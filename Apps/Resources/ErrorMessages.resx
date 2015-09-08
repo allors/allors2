@@ -1,0 +1,252 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="AccountNumberUniqueWithinChartOfAccounts" xml:space="preserve">
+    <value>AccountNumber must be unique within Chart of accounts</value>
+  </data>
+  <data name="ActiveDeploymentRegistered" xml:space="preserve">
+    <value>active deployment registered at {0}</value>
+  </data>
+  <data name="BasePriceOrderQuantityBreakNotAllowed" xml:space="preserve">
+    <value>order quantity break not allowed for a base price</value>
+  </data>
+  <data name="BasePriceOrderValueNotAllowed" xml:space="preserve">
+    <value>order value break not allowed for a base price</value>
+  </data>
+  <data name="BasePriceRevenueQuantityBreakNotAllowed" xml:space="preserve">
+    <value>revenue quantity break not allowed for a base price</value>
+  </data>
+  <data name="BasePriceRevenueValueBreakNotAllowed" xml:space="preserve">
+    <value>revenue value break not allowed for a base price</value>
+  </data>
+  <data name="CostCenterNotAllowed" xml:space="preserve">
+    <value>Cost center not in list of allowed cost centers</value>
+  </data>
+  <data name="CostUnitNotAllowed" xml:space="preserve">
+    <value>Cost unit not in list of allowed cost units</value>
+  </data>
+  <data name="DerivationErrorAtLeastOne" xml:space="preserve">
+    <value>{0} at least one</value>
+  </data>
+  <data name="DerivationErrorAtMostOne" xml:space="preserve">
+    <value>{0} at most one</value>
+  </data>
+  <data name="DerivationErrorConflict" xml:space="preserve">
+    <value>{0} is in conflict</value>
+  </data>
+  <data name="DerivationErrorEquals" xml:space="preserve">
+    <value>{0} are not equal</value>
+  </data>
+  <data name="DerivationErrorNotAllowed" xml:space="preserve">
+    <value>{0} is not allowed</value>
+  </data>
+  <data name="DerivationErrorRequired" xml:space="preserve">
+    <value>{0} is required</value>
+  </data>
+  <data name="DerivationErrorUnique" xml:space="preserve">
+    <value>{0} is not unique</value>
+  </data>
+  <data name="GeneralLedgerAccountNotBalanceAccount" xml:space="preserve">
+    <value>General Ledger Account must be balance sheet account</value>
+  </data>
+  <data name="GeneralLedgerAccountNotNeutral" xml:space="preserve">
+    <value>General Ledger Account not applicable</value>
+  </data>
+  <data name="IbanCheckDigitsError" xml:space="preserve">
+    <value>The check digits of IBAN are wrong</value>
+  </data>
+  <data name="IbanIllegalCharacters" xml:space="preserve">
+    <value>The IBAN contains illegal characters</value>
+  </data>
+  <data name="IbanIncorrect" xml:space="preserve">
+    <value>The IBAN is incorrect</value>
+  </data>
+  <data name="IbanLengthFailure" xml:space="preserve">
+    <value>IBAN length is wrong</value>
+  </data>
+  <data name="IbanStructuralFailure" xml:space="preserve">
+    <value>The country specific structure of IBAN is wrong</value>
+  </data>
+  <data name="IbanValidationUnavailable" xml:space="preserve">
+    <value>IBAN validation rules for this country are not known</value>
+  </data>
+  <data name="NotACostCenterAccount" xml:space="preserve">
+    <value>Account is not a cost center account</value>
+  </data>
+  <data name="NotACostUnitAccount" xml:space="preserve">
+    <value>Account is not a cost unit account</value>
+  </data>
+  <data name="NotAValidBic" xml:space="preserve">
+    <value>Not a valid BIC code</value>
+  </data>
+  <data name="PackagingContentMaximum" xml:space="preserve">
+    <value>maximum package content</value>
+  </data>
+  <data name="PartyIsNotACustomer" xml:space="preserve">
+    <value>Party choosen is not a customer for this internal organisation</value>
+  </data>
+  <data name="PartyIsNotASupplier" xml:space="preserve">
+    <value>Party choosen is not a supplier for this internal organisation</value>
+  </data>
+  <data name="PaymentApplicationNotLargerThanInvoiceAmount" xml:space="preserve">
+    <value>amount can not be larger then invoice amount</value>
+  </data>
+  <data name="PaymentApplicationNotLargerThanInvoiceItemAmount" xml:space="preserve">
+    <value>amount can not be larger then invoice item amount</value>
+  </data>
+  <data name="PaymentApplicationNotLargerThanPaymentAmount" xml:space="preserve">
+    <value>amount can not be larger then payment amount</value>
+  </data>
+  <data name="PaymentMethodNotAllowedForInternalOrganisation" xml:space="preserve">
+    <value>Payment method not listed for owner of this store</value>
+  </data>
+  <data name="PermissionOnlyExecuteForMethodType" xml:space="preserve">
+    <value>only execute is allowed for method type</value>
+  </data>
+  <data name="PermissionOnlyReadForRoleOrAssociationType" xml:space="preserve">
+    <value>only read is allowed for a role or an association type</value>
+  </data>
+  <data name="PermissionOnlyWriteForRoleType" xml:space="preserve">
+    <value>only write is allowed for a role type</value>
+  </data>
+  <data name="PickListItemQuantityMoreThanAllowed" xml:space="preserve">
+    <value>quantity more than allowed</value>
+  </data>
+  <data name="ProductCategoryPackageOnlyAtLowestLevel" xml:space="preserve">
+    <value>package only allowed at lowest level</value>
+  </data>
+  <data name="ReceiptAmountIsToSmall" xml:space="preserve">
+    <value>amount is to small</value>
+  </data>
+  <data name="SalesOrderItemLessThanAlreadeyShipped" xml:space="preserve">
+    <value>quantity less than already shipped</value>
+  </data>
+  <data name="SalesOrderItemProductChangeNotAllowed" xml:space="preserve">
+    <value>product change not allowed, user cancel orderitem instead</value>
+  </data>
+  <data name="SalesOrderItemQuantityToShipNowIsLargerThanQuantityOrdered" xml:space="preserve">
+    <value>The requested quantity to ship immediately is larger than the quantity that is ordered</value>
+  </data>
+  <data name="SalesOrderItemQuantityToShipNowIsLargerThanQuantityRemaining" xml:space="preserve">
+    <value>The requested quantity to ship immediately is larger than the quantity remaining to ship</value>
+  </data>
+  <data name="SalesOrderItemQuantityToShipNowNotAvailable" xml:space="preserve">
+    <value>The requested quantity to ship immediately is not available</value>
+  </data>
+</root>

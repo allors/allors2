@@ -1,0 +1,48 @@
+// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="PackagingSlip.cs" company="Allors bvba">
+//   Copyright 2002-2012 Allors bvba.
+// 
+// Dual Licensed under
+//   a) the General Public Licence v3 (GPL)
+//   b) the Allors License
+// 
+// The GPL License is included in the file gpl.txt.
+// The Allors License is an addendum to your contract.
+// 
+// Allors Applications is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+// 
+// For more information visit http://www.allors.com/legal
+// </copyright>
+// --------------------------------------------------------------------------------------------------------------------
+
+using System.Collections.Generic;
+
+namespace Allors.Domain
+{
+    public partial class PackagingSlip
+    {
+        public Shipment GetShipment
+        {
+            get { return this.ShipmentPackageWhereDocument.ShipmentWhereShipmentPackage; }
+        }
+
+        public void AppsOnDerive(ObjectOnDerive method)
+        {
+            var derivation = method.Derivation;
+
+            this.DeriveTemplate(derivation);
+        }
+
+        public void DeriveTemplate(IDerivation derivation)
+        {
+            var internalOrganisation = Singleton.Instance(this.strategy.Session).DefaultInternalOrganisation;
+            if (internalOrganisation != null && internalOrganisation.PackagingSlipTemplates.Count > 0)
+            {
+                this.PrintContent = internalOrganisation.PackagingSlipTemplates.First.Apply(new Dictionary<string, object> { { "this", this } });
+            }
+        }
+    }
+}

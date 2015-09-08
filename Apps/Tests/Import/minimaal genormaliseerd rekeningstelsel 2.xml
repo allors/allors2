@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<GeneralLedgerAccount>
+	<Row>
+    <AccountNumber>617910</AccountNumber>
+    <Name>Verworpen uitgaven niet-aftrekbare belastingen</Name>
+    <Description/>
+    <GeneralLedgerAccountType>Kosten</GeneralLedgerAccountType>
+    <GeneralLedgerAccountGroup>Diensten en diverse goederen;Overige kosten;Verworpen uitgaven</GeneralLedgerAccountGroup>
+    <BalanceSheetAccount>false</BalanceSheetAccount>
+    <DebitCredit>D</DebitCredit>
+    <ReconciliationAccount>false</ReconciliationAccount>
+    <CashAccount>false</CashAccount>
+    <Protected>false</Protected>
+    <CostCenterAccount>false</CostCenterAccount>
+    <DefaultCostCenter/>
+    <CostCenterRequired>false</CostCenterRequired>
+    <CostUnitAccount>false</CostUnitAccount>
+    <CostUnitRequired>false</CostUnitRequired>
+    <ChartOfAccounts>Minimum Algemeen Rekeningenstelsel</ChartOfAccounts>
+	</Row>
+</GeneralLedgerAccount>
