@@ -57,6 +57,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ErrorMessages.nl.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ErrorMessages.nl.resx</DependentUpon>
+    </Compile>
     <Compile Include="ErrorMessages1.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -65,11 +70,18 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="..\..\allors\Base\Resources\Base\ErrorMessages.resx">
+      <Link>Base\ErrorMessages.resx</Link>
+    </EmbeddedResource>
     <EmbeddedResource Include="Apps\ErrorMessages.nl.resx" />
     <EmbeddedResource Include="Apps\ErrorMessages.resx" />
-    <EmbeddedResource Include="ErrorMessages.resx">
+    <EmbeddedResource Include="ErrorMessages.nl.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>ErrorMessages.nl.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ErrorMessages.resx">
       <LastGenOutput>ErrorMessages1.Designer.cs</LastGenOutput>
+      <Generator>PublicResXFileCodeGenerator</Generator>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup />
