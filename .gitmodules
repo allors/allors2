@@ -1,3 +1,5 @@
-[submodule "Allors"]
-	path = allors
-	url = https://github.com/allors/allors
+[submodule "allors"]
+	
+path = allors
+	
+url = https://github.com/allors/allors
