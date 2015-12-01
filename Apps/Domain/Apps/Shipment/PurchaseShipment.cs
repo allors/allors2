@@ -150,7 +150,7 @@ namespace Allors.Domain
         public void AppsOnPostDerive(ObjectOnPostDerive method)
         {
             this.RemoveSecurityTokens();
-            this.AddSecurityToken(Domain.Singleton.Instance(this.Strategy.Session).AdministratorSecurityToken);
+            this.AddSecurityToken(Domain.Singleton.Instance(this.Strategy.Session).DefaultSecurityToken);
 
             if (this.ExistShipToParty)
             {

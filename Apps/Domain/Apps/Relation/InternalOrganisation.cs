@@ -386,7 +386,7 @@ namespace Allors.Domain
                 this.OwnerSecurityToken = securityToken;
 
                 this.AddSecurityToken(this.OwnerSecurityToken);
-                this.AddSecurityToken(Singleton.Instance(this.Strategy.Session).AdministratorSecurityToken);
+                this.AddSecurityToken(Singleton.Instance(this.Strategy.Session).DefaultSecurityToken);
             }
 
             this.DeriveEmployeeUserGroups(derivation);

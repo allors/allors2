@@ -40,7 +40,7 @@ namespace Allors.Domain
         {
             this.RemoveSecurityTokens();
             this.AddSecurityToken(this.OwnerSecurityToken);
-            this.AddSecurityToken(Singleton.Instance(this.Strategy.Session).AdministratorSecurityToken);
+            this.AddSecurityToken(Singleton.Instance(this.Strategy.Session).DefaultSecurityToken);
 
             foreach (CustomerRelationship customerRelationship in this.CustomerRelationshipsWhereCustomer)
             {

@@ -125,7 +125,7 @@ namespace Allors.Domain
         public void AppsOnPostDerive(ObjectOnPostDerive method)
         {
             this.RemoveSecurityTokens();
-            this.AddSecurityToken(Singleton.Instance(this.Strategy.Session).AdministratorSecurityToken);
+            this.AddSecurityToken(Singleton.Instance(this.Strategy.Session).DefaultSecurityToken);
 
             if (this.ExistOwner)
             {

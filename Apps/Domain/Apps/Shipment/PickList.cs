@@ -127,7 +127,7 @@ namespace Allors.Domain
         public void AppsOnPostDerive(ObjectOnPostDerive method)
         {
             this.RemoveSecurityTokens();
-            this.AddSecurityToken(Allors.Domain.Singleton.Instance(this.Strategy.Session).AdministratorSecurityToken);
+            this.AddSecurityToken(Allors.Domain.Singleton.Instance(this.Strategy.Session).DefaultSecurityToken);
 
             if (this.ExistShipToParty)
             {
