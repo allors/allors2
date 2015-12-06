@@ -4,7 +4,9 @@ namespace Allors.Meta
 	[Id("3a5dcec7-308f-48c7-afee-35d38415aa0b")]
 	#endregion
 	[Inherit(typeof(PartyInterface))]
-	public partial class OrganisationClass : Class
+    [Inherit(typeof(DeletableInterface))]
+
+    public partial class OrganisationClass : Class
 	{
 		#region Allors
 		[Id("1c8bf2e3-6794-47c8-990c-f124d47653fb")]

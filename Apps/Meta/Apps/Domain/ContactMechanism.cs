@@ -7,8 +7,9 @@ namespace Allors.Meta
 	#endregion
 	[Plural("ContactMechanisms")]
 	[Inherit(typeof(AccessControlledObjectInterface))]
+    [Inherit(typeof(DeletableInterface))]
 
-  	public partial class ContactMechanismInterface: Interface
+    public partial class ContactMechanismInterface: Interface
 	{
 		#region Allors
 		[Id("3c4ab373-8ff4-44ef-a97d-d8a27513f69c")]

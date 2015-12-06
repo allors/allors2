@@ -9,8 +9,9 @@ namespace Allors.Meta
 	[Inherit(typeof(PeriodInterface))]
 	[Inherit(typeof(CommentableInterface))]
 	[Inherit(typeof(AccessControlledObjectInterface))]
+    [Inherit(typeof(DeletableInterface))]
 
-  	public partial class PartyRelationshipInterface: Interface
+    public partial class PartyRelationshipInterface: Interface
 	{
 		#region Allors
 		[Id("1da069bb-5e29-49e0-93a8-b869a7f2d61a")]

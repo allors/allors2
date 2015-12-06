@@ -6,8 +6,9 @@ namespace Allors.Meta
 	[Id("e94bf9e1-373d-49e3-a0fe-f21a8b1525d4")]
 	#endregion
 	[Inherit(typeof(AccessControlledObjectInterface))]
+    [Inherit(typeof(DeletableInterface))]
 
-	[Plural("PostalBoundaries")]
+    [Plural("PostalBoundaries")]
 	public partial class PostalBoundaryClass : Class
 	{
 		#region Allors

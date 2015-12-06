@@ -8,8 +8,9 @@ namespace Allors.Meta
 	[Inherit(typeof(CommentableInterface))]
 	[Inherit(typeof(AccessControlledObjectInterface))]
 	[Inherit(typeof(PeriodInterface))]
+    [Inherit(typeof(DeletableInterface))]
 
-	[Plural("PartyContactMechanisms")]
+    [Plural("PartyContactMechanisms")]
 	public partial class PartyContactMechanismClass : Class
 	{
 		#region Allors

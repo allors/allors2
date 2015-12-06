@@ -622,21 +622,37 @@ namespace Allors.Domain
             }
         }
 
+        public bool IsDeletable => this.CurrentContacts.Count == 0;
+
         public void AppsDelete(DeletableDelete method)
         {
-            foreach (Employment employment in this.EmploymentsWhereEmployee)
+            if (this.IsDeletable)
             {
-                employment.Delete();
-            }
-
-            if (this.ExistOwnerSecurityToken)
-            {
-                foreach (AccessControl acl in this.OwnerSecurityToken.AccessControlsWhereObject)
+                foreach (PartyContactMechanism partyContactMechanism in this.PartyContactMechanisms)
                 {
-                    acl.Delete();
+                    partyContactMechanism.ContactMechanism.Delete();
+                    partyContactMechanism.Delete();
                 }
 
-                this.OwnerSecurityToken.Delete();
+                foreach (OrganisationContactRelationship organisationContactRelationship in this.OrganisationContactRelationshipsWhereContact)
+                {
+                    organisationContactRelationship.Delete();
+                }
+
+                foreach (Employment employment in this.EmploymentsWhereEmployee)
+                {
+                    employment.Delete();
+                }
+
+                if (this.ExistOwnerSecurityToken)
+                {
+                    foreach (AccessControl acl in this.OwnerSecurityToken.AccessControlsWhereObject)
+                    {
+                        acl.Delete();
+                    }
+
+                    this.OwnerSecurityToken.Delete();
+                }
             }
         }
 

@@ -23,6 +23,7 @@ namespace Allors.Domain
     public partial interface ContactMechanism
     {
         bool IsPostalAddress { get; }
+        void AppsDelete(DeletableDelete method);
     }
 
     public static partial class ContactMechanismExtensions
