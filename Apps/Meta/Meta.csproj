@@ -950,7 +950,6 @@
     <Compile Include="Apps\Domain\SubContractorRelationship.t.cs" />
     <Compile Include="Apps\Domain\SupplierOffering.t.cs" />
     <Compile Include="Apps\Domain\SupplierRelationship.t.cs" />
-    <Compile Include="Apps\Domain\TelecommunicationsNumber.t.cs" />
     <Compile Include="Apps\Domain\Territory.t.cs" />
     <Compile Include="Apps\Domain\TimeEntry.t.cs" />
     <Compile Include="Apps\Domain\Training.t.cs" />

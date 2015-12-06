@@ -96,7 +96,7 @@ namespace Allors.Domain
 	public interface CommunicationAttachment  : Object, AccessControlledObject 
 	{
 	}
-	public interface ContactMechanism  : Object, AccessControlledObject 
+	public interface ContactMechanism  : Object, AccessControlledObject, Deletable 
 	{
 					global::System.String Description {set;}
 
@@ -569,7 +569,7 @@ namespace Allors.Domain
 					global::System.String Name {set;}
 
 	}
-	public interface PartyRelationship  : Object, Period, Commentable, AccessControlledObject 
+	public interface PartyRelationship  : Object, Period, Commentable, AccessControlledObject, Deletable 
 	{
 					PartyRelationshipStatus PartyRelationshipStatus {set;}
 
@@ -2320,7 +2320,7 @@ namespace Allors.Domain
 					Employment Employment {set;}
 
 	}
-	public interface PartyContactMechanism  : Object, Commentable, AccessControlledObject, Period 
+	public interface PartyContactMechanism  : Object, Commentable, AccessControlledObject, Period, Deletable 
 	{
 					ContactMechanismPurpose ContactPurpose {set;}
 
@@ -2733,7 +2733,7 @@ namespace Allors.Domain
 					global::System.String FormattedFullAddress {set;}
 
 	}
-	public interface PostalBoundary  : Object, AccessControlledObject 
+	public interface PostalBoundary  : Object, AccessControlledObject, Deletable 
 	{
 					global::System.String PostalCode {set;}
 
@@ -4814,7 +4814,7 @@ namespace Allors.Domain
 	public interface OperatingBudget  : Object, Budget 
 	{
 	}
-	public interface Organisation  : Object, Party 
+	public interface Organisation  : Object, Party, Deletable 
 	{
 					LegalForm LegalForm {set;}
 

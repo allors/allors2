@@ -649,12 +649,7 @@ namespace Allors.Domain
                     organisationContactRelationship.Contact.Delete();
                     organisationContactRelationship.Delete();
                 }
-
-                foreach (Booking booking in this.BookingsWhereCustomer)
-                {
-                    booking.Delete();
-                }
-
+                
                 if (this.ExistOwnerSecurityToken)
                 {
                     foreach (AccessControl acl in this.OwnerSecurityToken.AccessControlsWhereObject)
