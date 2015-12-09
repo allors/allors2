@@ -644,12 +644,6 @@ namespace Allors.Domain
                     partyContactMechanism.Delete();
                 }
 
-                foreach (OrganisationContactRelationship organisationContactRelationship in this.OrganisationContactRelationshipsWhereOrganisation)
-                {
-                    organisationContactRelationship.Contact.Delete();
-                    organisationContactRelationship.Delete();
-                }
-                
                 if (this.ExistOwnerSecurityToken)
                 {
                     foreach (AccessControl acl in this.OwnerSecurityToken.AccessControlsWhereObject)

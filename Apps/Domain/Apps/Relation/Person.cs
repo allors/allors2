@@ -636,7 +636,7 @@ namespace Allors.Domain
 
                 foreach (OrganisationContactRelationship organisationContactRelationship in this.OrganisationContactRelationshipsWhereContact)
                 {
-                    organisationContactRelationship.Delete();
+                    organisationContactRelationship?.Delete();
                 }
 
                 foreach (Employment employment in this.EmploymentsWhereEmployee)

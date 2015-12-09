@@ -122,6 +122,11 @@ namespace Allors.Domain
                     }
                 }
             }
+
+            if (!this.ExistCustomer || !this.ExistInternalOrganisation)
+            {
+                this.Delete();
+            }
         }
 
         public void AppsOnDerive(ObjectOnDerive method)

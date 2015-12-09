@@ -60,6 +60,11 @@ namespace Allors.Domain
             {
                 this.Contact.OnDerive(x => x.WithDerivation(derivation));
             }
+
+            if (!this.ExistContact || !this.ExistOrganisation)
+            {
+                this.Delete();
+            }
         }
 
         public void AppsOnDeriveCustomerContactMemberShip(IDerivation derivation)
