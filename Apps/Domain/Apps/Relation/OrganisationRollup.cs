@@ -22,11 +22,11 @@ namespace Allors.Domain
 {
     using System;
 
-    public partial class OrganisationRollup
+    public partial class OrganisationRollUp
     {
         public void AppsOnDerive(ObjectOnDerive method)
         {
-            if (!this.ExistChild | !this.ExistParent)
+            if (!this.ExistParent | !this.ExistChild)
             {
                 this.Delete();
             }

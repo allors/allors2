@@ -22,12 +22,12 @@ namespace Allors.Domain
 {
     using System;
 
-    public partial class SubcontractorRelationship
+    public partial class SubContractorRelationship
     {
 
         public void AppsOnDerive(ObjectOnDerive method)
         {
-            if (!this.ExistContractor || !this.ExistSubcontractor)
+            if (!this.ExistContractor || !this.ExistSubContractor)
             {
                 this.Delete();
             }
