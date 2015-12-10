@@ -79,6 +79,11 @@ namespace Allors.Domain
             {
                 derivation.Log.AddError(new DerivationErrorUnique(derivation.Log, this, SupplierRelationships.Meta.SubAccountNumber));
             }
+
+            if (!this.ExistInternalOrganisation | !this.ExistSupplier)
+            {
+                this.Delete();
+            }
         }
 
         public void AppsOnDeriveInternalOrganisationSupplier(IDerivation derivation)

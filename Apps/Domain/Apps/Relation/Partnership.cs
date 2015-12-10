@@ -38,6 +38,11 @@ namespace Allors.Domain
 
             this.AppsOnDeriveMembership();
             this.AppsOnDerivePartnerContacts(derivation);
+
+            if (!this.ExistInternalOrganisation | !this.ExistPartner)
+            {
+                this.Delete();
+            }
         }
 
         public void AppsOnDerivePartnerContacts(IDerivation derivation)

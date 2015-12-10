@@ -871,6 +871,7 @@
     <Compile Include="Apps\Relation\CaseStatuses.cs" />
     <Compile Include="Apps\Relation\Citizenships.cs" />
     <Compile Include="Apps\Relation\ClientAgreements.cs" />
+    <Compile Include="Apps\Relation\ClientRelationship.cs" />
     <Compile Include="Apps\Relation\ClientRelationships.cs" />
     <Compile Include="Apps\Relation\CommunicationEvent.v.cs" />
     <Compile Include="Apps\Relation\CommunicationEventExtensions.cs" />
@@ -885,6 +886,7 @@
     <Compile Include="Apps\Relation\CustomerRelationship.cs" />
     <Compile Include="Apps\Relation\CustomerRelationship.v.cs" />
     <Compile Include="Apps\Relation\CustomerRelationships.cs" />
+    <Compile Include="Apps\Relation\DistributionChannelRelationship.cs" />
     <Compile Include="Apps\Relation\DistributionChannelRelationships.cs" />
     <Compile Include="Apps\Relation\EmailAddress.cs" />
     <Compile Include="Apps\Relation\EmailAddresses.cs" />
@@ -923,6 +925,7 @@
     <Compile Include="Apps\Relation\OrganisationContactRelationship.cs" />
     <Compile Include="Apps\Relation\OrganisationContactRelationship.v.cs" />
     <Compile Include="Apps\Relation\OrganisationContactRelationships.cs" />
+    <Compile Include="Apps\Relation\OrganisationRollup.cs" />
     <Compile Include="Apps\Relation\OrganisationRollUps.cs" />
     <Compile Include="Apps\Relation\Organisations.cs" />
     <Compile Include="Apps\Relation\OrganisationUnits.cs" />
@@ -947,7 +950,9 @@
     <Compile Include="Apps\Relation\PhoneCommunications.cs" />
     <Compile Include="Apps\Relation\Priorities.cs" />
     <Compile Include="Apps\Relation\ProductFeatureApplicabilityRelationships.cs" />
+    <Compile Include="Apps\Relation\ProfessionalServicesRelationship.cs" />
     <Compile Include="Apps\Relation\ProfessionalServicesRelationships.cs" />
+    <Compile Include="Apps\Relation\ProspectRelationship.cs" />
     <Compile Include="Apps\Relation\ProspectRelationships.cs" />
     <Compile Include="Apps\Relation\PurchaseAgreements.cs" />
     <Compile Include="Apps\Relation\SalesAgreements.cs" />
@@ -957,6 +962,7 @@
     <Compile Include="Apps\Relation\Salutations.cs" />
     <Compile Include="Apps\Relation\SubAgreements.cs" />
     <Compile Include="Apps\Relation\SubContractorAgreements.cs" />
+    <Compile Include="Apps\Relation\SubcontractorRelationship.cs" />
     <Compile Include="Apps\Relation\SubContractorRelationships.cs" />
     <Compile Include="Apps\Relation\SupplierRelationship.cs" />
     <Compile Include="Apps\Relation\SupplierRelationship.v.cs" />

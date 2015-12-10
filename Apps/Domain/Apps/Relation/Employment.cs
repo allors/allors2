@@ -76,7 +76,15 @@ namespace Allors.Domain
                 }
             }
 
-            this.AppsOnDeriveInternalOrganisationCustomer(derivation);
+            if (this.ExistEmployee && this.ExistEmployer)
+            {
+                this.AppsOnDeriveInternalOrganisationCustomer(derivation);
+            }
+
+            if (!this.ExistEmployer | !this.ExistEmployee)
+            {
+                this.Delete();
+            }
         }
 
         public void AppsOnDeriveInternalOrganisationCustomer(IDerivation derivation)

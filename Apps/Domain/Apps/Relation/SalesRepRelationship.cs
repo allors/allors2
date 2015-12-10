@@ -51,6 +51,11 @@ namespace Allors.Domain
                 this.Customer.DeriveCurrentSalesReps(derivation);
                 this.SalesRepresentative.OnDerive(x => x.WithDerivation(derivation));
             }
+
+            if (!this.ExistCustomer | !this.ExistSalesRepresentative)
+            {
+                this.Delete();
+            }
         }
 
         public void AppsCustomerContacts()
