@@ -948,6 +948,7 @@
     <Compile Include="Apps\Relation\PhoneCommunication.cs" />
     <Compile Include="Apps\Relation\PhoneCommunication.v.cs" />
     <Compile Include="Apps\Relation\PhoneCommunications.cs" />
+    <Compile Include="Apps\Relation\PostalAddress.cs" />
     <Compile Include="Apps\Relation\Priorities.cs" />
     <Compile Include="Apps\Relation\ProductFeatureApplicabilityRelationships.cs" />
     <Compile Include="Apps\Relation\ProfessionalServicesRelationship.cs" />
