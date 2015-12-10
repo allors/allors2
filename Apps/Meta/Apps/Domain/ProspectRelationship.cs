@@ -32,10 +32,12 @@ namespace Allors.Meta
 		public RelationType Prospect;
 
 
-
 		public static ProspectRelationshipClass Instance {get; internal set;}
 
 		internal ProspectRelationshipClass() : base(MetaPopulation.Instance)
+        {
+        }
+        internal override void AppsExtend()
         {
             this.Prospect.RoleType.IsRequired = true;
             this.InternalOrganisation.RoleType.IsRequired = true;
