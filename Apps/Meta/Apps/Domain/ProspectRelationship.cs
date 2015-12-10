@@ -37,6 +37,8 @@ namespace Allors.Meta
 
 		internal ProspectRelationshipClass() : base(MetaPopulation.Instance)
         {
+            this.Prospect.RoleType.IsRequired = true;
+            this.InternalOrganisation.RoleType.IsRequired = true;
         }
-	}
+    }
 }
