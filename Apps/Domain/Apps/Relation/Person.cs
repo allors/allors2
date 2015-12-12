@@ -622,7 +622,7 @@ namespace Allors.Domain
             }
         }
 
-        public bool IsDeletable => this.CurrentContacts.Count == 0;
+        public bool IsDeletable => !this.IsActiveContact(DateTime.UtcNow);
 
         public void AppsDelete(DeletableDelete method)
         {
@@ -632,16 +632,6 @@ namespace Allors.Domain
                 {
                     partyContactMechanism.ContactMechanism.Delete();
                     partyContactMechanism.Delete();
-                }
-
-                foreach (OrganisationContactRelationship organisationContactRelationship in this.OrganisationContactRelationshipsWhereContact)
-                {
-                    organisationContactRelationship?.Delete();
-                }
-
-                foreach (Employment employment in this.EmploymentsWhereEmployee)
-                {
-                    employment.Delete();
                 }
 
                 if (this.ExistOwnerSecurityToken)

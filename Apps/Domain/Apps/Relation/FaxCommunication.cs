@@ -36,6 +36,10 @@ namespace Allors.Domain
             this.AppsOnDeriveToParties();
             this.AppsOnDeriveInvolvedParties();
 
+            if (!this.ExistOriginator || !this.ExistReceiver)
+            {
+                this.Delete();
+            }
         }
 
         public void AppsOnDeriveFromParties()

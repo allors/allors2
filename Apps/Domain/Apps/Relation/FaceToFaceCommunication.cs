@@ -39,6 +39,11 @@ namespace Allors.Domain
             this.FromParties = this.Participants;
             this.ToParties = this.Participants;
             this.AppsOnDeriveInvolvedParties(derivation);
+
+            if (this.Participants.Count <= 1)
+            {
+                this.Delete();
+            }
         }
 
         public void AppsOnDeriveInvolvedParties(IDerivation derivation)

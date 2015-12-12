@@ -50,5 +50,11 @@ namespace Allors.Meta
 		internal LetterCorrespondenceClass() : base(MetaPopulation.Instance)
         {
         }
-	}
+
+        internal override void AppsExtend()
+        {
+            this.Originator.RoleType.IsRequired = true;
+            this.Receiver.RoleType.IsRequired = true;
+        }
+    }
 }

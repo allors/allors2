@@ -26,7 +26,7 @@ namespace Allors.Domain
     {
         public static void AppsOnDerive(this Requirement @this, ObjectOnDerive method)
         {
-            if (@this.ExistCurrentObjectState && !@this.CurrentObjectState.Equals(@this.PreviousObjectState))
+            if (@this.ExistCurrentObjectState && @this.ExistPreviousObjectState && !@this.CurrentObjectState.Equals(@this.PreviousObjectState))
             {
                 var currentStatus = new RequirementStatusBuilder(@this.Strategy.Session)
                     .WithRequirementObjectState(@this.CurrentObjectState)

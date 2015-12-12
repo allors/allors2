@@ -24,7 +24,7 @@ namespace Allors.Domain
     {
         public static void AppsOnDerive(this Budget @this, ObjectOnDerive method)
         {
-            if (@this.ExistCurrentObjectState && !@this.CurrentObjectState.Equals(@this.PreviousObjectState))
+            if (@this.ExistCurrentObjectState && @this.ExistPreviousObjectState && !@this.CurrentObjectState.Equals(@this.PreviousObjectState))
             {
                 var currentStatus = new BudgetStatusBuilder(@this.Strategy.Session).WithBudgetObjectState(@this.CurrentObjectState).Build();
                 @this.AddBudgetStatus(currentStatus);
