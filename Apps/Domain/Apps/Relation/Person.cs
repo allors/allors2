@@ -234,21 +234,31 @@ namespace Allors.Domain
                 return false;
             }
 
+            //var contactRelationships = this.OrganisationContactRelationshipsWhereContact;
+            //contactRelationships.Filter.AddLessThan(OrganisationContactRelationships.Meta.FromDate, date.AddDays(1));
+            //var or1 = contactRelationships.Filter.AddOr();
+            //or1.AddNot().AddExists(PartyRelationships.Meta.ThroughDate);
+            //or1.AddGreaterThan(PartyRelationships.Meta.ThroughDate, date.AddDays(-1));
+
+            //foreach (OrganisationContactRelationship contactRelationship in contactRelationships)
+            //{
+            //    var customerRelationships = contactRelationship.Organisation.CustomerRelationshipsWhereCustomer;
+            //    customerRelationships.Filter.AddLessThan(CustomerRelationships.Meta.FromDate, date.AddDays(1));
+            //    var or2 = contactRelationships.Filter.AddOr();
+            //    or2.AddNot().AddExists(PartyRelationships.Meta.ThroughDate);
+            //    or2.AddGreaterThan(PartyRelationships.Meta.ThroughDate, date.AddDays(-1));
+
+            //    if (customerRelationships.Count > 0)
+            //    {
+            //        return true;
+            //    }
+            //}
+
             var contactRelationships = this.OrganisationContactRelationshipsWhereContact;
-            contactRelationships.Filter.AddLessThan(OrganisationContactRelationships.Meta.FromDate, date.AddDays(1));
-            var or1 = contactRelationships.Filter.AddOr();
-            or1.AddNot().AddExists(PartyRelationships.Meta.ThroughDate);
-            or1.AddGreaterThan(PartyRelationships.Meta.ThroughDate, date.AddDays(-1));
-
-            foreach (OrganisationContactRelationship contactRelationship in contactRelationships)
+            foreach (OrganisationContactRelationship relationship in contactRelationships)
             {
-                var customerRelationships = contactRelationship.Organisation.CustomerRelationshipsWhereCustomer;
-                customerRelationships.Filter.AddLessThan(CustomerRelationships.Meta.FromDate, date.AddDays(1));
-                var or2 = contactRelationships.Filter.AddOr();
-                or2.AddNot().AddExists(PartyRelationships.Meta.ThroughDate);
-                or2.AddGreaterThan(PartyRelationships.Meta.ThroughDate, date.AddDays(-1));
-
-                if (customerRelationships.Count > 0)
+                if (relationship.FromDate <= date &&
+                    (!relationship.ExistThroughDate || relationship.ThroughDate >= date))
                 {
                     return true;
                 }
