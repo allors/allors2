@@ -516,6 +516,15 @@ namespace Allors.Domain
         public void AppsOnDeriveCurrentOrganisationContactRelationships(IDerivation derivation)
         {
             this.RemoveCurrentOrganisationContactRelationships();
+
+            foreach (OrganisationContactRelationship organisationContactRelationship in this.OrganisationContactRelationshipsWhereContact)
+            {
+                if (organisationContactRelationship.FromDate <= DateTime.UtcNow &&
+                    (!organisationContactRelationship.ExistThroughDate || organisationContactRelationship.ThroughDate >= DateTime.UtcNow))
+                {
+                    this.AddCurrentOrganisationContactRelationship(organisationContactRelationship);
+                }
+            }
         }
 
         public void AppsOnDeriveInactiveOrganisationContactRelationships(IDerivation derivation)
