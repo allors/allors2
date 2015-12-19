@@ -61,6 +61,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="PartyRelationships.cd" />
     <None Include="PartyClassification.cd" />
     <None Include="Overview.cd" />
     <None Include="Transitional.cd" />

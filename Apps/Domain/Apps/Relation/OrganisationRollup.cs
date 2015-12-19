@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------------------------------------------
-// <copyright file="SalesRepRelationship.cs" company="Allors bvba">
+// <copyright file="OrganisationRollUp.cs" company="Allors bvba">
 //   Copyright 2002-2012 Allors bvba.
 // 
 // Dual Licensed under
@@ -20,12 +20,12 @@
 
 namespace Allors.Domain
 {
-    using System;
-
     public partial class OrganisationRollUp
     {
         public void AppsOnDerive(ObjectOnDerive method)
         {
+            this.Parties = new Party[] { this.Child, this.Parent };
+
             if (!this.ExistParent | !this.ExistChild)
             {
                 this.Delete();

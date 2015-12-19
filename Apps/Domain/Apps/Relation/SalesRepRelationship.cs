@@ -26,8 +26,6 @@ namespace Allors.Domain
     {
         public void AppsOnBuild(ObjectOnBuild method)
         {
-            
-
             if (!this.ExistFromDate)
             {
                 this.FromDate = DateTime.UtcNow;
@@ -43,8 +41,8 @@ namespace Allors.Domain
         {
             var derivation = method.Derivation;
 
-            this.DeriveMembership();
-            this.DeriveCustomerContacts();
+            this.AppsOnDeriveMembership();
+            this.AppsCustomerContacts();
 
             if (this.ExistCustomer && this.ExistSalesRepresentative)
             {
@@ -52,6 +50,8 @@ namespace Allors.Domain
                 this.SalesRepresentative.OnDerive(x => x.WithDerivation(derivation));
             }
 
+            this.Parties = new Party[] { this.Customer, this.InternalOrganisation };
+    
             if (!this.ExistCustomer | !this.ExistSalesRepresentative)
             {
                 this.Delete();

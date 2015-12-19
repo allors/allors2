@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------------------------------------------
-// <copyright file="CustomerRelationship.cs" company="Allors bvba">
+// <copyright file="SubContractorRelationship.cs" company="Allors bvba">
 //   Copyright 2002-2012 Allors bvba.
 // 
 // Dual Licensed under
@@ -20,17 +20,16 @@
 
 namespace Allors.Domain
 {
-    using System;
-
     public partial class SubContractorRelationship
     {
-
         public void AppsOnDerive(ObjectOnDerive method)
         {
+            this.Parties = new Party[] { this.Contractor, this.SubContractor };
+
             if (!this.ExistContractor || !this.ExistSubContractor)
             {
                 this.Delete();
             }
         }
-   }
+    }
 }

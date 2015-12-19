@@ -39,6 +39,8 @@ namespace Allors.Domain
             this.AppsOnDeriveMembership();
             this.AppsOnDerivePartnerContacts(derivation);
 
+            this.Parties = new Party[] { this.Partner, this.InternalOrganisation };
+
             if (!this.ExistInternalOrganisation | !this.ExistPartner)
             {
                 this.Delete();

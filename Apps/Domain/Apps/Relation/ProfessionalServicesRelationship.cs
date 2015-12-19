@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------------------------------------------
-// <copyright file="SalesRepRelationship.cs" company="Allors bvba">
+// <copyright file="ProfessionalServicesRelationship.cs" company="Allors bvba">
 //   Copyright 2002-2012 Allors bvba.
 // 
 // Dual Licensed under
@@ -20,12 +20,12 @@
 
 namespace Allors.Domain
 {
-    using System;
-
     public partial class ProfessionalServicesRelationship
     {
         public void AppsOnDerive(ObjectOnDerive method)
         {
+            this.Parties = new Party[] { this.Professional, this.ProfessionalServicesProvider };
+
             if (!this.ExistProfessional | !this.ExistProfessionalServicesProvider)
             {
                 this.Delete();

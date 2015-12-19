@@ -103,8 +103,7 @@ namespace Allors.Domain
                 @this.InitialScheduledEnd = @this.ScheduledEnd;
             }
         }
-
-
+        
         public static void AppsDelete(this CommunicationEvent @this, DeletableDelete method)
         {
             foreach (CommunicationEventStatus communicationEventStatus in @this.CommunicationEventStatuses)
@@ -114,8 +113,7 @@ namespace Allors.Domain
 
             @this.RemoveWorkEfforts();
         }
-
-
+        
         public static void AppsClose(this CommunicationEvent @this, CommunicationEventClose method)
         {
             @this.CurrentObjectState = new CommunicationEventObjectStates(@this.Strategy.Session).Completed;

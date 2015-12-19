@@ -20,17 +20,18 @@
 
 namespace Allors.Domain
 {
-    using System;
-
     public partial class ClientRelationship
     {
-
         public void AppsOnDerive(ObjectOnDerive method)
         {
+            this.Parties = new Party[] { this.Client, this.InternalOrganisation };
+
             if (!this.ExistInternalOrganisation || !this.ExistClient)
             {
                 this.Delete();
             }
         }
-   }
+
+        public Party InvolvedParty => this.Client;
+    }
 }

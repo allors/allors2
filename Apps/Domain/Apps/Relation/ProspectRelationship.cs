@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------------------------------------------
-// <copyright file="SupplierRelationship.cs" company="Allors bvba">
+// <copyright file="ProspectRelationship.cs" company="Allors bvba">
 //   Copyright 2002-2012 Allors bvba.
 // 
 // Dual Licensed under
@@ -20,12 +20,12 @@
 
 namespace Allors.Domain
 {
-    using System;
-
     public partial class ProspectRelationship
     {
         public void AppsOnDerive(ObjectOnDerive method)
         {
+            this.Parties = new[] { this.Prospect, this.InternalOrganisation };
+
             if (!this.ExistInternalOrganisation | !this.ExistProspect)
             {
                 this.Delete();

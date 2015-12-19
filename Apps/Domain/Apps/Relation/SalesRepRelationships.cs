@@ -22,15 +22,14 @@ namespace Allors.Domain
 {
     using System;
     using System.Collections.Generic;
-
-
+    
     public partial class SalesRepRelationships
     {
         public static void DeriveCommissions(ISession session)
         {
             foreach (SalesRepRelationship salesRepRelationship in session.Extent<SalesRepRelationship>())
             {
-                salesRepRelationship.DeriveCommission();
+                salesRepRelationship.AppsOnDeriveCommission();
             }
         }
 

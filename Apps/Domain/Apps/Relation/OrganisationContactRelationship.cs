@@ -31,6 +31,7 @@ namespace Allors.Domain
                 this.FromDate = DateTime.UtcNow;
             }
         }
+
         public void AppsOnPreDerive(ObjectOnPreDerive method)
         {
             var derivation = method.Derivation;
@@ -60,6 +61,8 @@ namespace Allors.Domain
             {
                 this.Contact.OnDerive(x => x.WithDerivation(derivation));
             }
+
+            this.Parties = new Party[] { this.Contact, this.Organisation };
 
             if (!this.ExistContact || !this.ExistOrganisation)
             {

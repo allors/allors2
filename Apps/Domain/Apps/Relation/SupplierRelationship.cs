@@ -80,6 +80,8 @@ namespace Allors.Domain
                 derivation.Log.AddError(new DerivationErrorUnique(derivation.Log, this, SupplierRelationships.Meta.SubAccountNumber));
             }
 
+            this.Parties = new Party[] { this.Supplier, this.InternalOrganisation};
+
             if (!this.ExistInternalOrganisation | !this.ExistSupplier)
             {
                 this.Delete();

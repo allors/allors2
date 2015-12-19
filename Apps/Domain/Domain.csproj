@@ -884,7 +884,6 @@
     <Compile Include="Apps\Relation\ContactMechanismPurpose.cs" />
     <Compile Include="Apps\Relation\ContactMechanismPurposes.cs" />
     <Compile Include="Apps\Relation\CustomerRelationship.cs" />
-    <Compile Include="Apps\Relation\CustomerRelationship.v.cs" />
     <Compile Include="Apps\Relation\CustomerRelationships.cs" />
     <Compile Include="Apps\Relation\DistributionChannelRelationship.cs" />
     <Compile Include="Apps\Relation\DistributionChannelRelationships.cs" />
@@ -958,7 +957,6 @@
     <Compile Include="Apps\Relation\PurchaseAgreements.cs" />
     <Compile Include="Apps\Relation\SalesAgreements.cs" />
     <Compile Include="Apps\Relation\SalesRepRelationship.cs" />
-    <Compile Include="Apps\Relation\SalesRepRelationship.v.cs" />
     <Compile Include="Apps\Relation\SalesRepRelationships.cs" />
     <Compile Include="Apps\Relation\Salutations.cs" />
     <Compile Include="Apps\Relation\SubAgreements.cs" />

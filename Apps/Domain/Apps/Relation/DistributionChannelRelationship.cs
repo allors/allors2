@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------------------------------------------
-// <copyright file="SalesRepRelationship.cs" company="Allors bvba">
+// <copyright file="DistributionChannelRelationship.cs" company="Allors bvba">
 //   Copyright 2002-2012 Allors bvba.
 // 
 // Dual Licensed under
@@ -20,12 +20,12 @@
 
 namespace Allors.Domain
 {
-    using System;
-
     public partial class DistributionChannelRelationship
     {
         public void AppsOnDerive(ObjectOnDerive method)
         {
+            this.Parties = new Party[] { this.Distributor, this.InternalOrganisation };
+
             if (!this.ExistInternalOrganisation | !this.ExistDistributor)
             {
                 this.Delete();

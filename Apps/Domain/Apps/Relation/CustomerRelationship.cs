@@ -147,12 +147,14 @@ namespace Allors.Domain
                 derivation.Log.AddError(new DerivationErrorUnique(derivation.Log, this, CustomerRelationships.Meta.SubAccountNumber));
             }
 
-            this.DeriveInternalOrganisationCustomer(derivation);
-            this.DeriveMembership(derivation);
+            this.AppsOnDeriveInternalOrganisationCustomer(derivation);
+            this.AppsOnDeriveMembership(derivation);
 
-            this.DeriveAmountDue(derivation);
-            this.DeriveAmountOverDue(derivation);
-            this.DeriveRevenue(derivation);
+            this.AppsOnDeriveAmountDue(derivation);
+            this.AppsOnDeriveAmountOverDue(derivation);
+            this.AppsOnDeriveRevenue(derivation);
+
+            this.Parties = new Party[] { this.Customer, this.InternalOrganisation };
         }
 
         public void AppsOnDeriveInternalOrganisationCustomer(IDerivation derivation)

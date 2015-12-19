@@ -581,6 +581,8 @@ namespace Allors.Domain
 
 					CommunicationEvent CommunicationEvents {set;}
 
+					Party Parties {set;}
+
 	}
 	public interface Payment  : Object, AccessControlledObject, Commentable, UniquelyIdentifiable 
 	{

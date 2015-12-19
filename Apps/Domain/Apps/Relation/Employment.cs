@@ -81,6 +81,8 @@ namespace Allors.Domain
                 this.AppsOnDeriveInternalOrganisationCustomer(derivation);
             }
 
+            this.Parties = new Party[] { this.Employer, this.Employee};
+
             if (!this.ExistEmployer | !this.ExistEmployee)
             {
                 this.Delete();
