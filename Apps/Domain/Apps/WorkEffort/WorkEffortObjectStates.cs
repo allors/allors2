@@ -38,68 +38,29 @@ namespace Allors.Domain
 
         private UniquelyIdentifiableCache<WorkEffortObjectState> stateCache;
 
-        public WorkEffortObjectState NeedsAction
-        {
-            get { return this.StateCache.Get(NeedsActionId); }
-        }
+        public WorkEffortObjectState NeedsAction => this.StateCache.Get(NeedsActionId);
 
-        public WorkEffortObjectState Confirmed
-        {
-            get { return this.StateCache.Get(ConfirmedId); }
-        }
+        public WorkEffortObjectState Confirmed => this.StateCache.Get(ConfirmedId);
 
-        public WorkEffortObjectState InProgress
-        {
-            get { return this.StateCache.Get(DeclinedId); }
-        }
+        public WorkEffortObjectState InProgress => this.StateCache.Get(DeclinedId);
 
-        public WorkEffortObjectState Completed
-        {
-            get { return this.StateCache.Get(CompletedId); }
-        }
+        public WorkEffortObjectState Completed => this.StateCache.Get(CompletedId);
 
-        public WorkEffortObjectState Cancelled
-        {
-            get { return this.StateCache.Get(CancelledId); }
-        }
+        public WorkEffortObjectState Cancelled => this.StateCache.Get(CancelledId);
 
-        public WorkEffortObjectState Delagated
-        {
-            get { return this.StateCache.Get(DelegatedId); }
-        }
+        public WorkEffortObjectState Delagated => this.StateCache.Get(DelegatedId);
 
-        public WorkEffortObjectState InPlanning
-        {
-            get { return this.StateCache.Get(InPlanningId); }
-        }
+        public WorkEffortObjectState InPlanning => this.StateCache.Get(InPlanningId);
 
-        public WorkEffortObjectState Planned
-        {
-            get { return this.StateCache.Get(PlannedId); }
-        }
+        public WorkEffortObjectState Planned => this.StateCache.Get(PlannedId);
 
-        public WorkEffortObjectState Sent
-        {
-            get { return this.StateCache.Get(SentId); }
-        }
+        public WorkEffortObjectState Sent => this.StateCache.Get(SentId);
 
-        public WorkEffortObjectState Accepted
-        {
-            get { return this.StateCache.Get(AcceptedId); }
-        }
+        public WorkEffortObjectState Accepted => this.StateCache.Get(AcceptedId);
 
-        public WorkEffortObjectState Tentative
-        {
-            get { return this.StateCache.Get(TentativeId); }
-        }
+        public WorkEffortObjectState Tentative => this.StateCache.Get(TentativeId);
 
-        private UniquelyIdentifiableCache<WorkEffortObjectState> StateCache
-        {
-            get
-            {
-                return this.stateCache ?? (this.stateCache = new UniquelyIdentifiableCache<WorkEffortObjectState>(this.Session));
-            }
-        }
+        private UniquelyIdentifiableCache<WorkEffortObjectState> StateCache => this.stateCache ?? (this.stateCache = new UniquelyIdentifiableCache<WorkEffortObjectState>(this.Session));
 
         protected override void AppsSetup(Setup setup)
         {

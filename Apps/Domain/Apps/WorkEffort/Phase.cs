@@ -22,20 +22,6 @@ namespace Allors.Domain
 {
     public partial class Phase
     {
-        ObjectState Transitional.CurrentObjectState
-        {
-            get
-            {
-                return this.CurrentObjectState;
-            }
-        }
-
-        public void AppsOnBuild(ObjectOnBuild method)
-        {
-            if (!this.ExistCurrentObjectState)
-            {
-                this.CurrentObjectState = new WorkEffortObjectStates(this.Strategy.Session).NeedsAction;
-            }
-        }
+        ObjectState Transitional.CurrentObjectState => this.CurrentObjectState;
     }
 }

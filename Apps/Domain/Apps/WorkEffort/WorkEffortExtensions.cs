@@ -22,6 +22,14 @@ namespace Allors.Domain
 {
     public static partial class WorkEffortExtensions
     {
+        public static void AppsOnBuild(this WorkEffort @this, ObjectOnBuild method)
+        {
+            if (!@this.ExistCurrentObjectState)
+            {
+                @this.CurrentObjectState = new WorkEffortObjectStates(@this.Strategy.Session).NeedsAction;
+            }
+        }
+
         public static void AppsOnDerive(this WorkEffort @this, ObjectOnDerive method)
         {
             if (@this.ExistCurrentObjectState && @this.ExistPreviousObjectState && !@this.CurrentObjectState.Equals(@this.PreviousObjectState))

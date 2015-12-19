@@ -22,25 +22,11 @@ namespace Allors.Domain
 {
     public partial class Task
     {
-        ObjectState Transitional.CurrentObjectState
-        {
-            get
-            {
-                return this.CurrentObjectState;
-            }
-        }
-
-        public void AppsOnBuild(ObjectOnBuild method)
-        {
-            if (!this.ExistCurrentObjectState)
-            {
-                this.CurrentObjectState = new WorkEffortObjectStates(this.Strategy.Session).NeedsAction;
-            }
-        }
+        ObjectState Transitional.CurrentObjectState => this.CurrentObjectState;
 
         public void AppsDelete(DeletableDelete method)
         {
-            foreach (WorkEffortStatus workEffortStatus in WorkEffortStatuses)
+            foreach (WorkEffortStatus workEffortStatus in this.WorkEffortStatuses)
             {
                 workEffortStatus.Delete();
             }
