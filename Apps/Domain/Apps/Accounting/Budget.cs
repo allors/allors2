@@ -22,9 +22,18 @@ namespace Allors.Domain
 {
     public static partial class BudgetExtensions
     {
+        public static void AppsOnBuild(this Budget @this, ObjectOnBuild method)
+        {
+            if (!@this.ExistCurrentObjectState)
+            {
+                @this.CurrentObjectState = new BudgetObjectStates(@this.Strategy.Session).Opened;
+            }
+        }
+
         public static void AppsOnDerive(this Budget @this, ObjectOnDerive method)
         {
-            if (@this.ExistCurrentObjectState && @this.ExistPreviousObjectState && !@this.CurrentObjectState.Equals(@this.PreviousObjectState))
+            if ((@this.ExistCurrentObjectState && @this.ExistPreviousObjectState && !@this.CurrentObjectState.Equals(@this.PreviousObjectState)) ||
+                (@this.ExistCurrentObjectState && !@this.ExistPreviousObjectState))
             {
                 var currentStatus = new BudgetStatusBuilder(@this.Strategy.Session).WithBudgetObjectState(@this.CurrentObjectState).Build();
                 @this.AddBudgetStatus(currentStatus);

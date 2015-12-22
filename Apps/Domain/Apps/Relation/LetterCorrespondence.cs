@@ -60,6 +60,14 @@ namespace Allors.Domain
             this.InvolvedParties = this.Receivers;
             this.AddInvolvedParty(this.Owner);
             this.AddInvolvedParty(this.Originator);
+
+            if (this.ExistPartyRelationshipWhereCommunicationEvent)
+            {
+                foreach (Party party in this.PartyRelationshipWhereCommunicationEvent.Parties)
+                {
+                    this.AddInvolvedParty(party);
+                }
+            }
         }
     }
 }

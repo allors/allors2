@@ -57,7 +57,7 @@ namespace Allors.Domain
             this.RemoveToParties();
             this.ToParties = (Extent)this.Receivers;
 
-            if (!this.IncomingCall)
+            if (this.ExistPartyRelationshipWhereCommunicationEvent && !this.IncomingCall)
             {
                 foreach (Party party in this.PartyRelationshipWhereCommunicationEvent.Parties)
                 {

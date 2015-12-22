@@ -122,11 +122,6 @@ namespace Allors.Domain
                     }
                 }
             }
-
-            if (!this.ExistCustomer || !this.ExistInternalOrganisation)
-            {
-                this.Delete();
-            }
         }
 
         public void AppsOnDerive(ObjectOnDerive method)
@@ -155,6 +150,11 @@ namespace Allors.Domain
             this.AppsOnDeriveRevenue(derivation);
 
             this.Parties = new Party[] { this.Customer, this.InternalOrganisation };
+
+            if (!this.ExistCustomer || !this.ExistInternalOrganisation)
+            {
+                this.Delete();
+            }
         }
 
         public void AppsOnDeriveInternalOrganisationCustomer(IDerivation derivation)

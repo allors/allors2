@@ -75,9 +75,12 @@ namespace Allors.Domain
                 }
             }
 
-            foreach (Party party in this.PartyRelationshipWhereCommunicationEvent.Parties)
+            if (this.ExistPartyRelationshipWhereCommunicationEvent)
             {
-                this.AddToParty(party);
+                foreach (Party party in this.PartyRelationshipWhereCommunicationEvent.Parties)
+                {
+                    this.AddToParty(party);
+                }
             }
         }
 

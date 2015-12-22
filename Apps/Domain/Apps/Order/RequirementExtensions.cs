@@ -24,9 +24,18 @@ namespace Allors.Domain
 {
     public static class RequirementExtensions
     {
+        public static void AppsOnBuild(this Requirement @this, ObjectOnBuild method)
+        {
+            if (!@this.ExistCurrentObjectState)
+            {
+                @this.CurrentObjectState = new RequirementObjectStates(@this.Strategy.Session).Active;
+            }
+        }
+
         public static void AppsOnDerive(this Requirement @this, ObjectOnDerive method)
         {
-            if (@this.ExistCurrentObjectState && @this.ExistPreviousObjectState && !@this.CurrentObjectState.Equals(@this.PreviousObjectState))
+            if ((@this.ExistCurrentObjectState && @this.ExistPreviousObjectState && !@this.CurrentObjectState.Equals(@this.PreviousObjectState)) ||
+                (@this.ExistCurrentObjectState && !@this.ExistPreviousObjectState))
             {
                 var currentStatus = new RequirementStatusBuilder(@this.Strategy.Session)
                     .WithRequirementObjectState(@this.CurrentObjectState)
