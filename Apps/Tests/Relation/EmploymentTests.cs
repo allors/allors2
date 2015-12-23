@@ -53,34 +53,6 @@ namespace Allors.Domain
         }
 
         [Test]
-        public void GivenEmployment_WhenDeriving_ThenRequiredRelationsMustExist()
-        {
-            this.InstantiateObjects(this.DatabaseSession);
-            var employee = new PersonBuilder(this.DatabaseSession).WithLastName("employee").Build();
-
-            this.DatabaseSession.Derive(true);
-            this.DatabaseSession.Commit();
-
-            var builder = new EmploymentBuilder(this.DatabaseSession);
-            var employment = builder.Build();
-
-            Assert.IsTrue(this.DatabaseSession.Derive().HasErrors);
-
-            this.DatabaseSession.Rollback();
-
-            builder.WithEmployee(employee);
-            employment = builder.Build();
-
-            Assert.IsTrue(this.DatabaseSession.Derive().HasErrors);
-
-            this.DatabaseSession.Rollback();
-
-            builder.WithEmployer(this.internalOrganisation);
-            employment = builder.Build();
-            Assert.IsFalse(this.DatabaseSession.Derive().HasErrors);
-        }
-
-        [Test]
         public void GivenPerson_WhenEmploymentIsCreated_ThenNoOtherActiveEmploymentMayExist()
         {
             var secondEmployment = new EmploymentBuilder(this.DatabaseSession)

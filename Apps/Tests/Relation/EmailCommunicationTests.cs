@@ -29,15 +29,19 @@ namespace Allors.Domain
         [Test]
         public void GivenEmailCommunication_WhenDeriving_ThenRequiredRelationsMustExist()
         {
-            var builder = new EmailCommunicationBuilder(this.DatabaseSession);
-            var communication = builder.Build();
+            var personalEmailAddress = new ContactMechanismPurposes(this.DatabaseSession).PersonalEmailAddress;
+            var originatorEmail = new EmailAddressBuilder(this.DatabaseSession).WithElectronicAddressString("originator@allors.com").Build();
+            var originatorContact = new PartyContactMechanismBuilder(this.DatabaseSession).WithContactMechanism(originatorEmail).WithContactPurpose(personalEmailAddress).WithUseAsDefault(true).Build();
 
-            Assert.IsTrue(this.DatabaseSession.Derive().HasErrors);
+            var addresseeEmail = new EmailAddressBuilder(this.DatabaseSession).WithElectronicAddressString("addressee@allors.com").Build();
+            var addresseeContact = new PartyContactMechanismBuilder(this.DatabaseSession).WithContactMechanism(addresseeEmail).WithContactPurpose(personalEmailAddress).WithUseAsDefault(true).Build();
 
-            this.DatabaseSession.Rollback();
-
-            builder.WithSubject("Email communication");
-            communication = builder.Build();
+            var communication = new EmailCommunicationBuilder(this.DatabaseSession)
+                .WithSubject("Hello")
+                .WithDescription("Hello world!")
+                .WithOriginator(originatorEmail)
+                .WithAddressee(addresseeEmail)
+                .Build();
 
             Assert.IsFalse(this.DatabaseSession.Derive().HasErrors);
 

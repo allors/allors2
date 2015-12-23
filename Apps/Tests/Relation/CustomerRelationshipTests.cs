@@ -30,22 +30,6 @@ namespace Allors.Domain
     public class CustomerRelationshipTests : DomainTest
     {
         [Test]
-        public void GivenCustomerRelationship_WhenDeriving_ThenRequiredRelationsMustExist()
-        {
-            var builder = new CustomerRelationshipBuilder(this.DatabaseSession);
-            builder.Build();
-
-            Assert.IsTrue(this.DatabaseSession.Derive().HasErrors);
-
-            this.DatabaseSession.Rollback();
-
-            builder.WithCustomer(new PersonBuilder(this.DatabaseSession).WithLastName("customer").Build());
-            builder.Build();
-
-            Assert.IsFalse(this.DatabaseSession.Derive().HasErrors);
-        }
-
-        [Test]
         public void GivenCustomerRelationship_WhenDerivingWithout_ThenAmountDueIsZero()
         {
             var customer = new PersonBuilder(this.DatabaseSession).WithLastName("customer").Build();

@@ -27,25 +27,14 @@ namespace Allors.Domain
     public class FaxCommunicationTests : DomainTest
     {
         [Test]
-        public void GivenFaxCommunication_WhenDeriving_ThenRequiredRelationsMustExist()
+        public void GivenFaxCommunicationIsBuild_WhenDeriving_ThenDefaultStatusIsSet()
         {
-            var builder = new FaxCommunicationBuilder(this.DatabaseSession);
-            var communication = builder.Build();
-
-            Assert.IsTrue(this.DatabaseSession.Derive().HasErrors);
-
-            this.DatabaseSession.Rollback();
-
-            builder.WithSubject("Fax communication");
-            communication = builder.Build();
-
-            Assert.IsTrue(this.DatabaseSession.Derive().HasErrors);
-
-            this.DatabaseSession.Rollback();
-
-            builder.WithReceiver(new PersonBuilder(this.DatabaseSession).WithLastName("receiver").Build());
-            builder.WithOriginator(new PersonBuilder(this.DatabaseSession).WithLastName("originator").Build());
-            communication = builder.Build();
+            var communication = new FaxCommunicationBuilder(this.DatabaseSession)
+                .WithSubject("subject")
+                .WithOwner(new PersonBuilder(this.DatabaseSession).WithLastName("owner").Build())
+                .WithOriginator(new PersonBuilder(this.DatabaseSession).WithLastName("originator").Build())
+                .WithReceiver(new PersonBuilder(this.DatabaseSession).WithLastName("receiver").Build())
+                .Build();
 
             Assert.IsFalse(this.DatabaseSession.Derive().HasErrors);
 

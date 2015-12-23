@@ -78,7 +78,7 @@ namespace Allors.Domain
                         .Build();
                 }
 
-                @this.AddCommunicationEventStatus(@this.CurrentCommunicationEventStatus);
+                //@this.AddCommunicationEventStatus(@this.CurrentCommunicationEventStatus);
             }
 
             if ((@this.ExistCurrentObjectState && @this.ExistPreviousObjectState && !@this.CurrentObjectState.Equals(@this.PreviousObjectState)) ||
