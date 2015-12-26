@@ -448,6 +448,8 @@ namespace Allors.Domain
 
 					InventoryItemKind InventoryItemKind {set;}
 
+					global::System.String Sku {set;}
+
 	}
 	public interface PartBillOfMaterial  : Object, AccessControlledObject, Commentable, Period 
 	{

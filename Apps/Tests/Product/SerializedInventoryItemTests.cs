@@ -29,30 +29,30 @@ namespace Allors.Domain
         [Test]
         public void GivenInventoryItem_WhenDeriving_ThenRequiredRelationsMustExist()
         {
-            var part = new FinishedGoodBuilder(this.DatabaseSession).WithName("part").WithManufacturerId("10101").Build();
+            var part = new FinishedGoodBuilder(this.DatabaseSession).WithName("part").WithManufacturerId("10101").WithSku("sku").Build();
             this.DatabaseSession.Commit();
 
             var builder = new SerializedInventoryItemBuilder(this.DatabaseSession);
-            var item = builder.Build();
+            builder.Build();
 
             Assert.IsTrue(this.DatabaseSession.Derive().HasErrors);
 
             this.DatabaseSession.Rollback();
 
             builder.WithPart(part);
-            item = builder.Build();
+            builder.Build();
 
             Assert.IsTrue(this.DatabaseSession.Derive().HasErrors);
 
             this.DatabaseSession.Rollback();
 
             builder.WithSerialNumber("1");
-            item = builder.Build();
+            builder.Build();
 
             Assert.IsFalse(this.DatabaseSession.Derive().HasErrors);
 
             builder.WithGood(new GoodBuilder(this.DatabaseSession).WithSku("10101").WithName("good").Build());
-            item = builder.Build();
+            builder.Build();
 
             Assert.IsTrue(this.DatabaseSession.Derive().HasErrors);
         }

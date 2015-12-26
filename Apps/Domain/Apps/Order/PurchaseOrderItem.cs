@@ -187,7 +187,6 @@ namespace Allors.Domain
             }
         }
 
-
         public void AppsOnDeriveIsValidOrderItem(IDerivation derivation)
         {
             if (this.ExistPurchaseOrderWherePurchaseOrderItem)

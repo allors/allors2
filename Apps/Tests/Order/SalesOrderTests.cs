@@ -2349,7 +2349,7 @@ namespace Allors.Domain
         }
 
         [Test]
-        public void GivenSalesOrder_WhenObjectStateIsCreated_ThenCheckTransitions()
+        public void GivenSalesOrder_WhenObjectStateIsProvisional_ThenCheckTransitions()
         {
             var customer = new PersonBuilder(this.DatabaseSession).WithFirstName("Koen").WithUserName("customer").Build();
             var internalOrganisation = Singleton.Instance(this.DatabaseSession).DefaultInternalOrganisation;
@@ -3194,6 +3194,7 @@ namespace Allors.Domain
                 .WithBillToCustomer(person1)
                 .WithShipToCustomer(person1)
                 .WithShipToAddress(mechelenAddress)
+                .WithVatRegime(new VatRegimes(this.DatabaseSession).Export)
                 .Build();
 
             var item1 = new SalesOrderItemBuilder(this.DatabaseSession).WithProduct(good1).WithQuantityOrdered(1).WithActualUnitPrice(15).Build();

@@ -40,46 +40,45 @@ namespace Allors.Domain
         [Test]
         public void GivenShipmentReceiptWhenValidatingThenRequiredRelationsMustExist()
         {
-            throw new Exception("TODO");
+            var supplier = new OrganisationBuilder(this.DatabaseSession).WithName("supplier").Build();
+            var internalOrganisation = new InternalOrganisations(this.DatabaseSession).FindBy(InternalOrganisations.Meta.Name, "internalOrganisation");
+            new SupplierRelationshipBuilder(this.DatabaseSession).WithSupplier(supplier).WithInternalOrganisation(internalOrganisation).Build();
 
-            //var supplier = new OrganisationBuilder(this.DatabaseSession).WithName("supplier").Build();
-            //var internalOrganisation = new InternalOrganisations(this.DatabaseSession).FindBy(InternalOrganisations.Meta.Name, "internalOrganisation");
-            //new SupplierRelationshipBuilder(this.DatabaseSession).WithSupplier(supplier).WithInternalOrganisation(internalOrganisation).Build();
+            var good = new GoodBuilder(this.DatabaseSession)
+                .WithName("Good")
+                .WithSku("10101")
+                .WithVatRate(new VatRateBuilder(this.DatabaseSession).WithRate(21).Build())
+                .WithInventoryItemKind(new InventoryItemKinds(this.DatabaseSession).NonSerialized)
+                .WithUnitOfMeasure(new UnitsOfMeasure(this.DatabaseSession).Piece)
+                .Build();
 
-            //var good = new GoodBuilder(this.DatabaseSession)
-            //    .WithName("Good")
-            //    .WithSku("10101")
-            //    .WithVatRate(new VatRateBuilder(this.DatabaseSession).WithRate(21).Build())
-            //    .WithInventoryItemKind(new InventoryItemKinds(this.DatabaseSession).NonSerialized)
-            //    .WithUnitOfMeasure(new UnitsOfMeasure(this.DatabaseSession).Piece)
-            //    .Build();
+            var inventoryItem = new NonSerializedInventoryItemBuilder(this.DatabaseSession).WithGood(good).Build();
+            inventoryItem.AddInventoryItemVariance(new InventoryItemVarianceBuilder(this.DatabaseSession).WithQuantity(100).WithReason(new VarianceReasons(this.DatabaseSession).Order).Build());
+            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Commit();
 
-            //var inventoryItem = new NonSerializedInventoryItemBuilder(this.DatabaseSession).WithGood(good).WithQuantityOnHand(100).Build();
-            //this.DatabaseSession.Derive(true);
-            //this.DatabaseSession.Commit();
+            var builder = new ShipmentReceiptBuilder(this.DatabaseSession);
+            builder.Build();
 
-            //var builder = new ShipmentReceiptBuilder(this.DatabaseSession);
-            //builder.Build();
+            Assert.IsTrue(this.DatabaseSession.Derive().HasErrors);
 
-            //Assert.IsTrue(this.DatabaseSession.Derive().HasErrors);
+            this.DatabaseSession.Rollback();
 
-            //this.DatabaseSession.Rollback();
+            builder.WithInventoryItem(inventoryItem);
+            builder.Build();
 
-            //builder.WithInventoryItem(inventoryItem);
-            //builder.Build();
+            Assert.IsTrue(this.DatabaseSession.Derive().HasErrors);
 
-            //Assert.IsTrue(this.DatabaseSession.Derive().HasErrors);
+            this.DatabaseSession.Rollback();
 
-            //this.DatabaseSession.Rollback();
+            var shipment = new PurchaseShipmentBuilder(this.DatabaseSession).WithShipFromParty(supplier).Build();
+            var shipmentItem = new ShipmentItemBuilder(this.DatabaseSession).WithGood(good).Build();
+            shipment.AddShipmentItem(shipmentItem);
 
-            //var shipment = new PurchaseShipmentBuilder(this.DatabaseSession).WithShipFromParty(supplier).Build();
-            //var shipmentItem = new ShipmentItemBuilder(this.DatabaseSession).WithGood(good).Build();
-            //shipment.AddShipmentItem(shipmentItem);
+            builder.WithShipmentItem(shipmentItem);
+            builder.Build();
 
-            //builder.WithShipmentItem(shipmentItem);
-            //builder.Build();
-
-            //Assert.IsFalse(this.DatabaseSession.Derive().HasErrors);
+            Assert.IsFalse(this.DatabaseSession.Derive().HasErrors);
         }
 
         [Test]
@@ -94,7 +93,9 @@ namespace Allors.Domain
                 .Build();
 
             var order = new PurchaseOrderBuilder(this.DatabaseSession)
-                .WithTakenViaSupplier(supplier).Build();
+                .WithTakenViaSupplier(supplier)
+                .WithVatRegime(new VatRegimes(this.DatabaseSession).Export)
+                .Build();
 
             var item1 = new PurchaseOrderItemBuilder(this.DatabaseSession).WithPart(part).WithQuantityOrdered(1).Build();
             order.AddPurchaseOrderItem(item1);

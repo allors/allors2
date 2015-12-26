@@ -69,6 +69,7 @@ namespace Allors.Domain
 
             config.GrantSales(this.ObjectType, full);
             config.GrantCustomer(this.ObjectType, full);
+            config.GrantOwner(this.ObjectType, full);
             config.GrantOperations(this.ObjectType, full);
 
             var provisional = new SalesOrderObjectStates(Session).Provisional;

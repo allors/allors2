@@ -35,16 +35,18 @@ namespace Allors.Domain
             this.DatabaseSession.Commit();
 
             var builder = new SalesRepRelationshipBuilder(this.DatabaseSession);
-            builder.Build();
+            var relationship = builder.Build();
 
-            Assert.IsTrue(this.DatabaseSession.Derive().HasErrors);
+            this.DatabaseSession.Derive();
+            Assert.IsTrue(relationship.Strategy.IsDeleted);
 
             this.DatabaseSession.Rollback();
 
             builder.WithCustomer(customer);
-            builder.Build();
+            relationship = builder.Build();
 
-            Assert.IsTrue(this.DatabaseSession.Derive().HasErrors);
+            this.DatabaseSession.Derive();
+            Assert.IsTrue(relationship.Strategy.IsDeleted);
 
             this.DatabaseSession.Rollback();
 
