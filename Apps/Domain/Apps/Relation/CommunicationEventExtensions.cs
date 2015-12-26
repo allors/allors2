@@ -77,8 +77,6 @@ namespace Allors.Domain
                         .WithStartDateTime(@this.ActualEnd)
                         .Build();
                 }
-
-                //@this.AddCommunicationEventStatus(@this.CurrentCommunicationEventStatus);
             }
 
             if ((@this.ExistCurrentObjectState && @this.ExistPreviousObjectState && !@this.CurrentObjectState.Equals(@this.PreviousObjectState)) ||

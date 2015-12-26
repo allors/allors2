@@ -27,14 +27,10 @@ namespace Allors.Domain
     public class EmailCommunicationTests : DomainTest
     {
         [Test]
-        public void GivenEmailCommunication_WhenDeriving_ThenRequiredRelationsMustExist()
+        public void GivenEmailCommunicationIsBuild_WhenDeriving_ThenStatusIsSet()
         {
-            var personalEmailAddress = new ContactMechanismPurposes(this.DatabaseSession).PersonalEmailAddress;
             var originatorEmail = new EmailAddressBuilder(this.DatabaseSession).WithElectronicAddressString("originator@allors.com").Build();
-            var originatorContact = new PartyContactMechanismBuilder(this.DatabaseSession).WithContactMechanism(originatorEmail).WithContactPurpose(personalEmailAddress).WithUseAsDefault(true).Build();
-
             var addresseeEmail = new EmailAddressBuilder(this.DatabaseSession).WithElectronicAddressString("addressee@allors.com").Build();
-            var addresseeContact = new PartyContactMechanismBuilder(this.DatabaseSession).WithContactMechanism(addresseeEmail).WithContactPurpose(personalEmailAddress).WithUseAsDefault(true).Build();
 
             var communication = new EmailCommunicationBuilder(this.DatabaseSession)
                 .WithSubject("Hello")

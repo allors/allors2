@@ -32,20 +32,39 @@ namespace Allors.Domain
             var builder = new PhoneCommunicationBuilder(this.DatabaseSession);
             var communication = builder.Build();
 
-            Assert.IsTrue(this.DatabaseSession.Derive().HasErrors);
+            this.DatabaseSession.Derive();
+            Assert.IsTrue(communication.Strategy.IsDeleted);
 
             this.DatabaseSession.Rollback();
 
             builder.WithSubject("Phonecall");
             communication = builder.Build();
 
-            Assert.IsTrue(this.DatabaseSession.Derive().HasErrors);
+            this.DatabaseSession.Derive();
+            Assert.IsTrue(communication.Strategy.IsDeleted);
 
             this.DatabaseSession.Rollback();
 
             builder.WithReceiver(new PersonBuilder(this.DatabaseSession).WithLastName("receiver").Build());
             builder.WithCaller(new PersonBuilder(this.DatabaseSession).WithLastName("caller").Build());
             communication = builder.Build();
+
+            Assert.IsFalse(this.DatabaseSession.Derive().HasErrors);
+
+            Assert.AreEqual(communication.CurrentCommunicationEventStatus.CommunicationEventObjectState, new CommunicationEventObjectStates(this.DatabaseSession).Scheduled);
+            Assert.AreEqual(communication.CurrentObjectState, new CommunicationEventObjectStates(this.DatabaseSession).Scheduled);
+            Assert.AreEqual(communication.CurrentObjectState, communication.LastObjectState);
+        }
+
+        [Test]
+        public void GivenPhoneCommunicationIsBuild_WhenDeriving_ThenStatusIsSet()
+        {
+            var communication = new PhoneCommunicationBuilder(this.DatabaseSession)
+                .WithSubject("Hello world!")
+                .WithOwner(new PersonBuilder(this.DatabaseSession).WithLastName("owner").Build())
+                .WithCaller(new PersonBuilder(this.DatabaseSession).WithLastName("caller").Build())
+                .WithReceiver(new PersonBuilder(this.DatabaseSession).WithLastName("receiver").Build())
+                .Build();
 
             Assert.IsFalse(this.DatabaseSession.Derive().HasErrors);
 

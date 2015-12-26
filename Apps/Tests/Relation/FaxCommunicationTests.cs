@@ -27,7 +27,7 @@ namespace Allors.Domain
     public class FaxCommunicationTests : DomainTest
     {
         [Test]
-        public void GivenFaxCommunicationIsBuild_WhenDeriving_ThenDefaultStatusIsSet()
+        public void GivenFaxCommunicationIsBuild_WhenDeriving_ThenStatusIsSet()
         {
             var communication = new FaxCommunicationBuilder(this.DatabaseSession)
                 .WithSubject("subject")

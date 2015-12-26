@@ -64,6 +64,7 @@
     <None Include="PartyRelationships.cd" />
     <None Include="PartyClassification.cd" />
     <None Include="Overview.cd" />
+    <None Include="Security.cd" />
     <None Include="Transitional.cd" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

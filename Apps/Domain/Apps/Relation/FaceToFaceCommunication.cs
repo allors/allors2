@@ -61,7 +61,7 @@ namespace Allors.Domain
 
             if (this.ExistOwner)
             {
-                this.AddSecurityToken(Owner.OwnerSecurityToken);
+                this.AddSecurityToken(this.Owner.OwnerSecurityToken);
             }
 
             foreach (Party participant in this.Participants)

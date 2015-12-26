@@ -31,29 +31,20 @@ namespace Allors.Domain
     public class FaceToFaceCommunicationTests : DomainTest
     {
         [Test]
-        public void GivenFaceToFaceCommunication_WhenDeriving_ThenRequiredRelationsMustExist()
+        public void GivenFaceToFaceCommunicationIsBuild_WhenDeriving_ThenStatusIsSet()
         {
-            var builder = new FaceToFaceCommunicationBuilder(this.DatabaseSession);
-            var communication = builder.Build();
-
-            Assert.IsTrue(this.DatabaseSession.Derive().HasErrors);
-
-            this.DatabaseSession.Rollback();
-
-            builder.WithSubject("subject");
-            communication = builder.Build();
-
-            Assert.IsTrue(this.DatabaseSession.Derive().HasErrors);
-
-            this.DatabaseSession.Rollback();
-
-            builder.WithParticipant(new PersonBuilder(this.DatabaseSession).WithLastName("participant1").Build());
-            communication = builder.Build();
+            var communication = new FaceToFaceCommunicationBuilder(this.DatabaseSession)
+                .WithOwner(new PersonBuilder(this.DatabaseSession).WithLastName("owner").Build())
+                .WithSubject("subject")
+                .WithParticipant(new PersonBuilder(this.DatabaseSession).WithLastName("participant1").Build())
+                .WithParticipant(new PersonBuilder(this.DatabaseSession).WithLastName("participant2").Build())
+                .WithActualStart(DateTime.UtcNow)
+                .Build();
 
             Assert.IsFalse(this.DatabaseSession.Derive().HasErrors);
 
-            Assert.AreEqual(communication.CurrentCommunicationEventStatus.CommunicationEventObjectState, new CommunicationEventObjectStates(this.DatabaseSession).Scheduled);
-            Assert.AreEqual(communication.CurrentObjectState, new CommunicationEventObjectStates(this.DatabaseSession).Scheduled);
+            Assert.AreEqual(communication.CurrentCommunicationEventStatus.CommunicationEventObjectState, new CommunicationEventObjectStates(this.DatabaseSession).InProgress);
+            Assert.AreEqual(communication.CurrentObjectState, new CommunicationEventObjectStates(this.DatabaseSession).InProgress);
             Assert.AreEqual(communication.CurrentObjectState, communication.LastObjectState);
         }
 
@@ -90,7 +81,7 @@ namespace Allors.Domain
         }
 
         [Test]
-        public void GivenCurrentUserIsUnknown_WhenAccessingFaceToFaceCommunicationWithoutOwner_ThenAdminSecurityTokenIsApplied()
+        public void GivenCurrentUserIsUnknown_WhenAccessingFaceToFaceCommunicationWithoutOwner_ThenDefaultSecurityTokenIsApplied()
         {
             var participant1 = new PersonBuilder(this.DatabaseSession).WithLastName("participant1").Build();
             var participant2 = new PersonBuilder(this.DatabaseSession).WithLastName("participant2").Build();
@@ -108,7 +99,7 @@ namespace Allors.Domain
             this.DatabaseSession.Derive(true);
 
             Assert.AreEqual(1, communication.SecurityTokens.Count);
-            Assert.Contains(Singleton.Instance(this.DatabaseSession).AdministratorSecurityToken, communication.SecurityTokens);
+            Assert.Contains(Singleton.Instance(this.DatabaseSession).DefaultSecurityToken, communication.SecurityTokens);
         }
 
         [Test]
@@ -132,7 +123,7 @@ namespace Allors.Domain
             this.DatabaseSession.Derive(true);
 
             Assert.AreEqual(2, communication.SecurityTokens.Count);
-            Assert.Contains(Singleton.Instance(this.DatabaseSession).AdministratorSecurityToken, communication.SecurityTokens);
+            Assert.Contains(Singleton.Instance(this.DatabaseSession).DefaultSecurityToken, communication.SecurityTokens);
             Assert.Contains(owner.OwnerSecurityToken, communication.SecurityTokens);
         }
 
@@ -161,7 +152,7 @@ namespace Allors.Domain
             this.DatabaseSession.Derive(true);
 
             Assert.AreEqual(2, communication.SecurityTokens.Count);
-            Assert.Contains(Singleton.Instance(this.DatabaseSession).AdministratorSecurityToken, communication.SecurityTokens);
+            Assert.Contains(Singleton.Instance(this.DatabaseSession).DefaultSecurityToken, communication.SecurityTokens);
             Assert.Contains(owner.OwnerSecurityToken, communication.SecurityTokens);
         }
     }

@@ -20,6 +20,8 @@
 
 namespace Allors.Domain
 {
+    using System;
+
     public partial class OrganisationGlAccount
     {
         public bool IsNeutralAccount()
@@ -88,6 +90,11 @@ namespace Allors.Domain
 
         public void AppsOnBuild(ObjectOnBuild method)
         {
+            if (!this.ExistFromDate)
+            {
+                this.FromDate = DateTime.UtcNow;
+            }
+
             this.HasBankStatementTransactions = false;
         }
     }

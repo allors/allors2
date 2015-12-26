@@ -59,26 +59,28 @@ namespace Allors.Domain
         }
 
         [Test]
-        public void GivenPartnership_WhenDeriving_ThenRequiredRelationsMustExist()
+        public void GivenPartnershipIsBuild_WhenDeriving_ThenRequiredRelationsMustExist()
         {
             this.InstantiateObjects(this.DatabaseSession);
 
             var builder = new PartnershipBuilder(this.DatabaseSession);
             var relationship = builder.Build();
 
-            Assert.IsTrue(this.DatabaseSession.Derive().HasErrors);
+            this.DatabaseSession.Derive();
+            Assert.IsTrue(relationship.Strategy.IsDeleted);
 
             this.DatabaseSession.Rollback();
 
             builder.WithPartner(this.partner);
             relationship = builder.Build();
 
-            Assert.IsTrue(this.DatabaseSession.Derive().HasErrors);
+            this.DatabaseSession.Derive();
+            Assert.IsTrue(relationship.Strategy.IsDeleted);
 
             this.DatabaseSession.Rollback();
             
             builder.WithInternalOrganisation(this.internalOrganisation);
-            relationship = builder.Build();
+            builder.Build();
 
             Assert.IsFalse(this.DatabaseSession.Derive().HasErrors);
         }

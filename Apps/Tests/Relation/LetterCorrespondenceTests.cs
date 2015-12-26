@@ -27,17 +27,14 @@ namespace Allors.Domain
     public class LetterCorrespondenceTests : DomainTest
     {
         [Test]
-        public void GivenLetterCorrespondence_WhenDeriving_ThenRequiredRelationsMustExist()
+        public void GivenLetterCorrespondenceIsBuild_WhenDeriving_ThenStatusIsSet()
         {
-            var builder = new LetterCorrespondenceBuilder(this.DatabaseSession);
-            var communication = builder.Build();
-
-            Assert.IsTrue(this.DatabaseSession.Derive().HasErrors);
-
-            this.DatabaseSession.Rollback();
-
-            builder.WithSubject("Letter");
-            communication = builder.Build();
+            var communication = new LetterCorrespondenceBuilder(this.DatabaseSession)
+                .WithSubject("Hello world!")
+                .WithOwner(new PersonBuilder(this.DatabaseSession).WithLastName("owner").Build())
+                .WithOriginator(new PersonBuilder(this.DatabaseSession).WithLastName("originator").Build())
+                .WithReceiver(new PersonBuilder(this.DatabaseSession).WithLastName("receiver").Build())
+                .Build();
 
             Assert.IsFalse(this.DatabaseSession.Derive().HasErrors);
 

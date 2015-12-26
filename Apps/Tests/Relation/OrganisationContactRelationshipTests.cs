@@ -63,19 +63,21 @@ namespace Allors.Domain
             var builder = new OrganisationContactRelationshipBuilder(this.DatabaseSession);
             var relationship = builder.Build();
 
-            Assert.IsTrue(this.DatabaseSession.Derive().HasErrors);
+            this.DatabaseSession.Derive();
+            Assert.IsTrue(relationship.Strategy.IsDeleted);
 
             this.DatabaseSession.Rollback();
 
             builder.WithContact(contact);
             relationship = builder.Build();
 
-            Assert.IsTrue(this.DatabaseSession.Derive().HasErrors);
+            this.DatabaseSession.Derive();
+            Assert.IsTrue(relationship.Strategy.IsDeleted);
 
             this.DatabaseSession.Rollback();
 
             builder.WithOrganisation(new OrganisationBuilder(this.DatabaseSession).WithName("organisation").WithLocale(Singleton.Instance(this.DatabaseSession).DefaultLocale).Build());
-            relationship = builder.Build();
+            builder.Build();
 
             Assert.IsFalse(this.DatabaseSession.Derive().HasErrors);
         }

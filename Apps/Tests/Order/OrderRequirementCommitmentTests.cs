@@ -29,6 +29,19 @@ namespace Allors.Domain
         [Test]
         public void GivenOrderRequirementCommitment_WhenDeriving_ThenRequiredRelationsMustExist()
         {
+            var shipToCustomer = new OrganisationBuilder(this.DatabaseSession).WithName("shipToCustomer").Build();
+            var billToCustomer = new OrganisationBuilder(this.DatabaseSession).WithName("billToCustomer").Build();
+
+            new CustomerRelationshipBuilder(this.DatabaseSession)
+                .WithCustomer(billToCustomer)
+                .WithInternalOrganisation(Singleton.Instance(this.DatabaseSession).DefaultInternalOrganisation)
+                .Build();
+
+            new CustomerRelationshipBuilder(this.DatabaseSession)
+                .WithCustomer(shipToCustomer)
+                .WithInternalOrganisation(Singleton.Instance(this.DatabaseSession).DefaultInternalOrganisation)
+                .Build();
+
             var vatRate21 = new VatRateBuilder(this.DatabaseSession).WithRate(21).Build();
             var good = new GoodBuilder(this.DatabaseSession)
                 .WithName("Gizmo")
@@ -38,7 +51,15 @@ namespace Allors.Domain
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.DatabaseSession).Piece)
                 .Build();
 
-            OrderItem goodOrderItem = new SalesOrderItemBuilder(this.DatabaseSession).WithProduct(good).WithQuantityOrdered(1).Build();
+            var salesOrder = new SalesOrderBuilder(this.DatabaseSession)
+                .WithShipToCustomer(shipToCustomer)
+                .WithBillToCustomer(billToCustomer)
+                .WithVatRegime(new VatRegimes(this.DatabaseSession).Export)
+                .Build();
+
+            var goodOrderItem = new SalesOrderItemBuilder(this.DatabaseSession).WithProduct(good).WithQuantityOrdered(1).Build();
+            salesOrder.AddSalesOrderItem(goodOrderItem);
+
             var customerRequirement = new CustomerRequirementBuilder(this.DatabaseSession).WithDescription("100 gizmo's").Build();
 
             this.DatabaseSession.Derive(true);
@@ -59,14 +80,7 @@ namespace Allors.Domain
             this.DatabaseSession.Rollback();
 
             builder.WithRequirement(customerRequirement);
-            builder.Build();
-
-            Assert.IsTrue(this.DatabaseSession.Derive().HasErrors);
-
-            this.DatabaseSession.Rollback();
-
-            builder.WithQuantity(10);
-            builder.Build();
+            var tsts = builder.Build();
 
             Assert.IsFalse(this.DatabaseSession.Derive().HasErrors);
         }

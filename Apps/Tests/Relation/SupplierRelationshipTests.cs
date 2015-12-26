@@ -63,7 +63,7 @@ namespace Allors.Domain
         [Test]
         public void GivenSupplierRelationshipBuilder_WhenBuild_ThenSubAccountNumerIsValidElevenTestNumber()
         {
-            this.internalOrganisation.SubAccountCounter.Value = 1007;
+            this.internalOrganisation.SubAccountCounter.Value = 1000;
 
             this.DatabaseSession.Commit();
 
@@ -104,10 +104,17 @@ namespace Allors.Domain
                 .WithBankAccount(new BankAccountBuilder(this.DatabaseSession).WithBank(bank).WithCurrency(euro).WithIban("BE23 3300 6167 6391").WithNameOnAccount("Koen").Build())
                 .Build();
 
+            var billingAddress = new PartyContactMechanismBuilder(this.DatabaseSession)
+                .WithContactMechanism(new WebAddressBuilder(this.DatabaseSession).WithElectronicAddressString("billfrom").Build())
+                .WithContactPurpose(new ContactMechanismPurposes(this.DatabaseSession).BillingAddress)
+                .WithUseAsDefault(true)
+                .Build();
+
             var internalOrganisation2 = new InternalOrganisationBuilder(this.DatabaseSession)
                 .WithName("internalOrganisation2")
                 .WithLocale(new Locales(this.DatabaseSession).EnglishGreatBritain)
                 .WithEmployeeRole(new Roles(this.DatabaseSession).Administrator)
+                .WithPartyContactMechanism(billingAddress)
                 .WithDefaultPaymentMethod(ownBankAccount)
                 .WithPreferredCurrency(euro)
                 .Build();
@@ -146,9 +153,10 @@ namespace Allors.Domain
             this.InstantiateObjects(this.DatabaseSession);
 
             var builder = new SupplierRelationshipBuilder(this.DatabaseSession);
-            builder.Build();
+            var supplier = builder.Build();
 
-            Assert.IsTrue(this.DatabaseSession.Derive().HasErrors);
+            this.DatabaseSession.Derive();
+            Assert.IsTrue(supplier.Strategy.IsDeleted);
 
             this.DatabaseSession.Rollback();
 
@@ -182,7 +190,7 @@ namespace Allors.Domain
 
             Assert.AreEqual(0, this.supplierRelationship.Supplier.SupplierContactUserGroup.Members.Count);
 
-            this.supplierRelationship.FromDate = DateTime.UtcNow;
+            this.supplierRelationship.FromDate = DateTime.UtcNow.AddSeconds(-1);
             this.supplierRelationship.RemoveThroughDate();
 
             this.DatabaseSession.Derive(true);
