@@ -542,6 +542,11 @@ namespace Allors.Domain
             {
                 derivation.AddDependency(this, invoiceItem);
             }
+
+            if (this.ExistSalesOrder)
+            {
+                derivation.AddDependency(this.SalesOrder, this);
+            }
         }
 
         public void AppsOnDerive(ObjectOnDerive method)
@@ -607,7 +612,6 @@ namespace Allors.Domain
             this.PreviousBillToCustomer = this.BillToCustomer;
             this.PreviousShipToCustomer = this.ShipToCustomer;
 
-            this.DeriveTemplate(derivation);
             this.AppsOnDeriveRevenues(derivation);
         }
 
@@ -701,7 +705,7 @@ namespace Allors.Domain
 
         private void DeriveCurrentObjectState(IDerivation derivation)
         {
-            if (this.ExistCurrentObjectState && !this.CurrentObjectState.Equals(this.PreviousObjectState))
+            if (this.ExistCurrentObjectState && !this.CurrentObjectState.Equals(this.LastObjectState))
             {
                 this.CurrentObjectState.Process(this);
 
@@ -905,36 +909,6 @@ namespace Allors.Domain
 
                 this.InitialProfitMargin = decimal.Round(((totalUnitBasePrice - totalPurchasePrice) / totalUnitBasePrice) * 100, 2);
                 this.MaintainedProfitMargin = decimal.Round(((totalListPrice - totalPurchasePrice) / totalListPrice) * 100, 2);
-            }
-        }
-
-        public void AppsOnDeriveTemplate(IDerivation derivation)
-        {
-            StringTemplate template = null;
-            if (this.ExistStore && this.ExistBillToCustomer && this.BillToCustomer.ExistLocale)
-            {
-                var templates = this.Store.SalesInvoiceTemplates;
-                templates.Filter.AddEquals(StringTemplates.Meta.Locale, this.BillToCustomer.Locale);
-                template = templates.First;
-            }
-
-            if (this.ExistStore && template == null && this.BilledFromInternalOrganisation.ExistLocale)
-            {
-                var templates = this.Store.SalesInvoiceTemplates;
-                templates.Filter.AddEquals(StringTemplates.Meta.Locale, this.BilledFromInternalOrganisation.Locale);
-                template = templates.First;
-            }
-
-            if (this.ExistStore && template == null)
-            {
-                var templates = this.Store.SalesInvoiceTemplates;
-                templates.Filter.AddEquals(StringTemplates.Meta.Locale, Singleton.Instance(this.Strategy.Session).DefaultLocale);
-                template = templates.First;
-            }
-
-            if (template != null)
-            {
-                this.PrintContent = template.Apply(new Dictionary<string, object> { { "this", this } });
             }
         }
 

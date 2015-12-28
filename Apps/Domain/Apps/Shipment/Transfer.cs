@@ -29,11 +29,6 @@ namespace Allors.Domain
                 return this.CurrentObjectState;
             }
         }
-        
-        public void DeriveTemplate(IDerivation derivation)
-        {
-            this.PrintContent = "not implemented";
-        }
 
         public void AppsOnBuild(ObjectOnBuild method)
         {
@@ -58,13 +53,11 @@ namespace Allors.Domain
             }
 
             this.DeriveCurrentObjectState(derivation);
-
-            this.DeriveTemplate(derivation);
         }
 
         public void AppsOnDeriveCurrentObjectState(IDerivation derivation)
         {
-            if (this.ExistCurrentObjectState && !this.CurrentObjectState.Equals(this.PreviousObjectState))
+            if (this.ExistCurrentObjectState && !this.CurrentObjectState.Equals(this.LastObjectState))
             {
                 var currentStatus = new TransferStatusBuilder(this.Strategy.Session).WithTransferObjectState(this.CurrentObjectState).Build();
                 this.AddShipmentStatus(currentStatus);

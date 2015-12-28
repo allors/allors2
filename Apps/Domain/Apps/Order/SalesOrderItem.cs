@@ -362,7 +362,7 @@ namespace Allors.Domain
                 }
             }
 
-            if (this.ExistCurrentObjectState && !this.CurrentObjectState.Equals(this.PreviousObjectState))
+            if (this.ExistCurrentObjectState && !this.CurrentObjectState.Equals(this.LastObjectState))
             {
                 var currentStatus = new SalesOrderItemStatusBuilder(this.Strategy.Session).WithSalesOrderItemObjectState(this.CurrentObjectState).Build();
                 this.AddOrderItemStatus(currentStatus);
@@ -1290,16 +1290,15 @@ namespace Allors.Domain
             {
                 foreach (SalesInvoiceItem invoiceItem in orderShipment.ShipmentItem.InvoiceItems)
                 {
-                    if (state == null && invoiceItem.SalesInvoiceWhereSalesInvoiceItem.CurrentObjectState.Equals(new SalesInvoiceObjectStates(this.Strategy.Session).Paid))
+                    state = null;
+                    if (invoiceItem.SalesInvoiceWhereSalesInvoiceItem.CurrentObjectState.Equals(new SalesInvoiceObjectStates(this.Strategy.Session).Paid))
                     {
                         state = new SalesOrderItemObjectStates(this.Strategy.Session).Paid;
                     }
-                    else
+
+                    if (invoiceItem.SalesInvoiceWhereSalesInvoiceItem.CurrentObjectState.Equals(new SalesInvoiceObjectStates(this.Strategy.Session).PartiallyPaid))
                     {
-                        if (state != null && state.Equals(new SalesOrderItemObjectStates(this.Strategy.Session).Paid))
-                        {
-                            state = new SalesOrderItemObjectStates(this.Strategy.Session).PartiallyPaid;
-                        }
+                        state = new SalesOrderItemObjectStates(this.Strategy.Session).PartiallyPaid;
                     }
                 }
             }

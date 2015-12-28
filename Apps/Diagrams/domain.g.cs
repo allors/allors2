@@ -1419,8 +1419,6 @@ namespace Allors.Domain
 
 					global::System.String Name {set;}
 
-					TemplatePurpose TemplatePurpose {set;}
-
 	}
 	public interface Transition  : Object 
 	{
@@ -3677,8 +3675,6 @@ namespace Allors.Domain
 
 					Counter SalesOrderCounter {set;}
 
-					StringTemplate SalesInvoiceTemplates {set;}
-
 					global::System.String OutgoingShipmentNumberPrefix {set;}
 
 					global::System.String SalesInvoiceNumberPrefix {set;}
@@ -3692,8 +3688,6 @@ namespace Allors.Domain
 					Facility DefaultFacility {set;}
 
 					global::System.String Name {set;}
-
-					StringTemplate SalesOrderTemplates {set;}
 
 					global::System.Decimal CreditLimit {set;}
 
@@ -3716,8 +3710,6 @@ namespace Allors.Domain
 					Counter OutgoingShipmentCounter {set;}
 
 					global::System.String SalesOrderNumberPrefix {set;}
-
-					StringTemplate CustomerShipmentTemplates {set;}
 
 	}
 	public interface StoreRevenue  : Object, AccessControlledObject, Deletable 
@@ -3825,9 +3817,6 @@ namespace Allors.Domain
 
 					global::System.String ContactNumber {set;}
 
-	}
-	public interface TemplatePurpose  : Object, Enumeration 
-	{
 	}
 	public interface TermType  : Object, Enumeration 
 	{
@@ -4710,8 +4699,6 @@ namespace Allors.Domain
 
 					PaymentMethod ActivePaymentMethods {set;}
 
-					StringTemplate PurchaseShipmentTemplates {set;}
-
 					global::System.Decimal? MaximumAllowedPaymentDifference {set;}
 
 					Media LogoImage {set;}
@@ -4732,8 +4719,6 @@ namespace Allors.Domain
 
 					global::System.Int32 FiscalYearStartMonth {set;}
 
-					StringTemplate PurchaseOrderTemplates {set;}
-
 					CostOfGoodsSoldMethod CostOfGoodsSoldMethod {set;}
 
 					Role EmployeeRoles {set;}
@@ -4750,21 +4735,15 @@ namespace Allors.Domain
 
 					GeneralLedgerAccount RetainedEarningsAccount {set;}
 
-					StringTemplate PackagingSlipTemplates {set;}
-
 					Party Customers {set;}
 
 					global::System.String PurchaseInvoiceNumberPrefix {set;}
-
-					StringTemplate PickListTemplates {set;}
 
 					GeneralLedgerAccount SalesPaymentDiscountDifferencesAccount {set;}
 
 					Counter SubAccountCounter {set;}
 
 					AccountingTransactionNumber AccountingTransactionNumbers {set;}
-
-					StringTemplate QuoteTemplates {set;}
 
 					global::System.String TransactionReferenceNumberPrefix {set;}
 

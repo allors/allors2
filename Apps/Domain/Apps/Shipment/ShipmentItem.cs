@@ -45,11 +45,7 @@ namespace Allors.Domain
         {
             var derivation = method.Derivation;
 
-            // TODO:
-            if (derivation.ChangeSet.Associations.Contains(this.Id))
-            {
-                derivation.AddDependency(this.ShipmentWhereShipmentItem, this);
-            }
+            derivation.AddDependency(this.ShipmentWhereShipmentItem, this);
         }
 
         public void AppsOnDerive(ObjectOnDerive method)

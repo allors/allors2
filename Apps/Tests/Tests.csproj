@@ -107,8 +107,6 @@
     <Compile Include="DomainTest.cs" />
     <Compile Include="Fixture.cs" />
     <Compile Include="Import\ChartOfAccountsImportTests.cs" />
-    <Compile Include="Invoice\ExpectedInvoiceLayout.cs" />
-    <Compile Include="Invoice\InvoicePrintTest.cs" />
     <Compile Include="Invoice\InvoiceTermTests.cs" />
     <Compile Include="Invoice\PaymentApplicationTests.cs" />
     <Compile Include="Invoice\PurchaseInvoiceItemTests.cs" />
@@ -127,11 +125,9 @@
     <Compile Include="Order\EngagementItemTests.cs" />
     <Compile Include="Order\EngagementRateTests.cs" />
     <Compile Include="Order\EngagementTests.cs" />
-    <Compile Include="Order\ExpectedOrderLayout.cs" />
     <Compile Include="Order\FeeTests.cs" />
     <Compile Include="Order\NeededSkillTests.cs" />
     <Compile Include="Order\OrderKindTests.cs" />
-    <Compile Include="Order\OrderPrintTests.cs" />
     <Compile Include="Order\OrderRequirementCommitmentTests.cs" />
     <Compile Include="Order\OrderTermTests.cs" />
     <Compile Include="Order\PurchaseOrderItemTests.cs" />
@@ -197,9 +193,7 @@
     <Compile Include="Sandbox\SandboxTests.cs" />
     <Compile Include="SetupConfigurationTests.cs" />
     <Compile Include="Shipment\CustomerShipmentTests.cs" />
-    <Compile Include="Shipment\ExpectedPickListLayout.cs" />
     <Compile Include="Shipment\PackagingContentTests.cs" />
-    <Compile Include="Shipment\PickListPrintTests.cs" />
     <Compile Include="Shipment\PickListTests.cs" />
     <Compile Include="Shipment\PurchaseShipmentTests.cs" />
     <Compile Include="Shipment\ShipmentPackageTests.cs" />

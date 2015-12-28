@@ -114,60 +114,6 @@ namespace Allors.Domain
             {
                 this.PaymentGracePeriod = 0;
             }
-
-            if (new TemplatePurposes(this.Strategy.Session).SalesInvoice != null &&
-                new TemplatePurposes(this.Strategy.Session).SalesInvoice.StringTemplatesWhereTemplatePurpose.Count > 0)
-            {
-                if (!this.ExistSalesInvoiceTemplates)
-                {
-                    if (this.ExistOwner && this.Owner.ExistLocale)
-                    {
-                        var template = this.Owner.Locale.StringTemplatesWhereLocale.First(x => x.TemplatePurpose.Equals(new TemplatePurposes(this.Strategy.Session).SalesInvoice));
-                        this.AddSalesInvoiceTemplate(template);
-                    }
-                    else
-                    {
-                        var template = Singleton.Instance(this.Strategy.Session).DefaultLocale.StringTemplatesWhereLocale.First(x => x.TemplatePurpose.Equals(new TemplatePurposes(this.Strategy.Session).SalesInvoice));
-                        this.AddSalesInvoiceTemplate(template);
-                    }
-                }
-            }
-
-            if (new TemplatePurposes(this.Strategy.Session).SalesOrder != null &&
-                new TemplatePurposes(this.Strategy.Session).SalesOrder.StringTemplatesWhereTemplatePurpose.Count > 0)
-            {
-                if (!this.ExistSalesOrderTemplates)
-                {
-                    if (this.ExistOwner && this.Owner.ExistLocale)
-                    {
-                        var template = this.Owner.Locale.StringTemplatesWhereLocale.First(x => x.TemplatePurpose.Equals(new TemplatePurposes(this.Strategy.Session).SalesOrder));
-                        this.AddSalesOrderTemplate(template);
-                    }
-                    else
-                    {
-                        var template = Singleton.Instance(this.Strategy.Session).DefaultLocale.StringTemplatesWhereLocale.First(x => x.TemplatePurpose.Equals(new TemplatePurposes(this.Strategy.Session).SalesOrder));
-                        this.AddSalesOrderTemplate(template);
-                    }
-                }
-            }
-
-            if (new TemplatePurposes(this.Strategy.Session).CustomerShipment != null &&
-                new TemplatePurposes(this.Strategy.Session).CustomerShipment.StringTemplatesWhereTemplatePurpose.Count > 0)
-            {
-                if (!this.ExistCustomerShipmentTemplates)
-                {
-                    if (this.ExistOwner && this.Owner.ExistLocale)
-                    {
-                        var template = this.Owner.Locale.StringTemplatesWhereLocale.First(x => x.TemplatePurpose.Equals(new TemplatePurposes(this.Strategy.Session).CustomerShipment));
-                        this.AddCustomerShipmentTemplate(template);
-                    }
-                    else
-                    {
-                        var template = Singleton.Instance(this.Strategy.Session).DefaultLocale.StringTemplatesWhereLocale.First(x => x.TemplatePurpose.Equals(new TemplatePurposes(this.Strategy.Session).CustomerShipment));
-                        this.AddCustomerShipmentTemplate(template);
-                    }
-                }
-            }
         }
 
         public void AppsOnDerive(ObjectOnDerive method)

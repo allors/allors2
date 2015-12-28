@@ -34,17 +34,6 @@ namespace Allors.Meta
 		public RelationType SalesOrderCounter;
 
 		#region Allors
-		[Id("190d2363-affa-4a4b-8662-d8b566c506d6")]
-		[AssociationId("76194162-1ef0-45f0-8804-2183f42e0e17")]
-		[RoleId("b4d8f605-9a66-468d-b9a0-f2157e8528b7")]
-		#endregion
-		[Indexed]
-		[Type(typeof(StringTemplateClass))]
-		[Plural("SalesInvoiceTemplates")]
-		[Multiplicity(Multiplicity.ManyToMany)]
-		public RelationType SalesInvoiceTemplate;
-
-		#region Allors
 		[Id("3a837bae-993a-4765-8d4f-b690bf65dc79")]
 		[AssociationId("0304eacc-65bc-475d-9a82-00b0cdb233ad")]
 		[RoleId("21c8c056-2997-4f75-82db-597e258dceb6")]
@@ -113,17 +102,6 @@ namespace Allors.Meta
 		[Size(256)]
 		[Plural("Name")]
 		public RelationType Name;
-
-		#region Allors
-		[Id("72ea05f1-a631-4dec-a568-1307e380d41f")]
-		[AssociationId("3799c587-25f3-4d18-a671-2d2301dae0df")]
-		[RoleId("c6bb5b3c-c599-427d-9c42-dc1966f11ce5")]
-		#endregion
-		[Indexed]
-		[Type(typeof(StringTemplateClass))]
-		[Plural("SalesOrderTemplates")]
-		[Multiplicity(Multiplicity.ManyToMany)]
-		public RelationType SalesOrderTemplate;
 
 		#region Allors
 		[Id("79244ed7-6388-48ca-86db-7b57a64fe680")]
@@ -244,19 +222,6 @@ namespace Allors.Meta
 		[Size(256)]
 		[Plural("SalesOrderNumberPrefixes")]
 		public RelationType SalesOrderNumberPrefix;
-
-		#region Allors
-		[Id("f024d205-2420-40bb-ab1d-71533fa25557")]
-		[AssociationId("68800a34-f973-4339-b5d5-7c611b39a2b1")]
-		[RoleId("e858cc6c-2a6e-4c04-be7a-e019009bf3f7")]
-		#endregion
-		[Indexed]
-		[Type(typeof(StringTemplateClass))]
-		[Plural("CustomerShipmentTemplates")]
-		[Multiplicity(Multiplicity.ManyToMany)]
-		public RelationType CustomerShipmentTemplate;
-
-
 
 		public static StoreClass Instance {get; internal set;}
 

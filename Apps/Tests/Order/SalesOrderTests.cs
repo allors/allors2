@@ -290,9 +290,9 @@ namespace Allors.Domain
                 .WithShipToAddress(new PostalAddressBuilder(this.DatabaseSession).WithGeographicBoundary(mechelen).WithAddress1("Haverwerf 15").Build())
                 .Build();
 
-            var item1 = new SalesOrderItemBuilder(this.DatabaseSession).WithProduct(good1).WithQuantityOrdered(1).WithActualUnitPrice(15).Build();
-            var item2 = new SalesOrderItemBuilder(this.DatabaseSession).WithProduct(good1).WithQuantityOrdered(2).WithActualUnitPrice(15).Build();
-            var item3 = new SalesOrderItemBuilder(this.DatabaseSession).WithProduct(good2).WithQuantityOrdered(5).WithActualUnitPrice(15).Build();
+            var item1 = new SalesOrderItemBuilder(this.DatabaseSession).WithProduct(good1).WithQuantityOrdered(1).WithActualUnitPrice(15).WithComment("item1").Build();
+            var item2 = new SalesOrderItemBuilder(this.DatabaseSession).WithProduct(good1).WithQuantityOrdered(2).WithActualUnitPrice(15).WithComment("item2").Build();
+            var item3 = new SalesOrderItemBuilder(this.DatabaseSession).WithProduct(good2).WithQuantityOrdered(5).WithActualUnitPrice(15).WithComment("item3").Build();
             order.AddSalesOrderItem(item1);
             order.AddSalesOrderItem(item2);
             order.AddSalesOrderItem(item3);
@@ -309,7 +309,6 @@ namespace Allors.Domain
             pickList.Picker = new Persons(this.DatabaseSession).FindBy(Persons.Meta.LastName, "orderProcessor");
 
             pickList.SetPicked();
-
             this.DatabaseSession.Derive(true);
 
             var package = new ShipmentPackageBuilder(this.DatabaseSession).Build();
@@ -322,12 +321,15 @@ namespace Allors.Domain
 
             this.DatabaseSession.Derive(true);
 
-            shipment.Ship();
+            shipment.SetPacked();
+            this.DatabaseSession.Derive(true);
 
+            shipment.Ship();
             this.DatabaseSession.Derive(true);
 
             var salesInvoiceitem = (SalesInvoiceItem)shipment.ShipmentItems[0].InvoiceItems[0];
             var invoice1 = salesInvoiceitem.SalesInvoiceWhereSalesInvoiceItem;
+            invoice1.Send();
 
             new ReceiptBuilder(this.DatabaseSession)
                 .WithAmount(15)
@@ -379,6 +381,7 @@ namespace Allors.Domain
 
             salesInvoiceitem = (SalesInvoiceItem)shipment.ShipmentItems[0].InvoiceItems[0];
             var invoice2 = salesInvoiceitem.SalesInvoiceWhereSalesInvoiceItem;
+            invoice2.Send();
 
             new ReceiptBuilder(this.DatabaseSession)
                 .WithAmount(30)

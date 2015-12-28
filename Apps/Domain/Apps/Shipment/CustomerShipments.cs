@@ -24,39 +24,11 @@ namespace Allors.Domain
 {
     public partial class CustomerShipments
     {
-        public static readonly Guid CustomerShipmentTemplateEnId = new Guid("F4596683-A0D8-4487-9109-2209F5B340BF");
-        public static readonly Guid CustomerShipmentTemplateNlId = new Guid("B8A79504-0973-4B20-BF7A-6159288F6B3D");
-
         protected override void AppsPrepare(Setup setup)
         {
             base.AppsPrepare(setup);
 
-            setup.AddDependency(this.ObjectType, Domain.TemplatePurposes.Meta.ObjectType);
             setup.AddDependency(this.ObjectType, CustomerShipmentObjectStates.Meta.ObjectType);
-        }
-
-        protected override void AppsSetup(Setup setup)
-        {
-            base.AppsSetup(setup);
-
-            var englishLocale = new Locales(this.Session).EnglishGreatBritain;
-            var dutchLocale = new Locales(this.Session).DutchNetherlands;
-
-            new StringTemplateBuilder(this.Session)
-                .WithName("CustomerShipment " + englishLocale.Name)
-                .WithBody(CustomerShipmentTemplateEn)
-                .WithUniqueId(CustomerShipmentTemplateEnId)
-                .WithLocale(englishLocale)
-                .WithTemplatePurpose(new TemplatePurposes(this.Session).CustomerShipment)
-                .Build();
-
-            new StringTemplateBuilder(this.Session)
-                .WithName("CustomerShipment " + dutchLocale.Name)
-                .WithBody(CustomerShipmentTemplateNl)
-                .WithUniqueId(CustomerShipmentTemplateNlId)
-                .WithLocale(dutchLocale)
-                .WithTemplatePurpose(new TemplatePurposes(this.Session).CustomerShipment)
-                .Build();
         }
 
         protected override void AppsSecure(Domain.Security config)

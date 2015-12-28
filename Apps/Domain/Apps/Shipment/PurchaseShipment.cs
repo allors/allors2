@@ -51,16 +51,6 @@ namespace Allors.Domain
             get { return this.EstimatedArrivalDate.ToShortDateString(); }
         }
 
-        public void DeriveTemplate(IDerivation derivation)
-        {
-            var internalOrganisation = this.ShipToParty as Domain.InternalOrganisation;
-            if (internalOrganisation != null && internalOrganisation.PurchaseShipmentTemplates.Count > 0)
-            {
-                this.PrintContent =
-                    internalOrganisation.PurchaseShipmentTemplates.First.Apply(new Dictionary<string, object> { { "this", this } });
-            }
-        }
-
         public void AppsOnBuild(ObjectOnBuild method)
         {
             if (!this.ExistCurrentObjectState)
@@ -131,7 +121,7 @@ namespace Allors.Domain
 
             if (this.ExistCurrentObjectState && 
                 this.CurrentObjectState.UniqueId.Equals(PurchaseShipmentObjectStates.CompletedId) &&
-                !this.CurrentObjectState.Equals(this.PreviousObjectState))
+                !this.CurrentObjectState.Equals(this.LastObjectState))
             {
 
                 this.AppsOnDeriveOrderItemQuantityReceived(derivation);
@@ -143,8 +133,6 @@ namespace Allors.Domain
             {
                 shipmentItem.OnDerive(x => x.WithDerivation(derivation));
             }
-
-            this.DeriveTemplate(derivation);
         }
 
         public void AppsOnPostDerive(ObjectOnPostDerive method)
@@ -160,9 +148,7 @@ namespace Allors.Domain
 
         public void AppsOnDeriveCurrentObjectState(IDerivation derivation)
         {
-            
-
-            if (this.ExistCurrentObjectState && !this.CurrentObjectState.Equals(this.PreviousObjectState))
+            if (this.ExistCurrentObjectState && !this.CurrentObjectState.Equals(this.LastObjectState))
             {
                 var currentStatus = new PurchaseShipmentStatusBuilder(this.Strategy.Session).WithPurchaseShipmentObjectState(this.CurrentObjectState).Build();
                 this.AddShipmentStatus(currentStatus);
@@ -190,7 +176,6 @@ namespace Allors.Domain
                 if (orderItem != null)
                 {
                     orderItem.DeriveCurrentShipmentStatus(derivation);
-                    orderItem.PurchaseOrderWherePurchaseOrderItem.DeriveTemplate(derivation);
                 }
             }
         }

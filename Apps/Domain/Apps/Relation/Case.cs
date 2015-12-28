@@ -47,7 +47,7 @@ namespace Allors.Domain
         
         private void DeriveCurrentObjectState()
         {
-            if (this.ExistCurrentObjectState && !this.CurrentObjectState.Equals(this.PreviousObjectState))
+            if (this.ExistCurrentObjectState && !this.CurrentObjectState.Equals(this.LastObjectState))
             {
                 var currentStatus = new CaseStatusBuilder(this.Strategy.Session).WithCaseObjectState(this.CurrentObjectState).Build();
                 this.AddCaseStatus(currentStatus);

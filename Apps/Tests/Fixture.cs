@@ -161,7 +161,6 @@ namespace Allors
                     .WithEmployeeRole(new Roles(session).Sales)
                     .WithEmployeeRole(new Roles(session).Operations)
                     .WithEmployeeRole(new Roles(session).Administrator)
-                    .WithPurchaseOrderTemplate(new StringTemplates(session).FindBy(UniquelyIdentifiables.Meta.UniqueId, PurchaseOrders.PurchaseOrderTemplateEnId))
                     .WithDefaultPaymentMethod(ownBankAccount)
                     .Build();
 
@@ -179,12 +178,6 @@ namespace Allors
                     .WithSalesOrderNumberPrefix("orderno: ")
                     .WithDefaultShipmentMethod(new ShipmentMethods(session).Ground)
                     .WithDefaultCarrier(new Carriers(session).Fedex)
-                    .WithSalesInvoiceTemplate(new StringTemplates(session).FindBy(UniquelyIdentifiables.Meta.UniqueId, SalesInvoices.SalesInvoiceTemplateEnId))
-                    .WithSalesInvoiceTemplate(new StringTemplates(session).FindBy(UniquelyIdentifiables.Meta.UniqueId, SalesInvoices.SalesInvoiceTemplateNlId))
-                    .WithSalesOrderTemplate(new StringTemplates(session).FindBy(UniquelyIdentifiables.Meta.UniqueId, SalesOrders.SalesOrderTemplateEnId))
-                    .WithSalesOrderTemplate(new StringTemplates(session).FindBy(UniquelyIdentifiables.Meta.UniqueId, SalesOrders.SalesOrderTemplateNlId))
-                    .WithCustomerShipmentTemplate(new StringTemplates(session).FindBy(UniquelyIdentifiables.Meta.UniqueId, CustomerShipments.CustomerShipmentTemplateEnId))
-                    .WithCustomerShipmentTemplate(new StringTemplates(session).FindBy(UniquelyIdentifiables.Meta.UniqueId, CustomerShipments.CustomerShipmentTemplateNlId))
                     .WithCreditLimit(500)
                     .WithPaymentGracePeriod(10)
                     .Build();

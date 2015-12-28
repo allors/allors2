@@ -117,14 +117,6 @@ namespace Allors.Domain
             get { return this.EstimatedArrivalDate.ToShortDateString(); }
         }
 
-        public void DeriveTemplate(IDerivation derivation)
-        {
-            if (this.ExistStore && this.Store.CustomerShipmentTemplates.Count > 0)
-            {
-                this.PrintContent = this.Store.CustomerShipmentTemplates.First.Apply(new Dictionary<string, object> { { "this", this } });
-            }
-        }
-
         public void AppsOnBuild(ObjectOnBuild method)
         {
             if (!this.ExistCurrentObjectState)
@@ -244,8 +236,6 @@ namespace Allors.Domain
             this.AppsOnDeriveCurrentShipmentState(derivation);
             
             this.DeriveCurrentObjectState(derivation);
-            
-            this.DeriveTemplate(derivation);
         }
 
         public void AppsOnPostDerive(ObjectOnPostDerive method)
@@ -738,7 +728,7 @@ namespace Allors.Domain
 
         public void AppsOnDeriveCurrentObjectState(IDerivation derivation)
         {
-            if (this.ExistCurrentObjectState && !this.CurrentObjectState.Equals(this.PreviousObjectState))
+            if (this.ExistCurrentObjectState && !this.CurrentObjectState.Equals(this.LastObjectState))
             {
                 var currentStatus = new CustomerShipmentStatusBuilder(this.Strategy.Session).WithCustomerShipmentObjectState(this.CurrentObjectState).Build();
                 this.AddShipmentStatus(currentStatus);

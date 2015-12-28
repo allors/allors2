@@ -621,8 +621,6 @@ namespace Allors.Domain
 
             this.PreviousBillToCustomer = this.BillToCustomer;
             this.PreviousShipToCustomer = this.ShipToCustomer;  
-        
-            this.DeriveTemplate(derivation);
         }
 
         public void AppsOnPostDerive(ObjectOnPostDerive method)
@@ -663,7 +661,7 @@ namespace Allors.Domain
 
         private void DeriveCurrentObjectState(IDerivation derivation)
         {
-            if (this.ExistCurrentObjectState && !this.CurrentObjectState.Equals(this.PreviousObjectState))
+            if (this.ExistCurrentObjectState && !this.CurrentObjectState.Equals(this.LastObjectState))
             {
                 this.CurrentObjectState.Process(this);
 
@@ -996,36 +994,6 @@ namespace Allors.Domain
             else
             {
                 this.Locale = this.ExistTakenByInternalOrganisation ? this.TakenByInternalOrganisation.Locale : Singleton.Instance(this.Strategy.Session).DefaultLocale;
-            }
-        }
-
-        public void AppsOnDeriveTemplate(IDerivation derivation)
-        {
-            StringTemplate template = null;
-            if (this.ExistStore && this.ExistBillToCustomer && this.BillToCustomer.ExistLocale)
-            {
-                var templates = this.Store.SalesOrderTemplates;
-                templates.Filter.AddEquals(StringTemplates.Meta.Locale, this.BillToCustomer.Locale);
-                template = templates.First;
-            }
-
-            if (this.ExistStore && template == null && this.TakenByInternalOrganisation.ExistLocale)
-            {
-                var templates = this.Store.SalesOrderTemplates;
-                templates.Filter.AddEquals(StringTemplates.Meta.Locale, this.TakenByInternalOrganisation.Locale);
-                template = templates.First;
-            }
-
-            if (this.ExistStore && template == null)
-            {
-                var templates = this.Store.SalesOrderTemplates;
-                templates.Filter.AddEquals(StringTemplates.Meta.Locale, Singleton.Instance(this.Strategy.Session).DefaultLocale);
-                template = templates.First;
-            }
-
-            if (template != null)
-            {
-                this.PrintContent = template.Apply(new Dictionary<string, object> { { "this", this } });
             }
         }
 

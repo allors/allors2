@@ -25,9 +25,6 @@ namespace Allors.Domain
 
     public partial class PickLists
     {
-        public static readonly Guid PickListTemplateEnId = new Guid("3C1DC277-18B9-4d4e-8314-3719FAAF7DF7");
-        public static readonly Guid PickListTemplateNlId = new Guid("F44DD4D4-B293-4307-A0F6-17528477B406");
-
         public Extent<PickList> PendingPickLists
         {
             get
@@ -44,32 +41,7 @@ namespace Allors.Domain
         {
             base.AppsPrepare(setup);
 
-            setup.AddDependency(this.ObjectType, Domain.TemplatePurposes.Meta.ObjectType);
             setup.AddDependency(this.ObjectType, PickListObjectStates.Meta.ObjectType);
-        }
-
-        protected override void AppsSetup(Setup setup)
-        {
-            base.AppsSetup(setup);
-
-            var englischLocale = new Locales(this.Session).EnglishGreatBritain;
-            var dutchLocale = new Locales(this.Session).DutchNetherlands;
-
-            new StringTemplateBuilder(Session)
-                .WithName("PickList " + englischLocale.Name)
-                .WithBody(PickListTemplateEn)
-                .WithUniqueId(PickListTemplateEnId)
-                .WithLocale(englischLocale)
-                .WithTemplatePurpose(new Domain.TemplatePurposes(this.Session).PickList)
-                .Build();
-
-            new StringTemplateBuilder(Session)
-                .WithName("PickList " + dutchLocale.Name)
-                .WithBody(PickListTemplateNl)
-                .WithUniqueId(PickListTemplateNlId)
-                .WithLocale(dutchLocale)
-                .WithTemplatePurpose(new Domain.TemplatePurposes(this.Session).PickList)
-                .Build();
         }
 
         protected override void AppsSecure(Domain.Security config)

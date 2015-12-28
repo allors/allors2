@@ -651,7 +651,6 @@
     <Compile Include="Apps\Domain\Store.cs" />
     <Compile Include="Apps\Domain\StoreRevenue.cs" />
     <Compile Include="Apps\Domain\StoreRevenueHistory.cs" />
-    <Compile Include="Apps\Domain\StringTemplate.cs" />
     <Compile Include="Apps\Domain\SubAgreement.cs" />
     <Compile Include="Apps\Domain\SubAssembly.cs" />
     <Compile Include="Apps\Domain\SubContractorAgreement.cs" />
@@ -664,7 +663,6 @@
     <Compile Include="Apps\Domain\TaxDocument.cs" />
     <Compile Include="Apps\Domain\TaxDue.cs" />
     <Compile Include="Apps\Domain\TelecommunicationsNumber.cs" />
-    <Compile Include="Apps\Domain\TemplatePurpose.cs" />
     <Compile Include="Apps\Domain\TermType.cs" />
     <Compile Include="Apps\Domain\Territory.cs" />
     <Compile Include="Apps\Domain\TestingRequirement.cs" />

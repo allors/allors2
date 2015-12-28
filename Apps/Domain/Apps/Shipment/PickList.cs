@@ -115,13 +115,6 @@ namespace Allors.Domain
             var derivation = method.Derivation;
 
             this.DeriveCurrentObjectState();
-
-            if (this.ExistPickListItems)
-            {
-                this.AppsOnDeriveTemplate(derivation);
-            }
-
-            this.AppsOnDeriveTemplate(derivation);
         }
 
         public void AppsOnPostDerive(ObjectOnPostDerive method)
@@ -145,7 +138,7 @@ namespace Allors.Domain
 
         private void DeriveCurrentObjectState()
         {
-            if (this.ExistCurrentObjectState && !this.CurrentObjectState.Equals(this.PreviousObjectState))
+            if (this.ExistCurrentObjectState && !this.CurrentObjectState.Equals(this.LastObjectState))
             {
                 var currentStatus = new PickListStatusBuilder(this.Strategy.Session).WithPickListObjectState(this.CurrentObjectState).Build();
                 this.AddPickListStatus(currentStatus);
@@ -183,38 +176,6 @@ namespace Allors.Domain
                 {
                     pickListItem.ActualQuantity = pickListItem.RequestedQuantity;
                 }
-            }
-        }
-
-        public void AppsOnDeriveTemplate(IDerivation derivation)
-        {
-            var internalOrganisation = Singleton.Instance(this.strategy.Session).DefaultInternalOrganisation;
-            
-            if (this.ExistPickListItems)
-            {
-                internalOrganisation = this.PickListItems[0].InventoryItem.Facility.Owner;
-            }
-
-            StringTemplate template = null;
-
-            if (internalOrganisation.ExistLocale)
-            {
-                var templates = internalOrganisation.PickListTemplates;
-                templates.Filter.AddEquals(StringTemplates.Meta.Locale, internalOrganisation.Locale);
-                template = templates.First;
-            }
-
-            if (template == null)
-            {
-                var templates = internalOrganisation.PickListTemplates;
-                templates.Filter.AddEquals(StringTemplates.Meta.Locale,
-                    Singleton.Instance(this.Strategy.Session).DefaultLocale);
-                template = templates.First;
-            }
-
-            if (template != null)
-            {
-                this.PrintContent = template.Apply(new Dictionary<string, object> { { "this", this } });
             }
         }
     }

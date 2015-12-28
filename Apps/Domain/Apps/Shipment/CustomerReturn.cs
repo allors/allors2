@@ -30,11 +30,6 @@ namespace Allors.Domain
             }
         }
 
-        public void DeriveTemplate(IDerivation derivation)
-        {
-            this.PrintContent = "not implemented";
-        }
-
         public void AppsOnBuild(ObjectOnBuild method)
         {
             if (!this.ExistCurrentObjectState)
@@ -59,13 +54,11 @@ namespace Allors.Domain
             }
 
             this.DeriveCurrentObjectState(derivation);
-
-            this.DeriveTemplate(derivation);
         }
 
         public void AppsOnDeriveCurrentObjectState(IDerivation derivation)
         {
-            if (this.ExistCurrentObjectState && !this.CurrentObjectState.Equals(this.PreviousObjectState))
+            if (this.ExistCurrentObjectState && !this.CurrentObjectState.Equals(this.LastObjectState))
             {
                 var currentStatus = new CustomerReturnStatusBuilder(this.Strategy.Session).WithCustomerReturnObjectState(this.CurrentObjectState).Build();
                 this.AddShipmentStatus(currentStatus);

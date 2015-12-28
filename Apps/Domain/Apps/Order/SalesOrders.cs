@@ -24,39 +24,11 @@ namespace Allors.Domain
 
     public partial class SalesOrders
     {
-        public static readonly Guid SalesOrderTemplateEnId = new Guid("091760D0-C1F7-4bf9-BBC2-6DF42B170FEA");
-        public static readonly Guid SalesOrderTemplateNlId = new Guid("82E53A8A-5E59-4ec6-877C-BC0411EBA116");
-
         protected override void AppsPrepare(Setup setup)
         {
             base.AppsPrepare(setup);
 
-            setup.AddDependency(this.ObjectType, TemplatePurposes.Meta.ObjectType);
             setup.AddDependency(this.ObjectType, SalesOrderObjectStates.Meta.ObjectType);
-        }
-
-        protected override void AppsSetup(Setup setup)
-        {
-            base.AppsSetup(setup);
-
-            var englishLocale = new Locales(Session).EnglishGreatBritain;
-            var dutchLocale = new Locales(Session).DutchNetherlands;
-
-            new StringTemplateBuilder(Session)
-                .WithName("SalesOrder " + englishLocale.Name)
-                .WithBody(SalesOrderTemplateEn)
-                .WithUniqueId(SalesOrderTemplateEnId)
-                .WithLocale(englishLocale)
-                .WithTemplatePurpose(new TemplatePurposes(this.Session).SalesOrder)
-                .Build();
-
-            new StringTemplateBuilder(Session)
-                .WithName("SalesOrder " + dutchLocale.Name)
-                .WithBody(SalesOrderTemplateNl)
-                .WithUniqueId(SalesOrderTemplateNlId)
-                .WithLocale(dutchLocale)
-                .WithTemplatePurpose(new TemplatePurposes(this.Session).SalesOrder)
-                .Build();
         }
 
         protected override void AppsSecure(Security config)

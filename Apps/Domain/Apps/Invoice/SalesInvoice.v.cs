@@ -37,11 +37,6 @@ namespace Allors.Domain
             this.AppsOnDeriveInvoiceTotals(derivation);
         }
 
-        public void DeriveTemplate(IDerivation derivation)
-        {
-            this.AppsOnDeriveTemplate(derivation);
-        }
-
         public void DeriveSalesOrderPaymentStatus(IDerivation derivation)
         {
             this.AppsOnDeriveSalesOrderPaymentStatus(derivation);

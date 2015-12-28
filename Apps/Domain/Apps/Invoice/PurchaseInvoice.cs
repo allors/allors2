@@ -305,7 +305,7 @@ namespace Allors.Domain
                 }
             }
 
-            if (this.ExistCurrentObjectState && !this.CurrentObjectState.Equals(this.PreviousObjectState))
+            if (this.ExistCurrentObjectState && !this.CurrentObjectState.Equals(this.LastObjectState))
             {
                 this.CurrentObjectState.Process(this);
 

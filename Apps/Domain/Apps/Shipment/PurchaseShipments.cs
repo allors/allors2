@@ -24,39 +24,11 @@ namespace Allors.Domain
 
     public partial class PurchaseShipments
     {
-        public static readonly Guid PurchaseShipmentTemplateEnId = new Guid("AF818B3F-E621-4391-A4A4-8B381223651D");
-        public static readonly Guid PurchaseShipmentTemplateNlId = new Guid("E4EDB920-8577-43C6-A6CD-1635A700C439");
-
         protected override void AppsPrepare(Setup setup)
         {
             base.AppsPrepare(setup);
 
-            setup.AddDependency(this.ObjectType, Domain.TemplatePurposes.Meta.ObjectType);
             setup.AddDependency(this.ObjectType, PurchaseShipmentObjectStates.Meta.ObjectType);
-        }
-
-        protected override void AppsSetup(Setup setup)
-        {
-            base.AppsSetup(setup);
-
-            var englishLocale = new Locales(this.Session).EnglishGreatBritain;
-            var dutchLocale = new Locales(this.Session).DutchNetherlands;
-
-            new StringTemplateBuilder(this.Session)
-                .WithName("PurchaseShipment " + englishLocale.Name)
-                .WithBody(PurchaseShipmentTemplateEn)
-                .WithUniqueId(PurchaseShipmentTemplateEnId)
-                .WithLocale(englishLocale)
-                .WithTemplatePurpose(new Domain.TemplatePurposes(this.Session).PurchaseShipment)
-                .Build();
-
-            new StringTemplateBuilder(this.Session)
-                .WithName("PurchaseShipment " + dutchLocale.Name)
-                .WithBody(PurchaseShipmentTemplateNl)
-                .WithUniqueId(PurchaseShipmentTemplateNlId)
-                .WithLocale(dutchLocale)
-                .WithTemplatePurpose(new Domain.TemplatePurposes(this.Session).PurchaseShipment)
-                .Build();
         }
 
         protected override void AppsSecure(Domain.Security config)

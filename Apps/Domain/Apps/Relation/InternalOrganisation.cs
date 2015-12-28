@@ -136,46 +136,7 @@ namespace Allors.Domain
             if (!this.ExistFiscalYearStartDay)
             {
                 this.FiscalYearStartDay = 1;
-            }
-            
-            if (this.Strategy.Session.Extent<TemplatePurpose>().Count > 0 &&
-                this.Strategy.Session.Extent<StringTemplate>().Count > 0)
-            {
-                if (!this.ExistPurchaseOrderTemplates)
-                {
-                    var templates = this.ExistLocale ? this.Locale.StringTemplatesWhereLocale : Singleton.Instance(this.Strategy.Session).DefaultLocale.StringTemplatesWhereLocale;
-                    var template = templates.FirstOrDefault(t => t.ExistTemplatePurpose && t.TemplatePurpose.Equals(new TemplatePurposes(this.Strategy.Session).PurchaseOrder));
-                    this.AddPurchaseOrderTemplate(template);
-                }
-
-                if (!this.ExistQuoteTemplates)
-                {
-                    var templates = this.ExistLocale ? this.Locale.StringTemplatesWhereLocale : Singleton.Instance(this.Strategy.Session).DefaultLocale.StringTemplatesWhereLocale;
-                    var template = templates.FirstOrDefault(t => t.ExistTemplatePurpose && t.TemplatePurpose.Equals(new TemplatePurposes(this.Strategy.Session).Quote));
-                    this.AddQuoteTemplate(template);
-                }
-
-                if (!this.ExistPickListTemplates)
-                {
-                    var templates = this.ExistLocale ? this.Locale.StringTemplatesWhereLocale : Singleton.Instance(this.Strategy.Session).DefaultLocale.StringTemplatesWhereLocale;
-                    var template = templates.FirstOrDefault(t => t.ExistTemplatePurpose && t.TemplatePurpose.Equals(new TemplatePurposes(this.Strategy.Session).PickList));
-                    this.AddPickListTemplate(template);
-                }
-
-                if (!this.ExistPackagingSlipTemplates)
-                {
-                    var templates = this.ExistLocale ? this.Locale.StringTemplatesWhereLocale : Singleton.Instance(this.Strategy.Session).DefaultLocale.StringTemplatesWhereLocale;
-                    var template = templates.FirstOrDefault(t => t.ExistTemplatePurpose && t.TemplatePurpose.Equals(new TemplatePurposes(this.Strategy.Session).PackagingSlip));
-                    this.AddPackagingSlipTemplate(template);
-                }
-
-                if (!this.ExistPurchaseShipmentTemplates)
-                {
-                    var templates = this.ExistLocale ? this.Locale.StringTemplatesWhereLocale : Singleton.Instance(this.Strategy.Session).DefaultLocale.StringTemplatesWhereLocale;
-                    var template = templates.FirstOrDefault(t => t.ExistTemplatePurpose && t.TemplatePurpose.Equals(new TemplatePurposes(this.Strategy.Session).PurchaseShipment));
-                    this.AddPurchaseShipmentTemplate(template);
-                }
-            }
+            }            
         }
 
         public void AppsOnPreDerive(ObjectOnPreDerive method)

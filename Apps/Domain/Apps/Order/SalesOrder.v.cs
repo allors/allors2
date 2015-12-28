@@ -69,11 +69,6 @@ namespace Allors.Domain
             this.AppsOnDeriveOrderTotals(derivation);
         }
 
-        public void DeriveTemplate(IDerivation derivation)
-        {
-            this.AppsOnDeriveTemplate(derivation);
-        }
-
         public void DeriveCustomers(IDerivation derivation)
         {
             this.AppsOnDeriveCustomers(derivation);

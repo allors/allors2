@@ -42,11 +42,6 @@ namespace Allors.Domain
             this.AppsOnDeriveLocale(derivation);
         }
 
-        public void DeriveTemplate(IDerivation derivation)
-        {
-            this.AppsOnDeriveTemplate(derivation);
-        }
-
         public void DeriveOrderTotals(IDerivation derivation)
         {
             this.AppsOnDeriveOrderTotals(derivation);

@@ -1341,10 +1341,6 @@ namespace Allors.Domain
                 .WithOwner(internalOrganisation2)
                 .WithDefaultShipmentMethod(new ShipmentMethods(this.DatabaseSession).Ground)
                 .WithDefaultCarrier(new Carriers(this.DatabaseSession).Fedex)
-                .WithSalesInvoiceTemplate(new StringTemplates(this.DatabaseSession).FindBy(UniquelyIdentifiables.Meta.UniqueId, SalesInvoices.SalesInvoiceTemplateEnId))
-                .WithSalesInvoiceTemplate(new StringTemplates(this.DatabaseSession).FindBy(UniquelyIdentifiables.Meta.UniqueId, SalesInvoices.SalesInvoiceTemplateNlId))
-                .WithSalesOrderTemplate(new StringTemplates(this.DatabaseSession).FindBy(UniquelyIdentifiables.Meta.UniqueId, SalesOrders.SalesOrderTemplateEnId))
-                .WithSalesOrderTemplate(new StringTemplates(this.DatabaseSession).FindBy(UniquelyIdentifiables.Meta.UniqueId, SalesOrders.SalesOrderTemplateNlId))
                 .WithCreditLimit(500)
                 .WithPaymentGracePeriod(10)
                 .Build();

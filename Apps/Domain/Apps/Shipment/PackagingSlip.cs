@@ -28,21 +28,5 @@ namespace Allors.Domain
         {
             get { return this.ShipmentPackageWhereDocument.ShipmentWhereShipmentPackage; }
         }
-
-        public void AppsOnDerive(ObjectOnDerive method)
-        {
-            var derivation = method.Derivation;
-
-            this.DeriveTemplate(derivation);
-        }
-
-        public void DeriveTemplate(IDerivation derivation)
-        {
-            var internalOrganisation = Singleton.Instance(this.strategy.Session).DefaultInternalOrganisation;
-            if (internalOrganisation != null && internalOrganisation.PackagingSlipTemplates.Count > 0)
-            {
-                this.PrintContent = internalOrganisation.PackagingSlipTemplates.First.Apply(new Dictionary<string, object> { { "this", this } });
-            }
-        }
     }
 }

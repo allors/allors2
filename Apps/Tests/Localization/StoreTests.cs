@@ -82,8 +82,6 @@ namespace Allors.Domain
 
             this.DatabaseSession.Derive(true);
 
-            Assert.AreEqual(1, store.SalesOrderTemplates.Count);
-            Assert.AreEqual(1, store.SalesInvoiceTemplates.Count);
             Assert.AreEqual(0, store.CreditLimit);
             Assert.AreEqual(0, store.PaymentGracePeriod);
             Assert.AreEqual(0, store.ShipmentThreshold);

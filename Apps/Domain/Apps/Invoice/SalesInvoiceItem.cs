@@ -257,6 +257,16 @@ namespace Allors.Domain
                     derivation.AddDependency(this, paymentApplication);
                 }
             }
+
+            if (this.ExistSalesOrderItem)
+            {
+                derivation.AddDependency(this.SalesOrderItem, this);
+            }
+
+            if (this.ExistShipmentItemWhereInvoiceItem)
+            {
+                derivation.AddDependency(this.ShipmentItemWhereInvoiceItem, this);
+            }
         }
 
         public void AppsOnDerive(ObjectOnDerive method)
@@ -303,7 +313,7 @@ namespace Allors.Domain
             }
             else
             {
-                this.CurrentObjectState = new SalesInvoiceItemObjectStates(this.Strategy.Session).PartiallyPaid;                
+                this.CurrentObjectState = new SalesInvoiceItemObjectStates(this.Strategy.Session).Paid;                
             }
 
             if (this.ExistCurrentObjectState)
@@ -358,7 +368,7 @@ namespace Allors.Domain
                 }
             }
 
-            if (this.ExistCurrentObjectState && !this.CurrentObjectState.Equals(this.PreviousObjectState))
+            if (this.ExistCurrentObjectState && !this.CurrentObjectState.Equals(this.LastObjectState))
             {
                 var currentStatus = new SalesInvoiceItemStatusBuilder(this.Strategy.Session).WithSalesInvoiceItemObjectState(this.CurrentObjectState).Build();
                 this.AddInvoiceItemStatus(currentStatus);
@@ -377,6 +387,7 @@ namespace Allors.Domain
             foreach (PaymentApplication paymentApplication in this.PaymentApplicationsWhereInvoiceItem)
             {
                 this.AmountPaid += paymentApplication.AmountApplied;
+                this.PaymentReceived(derivation);
             }
         }
 

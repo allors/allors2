@@ -344,8 +344,6 @@ namespace Allors.Domain
             this.DeriveOrderTotals(derivation);
 
             this.PreviousTakenViaSupplier = this.TakenViaSupplier;
-
-            this.DeriveTemplate(derivation);
         }
 
         public void AppsOnPostDerive(ObjectOnPostDerive method)
@@ -391,7 +389,7 @@ namespace Allors.Domain
 
         private void DeriveCurrentObjectState(IDerivation derivation)
         {
-            if (this.ExistCurrentObjectState && !this.CurrentObjectState.Equals(this.PreviousObjectState))
+            if (this.ExistCurrentObjectState && !this.CurrentObjectState.Equals(this.LastObjectState))
             {
                 var currentStatus = new PurchaseOrderStatusBuilder(this.Strategy.Session).WithPurchaseOrderObjectState(this.CurrentObjectState).Build();
                 this.AddOrderStatus(currentStatus);
@@ -563,36 +561,6 @@ namespace Allors.Domain
                     this.TotalVat += orderItem.TotalVat;
                     this.TotalExVat += orderItem.TotalExVat;
                     this.TotalIncVat += orderItem.TotalIncVat;
-                }
-            }
-        }
-
-        public void AppsOnDeriveTemplate(IDerivation derivation)
-        {
-            StringTemplate template = null;
-            var templates = this.ShipToBuyer.PurchaseOrderTemplates;
-
-            if (this.ShipToBuyer.ExistLocale)
-            {
-                templates.Filter.AddEquals(StringTemplates.Meta.Locale, this.ShipToBuyer.Locale);
-                template = templates.First;
-            }
-
-            if (template == null)
-            {
-                templates.Filter.AddEquals(StringTemplates.Meta.Locale, Singleton.Instance(this.Strategy.Session).DefaultLocale);
-                template = templates.First;
-            }
-
-            if (template != null)
-            {
-                try
-                {
-                    this.PrintContent = template.Apply(new Dictionary<string, object> { { "this", this } });
-                }
-                catch (Exception e)
-                {
-                    Console.WriteLine(e);
                 }
             }
         }

@@ -24,39 +24,11 @@ namespace Allors.Domain
 
     public partial class PurchaseOrders
     {
-        public static readonly Guid PurchaseOrderTemplateEnId = new Guid("3A442D2F-4D8D-46EC-983F-BD003F8ABB3D");
-        public static readonly Guid PurchaseOrderTemplateNlId = new Guid("F8D92C09-A45C-4618-9320-B398FFE979E0");
-
         protected override void AppsPrepare(Setup setup)
         {
             base.AppsPrepare(setup);
 
-            setup.AddDependency(this.ObjectType, TemplatePurposes.Meta.ObjectType);
             setup.AddDependency(this.ObjectType, PurchaseOrderObjectStates.Meta.ObjectType);
-        }
-
-        protected override void AppsSetup(Setup setup)
-        {
-            base.AppsSetup(setup);
-
-            var englishLocale = new Locales(Session).EnglishGreatBritain;
-            var dutchLocale = new Locales(Session).DutchNetherlands;
-
-            new StringTemplateBuilder(Session)
-                .WithName("PurchaseOrder " + englishLocale.Name)
-                .WithBody(PurchaseOrderTemplateEn)
-                .WithUniqueId(PurchaseOrderTemplateEnId)
-                .WithLocale(englishLocale)
-                .WithTemplatePurpose(new TemplatePurposes(this.Session).PurchaseOrder)
-                .Build();
-
-            new StringTemplateBuilder(Session)
-                .WithName("PurchaseOrder " + dutchLocale.Name)
-                .WithBody(PurchaseOrderTemplateNl)
-                .WithUniqueId(PurchaseOrderTemplateNlId)
-                .WithLocale(dutchLocale)
-                .WithTemplatePurpose(new TemplatePurposes(this.Session).PurchaseOrder)
-                .Build();
         }
 
         protected override void AppsSecure(Security config)

@@ -523,7 +523,6 @@
     <Compile Include="Apps\Common\Singleton.cs" />
     <Compile Include="Apps\Common\Singleton.v.cs" />
     <Compile Include="Apps\Constants.cs" />
-    <Compile Include="Apps\Content\TemplatePurposes.cs" />
     <Compile Include="Apps\DateTimeExtensions.cs" />
     <Compile Include="Apps\DecimalExtensions.cs" />
     <Compile Include="Apps\HumanResource\Benefits.cs" />
@@ -601,7 +600,6 @@
     <Compile Include="Apps\Invoice\SalesInvoiceItemTypes.cs" />
     <Compile Include="Apps\Invoice\SalesInvoiceObjectStates.cs" />
     <Compile Include="Apps\Invoice\SalesInvoices.cs" />
-    <Compile Include="Apps\Invoice\SalesInvoices.v.cs" />
     <Compile Include="Apps\Invoice\SalesInvoiceStatus.cs" />
     <Compile Include="Apps\Invoice\SalesInvoiceStatuses.cs" />
     <Compile Include="Apps\Invoice\SalesInvoiceTypes.cs" />
@@ -617,7 +615,6 @@
     <Compile Include="Apps\Localization\Floors.cs" />
     <Compile Include="Apps\Localization\GeographicBoundary.cs" />
     <Compile Include="Apps\Localization\GeoLocatable.cs" />
-    <Compile Include="Apps\Localization\Locale.cs" />
     <Compile Include="Apps\Localization\Offices.cs" />
     <Compile Include="Apps\Localization\Plants.cs" />
     <Compile Include="Apps\Localization\PostalAddress.cs" />
@@ -676,7 +673,6 @@
     <Compile Include="Apps\Order\PurchaseOrderItemStatuses.cs" />
     <Compile Include="Apps\Order\PurchaseOrderObjectStates.cs" />
     <Compile Include="Apps\Order\PurchaseOrders.cs" />
-    <Compile Include="Apps\Order\PurchaseOrders.v.cs" />
     <Compile Include="Apps\Order\PurchaseOrderStatus.cs" />
     <Compile Include="Apps\Order\PurchaseOrderStatuses.cs" />
     <Compile Include="Apps\Order\QuoteItem.cs" />
@@ -706,7 +702,6 @@
     <Compile Include="Apps\Order\SalesOrderItemStatuses.cs" />
     <Compile Include="Apps\Order\SalesOrderObjectStates.cs" />
     <Compile Include="Apps\Order\SalesOrders.cs" />
-    <Compile Include="Apps\Order\SalesOrders.v.cs" />
     <Compile Include="Apps\Order\SalesOrderStatus.cs" />
     <Compile Include="Apps\Order\SalesOrderStatuses.cs" />
     <Compile Include="Apps\Order\ShippingAndHandlingCharge.cs" />
@@ -1015,7 +1010,6 @@
     <Compile Include="Apps\Shipment\PickListItem.cs" />
     <Compile Include="Apps\Shipment\PickListObjectStates.cs" />
     <Compile Include="Apps\Shipment\PickLists.cs" />
-    <Compile Include="Apps\Shipment\PickLists.v.cs" />
     <Compile Include="Apps\Shipment\PickListStatus.cs" />
     <Compile Include="Apps\Shipment\PickListStatuses.cs" />
     <Compile Include="Apps\Shipment\PurchaseReturn.cs" />
@@ -1028,17 +1022,13 @@
     <Compile Include="Apps\Shipment\PurchaseShipment.v.cs" />
     <Compile Include="Apps\Shipment\PurchaseShipmentObjectStates.cs" />
     <Compile Include="Apps\Shipment\PurchaseShipments.cs" />
-    <Compile Include="Apps\Shipment\CustomerShipments.v.cs" />
-    <Compile Include="Apps\Shipment\PurchaseShipments.v.cs" />
     <Compile Include="Apps\Shipment\PurchaseShipmentStatus.cs" />
     <Compile Include="Apps\Shipment\PurchaseShipmentStatuses.cs" />
-    <Compile Include="Apps\Shipment\Shipment.cs" />
     <Compile Include="Apps\Shipment\ShipmentItem.cs" />
     <Compile Include="Apps\Shipment\ShipmentItem.v.cs" />
     <Compile Include="Apps\Shipment\ShipmentMethods.cs" />
     <Compile Include="Apps\Shipment\ShipmentPackage.cs" />
     <Compile Include="Apps\Shipment\ShipmentPackages.cs" />
-    <Compile Include="Apps\Shipment\PackagingSlips.v.cs" />
     <Compile Include="Apps\Shipment\ShipmentReceipt.cs" />
     <Compile Include="Apps\Shipment\ShipmentReceipts.cs" />
     <Compile Include="Apps\Shipment\ShipmentRouteSegments.cs" />
@@ -1628,7 +1618,6 @@
     <Compile Include="Generated\TaxDocument.g.cs" />
     <Compile Include="Generated\TaxDue.g.cs" />
     <Compile Include="Generated\TelecommunicationsNumber.g.cs" />
-    <Compile Include="Generated\TemplatePurpose.g.cs" />
     <Compile Include="Generated\TermType.g.cs" />
     <Compile Include="Generated\Territory.g.cs" />
     <Compile Include="Generated\TestingRequirement.g.cs" />
