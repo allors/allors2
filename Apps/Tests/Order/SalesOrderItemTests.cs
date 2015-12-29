@@ -362,6 +362,9 @@ namespace Allors.Domain
                 .WithFromDate(DateTime.UtcNow)
                 .Build();
 
+            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Commit();
+
             this.order = new SalesOrderBuilder(this.DatabaseSession)
                 .WithShipToCustomer(this.shipToCustomer)
                 .WithBillToCustomer(this.billToCustomer)

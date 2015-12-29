@@ -52,7 +52,7 @@ namespace Allors.Domain
                 .WithBilledFromInternalOrganisation(new InternalOrganisations(this.DatabaseSession).FindBy(InternalOrganisations.Meta.Name, "internalOrganisation"))
                 .Build();
 
-            new CustomerRelationshipBuilder(this.DatabaseSession).WithCustomer(customer).WithInternalOrganisation(Singleton.Instance(this.DatabaseSession).DefaultInternalOrganisation).Build();
+            new CustomerRelationshipBuilder(this.DatabaseSession).WithFromDate(DateTime.UtcNow).WithCustomer(customer).WithInternalOrganisation(Singleton.Instance(this.DatabaseSession).DefaultInternalOrganisation).Build();
 
             this.DatabaseSession.Derive(true);
 
@@ -81,7 +81,7 @@ namespace Allors.Domain
                 .WithBilledFromInternalOrganisation(new InternalOrganisations(this.DatabaseSession).FindBy(InternalOrganisations.Meta.Name, "internalOrganisation"))
                 .Build();
 
-            new CustomerRelationshipBuilder(this.DatabaseSession).WithCustomer(customer).WithInternalOrganisation(Singleton.Instance(this.DatabaseSession).DefaultInternalOrganisation).Build();
+            new CustomerRelationshipBuilder(this.DatabaseSession).WithFromDate(DateTime.UtcNow).WithCustomer(customer).WithInternalOrganisation(Singleton.Instance(this.DatabaseSession).DefaultInternalOrganisation).Build();
 
             this.DatabaseSession.Derive(true);
 
@@ -121,7 +121,7 @@ namespace Allors.Domain
                 .WithSalesInvoiceItem(new SalesInvoiceItemBuilder(this.DatabaseSession).WithProduct(good).WithQuantity(1).WithActualUnitPrice(100M).WithSalesInvoiceItemType(new SalesInvoiceItemTypes(this.DatabaseSession).ProductItem).Build())
                 .Build();
 
-            new CustomerRelationshipBuilder(this.DatabaseSession).WithCustomer(customer).WithInternalOrganisation(Singleton.Instance(this.DatabaseSession).DefaultInternalOrganisation).Build();
+            new CustomerRelationshipBuilder(this.DatabaseSession).WithFromDate(DateTime.UtcNow).WithCustomer(customer).WithInternalOrganisation(Singleton.Instance(this.DatabaseSession).DefaultInternalOrganisation).Build();
 
             this.DatabaseSession.Derive(true);
 
@@ -215,7 +215,7 @@ namespace Allors.Domain
             var expectedError = ErrorMessages.PartyIsNotACustomer;
             Assert.AreEqual(expectedError, this.DatabaseSession.Derive().Errors[0].Message);
 
-            new CustomerRelationshipBuilder(this.DatabaseSession).WithCustomer(customer).WithInternalOrganisation(Singleton.Instance(this.DatabaseSession).DefaultInternalOrganisation).Build();
+            new CustomerRelationshipBuilder(this.DatabaseSession).WithFromDate(DateTime.UtcNow).WithCustomer(customer).WithInternalOrganisation(Singleton.Instance(this.DatabaseSession).DefaultInternalOrganisation).Build();
 
             Assert.IsFalse(this.DatabaseSession.Derive().HasErrors);
         }
@@ -243,12 +243,12 @@ namespace Allors.Domain
                 .WithBilledFromInternalOrganisation(new InternalOrganisations(this.DatabaseSession).FindBy(InternalOrganisations.Meta.Name, "internalOrganisation"))
                 .Build();
 
-            new CustomerRelationshipBuilder(this.DatabaseSession).WithCustomer(billtoCcustomer).WithInternalOrganisation(Singleton.Instance(this.DatabaseSession).DefaultInternalOrganisation).Build();
+            new CustomerRelationshipBuilder(this.DatabaseSession).WithFromDate(DateTime.UtcNow).WithCustomer(billtoCcustomer).WithInternalOrganisation(Singleton.Instance(this.DatabaseSession).DefaultInternalOrganisation).Build();
 
             var expectedError = ErrorMessages.PartyIsNotACustomer;
             Assert.AreEqual(expectedError, this.DatabaseSession.Derive().Errors[0].Message);
 
-            new CustomerRelationshipBuilder(this.DatabaseSession).WithCustomer(shipToCustomer).WithInternalOrganisation(Singleton.Instance(this.DatabaseSession).DefaultInternalOrganisation).Build();
+            new CustomerRelationshipBuilder(this.DatabaseSession).WithFromDate(DateTime.UtcNow).WithCustomer(shipToCustomer).WithInternalOrganisation(Singleton.Instance(this.DatabaseSession).DefaultInternalOrganisation).Build();
 
             Assert.IsFalse(this.DatabaseSession.Derive().HasErrors);
         }
@@ -281,7 +281,7 @@ namespace Allors.Domain
                 .WithBilledFromInternalOrganisation(new InternalOrganisations(this.DatabaseSession).FindBy(InternalOrganisations.Meta.Name, "internalOrganisation"))
                 .Build();
 
-            new CustomerRelationshipBuilder(this.DatabaseSession).WithCustomer(customer).WithInternalOrganisation(Singleton.Instance(this.DatabaseSession).DefaultInternalOrganisation).Build();
+            new CustomerRelationshipBuilder(this.DatabaseSession).WithFromDate(DateTime.UtcNow).WithCustomer(customer).WithInternalOrganisation(Singleton.Instance(this.DatabaseSession).DefaultInternalOrganisation).Build();
 
             Assert.AreEqual("1", invoice1.InvoiceNumber);
 
@@ -324,7 +324,7 @@ namespace Allors.Domain
                 .WithBilledFromInternalOrganisation(new InternalOrganisations(this.DatabaseSession).FindBy(InternalOrganisations.Meta.Name, "internalOrganisation"))
                 .Build();
 
-            new CustomerRelationshipBuilder(this.DatabaseSession).WithCustomer(customer).WithInternalOrganisation(Singleton.Instance(this.DatabaseSession).DefaultInternalOrganisation).Build();
+            new CustomerRelationshipBuilder(this.DatabaseSession).WithFromDate(DateTime.UtcNow).WithCustomer(customer).WithInternalOrganisation(Singleton.Instance(this.DatabaseSession).DefaultInternalOrganisation).Build();
 
             Assert.IsFalse(store.ExistSalesInvoiceCounter);
             Assert.AreEqual(DateTime.UtcNow.Year, store.FiscalYearInvoiceNumbers.First.FiscalYear);
@@ -372,7 +372,7 @@ namespace Allors.Domain
                 .WithBilledFromInternalOrganisation(new InternalOrganisations(this.DatabaseSession).FindBy(InternalOrganisations.Meta.Name, "internalOrganisation"))
                 .Build();
 
-            new CustomerRelationshipBuilder(this.DatabaseSession).WithCustomer(customer).WithInternalOrganisation(Singleton.Instance(this.DatabaseSession).DefaultInternalOrganisation).Build();
+            new CustomerRelationshipBuilder(this.DatabaseSession).WithFromDate(DateTime.UtcNow).WithCustomer(customer).WithInternalOrganisation(Singleton.Instance(this.DatabaseSession).DefaultInternalOrganisation).Build();
 
             Assert.AreEqual("the format is 1", invoice.InvoiceNumber);
         }
@@ -423,7 +423,7 @@ namespace Allors.Domain
                 .WithSalesInvoiceItem(new SalesInvoiceItemBuilder(this.DatabaseSession).WithProduct(good).WithQuantity(1).WithSalesInvoiceItemType(new SalesInvoiceItemTypes(this.DatabaseSession).ProductItem).Build())
                 .Build();
 
-            new CustomerRelationshipBuilder(this.DatabaseSession).WithCustomer(customer).WithInternalOrganisation(Singleton.Instance(this.DatabaseSession).DefaultInternalOrganisation).Build();
+            new CustomerRelationshipBuilder(this.DatabaseSession).WithFromDate(DateTime.UtcNow).WithCustomer(customer).WithInternalOrganisation(Singleton.Instance(this.DatabaseSession).DefaultInternalOrganisation).Build();
 
             this.DatabaseSession.Derive(true); 
             
@@ -472,7 +472,7 @@ namespace Allors.Domain
                 .WithBilledFromInternalOrganisation(internalOrganisation)
                 .Build();
 
-            new CustomerRelationshipBuilder(this.DatabaseSession).WithCustomer(customer).WithInternalOrganisation(Singleton.Instance(this.DatabaseSession).DefaultInternalOrganisation).Build();
+            new CustomerRelationshipBuilder(this.DatabaseSession).WithFromDate(DateTime.UtcNow).WithCustomer(customer).WithInternalOrganisation(Singleton.Instance(this.DatabaseSession).DefaultInternalOrganisation).Build();
 
             this.DatabaseSession.Derive(true);
 
@@ -497,7 +497,7 @@ namespace Allors.Domain
 
             var invoice = new SalesInvoiceBuilder(this.DatabaseSession).WithBillToCustomer(customer).Build();
 
-            new CustomerRelationshipBuilder(this.DatabaseSession).WithCustomer(customer).WithInternalOrganisation(Singleton.Instance(this.DatabaseSession).DefaultInternalOrganisation).Build();
+            new CustomerRelationshipBuilder(this.DatabaseSession).WithFromDate(DateTime.UtcNow).WithCustomer(customer).WithInternalOrganisation(Singleton.Instance(this.DatabaseSession).DefaultInternalOrganisation).Build();
 
             this.DatabaseSession.Derive(true); 
 
@@ -521,7 +521,7 @@ namespace Allors.Domain
                 .WithBillToContactMechanism(billToContactMechanismMechelen)
                 .Build();
 
-            new CustomerRelationshipBuilder(this.DatabaseSession).WithCustomer(customer).WithInternalOrganisation(Singleton.Instance(this.DatabaseSession).DefaultInternalOrganisation).Build();
+            new CustomerRelationshipBuilder(this.DatabaseSession).WithFromDate(DateTime.UtcNow).WithCustomer(customer).WithInternalOrganisation(Singleton.Instance(this.DatabaseSession).DefaultInternalOrganisation).Build();
 
             Assert.AreEqual(euro, invoice.CustomerCurrency);
         }
@@ -549,7 +549,7 @@ namespace Allors.Domain
                 .WithBillToContactMechanism(shipToContactMechanism)
                 .Build();
 
-            new CustomerRelationshipBuilder(this.DatabaseSession).WithCustomer(customer).WithInternalOrganisation(Singleton.Instance(this.DatabaseSession).DefaultInternalOrganisation).Build();
+            new CustomerRelationshipBuilder(this.DatabaseSession).WithFromDate(DateTime.UtcNow).WithCustomer(customer).WithInternalOrganisation(Singleton.Instance(this.DatabaseSession).DefaultInternalOrganisation).Build();
 
             this.DatabaseSession.Derive(true);
 
@@ -581,7 +581,7 @@ namespace Allors.Domain
                 .WithBilledFromInternalOrganisation(internalOrganisation)
                 .Build();
 
-            new CustomerRelationshipBuilder(this.DatabaseSession).WithCustomer(customer).WithInternalOrganisation(Singleton.Instance(this.DatabaseSession).DefaultInternalOrganisation).Build();
+            new CustomerRelationshipBuilder(this.DatabaseSession).WithFromDate(DateTime.UtcNow).WithCustomer(customer).WithInternalOrganisation(Singleton.Instance(this.DatabaseSession).DefaultInternalOrganisation).Build();
 
             Assert.AreEqual(euro, invoice.CustomerCurrency);
         }
@@ -604,7 +604,7 @@ namespace Allors.Domain
 
             var invoice1 = new SalesInvoiceBuilder(this.DatabaseSession).WithBillToCustomer(customer).WithBillToContactMechanism(contactMechanism).Build();
 
-            new CustomerRelationshipBuilder(this.DatabaseSession).WithCustomer(customer).WithInternalOrganisation(Singleton.Instance(this.DatabaseSession).DefaultInternalOrganisation).Build();
+            new CustomerRelationshipBuilder(this.DatabaseSession).WithFromDate(DateTime.UtcNow).WithCustomer(customer).WithInternalOrganisation(Singleton.Instance(this.DatabaseSession).DefaultInternalOrganisation).Build();
 
             this.DatabaseSession.Derive(true);
 
@@ -660,9 +660,11 @@ namespace Allors.Domain
 
                 .Build();
 
-            var invoice = new SalesInvoiceBuilder(this.DatabaseSession).WithBillToCustomer(customer).WithBillToContactMechanism(contactMechanism).Build();
+            new CustomerRelationshipBuilder(this.DatabaseSession).WithFromDate(DateTime.UtcNow).WithCustomer(customer).WithInternalOrganisation(Singleton.Instance(this.DatabaseSession).DefaultInternalOrganisation).Build();
 
-            new CustomerRelationshipBuilder(this.DatabaseSession).WithCustomer(customer).WithInternalOrganisation(Singleton.Instance(this.DatabaseSession).DefaultInternalOrganisation).Build();
+            this.DatabaseSession.Derive(true);
+
+            var invoice = new SalesInvoiceBuilder(this.DatabaseSession).WithBillToCustomer(customer).WithBillToContactMechanism(contactMechanism).Build();
 
             var item1 = new SalesInvoiceItemBuilder(this.DatabaseSession)
                 .WithProduct(good)
@@ -735,7 +737,7 @@ namespace Allors.Domain
                 .WithBilledFromInternalOrganisation(new InternalOrganisations(this.DatabaseSession).FindBy(InternalOrganisations.Meta.Name, "internalOrganisation"))
                 .Build();
 
-            new CustomerRelationshipBuilder(this.DatabaseSession).WithCustomer(customer).WithInternalOrganisation(Singleton.Instance(this.DatabaseSession).DefaultInternalOrganisation).Build();
+            new CustomerRelationshipBuilder(this.DatabaseSession).WithFromDate(DateTime.UtcNow).WithCustomer(customer).WithInternalOrganisation(Singleton.Instance(this.DatabaseSession).DefaultInternalOrganisation).Build();
 
             this.DatabaseSession.Derive(true);
 
@@ -775,7 +777,7 @@ namespace Allors.Domain
                 .WithBilledFromInternalOrganisation(new InternalOrganisations(this.DatabaseSession).FindBy(InternalOrganisations.Meta.Name, "internalOrganisation"))
                 .Build();
 
-            new CustomerRelationshipBuilder(this.DatabaseSession).WithCustomer(customer).WithInternalOrganisation(Singleton.Instance(this.DatabaseSession).DefaultInternalOrganisation).Build();
+            new CustomerRelationshipBuilder(this.DatabaseSession).WithFromDate(DateTime.UtcNow).WithCustomer(customer).WithInternalOrganisation(Singleton.Instance(this.DatabaseSession).DefaultInternalOrganisation).Build();
 
             invoice.Send();
 
@@ -851,7 +853,7 @@ namespace Allors.Domain
                 .WithSalesInvoiceItem(new SalesInvoiceItemBuilder(this.DatabaseSession).WithProduct(good).WithQuantity(1).WithActualUnitPrice(100M).WithSalesInvoiceItemType(new SalesInvoiceItemTypes(this.DatabaseSession).ProductItem).Build())
                 .Build();
 
-            new CustomerRelationshipBuilder(this.DatabaseSession).WithCustomer(customer).WithInternalOrganisation(Singleton.Instance(this.DatabaseSession).DefaultInternalOrganisation).Build();
+            new CustomerRelationshipBuilder(this.DatabaseSession).WithFromDate(DateTime.UtcNow).WithCustomer(customer).WithInternalOrganisation(Singleton.Instance(this.DatabaseSession).DefaultInternalOrganisation).Build();
 
             this.DatabaseSession.Derive(true);
 
@@ -907,7 +909,7 @@ namespace Allors.Domain
                 .WithSalesInvoiceItem(new SalesInvoiceItemBuilder(this.DatabaseSession).WithProduct(good).WithQuantity(1).WithActualUnitPrice(100M).WithSalesInvoiceItemType(new SalesInvoiceItemTypes(this.DatabaseSession).ProductItem).Build())
                 .Build();
 
-            new CustomerRelationshipBuilder(this.DatabaseSession).WithCustomer(customer).WithInternalOrganisation(Singleton.Instance(this.DatabaseSession).DefaultInternalOrganisation).Build();
+            new CustomerRelationshipBuilder(this.DatabaseSession).WithFromDate(DateTime.UtcNow).WithCustomer(customer).WithInternalOrganisation(Singleton.Instance(this.DatabaseSession).DefaultInternalOrganisation).Build();
 
             this.DatabaseSession.Derive(true);
 
@@ -954,7 +956,7 @@ namespace Allors.Domain
                 .WithBilledFromInternalOrganisation(new InternalOrganisations(this.DatabaseSession).FindBy(InternalOrganisations.Meta.Name, "internalOrganisation"))
                 .Build();
 
-            new CustomerRelationshipBuilder(this.DatabaseSession).WithCustomer(customer).WithInternalOrganisation(Singleton.Instance(this.DatabaseSession).DefaultInternalOrganisation).Build();
+            new CustomerRelationshipBuilder(this.DatabaseSession).WithFromDate(DateTime.UtcNow).WithCustomer(customer).WithInternalOrganisation(Singleton.Instance(this.DatabaseSession).DefaultInternalOrganisation).Build();
 
             invoice.Send();
             invoice.WriteOff();
@@ -997,7 +999,7 @@ namespace Allors.Domain
                 .WithBilledFromInternalOrganisation(new InternalOrganisations(this.DatabaseSession).FindBy(InternalOrganisations.Meta.Name, "internalOrganisation"))
                 .Build();
 
-            new CustomerRelationshipBuilder(this.DatabaseSession).WithCustomer(customer).WithInternalOrganisation(Singleton.Instance(this.DatabaseSession).DefaultInternalOrganisation).Build();
+            new CustomerRelationshipBuilder(this.DatabaseSession).WithFromDate(DateTime.UtcNow).WithCustomer(customer).WithInternalOrganisation(Singleton.Instance(this.DatabaseSession).DefaultInternalOrganisation).Build();
 
             invoice.CancelInvoice();
 
@@ -1036,7 +1038,7 @@ namespace Allors.Domain
                 .WithBilledFromInternalOrganisation(new InternalOrganisations(this.DatabaseSession).FindBy(InternalOrganisations.Meta.Name, "internalOrganisation"))
                 .Build();
 
-            new CustomerRelationshipBuilder(this.DatabaseSession).WithCustomer(customer).WithInternalOrganisation(Singleton.Instance(this.DatabaseSession).DefaultInternalOrganisation).Build();
+            new CustomerRelationshipBuilder(this.DatabaseSession).WithFromDate(DateTime.UtcNow).WithCustomer(customer).WithInternalOrganisation(Singleton.Instance(this.DatabaseSession).DefaultInternalOrganisation).Build();
 
             this.DatabaseSession.Derive(true);
 
@@ -1139,7 +1141,7 @@ namespace Allors.Domain
                 .WithBilledFromInternalOrganisation(new InternalOrganisations(this.DatabaseSession).FindBy(InternalOrganisations.Meta.Name, "internalOrganisation"))
                 .Build();
 
-            new CustomerRelationshipBuilder(this.DatabaseSession).WithCustomer(customer).WithInternalOrganisation(Singleton.Instance(this.DatabaseSession).DefaultInternalOrganisation).Build();
+            new CustomerRelationshipBuilder(this.DatabaseSession).WithFromDate(DateTime.UtcNow).WithCustomer(customer).WithInternalOrganisation(Singleton.Instance(this.DatabaseSession).DefaultInternalOrganisation).Build();
 
             this.DatabaseSession.Derive(true);
 
@@ -1178,7 +1180,7 @@ namespace Allors.Domain
                 .WithBillToContactMechanism(contactMechanism)
                 .Build();
 
-            new CustomerRelationshipBuilder(this.DatabaseSession).WithCustomer(customer).WithInternalOrganisation(Singleton.Instance(this.DatabaseSession).DefaultInternalOrganisation).Build();
+            new CustomerRelationshipBuilder(this.DatabaseSession).WithFromDate(DateTime.UtcNow).WithCustomer(customer).WithInternalOrganisation(Singleton.Instance(this.DatabaseSession).DefaultInternalOrganisation).Build();
 
             this.DatabaseSession.Derive(true);
 
@@ -1223,7 +1225,7 @@ namespace Allors.Domain
                 .WithBillToContactMechanism(contactMechanism)
                 .Build();
 
-            new CustomerRelationshipBuilder(this.DatabaseSession).WithCustomer(customer).WithInternalOrganisation(Singleton.Instance(this.DatabaseSession).DefaultInternalOrganisation).Build();
+            new CustomerRelationshipBuilder(this.DatabaseSession).WithFromDate(DateTime.UtcNow).WithCustomer(customer).WithInternalOrganisation(Singleton.Instance(this.DatabaseSession).DefaultInternalOrganisation).Build();
 
             this.DatabaseSession.Derive(true);
 
@@ -1271,7 +1273,7 @@ namespace Allors.Domain
                 .WithBillToContactMechanism(contactMechanism)
                 .Build();
 
-            new CustomerRelationshipBuilder(this.DatabaseSession).WithCustomer(customer).WithInternalOrganisation(Singleton.Instance(this.DatabaseSession).DefaultInternalOrganisation).Build();
+            new CustomerRelationshipBuilder(this.DatabaseSession).WithFromDate(DateTime.UtcNow).WithCustomer(customer).WithInternalOrganisation(Singleton.Instance(this.DatabaseSession).DefaultInternalOrganisation).Build();
 
             this.DatabaseSession.Derive(true);
 
@@ -1489,7 +1491,7 @@ namespace Allors.Domain
                 .WithShippingAndHandlingCharge(adjustment)
                 .Build();
 
-            new CustomerRelationshipBuilder(this.DatabaseSession).WithCustomer(invoice.BillToCustomer).WithInternalOrganisation(Singleton.Instance(this.DatabaseSession).DefaultInternalOrganisation).Build();
+            new CustomerRelationshipBuilder(this.DatabaseSession).WithFromDate(DateTime.UtcNow).WithCustomer(invoice.BillToCustomer).WithInternalOrganisation(Singleton.Instance(this.DatabaseSession).DefaultInternalOrganisation).Build();
 
             var item1 = new SalesInvoiceItemBuilder(this.DatabaseSession).WithProduct(good).WithQuantity(3).WithActualUnitPrice(15).WithSalesInvoiceItemType(new SalesInvoiceItemTypes(this.DatabaseSession).ProductItem).Build();
             invoice.AddSalesInvoiceItem(item1);
@@ -1540,7 +1542,7 @@ namespace Allors.Domain
                 .WithShippingAndHandlingCharge(adjustment)
                 .Build();
 
-            new CustomerRelationshipBuilder(this.DatabaseSession).WithCustomer(invoice.BillToCustomer).WithInternalOrganisation(Singleton.Instance(this.DatabaseSession).DefaultInternalOrganisation).Build();
+            new CustomerRelationshipBuilder(this.DatabaseSession).WithFromDate(DateTime.UtcNow).WithCustomer(invoice.BillToCustomer).WithInternalOrganisation(Singleton.Instance(this.DatabaseSession).DefaultInternalOrganisation).Build();
 
             var item1 = new SalesInvoiceItemBuilder(this.DatabaseSession).WithProduct(good).WithQuantity(3).WithActualUnitPrice(15).WithSalesInvoiceItemType(new SalesInvoiceItemTypes(this.DatabaseSession).ProductItem).Build();
             invoice.AddSalesInvoiceItem(item1);
@@ -1591,7 +1593,7 @@ namespace Allors.Domain
                 .WithFee(adjustment)
                 .Build();
 
-            new CustomerRelationshipBuilder(this.DatabaseSession).WithCustomer(invoice.BillToCustomer).WithInternalOrganisation(Singleton.Instance(this.DatabaseSession).DefaultInternalOrganisation).Build();
+            new CustomerRelationshipBuilder(this.DatabaseSession).WithFromDate(DateTime.UtcNow).WithCustomer(invoice.BillToCustomer).WithInternalOrganisation(Singleton.Instance(this.DatabaseSession).DefaultInternalOrganisation).Build();
 
             var item1 = new SalesInvoiceItemBuilder(this.DatabaseSession).WithProduct(good).WithQuantity(3).WithActualUnitPrice(15).WithSalesInvoiceItemType(new SalesInvoiceItemTypes(this.DatabaseSession).ProductItem).Build();
             invoice.AddSalesInvoiceItem(item1);
@@ -1642,7 +1644,7 @@ namespace Allors.Domain
                 .WithFee(adjustment)
                 .Build();
 
-            new CustomerRelationshipBuilder(this.DatabaseSession).WithCustomer(invoice.BillToCustomer).WithInternalOrganisation(Singleton.Instance(this.DatabaseSession).DefaultInternalOrganisation).Build();
+            new CustomerRelationshipBuilder(this.DatabaseSession).WithFromDate(DateTime.UtcNow).WithCustomer(invoice.BillToCustomer).WithInternalOrganisation(Singleton.Instance(this.DatabaseSession).DefaultInternalOrganisation).Build();
 
             var item1 = new SalesInvoiceItemBuilder(this.DatabaseSession).WithProduct(good).WithQuantity(3).WithActualUnitPrice(15).WithSalesInvoiceItemType(new SalesInvoiceItemTypes(this.DatabaseSession).ProductItem).Build();
             invoice.AddSalesInvoiceItem(item1);
@@ -1678,7 +1680,7 @@ namespace Allors.Domain
                 .WithBillToContactMechanism(contactMechanism)
                 .Build();
 
-            new CustomerRelationshipBuilder(this.DatabaseSession).WithCustomer(customer).WithInternalOrganisation(Singleton.Instance(this.DatabaseSession).DefaultInternalOrganisation).Build();
+            new CustomerRelationshipBuilder(this.DatabaseSession).WithFromDate(DateTime.UtcNow).WithCustomer(customer).WithInternalOrganisation(Singleton.Instance(this.DatabaseSession).DefaultInternalOrganisation).Build();
 
             this.DatabaseSession.Derive(true); 
             
@@ -1706,8 +1708,8 @@ namespace Allors.Domain
                 .WithBillToContactMechanism(contactMechanism)
                 .Build();
 
-            new CustomerRelationshipBuilder(this.DatabaseSession).WithCustomer(invoice.BillToCustomer).WithInternalOrganisation(Singleton.Instance(this.DatabaseSession).DefaultInternalOrganisation).Build();
-            new CustomerRelationshipBuilder(this.DatabaseSession).WithCustomer(invoice.ShipToCustomer).WithInternalOrganisation(Singleton.Instance(this.DatabaseSession).DefaultInternalOrganisation).Build();
+            new CustomerRelationshipBuilder(this.DatabaseSession).WithFromDate(DateTime.UtcNow).WithCustomer(invoice.BillToCustomer).WithInternalOrganisation(Singleton.Instance(this.DatabaseSession).DefaultInternalOrganisation).Build();
+            new CustomerRelationshipBuilder(this.DatabaseSession).WithFromDate(DateTime.UtcNow).WithCustomer(invoice.ShipToCustomer).WithInternalOrganisation(Singleton.Instance(this.DatabaseSession).DefaultInternalOrganisation).Build();
 
             this.DatabaseSession.Derive(true); 
             
@@ -1783,7 +1785,7 @@ namespace Allors.Domain
                 .WithBillToContactMechanism(contactMechanism)
                 .Build();
 
-            new CustomerRelationshipBuilder(this.DatabaseSession).WithCustomer(invoice.BillToCustomer).WithInternalOrganisation(Singleton.Instance(this.DatabaseSession).DefaultInternalOrganisation).Build();
+            new CustomerRelationshipBuilder(this.DatabaseSession).WithFromDate(DateTime.UtcNow).WithCustomer(invoice.BillToCustomer).WithInternalOrganisation(Singleton.Instance(this.DatabaseSession).DefaultInternalOrganisation).Build();
 
             var item1 = new SalesInvoiceItemBuilder(this.DatabaseSession)
                 .WithProduct(good1)
@@ -1862,7 +1864,7 @@ namespace Allors.Domain
                 .WithSalesInvoiceItem(new SalesInvoiceItemBuilder(this.DatabaseSession).WithProduct(good).WithQuantity(2).WithActualUnitPrice(100M).WithSalesInvoiceItemType(new SalesInvoiceItemTypes(this.DatabaseSession).ProductItem).Build())
                 .Build();
 
-            new CustomerRelationshipBuilder(this.DatabaseSession).WithCustomer(invoice.BillToCustomer).WithInternalOrganisation(Singleton.Instance(this.DatabaseSession).DefaultInternalOrganisation).Build();
+            new CustomerRelationshipBuilder(this.DatabaseSession).WithFromDate(DateTime.UtcNow).WithCustomer(invoice.BillToCustomer).WithInternalOrganisation(Singleton.Instance(this.DatabaseSession).DefaultInternalOrganisation).Build();
 
             this.DatabaseSession.Derive(true);
 
@@ -1905,7 +1907,7 @@ namespace Allors.Domain
                 .WithBillToContactMechanism(contactMechanism)
                 .Build();
 
-            new CustomerRelationshipBuilder(this.DatabaseSession).WithCustomer(invoice.BillToCustomer).WithInternalOrganisation(Singleton.Instance(this.DatabaseSession).DefaultInternalOrganisation).Build();
+            new CustomerRelationshipBuilder(this.DatabaseSession).WithFromDate(DateTime.UtcNow).WithCustomer(invoice.BillToCustomer).WithInternalOrganisation(Singleton.Instance(this.DatabaseSession).DefaultInternalOrganisation).Build();
 
             invoice.AddSalesInvoiceItem(new SalesInvoiceItemBuilder(this.DatabaseSession).WithProduct(good).WithQuantity(1).WithActualUnitPrice(100M).WithSalesInvoiceItemType(new SalesInvoiceItemTypes(this.DatabaseSession).ProductItem).Build());
 
@@ -1952,7 +1954,7 @@ namespace Allors.Domain
                 .WithSalesInvoiceItem(new SalesInvoiceItemBuilder(this.DatabaseSession).WithProduct(good).WithQuantity(1).WithActualUnitPrice(100M).WithSalesInvoiceItemType(new SalesInvoiceItemTypes(this.DatabaseSession).ProductItem).Build())
                 .Build();
 
-            new CustomerRelationshipBuilder(this.DatabaseSession).WithCustomer(invoice.BillToCustomer).WithInternalOrganisation(Singleton.Instance(this.DatabaseSession).DefaultInternalOrganisation).Build();
+            new CustomerRelationshipBuilder(this.DatabaseSession).WithFromDate(DateTime.UtcNow).WithCustomer(invoice.BillToCustomer).WithInternalOrganisation(Singleton.Instance(this.DatabaseSession).DefaultInternalOrganisation).Build();
 
             this.DatabaseSession.Derive(true);
 
@@ -1996,7 +1998,7 @@ namespace Allors.Domain
                 .WithSalesInvoiceItem(new SalesInvoiceItemBuilder(this.DatabaseSession).WithProduct(good).WithQuantity(1).WithActualUnitPrice(100M).WithSalesInvoiceItemType(new SalesInvoiceItemTypes(this.DatabaseSession).ProductItem).Build())
                 .Build();
 
-            new CustomerRelationshipBuilder(this.DatabaseSession).WithCustomer(invoice.BillToCustomer).WithInternalOrganisation(Singleton.Instance(this.DatabaseSession).DefaultInternalOrganisation).Build();
+            new CustomerRelationshipBuilder(this.DatabaseSession).WithFromDate(DateTime.UtcNow).WithCustomer(invoice.BillToCustomer).WithInternalOrganisation(Singleton.Instance(this.DatabaseSession).DefaultInternalOrganisation).Build();
 
             invoice.WriteOff();
 
@@ -2064,7 +2066,7 @@ namespace Allors.Domain
                 .WithSalesInvoiceType(new SalesInvoiceTypes(this.DatabaseSession).SalesInvoice)
                 .Build();
 
-            new CustomerRelationshipBuilder(this.DatabaseSession).WithCustomer(invoice1.BillToCustomer).WithInternalOrganisation(Singleton.Instance(this.DatabaseSession).DefaultInternalOrganisation).Build();
+            new CustomerRelationshipBuilder(this.DatabaseSession).WithFromDate(DateTime.UtcNow).WithCustomer(invoice1.BillToCustomer).WithInternalOrganisation(Singleton.Instance(this.DatabaseSession).DefaultInternalOrganisation).Build();
 
             var item1 = new SalesInvoiceItemBuilder(this.DatabaseSession).WithProduct(good1).WithQuantity(3).WithActualUnitPrice(15).WithSalesInvoiceItemType(productItem).Build();
             invoice1.AddSalesInvoiceItem(item1);
@@ -2204,7 +2206,7 @@ namespace Allors.Domain
                 .WithSalesInvoiceType(new SalesInvoiceTypes(this.DatabaseSession).SalesInvoice)
                 .Build();
 
-            new CustomerRelationshipBuilder(this.DatabaseSession).WithCustomer(invoice2.BillToCustomer).WithInternalOrganisation(invoice2.BilledFromInternalOrganisation).Build();
+            new CustomerRelationshipBuilder(this.DatabaseSession).WithFromDate(DateTime.UtcNow).WithCustomer(invoice2.BillToCustomer).WithInternalOrganisation(invoice2.BilledFromInternalOrganisation).Build();
 
             var item4 = new SalesInvoiceItemBuilder(this.DatabaseSession).WithProduct(good1).WithQuantity(1).WithActualUnitPrice(15).WithSalesInvoiceItemType(productItem).Build();
             invoice2.AddSalesInvoiceItem(item4);
@@ -2340,7 +2342,7 @@ namespace Allors.Domain
                 .WithSalesInvoiceType(new SalesInvoiceTypes(this.DatabaseSession).SalesInvoice)
                 .Build();
 
-            new CustomerRelationshipBuilder(this.DatabaseSession).WithCustomer(customer).WithInternalOrganisation(Singleton.Instance(this.DatabaseSession).DefaultInternalOrganisation).Build();
+            new CustomerRelationshipBuilder(this.DatabaseSession).WithFromDate(DateTime.UtcNow).WithCustomer(customer).WithInternalOrganisation(Singleton.Instance(this.DatabaseSession).DefaultInternalOrganisation).Build();
 
             var item1 = new SalesInvoiceItemBuilder(this.DatabaseSession).WithProduct(good).WithQuantity(3).WithActualUnitPrice(15).WithSalesInvoiceItemType(new SalesInvoiceItemTypes(this.DatabaseSession).ProductItem).Build();
             invoice1.AddSalesInvoiceItem(item1);

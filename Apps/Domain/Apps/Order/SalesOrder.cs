@@ -495,7 +495,7 @@ namespace Allors.Domain
                 {
                     if (customerRelationship.FromDate <= DateTime.UtcNow && (!customerRelationship.ExistThroughDate || customerRelationship.ThroughDate >= DateTime.UtcNow))
                     {
-                        derivation.AddDependency(this, customerRelationship);
+                        derivation.AddDependency(customerRelationship, this);
                     }
                 }
             }
@@ -509,7 +509,7 @@ namespace Allors.Domain
                 {
                     if (customerRelationship.FromDate <= DateTime.UtcNow && (!customerRelationship.ExistThroughDate || customerRelationship.ThroughDate >= DateTime.UtcNow))
                     {
-                        derivation.AddDependency(this, customerRelationship);
+                        derivation.AddDependency(customerRelationship, this);
                     }
                 }
             }

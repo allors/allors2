@@ -92,8 +92,8 @@ namespace Allors.Domain
                 .WithPreferredCurrency(euro)
                 .Build();
 
-            new CustomerRelationshipBuilder(this.DatabaseSession).WithCustomer(billToCustomer).WithInternalOrganisation(internalOrganisation).Build();
-            new CustomerRelationshipBuilder(this.DatabaseSession).WithCustomer(shipToCustomer).WithInternalOrganisation(internalOrganisation).Build();
+            new CustomerRelationshipBuilder(this.DatabaseSession).WithFromDate(DateTime.UtcNow).WithCustomer(billToCustomer).WithInternalOrganisation(internalOrganisation).Build();
+            new CustomerRelationshipBuilder(this.DatabaseSession).WithFromDate(DateTime.UtcNow).WithCustomer(shipToCustomer).WithInternalOrganisation(internalOrganisation).Build();
 
             this.part = new FinishedGoodBuilder(this.DatabaseSession).WithName("part").Build();
 
@@ -349,6 +349,9 @@ namespace Allors.Domain
                 .WithPrice(11)
                 .WithFromDate(DateTime.UtcNow.AddMinutes(-1))
                 .Build();
+
+            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Commit();
 
             this.order = new SalesOrderBuilder(this.DatabaseSession)
                 .WithShipToCustomer(this.shipToCustomer)

@@ -111,7 +111,7 @@ namespace Allors.Domain
         {
             var customer = new PersonBuilder(this.DatabaseSession).WithLastName("Customer").WithUserName("customer").Build();
 
-            new CustomerRelationshipBuilder(this.DatabaseSession).WithCustomer(customer).WithFromDate(DateTime.UtcNow).Build();
+            new CustomerRelationshipBuilder(this.DatabaseSession).WithCustomer(customer).Build();
 
             this.DatabaseSession.Derive(true);
             this.DatabaseSession.Commit();

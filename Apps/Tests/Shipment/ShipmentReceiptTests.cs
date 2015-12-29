@@ -187,7 +187,7 @@ namespace Allors.Domain
 
             var customer = new PersonBuilder(this.DatabaseSession).WithLastName("customer").WithPartyContactMechanism(shipToMechelen).Build();
             var internalOrganisation = new InternalOrganisations(this.DatabaseSession).FindBy(InternalOrganisations.Meta.Name, "internalOrganisation");
-            new CustomerRelationshipBuilder(this.DatabaseSession).WithCustomer(customer).WithInternalOrganisation(internalOrganisation).Build();
+            new CustomerRelationshipBuilder(this.DatabaseSession).WithFromDate(DateTime.UtcNow).WithCustomer(customer).WithInternalOrganisation(internalOrganisation).Build();
 
             var good = new GoodBuilder(this.DatabaseSession)
                 .WithName("Good")
@@ -199,6 +199,8 @@ namespace Allors.Domain
 
             var inventoryItem = new NonSerializedInventoryItemBuilder(this.DatabaseSession).WithGood(good).Build();
             inventoryItem.AddInventoryItemVariance(new InventoryItemVarianceBuilder(this.DatabaseSession).WithQuantity(20).WithReason(new VarianceReasons(this.DatabaseSession).Unknown).Build());
+
+            this.DatabaseSession.Derive(true);
 
             var order1 = new SalesOrderBuilder(this.DatabaseSession)
                 .WithBillToCustomer(customer)

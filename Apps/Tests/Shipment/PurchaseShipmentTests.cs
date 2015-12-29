@@ -191,6 +191,15 @@ namespace Allors.Domain
                 .WithBankAccount(new BankAccountBuilder(this.DatabaseSession).WithBank(bank).WithCurrency(euro).WithIban("BE23 3300 6167 6391").WithNameOnAccount("Koen").Build())
                 .Build();
 
+            var mechelen = new CityBuilder(this.DatabaseSession).WithName("Mechelen").Build();
+            var address1 = new PostalAddressBuilder(this.DatabaseSession).WithGeographicBoundary(mechelen).WithAddress1("Haverwerf 15").Build();
+
+            var billingAddress = new PartyContactMechanismBuilder(this.DatabaseSession)
+                .WithContactMechanism(address1)
+                .WithContactPurpose(new ContactMechanismPurposes(this.DatabaseSession).BillingAddress)
+                .WithUseAsDefault(true)
+                .Build();
+
             var supplier = new OrganisationBuilder(this.DatabaseSession).WithName("supplier").Build();
             var orderProcessor2 = new PersonBuilder(this.DatabaseSession).WithLastName("orderProcessor2").WithUserName("orderProcessor2").Build();
             var internalOrganisation = new InternalOrganisationBuilder(this.DatabaseSession)
@@ -200,6 +209,7 @@ namespace Allors.Domain
                 .WithEmployeeRole(new Roles(this.DatabaseSession).Operations)
                 .WithPreferredCurrency(euro)
                 .WithDefaultPaymentMethod(ownBankAccount)
+                .WithPartyContactMechanism(billingAddress)
                 .Build();
 
             this.DatabaseSession.Derive(true);

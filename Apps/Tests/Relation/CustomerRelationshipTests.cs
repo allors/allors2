@@ -34,7 +34,7 @@ namespace Allors.Domain
         {
             var customer = new PersonBuilder(this.DatabaseSession).WithLastName("customer").Build();
 
-            var customerRelationship = new CustomerRelationshipBuilder(this.DatabaseSession).WithCustomer(customer).Build();
+            var customerRelationship = new CustomerRelationshipBuilder(this.DatabaseSession).WithFromDate(DateTime.UtcNow).WithCustomer(customer).Build();
             var internalOrganisation = Singleton.Instance(this.DatabaseSession).DefaultInternalOrganisation;
 
             this.DatabaseSession.Derive(true);
@@ -47,7 +47,7 @@ namespace Allors.Domain
         {
             var customer = new PersonBuilder(this.DatabaseSession).WithLastName("customer").Build();
 
-            var customerRelationship = new CustomerRelationshipBuilder(this.DatabaseSession).WithCustomer(customer).Build();
+            var customerRelationship = new CustomerRelationshipBuilder(this.DatabaseSession).WithFromDate(DateTime.UtcNow).WithCustomer(customer).Build();
             var internalOrganisation = Singleton.Instance(this.DatabaseSession).DefaultInternalOrganisation;
 
             this.DatabaseSession.Derive(true);
@@ -166,21 +166,21 @@ namespace Allors.Domain
             this.DatabaseSession.Commit();
 
             var customer1 = new PersonBuilder(this.DatabaseSession).WithLastName("customer1").Build();
-            var customerRelationship1 = new CustomerRelationshipBuilder(this.DatabaseSession).WithCustomer(customer1).Build();
+            var customerRelationship1 = new CustomerRelationshipBuilder(this.DatabaseSession).WithFromDate(DateTime.UtcNow).WithCustomer(customer1).Build();
 
             this.DatabaseSession.Derive(true);
 
             Assert.AreEqual(1007, customerRelationship1.SubAccountNumber);
 
             var customer2 = new PersonBuilder(this.DatabaseSession).WithLastName("customer2").Build();
-            var customerRelationship2 = new CustomerRelationshipBuilder(this.DatabaseSession).WithCustomer(customer2).Build();
+            var customerRelationship2 = new CustomerRelationshipBuilder(this.DatabaseSession).WithFromDate(DateTime.UtcNow).WithCustomer(customer2).Build();
 
             this.DatabaseSession.Derive(true);
 
             Assert.AreEqual(1015, customerRelationship2.SubAccountNumber);
 
             var customer3 = new PersonBuilder(this.DatabaseSession).WithLastName("customer3").Build();
-            var customerRelationship3 = new CustomerRelationshipBuilder(this.DatabaseSession).WithCustomer(customer3).Build();
+            var customerRelationship3 = new CustomerRelationshipBuilder(this.DatabaseSession).WithFromDate(DateTime.UtcNow).WithCustomer(customer3).Build();
 
             this.DatabaseSession.Derive(true);
 
@@ -236,7 +236,7 @@ namespace Allors.Domain
         {
             var mechelen = new CityBuilder(this.DatabaseSession).WithName("Mechelen").Build();
             var customer = new PersonBuilder(this.DatabaseSession).WithLastName("customer").Build();
-            var customerRelationship = new CustomerRelationshipBuilder(this.DatabaseSession).WithCustomer(customer).Build();
+            var customerRelationship = new CustomerRelationshipBuilder(this.DatabaseSession).WithFromDate(DateTime.UtcNow).WithCustomer(customer).Build();
             var billToContactMechanism = new PostalAddressBuilder(this.DatabaseSession).WithGeographicBoundary(mechelen).WithAddress1("Mechelen").Build();
 
             var good = new GoodBuilder(this.DatabaseSession)
@@ -302,7 +302,7 @@ namespace Allors.Domain
         {
             var mechelen = new CityBuilder(this.DatabaseSession).WithName("Mechelen").Build();
             var customer = new PersonBuilder(this.DatabaseSession).WithLastName("customer").Build();
-            var customerRelationship = new CustomerRelationshipBuilder(this.DatabaseSession).WithCustomer(customer).Build();
+            var customerRelationship = new CustomerRelationshipBuilder(this.DatabaseSession).WithFromDate(DateTime.UtcNow).WithCustomer(customer).Build();
             var billToContactMechanism = new PostalAddressBuilder(this.DatabaseSession).WithGeographicBoundary(mechelen).WithAddress1("Mechelen").Build();
 
             var good = new GoodBuilder(this.DatabaseSession)

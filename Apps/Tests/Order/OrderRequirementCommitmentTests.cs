@@ -51,6 +51,8 @@ namespace Allors.Domain
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.DatabaseSession).Piece)
                 .Build();
 
+            this.DatabaseSession.Derive(true);
+
             var salesOrder = new SalesOrderBuilder(this.DatabaseSession)
                 .WithShipToCustomer(shipToCustomer)
                 .WithBillToCustomer(billToCustomer)

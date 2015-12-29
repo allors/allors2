@@ -76,8 +76,10 @@ namespace Allors.Domain
             var internalOrganisation = new InternalOrganisations(this.DatabaseSession).FindBy(InternalOrganisations.Meta.Name, "internalOrganisation");
             internalOrganisation.PreferredCurrency = euro;
 
-            new CustomerRelationshipBuilder(this.DatabaseSession).WithCustomer(customer1).WithInternalOrganisation(internalOrganisation).Build();
-            new CustomerRelationshipBuilder(this.DatabaseSession).WithCustomer(customer2).WithInternalOrganisation(internalOrganisation).Build();
+            new CustomerRelationshipBuilder(this.DatabaseSession).WithFromDate(DateTime.UtcNow).WithCustomer(customer1).WithInternalOrganisation(internalOrganisation).Build();
+            new CustomerRelationshipBuilder(this.DatabaseSession).WithFromDate(DateTime.UtcNow).WithCustomer(customer2).WithInternalOrganisation(internalOrganisation).Build();
+
+            this.DatabaseSession.Derive(true);
 
             var invoice1 = new SalesInvoiceBuilder(this.DatabaseSession)
                 .WithInvoiceDate(DateTime.UtcNow.AddMonths(-2))

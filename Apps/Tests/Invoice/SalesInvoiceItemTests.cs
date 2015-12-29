@@ -69,8 +69,10 @@ namespace Allors.Domain
 
             this.shipToCustomer = new OrganisationBuilder(this.DatabaseSession).WithName("shipToCustomer").WithPreferredCurrency(euro).Build();
 
-            new CustomerRelationshipBuilder(this.DatabaseSession).WithCustomer(this.billToCustomer).WithInternalOrganisation(this.internalOrganisation).Build();
-            new CustomerRelationshipBuilder(this.DatabaseSession).WithCustomer(this.shipToCustomer).WithInternalOrganisation(this.internalOrganisation).Build();
+            new CustomerRelationshipBuilder(this.DatabaseSession).WithFromDate(DateTime.UtcNow).WithCustomer(this.billToCustomer).WithInternalOrganisation(this.internalOrganisation).Build();
+            new CustomerRelationshipBuilder(this.DatabaseSession).WithFromDate(DateTime.UtcNow).WithCustomer(this.shipToCustomer).WithInternalOrganisation(this.internalOrganisation).Build();
+
+            this.DatabaseSession.Derive(true);
 
             this.good = new GoodBuilder(this.DatabaseSession)
                 .WithSku("10101")

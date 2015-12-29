@@ -42,7 +42,7 @@ namespace Allors.Domain
             this.billToCustomer = new OrganisationBuilder(this.DatabaseSession).WithName("billToCustomer").WithPreferredCurrency(euro).Build();
             var supplier = new OrganisationBuilder(this.DatabaseSession).WithName("supplier").WithLocale(new Locales(this.DatabaseSession).EnglishGreatBritain).Build();
 
-            new CustomerRelationshipBuilder(this.DatabaseSession).WithCustomer(this.billToCustomer).WithInternalOrganisation(this.internalOrganisation).Build();
+            new CustomerRelationshipBuilder(this.DatabaseSession).WithFromDate(DateTime.UtcNow).WithCustomer(this.billToCustomer).WithInternalOrganisation(this.internalOrganisation).Build();
 
             this.good = new GoodBuilder(this.DatabaseSession)
                 .WithSku("10101")

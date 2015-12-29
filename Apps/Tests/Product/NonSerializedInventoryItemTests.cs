@@ -249,7 +249,9 @@ namespace Allors.Domain
 
             var internalOrganisation = new InternalOrganisations(this.DatabaseSession).FindBy(InternalOrganisations.Meta.Name, "internalOrganisation");
 
-            new CustomerRelationshipBuilder(this.DatabaseSession).WithCustomer(customer).WithInternalOrganisation(internalOrganisation).Build();
+            new CustomerRelationshipBuilder(this.DatabaseSession).WithFromDate(DateTime.UtcNow).WithCustomer(customer).WithInternalOrganisation(internalOrganisation).Build();
+
+            this.DatabaseSession.Derive(true);
 
             var order1 = new SalesOrderBuilder(this.DatabaseSession)
                 .WithBillToCustomer(customer)
@@ -398,7 +400,9 @@ namespace Allors.Domain
 
             var internalOrganisation = new InternalOrganisations(this.DatabaseSession).FindBy(InternalOrganisations.Meta.Name, "internalOrganisation");
 
-            new CustomerRelationshipBuilder(this.DatabaseSession).WithCustomer(customer).WithInternalOrganisation(internalOrganisation).Build();
+            new CustomerRelationshipBuilder(this.DatabaseSession).WithFromDate(DateTime.UtcNow).WithCustomer(customer).WithInternalOrganisation(internalOrganisation).Build();
+
+            this.DatabaseSession.Derive(true);
 
             var order = new SalesOrderBuilder(this.DatabaseSession)
                 .WithBillToCustomer(customer)
