@@ -88,26 +88,26 @@ namespace Allors.Domain
         {
             var organisation = new OrganisationBuilder(this.DatabaseSession).WithName("organisation").Build();
             var customer = new PersonBuilder(this.DatabaseSession).WithLastName("Customer").WithUserName("customer").Build();
+            var anotherCustomer = new PersonBuilder(this.DatabaseSession).WithLastName("Customer2").WithUserName("customer2").Build();
 
+            new CustomerRelationshipBuilder(this.DatabaseSession).WithCustomer(organisation).Build();
             new OrganisationContactRelationshipBuilder(this.DatabaseSession).WithContact(customer).WithOrganisation(organisation).WithFromDate(DateTime.UtcNow).Build();
+            new OrganisationContactRelationshipBuilder(this.DatabaseSession).WithContact(anotherCustomer).WithOrganisation(organisation).WithFromDate(DateTime.UtcNow).Build();
 
             this.DatabaseSession.Derive(true);
             this.DatabaseSession.Commit();
 
             Thread.CurrentPrincipal = new GenericPrincipal(new GenericIdentity("customer", "Forms"), new string[0]);
-            var acl = new AccessControlList(customer, new Users(this.DatabaseSession).GetCurrentUser());
+            var acl = new AccessControlList(anotherCustomer, new Users(this.DatabaseSession).GetCurrentUser());
 
             Assert.IsTrue(acl.CanRead(Persons.Meta.FirstName));
             Assert.IsTrue(acl.CanWrite(Persons.Meta.FirstName));
-
-            Assert.IsFalse(acl.CanRead(Parties.Meta.OwnerSecurityToken));
-            Assert.IsFalse(acl.CanWrite(Parties.Meta.OwnerSecurityToken));
             Assert.IsFalse(acl.CanRead(Persons.Meta.Height));
             Assert.IsFalse(acl.CanWrite(Persons.Meta.Height));
         }
 
         [Test]
-        public void GivenPerson_WhenCurrentUserIsperson_ThenCustomerPermissionsAreGranted()
+        public void GivenPerson_WhenCurrentUserIsperson_ThenOwnerPermissionsAreGranted()
         {
             var customer = new PersonBuilder(this.DatabaseSession).WithLastName("Customer").WithUserName("customer").Build();
 
@@ -121,11 +121,8 @@ namespace Allors.Domain
 
             Assert.IsTrue(acl.CanRead(Persons.Meta.FirstName));
             Assert.IsTrue(acl.CanWrite(Persons.Meta.FirstName));
-
-            Assert.IsFalse(acl.CanRead(Parties.Meta.OwnerSecurityToken));
-            Assert.IsFalse(acl.CanWrite(Parties.Meta.OwnerSecurityToken));
-            Assert.IsFalse(acl.CanRead(Persons.Meta.Height));
-            Assert.IsFalse(acl.CanWrite(Persons.Meta.Height));
+            Assert.IsTrue(acl.CanRead(Persons.Meta.Height));
+            Assert.IsTrue(acl.CanWrite(Persons.Meta.Height));
         }
 
         [Test]

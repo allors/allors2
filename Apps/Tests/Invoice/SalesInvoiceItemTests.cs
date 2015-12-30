@@ -293,7 +293,6 @@ namespace Allors.Domain
             this.DatabaseSession.Derive(true);
 
             Assert.AreEqual(new SalesInvoiceItemObjectStates(this.DatabaseSession).ReadyForPosting, item.CurrentObjectState);
-            Assert.AreEqual(item.CurrentObjectState, new BudgetObjectStates(this.DatabaseSession).Opened);
             Assert.AreEqual(item.CurrentObjectState, item.LastObjectState);
             Assert.AreEqual(0, item.AmountPaid);
             Assert.AreEqual(0, item.Quantity);

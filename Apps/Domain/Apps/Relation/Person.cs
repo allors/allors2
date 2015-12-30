@@ -1,4 +1,4 @@
-    // --------------------------------------------------------------------------------------------------------------------
+// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="Person.cs" company="Allors bvba">
 //   Copyright 2002-2012 Allors bvba.
 // 
@@ -224,7 +224,7 @@ namespace Allors.Domain
                 }
 
                 return roles;
-            }            
+            }
         }
 
         public bool IsActiveContact(DateTime date)
@@ -602,34 +602,7 @@ namespace Allors.Domain
                 partyName.Append(this.LastName);
             }
 
-            return partyName.ToString(); 
-        }
-
-        public void AppsBuildOwnerSecurityToken()
-        {
-            if (!this.ExistOwnerSecurityToken)
-            {
-                var mySecurityToken = new SecurityTokenBuilder(this.Strategy.Session).Build();
-                this.OwnerSecurityToken = mySecurityToken;
-
-                //// In case person does not belong to any group (i.e. private person placing an order) this person should be granted customer permissions.
-                if (!this.ExistAccessControlsWhereSubject)
-                {
-                    var customerRole = new Roles(this.Strategy.Session).Customer;
-                    new AccessControlBuilder(this.Strategy.Session)
-                        .WithRole(customerRole)
-                        .WithSubject(this)
-                        .WithObject(this.OwnerSecurityToken)
-                        .Build();
-
-                    var ownerRole = new Roles(this.Strategy.Session).Owner;
-                    new AccessControlBuilder(this.Strategy.Session)
-                        .WithRole(ownerRole)
-                        .WithSubject(this)
-                        .WithObject(this.OwnerSecurityToken)
-                        .Build();
-                }
-            }
+            return partyName.ToString();
         }
 
         public bool IsDeletable => !this.IsActiveContact(DateTime.UtcNow);

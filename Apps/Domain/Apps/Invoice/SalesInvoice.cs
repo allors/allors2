@@ -699,8 +699,6 @@ namespace Allors.Domain
                     this.CurrentObjectState = new SalesInvoiceObjectStates(this.Strategy.Session).Paid;
                 }
             }
-
-            this.DeriveCurrentObjectState(derivation);
         }
 
         private void DeriveCurrentObjectState(IDerivation derivation)

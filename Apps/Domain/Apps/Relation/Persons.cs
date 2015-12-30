@@ -47,6 +47,9 @@ namespace Allors.Domain
         {
             base.AppsSecure(config);
 
+            var full = new[] { Operation.Read, Operation.Write, Operation.Execute };
+            config.GrantOwner(this.ObjectType, full);
+
             config.GrantCustomer(this.ObjectType, Meta.BirthDate, Operation.Read, Operation.Write);
             config.GrantCustomer(this.ObjectType, Meta.Citizenship, Operation.Read, Operation.Write);
             config.GrantCustomer(this.ObjectType, Meta.FirstName, Operation.Read, Operation.Write);
