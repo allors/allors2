@@ -42,15 +42,15 @@ namespace Allors.Domain
             this.partner = new OrganisationBuilder(this.DatabaseSession).WithName("partner").WithLocale(new Locales(this.DatabaseSession).EnglishGreatBritain).Build();
             this.internalOrganisation = new InternalOrganisations(this.DatabaseSession).FindBy(InternalOrganisations.Meta.Name, "internalOrganisation");
 
-            this.contactRelationship = new OrganisationContactRelationshipBuilder(this.DatabaseSession)
-                .WithOrganisation(this.partner)
-                .WithContact(this.contact)
-                .WithFromDate(DateTime.UtcNow)
-                .Build();
-
             this.partnership = new PartnershipBuilder(this.DatabaseSession)
                 .WithPartner(this.partner)
                 .WithInternalOrganisation(this.internalOrganisation)
+                .WithFromDate(DateTime.UtcNow)
+                .Build();
+
+            this.contactRelationship = new OrganisationContactRelationshipBuilder(this.DatabaseSession)
+                .WithOrganisation(this.partner)
+                .WithContact(this.contact)
                 .WithFromDate(DateTime.UtcNow)
                 .Build();
 

@@ -474,6 +474,7 @@
     <Compile Include="Apps\Accounting\PartyRevenueHistory.cs" />
     <Compile Include="Apps\Accounting\PartyRevenues.cs" />
     <Compile Include="Apps\Accounting\PaymentBudgetAllocations.cs" />
+    <Compile Include="Apps\Accounting\PriceableExtensions.cs" />
     <Compile Include="Apps\Accounting\ProductCategoryRevenue.cs" />
     <Compile Include="Apps\Accounting\ProductCategoryRevenueHistories.cs" />
     <Compile Include="Apps\Accounting\ProductCategoryRevenueHistory.cs" />
@@ -1450,6 +1451,7 @@
     <Compile Include="Generated\PostalAddress.g.cs" />
     <Compile Include="Generated\PostalBoundary.g.cs" />
     <Compile Include="Generated\PostalCode.g.cs" />
+    <Compile Include="Generated\Priceable.g.cs" />
     <Compile Include="Generated\PriceComponent.g.cs" />
     <Compile Include="Generated\Printable.g.cs" />
     <Compile Include="Generated\PrintQueue.g.cs" />

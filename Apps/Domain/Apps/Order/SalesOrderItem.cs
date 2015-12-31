@@ -30,113 +30,6 @@ namespace Allors.Domain
             }
         }
 
-        public string GetActualUnitBasePriceAsCurrencyString
-        {
-            get
-            {
-                return this.ExistActualUnitPrice ? DecimalExtensions.AsCurrencyString(this.ActualUnitPrice, this.SalesOrderWhereSalesOrderItem.CurrencyFormat) : string.Empty;
-            }
-        }
-
-        public string GetExtraDiscountAmountAsCurrencyString
-        {
-            get
-            {
-                if (this.ExistDiscountAdjustment)
-                {
-                    if (this.DiscountAdjustment.ExistAmount)
-                    {
-                        return this.DiscountAdjustment.Amount.AsCurrencyString(this.SalesOrderWhereSalesOrderItem.CurrencyFormat);
-                    }
-                }
-
-                return string.Empty;
-            }
-        }
-
-        public string GetExtraDiscountPercentage
-        {
-            get
-            {
-                if (this.ExistDiscountAdjustment)
-                {
-                    if (this.DiscountAdjustment.Percentage.HasValue)
-                    {
-                        return this.DiscountAdjustment.Percentage.Value.ToString(new CultureInfo(this.SalesOrderWhereSalesOrderItem.Locale.Name));
-                    }
-                }
-
-                return string.Empty;
-            }
-        }
-
-        public string GetDiscountAsPercentageString
-        {
-            get
-            {
-                if (this.ExistTotalDiscountAsPercentage)
-                {
-                    return this.TotalDiscountAsPercentage.ToString(new CultureInfo(this.SalesOrderWhereSalesOrderItem.Locale.Name));
-                }
-
-                return string.Empty;
-            }
-        }
-
-        public string GetSurchargeAsPercentageString
-        {
-            get
-            {
-                if (this.ExistTotalSurchargeAsPercentage)
-                {
-                    return this.TotalSurchargeAsPercentage.ToString(new CultureInfo(this.SalesOrderWhereSalesOrderItem.Locale.Name));
-                }
-
-                return string.Empty;
-            }
-        }
-
-        public string GetUnitBasePriceAsCurrencyString
-        {
-            get
-            {
-                return DecimalExtensions.AsCurrencyString(this.UnitBasePrice, this.SalesOrderWhereSalesOrderItem.CurrencyFormat);
-            }
-        }
-
-        public string GetPriceAdjustmentAsCurrencyString
-        {
-            get
-            {
-                return this.PriceAdjustment.AsCurrencyString(this.SalesOrderWhereSalesOrderItem.CurrencyFormat);
-            }
-        }
-
-        public string GetPriceAdjustmentAsPercentageString
-        {
-            get
-            {
-                return this.PriceAdjustmentAsPercentage.ToString("##.##");
-            }
-        }
-
-        public string GetNothingAsCurrencyString
-        {
-            get
-            {
-                const decimal Nothing = 0;
-                return Nothing.AsCurrencyString(this.SalesOrderWhereSalesOrderItem.CurrencyFormat);
-            }
-        }
-
-        public string GetTotalExVatAsCurrencyString
-        {
-            get
-            {
-                return DecimalExtensions.AsCurrencyString(this.TotalExVat, this.SalesOrderWhereSalesOrderItem.CurrencyFormat);
-            }
-        }
-
         public Party ItemDifferentShippingParty
         {
             get
@@ -203,8 +96,6 @@ namespace Allors.Domain
 
         public void AppsOnBuild(ObjectOnBuild method)
         {
-            
-
             if (!this.ExistCurrentObjectState)
             {
                 this.CurrentObjectState = new SalesOrderItemObjectStates(this.Strategy.Session).Created;
@@ -832,7 +723,7 @@ namespace Allors.Domain
                         {
                             if (this.UnitBasePrice == 0 || priceComponent.Price < this.UnitBasePrice)
                             {
-                                this.UnitBasePrice = priceComponent.Price.HasValue ? priceComponent.Price.Value : 0;
+                                this.UnitBasePrice = priceComponent.Price ?? 0;
 
                                 this.RemoveCurrentPriceComponents();
                                 this.AddCurrentPriceComponent(priceComponent);
@@ -862,8 +753,6 @@ namespace Allors.Domain
 
             if (!this.ExistActualUnitPrice)
             {
-                //var priceComponents = this.GetPriceComponents(internalOrganisation);
-
                 var revenueBreakDiscount = 0M;
                 var revenueBreakSurcharge = 0M;
 
@@ -885,84 +774,9 @@ namespace Allors.Domain
                         }))
                         {
                             this.AddCurrentPriceComponent(priceComponent);
-
-                            if (priceComponent.Strategy.Class.Equals(DiscountComponents.Meta.ObjectType))
-                            {
-                                var discountComponent = (DiscountComponent)priceComponent;
-                                decimal discount;
-
-                                if (discountComponent.Price.HasValue)
-                                {
-                                    discount = discountComponent.Price.Value;
-                                    this.UnitDiscount += discount;
-                                }
-                                else
-                                {
-                                    var percentage = discountComponent.Percentage.HasValue ? discountComponent.Percentage.Value : 0;
-                                    discount = decimal.Round((this.UnitBasePrice * percentage) / 100, 2);
-                                    this.UnitDiscount += discount;
-                                }
-
-                                ////Revenuebreaks on quantity and value are mutually exclusive.
-                                if (priceComponent.ExistRevenueQuantityBreak || priceComponent.ExistRevenueValueBreak)
-                                {
-                                    if (revenueBreakDiscount == 0)
-                                    {
-                                        revenueBreakDiscount = discount;
-                                    }
-                                    else
-                                    {
-                                        ////Apply highest of the two. Revert the other one. 
-                                        if (discount > revenueBreakDiscount)
-                                        {
-                                            this.UnitDiscount -= revenueBreakDiscount;
-                                        }
-                                        else
-                                        {
-                                            this.UnitDiscount -= discount;
-                                        }
-                                    }
-                                }
-                            }
-
-                            if (priceComponent.Strategy.Class.Equals(SurchargeComponents.Meta.ObjectType))
-                            {
-                                var surchargeComponent = (SurchargeComponent)priceComponent;
-                                decimal surcharge;
-
-                                if (surchargeComponent.Price.HasValue)
-                                {
-                                    surcharge = surchargeComponent.Price.Value;
-                                    this.UnitSurcharge += surcharge;
-                                }
-                                else
-                                {
-                                    var percentage = surchargeComponent.Percentage.HasValue ? surchargeComponent.Percentage.Value : 0;
-                                    surcharge = decimal.Round((this.UnitBasePrice * percentage) / 100, 2);
-                                    this.UnitSurcharge += surcharge;
-                                }
-
-                                ////Revenuebreaks on quantity and value are mutually exclusive.
-                                if (priceComponent.ExistRevenueQuantityBreak || priceComponent.ExistRevenueValueBreak)
-                                {
-                                    if (revenueBreakSurcharge == 0)
-                                    {
-                                        revenueBreakSurcharge = surcharge;
-                                    }
-                                    else
-                                    {
-                                        ////Apply highest of the two. Revert the other one. 
-                                        if (surcharge > revenueBreakSurcharge)
-                                        {
-                                            this.UnitDiscount -= revenueBreakSurcharge;
-                                        }
-                                        else
-                                        {
-                                            this.UnitDiscount -= surcharge;
-                                        }
-                                    }
-                                }
-                            }
+                              
+                            revenueBreakDiscount = this.SetUnitDiscount(priceComponent, revenueBreakDiscount);
+                            revenueBreakSurcharge = this.SetUnitSurcharge(priceComponent, revenueBreakSurcharge);
                         }
                     }
                 }

@@ -401,6 +401,7 @@
     <Compile Include="Apps\Domain\InventoryItemVariance.cs" />
     <Compile Include="Apps\Domain\InvestmentAccount.cs" />
     <Compile Include="Apps\Domain\Invoice.cs" />
+    <Compile Include="Apps\Domain\Priceable.cs" />
     <Compile Include="Apps\Domain\InvoiceItem.cs" />
     <Compile Include="Apps\Domain\InvoiceSequence.cs" />
     <Compile Include="Apps\Domain\InvoiceVatRateItem.cs" />
@@ -437,6 +438,7 @@
     <Compile Include="Apps\Domain\OperatingCondition.cs" />
     <Compile Include="Apps\Domain\OrderAdjustment.cs" />
     <Compile Include="Apps\Domain\OrderItem.cs" />
+    <Compile Include="Apps\Domain\Priceable.t.cs" />
     <Compile Include="Apps\Domain\OrderItemBilling.cs" />
     <Compile Include="Apps\Domain\OrderKind.cs" />
     <Compile Include="Apps\Domain\OrderQuantityBreak.cs" />

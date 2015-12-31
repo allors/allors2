@@ -29,22 +29,26 @@ namespace Allors.Domain
             // TODO:
             if (derivation.ChangeSet.Associations.Contains(this.Id))
             {
-                if (this.ExistOrderItemWhereDiscountAdjustment)
+                if (this.ExistPriceableWhereDiscountAdjustment)
                 {
-                    var salesOrderItem = (SalesOrderItem)this.OrderItemWhereDiscountAdjustment;
-                    derivation.AddDependency(this, salesOrderItem);
+                    var salesInvoiceItem = this.PriceableWhereDiscountAdjustment as SalesInvoiceItem;
+                    var salesOrderItem = this.PriceableWhereDiscountAdjustment as SalesOrderItem;
+
+                    if (salesInvoiceItem != null)
+                    {
+                        derivation.AddDependency(this, salesInvoiceItem);
+                    }
+
+                    if (salesOrderItem != null)
+                    {
+                        derivation.AddDependency(this, salesOrderItem);
+                    }
                 }
 
                 if (this.ExistOrderWhereDiscountAdjustment)
                 {
                     var salesOrder = (SalesOrder)this.OrderWhereDiscountAdjustment;
                     derivation.AddDependency(this, salesOrder);
-                }
-
-                if (this.ExistInvoiceItemWhereDiscountAdjustment)
-                {
-                    var salesInvoiceItem = (Allors.Domain.SalesInvoiceItem)this.InvoiceItemWhereDiscountAdjustment;
-                    derivation.AddDependency(this, salesInvoiceItem);
                 }
 
                 if (this.ExistInvoiceWhereDiscountAdjustment)

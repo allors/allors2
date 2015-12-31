@@ -141,16 +141,6 @@ namespace Allors.Domain
             }
         }
 
-        public string ShortDueDateString
-        {
-            get { return this.DueDate.ToShortDateString(); }
-        }
-
-        public string ShortInvoiceDateString
-        {
-            get { return this.InvoiceDate.ToShortDateString(); }
-        }
-
         public NumberFormatInfo CurrencyFormat
         {
             get
@@ -159,155 +149,6 @@ namespace Allors.Domain
                 var currencyFormat = (NumberFormatInfo)cultureInfo.NumberFormat.Clone();
                 currencyFormat.CurrencySymbol = this.CustomerCurrency.Symbol;
                 return currencyFormat;
-            }
-        }
-
-        public string GetTotalBasePriceAsCurrencyString
-        {
-            get
-            {
-                return DecimalExtensions.AsCurrencyString(this.TotalBasePrice, this.CurrencyFormat);
-            }
-        }
-
-        public string GetTotalDiscountAsCurrencyString
-        {
-            get
-            {
-                return DecimalExtensions.AsCurrencyString(this.TotalDiscount, this.CurrencyFormat);
-            }
-        }
-
-        public string GetTotalSurchargeAsCurrencyString
-        {
-            get
-            {
-                return DecimalExtensions.AsCurrencyString(this.TotalSurcharge, this.CurrencyFormat);
-            }
-        }
-
-        public string GetTotalFeeAsCurrencyString
-        {
-            get
-            {
-                return DecimalExtensions.AsCurrencyString(this.TotalFee, this.CurrencyFormat);
-            }
-        }
-
-        public string GetTotalShippingAndHandlingAsCurrencyString
-        {
-            get
-            {
-                return DecimalExtensions.AsCurrencyString(this.TotalShippingAndHandling, this.CurrencyFormat);
-            }
-        }
-
-        public string GetTotalExVatAsCurrencyString
-        {
-            get
-            {
-                return DecimalExtensions.AsCurrencyString(this.TotalExVat, this.CurrencyFormat);
-            }
-        }
-
-        public string GetTotalVatAsCurrencyString
-        {
-            get
-            {
-                return DecimalExtensions.AsCurrencyString(this.TotalVat, this.CurrencyFormat);
-            }
-        }
-
-        public string GetTotalIncVatAsCurrencyString
-        {
-            get
-            {
-                return DecimalExtensions.AsCurrencyString(this.TotalIncVat, this.CurrencyFormat);
-            }
-        }
-
-        public string GetExtraDiscountAmountAsCurrencyString
-        {
-            get
-            {
-                if (this.ExistDiscountAdjustment)
-                {
-                    if (this.DiscountAdjustment.ExistAmount)
-                    {
-                        return DecimalExtensions.AsCurrencyString(this.DiscountAdjustment.Amount, this.CurrencyFormat);
-                    }
-                }
-
-                return string.Empty;
-            }
-        }
-
-        public string GetExtraDiscountPercentage
-        {
-            get
-            {
-                if (this.ExistDiscountAdjustment && this.DiscountAdjustment.Percentage.HasValue)
-                {
-                    var percentage = this.DiscountAdjustment.Percentage;
-
-                    if (this.ExistLocale)
-                    {
-                        return percentage.Value.ToString(this.Locale.CultureInfo);
-                    }
-
-                    return percentage.ToString();
-                }
-
-                return null;
-            }
-        }
-
-        public string GetSubTotalAsCurrencyString
-        {
-            get
-            {
-                var subtotal = this.TotalBasePrice - this.TotalDiscount + this.TotalSurcharge;
-                return subtotal.AsCurrencyString(this.CurrencyFormat);
-            }
-        }
-
-        public bool HasDiscount
-        {
-            get
-            {
-                return this.TotalDiscount > 0;
-            }
-        }
-
-        public bool HasSurcharge
-        {
-            get
-            {
-                return this.TotalSurcharge > 0;
-            }
-        }
-
-        public bool HasFee
-        {
-            get
-            {
-                return this.TotalFee > 0;
-            }
-        }
-
-        public bool HasShippingAndHandling
-        {
-            get
-            {
-                return this.TotalShippingAndHandling > 0;
-            }
-        }
-
-        public string GetNothingAsCurrencyString
-        {
-            get
-            {
-                return 0m.AsCurrencyString(this.CurrencyFormat);
             }
         }
 
@@ -328,11 +169,6 @@ namespace Allors.Domain
 
                 return names.ToString();
             }
-        }
-
-        public string TotalExVatAsCurrencyString()
-        {
-            return this.GetTotalExVatAsCurrencyString;
         }
 
         public void SetActualDiscountAmount(decimal amount)

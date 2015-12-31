@@ -247,49 +247,72 @@ namespace Allors.Domain
 					global::System.Decimal TotalFee {set;}
 
 	}
-	public interface InvoiceItem  : Object, AccessControlledObject, Transitional 
+	public interface Priceable  : Object, AccessControlledObject, Commentable, Transitional 
 	{
-					global::System.Decimal TotalIncVatCustomerCurrency {set;}
-
-					AgreementTerm InvoiceTerms {set;}
-
-					global::System.Decimal TotalVatCustomerCurrency {set;}
-
-					global::System.Decimal TotalBasePrice {set;}
-
-					global::System.Decimal TotalSurcharge {set;}
-
-					global::System.Decimal TotalInvoiceAdjustment {set;}
-
-					global::System.Decimal TotalExVatCustomerCurrency {set;}
-
-					global::System.Decimal TotalDiscount {set;}
-
-					InvoiceVatRateItem InvoiceVatRateItems {set;}
-
 					global::System.Decimal? TotalDiscountAsPercentage {set;}
-
-					global::System.Decimal CalculatedUnitPrice {set;}
-
-					global::System.Decimal UnitDiscount {set;}
-
-					VatRegime AssignedVatRegime {set;}
-
-					global::System.Decimal TotalIncVat {set;}
-
-					InvoiceItem AdjustmentFor {set;}
-
-					global::System.Decimal UnitBasePrice {set;}
-
-					global::System.Decimal TotalSurchargeCustomerCurrency {set;}
-
-					SerializedInventoryItem SerializedInventoryItem {set;}
-
-					PriceComponent CurrentPriceComponents {set;}
 
 					DiscountAdjustment DiscountAdjustment {set;}
 
+					global::System.Decimal UnitVat {set;}
+
+					global::System.Decimal TotalVatCustomerCurrency {set;}
+
+					VatRegime VatRegime {set;}
+
+					global::System.Decimal TotalVat {set;}
+
+					global::System.Decimal UnitSurcharge {set;}
+
+					global::System.Decimal UnitDiscount {set;}
+
+					global::System.Decimal TotalExVatCustomerCurrency {set;}
+
+					VatRate DerivedVatRate {set;}
+
 					global::System.Decimal? ActualUnitPrice {set;}
+
+					global::System.Decimal TotalIncVatCustomerCurrency {set;}
+
+					global::System.Decimal UnitBasePrice {set;}
+
+					global::System.Decimal CalculatedUnitPrice {set;}
+
+					global::System.Decimal TotalSurchargeCustomerCurrency {set;}
+
+					global::System.Decimal TotalIncVat {set;}
+
+					global::System.Decimal? TotalSurchargeAsPercentage {set;}
+
+					global::System.Decimal TotalDiscountCustomerCurrency {set;}
+
+					global::System.Decimal TotalDiscount {set;}
+
+					global::System.Decimal TotalSurcharge {set;}
+
+					VatRegime AssignedVatRegime {set;}
+
+					global::System.Decimal TotalBasePrice {set;}
+
+					global::System.Decimal TotalExVat {set;}
+
+					global::System.Decimal TotalBasePriceCustomerCurrency {set;}
+
+					PriceComponent CurrentPriceComponents {set;}
+
+					SurchargeAdjustment SurchargeAdjustment {set;}
+
+	}
+	public interface InvoiceItem  : Object, AccessControlledObject, Transitional, Priceable 
+	{
+					AgreementTerm InvoiceTerms {set;}
+
+					global::System.Decimal TotalInvoiceAdjustment {set;}
+
+					InvoiceVatRateItem InvoiceVatRateItems {set;}
+
+					InvoiceItem AdjustmentFor {set;}
+
+					SerializedInventoryItem SerializedInventoryItem {set;}
 
 					global::System.String Message {set;}
 
@@ -297,27 +320,7 @@ namespace Allors.Domain
 
 					global::System.Decimal AmountPaid {set;}
 
-					VatRate DerivedVatRate {set;}
-
-					global::System.Decimal TotalDiscountCustomerCurrency {set;}
-
-					global::System.Decimal UnitSurcharge {set;}
-
-					global::System.Decimal TotalExVat {set;}
-
 					global::System.Decimal Quantity {set;}
-
-					global::System.Decimal? TotalSurchargeAsPercentage {set;}
-
-					VatRegime VatRegime {set;}
-
-					global::System.Decimal TotalBasePriceCustomerCurrency {set;}
-
-					global::System.Decimal TotalVat {set;}
-
-					SurchargeAdjustment SurchargeAdjustment {set;}
-
-					global::System.Decimal UnitVat {set;}
 
 					global::System.String Description {set;}
 
@@ -340,51 +343,21 @@ namespace Allors.Domain
 					global::System.Decimal? Percentage {set;}
 
 	}
-	public interface OrderItem  : Object, AccessControlledObject, Commentable, Transitional 
+	public interface OrderItem  : Object, AccessControlledObject, Commentable, Transitional, Priceable 
 	{
-					global::System.Decimal TotalDiscountAsPercentage {set;}
-
-					DiscountAdjustment DiscountAdjustment {set;}
-
-					global::System.Decimal UnitVat {set;}
-
-					global::System.Decimal TotalVatCustomerCurrency {set;}
-
-					VatRegime VatRegime {set;}
-
 					BudgetItem BudgetItem {set;}
-
-					global::System.Decimal TotalVat {set;}
-
-					global::System.Decimal UnitSurcharge {set;}
-
-					global::System.Decimal UnitDiscount {set;}
 
 					global::System.Decimal PreviousQuantity {set;}
 
 					global::System.Decimal QuantityOrdered {set;}
 
-					global::System.Decimal TotalExVatCustomerCurrency {set;}
-
-					VatRate DerivedVatRate {set;}
-
-					global::System.Decimal? ActualUnitPrice {set;}
-
-					global::System.Decimal TotalIncVatCustomerCurrency {set;}
-
 					global::System.String Description {set;}
 
-					global::System.Decimal UnitBasePrice {set;}
-
 					PurchaseOrder CorrespondingPurchaseOrder {set;}
-
-					global::System.Decimal CalculatedUnitPrice {set;}
 
 					global::System.Decimal TotalOrderAdjustmentCustomerCurrency {set;}
 
 					global::System.Decimal TotalOrderAdjustment {set;}
-
-					global::System.Decimal TotalSurchargeCustomerCurrency {set;}
 
 					QuoteItem QuoteItem {set;}
 
@@ -392,33 +365,11 @@ namespace Allors.Domain
 
 					global::System.DateTime? DeliveryDate {set;}
 
-					global::System.Decimal TotalIncVat {set;}
-
-					global::System.Decimal TotalSurchargeAsPercentage {set;}
-
-					global::System.Decimal TotalDiscountCustomerCurrency {set;}
-
-					global::System.Decimal TotalDiscount {set;}
-
-					global::System.Decimal TotalSurcharge {set;}
-
 					OrderTerm OrderTerms {set;}
-
-					VatRegime AssignedVatRegime {set;}
 
 					global::System.String ShippingInstruction {set;}
 
-					global::System.Decimal TotalBasePrice {set;}
-
 					OrderItem Associations {set;}
-
-					global::System.Decimal TotalExVat {set;}
-
-					global::System.Decimal TotalBasePriceCustomerCurrency {set;}
-
-					PriceComponent CurrentPriceComponents {set;}
-
-					SurchargeAdjustment SurchargeAdjustment {set;}
 
 					global::System.String Message {set;}
 

@@ -123,13 +123,151 @@ namespace Allors.Domain
             }
         }
 
-        public static void AppsOnDerive(this Party party, ObjectOnDerive method)
+        public static void AppsOnDerive(this Party @this, ObjectOnDerive method)
         {
             var derivation = method.Derivation;
 
-            party.DeriveCurrentSalesReps(derivation);
-            party.DeriveOpenOrderAmount();
-            party.DeriveRevenue();
+            @this.BillingAddress = null;
+            @this.BillingInquiriesFax = null;
+            @this.BillingInquiriesPhone = null;
+            @this.CellPhoneNumber = null;
+            @this.GeneralFaxNumber = null;
+            @this.GeneralPhoneNumber = null;
+            @this.HeadQuarter = null;
+            @this.HomeAddress = null;
+            @this.InternetAddress = null;
+            @this.OrderAddress = null;
+            @this.OrderInquiriesFax = null;
+            @this.OrderInquiriesPhone = null;
+            @this.PersonalEmailAddress = null;
+            @this.SalesOffice = null;
+            @this.ShippingAddress = null;
+            @this.ShippingInquiriesFax = null;
+            @this.ShippingAddress = null;
+
+            foreach (PartyContactMechanism partyContactMechanism in @this.PartyContactMechanisms)
+            {
+                if (partyContactMechanism.UseAsDefault)
+                {
+                    if (partyContactMechanism.ContactPurpose.IsBillingAddress)
+                    {
+                        @this.BillingAddress = partyContactMechanism.ContactMechanism;
+                        continue;
+                    }
+
+                    if (partyContactMechanism.ContactPurpose.IsBillingInquiriesFax)
+                    {
+                        @this.BillingInquiriesFax = partyContactMechanism.ContactMechanism as TelecommunicationsNumber;
+                        continue;
+                    }
+
+                    if (partyContactMechanism.ContactPurpose.IsBillingInquiriesPhone)
+                    {
+                        @this.BillingInquiriesPhone = partyContactMechanism.ContactMechanism as TelecommunicationsNumber;
+                        continue;
+                    }
+
+                    if (partyContactMechanism.ContactPurpose.IsCellPhoneNumber)
+                    {
+                        @this.CellPhoneNumber = partyContactMechanism.ContactMechanism as TelecommunicationsNumber;
+                        continue;
+                    }
+
+                    if (partyContactMechanism.ContactPurpose.IsGeneralCorrespondence)
+                    {
+                        @this.GeneralCorrespondence = partyContactMechanism.ContactMechanism as PostalAddress;
+                        continue;
+                    }
+
+                    if (partyContactMechanism.ContactPurpose.IsGeneralEmail)
+                    {
+                        @this.GeneralEmail = partyContactMechanism.ContactMechanism as ElectronicAddress;
+                        continue;
+                    }
+
+                    if (partyContactMechanism.ContactPurpose.IsGeneralFaxNumber)
+                    {
+                        @this.GeneralFaxNumber = partyContactMechanism.ContactMechanism as TelecommunicationsNumber;
+                        continue;
+                    }
+
+                    if (partyContactMechanism.ContactPurpose.IsGeneralPhoneNumber)
+                    {
+                        @this.GeneralPhoneNumber = partyContactMechanism.ContactMechanism as TelecommunicationsNumber;
+                        continue;
+                    }
+
+                    if (partyContactMechanism.ContactPurpose.IsHeadQuarters)
+                    {
+                        @this.HeadQuarter = partyContactMechanism.ContactMechanism;
+                        continue;
+                    }
+
+                    if (partyContactMechanism.ContactPurpose.IsHomeAddress)
+                    {
+                        @this.HomeAddress = partyContactMechanism.ContactMechanism;
+                        continue;
+                    }
+
+                    if (partyContactMechanism.ContactPurpose.IsInternetAddress)
+                    {
+                        @this.InternetAddress = partyContactMechanism.ContactMechanism as ElectronicAddress;
+                        continue;
+                    }
+
+                    if (partyContactMechanism.ContactPurpose.IsOrderAddress)
+                    {
+                        @this.OrderAddress = partyContactMechanism.ContactMechanism;
+                        continue;
+                    }
+
+                    if (partyContactMechanism.ContactPurpose.IsOrderInquiriesFax)
+                    {
+                        @this.OrderInquiriesFax = partyContactMechanism.ContactMechanism as TelecommunicationsNumber;
+                        continue;
+                    }
+
+                    if (partyContactMechanism.ContactPurpose.IsOrderInquiriesPhone)
+                    {
+                        @this.OrderInquiriesPhone = partyContactMechanism.ContactMechanism as TelecommunicationsNumber;
+                        continue;
+                    }
+
+                    if (partyContactMechanism.ContactPurpose.IsPersonalEmailAddress)
+                    {
+                        @this.PersonalEmailAddress = partyContactMechanism.ContactMechanism as ElectronicAddress;
+                        continue;
+                    }
+
+                    if (partyContactMechanism.ContactPurpose.IsSalesOffice)
+                    {
+                        @this.SalesOffice = partyContactMechanism.ContactMechanism;
+                        continue;
+                    }
+
+                    if (partyContactMechanism.ContactPurpose.IsShippingAddress)
+                    {
+                        @this.ShippingAddress = partyContactMechanism.ContactMechanism as Domain.PostalAddress;
+                        continue;
+                    }
+
+                    if (partyContactMechanism.ContactPurpose.IsShippingInquiriesFax)
+                    {
+                        @this.ShippingInquiriesFax = partyContactMechanism.ContactMechanism as TelecommunicationsNumber;
+                        continue;
+                    }
+
+                    if (partyContactMechanism.ContactPurpose.IsShippingInquiriesPhone)
+                    {
+                        @this.ShippingInquiriesPhone = partyContactMechanism.ContactMechanism as TelecommunicationsNumber;
+                        continue;
+                    }
+                }
+            }
+
+            @this.DeriveCurrentSalesReps(derivation);
+            @this.DeriveOpenOrderAmount();
+            @this.DeriveRevenue();
         }
 
         public static void AppsOnDeriveCurrentSalesReps(this Party party, IDerivation derivation)
