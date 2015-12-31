@@ -686,6 +686,13 @@ namespace Allors.Domain
                 this.CurrentObjectState = new SalesOrderItemObjectStates(this.Strategy.Session).Completed;
                 this.DeriveCurrentObjectState(derivation);
             }
+
+            if (this.ExistCurrentShipmentStatus && this.CurrentShipmentStatus.SalesOrderItemObjectState.Equals(new SalesOrderItemObjectStates(this.Strategy.Session).Shipped) &&
+                this.ExistCurrentPaymentStatus && this.CurrentPaymentStatus.SalesOrderItemObjectState.Equals(new SalesOrderItemObjectStates(this.Strategy.Session).Paid))
+            {
+                this.CurrentObjectState = new SalesOrderItemObjectStates(this.Strategy.Session).Finished;
+                this.DeriveCurrentObjectState(derivation);
+            }
         }
 
         public void AppsOnDeriveCurrentShipmentStatus(IDerivation derivation)
@@ -1311,6 +1318,8 @@ namespace Allors.Domain
                     this.AddPaymentStatus(this.CurrentPaymentStatus);
                 }
             }
+
+            this.DeriveCurrentOrderStatus(derivation);
         }
     }
 }

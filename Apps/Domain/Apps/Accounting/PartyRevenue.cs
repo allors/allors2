@@ -38,7 +38,7 @@ namespace Allors.Domain
 
             this.Revenue = 0;
 
-            var toDate = DateTimeFactory.CreateDate(year, month, 01).AddMonths(1);
+            var toDate = DateTimeFactory.CreateDate(year, month, 01).AddMonths(1).AddMilliseconds(-1);
 
             var invoices = this.Party.SalesInvoicesWhereBillToCustomer;
             invoices.Filter.AddEquals(SalesInvoices.Meta.BilledFromInternalOrganisation, this.InternalOrganisation);

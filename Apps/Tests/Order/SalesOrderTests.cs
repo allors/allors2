@@ -224,6 +224,9 @@ namespace Allors.Domain
                 .WithShipToAddress(new PostalAddressBuilder(this.DatabaseSession).WithGeographicBoundary(mechelen).WithAddress1("Haverwerf 15").Build())
                 .Build();
 
+            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Commit();
+
             var acl = new AccessControlList(order, new Users(this.DatabaseSession).GetCurrentUser());
 
             Assert.IsTrue(acl.CanWrite(SalesOrders.Meta.Comment));
@@ -346,7 +349,7 @@ namespace Allors.Domain
             Assert.AreEqual(new SalesOrderObjectStates(this.DatabaseSession).InProcess, order.CurrentObjectState);
             Assert.AreEqual(new SalesOrderObjectStates(this.DatabaseSession).PartiallyShipped, order.CurrentShipmentStatus.SalesOrderObjectState);
             Assert.AreEqual(new SalesOrderObjectStates(this.DatabaseSession).PartiallyPaid, order.CurrentPaymentStatus.SalesOrderObjectState);
-            Assert.AreEqual(new SalesOrderItemObjectStates(this.DatabaseSession).Completed, item1.CurrentObjectState);
+            Assert.AreEqual(new SalesOrderItemObjectStates(this.DatabaseSession).Finished, item1.CurrentObjectState);
             Assert.AreEqual(new SalesOrderItemObjectStates(this.DatabaseSession).Paid, item1.CurrentPaymentStatus.SalesOrderItemObjectState);
             Assert.AreEqual(new SalesOrderItemObjectStates(this.DatabaseSession).Shipped, item1.CurrentShipmentStatus.SalesOrderItemObjectState);
             Assert.AreEqual(new SalesOrderItemObjectStates(this.DatabaseSession).InProcess, item2.CurrentObjectState);
@@ -397,10 +400,10 @@ namespace Allors.Domain
             Assert.AreEqual(new SalesOrderObjectStates(this.DatabaseSession).InProcess, order.CurrentObjectState);
             Assert.AreEqual(new SalesOrderObjectStates(this.DatabaseSession).PartiallyShipped, order.CurrentShipmentStatus.SalesOrderObjectState);
             Assert.AreEqual(new SalesOrderObjectStates(this.DatabaseSession).PartiallyPaid, order.CurrentPaymentStatus.SalesOrderObjectState);
-            Assert.AreEqual(new SalesOrderItemObjectStates(this.DatabaseSession).Completed, item1.CurrentObjectState);
+            Assert.AreEqual(new SalesOrderItemObjectStates(this.DatabaseSession).Finished, item1.CurrentObjectState);
             Assert.AreEqual(new SalesOrderItemObjectStates(this.DatabaseSession).Paid, item1.CurrentPaymentStatus.SalesOrderItemObjectState);
             Assert.AreEqual(new SalesOrderItemObjectStates(this.DatabaseSession).Shipped, item1.CurrentShipmentStatus.SalesOrderItemObjectState);
-            Assert.AreEqual(new SalesOrderItemObjectStates(this.DatabaseSession).Completed, item2.CurrentObjectState);
+            Assert.AreEqual(new SalesOrderItemObjectStates(this.DatabaseSession).Finished, item2.CurrentObjectState);
             Assert.AreEqual(new SalesOrderItemObjectStates(this.DatabaseSession).Paid, item2.CurrentPaymentStatus.SalesOrderItemObjectState);
             Assert.AreEqual(new SalesOrderItemObjectStates(this.DatabaseSession).Shipped, item2.CurrentShipmentStatus.SalesOrderItemObjectState);
             Assert.AreEqual(new SalesOrderItemObjectStates(this.DatabaseSession).InProcess, item3.CurrentObjectState);
@@ -2006,6 +2009,9 @@ namespace Allors.Domain
                 .WithShipToAddress(new PostalAddressBuilder(this.DatabaseSession).WithGeographicBoundary(mechelen).WithAddress1("Haverwerf 15").Build())
                 .Build();
 
+            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Commit();
+
             var acl = new AccessControlList(order, new Users(this.DatabaseSession).GetCurrentUser());
 
             Assert.IsTrue(acl.CanWrite(SalesOrders.Meta.Comment));
@@ -2145,6 +2151,9 @@ namespace Allors.Domain
                 .WithShipToAddress(new PostalAddressBuilder(this.DatabaseSession).WithGeographicBoundary(mechelen).WithAddress1("Haverwerf 15").Build())
                 .Build();
 
+            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Commit();
+
             var acl = new AccessControlList(order, new Users(this.DatabaseSession).GetCurrentUser());
 
             Assert.IsTrue(acl.CanWrite(SalesOrders.Meta.Comment));
@@ -2173,6 +2182,9 @@ namespace Allors.Domain
                 .WithShipToCustomer(customer)
                 .WithShipToAddress(new PostalAddressBuilder(this.DatabaseSession).WithGeographicBoundary(mechelen).WithAddress1("Haverwerf 15").Build())
                 .Build();
+
+            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Commit();
 
             Thread.CurrentPrincipal = new GenericPrincipal(new GenericIdentity("customer2", "Forms"), new string[0]);
             var acl = new AccessControlList(order, new Users(this.DatabaseSession).GetCurrentUser());
