@@ -252,6 +252,7 @@ namespace Allors.Domain
             new CustomerRelationshipBuilder(this.DatabaseSession).WithFromDate(DateTime.UtcNow).WithCustomer(customer).WithInternalOrganisation(internalOrganisation).Build();
 
             this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Commit();
 
             var order1 = new SalesOrderBuilder(this.DatabaseSession)
                 .WithBillToCustomer(customer)
@@ -264,8 +265,9 @@ namespace Allors.Domain
             order1.AddSalesOrderItem(item1);
             order1.AddSalesOrderItem(item2);
 
-            this.DatabaseSession.Derive(true); 
-            
+            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Commit();
+
             order1.Confirm();
 
             this.DatabaseSession.Derive(true);
@@ -282,6 +284,7 @@ namespace Allors.Domain
             order2.AddSalesOrderItem(item4);
 
             this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Commit();
 
             order2.Confirm();
 
@@ -313,6 +316,7 @@ namespace Allors.Domain
             inventoryItem.AddInventoryItemVariance(new InventoryItemVarianceBuilder(this.DatabaseSession).WithQuantity(15).WithReason(new VarianceReasons(this.DatabaseSession).Unknown).Build());
 
             this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Commit();
 
             //// Orderitems are sorted as follows: item1, item2, item3, item4
             Assert.AreEqual(0, item1.QuantityRequestsShipping);
@@ -341,6 +345,7 @@ namespace Allors.Domain
             inventoryItem.AddInventoryItemVariance(new InventoryItemVarianceBuilder(this.DatabaseSession).WithQuantity(85).WithReason(new VarianceReasons(this.DatabaseSession).Unknown).Build());
 
             this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Commit();
 
             //// Orderitems are sorted as follows: item2, item1, item4, item 3
             Assert.AreEqual(0, item1.QuantityRequestsShipping);
