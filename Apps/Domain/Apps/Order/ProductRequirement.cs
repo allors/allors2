@@ -23,20 +23,6 @@ namespace Allors.Domain
     public partial class ProductRequirement
     {
         ObjectState Transitional.CurrentObjectState => this.CurrentObjectState;
-        public void Cancel()
-        {
-            this.AppsCancel();
-        }
-
-        public void Hold()
-        {
-            this.AppsHold();
-        }
-
-        public void Close()
-        {
-            this.AppsClose();
-        }
 
         public void AppsOnBuild(ObjectOnBuild method)
         {

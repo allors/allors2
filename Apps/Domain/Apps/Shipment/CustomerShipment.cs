@@ -207,8 +207,8 @@ namespace Allors.Domain
             this.CreatePickList(derivation);
             this.AppsOnDeriveShipmentValue(derivation);
             this.AppsOnDeriveCurrentShipmentState(derivation);
-            
-            this.DeriveCurrentObjectState(derivation);
+
+            this.AppsOnDeriveCurrentObjectState(derivation);
         }
 
         public void AppsOnPostDerive(ObjectOnPostDerive method)
@@ -284,7 +284,7 @@ namespace Allors.Domain
 
                         if (!costsInvoiced)
                         {
-                            var costs = this.DeriveShippingAndHandlingCharges(derivation);
+                            var costs = this.AppsOnDeriveShippingAndHandlingCharges(derivation);
                             if (costs > 0)
                             {
                                 salesInvoice.ShippingAndHandlingCharge = new ShippingAndHandlingChargeBuilder(this.Strategy.Session).WithAmount(costs).Build();
@@ -486,7 +486,7 @@ namespace Allors.Domain
                     if (shippingAndHandlingComponent.FromDate <= DateTime.UtcNow &&
                         (!shippingAndHandlingComponent.ExistThroughDate || shippingAndHandlingComponent.ThroughDate >= DateTime.UtcNow))
                     {
-                        if (ShippingAndHandlingComponents.IsEligible(shippingAndHandlingComponent, this))
+                        if (ShippingAndHandlingComponents.AppsIsEligible(shippingAndHandlingComponent, this))
                         {
                             if (shippingAndHandlingComponent.Cost.HasValue)
                             {
@@ -709,7 +709,7 @@ namespace Allors.Domain
 
                 if (this.CurrentObjectState.Equals(new CustomerShipmentObjectStates(this.Strategy.Session).Shipped))
                 {
-                    this.DeriveInvoices(derivation);
+                    this.AppsOnDeriveInvoices(derivation);
                     this.AppsOnDeriveOrderItemQuantityShipped(derivation);
                 }
             }

@@ -29,20 +29,6 @@ namespace Allors.Domain
 
         bool IsOrganisation { get; }
 
-        NumberFormatInfo CurrencyFormat { get; }
-
-        List<SalesOrder> PreOrders { get; }
-
-        IEnumerable<CustomerShipment> PendingCustomerShipments { get; }
-
-        void DeriveCurrentSalesReps(IDerivation derivation);
-
-        void DeriveOpenOrderAmount();
-
-        void DeriveRevenue();
-
-        CustomerShipment GetPendingCustomerShipmentForStore(PostalAddress address, Store store, ShipmentMethod shipmentMethod);
-
         void AppsOnDeriveCurrentContacts(IDerivation derivation);
 
         void AppsOnDeriveInactiveContacts(IDerivation derivation);

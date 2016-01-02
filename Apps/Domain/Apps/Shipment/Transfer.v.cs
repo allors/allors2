@@ -22,9 +22,5 @@ namespace Allors.Domain
 {
     public partial class Transfer
     {
-        public void DeriveCurrentObjectState(IDerivation derivation)
-        {
-            this.AppsOnDeriveCurrentObjectState(derivation);
-        }
     }
 }

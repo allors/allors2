@@ -33,7 +33,7 @@ namespace Allors.Domain
             {
                 if (person.ExistSalesRepRevenuesWhereSalesRep)
                 {
-                    person.DeriveCommission();
+                    person.AppsOnDeriveCommission();
                 }
             }
         }

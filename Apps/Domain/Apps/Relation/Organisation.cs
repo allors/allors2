@@ -60,7 +60,7 @@ namespace Allors.Domain
                 this.AddSecurityToken(this.OwnerSecurityToken);
             }
 
-            this.DeriveUserGroups(derivation);
+            this.AppsOnDeriveUserGroups(derivation);
             this.AppsOnDeriveCurrentContacts(derivation);
             this.AppsOnDeriveInactiveContacts(derivation);
             this.AppsOnDeriveCurrentOrganisationContactRelationships(derivation);
@@ -529,42 +529,42 @@ namespace Allors.Domain
             {
                 var roles = new List<string>();
 
-                if (IsActiveClient(DateTime.UtcNow.Date))
+                if (this.AppsIsActiveClient(DateTime.UtcNow.Date))
                 {
                     roles.Add("Client");
                 }
 
-                if (IsActiveCustomer(DateTime.UtcNow.Date))
+                if (this.AppsIsActiveCustomer(DateTime.UtcNow.Date))
                 {
                     roles.Add("Customer");
                 }
 
-                if (IsActiveDistributor(DateTime.UtcNow.Date))
+                if (this.AppsIsActiveDistributor(DateTime.UtcNow.Date))
                 {
                     roles.Add("Distributor");
                 }
 
-                if (IsActivePartner(DateTime.UtcNow.Date))
+                if (this.AppsIsActivePartner(DateTime.UtcNow.Date))
                 {
                     roles.Add("Partner");
                 }
 
-                if (IsActiveProfessionalServicesProvider(DateTime.UtcNow.Date))
+                if (this.AppsIsActiveProfessionalServicesProvider(DateTime.UtcNow.Date))
                 {
                     roles.Add("Professional Service Provider");
                 }
 
-                if (IsActiveProspect(DateTime.UtcNow.Date))
+                if (this.AppsIsActiveProspect(DateTime.UtcNow.Date))
                 {
                     roles.Add("Prospect");
                 }
 
-                if (IsActiveSubContractor(DateTime.UtcNow.Date))
+                if (this.AppsIsActiveSubContractor(DateTime.UtcNow.Date))
                 {
                     roles.Add("Subcontractor");
                 }
 
-                if (IsActiveSupplier(DateTime.UtcNow.Date))
+                if (this.AppsIsActiveSupplier(DateTime.UtcNow.Date))
                 {
                     roles.Add("Supplier");
                 }

@@ -31,7 +31,7 @@ namespace Allors.Domain
             config.GrantAdministrator(this.ObjectType, full);
         }
 
-        private static bool AppsIsEligible(ShippingAndHandlingComponent shippingAndHandlingComponent, CustomerShipment customerShipment)
+        public static bool AppsIsEligible(ShippingAndHandlingComponent shippingAndHandlingComponent, CustomerShipment customerShipment)
         {
             var withSpecifiedFor = false;
             var specifiedForValid = false;

@@ -87,7 +87,7 @@ namespace Allors.Domain
 
                 if (this.ExistShipToParty)
                 {
-                    foreach (var customerShipment in this.ShipToParty.PendingCustomerShipments)
+                    foreach (var customerShipment in this.ShipToParty.AppsGetPendingCustomerShipments())
                     {
                         derivation.AddDependency(customerShipment, this);
                     }

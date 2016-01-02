@@ -75,7 +75,7 @@ namespace Allors.Domain
             CustomerRelationships.AppsOnDeriveRevenues(this.Strategy.Session);
             this.Strategy.Session.Commit();
 
-            Parties.DeriveRevenues(this.Strategy.Session);
+            Parties.AppsOnDeriveRevenues(this.Strategy.Session);
             this.Strategy.Session.Commit();
 
             InternalOrganisationRevenues.AppsOnDeriveRevenues(this.Strategy.Session);

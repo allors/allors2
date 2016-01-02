@@ -350,7 +350,7 @@ namespace Allors.Domain
                 this.AddSecurityToken(Singleton.Instance(this.Strategy.Session).DefaultSecurityToken);
             }
 
-            this.DeriveEmployeeUserGroups(derivation);
+            this.AppsOnDeriveEmployeeUserGroups(derivation);
         }
 
         public void AppsOnDeriveEmployeeUserGroups(IDerivation derivation)

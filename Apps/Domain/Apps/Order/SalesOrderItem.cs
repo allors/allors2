@@ -482,7 +482,7 @@ namespace Allors.Domain
 
         private void DecreasePendingShipmentQuantity(IDerivation derivation, decimal diff)
         {
-            var pendingShipment = this.ShipToParty.GetPendingCustomerShipmentForStore(this.ShipToAddress, this.SalesOrderWhereSalesOrderItem.Store, this.SalesOrderWhereSalesOrderItem.ShipmentMethod);
+            var pendingShipment = this.ShipToParty.AppsGetPendingCustomerShipmentForStore(this.ShipToAddress, this.SalesOrderWhereSalesOrderItem.Store, this.SalesOrderWhereSalesOrderItem.ShipmentMethod);
 
             if (pendingShipment != null)
             {
@@ -493,7 +493,7 @@ namespace Allors.Domain
                         if (orderShipment.SalesOrderItem.Equals(this))
                         {
                             this.QuantityPendingShipment -= diff;
-                            pendingShipment.DeriveQuantityDecreased(derivation, shipmentItem, this, diff);
+                            pendingShipment.AppsOnDeriveQuantityDecreased(derivation, shipmentItem, this, diff);
                             break;
                         }
                     }

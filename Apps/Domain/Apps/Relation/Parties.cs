@@ -24,11 +24,11 @@ namespace Allors.Domain
 
     public partial class Parties
     {
-        private static void AppsOnDeriveRevenues(ISession session)
+        public static void AppsOnDeriveRevenues(ISession session)
         {
             foreach (Party party in session.Extent<Party>())
             {
-                party.DeriveRevenue();
+                party.AppsOnDeriveRevenue();
             }
         }
     }

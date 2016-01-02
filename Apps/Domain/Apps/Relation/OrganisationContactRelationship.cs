@@ -46,9 +46,9 @@ namespace Allors.Domain
         {
             var derivation = method.Derivation;
 
-            this.DeriveCustomerContactMemberShip(derivation);
-            this.DeriveSupplierContactMemberShip(derivation);
-            this.DerivePartnerContactMemberShip(derivation);
+            this.AppsOnDeriveCustomerContactMemberShip(derivation);
+            this.AppsOnDeriveSupplierContactMemberShip(derivation);
+            this.AppsOnDerivePartnerContactMemberShip(derivation);
 
             ////Before deriving this.Contact
             if (this.ExistOrganisation)
@@ -76,7 +76,7 @@ namespace Allors.Domain
             {
                 if (this.FromDate <= DateTime.UtcNow && (!this.ExistThroughDate || this.ThroughDate >= DateTime.UtcNow))
                 {
-                    if (this.Organisation.IsActiveCustomer(this.FromDate))
+                    if (this.Organisation.AppsIsActiveCustomer(this.FromDate))
                     {
                         if (!this.Organisation.CustomerContactUserGroup.ContainsMember(this.Contact))
                         {
@@ -107,7 +107,7 @@ namespace Allors.Domain
             {
                 if (this.FromDate <= DateTime.UtcNow && (!this.ExistThroughDate || this.ThroughDate >= DateTime.UtcNow))
                 {
-                    if (this.Organisation.IsActiveSupplier(this.FromDate))
+                    if (this.Organisation.AppsIsActiveSupplier(this.FromDate))
                     {
                         if (!this.Organisation.SupplierContactUserGroup.ContainsMember(this.Contact))
                         {
@@ -138,7 +138,7 @@ namespace Allors.Domain
             {
                 if (this.FromDate <= DateTime.UtcNow && (!this.ExistThroughDate || this.ThroughDate >= DateTime.UtcNow))
                 {
-                    if (this.Organisation.IsActivePartner(this.FromDate))
+                    if (this.Organisation.AppsIsActivePartner(this.FromDate))
                     {
                         if (!this.Organisation.PartnerContactUserGroup.ContainsMember(this.Contact))
                         {

@@ -22,9 +22,5 @@ namespace Allors.Domain
 {
     public partial class DropShipment
     {
-        public void DeriveCurrentObjectState(IDerivation derivation)
-        {
-            this.AppsOnDeriveCurrentObjectState(derivation);
-        }
     }
 }

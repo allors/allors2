@@ -47,7 +47,7 @@ namespace Allors.Domain
                 this.ShipFromAddress = this.ShipFromParty.ShippingAddress;
             }
 
-            this.DeriveCurrentObjectState(derivation);
+            this.AppsOnDeriveCurrentObjectState(derivation);
         }
 
         public void AppsOnDeriveCurrentObjectState(IDerivation derivation)

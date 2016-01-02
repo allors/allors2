@@ -61,8 +61,8 @@ namespace Allors.Domain
         {
             var derivation = method.Derivation;
 
-            this.DeriveMembership(derivation);
-            this.DeriveInternalOrganisationSupplier(derivation);
+            this.AppsOnDeriveMembership(derivation);
+            this.AppsOnDeriveInternalOrganisationSupplier(derivation);
 
             var supplierRelationships = this.InternalOrganisation.SupplierRelationshipsWhereInternalOrganisation;
             supplierRelationships.Filter.AddEquals(SupplierRelationships.Meta.SubAccountNumber, this.SubAccountNumber);

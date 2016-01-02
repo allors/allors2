@@ -99,7 +99,7 @@ namespace Allors.Domain
                 .WithDefaultPaymentMethod(ownBankAccount)
                 .Build();
 
-            organisation.StartNewFiscalYear();
+            organisation.AppsStartNewFiscalYear();
 
             Assert.AreEqual(4, this.DatabaseSession.Extent<AccountingPeriod>().Count);
 
@@ -135,7 +135,7 @@ namespace Allors.Domain
                 .WithDefaultPaymentMethod(ownBankAccount)
                 .Build();
 
-            organisation.StartNewFiscalYear();
+            organisation.AppsStartNewFiscalYear();
 
             Assert.AreEqual(4, this.DatabaseSession.Extent<AccountingPeriod>().Count);
 
@@ -188,7 +188,7 @@ namespace Allors.Domain
                 .WithDefaultPaymentMethod(ownBankAccount)
                 .Build();
 
-            organisation.StartNewFiscalYear();
+            organisation.AppsStartNewFiscalYear();
 
             Assert.AreEqual(4, this.DatabaseSession.Extent<AccountingPeriod>().Count);
 
@@ -254,7 +254,7 @@ namespace Allors.Domain
                 .WithDefaultPaymentMethod(ownBankAccount)
                 .Build();
 
-            organisation.StartNewFiscalYear();
+            organisation.AppsStartNewFiscalYear();
 
             organisation.ActualAccountingPeriod.AddNextMonth();
             organisation.ActualAccountingPeriod.AddNextMonth();

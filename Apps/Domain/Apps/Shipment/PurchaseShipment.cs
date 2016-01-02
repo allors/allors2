@@ -103,7 +103,7 @@ namespace Allors.Domain
                 this.AppsOnDeriveOrderItemQuantityReceived(derivation);
             }
 
-            this.DeriveCurrentObjectState(derivation);
+            this.AppsOnDeriveCurrentObjectState(derivation);
 
             foreach (ShipmentItem shipmentItem in this.ShipmentItems)
             {

@@ -748,7 +748,7 @@ namespace Allors.Domain
 
         private CustomerShipment AppsShip(IDerivation derivation, KeyValuePair<PostalAddress, Party> address)
         {
-            var pendingShipment = address.Value.GetPendingCustomerShipmentForStore(address.Key, this.Store, this.ShipmentMethod);
+            var pendingShipment = address.Value.AppsGetPendingCustomerShipmentForStore(address.Key, this.Store, this.ShipmentMethod);
 
             if (pendingShipment == null)
             {

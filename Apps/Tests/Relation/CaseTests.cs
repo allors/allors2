@@ -59,7 +59,7 @@ namespace Allors.Domain
             Assert.AreEqual(1, complaint.CaseStatuses.Count);
             Assert.AreEqual(new CaseObjectStates(this.DatabaseSession).Opened, complaint.CurrentCaseStatus.CaseObjectState);
 
-            complaint.Close();
+            complaint.AppsClose();
 
             this.DatabaseSession.Derive(true);
 

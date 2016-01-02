@@ -117,7 +117,7 @@ namespace Allors.Domain
                 .WithOrderItem(item1)
                 .Build();
 
-            shipment.Complete();
+            shipment.AppsComplete();
 
             this.DatabaseSession.Derive(true);
             this.DatabaseSession.Commit();
@@ -166,7 +166,7 @@ namespace Allors.Domain
             this.DatabaseSession.Derive(true);
             this.DatabaseSession.Commit();
 
-            shipment.Complete();
+            shipment.AppsComplete();
 
             Assert.AreEqual(new Warehouses(this.DatabaseSession).FindBy(Warehouses.Meta.Name, "facility"), receipt.InventoryItem.Facility);
             Assert.AreEqual(good.InventoryItemsWhereGood[0], receipt.InventoryItem);
@@ -252,7 +252,7 @@ namespace Allors.Domain
             this.DatabaseSession.Derive(true);
             this.DatabaseSession.Commit();
 
-            shipment.Complete();
+            shipment.AppsComplete();
 
             this.DatabaseSession.Derive(true);
             this.DatabaseSession.Commit();
@@ -299,7 +299,7 @@ namespace Allors.Domain
                 .WithOrderItem(item1)
                 .Build();
 
-            shipment.Complete();
+            shipment.AppsComplete();
 
             this.DatabaseSession.Derive(true);
             this.DatabaseSession.Commit();

@@ -44,9 +44,9 @@ namespace Allors.Domain
         {
             var derivation = method.Derivation;
 
-            this.DeriveCustomerShipmentItem(derivation);
+            this.AppsOnDeriveCustomerShipmentItem(derivation);
 
-            this.DerivePurchaseShipmentItem(derivation);
+            this.AppsOnDerivePurchaseShipmentItem(derivation);
         }
 
         public void AppsOnDerivePurchaseShipmentItem(IDerivation derivation)

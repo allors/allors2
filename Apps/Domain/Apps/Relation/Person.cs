@@ -188,37 +188,37 @@ namespace Allors.Domain
             {
                 var roles = new List<string>();
 
-                if (IsActiveClient(DateTime.UtcNow.Date))
+                if (this.AppsIsActiveClient(DateTime.UtcNow.Date))
                 {
                     roles.Add("Client");
                 }
 
-                if (IsActiveCustomer(DateTime.UtcNow.Date))
+                if (this.AppsIsActiveCustomer(DateTime.UtcNow.Date))
                 {
                     roles.Add("Customer");
                 }
 
-                if (IsActiveEmployee(DateTime.UtcNow.Date))
+                if (this.AppsIsActiveEmployee(DateTime.UtcNow.Date))
                 {
                     roles.Add("Employee");
                 }
 
-                if (IsActiveOrganisationContact(DateTime.UtcNow.Date))
+                if (this.AppsIsActiveOrganisationContact(DateTime.UtcNow.Date))
                 {
                     roles.Add("Organisation contact");
                 }
 
-                if (IsActiveSalesRep(DateTime.UtcNow.Date))
+                if (this.AppsIsActiveSalesRep(DateTime.UtcNow.Date))
                 {
                     roles.Add("Sales representative");
                 }
 
-                if (IsActiveProspect(DateTime.UtcNow.Date))
+                if (this.AppsIsActiveProspect(DateTime.UtcNow.Date))
                 {
                     roles.Add("Prospect");
                 }
 
-                if (IsActiveSubContractor(DateTime.UtcNow.Date))
+                if (this.AppsIsActiveSubContractor(DateTime.UtcNow.Date))
                 {
                     roles.Add("Subcontractor");
                 }
@@ -319,14 +319,14 @@ namespace Allors.Domain
             var derivation = method.Derivation;
 
             this.PartyName = this.DerivePartyName();
-            this.DeriveCurrentEmployment(derivation);
+            this.AppsOnDeriveCurrentEmployment(derivation);
             this.AppsOnDeriveCurrentContacts(derivation);
             this.AppsOnDeriveInactiveContacts(derivation);
             this.AppsOnDeriveCurrentOrganisationContactRelationships(derivation);
             this.AppsOnDeriveInactiveOrganisationContactRelationships(derivation);
             this.AppsOnDeriveCurrentPartyContactMechanisms(derivation);
             this.AppsOnDeriveInactivePartyContactMechanisms(derivation);
-            this.DeriveCommission();
+            this.AppsOnDeriveCommission();
         }
 
         public void AppsOnPostDerive(ObjectOnPostDerive method)

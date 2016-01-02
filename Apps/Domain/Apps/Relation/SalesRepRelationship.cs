@@ -46,7 +46,7 @@ namespace Allors.Domain
 
             if (this.ExistCustomer && this.ExistSalesRepresentative)
             {
-                this.Customer.DeriveCurrentSalesReps(derivation);
+                this.Customer.AppsOnDeriveCurrentSalesReps(derivation);
                 this.SalesRepresentative.OnDerive(x => x.WithDerivation(derivation));
             }
 

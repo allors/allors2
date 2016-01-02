@@ -22,7 +22,7 @@ namespace Allors.Domain
 {
     public partial class AutomatedAgent
     {
-        public bool IsPerson 
+        public bool IsPerson
         {
             get
             {
@@ -30,7 +30,8 @@ namespace Allors.Domain
             }
         }
 
-        public bool IsOrganisation {
+        public bool IsOrganisation
+        {
             get
             {
                 return false;

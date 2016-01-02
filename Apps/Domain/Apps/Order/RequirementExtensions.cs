@@ -18,11 +18,13 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-using System;
+using System.Runtime.CompilerServices;
 
 namespace Allors.Domain
 {
-    public static class RequirementExtensions
+    using System;
+
+    public static partial class RequirementExtensions
     {
         public static void AppsOnBuild(this Requirement @this, ObjectOnBuild method)
         {
@@ -63,6 +65,26 @@ namespace Allors.Domain
         public static void AppsHold(this Requirement requirement)
         {
             requirement.CurrentObjectState = new RequirementObjectStates(requirement.Strategy.Session).OnHold;
+        }
+
+        public static void AppsDelete(this CommunicationEvent @this, DeletableDelete method)
+        {
+            @this.CurrentObjectState = new CommunicationEventObjectStates(@this.Strategy.Session).Completed;
+        }
+
+        public static void AppsClose(this CommunicationEvent @this, CommunicationEventClose method)
+        {
+            @this.CurrentObjectState = new CommunicationEventObjectStates(@this.Strategy.Session).Completed;
+        }
+
+        public static void AppsReopen(this CommunicationEvent @this, CommunicationEventReopen method)
+        {
+            @this.CurrentObjectState = new CommunicationEventObjectStates(@this.Strategy.Session).Scheduled;
+        }
+
+        public static void AppsCancel(this CommunicationEvent @this, CommunicationEventCancel method)
+        {
+            @this.CurrentObjectState = new CommunicationEventObjectStates(@this.Strategy.Session).Cancelled;
         }
     }
 }

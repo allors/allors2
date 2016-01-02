@@ -265,9 +265,9 @@ namespace Allors.Domain
                 }
             }
 
-            @this.DeriveCurrentSalesReps(derivation);
-            @this.DeriveOpenOrderAmount();
-            @this.DeriveRevenue();
+            @this.AppsOnDeriveCurrentSalesReps(derivation);
+            @this.AppsOnDeriveOpenOrderAmount();
+            @this.AppsOnDeriveRevenue();
         }
 
         public static void AppsOnDeriveCurrentSalesReps(this Party party, IDerivation derivation)

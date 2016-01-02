@@ -310,7 +310,7 @@ namespace Allors.Domain
                 .WithPartyContactMechanism(this.billingAddress)
                 .Build();
 
-            organisation.StartNewFiscalYear();
+            organisation.AppsStartNewFiscalYear();
 
             var fromDate = DateTimeFactory.CreateDate(DateTime.UtcNow.Year, 01, 01).Date;
             var month = organisation.ActualAccountingPeriod;
@@ -360,7 +360,7 @@ namespace Allors.Domain
                 .WithPartyContactMechanism(this.billingAddress)
                 .Build();
 
-            organisation.StartNewFiscalYear();
+            organisation.AppsStartNewFiscalYear();
 
             var fromDate = DateTimeFactory.CreateDate(DateTime.UtcNow.Year, 05, 15).Date;
             var month = organisation.ActualAccountingPeriod;
@@ -416,11 +416,11 @@ namespace Allors.Domain
                 .WithPartyContactMechanism(this.billingAddress)
                 .Build();
 
-            organisation.StartNewFiscalYear();
+            organisation.AppsStartNewFiscalYear();
 
             Assert.AreEqual(4, this.DatabaseSession.Extent<AccountingPeriod>().Count);
 
-            organisation.StartNewFiscalYear();
+            organisation.AppsStartNewFiscalYear();
 
             Assert.AreEqual(4, this.DatabaseSession.Extent<AccountingPeriod>().Count);
         }

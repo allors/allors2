@@ -434,7 +434,7 @@ namespace Allors.Domain
                 .WithOrderItem(item)
                 .Build();
 
-            shipment.Complete();
+            shipment.AppsComplete();
 
             this.DatabaseSession.Derive(true);
 
@@ -576,7 +576,7 @@ namespace Allors.Domain
                 .WithOrderItem(item)
                 .Build();
 
-            shipment.Complete();
+            shipment.AppsComplete();
             
             this.DatabaseSession.Derive(true);
 
@@ -672,7 +672,7 @@ namespace Allors.Domain
                 .WithOrderItem(item)
                 .Build();
 
-            shipment.Complete();
+            shipment.AppsComplete();
             
             this.DatabaseSession.Derive(true);
 
