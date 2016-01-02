@@ -136,14 +136,20 @@ namespace Allors.Domain
             this.AppsOnDeriveDeliveryDate(derivation);
             this.AppsOnDeriveVatRegime(derivation);
             this.AppsOnDeriveIsValidOrderItem(derivation);
-            this.AppsOnDeriveCurrentObjectState(derivation);
 
             if (this.QuantityShipNow != 0)
             {
                 this.AppsShipNow(derivation);
-                this.ReservedFromInventoryItem.OnDerive(x => x.WithDerivation(derivation));
+
+                if (this.ExistReservedFromInventoryItem)
+                {
+                    this.ReservedFromInventoryItem.OnDerive(x => x.WithDerivation(derivation));
+                }
+
                 this.SalesOrderWhereSalesOrderItem.OnDerive(x => x.WithDerivation(derivation));
             }
+
+            this.AppsOnDeriveCurrentObjectState(derivation);
         }
 
         public void AppsOnDeriveIsValidOrderItem(IDerivation derivation)

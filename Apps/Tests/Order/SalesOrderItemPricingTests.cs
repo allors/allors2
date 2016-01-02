@@ -359,6 +359,8 @@ namespace Allors.Domain
                 .WithTakenByInternalOrganisation(this.internalOrganisation)
                 .Build();
 
+            this.order.Confirm();
+
             this.DatabaseSession.Derive(true);
             this.DatabaseSession.Commit();
         }
@@ -401,6 +403,7 @@ namespace Allors.Domain
 
             var item1 = new SalesOrderItemBuilder(this.DatabaseSession).WithProduct(this.good).WithQuantityOrdered(quantityOrdered1).Build();
             this.order.AddSalesOrderItem(item1);
+
             this.DatabaseSession.Derive(true);
 
             Assert.AreEqual(this.currentGoodBasePrice.Price, item1.UnitBasePrice);
@@ -2111,6 +2114,7 @@ namespace Allors.Domain
 
             var item1 = new SalesOrderItemBuilder(this.DatabaseSession).WithProduct(this.good).WithQuantityOrdered(3).WithRequiredMarkupPercentage(45).Build();
             this.order.AddSalesOrderItem(item1);
+            item1.Confirm();
 
             this.DatabaseSession.Derive(true);
 

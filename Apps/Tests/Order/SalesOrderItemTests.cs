@@ -371,6 +371,8 @@ namespace Allors.Domain
                 .WithTakenByInternalOrganisation(this.internalOrganisation)
                 .Build();
 
+            this.order.Confirm();
+
             this.DatabaseSession.Derive(true);
             this.DatabaseSession.Commit();
         }
