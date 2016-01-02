@@ -24,14 +24,6 @@ namespace Allors.Domain
 
     public partial class SalesChannelRevenueHistory
     {
-        public string RevenueAsCurrencyString
-        {
-            get
-            {
-                return DecimalExtensions.AsCurrencyString(this.Revenue, this.InternalOrganisation.CurrencyFormat);
-            }
-        }
-
         public void AppsOnDerive(ObjectOnDerive method)
         {
             var derivation = method.Derivation;

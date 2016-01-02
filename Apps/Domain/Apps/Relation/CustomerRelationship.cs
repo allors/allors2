@@ -87,16 +87,6 @@ namespace Allors.Domain
                 this.InternalOrganisation = Domain.Singleton.Instance(this.Strategy.Session).DefaultInternalOrganisation;
             }
 
-            if (!this.ExistAmountDue)
-            {
-                this.AmountDue = 0;
-            }
-
-            if (!this.ExistAmountOverDue)
-            {
-                this.AmountOverDue = 0;
-            }
-
             if (!this.ExistSubAccountNumber)
             {
                 this.SubAccountNumber = this.InternalOrganisation.DeriveNextSubAccountNumber();

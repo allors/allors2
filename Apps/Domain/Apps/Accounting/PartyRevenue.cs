@@ -24,11 +24,6 @@ namespace Allors.Domain
 
     public partial class PartyRevenue
     {
-        public string RevenueAsCurrencyString()
-        {
-            return DecimalExtensions.AsCurrencyString(this.Revenue, this.InternalOrganisation.CurrencyFormat);
-        }
-
         internal void AppsOnDeriveRevenue()
         {
             this.RemoveRevenue();

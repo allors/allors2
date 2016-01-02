@@ -28,8 +28,6 @@ namespace Allors.Domain
     {       
         public void AppsOnBuild(ObjectOnBuild method)
         {
-            
-
             if (!this.ExistEffectiveDate)
             {
                 this.EffectiveDate = DateTime.UtcNow;

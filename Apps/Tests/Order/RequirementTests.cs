@@ -57,7 +57,7 @@ namespace Allors.Domain
             Assert.AreEqual(1, requirement.RequirementStatuses.Count);
             Assert.AreEqual(new RequirementObjectStates(this.DatabaseSession).Active, requirement.CurrentRequirementStatus.RequirementObjectState);
 
-            requirement.Close();
+            requirement.AppsClose();
 
             this.DatabaseSession.Derive(true);
 

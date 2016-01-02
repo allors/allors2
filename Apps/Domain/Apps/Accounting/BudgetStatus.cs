@@ -26,8 +26,6 @@ namespace Allors.Domain
     {
         public void AppsOnBuild(ObjectOnBuild method)
         {
-            
-
             if (!this.ExistStartDateTime)
             {
                 this.StartDateTime = DateTime.UtcNow;

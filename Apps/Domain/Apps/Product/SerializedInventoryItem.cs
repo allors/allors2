@@ -22,13 +22,7 @@ namespace Allors.Domain
 {
     public partial class SerializedInventoryItem
     {
-        ObjectState Transitional.CurrentObjectState
-        {
-            get
-            {
-                return this.CurrentObjectState;
-            }
-        }
+        ObjectState Transitional.CurrentObjectState => this.CurrentObjectState;
 
         public void AppsOnBuild(ObjectOnBuild method)
         {
@@ -73,7 +67,7 @@ namespace Allors.Domain
             derivation.Log.AssertAtLeastOne(this, SerializedInventoryItems.Meta.Good, SerializedInventoryItems.Meta.Part);
             derivation.Log.AssertExistsAtMostOne(this, SerializedInventoryItems.Meta.Good, SerializedInventoryItems.Meta.Part);
 
-            this.DeriveCurrentObjectState(derivation);
+            this.AppsOnDeriveCurrentObjectState(derivation);
         }
 
         public void AppsOnDeriveCurrentObjectState(IDerivation derivation)
@@ -90,7 +84,7 @@ namespace Allors.Domain
                 this.CurrentObjectState.Process(this);
             }
 
-            this.DeriveProductCategories(derivation);
+            this.AppsOnDeriveProductCategories(derivation);
         }
 
         public void AppsOnDeriveProductCategories(IDerivation derivation)

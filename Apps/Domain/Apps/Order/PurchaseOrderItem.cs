@@ -22,46 +22,7 @@ namespace Allors.Domain
 {
     public partial class PurchaseOrderItem
     {
-        ObjectState Transitional.CurrentObjectState
-        {
-            get
-            {
-                return this.CurrentObjectState;
-            }
-        }
-
-        public string GetActualUnitBasePriceAsCurrencyString
-        {
-            get
-            {
-                return this.ExistActualUnitPrice ? DecimalExtensions.AsCurrencyString(this.ActualUnitPrice, this.PurchaseOrderWherePurchaseOrderItem.CurrencyFormat) : string.Empty;
-            }
-        }
-
-        public string GetUnitBasePriceAsCurrencyString
-        {
-            get
-            {
-                return DecimalExtensions.AsCurrencyString(this.UnitBasePrice, this.PurchaseOrderWherePurchaseOrderItem.CurrencyFormat);
-            }
-        }
-
-        public string GetTotalExVatAsCurrencyString
-        {
-            get
-            {
-                return DecimalExtensions.AsCurrencyString(this.TotalExVat, this.PurchaseOrderWherePurchaseOrderItem.CurrencyFormat);
-            }
-        }
-
-        public string GetNothingAsCurrencyString
-        {
-            get
-            {
-                const decimal Nothing = 0;
-                return Nothing.AsCurrencyString(this.PurchaseOrderWherePurchaseOrderItem.CurrencyFormat);
-            }
-        }
+        ObjectState Transitional.CurrentObjectState => this.CurrentObjectState;
 
         public string SupplierReference
         {
@@ -128,8 +89,6 @@ namespace Allors.Domain
 
         public void AppsOnBuild(ObjectOnBuild method)
         {
-            
-
             if (!this.ExistCurrentObjectState)
             {
                 this.CurrentObjectState = new PurchaseOrderItemObjectStates(this.Strategy.Session).Created;
@@ -159,9 +118,9 @@ namespace Allors.Domain
 
             this.AppsDeriveVatRegime(derivation);
 
-            this.DeriveIsValidOrderItem(derivation);
+            this.AppsOnDeriveIsValidOrderItem(derivation);
 
-            this.DeriveCurrentObjectState(derivation);
+            this.AppsOnDeriveCurrentObjectState(derivation);
         }
 
         public void AppsDeriveVatRegime(IDerivation derivation)
@@ -240,7 +199,7 @@ namespace Allors.Domain
 
             if (this.CurrentObjectState.Equals(new PurchaseOrderItemObjectStates(this.Strategy.Session).InProcess))
             {
-                this.DeriveQuantities(derivation);
+                this.AppsOnDeriveQuantities(derivation);
 
                 this.PreviousQuantity = this.QuantityOrdered;
             }
@@ -248,7 +207,7 @@ namespace Allors.Domain
             if (this.CurrentObjectState.Equals(new PurchaseOrderItemObjectStates(this.Strategy.Session).Cancelled) ||
                 this.CurrentObjectState.Equals(new PurchaseOrderItemObjectStates(this.Strategy.Session).Rejected))
             {
-                this.DeriveQuantities(derivation);
+                this.AppsOnDeriveQuantities(derivation);
             }
 
             if (this.ExistCurrentObjectState)
@@ -262,13 +221,13 @@ namespace Allors.Domain
             if (this.ExistCurrentShipmentStatus && this.CurrentShipmentStatus.PurchaseOrderItemObjectState.Equals(new PurchaseOrderItemObjectStates(this.Strategy.Session).PartiallyReceived))
             {
                 this.CurrentObjectState = new PurchaseOrderItemObjectStates(this.Strategy.Session).PartiallyReceived;
-                this.DeriveCurrentObjectState(derivation);
+                this.AppsOnDeriveCurrentObjectState(derivation);
             }
 
             if (this.ExistCurrentShipmentStatus && this.CurrentShipmentStatus.PurchaseOrderItemObjectState.Equals(new PurchaseOrderItemObjectStates(this.Strategy.Session).Received))
             {
                 this.CurrentObjectState = new PurchaseOrderItemObjectStates(this.Strategy.Session).Completed;
-                this.DeriveCurrentObjectState(derivation);
+                this.AppsOnDeriveCurrentObjectState(derivation);
             }
         }
 
@@ -340,11 +299,11 @@ namespace Allors.Domain
                 this.AddShipmentStatus(this.CurrentShipmentStatus);
             }
 
-            this.DeriveCurrentOrderStatus(derivation);
+            this.AppsOnDeriveCurrentOrderStatus(derivation);
 
             if (this.ExistPurchaseOrderWherePurchaseOrderItem)
             {
-                this.PurchaseOrderWherePurchaseOrderItem.DeriveCurrentShipmentStatus(derivation);
+                this.PurchaseOrderWherePurchaseOrderItem.AppsOnDeriveCurrentShipmentStatus(derivation);
             }
         }
 

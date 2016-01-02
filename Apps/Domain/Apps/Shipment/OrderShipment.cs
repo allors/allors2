@@ -24,8 +24,6 @@ namespace Allors.Domain
     {
         public void AppsOnBuild(ObjectOnBuild method)
         {
-            
-
             this.Picked = false;
 
             if (!this.ExistQuantity)

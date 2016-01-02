@@ -22,13 +22,7 @@ namespace Allors.Domain
 {
     public partial class WebSiteCommunication
     {
-        ObjectState Transitional.CurrentObjectState
-        {
-            get
-            {
-                return this.CurrentObjectState;
-            }
-        }
+        ObjectState Transitional.CurrentObjectState => this.CurrentObjectState;
 
         public void AppsOnDerive(ObjectOnDerive method)
         {

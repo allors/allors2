@@ -4,13 +4,7 @@ namespace Allors.Domain
 
     public partial class SalesInvoiceItem
     {
-        ObjectState Transitional.CurrentObjectState
-        {
-            get
-            {
-                return this.CurrentObjectState;
-            }
-        }
+        ObjectState Transitional.CurrentObjectState => this.CurrentObjectState;
 
         public int? PaymentNetDays
         {
@@ -78,21 +72,9 @@ namespace Allors.Domain
 
         public void AppsOnBuild(ObjectOnBuild method)
         {
-            
-
             if (!this.ExistCurrentObjectState)
             {
                 this.CurrentObjectState = new SalesInvoiceItemObjectStates(this.Strategy.Session).ReadyForPosting;
-            }
-
-            if (!this.ExistQuantity)
-            {
-                this.Quantity = 0;
-            }
-
-            if (!this.ExistAmountPaid)
-            {
-                this.AmountPaid = 0;
             }
         }
 
@@ -191,7 +173,7 @@ namespace Allors.Domain
                     if (!this.CurrentObjectState.Equals(new SalesInvoiceItemObjectStates(this.Strategy.Session).PartiallyPaid))
                     {
                         this.CurrentObjectState = new SalesInvoiceItemObjectStates(this.Strategy.Session).PartiallyPaid;
-                        this.DeriveCurrentObjectState(derivation);
+                        this.AppsOnDeriveCurrentObjectState(derivation);
                     }
                 }
 
@@ -200,7 +182,7 @@ namespace Allors.Domain
                     if (!this.CurrentObjectState.Equals(new SalesInvoiceItemObjectStates(this.Strategy.Session).Paid))
                     {
                         this.CurrentObjectState = new SalesInvoiceItemObjectStates(this.Strategy.Session).Paid;
-                        this.DeriveCurrentObjectState(derivation);
+                        this.AppsOnDeriveCurrentObjectState(derivation);
                     }
                 }
             }
@@ -214,12 +196,12 @@ namespace Allors.Domain
 
                 if (invoice.CurrentObjectState.Equals(new SalesInvoiceObjectStates(this.Strategy.Session).Cancelled))
                 {
-                    this.Cancel(derivation);
+                    this.AppsCancel(derivation);
                 }
 
                 if (invoice.CurrentObjectState.Equals(new SalesInvoiceObjectStates(this.Strategy.Session).WrittenOff))
                 {
-                    this.WriteOff(derivation);
+                    this.AppsWriteOff(derivation);
                 }
             }
 
@@ -242,15 +224,15 @@ namespace Allors.Domain
             foreach (PaymentApplication paymentApplication in this.PaymentApplicationsWhereInvoiceItem)
             {
                 this.AmountPaid += paymentApplication.AmountApplied;
-                this.PaymentReceived(derivation);
+                this.AppsPaymentReceived(derivation);
             }
         }
 
         public void AppsOnDeriveVatRegime(IDerivation derivation)
         {
             this.VatRegime = this.ExistAssignedVatRegime ? this.AssignedVatRegime : this.SalesInvoiceWhereSalesInvoiceItem.VatRegime;
-            
-            this.DeriveVatRate(derivation);
+
+            this.AppsOnDeriveVatRate(derivation);
         }
 
         public void AppsOnDeriveVatRate(IDerivation derivation)
@@ -297,15 +279,15 @@ namespace Allors.Domain
                 {
                     if (priceComponent.Strategy.Class.Equals(BasePrices.Meta.ObjectType))
                     {
-                        if (PriceComponents.IsEligible(new PriceComponents.IsEligibleParams
-                                                           {
-                                                               PriceComponent = priceComponent, 
-                                                               Customer = customer, 
-                                                               Product = this.Product, 
-                                                               SalesInvoice = salesInvoice, 
-                                                               QuantityOrdered = quantityInvoiced, 
-                                                               ValueOrdered = totalBasePrice
-                                                           }))
+                        if (PriceComponents.AppsIsEligible(new PriceComponents.IsEligibleParams
+                                                               {
+                                                                   PriceComponent = priceComponent, 
+                                                                   Customer = customer, 
+                                                                   Product = this.Product, 
+                                                                   SalesInvoice = salesInvoice, 
+                                                                   QuantityOrdered = quantityInvoiced, 
+                                                                   ValueOrdered = totalBasePrice
+                                                               }))
                         {
                             if (priceComponent.ExistPrice)
                             {
@@ -342,18 +324,18 @@ namespace Allors.Domain
                 {
                     if (priceComponent.Strategy.Class.Equals(DiscountComponents.Meta.ObjectType) || priceComponent.Strategy.Class.Equals(SurchargeComponents.Meta.ObjectType))
                     {
-                        if (PriceComponents.IsEligible(new PriceComponents.IsEligibleParams
-                                                           {
-                                                               PriceComponent = priceComponent, 
-                                                               Customer = customer, 
-                                                               Product = this.Product, 
-                                                               SalesInvoice = salesInvoice, 
-                                                               QuantityOrdered = quantityInvoiced, 
-                                                               ValueOrdered = totalBasePrice, 
-                                                               PartyPackageRevenueHistoryList = partyPackageRevenuesHistories, 
-                                                               PartyRevenueHistory = partyRevenueHistory, 
-                                                               PartyProductCategoryRevenueHistoryByProductCategory = partyProductCategoryRevenueHistoryByProductCategory
-                                                           }))
+                        if (PriceComponents.AppsIsEligible(new PriceComponents.IsEligibleParams
+                                                               {
+                                                                   PriceComponent = priceComponent, 
+                                                                   Customer = customer, 
+                                                                   Product = this.Product, 
+                                                                   SalesInvoice = salesInvoice, 
+                                                                   QuantityOrdered = quantityInvoiced, 
+                                                                   ValueOrdered = totalBasePrice, 
+                                                                   PartyPackageRevenueHistoryList = partyPackageRevenuesHistories, 
+                                                                   PartyRevenueHistory = partyRevenueHistory, 
+                                                                   PartyProductCategoryRevenueHistoryByProductCategory = partyProductCategoryRevenueHistoryByProductCategory
+                                                               }))
                         {
                             this.AddCurrentPriceComponent(priceComponent);
 
@@ -451,7 +433,7 @@ namespace Allors.Domain
                 this.TotalIncVatCustomerCurrency = Currencies.ConvertCurrency(this.TotalIncVat, fromCurrency, toCurrency);
             }
 
-            this.DeriveMarkupAndProfitMargin(derivation);
+            this.AppsOnDeriveMarkupAndProfitMargin(derivation);
         }
 
         private IEnumerable<PriceComponent> GetPriceComponents(InternalOrganisation internalOrganisation)

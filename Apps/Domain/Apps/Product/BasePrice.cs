@@ -84,15 +84,15 @@ namespace Allors.Domain
             {
                 this.ProductFeature.AddToBasePrice(this);
             }
-            
-            this.DeriveVirtualProductPriceComponent();
+
+            this.AppsOnDeriveVirtualProductPriceComponent();
         }
 
         public void AppsOnDeriveVirtualProductPriceComponent()
         {
             if (this.ExistProduct)
             {
-                this.Product.DeriveVirtualProductPriceComponent();
+                this.Product.AppsOnDeriveVirtualProductPriceComponent();
             }
         }
     }

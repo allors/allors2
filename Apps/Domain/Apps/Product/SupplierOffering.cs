@@ -29,7 +29,7 @@ namespace Allors.Domain
             derivation.Log.AssertAtLeastOne(this, SupplierOfferings.Meta.Part, SupplierOfferings.Meta.Product);
             derivation.Log.AssertExistsAtMostOne(this, SupplierOfferings.Meta.Part, SupplierOfferings.Meta.Product);
 
-            this.DeriveInventoryItem(derivation);
+            this.AppsOnDeriveInventoryItem(derivation);
         }
 
         public void AppsOnDeriveInventoryItem(IDerivation derivation)

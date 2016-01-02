@@ -52,60 +52,8 @@ namespace Allors.Domain
                 this.AddProductCategory(PrimaryProductCategory);
             }
 
-            this.DeriveVirtualProductPriceComponent();
-            this.DeriveProductCategoryExpanded();
-        }
-
-        public void AppsOnDeriveVirtualProductPriceComponent()
-        {
-            if (!this.ExistProductWhereVariant)
-            {
-                this.RemoveVirtualProductPriceComponents();
-            }
-
-            if (this.ExistVariants)
-            {
-                this.RemoveVirtualProductPriceComponents();
-
-                var priceComponents = this.PriceComponentsWhereProduct;
-
-                foreach (DeliverableBasedService product in this.Variants)
-                {
-                    foreach (PriceComponent priceComponent in priceComponents)
-                    {
-                        product.AddVirtualProductPriceComponent(priceComponent);
-
-                        var basePrice = priceComponent as BasePrice;
-                        if (basePrice != null && !priceComponent.ExistProductFeature)
-                        {
-                            product.AddToBasePrice(basePrice);
-                        }
-                    }
-                }
-            }
-        }
-
-        public void AppsOnDeriveProductCategoryExpanded()
-        {
-            this.RemoveProductCategoriesExpanded();
-
-            if (this.ExistPrimaryProductCategory)
-            {
-                this.AddProductCategoryExpanded(this.PrimaryProductCategory);
-                foreach (ProductCategory ancestor in this.PrimaryProductCategory.Ancestors)
-                {
-                    this.AddProductCategoryExpanded(ancestor);
-                }
-            }
-
-            foreach (ProductCategory productCategory in this.ProductCategories)
-            {
-                this.AddProductCategoryExpanded(productCategory);
-                foreach (ProductCategory ancestor in productCategory.Ancestors)
-                {
-                    this.AddProductCategoryExpanded(ancestor);
-                }
-            }
+            this.AppsOnDeriveVirtualProductPriceComponent();
+            this.AppsOnDeriveProductCategoryExpanded();
         }
     }
 }

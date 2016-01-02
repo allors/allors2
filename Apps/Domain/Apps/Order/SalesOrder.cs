@@ -28,13 +28,7 @@ namespace Allors.Domain
 
     public partial class SalesOrder
     {
-        ObjectState Transitional.CurrentObjectState
-        {
-            get
-            {
-                return this.CurrentObjectState;
-            }
-        }
+        ObjectState Transitional.CurrentObjectState => this.CurrentObjectState;
 
         public PaymentMethod GetPaymentMethod
         {
@@ -49,29 +43,7 @@ namespace Allors.Domain
             }
         }
 
-        public bool CanEdit
-        {
-            get
-            {
-                if (!this.CurrentObjectState.Equals(new SalesOrderObjectStates(this.Strategy.Session).Finished) &&
-                    !this.CurrentObjectState.Equals(new SalesOrderObjectStates(this.Strategy.Session).Completed) &&
-                    !this.CurrentObjectState.Equals(new SalesOrderObjectStates(this.Strategy.Session).Rejected) &&
-                    !this.CurrentObjectState.Equals(new SalesOrderObjectStates(this.Strategy.Session).Cancelled))
-                {
-                    return true;
-                }
-
-                return false;
-            }
-        }
-
-        public OrderItem[] OrderItems
-        {
-            get
-            {
-                return this.SalesOrderItems;
-            }
-        }
+        public OrderItem[] OrderItems => this.SalesOrderItems;
 
         public NumberFormatInfo CurrencyFormat
         {
@@ -94,25 +66,6 @@ namespace Allors.Domain
                 }
 
                 return false;
-            }
-        }
-
-        private string AppsSalesRepNames
-        {
-            get
-            {
-                var names = new StringBuilder();
-                foreach (Person salesRep in this.SalesReps)
-                {
-                    if (names.Length > 0)
-                    {
-                        names.Append(", ");
-                    }
-
-                    names.Append(salesRep.PartyName);
-                }
-
-                return names.ToString();
             }
         }
 
@@ -140,8 +93,6 @@ namespace Allors.Domain
 
         public void AppsOnBuild(ObjectOnBuild method)
         {
-
-
             if (!this.ExistCurrentObjectState)
             {
                 this.CurrentObjectState = new SalesOrderObjectStates(this.Strategy.Session).Provisional;
@@ -178,86 +129,6 @@ namespace Allors.Domain
                 {
                     this.Store = this.TakenByInternalOrganisation.StoresWhereOwner.First;
                 }
-            }
-
-            if (!this.ExistTotalBasePrice)
-            {
-                this.TotalBasePrice = 0;
-            }
-
-            if (!this.ExistTotalBasePriceCustomerCurrency)
-            {
-                this.TotalBasePriceCustomerCurrency = 0;
-            }
-
-            if (!this.ExistTotalDiscount)
-            {
-                this.TotalDiscount = 0;
-            }
-
-            if (!this.ExistTotalDiscountCustomerCurrency)
-            {
-                this.TotalDiscountCustomerCurrency = 0;
-            }
-
-            if (!this.ExistTotalExVat)
-            {
-                this.TotalExVat = 0;
-            }
-
-            if (!this.ExistTotalExVatCustomerCurrency)
-            {
-                this.TotalExVatCustomerCurrency = 0;
-            }
-
-            if (!this.ExistTotalFee)
-            {
-                this.TotalFee = 0;
-            }
-
-            if (!this.ExistTotalFeeCustomerCurrency)
-            {
-                this.TotalFeeCustomerCurrency = 0;
-            }
-
-            if (!this.ExistTotalShippingAndHandling)
-            {
-                this.TotalShippingAndHandling = 0;
-            }
-
-            if (!this.ExistTotalShippingAndHandlingCustomerCurrency)
-            {
-                this.TotalShippingAndHandlingCustomerCurrency = 0;
-            }
-
-            if (!this.ExistTotalSurcharge)
-            {
-                this.TotalSurcharge = 0;
-            }
-
-            if (!this.ExistTotalSurchargeCustomerCurrency)
-            {
-                this.TotalSurchargeCustomerCurrency = 0;
-            }
-
-            if (!this.ExistTotalIncVat)
-            {
-                this.TotalIncVat = 0;
-            }
-
-            if (!this.ExistTotalIncVatCustomerCurrency)
-            {
-                this.TotalIncVatCustomerCurrency = 0;
-            }
-
-            if (!this.ExistTotalVat)
-            {
-                this.TotalVat = 0;
-            }
-
-            if (!this.ExistTotalVatCustomerCurrency)
-            {
-                this.TotalVatCustomerCurrency = 0;
             }
 
             if (!this.ExistVatRegime && this.ExistBillToCustomer)
@@ -339,7 +210,7 @@ namespace Allors.Domain
                 }
             }
 
-            foreach (SalesOrderItem orderItem in this.OrderItems)
+            foreach (var orderItem in this.OrderItems)
             {
                 derivation.AddDependency(this, orderItem);
             }
@@ -431,18 +302,18 @@ namespace Allors.Domain
                 this.PaymentMethod = this.BillToCustomer.DefaultPaymentMethod ?? this.Store.DefaultPaymentMethod;
             }
 
-            this.DeriveOrderItems(derivation);
+            this.AppsOnDeriveOrderItems(derivation);
 
-            this.DeriveCurrentShipmentStatus(derivation);
-            this.DeriveCurrentOrderStatus(derivation);
+            this.AppsOnDeriveCurrentShipmentStatus(derivation);
+            this.AppsOnDeriveCurrentOrderStatus(derivation);
             this.DeriveCurrentObjectState(derivation);
-            this.DeriveLocale(derivation);
-            this.DeriveOrderTotals(derivation);
-            this.DeriveCustomers(derivation);
-            this.DeriveSalesReps(derivation);
-            this.DeriveCurrentPaymentStatus(derivation);
+            this.AppsOnDeriveLocale(derivation);
+            this.AppsOnDeriveOrderTotals(derivation);
+            this.AppsOnDeriveCustomers(derivation);
+            this.AppsOnDeriveSalesReps(derivation);
+            this.AppsOnDeriveCurrentPaymentStatus(derivation);
 
-            this.TryShip(derivation);
+            this.AppsTryShip(derivation);
 
             this.PreviousBillToCustomer = this.BillToCustomer;
             this.PreviousShipToCustomer = this.ShipToCustomer;  
@@ -465,7 +336,7 @@ namespace Allors.Domain
 
             if (this.ExistBillToCustomer && !this.SecurityTokens.Contains(this.BillToCustomer.OwnerSecurityToken))
             {
-                this.AddSecurityToken(BillToCustomer.OwnerSecurityToken);
+                this.AddSecurityToken(this.BillToCustomer.OwnerSecurityToken);
             }
 
             if (this.ExistPreviousBillToCustomer && !this.BillToCustomer.Equals(this.PreviousBillToCustomer))
@@ -475,7 +346,7 @@ namespace Allors.Domain
 
             if (this.ExistShipToCustomer && !this.SecurityTokens.Contains(this.ShipToCustomer.OwnerSecurityToken))
             {
-                this.AddSecurityToken(ShipToCustomer.OwnerSecurityToken);
+                this.AddSecurityToken(this.ShipToCustomer.OwnerSecurityToken);
             }
 
             if (this.ExistPreviousShipToCustomer && !this.ShipToCustomer.Equals(this.PreviousShipToCustomer))
@@ -514,7 +385,7 @@ namespace Allors.Domain
             {
                 if (customerRelationship.FromDate <= DateTime.UtcNow && (!customerRelationship.ExistThroughDate || customerRelationship.ThroughDate >= DateTime.UtcNow))
                 {
-                    creditLimit = customerRelationship.CreditLimit.HasValue ? customerRelationship.CreditLimit.Value : this.Store.ExistCreditLimit ? this.Store.CreditLimit : 0;
+                    creditLimit = customerRelationship.CreditLimit ?? (this.Store.ExistCreditLimit ? this.Store.CreditLimit : 0);
                     amountOverDue = customerRelationship.AmountOverDue;
                 }
             }
@@ -597,7 +468,7 @@ namespace Allors.Domain
                 this.CurrentPaymentStatus = new SalesOrderStatusBuilder(this.Strategy.Session).WithSalesOrderObjectState(new SalesOrderObjectStates(this.Strategy.Session).PartiallyPaid).Build();
             }
 
-            this.DeriveCurrentOrderStatus(derivation);
+            this.AppsOnDeriveCurrentOrderStatus(derivation);
         }
 
         public void AppsOnDeriveCurrentShipmentStatus(IDerivation derivation)
@@ -638,7 +509,7 @@ namespace Allors.Domain
                 this.CurrentShipmentStatus = new SalesOrderStatusBuilder(this.Strategy.Session).WithSalesOrderObjectState(new SalesOrderObjectStates(this.Strategy.Session).PartiallyShipped).Build();
             }
 
-            this.DeriveCurrentOrderStatus(derivation);
+            this.AppsOnDeriveCurrentOrderStatus(derivation);
         }
 
         public void AppsOnDeriveCurrentOrderStatus(IDerivation derivation)
@@ -710,7 +581,7 @@ namespace Allors.Domain
             {
                 decimal discount = this.DiscountAdjustment.Percentage.HasValue ?
                     decimal.Round((this.TotalExVat * this.DiscountAdjustment.Percentage.Value) / 100, 2) :
-                    this.DiscountAdjustment.Amount.HasValue ? this.DiscountAdjustment.Amount.Value : 0;
+                    this.DiscountAdjustment.Amount ?? 0;
 
                 this.TotalDiscount += discount;
                 this.TotalExVat -= discount;
@@ -728,7 +599,7 @@ namespace Allors.Domain
             {
                 decimal surcharge = this.SurchargeAdjustment.Percentage.HasValue ?
                     decimal.Round((this.TotalExVat * this.SurchargeAdjustment.Percentage.Value) / 100, 2) :
-                    this.SurchargeAdjustment.Amount.HasValue ? this.SurchargeAdjustment.Amount.Value : 0;
+                    this.SurchargeAdjustment.Amount ?? 0;
 
                 this.TotalSurcharge += surcharge;
                 this.TotalExVat += surcharge;
@@ -748,7 +619,7 @@ namespace Allors.Domain
             {
                 decimal fee = this.Fee.Percentage.HasValue ?
                     decimal.Round((this.TotalExVat * this.Fee.Percentage.Value) / 100, 2) :
-                    this.Fee.Amount.HasValue ? this.Fee.Amount.Value : 0;
+                    this.Fee.Amount ?? 0;
 
                 this.TotalFee += fee;
                 this.TotalExVat += fee;
@@ -768,7 +639,7 @@ namespace Allors.Domain
             {
                 decimal shipping = this.ShippingAndHandlingCharge.Percentage.HasValue ?
                     decimal.Round((this.TotalExVat * this.ShippingAndHandlingCharge.Percentage.Value) / 100, 2) :
-                    this.ShippingAndHandlingCharge.Amount.HasValue ? this.ShippingAndHandlingCharge.Amount.Value : 0;
+                    this.ShippingAndHandlingCharge.Amount ?? 0;
 
                 this.TotalShippingAndHandling += shipping;
                 this.TotalExVat += shipping;
@@ -855,7 +726,7 @@ namespace Allors.Domain
                 if (this.CurrentObjectState.Equals(new SalesOrderObjectStates(this.Strategy.Session).InProcess) &&
                     ((!this.PartiallyShip && allItemsAvailable) || somethingToShip))
                 {
-                    this.Ship(derivation);
+                    this.AppsShip(derivation);
                 }
             }
         }
@@ -868,7 +739,7 @@ namespace Allors.Domain
             {
                 foreach (var address in addresses)
                 {
-                    shipments.Add(this.Ship(derivation, address));
+                    shipments.Add(this.AppsShip(derivation, address));
                 }
             }
 
@@ -915,14 +786,14 @@ namespace Allors.Domain
                     if (shipmentItem != null)
                     {
                         shipmentItem.Quantity += orderItem.QuantityRequestsShipping;
-                        shipmentItem.ContentsDescription = string.Format("{0} * {1}", shipmentItem.Quantity, good);
+                        shipmentItem.ContentsDescription = $"{shipmentItem.Quantity} * {good}";
                     }
                     else
                     {
                         shipmentItem = new ShipmentItemBuilder(this.Strategy.Session)
                             .WithGood(good)
                             .WithQuantity(orderItem.QuantityRequestsShipping)
-                            .WithContentsDescription(string.Format("{0} * {1}", orderItem.QuantityRequestsShipping, good))
+                            .WithContentsDescription($"{orderItem.QuantityRequestsShipping} * {good}")
                             .Build();
 
                         pendingShipment.AddShipmentItem(shipmentItem);
@@ -949,7 +820,7 @@ namespace Allors.Domain
                         orderShipmentsWhereShipmentItem.First.Quantity += orderItem.QuantityRequestsShipping;
                     }
 
-                    orderItem.DeriveOnShip(derivation);
+                    orderItem.AppsOnDeriveOnShip(derivation);
                 }
             }
 
@@ -984,21 +855,21 @@ namespace Allors.Domain
             {
                 foreach (SalesOrderItem featureItem in salesOrderItem.OrderedWithFeatures)
                 {
-                    featureItem.DerivePrices(derivation);
+                    featureItem.AppsOnDerivePrices(derivation, 0, 0);
                 }
 
-                salesOrderItem.DeriveDeliveryDate(derivation);
-                salesOrderItem.DeriveShipTo(derivation);
-                salesOrderItem.DeriveSalesRep(derivation);
-                salesOrderItem.CalculatePurchasePrice(derivation);
-                salesOrderItem.CalculateUnitPrice(derivation);
-                salesOrderItem.DerivePrices(derivation);
-                salesOrderItem.DeriveCurrentShipmentStatus(derivation);
-                salesOrderItem.DeriveVatRegime(derivation);
-                salesOrderItem.DeriveCurrentPaymentStatus(derivation);
+                salesOrderItem.AppsOnDeriveDeliveryDate(derivation);
+                salesOrderItem.AppsOnDeriveShipTo(derivation);
+                salesOrderItem.AppsOnDeriveSalesRep(derivation);
+                salesOrderItem.AppsCalculatePurchasePrice(derivation);
+                salesOrderItem.AppsCalculateUnitPrice(derivation);
+                salesOrderItem.AppsOnDerivePrices(derivation, 0, 0);
+                salesOrderItem.AppsOnDeriveCurrentShipmentStatus(derivation);
+                salesOrderItem.AppsOnDeriveVatRegime(derivation);
+                salesOrderItem.AppsOnDeriveCurrentPaymentStatus(derivation);
 
                 // for the second time, because unitbaseprice might not be set
-                salesOrderItem.DeriveIsValidOrderItem(derivation);
+                salesOrderItem.AppsOnDeriveIsValidOrderItem(derivation);
 
                 if (salesOrderItem.ExistProduct)
                 {
@@ -1028,10 +899,10 @@ namespace Allors.Domain
 
                 foreach (SalesOrderItem featureItem in salesOrderItem.OrderedWithFeatures)
                 {
-                    featureItem.DerivePrices(derivation, quantityOrdered, totalBasePrice);
+                    featureItem.AppsOnDerivePrices(derivation, quantityOrdered, totalBasePrice);
                 }
 
-                salesOrderItem.DerivePrices(derivation, quantityOrdered, totalBasePrice);
+                salesOrderItem.AppsOnDerivePrices(derivation, quantityOrdered, totalBasePrice);
             }
         }
     }

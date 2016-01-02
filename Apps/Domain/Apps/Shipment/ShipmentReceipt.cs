@@ -26,21 +26,9 @@ namespace Allors.Domain
     {
         public void AppsOnBuild(ObjectOnBuild method)
         {
-            
-
             if (!this.ExistReceivedDateTime)
             {
                 this.ReceivedDateTime = DateTime.UtcNow;
-            }
-
-            if (!this.ExistQuantityAccepted)
-            {
-                this.QuantityAccepted = 0;
-            }
-
-            if (!this.ExistQuantityRejected)
-            {
-                this.QuantityRejected = 0;
             }
         }
 

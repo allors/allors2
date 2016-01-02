@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------------------------------------------
-// <copyright file="PurchaseInvoice.v.cs" company="Allors bvba">
+// <copyright file="PartSpecificationExtensions.v.cs" company="Allors bvba">
 //   Copyright 2002-2012 Allors bvba.
 // 
 // Dual Licensed under
@@ -20,31 +20,11 @@
 
 namespace Allors.Domain
 {
-    public partial class PurchaseInvoice
+    public static partial class PartSpecificationExtensions
     {
-        public void Approve(IDerivation derivation)
+        public static void AppsClose(this PartSpecification @this, PartSpecificationApprove method)
         {
-            this.AppsSearchDataApprove(derivation);
-        }
-
-        public void Ready(IDerivation derivation)
-        {
-            this.AppsReady(derivation);
-        }
-
-        public void Cancel(IDerivation derivation)
-        {
-            this.AppsCancel(derivation);
-        }
-
-        public void DeriveInvoiceTotals()
-        {
-            this.AppsOnDeriveInvoiceTotals();
-        }
-
-        public void DeriveInvoiceItems(IDerivation derivation)
-        {
-            this.AppsOnDeriveInvoiceItems(derivation);
+            @this.CurrentObjectState = new PartSpecificationObjectStates(@this.Strategy.Session).Approved;
         }
     }
 }

@@ -22,18 +22,10 @@ namespace Allors.Domain
 {
     public partial class Case
     {
-        ObjectState Transitional.CurrentObjectState
-        {
-            get
-            {
-                return this.CurrentObjectState;
-            }
-        }
+        ObjectState Transitional.CurrentObjectState => this.CurrentObjectState;
 
         public void AppsOnBuild(ObjectOnBuild method)
         {
-            
-
             if (!this.ExistCurrentObjectState)
             {
                 this.CurrentObjectState = new CaseObjectStates(this.Strategy.Session).Opened;

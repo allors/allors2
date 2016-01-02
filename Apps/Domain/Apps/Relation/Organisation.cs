@@ -28,8 +28,6 @@ namespace Allors.Domain
     {
         public void AppsOnBuild(ObjectOnBuild method)
         {
-            
-
             if (!this.ExistLocale)
             {
                 this.Locale = Singleton.Instance(this.Strategy.Session).DefaultLocale;

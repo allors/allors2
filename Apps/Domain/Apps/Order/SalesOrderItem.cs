@@ -6,29 +6,11 @@ namespace Allors.Domain
 
     public partial class SalesOrderItem
     {
-        ObjectState Transitional.CurrentObjectState
-        {
-            get
-            {
-                return this.CurrentObjectState;
-            }
-        }
+        ObjectState Transitional.CurrentObjectState => this.CurrentObjectState;
 
-        public decimal PriceAdjustment
-        {
-            get
-            {
-                return this.TotalSurcharge - this.TotalDiscount;
-            }
-        }
+        public decimal PriceAdjustment => this.TotalSurcharge - this.TotalDiscount;
 
-        public decimal PriceAdjustmentAsPercentage
-        {
-            get
-            {
-                return decimal.Round(((this.TotalSurcharge - this.TotalDiscount) / this.TotalBasePrice) * 100, 2);
-            }
-        }
+        public decimal PriceAdjustmentAsPercentage => decimal.Round(((this.TotalSurcharge - this.TotalDiscount) / this.TotalBasePrice) * 100, 2);
 
         public Party ItemDifferentShippingParty
         {
@@ -100,51 +82,6 @@ namespace Allors.Domain
             {
                 this.CurrentObjectState = new SalesOrderItemObjectStates(this.Strategy.Session).Created;
             }
-
-            if (!this.ExistQuantityOrdered)
-            {
-                this.QuantityOrdered = 0;
-            }
-
-            if (!this.ExistQuantityPicked)
-            {
-                this.QuantityPicked = 0;
-            }
-
-            if (!this.ExistQuantityRequestsShipping)
-            {
-                this.QuantityRequestsShipping = 0;
-            }
-
-            if (!this.ExistQuantityReserved)
-            {
-                this.QuantityReserved = 0;
-            }
-
-            if (!this.ExistQuantityReturned)
-            {
-                this.QuantityReturned = 0;
-            }
-
-            if (!this.ExistQuantityShipped)
-            {
-                this.QuantityShipped = 0;
-            }
-
-            if (!this.ExistQuantityPendingShipment)
-            {
-                this.QuantityPendingShipment = 0;
-            }
-
-            if (!this.ExistQuantityShortFalled)
-            {
-                this.QuantityShortFalled = 0;
-            }
-
-            if (!this.ExistQuantityShipNow)
-            {
-                this.QuantityShipNow = 0;
-            }
         }
 
         public void AppsOnPreDerive(ObjectOnPreDerive method)
@@ -195,10 +132,10 @@ namespace Allors.Domain
             derivation.Log.AssertExistsAtMostOne(this, SalesOrderItems.Meta.ActualUnitPrice, SalesOrderItems.Meta.DiscountAdjustment, SalesOrderItems.Meta.SurchargeAdjustment);
             derivation.Log.AssertExistsAtMostOne(this, SalesOrderItems.Meta.RequiredMarkupPercentage, SalesOrderItems.Meta.RequiredProfitMargin, SalesOrderItems.Meta.DiscountAdjustment, SalesOrderItems.Meta.SurchargeAdjustment);
 
-            this.DerivePrices(derivation, 0 , 0);
-            this.DeriveDeliveryDate(derivation);
-            this.DeriveVatRegime(derivation);
-            this.DeriveIsValidOrderItem(derivation);
+            this.AppsOnDerivePrices(derivation, 0, 0);
+            this.AppsOnDeriveDeliveryDate(derivation);
+            this.AppsOnDeriveVatRegime(derivation);
+            this.AppsOnDeriveIsValidOrderItem(derivation);
 
             if (this.QuantityShipNow != 0)
             {
@@ -207,7 +144,7 @@ namespace Allors.Domain
                 this.SalesOrderWhereSalesOrderItem.OnDerive(x => x.WithDerivation(derivation));
             }
 
-            this.DeriveCurrentObjectState(derivation);
+            this.AppsOnDeriveCurrentObjectState(derivation);
         }
 
         public void AppsOnDeriveIsValidOrderItem(IDerivation derivation)
@@ -262,8 +199,8 @@ namespace Allors.Domain
 
             if (this.CurrentObjectState.Equals(new SalesOrderItemObjectStates(this.Strategy.Session).InProcess))
             {
-                this.DeriveReservedFromInventoryItem(derivation);
-                this.DeriveQuantities(derivation);
+                this.AppsOnDeriveReservedFromInventoryItem(derivation);
+                this.AppsOnDeriveQuantities(derivation);
 
                 this.PreviousQuantity = this.QuantityOrdered;
                 this.PreviousReservedFromInventoryItem = this.ReservedFromInventoryItem;
@@ -273,7 +210,7 @@ namespace Allors.Domain
             if (this.CurrentObjectState.Equals(new SalesOrderItemObjectStates(this.Strategy.Session).Cancelled) ||
                 this.CurrentObjectState.Equals(new SalesOrderItemObjectStates(this.Strategy.Session).Rejected))
             {
-                this.DeriveQuantities(derivation);
+                this.AppsOnDeriveQuantities(derivation);
             }
 
             if (this.ExistCurrentObjectState)
@@ -569,20 +506,20 @@ namespace Allors.Domain
             if (this.ExistCurrentShipmentStatus && this.CurrentShipmentStatus.SalesOrderItemObjectState.Equals(new SalesOrderItemObjectStates(this.Strategy.Session).PartiallyShipped))
             {
                 this.CurrentObjectState = new SalesOrderItemObjectStates(this.Strategy.Session).PartiallyShipped;
-                this.DeriveCurrentObjectState(derivation);
+                this.AppsOnDeriveCurrentObjectState(derivation);
             }
 
             if (this.ExistCurrentShipmentStatus && this.CurrentShipmentStatus.SalesOrderItemObjectState.Equals(new SalesOrderItemObjectStates(this.Strategy.Session).Shipped))
             {
                 this.CurrentObjectState = new SalesOrderItemObjectStates(this.Strategy.Session).Completed;
-                this.DeriveCurrentObjectState(derivation);
+                this.AppsOnDeriveCurrentObjectState(derivation);
             }
 
             if (this.ExistCurrentShipmentStatus && this.CurrentShipmentStatus.SalesOrderItemObjectState.Equals(new SalesOrderItemObjectStates(this.Strategy.Session).Shipped) &&
                 this.ExistCurrentPaymentStatus && this.CurrentPaymentStatus.SalesOrderItemObjectState.Equals(new SalesOrderItemObjectStates(this.Strategy.Session).Paid))
             {
                 this.CurrentObjectState = new SalesOrderItemObjectStates(this.Strategy.Session).Finished;
-                this.DeriveCurrentObjectState(derivation);
+                this.AppsOnDeriveCurrentObjectState(derivation);
             }
         }
 
@@ -608,7 +545,7 @@ namespace Allors.Domain
                 this.AddShipmentStatus(this.CurrentShipmentStatus);
             }
 
-            this.DeriveCurrentOrderStatus(derivation);
+            this.AppsOnDeriveCurrentOrderStatus(derivation);
         }
         
         public void AppsCalculatePurchasePrice(IDerivation derivation)
@@ -706,18 +643,18 @@ namespace Allors.Domain
             {
                 if (priceComponent.Strategy.Class.Equals(BasePrice.Meta.ObjectType))
                 {
-                    if (PriceComponents.IsEligible(new PriceComponents.IsEligibleParams
-                    {
-                        PriceComponent = priceComponent, 
-                        Customer = customer, 
-                        Product = this.Product, 
-                        SalesOrder = salesOrder, 
-                        QuantityOrdered = quantityOrdered, 
-                        ValueOrdered = totalBasePrice,
-                        PartyPackageRevenueHistoryList = partyPackageRevenuesHistories, 
-                        PartyProductCategoryRevenueHistoryByProductCategory = partyProductCategoryRevenueHistoryByProductCategory, 
-                        PartyRevenueHistory = partyRevenueHistory
-                    }))
+                    if (PriceComponents.AppsIsEligible(new PriceComponents.IsEligibleParams
+                                                           {
+                                                               PriceComponent = priceComponent, 
+                                                               Customer = customer, 
+                                                               Product = this.Product, 
+                                                               SalesOrder = salesOrder, 
+                                                               QuantityOrdered = quantityOrdered, 
+                                                               ValueOrdered = totalBasePrice,
+                                                               PartyPackageRevenueHistoryList = partyPackageRevenuesHistories, 
+                                                               PartyProductCategoryRevenueHistoryByProductCategory = partyProductCategoryRevenueHistoryByProductCategory, 
+                                                               PartyRevenueHistory = partyRevenueHistory
+                                                           }))
                     {
                         if (priceComponent.ExistPrice)
                         {
@@ -760,18 +697,18 @@ namespace Allors.Domain
                 {
                     if (priceComponent.Strategy.Class.Equals(DiscountComponents.Meta.ObjectType) || priceComponent.Strategy.Class.Equals(SurchargeComponents.Meta.ObjectType))
                     {
-                        if (PriceComponents.IsEligible(new PriceComponents.IsEligibleParams
-                        {
-                            PriceComponent = priceComponent, 
-                            Customer = customer, 
-                            Product = this.Product, 
-                            SalesOrder = salesOrder, 
-                            QuantityOrdered = quantityOrdered, 
-                            ValueOrdered = totalBasePrice, 
-                            PartyPackageRevenueHistoryList = partyPackageRevenuesHistories, 
-                            PartyProductCategoryRevenueHistoryByProductCategory = partyProductCategoryRevenueHistoryByProductCategory, 
-                            PartyRevenueHistory = partyRevenueHistory
-                        }))
+                        if (PriceComponents.AppsIsEligible(new PriceComponents.IsEligibleParams
+                                                               {
+                                                                   PriceComponent = priceComponent, 
+                                                                   Customer = customer, 
+                                                                   Product = this.Product, 
+                                                                   SalesOrder = salesOrder, 
+                                                                   QuantityOrdered = quantityOrdered, 
+                                                                   ValueOrdered = totalBasePrice, 
+                                                                   PartyPackageRevenueHistoryList = partyPackageRevenuesHistories, 
+                                                                   PartyProductCategoryRevenueHistoryByProductCategory = partyProductCategoryRevenueHistoryByProductCategory, 
+                                                                   PartyRevenueHistory = partyRevenueHistory
+                                                               }))
                         {
                             this.AddCurrentPriceComponent(priceComponent);
                               
@@ -880,7 +817,7 @@ namespace Allors.Domain
                 this.TotalIncVatCustomerCurrency = Currencies.ConvertCurrency(this.TotalIncVat, fromCurrency, toCurrency);
             }
 
-            this.DeriveMarkupAndProfitMargin(derivation);
+            this.AppsOnDeriveMarkupAndProfitMargin(derivation);
         }
 
         private List<PriceComponent> GetPriceComponents(InternalOrganisation internalOrganisation)
@@ -1003,7 +940,7 @@ namespace Allors.Domain
             this.QuantityPendingShipment -= quantity;
             this.QuantityShipped += quantity;
 
-            this.DeriveCurrentShipmentStatus(derivation);
+            this.AppsOnDeriveCurrentShipmentStatus(derivation);
         }
 
         public void AppsOnDeriveOnPicked(IDerivation derivation, decimal quantity)
@@ -1087,7 +1024,7 @@ namespace Allors.Domain
             {
                 this.VatRegime = this.ExistAssignedVatRegime ? this.AssignedVatRegime : this.SalesOrderWhereSalesOrderItem.VatRegime;
 
-                this.DeriveVatRate(derivation);
+                this.AppsOnDeriveVatRate(derivation);
             }
         }
 
@@ -1133,7 +1070,7 @@ namespace Allors.Domain
                 }
             }
 
-            this.DeriveCurrentOrderStatus(derivation);
+            this.AppsOnDeriveCurrentOrderStatus(derivation);
         }
     }
 }

@@ -25,31 +25,7 @@ namespace Allors.Domain
 
     public partial class PurchaseShipment
     {
-        ObjectState Transitional.CurrentObjectState
-        {
-            get
-            {
-                return this.CurrentObjectState;
-            }
-        }
-
-        public bool CanEdit
-        {
-            get
-            {
-                if (this.CurrentObjectState.Equals(new PurchaseShipmentObjectStates(this.Strategy.Session).Created))
-                {
-                    return true;
-                }
-
-                return false;
-            }
-        }
-
-        public string DateString
-        {
-            get { return this.EstimatedArrivalDate.ToShortDateString(); }
-        }
+        ObjectState Transitional.CurrentObjectState => this.CurrentObjectState;
 
         public void AppsOnBuild(ObjectOnBuild method)
         {
@@ -175,7 +151,7 @@ namespace Allors.Domain
 
                 if (orderItem != null)
                 {
-                    orderItem.DeriveCurrentShipmentStatus(derivation);
+                    orderItem.AppsOnDeriveCurrentShipmentStatus(derivation);
                 }
             }
         }

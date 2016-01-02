@@ -26,7 +26,6 @@ namespace Allors.Domain
     {
         public void AppsOnBuild(ObjectOnBuild method)
         {
-
             if (!this.ExistInternalOrganisation)
             {
                 this.InternalOrganisation = Domain.Singleton.Instance(this.Strategy.Session).DefaultInternalOrganisation;
@@ -52,8 +51,8 @@ namespace Allors.Domain
         {
             var derivation = method.Derivation;
 
-            this.DeriveContraAccount(derivation);
-            this.DerivePreviousJournalType(derivation);
+            this.AppsOnDeriveContraAccount(derivation);
+            this.AppsOnDerivePreviousJournalType(derivation);
         }
 
         public void AppsOnDeriveContraAccount(IDerivation derivation)

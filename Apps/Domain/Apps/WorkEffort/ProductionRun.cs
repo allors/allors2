@@ -22,13 +22,7 @@ namespace Allors.Domain
 {
     public partial class ProductionRun
     {
-        ObjectState Transitional.CurrentObjectState
-        {
-            get
-            {
-                return this.CurrentObjectState;
-            }
-        }
+        ObjectState Transitional.CurrentObjectState => this.CurrentObjectState;
 
         public void AppsOnBuild(ObjectOnBuild method)
         {

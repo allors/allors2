@@ -53,7 +53,7 @@ namespace Allors.Domain
         {
             var derivation = method.Derivation;
 
-            this.DeriveInventoryItem(derivation);
+            this.AppsOnDeriveInventoryItem(derivation);
         }
 
         public void AppsOnDeriveInventoryItem(IDerivation derivation)

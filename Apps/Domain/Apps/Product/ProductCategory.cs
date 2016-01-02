@@ -74,7 +74,7 @@ namespace Allors.Domain
 
             foreach (Product product in this.ProductsWhereProductCategoryExpanded)
             {
-                product.DeriveProductCategoryExpanded();
+                product.AppsOnDeriveProductCategoryExpanded();
             }
 
             this.AppsOnDeriveAncestors(derivation);

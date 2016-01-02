@@ -40,7 +40,7 @@ namespace Allors.Domain
             this.DeriveIban(derivation);
         }
 
-        public void AppsOnDeriveIban(IDerivation derivation)
+        private void DeriveIban(IDerivation derivation)
         {
             if (this.ExistIban)
             {

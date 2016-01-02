@@ -25,22 +25,9 @@ namespace Allors.Domain
 
     public partial class PickList
     {
-        ObjectState Transitional.CurrentObjectState
-        {
-            get
-            {
-                return this.CurrentObjectState;
-            }
-        }
+        ObjectState Transitional.CurrentObjectState => this.CurrentObjectState;
 
-        public bool IsNegativePickList
-        {
-            get
-            {
-                //// Negative PickList only has 1 item.
-                return this.ExistPickListItems && this.PickListItems.First.RequestedQuantity < 0;
-            }
-        }
+        public bool IsNegativePickList => this.ExistPickListItems && this.PickListItems.First.RequestedQuantity < 0;
 
         public bool IsComplete
         {
@@ -60,8 +47,6 @@ namespace Allors.Domain
 
         public void AppsOnBuild(ObjectOnBuild method)
         {
-
-
             if (!this.ExistCreationDate)
             {
                 this.CreationDate = DateTime.UtcNow;

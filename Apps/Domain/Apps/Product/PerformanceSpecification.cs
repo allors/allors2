@@ -22,19 +22,13 @@ namespace Allors.Domain
 {
     public partial class PerformanceSpecification
     {
+        ObjectState Transitional.CurrentObjectState => this.CurrentObjectState;
+
         public void AppsOnBuild(ObjectOnBuild method)
         {
             if (!this.ExistCurrentObjectState)
             {
                 this.CurrentObjectState = new PartSpecificationObjectStates(this.Strategy.Session).Created;
-            }
-        }
-
-        ObjectState Transitional.CurrentObjectState
-        {
-            get
-            {
-                return this.CurrentObjectState;
             }
         }
     }

@@ -25,29 +25,7 @@ namespace Allors.Domain
 
     public partial class CustomerShipment
     {
-        ObjectState Transitional.CurrentObjectState
-        {
-            get
-            {
-                return this.CurrentObjectState;
-            }
-        }
-
-        public bool CanEdit
-        {
-            get
-            {
-                if (this.CurrentObjectState.Equals(new CustomerShipmentObjectStates(this.Strategy.Session).Created) ||
-                    this.CurrentObjectState.Equals(new CustomerShipmentObjectStates(this.Strategy.Session).Picked) ||
-                    this.CurrentObjectState.Equals(new CustomerShipmentObjectStates(this.Strategy.Session).OnHold) ||
-                    this.CurrentObjectState.Equals(new CustomerShipmentObjectStates(this.Strategy.Session).Packed))
-                {
-                    return true;
-                }
-
-                return false;
-            }
-        }
+        ObjectState Transitional.CurrentObjectState => this.CurrentObjectState;
 
         public bool CanShip
         {
@@ -110,11 +88,6 @@ namespace Allors.Domain
 
                 return pendingPickList;
             }
-        }
-
-        public string DateString
-        {
-            get { return this.EstimatedArrivalDate.ToShortDateString(); }
         }
 
         public void AppsOnBuild(ObjectOnBuild method)
@@ -538,7 +511,7 @@ namespace Allors.Domain
             {
                 foreach (OrderShipment orderShipment in shipmentItem.OrderShipmentsWhereShipmentItem)
                 {
-                    orderShipment.SalesOrderItem.DeriveOnShipped(derivation, orderShipment.Quantity);
+                    orderShipment.SalesOrderItem.AppsOnDeriveOnShipped(derivation, orderShipment.Quantity);
                     salesOrders.Add(orderShipment.SalesOrderItem.SalesOrderWhereSalesOrderItem);
                 }
             }

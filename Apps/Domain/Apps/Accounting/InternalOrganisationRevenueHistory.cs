@@ -24,14 +24,6 @@ namespace Allors.Domain
 
     public partial class InternalOrganisationRevenueHistory
     {
-        public string RevenueAsCurrencyString
-        {
-            get
-            {
-                return DecimalExtensions.AsCurrencyString(this.Revenue, this.InternalOrganisation.CurrencyFormat);
-            }
-        }
-
         public void AppsOnDeriveMovingAverage()
         {
             this.Revenue = 0;

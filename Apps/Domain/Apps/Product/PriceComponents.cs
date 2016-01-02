@@ -47,7 +47,7 @@ namespace Allors.Domain
             public SalesInvoice SalesInvoice = null;
         }
 
-        private static bool AppsIsEligible(IsEligibleParams isEligibleParams)
+        public static bool AppsIsEligible(IsEligibleParams isEligibleParams)
         {
             var priceComponent = isEligibleParams.PriceComponent;
             var customer = isEligibleParams.Customer;

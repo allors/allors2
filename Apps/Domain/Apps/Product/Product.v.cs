@@ -25,9 +25,5 @@ namespace Allors.Domain
         void AddToBasePrice(BasePrice basePrice);
 
         void RemoveFromBasePrices(BasePrice basePrice);
-
-        void DeriveVirtualProductPriceComponent();
-
-        void DeriveProductCategoryExpanded();
     } 
 }

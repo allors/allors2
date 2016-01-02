@@ -22,12 +22,20 @@ namespace Allors.Domain
 {
     public partial class InternalRequirement
     {
-        ObjectState Transitional.CurrentObjectState
+        ObjectState Transitional.CurrentObjectState => this.CurrentObjectState;
+        public void Cancel()
         {
-            get
-            {
-                return this.CurrentObjectState;
-            }
+            this.AppsCancel();
+        }
+
+        public void Hold()
+        {
+            this.AppsHold();
+        }
+
+        public void Close()
+        {
+            this.AppsClose();
         }
 
         public void AppsOnBuild(ObjectOnBuild method)

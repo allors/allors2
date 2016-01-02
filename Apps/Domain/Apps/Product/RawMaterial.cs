@@ -24,8 +24,6 @@ namespace Allors.Domain
     {
         public void AppsOnBuild(ObjectOnBuild method)
         {
-            
-
             this.InventoryItemKind = new InventoryItemKinds(this.Strategy.Session).NonSerialized;
 
             if (!this.ExistOwnedByParty)
@@ -55,7 +53,7 @@ namespace Allors.Domain
         {
             var derivation = method.Derivation;
 
-            this.DeriveInventoryItem(derivation);
+            this.AppsOnDeriveInventoryItem(derivation);
         }
 
         public void AppsOnDeriveInventoryItem(IDerivation derivation)

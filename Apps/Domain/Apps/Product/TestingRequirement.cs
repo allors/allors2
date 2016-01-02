@@ -29,5 +29,7 @@ namespace Allors.Domain
                 this.CurrentObjectState = new PartSpecificationObjectStates(this.Strategy.Session).Created;
             }
         }
+
+        ObjectState Transitional.CurrentObjectState => this.CurrentObjectState;
     }
 }

@@ -49,14 +49,14 @@ namespace Allors.Domain
                 if (priceComponent.FromDate <= date &&
                     (!priceComponent.ExistThroughDate || priceComponent.ThroughDate >= date))
                 {
-                    if (PriceComponents.IsEligible(new PriceComponents.IsEligibleParams
-                    {
-                        PriceComponent = priceComponent,
-                        Customer = party,
-                        Product = product,
-                        SalesOrder = salesOrder,
-                        SalesInvoice = salesInvoice,
-                    }))
+                    if (PriceComponents.AppsIsEligible(new PriceComponents.IsEligibleParams
+                                                           {
+                                                               PriceComponent = priceComponent,
+                                                               Customer = party,
+                                                               Product = product,
+                                                               SalesOrder = salesOrder,
+                                                               SalesInvoice = salesInvoice,
+                                                           }))
                     {
                         if (priceComponent.ExistPrice)
                         {
@@ -87,17 +87,17 @@ namespace Allors.Domain
             {
                 if (priceComponent.Strategy.Class.Equals(DiscountComponents.Meta.ObjectType) || priceComponent.Strategy.Class.Equals(SurchargeComponents.Meta.ObjectType))
                 {
-                    if (PriceComponents.IsEligible(new PriceComponents.IsEligibleParams
-                    {
-                        PriceComponent = priceComponent,
-                        Customer = party,
-                        Product = product,
-                        SalesOrder = salesOrder,
-                        SalesInvoice = salesInvoice,
-                        PartyPackageRevenueHistoryList = partyPackageRevenuesHistories,
-                        PartyRevenueHistory = partyRevenueHistory,
-                        PartyProductCategoryRevenueHistoryByProductCategory = partyProductCategoryRevenueHistoryByProductCategory,
-                    }))
+                    if (PriceComponents.AppsIsEligible(new PriceComponents.IsEligibleParams
+                                                           {
+                                                               PriceComponent = priceComponent,
+                                                               Customer = party,
+                                                               Product = product,
+                                                               SalesOrder = salesOrder,
+                                                               SalesInvoice = salesInvoice,
+                                                               PartyPackageRevenueHistoryList = partyPackageRevenuesHistories,
+                                                               PartyRevenueHistory = partyRevenueHistory,
+                                                               PartyProductCategoryRevenueHistoryByProductCategory = partyProductCategoryRevenueHistoryByProductCategory,
+                                                           }))
                     {
                         if (priceComponent.Strategy.Class.Equals(DiscountComponents.Meta.ObjectType))
                         {

@@ -24,11 +24,6 @@ namespace Allors.Domain
 
     public partial class ProductCategoryRevenue
     {
-        public string RevenueAsCurrencyString()
-        {
-            return DecimalExtensions.AsCurrencyString(this.Revenue, this.InternalOrganisation.CurrencyFormat);
-        }
-
         public void AppsOnDerive(ObjectOnDerive method)
         {
             var derivation = method.Derivation;

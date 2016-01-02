@@ -69,7 +69,7 @@ namespace Allors.Domain
                                 }
                             }
 
-                            orderShipment.SalesOrderItem.DeriveOnPicked(derivation, orderShipment.Quantity);
+                            orderShipment.SalesOrderItem.AppsOnDeriveOnPicked(derivation, orderShipment.Quantity);
                             orderShipment.Picked = true;
                         }
                     }

@@ -27,37 +27,9 @@ namespace Allors.Domain
 
     public partial class PurchaseOrder
     {
-        ObjectState Transitional.CurrentObjectState
-        {
-            get
-            {
-                return this.CurrentObjectState;
-            }
-        }
+        ObjectState Transitional.CurrentObjectState => this.CurrentObjectState;
 
-        public bool CanEdit
-        {
-            get
-            {
-                if (!this.CurrentObjectState.Equals(new PurchaseOrderObjectStates(this.Strategy.Session).Finished) &&
-                    !this.CurrentObjectState.Equals(new PurchaseOrderObjectStates(this.Strategy.Session).Completed) &&
-                    !this.CurrentObjectState.Equals(new PurchaseOrderObjectStates(this.Strategy.Session).Rejected) &&
-                    !this.CurrentObjectState.Equals(new PurchaseOrderObjectStates(this.Strategy.Session).Cancelled))
-                {
-                    return true;
-                }
-
-                return false;
-            }
-        }
-
-        public bool IsProvisional
-        {
-            get
-            {
-                return this.CurrentObjectState.Equals(new PurchaseOrderObjectStates(this.Strategy.Session).Provisional);
-            }
-        }
+        public bool IsProvisional => this.CurrentObjectState.Equals(new PurchaseOrderObjectStates(this.Strategy.Session).Provisional);
 
         public NumberFormatInfo CurrencyFormat
         {
@@ -70,64 +42,10 @@ namespace Allors.Domain
             }
         }
 
-        public string GetTotalBasePriceAsCurrencyString
-        {
-            get
-            {
-                return DecimalExtensions.AsCurrencyString(this.TotalBasePrice, this.CurrencyFormat);
-            }
-        }
-
-        public string GetTotalVatAsCurrencyString
-        {
-            get
-            {
-                return DecimalExtensions.AsCurrencyString(this.TotalVat, this.CurrencyFormat);
-            }
-        }
-
-        public string GetTotalIncVatAsCurrencyString
-        {
-            get
-            {
-                return DecimalExtensions.AsCurrencyString(this.TotalIncVat, this.CurrencyFormat);
-            }
-        }
-
-        public string GetTotalExVatAsCurrencyString
-        {
-            get
-            {
-                return DecimalExtensions.AsCurrencyString(this.TotalExVat, this.CurrencyFormat);
-            }
-        }
-
-        public string GetNothingAsCurrencyString
-        {
-            get
-            {
-                const decimal Nothing = 0;
-                return Nothing.AsCurrencyString(this.CurrencyFormat);
-            }
-        }
-
-        public OrderItem[] OrderItems
-        {
-            get
-            {
-                return this.PurchaseOrderItems;
-            }
-        }
-
-        public string ShortOrderDateString
-        {
-            get { return this.OrderDate.ToShortDateString(); }
-        }
+        public OrderItem[] OrderItems => this.PurchaseOrderItems;
 
         public void AppsOnBuild(ObjectOnBuild method)
         {
-            
-
             if (!this.ExistCurrentObjectState)
             {
                 this.CurrentObjectState = new PurchaseOrderObjectStates(this.Strategy.Session).Provisional;
@@ -177,86 +95,6 @@ namespace Allors.Domain
                 {
                     this.Facility = Singleton.Instance(this.Strategy.Session).DefaultInternalOrganisation.DefaultFacility;
                 }
-            }
-
-            if (!this.ExistTotalBasePrice)
-            {
-                this.TotalBasePrice = 0;
-            }
-
-            if (!this.ExistTotalBasePriceCustomerCurrency)
-            {
-                this.TotalBasePriceCustomerCurrency = 0;
-            }
-
-            if (!this.ExistTotalDiscount)
-            {
-                this.TotalDiscount = 0;
-            }
-
-            if (!this.ExistTotalDiscountCustomerCurrency)
-            {
-                this.TotalDiscountCustomerCurrency = 0;
-            }
-
-            if (!this.ExistTotalExVat)
-            {
-                this.TotalExVat = 0;
-            }
-
-            if (!this.ExistTotalExVatCustomerCurrency)
-            {
-                this.TotalExVatCustomerCurrency = 0;
-            }
-
-            if (!this.ExistTotalFee)
-            {
-                this.TotalFee = 0;
-            }
-
-            if (!this.ExistTotalFeeCustomerCurrency)
-            {
-                this.TotalFeeCustomerCurrency = 0;
-            }
-
-            if (!this.ExistTotalIncVat)
-            {
-                this.TotalIncVat = 0;
-            }
-
-            if (!this.ExistTotalIncVatCustomerCurrency)
-            {
-                this.TotalIncVatCustomerCurrency = 0;
-            }
-
-            if (!this.ExistTotalShippingAndHandling)
-            {
-                this.TotalShippingAndHandling = 0;
-            }
-
-            if (!this.ExistTotalShippingAndHandlingCustomerCurrency)
-            {
-                this.TotalShippingAndHandlingCustomerCurrency = 0;
-            }
-
-            if (!this.ExistTotalSurcharge)
-            {
-                this.TotalSurcharge = 0;
-            }
-
-            if (!this.ExistTotalSurchargeCustomerCurrency)
-            {
-                this.TotalSurchargeCustomerCurrency = 0;
-            }
-
-            if (!this.ExistTotalVat)
-            {
-                this.TotalVat = 0;
-            }
-
-            if (!this.ExistTotalVatCustomerCurrency)
-            {
-                this.TotalVatCustomerCurrency = 0;
             }
         }
 
@@ -335,13 +173,13 @@ namespace Allors.Domain
                 this.TakenViaContactMechanism = this.TakenViaSupplier.OrderAddress;
             }
 
-            this.DeriveOrderItems(derivation);
+            this.AppsOnDeriveOrderItems(derivation);
 
-            this.DeriveCurrentShipmentStatus(derivation);
-            this.DeriveCurrentPaymentStatus(derivation);
+            this.AppsOnDeriveCurrentShipmentStatus(derivation);
+            this.AppsOnDeriveCurrentPaymentStatus(derivation);
             this.DeriveCurrentObjectState(derivation);
-            this.DeriveLocale(derivation);
-            this.DeriveOrderTotals(derivation);
+            this.AppsOnDeriveLocale(derivation);
+            this.AppsOnDeriveOrderTotals(derivation);
 
             this.PreviousTakenViaSupplier = this.TakenViaSupplier;
         }
@@ -479,7 +317,7 @@ namespace Allors.Domain
                 this.CurrentPaymentStatus = new PurchaseOrderStatusBuilder(this.Strategy.Session).WithPurchaseOrderObjectState(new PurchaseOrderObjectStates(this.Strategy.Session).PartiallyPaid).Build();
             }
 
-            this.DeriveCurrentOrderStatus(derivation);
+            this.AppsOnDeriveCurrentOrderStatus(derivation);
         }
 
         public void AppsOnDeriveCurrentShipmentStatus(IDerivation derivation)
@@ -519,7 +357,7 @@ namespace Allors.Domain
                 this.CurrentShipmentStatus = new PurchaseOrderStatusBuilder(this.Strategy.Session).WithPurchaseOrderObjectState(new PurchaseOrderObjectStates(this.Strategy.Session).PartiallyReceived).Build();
             }
 
-            this.DeriveCurrentOrderStatus(derivation);
+            this.AppsOnDeriveCurrentOrderStatus(derivation);
         }
 
         public void AppsOnDeriveCurrentOrderStatus(IDerivation derivation)
@@ -575,9 +413,9 @@ namespace Allors.Domain
             foreach (PurchaseOrderItem purchaseOrderItem in this.ValidOrderItems)
             {
                 purchaseOrderItem.OnDerive(x => x.WithDerivation(derivation));
-                purchaseOrderItem.DeriveDeliveryDate(derivation);
-                purchaseOrderItem.DeriveCurrentShipmentStatus(derivation);
-                purchaseOrderItem.DerivePrices();
+                purchaseOrderItem.AppsOnDeriveDeliveryDate(derivation);
+                purchaseOrderItem.AppsOnDeriveCurrentShipmentStatus(derivation);
+                purchaseOrderItem.AppsOnDerivePrices();
                 purchaseOrderItem.AppsDeriveVatRegime(derivation);
 
 

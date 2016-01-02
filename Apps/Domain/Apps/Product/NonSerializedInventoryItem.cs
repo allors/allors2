@@ -22,39 +22,13 @@ namespace Allors.Domain
 {
     public partial class NonSerializedInventoryItem
     {
-        ObjectState Transitional.CurrentObjectState
-        {
-            get
-            {
-                return this.CurrentObjectState;
-            }
-        }
+        ObjectState Transitional.CurrentObjectState => this.CurrentObjectState;
 
         public void AppsOnBuild(ObjectOnBuild method)
         {
             if (!this.ExistCurrentObjectState)
             {
                 this.CurrentObjectState = new NonSerializedInventoryItemObjectStates(this.Strategy.Session).Good;
-            }
-
-            if (!this.ExistAvailableToPromise)
-            {
-                this.AvailableToPromise = 0;
-            }
-
-            if (!this.ExistQuantityCommittedOut)
-            {
-                this.QuantityCommittedOut = 0;
-            }
-
-            if (!this.ExistQuantityExpectedIn)
-            {
-                this.QuantityExpectedIn = 0;
-            }
-
-            if (!this.ExistQuantityOnHand)
-            {
-                this.QuantityOnHand = 0;
             }
 
             if (!this.ExistFacility)
@@ -87,8 +61,8 @@ namespace Allors.Domain
             {
                 this.AppsDepleteSalesOrders(derivation);
             }
-            
-            this.DeriveCurrentObjectState(derivation);
+
+            this.AppsOnDeriveCurrentObjectState(derivation);
 
             this.AppsOnDeriveSku(derivation);
             this.AppsOnDeriveName(derivation);
@@ -238,7 +212,7 @@ namespace Allors.Domain
 
                     extra -= diff;
 
-                    salesOrderItem.DeriveAddToShipping(derivation, diff);
+                    salesOrderItem.AppsOnDeriveAddToShipping(derivation, diff);
                     salesOrderItem.SalesOrderWhereSalesOrderItem.OnDerive(x => x.WithDerivation(derivation));
                 }
             }
@@ -270,7 +244,7 @@ namespace Allors.Domain
 
                     subtract -= diff;
 
-                    salesOrderItem.DeriveSubtractFromShipping(derivation, diff);
+                    salesOrderItem.AppsOnDeriveSubtractFromShipping(derivation, diff);
                     salesOrderItem.SalesOrderWhereSalesOrderItem.OnDerive(x => x.WithDerivation(derivation));
                 }
             }

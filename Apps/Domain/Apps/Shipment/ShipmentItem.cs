@@ -32,14 +32,6 @@ namespace Allors.Domain
                 }
             }
         }
-        
-        public void AppsOnBuild(ObjectOnBuild method)
-        {
-            if (!this.ExistQuantity)
-            {
-                this.Quantity = 0;
-            }
-        }
 
         public void AppsOnPreDerive(ObjectOnPreDerive method)
         {

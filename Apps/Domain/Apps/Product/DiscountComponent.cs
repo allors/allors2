@@ -24,8 +24,6 @@ namespace Allors.Domain
     {
         public void AppsOnBuild(ObjectOnBuild method)
         {
-            
-
             if (!this.ExistSpecifiedFor)
             {
                 this.SpecifiedFor = Domain.Singleton.Instance(this.Strategy.Session).DefaultInternalOrganisation;
@@ -48,15 +46,15 @@ namespace Allors.Domain
 
                 derivation.Log.AssertExists(this, BasePrices.Meta.Currency);
             }
-            
-            this.DeriveVirtualProductPriceComponent();
+
+            this.AppsOnDeriveVirtualProductPriceComponent();
         }
 
         public void AppsOnDeriveVirtualProductPriceComponent()
         {
             if (this.ExistProduct)
             {
-                this.Product.DeriveVirtualProductPriceComponent();
+                this.Product.AppsOnDeriveVirtualProductPriceComponent();
             }
         }
     }

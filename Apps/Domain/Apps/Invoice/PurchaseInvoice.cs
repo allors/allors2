@@ -26,13 +26,7 @@ namespace Allors.Domain
 
     public partial class PurchaseInvoice
     {
-        ObjectState Transitional.CurrentObjectState
-        {
-            get
-            {
-                return this.CurrentObjectState;
-            }
-        }
+        ObjectState Transitional.CurrentObjectState => this.CurrentObjectState;
 
         public NumberFormatInfo CurrencyFormat
         {
@@ -45,120 +39,12 @@ namespace Allors.Domain
             }
         }
 
-        public bool CanEdit
-        {
-            get
-            {
-                return true;
-            }
-        }
+        public InvoiceItem[] InvoiceItems => this.PurchaseInvoiceItems;
 
-        public string GetTotalFeeAsCurrencyString
-        {
-            get
-            {
-                return DecimalExtensions.AsCurrencyString(this.TotalFee, this.CurrencyFormat);
-            }
-        }
-
-        public string GetTotalShippingAndHandlingAsCurrencyString
-        {
-            get
-            {
-                return DecimalExtensions.AsCurrencyString(this.TotalShippingAndHandling, this.CurrencyFormat);
-            }
-        }
-
-        public string GetTotalExVatAsCurrencyString
-        {
-            get
-            {
-                return DecimalExtensions.AsCurrencyString(this.TotalExVat, this.CurrencyFormat);
-            }
-        }
-
-        public string GetTotalVatAsCurrencyString
-        {
-            get
-            {
-                return DecimalExtensions.AsCurrencyString(this.TotalVat, this.CurrencyFormat);
-            }
-        }
-
-        public string GetTotalIncVatAsCurrencyString
-        {
-            get
-            {
-                return DecimalExtensions.AsCurrencyString(this.TotalIncVat, this.CurrencyFormat);
-            }
-        }
-
-        public string GetSubTotalAsCurrencyString
-        {
-            get
-            {
-                var subtotal = this.TotalBasePrice - this.TotalDiscount + this.TotalSurcharge;
-                return DecimalExtensions.AsCurrencyString(subtotal, this.CurrencyFormat);
-            }
-        }
-
-        public bool HasDiscount
-        {
-            get
-            {
-                return this.TotalDiscount > 0;
-            }
-        }
-
-        public bool HasSurcharge
-        {
-            get
-            {
-                return this.TotalSurcharge > 0;
-            }
-        }
-
-        public bool HasFee
-        {
-            get
-            {
-                return this.TotalFee > 0;
-            }
-        }
-
-        public bool HasShippingAndHandling
-        {
-            get
-            {
-                return this.TotalShippingAndHandling > 0;
-            }
-        }
-
-        public string GetNothingAsCurrencyString
-        {
-            get
-            {
-                return DecimalExtensions.AsCurrencyString(0, this.CurrencyFormat);
-            }
-        }
-
-        public InvoiceItem[] InvoiceItems
-        {
-            get
-            {
-                return this.PurchaseInvoiceItems;
-            }
-        }
-
-        public string ShortInvoiceDateString
-        {
-            get { return this.InvoiceDate.ToShortDateString(); }
-        }
+        public string ShortInvoiceDateString => this.InvoiceDate.ToShortDateString();
 
         public void AppsOnBuild(ObjectOnBuild method)
         {
-            
-
             if (!this.ExistCurrentObjectState)
             {
                 this.CurrentObjectState = new PurchaseInvoiceObjectStates(this.Strategy.Session).InProcess;
@@ -177,86 +63,6 @@ namespace Allors.Domain
             if (!this.ExistEntryDate)
             {
                 this.EntryDate = DateTime.UtcNow;
-            }
-
-            if (!this.ExistTotalBasePrice)
-            {
-                this.TotalBasePrice = 0;
-            }
-
-            if (!this.ExistTotalBasePriceCustomerCurrency)
-            {
-                this.TotalBasePriceCustomerCurrency = 0;
-            }
-
-            if (!this.ExistTotalDiscount)
-            {
-                this.TotalDiscount = 0;
-            }
-
-            if (!this.ExistTotalDiscountCustomerCurrency)
-            {
-                this.TotalDiscountCustomerCurrency = 0;
-            }
-
-            if (!this.ExistTotalExVat)
-            {
-                this.TotalExVat = 0;
-            }
-
-            if (!this.ExistTotalExVatCustomerCurrency)
-            {
-                this.TotalExVatCustomerCurrency = 0;
-            }
-
-            if (!this.ExistTotalFee)
-            {
-                this.TotalFee = 0;
-            }
-
-            if (!this.ExistTotalFeeCustomerCurrency)
-            {
-                this.TotalFeeCustomerCurrency = 0;
-            }
-
-            if (!this.ExistTotalIncVat)
-            {
-                this.TotalIncVat = 0;
-            }
-
-            if (!this.ExistTotalIncVatCustomerCurrency)
-            {
-                this.TotalIncVatCustomerCurrency = 0;
-            }
-
-            if (!this.ExistTotalShippingAndHandling)
-            {
-                this.TotalShippingAndHandling = 0;
-            }
-
-            if (!this.ExistTotalShippingAndHandlingCustomerCurrency)
-            {
-                this.TotalShippingAndHandlingCustomerCurrency = 0;
-            }
-
-            if (!this.ExistTotalSurcharge)
-            {
-                this.TotalSurcharge = 0;
-            }
-
-            if (!this.ExistTotalSurchargeCustomerCurrency)
-            {
-                this.TotalSurchargeCustomerCurrency = 0;
-            }
-
-            if (!this.ExistTotalVat)
-            {
-                this.TotalVat = 0;
-            }
-
-            if (!this.ExistTotalVatCustomerCurrency)
-            {
-                this.TotalVatCustomerCurrency = 0;
             }
         }
 
@@ -314,8 +120,8 @@ namespace Allors.Domain
                 this.CurrentInvoiceStatus = currentStatus;
             }
 
-            this.DeriveInvoiceItems(derivation);
-            this.DeriveInvoiceTotals();
+            this.AppsOnDeriveInvoiceItems(derivation);
+            this.AppsOnDeriveInvoiceTotals();
         }
 
         public void AppsOnDeriveInvoiceTotals()
@@ -360,7 +166,7 @@ namespace Allors.Domain
         {
             foreach (PurchaseInvoiceItem purchaseInvoiceItem in this.PurchaseInvoiceItems)
             {
-                purchaseInvoiceItem.DerivePrices();
+                purchaseInvoiceItem.AppsOnDerivePrices();
             }
         }
     }

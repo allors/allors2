@@ -29,28 +29,7 @@ namespace Allors.Domain
 
     public partial class SalesInvoice
     {
-        ObjectState Transitional.CurrentObjectState
-        {
-            get
-            {
-                return this.CurrentObjectState;
-            }
-        }
-
-        public bool CanEdit
-        {
-            get
-            {
-                if (this.CurrentObjectState.Equals(new SalesInvoiceObjectStates(this.Strategy.Session).Sent) ||
-                    this.CurrentObjectState.Equals(new SalesInvoiceObjectStates(this.Strategy.Session).ReadyForPosting) ||
-                    this.CurrentObjectState.Equals(new SalesInvoiceObjectStates(this.Strategy.Session).PartiallyPaid))
-                {
-                    return true;
-                }
-
-                return false;
-            }
-        }
+        ObjectState Transitional.CurrentObjectState => this.CurrentObjectState;
 
         public PaymentMethod GetPaymentMethod
         {
@@ -133,13 +112,7 @@ namespace Allors.Domain
             }
         }
 
-        public InvoiceItem[] InvoiceItems
-        {
-            get
-            {
-                return this.SalesInvoiceItems;
-            }
-        }
+        public InvoiceItem[] InvoiceItems => this.SalesInvoiceItems;
 
         public NumberFormatInfo CurrencyFormat
         {
@@ -149,25 +122,6 @@ namespace Allors.Domain
                 var currencyFormat = (NumberFormatInfo)cultureInfo.NumberFormat.Clone();
                 currencyFormat.CurrencySymbol = this.CustomerCurrency.Symbol;
                 return currencyFormat;
-            }
-        }
-
-        private string AppsSalesRepNames
-        {
-            get
-            {
-                var names = new StringBuilder();
-                foreach (Person salesRep in this.SalesReps)
-                {
-                    if (names.Length > 0)
-                    {
-                        names.Append(", ");
-                    }
-
-                    names.Append(salesRep.PartyName);
-                }
-
-                return names.ToString();
             }
         }
 
@@ -195,8 +149,6 @@ namespace Allors.Domain
 
         public void AppsOnBuild(ObjectOnBuild method)
         {
-            
-
             if (!this.ExistCurrentObjectState)
             {
                 this.CurrentObjectState = new SalesInvoiceObjectStates(this.Strategy.Session).ReadyForPosting;
@@ -254,91 +206,6 @@ namespace Allors.Domain
                         this.CustomerCurrency = this.BilledFromInternalOrganisation.ExistPreferredCurrency ? this.BilledFromInternalOrganisation.PreferredCurrency : this.BilledFromInternalOrganisation.Locale.Country.Currency;
                     }
                 }
-            }
-
-            if (!this.ExistTotalBasePrice)
-            {
-                this.TotalBasePrice = 0;
-            }
-
-            if (!this.ExistTotalBasePriceCustomerCurrency)
-            {
-                this.TotalBasePriceCustomerCurrency = 0;
-            }
-
-            if (!this.ExistTotalDiscount)
-            {
-                this.TotalDiscount = 0;
-            }
-
-            if (!this.ExistTotalDiscountCustomerCurrency)
-            {
-                this.TotalDiscountCustomerCurrency = 0;
-            }
-
-            if (!this.ExistTotalExVat)
-            {
-                this.TotalExVat = 0;
-            }
-
-            if (!this.ExistTotalExVatCustomerCurrency)
-            {
-                this.TotalExVatCustomerCurrency = 0;
-            }
-
-            if (!this.ExistTotalFee)
-            {
-                this.TotalFee = 0;
-            }
-
-            if (!this.ExistTotalFeeCustomerCurrency)
-            {
-                this.TotalFeeCustomerCurrency = 0;
-            }
-
-            if (!this.ExistTotalIncVat)
-            {
-                this.TotalIncVat = 0;
-            }
-
-            if (!this.ExistTotalIncVatCustomerCurrency)
-            {
-                this.TotalIncVatCustomerCurrency = 0;
-            }
-
-            if (!this.ExistTotalShippingAndHandling)
-            {
-                this.TotalShippingAndHandling = 0;
-            }
-
-            if (!this.ExistTotalShippingAndHandlingCustomerCurrency)
-            {
-                this.TotalShippingAndHandlingCustomerCurrency = 0;
-            }
-
-            if (!this.ExistTotalSurcharge)
-            {
-                this.TotalSurcharge = 0;
-            }
-
-            if (!this.ExistTotalSurchargeCustomerCurrency)
-            {
-                this.TotalSurchargeCustomerCurrency = 0;
-            }
-
-            if (!this.ExistTotalVat)
-            {
-                this.TotalVat = 0;
-            }
-
-            if (!this.ExistAmountPaid)
-            {
-                this.AmountPaid = 0;
-            }
-
-            if (!this.ExistTotalVatCustomerCurrency)
-            {
-                this.TotalVatCustomerCurrency = 0;
             }
         }
 
@@ -404,14 +271,14 @@ namespace Allors.Domain
                 this.ShipToAddress = this.ShipToCustomer.ShippingAddress;
             }
 
-            this.DeriveInvoiceItems(derivation);
+            this.AppsOnDeriveInvoiceItems(derivation);
 
             this.SalesInvoiceItems = this.SalesInvoiceItems.ToArray();
 
-            this.DeriveLocale(derivation);
-            this.DeriveInvoiceTotals(derivation);
-            this.DeriveCustomers(derivation);
-            this.DeriveSalesReps(derivation);
+            this.AppsOnDeriveLocale(derivation);
+            this.AppsOnDeriveInvoiceTotals(derivation);
+            this.AppsOnDeriveCustomers(derivation);
+            this.AppsOnDeriveSalesReps(derivation);
             this.AppsOnDeriveAmountPaid(derivation);
 
             if (this.ExistBillToCustomer && this.BillToCustomer.ExistCustomerRelationshipsWhereCustomer)
@@ -420,10 +287,7 @@ namespace Allors.Domain
                 customerRelationships.Filter.AddEquals(CustomerRelationships.Meta.InternalOrganisation, this.BilledFromInternalOrganisation);
                 var customerRelationship = customerRelationships.First;
 
-                if (customerRelationship != null)
-                {
-                    customerRelationship.OnDerive(x => x.WithDerivation(derivation));
-                }
+                customerRelationship?.OnDerive(x => x.WithDerivation(derivation));
             }
 
             if (this.ExistBillToCustomer && this.ExistBilledFromInternalOrganisation)
@@ -550,7 +414,7 @@ namespace Allors.Domain
 
             if (this.CurrentObjectState.Equals(new SalesInvoiceObjectStates(this.Strategy.Session).Paid))
             {
-                this.DeriveSalesOrderPaymentStatus(derivation);
+                this.AppsOnDeriveSalesOrderPaymentStatus(derivation);
             }
         }
 
@@ -641,7 +505,7 @@ namespace Allors.Domain
             this.DeriveSurchargeAdjustments(derivation);
             this.DeriveTotalFee(derivation);
             this.DeriveTotalShippingAndHandling(derivation);
-            this.DeriveMarkupAndProfitMargin(derivation);
+            this.AppsOnDeriveMarkupAndProfitMargin(derivation);
         }
 
         private void DeriveDiscountAdjustments(IDerivation derivation)
@@ -754,7 +618,7 @@ namespace Allors.Domain
                 {
                     foreach (OrderShipment orderShipment in invoiceItem.ShipmentItemWhereInvoiceItem.OrderShipmentsWhereShipmentItem)
                     {
-                        orderShipment.SalesOrderItem.DeriveCurrentPaymentStatus(derivation);
+                        orderShipment.SalesOrderItem.AppsOnDeriveCurrentPaymentStatus(derivation);
                         orderShipment.SalesOrderItem.SalesOrderWhereSalesOrderItem.OnDerive(x => x.WithDerivation(derivation));
                     }
                 }
@@ -784,15 +648,15 @@ namespace Allors.Domain
             foreach (SalesInvoiceItem salesInvoiceItem in this.SalesInvoiceItems)
             {
                 salesInvoiceItem.OnDerive(x => x.WithDerivation(derivation));
-                salesInvoiceItem.DeriveVatRegime(derivation);
-                salesInvoiceItem.DeriveSalesRep(derivation);
-                salesInvoiceItem.DeriveCurrentObjectState(derivation);
+                salesInvoiceItem.AppsOnDeriveVatRegime(derivation);
+                salesInvoiceItem.AppsOnDeriveSalesRep(derivation);
+                salesInvoiceItem.AppsOnDeriveCurrentObjectState(derivation);
 
                 if (!salesInvoiceItem.ExistShipmentItemWhereInvoiceItem)
                 {
                     invoiceFromOrder = false;
-                    salesInvoiceItem.DerivePrices(derivation);
-                    salesInvoiceItem.DeriveCurrentPaymentStatus(derivation);
+                    salesInvoiceItem.AppsOnDerivePrices(derivation, 0, 0);
+                    salesInvoiceItem.AppsOnDeriveCurrentPaymentStatus(derivation);
 
                     if (salesInvoiceItem.ExistProduct)
                     {
@@ -823,8 +687,8 @@ namespace Allors.Domain
                         totalBasePriceByProduct.TryGetValue(salesInvoiceItem.Product, out totalBasePrice);
                     }
 
-                    salesInvoiceItem.DerivePrices(derivation, quantity, totalBasePrice);
-                    salesInvoiceItem.DeriveCurrentPaymentStatus(derivation);
+                    salesInvoiceItem.AppsOnDerivePrices(derivation, quantity, totalBasePrice);
+                    salesInvoiceItem.AppsOnDeriveCurrentPaymentStatus(derivation);
                 }
             }
         }

@@ -94,26 +94,6 @@ namespace Allors.Domain
             {
                 this.OutgoingShipmentCounter = new CounterBuilder(this.strategy.Session).WithUniqueId(Guid.NewGuid()).WithValue(0).Build();
             }
-
-            if (!this.ExistCreditLimit)
-            {
-                this.CreditLimit = 0;
-            }
-            
-            if (!this.ExistShipmentThreshold)
-            {
-                this.ShipmentThreshold = 0;
-            }
-
-            if (!this.ExistOrderThreshold)
-            {
-                this.OrderThreshold = 0;
-            }
-
-            if (!this.ExistPaymentGracePeriod)
-            {
-                this.PaymentGracePeriod = 0;
-            }
         }
 
         public void AppsOnDerive(ObjectOnDerive method)

@@ -22,19 +22,13 @@ namespace Allors.Domain
 {
     public partial class OperatingBudget
     {
+        ObjectState Transitional.CurrentObjectState => this.CurrentObjectState;
+
         public void AppsOnBuild(ObjectOnBuild method)
         {
             if (!this.ExistCurrentObjectState)
             {
                 this.CurrentObjectState = new BudgetObjectStates(this.Strategy.Session).Opened;
-            }
-        }
-
-        ObjectState Transitional.CurrentObjectState
-        {
-            get
-            {
-                return this.CurrentObjectState;
             }
         }
     }

@@ -22,12 +22,6 @@ namespace Allors.Domain
 {
     public partial class EngineeringChange
     {
-        ObjectState Transitional.CurrentObjectState
-        {
-            get
-            {
-                return this.CurrentObjectState;
-            }
-        }
+        ObjectState Transitional.CurrentObjectState => this.CurrentObjectState;
     }
 }

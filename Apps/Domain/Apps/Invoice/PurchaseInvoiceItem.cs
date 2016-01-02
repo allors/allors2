@@ -22,54 +22,9 @@ namespace Allors.Domain
 {
     public partial class PurchaseInvoiceItem
     {
-        ObjectState Transitional.CurrentObjectState
-        {
-            get
-            {
-                return this.CurrentObjectState;
-            }
-        }
+        ObjectState Transitional.CurrentObjectState => this.CurrentObjectState;
 
-        public decimal PriceAdjustment
-        {
-            get
-            {
-                return this.TotalSurcharge - this.TotalDiscount;
-            }
-        }
-
-        public string GetTotalExVatAsCurrencyString
-        {
-            get
-            {
-                return DecimalExtensions.AsCurrencyString(this.TotalExVat, this.PurchaseInvoiceWherePurchaseInvoiceItem.CurrencyFormat);
-            }
-        }
-
-        public string GetTotalIncVatAsCurrencyString
-        {
-            get
-            {
-                return DecimalExtensions.AsCurrencyString(this.TotalIncVat, this.PurchaseInvoiceWherePurchaseInvoiceItem.CurrencyFormat);
-            }
-        }
-
-        public string GetNothingAsCurrencyString
-        {
-            get
-            {
-                const decimal Nothing = 0;
-                return Nothing.AsCurrencyString(this.PurchaseInvoiceWherePurchaseInvoiceItem.CurrencyFormat);
-            }
-        }
-
-        public string VatRateAsString
-        {
-            get
-            {
-                return this.DerivedVatRate.Rate.ToString("##.##");
-            }
-        }
+        public decimal PriceAdjustment => this.TotalSurcharge - this.TotalDiscount;
 
         public void AppsOnPreDerive(ObjectOnPreDerive method)
         {
