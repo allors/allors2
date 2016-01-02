@@ -37,8 +37,6 @@ namespace Allors.Domain
 
         void AppsOnDeriveInactiveOrganisationContactRelationships(IDerivation derivation);
 
-        void AppsOnDeriveCurrentPartyContactMechanisms(IDerivation derivation);
-
         void AppsOnDeriveInactivePartyContactMechanisms(IDerivation derivation);
     }
 }

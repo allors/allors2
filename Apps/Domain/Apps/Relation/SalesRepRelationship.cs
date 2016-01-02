@@ -26,11 +26,6 @@ namespace Allors.Domain
     {
         public void AppsOnBuild(ObjectOnBuild method)
         {
-            if (!this.ExistFromDate)
-            {
-                this.FromDate = DateTime.UtcNow;
-            }
-
             if (!this.ExistInternalOrganisation)
             {
                 this.InternalOrganisation = Singleton.Instance(this.Strategy.Session).DefaultInternalOrganisation;

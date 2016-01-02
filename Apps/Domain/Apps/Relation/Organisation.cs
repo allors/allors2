@@ -68,26 +68,6 @@ namespace Allors.Domain
             this.AppsOnDeriveCurrentPartyContactMechanisms(derivation);
             this.AppsOnDeriveInactivePartyContactMechanisms(derivation);
         }
-        
-        public bool AppsIsActiveClient(DateTime? date)
-        {
-            if (date == DateTime.MinValue)
-            {
-                return false;
-            }
-
-            var clientRelationships = this.ClientRelationshipsWhereClient;
-            foreach (ClientRelationship relationship in clientRelationships)
-            {
-                if (relationship.FromDate <= date &&
-                    (!relationship.ExistThroughDate || relationship.ThroughDate >= date))
-                {
-                    return true;
-                }
-            }
-
-            return false;
-        }
 
         public ClientRelationship ClientRelationShip(InternalOrganisation internalOrganisation)
         {
@@ -104,26 +84,6 @@ namespace Allors.Domain
             }
 
             return null;
-        }
-
-        public bool AppsIsActiveCustomer(DateTime? date)
-        {
-            if (date == DateTime.MinValue)
-            {
-                return false;
-            }
-
-            var customerRelationships = this.CustomerRelationshipsWhereCustomer;
-            foreach (CustomerRelationship relationship in customerRelationships)
-            {
-                if (relationship.FromDate <= date &&
-                    (!relationship.ExistThroughDate || relationship.ThroughDate >= date))
-                {
-                    return true;
-                }
-            }
-
-            return false;
         }
 
         public CustomerRelationship CustomerRelationship(InternalOrganisation internalOrganisation)
@@ -237,26 +197,6 @@ namespace Allors.Domain
             return false;
         }
 
-        public bool AppsIsActiveProspect(DateTime? date)
-        {
-            if (date == DateTime.MinValue)
-            {
-                return false;
-            }
-
-            var prospectRelationships = this.ProspectRelationshipsWhereProspect;
-            foreach (ProspectRelationship relationship in prospectRelationships)
-            {
-                if (relationship.FromDate <= date &&
-                    (!relationship.ExistThroughDate || relationship.ThroughDate >= date))
-                {
-                    return true;
-                }
-            }
-
-            return false;
-        }
-
         public ProspectRelationship ProspectRelationship(InternalOrganisation internalOrganisation)
         {
             var relationships = this.ProspectRelationshipsWhereProspect;
@@ -272,26 +212,6 @@ namespace Allors.Domain
             }
 
             return null;
-        }
-
-        public bool AppsIsActiveSubContractor(DateTime? date)
-        {
-            if (date == DateTime.MinValue)
-            {
-                return false;
-            }
-
-            var subContractorRelationships = this.SubContractorRelationshipsWhereSubContractor;
-            foreach (SubContractorRelationship relationship in subContractorRelationships)
-            {
-                if (relationship.FromDate <= date &&
-                    (!relationship.ExistThroughDate || relationship.ThroughDate >= date))
-                {
-                    return true;
-                }
-            }
-
-            return false;
         }
 
         public bool AppsIsActiveSupplier(DateTime? date)
@@ -453,16 +373,7 @@ namespace Allors.Domain
 
         public void AppsOnDeriveCurrentPartyContactMechanisms(IDerivation derivation)
         {
-            this.RemoveCurrentPartyContactMechanisms();
-
-            foreach (PartyContactMechanism partyContactMechanism in this.PartyContactMechanisms)
-            {
-                if (partyContactMechanism.FromDate <= DateTime.UtcNow &&
-                    (!partyContactMechanism.ExistThroughDate || partyContactMechanism.ThroughDate >= DateTime.UtcNow))
-                {
-                    this.AddCurrentPartyContactMechanism(partyContactMechanism);
-                }
-            }
+            throw new NotImplementedException();
         }
 
         public void AppsOnDeriveInactivePartyContactMechanisms(IDerivation derivation)

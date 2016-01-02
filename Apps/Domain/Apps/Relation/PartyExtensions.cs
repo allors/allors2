@@ -110,6 +110,100 @@ namespace Allors.Domain
             return null;
         }
 
+        public static bool AppsIsActiveSubContractor(this Party party, DateTime? date)
+        {
+            if (date == DateTime.MinValue)
+            {
+                return false;
+            }
+
+            var subContractorRelationships = party.SubContractorRelationshipsWhereSubContractor;
+            foreach (SubContractorRelationship relationship in subContractorRelationships)
+            {
+                if (relationship.FromDate <= date &&
+                    (!relationship.ExistThroughDate || relationship.ThroughDate >= date))
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        public static bool AppsIsActiveProspect(this Party party, DateTime? date)
+        {
+            if (date == DateTime.MinValue)
+            {
+                return false;
+            }
+
+            var prospectRelationships = party.ProspectRelationshipsWhereProspect;
+            foreach (ProspectRelationship relationship in prospectRelationships)
+            {
+                if (relationship.FromDate <= date &&
+                    (!relationship.ExistThroughDate || relationship.ThroughDate >= date))
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        public static bool AppsIsActiveClient(this Party party, DateTime? date)
+        {
+            if (date == DateTime.MinValue)
+            {
+                return false;
+            }
+
+            var clientRelationships = party.ClientRelationshipsWhereClient;
+            foreach (ClientRelationship relationship in clientRelationships)
+            {
+                if (relationship.FromDate <= date &&
+                    (!relationship.ExistThroughDate || relationship.ThroughDate >= date))
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        public static bool AppsIsActiveCustomer(this Party party, DateTime? date)
+        {
+            if (date == DateTime.MinValue)
+            {
+                return false;
+            }
+
+            var customerRelationships = party.CustomerRelationshipsWhereCustomer;
+            foreach (CustomerRelationship relationship in customerRelationships)
+            {
+                if (relationship.FromDate <= date &&
+                    (!relationship.ExistThroughDate || relationship.ThroughDate >= date))
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        public static void AppsOnDeriveCurrentPartyContactMechanisms(this Party party, IDerivation derivation)
+        {
+            party.RemoveCurrentPartyContactMechanisms();
+
+            foreach (PartyContactMechanism partyContactMechanism in party.PartyContactMechanisms)
+            {
+                if (partyContactMechanism.FromDate <= DateTime.UtcNow &&
+                    (!partyContactMechanism.ExistThroughDate || partyContactMechanism.ThroughDate >= DateTime.UtcNow))
+                {
+                    party.AddCurrentPartyContactMechanism(partyContactMechanism);
+                }
+            }
+        }
+
         public static void AppsOnBuild(this Party party, ObjectOnBuild method)
         {
             if (!party.ExistLocale && Singleton.Instance(party.Strategy.Session).ExistDefaultInternalOrganisation)

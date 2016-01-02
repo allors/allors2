@@ -24,14 +24,6 @@ namespace Allors.Domain
 
     public partial class Partnership
     {
-        public void AppsOnBuild(ObjectOnBuild method)
-        {
-            if (!this.ExistFromDate)
-            {
-                this.FromDate = DateTime.UtcNow;
-            }
-        }
-
         public void AppsOnDerive(ObjectOnDerive method)
         {
             var derivation = method.Derivation;

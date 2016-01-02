@@ -28,5 +28,22 @@ namespace Allors.Domain
 
             setup.AddDependency(this.ObjectType, BudgetObjectStates.Meta.ObjectType);
         }
+        protected override void AppsSecure(Security config)
+        {
+            base.AppsSecure(config);
+
+            var write = Operation.Write;
+            var full = new[] { Operation.Read, Operation.Write, Operation.Execute };
+
+            config.GrantAdministrator(this.ObjectType, full);
+
+            var closed = new BudgetObjectStates(this.Session).Closed;
+            var opened = new BudgetObjectStates(this.Session).Opened;
+
+            config.Deny(this.ObjectType, closed, write);
+
+            config.Deny(this.ObjectType, closed, Budgets.Meta.Close);
+            config.Deny(this.ObjectType, opened, Budgets.Meta.Reopen);
+        }
     }
 }

@@ -22,14 +22,6 @@ namespace Allors.Domain
 {
     public partial class TestingRequirement
     {
-        public void AppsOnBuild(ObjectOnBuild method)
-        {
-            if (!this.ExistCurrentObjectState)
-            {
-                this.CurrentObjectState = new PartSpecificationObjectStates(this.Strategy.Session).Created;
-            }
-        }
-
         ObjectState Transitional.CurrentObjectState => this.CurrentObjectState;
     }
 }

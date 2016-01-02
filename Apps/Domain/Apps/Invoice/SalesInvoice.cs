@@ -114,17 +114,6 @@ namespace Allors.Domain
 
         public InvoiceItem[] InvoiceItems => this.SalesInvoiceItems;
 
-        public NumberFormatInfo CurrencyFormat
-        {
-            get
-            {
-                var cultureInfo = new CultureInfo(this.Locale.Name, false);
-                var currencyFormat = (NumberFormatInfo)cultureInfo.NumberFormat.Clone();
-                currencyFormat.CurrencySymbol = this.CustomerCurrency.Symbol;
-                return currencyFormat;
-            }
-        }
-
         public void SetActualDiscountAmount(decimal amount)
         {
             if (!this.ExistDiscountAdjustment)

@@ -26,5 +26,13 @@ namespace Allors.Domain
         {
             @this.CurrentObjectState = new PartSpecificationObjectStates(@this.Strategy.Session).Approved;
         }
+
+        public static void AppsOnBuild(this PartSpecification @this, ObjectOnBuild method)
+        {
+            if (!@this.ExistCurrentObjectState)
+            {
+                @this.CurrentObjectState = new PartSpecificationObjectStates(@this.Strategy.Session).Created;
+            }
+        }
     }
 }

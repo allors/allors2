@@ -250,32 +250,6 @@ namespace Allors.Domain
             }
         }
 
-        public void AppsOnDeriveProductCategories(IDerivation derivation)
-        {
-            this.RemoveDerivedProductCategories();
-
-            if (this.ExistGood)
-            {
-                foreach (ProductCategory productCategory in this.Good.ProductCategories)
-                {
-                    this.AddDerivedProductCategory(productCategory);
-                    this.AddParentCategories(productCategory);
-                }
-            }
-        }
-
-        private void AddParentCategories(ProductCategory productCategory)
-        {
-            if (productCategory.ExistParents)
-            {
-                foreach (ProductCategory parent in productCategory.Parents)
-                {
-                    this.AddDerivedProductCategory(parent);
-                    this.AddParentCategories(parent);
-                }
-            }
-        }
-
         public void AppsOnDeriveSku(IDerivation derivation)
         {
             this.Sku = this.ExistGood ? this.Good.Sku : string.Empty;

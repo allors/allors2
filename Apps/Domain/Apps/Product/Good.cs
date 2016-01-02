@@ -22,16 +22,6 @@ namespace Allors.Domain
 {
     public partial class Good
     {
-        public void AddToBasePrice(BasePrice basePrice)
-        {
-            this.AddBasePrice(basePrice);
-        }
-
-        public void RemoveFromBasePrices(BasePrice basePrice)
-        {
-            this.RemoveBasePrice(basePrice);
-        }
-
         public void DeriveVirtualProductPriceComponent()
         {
             if (!this.ExistProductWhereVariant)

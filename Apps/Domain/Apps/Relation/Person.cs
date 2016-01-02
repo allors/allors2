@@ -42,46 +42,6 @@ namespace Allors.Domain
             }
         }
 
-        private bool AppsIsActiveClient(DateTime? date)
-        {
-            if (date == DateTime.MinValue)
-            {
-                return false;
-            }
-
-            var clientRelationships = this.ClientRelationshipsWhereClient;
-            foreach (ClientRelationship relationship in clientRelationships)
-            {
-                if (relationship.FromDate <= date &&
-                    (!relationship.ExistThroughDate || relationship.ThroughDate >= date))
-                {
-                    return true;
-                }
-            }
-
-            return false;
-        }
-
-        private bool AppsIsActiveCustomer(DateTime? date)
-        {
-            if (date == DateTime.MinValue)
-            {
-                return false;
-            }
-
-            var customerRelationships = this.CustomerRelationshipsWhereCustomer;
-            foreach (CustomerRelationship relationship in customerRelationships)
-            {
-                if (relationship.FromDate <= date &&
-                    (!relationship.ExistThroughDate || relationship.ThroughDate >= date))
-                {
-                    return true;
-                }
-            }
-
-            return false;
-        }
-
         private bool AppsIsActiveEmployee(DateTime? date)
         {
             if (date == DateTime.MinValue)
@@ -131,46 +91,6 @@ namespace Allors.Domain
 
             var salesRepRelationships = this.SalesRepRelationshipsWhereSalesRepresentative;
             foreach (SalesRepRelationship relationship in salesRepRelationships)
-            {
-                if (relationship.FromDate <= date &&
-                    (!relationship.ExistThroughDate || relationship.ThroughDate >= date))
-                {
-                    return true;
-                }
-            }
-
-            return false;
-        }
-
-        private bool AppsIsActiveProspect(DateTime? date)
-        {
-            if (date == DateTime.MinValue)
-            {
-                return false;
-            }
-
-            var prospectRelationships = this.ProspectRelationshipsWhereProspect;
-            foreach (ProspectRelationship relationship in prospectRelationships)
-            {
-                if (relationship.FromDate <= date &&
-                    (!relationship.ExistThroughDate || relationship.ThroughDate >= date))
-                {
-                    return true;
-                }
-            }
-
-            return false;
-        }
-
-        private bool AppsIsActiveSubContractor(DateTime? date)
-        {
-            if (date == DateTime.MinValue)
-            {
-                return false;
-            }
-
-            var subContractorRelationships = this.SubContractorRelationshipsWhereSubContractor;
-            foreach (SubContractorRelationship relationship in subContractorRelationships)
             {
                 if (relationship.FromDate <= date &&
                     (!relationship.ExistThroughDate || relationship.ThroughDate >= date))
@@ -383,20 +303,6 @@ namespace Allors.Domain
         public void AppsOnDeriveInactiveOrganisationContactRelationships(IDerivation derivation)
         {
             this.RemoveInactiveOrganisationContactRelationships();
-        }
-
-        public void AppsOnDeriveCurrentPartyContactMechanisms(IDerivation derivation)
-        {
-            this.RemoveCurrentPartyContactMechanisms();
-
-            foreach (PartyContactMechanism partyContactMechanism in this.PartyContactMechanisms)
-            {
-                if (partyContactMechanism.FromDate <= DateTime.UtcNow &&
-                    (!partyContactMechanism.ExistThroughDate || partyContactMechanism.ThroughDate >= DateTime.UtcNow))
-                {
-                    this.AddCurrentPartyContactMechanism(partyContactMechanism);
-                }
-            }
         }
 
         public void AppsOnDeriveInactivePartyContactMechanisms(IDerivation derivation)

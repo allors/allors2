@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------------------------------------------
-// <copyright file="Product.v.cs" company="Allors bvba">
+// <copyright file="AgreementTermExtensions.cs" company="Allors bvba">
 //   Copyright 2002-2012 Allors bvba.
 // 
 // Dual Licensed under
@@ -20,10 +20,13 @@
 
 namespace Allors.Domain
 {
-    public partial interface Product
+    public static partial class AgreementTermExtensions
     {
-        void AddToBasePrice(BasePrice basePrice);
+        public static void AppsOnDerive(this AgreementTerm @this, ObjectOnDerive method)
+        {
+            var derivation = method.Derivation;
 
-        void RemoveFromBasePrices(BasePrice basePrice);
-    } 
+            derivation.Log.AssertAtLeastOne(@this, AgreementTerms.Meta.TermType, AgreementTerms.Meta.Description);
+        }
+    }
 }

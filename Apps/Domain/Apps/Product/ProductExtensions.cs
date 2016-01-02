@@ -22,6 +22,16 @@ namespace Allors.Domain
 {
     public static partial class ProductExtensions
     {
+        public static void AddToBasePrice(this Product @this, BasePrice basePrice)
+        {
+            @this.AddBasePrice(basePrice);
+        }
+
+        public static void RemoveFromBasePrices(this Product @this, BasePrice basePrice)
+        {
+            @this.RemoveBasePrice(basePrice);
+        }
+
         public static void AppsOnDeriveVirtualProductPriceComponent(this Product @this)
         {
             if (!@this.ExistProductWhereVariant)

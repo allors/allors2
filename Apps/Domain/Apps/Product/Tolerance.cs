@@ -23,13 +23,5 @@ namespace Allors.Domain
     public partial class Tolerance
     {
         ObjectState Transitional.CurrentObjectState => this.CurrentObjectState;
-
-        public void AppsOnBuild(ObjectOnBuild method)
-        {
-            if (!this.ExistCurrentObjectState)
-            {
-                this.CurrentObjectState = new PartSpecificationObjectStates(this.Strategy.Session).Created;
-            }
-        }
     }
 }

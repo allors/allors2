@@ -64,11 +64,6 @@ namespace Allors.Domain
             this.RemoveInactivePartyContactMechanisms();
         }
 
-        public void AppsOnDeriveCurrentPartyContactMechanisms(IDerivation derivation)
-        {
-            this.RemoveCurrentPartyContactMechanisms();
-        }
-
         public void AppsOnDeriveInactivePartyContactMechanisms(IDerivation derivation)
         {
             this.RemoveInactivePartyContactMechanisms();

@@ -31,17 +31,6 @@ namespace Allors.Domain
 
         public bool IsProvisional => this.CurrentObjectState.Equals(new PurchaseOrderObjectStates(this.Strategy.Session).Provisional);
 
-        public NumberFormatInfo CurrencyFormat
-        {
-            get
-            {
-                var cultureInfo = new CultureInfo(this.Locale.Name, false);
-                var currencyFormat = (NumberFormatInfo)cultureInfo.NumberFormat.Clone();
-                currencyFormat.CurrencySymbol = this.CustomerCurrency.Symbol;
-                return currencyFormat;
-            }
-        }
-
         public OrderItem[] OrderItems => this.PurchaseOrderItems;
 
         public void AppsOnBuild(ObjectOnBuild method)

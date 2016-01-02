@@ -23,13 +23,5 @@ namespace Allors.Domain
     public partial class CustomerRequirement
     {
         ObjectState Transitional.CurrentObjectState => this.CurrentObjectState;
-
-        public void AppsOnBuild(ObjectOnBuild method)
-        {
-            if (!this.ExistCurrentObjectState)
-            {
-                this.CurrentObjectState = new RequirementObjectStates(this.Strategy.Session).Active;
-            }
-        }
     }
 }

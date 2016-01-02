@@ -25,14 +25,6 @@ namespace Allors.Domain
 
     public partial class Employment
     {
-        public void AppsOnBuild(ObjectOnBuild method)
-        {
-            if (!this.ExistFromDate)
-            {
-                this.FromDate = DateTime.UtcNow;
-            }
-        }
-
         public void AppsOnPreDerive(ObjectOnPreDerive method)
         {
             var derivation = method.Derivation;

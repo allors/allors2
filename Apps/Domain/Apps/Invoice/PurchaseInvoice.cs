@@ -28,20 +28,7 @@ namespace Allors.Domain
     {
         ObjectState Transitional.CurrentObjectState => this.CurrentObjectState;
 
-        public NumberFormatInfo CurrencyFormat
-        {
-            get
-            {
-                var cultureInfo = new CultureInfo(this.Locale.Name, false);
-                var currencyFormat = (NumberFormatInfo)cultureInfo.NumberFormat.Clone();
-                currencyFormat.CurrencySymbol = this.CustomerCurrency.Symbol;
-                return currencyFormat;
-            }
-        }
-
         public InvoiceItem[] InvoiceItems => this.PurchaseInvoiceItems;
-
-        public string ShortInvoiceDateString => this.InvoiceDate.ToShortDateString();
 
         public void AppsOnBuild(ObjectOnBuild method)
         {

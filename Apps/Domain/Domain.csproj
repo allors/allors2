@@ -400,7 +400,7 @@
     <Compile Include="Apps\Accounting\BankAccount.cs" />
     <Compile Include="Apps\Accounting\BankAccounts.cs" />
     <Compile Include="Apps\Accounting\Banks.cs" />
-    <Compile Include="Apps\Accounting\Budget.cs" />
+    <Compile Include="Apps\Accounting\BudgetExtensions.cs" />
     <Compile Include="Apps\Accounting\BudgetItems.cs" />
     <Compile Include="Apps\Accounting\BudgetObjectStates.cs" />
     <Compile Include="Apps\Accounting\BudgetReviews.cs" />
@@ -410,7 +410,6 @@
     <Compile Include="Apps\Accounting\BudgetStatus.cs" />
     <Compile Include="Apps\Accounting\BudgetStatuses.cs" />
     <Compile Include="Apps\Accounting\CapitalBudget.cs" />
-    <Compile Include="Apps\Accounting\CapitalBudgets.cs" />
     <Compile Include="Apps\Accounting\Capitalizations.cs" />
     <Compile Include="Apps\Accounting\Cash.cs" />
     <Compile Include="Apps\Accounting\ChartOfAccounts.cs" />
@@ -442,7 +441,6 @@
     <Compile Include="Apps\Accounting\Notes.cs" />
     <Compile Include="Apps\Accounting\Obligations.cs" />
     <Compile Include="Apps\Accounting\OperatingBudget.cs" />
-    <Compile Include="Apps\Accounting\OperatingBudgets.cs" />
     <Compile Include="Apps\Accounting\OrganisationGlAccount.cs" />
     <Compile Include="Apps\Accounting\OrganisationGlAccountBalance.cs" />
     <Compile Include="Apps\Accounting\OrganisationGlAccounts.cs" />
@@ -627,7 +625,6 @@
     <Compile Include="Apps\ObjectsBase.cs" />
     <Compile Include="Apps\Order\CustomEngagementItems.cs" />
     <Compile Include="Apps\Order\CustomerRequirement.cs" />
-    <Compile Include="Apps\Order\CustomerRequirements.cs" />
     <Compile Include="Apps\Order\DesiredProductFeatures.cs" />
     <Compile Include="Apps\Order\DiscountAdjustment.cs" />
     <Compile Include="Apps\Order\DiscountAdjustments.cs" />
@@ -637,7 +634,6 @@
     <Compile Include="Apps\Order\Fee.cs" />
     <Compile Include="Apps\Order\Fees.cs" />
     <Compile Include="Apps\Order\InternalRequirement.cs" />
-    <Compile Include="Apps\Order\InternalRequirements.cs" />
     <Compile Include="Apps\Order\NeededSkills.cs" />
     <Compile Include="Apps\Order\Order.cs" />
     <Compile Include="Apps\Order\OrderKind.cs" />
@@ -646,11 +642,9 @@
     <Compile Include="Apps\Order\OrderTerms.cs" />
     <Compile Include="Apps\Order\ProductQuotes.cs" />
     <Compile Include="Apps\Order\ProductRequirement.cs" />
-    <Compile Include="Apps\Order\ProductRequirements.cs" />
     <Compile Include="Apps\Order\ProfessionalAssignments.cs" />
     <Compile Include="Apps\Order\ProfessionalPlacements.cs" />
     <Compile Include="Apps\Order\ProjectRequirement.cs" />
-    <Compile Include="Apps\Order\ProjectRequirements.cs" />
     <Compile Include="Apps\Order\Proposals.cs" />
     <Compile Include="Apps\Order\PurchaseOrder.cs" />
     <Compile Include="Apps\Order\PurchaseOrderItem.cs" />
@@ -675,7 +669,6 @@
     <Compile Include="Apps\Order\RequirementStatus.cs" />
     <Compile Include="Apps\Order\RequirementStatuses.cs" />
     <Compile Include="Apps\Order\ResourceRequirement.cs" />
-    <Compile Include="Apps\Order\ResourceRequirements.cs" />
     <Compile Include="Apps\Order\RespondingParties.cs" />
     <Compile Include="Apps\Order\SalesOrder.cs" />
     <Compile Include="Apps\Order\SalesOrderItem.cs" />
@@ -702,7 +695,6 @@
     <Compile Include="Apps\Product\Colours.cs" />
     <Compile Include="Apps\Product\ConstraintSpecification.cs" />
     <Compile Include="Apps\Product\ConstraintSpecifications.cs" />
-    <Compile Include="Apps\Product\DeliverableBasedService.cs" />
     <Compile Include="Apps\Product\DeliverableBasedServices.cs" />
     <Compile Include="Apps\Product\Deployments.cs" />
     <Compile Include="Apps\Product\Dimension.cs" />
@@ -753,6 +745,9 @@
     <Compile Include="Apps\Product\PartBillOfMaterialSubstitutes.cs" />
     <Compile Include="Apps\Product\PartRevisions.cs" />
     <Compile Include="Apps\Product\PartSpecification.cs" />
+    <Compile Include="Apps\Product\PartExtensions.cs" />
+    <Compile Include="Apps\Product\InventoryItemExtensions.cs" />
+    <Compile Include="Apps\Product\ServiceExtensions.cs" />
     <Compile Include="Apps\Product\ProductExtensions.cs" />
     <Compile Include="Apps\Product\PartSpecificationExtensions.cs" />
     <Compile Include="Apps\Product\PartSpecificationObjectStates.cs" />
@@ -763,7 +758,6 @@
     <Compile Include="Apps\Product\PerformanceSpecification.cs" />
     <Compile Include="Apps\Product\PerformanceSpecifications.cs" />
     <Compile Include="Apps\Product\PriceComponents.cs" />
-    <Compile Include="Apps\Product\Product.v.cs" />
     <Compile Include="Apps\Product\ProductCategories.cs" />
     <Compile Include="Apps\Product\ProductCategory.cs" />
     <Compile Include="Apps\Product\ProductConfigurations.cs" />
@@ -771,13 +765,11 @@
     <Compile Include="Apps\Product\ProductDrawings.cs" />
     <Compile Include="Apps\Product\ProductFeature.v.cs" />
     <Compile Include="Apps\Product\ProductModels.cs" />
-    <Compile Include="Apps\Product\ProductPurchasePrice.cs" />
     <Compile Include="Apps\Product\ProductPurchasePrices.cs" />
     <Compile Include="Apps\Product\ProductQualities.cs" />
     <Compile Include="Apps\Product\ProductQuality.cs" />
     <Compile Include="Apps\Product\Products.cs" />
     <Compile Include="Apps\Product\RatingTypes.cs" />
-    <Compile Include="Apps\Product\RawMaterial.cs" />
     <Compile Include="Apps\Product\RawMaterials.cs" />
     <Compile Include="Apps\Product\RecurringCharge.cs" />
     <Compile Include="Apps\Product\RecurringCharges.cs" />
@@ -796,14 +788,12 @@
     <Compile Include="Apps\Product\SoftwareFeature.cs" />
     <Compile Include="Apps\Product\SoftwareFeatures.cs" />
     <Compile Include="Apps\Product\SubAssemblies.cs" />
-    <Compile Include="Apps\Product\SubAssembly.cs" />
     <Compile Include="Apps\Product\SupplierOffering.cs" />
     <Compile Include="Apps\Product\SupplierOfferings.cs" />
     <Compile Include="Apps\Product\SurchargeComponent.cs" />
     <Compile Include="Apps\Product\SurchargeComponents.cs" />
     <Compile Include="Apps\Product\TestingRequirement.cs" />
     <Compile Include="Apps\Product\TestingRequirements.cs" />
-    <Compile Include="Apps\Product\TimeAndMaterialsService.cs" />
     <Compile Include="Apps\Product\TimeAndMaterialsServices.cs" />
     <Compile Include="Apps\Product\TimePeriodUsages.cs" />
     <Compile Include="Apps\Product\Tolerance.cs" />
@@ -831,6 +821,8 @@
     <Compile Include="Apps\Relation\ClientAgreements.cs" />
     <Compile Include="Apps\Relation\ClientRelationship.cs" />
     <Compile Include="Apps\Relation\ClientRelationships.cs" />
+    <Compile Include="Apps\Relation\AgreementTermExtensions.cs" />
+    <Compile Include="Apps\Relation\PartyRelationshipExtensions.cs" />
     <Compile Include="Apps\Relation\CommunicationEventExtensions.cs" />
     <Compile Include="Apps\Relation\CommunicationEventObjectStates.cs" />
     <Compile Include="Apps\Relation\CommunicationEventPurposes.cs" />
@@ -855,20 +847,15 @@
     <Compile Include="Apps\Relation\FaceToFaceCommunication.cs" />
     <Compile Include="Apps\Relation\FaceToFaceCommunications.cs" />
     <Compile Include="Apps\Relation\FaxCommunication.cs" />
-    <Compile Include="Apps\Relation\FaxCommunications.cs" />
-    <Compile Include="Apps\Relation\FinancialTerm.cs" />
     <Compile Include="Apps\Relation\FinancialTerms.cs" />
     <Compile Include="Apps\Relation\GenderTypes.cs" />
     <Compile Include="Apps\Relation\Hobbies.cs" />
-    <Compile Include="Apps\Relation\Incentive.cs" />
     <Compile Include="Apps\Relation\Incentives.cs" />
     <Compile Include="Apps\Relation\InternalOrganisation.cs" />
     <Compile Include="Apps\Relation\InternalOrganisations.cs" />
     <Compile Include="Apps\Relation\LegalForms.cs" />
-    <Compile Include="Apps\Relation\LegalTerm.cs" />
     <Compile Include="Apps\Relation\LegalTerms.cs" />
     <Compile Include="Apps\Relation\LetterCorrespondence.cs" />
-    <Compile Include="Apps\Relation\LetterCorrespondences.cs" />
     <Compile Include="Apps\Relation\MaritalStatuses.cs" />
     <Compile Include="Apps\Relation\Organisation.cs" />
     <Compile Include="Apps\Relation\OrganisationContactKinds.cs" />
@@ -893,7 +880,6 @@
     <Compile Include="Apps\Relation\PersonalTitles.cs" />
     <Compile Include="Apps\Relation\Persons.cs" />
     <Compile Include="Apps\Relation\PhoneCommunication.cs" />
-    <Compile Include="Apps\Relation\PhoneCommunications.cs" />
     <Compile Include="Apps\Relation\PostalAddress.cs" />
     <Compile Include="Apps\Relation\Priorities.cs" />
     <Compile Include="Apps\Relation\ProductFeatureApplicabilityRelationships.cs" />
@@ -915,12 +901,10 @@
     <Compile Include="Apps\Relation\TelecommunicationsNumber.cs" />
     <Compile Include="Apps\Relation\TelecommunicationsNumbers.cs" />
     <Compile Include="Apps\Relation\TermTypes.cs" />
-    <Compile Include="Apps\Relation\Threshold.cs" />
     <Compile Include="Apps\Relation\Thresholds.cs" />
     <Compile Include="Apps\Relation\WebAddress.cs" />
     <Compile Include="Apps\Relation\WebAddresses.cs" />
     <Compile Include="Apps\Relation\WebSiteCommunication.cs" />
-    <Compile Include="Apps\Relation\WebSiteCommunications.cs" />
     <Compile Include="Apps\Security\AccessControls.cs" />
     <Compile Include="Apps\Security\Roles.cs" />
     <Compile Include="Apps\Security\SecurityConfiguration.cs" />
@@ -1036,7 +1020,6 @@
     <Compile Include="Apps\WorkEffort\WorkFlow.cs" />
     <Compile Include="Apps\WorkEffort\WorkFlows.cs" />
     <Compile Include="Apps\WorkEffort\WorkRequirement.cs" />
-    <Compile Include="Apps\WorkEffort\WorkRequirements.cs" />
     <Compile Include="Generated\AccessControl.g.cs" />
     <Compile Include="Generated\AccessControlledObject.g.cs" />
     <Compile Include="Generated\AccountAdjustment.g.cs" />

@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------------------------------------------
-// <copyright file="OperatingBudgets.cs" company="Allors bvba">
+// <copyright file="PartyRelationshipExtensions.cs" company="Allors bvba">
 //   Copyright 2002-2012 Allors bvba.
 // 
 // Dual Licensed under
@@ -20,23 +20,16 @@
 
 namespace Allors.Domain
 {
-    public partial class OperatingBudgets
+    using System;
+
+    public static partial class PartyRelationshipExtensions
     {
-        protected override void AppsSecure(Security config)
+        public static void AppsOnBuild(this PartyRelationship @this, ObjectOnBuild method)
         {
-            base.AppsSecure(config);
-
-            var write = Operation.Write;
-            var full = new[] { Operation.Read, Operation.Write, Operation.Execute };
-
-            config.GrantAdministrator(this.ObjectType, full);
-
-            var closed = new BudgetObjectStates(this.Session).Closed;
-            var opened = new BudgetObjectStates(this.Session).Opened;
-
-            config.Deny(this.ObjectType, closed, write);
-            config.Deny(this.ObjectType, closed, Budgets.Meta.Close);
-            config.Deny(this.ObjectType, opened, Budgets.Meta.Reopen);
+            if (!@this.ExistFromDate)
+            {
+                @this.FromDate = DateTime.UtcNow;
+            }
         }
     }
 }
