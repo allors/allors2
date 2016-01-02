@@ -52,39 +52,24 @@ namespace Allors.Domain
             }
         }
 
-        public static void AppsCancel(this Requirement requirement)
+        public static void AppsClose(this Requirement @this, RequirementClose method)
         {
-            requirement.CurrentObjectState = new RequirementObjectStates(requirement.Strategy.Session).Cancelled;
+            @this.CurrentObjectState = new RequirementObjectStates(@this.Strategy.Session).Closed;
         }
 
-        public static void AppsClose(this Requirement requirement)
+        public static void AppsReopen(this Requirement @this, RequirementReopen method)
         {
-            requirement.CurrentObjectState = new RequirementObjectStates(requirement.Strategy.Session).Closed;
+            @this.CurrentObjectState = new RequirementObjectStates(@this.Strategy.Session).Active;
         }
 
-        public static void AppsHold(this Requirement requirement)
+        public static void AppsCancel(this Requirement @this, RequirementCancel method)
         {
-            requirement.CurrentObjectState = new RequirementObjectStates(requirement.Strategy.Session).OnHold;
+            @this.CurrentObjectState = new RequirementObjectStates(@this.Strategy.Session).Cancelled;
         }
 
-        public static void AppsDelete(this CommunicationEvent @this, DeletableDelete method)
+        public static void AppsHold(this Requirement @this, RequirementHold method)
         {
-            @this.CurrentObjectState = new CommunicationEventObjectStates(@this.Strategy.Session).Completed;
-        }
-
-        public static void AppsClose(this CommunicationEvent @this, CommunicationEventClose method)
-        {
-            @this.CurrentObjectState = new CommunicationEventObjectStates(@this.Strategy.Session).Completed;
-        }
-
-        public static void AppsReopen(this CommunicationEvent @this, CommunicationEventReopen method)
-        {
-            @this.CurrentObjectState = new CommunicationEventObjectStates(@this.Strategy.Session).Scheduled;
-        }
-
-        public static void AppsCancel(this CommunicationEvent @this, CommunicationEventCancel method)
-        {
-            @this.CurrentObjectState = new CommunicationEventObjectStates(@this.Strategy.Session).Cancelled;
+            @this.CurrentObjectState = new RequirementObjectStates(@this.Strategy.Session).OnHold;
         }
     }
 }

@@ -28,6 +28,7 @@ namespace Allors.Domain
 
             setup.AddDependency(this.ObjectType, CommunicationEventObjectStates.Meta.ObjectType);
         }
+
         protected override void AppsSecure(Security config)
         {
             base.AppsSecure(config);
@@ -51,6 +52,5 @@ namespace Allors.Domain
             config.Deny(this.ObjectType, closed, Operation.Write);
             config.Deny(this.ObjectType, cancelled, Operation.Execute, Operation.Write);
         }
-
     }
 }

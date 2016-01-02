@@ -371,11 +371,6 @@ namespace Allors.Domain
             }
         }
 
-        public void AppsOnDeriveCurrentPartyContactMechanisms(IDerivation derivation)
-        {
-            throw new NotImplementedException();
-        }
-
         public void AppsOnDeriveInactivePartyContactMechanisms(IDerivation derivation)
         {
             this.RemoveInactivePartyContactMechanisms();

@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------------------------------------------
-// <copyright file="WorkFlows.cs" company="Allors bvba">
+// <copyright file="WorkEfforts.cs" company="Allors bvba">
 //   Copyright 2002-2012 Allors bvba.
 // 
 // Dual Licensed under
@@ -20,7 +20,7 @@
 
 namespace Allors.Domain
 {
-    public partial class WorkFlows
+    public partial class WorkEfforts
     {
         protected override void AppsSecure(Domain.Security config)
         {

@@ -22,9 +22,9 @@ namespace Allors.Domain
 {
     public static partial class PartSpecificationExtensions
     {
-        public static void AppsClose(this PartSpecification @this, PartSpecificationApprove method)
+        public static void AppsApprove(this PartSpecification partSpecification, PartSpecificationApprove method)
         {
-            @this.CurrentObjectState = new PartSpecificationObjectStates(@this.Strategy.Session).Approved;
+            partSpecification.CurrentObjectState = new PartSpecificationObjectStates(partSpecification.Strategy.Session).Approved;
         }
 
         public static void AppsOnBuild(this PartSpecification @this, ObjectOnBuild method)
@@ -32,6 +32,21 @@ namespace Allors.Domain
             if (!@this.ExistCurrentObjectState)
             {
                 @this.CurrentObjectState = new PartSpecificationObjectStates(@this.Strategy.Session).Created;
+            }
+        }
+
+        public static void AppsOnDerive(this PartSpecification partSpecification, ObjectOnDerive method)
+        {
+            if (partSpecification.ExistCurrentObjectState && !partSpecification.CurrentObjectState.Equals(partSpecification.PreviousObjectState))
+            {
+                var currentStatus = new PartSpecificationStatusBuilder(partSpecification.Strategy.Session).WithPartSpecificationObjectState(partSpecification.CurrentObjectState).Build();
+                partSpecification.AddPartSpecificationStatus(currentStatus);
+                partSpecification.CurrentPartSpecificationStatus = currentStatus;
+            }
+
+            if (partSpecification.ExistCurrentObjectState)
+            {
+                partSpecification.CurrentObjectState.Process(partSpecification);
             }
         }
     }

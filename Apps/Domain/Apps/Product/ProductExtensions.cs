@@ -45,7 +45,7 @@ namespace Allors.Domain
 
                 var priceComponents = @this.PriceComponentsWhereProduct;
 
-                foreach (DeliverableBasedService product in @this.Variants)
+                foreach (Product product in @this.Variants)
                 {
                     foreach (PriceComponent priceComponent in priceComponents)
                     {
