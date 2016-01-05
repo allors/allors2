@@ -137,7 +137,7 @@ namespace Allors.Domain
             this.AppsOnDeriveVatRegime(derivation);
             this.AppsOnDeriveIsValidOrderItem(derivation);
 
-            if (this.QuantityShipNow != 0)
+            if (this.ExistQuantityShipNow && this.QuantityShipNow != 0)
             {
                 this.AppsShipNow(derivation);
 
@@ -964,9 +964,9 @@ namespace Allors.Domain
         {
             if (this.SalesOrderWhereSalesOrderItem.ScheduledManually)
             {
-                var quantity = this.QuantityShipNow.HasValue ? this.QuantityShipNow.Value : 0;
+                var quantity = this.QuantityShipNow ?? 0;
 
-                if (quantity > this.ReservedFromInventoryItem.AvailableToPromise)
+                if (this.ExistReservedFromInventoryItem && quantity > this.ReservedFromInventoryItem.AvailableToPromise)
                 {
                     derivation.Log.AddError(this, SalesOrderItems.Meta.QuantityShipNow, ErrorMessages.SalesOrderItemQuantityToShipNowNotAvailable);
                 }

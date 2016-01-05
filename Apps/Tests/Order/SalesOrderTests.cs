@@ -49,8 +49,6 @@ namespace Allors.Domain
                 .WithShipToAddress(new PostalAddressBuilder(this.DatabaseSession).WithGeographicBoundary(mechelen).WithAddress1("Haverwerf 15").Build())
                 .Build();
 
-            order.Confirm();
-
             this.DatabaseSession.Derive(true);
 
             Assert.AreEqual(new SalesOrderObjectStates(this.DatabaseSession).Provisional, order.CurrentObjectState);

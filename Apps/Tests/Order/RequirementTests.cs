@@ -57,7 +57,7 @@ namespace Allors.Domain
             Assert.AreEqual(1, requirement.RequirementStatuses.Count);
             Assert.AreEqual(new RequirementObjectStates(this.DatabaseSession).Active, requirement.CurrentRequirementStatus.RequirementObjectState);
 
-           // requirement.AppsClose();
+            requirement.Close();
 
             this.DatabaseSession.Derive(true);
 
@@ -76,7 +76,7 @@ namespace Allors.Domain
             this.DatabaseSession.Rollback();
 
             builder.WithDescription("CustomerRequirement");
-            customerRequirement = builder.Build();
+            builder.Build();
 
             Assert.IsFalse(this.DatabaseSession.Derive().HasErrors);
         }
@@ -92,7 +92,7 @@ namespace Allors.Domain
             this.DatabaseSession.Rollback();
 
             builder.WithDescription("InternalRequirement");
-            internalRequirement = builder.Build();
+            builder.Build();
 
             Assert.IsFalse(this.DatabaseSession.Derive().HasErrors);
         }
@@ -108,7 +108,7 @@ namespace Allors.Domain
             this.DatabaseSession.Rollback();
 
             builder.WithDescription("ProductRequirement");
-            productRequirement = builder.Build();
+            builder.Build();
 
             Assert.IsFalse(this.DatabaseSession.Derive().HasErrors);
         }
@@ -124,7 +124,7 @@ namespace Allors.Domain
             this.DatabaseSession.Rollback();
 
             builder.WithDescription("ProjectRequirement");
-            projectRequirement = builder.Build();
+            builder.Build();
 
             Assert.IsFalse(this.DatabaseSession.Derive().HasErrors);
         }
@@ -140,7 +140,7 @@ namespace Allors.Domain
             this.DatabaseSession.Rollback();
 
             builder.WithDescription("ResourceRequirement");
-            resourceRequirement = builder.Build();
+            builder.Build();
 
             Assert.IsFalse(this.DatabaseSession.Derive().HasErrors);
         }
@@ -156,7 +156,7 @@ namespace Allors.Domain
             this.DatabaseSession.Rollback();
 
             builder.WithDescription("WorkRequirement");
-            workRequirement = builder.Build();
+            builder.Build();
 
             Assert.IsFalse(this.DatabaseSession.Derive().HasErrors);
         }
