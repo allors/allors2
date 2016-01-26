@@ -61,11 +61,13 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Accounting.cd" />
+    <None Include="Party.cd" />
     <None Include="PartyRelationships.cd" />
-    <None Include="PartyClassification.cd" />
-    <None Include="Overview.cd" />
+    <None Include="Budget.cd" />
     <None Include="Security.cd" />
     <None Include="Transitional.cd" />
+    <None Include="WorkEffort.cd" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -1,13 +1,13 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ClassDiagram MajorVersion="1" MinorVersion="1">
   <Interface Name="Allors.Domain.Party" Collapsed="true">
-    <Position X="11" Y="2.75" Width="1.75" />
+    <Position X="2.25" Y="2.75" Width="1.75" />
     <TypeIdentifier>
       <HashCode>AYAICAABVAAAAoAQIZgmAASgoAgUAAEACAKFBANAgEI=</HashCode>
       <FileName>domain.g.cs</FileName>
     </TypeIdentifier>
   </Interface>
-  <Interface Name="Allors.Domain.PartyRelationship">
+  <Interface Name="Allors.Domain.PartyRelationship" Collapsed="true">
     <Position X="16.25" Y="0.5" Width="2" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAQAAAAAAAAAAAAAEAAAABACCAAAAAIAAA=</HashCode>
@@ -17,16 +17,37 @@
       <Property Name="CommunicationEvents" />
     </ShowAsAssociation>
   </Interface>
-  <Interface Name="Allors.Domain.CommunicationEvent">
+  <Interface Name="Allors.Domain.CommunicationEvent" Collapsed="true">
     <Position X="5" Y="0.5" Width="2.5" />
+    <AssociationLine Name="ToParties" Type="Allors.Domain.Party" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="5.625" Y="1.838" />
+        <Point X="5.625" Y="3.354" />
+        <Point X="4" Y="3.354" />
+      </Path>
+    </AssociationLine>
+    <AssociationLine Name="InvolvedParties" Type="Allors.Domain.Party" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="5.125" Y="1.838" />
+        <Point X="5.125" Y="3.021" />
+        <Point X="4" Y="3.021" />
+      </Path>
+    </AssociationLine>
+    <AssociationLine Name="FromParties" Type="Allors.Domain.Party" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="5.938" Y="1.838" />
+        <Point X="5.938" Y="3.688" />
+        <Point X="4" Y="3.688" />
+      </Path>
+    </AssociationLine>
     <TypeIdentifier>
       <HashCode>AACAAAKAAACgAEEEAIBIAAACAACAQAICAAGAgCEAAAQ=</HashCode>
       <FileName>domain.g.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
-      <Property Name="FromParties" />
       <Property Name="ToParties" />
       <Property Name="InvolvedParties" />
+      <Property Name="FromParties" />
     </ShowAsAssociation>
   </Interface>
   <Interface Name="Allors.Domain.OrganisationContactRelationship">
@@ -114,7 +135,7 @@
     </TypeIdentifier>
   </Interface>
   <Interface Name="Allors.Domain.Organisation" Collapsed="true">
-    <Position X="11" Y="5" Width="1.75" />
+    <Position X="2.25" Y="4.75" Width="1.75" />
     <TypeIdentifier>
       <HashCode>AAAAoAAAAAAgAEAAAABAAAQAAAgAAAAAAAAAAACAAQA=</HashCode>
       <FileName>domain.g.cs</FileName>
