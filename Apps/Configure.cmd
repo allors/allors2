@@ -10,4 +10,6 @@
 @msbuild Domain/Generate.proj /verbosity:minimal
 @msbuild Diagrams/Generate.proj /verbosity:minimal
 
+@msbuild Temp/Generate.proj /verbosity:minimal
+
 @pause
