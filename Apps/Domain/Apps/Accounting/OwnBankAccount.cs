@@ -20,6 +20,8 @@
 
 namespace Allors.Domain
 {
+    using Allors.Meta;
+
     public partial class OwnBankAccount
     {
         public void AppsOnBuild(ObjectOnBuild method)
@@ -34,7 +36,7 @@ namespace Allors.Domain
         {
             var derivation = method.Derivation;
 
-            if (this.ExistBankAccount && derivation.ChangeSet.GetRoleTypes(this.Id).Contains(OwnBankAccounts.Meta.BankAccount))
+            if (this.ExistBankAccount && derivation.ChangeSet.GetRoleTypes(this.Id).Contains(this.Meta.BankAccount))
             {
                 derivation.AddDerivable(this.BankAccount);
             }
@@ -46,11 +48,11 @@ namespace Allors.Domain
 
             if (this.ExistInternalOrganisationWherePaymentMethod && this.InternalOrganisationWherePaymentMethod.DoAccounting)
             { 
-                derivation.Log.AssertExists(this, OwnBankAccounts.Meta.Creditor);
-                derivation.Log.AssertAtLeastOne(this, Cashes.Meta.GeneralLedgerAccount, Cashes.Meta.Journal);
+                derivation.Validation.AssertExists(this, this.Meta.Creditor);
+                derivation.Validation.AssertAtLeastOne(this, M.Cash.GeneralLedgerAccount, M.Cash.Journal);
             }
             
-            derivation.Log.AssertExistsAtMostOne(this, Cashes.Meta.GeneralLedgerAccount, Cashes.Meta.Journal);
+            derivation.Validation.AssertExistsAtMostOne(this, M.Cash.GeneralLedgerAccount, M.Cash.Journal);
         }
     }
 }

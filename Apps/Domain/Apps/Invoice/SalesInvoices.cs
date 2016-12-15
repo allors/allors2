@@ -37,10 +37,10 @@ namespace Allors.Domain
         {
             base.AppsSecure(config);
             
-            var full = new[] { Operation.Read, Operation.Write, Operation.Execute };
+            var full = new[] { Operations.Read, Operations.Write, Operations.Execute };
 
             config.GrantAdministrator(this.ObjectType, full);
-            config.GrantCustomer(this.ObjectType, Operation.Read);
+            config.GrantCustomer(this.ObjectType, Operations.Read);
             config.GrantSales(this.ObjectType, full);
 
             var sent = new SalesInvoiceObjectStates(Session).Sent;
@@ -55,9 +55,9 @@ namespace Allors.Domain
             config.Deny(this.ObjectType, sent, sendId, cancelInvoiceId);
             config.Deny(this.ObjectType, partiallyPaid, sendId, cancelInvoiceId);
 
-            config.Deny(this.ObjectType, paid, Operation.Write, Operation.Execute);
-            config.Deny(this.ObjectType, writtenOff, Operation.Write, Operation.Execute);
-            config.Deny(this.ObjectType, cancelled, Operation.Write, Operation.Execute);
+            config.Deny(this.ObjectType, paid, Operations.Write, Operation.Execute);
+            config.Deny(this.ObjectType, writtenOff, Operations.Write, Operation.Execute);
+            config.Deny(this.ObjectType, cancelled, Operations.Write, Operation.Execute);
         }
     }
 }

@@ -110,7 +110,7 @@ namespace Allors.Domain
                 }
             }
 
-            var revenues = new HashSet<ObjectId>();
+            var revenues = new HashSet<long>();
 
             var salesInvoices = session.Extent<SalesInvoice>();
             var year = 0;
@@ -149,7 +149,7 @@ namespace Allors.Domain
         {
             base.AppsSecure(config);
 
-            var full = new[] { Operation.Read, Operation.Write, Operation.Execute };
+            var full = new[] { Operations.Read, Operations.Write, Operations.Execute };
 
             config.GrantAdministrator(this.ObjectType, full);
         }
@@ -158,7 +158,7 @@ namespace Allors.Domain
             ISession session,
             Dictionary<InternalOrganisation, Dictionary<Party, Dictionary<ProductCategory, Dictionary<DateTime, SalesRepProductCategoryRevenue>>>> salesRepProductCategoryRevenuesByPeriodByProductCategoryBySalesRepByInternalOrganisation,
             DateTime date,
-            HashSet<ObjectId> revenues,
+            HashSet<long> revenues,
             SalesInvoiceItem salesInvoiceItem,
             ProductCategory productCategory)
         {

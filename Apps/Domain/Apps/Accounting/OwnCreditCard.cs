@@ -38,8 +38,8 @@ namespace Allors.Domain
 
             if (this.ExistInternalOrganisationWherePaymentMethod && this.InternalOrganisationWherePaymentMethod.DoAccounting)
             { 
-                derivation.Log.AssertExists(this, OwnCreditCards.Meta.Creditor);
-                derivation.Log.AssertAtLeastOne(this, Cashes.Meta.GeneralLedgerAccount, Cashes.Meta.Journal);
+                derivation.Validation.AssertExists(this, OwnCreditCards.Meta.Creditor);
+                derivation.Validation.AssertAtLeastOne(this, Cashes.Meta.GeneralLedgerAccount, Cashes.Meta.Journal);
             }
 
             if (this.ExistCreditCard)
@@ -50,7 +50,7 @@ namespace Allors.Domain
                 }
             }
 
-            derivation.Log.AssertExistsAtMostOne(this, Cashes.Meta.GeneralLedgerAccount, Cashes.Meta.Journal);
+            derivation.Validation.AssertExistsAtMostOne(this, Cashes.Meta.GeneralLedgerAccount, Cashes.Meta.Journal);
         }
     }
 }

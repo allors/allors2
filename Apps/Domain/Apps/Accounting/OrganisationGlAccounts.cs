@@ -26,8 +26,8 @@ namespace Allors.Domain
         {
             base.AppsSecure(config);
 
-            var write = Operation.Write;
-            var full = new[] { Operation.Read, Operation.Write, Operation.Execute };
+            var write = Operations.Write;
+            var full = new[] { Operations.Read, Operations.Write, Operations.Execute };
 
             config.GrantAdministrator(this.ObjectType, full);
 
@@ -35,8 +35,6 @@ namespace Allors.Domain
             var opened = new BudgetObjectStates(this.Session).Opened;
 
             config.Deny(this.ObjectType, closed, write);
-            config.Deny(this.ObjectType, closed, Budgets.Meta.Close);
-            config.Deny(this.ObjectType, opened, Budgets.Meta.Reopen);
         }
     }
 }

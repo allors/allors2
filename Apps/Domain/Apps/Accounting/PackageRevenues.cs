@@ -26,12 +26,12 @@ namespace Allors.Domain
 
     public partial class PackageRevenues
     {
-        public static PackageRevenue AppsFindOrCreateAsDependable(ISession session, PartyPackageRevenue dependant)
+        public PackageRevenue AppsFindOrCreateAsDependable(ISession session, PartyPackageRevenue dependant)
         {
             var packageRevenues = dependant.Package.PackageRevenuesWherePackage;
-            packageRevenues.Filter.AddEquals(Meta.InternalOrganisation, dependant.InternalOrganisation);
-            packageRevenues.Filter.AddEquals(Meta.Year, dependant.Year);
-            packageRevenues.Filter.AddEquals(Meta.Month, dependant.Month);
+            packageRevenues.Filter.AddEquals(this.Meta.InternalOrganisation, dependant.InternalOrganisation);
+            packageRevenues.Filter.AddEquals(this.Meta.Year, dependant.Year);
+            packageRevenues.Filter.AddEquals(this.Meta.Month, dependant.Month);
             var packageRevenue = packageRevenues.First ?? new PackageRevenueBuilder(session)
                                                                 .WithInternalOrganisation(dependant.InternalOrganisation)
                                                                 .WithPackage(dependant.Package)
@@ -76,7 +76,7 @@ namespace Allors.Domain
                 }
             }
 
-            var revenues = new HashSet<ObjectId>();
+            var revenues = new HashSet<long>();
 
             var salesInvoices = session.Extent<SalesInvoice>();
             var year = 0;
@@ -112,7 +112,7 @@ namespace Allors.Domain
         {
             base.AppsSecure(config);
             
-            var full = new[] { Operation.Read, Operation.Write, Operation.Execute };
+            var full = new[] { Operations.Read, Operations.Write, Operations.Execute };
 
             config.GrantAdministrator(this.ObjectType, full);
         }
@@ -121,7 +121,7 @@ namespace Allors.Domain
             ISession session,
             Dictionary<InternalOrganisation, Dictionary<Package, Dictionary<DateTime, PackageRevenue>>> packageRevenuesByPeriodByPackageByInternalOrganisation,
             DateTime date,
-            HashSet<ObjectId> revenues,
+            HashSet<long> revenues,
             SalesInvoiceItem salesInvoiceItem,
             Package package)
         {

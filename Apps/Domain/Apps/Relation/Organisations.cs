@@ -26,38 +26,38 @@ namespace Allors.Domain
         {
             base.AppsSecure(config);
 
-            var full = new[] { Operation.Read, Operation.Write, Operation.Execute };
+            var full = new[] { Operations.Read, Operations.Write, Operations.Execute };
             config.GrantAdministrator(this.ObjectType, full);
 
-            config.GrantCustomer(this.ObjectType, Meta.Name, Operation.Read, Operation.Write);
-            config.GrantCustomer(this.ObjectType, Meta.LegalForm, Operation.Read, Operation.Write);
-            config.GrantCustomer(this.ObjectType, Meta.LogoImage, Operation.Read, Operation.Write);
-            config.GrantCustomer(this.ObjectType, Meta.TaxNumber, Operation.Read, Operation.Write);
-            config.GrantCustomer(this.ObjectType, Meta.Locale, Operation.Read, Operation.Write);
-            config.GrantCustomer(this.ObjectType, Meta.PartyContactMechanisms, Operation.Read, Operation.Write);
-            config.GrantCustomer(this.ObjectType, Meta.CurrentSalesReps, Operation.Read);
-            config.GrantCustomer(this.ObjectType, Meta.OpenOrderAmount, Operation.Read);
-            config.GrantCustomer(this.ObjectType, Meta.BankAccounts, Operation.Read, Operation.Write);
+            config.GrantCustomer(this.ObjectType, Meta.Name, Operations.Read, Operations.Write);
+            config.GrantCustomer(this.ObjectType, Meta.LegalForm, Operations.Read, Operations.Write);
+            config.GrantCustomer(this.ObjectType, Meta.LogoImage, Operations.Read, Operations.Write);
+            config.GrantCustomer(this.ObjectType, Meta.TaxNumber, Operations.Read, Operations.Write);
+            config.GrantCustomer(this.ObjectType, Meta.Locale, Operations.Read, Operations.Write);
+            config.GrantCustomer(this.ObjectType, Meta.PartyContactMechanisms, Operations.Read, Operations.Write);
+            config.GrantCustomer(this.ObjectType, Meta.CurrentSalesReps, Operations.Read);
+            config.GrantCustomer(this.ObjectType, Meta.OpenOrderAmount, Operations.Read);
+            config.GrantCustomer(this.ObjectType, Meta.BankAccounts, Operations.Read, Operations.Write);
 
-            config.GrantSupplier(this.ObjectType, Meta.Name, Operation.Read, Operation.Write);
-            config.GrantSupplier(this.ObjectType, Meta.LegalForm, Operation.Read, Operation.Write);
-            config.GrantSupplier(this.ObjectType, Meta.LogoImage, Operation.Read, Operation.Write);
-            config.GrantSupplier(this.ObjectType, Meta.TaxNumber, Operation.Read, Operation.Write);
-            config.GrantSupplier(this.ObjectType, Meta.Locale, Operation.Read, Operation.Write);
-            config.GrantSupplier(this.ObjectType, Meta.PartyContactMechanisms, Operation.Read, Operation.Write);
-            config.GrantSupplier(this.ObjectType, Meta.CurrentSalesReps, Operation.Read);
-            config.GrantSupplier(this.ObjectType, Meta.OpenOrderAmount, Operation.Read);
-            config.GrantSupplier(this.ObjectType, Meta.BankAccounts, Operation.Read, Operation.Write);
+            config.GrantSupplier(this.ObjectType, Meta.Name, Operations.Read, Operations.Write);
+            config.GrantSupplier(this.ObjectType, Meta.LegalForm, Operations.Read, Operations.Write);
+            config.GrantSupplier(this.ObjectType, Meta.LogoImage, Operations.Read, Operations.Write);
+            config.GrantSupplier(this.ObjectType, Meta.TaxNumber, Operations.Read, Operations.Write);
+            config.GrantSupplier(this.ObjectType, Meta.Locale, Operations.Read, Operations.Write);
+            config.GrantSupplier(this.ObjectType, Meta.PartyContactMechanisms, Operations.Read, Operations.Write);
+            config.GrantSupplier(this.ObjectType, Meta.CurrentSalesReps, Operations.Read);
+            config.GrantSupplier(this.ObjectType, Meta.OpenOrderAmount, Operations.Read);
+            config.GrantSupplier(this.ObjectType, Meta.BankAccounts, Operations.Read, Operations.Write);
           
-            config.GrantPartner(this.ObjectType, Meta.Name, Operation.Read, Operation.Write);
-            config.GrantPartner(this.ObjectType, Meta.LegalForm, Operation.Read, Operation.Write);
-            config.GrantPartner(this.ObjectType, Meta.LogoImage, Operation.Read, Operation.Write);
-            config.GrantPartner(this.ObjectType, Meta.TaxNumber, Operation.Read, Operation.Write);
-            config.GrantPartner(this.ObjectType, Meta.Locale, Operation.Read, Operation.Write);
-            config.GrantPartner(this.ObjectType, Meta.PartyContactMechanisms, Operation.Read, Operation.Write);
-            config.GrantPartner(this.ObjectType, Meta.CurrentSalesReps, Operation.Read);
-            config.GrantPartner(this.ObjectType, Meta.OpenOrderAmount, Operation.Read);
-            config.GrantPartner(this.ObjectType, Meta.BankAccounts, Operation.Read, Operation.Write);
+            config.GrantPartner(this.ObjectType, Meta.Name, Operations.Read, Operations.Write);
+            config.GrantPartner(this.ObjectType, Meta.LegalForm, Operations.Read, Operations.Write);
+            config.GrantPartner(this.ObjectType, Meta.LogoImage, Operations.Read, Operations.Write);
+            config.GrantPartner(this.ObjectType, Meta.TaxNumber, Operations.Read, Operations.Write);
+            config.GrantPartner(this.ObjectType, Meta.Locale, Operations.Read, Operations.Write);
+            config.GrantPartner(this.ObjectType, Meta.PartyContactMechanisms, Operations.Read, Operations.Write);
+            config.GrantPartner(this.ObjectType, Meta.CurrentSalesReps, Operations.Read);
+            config.GrantPartner(this.ObjectType, Meta.OpenOrderAmount, Operations.Read);
+            config.GrantPartner(this.ObjectType, Meta.BankAccounts, Operations.Read, Operations.Write);
         }
     }
 }

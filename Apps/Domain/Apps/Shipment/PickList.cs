@@ -129,11 +129,6 @@ namespace Allors.Domain
                 this.AddPickListStatus(currentStatus);
                 this.CurrentPickListStatus = currentStatus;
             }
-
-            if (this.ExistCurrentObjectState)
-            {
-                this.CurrentObjectState.Process(this);
-            }
         }
 
         public void AppsCancel(PickListCancel method)

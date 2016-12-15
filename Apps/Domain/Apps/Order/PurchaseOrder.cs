@@ -143,7 +143,7 @@ namespace Allors.Domain
             {
                 if (!this.ShipToBuyer.Equals(supplier.InternalOrganisationWhereSupplier))
                 {
-                    derivation.Log.AddError(this, PurchaseOrders.Meta.TakenViaSupplier, ErrorMessages.PartyIsNotASupplier);
+                    derivation.Validation.AddError(this, PurchaseOrders.Meta.TakenViaSupplier, ErrorMessages.PartyIsNotASupplier);
                 }
             }
 
@@ -221,11 +221,6 @@ namespace Allors.Domain
                 var currentStatus = new PurchaseOrderStatusBuilder(this.Strategy.Session).WithPurchaseOrderObjectState(this.CurrentObjectState).Build();
                 this.AddOrderStatus(currentStatus);
                 this.CurrentOrderStatus = currentStatus;
-            }
-
-            if (this.ExistCurrentObjectState)
-            {
-                this.CurrentObjectState.Process(this);
             }
         }
 

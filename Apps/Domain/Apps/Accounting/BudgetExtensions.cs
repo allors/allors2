@@ -38,11 +38,6 @@ namespace Allors.Domain
                 @this.AddBudgetStatus(currentStatus);
                 @this.CurrentBudgetStatus = currentStatus;
             }
-
-            if (@this.ExistCurrentObjectState)
-            {
-                @this.CurrentObjectState.Process(@this);
-            }
         }
 
         public static void AppsClose(this Budget @this, BudgetClose method)

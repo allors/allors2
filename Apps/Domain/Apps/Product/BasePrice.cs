@@ -42,26 +42,26 @@ namespace Allors.Domain
         {
             var derivation = method.Derivation;
 
-            derivation.Log.AssertAtLeastOne(this, BasePrices.Meta.Product, BasePrices.Meta.ProductFeature);
+            derivation.Validation.AssertAtLeastOne(this, BasePrices.Meta.Product, BasePrices.Meta.ProductFeature);
 
             if (this.ExistOrderQuantityBreak)
             {
-                derivation.Log.AddError(this, BasePrices.Meta.OrderQuantityBreak, ErrorMessages.BasePriceOrderQuantityBreakNotAllowed);
+                derivation.Validation.AddError(this, BasePrices.Meta.OrderQuantityBreak, ErrorMessages.BasePriceOrderQuantityBreakNotAllowed);
             }
 
             if (this.ExistOrderValue)
             {
-                derivation.Log.AddError(this, BasePrices.Meta.OrderValue, ErrorMessages.BasePriceOrderValueNotAllowed);
+                derivation.Validation.AddError(this, BasePrices.Meta.OrderValue, ErrorMessages.BasePriceOrderValueNotAllowed);
             }
 
             if (this.ExistRevenueQuantityBreak)
             {
-                derivation.Log.AddError(this, BasePrices.Meta.RevenueQuantityBreak, ErrorMessages.BasePriceRevenueQuantityBreakNotAllowed);
+                derivation.Validation.AddError(this, BasePrices.Meta.RevenueQuantityBreak, ErrorMessages.BasePriceRevenueQuantityBreakNotAllowed);
             }
 
             if (this.ExistRevenueValueBreak)
             {
-                derivation.Log.AddError(this, BasePrices.Meta.RevenueValueBreak, ErrorMessages.BasePriceRevenueValueBreakNotAllowed);
+                derivation.Validation.AddError(this, BasePrices.Meta.RevenueValueBreak, ErrorMessages.BasePriceRevenueValueBreakNotAllowed);
             }
 
 
@@ -72,7 +72,7 @@ namespace Allors.Domain
                     this.Currency = this.SpecifiedFor.PreferredCurrency;
                 }
 
-                derivation.Log.AssertExists(this, BasePrices.Meta.Currency);
+                derivation.Validation.AssertExists(this, BasePrices.Meta.Currency);
             }
 
             if (this.ExistProduct && !this.ExistProductFeature)

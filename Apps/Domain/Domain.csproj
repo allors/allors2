@@ -9,10 +9,11 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Domain</RootNamespace>
     <AssemblyName>Domain</AssemblyName>
-    <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
     <RestorePackages>true</RestorePackages>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -64,328 +65,325 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\..\allors\Base\Domain\Base\Common\Cache.cs">
+    <Compile Include="..\..\platform\Base\Domain\Base\Common\Cache.cs">
       <Link>Base\Common\Cache.cs</Link>
     </Compile>
-    <Compile Include="..\..\allors\Base\Domain\Base\Common\Counter.cs">
+    <Compile Include="..\..\platform\Base\Domain\Base\Common\Counter.cs">
       <Link>Base\Common\Counter.cs</Link>
     </Compile>
-    <Compile Include="..\..\allors\Base\Domain\Base\Common\Counters.cs">
+    <Compile Include="..\..\platform\Base\Domain\Base\Common\Counters.cs">
       <Link>Base\Common\Counters.cs</Link>
     </Compile>
-    <Compile Include="..\..\allors\Base\Domain\Base\Common\DeletableDelete.cs">
+    <Compile Include="..\..\platform\Base\Domain\Base\Common\DeletableDelete.cs">
       <Link>Base\Common\DeletableDelete.cs</Link>
     </Compile>
-    <Compile Include="..\..\allors\Base\Domain\Base\Common\Derivation.cs">
-      <Link>Base\Common\Derivation.cs</Link>
-    </Compile>
-    <Compile Include="..\..\allors\Base\Domain\Base\Common\DerivationError.cs">
-      <Link>Base\Common\DerivationError.cs</Link>
-    </Compile>
-    <Compile Include="..\..\allors\Base\Domain\Base\Common\DerivationErrorAtLeastOne.cs">
-      <Link>Base\Common\DerivationErrorAtLeastOne.cs</Link>
-    </Compile>
-    <Compile Include="..\..\allors\Base\Domain\Base\Common\DerivationErrorAtMostOne.cs">
-      <Link>Base\Common\DerivationErrorAtMostOne.cs</Link>
-    </Compile>
-    <Compile Include="..\..\allors\Base\Domain\Base\Common\DerivationErrorConflict.cs">
-      <Link>Base\Common\DerivationErrorConflict.cs</Link>
-    </Compile>
-    <Compile Include="..\..\allors\Base\Domain\Base\Common\DerivationErrorEquals.cs">
-      <Link>Base\Common\DerivationErrorEquals.cs</Link>
-    </Compile>
-    <Compile Include="..\..\allors\Base\Domain\Base\Common\DerivationErrorGeneric.cs">
-      <Link>Base\Common\DerivationErrorGeneric.cs</Link>
-    </Compile>
-    <Compile Include="..\..\allors\Base\Domain\Base\Common\DerivationErrorNotAllowed.cs">
-      <Link>Base\Common\DerivationErrorNotAllowed.cs</Link>
-    </Compile>
-    <Compile Include="..\..\allors\Base\Domain\Base\Common\DerivationErrorRequired.cs">
-      <Link>Base\Common\DerivationErrorRequired.cs</Link>
-    </Compile>
-    <Compile Include="..\..\allors\Base\Domain\Base\Common\DerivationErrorUnique.cs">
-      <Link>Base\Common\DerivationErrorUnique.cs</Link>
-    </Compile>
-    <Compile Include="..\..\allors\Base\Domain\Base\Common\DerivationException.cs">
-      <Link>Base\Common\DerivationException.cs</Link>
-    </Compile>
-    <Compile Include="..\..\allors\Base\Domain\Base\Common\DerivationGraph.cs">
-      <Link>Base\Common\DerivationGraph.cs</Link>
-    </Compile>
-    <Compile Include="..\..\allors\Base\Domain\Base\Common\DerivationLog.cs">
-      <Link>Base\Common\DerivationLog.cs</Link>
-    </Compile>
-    <Compile Include="..\..\allors\Base\Domain\Base\Common\DerivationNode.cs">
-      <Link>Base\Common\DerivationNode.cs</Link>
-    </Compile>
-    <Compile Include="..\..\allors\Base\Domain\Base\Common\DerivationRelation.cs">
-      <Link>Base\Common\DerivationRelation.cs</Link>
-    </Compile>
-    <Compile Include="..\..\allors\Base\Domain\Base\Common\Enumeration.cs">
+    <Compile Include="..\..\platform\Base\Domain\Base\Common\Enumeration.cs">
       <Link>Base\Common\Enumeration.cs</Link>
     </Compile>
-    <Compile Include="..\..\allors\Base\Domain\Base\Common\IDerivation.cs">
-      <Link>Base\Common\IDerivation.cs</Link>
-    </Compile>
-    <Compile Include="..\..\allors\Base\Domain\Base\Common\IDerivationError.cs">
-      <Link>Base\Common\IDerivationError.cs</Link>
-    </Compile>
-    <Compile Include="..\..\allors\Base\Domain\Base\Common\Object.cs">
+    <Compile Include="..\..\platform\Base\Domain\Base\Common\Object.cs">
       <Link>Base\Common\Object.cs</Link>
     </Compile>
-    <Compile Include="..\..\allors\Base\Domain\Base\Common\ObjectState.cs">
+    <Compile Include="..\..\platform\Base\Domain\Base\Common\ObjectState.cs">
       <Link>Base\Common\ObjectState.cs</Link>
     </Compile>
-    <Compile Include="..\..\allors\Base\Domain\Base\Common\Retry.cs">
+    <Compile Include="..\..\platform\Base\Domain\Base\Common\Retry.cs">
       <Link>Base\Common\Retry.cs</Link>
     </Compile>
-    <Compile Include="..\..\allors\Base\Domain\Base\Common\Singleton.cs">
+    <Compile Include="..\..\platform\Base\Domain\Base\Common\Singleton.cs">
       <Link>Base\Common\Singleton.cs</Link>
     </Compile>
-    <Compile Include="..\..\allors\Base\Domain\Base\Common\Singletons.cs">
+    <Compile Include="..\..\platform\Base\Domain\Base\Common\Singletons.cs">
       <Link>Base\Common\Singletons.cs</Link>
     </Compile>
-    <Compile Include="..\..\allors\Base\Domain\Base\Common\Transitional.cs">
+    <Compile Include="..\..\platform\Base\Domain\Base\Common\Transitional.cs">
       <Link>Base\Common\Transitional.cs</Link>
     </Compile>
-    <Compile Include="..\..\allors\Base\Domain\Base\Common\TransitionalExtensions.cs">
+    <Compile Include="..\..\platform\Base\Domain\Base\Common\TransitionalExtensions.cs">
       <Link>Base\Common\TransitionalExtensions.cs</Link>
     </Compile>
-    <Compile Include="..\..\allors\Base\Domain\Base\Common\UniquelyIdentifiableCache.cs">
+    <Compile Include="..\..\platform\Base\Domain\Base\Common\UniquelyIdentifiableCache.cs">
       <Link>Base\Common\UniquelyIdentifiableCache.cs</Link>
     </Compile>
-    <Compile Include="..\..\allors\Base\Domain\Base\Common\UniquelyIdentifiableExtension.cs">
+    <Compile Include="..\..\platform\Base\Domain\Base\Common\UniquelyIdentifiableExtension.cs">
       <Link>Base\Common\UniquelyIdentifiableExtension.cs</Link>
     </Compile>
-    <Compile Include="..\..\allors\Base\Domain\Base\Config.cs">
+    <Compile Include="..\..\platform\Base\Domain\Base\Config.cs">
       <Link>Base\Config.cs</Link>
     </Compile>
-    <Compile Include="..\..\allors\Base\Domain\Base\Content\HtmlCharacters.cs">
-      <Link>Base\Content\HtmlCharacters.cs</Link>
-    </Compile>
-    <Compile Include="..\..\allors\Base\Domain\Base\Content\HtmlDocument.cs">
-      <Link>Base\Content\HtmlDocument.cs</Link>
-    </Compile>
-    <Compile Include="..\..\allors\Base\Domain\Base\Content\HtmlProfile.cs">
-      <Link>Base\Content\HtmlProfile.cs</Link>
-    </Compile>
-    <Compile Include="..\..\allors\Base\Domain\Base\Content\HtmlReader.cs">
-      <Link>Base\Content\HtmlReader.cs</Link>
-    </Compile>
-    <Compile Include="..\..\allors\Base\Domain\Base\Content\HtmlRules.cs">
-      <Link>Base\Content\HtmlRules.cs</Link>
-    </Compile>
-    <Compile Include="..\..\allors\Base\Domain\Base\Content\HtmlSanitize.cs">
-      <Link>Base\Content\HtmlSanitize.cs</Link>
-    </Compile>
-    <Compile Include="..\..\allors\Base\Domain\Base\Content\Image.cs">
-      <Link>Base\Content\Image.cs</Link>
-    </Compile>
-    <Compile Include="..\..\allors\Base\Domain\Base\Content\ImageCreateResponsive.cs">
-      <Link>Base\Content\ImageCreateResponsive.cs</Link>
-    </Compile>
-    <Compile Include="..\..\allors\Base\Domain\Base\Content\ImageCreateThumbnail.cs">
-      <Link>Base\Content\ImageCreateThumbnail.cs</Link>
-    </Compile>
-    <Compile Include="..\..\allors\Base\Domain\Base\Content\Media.cs">
+    <Compile Include="..\..\platform\Base\Domain\Base\Content\Media.cs">
       <Link>Base\Content\Media.cs</Link>
     </Compile>
-    <Compile Include="..\..\allors\Base\Domain\Base\Content\MediaBuilder.cs">
-      <Link>Base\Content\MediaBuilder.cs</Link>
-    </Compile>
-    <Compile Include="..\..\allors\Base\Domain\Base\Content\MediaContent.cs">
+    <Compile Include="..\..\platform\Base\Domain\Base\Content\MediaContent.cs">
       <Link>Base\Content\MediaContent.cs</Link>
     </Compile>
-    <Compile Include="..\..\allors\Base\Domain\Base\Content\Medias.cs">
+    <Compile Include="..\..\platform\Base\Domain\Base\Content\MediaContents.cs">
+      <Link>Base\Content\MediaContents.cs</Link>
+    </Compile>
+    <Compile Include="..\..\platform\Base\Domain\Base\Content\Medias.cs">
       <Link>Base\Content\Medias.cs</Link>
     </Compile>
-    <Compile Include="..\..\allors\Base\Domain\Base\Content\MediaType.cs">
-      <Link>Base\Content\MediaType.cs</Link>
-    </Compile>
-    <Compile Include="..\..\allors\Base\Domain\Base\Content\MediaTypes.cs">
-      <Link>Base\Content\MediaTypes.cs</Link>
-    </Compile>
-    <Compile Include="..\..\allors\Base\Domain\Base\Content\PrintQueues.cs">
-      <Link>Base\Content\PrintQueues.cs</Link>
-    </Compile>
-    <Compile Include="..\..\allors\Base\Domain\Base\Content\StringTemplate.cs">
-      <Link>Base\Content\StringTemplate.cs</Link>
-    </Compile>
-    <Compile Include="..\..\allors\Base\Domain\Base\Content\StringTemplates.cs">
-      <Link>Base\Content\StringTemplates.cs</Link>
-    </Compile>
-    <Compile Include="..\..\allors\Base\Domain\Base\Data\CsvExport.cs">
+    <Compile Include="..\..\platform\Base\Domain\Base\Data\CsvExport.cs">
       <Link>Base\Data\CsvExport.cs</Link>
     </Compile>
-    <Compile Include="..\..\allors\Base\Domain\Base\Data\CsvExportColumn.cs">
+    <Compile Include="..\..\platform\Base\Domain\Base\Data\CsvExportColumn.cs">
       <Link>Base\Data\CsvExportColumn.cs</Link>
     </Compile>
-    <Compile Include="..\..\allors\Base\Domain\Base\Data\CsvExportFunction.cs">
+    <Compile Include="..\..\platform\Base\Domain\Base\Data\CsvExportFunction.cs">
       <Link>Base\Data\CsvExportFunction.cs</Link>
     </Compile>
-    <Compile Include="..\..\allors\Base\Domain\Base\Data\CsvExportPath.cs">
+    <Compile Include="..\..\platform\Base\Domain\Base\Data\CsvExportPath.cs">
       <Link>Base\Data\CsvExportPath.cs</Link>
     </Compile>
-    <Compile Include="..\..\allors\Base\Domain\Base\Drawing\BitmapExtensions.cs">
-      <Link>Base\Drawing\BitmapExtensions.cs</Link>
+    <Compile Include="..\..\platform\Base\Domain\Base\Derivations\AsyncDerivations.cs">
+      <Link>Base\Derivations\AsyncDerivations.cs</Link>
     </Compile>
-    <Compile Include="..\..\allors\Base\Domain\Base\IObjectBase.cs">
+    <Compile Include="..\..\platform\Base\Domain\Base\Derivations\DerivationBase.cs">
+      <Link>Base\Derivations\DerivationBase.cs</Link>
+    </Compile>
+    <Compile Include="..\..\platform\Base\Domain\Base\Derivations\DerivationException.cs">
+      <Link>Base\Derivations\DerivationException.cs</Link>
+    </Compile>
+    <Compile Include="..\..\platform\Base\Domain\Base\Derivations\DerivationGraphBase.cs">
+      <Link>Base\Derivations\DerivationGraphBase.cs</Link>
+    </Compile>
+    <Compile Include="..\..\platform\Base\Domain\Base\Derivations\DerivationNodeBase.cs">
+      <Link>Base\Derivations\DerivationNodeBase.cs</Link>
+    </Compile>
+    <Compile Include="..\..\platform\Base\Domain\Base\Derivations\DerivationRelation.cs">
+      <Link>Base\Derivations\DerivationRelation.cs</Link>
+    </Compile>
+    <Compile Include="..\..\platform\Base\Domain\Base\Derivations\Errors\DerivationError.cs">
+      <Link>Base\Derivations\Errors\DerivationError.cs</Link>
+    </Compile>
+    <Compile Include="..\..\platform\Base\Domain\Base\Derivations\Errors\DerivationErrorAtLeastOne.cs">
+      <Link>Base\Derivations\Errors\DerivationErrorAtLeastOne.cs</Link>
+    </Compile>
+    <Compile Include="..\..\platform\Base\Domain\Base\Derivations\Errors\DerivationErrorAtMostOne.cs">
+      <Link>Base\Derivations\Errors\DerivationErrorAtMostOne.cs</Link>
+    </Compile>
+    <Compile Include="..\..\platform\Base\Domain\Base\Derivations\Errors\DerivationErrorConflict.cs">
+      <Link>Base\Derivations\Errors\DerivationErrorConflict.cs</Link>
+    </Compile>
+    <Compile Include="..\..\platform\Base\Domain\Base\Derivations\Errors\DerivationErrorEquals.cs">
+      <Link>Base\Derivations\Errors\DerivationErrorEquals.cs</Link>
+    </Compile>
+    <Compile Include="..\..\platform\Base\Domain\Base\Derivations\Errors\DerivationErrorGeneric.cs">
+      <Link>Base\Derivations\Errors\DerivationErrorGeneric.cs</Link>
+    </Compile>
+    <Compile Include="..\..\platform\Base\Domain\Base\Derivations\Errors\DerivationErrorNotAllowed.cs">
+      <Link>Base\Derivations\Errors\DerivationErrorNotAllowed.cs</Link>
+    </Compile>
+    <Compile Include="..\..\platform\Base\Domain\Base\Derivations\Errors\DerivationErrorRequired.cs">
+      <Link>Base\Derivations\Errors\DerivationErrorRequired.cs</Link>
+    </Compile>
+    <Compile Include="..\..\platform\Base\Domain\Base\Derivations\Errors\DerivationErrorUnique.cs">
+      <Link>Base\Derivations\Errors\DerivationErrorUnique.cs</Link>
+    </Compile>
+    <Compile Include="..\..\platform\Base\Domain\Base\Derivations\IDerivation.cs">
+      <Link>Base\Derivations\IDerivation.cs</Link>
+    </Compile>
+    <Compile Include="..\..\platform\Base\Domain\Base\Derivations\IDerivationError.cs">
+      <Link>Base\Derivations\IDerivationError.cs</Link>
+    </Compile>
+    <Compile Include="..\..\platform\Base\Domain\Base\Derivations\IValidation.cs">
+      <Link>Base\Derivations\IValidation.cs</Link>
+    </Compile>
+    <Compile Include="..\..\platform\Base\Domain\Base\Derivations\Logging\ConsoleDerivationLog.cs">
+      <Link>Base\Derivations\Logging\ConsoleDerivationLog.cs</Link>
+    </Compile>
+    <Compile Include="..\..\platform\Base\Domain\Base\Derivations\Logging\Derivation.cs">
+      <Link>Base\Derivations\Logging\Derivation.cs</Link>
+    </Compile>
+    <Compile Include="..\..\platform\Base\Domain\Base\Derivations\Logging\DerivationGraph.cs">
+      <Link>Base\Derivations\Logging\DerivationGraph.cs</Link>
+    </Compile>
+    <Compile Include="..\..\platform\Base\Domain\Base\Derivations\Logging\DerivationLogFormatter.cs">
+      <Link>Base\Derivations\Logging\DerivationLogFormatter.cs</Link>
+    </Compile>
+    <Compile Include="..\..\platform\Base\Domain\Base\Derivations\Logging\DerivationNode.cs">
+      <Link>Base\Derivations\Logging\DerivationNode.cs</Link>
+    </Compile>
+    <Compile Include="..\..\platform\Base\Domain\Base\Derivations\Logging\IDerivationLog.cs">
+      <Link>Base\Derivations\Logging\IDerivationLog.cs</Link>
+    </Compile>
+    <Compile Include="..\..\platform\Base\Domain\Base\Derivations\Logging\ListDerivationLog.cs">
+      <Link>Base\Derivations\Logging\ListDerivationLog.cs</Link>
+    </Compile>
+    <Compile Include="..\..\platform\Base\Domain\Base\Derivations\Logging\Validation.cs">
+      <Link>Base\Derivations\Logging\Validation.cs</Link>
+    </Compile>
+    <Compile Include="..\..\platform\Base\Domain\Base\Derivations\NonLogging\Derivation.cs">
+      <Link>Base\Derivations\NonLogging\Derivation.cs</Link>
+    </Compile>
+    <Compile Include="..\..\platform\Base\Domain\Base\Derivations\NonLogging\DerivationGraph.cs">
+      <Link>Base\Derivations\NonLogging\DerivationGraph.cs</Link>
+    </Compile>
+    <Compile Include="..\..\platform\Base\Domain\Base\Derivations\NonLogging\DerivationNode.cs">
+      <Link>Base\Derivations\NonLogging\DerivationNode.cs</Link>
+    </Compile>
+    <Compile Include="..\..\platform\Base\Domain\Base\Derivations\NonLogging\Validation.cs">
+      <Link>Base\Derivations\NonLogging\Validation.cs</Link>
+    </Compile>
+    <Compile Include="..\..\platform\Base\Domain\Base\Derivations\ValidationBase.cs">
+      <Link>Base\Derivations\ValidationBase.cs</Link>
+    </Compile>
+    <Compile Include="..\..\platform\Base\Domain\Base\DomainException.cs">
+      <Link>Base\DomainException.cs</Link>
+    </Compile>
+    <Compile Include="..\..\platform\Base\Domain\Base\IObjectBase.cs">
       <Link>Base\IObjectBase.cs</Link>
     </Compile>
-    <Compile Include="..\..\allors\Base\Domain\Base\IObjectBuilder.cs">
+    <Compile Include="..\..\platform\Base\Domain\Base\IObjectBuilder.cs">
       <Link>Base\IObjectBuilder.cs</Link>
     </Compile>
-    <Compile Include="..\..\allors\Base\Domain\Base\IObjects.cs">
+    <Compile Include="..\..\platform\Base\Domain\Base\IObjects.cs">
       <Link>Base\IObjects.cs</Link>
     </Compile>
-    <Compile Include="..\..\allors\Base\Domain\Base\ISecure.cs">
+    <Compile Include="..\..\platform\Base\Domain\Base\ISecure.cs">
       <Link>Base\ISecure.cs</Link>
     </Compile>
-    <Compile Include="..\..\allors\Base\Domain\Base\ISessionExtensions.cs">
+    <Compile Include="..\..\platform\Base\Domain\Base\ISessionExtensions.cs">
       <Link>Base\ISessionExtensions.cs</Link>
     </Compile>
-    <Compile Include="..\..\allors\Base\Domain\Base\ISetup.cs">
+    <Compile Include="..\..\platform\Base\Domain\Base\ISetup.cs">
       <Link>Base\ISetup.cs</Link>
     </Compile>
-    <Compile Include="..\..\allors\Base\Domain\Base\Localisation\Countries.cs">
+    <Compile Include="..\..\platform\Base\Domain\Base\Localisation\Countries.cs">
       <Link>Base\Localisation\Countries.cs</Link>
     </Compile>
-    <Compile Include="..\..\allors\Base\Domain\Base\Localisation\Country.cs">
+    <Compile Include="..\..\platform\Base\Domain\Base\Localisation\Country.cs">
       <Link>Base\Localisation\Country.cs</Link>
     </Compile>
-    <Compile Include="..\..\allors\Base\Domain\Base\Localisation\Currencies.cs">
+    <Compile Include="..\..\platform\Base\Domain\Base\Localisation\Currencies.cs">
       <Link>Base\Localisation\Currencies.cs</Link>
     </Compile>
-    <Compile Include="..\..\allors\Base\Domain\Base\Localisation\Currency.cs">
+    <Compile Include="..\..\platform\Base\Domain\Base\Localisation\Currency.cs">
       <Link>Base\Localisation\Currency.cs</Link>
     </Compile>
-    <Compile Include="..\..\allors\Base\Domain\Base\Localisation\Language.cs">
+    <Compile Include="..\..\platform\Base\Domain\Base\Localisation\Language.cs">
       <Link>Base\Localisation\Language.cs</Link>
     </Compile>
-    <Compile Include="..\..\allors\Base\Domain\Base\Localisation\Languages.cs">
+    <Compile Include="..\..\platform\Base\Domain\Base\Localisation\Languages.cs">
       <Link>Base\Localisation\Languages.cs</Link>
     </Compile>
-    <Compile Include="..\..\allors\Base\Domain\Base\Localisation\Locale.cs">
+    <Compile Include="..\..\platform\Base\Domain\Base\Localisation\Locale.cs">
       <Link>Base\Localisation\Locale.cs</Link>
     </Compile>
-    <Compile Include="..\..\allors\Base\Domain\Base\Localisation\Locales.cs">
+    <Compile Include="..\..\platform\Base\Domain\Base\Localisation\Locales.cs">
       <Link>Base\Localisation\Locales.cs</Link>
     </Compile>
-    <Compile Include="..\..\allors\Base\Domain\Base\Localisation\LocalisedTexts.cs">
+    <Compile Include="..\..\platform\Base\Domain\Base\Localisation\LocalisedTexts.cs">
       <Link>Base\Localisation\LocalisedTexts.cs</Link>
     </Compile>
-    <Compile Include="..\..\allors\Base\Domain\Base\Meta\IObjectTypeExtensions.cs">
+    <Compile Include="..\..\platform\Base\Domain\Base\Meta\IObjectTypeExtensions.cs">
       <Link>Base\Meta\IObjectTypeExtensions.cs</Link>
     </Compile>
-    <Compile Include="..\..\allors\Base\Domain\Base\Meta\Path.cs">
+    <Compile Include="..\..\platform\Base\Domain\Base\Meta\Path.cs">
       <Link>Base\Meta\Path.cs</Link>
     </Compile>
-    <Compile Include="..\..\allors\Base\Domain\Base\Object.cs">
+    <Compile Include="..\..\platform\Base\Domain\Base\Object.cs">
       <Link>Base\Object.cs</Link>
     </Compile>
-    <Compile Include="..\..\allors\Base\Domain\Base\ObjectBuilder.cs">
+    <Compile Include="..\..\platform\Base\Domain\Base\ObjectBuilder.cs">
       <Link>Base\ObjectBuilder.cs</Link>
     </Compile>
-    <Compile Include="..\..\allors\Base\Domain\Base\ObjectBuilder`1.cs">
+    <Compile Include="..\..\platform\Base\Domain\Base\ObjectBuilder`1.cs">
       <Link>Base\ObjectBuilder`1.cs</Link>
     </Compile>
-    <Compile Include="..\..\allors\Base\Domain\Base\ObjectExtensions.cs">
+    <Compile Include="..\..\platform\Base\Domain\Base\ObjectExtensions.cs">
       <Link>Base\ObjectExtensions.cs</Link>
     </Compile>
-    <Compile Include="..\..\allors\Base\Domain\Base\ObjectOnBuild.cs">
+    <Compile Include="..\..\platform\Base\Domain\Base\ObjectOnBuild.cs">
       <Link>Base\ObjectOnBuild.cs</Link>
     </Compile>
-    <Compile Include="..\..\allors\Base\Domain\Base\ObjectOnPostBuild.cs">
+    <Compile Include="..\..\platform\Base\Domain\Base\ObjectOnPostBuild.cs">
       <Link>Base\ObjectOnPostBuild.cs</Link>
     </Compile>
-    <Compile Include="..\..\allors\Base\Domain\Base\ObjectsBase.cs">
+    <Compile Include="..\..\platform\Base\Domain\Base\ObjectsBase.cs">
       <Link>Base\ObjectsBase.cs</Link>
     </Compile>
-    <Compile Include="..\..\allors\Base\Domain\Base\ObjectsGraph.cs">
+    <Compile Include="..\..\platform\Base\Domain\Base\ObjectsGraph.cs">
       <Link>Base\ObjectsGraph.cs</Link>
     </Compile>
-    <Compile Include="..\..\allors\Base\Domain\Base\ObjectsNode.cs">
+    <Compile Include="..\..\platform\Base\Domain\Base\ObjectsNode.cs">
       <Link>Base\ObjectsNode.cs</Link>
     </Compile>
-    <Compile Include="..\..\allors\Base\Domain\Base\Relation\Person.cs">
+    <Compile Include="..\..\platform\Base\Domain\Base\PrefetchPolicyBuilderExtensions.cs">
+      <Link>Base\PrefetchPolicyBuilderExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\..\platform\Base\Domain\Base\Relation\People.cs">
+      <Link>Base\Relation\People.cs</Link>
+    </Compile>
+    <Compile Include="..\..\platform\Base\Domain\Base\Relation\Person.cs">
       <Link>Base\Relation\Person.cs</Link>
     </Compile>
-    <Compile Include="..\..\allors\Base\Domain\Base\Relation\Persons.cs">
-      <Link>Base\Relation\Persons.cs</Link>
-    </Compile>
-    <Compile Include="..\..\allors\Base\Domain\Base\Security\AccessControl.cs">
+    <Compile Include="..\..\platform\Base\Domain\Base\Security\AccessControl.cs">
       <Link>Base\Security\AccessControl.cs</Link>
     </Compile>
-    <Compile Include="..\..\allors\Base\Domain\Base\Security\AccessControlList.cs">
+    <Compile Include="..\..\platform\Base\Domain\Base\Security\AccessControlList.cs">
       <Link>Base\Security\AccessControlList.cs</Link>
     </Compile>
-    <Compile Include="..\..\allors\Base\Domain\Base\Security\AccessControlListCache.cs">
+    <Compile Include="..\..\platform\Base\Domain\Base\Security\AccessControlListCache.cs">
       <Link>Base\Security\AccessControlListCache.cs</Link>
     </Compile>
-    <Compile Include="..\..\allors\Base\Domain\Base\Security\AccessControls.cs">
+    <Compile Include="..\..\platform\Base\Domain\Base\Security\AccessControls.cs">
       <Link>Base\Security\AccessControls.cs</Link>
     </Compile>
-    <Compile Include="..\..\allors\Base\Domain\Base\Security\Cache\AccessControlCache.cs">
-      <Link>Base\Security\Cache\AccessControlCache.cs</Link>
-    </Compile>
-    <Compile Include="..\..\allors\Base\Domain\Base\Security\Cache\SecurityCache.cs">
-      <Link>Base\Security\Cache\SecurityCache.cs</Link>
-    </Compile>
-    <Compile Include="..\..\allors\Base\Domain\Base\Security\IAccessControlList.cs">
+    <Compile Include="..\..\platform\Base\Domain\Base\Security\IAccessControlList.cs">
       <Link>Base\Security\IAccessControlList.cs</Link>
     </Compile>
-    <Compile Include="..\..\allors\Base\Domain\Base\Security\IAccessControlListFactory.cs">
+    <Compile Include="..\..\platform\Base\Domain\Base\Security\IAccessControlListFactory.cs">
       <Link>Base\Security\IAccessControlListFactory.cs</Link>
     </Compile>
-    <Compile Include="..\..\allors\Base\Domain\Base\Security\Login.cs">
+    <Compile Include="..\..\platform\Base\Domain\Base\Security\Login.cs">
       <Link>Base\Security\Login.cs</Link>
     </Compile>
-    <Compile Include="..\..\allors\Base\Domain\Base\Security\Operation.cs">
-      <Link>Base\Security\Operation.cs</Link>
+    <Compile Include="..\..\platform\Base\Domain\Base\Security\Operations.cs">
+      <Link>Base\Security\Operations.cs</Link>
     </Compile>
-    <Compile Include="..\..\allors\Base\Domain\Base\Security\Permission.cs">
+    <Compile Include="..\..\platform\Base\Domain\Base\Security\Permission.cs">
       <Link>Base\Security\Permission.cs</Link>
     </Compile>
-    <Compile Include="..\..\allors\Base\Domain\Base\Security\PermissionBuilder.cs">
+    <Compile Include="..\..\platform\Base\Domain\Base\Security\PermissionBuilder.cs">
       <Link>Base\Security\PermissionBuilder.cs</Link>
     </Compile>
-    <Compile Include="..\..\allors\Base\Domain\Base\Security\PermissionComparer.cs">
+    <Compile Include="..\..\platform\Base\Domain\Base\Security\PermissionComparer.cs">
       <Link>Base\Security\PermissionComparer.cs</Link>
     </Compile>
-    <Compile Include="..\..\allors\Base\Domain\Base\Security\Permissions.cs">
+    <Compile Include="..\..\platform\Base\Domain\Base\Security\Permissions.cs">
       <Link>Base\Security\Permissions.cs</Link>
     </Compile>
-    <Compile Include="..\..\allors\Base\Domain\Base\Security\Role.cs">
+    <Compile Include="..\..\platform\Base\Domain\Base\Security\Role.cs">
       <Link>Base\Security\Role.cs</Link>
     </Compile>
-    <Compile Include="..\..\allors\Base\Domain\Base\Security\Roles.cs">
+    <Compile Include="..\..\platform\Base\Domain\Base\Security\Roles.cs">
       <Link>Base\Security\Roles.cs</Link>
     </Compile>
-    <Compile Include="..\..\allors\Base\Domain\Base\Security\Security.cs">
+    <Compile Include="..\..\platform\Base\Domain\Base\Security\Security.cs">
       <Link>Base\Security\Security.cs</Link>
     </Compile>
-    <Compile Include="..\..\allors\Base\Domain\Base\Security\SecurityToken.cs">
+    <Compile Include="..\..\platform\Base\Domain\Base\Security\SecurityToken.cs">
       <Link>Base\Security\SecurityToken.cs</Link>
     </Compile>
-    <Compile Include="..\..\allors\Base\Domain\Base\Security\SecurityTokens.cs">
+    <Compile Include="..\..\platform\Base\Domain\Base\Security\SecurityTokens.cs">
       <Link>Base\Security\SecurityTokens.cs</Link>
     </Compile>
-    <Compile Include="..\..\allors\Base\Domain\Base\Security\UserExtensions.cs">
+    <Compile Include="..\..\platform\Base\Domain\Base\Security\UserExtensions.cs">
       <Link>Base\Security\UserExtensions.cs</Link>
     </Compile>
-    <Compile Include="..\..\allors\Base\Domain\Base\Security\UserGroup.cs">
+    <Compile Include="..\..\platform\Base\Domain\Base\Security\UserGroup.cs">
       <Link>Base\Security\UserGroup.cs</Link>
     </Compile>
-    <Compile Include="..\..\allors\Base\Domain\Base\Security\UserGroups.cs">
+    <Compile Include="..\..\platform\Base\Domain\Base\Security\UserGroups.cs">
       <Link>Base\Security\UserGroups.cs</Link>
     </Compile>
-    <Compile Include="..\..\allors\Base\Domain\Base\Security\Users.cs">
+    <Compile Include="..\..\platform\Base\Domain\Base\Security\Users.cs">
       <Link>Base\Security\Users.cs</Link>
     </Compile>
-    <Compile Include="..\..\allors\Base\Domain\Base\Setup.cs">
+    <Compile Include="..\..\platform\Base\Domain\Base\Setup.cs">
       <Link>Base\Setup.cs</Link>
     </Compile>
-    <Compile Include="..\..\allors\Base\Domain\Base\Unit\DateTimeFactory.cs">
+    <Compile Include="..\..\platform\Base\Domain\Base\Unit\DateTimeFactory.cs">
       <Link>Base\Unit\DateTimeFactory.cs</Link>
     </Compile>
     <Compile Include="Apps\Accounting\AccountingPeriod.cs" />
@@ -412,7 +410,7 @@
     <Compile Include="Apps\Accounting\CapitalBudget.cs" />
     <Compile Include="Apps\Accounting\Capitalizations.cs" />
     <Compile Include="Apps\Accounting\Cash.cs" />
-    <Compile Include="Apps\Accounting\ChartOfAccounts.cs" />
+    <Compile Include="Apps\Accounting\ChartOfAccount.cs" />
     <Compile Include="Apps\Accounting\CostCenterCategory.cs" />
     <Compile Include="Apps\Accounting\CostCenterSplitMethods.cs" />
     <Compile Include="Apps\Accounting\CostOfGoodsSoldMethods.cs" />
@@ -803,7 +801,7 @@
     <Compile Include="Apps\Product\UtilizationCharges.cs" />
     <Compile Include="Apps\Product\VarianceReasons.cs" />
     <Compile Include="Apps\Product\VolumeUsages.cs" />
-    <Compile Include="Apps\Relation\Addenda.cs" />
+    <Compile Include="Apps\Relation\Addendums.cs" />
     <Compile Include="Apps\Relation\Addendum.cs" />
     <Compile Include="Apps\Relation\AgreementExhibits.cs" />
     <Compile Include="Apps\Relation\AgreementPricingPrograms.cs" />
@@ -877,7 +875,7 @@
     <Compile Include="Apps\Relation\Passports.cs" />
     <Compile Include="Apps\Relation\Person.cs" />
     <Compile Include="Apps\Relation\PersonalTitles.cs" />
-    <Compile Include="Apps\Relation\Persons.cs" />
+    <Compile Include="Apps\Relation\People.cs" />
     <Compile Include="Apps\Relation\PhoneCommunication.cs" />
     <Compile Include="Apps\Relation\PostalAddress.cs" />
     <Compile Include="Apps\Relation\Priorities.cs" />
@@ -1031,6 +1029,9 @@
     <Compile Include="Generated\Amortization.g.cs" />
     <Compile Include="Generated\AmountDue.g.cs" />
     <Compile Include="Generated\AssetAssignmentStatus.g.cs" />
+    <Compile Include="Generated\AsyncDerivable.g.cs" />
+    <Compile Include="Generated\AsyncDerivableAsyncDerive.g.cs" />
+    <Compile Include="Generated\AsyncDerivation.g.cs" />
     <Compile Include="Generated\AutomatedAgent.g.cs" />
     <Compile Include="Generated\Bank.g.cs" />
     <Compile Include="Generated\BankAccount.g.cs" />
@@ -1058,7 +1059,7 @@
     <Compile Include="Generated\CaseObjectState.g.cs" />
     <Compile Include="Generated\CaseStatus.g.cs" />
     <Compile Include="Generated\Cash.g.cs" />
-    <Compile Include="Generated\ChartOfAccounts.g.cs" />
+    <Compile Include="Generated\ChartOfAccount.g.cs" />
     <Compile Include="Generated\Citizenship.g.cs" />
     <Compile Include="Generated\City.g.cs" />
     <Compile Include="Generated\CityBound.g.cs" />
@@ -1238,8 +1239,6 @@
     <Compile Include="Generated\MaterialsUsage.g.cs" />
     <Compile Include="Generated\Media.g.cs" />
     <Compile Include="Generated\MediaContent.g.cs" />
-    <Compile Include="Generated\MediaType.g.cs" />
-    <Compile Include="Generated\Meta.g.cs" />
     <Compile Include="Generated\Model.g.cs" />
     <Compile Include="Generated\NeededSkill.g.cs" />
     <Compile Include="Generated\NewsItem.g.cs" />
@@ -1605,11 +1604,14 @@
     <Compile Include="Tests\Setup.v.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\..\platform\Base\Domain\Base\Derivations\Logging\Logging.cd">
+      <Link>Base\Derivations\Logging\Logging.cd</Link>
+    </None>
     <None Include="packages.config" />
     <None Include="Settings.StyleCop" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\allors\Framework\Allors\Allors.csproj">
+    <ProjectReference Include="..\..\platform\Framework\Allors\Allors.csproj">
       <Project>{5b4e2d7c-8ef8-45f5-bfb2-e595c401a95f}</Project>
       <Name>Allors</Name>
     </ProjectReference>

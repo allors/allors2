@@ -130,11 +130,6 @@ namespace Allors.Domain
                 this.AddShipmentStatus(currentStatus);
                 this.CurrentShipmentStatus = currentStatus;
             }
-
-            if (this.ExistCurrentObjectState)
-            {
-                this.CurrentObjectState.Process(this);
-            }
         }
 
         public void AppsComplete()

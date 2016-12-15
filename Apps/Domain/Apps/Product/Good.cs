@@ -136,8 +136,8 @@ namespace Allors.Domain
         {
             var derivation = method.Derivation;
 
-            derivation.Log.AssertAtLeastOne(this, Goods.Meta.FinishedGood, Goods.Meta.InventoryItemKind);
-            derivation.Log.AssertExistsAtMostOne(this, Goods.Meta.FinishedGood, Goods.Meta.InventoryItemKind);
+            derivation.Validation.AssertAtLeastOne(this, Goods.Meta.FinishedGood, Goods.Meta.InventoryItemKind);
+            derivation.Validation.AssertExistsAtMostOne(this, Goods.Meta.FinishedGood, Goods.Meta.InventoryItemKind);
 
             if (this.ProductCategories.Count == 1 && !this.ExistPrimaryProductCategory)
             {

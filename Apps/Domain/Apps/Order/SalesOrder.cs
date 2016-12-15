@@ -269,7 +269,7 @@ namespace Allors.Domain
             {
                 if (!this.TakenByInternalOrganisation.Equals(this.BillToCustomer.InternalOrganisationWhereCustomer))
                 {
-                    derivation.Log.AddError(this, SalesOrders.Meta.BillToCustomer, ErrorMessages.PartyIsNotACustomer);
+                    derivation.Validation.AddError(this, SalesOrders.Meta.BillToCustomer, ErrorMessages.PartyIsNotACustomer);
                 }
             }
 
@@ -277,7 +277,7 @@ namespace Allors.Domain
             {
                 if (!this.TakenByInternalOrganisation.Equals(this.ShipToCustomer.InternalOrganisationWhereCustomer))
                 {
-                    derivation.Log.AddError(this, SalesOrders.Meta.ShipToCustomer, ErrorMessages.PartyIsNotACustomer);
+                    derivation.Validation.AddError(this, SalesOrders.Meta.ShipToCustomer, ErrorMessages.PartyIsNotACustomer);
                 }
             }
 
@@ -348,8 +348,6 @@ namespace Allors.Domain
         {
             if (this.ExistCurrentObjectState && !this.CurrentObjectState.Equals(this.LastObjectState))
             {
-                this.CurrentObjectState.Process(this);
-
                 var currentStatus = new SalesOrderStatusBuilder(this.Strategy.Session).WithSalesOrderObjectState(this.CurrentObjectState).Build();
                 this.AddOrderStatus(currentStatus);
                 this.CurrentOrderStatus = currentStatus;

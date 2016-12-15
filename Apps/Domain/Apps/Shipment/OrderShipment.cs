@@ -36,8 +36,8 @@ namespace Allors.Domain
         {
             var derivation = method.Derivation;
 
-            derivation.Log.AssertAtLeastOne(this, OrderShipments.Meta.SalesOrderItem, OrderShipments.Meta.PurchaseOrderItem);
-            derivation.Log.AssertExistsAtMostOne(this, OrderShipments.Meta.SalesOrderItem, OrderShipments.Meta.PurchaseOrderItem);
+            derivation.Validation.AssertAtLeastOne(this, OrderShipments.Meta.SalesOrderItem, OrderShipments.Meta.PurchaseOrderItem);
+            derivation.Validation.AssertExistsAtMostOne(this, OrderShipments.Meta.SalesOrderItem, OrderShipments.Meta.PurchaseOrderItem);
         }
     }
 }

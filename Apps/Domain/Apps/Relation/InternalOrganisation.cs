@@ -199,7 +199,7 @@ namespace Allors.Domain
 
             if (this.ExistPreviousCurrency)
             {
-                derivation.Log.AssertAreEqual(this, InternalOrganisations.Meta.PreferredCurrency, InternalOrganisations.Meta.PreviousCurrency);
+                derivation.Validation.AssertAreEqual(this, InternalOrganisations.Meta.PreferredCurrency, InternalOrganisations.Meta.PreviousCurrency);
             }
             else
             {

@@ -20,30 +20,31 @@
 
 namespace Allors.Domain
 {
+    using Allors.Meta;
+
     public partial class Budgets
     {
         protected override void AppsPrepare(Setup setup)
         {
             base.AppsPrepare(setup);
 
-            setup.AddDependency(this.ObjectType, BudgetObjectStates.Meta.ObjectType);
+            setup.AddDependency(this.ObjectType, M.BudgetObjectState);
         }
         protected override void AppsSecure(Security config)
         {
             base.AppsSecure(config);
 
-            var write = Operation.Write;
-            var full = new[] { Operation.Read, Operation.Write, Operation.Execute };
+            var full = new[] { Operations.Read, Operations.Write, Operations.Execute };
 
             config.GrantAdministrator(this.ObjectType, full);
 
             var closed = new BudgetObjectStates(this.Session).Closed;
             var opened = new BudgetObjectStates(this.Session).Opened;
 
-            config.Deny(this.ObjectType, closed, write);
+            config.Deny(this.ObjectType, closed, Operations.Write);
 
-            config.Deny(this.ObjectType, closed, Budgets.Meta.Close);
-            config.Deny(this.ObjectType, opened, Budgets.Meta.Reopen);
+            config.Deny(this.ObjectType, closed, this.Meta.Close);
+            config.Deny(this.ObjectType, opened, this.Meta.Reopen);
         }
     }
 }

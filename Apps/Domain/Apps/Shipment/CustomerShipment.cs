@@ -713,11 +713,6 @@ namespace Allors.Domain
                     this.AppsOnDeriveOrderItemQuantityShipped(derivation);
                 }
             }
-
-            if (this.ExistCurrentObjectState)
-            {
-                this.CurrentObjectState.Process(this);
-            }
         }
     }
 }

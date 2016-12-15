@@ -26,7 +26,7 @@ namespace Allors.Domain
         {
             var derivation = method.Derivation;
 
-            derivation.Log.AssertAtLeastOne(this, OrderValues.Meta.FromAmount, OrderValues.Meta.ThroughAmount);
+            derivation.Validation.AssertAtLeastOne(this, OrderValues.Meta.FromAmount, OrderValues.Meta.ThroughAmount);
         }
     }
 }

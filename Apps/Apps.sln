@@ -1,11 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.23107.0
+VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domain", "Domain\Domain.csproj", "{B4EDDCC1-BA69-4415-BFC8-78098AEFF221}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Diagrams", "Diagrams\Diagrams.csproj", "{4917407C-54AA-4B64-A675-4A3EF58E7CD3}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Console", "Console\Console.csproj", "{23DD35E8-5611-46E1-A913-717AFB4150C2}"
 EndProject
@@ -15,13 +13,15 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Resources", "Resources\Reso
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests", "Tests\Tests.csproj", "{953F37B8-865D-4D8C-A084-FFE10F360ECE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Merge", "..\allors\Base\Merge\Merge.csproj", "{F192CA79-CB0F-43A6-AC0A-3F9685BDB8E1}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Merge", "..\platform\Base\Merge\Merge.csproj", "{F192CA79-CB0F-43A6-AC0A-3F9685BDB8E1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Allors", "..\allors\Framework\Allors\Allors.csproj", "{5B4E2D7C-8EF8-45F5-BFB2-E595C401A95F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Allors", "..\platform\Framework\Allors\Allors.csproj", "{5B4E2D7C-8EF8-45F5-BFB2-E595C401A95F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Allors.Adapters.Memory", "..\allors\Adapters\Allors.Adapters.Memory\Allors.Adapters.Memory.csproj", "{CB9B7108-C8F3-459C-B2DA-88187C84CFC1}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Allors.Adapters.Memory", "..\platform\Adapters\Allors.Adapters.Memory\Allors.Adapters.Memory.csproj", "{CB9B7108-C8F3-459C-B2DA-88187C84CFC1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Allors.Adapters.Object.SqlClient", "..\allors\Adapters\Allors.Adapters.Object.SqlClient\Allors.Adapters.Object.SqlClient.csproj", "{06BC1665-8FE8-4F04-9E80-EC2D54404BA7}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Allors.Adapters.Object.SqlClient", "..\platform\Adapters\Allors.Adapters.Object.SqlClient\Allors.Adapters.Object.SqlClient.csproj", "{06BC1665-8FE8-4F04-9E80-EC2D54404BA7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Generate", "Generate\Generate.csproj", "{535369EE-1572-4A34-888F-FC0ED4938089}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,14 +39,6 @@ Global
 		{B4EDDCC1-BA69-4415-BFC8-78098AEFF221}.Release|Any CPU.Build.0 = Release|Any CPU
 		{B4EDDCC1-BA69-4415-BFC8-78098AEFF221}.Release|x64.ActiveCfg = Release|x64
 		{B4EDDCC1-BA69-4415-BFC8-78098AEFF221}.Release|x64.Build.0 = Release|x64
-		{4917407C-54AA-4B64-A675-4A3EF58E7CD3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{4917407C-54AA-4B64-A675-4A3EF58E7CD3}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{4917407C-54AA-4B64-A675-4A3EF58E7CD3}.Debug|x64.ActiveCfg = Debug|x64
-		{4917407C-54AA-4B64-A675-4A3EF58E7CD3}.Debug|x64.Build.0 = Debug|x64
-		{4917407C-54AA-4B64-A675-4A3EF58E7CD3}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{4917407C-54AA-4B64-A675-4A3EF58E7CD3}.Release|Any CPU.Build.0 = Release|Any CPU
-		{4917407C-54AA-4B64-A675-4A3EF58E7CD3}.Release|x64.ActiveCfg = Release|x64
-		{4917407C-54AA-4B64-A675-4A3EF58E7CD3}.Release|x64.Build.0 = Release|x64
 		{23DD35E8-5611-46E1-A913-717AFB4150C2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{23DD35E8-5611-46E1-A913-717AFB4150C2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{23DD35E8-5611-46E1-A913-717AFB4150C2}.Debug|x64.ActiveCfg = Debug|x64
@@ -111,6 +103,14 @@ Global
 		{06BC1665-8FE8-4F04-9E80-EC2D54404BA7}.Release|Any CPU.Build.0 = Release|Any CPU
 		{06BC1665-8FE8-4F04-9E80-EC2D54404BA7}.Release|x64.ActiveCfg = Release|x64
 		{06BC1665-8FE8-4F04-9E80-EC2D54404BA7}.Release|x64.Build.0 = Release|x64
+		{535369EE-1572-4A34-888F-FC0ED4938089}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{535369EE-1572-4A34-888F-FC0ED4938089}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{535369EE-1572-4A34-888F-FC0ED4938089}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{535369EE-1572-4A34-888F-FC0ED4938089}.Debug|x64.Build.0 = Debug|Any CPU
+		{535369EE-1572-4A34-888F-FC0ED4938089}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{535369EE-1572-4A34-888F-FC0ED4938089}.Release|Any CPU.Build.0 = Release|Any CPU
+		{535369EE-1572-4A34-888F-FC0ED4938089}.Release|x64.ActiveCfg = Release|Any CPU
+		{535369EE-1572-4A34-888F-FC0ED4938089}.Release|x64.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

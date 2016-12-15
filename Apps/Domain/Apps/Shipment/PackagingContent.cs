@@ -62,7 +62,7 @@ namespace Allors.Domain
                 var maxQuantity = this.ShipmentItem.Quantity - this.ShipmentItem.QuantityShipped;
                 if (this.Quantity == 0 || this.Quantity > maxQuantity)
                 {
-                    derivation.Log.AddError(this, PackagingContents.Meta.Quantity, ErrorMessages.PackagingContentMaximum);
+                    derivation.Validation.AddError(this, PackagingContents.Meta.Quantity, ErrorMessages.PackagingContentMaximum);
                 }
             }
         }

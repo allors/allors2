@@ -1,0 +1,11 @@
+namespace Allors.Repository.Domain
+{
+    using System;
+
+    #region Allors
+    [Id("13d519ec-468e-4fa7-9803-b95dbab4eb82")]
+    #endregion
+	public partial interface Service : Product 
+    {
+    }
+}

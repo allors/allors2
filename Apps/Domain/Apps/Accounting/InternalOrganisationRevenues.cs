@@ -26,11 +26,11 @@ namespace Allors.Domain
 
     public partial class InternalOrganisationRevenues
     {
-        public static InternalOrganisationRevenue AppsFindOrCreateAsDependable(ISession session, StoreRevenue dependant)
+        public InternalOrganisationRevenue AppsFindOrCreateAsDependable(ISession session, StoreRevenue dependant)
         {
             var internalOrganisationRevenues = dependant.InternalOrganisation.InternalOrganisationRevenuesWhereInternalOrganisation;
-            internalOrganisationRevenues.Filter.AddEquals(InternalOrganisationRevenues.Meta.Year, dependant.Year);
-            internalOrganisationRevenues.Filter.AddEquals(InternalOrganisationRevenues.Meta.Month, dependant.Month);
+            internalOrganisationRevenues.Filter.AddEquals(this.Meta.Year, dependant.Year);
+            internalOrganisationRevenues.Filter.AddEquals(this.Meta.Month, dependant.Month);
             var internalOrganisationRevenue = internalOrganisationRevenues.First
                                               ?? new InternalOrganisationRevenueBuilder(session)
                                                         .WithInternalOrganisation(dependant.InternalOrganisation)
@@ -67,7 +67,7 @@ namespace Allors.Domain
                 }
             }
 
-            var revenues = new HashSet<ObjectId>();
+            var revenues = new HashSet<long>();
 
             var salesInvoices = session.Extent<SalesInvoice>();
             var year = 0;
@@ -122,7 +122,7 @@ namespace Allors.Domain
         {
             base.AppsSecure(config);
 
-            var full = new[] { Operation.Read, Operation.Write, Operation.Execute }; 
+            var full = new[] { Operations.Read, Operations.Write, Operations.Execute }; 
             
             config.GrantAdministrator(this.ObjectType, full);
         }

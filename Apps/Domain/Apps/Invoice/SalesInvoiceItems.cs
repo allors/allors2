@@ -35,7 +35,7 @@ namespace Allors.Domain
         {
             base.AppsSecure(config);
 
-            var full = new[] { Operation.Read, Operation.Write, Operation.Execute };
+            var full = new[] { Operations.Read, Operations.Write, Operations.Execute };
 
             config.GrantAdministrator(this.ObjectType, full);
 
@@ -43,9 +43,9 @@ namespace Allors.Domain
             ObjectState writtenOff = new SalesInvoiceItemObjectStates(Session).WrittenOff;
             ObjectState cancelled = new SalesInvoiceItemObjectStates(Session).Cancelled;
 
-            config.Deny(this.ObjectType, paid, Operation.Write, Operation.Execute);
-            config.Deny(this.ObjectType, writtenOff, Operation.Write, Operation.Execute);
-            config.Deny(this.ObjectType, cancelled, Operation.Write, Operation.Execute);
+            config.Deny(this.ObjectType, paid, Operations.Write, Operation.Execute);
+            config.Deny(this.ObjectType, writtenOff, Operations.Write, Operation.Execute);
+            config.Deny(this.ObjectType, cancelled, Operations.Write, Operation.Execute);
         }
     }
 }

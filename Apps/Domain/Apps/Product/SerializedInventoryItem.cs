@@ -64,8 +64,8 @@ namespace Allors.Domain
         {
             var derivation = method.Derivation;
 
-            derivation.Log.AssertAtLeastOne(this, SerializedInventoryItems.Meta.Good, SerializedInventoryItems.Meta.Part);
-            derivation.Log.AssertExistsAtMostOne(this, SerializedInventoryItems.Meta.Good, SerializedInventoryItems.Meta.Part);
+            derivation.Validation.AssertAtLeastOne(this, SerializedInventoryItems.Meta.Good, SerializedInventoryItems.Meta.Part);
+            derivation.Validation.AssertExistsAtMostOne(this, SerializedInventoryItems.Meta.Good, SerializedInventoryItems.Meta.Part);
 
             this.AppsOnDeriveCurrentObjectState(derivation);
         }
@@ -77,11 +77,6 @@ namespace Allors.Domain
                 SerializedInventoryItemStatus currentStatus = new SerializedInventoryItemStatusBuilder(this.Strategy.Session).WithSerializedInventoryItemObjectState(this.CurrentObjectState).Build();
                 this.AddInventoryItemStatus(currentStatus);
                 this.CurrentInventoryItemStatus = currentStatus;
-            }
-
-            if (this.ExistCurrentObjectState)
-            {
-                this.CurrentObjectState.Process(this);
             }
 
             this.AppsOnDeriveProductCategories(derivation);

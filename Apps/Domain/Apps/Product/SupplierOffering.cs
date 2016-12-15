@@ -26,8 +26,8 @@ namespace Allors.Domain
         {
             var derivation = method.Derivation;
 
-            derivation.Log.AssertAtLeastOne(this, SupplierOfferings.Meta.Part, SupplierOfferings.Meta.Product);
-            derivation.Log.AssertExistsAtMostOne(this, SupplierOfferings.Meta.Part, SupplierOfferings.Meta.Product);
+            derivation.Validation.AssertAtLeastOne(this, SupplierOfferings.Meta.Part, SupplierOfferings.Meta.Product);
+            derivation.Validation.AssertExistsAtMostOne(this, SupplierOfferings.Meta.Part, SupplierOfferings.Meta.Product);
 
             this.AppsOnDeriveInventoryItem(derivation);
         }

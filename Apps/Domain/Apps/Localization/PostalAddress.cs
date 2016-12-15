@@ -52,8 +52,8 @@ namespace Allors.Domain
         {
             var derivation = method.Derivation;
 
-            derivation.Log.AssertAtLeastOne(this, PostalAddresses.Meta.GeographicBoundaries, PostalAddresses.Meta.PostalBoundary);
-            derivation.Log.AssertExistsAtMostOne(this, PostalAddresses.Meta.GeographicBoundaries, PostalAddresses.Meta.PostalBoundary);
+            derivation.Validation.AssertAtLeastOne(this, PostalAddresses.Meta.GeographicBoundaries, PostalAddresses.Meta.PostalBoundary);
+            derivation.Validation.AssertExistsAtMostOne(this, PostalAddresses.Meta.GeographicBoundaries, PostalAddresses.Meta.PostalBoundary);
 
             this.DeriveFormattedfullAddress();
             this.AppsOnDerivePostalCode();

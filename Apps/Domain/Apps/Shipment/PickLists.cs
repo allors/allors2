@@ -48,14 +48,14 @@ namespace Allors.Domain
         {
             base.AppsSecure(config);
 
-            var full = new[] { Operation.Read, Operation.Write, Operation.Execute };
+            var full = new[] { Operations.Read, Operations.Write, Operations.Execute };
 
             config.GrantAdministrator(this.ObjectType, full);
             
             config.GrantOperations(this.ObjectType, full);
 
-            config.GrantCustomer(this.ObjectType, Meta.CurrentPickListStatus, Operation.Read);
-            config.GrantCustomer(this.ObjectType, Meta.PickListStatuses, Operation.Read);
+            config.GrantCustomer(this.ObjectType, Meta.CurrentPickListStatus, Operations.Read);
+            config.GrantCustomer(this.ObjectType, Meta.PickListStatuses, Operations.Read);
 
             var created = new PickListObjectStates(Session).Created;
             var onHold = new PickListObjectStates(Session).OnHold;
@@ -65,8 +65,8 @@ namespace Allors.Domain
             config.Deny(this.ObjectType, created, Meta.Continue);
             config.Deny(this.ObjectType, onHold, Meta.Hold);
 
-            config.Deny(this.ObjectType, picked, Operation.Execute, Operation.Write);
-            config.Deny(this.ObjectType, cancelled, Operation.Execute, Operation.Write);
+            config.Deny(this.ObjectType, picked, Operation.Execute, Operations.Write);
+            config.Deny(this.ObjectType, cancelled, Operation.Execute, Operations.Write);
         }
     }
 }

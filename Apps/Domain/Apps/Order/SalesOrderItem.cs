@@ -105,7 +105,7 @@ namespace Allors.Domain
 
             if (this.ExistPreviousProduct && !this.PreviousProduct.Equals(this.Product))
             {
-                derivation.Log.AddError(this, SalesOrderItems.Meta.Product, ErrorMessages.SalesOrderItemProductChangeNotAllowed);
+                derivation.Validation.AddError(this, SalesOrderItems.Meta.Product, ErrorMessages.SalesOrderItemProductChangeNotAllowed);
             }
             else
             {
@@ -114,12 +114,12 @@ namespace Allors.Domain
 
             if (this.ExistSalesOrderItemWhereOrderedWithFeature && !this.ExistProductFeature)
             {
-                derivation.Log.AssertExists(this, SalesOrderItems.Meta.ProductFeature);
+                derivation.Validation.AssertExists(this, SalesOrderItems.Meta.ProductFeature);
             }
 
             if (this.ExistProduct && this.ExistQuantityOrdered && this.QuantityOrdered < this.QuantityShipped)
             {
-                derivation.Log.AddError(this, SalesOrderItems.Meta.QuantityOrdered, ErrorMessages.SalesOrderItemLessThanAlreadeyShipped);
+                derivation.Validation.AddError(this, SalesOrderItems.Meta.QuantityOrdered, ErrorMessages.SalesOrderItemLessThanAlreadeyShipped);
             }
 
             if (!this.ExistAssignedShipToAddress && this.ExistAssignedShipToParty)
@@ -127,10 +127,10 @@ namespace Allors.Domain
                 this.AssignedShipToAddress = this.AssignedShipToParty.ShippingAddress;
             }
 
-            derivation.Log.AssertAtLeastOne(this, SalesOrderItems.Meta.Product, SalesOrderItems.Meta.ProductFeature);
-            derivation.Log.AssertExistsAtMostOne(this, SalesOrderItems.Meta.Product, SalesOrderItems.Meta.ProductFeature);
-            derivation.Log.AssertExistsAtMostOne(this, SalesOrderItems.Meta.ActualUnitPrice, SalesOrderItems.Meta.DiscountAdjustment, SalesOrderItems.Meta.SurchargeAdjustment);
-            derivation.Log.AssertExistsAtMostOne(this, SalesOrderItems.Meta.RequiredMarkupPercentage, SalesOrderItems.Meta.RequiredProfitMargin, SalesOrderItems.Meta.DiscountAdjustment, SalesOrderItems.Meta.SurchargeAdjustment);
+            derivation.Validation.AssertAtLeastOne(this, SalesOrderItems.Meta.Product, SalesOrderItems.Meta.ProductFeature);
+            derivation.Validation.AssertExistsAtMostOne(this, SalesOrderItems.Meta.Product, SalesOrderItems.Meta.ProductFeature);
+            derivation.Validation.AssertExistsAtMostOne(this, SalesOrderItems.Meta.ActualUnitPrice, SalesOrderItems.Meta.DiscountAdjustment, SalesOrderItems.Meta.SurchargeAdjustment);
+            derivation.Validation.AssertExistsAtMostOne(this, SalesOrderItems.Meta.RequiredMarkupPercentage, SalesOrderItems.Meta.RequiredProfitMargin, SalesOrderItems.Meta.DiscountAdjustment, SalesOrderItems.Meta.SurchargeAdjustment);
 
             this.AppsOnDerivePrices(derivation, 0, 0);
             this.AppsOnDeriveDeliveryDate(derivation);
@@ -216,11 +216,6 @@ namespace Allors.Domain
                 this.CurrentObjectState.Equals(new SalesOrderItemObjectStates(this.Strategy.Session).Rejected))
             {
                 this.AppsOnDeriveQuantities(derivation);
-            }
-
-            if (this.ExistCurrentObjectState)
-            {
-                this.CurrentObjectState.Process(this);
             }
         }
 
@@ -968,15 +963,15 @@ namespace Allors.Domain
 
                 if (this.ExistReservedFromInventoryItem && quantity > this.ReservedFromInventoryItem.AvailableToPromise)
                 {
-                    derivation.Log.AddError(this, SalesOrderItems.Meta.QuantityShipNow, ErrorMessages.SalesOrderItemQuantityToShipNowNotAvailable);
+                    derivation.Validation.AddError(this, SalesOrderItems.Meta.QuantityShipNow, ErrorMessages.SalesOrderItemQuantityToShipNowNotAvailable);
                 }
                 else if (quantity > this.QuantityOrdered)
                 {
-                    derivation.Log.AddError(this, SalesOrderItems.Meta.QuantityShipNow, ErrorMessages.SalesOrderItemQuantityToShipNowIsLargerThanQuantityOrdered);
+                    derivation.Validation.AddError(this, SalesOrderItems.Meta.QuantityShipNow, ErrorMessages.SalesOrderItemQuantityToShipNowIsLargerThanQuantityOrdered);
                 }
                 else if (quantity > this.QuantityOrdered - this.QuantityShipped - this.QuantityPendingShipment + this.QuantityReturned)
                 {
-                    derivation.Log.AddError(this, SalesOrderItems.Meta.QuantityShipNow, ErrorMessages.SalesOrderItemQuantityToShipNowIsLargerThanQuantityRemaining);
+                    derivation.Validation.AddError(this, SalesOrderItems.Meta.QuantityShipNow, ErrorMessages.SalesOrderItemQuantityToShipNowIsLargerThanQuantityRemaining);
                 }
                 else
                 {

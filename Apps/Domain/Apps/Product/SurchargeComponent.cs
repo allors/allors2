@@ -34,8 +34,8 @@ namespace Allors.Domain
         {
             var derivation = method.Derivation;
 
-            derivation.Log.AssertAtLeastOne(this, SurchargeComponents.Meta.Price, SurchargeComponents.Meta.Percentage);
-            derivation.Log.AssertExistsAtMostOne(this, SurchargeComponents.Meta.Price, SurchargeComponents.Meta.Percentage);
+            derivation.Validation.AssertAtLeastOne(this, SurchargeComponents.Meta.Price, SurchargeComponents.Meta.Percentage);
+            derivation.Validation.AssertExistsAtMostOne(this, SurchargeComponents.Meta.Price, SurchargeComponents.Meta.Percentage);
 
             if (this.ExistPrice)
             {
@@ -44,7 +44,7 @@ namespace Allors.Domain
                     this.Currency = this.SpecifiedFor.PreferredCurrency;
                 }
 
-                derivation.Log.AssertExists(this, BasePrices.Meta.Currency);
+                derivation.Validation.AssertExists(this, BasePrices.Meta.Currency);
             }
 
             this.AppsOnDeriveVirtualProductPriceComponent();

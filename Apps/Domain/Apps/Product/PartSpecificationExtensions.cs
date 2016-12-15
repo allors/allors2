@@ -43,11 +43,6 @@ namespace Allors.Domain
                 partSpecification.AddPartSpecificationStatus(currentStatus);
                 partSpecification.CurrentPartSpecificationStatus = currentStatus;
             }
-
-            if (partSpecification.ExistCurrentObjectState)
-            {
-                partSpecification.CurrentObjectState.Process(partSpecification);
-            }
         }
     }
 }

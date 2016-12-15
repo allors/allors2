@@ -54,7 +54,7 @@ namespace Allors.Domain
 
             if (this.ExistUseAsDefault && this.UseAsDefault)
             {
-                derivation.Log.AssertExists(this, PartyContactMechanisms.Meta.ContactPurpose);
+                derivation.Validation.AssertExists(this, PartyContactMechanisms.Meta.ContactPurpose);
             }
 
             if (this.UseAsDefault && this.ExistPartyWherePartyContactMechanism && this.ExistContactPurpose)

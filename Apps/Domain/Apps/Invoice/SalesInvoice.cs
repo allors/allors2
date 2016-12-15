@@ -25,6 +25,8 @@ namespace Allors.Domain
     using System.Globalization;
     using System.Text;
 
+    using Allors.Meta;
+
     using Resources;
 
     public partial class SalesInvoice
@@ -91,7 +93,7 @@ namespace Allors.Domain
                     if (this.ExistBilledFromInternalOrganisation && this.ExistBillToCustomer && this.BillToCustomer.ExistCustomerRelationshipsWhereCustomer)
                     {
                         var customerRelationships = this.BillToCustomer.CustomerRelationshipsWhereCustomer;
-                        customerRelationships.Filter.AddEquals(CustomerRelationships.Meta.InternalOrganisation, this.BilledFromInternalOrganisation);
+                        customerRelationships.Filter.AddEquals(M.CustomerRelationship.InternalOrganisation, this.BilledFromInternalOrganisation);
                         var customerRelationship = customerRelationships.First;
 
                         if (customerRelationship != null && customerRelationship.PaymentNetDays != null)
@@ -205,7 +207,7 @@ namespace Allors.Domain
             if (this.ExistBillToCustomer)
             {
                 var customerRelationships = this.BillToCustomer.CustomerRelationshipsWhereCustomer;
-                customerRelationships.Filter.AddEquals(CustomerRelationships.Meta.InternalOrganisation, this.BilledFromInternalOrganisation);
+                customerRelationships.Filter.AddEquals(M.CustomerRelationship.InternalOrganisation, this.BilledFromInternalOrganisation);
 
                 foreach (CustomerRelationship customerRelationship in customerRelationships)
                 {
@@ -219,7 +221,7 @@ namespace Allors.Domain
             if (this.ExistShipToCustomer)
             {
                 var customerRelationships = this.ShipToCustomer.CustomerRelationshipsWhereCustomer;
-                customerRelationships.Filter.AddEquals(CustomerRelationships.Meta.InternalOrganisation, this.BilledFromInternalOrganisation);
+                customerRelationships.Filter.AddEquals(M.CustomerRelationship.InternalOrganisation, this.BilledFromInternalOrganisation);
 
                 foreach (CustomerRelationship customerRelationship in customerRelationships)
                 {
@@ -273,7 +275,7 @@ namespace Allors.Domain
             if (this.ExistBillToCustomer && this.BillToCustomer.ExistCustomerRelationshipsWhereCustomer)
             {
                 var customerRelationships = this.BillToCustomer.CustomerRelationshipsWhereCustomer;
-                customerRelationships.Filter.AddEquals(CustomerRelationships.Meta.InternalOrganisation, this.BilledFromInternalOrganisation);
+                customerRelationships.Filter.AddEquals(M.CustomerRelationship.InternalOrganisation, this.BilledFromInternalOrganisation);
                 var customerRelationship = customerRelationships.First;
 
                 customerRelationship?.OnDerive(x => x.WithDerivation(derivation));
@@ -283,7 +285,7 @@ namespace Allors.Domain
             {
                 if (!this.BilledFromInternalOrganisation.Equals(this.BillToCustomer.InternalOrganisationWhereCustomer))
                 {
-                    derivation.Log.AddError(this, SalesInvoices.Meta.BillToCustomer, ErrorMessages.PartyIsNotACustomer);
+                    derivation.Validation.AddError(this, M.SalesInvoice.BillToCustomer, ErrorMessages.PartyIsNotACustomer);
                 }
             }
 
@@ -291,7 +293,7 @@ namespace Allors.Domain
             {
                 if (!this.BilledFromInternalOrganisation.Equals(this.ShipToCustomer.InternalOrganisationWhereCustomer))
                 {
-                    derivation.Log.AddError(this, SalesInvoices.Meta.ShipToCustomer, ErrorMessages.PartyIsNotACustomer);
+                    derivation.Validation.AddError(this, M.SalesInvoice.ShipToCustomer, ErrorMessages.PartyIsNotACustomer);
                 }
             }
 
@@ -394,8 +396,6 @@ namespace Allors.Domain
         {
             if (this.ExistCurrentObjectState && !this.CurrentObjectState.Equals(this.LastObjectState))
             {
-                this.CurrentObjectState.Process(this);
-
                 var currentStatus = new SalesInvoiceStatusBuilder(this.Strategy.Session).WithSalesInvoiceObjectState(this.CurrentObjectState).Build();
                 this.AddInvoiceStatus(currentStatus);
                 this.CurrentInvoiceStatus = currentStatus;

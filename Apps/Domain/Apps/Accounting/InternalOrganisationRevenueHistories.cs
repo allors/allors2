@@ -26,9 +26,8 @@ namespace Allors.Domain
 
     public partial class InternalOrganisationRevenueHistories
     {
-        public static void AppsOnDeriveHistory(ISession session)
+        public static void AppsOnDeriveHistory(ISession session, IDerivation derivation)
         {
-            var derivation = new Derivation(session);
             var internalOrganisationRevenuesByPeriodByInternalOrganisation = new Dictionary<InternalOrganisation, Dictionary<DateTime, InternalOrganisationRevenue>>();
 
             var internalOrganisationRevenues = session.Extent<InternalOrganisationRevenue>();
@@ -100,7 +99,7 @@ namespace Allors.Domain
         {
             base.AppsSecure(config);
 
-            var full = new[] { Operation.Read, Operation.Write, Operation.Execute }; 
+            var full = new[] { Operations.Read, Operations.Write, Operations.Execute }; 
             
             config.GrantAdministrator(this.ObjectType, full);
         }

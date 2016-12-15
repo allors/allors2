@@ -1,10 +1,10 @@
 <Project DefaultTargets="Merge" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 
-  <UsingTask TaskName="Merge" AssemblyFile="..\..\allors\Base\Merge\bin\debug\Merge.dll"/>
+  <UsingTask TaskName="Merge" AssemblyFile="..\..\platform\Base\Merge\bin\debug\Merge.dll"/>
 
   <Target Name="Merge">
     <ItemGroup>
-      <InputDirectories Include="..\..\allors\Base\Resources\Base"/>
+      <InputDirectories Include="..\..\platform\Base\Resources\Base"/>
       <InputDirectories Include="Apps"/>
     </ItemGroup>
 

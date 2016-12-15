@@ -45,11 +45,6 @@ namespace Allors.Domain
                 this.AddCaseStatus(currentStatus);
                 this.CurrentCaseStatus = currentStatus;
             }
-
-            if (this.ExistCurrentObjectState)
-            {
-                this.CurrentObjectState.Process(this);
-            }
         }
 
         public void AppsClose()

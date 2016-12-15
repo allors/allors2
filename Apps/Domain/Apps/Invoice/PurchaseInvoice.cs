@@ -94,14 +94,12 @@ namespace Allors.Domain
             {
                 if (!this.BilledToInternalOrganisation.Equals(supplier.InternalOrganisationWhereSupplier))
                 {
-                    derivation.Log.AddError(this, PurchaseInvoices.Meta.BilledFromParty, ErrorMessages.PartyIsNotASupplier);
+                    derivation.Validation.AddError(this, this.Meta.BilledFromParty, ErrorMessages.PartyIsNotASupplier);
                 }
             }
 
             if (this.ExistCurrentObjectState && !this.CurrentObjectState.Equals(this.LastObjectState))
             {
-                this.CurrentObjectState.Process(this);
-
                 var currentStatus = new PurchaseInvoiceStatusBuilder(this.Strategy.Session).WithPurchaseInvoiceObjectState(this.CurrentObjectState).Build();
                 this.AddInvoiceStatus(currentStatus);
                 this.CurrentInvoiceStatus = currentStatus;

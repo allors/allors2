@@ -46,7 +46,7 @@ namespace Allors.Domain
 
                 if (employments.Count > 1)
                 {
-                    derivation.Log.AddError(this, Employments.Meta.FromDate, ErrorMessages.ActiveDeploymentRegistered, this.Employer.Name);
+                    derivation.Validation.AddError(this, Employments.Meta.FromDate, ErrorMessages.ActiveDeploymentRegistered, this.Employer.Name);
                 }
             }
 

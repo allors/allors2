@@ -35,42 +35,42 @@ namespace Allors.Domain
         {
             base.AppsSecure(config);
 
-            var full = new[] { Operation.Read, Operation.Write, Operation.Execute };
+            var full = new[] { Operations.Read, Operations.Write, Operations.Execute };
 
             config.GrantAdministrator(this.ObjectType, full);
 
             config.GrantProcurement(this.ObjectType, full);
             config.GrantOperations(this.ObjectType, full);
 
-            config.GrantSupplier(this.ObjectType, Meta.OrderNumber, Operation.Read);
-            config.GrantSupplier(this.ObjectType, Meta.OrderDate, Operation.Read);
-            config.GrantSupplier(this.ObjectType, Meta.CurrentOrderStatus, Operation.Read);
-            config.GrantSupplier(this.ObjectType, Meta.CurrentPaymentStatus, Operation.Read);
-            config.GrantSupplier(this.ObjectType, Meta.CurrentShipmentStatus, Operation.Read);
-            config.GrantSupplier(this.ObjectType, Meta.OrderStatuses, Operation.Read);
-            config.GrantSupplier(this.ObjectType, Meta.PaymentStatuses, Operation.Read);
-            config.GrantSupplier(this.ObjectType, Meta.ShipmentStatuses, Operation.Read);
-            config.GrantSupplier(this.ObjectType, Meta.TotalBasePrice, Operation.Read);
-            config.GrantSupplier(this.ObjectType, Meta.TotalDiscount, Operation.Read);
-            config.GrantSupplier(this.ObjectType, Meta.TotalSurcharge, Operation.Read);
-            config.GrantSupplier(this.ObjectType, Meta.TotalExVat, Operation.Read);
-            config.GrantSupplier(this.ObjectType, Meta.TotalVat, Operation.Read);
-            config.GrantSupplier(this.ObjectType, Meta.TotalIncVat, Operation.Read);
+            config.GrantSupplier(this.ObjectType, Meta.OrderNumber, Operations.Read);
+            config.GrantSupplier(this.ObjectType, Meta.OrderDate, Operations.Read);
+            config.GrantSupplier(this.ObjectType, Meta.CurrentOrderStatus, Operations.Read);
+            config.GrantSupplier(this.ObjectType, Meta.CurrentPaymentStatus, Operations.Read);
+            config.GrantSupplier(this.ObjectType, Meta.CurrentShipmentStatus, Operations.Read);
+            config.GrantSupplier(this.ObjectType, Meta.OrderStatuses, Operations.Read);
+            config.GrantSupplier(this.ObjectType, Meta.PaymentStatuses, Operations.Read);
+            config.GrantSupplier(this.ObjectType, Meta.ShipmentStatuses, Operations.Read);
+            config.GrantSupplier(this.ObjectType, Meta.TotalBasePrice, Operations.Read);
+            config.GrantSupplier(this.ObjectType, Meta.TotalDiscount, Operations.Read);
+            config.GrantSupplier(this.ObjectType, Meta.TotalSurcharge, Operations.Read);
+            config.GrantSupplier(this.ObjectType, Meta.TotalExVat, Operations.Read);
+            config.GrantSupplier(this.ObjectType, Meta.TotalVat, Operations.Read);
+            config.GrantSupplier(this.ObjectType, Meta.TotalIncVat, Operations.Read);
 
-            config.GrantProcurement(this.ObjectType, Meta.OrderNumber, Operation.Read);
-            config.GrantProcurement(this.ObjectType, Meta.OrderDate, Operation.Read);
-            config.GrantProcurement(this.ObjectType, Meta.CurrentOrderStatus, Operation.Read);
-            config.GrantProcurement(this.ObjectType, Meta.CurrentPaymentStatus, Operation.Read);
-            config.GrantProcurement(this.ObjectType, Meta.CurrentShipmentStatus, Operation.Read);
-            config.GrantProcurement(this.ObjectType, Meta.OrderStatuses, Operation.Read);
-            config.GrantProcurement(this.ObjectType, Meta.PaymentStatuses, Operation.Read);
-            config.GrantProcurement(this.ObjectType, Meta.ShipmentStatuses, Operation.Read);
-            config.GrantProcurement(this.ObjectType, Meta.TotalBasePrice, Operation.Read);
-            config.GrantProcurement(this.ObjectType, Meta.TotalDiscount, Operation.Read);
-            config.GrantProcurement(this.ObjectType, Meta.TotalSurcharge, Operation.Read);
-            config.GrantProcurement(this.ObjectType, Meta.TotalExVat, Operation.Read);
-            config.GrantProcurement(this.ObjectType, Meta.TotalVat, Operation.Read);
-            config.GrantProcurement(this.ObjectType, Meta.TotalIncVat, Operation.Read);
+            config.GrantProcurement(this.ObjectType, Meta.OrderNumber, Operations.Read);
+            config.GrantProcurement(this.ObjectType, Meta.OrderDate, Operations.Read);
+            config.GrantProcurement(this.ObjectType, Meta.CurrentOrderStatus, Operations.Read);
+            config.GrantProcurement(this.ObjectType, Meta.CurrentPaymentStatus, Operations.Read);
+            config.GrantProcurement(this.ObjectType, Meta.CurrentShipmentStatus, Operations.Read);
+            config.GrantProcurement(this.ObjectType, Meta.OrderStatuses, Operations.Read);
+            config.GrantProcurement(this.ObjectType, Meta.PaymentStatuses, Operations.Read);
+            config.GrantProcurement(this.ObjectType, Meta.ShipmentStatuses, Operations.Read);
+            config.GrantProcurement(this.ObjectType, Meta.TotalBasePrice, Operations.Read);
+            config.GrantProcurement(this.ObjectType, Meta.TotalDiscount, Operations.Read);
+            config.GrantProcurement(this.ObjectType, Meta.TotalSurcharge, Operations.Read);
+            config.GrantProcurement(this.ObjectType, Meta.TotalExVat, Operations.Read);
+            config.GrantProcurement(this.ObjectType, Meta.TotalVat, Operations.Read);
+            config.GrantProcurement(this.ObjectType, Meta.TotalIncVat, Operations.Read);
 
             var created = new PurchaseOrderObjectStates(Session).Provisional;
             var onHold = new PurchaseOrderObjectStates(Session).OnHold;
@@ -92,10 +92,10 @@ namespace Allors.Domain
             config.Deny(this.ObjectType, inProcess, confirm, reject, approve, @continue);
             config.Deny(this.ObjectType, onHold, confirm, reject, approve, hold);
 
-            config.Deny(this.ObjectType, cancelled, Operation.Execute, Operation.Write);
-            config.Deny(this.ObjectType, rejected, Operation.Execute, Operation.Write);
-            config.Deny(this.ObjectType, completed, Operation.Execute, Operation.Write);
-            config.Deny(this.ObjectType, finished, Operation.Execute, Operation.Write);
+            config.Deny(this.ObjectType, cancelled, Operation.Execute, Operations.Write);
+            config.Deny(this.ObjectType, rejected, Operation.Execute, Operations.Write);
+            config.Deny(this.ObjectType, completed, Operation.Execute, Operations.Write);
+            config.Deny(this.ObjectType, finished, Operation.Execute, Operations.Write);
         }
     }
 }

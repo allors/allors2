@@ -35,7 +35,7 @@ namespace Allors.Domain
         {
             base.AppsSecure(config);
 
-            var full = new[] { Operation.Read, Operation.Write, Operation.Execute };
+            var full = new[] { Operations.Read, Operations.Write, Operations.Execute };
 
             config.GrantAdministrator(this.ObjectType, full);
 
@@ -65,10 +65,10 @@ namespace Allors.Domain
             config.Deny(this.ObjectType, onHold, confirm, reject, approve, hold);
             config.Deny(this.ObjectType, rejected, reject);
 
-            config.Deny(this.ObjectType, cancelled, Operation.Execute, Operation.Write);
-            config.Deny(this.ObjectType, rejected, Operation.Execute, Operation.Write);
-            config.Deny(this.ObjectType, completed, Operation.Execute, Operation.Write);
-            config.Deny(this.ObjectType, finished, Operation.Execute, Operation.Write);
+            config.Deny(this.ObjectType, cancelled, Operation.Execute, Operations.Write);
+            config.Deny(this.ObjectType, rejected, Operation.Execute, Operations.Write);
+            config.Deny(this.ObjectType, completed, Operation.Execute, Operations.Write);
+            config.Deny(this.ObjectType, finished, Operation.Execute, Operations.Write);
         }
     }
 }

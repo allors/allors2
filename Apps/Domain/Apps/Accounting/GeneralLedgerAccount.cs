@@ -66,41 +66,41 @@ namespace Allors.Domain
         {
             var derivation = method.Derivation;
 
-            if (this.ExistChartOfAccountsWhereGeneralLedgerAccount)
+            if (this.ExistChartOfAccountWhereGeneralLedgerAccount)
             {
                 var extent = this.Strategy.Session.Extent<GeneralLedgerAccount>();
-                extent.Filter.AddEquals(GeneralLedgerAccounts.Meta.ChartOfAccountsWhereGeneralLedgerAccount, this.ChartOfAccountsWhereGeneralLedgerAccount);
-                extent.Filter.AddEquals(GeneralLedgerAccounts.Meta.AccountNumber, this.AccountNumber);
+                extent.Filter.AddEquals(this.Meta.ChartOfAccountWhereGeneralLedgerAccount, this.ChartOfAccountWhereGeneralLedgerAccount);
+                extent.Filter.AddEquals(this.Meta.AccountNumber, this.AccountNumber);
 
                 if (extent.Count > 1)
                 {
-                    derivation.Log.AddError(this, GeneralLedgerAccounts.Meta.AccountNumber, ErrorMessages.AccountNumberUniqueWithinChartOfAccounts);
+                    derivation.Validation.AddError(this, this.Meta.AccountNumber, ErrorMessages.AccountNumberUniqueWithinChartOfAccounts);
                 }
             }
 
             if (!this.CostCenterAccount && this.CostCenterRequired)
             {
-                derivation.Log.AddError(this, GeneralLedgerAccounts.Meta.CostCenterRequired, ErrorMessages.NotACostCenterAccount);
+                derivation.Validation.AddError(this, this.Meta.CostCenterRequired, ErrorMessages.NotACostCenterAccount);
             }
 
             if (this.CostCenterAccount && this.ExistDefaultCostCenter)
             {
                 if (!this.CostCentersAllowed.Contains(this.DefaultCostCenter))
                 {
-                    derivation.Log.AddError(this, GeneralLedgerAccounts.Meta.DefaultCostCenter, ErrorMessages.CostCenterNotAllowed);
+                    derivation.Validation.AddError(this, this.Meta.DefaultCostCenter, ErrorMessages.CostCenterNotAllowed);
                 }
             }
 
             if (!this.CostUnitAccount && this.CostUnitRequired)
             {
-                derivation.Log.AddError(this, GeneralLedgerAccounts.Meta.CostCenterRequired, ErrorMessages.NotACostUnitAccount);
+                derivation.Validation.AddError(this, this.Meta.CostCenterRequired, ErrorMessages.NotACostUnitAccount);
             }
 
             if (this.CostUnitAccount && this.ExistDefaultCostUnit)
             {
                 if (!this.CostUnitsAllowed.Contains(this.DefaultCostUnit))
                 {
-                    derivation.Log.AddError(this, GeneralLedgerAccounts.Meta.DefaultCostUnit, ErrorMessages.CostUnitNotAllowed);
+                    derivation.Validation.AddError(this, this.Meta.DefaultCostUnit, ErrorMessages.CostUnitNotAllowed);
                 }
             }
         }

@@ -32,7 +32,7 @@ namespace Allors.Domain
 
             if (this.ExistActualQuantity && this.ActualQuantity > this.RequestedQuantity)
             {
-                derivation.Log.AddError(this, PickListItems.Meta.ActualQuantity, ErrorMessages.PickListItemQuantityMoreThanAllowed);
+                derivation.Validation.AddError(this, PickListItems.Meta.ActualQuantity, ErrorMessages.PickListItemQuantityMoreThanAllowed);
             }
 
             this.AppsOnDeriveOrderItemAdjustment(derivation);

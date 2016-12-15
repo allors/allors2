@@ -35,21 +35,21 @@ namespace Allors.Domain
         {
             base.AppsSecure(config);
 
-            var full = new[] { Operation.Read, Operation.Write, Operation.Execute };
+            var full = new[] { Operations.Read, Operations.Write, Operations.Execute };
 
             config.GrantAdministrator(this.ObjectType, full);
 
             config.GrantOperations(this.ObjectType, full);
 
-            config.GrantCustomer(this.ObjectType, Meta.CurrentShipmentStatus, Operation.Read);
-            config.GrantCustomer(this.ObjectType, Meta.ShipToParty, Operation.Read);
-            config.GrantCustomer(this.ObjectType, Meta.ShipmentStatuses, Operation.Read);
-            config.GrantCustomer(this.ObjectType, Meta.ShipmentPackages, Operation.Read);
+            config.GrantCustomer(this.ObjectType, Meta.CurrentShipmentStatus, Operations.Read);
+            config.GrantCustomer(this.ObjectType, Meta.ShipToParty, Operations.Read);
+            config.GrantCustomer(this.ObjectType, Meta.ShipmentStatuses, Operations.Read);
+            config.GrantCustomer(this.ObjectType, Meta.ShipmentPackages, Operations.Read);
 
-            config.GrantSales(this.ObjectType, Meta.CurrentShipmentStatus, Operation.Read);
-            config.GrantSales(this.ObjectType, Meta.ShipToParty, Operation.Read);
-            config.GrantSales(this.ObjectType, Meta.ShipmentStatuses, Operation.Read);
-            config.GrantSales(this.ObjectType, Meta.ShipmentPackages, Operation.Read);
+            config.GrantSales(this.ObjectType, Meta.CurrentShipmentStatus, Operations.Read);
+            config.GrantSales(this.ObjectType, Meta.ShipToParty, Operations.Read);
+            config.GrantSales(this.ObjectType, Meta.ShipmentStatuses, Operations.Read);
+            config.GrantSales(this.ObjectType, Meta.ShipmentPackages, Operations.Read);
 
             var created = new CustomerShipmentObjectStates(Session).Created;
             var picked = new CustomerShipmentObjectStates(Session).Picked;
@@ -69,9 +69,9 @@ namespace Allors.Domain
             config.Deny(this.ObjectType, picked, @continue);
             config.Deny(this.ObjectType, packed, @continue);
 
-            config.Deny(this.ObjectType, cancelled, Operation.Execute, Operation.Write);
-            config.Deny(this.ObjectType, shipped, Operation.Execute, Operation.Write);
-            config.Deny(this.ObjectType, delivered, Operation.Execute, Operation.Write);
+            config.Deny(this.ObjectType, cancelled, Operation.Execute, Operations.Write);
+            config.Deny(this.ObjectType, shipped, Operation.Execute, Operations.Write);
+            config.Deny(this.ObjectType, delivered, Operation.Execute, Operations.Write);
         }
     }
 }

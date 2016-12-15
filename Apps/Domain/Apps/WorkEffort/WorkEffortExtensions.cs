@@ -38,11 +38,6 @@ namespace Allors.Domain
                 @this.AddWorkEffortStatus(currentStatus);
                 @this.CurrentWorkEffortStatus = currentStatus;
             }
-
-            if (@this.ExistCurrentObjectState)
-            {
-                @this.CurrentObjectState.Process(@this);
-            }
         }
 
         public static void AppsConfirm(this WorkEffort @this, WorkEffortConfirm method)

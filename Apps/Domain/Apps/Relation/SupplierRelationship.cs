@@ -65,12 +65,12 @@ namespace Allors.Domain
             {
                 if (!supplierRelationships[0].Equals(this))
                 {
-                    derivation.Log.AddError(new DerivationErrorUnique(derivation.Log, this, SupplierRelationships.Meta.SubAccountNumber));
+                    derivation.Validation.AddError(new DerivationErrorUnique(derivation.Log, this, SupplierRelationships.Meta.SubAccountNumber));
                 }
             }
             else if (supplierRelationships.Count > 1)
             {
-                derivation.Log.AddError(new DerivationErrorUnique(derivation.Log, this, SupplierRelationships.Meta.SubAccountNumber));
+                derivation.Validation.AddError(new DerivationErrorUnique(derivation.Log, this, SupplierRelationships.Meta.SubAccountNumber));
             }
 
             this.Parties = new Party[] { this.Supplier, this.InternalOrganisation};

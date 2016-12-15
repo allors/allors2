@@ -26,8 +26,8 @@ namespace Allors.Domain
         {
             var derivation = method.Derivation;   
 
-            derivation.Log.AssertAtLeastOne(this, PayHistories.Meta.Amount, PayHistories.Meta.SalaryStep);
-            derivation.Log.AssertExistsAtMostOne(this, PayHistories.Meta.Amount, PayHistories.Meta.SalaryStep);
+            derivation.Validation.AssertAtLeastOne(this, PayHistories.Meta.Amount, PayHistories.Meta.SalaryStep);
+            derivation.Validation.AssertExistsAtMostOne(this, PayHistories.Meta.Amount, PayHistories.Meta.SalaryStep);
         }
     }
 }

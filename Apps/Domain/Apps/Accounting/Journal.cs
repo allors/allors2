@@ -61,7 +61,7 @@ namespace Allors.Domain
             {
                 if (this.PreviousContraAccount.ExistJournalEntryDetailsWhereGeneralLedgerAccount)
                 {
-                    derivation.Log.AssertAreEqual(this, Journals.Meta.ContraAccount, Journals.Meta.PreviousContraAccount);
+                    derivation.Validation.AssertAreEqual(this, this.Meta.ContraAccount, this.Meta.PreviousContraAccount);
                 }
                 else
                 {
@@ -79,19 +79,19 @@ namespace Allors.Domain
                         this.RemoveContraAccount();
                         if (!savedContraAccount.IsNeutralAccount())
                         {
-                            derivation.Log.AddError(this, Journals.Meta.ContraAccount, ErrorMessages.GeneralLedgerAccountNotNeutral);
+                            derivation.Validation.AddError(this, this.Meta.ContraAccount, ErrorMessages.GeneralLedgerAccountNotNeutral);
                         }
 
                         if (!savedContraAccount.GeneralLedgerAccount.BalanceSheetAccount)
                         {
-                            derivation.Log.AddError(this, Journals.Meta.ContraAccount, ErrorMessages.GeneralLedgerAccountNotBalanceAccount);
+                            derivation.Validation.AddError(this, this.Meta.ContraAccount, ErrorMessages.GeneralLedgerAccountNotBalanceAccount);
                         }
 
                         this.ContraAccount = savedContraAccount;
                     }
                 }
 
-                if (!derivation.Log.HasErrors)
+                if (!derivation.Validation.HasErrors)
                 {
                     this.PreviousContraAccount = this.ContraAccount;
                 }
@@ -104,7 +104,7 @@ namespace Allors.Domain
             {
                 if (this.ExistPreviousContraAccount && this.PreviousContraAccount.ExistJournalEntryDetailsWhereGeneralLedgerAccount)
                 {
-                    derivation.Log.AssertAreEqual(this, Journals.Meta.JournalType, Journals.Meta.PreviousJournalType);
+                    derivation.Validation.AssertAreEqual(this, this.Meta.JournalType, this.Meta.PreviousJournalType);
                 }
                 else
                 {

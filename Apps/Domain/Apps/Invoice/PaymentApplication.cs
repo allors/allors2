@@ -53,21 +53,21 @@ namespace Allors.Domain
         {
             var derivation = method.Derivation;
 
-            derivation.Log.AssertExistsAtMostOne(this, PaymentApplications.Meta.Invoice, PaymentApplications.Meta.InvoiceItem);
+            derivation.Validation.AssertExistsAtMostOne(this, PaymentApplications.Meta.Invoice, PaymentApplications.Meta.InvoiceItem);
 
             if (this.ExistPaymentWherePaymentApplication && this.AmountApplied > this.PaymentWherePaymentApplication.Amount)
             {
-                derivation.Log.AddError(this, PaymentApplications.Meta.AmountApplied, ErrorMessages.PaymentApplicationNotLargerThanPaymentAmount);
+                derivation.Validation.AddError(this, PaymentApplications.Meta.AmountApplied, ErrorMessages.PaymentApplicationNotLargerThanPaymentAmount);
             }
 
             if (this.ExistInvoice && this.Invoice.AmountPaid > this.Invoice.TotalIncVat)
             {
-                derivation.Log.AddError(this, PaymentApplications.Meta.AmountApplied, ErrorMessages.PaymentApplicationNotLargerThanInvoiceAmount);
+                derivation.Validation.AddError(this, PaymentApplications.Meta.AmountApplied, ErrorMessages.PaymentApplicationNotLargerThanInvoiceAmount);
             }
 
             if (this.ExistInvoiceItem && this.InvoiceItem.AmountPaid > this.InvoiceItem.TotalIncVat)
             {
-                derivation.Log.AddError(this, PaymentApplications.Meta.AmountApplied, ErrorMessages.PaymentApplicationNotLargerThanInvoiceItemAmount);
+                derivation.Validation.AddError(this, PaymentApplications.Meta.AmountApplied, ErrorMessages.PaymentApplicationNotLargerThanInvoiceItemAmount);
             }
 
             var salesInvoice = this.Invoice as SalesInvoice;

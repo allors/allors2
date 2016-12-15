@@ -26,7 +26,7 @@ namespace Allors.Domain
         {
             var derivation = method.Derivation;
 
-            derivation.Log.AssertIsUnique(this, Passports.Meta.Number);
+            derivation.Validation.AssertIsUnique(this, Passports.Meta.Number);
         }
     }
 }

@@ -45,11 +45,6 @@ namespace Allors.Domain
                 @this.AddRequirementStatus(currentStatus);
                 @this.CurrentRequirementStatus = currentStatus;
             }
-
-            if (@this.ExistCurrentObjectState)
-            {
-                @this.CurrentObjectState.Process(@this);
-            }
         }
 
         public static void AppsClose(this Requirement @this, RequirementClose method)

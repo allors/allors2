@@ -86,11 +86,6 @@ namespace Allors.Domain
                 @this.CurrentCommunicationEventStatus = currentStatus;
             }
 
-            if (@this.ExistCurrentObjectState)
-            {
-                @this.CurrentObjectState.Process(@this);
-            }
-
             if (!@this.ExistInitialScheduledStart && @this.ExistScheduledStart)
             {
                 @this.InitialScheduledStart = @this.ScheduledStart;

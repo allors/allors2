@@ -9,10 +9,11 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Meta</RootNamespace>
     <AssemblyName>Meta</AssemblyName>
-    <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
     <RestorePackages>true</RestorePackages>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -65,933 +66,255 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\..\allors\Base\Meta\Base\Domain\AccessControl.cs">
-      <Link>Base\Domain\AccessControl.cs</Link>
+    <Compile Include="..\..\platform\Base\Meta\Base\Domain\MetaAccessControl.cs">
+      <Link>Base\Domain\MetaAccessControl.cs</Link>
     </Compile>
-    <Compile Include="..\..\allors\Base\Meta\Base\Domain\AccessControlledObject.cs">
-      <Link>Base\Domain\AccessControlledObject.cs</Link>
+    <Compile Include="..\..\platform\Base\Meta\Base\Domain\MetaAccessControlledObject.cs">
+      <Link>Base\Domain\MetaAccessControlledObject.cs</Link>
     </Compile>
-    <Compile Include="..\..\allors\Base\Meta\Base\Domain\Base.cs">
-      <Link>Base\Domain\Base.cs</Link>
+    <Compile Include="..\..\platform\Base\Meta\Base\Domain\MetaAsyncDerivable.cs">
+      <Link>Base\Domain\MetaAsyncDerivable.cs</Link>
     </Compile>
-    <Compile Include="..\..\allors\Base\Meta\Base\Domain\Commentable.cs">
-      <Link>Base\Domain\Commentable.cs</Link>
+    <Compile Include="..\..\platform\Base\Meta\Base\Domain\MetaAsyncDerivation.cs">
+      <Link>Base\Domain\MetaAsyncDerivation.cs</Link>
     </Compile>
-    <Compile Include="..\..\allors\Base\Meta\Base\Domain\Counter.cs">
-      <Link>Base\Domain\Counter.cs</Link>
+    <Compile Include="..\..\platform\Base\Meta\Base\Domain\MetaCommentable.cs">
+      <Link>Base\Domain\MetaCommentable.cs</Link>
     </Compile>
-    <Compile Include="..\..\allors\Base\Meta\Base\Domain\Country.cs">
-      <Link>Base\Domain\Country.cs</Link>
+    <Compile Include="..\..\platform\Base\Meta\Base\Domain\MetaCounter.cs">
+      <Link>Base\Domain\MetaCounter.cs</Link>
     </Compile>
-    <Compile Include="..\..\allors\Base\Meta\Base\Domain\Currency.cs">
-      <Link>Base\Domain\Currency.cs</Link>
+    <Compile Include="..\..\platform\Base\Meta\Base\Domain\MetaCountry.cs">
+      <Link>Base\Domain\MetaCountry.cs</Link>
     </Compile>
-    <Compile Include="..\..\allors\Base\Meta\Base\Domain\Deletable.cs">
-      <Link>Base\Domain\Deletable.cs</Link>
+    <Compile Include="..\..\platform\Base\Meta\Base\Domain\MetaCurrency.cs">
+      <Link>Base\Domain\MetaCurrency.cs</Link>
     </Compile>
-    <Compile Include="..\..\allors\Base\Meta\Base\Domain\Enumeration.cs">
-      <Link>Base\Domain\Enumeration.cs</Link>
+    <Compile Include="..\..\platform\Base\Meta\Base\Domain\MetaDeletable.cs">
+      <Link>Base\Domain\MetaDeletable.cs</Link>
     </Compile>
-    <Compile Include="..\..\allors\Base\Meta\Base\Domain\Image.cs">
-      <Link>Base\Domain\Image.cs</Link>
+    <Compile Include="..\..\platform\Base\Meta\Base\Domain\MetaEnumeration.cs">
+      <Link>Base\Domain\MetaEnumeration.cs</Link>
     </Compile>
-    <Compile Include="..\..\allors\Base\Meta\Base\Domain\Language.cs">
-      <Link>Base\Domain\Language.cs</Link>
+    <Compile Include="..\..\platform\Base\Meta\Base\Domain\MetaImage.cs">
+      <Link>Base\Domain\MetaImage.cs</Link>
     </Compile>
-    <Compile Include="..\..\allors\Base\Meta\Base\Domain\Locale.cs">
-      <Link>Base\Domain\Locale.cs</Link>
+    <Compile Include="..\..\platform\Base\Meta\Base\Domain\MetaLanguage.cs">
+      <Link>Base\Domain\MetaLanguage.cs</Link>
     </Compile>
-    <Compile Include="..\..\allors\Base\Meta\Base\Domain\Localised.cs">
-      <Link>Base\Domain\Localised.cs</Link>
+    <Compile Include="..\..\platform\Base\Meta\Base\Domain\MetaLocale.cs">
+      <Link>Base\Domain\MetaLocale.cs</Link>
     </Compile>
-    <Compile Include="..\..\allors\Base\Meta\Base\Domain\LocalisedText.cs">
-      <Link>Base\Domain\LocalisedText.cs</Link>
+    <Compile Include="..\..\platform\Base\Meta\Base\Domain\MetaLocalised.cs">
+      <Link>Base\Domain\MetaLocalised.cs</Link>
     </Compile>
-    <Compile Include="..\..\allors\Base\Meta\Base\Domain\Login.cs">
-      <Link>Base\Domain\Login.cs</Link>
+    <Compile Include="..\..\platform\Base\Meta\Base\Domain\MetaLocalisedText.cs">
+      <Link>Base\Domain\MetaLocalisedText.cs</Link>
     </Compile>
-    <Compile Include="..\..\allors\Base\Meta\Base\Domain\Media.cs">
-      <Link>Base\Domain\Media.cs</Link>
+    <Compile Include="..\..\platform\Base\Meta\Base\Domain\MetaLogin.cs">
+      <Link>Base\Domain\MetaLogin.cs</Link>
     </Compile>
-    <Compile Include="..\..\allors\Base\Meta\Base\Domain\MediaContent.cs">
-      <Link>Base\Domain\MediaContent.cs</Link>
+    <Compile Include="..\..\platform\Base\Meta\Base\Domain\MetaMedia.cs">
+      <Link>Base\Domain\MetaMedia.cs</Link>
     </Compile>
-    <Compile Include="..\..\allors\Base\Meta\Base\Domain\MediaType.cs">
-      <Link>Base\Domain\MediaType.cs</Link>
+    <Compile Include="..\..\platform\Base\Meta\Base\Domain\MetaObjectInterface.cs">
+      <Link>Base\Domain\MetaObjectInterface.cs</Link>
     </Compile>
-    <Compile Include="..\..\allors\Base\Meta\Base\Domain\ObjectInterface.cs">
-      <Link>Base\Domain\ObjectInterface.cs</Link>
+    <Compile Include="..\..\platform\Base\Meta\Base\Domain\MetaObjectState.cs">
+      <Link>Base\Domain\MetaObjectState.cs</Link>
     </Compile>
-    <Compile Include="..\..\allors\Base\Meta\Base\Domain\ObjectState.cs">
-      <Link>Base\Domain\ObjectState.cs</Link>
+    <Compile Include="..\..\platform\Base\Meta\Base\Domain\MetaPermission.cs">
+      <Link>Base\Domain\MetaPermission.cs</Link>
     </Compile>
-    <Compile Include="..\..\allors\Base\Meta\Base\Domain\Period.cs">
-      <Link>Base\Domain\Period.cs</Link>
+    <Compile Include="..\..\platform\Base\Meta\Base\Domain\MetaPerson.cs">
+      <Link>Base\Domain\MetaPerson.cs</Link>
     </Compile>
-    <Compile Include="..\..\allors\Base\Meta\Base\Domain\Permission.cs">
-      <Link>Base\Domain\Permission.cs</Link>
+    <Compile Include="..\..\platform\Base\Meta\Base\Domain\MetaPrintQueue.cs">
+      <Link>Base\Domain\MetaPrintQueue.cs</Link>
     </Compile>
-    <Compile Include="..\..\allors\Base\Meta\Base\Domain\Person.cs">
-      <Link>Base\Domain\Person.cs</Link>
+    <Compile Include="..\..\platform\Base\Meta\Base\Domain\MetaRole.cs">
+      <Link>Base\Domain\MetaRole.cs</Link>
     </Compile>
-    <Compile Include="..\..\allors\Base\Meta\Base\Domain\Printable.cs">
-      <Link>Base\Domain\Printable.cs</Link>
+    <Compile Include="..\..\platform\Base\Meta\Base\Domain\MetaSecurityToken.cs">
+      <Link>Base\Domain\MetaSecurityToken.cs</Link>
     </Compile>
-    <Compile Include="..\..\allors\Base\Meta\Base\Domain\PrintQueue.cs">
-      <Link>Base\Domain\PrintQueue.cs</Link>
+    <Compile Include="..\..\platform\Base\Meta\Base\Domain\MetaSecurityTokenOwner.cs">
+      <Link>Base\Domain\MetaSecurityTokenOwner.cs</Link>
     </Compile>
-    <Compile Include="..\..\allors\Base\Meta\Base\Domain\Role.cs">
-      <Link>Base\Domain\Role.cs</Link>
+    <Compile Include="..\..\platform\Base\Meta\Base\Domain\MetaSingleton.cs">
+      <Link>Base\Domain\MetaSingleton.cs</Link>
     </Compile>
-    <Compile Include="..\..\allors\Base\Meta\Base\Domain\SecurityToken.cs">
-      <Link>Base\Domain\SecurityToken.cs</Link>
+    <Compile Include="..\..\platform\Base\Meta\Base\Domain\MetaTransition.cs">
+      <Link>Base\Domain\MetaTransition.cs</Link>
     </Compile>
-    <Compile Include="..\..\allors\Base\Meta\Base\Domain\SecurityTokenOwner.cs">
-      <Link>Base\Domain\SecurityTokenOwner.cs</Link>
+    <Compile Include="..\..\platform\Base\Meta\Base\Domain\MetaTransitional.cs">
+      <Link>Base\Domain\MetaTransitional.cs</Link>
     </Compile>
-    <Compile Include="..\..\allors\Base\Meta\Base\Domain\Singleton.cs">
-      <Link>Base\Domain\Singleton.cs</Link>
+    <Compile Include="..\..\platform\Base\Meta\Base\Domain\MetaUniquelyIdentifiable.cs">
+      <Link>Base\Domain\MetaUniquelyIdentifiable.cs</Link>
     </Compile>
-    <Compile Include="..\..\allors\Base\Meta\Base\Domain\StringTemplate.cs">
-      <Link>Base\Domain\StringTemplate.cs</Link>
+    <Compile Include="..\..\platform\Base\Meta\Base\Domain\MetaUser.cs">
+      <Link>Base\Domain\MetaUser.cs</Link>
     </Compile>
-    <Compile Include="..\..\allors\Base\Meta\Base\Domain\Transition.cs">
-      <Link>Base\Domain\Transition.cs</Link>
+    <Compile Include="..\..\platform\Base\Meta\Base\Domain\MetaUserGroup.cs">
+      <Link>Base\Domain\MetaUserGroup.cs</Link>
     </Compile>
-    <Compile Include="..\..\allors\Base\Meta\Base\Domain\Transitional.cs">
-      <Link>Base\Domain\Transitional.cs</Link>
+    <Compile Include="..\..\platform\Base\Meta\Base\Meta\Class.cs">
+      <Link>Base\Meta\Class.cs</Link>
     </Compile>
-    <Compile Include="..\..\allors\Base\Meta\Base\Domain\UniquelyIdentifiable.cs">
-      <Link>Base\Domain\UniquelyIdentifiable.cs</Link>
-    </Compile>
-    <Compile Include="..\..\allors\Base\Meta\Base\Domain\User.cs">
-      <Link>Base\Domain\User.cs</Link>
-    </Compile>
-    <Compile Include="..\..\allors\Base\Meta\Base\Domain\UserGroup.cs">
-      <Link>Base\Domain\UserGroup.cs</Link>
-    </Compile>
-    <Compile Include="..\..\allors\Base\Meta\Base\Meta\Composite.cs">
+    <Compile Include="..\..\platform\Base\Meta\Base\Meta\Composite.cs">
       <Link>Base\Meta\Composite.cs</Link>
     </Compile>
-    <Compile Include="..\..\allors\Base\Meta\Base\Meta\ConcreteRoleType.cs">
+    <Compile Include="..\..\platform\Base\Meta\Base\Meta\ConcreteRoleType.cs">
       <Link>Base\Meta\ConcreteRoleType.cs</Link>
     </Compile>
-    <Compile Include="..\..\allors\Base\Meta\Base\Meta\Path.cs">
+    <Compile Include="..\..\platform\Base\Meta\Base\Meta\Path.cs">
       <Link>Base\Meta\Path.cs</Link>
     </Compile>
-    <Compile Include="..\..\allors\Base\Meta\Base\Meta\RoleType.cs">
+    <Compile Include="..\..\platform\Base\Meta\Base\Meta\RoleType.cs">
       <Link>Base\Meta\RoleType.cs</Link>
     </Compile>
-    <Compile Include="..\..\allors\Core\Meta\Core\Domain\AllorsBinaryUnit.cs">
-      <Link>Core\Domain\AllorsBinaryUnit.cs</Link>
+    <Compile Include="..\..\platform\Base\Meta\Base\Meta\Tree.cs">
+      <Link>Base\Meta\Tree.cs</Link>
     </Compile>
-    <Compile Include="..\..\allors\Core\Meta\Core\Domain\AllorsBooleanUnit.cs">
-      <Link>Core\Domain\AllorsBooleanUnit.cs</Link>
+    <Compile Include="..\..\platform\Base\Meta\Base\Meta\TreeNode.cs">
+      <Link>Base\Meta\TreeNode.cs</Link>
     </Compile>
-    <Compile Include="..\..\allors\Core\Meta\Core\Domain\AllorsDateTimeUnit.cs">
-      <Link>Core\Domain\AllorsDateTimeUnit.cs</Link>
+    <Compile Include="..\..\platform\Base\Meta\Base\Meta\TreeNodes.cs">
+      <Link>Base\Meta\TreeNodes.cs</Link>
     </Compile>
-    <Compile Include="..\..\allors\Core\Meta\Core\Domain\AllorsDecimalUnit.cs">
-      <Link>Core\Domain\AllorsDecimalUnit.cs</Link>
+    <Compile Include="..\..\platform\Core\Meta\Core\Domain\MetaClass.cs">
+      <Link>Core\Domain\MetaClass.cs</Link>
     </Compile>
-    <Compile Include="..\..\allors\Core\Meta\Core\Domain\AllorsFloatUnit.cs">
-      <Link>Core\Domain\AllorsFloatUnit.cs</Link>
+    <Compile Include="..\..\platform\Core\Meta\Core\Domain\MetaInterface.cs">
+      <Link>Core\Domain\MetaInterface.cs</Link>
     </Compile>
-    <Compile Include="..\..\allors\Core\Meta\Core\Domain\AllorsIntegerUnit.cs">
-      <Link>Core\Domain\AllorsIntegerUnit.cs</Link>
+    <Compile Include="..\..\platform\Core\Meta\Core\Domain\MetaUnit.cs">
+      <Link>Core\Domain\MetaUnit.cs</Link>
     </Compile>
-    <Compile Include="..\..\allors\Core\Meta\Core\Domain\AllorsStringUnit.cs">
-      <Link>Core\Domain\AllorsStringUnit.cs</Link>
-    </Compile>
-    <Compile Include="..\..\allors\Core\Meta\Core\Domain\AllorsUniqueUnit.cs">
-      <Link>Core\Domain\AllorsUniqueUnit.cs</Link>
-    </Compile>
-    <Compile Include="..\..\allors\Core\Meta\Core\Domain\CoreDomain.cs">
-      <Link>Core\Domain\CoreDomain.cs</Link>
-    </Compile>
-    <Compile Include="..\..\allors\Core\Meta\Core\Domain\ObjectInterface.cs">
-      <Link>Core\Domain\ObjectInterface.cs</Link>
-    </Compile>
-    <Compile Include="..\..\allors\Core\Meta\Core\Generation\Generate.cs">
+    <Compile Include="..\..\platform\Core\Meta\Core\Generation\Generate.cs">
       <Link>Core\Generation\Generate.cs</Link>
     </Compile>
-    <Compile Include="..\..\allors\Core\Meta\Core\Generation\GenerateLog.cs">
+    <Compile Include="..\..\platform\Core\Meta\Core\Generation\GenerateLog.cs">
       <Link>Core\Generation\GenerateLog.cs</Link>
     </Compile>
-    <Compile Include="..\..\allors\Core\Meta\Core\Generation\Log.cs">
+    <Compile Include="..\..\platform\Core\Meta\Core\Generation\Log.cs">
       <Link>Core\Generation\Log.cs</Link>
     </Compile>
-    <Compile Include="..\..\allors\Core\Meta\Core\Generation\Storage\AllorsDirectoryInfo.cs">
+    <Compile Include="..\..\platform\Core\Meta\Core\Generation\Storage\AllorsDirectoryInfo.cs">
       <Link>Core\Generation\Storage\AllorsDirectoryInfo.cs</Link>
     </Compile>
-    <Compile Include="..\..\allors\Core\Meta\Core\Generation\Storage\AllorsFileInfo.cs">
+    <Compile Include="..\..\platform\Core\Meta\Core\Generation\Storage\AllorsFileInfo.cs">
       <Link>Core\Generation\Storage\AllorsFileInfo.cs</Link>
     </Compile>
-    <Compile Include="..\..\allors\Core\Meta\Core\Generation\Storage\Location.cs">
+    <Compile Include="..\..\platform\Core\Meta\Core\Generation\Storage\Location.cs">
       <Link>Core\Generation\Storage\Location.cs</Link>
     </Compile>
-    <Compile Include="..\..\allors\Core\Meta\Core\Generation\StringTemplate.cs">
+    <Compile Include="..\..\platform\Core\Meta\Core\Generation\StringTemplate.cs">
       <Link>Core\Generation\StringTemplate.cs</Link>
     </Compile>
-    <Compile Include="..\..\allors\Core\Meta\Core\Meta\AssociationType.cs">
+    <Compile Include="..\..\platform\Core\Meta\Core\Meta\AssociationType.cs">
       <Link>Core\Meta\AssociationType.cs</Link>
     </Compile>
-    <Compile Include="..\..\allors\Core\Meta\Core\Meta\Class.cs">
+    <Compile Include="..\..\platform\Core\Meta\Core\Meta\Class.cs">
       <Link>Core\Meta\Class.cs</Link>
     </Compile>
-    <Compile Include="..\..\allors\Core\Meta\Core\Meta\Composite.cs">
+    <Compile Include="..\..\platform\Core\Meta\Core\Meta\Composite.cs">
       <Link>Core\Meta\Composite.cs</Link>
     </Compile>
-    <Compile Include="..\..\allors\Core\Meta\Core\Meta\ConcreteMethodType.cs">
+    <Compile Include="..\..\platform\Core\Meta\Core\Meta\ConcreteMethodType.cs">
       <Link>Core\Meta\ConcreteMethodType.cs</Link>
     </Compile>
-    <Compile Include="..\..\allors\Core\Meta\Core\Meta\ConcreteRoleType.cs">
+    <Compile Include="..\..\platform\Core\Meta\Core\Meta\ConcreteRoleType.cs">
       <Link>Core\Meta\ConcreteRoleType.cs</Link>
     </Compile>
-    <Compile Include="..\..\allors\Core\Meta\Core\Meta\Domain.cs">
+    <Compile Include="..\..\platform\Core\Meta\Core\Meta\Domain.cs">
       <Link>Core\Meta\Domain.cs</Link>
     </Compile>
-    <Compile Include="..\..\allors\Core\Meta\Core\Meta\DomainObject.cs">
+    <Compile Include="..\..\platform\Core\Meta\Core\Meta\DomainObject.cs">
       <Link>Core\Meta\DomainObject.cs</Link>
     </Compile>
-    <Compile Include="..\..\allors\Core\Meta\Core\Meta\Inheritance.cs">
+    <Compile Include="..\..\platform\Core\Meta\Core\Meta\Inheritance.cs">
       <Link>Core\Meta\Inheritance.cs</Link>
     </Compile>
-    <Compile Include="..\..\allors\Core\Meta\Core\Meta\Interface.cs">
+    <Compile Include="..\..\platform\Core\Meta\Core\Meta\Interface.cs">
       <Link>Core\Meta\Interface.cs</Link>
     </Compile>
-    <Compile Include="..\..\allors\Core\Meta\Core\Meta\LazySet.cs">
+    <Compile Include="..\..\platform\Core\Meta\Core\Meta\LazySet.cs">
       <Link>Core\Meta\LazySet.cs</Link>
     </Compile>
-    <Compile Include="..\..\allors\Core\Meta\Core\Meta\MetaObject.cs">
+    <Compile Include="..\..\platform\Core\Meta\Core\Meta\MetaObject.cs">
       <Link>Core\Meta\MetaObject.cs</Link>
     </Compile>
-    <Compile Include="..\..\allors\Core\Meta\Core\Meta\MetaPopulation.cs">
+    <Compile Include="..\..\platform\Core\Meta\Core\Meta\MetaPopulation.cs">
       <Link>Core\Meta\MetaPopulation.cs</Link>
     </Compile>
-    <Compile Include="..\..\allors\Core\Meta\Core\Meta\Method.cs">
+    <Compile Include="..\..\platform\Core\Meta\Core\Meta\Method.cs">
       <Link>Core\Meta\Method.cs</Link>
     </Compile>
-    <Compile Include="..\..\allors\Core\Meta\Core\Meta\MethodInvocation.cs">
+    <Compile Include="..\..\platform\Core\Meta\Core\Meta\MethodInvocation.cs">
       <Link>Core\Meta\MethodInvocation.cs</Link>
     </Compile>
-    <Compile Include="..\..\allors\Core\Meta\Core\Meta\MethodType.cs">
+    <Compile Include="..\..\platform\Core\Meta\Core\Meta\MethodType.cs">
       <Link>Core\Meta\MethodType.cs</Link>
     </Compile>
-    <Compile Include="..\..\allors\Core\Meta\Core\Meta\ObjectType.cs">
+    <Compile Include="..\..\platform\Core\Meta\Core\Meta\ObjectType.cs">
       <Link>Core\Meta\ObjectType.cs</Link>
     </Compile>
-    <Compile Include="..\..\allors\Core\Meta\Core\Meta\OperandType.cs">
+    <Compile Include="..\..\platform\Core\Meta\Core\Meta\OperandType.cs">
       <Link>Core\Meta\OperandType.cs</Link>
     </Compile>
-    <Compile Include="..\..\allors\Core\Meta\Core\Meta\PropertyType.cs">
+    <Compile Include="..\..\platform\Core\Meta\Core\Meta\PropertyType.cs">
       <Link>Core\Meta\PropertyType.cs</Link>
     </Compile>
-    <Compile Include="..\..\allors\Core\Meta\Core\Meta\RelationType.cs">
+    <Compile Include="..\..\platform\Core\Meta\Core\Meta\RelationType.cs">
       <Link>Core\Meta\RelationType.cs</Link>
     </Compile>
-    <Compile Include="..\..\allors\Core\Meta\Core\Meta\RoleType.cs">
+    <Compile Include="..\..\platform\Core\Meta\Core\Meta\RoleType.cs">
       <Link>Core\Meta\RoleType.cs</Link>
     </Compile>
-    <Compile Include="..\..\allors\Core\Meta\Core\Meta\Unit.cs">
+    <Compile Include="..\..\platform\Core\Meta\Core\Meta\Unit.cs">
       <Link>Core\Meta\Unit.cs</Link>
     </Compile>
-    <Compile Include="..\..\allors\Core\Meta\Core\Meta\ValidationError.cs">
+    <Compile Include="..\..\platform\Core\Meta\Core\Meta\ValidationError.cs">
       <Link>Core\Meta\ValidationError.cs</Link>
     </Compile>
-    <Compile Include="..\..\allors\Core\Meta\Core\Meta\ValidationKind.cs">
+    <Compile Include="..\..\platform\Core\Meta\Core\Meta\ValidationKind.cs">
       <Link>Core\Meta\ValidationKind.cs</Link>
     </Compile>
-    <Compile Include="..\..\allors\Core\Meta\Core\Meta\ValidationLog.cs">
+    <Compile Include="..\..\platform\Core\Meta\Core\Meta\ValidationLog.cs">
       <Link>Core\Meta\ValidationLog.cs</Link>
     </Compile>
-    <Compile Include="Apps\Domain\AccountAdjustment.cs" />
-    <Compile Include="Apps\Domain\AccountingTransactionNumber.cs" />
-    <Compile Include="Apps\Domain\AccountingTransactionType.cs" />
-    <Compile Include="Apps\Domain\Activity.cs" />
-    <Compile Include="Apps\Domain\AgreementExhibit.cs" />
-    <Compile Include="Apps\Domain\AgreementPricingProgram.cs" />
-    <Compile Include="Apps\Domain\AgreementSection.cs" />
-    <Compile Include="Apps\Domain\AgreementTerm.cs" />
-    <Compile Include="Apps\Domain\Amortization.cs" />
-    <Compile Include="Apps\Domain\AmountDue.cs" />
-    <Compile Include="Apps\Domain\AssetAssignmentStatus.cs" />
-    <Compile Include="Apps\Domain\Barrel.cs" />
-    <Compile Include="Apps\Domain\BillOfLading.cs" />
-    <Compile Include="Apps\Domain\Bin.cs" />
-    <Compile Include="Apps\Domain\BudgetObjectState.cs" />
-    <Compile Include="Apps\Domain\Building.cs" />
-    <Compile Include="Apps\Domain\Capitalization.cs" />
-    <Compile Include="Apps\Domain\CaseObjectState.cs" />
-    <Compile Include="Apps\Domain\Cash.cs" />
-    <Compile Include="Apps\Domain\CityBound.cs" />
-    <Compile Include="Apps\Domain\ClientAgreement.cs" />
-    <Compile Include="Apps\Domain\Colour.cs" />
-    <Compile Include="Apps\Domain\CommunicationAttachment.cs" />
-    <Compile Include="Apps\Domain\CommunicationEventObjectState.cs" />
-    <Compile Include="Apps\Domain\CommunicationEventPurpose.cs" />
-    <Compile Include="Apps\Domain\ConstraintSpecification.cs" />
-    <Compile Include="Apps\Domain\ContactMechanism.cs" />
-    <Compile Include="Apps\Domain\ContactMechanismPurpose.cs" />
-    <Compile Include="Apps\Domain\CostCenterSplitMethod.cs" />
-    <Compile Include="Apps\Domain\CostOfGoodsSoldMethod.cs" />
-    <Compile Include="Apps\Domain\CountryBound.cs" />
-    <Compile Include="Apps\Domain\CreditLine.cs" />
-    <Compile Include="Apps\Domain\Currency.cs" />
-    <Compile Include="Apps\Domain\CustomEngagementItem.cs" />
-    <Compile Include="Apps\Domain\CustomerRequirement.cs" />
-    <Compile Include="Apps\Domain\CustomerReturnObjectState.cs" />
-    <Compile Include="Apps\Domain\CustomerShipmentObjectState.cs" />
-    <Compile Include="Apps\Domain\DebitCreditConstant.cs" />
-    <Compile Include="Apps\Domain\DeductionType.cs" />
-    <Compile Include="Apps\Domain\DeliverableBasedService.cs" />
-    <Compile Include="Apps\Domain\DeliverableOrderItem.cs" />
-    <Compile Include="Apps\Domain\DeliverableType.cs" />
-    <Compile Include="Apps\Domain\Deployment.cs" />
-    <Compile Include="Apps\Domain\Deposit.cs" />
-    <Compile Include="Apps\Domain\Disbursement.cs" />
-    <Compile Include="Apps\Domain\DiscountAdjustment.cs" />
-    <Compile Include="Apps\Domain\DiscountComponent.cs" />
-    <Compile Include="Apps\Domain\DropShipmentObjectState.cs" />
-    <Compile Include="Apps\Domain\DunningType.cs" />
-    <Compile Include="Apps\Domain\EmailAddress.cs" />
-    <Compile Include="Apps\Domain\EmploymentAgreement.cs" />
-    <Compile Include="Apps\Domain\EmploymentApplicationSource.cs" />
-    <Compile Include="Apps\Domain\EmploymentApplicationStatus.cs" />
-    <Compile Include="Apps\Domain\EmploymentTermination.cs" />
-    <Compile Include="Apps\Domain\EmploymentTerminationReason.cs" />
-    <Compile Include="Apps\Domain\EngineeringBom.cs" />
-    <Compile Include="Apps\Domain\EngineeringChangeObjectState.cs" />
-    <Compile Include="Apps\Domain\EngineeringDocument.cs" />
-    <Compile Include="Apps\Domain\Equipment.cs" />
-    <Compile Include="Apps\Domain\EstimatedLaborCost.cs" />
-    <Compile Include="Apps\Domain\EstimatedMaterialCost.cs" />
-    <Compile Include="Apps\Domain\EstimatedOtherCost.cs" />
-    <Compile Include="Apps\Domain\EuSalesListType.cs" />
-    <Compile Include="Apps\Domain\Event.cs" />
-    <Compile Include="Apps\Domain\EventRegistration.cs" />
-    <Compile Include="Apps\Domain\ExportDocument.cs" />
-    <Compile Include="Apps\Domain\Fee.cs" />
-    <Compile Include="Apps\Domain\FinancialAccount.cs" />
-    <Compile Include="Apps\Domain\FinancialAccountAdjustment.cs" />
-    <Compile Include="Apps\Domain\FinancialTerm.cs" />
-    <Compile Include="Apps\Domain\FinishedGood.cs" />
-    <Compile Include="Apps\Domain\FiscalYearInvoiceNumber.cs" />
-    <Compile Include="Apps\Domain\FixedAsset.cs" />
-    <Compile Include="Apps\Domain\Floor.cs" />
-    <Compile Include="Apps\Domain\GenderType.cs" />
-    <Compile Include="Apps\Domain\GeneralLedgerAccount.cs" />
-    <Compile Include="Apps\Domain\GeographicBoundary.cs" />
-    <Compile Include="Apps\Domain\GeographicBoundaryComposite.cs" />
-    <Compile Include="Apps\Domain\GeoLocatable.cs" />
-    <Compile Include="Apps\Domain\GlBudgetAllocation.cs" />
-    <Compile Include="Apps\Domain\GoodOrderItem.cs" />
-    <Compile Include="Apps\Domain\HazardousMaterialsDocument.cs" />
-    <Compile Include="Apps\Domain\Hobby.cs" />
-    <Compile Include="Apps\Domain\Incentive.cs" />
-    <Compile Include="Apps\Domain\IndustryClassification.cs" />
-    <Compile Include="Apps\Domain\InternalAccountingTransaction.cs" />
-    <Compile Include="Apps\Domain\InternalOrganisationAccountingPreference.cs" />
-    <Compile Include="Apps\Domain\InternalOrganisationRevenue.cs" />
-    <Compile Include="Apps\Domain\InternalOrganisationRevenueHistory.cs" />
-    <Compile Include="Apps\Domain\InternalRequirement.cs" />
-    <Compile Include="Apps\Domain\InventoryItem.cs" />
-    <Compile Include="Apps\Domain\InventoryItemConfiguration.cs" />
-    <Compile Include="Apps\Domain\InventoryItemKind.cs" />
-    <Compile Include="Apps\Domain\InventoryItemVariance.cs" />
-    <Compile Include="Apps\Domain\InvestmentAccount.cs" />
-    <Compile Include="Apps\Domain\Invoice.cs" />
-    <Compile Include="Apps\Domain\Priceable.cs" />
-    <Compile Include="Apps\Domain\InvoiceItem.cs" />
-    <Compile Include="Apps\Domain\InvoiceSequence.cs" />
-    <Compile Include="Apps\Domain\InvoiceVatRateItem.cs" />
-    <Compile Include="Apps\Domain\ItemIssuance.cs" />
-    <Compile Include="Apps\Domain\ItemVarianceAccountingTransaction.cs" />
-    <Compile Include="Apps\Domain\IUnitOfMeasure.cs" />
-    <Compile Include="Apps\Domain\Journal.cs" />
-    <Compile Include="Apps\Domain\JournalEntry.cs" />
-    <Compile Include="Apps\Domain\JournalEntryDetail.cs" />
-    <Compile Include="Apps\Domain\JournalEntryNumber.cs" />
-    <Compile Include="Apps\Domain\JournalType.cs" />
-    <Compile Include="Apps\Domain\LegalForm.cs" />
-    <Compile Include="Apps\Domain\LegalTerm.cs" />
-    <Compile Include="Apps\Domain\LetterCorrespondence.cs" />
-    <Compile Include="Apps\Domain\Lot.cs" />
-    <Compile Include="Apps\Domain\Maintenance.cs" />
-    <Compile Include="Apps\Domain\Manifest.cs" />
-    <Compile Include="Apps\Domain\ManufacturingBom.cs" />
-    <Compile Include="Apps\Domain\ManufacturingConfiguration.cs" />
-    <Compile Include="Apps\Domain\MaritalStatus.cs" />
-    <Compile Include="Apps\Domain\MarketingMaterial.cs" />
-    <Compile Include="Apps\Domain\MarketingPackage.cs" />
-    <Compile Include="Apps\Domain\MediaContent.cs" />
-    <Compile Include="Apps\Domain\Apps.cs" />
-    <Compile Include="Apps\Domain\Model.cs" />
-    <Compile Include="Apps\Domain\NeededSkill.cs" />
-    <Compile Include="Apps\Domain\NewsItem.cs" />
-    <Compile Include="Apps\Domain\NonSerializedInventoryItem.cs" />
-    <Compile Include="Apps\Domain\NonSerializedInventoryItemObjectState.cs" />
-    <Compile Include="Apps\Domain\NonSerializedInventoryItemStatus.cs" />
-    <Compile Include="Apps\Domain\Note.cs" />
-    <Compile Include="Apps\Domain\Obligation.cs" />
-    <Compile Include="Apps\Domain\Office.cs" />
-    <Compile Include="Apps\Domain\OperatingCondition.cs" />
-    <Compile Include="Apps\Domain\OrderAdjustment.cs" />
-    <Compile Include="Apps\Domain\OrderItem.cs" />
-    <Compile Include="Apps\Domain\Priceable.t.cs" />
-    <Compile Include="Apps\Domain\OrderItemBilling.cs" />
-    <Compile Include="Apps\Domain\OrderKind.cs" />
-    <Compile Include="Apps\Domain\OrderQuantityBreak.cs" />
-    <Compile Include="Apps\Domain\OrderRequirementCommitment.cs" />
-    <Compile Include="Apps\Domain\OrderShipment.cs" />
-    <Compile Include="Apps\Domain\OrderTerm.cs" />
-    <Compile Include="Apps\Domain\OrderValue.cs" />
-    <Compile Include="Apps\Domain\Ordinal.cs" />
-    <Compile Include="Apps\Domain\OrganisationClassification.cs" />
-    <Compile Include="Apps\Domain\OrganisationContactKind.cs" />
-    <Compile Include="Apps\Domain\OrganisationContactRelationship.cs" />
-    <Compile Include="Apps\Domain\OrganisationGlAccount.cs" />
-    <Compile Include="Apps\Domain\OrganisationGlAccountBalance.cs" />
-    <Compile Include="Apps\Domain\OrganisationRollUp.cs" />
-    <Compile Include="Apps\Domain\OrganisationUnit.cs" />
-    <Compile Include="Apps\Domain\OwnBankAccount.cs" />
-    <Compile Include="Apps\Domain\OwnCreditCard.cs" />
-    <Compile Include="Apps\Domain\Package.cs" />
-    <Compile Include="Apps\Domain\PackageQuantityBreak.cs" />
-    <Compile Include="Apps\Domain\PackageRevenue.cs" />
-    <Compile Include="Apps\Domain\PackageRevenueHistory.cs" />
-    <Compile Include="Apps\Domain\PackagingContent.cs" />
-    <Compile Include="Apps\Domain\PackagingSlip.cs" />
-    <Compile Include="Apps\Domain\Part.cs" />
-    <Compile Include="Apps\Domain\PartBillOfMaterial.cs" />
-    <Compile Include="Apps\Domain\PartBillOfMaterialSubstitute.cs" />
-    <Compile Include="Apps\Domain\Partnership.cs" />
-    <Compile Include="Apps\Domain\PartRevision.cs" />
-    <Compile Include="Apps\Domain\PartSpecification.cs" />
-    <Compile Include="Apps\Domain\PartSpecificationObjectState.cs" />
-    <Compile Include="Apps\Domain\PartSpecificationStatus.cs" />
-    <Compile Include="Apps\Domain\PartSubstitute.cs" />
-    <Compile Include="Apps\Domain\Party.cs" />
-    <Compile Include="Apps\Domain\PartyBenefit.cs" />
-    <Compile Include="Apps\Domain\PartyClassification.cs" />
-    <Compile Include="Apps\Domain\PartyContactMechanism.cs" />
-    <Compile Include="Apps\Domain\PartyFixedAssetAssignment.cs" />
-    <Compile Include="Apps\Domain\PartyPackageRevenue.cs" />
-    <Compile Include="Apps\Domain\PartyPackageRevenueHistory.cs" />
-    <Compile Include="Apps\Domain\PartyProductCategoryRevenue.cs" />
-    <Compile Include="Apps\Domain\PartyProductCategoryRevenueHistory.cs" />
-    <Compile Include="Apps\Domain\PartyProductRevenue.cs" />
-    <Compile Include="Apps\Domain\PartyProductRevenueHistory.cs" />
-    <Compile Include="Apps\Domain\PartyRelationship.cs" />
-    <Compile Include="Apps\Domain\PartyRelationshipStatus.cs" />
-    <Compile Include="Apps\Domain\PartyRevenue.cs" />
-    <Compile Include="Apps\Domain\PartyRevenueHistory.cs" />
-    <Compile Include="Apps\Domain\PartySkill.cs" />
-    <Compile Include="Apps\Domain\Passport.cs" />
-    <Compile Include="Apps\Domain\PayCheck.cs" />
-    <Compile Include="Apps\Domain\PayGrade.cs" />
-    <Compile Include="Apps\Domain\PayHistory.cs" />
-    <Compile Include="Apps\Domain\Payment.cs" />
-    <Compile Include="Apps\Domain\PaymentApplication.cs" />
-    <Compile Include="Apps\Domain\PaymentBudgetAllocation.cs" />
-    <Compile Include="Apps\Domain\PaymentMethod.cs" />
-    <Compile Include="Apps\Domain\PayrollPreference.cs" />
-    <Compile Include="Apps\Domain\PerformanceNote.cs" />
-    <Compile Include="Apps\Domain\PerformanceReview.cs" />
-    <Compile Include="Apps\Domain\PerformanceReviewItem.cs" />
-    <Compile Include="Apps\Domain\PerformanceReviewItemType.cs" />
-    <Compile Include="Apps\Domain\PerformanceSpecification.cs" />
-    <Compile Include="Apps\Domain\Period.cs" />
-    <Compile Include="Apps\Domain\Person.cs" />
-    <Compile Include="Apps\Domain\PersonalTitle.cs" />
-    <Compile Include="Apps\Domain\PersonClassification.cs" />
-    <Compile Include="Apps\Domain\Phase.cs" />
-    <Compile Include="Apps\Domain\PhoneCommunication.cs" />
-    <Compile Include="Apps\Domain\PickListItem.cs" />
-    <Compile Include="Apps\Domain\PickListObjectState.cs" />
-    <Compile Include="Apps\Domain\PickListStatus.cs" />
-    <Compile Include="Apps\Domain\Plant.cs" />
-    <Compile Include="Apps\Domain\Position.cs" />
-    <Compile Include="Apps\Domain\PositionFulfillment.cs" />
-    <Compile Include="Apps\Domain\PositionReportingStructure.cs" />
-    <Compile Include="Apps\Domain\PositionResponsibility.cs" />
-    <Compile Include="Apps\Domain\PositionStatus.cs" />
-    <Compile Include="Apps\Domain\PositionType.cs" />
-    <Compile Include="Apps\Domain\PositionTypeRate.cs" />
-    <Compile Include="Apps\Domain\PostalAddress.cs" />
-    <Compile Include="Apps\Domain\PostalBoundary.cs" />
-    <Compile Include="Apps\Domain\PostalCode.cs" />
-    <Compile Include="Apps\Domain\Printable.cs" />
-    <Compile Include="Apps\Domain\Priority.cs" />
-    <Compile Include="Apps\Domain\Product.cs" />
-    <Compile Include="Apps\Domain\ProductAssociation.cs" />
-    <Compile Include="Apps\Domain\ProductCategory.cs" />
-    <Compile Include="Apps\Domain\ProductCategoryRevenue.cs" />
-    <Compile Include="Apps\Domain\ProductCategoryRevenueHistory.cs" />
-    <Compile Include="Apps\Domain\ProductConfiguration.cs" />
-    <Compile Include="Apps\Domain\ProductDeliverySkillRequirement.cs" />
-    <Compile Include="Apps\Domain\ProductDrawing.cs" />
-    <Compile Include="Apps\Domain\ProductFeature.cs" />
-    <Compile Include="Apps\Domain\ProductFeatureApplicabilityRelationship.cs" />
-    <Compile Include="Apps\Domain\ProductionRun.cs" />
-    <Compile Include="Apps\Domain\ProductModel.cs" />
-    <Compile Include="Apps\Domain\ProductPurchasePrice.cs" />
-    <Compile Include="Apps\Domain\ProductQuality.cs" />
-    <Compile Include="Apps\Domain\ProductQuote.cs" />
-    <Compile Include="Apps\Domain\ProductRequirement.cs" />
-    <Compile Include="Apps\Domain\ProductRevenue.cs" />
-    <Compile Include="Apps\Domain\ProductRevenueHistory.cs" />
-    <Compile Include="Apps\Domain\ProfessionalAssignment.cs" />
-    <Compile Include="Apps\Domain\ProfessionalPlacement.cs" />
-    <Compile Include="Apps\Domain\ProfessionalServicesRelationship.cs" />
-    <Compile Include="Apps\Domain\Program.cs" />
-    <Compile Include="Apps\Domain\Project.cs" />
-    <Compile Include="Apps\Domain\ProjectRequirement.cs" />
-    <Compile Include="Apps\Domain\Property.cs" />
-    <Compile Include="Apps\Domain\Proposal.cs" />
-    <Compile Include="Apps\Domain\ProspectRelationship.cs" />
-    <Compile Include="Apps\Domain\Province.cs" />
-    <Compile Include="Apps\Domain\PurchaseAgreement.cs" />
-    <Compile Include="Apps\Domain\PurchaseInvoiceItemObjectState.cs" />
-    <Compile Include="Apps\Domain\PurchaseInvoiceItemStatus.cs" />
-    <Compile Include="Apps\Domain\PurchaseInvoiceItemType.cs" />
-    <Compile Include="Apps\Domain\PurchaseInvoiceObjectState.cs" />
-    <Compile Include="Apps\Domain\PurchaseInvoiceStatus.cs" />
-    <Compile Include="Apps\Domain\PurchaseInvoiceType.cs" />
-    <Compile Include="Apps\Domain\PurchaseOrder.cs" />
-    <Compile Include="Apps\Domain\PurchaseOrderItemObjectState.cs" />
-    <Compile Include="Apps\Domain\PurchaseOrderItemStatus.cs" />
-    <Compile Include="Apps\Domain\PurchaseOrderObjectState.cs" />
-    <Compile Include="Apps\Domain\PurchaseOrderStatus.cs" />
-    <Compile Include="Apps\Domain\PurchaseReturnObjectState.cs" />
-    <Compile Include="Apps\Domain\PurchaseReturnStatus.cs" />
-    <Compile Include="Apps\Domain\PurchaseShipment.cs" />
-    <Compile Include="Apps\Domain\PurchaseShipmentObjectState.cs" />
-    <Compile Include="Apps\Domain\PurchaseShipmentStatus.cs" />
-    <Compile Include="Apps\Domain\Qualification.cs" />
-    <Compile Include="Apps\Domain\Quote.cs" />
-    <Compile Include="Apps\Domain\QuoteItem.cs" />
-    <Compile Include="Apps\Domain\QuoteTerm.cs" />
-    <Compile Include="Apps\Domain\RateType.cs" />
-    <Compile Include="Apps\Domain\RatingType.cs" />
-    <Compile Include="Apps\Domain\RawMaterial.cs" />
-    <Compile Include="Apps\Domain\ReceiptAccountingTransaction.cs" />
-    <Compile Include="Apps\Domain\Region.cs" />
-    <Compile Include="Apps\Domain\Request.cs" />
-    <Compile Include="Apps\Domain\RequestForInformation.cs" />
-    <Compile Include="Apps\Domain\RequestForProposal.cs" />
-    <Compile Include="Apps\Domain\RequestForQuote.cs" />
-    <Compile Include="Apps\Domain\RequestItem.cs" />
-    <Compile Include="Apps\Domain\Requirement.cs" />
-    <Compile Include="Apps\Domain\RequirementBudgetAllocation.cs" />
-    <Compile Include="Apps\Domain\RequirementCommunication.cs" />
-    <Compile Include="Apps\Domain\RequirementObjectState.cs" />
-    <Compile Include="Apps\Domain\RequirementStatus.cs" />
-    <Compile Include="Apps\Domain\Research.cs" />
-    <Compile Include="Apps\Domain\ResourceRequirement.cs" />
-    <Compile Include="Apps\Domain\RespondingParty.cs" />
-    <Compile Include="Apps\Domain\Responsibility.cs" />
-    <Compile Include="Apps\Domain\Resume.cs" />
-    <Compile Include="Apps\Domain\RevenueQuantityBreak.cs" />
-    <Compile Include="Apps\Domain\RevenueValueBreak.cs" />
-    <Compile Include="Apps\Domain\Room.cs" />
-    <Compile Include="Apps\Domain\SalaryStep.cs" />
-    <Compile Include="Apps\Domain\SalesAccountingTransaction.cs" />
-    <Compile Include="Apps\Domain\SalesAgreement.cs" />
-    <Compile Include="Apps\Domain\SalesChannel.cs" />
-    <Compile Include="Apps\Domain\SalesChannelRevenue.cs" />
-    <Compile Include="Apps\Domain\SalesChannelRevenueHistory.cs" />
-    <Compile Include="Apps\Domain\SalesInvoiceItem.cs" />
-    <Compile Include="Apps\Domain\SalesInvoiceItemObjectState.cs" />
-    <Compile Include="Apps\Domain\SalesInvoiceItemStatus.cs" />
-    <Compile Include="Apps\Domain\SalesInvoiceItemType.cs" />
-    <Compile Include="Apps\Domain\SalesInvoiceObjectState.cs" />
-    <Compile Include="Apps\Domain\SalesInvoiceStatus.cs" />
-    <Compile Include="Apps\Domain\SalesInvoiceType.cs" />
-    <Compile Include="Apps\Domain\SalesOrderItemObjectState.cs" />
-    <Compile Include="Apps\Domain\SalesOrderItemStatus.cs" />
-    <Compile Include="Apps\Domain\SalesOrderObjectState.cs" />
-    <Compile Include="Apps\Domain\SalesOrderStatus.cs" />
-    <Compile Include="Apps\Domain\SalesRepCommission.cs" />
-    <Compile Include="Apps\Domain\SalesRepPartyProductCategoryRevenue.cs" />
-    <Compile Include="Apps\Domain\SalesRepPartyRevenue.cs" />
-    <Compile Include="Apps\Domain\SalesRepProductCategoryRevenue.cs" />
-    <Compile Include="Apps\Domain\SalesRepRelationship.cs" />
-    <Compile Include="Apps\Domain\SalesRepRevenue.cs" />
-    <Compile Include="Apps\Domain\SalesRepRevenueHistory.cs" />
-    <Compile Include="Apps\Domain\SalesTerritory.cs" />
-    <Compile Include="Apps\Domain\Salutation.cs" />
-    <Compile Include="Apps\Domain\SerializedInventoryItem.cs" />
-    <Compile Include="Apps\Domain\SerializedInventoryItemObjectState.cs" />
-    <Compile Include="Apps\Domain\SerializedInventoryItemStatus.cs" />
-    <Compile Include="Apps\Domain\Service.cs" />
-    <Compile Include="Apps\Domain\ServiceConfiguration.cs" />
-    <Compile Include="Apps\Domain\ServiceEntry.cs" />
-    <Compile Include="Apps\Domain\ServiceEntryBilling.cs" />
-    <Compile Include="Apps\Domain\ServiceEntryHeader.cs" />
-    <Compile Include="Apps\Domain\ServiceFeature.cs" />
-    <Compile Include="Apps\Domain\ServiceTerritory.cs" />
-    <Compile Include="Apps\Domain\Shelf.cs" />
-    <Compile Include="Apps\Domain\Shipment.cs" />
-    <Compile Include="Apps\Domain\ShipmentItem.cs" />
-    <Compile Include="Apps\Domain\ShipmentMethod.cs" />
-    <Compile Include="Apps\Domain\ShipmentPackage.cs" />
-    <Compile Include="Apps\Domain\ShipmentReceipt.cs" />
-    <Compile Include="Apps\Domain\ShipmentRouteSegment.cs" />
-    <Compile Include="Apps\Domain\ShipmentValue.cs" />
-    <Compile Include="Apps\Domain\ShippingAndHandlingCharge.cs" />
-    <Compile Include="Apps\Domain\ShippingAndHandlingComponent.cs" />
-    <Compile Include="Apps\Domain\Singleton.cs" />
-    <Compile Include="Apps\Domain\Size.cs" />
-    <Compile Include="Apps\Domain\Skill.cs" />
-    <Compile Include="Apps\Domain\SkillLevel.cs" />
-    <Compile Include="Apps\Domain\SkillRating.cs" />
-    <Compile Include="Apps\Domain\SoftwareFeature.cs" />
-    <Compile Include="Apps\Domain\StandardServiceOrderItem.cs" />
-    <Compile Include="Apps\Domain\State.cs" />
-    <Compile Include="Apps\Domain\StatementOfWork.cs" />
-    <Compile Include="Apps\Domain\Store.cs" />
-    <Compile Include="Apps\Domain\StoreRevenue.cs" />
-    <Compile Include="Apps\Domain\StoreRevenueHistory.cs" />
-    <Compile Include="Apps\Domain\SubAgreement.cs" />
-    <Compile Include="Apps\Domain\SubAssembly.cs" />
-    <Compile Include="Apps\Domain\SubContractorAgreement.cs" />
-    <Compile Include="Apps\Domain\SubContractorRelationship.cs" />
-    <Compile Include="Apps\Domain\SupplierOffering.cs" />
-    <Compile Include="Apps\Domain\SupplierRelationship.cs" />
-    <Compile Include="Apps\Domain\SurchargeAdjustment.cs" />
-    <Compile Include="Apps\Domain\SurchargeComponent.cs" />
-    <Compile Include="Apps\Domain\Task.cs" />
-    <Compile Include="Apps\Domain\TaxDocument.cs" />
-    <Compile Include="Apps\Domain\TaxDue.cs" />
-    <Compile Include="Apps\Domain\TelecommunicationsNumber.cs" />
-    <Compile Include="Apps\Domain\TermType.cs" />
-    <Compile Include="Apps\Domain\Territory.cs" />
-    <Compile Include="Apps\Domain\TestingRequirement.cs" />
-    <Compile Include="Apps\Domain\Threshold.cs" />
-    <Compile Include="Apps\Domain\TimeAndMaterialsService.cs" />
-    <Compile Include="Apps\Domain\TimeEntry.cs" />
-    <Compile Include="Apps\Domain\TimeFrequency.cs" />
-    <Compile Include="Apps\Domain\TimePeriodUsage.cs" />
-    <Compile Include="Apps\Domain\Tolerance.cs" />
-    <Compile Include="Apps\Domain\Training.cs" />
-    <Compile Include="Apps\Domain\TransferObjectState.cs" />
-    <Compile Include="Apps\Domain\TransferStatus.cs" />
-    <Compile Include="Apps\Domain\UniquelyIdentifiable.cs" />
-    <Compile Include="Apps\Domain\UnitOfMeasure.cs" />
-    <Compile Include="Apps\Domain\UnitOfMeasureConversion.cs" />
-    <Compile Include="Apps\Domain\UserGroup.cs" />
-    <Compile Include="Apps\Domain\VarianceReason.cs" />
-    <Compile Include="Apps\Domain\VatCalculationMethod.cs" />
-    <Compile Include="Apps\Domain\VatForm.cs" />
-    <Compile Include="Apps\Domain\VatRate.cs" />
-    <Compile Include="Apps\Domain\VatRatePurchaseKind.cs" />
-    <Compile Include="Apps\Domain\VatRateUsage.cs" />
-    <Compile Include="Apps\Domain\VatRegime.cs" />
-    <Compile Include="Apps\Domain\VatReturnBox.cs" />
-    <Compile Include="Apps\Domain\VatReturnBoxType.cs" />
-    <Compile Include="Apps\Domain\VatTariff.cs" />
-    <Compile Include="Apps\Domain\Vehicle.cs" />
-    <Compile Include="Apps\Domain\VolumeUsage.cs" />
-    <Compile Include="Apps\Domain\WebAddress.cs" />
-    <Compile Include="Apps\Domain\WebSiteCommunication.cs" />
-    <Compile Include="Apps\Domain\Withdrawal.cs" />
-    <Compile Include="Apps\Domain\WorkEffort.cs" />
-    <Compile Include="Apps\Domain\WorkEffortAssignment.cs" />
-    <Compile Include="Apps\Domain\WorkEffortAssignmentRate.cs" />
-    <Compile Include="Apps\Domain\WorkEffortBilling.cs" />
-    <Compile Include="Apps\Domain\WorkEffortFixedAssetAssignment.cs" />
-    <Compile Include="Apps\Domain\WorkEffortFixedAssetStandard.cs" />
-    <Compile Include="Apps\Domain\WorkEffortGoodStandard.cs" />
-    <Compile Include="Apps\Domain\WorkEffortInventoryAssignment.cs" />
-    <Compile Include="Apps\Domain\WorkEffortObjectState.cs" />
-    <Compile Include="Apps\Domain\WorkEffortPartStandard.cs" />
-    <Compile Include="Apps\Domain\WorkEffortPurpose.cs" />
-    <Compile Include="Apps\Domain\WorkEffortSkillStandard.cs" />
-    <Compile Include="Apps\Domain\WorkEffortTypeKind.cs" />
-    <Compile Include="Apps\Domain\WorkFlow.cs" />
-    <Compile Include="Apps\Domain\WorkRequirement.cs" />
     <Compile Include="Apps\Meta\Composite.cs" />
-    <Compile Include="Apps\MetaPopulation.v.cs" />
-    <Compile Include="Apps\Domain\AccountingPeriod.cs" />
-    <Compile Include="Apps\Domain\AccountingTransaction.cs" />
-    <Compile Include="Apps\Domain\AccountingTransactionDetail.cs" />
-    <Compile Include="Apps\Domain\ActivityUsage.cs" />
-    <Compile Include="Apps\Domain\Addendum.cs" />
-    <Compile Include="Apps\Domain\Agreement.cs" />
-    <Compile Include="Apps\Domain\AgreementItem.cs" />
-    <Compile Include="Apps\Domain\AutomatedAgent.cs" />
-    <Compile Include="Apps\Domain\Bank.cs" />
-    <Compile Include="Apps\Domain\BankAccount.cs" />
-    <Compile Include="Apps\Domain\BasePrice.cs" />
-    <Compile Include="Apps\Domain\Benefit.cs" />
-    <Compile Include="Apps\Domain\BillingAccount.cs" />
-    <Compile Include="Apps\Domain\Brand.cs" />
-    <Compile Include="Apps\Domain\Budget.cs" />
-    <Compile Include="Apps\Domain\BudgetItem.cs" />
-    <Compile Include="Apps\Domain\BudgetReview.cs" />
-    <Compile Include="Apps\Domain\BudgetRevision.cs" />
-    <Compile Include="Apps\Domain\BudgetRevisionImpact.cs" />
-    <Compile Include="Apps\Domain\BudgetStatus.cs" />
-    <Compile Include="Apps\Domain\CapitalBudget.cs" />
-    <Compile Include="Apps\Domain\Carrier.cs" />
-    <Compile Include="Apps\Domain\Case.cs" />
-    <Compile Include="Apps\Domain\CaseStatus.cs" />
-    <Compile Include="Apps\Domain\ChartOfAccounts.cs" />
-    <Compile Include="Apps\Domain\Citizenship.cs" />
-    <Compile Include="Apps\Domain\City.cs" />
-    <Compile Include="Apps\Domain\ClientRelationship.cs" />
-    <Compile Include="Apps\Domain\CommunicationEvent.cs" />
-    <Compile Include="Apps\Domain\CommunicationEventStatus.cs" />
-    <Compile Include="Apps\Domain\Container.cs" />
-    <Compile Include="Apps\Domain\CostCenter.cs" />
-    <Compile Include="Apps\Domain\CostCenterCategory.cs" />
-    <Compile Include="Apps\Domain\Country.cs" />
-    <Compile Include="Apps\Domain\County.cs" />
-    <Compile Include="Apps\Domain\CreditCard.cs" />
-    <Compile Include="Apps\Domain\CreditCardCompany.cs" />
-    <Compile Include="Apps\Domain\CustomerRelationship.cs" />
-    <Compile Include="Apps\Domain\CustomerReturn.cs" />
-    <Compile Include="Apps\Domain\CustomerReturnStatus.cs" />
-    <Compile Include="Apps\Domain\CustomerShipment.cs" />
-    <Compile Include="Apps\Domain\CustomerShipmentStatus.cs" />
-    <Compile Include="Apps\Domain\Deduction.cs" />
-    <Compile Include="Apps\Domain\Deliverable.cs" />
-    <Compile Include="Apps\Domain\DeliverableTurnover.cs" />
-    <Compile Include="Apps\Domain\DeploymentUsage.cs" />
-    <Compile Include="Apps\Domain\Depreciation.cs" />
-    <Compile Include="Apps\Domain\DepreciationMethod.cs" />
-    <Compile Include="Apps\Domain\DesiredProductFeature.cs" />
-    <Compile Include="Apps\Domain\Dimension.cs" />
-    <Compile Include="Apps\Domain\DisbursementAccountingTransaction.cs" />
-    <Compile Include="Apps\Domain\DistributionChannelRelationship.cs" />
-    <Compile Include="Apps\Domain\Document.cs" />
-    <Compile Include="Apps\Domain\DropShipment.cs" />
-    <Compile Include="Apps\Domain\DropShipmentStatus.cs" />
-    <Compile Include="Apps\Domain\ElectronicAddress.cs" />
-    <Compile Include="Apps\Domain\EmailCommunication.cs" />
-    <Compile Include="Apps\Domain\EmailTemplate.cs" />
-    <Compile Include="Apps\Domain\Employment.cs" />
-    <Compile Include="Apps\Domain\EmploymentApplication.cs" />
-    <Compile Include="Apps\Domain\Engagement.cs" />
-    <Compile Include="Apps\Domain\EngagementItem.cs" />
-    <Compile Include="Apps\Domain\EngagementRate.cs" />
-    <Compile Include="Apps\Domain\EngineeringChange.cs" />
-    <Compile Include="Apps\Domain\EngineeringChangeStatus.cs" />
-    <Compile Include="Apps\Domain\EstimatedProductCost.cs" />
-    <Compile Include="Apps\Domain\ExpenseEntry.cs" />
-    <Compile Include="Apps\Domain\ExternalAccountingTransaction.cs" />
-    <Compile Include="Apps\Domain\FaceToFaceCommunication.cs" />
-    <Compile Include="Apps\Domain\Facility.cs" />
-    <Compile Include="Apps\Domain\FaxCommunication.cs" />
-    <Compile Include="Apps\Domain\FinancialAccountTransaction.cs" />
-    <Compile Include="Apps\Domain\FiscalYearInvoiceNumber.t.cs" />
-    <Compile Include="Apps\Domain\FixedAsset.t.cs" />
-    <Compile Include="Apps\Domain\GeneralLedgerAccount.t.cs" />
-    <Compile Include="Apps\Domain\GeneralLedgerAccountGroup.cs" />
-    <Compile Include="Apps\Domain\GeneralLedgerAccountType.cs" />
-    <Compile Include="Apps\Domain\GeoLocatable.t.cs" />
-    <Compile Include="Apps\Domain\GlBudgetAllocation.t.cs" />
-    <Compile Include="Apps\Domain\Good.cs" />
-    <Compile Include="Apps\Domain\InternalOrganisation.cs" />
-    <Compile Include="Apps\Domain\InternalOrganisationAccountingPreference.t.cs" />
-    <Compile Include="Apps\Domain\InternalOrganisationRevenue.t.cs" />
-    <Compile Include="Apps\Domain\InventoryItem.t.cs" />
-    <Compile Include="Apps\Domain\InventoryItemConfiguration.t.cs" />
-    <Compile Include="Apps\Domain\InventoryItemVariance.t.cs" />
-    <Compile Include="Apps\Domain\InvestmentAccount.t.cs" />
-    <Compile Include="Apps\Domain\Invoice.t.cs" />
-    <Compile Include="Apps\Domain\InvoiceItem.t.cs" />
-    <Compile Include="Apps\Domain\InvoiceTerm.cs" />
-    <Compile Include="Apps\Domain\ItemIssuance.t.cs" />
-    <Compile Include="Apps\Domain\Journal.t.cs" />
-    <Compile Include="Apps\Domain\LegalForm.t.cs" />
-    <Compile Include="Apps\Domain\Lot.t.cs" />
-    <Compile Include="Apps\Domain\ManufacturerSuggestedRetailPrice.cs" />
-    <Compile Include="Apps\Domain\MarketingPackage.t.cs" />
-    <Compile Include="Apps\Domain\MaterialsUsage.cs" />
-    <Compile Include="Apps\Domain\NeededSkill.t.cs" />
-    <Compile Include="Apps\Domain\NonSerializedInventoryItem.t.cs" />
-    <Compile Include="Apps\Domain\NonSerializedInventoryItemStatus.t.cs" />
-    <Compile Include="Apps\Domain\OneTimeCharge.cs" />
-    <Compile Include="Apps\Domain\OperatingBudget.cs" />
-    <Compile Include="Apps\Domain\Order.cs" />
-    <Compile Include="Apps\Domain\OrderItem.t.cs" />
-    <Compile Include="Apps\Domain\OrderItemBilling.t.cs" />
-    <Compile Include="Apps\Domain\OrderKind.t.cs" />
-    <Compile Include="Apps\Domain\OrderRequirementCommitment.t.cs" />
-    <Compile Include="Apps\Domain\OrderShipment.t.cs" />
-    <Compile Include="Apps\Domain\OrderTerm.t.cs" />
-    <Compile Include="Apps\Domain\Organisation.cs" />
-    <Compile Include="Apps\Domain\OrganisationContactKind.t.cs" />
-    <Compile Include="Apps\Domain\OrganisationContactRelationship.t.cs" />
-    <Compile Include="Apps\Domain\OrganisationGlAccount.t.cs" />
-    <Compile Include="Apps\Domain\OrganisationGlAccountBalance.t.cs" />
-    <Compile Include="Apps\Domain\OrganisationRollUp.t.cs" />
-    <Compile Include="Apps\Domain\OwnBankAccount.t.cs" />
-    <Compile Include="Apps\Domain\OwnCreditCard.t.cs" />
-    <Compile Include="Apps\Domain\Package.t.cs" />
-    <Compile Include="Apps\Domain\PackageRevenue.t.cs" />
-    <Compile Include="Apps\Domain\PackagingContent.t.cs" />
-    <Compile Include="Apps\Domain\Part.t.cs" />
-    <Compile Include="Apps\Domain\PartBillOfMaterial.t.cs" />
-    <Compile Include="Apps\Domain\PartBillOfMaterialSubstitute.t.cs" />
-    <Compile Include="Apps\Domain\Partnership.t.cs" />
-    <Compile Include="Apps\Domain\PartRevision.t.cs" />
-    <Compile Include="Apps\Domain\PartSpecification.t.cs" />
-    <Compile Include="Apps\Domain\PartSpecificationStatus.t.cs" />
-    <Compile Include="Apps\Domain\PartSubstitute.t.cs" />
-    <Compile Include="Apps\Domain\Party.t.cs" />
-    <Compile Include="Apps\Domain\PartyBenefit.t.cs" />
-    <Compile Include="Apps\Domain\PartyClassification.t.cs" />
-    <Compile Include="Apps\Domain\PartyContactMechanism.t.cs" />
-    <Compile Include="Apps\Domain\PartyFixedAssetAssignment.t.cs" />
-    <Compile Include="Apps\Domain\PartyPackageRevenue.t.cs" />
-    <Compile Include="Apps\Domain\PartyProductCategoryRevenue.t.cs" />
-    <Compile Include="Apps\Domain\PartyProductCategoryRevenueHistory.t.cs" />
-    <Compile Include="Apps\Domain\PartyProductRevenue.t.cs" />
-    <Compile Include="Apps\Domain\PartyRevenue.t.cs" />
-    <Compile Include="Apps\Domain\PartyRevenueHistory.t.cs" />
-    <Compile Include="Apps\Domain\PartySkill.t.cs" />
-    <Compile Include="Apps\Domain\Passport.t.cs" />
-    <Compile Include="Apps\Domain\PayCheck.t.cs" />
-    <Compile Include="Apps\Domain\PayGrade.t.cs" />
-    <Compile Include="Apps\Domain\PayHistory.t.cs" />
-    <Compile Include="Apps\Domain\Payment.t.cs" />
-    <Compile Include="Apps\Domain\PaymentApplication.t.cs" />
-    <Compile Include="Apps\Domain\PaymentBudgetAllocation.t.cs" />
-    <Compile Include="Apps\Domain\PaymentMethod.t.cs" />
-    <Compile Include="Apps\Domain\PayrollPreference.t.cs" />
-    <Compile Include="Apps\Domain\PerformanceNote.t.cs" />
-    <Compile Include="Apps\Domain\PerformanceReview.t.cs" />
-    <Compile Include="Apps\Domain\PerformanceReviewItem.t.cs" />
-    <Compile Include="Apps\Domain\PersonTraining.cs" />
-    <Compile Include="Apps\Domain\PhoneCommunication.t.cs" />
-    <Compile Include="Apps\Domain\PickList.t.cs" />
-    <Compile Include="Apps\Domain\PickListItem.t.cs" />
-    <Compile Include="Apps\Domain\PickListStatus.t.cs" />
-    <Compile Include="Apps\Domain\Position.t.cs" />
-    <Compile Include="Apps\Domain\PositionFulfillment.t.cs" />
-    <Compile Include="Apps\Domain\PositionReportingStructure.t.cs" />
-    <Compile Include="Apps\Domain\PositionResponsibility.t.cs" />
-    <Compile Include="Apps\Domain\PositionType.t.cs" />
-    <Compile Include="Apps\Domain\PositionTypeRate.t.cs" />
-    <Compile Include="Apps\Domain\PostalAddress.t.cs" />
-    <Compile Include="Apps\Domain\PostalBoundary.t.cs" />
-    <Compile Include="Apps\Domain\PostalCode.t.cs" />
-    <Compile Include="Apps\Domain\PriceComponent.t.cs" />
-    <Compile Include="Apps\Domain\Product.t.cs" />
-    <Compile Include="Apps\Domain\ProductCategory.t.cs" />
-    <Compile Include="Apps\Domain\ProductCategoryRevenue.t.cs" />
-    <Compile Include="Apps\Domain\ProductConfiguration.t.cs" />
-    <Compile Include="Apps\Domain\ProductDeliverySkillRequirement.t.cs" />
-    <Compile Include="Apps\Domain\ProductFeatureApplicabilityRelationship.t.cs" />
-    <Compile Include="Apps\Domain\ProductPurchasePrice.t.cs" />
-    <Compile Include="Apps\Domain\ProductRevenue.t.cs" />
-    <Compile Include="Apps\Domain\ProfessionalAssignment.t.cs" />
-    <Compile Include="Apps\Domain\ProfessionalServicesRelationship.t.cs" />
-    <Compile Include="Apps\Domain\Province.t.cs" />
-    <Compile Include="Apps\Domain\PurchaseInvoice.cs" />
-    <Compile Include="Apps\Domain\PurchaseInvoiceItem.cs" />
-    <Compile Include="Apps\Domain\PurchaseInvoiceItemStatus.t.cs" />
-    <Compile Include="Apps\Domain\PurchaseOrder.t.cs" />
-    <Compile Include="Apps\Domain\PurchaseOrderItem.cs" />
-    <Compile Include="Apps\Domain\PurchaseOrderItemStatus.t.cs" />
-    <Compile Include="Apps\Domain\PurchaseOrderStatus.t.cs" />
-    <Compile Include="Apps\Domain\PurchaseReturn.cs" />
-    <Compile Include="Apps\Domain\PurchaseReturnStatus.t.cs" />
-    <Compile Include="Apps\Domain\PurchaseShipment.t.cs" />
-    <Compile Include="Apps\Domain\PurchaseShipmentStatus.t.cs" />
-    <Compile Include="Apps\Domain\Quote.t.cs" />
-    <Compile Include="Apps\Domain\QuoteTerm.t.cs" />
-    <Compile Include="Apps\Domain\Receipt.cs" />
-    <Compile Include="Apps\Domain\ReceiptAccountingTransaction.t.cs" />
-    <Compile Include="Apps\Domain\RecurringCharge.cs" />
-    <Compile Include="Apps\Domain\Region.t.cs" />
-    <Compile Include="Apps\Domain\Request.t.cs" />
-    <Compile Include="Apps\Domain\Requirement.t.cs" />
-    <Compile Include="Apps\Domain\RequirementBudgetAllocation.t.cs" />
-    <Compile Include="Apps\Domain\RequirementCommunication.t.cs" />
-    <Compile Include="Apps\Domain\RequirementStatus.t.cs" />
-    <Compile Include="Apps\Domain\RespondingParty.t.cs" />
-    <Compile Include="Apps\Domain\Responsibility.t.cs" />
-    <Compile Include="Apps\Domain\Resume.t.cs" />
-    <Compile Include="Apps\Domain\SalaryStep.t.cs" />
-    <Compile Include="Apps\Domain\SalesAccountingTransaction.t.cs" />
-    <Compile Include="Apps\Domain\SalesChannelRevenue.t.cs" />
-    <Compile Include="Apps\Domain\SalesInvoice.cs" />
-    <Compile Include="Apps\Domain\SalesInvoiceItem.t.cs" />
-    <Compile Include="Apps\Domain\SalesInvoiceItemStatus.t.cs" />
-    <Compile Include="Apps\Domain\SalesInvoiceStatus.t.cs" />
-    <Compile Include="Apps\Domain\SalesOrder.cs" />
-    <Compile Include="Apps\Domain\SalesOrderItem.cs" />
-    <Compile Include="Apps\Domain\SalesOrderItemStatus.t.cs" />
-    <Compile Include="Apps\Domain\SalesOrderStatus.t.cs" />
-    <Compile Include="Apps\Domain\SalesRepCommission.t.cs" />
-    <Compile Include="Apps\Domain\SalesRepPartyProductCategoryRevenue.t.cs" />
-    <Compile Include="Apps\Domain\SalesRepPartyRevenue.t.cs" />
-    <Compile Include="Apps\Domain\SalesRepProductCategoryRevenue.t.cs" />
-    <Compile Include="Apps\Domain\SalesRepRelationship.t.cs" />
-    <Compile Include="Apps\Domain\SalesRepRevenue.t.cs" />
-    <Compile Include="Apps\Domain\SalesTerritory.t.cs" />
-    <Compile Include="Apps\Domain\SerializedInventoryItem.t.cs" />
-    <Compile Include="Apps\Domain\SerializedInventoryItemStatus.t.cs" />
-    <Compile Include="Apps\Domain\ServiceEntryBilling.t.cs" />
-    <Compile Include="Apps\Domain\ServiceEntryHeader.t.cs" />
-    <Compile Include="Apps\Domain\ServiceTerritory.t.cs" />
-    <Compile Include="Apps\Domain\Shipment.t.cs" />
-    <Compile Include="Apps\Domain\ShipmentItem.t.cs" />
-    <Compile Include="Apps\Domain\ShipmentPackage.t.cs" />
-    <Compile Include="Apps\Domain\ShipmentReceipt.t.cs" />
-    <Compile Include="Apps\Domain\ShippingAndHandlingComponent.t.cs" />
-    <Compile Include="Apps\Domain\State.t.cs" />
-    <Compile Include="Apps\Domain\Store.t.cs" />
-    <Compile Include="Apps\Domain\StoreRevenue.t.cs" />
-    <Compile Include="Apps\Domain\SubContractorRelationship.t.cs" />
-    <Compile Include="Apps\Domain\SupplierOffering.t.cs" />
-    <Compile Include="Apps\Domain\SupplierRelationship.t.cs" />
-    <Compile Include="Apps\Domain\Territory.t.cs" />
-    <Compile Include="Apps\Domain\TimeEntry.t.cs" />
-    <Compile Include="Apps\Domain\Training.t.cs" />
-    <Compile Include="Apps\Domain\Transfer.cs" />
-    <Compile Include="Apps\Domain\TransferStatus.t.cs" />
-    <Compile Include="Apps\Domain\UnitOfMeasureConversion.t.cs" />
-    <Compile Include="Apps\Domain\UtilizationCharge.cs" />
-    <Compile Include="Apps\Domain\VatRate.t.cs" />
-    <Compile Include="Apps\Domain\VolumeUsage.t.cs" />
-    <Compile Include="Apps\Domain\Warehouse.cs" />
-    <Compile Include="Apps\Domain\WorkEffort.t.cs" />
-    <Compile Include="Apps\Domain\WorkEffortAssignment.t.cs" />
-    <Compile Include="Apps\Domain\WorkEffortAssignmentRate.t.cs" />
-    <Compile Include="Apps\Domain\WorkEffortBilling.t.cs" />
-    <Compile Include="Apps\Domain\WorkEffortFixedAssetAssignment.t.cs" />
-    <Compile Include="Apps\Domain\WorkEffortFixedAssetStandard.t.cs" />
-    <Compile Include="Apps\Domain\WorkEffortGoodStandard.t.cs" />
-    <Compile Include="Apps\Domain\WorkEffortInventoryAssignment.t.cs" />
-    <Compile Include="Apps\Domain\WorkEffortPartStandard.t.cs" />
-    <Compile Include="Apps\Domain\WorkEffortPartyAssignment.cs" />
-    <Compile Include="Apps\Domain\WorkEffortStatus.cs" />
-    <Compile Include="Apps\Domain\WorkEffortType.cs" />
+    <Compile Include="generated\builder.g.cs" />
+    <Compile Include="generated\classes.g.cs" />
+    <Compile Include="generated\domains.g.cs" />
+    <Compile Include="generated\interfaces.g.cs" />
+    <Compile Include="generated\meta.g.cs" />
+    <Compile Include="generated\units.g.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\..\allors\Base\Meta\Base\RelationType.cd">
+    <None Include="..\..\platform\Base\Meta\Base\Meta\Tree.cd">
+      <Link>Base\Meta\Tree.cd</Link>
+    </None>
+    <None Include="..\..\platform\Base\Meta\Base\RelationType.cd">
       <Link>Base\RelationType.cd</Link>
     </None>
-    <None Include="..\..\allors\Core\Meta\Core\Generate.proj">
-      <Link>Core\Generate.proj</Link>
-    </None>
-    <None Include="..\..\allors\Core\Meta\Core\Overview.cd">
+    <None Include="..\..\platform\Core\Meta\Core\Overview.cd">
       <Link>Core\Overview.cd</Link>
     </None>
     <None Include="packages.config" />
     <None Include="Settings.StyleCop" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\allors\Framework\Allors\Allors.csproj">
+    <ProjectReference Include="..\..\platform\Framework\Allors\Allors.csproj">
       <Project>{5b4e2d7c-8ef8-45f5-bfb2-e595c401a95f}</Project>
       <Name>Allors</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Apps\Domain\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />

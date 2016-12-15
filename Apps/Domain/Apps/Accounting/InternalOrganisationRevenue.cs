@@ -22,6 +22,8 @@ namespace Allors.Domain
 {
     using System;
 
+    using Allors.Meta;
+
     public partial class InternalOrganisationRevenue
     {
         public void AppsOnDerive(ObjectOnDerive method)
@@ -36,8 +38,8 @@ namespace Allors.Domain
             this.Revenue = 0;
 
             var storeRevenues = this.InternalOrganisation.StoreRevenuesWhereInternalOrganisation;
-            storeRevenues.Filter.AddEquals(StoreRevenues.Meta.Year, this.Year);
-            storeRevenues.Filter.AddEquals(StoreRevenues.Meta.Month, this.Month);
+            storeRevenues.Filter.AddEquals(M.StoreRevenue.Year, this.Year);
+            storeRevenues.Filter.AddEquals(M.StoreRevenue.Month, this.Month);
 
             foreach (StoreRevenue storeRevenue in storeRevenues)
             {

@@ -9,8 +9,9 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Resources</RootNamespace>
     <AssemblyName>Resources</AssemblyName>
-    <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -77,8 +78,14 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="..\..\allors\Base\Resources\Base\ErrorMessages.resx">
-      <Link>Base\ErrorMessages.resx</Link>
+    <EmbeddedResource Include="..\..\platform\Base\Resources\Base\DomainErrors.resx">
+      <Link>Base\DomainErrors.resx</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\..\platform\Base\Resources\Base\WorkspaceMeta.resx">
+      <Link>Base\WorkspaceMeta.resx</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\..\platform\Base\Resources\Base\WorkspaceResources.resx">
+      <Link>Base\WorkspaceResources.resx</Link>
     </EmbeddedResource>
     <EmbeddedResource Include="Apps\ErrorMessages.nl.resx" />
     <EmbeddedResource Include="Apps\ErrorMessages.resx" />

@@ -117,12 +117,12 @@ namespace Allors.Domain
             {
                 if (!customerRelationships[0].Equals(this))
                 {
-                    derivation.Log.AddError(new DerivationErrorUnique(derivation.Log, this, CustomerRelationships.Meta.SubAccountNumber));
+                    derivation.Validation.AddError(new DerivationErrorUnique(derivation.Log, this, CustomerRelationships.Meta.SubAccountNumber));
                 }
             }
             else if (customerRelationships.Count > 1)
             {
-                derivation.Log.AddError(new DerivationErrorUnique(derivation.Log, this, CustomerRelationships.Meta.SubAccountNumber));
+                derivation.Validation.AddError(new DerivationErrorUnique(derivation.Log, this, CustomerRelationships.Meta.SubAccountNumber));
             }
 
             this.AppsOnDeriveInternalOrganisationCustomer(derivation);

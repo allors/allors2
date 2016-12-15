@@ -56,7 +56,7 @@ namespace Allors.Domain
 
             if (this.ExistAmount && totalAmountApplied > this.Amount)
             {
-                derivation.Log.AddError(this, Receipts.Meta.Amount, ErrorMessages.ReceiptAmountIsToSmall);
+                derivation.Validation.AddError(this, Receipts.Meta.Amount, ErrorMessages.ReceiptAmountIsToSmall);
             }
         }
     }

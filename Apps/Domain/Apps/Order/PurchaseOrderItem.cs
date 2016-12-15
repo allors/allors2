@@ -113,8 +113,8 @@ namespace Allors.Domain
         {
             var derivation = method.Derivation;
             
-            derivation.Log.AssertAtLeastOne(this, PurchaseOrderItems.Meta.Product, PurchaseOrderItems.Meta.Part);
-            derivation.Log.AssertExistsAtMostOne(this, PurchaseOrderItems.Meta.Product, PurchaseOrderItems.Meta.Part);
+            derivation.Validation.AssertAtLeastOne(this, PurchaseOrderItems.Meta.Product, PurchaseOrderItems.Meta.Part);
+            derivation.Validation.AssertExistsAtMostOne(this, PurchaseOrderItems.Meta.Product, PurchaseOrderItems.Meta.Part);
 
             this.AppsDeriveVatRegime(derivation);
 
@@ -208,11 +208,6 @@ namespace Allors.Domain
                 this.CurrentObjectState.Equals(new PurchaseOrderItemObjectStates(this.Strategy.Session).Rejected))
             {
                 this.AppsOnDeriveQuantities(derivation);
-            }
-
-            if (this.ExistCurrentObjectState)
-            {
-                this.CurrentObjectState.Process(this);
             }
         }
 

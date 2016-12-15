@@ -1,5 +1,6 @@
 namespace Allors.Domain
 {
+    using Meta;
     using System.Collections.Generic;
 
     public partial class SalesInvoiceItem
@@ -112,24 +113,8 @@ namespace Allors.Domain
 
             this.AppsOnDeriveAmountPaid(derivation);
 
-            derivation.Log.AssertAtLeastOne(this, SalesInvoiceItems.Meta.Product, SalesInvoiceItems.Meta.ProductFeature, SalesInvoiceItems.Meta.TimeEntries);
-            derivation.Log.AssertExistsAtMostOne(this, SalesInvoiceItems.Meta.Product, SalesInvoiceItems.Meta.ProductFeature, SalesInvoiceItems.Meta.TimeEntries);
-        }
-
-        private static decimal PriceInCurrency(decimal price, Currency fromCurrency, Currency toCurrency)
-        {
-            if (!fromCurrency.Equals(toCurrency))
-            {
-                foreach (UnitOfMeasureConversion unitOfMeasureConversion in fromCurrency.UnitOfMeasureConversions)
-                {
-                    if (unitOfMeasureConversion.ToUnitOfMeasure.Equals(toCurrency))
-                    {
-                        return decimal.Round(price * unitOfMeasureConversion.ConversionFactor, 2);
-                    }
-                }
-            }
-
-            return price;
+            derivation.Validation.AssertAtLeastOne(this, this.Meta.Product, this.Meta.ProductFeature, this.Meta.TimeEntries);
+            derivation.Validation.AssertExistsAtMostOne(this, this.Meta.Product, this.Meta.ProductFeature, this.Meta.TimeEntries);
         }
 
         public void AppsWriteOff(IDerivation derivation)
@@ -158,8 +143,6 @@ namespace Allors.Domain
                 var currentStatus = new SalesInvoiceItemStatusBuilder(this.Strategy.Session).WithSalesInvoiceItemObjectState(this.CurrentObjectState).Build();
                 this.AddInvoiceItemStatus(currentStatus);
                 this.CurrentInvoiceItemStatus = currentStatus;
-                
-                this.CurrentObjectState.Process(this);
             }
         }
 
@@ -210,11 +193,6 @@ namespace Allors.Domain
                 var currentStatus = new SalesInvoiceItemStatusBuilder(this.Strategy.Session).WithSalesInvoiceItemObjectState(this.CurrentObjectState).Build();
                 this.AddInvoiceItemStatus(currentStatus);
                 this.CurrentInvoiceItemStatus = currentStatus;
-            }
-
-            if (this.ExistCurrentObjectState)
-            {
-                this.CurrentObjectState.Process(this);
             }
         }
 
@@ -277,7 +255,7 @@ namespace Allors.Domain
                 if (priceComponent.FromDate <= this.SalesInvoiceWhereSalesInvoiceItem.InvoiceDate &&
                     (!priceComponent.ExistThroughDate || priceComponent.ThroughDate >= this.SalesInvoiceWhereSalesInvoiceItem.InvoiceDate))
                 {
-                    if (priceComponent.Strategy.Class.Equals(BasePrices.Meta.ObjectType))
+                    if (priceComponent.Strategy.Class.Equals(M.BasePrice.ObjectType))
                     {
                         if (PriceComponents.AppsIsEligible(new PriceComponents.IsEligibleParams
                                                                {
@@ -291,9 +269,9 @@ namespace Allors.Domain
                         {
                             if (priceComponent.ExistPrice)
                             {
-                                if (this.UnitBasePrice == 0 || priceComponent.Price < this.UnitBasePrice)
+                                if (priceComponent.Price.HasValue && (this.UnitBasePrice == 0 || priceComponent.Price < this.UnitBasePrice))
                                 {
-                                    this.UnitBasePrice = priceComponent.Price;
+                                    this.UnitBasePrice = priceComponent.Price.Value;
 
                                     this.RemoveCurrentPriceComponents();
                                     this.AddCurrentPriceComponent(priceComponent);
@@ -307,13 +285,13 @@ namespace Allors.Domain
             if (!this.ExistActualUnitPrice)
             {
                 var partyRevenueHistories = customer.PartyRevenueHistoriesWhereParty;
-                partyRevenueHistories.Filter.AddEquals(PartyRevenueHistories.Meta.InternalOrganisation, internalOrganisation);
+                partyRevenueHistories.Filter.AddEquals(M.PartyRevenueHistory.InternalOrganisation, internalOrganisation);
                 var partyRevenueHistory = partyRevenueHistories.First;
 
                 var partyProductCategoryRevenueHistoryByProductCategory = PartyProductCategoryRevenueHistories.PartyProductCategoryRevenueHistoryByProductCategory(internalOrganisation, customer);
 
                 var partyPackageRevenuesHistories = customer.PartyPackageRevenueHistoriesWhereParty;
-                partyPackageRevenuesHistories.Filter.AddEquals(PartyPackageRevenueHistories.Meta.InternalOrganisation, internalOrganisation);
+                partyPackageRevenuesHistories.Filter.AddEquals(M.PartyPackageRevenueHistory.InternalOrganisation, internalOrganisation);
 
                 var priceComponents = this.GetPriceComponents(internalOrganisation);
 
@@ -322,7 +300,7 @@ namespace Allors.Domain
 
                 foreach (var priceComponent in priceComponents)
                 {
-                    if (priceComponent.Strategy.Class.Equals(DiscountComponents.Meta.ObjectType) || priceComponent.Strategy.Class.Equals(SurchargeComponents.Meta.ObjectType))
+                    if (priceComponent.Strategy.Class.Equals(M.DiscountComponent.ObjectType) || priceComponent.Strategy.Class.Equals(M.SurchargeComponent.ObjectType))
                     {
                         if (PriceComponents.AppsIsEligible(new PriceComponents.IsEligibleParams
                                                                {

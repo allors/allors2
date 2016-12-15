@@ -26,8 +26,8 @@ namespace Allors.Domain
         {
             var derivation = method.Derivation;
 
-            derivation.Log.AssertAtLeastOne(this, RequestItems.Meta.Product, RequestItems.Meta.ProductFeature, RequestItems.Meta.Description, RequestItems.Meta.NeededSkill, RequestItems.Meta.Deliverable);
-            derivation.Log.AssertExistsAtMostOne(this, RequestItems.Meta.Product, RequestItems.Meta.ProductFeature, RequestItems.Meta.Description, RequestItems.Meta.NeededSkill, RequestItems.Meta.Deliverable);
+            derivation.Validation.AssertAtLeastOne(this, RequestItems.Meta.Product, RequestItems.Meta.ProductFeature, RequestItems.Meta.Description, RequestItems.Meta.NeededSkill, RequestItems.Meta.Deliverable);
+            derivation.Validation.AssertExistsAtMostOne(this, RequestItems.Meta.Product, RequestItems.Meta.ProductFeature, RequestItems.Meta.Description, RequestItems.Meta.NeededSkill, RequestItems.Meta.Deliverable);
         }
     }
 }

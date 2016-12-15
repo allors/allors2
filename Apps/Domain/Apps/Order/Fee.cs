@@ -47,8 +47,8 @@ namespace Allors.Domain
         {
             var derivation = method.Derivation;
 
-            derivation.Log.AssertAtLeastOne(this, Fees.Meta.Amount, Fees.Meta.Percentage);
-            derivation.Log.AssertExistsAtMostOne(this, Fees.Meta.Amount, Fees.Meta.Percentage);
+            derivation.Validation.AssertAtLeastOne(this, Fees.Meta.Amount, Fees.Meta.Percentage);
+            derivation.Validation.AssertExistsAtMostOne(this, Fees.Meta.Amount, Fees.Meta.Percentage);
         }
     }
 }

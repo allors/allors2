@@ -36,11 +36,11 @@ namespace Allors.Domain
 
             if (this.ExistInternalOrganisationWherePaymentMethod && this.InternalOrganisationWherePaymentMethod.DoAccounting)
             { 
-                derivation.Log.AssertExists(this, Cashes.Meta.Creditor);
-                derivation.Log.AssertAtLeastOne(this, Cashes.Meta.GeneralLedgerAccount, Cashes.Meta.Journal);
+                derivation.Validation.AssertExists(this, this.Meta.Creditor);
+                derivation.Validation.AssertAtLeastOne(this, this.Meta.GeneralLedgerAccount, this.Meta.Journal);
             }
 
-            derivation.Log.AssertExistsAtMostOne(this, Cashes.Meta.GeneralLedgerAccount, Cashes.Meta.Journal);
+            derivation.Validation.AssertExistsAtMostOne(this, this.Meta.GeneralLedgerAccount, this.Meta.Journal);
         }
     }
 }

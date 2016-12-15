@@ -26,7 +26,7 @@ namespace Allors.Domain
         {
             base.AppsSecure(config);
 
-            var full = new[] { Operation.Read, Operation.Write, Operation.Execute };
+            var full = new[] { Operations.Read, Operations.Write, Operations.Execute };
 
             config.GrantAdministrator(this.ObjectType, full);
             config.GrantOwner(this.ObjectType, full);
@@ -38,8 +38,8 @@ namespace Allors.Domain
             config.Deny(this.ObjectType, scheduled, CommunicationEvents.Meta.Reopen);
             config.Deny(this.ObjectType, closed, CommunicationEvents.Meta.Close, CommunicationEvents.Meta.Cancel);
 
-            config.Deny(this.ObjectType, closed, Operation.Write);
-            config.Deny(this.ObjectType, cancelled, Operation.Execute, Operation.Write);
+            config.Deny(this.ObjectType, closed, Operations.Write);
+            config.Deny(this.ObjectType, cancelled, Operation.Execute, Operations.Write);
         }
     }
 }

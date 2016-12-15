@@ -141,27 +141,6 @@
   <data name="CostUnitNotAllowed" xml:space="preserve">
     <value>Cost unit not in list of allowed cost units</value>
   </data>
-  <data name="DerivationErrorAtLeastOne" xml:space="preserve">
-    <value>{0} at least one</value>
-  </data>
-  <data name="DerivationErrorAtMostOne" xml:space="preserve">
-    <value>{0} at most one</value>
-  </data>
-  <data name="DerivationErrorConflict" xml:space="preserve">
-    <value>{0} is in conflict</value>
-  </data>
-  <data name="DerivationErrorEquals" xml:space="preserve">
-    <value>{0} are not equal</value>
-  </data>
-  <data name="DerivationErrorNotAllowed" xml:space="preserve">
-    <value>{0} is not allowed</value>
-  </data>
-  <data name="DerivationErrorRequired" xml:space="preserve">
-    <value>{0} is required</value>
-  </data>
-  <data name="DerivationErrorUnique" xml:space="preserve">
-    <value>{0} is not unique</value>
-  </data>
   <data name="GeneralLedgerAccountNotBalanceAccount" xml:space="preserve">
     <value>General Ledger Account must be balance sheet account</value>
   </data>
@@ -215,15 +194,6 @@
   </data>
   <data name="PaymentMethodNotAllowedForInternalOrganisation" xml:space="preserve">
     <value>Payment method not listed for owner of this store</value>
-  </data>
-  <data name="PermissionOnlyExecuteForMethodType" xml:space="preserve">
-    <value>only execute is allowed for method type</value>
-  </data>
-  <data name="PermissionOnlyReadForRoleOrAssociationType" xml:space="preserve">
-    <value>only read is allowed for a role or an association type</value>
-  </data>
-  <data name="PermissionOnlyWriteForRoleType" xml:space="preserve">
-    <value>only write is allowed for a role type</value>
   </data>
   <data name="PickListItemQuantityMoreThanAllowed" xml:space="preserve">
     <value>quantity more than allowed</value>

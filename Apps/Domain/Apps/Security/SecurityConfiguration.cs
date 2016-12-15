@@ -24,62 +24,62 @@ namespace Allors.Domain
 
     public partial class Security
     {
-        public void GrantCustomer(ObjectType objectType, params Operation[] operations)
+        public void GrantCustomer(ObjectType objectType, params Operations[] operations)
         {
             this.Grant(Roles.CustomerRoleId, objectType, operations);
         }
 
-        public void GrantCustomer(ObjectType objectType, OperandType operandType, params Operation[] operations)
+        public void GrantCustomer(ObjectType objectType, OperandType operandType, params Operations[] operations)
         {
             this.Grant(Roles.CustomerRoleId, objectType, operandType, operations);
         }
 
-        public void GrantSupplier(ObjectType objectType, params Operation[] operations)
+        public void GrantSupplier(ObjectType objectType, params Operations[] operations)
         {
             this.Grant(Roles.SupplierRoleId, objectType, operations);
         }
 
-        public void GrantSupplier(ObjectType objectType, OperandType operandType, params Operation[] operations)
+        public void GrantSupplier(ObjectType objectType, OperandType operandType, params Operations[] operations)
         {
             this.Grant(Roles.SupplierRoleId, objectType, operandType, operations);
         }
 
-        public void GrantPartner(ObjectType objectType, params Operation[] operations)
+        public void GrantPartner(ObjectType objectType, params Operations[] operations)
         {
             this.Grant(Roles.PartnerRoleId, objectType, operations);
         }
 
-        public void GrantPartner(ObjectType objectType, OperandType operandType, params Operation[] operations)
+        public void GrantPartner(ObjectType objectType, OperandType operandType, params Operations[] operations)
         {
             this.Grant(Roles.PartnerRoleId, objectType, operandType, operations);
         }
 
-        public void GrantOperations(ObjectType objectType, params Operation[] operations)
+        public void GrantOperations(ObjectType objectType, params Operations[] operations)
         {
             this.Grant(Roles.OperationsId, objectType, operations);
         }
 
-        public void GrantOperations(ObjectType objectType, OperandType operandType, params Operation[] operations)
+        public void GrantOperations(ObjectType objectType, OperandType operandType, params Operations[] operations)
         {
             this.Grant(Roles.OperationsId, objectType, operandType, operations);
         }
 
-        public void GrantSales(ObjectType objectType, params Operation[] operations)
+        public void GrantSales(ObjectType objectType, params Operations[] operations)
         {
             this.Grant(Roles.SalesId, objectType, operations);
         }
 
-        public void GrantSales(ObjectType objectType, OperandType operandType, params Operation[] operations)
+        public void GrantSales(ObjectType objectType, OperandType operandType, params Operations[] operations)
         {
             this.Grant(Roles.SalesId, objectType, operandType, operations);
         }
 
-        public void GrantProcurement(ObjectType objectType, params Operation[] operations)
+        public void GrantProcurement(ObjectType objectType, params Operations[] operations)
         {
             this.Grant(Roles.ProcurementId, objectType, operations);
         }
         
-        public void GrantProcurement(ObjectType objectType, OperandType operandType, params Operation[] operations)
+        public void GrantProcurement(ObjectType objectType, OperandType operandType, params Operations[] operations)
         {
             this.Grant(Roles.ProcurementId, objectType, operandType, operations);
         }

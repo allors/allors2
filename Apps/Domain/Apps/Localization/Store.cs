@@ -137,11 +137,11 @@ namespace Allors.Domain
             {
                 if (this.ExistOwner && !this.Owner.PaymentMethods.Contains(paymentMethod))
                 {
-                    derivation.Log.AddError(this, Stores.Meta.PaymentMethods, ErrorMessages.PaymentApplicationNotLargerThanInvoiceItemAmount);
+                    derivation.Validation.AddError(this, Stores.Meta.PaymentMethods, ErrorMessages.PaymentApplicationNotLargerThanInvoiceItemAmount);
                 }
             }
 
-            derivation.Log.AssertExistsAtMostOne(this, Stores.Meta.FiscalYearInvoiceNumbers, Stores.Meta.SalesInvoiceCounter);
+            derivation.Validation.AssertExistsAtMostOne(this, Stores.Meta.FiscalYearInvoiceNumbers, Stores.Meta.SalesInvoiceCounter);
         }
     }
 }
