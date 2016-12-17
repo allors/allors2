@@ -22,9 +22,7 @@
 namespace Allors.Domain
 {
     using System;
-
-    
-
+    using Meta;
     using NUnit.Framework;
 
     [TestFixture]
@@ -40,7 +38,7 @@ namespace Allors.Domain
             base.Init();
 
             this.employee = new PersonBuilder(this.DatabaseSession).WithLastName("slave").Build();
-            this.internalOrganisation = new InternalOrganisations(this.DatabaseSession).FindBy(InternalOrganisations.Meta.Name, "internalOrganisation");
+            this.internalOrganisation = new InternalOrganisations(this.DatabaseSession).FindBy(M.InternalOrganisation.Name, "internalOrganisation");
 
             this.employment = new EmploymentBuilder(this.DatabaseSession)
                 .WithEmployee(this.employee)
@@ -57,7 +55,7 @@ namespace Allors.Domain
         {
             var secondEmployment = new EmploymentBuilder(this.DatabaseSession)
                 .WithEmployee(this.employee)
-                .WithEmployer(new InternalOrganisations(this.DatabaseSession).FindBy(InternalOrganisations.Meta.Name, "internalOrganisation"))
+                .WithEmployer(new InternalOrganisations(this.DatabaseSession).FindBy(M.InternalOrganisation.Name, "internalOrganisation"))
                 .WithFromDate(DateTime.UtcNow)
                 .Build();
 

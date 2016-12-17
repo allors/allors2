@@ -20,6 +20,7 @@
 
 namespace Allors.Domain
 {
+    using Meta;
     using Resources;
 
     public partial class BasePrice
@@ -34,7 +35,7 @@ namespace Allors.Domain
         {
             if (!this.ExistSpecifiedFor)
             {
-                this.SpecifiedFor = Domain.Singleton.Instance(this.Strategy.Session).DefaultInternalOrganisation;
+                this.SpecifiedFor = Singleton.Instance(this.Strategy.Session).DefaultInternalOrganisation;
             }
         }
 
@@ -42,26 +43,26 @@ namespace Allors.Domain
         {
             var derivation = method.Derivation;
 
-            derivation.Validation.AssertAtLeastOne(this, BasePrices.Meta.Product, BasePrices.Meta.ProductFeature);
+            derivation.Validation.AssertAtLeastOne(this, M.BasePrice.Product, M.BasePrice.ProductFeature);
 
             if (this.ExistOrderQuantityBreak)
             {
-                derivation.Validation.AddError(this, BasePrices.Meta.OrderQuantityBreak, ErrorMessages.BasePriceOrderQuantityBreakNotAllowed);
+                derivation.Validation.AddError(this, M.BasePrice.OrderQuantityBreak, ErrorMessages.BasePriceOrderQuantityBreakNotAllowed);
             }
 
             if (this.ExistOrderValue)
             {
-                derivation.Validation.AddError(this, BasePrices.Meta.OrderValue, ErrorMessages.BasePriceOrderValueNotAllowed);
+                derivation.Validation.AddError(this, M.BasePrice.OrderValue, ErrorMessages.BasePriceOrderValueNotAllowed);
             }
 
             if (this.ExistRevenueQuantityBreak)
             {
-                derivation.Validation.AddError(this, BasePrices.Meta.RevenueQuantityBreak, ErrorMessages.BasePriceRevenueQuantityBreakNotAllowed);
+                derivation.Validation.AddError(this, M.BasePrice.RevenueQuantityBreak, ErrorMessages.BasePriceRevenueQuantityBreakNotAllowed);
             }
 
             if (this.ExistRevenueValueBreak)
             {
-                derivation.Validation.AddError(this, BasePrices.Meta.RevenueValueBreak, ErrorMessages.BasePriceRevenueValueBreakNotAllowed);
+                derivation.Validation.AddError(this, M.BasePrice.RevenueValueBreak, ErrorMessages.BasePriceRevenueValueBreakNotAllowed);
             }
 
 
@@ -72,7 +73,7 @@ namespace Allors.Domain
                     this.Currency = this.SpecifiedFor.PreferredCurrency;
                 }
 
-                derivation.Validation.AssertExists(this, BasePrices.Meta.Currency);
+                derivation.Validation.AssertExists(this, M.BasePrice.Currency);
             }
 
             if (this.ExistProduct && !this.ExistProductFeature)

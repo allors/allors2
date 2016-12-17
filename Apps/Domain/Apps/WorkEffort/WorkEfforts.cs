@@ -20,9 +20,11 @@
 
 namespace Allors.Domain
 {
+    using Meta;
+
     public partial class WorkEfforts
     {
-        protected override void AppsSecure(Domain.Security config)
+        protected override void AppsSecure(Security config)
         {
             base.AppsSecure(config);
 
@@ -34,10 +36,10 @@ namespace Allors.Domain
             var cancelledState = new WorkEffortObjectStates(Session).Cancelled;
             var finishedState = new WorkEffortObjectStates(Session).Completed;
 
-            config.Deny(this.ObjectType, openedState, WorkEfforts.Meta.Reopen);
+            config.Deny(this.ObjectType, openedState, M.WorkEffort.Reopen);
 
-            config.Deny(this.ObjectType, cancelledState, Operation.Execute, Operations.Write);
-            config.Deny(this.ObjectType, finishedState, Operation.Execute, Operations.Read);
+            config.Deny(this.ObjectType, cancelledState, Operations.Execute, Operations.Write);
+            config.Deny(this.ObjectType, finishedState, Operations.Execute, Operations.Read);
         }
     }
 }

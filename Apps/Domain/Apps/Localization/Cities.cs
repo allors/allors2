@@ -20,6 +20,8 @@
 
 namespace Allors.Domain
 {
+    using Meta;
+
     public partial class Cities
     {
         private Cache<string, City> cityByName;
@@ -28,7 +30,7 @@ namespace Allors.Domain
         {
             get
             {
-                return this.cityByName ?? (this.cityByName = new Cache<string, City>(this.Session, Cities.Meta.Name));
+                return this.cityByName ?? (this.cityByName = new Cache<string, City>(this.Session, M.City.Name));
             }
         }
 

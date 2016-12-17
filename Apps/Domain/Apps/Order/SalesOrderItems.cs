@@ -21,6 +21,7 @@
 namespace Allors.Domain
 {
     using Allors;
+    using Meta;
 
     public partial class SalesOrderItems
     {
@@ -28,7 +29,7 @@ namespace Allors.Domain
         {
             base.AppsPrepare(setup);
 
-            setup.AddDependency(this.ObjectType, SalesOrderItemObjectStates.Meta.ObjectType);
+            setup.AddDependency(this.ObjectType, M.SalesOrderItemObjectState);
         }
 
         protected override void AppsSecure(Security config)
@@ -61,10 +62,10 @@ namespace Allors.Domain
             config.Deny(this.ObjectType, shipped, delete, cancel, reject);
             config.Deny(this.ObjectType, inProcess, delete);
 
-            config.Deny(this.ObjectType, cancelled, Operation.Execute, Operations.Write);
-            config.Deny(this.ObjectType, rejected, Operation.Execute, Operations.Write);
-            config.Deny(this.ObjectType, completed, Operation.Execute, Operations.Write);
-            config.Deny(this.ObjectType, finished, Operation.Execute, Operations.Write);
+            config.Deny(this.ObjectType, cancelled, Operations.Execute, Operations.Write);
+            config.Deny(this.ObjectType, rejected, Operations.Execute, Operations.Write);
+            config.Deny(this.ObjectType, completed, Operations.Execute, Operations.Write);
+            config.Deny(this.ObjectType, finished, Operations.Execute, Operations.Write);
         }
     }
 }

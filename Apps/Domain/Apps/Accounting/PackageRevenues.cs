@@ -22,16 +22,16 @@ namespace Allors.Domain
 {
     using System;
     using System.Collections.Generic;
-
-
+    using Meta;
+    
     public partial class PackageRevenues
     {
-        public PackageRevenue AppsFindOrCreateAsDependable(ISession session, PartyPackageRevenue dependant)
+        public static PackageRevenue AppsFindOrCreateAsDependable(ISession session, PartyPackageRevenue dependant)
         {
             var packageRevenues = dependant.Package.PackageRevenuesWherePackage;
-            packageRevenues.Filter.AddEquals(this.Meta.InternalOrganisation, dependant.InternalOrganisation);
-            packageRevenues.Filter.AddEquals(this.Meta.Year, dependant.Year);
-            packageRevenues.Filter.AddEquals(this.Meta.Month, dependant.Month);
+            packageRevenues.Filter.AddEquals(M.PackageRevenue.InternalOrganisation, dependant.InternalOrganisation);
+            packageRevenues.Filter.AddEquals(M.PackageRevenue.Year, dependant.Year);
+            packageRevenues.Filter.AddEquals(M.PackageRevenue.Month, dependant.Month);
             var packageRevenue = packageRevenues.First ?? new PackageRevenueBuilder(session)
                                                                 .WithInternalOrganisation(dependant.InternalOrganisation)
                                                                 .WithPackage(dependant.Package)

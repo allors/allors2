@@ -21,6 +21,7 @@
 namespace Allors.Domain
 {
     using System;
+    using Meta;
 
     public partial class CustomerRelationship
     {
@@ -79,7 +80,7 @@ namespace Allors.Domain
         {
             if (!this.ExistInternalOrganisation)
             {
-                this.InternalOrganisation = Domain.Singleton.Instance(this.Strategy.Session).DefaultInternalOrganisation;
+                this.InternalOrganisation = Singleton.Instance(this.Strategy.Session).DefaultInternalOrganisation;
             }
 
             if (!this.ExistSubAccountNumber)
@@ -112,17 +113,17 @@ namespace Allors.Domain
             var derivation = method.Derivation;
 
             var customerRelationships = this.InternalOrganisation.CustomerRelationshipsWhereInternalOrganisation;
-            customerRelationships.Filter.AddEquals(CustomerRelationships.Meta.SubAccountNumber, this.SubAccountNumber);
+            customerRelationships.Filter.AddEquals(M.CustomerRelationship.SubAccountNumber, this.SubAccountNumber);
             if (customerRelationships.Count == 1)
             {
                 if (!customerRelationships[0].Equals(this))
                 {
-                    derivation.Validation.AddError(new DerivationErrorUnique(derivation.Log, this, CustomerRelationships.Meta.SubAccountNumber));
+                    derivation.Validation.AddError(new DerivationErrorUnique(derivation.Log, this, M.CustomerRelationship.SubAccountNumber));
                 }
             }
             else if (customerRelationships.Count > 1)
             {
-                derivation.Validation.AddError(new DerivationErrorUnique(derivation.Log, this, CustomerRelationships.Meta.SubAccountNumber));
+                derivation.Validation.AddError(new DerivationErrorUnique(derivation.Log, this, M.CustomerRelationship.SubAccountNumber));
             }
 
             this.AppsOnDeriveInternalOrganisationCustomer(derivation);

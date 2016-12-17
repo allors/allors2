@@ -20,13 +20,15 @@
 
 namespace Allors.Domain
 {
+    using Meta;
+
     public partial class SalesRepCommissions
     {
         public static void AppsFindOrCreateAsDependable(ISession session, SalesRepRevenue dependant)
         {
             var salesRepCommissions = dependant.SalesRep.SalesRepCommissionsWhereSalesRep;
-            salesRepCommissions.Filter.AddEquals(SalesRepCommissions.Meta.Year, dependant.Year);
-            salesRepCommissions.Filter.AddEquals(SalesRepCommissions.Meta.Month, dependant.Month);
+            salesRepCommissions.Filter.AddEquals(M.SalesRepCommission.Year, dependant.Year);
+            salesRepCommissions.Filter.AddEquals(M.SalesRepCommission.Month, dependant.Month);
             var salesRepCommission = salesRepCommissions.First;
 
             if (salesRepCommission == null)

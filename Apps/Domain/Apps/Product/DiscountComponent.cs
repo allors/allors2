@@ -20,13 +20,15 @@
 
 namespace Allors.Domain
 {
+    using Meta;
+
     public partial class DiscountComponent
     {
         public void AppsOnBuild(ObjectOnBuild method)
         {
             if (!this.ExistSpecifiedFor)
             {
-                this.SpecifiedFor = Domain.Singleton.Instance(this.Strategy.Session).DefaultInternalOrganisation;
+                this.SpecifiedFor = Singleton.Instance(this.Strategy.Session).DefaultInternalOrganisation;
             }
         }
 
@@ -34,8 +36,8 @@ namespace Allors.Domain
         {
             var derivation = method.Derivation;
 
-            derivation.Validation.AssertAtLeastOne(this, DiscountComponents.Meta.Price, DiscountComponents.Meta.Percentage);
-            derivation.Validation.AssertExistsAtMostOne(this, DiscountComponents.Meta.Price, DiscountComponents.Meta.Percentage);
+            derivation.Validation.AssertAtLeastOne(this, M.DiscountComponent.Price, M.DiscountComponent.Percentage);
+            derivation.Validation.AssertExistsAtMostOne(this, M.DiscountComponent.Price, M.DiscountComponent.Percentage);
 
             if (this.ExistPrice)
             {
@@ -44,7 +46,7 @@ namespace Allors.Domain
                     this.Currency = this.SpecifiedFor.PreferredCurrency;
                 }
 
-                derivation.Validation.AssertExists(this, BasePrices.Meta.Currency);
+                derivation.Validation.AssertExists(this, M.BasePrice.Currency);
             }
 
             this.AppsOnDeriveVirtualProductPriceComponent();

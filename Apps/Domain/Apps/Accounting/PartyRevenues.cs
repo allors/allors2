@@ -22,6 +22,7 @@ namespace Allors.Domain
 {
     using System;
     using System.Collections.Generic;
+    using Meta;
 
 
     public partial class PartyRevenues
@@ -29,9 +30,9 @@ namespace Allors.Domain
         public static PartyRevenue AppsFindOrCreateAsDependable(ISession session, PartyProductRevenue dependant)
         {
             var partyRevenues = dependant.Party.PartyRevenuesWhereParty;
-            partyRevenues.Filter.AddEquals(PartyRevenues.Meta.InternalOrganisation, dependant.InternalOrganisation);
-            partyRevenues.Filter.AddEquals(PartyRevenues.Meta.Year, dependant.Year);
-            partyRevenues.Filter.AddEquals(PartyRevenues.Meta.Month, dependant.Month);
+            partyRevenues.Filter.AddEquals(M.PartyRevenue.InternalOrganisation, dependant.InternalOrganisation);
+            partyRevenues.Filter.AddEquals(M.PartyRevenue.Year, dependant.Year);
+            partyRevenues.Filter.AddEquals(M.PartyRevenue.Month, dependant.Month);
             var partyRevenue = partyRevenues.First ?? new PartyRevenueBuilder(session)
                                                             .WithInternalOrganisation(dependant.InternalOrganisation)
                                                             .WithParty(dependant.Party)
@@ -46,8 +47,8 @@ namespace Allors.Domain
         public static PartyRevenue AppsFindOrCreateAsDependable(ISession session, SalesInvoice invoice)
         {
             var partyRevenues = invoice.BilledFromInternalOrganisation.PartyRevenuesWhereParty;
-            partyRevenues.Filter.AddEquals(PartyRevenues.Meta.Year, invoice.InvoiceDate.Year);
-            partyRevenues.Filter.AddEquals(PartyRevenues.Meta.Month, invoice.InvoiceDate.Month);
+            partyRevenues.Filter.AddEquals(M.PartyRevenue.Year, invoice.InvoiceDate.Year);
+            partyRevenues.Filter.AddEquals(M.PartyRevenue.Month, invoice.InvoiceDate.Month);
             var partyRevenue = partyRevenues.First ?? new PartyRevenueBuilder(session)
                                                             .WithInternalOrganisation(invoice.BilledFromInternalOrganisation)
                                                             .WithParty(invoice.BilledFromInternalOrganisation)

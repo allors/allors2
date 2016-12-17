@@ -24,7 +24,7 @@ namespace Allors.Domain
     using System;
     using System.Security.Principal;
     using System.Threading;
-
+    using Meta;
     using NUnit.Framework;
 
     [TestFixture]
@@ -40,7 +40,7 @@ namespace Allors.Domain
         {
             base.Init();
 
-            var euro = new Currencies(this.DatabaseSession).FindBy(Currencies.Meta.IsoCode, "EUR");
+            var euro = new Currencies(this.DatabaseSession).FindBy(M.Currency.IsoCode, "EUR");
 
             var mechelen = new CityBuilder(this.DatabaseSession).WithName("Mechelen").Build();
             ContactMechanism takenViaContactMechanism = new PostalAddressBuilder(this.DatabaseSession).WithGeographicBoundary(mechelen).WithAddress1("Haverwerf 15").Build();
@@ -51,7 +51,7 @@ namespace Allors.Domain
                 .WithContactPurpose(new ContactMechanismPurposes(this.DatabaseSession).BillingAddress)
                 .Build();
 
-            var internalOrganisation = new InternalOrganisations(this.DatabaseSession).FindBy(InternalOrganisations.Meta.Name, "internalOrganisation");
+            var internalOrganisation = new InternalOrganisations(this.DatabaseSession).FindBy(M.InternalOrganisation.Name, "internalOrganisation");
             this.supplier = new OrganisationBuilder(this.DatabaseSession).WithName("supplier").Build();
             this.supplier.AddPartyContactMechanism(supplierContactMechanism);
 
@@ -154,7 +154,7 @@ namespace Allors.Domain
                 .WithName("good")
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.DatabaseSession).Piece)
                 .WithInventoryItemKind(new InventoryItemKinds(this.DatabaseSession).NonSerialized)
-                .WithVatRate(new VatRates(this.DatabaseSession).FindBy(VatRates.Meta.Rate, 21))
+                .WithVatRate(new VatRates(this.DatabaseSession).FindBy(M.VatRate.Rate, 21))
                 .Build();
 
             var item = new PurchaseOrderItemBuilder(this.DatabaseSession)
@@ -210,13 +210,13 @@ namespace Allors.Domain
         [Test]
         public void GivenOrderItemForProduct_WhenDerivingPrices_ThenUseProductCurrentPurchasePrice()
         {
-            var euro = new Currencies(this.DatabaseSession).FindBy(Currencies.Meta.IsoCode, "EUR");
+            var euro = new Currencies(this.DatabaseSession).FindBy(M.Currency.IsoCode, "EUR");
 
             var good = new GoodBuilder(this.DatabaseSession)
                 .WithSku("10101")
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.DatabaseSession).Piece)
                 .WithInventoryItemKind(new InventoryItemKinds(this.DatabaseSession).NonSerialized)
-                .WithVatRate(new VatRates(this.DatabaseSession).FindBy(VatRates.Meta.Rate,21))
+                .WithVatRate(new VatRates(this.DatabaseSession).FindBy(M.VatRate.Rate,21))
                 .WithName("good")
                 .Build();
 
@@ -327,7 +327,7 @@ namespace Allors.Domain
                 .WithName("good")
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.DatabaseSession).Piece)
                 .WithInventoryItemKind(new InventoryItemKinds(this.DatabaseSession).NonSerialized)
-                .WithVatRate(new VatRates(this.DatabaseSession).FindBy(VatRates.Meta.Rate,21))
+                .WithVatRate(new VatRates(this.DatabaseSession).FindBy(M.VatRate.Rate,21))
                 .Build();
 
             Thread.CurrentPrincipal = new GenericPrincipal(new GenericIdentity("admin", "Forms"), new string[0]);
@@ -344,9 +344,9 @@ namespace Allors.Domain
 
             Assert.AreEqual(new PurchaseOrderItemObjectStates(this.DatabaseSession).Created, item.CurrentObjectState);
             var acl = new AccessControlList(item, new Users(this.DatabaseSession).GetCurrentUser());
-            Assert.IsTrue(acl.CanExecute(PurchaseOrderItems.Meta.Delete));
-            Assert.IsFalse(acl.CanExecute(PurchaseOrderItems.Meta.Cancel));
-            Assert.IsFalse(acl.CanExecute(PurchaseOrderItems.Meta.Reject));
+            Assert.IsTrue(acl.CanExecute(M.PurchaseOrderItem.Delete));
+            Assert.IsFalse(acl.CanExecute(M.PurchaseOrderItem.Cancel));
+            Assert.IsFalse(acl.CanExecute(M.PurchaseOrderItem.Reject));
         }
 
         [Test]
@@ -366,7 +366,7 @@ namespace Allors.Domain
                 .WithName("good")
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.DatabaseSession).Piece)
                 .WithInventoryItemKind(new InventoryItemKinds(this.DatabaseSession).NonSerialized)
-                .WithVatRate(new VatRates(this.DatabaseSession).FindBy(VatRates.Meta.Rate,21))
+                .WithVatRate(new VatRates(this.DatabaseSession).FindBy(M.VatRate.Rate,21))
                 .Build();
 
             Thread.CurrentPrincipal = new GenericPrincipal(new GenericIdentity("admin", "Forms"), new string[0]);
@@ -385,9 +385,9 @@ namespace Allors.Domain
 
             Assert.AreEqual(new PurchaseOrderItemObjectStates(this.DatabaseSession).InProcess, item.CurrentObjectState);
             var acl = new AccessControlList(item, new Users(this.DatabaseSession).GetCurrentUser());
-            Assert.IsTrue(acl.CanExecute(PurchaseOrderItems.Meta.Cancel));
-            Assert.IsTrue(acl.CanExecute(PurchaseOrderItems.Meta.Reject));
-            Assert.IsFalse(acl.CanExecute(PurchaseOrderItems.Meta.Delete));
+            Assert.IsTrue(acl.CanExecute(M.PurchaseOrderItem.Cancel));
+            Assert.IsTrue(acl.CanExecute(M.PurchaseOrderItem.Reject));
+            Assert.IsFalse(acl.CanExecute(M.PurchaseOrderItem.Delete));
         }
 
         [Test]
@@ -407,7 +407,7 @@ namespace Allors.Domain
                 .WithName("good")
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.DatabaseSession).Piece)
                 .WithInventoryItemKind(new InventoryItemKinds(this.DatabaseSession).NonSerialized)
-                .WithVatRate(new VatRates(this.DatabaseSession).FindBy(VatRates.Meta.Rate,21))
+                .WithVatRate(new VatRates(this.DatabaseSession).FindBy(M.VatRate.Rate,21))
                 .Build();
 
             Thread.CurrentPrincipal = new GenericPrincipal(new GenericIdentity("admin", "Forms"), new string[0]);
@@ -440,9 +440,9 @@ namespace Allors.Domain
 
             Assert.AreEqual(new PurchaseOrderItemObjectStates(this.DatabaseSession).PartiallyReceived, item.CurrentObjectState);
             var acl = new AccessControlList(item, new Users(this.DatabaseSession).GetCurrentUser());
-            Assert.IsFalse(acl.CanExecute(PurchaseOrderItems.Meta.Cancel));
-            Assert.IsFalse(acl.CanExecute(PurchaseOrderItems.Meta.Reject));
-            Assert.IsFalse(acl.CanExecute(PurchaseOrderItems.Meta.Delete));
+            Assert.IsFalse(acl.CanExecute(M.PurchaseOrderItem.Cancel));
+            Assert.IsFalse(acl.CanExecute(M.PurchaseOrderItem.Reject));
+            Assert.IsFalse(acl.CanExecute(M.PurchaseOrderItem.Delete));
         }
 
         [Test]
@@ -462,7 +462,7 @@ namespace Allors.Domain
                 .WithName("good")
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.DatabaseSession).Piece)
                 .WithInventoryItemKind(new InventoryItemKinds(this.DatabaseSession).NonSerialized)
-                .WithVatRate(new VatRates(this.DatabaseSession).FindBy(VatRates.Meta.Rate,21))
+                .WithVatRate(new VatRates(this.DatabaseSession).FindBy(M.VatRate.Rate,21))
                 .Build();
 
             Thread.CurrentPrincipal = new GenericPrincipal(new GenericIdentity("admin", "Forms"), new string[0]);
@@ -484,9 +484,9 @@ namespace Allors.Domain
 
             Assert.AreEqual(new PurchaseOrderItemObjectStates(this.DatabaseSession).Cancelled, item.CurrentObjectState);
             var acl = new AccessControlList(item, new Users(this.DatabaseSession).GetCurrentUser());
-            Assert.IsFalse(acl.CanExecute(PurchaseOrderItems.Meta.Cancel));
-            Assert.IsFalse(acl.CanExecute(PurchaseOrderItems.Meta.Reject));
-            Assert.IsFalse(acl.CanExecute(PurchaseOrderItems.Meta.Delete));
+            Assert.IsFalse(acl.CanExecute(M.PurchaseOrderItem.Cancel));
+            Assert.IsFalse(acl.CanExecute(M.PurchaseOrderItem.Reject));
+            Assert.IsFalse(acl.CanExecute(M.PurchaseOrderItem.Delete));
         }
 
         [Test]
@@ -506,7 +506,7 @@ namespace Allors.Domain
                 .WithName("good")
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.DatabaseSession).Piece)
                 .WithInventoryItemKind(new InventoryItemKinds(this.DatabaseSession).NonSerialized)
-                .WithVatRate(new VatRates(this.DatabaseSession).FindBy(VatRates.Meta.Rate,21))
+                .WithVatRate(new VatRates(this.DatabaseSession).FindBy(M.VatRate.Rate,21))
                 .Build();
 
             Thread.CurrentPrincipal = new GenericPrincipal(new GenericIdentity("admin", "Forms"), new string[0]);
@@ -527,9 +527,9 @@ namespace Allors.Domain
 
             Assert.AreEqual(new PurchaseOrderItemObjectStates(this.DatabaseSession).Rejected, item.CurrentObjectState);
             var acl = new AccessControlList(item, new Users(this.DatabaseSession).GetCurrentUser());
-            Assert.IsFalse(acl.CanExecute(PurchaseOrderItems.Meta.Cancel));
-            Assert.IsFalse(acl.CanExecute(PurchaseOrderItems.Meta.Reject));
-            Assert.IsFalse(acl.CanExecute(PurchaseOrderItems.Meta.Delete));
+            Assert.IsFalse(acl.CanExecute(M.PurchaseOrderItem.Cancel));
+            Assert.IsFalse(acl.CanExecute(M.PurchaseOrderItem.Reject));
+            Assert.IsFalse(acl.CanExecute(M.PurchaseOrderItem.Delete));
         }
 
         [Test]
@@ -549,7 +549,7 @@ namespace Allors.Domain
                 .WithName("good")
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.DatabaseSession).Piece)
                 .WithInventoryItemKind(new InventoryItemKinds(this.DatabaseSession).NonSerialized)
-                .WithVatRate(new VatRates(this.DatabaseSession).FindBy(VatRates.Meta.Rate,21))
+                .WithVatRate(new VatRates(this.DatabaseSession).FindBy(M.VatRate.Rate,21))
                 .Build();
 
             Thread.CurrentPrincipal = new GenericPrincipal(new GenericIdentity("admin", "Forms"), new string[0]);
@@ -582,9 +582,9 @@ namespace Allors.Domain
 
             Assert.AreEqual(new PurchaseOrderItemObjectStates(this.DatabaseSession).Completed, item.CurrentObjectState);
             var acl = new AccessControlList(item, new Users(this.DatabaseSession).GetCurrentUser());
-            Assert.IsFalse(acl.CanExecute(PurchaseOrderItems.Meta.Cancel));
-            Assert.IsFalse(acl.CanExecute(PurchaseOrderItems.Meta.Reject));
-            Assert.IsFalse(acl.CanExecute(PurchaseOrderItems.Meta.Delete));
+            Assert.IsFalse(acl.CanExecute(M.PurchaseOrderItem.Cancel));
+            Assert.IsFalse(acl.CanExecute(M.PurchaseOrderItem.Reject));
+            Assert.IsFalse(acl.CanExecute(M.PurchaseOrderItem.Delete));
         }
 
         [Test]
@@ -604,7 +604,7 @@ namespace Allors.Domain
                 .WithName("good")
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.DatabaseSession).Piece)
                 .WithInventoryItemKind(new InventoryItemKinds(this.DatabaseSession).NonSerialized)
-                .WithVatRate(new VatRates(this.DatabaseSession).FindBy(VatRates.Meta.Rate,21))
+                .WithVatRate(new VatRates(this.DatabaseSession).FindBy(M.VatRate.Rate,21))
                 .Build();
 
             Thread.CurrentPrincipal = new GenericPrincipal(new GenericIdentity("admin", "Forms"), new string[0]);
@@ -623,9 +623,9 @@ namespace Allors.Domain
 
             Assert.AreEqual(new PurchaseOrderItemObjectStates(this.DatabaseSession).Finished, item.CurrentObjectState);
             var acl = new AccessControlList(item, new Users(this.DatabaseSession).GetCurrentUser());
-            Assert.IsFalse(acl.CanExecute(PurchaseOrderItems.Meta.Cancel));
-            Assert.IsFalse(acl.CanExecute(PurchaseOrderItems.Meta.Reject));
-            Assert.IsFalse(acl.CanExecute(PurchaseOrderItems.Meta.Delete));
+            Assert.IsFalse(acl.CanExecute(M.PurchaseOrderItem.Cancel));
+            Assert.IsFalse(acl.CanExecute(M.PurchaseOrderItem.Reject));
+            Assert.IsFalse(acl.CanExecute(M.PurchaseOrderItem.Delete));
         }
 
         [Test]
@@ -645,7 +645,7 @@ namespace Allors.Domain
                 .WithName("good")
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.DatabaseSession).Piece)
                 .WithInventoryItemKind(new InventoryItemKinds(this.DatabaseSession).NonSerialized)
-                .WithVatRate(new VatRates(this.DatabaseSession).FindBy(VatRates.Meta.Rate,21))
+                .WithVatRate(new VatRates(this.DatabaseSession).FindBy(M.VatRate.Rate,21))
                 .Build();
 
             Thread.CurrentPrincipal = new GenericPrincipal(new GenericIdentity("admin", "Forms"), new string[0]);
@@ -678,7 +678,7 @@ namespace Allors.Domain
 
             Assert.AreEqual(new PurchaseOrderItemObjectStates(this.DatabaseSession).PartiallyReceived, item.CurrentObjectState);
             var acl = new AccessControlList(item, new Users(this.DatabaseSession).GetCurrentUser());
-            Assert.IsFalse(acl.CanWrite(PurchaseOrderItems.Meta.Product));
+            Assert.IsFalse(acl.CanWrite(M.PurchaseOrderItem.Product));
         }
 
         [Test]
@@ -691,7 +691,7 @@ namespace Allors.Domain
                 .WithName("good")
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.DatabaseSession).Piece)
                 .WithInventoryItemKind(new InventoryItemKinds(this.DatabaseSession).NonSerialized)
-                .WithVatRate(new VatRates(this.DatabaseSession).FindBy(VatRates.Meta.Rate,21))
+                .WithVatRate(new VatRates(this.DatabaseSession).FindBy(M.VatRate.Rate,21))
                 .Build();
 
             var item = new PurchaseOrderItemBuilder(this.DatabaseSession)
@@ -717,7 +717,7 @@ namespace Allors.Domain
                 .WithName("good")
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.DatabaseSession).Piece)
                 .WithInventoryItemKind(new InventoryItemKinds(this.DatabaseSession).NonSerialized)
-                .WithVatRate(new VatRates(this.DatabaseSession).FindBy(VatRates.Meta.Rate,21))
+                .WithVatRate(new VatRates(this.DatabaseSession).FindBy(M.VatRate.Rate,21))
                 .Build();
 
             var item = new PurchaseOrderItemBuilder(this.DatabaseSession)

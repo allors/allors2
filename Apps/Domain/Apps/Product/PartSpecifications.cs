@@ -20,13 +20,15 @@
 
 namespace Allors.Domain
 {
+    using Meta;
+
     public partial class PartSpecifications
     {
         protected override void AppsPrepare(Setup setup)
         {
             base.AppsPrepare(setup);
 
-            setup.AddDependency(this.ObjectType, PartSpecificationObjectStates.Meta.ObjectType);
+            setup.AddDependency(this.ObjectType, M.PartSpecificationObjectState);
         }
 
         protected override void AppsSecure(Security config)

@@ -22,16 +22,16 @@ namespace Allors.Domain
 {
     using System;
     using System.Collections.Generic;
-
-
+    using Meta;
+    
     public partial class StoreRevenues
     {
         public static StoreRevenue AppsFindOrCreateAsDependable(ISession session, SalesInvoice invoice)
         {
             var storeRevenues = invoice.Store.StoreRevenuesWhereStore;
-            storeRevenues.Filter.AddEquals(Meta.InternalOrganisation, invoice.BilledFromInternalOrganisation);
-            storeRevenues.Filter.AddEquals(Meta.Year, invoice.InvoiceDate.Year);
-            storeRevenues.Filter.AddEquals(Meta.Month, invoice.InvoiceDate.Month);
+            storeRevenues.Filter.AddEquals(M.StoreRevenue.InternalOrganisation, invoice.BilledFromInternalOrganisation);
+            storeRevenues.Filter.AddEquals(M.StoreRevenue.Year, invoice.InvoiceDate.Year);
+            storeRevenues.Filter.AddEquals(M.StoreRevenue.Month, invoice.InvoiceDate.Month);
             var storeRevenue = storeRevenues.First ?? new StoreRevenueBuilder(session)
                                                             .WithInternalOrganisation(invoice.BilledFromInternalOrganisation)
                                                             .WithStore((Store)session.Instantiate(invoice.Store))

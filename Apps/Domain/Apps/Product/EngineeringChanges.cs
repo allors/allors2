@@ -20,13 +20,15 @@
 
 namespace Allors.Domain
 {
+    using Meta;
+
     public partial class EngineeringChanges
     {
         protected override void AppsPrepare(Setup setup)
         {
             base.AppsPrepare(setup);
 
-            setup.AddDependency(this.ObjectType, EngineeringChangeObjectStates.Meta.ObjectType);
+            setup.AddDependency(this.ObjectType, M.EngineeringChangeObjectState);
         }
 
         protected override void AppsSecure(Security config)

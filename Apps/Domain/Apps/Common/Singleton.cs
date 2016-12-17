@@ -171,7 +171,7 @@ namespace Allors.Domain
 
             SalesRepRelationships.DeriveCommissions(this.Strategy.Session);
             this.Strategy.Session.Commit();
-            Persons.AppsOnDeriveCommissions(this.Strategy.Session);
+            People.AppsOnDeriveCommissions(this.Strategy.Session);
             this.Strategy.Session.Commit();
 
             this.AppsOnDeriveHistories();

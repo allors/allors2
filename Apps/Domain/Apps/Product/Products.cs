@@ -22,6 +22,7 @@ namespace Allors.Domain
 {
     using System;
     using System.Collections.Generic;
+    using Meta;
 
     public partial class Products
     {
@@ -70,13 +71,13 @@ namespace Allors.Domain
             }
 
             var partyRevenueHistories = party.PartyRevenueHistoriesWhereParty;
-            partyRevenueHistories.Filter.AddEquals(PartyRevenueHistories.Meta.InternalOrganisation, internalOrganisation);
+            partyRevenueHistories.Filter.AddEquals(M.PartyRevenueHistory.InternalOrganisation, internalOrganisation);
             var partyRevenueHistory = partyRevenueHistories.First;
 
             var partyProductCategoryRevenueHistoryByProductCategory = PartyProductCategoryRevenueHistories.PartyProductCategoryRevenueHistoryByProductCategory(internalOrganisation, party);
 
             var partyPackageRevenuesHistories = party.PartyPackageRevenueHistoriesWhereParty;
-            partyPackageRevenuesHistories.Filter.AddEquals(PartyPackageRevenueHistories.Meta.InternalOrganisation, internalOrganisation);
+            partyPackageRevenuesHistories.Filter.AddEquals(M.PartyPackageRevenueHistory.InternalOrganisation, internalOrganisation);
 
             var priceComponents = GetPriceComponents(internalOrganisation, product, date);
 
@@ -85,7 +86,7 @@ namespace Allors.Domain
 
             foreach (var priceComponent in priceComponents)
             {
-                if (priceComponent.Strategy.Class.Equals(DiscountComponents.Meta.ObjectType) || priceComponent.Strategy.Class.Equals(SurchargeComponents.Meta.ObjectType))
+                if (priceComponent.Strategy.Class.Equals(M.DiscountComponent.ObjectType) || priceComponent.Strategy.Class.Equals(M.SurchargeComponent.ObjectType))
                 {
                     if (PriceComponents.AppsIsEligible(new PriceComponents.IsEligibleParams
                                                            {
@@ -99,7 +100,7 @@ namespace Allors.Domain
                                                                PartyProductCategoryRevenueHistoryByProductCategory = partyProductCategoryRevenueHistoryByProductCategory,
                                                            }))
                     {
-                        if (priceComponent.Strategy.Class.Equals(DiscountComponents.Meta.ObjectType))
+                        if (priceComponent.Strategy.Class.Equals(M.DiscountComponent.ObjectType))
                         {
                             var discountComponent = (DiscountComponent)priceComponent;
                             decimal discount;
@@ -138,7 +139,7 @@ namespace Allors.Domain
                             }
                         }
 
-                        if (priceComponent.Strategy.Class.Equals(SurchargeComponents.Meta.ObjectType))
+                        if (priceComponent.Strategy.Class.Equals(M.SurchargeComponent.ObjectType))
                         {
                             var surchargeComponent = (SurchargeComponent)priceComponent;
                             decimal surcharge;

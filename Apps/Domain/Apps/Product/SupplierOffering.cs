@@ -20,14 +20,16 @@
 
 namespace Allors.Domain
 {
+    using Meta;
+
     public partial class SupplierOffering
     {
         public void AppsOnDerive(ObjectOnDerive method)
         {
             var derivation = method.Derivation;
 
-            derivation.Validation.AssertAtLeastOne(this, SupplierOfferings.Meta.Part, SupplierOfferings.Meta.Product);
-            derivation.Validation.AssertExistsAtMostOne(this, SupplierOfferings.Meta.Part, SupplierOfferings.Meta.Product);
+            derivation.Validation.AssertAtLeastOne(this, M.SupplierOffering.Part, M.SupplierOffering.Product);
+            derivation.Validation.AssertExistsAtMostOne(this, M.SupplierOffering.Part, M.SupplierOffering.Product);
 
             this.AppsOnDeriveInventoryItem(derivation);
         }
@@ -50,7 +52,7 @@ namespace Allors.Domain
                         foreach (Facility facility in supplierRelationship.InternalOrganisation.FacilitiesWhereOwner)
                         {
                             var inventoryItems = good.InventoryItemsWhereGood;
-                            inventoryItems.Filter.AddEquals(InventoryItems.Meta.Facility, facility);
+                            inventoryItems.Filter.AddEquals(M.InventoryItem.Facility, facility);
                             var inventoryItem = inventoryItems.First;
 
                             if (inventoryItem == null)
@@ -71,7 +73,7 @@ namespace Allors.Domain
                             foreach (Facility facility in supplierRelationship.InternalOrganisation.FacilitiesWhereOwner)
                             {
                                 var inventoryItems = good.FinishedGood.InventoryItemsWherePart;
-                                inventoryItems.Filter.AddEquals(InventoryItems.Meta.Facility, facility);
+                                inventoryItems.Filter.AddEquals(M.InventoryItem.Facility, facility);
                                 var inventoryItem = inventoryItems.First;
 
                                 if (inventoryItem == null)

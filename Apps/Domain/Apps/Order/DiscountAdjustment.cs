@@ -20,6 +20,8 @@
 
 namespace Allors.Domain
 {
+    using Meta;
+
     public partial class DiscountAdjustment
     {
         public void AppsOnPreDerive(ObjectOnPreDerive method)
@@ -63,8 +65,8 @@ namespace Allors.Domain
         {
             var derivation = method.Derivation;
 
-            derivation.Validation.AssertAtLeastOne(this, DiscountAdjustments.Meta.Amount, DiscountAdjustments.Meta.Percentage);
-            derivation.Validation.AssertExistsAtMostOne(this, DiscountAdjustments.Meta.Amount, DiscountAdjustments.Meta.Percentage);
+            derivation.Validation.AssertAtLeastOne(this, M.DiscountAdjustment.Amount, M.DiscountAdjustment.Percentage);
+            derivation.Validation.AssertExistsAtMostOne(this, M.DiscountAdjustment.Amount, M.DiscountAdjustment.Percentage);
         }
     }
 }

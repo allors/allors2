@@ -22,6 +22,7 @@ namespace Allors.Domain
 {
     using System;
     using System.Collections.Generic;
+    using Meta;
 
     public partial class CustomerShipment
     {
@@ -42,8 +43,8 @@ namespace Allors.Domain
                 }
 
                 var picklists = this.ShipToParty.PickListsWhereShipToParty;
-                picklists.Filter.AddEquals(PickLists.Meta.Store, this.Store);
-                picklists.Filter.AddNot().AddEquals(PickLists.Meta.CurrentObjectState, new PickListObjectStates(this.Strategy.Session).Picked);
+                picklists.Filter.AddEquals(M.PickList.Store, this.Store);
+                picklists.Filter.AddNot().AddEquals(M.PickList.CurrentObjectState, new PickListObjectStates(this.Strategy.Session).Picked);
                 if (picklists.First != null)
                 {
                     return false;
@@ -74,7 +75,7 @@ namespace Allors.Domain
             get
             {
                 var picklists = this.ShipToParty.PickListsWhereShipToParty;
-                picklists.Filter.AddNot().AddExists(PickLists.Meta.Picker);
+                picklists.Filter.AddNot().AddExists(M.PickList.Picker);
 
                 PickList pendingPickList = null;
                 foreach (PickList picklist in picklists)
@@ -214,7 +215,7 @@ namespace Allors.Domain
         public void AppsOnPostDerive(ObjectOnPostDerive method)
         {
             this.RemoveSecurityTokens();
-            this.AddSecurityToken(Domain.Singleton.Instance(this.Strategy.Session).DefaultSecurityToken);
+            this.AddSecurityToken(Singleton.Instance(this.Strategy.Session).DefaultSecurityToken);
 
             if (this.ExistShipFromParty)
             {
@@ -427,7 +428,7 @@ namespace Allors.Domain
                             pickListItem.RequestedQuantity += shipmentItem.Quantity;
 
                             var itemIssuances = pickListItem.ItemIssuancesWherePickListItem;
-                            itemIssuances.Filter.AddEquals(ItemIssuances.Meta.ShipmentItem, shipmentItem);
+                            itemIssuances.Filter.AddEquals(M.ItemIssuance.ShipmentItem, shipmentItem);
                             itemIssuances.First.Quantity = shipmentItem.Quantity;
                         }
                         else

@@ -22,7 +22,7 @@ namespace Allors.Domain
 {
     using System;
     using System.Collections.Generic;
-    using System.Globalization;
+    using Meta;
     using Resources;
 
     public partial class PurchaseOrder
@@ -116,7 +116,7 @@ namespace Allors.Domain
                 if (supplier != null)
                 {
                     var supplierRelationships = supplier.SupplierRelationshipsWhereSupplier;
-                    supplierRelationships.Filter.AddEquals(SupplierRelationships.Meta.InternalOrganisation, this.ShipToBuyer);
+                    supplierRelationships.Filter.AddEquals(M.SupplierRelationship.InternalOrganisation, this.ShipToBuyer);
 
                     foreach (SupplierRelationship supplierRelationship in supplierRelationships)
                     {
@@ -143,7 +143,7 @@ namespace Allors.Domain
             {
                 if (!this.ShipToBuyer.Equals(supplier.InternalOrganisationWhereSupplier))
                 {
-                    derivation.Validation.AddError(this, PurchaseOrders.Meta.TakenViaSupplier, ErrorMessages.PartyIsNotASupplier);
+                    derivation.Validation.AddError(this, M.PurchaseOrder.TakenViaSupplier, ErrorMessages.PartyIsNotASupplier);
                 }
             }
 

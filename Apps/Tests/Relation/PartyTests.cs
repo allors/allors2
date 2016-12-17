@@ -24,6 +24,7 @@
 namespace Allors.Domain
 {
     using System;
+    using Meta;
     using NUnit.Framework;
 
     [TestFixture]
@@ -84,7 +85,7 @@ namespace Allors.Domain
         public void GivenPartyWithOpenOrders_WhenDeriving_ThenOpenOrderAmountIsUpdated()
         {
             var organisation = new OrganisationBuilder(this.DatabaseSession).WithName("customer").Build();
-            var internalOrganisation = new InternalOrganisations(this.DatabaseSession).FindBy(InternalOrganisations.Meta.Name, "internalOrganisation");
+            var internalOrganisation = new InternalOrganisations(this.DatabaseSession).FindBy(M.InternalOrganisation.Name, "internalOrganisation");
             new CustomerRelationshipBuilder(this.DatabaseSession).WithCustomer(organisation).WithInternalOrganisation(internalOrganisation).Build();
 
             var mechelen = new CityBuilder(this.DatabaseSession).WithName("Mechelen").Build();
@@ -138,7 +139,7 @@ namespace Allors.Domain
         public void GivenPartyWithRevenue_WhenDeriving_ThenTotalRevenuesAreUpdated()
         {
             var customer = new OrganisationBuilder(this.DatabaseSession).WithName("customer").Build();
-            var internalOrganisation = new InternalOrganisations(this.DatabaseSession).FindBy(InternalOrganisations.Meta.Name, "internalOrganisation");
+            var internalOrganisation = new InternalOrganisations(this.DatabaseSession).FindBy(M.InternalOrganisation.Name, "internalOrganisation");
             var productItem = new SalesInvoiceItemTypes(this.DatabaseSession).ProductItem;
             var contactMechanism = new ContactMechanisms(this.DatabaseSession).Extent().First;
 

@@ -22,6 +22,7 @@ namespace Allors.Domain
 {
     using System;
     using System.Collections.Generic;
+    using Meta;
 
 
     public partial class PartyProductCategoryRevenueHistories
@@ -149,7 +150,7 @@ namespace Allors.Domain
             var partyProductCategoryRevenueHistoryByProductCategory = new Dictionary<ProductCategory, PartyProductCategoryRevenueHistory>();
 
             var partyProductCategoryRevenueHistories = party.PartyProductCategoryRevenueHistoriesWhereParty;
-            partyProductCategoryRevenueHistories.Filter.AddEquals(PartyProductCategoryRevenueHistories.Meta.InternalOrganisation, internalOrganisation);
+            partyProductCategoryRevenueHistories.Filter.AddEquals(M.ProductCategoryRevenueHistory.InternalOrganisation, internalOrganisation);
 
             foreach (PartyProductCategoryRevenueHistory partyProductCategoryRevenueHistory in partyProductCategoryRevenueHistories)
             {

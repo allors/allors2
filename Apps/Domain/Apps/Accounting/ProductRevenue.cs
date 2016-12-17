@@ -21,6 +21,7 @@
 namespace Allors.Domain
 {
     using System;
+    using Meta;
 
     public partial class ProductRevenue
     {
@@ -38,9 +39,9 @@ namespace Allors.Domain
             this.Revenue = 0;
 
             var partyProductRevenues = this.Product.PartyProductRevenuesWhereProduct;
-            partyProductRevenues.Filter.AddEquals(PartyProductRevenues.Meta.InternalOrganisation, this.InternalOrganisation);
-            partyProductRevenues.Filter.AddEquals(PartyProductRevenues.Meta.Year, this.Year);
-            partyProductRevenues.Filter.AddEquals(PartyProductRevenues.Meta.Month, this.Month);
+            partyProductRevenues.Filter.AddEquals(M.PartyProductRevenue.InternalOrganisation, this.InternalOrganisation);
+            partyProductRevenues.Filter.AddEquals(M.PartyProductRevenue.Year, this.Year);
+            partyProductRevenues.Filter.AddEquals(M.PartyProductRevenue.Month, this.Month);
 
             foreach (PartyProductRevenue partyProductRevenue in partyProductRevenues)
             {
@@ -51,7 +52,7 @@ namespace Allors.Domain
             if (months <= 12)
             {
                 var histories = this.Product.ProductRevenueHistoriesWhereProduct;
-                histories.Filter.AddEquals(ProductRevenueHistories.Meta.InternalOrganisation, this.InternalOrganisation);
+                histories.Filter.AddEquals(M.ProductRevenueHistory.InternalOrganisation, this.InternalOrganisation);
                 var history = histories.First ?? new ProductRevenueHistoryBuilder(this.Strategy.Session)
                                                      .WithCurrency(this.Currency)
                                                      .WithInternalOrganisation(this.InternalOrganisation)

@@ -24,7 +24,7 @@ namespace Allors.Domain
     using System;
     using System.Security.Principal;
     using System.Threading;
-
+    using Meta;
     using NUnit.Framework;
 
     [TestFixture]
@@ -105,7 +105,7 @@ namespace Allors.Domain
                 .WithUseAsDefault(true)
                 .Build();
 
-            var internalOrganisation = new InternalOrganisations(this.DatabaseSession).FindBy(InternalOrganisations.Meta.Name, "internalOrganisation");
+            var internalOrganisation = new InternalOrganisations(this.DatabaseSession).FindBy(M.InternalOrganisation.Name, "internalOrganisation");
             internalOrganisation.AddPartyContactMechanism(partyContactMechanism);
 
             this.DatabaseSession.Derive(true);
@@ -120,10 +120,10 @@ namespace Allors.Domain
             this.DatabaseSession.Derive(true);
 
             Assert.AreEqual(new CustomerShipmentObjectStates(this.DatabaseSession).Created, shipment.CurrentObjectState);
-            Assert.AreEqual(new InternalOrganisations(this.DatabaseSession).FindBy(InternalOrganisations.Meta.Name, "internalOrganisation"), shipment.ShipFromParty);
+            Assert.AreEqual(new InternalOrganisations(this.DatabaseSession).FindBy(M.InternalOrganisation.Name, "internalOrganisation"), shipment.ShipFromParty);
             Assert.AreEqual(shipFromAddress, shipment.ShipFromAddress);
             Assert.AreEqual(shipment.ShipFromParty, shipment.ShipFromParty);
-            Assert.AreEqual(new Stores(this.DatabaseSession).FindBy(Stores.Meta.Name, "store"), shipment.Store);
+            Assert.AreEqual(new Stores(this.DatabaseSession).FindBy(M.Store.Name, "store"), shipment.Store);
         }
 
         [Test]
@@ -175,8 +175,8 @@ namespace Allors.Domain
             var mechelen = new CityBuilder(this.DatabaseSession).WithName("Mechelen").Build();
 
             var store = new StoreBuilder(this.DatabaseSession).WithName("store")
-                .WithDefaultFacility(new Warehouses(this.DatabaseSession).FindBy(Warehouses.Meta.Name, "facility"))
-                .WithOwner(new InternalOrganisations(this.DatabaseSession).FindBy(InternalOrganisations.Meta.Name, "internalOrganisation"))
+                .WithDefaultFacility(new Warehouses(this.DatabaseSession).FindBy(M.Warehouse.Name, "facility"))
+                .WithOwner(new InternalOrganisations(this.DatabaseSession).FindBy(M.InternalOrganisation.Name, "internalOrganisation"))
                 .WithDefaultShipmentMethod(new ShipmentMethods(this.DatabaseSession).Ground)
                 .WithDefaultCarrier(new Carriers(this.DatabaseSession).Fedex)
                 .Build();
@@ -207,8 +207,8 @@ namespace Allors.Domain
             var mechelen = new CityBuilder(this.DatabaseSession).WithName("Mechelen").Build();
 
             var store = new StoreBuilder(this.DatabaseSession).WithName("store")
-                .WithDefaultFacility(new Warehouses(this.DatabaseSession).FindBy(Warehouses.Meta.Name, "facility"))
-                .WithOwner(new InternalOrganisations(this.DatabaseSession).FindBy(InternalOrganisations.Meta.Name, "internalOrganisation"))
+                .WithDefaultFacility(new Warehouses(this.DatabaseSession).FindBy(M.Warehouse.Name, "facility"))
+                .WithOwner(new InternalOrganisations(this.DatabaseSession).FindBy(M.InternalOrganisation.Name, "internalOrganisation"))
                 .WithOutgoingShipmentNumberPrefix("the format is ")
                 .WithDefaultShipmentMethod(new ShipmentMethods(this.DatabaseSession).Ground)
                 .WithDefaultCarrier(new Carriers(this.DatabaseSession).Fedex)
@@ -268,7 +268,7 @@ namespace Allors.Domain
         {
             var mechelen = new CityBuilder(this.DatabaseSession).WithName("Mechelen").Build();
             var orderProcessor2 = new PersonBuilder(this.DatabaseSession).WithLastName("orderProcessor2").WithUserName("orderProcessor2").Build();
-            var internalOrganisation = new InternalOrganisations(this.DatabaseSession).FindBy(InternalOrganisations.Meta.Name, "internalOrganisation");
+            var internalOrganisation = new InternalOrganisations(this.DatabaseSession).FindBy(M.InternalOrganisation.Name, "internalOrganisation");
 
             var shipToAddress = new PostalAddressBuilder(this.DatabaseSession).WithGeographicBoundary(mechelen).WithAddress1("Haverwerf 15").Build();
 
@@ -299,16 +299,16 @@ namespace Allors.Domain
 
             var acl = new AccessControlList(shipment, new Users(this.DatabaseSession).GetCurrentUser());
 
-            Assert.IsTrue(acl.CanWrite(CustomerShipments.Meta.ShipToParty));
-            Assert.IsTrue(acl.CanRead(CustomerShipments.Meta.ShipToParty));
-            Assert.IsTrue(acl.CanExecute(CustomerShipments.Meta.Cancel));
+            Assert.IsTrue(acl.CanWrite(M.CustomerShipment.ShipToParty));
+            Assert.IsTrue(acl.CanRead(M.CustomerShipment.ShipToParty));
+            Assert.IsTrue(acl.CanExecute(M.CustomerShipment.Cancel));
 
             Thread.CurrentPrincipal = new GenericPrincipal(new GenericIdentity("orderProcessor2", "Forms"), new string[0]);
             acl = new AccessControlList(shipment, new Users(this.DatabaseSession).GetCurrentUser());
 
-            Assert.IsTrue(acl.CanWrite(CustomerShipments.Meta.ShipToParty));
-            Assert.IsTrue(acl.CanRead(CustomerShipments.Meta.ShipToParty));
-            Assert.IsTrue(acl.CanExecute(CustomerShipments.Meta.Cancel));
+            Assert.IsTrue(acl.CanWrite(M.CustomerShipment.ShipToParty));
+            Assert.IsTrue(acl.CanRead(M.CustomerShipment.ShipToParty));
+            Assert.IsTrue(acl.CanExecute(M.CustomerShipment.Cancel));
         }
 
         [Test]
@@ -323,7 +323,7 @@ namespace Allors.Domain
 
             new CustomerRelationshipBuilder(this.DatabaseSession)
                 .WithCustomer(customer)
-                .WithInternalOrganisation(new InternalOrganisations(this.DatabaseSession).FindBy(InternalOrganisations.Meta.Name, "internalOrganisation"))
+                .WithInternalOrganisation(new InternalOrganisations(this.DatabaseSession).FindBy(M.InternalOrganisation.Name, "internalOrganisation"))
                 .WithFromDate(DateTime.UtcNow)
                 .Build();
 
@@ -331,7 +331,7 @@ namespace Allors.Domain
 
             new EmploymentBuilder(this.DatabaseSession)
                 .WithEmployee(employee)
-                .WithEmployer(new InternalOrganisations(this.DatabaseSession).FindBy(InternalOrganisations.Meta.Name, "internalOrganisation"))
+                .WithEmployer(new InternalOrganisations(this.DatabaseSession).FindBy(M.InternalOrganisation.Name, "internalOrganisation"))
                 .WithFromDate(DateTime.UtcNow)
                 .Build();
 
@@ -349,16 +349,16 @@ namespace Allors.Domain
 
             var acl = new AccessControlList(shipment, new Users(this.DatabaseSession).GetCurrentUser());
 
-            Assert.IsTrue(acl.CanWrite(CustomerShipments.Meta.ShipToParty));
-            Assert.IsTrue(acl.CanRead(CustomerShipments.Meta.ShipToParty));
-            Assert.IsTrue(acl.CanExecute(CustomerShipments.Meta.Cancel));
+            Assert.IsTrue(acl.CanWrite(M.CustomerShipment.ShipToParty));
+            Assert.IsTrue(acl.CanRead(M.CustomerShipment.ShipToParty));
+            Assert.IsTrue(acl.CanExecute(M.CustomerShipment.Cancel));
 
             Thread.CurrentPrincipal = new GenericPrincipal(new GenericIdentity("customercontact", "Forms"), new string[0]);
             acl = new AccessControlList(shipment, new Users(this.DatabaseSession).GetCurrentUser());
 
-            Assert.IsFalse(acl.CanWrite(CustomerShipments.Meta.ShipToParty));
-            Assert.IsTrue(acl.CanRead(CustomerShipments.Meta.ShipToParty));
-            Assert.IsFalse(acl.CanExecute(CustomerShipments.Meta.Cancel));
+            Assert.IsFalse(acl.CanWrite(M.CustomerShipment.ShipToParty));
+            Assert.IsTrue(acl.CanRead(M.CustomerShipment.ShipToParty));
+            Assert.IsFalse(acl.CanExecute(M.CustomerShipment.Cancel));
         }
 
         [Test]
@@ -380,7 +380,7 @@ namespace Allors.Domain
             this.DatabaseSession.Derive(true);
 
             var acl = new AccessControlList(shipment, new Users(this.DatabaseSession).GetCurrentUser());
-            Assert.IsTrue(acl.CanExecute(CustomerShipments.Meta.Cancel));
+            Assert.IsTrue(acl.CanExecute(M.CustomerShipment.Cancel));
         }
 
         [Test]
@@ -404,7 +404,7 @@ namespace Allors.Domain
             this.DatabaseSession.Derive(true);
 
             var acl = new AccessControlList(shipment, new Users(this.DatabaseSession).GetCurrentUser());
-            Assert.IsFalse(acl.CanExecute(CustomerShipments.Meta.Cancel));
+            Assert.IsFalse(acl.CanExecute(M.CustomerShipment.Cancel));
         }
 
         [Test]
@@ -441,7 +441,7 @@ namespace Allors.Domain
                 .Build();
 
             var customer = new PersonBuilder(this.DatabaseSession).WithLastName("customer").WithPartyContactMechanism(shipToMechelen).WithPartyContactMechanism(billToMechelen).Build();
-            var internalOrganisation = new InternalOrganisations(this.DatabaseSession).FindBy(InternalOrganisations.Meta.Name, "internalOrganisation");
+            var internalOrganisation = new InternalOrganisations(this.DatabaseSession).FindBy(M.InternalOrganisation.Name, "internalOrganisation");
             new CustomerRelationshipBuilder(this.DatabaseSession).WithFromDate(DateTime.UtcNow).WithCustomer(customer).WithInternalOrganisation(internalOrganisation).Build();
 
             this.DatabaseSession.Derive(true);
@@ -464,7 +464,7 @@ namespace Allors.Domain
             var shipment = (CustomerShipment)item1.OrderShipmentsWhereSalesOrderItem[0].ShipmentItem.ShipmentWhereShipmentItem;
             
             var pickList = shipment.ShipmentItems[0].ItemIssuancesWhereShipmentItem[0].PickListItem.PickListWherePickListItem;
-            pickList.Picker = new Persons(this.DatabaseSession).FindBy(Persons.Meta.LastName, "orderProcessor");
+            pickList.Picker = new People(this.DatabaseSession).FindBy(M.Person.LastName, "orderProcessor");
 
             pickList.SetPicked();
 
@@ -482,8 +482,8 @@ namespace Allors.Domain
 
             var acl = new AccessControlList(shipment, new Users(this.DatabaseSession).GetCurrentUser());
             Assert.AreEqual(new CustomerShipmentObjectStates(this.DatabaseSession).Shipped, shipment.CurrentObjectState);
-            Assert.IsFalse(acl.CanExecute(CustomerShipments.Meta.Cancel));
-            Assert.IsFalse(acl.CanWrite(CustomerShipments.Meta.HandlingInstruction));
+            Assert.IsFalse(acl.CanExecute(M.CustomerShipment.Cancel));
+            Assert.IsFalse(acl.CanWrite(M.CustomerShipment.HandlingInstruction));
         }
 
         [Test]
@@ -498,7 +498,7 @@ namespace Allors.Domain
                 .Build();
 
             var customer = new PersonBuilder(this.DatabaseSession).WithLastName("customer").WithPartyContactMechanism(shipToMechelen).Build();
-            var internalOrganisation = new InternalOrganisations(this.DatabaseSession).FindBy(InternalOrganisations.Meta.Name, "internalOrganisation");
+            var internalOrganisation = new InternalOrganisations(this.DatabaseSession).FindBy(M.InternalOrganisation.Name, "internalOrganisation");
             new CustomerRelationshipBuilder(this.DatabaseSession).WithFromDate(DateTime.UtcNow).WithCustomer(customer).WithInternalOrganisation(internalOrganisation).Build();
 
             var vatRate21 = new VatRateBuilder(this.DatabaseSession).WithRate(21).Build();
@@ -658,7 +658,7 @@ namespace Allors.Domain
                 .Build();
 
             var customer = new PersonBuilder(this.DatabaseSession).WithLastName("customer").WithPartyContactMechanism(shipToMechelen).Build();
-            var internalOrganisation = new InternalOrganisations(this.DatabaseSession).FindBy(InternalOrganisations.Meta.Name, "internalOrganisation");
+            var internalOrganisation = new InternalOrganisations(this.DatabaseSession).FindBy(M.InternalOrganisation.Name, "internalOrganisation");
             new CustomerRelationshipBuilder(this.DatabaseSession).WithFromDate(DateTime.UtcNow).WithCustomer(customer).WithInternalOrganisation(internalOrganisation).Build();
 
             this.DatabaseSession.Derive(true);
@@ -720,7 +720,7 @@ namespace Allors.Domain
                 .Build();
 
             var customer = new PersonBuilder(this.DatabaseSession).WithLastName("customer").WithPartyContactMechanism(shipToMechelen).Build();
-            var internalOrganisation = new InternalOrganisations(this.DatabaseSession).FindBy(InternalOrganisations.Meta.Name, "internalOrganisation");
+            var internalOrganisation = new InternalOrganisations(this.DatabaseSession).FindBy(M.InternalOrganisation.Name, "internalOrganisation");
             new CustomerRelationshipBuilder(this.DatabaseSession).WithFromDate(DateTime.UtcNow).WithCustomer(customer).WithInternalOrganisation(internalOrganisation).Build();
 
             this.DatabaseSession.Derive(true);
@@ -772,7 +772,7 @@ namespace Allors.Domain
                 .Build();
 
             var customer = new PersonBuilder(this.DatabaseSession).WithLastName("customer").WithPartyContactMechanism(shipToMechelen).Build();
-            var internalOrganisation = new InternalOrganisations(this.DatabaseSession).FindBy(InternalOrganisations.Meta.Name, "internalOrganisation");
+            var internalOrganisation = new InternalOrganisations(this.DatabaseSession).FindBy(M.InternalOrganisation.Name, "internalOrganisation");
             new CustomerRelationshipBuilder(this.DatabaseSession).WithFromDate(DateTime.UtcNow).WithCustomer(customer).WithInternalOrganisation(internalOrganisation).Build();
 
             this.DatabaseSession.Derive(true);
@@ -833,7 +833,7 @@ namespace Allors.Domain
                 .Build();
 
             var customer = new PersonBuilder(this.DatabaseSession).WithLastName("customer").WithPartyContactMechanism(shipToMechelen).Build();
-            var internalOrganisation = new InternalOrganisations(this.DatabaseSession).FindBy(InternalOrganisations.Meta.Name, "internalOrganisation");
+            var internalOrganisation = new InternalOrganisations(this.DatabaseSession).FindBy(M.InternalOrganisation.Name, "internalOrganisation");
             new CustomerRelationshipBuilder(this.DatabaseSession).WithFromDate(DateTime.UtcNow).WithCustomer(customer).WithInternalOrganisation(internalOrganisation).Build();
 
             this.DatabaseSession.Derive(true);
@@ -890,7 +890,7 @@ namespace Allors.Domain
                 .Build();
 
             var customer = new PersonBuilder(this.DatabaseSession).WithLastName("customer").WithPartyContactMechanism(shipToMechelen).Build();
-            var internalOrganisation = new InternalOrganisations(this.DatabaseSession).FindBy(InternalOrganisations.Meta.Name, "internalOrganisation");
+            var internalOrganisation = new InternalOrganisations(this.DatabaseSession).FindBy(M.InternalOrganisation.Name, "internalOrganisation");
             new CustomerRelationshipBuilder(this.DatabaseSession).WithFromDate(DateTime.UtcNow).WithCustomer(customer).WithInternalOrganisation(internalOrganisation).Build();
 
             this.DatabaseSession.Derive(true);
@@ -912,7 +912,7 @@ namespace Allors.Domain
             var shipment = (CustomerShipment)item.OrderShipmentsWhereSalesOrderItem[0].ShipmentItem.ShipmentWhereShipmentItem;
 
             var pickList = shipment.ShipmentItems[0].ItemIssuancesWhereShipmentItem[0].PickListItem.PickListWherePickListItem;
-            pickList.Picker = new Persons(this.DatabaseSession).FindBy(Persons.Meta.LastName, "orderProcessor");
+            pickList.Picker = new People(this.DatabaseSession).FindBy(M.Person.LastName, "orderProcessor");
 
             pickList.SetPicked();
 
@@ -966,7 +966,7 @@ namespace Allors.Domain
                 .Build();
 
             var customer = new PersonBuilder(this.DatabaseSession).WithLastName("customer").WithPartyContactMechanism(shipToMechelen).Build();
-            var internalOrganisation = new InternalOrganisations(this.DatabaseSession).FindBy(InternalOrganisations.Meta.Name, "internalOrganisation");
+            var internalOrganisation = new InternalOrganisations(this.DatabaseSession).FindBy(M.InternalOrganisation.Name, "internalOrganisation");
             new CustomerRelationshipBuilder(this.DatabaseSession).WithFromDate(DateTime.UtcNow).WithCustomer(customer).WithInternalOrganisation(internalOrganisation).Build();
 
             this.DatabaseSession.Derive(true);
@@ -1023,7 +1023,7 @@ namespace Allors.Domain
                 .Build();
 
             var customer = new PersonBuilder(this.DatabaseSession).WithLastName("customer").WithPartyContactMechanism(shipToMechelen).Build();
-            var internalOrganisation = new InternalOrganisations(this.DatabaseSession).FindBy(InternalOrganisations.Meta.Name, "internalOrganisation");
+            var internalOrganisation = new InternalOrganisations(this.DatabaseSession).FindBy(M.InternalOrganisation.Name, "internalOrganisation");
             new CustomerRelationshipBuilder(this.DatabaseSession).WithFromDate(DateTime.UtcNow).WithCustomer(customer).WithInternalOrganisation(internalOrganisation).Build();
 
             this.DatabaseSession.Derive(true);
@@ -1045,7 +1045,7 @@ namespace Allors.Domain
             var shipment = (CustomerShipment)item.OrderShipmentsWhereSalesOrderItem[0].ShipmentItem.ShipmentWhereShipmentItem;
 
             var pickList = shipment.ShipmentItems[0].ItemIssuancesWhereShipmentItem[0].PickListItem.PickListWherePickListItem;
-            pickList.Picker = new Persons(this.DatabaseSession).FindBy(Persons.Meta.LastName, "orderProcessor");
+            pickList.Picker = new People(this.DatabaseSession).FindBy(M.Person.LastName, "orderProcessor");
 
             pickList.SetPicked();
 
@@ -1091,7 +1091,7 @@ namespace Allors.Domain
                 .Build();
 
             var customer = new PersonBuilder(this.DatabaseSession).WithLastName("customer").WithPartyContactMechanism(shipToMechelen).Build();
-            var internalOrganisation = new InternalOrganisations(this.DatabaseSession).FindBy(InternalOrganisations.Meta.Name, "internalOrganisation");
+            var internalOrganisation = new InternalOrganisations(this.DatabaseSession).FindBy(M.InternalOrganisation.Name, "internalOrganisation");
             new CustomerRelationshipBuilder(this.DatabaseSession).WithFromDate(DateTime.UtcNow).WithCustomer(customer).WithInternalOrganisation(internalOrganisation).Build();
 
             this.DatabaseSession.Derive(true);
@@ -1113,7 +1113,7 @@ namespace Allors.Domain
             var shipment = (CustomerShipment)item.OrderShipmentsWhereSalesOrderItem[0].ShipmentItem.ShipmentWhereShipmentItem;
 
             var pickList = shipment.ShipmentItems[0].ItemIssuancesWhereShipmentItem[0].PickListItem.PickListWherePickListItem;
-            pickList.Picker = new Persons(this.DatabaseSession).FindBy(Persons.Meta.LastName, "orderProcessor");
+            pickList.Picker = new People(this.DatabaseSession).FindBy(M.Person.LastName, "orderProcessor");
             pickList.SetPicked();
 
             this.DatabaseSession.Derive(true);
@@ -1170,13 +1170,13 @@ namespace Allors.Domain
                 .Build();
 
             var customer = new PersonBuilder(this.DatabaseSession).WithLastName("customer").WithPartyContactMechanism(shipToMechelen).Build();
-            var internalOrganisation = new InternalOrganisations(this.DatabaseSession).FindBy(InternalOrganisations.Meta.Name, "internalOrganisation");
+            var internalOrganisation = new InternalOrganisations(this.DatabaseSession).FindBy(M.InternalOrganisation.Name, "internalOrganisation");
             new CustomerRelationshipBuilder(this.DatabaseSession).WithFromDate(DateTime.UtcNow).WithCustomer(customer).WithInternalOrganisation(internalOrganisation).Build();
 
             this.DatabaseSession.Derive(true);
 
             var order1 = new SalesOrderBuilder(this.DatabaseSession)
-                .WithStore(new Stores(this.DatabaseSession).FindBy(Stores.Meta.Name, "store"))
+                .WithStore(new Stores(this.DatabaseSession).FindBy(M.Store.Name, "store"))
                 .WithBillToCustomer(customer)
                 .WithShipToCustomer(customer)
                 .Build();
@@ -1194,7 +1194,7 @@ namespace Allors.Domain
             Assert.AreEqual(1, customer.PickListsWhereShipToParty.Count);
 
             var order2 = new SalesOrderBuilder(this.DatabaseSession)
-                .WithStore(new Stores(this.DatabaseSession).FindBy(Stores.Meta.Name, "store"))
+                .WithStore(new Stores(this.DatabaseSession).FindBy(M.Store.Name, "store"))
                 .WithBillToCustomer(customer)
                 .WithShipToCustomer(customer)
                 .Build();
@@ -1212,7 +1212,7 @@ namespace Allors.Domain
             Assert.AreEqual(1, customer.PickListsWhereShipToParty.Count);
 
             var order3 = new SalesOrderBuilder(this.DatabaseSession)
-                .WithStore(new Stores(this.DatabaseSession).FindBy(Stores.Meta.Name, "second store"))
+                .WithStore(new Stores(this.DatabaseSession).FindBy(M.Store.Name, "second store"))
                 .WithBillToCustomer(customer)
                 .WithShipToCustomer(customer)
                 .Build();
@@ -1322,7 +1322,7 @@ namespace Allors.Domain
             this.DatabaseSession.Commit();
 
             var usergroups = internalOrganisation.UserGroupsWhereParty;
-            usergroups.Filter.AddEquals(UserGroups.Meta.Parent, new Roles(this.DatabaseSession).Operations.UserGroupWhereRole);
+            usergroups.Filter.AddEquals(M.UserGroup.Parent, new Roles(this.DatabaseSession).Operations.UserGroupWhereRole);
             var orderProcessorUserGroup = usergroups.First;
 
             orderProcessorUserGroup.AddMember(orderProcessor2);
@@ -1343,14 +1343,14 @@ namespace Allors.Domain
 
             var acl = new AccessControlList(shipment, new Users(this.DatabaseSession).GetCurrentUser());
 
-            Assert.IsTrue(acl.CanWrite(CustomerShipments.Meta.ShipToParty));
-            Assert.IsTrue(acl.CanRead(CustomerShipments.Meta.ShipToParty));
-            Assert.IsTrue(acl.CanExecute(CustomerShipments.Meta.Cancel));
+            Assert.IsTrue(acl.CanWrite(M.CustomerShipment.ShipToParty));
+            Assert.IsTrue(acl.CanRead(M.CustomerShipment.ShipToParty));
+            Assert.IsTrue(acl.CanExecute(M.CustomerShipment.Cancel));
 
             Thread.CurrentPrincipal = new GenericPrincipal(new GenericIdentity("orderProcessor2", "Forms"), new string[0]);
             acl = new AccessControlList(shipment, new Users(this.DatabaseSession).GetCurrentUser());
 
-            Assert.IsFalse(acl.HasReadOperation);
+            Assert.IsFalse(acl.CanRead);
         }
 
         [Test]
@@ -1387,7 +1387,7 @@ namespace Allors.Domain
                 .Build();
 
             var customer = new PersonBuilder(this.DatabaseSession).WithLastName("customer").WithPartyContactMechanism(shipToMechelen).WithPartyContactMechanism(billToMechelen).Build();
-            var internalOrganisation = new InternalOrganisations(this.DatabaseSession).FindBy(InternalOrganisations.Meta.Name, "internalOrganisation");
+            var internalOrganisation = new InternalOrganisations(this.DatabaseSession).FindBy(M.InternalOrganisation.Name, "internalOrganisation");
             new CustomerRelationshipBuilder(this.DatabaseSession).WithFromDate(DateTime.UtcNow).WithCustomer(customer).WithInternalOrganisation(internalOrganisation).Build();
 
             this.DatabaseSession.Derive(true);
@@ -1410,7 +1410,7 @@ namespace Allors.Domain
             var shipment = (CustomerShipment)item1.OrderShipmentsWhereSalesOrderItem[0].ShipmentItem.ShipmentWhereShipmentItem;
 
             var pickList = shipment.ShipmentItems[0].ItemIssuancesWhereShipmentItem[0].PickListItem.PickListWherePickListItem;
-            pickList.Picker = new Persons(this.DatabaseSession).FindBy(Persons.Meta.LastName, "orderProcessor");
+            pickList.Picker = new People(this.DatabaseSession).FindBy(M.Person.LastName, "orderProcessor");
 
             pickList.SetPicked();
 
@@ -1460,7 +1460,7 @@ namespace Allors.Domain
                 .Build();
 
             var customer = new PersonBuilder(this.DatabaseSession).WithLastName("customer").WithPartyContactMechanism(shipToMechelen).Build();
-            var internalOrganisation = new InternalOrganisations(this.DatabaseSession).FindBy(InternalOrganisations.Meta.Name, "internalOrganisation");
+            var internalOrganisation = new InternalOrganisations(this.DatabaseSession).FindBy(M.InternalOrganisation.Name, "internalOrganisation");
             new CustomerRelationshipBuilder(this.DatabaseSession).WithFromDate(DateTime.UtcNow).WithCustomer(customer).WithInternalOrganisation(internalOrganisation).Build();
 
             this.DatabaseSession.Derive(true);
@@ -1483,7 +1483,7 @@ namespace Allors.Domain
             var shipment = (CustomerShipment)item.OrderShipmentsWhereSalesOrderItem[0].ShipmentItem.ShipmentWhereShipmentItem;
 
             var pickList = shipment.ShipmentItems[0].ItemIssuancesWhereShipmentItem[0].PickListItem.PickListWherePickListItem;
-            pickList.Picker = new Persons(this.DatabaseSession).FindBy(Persons.Meta.LastName, "orderProcessor");
+            pickList.Picker = new People(this.DatabaseSession).FindBy(M.Person.LastName, "orderProcessor");
 
             pickList.SetPicked();
 
@@ -1543,7 +1543,7 @@ namespace Allors.Domain
                 .Build();
 
             var customer = new PersonBuilder(this.DatabaseSession).WithLastName("customer").WithPartyContactMechanism(shipToMechelen).Build();
-            var internalOrganisation = new InternalOrganisations(this.DatabaseSession).FindBy(InternalOrganisations.Meta.Name, "internalOrganisation");
+            var internalOrganisation = new InternalOrganisations(this.DatabaseSession).FindBy(M.InternalOrganisation.Name, "internalOrganisation");
             new CustomerRelationshipBuilder(this.DatabaseSession).WithFromDate(DateTime.UtcNow).WithCustomer(customer).WithInternalOrganisation(internalOrganisation).Build();
 
             this.DatabaseSession.Derive(true);
@@ -1566,7 +1566,7 @@ namespace Allors.Domain
             var shipment = (CustomerShipment)item.OrderShipmentsWhereSalesOrderItem[0].ShipmentItem.ShipmentWhereShipmentItem;
 
             var pickList = shipment.ShipmentItems[0].ItemIssuancesWhereShipmentItem[0].PickListItem.PickListWherePickListItem;
-            pickList.Picker = new Persons(this.DatabaseSession).FindBy(Persons.Meta.LastName, "orderProcessor");
+            pickList.Picker = new People(this.DatabaseSession).FindBy(M.Person.LastName, "orderProcessor");
 
             pickList.SetPicked();
 
@@ -1619,7 +1619,7 @@ namespace Allors.Domain
                 .Build();
 
             var customer = new PersonBuilder(this.DatabaseSession).WithLastName("customer").WithPartyContactMechanism(shipToMechelen).Build();
-            var internalOrganisation = new InternalOrganisations(this.DatabaseSession).FindBy(InternalOrganisations.Meta.Name, "internalOrganisation");
+            var internalOrganisation = new InternalOrganisations(this.DatabaseSession).FindBy(M.InternalOrganisation.Name, "internalOrganisation");
             new CustomerRelationshipBuilder(this.DatabaseSession).WithFromDate(DateTime.UtcNow).WithCustomer(customer).WithInternalOrganisation(internalOrganisation).Build();
 
             this.DatabaseSession.Derive(true);
@@ -1642,7 +1642,7 @@ namespace Allors.Domain
             var shipment = (CustomerShipment)item.OrderShipmentsWhereSalesOrderItem[0].ShipmentItem.ShipmentWhereShipmentItem;
 
             var pickList = shipment.ShipmentItems[0].ItemIssuancesWhereShipmentItem[0].PickListItem.PickListWherePickListItem;
-            pickList.Picker = new Persons(this.DatabaseSession).FindBy(Persons.Meta.LastName, "orderProcessor");
+            pickList.Picker = new People(this.DatabaseSession).FindBy(M.Person.LastName, "orderProcessor");
             pickList.SetPicked();
 
             this.DatabaseSession.Derive(true);
@@ -1717,7 +1717,7 @@ namespace Allors.Domain
 
             var customer = new PersonBuilder(this.DatabaseSession).WithLastName("customer").WithPartyContactMechanism(shipToMechelen).Build();
             var billToContactMechanismMechelen = new PostalAddressBuilder(this.DatabaseSession).WithGeographicBoundary(mechelen).WithAddress1("Mechelen").Build();
-            var internalOrganisation = new InternalOrganisations(this.DatabaseSession).FindBy(InternalOrganisations.Meta.Name, "internalOrganisation");
+            var internalOrganisation = new InternalOrganisations(this.DatabaseSession).FindBy(M.InternalOrganisation.Name, "internalOrganisation");
             new CustomerRelationshipBuilder(this.DatabaseSession).WithFromDate(DateTime.UtcNow).WithCustomer(customer).WithInternalOrganisation(internalOrganisation).Build();
 
             this.DatabaseSession.Derive(true);
@@ -1739,7 +1739,7 @@ namespace Allors.Domain
 
             var shipment = (CustomerShipment)item.OrderShipmentsWhereSalesOrderItem[0].ShipmentItem.ShipmentWhereShipmentItem;
             var pickList = shipment.ShipmentItems[0].ItemIssuancesWhereShipmentItem[0].PickListItem.PickListWherePickListItem;
-            pickList.Picker = new Persons(this.DatabaseSession).FindBy(Persons.Meta.LastName, "orderProcessor");
+            pickList.Picker = new People(this.DatabaseSession).FindBy(M.Person.LastName, "orderProcessor");
 
             pickList.SetPicked();
 

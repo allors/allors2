@@ -20,6 +20,8 @@
 
 namespace Allors.Domain
 {
+    using Meta;
+
     public partial class NonSerializedInventoryItem
     {
         ObjectState Transitional.CurrentObjectState => this.CurrentObjectState;
@@ -44,8 +46,8 @@ namespace Allors.Domain
         {
             var derivation = method.Derivation;
 
-            derivation.Validation.AssertAtLeastOne(this, NonSerializedInventoryItems.Meta.Good, NonSerializedInventoryItems.Meta.Part);
-            derivation.Validation.AssertExistsAtMostOne(this, NonSerializedInventoryItems.Meta.Good, NonSerializedInventoryItems.Meta.Part);
+            derivation.Validation.AssertAtLeastOne(this, M.InventoryItem.Good, M.InventoryItem.Part);
+            derivation.Validation.AssertExistsAtMostOne(this, M.InventoryItem.Good, M.InventoryItem.Part);
 
             this.AppsOnDeriveQuantityOnHand(derivation);
             this.AppsOnDeriveQuantityCommittedOut(derivation);
@@ -179,12 +181,12 @@ namespace Allors.Domain
         public void AppsReplenishSalesOrders(IDerivation derivation)
         {
             Extent<SalesOrderItem> salesOrderItems = this.Strategy.Session.Extent<SalesOrderItem>();
-            salesOrderItems.Filter.AddEquals(SalesOrderItems.Meta.CurrentObjectState, new SalesOrderItemObjectStates(this.Strategy.Session).InProcess);
-            salesOrderItems.AddSort(SalesOrderItems.Meta.DeliveryDate, SortDirection.Ascending);
+            salesOrderItems.Filter.AddEquals(M.SalesOrderItem.CurrentObjectState, new SalesOrderItemObjectStates(this.Strategy.Session).InProcess);
+            salesOrderItems.AddSort(M.SalesOrderItem.DeliveryDate, SortDirection.Ascending);
 
             if (this.ExistGood)
             {
-                salesOrderItems.Filter.AddEquals(SalesOrderItems.Meta.PreviousProduct, this.Good);                
+                salesOrderItems.Filter.AddEquals(M.SalesOrderItem.PreviousProduct, this.Good);                
             }
 
             salesOrderItems = this.Strategy.Session.Instantiate(salesOrderItems);
@@ -216,8 +218,8 @@ namespace Allors.Domain
         public void AppsDepleteSalesOrders(IDerivation derivation)
         {
             Extent<SalesOrderItem> salesOrderItems = this.Strategy.Session.Extent<SalesOrderItem>();
-            salesOrderItems.Filter.AddEquals(SalesOrderItems.Meta.CurrentObjectState, new SalesOrderItemObjectStates(this.Strategy.Session).InProcess);
-            salesOrderItems.AddSort(SalesOrderItems.Meta.DeliveryDate, SortDirection.Descending);
+            salesOrderItems.Filter.AddEquals(M.SalesOrderItem.CurrentObjectState, new SalesOrderItemObjectStates(this.Strategy.Session).InProcess);
+            salesOrderItems.AddSort(M.SalesOrderItem.DeliveryDate, SortDirection.Descending);
 
             salesOrderItems = this.Strategy.Session.Instantiate(salesOrderItems);
 

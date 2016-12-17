@@ -21,6 +21,7 @@
 namespace Allors.Domain
 {
     using System;
+    using Meta;
     using Resources;
 
     public partial class Employment
@@ -42,11 +43,11 @@ namespace Allors.Domain
             if (this.ExistEmployee && this.ExistEmployer)
             {
                 var employments = this.Employee.EmploymentsWhereEmployee;
-                employments.Filter.AddNot().AddExists(Employments.Meta.ThroughDate);
+                employments.Filter.AddNot().AddExists(M.Employment.ThroughDate);
 
                 if (employments.Count > 1)
                 {
-                    derivation.Validation.AddError(this, Employments.Meta.FromDate, ErrorMessages.ActiveDeploymentRegistered, this.Employer.Name);
+                    derivation.Validation.AddError(this, M.Employment.FromDate, ErrorMessages.ActiveDeploymentRegistered, this.Employer.Name);
                 }
             }
 

@@ -22,6 +22,7 @@
 namespace Allors.Domain
 {
     using System;
+    using Meta;
     using NUnit.Framework;
 
     [TestFixture]
@@ -44,7 +45,7 @@ namespace Allors.Domain
 
             this.DatabaseSession.Rollback();
 
-            builder.WithCurrency(new Currencies(this.DatabaseSession).FindBy(Currencies.Meta.IsoCode, "EUR"));
+            builder.WithCurrency(new Currencies(this.DatabaseSession).FindBy(M.Currency.IsoCode, "EUR"));
             purchasePrice = builder.Build();
 
             Assert.IsTrue(this.DatabaseSession.Derive().HasErrors);

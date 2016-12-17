@@ -20,13 +20,15 @@
 
 namespace Allors.Domain
 {
+    using Meta;
+
     public partial class Passport
     {
         public void AppsOnDerive(ObjectOnDerive method)
         {
             var derivation = method.Derivation;
 
-            derivation.Validation.AssertIsUnique(this, Passports.Meta.Number);
+            derivation.Validation.AssertIsUnique(this, M.Passport.Number);
         }
     }
 }

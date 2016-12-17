@@ -21,6 +21,7 @@
 namespace Allors.Domain
 {
     using System;
+    using Meta;
     using NUnit.Framework;
 
     [TestFixture]
@@ -50,7 +51,7 @@ namespace Allors.Domain
 
             this.DatabaseSession.Derive(true);
 
-            var euro = new Currencies(this.DatabaseSession).FindBy(Currencies.Meta.IsoCode, "EUR");
+            var euro = new Currencies(this.DatabaseSession).FindBy(M.Currency.IsoCode, "EUR");
             var vatRate21 = new VatRateBuilder(this.DatabaseSession).WithRate(21).Build();
 
             var good1 = new GoodBuilder(this.DatabaseSession)
@@ -71,7 +72,7 @@ namespace Allors.Domain
                 .WithPrimaryProductCategory(cat2)
                 .Build();
 
-            var internalOrganisation = new InternalOrganisations(this.DatabaseSession).FindBy(InternalOrganisations.Meta.Name, "internalOrganisation");
+            var internalOrganisation = new InternalOrganisations(this.DatabaseSession).FindBy(M.InternalOrganisation.Name, "internalOrganisation");
             internalOrganisation.PreferredCurrency = euro;
 
             new CustomerRelationshipBuilder(this.DatabaseSession).WithFromDate(DateTime.UtcNow).WithCustomer(customer1).WithInternalOrganisation(internalOrganisation).Build();
@@ -103,25 +104,25 @@ namespace Allors.Domain
             var salesRep1Customer1ProductCategoryRevenues = salesRep1.SalesRepPartyProductCategoryRevenuesWhereSalesRep;
             Assert.AreEqual(2, salesRep1Customer1ProductCategoryRevenues.Count);
 
-            salesRep1Customer1ProductCategoryRevenues.Filter.AddEquals(SalesRepPartyProductCategoryRevenues.Meta.ProductCategory, cat1);
-            salesRep1Customer1ProductCategoryRevenues.Filter.AddEquals(SalesRepPartyProductCategoryRevenues.Meta.Party, customer1);
+            salesRep1Customer1ProductCategoryRevenues.Filter.AddEquals(M.SalesRepPartyProductCategoryRevenue.ProductCategory, cat1);
+            salesRep1Customer1ProductCategoryRevenues.Filter.AddEquals(M.SalesRepPartyProductCategoryRevenue.Party, customer1);
             var salesRep1Customer1Cat1Revenue = salesRep1Customer1ProductCategoryRevenues.First;
 
             salesRep1Customer1ProductCategoryRevenues = salesRep1.SalesRepPartyProductCategoryRevenuesWhereSalesRep;
-            salesRep1Customer1ProductCategoryRevenues.Filter.AddEquals(SalesRepPartyProductCategoryRevenues.Meta.ProductCategory, catMain);
-            salesRep1Customer1ProductCategoryRevenues.Filter.AddEquals(SalesRepPartyProductCategoryRevenues.Meta.Party, customer1);
+            salesRep1Customer1ProductCategoryRevenues.Filter.AddEquals(M.SalesRepPartyProductCategoryRevenue.ProductCategory, catMain);
+            salesRep1Customer1ProductCategoryRevenues.Filter.AddEquals(M.SalesRepPartyProductCategoryRevenue.Party, customer1);
             var salesRep1Customer1CatMainRevenue = salesRep1Customer1ProductCategoryRevenues.First;
 
             var salesRep2Customer1ProductCategoryRevenues = salesRep2.SalesRepPartyProductCategoryRevenuesWhereSalesRep;
             Assert.AreEqual(2, salesRep2Customer1ProductCategoryRevenues.Count);
 
-            salesRep2Customer1ProductCategoryRevenues.Filter.AddEquals(SalesRepPartyProductCategoryRevenues.Meta.ProductCategory, cat2);
-            salesRep2Customer1ProductCategoryRevenues.Filter.AddEquals(SalesRepPartyProductCategoryRevenues.Meta.Party, customer1);
+            salesRep2Customer1ProductCategoryRevenues.Filter.AddEquals(M.SalesRepPartyProductCategoryRevenue.ProductCategory, cat2);
+            salesRep2Customer1ProductCategoryRevenues.Filter.AddEquals(M.SalesRepPartyProductCategoryRevenue.Party, customer1);
             var salesRep2Customer1Cat2Revenue = salesRep2Customer1ProductCategoryRevenues.First;
 
             salesRep2Customer1ProductCategoryRevenues = salesRep2.SalesRepPartyProductCategoryRevenuesWhereSalesRep;
-            salesRep2Customer1ProductCategoryRevenues.Filter.AddEquals(SalesRepPartyProductCategoryRevenues.Meta.Party, customer1);
-            salesRep2Customer1ProductCategoryRevenues.Filter.AddEquals(SalesRepPartyProductCategoryRevenues.Meta.ProductCategory, catMain);
+            salesRep2Customer1ProductCategoryRevenues.Filter.AddEquals(M.SalesRepPartyProductCategoryRevenue.Party, customer1);
+            salesRep2Customer1ProductCategoryRevenues.Filter.AddEquals(M.SalesRepPartyProductCategoryRevenue.ProductCategory, catMain);
             var salesRep2Customer1CatMainRevenue = salesRep2Customer1ProductCategoryRevenues.First;
 
             Assert.AreEqual(90, salesRep1Customer1Cat1Revenue.Revenue);
@@ -150,29 +151,29 @@ namespace Allors.Domain
             Singleton.Instance(this.DatabaseSession).DeriveRevenues();
 
             var salesRep1Customer2ProductCategoryRevenues = salesRep1.SalesRepPartyProductCategoryRevenuesWhereSalesRep;
-            salesRep1Customer2ProductCategoryRevenues.Filter.AddEquals(SalesRepPartyProductCategoryRevenues.Meta.Party, customer2);
+            salesRep1Customer2ProductCategoryRevenues.Filter.AddEquals(M.SalesRepPartyProductCategoryRevenue.Party, customer2);
             Assert.AreEqual(2, salesRep1Customer2ProductCategoryRevenues.Count);
 
-            salesRep1Customer2ProductCategoryRevenues.Filter.AddEquals(SalesRepPartyProductCategoryRevenues.Meta.ProductCategory, cat1);
-            salesRep1Customer2ProductCategoryRevenues.Filter.AddEquals(SalesRepPartyProductCategoryRevenues.Meta.Party, customer2);
+            salesRep1Customer2ProductCategoryRevenues.Filter.AddEquals(M.SalesRepPartyProductCategoryRevenue.ProductCategory, cat1);
+            salesRep1Customer2ProductCategoryRevenues.Filter.AddEquals(M.SalesRepPartyProductCategoryRevenue.Party, customer2);
             var salesRep1Customer2Cat1Revenue = salesRep1Customer2ProductCategoryRevenues.First;
 
             salesRep1Customer2ProductCategoryRevenues = salesRep1.SalesRepPartyProductCategoryRevenuesWhereSalesRep;
-            salesRep1Customer2ProductCategoryRevenues.Filter.AddEquals(SalesRepPartyProductCategoryRevenues.Meta.ProductCategory, catMain);
-            salesRep1Customer2ProductCategoryRevenues.Filter.AddEquals(SalesRepPartyProductCategoryRevenues.Meta.Party, customer2);
+            salesRep1Customer2ProductCategoryRevenues.Filter.AddEquals(M.SalesRepPartyProductCategoryRevenue.ProductCategory, catMain);
+            salesRep1Customer2ProductCategoryRevenues.Filter.AddEquals(M.SalesRepPartyProductCategoryRevenue.Party, customer2);
             var salesRep1Customer2CatMainRevenue = salesRep1Customer2ProductCategoryRevenues.First;
 
             var salesRep2Customer2ProductCategoryRevenues = salesRep2.SalesRepPartyProductCategoryRevenuesWhereSalesRep;
-            salesRep2Customer2ProductCategoryRevenues.Filter.AddEquals(SalesRepPartyProductCategoryRevenues.Meta.Party, customer2);
+            salesRep2Customer2ProductCategoryRevenues.Filter.AddEquals(M.SalesRepPartyProductCategoryRevenue.Party, customer2);
             Assert.AreEqual(2, salesRep2Customer2ProductCategoryRevenues.Count);
 
-            salesRep2Customer2ProductCategoryRevenues.Filter.AddEquals(SalesRepPartyProductCategoryRevenues.Meta.ProductCategory, cat2);
-            salesRep2Customer2ProductCategoryRevenues.Filter.AddEquals(SalesRepPartyProductCategoryRevenues.Meta.Party, customer2);
+            salesRep2Customer2ProductCategoryRevenues.Filter.AddEquals(M.SalesRepPartyProductCategoryRevenue.ProductCategory, cat2);
+            salesRep2Customer2ProductCategoryRevenues.Filter.AddEquals(M.SalesRepPartyProductCategoryRevenue.Party, customer2);
             var salesRep2Customer2Cat2Revenue = salesRep2Customer2ProductCategoryRevenues.First;
 
             salesRep2Customer2ProductCategoryRevenues = salesRep2.SalesRepPartyProductCategoryRevenuesWhereSalesRep;
-            salesRep2Customer2ProductCategoryRevenues.Filter.AddEquals(SalesRepPartyProductCategoryRevenues.Meta.Party, customer2);
-            salesRep2Customer2ProductCategoryRevenues.Filter.AddEquals(SalesRepPartyProductCategoryRevenues.Meta.ProductCategory, catMain);
+            salesRep2Customer2ProductCategoryRevenues.Filter.AddEquals(M.SalesRepPartyProductCategoryRevenue.Party, customer2);
+            salesRep2Customer2ProductCategoryRevenues.Filter.AddEquals(M.SalesRepPartyProductCategoryRevenue.ProductCategory, catMain);
             var salesRep2Customer2CatMainRevenue = salesRep2Customer2ProductCategoryRevenues.First;
 
             Assert.AreEqual(90, salesRep1Customer1Cat1Revenue.Revenue);

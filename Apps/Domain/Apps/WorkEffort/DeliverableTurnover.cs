@@ -20,13 +20,15 @@
 
 namespace Allors.Domain
 {
+    using Meta;
+
     public partial class DeliverableTurnover
     {
         public void AppsOnDerive(ObjectOnDerive method)
         {
             var derivation = method.Derivation;
 
-            derivation.Validation.AssertAtLeastOne(this, DeliverableTurnovers.Meta.WorkEffort, DeliverableTurnovers.Meta.EngagementItem);
+            derivation.Validation.AssertAtLeastOne(this, M.DeliverableTurnover.WorkEffort, M.DeliverableTurnover.EngagementItem);
         }
     }
 }

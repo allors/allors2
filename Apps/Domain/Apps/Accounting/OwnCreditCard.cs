@@ -21,6 +21,7 @@
 namespace Allors.Domain
 {
     using System;
+    using Meta;
 
     public partial class OwnCreditCard
     {
@@ -38,8 +39,8 @@ namespace Allors.Domain
 
             if (this.ExistInternalOrganisationWherePaymentMethod && this.InternalOrganisationWherePaymentMethod.DoAccounting)
             { 
-                derivation.Validation.AssertExists(this, OwnCreditCards.Meta.Creditor);
-                derivation.Validation.AssertAtLeastOne(this, Cashes.Meta.GeneralLedgerAccount, Cashes.Meta.Journal);
+                derivation.Validation.AssertExists(this, M.OwnCreditCard.Creditor);
+                derivation.Validation.AssertAtLeastOne(this, M.Cash.GeneralLedgerAccount, M.Cash.Journal);
             }
 
             if (this.ExistCreditCard)
@@ -50,7 +51,7 @@ namespace Allors.Domain
                 }
             }
 
-            derivation.Validation.AssertExistsAtMostOne(this, Cashes.Meta.GeneralLedgerAccount, Cashes.Meta.Journal);
+            derivation.Validation.AssertExistsAtMostOne(this, M.Cash.GeneralLedgerAccount, M.Cash.Journal);
         }
     }
 }

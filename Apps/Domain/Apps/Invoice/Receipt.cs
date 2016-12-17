@@ -21,7 +21,7 @@
 namespace Allors.Domain
 {
     using System;
-
+    using Meta;
     using Resources;
 
     public partial class Receipt
@@ -56,7 +56,7 @@ namespace Allors.Domain
 
             if (this.ExistAmount && totalAmountApplied > this.Amount)
             {
-                derivation.Validation.AddError(this, Receipts.Meta.Amount, ErrorMessages.ReceiptAmountIsToSmall);
+                derivation.Validation.AddError(this, M.Receipt.Amount, ErrorMessages.ReceiptAmountIsToSmall);
             }
         }
     }

@@ -21,6 +21,7 @@
 namespace Allors.Domain
 {
     using System;
+    using Meta;
 
     public partial class PartyPackageRevenue
     {
@@ -36,9 +37,9 @@ namespace Allors.Domain
             this.Revenue = 0;
 
             var partyProductCategoryRevenues = this.Party.PartyProductCategoryRevenuesWhereParty;
-            partyProductCategoryRevenues.Filter.AddEquals(PartyProductCategoryRevenues.Meta.InternalOrganisation, this.InternalOrganisation);
-            partyProductCategoryRevenues.Filter.AddEquals(PartyProductCategoryRevenues.Meta.Year, this.Year);
-            partyProductCategoryRevenues.Filter.AddEquals(PartyProductCategoryRevenues.Meta.Month, this.Month);
+            partyProductCategoryRevenues.Filter.AddEquals(M.PartyProductCategoryRevenue.InternalOrganisation, this.InternalOrganisation);
+            partyProductCategoryRevenues.Filter.AddEquals(M.PartyProductCategoryRevenue.Year, this.Year);
+            partyProductCategoryRevenues.Filter.AddEquals(M.PartyProductCategoryRevenue.Month, this.Month);
 
             foreach (PartyProductCategoryRevenue productCategoryRevenue in partyProductCategoryRevenues)
             {
@@ -52,8 +53,8 @@ namespace Allors.Domain
             if (months <= 12)
             {
                 var histories = this.Party.PartyPackageRevenueHistoriesWhereParty;
-                histories.Filter.AddEquals(PartyPackageRevenueHistories.Meta.InternalOrganisation, this.InternalOrganisation);
-                histories.Filter.AddEquals(PartyPackageRevenueHistories.Meta.Package, this.Package);
+                histories.Filter.AddEquals(M.PartyPackageRevenueHistory.InternalOrganisation, this.InternalOrganisation);
+                histories.Filter.AddEquals(M.PartyPackageRevenueHistory.Package, this.Package);
                 var history = histories.First ?? new PartyPackageRevenueHistoryBuilder(this.Strategy.Session)
                                                      .WithCurrency(this.Currency)
                                                      .WithInternalOrganisation(this.InternalOrganisation)

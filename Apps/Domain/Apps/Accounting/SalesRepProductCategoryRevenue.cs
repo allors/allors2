@@ -20,6 +20,8 @@
 
 namespace Allors.Domain
 {
+    using Meta;
+
     public partial class SalesRepProductCategoryRevenue
     {
         public void AppsOnDerive(ObjectOnDerive method)
@@ -36,10 +38,10 @@ namespace Allors.Domain
             this.Revenue = 0;
 
             var salesRepPartyProductCategoryRevenues = this.ProductCategory.SalesRepPartyProductCategoryRevenuesWhereProductCategory;
-            salesRepPartyProductCategoryRevenues.Filter.AddEquals(SalesRepPartyProductCategoryRevenues.Meta.InternalOrganisation, this.InternalOrganisation);
-            salesRepPartyProductCategoryRevenues.Filter.AddEquals(SalesRepPartyProductCategoryRevenues.Meta.SalesRep, this.SalesRep);
-            salesRepPartyProductCategoryRevenues.Filter.AddEquals(SalesRepPartyProductCategoryRevenues.Meta.Year, this.Year);
-            salesRepPartyProductCategoryRevenues.Filter.AddEquals(SalesRepPartyProductCategoryRevenues.Meta.Month, this.Month);
+            salesRepPartyProductCategoryRevenues.Filter.AddEquals(M.PartyProductCategoryRevenue.InternalOrganisation, this.InternalOrganisation);
+            salesRepPartyProductCategoryRevenues.Filter.AddEquals(M.PartyProductCategoryRevenue.SalesRep, this.SalesRep);
+            salesRepPartyProductCategoryRevenues.Filter.AddEquals(M.PartyProductCategoryRevenue.Year, this.Year);
+            salesRepPartyProductCategoryRevenues.Filter.AddEquals(M.PartyProductCategoryRevenue.Month, this.Month);
 
             foreach (SalesRepPartyProductCategoryRevenue salesRepPartyProductCategoryRevenue in salesRepPartyProductCategoryRevenues)
             {

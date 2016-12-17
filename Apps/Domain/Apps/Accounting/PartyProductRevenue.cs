@@ -21,6 +21,7 @@
 namespace Allors.Domain
 {
     using System;
+    using Meta;
 
     public partial class PartyProductRevenue
     {
@@ -41,9 +42,9 @@ namespace Allors.Domain
             var toDate = DateTimeFactory.CreateDate(this.Year, this.Month, 01).AddMonths(1);
 
             var invoices = this.Party.SalesInvoicesWhereBillToCustomer;
-            invoices.Filter.AddEquals(SalesInvoices.Meta.BilledFromInternalOrganisation, this.InternalOrganisation);https://teamcity.inxin.net/win32/userStatus.html?small=1#
-            invoices.Filter.AddNot().AddEquals(SalesInvoices.Meta.CurrentObjectState, new SalesInvoiceObjectStates(this.Strategy.Session).WrittenOff);
-            invoices.Filter.AddBetween(SalesInvoices.Meta.InvoiceDate, DateTimeFactory.CreateDate(this.Year, this.Month, 01), toDate);
+            invoices.Filter.AddEquals(M.SalesInvoice.BilledFromInternalOrganisation, this.InternalOrganisation);https://teamcity.inxin.net/win32/userStatus.html?small=1#
+            invoices.Filter.AddNot().AddEquals(M.SalesInvoice.CurrentObjectState, new SalesInvoiceObjectStates(this.Strategy.Session).WrittenOff);
+            invoices.Filter.AddBetween(M.SalesInvoice.InvoiceDate, DateTimeFactory.CreateDate(this.Year, this.Month, 01), toDate);
 
             foreach (SalesInvoice salesInvoice in invoices)
             {
@@ -61,8 +62,8 @@ namespace Allors.Domain
             if (months <= 12)
             {
                 var histories = this.Party.PartyProductRevenueHistoriesWhereParty;
-                histories.Filter.AddEquals(PartyProductRevenueHistories.Meta.InternalOrganisation, this.InternalOrganisation);
-                histories.Filter.AddEquals(PartyProductRevenueHistories.Meta.Product, this.Product);
+                histories.Filter.AddEquals(M.ProductRevenueHistory.InternalOrganisation, this.InternalOrganisation);
+                histories.Filter.AddEquals(M.ProductRevenueHistory.Product, this.Product);
                 var history = histories.First ?? new PartyProductRevenueHistoryBuilder(this.Strategy.Session)
                                                      .WithCurrency(this.Currency)
                                                      .WithInternalOrganisation(this.InternalOrganisation)
@@ -89,10 +90,10 @@ namespace Allors.Domain
                 foreach (ProductCategory productCategory in this.Product.ProductCategories)
                 {
                     var partyProductCategoryRevenues = this.Party.PartyProductCategoryRevenuesWhereParty;
-                    partyProductCategoryRevenues.Filter.AddEquals(PartyProductCategoryRevenues.Meta.InternalOrganisation, this.InternalOrganisation);
-                    partyProductCategoryRevenues.Filter.AddEquals(PartyProductCategoryRevenues.Meta.Year, this.Year);
-                    partyProductCategoryRevenues.Filter.AddEquals(PartyProductCategoryRevenues.Meta.Month, this.Month);
-                    partyProductCategoryRevenues.Filter.AddEquals(PartyProductCategoryRevenues.Meta.ProductCategory, productCategory);
+                    partyProductCategoryRevenues.Filter.AddEquals(M.PartyProductCategoryRevenue.InternalOrganisation, this.InternalOrganisation);
+                    partyProductCategoryRevenues.Filter.AddEquals(M.PartyProductCategoryRevenue.Year, this.Year);
+                    partyProductCategoryRevenues.Filter.AddEquals(M.PartyProductCategoryRevenue.Month, this.Month);
+                    partyProductCategoryRevenues.Filter.AddEquals(M.PartyProductCategoryRevenue.ProductCategory, productCategory);
                     var partyProductCategoryRevenue = partyProductCategoryRevenues.First
                                                       ?? new PartyProductCategoryRevenueBuilder(this.Strategy.Session)
                                                                 .WithInternalOrganisation(this.InternalOrganisation)

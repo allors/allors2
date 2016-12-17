@@ -20,6 +20,8 @@
 
 namespace Allors.Domain
 {
+    using Meta;
+
     public partial class PostalCodes
     {
         private Cache<string, PostalCode> postalCodeByCode;
@@ -28,7 +30,7 @@ namespace Allors.Domain
         {
             get
             {
-                return this.postalCodeByCode ?? (this.postalCodeByCode = new Cache<string, PostalCode>(this.Session, PostalCodes.Meta.Code));
+                return this.postalCodeByCode ?? (this.postalCodeByCode = new Cache<string, PostalCode>(this.Session, M.PostalCode.Code));
             }
         }
 

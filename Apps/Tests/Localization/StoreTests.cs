@@ -24,6 +24,7 @@
 namespace Allors.Domain
 {
     using System;
+    using Meta;
     using NUnit.Framework;
 
     [TestFixture]
@@ -72,7 +73,7 @@ namespace Allors.Domain
         [Test]
         public void GivenStore_WhenBuild_ThenPostBuildRelationsMustExist()
         {
-            var internalOrganisation = new InternalOrganisations(this.DatabaseSession).FindBy(InternalOrganisations.Meta.Name, "internalOrganisation");
+            var internalOrganisation = new InternalOrganisations(this.DatabaseSession).FindBy(M.InternalOrganisation.Name, "internalOrganisation");
 
             var store = new StoreBuilder(this.DatabaseSession)
                 .WithName("Organisation store")
@@ -88,7 +89,7 @@ namespace Allors.Domain
             Assert.AreEqual(internalOrganisation, store.Owner);
             Assert.AreEqual(internalOrganisation.DefaultPaymentMethod, store.DefaultPaymentMethod);
             Assert.AreEqual(1, store.PaymentMethods.Count);
-            Assert.AreEqual(new Warehouses(this.DatabaseSession).FindBy(Warehouses.Meta.Name, "facility"), store.DefaultFacility);
+            Assert.AreEqual(new Warehouses(this.DatabaseSession).FindBy(M.Warehouse.Name, "facility"), store.DefaultFacility);
         }
 
         [Test]

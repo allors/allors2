@@ -22,7 +22,7 @@ namespace Allors.Domain
 {
     using System;
     using System.Collections.Generic;
-
+    using Meta;
 
     public partial class PartyPackageRevenues
     {
@@ -31,10 +31,10 @@ namespace Allors.Domain
             if (dependant.ProductCategory.ExistPackage)
             {
                 var partyPackageRevenues = dependant.Party.PartyPackageRevenuesWhereParty;
-                partyPackageRevenues.Filter.AddEquals(PartyPackageRevenues.Meta.InternalOrganisation, dependant.InternalOrganisation);
-                partyPackageRevenues.Filter.AddEquals(PartyPackageRevenues.Meta.Year, dependant.Year);
-                partyPackageRevenues.Filter.AddEquals(PartyPackageRevenues.Meta.Month, dependant.Month);
-                partyPackageRevenues.Filter.AddEquals(PartyPackageRevenues.Meta.Package, dependant.ProductCategory.Package);
+                partyPackageRevenues.Filter.AddEquals(M.PartyPackageRevenue.InternalOrganisation, dependant.InternalOrganisation);
+                partyPackageRevenues.Filter.AddEquals(M.PartyPackageRevenue.Year, dependant.Year);
+                partyPackageRevenues.Filter.AddEquals(M.PartyPackageRevenue.Month, dependant.Month);
+                partyPackageRevenues.Filter.AddEquals(M.PartyPackageRevenue.Package, dependant.ProductCategory.Package);
                 var partyPackageRevenue = partyPackageRevenues.First
                                                 ?? new PartyPackageRevenueBuilder(session)
                                                         .WithInternalOrganisation(dependant.InternalOrganisation)

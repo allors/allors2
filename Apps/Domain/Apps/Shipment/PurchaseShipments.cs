@@ -21,6 +21,7 @@
 namespace Allors.Domain
 {
     using System;
+    using Meta;
 
     public partial class PurchaseShipments
     {
@@ -28,10 +29,10 @@ namespace Allors.Domain
         {
             base.AppsPrepare(setup);
 
-            setup.AddDependency(this.ObjectType, PurchaseShipmentObjectStates.Meta.ObjectType);
+            setup.AddDependency(this.ObjectType, M.PurchaseShipmentObjectState);
         }
 
-        protected override void AppsSecure(Domain.Security config)
+        protected override void AppsSecure(Security config)
         {
             base.AppsSecure(config);
 

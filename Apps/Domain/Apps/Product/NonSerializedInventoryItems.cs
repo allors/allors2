@@ -20,13 +20,15 @@
 
 namespace Allors.Domain
 {
+    using Meta;
+
     public partial class NonSerializedInventoryItems
     {
         protected override void AppsPrepare(Setup setup)
         {
             base.AppsPrepare(setup);
 
-            setup.AddDependency(this.ObjectType, NonSerializedInventoryItemObjectStates.Meta.ObjectType);
+            setup.AddDependency(this.ObjectType, M.NonSerializedInventoryItemObjectState);
         }
 
         protected override void AppsSecure(Security config)

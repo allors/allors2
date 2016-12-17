@@ -23,6 +23,7 @@ using System.Collections.Generic;
 namespace Allors.Domain
 {
     using System;
+    using Meta;
 
     public partial class Organisation
     {
@@ -72,7 +73,7 @@ namespace Allors.Domain
         public ClientRelationship ClientRelationShip(InternalOrganisation internalOrganisation)
         {
             var relationships = this.ClientRelationshipsWhereClient;
-            relationships.Filter.AddEquals(ClientRelationships.Meta.InternalOrganisation, internalOrganisation);
+            relationships.Filter.AddEquals(M.ClientRelationship.InternalOrganisation, internalOrganisation);
 
             foreach (ClientRelationship relationship in relationships)
             {
@@ -89,7 +90,7 @@ namespace Allors.Domain
         public CustomerRelationship CustomerRelationship(InternalOrganisation internalOrganisation)
         {
             var relationships = this.CustomerRelationshipsWhereCustomer;
-            relationships.Filter.AddEquals(CustomerRelationships.Meta.InternalOrganisation, internalOrganisation);
+            relationships.Filter.AddEquals(M.CustomerRelationship.InternalOrganisation, internalOrganisation);
 
             foreach (CustomerRelationship relationship in relationships)
             {
@@ -126,7 +127,7 @@ namespace Allors.Domain
         public DistributionChannelRelationship DistributionChannelRelationship(InternalOrganisation internalOrganisation)
         {
             var relationships = this.DistributionChannelRelationshipsWhereDistributor;
-            relationships.Filter.AddEquals(DistributionChannelRelationships.Meta.InternalOrganisation, internalOrganisation);
+            relationships.Filter.AddEquals(M.DistributionChannelRelationship.InternalOrganisation, internalOrganisation);
 
             foreach (DistributionChannelRelationship relationship in relationships)
             {
@@ -237,7 +238,7 @@ namespace Allors.Domain
         public SupplierRelationship SupplierRelationship(InternalOrganisation internalOrganisation)
         {
             var relationships = this.SupplierRelationshipsWhereSupplier;
-            relationships.Filter.AddEquals(SupplierRelationships.Meta.InternalOrganisation, internalOrganisation);
+            relationships.Filter.AddEquals(M.SupplierRelationship.InternalOrganisation, internalOrganisation);
 
             foreach (SupplierRelationship relationship in relationships)
             {

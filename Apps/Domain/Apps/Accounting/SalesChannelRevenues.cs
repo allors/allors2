@@ -22,7 +22,7 @@ namespace Allors.Domain
 {
     using System;
     using System.Collections.Generic;
-
+    using Meta;
 
     public partial class SalesChannelRevenues
     {
@@ -32,9 +32,9 @@ namespace Allors.Domain
             if (invoice.ExistSalesChannel)
             {
                 var salesChannelRevenues = invoice.SalesChannel.SalesChannelRevenuesWhereSalesChannel;
-                salesChannelRevenues.Filter.AddEquals(SalesChannelRevenues.Meta.InternalOrganisation, invoice.BilledFromInternalOrganisation);
-                salesChannelRevenues.Filter.AddEquals(SalesChannelRevenues.Meta.Year, invoice.InvoiceDate.Year);
-                salesChannelRevenues.Filter.AddEquals(SalesChannelRevenues.Meta.Month, invoice.InvoiceDate.Month);
+                salesChannelRevenues.Filter.AddEquals(M.SalesChannelRevenue.InternalOrganisation, invoice.BilledFromInternalOrganisation);
+                salesChannelRevenues.Filter.AddEquals(M.SalesChannelRevenue.Year, invoice.InvoiceDate.Year);
+                salesChannelRevenues.Filter.AddEquals(M.SalesChannelRevenue.Month, invoice.InvoiceDate.Month);
                 salesChannelRevenue = salesChannelRevenues.First ?? new SalesChannelRevenueBuilder(session)
                                                                             .WithInternalOrganisation(invoice.BilledFromInternalOrganisation)
                                                                             .WithSalesChannel((SalesChannel)session.Instantiate(invoice.SalesChannel))
@@ -83,7 +83,7 @@ namespace Allors.Domain
             var revenues = new HashSet<long>();
 
             var salesInvoices = session.Extent<SalesInvoice>();
-            salesInvoices.Filter.AddExists(SalesInvoices.Meta.SalesChannel);
+            salesInvoices.Filter.AddExists(M.SalesInvoice.SalesChannel);
 
             var year = 0;
             foreach (SalesInvoice salesInvoice in salesInvoices)

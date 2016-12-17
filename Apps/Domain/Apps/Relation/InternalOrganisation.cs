@@ -18,11 +18,13 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
+using System.Management.Instrumentation;
+
 namespace Allors.Domain
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
+    using Meta;
 
     public partial class InternalOrganisation
     {
@@ -199,7 +201,7 @@ namespace Allors.Domain
 
             if (this.ExistPreviousCurrency)
             {
-                derivation.Validation.AssertAreEqual(this, InternalOrganisations.Meta.PreferredCurrency, InternalOrganisations.Meta.PreviousCurrency);
+                derivation.Validation.AssertAreEqual(this, M.InternalOrganisation.PreferredCurrency, M.InternalOrganisation.PreviousCurrency);
             }
             else
             {

@@ -20,16 +20,18 @@
 
 namespace Allors.Domain
 {
+    using Meta;
+
     public partial class Transfers
     {
         protected override void AppsPrepare(Setup setup)
         {
             base.AppsPrepare(setup);
 
-            setup.AddDependency(this.ObjectType, TransferObjectStates.Meta.ObjectType);
+            setup.AddDependency(this.ObjectType, M.TransferObjectState);
         }
 
-        protected override void AppsSecure(Domain.Security config)
+        protected override void AppsSecure(Security config)
         {
             base.AppsSecure(config);
 

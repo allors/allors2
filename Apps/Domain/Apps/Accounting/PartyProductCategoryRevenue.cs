@@ -21,6 +21,7 @@
 namespace Allors.Domain
 {
     using System;
+    using Meta;
 
     public partial class PartyProductCategoryRevenue
     {
@@ -39,9 +40,9 @@ namespace Allors.Domain
             this.Quantity = 0;
 
             var partyProductRevenues = this.Party.PartyProductRevenuesWhereParty;
-            partyProductRevenues.Filter.AddEquals(PartyProductRevenues.Meta.InternalOrganisation, this.InternalOrganisation);
-            partyProductRevenues.Filter.AddEquals(PartyProductRevenues.Meta.Year, this.Year);
-            partyProductRevenues.Filter.AddEquals(PartyProductRevenues.Meta.Month, this.Month);
+            partyProductRevenues.Filter.AddEquals(M.PartyProductRevenue.InternalOrganisation, this.InternalOrganisation);
+            partyProductRevenues.Filter.AddEquals(M.PartyProductRevenue.Year, this.Year);
+            partyProductRevenues.Filter.AddEquals(M.PartyProductRevenue.Month, this.Month);
 
             foreach (PartyProductRevenue partyProductRevenue in partyProductRevenues)
             {
@@ -65,10 +66,10 @@ namespace Allors.Domain
                 foreach (ProductCategory parentCategory in this.ProductCategory.Parents)
                 {
                     var partyProductCategoryRevenues = this.Party.PartyProductCategoryRevenuesWhereParty;
-                    partyProductCategoryRevenues.Filter.AddEquals(PartyProductCategoryRevenues.Meta.InternalOrganisation, this.InternalOrganisation);
-                    partyProductCategoryRevenues.Filter.AddEquals(PartyProductCategoryRevenues.Meta.Year, this.Year);
-                    partyProductCategoryRevenues.Filter.AddEquals(PartyProductCategoryRevenues.Meta.Month, this.Month);
-                    partyProductCategoryRevenues.Filter.AddEquals(PartyProductCategoryRevenues.Meta.ProductCategory, parentCategory);
+                    partyProductCategoryRevenues.Filter.AddEquals(M.PartyProductCategoryRevenue.InternalOrganisation, this.InternalOrganisation);
+                    partyProductCategoryRevenues.Filter.AddEquals(M.PartyProductCategoryRevenue.Year, this.Year);
+                    partyProductCategoryRevenues.Filter.AddEquals(M.PartyProductCategoryRevenue.Month, this.Month);
+                    partyProductCategoryRevenues.Filter.AddEquals(M.PartyProductCategoryRevenue.ProductCategory, parentCategory);
                     var partyProductCategoryRevenue = partyProductCategoryRevenues.First
                                                       ?? new PartyProductCategoryRevenueBuilder(this.Strategy.Session)
                                                                 .WithInternalOrganisation(this.InternalOrganisation)
@@ -89,8 +90,8 @@ namespace Allors.Domain
             {
                 var histories = this.Party.PartyProductCategoryRevenueHistoriesWhereParty;
                 histories.Filter.AddEquals(
-                    PartyProductCategoryRevenueHistories.Meta.InternalOrganisation, this.InternalOrganisation);
-                histories.Filter.AddEquals(PartyProductCategoryRevenueHistories.Meta.ProductCategory, this.ProductCategory);
+                    M.ProductCategoryRevenueHistory.InternalOrganisation, this.InternalOrganisation);
+                histories.Filter.AddEquals(M.ProductCategoryRevenueHistory.ProductCategory, this.ProductCategory);
                 var history = histories.First
                               ??
                               new PartyProductCategoryRevenueHistoryBuilder(this.Strategy.Session).WithCurrency(this.Currency).

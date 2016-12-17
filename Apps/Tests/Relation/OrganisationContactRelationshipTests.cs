@@ -22,10 +22,7 @@
 namespace Allors.Domain
 {
     using System;
-
-    
-    
-
+    using Meta;
     using NUnit.Framework;
 
     [TestFixture]
@@ -43,7 +40,7 @@ namespace Allors.Domain
 
             this.organisationContactRelationship = new OrganisationContactRelationshipBuilder(this.DatabaseSession)
                 .WithContact(this.contact)
-                .WithOrganisation(new Organisations(this.DatabaseSession).FindBy(Organisations.Meta.Name, "customer"))
+                .WithOrganisation(new Organisations(this.DatabaseSession).FindBy(M.Organisation.Name, "customer"))
                 .WithFromDate(DateTime.UtcNow)
                 .Build();
 
@@ -102,7 +99,7 @@ namespace Allors.Domain
 
             var secondContact = new OrganisationContactRelationshipBuilder(this.DatabaseSession)
                 .WithContact(new PersonBuilder(this.DatabaseSession).WithLastName("contact 2").Build())
-                .WithOrganisation(new Organisations(this.DatabaseSession).FindBy(Organisations.Meta.Name, "customer"))
+                .WithOrganisation(new Organisations(this.DatabaseSession).FindBy(M.Organisation.Name, "customer"))
                 .WithFromDate(DateTime.UtcNow)
                 .Build();
 

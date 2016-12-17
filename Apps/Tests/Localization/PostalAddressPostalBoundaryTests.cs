@@ -21,6 +21,7 @@
 
 namespace Allors.Domain
 {
+    using Meta;
     using NUnit.Framework;
 
     [TestFixture]
@@ -66,7 +67,7 @@ namespace Allors.Domain
         {
             var city = new CityBuilder(this.DatabaseSession).WithName("Mechelen").Build();
             var postalCode = new PostalCodeBuilder(this.DatabaseSession).WithCode("2800").Build();
-            var country = new Countries(this.DatabaseSession).FindBy(Countries.Meta.IsoCode, "BE");
+            var country = new Countries(this.DatabaseSession).FindBy(M.Country.IsoCode, "BE");
 
             var address = new PostalAddressBuilder(this.DatabaseSession).WithAddress1("Haverwerf 15").WithGeographicBoundary(country).Build();
 
@@ -93,7 +94,7 @@ namespace Allors.Domain
         [Test]
         public void GivenPostalBoundary_WhenDeriving_ThenCountryAndCityAreDerived()
         {
-            var country = new Countries(this.DatabaseSession).FindBy(Countries.Meta.IsoCode, "BE");
+            var country = new Countries(this.DatabaseSession).FindBy(M.Country.IsoCode, "BE");
             var postalBoundary = new PostalBoundaryBuilder(this.DatabaseSession).WithLocality("locality").WithCountry(country).Build();
 
             var address = new PostalAddressBuilder(this.DatabaseSession)

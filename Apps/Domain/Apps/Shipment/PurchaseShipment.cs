@@ -36,7 +36,7 @@ namespace Allors.Domain
 
             if (!this.ExistShipToParty)
             {
-                this.ShipToParty = Domain.Singleton.Instance(this.Strategy.Session).DefaultInternalOrganisation;
+                this.ShipToParty = Singleton.Instance(this.Strategy.Session).DefaultInternalOrganisation;
             }
 
             if (!this.ExistFacility && this.ExistShipToParty)
@@ -114,7 +114,7 @@ namespace Allors.Domain
         public void AppsOnPostDerive(ObjectOnPostDerive method)
         {
             this.RemoveSecurityTokens();
-            this.AddSecurityToken(Domain.Singleton.Instance(this.Strategy.Session).DefaultSecurityToken);
+            this.AddSecurityToken(Singleton.Instance(this.Strategy.Session).DefaultSecurityToken);
 
             if (this.ExistShipToParty)
             {

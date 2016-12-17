@@ -22,6 +22,7 @@
 namespace Allors.Domain
 {
     using System;
+    using Meta;
     using NUnit.Framework;
 
     [TestFixture]
@@ -52,11 +53,11 @@ namespace Allors.Domain
         {
             base.Init();
 
-            var euro = new Currencies(this.DatabaseSession).FindBy(Currencies.Meta.IsoCode, "EUR");
+            var euro = new Currencies(this.DatabaseSession).FindBy(M.Currency.IsoCode, "EUR");
 
             this.supplier = new OrganisationBuilder(this.DatabaseSession).WithName("supplier").WithLocale(new Locales(this.DatabaseSession).EnglishGreatBritain).Build();
 
-            this.internalOrganisation = new InternalOrganisations(this.DatabaseSession).FindBy(InternalOrganisations.Meta.Name, "internalOrganisation");
+            this.internalOrganisation = new InternalOrganisations(this.DatabaseSession).FindBy(M.InternalOrganisation.Name, "internalOrganisation");
 
             this.vatRate21 = new VatRateBuilder(this.DatabaseSession).WithRate(21).Build();
 
@@ -325,7 +326,7 @@ namespace Allors.Domain
         {
             this.InstantiateObjects(this.DatabaseSession);
 
-            var vatRate0 = new VatRates(this.DatabaseSession).FindBy(VatRates.Meta.Rate, 0);
+            var vatRate0 = new VatRates(this.DatabaseSession).FindBy(M.VatRate.Rate, 0);
 
             var salesInvoice = new SalesInvoiceBuilder(this.DatabaseSession)
                 .WithBilledFromInternalOrganisation(this.internalOrganisation)
@@ -2230,7 +2231,7 @@ namespace Allors.Domain
         [Test]
         public void GivenBillToCustomerWithDifferentCurrency_WhenDerivingPrices_ThenCalculatePricesInPreferredCurrency()
         {
-            var poundSterling = new Currencies(this.DatabaseSession).FindBy(Currencies.Meta.IsoCode, "GBP");
+            var poundSterling = new Currencies(this.DatabaseSession).FindBy(M.Currency.IsoCode, "GBP");
 
             const decimal conversionfactor = 0.8553M;
             var euroToPoundStirling = new UnitOfMeasureConversionBuilder(this.DatabaseSession)
@@ -2239,7 +2240,7 @@ namespace Allors.Domain
                 .WithStartDate(DateTime.UtcNow)
                 .Build();
 
-            var euro = new Currencies(this.DatabaseSession).FindBy(Currencies.Meta.IsoCode, "EUR");
+            var euro = new Currencies(this.DatabaseSession).FindBy(M.Currency.IsoCode, "EUR");
             euro.AddUnitOfMeasureConversion(euroToPoundStirling);
 
             this.DatabaseSession.Derive(true);

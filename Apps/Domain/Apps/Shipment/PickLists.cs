@@ -21,7 +21,7 @@
 namespace Allors.Domain
 {
     using System;
-
+    using Meta;
 
     public partial class PickLists
     {
@@ -30,8 +30,8 @@ namespace Allors.Domain
             get
             {
                 var pickLists = new PickLists(this.Session).Extent();
-                pickLists.Filter.AddNot().AddExists(PickLists.Meta.Picker);
-                pickLists.Filter.AddEquals(PickLists.Meta.CurrentObjectState, new PickListObjectStates(this.Session).Created);
+                pickLists.Filter.AddNot().AddExists(M.PickList.Picker);
+                pickLists.Filter.AddEquals(M.PickList.CurrentObjectState, new PickListObjectStates(this.Session).Created);
 
                 return pickLists;
             }
@@ -41,10 +41,10 @@ namespace Allors.Domain
         {
             base.AppsPrepare(setup);
 
-            setup.AddDependency(this.ObjectType, PickListObjectStates.Meta.ObjectType);
+            setup.AddDependency(this.ObjectType, M.PickListObjectState);
         }
 
-        protected override void AppsSecure(Domain.Security config)
+        protected override void AppsSecure(Security config)
         {
             base.AppsSecure(config);
 
@@ -65,8 +65,8 @@ namespace Allors.Domain
             config.Deny(this.ObjectType, created, Meta.Continue);
             config.Deny(this.ObjectType, onHold, Meta.Hold);
 
-            config.Deny(this.ObjectType, picked, Operation.Execute, Operations.Write);
-            config.Deny(this.ObjectType, cancelled, Operation.Execute, Operations.Write);
+            config.Deny(this.ObjectType, picked, Operations.Execute, Operations.Write);
+            config.Deny(this.ObjectType, cancelled, Operations.Execute, Operations.Write);
         }
     }
 }

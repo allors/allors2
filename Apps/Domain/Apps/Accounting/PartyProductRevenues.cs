@@ -22,7 +22,7 @@ namespace Allors.Domain
 {
     using System;
     using System.Collections.Generic;
-
+    using Meta;
     
 
     public partial class PartyProductRevenues
@@ -30,10 +30,10 @@ namespace Allors.Domain
         public static PartyProductRevenue AppsFindOrCreateAsDependable(ISession session, Product product, SalesInvoice invoice)
         {
             var partyProductRevenues = invoice.BillToCustomer.PartyProductRevenuesWhereParty;
-            partyProductRevenues.Filter.AddEquals(Meta.InternalOrganisation, invoice.BilledFromInternalOrganisation);
-            partyProductRevenues.Filter.AddEquals(Meta.Year, invoice.InvoiceDate.Year);
-            partyProductRevenues.Filter.AddEquals(Meta.Month, invoice.InvoiceDate.Month);
-            partyProductRevenues.Filter.AddEquals(Meta.Product, product);
+            partyProductRevenues.Filter.AddEquals(M.PartyProductRevenue.InternalOrganisation, invoice.BilledFromInternalOrganisation);
+            partyProductRevenues.Filter.AddEquals(M.PartyProductRevenue.Year, invoice.InvoiceDate.Year);
+            partyProductRevenues.Filter.AddEquals(M.PartyProductRevenue.Month, invoice.InvoiceDate.Month);
+            partyProductRevenues.Filter.AddEquals(M.PartyProductRevenue.Product, product);
             var partyProductRevenue = partyProductRevenues.First ?? new PartyProductRevenueBuilder(session)
                                                                         .WithInternalOrganisation(invoice.BilledFromInternalOrganisation)
                                                                         .WithParty(invoice.BillToCustomer)

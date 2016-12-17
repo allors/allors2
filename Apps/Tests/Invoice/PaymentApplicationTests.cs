@@ -22,6 +22,7 @@
 namespace Allors.Domain
 {
     using System;
+    using Meta;
     using NUnit.Framework;
 
     [TestFixture]
@@ -107,7 +108,7 @@ namespace Allors.Domain
 
             var derivationLog = this.DatabaseSession.Derive();
             Assert.IsTrue(derivationLog.HasErrors);
-            Assert.Contains(PaymentApplications.Meta.AmountApplied, derivationLog.Errors[0].RoleTypes);
+            Assert.Contains(M.PaymentApplication.AmountApplied, derivationLog.Errors[0].RoleTypes);
         }
     }
 }

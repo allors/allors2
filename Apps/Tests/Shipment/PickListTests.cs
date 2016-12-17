@@ -25,6 +25,7 @@ using System.Threading;
 namespace Allors.Domain
 {
     using System;
+    using Meta;
     using NUnit.Framework;
 
     [TestFixture]
@@ -45,10 +46,10 @@ namespace Allors.Domain
         public void GivenPickListCreatedByOrderProcessor_WhenCurrentUserInSameOrderProcessorUserGroup_ThenAccessIsGranted()
         {
             var orderProcessor2 = new PersonBuilder(this.DatabaseSession).WithLastName("orderProcessor2").WithUserName("orderProcessor2").Build();
-            var internalOrganisation = new InternalOrganisations(this.DatabaseSession).FindBy(InternalOrganisations.Meta.Name, "internalOrganisation");
+            var internalOrganisation = new InternalOrganisations(this.DatabaseSession).FindBy(M.InternalOrganisation.Name, "internalOrganisation");
 
             var usergroups = internalOrganisation.UserGroupsWhereParty;
-            usergroups.Filter.AddEquals(UserGroups.Meta.Parent, new Roles(this.DatabaseSession).Operations.UserGroupWhereRole);
+            usergroups.Filter.AddEquals(M.UserGroup.Parent, new Roles(this.DatabaseSession).Operations.UserGroupWhereRole);
             var orderProcessorUserGroup = usergroups.First;
 
             new EmploymentBuilder(this.DatabaseSession)
@@ -69,16 +70,16 @@ namespace Allors.Domain
 
             var acl = new AccessControlList(pickList, new Users(this.DatabaseSession).GetCurrentUser());
 
-            Assert.IsTrue(acl.CanWrite(PickLists.Meta.Picker));
-            Assert.IsTrue(acl.CanRead(PickLists.Meta.Picker));
-            Assert.IsTrue(acl.CanExecute(PickLists.Meta.Cancel));
+            Assert.IsTrue(acl.CanWrite(M.PickList.Picker));
+            Assert.IsTrue(acl.CanRead(M.PickList.Picker));
+            Assert.IsTrue(acl.CanExecute(M.PickList.Cancel));
 
             Thread.CurrentPrincipal = new GenericPrincipal(new GenericIdentity("orderProcessor2", "Forms"), new string[0]);
             acl = new AccessControlList(pickList, new Users(this.DatabaseSession).GetCurrentUser());
 
-            Assert.IsTrue(acl.CanWrite(PickLists.Meta.Picker));
-            Assert.IsTrue(acl.CanRead(PickLists.Meta.Picker));
-            Assert.IsTrue(acl.CanExecute(PickLists.Meta.Cancel));
+            Assert.IsTrue(acl.CanWrite(M.PickList.Picker));
+            Assert.IsTrue(acl.CanRead(M.PickList.Picker));
+            Assert.IsTrue(acl.CanExecute(M.PickList.Cancel));
         }
 
         [Test]
@@ -91,7 +92,7 @@ namespace Allors.Domain
             this.DatabaseSession.Derive(true);
 
             var acl = new AccessControlList(pickList, new Users(this.DatabaseSession).GetCurrentUser());
-            Assert.IsTrue(acl.CanExecute(PickLists.Meta.Cancel));
+            Assert.IsTrue(acl.CanExecute(M.PickList.Cancel));
         }
 
         [Test]
@@ -108,8 +109,8 @@ namespace Allors.Domain
             this.DatabaseSession.Derive(true);
 
             var acl = new AccessControlList(pickList, new Users(this.DatabaseSession).GetCurrentUser());
-            Assert.IsFalse(acl.CanExecute(PickLists.Meta.Cancel));
-            Assert.IsFalse(acl.CanExecute(PickLists.Meta.SetPicked));
+            Assert.IsFalse(acl.CanExecute(M.PickList.Cancel));
+            Assert.IsFalse(acl.CanExecute(M.PickList.SetPicked));
         }
 
         [Test]
@@ -126,8 +127,8 @@ namespace Allors.Domain
             this.DatabaseSession.Derive(true);
 
             var acl = new AccessControlList(pickList, new Users(this.DatabaseSession).GetCurrentUser());
-            Assert.IsFalse(acl.CanExecute(PickLists.Meta.Cancel));
-            Assert.IsFalse(acl.CanExecute(PickLists.Meta.SetPicked));
+            Assert.IsFalse(acl.CanExecute(M.PickList.Cancel));
+            Assert.IsFalse(acl.CanExecute(M.PickList.SetPicked));
         }
 
         [Test]
@@ -143,11 +144,11 @@ namespace Allors.Domain
 
             var supplier = new OrganisationBuilder(this.DatabaseSession).WithName("supplier").Build();
             var customer = new PersonBuilder(this.DatabaseSession).WithLastName("person1").WithPartyContactMechanism(shipToMechelen).Build();
-            var internalOrganisation = new InternalOrganisations(this.DatabaseSession).FindBy(InternalOrganisations.Meta.Name, "internalOrganisation");
+            var internalOrganisation = new InternalOrganisations(this.DatabaseSession).FindBy(M.InternalOrganisation.Name, "internalOrganisation");
             new CustomerRelationshipBuilder(this.DatabaseSession).WithFromDate(DateTime.UtcNow).WithCustomer(customer).WithInternalOrganisation(internalOrganisation).Build();
 
             new SupplierRelationshipBuilder(this.DatabaseSession)
-                .WithInternalOrganisation(new InternalOrganisations(this.DatabaseSession).FindBy(InternalOrganisations.Meta.Name, "internalOrganisation"))
+                .WithInternalOrganisation(new InternalOrganisations(this.DatabaseSession).FindBy(M.InternalOrganisation.Name, "internalOrganisation"))
                 .WithSupplier(supplier)
                 .WithFromDate(DateTime.UtcNow)
                 .Build();
@@ -171,14 +172,14 @@ namespace Allors.Domain
                 .Build();
 
             var good1PurchasePrice = new ProductPurchasePriceBuilder(this.DatabaseSession)
-                .WithCurrency(new Currencies(this.DatabaseSession).FindBy(Currencies.Meta.IsoCode, "EUR"))
+                .WithCurrency(new Currencies(this.DatabaseSession).FindBy(M.Currency.IsoCode, "EUR"))
                 .WithFromDate(DateTime.UtcNow)
                 .WithPrice(7)
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.DatabaseSession).Piece)
                 .Build();
 
             var good2PurchasePrice = new ProductPurchasePriceBuilder(this.DatabaseSession)
-                .WithCurrency(new Currencies(this.DatabaseSession).FindBy(Currencies.Meta.IsoCode, "EUR"))
+                .WithCurrency(new Currencies(this.DatabaseSession).FindBy(M.Currency.IsoCode, "EUR"))
                 .WithFromDate(DateTime.UtcNow)
                 .WithPrice(7)
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.DatabaseSession).Piece)
@@ -254,7 +255,7 @@ namespace Allors.Domain
             var shipment = (CustomerShipment)mechelenAddress.ShipmentsWhereShipToAddress[0];
 
             var pickList = good1.InventoryItemsWhereGood[0].PickListItemsWhereInventoryItem[0].PickListWherePickListItem;
-            pickList.Picker = new Persons(this.DatabaseSession).FindBy(Persons.Meta.LastName, "orderProcessor");
+            pickList.Picker = new People(this.DatabaseSession).FindBy(M.Person.LastName, "orderProcessor");
 
             //// item5: only 4 out of 5 are actually picked
             foreach (PickListItem pickListItem in pickList.PickListItems)
@@ -300,11 +301,11 @@ namespace Allors.Domain
 
             var supplier = new OrganisationBuilder(this.DatabaseSession).WithName("supplier").Build();
             var customer = new PersonBuilder(this.DatabaseSession).WithLastName("person1").WithPartyContactMechanism(shipToMechelen).Build();
-            var internalOrganisation = new InternalOrganisations(this.DatabaseSession).FindBy(InternalOrganisations.Meta.Name, "internalOrganisation");
+            var internalOrganisation = new InternalOrganisations(this.DatabaseSession).FindBy(M.InternalOrganisation.Name, "internalOrganisation");
             new CustomerRelationshipBuilder(this.DatabaseSession).WithFromDate(DateTime.UtcNow).WithCustomer(customer).WithInternalOrganisation(internalOrganisation).Build();
 
             new SupplierRelationshipBuilder(this.DatabaseSession)
-                .WithInternalOrganisation(new InternalOrganisations(this.DatabaseSession).FindBy(InternalOrganisations.Meta.Name, "internalOrganisation"))
+                .WithInternalOrganisation(new InternalOrganisations(this.DatabaseSession).FindBy(M.InternalOrganisation.Name, "internalOrganisation"))
                 .WithSupplier(supplier)
                 .WithFromDate(DateTime.UtcNow)
                 .Build();
@@ -328,14 +329,14 @@ namespace Allors.Domain
                 .Build();
 
             var good1PurchasePrice = new ProductPurchasePriceBuilder(this.DatabaseSession)
-                .WithCurrency(new Currencies(this.DatabaseSession).FindBy(Currencies.Meta.IsoCode, "EUR"))
+                .WithCurrency(new Currencies(this.DatabaseSession).FindBy(M.Currency.IsoCode, "EUR"))
                 .WithFromDate(DateTime.UtcNow)
                 .WithPrice(7)
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.DatabaseSession).Piece)
                 .Build();
 
             var good2PurchasePrice = new ProductPurchasePriceBuilder(this.DatabaseSession)
-                .WithCurrency(new Currencies(this.DatabaseSession).FindBy(Currencies.Meta.IsoCode, "EUR"))
+                .WithCurrency(new Currencies(this.DatabaseSession).FindBy(M.Currency.IsoCode, "EUR"))
                 .WithFromDate(DateTime.UtcNow)
                 .WithPrice(7)
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.DatabaseSession).Piece)
@@ -386,7 +387,7 @@ namespace Allors.Domain
             this.DatabaseSession.Derive(true);
 
             var pickList = good1.InventoryItemsWhereGood[0].PickListItemsWhereInventoryItem[0].PickListWherePickListItem;
-            pickList.Picker = new Persons(this.DatabaseSession).FindBy(Persons.Meta.LastName, "orderProcessor");
+            pickList.Picker = new People(this.DatabaseSession).FindBy(M.Person.LastName, "orderProcessor");
 
             //// item3: only 4 out of 5 are actually picked
             PickListItem adjustedPicklistItem = null;
@@ -428,11 +429,11 @@ namespace Allors.Domain
             var supplier = new OrganisationBuilder(this.DatabaseSession).WithName("supplier").Build();
 
             var customer = new PersonBuilder(this.DatabaseSession).WithLastName("person1").WithPartyContactMechanism(shipToMechelen).Build();
-            var internalOrganisation = new InternalOrganisations(this.DatabaseSession).FindBy(InternalOrganisations.Meta.Name, "internalOrganisation");
+            var internalOrganisation = new InternalOrganisations(this.DatabaseSession).FindBy(M.InternalOrganisation.Name, "internalOrganisation");
             new CustomerRelationshipBuilder(this.DatabaseSession).WithFromDate(DateTime.UtcNow).WithCustomer(customer).WithInternalOrganisation(internalOrganisation).Build();
 
             new SupplierRelationshipBuilder(this.DatabaseSession)
-                .WithInternalOrganisation(new InternalOrganisations(this.DatabaseSession).FindBy(InternalOrganisations.Meta.Name, "internalOrganisation"))
+                .WithInternalOrganisation(new InternalOrganisations(this.DatabaseSession).FindBy(M.InternalOrganisation.Name, "internalOrganisation"))
                 .WithSupplier(supplier)
                 .WithFromDate(DateTime.UtcNow)
                 .Build();
@@ -456,14 +457,14 @@ namespace Allors.Domain
                 .Build();
 
             var good1PurchasePrice = new ProductPurchasePriceBuilder(this.DatabaseSession)
-                .WithCurrency(new Currencies(this.DatabaseSession).FindBy(Currencies.Meta.IsoCode, "EUR"))
+                .WithCurrency(new Currencies(this.DatabaseSession).FindBy(M.Currency.IsoCode, "EUR"))
                 .WithFromDate(DateTime.UtcNow)
                 .WithPrice(7)
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.DatabaseSession).Piece)
                 .Build();
 
             var good2PurchasePrice = new ProductPurchasePriceBuilder(this.DatabaseSession)
-                .WithCurrency(new Currencies(this.DatabaseSession).FindBy(Currencies.Meta.IsoCode, "EUR"))
+                .WithCurrency(new Currencies(this.DatabaseSession).FindBy(M.Currency.IsoCode, "EUR"))
                 .WithFromDate(DateTime.UtcNow)
                 .WithPrice(7)
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.DatabaseSession).Piece)
@@ -518,11 +519,11 @@ namespace Allors.Domain
             Assert.AreEqual(2, pickList.PickListItems.Count);
 
             var extent1 = pickList.PickListItems;
-            extent1.Filter.AddEquals(PickListItems.Meta.InventoryItem, good1Inventory);
+            extent1.Filter.AddEquals(M.PickListItem.InventoryItem, good1Inventory);
             Assert.AreEqual(3, extent1.First.RequestedQuantity);
 
             var extent2 = pickList.PickListItems;
-            extent2.Filter.AddEquals(PickListItems.Meta.InventoryItem, good2Inventory);
+            extent2.Filter.AddEquals(M.PickListItem.InventoryItem, good2Inventory);
             Assert.AreEqual(5, extent2.First.RequestedQuantity);
         }
 
@@ -539,13 +540,13 @@ namespace Allors.Domain
 
             var supplier = new OrganisationBuilder(this.DatabaseSession).WithName("supplier").Build();
             var customer = new PersonBuilder(this.DatabaseSession).WithLastName("person1").WithPartyContactMechanism(shipToMechelen).Build();
-            var internalOrganisation = new InternalOrganisations(this.DatabaseSession).FindBy(InternalOrganisations.Meta.Name, "internalOrganisation");
+            var internalOrganisation = new InternalOrganisations(this.DatabaseSession).FindBy(M.InternalOrganisation.Name, "internalOrganisation");
             new CustomerRelationshipBuilder(this.DatabaseSession).WithFromDate(DateTime.UtcNow).WithCustomer(customer).WithInternalOrganisation(internalOrganisation).Build();
 
             var vatRate21 = new VatRateBuilder(this.DatabaseSession).WithRate(21).Build();
 
             new SupplierRelationshipBuilder(this.DatabaseSession)
-                .WithInternalOrganisation(new InternalOrganisations(this.DatabaseSession).FindBy(InternalOrganisations.Meta.Name, "internalOrganisation"))
+                .WithInternalOrganisation(new InternalOrganisations(this.DatabaseSession).FindBy(M.InternalOrganisation.Name, "internalOrganisation"))
                 .WithSupplier(supplier)
                 .WithFromDate(DateTime.UtcNow)
                 .Build();
@@ -567,14 +568,14 @@ namespace Allors.Domain
                 .Build();
 
             var good1PurchasePrice = new ProductPurchasePriceBuilder(this.DatabaseSession)
-                .WithCurrency(new Currencies(this.DatabaseSession).FindBy(Currencies.Meta.IsoCode, "EUR"))
+                .WithCurrency(new Currencies(this.DatabaseSession).FindBy(M.Currency.IsoCode, "EUR"))
                 .WithFromDate(DateTime.UtcNow)
                 .WithPrice(7)
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.DatabaseSession).Piece)
                 .Build();
 
             var good2PurchasePrice = new ProductPurchasePriceBuilder(this.DatabaseSession)
-                .WithCurrency(new Currencies(this.DatabaseSession).FindBy(Currencies.Meta.IsoCode, "EUR"))
+                .WithCurrency(new Currencies(this.DatabaseSession).FindBy(M.Currency.IsoCode, "EUR"))
                 .WithFromDate(DateTime.UtcNow)
                 .WithPrice(7)
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.DatabaseSession).Piece)
@@ -641,7 +642,7 @@ namespace Allors.Domain
             this.DatabaseSession.Derive(true);
 
             var pickList = good1.InventoryItemsWhereGood[0].PickListItemsWhereInventoryItem[0].PickListWherePickListItem;
-            pickList.Picker = new Persons(this.DatabaseSession).FindBy(Persons.Meta.LastName, "orderProcessor");
+            pickList.Picker = new People(this.DatabaseSession).FindBy(M.Person.LastName, "orderProcessor");
 
             pickList.SetPicked();
 
@@ -690,7 +691,7 @@ namespace Allors.Domain
             this.DatabaseSession.Commit();
 
             var usergroups = internalOrganisation.UserGroupsWhereParty;
-            usergroups.Filter.AddEquals(UserGroups.Meta.Parent, new Roles(this.DatabaseSession).Operations.UserGroupWhereRole);
+            usergroups.Filter.AddEquals(M.UserGroup.Parent, new Roles(this.DatabaseSession).Operations.UserGroupWhereRole);
             var orderProcessorUserGroup = usergroups.First;
 
             new EmploymentBuilder(this.DatabaseSession)
@@ -711,14 +712,14 @@ namespace Allors.Domain
 
             var acl = new AccessControlList(pickList, new Users(this.DatabaseSession).GetCurrentUser());
 
-            Assert.IsTrue(acl.CanWrite(PickLists.Meta.Picker));
-            Assert.IsTrue(acl.CanRead(PickLists.Meta.Picker));
-            Assert.IsTrue(acl.CanExecute(PickLists.Meta.Cancel));
+            Assert.IsTrue(acl.CanWrite(M.PickList.Picker));
+            Assert.IsTrue(acl.CanRead(M.PickList.Picker));
+            Assert.IsTrue(acl.CanExecute(M.PickList.Cancel));
 
             Thread.CurrentPrincipal = new GenericPrincipal(new GenericIdentity("orderProcessor2", "Forms"), new string[0]);
             acl = new AccessControlList(pickList, new Users(this.DatabaseSession).GetCurrentUser());
 
-            Assert.IsFalse(acl.HasReadOperation);
+            Assert.IsFalse(acl.CanRead);
         }
     }
 }

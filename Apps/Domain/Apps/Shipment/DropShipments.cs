@@ -20,13 +20,15 @@
 
 namespace Allors.Domain
 {
+    using Meta;
+
     public partial class DropShipments
     {
         protected override void AppsPrepare(Setup setup)
         {
             base.AppsPrepare(setup);
 
-            setup.AddDependency(this.ObjectType, DropShipmentObjectStates.Meta.ObjectType);
+            setup.AddDependency(this.ObjectType, M.DropShipmentObjectState);
         }
     }
 }

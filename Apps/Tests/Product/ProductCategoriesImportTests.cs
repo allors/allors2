@@ -42,7 +42,7 @@ namespace Allors.Domain
     //        var productImport = new ProductCategoriesImport(this.DatabaseSession, table, new ProductCategoriesImportSettings(), new DefaultImportLog());
     //        productImport.Execute();
 
-    //        var productCategories = this.GetObjects(this.DatabaseSession, ProductCategories.Meta.ObjectType);
+    //        var productCategories = this.GetObjects(this.DatabaseSession, M.ProductCategoryObjectType);
 
     //        var skus = new List<string>();
 

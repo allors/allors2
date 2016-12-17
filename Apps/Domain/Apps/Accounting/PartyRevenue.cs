@@ -21,6 +21,7 @@
 namespace Allors.Domain
 {
     using System;
+    using Meta;
 
     public partial class PartyRevenue
     {
@@ -36,9 +37,9 @@ namespace Allors.Domain
             var toDate = DateTimeFactory.CreateDate(year, month, 01).AddMonths(1).AddMilliseconds(-1);
 
             var invoices = this.Party.SalesInvoicesWhereBillToCustomer;
-            invoices.Filter.AddEquals(SalesInvoices.Meta.BilledFromInternalOrganisation, this.InternalOrganisation);
-            invoices.Filter.AddNot().AddEquals(SalesInvoices.Meta.CurrentObjectState, new SalesInvoiceObjectStates(this.Strategy.Session).WrittenOff);
-            invoices.Filter.AddBetween(SalesInvoices.Meta.InvoiceDate, DateTimeFactory.CreateDate(year, month, 01), toDate);
+            invoices.Filter.AddEquals(M.SalesInvoice.BilledFromInternalOrganisation, this.InternalOrganisation);
+            invoices.Filter.AddNot().AddEquals(M.SalesInvoice.CurrentObjectState, new SalesInvoiceObjectStates(this.Strategy.Session).WrittenOff);
+            invoices.Filter.AddBetween(M.Invoice.InvoiceDate, DateTimeFactory.CreateDate(year, month, 01), toDate);
 
             foreach (SalesInvoice salesInvoice in invoices)
             {
@@ -49,7 +50,7 @@ namespace Allors.Domain
             if (months <= 12)
             {
                 var histories = this.Party.PartyRevenueHistoriesWhereParty;
-                histories.Filter.AddEquals(PartyRevenueHistories.Meta.InternalOrganisation, this.InternalOrganisation);
+                histories.Filter.AddEquals(M.PartyRevenueHistory.InternalOrganisation, this.InternalOrganisation);
                 var history = histories.First ?? new PartyRevenueHistoryBuilder(this.Strategy.Session)
                                                         .WithCurrency(this.Currency)
                                                         .WithInternalOrganisation(this.InternalOrganisation)

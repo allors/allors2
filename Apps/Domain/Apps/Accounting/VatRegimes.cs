@@ -18,9 +18,11 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
+
 namespace Allors.Domain
 {
     using System;
+    using Meta;
 
     public partial class VatRegimes
     {
@@ -81,14 +83,14 @@ namespace Allors.Domain
         {
             base.AppsPrepare(setup);
 
-            setup.AddDependency(this.ObjectType, VatRates.Meta.ObjectType);
+            setup.AddDependency(this.ObjectType, M.VatRate);
         }
 
         protected override void AppsSetup(Setup setup)
         {
             base.AppsSetup(setup);
 
-            var vatRate0 = new VatRates(this.Session).FindBy(VatRates.Meta.Rate, 0);
+            var vatRate0 = new VatRates(this.Session).FindBy(M.VatRate.Rate, 0);
         
             var englishLocale = new Locales(this.Session).EnglishGreatBritain;
             var dutchLocale = new Locales(this.Session).DutchNetherlands;

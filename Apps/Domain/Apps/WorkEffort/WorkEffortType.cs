@@ -20,14 +20,16 @@
 
 namespace Allors.Domain
 {
+    using Meta;
+
     public partial class WorkEffortType
     {
         public void AppsOnDerive(ObjectOnDerive method)
         {
             var derivation = method.Derivation;
 
-            derivation.Validation.AssertExists(this, WorkEffortTypes.Meta.Description);
-            derivation.Validation.AssertExists(this, WorkEffortTypes.Meta.WorkEffortTypeKind);
+            derivation.Validation.AssertExists(this, M.WorkEffortType.Description);
+            derivation.Validation.AssertExists(this, M.WorkEffortType.WorkEffortTypeKind);
         }
     }
 }

@@ -20,13 +20,15 @@
 
 namespace Allors.Domain
 {
+    using Meta;
+
     public partial class CommunicationEvents
     {
         protected override void AppsPrepare(Setup setup)
         {
             base.AppsPrepare(setup);
 
-            setup.AddDependency(this.ObjectType, CommunicationEventObjectStates.Meta.ObjectType);
+            setup.AddDependency(this.ObjectType, M.CommunicationEventObjectState);
         }
 
         protected override void AppsSecure(Security config)
@@ -42,15 +44,15 @@ namespace Allors.Domain
             ObjectState cancelled = new CommunicationEventObjectStates(this.Session).Cancelled;
             ObjectState closed = new CommunicationEventObjectStates(this.Session).Completed;
 
-            var reopenId = CommunicationEvents.Meta.Reopen;
-            var closeId = CommunicationEvents.Meta.Close;
-            var cancelId = CommunicationEvents.Meta.Cancel;
+            var reopenId = M.CommunicationEvent.Reopen;
+            var closeId = M.CommunicationEvent.Close;
+            var cancelId = M.CommunicationEvent.Cancel;
 
             config.Deny(this.ObjectType, scheduled, reopenId);
             config.Deny(this.ObjectType, closed, closeId, cancelId);
 
             config.Deny(this.ObjectType, closed, Operations.Write);
-            config.Deny(this.ObjectType, cancelled, Operation.Execute, Operations.Write);
+            config.Deny(this.ObjectType, cancelled, Operations.Execute, Operations.Write);
         }
     }
 }

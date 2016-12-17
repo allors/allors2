@@ -20,6 +20,8 @@
 
 namespace Allors.Domain
 {
+    using Meta;
+
     public partial class OrderShipment
     {
         public void AppsOnBuild(ObjectOnBuild method)
@@ -36,8 +38,8 @@ namespace Allors.Domain
         {
             var derivation = method.Derivation;
 
-            derivation.Validation.AssertAtLeastOne(this, OrderShipments.Meta.SalesOrderItem, OrderShipments.Meta.PurchaseOrderItem);
-            derivation.Validation.AssertExistsAtMostOne(this, OrderShipments.Meta.SalesOrderItem, OrderShipments.Meta.PurchaseOrderItem);
+            derivation.Validation.AssertAtLeastOne(this, M.OrderShipment.SalesOrderItem, M.OrderShipment.PurchaseOrderItem);
+            derivation.Validation.AssertExistsAtMostOne(this, M.OrderShipment.SalesOrderItem, M.OrderShipment.PurchaseOrderItem);
         }
     }
 }

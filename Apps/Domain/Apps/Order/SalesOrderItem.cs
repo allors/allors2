@@ -2,6 +2,7 @@ namespace Allors.Domain
 {
     using System.Collections.Generic;
     using System.Globalization;
+    using Meta;
     using Resources;
 
     public partial class SalesOrderItem
@@ -105,7 +106,7 @@ namespace Allors.Domain
 
             if (this.ExistPreviousProduct && !this.PreviousProduct.Equals(this.Product))
             {
-                derivation.Validation.AddError(this, SalesOrderItems.Meta.Product, ErrorMessages.SalesOrderItemProductChangeNotAllowed);
+                derivation.Validation.AddError(this, M.SalesOrderItem.Product, ErrorMessages.SalesOrderItemProductChangeNotAllowed);
             }
             else
             {
@@ -114,12 +115,12 @@ namespace Allors.Domain
 
             if (this.ExistSalesOrderItemWhereOrderedWithFeature && !this.ExistProductFeature)
             {
-                derivation.Validation.AssertExists(this, SalesOrderItems.Meta.ProductFeature);
+                derivation.Validation.AssertExists(this, M.SalesOrderItem.ProductFeature);
             }
 
             if (this.ExistProduct && this.ExistQuantityOrdered && this.QuantityOrdered < this.QuantityShipped)
             {
-                derivation.Validation.AddError(this, SalesOrderItems.Meta.QuantityOrdered, ErrorMessages.SalesOrderItemLessThanAlreadeyShipped);
+                derivation.Validation.AddError(this, M.SalesOrderItem.QuantityOrdered, ErrorMessages.SalesOrderItemLessThanAlreadeyShipped);
             }
 
             if (!this.ExistAssignedShipToAddress && this.ExistAssignedShipToParty)
@@ -127,10 +128,10 @@ namespace Allors.Domain
                 this.AssignedShipToAddress = this.AssignedShipToParty.ShippingAddress;
             }
 
-            derivation.Validation.AssertAtLeastOne(this, SalesOrderItems.Meta.Product, SalesOrderItems.Meta.ProductFeature);
-            derivation.Validation.AssertExistsAtMostOne(this, SalesOrderItems.Meta.Product, SalesOrderItems.Meta.ProductFeature);
-            derivation.Validation.AssertExistsAtMostOne(this, SalesOrderItems.Meta.ActualUnitPrice, SalesOrderItems.Meta.DiscountAdjustment, SalesOrderItems.Meta.SurchargeAdjustment);
-            derivation.Validation.AssertExistsAtMostOne(this, SalesOrderItems.Meta.RequiredMarkupPercentage, SalesOrderItems.Meta.RequiredProfitMargin, SalesOrderItems.Meta.DiscountAdjustment, SalesOrderItems.Meta.SurchargeAdjustment);
+            derivation.Validation.AssertAtLeastOne(this, M.SalesOrderItem.Product, M.SalesOrderItem.ProductFeature);
+            derivation.Validation.AssertExistsAtMostOne(this, M.SalesOrderItem.Product, M.SalesOrderItem.ProductFeature);
+            derivation.Validation.AssertExistsAtMostOne(this, M.SalesOrderItem.ActualUnitPrice, M.SalesOrderItem.DiscountAdjustment, M.SalesOrderItem.SurchargeAdjustment);
+            derivation.Validation.AssertExistsAtMostOne(this, M.SalesOrderItem.RequiredMarkupPercentage, M.SalesOrderItem.RequiredProfitMargin, M.SalesOrderItem.DiscountAdjustment, M.SalesOrderItem.SurchargeAdjustment);
 
             this.AppsOnDerivePrices(derivation, 0, 0);
             this.AppsOnDeriveDeliveryDate(derivation);
@@ -282,7 +283,7 @@ namespace Allors.Domain
                         if (!this.ExistReservedFromInventoryItem || !this.ReservedFromInventoryItem.Part.Equals(good.FinishedGood))
                         {
                             var inventoryItems = good.FinishedGood.InventoryItemsWherePart;
-                            inventoryItems.Filter.AddEquals(InventoryItems.Meta.Facility, SalesOrderWhereSalesOrderItem.TakenByInternalOrganisation.DefaultFacility);
+                            inventoryItems.Filter.AddEquals(M.InventoryItem.Facility, SalesOrderWhereSalesOrderItem.TakenByInternalOrganisation.DefaultFacility);
                             this.ReservedFromInventoryItem = inventoryItems.First as NonSerializedInventoryItem;
                         }
                     }
@@ -291,7 +292,7 @@ namespace Allors.Domain
                         if (!this.ExistReservedFromInventoryItem || !this.ReservedFromInventoryItem.Good.Equals(good))
                         {
                             var inventoryItems = good.InventoryItemsWhereGood;
-                            inventoryItems.Filter.AddEquals(InventoryItems.Meta.Facility, SalesOrderWhereSalesOrderItem.TakenByInternalOrganisation.DefaultFacility);
+                            inventoryItems.Filter.AddEquals(M.InventoryItem.Facility, SalesOrderWhereSalesOrderItem.TakenByInternalOrganisation.DefaultFacility);
                             this.ReservedFromInventoryItem = inventoryItems.First as NonSerializedInventoryItem;
                         }
                     }
@@ -630,18 +631,18 @@ namespace Allors.Domain
             if (customer != null)
             {
                 var partyRevenueHistories = customer.PartyRevenueHistoriesWhereParty;
-                partyRevenueHistories.Filter.AddEquals(PartyRevenueHistories.Meta.InternalOrganisation, internalOrganisation);
+                partyRevenueHistories.Filter.AddEquals(M.PartyRevenueHistory.InternalOrganisation, internalOrganisation);
                 partyRevenueHistory = partyRevenueHistories.First;
 
                 partyProductCategoryRevenueHistoryByProductCategory = PartyProductCategoryRevenueHistories.PartyProductCategoryRevenueHistoryByProductCategory(internalOrganisation, customer);
 
                 partyPackageRevenuesHistories = customer.PartyPackageRevenueHistoriesWhereParty;
-                partyPackageRevenuesHistories.Filter.AddEquals(PartyPackageRevenueHistories.Meta.InternalOrganisation, internalOrganisation);
+                partyPackageRevenuesHistories.Filter.AddEquals(M.PartyPackageRevenueHistory.InternalOrganisation, internalOrganisation);
             }
 
             foreach (var priceComponent in priceComponents)
             {
-                if (priceComponent.Strategy.Class.Equals(BasePrice.Meta.ObjectType))
+                if (priceComponent.Strategy.Class.Equals(M.BasePrice.ObjectType))
                 {
                     if (PriceComponents.AppsIsEligible(new PriceComponents.IsEligibleParams
                     {
@@ -695,7 +696,7 @@ namespace Allors.Domain
 
                 foreach (var priceComponent in priceComponents)
                 {
-                    if (priceComponent.Strategy.Class.Equals(DiscountComponents.Meta.ObjectType) || priceComponent.Strategy.Class.Equals(SurchargeComponents.Meta.ObjectType))
+                    if (priceComponent.Strategy.Class.Equals(M.DiscountComponent.ObjectType) || priceComponent.Strategy.Class.Equals(M.SurchargeComponent.ObjectType))
                     {
                         if (PriceComponents.AppsIsEligible(new PriceComponents.IsEligibleParams
                         {
@@ -963,15 +964,15 @@ namespace Allors.Domain
 
                 if (this.ExistReservedFromInventoryItem && quantity > this.ReservedFromInventoryItem.AvailableToPromise)
                 {
-                    derivation.Validation.AddError(this, SalesOrderItems.Meta.QuantityShipNow, ErrorMessages.SalesOrderItemQuantityToShipNowNotAvailable);
+                    derivation.Validation.AddError(this, M.SalesOrderItem.QuantityShipNow, ErrorMessages.SalesOrderItemQuantityToShipNowNotAvailable);
                 }
                 else if (quantity > this.QuantityOrdered)
                 {
-                    derivation.Validation.AddError(this, SalesOrderItems.Meta.QuantityShipNow, ErrorMessages.SalesOrderItemQuantityToShipNowIsLargerThanQuantityOrdered);
+                    derivation.Validation.AddError(this, M.SalesOrderItem.QuantityShipNow, ErrorMessages.SalesOrderItemQuantityToShipNowIsLargerThanQuantityOrdered);
                 }
                 else if (quantity > this.QuantityOrdered - this.QuantityShipped - this.QuantityPendingShipment + this.QuantityReturned)
                 {
-                    derivation.Validation.AddError(this, SalesOrderItems.Meta.QuantityShipNow, ErrorMessages.SalesOrderItemQuantityToShipNowIsLargerThanQuantityRemaining);
+                    derivation.Validation.AddError(this, M.SalesOrderItem.QuantityShipNow, ErrorMessages.SalesOrderItemQuantityToShipNowIsLargerThanQuantityRemaining);
                 }
                 else
                 {

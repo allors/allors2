@@ -21,6 +21,7 @@
 namespace Allors.Domain
 {
     using System;
+    using Meta;
 
     public partial class SupplierRelationship
     {
@@ -28,7 +29,7 @@ namespace Allors.Domain
         {
             if (!this.ExistInternalOrganisation)
             {
-                this.InternalOrganisation = Domain.Singleton.Instance(this.Strategy.Session).DefaultInternalOrganisation;
+                this.InternalOrganisation = Singleton.Instance(this.Strategy.Session).DefaultInternalOrganisation;
             }
 
             if (!this.ExistSubAccountNumber)
@@ -60,17 +61,17 @@ namespace Allors.Domain
             this.AppsOnDeriveInternalOrganisationSupplier(derivation);
 
             var supplierRelationships = this.InternalOrganisation.SupplierRelationshipsWhereInternalOrganisation;
-            supplierRelationships.Filter.AddEquals(SupplierRelationships.Meta.SubAccountNumber, this.SubAccountNumber);
+            supplierRelationships.Filter.AddEquals(M.SupplierRelationship.SubAccountNumber, this.SubAccountNumber);
             if (supplierRelationships.Count == 1)
             {
                 if (!supplierRelationships[0].Equals(this))
                 {
-                    derivation.Validation.AddError(new DerivationErrorUnique(derivation.Log, this, SupplierRelationships.Meta.SubAccountNumber));
+                    derivation.Validation.AddError(new DerivationErrorUnique(derivation.Log, this, M.SupplierRelationship.SubAccountNumber));
                 }
             }
             else if (supplierRelationships.Count > 1)
             {
-                derivation.Validation.AddError(new DerivationErrorUnique(derivation.Log, this, SupplierRelationships.Meta.SubAccountNumber));
+                derivation.Validation.AddError(new DerivationErrorUnique(derivation.Log, this, M.SupplierRelationship.SubAccountNumber));
             }
 
             this.Parties = new Party[] { this.Supplier, this.InternalOrganisation};

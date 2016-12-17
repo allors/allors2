@@ -21,6 +21,7 @@
 namespace Allors.Domain
 {
     using System;
+    using Meta;
 
     public partial class SalesInvoices
     {
@@ -30,7 +31,7 @@ namespace Allors.Domain
         {
             base.AppsPrepare(setup);
 
-            setup.AddDependency(this.ObjectType, SalesInvoiceObjectStates.Meta.ObjectType);
+            setup.AddDependency(this.ObjectType, M.SalesInvoiceObjectState);
         }
 
         protected override void AppsSecure(Security config)
@@ -55,9 +56,9 @@ namespace Allors.Domain
             config.Deny(this.ObjectType, sent, sendId, cancelInvoiceId);
             config.Deny(this.ObjectType, partiallyPaid, sendId, cancelInvoiceId);
 
-            config.Deny(this.ObjectType, paid, Operations.Write, Operation.Execute);
-            config.Deny(this.ObjectType, writtenOff, Operations.Write, Operation.Execute);
-            config.Deny(this.ObjectType, cancelled, Operations.Write, Operation.Execute);
+            config.Deny(this.ObjectType, paid, Operations.Write, Operations.Execute);
+            config.Deny(this.ObjectType, writtenOff, Operations.Write, Operations.Execute);
+            config.Deny(this.ObjectType, cancelled, Operations.Write, Operations.Execute);
         }
     }
 }

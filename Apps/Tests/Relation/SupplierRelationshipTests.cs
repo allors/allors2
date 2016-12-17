@@ -22,6 +22,7 @@
 namespace Allors.Domain
 {
     using System;
+    using Meta;
     using NUnit.Framework;
 
     [TestFixture]
@@ -42,7 +43,7 @@ namespace Allors.Domain
                 .WithName("supplier")
                 .WithLocale(new Locales(this.DatabaseSession).EnglishGreatBritain)
                 .Build();
-            this.internalOrganisation = new InternalOrganisations(this.DatabaseSession).FindBy(InternalOrganisations.Meta.Name, "internalOrganisation");
+            this.internalOrganisation = new InternalOrganisations(this.DatabaseSession).FindBy(M.InternalOrganisation.Name, "internalOrganisation");
 
             new OrganisationContactRelationshipBuilder(this.DatabaseSession)
                 .WithOrganisation(this.supplier)

@@ -18,10 +18,11 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-using System;
-
 namespace Allors.Domain
 {
+    using System;
+    using Meta;
+
     public partial class PartyContactMechanism
     {
         public void AppsOnBuild(ObjectOnBuild method)
@@ -54,13 +55,13 @@ namespace Allors.Domain
 
             if (this.ExistUseAsDefault && this.UseAsDefault)
             {
-                derivation.Validation.AssertExists(this, PartyContactMechanisms.Meta.ContactPurpose);
+                derivation.Validation.AssertExists(this, M.PartyContactMechanism.ContactPurpose);
             }
 
             if (this.UseAsDefault && this.ExistPartyWherePartyContactMechanism && this.ExistContactPurpose)
             {
                 var partyContactMechanisms = this.PartyWherePartyContactMechanism.PartyContactMechanisms;
-                partyContactMechanisms.Filter.AddEquals(PartyContactMechanisms.Meta.ContactPurpose, this.ContactPurpose);
+                partyContactMechanisms.Filter.AddEquals(M.PartyContactMechanism.ContactPurpose, this.ContactPurpose);
 
                 foreach (PartyContactMechanism partyContactMechanism in partyContactMechanisms)
                 {

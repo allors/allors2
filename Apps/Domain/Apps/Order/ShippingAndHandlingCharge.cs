@@ -20,6 +20,8 @@
 
 namespace Allors.Domain
 {
+    using Meta;
+
     public partial class ShippingAndHandlingCharge
     {
         public void AppsOnPreDerive(ObjectOnPreDerive method)
@@ -47,8 +49,8 @@ namespace Allors.Domain
         {
             var derivation = method.Derivation;
 
-            derivation.Validation.AssertAtLeastOne(this, ShippingAndHandlingCharges.Meta.Amount, ShippingAndHandlingCharges.Meta.Percentage);
-            derivation.Validation.AssertExistsAtMostOne(this, ShippingAndHandlingCharges.Meta.Amount, ShippingAndHandlingCharges.Meta.Percentage);
+            derivation.Validation.AssertAtLeastOne(this, M.ShippingAndHandlingCharge.Amount, M.ShippingAndHandlingCharge.Percentage);
+            derivation.Validation.AssertExistsAtMostOne(this, M.ShippingAndHandlingCharge.Amount, M.ShippingAndHandlingCharge.Percentage);
         }
     }
 }

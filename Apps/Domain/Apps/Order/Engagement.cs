@@ -26,7 +26,7 @@ namespace Allors.Domain
         {
             if (!this.ExistTakenViaInternalOrganisation)
             {
-                this.TakenViaInternalOrganisation = Domain.Singleton.Instance(this.Strategy.Session).DefaultInternalOrganisation;
+                this.TakenViaInternalOrganisation = Singleton.Instance(this.Strategy.Session).DefaultInternalOrganisation;
             }
         }
 

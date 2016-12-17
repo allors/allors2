@@ -21,6 +21,7 @@
 namespace Allors.Domain
 {
     using System;
+    using Meta;
 
     public partial class SalesRepRevenue
     {
@@ -38,9 +39,9 @@ namespace Allors.Domain
             this.Revenue = 0;
 
             var salesRepPartiesRevenue = this.SalesRep.SalesRepPartyRevenuesWhereSalesRep;
-            salesRepPartiesRevenue.Filter.AddEquals(SalesRepPartyRevenues.Meta.InternalOrganisation, this.InternalOrganisation);
-            salesRepPartiesRevenue.Filter.AddEquals(SalesRepPartyRevenues.Meta.Year, this.Year);
-            salesRepPartiesRevenue.Filter.AddEquals(SalesRepPartyRevenues.Meta.Month, this.Month);
+            salesRepPartiesRevenue.Filter.AddEquals(M.SalesRepPartyRevenue.InternalOrganisation, this.InternalOrganisation);
+            salesRepPartiesRevenue.Filter.AddEquals(M.SalesRepPartyRevenue.Year, this.Year);
+            salesRepPartiesRevenue.Filter.AddEquals(M.SalesRepPartyRevenue.Month, this.Month);
 
             foreach (SalesRepPartyRevenue salesRepPartyRevenue in salesRepPartiesRevenue)
             {
@@ -51,7 +52,7 @@ namespace Allors.Domain
             if (months <= 12)
             {
                 var histories = this.SalesRep.SalesRepRevenueHistoriesWhereSalesRep;
-                histories.Filter.AddEquals(SalesRepRevenueHistories.Meta.InternalOrganisation, this.InternalOrganisation);
+                histories.Filter.AddEquals(M.SalesRepRevenueHistory.InternalOrganisation, this.InternalOrganisation);
                 var history = histories.First ?? new SalesRepRevenueHistoryBuilder(this.Strategy.Session)
                                                      .WithCurrency(this.Currency)
                                                      .WithInternalOrganisation(this.InternalOrganisation)

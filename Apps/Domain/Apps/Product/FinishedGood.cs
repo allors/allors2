@@ -31,7 +31,7 @@ namespace Allors.Domain
 
             if (!this.ExistOwnedByParty)
             {
-                this.OwnedByParty = Domain.Singleton.Instance(this.Strategy.Session).DefaultInternalOrganisation;
+                this.OwnedByParty = Singleton.Instance(this.Strategy.Session).DefaultInternalOrganisation;
             }
         }
 

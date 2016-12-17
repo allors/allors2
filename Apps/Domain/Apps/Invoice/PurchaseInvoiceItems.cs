@@ -20,13 +20,15 @@
 
 namespace Allors.Domain
 {
+    using Meta;
+
     public partial class PurchaseInvoiceItems
     {
         protected override void AppsPrepare(Setup setup)
         {
             base.AppsPrepare(setup);
 
-            setup.AddDependency(this.ObjectType, PurchaseInvoiceItemObjectStates.Meta.ObjectType);
+            setup.AddDependency(this.ObjectType, M.PurchaseInvoiceItemObjectState);
         }
 
         protected override void AppsSecure(Security config)
@@ -40,8 +42,8 @@ namespace Allors.Domain
             var paid = new PurchaseInvoiceItemObjectStates(Session).Paid;
             var cancelled = new PurchaseInvoiceItemObjectStates(Session).Cancelled;
 
-            config.Deny(this.ObjectType, paid, Operations.Write, Operation.Execute);
-            config.Deny(this.ObjectType, cancelled, Operations.Write, Operation.Execute);
+            config.Deny(this.ObjectType, paid, Operations.Write, Operations.Execute);
+            config.Deny(this.ObjectType, cancelled, Operations.Write, Operations.Execute);
         }
     }
 }

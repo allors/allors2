@@ -21,7 +21,7 @@
 namespace Allors.Domain
 {
     using System;
-
+    using Meta;
     using Resources;
 
     public partial class PickListItem
@@ -32,7 +32,7 @@ namespace Allors.Domain
 
             if (this.ExistActualQuantity && this.ActualQuantity > this.RequestedQuantity)
             {
-                derivation.Validation.AddError(this, PickListItems.Meta.ActualQuantity, ErrorMessages.PickListItemQuantityMoreThanAllowed);
+                derivation.Validation.AddError(this, M.PickListItem.ActualQuantity, ErrorMessages.PickListItemQuantityMoreThanAllowed);
             }
 
             this.AppsOnDeriveOrderItemAdjustment(derivation);

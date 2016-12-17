@@ -21,8 +21,6 @@
 
 namespace Allors.Domain
 {
-    
-
     using NUnit.Framework;
 
     [TestFixture]

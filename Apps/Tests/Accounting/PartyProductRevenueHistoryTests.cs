@@ -21,6 +21,7 @@
 namespace Allors.Domain
 {
     using System;
+    using Meta;
     using NUnit.Framework;
 
     [TestFixture]
@@ -32,7 +33,7 @@ namespace Allors.Domain
             var productItem = new SalesInvoiceItemTypes(this.DatabaseSession).ProductItem;
             var contactMechanism = new ContactMechanisms(this.DatabaseSession).Extent().First; 
 
-            var euro = new Currencies(this.DatabaseSession).FindBy(Currencies.Meta.IsoCode, "EUR");
+            var euro = new Currencies(this.DatabaseSession).FindBy(M.Currency.IsoCode, "EUR");
             var vatRate21 = new VatRateBuilder(this.DatabaseSession).WithRate(21).Build();
             var catMain = new ProductCategoryBuilder(this.DatabaseSession).WithDescription("main cat").Build();
             var cat1 = new ProductCategoryBuilder(this.DatabaseSession).WithDescription("cat for good1").WithParent(catMain).Build();
@@ -46,8 +47,8 @@ namespace Allors.Domain
                 .WithPrimaryProductCategory(cat1)
                 .Build();
 
-            var customer = new Organisations(this.DatabaseSession).FindBy(Organisations.Meta.Name, "customer");
-            var internalOrganisation = new InternalOrganisations(this.DatabaseSession).FindBy(InternalOrganisations.Meta.Name, "internalOrganisation");
+            var customer = new Organisations(this.DatabaseSession).FindBy(M.Organisation.Name, "customer");
+            var internalOrganisation = new InternalOrganisations(this.DatabaseSession).FindBy(M.InternalOrganisation.Name, "internalOrganisation");
             internalOrganisation.PreferredCurrency = euro;
 
             new CustomerRelationshipBuilder(this.DatabaseSession).WithFromDate(DateTime.UtcNow).WithCustomer(customer).WithInternalOrganisation(internalOrganisation).Build();
@@ -115,7 +116,7 @@ namespace Allors.Domain
 
             this.DatabaseSession.Derive(true);
 
-            var euro = new Currencies(this.DatabaseSession).FindBy(Currencies.Meta.IsoCode, "EUR");
+            var euro = new Currencies(this.DatabaseSession).FindBy(M.Currency.IsoCode, "EUR");
             var vatRate21 = new VatRateBuilder(this.DatabaseSession).WithRate(21).Build();
 
             var good1 = new GoodBuilder(this.DatabaseSession)
@@ -136,7 +137,7 @@ namespace Allors.Domain
                 .WithPrimaryProductCategory(cat2)
                 .Build();
 
-            var internalOrganisation = new InternalOrganisations(this.DatabaseSession).FindBy(InternalOrganisations.Meta.Name, "internalOrganisation");
+            var internalOrganisation = new InternalOrganisations(this.DatabaseSession).FindBy(M.InternalOrganisation.Name, "internalOrganisation");
             internalOrganisation.PreferredCurrency = euro;
 
             new CustomerRelationshipBuilder(this.DatabaseSession).WithFromDate(DateTime.UtcNow).WithCustomer(customer1).WithInternalOrganisation(internalOrganisation).Build();
@@ -185,11 +186,11 @@ namespace Allors.Domain
             Singleton.Instance(this.DatabaseSession).DeriveRevenues();
 
             var customer1Good1RevenueHistories = customer1.PartyProductRevenueHistoriesWhereParty;
-            customer1Good1RevenueHistories.Filter.AddEquals(PartyProductRevenueHistories.Meta.Product, good1);
+            customer1Good1RevenueHistories.Filter.AddEquals(M.PartyProductRevenueHistory.Product, good1);
             var customer1Good1RevenueHistory = customer1Good1RevenueHistories.First;
 
             var customer1Good2RevenueHistories = customer1.PartyProductRevenueHistoriesWhereParty;
-            customer1Good2RevenueHistories.Filter.AddEquals(PartyProductRevenueHistories.Meta.Product, good2);
+            customer1Good2RevenueHistories.Filter.AddEquals(M.PartyProductRevenueHistory.Product, good2);
             var customer1Good2RevenueHistory = customer1Good2RevenueHistories.First;
 
             Assert.AreEqual(180, customer1Good1RevenueHistory.Revenue);
@@ -214,11 +215,11 @@ namespace Allors.Domain
             Singleton.Instance(this.DatabaseSession).DeriveRevenues();
 
             var customer2Good1RevenueHistories = customer2.PartyProductRevenueHistoriesWhereParty;
-            customer2Good1RevenueHistories.Filter.AddEquals(PartyProductRevenueHistories.Meta.Product, good1);
+            customer2Good1RevenueHistories.Filter.AddEquals(M.PartyProductRevenueHistory.Product, good1);
             var customer2Good1RevenueHistory = customer2Good1RevenueHistories.First;
 
             var customer2Good2RevenueHistories = customer2.PartyProductRevenueHistoriesWhereParty;
-            customer2Good2RevenueHistories.Filter.AddEquals(PartyProductRevenueHistories.Meta.Product, good2);
+            customer2Good2RevenueHistories.Filter.AddEquals(M.PartyProductRevenueHistory.Product, good2);
             var customer2Good2RevenueHistory = customer2Good2RevenueHistories.First;
 
             Assert.AreEqual(180, customer1Good1RevenueHistory.Revenue);

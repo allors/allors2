@@ -26,7 +26,7 @@ namespace Allors.Domain
     using System;
     using System.Security.Principal;
     using System.Threading;
-
+    using Meta;
     using NUnit.Framework;
 
     [TestFixture]
@@ -51,7 +51,7 @@ namespace Allors.Domain
         [Test]
         public void GivenOrganisation_WhenCurrentUserIsContactForOrganisation_ThenCustomerPermissionsAreGranted()
         {
-            var internalOrganisation = new InternalOrganisations(this.DatabaseSession).FindBy(InternalOrganisations.Meta.Name, "internalOrganisation");
+            var internalOrganisation = new InternalOrganisations(this.DatabaseSession).FindBy(M.InternalOrganisation.Name, "internalOrganisation");
             var organisation = new OrganisationBuilder(this.DatabaseSession).WithName("organisation").Build();
             var customer = new PersonBuilder(this.DatabaseSession).WithLastName("Customer").WithUserName("customer").Build();
 
@@ -64,17 +64,17 @@ namespace Allors.Domain
             Thread.CurrentPrincipal = new GenericPrincipal(new GenericIdentity("customer", "Forms"), new string[0]);
             var acl = new AccessControlList(organisation, new Users(this.DatabaseSession).GetCurrentUser());
 
-            Assert.IsTrue(acl.CanRead(Organisations.Meta.Name));
-            Assert.IsTrue(acl.CanWrite(Organisations.Meta.Name));
-            Assert.IsTrue(acl.CanRead(Organisations.Meta.LegalForm));
-            Assert.IsTrue(acl.CanWrite(Organisations.Meta.LegalForm));
-            Assert.IsTrue(acl.CanRead(Organisations.Meta.LogoImage));
-            Assert.IsTrue(acl.CanWrite(Organisations.Meta.LogoImage));
-            Assert.IsTrue(acl.CanRead(Organisations.Meta.Locale));
-            Assert.IsTrue(acl.CanWrite(Organisations.Meta.Locale));
+            Assert.IsTrue(acl.CanRead(M.Organisation.Name));
+            Assert.IsTrue(acl.CanWrite(M.Organisation.Name));
+            Assert.IsTrue(acl.CanRead(M.Organisation.LegalForm));
+            Assert.IsTrue(acl.CanWrite(M.Organisation.LegalForm));
+            Assert.IsTrue(acl.CanRead(M.Organisation.LogoImage));
+            Assert.IsTrue(acl.CanWrite(M.Organisation.LogoImage));
+            Assert.IsTrue(acl.CanRead(M.Organisation.Locale));
+            Assert.IsTrue(acl.CanWrite(M.Organisation.Locale));
 
-            Assert.IsFalse(acl.CanRead(Organisations.Meta.OwnerSecurityToken));
-            Assert.IsFalse(acl.CanWrite(Organisations.Meta.OwnerSecurityToken));
+            Assert.IsFalse(acl.CanRead(M.Organisation.OwnerSecurityToken));
+            Assert.IsFalse(acl.CanWrite(M.Organisation.OwnerSecurityToken));
         }
     }
 }

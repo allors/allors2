@@ -26,6 +26,7 @@ namespace Allors.Domain
     using System;
     using System.Security.Principal;
     using System.Threading;
+    using Meta;
     using NUnit.Framework;
 
     [TestFixture]
@@ -35,7 +36,7 @@ namespace Allors.Domain
         public void GivenPurchaseOrderBuilder_WhenBuild_ThenPostBuildRelationsMustExist()
         {
             var supplier = new OrganisationBuilder(this.DatabaseSession).WithName("supplier").Build();
-            var internalOrganisation = new InternalOrganisations(this.DatabaseSession).FindBy(InternalOrganisations.Meta.Name, "internalOrganisation");
+            var internalOrganisation = new InternalOrganisations(this.DatabaseSession).FindBy(M.InternalOrganisation.Name, "internalOrganisation");
             new SupplierRelationshipBuilder(this.DatabaseSession).WithSupplier(supplier).WithInternalOrganisation(internalOrganisation).Build();
 
             var order = new PurchaseOrderBuilder(this.DatabaseSession).WithTakenViaSupplier(supplier).Build();
@@ -54,7 +55,7 @@ namespace Allors.Domain
         public void GivenOrder_WhenDeriving_ThenRequiredRelationsMustExist()
         {
             var supplier = new OrganisationBuilder(this.DatabaseSession).WithName("supplier").Build();
-            var internalOrganisation = new InternalOrganisations(this.DatabaseSession).FindBy(InternalOrganisations.Meta.Name, "internalOrganisation");
+            var internalOrganisation = new InternalOrganisations(this.DatabaseSession).FindBy(M.InternalOrganisation.Name, "internalOrganisation");
             new SupplierRelationshipBuilder(this.DatabaseSession).WithSupplier(supplier).WithInternalOrganisation(internalOrganisation).Build();
 
             var mechelen = new CityBuilder(this.DatabaseSession).WithName("Mechelen").Build();
@@ -91,7 +92,7 @@ namespace Allors.Domain
         public void GivenPurchaseOrder_WhenDeriving_ThenTakenViaSupplierMustBeInSupplierRelationship()
         {
             var supplier = new OrganisationBuilder(this.DatabaseSession).WithName("supplier").Build();
-            var internalOrganisation = new InternalOrganisations(this.DatabaseSession).FindBy(InternalOrganisations.Meta.Name, "internalOrganisation");
+            var internalOrganisation = new InternalOrganisations(this.DatabaseSession).FindBy(M.InternalOrganisation.Name, "internalOrganisation");
 
             new PurchaseOrderBuilder(this.DatabaseSession)
                 .WithTakenViaSupplier(supplier)
@@ -112,7 +113,7 @@ namespace Allors.Domain
             var englischLocale = new Locales(this.DatabaseSession).EnglishGreatBritain;
 
             var supplier = new OrganisationBuilder(this.DatabaseSession).WithName("supplier").Build();
-            var internalOrganisation = new InternalOrganisations(this.DatabaseSession).FindBy(InternalOrganisations.Meta.Name, "internalOrganisation");
+            var internalOrganisation = new InternalOrganisations(this.DatabaseSession).FindBy(M.InternalOrganisation.Name, "internalOrganisation");
             new SupplierRelationshipBuilder(this.DatabaseSession).WithSupplier(supplier).WithInternalOrganisation(internalOrganisation).Build();
 
             var mechelen = new CityBuilder(this.DatabaseSession).WithName("Mechelen").Build();
@@ -176,7 +177,7 @@ namespace Allors.Domain
             Thread.CurrentPrincipal = new GenericPrincipal(new GenericIdentity("orderProcessor", "Forms"), new string[0]);
 
             var supplier = new OrganisationBuilder(this.DatabaseSession).WithName("supplier").Build();
-            var internalOrganisation = new InternalOrganisations(this.DatabaseSession).FindBy(InternalOrganisations.Meta.Name, "internalOrganisation");
+            var internalOrganisation = new InternalOrganisations(this.DatabaseSession).FindBy(M.InternalOrganisation.Name, "internalOrganisation");
             new SupplierRelationshipBuilder(this.DatabaseSession).WithSupplier(supplier).WithInternalOrganisation(internalOrganisation).Build();
 
             var order = new PurchaseOrderBuilder(this.DatabaseSession)
@@ -194,10 +195,10 @@ namespace Allors.Domain
 
             Assert.AreEqual(new PurchaseOrderObjectStates(this.DatabaseSession).RequestsApproval, order.CurrentObjectState);
             var acl = new AccessControlList(order, new Users(this.DatabaseSession).GetCurrentUser());
-            Assert.IsFalse(acl.CanExecute(PurchaseOrders.Meta.Confirm));
-            Assert.IsFalse(acl.CanExecute(PurchaseOrders.Meta.Reject));
-            Assert.IsFalse(acl.CanExecute(PurchaseOrders.Meta.Approve));
-            Assert.IsFalse(acl.CanExecute(PurchaseOrders.Meta.Continue));
+            Assert.IsFalse(acl.CanExecute(M.PurchaseOrder.Confirm));
+            Assert.IsFalse(acl.CanExecute(M.PurchaseOrder.Reject));
+            Assert.IsFalse(acl.CanExecute(M.PurchaseOrder.Approve));
+            Assert.IsFalse(acl.CanExecute(M.PurchaseOrder.Continue));
         }
 
         [Test]
@@ -206,7 +207,7 @@ namespace Allors.Domain
             Thread.CurrentPrincipal = new GenericPrincipal(new GenericIdentity("orderProcessor", "Forms"), new string[0]);
 
             var supplier = new OrganisationBuilder(this.DatabaseSession).WithName("supplier").Build();
-            var internalOrganisation = new InternalOrganisations(this.DatabaseSession).FindBy(InternalOrganisations.Meta.Name, "internalOrganisation");
+            var internalOrganisation = new InternalOrganisations(this.DatabaseSession).FindBy(M.InternalOrganisation.Name, "internalOrganisation");
             new SupplierRelationshipBuilder(this.DatabaseSession).WithSupplier(supplier).WithInternalOrganisation(internalOrganisation).Build();
 
             var order = new PurchaseOrderBuilder(this.DatabaseSession)
@@ -220,12 +221,12 @@ namespace Allors.Domain
 
             Assert.AreEqual(new PurchaseOrderObjectStates(this.DatabaseSession).InProcess, order.CurrentObjectState);
             var acl = new AccessControlList(order, new Users(this.DatabaseSession).GetCurrentUser());
-            Assert.IsTrue(acl.CanExecute(PurchaseOrders.Meta.Cancel));
-            Assert.IsTrue(acl.CanExecute(PurchaseOrders.Meta.Hold));
-            Assert.IsFalse(acl.CanExecute(PurchaseOrders.Meta.Confirm));
-            Assert.IsFalse(acl.CanExecute(PurchaseOrders.Meta.Reject));
-            Assert.IsFalse(acl.CanExecute(PurchaseOrders.Meta.Approve));
-            Assert.IsFalse(acl.CanExecute(PurchaseOrders.Meta.Continue));
+            Assert.IsTrue(acl.CanExecute(M.PurchaseOrder.Cancel));
+            Assert.IsTrue(acl.CanExecute(M.PurchaseOrder.Hold));
+            Assert.IsFalse(acl.CanExecute(M.PurchaseOrder.Confirm));
+            Assert.IsFalse(acl.CanExecute(M.PurchaseOrder.Reject));
+            Assert.IsFalse(acl.CanExecute(M.PurchaseOrder.Approve));
+            Assert.IsFalse(acl.CanExecute(M.PurchaseOrder.Continue));
         }
 
         [Test]
@@ -234,7 +235,7 @@ namespace Allors.Domain
             Thread.CurrentPrincipal = new GenericPrincipal(new GenericIdentity("orderProcessor", "Forms"), new string[0]);
 
             var supplier = new OrganisationBuilder(this.DatabaseSession).WithName("supplier").Build();
-            var internalOrganisation = new InternalOrganisations(this.DatabaseSession).FindBy(InternalOrganisations.Meta.Name, "internalOrganisation");
+            var internalOrganisation = new InternalOrganisations(this.DatabaseSession).FindBy(M.InternalOrganisation.Name, "internalOrganisation");
             new SupplierRelationshipBuilder(this.DatabaseSession).WithSupplier(supplier).WithInternalOrganisation(internalOrganisation).Build();
 
             var order = new PurchaseOrderBuilder(this.DatabaseSession)
@@ -252,12 +253,12 @@ namespace Allors.Domain
 
             Assert.AreEqual(new PurchaseOrderObjectStates(this.DatabaseSession).OnHold, order.CurrentObjectState);
             var acl = new AccessControlList(order, new Users(this.DatabaseSession).GetCurrentUser());
-            Assert.IsTrue(acl.CanExecute(PurchaseOrders.Meta.Cancel));
-            Assert.IsTrue(acl.CanExecute(PurchaseOrders.Meta.Continue));
-            Assert.IsFalse(acl.CanExecute(PurchaseOrders.Meta.Confirm));
-            Assert.IsFalse(acl.CanExecute(PurchaseOrders.Meta.Reject));
-            Assert.IsFalse(acl.CanExecute(PurchaseOrders.Meta.Approve));
-            Assert.IsFalse(acl.CanExecute(PurchaseOrders.Meta.Hold));
+            Assert.IsTrue(acl.CanExecute(M.PurchaseOrder.Cancel));
+            Assert.IsTrue(acl.CanExecute(M.PurchaseOrder.Continue));
+            Assert.IsFalse(acl.CanExecute(M.PurchaseOrder.Confirm));
+            Assert.IsFalse(acl.CanExecute(M.PurchaseOrder.Reject));
+            Assert.IsFalse(acl.CanExecute(M.PurchaseOrder.Approve));
+            Assert.IsFalse(acl.CanExecute(M.PurchaseOrder.Hold));
         }
 
         [Test]
@@ -268,7 +269,7 @@ namespace Allors.Domain
 
             new SupplierRelationshipBuilder(this.DatabaseSession)
                 .WithSupplier(supplier)
-                .WithInternalOrganisation(new InternalOrganisations(this.DatabaseSession).FindBy(InternalOrganisations.Meta.Name, "internalOrganisation"))
+                .WithInternalOrganisation(new InternalOrganisations(this.DatabaseSession).FindBy(M.InternalOrganisation.Name, "internalOrganisation"))
                 .WithFromDate(DateTime.UtcNow)
                 .Build();
 
@@ -285,11 +286,11 @@ namespace Allors.Domain
             Thread.CurrentPrincipal = new GenericPrincipal(new GenericIdentity("suppliercontact", "Forms"), new string[0]);
             var acl = new AccessControlList(order, new Users(this.DatabaseSession).GetCurrentUser());
 
-            Assert.IsFalse(acl.CanWrite(PurchaseOrders.Meta.OrderDate));
-            Assert.IsTrue(acl.CanRead(PurchaseOrders.Meta.OrderDate));
-            Assert.IsTrue(acl.CanRead(PurchaseOrders.Meta.OrderNumber));
-            Assert.IsTrue(acl.CanRead(PurchaseOrders.Meta.TotalExVat));
-            Assert.IsFalse(acl.CanExecute(PurchaseOrders.Meta.Confirm));
+            Assert.IsFalse(acl.CanWrite(M.PurchaseOrder.OrderDate));
+            Assert.IsTrue(acl.CanRead(M.PurchaseOrder.OrderDate));
+            Assert.IsTrue(acl.CanRead(M.PurchaseOrder.OrderNumber));
+            Assert.IsTrue(acl.CanRead(M.PurchaseOrder.TotalExVat));
+            Assert.IsFalse(acl.CanExecute(M.PurchaseOrder.Confirm));
         }
 
         [Test]
@@ -302,9 +303,9 @@ namespace Allors.Domain
             Thread.CurrentPrincipal = new GenericPrincipal(new GenericIdentity("administrator", "Forms"), new string[0]);
             var acl = new AccessControlList(order, new Users(this.DatabaseSession).GetCurrentUser());
 
-            Assert.IsTrue(acl.CanWrite(PurchaseOrders.Meta.Comment));
-            Assert.IsTrue(acl.CanRead(PurchaseOrders.Meta.Comment));
-            Assert.IsTrue(acl.CanExecute(PurchaseOrders.Meta.Confirm));
+            Assert.IsTrue(acl.CanWrite(M.PurchaseOrder.Comment));
+            Assert.IsTrue(acl.CanRead(M.PurchaseOrder.Comment));
+            Assert.IsTrue(acl.CanExecute(M.PurchaseOrder.Confirm));
         }
 
         [Test]
@@ -316,7 +317,7 @@ namespace Allors.Domain
 
             new SupplierRelationshipBuilder(this.DatabaseSession)
                 .WithSupplier(supplier)
-                .WithInternalOrganisation(new InternalOrganisations(this.DatabaseSession).FindBy(InternalOrganisations.Meta.Name, "internalOrganisation"))
+                .WithInternalOrganisation(new InternalOrganisations(this.DatabaseSession).FindBy(M.InternalOrganisation.Name, "internalOrganisation"))
                 .WithFromDate(DateTime.UtcNow)
                 .Build();
 
@@ -332,14 +333,14 @@ namespace Allors.Domain
             Thread.CurrentPrincipal = new GenericPrincipal(new GenericIdentity("customer", "Forms"), new string[0]);
             var acl = new AccessControlList(order, new Users(this.DatabaseSession).GetCurrentUser());
 
-            Assert.IsFalse(acl.HasReadOperation);
+            Assert.IsFalse(acl.CanRead);
         }
 
         [Test]
         public void GivenPurchaseOrderCreatedByProcurementLevel1Role_WhenCurrentUserInSameProcurementLevel1RoleUserGroup_ThenAccessIsGranted()
         {
             var supplier = new OrganisationBuilder(this.DatabaseSession).WithName("supplier").Build();
-            var internalOrganisation = new InternalOrganisations(this.DatabaseSession).FindBy(InternalOrganisations.Meta.Name, "internalOrganisation");
+            var internalOrganisation = new InternalOrganisations(this.DatabaseSession).FindBy(M.InternalOrganisation.Name, "internalOrganisation");
             new SupplierRelationshipBuilder(this.DatabaseSession).WithSupplier(supplier).WithInternalOrganisation(internalOrganisation).Build();
 
             var purchaser2 = new PersonBuilder(this.DatabaseSession).WithLastName("purchaser2").WithUserName("purchaser2").Build();
@@ -365,16 +366,16 @@ namespace Allors.Domain
 
             var acl = new AccessControlList(order, new Users(this.DatabaseSession).GetCurrentUser());
 
-            Assert.IsTrue(acl.CanWrite(SalesOrders.Meta.Comment));
-            Assert.IsTrue(acl.CanRead(SalesOrders.Meta.Comment));
-            Assert.IsTrue(acl.CanExecute(PurchaseOrders.Meta.Confirm));
+            Assert.IsTrue(acl.CanWrite(M.SalesOrder.Comment));
+            Assert.IsTrue(acl.CanRead(M.SalesOrder.Comment));
+            Assert.IsTrue(acl.CanExecute(M.PurchaseOrder.Confirm));
 
             Thread.CurrentPrincipal = new GenericPrincipal(new GenericIdentity("purchaser2", "Forms"), new string[0]);
             acl = new AccessControlList(order, new Users(this.DatabaseSession).GetCurrentUser());
 
-            Assert.IsTrue(acl.CanWrite(PurchaseOrders.Meta.Comment));
-            Assert.IsTrue(acl.CanRead(PurchaseOrders.Meta.Comment));
-            Assert.IsTrue(acl.CanExecute(PurchaseOrders.Meta.Confirm));
+            Assert.IsTrue(acl.CanWrite(M.PurchaseOrder.Comment));
+            Assert.IsTrue(acl.CanRead(M.PurchaseOrder.Comment));
+            Assert.IsTrue(acl.CanExecute(M.PurchaseOrder.Confirm));
         }
 
         [Test]
@@ -387,13 +388,13 @@ namespace Allors.Domain
 
             new SupplierRelationshipBuilder(this.DatabaseSession)
                 .WithSupplier(supplier)
-                .WithInternalOrganisation(new InternalOrganisations(this.DatabaseSession).FindBy(InternalOrganisations.Meta.Name, "internalOrganisation"))
+                .WithInternalOrganisation(new InternalOrganisations(this.DatabaseSession).FindBy(M.InternalOrganisation.Name, "internalOrganisation"))
                 .WithFromDate(DateTime.UtcNow)
                 .Build();
 
             new SupplierRelationshipBuilder(this.DatabaseSession)
                 .WithSupplier(supplier2)
-                .WithInternalOrganisation(new InternalOrganisations(this.DatabaseSession).FindBy(InternalOrganisations.Meta.Name, "internalOrganisation"))
+                .WithInternalOrganisation(new InternalOrganisations(this.DatabaseSession).FindBy(M.InternalOrganisation.Name, "internalOrganisation"))
                 .WithFromDate(DateTime.UtcNow)
                 .Build();
 
@@ -413,16 +414,16 @@ namespace Allors.Domain
             Thread.CurrentPrincipal = new GenericPrincipal(new GenericIdentity("suppliercontact", "Forms"), new string[0]);
             var acl = new AccessControlList(order, new Users(this.DatabaseSession).GetCurrentUser());
 
-            Assert.IsFalse(acl.CanWrite(PurchaseOrders.Meta.OrderDate));
-            Assert.IsTrue(acl.CanRead(PurchaseOrders.Meta.OrderDate));
-            Assert.IsTrue(acl.CanRead(PurchaseOrders.Meta.OrderNumber));
-            Assert.IsTrue(acl.CanRead(PurchaseOrders.Meta.TotalExVat));
-            Assert.IsFalse(acl.CanExecute(PurchaseOrders.Meta.Confirm));
+            Assert.IsFalse(acl.CanWrite(M.PurchaseOrder.OrderDate));
+            Assert.IsTrue(acl.CanRead(M.PurchaseOrder.OrderDate));
+            Assert.IsTrue(acl.CanRead(M.PurchaseOrder.OrderNumber));
+            Assert.IsTrue(acl.CanRead(M.PurchaseOrder.TotalExVat));
+            Assert.IsFalse(acl.CanExecute(M.PurchaseOrder.Confirm));
 
             Thread.CurrentPrincipal = new GenericPrincipal(new GenericIdentity("suppliercontact2", "Forms"), new string[0]);
             acl = new AccessControlList(order, new Users(this.DatabaseSession).GetCurrentUser());
 
-            Assert.IsFalse(acl.HasReadOperation);
+            Assert.IsFalse(acl.CanRead);
 
             order.TakenViaSupplier = supplier2;
 
@@ -431,23 +432,23 @@ namespace Allors.Domain
             Thread.CurrentPrincipal = new GenericPrincipal(new GenericIdentity("suppliercontact", "Forms"), new string[0]);
             acl = new AccessControlList(order, new Users(this.DatabaseSession).GetCurrentUser());
 
-            Assert.IsFalse(acl.HasReadOperation);
+            Assert.IsFalse(acl.CanRead);
 
             Thread.CurrentPrincipal = new GenericPrincipal(new GenericIdentity("suppliercontact2", "Forms"), new string[0]);
             acl = new AccessControlList(order, new Users(this.DatabaseSession).GetCurrentUser());
 
-            Assert.IsFalse(acl.CanWrite(PurchaseOrders.Meta.OrderDate));
-            Assert.IsTrue(acl.CanRead(PurchaseOrders.Meta.OrderDate));
-            Assert.IsTrue(acl.CanRead(PurchaseOrders.Meta.OrderNumber));
-            Assert.IsTrue(acl.CanRead(PurchaseOrders.Meta.TotalExVat));
-            Assert.IsFalse(acl.CanExecute(PurchaseOrders.Meta.Confirm));
+            Assert.IsFalse(acl.CanWrite(M.PurchaseOrder.OrderDate));
+            Assert.IsTrue(acl.CanRead(M.PurchaseOrder.OrderDate));
+            Assert.IsTrue(acl.CanRead(M.PurchaseOrder.OrderNumber));
+            Assert.IsTrue(acl.CanRead(M.PurchaseOrder.TotalExVat));
+            Assert.IsFalse(acl.CanExecute(M.PurchaseOrder.Confirm));
         }
 
         [Test]
         public void GivenPurchaseOrder_WhenConfirming_ThenAllValidItemsAreInConfirmedState()
         {
             var supplier = new OrganisationBuilder(this.DatabaseSession).WithName("supplier").Build();
-            var internalOrganisation = new InternalOrganisations(this.DatabaseSession).FindBy(InternalOrganisations.Meta.Name, "internalOrganisation");
+            var internalOrganisation = new InternalOrganisations(this.DatabaseSession).FindBy(M.InternalOrganisation.Name, "internalOrganisation");
             new SupplierRelationshipBuilder(this.DatabaseSession).WithSupplier(supplier).WithInternalOrganisation(internalOrganisation).Build();
 
             var part = new RawMaterialBuilder(this.DatabaseSession).WithName("RawMaterial").Build();
@@ -490,7 +491,7 @@ namespace Allors.Domain
         public void GivenPurchaseOrder_WhenOrdering_ThenAllValidItemsAreInInProcessState()
         {
             var supplier = new OrganisationBuilder(this.DatabaseSession).WithName("supplier").Build();
-            var internalOrganisation = new InternalOrganisations(this.DatabaseSession).FindBy(InternalOrganisations.Meta.Name, "internalOrganisation");
+            var internalOrganisation = new InternalOrganisations(this.DatabaseSession).FindBy(M.InternalOrganisation.Name, "internalOrganisation");
             new SupplierRelationshipBuilder(this.DatabaseSession).WithSupplier(supplier).WithInternalOrganisation(internalOrganisation).Build();
 
             var part = new RawMaterialBuilder(this.DatabaseSession).WithName("RawMaterial").Build();
@@ -526,7 +527,7 @@ namespace Allors.Domain
         public void GivenPurchaseOrder_WhenShipmentIsReceived_ThenCurrenShipmentStatusIsUpdated()
         {
             var supplier = new OrganisationBuilder(this.DatabaseSession).WithName("supplier").Build();
-            var internalOrganisation = new InternalOrganisations(this.DatabaseSession).FindBy(InternalOrganisations.Meta.Name, "internalOrganisation");
+            var internalOrganisation = new InternalOrganisations(this.DatabaseSession).FindBy(M.InternalOrganisation.Name, "internalOrganisation");
             new SupplierRelationshipBuilder(this.DatabaseSession).WithSupplier(supplier).WithInternalOrganisation(internalOrganisation).Build();
 
             var part = new RawMaterialBuilder(this.DatabaseSession).WithName("RawMaterial").Build();
@@ -657,14 +658,14 @@ namespace Allors.Domain
 
             var acl = new AccessControlList(order, new Users(this.DatabaseSession).GetCurrentUser());
 
-            Assert.IsTrue(acl.CanWrite(PurchaseOrders.Meta.Comment));
-            Assert.IsTrue(acl.CanRead(PurchaseOrders.Meta.Comment));
-            Assert.IsTrue(acl.CanExecute(PurchaseOrders.Meta.Confirm));
+            Assert.IsTrue(acl.CanWrite(M.PurchaseOrder.Comment));
+            Assert.IsTrue(acl.CanRead(M.PurchaseOrder.Comment));
+            Assert.IsTrue(acl.CanExecute(M.PurchaseOrder.Confirm));
 
             Thread.CurrentPrincipal = new GenericPrincipal(new GenericIdentity("purchaser2", "Forms"), new string[0]);
             acl = new AccessControlList(order, new Users(this.DatabaseSession).GetCurrentUser());
 
-            Assert.IsFalse(acl.HasReadOperation);
+            Assert.IsFalse(acl.CanRead);
         }
     }
 }

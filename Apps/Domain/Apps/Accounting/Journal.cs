@@ -28,7 +28,7 @@ namespace Allors.Domain
         {
             if (!this.ExistInternalOrganisation)
             {
-                this.InternalOrganisation = Domain.Singleton.Instance(this.Strategy.Session).DefaultInternalOrganisation;
+                this.InternalOrganisation = Singleton.Instance(this.Strategy.Session).DefaultInternalOrganisation;
             }
 
             if (!this.ExistBlockUnpaidTransactions)

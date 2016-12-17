@@ -20,12 +20,14 @@
 
 namespace Allors.Domain
 {
+    using Meta;
+
     public partial class InternalOrganisations
     {
         protected override void AppsPrepare(Setup setup)
         {
-            setup.AddDependency(Meta.ObjectType, Roles.Meta.ObjectType); 
-            setup.AddDependency(Meta.ObjectType, InvoiceSequences.Meta.ObjectType);
+            setup.AddDependency(Meta.ObjectType, M.Role); 
+            setup.AddDependency(Meta.ObjectType, M.InvoiceSequence);
         }
 
         protected override void AppsSecure(Security config)

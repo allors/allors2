@@ -22,6 +22,7 @@
 namespace Allors.Domain
 {
     using System;
+    using Meta;
     using NUnit.Framework;
 
     [TestFixture]
@@ -100,7 +101,7 @@ namespace Allors.Domain
             Assert.IsNotNull(item.QuantityExpectedIn);
             Assert.IsNotNull(item.QuantityOnHand);
             Assert.AreEqual(new NonSerializedInventoryItemObjectStates(this.DatabaseSession).Good, item.CurrentObjectState);
-            Assert.AreEqual(new Warehouses(this.DatabaseSession).FindBy(Warehouses.Meta.Name, "facility"), item.Facility);
+            Assert.AreEqual(new Warehouses(this.DatabaseSession).FindBy(M.Warehouse.Name, "facility"), item.Facility);
         }
 
         [Test]
@@ -247,7 +248,7 @@ namespace Allors.Domain
 
             var customer = new PersonBuilder(this.DatabaseSession).WithLastName("customer").WithPartyContactMechanism(shipToMechelen).Build();
 
-            var internalOrganisation = new InternalOrganisations(this.DatabaseSession).FindBy(InternalOrganisations.Meta.Name, "internalOrganisation");
+            var internalOrganisation = new InternalOrganisations(this.DatabaseSession).FindBy(M.InternalOrganisation.Name, "internalOrganisation");
 
             new CustomerRelationshipBuilder(this.DatabaseSession).WithFromDate(DateTime.UtcNow).WithCustomer(customer).WithInternalOrganisation(internalOrganisation).Build();
 
@@ -403,7 +404,7 @@ namespace Allors.Domain
 
             var customer = new PersonBuilder(this.DatabaseSession).WithLastName("customer").WithPartyContactMechanism(shipToMechelen).Build();
 
-            var internalOrganisation = new InternalOrganisations(this.DatabaseSession).FindBy(InternalOrganisations.Meta.Name, "internalOrganisation");
+            var internalOrganisation = new InternalOrganisations(this.DatabaseSession).FindBy(M.InternalOrganisation.Name, "internalOrganisation");
 
             new CustomerRelationshipBuilder(this.DatabaseSession).WithFromDate(DateTime.UtcNow).WithCustomer(customer).WithInternalOrganisation(internalOrganisation).Build();
 
@@ -444,7 +445,7 @@ namespace Allors.Domain
         //public void ReportNonSerializedInventory()
         //{
         //    var supplier = new OrganisationBuilder(this.DatabaseSession).WithName("supplier").Build();
-        //    var internalOrganisation = new InternalOrganisations(this.DatabaseSession).FindBy(InternalOrganisations.Meta.Name, "internalOrganisation");
+        //    var internalOrganisation = new InternalOrganisations(this.DatabaseSession).FindBy(M.InternalOrganisation.Name, "internalOrganisation");
 
         //    new SupplierRelationshipBuilder(this.DatabaseSession)
         //        .WithInternalOrganisation(internalOrganisation)
@@ -475,7 +476,7 @@ namespace Allors.Domain
 
         //    var purchasePrice = new ProductPurchasePriceBuilder(this.DatabaseSession)
         //        .WithFromDate(DateTime.UtcNow)
-        //        .WithCurrency(new Currencies(this.DatabaseSession).FindBy(Currencies.Meta.IsoCode, "EUR"))
+        //        .WithCurrency(new Currencies(this.DatabaseSession).FindBy(M.Currency.IsoCode, "EUR"))
         //        .WithPrice(1)
         //        .WithUnitOfMeasure(new UnitsOfMeasure(this.DatabaseSession).Piece)
         //        .Build();

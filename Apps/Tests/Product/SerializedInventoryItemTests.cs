@@ -21,6 +21,7 @@
 
 namespace Allors.Domain
 {
+    using Meta;
     using NUnit.Framework;
 
     [TestFixture]
@@ -65,7 +66,7 @@ namespace Allors.Domain
                 .Build();
 
             Assert.AreEqual(new SerializedInventoryItemObjectStates(this.DatabaseSession).Good, item.CurrentObjectState);
-            Assert.AreEqual(new Warehouses(this.DatabaseSession).FindBy(Warehouses.Meta.Name, "facility"), item.Facility);
+            Assert.AreEqual(new Warehouses(this.DatabaseSession).FindBy(M.Warehouse.Name, "facility"), item.Facility);
         }
     }
 }

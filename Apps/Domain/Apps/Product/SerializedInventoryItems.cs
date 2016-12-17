@@ -20,13 +20,15 @@
 
 namespace Allors.Domain
 {
+    using Meta;
+
     public partial class SerializedInventoryItems
     {
         protected override void AppsPrepare(Setup setup)
         {
             base.AppsPrepare(setup);
 
-            setup.AddDependency(this.ObjectType, SerializedInventoryItemObjectStates.Meta.ObjectType);
+            setup.AddDependency(this.ObjectType, M.SerializedInventoryItemObjectState);
         }
 
         protected override void AppsSecure(Security config)

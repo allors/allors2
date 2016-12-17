@@ -22,16 +22,18 @@ using System;
 
 namespace Allors.Domain
 {
+    using Meta;
+
     public partial class CustomerShipments
     {
         protected override void AppsPrepare(Setup setup)
         {
             base.AppsPrepare(setup);
 
-            setup.AddDependency(this.ObjectType, CustomerShipmentObjectStates.Meta.ObjectType);
+            setup.AddDependency(this.ObjectType, M.CustomerShipment.ObjectState);
         }
 
-        protected override void AppsSecure(Domain.Security config)
+        protected override void AppsSecure(Security config)
         {
             base.AppsSecure(config);
 
@@ -69,9 +71,9 @@ namespace Allors.Domain
             config.Deny(this.ObjectType, picked, @continue);
             config.Deny(this.ObjectType, packed, @continue);
 
-            config.Deny(this.ObjectType, cancelled, Operation.Execute, Operations.Write);
-            config.Deny(this.ObjectType, shipped, Operation.Execute, Operations.Write);
-            config.Deny(this.ObjectType, delivered, Operation.Execute, Operations.Write);
+            config.Deny(this.ObjectType, cancelled, Operations.Execute, Operations.Write);
+            config.Deny(this.ObjectType, shipped, Operations.Execute, Operations.Write);
+            config.Deny(this.ObjectType, delivered, Operations.Execute, Operations.Write);
         }
     }
 }

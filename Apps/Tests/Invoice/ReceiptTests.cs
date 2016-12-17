@@ -22,6 +22,7 @@
 namespace Allors.Domain
 {
     using System;
+    using Meta;
     using NUnit.Framework;
 
     [TestFixture]
@@ -36,9 +37,9 @@ namespace Allors.Domain
         {
             base.Init();
 
-            var euro = new Currencies(this.DatabaseSession).FindBy(Currencies.Meta.IsoCode, "EUR");
+            var euro = new Currencies(this.DatabaseSession).FindBy(M.Currency.IsoCode, "EUR");
 
-            this.internalOrganisation = new InternalOrganisations(this.DatabaseSession).FindBy(InternalOrganisations.Meta.Name, "internalOrganisation");
+            this.internalOrganisation = new InternalOrganisations(this.DatabaseSession).FindBy(M.InternalOrganisation.Name, "internalOrganisation");
             this.billToCustomer = new OrganisationBuilder(this.DatabaseSession).WithName("billToCustomer").WithPreferredCurrency(euro).Build();
             var supplier = new OrganisationBuilder(this.DatabaseSession).WithName("supplier").WithLocale(new Locales(this.DatabaseSession).EnglishGreatBritain).Build();
 
@@ -182,7 +183,7 @@ namespace Allors.Domain
 
             var derivationLog = this.DatabaseSession.Derive();
             Assert.IsTrue(derivationLog.HasErrors);
-            Assert.Contains(Receipts.Meta.Amount, derivationLog.Errors[0].RoleTypes);
+            Assert.Contains(M.Receipt.Amount, derivationLog.Errors[0].RoleTypes);
         }
 
         private void InstantiateObjects(ISession session)

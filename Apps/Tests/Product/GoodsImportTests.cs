@@ -43,7 +43,7 @@ namespace Allors.Domain
     //        var productImport = new GoodsImport(this.DatabaseSession, table, settings, importLog);
     //        productImport.Execute();
 
-    //        var goods = this.GetObjects(this.DatabaseSession, Goods.Meta.ObjectType);
+    //        var goods = this.GetObjects(this.DatabaseSession, M.Good.ObjectType);
 
     //        var skus = new List<string>();
 
@@ -102,7 +102,7 @@ namespace Allors.Domain
     //        var productImport = new GoodsImport(this.DatabaseSession, table, settings, importLog);
     //        productImport.Execute();
 
-    //        var goods = this.GetObjects(this.DatabaseSession, Goods.Meta.ObjectType);
+    //        var goods = this.GetObjects(this.DatabaseSession, M.Good.ObjectType);
 
     //        Assert.AreEqual(1, goods.Length);
     //        foreach (Good good in goods)

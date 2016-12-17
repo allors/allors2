@@ -24,8 +24,8 @@ namespace Allors.Domain
     using System;
     using System.Security.Principal;
     using System.Threading;
+    using Meta;
     using NUnit.Framework;
-
     using Resources;
 
     [TestFixture]
@@ -39,7 +39,7 @@ namespace Allors.Domain
                 .WithAddress1("Haverwerf 15")
                 .WithPostalBoundary(new PostalBoundaryBuilder(this.DatabaseSession)
                                         .WithLocality("Mechelen")
-                                        .WithCountry(new Countries(this.DatabaseSession).FindBy(Countries.Meta.IsoCode, "BE"))
+                                        .WithCountry(new Countries(this.DatabaseSession).FindBy(M.Country.IsoCode, "BE"))
                                         .Build())
 
                 .Build();
@@ -49,7 +49,7 @@ namespace Allors.Domain
                 .WithBillToCustomer(customer)
                 .WithBillToContactMechanism(contactMechanism)
                 .WithSalesInvoiceType(new SalesInvoiceTypes(this.DatabaseSession).SalesInvoice)
-                .WithBilledFromInternalOrganisation(new InternalOrganisations(this.DatabaseSession).FindBy(InternalOrganisations.Meta.Name, "internalOrganisation"))
+                .WithBilledFromInternalOrganisation(new InternalOrganisations(this.DatabaseSession).FindBy(M.InternalOrganisation.Name, "internalOrganisation"))
                 .Build();
 
             new CustomerRelationshipBuilder(this.DatabaseSession).WithFromDate(DateTime.UtcNow).WithCustomer(customer).WithInternalOrganisation(Singleton.Instance(this.DatabaseSession).DefaultInternalOrganisation).Build();
@@ -68,7 +68,7 @@ namespace Allors.Domain
                 .WithAddress1("Haverwerf 15")
                 .WithPostalBoundary(new PostalBoundaryBuilder(this.DatabaseSession)
                                         .WithLocality("Mechelen")
-                                        .WithCountry(new Countries(this.DatabaseSession).FindBy(Countries.Meta.IsoCode, "BE"))
+                                        .WithCountry(new Countries(this.DatabaseSession).FindBy(M.Country.IsoCode, "BE"))
                                         .Build())
 
                 .Build();
@@ -78,7 +78,7 @@ namespace Allors.Domain
                 .WithBillToCustomer(customer)
                 .WithBillToContactMechanism(contactMechanism)
                 .WithSalesInvoiceType(new SalesInvoiceTypes(this.DatabaseSession).SalesInvoice)
-                .WithBilledFromInternalOrganisation(new InternalOrganisations(this.DatabaseSession).FindBy(InternalOrganisations.Meta.Name, "internalOrganisation"))
+                .WithBilledFromInternalOrganisation(new InternalOrganisations(this.DatabaseSession).FindBy(M.InternalOrganisation.Name, "internalOrganisation"))
                 .Build();
 
             new CustomerRelationshipBuilder(this.DatabaseSession).WithFromDate(DateTime.UtcNow).WithCustomer(customer).WithInternalOrganisation(Singleton.Instance(this.DatabaseSession).DefaultInternalOrganisation).Build();
@@ -96,7 +96,7 @@ namespace Allors.Domain
                 .WithAddress1("Haverwerf 15")
                 .WithPostalBoundary(new PostalBoundaryBuilder(this.DatabaseSession)
                                         .WithLocality("Mechelen")
-                                        .WithCountry(new Countries(this.DatabaseSession).FindBy(Countries.Meta.IsoCode, "BE"))
+                                        .WithCountry(new Countries(this.DatabaseSession).FindBy(M.Country.IsoCode, "BE"))
                                         .Build())
 
                 .Build();
@@ -119,7 +119,7 @@ namespace Allors.Domain
                 .WithBillToCustomer(customer)
                 .WithBillToContactMechanism(contactMechanism)
                 .WithSalesInvoiceType(new SalesInvoiceTypes(this.DatabaseSession).SalesInvoice)
-                .WithBilledFromInternalOrganisation(new InternalOrganisations(this.DatabaseSession).FindBy(InternalOrganisations.Meta.Name, "internalOrganisation"))
+                .WithBilledFromInternalOrganisation(new InternalOrganisations(this.DatabaseSession).FindBy(M.InternalOrganisation.Name, "internalOrganisation"))
                 .WithSalesInvoiceItem(new SalesInvoiceItemBuilder(this.DatabaseSession).WithProduct(good).WithQuantity(1).WithActualUnitPrice(100M).WithSalesInvoiceItemType(new SalesInvoiceItemTypes(this.DatabaseSession).ProductItem).Build())
                 .Build();
 
@@ -185,7 +185,7 @@ namespace Allors.Domain
             Assert.AreEqual(invoice.CurrentObjectState, new SalesInvoiceObjectStates(this.DatabaseSession).ReadyForPosting);
             Assert.AreEqual(invoice.CurrentObjectState, invoice.LastObjectState);
 
-            builder.WithBilledFromInternalOrganisation(new InternalOrganisations(this.DatabaseSession).FindBy(InternalOrganisations.Meta.Name, "internalOrganisation"));
+            builder.WithBilledFromInternalOrganisation(new InternalOrganisations(this.DatabaseSession).FindBy(M.InternalOrganisation.Name, "internalOrganisation"));
             builder.Build();
 
             Assert.IsFalse(this.DatabaseSession.Derive().HasErrors);
@@ -199,7 +199,7 @@ namespace Allors.Domain
                 .WithAddress1("Haverwerf 15")
                 .WithPostalBoundary(new PostalBoundaryBuilder(this.DatabaseSession)
                                         .WithLocality("Mechelen")
-                                        .WithCountry(new Countries(this.DatabaseSession).FindBy(Countries.Meta.IsoCode, "BE"))
+                                        .WithCountry(new Countries(this.DatabaseSession).FindBy(M.Country.IsoCode, "BE"))
                                         .Build())
 
                 .Build();
@@ -209,7 +209,7 @@ namespace Allors.Domain
                 .WithBillToCustomer(customer)
                 .WithBillToContactMechanism(contactMechanism)
                 .WithSalesInvoiceType(new SalesInvoiceTypes(this.DatabaseSession).SalesInvoice)
-                .WithBilledFromInternalOrganisation(new InternalOrganisations(this.DatabaseSession).FindBy(InternalOrganisations.Meta.Name, "internalOrganisation"))
+                .WithBilledFromInternalOrganisation(new InternalOrganisations(this.DatabaseSession).FindBy(M.InternalOrganisation.Name, "internalOrganisation"))
                 .Build();
 
             var expectedError = ErrorMessages.PartyIsNotACustomer;
@@ -229,7 +229,7 @@ namespace Allors.Domain
                 .WithAddress1("Haverwerf 15")
                 .WithPostalBoundary(new PostalBoundaryBuilder(this.DatabaseSession)
                                         .WithLocality("Mechelen")
-                                        .WithCountry(new Countries(this.DatabaseSession).FindBy(Countries.Meta.IsoCode, "BE"))
+                                        .WithCountry(new Countries(this.DatabaseSession).FindBy(M.Country.IsoCode, "BE"))
                                         .Build())
 
                 .Build();
@@ -240,7 +240,7 @@ namespace Allors.Domain
                 .WithShipToCustomer(shipToCustomer)
                 .WithBillToContactMechanism(contactMechanism)
                 .WithSalesInvoiceType(new SalesInvoiceTypes(this.DatabaseSession).SalesInvoice)
-                .WithBilledFromInternalOrganisation(new InternalOrganisations(this.DatabaseSession).FindBy(InternalOrganisations.Meta.Name, "internalOrganisation"))
+                .WithBilledFromInternalOrganisation(new InternalOrganisations(this.DatabaseSession).FindBy(M.InternalOrganisation.Name, "internalOrganisation"))
                 .Build();
 
             new CustomerRelationshipBuilder(this.DatabaseSession).WithFromDate(DateTime.UtcNow).WithCustomer(billtoCcustomer).WithInternalOrganisation(Singleton.Instance(this.DatabaseSession).DefaultInternalOrganisation).Build();
@@ -257,8 +257,8 @@ namespace Allors.Domain
         public void GivenSalesInvoice_WhenGettingInvoiceNumberWithoutFormat_ThenInvoiceNumberShouldBeReturned()
         {
             var store = new StoreBuilder(this.DatabaseSession).WithName("store")
-                .WithDefaultFacility(new Warehouses(this.DatabaseSession).FindBy(Warehouses.Meta.Name, "facility"))
-                .WithOwner(new InternalOrganisations(this.DatabaseSession).FindBy(InternalOrganisations.Meta.Name, "internalOrganisation"))
+                .WithDefaultFacility(new Warehouses(this.DatabaseSession).FindBy(M.Warehouse.Name, "facility"))
+                .WithOwner(new InternalOrganisations(this.DatabaseSession).FindBy(M.InternalOrganisation.Name, "internalOrganisation"))
                 .WithDefaultShipmentMethod(new ShipmentMethods(this.DatabaseSession).Ground)
                 .WithDefaultCarrier(new Carriers(this.DatabaseSession).Fedex)
                 .Build();
@@ -268,7 +268,7 @@ namespace Allors.Domain
                 .WithAddress1("Haverwerf 15")
                 .WithPostalBoundary(new PostalBoundaryBuilder(this.DatabaseSession)
                                         .WithLocality("Mechelen")
-                                        .WithCountry(new Countries(this.DatabaseSession).FindBy(Countries.Meta.IsoCode, "BE"))
+                                        .WithCountry(new Countries(this.DatabaseSession).FindBy(M.Country.IsoCode, "BE"))
                                         .Build())
 
                 .Build();
@@ -278,7 +278,7 @@ namespace Allors.Domain
                 .WithBillToCustomer(customer)
                 .WithBillToContactMechanism(contactMechanism)
                 .WithSalesInvoiceType(new SalesInvoiceTypes(this.DatabaseSession).SalesInvoice)
-                .WithBilledFromInternalOrganisation(new InternalOrganisations(this.DatabaseSession).FindBy(InternalOrganisations.Meta.Name, "internalOrganisation"))
+                .WithBilledFromInternalOrganisation(new InternalOrganisations(this.DatabaseSession).FindBy(M.InternalOrganisation.Name, "internalOrganisation"))
                 .Build();
 
             new CustomerRelationshipBuilder(this.DatabaseSession).WithFromDate(DateTime.UtcNow).WithCustomer(customer).WithInternalOrganisation(Singleton.Instance(this.DatabaseSession).DefaultInternalOrganisation).Build();
@@ -290,7 +290,7 @@ namespace Allors.Domain
                 .WithBillToCustomer(customer)
                 .WithBillToContactMechanism(contactMechanism)
                 .WithSalesInvoiceType(new SalesInvoiceTypes(this.DatabaseSession).SalesInvoice)
-                .WithBilledFromInternalOrganisation(new InternalOrganisations(this.DatabaseSession).FindBy(InternalOrganisations.Meta.Name, "internalOrganisation"))
+                .WithBilledFromInternalOrganisation(new InternalOrganisations(this.DatabaseSession).FindBy(M.InternalOrganisation.Name, "internalOrganisation"))
                 .Build();
 
             Assert.AreEqual("2", invoice2.InvoiceNumber);
@@ -300,8 +300,8 @@ namespace Allors.Domain
         public void GivenInternalOrganisationWithInvoiceSequenceFiscalYear_WhenCreatingInvoice_ThenInvoiceNumberFromFiscalYearMustBeUsed()
         {
             var store = new StoreBuilder(this.DatabaseSession).WithName("store")
-                .WithDefaultFacility(new Warehouses(this.DatabaseSession).FindBy(Warehouses.Meta.Name, "facility"))
-                .WithOwner(new InternalOrganisations(this.DatabaseSession).FindBy(InternalOrganisations.Meta.Name, "internalOrganisation"))
+                .WithDefaultFacility(new Warehouses(this.DatabaseSession).FindBy(M.Warehouse.Name, "facility"))
+                .WithOwner(new InternalOrganisations(this.DatabaseSession).FindBy(M.InternalOrganisation.Name, "internalOrganisation"))
                 .WithDefaultShipmentMethod(new ShipmentMethods(this.DatabaseSession).Ground)
                 .WithDefaultCarrier(new Carriers(this.DatabaseSession).Fedex)
                 .Build();
@@ -311,7 +311,7 @@ namespace Allors.Domain
                 .WithAddress1("Haverwerf 15")
                 .WithPostalBoundary(new PostalBoundaryBuilder(this.DatabaseSession)
                                         .WithLocality("Mechelen")
-                                        .WithCountry(new Countries(this.DatabaseSession).FindBy(Countries.Meta.IsoCode, "BE"))
+                                        .WithCountry(new Countries(this.DatabaseSession).FindBy(M.Country.IsoCode, "BE"))
                                         .Build())
 
                 .Build();
@@ -321,7 +321,7 @@ namespace Allors.Domain
                 .WithBillToCustomer(customer)
                 .WithBillToContactMechanism(contactMechanism)
                 .WithSalesInvoiceType(new SalesInvoiceTypes(this.DatabaseSession).SalesInvoice)
-                .WithBilledFromInternalOrganisation(new InternalOrganisations(this.DatabaseSession).FindBy(InternalOrganisations.Meta.Name, "internalOrganisation"))
+                .WithBilledFromInternalOrganisation(new InternalOrganisations(this.DatabaseSession).FindBy(M.InternalOrganisation.Name, "internalOrganisation"))
                 .Build();
 
             new CustomerRelationshipBuilder(this.DatabaseSession).WithFromDate(DateTime.UtcNow).WithCustomer(customer).WithInternalOrganisation(Singleton.Instance(this.DatabaseSession).DefaultInternalOrganisation).Build();
@@ -335,7 +335,7 @@ namespace Allors.Domain
                 .WithBillToCustomer(customer)
                 .WithBillToContactMechanism(contactMechanism)
                 .WithSalesInvoiceType(new SalesInvoiceTypes(this.DatabaseSession).SalesInvoice)
-                .WithBilledFromInternalOrganisation(new InternalOrganisations(this.DatabaseSession).FindBy(InternalOrganisations.Meta.Name, "internalOrganisation"))
+                .WithBilledFromInternalOrganisation(new InternalOrganisations(this.DatabaseSession).FindBy(M.InternalOrganisation.Name, "internalOrganisation"))
                 .Build();
 
             Assert.IsFalse(store.ExistSalesInvoiceCounter);
@@ -347,8 +347,8 @@ namespace Allors.Domain
         public void GivenSalesInvoice_WhenGettingInvoiceNumberWithFormat_ThenFormattedInvoiceNumberShouldBeReturned()
         {
             var store = new StoreBuilder(this.DatabaseSession).WithName("store")
-                .WithDefaultFacility(new Warehouses(this.DatabaseSession).FindBy(Warehouses.Meta.Name, "facility"))
-                .WithOwner(new InternalOrganisations(this.DatabaseSession).FindBy(InternalOrganisations.Meta.Name, "internalOrganisation"))
+                .WithDefaultFacility(new Warehouses(this.DatabaseSession).FindBy(M.Warehouse.Name, "facility"))
+                .WithOwner(new InternalOrganisations(this.DatabaseSession).FindBy(M.InternalOrganisation.Name, "internalOrganisation"))
                 .WithSalesInvoiceNumberPrefix("the format is ")
                 .WithDefaultShipmentMethod(new ShipmentMethods(this.DatabaseSession).Ground)
                 .WithDefaultCarrier(new Carriers(this.DatabaseSession).Fedex)
@@ -359,7 +359,7 @@ namespace Allors.Domain
                 .WithAddress1("Haverwerf 15")
                 .WithPostalBoundary(new PostalBoundaryBuilder(this.DatabaseSession)
                                         .WithLocality("Mechelen")
-                                        .WithCountry(new Countries(this.DatabaseSession).FindBy(Countries.Meta.IsoCode, "BE"))
+                                        .WithCountry(new Countries(this.DatabaseSession).FindBy(M.Country.IsoCode, "BE"))
                                         .Build())
 
                 .Build();
@@ -369,7 +369,7 @@ namespace Allors.Domain
                 .WithBillToCustomer(customer)
                 .WithBillToContactMechanism(contactMechanism)
                 .WithSalesInvoiceType(new SalesInvoiceTypes(this.DatabaseSession).SalesInvoice)
-                .WithBilledFromInternalOrganisation(new InternalOrganisations(this.DatabaseSession).FindBy(InternalOrganisations.Meta.Name, "internalOrganisation"))
+                .WithBilledFromInternalOrganisation(new InternalOrganisations(this.DatabaseSession).FindBy(M.InternalOrganisation.Name, "internalOrganisation"))
                 .Build();
 
             new CustomerRelationshipBuilder(this.DatabaseSession).WithFromDate(DateTime.UtcNow).WithCustomer(customer).WithInternalOrganisation(Singleton.Instance(this.DatabaseSession).DefaultInternalOrganisation).Build();
@@ -386,7 +386,7 @@ namespace Allors.Domain
                 .WithAddress1("Haverwerf 15")
                 .WithPostalBoundary(new PostalBoundaryBuilder(this.DatabaseSession)
                                         .WithLocality("Mechelen")
-                                        .WithCountry(new Countries(this.DatabaseSession).FindBy(Countries.Meta.IsoCode, "BE"))
+                                        .WithCountry(new Countries(this.DatabaseSession).FindBy(M.Country.IsoCode, "BE"))
                                         .Build())
 
                 .Build();
@@ -402,7 +402,7 @@ namespace Allors.Domain
             this.DatabaseSession.Derive(true);
             this.DatabaseSession.Commit();
 
-            var internalOrganisation = new InternalOrganisations(this.DatabaseSession).FindBy(InternalOrganisations.Meta.Name, "internalOrganisation");
+            var internalOrganisation = new InternalOrganisations(this.DatabaseSession).FindBy(M.InternalOrganisation.Name, "internalOrganisation");
 
             new CustomerRelationshipBuilder(this.DatabaseSession)
                 .WithCustomer(customer)
@@ -438,7 +438,7 @@ namespace Allors.Domain
                 .WithAddress1("Haverwerf 15")
                 .WithPostalBoundary(new PostalBoundaryBuilder(this.DatabaseSession)
                                         .WithLocality("Mechelen")
-                                        .WithCountry(new Countries(this.DatabaseSession).FindBy(Countries.Meta.IsoCode, "BE"))
+                                        .WithCountry(new Countries(this.DatabaseSession).FindBy(M.Country.IsoCode, "BE"))
                                         .Build())
 
                 .Build();
@@ -447,7 +447,7 @@ namespace Allors.Domain
                 .WithAddress1("Sint-Lambertuslaan 78")
                 .WithPostalBoundary(new PostalBoundaryBuilder(this.DatabaseSession)
                                         .WithLocality("Muizen")
-                                        .WithCountry(new Countries(this.DatabaseSession).FindBy(Countries.Meta.IsoCode, "BE"))
+                                        .WithCountry(new Countries(this.DatabaseSession).FindBy(M.Country.IsoCode, "BE"))
                                         .Build())
 
                 .Build();
@@ -458,7 +458,7 @@ namespace Allors.Domain
                 .WithUseAsDefault(true)
                 .Build();
 
-            var internalOrganisation = new InternalOrganisations(this.DatabaseSession).FindBy(InternalOrganisations.Meta.Name, "internalOrganisation");
+            var internalOrganisation = new InternalOrganisations(this.DatabaseSession).FindBy(M.InternalOrganisation.Name, "internalOrganisation");
             internalOrganisation.RemovePartyContactMechanisms();
             internalOrganisation.AddPartyContactMechanism(home);
 
@@ -507,7 +507,7 @@ namespace Allors.Domain
         [Test]
         public void GivenSalesInvoiceBuilderWithBillToCustomerWithPreferredCurrency_WhenBuilding_ThenDerivedCurrencyIsCustomersPreferredCurrency()
         {
-            var euro = new Currencies(this.DatabaseSession).FindBy(Currencies.Meta.IsoCode, "EUR");
+            var euro = new Currencies(this.DatabaseSession).FindBy(M.Currency.IsoCode, "EUR");
 
             var customer = new OrganisationBuilder(this.DatabaseSession)
                 .WithName("customer")
@@ -559,16 +559,16 @@ namespace Allors.Domain
         [Test]
         public void GivenSalesInvoiceBuilderWithoutBillToCustomer_WhenBuilding_ThenDerivedCurrencyIsInternalOrganisationsPreferredCurrency()
         {
-            var euro = new Currencies(this.DatabaseSession).FindBy(Currencies.Meta.IsoCode, "EUR");
+            var euro = new Currencies(this.DatabaseSession).FindBy(M.Currency.IsoCode, "EUR");
 
-            var internalOrganisation = new InternalOrganisations(this.DatabaseSession).FindBy(InternalOrganisations.Meta.Name, "internalOrganisation");
+            var internalOrganisation = new InternalOrganisations(this.DatabaseSession).FindBy(M.InternalOrganisation.Name, "internalOrganisation");
             internalOrganisation.PreferredCurrency = euro;
             var customer = new OrganisationBuilder(this.DatabaseSession).WithName("customer").Build();
             var contactMechanism = new PostalAddressBuilder(this.DatabaseSession)
                 .WithAddress1("Haverwerf 15")
                 .WithPostalBoundary(new PostalBoundaryBuilder(this.DatabaseSession)
                                         .WithLocality("Mechelen")
-                                        .WithCountry(new Countries(this.DatabaseSession).FindBy(Countries.Meta.IsoCode, "BE"))
+                                        .WithCountry(new Countries(this.DatabaseSession).FindBy(M.Country.IsoCode, "BE"))
                                         .Build())
 
                 .Build();
@@ -597,7 +597,7 @@ namespace Allors.Domain
                 .WithAddress1("Haverwerf 15")
                 .WithPostalBoundary(new PostalBoundaryBuilder(this.DatabaseSession)
                                         .WithLocality("Mechelen")
-                                        .WithCountry(new Countries(this.DatabaseSession).FindBy(Countries.Meta.IsoCode, "BE"))
+                                        .WithCountry(new Countries(this.DatabaseSession).FindBy(M.Country.IsoCode, "BE"))
                                         .Build())
 
                 .Build();
@@ -622,7 +622,7 @@ namespace Allors.Domain
         [Test]
         public void GivenSalesInvoice_WhenDeriving_ThenTotalAmountMustBeDerived()
         {
-            var euro = new Currencies(this.DatabaseSession).FindBy(Currencies.Meta.IsoCode, "EUR");
+            var euro = new Currencies(this.DatabaseSession).FindBy(M.Currency.IsoCode, "EUR");
             var supplier = new OrganisationBuilder(this.DatabaseSession).WithName("supplier").Build();
             var vatRate21 = new VatRateBuilder(this.DatabaseSession).WithRate(19).Build();
 
@@ -655,7 +655,7 @@ namespace Allors.Domain
                 .WithAddress1("Haverwerf 15")
                 .WithPostalBoundary(new PostalBoundaryBuilder(this.DatabaseSession)
                                         .WithLocality("Mechelen")
-                                        .WithCountry(new Countries(this.DatabaseSession).FindBy(Countries.Meta.IsoCode, "BE"))
+                                        .WithCountry(new Countries(this.DatabaseSession).FindBy(M.Country.IsoCode, "BE"))
                                         .Build())
 
                 .Build();
@@ -715,7 +715,7 @@ namespace Allors.Domain
                 .WithAddress1("Haverwerf 15")
                 .WithPostalBoundary(new PostalBoundaryBuilder(this.DatabaseSession)
                                         .WithLocality("Mechelen")
-                                        .WithCountry(new Countries(this.DatabaseSession).FindBy(Countries.Meta.IsoCode, "BE"))
+                                        .WithCountry(new Countries(this.DatabaseSession).FindBy(M.Country.IsoCode, "BE"))
                                         .Build())
 
                 .Build();
@@ -734,7 +734,7 @@ namespace Allors.Domain
                 .WithBillToCustomer(customer)
                 .WithBillToContactMechanism(contactMechanism)
                 .WithSalesInvoiceType(new SalesInvoiceTypes(this.DatabaseSession).SalesInvoice)
-                .WithBilledFromInternalOrganisation(new InternalOrganisations(this.DatabaseSession).FindBy(InternalOrganisations.Meta.Name, "internalOrganisation"))
+                .WithBilledFromInternalOrganisation(new InternalOrganisations(this.DatabaseSession).FindBy(M.InternalOrganisation.Name, "internalOrganisation"))
                 .Build();
 
             new CustomerRelationshipBuilder(this.DatabaseSession).WithFromDate(DateTime.UtcNow).WithCustomer(customer).WithInternalOrganisation(Singleton.Instance(this.DatabaseSession).DefaultInternalOrganisation).Build();
@@ -742,9 +742,9 @@ namespace Allors.Domain
             this.DatabaseSession.Derive(true);
 
             var acl = new AccessControlList(invoice, new Users(this.DatabaseSession).GetCurrentUser());
-            Assert.IsTrue(acl.CanExecute(SalesInvoices.Meta.Send));
-            Assert.IsTrue(acl.CanExecute(SalesInvoices.Meta.WriteOff));
-            Assert.IsTrue(acl.CanExecute(SalesInvoices.Meta.CancelInvoice));
+            Assert.IsTrue(acl.CanExecute(M.SalesInvoice.Send));
+            Assert.IsTrue(acl.CanExecute(M.SalesInvoice.WriteOff));
+            Assert.IsTrue(acl.CanExecute(M.SalesInvoice.CancelInvoice));
         }
 
         [Test]
@@ -755,7 +755,7 @@ namespace Allors.Domain
                 .WithAddress1("Haverwerf 15")
                 .WithPostalBoundary(new PostalBoundaryBuilder(this.DatabaseSession)
                                         .WithLocality("Mechelen")
-                                        .WithCountry(new Countries(this.DatabaseSession).FindBy(Countries.Meta.IsoCode, "BE"))
+                                        .WithCountry(new Countries(this.DatabaseSession).FindBy(M.Country.IsoCode, "BE"))
                                         .Build())
 
                 .Build();
@@ -774,7 +774,7 @@ namespace Allors.Domain
                 .WithBillToCustomer(customer)
                 .WithBillToContactMechanism(contactMechanism)
                 .WithSalesInvoiceType(new SalesInvoiceTypes(this.DatabaseSession).SalesInvoice)
-                .WithBilledFromInternalOrganisation(new InternalOrganisations(this.DatabaseSession).FindBy(InternalOrganisations.Meta.Name, "internalOrganisation"))
+                .WithBilledFromInternalOrganisation(new InternalOrganisations(this.DatabaseSession).FindBy(M.InternalOrganisation.Name, "internalOrganisation"))
                 .Build();
 
             new CustomerRelationshipBuilder(this.DatabaseSession).WithFromDate(DateTime.UtcNow).WithCustomer(customer).WithInternalOrganisation(Singleton.Instance(this.DatabaseSession).DefaultInternalOrganisation).Build();
@@ -784,9 +784,9 @@ namespace Allors.Domain
             this.DatabaseSession.Derive(true);
 
             var acl = new AccessControlList(invoice, new Users(this.DatabaseSession).GetCurrentUser());
-            Assert.IsFalse(acl.CanExecute(SalesInvoices.Meta.Send));
-            Assert.IsTrue(acl.CanExecute(SalesInvoices.Meta.WriteOff));
-            Assert.IsFalse(acl.CanExecute(SalesInvoices.Meta.CancelInvoice));
+            Assert.IsFalse(acl.CanExecute(M.SalesInvoice.Send));
+            Assert.IsTrue(acl.CanExecute(M.SalesInvoice.WriteOff));
+            Assert.IsFalse(acl.CanExecute(M.SalesInvoice.CancelInvoice));
         }
 
         ////[Test]
@@ -822,7 +822,7 @@ namespace Allors.Domain
                 .WithAddress1("Haverwerf 15")
                 .WithPostalBoundary(new PostalBoundaryBuilder(this.DatabaseSession)
                                         .WithLocality("Mechelen")
-                                        .WithCountry(new Countries(this.DatabaseSession).FindBy(Countries.Meta.IsoCode, "BE"))
+                                        .WithCountry(new Countries(this.DatabaseSession).FindBy(M.Country.IsoCode, "BE"))
                                         .Build())
 
                 .Build();
@@ -849,7 +849,7 @@ namespace Allors.Domain
                 .WithBillToCustomer(customer)
                 .WithBillToContactMechanism(contactMechanism)
                 .WithSalesInvoiceType(new SalesInvoiceTypes(this.DatabaseSession).SalesInvoice)
-                .WithBilledFromInternalOrganisation(new InternalOrganisations(this.DatabaseSession).FindBy(InternalOrganisations.Meta.Name, "internalOrganisation"))
+                .WithBilledFromInternalOrganisation(new InternalOrganisations(this.DatabaseSession).FindBy(M.InternalOrganisation.Name, "internalOrganisation"))
                 .WithSalesInvoiceItem(new SalesInvoiceItemBuilder(this.DatabaseSession).WithProduct(good).WithQuantity(1).WithActualUnitPrice(100M).WithSalesInvoiceItemType(new SalesInvoiceItemTypes(this.DatabaseSession).ProductItem).Build())
                 .Build();
 
@@ -865,9 +865,9 @@ namespace Allors.Domain
             this.DatabaseSession.Derive(true);
 
             var acl = new AccessControlList(invoice, new Users(this.DatabaseSession).GetCurrentUser());
-            Assert.IsFalse(acl.CanExecute(SalesInvoices.Meta.Send));
-            Assert.IsFalse(acl.CanExecute(SalesInvoices.Meta.WriteOff));
-            Assert.IsFalse(acl.CanExecute(SalesInvoices.Meta.CancelInvoice));
+            Assert.IsFalse(acl.CanExecute(M.SalesInvoice.Send));
+            Assert.IsFalse(acl.CanExecute(M.SalesInvoice.WriteOff));
+            Assert.IsFalse(acl.CanExecute(M.SalesInvoice.CancelInvoice));
         }
 
         [Test]
@@ -878,7 +878,7 @@ namespace Allors.Domain
                 .WithAddress1("Haverwerf 15")
                 .WithPostalBoundary(new PostalBoundaryBuilder(this.DatabaseSession)
                                         .WithLocality("Mechelen")
-                                        .WithCountry(new Countries(this.DatabaseSession).FindBy(Countries.Meta.IsoCode, "BE"))
+                                        .WithCountry(new Countries(this.DatabaseSession).FindBy(M.Country.IsoCode, "BE"))
                                         .Build())
 
                 .Build();
@@ -905,7 +905,7 @@ namespace Allors.Domain
                 .WithBillToCustomer(customer)
                 .WithBillToContactMechanism(contactMechanism)
                 .WithSalesInvoiceType(new SalesInvoiceTypes(this.DatabaseSession).SalesInvoice)
-                .WithBilledFromInternalOrganisation(new InternalOrganisations(this.DatabaseSession).FindBy(InternalOrganisations.Meta.Name, "internalOrganisation"))
+                .WithBilledFromInternalOrganisation(new InternalOrganisations(this.DatabaseSession).FindBy(M.InternalOrganisation.Name, "internalOrganisation"))
                 .WithSalesInvoiceItem(new SalesInvoiceItemBuilder(this.DatabaseSession).WithProduct(good).WithQuantity(1).WithActualUnitPrice(100M).WithSalesInvoiceItemType(new SalesInvoiceItemTypes(this.DatabaseSession).ProductItem).Build())
                 .Build();
 
@@ -921,9 +921,9 @@ namespace Allors.Domain
             this.DatabaseSession.Derive(true);
 
             var acl = new AccessControlList(invoice, new Users(this.DatabaseSession).GetCurrentUser());
-            Assert.IsFalse(acl.CanExecute(SalesInvoices.Meta.Send));
-            Assert.IsTrue(acl.CanExecute(SalesInvoices.Meta.WriteOff));
-            Assert.IsFalse(acl.CanExecute(SalesInvoices.Meta.CancelInvoice));
+            Assert.IsFalse(acl.CanExecute(M.SalesInvoice.Send));
+            Assert.IsTrue(acl.CanExecute(M.SalesInvoice.WriteOff));
+            Assert.IsFalse(acl.CanExecute(M.SalesInvoice.CancelInvoice));
         }
 
         [Test]
@@ -934,7 +934,7 @@ namespace Allors.Domain
                 .WithAddress1("Haverwerf 15")
                 .WithPostalBoundary(new PostalBoundaryBuilder(this.DatabaseSession)
                                         .WithLocality("Mechelen")
-                                        .WithCountry(new Countries(this.DatabaseSession).FindBy(Countries.Meta.IsoCode, "BE"))
+                                        .WithCountry(new Countries(this.DatabaseSession).FindBy(M.Country.IsoCode, "BE"))
                                         .Build())
 
                 .Build();
@@ -953,7 +953,7 @@ namespace Allors.Domain
                 .WithBillToCustomer(customer)
                 .WithBillToContactMechanism(contactMechanism)
                 .WithSalesInvoiceType(new SalesInvoiceTypes(this.DatabaseSession).SalesInvoice)
-                .WithBilledFromInternalOrganisation(new InternalOrganisations(this.DatabaseSession).FindBy(InternalOrganisations.Meta.Name, "internalOrganisation"))
+                .WithBilledFromInternalOrganisation(new InternalOrganisations(this.DatabaseSession).FindBy(M.InternalOrganisation.Name, "internalOrganisation"))
                 .Build();
 
             new CustomerRelationshipBuilder(this.DatabaseSession).WithFromDate(DateTime.UtcNow).WithCustomer(customer).WithInternalOrganisation(Singleton.Instance(this.DatabaseSession).DefaultInternalOrganisation).Build();
@@ -964,9 +964,9 @@ namespace Allors.Domain
             this.DatabaseSession.Derive(true);
 
             var acl = new AccessControlList(invoice, new Users(this.DatabaseSession).GetCurrentUser());
-            Assert.IsFalse(acl.CanExecute(SalesInvoices.Meta.Send));
-            Assert.IsFalse(acl.CanExecute(SalesInvoices.Meta.WriteOff));
-            Assert.IsFalse(acl.CanExecute(SalesInvoices.Meta.CancelInvoice));
+            Assert.IsFalse(acl.CanExecute(M.SalesInvoice.Send));
+            Assert.IsFalse(acl.CanExecute(M.SalesInvoice.WriteOff));
+            Assert.IsFalse(acl.CanExecute(M.SalesInvoice.CancelInvoice));
         }
 
         [Test]
@@ -977,7 +977,7 @@ namespace Allors.Domain
                 .WithAddress1("Haverwerf 15")
                 .WithPostalBoundary(new PostalBoundaryBuilder(this.DatabaseSession)
                                         .WithLocality("Mechelen")
-                                        .WithCountry(new Countries(this.DatabaseSession).FindBy(Countries.Meta.IsoCode, "BE"))
+                                        .WithCountry(new Countries(this.DatabaseSession).FindBy(M.Country.IsoCode, "BE"))
                                         .Build())
 
                 .Build();
@@ -996,7 +996,7 @@ namespace Allors.Domain
                 .WithBillToCustomer(customer)
                 .WithBillToContactMechanism(contactMechanism)
                 .WithSalesInvoiceType(new SalesInvoiceTypes(this.DatabaseSession).SalesInvoice)
-                .WithBilledFromInternalOrganisation(new InternalOrganisations(this.DatabaseSession).FindBy(InternalOrganisations.Meta.Name, "internalOrganisation"))
+                .WithBilledFromInternalOrganisation(new InternalOrganisations(this.DatabaseSession).FindBy(M.InternalOrganisation.Name, "internalOrganisation"))
                 .Build();
 
             new CustomerRelationshipBuilder(this.DatabaseSession).WithFromDate(DateTime.UtcNow).WithCustomer(customer).WithInternalOrganisation(Singleton.Instance(this.DatabaseSession).DefaultInternalOrganisation).Build();
@@ -1007,21 +1007,21 @@ namespace Allors.Domain
 
             var acl = new AccessControlList(invoice, new Users(this.DatabaseSession).GetCurrentUser());
             Assert.AreEqual(new SalesInvoiceObjectStates(this.DatabaseSession).Cancelled, invoice.CurrentObjectState);
-            Assert.IsFalse(acl.CanExecute(SalesInvoices.Meta.Send));
-            Assert.IsFalse(acl.CanExecute(SalesInvoices.Meta.WriteOff));
-            Assert.IsFalse(acl.CanExecute(SalesInvoices.Meta.CancelInvoice));
+            Assert.IsFalse(acl.CanExecute(M.SalesInvoice.Send));
+            Assert.IsFalse(acl.CanExecute(M.SalesInvoice.WriteOff));
+            Assert.IsFalse(acl.CanExecute(M.SalesInvoice.CancelInvoice));
         }
 
         [Test]
         public void GivenSalesInvoiceCreatedByEmloyee_WhenCurrentUserIsCustomerContactForThisInvoice_ThenReadAccessIsGranted()
         {
-            var customer = new Organisations(this.DatabaseSession).FindBy(Organisations.Meta.Name, "customer");
+            var customer = new Organisations(this.DatabaseSession).FindBy(M.Organisation.Name, "customer");
             var customerContact = new PersonBuilder(this.DatabaseSession).WithUserName("customercontact").WithLastName("customercontact").Build();
             var contactMechanism = new PostalAddressBuilder(this.DatabaseSession)
                 .WithAddress1("Haverwerf 15")
                 .WithPostalBoundary(new PostalBoundaryBuilder(this.DatabaseSession)
                                         .WithLocality("Mechelen")
-                                        .WithCountry(new Countries(this.DatabaseSession).FindBy(Countries.Meta.IsoCode, "BE"))
+                                        .WithCountry(new Countries(this.DatabaseSession).FindBy(M.Country.IsoCode, "BE"))
                                         .Build())
 
                 .Build();
@@ -1035,7 +1035,7 @@ namespace Allors.Domain
             var invoice = new SalesInvoiceBuilder(this.DatabaseSession)
                 .WithBillToCustomer(customer)
                 .WithBillToContactMechanism(contactMechanism)
-                .WithBilledFromInternalOrganisation(new InternalOrganisations(this.DatabaseSession).FindBy(InternalOrganisations.Meta.Name, "internalOrganisation"))
+                .WithBilledFromInternalOrganisation(new InternalOrganisations(this.DatabaseSession).FindBy(M.InternalOrganisation.Name, "internalOrganisation"))
                 .Build();
 
             new CustomerRelationshipBuilder(this.DatabaseSession).WithFromDate(DateTime.UtcNow).WithCustomer(customer).WithInternalOrganisation(Singleton.Instance(this.DatabaseSession).DefaultInternalOrganisation).Build();
@@ -1045,17 +1045,17 @@ namespace Allors.Domain
             Thread.CurrentPrincipal = new GenericPrincipal(new GenericIdentity("customercontact", "Forms"), new string[0]);
             var acl = new AccessControlList(invoice, new Users(this.DatabaseSession).GetCurrentUser());
 
-            Assert.IsFalse(acl.CanWrite(SalesInvoices.Meta.InvoiceDate));
-            Assert.IsTrue(acl.CanRead(SalesInvoices.Meta.InvoiceDate));
-            Assert.IsTrue(acl.CanRead(SalesInvoices.Meta.InvoiceNumber));
-            Assert.IsTrue(acl.CanRead(SalesInvoices.Meta.TotalExVat));
-            Assert.IsFalse(acl.CanExecute(SalesInvoices.Meta.Send));
+            Assert.IsFalse(acl.CanWrite(M.SalesInvoice.InvoiceDate));
+            Assert.IsTrue(acl.CanRead(M.SalesInvoice.InvoiceDate));
+            Assert.IsTrue(acl.CanRead(M.SalesInvoice.InvoiceNumber));
+            Assert.IsTrue(acl.CanRead(M.SalesInvoice.TotalExVat));
+            Assert.IsFalse(acl.CanExecute(M.SalesInvoice.Send));
         }
 
         [Test]
         public void GivenSalesInvoiceCreatedByEmloyee_WhenCurrentUserIsCustomerContactForDifferentCustomer_ThenAccessIsDenied()
         {
-            var customer = new Organisations(this.DatabaseSession).FindBy(Organisations.Meta.Name, "customer");
+            var customer = new Organisations(this.DatabaseSession).FindBy(M.Organisation.Name, "customer");
             var customerContact = new PersonBuilder(this.DatabaseSession).WithUserName("customercontact").WithLastName("customercontact").Build();
             var customerContact2 = new PersonBuilder(this.DatabaseSession).WithUserName("customercontact2").WithLastName("customercontact2").Build();
             var customer2 = new OrganisationBuilder(this.DatabaseSession).WithName("customer2").Build();
@@ -1063,14 +1063,14 @@ namespace Allors.Domain
                 .WithAddress1("Haverwerf 15")
                 .WithPostalBoundary(new PostalBoundaryBuilder(this.DatabaseSession)
                                         .WithLocality("Mechelen")
-                                        .WithCountry(new Countries(this.DatabaseSession).FindBy(Countries.Meta.IsoCode, "BE"))
+                                        .WithCountry(new Countries(this.DatabaseSession).FindBy(M.Country.IsoCode, "BE"))
                                         .Build())
 
                 .Build();
 
             new CustomerRelationshipBuilder(this.DatabaseSession)
                 .WithCustomer(customer2)
-                .WithInternalOrganisation(new InternalOrganisations(this.DatabaseSession).FindBy(InternalOrganisations.Meta.Name, "internalOrganisation"))
+                .WithInternalOrganisation(new InternalOrganisations(this.DatabaseSession).FindBy(M.InternalOrganisation.Name, "internalOrganisation"))
                 .WithFromDate(DateTime.UtcNow)
                 .Build();
 
@@ -1087,7 +1087,7 @@ namespace Allors.Domain
                 .WithBillToCustomer(customer)
                 .WithBillToContactMechanism(contactMechanism)
                 .WithSalesInvoiceType(new SalesInvoiceTypes(this.DatabaseSession).SalesInvoice)
-                .WithBilledFromInternalOrganisation(new InternalOrganisations(this.DatabaseSession).FindBy(InternalOrganisations.Meta.Name, "internalOrganisation"))
+                .WithBilledFromInternalOrganisation(new InternalOrganisations(this.DatabaseSession).FindBy(M.InternalOrganisation.Name, "internalOrganisation"))
                 .Build();
 
             this.DatabaseSession.Derive(true);
@@ -1095,18 +1095,18 @@ namespace Allors.Domain
             Thread.CurrentPrincipal = new GenericPrincipal(new GenericIdentity("customercontact2", "Forms"), new string[0]);
             var acl = new AccessControlList(invoice, new Users(this.DatabaseSession).GetCurrentUser());
 
-            Assert.IsFalse(acl.HasReadOperation);
+            Assert.IsFalse(acl.CanRead);
         }
 
         [Test]
         public void GivenSalesInvoiceCreatedBySalesRep_WhenCurrentUserInAdministratorRole_ThenAccessIsGranted()
         {
-            var customer = new Organisations(this.DatabaseSession).FindBy(Organisations.Meta.Name, "customer");
+            var customer = new Organisations(this.DatabaseSession).FindBy(M.Organisation.Name, "customer");
             var contactMechanism = new PostalAddressBuilder(this.DatabaseSession)
                 .WithAddress1("Haverwerf 15")
                 .WithPostalBoundary(new PostalBoundaryBuilder(this.DatabaseSession)
                                         .WithLocality("Mechelen")
-                                        .WithCountry(new Countries(this.DatabaseSession).FindBy(Countries.Meta.IsoCode, "BE"))
+                                        .WithCountry(new Countries(this.DatabaseSession).FindBy(M.Country.IsoCode, "BE"))
                                         .Build())
 
                 .Build();
@@ -1122,7 +1122,7 @@ namespace Allors.Domain
 
             new SupplierRelationshipBuilder(this.DatabaseSession)
                 .WithSupplier(supplier)
-                .WithInternalOrganisation(new InternalOrganisations(this.DatabaseSession).FindBy(InternalOrganisations.Meta.Name, "internalOrganisation"))
+                .WithInternalOrganisation(new InternalOrganisations(this.DatabaseSession).FindBy(M.InternalOrganisation.Name, "internalOrganisation"))
                 .WithFromDate(DateTime.UtcNow)
                 .Build();
 
@@ -1138,7 +1138,7 @@ namespace Allors.Domain
                 .WithBillToCustomer(customer)
                 .WithBillToContactMechanism(contactMechanism)
                 .WithSalesInvoiceType(new SalesInvoiceTypes(this.DatabaseSession).SalesInvoice)
-                .WithBilledFromInternalOrganisation(new InternalOrganisations(this.DatabaseSession).FindBy(InternalOrganisations.Meta.Name, "internalOrganisation"))
+                .WithBilledFromInternalOrganisation(new InternalOrganisations(this.DatabaseSession).FindBy(M.InternalOrganisation.Name, "internalOrganisation"))
                 .Build();
 
             new CustomerRelationshipBuilder(this.DatabaseSession).WithFromDate(DateTime.UtcNow).WithCustomer(customer).WithInternalOrganisation(Singleton.Instance(this.DatabaseSession).DefaultInternalOrganisation).Build();
@@ -1148,21 +1148,21 @@ namespace Allors.Domain
             Thread.CurrentPrincipal = new GenericPrincipal(new GenericIdentity("admin", "Forms"), new string[0]);
             var acl = new AccessControlList(invoice, new Users(this.DatabaseSession).GetCurrentUser());
 
-            Assert.IsTrue(acl.CanWrite(SalesInvoices.Meta.Comment));
-            Assert.IsTrue(acl.CanRead(SalesInvoices.Meta.Comment));
-            Assert.IsTrue(acl.CanExecute(SalesInvoices.Meta.Send));
+            Assert.IsTrue(acl.CanWrite(M.SalesInvoice.Comment));
+            Assert.IsTrue(acl.CanRead(M.SalesInvoice.Comment));
+            Assert.IsTrue(acl.CanExecute(M.SalesInvoice.Send));
         }
 
         [Test]
         public void GivenSalesInvoiceCreatedBySalesRep_WhenCurrentUserIsCustomer_ThenAccessIsGranted()
         {
-            var customer = new Organisations(this.DatabaseSession).FindBy(Organisations.Meta.Name, "customer");
+            var customer = new Organisations(this.DatabaseSession).FindBy(M.Organisation.Name, "customer");
             var customerContact = new PersonBuilder(this.DatabaseSession).WithLastName("customercontact").WithUserName("customercontact").Build();
             var contactMechanism = new PostalAddressBuilder(this.DatabaseSession)
                 .WithAddress1("Haverwerf 15")
                 .WithPostalBoundary(new PostalBoundaryBuilder(this.DatabaseSession)
                                         .WithLocality("Mechelen")
-                                        .WithCountry(new Countries(this.DatabaseSession).FindBy(Countries.Meta.IsoCode, "BE"))
+                                        .WithCountry(new Countries(this.DatabaseSession).FindBy(M.Country.IsoCode, "BE"))
                                         .Build())
 
                 .Build();
@@ -1175,7 +1175,7 @@ namespace Allors.Domain
             Thread.CurrentPrincipal = new GenericPrincipal(new GenericIdentity("salesRep", "Forms"), new string[0]);
 
             var invoice = new SalesInvoiceBuilder(this.DatabaseSession)
-                .WithBilledFromInternalOrganisation(new InternalOrganisations(this.DatabaseSession).FindBy(InternalOrganisations.Meta.Name, "internalOrganisation"))
+                .WithBilledFromInternalOrganisation(new InternalOrganisations(this.DatabaseSession).FindBy(M.InternalOrganisation.Name, "internalOrganisation"))
                 .WithBillToCustomer(customer)
                 .WithBillToContactMechanism(contactMechanism)
                 .Build();
@@ -1187,18 +1187,18 @@ namespace Allors.Domain
             Thread.CurrentPrincipal = new GenericPrincipal(new GenericIdentity("customercontact", "Forms"), new string[0]);
             var acl = new AccessControlList(invoice, new Users(this.DatabaseSession).GetCurrentUser());
 
-            Assert.IsTrue(acl.HasReadOperation);
+            Assert.IsTrue(acl.CanRead);
         }
 
         [Test]
         public void GivenSalesInvoiceCreatedBySalesRep_WhenCurrentUserIsSupplier_ThenAccessIsDenied()
         {
-            var customer = new Organisations(this.DatabaseSession).FindBy(Organisations.Meta.Name, "customer");
+            var customer = new Organisations(this.DatabaseSession).FindBy(M.Organisation.Name, "customer");
             var contactMechanism = new PostalAddressBuilder(this.DatabaseSession)
                 .WithAddress1("Haverwerf 15")
                 .WithPostalBoundary(new PostalBoundaryBuilder(this.DatabaseSession)
                                         .WithLocality("Mechelen")
-                                        .WithCountry(new Countries(this.DatabaseSession).FindBy(Countries.Meta.IsoCode, "BE"))
+                                        .WithCountry(new Countries(this.DatabaseSession).FindBy(M.Country.IsoCode, "BE"))
                                         .Build())
 
                 .Build();
@@ -1208,7 +1208,7 @@ namespace Allors.Domain
 
             new SupplierRelationshipBuilder(this.DatabaseSession)
                 .WithSupplier(supplier)
-                .WithInternalOrganisation(new InternalOrganisations(this.DatabaseSession).FindBy(InternalOrganisations.Meta.Name, "internalOrganisation"))
+                .WithInternalOrganisation(new InternalOrganisations(this.DatabaseSession).FindBy(M.InternalOrganisation.Name, "internalOrganisation"))
                 .WithFromDate(DateTime.UtcNow)
                 .Build();
 
@@ -1220,7 +1220,7 @@ namespace Allors.Domain
             Thread.CurrentPrincipal = new GenericPrincipal(new GenericIdentity("salesRep", "Forms"), new string[0]);
 
             var invoice = new SalesInvoiceBuilder(this.DatabaseSession)
-                .WithBilledFromInternalOrganisation(new InternalOrganisations(this.DatabaseSession).FindBy(InternalOrganisations.Meta.Name, "internalOrganisation"))
+                .WithBilledFromInternalOrganisation(new InternalOrganisations(this.DatabaseSession).FindBy(M.InternalOrganisation.Name, "internalOrganisation"))
                 .WithBillToCustomer(customer)
                 .WithBillToContactMechanism(contactMechanism)
                 .Build();
@@ -1232,18 +1232,18 @@ namespace Allors.Domain
             Thread.CurrentPrincipal = new GenericPrincipal(new GenericIdentity("suppliercontact", "Forms"), new string[0]);
             var acl = new AccessControlList(invoice, new Users(this.DatabaseSession).GetCurrentUser());
 
-            Assert.IsFalse(acl.HasReadOperation);
+            Assert.IsFalse(acl.CanRead);
         }
 
         [Test]
         public void GivenSalesInvoiceCreatedBySalesRep_WhenCurrentUserInSameSalesRepUserGroup_ThenAccessIsGranted()
         {
-            var customer = new Organisations(this.DatabaseSession).FindBy(Organisations.Meta.Name, "customer");
+            var customer = new Organisations(this.DatabaseSession).FindBy(M.Organisation.Name, "customer");
             var contactMechanism = new PostalAddressBuilder(this.DatabaseSession)
                 .WithAddress1("Haverwerf 15")
                 .WithPostalBoundary(new PostalBoundaryBuilder(this.DatabaseSession)
                                         .WithLocality("Mechelen")
-                                        .WithCountry(new Countries(this.DatabaseSession).FindBy(Countries.Meta.IsoCode, "BE"))
+                                        .WithCountry(new Countries(this.DatabaseSession).FindBy(M.Country.IsoCode, "BE"))
                                         .Build())
 
                 .Build();
@@ -1252,7 +1252,7 @@ namespace Allors.Domain
 
             new EmploymentBuilder(this.DatabaseSession)
                 .WithEmployee(salesRep2)
-                .WithEmployer(new InternalOrganisations(this.DatabaseSession).FindBy(InternalOrganisations.Meta.Name, "internalOrganisation"))
+                .WithEmployer(new InternalOrganisations(this.DatabaseSession).FindBy(M.InternalOrganisation.Name, "internalOrganisation"))
                 .WithFromDate(DateTime.UtcNow)
                 .Build();
 
@@ -1268,7 +1268,7 @@ namespace Allors.Domain
             Thread.CurrentPrincipal = new GenericPrincipal(new GenericIdentity("salesRep", "Forms"), new string[0]);
 
             var invoice = new SalesInvoiceBuilder(this.DatabaseSession)
-                .WithBilledFromInternalOrganisation(new InternalOrganisations(this.DatabaseSession).FindBy(InternalOrganisations.Meta.Name, "internalOrganisation"))
+                .WithBilledFromInternalOrganisation(new InternalOrganisations(this.DatabaseSession).FindBy(M.InternalOrganisation.Name, "internalOrganisation"))
                 .WithBillToCustomer(customer)
                 .WithBillToContactMechanism(contactMechanism)
                 .Build();
@@ -1279,16 +1279,16 @@ namespace Allors.Domain
 
             var acl = new AccessControlList(invoice, new Users(this.DatabaseSession).GetCurrentUser());
 
-            Assert.IsTrue(acl.CanWrite(SalesInvoices.Meta.Comment));
-            Assert.IsTrue(acl.CanRead(SalesInvoices.Meta.Comment));
-            Assert.IsTrue(acl.CanExecute(SalesInvoices.Meta.Send));
+            Assert.IsTrue(acl.CanWrite(M.SalesInvoice.Comment));
+            Assert.IsTrue(acl.CanRead(M.SalesInvoice.Comment));
+            Assert.IsTrue(acl.CanExecute(M.SalesInvoice.Send));
 
             Thread.CurrentPrincipal = new GenericPrincipal(new GenericIdentity("salesRep2", "Forms"), new string[0]);
             acl = new AccessControlList(invoice, new Users(this.DatabaseSession).GetCurrentUser());
 
-            Assert.IsTrue(acl.CanWrite(SalesInvoices.Meta.Comment));
-            Assert.IsTrue(acl.CanRead(SalesInvoices.Meta.Comment));
-            Assert.IsTrue(acl.CanExecute(SalesInvoices.Meta.Send));
+            Assert.IsTrue(acl.CanWrite(M.SalesInvoice.Comment));
+            Assert.IsTrue(acl.CanRead(M.SalesInvoice.Comment));
+            Assert.IsTrue(acl.CanExecute(M.SalesInvoice.Send));
         }
 
         [Test]
@@ -1300,7 +1300,7 @@ namespace Allors.Domain
                 .WithAddress1("Haverwerf 15")
                 .WithPostalBoundary(new PostalBoundaryBuilder(this.DatabaseSession)
                                         .WithLocality("Mechelen")
-                                        .WithCountry(new Countries(this.DatabaseSession).FindBy(Countries.Meta.IsoCode, "BE"))
+                                        .WithCountry(new Countries(this.DatabaseSession).FindBy(M.Country.IsoCode, "BE"))
                                         .Build())
 
                 .Build();
@@ -1377,20 +1377,20 @@ namespace Allors.Domain
 
             var acl = new AccessControlList(invoice, new Users(this.DatabaseSession).GetCurrentUser());
 
-            Assert.IsTrue(acl.CanWrite(SalesInvoices.Meta.Comment));
-            Assert.IsTrue(acl.CanRead(SalesInvoices.Meta.Comment));
-            Assert.IsTrue(acl.CanExecute(SalesInvoices.Meta.Send));
+            Assert.IsTrue(acl.CanWrite(M.SalesInvoice.Comment));
+            Assert.IsTrue(acl.CanRead(M.SalesInvoice.Comment));
+            Assert.IsTrue(acl.CanExecute(M.SalesInvoice.Send));
 
             Thread.CurrentPrincipal = new GenericPrincipal(new GenericIdentity("salesRep", "Forms"), new string[0]);
             acl = new AccessControlList(invoice, new Users(this.DatabaseSession).GetCurrentUser());
 
-            Assert.IsFalse(acl.HasReadOperation);
+            Assert.IsFalse(acl.CanRead);
         }
 
         [Test]
         public void GivenSalesInvoice_WhenBillToCustomerChangesValue_ThenAccessPreviousCustomerIsDenied()
         {
-            var customer = new Organisations(this.DatabaseSession).FindBy(Organisations.Meta.Name, "customer");
+            var customer = new Organisations(this.DatabaseSession).FindBy(M.Organisation.Name, "customer");
             var customer2 = new OrganisationBuilder(this.DatabaseSession).WithName("customer2").Build();
             var customerContact = new PersonBuilder(this.DatabaseSession).WithUserName("customercontact").WithLastName("customercontact").Build();
             var customerContact2 = new PersonBuilder(this.DatabaseSession).WithUserName("customercontact2").WithLastName("customercontact2").Build();
@@ -1398,14 +1398,14 @@ namespace Allors.Domain
                 .WithAddress1("Haverwerf 15")
                 .WithPostalBoundary(new PostalBoundaryBuilder(this.DatabaseSession)
                                         .WithLocality("Mechelen")
-                                        .WithCountry(new Countries(this.DatabaseSession).FindBy(Countries.Meta.IsoCode, "BE"))
+                                        .WithCountry(new Countries(this.DatabaseSession).FindBy(M.Country.IsoCode, "BE"))
                                         .Build())
 
                 .Build();
 
             new CustomerRelationshipBuilder(this.DatabaseSession)
                 .WithCustomer(customer2)
-                .WithInternalOrganisation(new InternalOrganisations(this.DatabaseSession).FindBy(InternalOrganisations.Meta.Name, "internalOrganisation"))
+                .WithInternalOrganisation(new InternalOrganisations(this.DatabaseSession).FindBy(M.InternalOrganisation.Name, "internalOrganisation"))
                 .WithFromDate(DateTime.UtcNow.Date)
                 .Build();
 
@@ -1419,7 +1419,7 @@ namespace Allors.Domain
             var invoice = new SalesInvoiceBuilder(this.DatabaseSession)
                 .WithBillToCustomer(customer)
                 .WithBillToContactMechanism(contactMechanism)
-                .WithBilledFromInternalOrganisation(new InternalOrganisations(this.DatabaseSession).FindBy(InternalOrganisations.Meta.Name, "internalOrganisation"))
+                .WithBilledFromInternalOrganisation(new InternalOrganisations(this.DatabaseSession).FindBy(M.InternalOrganisation.Name, "internalOrganisation"))
                 .Build();
 
             this.DatabaseSession.Derive(true);
@@ -1427,16 +1427,16 @@ namespace Allors.Domain
             Thread.CurrentPrincipal = new GenericPrincipal(new GenericIdentity("customercontact", "Forms"), new string[0]);
             var acl = new AccessControlList(invoice, new Users(this.DatabaseSession).GetCurrentUser());
 
-            Assert.IsFalse(acl.CanWrite(SalesInvoices.Meta.InvoiceDate));
-            Assert.IsTrue(acl.CanRead(SalesInvoices.Meta.InvoiceDate));
-            Assert.IsTrue(acl.CanRead(SalesInvoices.Meta.InvoiceNumber));
-            Assert.IsTrue(acl.CanRead(SalesInvoices.Meta.TotalExVat));
-            Assert.IsFalse(acl.CanExecute(SalesInvoices.Meta.Send));
+            Assert.IsFalse(acl.CanWrite(M.SalesInvoice.InvoiceDate));
+            Assert.IsTrue(acl.CanRead(M.SalesInvoice.InvoiceDate));
+            Assert.IsTrue(acl.CanRead(M.SalesInvoice.InvoiceNumber));
+            Assert.IsTrue(acl.CanRead(M.SalesInvoice.TotalExVat));
+            Assert.IsFalse(acl.CanExecute(M.SalesInvoice.Send));
 
             Thread.CurrentPrincipal = new GenericPrincipal(new GenericIdentity("customercontact2", "Forms"), new string[0]);
             acl = new AccessControlList(invoice, new Users(this.DatabaseSession).GetCurrentUser());
 
-            Assert.IsFalse(acl.HasReadOperation);
+            Assert.IsFalse(acl.CanRead);
 
             invoice.BillToCustomer = customer2;
 
@@ -1445,29 +1445,29 @@ namespace Allors.Domain
             Thread.CurrentPrincipal = new GenericPrincipal(new GenericIdentity("customercontact", "Forms"), new string[0]);
             acl = new AccessControlList(invoice, new Users(this.DatabaseSession).GetCurrentUser());
 
-            Assert.IsFalse(acl.HasReadOperation);
+            Assert.IsFalse(acl.CanRead);
 
             Thread.CurrentPrincipal = new GenericPrincipal(new GenericIdentity("customercontact2", "Forms"), new string[0]);
             acl = new AccessControlList(invoice, new Users(this.DatabaseSession).GetCurrentUser());
 
-            Assert.IsFalse(acl.CanWrite(SalesInvoices.Meta.InvoiceDate));
-            Assert.IsTrue(acl.CanRead(SalesInvoices.Meta.InvoiceDate));
-            Assert.IsTrue(acl.CanRead(SalesInvoices.Meta.InvoiceNumber));
-            Assert.IsTrue(acl.CanRead(SalesInvoices.Meta.TotalExVat));
-            Assert.IsFalse(acl.CanExecute(SalesInvoices.Meta.Send));
+            Assert.IsFalse(acl.CanWrite(M.SalesInvoice.InvoiceDate));
+            Assert.IsTrue(acl.CanRead(M.SalesInvoice.InvoiceDate));
+            Assert.IsTrue(acl.CanRead(M.SalesInvoice.InvoiceNumber));
+            Assert.IsTrue(acl.CanRead(M.SalesInvoice.TotalExVat));
+            Assert.IsFalse(acl.CanExecute(M.SalesInvoice.Send));
         }
 
         [Test]
         public void GivenSalesInvoiceWithShippingAndHandlingAmount_WhenDeriving_ThenInvoiceTotalsMustIncludeShippingAndHandlingAmount()
         {
-            var euro = new Currencies(this.DatabaseSession).FindBy(Currencies.Meta.IsoCode, "EUR");
+            var euro = new Currencies(this.DatabaseSession).FindBy(M.Currency.IsoCode, "EUR");
             var vatRate21 = new VatRateBuilder(this.DatabaseSession).WithRate(21).Build();
             var adjustment = new ShippingAndHandlingChargeBuilder(this.DatabaseSession).WithAmount(7.5M).WithVatRate(vatRate21).Build();
             var contactMechanism = new PostalAddressBuilder(this.DatabaseSession)
                 .WithAddress1("Haverwerf 15")
                 .WithPostalBoundary(new PostalBoundaryBuilder(this.DatabaseSession)
                                         .WithLocality("Mechelen")
-                                        .WithCountry(new Countries(this.DatabaseSession).FindBy(Countries.Meta.IsoCode, "BE"))
+                                        .WithCountry(new Countries(this.DatabaseSession).FindBy(M.Country.IsoCode, "BE"))
                                         .Build())
 
                 .Build();
@@ -1480,7 +1480,7 @@ namespace Allors.Domain
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.DatabaseSession).Piece)
                 .Build();
 
-            var internalOrganisation = new InternalOrganisations(this.DatabaseSession).FindBy(InternalOrganisations.Meta.Name, "internalOrganisation");
+            var internalOrganisation = new InternalOrganisations(this.DatabaseSession).FindBy(M.InternalOrganisation.Name, "internalOrganisation");
             internalOrganisation.PreferredCurrency = euro;
 
             var invoice = new SalesInvoiceBuilder(this.DatabaseSession)
@@ -1511,14 +1511,14 @@ namespace Allors.Domain
         [Test]
         public void GivenSalesInvoiceWithShippingAndHandlingPercentage_WhenDeriving_ThenSalesInvoiceTotalsMustIncludeShippingAndHandlingAmount()
         {
-            var euro = new Currencies(this.DatabaseSession).FindBy(Currencies.Meta.IsoCode, "EUR");
+            var euro = new Currencies(this.DatabaseSession).FindBy(M.Currency.IsoCode, "EUR");
             var vatRate21 = new VatRateBuilder(this.DatabaseSession).WithRate(21).Build();
             var adjustment = new ShippingAndHandlingChargeBuilder(this.DatabaseSession).WithPercentage(5).WithVatRate(vatRate21).Build();
             var contactMechanism = new PostalAddressBuilder(this.DatabaseSession)
                 .WithAddress1("Haverwerf 15")
                 .WithPostalBoundary(new PostalBoundaryBuilder(this.DatabaseSession)
                                         .WithLocality("Mechelen")
-                                        .WithCountry(new Countries(this.DatabaseSession).FindBy(Countries.Meta.IsoCode, "BE"))
+                                        .WithCountry(new Countries(this.DatabaseSession).FindBy(M.Country.IsoCode, "BE"))
                                         .Build())
 
                 .Build();
@@ -1531,7 +1531,7 @@ namespace Allors.Domain
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.DatabaseSession).Piece)
                 .Build();
 
-            var internalOrganisation = new InternalOrganisations(this.DatabaseSession).FindBy(InternalOrganisations.Meta.Name, "internalOrganisation");
+            var internalOrganisation = new InternalOrganisations(this.DatabaseSession).FindBy(M.InternalOrganisation.Name, "internalOrganisation");
             internalOrganisation.PreferredCurrency = euro;
 
             var invoice = new SalesInvoiceBuilder(this.DatabaseSession)
@@ -1562,14 +1562,14 @@ namespace Allors.Domain
         [Test]
         public void GivenSalesInvoiceWithFeeAmount_WhenDeriving_ThenSalesInvoiceTotalsMustIncludeFeeAmount()
         {
-            var euro = new Currencies(this.DatabaseSession).FindBy(Currencies.Meta.IsoCode, "EUR");
+            var euro = new Currencies(this.DatabaseSession).FindBy(M.Currency.IsoCode, "EUR");
             var vatRate21 = new VatRateBuilder(this.DatabaseSession).WithRate(21).Build();
             var adjustment = new FeeBuilder(this.DatabaseSession).WithAmount(7.5M).WithVatRate(vatRate21).Build();
             var contactMechanism = new PostalAddressBuilder(this.DatabaseSession)
                 .WithAddress1("Haverwerf 15")
                 .WithPostalBoundary(new PostalBoundaryBuilder(this.DatabaseSession)
                                         .WithLocality("Mechelen")
-                                        .WithCountry(new Countries(this.DatabaseSession).FindBy(Countries.Meta.IsoCode, "BE"))
+                                        .WithCountry(new Countries(this.DatabaseSession).FindBy(M.Country.IsoCode, "BE"))
                                         .Build())
 
                 .Build();
@@ -1582,7 +1582,7 @@ namespace Allors.Domain
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.DatabaseSession).Piece)
                 .Build();
 
-            var internalOrganisation = new InternalOrganisations(this.DatabaseSession).FindBy(InternalOrganisations.Meta.Name, "internalOrganisation");
+            var internalOrganisation = new InternalOrganisations(this.DatabaseSession).FindBy(M.InternalOrganisation.Name, "internalOrganisation");
             internalOrganisation.PreferredCurrency = euro;
 
             var invoice = new SalesInvoiceBuilder(this.DatabaseSession)
@@ -1613,14 +1613,14 @@ namespace Allors.Domain
         [Test]
         public void GivenSalesInvoiceWithFeePercentage_WhenDeriving_ThenSalesInvoiceTotalsMustIncludeFeeAmount()
         {
-            var euro = new Currencies(this.DatabaseSession).FindBy(Currencies.Meta.IsoCode, "EUR");
+            var euro = new Currencies(this.DatabaseSession).FindBy(M.Currency.IsoCode, "EUR");
             var vatRate21 = new VatRateBuilder(this.DatabaseSession).WithRate(21).Build();
             var adjustment = new FeeBuilder(this.DatabaseSession).WithPercentage(5).WithVatRate(vatRate21).Build();
             var contactMechanism = new PostalAddressBuilder(this.DatabaseSession)
                 .WithAddress1("Haverwerf 15")
                 .WithPostalBoundary(new PostalBoundaryBuilder(this.DatabaseSession)
                                         .WithLocality("Mechelen")
-                                        .WithCountry(new Countries(this.DatabaseSession).FindBy(Countries.Meta.IsoCode, "BE"))
+                                        .WithCountry(new Countries(this.DatabaseSession).FindBy(M.Country.IsoCode, "BE"))
                                         .Build())
 
                 .Build();
@@ -1633,7 +1633,7 @@ namespace Allors.Domain
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.DatabaseSession).Piece)
                 .Build();
 
-            var internalOrganisation = new InternalOrganisations(this.DatabaseSession).FindBy(InternalOrganisations.Meta.Name, "internalOrganisation");
+            var internalOrganisation = new InternalOrganisations(this.DatabaseSession).FindBy(M.InternalOrganisation.Name, "internalOrganisation");
             internalOrganisation.PreferredCurrency = euro;
 
             var invoice = new SalesInvoiceBuilder(this.DatabaseSession)
@@ -1669,7 +1669,7 @@ namespace Allors.Domain
                 .WithAddress1("Haverwerf 15")
                 .WithPostalBoundary(new PostalBoundaryBuilder(this.DatabaseSession)
                                         .WithLocality("Mechelen")
-                                        .WithCountry(new Countries(this.DatabaseSession).FindBy(Countries.Meta.IsoCode, "BE"))
+                                        .WithCountry(new Countries(this.DatabaseSession).FindBy(M.Country.IsoCode, "BE"))
                                         .Build())
 
                 .Build();
@@ -1697,7 +1697,7 @@ namespace Allors.Domain
                 .WithAddress1("Haverwerf 15")
                 .WithPostalBoundary(new PostalBoundaryBuilder(this.DatabaseSession)
                                         .WithLocality("Mechelen")
-                                        .WithCountry(new Countries(this.DatabaseSession).FindBy(Countries.Meta.IsoCode, "BE"))
+                                        .WithCountry(new Countries(this.DatabaseSession).FindBy(M.Country.IsoCode, "BE"))
                                         .Build())
 
                 .Build();
@@ -1732,7 +1732,7 @@ namespace Allors.Domain
                 .WithAddress1("Haverwerf 15")
                 .WithPostalBoundary(new PostalBoundaryBuilder(this.DatabaseSession)
                                         .WithLocality("Mechelen")
-                                        .WithCountry(new Countries(this.DatabaseSession).FindBy(Countries.Meta.IsoCode, "BE"))
+                                        .WithCountry(new Countries(this.DatabaseSession).FindBy(M.Country.IsoCode, "BE"))
                                         .Build())
 
                 .Build();
@@ -1841,7 +1841,7 @@ namespace Allors.Domain
                 .WithAddress1("Haverwerf 15")
                 .WithPostalBoundary(new PostalBoundaryBuilder(this.DatabaseSession)
                                         .WithLocality("Mechelen")
-                                        .WithCountry(new Countries(this.DatabaseSession).FindBy(Countries.Meta.IsoCode, "BE"))
+                                        .WithCountry(new Countries(this.DatabaseSession).FindBy(M.Country.IsoCode, "BE"))
                                         .Build())
 
                 .Build();
@@ -1886,7 +1886,7 @@ namespace Allors.Domain
                 .WithAddress1("Haverwerf 15")
                 .WithPostalBoundary(new PostalBoundaryBuilder(this.DatabaseSession)
                                         .WithLocality("Mechelen")
-                                        .WithCountry(new Countries(this.DatabaseSession).FindBy(Countries.Meta.IsoCode, "BE"))
+                                        .WithCountry(new Countries(this.DatabaseSession).FindBy(M.Country.IsoCode, "BE"))
                                         .Build())
 
                 .Build();
@@ -1931,7 +1931,7 @@ namespace Allors.Domain
                 .WithAddress1("Haverwerf 15")
                 .WithPostalBoundary(new PostalBoundaryBuilder(this.DatabaseSession)
                                         .WithLocality("Mechelen")
-                                        .WithCountry(new Countries(this.DatabaseSession).FindBy(Countries.Meta.IsoCode, "BE"))
+                                        .WithCountry(new Countries(this.DatabaseSession).FindBy(M.Country.IsoCode, "BE"))
                                         .Build())
 
                 .Build();
@@ -1975,7 +1975,7 @@ namespace Allors.Domain
                 .WithAddress1("Haverwerf 15")
                 .WithPostalBoundary(new PostalBoundaryBuilder(this.DatabaseSession)
                                         .WithLocality("Mechelen")
-                                        .WithCountry(new Countries(this.DatabaseSession).FindBy(Countries.Meta.IsoCode, "BE"))
+                                        .WithCountry(new Countries(this.DatabaseSession).FindBy(M.Country.IsoCode, "BE"))
                                         .Build())
 
                 .Build();
@@ -2033,7 +2033,7 @@ namespace Allors.Domain
 
             this.DatabaseSession.Derive(true);
 
-            var euro = new Currencies(this.DatabaseSession).FindBy(Currencies.Meta.IsoCode, "EUR");
+            var euro = new Currencies(this.DatabaseSession).FindBy(M.Currency.IsoCode, "EUR");
             var vatRate21 = new VatRateBuilder(this.DatabaseSession).WithRate(21).Build();
 
             var good1 = new GoodBuilder(this.DatabaseSession)
@@ -2054,7 +2054,7 @@ namespace Allors.Domain
                 .WithPrimaryProductCategory(cat2)
                 .Build();
 
-            var internalOrganisation = new InternalOrganisations(this.DatabaseSession).FindBy(InternalOrganisations.Meta.Name, "internalOrganisation");
+            var internalOrganisation = new InternalOrganisations(this.DatabaseSession).FindBy(M.InternalOrganisation.Name, "internalOrganisation");
             internalOrganisation.PreferredCurrency = euro;
 
             var invoice1 = new SalesInvoiceBuilder(this.DatabaseSession)
@@ -2095,77 +2095,77 @@ namespace Allors.Domain
             Assert.AreEqual(2, customer1ProductRevenues.Count);
 
             customer1ProductRevenues = customer1.PartyProductRevenuesWhereParty;
-            customer1ProductRevenues.Filter.AddEquals(PartyProductRevenues.Meta.Product, good1);
+            customer1ProductRevenues.Filter.AddEquals(M.PartyProductRevenue.Product, good1);
             var customer1Good1Revenue = customer1ProductRevenues.First;
 
             customer1ProductRevenues = customer1.PartyProductRevenuesWhereParty;
-            customer1ProductRevenues.Filter.AddEquals(PartyProductRevenues.Meta.Product, good2);
+            customer1ProductRevenues.Filter.AddEquals(M.PartyProductRevenue.Product, good2);
             var customer1Good2Revenue = customer1ProductRevenues.First;
 
             var customer1ProductCategoryRevenues = customer1.PartyProductCategoryRevenuesWhereParty;
             Assert.AreEqual(3, customer1ProductCategoryRevenues.Count);
 
-            customer1ProductCategoryRevenues.Filter.AddEquals(PartyProductCategoryRevenues.Meta.ProductCategory, cat1);
+            customer1ProductCategoryRevenues.Filter.AddEquals(M.PartyProductCategoryRevenue.ProductCategory, cat1);
             var customer1Cat1Revenue = customer1ProductCategoryRevenues.First;
 
             customer1ProductCategoryRevenues = customer1.PartyProductCategoryRevenuesWhereParty;
-            customer1ProductCategoryRevenues.Filter.AddEquals(PartyProductCategoryRevenues.Meta.ProductCategory, cat2);
+            customer1ProductCategoryRevenues.Filter.AddEquals(M.PartyProductCategoryRevenue.ProductCategory, cat2);
             var customer1Cat2Revenue = customer1ProductCategoryRevenues.First;
 
             customer1ProductCategoryRevenues = customer1.PartyProductCategoryRevenuesWhereParty;
-            customer1ProductCategoryRevenues.Filter.AddEquals(PartyProductCategoryRevenues.Meta.ProductCategory, catMain);
+            customer1ProductCategoryRevenues.Filter.AddEquals(M.PartyProductCategoryRevenue.ProductCategory, catMain);
             var customer1CatMainRevenue = customer1ProductCategoryRevenues.First;
 
             var salesRep1Customer1Revenues = salesRep1.SalesRepPartyRevenuesWhereSalesRep;
-            salesRep1Customer1Revenues.Filter.AddEquals(SalesRepPartyRevenues.Meta.Party, customer1);
+            salesRep1Customer1Revenues.Filter.AddEquals(M.SalesRepPartyRevenue.Party, customer1);
             var salesRep1Customer1Revenue = salesRep1Customer1Revenues.First;
 
             var salesRep2Customer1Revenues = salesRep2.SalesRepPartyRevenuesWhereSalesRep;
-            salesRep2Customer1Revenues.Filter.AddEquals(SalesRepPartyRevenues.Meta.Party, customer1);
+            salesRep2Customer1Revenues.Filter.AddEquals(M.SalesRepPartyRevenue.Party, customer1);
             var salesRep2Customer1Revenue = salesRep2Customer1Revenues.First;
 
             var salesRep1Customer1ProductCategoryRevenues = salesRep1.SalesRepPartyProductCategoryRevenuesWhereSalesRep;
             Assert.AreEqual(2, salesRep1Customer1ProductCategoryRevenues.Count);
 
-            salesRep1Customer1ProductCategoryRevenues.Filter.AddEquals(SalesRepPartyProductCategoryRevenues.Meta.ProductCategory, cat1);
-            salesRep1Customer1ProductCategoryRevenues.Filter.AddEquals(SalesRepPartyProductCategoryRevenues.Meta.Party, customer1);
+            salesRep1Customer1ProductCategoryRevenues.Filter.AddEquals(M.SalesRepPartyProductCategoryRevenue.ProductCategory, cat1);
+            salesRep1Customer1ProductCategoryRevenues.Filter.AddEquals(M.SalesRepPartyProductCategoryRevenue.Party, customer1);
             var salesRep1Customer1Cat1Revenue = salesRep1Customer1ProductCategoryRevenues.First;
 
             salesRep1Customer1ProductCategoryRevenues = salesRep1.SalesRepPartyProductCategoryRevenuesWhereSalesRep;
-            salesRep1Customer1ProductCategoryRevenues.Filter.AddEquals(SalesRepPartyProductCategoryRevenues.Meta.ProductCategory, catMain);
-            salesRep1Customer1ProductCategoryRevenues.Filter.AddEquals(SalesRepPartyProductCategoryRevenues.Meta.Party, customer1);
+            salesRep1Customer1ProductCategoryRevenues.Filter.AddEquals(M.SalesRepPartyProductCategoryRevenue.ProductCategory, catMain);
+            salesRep1Customer1ProductCategoryRevenues.Filter.AddEquals(M.SalesRepPartyProductCategoryRevenue.Party, customer1);
             var salesRep1Customer1CatMainRevenue = salesRep1Customer1ProductCategoryRevenues.First;
 
             var salesRep2Customer1ProductCategoryRevenues = salesRep2.SalesRepPartyProductCategoryRevenuesWhereSalesRep;
             Assert.AreEqual(2, salesRep2Customer1ProductCategoryRevenues.Count);
 
-            salesRep2Customer1ProductCategoryRevenues.Filter.AddEquals(SalesRepPartyProductCategoryRevenues.Meta.ProductCategory, cat2);
-            salesRep2Customer1ProductCategoryRevenues.Filter.AddEquals(SalesRepPartyProductCategoryRevenues.Meta.Party, customer1);
+            salesRep2Customer1ProductCategoryRevenues.Filter.AddEquals(M.SalesRepPartyProductCategoryRevenue.ProductCategory, cat2);
+            salesRep2Customer1ProductCategoryRevenues.Filter.AddEquals(M.SalesRepPartyProductCategoryRevenue.Party, customer1);
             var salesRep2Customer1Cat2Revenue = salesRep2Customer1ProductCategoryRevenues.First;
 
             salesRep2Customer1ProductCategoryRevenues = salesRep2.SalesRepPartyProductCategoryRevenuesWhereSalesRep;
-            salesRep2Customer1ProductCategoryRevenues.Filter.AddEquals(SalesRepPartyProductCategoryRevenues.Meta.Party, customer1);
-            salesRep2Customer1ProductCategoryRevenues.Filter.AddEquals(SalesRepPartyProductCategoryRevenues.Meta.ProductCategory, catMain);
+            salesRep2Customer1ProductCategoryRevenues.Filter.AddEquals(M.SalesRepPartyProductCategoryRevenue.Party, customer1);
+            salesRep2Customer1ProductCategoryRevenues.Filter.AddEquals(M.SalesRepPartyProductCategoryRevenue.ProductCategory, catMain);
             var salesRep2Customer1CatMainRevenue = salesRep2Customer1ProductCategoryRevenues.First;
 
             var salesRep1ProductCategoryRevenues = salesRep1.SalesRepProductCategoryRevenuesWhereSalesRep;
             Assert.AreEqual(2, salesRep1ProductCategoryRevenues.Count);
 
-            salesRep1ProductCategoryRevenues.Filter.AddEquals(SalesRepProductCategoryRevenues.Meta.ProductCategory, cat1);
+            salesRep1ProductCategoryRevenues.Filter.AddEquals(M.SalesRepProductCategoryRevenue.ProductCategory, cat1);
             var salesRep1Cat1Revenue = salesRep1ProductCategoryRevenues.First;
 
             salesRep1ProductCategoryRevenues = salesRep1.SalesRepProductCategoryRevenuesWhereSalesRep;
-            salesRep1ProductCategoryRevenues.Filter.AddEquals(SalesRepProductCategoryRevenues.Meta.ProductCategory, catMain);
+            salesRep1ProductCategoryRevenues.Filter.AddEquals(M.SalesRepProductCategoryRevenue.ProductCategory, catMain);
             var salesRep1CatMainRevenue = salesRep1ProductCategoryRevenues.First;
 
             var salesRep2ProductCategoryRevenues = salesRep2.SalesRepProductCategoryRevenuesWhereSalesRep;
             Assert.AreEqual(2, salesRep2ProductCategoryRevenues.Count);
 
-            salesRep2ProductCategoryRevenues.Filter.AddEquals(SalesRepProductCategoryRevenues.Meta.ProductCategory, cat2);
+            salesRep2ProductCategoryRevenues.Filter.AddEquals(M.SalesRepProductCategoryRevenue.ProductCategory, cat2);
             var salesRep2Cat2Revenue = salesRep2ProductCategoryRevenues.First;
 
             salesRep2ProductCategoryRevenues = salesRep2.SalesRepProductCategoryRevenuesWhereSalesRep;
-            salesRep2ProductCategoryRevenues.Filter.AddEquals(SalesRepProductCategoryRevenues.Meta.ProductCategory, catMain);
+            salesRep2ProductCategoryRevenues.Filter.AddEquals(M.SalesRepProductCategoryRevenue.ProductCategory, catMain);
             var salesRep2CatMainRevenue = salesRep2ProductCategoryRevenues.First;
 
             this.DatabaseSession.Derive(true);
@@ -2223,59 +2223,59 @@ namespace Allors.Domain
             var customer2ProductRevenues = customer2.PartyProductRevenuesWhereParty;
             Assert.AreEqual(2, customer2ProductRevenues.Count);
 
-            customer2ProductRevenues.Filter.AddEquals(PartyProductRevenues.Meta.Product, good1);
+            customer2ProductRevenues.Filter.AddEquals(M.PartyProductRevenue.Product, good1);
             var customer2Good1Revenue = customer2ProductRevenues.First;
 
             customer2ProductRevenues = customer2.PartyProductRevenuesWhereParty;
-            customer2ProductRevenues.Filter.AddEquals(PartyProductRevenues.Meta.Product, good2);
+            customer2ProductRevenues.Filter.AddEquals(M.PartyProductRevenue.Product, good2);
             var customer2Good2Revenue = customer2ProductRevenues.First;
 
             var customer2ProductCategoryRevenues = customer2.PartyProductCategoryRevenuesWhereParty;
             Assert.AreEqual(3, customer2ProductCategoryRevenues.Count);
 
-            customer2ProductCategoryRevenues.Filter.AddEquals(PartyProductCategoryRevenues.Meta.ProductCategory, cat1);
+            customer2ProductCategoryRevenues.Filter.AddEquals(M.PartyProductCategoryRevenue.ProductCategory, cat1);
             var customer2Cat1Revenue = customer2ProductCategoryRevenues.First;
 
             customer2ProductCategoryRevenues = customer2.PartyProductCategoryRevenuesWhereParty;
-            customer2ProductCategoryRevenues.Filter.AddEquals(PartyProductCategoryRevenues.Meta.ProductCategory, cat2);
+            customer2ProductCategoryRevenues.Filter.AddEquals(M.PartyProductCategoryRevenue.ProductCategory, cat2);
             var customer2Cat2Revenue = customer2ProductCategoryRevenues.First;
 
             customer2ProductCategoryRevenues = customer2.PartyProductCategoryRevenuesWhereParty;
-            customer2ProductCategoryRevenues.Filter.AddEquals(PartyProductCategoryRevenues.Meta.ProductCategory, catMain);
+            customer2ProductCategoryRevenues.Filter.AddEquals(M.PartyProductCategoryRevenue.ProductCategory, catMain);
             var customer2CatMainRevenue = customer2ProductCategoryRevenues.First;
 
             var salesRep1Customer2Revenues = salesRep1.SalesRepPartyRevenuesWhereSalesRep;
-            salesRep1Customer2Revenues.Filter.AddEquals(SalesRepPartyRevenues.Meta.Party, customer2);
+            salesRep1Customer2Revenues.Filter.AddEquals(M.SalesRepPartyRevenue.Party, customer2);
             var salesRep1Customer2Revenue = salesRep1Customer2Revenues.First;
 
             var salesRep2Customer2Revenues = salesRep2.SalesRepPartyRevenuesWhereSalesRep;
-            salesRep2Customer2Revenues.Filter.AddEquals(SalesRepPartyRevenues.Meta.Party, customer2);
+            salesRep2Customer2Revenues.Filter.AddEquals(M.SalesRepPartyRevenue.Party, customer2);
             var salesRep2Customer2Revenue = salesRep2Customer2Revenues.First;
 
             var salesRep1Customer2ProductCategoryRevenues = salesRep1.SalesRepPartyProductCategoryRevenuesWhereSalesRep;
-            salesRep1Customer2ProductCategoryRevenues.Filter.AddEquals(SalesRepPartyProductCategoryRevenues.Meta.Party, customer2);
+            salesRep1Customer2ProductCategoryRevenues.Filter.AddEquals(M.SalesRepPartyProductCategoryRevenue.Party, customer2);
             Assert.AreEqual(2, salesRep1Customer2ProductCategoryRevenues.Count);
 
-            salesRep1Customer2ProductCategoryRevenues.Filter.AddEquals(SalesRepPartyProductCategoryRevenues.Meta.ProductCategory, cat1);
-            salesRep1Customer2ProductCategoryRevenues.Filter.AddEquals(SalesRepPartyProductCategoryRevenues.Meta.Party, customer2);
+            salesRep1Customer2ProductCategoryRevenues.Filter.AddEquals(M.SalesRepPartyProductCategoryRevenue.ProductCategory, cat1);
+            salesRep1Customer2ProductCategoryRevenues.Filter.AddEquals(M.SalesRepPartyProductCategoryRevenue.Party, customer2);
             var salesRep1Customer2Cat1Revenue = salesRep1Customer2ProductCategoryRevenues.First;
 
             salesRep1Customer2ProductCategoryRevenues = salesRep1.SalesRepPartyProductCategoryRevenuesWhereSalesRep;
-            salesRep1Customer2ProductCategoryRevenues.Filter.AddEquals(SalesRepPartyProductCategoryRevenues.Meta.ProductCategory, catMain);
-            salesRep1Customer2ProductCategoryRevenues.Filter.AddEquals(SalesRepPartyProductCategoryRevenues.Meta.Party, customer2);
+            salesRep1Customer2ProductCategoryRevenues.Filter.AddEquals(M.SalesRepPartyProductCategoryRevenue.ProductCategory, catMain);
+            salesRep1Customer2ProductCategoryRevenues.Filter.AddEquals(M.SalesRepPartyProductCategoryRevenue.Party, customer2);
             var salesRep1Customer2CatMainRevenue = salesRep1Customer2ProductCategoryRevenues.First;
 
             var salesRep2Customer2ProductCategoryRevenues = salesRep2.SalesRepPartyProductCategoryRevenuesWhereSalesRep;
-            salesRep2Customer2ProductCategoryRevenues.Filter.AddEquals(SalesRepPartyProductCategoryRevenues.Meta.Party, customer2);
+            salesRep2Customer2ProductCategoryRevenues.Filter.AddEquals(M.SalesRepPartyProductCategoryRevenue.Party, customer2);
             Assert.AreEqual(2, salesRep2Customer2ProductCategoryRevenues.Count);
 
-            salesRep2Customer2ProductCategoryRevenues.Filter.AddEquals(SalesRepPartyProductCategoryRevenues.Meta.ProductCategory, cat2);
-            salesRep2Customer2ProductCategoryRevenues.Filter.AddEquals(SalesRepPartyProductCategoryRevenues.Meta.Party, customer2);
+            salesRep2Customer2ProductCategoryRevenues.Filter.AddEquals(M.SalesRepPartyProductCategoryRevenue.ProductCategory, cat2);
+            salesRep2Customer2ProductCategoryRevenues.Filter.AddEquals(M.SalesRepPartyProductCategoryRevenue.Party, customer2);
             var salesRep2Customer2Cat2Revenue = salesRep2Customer2ProductCategoryRevenues.First;
 
             salesRep2Customer2ProductCategoryRevenues = salesRep2.SalesRepPartyProductCategoryRevenuesWhereSalesRep;
-            salesRep2Customer2ProductCategoryRevenues.Filter.AddEquals(SalesRepPartyProductCategoryRevenues.Meta.Party, customer2);
-            salesRep2Customer2ProductCategoryRevenues.Filter.AddEquals(SalesRepPartyProductCategoryRevenues.Meta.ProductCategory, catMain);
+            salesRep2Customer2ProductCategoryRevenues.Filter.AddEquals(M.SalesRepPartyProductCategoryRevenue.Party, customer2);
+            salesRep2Customer2ProductCategoryRevenues.Filter.AddEquals(M.SalesRepPartyProductCategoryRevenue.ProductCategory, catMain);
             var salesRep2Customer2CatMainRevenue = salesRep2Customer2ProductCategoryRevenues.First;
 
             Assert.AreEqual(165, internalOrganisationRevenue.Revenue);
@@ -2309,13 +2309,13 @@ namespace Allors.Domain
         [Test]
         public void GivenSalesInvoice_WhenWrittenOff_ThenRevenueIsUpdated()
         {
-            var euro = new Currencies(this.DatabaseSession).FindBy(Currencies.Meta.IsoCode, "EUR");
+            var euro = new Currencies(this.DatabaseSession).FindBy(M.Currency.IsoCode, "EUR");
             var vatRate21 = new VatRateBuilder(this.DatabaseSession).WithRate(21).Build();
             var contactMechanism = new PostalAddressBuilder(this.DatabaseSession)
                 .WithAddress1("Haverwerf 15")
                 .WithPostalBoundary(new PostalBoundaryBuilder(this.DatabaseSession)
                                         .WithLocality("Mechelen")
-                                        .WithCountry(new Countries(this.DatabaseSession).FindBy(Countries.Meta.IsoCode, "BE"))
+                                        .WithCountry(new Countries(this.DatabaseSession).FindBy(M.Country.IsoCode, "BE"))
                                         .Build())
 
                 .Build();
@@ -2328,7 +2328,7 @@ namespace Allors.Domain
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.DatabaseSession).Piece)
                 .Build();
 
-            var internalOrganisation = new InternalOrganisations(this.DatabaseSession).FindBy(InternalOrganisations.Meta.Name, "internalOrganisation");
+            var internalOrganisation = new InternalOrganisations(this.DatabaseSession).FindBy(M.InternalOrganisation.Name, "internalOrganisation");
             internalOrganisation.PreferredCurrency = euro;
 
             var customer = new OrganisationBuilder(this.DatabaseSession).WithName("customer").Build();

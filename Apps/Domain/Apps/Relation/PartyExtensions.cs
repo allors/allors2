@@ -23,6 +23,7 @@ namespace Allors.Domain
     using System;
     using System.Collections.Generic;
     using System.Globalization;
+    using Meta;
 
     public static class PartyExtensions
     {
@@ -92,9 +93,9 @@ namespace Allors.Domain
         public static CustomerShipment AppsGetPendingCustomerShipmentForStore(this Party party, PostalAddress address, Store store, ShipmentMethod shipmentMethod)
         {
             var shipments = party.ShipmentsWhereShipToParty;
-            shipments.Filter.AddEquals(Shipments.Meta.ShipToAddress, address);
-            shipments.Filter.AddEquals(Shipments.Meta.Store, store);
-            shipments.Filter.AddEquals(Shipments.Meta.ShipmentMethod, shipmentMethod);
+            shipments.Filter.AddEquals(M.Shipment.ShipToAddress, address);
+            shipments.Filter.AddEquals(M.Shipment.Store, store);
+            shipments.Filter.AddEquals(M.Shipment.ShipmentMethod, shipmentMethod);
 
             foreach (CustomerShipment shipment in shipments)
             {

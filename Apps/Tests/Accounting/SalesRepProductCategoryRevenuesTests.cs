@@ -21,6 +21,7 @@
 namespace Allors.Domain
 {
     using System;
+    using Meta;
     using NUnit.Framework;
 
     [TestFixture]
@@ -50,7 +51,7 @@ namespace Allors.Domain
 
             this.DatabaseSession.Derive(true);
 
-            var euro = new Currencies(this.DatabaseSession).FindBy(Currencies.Meta.IsoCode, "EUR");
+            var euro = new Currencies(this.DatabaseSession).FindBy(M.Currency.IsoCode, "EUR");
             var vatRate21 = new VatRateBuilder(this.DatabaseSession).WithRate(21).Build();
 
             var good1 = new GoodBuilder(this.DatabaseSession)
@@ -71,7 +72,7 @@ namespace Allors.Domain
                 .WithPrimaryProductCategory(cat2)
                 .Build();
 
-            var internalOrganisation = new InternalOrganisations(this.DatabaseSession).FindBy(InternalOrganisations.Meta.Name, "internalOrganisation");
+            var internalOrganisation = new InternalOrganisations(this.DatabaseSession).FindBy(M.InternalOrganisation.Name, "internalOrganisation");
             internalOrganisation.PreferredCurrency = euro;
 
             new CustomerRelationshipBuilder(this.DatabaseSession).WithFromDate(DateTime.UtcNow).WithCustomer(customer1).WithInternalOrganisation(internalOrganisation).Build();
@@ -103,21 +104,21 @@ namespace Allors.Domain
             var salesRep1ProductCategoryRevenues = salesRep1.SalesRepProductCategoryRevenuesWhereSalesRep;
             Assert.AreEqual(2, salesRep1ProductCategoryRevenues.Count);
 
-            salesRep1ProductCategoryRevenues.Filter.AddEquals(SalesRepProductCategoryRevenues.Meta.ProductCategory, cat1);
+            salesRep1ProductCategoryRevenues.Filter.AddEquals(M.SalesRepProductCategoryRevenue.ProductCategory, cat1);
             var salesRep1Cat1Revenue = salesRep1ProductCategoryRevenues.First;
 
             salesRep1ProductCategoryRevenues = salesRep1.SalesRepProductCategoryRevenuesWhereSalesRep;
-            salesRep1ProductCategoryRevenues.Filter.AddEquals(SalesRepProductCategoryRevenues.Meta.ProductCategory, catMain);
+            salesRep1ProductCategoryRevenues.Filter.AddEquals(M.SalesRepProductCategoryRevenue.ProductCategory, catMain);
             var salesRep1CatMainRevenue = salesRep1ProductCategoryRevenues.First;
 
             var salesRep2ProductCategoryRevenues = salesRep2.SalesRepProductCategoryRevenuesWhereSalesRep;
             Assert.AreEqual(2, salesRep2ProductCategoryRevenues.Count);
 
-            salesRep2ProductCategoryRevenues.Filter.AddEquals(SalesRepProductCategoryRevenues.Meta.ProductCategory, cat2);
+            salesRep2ProductCategoryRevenues.Filter.AddEquals(M.SalesRepProductCategoryRevenue.ProductCategory, cat2);
             var salesRep2Cat2Revenue = salesRep2ProductCategoryRevenues.First;
 
             salesRep2ProductCategoryRevenues = salesRep2.SalesRepProductCategoryRevenuesWhereSalesRep;
-            salesRep2ProductCategoryRevenues.Filter.AddEquals(SalesRepProductCategoryRevenues.Meta.ProductCategory, catMain);
+            salesRep2ProductCategoryRevenues.Filter.AddEquals(M.SalesRepProductCategoryRevenue.ProductCategory, catMain);
             var salesRep2CatMainRevenue = salesRep2ProductCategoryRevenues.First;
 
             Assert.AreEqual(90, salesRep1Cat1Revenue.Revenue);

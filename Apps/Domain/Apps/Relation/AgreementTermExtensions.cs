@@ -20,13 +20,15 @@
 
 namespace Allors.Domain
 {
+    using Meta;
+
     public static partial class AgreementTermExtensions
     {
         public static void AppsOnDerive(this AgreementTerm @this, ObjectOnDerive method)
         {
             var derivation = method.Derivation;
 
-            derivation.Validation.AssertAtLeastOne(@this, AgreementTerms.Meta.TermType, AgreementTerms.Meta.Description);
+            derivation.Validation.AssertAtLeastOne(@this, M.AgreementTerm.TermType, M.AgreementTerm.Description);
         }
     }
 }

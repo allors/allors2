@@ -20,13 +20,15 @@
 
 namespace Allors.Domain
 {
+    using Meta;
+
     public partial class MaterialsUsage
     {
         public void AppsOnDerive(ObjectOnDerive method)
         {
             var derivation = method.Derivation;
 
-            derivation.Validation.AssertAtLeastOne(this, MaterialsUsages.Meta.WorkEffort, MaterialsUsages.Meta.EngagementItem);
+            derivation.Validation.AssertAtLeastOne(this, M.MaterialsUsage.WorkEffort, M.MaterialsUsage.EngagementItem);
         }
     }
 }

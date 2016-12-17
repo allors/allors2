@@ -20,11 +20,12 @@
 
 namespace Allors.Domain
 {
+    using Meta;
     internal static class PriceableExtensions
     {
         public static decimal SetUnitSurcharge(this Priceable @this, PriceComponent priceComponent, decimal revenueBreakSurcharge)
         {
-            if (priceComponent.Strategy.Class.Equals(SurchargeComponents.Meta.ObjectType))
+            if (priceComponent.Strategy.Class.Equals(M.SurchargeComponent.ObjectType))
             {
                 var surchargeComponent = (SurchargeComponent)priceComponent;
                 decimal surcharge;
@@ -68,7 +69,7 @@ namespace Allors.Domain
 
         internal static decimal SetUnitDiscount(this Priceable @this, PriceComponent priceComponent, decimal revenueBreakDiscount)
         {
-            if (priceComponent.Strategy.Class.Equals(DiscountComponents.Meta.ObjectType))
+            if (priceComponent.Strategy.Class.Equals(M.DiscountComponent.ObjectType))
             {
                 var discountComponent = (DiscountComponent)priceComponent;
                 decimal discount;

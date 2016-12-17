@@ -22,6 +22,7 @@
 namespace Allors.Domain
 {
     using System;
+    using Meta;
     using NUnit.Framework;
 
     [TestFixture]
@@ -59,17 +60,17 @@ namespace Allors.Domain
         [Test]
         public void GivenNextSalesRep_WhenEmploymentAndSalesRepRelationshipAreCreated_ThenSalesRepIsAddedToUserGroup()
         {
-            var internalOrganisation = new InternalOrganisations(this.DatabaseSession).FindBy(InternalOrganisations.Meta.Name, "internalOrganisation");
+            var internalOrganisation = new InternalOrganisations(this.DatabaseSession).FindBy(M.InternalOrganisation.Name, "internalOrganisation");
             var customer = new PersonBuilder(this.DatabaseSession).WithLastName("customer").Build();
 
             var usergroups = internalOrganisation.UserGroupsWhereParty;
-            usergroups.Filter.AddEquals(UserGroups.Meta.Parent, new Roles(this.DatabaseSession).Sales.UserGroupWhereRole);
+            usergroups.Filter.AddEquals(M.UserGroup.Parent, new Roles(this.DatabaseSession).Sales.UserGroupWhereRole);
             var salesRepUserGroup = usergroups.First;
 
             this.DatabaseSession.Derive(true);
 
             Assert.AreEqual(1, salesRepUserGroup.Members.Count);
-            Assert.Contains(new Persons(this.DatabaseSession).FindBy(Persons.Meta.LastName, "salesRep"), salesRepUserGroup.Members);
+            Assert.Contains(new People(this.DatabaseSession).FindBy(M.Person.LastName, "salesRep"), salesRepUserGroup.Members);
 
             var salesrep2 = new PersonBuilder(this.DatabaseSession).WithLastName("salesRep2").WithUserName("salesRep2").Build();
 
@@ -94,11 +95,11 @@ namespace Allors.Domain
         [Test]
         public void GivenEmployment_WhenEmploymentPeriodIsNotValid_ThenEmployeeIsNotInSalesRepUserGroup()
         {
-            var salesRep = new Persons(this.DatabaseSession).FindBy(Persons.Meta.LastName, "salesRep");
-            var internalOrganisation = new InternalOrganisations(this.DatabaseSession).FindBy(InternalOrganisations.Meta.Name, "internalOrganisation");
+            var salesRep = new People(this.DatabaseSession).FindBy(M.Person.LastName, "salesRep");
+            var internalOrganisation = new InternalOrganisations(this.DatabaseSession).FindBy(M.InternalOrganisation.Name, "internalOrganisation");
 
             var usergroups = internalOrganisation.UserGroupsWhereParty;
-            usergroups.Filter.AddEquals(UserGroups.Meta.Parent, new Roles(this.DatabaseSession).Sales.UserGroupWhereRole);
+            usergroups.Filter.AddEquals(M.UserGroup.Parent, new Roles(this.DatabaseSession).Sales.UserGroupWhereRole);
             var salesRepUserGroup = usergroups.First;
 
             Assert.AreEqual(1, salesRepUserGroup.Members.Count);

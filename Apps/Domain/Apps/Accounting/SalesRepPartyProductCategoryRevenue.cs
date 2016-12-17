@@ -21,6 +21,7 @@
 namespace Allors.Domain
 {
     using System;
+    using Meta;
 
     public partial class SalesRepPartyProductCategoryRevenue
     {
@@ -40,9 +41,9 @@ namespace Allors.Domain
             var toDate = DateTimeFactory.CreateDate(this.Year, this.Month, 01).AddMonths(1);
 
             var invoices = this.Party.SalesInvoicesWhereBillToCustomer;
-            invoices.Filter.AddEquals(SalesInvoices.Meta.BilledFromInternalOrganisation, this.InternalOrganisation);
-            invoices.Filter.AddNot().AddEquals(SalesInvoices.Meta.CurrentObjectState, new SalesInvoiceObjectStates(this.Strategy.Session).WrittenOff);
-            invoices.Filter.AddBetween(SalesInvoices.Meta.InvoiceDate, DateTimeFactory.CreateDate(this.Year, this.Month, 01), toDate);
+            invoices.Filter.AddEquals(M.SalesInvoice.BilledFromInternalOrganisation, this.InternalOrganisation);
+            invoices.Filter.AddNot().AddEquals(M.SalesInvoice.CurrentObjectState, new SalesInvoiceObjectStates(this.Strategy.Session).WrittenOff);
+            invoices.Filter.AddBetween(M.SalesInvoice.InvoiceDate, DateTimeFactory.CreateDate(this.Year, this.Month, 01), toDate);
 
             foreach (SalesInvoice salesInvoice in invoices)
             {

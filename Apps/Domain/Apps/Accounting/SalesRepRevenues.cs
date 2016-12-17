@@ -22,16 +22,16 @@ namespace Allors.Domain
 {
     using System;
     using System.Collections.Generic;
-
+    using Meta;
 
     public partial class SalesRepRevenues
     {
         public static SalesRepRevenue AppsFindOrCreateAsDependable(ISession session, SalesRepPartyRevenue dependant)
         {
             var salesRepRevenues = dependant.SalesRep.SalesRepRevenuesWhereSalesRep;
-            salesRepRevenues.Filter.AddEquals(SalesRepRevenues.Meta.InternalOrganisation, dependant.InternalOrganisation);
-            salesRepRevenues.Filter.AddEquals(SalesRepRevenues.Meta.Year, dependant.Year);
-            salesRepRevenues.Filter.AddEquals(SalesRepRevenues.Meta.Month, dependant.Month);
+            salesRepRevenues.Filter.AddEquals(M.SalesRepRevenue.InternalOrganisation, dependant.InternalOrganisation);
+            salesRepRevenues.Filter.AddEquals(M.SalesRepRevenue.Year, dependant.Year);
+            salesRepRevenues.Filter.AddEquals(M.SalesRepRevenue.Month, dependant.Month);
             var salesRepRevenue = salesRepRevenues.First ?? new SalesRepRevenueBuilder(session)
                                                                 .WithInternalOrganisation(dependant.InternalOrganisation)
                                                                 .WithSalesRep(dependant.SalesRep)

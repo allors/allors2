@@ -26,7 +26,7 @@ namespace Allors.Domain
     using System;
     using System.Security.Principal;
     using System.Threading;
-
+    using Meta;
     using NUnit.Framework;
 
     [TestFixture]
@@ -48,7 +48,7 @@ namespace Allors.Domain
 
             var employment = new EmploymentBuilder(this.DatabaseSession)
                 .WithEmployee(salesRep)
-                .WithEmployer(new InternalOrganisations(this.DatabaseSession).FindBy(InternalOrganisations.Meta.Name, "internalOrganisation"))
+                .WithEmployer(new InternalOrganisations(this.DatabaseSession).FindBy(M.InternalOrganisation.Name, "internalOrganisation"))
                 .WithFromDate(DateTime.UtcNow)
                 .Build();
 
@@ -60,17 +60,17 @@ namespace Allors.Domain
         [Test]
         public void GivenLoggedUserIsAdministrator_WhenAccessingInternalOrganisation_ThenLoggedInUserIsGrantedAccess()
         {
-            var existingAdministrator = new Persons(this.DatabaseSession).FindBy(Persons.Meta.UserName, "administrator");
+            var existingAdministrator = new People(this.DatabaseSession).FindBy(M.Person.UserName, "administrator");
             var secondAdministrator = new PersonBuilder(this.DatabaseSession).WithLastName("second admin").Build();
             Assert.IsFalse(secondAdministrator.IsAdministrator);
 
-            var internalOrganisation = new InternalOrganisations(this.DatabaseSession).FindBy(InternalOrganisations.Meta.Name, "internalOrganisation");
+            var internalOrganisation = new InternalOrganisations(this.DatabaseSession).FindBy(M.InternalOrganisation.Name, "internalOrganisation");
 
             var acl = new AccessControlList(internalOrganisation, existingAdministrator);
-            Assert.IsTrue(acl.CanWrite(InternalOrganisations.Meta.Name));
+            Assert.IsTrue(acl.CanWrite(M.InternalOrganisation.Name));
             
             acl = new AccessControlList(internalOrganisation, secondAdministrator);
-            Assert.IsFalse(acl.CanRead(InternalOrganisations.Meta.Name));
+            Assert.IsFalse(acl.CanRead(M.InternalOrganisation.Name));
 
             var administrators = new UserGroups(this.DatabaseSession).Administrators;
             administrators.AddMember(secondAdministrator);
@@ -80,7 +80,7 @@ namespace Allors.Domain
             Assert.IsTrue(secondAdministrator.IsAdministrator);
 
             acl = new AccessControlList(internalOrganisation, secondAdministrator);
-            Assert.IsTrue(acl.CanWrite(InternalOrganisations.Meta.Name));
+            Assert.IsTrue(acl.CanWrite(M.InternalOrganisation.Name));
         }
 
         [Test]
@@ -100,10 +100,10 @@ namespace Allors.Domain
             Thread.CurrentPrincipal = new GenericPrincipal(new GenericIdentity("customer", "Forms"), new string[0]);
             var acl = new AccessControlList(anotherCustomer, new Users(this.DatabaseSession).GetCurrentUser());
 
-            Assert.IsTrue(acl.CanRead(Persons.Meta.FirstName));
-            Assert.IsTrue(acl.CanWrite(Persons.Meta.FirstName));
-            Assert.IsFalse(acl.CanRead(Persons.Meta.Height));
-            Assert.IsFalse(acl.CanWrite(Persons.Meta.Height));
+            Assert.IsTrue(acl.CanRead(M.Person.FirstName));
+            Assert.IsTrue(acl.CanWrite(M.Person.FirstName));
+            Assert.IsFalse(acl.CanRead(M.Person.Height));
+            Assert.IsFalse(acl.CanWrite(M.Person.Height));
         }
 
         [Test]
@@ -119,10 +119,10 @@ namespace Allors.Domain
             Thread.CurrentPrincipal = new GenericPrincipal(new GenericIdentity("customer", "Forms"), new string[0]);
             var acl = new AccessControlList(customer, new Users(this.DatabaseSession).GetCurrentUser());
 
-            Assert.IsTrue(acl.CanRead(Persons.Meta.FirstName));
-            Assert.IsTrue(acl.CanWrite(Persons.Meta.FirstName));
-            Assert.IsTrue(acl.CanRead(Persons.Meta.Height));
-            Assert.IsTrue(acl.CanWrite(Persons.Meta.Height));
+            Assert.IsTrue(acl.CanRead(M.Person.FirstName));
+            Assert.IsTrue(acl.CanWrite(M.Person.FirstName));
+            Assert.IsTrue(acl.CanRead(M.Person.Height));
+            Assert.IsTrue(acl.CanWrite(M.Person.Height));
         }
 
         [Test]
@@ -132,7 +132,7 @@ namespace Allors.Domain
             var organisation = new OrganisationBuilder(this.DatabaseSession).WithName("organisation").Build();
 
             new CustomerRelationshipBuilder(this.DatabaseSession)
-                .WithInternalOrganisation(new InternalOrganisations(this.DatabaseSession).FindBy(InternalOrganisations.Meta.Name, "internalOrganisation"))
+                .WithInternalOrganisation(new InternalOrganisations(this.DatabaseSession).FindBy(M.InternalOrganisation.Name, "internalOrganisation"))
                 .WithCustomer(organisation)
                 .WithFromDate(DateTimeFactory.CreateDate(2010, 01, 01))
                 .Build();

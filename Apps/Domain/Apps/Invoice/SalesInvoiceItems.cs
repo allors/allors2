@@ -21,6 +21,7 @@
 namespace Allors.Domain
 {
     using Allors;
+    using Meta;
 
     public partial class SalesInvoiceItems
     {
@@ -28,7 +29,7 @@ namespace Allors.Domain
         {
             base.AppsPrepare(setup);
 
-            setup.AddDependency(this.ObjectType, SalesInvoiceItemObjectStates.Meta.ObjectType);
+            setup.AddDependency(this.ObjectType, M.SalesInvoiceItemObjectState);
         }
 
         protected override void AppsSecure(Security config)
@@ -43,9 +44,9 @@ namespace Allors.Domain
             ObjectState writtenOff = new SalesInvoiceItemObjectStates(Session).WrittenOff;
             ObjectState cancelled = new SalesInvoiceItemObjectStates(Session).Cancelled;
 
-            config.Deny(this.ObjectType, paid, Operations.Write, Operation.Execute);
-            config.Deny(this.ObjectType, writtenOff, Operations.Write, Operation.Execute);
-            config.Deny(this.ObjectType, cancelled, Operations.Write, Operation.Execute);
+            config.Deny(this.ObjectType, paid, Operations.Write, Operations.Execute);
+            config.Deny(this.ObjectType, writtenOff, Operations.Write, Operations.Execute);
+            config.Deny(this.ObjectType, cancelled, Operations.Write, Operations.Execute);
         }
     }
 }

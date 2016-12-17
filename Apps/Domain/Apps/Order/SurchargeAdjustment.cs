@@ -20,6 +20,8 @@
 
 namespace Allors.Domain
 {
+    using Meta;
+
     public partial class SurchargeAdjustment
     {
         public void AppsOnPreDerive(ObjectOnPreDerive method)
@@ -63,8 +65,8 @@ namespace Allors.Domain
         {
             var derivation = method.Derivation;
 
-            derivation.Validation.AssertAtLeastOne(this, SurchargeAdjustments.Meta.Amount, SurchargeAdjustments.Meta.Percentage);
-            derivation.Validation.AssertExistsAtMostOne(this, SurchargeAdjustments.Meta.Amount, SurchargeAdjustments.Meta.Percentage);
+            derivation.Validation.AssertAtLeastOne(this, M.SurchargeAdjustment.Amount, M.SurchargeAdjustment.Percentage);
+            derivation.Validation.AssertExistsAtMostOne(this, M.SurchargeAdjustment.Amount, M.SurchargeAdjustment.Percentage);
         }
     }
 }

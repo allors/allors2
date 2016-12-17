@@ -69,7 +69,7 @@ namespace Allors.Domain
                 .Build();
         }
 
-        protected override void AppsSecure(Domain.Security config)
+        protected override void AppsSecure(Security config)
         {
             base.AppsSecure(config);
 

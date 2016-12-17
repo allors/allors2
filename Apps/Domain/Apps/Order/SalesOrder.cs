@@ -22,8 +22,7 @@ namespace Allors.Domain
 {
     using System;
     using System.Collections.Generic;
-    using System.Globalization;
-    using System.Text;
+    using Meta;
     using Resources;
 
     public partial class SalesOrder
@@ -174,7 +173,7 @@ namespace Allors.Domain
             if (this.ExistBillToCustomer)
             {
                 var customerRelationships = this.BillToCustomer.CustomerRelationshipsWhereCustomer;
-                customerRelationships.Filter.AddEquals(CustomerRelationships.Meta.InternalOrganisation, this.TakenByInternalOrganisation);
+                customerRelationships.Filter.AddEquals(M.CustomerRelationship.InternalOrganisation, this.TakenByInternalOrganisation);
 
                 foreach (CustomerRelationship customerRelationship in customerRelationships)
                 {
@@ -188,7 +187,7 @@ namespace Allors.Domain
             if (this.ExistShipToCustomer)
             {
                 var customerRelationships = this.ShipToCustomer.CustomerRelationshipsWhereCustomer;
-                customerRelationships.Filter.AddEquals(CustomerRelationships.Meta.InternalOrganisation, this.TakenByInternalOrganisation);
+                customerRelationships.Filter.AddEquals(M.CustomerRelationship.InternalOrganisation, this.TakenByInternalOrganisation);
 
                 foreach (CustomerRelationship customerRelationship in customerRelationships)
                 {
@@ -269,7 +268,7 @@ namespace Allors.Domain
             {
                 if (!this.TakenByInternalOrganisation.Equals(this.BillToCustomer.InternalOrganisationWhereCustomer))
                 {
-                    derivation.Validation.AddError(this, SalesOrders.Meta.BillToCustomer, ErrorMessages.PartyIsNotACustomer);
+                    derivation.Validation.AddError(this, M.SalesOrder.BillToCustomer, ErrorMessages.PartyIsNotACustomer);
                 }
             }
 
@@ -277,7 +276,7 @@ namespace Allors.Domain
             {
                 if (!this.TakenByInternalOrganisation.Equals(this.ShipToCustomer.InternalOrganisationWhereCustomer))
                 {
-                    derivation.Validation.AddError(this, SalesOrders.Meta.ShipToCustomer, ErrorMessages.PartyIsNotACustomer);
+                    derivation.Validation.AddError(this, M.SalesOrder.ShipToCustomer, ErrorMessages.PartyIsNotACustomer);
                 }
             }
 
@@ -364,7 +363,7 @@ namespace Allors.Domain
             var orderThreshold = this.Store.OrderThreshold;
 
             var customerRelationships = this.BillToCustomer.CustomerRelationshipsWhereCustomer;
-            customerRelationships.Filter.AddEquals(CustomerRelationships.Meta.InternalOrganisation, this.TakenByInternalOrganisation);
+            customerRelationships.Filter.AddEquals(M.CustomerRelationship.InternalOrganisation, this.TakenByInternalOrganisation);
 
             decimal amountOverDue = 0;
             decimal creditLimit = 0;
@@ -792,7 +791,7 @@ namespace Allors.Domain
                     }
 
                     var orderShipmentsWhereShipmentItem = shipmentItem.OrderShipmentsWhereShipmentItem;
-                    orderShipmentsWhereShipmentItem.Filter.AddEquals(OrderShipments.Meta.SalesOrderItem, orderItem);
+                    orderShipmentsWhereShipmentItem.Filter.AddEquals(M.OrderShipment.SalesOrderItem, orderItem);
 
                     if (orderShipmentsWhereShipmentItem.First == null)
                     {

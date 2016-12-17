@@ -22,6 +22,7 @@ namespace Allors.Domain
 {
     using System;
     using System.Collections.Generic;
+    using Meta;
 
 
     public partial class SalesRepProductCategoryRevenues
@@ -29,10 +30,10 @@ namespace Allors.Domain
         public static SalesRepProductCategoryRevenue AppsFindOrCreateAsDependable(ISession session, SalesRepPartyProductCategoryRevenue dependant)
         {
             var salesRepProductCategoryRevenues = dependant.SalesRep.SalesRepProductCategoryRevenuesWhereSalesRep;
-            salesRepProductCategoryRevenues.Filter.AddEquals(SalesRepProductCategoryRevenues.Meta.InternalOrganisation, dependant.InternalOrganisation);
-            salesRepProductCategoryRevenues.Filter.AddEquals(SalesRepProductCategoryRevenues.Meta.ProductCategory, dependant.ProductCategory);
-            salesRepProductCategoryRevenues.Filter.AddEquals(SalesRepProductCategoryRevenues.Meta.Year, dependant.Year);
-            salesRepProductCategoryRevenues.Filter.AddEquals(SalesRepProductCategoryRevenues.Meta.Month, dependant.Month);
+            salesRepProductCategoryRevenues.Filter.AddEquals(M.SalesRepProductCategoryRevenue.InternalOrganisation, dependant.InternalOrganisation);
+            salesRepProductCategoryRevenues.Filter.AddEquals(M.SalesRepProductCategoryRevenue.ProductCategory, dependant.ProductCategory);
+            salesRepProductCategoryRevenues.Filter.AddEquals(M.SalesRepProductCategoryRevenue.Year, dependant.Year);
+            salesRepProductCategoryRevenues.Filter.AddEquals(M.SalesRepProductCategoryRevenue.Month, dependant.Month);
             var salesRepProductCategoryRevenue = salesRepProductCategoryRevenues.First
                                                  ?? new SalesRepProductCategoryRevenueBuilder(session)
                                                                 .WithInternalOrganisation(dependant.InternalOrganisation)
@@ -51,10 +52,10 @@ namespace Allors.Domain
             foreach (ProductCategory parentCategory in dependant.ProductCategory.Parents)
             {
                 var salesRepProductCategoryRevenues = parentCategory.SalesRepProductCategoryRevenuesWhereProductCategory;
-                salesRepProductCategoryRevenues.Filter.AddEquals(SalesRepProductCategoryRevenues.Meta.InternalOrganisation, dependant.InternalOrganisation);
-                salesRepProductCategoryRevenues.Filter.AddEquals(SalesRepProductCategoryRevenues.Meta.SalesRep, dependant.SalesRep);
-                salesRepProductCategoryRevenues.Filter.AddEquals(SalesRepProductCategoryRevenues.Meta.Year, dependant.Year);
-                salesRepProductCategoryRevenues.Filter.AddEquals(SalesRepProductCategoryRevenues.Meta.Month, dependant.Month);
+                salesRepProductCategoryRevenues.Filter.AddEquals(M.SalesRepProductCategoryRevenue.InternalOrganisation, dependant.InternalOrganisation);
+                salesRepProductCategoryRevenues.Filter.AddEquals(M.SalesRepProductCategoryRevenue.SalesRep, dependant.SalesRep);
+                salesRepProductCategoryRevenues.Filter.AddEquals(M.SalesRepProductCategoryRevenue.Year, dependant.Year);
+                salesRepProductCategoryRevenues.Filter.AddEquals(M.SalesRepProductCategoryRevenue.Month, dependant.Month);
                 var salesRepProductCategoryRevenue = salesRepProductCategoryRevenues.First
                                                         ?? new SalesRepProductCategoryRevenueBuilder(session)
                                                                 .WithInternalOrganisation(dependant.InternalOrganisation)

@@ -26,7 +26,7 @@ namespace Allors.Domain
         {
             base.AppsSecure(config);
 
-            var defaultSecurityToken = Domain.Singleton.Instance(this.Session).DefaultSecurityToken;
+            var defaultSecurityToken = Singleton.Instance(this.Session).DefaultSecurityToken;
 
             new AccessControlBuilder(this.Session)
                 .WithRole(new Roles(this.Session).Customer)

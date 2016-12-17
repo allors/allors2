@@ -23,7 +23,7 @@ using System.Linq;
 namespace Allors.Domain
 {
     using System;
-
+    using Meta;
     using Resources;
 
     public partial class Store
@@ -102,7 +102,7 @@ namespace Allors.Domain
 
             if (!this.ExistOwner)
             {
-                this.Owner = Domain.Singleton.Instance(this.Strategy.Session).DefaultInternalOrganisation;
+                this.Owner = Singleton.Instance(this.Strategy.Session).DefaultInternalOrganisation;
 
                 if (this.ExistOwner && this.Owner.ExistDefaultFacility)
                 {
@@ -137,11 +137,11 @@ namespace Allors.Domain
             {
                 if (this.ExistOwner && !this.Owner.PaymentMethods.Contains(paymentMethod))
                 {
-                    derivation.Validation.AddError(this, Stores.Meta.PaymentMethods, ErrorMessages.PaymentApplicationNotLargerThanInvoiceItemAmount);
+                    derivation.Validation.AddError(this, M.Store.PaymentMethods, ErrorMessages.PaymentApplicationNotLargerThanInvoiceItemAmount);
                 }
             }
 
-            derivation.Validation.AssertExistsAtMostOne(this, Stores.Meta.FiscalYearInvoiceNumbers, Stores.Meta.SalesInvoiceCounter);
+            derivation.Validation.AssertExistsAtMostOne(this, M.Store.FiscalYearInvoiceNumbers, M.Store.SalesInvoiceCounter);
         }
     }
 }

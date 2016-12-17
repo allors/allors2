@@ -20,13 +20,15 @@
 
 namespace Allors.Domain
 {
+    using Meta;
+
     public partial class PurchaseInvoices
     {
         protected override void AppsPrepare(Setup setup)
         {
             base.AppsPrepare(setup);
 
-            setup.AddDependency(this.ObjectType, PurchaseInvoiceObjectStates.Meta.ObjectType);
+            setup.AddDependency(this.ObjectType, M.PurchaseInvoiceObjectState);
         }
 
         protected override void AppsSecure(Security config)
@@ -51,8 +53,8 @@ namespace Allors.Domain
             config.Deny(this.ObjectType, received, ready, approve, cancel);
             config.Deny(this.ObjectType, readyForPosting, ready, approve);
 
-            config.Deny(this.ObjectType, paid, Operation.Execute);
-            config.Deny(this.ObjectType, cancelled, Operation.Execute);
+            config.Deny(this.ObjectType, paid, Operations.Execute);
+            config.Deny(this.ObjectType, cancelled, Operations.Execute);
         }
     }
 }

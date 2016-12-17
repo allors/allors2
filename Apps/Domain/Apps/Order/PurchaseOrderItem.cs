@@ -20,6 +20,8 @@
 
 namespace Allors.Domain
 {
+    using Meta;
+
     public partial class PurchaseOrderItem
     {
         ObjectState Transitional.CurrentObjectState => this.CurrentObjectState;
@@ -42,7 +44,7 @@ namespace Allors.Domain
 
                 if (offerings != null)
                 {
-                    offerings.Filter.AddEquals(SupplierOfferings.Meta.Supplier, this.PurchaseOrderWherePurchaseOrderItem.TakenViaSupplier);
+                    offerings.Filter.AddEquals(M.SupplierOffering.Supplier, this.PurchaseOrderWherePurchaseOrderItem.TakenViaSupplier);
                     foreach (SupplierOffering offering in offerings)
                     {
                         if (offering.FromDate <= this.PurchaseOrderWherePurchaseOrderItem.OrderDate &&
@@ -113,8 +115,8 @@ namespace Allors.Domain
         {
             var derivation = method.Derivation;
             
-            derivation.Validation.AssertAtLeastOne(this, PurchaseOrderItems.Meta.Product, PurchaseOrderItems.Meta.Part);
-            derivation.Validation.AssertExistsAtMostOne(this, PurchaseOrderItems.Meta.Product, PurchaseOrderItems.Meta.Part);
+            derivation.Validation.AssertAtLeastOne(this, M.PurchaseOrderItem.Product, M.PurchaseOrderItem.Part);
+            derivation.Validation.AssertExistsAtMostOne(this, M.PurchaseOrderItem.Product, M.PurchaseOrderItem.Part);
 
             this.AppsDeriveVatRegime(derivation);
 
@@ -312,7 +314,7 @@ namespace Allors.Domain
                 if (good != null)
                 {
                     var inventoryItems = good.InventoryItemsWhereGood;
-                    inventoryItems.Filter.AddEquals(InventoryItems.Meta.Facility, this.PurchaseOrderWherePurchaseOrderItem.Facility);
+                    inventoryItems.Filter.AddEquals(M.InventoryItem.Facility, this.PurchaseOrderWherePurchaseOrderItem.Facility);
                     inventoryItem = inventoryItems.First as NonSerializedInventoryItem;
                 }
             }
@@ -320,7 +322,7 @@ namespace Allors.Domain
             if (this.ExistPart)
             {
                 var inventoryItems = this.Part.InventoryItemsWherePart;
-                inventoryItems.Filter.AddEquals(InventoryItems.Meta.Facility, this.PurchaseOrderWherePurchaseOrderItem.Facility);
+                inventoryItems.Filter.AddEquals(M.InventoryItem.Facility, this.PurchaseOrderWherePurchaseOrderItem.Facility);
                 inventoryItem = inventoryItems.First as NonSerializedInventoryItem;
             }
 

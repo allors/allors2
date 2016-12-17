@@ -22,6 +22,7 @@
 namespace Allors.Domain
 {
     using System;
+    using Meta;
     using NUnit.Framework;
 
     [TestFixture]
@@ -65,9 +66,9 @@ namespace Allors.Domain
         {
             base.Init();
 
-            var euro = new Currencies(this.DatabaseSession).FindBy(Currencies.Meta.IsoCode, "EUR");
+            var euro = new Currencies(this.DatabaseSession).FindBy(M.Currency.IsoCode, "EUR");
 
-            this.internalOrganisation = new InternalOrganisations(this.DatabaseSession).FindBy(InternalOrganisations.Meta.Name, "internalOrganisation");
+            this.internalOrganisation = new InternalOrganisations(this.DatabaseSession).FindBy(M.InternalOrganisation.Name, "internalOrganisation");
             this.internalOrganisation.PreferredCurrency = euro;
 
             this.supplier = new OrganisationBuilder(this.DatabaseSession).WithName("supplier").Build();
@@ -4194,7 +4195,7 @@ namespace Allors.Domain
         [Test]
         public void GivenBillToCustomerWithDifferentCurrency_WhenDerivingPrices_ThenCalculatePricesInPreferredCurrency()
         {
-            var poundSterling = new Currencies(this.DatabaseSession).FindBy(Currencies.Meta.IsoCode, "GBP");
+            var poundSterling = new Currencies(this.DatabaseSession).FindBy(M.Currency.IsoCode, "GBP");
 
             const decimal conversionfactor = 0.8553M;
             var euroToPoundStirling = new UnitOfMeasureConversionBuilder(this.DatabaseSession)
@@ -4203,7 +4204,7 @@ namespace Allors.Domain
                 .WithStartDate(DateTime.UtcNow)
                 .Build();
 
-            var euro = new Currencies(this.DatabaseSession).FindBy(Currencies.Meta.IsoCode, "EUR");
+            var euro = new Currencies(this.DatabaseSession).FindBy(M.Currency.IsoCode, "EUR");
             euro.AddUnitOfMeasureConversion(euroToPoundStirling);
 
             this.DatabaseSession.Derive(true);

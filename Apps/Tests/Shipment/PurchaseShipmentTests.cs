@@ -24,6 +24,7 @@ namespace Allors.Domain
     using System;
     using System.Security.Principal;
     using System.Threading;
+    using Meta;
     using NUnit.Framework;
 
     [TestFixture]
@@ -33,7 +34,7 @@ namespace Allors.Domain
         public void GivenPurchaseShipmentBuilder_WhenBuild_ThenPostBuildRelationsMustExist()
         {
             var supplier = new OrganisationBuilder(this.DatabaseSession).WithName("supplier").Build();
-            var internalOrganisation = new InternalOrganisations(this.DatabaseSession).FindBy(InternalOrganisations.Meta.Name, "internalOrganisation");
+            var internalOrganisation = new InternalOrganisations(this.DatabaseSession).FindBy(M.InternalOrganisation.Name, "internalOrganisation");
             var shipment = new PurchaseShipmentBuilder(this.DatabaseSession).WithShipFromParty(supplier).Build();
 
             this.DatabaseSession.Derive(true);
@@ -97,7 +98,7 @@ namespace Allors.Domain
         public void GivenPurchaseShipmentWithShipToAddress_WhenDeriving_ThenDerivedShipToAddressMustExist()
         {
             var supplier = new OrganisationBuilder(this.DatabaseSession).WithName("supplier").Build();
-            var internalOrganisation = new InternalOrganisations(this.DatabaseSession).FindBy(InternalOrganisations.Meta.Name, "internalOrganisation");
+            var internalOrganisation = new InternalOrganisations(this.DatabaseSession).FindBy(M.InternalOrganisation.Name, "internalOrganisation");
             PostalAddress postalAddress = null;
             foreach (PartyContactMechanism partyContactMechanism in internalOrganisation.PartyContactMechanisms)
             {
@@ -118,7 +119,7 @@ namespace Allors.Domain
         public void GivenPurchaseShipmentWithShipToCustomerWithshippingAddress_WhenDeriving_ThenDerivedShipToCustomerAndDerivedShipToAddressMustExist()
         {
             var supplier = new OrganisationBuilder(this.DatabaseSession).WithName("supplier").Build();
-            var internalOrganisation = new InternalOrganisations(this.DatabaseSession).FindBy(InternalOrganisations.Meta.Name, "internalOrganisation");
+            var internalOrganisation = new InternalOrganisations(this.DatabaseSession).FindBy(M.InternalOrganisation.Name, "internalOrganisation");
             var mechelen = new CityBuilder(this.DatabaseSession).WithName("Mechelen").Build();
             var shipToAddress = new PostalAddressBuilder(this.DatabaseSession).WithAddress1("Haverwerf 15").WithGeographicBoundary(mechelen).Build();
 
@@ -144,7 +145,7 @@ namespace Allors.Domain
         {
             var supplier = new OrganisationBuilder(this.DatabaseSession).WithName("supplier").Build();
             var orderProcessor2 = new PersonBuilder(this.DatabaseSession).WithLastName("orderProcessor2").WithUserName("orderProcessor2").Build();
-            var internalOrganisation = new InternalOrganisations(this.DatabaseSession).FindBy(InternalOrganisations.Meta.Name, "internalOrganisation");
+            var internalOrganisation = new InternalOrganisations(this.DatabaseSession).FindBy(M.InternalOrganisation.Name, "internalOrganisation");
 
             new EmploymentBuilder(this.DatabaseSession)
                 .WithFromDate(DateTime.UtcNow)
@@ -153,7 +154,7 @@ namespace Allors.Domain
                 .Build();
 
             var usergroups = internalOrganisation.UserGroupsWhereParty;
-            usergroups.Filter.AddEquals(UserGroups.Meta.Parent, new Roles(this.DatabaseSession).Operations.UserGroupWhereRole);
+            usergroups.Filter.AddEquals(M.UserGroup.Parent, new Roles(this.DatabaseSession).Operations.UserGroupWhereRole);
             var orderProcessorUserGroup = usergroups.First;
 
             orderProcessorUserGroup.AddMember(orderProcessor2);
@@ -168,14 +169,14 @@ namespace Allors.Domain
 
             var acl = new AccessControlList(shipment, new Users(this.DatabaseSession).GetCurrentUser());
 
-            Assert.IsTrue(acl.CanWrite(PurchaseShipments.Meta.ShipToParty));
-            Assert.IsTrue(acl.CanRead(PurchaseShipments.Meta.ShipToParty));
+            Assert.IsTrue(acl.CanWrite(PurchaseM.Shipment.ShipToParty));
+            Assert.IsTrue(acl.CanRead(PurchaseM.Shipment.ShipToParty));
 
             Thread.CurrentPrincipal = new GenericPrincipal(new GenericIdentity("orderProcessor2", "Forms"), new string[0]);
             acl = new AccessControlList(shipment, new Users(this.DatabaseSession).GetCurrentUser());
 
-            Assert.IsTrue(acl.CanWrite(PurchaseShipments.Meta.ShipToParty));
-            Assert.IsTrue(acl.CanRead(PurchaseShipments.Meta.ShipToParty));
+            Assert.IsTrue(acl.CanWrite(PurchaseM.Shipment.ShipToParty));
+            Assert.IsTrue(acl.CanRead(PurchaseM.Shipment.ShipToParty));
         }
 
         [Test]
@@ -216,7 +217,7 @@ namespace Allors.Domain
             this.DatabaseSession.Commit();
 
             var usergroups = internalOrganisation.UserGroupsWhereParty;
-            usergroups.Filter.AddEquals(UserGroups.Meta.Parent, new Roles(this.DatabaseSession).Operations.UserGroupWhereRole);
+            usergroups.Filter.AddEquals(M.UserGroup.Parent, new Roles(this.DatabaseSession).Operations.UserGroupWhereRole);
             var orderProcessorUserGroup = usergroups.First;
 
             new EmploymentBuilder(this.DatabaseSession)
@@ -237,13 +238,13 @@ namespace Allors.Domain
 
             var acl = new AccessControlList(shipment, new Users(this.DatabaseSession).GetCurrentUser());
 
-            Assert.IsTrue(acl.CanWrite(PurchaseShipments.Meta.ShipToParty));
-            Assert.IsTrue(acl.CanRead(PurchaseShipments.Meta.ShipToParty));
+            Assert.IsTrue(acl.CanWrite(PurchaseM.Shipment.ShipToParty));
+            Assert.IsTrue(acl.CanRead(PurchaseM.Shipment.ShipToParty));
 
             Thread.CurrentPrincipal = new GenericPrincipal(new GenericIdentity("orderProcessor2", "Forms"), new string[0]);
             acl = new AccessControlList(shipment, new Users(this.DatabaseSession).GetCurrentUser());
 
-            Assert.IsFalse(acl.HasReadOperation);
+            Assert.IsFalse(acl.CanRead);
         }
     }
 }

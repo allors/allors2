@@ -21,6 +21,7 @@
 namespace Allors.Domain
 {
     using System;
+    using Meta;
 
     public partial class ProductCategoryRevenue
     {
@@ -36,9 +37,9 @@ namespace Allors.Domain
             this.Revenue = 0;
 
             var partyProductCategoryRevenues = this.ProductCategory.PartyProductCategoryRevenuesWhereProductCategory;
-            partyProductCategoryRevenues.Filter.AddEquals(PartyProductCategoryRevenues.Meta.InternalOrganisation, this.InternalOrganisation);
-            partyProductCategoryRevenues.Filter.AddEquals(PartyProductCategoryRevenues.Meta.Year, this.Year);
-            partyProductCategoryRevenues.Filter.AddEquals(PartyProductCategoryRevenues.Meta.Month, this.Month);
+            partyProductCategoryRevenues.Filter.AddEquals(M.PartyProductCategoryRevenue.InternalOrganisation, this.InternalOrganisation);
+            partyProductCategoryRevenues.Filter.AddEquals(M.PartyProductCategoryRevenue.Year, this.Year);
+            partyProductCategoryRevenues.Filter.AddEquals(M.PartyProductCategoryRevenue.Month, this.Month);
 
             foreach (PartyProductCategoryRevenue productCategoryRevenue in partyProductCategoryRevenues)
             {
@@ -54,7 +55,7 @@ namespace Allors.Domain
             if (months <= 12)
             {
                 var histories = this.ProductCategory.ProductCategoryRevenueHistoriesWhereProductCategory;
-                histories.Filter.AddEquals(ProductCategoryRevenueHistories.Meta.InternalOrganisation, this.InternalOrganisation);
+                histories.Filter.AddEquals(M.ProductCategoryRevenueHistory.InternalOrganisation, this.InternalOrganisation);
                 var history = histories.First ?? new ProductCategoryRevenueHistoryBuilder(this.Strategy.Session)
                                                      .WithCurrency(this.Currency)
                                                      .WithInternalOrganisation(this.InternalOrganisation)
@@ -65,9 +66,9 @@ namespace Allors.Domain
             foreach (ProductCategory parentCategory in this.ProductCategory.Parents)
             {
                 var productCategoryRevenues = parentCategory.ProductCategoryRevenuesWhereProductCategory;
-                productCategoryRevenues.Filter.AddEquals(ProductCategoryRevenues.Meta.InternalOrganisation, this.InternalOrganisation);
-                productCategoryRevenues.Filter.AddEquals(ProductCategoryRevenues.Meta.Year, this.Year);
-                productCategoryRevenues.Filter.AddEquals(ProductCategoryRevenues.Meta.Month, this.Month);
+                productCategoryRevenues.Filter.AddEquals(M.ProductCategoryRevenue.InternalOrganisation, this.InternalOrganisation);
+                productCategoryRevenues.Filter.AddEquals(M.ProductCategoryRevenue.Year, this.Year);
+                productCategoryRevenues.Filter.AddEquals(M.ProductCategoryRevenue.Month, this.Month);
                 var productCategoryRevenue = productCategoryRevenues.First ?? new ProductCategoryRevenueBuilder(this.Strategy.Session)
                                                                                     .WithInternalOrganisation(this.InternalOrganisation)
                                                                                     .WithProductCategory(parentCategory)

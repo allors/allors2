@@ -21,6 +21,7 @@
 namespace Allors.Domain
 {
     using System;
+    using Meta;
     using NUnit.Framework;
 
     [TestFixture]
@@ -50,7 +51,7 @@ namespace Allors.Domain
 
             this.DatabaseSession.Derive(true);
 
-            var euro = new Currencies(this.DatabaseSession).FindBy(Currencies.Meta.IsoCode, "EUR");
+            var euro = new Currencies(this.DatabaseSession).FindBy(M.Currency.IsoCode, "EUR");
             var vatRate21 = new VatRateBuilder(this.DatabaseSession).WithRate(21).Build();
 
             var good1 = new GoodBuilder(this.DatabaseSession)
@@ -71,7 +72,7 @@ namespace Allors.Domain
                 .WithPrimaryProductCategory(cat2)
                 .Build();
 
-            var internalOrganisation = new InternalOrganisations(this.DatabaseSession).FindBy(InternalOrganisations.Meta.Name, "internalOrganisation");
+            var internalOrganisation = new InternalOrganisations(this.DatabaseSession).FindBy(M.InternalOrganisation.Name, "internalOrganisation");
             internalOrganisation.PreferredCurrency = euro;
 
             new CustomerRelationshipBuilder(this.DatabaseSession).WithFromDate(DateTime.UtcNow).WithCustomer(customer1).WithInternalOrganisation(internalOrganisation).Build();
@@ -104,11 +105,11 @@ namespace Allors.Domain
             Assert.AreEqual(2, customer1ProductRevenues.Count);
 
             customer1ProductRevenues = customer1.PartyProductRevenuesWhereParty;
-            customer1ProductRevenues.Filter.AddEquals(PartyProductRevenues.Meta.Product, good1);
+            customer1ProductRevenues.Filter.AddEquals(M.PartyProductRevenue.Product, good1);
             var customer1Good1Revenue = customer1ProductRevenues.First;
 
             customer1ProductRevenues = customer1.PartyProductRevenuesWhereParty;
-            customer1ProductRevenues.Filter.AddEquals(PartyProductRevenues.Meta.Product, good2);
+            customer1ProductRevenues.Filter.AddEquals(M.PartyProductRevenue.Product, good2);
             var customer1Good2Revenue = customer1ProductRevenues.First;
 
             Assert.AreEqual(90, customer1Good1Revenue.Revenue);
@@ -139,11 +140,11 @@ namespace Allors.Domain
             var customer2ProductRevenues = customer2.PartyProductRevenuesWhereParty;
             Assert.AreEqual(2, customer2ProductRevenues.Count);
 
-            customer2ProductRevenues.Filter.AddEquals(PartyProductRevenues.Meta.Product, good1);
+            customer2ProductRevenues.Filter.AddEquals(M.PartyProductRevenue.Product, good1);
             var customer2Good1Revenue = customer2ProductRevenues.First;
 
             customer2ProductRevenues = customer2.PartyProductRevenuesWhereParty;
-            customer2ProductRevenues.Filter.AddEquals(PartyProductRevenues.Meta.Product, good2);
+            customer2ProductRevenues.Filter.AddEquals(M.PartyProductRevenue.Product, good2);
             var customer2Good2Revenue = customer2ProductRevenues.First;
 
             Assert.AreEqual(15, customer2Good1Revenue.Revenue);

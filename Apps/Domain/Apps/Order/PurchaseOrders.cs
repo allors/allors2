@@ -21,6 +21,7 @@
 namespace Allors.Domain
 {
     using System;
+    using Meta;
 
     public partial class PurchaseOrders
     {
@@ -28,7 +29,7 @@ namespace Allors.Domain
         {
             base.AppsPrepare(setup);
 
-            setup.AddDependency(this.ObjectType, PurchaseOrderObjectStates.Meta.ObjectType);
+            setup.AddDependency(this.ObjectType, M.PurchaseOrderObjectState);
         }
 
         protected override void AppsSecure(Security config)
@@ -92,10 +93,10 @@ namespace Allors.Domain
             config.Deny(this.ObjectType, inProcess, confirm, reject, approve, @continue);
             config.Deny(this.ObjectType, onHold, confirm, reject, approve, hold);
 
-            config.Deny(this.ObjectType, cancelled, Operation.Execute, Operations.Write);
-            config.Deny(this.ObjectType, rejected, Operation.Execute, Operations.Write);
-            config.Deny(this.ObjectType, completed, Operation.Execute, Operations.Write);
-            config.Deny(this.ObjectType, finished, Operation.Execute, Operations.Write);
+            config.Deny(this.ObjectType, cancelled, Operations.Execute, Operations.Write);
+            config.Deny(this.ObjectType, rejected, Operations.Execute, Operations.Write);
+            config.Deny(this.ObjectType, completed, Operations.Execute, Operations.Write);
+            config.Deny(this.ObjectType, finished, Operations.Execute, Operations.Write);
         }
     }
 }

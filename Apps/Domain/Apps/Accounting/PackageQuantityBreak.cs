@@ -20,13 +20,15 @@
 
 namespace Allors.Domain
 {
+    using Meta;
+
     public partial class PackageQuantityBreak
     {
         public void AppsOnDerive(ObjectOnDerive method)
         {
             var derivation = method.Derivation;
 
-            derivation.Validation.AssertAtLeastOne(this, PackageQuantityBreaks.Meta.From, PackageQuantityBreaks.Meta.Through);
+            derivation.Validation.AssertAtLeastOne(this, M.PackageQuantityBreak.From, M.PackageQuantityBreak.Through);
         }
     }
 }

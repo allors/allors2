@@ -21,6 +21,7 @@
 namespace Allors.Domain
 {
     using System;
+    using Meta;
     using NUnit.Framework;
 
     [TestFixture]
@@ -50,7 +51,7 @@ namespace Allors.Domain
 
             this.DatabaseSession.Derive(true);
 
-            var euro = new Currencies(this.DatabaseSession).FindBy(Currencies.Meta.IsoCode, "EUR");
+            var euro = new Currencies(this.DatabaseSession).FindBy(M.Currency.IsoCode, "EUR");
             var vatRate21 = new VatRateBuilder(this.DatabaseSession).WithRate(21).Build();
 
             var good1 = new GoodBuilder(this.DatabaseSession)
@@ -71,7 +72,7 @@ namespace Allors.Domain
                 .WithPrimaryProductCategory(cat2)
                 .Build();
 
-            var internalOrganisation = new InternalOrganisations(this.DatabaseSession).FindBy(InternalOrganisations.Meta.Name, "internalOrganisation");
+            var internalOrganisation = new InternalOrganisations(this.DatabaseSession).FindBy(M.InternalOrganisation.Name, "internalOrganisation");
             internalOrganisation.PreferredCurrency = euro;
 
             new CustomerRelationshipBuilder(this.DatabaseSession).WithFromDate(DateTime.UtcNow).WithCustomer(customer1).WithInternalOrganisation(internalOrganisation).Build();
@@ -103,15 +104,15 @@ namespace Allors.Domain
             var customer1ProductCategoryRevenues = customer1.PartyProductCategoryRevenuesWhereParty;
             Assert.AreEqual(3, customer1ProductCategoryRevenues.Count);
 
-            customer1ProductCategoryRevenues.Filter.AddEquals(PartyProductCategoryRevenues.Meta.ProductCategory, cat1);
+            customer1ProductCategoryRevenues.Filter.AddEquals(M.PartyProductCategoryRevenue.ProductCategory, cat1);
             var customer1Cat1Revenue = customer1ProductCategoryRevenues.First;
 
             customer1ProductCategoryRevenues = customer1.PartyProductCategoryRevenuesWhereParty;
-            customer1ProductCategoryRevenues.Filter.AddEquals(PartyProductCategoryRevenues.Meta.ProductCategory, cat2);
+            customer1ProductCategoryRevenues.Filter.AddEquals(M.PartyProductCategoryRevenue.ProductCategory, cat2);
             var customer1Cat2Revenue = customer1ProductCategoryRevenues.First;
 
             customer1ProductCategoryRevenues = customer1.PartyProductCategoryRevenuesWhereParty;
-            customer1ProductCategoryRevenues.Filter.AddEquals(PartyProductCategoryRevenues.Meta.ProductCategory, catMain);
+            customer1ProductCategoryRevenues.Filter.AddEquals(M.PartyProductCategoryRevenue.ProductCategory, catMain);
             var customer1CatMainRevenue = customer1ProductCategoryRevenues.First;
 
             Assert.AreEqual(90, customer1Cat1Revenue.Revenue);
@@ -144,15 +145,15 @@ namespace Allors.Domain
             var customer2ProductCategoryRevenues = customer2.PartyProductCategoryRevenuesWhereParty;
             Assert.AreEqual(3, customer2ProductCategoryRevenues.Count);
 
-            customer2ProductCategoryRevenues.Filter.AddEquals(PartyProductCategoryRevenues.Meta.ProductCategory, cat1);
+            customer2ProductCategoryRevenues.Filter.AddEquals(M.PartyProductCategoryRevenue.ProductCategory, cat1);
             var customer2Cat1Revenue = customer2ProductCategoryRevenues.First;
 
             customer2ProductCategoryRevenues = customer2.PartyProductCategoryRevenuesWhereParty;
-            customer2ProductCategoryRevenues.Filter.AddEquals(PartyProductCategoryRevenues.Meta.ProductCategory, cat2);
+            customer2ProductCategoryRevenues.Filter.AddEquals(M.PartyProductCategoryRevenue.ProductCategory, cat2);
             var customer2Cat2Revenue = customer2ProductCategoryRevenues.First;
 
             customer2ProductCategoryRevenues = customer2.PartyProductCategoryRevenuesWhereParty;
-            customer2ProductCategoryRevenues.Filter.AddEquals(PartyProductCategoryRevenues.Meta.ProductCategory, catMain);
+            customer2ProductCategoryRevenues.Filter.AddEquals(M.PartyProductCategoryRevenue.ProductCategory, catMain);
             var customer2CatMainRevenue = customer2ProductCategoryRevenues.First;
 
             Assert.AreEqual(15, customer2Cat1Revenue.Revenue);

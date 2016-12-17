@@ -25,8 +25,8 @@ namespace Allors
     using System.IO;
     using System.Threading;
     using System.Xml;
-
-    using Allors.Domain;
+    using Domain;
+    using Meta;
 
     public class Fixture
     {
@@ -208,13 +208,13 @@ namespace Allors
 
                 var usergroups = internalOrganisation.UserGroupsWhereParty;
                 usergroups = internalOrganisation.UserGroupsWhereParty;
-                usergroups.Filter.AddEquals(UserGroups.Meta.Parent, new Roles(session).Operations.UserGroupWhereRole);
+                usergroups.Filter.AddEquals(M.UserGroup.Parent, new Roles(session).Operations.UserGroupWhereRole);
                 var userGroup = usergroups.First;
 
                 userGroup.AddMember(orderProcessor);
 
                 usergroups = internalOrganisation.UserGroupsWhereParty;
-                usergroups.Filter.AddEquals(UserGroups.Meta.Parent, new Roles(session).Procurement.UserGroupWhereRole);
+                usergroups.Filter.AddEquals(M.UserGroup.Parent, new Roles(session).Procurement.UserGroupWhereRole);
                 userGroup = usergroups.First;
 
                 userGroup.AddMember(purchaser);

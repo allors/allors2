@@ -20,13 +20,15 @@
 
 namespace Allors.Domain
 {
+    using Meta;
+
     public partial class PurchaseOrderItems
     {
         protected override void AppsPrepare(Setup setup)
         {
             base.AppsPrepare(setup);
 
-            setup.AddDependency(this.ObjectType, PurchaseOrderItemObjectStates.Meta.ObjectType);
+            setup.AddDependency(this.ObjectType, M.PurchaseOrderItemObjectState);
         }
 
         protected override void AppsSecure(Security config)
@@ -64,10 +66,10 @@ namespace Allors.Domain
             config.Deny(this.ObjectType, received, delete, cancel, reject);
             
             config.Deny(this.ObjectType, inProcess, Operations.Write);
-            config.Deny(this.ObjectType, cancelled, Operation.Execute, Operations.Write);
-            config.Deny(this.ObjectType, rejected, Operation.Execute, Operations.Write);
-            config.Deny(this.ObjectType, completed, Operation.Execute, Operations.Write);
-            config.Deny(this.ObjectType, finished, Operation.Execute);
+            config.Deny(this.ObjectType, cancelled, Operations.Execute, Operations.Write);
+            config.Deny(this.ObjectType, rejected, Operations.Execute, Operations.Write);
+            config.Deny(this.ObjectType, completed, Operations.Execute, Operations.Write);
+            config.Deny(this.ObjectType, finished, Operations.Execute);
         }
     }
 }

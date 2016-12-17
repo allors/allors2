@@ -22,7 +22,7 @@ namespace Allors.Domain
 {
     using System;
     using System.Collections.Generic;
-
+    using Meta;
 
     public partial class PartyProductCategoryRevenues
     {
@@ -102,15 +102,15 @@ namespace Allors.Domain
             }
         }
 
-        public void AppsFindOrCreateAsDependable(ISession session, PartyProductRevenue dependant)
+        public static void AppsFindOrCreateAsDependable(ISession session, PartyProductRevenue dependant)
         {
             foreach (ProductCategory productCategory in dependant.Product.ProductCategories)
             {
                 var partyProductCategoryRevenues = dependant.Party.PartyProductCategoryRevenuesWhereParty;
-                partyProductCategoryRevenues.Filter.AddEquals(Meta.InternalOrganisation, dependant.InternalOrganisation);
-                partyProductCategoryRevenues.Filter.AddEquals(Meta.Year, dependant.Year);
-                partyProductCategoryRevenues.Filter.AddEquals(Meta.Month, dependant.Month);
-                partyProductCategoryRevenues.Filter.AddEquals(Meta.ProductCategory, productCategory);
+                partyProductCategoryRevenues.Filter.AddEquals(M.PartyProductRevenue.InternalOrganisation, dependant.InternalOrganisation);
+                partyProductCategoryRevenues.Filter.AddEquals(M.PartyProductRevenue.Year, dependant.Year);
+                partyProductCategoryRevenues.Filter.AddEquals(M.PartyProductRevenue.Month, dependant.Month);
+                partyProductCategoryRevenues.Filter.AddEquals(M.PartyProductRevenue.ProductCategory, productCategory);
                 var partyProductCategoryRevenue = partyProductCategoryRevenues.First
                                                   ?? new PartyProductCategoryRevenueBuilder(session)
                                                             .WithInternalOrganisation(dependant.InternalOrganisation)

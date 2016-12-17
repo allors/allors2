@@ -20,6 +20,7 @@
 
 namespace Allors.Domain
 {
+    using Meta;
     using Resources;
 
     public partial class PaymentApplication
@@ -53,21 +54,21 @@ namespace Allors.Domain
         {
             var derivation = method.Derivation;
 
-            derivation.Validation.AssertExistsAtMostOne(this, PaymentApplications.Meta.Invoice, PaymentApplications.Meta.InvoiceItem);
+            derivation.Validation.AssertExistsAtMostOne(this, M.PaymentApplication.Invoice, M.PaymentApplication.InvoiceItem);
 
             if (this.ExistPaymentWherePaymentApplication && this.AmountApplied > this.PaymentWherePaymentApplication.Amount)
             {
-                derivation.Validation.AddError(this, PaymentApplications.Meta.AmountApplied, ErrorMessages.PaymentApplicationNotLargerThanPaymentAmount);
+                derivation.Validation.AddError(this, M.PaymentApplication.AmountApplied, ErrorMessages.PaymentApplicationNotLargerThanPaymentAmount);
             }
 
             if (this.ExistInvoice && this.Invoice.AmountPaid > this.Invoice.TotalIncVat)
             {
-                derivation.Validation.AddError(this, PaymentApplications.Meta.AmountApplied, ErrorMessages.PaymentApplicationNotLargerThanInvoiceAmount);
+                derivation.Validation.AddError(this, M.PaymentApplication.AmountApplied, ErrorMessages.PaymentApplicationNotLargerThanInvoiceAmount);
             }
 
             if (this.ExistInvoiceItem && this.InvoiceItem.AmountPaid > this.InvoiceItem.TotalIncVat)
             {
-                derivation.Validation.AddError(this, PaymentApplications.Meta.AmountApplied, ErrorMessages.PaymentApplicationNotLargerThanInvoiceItemAmount);
+                derivation.Validation.AddError(this, M.PaymentApplication.AmountApplied, ErrorMessages.PaymentApplicationNotLargerThanInvoiceItemAmount);
             }
 
             var salesInvoice = this.Invoice as SalesInvoice;

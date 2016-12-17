@@ -21,8 +21,8 @@
 
 namespace Allors.Domain
 {
+    using Meta;
     using NUnit.Framework;
-
     using Resources;
 
     [TestFixture]
@@ -45,14 +45,14 @@ namespace Allors.Domain
 
             this.DatabaseSession.Rollback();
 
-            builder.WithBilledToInternalOrganisation(new InternalOrganisations(this.DatabaseSession).FindBy(InternalOrganisations.Meta.Name, "internalOrganisation"));
+            builder.WithBilledToInternalOrganisation(new InternalOrganisations(this.DatabaseSession).FindBy(M.InternalOrganisation.Name, "internalOrganisation"));
             builder.Build();
 
             Assert.IsTrue(this.DatabaseSession.Derive().HasErrors);
 
             this.DatabaseSession.Rollback();
 
-            builder.WithBilledFromParty(new Organisations(this.DatabaseSession).FindBy(Organisations.Meta.Name, "supplier"));
+            builder.WithBilledFromParty(new Organisations(this.DatabaseSession).FindBy(M.Organisation.Name, "supplier"));
             builder.Build();
 
             Assert.IsFalse(this.DatabaseSession.Derive().HasErrors);
@@ -67,7 +67,7 @@ namespace Allors.Domain
                 .WithInvoiceNumber("1")
                 .WithPurchaseInvoiceType(new PurchaseInvoiceTypes(this.DatabaseSession).PurchaseInvoice)
                 .WithBilledFromParty(supplier2)
-                .WithBilledToInternalOrganisation(new InternalOrganisations(this.DatabaseSession).FindBy(InternalOrganisations.Meta.Name, "internalOrganisation"))
+                .WithBilledToInternalOrganisation(new InternalOrganisations(this.DatabaseSession).FindBy(M.InternalOrganisation.Name, "internalOrganisation"))
                 .Build();
 
             Assert.AreEqual(ErrorMessages.PartyIsNotASupplier, this.DatabaseSession.Derive().Errors[0].Message);

@@ -20,14 +20,16 @@
 
 namespace Allors.Domain
 {
+    using Meta;
+
     public partial class RequestItem
     {
         public void AppsOnDerive(ObjectOnDerive method)
         {
             var derivation = method.Derivation;
 
-            derivation.Validation.AssertAtLeastOne(this, RequestItems.Meta.Product, RequestItems.Meta.ProductFeature, RequestItems.Meta.Description, RequestItems.Meta.NeededSkill, RequestItems.Meta.Deliverable);
-            derivation.Validation.AssertExistsAtMostOne(this, RequestItems.Meta.Product, RequestItems.Meta.ProductFeature, RequestItems.Meta.Description, RequestItems.Meta.NeededSkill, RequestItems.Meta.Deliverable);
+            derivation.Validation.AssertAtLeastOne(this, M.RequestItem.Product, M.RequestItem.ProductFeature, M.RequestItem.Description, M.RequestItem.NeededSkill, M.RequestItem.Deliverable);
+            derivation.Validation.AssertExistsAtMostOne(this, M.RequestItem.Product, M.RequestItem.ProductFeature, M.RequestItem.Description, M.RequestItem.NeededSkill, M.RequestItem.Deliverable);
         }
     }
 }

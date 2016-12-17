@@ -20,13 +20,15 @@
 
 namespace Allors.Domain
 {
+    using Meta;
+
     public partial class RevenueQuantityBreak
     {
         public void AppsOnDerive(ObjectOnDerive method)
         {
             var derivation = method.Derivation;
 
-            derivation.Validation.AssertAtLeastOne(this, RevenueQuantityBreaks.Meta.From, RevenueQuantityBreaks.Meta.Through);
+            derivation.Validation.AssertAtLeastOne(this, M.RevenueQuantityBreak.From, M.RevenueQuantityBreak.Through);
         }
     }
 }

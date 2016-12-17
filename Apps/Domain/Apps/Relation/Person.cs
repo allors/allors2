@@ -163,7 +163,7 @@ namespace Allors.Domain
             //foreach (OrganisationContactRelationship contactRelationship in contactRelationships)
             //{
             //    var customerRelationships = contactRelationship.Organisation.CustomerRelationshipsWhereCustomer;
-            //    customerRelationships.Filter.AddLessThan(CustomerRelationships.Meta.FromDate, date.AddDays(1));
+            //    customerRelationships.Filter.AddLessThan(M.CustomerRelationship.FromDate, date.AddDays(1));
             //    var or2 = contactRelationships.Filter.AddOr();
             //    or2.AddNot().AddExists(PartyRelationships.Meta.ThroughDate);
             //    or2.AddGreaterThan(PartyRelationships.Meta.ThroughDate, date.AddDays(-1));

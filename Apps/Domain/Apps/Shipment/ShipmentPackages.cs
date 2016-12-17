@@ -24,7 +24,7 @@ namespace Allors.Domain
 
     public partial class ShipmentPackages
     {
-        protected override void AppsSecure(Domain.Security config)
+        protected override void AppsSecure(Security config)
         {
             base.AppsSecure(config);
 

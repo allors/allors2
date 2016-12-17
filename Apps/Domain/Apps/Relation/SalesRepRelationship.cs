@@ -21,6 +21,7 @@
 namespace Allors.Domain
 {
     using System;
+    using Meta;
 
     public partial class SalesRepRelationship
     {
@@ -76,7 +77,7 @@ namespace Allors.Domain
         public void AppsOnDeriveMembership()
         {
             var usergroups = this.InternalOrganisation.UserGroupsWhereParty;
-            usergroups.Filter.AddEquals(UserGroups.Meta.Parent, new Roles(this.Strategy.Session).Sales.UserGroupWhereRole);
+            usergroups.Filter.AddEquals(M.UserGroup.Parent, new Roles(this.Strategy.Session).Sales.UserGroupWhereRole);
             var salesRepUserGroup = usergroups.First;
 
             if (this.ExistSalesRepresentative && this.SalesRepresentative.ExistCurrentEmployment

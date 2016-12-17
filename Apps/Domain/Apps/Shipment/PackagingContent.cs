@@ -20,6 +20,7 @@
 
 namespace Allors.Domain
 {
+    using Meta;
     using Resources;
 
     public partial class PackagingContent
@@ -62,7 +63,7 @@ namespace Allors.Domain
                 var maxQuantity = this.ShipmentItem.Quantity - this.ShipmentItem.QuantityShipped;
                 if (this.Quantity == 0 || this.Quantity > maxQuantity)
                 {
-                    derivation.Validation.AddError(this, PackagingContents.Meta.Quantity, ErrorMessages.PackagingContentMaximum);
+                    derivation.Validation.AddError(this, M.PackagingContent.Quantity, ErrorMessages.PackagingContentMaximum);
                 }
             }
         }

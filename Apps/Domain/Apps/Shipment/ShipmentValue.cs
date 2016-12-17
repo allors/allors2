@@ -20,13 +20,15 @@
 
 namespace Allors.Domain
 {
+    using Meta;
+
     public partial class ShipmentValue
     {
         public void AppsOnDerive(ObjectOnDerive method)
         {
             var derivation = method.Derivation;
 
-            derivation.Validation.AssertAtLeastOne(this, ShipmentValues.Meta.FromAmount, ShipmentValues.Meta.ThroughAmount);
+            derivation.Validation.AssertAtLeastOne(this, M.ShipmentValue.FromAmount, M.ShipmentValue.ThroughAmount);
         }
     }
 }

@@ -22,6 +22,7 @@
 namespace Allors.Domain
 {
     using System;
+    using Meta;
     using NUnit.Framework;
 
     [TestFixture]
@@ -43,7 +44,7 @@ namespace Allors.Domain
 
             var purchasePrice = new ProductPurchasePriceBuilder(this.DatabaseSession)
                 .WithFromDate(DateTime.UtcNow)
-                .WithCurrency(new Currencies(this.DatabaseSession).FindBy(Currencies.Meta.IsoCode, "EUR"))
+                .WithCurrency(new Currencies(this.DatabaseSession).FindBy(M.Currency.IsoCode, "EUR"))
                 .WithPrice(1)
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.DatabaseSession).Piece)
                 .Build();
@@ -100,7 +101,7 @@ namespace Allors.Domain
         public void GivenNewGood_WhenDeriving_ThenNonSerializedInventryItemIsCreatedForEveryFacility()
         {
             var supplier = new OrganisationBuilder(this.DatabaseSession).WithName("supplier").Build();
-            var internalOrganisation = new InternalOrganisations(this.DatabaseSession).FindBy(InternalOrganisations.Meta.Name, "internalOrganisation");
+            var internalOrganisation = new InternalOrganisations(this.DatabaseSession).FindBy(M.InternalOrganisation.Name, "internalOrganisation");
             var secondFacility = new WarehouseBuilder(this.DatabaseSession).WithName("second facility").WithOwner(internalOrganisation).Build();
 
             new SupplierRelationshipBuilder(this.DatabaseSession)
@@ -111,7 +112,7 @@ namespace Allors.Domain
 
             var purchasePrice = new ProductPurchasePriceBuilder(this.DatabaseSession)
                 .WithFromDate(DateTime.UtcNow)
-                .WithCurrency(new Currencies(this.DatabaseSession).FindBy(Currencies.Meta.IsoCode, "EUR"))
+                .WithCurrency(new Currencies(this.DatabaseSession).FindBy(M.Currency.IsoCode, "EUR"))
                 .WithPrice(1)
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.DatabaseSession).Piece)
                 .Build();
@@ -142,7 +143,7 @@ namespace Allors.Domain
         public void GivenNewGoodCoredOnFinishedGood_WhenDeriving_ThenNonSerializedInventryItemIsCreatedForEveryFinishedGoodAndFacility()
         {
             var supplier = new OrganisationBuilder(this.DatabaseSession).WithName("supplier").Build();
-            var internalOrganisation = new InternalOrganisations(this.DatabaseSession).FindBy(InternalOrganisations.Meta.Name, "internalOrganisation");
+            var internalOrganisation = new InternalOrganisations(this.DatabaseSession).FindBy(M.InternalOrganisation.Name, "internalOrganisation");
             var secondFacility = new WarehouseBuilder(this.DatabaseSession).WithName("second facility").WithOwner(internalOrganisation).Build();
 
             new SupplierRelationshipBuilder(this.DatabaseSession)
@@ -157,7 +158,7 @@ namespace Allors.Domain
 
             var purchasePrice = new ProductPurchasePriceBuilder(this.DatabaseSession)
                 .WithFromDate(DateTime.UtcNow)
-                .WithCurrency(new Currencies(this.DatabaseSession).FindBy(Currencies.Meta.IsoCode, "EUR"))
+                .WithCurrency(new Currencies(this.DatabaseSession).FindBy(M.Currency.IsoCode, "EUR"))
                 .WithPrice(1)
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.DatabaseSession).Piece)
                 .Build();

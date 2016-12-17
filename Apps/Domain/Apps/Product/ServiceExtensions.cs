@@ -36,7 +36,7 @@ namespace Allors.Domain
         {
             if (!@this.ExistSoldBy)
             {
-                @this.SoldBy = Domain.Singleton.Instance(@this.Strategy.Session).DefaultInternalOrganisation;
+                @this.SoldBy = Singleton.Instance(@this.Strategy.Session).DefaultInternalOrganisation;
             }
         }
 

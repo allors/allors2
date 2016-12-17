@@ -21,6 +21,7 @@
 namespace Allors.Domain
 {
     using System;
+    using Meta;
 
     public partial class StoreRevenue
     {
@@ -40,8 +41,8 @@ namespace Allors.Domain
             var toDate = DateTimeFactory.CreateDate(this.Year, this.Month, 01).AddMonths(1);
 
             var invoices = this.Store.SalesInvoicesWhereStore;
-            invoices.Filter.AddNot().AddEquals(SalesInvoices.Meta.CurrentObjectState, new SalesInvoiceObjectStates(this.Strategy.Session).WrittenOff);
-            invoices.Filter.AddBetween(SalesInvoices.Meta.InvoiceDate, DateTimeFactory.CreateDate(this.Year, this.Month, 01), toDate);
+            invoices.Filter.AddNot().AddEquals(M.SalesInvoice.CurrentObjectState, new SalesInvoiceObjectStates(this.Strategy.Session).WrittenOff);
+            invoices.Filter.AddBetween(M.Invoice.InvoiceDate, DateTimeFactory.CreateDate(this.Year, this.Month, 01), toDate);
 
             foreach (SalesInvoice salesInvoice in invoices)
             {
@@ -52,7 +53,7 @@ namespace Allors.Domain
             if (months <= 12)
             {
                 var histories = this.Store.StoreRevenueHistoriesWhereStore;
-                histories.Filter.AddEquals(StoreRevenueHistories.Meta.InternalOrganisation, this.InternalOrganisation);
+                histories.Filter.AddEquals(M.StoreRevenueHistory.InternalOrganisation, this.InternalOrganisation);
                 var history = histories.First ?? new StoreRevenueHistoryBuilder(this.Strategy.Session)
                                                      .WithCurrency(this.Currency)
                                                      .WithInternalOrganisation(this.InternalOrganisation)

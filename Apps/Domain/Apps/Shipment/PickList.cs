@@ -59,7 +59,7 @@ namespace Allors.Domain
 
             if (!this.ExistStore)
             {
-                var internalOrganisation = Allors.Domain.Singleton.Instance(this.Strategy.Session).DefaultInternalOrganisation;
+                var internalOrganisation = Singleton.Instance(this.Strategy.Session).DefaultInternalOrganisation;
                 if (internalOrganisation.StoresWhereOwner.Count == 1)
                 {
                     this.Store = internalOrganisation.StoresWhereOwner.First;
@@ -105,7 +105,7 @@ namespace Allors.Domain
         public void AppsOnPostDerive(ObjectOnPostDerive method)
         {
             this.RemoveSecurityTokens();
-            this.AddSecurityToken(Allors.Domain.Singleton.Instance(this.Strategy.Session).DefaultSecurityToken);
+            this.AddSecurityToken(Allors.Singleton.Instance(this.Strategy.Session).DefaultSecurityToken);
 
             if (this.ExistShipToParty)
             {

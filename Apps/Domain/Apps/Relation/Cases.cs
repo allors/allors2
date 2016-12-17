@@ -20,13 +20,15 @@
 
 namespace Allors.Domain
 {
+    using Meta;
+
     public partial class Cases
     {
         protected override void AppsPrepare(Setup setup)
         {
             base.AppsPrepare(setup);
 
-            setup.AddDependency(this.ObjectType, CaseObjectStates.Meta.ObjectType);
+            setup.AddDependency(this.ObjectType, M.CaseObjectState);
         }
         
         protected override void AppsSecure(Security config)

@@ -21,6 +21,7 @@
 namespace Allors.Domain
 {
     using System;
+    using Meta;
     using NUnit.Framework;
 
     [TestFixture]
@@ -50,7 +51,7 @@ namespace Allors.Domain
 
             this.DatabaseSession.Derive(true);
 
-            var euro = new Currencies(this.DatabaseSession).FindBy(Currencies.Meta.IsoCode, "EUR");
+            var euro = new Currencies(this.DatabaseSession).FindBy(M.Currency.IsoCode, "EUR");
             var vatRate21 = new VatRateBuilder(this.DatabaseSession).WithRate(21).Build();
 
             var good1 = new GoodBuilder(this.DatabaseSession)
@@ -71,7 +72,7 @@ namespace Allors.Domain
                 .WithPrimaryProductCategory(cat2)
                 .Build();
 
-            var internalOrganisation = new InternalOrganisations(this.DatabaseSession).FindBy(InternalOrganisations.Meta.Name, "internalOrganisation");
+            var internalOrganisation = new InternalOrganisations(this.DatabaseSession).FindBy(M.InternalOrganisation.Name, "internalOrganisation");
             internalOrganisation.PreferredCurrency = euro;
 
             new CustomerRelationshipBuilder(this.DatabaseSession).WithFromDate(DateTime.UtcNow).WithCustomer(customer1).WithInternalOrganisation(internalOrganisation).Build();
@@ -101,11 +102,11 @@ namespace Allors.Domain
             Singleton.Instance(this.DatabaseSession).DeriveRevenues();
 
             var salesRep1Customer1Revenues = salesRep1.SalesRepPartyRevenuesWhereSalesRep;
-            salesRep1Customer1Revenues.Filter.AddEquals(SalesRepPartyRevenues.Meta.Party, customer1);
+            salesRep1Customer1Revenues.Filter.AddEquals(M.SalesRepPartyRevenue.Party, customer1);
             var salesRep1Customer1Revenue = salesRep1Customer1Revenues.First;
 
             var salesRep2Customer1Revenues = salesRep2.SalesRepPartyRevenuesWhereSalesRep;
-            salesRep2Customer1Revenues.Filter.AddEquals(SalesRepPartyRevenues.Meta.Party, customer1);
+            salesRep2Customer1Revenues.Filter.AddEquals(M.SalesRepPartyRevenue.Party, customer1);
             var salesRep2Customer1Revenue = salesRep2Customer1Revenues.First;
 
             Assert.AreEqual(90, salesRep1Customer1Revenue.Revenue);
@@ -132,19 +133,19 @@ namespace Allors.Domain
             Singleton.Instance(this.DatabaseSession).DeriveRevenues();
 
             salesRep1Customer1Revenues = salesRep1.SalesRepPartyRevenuesWhereSalesRep;
-            salesRep1Customer1Revenues.Filter.AddEquals(SalesRepPartyRevenues.Meta.Party, customer1);
+            salesRep1Customer1Revenues.Filter.AddEquals(M.SalesRepPartyRevenue.Party, customer1);
             salesRep1Customer1Revenue = salesRep1Customer1Revenues.First;
 
             salesRep2Customer1Revenues = salesRep2.SalesRepPartyRevenuesWhereSalesRep;
-            salesRep2Customer1Revenues.Filter.AddEquals(SalesRepPartyRevenues.Meta.Party, customer1);
+            salesRep2Customer1Revenues.Filter.AddEquals(M.SalesRepPartyRevenue.Party, customer1);
             salesRep2Customer1Revenue = salesRep2Customer1Revenues.First;
 
             var salesRep1Customer2Revenues = salesRep1.SalesRepPartyRevenuesWhereSalesRep;
-            salesRep1Customer2Revenues.Filter.AddEquals(SalesRepPartyRevenues.Meta.Party, customer2);
+            salesRep1Customer2Revenues.Filter.AddEquals(M.SalesRepPartyRevenue.Party, customer2);
             var salesRep1Customer2Revenue = salesRep1Customer2Revenues.First;
 
             var salesRep2Customer2Revenues = salesRep2.SalesRepPartyRevenuesWhereSalesRep;
-            salesRep2Customer2Revenues.Filter.AddEquals(SalesRepPartyRevenues.Meta.Party, customer2);
+            salesRep2Customer2Revenues.Filter.AddEquals(M.SalesRepPartyRevenue.Party, customer2);
             var salesRep2Customer2Revenue = salesRep2Customer2Revenues.First;
 
             Assert.AreEqual(90, salesRep1Customer1Revenue.Revenue);

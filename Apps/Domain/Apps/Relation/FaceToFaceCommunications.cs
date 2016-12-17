@@ -20,6 +20,8 @@
 
 namespace Allors.Domain
 {
+    using Meta;
+
     public partial class FaceToFaceCommunications
     {
         protected override void AppsSecure(Security config)
@@ -35,11 +37,11 @@ namespace Allors.Domain
             ObjectState cancelled = new CommunicationEventObjectStates(this.Session).Cancelled;
             ObjectState closed = new CommunicationEventObjectStates(this.Session).Completed;
 
-            config.Deny(this.ObjectType, scheduled, CommunicationEvents.Meta.Reopen);
-            config.Deny(this.ObjectType, closed, CommunicationEvents.Meta.Close, CommunicationEvents.Meta.Cancel);
+            config.Deny(this.ObjectType, scheduled, M.CommunicationEvent.Reopen);
+            config.Deny(this.ObjectType, closed, M.CommunicationEvent.Close, M.CommunicationEvent.Cancel);
 
             config.Deny(this.ObjectType, closed, Operations.Write);
-            config.Deny(this.ObjectType, cancelled, Operation.Execute, Operations.Write);
+            config.Deny(this.ObjectType, cancelled, Operations.Execute, Operations.Write);
         }
     }
 }

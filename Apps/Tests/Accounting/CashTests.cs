@@ -22,6 +22,7 @@
 namespace Allors.Domain
 {
     using System;
+    using Meta;
     using NUnit.Framework;
 
     [TestFixture]
@@ -55,7 +56,7 @@ namespace Allors.Domain
                 .WithLocale(new Locales(this.DatabaseSession).EnglishGreatBritain)
                 .Build();
 
-            var internalOrganisation = new InternalOrganisations(this.DatabaseSession).FindBy(InternalOrganisations.Meta.Name, "internalOrganisation");
+            var internalOrganisation = new InternalOrganisations(this.DatabaseSession).FindBy(M.InternalOrganisation.Name, "internalOrganisation");
 
             var supplierRelationship = new SupplierRelationshipBuilder(this.DatabaseSession)
                 .WithSupplier(supplier)
@@ -107,7 +108,7 @@ namespace Allors.Domain
                 .WithLocale(new Locales(this.DatabaseSession).EnglishGreatBritain)
                 .Build();
 
-            var internalOrganisation = new InternalOrganisations(this.DatabaseSession).FindBy(InternalOrganisations.Meta.Name, "internalOrganisation");
+            var internalOrganisation = new InternalOrganisations(this.DatabaseSession).FindBy(M.InternalOrganisation.Name, "internalOrganisation");
 
             var supplierRelationship = new SupplierRelationshipBuilder(this.DatabaseSession)
                 .WithSupplier(supplier)

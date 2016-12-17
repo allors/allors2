@@ -20,7 +20,7 @@
 
 namespace Allors.Domain
 {
-    using Allors.Meta;
+    using Meta;
 
     public partial class Budgets
     {

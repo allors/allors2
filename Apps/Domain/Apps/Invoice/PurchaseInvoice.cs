@@ -21,7 +21,7 @@
 namespace Allors.Domain
 {
     using System;
-    using System.Globalization;
+    using Meta;
     using Resources;
 
     public partial class PurchaseInvoice
@@ -72,7 +72,7 @@ namespace Allors.Domain
                 if (supplier != null)
                 {
                     var supplierRelationships = supplier.SupplierRelationshipsWhereSupplier;
-                    supplierRelationships.Filter.AddEquals(SupplierRelationships.Meta.InternalOrganisation, this.BilledToInternalOrganisation);
+                    supplierRelationships.Filter.AddEquals(M.SupplierRelationship.InternalOrganisation, this.BilledToInternalOrganisation);
 
                     foreach (SupplierRelationship supplierRelationship in supplierRelationships)
                     {

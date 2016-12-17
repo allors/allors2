@@ -20,14 +20,16 @@
 
 namespace Allors.Domain
 {
+    using Meta;
+
     public partial class PayHistory
     {
         public void AppsOnDerive(ObjectOnDerive method)
         {
             var derivation = method.Derivation;   
 
-            derivation.Validation.AssertAtLeastOne(this, PayHistories.Meta.Amount, PayHistories.Meta.SalaryStep);
-            derivation.Validation.AssertExistsAtMostOne(this, PayHistories.Meta.Amount, PayHistories.Meta.SalaryStep);
+            derivation.Validation.AssertAtLeastOne(this, M.PayHistory.Amount, M.PayHistory.SalaryStep);
+            derivation.Validation.AssertExistsAtMostOne(this, M.PayHistory.Amount, M.PayHistory.SalaryStep);
         }
     }
 }

@@ -21,7 +21,7 @@
 namespace Allors.Domain
 {
     using System.Collections.Generic;
-
+    using Meta;
     using Resources;
 
     public partial class ProductCategory
@@ -64,7 +64,7 @@ namespace Allors.Domain
 
             if (this.ExistProductCategoriesWhereParent && this.ExistPackage)
             {
-                derivation.Validation.AddError(this, ProductCategories.Meta.Package, ErrorMessages.ProductCategoryPackageOnlyAtLowestLevel);
+                derivation.Validation.AddError(this, M.ProductCategoryPackage, ErrorMessages.ProductCategoryPackageOnlyAtLowestLevel);
             }
 
             foreach (ProductCategory productCategory in this.ProductCategoriesWhereAncestor)

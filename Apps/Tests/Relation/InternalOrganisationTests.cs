@@ -24,6 +24,7 @@
 namespace Allors.Domain
 {
     using System;
+    using Meta;
     using NUnit.Framework;
 
     [TestFixture]
@@ -163,7 +164,7 @@ namespace Allors.Domain
 
             this.DatabaseSession.Derive(true);
 
-            Assert.AreEqual(new InvoiceSequences(this.DatabaseSession).FindBy(UniquelyIdentifiables.Meta.UniqueId, InvoiceSequences.RestartOnFiscalYearId), internalOrganisation.InvoiceSequence);
+            Assert.AreEqual(new InvoiceSequences(this.DatabaseSession).FindBy(M.UniquelyIdentifiable.UniqueId, InvoiceSequences.RestartOnFiscalYearId), internalOrganisation.InvoiceSequence);
         }
 
         [Test]
@@ -222,7 +223,7 @@ namespace Allors.Domain
 
             var name = string.Format("{0} for {1})", new Roles(this.DatabaseSession).Administrator.Name, internalOrganisation.Name);
 
-            Assert.IsNotNull(new UserGroups(this.DatabaseSession).FindBy(UserGroups.Meta.Name, name));
+            Assert.IsNotNull(new UserGroups(this.DatabaseSession).FindBy(M.UserGroup.Name, name));
         }
 
         [Test]
@@ -242,7 +243,7 @@ namespace Allors.Domain
             this.DatabaseSession.Derive(true);
 
             var name = string.Format("{0} for {1})", new Roles(this.DatabaseSession).Administrator.Name, internalOrganisation.Name);
-            var userGroup = new UserGroups(this.DatabaseSession).FindBy(UserGroups.Meta.Name, name);
+            var userGroup = new UserGroups(this.DatabaseSession).FindBy(M.UserGroup.Name, name);
             Assert.IsNotNull(userGroup);
         }
 
@@ -263,7 +264,7 @@ namespace Allors.Domain
             this.DatabaseSession.Derive(true);
 
             var name = string.Format("{0} for {1})", new Roles(this.DatabaseSession).Administrator.Name, internalOrganisation.Name);
-            var userGroup = new UserGroups(this.DatabaseSession).FindBy(UserGroups.Meta.Name, name);
+            var userGroup = new UserGroups(this.DatabaseSession).FindBy(M.UserGroup.Name, name);
             Assert.IsNotNull(userGroup);
 
             internalOrganisation.RemoveEmployeeRole(new Roles(this.DatabaseSession).Administrator);
@@ -289,11 +290,11 @@ namespace Allors.Domain
             this.DatabaseSession.Derive(true);
             Assert.IsNotNull(organisation.PreviousCurrency);
                
-            organisation.PreferredCurrency = new Currencies(this.DatabaseSession).FindBy(Currencies.Meta.IsoCode, "GBP");
+            organisation.PreferredCurrency = new Currencies(this.DatabaseSession).FindBy(M.Currency.IsoCode, "GBP");
 
             Assert.IsTrue(this.DatabaseSession.Derive().HasErrors);
 
-            organisation.PreferredCurrency = new Currencies(this.DatabaseSession).FindBy(Currencies.Meta.IsoCode, "EUR");
+            organisation.PreferredCurrency = new Currencies(this.DatabaseSession).FindBy(M.Currency.IsoCode, "EUR");
 
             Assert.IsFalse(this.DatabaseSession.Derive().HasErrors);
         }

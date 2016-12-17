@@ -20,6 +20,8 @@
 
 namespace Allors.Domain
 {
+    using Meta;
+
     public partial class Good
     {
         public void DeriveVirtualProductPriceComponent()
@@ -111,7 +113,7 @@ namespace Allors.Domain
         {
             if (!this.ExistSoldBy)
             {
-                this.SoldBy = Domain.Singleton.Instance(this.Strategy.Session).DefaultInternalOrganisation;
+                this.SoldBy = Singleton.Instance(this.Strategy.Session).DefaultInternalOrganisation;
             }
         }
 
@@ -136,8 +138,8 @@ namespace Allors.Domain
         {
             var derivation = method.Derivation;
 
-            derivation.Validation.AssertAtLeastOne(this, Goods.Meta.FinishedGood, Goods.Meta.InventoryItemKind);
-            derivation.Validation.AssertExistsAtMostOne(this, Goods.Meta.FinishedGood, Goods.Meta.InventoryItemKind);
+            derivation.Validation.AssertAtLeastOne(this, M.Good.FinishedGood, M.Good.InventoryItemKind);
+            derivation.Validation.AssertExistsAtMostOne(this, M.Good.FinishedGood, M.Good.InventoryItemKind);
 
             if (this.ProductCategories.Count == 1 && !this.ExistPrimaryProductCategory)
             {

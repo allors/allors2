@@ -21,6 +21,7 @@
 
 namespace Allors.Domain
 {
+    using Meta;
     using NUnit.Framework;
 
     [TestFixture]
@@ -50,7 +51,7 @@ namespace Allors.Domain
                 .Build();
 
             Assert.AreEqual(new InventoryItemKinds(this.DatabaseSession).NonSerialized, finishedGood.InventoryItemKind);
-            Assert.AreEqual(new InternalOrganisations(this.DatabaseSession).FindBy(InternalOrganisations.Meta.Name, "internalOrganisation"), finishedGood.OwnedByParty);
+            Assert.AreEqual(new InternalOrganisations(this.DatabaseSession).FindBy(M.InternalOrganisation.Name, "internalOrganisation"), finishedGood.OwnedByParty);
         }
 
         [Test]
@@ -63,7 +64,7 @@ namespace Allors.Domain
             this.DatabaseSession.Derive(true);
             
             Assert.AreEqual(1, finishedGood.InventoryItemsWherePart.Count);
-            Assert.AreEqual(new Warehouses(this.DatabaseSession).FindBy(Warehouses.Meta.Name, "facility"), finishedGood.InventoryItemsWherePart.First.Facility);
+            Assert.AreEqual(new Warehouses(this.DatabaseSession).FindBy(M.Warehouse.Name, "facility"), finishedGood.InventoryItemsWherePart.First.Facility);
         }
 
         [Test]
@@ -90,7 +91,7 @@ namespace Allors.Domain
                 .Build();
 
             Assert.AreEqual(new InventoryItemKinds(this.DatabaseSession).NonSerialized, rawMaterial.InventoryItemKind);
-            Assert.AreEqual(new InternalOrganisations(this.DatabaseSession).FindBy(InternalOrganisations.Meta.Name, "internalOrganisation"), rawMaterial.OwnedByParty);
+            Assert.AreEqual(new InternalOrganisations(this.DatabaseSession).FindBy(M.InternalOrganisation.Name, "internalOrganisation"), rawMaterial.OwnedByParty);
         }
 
         [Test]
@@ -103,7 +104,7 @@ namespace Allors.Domain
             this.DatabaseSession.Derive(true);
 
             Assert.AreEqual(1, rawMaterial.InventoryItemsWherePart.Count);
-            Assert.AreEqual(new Warehouses(this.DatabaseSession).FindBy(Warehouses.Meta.Name, "facility"), rawMaterial.InventoryItemsWherePart.First.Facility);
+            Assert.AreEqual(new Warehouses(this.DatabaseSession).FindBy(M.Warehouse.Name, "facility"), rawMaterial.InventoryItemsWherePart.First.Facility);
         }
 
         [Test]
@@ -130,7 +131,7 @@ namespace Allors.Domain
                 .Build();
 
             Assert.AreEqual(new InventoryItemKinds(this.DatabaseSession).NonSerialized, subAssembly.InventoryItemKind);
-            Assert.AreEqual(new InternalOrganisations(this.DatabaseSession).FindBy(InternalOrganisations.Meta.Name, "internalOrganisation"), subAssembly.OwnedByParty);
+            Assert.AreEqual(new InternalOrganisations(this.DatabaseSession).FindBy(M.InternalOrganisation.Name, "internalOrganisation"), subAssembly.OwnedByParty);
         }
 
         [Test]
@@ -143,7 +144,7 @@ namespace Allors.Domain
             this.DatabaseSession.Derive(true);
 
             Assert.AreEqual(1, subAssembly.InventoryItemsWherePart.Count);
-            Assert.AreEqual(new Warehouses(this.DatabaseSession).FindBy(Warehouses.Meta.Name, "facility"), subAssembly.InventoryItemsWherePart.First.Facility);
+            Assert.AreEqual(new Warehouses(this.DatabaseSession).FindBy(M.Warehouse.Name, "facility"), subAssembly.InventoryItemsWherePart.First.Facility);
         }
     }
 }

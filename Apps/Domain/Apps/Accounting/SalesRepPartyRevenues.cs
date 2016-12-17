@@ -22,17 +22,17 @@ namespace Allors.Domain
 {
     using System;
     using System.Collections.Generic;
-
+    using Meta;
 
     public partial class SalesRepPartyRevenues
     {
         public static SalesRepPartyRevenue AppsFindOrCreateAsDependable(ISession session, SalesRepPartyProductCategoryRevenue dependant)
         {
             var salesRepPartyRevenues = dependant.SalesRep.SalesRepPartyRevenuesWhereSalesRep;
-            salesRepPartyRevenues.Filter.AddEquals(SalesRepPartyRevenues.Meta.InternalOrganisation, dependant.InternalOrganisation);
-            salesRepPartyRevenues.Filter.AddEquals(SalesRepPartyRevenues.Meta.Party, dependant.Party);
-            salesRepPartyRevenues.Filter.AddEquals(SalesRepPartyRevenues.Meta.Year, dependant.Year);
-            salesRepPartyRevenues.Filter.AddEquals(SalesRepPartyRevenues.Meta.Month, dependant.Month);
+            salesRepPartyRevenues.Filter.AddEquals(M.SalesRepPartyRevenue.InternalOrganisation, dependant.InternalOrganisation);
+            salesRepPartyRevenues.Filter.AddEquals(M.SalesRepPartyRevenue.Party, dependant.Party);
+            salesRepPartyRevenues.Filter.AddEquals(M.SalesRepPartyRevenue.Year, dependant.Year);
+            salesRepPartyRevenues.Filter.AddEquals(M.SalesRepPartyRevenue.Month, dependant.Month);
             var salesRepPartyRevenue = salesRepPartyRevenues.First ?? new SalesRepPartyRevenueBuilder(session)
                                                                             .WithInternalOrganisation(dependant.InternalOrganisation)
                                                                             .WithParty(dependant.Party)
@@ -51,10 +51,10 @@ namespace Allors.Domain
         public static SalesRepPartyRevenue AppsFindOrCreateAsDependable(ISession session, SalesInvoiceItem salesInvoiceItem)
         {
             var salesRepPartyRevenues = salesInvoiceItem.SalesRep.SalesRepPartyRevenuesWhereSalesRep;
-            salesRepPartyRevenues.Filter.AddEquals(SalesRepPartyRevenues.Meta.InternalOrganisation, salesInvoiceItem.SalesInvoiceWhereSalesInvoiceItem.BilledFromInternalOrganisation);
-            salesRepPartyRevenues.Filter.AddEquals(SalesRepPartyRevenues.Meta.Party, salesInvoiceItem.SalesInvoiceWhereSalesInvoiceItem.BillToCustomer);
-            salesRepPartyRevenues.Filter.AddEquals(SalesRepPartyRevenues.Meta.Year, salesInvoiceItem.SalesInvoiceWhereSalesInvoiceItem.InvoiceDate.Year);
-            salesRepPartyRevenues.Filter.AddEquals(SalesRepPartyRevenues.Meta.Month, salesInvoiceItem.SalesInvoiceWhereSalesInvoiceItem.InvoiceDate.Month);
+            salesRepPartyRevenues.Filter.AddEquals(M.SalesRepPartyRevenue.InternalOrganisation, salesInvoiceItem.SalesInvoiceWhereSalesInvoiceItem.BilledFromInternalOrganisation);
+            salesRepPartyRevenues.Filter.AddEquals(M.SalesRepPartyRevenue.Party, salesInvoiceItem.SalesInvoiceWhereSalesInvoiceItem.BillToCustomer);
+            salesRepPartyRevenues.Filter.AddEquals(M.SalesRepPartyRevenue.Year, salesInvoiceItem.SalesInvoiceWhereSalesInvoiceItem.InvoiceDate.Year);
+            salesRepPartyRevenues.Filter.AddEquals(M.SalesRepPartyRevenue.Month, salesInvoiceItem.SalesInvoiceWhereSalesInvoiceItem.InvoiceDate.Month);
             var salesRepPartyRevenue = salesRepPartyRevenues.First ?? new SalesRepPartyRevenueBuilder(session)
                                                                             .WithInternalOrganisation(salesInvoiceItem.SalesInvoiceWhereSalesInvoiceItem.BilledFromInternalOrganisation)
                                                                             .WithParty(salesInvoiceItem.SalesInvoiceWhereSalesInvoiceItem.BillToCustomer)

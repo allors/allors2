@@ -24,8 +24,9 @@ namespace Allors.Domain
     using System;
     using System.Security.Principal;
     using System.Threading;
+    using Meta;
+    using Meta;
     using NUnit.Framework;
-
     using Resources;
 
     [TestFixture]
@@ -59,8 +60,8 @@ namespace Allors.Domain
             Assert.AreEqual(order.PreviousBillToCustomer, order.BillToCustomer);
             Assert.AreEqual(order.PreviousShipToCustomer, order.ShipToCustomer);
             Assert.AreEqual(order.VatRegime, order.BillToCustomer.VatRegime);
-            Assert.AreEqual(new InternalOrganisations(this.DatabaseSession).FindBy(InternalOrganisations.Meta.Name, "internalOrganisation"), order.TakenByInternalOrganisation);
-            Assert.AreEqual(new Stores(this.DatabaseSession).FindBy(Stores.Meta.Name, "store"), order.Store);
+            Assert.AreEqual(new InternalOrganisations(this.DatabaseSession).FindBy(M.InternalOrganisation.Name, "internalOrganisation"), order.TakenByInternalOrganisation);
+            Assert.AreEqual(new Stores(this.DatabaseSession).FindBy(M.Store.Name, "store"), order.Store);
             Assert.AreEqual(order.TakenByInternalOrganisation.PreferredCurrency, order.CustomerCurrency);
             Assert.AreEqual(order.Store.DefaultPaymentMethod, order.PaymentMethod);
             Assert.AreEqual(order.Store.DefaultShipmentMethod, order.ShipmentMethod);
@@ -138,7 +139,7 @@ namespace Allors.Domain
             var shipment = (CustomerShipment)mechelenAddress.ShipmentsWhereShipToAddress[0];
 
             var pickList = shipment.ShipmentItems[0].ItemIssuancesWhereShipmentItem[0].PickListItem.PickListWherePickListItem;
-            pickList.Picker = new Persons(this.DatabaseSession).FindBy(Persons.Meta.LastName, "orderProcessor");
+            pickList.Picker = new People(this.DatabaseSession).FindBy(M.Person.LastName, "orderProcessor");
 
             pickList.SetPicked();
             this.DatabaseSession.Derive(true);
@@ -184,7 +185,7 @@ namespace Allors.Domain
                 .WithBankAccount(new BankAccountBuilder(this.DatabaseSession).WithBank(bank).WithCurrency(euro).WithIban("BE23 3300 6167 6391").WithNameOnAccount("Koen").Build())
                 .Build();
 
-            var customer = new Organisations(this.DatabaseSession).FindBy(Organisations.Meta.Name, "customer");
+            var customer = new Organisations(this.DatabaseSession).FindBy(M.Organisation.Name, "customer");
             var internalOrganisation = Singleton.Instance(this.DatabaseSession).DefaultInternalOrganisation;
 
             new CustomerRelationshipBuilder(this.DatabaseSession).WithFromDate(DateTime.UtcNow).WithCustomer(customer).WithInternalOrganisation(internalOrganisation).Build();
@@ -229,14 +230,14 @@ namespace Allors.Domain
 
             var acl = new AccessControlList(order, new Users(this.DatabaseSession).GetCurrentUser());
 
-            Assert.IsTrue(acl.CanWrite(SalesOrders.Meta.Comment));
-            Assert.IsTrue(acl.CanRead(SalesOrders.Meta.Comment));
-            Assert.IsTrue(acl.CanExecute(SalesOrders.Meta.Confirm));
+            Assert.IsTrue(acl.CanWrite(M.SalesOrder.Comment));
+            Assert.IsTrue(acl.CanRead(M.SalesOrder.Comment));
+            Assert.IsTrue(acl.CanExecute(M.SalesOrder.Confirm));
 
             Thread.CurrentPrincipal = new GenericPrincipal(new GenericIdentity("salesRep2", "Forms"), new string[0]);
             acl = new AccessControlList(order, new Users(this.DatabaseSession).GetCurrentUser());
 
-            Assert.IsFalse(acl.HasReadOperation);
+            Assert.IsFalse(acl.CanRead);
         }
 
         [Test]
@@ -313,7 +314,7 @@ namespace Allors.Domain
             var shipment = (CustomerShipment)item1.OrderShipmentsWhereSalesOrderItem[0].ShipmentItem.ShipmentWhereShipmentItem;
 
             var pickList = shipment.ShipmentItems[0].ItemIssuancesWhereShipmentItem[0].PickListItem.PickListWherePickListItem;
-            pickList.Picker = new Persons(this.DatabaseSession).FindBy(Persons.Meta.LastName, "orderProcessor");
+            pickList.Picker = new People(this.DatabaseSession).FindBy(M.Person.LastName, "orderProcessor");
 
             pickList.SetPicked();
             this.DatabaseSession.Derive(true);
@@ -366,7 +367,7 @@ namespace Allors.Domain
             shipment = (CustomerShipment)item2.OrderShipmentsWhereSalesOrderItem[0].ShipmentItem.ShipmentWhereShipmentItem;
 
             pickList = shipment.ShipmentItems[0].ItemIssuancesWhereShipmentItem[0].PickListItem.PickListWherePickListItem;
-            pickList.Picker = new Persons(this.DatabaseSession).FindBy(Persons.Meta.LastName, "orderProcessor");
+            pickList.Picker = new People(this.DatabaseSession).FindBy(M.Person.LastName, "orderProcessor");
 
             pickList.SetPicked();
 
@@ -417,7 +418,7 @@ namespace Allors.Domain
             shipment = (CustomerShipment)item3.OrderShipmentsWhereSalesOrderItem[0].ShipmentItem.ShipmentWhereShipmentItem;
 
             pickList = shipment.ShipmentItems[0].ItemIssuancesWhereShipmentItem[0].PickListItem.PickListWherePickListItem;
-            pickList.Picker = new Persons(this.DatabaseSession).FindBy(Persons.Meta.LastName, "orderProcessor");
+            pickList.Picker = new People(this.DatabaseSession).FindBy(M.Person.LastName, "orderProcessor");
 
             pickList.SetPicked();
 
@@ -523,7 +524,7 @@ namespace Allors.Domain
             var pickList1 = shipment.ShipmentItems[0].ItemIssuancesWhereShipmentItem[0].PickListItem.PickListWherePickListItem;
             Assert.AreEqual(3, pickList1.PickListItems[0].RequestedQuantity);
 
-            pickList1.Picker = new Persons(this.DatabaseSession).FindBy(Persons.Meta.LastName, "orderProcessor");
+            pickList1.Picker = new People(this.DatabaseSession).FindBy(M.Person.LastName, "orderProcessor");
 
             this.DatabaseSession.Derive(true);
 
@@ -616,7 +617,7 @@ namespace Allors.Domain
             var pickList = shipment.ShipmentItems[0].ItemIssuancesWhereShipmentItem[0].PickListItem.PickListWherePickListItem;
             Assert.AreEqual(10, pickList.PickListItems[0].RequestedQuantity);
 
-            pickList.Picker = new Persons(this.DatabaseSession).FindBy(Persons.Meta.LastName, "orderProcessor");
+            pickList.Picker = new People(this.DatabaseSession).FindBy(M.Person.LastName, "orderProcessor");
 
             this.DatabaseSession.Derive(true);
 
@@ -1592,7 +1593,7 @@ namespace Allors.Domain
 
             new EmploymentBuilder(this.DatabaseSession)
                 .WithEmployee(user)
-                .WithEmployer(new InternalOrganisations(this.DatabaseSession).FindBy(InternalOrganisations.Meta.Name, "internalOrganisation"))
+                .WithEmployer(new InternalOrganisations(this.DatabaseSession).FindBy(M.InternalOrganisation.Name, "internalOrganisation"))
                 .WithFromDate(DateTime.UtcNow)
                 .Build();
 
@@ -1616,7 +1617,7 @@ namespace Allors.Domain
 
             this.DatabaseSession.Derive(true);
 
-            Assert.Contains(new InternalOrganisations(this.DatabaseSession).FindBy(InternalOrganisations.Meta.Name, "internalOrganisation").OwnerSecurityToken, order.SecurityTokens);
+            Assert.Contains(new InternalOrganisations(this.DatabaseSession).FindBy(M.InternalOrganisation.Name, "internalOrganisation").OwnerSecurityToken, order.SecurityTokens);
         }
 
         [Test]
@@ -1704,8 +1705,8 @@ namespace Allors.Domain
             var mechelen = new CityBuilder(this.DatabaseSession).WithName("Mechelen").Build();
 
             var store = new StoreBuilder(this.DatabaseSession).WithName("store")
-                .WithDefaultFacility(new Warehouses(this.DatabaseSession).FindBy(Warehouses.Meta.Name, "facility"))
-                .WithOwner(new InternalOrganisations(this.DatabaseSession).FindBy(InternalOrganisations.Meta.Name, "internalOrganisation"))
+                .WithDefaultFacility(new Warehouses(this.DatabaseSession).FindBy(M.Warehouse.Name, "facility"))
+                .WithOwner(new InternalOrganisations(this.DatabaseSession).FindBy(M.InternalOrganisation.Name, "internalOrganisation"))
                 .WithDefaultShipmentMethod(new ShipmentMethods(this.DatabaseSession).Ground)
                 .WithDefaultCarrier(new Carriers(this.DatabaseSession).Fedex)
                 .Build();
@@ -1750,8 +1751,8 @@ namespace Allors.Domain
             var mechelen = new CityBuilder(this.DatabaseSession).WithName("Mechelen").Build();
 
             var store = new StoreBuilder(this.DatabaseSession).WithName("store")
-                .WithDefaultFacility(new Warehouses(this.DatabaseSession).FindBy(Warehouses.Meta.Name, "facility"))
-                .WithOwner(new InternalOrganisations(this.DatabaseSession).FindBy(InternalOrganisations.Meta.Name, "internalOrganisation"))
+                .WithDefaultFacility(new Warehouses(this.DatabaseSession).FindBy(M.Warehouse.Name, "facility"))
+                .WithOwner(new InternalOrganisations(this.DatabaseSession).FindBy(M.InternalOrganisation.Name, "internalOrganisation"))
                 .WithSalesOrderNumberPrefix("the format is ")
                 .WithDefaultShipmentMethod(new ShipmentMethods(this.DatabaseSession).Ground)
                 .WithDefaultCarrier(new Carriers(this.DatabaseSession).Fedex)
@@ -1794,7 +1795,7 @@ namespace Allors.Domain
             this.DatabaseSession.Derive(true);
             this.DatabaseSession.Commit();
 
-            var internalOrganisation = new InternalOrganisations(this.DatabaseSession).FindBy(InternalOrganisations.Meta.Name, "internalOrganisation");
+            var internalOrganisation = new InternalOrganisations(this.DatabaseSession).FindBy(M.InternalOrganisation.Name, "internalOrganisation");
 
             new CustomerRelationshipBuilder(this.DatabaseSession)
                 .WithCustomer(customer)
@@ -1900,7 +1901,7 @@ namespace Allors.Domain
         {
             var mechelen = new CityBuilder(this.DatabaseSession).WithName("Mechelen").Build();
             var englischLocale = new Locales(this.DatabaseSession).EnglishGreatBritain;
-            var poundSterling = new Currencies(this.DatabaseSession).FindBy(Currencies.Meta.IsoCode, "GBP");
+            var poundSterling = new Currencies(this.DatabaseSession).FindBy(M.Currency.IsoCode, "GBP");
 
             var customer = new OrganisationBuilder(this.DatabaseSession).WithName("customer").WithLocale(englischLocale).WithPreferredCurrency(poundSterling).Build();
             var internalOrganisation = Singleton.Instance(this.DatabaseSession).DefaultInternalOrganisation;
@@ -1918,7 +1919,7 @@ namespace Allors.Domain
 
             Assert.AreEqual(poundSterling, order.CustomerCurrency);
 
-            var euro = new Currencies(this.DatabaseSession).FindBy(Currencies.Meta.IsoCode, "EUR");
+            var euro = new Currencies(this.DatabaseSession).FindBy(M.Currency.IsoCode, "EUR");
             customer.PreferredCurrency = euro;
 
             this.DatabaseSession.Derive(true);
@@ -1980,7 +1981,7 @@ namespace Allors.Domain
             Thread.CurrentPrincipal = new GenericPrincipal(new GenericIdentity("suppliercontact", "Forms"), new string[0]);
             var acl = new AccessControlList(order, new Users(this.DatabaseSession).GetCurrentUser());
 
-            Assert.IsFalse(acl.HasReadOperation);
+            Assert.IsFalse(acl.CanRead);
         }
 
         [Test]
@@ -2014,9 +2015,9 @@ namespace Allors.Domain
 
             var acl = new AccessControlList(order, new Users(this.DatabaseSession).GetCurrentUser());
 
-            Assert.IsTrue(acl.CanWrite(SalesOrders.Meta.Comment));
-            Assert.IsTrue(acl.CanRead(SalesOrders.Meta.Comment));
-            Assert.IsTrue(acl.CanExecute(SalesOrders.Meta.Confirm));
+            Assert.IsTrue(acl.CanWrite(M.SalesOrder.Comment));
+            Assert.IsTrue(acl.CanRead(M.SalesOrder.Comment));
+            Assert.IsTrue(acl.CanExecute(M.SalesOrder.Confirm));
         }
 
         [Test]
@@ -2052,9 +2053,9 @@ namespace Allors.Domain
             Thread.CurrentPrincipal = new GenericPrincipal(new GenericIdentity("customercontact2", "Forms"), new string[0]);
             var acl = new AccessControlList(order, new Users(this.DatabaseSession).GetCurrentUser());
 
-            Assert.IsTrue(acl.CanWrite(SalesOrders.Meta.Comment));
-            Assert.IsTrue(acl.CanRead(SalesOrders.Meta.Comment));
-            Assert.IsTrue(acl.CanExecute(SalesOrders.Meta.Confirm));
+            Assert.IsTrue(acl.CanWrite(M.SalesOrder.Comment));
+            Assert.IsTrue(acl.CanRead(M.SalesOrder.Comment));
+            Assert.IsTrue(acl.CanExecute(M.SalesOrder.Confirm));
         }
 
         [Test]
@@ -2095,7 +2096,7 @@ namespace Allors.Domain
             Thread.CurrentPrincipal = new GenericPrincipal(new GenericIdentity("customercontact2", "Forms"), new string[0]);
             var acl = new AccessControlList(order, new Users(this.DatabaseSession).GetCurrentUser());
 
-            Assert.IsFalse(acl.HasReadOperation);
+            Assert.IsFalse(acl.CanRead);
         }
 
         [Test]
@@ -2125,9 +2126,9 @@ namespace Allors.Domain
             Thread.CurrentPrincipal = new GenericPrincipal(new GenericIdentity("admin", "Forms"), new string[0]);
             var acl = new AccessControlList(order, new Users(this.DatabaseSession).GetCurrentUser());
 
-            Assert.IsTrue(acl.CanWrite(SalesOrders.Meta.Comment));
-            Assert.IsTrue(acl.CanRead(SalesOrders.Meta.Comment));
-            Assert.IsTrue(acl.CanExecute(SalesOrders.Meta.Confirm));
+            Assert.IsTrue(acl.CanWrite(M.SalesOrder.Comment));
+            Assert.IsTrue(acl.CanRead(M.SalesOrder.Comment));
+            Assert.IsTrue(acl.CanExecute(M.SalesOrder.Confirm));
         }
 
         [Test]
@@ -2156,9 +2157,9 @@ namespace Allors.Domain
 
             var acl = new AccessControlList(order, new Users(this.DatabaseSession).GetCurrentUser());
 
-            Assert.IsTrue(acl.CanWrite(SalesOrders.Meta.Comment));
-            Assert.IsTrue(acl.CanRead(SalesOrders.Meta.Comment));
-            Assert.IsTrue(acl.CanExecute(SalesOrders.Meta.Confirm));
+            Assert.IsTrue(acl.CanWrite(M.SalesOrder.Comment));
+            Assert.IsTrue(acl.CanRead(M.SalesOrder.Comment));
+            Assert.IsTrue(acl.CanExecute(M.SalesOrder.Confirm));
         }
 
         [Test]
@@ -2189,7 +2190,7 @@ namespace Allors.Domain
             Thread.CurrentPrincipal = new GenericPrincipal(new GenericIdentity("customer2", "Forms"), new string[0]);
             var acl = new AccessControlList(order, new Users(this.DatabaseSession).GetCurrentUser());
 
-            Assert.IsFalse(acl.HasReadOperation);
+            Assert.IsFalse(acl.CanRead);
         }
 
         [Test]
@@ -2206,7 +2207,7 @@ namespace Allors.Domain
             new EmploymentBuilder(this.DatabaseSession)
                 .WithFromDate(DateTime.UtcNow)
                 .WithEmployee(salesrep2)
-                .WithEmployer(new InternalOrganisations(this.DatabaseSession).FindBy(InternalOrganisations.Meta.Name, "internalOrganisation"))
+                .WithEmployer(new InternalOrganisations(this.DatabaseSession).FindBy(M.InternalOrganisation.Name, "internalOrganisation"))
                 .Build();
 
             new SalesRepRelationshipBuilder(this.DatabaseSession)
@@ -2229,16 +2230,16 @@ namespace Allors.Domain
 
             var acl = new AccessControlList(order, new Users(this.DatabaseSession).GetCurrentUser());
 
-            Assert.IsTrue(acl.CanWrite(SalesOrders.Meta.Comment));
-            Assert.IsTrue(acl.CanRead(SalesOrders.Meta.Comment));
-            Assert.IsTrue(acl.CanExecute(SalesOrders.Meta.Confirm));
+            Assert.IsTrue(acl.CanWrite(M.SalesOrder.Comment));
+            Assert.IsTrue(acl.CanRead(M.SalesOrder.Comment));
+            Assert.IsTrue(acl.CanExecute(M.SalesOrder.Confirm));
 
             Thread.CurrentPrincipal = new GenericPrincipal(new GenericIdentity("salesRep2", "Forms"), new string[0]);
             acl = new AccessControlList(order, new Users(this.DatabaseSession).GetCurrentUser());
 
-            Assert.IsTrue(acl.CanWrite(SalesOrders.Meta.Comment));
-            Assert.IsTrue(acl.CanRead(SalesOrders.Meta.Comment));
-            Assert.IsTrue(acl.CanExecute(SalesOrders.Meta.Confirm));
+            Assert.IsTrue(acl.CanWrite(M.SalesOrder.Comment));
+            Assert.IsTrue(acl.CanRead(M.SalesOrder.Comment));
+            Assert.IsTrue(acl.CanExecute(M.SalesOrder.Confirm));
         }
 
         [Test]
@@ -2269,22 +2270,22 @@ namespace Allors.Domain
 
             var acl = new AccessControlList(order, new Users(this.DatabaseSession).GetCurrentUser());
 
-            Assert.IsTrue(acl.CanWrite(SalesOrders.Meta.Comment));
-            Assert.IsTrue(acl.CanRead(SalesOrders.Meta.Comment));
-            Assert.IsTrue(acl.CanExecute(SalesOrders.Meta.Confirm));
+            Assert.IsTrue(acl.CanWrite(M.SalesOrder.Comment));
+            Assert.IsTrue(acl.CanRead(M.SalesOrder.Comment));
+            Assert.IsTrue(acl.CanExecute(M.SalesOrder.Confirm));
 
             Thread.CurrentPrincipal = new GenericPrincipal(new GenericIdentity("customercontact", "Forms"), new string[0]);
             acl = new AccessControlList(order, new Users(this.DatabaseSession).GetCurrentUser());
 
-            Assert.IsTrue(acl.CanWrite(SalesOrders.Meta.Comment));
-            Assert.IsTrue(acl.CanRead(SalesOrders.Meta.Comment));
-            Assert.IsTrue(acl.CanExecute(SalesOrders.Meta.Confirm));
+            Assert.IsTrue(acl.CanWrite(M.SalesOrder.Comment));
+            Assert.IsTrue(acl.CanRead(M.SalesOrder.Comment));
+            Assert.IsTrue(acl.CanExecute(M.SalesOrder.Confirm));
         }
 
         [Test]
         public void GivenSalesOrderCreatedByCustomer_WhenCurrentUserIsSalesRepOfOrganisationThatTakesTheOrder_ThenAccessIsGranted()
         {
-            var customer = new Organisations(this.DatabaseSession).FindBy(Organisations.Meta.Name, "customer");
+            var customer = new Organisations(this.DatabaseSession).FindBy(M.Organisation.Name, "customer");
             var internalOrganisation = Singleton.Instance(this.DatabaseSession).DefaultInternalOrganisation;
 
             new CustomerRelationshipBuilder(this.DatabaseSession).WithFromDate(DateTime.UtcNow).WithCustomer(customer).WithInternalOrganisation(internalOrganisation).Build();
@@ -2293,7 +2294,7 @@ namespace Allors.Domain
             var customerContact = new PersonBuilder(this.DatabaseSession).WithFirstName("Koen").WithUserName("customerContact").Build();
             new OrganisationContactRelationshipBuilder(this.DatabaseSession)
                 .WithContact(customerContact)
-                .WithOrganisation(new Organisations(this.DatabaseSession).FindBy(Organisations.Meta.Name, "customer"))
+                .WithOrganisation(new Organisations(this.DatabaseSession).FindBy(M.Organisation.Name, "customer"))
                 .Build();
 
             Thread.CurrentPrincipal = new GenericPrincipal(new GenericIdentity("customerContact", "Forms"), new string[0]);
@@ -2310,9 +2311,9 @@ namespace Allors.Domain
             Thread.CurrentPrincipal = new GenericPrincipal(new GenericIdentity("salesRep", "Forms"), new string[0]);
             var acl = new AccessControlList(order, new Users(this.DatabaseSession).GetCurrentUser());
 
-            Assert.IsTrue(acl.CanWrite(SalesOrders.Meta.Comment));
-            Assert.IsTrue(acl.CanRead(SalesOrders.Meta.Comment));
-            Assert.IsTrue(acl.CanExecute(SalesOrders.Meta.Confirm));
+            Assert.IsTrue(acl.CanWrite(M.SalesOrder.Comment));
+            Assert.IsTrue(acl.CanRead(M.SalesOrder.Comment));
+            Assert.IsTrue(acl.CanExecute(M.SalesOrder.Confirm));
         }
 
         [Test]
@@ -2343,7 +2344,7 @@ namespace Allors.Domain
 
             new EmploymentBuilder(this.DatabaseSession)
                 .WithEmployee(employee)
-                .WithEmployer(new InternalOrganisations(this.DatabaseSession).FindBy(InternalOrganisations.Meta.Name, "internalOrganisation"))
+                .WithEmployer(new InternalOrganisations(this.DatabaseSession).FindBy(M.InternalOrganisation.Name, "internalOrganisation"))
                 .WithFromDate(DateTime.UtcNow)
                 .Build();
 
@@ -2363,14 +2364,14 @@ namespace Allors.Domain
             Thread.CurrentPrincipal = new GenericPrincipal(new GenericIdentity("customercontact1", "Forms"), new string[0]);
             var acl = new AccessControlList(order, new Users(this.DatabaseSession).GetCurrentUser());
 
-            Assert.IsTrue(acl.CanWrite(SalesOrders.Meta.Comment));
-            Assert.IsTrue(acl.CanRead(SalesOrders.Meta.Comment));
-            Assert.IsTrue(acl.CanExecute(SalesOrders.Meta.Confirm));
+            Assert.IsTrue(acl.CanWrite(M.SalesOrder.Comment));
+            Assert.IsTrue(acl.CanRead(M.SalesOrder.Comment));
+            Assert.IsTrue(acl.CanExecute(M.SalesOrder.Confirm));
 
             Thread.CurrentPrincipal = new GenericPrincipal(new GenericIdentity("customercontact2", "Forms"), new string[0]);
             acl = new AccessControlList(order, new Users(this.DatabaseSession).GetCurrentUser());
 
-            Assert.IsFalse(acl.HasReadOperation);
+            Assert.IsFalse(acl.CanRead);
 
             order.BillToCustomer = customer2;
 
@@ -2379,16 +2380,16 @@ namespace Allors.Domain
             Thread.CurrentPrincipal = new GenericPrincipal(new GenericIdentity("customercontact1", "Forms"), new string[0]);
             acl = new AccessControlList(order, new Users(this.DatabaseSession).GetCurrentUser());
 
-            Assert.IsTrue(acl.CanWrite(SalesOrders.Meta.Comment));
-            Assert.IsTrue(acl.CanRead(SalesOrders.Meta.Comment));
-            Assert.IsTrue(acl.CanExecute(SalesOrders.Meta.Confirm));
+            Assert.IsTrue(acl.CanWrite(M.SalesOrder.Comment));
+            Assert.IsTrue(acl.CanRead(M.SalesOrder.Comment));
+            Assert.IsTrue(acl.CanExecute(M.SalesOrder.Confirm));
 
             Thread.CurrentPrincipal = new GenericPrincipal(new GenericIdentity("customercontact2", "Forms"), new string[0]);
             acl = new AccessControlList(order, new Users(this.DatabaseSession).GetCurrentUser());
 
-            Assert.IsTrue(acl.CanWrite(SalesOrders.Meta.Comment));
-            Assert.IsTrue(acl.CanRead(SalesOrders.Meta.Comment));
-            Assert.IsTrue(acl.CanExecute(SalesOrders.Meta.Confirm));
+            Assert.IsTrue(acl.CanWrite(M.SalesOrder.Comment));
+            Assert.IsTrue(acl.CanRead(M.SalesOrder.Comment));
+            Assert.IsTrue(acl.CanExecute(M.SalesOrder.Confirm));
 
             order.ShipToCustomer = customer2;
 
@@ -2397,14 +2398,14 @@ namespace Allors.Domain
             Thread.CurrentPrincipal = new GenericPrincipal(new GenericIdentity("customercontact1", "Forms"), new string[0]);
             acl = new AccessControlList(order, new Users(this.DatabaseSession).GetCurrentUser());
 
-            Assert.IsFalse(acl.HasReadOperation);
+            Assert.IsFalse(acl.CanRead);
 
             Thread.CurrentPrincipal = new GenericPrincipal(new GenericIdentity("customercontact2", "Forms"), new string[0]);
             acl = new AccessControlList(order, new Users(this.DatabaseSession).GetCurrentUser());
 
-            Assert.IsTrue(acl.CanWrite(SalesOrders.Meta.Comment));
-            Assert.IsTrue(acl.CanRead(SalesOrders.Meta.Comment));
-            Assert.IsTrue(acl.CanExecute(SalesOrders.Meta.Confirm));
+            Assert.IsTrue(acl.CanWrite(M.SalesOrder.Comment));
+            Assert.IsTrue(acl.CanRead(M.SalesOrder.Comment));
+            Assert.IsTrue(acl.CanExecute(M.SalesOrder.Confirm));
         }
 
         [Test]
@@ -2430,12 +2431,12 @@ namespace Allors.Domain
 
             Assert.AreEqual(new SalesOrderObjectStates(this.DatabaseSession).Provisional, order.CurrentObjectState);
             var acl = new AccessControlList(order, new Users(this.DatabaseSession).GetCurrentUser());
-            Assert.IsTrue(acl.CanExecute(SalesOrders.Meta.Confirm));
-            Assert.IsTrue(acl.CanExecute(SalesOrders.Meta.Cancel));
-            Assert.IsFalse(acl.CanExecute(SalesOrders.Meta.Approve));
-            Assert.IsFalse(acl.CanExecute(SalesOrders.Meta.Reject));
-            Assert.IsFalse(acl.CanExecute(SalesOrders.Meta.Hold));
-            Assert.IsFalse(acl.CanExecute(SalesOrders.Meta.Continue));
+            Assert.IsTrue(acl.CanExecute(M.SalesOrder.Confirm));
+            Assert.IsTrue(acl.CanExecute(M.SalesOrder.Cancel));
+            Assert.IsFalse(acl.CanExecute(M.SalesOrder.Approve));
+            Assert.IsFalse(acl.CanExecute(M.SalesOrder.Reject));
+            Assert.IsFalse(acl.CanExecute(M.SalesOrder.Hold));
+            Assert.IsFalse(acl.CanExecute(M.SalesOrder.Continue));
         }
 
         [Test]
@@ -2465,12 +2466,12 @@ namespace Allors.Domain
             this.DatabaseSession.Derive(true);
 
             var acl = new AccessControlList(order, new Users(this.DatabaseSession).GetCurrentUser());
-            Assert.IsTrue(acl.CanExecute(SalesOrders.Meta.Cancel));
-            Assert.IsFalse(acl.CanExecute(SalesOrders.Meta.Reject));
-            Assert.IsFalse(acl.CanExecute(SalesOrders.Meta.Approve));
-            Assert.IsTrue(acl.CanExecute(SalesOrders.Meta.Hold));
-            Assert.IsFalse(acl.CanExecute(SalesOrders.Meta.Confirm));
-            Assert.IsFalse(acl.CanExecute(SalesOrders.Meta.Continue));
+            Assert.IsTrue(acl.CanExecute(M.SalesOrder.Cancel));
+            Assert.IsFalse(acl.CanExecute(M.SalesOrder.Reject));
+            Assert.IsFalse(acl.CanExecute(M.SalesOrder.Approve));
+            Assert.IsTrue(acl.CanExecute(M.SalesOrder.Hold));
+            Assert.IsFalse(acl.CanExecute(M.SalesOrder.Confirm));
+            Assert.IsFalse(acl.CanExecute(M.SalesOrder.Continue));
         }
 
         [Test]
@@ -2501,12 +2502,12 @@ namespace Allors.Domain
 
             Assert.AreEqual(new SalesOrderObjectStates(this.DatabaseSession).Cancelled, order.CurrentObjectState);
             var acl = new AccessControlList(order, new Users(this.DatabaseSession).GetCurrentUser());
-            Assert.IsFalse(acl.CanExecute(SalesOrders.Meta.Confirm));
-            Assert.IsFalse(acl.CanExecute(SalesOrders.Meta.Cancel));
-            Assert.IsFalse(acl.CanExecute(SalesOrders.Meta.Reject));
-            Assert.IsFalse(acl.CanExecute(SalesOrders.Meta.Approve));
-            Assert.IsFalse(acl.CanExecute(SalesOrders.Meta.Continue));
-            Assert.IsFalse(acl.CanExecute(SalesOrders.Meta.Hold));
+            Assert.IsFalse(acl.CanExecute(M.SalesOrder.Confirm));
+            Assert.IsFalse(acl.CanExecute(M.SalesOrder.Cancel));
+            Assert.IsFalse(acl.CanExecute(M.SalesOrder.Reject));
+            Assert.IsFalse(acl.CanExecute(M.SalesOrder.Approve));
+            Assert.IsFalse(acl.CanExecute(M.SalesOrder.Continue));
+            Assert.IsFalse(acl.CanExecute(M.SalesOrder.Hold));
         }
 
         [Test]
@@ -2537,12 +2538,12 @@ namespace Allors.Domain
 
             Assert.AreEqual(new SalesOrderObjectStates(this.DatabaseSession).Rejected, order.CurrentObjectState);
             var acl = new AccessControlList(order, new Users(this.DatabaseSession).GetCurrentUser());
-            Assert.IsFalse(acl.CanExecute(SalesOrders.Meta.Confirm));
-            Assert.IsFalse(acl.CanExecute(SalesOrders.Meta.Cancel));
-            Assert.IsFalse(acl.CanExecute(SalesOrders.Meta.Reject));
-            Assert.IsFalse(acl.CanExecute(SalesOrders.Meta.Approve));
-            Assert.IsFalse(acl.CanExecute(SalesOrders.Meta.Continue));
-            Assert.IsFalse(acl.CanExecute(SalesOrders.Meta.Hold));
+            Assert.IsFalse(acl.CanExecute(M.SalesOrder.Confirm));
+            Assert.IsFalse(acl.CanExecute(M.SalesOrder.Cancel));
+            Assert.IsFalse(acl.CanExecute(M.SalesOrder.Reject));
+            Assert.IsFalse(acl.CanExecute(M.SalesOrder.Approve));
+            Assert.IsFalse(acl.CanExecute(M.SalesOrder.Continue));
+            Assert.IsFalse(acl.CanExecute(M.SalesOrder.Hold));
         }
 
         [Test]
@@ -2577,12 +2578,12 @@ namespace Allors.Domain
 
             Assert.AreEqual(new SalesOrderObjectStates(this.DatabaseSession).Finished, order.CurrentObjectState);
             var acl = new AccessControlList(order, new Users(this.DatabaseSession).GetCurrentUser());
-            Assert.IsFalse(acl.CanExecute(SalesOrders.Meta.Confirm));
-            Assert.IsFalse(acl.CanExecute(SalesOrders.Meta.Cancel));
-            Assert.IsFalse(acl.CanExecute(SalesOrders.Meta.Reject));
-            Assert.IsFalse(acl.CanExecute(SalesOrders.Meta.Approve));
-            Assert.IsFalse(acl.CanExecute(SalesOrders.Meta.Continue));
-            Assert.IsFalse(acl.CanExecute(SalesOrders.Meta.Hold));
+            Assert.IsFalse(acl.CanExecute(M.SalesOrder.Confirm));
+            Assert.IsFalse(acl.CanExecute(M.SalesOrder.Cancel));
+            Assert.IsFalse(acl.CanExecute(M.SalesOrder.Reject));
+            Assert.IsFalse(acl.CanExecute(M.SalesOrder.Approve));
+            Assert.IsFalse(acl.CanExecute(M.SalesOrder.Continue));
+            Assert.IsFalse(acl.CanExecute(M.SalesOrder.Hold));
         }
 
         [Test]
@@ -2617,12 +2618,12 @@ namespace Allors.Domain
 
             Assert.AreEqual(new SalesOrderObjectStates(this.DatabaseSession).OnHold, order.CurrentObjectState);
             var acl = new AccessControlList(order, new Users(this.DatabaseSession).GetCurrentUser());
-            Assert.IsTrue(acl.CanExecute(SalesOrders.Meta.Cancel));
-            Assert.IsTrue(acl.CanExecute(SalesOrders.Meta.Continue));
-            Assert.IsFalse(acl.CanExecute(SalesOrders.Meta.Confirm));
-            Assert.IsFalse(acl.CanExecute(SalesOrders.Meta.Reject));
-            Assert.IsFalse(acl.CanExecute(SalesOrders.Meta.Approve));
-            Assert.IsFalse(acl.CanExecute(SalesOrders.Meta.Hold));
+            Assert.IsTrue(acl.CanExecute(M.SalesOrder.Cancel));
+            Assert.IsTrue(acl.CanExecute(M.SalesOrder.Continue));
+            Assert.IsFalse(acl.CanExecute(M.SalesOrder.Confirm));
+            Assert.IsFalse(acl.CanExecute(M.SalesOrder.Reject));
+            Assert.IsFalse(acl.CanExecute(M.SalesOrder.Approve));
+            Assert.IsFalse(acl.CanExecute(M.SalesOrder.Hold));
         }
 
         [Test]
@@ -2636,7 +2637,7 @@ namespace Allors.Domain
             new CustomerRelationshipBuilder(this.DatabaseSession).WithFromDate(DateTime.UtcNow).WithCustomer(shipToCustomer).WithInternalOrganisation(internalOrganisation).Build();
 
             var mechelen = new CityBuilder(this.DatabaseSession).WithName("Mechelen").Build();
-            var euro = new Currencies(this.DatabaseSession).FindBy(Currencies.Meta.IsoCode, "EUR");
+            var euro = new Currencies(this.DatabaseSession).FindBy(M.Currency.IsoCode, "EUR");
             var supplier = new OrganisationBuilder(this.DatabaseSession).WithName("supplier").Build();
             var vatRate21 = new VatRateBuilder(this.DatabaseSession).WithRate(21).Build();
             var adjustment = new ShippingAndHandlingChargeBuilder(this.DatabaseSession).WithAmount(7.5M).WithVatRate(vatRate21).Build();
@@ -2700,7 +2701,7 @@ namespace Allors.Domain
             new CustomerRelationshipBuilder(this.DatabaseSession).WithFromDate(DateTime.UtcNow).WithCustomer(shipToCustomer).WithInternalOrganisation(internalOrganisation).Build();
 
             var mechelen = new CityBuilder(this.DatabaseSession).WithName("Mechelen").Build();
-            var euro = new Currencies(this.DatabaseSession).FindBy(Currencies.Meta.IsoCode, "EUR");
+            var euro = new Currencies(this.DatabaseSession).FindBy(M.Currency.IsoCode, "EUR");
             var supplier = new OrganisationBuilder(this.DatabaseSession).WithName("supplier").Build();
             var vatRate21 = new VatRateBuilder(this.DatabaseSession).WithRate(21).Build();
             var adjustment = new ShippingAndHandlingChargeBuilder(this.DatabaseSession).WithPercentage(5).WithVatRate(vatRate21).Build();
@@ -2764,7 +2765,7 @@ namespace Allors.Domain
             new CustomerRelationshipBuilder(this.DatabaseSession).WithFromDate(DateTime.UtcNow).WithCustomer(shipToCustomer).WithInternalOrganisation(internalOrganisation).Build();
 
             var mechelen = new CityBuilder(this.DatabaseSession).WithName("Mechelen").Build();
-            var euro = new Currencies(this.DatabaseSession).FindBy(Currencies.Meta.IsoCode, "EUR");
+            var euro = new Currencies(this.DatabaseSession).FindBy(M.Currency.IsoCode, "EUR");
             var supplier = new OrganisationBuilder(this.DatabaseSession).WithName("supplier").Build();
             var vatRate21 = new VatRateBuilder(this.DatabaseSession).WithRate(21).Build();
             var adjustment = new FeeBuilder(this.DatabaseSession).WithAmount(7.5M).WithVatRate(vatRate21).Build();
@@ -2828,7 +2829,7 @@ namespace Allors.Domain
             new CustomerRelationshipBuilder(this.DatabaseSession).WithFromDate(DateTime.UtcNow).WithCustomer(shipToCustomer).WithInternalOrganisation(internalOrganisation).Build();
 
             var mechelen = new CityBuilder(this.DatabaseSession).WithName("Mechelen").Build();
-            var euro = new Currencies(this.DatabaseSession).FindBy(Currencies.Meta.IsoCode, "EUR");
+            var euro = new Currencies(this.DatabaseSession).FindBy(M.Currency.IsoCode, "EUR");
             var supplier = new OrganisationBuilder(this.DatabaseSession).WithName("supplier").Build();
             var vatRate21 = new VatRateBuilder(this.DatabaseSession).WithRate(21).Build();
             var adjustment = new FeeBuilder(this.DatabaseSession).WithPercentage(5).WithVatRate(vatRate21).Build();
@@ -3237,7 +3238,7 @@ namespace Allors.Domain
             var vatRate21 = new VatRateBuilder(this.DatabaseSession).WithRate(21).Build();
             var part = new FinishedGoodBuilder(this.DatabaseSession)
                 .WithName("part1")
-                .WithOwnedByParty(new InternalOrganisations(this.DatabaseSession).FindBy(InternalOrganisations.Meta.Name, "internalOrganisation"))
+                .WithOwnedByParty(new InternalOrganisations(this.DatabaseSession).FindBy(M.InternalOrganisation.Name, "internalOrganisation"))
                 .Build();
 
             this.DatabaseSession.Derive(true);

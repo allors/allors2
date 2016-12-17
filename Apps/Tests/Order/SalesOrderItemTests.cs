@@ -24,7 +24,7 @@ namespace Allors.Domain
     using System;
     using System.Security.Principal;
     using System.Threading;
-
+    using Meta;
     using NUnit.Framework;
 
     [TestFixture]
@@ -67,9 +67,9 @@ namespace Allors.Domain
         {
             base.Init();
 
-            var euro = new Currencies(this.DatabaseSession).FindBy(Currencies.Meta.IsoCode, "EUR");
+            var euro = new Currencies(this.DatabaseSession).FindBy(M.Currency.IsoCode, "EUR");
 
-            this.internalOrganisation = new InternalOrganisations(this.DatabaseSession).FindBy(InternalOrganisations.Meta.Name, "internalOrganisation");
+            this.internalOrganisation = new InternalOrganisations(this.DatabaseSession).FindBy(M.InternalOrganisation.Name, "internalOrganisation");
             this.internalOrganisation.PreferredCurrency = euro;
 
             this.supplier = new OrganisationBuilder(this.DatabaseSession).WithName("supplier").Build();
@@ -650,7 +650,7 @@ namespace Allors.Domain
             this.InstantiateObjects(this.DatabaseSession);
 
             var good2PurchasePrice = new ProductPurchasePriceBuilder(this.DatabaseSession)
-                .WithCurrency(new Currencies(this.DatabaseSession).FindBy(Currencies.Meta.IsoCode, "EUR"))
+                .WithCurrency(new Currencies(this.DatabaseSession).FindBy(M.Currency.IsoCode, "EUR"))
                 .WithFromDate(DateTime.UtcNow)
                 .WithPrice(7)
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.DatabaseSession).Piece)
@@ -665,7 +665,7 @@ namespace Allors.Domain
                 .Build();
 
             new SupplierRelationshipBuilder(this.DatabaseSession)
-                .WithInternalOrganisation(new InternalOrganisations(this.DatabaseSession).FindBy(InternalOrganisations.Meta.Name, "internalOrganisation"))
+                .WithInternalOrganisation(new InternalOrganisations(this.DatabaseSession).FindBy(M.InternalOrganisation.Name, "internalOrganisation"))
                 .WithSupplier(this.supplier)
                 .WithFromDate(DateTime.UtcNow)
                 .Build();
@@ -699,8 +699,8 @@ namespace Allors.Domain
 
             this.DatabaseSession.Derive(true);
 
-            Assert.AreEqual(new Warehouses(this.DatabaseSession).FindBy(Warehouses.Meta.Name, "facility"), item1.ReservedFromInventoryItem.Facility);
-            Assert.AreEqual(new Warehouses(this.DatabaseSession).FindBy(Warehouses.Meta.Name, "facility"), item2.ReservedFromInventoryItem.Facility);
+            Assert.AreEqual(new Warehouses(this.DatabaseSession).FindBy(M.Warehouse.Name, "facility"), item1.ReservedFromInventoryItem.Facility);
+            Assert.AreEqual(new Warehouses(this.DatabaseSession).FindBy(M.Warehouse.Name, "facility"), item2.ReservedFromInventoryItem.Facility);
         }
 
         [Test]
@@ -852,9 +852,9 @@ namespace Allors.Domain
 
             Assert.AreEqual(new SalesOrderItemObjectStates(this.DatabaseSession).Created, item.CurrentObjectState);
             var acl = new AccessControlList(item, new Users(this.DatabaseSession).GetCurrentUser());
-            Assert.IsTrue(acl.CanExecute(SalesOrderItems.Meta.Delete));
-            Assert.IsFalse(acl.CanExecute(SalesOrderItems.Meta.Cancel));
-            Assert.IsFalse(acl.CanExecute(SalesOrderItems.Meta.Reject));
+            Assert.IsTrue(acl.CanExecute(M.SalesOrderItem.Delete));
+            Assert.IsFalse(acl.CanExecute(M.SalesOrderItem.Cancel));
+            Assert.IsFalse(acl.CanExecute(M.SalesOrderItem.Reject));
         }
 
         [Test]
@@ -885,9 +885,9 @@ namespace Allors.Domain
 
             Assert.AreEqual(new SalesOrderItemObjectStates(this.DatabaseSession).InProcess, item.CurrentObjectState);
             var acl = new AccessControlList(item, new Users(this.DatabaseSession).GetCurrentUser());
-            Assert.IsTrue(acl.CanExecute(SalesOrderItems.Meta.Cancel));
-            Assert.IsTrue(acl.CanExecute(SalesOrderItems.Meta.Reject));
-            Assert.IsFalse(acl.CanExecute(SalesOrderItems.Meta.Delete));
+            Assert.IsTrue(acl.CanExecute(M.SalesOrderItem.Cancel));
+            Assert.IsTrue(acl.CanExecute(M.SalesOrderItem.Reject));
+            Assert.IsFalse(acl.CanExecute(M.SalesOrderItem.Delete));
         }
 
         [Test]
@@ -926,7 +926,7 @@ namespace Allors.Domain
             var shipment = (CustomerShipment)this.order.ShipToAddress.ShipmentsWhereShipToAddress[0];
 
             var pickList = shipment.ShipmentItems[0].ItemIssuancesWhereShipmentItem[0].PickListItem.PickListWherePickListItem;
-            pickList.Picker = new Persons(this.DatabaseSession).FindBy(Persons.Meta.LastName, "orderProcessor");
+            pickList.Picker = new People(this.DatabaseSession).FindBy(M.Person.LastName, "orderProcessor");
             pickList.SetPicked();
 
             this.DatabaseSession.Derive(true);
@@ -947,9 +947,9 @@ namespace Allors.Domain
 
             Assert.AreEqual(new SalesOrderItemObjectStates(this.DatabaseSession).PartiallyShipped, item.CurrentObjectState);
             var acl = new AccessControlList(item, new Users(this.DatabaseSession).GetCurrentUser());
-            Assert.IsFalse(acl.CanExecute(SalesOrderItems.Meta.Cancel));
-            Assert.IsFalse(acl.CanExecute(SalesOrderItems.Meta.Reject));
-            Assert.IsFalse(acl.CanExecute(SalesOrderItems.Meta.Delete));
+            Assert.IsFalse(acl.CanExecute(M.SalesOrderItem.Cancel));
+            Assert.IsFalse(acl.CanExecute(M.SalesOrderItem.Reject));
+            Assert.IsFalse(acl.CanExecute(M.SalesOrderItem.Delete));
         }
 
         [Test]
@@ -982,9 +982,9 @@ namespace Allors.Domain
 
             Assert.AreEqual(new SalesOrderItemObjectStates(this.DatabaseSession).Cancelled, item.CurrentObjectState);
             var acl = new AccessControlList(item, new Users(this.DatabaseSession).GetCurrentUser());
-            Assert.IsFalse(acl.CanExecute(SalesOrderItems.Meta.Cancel));
-            Assert.IsFalse(acl.CanExecute(SalesOrderItems.Meta.Reject));
-            Assert.IsFalse(acl.CanExecute(SalesOrderItems.Meta.Delete));
+            Assert.IsFalse(acl.CanExecute(M.SalesOrderItem.Cancel));
+            Assert.IsFalse(acl.CanExecute(M.SalesOrderItem.Reject));
+            Assert.IsFalse(acl.CanExecute(M.SalesOrderItem.Delete));
         }
 
         [Test]
@@ -1017,8 +1017,8 @@ namespace Allors.Domain
 
             Assert.AreEqual(new SalesOrderItemObjectStates(this.DatabaseSession).Rejected, item.CurrentObjectState);
             var acl = new AccessControlList(item, new Users(this.DatabaseSession).GetCurrentUser());
-            Assert.IsFalse(acl.CanExecute(SalesOrderItems.Meta.Cancel));
-            Assert.IsFalse(acl.CanExecute(SalesOrderItems.Meta.Reject));
+            Assert.IsFalse(acl.CanExecute(M.SalesOrderItem.Cancel));
+            Assert.IsFalse(acl.CanExecute(M.SalesOrderItem.Reject));
         }
 
         [Test]
@@ -1057,7 +1057,7 @@ namespace Allors.Domain
             var shipment = (CustomerShipment)this.order.ShipToAddress.ShipmentsWhereShipToAddress[0];
 
             var pickList = shipment.ShipmentItems[0].ItemIssuancesWhereShipmentItem[0].PickListItem.PickListWherePickListItem;
-            pickList.Picker = new Persons(this.DatabaseSession).FindBy(Persons.Meta.LastName, "orderProcessor");
+            pickList.Picker = new People(this.DatabaseSession).FindBy(M.Person.LastName, "orderProcessor");
             pickList.SetPicked();
 
             this.DatabaseSession.Derive(true);
@@ -1078,8 +1078,8 @@ namespace Allors.Domain
 
             Assert.AreEqual(new SalesOrderItemObjectStates(this.DatabaseSession).Completed, item.CurrentObjectState);
             var acl = new AccessControlList(item, new Users(this.DatabaseSession).GetCurrentUser());
-            Assert.IsFalse(acl.CanExecute(SalesOrderItems.Meta.Cancel));
-            Assert.IsFalse(acl.CanExecute(SalesOrderItems.Meta.Reject));
+            Assert.IsFalse(acl.CanExecute(M.SalesOrderItem.Cancel));
+            Assert.IsFalse(acl.CanExecute(M.SalesOrderItem.Reject));
         }
 
         [Test]
@@ -1112,8 +1112,8 @@ namespace Allors.Domain
 
             Assert.AreEqual(new SalesOrderItemObjectStates(this.DatabaseSession).Finished, item.CurrentObjectState);
             var acl = new AccessControlList(item, new Users(this.DatabaseSession).GetCurrentUser());
-            Assert.IsFalse(acl.CanExecute(SalesOrderItems.Meta.Cancel));
-            Assert.IsFalse(acl.CanExecute(SalesOrderItems.Meta.Reject));
+            Assert.IsFalse(acl.CanExecute(M.SalesOrderItem.Cancel));
+            Assert.IsFalse(acl.CanExecute(M.SalesOrderItem.Reject));
         }
 
         [Test]
@@ -1152,7 +1152,7 @@ namespace Allors.Domain
             var shipment = (CustomerShipment)this.order.ShipToAddress.ShipmentsWhereShipToAddress[0];
 
             var pickList = shipment.ShipmentItems[0].ItemIssuancesWhereShipmentItem[0].PickListItem.PickListWherePickListItem;
-            pickList.Picker = new Persons(this.DatabaseSession).FindBy(Persons.Meta.LastName, "orderProcessor");
+            pickList.Picker = new People(this.DatabaseSession).FindBy(M.Person.LastName, "orderProcessor");
             pickList.SetPicked();
 
             this.DatabaseSession.Derive(true);
@@ -1173,7 +1173,7 @@ namespace Allors.Domain
 
             Assert.AreEqual(new SalesOrderItemObjectStates(this.DatabaseSession).PartiallyShipped, item.CurrentObjectState);
             var acl = new AccessControlList(item, new Users(this.DatabaseSession).GetCurrentUser());
-            Assert.IsFalse(acl.CanWrite(SalesOrderItems.Meta.Product));
+            Assert.IsFalse(acl.CanWrite(M.SalesOrderItem.Product));
         }
 
         [Test]
@@ -1397,7 +1397,7 @@ namespace Allors.Domain
             var shipment = (CustomerShipment)this.order.ShipToAddress.ShipmentsWhereShipToAddress[0];
 
             var pickList = shipment.ShipmentItems[0].ItemIssuancesWhereShipmentItem[0].PickListItem.PickListWherePickListItem;
-            pickList.Picker = new Persons(this.DatabaseSession).FindBy(Persons.Meta.LastName, "orderProcessor");
+            pickList.Picker = new People(this.DatabaseSession).FindBy(M.Person.LastName, "orderProcessor");
             pickList.SetPicked();
 
             this.DatabaseSession.Derive(true);
@@ -1757,7 +1757,7 @@ namespace Allors.Domain
             var pickList = shipment.ShipmentItems[0].ItemIssuancesWhereShipmentItem[0].PickListItem.PickListWherePickListItem;
             Assert.AreEqual(10, pickList.PickListItems[0].RequestedQuantity);
 
-            pickList.Picker = new Persons(this.DatabaseSession).FindBy(Persons.Meta.LastName, "orderProcessor");
+            pickList.Picker = new People(this.DatabaseSession).FindBy(M.Person.LastName, "orderProcessor");
 
             this.DatabaseSession.Derive(true);
 
@@ -1809,7 +1809,7 @@ namespace Allors.Domain
             var pickList = shipment.ShipmentItems[0].ItemIssuancesWhereShipmentItem[0].PickListItem.PickListWherePickListItem;
             Assert.AreEqual(5, pickList.PickListItems[0].RequestedQuantity);
 
-            pickList.Picker = new Persons(this.DatabaseSession).FindBy(Persons.Meta.LastName, "orderProcessor");
+            pickList.Picker = new People(this.DatabaseSession).FindBy(M.Person.LastName, "orderProcessor");
 
             this.DatabaseSession.Derive(true);
             
@@ -1861,7 +1861,7 @@ namespace Allors.Domain
             var derivationLog = this.DatabaseSession.Derive();
 
             Assert.IsTrue(derivationLog.HasErrors);
-            Assert.Contains(SalesOrderItems.Meta.QuantityShipNow, derivationLog.Errors[0].RoleTypes);
+            Assert.Contains(M.SalesOrderItem.QuantityShipNow, derivationLog.Errors[0].RoleTypes);
 
             item1.QuantityShipNow = 3;
             derivationLog = this.DatabaseSession.Derive();
@@ -1914,7 +1914,7 @@ namespace Allors.Domain
             var pickList = shipment.ShipmentItems[0].ItemIssuancesWhereShipmentItem[0].PickListItem.PickListWherePickListItem;
             Assert.AreEqual(10, pickList.PickListItems[0].RequestedQuantity);
 
-            pickList.Picker = new Persons(this.DatabaseSession).FindBy(Persons.Meta.LastName, "orderProcessor");
+            pickList.Picker = new People(this.DatabaseSession).FindBy(M.Person.LastName, "orderProcessor");
 
             item.QuantityShipNow = -7;
             this.DatabaseSession.Derive(true);
