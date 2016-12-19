@@ -43,7 +43,7 @@ namespace Allors.Domain
             var invoices = this.Party.SalesInvoicesWhereBillToCustomer;
             invoices.Filter.AddEquals(M.SalesInvoice.BilledFromInternalOrganisation, this.InternalOrganisation);
             invoices.Filter.AddNot().AddEquals(M.SalesInvoice.CurrentObjectState, new SalesInvoiceObjectStates(this.Strategy.Session).WrittenOff);
-            invoices.Filter.AddBetween(M.SalesInvoice.InvoiceDate, DateTimeFactory.CreateDate(this.Year, this.Month, 01), toDate);
+            invoices.Filter.AddBetween(M.Invoice.InvoiceDate, DateTimeFactory.CreateDate(this.Year, this.Month, 01), toDate);
 
             foreach (SalesInvoice salesInvoice in invoices)
             {

@@ -70,14 +70,14 @@ namespace Allors.Domain
                 {
                     if (this.Organisation.AppsIsActiveCustomer(this.FromDate))
                     {
-                        if (!this.Organisation.CustomerContactUserGroup.ContainsMember(this.Contact))
+                        if (!this.Organisation.CustomerContactUserGroup.Members.Contains(this.Contact))
                         {
                             this.Organisation.CustomerContactUserGroup.AddMember(this.Contact);
                         }
                     }
                     else
                     {
-                        if (this.Organisation.CustomerContactUserGroup.ContainsMember(this.Contact))
+                        if (this.Organisation.CustomerContactUserGroup.Members.Contains(this.Contact))
                         {
                             this.Organisation.CustomerContactUserGroup.RemoveMember(this.Contact);
                         }
@@ -85,7 +85,7 @@ namespace Allors.Domain
                 }
                 else
                 {
-                    if (this.Organisation.CustomerContactUserGroup.ContainsMember(this.Contact))
+                    if (this.Organisation.CustomerContactUserGroup.Members.Contains(this.Contact))
                     {
                         this.Organisation.CustomerContactUserGroup.RemoveMember(this.Contact);
                     }
@@ -101,14 +101,14 @@ namespace Allors.Domain
                 {
                     if (this.Organisation.AppsIsActiveSupplier(this.FromDate))
                     {
-                        if (!this.Organisation.SupplierContactUserGroup.ContainsMember(this.Contact))
+                        if (!this.Organisation.SupplierContactUserGroup.Members.Contains(this.Contact))
                         {
                             this.Organisation.SupplierContactUserGroup.AddMember(this.Contact);
                         }
                     }
                     else
                     {
-                        if (this.Organisation.SupplierContactUserGroup.ContainsMember(this.Contact))
+                        if (this.Organisation.SupplierContactUserGroup.Members.Contains(this.Contact))
                         {
                             this.Organisation.SupplierContactUserGroup.RemoveMember(this.Contact);
                         }
@@ -116,7 +116,7 @@ namespace Allors.Domain
                 }
                 else
                 {
-                    if (this.Organisation.SupplierContactUserGroup.ContainsMember(this.Contact))
+                    if (this.Organisation.SupplierContactUserGroup.Members.Contains(this.Contact))
                     {
                         this.Organisation.SupplierContactUserGroup.RemoveMember(this.Contact);
                     }
@@ -132,14 +132,14 @@ namespace Allors.Domain
                 {
                     if (this.Organisation.AppsIsActivePartner(this.FromDate))
                     {
-                        if (!this.Organisation.PartnerContactUserGroup.ContainsMember(this.Contact))
+                        if (!this.Organisation.PartnerContactUserGroup.Members.Contains(this.Contact))
                         {
                             this.Organisation.PartnerContactUserGroup.AddMember(this.Contact);
                         }
                     }
                     else
                     {
-                        if (this.Organisation.PartnerContactUserGroup.ContainsMember(this.Contact))
+                        if (this.Organisation.PartnerContactUserGroup.Members.Contains(this.Contact))
                         {
                             this.Organisation.PartnerContactUserGroup.RemoveMember(this.Contact);
                         }
@@ -147,7 +147,7 @@ namespace Allors.Domain
                 }
                 else
                 {
-                    if (this.Organisation.PartnerContactUserGroup.ContainsMember(this.Contact))
+                    if (this.Organisation.PartnerContactUserGroup.Members.Contains(this.Contact))
                     {
                         this.Organisation.PartnerContactUserGroup.RemoveMember(this.Contact);
                     }

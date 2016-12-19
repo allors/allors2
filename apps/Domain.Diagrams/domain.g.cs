@@ -1648,7 +1648,7 @@ namespace Allors.Domain
 						Person PersonResponsible {set;}
 
 		}
-		public interface ChartOfAccount  : UniquelyIdentifiable, AccessControlledObject 
+		public interface ChartOfAccounts  : UniquelyIdentifiable, AccessControlledObject 
 		{
 						global::System.String Name {set;}
 

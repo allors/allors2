@@ -5,6 +5,7 @@ namespace Allors.Repository.Domain
     #region Allors
     [Id("6360b45d-3556-41c6-b183-f42a15b9424f")]
     #endregion
+    [Plural("TimeEntries")]
     public partial class TimeEntry : ServiceEntry 
     {
         #region inherited properties

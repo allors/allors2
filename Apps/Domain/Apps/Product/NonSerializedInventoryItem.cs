@@ -182,7 +182,7 @@ namespace Allors.Domain
         {
             Extent<SalesOrderItem> salesOrderItems = this.Strategy.Session.Extent<SalesOrderItem>();
             salesOrderItems.Filter.AddEquals(M.SalesOrderItem.CurrentObjectState, new SalesOrderItemObjectStates(this.Strategy.Session).InProcess);
-            salesOrderItems.AddSort(M.SalesOrderItem.DeliveryDate, SortDirection.Ascending);
+            salesOrderItems.AddSort(M.OrderItem.DeliveryDate, SortDirection.Ascending);
 
             if (this.ExistGood)
             {
@@ -219,7 +219,7 @@ namespace Allors.Domain
         {
             Extent<SalesOrderItem> salesOrderItems = this.Strategy.Session.Extent<SalesOrderItem>();
             salesOrderItems.Filter.AddEquals(M.SalesOrderItem.CurrentObjectState, new SalesOrderItemObjectStates(this.Strategy.Session).InProcess);
-            salesOrderItems.AddSort(M.SalesOrderItem.DeliveryDate, SortDirection.Descending);
+            salesOrderItems.AddSort(M.OrderItem.DeliveryDate, SortDirection.Descending);
 
             salesOrderItems = this.Strategy.Session.Instantiate(salesOrderItems);
 

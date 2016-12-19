@@ -62,14 +62,14 @@ namespace Allors.Domain
                         if (this.FromDate <= DateTime.UtcNow &&
                             (!this.ExistThroughDate || this.ThroughDate >= DateTime.UtcNow))
                         {
-                            if (!this.Partner.PartnerContactUserGroup.ContainsMember(contactRelationship.Contact))
+                            if (!this.Partner.PartnerContactUserGroup.Members.Contains(contactRelationship.Contact))
                             {
                                 this.Partner.PartnerContactUserGroup.AddMember(contactRelationship.Contact);
                             }
                         }
                         else
                         {
-                            if (this.Partner.PartnerContactUserGroup.ContainsMember(contactRelationship.Contact))
+                            if (this.Partner.PartnerContactUserGroup.Members.Contains(contactRelationship.Contact))
                             {
                                 this.Partner.PartnerContactUserGroup.RemoveMember(contactRelationship.Contact);
                             }

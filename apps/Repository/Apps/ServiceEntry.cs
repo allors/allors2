@@ -5,7 +5,8 @@ namespace Allors.Repository.Domain
     #region Allors
     [Id("4a4a0548-b75f-4a79-89aa-f5c242121f11")]
     #endregion
-	public partial interface ServiceEntry : Commentable, AccessControlledObject 
+    [Plural("ServiceEntries")]
+    public partial interface ServiceEntry : Commentable, AccessControlledObject 
     {
 
 

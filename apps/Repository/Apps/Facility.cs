@@ -5,7 +5,8 @@ namespace Allors.Repository.Domain
     #region Allors
     [Id("cdd79e23-a132-48b0-b88f-a03bd029f49d")]
     #endregion
-	public partial interface Facility : AccessControlledObject, GeoLocatable 
+    [Plural("Facilities")]
+    public partial interface Facility : AccessControlledObject, GeoLocatable 
     {
 
 

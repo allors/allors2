@@ -72,9 +72,9 @@ namespace Allors.Domain
                 productCategory.AppsOnDeriveAncestors(derivation);
             }
 
-            foreach (Product product in this.ProductsWhereProductCategoryExpanded)
+            foreach (Product product in this.ProductsWhereProductCategoriesExpanded)
             {
-                product.AppsOnDeriveProductCategoryExpanded();
+                product.AppsOnDeriveProductCategoriesExpanded();
             }
 
             this.AppsOnDeriveAncestors(derivation);

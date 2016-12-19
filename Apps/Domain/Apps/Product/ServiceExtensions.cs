@@ -53,7 +53,7 @@ namespace Allors.Domain
             }
 
             @this.AppsOnDeriveVirtualProductPriceComponent();
-            @this.AppsOnDeriveProductCategoryExpanded();
+            @this.AppsOnDeriveProductCategoriesExpanded();
         }
     }
 }

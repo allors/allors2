@@ -20,7 +20,7 @@
 
 namespace Allors.Domain
 {
-    public partial class ChartOfAccount
+    public partial class ChartOfAccounts
     {
         public void AppsOnPreDerive(ObjectOnPreDerive method)
         {

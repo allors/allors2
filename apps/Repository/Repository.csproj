@@ -161,6 +161,7 @@
     <Compile Include="Apps\Benefit.cs" />
     <Compile Include="Apps\BillingAccount.cs" />
     <Compile Include="Apps\BillOfLading.cs" />
+    <Compile Include="Apps\Currency.cs" />
     <Compile Include="Apps\Bin.cs" />
     <Compile Include="Apps\Brand.cs" />
     <Compile Include="Apps\Budget.cs" />

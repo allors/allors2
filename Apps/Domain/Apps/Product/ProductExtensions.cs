@@ -61,25 +61,25 @@ namespace Allors.Domain
             }
         }
 
-        public static void AppsOnDeriveProductCategoryExpanded(this Product @this)
+        public static void AppsOnDeriveProductCategoriesExpanded(this Product @this)
         {
             @this.RemoveProductCategoriesExpanded();
 
             if (@this.ExistPrimaryProductCategory)
             {
-                @this.AddProductCategoryExpanded(@this.PrimaryProductCategory);
+                @this.AddProductCategoriesExpanded(@this.PrimaryProductCategory);
                 foreach (ProductCategory ancestor in @this.PrimaryProductCategory.Ancestors)
                 {
-                    @this.AddProductCategoryExpanded(ancestor);
+                    @this.AddProductCategoriesExpanded(ancestor);
                 }
             }
 
             foreach (ProductCategory productCategory in @this.ProductCategories)
             {
-                @this.AddProductCategoryExpanded(productCategory);
+                @this.AddProductCategoriesExpanded(productCategory);
                 foreach (ProductCategory ancestor in productCategory.Ancestors)
                 {
-                    @this.AddProductCategoryExpanded(ancestor);
+                    @this.AddProductCategoriesExpanded(ancestor);
                 }
             }
         }

@@ -115,14 +115,14 @@ namespace Allors.Domain
                         if (this.FromDate <= DateTime.UtcNow &&
                             (!this.ExistThroughDate || this.ThroughDate >= DateTime.UtcNow))
                         {
-                            if (!this.Supplier.SupplierContactUserGroup.ContainsMember(contactRelationship.Contact))
+                            if (!this.Supplier.SupplierContactUserGroup.Members.Contains(contactRelationship.Contact))
                             {
                                 this.Supplier.SupplierContactUserGroup.AddMember(contactRelationship.Contact);
                             }
                         }
                         else
                         {
-                            if (this.Supplier.SupplierContactUserGroup.ContainsMember(contactRelationship.Contact))
+                            if (this.Supplier.SupplierContactUserGroup.Members.Contains(contactRelationship.Contact))
                             {
                                 this.Supplier.SupplierContactUserGroup.RemoveMember(contactRelationship.Contact);
                             }

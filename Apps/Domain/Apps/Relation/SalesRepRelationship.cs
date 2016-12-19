@@ -87,14 +87,14 @@ namespace Allors.Domain
                 {
                     if (this.FromDate <= DateTime.UtcNow && (!this.ExistThroughDate || this.ThroughDate >= DateTime.UtcNow))
                     {
-                        if (!salesRepUserGroup.ContainsMember(this.SalesRepresentative))
+                        if (!salesRepUserGroup.Members.Contains(this.SalesRepresentative))
                         {
                             salesRepUserGroup.AddMember(this.SalesRepresentative);
                         }
                     }
                     else
                     {
-                        if (salesRepUserGroup.ContainsMember(this.SalesRepresentative))
+                        if (salesRepUserGroup.Members.Contains(this.SalesRepresentative))
                         {
                             salesRepUserGroup.RemoveMember(this.SalesRepresentative);
                         }

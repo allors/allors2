@@ -1059,7 +1059,7 @@
     <Compile Include="Generated\CaseObjectState.g.cs" />
     <Compile Include="Generated\CaseStatus.g.cs" />
     <Compile Include="Generated\Cash.g.cs" />
-    <Compile Include="Generated\ChartOfAccount.g.cs" />
+    <Compile Include="Generated\ChartOfAccounts.g.cs" />
     <Compile Include="Generated\Citizenship.g.cs" />
     <Compile Include="Generated\City.g.cs" />
     <Compile Include="Generated\CityBound.g.cs" />

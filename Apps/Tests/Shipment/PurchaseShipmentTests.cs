@@ -169,14 +169,14 @@ namespace Allors.Domain
 
             var acl = new AccessControlList(shipment, new Users(this.DatabaseSession).GetCurrentUser());
 
-            Assert.IsTrue(acl.CanWrite(PurchaseM.Shipment.ShipToParty));
-            Assert.IsTrue(acl.CanRead(PurchaseM.Shipment.ShipToParty));
+            Assert.IsTrue(acl.CanWrite(M.Shipment.ShipToParty));
+            Assert.IsTrue(acl.CanRead(M.Shipment.ShipToParty));
 
             Thread.CurrentPrincipal = new GenericPrincipal(new GenericIdentity("orderProcessor2", "Forms"), new string[0]);
             acl = new AccessControlList(shipment, new Users(this.DatabaseSession).GetCurrentUser());
 
-            Assert.IsTrue(acl.CanWrite(PurchaseM.Shipment.ShipToParty));
-            Assert.IsTrue(acl.CanRead(PurchaseM.Shipment.ShipToParty));
+            Assert.IsTrue(acl.CanWrite(M.Shipment.ShipToParty));
+            Assert.IsTrue(acl.CanRead(M.Shipment.ShipToParty));
         }
 
         [Test]
@@ -238,8 +238,8 @@ namespace Allors.Domain
 
             var acl = new AccessControlList(shipment, new Users(this.DatabaseSession).GetCurrentUser());
 
-            Assert.IsTrue(acl.CanWrite(PurchaseM.Shipment.ShipToParty));
-            Assert.IsTrue(acl.CanRead(PurchaseM.Shipment.ShipToParty));
+            Assert.IsTrue(acl.CanWrite(M.Shipment.ShipToParty));
+            Assert.IsTrue(acl.CanRead(M.Shipment.ShipToParty));
 
             Thread.CurrentPrincipal = new GenericPrincipal(new GenericIdentity("orderProcessor2", "Forms"), new string[0]);
             acl = new AccessControlList(shipment, new Users(this.DatabaseSession).GetCurrentUser());

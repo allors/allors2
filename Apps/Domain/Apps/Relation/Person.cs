@@ -405,7 +405,7 @@ namespace Allors.Domain
             {
                 foreach (UserGroup userGroup in this.CurrentEmployment.Employer.UserGroupsWhereParty)
                 {
-                    if (userGroup.ContainsMember(this))
+                    if (UserGroup.Members.Contains(this))
                     {
                         usergroupsWhereMember.Add(userGroup);
                     }
