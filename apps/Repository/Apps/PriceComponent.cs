@@ -174,7 +174,6 @@ namespace Allors.Repository.Domain
 
         OrderValue OrderValue { get; set; }
 
-
         #region Allors
         [Id("dc5ad82b-c18d-4971-9689-e81475ed6a54")]
         [AssociationId("40276e1c-d9eb-4ef8-b828-387f67f1a337")]
@@ -183,7 +182,6 @@ namespace Allors.Repository.Domain
         [Precision(19)]
         [Scale(2)]
         decimal Price { get; set; }
-
 
         #region Allors
         [Id("de59dbb7-996a-45be-ae2a-a7b5a0ff3d94")]

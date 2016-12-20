@@ -64,6 +64,7 @@ namespace Allors.Repository.Domain
         [Precision(19)]
         [Scale(2)]
         public decimal Quantity { get; set; }
+
         #region Allors
         [Id("4f933f12-1337-453c-9cfd-6babaf9189d5")]
         [AssociationId("b49286b4-db2a-4025-8fb2-9390514b69dc")]
