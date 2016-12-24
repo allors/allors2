@@ -50,7 +50,7 @@ namespace Allors.Domain
 
             new ProductCategoryBuilder(this.DatabaseSession).WithDescription("Category").WithPackage(package).Build();
 
-            Assert.IsFalse(new Derivation(this.DatabaseSession).Derive().HasErrors);
+            Assert.IsFalse(new NonLogging.Derivation(this.DatabaseSession).Derive().HasErrors);
 
             this.DatabaseSession.Rollback();
         }
@@ -63,7 +63,7 @@ namespace Allors.Domain
             var parent = new ProductCategoryBuilder(this.DatabaseSession).WithDescription("parent").WithPackage(package).Build();
             var child = new ProductCategoryBuilder(this.DatabaseSession).WithDescription("child").WithParent(parent).Build();
 
-            Assert.IsTrue(new Derivation(this.DatabaseSession).Derive().HasErrors);
+            Assert.IsTrue(new NonLogging.Derivation(this.DatabaseSession).Derive().HasErrors);
         }
 
         [Test]

@@ -101,7 +101,7 @@ namespace Allors.Domain
 
             this.DatabaseSession.Derive(true);
 
-            Singleton.Instance(this.DatabaseSession).DeriveRevenues();
+            Singleton.Instance(this.DatabaseSession).DeriveRevenues(new NonLogging.Derivation(this.DatabaseSession));
 
             var package1Revenue = package1.PackageRevenuesWherePackage[0];
             var package2Revenue = package2.PackageRevenuesWherePackage[0];
@@ -127,7 +127,7 @@ namespace Allors.Domain
 
             this.DatabaseSession.Derive(true);
 
-            Singleton.Instance(this.DatabaseSession).DeriveRevenues();
+            Singleton.Instance(this.DatabaseSession).DeriveRevenues(new NonLogging.Derivation(this.DatabaseSession));
         
             Assert.AreEqual(105, package1Revenue.Revenue);
             Assert.AreEqual(60, package2Revenue.Revenue);
@@ -226,7 +226,7 @@ namespace Allors.Domain
 
             this.DatabaseSession.Derive(true);
 
-            Singleton.Instance(this.DatabaseSession).DeriveRevenues();
+            Singleton.Instance(this.DatabaseSession).DeriveRevenues(new NonLogging.Derivation(this.DatabaseSession));
 
             var packageRevenueHistory1 = package1.PackageRevenueHistoriesWherePackage.First;
             Assert.AreEqual(180, packageRevenueHistory1.Revenue);
@@ -250,7 +250,7 @@ namespace Allors.Domain
 
             this.DatabaseSession.Derive(true);
 
-            Singleton.Instance(this.DatabaseSession).DeriveRevenues();
+            Singleton.Instance(this.DatabaseSession).DeriveRevenues(new NonLogging.Derivation(this.DatabaseSession));
 
             Assert.AreEqual(195, packageRevenueHistory1.Revenue);
             Assert.AreEqual(110, packageRevenueHistory2.Revenue);

@@ -28,7 +28,7 @@ namespace Allors.Domain
     /// </summary>
     public partial class Singleton
     {
-        public void AppsOnDeriveRevenues()
+        public void AppsOnDeriveRevenues(IDerivation derivation)
         {
             PartyPackageRevenues.AppsOnDeriveRevenues(this.Strategy.Session);
             this.Strategy.Session.Commit();
@@ -41,8 +41,6 @@ namespace Allors.Domain
 
             PartyRevenues.AppsOnDeriveRevenues(this.Strategy.Session);
             this.Strategy.Session.Commit();
-
-            var derivation = new Derivation(this.Strategy.Session);
 
             foreach (PartyPackageRevenue revenue in this.Strategy.Session.Extent<PartyPackageRevenue>())
             {
@@ -174,10 +172,10 @@ namespace Allors.Domain
             People.AppsOnDeriveCommissions(this.Strategy.Session);
             this.Strategy.Session.Commit();
 
-            this.AppsOnDeriveHistories();
+            this.AppsOnDeriveHistories(derivation);
         }
 
-        public void AppsOnDeriveHistories()
+        public void AppsOnDeriveHistories(IDerivation derivation)
         {
             PartyPackageRevenueHistories.AppsOnDeriveHistory(this.Strategy.Session);
             this.Strategy.Session.Commit();
@@ -190,8 +188,6 @@ namespace Allors.Domain
 
             PartyRevenueHistories.AppsOnDeriveHistory(this.Strategy.Session);
             this.Strategy.Session.Commit();
-
-            var derivation = new Derivation(this.Strategy.Session);
 
             var revenues = this.Strategy.Session.Extent<PartyPackageRevenueHistory>();
             foreach (PartyPackageRevenueHistory revenue in revenues)

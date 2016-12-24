@@ -102,7 +102,7 @@ namespace Allors.Domain
 
             this.DatabaseSession.Derive(true);
 
-            Singleton.Instance(this.DatabaseSession).DeriveRevenues();
+            Singleton.Instance(this.DatabaseSession).DeriveRevenues(new NonLogging.Derivation(this.DatabaseSession));
 
             var customer1PackageRevenues = customer1.PartyPackageRevenuesWhereParty;
             Assert.AreEqual(2, customer1PackageRevenues.Count);
@@ -135,7 +135,7 @@ namespace Allors.Domain
 
             this.DatabaseSession.Derive(true);
 
-            Singleton.Instance(this.DatabaseSession).DeriveRevenues();
+            Singleton.Instance(this.DatabaseSession).DeriveRevenues(new NonLogging.Derivation(this.DatabaseSession));
 
             var customer2PackageRevenues = customer2.PartyPackageRevenuesWhereParty;
             Assert.AreEqual(2, customer2PackageRevenues.Count);

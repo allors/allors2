@@ -67,8 +67,6 @@ namespace Allors
             }
 
             this.databaseSession = Config.Default.CreateSession();
-
-            new SecurityCache(this.databaseSession).Invalidate();
         }
 
         protected IObject[] GetObjects(ISession session, Composite objectType)

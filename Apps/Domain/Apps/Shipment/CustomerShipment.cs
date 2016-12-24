@@ -130,7 +130,7 @@ namespace Allors.Domain
 
             if (!this.ExistStore && this.ExistShipFromParty)
             {
-                var organisation = this.ShipFromParty as Domain.InternalOrganisation;
+                var organisation = this.ShipFromParty as InternalOrganisation;
                 if (organisation != null && organisation.StoresWhereOwner.Count == 1)
                 {
                     this.Store = organisation.StoresWhereOwner.First;

@@ -1981,7 +1981,7 @@ namespace Allors.Domain
             Thread.CurrentPrincipal = new GenericPrincipal(new GenericIdentity("suppliercontact", "Forms"), new string[0]);
             var acl = new AccessControlList(order, new Users(this.DatabaseSession).GetCurrentUser());
 
-            Assert.IsFalse(acl.CanRead);
+            Assert.IsFalse(acl.CanRead(M.SalesOrder.OrderNumber));
         }
 
         [Test]

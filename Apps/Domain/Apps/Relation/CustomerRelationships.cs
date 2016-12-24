@@ -24,7 +24,7 @@ namespace Allors.Domain
     {
         public static void AppsOnDeriveRevenues(ISession session)
         {
-            var derivation = new Derivation(session);
+            var derivation = new NonLogging.Derivation(session);
             foreach (CustomerRelationship customerRelationship in session.Extent<CustomerRelationship>())
             {
                 customerRelationship.AppsOnDeriveRevenue(derivation);

@@ -1384,7 +1384,7 @@ namespace Allors.Domain
             Thread.CurrentPrincipal = new GenericPrincipal(new GenericIdentity("salesRep", "Forms"), new string[0]);
             acl = new AccessControlList(invoice, new Users(this.DatabaseSession).GetCurrentUser());
 
-            Assert.IsFalse(acl.CanRead());
+            Assert.IsFalse(acl.CanRead(M.SalesInvoice.InvoiceNumber));
         }
 
         [Test]

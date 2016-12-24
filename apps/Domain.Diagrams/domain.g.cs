@@ -1205,7 +1205,7 @@ namespace Allors.Domain
 						global::System.String UriExtension {set;}
 
 		}
-		public interface Currency  : AccessControlledObject 
+		public interface Currency  : IUnitOfMeasure 
 		{
 						global::System.String IsoCode {set;}
 

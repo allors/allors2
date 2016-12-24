@@ -18,6 +18,7 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
+
 namespace Allors.Domain
 {
     using System;
@@ -28,7 +29,7 @@ namespace Allors.Domain
     {
         public static void AppsOnDeriveHistory(ISession session)
         {
-            var derivation = new Derivation(session);
+            var derivation = new NonLogging.Derivation(session);
 
             var salesRepRevenuesByPeriodBySalesRepByInternalOrganisation = new Dictionary<InternalOrganisation, Dictionary<Person, Dictionary<DateTime, SalesRepRevenue>>>();
 

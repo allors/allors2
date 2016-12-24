@@ -138,11 +138,6 @@ namespace Allors.Domain
                     roles.Add("Prospect");
                 }
 
-                if (this.AppsIsActiveSubContractor(DateTime.UtcNow.Date))
-                {
-                    roles.Add("Subcontractor");
-                }
-
                 return roles;
             }
         }

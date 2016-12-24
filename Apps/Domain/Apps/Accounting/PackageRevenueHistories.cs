@@ -27,7 +27,7 @@ namespace Allors.Domain
     {
         public static void AppsOnDeriveHistory(ISession session)
         {
-            var derivation = new Derivation(session);
+            var derivation = new NonLogging.Derivation(session);
 
             var packageRevenuesByPeriodByPackageByInternalOrganisation = new Dictionary<InternalOrganisation, Dictionary<Package, Dictionary<DateTime, PackageRevenue>>>();
 

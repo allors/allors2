@@ -120,7 +120,7 @@ namespace Allors.Domain
 
             this.DatabaseSession.Derive(true);
 
-            Singleton.Instance(this.DatabaseSession).DeriveRevenues();
+            Singleton.Instance(this.DatabaseSession).DeriveRevenues(new NonLogging.Derivation(this.DatabaseSession));
 
             var cat1RevenueHistory = cat1.ProductCategoryRevenueHistoriesWhereProductCategory.First;
             Assert.AreEqual(180, cat1RevenueHistory.Revenue);
@@ -147,7 +147,7 @@ namespace Allors.Domain
 
             this.DatabaseSession.Derive(true);
 
-            Singleton.Instance(this.DatabaseSession).DeriveRevenues();
+            Singleton.Instance(this.DatabaseSession).DeriveRevenues(new NonLogging.Derivation(this.DatabaseSession));
 
             Assert.AreEqual(195, cat1RevenueHistory.Revenue);
             Assert.AreEqual(110, cat2RevenueHistory.Revenue);

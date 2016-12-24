@@ -63,7 +63,7 @@ namespace Allors.Domain
                         {
                             if (productBasePrice == 0 || priceComponent.Price < productBasePrice)
                             {
-                                productBasePrice = priceComponent.Price;
+                                productBasePrice = priceComponent.Price?? 0;
                             }
                         }
                     }

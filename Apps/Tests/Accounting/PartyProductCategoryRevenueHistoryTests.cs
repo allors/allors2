@@ -183,7 +183,7 @@ namespace Allors.Domain
 
             this.DatabaseSession.Derive(true);
 
-            Singleton.Instance(this.DatabaseSession).DeriveRevenues();
+            Singleton.Instance(this.DatabaseSession).DeriveRevenues(new NonLogging.Derivation(this.DatabaseSession));
 
             var customer1Cat1RevenueHistories = customer1.PartyProductCategoryRevenueHistoriesWhereParty;
             customer1Cat1RevenueHistories.Filter.AddEquals(M.PartyProductCategoryRevenueHistory.ProductCategory, cat1);
@@ -217,7 +217,7 @@ namespace Allors.Domain
 
             this.DatabaseSession.Derive(true);
 
-            Singleton.Instance(this.DatabaseSession).DeriveRevenues();
+            Singleton.Instance(this.DatabaseSession).DeriveRevenues(new NonLogging.Derivation(this.DatabaseSession));
 
             var customer2Cat1RevenueHistories = customer2.PartyProductCategoryRevenueHistoriesWhereParty;
             customer2Cat1RevenueHistories.Filter.AddEquals(M.PartyProductCategoryRevenueHistory.ProductCategory, cat1);

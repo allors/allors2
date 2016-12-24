@@ -322,7 +322,7 @@ namespace Allors.Domain
 
                     if (partyContactMechanism.ContactPurpose.IsShippingAddress)
                     {
-                        @this.ShippingAddress = partyContactMechanism.ContactMechanism as Domain.PostalAddress;
+                        @this.ShippingAddress = partyContactMechanism.ContactMechanism as PostalAddress;
                         continue;
                     }
 

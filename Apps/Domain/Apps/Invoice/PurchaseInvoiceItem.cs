@@ -49,8 +49,8 @@ namespace Allors.Domain
 
             if (this.ExistActualUnitPrice)
             {
-                this.UnitBasePrice = this.ActualUnitPrice;
-                this.CalculatedUnitPrice = this.ActualUnitPrice;
+                this.UnitBasePrice = this.ActualUnitPrice??  0;
+                this.CalculatedUnitPrice = this.ActualUnitPrice?? 0;
 
                 var discountAdjustment = this.GetDiscountAdjustment();
 

@@ -22,15 +22,15 @@ namespace Allors.Domain
 {
     public partial class Singleton
     {
-        public void DeriveRevenues()
+        public void DeriveRevenues(IDerivation derivation)
         {
-            this.AppsOnDeriveRevenues();
-            this.DeriveHistories();
+            this.AppsOnDeriveRevenues(derivation);
+            this.DeriveHistories(derivation);
         }
 
-        public void DeriveHistories()
+        public void DeriveHistories(IDerivation derivation)
         {
-            this.AppsOnDeriveHistories();
+            this.AppsOnDeriveHistories(derivation);
         }
     }
 }

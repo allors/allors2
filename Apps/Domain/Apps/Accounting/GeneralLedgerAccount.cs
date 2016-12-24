@@ -66,10 +66,10 @@ namespace Allors.Domain
         {
             var derivation = method.Derivation;
 
-            if (this.ExistChartOfAccountWhereGeneralLedgerAccount)
+            if (this.ExistChartOfAccountsWhereGeneralLedgerAccount)
             {
                 var extent = this.Strategy.Session.Extent<GeneralLedgerAccount>();
-                extent.Filter.AddEquals(this.Meta.ChartOfAccountWhereGeneralLedgerAccount, this.ChartOfAccountWhereGeneralLedgerAccount);
+                extent.Filter.AddEquals(this.Meta.ChartOfAccountsWhereGeneralLedgerAccount, this.ChartOfAccountsWhereGeneralLedgerAccount);
                 extent.Filter.AddEquals(this.Meta.AccountNumber, this.AccountNumber);
 
                 if (extent.Count > 1)

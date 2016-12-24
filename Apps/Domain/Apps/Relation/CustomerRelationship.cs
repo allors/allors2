@@ -58,7 +58,7 @@ namespace Allors.Domain
                 this.YTDRevenue = 0;
                 this.LastYearsRevenue = 0;
 
-                foreach (Domain.PartyRevenue partyRevenue in this.Customer.PartyRevenuesWhereParty)
+                foreach (PartyRevenue partyRevenue in this.Customer.PartyRevenuesWhereParty)
                 {
                     if (partyRevenue.InternalOrganisation.Equals(this.InternalOrganisation))
                     {

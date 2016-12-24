@@ -26,8 +26,10 @@ namespace Allors.Domain
 
     public partial class InternalOrganisationRevenueHistories
     {
-        public static void AppsOnDeriveHistory(ISession session, IDerivation derivation)
+        public static void AppsOnDeriveHistory(ISession session)
         {
+            var derivation = new NonLogging.Derivation(session);
+
             var internalOrganisationRevenuesByPeriodByInternalOrganisation = new Dictionary<InternalOrganisation, Dictionary<DateTime, InternalOrganisationRevenue>>();
 
             var internalOrganisationRevenues = session.Extent<InternalOrganisationRevenue>();
