@@ -18,6 +18,8 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Allors.Adapters.Memory;
+
 namespace Allors
 {
     using System;
@@ -61,9 +63,9 @@ namespace Allors
 
         private static void SetupBasic()
         {
-            var configuration = new Adapters.Memory.IntegerId.Configuration { ObjectFactory = Config.ObjectFactory };
-            Config.Default = new Adapters.Memory.IntegerId.Database(configuration);
-            
+            var configuration = new Configuration { ObjectFactory = Config.ObjectFactory };
+            Config.Default = new Database(configuration);
+
             Thread.CurrentThread.CurrentCulture = CultureInfo.GetCultureInfo("en-GB");
             Thread.CurrentThread.CurrentUICulture = CultureInfo.GetCultureInfo("en-GB");
 
@@ -91,8 +93,8 @@ namespace Allors
 
         private static void SetupFull()
         {
-            var configuration = new Adapters.Memory.IntegerId.Configuration { ObjectFactory = Config.ObjectFactory };
-            Config.Default = new Adapters.Memory.IntegerId.Database(configuration);
+            var configuration = new Configuration { ObjectFactory = Config.ObjectFactory };
+            Config.Default = new Database(configuration);
 
             Thread.CurrentThread.CurrentCulture = CultureInfo.GetCultureInfo("en-GB");
             Thread.CurrentThread.CurrentUICulture = CultureInfo.GetCultureInfo("en-GB");
@@ -186,8 +188,7 @@ namespace Allors
                 var supplier = new OrganisationBuilder(session).WithName("supplier").WithLocale(singleton.DefaultLocale).Build();
                 var purchaser = new PersonBuilder(session).WithLastName("purchaser").WithUserName("purchaser").Build();
                 var salesrep = new PersonBuilder(session).WithLastName("salesRep").WithUserName("salesRep").Build();
-                var orderProcessor =
-                    new PersonBuilder(session).WithLastName("orderProcessor").WithUserName("orderProcessor").Build();
+                var orderProcessor = new PersonBuilder(session).WithLastName("orderProcessor").WithUserName("orderProcessor").Build();
 
                 new CustomerRelationshipBuilder(session).WithCustomer(customer).WithInternalOrganisation(internalOrganisation).WithFromDate(DateTime.UtcNow).Build();
 
@@ -206,18 +207,8 @@ namespace Allors
                 var administrators = new UserGroups(session).Administrators;
                 administrators.AddMember(administrator);
 
-                var usergroups = internalOrganisation.UserGroupsWhereParty;
-                usergroups = internalOrganisation.UserGroupsWhereParty;
-                usergroups.Filter.AddEquals(M.UserGroup.Parent, new Roles(session).Operations.UserGroupWhereRole);
-                var userGroup = usergroups.First;
-
-                userGroup.AddMember(orderProcessor);
-
-                usergroups = internalOrganisation.UserGroupsWhereParty;
-                usergroups.Filter.AddEquals(M.UserGroup.Parent, new Roles(session).Procurement.UserGroupWhereRole);
-                userGroup = usergroups.First;
-
-                userGroup.AddMember(purchaser);
+                internalOrganisation.OperationsUserGroup.AddMember(orderProcessor);
+                internalOrganisation.ProcurementUserGroup.AddMember(purchaser);
 
                 session.Derive(true);
                 session.Commit();

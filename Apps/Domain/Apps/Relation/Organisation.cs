@@ -35,33 +35,13 @@ namespace Allors.Domain
             }
         }
 
-        public void AppsOnPostDerive(ObjectOnPostDerive method)
-        {
-            this.RemoveSecurityTokens();
-            this.AddSecurityToken(this.OwnerSecurityToken);
-            this.AddSecurityToken(Singleton.Instance(this.Strategy.Session).DefaultSecurityToken);
-
-            foreach (CustomerRelationship customerRelationship in this.CustomerRelationshipsWhereCustomer)
-            {
-                this.AddSecurityToken(customerRelationship.InternalOrganisation.OwnerSecurityToken);
-            }
-        }
-
         public void AppsOnDerive(ObjectOnDerive method)
         {
             var derivation = method.Derivation;
 
             this.PartyName = this.Name;
 
-            if (!this.ExistOwnerSecurityToken)
-            {
-                var securityToken = new SecurityTokenBuilder(this.Strategy.Session).Build();
-                this.OwnerSecurityToken = securityToken;
-
-                this.AddSecurityToken(this.OwnerSecurityToken);
-            }
-
-            this.AppsOnDeriveUserGroups(derivation);
+            this.AppsOnDeriveSecurity(derivation);
             this.AppsOnDeriveCurrentContacts(derivation);
             this.AppsOnDeriveInactiveContacts(derivation);
             this.AppsOnDeriveCurrentOrganisationContactRelationships(derivation);
@@ -164,7 +144,7 @@ namespace Allors.Domain
         public Partnership Partnership(InternalOrganisation internalOrganisation)
         {
             var relationships = this.PartnershipsWherePartner;
-            relationships.Filter.AddEquals(Partnerships.Meta.InternalOrganisation, internalOrganisation);
+            relationships.Filter.AddEquals(M.Partnership.InternalOrganisation, internalOrganisation);
 
             foreach (Partnership relationship in relationships)
             {
@@ -201,7 +181,7 @@ namespace Allors.Domain
         public ProspectRelationship ProspectRelationship(InternalOrganisation internalOrganisation)
         {
             var relationships = this.ProspectRelationshipsWhereProspect;
-            relationships.Filter.AddEquals(ProspectRelationships.Meta.InternalOrganisation, internalOrganisation);
+            relationships.Filter.AddEquals(M.ProspectRelationship.InternalOrganisation, internalOrganisation);
 
             foreach (ProspectRelationship relationship in relationships)
             {
@@ -213,6 +193,26 @@ namespace Allors.Domain
             }
 
             return null;
+        }
+
+        public bool AppsIsActiveSubContractor(DateTime? date)
+        {
+            if (date == DateTime.MinValue)
+            {
+                return false;
+            }
+
+            var subContractorRelationships = this.SubContractorRelationshipsWhereSubContractor;
+            foreach (SubContractorRelationship relationship in subContractorRelationships)
+            {
+                if (relationship.FromDate <= date &&
+                    (!relationship.ExistThroughDate || relationship.ThroughDate >= date))
+                {
+                    return true;
+                }
+            }
+
+            return false;
         }
 
         public bool AppsIsActiveSupplier(DateTime? date)
@@ -252,65 +252,124 @@ namespace Allors.Domain
             return null;
         }
 
-        public void AppsOnDeriveUserGroups(IDerivation derivation)
+        public void AppsOnDeriveSecurity(IDerivation derivation)
         {
-            var customerContactGroupName = string.Format("Customer contacts at {0} ({1})", this.Name, this.UniqueId);
-            var supplierContactGroupName = string.Format("Supplier contacts at {0} ({1})", this.Name, this.UniqueId);
-            var partnerContactGroupName = string.Format("Partner contacts at {0} ({1})", this.Name, this.UniqueId);
+            this.RemoveSecurityTokens();
 
-            var customerContactGroupFound = false;
-            var supplierContactGroupFound = false;
-            var partnerContactGroupFound = false;
+            var session = this.Strategy.Session;
+            var singleton = Singleton.Instance(session);
 
-            foreach (UserGroup userGroup in this.UserGroupsWhereParty)
+            if (!this.SecurityTokens.Contains(singleton.DefaultSecurityToken))
             {
-                if (userGroup.Name == customerContactGroupName)
-                {
-                    customerContactGroupFound = true;
-                }
-
-                if (userGroup.Name == supplierContactGroupName)
-                {
-                    supplierContactGroupFound = true;
-                }
-
-                if (userGroup.Name == partnerContactGroupName)
-                {
-                    partnerContactGroupFound = true;
-                }
+                this.AddSecurityToken(singleton.DefaultSecurityToken);
             }
 
-            if (!customerContactGroupFound)
+            this.OrganisationOwnerSecurity();
+
+            if (this.AppsIsActiveCustomer(DateTime.UtcNow.Date) && !this.ExistCustomerContactUserGroup)
             {
-                this.CustomerContactUserGroup = new UserGroupBuilder(this.Strategy.Session)
+                var customerContactGroupName = string.Format("Customer contacts at {0} ({1})", this.Name, this.UniqueId);
+                this.CustomerContactUserGroup = new UserGroupBuilder(session)
                     .WithName(customerContactGroupName)
-                    .WithParty(this)
-                    .WithParent(new UserGroups(this.Strategy.Session).Customers)
                     .Build();
-
-                new AccessControlBuilder(this.Strategy.Session).WithRole(new Roles(this.Strategy.Session).Customer).WithSubjectGroup(this.CustomerContactUserGroup).WithObject(this.OwnerSecurityToken).Build();
             }
 
-            if (!supplierContactGroupFound)
+            if (!this.ExistCustomerSecurityToken)
             {
-                this.SupplierContactUserGroup = new UserGroupBuilder(this.Strategy.Session)
+                this.CustomerSecurityToken = new SecurityTokenBuilder(session).Build();
+                this.AddSecurityToken(this.CustomerSecurityToken);
+            }
+
+            if (!this.ExistCustomerAccessControl)
+            {
+                this.CustomerAccessControl = new AccessControlBuilder(session)
+                    .WithRole(new Roles(session).Customer)
+                    .WithSubjectGroup(this.CustomerContactUserGroup)
+                    .Build();
+
+                this.CustomerSecurityToken.AddAccessControl(this.CustomerAccessControl);
+            }
+
+            if (this.AppsIsActiveSupplier(DateTime.UtcNow.Date) && this.ExistSupplierContactUserGroup)
+            {
+                var supplierContactGroupName = string.Format("Supplier contacts at {0} ({1})", this.Name, this.UniqueId);
+                this.SupplierContactUserGroup = new UserGroupBuilder(session)
                     .WithName(supplierContactGroupName)
-                    .WithParty(this)
-                    .WithParent(new UserGroups(this.Strategy.Session).Suppliers)
                     .Build();
-
-                new AccessControlBuilder(this.Strategy.Session).WithRole(new Roles(this.Strategy.Session).Supplier).WithSubjectGroup(this.SupplierContactUserGroup).WithObject(this.OwnerSecurityToken).Build();
             }
 
-            if (!partnerContactGroupFound)
+            if (!this.ExistSupplierSecurityToken)
             {
-                this.PartnerContactUserGroup = new UserGroupBuilder(this.Strategy.Session)
-                    .WithName(partnerContactGroupName)
-                    .WithParty(this)
-                    .WithParent(new UserGroups(this.Strategy.Session).Partners)
+                this.SupplierSecurityToken = new SecurityTokenBuilder(session).Build();
+                this.AddSecurityToken(this.SupplierSecurityToken);
+            }
+
+            if (!this.ExistSupplierAccessControl)
+            {
+                this.SupplierAccessControl = new AccessControlBuilder(session)
+                    .WithRole(new Roles(session).Customer)
+                    .WithSubjectGroup(this.SupplierContactUserGroup)
                     .Build();
 
-                new AccessControlBuilder(this.Strategy.Session).WithRole(new Roles(this.Strategy.Session).Partner).WithSubjectGroup(this.PartnerContactUserGroup).WithObject(this.OwnerSecurityToken).Build();
+                this.SupplierSecurityToken.AddAccessControl(this.SupplierAccessControl);
+            }
+
+            if (this.AppsIsActiveSupplier(DateTime.UtcNow.Date) && !this.ExistPartnerContactUserGroup)
+            {
+                var partnerContactGroupName = string.Format("Partner contacts at {0} ({1})", this.Name, this.UniqueId);
+                this.PartnerContactUserGroup = new UserGroupBuilder(session)
+                    .WithName(partnerContactGroupName)
+                    .Build();
+            }
+
+            if (!this.ExistPartnerSecurityToken)
+            {
+                this.PartnerSecurityToken = new SecurityTokenBuilder(session).Build();
+                this.AddSecurityToken(this.PartnerSecurityToken);
+            }
+
+            if (!this.ExistPartnerAccessControl)
+            {
+                this.CustomerAccessControl = new AccessControlBuilder(session)
+                    .WithRole(new Roles(session).Customer)
+                    .WithSubjectGroup(this.PartnerContactUserGroup)
+                    .Build();
+
+                this.PartnerSecurityToken.AddAccessControl(this.PartnerAccessControl);
+            }
+
+            foreach (CustomerRelationship customerRelationship in this.CustomerRelationshipsWhereCustomer)
+            {
+                this.AddSecurityToken(customerRelationship.InternalOrganisation.OwnerSecurityToken);
+            }
+        }
+
+        private void OrganisationOwnerSecurity()
+        {
+            var session = this.Strategy.Session;
+
+            var ownerGroupName = $"Owners for organisation {this.Name} ({this.UniqueId})";
+            var ownerRole = new Roles(session).Owner;
+
+            if (!this.ExistOwnerUserGroup)
+            {
+                var existingOwnerGroup = new UserGroups(session).FindBy(MetaUserGroup.Instance.Name, ownerGroupName);
+                this.OwnerUserGroup = existingOwnerGroup ?? new UserGroupBuilder(session).WithName(ownerGroupName).Build();
+            }
+
+            if (!this.ExistOwnerSecurityToken)
+            {
+                this.OwnerSecurityToken = new SecurityTokenBuilder(session).Build();
+            }
+
+            if (!this.ExistOwnerAccessControl)
+            {
+                this.OwnerAccessControl = new AccessControlBuilder(session)
+                    .WithSubjectGroup(this.OwnerUserGroup)
+                    .WithRole(ownerRole)
+                    .Build();
+
+                this.OwnerSecurityToken.AddAccessControl(this.OwnerAccessControl);
             }
         }
 
@@ -428,7 +487,6 @@ namespace Allors.Domain
                 }
             }
         }
-
 
         public List<string> Roles
         {

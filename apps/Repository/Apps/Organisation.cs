@@ -8,6 +8,11 @@ namespace Allors.Repository.Domain
     public partial class Organisation : Party, Deletable 
     {
         #region inherited properties
+
+        public SecurityToken CustomerSecurityToken { get; set; }
+
+        public AccessControl CustomerAccessControl { get; set; }
+
         public PostalAddress GeneralCorrespondence { get; set; }
 
         public decimal YTDRevenue { get; set; }
@@ -109,6 +114,58 @@ namespace Allors.Repository.Domain
         public Guid UniqueId { get; set; }
 
         #endregion
+
+        #region Allors
+        [Id("D162BF34-C4DE-4BC9-814D-3CDD1BB324B4")]
+        [AssociationId("36A5ED60-52B9-4FAC-97C2-D8212B0B5AF9")]
+        [RoleId("02DFEB97-42B6-4AAD-B38A-02EF8EC5AE87")]
+        #endregion
+        [Multiplicity(Multiplicity.OneToOne)]
+        [Indexed]
+        [Required]
+        [Derived]
+        public SecurityToken SupplierSecurityToken { get; set; }
+
+        #region Allors
+        [Id("C5E4F0D2-B29F-4811-8743-994DCAFE6F7F")]
+        [AssociationId("6D4607CC-0BCC-4512-9C2A-ED52E5A19E96")]
+        [RoleId("1D5872F7-B610-4129-A5C0-CD5748CE239E")]
+        #endregion
+        [Multiplicity(Multiplicity.OneToOne)]
+        [Indexed]
+        [Derived]
+        public AccessControl SupplierAccessControl { get; set; }
+
+        #region Allors
+        [Id("727FFAF1-230E-426D-8722-8A134340C3A5")]
+        [AssociationId("AFA1BC69-1755-49CC-974D-5DEB5ACCC7E0")]
+        [RoleId("0D94EF98-1E62-4054-AB26-0ACFDA62ED4D")]
+        #endregion
+        [Multiplicity(Multiplicity.OneToOne)]
+        [Indexed]
+        [Required]
+        [Derived]
+        public SecurityToken PartnerSecurityToken { get; set; }
+
+        #region Allors
+        [Id("7BBB4A56-721D-4058-B475-D6AABBD81C3B")]
+        [AssociationId("25AAA810-849D-4599-85B2-6AB2E0A07D89")]
+        [RoleId("C185E780-DB96-4934-833E-7B77D42E8427")]
+        #endregion
+        [Multiplicity(Multiplicity.OneToOne)]
+        [Indexed]
+        [Derived]
+        public AccessControl PartnerAccessControl { get; set; }
+
+        #region Allors
+        [Id("980631CB-CC72-4264-87E5-B65DC6ABBB4D")]
+        [AssociationId("53B3AFB0-D926-477D-9591-D537B00CCCBD")]
+        [RoleId("0CCF23A0-F65B-469B-9886-3E554A02A353")]
+        [Multiplicity(Multiplicity.OneToOne)]
+        [Derived]
+        [Indexed]
+        #endregion
+        public UserGroup OwnerUserGroup { get; set; }
 
         #region Allors
         [Id("1c8bf2e3-6794-47c8-990c-f124d47653fb")]

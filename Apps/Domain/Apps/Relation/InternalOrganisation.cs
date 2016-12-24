@@ -343,40 +343,140 @@ namespace Allors.Domain
                 this.DefaultPaymentMethod = this.PaymentMethods.First;
             }
 
-            if (!this.ExistOwnerSecurityToken)
-            {
-                var securityToken = new SecurityTokenBuilder(this.Strategy.Session).Build();
-                this.OwnerSecurityToken = securityToken;
-
-                this.AddSecurityToken(this.OwnerSecurityToken);
-                this.AddSecurityToken(Singleton.Instance(this.Strategy.Session).DefaultSecurityToken);
-            }
-
-            this.AppsOnDeriveEmployeeUserGroups(derivation);
+            this.AppsOnDeriveSecurity(derivation);
         }
 
-        public void AppsOnDeriveEmployeeUserGroups(IDerivation derivation)
+        public void AppsOnDeriveSecurity(IDerivation derivation)
         {
-            var employeeUserGroupsByName = new Dictionary<string, UserGroup>();
-            foreach (UserGroup userGroup in this.UserGroupsWhereParty)
+            var session = this.Strategy.Session;
+            var singleton = Singleton.Instance(session);
+
+            if (!this.SecurityTokens.Contains(singleton.DefaultSecurityToken))
             {
-                employeeUserGroupsByName.Add(userGroup.Name, userGroup);
+                this.AddSecurityToken(singleton.DefaultSecurityToken);
             }
 
-            foreach (Role role in this.EmployeeRoles)
+            this.InternalOrganisationOwnerSecurity();
+
+            if (!this.ExistEmployeeUserGroup)
             {
-                var userGroupName = string.Format("{0} for {1})", role.Name, this.Name);
+                this.EmployeeUserGroup = new UserGroupBuilder(session)
+                    .WithName($"Employees at {this.Name} ({this.UniqueId})")
+                    .Build();
+            }
 
-                if (!employeeUserGroupsByName.ContainsKey(userGroupName))
-                {
-                    var userGroup = new UserGroupBuilder(this.Strategy.Session)
-                        .WithName(userGroupName)
-                        .WithParty(this)
-                        .WithParent(role.UserGroupWhereRole)
-                        .Build();
+            if (!this.ExistEmployeeSecurityToken)
+            {
+                this.EmployeeSecurityToken = new SecurityTokenBuilder(session).Build();
+                this.AddSecurityToken(this.EmployeeSecurityToken);
+            }
 
-                    new AccessControlBuilder(this.Strategy.Session).WithRole(role).WithSubjectGroup(userGroup).WithObject(this.OwnerSecurityToken).Build();
-                }
+            if (!this.ExistEmployeeAccessControl)
+            {
+                this.EmployeeAccessControl = new AccessControlBuilder(session)
+                    .WithRole(new Roles(session).Customer)
+                    .WithSubjectGroup(this.EmployeeUserGroup)
+                    .Build();
+
+                this.EmployeeSecurityToken.AddAccessControl(this.EmployeeAccessControl);
+            }
+
+            if (!this.ExistOperationsUserGroup)
+            {
+                this.OperationsUserGroup = new UserGroupBuilder(session)
+                    .WithName($"Operationss at {this.Name} ({this.UniqueId})")
+                    .Build();
+            }
+
+            if (!this.ExistOperationsSecurityToken)
+            {
+                this.OperationsSecurityToken = new SecurityTokenBuilder(session).Build();
+                this.AddSecurityToken(this.OperationsSecurityToken);
+            }
+
+            if (!this.ExistOperationsAccessControl)
+            {
+                this.OperationsAccessControl = new AccessControlBuilder(session)
+                    .WithRole(new Roles(session).Customer)
+                    .WithSubjectGroup(this.OperationsUserGroup)
+                    .Build();
+
+                this.OperationsSecurityToken.AddAccessControl(this.OperationsAccessControl);
+            }
+
+            if (!this.ExistProcurementUserGroup)
+            {
+                this.ProcurementUserGroup = new UserGroupBuilder(session)
+                    .WithName($"Procurements at {this.Name} ({this.UniqueId})")
+                    .Build();
+            }
+
+            if (!this.ExistProcurementSecurityToken)
+            {
+                this.ProcurementSecurityToken = new SecurityTokenBuilder(session).Build();
+                this.AddSecurityToken(this.ProcurementSecurityToken);
+            }
+
+            if (!this.ExistProcurementAccessControl)
+            {
+                this.ProcurementAccessControl = new AccessControlBuilder(session)
+                    .WithRole(new Roles(session).Customer)
+                    .WithSubjectGroup(this.ProcurementUserGroup)
+                    .Build();
+
+                this.ProcurementSecurityToken.AddAccessControl(this.ProcurementAccessControl);
+            }
+
+            if (!this.ExistSalesUserGroup)
+            {
+                this.SalesUserGroup = new UserGroupBuilder(session)
+                    .WithName($"Saless at {this.Name} ({this.UniqueId})")
+                    .Build();
+            }
+
+            if (!this.ExistSalesSecurityToken)
+            {
+                this.SalesSecurityToken = new SecurityTokenBuilder(session).Build();
+                this.AddSecurityToken(this.SalesSecurityToken);
+            }
+
+            if (!this.ExistSalesAccessControl)
+            {
+                this.SalesAccessControl = new AccessControlBuilder(session)
+                    .WithRole(new Roles(session).Customer)
+                    .WithSubjectGroup(this.SalesUserGroup)
+                    .Build();
+
+                this.SalesSecurityToken.AddAccessControl(this.SalesAccessControl);
+            }
+        }
+
+        private void InternalOrganisationOwnerSecurity()
+        {
+            var session = this.Strategy.Session;
+
+            var ownerGroupName = $"Owners for organisation {this.Name} ({this.UniqueId})";
+            var ownerRole = new Roles(session).Owner;
+
+            if (!this.ExistOwnerUserGroup)
+            {
+                var existingOwnerGroup = new UserGroups(session).FindBy(MetaUserGroup.Instance.Name, ownerGroupName);
+                this.OwnerUserGroup = existingOwnerGroup ?? new UserGroupBuilder(session).WithName(ownerGroupName).Build();
+            }
+
+            if (!this.ExistOwnerSecurityToken)
+            {
+                this.OwnerSecurityToken = new SecurityTokenBuilder(session).Build();
+            }
+
+            if (!this.ExistOwnerAccessControl)
+            {
+                this.OwnerAccessControl = new AccessControlBuilder(session)
+                    .WithSubjectGroup(this.OwnerUserGroup)
+                    .WithRole(ownerRole)
+                    .Build();
+
+                this.OwnerSecurityToken.AddAccessControl(this.OwnerAccessControl);
             }
         }
 

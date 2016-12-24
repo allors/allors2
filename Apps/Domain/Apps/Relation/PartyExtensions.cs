@@ -111,26 +111,6 @@ namespace Allors.Domain
             return null;
         }
 
-        public static bool AppsIsActiveSubContractor(this Party party, DateTime? date)
-        {
-            if (date == DateTime.MinValue)
-            {
-                return false;
-            }
-
-            var subContractorRelationships = party.SubContractorRelationshipsWhereSubContractor;
-            foreach (SubContractorRelationship relationship in subContractorRelationships)
-            {
-                if (relationship.FromDate <= date &&
-                    (!relationship.ExistThroughDate || relationship.ThroughDate >= date))
-                {
-                    return true;
-                }
-            }
-
-            return false;
-        }
-
         public static bool AppsIsActiveProspect(this Party party, DateTime? date)
         {
             if (date == DateTime.MinValue)

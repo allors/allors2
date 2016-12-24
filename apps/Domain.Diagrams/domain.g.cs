@@ -641,6 +641,10 @@ namespace Allors.Domain
 		}
 		public interface Party  : Localised, AccessControlledObject, SecurityTokenOwner, UniquelyIdentifiable 
 		{
+						SecurityToken CustomerSecurityToken {set;}
+
+						AccessControl CustomerAccessControl {set;}
+
 						PostalAddress GeneralCorrespondence {set;}
 
 						global::System.Decimal YTDRevenue {set;}
@@ -2339,6 +2343,32 @@ namespace Allors.Domain
 		}
 		public interface InternalOrganisation  : Party 
 		{
+						UserGroup OwnerUserGroup {set;}
+
+						UserGroup EmployeeUserGroup {set;}
+
+						UserGroup OperationsUserGroup {set;}
+
+						UserGroup ProcurementUserGroup {set;}
+
+						UserGroup SalesUserGroup {set;}
+
+						SecurityToken EmployeeSecurityToken {set;}
+
+						SecurityToken OperationsSecurityToken {set;}
+
+						SecurityToken ProcurementSecurityToken {set;}
+
+						SecurityToken SalesSecurityToken {set;}
+
+						AccessControl EmployeeAccessControl {set;}
+
+						AccessControl OperationsAccessControl {set;}
+
+						AccessControl ProcurementAccessControl {set;}
+
+						AccessControl SalesAccessControl {set;}
+
 						global::System.String PurchaseOrderNumberPrefix {set;}
 
 						global::System.String TransactionReferenceNumber {set;}
@@ -2796,6 +2826,16 @@ namespace Allors.Domain
 		}
 		public interface Organisation  : Party, Deletable 
 		{
+						SecurityToken SupplierSecurityToken {set;}
+
+						AccessControl SupplierAccessControl {set;}
+
+						SecurityToken PartnerSecurityToken {set;}
+
+						AccessControl PartnerAccessControl {set;}
+
+						UserGroup OwnerUserGroup {set;}
+
 						LegalForm LegalForm {set;}
 
 						global::System.String Name {set;}

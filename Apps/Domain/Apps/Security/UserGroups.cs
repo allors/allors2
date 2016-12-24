@@ -73,20 +73,5 @@ namespace Allors.Domain
         {
             get { return this.Cache.Get(ProcurementId); }
         }
-
-        protected override void AppsSetup(Setup setup)
-        {
-            base.AppsSetup(setup);
-
-            new UserGroupBuilder(Session).WithName("customers").WithUniqueId(CustomersId).WithRole(new Roles(Session).Customer).Build();
-            new UserGroupBuilder(Session).WithName("suppliers").WithUniqueId(SuppliersId).WithRole(new Roles(Session).Supplier).Build();
-            new UserGroupBuilder(Session).WithName("partners").WithUniqueId(PartnersId).WithRole(new Roles(Session).Partner).Build();
-
-            new UserGroupBuilder(Session).WithName("operations").WithUniqueId(OperationsId).WithRole(new Roles(Session).Operations).Build();
-            new UserGroupBuilder(Session).WithName("sales").WithUniqueId(SalesId).WithRole(new Roles(Session).Sales).Build();
-            new UserGroupBuilder(Session).WithName("procurement").WithUniqueId(ProcurementId).WithRole(new Roles(Session).Procurement).Build();
-
-            new SecurityCache(this.Session).Invalidate();
-        }
     }
 }

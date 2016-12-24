@@ -76,9 +76,7 @@ namespace Allors.Domain
 
         public void AppsOnDeriveMembership()
         {
-            var usergroups = this.InternalOrganisation.UserGroupsWhereParty;
-            usergroups.Filter.AddEquals(M.UserGroup.Parent, new Roles(this.Strategy.Session).Sales.UserGroupWhereRole);
-            var salesRepUserGroup = usergroups.First;
+            var salesRepUserGroup = this.InternalOrganisation.SalesUserGroup;
 
             if (this.ExistSalesRepresentative && this.SalesRepresentative.ExistCurrentEmployment
                 && this.ExistInternalOrganisation)

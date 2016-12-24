@@ -31,37 +31,37 @@ namespace Allors.Domain
             new AccessControlBuilder(this.Session)
                 .WithRole(new Roles(this.Session).Customer)
                 .WithSubjectGroup(new UserGroups(this.Session).Customers)
-                .WithObject(defaultSecurityToken)
+                .WithSecurityToken(defaultSecurityToken)
                 .Build();
 
             new AccessControlBuilder(this.Session)
                 .WithRole(new Roles(this.Session).Supplier)
                 .WithSubjectGroup(new UserGroups(this.Session).Suppliers)
-                .WithObject(defaultSecurityToken)
+                .WithSecurityToken(defaultSecurityToken)
                 .Build();
 
             new AccessControlBuilder(this.Session)
                 .WithRole(new Roles(this.Session).Partner)
                 .WithSubjectGroup(new UserGroups(this.Session).Partners)
-                .WithObject(defaultSecurityToken)
+                .WithSecurityToken(defaultSecurityToken)
                 .Build();
 
             new AccessControlBuilder(this.Session)
                 .WithRole(new Roles(this.Session).Sales)
                 .WithSubjectGroup(new UserGroups(this.Session).Sales)
-                .WithObject(defaultSecurityToken)
+                .WithSecurityToken(defaultSecurityToken)
                 .Build();
 
             new AccessControlBuilder(this.Session)
                 .WithRole(new Roles(this.Session).Operations)
                 .WithSubjectGroup(new UserGroups(this.Session).Operations)
-                .WithObject(defaultSecurityToken)
+                .WithSecurityToken(defaultSecurityToken)
                 .Build();
 
             new AccessControlBuilder(this.Session)
                 .WithRole(new Roles(this.Session).Procurement)
                 .WithSubjectGroup(new UserGroups(this.Session).Procurement)
-                .WithObject(defaultSecurityToken)
+                .WithSecurityToken(defaultSecurityToken)
                 .Build();
         }
     }

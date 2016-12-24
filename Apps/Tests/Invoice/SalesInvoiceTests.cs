@@ -1095,7 +1095,7 @@ namespace Allors.Domain
             Thread.CurrentPrincipal = new GenericPrincipal(new GenericIdentity("customercontact2", "Forms"), new string[0]);
             var acl = new AccessControlList(invoice, new Users(this.DatabaseSession).GetCurrentUser());
 
-            Assert.IsFalse(acl.CanRead());
+            Assert.IsFalse(acl.CanRead(M.SalesInvoice.InvoiceNumber));
         }
 
         [Test]
@@ -1187,7 +1187,7 @@ namespace Allors.Domain
             Thread.CurrentPrincipal = new GenericPrincipal(new GenericIdentity("customercontact", "Forms"), new string[0]);
             var acl = new AccessControlList(invoice, new Users(this.DatabaseSession).GetCurrentUser());
 
-            Assert.IsTrue(acl.CanRead);
+            Assert.IsTrue(acl.CanRead(M.SalesInvoice.InvoiceNumber));
         }
 
         [Test]
@@ -1232,7 +1232,7 @@ namespace Allors.Domain
             Thread.CurrentPrincipal = new GenericPrincipal(new GenericIdentity("suppliercontact", "Forms"), new string[0]);
             var acl = new AccessControlList(invoice, new Users(this.DatabaseSession).GetCurrentUser());
 
-            Assert.IsFalse(acl.CanRead);
+            Assert.IsFalse(acl.CanRead(M.SalesInvoice.InvoiceNumber));
         }
 
         [Test]
@@ -1384,7 +1384,7 @@ namespace Allors.Domain
             Thread.CurrentPrincipal = new GenericPrincipal(new GenericIdentity("salesRep", "Forms"), new string[0]);
             acl = new AccessControlList(invoice, new Users(this.DatabaseSession).GetCurrentUser());
 
-            Assert.IsFalse(acl.CanRead);
+            Assert.IsFalse(acl.CanRead());
         }
 
         [Test]
@@ -1436,7 +1436,7 @@ namespace Allors.Domain
             Thread.CurrentPrincipal = new GenericPrincipal(new GenericIdentity("customercontact2", "Forms"), new string[0]);
             acl = new AccessControlList(invoice, new Users(this.DatabaseSession).GetCurrentUser());
 
-            Assert.IsFalse(acl.CanRead);
+            Assert.IsFalse(acl.CanRead(M.SalesInvoice.InvoiceNumber));
 
             invoice.BillToCustomer = customer2;
 
@@ -1445,7 +1445,7 @@ namespace Allors.Domain
             Thread.CurrentPrincipal = new GenericPrincipal(new GenericIdentity("customercontact", "Forms"), new string[0]);
             acl = new AccessControlList(invoice, new Users(this.DatabaseSession).GetCurrentUser());
 
-            Assert.IsFalse(acl.CanRead);
+            Assert.IsFalse(acl.CanRead(M.SalesInvoice.InvoiceNumber));
 
             Thread.CurrentPrincipal = new GenericPrincipal(new GenericIdentity("customercontact2", "Forms"), new string[0]);
             acl = new AccessControlList(invoice, new Users(this.DatabaseSession).GetCurrentUser());

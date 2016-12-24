@@ -62,14 +62,11 @@ namespace Allors.Domain
         {
             var internalOrganisation = new InternalOrganisations(this.DatabaseSession).FindBy(M.InternalOrganisation.Name, "internalOrganisation");
             var customer = new PersonBuilder(this.DatabaseSession).WithLastName("customer").Build();
-
-            var usergroups = internalOrganisation.UserGroupsWhereParty;
-            usergroups.Filter.AddEquals(M.UserGroup.Parent, new Roles(this.DatabaseSession).Sales.UserGroupWhereRole);
-            var salesRepUserGroup = usergroups.First;
+            var salesRepUserGroup = internalOrganisation.SalesUserGroup;
 
             this.DatabaseSession.Derive(true);
 
-            Assert.AreEqual(1, salesRepUserGroup.Members.Count);
+            Assert.AreEqual(1, internalOrganisation.SalesUserGroup.Members.Count);
             Assert.Contains(new People(this.DatabaseSession).FindBy(M.Person.LastName, "salesRep"), salesRepUserGroup.Members);
 
             var salesrep2 = new PersonBuilder(this.DatabaseSession).WithLastName("salesRep2").WithUserName("salesRep2").Build();
@@ -97,10 +94,7 @@ namespace Allors.Domain
         {
             var salesRep = new People(this.DatabaseSession).FindBy(M.Person.LastName, "salesRep");
             var internalOrganisation = new InternalOrganisations(this.DatabaseSession).FindBy(M.InternalOrganisation.Name, "internalOrganisation");
-
-            var usergroups = internalOrganisation.UserGroupsWhereParty;
-            usergroups.Filter.AddEquals(M.UserGroup.Parent, new Roles(this.DatabaseSession).Sales.UserGroupWhereRole);
-            var salesRepUserGroup = usergroups.First;
+            var salesRepUserGroup = internalOrganisation.SalesUserGroup;
 
             Assert.AreEqual(1, salesRepUserGroup.Members.Count);
             Assert.Contains(salesRep, salesRepUserGroup.Members);

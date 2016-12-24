@@ -333,7 +333,7 @@ namespace Allors.Domain
             Thread.CurrentPrincipal = new GenericPrincipal(new GenericIdentity("customer", "Forms"), new string[0]);
             var acl = new AccessControlList(order, new Users(this.DatabaseSession).GetCurrentUser());
 
-            Assert.IsFalse(acl.CanRead);
+            Assert.IsFalse(acl.CanRead(M.PurchaseOrder.OrderNumber));
         }
 
         [Test]
@@ -423,7 +423,7 @@ namespace Allors.Domain
             Thread.CurrentPrincipal = new GenericPrincipal(new GenericIdentity("suppliercontact2", "Forms"), new string[0]);
             acl = new AccessControlList(order, new Users(this.DatabaseSession).GetCurrentUser());
 
-            Assert.IsFalse(acl.CanRead);
+            Assert.IsFalse(acl.CanRead(M.PurchaseOrder.OrderNumber));
 
             order.TakenViaSupplier = supplier2;
 
@@ -432,7 +432,7 @@ namespace Allors.Domain
             Thread.CurrentPrincipal = new GenericPrincipal(new GenericIdentity("suppliercontact", "Forms"), new string[0]);
             acl = new AccessControlList(order, new Users(this.DatabaseSession).GetCurrentUser());
 
-            Assert.IsFalse(acl.CanRead);
+            Assert.IsFalse(acl.CanRead(M.PurchaseOrder.OrderNumber));
 
             Thread.CurrentPrincipal = new GenericPrincipal(new GenericIdentity("suppliercontact2", "Forms"), new string[0]);
             acl = new AccessControlList(order, new Users(this.DatabaseSession).GetCurrentUser());
@@ -665,7 +665,7 @@ namespace Allors.Domain
             Thread.CurrentPrincipal = new GenericPrincipal(new GenericIdentity("purchaser2", "Forms"), new string[0]);
             acl = new AccessControlList(order, new Users(this.DatabaseSession).GetCurrentUser());
 
-            Assert.IsFalse(acl.CanRead);
+            Assert.IsFalse(acl.CanRead(M.PurchaseOrder.OrderNumber));
         }
     }
 }

@@ -29,6 +29,7 @@ namespace Allors.Domain
         public static readonly Guid SupplierRoleId = new Guid("E6A319B9-3E48-488a-9DEC-AD54FAA364D7");
         public static readonly Guid PartnerRoleId = new Guid("F3F6E8F6-94FB-42db-9F4A-CA33D8A88C97");
 
+        public static readonly Guid EmployeeId = new Guid("0C433640-6220-4BB8-8EB4-050EA981324D");
         public static readonly Guid OperationsId = new Guid("387E5E5A-727F-4098-9FDC-3431C258E1AA");
         public static readonly Guid ProcurementId = new Guid("ACB4E8EE-61CC-48AA-BB0A-75B279A03049");
         public static readonly Guid SalesId = new Guid("052F86E8-D40D-43CC-9555-9C3107500116");
@@ -46,6 +47,11 @@ namespace Allors.Domain
         public Role Partner
         {
             get { return this.RoleCache.Get(PartnerRoleId); }
+        }
+
+        public Role Employee
+        {
+            get { return this.RoleCache.Get(EmployeeId); }
         }
 
         public Role Operations
@@ -70,12 +76,11 @@ namespace Allors.Domain
             new RoleBuilder(Session).WithName("Customer").WithUniqueId(CustomerRoleId).Build();
             new RoleBuilder(Session).WithName("Supplier").WithUniqueId(SupplierRoleId).Build();
             new RoleBuilder(Session).WithName("Partner").WithUniqueId(PartnerRoleId).Build();
-            
+
+            new RoleBuilder(Session).WithName("Enployee").WithUniqueId(EmployeeId).Build();
             new RoleBuilder(Session).WithName("Operations").WithUniqueId(OperationsId).Build();
             new RoleBuilder(Session).WithName("Procurement").WithUniqueId(ProcurementId).Build();
             new RoleBuilder(Session).WithName("Sales").WithUniqueId(SalesId).Build();
-
-            new SecurityCache(this.Session).Invalidate();
         }
     }
 }

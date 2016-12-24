@@ -48,9 +48,7 @@ namespace Allors.Domain
             var orderProcessor2 = new PersonBuilder(this.DatabaseSession).WithLastName("orderProcessor2").WithUserName("orderProcessor2").Build();
             var internalOrganisation = new InternalOrganisations(this.DatabaseSession).FindBy(M.InternalOrganisation.Name, "internalOrganisation");
 
-            var usergroups = internalOrganisation.UserGroupsWhereParty;
-            usergroups.Filter.AddEquals(M.UserGroup.Parent, new Roles(this.DatabaseSession).Operations.UserGroupWhereRole);
-            var orderProcessorUserGroup = usergroups.First;
+            var orderProcessorUserGroup = internalOrganisation.OperationsUserGroup;
 
             new EmploymentBuilder(this.DatabaseSession)
                 .WithFromDate(DateTime.UtcNow)
@@ -690,9 +688,7 @@ namespace Allors.Domain
             this.DatabaseSession.Derive(true);
             this.DatabaseSession.Commit();
 
-            var usergroups = internalOrganisation.UserGroupsWhereParty;
-            usergroups.Filter.AddEquals(M.UserGroup.Parent, new Roles(this.DatabaseSession).Operations.UserGroupWhereRole);
-            var orderProcessorUserGroup = usergroups.First;
+            var orderProcessorUserGroup = internalOrganisation.OperationsUserGroup;
 
             new EmploymentBuilder(this.DatabaseSession)
                 .WithFromDate(DateTime.UtcNow)
@@ -719,7 +715,7 @@ namespace Allors.Domain
             Thread.CurrentPrincipal = new GenericPrincipal(new GenericIdentity("orderProcessor2", "Forms"), new string[0]);
             acl = new AccessControlList(pickList, new Users(this.DatabaseSession).GetCurrentUser());
 
-            Assert.IsFalse(acl.CanRead);
+            Assert.IsFalse(acl.CanRead(M.PickList.PickListItems));
         }
     }
 }

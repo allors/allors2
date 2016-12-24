@@ -9,6 +9,26 @@ namespace Allors.Repository.Domain
     public partial interface Party : Localised, AccessControlledObject, SecurityTokenOwner, UniquelyIdentifiable 
     {
 
+        #region Allors
+        [Id("124181AE-3BB2-42E2-A27B-D9B811824282")]
+        [AssociationId("E85FE7C7-0B10-4ABB-AD84-1B920DB767E2")]
+        [RoleId("5E5718DC-1060-4BF1-9E76-B2D2927E028D")]
+        #endregion
+        [Multiplicity(Multiplicity.OneToOne)]
+        [Indexed]
+        [Required]
+        [Derived]
+        SecurityToken CustomerSecurityToken { get; set; }
+
+        #region Allors
+        [Id("98D13035-810F-4550-8EDE-8514FDFD275D")]
+        [AssociationId("4B77E890-1061-49E0-AE29-A28EB0C6A52E")]
+        [RoleId("18376FC8-224A-4F16-BBC8-006B04F8C184")]
+        #endregion
+        [Multiplicity(Multiplicity.OneToOne)]
+        [Indexed]
+        [Derived]
+        AccessControl CustomerAccessControl { get; set; }
 
         #region Allors
         [Id("008618c4-6252-4643-a0a8-e736f9288946")]

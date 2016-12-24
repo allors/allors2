@@ -237,7 +237,7 @@ namespace Allors.Domain
             Thread.CurrentPrincipal = new GenericPrincipal(new GenericIdentity("salesRep2", "Forms"), new string[0]);
             acl = new AccessControlList(order, new Users(this.DatabaseSession).GetCurrentUser());
 
-            Assert.IsFalse(acl.CanRead);
+            Assert.IsFalse(acl.CanRead(M.SalesOrder.OrderNumber));
         }
 
         [Test]
@@ -2096,7 +2096,7 @@ namespace Allors.Domain
             Thread.CurrentPrincipal = new GenericPrincipal(new GenericIdentity("customercontact2", "Forms"), new string[0]);
             var acl = new AccessControlList(order, new Users(this.DatabaseSession).GetCurrentUser());
 
-            Assert.IsFalse(acl.CanRead);
+            Assert.IsFalse(acl.CanRead(M.SalesOrder.OrderNumber));
         }
 
         [Test]
@@ -2190,7 +2190,7 @@ namespace Allors.Domain
             Thread.CurrentPrincipal = new GenericPrincipal(new GenericIdentity("customer2", "Forms"), new string[0]);
             var acl = new AccessControlList(order, new Users(this.DatabaseSession).GetCurrentUser());
 
-            Assert.IsFalse(acl.CanRead);
+            Assert.IsFalse(acl.CanRead(M.SalesOrder.OrderNumber));
         }
 
         [Test]
@@ -2371,7 +2371,7 @@ namespace Allors.Domain
             Thread.CurrentPrincipal = new GenericPrincipal(new GenericIdentity("customercontact2", "Forms"), new string[0]);
             acl = new AccessControlList(order, new Users(this.DatabaseSession).GetCurrentUser());
 
-            Assert.IsFalse(acl.CanRead);
+            Assert.IsFalse(acl.CanRead(M.SalesOrder.OrderNumber));
 
             order.BillToCustomer = customer2;
 
@@ -2398,7 +2398,7 @@ namespace Allors.Domain
             Thread.CurrentPrincipal = new GenericPrincipal(new GenericIdentity("customercontact1", "Forms"), new string[0]);
             acl = new AccessControlList(order, new Users(this.DatabaseSession).GetCurrentUser());
 
-            Assert.IsFalse(acl.CanRead);
+            Assert.IsFalse(acl.CanRead(M.SalesOrder.OrderNumber));
 
             Thread.CurrentPrincipal = new GenericPrincipal(new GenericIdentity("customercontact2", "Forms"), new string[0]);
             acl = new AccessControlList(order, new Users(this.DatabaseSession).GetCurrentUser());

@@ -26,6 +26,10 @@ namespace Allors.Repository.Domain
 
         public Locale Locale { get; set; }
 
+        public SecurityToken CustomerSecurityToken { get; set; }
+
+        public AccessControl CustomerAccessControl { get; set; }
+
         public PostalAddress GeneralCorrespondence { get; set; }
 
         public decimal YTDRevenue { get; set; }

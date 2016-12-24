@@ -153,9 +153,7 @@ namespace Allors.Domain
                 .WithEmployer(internalOrganisation)
                 .Build();
 
-            var usergroups = internalOrganisation.UserGroupsWhereParty;
-            usergroups.Filter.AddEquals(M.UserGroup.Parent, new Roles(this.DatabaseSession).Operations.UserGroupWhereRole);
-            var orderProcessorUserGroup = usergroups.First;
+            var orderProcessorUserGroup = internalOrganisation.OperationsUserGroup;
 
             orderProcessorUserGroup.AddMember(orderProcessor2);
 
@@ -216,9 +214,7 @@ namespace Allors.Domain
             this.DatabaseSession.Derive(true);
             this.DatabaseSession.Commit();
 
-            var usergroups = internalOrganisation.UserGroupsWhereParty;
-            usergroups.Filter.AddEquals(M.UserGroup.Parent, new Roles(this.DatabaseSession).Operations.UserGroupWhereRole);
-            var orderProcessorUserGroup = usergroups.First;
+            var orderProcessorUserGroup = internalOrganisation.OperationsUserGroup;
 
             new EmploymentBuilder(this.DatabaseSession)
                 .WithFromDate(DateTime.UtcNow)
@@ -244,7 +240,7 @@ namespace Allors.Domain
             Thread.CurrentPrincipal = new GenericPrincipal(new GenericIdentity("orderProcessor2", "Forms"), new string[0]);
             acl = new AccessControlList(shipment, new Users(this.DatabaseSession).GetCurrentUser());
 
-            Assert.IsFalse(acl.CanRead);
+            Assert.IsFalse(acl.CanRead(M.SalesOrder.OrderNumber));
         }
     }
 }

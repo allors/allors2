@@ -5,6 +5,9 @@ namespace Allors.Repository.Domain
     public partial class Person : Party, Deletable 
     {
         #region inherited properties
+
+        public SecurityToken CustomerSecurityToken { get; set; }
+        public AccessControl CustomerAccessControl { get; set; }
         public PostalAddress GeneralCorrespondence { get; set; }
 
         public decimal YTDRevenue { get; set; }
