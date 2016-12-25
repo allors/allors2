@@ -476,13 +476,13 @@ namespace Allors.Domain
                     organisationContactRelationship.Contact.Delete();
                 }
 
+                if (this.ExistOwnerAccessControl)
+                {
+                    this.OwnerAccessControl.Delete();
+                }
+
                 if (this.ExistOwnerSecurityToken)
                 {
-                    foreach (AccessControl acl in this.OwnerSecurityToken.AccessControlsWhereObject)
-                    {
-                        acl.Delete();
-                    }
-
                     this.OwnerSecurityToken.Delete();
                 }
             }

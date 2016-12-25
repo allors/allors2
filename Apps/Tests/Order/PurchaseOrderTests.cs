@@ -351,10 +351,9 @@ namespace Allors.Domain
                 .WithEmployer(internalOrganisation)
                 .Build();
 
-            var usergroups = internalOrganisation.UserGroupsWhereParty;
-            var userGroup = usergroups.First;
+            var procurementuserGroup = internalOrganisation.ProcurementUserGroup;
 
-            userGroup.AddMember(purchaser2);
+            procurementuserGroup.AddMember(purchaser2);
             
             this.DatabaseSession.Derive(true);
             this.DatabaseSession.Commit();

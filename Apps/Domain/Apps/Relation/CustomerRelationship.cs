@@ -118,12 +118,12 @@ namespace Allors.Domain
             {
                 if (!customerRelationships[0].Equals(this))
                 {
-                    derivation.Validation.AddError(new DerivationErrorUnique(derivation.Log, this, M.CustomerRelationship.SubAccountNumber));
+                    derivation.Validation.AddError(new DerivationErrorUnique(derivation.Validation, this, M.CustomerRelationship.SubAccountNumber));
                 }
             }
             else if (customerRelationships.Count > 1)
             {
-                derivation.Validation.AddError(new DerivationErrorUnique(derivation.Log, this, M.CustomerRelationship.SubAccountNumber));
+                derivation.Validation.AddError(new DerivationErrorUnique(derivation.Validation, this, M.CustomerRelationship.SubAccountNumber));
             }
 
             this.AppsOnDeriveInternalOrganisationCustomer(derivation);

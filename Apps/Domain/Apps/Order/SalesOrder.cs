@@ -101,11 +101,6 @@ namespace Allors.Domain
                 this.EntryDate = DateTime.UtcNow;
             }
 
-            if (!this.ExistDeliveryDate)
-            {
-                this.DeliveryDate = DateTime.UtcNow;
-            }
-
             if (!this.ExistTakenByInternalOrganisation)
             {
                 this.TakenByInternalOrganisation = Singleton.Instance(this.Strategy.Session).DefaultInternalOrganisation;

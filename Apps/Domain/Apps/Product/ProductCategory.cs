@@ -64,7 +64,7 @@ namespace Allors.Domain
 
             if (this.ExistProductCategoriesWhereParent && this.ExistPackage)
             {
-                derivation.Validation.AddError(this, M.ProductCategoryPackage, ErrorMessages.ProductCategoryPackageOnlyAtLowestLevel);
+                derivation.Validation.AddError(this, M.ProductCategory.Package, ErrorMessages.ProductCategoryPackageOnlyAtLowestLevel);
             }
 
             foreach (ProductCategory productCategory in this.ProductCategoriesWhereAncestor)

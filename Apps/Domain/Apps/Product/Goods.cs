@@ -60,7 +60,7 @@ namespace Allors.Domain
 
                     try
                     {
-                        good.Photo.Content = File.ReadAllBytes(fileInfo.FullName);
+                        good.Photo.MediaContent.Data = File.ReadAllBytes(fileInfo.FullName);
                     }
                     catch (Exception e)
                     {

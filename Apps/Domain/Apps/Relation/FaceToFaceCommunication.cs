@@ -66,7 +66,7 @@ namespace Allors.Domain
 
             foreach (Party participant in this.Participants)
             {
-                if (participant.GetType().Name == PersonClass.Instance.Name)
+                if (participant.GetType().Name == M.Person.Class.SingularName)
                 {
                     var person = participant as Person;
                     if (person.ExistCurrentEmployment)

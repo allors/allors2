@@ -43,7 +43,7 @@ namespace Allors.Domain
             if (this.ExistEmployee && this.ExistEmployer)
             {
                 var employments = this.Employee.EmploymentsWhereEmployee;
-                employments.Filter.AddNot().AddExists(M.Employment.ThroughDate);
+                employments.Filter.AddNot().AddExists(M.Period.ThroughDate);
 
                 if (employments.Count > 1)
                 {

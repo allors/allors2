@@ -31,11 +31,11 @@ namespace Allors.Domain
             var salesInvoice = salesInvoiceItem.SalesInvoiceWhereSalesInvoiceItem;
 
             var salesRepPartyProductCategoryRevenues = salesInvoiceItem.SalesRep.SalesRepPartyProductCategoryRevenuesWhereSalesRep;
-            salesRepPartyProductCategoryRevenues.Filter.AddEquals(M.PartyProductCategoryRevenue.InternalOrganisation, salesInvoice.BilledFromInternalOrganisation);
-            salesRepPartyProductCategoryRevenues.Filter.AddEquals(M.PartyProductCategoryRevenue.Party, salesInvoice.BillToCustomer);
-            salesRepPartyProductCategoryRevenues.Filter.AddEquals(M.PartyProductCategoryRevenue.Year, salesInvoice.InvoiceDate.Year);
-            salesRepPartyProductCategoryRevenues.Filter.AddEquals(M.PartyProductCategoryRevenue.Month, salesInvoice.InvoiceDate.Month);
-            salesRepPartyProductCategoryRevenues.Filter.AddEquals(M.PartyProductCategoryRevenue.ProductCategory, salesInvoiceItem.Product.PrimaryProductCategory);
+            salesRepPartyProductCategoryRevenues.Filter.AddEquals(M.SalesRepPartyProductCategoryRevenue.InternalOrganisation, salesInvoice.BilledFromInternalOrganisation);
+            salesRepPartyProductCategoryRevenues.Filter.AddEquals(M.SalesRepPartyProductCategoryRevenue.Party, salesInvoice.BillToCustomer);
+            salesRepPartyProductCategoryRevenues.Filter.AddEquals(M.SalesRepPartyProductCategoryRevenue.Year, salesInvoice.InvoiceDate.Year);
+            salesRepPartyProductCategoryRevenues.Filter.AddEquals(M.SalesRepPartyProductCategoryRevenue.Month, salesInvoice.InvoiceDate.Month);
+            salesRepPartyProductCategoryRevenues.Filter.AddEquals(M.SalesRepPartyProductCategoryRevenue.ProductCategory, salesInvoiceItem.Product.PrimaryProductCategory);
             var salesRepPartyProductCategoryRevenue = salesRepPartyProductCategoryRevenues.First
                                                       ?? new SalesRepPartyProductCategoryRevenueBuilder(session)
                                                                 .WithInternalOrganisation(salesInvoice.BilledFromInternalOrganisation)
@@ -59,11 +59,11 @@ namespace Allors.Domain
             foreach (ProductCategory parentCategory in dependant.ProductCategory.Parents)
             {
                 var salesRepPartyProductCategoryRevenues = dependant.SalesRep.SalesRepPartyProductCategoryRevenuesWhereSalesRep;
-                salesRepPartyProductCategoryRevenues.Filter.AddEquals(M.PartyProductCategoryRevenue.InternalOrganisation, dependant.InternalOrganisation);
-                salesRepPartyProductCategoryRevenues.Filter.AddEquals(M.PartyProductCategoryRevenue.Party, dependant.Party);
-                salesRepPartyProductCategoryRevenues.Filter.AddEquals(M.PartyProductCategoryRevenue.Year, dependant.Year);
-                salesRepPartyProductCategoryRevenues.Filter.AddEquals(M.PartyProductCategoryRevenue.Month, dependant.Month);
-                salesRepPartyProductCategoryRevenues.Filter.AddEquals(M.PartyProductCategoryRevenue.ProductCategory, parentCategory);
+                salesRepPartyProductCategoryRevenues.Filter.AddEquals(M.SalesRepPartyProductCategoryRevenue.InternalOrganisation, dependant.InternalOrganisation);
+                salesRepPartyProductCategoryRevenues.Filter.AddEquals(M.SalesRepPartyProductCategoryRevenue.Party, dependant.Party);
+                salesRepPartyProductCategoryRevenues.Filter.AddEquals(M.SalesRepPartyProductCategoryRevenue.Year, dependant.Year);
+                salesRepPartyProductCategoryRevenues.Filter.AddEquals(M.SalesRepPartyProductCategoryRevenue.Month, dependant.Month);
+                salesRepPartyProductCategoryRevenues.Filter.AddEquals(M.SalesRepPartyProductCategoryRevenue.ProductCategory, parentCategory);
                 var salesRepPartyProductCategoryRevenue = salesRepPartyProductCategoryRevenues.First
                                                           ?? new SalesRepPartyProductCategoryRevenueBuilder(session)
                                                                     .WithInternalOrganisation(dependant.InternalOrganisation)

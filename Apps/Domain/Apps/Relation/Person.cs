@@ -380,13 +380,13 @@ namespace Allors.Domain
                     partyContactMechanism.Delete();
                 }
 
+                if (this.ExistOwnerAccessControl)
+                {
+                    this.OwnerAccessControl.Delete();
+                }
+
                 if (this.ExistOwnerSecurityToken)
                 {
-                    foreach (AccessControl acl in this.OwnerSecurityToken.AccessControlsWhereObject)
-                    {
-                        acl.Delete();
-                    }
-
                     this.OwnerSecurityToken.Delete();
                 }
             }
@@ -394,18 +394,12 @@ namespace Allors.Domain
 
         public void AppsOnDeriveCurrentEmployment(IDerivation derivation)
         {
-            var usergroupsWhereMember = new List<UserGroup>();
+            UserGroup previousEmployeeUserGroup = null;
             InternalOrganisation previousEmployer = null;
+
             if (this.ExistCurrentEmployment)
             {
-                foreach (UserGroup userGroup in this.CurrentEmployment.Employer.UserGroupsWhereParty)
-                {
-                    if (UserGroup.Members.Contains(this))
-                    {
-                        usergroupsWhereMember.Add(userGroup);
-                    }
-                }
-
+                previousEmployeeUserGroup = this.CurrentEmployment.Employer.EmployeeUserGroup;
                 previousEmployer = this.CurrentEmployment.Employer;
                 this.RemoveCurrentEmployment();
             }
@@ -422,10 +416,7 @@ namespace Allors.Domain
 
             if (!this.ExistCurrentEmployment || (previousEmployer != null && !this.CurrentEmployment.Employer.Equals(previousEmployer)))
             {
-                foreach (var userGroup in usergroupsWhereMember)
-                {
-                    userGroup.RemoveMember(this);
-                }
+                previousEmployeeUserGroup.RemoveMember(this);
             }
         }
     }

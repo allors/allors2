@@ -30,7 +30,7 @@ namespace Allors.Domain
         {
             base.AppsPrepare(setup);
 
-            setup.AddDependency(this.ObjectType, M.CustomerShipment.ObjectState);
+            setup.AddDependency(this.ObjectType, M.CustomerShipmentObjectState);
         }
 
         protected override void AppsSecure(Security config)

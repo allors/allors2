@@ -200,7 +200,7 @@ namespace Allors.Domain
 
             Assert.AreEqual(derivationLog.Errors[0].Message, expectedMessage);
 
-            glAccount.AddCostCenterAllowed(costCenter);
+            glAccount.AddCostCentersAllowed(costCenter);
 
             Assert.IsFalse(this.DatabaseSession.Derive().HasErrors);
         }
@@ -233,7 +233,7 @@ namespace Allors.Domain
 
             Assert.AreEqual(derivationLog.Errors[0].Message, expectedMessage);
 
-            glAccount.AddCostUnitAllowed(costUnit);
+            glAccount.AddCostUnitsAllowed(costUnit);
 
             Assert.IsFalse(this.DatabaseSession.Derive().HasErrors);
         }

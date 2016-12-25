@@ -22,15 +22,15 @@ namespace Allors.Domain
 {
     using System;
     using System.Collections.Generic;
-
-
+    using Meta;
+    
     public partial class InternalOrganisationRevenues
     {
-        public InternalOrganisationRevenue AppsFindOrCreateAsDependable(ISession session, StoreRevenue dependant)
+        public static InternalOrganisationRevenue AppsFindOrCreateAsDependable(ISession session, StoreRevenue dependant)
         {
             var internalOrganisationRevenues = dependant.InternalOrganisation.InternalOrganisationRevenuesWhereInternalOrganisation;
-            internalOrganisationRevenues.Filter.AddEquals(this.Meta.Year, dependant.Year);
-            internalOrganisationRevenues.Filter.AddEquals(this.Meta.Month, dependant.Month);
+            internalOrganisationRevenues.Filter.AddEquals(M.InternalOrganisationRevenue.Year, dependant.Year);
+            internalOrganisationRevenues.Filter.AddEquals(M.InternalOrganisationRevenue.Month, dependant.Month);
             var internalOrganisationRevenue = internalOrganisationRevenues.First
                                               ?? new InternalOrganisationRevenueBuilder(session)
                                                         .WithInternalOrganisation(dependant.InternalOrganisation)

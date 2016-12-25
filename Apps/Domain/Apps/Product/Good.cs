@@ -92,7 +92,7 @@ namespace Allors.Domain
 
         public void DeriveThumbnail()
         {
-            if (this.ExistPhoto && this.Photo.ExistMediaType && this.Photo.MediaType.IsImage && this.Photo.ExistMediaContent)
+            if (this.ExistPhoto && this.Photo.ExistMediaContent)
             {
                 if (!this.ExistThumbnail)
                 {

@@ -56,7 +56,6 @@ namespace Allors.Domain
             Assert.IsTrue(order.PartiallyShip);
             Assert.AreEqual(DateTime.UtcNow.Date, order.OrderDate.Date);
             Assert.AreEqual(DateTime.UtcNow.Date, order.EntryDate.Date);
-            Assert.AreEqual(DateTime.UtcNow.Date, order.DeliveryDate.Date);
             Assert.AreEqual(order.PreviousBillToCustomer, order.BillToCustomer);
             Assert.AreEqual(order.PreviousShipToCustomer, order.ShipToCustomer);
             Assert.AreEqual(order.VatRegime, order.BillToCustomer.VatRegime);
