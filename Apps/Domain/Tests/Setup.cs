@@ -30,8 +30,6 @@ namespace Allors
 
         private void TestOnPostPrepare()
         {
-            var singleton = Singleton.Instance(session);
-            singleton.DefaultLocale = new Locales(session).EnglishGreatBritain;
         }
 
         private void TestOnPreSetup()
@@ -40,6 +38,8 @@ namespace Allors
 
         private void TestOnPostSetup()
         {
+            var singleton = Singleton.Instance(session);
+            singleton.DefaultLocale = new Locales(session).EnglishGreatBritain;
         }
     }
 }

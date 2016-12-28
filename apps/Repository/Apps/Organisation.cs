@@ -122,7 +122,6 @@ namespace Allors.Repository.Domain
         #endregion
         [Multiplicity(Multiplicity.OneToOne)]
         [Indexed]
-        [Required]
         [Derived]
         public SecurityToken SupplierSecurityToken { get; set; }
 
@@ -143,7 +142,6 @@ namespace Allors.Repository.Domain
         #endregion
         [Multiplicity(Multiplicity.OneToOne)]
         [Indexed]
-        [Required]
         [Derived]
         public SecurityToken PartnerSecurityToken { get; set; }
 

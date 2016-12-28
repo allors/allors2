@@ -16,7 +16,6 @@ namespace Allors.Repository.Domain
         #endregion
         [Multiplicity(Multiplicity.OneToOne)]
         [Indexed]
-        [Required]
         [Derived]
         SecurityToken CustomerSecurityToken { get; set; }
 

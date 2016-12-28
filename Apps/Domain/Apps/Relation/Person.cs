@@ -400,6 +400,7 @@ namespace Allors.Domain
             if (this.ExistCurrentEmployment)
             {
                 previousEmployeeUserGroup = this.CurrentEmployment.Employer.EmployeeUserGroup;
+                previousEmployeeUserGroup.RemoveMember(this);
                 previousEmployer = this.CurrentEmployment.Employer;
                 this.RemoveCurrentEmployment();
             }
@@ -414,7 +415,7 @@ namespace Allors.Domain
                 }
             }
 
-            if (!this.ExistCurrentEmployment || (previousEmployer != null && !this.CurrentEmployment.Employer.Equals(previousEmployer)))
+            if (previousEmployer != null && !this.CurrentEmployment.Employer.Equals(previousEmployer))
             {
                 previousEmployeeUserGroup.RemoveMember(this);
             }

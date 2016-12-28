@@ -89,9 +89,8 @@ namespace Allors.Domain
             if (months <= 12)
             {
                 var histories = this.Party.PartyProductCategoryRevenueHistoriesWhereParty;
-                histories.Filter.AddEquals(
-                    M.ProductCategoryRevenueHistory.InternalOrganisation, this.InternalOrganisation);
-                histories.Filter.AddEquals(M.ProductCategoryRevenueHistory.ProductCategory, this.ProductCategory);
+                histories.Filter.AddEquals(M.PartyProductCategoryRevenueHistory.InternalOrganisation, this.InternalOrganisation);
+                histories.Filter.AddEquals(M.PartyProductCategoryRevenueHistory.ProductCategory, this.ProductCategory);
                 var history = histories.First
                               ??
                               new PartyProductCategoryRevenueHistoryBuilder(this.Strategy.Session).WithCurrency(this.Currency).

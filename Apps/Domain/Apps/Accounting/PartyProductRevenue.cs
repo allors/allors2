@@ -62,8 +62,8 @@ namespace Allors.Domain
             if (months <= 12)
             {
                 var histories = this.Party.PartyProductRevenueHistoriesWhereParty;
-                histories.Filter.AddEquals(M.ProductRevenueHistory.InternalOrganisation, this.InternalOrganisation);
-                histories.Filter.AddEquals(M.ProductRevenueHistory.Product, this.Product);
+                histories.Filter.AddEquals(M.PartyProductRevenueHistory.InternalOrganisation, this.InternalOrganisation);
+                histories.Filter.AddEquals(M.PartyProductRevenueHistory.Product, this.Product);
                 var history = histories.First ?? new PartyProductRevenueHistoryBuilder(this.Strategy.Session)
                                                      .WithCurrency(this.Currency)
                                                      .WithInternalOrganisation(this.InternalOrganisation)

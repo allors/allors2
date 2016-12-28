@@ -19,6 +19,7 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 using System.Management.Instrumentation;
+using System.Runtime.CompilerServices;
 
 namespace Allors.Domain
 {
@@ -397,7 +398,7 @@ namespace Allors.Domain
             if (!this.ExistOperationsAccessControl)
             {
                 this.OperationsAccessControl = new AccessControlBuilder(session)
-                    .WithRole(new Roles(session).Customer)
+                    .WithRole(new Roles(session).Operations)
                     .WithSubjectGroup(this.OperationsUserGroup)
                     .Build();
 
@@ -420,7 +421,7 @@ namespace Allors.Domain
             if (!this.ExistProcurementAccessControl)
             {
                 this.ProcurementAccessControl = new AccessControlBuilder(session)
-                    .WithRole(new Roles(session).Customer)
+                    .WithRole(new Roles(session).Procurement)
                     .WithSubjectGroup(this.ProcurementUserGroup)
                     .Build();
 
@@ -443,7 +444,7 @@ namespace Allors.Domain
             if (!this.ExistSalesAccessControl)
             {
                 this.SalesAccessControl = new AccessControlBuilder(session)
-                    .WithRole(new Roles(session).Customer)
+                    .WithRole(new Roles(session).Sales)
                     .WithSubjectGroup(this.SalesUserGroup)
                     .Build();
 
@@ -558,7 +559,7 @@ namespace Allors.Domain
 
             return int.Parse(candidate);
         }
-
+ 
         public bool IsPerson {
             get
             {

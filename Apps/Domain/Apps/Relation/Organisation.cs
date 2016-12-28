@@ -266,76 +266,85 @@ namespace Allors.Domain
 
             this.OrganisationOwnerSecurity();
 
-            if (this.AppsIsActiveCustomer(DateTime.UtcNow.Date) && !this.ExistCustomerContactUserGroup)
+            if (this.AppsIsActiveCustomer(DateTime.UtcNow.Date))
             {
-                var customerContactGroupName = string.Format("Customer contacts at {0} ({1})", this.Name, this.UniqueId);
-                this.CustomerContactUserGroup = new UserGroupBuilder(session)
-                    .WithName(customerContactGroupName)
-                    .Build();
+                if (!this.ExistCustomerContactUserGroup)
+                {
+                    var customerContactGroupName = string.Format("Customer contacts at {0} ({1})", this.Name, this.UniqueId);
+                    this.CustomerContactUserGroup = new UserGroupBuilder(session)
+                        .WithName(customerContactGroupName)
+                        .Build();
+                }
+
+                if (!this.ExistCustomerSecurityToken)
+                {
+                    this.CustomerSecurityToken = new SecurityTokenBuilder(session).Build();
+                    this.AddSecurityToken(this.CustomerSecurityToken);
+                }
+
+                if (!this.ExistCustomerAccessControl)
+                {
+                    this.CustomerAccessControl = new AccessControlBuilder(session)
+                        .WithRole(new Roles(session).Customer)
+                        .WithSubjectGroup(this.CustomerContactUserGroup)
+                        .Build();
+
+                    this.CustomerSecurityToken.AddAccessControl(this.CustomerAccessControl);
+                }
             }
 
-            if (!this.ExistCustomerSecurityToken)
+            if (this.AppsIsActiveSupplier(DateTime.UtcNow.Date))
             {
-                this.CustomerSecurityToken = new SecurityTokenBuilder(session).Build();
-                this.AddSecurityToken(this.CustomerSecurityToken);
+                if (this.ExistSupplierContactUserGroup)
+                {
+                    var supplierContactGroupName = string.Format("Supplier contacts at {0} ({1})", this.Name, this.UniqueId);
+                    this.SupplierContactUserGroup = new UserGroupBuilder(session)
+                        .WithName(supplierContactGroupName)
+                        .Build();
+                }
+
+                if (!this.ExistSupplierSecurityToken)
+                {
+                    this.SupplierSecurityToken = new SecurityTokenBuilder(session).Build();
+                    this.AddSecurityToken(this.SupplierSecurityToken);
+                }
+
+                if (!this.ExistSupplierAccessControl)
+                {
+                    this.SupplierAccessControl = new AccessControlBuilder(session)
+                        .WithRole(new Roles(session).Customer)
+                        .WithSubjectGroup(this.SupplierContactUserGroup)
+                        .Build();
+
+                    this.SupplierSecurityToken.AddAccessControl(this.SupplierAccessControl);
+                }
             }
 
-            if (!this.ExistCustomerAccessControl)
+            if (this.AppsIsActiveSupplier(DateTime.UtcNow.Date))
             {
-                this.CustomerAccessControl = new AccessControlBuilder(session)
-                    .WithRole(new Roles(session).Customer)
-                    .WithSubjectGroup(this.CustomerContactUserGroup)
-                    .Build();
+                if (!this.ExistPartnerContactUserGroup)
+                {
+                    var partnerContactGroupName = string.Format("Partner contacts at {0} ({1})", this.Name, this.UniqueId);
+                    this.PartnerContactUserGroup = new UserGroupBuilder(session)
+                        .WithName(partnerContactGroupName)
+                        .Build();
+                }
 
-                this.CustomerSecurityToken.AddAccessControl(this.CustomerAccessControl);
-            }
+                if (!this.ExistPartnerSecurityToken)
+                {
+                    this.PartnerSecurityToken = new SecurityTokenBuilder(session).Build();
+                    this.AddSecurityToken(this.PartnerSecurityToken);
+                }
 
-            if (this.AppsIsActiveSupplier(DateTime.UtcNow.Date) && this.ExistSupplierContactUserGroup)
-            {
-                var supplierContactGroupName = string.Format("Supplier contacts at {0} ({1})", this.Name, this.UniqueId);
-                this.SupplierContactUserGroup = new UserGroupBuilder(session)
-                    .WithName(supplierContactGroupName)
-                    .Build();
-            }
+                if (!this.ExistPartnerAccessControl)
+                {
+                    this.CustomerAccessControl = new AccessControlBuilder(session)
+                        .WithRole(new Roles(session).Customer)
+                        .WithSubjectGroup(this.PartnerContactUserGroup)
+                        .Build();
 
-            if (!this.ExistSupplierSecurityToken)
-            {
-                this.SupplierSecurityToken = new SecurityTokenBuilder(session).Build();
-                this.AddSecurityToken(this.SupplierSecurityToken);
-            }
-
-            if (!this.ExistSupplierAccessControl)
-            {
-                this.SupplierAccessControl = new AccessControlBuilder(session)
-                    .WithRole(new Roles(session).Customer)
-                    .WithSubjectGroup(this.SupplierContactUserGroup)
-                    .Build();
-
-                this.SupplierSecurityToken.AddAccessControl(this.SupplierAccessControl);
-            }
-
-            if (this.AppsIsActiveSupplier(DateTime.UtcNow.Date) && !this.ExistPartnerContactUserGroup)
-            {
-                var partnerContactGroupName = string.Format("Partner contacts at {0} ({1})", this.Name, this.UniqueId);
-                this.PartnerContactUserGroup = new UserGroupBuilder(session)
-                    .WithName(partnerContactGroupName)
-                    .Build();
-            }
-
-            if (!this.ExistPartnerSecurityToken)
-            {
-                this.PartnerSecurityToken = new SecurityTokenBuilder(session).Build();
-                this.AddSecurityToken(this.PartnerSecurityToken);
-            }
-
-            if (!this.ExistPartnerAccessControl)
-            {
-                this.CustomerAccessControl = new AccessControlBuilder(session)
-                    .WithRole(new Roles(session).Customer)
-                    .WithSubjectGroup(this.PartnerContactUserGroup)
-                    .Build();
-
-                this.PartnerSecurityToken.AddAccessControl(this.PartnerAccessControl);
+                    this.PartnerSecurityToken.AddAccessControl(this.PartnerAccessControl);
+                }
             }
 
             foreach (CustomerRelationship customerRelationship in this.CustomerRelationshipsWhereCustomer)
