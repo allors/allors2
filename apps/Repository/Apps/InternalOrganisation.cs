@@ -9,10 +9,6 @@ namespace Allors.Repository.Domain
     {
         #region inherited properties
 
-        public SecurityToken CustomerSecurityToken { get; set; }
-
-        public AccessControl CustomerAccessControl { get; set; }
-
         public PostalAddress GeneralCorrespondence { get; set; }
 
         public decimal YTDRevenue { get; set; }
@@ -107,143 +103,9 @@ namespace Allors.Repository.Domain
 
         public SecurityToken[] SecurityTokens { get; set; }
 
-        public SecurityToken OwnerSecurityToken { get; set; }
-
-        public AccessControl OwnerAccessControl { get; set; }
-
         public Guid UniqueId { get; set; }
 
         #endregion
-
-        #region Allors
-        [Id("20BADA28-450F-4E20-8F5B-DC5A275CF157")]
-        [AssociationId("824F3CC5-C7EF-4F43-A8ED-C33F994AFCD7")]
-        [RoleId("CBF27207-9DD1-4A47-9C38-5349CE05157E")]
-        [Multiplicity(Multiplicity.OneToOne)]
-        [Derived]
-        [Indexed]
-        #endregion
-        public UserGroup OwnerUserGroup { get; set; }
-
-        #region Allors
-        [Id("D9A2A7C5-2CC4-4529-8CE8-53035701E3EB")]
-        [AssociationId("D168A14F-D8E9-42F4-8145-18AE45182F4C")]
-        [RoleId("79676AF5-677F-40B5-A5C2-F569FB259BEC")]
-        [Multiplicity(Multiplicity.OneToOne)]
-        [Indexed]
-        #endregion
-        public UserGroup EmployeeUserGroup { get; set; }
-
-        #region Allors
-        [Id("2DFAF8F2-A434-4256-8B80-C0DDEEC8DA88")]
-        [AssociationId("FC9BCDAC-B27A-4FE7-8177-637969A1E69A")]
-        [RoleId("7EDCCC35-4622-41BD-B312-1F9123358EE0")]
-        [Multiplicity(Multiplicity.OneToOne)]
-        [Indexed]
-        #endregion
-        public UserGroup OperationsUserGroup { get; set; }
-
-        #region Allors
-        [Id("1332B5C4-711E-4E60-A6B1-DC92CB979454")]
-        [AssociationId("C89104D8-473F-4371-882B-66243E40E9AA")]
-        [RoleId("CA4F451B-F377-4693-B78F-93890396A7DA")]
-        [Multiplicity(Multiplicity.OneToOne)]
-        [Indexed]
-        #endregion
-        public UserGroup ProcurementUserGroup { get; set; }
-
-        #region Allors
-        [Id("DBE6FEB5-AADA-4B77-9F36-DCF446A33AA4")]
-        [AssociationId("94180CF6-34DF-4DF6-AC2F-D45A359755F1")]
-        [RoleId("3AE02D78-BE2E-4C71-A865-7232C6BA95BD")]
-        [Multiplicity(Multiplicity.OneToOne)]
-        [Indexed]
-        #endregion
-        public UserGroup SalesUserGroup { get; set; }
-
-        #region Allors
-        [Id("2A3CA2C1-2C1F-4B52-BFA9-97DD91C72502")]
-        [AssociationId("C7F4FCCF-8882-48BE-AA4D-CE438A25C4E2")]
-        [RoleId("5DF0DE80-7812-4759-8ACC-54006EF93C80")]
-        #endregion
-        [Multiplicity(Multiplicity.OneToOne)]
-        [Indexed]
-        [Required]
-        [Derived]
-        public SecurityToken EmployeeSecurityToken { get; set; }
-
-        #region Allors
-        [Id("AB4379C8-E81F-4925-835E-D4359DAF1F4F")]
-        [AssociationId("605281FD-A3FA-4981-9581-FC564338ABBF")]
-        [RoleId("47FD634D-75D2-4C7B-A572-7F7176C227D6")]
-        #endregion
-        [Multiplicity(Multiplicity.OneToOne)]
-        [Indexed]
-        [Required]
-        [Derived]
-        public SecurityToken OperationsSecurityToken { get; set; }
-
-        #region Allors
-        [Id("3E3A3F4E-11B2-4B09-A2B1-3C448D2E65BB")]
-        [AssociationId("374849C1-6EB6-4B58-94A0-1179B4B03817")]
-        [RoleId("8263A2A6-F5F5-488A-9A54-4E952FE96A98")]
-        #endregion
-        [Multiplicity(Multiplicity.OneToOne)]
-        [Indexed]
-        [Required]
-        [Derived]
-        public SecurityToken ProcurementSecurityToken { get; set; }
-
-        #region Allors
-        [Id("4359DB4C-FDE9-45DF-A112-34D8A9CFEA8B")]
-        [AssociationId("E912E09B-AD98-4194-B773-16C788CEE49D")]
-        [RoleId("D4540D9A-B847-40B4-9FC3-D332D8728551")]
-        #endregion
-        [Multiplicity(Multiplicity.OneToOne)]
-        [Indexed]
-        [Required]
-        [Derived]
-        public SecurityToken SalesSecurityToken { get; set; }
-
-        #region Allors
-        [Id("B0526CA5-7776-447E-AA24-E21E19A6BCA9")]
-        [AssociationId("49E0F6BB-0B1C-4666-832C-A1C6FC601ABD")]
-        [RoleId("859C5D31-9387-46B3-93FE-547653B94DC7")]
-        #endregion
-        [Multiplicity(Multiplicity.OneToOne)]
-        [Indexed]
-        [Derived]
-        public AccessControl EmployeeAccessControl { get; set; }
-
-        #region Allors
-        [Id("B59187D1-0ECD-4B59-8167-ABB880D63344")]
-        [AssociationId("071EF1B3-75E6-45F1-9C0C-35534FB2EA45")]
-        [RoleId("88D98334-FCEE-468D-AE9D-7035F40A98A6")]
-        #endregion
-        [Multiplicity(Multiplicity.OneToOne)]
-        [Indexed]
-        [Derived]
-        public AccessControl OperationsAccessControl { get; set; }
-
-        #region Allors
-        [Id("C25CF2A7-A853-4601-B24F-25DAD03459F9")]
-        [AssociationId("4D0EB9E9-2863-4378-BCBE-55EE105B1343")]
-        [RoleId("B2404341-7614-4938-90A6-6A49497BDEBB")]
-        #endregion
-        [Multiplicity(Multiplicity.OneToOne)]
-        [Indexed]
-        [Derived]
-        public AccessControl ProcurementAccessControl { get; set; }
-
-        #region Allors
-        [Id("039716B3-B3CD-4972-BC69-66E7057007A4")]
-        [AssociationId("8ED8003F-B001-444F-A262-E0D6B6EE8667")]
-        [RoleId("912E04D2-F0D4-45C8-BB85-C12A6FC3D0F1")]
-        #endregion
-        [Multiplicity(Multiplicity.OneToOne)]
-        [Indexed]
-        [Derived]
-        public AccessControl SalesAccessControl { get; set; }
 
         #region Allors
         [Id("00bf781c-c874-44fe-ae60-d6609075b1c0")]

@@ -1,78 +1,49 @@
 // --------------------------------------------------------------------------------------------------------------------
 // <copyright file="PartyRelationshipPriorities.cs" company="Allors bvba">
 //   Copyright 2002-2012 Allors bvba.
-// 
 // Dual Licensed under
 //   a) the General Public Licence v3 (GPL)
 //   b) the Allors License
-// 
 // The GPL License is included in the file gpl.txt.
 // The Allors License is an addendum to your contract.
-// 
 // Allors Applications is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
 // For more information visit http://www.allors.com/legal
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
-
 namespace Allors.Domain
 {
     using System;
 
     public partial class Priorities
     {
-        public static readonly Guid VeryHighId = new Guid("AE6AB101-481C-4ff1-8BE5-6CD6311903D7");
-        public static readonly Guid HighId = new Guid("23248D29-A6B5-4081-A1B9-101A28460366");
-        public static readonly Guid MediumId = new Guid("3B6A4A9A-1124-47fd-B812-DD034BE193E4");
-        public static readonly Guid LowId = new Guid("ED1E1A54-343D-42d4-A1C3-884C7D925372");
-        public static readonly Guid FirstId = new Guid("9638E638-1DCE-4f51-B6AF-598CE968313C");
-        public static readonly Guid SecondId = new Guid("1BE83C5B-72C4-4d08-900B-79D2EF36BF1A");
-        public static readonly Guid ThirdId = new Guid("1078C4C8-37B4-4f5b-B650-04DEA2C337C8");
+        private static readonly Guid VeryHighId = new Guid("AE6AB101-481C-4ff1-8BE5-6CD6311903D7");
+        private static readonly Guid HighId = new Guid("23248D29-A6B5-4081-A1B9-101A28460366");
+        private static readonly Guid MediumId = new Guid("3B6A4A9A-1124-47fd-B812-DD034BE193E4");
+        private static readonly Guid LowId = new Guid("ED1E1A54-343D-42d4-A1C3-884C7D925372");
+        private static readonly Guid FirstId = new Guid("9638E638-1DCE-4f51-B6AF-598CE968313C");
+        private static readonly Guid SecondId = new Guid("1BE83C5B-72C4-4d08-900B-79D2EF36BF1A");
+        private static readonly Guid ThirdId = new Guid("1078C4C8-37B4-4f5b-B650-04DEA2C337C8");
 
         private UniquelyIdentifiableCache<Priority> cache;
 
-        public Priority VeryHigh
-        {
-            get { return this.Cache.Get(VeryHighId); }
-        }
+        public Priority VeryHigh => this.Cache.Get(VeryHighId);
 
-        public Priority High
-        {
-            get { return this.Cache.Get(HighId); }
-        }
+        public Priority High => this.Cache.Get(HighId);
 
-        public Priority Medium
-        {
-            get { return this.Cache.Get(MediumId); }
-        }
+        public Priority Medium => this.Cache.Get(MediumId);
 
-        public Priority Low
-        {
-            get { return this.Cache.Get(LowId); }
-        }
+        public Priority Low => this.Cache.Get(LowId);
 
-        public Priority First
-        {
-            get { return this.Cache.Get(FirstId); }
-        }
+        public Priority First => this.Cache.Get(FirstId);
 
-        public Priority Second
-        {
-            get { return this.Cache.Get(SecondId); }
-        }
+        public Priority Second => this.Cache.Get(SecondId);
 
-        public Priority Third
-        {
-            get { return this.Cache.Get(ThirdId); }
-        }
+        public Priority Third => this.Cache.Get(ThirdId);
 
-        private UniquelyIdentifiableCache<Priority> Cache
-        {
-            get { return this.cache ?? (this.cache = new UniquelyIdentifiableCache<Priority>(this.Session)); }
-        }
+        private UniquelyIdentifiableCache<Priority> Cache => this.cache ?? (this.cache = new UniquelyIdentifiableCache<Priority>(this.Session));
 
         protected override void AppsSetup(Setup setup)
         {
@@ -129,15 +100,6 @@ namespace Allors.Domain
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Derde").WithLocale(dutchLocale).Build())
                 .WithUniqueId(ThirdId)
                 .Build();
-        }
-
-        protected override void AppsSecure(Security config)
-        {
-            base.AppsSecure(config);
-            
-            var full = new[] { Operations.Read, Operations.Write, Operations.Execute };
-
-            config.GrantAdministrator(this.ObjectType, full);
         }
     }
 }

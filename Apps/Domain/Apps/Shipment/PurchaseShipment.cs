@@ -1,23 +1,18 @@
 // --------------------------------------------------------------------------------------------------------------------
 // <copyright file="PurchaseShipment.cs" company="Allors bvba">
 //   Copyright 2002-2012 Allors bvba.
-// 
 // Dual Licensed under
 //   a) the General Public Licence v3 (GPL)
 //   b) the Allors License
-// 
 // The GPL License is included in the file gpl.txt.
 // The Allors License is an addendum to your contract.
-// 
 // Allors Applications is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
 // For more information visit http://www.allors.com/legal
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
-
 namespace Allors.Domain
 {
     using System;
@@ -41,7 +36,7 @@ namespace Allors.Domain
 
             if (!this.ExistFacility && this.ExistShipToParty)
             {
-                var toParty = this.ShipToParty as Domain.InternalOrganisation;
+                var toParty = this.ShipToParty as InternalOrganisation;
                 if (toParty != null)
                 {
                     this.Facility = toParty.DefaultFacility;
@@ -50,7 +45,7 @@ namespace Allors.Domain
 
             if (!this.ExistShipmentNumber && this.ExistShipToParty)
             {
-                var internalOrganisation = this.ShipToParty as Domain.InternalOrganisation;
+                var internalOrganisation = this.ShipToParty as InternalOrganisation;
 
                 if (internalOrganisation != null)
                 {
@@ -96,7 +91,7 @@ namespace Allors.Domain
             }
 
             if (this.ExistCurrentObjectState && 
-                this.CurrentObjectState.UniqueId.Equals(PurchaseShipmentObjectStates.CompletedId) &&
+                this.CurrentObjectState.UniqueId.Equals(new PurchaseShipmentObjectStates(this.strategy.Session).Completed) &&
                 !this.CurrentObjectState.Equals(this.LastObjectState))
             {
 
@@ -108,17 +103,6 @@ namespace Allors.Domain
             foreach (ShipmentItem shipmentItem in this.ShipmentItems)
             {
                 shipmentItem.OnDerive(x => x.WithDerivation(derivation));
-            }
-        }
-
-        public void AppsOnPostDerive(ObjectOnPostDerive method)
-        {
-            this.RemoveSecurityTokens();
-            this.AddSecurityToken(Singleton.Instance(this.Strategy.Session).DefaultSecurityToken);
-
-            if (this.ExistShipToParty)
-            {
-                this.AddSecurityToken(this.ShipToParty.OwnerSecurityToken);
             }
         }
 
@@ -142,7 +126,7 @@ namespace Allors.Domain
             foreach (ShipmentItem shipmentItem in this.ShipmentItems)
             {
                 var receipt = shipmentItem.ShipmentReceiptWhereShipmentItem;
-                var orderItem = (Allors.Domain.PurchaseOrderItem)receipt.OrderItem;
+                var orderItem = (PurchaseOrderItem)receipt.OrderItem;
 
                 if (orderItem != null)
                 {

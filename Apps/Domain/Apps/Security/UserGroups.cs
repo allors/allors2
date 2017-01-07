@@ -36,42 +36,18 @@ namespace Allors.Domain
 
         private static ISet<Guid> administratorIdSet;
        
-        public static ISet<Guid> AdministratorIdSet
-        {
-            get
-            {
-                return administratorIdSet ?? (administratorIdSet = new HashSet<Guid> { AdministratorsId });
-            }
-        }
+        public static ISet<Guid> AdministratorIdSet => administratorIdSet ?? (administratorIdSet = new HashSet<Guid> { AdministratorsId });
 
-        public UserGroup Customers
-        {
-            get { return this.Cache.Get(CustomersId); }
-        }
+        public UserGroup Customers => this.Cache.Get(CustomersId);
 
-        public UserGroup Suppliers
-        {
-            get { return this.Cache.Get(SuppliersId); }
-        }
+        public UserGroup Suppliers => this.Cache.Get(SuppliersId);
 
-        public UserGroup Partners
-        {
-            get { return this.Cache.Get(PartnersId); }
-        }
+        public UserGroup Partners => this.Cache.Get(PartnersId);
 
-        public UserGroup Operations
-        {
-            get { return this.Cache.Get(OperationsId); }
-        }
+        public UserGroup Operations => this.Cache.Get(OperationsId);
 
-        public UserGroup Sales
-        {
-            get { return this.Cache.Get(SalesId); }
-        }
+        public UserGroup Sales => this.Cache.Get(SalesId);
 
-        public UserGroup Procurement
-        {
-            get { return this.Cache.Get(ProcurementId); }
-        }
+        public UserGroup Procurement => this.Cache.Get(ProcurementId);
     }
 }

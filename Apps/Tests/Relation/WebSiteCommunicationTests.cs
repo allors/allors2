@@ -29,7 +29,9 @@ namespace Allors.Domain
         [Test]
         public void GivenWebSiteCommunication_WhenDeriving_ThenRequiredRelationsMustExist()
         {
-            var builder = new WebSiteCommunicationBuilder(this.DatabaseSession);
+            var owner = new PersonBuilder(this.DatabaseSession).WithLastName("owner").Build();
+
+            var builder = new WebSiteCommunicationBuilder(this.DatabaseSession).WithOwner(owner);
             var communication = builder.Build();
 
             Assert.IsTrue(this.DatabaseSession.Derive().HasErrors);

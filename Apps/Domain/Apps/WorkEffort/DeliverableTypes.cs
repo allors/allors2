@@ -1,60 +1,40 @@
 // --------------------------------------------------------------------------------------------------------------------
 // <copyright file="DeliverableTypes.cs" company="Allors bvba">
 //   Copyright 2002-2012 Allors bvba.
-// 
 // Dual Licensed under
 //   a) the General Public Licence v3 (GPL)
 //   b) the Allors License
-// 
 // The GPL License is included in the file gpl.txt.
 // The Allors License is an addendum to your contract.
-// 
 // Allors Applications is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
 // For more information visit http://www.allors.com/legal
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
-
 namespace Allors.Domain
 {
     using System;
 
     public partial class DeliverableTypes
     {
-        public static readonly Guid ProjectPlanId = new Guid("AFAC9785-9DA9-4a74-BC04-113EEB52949D");
-        public static readonly Guid PresentationId = new Guid("1A8FCF9F-EF83-4773-B7CC-30E1B567790B");
-        public static readonly Guid ReportId = new Guid("633116FD-9843-4356-8261-637170682E2F");
-        public static readonly Guid MarketAnalysisId = new Guid("6994E018-CCD5-442f-80C2-F133DC9FAD17");
+        private static readonly Guid ProjectPlanId = new Guid("AFAC9785-9DA9-4a74-BC04-113EEB52949D");
+        private static readonly Guid PresentationId = new Guid("1A8FCF9F-EF83-4773-B7CC-30E1B567790B");
+        private static readonly Guid ReportId = new Guid("633116FD-9843-4356-8261-637170682E2F");
+        private static readonly Guid MarketAnalysisId = new Guid("6994E018-CCD5-442f-80C2-F133DC9FAD17");
 
         private UniquelyIdentifiableCache<DeliverableType> cache;
 
-        public DeliverableType ProjectPlan
-        {
-            get { return this.Cache.Get(ProjectPlanId); }
-        }
+        public DeliverableType ProjectPlan => this.Cache.Get(ProjectPlanId);
 
-        public DeliverableType Presentation
-        {
-            get { return this.Cache.Get(PresentationId); }
-        }
+        public DeliverableType Presentation => this.Cache.Get(PresentationId);
 
-        public DeliverableType Report
-        {
-            get { return this.Cache.Get(ReportId); }
-        }
+        public DeliverableType Report => this.Cache.Get(ReportId);
 
-        public DeliverableType MarketAnalysis
-        {
-            get { return this.Cache.Get(MarketAnalysisId); }
-        }
+        public DeliverableType MarketAnalysis => this.Cache.Get(MarketAnalysisId);
 
-        private UniquelyIdentifiableCache<DeliverableType> Cache
-        {
-            get { return this.cache ?? (this.cache = new UniquelyIdentifiableCache<DeliverableType>(this.Session)); }
-        }
+        private UniquelyIdentifiableCache<DeliverableType> Cache => this.cache ?? (this.cache = new UniquelyIdentifiableCache<DeliverableType>(this.Session));
 
         protected override void AppsSetup(Setup setup)
         {
@@ -90,15 +70,6 @@ namespace Allors.Domain
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Markt analyse").WithLocale(dutchLocale).Build())
                 .WithUniqueId(MarketAnalysisId)
                 .Build();
-        }
-
-        protected override void AppsSecure(Security config)
-        {
-            base.AppsSecure(config);
-
-            var full = new[] { Operations.Read, Operations.Write, Operations.Execute };
-
-            config.GrantAdministrator(this.ObjectType, full);
         }
     }
 }

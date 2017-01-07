@@ -1,23 +1,18 @@
      // --------------------------------------------------------------------------------------------------------------------
 // <copyright file="SalesOrders.cs" company="Allors bvba">
 //   Copyright 2002-2012 Allors bvba.
-// 
 // Dual Licensed under
 //   a) the General Public Licence v3 (GPL)
 //   b) the Allors License
-// 
 // The GPL License is included in the file gpl.txt.
 // The Allors License is an addendum to your contract.
-// 
 // Allors Applications is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
 // For more information visit http://www.allors.com/legal
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
-
 namespace Allors.Domain
 {
     using System;
@@ -36,29 +31,20 @@ namespace Allors.Domain
         {
             base.AppsSecure(config);
 
-            var full = new[] { Operations.Read, Operations.Write, Operations.Execute };
+            var provisional = new SalesOrderObjectStates(this.Session).Provisional;
+            var onHold = new SalesOrderObjectStates(this.Session).OnHold;
+            var requestsApproval = new SalesOrderObjectStates(this.Session).RequestsApproval;
+            var inProcess = new SalesOrderObjectStates(this.Session).InProcess;
+            var cancelled = new SalesOrderObjectStates(this.Session).Cancelled;
+            var rejected = new SalesOrderObjectStates(this.Session).Rejected;
+            var completed = new SalesOrderObjectStates(this.Session).Completed;
+            var finished = new SalesOrderObjectStates(this.Session).Finished;
 
-            config.GrantAdministrator(this.ObjectType, full);
-
-            config.GrantSales(this.ObjectType, full);
-            config.GrantCustomer(this.ObjectType, full);
-            config.GrantOwner(this.ObjectType, full);
-            config.GrantOperations(this.ObjectType, full);
-
-            var provisional = new SalesOrderObjectStates(Session).Provisional;
-            var onHold = new SalesOrderObjectStates(Session).OnHold;
-            var requestsApproval = new SalesOrderObjectStates(Session).RequestsApproval;
-            var inProcess = new SalesOrderObjectStates(Session).InProcess;
-            var cancelled = new SalesOrderObjectStates(Session).Cancelled;
-            var rejected = new SalesOrderObjectStates(Session).Rejected;
-            var completed = new SalesOrderObjectStates(Session).Completed;
-            var finished = new SalesOrderObjectStates(Session).Finished;
-
-            var reject = Meta.Reject;
-            var approve = Meta.Approve;
-            var hold = Meta.Hold;
-            var @continue = Meta.Continue;
-            var confirm = Meta.Confirm;
+            var reject = this.Meta.Reject;
+            var approve = this.Meta.Approve;
+            var hold = this.Meta.Hold;
+            var @continue = this.Meta.Continue;
+            var confirm = this.Meta.Confirm;
 
             config.Deny(this.ObjectType, provisional, reject, approve, hold, @continue);
             config.Deny(this.ObjectType, requestsApproval, confirm, hold, @continue);

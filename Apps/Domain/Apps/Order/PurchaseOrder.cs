@@ -1,23 +1,18 @@
 // --------------------------------------------------------------------------------------------------------------------
 // <copyright file="PurchaseOrder.cs" company="Allors bvba">
 //   Copyright 2002-2012 Allors bvba.
-// 
 // Dual Licensed under
 //   a) the General Public Licence v3 (GPL)
 //   b) the Allors License
-// 
 // The GPL License is included in the file gpl.txt.
 // The Allors License is an addendum to your contract.
-// 
 // Allors Applications is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
 // For more information visit http://www.allors.com/legal
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
-
 namespace Allors.Domain
 {
     using System;
@@ -171,47 +166,6 @@ namespace Allors.Domain
             this.AppsOnDeriveOrderTotals(derivation);
 
             this.PreviousTakenViaSupplier = this.TakenViaSupplier;
-        }
-
-        public void AppsOnPostDerive(ObjectOnPostDerive method)
-        {
-            this.RemoveSecurityTokens();
-            this.AddSecurityToken(Singleton.Instance(this.Strategy.Session).DefaultSecurityToken);
-
-            if (this.ExistBillToPurchaser)
-            {
-                var securityToken = this.BillToPurchaser.OwnerSecurityToken;
-
-                if (!this.SecurityTokens.Contains(securityToken))
-                {
-                    this.AddSecurityToken(securityToken);
-                }
-            }
-
-            if (this.ExistShipToBuyer)
-            {
-                var securityToken = this.ShipToBuyer.OwnerSecurityToken;
-
-                if (!this.SecurityTokens.Contains(securityToken))
-                {
-                    this.AddSecurityToken(securityToken);
-                }
-            }
-
-            if (this.ExistTakenViaSupplier)
-            {
-                var securityToken = this.TakenViaSupplier.OwnerSecurityToken;
-
-                if (!this.SecurityTokens.Contains(securityToken))
-                {
-                    this.AddSecurityToken(securityToken);
-                }
-            }
-
-            if (this.ExistPreviousTakenViaSupplier && !this.TakenViaSupplier.Equals(this.PreviousTakenViaSupplier))
-            {
-                this.RemoveSecurityToken(this.PreviousTakenViaSupplier.OwnerSecurityToken);
-            }
         }
 
         private void DeriveCurrentObjectState(IDerivation derivation)

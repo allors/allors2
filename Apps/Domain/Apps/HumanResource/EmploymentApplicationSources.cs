@@ -1,54 +1,37 @@
 // --------------------------------------------------------------------------------------------------------------------
 // <copyright file="EmploymentApplicationSources.cs" company="Allors bvba">
 //   Copyright 2002-2012 Allors bvba.
-// 
 // Dual Licensed under
 //   a) the General Public Licence v3 (GPL)
 //   b) the Allors License
-// 
 // The GPL License is included in the file gpl.txt.
 // The Allors License is an addendum to your contract.
-// 
 // Allors Applications is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
 // For more information visit http://www.allors.com/legal
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
-
 namespace Allors.Domain
 {
     using System;
 
     public partial class EmploymentApplicationSources
     {
-        public static readonly Guid NewsPaperId = new Guid("206E641B-DAC1-4b2e-9DD4-E4770AF09B9F");
-        public static readonly Guid PersonallReferalId = new Guid("C7029F05-6CCD-4639-A497-A9D8320549D7");
-        public static readonly Guid InternetId = new Guid("7931D959-4396-492d-90E4-C44632F2E3EA");
+        private static readonly Guid NewsPaperId = new Guid("206E641B-DAC1-4b2e-9DD4-E4770AF09B9F");
+        private static readonly Guid PersonallReferalId = new Guid("C7029F05-6CCD-4639-A497-A9D8320549D7");
+        private static readonly Guid InternetId = new Guid("7931D959-4396-492d-90E4-C44632F2E3EA");
 
         private UniquelyIdentifiableCache<EmploymentApplicationSource> cache;
 
-        public EmploymentApplicationSource NewsPaper
-        {
-            get { return this.Cache.Get(NewsPaperId); }
-        }
+        public EmploymentApplicationSource NewsPaper => this.Cache.Get(NewsPaperId);
 
-        public EmploymentApplicationSource PersonallReferal
-        {
-            get { return this.Cache.Get(PersonallReferalId); }
-        }
+        public EmploymentApplicationSource PersonallReferal => this.Cache.Get(PersonallReferalId);
 
-        public EmploymentApplicationSource Internet
-        {
-            get { return this.Cache.Get(InternetId); }
-        }
+        public EmploymentApplicationSource Internet => this.Cache.Get(InternetId);
 
-        private UniquelyIdentifiableCache<EmploymentApplicationSource> Cache
-        {
-            get { return this.cache ?? (this.cache = new UniquelyIdentifiableCache<EmploymentApplicationSource>(this.Session)); }
-        }
+        private UniquelyIdentifiableCache<EmploymentApplicationSource> Cache => this.cache ?? (this.cache = new UniquelyIdentifiableCache<EmploymentApplicationSource>(this.Session));
 
         protected override void AppsSetup(Setup setup)
         {
@@ -76,15 +59,6 @@ namespace Allors.Domain
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Internet").WithLocale(dutchLocale).Build())
                 .WithUniqueId(InternetId)
                 .Build();
-        }
-
-        protected override void AppsSecure(Security config)
-        {
-            base.AppsSecure(config);
-
-            var full = new[] { Operations.Read, Operations.Write, Operations.Execute };
-
-            config.GrantAdministrator(this.ObjectType, full);
         }
     }
 }

@@ -1,23 +1,18 @@
 // --------------------------------------------------------------------------------------------------------------------
 // <copyright file="CommunicationEvent.cs" company="Allors bvba">
 //   Copyright 2002-2012 Allors bvba.
-// 
 // Dual Licensed under
 //   a) the General Public Licence v3 (GPL)
 //   b) the Allors License
-// 
 // The GPL License is included in the file gpl.txt.
 // The Allors License is an addendum to your contract.
-// 
 // Allors Applications is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
 // For more information visit http://www.allors.com/legal
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
-
 using System.Runtime.CompilerServices;
 
 namespace Allors.Domain
@@ -95,8 +90,10 @@ namespace Allors.Domain
             {
                 @this.InitialScheduledEnd = @this.ScheduledEnd;
             }
+
+            @this.DeriveOwnerSecurity();
         }
-        
+
         public static void AppsDelete(this CommunicationEvent @this, DeletableDelete method)
         {
             foreach (CommunicationEventStatus communicationEventStatus in @this.CommunicationEventStatuses)
@@ -120,6 +117,25 @@ namespace Allors.Domain
         public static void AppsCancel(this CommunicationEvent @this, CommunicationEventCancel method)
         {
             @this.CurrentObjectState = new CommunicationEventObjectStates(@this.Strategy.Session).Cancelled;
+        }
+
+        private static void DeriveOwnerSecurity(this CommunicationEvent @this)
+        {
+            if (!@this.ExistOwnerAccessControl)
+            {
+                var ownerRole = new Roles(@this.Strategy.Session).Owner;
+                @this.OwnerAccessControl = new AccessControlBuilder(@this.Strategy.Session)
+                        .WithRole(ownerRole)
+                        .WithSubject(@this.Owner)
+                        .Build();
+            }
+
+            if (!@this.ExistOwnerSecurityToken)
+            {
+                @this.OwnerSecurityToken = new SecurityTokenBuilder(@this.Strategy.Session)
+                    .WithAccessControl(@this.OwnerAccessControl)
+                    .Build();
+            }
         }
     }
 }

@@ -1,63 +1,40 @@
 // --------------------------------------------------------------------------------------------------------------------
 // <copyright file="CommunicationEventObjectStates.cs" company="Allors bvba">
 //   Copyright 2002-2012 Allors bvba.
-// 
 // Dual Licensed under
 //   a) the General Public Licence v3 (GPL)
 //   b) the Allors License
-// 
 // The GPL License is included in the file gpl.txt.
 // The Allors License is an addendum to your contract.
-// 
 // Allors Applications is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
 // For more information visit http://www.allors.com/legal
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
-
 namespace Allors.Domain
 {
     using System;
 
     public partial class CommunicationEventObjectStates
     {
-        public static readonly Guid ScheduledId = new Guid("199131EB-18FD-4b8a-9FEC-23789C169FF5");
-        public static readonly Guid CompletedId = new Guid("35612611-62C5-4de5-B138-9C8D874D8916");
-        public static readonly Guid CancelledId = new Guid("F236E865-E2CA-43d7-8F17-56C3DC54C191");
-        public static readonly Guid InProgressId = new Guid("D1232CEB-1530-451e-BAED-DB1356BC1EB2");
+        private static readonly Guid ScheduledId = new Guid("199131EB-18FD-4b8a-9FEC-23789C169FF5");
+        private static readonly Guid CompletedId = new Guid("35612611-62C5-4de5-B138-9C8D874D8916");
+        private static readonly Guid CancelledId = new Guid("F236E865-E2CA-43d7-8F17-56C3DC54C191");
+        private static readonly Guid InProgressId = new Guid("D1232CEB-1530-451e-BAED-DB1356BC1EB2");
 
         private UniquelyIdentifiableCache<CommunicationEventObjectState> cache;
 
-        public CommunicationEventObjectState Scheduled
-        {
-            get { return this.Cache.Get(ScheduledId); }
-        }
+        public CommunicationEventObjectState Scheduled => this.Cache.Get(ScheduledId);
 
-        public CommunicationEventObjectState InProgress
-        {
-            get { return this.Cache.Get(InProgressId); }
-        }
+        public CommunicationEventObjectState InProgress => this.Cache.Get(InProgressId);
 
-        public CommunicationEventObjectState Completed
-        {
-            get { return this.Cache.Get(CompletedId); }
-        }
+        public CommunicationEventObjectState Completed => this.Cache.Get(CompletedId);
 
-        public CommunicationEventObjectState Cancelled
-        {
-            get { return this.Cache.Get(CancelledId); }
-        }
+        public CommunicationEventObjectState Cancelled => this.Cache.Get(CancelledId);
 
-        private UniquelyIdentifiableCache<CommunicationEventObjectState> Cache
-        {
-            get
-            {
-                return this.cache ?? (this.cache = new UniquelyIdentifiableCache<CommunicationEventObjectState>(this.Session));
-            }
-        }
+        private UniquelyIdentifiableCache<CommunicationEventObjectState> Cache => this.cache ?? (this.cache = new UniquelyIdentifiableCache<CommunicationEventObjectState>(this.Session));
 
         protected override void AppsSetup(Setup setup)
         {
@@ -85,16 +62,6 @@ namespace Allors.Domain
                 .WithName("Cancelled")
                 .WithUniqueId(CancelledId)
                 .Build();
-        }
-
-
-        protected override void AppsSecure(Security config)
-        {
-            base.AppsSecure(config);
-            
-            var full = new[] { Operations.Read, Operations.Write, Operations.Execute };
-
-            config.GrantAdministrator(this.ObjectType, full);
         }
     }
 }

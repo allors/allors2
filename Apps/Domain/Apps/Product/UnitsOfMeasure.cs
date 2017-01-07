@@ -1,90 +1,55 @@
 // --------------------------------------------------------------------------------------------------------------------
 // <copyright file="UnitsOfMeasure.cs" company="Allors bvba">
 //   Copyright 2002-2012 Allors bvba.
-// 
 // Dual Licensed under
 //   a) the General Public Licence v3 (GPL)
 //   b) the Allors License
-// 
 // The GPL License is included in the file gpl.txt.
 // The Allors License is an addendum to your contract.
-// 
 // Allors Applications is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
 // For more information visit http://www.allors.com/legal
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
-
 namespace Allors.Domain
 {
     using System;
 
     public partial class UnitsOfMeasure
     {
-        public static readonly Guid PackId = new Guid("C4EC577A-D682-433c-BD70-84538BE83209");
-        public static readonly Guid PairId = new Guid("62CB31EB-CD70-4836-B20F-1088C6CA9DCB");
-        public static readonly Guid PiecesId = new Guid("DDC5822F-9D7E-4729-B73F-8D033384B3FB");
-        public static readonly Guid PieceId = new Guid("F4BBDB52-3441-4768-92D4-729C6C5D6F1B");
-        public static readonly Guid LengthCmId = new Guid("BD1D2F1F-329E-41c4-A27B-0BA0CD3960E2");
-        public static readonly Guid CentimeterId = new Guid("7D81FFC7-E77D-4a00-916D-49F2B1CCA12E");
-        public static readonly Guid MeterId = new Guid("2598BA8D-CF49-47f5-98E2-E65795C4178E");
-        public static readonly Guid WidthCmId = new Guid("73C329FE-32EC-401f-A0F0-17EDE011B518");
-        public static readonly Guid HeightCmId = new Guid("87519F22-9EA3-4a3f-9DC4-66A417AC08AD");
+        private static readonly Guid PackId = new Guid("C4EC577A-D682-433c-BD70-84538BE83209");
+        private static readonly Guid PairId = new Guid("62CB31EB-CD70-4836-B20F-1088C6CA9DCB");
+        private static readonly Guid PiecesId = new Guid("DDC5822F-9D7E-4729-B73F-8D033384B3FB");
+        private static readonly Guid PieceId = new Guid("F4BBDB52-3441-4768-92D4-729C6C5D6F1B");
+        private static readonly Guid LengthCmId = new Guid("BD1D2F1F-329E-41c4-A27B-0BA0CD3960E2");
+        private static readonly Guid CentimeterId = new Guid("7D81FFC7-E77D-4a00-916D-49F2B1CCA12E");
+        private static readonly Guid MeterId = new Guid("2598BA8D-CF49-47f5-98E2-E65795C4178E");
+        private static readonly Guid WidthCmId = new Guid("73C329FE-32EC-401f-A0F0-17EDE011B518");
+        private static readonly Guid HeightCmId = new Guid("87519F22-9EA3-4a3f-9DC4-66A417AC08AD");
 
         private UniquelyIdentifiableCache<UnitOfMeasure> cache;
 
-        public UnitOfMeasure Pack
-        {
-            get { return this.Cache.Get(PackId); }
-        }
+        public UnitOfMeasure Pack => this.Cache.Get(PackId);
 
-        public UnitOfMeasure Pair
-        {
-            get { return this.Cache.Get(PairId); }
-        }
+        public UnitOfMeasure Pair => this.Cache.Get(PairId);
 
-        public UnitOfMeasure Pieces
-        {
-            get { return this.Cache.Get(PiecesId); }
-        }
+        public UnitOfMeasure Pieces => this.Cache.Get(PiecesId);
 
-        public UnitOfMeasure Piece
-        {
-            get { return this.Cache.Get(PieceId); }
-        }
+        public UnitOfMeasure Piece => this.Cache.Get(PieceId);
 
-        public UnitOfMeasure LengthCm
-        {
-            get { return this.Cache.Get(LengthCmId); }
-        }
+        public UnitOfMeasure LengthCm => this.Cache.Get(LengthCmId);
 
-        public UnitOfMeasure WidthCm
-        {
-            get { return this.Cache.Get(WidthCmId); }
-        }
+        public UnitOfMeasure WidthCm => this.Cache.Get(WidthCmId);
 
-        public UnitOfMeasure HeightCm
-        {
-            get { return this.Cache.Get(HeightCmId); }
-        }
+        public UnitOfMeasure HeightCm => this.Cache.Get(HeightCmId);
 
-        public UnitOfMeasure Centimeter
-        {
-            get { return this.Cache.Get(CentimeterId); }
-        }
+        public UnitOfMeasure Centimeter => this.Cache.Get(CentimeterId);
 
-        public UnitOfMeasure Meter
-        {
-            get { return this.Cache.Get(MeterId); }
-        }
+        public UnitOfMeasure Meter => this.Cache.Get(MeterId);
 
-        private UniquelyIdentifiableCache<UnitOfMeasure> Cache
-        {
-            get { return this.cache ?? (this.cache = new UniquelyIdentifiableCache<UnitOfMeasure>(this.Session)); }
-        }
+        private UniquelyIdentifiableCache<UnitOfMeasure> Cache => this.cache ?? (this.cache = new UniquelyIdentifiableCache<UnitOfMeasure>(this.Session));
 
         protected override void AppsSetup(Setup setup)
         {
@@ -155,15 +120,6 @@ namespace Allors.Domain
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("meter").WithLocale(dutchLocale).Build())
                 .WithUniqueId(MeterId)
                 .Build();
-        }
-
-        protected override void AppsSecure(Security config)
-        {
-            base.AppsSecure(config);
-            
-            var full = new[] { Operations.Read, Operations.Write, Operations.Execute };
-
-            config.GrantAdministrator(this.ObjectType, full);
         }
     }
 }

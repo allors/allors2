@@ -1,57 +1,37 @@
 // --------------------------------------------------------------------------------------------------------------------
 // <copyright file="EuSalesListTypes.cs" company="Allors bvba">
 //   Copyright 2002-2012 Allors bvba.
-// 
 // Dual Licensed under
 //   a) the General Public Licence v3 (GPL)
 //   b) the Allors License
-// 
 // The GPL License is included in the file gpl.txt.
 // The Allors License is an addendum to your contract.
-// 
 // Allors Applications is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
 // For more information visit http://www.allors.com/legal
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
-
 namespace Allors.Domain
 {
     using System;
 
     public partial class EuSalesListTypes
     {
-        public static readonly Guid GoodsId = new Guid("1C5FDDAA-8BF8-4D28-829F-4D2012907556");
-        public static readonly Guid ServicesId = new Guid("2166066E-3953-448D-AB0A-F3B96A307503");
-        public static readonly Guid TriangularTradeId = new Guid("EA231348-081E-4867-B5D7-B85055EF40FB");
+        private static readonly Guid GoodsId = new Guid("1C5FDDAA-8BF8-4D28-829F-4D2012907556");
+        private static readonly Guid ServicesId = new Guid("2166066E-3953-448D-AB0A-F3B96A307503");
+        private static readonly Guid TriangularTradeId = new Guid("EA231348-081E-4867-B5D7-B85055EF40FB");
 
         private UniquelyIdentifiableCache<EuSalesListType> cache;
 
-        public EuSalesListType Goods
-        {
-            get { return this.Cache.Get(GoodsId); }
-        }
+        public EuSalesListType Goods => this.Cache.Get(GoodsId);
 
-        public EuSalesListType Services
-        {
-            get { return this.Cache.Get(ServicesId); }
-        }
+        public EuSalesListType Services => this.Cache.Get(ServicesId);
 
-        public EuSalesListType TriangularTrade
-        {
-            get { return this.Cache.Get(TriangularTradeId); }
-        }
+        public EuSalesListType TriangularTrade => this.Cache.Get(TriangularTradeId);
 
-        private UniquelyIdentifiableCache<EuSalesListType> Cache
-        {
-            get
-            {
-                return this.cache ?? (this.cache = new UniquelyIdentifiableCache<EuSalesListType>(this.Session));
-            }
-        }
+        private UniquelyIdentifiableCache<EuSalesListType> Cache => this.cache ?? (this.cache = new UniquelyIdentifiableCache<EuSalesListType>(this.Session));
 
         protected override void AppsSetup(Setup setup)
         {
@@ -77,15 +57,6 @@ namespace Allors.Domain
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Triangular trade").WithLocale(englishLocale).Build())
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("ABC-transactie").WithLocale(dutchLocale).Build())
                 .WithUniqueId(TriangularTradeId).Build();
-        }
-
-        protected override void AppsSecure(Security config)
-        {
-            base.AppsSecure(config);
-
-            var full = new[] { Operations.Read, Operations.Write, Operations.Execute };
-
-            config.GrantAdministrator(this.ObjectType, full);
         }
     }
 }

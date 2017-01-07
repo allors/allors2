@@ -155,6 +155,10 @@ namespace Allors.Domain
 		}
 		public interface CommunicationEvent  : Transitional, Deletable, Commentable, UniquelyIdentifiable 
 		{
+						SecurityToken OwnerSecurityToken {set;}
+
+						AccessControl OwnerAccessControl {set;}
+
 						global::System.DateTime? ScheduledStart {set;}
 
 						Party ToParties {set;}
@@ -639,12 +643,8 @@ namespace Allors.Domain
 						global::System.String Description {set;}
 
 		}
-		public interface Party  : Localised, AccessControlledObject, SecurityTokenOwner, UniquelyIdentifiable 
+		public interface Party  : Localised, AccessControlledObject, UniquelyIdentifiable 
 		{
-						SecurityToken CustomerSecurityToken {set;}
-
-						AccessControl CustomerAccessControl {set;}
-
 						PostalAddress GeneralCorrespondence {set;}
 
 						global::System.Decimal YTDRevenue {set;}
@@ -2343,32 +2343,6 @@ namespace Allors.Domain
 		}
 		public interface InternalOrganisation  : Party 
 		{
-						UserGroup OwnerUserGroup {set;}
-
-						UserGroup EmployeeUserGroup {set;}
-
-						UserGroup OperationsUserGroup {set;}
-
-						UserGroup ProcurementUserGroup {set;}
-
-						UserGroup SalesUserGroup {set;}
-
-						SecurityToken EmployeeSecurityToken {set;}
-
-						SecurityToken OperationsSecurityToken {set;}
-
-						SecurityToken ProcurementSecurityToken {set;}
-
-						SecurityToken SalesSecurityToken {set;}
-
-						AccessControl EmployeeAccessControl {set;}
-
-						AccessControl OperationsAccessControl {set;}
-
-						AccessControl ProcurementAccessControl {set;}
-
-						AccessControl SalesAccessControl {set;}
-
 						global::System.String PurchaseOrderNumberPrefix {set;}
 
 						global::System.String TransactionReferenceNumber {set;}
@@ -2826,13 +2800,9 @@ namespace Allors.Domain
 		}
 		public interface Organisation  : Party, Deletable 
 		{
-						SecurityToken SupplierSecurityToken {set;}
+						SecurityToken ContactsSecurityToken {set;}
 
-						AccessControl SupplierAccessControl {set;}
-
-						SecurityToken PartnerSecurityToken {set;}
-
-						AccessControl PartnerAccessControl {set;}
+						AccessControl ContactsAccessControl {set;}
 
 						UserGroup OwnerUserGroup {set;}
 
@@ -2840,17 +2810,13 @@ namespace Allors.Domain
 
 						global::System.String Name {set;}
 
-						UserGroup CustomerContactUserGroup {set;}
+						UserGroup ContactsUserGroup {set;}
 
 						Image LogoImage {set;}
-
-						UserGroup PartnerContactUserGroup {set;}
 
 						global::System.String TaxNumber {set;}
 
 						IndustryClassification IndustryClassification {set;}
-
-						UserGroup SupplierContactUserGroup {set;}
 
 						OrganisationClassification OrganisationClassifications {set;}
 

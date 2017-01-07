@@ -1,23 +1,18 @@
 // --------------------------------------------------------------------------------------------------------------------
 // <copyright file="OrganisationContactRelationship.cs" company="Allors bvba">
 //   Copyright 2002-2012 Allors bvba.
-// 
 // Dual Licensed under
 //   a) the General Public Licence v3 (GPL)
 //   b) the Allors License
-// 
 // The GPL License is included in the file gpl.txt.
 // The Allors License is an addendum to your contract.
-// 
 // Allors Applications is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
 // For more information visit http://www.allors.com/legal
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
-
 namespace Allors.Domain
 {
     using System;
@@ -30,7 +25,7 @@ namespace Allors.Domain
 
             if (this.ExistOrganisation)
             {
-                derivation.AddDependency(this.Organisation, this);
+                derivation.AddDependency(this, this.Organisation);
             }
         }
 
@@ -38,9 +33,7 @@ namespace Allors.Domain
         {
             var derivation = method.Derivation;
 
-            this.AppsOnDeriveCustomerContactMemberShip(derivation);
-            this.AppsOnDeriveSupplierContactMemberShip(derivation);
-            this.AppsOnDerivePartnerContactMemberShip(derivation);
+            this.AppsOnDeriveContactMembership(derivation);
 
             ////Before deriving this.Contact
             if (this.ExistOrganisation)
@@ -62,102 +55,29 @@ namespace Allors.Domain
             }
         }
 
-        public void AppsOnDeriveCustomerContactMemberShip(IDerivation derivation)
+        public void AppsOnDeriveContactMembership(IDerivation derivation)
         {
-            if (this.ExistContact && this.ExistOrganisation && this.Organisation.ExistCustomerContactUserGroup)
+            if (this.ExistContact && this.ExistOrganisation && this.Organisation.ExistContactsUserGroup)
             {
+                this.Organisation.ContactsUserGroup.RemoveMembers();
                 if (this.FromDate <= DateTime.UtcNow && (!this.ExistThroughDate || this.ThroughDate >= DateTime.UtcNow))
                 {
-                    if (this.Organisation.AppsIsActiveCustomer(this.FromDate))
+                    if (this.Organisation.AppsIsActiveCustomer(this.FromDate) ||
+                        this.Organisation.AppsIsActiveSupplier(this.FromDate) ||
+                        this.Organisation.AppsIsActiveDistributor(this.FromDate) ||
+                        this.Organisation.AppsIsActivePartner(this.FromDate) ||
+                        this.Organisation.AppsIsActiveProfessionalServicesProvider(this.FromDate) ||
+                        this.Organisation.AppsIsActiveSubContractor(this.FromDate))
                     {
-                        if (!this.Organisation.CustomerContactUserGroup.Members.Contains(this.Contact))
+                        if (!this.Organisation.ContactsUserGroup.Members.Contains(this.Contact))
                         {
-                            this.Organisation.CustomerContactUserGroup.AddMember(this.Contact);
-                        }
-                    }
-                    else
-                    {
-                        if (this.Organisation.CustomerContactUserGroup.Members.Contains(this.Contact))
-                        {
-                            this.Organisation.CustomerContactUserGroup.RemoveMember(this.Contact);
+                            this.Organisation.ContactsUserGroup.AddMember(this.Contact);
                         }
                     }
                 }
-                else
-                {
-                    if (this.Organisation.CustomerContactUserGroup.Members.Contains(this.Contact))
-                    {
-                        this.Organisation.CustomerContactUserGroup.RemoveMember(this.Contact);
-                    }
-                }                
             }
         }
 
-        public void AppsOnDeriveSupplierContactMemberShip(IDerivation derivation)
-        {
-            if (this.ExistContact && this.ExistOrganisation && this.Organisation.ExistSupplierContactUserGroup)
-            {
-                if (this.FromDate <= DateTime.UtcNow && (!this.ExistThroughDate || this.ThroughDate >= DateTime.UtcNow))
-                {
-                    if (this.Organisation.AppsIsActiveSupplier(this.FromDate))
-                    {
-                        if (!this.Organisation.SupplierContactUserGroup.Members.Contains(this.Contact))
-                        {
-                            this.Organisation.SupplierContactUserGroup.AddMember(this.Contact);
-                        }
-                    }
-                    else
-                    {
-                        if (this.Organisation.SupplierContactUserGroup.Members.Contains(this.Contact))
-                        {
-                            this.Organisation.SupplierContactUserGroup.RemoveMember(this.Contact);
-                        }
-                    }
-                }
-                else
-                {
-                    if (this.Organisation.SupplierContactUserGroup.Members.Contains(this.Contact))
-                    {
-                        this.Organisation.SupplierContactUserGroup.RemoveMember(this.Contact);
-                    }
-                }   
-            }                
-        }
-
-        public void AppsOnDerivePartnerContactMemberShip(IDerivation derivation)
-        {
-            if (this.ExistContact && this.ExistOrganisation && this.Organisation.ExistPartnerContactUserGroup)
-            {
-                if (this.FromDate <= DateTime.UtcNow && (!this.ExistThroughDate || this.ThroughDate >= DateTime.UtcNow))
-                {
-                    if (this.Organisation.AppsIsActivePartner(this.FromDate))
-                    {
-                        if (!this.Organisation.PartnerContactUserGroup.Members.Contains(this.Contact))
-                        {
-                            this.Organisation.PartnerContactUserGroup.AddMember(this.Contact);
-                        }
-                    }
-                    else
-                    {
-                        if (this.Organisation.PartnerContactUserGroup.Members.Contains(this.Contact))
-                        {
-                            this.Organisation.PartnerContactUserGroup.RemoveMember(this.Contact);
-                        }
-                    }
-                }
-                else
-                {
-                    if (this.Organisation.PartnerContactUserGroup.Members.Contains(this.Contact))
-                    {
-                        this.Organisation.PartnerContactUserGroup.RemoveMember(this.Contact);
-                    }
-                }                
-            }
-        }
-
-        public bool IsActive
-        {
-            get { return this.ExistPartyWhereCurrentOrganisationContactRelationship;  }
-        }
+        public bool IsActive => this.ExistPartyWhereCurrentOrganisationContactRelationship;
     }
 }

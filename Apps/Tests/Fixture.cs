@@ -159,10 +159,6 @@ namespace Allors
                     .WithPartyContactMechanism(billingAddress)
                     .WithPartyContactMechanism(shippingAddress)
                     .WithEmployeeRole(new Roles(session).Administrator)
-                    .WithEmployeeRole(new Roles(session).Procurement)
-                    .WithEmployeeRole(new Roles(session).Sales)
-                    .WithEmployeeRole(new Roles(session).Operations)
-                    .WithEmployeeRole(new Roles(session).Administrator)
                     .WithDefaultPaymentMethod(ownBankAccount)
                     .Build();
 
@@ -206,9 +202,6 @@ namespace Allors
 
                 var administrators = new UserGroups(session).Administrators;
                 administrators.AddMember(administrator);
-
-                internalOrganisation.OperationsUserGroup.AddMember(orderProcessor);
-                internalOrganisation.ProcurementUserGroup.AddMember(purchaser);
 
                 session.Derive(true);
                 session.Commit();

@@ -1,23 +1,18 @@
 // --------------------------------------------------------------------------------------------------------------------
 // <copyright file="DropShipmentObjectStates.cs" company="Allors bvba">
 //   Copyright 2002-2012 Allors bvba.
-// 
 // Dual Licensed under
 //   a) the General Public Licence v3 (GPL)
 //   b) the Allors License
-// 
 // The GPL License is included in the file gpl.txt.
 // The Allors License is an addendum to your contract.
-// 
 // Allors Applications is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
 // For more information visit http://www.allors.com/legal
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
-
 namespace Allors.Domain
 {
     using System;
@@ -29,47 +24,26 @@ namespace Allors.Domain
 
         private UniquelyIdentifiableCache<DropShipmentObjectState> stateCache;
 
-        public DropShipmentObjectState Created
-        {
-            get { return this.StateCache.Get(CreatedId); }
-        }
+        public DropShipmentObjectState Created => this.StateCache.Get(CreatedId);
 
-        public DropShipmentObjectState Cancelled
-        {
-            get { return this.StateCache.Get(CancelledId); }
-        }
+        public DropShipmentObjectState Cancelled => this.StateCache.Get(CancelledId);
 
-        private UniquelyIdentifiableCache<DropShipmentObjectState> StateCache
-        {
-            get
-            {
-                return this.stateCache ?? (this.stateCache = new UniquelyIdentifiableCache<DropShipmentObjectState>(this.Session));
-            }
-        }
+        private UniquelyIdentifiableCache<DropShipmentObjectState> StateCache => this.stateCache ?? (this.stateCache = new UniquelyIdentifiableCache<DropShipmentObjectState>(this.Session));
 
         protected override void AppsSetup(Setup setup)
         {
-            var englishLocale = new Locales(Session).EnglishGreatBritain;
-            var dutchLocale = new Locales(Session).DutchNetherlands;
+            var englishLocale = new Locales(this.Session).EnglishGreatBritain;
+            var dutchLocale = new Locales(this.Session).DutchNetherlands;
 
-            new DropShipmentObjectStateBuilder(Session)
+            new DropShipmentObjectStateBuilder(this.Session)
                 .WithUniqueId(CreatedId)
                 .WithName("Created")
                 .Build();
 
-            new DropShipmentObjectStateBuilder(Session)
+            new DropShipmentObjectStateBuilder(this.Session)
                 .WithUniqueId(CancelledId)
                 .WithName("Cancelled")
                 .Build();
-        }
-
-        protected override void AppsSecure(Security config)
-        {
-            base.AppsSecure(config);
-
-            var full = new[] { Operations.Read, Operations.Write, Operations.Execute };
-
-            config.GrantAdministrator(this.ObjectType, full);
         }
     }
 }

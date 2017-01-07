@@ -1,36 +1,22 @@
 // --------------------------------------------------------------------------------------------------------------------
 // <copyright file="ShippingAndHandlingComponents.cs" company="Allors bvba">
 //   Copyright 2002-2012 Allors bvba.
-// 
 // Dual Licensed under
 //   a) the General Public Licence v3 (GPL)
 //   b) the Allors License
-// 
 // The GPL License is included in the file gpl.txt.
 // The Allors License is an addendum to your contract.
-// 
 // Allors Applications is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
 // For more information visit http://www.allors.com/legal
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
-
 namespace Allors.Domain
 {
     public partial class ShippingAndHandlingComponents
     {
-        protected override void AppsSecure(Security config)
-        {
-            base.AppsSecure(config);
-
-            var full = new[] { Operations.Read, Operations.Write, Operations.Execute };
-
-            config.GrantAdministrator(this.ObjectType, full);
-        }
-
         public static bool AppsIsEligible(ShippingAndHandlingComponent shippingAndHandlingComponent, CustomerShipment customerShipment)
         {
             var withSpecifiedFor = false;
@@ -60,7 +46,7 @@ namespace Allors.Domain
 
                 if (customerShipment.ExistShipToAddress)
                 {
-                    foreach (Domain.GeographicBoundary geographicBoundary in customerShipment.ShipToAddress.GeographicBoundaries)
+                    foreach (GeographicBoundary geographicBoundary in customerShipment.ShipToAddress.GeographicBoundaries)
                     {
                         if (geographicBoundary.Equals(shippingAndHandlingComponent.GeographicBoundary))
                         {

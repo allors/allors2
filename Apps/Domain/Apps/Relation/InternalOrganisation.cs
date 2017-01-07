@@ -1,23 +1,18 @@
 // --------------------------------------------------------------------------------------------------------------------
 // <copyright file="InternalOrganisation.cs" company="Allors bvba">
 //   Copyright 2002-2012 Allors bvba.
-// 
 // Dual Licensed under
 //   a) the General Public Licence v3 (GPL)
 //   b) the Allors License
-// 
 // The GPL License is included in the file gpl.txt.
 // The Allors License is an addendum to your contract.
-// 
 // Allors Applications is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
 // For more information visit http://www.allors.com/legal
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
-
 using System.Management.Instrumentation;
 using System.Runtime.CompilerServices;
 
@@ -31,15 +26,15 @@ namespace Allors.Domain
     {
         // TODO: Cascading delete
 
-        //public override void RemovePaymentMethod(PaymentMethod value)
-        //{
-        //    if (value.Equals(this.DefaultPaymentMethod))
-        //    {
-        //        this.RemoveDefaultPaymentMethod();
-        //    }
+        // public override void RemovePaymentMethod(PaymentMethod value)
+        // {
+        // if (value.Equals(this.DefaultPaymentMethod))
+        // {
+        // this.RemoveDefaultPaymentMethod();
+        // }
 
-        //    base.RemovePaymentMethod(value);
-        //}
+        // base.RemovePaymentMethod(value);
+        // }
         public void AppsOnDeriveCurrentContacts(IDerivation derivation)
         {
             this.RemoveCurrentContacts();
@@ -343,142 +338,6 @@ namespace Allors.Domain
             {
                 this.DefaultPaymentMethod = this.PaymentMethods.First;
             }
-
-            this.AppsOnDeriveSecurity(derivation);
-        }
-
-        public void AppsOnDeriveSecurity(IDerivation derivation)
-        {
-            var session = this.Strategy.Session;
-            var singleton = Singleton.Instance(session);
-
-            if (!this.SecurityTokens.Contains(singleton.DefaultSecurityToken))
-            {
-                this.AddSecurityToken(singleton.DefaultSecurityToken);
-            }
-
-            this.InternalOrganisationOwnerSecurity();
-
-            if (!this.ExistEmployeeUserGroup)
-            {
-                this.EmployeeUserGroup = new UserGroupBuilder(session)
-                    .WithName($"Employees at {this.Name} ({this.UniqueId})")
-                    .Build();
-            }
-
-            if (!this.ExistEmployeeSecurityToken)
-            {
-                this.EmployeeSecurityToken = new SecurityTokenBuilder(session).Build();
-                this.AddSecurityToken(this.EmployeeSecurityToken);
-            }
-
-            if (!this.ExistEmployeeAccessControl)
-            {
-                this.EmployeeAccessControl = new AccessControlBuilder(session)
-                    .WithRole(new Roles(session).Customer)
-                    .WithSubjectGroup(this.EmployeeUserGroup)
-                    .Build();
-
-                this.EmployeeSecurityToken.AddAccessControl(this.EmployeeAccessControl);
-            }
-
-            if (!this.ExistOperationsUserGroup)
-            {
-                this.OperationsUserGroup = new UserGroupBuilder(session)
-                    .WithName($"Operationss at {this.Name} ({this.UniqueId})")
-                    .Build();
-            }
-
-            if (!this.ExistOperationsSecurityToken)
-            {
-                this.OperationsSecurityToken = new SecurityTokenBuilder(session).Build();
-                this.AddSecurityToken(this.OperationsSecurityToken);
-            }
-
-            if (!this.ExistOperationsAccessControl)
-            {
-                this.OperationsAccessControl = new AccessControlBuilder(session)
-                    .WithRole(new Roles(session).Operations)
-                    .WithSubjectGroup(this.OperationsUserGroup)
-                    .Build();
-
-                this.OperationsSecurityToken.AddAccessControl(this.OperationsAccessControl);
-            }
-
-            if (!this.ExistProcurementUserGroup)
-            {
-                this.ProcurementUserGroup = new UserGroupBuilder(session)
-                    .WithName($"Procurements at {this.Name} ({this.UniqueId})")
-                    .Build();
-            }
-
-            if (!this.ExistProcurementSecurityToken)
-            {
-                this.ProcurementSecurityToken = new SecurityTokenBuilder(session).Build();
-                this.AddSecurityToken(this.ProcurementSecurityToken);
-            }
-
-            if (!this.ExistProcurementAccessControl)
-            {
-                this.ProcurementAccessControl = new AccessControlBuilder(session)
-                    .WithRole(new Roles(session).Procurement)
-                    .WithSubjectGroup(this.ProcurementUserGroup)
-                    .Build();
-
-                this.ProcurementSecurityToken.AddAccessControl(this.ProcurementAccessControl);
-            }
-
-            if (!this.ExistSalesUserGroup)
-            {
-                this.SalesUserGroup = new UserGroupBuilder(session)
-                    .WithName($"Saless at {this.Name} ({this.UniqueId})")
-                    .Build();
-            }
-
-            if (!this.ExistSalesSecurityToken)
-            {
-                this.SalesSecurityToken = new SecurityTokenBuilder(session).Build();
-                this.AddSecurityToken(this.SalesSecurityToken);
-            }
-
-            if (!this.ExistSalesAccessControl)
-            {
-                this.SalesAccessControl = new AccessControlBuilder(session)
-                    .WithRole(new Roles(session).Sales)
-                    .WithSubjectGroup(this.SalesUserGroup)
-                    .Build();
-
-                this.SalesSecurityToken.AddAccessControl(this.SalesAccessControl);
-            }
-        }
-
-        private void InternalOrganisationOwnerSecurity()
-        {
-            var session = this.Strategy.Session;
-
-            var ownerGroupName = $"Owners for organisation {this.Name} ({this.UniqueId})";
-            var ownerRole = new Roles(session).Owner;
-
-            if (!this.ExistOwnerUserGroup)
-            {
-                var existingOwnerGroup = new UserGroups(session).FindBy(MetaUserGroup.Instance.Name, ownerGroupName);
-                this.OwnerUserGroup = existingOwnerGroup ?? new UserGroupBuilder(session).WithName(ownerGroupName).Build();
-            }
-
-            if (!this.ExistOwnerSecurityToken)
-            {
-                this.OwnerSecurityToken = new SecurityTokenBuilder(session).Build();
-            }
-
-            if (!this.ExistOwnerAccessControl)
-            {
-                this.OwnerAccessControl = new AccessControlBuilder(session)
-                    .WithSubjectGroup(this.OwnerUserGroup)
-                    .WithRole(ownerRole)
-                    .Build();
-
-                this.OwnerSecurityToken.AddAccessControl(this.OwnerAccessControl);
-            }
         }
 
         public void AppsStartNewFiscalYear()
@@ -549,7 +408,7 @@ namespace Allors.Domain
                     sum += int.Parse(candidate.Substring(candidate.Length - i, 1)) * i;
                 }
                 
-                valid = (sum % 11 == 0);
+                valid = sum % 11 == 0;
                 
                 if (!valid)
                 {
@@ -560,26 +419,10 @@ namespace Allors.Domain
             return int.Parse(candidate);
         }
  
-        public bool IsPerson {
-            get
-            {
-                return false;
-            }
-        }
+        public bool IsPerson => false;
 
-        public bool IsOrganisation {
-            get
-            {
-                return false;
-            }
-        }
+        public bool IsOrganisation => false;
 
-        public List<string> Roles
-        {
-            get
-            {
-                return new List<string>() {"Internal organisation"};
-            }
-        }
+        public List<string> Roles => new List<string>() {"Internal organisation"};
     }
 }

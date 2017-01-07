@@ -8,6 +8,11 @@ namespace Allors.Repository.Domain
     public partial class PhoneCommunication : CommunicationEvent 
     {
         #region inherited properties
+
+        public SecurityToken OwnerSecurityToken { get; set; }
+
+        public AccessControl OwnerAccessControl { get; set; }
+
         public DateTime ScheduledStart { get; set; }
 
         public Party[] ToParties { get; set; }

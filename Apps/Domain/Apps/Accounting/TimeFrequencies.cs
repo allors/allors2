@@ -1,84 +1,52 @@
 // --------------------------------------------------------------------------------------------------------------------
 // <copyright file="TimeFrequencies.cs" company="Allors bvba">
 //   Copyright 2002-2012 Allors bvba.
-// 
 // Dual Licensed under
 //   a) the General Public Licence v3 (GPL)
 //   b) the Allors License
-// 
 // The GPL License is included in the file gpl.txt.
 // The Allors License is an addendum to your contract.
-// 
 // Allors Applications is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
 // For more information visit http://www.allors.com/legal
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
-
 namespace Allors.Domain
 {
     using System;
 
     public partial class TimeFrequencies
     {
-        public static readonly Guid HourId = new Guid("DB14E5D5-5EAF-4ec8-B149-C558A28D99F5");
-        public static readonly Guid DayId = new Guid("DA53F7DB-F911-4183-B281-14440EE108A6");
-        public static readonly Guid WeekId = new Guid("806D7DED-CAF0-4d1b-A0FA-0AC2F2773A32");
-        public static readonly Guid FortnightId = new Guid("DBE8A817-ED3F-49F0-8BD0-ADAB918AEB7D");
-        public static readonly Guid MonthId = new Guid("4BF13734-E648-4204-AB92-CA0C096105FE");
-        public static readonly Guid SemesterId = new Guid("1E98D1ED-AEC2-4bd5-996D-EF3A9D372490");
-        public static readonly Guid TrimesterId = new Guid("E3E9AB81-D44C-4166-8983-917FAF4CCF6D");
-        public static readonly Guid YearId = new Guid("F43E9D63-2BF0-4181-8247-B6BF39BA5313");
+        private static readonly Guid HourId = new Guid("DB14E5D5-5EAF-4ec8-B149-C558A28D99F5");
+        private static readonly Guid DayId = new Guid("DA53F7DB-F911-4183-B281-14440EE108A6");
+        private static readonly Guid WeekId = new Guid("806D7DED-CAF0-4d1b-A0FA-0AC2F2773A32");
+        private static readonly Guid FortnightId = new Guid("DBE8A817-ED3F-49F0-8BD0-ADAB918AEB7D");
+        private static readonly Guid MonthId = new Guid("4BF13734-E648-4204-AB92-CA0C096105FE");
+        private static readonly Guid SemesterId = new Guid("1E98D1ED-AEC2-4bd5-996D-EF3A9D372490");
+        private static readonly Guid TrimesterId = new Guid("E3E9AB81-D44C-4166-8983-917FAF4CCF6D");
+        private static readonly Guid YearId = new Guid("F43E9D63-2BF0-4181-8247-B6BF39BA5313");
 
         private UniquelyIdentifiableCache<TimeFrequency> cache;
 
-        public TimeFrequency Hour
-        {
-            get { return this.Cache.Get(HourId); }
-        }
+        public TimeFrequency Hour => this.Cache.Get(HourId);
 
-        public TimeFrequency Day
-        {
-            get { return this.Cache.Get(DayId); }
-        }
+        public TimeFrequency Day => this.Cache.Get(DayId);
 
-        public TimeFrequency Week
-        {
-            get { return this.Cache.Get(WeekId); }
-        }
+        public TimeFrequency Week => this.Cache.Get(WeekId);
 
-        public TimeFrequency Fortnight
-        {
-            get { return this.Cache.Get(FortnightId); }
-        }
+        public TimeFrequency Fortnight => this.Cache.Get(FortnightId);
 
-        public TimeFrequency Month
-        {
-            get { return this.Cache.Get(MonthId); }
-        }
+        public TimeFrequency Month => this.Cache.Get(MonthId);
 
-        public TimeFrequency Semester
-        {
-            get { return this.Cache.Get(SemesterId); }
-        }
+        public TimeFrequency Semester => this.Cache.Get(SemesterId);
 
-        public TimeFrequency Trimester
-        {
-            get { return this.Cache.Get(TrimesterId); }
-        }
+        public TimeFrequency Trimester => this.Cache.Get(TrimesterId);
 
-        public TimeFrequency Year
-        {
-            get { return this.Cache.Get(YearId); }
-        }
+        public TimeFrequency Year => this.Cache.Get(YearId);
 
-        private UniquelyIdentifiableCache<TimeFrequency> Cache
-        {
-            get { return this.cache ?? (this.cache = new UniquelyIdentifiableCache<TimeFrequency>(this.Session)); }
-        }
+        private UniquelyIdentifiableCache<TimeFrequency> Cache => this.cache ?? (this.cache = new UniquelyIdentifiableCache<TimeFrequency>(this.Session));
 
         protected override void AppsSetup(Setup setup)
         {
@@ -142,15 +110,6 @@ namespace Allors.Domain
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Jaar").WithLocale(dutchLocale).Build())
                 .WithUniqueId(YearId)
                 .Build();
-        }
-
-        protected override void AppsSecure(Security config)
-        {
-            base.AppsSecure(config);
-
-            var full = new[] { Operations.Read, Operations.Write, Operations.Execute };
-
-            config.GrantAdministrator(this.ObjectType, full);
         }
     }
 }

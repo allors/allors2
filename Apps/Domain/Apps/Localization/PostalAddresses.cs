@@ -1,23 +1,18 @@
 // --------------------------------------------------------------------------------------------------------------------
 // <copyright file="PostalAddresses.cs" company="Allors bvba">
 //   Copyright 2002-2012 Allors bvba.
-// 
 // Dual Licensed under
 //   a) the General Public Licence v3 (GPL)
 //   b) the Allors License
-// 
 // The GPL License is included in the file gpl.txt.
 // The Allors License is an addendum to your contract.
-// 
 // Allors Applications is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
 // For more information visit http://www.allors.com/legal
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
-
 namespace Allors.Domain
 {
     public partial class PostalAddresses
@@ -28,44 +23,35 @@ namespace Allors.Domain
 
             if (!string.IsNullOrEmpty(address1))
             {
-                postalAddresses.Filter.AddEquals(Meta.Address1, address1);
+                postalAddresses.Filter.AddEquals(this.Meta.Address1, address1);
             }
 
             if (!string.IsNullOrEmpty(address2))
             {
-                postalAddresses.Filter.AddEquals(Meta.Address2, address2);
+                postalAddresses.Filter.AddEquals(this.Meta.Address2, address2);
             }
 
             if (!string.IsNullOrEmpty(address3))
             {
-                postalAddresses.Filter.AddEquals(Meta.Address3, address3);
+                postalAddresses.Filter.AddEquals(this.Meta.Address3, address3);
             }
 
             if (postalCode != null)
             {
-                postalAddresses.Filter.AddContains(Meta.GeographicBoundaries, postalCode);
+                postalAddresses.Filter.AddContains(this.Meta.GeographicBoundaries, postalCode);
             }
 
             if (city != null)
             {
-                postalAddresses.Filter.AddContains(Meta.GeographicBoundaries, city);
+                postalAddresses.Filter.AddContains(this.Meta.GeographicBoundaries, city);
             }
 
             if (country != null)
             {
-                postalAddresses.Filter.AddContains(Meta.GeographicBoundaries, country);
+                postalAddresses.Filter.AddContains(this.Meta.GeographicBoundaries, country);
             }
 
             return postalAddresses.First;
-        }
-
-        protected override void AppsSecure(Security config)
-        {
-            base.AppsSecure(config);
-
-            var full = new[] { Operations.Read, Operations.Write, Operations.Execute };
-
-            config.GrantAdministrator(this.ObjectType, full);
         }
     }
 }

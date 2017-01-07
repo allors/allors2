@@ -1,60 +1,40 @@
 // --------------------------------------------------------------------------------------------------------------------
 // <copyright file="SkillRatings.cs" company="Allors bvba">
 //   Copyright 2002-2012 Allors bvba.
-// 
 // Dual Licensed under
 //   a) the General Public Licence v3 (GPL)
 //   b) the Allors License
-// 
 // The GPL License is included in the file gpl.txt.
 // The Allors License is an addendum to your contract.
-// 
 // Allors Applications is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
 // For more information visit http://www.allors.com/legal
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
-
 namespace Allors.Domain
 {
     using System;
 
     public partial class SkillRatings
     {
-        public static readonly Guid PoorId = new Guid("5D2D23C7-95AA-49ed-8B2A-9A3E4D91BC3D");
-        public static readonly Guid FairId = new Guid("583BCA0A-2A5E-40c1-936C-D8F16A4DAAC5");
-        public static readonly Guid GoodId = new Guid("374DEE3A-82FA-4bee-B66B-F48CA1B0CBD7");
-        public static readonly Guid ExcellentId = new Guid("52029ECD-1752-4b40-A39D-54B0C1CB8297");
+        private static readonly Guid PoorId = new Guid("5D2D23C7-95AA-49ed-8B2A-9A3E4D91BC3D");
+        private static readonly Guid FairId = new Guid("583BCA0A-2A5E-40c1-936C-D8F16A4DAAC5");
+        private static readonly Guid GoodId = new Guid("374DEE3A-82FA-4bee-B66B-F48CA1B0CBD7");
+        private static readonly Guid ExcellentId = new Guid("52029ECD-1752-4b40-A39D-54B0C1CB8297");
 
         private UniquelyIdentifiableCache<SkillRating> cache;
 
-        public SkillRating Poor
-        {
-            get { return this.Cache.Get(PoorId); }
-        }
+        public SkillRating Poor => this.Cache.Get(PoorId);
 
-        public SkillRating Fair
-        {
-            get { return this.Cache.Get(FairId); }
-        }
+        public SkillRating Fair => this.Cache.Get(FairId);
 
-        public SkillRating Good
-        {
-            get { return this.Cache.Get(GoodId); }
-        }
+        public SkillRating Good => this.Cache.Get(GoodId);
 
-        public SkillRating Excellent
-        {
-            get { return this.Cache.Get(ExcellentId); }
-        }
+        public SkillRating Excellent => this.Cache.Get(ExcellentId);
 
-        private UniquelyIdentifiableCache<SkillRating> Cache
-        {
-            get { return this.cache ?? (this.cache = new UniquelyIdentifiableCache<SkillRating>(this.Session)); }
-        }
+        private UniquelyIdentifiableCache<SkillRating> Cache => this.cache ?? (this.cache = new UniquelyIdentifiableCache<SkillRating>(this.Session));
 
         protected override void AppsSetup(Setup setup)
         {
@@ -90,15 +70,6 @@ namespace Allors.Domain
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Uitstekend").WithLocale(dutchLocale).Build())
                 .WithUniqueId(ExcellentId)
                 .Build();
-        }
-
-        protected override void AppsSecure(Security config)
-        {
-            base.AppsSecure(config);
-
-            var full = new[] { Operations.Read, Operations.Write, Operations.Execute };
-            
-            config.GrantAdministrator(this.ObjectType, full);
         }
     }
 }

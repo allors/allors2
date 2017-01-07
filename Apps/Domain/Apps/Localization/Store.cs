@@ -1,23 +1,18 @@
 // --------------------------------------------------------------------------------------------------------------------
 // <copyright file="Store.cs" company="Allors bvba">
 //   Copyright 2002-2012 Allors bvba.
-// 
 // Dual Licensed under
 //   a) the General Public Licence v3 (GPL)
 //   b) the Allors License
-// 
 // The GPL License is included in the file gpl.txt.
 // The Allors License is an addendum to your contract.
-// 
 // Allors Applications is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
 // For more information visit http://www.allors.com/legal
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
-
 using System.Linq;
 
 namespace Allors.Domain
@@ -61,16 +56,15 @@ namespace Allors.Domain
         }
 
         // TODO: Cascading delete
-        //public override void RemovePaymentMethod(PaymentMethod value)
-        //{
-        //    if (value.Equals(this.DefaultPaymentMethod))
-        //    {
-        //        this.RemoveDefaultPaymentMethod();
-        //    }
+        // public override void RemovePaymentMethod(PaymentMethod value)
+        // {
+        // if (value.Equals(this.DefaultPaymentMethod))
+        // {
+        // this.RemoveDefaultPaymentMethod();
+        // }
 
-        //    base.RemovePaymentMethod(value);
-        //}
-
+        // base.RemovePaymentMethod(value);
+        // }
         public string DeriveNextShipmentNumber()
         {
             var shipmentNumber = this.OutgoingShipmentCounter.NextValue();

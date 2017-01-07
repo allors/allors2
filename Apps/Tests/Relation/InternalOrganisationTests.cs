@@ -164,7 +164,7 @@ namespace Allors.Domain
 
             this.DatabaseSession.Derive(true);
 
-            Assert.AreEqual(new InvoiceSequences(this.DatabaseSession).FindBy(M.UniquelyIdentifiable.UniqueId, InvoiceSequences.RestartOnFiscalYearId), internalOrganisation.InvoiceSequence);
+            Assert.AreEqual(new InvoiceSequences(this.DatabaseSession).FindBy(M.UniquelyIdentifiable.UniqueId, new InvoiceSequences(this.DatabaseSession).RestartOnFiscalYear), internalOrganisation.InvoiceSequence);
         }
 
         [Test]

@@ -1,51 +1,34 @@
 // --------------------------------------------------------------------------------------------------------------------
 // <copyright file="InvoiceSequences.cs" company="Allors bvba">
 //   Copyright 2002-2012 Allors bvba.
-// 
 // Dual Licensed under
 //   a) the General Public Licence v3 (GPL)
 //   b) the Allors License
-// 
 // The GPL License is included in the file gpl.txt.
 // The Allors License is an addendum to your contract.
-// 
 // Allors Applications is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
 // For more information visit http://www.allors.com/legal
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
-
 namespace Allors.Domain
 {
     using System;
 
     public partial class InvoiceSequences
     {
-        public static readonly Guid EnforcedSequenceId = new Guid("54FF2FC1-9A4F-4d46-8BEA-866F4FBB448C");
-        public static readonly Guid RestartOnFiscalYearId = new Guid("2A2027B5-30D2-42a1-BE8B-FEF343C742D1");
+        private static readonly Guid EnforcedSequenceId = new Guid("54FF2FC1-9A4F-4d46-8BEA-866F4FBB448C");
+        private static readonly Guid RestartOnFiscalYearId = new Guid("2A2027B5-30D2-42a1-BE8B-FEF343C742D1");
 
         private UniquelyIdentifiableCache<InvoiceSequence> cache;
 
-        public InvoiceSequence EnforcedSequence
-        {
-            get { return this.Cache.Get(EnforcedSequenceId); }
-        }
+        public InvoiceSequence EnforcedSequence => this.Cache.Get(EnforcedSequenceId);
 
-        public InvoiceSequence RestartOnFiscalYear
-        {
-            get { return this.Cache.Get(RestartOnFiscalYearId); }
-        }
+        public InvoiceSequence RestartOnFiscalYear => this.Cache.Get(RestartOnFiscalYearId);
 
-        private UniquelyIdentifiableCache<InvoiceSequence> Cache
-        {
-            get
-            {
-                return this.cache ?? (this.cache = new UniquelyIdentifiableCache<InvoiceSequence>(this.Session));
-            }
-        }
+        private UniquelyIdentifiableCache<InvoiceSequence> Cache => this.cache ?? (this.cache = new UniquelyIdentifiableCache<InvoiceSequence>(this.Session));
 
         protected override void AppsSetup(Setup setup)
         {
@@ -67,15 +50,6 @@ namespace Allors.Domain
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Herstart elk fiscaal jaar (aansluitend, begint elk jaar met nummer '1'").WithLocale(dutchLocale).Build())
                 .WithUniqueId(RestartOnFiscalYearId)
                 .Build();
-        }
-
-        protected override void AppsSecure(Security config)
-        {
-            base.AppsSecure(config);
-            
-            var full = new[] { Operations.Read, Operations.Write, Operations.Execute };
-
-            config.GrantAdministrator(this.ObjectType, full);
         }
     }
 }

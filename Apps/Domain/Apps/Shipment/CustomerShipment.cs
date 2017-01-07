@@ -1,23 +1,18 @@
 // --------------------------------------------------------------------------------------------------------------------
 // <copyright file="CustomerShipment.cs" company="Allors bvba">
 //   Copyright 2002-2012 Allors bvba.
-// 
 // Dual Licensed under
 //   a) the General Public Licence v3 (GPL)
 //   b) the Allors License
-// 
 // The GPL License is included in the file gpl.txt.
 // The Allors License is an addendum to your contract.
-// 
 // Allors Applications is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
 // For more information visit http://www.allors.com/legal
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
-
 namespace Allors.Domain
 {
     using System;
@@ -54,7 +49,7 @@ namespace Allors.Domain
                 {
                     foreach (OrderShipment orderShipment in shipmentItem.OrderShipmentsWhereShipmentItem)
                     {
-                        if (orderShipment.SalesOrderItem.SalesOrderWhereSalesOrderItem.CurrentObjectState.Equals(new Allors.Domain.SalesOrderObjectStates(this.Strategy.Session).OnHold))
+                        if (orderShipment.SalesOrderItem.SalesOrderWhereSalesOrderItem.CurrentObjectState.Equals(new SalesOrderObjectStates(this.Strategy.Session).OnHold))
                         {
                             return false;
                         }
@@ -65,10 +60,7 @@ namespace Allors.Domain
             }
         }
 
-        public string ShortShipDateString
-        {
-            get { return this.EstimatedShipDate.ToShortDateString(); }
-        }
+        public string ShortShipDateString => this.EstimatedShipDate.ToShortDateString();
 
         private PickList PendingPickList
         {
@@ -125,7 +117,7 @@ namespace Allors.Domain
 
             if (!this.ExistBillFromContactMechanism)
             {
-                this.BillFromContactMechanism = BillFromInternalOrganisation.BillingAddress;
+                this.BillFromContactMechanism = this.BillFromInternalOrganisation.BillingAddress;
             }
 
             if (!this.ExistStore && this.ExistShipFromParty)
@@ -211,45 +203,9 @@ namespace Allors.Domain
 
             this.AppsOnDeriveCurrentObjectState(derivation);
         }
-
-        public void AppsOnPostDerive(ObjectOnPostDerive method)
-        {
-            this.RemoveSecurityTokens();
-            this.AddSecurityToken(Singleton.Instance(this.Strategy.Session).DefaultSecurityToken);
-
-            if (this.ExistShipFromParty)
-            {
-                this.AddSecurityToken(this.ShipFromParty.OwnerSecurityToken);
-            }
-
-            if (this.ExistBillToParty)
-            {
-                if (this.BillToParty.ExistOwnerSecurityToken && !this.SecurityTokens.Contains(this.BillToParty.OwnerSecurityToken))
-                {
-                    this.AddSecurityToken(BillToParty.OwnerSecurityToken);                    
-                }
-            }
-
-            if (this.ExistShipToParty)
-            {
-                if (this.ShipToParty.ExistOwnerSecurityToken && !this.SecurityTokens.Contains(this.ShipToParty.OwnerSecurityToken))
-                {
-                    this.AddSecurityToken(ShipToParty.OwnerSecurityToken);
-                }
-            }
-
-            if (this.ExistShipFromParty)
-            {
-                if (this.ShipFromParty.ExistOwnerSecurityToken && !this.SecurityTokens.Contains(this.ShipFromParty.OwnerSecurityToken))
-                {
-                    this.AddSecurityToken(ShipFromParty.OwnerSecurityToken);
-                }
-            }
-        }
-
         public void AppsOnDeriveInvoices(IDerivation derivation)
         {
-            var invoiceByOrder = new Dictionary<Allors.Domain.SalesOrder, Allors.Domain.SalesInvoice>();
+            var invoiceByOrder = new Dictionary<SalesOrder, SalesInvoice>();
             var costsInvoiced = false;
 
             foreach (ShipmentItem shipmentItem in this.ShipmentItems)
@@ -258,14 +214,14 @@ namespace Allors.Domain
                 {
                     var salesOrder = orderShipment.SalesOrderItem.SalesOrderWhereSalesOrderItem;
 
-                    Allors.Domain.SalesInvoice salesInvoice;
+                    SalesInvoice salesInvoice;
                     if (!invoiceByOrder.TryGetValue(salesOrder, out salesInvoice))
                     {
                         salesInvoice = new SalesInvoiceBuilder(this.Strategy.Session)
                             .WithStore(salesOrder.Store)
                             .WithInvoiceDate(DateTime.UtcNow)
                             .WithSalesChannel(salesOrder.SalesChannel)
-                            .WithSalesInvoiceType(new Allors.Domain.SalesInvoiceTypes(this.Strategy.Session).SalesInvoice)
+                            .WithSalesInvoiceType(new SalesInvoiceTypes(this.Strategy.Session).SalesInvoice)
                             .WithVatRegime(salesOrder.VatRegime)
                             .WithBilledFromContactMechanism(this.BillFromContactMechanism)
                             .WithBilledFromInternalOrganisation(this.BillFromInternalOrganisation)
@@ -295,7 +251,7 @@ namespace Allors.Domain
                     }
 
                     var invoiceItem = new SalesInvoiceItemBuilder(this.Strategy.Session)
-                        .WithSalesInvoiceItemType(new Allors.Domain.SalesInvoiceItemTypes(this.Strategy.Session).ProductItem)
+                        .WithSalesInvoiceItemType(new SalesInvoiceItemTypes(this.Strategy.Session).ProductItem)
                         .WithProduct(orderShipment.SalesOrderItem.Product)
                         .WithQuantity(orderShipment.Quantity)
                         .Build();
@@ -459,7 +415,7 @@ namespace Allors.Domain
             }
         }
 
-        private void CreateNegativePickList(IDerivation derivation, CustomerShipment shipment, Allors.Domain.SalesOrderItem orderItem, decimal quantity)
+        private void CreateNegativePickList(IDerivation derivation, CustomerShipment shipment, SalesOrderItem orderItem, decimal quantity)
         {
             if (this.ExistShipToParty)
             {
@@ -506,7 +462,7 @@ namespace Allors.Domain
 
         public void AppsOnDeriveOrderItemQuantityShipped(IDerivation derivation)
         {
-            var salesOrders = new List<Allors.Domain.SalesOrder>();
+            var salesOrders = new List<SalesOrder>();
 
             foreach (ShipmentItem shipmentItem in this.ShipmentItems)
             {
@@ -518,7 +474,7 @@ namespace Allors.Domain
             }
         }
 
-        public void AppsOnDeriveQuantityDecreased(IDerivation derivation, ShipmentItem shipmentItem, Allors.Domain.SalesOrderItem orderItem, decimal correction)
+        public void AppsOnDeriveQuantityDecreased(IDerivation derivation, ShipmentItem shipmentItem, SalesOrderItem orderItem, decimal correction)
         {
             var remainingCorrection = correction;
 

@@ -1,23 +1,18 @@
 // --------------------------------------------------------------------------------------------------------------------
 // <copyright file="CustomerShipments.cs" company="Allors bvba">
 //   Copyright 2002-2012 Allors bvba.
-// 
 // Dual Licensed under
 //   a) the General Public Licence v3 (GPL)
 //   b) the Allors License
-// 
 // The GPL License is included in the file gpl.txt.
 // The Allors License is an addendum to your contract.
-// 
 // Allors Applications is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
 // For more information visit http://www.allors.com/legal
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
-
 using System;
 
 namespace Allors.Domain
@@ -37,33 +32,17 @@ namespace Allors.Domain
         {
             base.AppsSecure(config);
 
-            var full = new[] { Operations.Read, Operations.Write, Operations.Execute };
+            var created = new CustomerShipmentObjectStates(this.Session).Created;
+            var picked = new CustomerShipmentObjectStates(this.Session).Picked;
+            var packed = new CustomerShipmentObjectStates(this.Session).Packed;
+            var shipped = new CustomerShipmentObjectStates(this.Session).Shipped;
+            var delivered = new CustomerShipmentObjectStates(this.Session).Delivered;
+            var cancelled = new CustomerShipmentObjectStates(this.Session).Cancelled;
+            var onHold = new CustomerShipmentObjectStates(this.Session).OnHold;
 
-            config.GrantAdministrator(this.ObjectType, full);
-
-            config.GrantOperations(this.ObjectType, full);
-
-            config.GrantCustomer(this.ObjectType, Meta.CurrentShipmentStatus, Operations.Read);
-            config.GrantCustomer(this.ObjectType, Meta.ShipToParty, Operations.Read);
-            config.GrantCustomer(this.ObjectType, Meta.ShipmentStatuses, Operations.Read);
-            config.GrantCustomer(this.ObjectType, Meta.ShipmentPackages, Operations.Read);
-
-            config.GrantSales(this.ObjectType, Meta.CurrentShipmentStatus, Operations.Read);
-            config.GrantSales(this.ObjectType, Meta.ShipToParty, Operations.Read);
-            config.GrantSales(this.ObjectType, Meta.ShipmentStatuses, Operations.Read);
-            config.GrantSales(this.ObjectType, Meta.ShipmentPackages, Operations.Read);
-
-            var created = new CustomerShipmentObjectStates(Session).Created;
-            var picked = new CustomerShipmentObjectStates(Session).Picked;
-            var packed = new CustomerShipmentObjectStates(Session).Packed;
-            var shipped = new CustomerShipmentObjectStates(Session).Shipped;
-            var delivered = new CustomerShipmentObjectStates(Session).Delivered;
-            var cancelled = new CustomerShipmentObjectStates(Session).Cancelled;
-            var onHold = new CustomerShipmentObjectStates(Session).OnHold;
-
-            var hold = Meta.Hold;
-            var @continue = Meta.Continue;
-            var ship = Meta.Ship;
+            var hold = this.Meta.Hold;
+            var @continue = this.Meta.Continue;
+            var ship = this.Meta.Ship;
 
             config.Deny(this.ObjectType, shipped, hold, @continue);
             config.Deny(this.ObjectType, onHold, ship, hold, @continue);

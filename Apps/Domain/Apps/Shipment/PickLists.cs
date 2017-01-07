@@ -1,23 +1,18 @@
 // --------------------------------------------------------------------------------------------------------------------
 // <copyright file="PickLists.cs" company="Allors bvba">
 //   Copyright 2002-2012 Allors bvba.
-// 
 // Dual Licensed under
 //   a) the General Public Licence v3 (GPL)
 //   b) the Allors License
-// 
 // The GPL License is included in the file gpl.txt.
 // The Allors License is an addendum to your contract.
-// 
 // Allors Applications is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
 // For more information visit http://www.allors.com/legal
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
-
 namespace Allors.Domain
 {
     using System;
@@ -48,22 +43,13 @@ namespace Allors.Domain
         {
             base.AppsSecure(config);
 
-            var full = new[] { Operations.Read, Operations.Write, Operations.Execute };
+            var created = new PickListObjectStates(this.Session).Created;
+            var onHold = new PickListObjectStates(this.Session).OnHold;
+            var picked = new PickListObjectStates(this.Session).Picked;
+            var cancelled = new PickListObjectStates(this.Session).Cancelled;
 
-            config.GrantAdministrator(this.ObjectType, full);
-            
-            config.GrantOperations(this.ObjectType, full);
-
-            config.GrantCustomer(this.ObjectType, Meta.CurrentPickListStatus, Operations.Read);
-            config.GrantCustomer(this.ObjectType, Meta.PickListStatuses, Operations.Read);
-
-            var created = new PickListObjectStates(Session).Created;
-            var onHold = new PickListObjectStates(Session).OnHold;
-            var picked = new PickListObjectStates(Session).Picked;
-            var cancelled = new PickListObjectStates(Session).Cancelled;
-
-            config.Deny(this.ObjectType, created, Meta.Continue);
-            config.Deny(this.ObjectType, onHold, Meta.Hold);
+            config.Deny(this.ObjectType, created, this.Meta.Continue);
+            config.Deny(this.ObjectType, onHold, this.Meta.Hold);
 
             config.Deny(this.ObjectType, picked, Operations.Execute, Operations.Write);
             config.Deny(this.ObjectType, cancelled, Operations.Execute, Operations.Write);

@@ -1,48 +1,37 @@
 // --------------------------------------------------------------------------------------------------------------------
 // <copyright file="GenderTypes.cs" company="Allors bvba">
 //   Copyright 2002-2012 Allors bvba.
-// 
 // Dual Licensed under
 //   a) the General Public Licence v3 (GPL)
 //   b) the Allors License
-// 
 // The GPL License is included in the file gpl.txt.
 // The Allors License is an addendum to your contract.
-// 
 // Allors Applications is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
 // For more information visit http://www.allors.com/legal
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
-
 namespace Allors.Domain
 {
     using System;
 
     public partial class GenderTypes
     {
-        public static readonly Guid MaleId = new Guid("DAB59C10-0D45-4478-A802-3ABE54308CCD");
-        public static readonly Guid FemaleId = new Guid("B68704AD-82F1-4d5d-BBAF-A54635B5034F");
+        private static readonly Guid MaleId = new Guid("DAB59C10-0D45-4478-A802-3ABE54308CCD");
+        private static readonly Guid FemaleId = new Guid("B68704AD-82F1-4d5d-BBAF-A54635B5034F");
+        private static readonly Guid OtherId = new Guid("09210D7C-804B-4E76-AD91-0E150D36E86E");
 
         private UniquelyIdentifiableCache<GenderType> cache;
 
-        public GenderType Male
-        {
-            get { return this.Cache.Get(MaleId); }
-        }
+        public GenderType Male => this.Cache.Get(MaleId);
 
-        public GenderType Female
-        {
-            get { return this.Cache.Get(FemaleId); }
-        }
+        public GenderType Female => this.Cache.Get(FemaleId);
 
-        private UniquelyIdentifiableCache<GenderType> Cache
-        {
-            get { return this.cache ?? (this.cache = new UniquelyIdentifiableCache<GenderType>(this.Session)); }
-        }
+        public GenderType Other => this.Cache.Get(OtherId);
+
+        private UniquelyIdentifiableCache<GenderType> Cache => this.cache ?? (this.cache = new UniquelyIdentifiableCache<GenderType>(this.Session));
 
         protected override void AppsSetup(Setup setup)
         {
@@ -64,15 +53,13 @@ namespace Allors.Domain
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Vrouwelijk").WithLocale(dutchLocale).Build())
                 .WithUniqueId(FemaleId)
                 .Build();
-        }
 
-        protected override void AppsSecure(Security config)
-        {
-            base.AppsSecure(config);
-            
-            var full = new[] { Operations.Read, Operations.Write, Operations.Execute };
-
-            config.GrantAdministrator(this.ObjectType, full);
+            new GenderTypeBuilder(this.Session)
+                .WithName("Other")
+                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Other").WithLocale(englishLocale).Build())
+                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Anders").WithLocale(dutchLocale).Build())
+                .WithUniqueId(FemaleId)
+                .Build();
         }
     }
 }

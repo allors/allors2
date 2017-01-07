@@ -1,23 +1,18 @@
 // --------------------------------------------------------------------------------------------------------------------
 // <copyright file="ShipmentReceipt.cs" company="Allors bvba">
 //   Copyright 2002-2012 Allors bvba.
-// 
 // Dual Licensed under
 //   a) the General Public Licence v3 (GPL)
 //   b) the Allors License
-// 
 // The GPL License is included in the file gpl.txt.
 // The Allors License is an addendum to your contract.
-// 
 // Allors Applications is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
 // For more information visit http://www.allors.com/legal
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
-
 namespace Allors.Domain
 {
     using System;
@@ -47,7 +42,7 @@ namespace Allors.Domain
                 if (orderShipmentsWhereShipmentItem.First == null)
                 {
                     new OrderShipmentBuilder(this.Strategy.Session)
-                        .WithPurchaseOrderItem((Allors.Domain.PurchaseOrderItem)this.OrderItem)
+                        .WithPurchaseOrderItem((PurchaseOrderItem)this.OrderItem)
                         .WithShipmentItem(this.ShipmentItem)
                         .WithQuantity(this.QuantityAccepted)
                         .Build();
@@ -70,7 +65,7 @@ namespace Allors.Domain
 
                 if (purchaseOrderItem.ExistProduct)
                 {
-                    var good = purchaseOrderItem.Product as Allors.Domain.Good;
+                    var good = purchaseOrderItem.Product as Good;
                     if (good != null)
                     {
                         if (good.ExistFinishedGood)
@@ -79,7 +74,7 @@ namespace Allors.Domain
                             {
                                 var inventoryItems = good.FinishedGood.InventoryItemsWherePart;
                                 inventoryItems.Filter.AddEquals(M.InventoryItem.Facility, order.ShipToBuyer.DefaultFacility);
-                                this.InventoryItem = inventoryItems.First as Allors.Domain.NonSerializedInventoryItem;
+                                this.InventoryItem = inventoryItems.First as NonSerializedInventoryItem;
                             }
                         }
                         else
@@ -88,7 +83,7 @@ namespace Allors.Domain
                             {
                                 var inventoryItems = good.InventoryItemsWhereGood;
                                 inventoryItems.Filter.AddEquals(M.InventoryItem.Facility, order.ShipToBuyer.DefaultFacility);
-                                this.InventoryItem = inventoryItems.First as Allors.Domain.NonSerializedInventoryItem ??
+                                this.InventoryItem = inventoryItems.First as NonSerializedInventoryItem ??
                                                      new NonSerializedInventoryItemBuilder(this.Strategy.Session).WithGood(good).Build();
                             }
                         }
@@ -101,7 +96,7 @@ namespace Allors.Domain
                     {
                         var inventoryItems = purchaseOrderItem.Part.InventoryItemsWherePart;
                         inventoryItems.Filter.AddEquals(M.InventoryItem.Facility, order.ShipToBuyer.DefaultFacility);
-                        this.InventoryItem = inventoryItems.First as Allors.Domain.NonSerializedInventoryItem;
+                        this.InventoryItem = inventoryItems.First as NonSerializedInventoryItem;
                     }
                 }
             }

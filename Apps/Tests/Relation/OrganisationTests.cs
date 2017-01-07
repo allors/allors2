@@ -72,9 +72,6 @@ namespace Allors.Domain
             Assert.IsTrue(acl.CanWrite(M.Organisation.LogoImage));
             Assert.IsTrue(acl.CanRead(M.Organisation.Locale));
             Assert.IsTrue(acl.CanWrite(M.Organisation.Locale));
-
-            Assert.IsFalse(acl.CanRead(M.Organisation.OwnerSecurityToken));
-            Assert.IsFalse(acl.CanWrite(M.Organisation.OwnerSecurityToken));
         }
     }
 }

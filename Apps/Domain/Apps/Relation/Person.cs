@@ -1,22 +1,19 @@
 // --------------------------------------------------------------------------------------------------------------------
 // <copyright file="Person.cs" company="Allors bvba">
 //   Copyright 2002-2012 Allors bvba.
-// 
 // Dual Licensed under
 //   a) the General Public Licence v3 (GPL)
 //   b) the Allors License
-// 
 // The GPL License is included in the file gpl.txt.
 // The Allors License is an addendum to your contract.
-// 
 // Allors Applications is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
 // For more information visit http://www.allors.com/legal
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
+using System.Diagnostics.Contracts;
 
 namespace Allors.Domain
 {
@@ -26,23 +23,11 @@ namespace Allors.Domain
 
     public partial class Person
     {
-        public bool IsPerson
-        {
-            get
-            {
-                return true;
-            }
-        }
+        public bool IsPerson => true;
 
-        public bool IsOrganisation
-        {
-            get
-            {
-                return false;
-            }
-        }
+        public bool IsOrganisation => false;
 
-        private bool AppsIsActiveEmployee(DateTime? date)
+        public bool AppsIsActiveEmployee(DateTime? date)
         {
             if (date == DateTime.MinValue)
             {
@@ -52,7 +37,7 @@ namespace Allors.Domain
             var employments = this.EmploymentsWhereEmployee;
             foreach (Employment relationship in employments)
             {
-                if (relationship.FromDate <= date &&
+                if (relationship.FromDate.Date <= date &&
                     (!relationship.ExistThroughDate || relationship.ThroughDate >= date))
                 {
                     return true;
@@ -62,7 +47,7 @@ namespace Allors.Domain
             return false;
         }
 
-        private bool AppsIsActiveOrganisationContact(DateTime? date)
+        public bool AppsIsActiveOrganisationContact(DateTime? date)
         {
             if (date == DateTime.MinValue)
             {
@@ -72,7 +57,7 @@ namespace Allors.Domain
             var organisationContactRelationships = this.OrganisationContactRelationshipsWhereContact;
             foreach (OrganisationContactRelationship relationship in organisationContactRelationships)
             {
-                if (relationship.FromDate <= date &&
+                if (relationship.FromDate.Date<= date &&
                     (!relationship.ExistThroughDate || relationship.ThroughDate >= date))
                 {
                     return true;
@@ -82,7 +67,7 @@ namespace Allors.Domain
             return false;
         }
 
-        private bool AppsIsActiveSalesRep(DateTime? date)
+        public bool AppsIsActiveSalesRep(DateTime? date)
         {
             if (date == DateTime.MinValue)
             {
@@ -92,7 +77,7 @@ namespace Allors.Domain
             var salesRepRelationships = this.SalesRepRelationshipsWhereSalesRepresentative;
             foreach (SalesRepRelationship relationship in salesRepRelationships)
             {
-                if (relationship.FromDate <= date &&
+                if (relationship.FromDate.Date <= date &&
                     (!relationship.ExistThroughDate || relationship.ThroughDate >= date))
                 {
                     return true;
@@ -149,26 +134,25 @@ namespace Allors.Domain
                 return false;
             }
 
-            //var contactRelationships = this.OrganisationContactRelationshipsWhereContact;
-            //contactRelationships.Filter.AddLessThan(OrganisationContactRelationships.Meta.FromDate, date.AddDays(1));
-            //var or1 = contactRelationships.Filter.AddOr();
-            //or1.AddNot().AddExists(PartyRelationships.Meta.ThroughDate);
-            //or1.AddGreaterThan(PartyRelationships.Meta.ThroughDate, date.AddDays(-1));
+            // var contactRelationships = this.OrganisationContactRelationshipsWhereContact;
+            // contactRelationships.Filter.AddLessThan(OrganisationContactRelationships.Meta.FromDate, date.AddDays(1));
+            // var or1 = contactRelationships.Filter.AddOr();
+            // or1.AddNot().AddExists(PartyRelationships.Meta.ThroughDate);
+            // or1.AddGreaterThan(PartyRelationships.Meta.ThroughDate, date.AddDays(-1));
 
-            //foreach (OrganisationContactRelationship contactRelationship in contactRelationships)
-            //{
-            //    var customerRelationships = contactRelationship.Organisation.CustomerRelationshipsWhereCustomer;
-            //    customerRelationships.Filter.AddLessThan(M.CustomerRelationship.FromDate, date.AddDays(1));
-            //    var or2 = contactRelationships.Filter.AddOr();
-            //    or2.AddNot().AddExists(PartyRelationships.Meta.ThroughDate);
-            //    or2.AddGreaterThan(PartyRelationships.Meta.ThroughDate, date.AddDays(-1));
+            // foreach (OrganisationContactRelationship contactRelationship in contactRelationships)
+            // {
+            // var customerRelationships = contactRelationship.Organisation.CustomerRelationshipsWhereCustomer;
+            // customerRelationships.Filter.AddLessThan(M.CustomerRelationship.FromDate, date.AddDays(1));
+            // var or2 = contactRelationships.Filter.AddOr();
+            // or2.AddNot().AddExists(PartyRelationships.Meta.ThroughDate);
+            // or2.AddGreaterThan(PartyRelationships.Meta.ThroughDate, date.AddDays(-1));
 
-            //    if (customerRelationships.Count > 0)
-            //    {
-            //        return true;
-            //    }
-            //}
-
+            // if (customerRelationships.Count > 0)
+            // {
+            // return true;
+            // }
+            // }
             var contactRelationships = this.OrganisationContactRelationshipsWhereContact;
             foreach (OrganisationContactRelationship relationship in contactRelationships)
             {
@@ -242,42 +226,6 @@ namespace Allors.Domain
             this.AppsOnDeriveCurrentPartyContactMechanisms(derivation);
             this.AppsOnDeriveInactivePartyContactMechanisms(derivation);
             this.AppsOnDeriveCommission();
-        }
-
-        public void AppsOnPostDerive(ObjectOnPostDerive method)
-        {
-            this.RemoveSecurityTokens();
-            this.AddSecurityToken(this.OwnerSecurityToken);
-            this.AddSecurityToken(Singleton.Instance(this.Strategy.Session).DefaultSecurityToken);
-
-            foreach (Organisation organisation in this.PartiesWhereCurrentContact)
-            {
-                this.AddSecurityToken(organisation.OwnerSecurityToken);
-            }
-
-            if (this.ExistCurrentEmployment)
-            {
-                this.AddSecurityToken(this.CurrentEmployment.Employer.OwnerSecurityToken);
-            }
-
-            if (this.ExistOrganisationContactRelationshipsWhereContact)
-            {
-                foreach (OrganisationContactRelationship organisationContactRelationship in OrganisationContactRelationshipsWhereContact)
-                {
-                    if (organisationContactRelationship.ExistOrganisation)
-                    {
-                        foreach (CustomerRelationship customerRelationship in organisationContactRelationship.Organisation.CustomerRelationshipsWhereCustomer)
-                        {
-                            this.AddSecurityToken(customerRelationship.InternalOrganisation.OwnerSecurityToken);
-                        }
-                    }
-                }
-            }
-
-            foreach (CustomerRelationship customerRelationship in this.CustomerRelationshipsWhereCustomer)
-            {
-                this.AddSecurityToken(customerRelationship.InternalOrganisation.OwnerSecurityToken);
-            }
         }
 
         public void AppsOnDeriveCurrentContacts(IDerivation derivation)
@@ -394,13 +342,10 @@ namespace Allors.Domain
 
         public void AppsOnDeriveCurrentEmployment(IDerivation derivation)
         {
-            UserGroup previousEmployeeUserGroup = null;
             InternalOrganisation previousEmployer = null;
 
             if (this.ExistCurrentEmployment)
             {
-                previousEmployeeUserGroup = this.CurrentEmployment.Employer.EmployeeUserGroup;
-                previousEmployeeUserGroup.RemoveMember(this);
                 previousEmployer = this.CurrentEmployment.Employer;
                 this.RemoveCurrentEmployment();
             }
@@ -413,11 +358,6 @@ namespace Allors.Domain
                 {
                     this.CurrentEmployment = employment;
                 }
-            }
-
-            if (previousEmployer != null && !this.CurrentEmployment.Employer.Equals(previousEmployer))
-            {
-                previousEmployeeUserGroup.RemoveMember(this);
             }
         }
     }

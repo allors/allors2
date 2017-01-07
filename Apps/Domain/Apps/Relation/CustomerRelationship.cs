@@ -1,23 +1,18 @@
 // --------------------------------------------------------------------------------------------------------------------
 // <copyright file="CustomerRelationship.cs" company="Allors bvba">
 //   Copyright 2002-2012 Allors bvba.
-// 
 // Dual Licensed under
 //   a) the General Public Licence v3 (GPL)
 //   b) the Allors License
-// 
 // The GPL License is included in the file gpl.txt.
 // The Allors License is an addendum to your contract.
-// 
 // Allors Applications is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
 // For more information visit http://www.allors.com/legal
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
-
 namespace Allors.Domain
 {
     using System;
@@ -133,7 +128,7 @@ namespace Allors.Domain
             this.AppsOnDeriveAmountOverDue(derivation);
             this.AppsOnDeriveRevenue(derivation);
 
-            this.Parties = new Party[] { this.Customer, this.InternalOrganisation };
+            this.Parties = new[] { this.Customer, this.InternalOrganisation };
 
             if (!this.ExistCustomer || !this.ExistInternalOrganisation)
             {
@@ -168,18 +163,18 @@ namespace Allors.Domain
             if (this.ExistCustomer && this.ExistInternalOrganisation)
             {
                 var customerOrganisation = this.Customer as Organisation;
-                if (customerOrganisation != null && customerOrganisation.ExistCustomerContactUserGroup)
+                if (customerOrganisation != null && customerOrganisation.ExistContactsUserGroup)
                 {
-                    foreach (Person contact in customerOrganisation.CustomerContactUserGroup.Members)
+                    foreach (Person contact in customerOrganisation.ContactsUserGroup.Members)
                     {
-                        customerOrganisation.CustomerContactUserGroup.RemoveMember(contact);
+                        customerOrganisation.ContactsUserGroup.RemoveMember(contact);
                     }
 
                     if (this.FromDate <= DateTime.UtcNow && (!this.ExistThroughDate || this.ThroughDate >= DateTime.UtcNow))
                     {
                         foreach (Person currentContact in customerOrganisation.CurrentContacts)
                         {
-                            customerOrganisation.CustomerContactUserGroup.AddMember(currentContact);
+                            customerOrganisation.ContactsUserGroup.AddMember(currentContact);
                         }
                     }
                 }
@@ -192,10 +187,10 @@ namespace Allors.Domain
 
             if (this.ExistCustomer)
             {
-                foreach (Allors.Domain.SalesInvoice salesInvoice in this.Customer.SalesInvoicesWhereBillToCustomer)
+                foreach (SalesInvoice salesInvoice in this.Customer.SalesInvoicesWhereBillToCustomer)
                 {
                     if (salesInvoice.BilledFromInternalOrganisation.Equals(this.InternalOrganisation)
-                        && !salesInvoice.CurrentObjectState.Equals(new Allors.Domain.SalesInvoiceObjectStates(this.Strategy.Session).Paid))
+                        && !salesInvoice.CurrentObjectState.Equals(new SalesInvoiceObjectStates(this.Strategy.Session).Paid))
                     {
                         if (salesInvoice.AmountPaid > 0)
                         {
@@ -203,9 +198,9 @@ namespace Allors.Domain
                         }
                         else
                         {
-                            foreach (Allors.Domain.SalesInvoiceItem invoiceItem in salesInvoice.InvoiceItems)
+                            foreach (SalesInvoiceItem invoiceItem in salesInvoice.InvoiceItems)
                             {
-                                if (!invoiceItem.CurrentObjectState.Equals(new Allors.Domain.SalesInvoiceItemObjectStates(this.Strategy.Session).Paid))
+                                if (!invoiceItem.CurrentObjectState.Equals(new SalesInvoiceItemObjectStates(this.Strategy.Session).Paid))
                                 {
                                     if (invoiceItem.ExistTotalIncVat)
                                     {
@@ -228,7 +223,7 @@ namespace Allors.Domain
                 foreach (SalesInvoice salesInvoice in this.Customer.SalesInvoicesWhereBillToCustomer)
                 {
                     if (salesInvoice.BilledFromInternalOrganisation.Equals(this.InternalOrganisation)
-                        && !salesInvoice.CurrentObjectState.Equals(new Allors.Domain.SalesInvoiceObjectStates(this.Strategy.Session).Paid))
+                        && !salesInvoice.CurrentObjectState.Equals(new SalesInvoiceObjectStates(this.Strategy.Session).Paid))
                     {
                         var gracePeriod = salesInvoice.Store.PaymentGracePeriod;
 

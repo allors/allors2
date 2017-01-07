@@ -43,44 +43,6 @@ namespace Allors.Domain
         }
 
         [Test]
-        public void GivenPickListCreatedByOrderProcessor_WhenCurrentUserInSameOrderProcessorUserGroup_ThenAccessIsGranted()
-        {
-            var orderProcessor2 = new PersonBuilder(this.DatabaseSession).WithLastName("orderProcessor2").WithUserName("orderProcessor2").Build();
-            var internalOrganisation = new InternalOrganisations(this.DatabaseSession).FindBy(M.InternalOrganisation.Name, "internalOrganisation");
-
-            var orderProcessorUserGroup = internalOrganisation.OperationsUserGroup;
-
-            new EmploymentBuilder(this.DatabaseSession)
-                .WithFromDate(DateTime.UtcNow)
-                .WithEmployee(orderProcessor2)
-                .WithEmployer(internalOrganisation)
-                .Build();
-
-            orderProcessorUserGroup.AddMember(orderProcessor2);
-
-            this.DatabaseSession.Derive(true);
-            this.DatabaseSession.Commit();
-
-            Thread.CurrentPrincipal = new GenericPrincipal(new GenericIdentity("orderProcessor", "Forms"), new string[0]);
-            var pickList = new PickListBuilder(this.DatabaseSession).Build();
-
-            this.DatabaseSession.Derive(true);
-
-            var acl = new AccessControlList(pickList, new Users(this.DatabaseSession).GetCurrentUser());
-
-            Assert.IsTrue(acl.CanWrite(M.PickList.Picker));
-            Assert.IsTrue(acl.CanRead(M.PickList.Picker));
-            Assert.IsTrue(acl.CanExecute(M.PickList.Cancel));
-
-            Thread.CurrentPrincipal = new GenericPrincipal(new GenericIdentity("orderProcessor2", "Forms"), new string[0]);
-            acl = new AccessControlList(pickList, new Users(this.DatabaseSession).GetCurrentUser());
-
-            Assert.IsTrue(acl.CanWrite(M.PickList.Picker));
-            Assert.IsTrue(acl.CanRead(M.PickList.Picker));
-            Assert.IsTrue(acl.CanExecute(M.PickList.Cancel));
-        }
-
-        [Test]
         public void GivenPickList_WhenObjectStateIsCreated_ThenCheckTransitions()
         {
             Thread.CurrentPrincipal = new GenericPrincipal(new GenericIdentity("orderProcessor", "Forms"), new string[0]);
@@ -650,72 +612,6 @@ namespace Allors.Domain
 
             var customerShipment = customer.ShipmentsWhereBillToParty.First;
             Assert.AreEqual(new CustomerShipmentObjectStates(this.DatabaseSession).Picked, customerShipment.CurrentObjectState);
-        }
-
-        [Test]
-        public void GivenPickListCreatedByOrderProcessor_WhenCurrentUserInAnotherOrderProcessorUserGroup_ThenAccessIsDenied()
-        {
-            var belgium = new Countries(this.DatabaseSession).CountryByIsoCode["BE"];
-            var euro = belgium.Currency;
-
-            var bank = new BankBuilder(this.DatabaseSession).WithCountry(belgium).WithName("ING België").WithBic("BBRUBEBB").Build();
-
-            var ownBankAccount = new OwnBankAccountBuilder(this.DatabaseSession)
-                .WithDescription("own account")
-                .WithBankAccount(new BankAccountBuilder(this.DatabaseSession).WithBank(bank).WithCurrency(euro).WithIban("BE23 3300 6167 6391").WithNameOnAccount("Koen").Build())
-                .Build();
-
-            var mechelen = new CityBuilder(this.DatabaseSession).WithName("Mechelen").Build();
-            var address1 = new PostalAddressBuilder(this.DatabaseSession).WithGeographicBoundary(mechelen).WithAddress1("Haverwerf 15").Build();
-
-            var billingAddress = new PartyContactMechanismBuilder(this.DatabaseSession)
-                .WithContactMechanism(address1)
-                .WithContactPurpose(new ContactMechanismPurposes(this.DatabaseSession).BillingAddress)
-                .WithUseAsDefault(true)
-                .Build();
-
-            var orderProcessor2 = new PersonBuilder(this.DatabaseSession).WithLastName("orderProcessor2").WithUserName("orderProcessor2").Build();
-            var internalOrganisation = new InternalOrganisationBuilder(this.DatabaseSession)
-                .WithName("employer2")
-                .WithLocale(new Locales(this.DatabaseSession).EnglishGreatBritain)
-                .WithEmployeeRole(new Roles(this.DatabaseSession).Administrator)
-                .WithEmployeeRole(new Roles(this.DatabaseSession).Operations)
-                .WithDefaultPaymentMethod(ownBankAccount)
-                .WithPreferredCurrency(euro)
-                .WithPartyContactMechanism(billingAddress)
-                .Build();
-
-            this.DatabaseSession.Derive(true);
-            this.DatabaseSession.Commit();
-
-            var orderProcessorUserGroup = internalOrganisation.OperationsUserGroup;
-
-            new EmploymentBuilder(this.DatabaseSession)
-                .WithFromDate(DateTime.UtcNow)
-                .WithEmployee(orderProcessor2)
-                .WithEmployer(internalOrganisation)
-                .Build();
-
-            orderProcessorUserGroup.AddMember(orderProcessor2);
-
-            this.DatabaseSession.Derive(true);
-            this.DatabaseSession.Commit();
-
-            Thread.CurrentPrincipal = new GenericPrincipal(new GenericIdentity("orderProcessor", "Forms"), new string[0]);
-            var pickList = new PickListBuilder(this.DatabaseSession).Build();
-
-            this.DatabaseSession.Derive(true);
-
-            var acl = new AccessControlList(pickList, new Users(this.DatabaseSession).GetCurrentUser());
-
-            Assert.IsTrue(acl.CanWrite(M.PickList.Picker));
-            Assert.IsTrue(acl.CanRead(M.PickList.Picker));
-            Assert.IsTrue(acl.CanExecute(M.PickList.Cancel));
-
-            Thread.CurrentPrincipal = new GenericPrincipal(new GenericIdentity("orderProcessor2", "Forms"), new string[0]);
-            acl = new AccessControlList(pickList, new Users(this.DatabaseSession).GetCurrentUser());
-
-            Assert.IsFalse(acl.CanRead(M.PickList.PickListItems));
         }
     }
 }

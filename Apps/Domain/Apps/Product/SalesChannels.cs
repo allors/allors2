@@ -1,90 +1,55 @@
 // --------------------------------------------------------------------------------------------------------------------
 // <copyright file="SalesChannels.cs" company="Allors bvba">
 //   Copyright 2002-2012 Allors bvba.
-// 
 // Dual Licensed under
 //   a) the General Public Licence v3 (GPL)
 //   b) the Allors License
-// 
 // The GPL License is included in the file gpl.txt.
 // The Allors License is an addendum to your contract.
-// 
 // Allors Applications is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
 // For more information visit http://www.allors.com/legal
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
-
 namespace Allors.Domain
 {
     using System;
 
     public partial class SalesChannels
     {
-        public static readonly Guid NoChannelId = new Guid("C2F8E220-722E-4b6d-94A9-C02B2ABB2ABE");
-        public static readonly Guid WebChannelId = new Guid("AE821BB6-7F54-4d98-930C-9D2B144FB662");
-        public static readonly Guid PosChannelId = new Guid("6E35BE16-C0C7-479d-9E87-D382C0E34FDC");
-        public static readonly Guid FaxChannelId = new Guid("06B1A63D-AC2C-434d-947E-465058E6C2BB");
-        public static readonly Guid PhoneChannelId = new Guid("04F7E8BE-CAB5-481a-8250-1C126B06D5E0");
-        public static readonly Guid EmailChannelId = new Guid("88E3D10B-CF0E-439a-8D75-6B68909E6D8E");
-        public static readonly Guid SnailMailChannelId = new Guid("7EFBA4C0-A853-4c61-8862-B606EF5C1B63");
-        public static readonly Guid AffiliateChannelId = new Guid("0FC9C19F-2005-4d7b-80B3-C7C862048CFA");
-        public static readonly Guid EbayChannelId = new Guid("93FFD696-F11F-4cc1-A461-367AFCFD0579");
+        private static readonly Guid NoChannelId = new Guid("C2F8E220-722E-4b6d-94A9-C02B2ABB2ABE");
+        private static readonly Guid WebChannelId = new Guid("AE821BB6-7F54-4d98-930C-9D2B144FB662");
+        private static readonly Guid PosChannelId = new Guid("6E35BE16-C0C7-479d-9E87-D382C0E34FDC");
+        private static readonly Guid FaxChannelId = new Guid("06B1A63D-AC2C-434d-947E-465058E6C2BB");
+        private static readonly Guid PhoneChannelId = new Guid("04F7E8BE-CAB5-481a-8250-1C126B06D5E0");
+        private static readonly Guid EmailChannelId = new Guid("88E3D10B-CF0E-439a-8D75-6B68909E6D8E");
+        private static readonly Guid SnailMailChannelId = new Guid("7EFBA4C0-A853-4c61-8862-B606EF5C1B63");
+        private static readonly Guid AffiliateChannelId = new Guid("0FC9C19F-2005-4d7b-80B3-C7C862048CFA");
+        private static readonly Guid EbayChannelId = new Guid("93FFD696-F11F-4cc1-A461-367AFCFD0579");
 
         private UniquelyIdentifiableCache<SalesChannel> cache;
 
-        public SalesChannel NoChannel
-        {
-            get { return this.Cache.Get(NoChannelId); }
-        }
+        public SalesChannel NoChannel => this.Cache.Get(NoChannelId);
 
-        public SalesChannel WebChannel
-        {
-            get { return this.Cache.Get(WebChannelId); }
-        }
+        public SalesChannel WebChannel => this.Cache.Get(WebChannelId);
 
-        public SalesChannel PosChannel
-        {
-            get { return this.Cache.Get(PosChannelId); }
-        }
+        public SalesChannel PosChannel => this.Cache.Get(PosChannelId);
 
-        public SalesChannel FaxChannel
-        {
-            get { return this.Cache.Get(FaxChannelId); }
-        }
+        public SalesChannel FaxChannel => this.Cache.Get(FaxChannelId);
 
-        public SalesChannel PhoneChannel
-        {
-            get { return this.Cache.Get(PhoneChannelId); }
-        }
+        public SalesChannel PhoneChannel => this.Cache.Get(PhoneChannelId);
 
-        public SalesChannel EmailChannel
-        {
-            get { return this.Cache.Get(EmailChannelId); }
-        }
+        public SalesChannel EmailChannel => this.Cache.Get(EmailChannelId);
 
-        public SalesChannel SnailMailChannel
-        {
-            get { return this.Cache.Get(SnailMailChannelId); }
-        }
+        public SalesChannel SnailMailChannel => this.Cache.Get(SnailMailChannelId);
 
-        public SalesChannel AffiliateChannel
-        {
-            get { return this.Cache.Get(AffiliateChannelId); }
-        }
+        public SalesChannel AffiliateChannel => this.Cache.Get(AffiliateChannelId);
 
-        public SalesChannel EbayChannel
-        {
-            get { return this.Cache.Get(EbayChannelId); }
-        }
+        public SalesChannel EbayChannel => this.Cache.Get(EbayChannelId);
 
-        private UniquelyIdentifiableCache<SalesChannel> Cache
-        {
-            get { return this.cache ?? (this.cache = new UniquelyIdentifiableCache<SalesChannel>(this.Session)); }
-        }
+        private UniquelyIdentifiableCache<SalesChannel> Cache => this.cache ?? (this.cache = new UniquelyIdentifiableCache<SalesChannel>(this.Session));
 
         protected override void AppsSetup(Setup setup)
         {
@@ -155,15 +120,6 @@ namespace Allors.Domain
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("via eBay").WithLocale(dutchLocale).Build())
                 .WithUniqueId(EbayChannelId)
                 .Build();
-        }
-
-        protected override void AppsSecure(Security config)
-        {
-            base.AppsSecure(config);
-            
-            var full = new[] { Operations.Read, Operations.Write, Operations.Execute };
-
-            config.GrantAdministrator(this.ObjectType, full);
         }
     }
 }

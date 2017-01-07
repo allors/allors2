@@ -84,7 +84,7 @@ namespace Allors.Domain
         {
             this.InstantiateObjects(this.DatabaseSession);
 
-            var usergroup = this.organisationContactRelationship.Organisation.CustomerContactUserGroup;
+            var usergroup = this.organisationContactRelationship.Organisation.ContactsUserGroup;
             Assert.IsTrue(usergroup.Members.Contains(this.organisationContactRelationship.Contact));
         }
 
@@ -93,7 +93,7 @@ namespace Allors.Domain
         {
             this.InstantiateObjects(this.DatabaseSession);
 
-            var usergroup = this.organisationContactRelationship.Organisation.CustomerContactUserGroup;
+            var usergroup = this.organisationContactRelationship.Organisation.ContactsUserGroup;
             Assert.AreEqual(1, usergroup.Members.Count);
             Assert.IsTrue(usergroup.Members.Contains(this.organisationContactRelationship.Contact));
 
@@ -114,7 +114,7 @@ namespace Allors.Domain
         {
             this.InstantiateObjects(this.DatabaseSession);
 
-            var usergroup = this.organisationContactRelationship.Organisation.CustomerContactUserGroup;
+            var usergroup = this.organisationContactRelationship.Organisation.ContactsUserGroup;
 
             Assert.AreEqual(1, usergroup.Members.Count);
             Assert.IsTrue(usergroup.Members.Contains(this.contact));

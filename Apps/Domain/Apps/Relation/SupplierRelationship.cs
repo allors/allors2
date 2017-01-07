@@ -1,23 +1,18 @@
 // --------------------------------------------------------------------------------------------------------------------
 // <copyright file="SupplierRelationship.cs" company="Allors bvba">
 //   Copyright 2002-2012 Allors bvba.
-// 
 // Dual Licensed under
 //   a) the General Public Licence v3 (GPL)
 //   b) the Allors License
-// 
 // The GPL License is included in the file gpl.txt.
 // The Allors License is an addendum to your contract.
-// 
 // Allors Applications is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
 // For more information visit http://www.allors.com/legal
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
-
 namespace Allors.Domain
 {
     using System;
@@ -108,23 +103,23 @@ namespace Allors.Domain
         {
             if (this.ExistSupplier && this.ExistInternalOrganisation)
             {
-                if (this.Supplier.SupplierContactUserGroup != null)
+                if (this.Supplier.ContactsUserGroup != null)
                 {
                     foreach (OrganisationContactRelationship contactRelationship in this.Supplier.OrganisationContactRelationshipsWhereOrganisation)
                     {
                         if (this.FromDate <= DateTime.UtcNow &&
                             (!this.ExistThroughDate || this.ThroughDate >= DateTime.UtcNow))
                         {
-                            if (!this.Supplier.SupplierContactUserGroup.Members.Contains(contactRelationship.Contact))
+                            if (!this.Supplier.ContactsUserGroup.Members.Contains(contactRelationship.Contact))
                             {
-                                this.Supplier.SupplierContactUserGroup.AddMember(contactRelationship.Contact);
+                                this.Supplier.ContactsUserGroup.AddMember(contactRelationship.Contact);
                             }
                         }
                         else
                         {
-                            if (this.Supplier.SupplierContactUserGroup.Members.Contains(contactRelationship.Contact))
+                            if (this.Supplier.ContactsUserGroup.Members.Contains(contactRelationship.Contact))
                             {
-                                this.Supplier.SupplierContactUserGroup.RemoveMember(contactRelationship.Contact);
+                                this.Supplier.ContactsUserGroup.RemoveMember(contactRelationship.Contact);
                             }
                         }
                     }

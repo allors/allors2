@@ -30,44 +30,14 @@ namespace Allors.Domain
         public static readonly Guid PartnerRoleId = new Guid("F3F6E8F6-94FB-42db-9F4A-CA33D8A88C97");
 
         public static readonly Guid EmployeeId = new Guid("0C433640-6220-4BB8-8EB4-050EA981324D");
-        public static readonly Guid OperationsId = new Guid("387E5E5A-727F-4098-9FDC-3431C258E1AA");
-        public static readonly Guid ProcurementId = new Guid("ACB4E8EE-61CC-48AA-BB0A-75B279A03049");
-        public static readonly Guid SalesId = new Guid("052F86E8-D40D-43CC-9555-9C3107500116");
 
-        public Role Customer
-        {
-            get { return this.RoleCache.Get(CustomerRoleId); }
-        }
+        public Role Customer => this.RoleCache.Get(CustomerRoleId);
 
-        public Role Supplier
-        {
-            get { return this.RoleCache.Get(SupplierRoleId); }
-        }
+        public Role Supplier => this.RoleCache.Get(SupplierRoleId);
 
-        public Role Partner
-        {
-            get { return this.RoleCache.Get(PartnerRoleId); }
-        }
+        public Role Partner => this.RoleCache.Get(PartnerRoleId);
 
-        public Role Employee
-        {
-            get { return this.RoleCache.Get(EmployeeId); }
-        }
-
-        public Role Operations
-        {
-            get { return this.RoleCache.Get(OperationsId); }
-        }
-
-        public Role Procurement
-        {
-            get { return this.RoleCache.Get(ProcurementId); }
-        }
-
-        public Role Sales
-        {
-            get { return this.RoleCache.Get(SalesId); }
-        }
+        public Role Employee => this.RoleCache.Get(EmployeeId);
 
         protected override void AppsSetup(Setup setup)
         {
@@ -77,10 +47,7 @@ namespace Allors.Domain
             new RoleBuilder(Session).WithName("Supplier").WithUniqueId(SupplierRoleId).Build();
             new RoleBuilder(Session).WithName("Partner").WithUniqueId(PartnerRoleId).Build();
 
-            new RoleBuilder(Session).WithName("Enployee").WithUniqueId(EmployeeId).Build();
-            new RoleBuilder(Session).WithName("Operations").WithUniqueId(OperationsId).Build();
-            new RoleBuilder(Session).WithName("Procurement").WithUniqueId(ProcurementId).Build();
-            new RoleBuilder(Session).WithName("Sales").WithUniqueId(SalesId).Build();
+            new RoleBuilder(Session).WithName("Employee").WithUniqueId(EmployeeId).Build();
         }
     }
 }

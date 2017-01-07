@@ -1,23 +1,18 @@
 // --------------------------------------------------------------------------------------------------------------------
 // <copyright file="SalesInvoices.cs" company="Allors bvba">
 //   Copyright 2002-2012 Allors bvba.
-// 
 // Dual Licensed under
 //   a) the General Public Licence v3 (GPL)
 //   b) the Allors License
-// 
 // The GPL License is included in the file gpl.txt.
 // The Allors License is an addendum to your contract.
-// 
 // Allors Applications is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
 // For more information visit http://www.allors.com/legal
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
-
 namespace Allors.Domain
 {
     using System;
@@ -37,21 +32,15 @@ namespace Allors.Domain
         protected override void AppsSecure(Security config)
         {
             base.AppsSecure(config);
-            
-            var full = new[] { Operations.Read, Operations.Write, Operations.Execute };
 
-            config.GrantAdministrator(this.ObjectType, full);
-            config.GrantCustomer(this.ObjectType, Operations.Read);
-            config.GrantSales(this.ObjectType, full);
+            var sent = new SalesInvoiceObjectStates(this.Session).Sent;
+            var paid = new SalesInvoiceObjectStates(this.Session).Paid;
+            var partiallyPaid = new SalesInvoiceObjectStates(this.Session).PartiallyPaid;
+            var writtenOff = new SalesInvoiceObjectStates(this.Session).WrittenOff;
+            var cancelled = new SalesInvoiceObjectStates(this.Session).Cancelled;
 
-            var sent = new SalesInvoiceObjectStates(Session).Sent;
-            var paid = new SalesInvoiceObjectStates(Session).Paid;
-            var partiallyPaid = new SalesInvoiceObjectStates(Session).PartiallyPaid;
-            var writtenOff = new SalesInvoiceObjectStates(Session).WrittenOff;
-            var cancelled = new SalesInvoiceObjectStates(Session).Cancelled;
-
-            var sendId = Meta.Send;
-            var cancelInvoiceId = Meta.CancelInvoice;
+            var sendId = this.Meta.Send;
+            var cancelInvoiceId = this.Meta.CancelInvoice;
 
             config.Deny(this.ObjectType, sent, sendId, cancelInvoiceId);
             config.Deny(this.ObjectType, partiallyPaid, sendId, cancelInvoiceId);

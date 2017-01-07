@@ -1,60 +1,40 @@
 // --------------------------------------------------------------------------------------------------------------------
 // <copyright file="EmploymentTerminationReasons.cs" company="Allors bvba">
 //   Copyright 2002-2012 Allors bvba.
-// 
 // Dual Licensed under
 //   a) the General Public Licence v3 (GPL)
 //   b) the Allors License
-// 
 // The GPL License is included in the file gpl.txt.
 // The Allors License is an addendum to your contract.
-// 
 // Allors Applications is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
 // For more information visit http://www.allors.com/legal
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
-
 namespace Allors.Domain
 {
     using System;
 
     public partial class EmploymentTerminationReasons
     {
-        public static readonly Guid InsubordinationId = new Guid("6791B66C-FC8B-45d3-A5B0-56D15135F857");
-        public static readonly Guid AcceptedNewJobId = new Guid("5DB325E1-F60F-49bc-980B-CA202D2933F5");
-        public static readonly Guid NonPerformanceId = new Guid("A83EEE92-54B0-45cc-AC07-C33B0116D33B");
-        public static readonly Guid MovedId = new Guid("D1BC9AE6-CD34-4164-B807-FB247B9A6278");
+        private static readonly Guid InsubordinationId = new Guid("6791B66C-FC8B-45d3-A5B0-56D15135F857");
+        private static readonly Guid AcceptedNewJobId = new Guid("5DB325E1-F60F-49bc-980B-CA202D2933F5");
+        private static readonly Guid NonPerformanceId = new Guid("A83EEE92-54B0-45cc-AC07-C33B0116D33B");
+        private static readonly Guid MovedId = new Guid("D1BC9AE6-CD34-4164-B807-FB247B9A6278");
 
         private UniquelyIdentifiableCache<EmploymentTerminationReason> cache;
 
-        public EmploymentTerminationReason Insubordination
-        {
-            get { return this.Cache.Get(InsubordinationId); }
-        }
+        public EmploymentTerminationReason Insubordination => this.Cache.Get(InsubordinationId);
 
-        public EmploymentTerminationReason AcceptedNewJob
-        {
-            get { return this.Cache.Get(AcceptedNewJobId); }
-        }
+        public EmploymentTerminationReason AcceptedNewJob => this.Cache.Get(AcceptedNewJobId);
 
-        public EmploymentTerminationReason NonPerformance
-        {
-            get { return this.Cache.Get(NonPerformanceId); }
-        }
+        public EmploymentTerminationReason NonPerformance => this.Cache.Get(NonPerformanceId);
 
-        public EmploymentTerminationReason Moved
-        {
-            get { return this.Cache.Get(MovedId); }
-        }
+        public EmploymentTerminationReason Moved => this.Cache.Get(MovedId);
 
-        private UniquelyIdentifiableCache<EmploymentTerminationReason> Cache
-        {
-            get { return this.cache ?? (this.cache = new UniquelyIdentifiableCache<EmploymentTerminationReason>(this.Session)); }
-        }
+        private UniquelyIdentifiableCache<EmploymentTerminationReason> Cache => this.cache ?? (this.cache = new UniquelyIdentifiableCache<EmploymentTerminationReason>(this.Session));
 
         protected override void AppsSetup(Setup setup)
         {
@@ -90,15 +70,6 @@ namespace Allors.Domain
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Verhuis").WithLocale(dutchLocale).Build())
                 .WithUniqueId(MovedId)
                 .Build();
-        }
-
-        protected override void AppsSecure(Security config)
-        {
-            base.AppsSecure(config);
-
-            var full = new[] { Operations.Read, Operations.Write, Operations.Execute };
-
-            config.GrantAdministrator(this.ObjectType, full);
         }
     }
 }

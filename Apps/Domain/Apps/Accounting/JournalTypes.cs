@@ -1,75 +1,46 @@
 // --------------------------------------------------------------------------------------------------------------------
 // <copyright file="JournalTypes.cs" company="Allors bvba">
 //   Copyright 2002-2012 Allors bvba.
-// 
 // Dual Licensed under
 //   a) the General Public Licence v3 (GPL)
 //   b) the Allors License
-// 
 // The GPL License is included in the file gpl.txt.
 // The Allors License is an addendum to your contract.
-// 
 // Allors Applications is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
 // For more information visit http://www.allors.com/legal
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
-
 namespace Allors.Domain
 {
     using System;
 
     public partial class JournalTypes
     {
-        public static readonly Guid CashId = new Guid("B057AB5B-3BFD-46A4-80AA-D5330252E7E8");
-        public static readonly Guid BankId = new Guid("D09AAFCB-CD28-447F-BE28-92509B7723CB");
-        public static readonly Guid GiroId = new Guid("D364CC2B-9173-454F-A81E-F012859DAE44");
-        public static readonly Guid GeneralId = new Guid("B886672A-019A-4D27-BFA0-6C18A8BBD4B8");
-        public static readonly Guid SalesId = new Guid("FAE9D5DB-0EAD-46CB-89E8-C32E4001D8D1");
-        public static readonly Guid PurchaseId = new Guid("BB8A39C3-9F3E-4D3F-83A2-10100016A78E");
+        private static readonly Guid CashId = new Guid("B057AB5B-3BFD-46A4-80AA-D5330252E7E8");
+        private static readonly Guid BankId = new Guid("D09AAFCB-CD28-447F-BE28-92509B7723CB");
+        private static readonly Guid GiroId = new Guid("D364CC2B-9173-454F-A81E-F012859DAE44");
+        private static readonly Guid GeneralId = new Guid("B886672A-019A-4D27-BFA0-6C18A8BBD4B8");
+        private static readonly Guid SalesId = new Guid("FAE9D5DB-0EAD-46CB-89E8-C32E4001D8D1");
+        private static readonly Guid PurchaseId = new Guid("BB8A39C3-9F3E-4D3F-83A2-10100016A78E");
 
         private UniquelyIdentifiableCache<JournalType> cache;
 
-        public JournalType Cash
-        {
-            get { return this.Cache.Get(CashId); }
-        }
+        public JournalType Cash => this.Cache.Get(CashId);
 
-        public JournalType Bank
-        {
-            get { return this.Cache.Get(BankId); }
-        }
+        public JournalType Bank => this.Cache.Get(BankId);
 
-        public JournalType Giro
-        {
-            get { return this.Cache.Get(GiroId); }
-        }
+        public JournalType Giro => this.Cache.Get(GiroId);
 
-        public JournalType General
-        {
-            get { return this.Cache.Get(GeneralId); }
-        }
+        public JournalType General => this.Cache.Get(GeneralId);
 
-        public JournalType Sales
-        {
-            get { return this.Cache.Get(SalesId); }
-        }
+        public JournalType Sales => this.Cache.Get(SalesId);
 
-        public JournalType Purchase
-        {
-            get { return this.Cache.Get(PurchaseId); }
-        }
+        public JournalType Purchase => this.Cache.Get(PurchaseId);
 
-        private UniquelyIdentifiableCache<JournalType> Cache
-        {
-            get
-            {
-                return this.cache ?? (this.cache = new UniquelyIdentifiableCache<JournalType>(this.Session));
-            }
-        }
+        private UniquelyIdentifiableCache<JournalType> Cache => this.cache ?? (this.cache = new UniquelyIdentifiableCache<JournalType>(this.Session));
 
         protected override void AppsSetup(Setup setup)
         {
@@ -119,15 +90,6 @@ namespace Allors.Domain
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Verkoop").WithLocale(dutchLocale).Build())
                 .WithUniqueId(PurchaseId)
                 .Build();
-        }
-
-        protected override void AppsSecure(Security config)
-        {
-            base.AppsSecure(config);
-
-            var full = new[] { Operations.Read, Operations.Write, Operations.Execute };
-
-            config.GrantAdministrator(this.ObjectType, full);
         }
     }
 }

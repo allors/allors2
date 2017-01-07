@@ -172,8 +172,8 @@ namespace Allors.Domain
         {
             this.InstantiateObjects(this.DatabaseSession);
 
-            Assert.AreEqual(1, this.supplierRelationship.Supplier.SupplierContactUserGroup.Members.Count);
-            Assert.IsTrue(this.supplierRelationship.Supplier.SupplierContactUserGroup.Members.Contains(this.contact));
+            Assert.AreEqual(1, this.supplierRelationship.Supplier.ContactsUserGroup.Members.Count);
+            Assert.IsTrue(this.supplierRelationship.Supplier.ContactsUserGroup.Members.Contains(this.contact));
         }
 
         [Test]
@@ -181,30 +181,30 @@ namespace Allors.Domain
         {
             this.InstantiateObjects(this.DatabaseSession);
 
-            Assert.AreEqual(1, this.supplierRelationship.Supplier.SupplierContactUserGroup.Members.Count);
-            Assert.IsTrue(this.supplierRelationship.Supplier.SupplierContactUserGroup.Members.Contains(this.contact));
+            Assert.AreEqual(1, this.supplierRelationship.Supplier.ContactsUserGroup.Members.Count);
+            Assert.IsTrue(this.supplierRelationship.Supplier.ContactsUserGroup.Members.Contains(this.contact));
 
             this.supplierRelationship.FromDate = DateTime.UtcNow.AddDays(+1);
             this.supplierRelationship.RemoveThroughDate();
 
             this.DatabaseSession.Derive(true);
 
-            Assert.AreEqual(0, this.supplierRelationship.Supplier.SupplierContactUserGroup.Members.Count);
+            Assert.AreEqual(0, this.supplierRelationship.Supplier.ContactsUserGroup.Members.Count);
 
             this.supplierRelationship.FromDate = DateTime.UtcNow.AddSeconds(-1);
             this.supplierRelationship.RemoveThroughDate();
 
             this.DatabaseSession.Derive(true);
 
-            Assert.AreEqual(1, this.supplierRelationship.Supplier.SupplierContactUserGroup.Members.Count);
-            Assert.IsTrue(this.supplierRelationship.Supplier.SupplierContactUserGroup.Members.Contains(this.contact));
+            Assert.AreEqual(1, this.supplierRelationship.Supplier.ContactsUserGroup.Members.Count);
+            Assert.IsTrue(this.supplierRelationship.Supplier.ContactsUserGroup.Members.Contains(this.contact));
 
             this.supplierRelationship.FromDate = DateTime.UtcNow.AddDays(-2);
             this.supplierRelationship.ThroughDate = DateTime.UtcNow.AddDays(-1);
 
             this.DatabaseSession.Derive(true);
 
-            Assert.AreEqual(0, this.supplierRelationship.Supplier.SupplierContactUserGroup.Members.Count);
+            Assert.AreEqual(0, this.supplierRelationship.Supplier.ContactsUserGroup.Members.Count);
         }
 
         [Test]
@@ -221,16 +221,16 @@ namespace Allors.Domain
 
             this.DatabaseSession.Derive(true);
 
-            Assert.AreEqual(2, this.supplierRelationship.Supplier.SupplierContactUserGroup.Members.Count);
-            Assert.IsTrue(this.supplierRelationship.Supplier.SupplierContactUserGroup.Members.Contains(this.contact));
+            Assert.AreEqual(2, this.supplierRelationship.Supplier.ContactsUserGroup.Members.Count);
+            Assert.IsTrue(this.supplierRelationship.Supplier.ContactsUserGroup.Members.Contains(this.contact));
 
             contactRelationship2.ThroughDate = DateTime.UtcNow.AddDays(-1);
 
             this.DatabaseSession.Derive(true);
 
-            Assert.AreEqual(1, this.supplierRelationship.Supplier.SupplierContactUserGroup.Members.Count);
-            Assert.IsTrue(this.supplierRelationship.Supplier.SupplierContactUserGroup.Members.Contains(this.contact));
-            Assert.IsFalse(this.supplierRelationship.Supplier.SupplierContactUserGroup.Members.Contains(contact2));
+            Assert.AreEqual(1, this.supplierRelationship.Supplier.ContactsUserGroup.Members.Count);
+            Assert.IsTrue(this.supplierRelationship.Supplier.ContactsUserGroup.Members.Contains(this.contact));
+            Assert.IsFalse(this.supplierRelationship.Supplier.ContactsUserGroup.Members.Contains(contact2));
         }
 
         [Test]

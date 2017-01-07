@@ -91,43 +91,43 @@ namespace Allors.Domain
         {
             this.InstantiateObjects(this.DatabaseSession);
 
-            Assert.AreEqual(1, this.partnership.Partner.PartnerContactUserGroup.Members.Count);
-            Assert.IsTrue(this.partnership.Partner.PartnerContactUserGroup.Members.Contains(this.contact));
+            Assert.AreEqual(1, this.partnership.Partner.ContactsUserGroup.Members.Count);
+            Assert.IsTrue(this.partnership.Partner.ContactsUserGroup.Members.Contains(this.contact));
         }
 
         [Test]
-        public void GivenSupplierContactRelationship_WhenRelationshipPeriodIsNotValid_ThenContactIsNotInSupplierContactsUserGroup()
+        public void GivenSupplierContactRelationship_WhenRelationshipPeriodIsNotValid_ThenContactIsNotInContactsUserGroup()
         {
             this.InstantiateObjects(this.DatabaseSession);
 
-            Assert.AreEqual(1, this.partnership.Partner.PartnerContactUserGroup.Members.Count);
-            Assert.IsTrue(this.partnership.Partner.PartnerContactUserGroup.Members.Contains(this.contact));
+            Assert.AreEqual(1, this.partnership.Partner.ContactsUserGroup.Members.Count);
+            Assert.IsTrue(this.partnership.Partner.ContactsUserGroup.Members.Contains(this.contact));
 
             this.partnership.FromDate = DateTime.UtcNow.AddDays(+1);
             this.partnership.RemoveThroughDate();
 
             this.DatabaseSession.Derive(true);
 
-            Assert.AreEqual(0, this.partnership.Partner.PartnerContactUserGroup.Members.Count);
+            Assert.AreEqual(0, this.partnership.Partner.ContactsUserGroup.Members.Count);
 
             this.partnership.FromDate = DateTime.UtcNow;
             this.partnership.RemoveThroughDate();
 
             this.DatabaseSession.Derive(true);
 
-            Assert.AreEqual(1, this.partnership.Partner.PartnerContactUserGroup.Members.Count);
-            Assert.IsTrue(this.partnership.Partner.PartnerContactUserGroup.Members.Contains(this.contact));
+            Assert.AreEqual(1, this.partnership.Partner.ContactsUserGroup.Members.Count);
+            Assert.IsTrue(this.partnership.Partner.ContactsUserGroup.Members.Contains(this.contact));
 
             this.partnership.FromDate = DateTime.UtcNow.AddDays(-2);
             this.partnership.ThroughDate = DateTime.UtcNow.AddDays(-1);
 
             this.DatabaseSession.Derive(true);
 
-            Assert.AreEqual(0, this.partnership.Partner.PartnerContactUserGroup.Members.Count);
+            Assert.AreEqual(0, this.partnership.Partner.ContactsUserGroup.Members.Count);
         }
 
         [Test]
-        public void GivenSupplierContactRelationship_WhenContactForOrganisationEnds_ThenContactIsRemovedfromSupplierContactsUserGroup()
+        public void GivenSupplierContactRelationship_WhenContactForOrganisationEnds_ThenContactIsRemovedfromContactsUserGroup()
         {
             this.InstantiateObjects(this.DatabaseSession);
 
@@ -140,16 +140,16 @@ namespace Allors.Domain
 
             this.DatabaseSession.Derive(true);
 
-            Assert.AreEqual(2, this.partnership.Partner.PartnerContactUserGroup.Members.Count);
-            Assert.IsTrue(this.partnership.Partner.PartnerContactUserGroup.Members.Contains(this.contact));
+            Assert.AreEqual(2, this.partnership.Partner.ContactsUserGroup.Members.Count);
+            Assert.IsTrue(this.partnership.Partner.ContactsUserGroup.Members.Contains(this.contact));
 
             contactRelationship2.ThroughDate = DateTime.UtcNow.AddDays(-1);
 
             this.DatabaseSession.Derive(true);
 
-            Assert.AreEqual(1, this.partnership.Partner.PartnerContactUserGroup.Members.Count);
-            Assert.IsTrue(this.partnership.Partner.PartnerContactUserGroup.Members.Contains(this.contact));
-            Assert.IsFalse(this.partnership.Partner.PartnerContactUserGroup.Members.Contains(contact2));
+            Assert.AreEqual(1, this.partnership.Partner.ContactsUserGroup.Members.Count);
+            Assert.IsTrue(this.partnership.Partner.ContactsUserGroup.Members.Contains(this.contact));
+            Assert.IsFalse(this.partnership.Partner.ContactsUserGroup.Members.Contains(contact2));
         }
 
         private void InstantiateObjects(ISession session)

@@ -1,23 +1,18 @@
 // --------------------------------------------------------------------------------------------------------------------
 // <copyright file="PurchaseInvoiceItem.cs" company="Allors bvba">
 //   Copyright 2002-2012 Allors bvba.
-// 
 // Dual Licensed under
 //   a) the General Public Licence v3 (GPL)
 //   b) the Allors License
-// 
 // The GPL License is included in the file gpl.txt.
 // The Allors License is an addendum to your contract.
-// 
 // Allors Applications is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
 // For more information visit http://www.allors.com/legal
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
-
 namespace Allors.Domain
 {
     public partial class PurchaseInvoiceItem
@@ -58,7 +53,7 @@ namespace Allors.Domain
                 {
                     if (discountAdjustment.Percentage.HasValue)
                     {
-                        this.UnitDiscount += decimal.Round(((this.UnitBasePrice * discountAdjustment.Percentage.Value) / 100), 2);
+                        this.UnitDiscount += decimal.Round((this.UnitBasePrice * discountAdjustment.Percentage.Value) / 100, 2);
                     }
                     else
                     {
@@ -75,7 +70,7 @@ namespace Allors.Domain
                 {
                     if (surchargeAdjustment.Percentage.HasValue)
                     {
-                        this.UnitSurcharge += decimal.Round(((this.UnitBasePrice * surchargeAdjustment.Percentage.Value) / 100), 2);
+                        this.UnitSurcharge += decimal.Round((this.UnitBasePrice * surchargeAdjustment.Percentage.Value) / 100, 2);
                     }
                     else
                     {
@@ -92,7 +87,7 @@ namespace Allors.Domain
                 {
                     var vatRate = this.DerivedVatRate.Rate;
                     var vatBase = this.UnitBasePrice - this.UnitDiscount + this.UnitSurcharge;
-                    vat = decimal.Round(((vatBase * vatRate) / 100), 2);
+                    vat = decimal.Round((vatBase * vatRate) / 100, 2);
                 }
 
                 this.UnitVat = vat;

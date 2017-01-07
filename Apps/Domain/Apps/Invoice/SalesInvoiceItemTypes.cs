@@ -1,108 +1,64 @@
 // --------------------------------------------------------------------------------------------------------------------
 // <copyright file="SalesInvoiceItemTypes.cs" company="Allors bvba">
 //   Copyright 2002-2012 Allors bvba.
-// 
 // Dual Licensed under
 //   a) the General Public Licence v3 (GPL)
 //   b) the Allors License
-// 
 // The GPL License is included in the file gpl.txt.
 // The Allors License is an addendum to your contract.
-// 
 // Allors Applications is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
 // For more information visit http://www.allors.com/legal
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
-
 namespace Allors.Domain
 {
     using System;
 
     public partial class SalesInvoiceItemTypes
     {
-        public static readonly Guid FeeId = new Guid("90E9010A-E040-484c-9644-735C750B5A7C");
-        public static readonly Guid DiscountId = new Guid("29AF6097-A7ED-4916-94DC-686E7E55E31E");
-        public static readonly Guid InterestChargeId = new Guid("9077D502-1823-4ac5-B8E9-A6F074186A3F");
-        public static readonly Guid MiscChargeId = new Guid("2175B0D1-E2D3-4a83-8842-DDF02A7DF794");
-        public static readonly Guid PromotionId = new Guid("2D2E81A5-E42F-497e-B446-3D448FF8FF75");
-        public static readonly Guid VatId = new Guid("2DB43A22-6FED-4e85-843F-377157E9D72B");
-        public static readonly Guid ShippingAndHandlingId = new Guid("735349ED-14FF-4f57-8754-F053FD358B8A");
-        public static readonly Guid SurchargeId = new Guid("7B5AD1AC-BC9F-46ea-8FD3-01A9624D7E13");
-        public static readonly Guid WarrantyId = new Guid("5F5994E3-AF24-4cab-9F1E-5869556488E3");
-        public static readonly Guid ProductFeatureItemId = new Guid("2C8742AA-B4CD-436b-9350-B4B7AD18E7AC");
-        public static readonly Guid ProductItemId = new Guid("0D07F778-2735-44cb-8354-FB887ADA42AD");
-        public static readonly Guid ServiceProductItemId = new Guid("DA178F93-234A-41ed-815C-819AF8CA4E6F");
+        private static readonly Guid FeeId = new Guid("90E9010A-E040-484c-9644-735C750B5A7C");
+        private static readonly Guid DiscountId = new Guid("29AF6097-A7ED-4916-94DC-686E7E55E31E");
+        private static readonly Guid InterestChargeId = new Guid("9077D502-1823-4ac5-B8E9-A6F074186A3F");
+        private static readonly Guid MiscChargeId = new Guid("2175B0D1-E2D3-4a83-8842-DDF02A7DF794");
+        private static readonly Guid PromotionId = new Guid("2D2E81A5-E42F-497e-B446-3D448FF8FF75");
+        private static readonly Guid VatId = new Guid("2DB43A22-6FED-4e85-843F-377157E9D72B");
+        private static readonly Guid ShippingAndHandlingId = new Guid("735349ED-14FF-4f57-8754-F053FD358B8A");
+        private static readonly Guid SurchargeId = new Guid("7B5AD1AC-BC9F-46ea-8FD3-01A9624D7E13");
+        private static readonly Guid WarrantyId = new Guid("5F5994E3-AF24-4cab-9F1E-5869556488E3");
+        private static readonly Guid ProductFeatureItemId = new Guid("2C8742AA-B4CD-436b-9350-B4B7AD18E7AC");
+        private static readonly Guid ProductItemId = new Guid("0D07F778-2735-44cb-8354-FB887ADA42AD");
+        private static readonly Guid ServiceProductItemId = new Guid("DA178F93-234A-41ed-815C-819AF8CA4E6F");
 
         private UniquelyIdentifiableCache<SalesInvoiceItemType> cache;
 
-        public SalesInvoiceItemType Fee
-        {
-            get { return this.Cache.Get(FeeId); }
-        }
+        public SalesInvoiceItemType Fee => this.Cache.Get(FeeId);
 
-        public SalesInvoiceItemType Discount
-        {
-            get { return this.Cache.Get(DiscountId); }
-        }
+        public SalesInvoiceItemType Discount => this.Cache.Get(DiscountId);
 
-        public SalesInvoiceItemType InterestCharge
-        {
-            get { return this.Cache.Get(InterestChargeId); }
-        }
+        public SalesInvoiceItemType InterestCharge => this.Cache.Get(InterestChargeId);
 
-        public SalesInvoiceItemType MiscCharge
-        {
-            get { return this.Cache.Get(MiscChargeId); }
-        }
+        public SalesInvoiceItemType MiscCharge => this.Cache.Get(MiscChargeId);
 
-        public SalesInvoiceItemType Promotion
-        {
-            get { return this.Cache.Get(PromotionId); }
-        }
+        public SalesInvoiceItemType Promotion => this.Cache.Get(PromotionId);
 
-        public SalesInvoiceItemType SalesTax
-        {
-            get { return this.Cache.Get(VatId); }
-        }
+        public SalesInvoiceItemType SalesTax => this.Cache.Get(VatId);
 
-        public SalesInvoiceItemType ShippingAndHandling
-        {
-            get { return this.Cache.Get(ShippingAndHandlingId); }
-        }
+        public SalesInvoiceItemType ShippingAndHandling => this.Cache.Get(ShippingAndHandlingId);
 
-        public SalesInvoiceItemType Surcharge
-        {
-            get { return this.Cache.Get(SurchargeId); }
-        }
+        public SalesInvoiceItemType Surcharge => this.Cache.Get(SurchargeId);
 
-        public SalesInvoiceItemType Warranty
-        {
-            get { return this.Cache.Get(WarrantyId); }
-        }
+        public SalesInvoiceItemType Warranty => this.Cache.Get(WarrantyId);
 
-        public SalesInvoiceItemType ProductFeatureItem
-        {
-            get { return this.Cache.Get(ProductFeatureItemId); }
-        }
+        public SalesInvoiceItemType ProductFeatureItem => this.Cache.Get(ProductFeatureItemId);
 
-        public SalesInvoiceItemType ProductItem
-        {
-            get { return this.Cache.Get(ProductItemId); }
-        }
+        public SalesInvoiceItemType ProductItem => this.Cache.Get(ProductItemId);
 
-        public SalesInvoiceItemType ServiceProductItem
-        {
-            get { return this.Cache.Get(ServiceProductItemId); }
-        }
+        public SalesInvoiceItemType ServiceProductItem => this.Cache.Get(ServiceProductItemId);
 
-        private UniquelyIdentifiableCache<SalesInvoiceItemType> Cache
-        {
-            get { return this.cache ?? (this.cache = new UniquelyIdentifiableCache<SalesInvoiceItemType>(this.Session)); }
-        }
+        private UniquelyIdentifiableCache<SalesInvoiceItemType> Cache => this.cache ?? (this.cache = new UniquelyIdentifiableCache<SalesInvoiceItemType>(this.Session));
 
         protected override void AppsSetup(Setup setup)
         {
@@ -194,15 +150,6 @@ namespace Allors.Domain
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Dienst onderdeel").WithLocale(dutchLocale).Build())
                 .WithUniqueId(ServiceProductItemId)
                 .Build();
-        }
-
-        protected override void AppsSecure(Security config)
-        {
-            base.AppsSecure(config);
-            
-            var full = new[] { Operations.Read, Operations.Write, Operations.Execute };
-
-            config.GrantAdministrator(this.ObjectType, full);
         }
     }
 }

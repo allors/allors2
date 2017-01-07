@@ -8,6 +8,11 @@ namespace Allors.Repository.Domain
     public partial class AutomatedAgent : User, Party 
     {
         #region inherited properties
+
+        public SecurityToken OwnerSecurityToken { get; set; }
+
+        public AccessControl OwnerAccessControl { get; set; }
+
         public bool UserEmailConfirmed { get; set; }
 
         public string UserName { get; set; }
@@ -16,19 +21,11 @@ namespace Allors.Repository.Domain
 
         public string UserPasswordHash { get; set; }
 
-        public SecurityToken OwnerSecurityToken { get; set; }
-
-        public AccessControl OwnerAccessControl { get; set; }
-
         public Permission[] DeniedPermissions { get; set; }
 
         public SecurityToken[] SecurityTokens { get; set; }
 
         public Locale Locale { get; set; }
-
-        public SecurityToken CustomerSecurityToken { get; set; }
-
-        public AccessControl CustomerAccessControl { get; set; }
 
         public PostalAddress GeneralCorrespondence { get; set; }
 

@@ -1,7 +1,8 @@
 namespace Allors.Domain
 {
-    using Meta;
     using System.Collections.Generic;
+
+    using Meta;
 
     public partial class SalesInvoiceItem
     {
@@ -33,21 +34,9 @@ namespace Allors.Domain
             }
         }
 
-        public decimal PriceAdjustment
-        {
-            get
-            {
-                return this.TotalSurcharge - this.TotalDiscount;
-            }
-        }
+        public decimal PriceAdjustment => this.TotalSurcharge - this.TotalDiscount;
 
-        public decimal PriceAdjustmentAsPercentage
-        {
-            get
-            {
-                return decimal.Round(((this.TotalSurcharge - this.TotalDiscount) / this.TotalBasePrice) * 100, 2);
-            }
-        }
+        public decimal PriceAdjustmentAsPercentage => decimal.Round(((this.TotalSurcharge - this.TotalDiscount) / this.TotalBasePrice) * 100, 2);
 
         public void SetActualDiscountAmount(decimal amount)
         {
@@ -242,12 +231,12 @@ namespace Allors.Domain
             var baseprices = new PriceComponent[0];
             if (this.ExistProduct && this.Product.ExistBasePrices)
             {
-                baseprices = Product.BasePrices; 
+                baseprices = this.Product.BasePrices; 
             }
 
             if (this.ExistProductFeature && this.ProductFeature.ExistBasePrices)
             {
-                baseprices = ProductFeature.BasePrices;                 
+                baseprices = this.ProductFeature.BasePrices;                 
             }
 
             foreach (BasePrice priceComponent in baseprices)
@@ -549,7 +538,7 @@ namespace Allors.Domain
                 {
                     if (this.ExistProduct)
                     {
-                        this.SalesRep = SalesRepRelationships.SalesRep(customer, Product.PrimaryProductCategory, this.SalesInvoiceWhereSalesInvoiceItem.InvoiceDate);
+                        this.SalesRep = SalesRepRelationships.SalesRep(customer, this.Product.PrimaryProductCategory, this.SalesInvoiceWhereSalesInvoiceItem.InvoiceDate);
                     }
                     else
                     {

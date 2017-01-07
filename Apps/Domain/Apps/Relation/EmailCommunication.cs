@@ -1,23 +1,18 @@
 // --------------------------------------------------------------------------------------------------------------------
 // <copyright file="EmailCommunication.cs" company="Allors bvba">
 //   Copyright 2002-2012 Allors bvba.
-// 
 // Dual Licensed under
 //   a) the General Public Licence v3 (GPL)
 //   b) the Allors License
-// 
 // The GPL License is included in the file gpl.txt.
 // The Allors License is an addendum to your contract.
-// 
 // Allors Applications is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
 // For more information visit http://www.allors.com/legal
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
-
 using Allors.Meta;
 
 namespace Allors.Domain
@@ -53,7 +48,7 @@ namespace Allors.Domain
 
             foreach (EmailAddress addressee in this.Addressees)
             {
-                if (addressee.ExistPartyWherePersonalEmailAddress && !ToParties.Contains(addressee.PartyWherePersonalEmailAddress))
+                if (addressee.ExistPartyWherePersonalEmailAddress && !this.ToParties.Contains(addressee.PartyWherePersonalEmailAddress))
                 {
                     this.AddToParty(addressee.PartyWherePersonalEmailAddress);
                 }
@@ -61,7 +56,7 @@ namespace Allors.Domain
 
             foreach (EmailAddress carbonCopy in this.CarbonCopies)
             {
-                if (carbonCopy.ExistPartyWherePersonalEmailAddress && !ToParties.Contains(carbonCopy.PartyWherePersonalEmailAddress))
+                if (carbonCopy.ExistPartyWherePersonalEmailAddress && !this.ToParties.Contains(carbonCopy.PartyWherePersonalEmailAddress))
                 {
                     this.AddToParty(carbonCopy.PartyWherePersonalEmailAddress);
                 }
@@ -69,7 +64,7 @@ namespace Allors.Domain
 
             foreach (EmailAddress blindCopy in this.BlindCopies)
             {
-                if (blindCopy.ExistPartyWherePersonalEmailAddress && !ToParties.Contains(blindCopy.PartyWherePersonalEmailAddress))
+                if (blindCopy.ExistPartyWherePersonalEmailAddress && !this.ToParties.Contains(blindCopy.PartyWherePersonalEmailAddress))
                 {
                     this.AddToParty(blindCopy.PartyWherePersonalEmailAddress);
                 }

@@ -32,6 +32,7 @@ namespace Allors.Domain
         public void GivenCommunicationEvent_WhenInProgress_ThenCurrentObjectStateIsInProgress()
         {
             var communication = new FaceToFaceCommunicationBuilder(this.DatabaseSession)
+                .WithOwner(new PersonBuilder(this.DatabaseSession).WithLastName("owner").Build())
                 .WithParticipant(new PersonBuilder(this.DatabaseSession).WithLastName("participant1").Build())
                 .WithParticipant(new PersonBuilder(this.DatabaseSession).WithLastName("participant2").Build())
                 .WithSubject("Hello")
@@ -47,6 +48,7 @@ namespace Allors.Domain
         public void GivenCommunicationEvent_WhenInPast_ThenCurrencObjectStateIsCompleted()
         {
             var communication = new FaceToFaceCommunicationBuilder(this.DatabaseSession)
+                .WithOwner(new PersonBuilder(this.DatabaseSession).WithLastName("owner").Build())
                 .WithParticipant(new PersonBuilder(this.DatabaseSession).WithLastName("participant1").Build())
                 .WithParticipant(new PersonBuilder(this.DatabaseSession).WithLastName("participant2").Build())
                 .WithSubject("Hello")
@@ -63,6 +65,7 @@ namespace Allors.Domain
         public void GivenCommunicationEvent_WhenInFuture_ThenCurrencObjectStateIsScheduled()
         {
             var communication = new FaceToFaceCommunicationBuilder(this.DatabaseSession)
+                .WithOwner(new PersonBuilder(this.DatabaseSession).WithLastName("owner").Build())
                 .WithParticipant(new PersonBuilder(this.DatabaseSession).WithLastName("participant1").Build())
                 .WithParticipant(new PersonBuilder(this.DatabaseSession).WithLastName("participant2").Build())
                 .WithSubject("Hello")
@@ -79,6 +82,7 @@ namespace Allors.Domain
         public void GivenFaceToFaceCommunication_WhenConfirmed_ThenCurrentCommunicationEventStatusMustBeDerived()
         {
             var communication = new FaceToFaceCommunicationBuilder(this.DatabaseSession)
+                .WithOwner(new PersonBuilder(this.DatabaseSession).WithLastName("owner").Build())
                 .WithParticipant(new PersonBuilder(this.DatabaseSession).WithLastName("participant1").Build())
                 .WithParticipant(new PersonBuilder(this.DatabaseSession).WithLastName("participant2").Build())
                 .WithSubject("Hello")

@@ -1,23 +1,18 @@
 // --------------------------------------------------------------------------------------------------------------------
 // <copyright file="PaymentApplication.cs" company="Allors bvba">
 //   Copyright 2002-2012 Allors bvba.
-// 
 // Dual Licensed under
 //   a) the General Public Licence v3 (GPL)
 //   b) the Allors License
-// 
 // The GPL License is included in the file gpl.txt.
 // The Allors License is an addendum to your contract.
-// 
 // Allors Applications is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
 // For more information visit http://www.allors.com/legal
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
-
 namespace Allors.Domain
 {
     using Meta;
@@ -76,25 +71,25 @@ namespace Allors.Domain
             var salesInvoiceItem = this.InvoiceItem as SalesInvoiceItem;
             var purchaseInvoiceItem  = this.InvoiceItem as PurchaseInvoiceItem;
 
-            //if (salesInvoice != null)
-            //{
-            //    salesInvoice.OnDerive(x => x.WithDerivation(derivation));
-            //}
+            // if (salesInvoice != null)
+            // {
+            // salesInvoice.OnDerive(x => x.WithDerivation(derivation));
+            // }
 
-            //if (purchaseInvoice != null)
-            //{
-            //    purchaseInvoice.OnDerive(x => x.WithDerivation(derivation));
-            //}
+            // if (purchaseInvoice != null)
+            // {
+            // purchaseInvoice.OnDerive(x => x.WithDerivation(derivation));
+            // }
 
-            //if (salesInvoiceItem != null)
-            //{
-            //    salesInvoiceItem.SalesInvoiceWhereSalesInvoiceItem.OnDerive(x => x.WithDerivation(derivation));
-            //}
+            // if (salesInvoiceItem != null)
+            // {
+            // salesInvoiceItem.SalesInvoiceWhereSalesInvoiceItem.OnDerive(x => x.WithDerivation(derivation));
+            // }
 
-            //if (purchaseInvoiceItem != null)
-            //{
-            //    purchaseInvoiceItem.PurchaseInvoiceItemType.OnDerive(x => x.WithDerivation(derivation));
-            //}
+            // if (purchaseInvoiceItem != null)
+            // {
+            // purchaseInvoiceItem.PurchaseInvoiceItemType.OnDerive(x => x.WithDerivation(derivation));
+            // }
         }
     }
 }

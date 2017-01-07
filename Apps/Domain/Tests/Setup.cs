@@ -18,6 +18,8 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Allors.Meta;
+
 namespace Allors
 {
     using Allors.Domain;
@@ -40,6 +42,12 @@ namespace Allors
         {
             var singleton = Singleton.Instance(session);
             singleton.DefaultLocale = new Locales(session).EnglishGreatBritain;
+
+            var security = new Security(session);
+            foreach (var @class in this.session.Database.MetaPopulation.Classes)
+            {
+                security.GrantAdministrator(@class, Operations.Read, Operations.Write, Operations.Execute);
+            }
         }
     }
 }

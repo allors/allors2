@@ -1,23 +1,18 @@
 // --------------------------------------------------------------------------------------------------------------------
 // <copyright file="VatRegimes.cs" company="Allors bvba">
 //   Copyright 2002-2012 Allors bvba.
-// 
 // Dual Licensed under
 //   a) the General Public Licence v3 (GPL)
 //   b) the Allors License
-// 
 // The GPL License is included in the file gpl.txt.
 // The Allors License is an addendum to your contract.
-// 
 // Allors Applications is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
 // For more information visit http://www.allors.com/legal
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
-
 
 namespace Allors.Domain
 {
@@ -26,58 +21,31 @@ namespace Allors.Domain
 
     public partial class VatRegimes
     {
-        public static readonly Guid CoContractorId = new Guid("49D061B2-A9F9-408b-B781-409ECC3D54FC");
-        public static readonly Guid PrivatePersonId = new Guid("001A6A60-CC8A-4e6a-8FC0-BCE9707FA496");
-        public static readonly Guid AssessableId = new Guid("5973BE64-C785-480f-AF30-74D32C6D6AF9");
-        public static readonly Guid ExportId = new Guid("3268B6E5-995D-4f4b-B94E-AF4BE25F4282");
-        public static readonly Guid IntraCommunautairId = new Guid("CFA1860E-DEBA-49a8-9062-E5577CDE0CCC");
-        public static readonly Guid NotAssessableId = new Guid("4D57C8ED-1DF4-4db2-9AAA-4552257DC2BF");
-        public static readonly Guid ExemptId = new Guid("82986030-5E18-43c1-8CBE-9832ACD4151D");
+        private static readonly Guid CoContractorId = new Guid("49D061B2-A9F9-408b-B781-409ECC3D54FC");
+        private static readonly Guid PrivatePersonId = new Guid("001A6A60-CC8A-4e6a-8FC0-BCE9707FA496");
+        private static readonly Guid AssessableId = new Guid("5973BE64-C785-480f-AF30-74D32C6D6AF9");
+        private static readonly Guid ExportId = new Guid("3268B6E5-995D-4f4b-B94E-AF4BE25F4282");
+        private static readonly Guid IntraCommunautairId = new Guid("CFA1860E-DEBA-49a8-9062-E5577CDE0CCC");
+        private static readonly Guid NotAssessableId = new Guid("4D57C8ED-1DF4-4db2-9AAA-4552257DC2BF");
+        private static readonly Guid ExemptId = new Guid("82986030-5E18-43c1-8CBE-9832ACD4151D");
 
         private UniquelyIdentifiableCache<VatRegime> cache;
 
-        public VatRegime CoContractor
-        {
-            get { return this.Cache.Get(CoContractorId); }
-        }
+        public VatRegime CoContractor => this.Cache.Get(CoContractorId);
 
-        public VatRegime PrivatePerson
-        {
-            get { return this.Cache.Get(PrivatePersonId); }
-        }
+        public VatRegime PrivatePerson => this.Cache.Get(PrivatePersonId);
 
-        public VatRegime Assessable
-        {
-            get { return this.Cache.Get(AssessableId); }
-        }
+        public VatRegime Assessable => this.Cache.Get(AssessableId);
 
-        public VatRegime Export
-        {
-            get { return this.Cache.Get(ExportId); }
-        }
+        public VatRegime Export => this.Cache.Get(ExportId);
 
-        public VatRegime IntraCommunautair
-        {
-            get { return this.Cache.Get(IntraCommunautairId); }
-        }
+        public VatRegime IntraCommunautair => this.Cache.Get(IntraCommunautairId);
 
-        public VatRegime NotAssessable
-        {
-            get { return this.Cache.Get(NotAssessableId); }
-        }
+        public VatRegime NotAssessable => this.Cache.Get(NotAssessableId);
 
-        public VatRegime Exempt
-        {
-            get { return this.Cache.Get(ExemptId); }
-        }
+        public VatRegime Exempt => this.Cache.Get(ExemptId);
 
-        private UniquelyIdentifiableCache<VatRegime> Cache
-        {
-            get
-            {
-                return this.cache ?? (this.cache = new UniquelyIdentifiableCache<VatRegime>(this.Session));
-            }
-        }
+        private UniquelyIdentifiableCache<VatRegime> Cache => this.cache ?? (this.cache = new UniquelyIdentifiableCache<VatRegime>(this.Session));
 
         protected override void AppsPrepare(Setup setup)
         {
@@ -147,15 +115,6 @@ namespace Allors.Domain
                 .WithUniqueId(ExemptId)
                 .WithVatRate(vatRate0)
                 .Build();
-        }
-
-        protected override void AppsSecure(Security config)
-        {
-            base.AppsSecure(config);
-            
-            var full = new[] { Operations.Read, Operations.Write, Operations.Execute };
-
-            config.GrantAdministrator(this.ObjectType, full);
         }
     }
 }

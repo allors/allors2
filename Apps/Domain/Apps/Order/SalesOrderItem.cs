@@ -283,7 +283,7 @@ namespace Allors.Domain
                         if (!this.ExistReservedFromInventoryItem || !this.ReservedFromInventoryItem.Part.Equals(good.FinishedGood))
                         {
                             var inventoryItems = good.FinishedGood.InventoryItemsWherePart;
-                            inventoryItems.Filter.AddEquals(M.InventoryItem.Facility, SalesOrderWhereSalesOrderItem.TakenByInternalOrganisation.DefaultFacility);
+                            inventoryItems.Filter.AddEquals(M.InventoryItem.Facility, this.SalesOrderWhereSalesOrderItem.TakenByInternalOrganisation.DefaultFacility);
                             this.ReservedFromInventoryItem = inventoryItems.First as NonSerializedInventoryItem;
                         }
                     }
@@ -292,7 +292,7 @@ namespace Allors.Domain
                         if (!this.ExistReservedFromInventoryItem || !this.ReservedFromInventoryItem.Good.Equals(good))
                         {
                             var inventoryItems = good.InventoryItemsWhereGood;
-                            inventoryItems.Filter.AddEquals(M.InventoryItem.Facility, SalesOrderWhereSalesOrderItem.TakenByInternalOrganisation.DefaultFacility);
+                            inventoryItems.Filter.AddEquals(M.InventoryItem.Facility, this.SalesOrderWhereSalesOrderItem.TakenByInternalOrganisation.DefaultFacility);
                             this.ReservedFromInventoryItem = inventoryItems.First as NonSerializedInventoryItem;
                         }
                     }
@@ -1010,7 +1010,7 @@ namespace Allors.Domain
             {
                 if (this.ExistProduct)
                 {
-                    this.SalesRep = SalesRepRelationships.SalesRep(customer, Product.PrimaryProductCategory, this.SalesOrderWhereSalesOrderItem.OrderDate);
+                    this.SalesRep = SalesRepRelationships.SalesRep(customer, this.Product.PrimaryProductCategory, this.SalesOrderWhereSalesOrderItem.OrderDate);
                 }
                 else
                 {

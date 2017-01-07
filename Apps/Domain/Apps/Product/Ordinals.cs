@@ -1,54 +1,37 @@
 // --------------------------------------------------------------------------------------------------------------------
 // <copyright file="Ordinals.cs" company="Allors bvba">
 //   Copyright 2002-2012 Allors bvba.
-// 
 // Dual Licensed under
 //   a) the General Public Licence v3 (GPL)
 //   b) the Allors License
-// 
 // The GPL License is included in the file gpl.txt.
 // The Allors License is an addendum to your contract.
-// 
 // Allors Applications is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
 // For more information visit http://www.allors.com/legal
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
-
 namespace Allors.Domain
 {
     using System;
 
     public partial class Ordinals
     {
-        public static readonly Guid FirstId = new Guid("E312891F-7744-43ba-A69F-13878B1FC66B");
-        public static readonly Guid SecondId = new Guid("6593FE82-A00F-4de6-9516-D652FE28A3EA");
-        public static readonly Guid ThirdId = new Guid("C207121C-B534-4764-9724-3E829E9C9F21");
+        private static readonly Guid FirstId = new Guid("E312891F-7744-43ba-A69F-13878B1FC66B");
+        private static readonly Guid SecondId = new Guid("6593FE82-A00F-4de6-9516-D652FE28A3EA");
+        private static readonly Guid ThirdId = new Guid("C207121C-B534-4764-9724-3E829E9C9F21");
 
         private UniquelyIdentifiableCache<Ordinal> cache;
 
-        public Ordinal First
-        {
-            get { return this.Cache.Get(FirstId); }
-        }
+        public Ordinal First => this.Cache.Get(FirstId);
 
-        public Ordinal Second
-        {
-            get { return this.Cache.Get(SecondId); }
-        }
+        public Ordinal Second => this.Cache.Get(SecondId);
 
-        public Ordinal Third
-        {
-            get { return this.Cache.Get(ThirdId); }
-        }
+        public Ordinal Third => this.Cache.Get(ThirdId);
 
-        private UniquelyIdentifiableCache<Ordinal> Cache
-        {
-            get { return this.cache ?? (this.cache = new UniquelyIdentifiableCache<Ordinal>(this.Session)); }
-        }
+        private UniquelyIdentifiableCache<Ordinal> Cache => this.cache ?? (this.cache = new UniquelyIdentifiableCache<Ordinal>(this.Session));
 
         protected override void AppsSetup(Setup setup)
         {
@@ -77,15 +60,6 @@ namespace Allors.Domain
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Derde").WithLocale(dutchLocale).Build())
                 .WithUniqueId(ThirdId)
                 .Build();
-        }
-
-        protected override void AppsSecure(Security config)
-        {
-            base.AppsSecure(config);
-            
-            var full = new[] { Operations.Read, Operations.Write, Operations.Execute };
-
-            config.GrantAdministrator(this.ObjectType, full);
         }
     }
 }

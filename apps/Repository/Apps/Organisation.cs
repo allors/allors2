@@ -9,10 +9,6 @@ namespace Allors.Repository.Domain
     {
         #region inherited properties
 
-        public SecurityToken CustomerSecurityToken { get; set; }
-
-        public AccessControl CustomerAccessControl { get; set; }
-
         public PostalAddress GeneralCorrespondence { get; set; }
 
         public decimal YTDRevenue { get; set; }
@@ -107,53 +103,29 @@ namespace Allors.Repository.Domain
 
         public SecurityToken[] SecurityTokens { get; set; }
 
-        public SecurityToken OwnerSecurityToken { get; set; }
-
-        public AccessControl OwnerAccessControl { get; set; }
-
         public Guid UniqueId { get; set; }
 
         #endregion
 
         #region Allors
-        [Id("D162BF34-C4DE-4BC9-814D-3CDD1BB324B4")]
-        [AssociationId("36A5ED60-52B9-4FAC-97C2-D8212B0B5AF9")]
-        [RoleId("02DFEB97-42B6-4AAD-B38A-02EF8EC5AE87")]
+        [Id("124181AE-3BB2-42E2-A27B-D9B811824282")]
+        [AssociationId("E85FE7C7-0B10-4ABB-AD84-1B920DB767E2")]
+        [RoleId("5E5718DC-1060-4BF1-9E76-B2D2927E028D")]
         #endregion
         [Multiplicity(Multiplicity.OneToOne)]
         [Indexed]
         [Derived]
-        public SecurityToken SupplierSecurityToken { get; set; }
+        public SecurityToken ContactsSecurityToken { get; set; }
 
         #region Allors
-        [Id("C5E4F0D2-B29F-4811-8743-994DCAFE6F7F")]
-        [AssociationId("6D4607CC-0BCC-4512-9C2A-ED52E5A19E96")]
-        [RoleId("1D5872F7-B610-4129-A5C0-CD5748CE239E")]
+        [Id("98D13035-810F-4550-8EDE-8514FDFD275D")]
+        [AssociationId("4B77E890-1061-49E0-AE29-A28EB0C6A52E")]
+        [RoleId("18376FC8-224A-4F16-BBC8-006B04F8C184")]
         #endregion
         [Multiplicity(Multiplicity.OneToOne)]
         [Indexed]
         [Derived]
-        public AccessControl SupplierAccessControl { get; set; }
-
-        #region Allors
-        [Id("727FFAF1-230E-426D-8722-8A134340C3A5")]
-        [AssociationId("AFA1BC69-1755-49CC-974D-5DEB5ACCC7E0")]
-        [RoleId("0D94EF98-1E62-4054-AB26-0ACFDA62ED4D")]
-        #endregion
-        [Multiplicity(Multiplicity.OneToOne)]
-        [Indexed]
-        [Derived]
-        public SecurityToken PartnerSecurityToken { get; set; }
-
-        #region Allors
-        [Id("7BBB4A56-721D-4058-B475-D6AABBD81C3B")]
-        [AssociationId("25AAA810-849D-4599-85B2-6AB2E0A07D89")]
-        [RoleId("C185E780-DB96-4934-833E-7B77D42E8427")]
-        #endregion
-        [Multiplicity(Multiplicity.OneToOne)]
-        [Indexed]
-        [Derived]
-        public AccessControl PartnerAccessControl { get; set; }
+        public AccessControl ContactsAccessControl { get; set; }
 
         #region Allors
         [Id("980631CB-CC72-4264-87E5-B65DC6ABBB4D")]
@@ -174,6 +146,7 @@ namespace Allors.Repository.Domain
         [Indexed]
 
         public LegalForm LegalForm { get; set; }
+
         #region Allors
         [Id("2cc74901-cda5-4185-bcd8-d51c745a8437")]
         [AssociationId("896a4589-4caf-4cd2-8365-c4200b12f519")]
@@ -182,8 +155,8 @@ namespace Allors.Repository.Domain
         [Indexed]
         [Required]
         [Size(256)]
-
         public string Name { get; set; }
+
         #region Allors
         [Id("4cc8bc02-8305-4bd3-b0c7-e9b3ecaf4bd2")]
         [AssociationId("c2be4896-2eae-40fa-9300-b548741407f2")]
@@ -193,7 +166,7 @@ namespace Allors.Repository.Domain
         [Derived]
         [Indexed]
 
-        public UserGroup CustomerContactUserGroup { get; set; }
+        public UserGroup ContactsUserGroup { get; set; }
         #region Allors
         [Id("786a74b0-015a-47db-8d3a-c790b326cc7d")]
         [AssociationId("6f7363d4-46c5-4bcb-b19c-314733af9e9e")]
@@ -203,24 +176,15 @@ namespace Allors.Repository.Domain
         [Indexed]
 
         public Image LogoImage { get; set; }
-        #region Allors
-        [Id("78837f12-05d3-49f1-a607-43e96120bcf0")]
-        [AssociationId("0df49189-f6a1-49cf-97c5-ab40e3087b6e")]
-        [RoleId("d03e4b6a-6741-4290-a590-18e32b4a6e43")]
-        #endregion
-        [Multiplicity(Multiplicity.OneToOne)]
-        [Derived]
-        [Indexed]
 
-        public UserGroup PartnerContactUserGroup { get; set; }
         #region Allors
         [Id("813633df-c6cb-44a6-9fdf-579aa8180ebd")]
         [AssociationId("4e4c1ca5-43e1-4567-8f1e-636197ca72b7")]
         [RoleId("e5c40212-c5c5-44a1-8f18-f5d3dbeec9ca")]
         #endregion
         [Size(256)]
-
         public string TaxNumber { get; set; }
+
         #region Allors
         [Id("a5318bd4-da7d-48bd-9d41-00c3261caa09")]
         [AssociationId("baae72eb-acf3-4dce-b480-fce90e124de3")]
@@ -230,16 +194,7 @@ namespace Allors.Repository.Domain
         [Indexed]
 
         public IndustryClassification IndustryClassification { get; set; }
-        #region Allors
-        [Id("af80efaf-7ef1-4625-9717-564eef0504c4")]
-        [AssociationId("ff2bb57b-4aaf-4c61-b282-6ce0852e8546")]
-        [RoleId("844af39b-fae2-4d94-9e67-ff6d97152736")]
-        #endregion
-        [Multiplicity(Multiplicity.OneToOne)]
-        [Derived]
-        [Indexed]
 
-        public UserGroup SupplierContactUserGroup { get; set; }
         #region Allors
         [Id("d0ac426e-4775-4f2f-8055-08cb84e8e9bd")]
         [AssociationId("e8677033-8927-4a52-b210-9a98558625ba")]
