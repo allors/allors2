@@ -30,21 +30,6 @@ namespace Allors.Domain
         {
             base.AppsSecure(config);
 
-            config.GrantSupplier(this.ObjectType, this.Meta.OrderNumber, Operations.Read);
-            config.GrantSupplier(this.ObjectType, this.Meta.OrderDate, Operations.Read);
-            config.GrantSupplier(this.ObjectType, this.Meta.CurrentOrderStatus, Operations.Read);
-            config.GrantSupplier(this.ObjectType, this.Meta.CurrentPaymentStatus, Operations.Read);
-            config.GrantSupplier(this.ObjectType, this.Meta.CurrentShipmentStatus, Operations.Read);
-            config.GrantSupplier(this.ObjectType, this.Meta.OrderStatuses, Operations.Read);
-            config.GrantSupplier(this.ObjectType, this.Meta.PaymentStatuses, Operations.Read);
-            config.GrantSupplier(this.ObjectType, this.Meta.ShipmentStatuses, Operations.Read);
-            config.GrantSupplier(this.ObjectType, this.Meta.TotalBasePrice, Operations.Read);
-            config.GrantSupplier(this.ObjectType, this.Meta.TotalDiscount, Operations.Read);
-            config.GrantSupplier(this.ObjectType, this.Meta.TotalSurcharge, Operations.Read);
-            config.GrantSupplier(this.ObjectType, this.Meta.TotalExVat, Operations.Read);
-            config.GrantSupplier(this.ObjectType, this.Meta.TotalVat, Operations.Read);
-            config.GrantSupplier(this.ObjectType, this.Meta.TotalIncVat, Operations.Read);
-
             var created = new PurchaseOrderObjectStates(this.Session).Provisional;
             var onHold = new PurchaseOrderObjectStates(this.Session).OnHold;
             var requestsApproval = new PurchaseOrderObjectStates(this.Session).RequestsApproval;

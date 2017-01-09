@@ -60,12 +60,17 @@ namespace Allors.Domain
         [Test]
         public void GivenLoggedUserIsAdministrator_WhenAccessingInternalOrganisation_ThenLoggedInUserIsGrantedAccess()
         {
-            var existingAdministrator = new People(this.DatabaseSession).FindBy(M.Person.UserName, "administrator");
+            var existingAdministrator = new People(this.DatabaseSession).FindBy(M.Person.UserName, Users.AdministratorUserName);
             var secondAdministrator = new PersonBuilder(this.DatabaseSession).WithLastName("second admin").Build();
             Assert.IsFalse(secondAdministrator.IsAdministrator);
 
             var internalOrganisation = new InternalOrganisations(this.DatabaseSession).FindBy(M.InternalOrganisation.Name, "internalOrganisation");
 
+            this.DatabaseSession.Derive(true);
+            var roles = new Roles(this.DatabaseSession).Extent();
+            var people = new People(this.DatabaseSession).Extent();
+
+            Thread.CurrentPrincipal = new GenericPrincipal(new GenericIdentity(Users.AdministratorUserName, "Forms"), new string[0]);
             var acl = new AccessControlList(internalOrganisation, existingAdministrator);
             Assert.IsTrue(acl.CanWrite(M.InternalOrganisation.Name));
             

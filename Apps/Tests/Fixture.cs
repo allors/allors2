@@ -25,6 +25,7 @@ namespace Allors
     using System;
     using System.Globalization;
     using System.IO;
+    using System.Linq;
     using System.Threading;
     using System.Xml;
     using Domain;
@@ -105,7 +106,9 @@ namespace Allors
             using (var session = database.CreateSession())
             {
                 new Setup(session, null).Apply();
-                new Security(session).Apply();
+
+                var administrator = new People(session).FindBy(M.Person.UserName, Users.AdministratorUserName);
+                new UserGroups(session).Administrators.AddMember(administrator);
 
                 session.Derive(true);
                 session.Commit();
@@ -121,8 +124,6 @@ namespace Allors
 
                 var singleton = Singleton.Instance(session);
                 singleton.Guest = new PersonBuilder(session).WithUserName("guest").WithLastName("guest").Build();
-
-                var administrator = new PersonBuilder(session).WithUserName("administrator").WithLastName("Administrator").Build();
 
                 var belgium = new Countries(session).CountryByIsoCode["BE"];
                 var euro = belgium.Currency;
@@ -197,11 +198,6 @@ namespace Allors
                 new EmploymentBuilder(session).WithFromDate(DateTime.UtcNow).WithEmployee(orderProcessor).WithEmployer(internalOrganisation).Build();
 
                 new SalesRepRelationshipBuilder(session).WithFromDate(DateTime.UtcNow).WithCustomer(customer).WithSalesRepresentative(salesrep).Build();
-
-                session.Derive(true);
-
-                var administrators = new UserGroups(session).Administrators;
-                administrators.AddMember(administrator);
 
                 session.Derive(true);
                 session.Commit();

@@ -177,7 +177,7 @@ namespace Allors.Domain
         }
 
         [Test]
-        public void GivenSupplierContactRelationship_WhenRelationshipPeriodIsNotValid_ThenContactIsNotInSupplierContactsUserGroup()
+        public void GivenSupplierContactRelationship_WhenRelationshipPeriodIsNotValid_ThenContactIsNotInContactsUserGroup()
         {
             this.InstantiateObjects(this.DatabaseSession);
 
@@ -208,7 +208,7 @@ namespace Allors.Domain
         }
 
         [Test]
-        public void GivenSupplierContactRelationship_WhenContactForOrganisationEnds_ThenContactIsRemovedfromSupplierContactsUserGroup()
+        public void GivenSupplierContactRelationship_WhenContactForOrganisationEnds_ThenContactIsRemovedfromContactsUserGroup()
         {
             this.InstantiateObjects(this.DatabaseSession);
 

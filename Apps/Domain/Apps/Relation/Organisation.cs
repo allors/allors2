@@ -42,6 +42,7 @@ namespace Allors.Domain
             this.AppsOnDeriveInactiveOrganisationContactRelationships(derivation);
             this.AppsOnDeriveCurrentPartyContactMechanisms(derivation);
             this.AppsOnDeriveInactivePartyContactMechanisms(derivation);
+            this.AppsOnDeriverContactUserGroup(derivation);
         }
 
         public ClientRelationship ClientRelationShip(InternalOrganisation internalOrganisation)
@@ -318,6 +319,15 @@ namespace Allors.Domain
             }
         }
 
+        public void AppsOnDeriverContactUserGroup(IDerivation derivation)
+        {
+            if (!this.ExistContactsUserGroup)
+            {
+                var customerContactGroupName = $"Customer contacts at {this.Name} ({this.UniqueId})";
+                this.ContactsUserGroup = new UserGroupBuilder(this.strategy.Session).WithName(customerContactGroupName).Build();
+            }
+        }
+
         public bool IsPerson => false;
 
         public bool IsOrganisation => true;
@@ -388,7 +398,7 @@ namespace Allors.Domain
                 }
 
                 return roles;
-            }            
+            }
         }
     }
 }

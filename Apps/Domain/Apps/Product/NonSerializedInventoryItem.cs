@@ -214,6 +214,7 @@ namespace Allors.Domain
         {
             Extent<SalesOrderItem> salesOrderItems = this.Strategy.Session.Extent<SalesOrderItem>();
             salesOrderItems.Filter.AddEquals(M.SalesOrderItem.CurrentObjectState, new SalesOrderItemObjectStates(this.Strategy.Session).InProcess);
+            salesOrderItems.Filter.AddExists(M.OrderItem.DeliveryDate);
             salesOrderItems.AddSort(M.OrderItem.DeliveryDate, SortDirection.Descending);
 
             salesOrderItems = this.Strategy.Session.Instantiate(salesOrderItems);

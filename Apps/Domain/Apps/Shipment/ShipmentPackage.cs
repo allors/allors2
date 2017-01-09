@@ -51,7 +51,8 @@ namespace Allors.Domain
 
             if (!this.ExistDocuments)
             {
-                var name = string.Format("Package {0}", this.ExistSequenceNumber ? this.SequenceNumber.ToString(CultureInfo.InvariantCulture) : string.Empty);
+                var name =
+                    $"Package {(this.ExistSequenceNumber ? this.SequenceNumber.ToString(CultureInfo.InvariantCulture) : string.Empty)}";
                 this.AddDocument(new PackagingSlipBuilder(this.Strategy.Session).WithName(name).Build());
             }
         }

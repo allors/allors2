@@ -21,11 +21,8 @@ namespace Allors.Domain
 
         public void AppsOnDerive(ObjectOnDerive method)
         {
-            this.Description = string.Format(
-                "{0} {1} {2}",
-                this.ExistCountryCode ? this.CountryCode : null,
-                this.ExistAreaCode ? this.AreaCode : null,
-                this.ExistContactNumber ? this.ContactNumber : null);
+            this.Description =
+                $"{(this.ExistCountryCode ? this.CountryCode : null)} {(this.ExistAreaCode ? this.AreaCode : null)} {(this.ExistContactNumber ? this.ContactNumber : null)}";
         }
     }
 }

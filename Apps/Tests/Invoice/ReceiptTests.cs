@@ -183,7 +183,7 @@ namespace Allors.Domain
 
             var derivationLog = this.DatabaseSession.Derive();
             Assert.IsTrue(derivationLog.HasErrors);
-            Assert.Contains(M.Receipt.Amount, derivationLog.Errors[0].RoleTypes);
+            Assert.Contains(M.Receipt.Amount.RoleType, derivationLog.Errors[0].RoleTypes);
         }
 
         private void InstantiateObjects(ISession session)

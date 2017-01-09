@@ -20,6 +20,8 @@
 
 namespace Allors
 {
+    using Allors.Domain;
+
     public partial class Setup
     {
 

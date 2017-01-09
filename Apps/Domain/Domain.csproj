@@ -687,9 +687,6 @@
     <Compile Include="Apps\Relation\TermTypes.cs" />
     <Compile Include="Apps\Relation\WebAddress.cs" />
     <Compile Include="Apps\Relation\WebSiteCommunication.cs" />
-    <Compile Include="Apps\Security\Roles.cs" />
-    <Compile Include="Apps\Security\SecurityConfiguration.cs" />
-    <Compile Include="Apps\Security\UserGroups.cs" />
     <Compile Include="Apps\Setup.cs" />
     <Compile Include="Apps\Shipment\CustomerReturn.cs" />
     <Compile Include="Apps\Shipment\CustomerReturnObjectStates.cs" />
