@@ -1,0 +1,65 @@
+﻿<div class="container-fluid">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-sm-3 col-md-2 sidebar">
+                <ul class="nav nav-sidebar">
+                    <li ui-sref-active="active">
+                        <a ui-sref="profile">Profile</a>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <ol class="breadcrumb">
+                            <li>
+                                <a ui-sref="home">Home</a>
+                            </li>
+                            <li class="active">
+                                <strong>Profile</strong>
+                            </li>
+                        </ol>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="panel panel-default">
+                            <div class="panel-heading clearfix">
+                                <div class="pull-right">
+                                    <button class="btn btn-default btn-xs" ng-click="vm.refresh()">
+                                        <i class="fa fa-refresh"></i>
+                                    </button>
+                                </div>
+
+                                <h3 class="panel-title">
+                                    Profile
+                                </h3>
+                            </div>
+                            <div class="panel-body">
+                                <!-- ReSharper disable Html.TagNotResolved -->
+                                <b-form orientation="horizontal">
+                                    <b-labeled-text object="vm.person" relation="FirstName"></b-labeled-text>
+                                    <b-labeled-static object="vm.person" relation="LastName"></b-labeled-static>
+                                    <b-labeled-image object="vm.person" relation="Photo" size="200"></b-labeled-image>
+                                    <b-labeled-textarea object="vm.person" relation="UserEmail"></b-labeled-textarea>
+                                </b-form>
+                            </div>
+
+                            <div class="panel-footer clearfix">
+                                <div class="pull-right">
+                                    <input ng-disabled="!vm.hasChanges" id="save" type="button" class="btn btn-primary btn-sm" value="Save changes" ng-click="vm.save()" />
+                                    <input id="cancel" type="button" class="btn btn-danger btn-sm" value="Cancel" ng-click="vm.cancel()" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>

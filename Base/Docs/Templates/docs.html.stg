@@ -1,0 +1,110 @@
+delimiters "$", "$"
+
+TemplateId() ::= <<98A1777D-28A2-477C-9A7E-90486D19262C>>
+TemplateName() ::= <<Allors Html Docs>>
+TemplateVersion() ::= <<1.0.0>>
+TemplateAllors() ::= <<1.0>>
+TemplateConfiguration(meta) ::= <<
+$! 
+Copyright 2002-2016 Allors bvba.
+
+Dual Licensed under
+  a) the Lesser General Public Licence v3 (LGPL)
+  b) the Allors License
+
+The LGPL License is included in the file lgpl.txt.
+The Allors License is an addendum to your contract.
+
+Allors Platform is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+For more information visit http://www.allors.com/legal
+!$
+<generations>
+	<generation template="docs" output="docs.html"/> 
+</generations>
+>>
+
+docs(meta) ::= <<
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Documentation</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
+  </head>
+
+  <body>
+	<div class="container">
+		<div class="row">
+			<div class="col-sm-3">
+			  <div class="toc">
+				<h4 class="badge">TOC</h4>
+				<ol class="list-unstyled">
+$meta.SortedComposites:{composite|$tocComposite()$}$
+				</ol>
+			  </div>
+			</div>
+
+			<div class="col-sm-9">
+				<h4 class="badge">Contents</h4>
+$meta.SortedComposites:{composite|$composite()$}$
+			</div>
+
+		</div>
+
+		<div class="row">
+			<div>
+				<p>
+					<a href="#">Back to top</a>
+				</p>
+			</div>
+		</div>
+
+    </div>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+  </body>
+</html>
+>>
+
+composite() ::= <<
+<a name="$composite.Name$"></a>
+<div class="panel panel-default panel-primary">
+	<div class="panel-heading">
+	<h3 class="panel-title">$composite.Name$</h3>
+	</div>
+	<div class="panel-body">
+$if(composite.XmlDoc)$
+		<blockquote>
+			<p>$composite.XmlDoc$</p>
+		</blockquote>
+$endif$
+
+$composite.SortedExclusiveRoleTypes:{roleType|$roleType()$}$
+
+  </div>
+</div>
+>>
+
+roleType() ::= <<
+<div class="panel panel-default">
+	<div class="panel-heading">
+	<h4 class="panel-title">$roleType.Name$</h3>
+	</div>
+	<div class="panel-body">
+$if(roleType.RelationType.XmlDoc)$
+	<p>$roleType.RelationType.XmlDoc$</p>
+$endif$
+	</div>
+</div>
+>>
+
+tocComposite() ::= <<
+<li><a href="#$composite.Name$">$composite.Name$</a></li>
+>>

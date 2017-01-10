@@ -1,0 +1,69 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Allors.Adapters.Object.SqlClient.Session" Collapsed="true">
+    <Position X="0.5" Y="0.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>WE5g1XXDkOHwWrVPiFY3kCA6GJxzAlYcD14QBaIvEKI=</HashCode>
+      <FileName>Session.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="database" />
+      <Field Name="connection" />
+    </ShowAsAssociation>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Allors.Adapters.Object.SqlClient.Connection">
+    <Position X="6" Y="1.5" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAEACIMAAEACCAAAEBAAAAAgARAAAABIAAIAAiAI=</HashCode>
+      <FileName>SqlClient\Connection.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="Database" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="Allors.Adapters.Object.SqlClient.Database" Collapsed="true">
+    <Position X="3" Y="2.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QAYCoIAoAQCByBgUCSwBBAEBBABEACgAgDCChCBgQAQ=</HashCode>
+      <FileName>Database.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Allors.Adapters.Object.SqlClient.ManagementSession" Collapsed="true">
+    <Position X="0.5" Y="3.75" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAEAAAGAAAAECEAAAAAAAAAAAAAAAAAAAAABQAAA=</HashCode>
+      <FileName>ManagementSession.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Connection" />
+    </ShowAsAssociation>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="System.Data.SqlClient.SqlConnection" Collapsed="true">
+    <Position X="10.5" Y="1.5" Width="1.5" />
+    <TypeIdentifier />
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="System.Data.SqlClient.SqlTransaction" Collapsed="true">
+    <Position X="11" Y="2.5" Width="1.5" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="Allors.Adapters.Object.SqlClient.Command">
+    <Position X="8.75" Y="4" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AABQAAAAICABACSAAAAAAECAAAAAAAABBIAAAQAAAAA=</HashCode>
+      <FileName>SqlClient\Command.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Allors.Adapters.Object.SqlClient.Mapping" Collapsed="true">
+    <Position X="12.5" Y="4" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ACAuKBUBDdTAgBBYZRGiAdCREROgzQkBCCACEgiggRU=</HashCode>
+      <FileName>Schema\Mapping.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

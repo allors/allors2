@@ -1,0 +1,178 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{40B98450-DA22-4871-AFF9-E1EA5ED7119A}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Tests</RootNamespace>
+    <AssemblyName>Tests</AssemblyName>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="nunit.framework, Version=2.6.4.14350, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\NUnit.2.6.4\lib\nunit.framework.dll</HintPath>
+    </Reference>
+    <Reference Include="Should, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Should.1.1.20\lib\Should.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Data.SQLite, Version=1.0.98.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Data.SQLite.Core.1.0.98.1\lib\net451\System.Data.SQLite.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Adapters\CacheTest.cs" />
+    <Compile Include="Adapters\ChangesTest.cs" />
+    <Compile Include="Adapters\ExtentTest.cs" />
+    <Compile Include="Adapters\LifeCycleTest.cs" />
+    <Compile Include="Adapters\Many2ManyTest.cs" />
+    <Compile Include="Adapters\Many2OneTest.cs" />
+    <Compile Include="Adapters\memory\ChangesTest.cs" />
+    <Compile Include="Adapters\memory\ExtentTest.cs" />
+    <Compile Include="Adapters\memory\LifeCycleTest.cs" />
+    <Compile Include="Adapters\memory\Many2ManyTest.cs" />
+    <Compile Include="Adapters\memory\Many2OneTest.cs" />
+    <Compile Include="Adapters\memory\One2ManyTest.cs" />
+    <Compile Include="Adapters\memory\One2OneTest.cs" />
+    <Compile Include="Adapters\memory\Profile.cs" />
+    <Compile Include="Adapters\memory\PropertiesTest.cs" />
+    <Compile Include="Adapters\memory\RelationExtentTest.cs" />
+    <Compile Include="Adapters\memory\SandboxTest.cs" />
+    <Compile Include="Adapters\memory\SerializationTest.cs" />
+    <Compile Include="Adapters\memory\UnitTest.cs" />
+    <Compile Include="Adapters\object\SchemaTest.cs" />
+    <Compile Include="Adapters\object\sqlclient\ExtentTest.cs" />
+    <Compile Include="Adapters\object\sqlclient\ReadCommitted\CacheTest.cs" />
+    <Compile Include="Adapters\object\sqlclient\ReadCommitted\ChangesTest.cs" />
+    <Compile Include="Adapters\object\sqlclient\ReadCommitted\ExtentTest.cs" />
+    <Compile Include="Adapters\object\sqlclient\ReadCommitted\LifeCycleTest.cs" />
+    <Compile Include="Adapters\object\sqlclient\ReadCommitted\Many2ManyTest.cs" />
+    <Compile Include="Adapters\object\sqlclient\ReadCommitted\Many2OneTest.cs" />
+    <Compile Include="Adapters\object\sqlclient\ReadCommitted\One2ManyTest.cs" />
+    <Compile Include="Adapters\object\sqlclient\ReadCommitted\One2OneTest.cs" />
+    <Compile Include="Adapters\object\sqlclient\ReadCommitted\Profile.cs" />
+    <Compile Include="Adapters\object\sqlclient\ReadCommitted\PropertiesTest.cs" />
+    <Compile Include="Adapters\object\sqlclient\ReadCommitted\RelationExtentTest.cs" />
+    <Compile Include="Adapters\object\sqlclient\ReadCommitted\SandboxTest.cs" />
+    <Compile Include="Adapters\object\sqlclient\ReadCommitted\SchemaTest.cs" />
+    <Compile Include="Adapters\object\sqlclient\ReadCommitted\SerializationTest.cs" />
+    <Compile Include="Adapters\object\sqlclient\ReadCommitted\DebugTests.cs" />
+    <Compile Include="Adapters\object\sqlclient\ReadCommitted\SqlClientTest.cs" />
+    <Compile Include="Adapters\object\sqlclient\ReadCommitted\UnitTest.cs" />
+    <Compile Include="Adapters\object\sqlclient\Profile.cs" />
+    <Compile Include="Adapters\object\sqlclient\SchemaTest.cs" />
+    <Compile Include="Adapters\object\sqlclient\DebugTests.cs" />
+    <Compile Include="Adapters\object\sqlclient\SqlClientTest.cs" />
+    <Compile Include="Adapters\object\sqlclient\UnitTest.cs" />
+    <Compile Include="Adapters\One2ManyTest.cs" />
+    <Compile Include="Adapters\One2OneTest.cs" />
+    <Compile Include="Adapters\Prefetchers.cs" />
+    <Compile Include="Adapters\Profile.cs" />
+    <Compile Include="Adapters\PropertiesTest.cs" />
+    <Compile Include="Adapters\RelationExtentTest.cs" />
+    <Compile Include="Adapters\relation\sqlclient\ExtentTest.cs" />
+    <Compile Include="Adapters\relation\sqlclient\ReadCommitted\Profile.cs" />
+    <Compile Include="Adapters\relation\sqlclient\Profile.cs" />
+    <Compile Include="Adapters\relation\sqlclient\ReadCommitted\CacheTest.cs" />
+    <Compile Include="Adapters\relation\sqlclient\ReadCommitted\ChangesTest.cs" />
+    <Compile Include="Adapters\relation\sqlclient\ReadCommitted\ExtentTest.cs" />
+    <Compile Include="Adapters\relation\sqlclient\ReadCommitted\LifeCycleTest.cs" />
+    <Compile Include="Adapters\relation\sqlclient\ReadCommitted\Many2ManyTest.cs" />
+    <Compile Include="Adapters\relation\sqlclient\ReadCommitted\Many2OneTest.cs" />
+    <Compile Include="Adapters\relation\sqlclient\ReadCommitted\One2ManyTest.cs" />
+    <Compile Include="Adapters\relation\sqlclient\ReadCommitted\One2OneTest.cs" />
+    <Compile Include="Adapters\relation\sqlclient\ReadCommitted\PropertiesTest.cs" />
+    <Compile Include="Adapters\relation\sqlclient\ReadCommitted\RelationExtentTest.cs" />
+    <Compile Include="Adapters\relation\sqlclient\ReadCommitted\SandboxTest.cs" />
+    <Compile Include="Adapters\relation\sqlclient\ReadCommitted\SchemaTest.cs" />
+    <Compile Include="Adapters\relation\sqlclient\ReadCommitted\SerializationTest.cs" />
+    <Compile Include="Adapters\relation\sqlclient\ReadCommitted\SqlClientTest.cs" />
+    <Compile Include="Adapters\relation\sqlclient\ReadCommitted\UnitTest.cs" />
+    <Compile Include="Adapters\relation\sqlclient\SchemaTest.cs" />
+    <Compile Include="Adapters\relation\sqlclient\SqlClientTest.cs" />
+    <Compile Include="Adapters\relation\sqlclient\UnitTest.cs" />
+    <Compile Include="Adapters\SandboxTest.cs" />
+    <Compile Include="Adapters\SchemaTest.cs" />
+    <Compile Include="Adapters\SerializationTest.cs" />
+    <Compile Include="Adapters\UnitTest.cs" />
+    <Compile Include="Populations\AllorsTestUtils.cs" />
+    <Compile Include="Populations\assertions\StrategyAssert.cs" />
+    <Compile Include="Populations\assertions\StrategyAssertTest.cs" />
+    <Compile Include="Populations\IProfile.cs" />
+    <Compile Include="Populations\Settings.cs" />
+    <Compile Include="Populations\TestPopulation.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+    <None Include="packages.config" />
+    <None Include="Settings.StyleCop" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Framework\Allors\Allors.csproj">
+      <Project>{5b4e2d7c-8ef8-45f5-bfb2-e595c401a95f}</Project>
+      <Name>Allors</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Allors.Adapters.Memory\Allors.Adapters.Memory.csproj">
+      <Project>{cb9b7108-c8f3-459c-b2da-88187c84cfc1}</Project>
+      <Name>Allors.Adapters.Memory</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Allors.Adapters.Object.SqlClient\Allors.Adapters.Object.SqlClient.csproj">
+      <Project>{06bc1665-8fe8-4f04-9e80-ec2d54404ba7}</Project>
+      <Name>Allors.Adapters.Object.SqlClient</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Allors.Adapters.Relation.SqlClient\Allors.Adapters.Relation.SqlClient.csproj">
+      <Project>{91356b87-6321-45c3-88cc-d3deae2dc16c}</Project>
+      <Name>Allors.Adapters.Relation.SqlClient</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Domain\Domain.csproj">
+      <Project>{50ed5307-33e3-4fda-8268-d844b77981c8}</Project>
+      <Name>Domain</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Meta\Meta.csproj">
+      <Project>{9e9d6bdd-1674-4f0f-b01d-2148b0114d68}</Project>
+      <Name>Meta</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="..\packages\System.Data.SQLite.Core.1.0.98.1\build\net451\System.Data.SQLite.Core.targets" Condition="Exists('..\packages\System.Data.SQLite.Core.1.0.98.1\build\net451\System.Data.SQLite.Core.targets')" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

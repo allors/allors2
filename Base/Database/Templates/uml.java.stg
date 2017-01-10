@@ -1,0 +1,45 @@
+group JavaUml;
+
+TemplateId() ::= <<2BD69D34-4989-4DE2-93D6-0AF734BAEA06>>
+TemplateName() ::= <<Allors Java Uml>>
+TemplateVersion() ::= <<1.0.5>>
+TemplateAllors() ::= <<1.0>>
+TemplateConfiguration(domain) ::= <<
+<generations>
+$meta.compositeObjectTypes:{type|<generation template="compositeObjectType" input="$type.Id $" output="$type.Namespace.SlashSeparatedLowerCaseLongName$/$type.SingularName$.java"/>}$
+</generations>
+>>
+
+compositeObjectType(meta, objectType) ::= <<
+package $objectType.Namespace.NameForJava$;
+
+$if(objectType.IsInterface)$
+public interface $objectType.SingularName$ $if(objectType.ExistDirectSuperInterfaces)$ $first(objectType.DirectSuperInterfaces):{extends $it.FullNameForJava$}$$rest(objectType.DirectSuperInterfaces):{, $it.FullNameForJava$}$ $endif$
+{
+$objectType.ExclusiveAssociationTypes:{associationType|$interfaceRoleType(relationType=associationType.RelationType,associationType=associationType,roleType=associationType.RoleType)$}$
+}
+$else$
+public $if(objectType.IsAbstract)$abstract$endif$ class $objectType.Name$ $if(objectType.ExistDirectSuperClass)$extends $objectType.DirectSuperClass.FullNameForJava$ $endif$ $if(objectType.ExistDirectSuperInterfaces)$implements $first([objectType.DirectSuperInterfaces]):{ $it.FullNameForJava$}$$rest([objectType.DirectSuperInterfaces]):{, $it.FullNameForJava$}$ $endif$
+{
+$objectType.ExclusiveRoleTypes:{roleType|$classRoleType(relationType=roleType.RelationType,associationType=roleType.AssociationType,roleType=roleType)$}$
+}
+$endif$
+>>
+
+interfaceRoleType(relationType,associationType,roleType) ::= <<
+$if(roleType.IsOne)$ 
+	private $roleType.ObjectType.FullNameForJava$ $roleType.HierarchySingularName$ = null;
+$else$
+	private $roleType.ObjectType.FullNameForJava$[] $roleType.HierarchyPluralName$ = null;
+$endif$
+$\n$
+>>
+
+classRoleType(relationType,associationType,roleType) ::= <<
+$if(roleType.IsOne)$ 
+	public $roleType.ObjectType.FullNameForJava$ $roleType.HierarchySingularName$;
+$else$
+	public $roleType.ObjectType.FullNameForJava$[] $roleType.HierarchyPluralName$;
+$endif$
+$\n$
+>>

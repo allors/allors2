@@ -1,0 +1,180 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{9E9D6BDD-1674-4F0F-B01D-2148B0114D68}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Meta</RootNamespace>
+    <AssemblyName>Meta</AssemblyName>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Antlr4.StringTemplate, Version=4.0.6.9004, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Antlr4.StringTemplate.4.0.6.9004\lib\net35\Antlr4.StringTemplate.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Build.Framework" />
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.XML" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\..\Core\Meta\Core\Domain\MetaClass.cs">
+      <Link>Core\Domain\MetaClass.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Core\Meta\Core\Domain\MetaInterface.cs">
+      <Link>Core\Domain\MetaInterface.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Core\Meta\Core\Domain\MetaUnit.cs">
+      <Link>Core\Domain\MetaUnit.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Core\Meta\Core\Generation\Generate.cs">
+      <Link>Core\Generation\Generate.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Core\Meta\Core\Generation\GenerateLog.cs">
+      <Link>Core\Generation\GenerateLog.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Core\Meta\Core\Generation\Log.cs">
+      <Link>Core\Generation\Log.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Core\Meta\Core\Generation\Storage\AllorsDirectoryInfo.cs">
+      <Link>Core\Generation\Storage\AllorsDirectoryInfo.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Core\Meta\Core\Generation\Storage\AllorsFileInfo.cs">
+      <Link>Core\Generation\Storage\AllorsFileInfo.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Core\Meta\Core\Generation\Storage\Location.cs">
+      <Link>Core\Generation\Storage\Location.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Core\Meta\Core\Generation\StringTemplate.cs">
+      <Link>Core\Generation\StringTemplate.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Core\Meta\Core\Meta\AssociationType.cs">
+      <Link>Core\Meta\AssociationType.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Core\Meta\Core\Meta\Class.cs">
+      <Link>Core\Meta\Class.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Core\Meta\Core\Meta\Composite.cs">
+      <Link>Core\Meta\Composite.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Core\Meta\Core\Meta\ConcreteMethodType.cs">
+      <Link>Core\Meta\ConcreteMethodType.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Core\Meta\Core\Meta\ConcreteRoleType.cs">
+      <Link>Core\Meta\ConcreteRoleType.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Core\Meta\Core\Meta\Domain.cs">
+      <Link>Core\Meta\Domain.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Core\Meta\Core\Meta\DomainObject.cs">
+      <Link>Core\Meta\DomainObject.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Core\Meta\Core\Meta\Inheritance.cs">
+      <Link>Core\Meta\Inheritance.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Core\Meta\Core\Meta\Interface.cs">
+      <Link>Core\Meta\Interface.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Core\Meta\Core\Meta\LazySet.cs">
+      <Link>Core\Meta\LazySet.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Core\Meta\Core\Meta\MetaObject.cs">
+      <Link>Core\Meta\MetaObject.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Core\Meta\Core\Meta\MetaPopulation.cs">
+      <Link>Core\Meta\MetaPopulation.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Core\Meta\Core\Meta\Method.cs">
+      <Link>Core\Meta\Method.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Core\Meta\Core\Meta\MethodInvocation.cs">
+      <Link>Core\Meta\MethodInvocation.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Core\Meta\Core\Meta\MethodType.cs">
+      <Link>Core\Meta\MethodType.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Core\Meta\Core\Meta\ObjectType.cs">
+      <Link>Core\Meta\ObjectType.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Core\Meta\Core\Meta\OperandType.cs">
+      <Link>Core\Meta\OperandType.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Core\Meta\Core\Meta\PropertyType.cs">
+      <Link>Core\Meta\PropertyType.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Core\Meta\Core\Meta\RelationType.cs">
+      <Link>Core\Meta\RelationType.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Core\Meta\Core\Meta\RoleType.cs">
+      <Link>Core\Meta\RoleType.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Core\Meta\Core\Meta\Unit.cs">
+      <Link>Core\Meta\Unit.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Core\Meta\Core\Meta\ValidationError.cs">
+      <Link>Core\Meta\ValidationError.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Core\Meta\Core\Meta\ValidationKind.cs">
+      <Link>Core\Meta\ValidationKind.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Core\Meta\Core\Meta\ValidationLog.cs">
+      <Link>Core\Meta\ValidationLog.cs</Link>
+    </Compile>
+    <Compile Include="generated\builder.g.cs" />
+    <Compile Include="generated\classes.g.cs" />
+    <Compile Include="generated\domains.g.cs" />
+    <Compile Include="generated\interfaces.g.cs" />
+    <Compile Include="generated\meta.g.cs" />
+    <Compile Include="generated\units.g.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\Core\Meta\Core\Overview.cd">
+      <Link>Core\Overview.cd</Link>
+    </None>
+    <None Include="packages.config" />
+    <None Include="Settings.StyleCop" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Adapters\Domain\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Framework\Allors\Allors.csproj">
+      <Project>{5b4e2d7c-8ef8-45f5-bfb2-e595c401a95f}</Project>
+      <Name>Allors</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

@@ -1,0 +1,339 @@
+group AllorsCSharpRepository;
+
+TemplateId() ::= <<14F49218-A676-43ba-9CBD-B8FFA059D1BF>>
+TemplateName() ::= <<Allors C# Meta>>
+TemplateVersion() ::= <<1.0.2>>
+TemplateAllors() ::= <<1.0>>
+TemplateConfiguration(repository) ::= <<
+$! 
+Copyright 2002-2016 Allors bvba.
+
+Dual Licensed under
+  a) the Lesser General Public Licence v3 (LGPL)
+  b) the Allors License
+
+The LGPL License is included in the file lgpl.txt.
+The Allors License is an addendum to your contract.
+
+Allors Platform is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+For more information visit http://www.allors.com/legal
+!$
+<generations>
+	<generation template="meta" output="meta.g.cs"/> 
+	<generation template="builder" output="builder.g.cs"/> 
+	<generation template="domains" output="domains.g.cs"/> 
+	<generation template="units" output="units.g.cs"/> 
+	<generation template="interfaces" output="interfaces.g.cs"/> 
+	<generation template="classes" output="classes.g.cs"/> 
+</generations>
+>>
+
+meta(repository) ::= <<
+namespace Allors.Meta
+{
+	public static class M
+	{
+		// Interfaces
+$repository.Interfaces:{interface|         public static readonly Meta$interface.SingularName$ $interface.SingularName$;}; separator="\n"$
+
+		// Classes
+$repository.Classes:{class|         public static readonly Meta$class.SingularName$ $class.SingularName$;}; separator="\n"$
+
+
+		static M()
+		{
+		    // Interfaces
+$repository.Interfaces:{interface|             $interface.SingularName$ = Meta$interface.SingularName$.Instance;}; separator="\n"$
+
+		    // Classes
+$repository.Classes:{class|             $class.SingularName$ = Meta$class.SingularName$.Instance;}; separator="\n"$
+		}
+	}
+
+	public partial class MetaInterface 
+	{
+		public void Extend()
+		{
+			this.CoreExtend();
+			$repository.SortedAssemblies:{assembly|this.$assembly.Name$Extend();}; separator="\n"$
+		}
+
+$repository.SortedAssemblies:{assembly|        internal virtual void $assembly.Name$Extend() {\}}; separator="\n"$
+	}
+
+	public partial class MetaClass 
+	{
+		public void Extend()
+		{
+			this.CoreExtend();
+			$repository.SortedAssemblies:{assembly|this.$assembly.Name$Extend();}; separator="\n"$
+		}
+
+$repository.SortedAssemblies:{assembly|        internal virtual void $assembly.Name$Extend() {\}}; separator="\n"$
+	}
+}
+>>
+
+builder(repository) ::= <<
+namespace Allors.Meta
+{
+	internal class MetaBuilder
+	{
+	    private readonly MetaPopulation metaPopulation;
+
+        internal MetaBuilder(MetaPopulation metaPopulation)
+		{
+			this.metaPopulation = metaPopulation;
+		}
+
+		internal void Build()
+		{
+			// Domains
+$repository.Assemblies:{assembly|             Meta$assembly.Name$.Instance = new Meta$assembly.Name$(this.metaPopulation);}; separator="\n"$
+
+			// Domain Inheritance
+$repository.Assemblies:{assembly|$domain_inheritance(assembly)$}; separator="\n"$
+
+			// Units
+$repository.Units:{unit|             Meta$unit.SingularName$.Instance = new Meta$unit.SingularName$(this.metaPopulation);}; separator="\n"$
+
+			// Interfaces
+$repository.Interfaces:{interface|             Meta$interface.SingularName$.Instance = new Meta$interface.SingularName$(this.metaPopulation);}; separator="\n"$
+
+			// Classes
+$repository.Classes:{class|             Meta$class.SingularName$.Instance = new Meta$class.SingularName$(this.metaPopulation);}; separator="\n"$
+
+			// Inheritance
+$repository.Composites:{composite|$inheritance(composite)$}; separator="\n"$
+
+			// Roles
+$repository.Composites:{composite|$relations(composite)$}; separator="\n"$
+
+			// Inherited Roles
+$repository.Interfaces:{interface|$inheritedRoles(interface)$}; separator="\n"$
+
+			// Implemented Roles
+$repository.Classes:{class|$implementedRoles(class)$}; separator="\n"$
+
+			// Associations
+$repository.Composites:{composite|$associations(composite)$}; separator="\n"$
+
+			// InheritedAssociations
+$repository.Composites:{composite|$inherited_associations(composite)$}; separator="\n"$
+
+			// Defined Methods
+$repository.Composites:{composite|$definedMethods(composite)$}; separator="\n"$
+
+			// Inherited Methods
+$repository.Composites:{composite|$inheritedMethods(composite)$}; separator="\n"$
+
+			// Extend
+            $repository.Interfaces:{interface|Meta$interface.SingularName$.Instance.Extend();}; separator="\n"$
+
+            $repository.Classes:{class|Meta$class.SingularName$.Instance.Extend();}; separator="\n"$
+		}
+	}
+}
+>>
+
+domain_inheritance(assembly) ::= <<$assembly.Bases:{base|             Meta$assembly.Name$.Instance.Domain.AddDirectSuperdomain(Meta$base.Name$.Instance.Domain);}; separator="\n"$>>
+
+inheritance(composite) ::= <<$composite.ImplementedInterfaces:{implementedInterface|$inheritance_implentedInterface(composite, implementedInterface)$}; separator="\n"$>>
+inheritance_implentedInterface(composite, implementedInterface) ::= <<            new Inheritance(this.metaPopulation){ Subtype = (Composite)Meta$composite.SingularName$.Instance.ObjectType, Supertype = Meta$implementedInterface.SingularName$.Instance.Interface};>>
+
+relations(composite) ::= <<$composite.DefinedProperties:{property|$relation(property)$}; separator="\n"$>>
+relation(property) ::= <<
+	{
+		var relationType = new RelationType(this.metaPopulation, new System.Guid("$property.AttributeByName.Id.Value$"), new System.Guid("$property.AttributeByName.AssociationId.Value$"), new System.Guid("$property.AttributeByName.RoleId.Value$"));
+		relationType.AssociationType.ObjectType = Meta$property.DefiningType.SingularName$.Instance;
+$if(property.XmlDoc)$		relationType.XmlDoc = @"$property.XmlDoc.VerbatimValue$";$endif$
+$if(property.AttributeByName.Workspace)$		relationType.Workspace = true;$endif$
+$if(property.AttributeByName.Multiplicity)$		relationType.AssignedMultiplicity = Allors.Multiplicity.$property.AttributeByName.Multiplicity.Value$;$endif$
+$if(property.AttributeByName.Derived)$		relationType.IsDerived = $property.AttributeByName.Derived.Value$;$endif$
+$if(property.AttributeByName.Synced)$		relationType.IsSynced = $property.AttributeByName.Synced.Value$;$endif$
+$if(property.AttributeByName.Indexed)$		relationType.IsIndexed = $property.AttributeByName.Indexed.Value$;$endif$
+		relationType.RoleType.ObjectType = Meta$property.Type.SingularName$.Instance;
+		relationType.RoleType.SingularName = "$property.RoleSingularName$";
+		relationType.RoleType.PluralName = "$property.RolePluralName$";
+$if(property.AttributeByName.Required)$		relationType.RoleType.IsRequired = $property.AttributeByName.Required.Value$;$endif$
+$if(property.AttributeByName.Size)$		relationType.RoleType.Size = $property.AttributeByName.Size.Value$;$endif$
+$if(property.AttributeByName.Precision)$		relationType.RoleType.Precision = $property.AttributeByName.Precision.Value$;$endif$
+$if(property.AttributeByName.Scale)$		relationType.RoleType.Scale = $property.AttributeByName.Scale.Value$;$endif$
+		Meta$composite.SingularName$.Instance.$property.RoleName$ = relationType.RoleType; 
+	}
+>>
+
+definedMethods(composite) ::= <<$composite.DefinedMethods:{method|$definedMethod(method)$}; separator="\n"$>>
+definedMethod(method) ::= <<
+			{
+				var method = new MethodType(this.metaPopulation, new System.Guid("$method.AttributeByName.Id.Value$"));
+				method.ObjectType = Meta$method.DefiningType.SingularName$.Instance;
+				method.Name = "$method.Name$";
+$if(method.AttributeByName.Workspace)$				method.Workspace = true;$endif$
+$if(method.XmlDoc)$		method.XmlDoc = @"$method.XmlDoc.VerbatimValue$";$endif$
+				Meta$composite.SingularName$.Instance.$method.Name$ = method; 
+			}
+>>
+
+inheritedMethods(composite) ::= <<$composite.InheritedMethods:{method|$inheritedMethod(method)$}; separator="\n"$>>
+inheritedMethod(method) ::= <<				Meta$composite.SingularName$.Instance.$method.Name$ = Meta$method.DefiningMethod.DefiningType.SingularName$.Instance.$method.Name$;>>
+
+
+inheritedRoles(interface) ::= <<$interface.InheritedProperties:{property|$inheritedRole(property)$}; separator="\n"$>>
+inheritedRole(property) ::= <<            Meta$interface.SingularName$.Instance.$property.RoleName$ = Meta$property.DefiningType.SingularName$.Instance.$property.RoleName$;>>
+
+implementedRoles(class) ::= <<$class.ImplementedProperties:{property|$implementedRole(property)$}; separator="\n"$>>
+implementedRole(property) ::= <<            Meta$class.SingularName$.Instance.$property.RoleName$ = Meta$class.SingularName$.Instance.Class.ConcreteRoleTypeByRoleType[Meta$property.DefiningProperty.DefiningType.SingularName$.Instance.$property.RoleName$];>>
+
+associations(composite) ::= <<$composite.DefinedReverseProperties:{property|$association(property)$}; separator="\n"$>>
+association(property) ::= <<            Meta$composite.SingularName$.Instance.$property.AssociationName$ = Meta$property.DefiningType.SingularName$.Instance.$property.RoleName$.AssociationType;>>
+
+inherited_associations(composite) ::= <<$composite.InheritedReverseProperties:{property|$inherited_association(property)$}; separator="\n"$>>
+inherited_association(property) ::= <<            Meta$composite.SingularName$.Instance.$property.AssociationName$ = Meta$property.DefiningType.SingularName$.Instance.$property.RoleName$.AssociationType;>>
+
+
+domains(repository) ::= <<
+namespace Allors.Meta
+{
+$repository.Assemblies:{assembly|$domain(assembly)$}; separator="\n\n"$
+}
+>>
+
+domain(assembly) ::= <<
+    public partial class Meta$assembly.Name$
+    {
+        public static Meta$assembly.Name$ Instance { get; internal set;}
+
+		public readonly Domain Domain;
+
+        internal Meta$assembly.Name$(MetaPopulation metaPopulation)
+        {
+			this.Domain = new Domain(metaPopulation, new System.Guid("$assembly.Id$"))
+			{
+				Name = "$assembly.Name$"
+			};
+        }
+    }
+>>
+
+units(repository) ::= <<
+namespace Allors.Meta
+{
+$repository.Units:{unit|$unit(unit)$}; separator="\n\n"$
+}
+>>
+
+unit(unit) ::= <<
+    public partial class Meta$unit.SingularName$ : MetaUnit
+	{
+	    public static Meta$unit.SingularName$ Instance { get; internal set;}
+
+		public override Unit Unit { get; }
+
+		internal Meta$unit.SingularName$(MetaPopulation metaPopulation)
+        {
+			this.Unit = new Unit(metaPopulation, UnitIds.$unit.SingularName$)
+			{
+				UnitTag = UnitTags.$unit.SingularName$,
+				SingularName = UnitNames.$unit.SingularName$
+			};
+        }
+	}
+>>
+
+interfaces(repository) ::= <<
+namespace Allors.Meta
+{
+$repository.Interfaces:{interface|$interface(interface)$}; separator="\n\n"$
+}
+>>
+
+interface(interface) ::= <<
+    public partial class Meta$interface.SingularName$ : MetaInterface
+	{
+	    public static Meta$interface.SingularName$ Instance { get; internal set;}
+
+		public override Interface Interface { get; }
+
+		// Defined Methods
+$interface.DefinedMethods:{method|         public MethodType $method.Name$;}; separator="\n"$
+
+		// Inherited Methods
+$interface.InheritedMethods:{method|         public MethodType $method.Name$;}; separator="\n"$
+		
+		// Defined Roles
+$interface.DefinedProperties:{property|         public RoleType $property.RoleName$;}; separator="\n"$
+
+		// Inherited Roles
+$interface.InheritedProperties:{property|         public RoleType $property.RoleName$;}; separator="\n"$
+
+		// Defined Associations
+$interface.DefinedReverseProperties:{property|         public AssociationType $property.AssociationName$;}; separator="\n"$
+
+		// Inherited Associations
+$interface.InheritedReverseProperties:{property|         public AssociationType $property.AssociationName$;}; separator="\n"$
+
+		internal Meta$interface.SingularName$(MetaPopulation metaPopulation)
+        {
+			this.Interface = new Interface(metaPopulation, new System.Guid("$interface.AttributeByName.Id.Value$"))
+			{
+				SingularName = "$interface.SingularName$",
+				$if(interface.AttributeByName.Plural)$PluralName = "$interface.AttributeByName.Plural.Value$",$endif$
+$if(interface.XmlDoc)$		XmlDoc = @"$interface.XmlDoc.VerbatimValue$"$endif$
+			};
+        }
+	}
+>>
+
+classes(repository) ::= <<
+namespace Allors.Meta
+{
+$repository.Classes:{class|$class(class)$}; separator="\n\n"$
+}
+>>
+
+class(class) ::= <<
+    public partial class Meta$class.SingularName$ : MetaClass
+	{
+	    public static Meta$class.SingularName$ Instance { get; internal set;}
+
+		public override Class Class { get; }
+
+		// Defined Methods
+$class.DefinedMethods:{method|         public MethodType $method.Name$;}; separator="\n"$
+
+		// Inherited Methods
+$class.InheritedMethods:{method|         public MethodType $method.Name$;}; separator="\n"$
+
+		// Defined Roles
+$class.DefinedProperties:{property|         public RoleType $property.RoleName$;}; separator="\n"$
+
+		// Inherited Roles
+$class.ImplementedProperties:{property|         public ConcreteRoleType $property.RoleName$;}; separator="\n"$
+
+		// Defined Associations
+$class.DefinedReverseProperties:{property|         public AssociationType $property.AssociationName$;}; separator="\n"$
+
+		// Inherited Associations
+$class.InheritedReverseProperties:{property|         public AssociationType $property.AssociationName$;}; separator="\n"$
+
+
+		internal Meta$class.SingularName$(MetaPopulation metaPopulation)
+        {
+			this.Class = new Class(metaPopulation, new System.Guid("$class.AttributeByName.Id.Value$"))
+			{
+				SingularName = "$class.SingularName$",
+				PluralName = "$class.PluralName$",
+$if(class.XmlDoc)$		XmlDoc = @"$class.XmlDoc.VerbatimValue$"$endif$
+			};
+        }
+
+	}
+>>
+
+
+boolean(value) ::= "$if(value)$true$else$false$endif$"

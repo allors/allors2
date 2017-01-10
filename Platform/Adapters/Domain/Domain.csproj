@@ -1,0 +1,135 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{50ED5307-33E3-4FDA-8268-D844B77981C8}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Domain</RootNamespace>
+    <AssemblyName>Domain</AssemblyName>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Adapters\DomainBusiness\Company.cs" />
+    <Compile Include="Adapters\DomainBusiness\Named.cs" />
+    <Compile Include="Adapters\DomainBusiness\Person.cs" />
+    <Compile Include="Adapters\DomainSpecial\ClassWithoutRoles.cs" />
+    <Compile Include="Adapters\DomainSpecial\ClassWithoutUnitRoles.cs" />
+    <Compile Include="Adapters\DomainSpecial\GT32.cs" />
+    <Compile Include="Adapters\DomainSpecial\GT32UnitLT32Composite.cs" />
+    <Compile Include="Adapters\DomainSpecial\IGT32Composite.cs" />
+    <Compile Include="Adapters\DomainSpecial\IGT32Unit.cs" />
+    <Compile Include="Adapters\DomainSpecial\ILT32Composite.cs" />
+    <Compile Include="Adapters\DomainSpecial\ILT32Unit.cs" />
+    <Compile Include="Adapters\DomainSpecial\ISandbox.cs" />
+    <Compile Include="Adapters\DomainSpecial\LT32.cs" />
+    <Compile Include="Adapters\DomainSpecial\LT32UnitGT32Composite.cs" />
+    <Compile Include="Adapters\DomainSpecial\Sandbox.cs" />
+    <Compile Include="Adapters\DomainSpecial\SingleUnit.cs" />
+    <Compile Include="Adapters\DomainSpecial\User.cs" />
+    <Compile Include="Adapters\Domain\C1.cs" />
+    <Compile Include="Adapters\Domain\C2.cs" />
+    <Compile Include="Adapters\Domain\C3.cs" />
+    <Compile Include="Adapters\Domain\C4.cs" />
+    <Compile Include="Adapters\Domain\I1.cs" />
+    <Compile Include="Adapters\Domain\I12.cs" />
+    <Compile Include="Adapters\Domain\I2.cs" />
+    <Compile Include="Adapters\Domain\I23.cs" />
+    <Compile Include="Adapters\Domain\I3.cs" />
+    <Compile Include="Adapters\Domain\I34.cs" />
+    <Compile Include="Adapters\Domain\I4.cs" />
+    <Compile Include="Adapters\Domain\S1.cs" />
+    <Compile Include="Adapters\Domain\S12.cs" />
+    <Compile Include="Adapters\Domain\S1234.cs" />
+    <Compile Include="Adapters\Domain\S2.cs" />
+    <Compile Include="Adapters\Domain\S3.cs" />
+    <Compile Include="Adapters\Domain\S4.cs" />
+    <Compile Include="Adapters\Domain\Subscriber.cs" />
+    <Compile Include="Generated\C1.g.cs" />
+    <Compile Include="Generated\C2.g.cs" />
+    <Compile Include="Generated\C3.g.cs" />
+    <Compile Include="Generated\C4.g.cs" />
+    <Compile Include="Generated\ClassWithoutRoles.g.cs" />
+    <Compile Include="Generated\ClassWithoutUnitRoles.g.cs" />
+    <Compile Include="Generated\Company.g.cs" />
+    <Compile Include="Generated\GT32.g.cs" />
+    <Compile Include="Generated\GT32UnitLT32Composite.g.cs" />
+    <Compile Include="Generated\I1.g.cs" />
+    <Compile Include="Generated\I12.g.cs" />
+    <Compile Include="Generated\I2.g.cs" />
+    <Compile Include="Generated\I23.g.cs" />
+    <Compile Include="Generated\I3.g.cs" />
+    <Compile Include="Generated\I34.g.cs" />
+    <Compile Include="Generated\I4.g.cs" />
+    <Compile Include="Generated\IGT32Composite.g.cs" />
+    <Compile Include="Generated\IGT32Unit.g.cs" />
+    <Compile Include="Generated\ILT32Composite.g.cs" />
+    <Compile Include="Generated\ILT32Unit.g.cs" />
+    <Compile Include="Generated\InterfaceWithoutConcreteClass.g.cs" />
+    <Compile Include="Generated\ISandbox.g.cs" />
+    <Compile Include="Generated\LT32.g.cs" />
+    <Compile Include="Generated\LT32UnitGT32Composite.g.cs" />
+    <Compile Include="Generated\Named.g.cs" />
+    <Compile Include="Generated\Object.g.cs" />
+    <Compile Include="Generated\Person.g.cs" />
+    <Compile Include="Generated\S1.g.cs" />
+    <Compile Include="Generated\S12.g.cs" />
+    <Compile Include="Generated\S1234.g.cs" />
+    <Compile Include="Generated\S2.g.cs" />
+    <Compile Include="Generated\S3.g.cs" />
+    <Compile Include="Generated\S4.g.cs" />
+    <Compile Include="Generated\Sandbox.g.cs" />
+    <Compile Include="Generated\SingleUnit.g.cs" />
+    <Compile Include="Generated\User.g.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+    <None Include="Settings.StyleCop" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Framework\Allors\Allors.csproj">
+      <Project>{5b4e2d7c-8ef8-45f5-bfb2-e595c401a95f}</Project>
+      <Name>Allors</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Meta\Meta.csproj">
+      <Project>{9e9d6bdd-1674-4f0f-b01d-2148b0114d68}</Project>
+      <Name>Meta</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

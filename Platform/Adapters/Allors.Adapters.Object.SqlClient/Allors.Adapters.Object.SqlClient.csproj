@@ -1,0 +1,185 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{06BC1665-8FE8-4F04-9E80-EC2D54404BA7}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Allors.Adapters.Object.SqlClient</RootNamespace>
+    <AssemblyName>Allors.Adapters.Object.SqlClient</AssemblyName>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x64\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
+    <OutputPath>bin\x64\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Cache\Debugging\DebugCache.cs" />
+    <Compile Include="Cache\Debugging\DebugCachedObject.cs" />
+    <Compile Include="Cache\Debugging\DebugCacheFactory.cs" />
+    <Compile Include="Cache\DefaultCache.cs" />
+    <Compile Include="Cache\DefaultCachedObject.cs" />
+    <Compile Include="Cache\DefaultCacheFactory.cs" />
+    <Compile Include="Connection\DefaultConnectionFactory.cs" />
+    <Compile Include="Connection\Debugging\DebugExecution.cs" />
+    <Compile Include="Connection\IConnectionFactory.cs" />
+    <Compile Include="Connection\Debugging\DebugCommand.cs" />
+    <Compile Include="Connection\Debugging\DebugConnection.cs" />
+    <Compile Include="Connection\Debugging\DebugConnectionFactory.cs" />
+    <Compile Include="DataRecords\VersionedObjectDataRecord.cs" />
+    <Compile Include="Connection\DefaultCommand.cs" />
+    <Compile Include="Connection\DefaultConnection.cs" />
+    <Compile Include="Connection\Connection.cs" />
+    <Compile Include="Prefetching\Prefetcher.cs" />
+    <Compile Include="Schema\Initialization.cs" />
+    <Compile Include="Prefetching\Prefetch.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Cache\Cache.cs" />
+    <Compile Include="Cache\CachedObject.cs" />
+    <Compile Include="Cache\CacheFactory.cs" />
+    <Compile Include="Cache\ICache.cs" />
+    <Compile Include="Cache\ICachedObject.cs" />
+    <Compile Include="Cache\ICacheFactory.cs" />
+    <Compile Include="ChangeSet.cs" />
+    <Compile Include="Connection\Command.cs" />
+    <Compile Include="Relations\CompositeRelation.cs" />
+    <Compile Include="Configuration.cs" />
+    <Compile Include="Database.cs" />
+    <Compile Include="Commands.cs" />
+    <Compile Include="Serialization\Readers\RelationTableReader.cs" />
+    <Compile Include="Serialization\Readers\ObjectTableReader.cs" />
+    <Compile Include="Serialization\Readers\ObjectsTableReader.cs" />
+    <Compile Include="State.cs" />
+    <Compile Include="Session.cs" />
+    <Compile Include="Extents\Extent.cs" />
+    <Compile Include="Extents\ExtentAssociations.cs" />
+    <Compile Include="Extents\ExtentEnumerator.cs" />
+    <Compile Include="Extents\ExtentFiltered.cs" />
+    <Compile Include="Extents\ExtentOperation.cs" />
+    <Compile Include="Extents\ExtentOperations.cs" />
+    <Compile Include="Extents\ExtentRoles.cs" />
+    <Compile Include="Extents\ExtentSort.cs" />
+    <Compile Include="Extents\ExtentStatement.cs" />
+    <Compile Include="Extents\ExtentStatementChild.cs" />
+    <Compile Include="Extents\ExtentStatementRoot.cs" />
+    <Compile Include="Extents\SqlExtent.cs" />
+    <Compile Include="Flush.cs" />
+    <Compile Include="DataRecords\ObjectDataRecord.cs" />
+    <Compile Include="DataRecords\CompositesRoleDataRecords.cs" />
+    <Compile Include="DataRecords\CompositeRoleDataRecords.cs" />
+    <Compile Include="DataRecords\UnitRoleDataRecords.cs" />
+    <Compile Include="Serialization\Load.cs" />
+    <Compile Include="ManagementSession.cs" />
+    <Compile Include="Predicates\AndPredicate.cs" />
+    <Compile Include="Predicates\AssociationContainedInEnumerable.cs" />
+    <Compile Include="Predicates\AssociationContainedInExtent.cs" />
+    <Compile Include="Predicates\AssociationContains.cs" />
+    <Compile Include="Predicates\AssociationEquals.cs" />
+    <Compile Include="Predicates\AssociationExists.cs" />
+    <Compile Include="Predicates\AssociationInstanceOf.cs" />
+    <Compile Include="Predicates\CompositePredicate.cs" />
+    <Compile Include="Predicates\Equals.cs" />
+    <Compile Include="Predicates\In.cs" />
+    <Compile Include="Predicates\InstanceOf.cs" />
+    <Compile Include="Predicates\Not.cs" />
+    <Compile Include="Predicates\Or.cs" />
+    <Compile Include="Predicates\Predicate.cs" />
+    <Compile Include="Predicates\RoleBetweenRole.cs" />
+    <Compile Include="Predicates\RoleBetweenValue.cs" />
+    <Compile Include="Predicates\RoleContainedInEnumerable.cs" />
+    <Compile Include="Predicates\RoleContainedInExtent.cs" />
+    <Compile Include="Predicates\RoleContains.cs" />
+    <Compile Include="Predicates\RoleEqualsRole.cs" />
+    <Compile Include="Predicates\RoleEqualsValue.cs" />
+    <Compile Include="Predicates\RoleExists.cs" />
+    <Compile Include="Predicates\RoleGreaterThanRole.cs" />
+    <Compile Include="Predicates\RoleGreaterThanValue.cs" />
+    <Compile Include="Predicates\RoleInstanceof.cs" />
+    <Compile Include="Predicates\RoleLessThanRole.cs" />
+    <Compile Include="Predicates\RoleLessThanValue.cs" />
+    <Compile Include="Predicates\RoleLike.cs" />
+    <Compile Include="Reference.cs" />
+    <Compile Include="Serialization\RelationTypeManyXmlWriter.cs" />
+    <Compile Include="Serialization\RelationTypeOneXmlWriter.cs" />
+    <Compile Include="Relations\Roles.cs" />
+    <Compile Include="Serialization\Save.cs" />
+    <Compile Include="Schema\ReservedWords.cs" />
+    <Compile Include="Schema\Mapping.cs" />
+    <Compile Include="Schema\SchemaIndex.cs" />
+    <Compile Include="Schema\SchemaProcedure.cs" />
+    <Compile Include="Schema\Schema.cs" />
+    <Compile Include="Schema\SchemaTable.cs" />
+    <Compile Include="Schema\SchemaTableTypeColumn.cs" />
+    <Compile Include="Schema\SchemaTableColumn.cs" />
+    <Compile Include="Schema\SchemaTableType.cs" />
+    <Compile Include="Strategy.cs" />
+    <Compile Include="Relations\UnitRelation.cs" />
+    <Compile Include="Schema\Validation.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Cache\Debugging\Debug.cd" />
+    <None Include="Connection\Debugging\Debug.cd" />
+    <None Include="Diagrams\Overview.cd" />
+    <None Include="Diagrams\Schema.cd" />
+    <None Include="Settings.StyleCop" />
+    <None Include="Diagrams\Connection.cd" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Framework\Allors\Allors.csproj">
+      <Project>{5b4e2d7c-8ef8-45f5-bfb2-e595c401a95f}</Project>
+      <Name>Allors</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

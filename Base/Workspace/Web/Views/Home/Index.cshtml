@@ -1,0 +1,30 @@
+﻿<!DOCTYPE html>
+<html ng-app="app">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Allors Base</title>
+
+    @Styles.Render("~/bundles/css")
+    <link href="/lib/font-awesome/css/font-awesome.css" rel="stylesheet"/>
+
+</head>
+
+<body ng-controller="mainController as main">
+
+    <ng-include src="'app/shell/main.html'"></ng-include>
+
+    @Html.Raw(JSNLog.JavascriptLogging.Configure())
+    
+    @Scripts.Render("~/bundles/common")
+    @Scripts.Render("~/bundles/angular")
+    @Scripts.Render("~/bundles/allors")
+    @Scripts.Render("~/bundles/app")
+
+</body>
+</html>
+
+
+
+

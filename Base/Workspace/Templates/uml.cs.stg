@@ -1,0 +1,97 @@
+delimiters "$", "$"
+
+TemplateId() ::= <<FA2E53B4-915D-4227-8571-456FC8E04DB0>>
+TemplateName() ::= <<Allors C# Uml>>
+TemplateVersion() ::= <<1.0.23>>
+TemplateAllors() ::= <<1.0>>
+TemplateConfiguration(meta) ::= <<
+$! 
+Copyright 2002-2013 Allors bvba.
+
+Dual Licensed under
+  a) the Lesser General Public Licence v3 (LGPL)
+  b) the Allors License
+
+The LGPL License is included in the file lgpl.txt.
+The Allors License is an addendum to your contract.
+
+Allors Platform is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+For more information visit http://www.allors.com/legal
+!$
+<generations>
+	<generation template="domain" output="domain.g.cs"/> 
+</generations>
+>>
+
+domain(meta) ::= <<
+namespace Allors.Domain
+{
+	$meta.WorkspaceComposites:{objectType|
+		$composite(meta=meta,composite=objectType)$
+	}$
+}
+>>
+
+composite(meta,composite) ::= <<
+
+	public interface $composite.Name$ $if(composite.WorkspaceDirectSupertypes)$: $composite.WorkspaceDirectSupertypes:{directSupertype|$directSupertype.SingularName$}; separator=", "$ $endif$
+	{
+		$composite.WorkspaceExclusiveRoleTypes:{roleType|$roleType(roleType=roleType)$}; separator="\n"$
+	}
+>>
+
+roleType(roleType) ::= <<
+$if(roleType.IsOne)$
+			$nullableName(roleType)$ $roleType.SingularPropertyName$ {set;}
+$else$
+			$nullableName(roleType)$ $roleType.PluralPropertyName$ {set;}
+$endif$
+>>
+
+nullableName(roleType) ::= <%
+$if(roleType.ObjectType.IsUnit)$
+	$if(roleType.IsRequired)$
+		$if(roleType.ObjectType.IsBinary)$
+			global::System.Byte[]
+		$elseif(roleType.ObjectType.IsBoolean)$
+			global::System.Boolean
+		$elseif(roleType.ObjectType.IsDateTime)$
+			global::System.DateTime
+		$elseif(roleType.ObjectType.IsDecimal)$
+			global::System.Decimal
+		$elseif(roleType.ObjectType.IsFloat)$
+			global::System.Double
+		$elseif(roleType.ObjectType.IsInteger)$
+			global::System.Int32
+		$elseif(roleType.ObjectType.IsString)$
+			global::System.String
+		$elseif(roleType.ObjectType.IsUnique)$
+			global::System.Guid
+		$endif$
+	$else$
+		$if(roleType.ObjectType.IsBinary)$
+			global::System.Byte[]
+		$elseif(roleType.ObjectType.IsBoolean)$
+			global::System.Boolean?
+		$elseif(roleType.ObjectType.IsDateTime)$
+			global::System.DateTime?
+		$elseif(roleType.ObjectType.IsDecimal)$
+			global::System.Decimal?
+		$elseif(roleType.ObjectType.IsFloat)$
+			global::System.Double?
+		$elseif(roleType.ObjectType.IsInteger)$
+			global::System.Int32?
+		$elseif(roleType.ObjectType.IsString)$
+			global::System.String
+		$elseif(roleType.ObjectType.IsUnique)$
+			global::System.Guid?
+		$endif$
+	$endif$
+$else$
+	$roleType.ObjectType.SingularName$
+$endif$
+%>

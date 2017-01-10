@@ -1,0 +1,49 @@
+﻿<div class="row">
+    <div class="col-md-12">
+        <ol class="breadcrumb">
+            <li>
+                <a ui-sref="home">Home</a>
+            </li>
+            <li>
+                <a ui-sref="relation.people">People</a>
+            </li>
+            <li class="active">
+                <strong>Add a Person</strong>
+            </li>
+        </ol>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="panel panel-default">
+            <div class="panel-heading clearfix">
+                <div class="pull-right">
+                    <button class="btn btn-default btn-xs" ng-click="vm.refresh()">
+                        <i class="fa fa-refresh"></i>
+                    </button>
+                </div>
+
+                <h3 class="panel-title">
+                    Add a Person
+                </h3>
+            </div>
+            <div class="panel-body">
+                <!-- ReSharper disable Html.TagNotResolved -->
+                <b-form orientation="horizontal">
+                    <b-labeled-text object="vm.person" relation="FirstName"></b-labeled-text>
+                    <b-labeled-text object="vm.person" relation="LastName"></b-labeled-text>
+                    <b-datepicker-popup-group object="vm.person" relation="BirthDate"></b-datepicker-popup-group>
+                </b-form>
+            </div>
+
+            <div class="panel-footer clearfix">
+                <div class="pull-right">
+                    <input id="cancel" type="button" class="btn btn-danger btn-sm" value="Cancel" ng-click="vm.cancel()" />
+                    <input ng-disabled="!vm.hasChanges" id="save" type="button" class="btn btn-primary btn-sm" value="Save changes" ng-click="vm.save()" />
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>

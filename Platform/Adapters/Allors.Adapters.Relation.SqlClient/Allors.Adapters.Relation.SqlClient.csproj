@@ -1,0 +1,114 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{91356B87-6321-45C3-88CC-D3DEAE2DC16C}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Allors.Adapters.Relation.SqlClient</RootNamespace>
+    <AssemblyName>Allors.Adapters.Relation.SqlClient</AssemblyName>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="ChangeSet.cs" />
+    <Compile Include="Configuration.cs" />
+    <Compile Include="Database.cs" />
+    <Compile Include="Session.cs" />
+    <Compile Include="DataRecords\CompositeRoleDataRecords.cs" />
+    <Compile Include="DataRecords\CompositesRoleDataRecords.cs" />
+    <Compile Include="DataRecords\ObjectDataRecords.cs" />
+    <Compile Include="DataRecords\UnitRoleDataRecords.cs" />
+    <Compile Include="Extent.cs" />
+    <Compile Include="ExtentFiltered.cs" />
+    <Compile Include="ExtentOperation.cs" />
+    <Compile Include="ExtentSort.cs" />
+    <Compile Include="ExtentStatement.cs" />
+    <Compile Include="Initialization.cs" />
+    <Compile Include="Schema\Mapping.cs" />
+    <Compile Include="Predicates\And.cs" />
+    <Compile Include="Predicates\AssociationContainedInEnumerable.cs" />
+    <Compile Include="Predicates\AssociationContainedInExtent.cs" />
+    <Compile Include="Predicates\AssociationContains.cs" />
+    <Compile Include="Predicates\AssociationEquals.cs" />
+    <Compile Include="Predicates\AssociationExists.cs" />
+    <Compile Include="Predicates\AssociationInstanceOf.cs" />
+    <Compile Include="Predicates\Composite.cs" />
+    <Compile Include="Predicates\Equals.cs" />
+    <Compile Include="Predicates\InstanceOf.cs" />
+    <Compile Include="Predicates\Not.cs" />
+    <Compile Include="Predicates\Or.cs" />
+    <Compile Include="Predicates\Predicate.cs" />
+    <Compile Include="Predicates\RoleBetweenRole.cs" />
+    <Compile Include="Predicates\RoleBetweenValue.cs" />
+    <Compile Include="Predicates\RoleCompositeEquals.cs" />
+    <Compile Include="Predicates\RoleContainedInEnunerable.cs" />
+    <Compile Include="Predicates\RoleContainedInExtent.cs" />
+    <Compile Include="Predicates\RoleContains.cs" />
+    <Compile Include="Predicates\RoleExists.cs" />
+    <Compile Include="Predicates\RoleGreaterThanRole.cs" />
+    <Compile Include="Predicates\RoleGreaterThanValue.cs" />
+    <Compile Include="Predicates\RoleInstanceOf.cs" />
+    <Compile Include="Predicates\RoleLessThanRole.cs" />
+    <Compile Include="Predicates\RoleLessThanValue.cs" />
+    <Compile Include="Predicates\RoleLike.cs" />
+    <Compile Include="Predicates\RoleUnitEqualsRole.cs" />
+    <Compile Include="Predicates\RoleUnitEqualsValue.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RelationTypeManyXmlWriter.cs" />
+    <Compile Include="RelationTypeOneXmlWriter.cs" />
+    <Compile Include="Schema\Index.cs" />
+    <Compile Include="Schema\Procedure.cs" />
+    <Compile Include="Schema\Schema.cs" />
+    <Compile Include="Schema\Table.cs" />
+    <Compile Include="Schema\TableColumn.cs" />
+    <Compile Include="Schema\TableType.cs" />
+    <Compile Include="Schema\View.cs" />
+    <Compile Include="Strategy.cs" />
+    <Compile Include="Validation.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Schema\Overview.cd" />
+    <None Include="Settings.StyleCop" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Framework\Allors\Allors.csproj">
+      <Project>{5b4e2d7c-8ef8-45f5-bfb2-e595c401a95f}</Project>
+      <Name>Allors</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

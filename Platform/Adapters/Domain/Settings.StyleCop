@@ -1,0 +1,9 @@
+<StyleCopSettings Version="105">
+  <GlobalSettings>
+    <CollectionProperty Name="RecognizedWords">
+      <Value>allors</Value>
+      <Value>supertype</Value>
+      <Value>datetime</Value>
+    </CollectionProperty>
+  </GlobalSettings>
+  </StyleCopSettings>
