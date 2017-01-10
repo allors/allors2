@@ -83,13 +83,13 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="..\..\platform\Base\Resources\Base\DomainErrors.resx">
+    <EmbeddedResource Include="..\..\Base\Database\Resources\Base\DomainErrors.resx">
       <Link>Base\DomainErrors.resx</Link>
     </EmbeddedResource>
-    <EmbeddedResource Include="..\..\platform\Base\Resources\Base\WorkspaceMeta.resx">
+    <EmbeddedResource Include="..\..\Base\Database\Resources\Base\WorkspaceMeta.resx">
       <Link>Base\WorkspaceMeta.resx</Link>
     </EmbeddedResource>
-    <EmbeddedResource Include="..\..\platform\Base\Resources\Base\WorkspaceResources.resx">
+    <EmbeddedResource Include="..\..\Base\Database\Resources\Base\WorkspaceResources.resx">
       <Link>Base\WorkspaceResources.resx</Link>
     </EmbeddedResource>
     <EmbeddedResource Include="Apps\ErrorMessages.nl.resx" />

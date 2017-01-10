@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------------------------------------------
-// <copyright file="SecurityConfiguration.cs" company="Allors bvba">
+// <copyright file="Security.cs" company="Allors bvba">
 //   Copyright 2002-2016 Allors bvba.
 //
 // Dual Licensed under
@@ -199,7 +199,7 @@ namespace Allors.Domain
             }
         }
 
-        public void Grant(Guid roleId, ObjectType objectType, params Operations[] operations)
+        public void Grant(Guid roleId, IObjectType objectType, params Operations[] operations)
         {
             Role role;
             if (this.roleById.TryGetValue(roleId, out role))
@@ -237,7 +237,7 @@ namespace Allors.Domain
             }
         }
 
-        public void Grant(Guid roleId, ObjectType objectType, OperandType operandType, params Operations[] operations)
+        public void Grant(Guid roleId, IObjectType objectType, OperandType operandType, params Operations[] operations)
         {
             Role role;
             if (this.roleById.TryGetValue(roleId, out role))
@@ -276,22 +276,22 @@ namespace Allors.Domain
             }
         }
 
-        public void GrantAdministrator(ObjectType objectType, params Operations[] operations)
+        public void GrantAdministrator(IObjectType objectType, params Operations[] operations)
         {
             this.Grant(Roles.AdministratorId, objectType, operations);
         }
 
-        public void GrantGuest(ObjectType objectType, params Operations[] operations)
+        public void GrantGuest(IObjectType objectType, params Operations[] operations)
         {
             this.Grant(Roles.GuestId, objectType, operations);
         }
 
-        public void GrantCreator(ObjectType objectType, params Operations[] operations)
+        public void GrantCreator(IObjectType objectType, params Operations[] operations)
         {
             this.Grant(Roles.CreatorId, objectType, operations);
         }
 
-        public void GrantOwner(ObjectType objectType, params Operations[] operations)
+        public void GrantOwner(IObjectType objectType, params Operations[] operations)
         {
             this.Grant(Roles.OwnerId, objectType, operations);
         }

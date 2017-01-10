@@ -13,7 +13,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Resources", "Resources\Reso
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests", "Tests\Tests.csproj", "{953F37B8-865D-4D8C-A084-FFE10F360ECE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Merge", "..\platform\Base\Merge\Merge.csproj", "{F192CA79-CB0F-43A6-AC0A-3F9685BDB8E1}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Merge", "..\Base\Allors\Merge\Merge.csproj", "{F192CA79-CB0F-43A6-AC0A-3F9685BDB8E1}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Allors", "..\platform\Framework\Allors\Allors.csproj", "{5B4E2D7C-8EF8-45F5-BFB2-E595C401A95F}"
 EndProject

@@ -66,223 +66,223 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\..\platform\Base\Meta\Base\Domain\MetaAccessControl.cs">
+    <Compile Include="..\..\Base\Database\Meta\Base\Domain\MetaAccessControl.cs">
       <Link>Base\Domain\MetaAccessControl.cs</Link>
     </Compile>
-    <Compile Include="..\..\platform\Base\Meta\Base\Domain\MetaAccessControlledObject.cs">
+    <Compile Include="..\..\Base\Database\Meta\Base\Domain\MetaAccessControlledObject.cs">
       <Link>Base\Domain\MetaAccessControlledObject.cs</Link>
     </Compile>
-    <Compile Include="..\..\platform\Base\Meta\Base\Domain\MetaAsyncDerivable.cs">
+    <Compile Include="..\..\Base\Database\Meta\Base\Domain\MetaAsyncDerivable.cs">
       <Link>Base\Domain\MetaAsyncDerivable.cs</Link>
     </Compile>
-    <Compile Include="..\..\platform\Base\Meta\Base\Domain\MetaAsyncDerivation.cs">
+    <Compile Include="..\..\Base\Database\Meta\Base\Domain\MetaAsyncDerivation.cs">
       <Link>Base\Domain\MetaAsyncDerivation.cs</Link>
     </Compile>
-    <Compile Include="..\..\platform\Base\Meta\Base\Domain\MetaCommentable.cs">
+    <Compile Include="..\..\Base\Database\Meta\Base\Domain\MetaCommentable.cs">
       <Link>Base\Domain\MetaCommentable.cs</Link>
     </Compile>
-    <Compile Include="..\..\platform\Base\Meta\Base\Domain\MetaCounter.cs">
+    <Compile Include="..\..\Base\Database\Meta\Base\Domain\MetaCounter.cs">
       <Link>Base\Domain\MetaCounter.cs</Link>
     </Compile>
-    <Compile Include="..\..\platform\Base\Meta\Base\Domain\MetaCountry.cs">
+    <Compile Include="..\..\Base\Database\Meta\Base\Domain\MetaCountry.cs">
       <Link>Base\Domain\MetaCountry.cs</Link>
     </Compile>
-    <Compile Include="..\..\platform\Base\Meta\Base\Domain\MetaCurrency.cs">
+    <Compile Include="..\..\Base\Database\Meta\Base\Domain\MetaCurrency.cs">
       <Link>Base\Domain\MetaCurrency.cs</Link>
     </Compile>
-    <Compile Include="..\..\platform\Base\Meta\Base\Domain\MetaDeletable.cs">
+    <Compile Include="..\..\Base\Database\Meta\Base\Domain\MetaDeletable.cs">
       <Link>Base\Domain\MetaDeletable.cs</Link>
     </Compile>
-    <Compile Include="..\..\platform\Base\Meta\Base\Domain\MetaEnumeration.cs">
+    <Compile Include="..\..\Base\Database\Meta\Base\Domain\MetaEnumeration.cs">
       <Link>Base\Domain\MetaEnumeration.cs</Link>
     </Compile>
-    <Compile Include="..\..\platform\Base\Meta\Base\Domain\MetaImage.cs">
+    <Compile Include="..\..\Base\Database\Meta\Base\Domain\MetaImage.cs">
       <Link>Base\Domain\MetaImage.cs</Link>
     </Compile>
-    <Compile Include="..\..\platform\Base\Meta\Base\Domain\MetaLanguage.cs">
+    <Compile Include="..\..\Base\Database\Meta\Base\Domain\MetaLanguage.cs">
       <Link>Base\Domain\MetaLanguage.cs</Link>
     </Compile>
-    <Compile Include="..\..\platform\Base\Meta\Base\Domain\MetaLocale.cs">
+    <Compile Include="..\..\Base\Database\Meta\Base\Domain\MetaLocale.cs">
       <Link>Base\Domain\MetaLocale.cs</Link>
     </Compile>
-    <Compile Include="..\..\platform\Base\Meta\Base\Domain\MetaLocalised.cs">
+    <Compile Include="..\..\Base\Database\Meta\Base\Domain\MetaLocalised.cs">
       <Link>Base\Domain\MetaLocalised.cs</Link>
     </Compile>
-    <Compile Include="..\..\platform\Base\Meta\Base\Domain\MetaLocalisedText.cs">
+    <Compile Include="..\..\Base\Database\Meta\Base\Domain\MetaLocalisedText.cs">
       <Link>Base\Domain\MetaLocalisedText.cs</Link>
     </Compile>
-    <Compile Include="..\..\platform\Base\Meta\Base\Domain\MetaLogin.cs">
+    <Compile Include="..\..\Base\Database\Meta\Base\Domain\MetaLogin.cs">
       <Link>Base\Domain\MetaLogin.cs</Link>
     </Compile>
-    <Compile Include="..\..\platform\Base\Meta\Base\Domain\MetaMedia.cs">
+    <Compile Include="..\..\Base\Database\Meta\Base\Domain\MetaMedia.cs">
       <Link>Base\Domain\MetaMedia.cs</Link>
     </Compile>
-    <Compile Include="..\..\platform\Base\Meta\Base\Domain\MetaObjectInterface.cs">
+    <Compile Include="..\..\Base\Database\Meta\Base\Domain\MetaObjectInterface.cs">
       <Link>Base\Domain\MetaObjectInterface.cs</Link>
     </Compile>
-    <Compile Include="..\..\platform\Base\Meta\Base\Domain\MetaObjectState.cs">
+    <Compile Include="..\..\Base\Database\Meta\Base\Domain\MetaObjectState.cs">
       <Link>Base\Domain\MetaObjectState.cs</Link>
     </Compile>
-    <Compile Include="..\..\platform\Base\Meta\Base\Domain\MetaPermission.cs">
+    <Compile Include="..\..\Base\Database\Meta\Base\Domain\MetaPermission.cs">
       <Link>Base\Domain\MetaPermission.cs</Link>
     </Compile>
-    <Compile Include="..\..\platform\Base\Meta\Base\Domain\MetaPerson.cs">
+    <Compile Include="..\..\Base\Database\Meta\Base\Domain\MetaPerson.cs">
       <Link>Base\Domain\MetaPerson.cs</Link>
     </Compile>
-    <Compile Include="..\..\platform\Base\Meta\Base\Domain\MetaPrintQueue.cs">
+    <Compile Include="..\..\Base\Database\Meta\Base\Domain\MetaPrintQueue.cs">
       <Link>Base\Domain\MetaPrintQueue.cs</Link>
     </Compile>
-    <Compile Include="..\..\platform\Base\Meta\Base\Domain\MetaRole.cs">
+    <Compile Include="..\..\Base\Database\Meta\Base\Domain\MetaRole.cs">
       <Link>Base\Domain\MetaRole.cs</Link>
     </Compile>
-    <Compile Include="..\..\platform\Base\Meta\Base\Domain\MetaSecurityToken.cs">
+    <Compile Include="..\..\Base\Database\Meta\Base\Domain\MetaSecurityToken.cs">
       <Link>Base\Domain\MetaSecurityToken.cs</Link>
     </Compile>
-    <Compile Include="..\..\platform\Base\Meta\Base\Domain\MetaSecurityTokenOwner.cs">
+    <Compile Include="..\..\Base\Database\Meta\Base\Domain\MetaSecurityTokenOwner.cs">
       <Link>Base\Domain\MetaSecurityTokenOwner.cs</Link>
     </Compile>
-    <Compile Include="..\..\platform\Base\Meta\Base\Domain\MetaSingleton.cs">
+    <Compile Include="..\..\Base\Database\Meta\Base\Domain\MetaSingleton.cs">
       <Link>Base\Domain\MetaSingleton.cs</Link>
     </Compile>
-    <Compile Include="..\..\platform\Base\Meta\Base\Domain\MetaTransition.cs">
+    <Compile Include="..\..\Base\Database\Meta\Base\Domain\MetaTransition.cs">
       <Link>Base\Domain\MetaTransition.cs</Link>
     </Compile>
-    <Compile Include="..\..\platform\Base\Meta\Base\Domain\MetaTransitional.cs">
+    <Compile Include="..\..\Base\Database\Meta\Base\Domain\MetaTransitional.cs">
       <Link>Base\Domain\MetaTransitional.cs</Link>
     </Compile>
-    <Compile Include="..\..\platform\Base\Meta\Base\Domain\MetaUniquelyIdentifiable.cs">
+    <Compile Include="..\..\Base\Database\Meta\Base\Domain\MetaUniquelyIdentifiable.cs">
       <Link>Base\Domain\MetaUniquelyIdentifiable.cs</Link>
     </Compile>
-    <Compile Include="..\..\platform\Base\Meta\Base\Domain\MetaUser.cs">
+    <Compile Include="..\..\Base\Database\Meta\Base\Domain\MetaUser.cs">
       <Link>Base\Domain\MetaUser.cs</Link>
     </Compile>
-    <Compile Include="..\..\platform\Base\Meta\Base\Domain\MetaUserGroup.cs">
+    <Compile Include="..\..\Base\Database\Meta\Base\Domain\MetaUserGroup.cs">
       <Link>Base\Domain\MetaUserGroup.cs</Link>
     </Compile>
-    <Compile Include="..\..\platform\Base\Meta\Base\Meta\Class.cs">
+    <Compile Include="..\..\Base\Database\Meta\Base\Meta\Class.cs">
       <Link>Base\Meta\Class.cs</Link>
     </Compile>
-    <Compile Include="..\..\platform\Base\Meta\Base\Meta\Composite.cs">
+    <Compile Include="..\..\Base\Database\Meta\Base\Meta\Composite.cs">
       <Link>Base\Meta\Composite.cs</Link>
     </Compile>
-    <Compile Include="..\..\platform\Base\Meta\Base\Meta\ConcreteRoleType.cs">
+    <Compile Include="..\..\Base\Database\Meta\Base\Meta\ConcreteRoleType.cs">
       <Link>Base\Meta\ConcreteRoleType.cs</Link>
     </Compile>
-    <Compile Include="..\..\platform\Base\Meta\Base\Meta\Path.cs">
+    <Compile Include="..\..\Base\Database\Meta\Base\Meta\Path.cs">
       <Link>Base\Meta\Path.cs</Link>
     </Compile>
-    <Compile Include="..\..\platform\Base\Meta\Base\Meta\RoleType.cs">
+    <Compile Include="..\..\Base\Database\Meta\Base\Meta\RoleType.cs">
       <Link>Base\Meta\RoleType.cs</Link>
     </Compile>
-    <Compile Include="..\..\platform\Base\Meta\Base\Meta\Tree.cs">
+    <Compile Include="..\..\Base\Database\Meta\Base\Meta\Tree.cs">
       <Link>Base\Meta\Tree.cs</Link>
     </Compile>
-    <Compile Include="..\..\platform\Base\Meta\Base\Meta\TreeNode.cs">
+    <Compile Include="..\..\Base\Database\Meta\Base\Meta\TreeNode.cs">
       <Link>Base\Meta\TreeNode.cs</Link>
     </Compile>
-    <Compile Include="..\..\platform\Base\Meta\Base\Meta\TreeNodes.cs">
+    <Compile Include="..\..\Base\Database\Meta\Base\Meta\TreeNodes.cs">
       <Link>Base\Meta\TreeNodes.cs</Link>
     </Compile>
-    <Compile Include="..\..\platform\Core\Meta\Core\Domain\MetaClass.cs">
+    <Compile Include="..\..\Core\Meta\Core\Domain\MetaClass.cs">
       <Link>Core\Domain\MetaClass.cs</Link>
     </Compile>
-    <Compile Include="..\..\platform\Core\Meta\Core\Domain\MetaInterface.cs">
+    <Compile Include="..\..\Core\Meta\Core\Domain\MetaInterface.cs">
       <Link>Core\Domain\MetaInterface.cs</Link>
     </Compile>
-    <Compile Include="..\..\platform\Core\Meta\Core\Domain\MetaUnit.cs">
+    <Compile Include="..\..\Core\Meta\Core\Domain\MetaUnit.cs">
       <Link>Core\Domain\MetaUnit.cs</Link>
     </Compile>
-    <Compile Include="..\..\platform\Core\Meta\Core\Generation\Generate.cs">
+    <Compile Include="..\..\Core\Meta\Core\Generation\Generate.cs">
       <Link>Core\Generation\Generate.cs</Link>
     </Compile>
-    <Compile Include="..\..\platform\Core\Meta\Core\Generation\GenerateLog.cs">
+    <Compile Include="..\..\Core\Meta\Core\Generation\GenerateLog.cs">
       <Link>Core\Generation\GenerateLog.cs</Link>
     </Compile>
-    <Compile Include="..\..\platform\Core\Meta\Core\Generation\Log.cs">
+    <Compile Include="..\..\Core\Meta\Core\Generation\Log.cs">
       <Link>Core\Generation\Log.cs</Link>
     </Compile>
-    <Compile Include="..\..\platform\Core\Meta\Core\Generation\Storage\AllorsDirectoryInfo.cs">
+    <Compile Include="..\..\Core\Meta\Core\Generation\Storage\AllorsDirectoryInfo.cs">
       <Link>Core\Generation\Storage\AllorsDirectoryInfo.cs</Link>
     </Compile>
-    <Compile Include="..\..\platform\Core\Meta\Core\Generation\Storage\AllorsFileInfo.cs">
+    <Compile Include="..\..\Core\Meta\Core\Generation\Storage\AllorsFileInfo.cs">
       <Link>Core\Generation\Storage\AllorsFileInfo.cs</Link>
     </Compile>
-    <Compile Include="..\..\platform\Core\Meta\Core\Generation\Storage\Location.cs">
+    <Compile Include="..\..\Core\Meta\Core\Generation\Storage\Location.cs">
       <Link>Core\Generation\Storage\Location.cs</Link>
     </Compile>
-    <Compile Include="..\..\platform\Core\Meta\Core\Generation\StringTemplate.cs">
+    <Compile Include="..\..\Core\Meta\Core\Generation\StringTemplate.cs">
       <Link>Core\Generation\StringTemplate.cs</Link>
     </Compile>
-    <Compile Include="..\..\platform\Core\Meta\Core\Meta\AssociationType.cs">
+    <Compile Include="..\..\Core\Meta\Core\Meta\AssociationType.cs">
       <Link>Core\Meta\AssociationType.cs</Link>
     </Compile>
-    <Compile Include="..\..\platform\Core\Meta\Core\Meta\Class.cs">
+    <Compile Include="..\..\Core\Meta\Core\Meta\Class.cs">
       <Link>Core\Meta\Class.cs</Link>
     </Compile>
-    <Compile Include="..\..\platform\Core\Meta\Core\Meta\Composite.cs">
+    <Compile Include="..\..\Core\Meta\Core\Meta\Composite.cs">
       <Link>Core\Meta\Composite.cs</Link>
     </Compile>
-    <Compile Include="..\..\platform\Core\Meta\Core\Meta\ConcreteMethodType.cs">
+    <Compile Include="..\..\Core\Meta\Core\Meta\ConcreteMethodType.cs">
       <Link>Core\Meta\ConcreteMethodType.cs</Link>
     </Compile>
-    <Compile Include="..\..\platform\Core\Meta\Core\Meta\ConcreteRoleType.cs">
+    <Compile Include="..\..\Core\Meta\Core\Meta\ConcreteRoleType.cs">
       <Link>Core\Meta\ConcreteRoleType.cs</Link>
     </Compile>
-    <Compile Include="..\..\platform\Core\Meta\Core\Meta\Domain.cs">
+    <Compile Include="..\..\Core\Meta\Core\Meta\Domain.cs">
       <Link>Core\Meta\Domain.cs</Link>
     </Compile>
-    <Compile Include="..\..\platform\Core\Meta\Core\Meta\DomainObject.cs">
+    <Compile Include="..\..\Core\Meta\Core\Meta\DomainObject.cs">
       <Link>Core\Meta\DomainObject.cs</Link>
     </Compile>
-    <Compile Include="..\..\platform\Core\Meta\Core\Meta\Inheritance.cs">
+    <Compile Include="..\..\Core\Meta\Core\Meta\Inheritance.cs">
       <Link>Core\Meta\Inheritance.cs</Link>
     </Compile>
-    <Compile Include="..\..\platform\Core\Meta\Core\Meta\Interface.cs">
+    <Compile Include="..\..\Core\Meta\Core\Meta\Interface.cs">
       <Link>Core\Meta\Interface.cs</Link>
     </Compile>
-    <Compile Include="..\..\platform\Core\Meta\Core\Meta\LazySet.cs">
+    <Compile Include="..\..\Core\Meta\Core\Meta\LazySet.cs">
       <Link>Core\Meta\LazySet.cs</Link>
     </Compile>
-    <Compile Include="..\..\platform\Core\Meta\Core\Meta\MetaObject.cs">
+    <Compile Include="..\..\Core\Meta\Core\Meta\MetaObject.cs">
       <Link>Core\Meta\MetaObject.cs</Link>
     </Compile>
-    <Compile Include="..\..\platform\Core\Meta\Core\Meta\MetaPopulation.cs">
+    <Compile Include="..\..\Core\Meta\Core\Meta\MetaPopulation.cs">
       <Link>Core\Meta\MetaPopulation.cs</Link>
     </Compile>
-    <Compile Include="..\..\platform\Core\Meta\Core\Meta\Method.cs">
+    <Compile Include="..\..\Core\Meta\Core\Meta\Method.cs">
       <Link>Core\Meta\Method.cs</Link>
     </Compile>
-    <Compile Include="..\..\platform\Core\Meta\Core\Meta\MethodInvocation.cs">
+    <Compile Include="..\..\Core\Meta\Core\Meta\MethodInvocation.cs">
       <Link>Core\Meta\MethodInvocation.cs</Link>
     </Compile>
-    <Compile Include="..\..\platform\Core\Meta\Core\Meta\MethodType.cs">
+    <Compile Include="..\..\Core\Meta\Core\Meta\MethodType.cs">
       <Link>Core\Meta\MethodType.cs</Link>
     </Compile>
-    <Compile Include="..\..\platform\Core\Meta\Core\Meta\ObjectType.cs">
+    <Compile Include="..\..\Core\Meta\Core\Meta\ObjectType.cs">
       <Link>Core\Meta\ObjectType.cs</Link>
     </Compile>
-    <Compile Include="..\..\platform\Core\Meta\Core\Meta\OperandType.cs">
+    <Compile Include="..\..\Core\Meta\Core\Meta\OperandType.cs">
       <Link>Core\Meta\OperandType.cs</Link>
     </Compile>
-    <Compile Include="..\..\platform\Core\Meta\Core\Meta\PropertyType.cs">
+    <Compile Include="..\..\Core\Meta\Core\Meta\PropertyType.cs">
       <Link>Core\Meta\PropertyType.cs</Link>
     </Compile>
-    <Compile Include="..\..\platform\Core\Meta\Core\Meta\RelationType.cs">
+    <Compile Include="..\..\Core\Meta\Core\Meta\RelationType.cs">
       <Link>Core\Meta\RelationType.cs</Link>
     </Compile>
-    <Compile Include="..\..\platform\Core\Meta\Core\Meta\RoleType.cs">
+    <Compile Include="..\..\Core\Meta\Core\Meta\RoleType.cs">
       <Link>Core\Meta\RoleType.cs</Link>
     </Compile>
-    <Compile Include="..\..\platform\Core\Meta\Core\Meta\Unit.cs">
+    <Compile Include="..\..\Core\Meta\Core\Meta\Unit.cs">
       <Link>Core\Meta\Unit.cs</Link>
     </Compile>
-    <Compile Include="..\..\platform\Core\Meta\Core\Meta\ValidationError.cs">
+    <Compile Include="..\..\Core\Meta\Core\Meta\ValidationError.cs">
       <Link>Core\Meta\ValidationError.cs</Link>
     </Compile>
-    <Compile Include="..\..\platform\Core\Meta\Core\Meta\ValidationKind.cs">
+    <Compile Include="..\..\Core\Meta\Core\Meta\ValidationKind.cs">
       <Link>Core\Meta\ValidationKind.cs</Link>
     </Compile>
-    <Compile Include="..\..\platform\Core\Meta\Core\Meta\ValidationLog.cs">
+    <Compile Include="..\..\Core\Meta\Core\Meta\ValidationLog.cs">
       <Link>Core\Meta\ValidationLog.cs</Link>
     </Compile>
     <Compile Include="Apps\Meta\Composite.cs" />
@@ -295,13 +295,13 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\..\platform\Base\Meta\Base\Meta\Tree.cd">
+    <None Include="..\..\Base\Database\Meta\Base\Meta\Tree.cd">
       <Link>Base\Meta\Tree.cd</Link>
     </None>
-    <None Include="..\..\platform\Base\Meta\Base\RelationType.cd">
+    <None Include="..\..\Base\Database\Meta\Base\RelationType.cd">
       <Link>Base\RelationType.cd</Link>
     </None>
-    <None Include="..\..\platform\Core\Meta\Core\Overview.cd">
+    <None Include="..\..\Core\Meta\Core\Overview.cd">
       <Link>Core\Overview.cd</Link>
     </None>
     <None Include="packages.config" />

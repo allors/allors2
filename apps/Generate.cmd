@@ -25,13 +25,12 @@ rmdir /s /q .\Domain\Generated >nul 2>&1
 
 msbuild Repository.sln /target:Clean /verbosity:minimal
 
-..\Platform\Tools\dist\Allors.Tools.Cmd.exe repository generate repository.sln repository ../platform/base/templates/meta.cs.stg meta/generated || SET /A errno^|=%ERROR_GENERATE_META% && GOTO :END
+..\Tools\dist\Allors.Tools.Cmd.exe repository generate repository.sln repository ../base/repository/templates/meta.cs.stg meta/generated || SET /A errno^|=%ERROR_GENERATE_META% && GOTO :END
 
 msbuild Apps.sln /target:Clean /verbosity:minimal
 
 msbuild Apps.sln /target:Merge:Rebuild /p:Configuration="Debug" /verbosity:minimal
 msbuild Resources/Merge.proj /verbosity:minimal
-
 
 msbuild Apps.sln /target:Meta:Rebuild /p:Configuration="Debug" /verbosity:minimal || SET /A errno^|=%ERROR_BUILD_META% && GOTO :END
 

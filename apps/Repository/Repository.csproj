@@ -41,97 +41,97 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\..\platform\Base\Repository\Base\AccessControl.cs">
+    <Compile Include="..\..\Base\Repository\Base\AccessControl.cs">
       <Link>Base\AccessControl.cs</Link>
     </Compile>
-    <Compile Include="..\..\platform\Base\Repository\Base\AccessControlledObject.cs">
+    <Compile Include="..\..\Base\Repository\Base\AccessControlledObject.cs">
       <Link>Base\AccessControlledObject.cs</Link>
     </Compile>
-    <Compile Include="..\..\platform\Base\Repository\Base\AssemblyInfo.cs">
+    <Compile Include="..\..\Base\Repository\Base\AssemblyInfo.cs">
       <Link>Base\AssemblyInfo.cs</Link>
     </Compile>
-    <Compile Include="..\..\platform\Base\Repository\Base\AsyncDerivable.cs">
+    <Compile Include="..\..\Base\Repository\Base\AsyncDerivable.cs">
       <Link>Base\AsyncDerivable.cs</Link>
     </Compile>
-    <Compile Include="..\..\platform\Base\Repository\Base\AsyncDerivation.cs">
+    <Compile Include="..\..\Base\Repository\Base\AsyncDerivation.cs">
       <Link>Base\AsyncDerivation.cs</Link>
     </Compile>
-    <Compile Include="..\..\platform\Base\Repository\Base\Counter.cs">
+    <Compile Include="..\..\Base\Repository\Base\Counter.cs">
       <Link>Base\Counter.cs</Link>
     </Compile>
-    <Compile Include="..\..\platform\Base\Repository\Base\Country.cs">
+    <Compile Include="..\..\Base\Repository\Base\Country.cs">
       <Link>Base\Country.cs</Link>
     </Compile>
-    <Compile Include="..\..\platform\Base\Repository\Base\Currency.cs">
+    <Compile Include="..\..\Base\Repository\Base\Currency.cs">
       <Link>Base\Currency.cs</Link>
     </Compile>
-    <Compile Include="..\..\platform\Base\Repository\Base\Deletable.cs">
+    <Compile Include="..\..\Base\Repository\Base\Deletable.cs">
       <Link>Base\Deletable.cs</Link>
     </Compile>
-    <Compile Include="..\..\platform\Base\Repository\Base\Enumeration.cs">
+    <Compile Include="..\..\Base\Repository\Base\Enumeration.cs">
       <Link>Base\Enumeration.cs</Link>
     </Compile>
-    <Compile Include="..\..\platform\Base\Repository\Base\Language.cs">
+    <Compile Include="..\..\Base\Repository\Base\Language.cs">
       <Link>Base\Language.cs</Link>
     </Compile>
-    <Compile Include="..\..\platform\Base\Repository\Base\Locale.cs">
+    <Compile Include="..\..\Base\Repository\Base\Locale.cs">
       <Link>Base\Locale.cs</Link>
     </Compile>
-    <Compile Include="..\..\platform\Base\Repository\Base\Localised.cs">
+    <Compile Include="..\..\Base\Repository\Base\Localised.cs">
       <Link>Base\Localised.cs</Link>
     </Compile>
-    <Compile Include="..\..\platform\Base\Repository\Base\LocalisedText.cs">
+    <Compile Include="..\..\Base\Repository\Base\LocalisedText.cs">
       <Link>Base\LocalisedText.cs</Link>
     </Compile>
-    <Compile Include="..\..\platform\Base\Repository\Base\Login.cs">
+    <Compile Include="..\..\Base\Repository\Base\Login.cs">
       <Link>Base\Login.cs</Link>
     </Compile>
-    <Compile Include="..\..\platform\Base\Repository\Base\Media.cs">
+    <Compile Include="..\..\Base\Repository\Base\Media.cs">
       <Link>Base\Media.cs</Link>
     </Compile>
-    <Compile Include="..\..\platform\Base\Repository\Base\MediaContent.cs">
+    <Compile Include="..\..\Base\Repository\Base\MediaContent.cs">
       <Link>Base\MediaContent.cs</Link>
     </Compile>
-    <Compile Include="..\..\platform\Base\Repository\Base\Object.cs">
+    <Compile Include="..\..\Base\Repository\Base\Object.cs">
       <Link>Base\Object.cs</Link>
     </Compile>
-    <Compile Include="..\..\platform\Base\Repository\Base\ObjectState.cs">
+    <Compile Include="..\..\Base\Repository\Base\ObjectState.cs">
       <Link>Base\ObjectState.cs</Link>
     </Compile>
-    <Compile Include="..\..\platform\Base\Repository\Base\Permission.cs">
+    <Compile Include="..\..\Base\Repository\Base\Permission.cs">
       <Link>Base\Permission.cs</Link>
     </Compile>
-    <Compile Include="..\..\platform\Base\Repository\Base\Person.cs">
+    <Compile Include="..\..\Base\Repository\Base\Person.cs">
       <Link>Base\Person.cs</Link>
     </Compile>
-    <Compile Include="..\..\platform\Base\Repository\Base\Role.cs">
+    <Compile Include="..\..\Base\Repository\Base\Role.cs">
       <Link>Base\Role.cs</Link>
     </Compile>
-    <Compile Include="..\..\platform\Base\Repository\Base\SecurityToken.cs">
+    <Compile Include="..\..\Base\Repository\Base\SecurityToken.cs">
       <Link>Base\SecurityToken.cs</Link>
     </Compile>
-    <Compile Include="..\..\platform\Base\Repository\Base\SecurityTokenOwner.cs">
+    <Compile Include="..\..\Base\Repository\Base\SecurityTokenOwner.cs">
       <Link>Base\SecurityTokenOwner.cs</Link>
     </Compile>
-    <Compile Include="..\..\platform\Base\Repository\Base\Singleton.cs">
+    <Compile Include="..\..\Base\Repository\Base\Singleton.cs">
       <Link>Base\Singleton.cs</Link>
     </Compile>
-    <Compile Include="..\..\platform\Base\Repository\Base\Transitional.cs">
+    <Compile Include="..\..\Base\Repository\Base\Transitional.cs">
       <Link>Base\Transitional.cs</Link>
     </Compile>
-    <Compile Include="..\..\platform\Base\Repository\Base\UniquelyIdentifiable.cs">
+    <Compile Include="..\..\Base\Repository\Base\UniquelyIdentifiable.cs">
       <Link>Base\UniquelyIdentifiable.cs</Link>
     </Compile>
-    <Compile Include="..\..\platform\Base\Repository\Base\User.cs">
+    <Compile Include="..\..\Base\Repository\Base\User.cs">
       <Link>Base\User.cs</Link>
     </Compile>
-    <Compile Include="..\..\platform\Base\Repository\Base\UserGroup.cs">
+    <Compile Include="..\..\Base\Repository\Base\UserGroup.cs">
       <Link>Base\UserGroup.cs</Link>
     </Compile>
-    <Compile Include="..\..\platform\Core\Repository\Core\AssemblyInfo.cs">
+    <Compile Include="..\..\Core\Repository\Core\AssemblyInfo.cs">
       <Link>Core\AssemblyInfo.cs</Link>
     </Compile>
-    <Compile Include="..\..\platform\Core\Repository\Core\Object.cs">
+    <Compile Include="..\..\Core\Repository\Core\Object.cs">
       <Link>Core\Object.cs</Link>
     </Compile>
     <Compile Include="Apps\AssemblyInfo.cs" />
