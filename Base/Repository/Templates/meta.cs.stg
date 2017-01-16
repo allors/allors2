@@ -2,7 +2,7 @@ group AllorsCSharpRepository;
 
 TemplateId() ::= <<14F49218-A676-43ba-9CBD-B8FFA059D1BF>>
 TemplateName() ::= <<Allors C# Meta>>
-TemplateVersion() ::= <<1.0.2>>
+TemplateVersion() ::= <<1.0.3>>
 TemplateAllors() ::= <<1.0>>
 TemplateConfiguration(repository) ::= <<
 $! 
@@ -160,6 +160,7 @@ $if(property.AttributeByName.Indexed)$		relationType.IsIndexed = $property.Attri
 		relationType.RoleType.SingularName = "$property.RoleSingularName$";
 		relationType.RoleType.PluralName = "$property.RolePluralName$";
 $if(property.AttributeByName.Required)$		relationType.RoleType.IsRequired = $property.AttributeByName.Required.Value$;$endif$
+$if(property.AttributeByName.Unique)$		relationType.RoleType.IsUnique = $property.AttributeByName.Unique.Value$;$endif$
 $if(property.AttributeByName.Size)$		relationType.RoleType.Size = $property.AttributeByName.Size.Value$;$endif$
 $if(property.AttributeByName.Precision)$		relationType.RoleType.Precision = $property.AttributeByName.Precision.Value$;$endif$
 $if(property.AttributeByName.Scale)$		relationType.RoleType.Scale = $property.AttributeByName.Scale.Value$;$endif$
