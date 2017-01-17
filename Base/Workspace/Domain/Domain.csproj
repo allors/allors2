@@ -77,16 +77,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\Framework\Allors\Allors.csproj">
-      <Project>{5b4e2d7c-8ef8-45f5-bfb2-e595c401a95f}</Project>
-      <Name>Allors</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Meta\Meta.csproj">
-      <Project>{7b37dff9-8cef-4189-8d9d-be29e34eb68c}</Project>
-      <Name>Meta</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <None Include="app.config" />
     <None Include="Generate.proj" />
     <None Include="packages.config" />
@@ -115,6 +105,16 @@
     <Compile Include="Base\Client\Context.cs" />
     <Compile Include="Base\Client\Database.cs" />
     <Compile Include="Base\Client\Result.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Platform\Framework\Allors\Allors.csproj">
+      <Project>{5b4e2d7c-8ef8-45f5-bfb2-e595c401a95f}</Project>
+      <Name>Allors</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Meta\Meta.csproj">
+      <Project>{7b37dff9-8cef-4189-8d9d-be29e34eb68c}</Project>
+      <Name>Meta</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

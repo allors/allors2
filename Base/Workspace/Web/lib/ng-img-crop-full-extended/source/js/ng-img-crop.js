@@ -13,6 +13,9 @@ crop.directive('imgCrop', ['$timeout', 'cropHost', 'cropPubSub', function ($time
             cropject: '=?',
             maxCanvasDimensions: '=?',
             minCanvasDimensions: '=?',
+            canvasScalemode: '@?', /* String. If set to 'full-width' the directive uses all width available */
+            /* and the canvas expands in height as much as it need to maintain the aspect ratio */
+            /* if set to 'fixed-height', the directive is restricted by a parent element in height */
 
             changeOnFly: '=?',
             liveView: '=?',
@@ -22,6 +25,12 @@ crop.directive('imgCrop', ['$timeout', 'cropHost', 'cropPubSub', function ($time
             areaMinSize: '=?',
             areaInitSize: '=?',
             areaInitCoords: '=?',
+            areaInitIsRelativeToImage: '=?', /* Boolean: If true the areaInitCoords and areaInitSize is scaled according to canvas size. */
+            /* No matter how big/small the canvas is, the resultImage remains the same */
+            /* Example: areaInitCoords are {x: 100, y: 100}, areaInitSize {w: 100, h: 100}   */
+            /* Image is 1000x1000
+             /* if canvas is 500x500 Crop coordinates will be x: 50, y: 50, w: 50, h: 50 */
+            /* if canvas is 100x100 crop coordinates will be x: 10, y: 10, w: 10, h: 10 */
             areaMinRelativeSize: '=?',
             resultImageSize: '=?',
             resultImageFormat: '=?',
@@ -45,11 +54,15 @@ crop.directive('imgCrop', ['$timeout', 'cropHost', 'cropPubSub', function ($time
         }],
         link: function (scope, element) {
 
-            if (scope.liveView && typeof scope.liveView.block == 'boolean') {
+            console.warn('This plugin is deprecated in the name of ui-cropper. You can find it under https://github.com/CrackerakiUA/ui-cropper');
+
+            if (scope.liveView && typeof scope.liveView.block === 'boolean') {
                 scope.liveView.render = function (callback) {
                     updateResultImage(scope, true, callback);
-                }
-            } else scope.liveView = {block: false};
+                };
+            } else {
+                scope.liveView = {block: false};
+            }
 
             // Init Events Manager
             var events = scope.events;
@@ -57,24 +70,39 @@ crop.directive('imgCrop', ['$timeout', 'cropHost', 'cropPubSub', function ($time
             // Init Crop Host
             var cropHost = new CropHost(element.find('canvas'), {}, events);
 
+            if (scope.canvasScalemode) {
+                cropHost.setScalemode(scope.canvasScalemode);
+            } else {
+                cropHost.setScalemode('fixed-height');
+            }
+
+            element.addClass(cropHost.getScalemode());
+
             // Store Result Image to check if it's changed
             var storedResultImage;
+
 
             var updateResultImage = function (scope, force, callback) {
                 if (scope.image !== '' && (!scope.liveView.block || force)) {
                     var resultImageObj = cropHost.getResultImage();
+                    var resultImage;
                     if (angular.isArray(resultImageObj)) {
                         resultImage = resultImageObj[0].dataURI;
                         scope.resultArrayImage = resultImageObj;
-                        console.log(scope.resultArrayImage);
-                    } else var resultImage = resultImageObj.dataURI;
+                    } else {
+                        resultImage = resultImageObj.dataURI;
+                    }
 
                     var urlCreator = window.URL || window.webkitURL;
                     if (storedResultImage !== resultImage) {
                         storedResultImage = resultImage;
                         scope.resultImage = resultImage;
-                        if (scope.liveView.callback) scope.liveView.callback(resultImage);
-                        if (callback) callback(resultImage);
+                        if (scope.liveView.callback) {
+                            scope.liveView.callback(resultImage);
+                        }
+                        if (callback) {
+                            callback(resultImage);
+                        }
                         cropHost.getResultImageDataBlob().then(function (blob) {
                             scope.resultBlob = blob;
                             scope.urlBlob = urlCreator.createObjectURL(blob);
@@ -98,19 +126,19 @@ crop.directive('imgCrop', ['$timeout', 'cropHost', 'cropPubSub', function ($time
             };
 
             var updateAreaCoords = function (scope) {
-                var areaCoords = cropHost.getAreaCoords();
-                scope.areaCoords = areaCoords;
+                scope.areaCoords = cropHost.getAreaCoords();
             };
 
             var updateCropject = function (scope) {
                 var areaCoords = cropHost.getAreaCoords();
 
                 var dimRatio = {
-                  x: cropHost.getArea().getImage().width / cropHost.getArea().getCanvasSize().w,
-                  y: cropHost.getArea().getImage().height / cropHost.getArea().getCanvasSize().h
+                    x: cropHost.getArea().getImage().width / cropHost.getArea().getCanvasSize().w,
+                    y: cropHost.getArea().getImage().height / cropHost.getArea().getCanvasSize().h
                 };
 
                 scope.cropject = {
+                    canvasSize: cropHost.getArea().getCanvasSize(),
                     areaCoords: areaCoords,
                     cropWidth: areaCoords.w,
                     cropHeight: areaCoords.h,
@@ -134,9 +162,41 @@ crop.directive('imgCrop', ['$timeout', 'cropHost', 'cropPubSub', function ($time
                 };
             };
 
-            if (scope.chargement == null) scope.chargement = 'Chargement';
+            // Will get the users language settings, and return the appropriate loading text
+            var printLoadMsg = function () {
+                var language = window.navigator.userLanguage || window.navigator.language;
+
+                switch (language) {
+                    case 'nl':
+                    case 'nl_NL':
+                        return 'Aan het laden';
+
+                    case 'fr':
+                    case 'fr-FR':
+                        return 'Chargement';
+
+                    case 'es':
+                    case 'es-ES':
+                        return 'Cargando';
+
+                    case 'ca':
+                    case 'ca-ES':
+                        return 'Càrrega';
+
+                    case 'de':
+                    case 'de-DE':
+                        return 'Laden';
+
+                    default:
+                        return 'Loading';
+                }
+            };
+
+            if (!scope.chargement) {
+                scope.chargement = printLoadMsg();
+            }
             var displayLoading = function () {
-                element.append('<div class="loading"><span>' + scope.chargement + '...</span></div>')
+                element.append('<div class="loading"><span>' + scope.chargement + '...</span></div>');
             };
 
             // Setup CropHost Event Handlers
@@ -145,7 +205,13 @@ crop.directive('imgCrop', ['$timeout', 'cropHost', 'cropPubSub', function ($time
                     scope.onLoadBegin({});
                 }))
                 .on('load-done', fnSafeApply(function (scope) {
-                    angular.element(element.children()[element.children().length - 1]).remove();
+                    var children = element.children();
+                    angular.forEach(children, function (child, index) {
+                        if (angular.element(child).hasClass('loading')) {
+                            angular.element(child).remove();
+                        }
+                    });
+                    updateCropject(scope);
                     scope.onLoadDone({});
                 }))
                 .on('load-error', fnSafeApply(function (scope) {
@@ -157,12 +223,12 @@ crop.directive('imgCrop', ['$timeout', 'cropHost', 'cropPubSub', function ($time
                     }
                     updateCropject(scope);
                 }))
+                .on('image-updated', fnSafeApply(function (scope) {
+                    cropHost.setAreaMinRelativeSize(scope.areaMinRelativeSize);
+                }))
                 .on('area-move-end area-resize-end image-updated', fnSafeApply(function (scope) {
                     updateResultImage(scope);
                     updateCropject(scope);
-                }))
-                .on('image-updated', fnSafeApply(function(scope) {
-                    cropHost.setAreaMinRelativeSize(scope.areaMinRelativeSize);
                 }));
 
 
@@ -171,7 +237,12 @@ crop.directive('imgCrop', ['$timeout', 'cropHost', 'cropPubSub', function ($time
                 if (newVal) {
                     displayLoading();
                 }
-                $timeout(function () {
+                // cancel timeout if necessary
+                if (!!scope.timeout) {
+                    $timeout.cancel(scope.timeout);
+                }
+                scope.timeout = $timeout(function () {
+                    scope.timeout = null;
                     cropHost.setInitMax(scope.initMaxArea);
                     cropHost.setNewImageSource(scope.image);
                 }, 100);
@@ -196,6 +267,7 @@ crop.directive('imgCrop', ['$timeout', 'cropHost', 'cropPubSub', function ($time
             });
             scope.$watch('areaInitCoords', function () {
                 cropHost.setAreaInitCoords(scope.areaInitCoords);
+                cropHost.areaInitIsRelativeToImage = scope.areaInitIsRelativeToImage;
                 updateResultImage(scope);
             });
             scope.$watch('maxCanvasDimensions', function () {
@@ -220,24 +292,41 @@ crop.directive('imgCrop', ['$timeout', 'cropHost', 'cropPubSub', function ($time
                 cropHost.setPaletteColorLength(scope.paletteColorLength);
             });
             scope.$watch('aspectRatio', function () {
-                if (typeof scope.aspectRatio == 'string' && scope.aspectRatio != '') {
+                if (typeof scope.aspectRatio === 'string' && scope.aspectRatio !== '') {
                     scope.aspectRatio = parseInt(scope.aspectRatio);
                 }
-                if (scope.aspectRatio) cropHost.setAspect(scope.aspectRatio);
+                if (scope.aspectRatio) {
+                    cropHost.setAspect(scope.aspectRatio);
+                }
             });
             scope.$watch('allowCropResizeOnCorners', function () {
-                if (scope.allowCropResizeOnCorners) cropHost.setAllowCropResizeOnCorners(scope.allowCropResizeOnCorners);
+                if (scope.allowCropResizeOnCorners) {
+                    cropHost.setAllowCropResizeOnCorners(scope.allowCropResizeOnCorners);
+                }
             });
 
             // Update CropHost dimensions when the directive element is resized
             scope.$watch(
                 function () {
-                    return [element[0].clientWidth, element[0].clientHeight];
+                    if (cropHost.getScalemode() === 'fixed-height') {
+                        return [element[0].clientWidth, element[0].clientHeight];
+                    }
+                    if (cropHost.getScalemode() === 'full-width') {
+                        return element[0].clientWidth;
+                    }
                 },
                 function (value) {
-                    if(value[0] > 0 && value[1] > 0) {
-                        cropHost.setMaxDimensions(value[0], value[1]);
-                        updateResultImage(scope);
+
+                    if (cropHost.getScalemode() === 'fixed-height') {
+                        if (value[0] > 0 && value[1] > 0) {
+                            cropHost.setMaxDimensions(value[0], value[1]);
+                            updateResultImage(scope);
+                        }
+                    }
+                    if (cropHost.getScalemode() === 'full-width') {
+                        if (value > 0) {
+                            cropHost.setMaxDimensions(value);
+                        }
                     }
                 },
                 true

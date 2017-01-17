@@ -93,15 +93,15 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\Adapters\Allors.Adapters.Memory\Allors.Adapters.Memory.csproj">
+    <ProjectReference Include="..\..\..\Platform\Adapters\Allors.Adapters.Memory\Allors.Adapters.Memory.csproj">
       <Project>{cb9b7108-c8f3-459c-b2da-88187c84cfc1}</Project>
       <Name>Allors.Adapters.Memory</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\Adapters\Allors.Adapters.Object.SqlClient\Allors.Adapters.Object.SqlClient.csproj">
+    <ProjectReference Include="..\..\..\Platform\Adapters\Allors.Adapters.Object.SqlClient\Allors.Adapters.Object.SqlClient.csproj">
       <Project>{06bc1665-8fe8-4f04-9e80-ec2d54404ba7}</Project>
       <Name>Allors.Adapters.Object.SqlClient</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\Framework\Allors\Allors.csproj">
+    <ProjectReference Include="..\..\..\Platform\Framework\Allors\Allors.csproj">
       <Project>{5b4e2d7c-8ef8-45f5-bfb2-e595c401a95f}</Project>
       <Name>Allors</Name>
     </ProjectReference>
@@ -110,7 +110,7 @@
       <Name>Domain</Name>
     </ProjectReference>
     <ProjectReference Include="..\Meta\Meta.csproj">
-      <Project>{BA6EFCFE-CB7F-4994-A5A4-C11DDAAC32DD}</Project>
+      <Project>{ba6efcfe-cb7f-4994-a5a4-c11ddaac32dd}</Project>
       <Name>Meta</Name>
     </ProjectReference>
     <ProjectReference Include="..\Resources\Resources.csproj">

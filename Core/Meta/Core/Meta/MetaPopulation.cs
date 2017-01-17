@@ -62,20 +62,27 @@ namespace Allors.Meta
 
         private MetaPopulation()
         {
-            this.isStale = true;
-            this.isDeriving = false;
+            try
+            {
+                this.isStale = true;
+                this.isDeriving = false;
 
-            this.domains = new List<Domain>();
-            this.units = new List<Unit>();
-            this.interfaces = new List<Interface>();
-            this.classes = new List<Class>();
-            this.inheritances = new List<Inheritance>();
-            this.relationTypes = new List<RelationType>();
-            this.associationTypes = new List<AssociationType>();
-            this.roleTypes = new List<RoleType>();
-            this.methodTypes = new List<MethodType>();
+                this.domains = new List<Domain>();
+                this.units = new List<Unit>();
+                this.interfaces = new List<Interface>();
+                this.classes = new List<Class>();
+                this.inheritances = new List<Inheritance>();
+                this.relationTypes = new List<RelationType>();
+                this.associationTypes = new List<AssociationType>();
+                this.roleTypes = new List<RoleType>();
+                this.methodTypes = new List<MethodType>();
 
-            this.metaObjectById = new Dictionary<Guid, MetaObjectBase>();
+                this.metaObjectById = new Dictionary<Guid, MetaObjectBase>();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(1);
+            }
         }
 
         public bool IsBound => this.isBound;

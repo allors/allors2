@@ -24,7 +24,7 @@ namespace Tests.Remote
 
     public abstract class Test
     {
-        public static DirectoryInfo AppLocation => new DirectoryInfo("../../../Workspace.Web");
+        public static DirectoryInfo AppLocation => new DirectoryInfo("../../../Web");
         
         public const string BaseUrl = "http://localhost:" + Fixture.Port;
 

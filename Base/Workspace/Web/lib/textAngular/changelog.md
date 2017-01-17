@@ -1,3 +1,187 @@
+<a name="1.5.16"></a>
+## [1.5.16](https://github.com/fraywing/textAngular/compare/v1.5.15...v1.5.16) (2016-12-05)
+
+
+### Bug Fixes
+
+* **taFixChrome, taFixChrome.spec:** corrected a bug introduced when correcting pasted html (see PR [#1411](https://github.com/fraywing/textAngular/issues/1411)) ([35be0a0](https://github.com/fraywing/textAngular/commit/35be0a0))
+
+
+
+<a name="1.5.15"></a>
+## [1.5.15](https://github.com/fraywing/textAngular/compare/v1.5.14...v1.5.15) (2016-12-04)
+
+
+### Bug Fixes
+
+* **taBind:** (from damien-otis) Add code to handle pasting text in IE [#1410](https://github.com/fraywing/textAngular/issues/1410) ([b9863c2](https://github.com/fraywing/textAngular/commit/b9863c2))
+* **taBind:** corrected bug [#1379](https://github.com/fraywing/textAngular/issues/1379) where the paste from word was broken for lists ([c11765d](https://github.com/fraywing/textAngular/commit/c11765d))
+* **taFixChrome, taFixChrom.spec:** fixed bug where the html was being damaged on pasted html ([425396d](https://github.com/fraywing/textAngular/commit/425396d))
+* Note: with this release we shift from tab's in the source code to 4 spaces!
+
+
+<a name="1.5.14"></a>
+## [1.5.14](https://github.com/fraywing/textAngular/compare/v1.5.13...v1.5.14) (2016-11-30)
+
+
+### Bug Fixes
+
+* **DOM:** corrected a bug where we could not insertHTML when the document was empty. ([ba156c4](https://github.com/fraywing/textAngular/commit/ba156c4))
+* **taBind:** corrected a bug where we attempted to restore the selection in element.on('input') when the
+     document was empty after a delete.
+* **textAngularSetup):** corrected a bug where we would throw an error in taRegisterTool('justifyFull'),
+     taRegisterTool('justifyRight'), and taRegisterTool('justifyLeft') when it was illegal to call
+     .css('text-align).  We now catch and suppress those errors.
+
+
+<a name="1.5.13"></a>
+## [1.5.13](https://github.com/fraywing/textAngular/compare/v1.5.12...v1.5.13) (2016-11-10)
+
+
+### Bug Fixes
+
+* **main:** Corrected issue [#1353](https://github.com/fraywing/textAngular/issues/1353) where the dropEvent.target was not being used. ([be038c2](https://github.com/fraywing/textAngular/commit/be038c2))
+* **main:** Corrected issue [#1359](https://github.com/fraywing/textAngular/issues/1359) and some older issues around refesh of popover display ([4ef827e](https://github.com/fraywing/textAngular/commit/4ef827e))
+* **taBind:** Corrected issue [#1361](https://github.com/fraywing/textAngular/issues/1361) can't paste word document with tables ([f27d444](https://github.com/fraywing/textAngular/commit/f27d444))
+* **taBind:** Corrected issue where Apple ignores Shift+Enter on Safari ([cd9de24](https://github.com/fraywing/textAngular/commit/cd9de24))
+* **taBind, textAngular-sanitize:** Corrected and enhanced formating comming from Word and OneNote ([fbcd381](https://github.com/fraywing/textAngular/commit/fbcd381))
+* **main:** Cleanup event handlers that are placed on the window (from Bret Little)
+* **textAngularSetup:** Fix clear formatting functionality when used with ta-default-wrap=br #1374 - thanks to damien-otis for this fix. 0e45059062fadf2499b4d4d4f78621a49cb89968
+* **taBind:** Fix don't deselect after 1000ms after applying styling #1381 - thanks to damien-otis for this fix 
+
+
+<a name="1.5.12"></a>
+## [1.5.12](https://github.com/fraywing/textAngular/compare/v1.5.11...v1.5.12) (2016-10-03)
+
+
+### Bug Fixes
+
+* **DOM:** Issue [#754](https://github.com/fraywing/textAngular/issues/754) is not corrected.  Now wrapSelection('insertHtml', embed, true) can insert '\n' ([424ac59](https://github.com/fraywing/textAngular/commit/424ac59))
+* **main:** added a click monitor to the resize.background to shift the focus back to editor when closed. ([a3133ca](https://github.com/fraywing/textAngular/commit/a3133ca))
+* **main:** Corrected issue editor only focuses when files are dropped - drop text behavior, Schamelhout
+* **main:** Fix multi-deselect problem [#1334](https://github.com/fraywing/textAngular/issues/1334) from mikolawannabe ([64d0c4a](https://github.com/fraywing/textAngular/commit/64d0c4a))
+* **taBind:** Corrected console errors caused by #text nodes - damien-otis. ([6dd1556](https://github.com/fraywing/textAngular/commit/6dd1556))
+* **main:** Corrected issue [#299](https://github.com/fraywing/textAngular/issues/299) around the positioning of the popover on scrolling ([53f9529](https://github.com/fraywing/textAngular/commit/53f9529))
+* **main:** Corrected Issue: [#1326](https://github.com/fraywing/textAngular/issues/1326) ([f9715de](https://github.com/fraywing/textAngular/commit/f9715de)) No reflowPopover() when window resized or scrolled. 
+* **taBind:** Corrected 'MS Word, some word spaces get lost (line break issue?)' [#598](https://github.com/fraywing/textAngular/issues/598) ([e29e463](https://github.com/fraywing/textAngular/commit/e29e463))
+
+
+
+<a name="1.5.11"></a>
+## [1.5.11](https://github.com/fraywing/textAngular/compare/v1.5.10...v1.5.11) (2016-10-01)
+
+
+### Bug Fixes
+
+* **demo:** improved the style usage ([58f7f8d](https://github.com/fraywing/textAngular/commit/58f7f8d))
+* **demo/textAngular.com.html:** fixed issue [#611](https://github.com/fraywing/textAngular/issues/611) by adding a 'clearfix' to the ta-text-editor-class attribute. ([3683747](https://github.com/fraywing/textAngular/commit/3683747))
+* **DOM:** corrected bug [#1343](https://github.com/fraywing/textAngular/issues/1343) where we were incorrectly setting the <a> link on a <li> element ([44d5c56](https://github.com/fraywing/textAngular/commit/44d5c56))
+* **factories:** small fix for undefined unsafe.replace [#1335](https://github.com/fraywing/textAngular/issues/1335) ([12a7b27](https://github.com/fraywing/textAngular/commit/12a7b27))
+
+
+
+<a name="1.5.10"></a>
+## [1.5.10](https://github.com/fraywing/textAngular/compare/v1.5.9...v1.5.10) (2016-09-19)
+
+
+### Bug Fixes
+
+* **DOM, globals, main, taBind:** Fix for [#1205](https://github.com/fraywing/textAngular/issues/1205) Duplicating content inside <p> ([581e050](https://github.com/fraywing/textAngular/commit/581e050))
+* **DOM, taBind, taBind.spec:** added test for ShiftKey being pressed and released ([1b94314](https://github.com/fraywing/textAngular/commit/1b94314))
+* **globals, taBind:** small code clean up and re-org ([19cfe7e](https://github.com/fraywing/textAngular/commit/19cfe7e))
+* **main:** fix for [#655](https://github.com/fraywing/textAngular/issues/655) activeState seemingly not firing after the first click after a highlight [#655](https://github.com/fraywing/textAngular/issues/655) ([6ecc1c1](https://github.com/fraywing/textAngular/commit/6ecc1c1))
+* **main:** fixed an invalid error in rare conditions ([8772907](https://github.com/fraywing/textAngular/commit/8772907))
+* **taBind:** Browser spelling correction not setting the control to dirty [#1120](https://github.com/fraywing/textAngular/issues/1120) ([5473d01](https://github.com/fraywing/textAngular/commit/5473d01))
+* **taBind:** corrected issue #607 - catching Ctrl+Return ([438e060](https://github.com/fraywing/textAngular/commit/438e060))
+* **DOM, globals, main, taBind:** Fix for #1205 Duplicating content in ... (https://github.com/fraywing/textAngular/commit/581e050a3ed5bb4f21d59e4a59856f1d4a859770)
+
+
+<a name="1.5.9"></a>
+## [1.5.9](https://github.com/fraywing/textAngular/compare/v1.5.8...v1.5.9) (2016-09-05)
+
+
+### Bug Fixes
+
+* **factories.js:** removed the extra <span id="selectionBoundary..." class="rangySelectionBoundary">></span> and ([76a31e2](https://github.com/fraywing/textAngular/commit/76a31e2))
+* **main:** We now properly update the toolbar when we tab into the editor. ([d930538](https://github.com/fraywing/textAngular/commit/d930538))
+* **DOM, textAngularSetup, taExecCommand.formatBlock.spec, taTools.spec)
+ - removed a rare element.parentNode === null condition
+ - fixed a rare bug during 'CLEAR' formatic where we could see a rangy error
+   'The given range isn't in document'
+ - enhanced the 'CLEAR' format function to properly handle nested <ul> statements
+
+#### Features
+  * Enhancment: - the build proces is improved and we are now uptodate with the
+                packages in use.  Only grunt-istanbul-coverage is behind because
+                it currently breaks the  build.
+              - Updated the grunt-conventional-changelog to the current package.
+                and added an editing step for the changelog.md as part of the
+                build process.
+
+#### Breaking Changes (BUILD ONLY)
+  * Because of the update of the packages used in the build process, you must
+    do a 'npm install' before you can build.
+
+
+
+<a name"1.5.8"></a>
+### 1.5.8 (2016-08-31)
+
+
+#### Bug Fixes
+
+* **textAngular:**
+   * Fixed several issues around Italic, Bold, Strikethrough, Underline state in the  ([7823937b](https://github.com/fraywing/textAngular/commit/7823937b))
+   * fix(DOM, textAngularSetup): Functionality under Firefox is now much improved. 
+   * Build Enhancement: updated many of the development packages.  There is more work to do, but some improvement.
+   * Fix(main): removed the saveFocusSelection() and restoreFocusSelection()
+      which to do function properly and create problems!
+
+#### Features
+   * Enhancment: - 'insertLink' now allows editing of existing link
+
+
+<a name"1.5.7"></a>
+### 1.5.7 (2016-08-23)
+
+
+<a name"1.5.6"></a>
+### 1.5.6 (2016-08-23)
+
+
+#### Bug Fixes
+
+* **textAngular:**
+  * Fix(main, textAngularManager.spec): Corrected issues with toolbar being active all all editors with same toolbar.
+     Now toolbarScopes are tied to each editor which is cleaner and makes more sense.
+      AND the toolbarScopes are deleted when the editor is deleted which is better and
+      no longer tied to the toolbar.
+      We also added some code to enable $log messages in the karma testing when necessary
+      See the textAngularManager.spec.js file for details looking at 'var $log', beforeEach() and afterEach()
+     (https://github.com/fraywing/textAngular/commit/daec3e8769f187be3e9f9f5a3c4ac33241f3e492) 
+  * Fix(taFixChrome.spec): added a test to verify the fix form #1281 (https://github.com/fraywing/textAngular/commit/cd45b29a9fddeffaab5bae267572a59b04bd0370)
+  * Fix(main): We now respect he selection and enhanced wrapSelection (https://github.com/fraywing/textAngular/commit/13379176e7b732bf8b83aee9fe0fa5104dcf3473)
+  * FIx(Gruntfile): Added the missing task demo_pages to all release paths
+  * Chore(README): Update to new pluker link
+      
+* **factories:**
+  * Only append remainder if the Apple-converted-space has matched ([e086974c](https://github.com/fraywing/textAngular/commit/e086974c))
+  * Add remainder of html string to finalHtml ([950ed2d8](https://github.com/fraywing/textAngular/commit/950ed2d8))
+
+
+
+<a name"1.5.6-0"></a>
+### 1.5.6-0 (2016-08-17)
+
+* **textAngular:**
+  * Enhancement(demo, static-demo, textAngular.com) Added version display to demo code 
+           (https://github.com/fraywing/textAngular/commit/3c3ce76c3805d67e49c980c5bf1da15f52a24781)
+  * Enhancement(main, globals, Gruntfile, textAngularManger.spec, textAngular.spec): 
+       Added a new directive text-angular-version and a new function to textAngularManger:getVersion()
+       I have wanted to add this for a long time to make it easier to display the version of textAngular being used.
+           (https://github.com/fraywing/textAngular/commit/1ffa6f7263ce844a4e300226616a9d2282143f56)
+       This also modifies the build process to automatically put the version into globals.js     
+
 <a name"1.5.5"></a>
 ### 1.5.5 (2016-08-15)
 

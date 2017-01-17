@@ -22,6 +22,8 @@ using Allors.Meta;
 
 namespace Allors
 {
+    using System;
+
     using Allors.Domain;
 
     public partial class Setup
@@ -46,6 +48,11 @@ namespace Allors
             var security = new Security(session);
             foreach (var @class in this.session.Database.MetaPopulation.Classes)
             {
+                if (@class.Equals(M.InternalOrganisation.Class))
+                {
+                    Console.WriteLine(1);   
+                }
+
                 security.GrantAdministrator(@class, Operations.Read, Operations.Write, Operations.Execute);
             }
         }

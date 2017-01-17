@@ -12,8 +12,8 @@
     <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Desktop</RootNamespace>
-    <AssemblyName>Desktop</AssemblyName>
+    <RootNamespace>Web</RootNamespace>
+    <AssemblyName>Web</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <MvcBuildViews>false</MvcBuildViews>
     <UseIISExpress>true</UseIISExpress>
@@ -284,8 +284,6 @@
     <Content Include="lib\angular-i18n\angular-locale_en.js" />
     <Content Include="lib\angular-i18n\angular-locale_fr.js" />
     <Content Include="lib\angular-i18n\angular-locale_nl.js" />
-    <Content Include="lib\angular-loading-bar\build\loading-bar.css" />
-    <Content Include="lib\angular-loading-bar\build\loading-bar.js" />
     <Content Include="lib\angular-toastr\dist\angular-toastr.css" />
     <Content Include="lib\angular-toastr\dist\angular-toastr.tpls.js" />
     <Content Include="lib\angular-translate-loader-url\angular-translate-loader-url.js" />
@@ -438,7 +436,6 @@
     <Content Include="_UnitTests\app.css" />
     <TypeScriptCompile Include="app\app.translate.ts" />
     <TypeScriptCompile Include="app\app.goto.ts" />
-    <TypeScriptCompile Include="app\app.loading.ts" />
     <TypeScriptCompile Include="app\app.logging.ts" />
     <TypeScriptCompile Include="app\app.state.ts" />
     <TypeScriptCompile Include="app\app.templates.ts" />
@@ -493,15 +490,29 @@
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\Adapters\Allors.Adapters.Memory\Allors.Adapters.Memory.csproj">
+    <Content Include="Generate.proj" />
+    <Content Include="Views\Test\Init.cshtml" />
+    <Content Include="Views\Test\Setup.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="NLog.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <Content Include="Scripts\jsnlog.js.map" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Platform\Adapters\Allors.Adapters.Memory\Allors.Adapters.Memory.csproj">
       <Project>{cb9b7108-c8f3-459c-b2da-88187c84cfc1}</Project>
       <Name>Allors.Adapters.Memory</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\Adapters\Allors.Adapters.Object.SqlClient\Allors.Adapters.Object.SqlClient.csproj">
+    <ProjectReference Include="..\..\..\Platform\Adapters\Allors.Adapters.Object.SqlClient\Allors.Adapters.Object.SqlClient.csproj">
       <Project>{06bc1665-8fe8-4f04-9e80-ec2d54404ba7}</Project>
       <Name>Allors.Adapters.Object.SqlClient</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\Framework\Allors\Allors.csproj">
+    <ProjectReference Include="..\..\..\Platform\Framework\Allors\Allors.csproj">
       <Project>{5b4e2d7c-8ef8-45f5-bfb2-e595c401a95f}</Project>
       <Name>Allors</Name>
     </ProjectReference>
@@ -517,20 +528,6 @@
       <Project>{a10683f7-b261-4770-81c6-bb589e768acb}</Project>
       <Name>Resources</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Generate.proj" />
-    <Content Include="Views\Test\Init.cshtml" />
-    <Content Include="Views\Test\Setup.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="NLog.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <Content Include="Scripts\jsnlog.js.map" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

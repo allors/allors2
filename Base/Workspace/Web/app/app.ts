@@ -9,6 +9,6 @@
         "ui.router", "ui.bootstrap", "ui.select",
 
         // Third Party
-        "pascalprecht.translate", "tmh.dynamicLocale", "angular-loading-bar", "toastr",
+        "pascalprecht.translate", "tmh.dynamicLocale", "toastr",
         "ncy-angular-breadcrumb", "textAngular", "ngImgCrop"]);
 }

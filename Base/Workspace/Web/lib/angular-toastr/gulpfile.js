@@ -5,7 +5,7 @@ var ngTemplates  = require('gulp-angular-templatecache');
 var rename       = require('gulp-rename');
 var uglify       = require('gulp-uglify');
 var concat       = require('gulp-concat');
-var minifyCss    = require('gulp-minify-css');
+var cssnano      = require('gulp-cssnano');
 
 var del          = require('del');
 var stylish      = require('jshint-stylish');
@@ -21,7 +21,9 @@ gulp.task('less-prod', function() {
     .pipe(less())
     .pipe(rename('angular-toastr.css'))
     .pipe(gulp.dest('dist'))
-    .pipe(minifyCss())
+    .pipe(cssnano({
+      zindex: false
+    }))
     .pipe(rename('angular-toastr.min.css'))
     .pipe(gulp.dest('dist'));
 });

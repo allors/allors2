@@ -293,12 +293,18 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\Framework\Allors\Allors.csproj">
+    <None Include="Base\Derivations\Logging\Logging.cd" />
+    <None Include="Generate.proj" />
+    <None Include="packages.config" />
+    <None Include="Settings.StyleCop" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Platform\Framework\Allors\Allors.csproj">
       <Project>{5b4e2d7c-8ef8-45f5-bfb2-e595c401a95f}</Project>
       <Name>Allors</Name>
     </ProjectReference>
     <ProjectReference Include="..\Meta\Meta.csproj">
-      <Project>{BA6EFCFE-CB7F-4994-A5A4-C11DDAAC32DD}</Project>
+      <Project>{ba6efcfe-cb7f-4994-a5a4-c11ddaac32dd}</Project>
       <Name>Meta</Name>
     </ProjectReference>
     <ProjectReference Include="..\Resources\Resources.csproj">
@@ -306,13 +312,6 @@
       <Name>Resources</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <None Include="Base\Derivations\Logging\Logging.cd" />
-    <None Include="Generate.proj" />
-    <None Include="packages.config" />
-    <None Include="Settings.StyleCop" />
-  </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

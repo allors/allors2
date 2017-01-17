@@ -4,8 +4,8 @@ crop.factory('cropAreaCircle', ['cropArea', function(CropArea) {
     var CropAreaCircle = function() {
         CropArea.apply(this, arguments);
 
-        this._boxResizeBaseSize = 30;
-        this._boxResizeNormalRatio = 0.9;
+        this._boxResizeBaseSize = 25;
+        this._boxResizeNormalRatio = 1;
         this._boxResizeHoverRatio = 1.2;
         this._iconMoveNormalRatio = 0.9;
         this._iconMoveHoverRatio = 1.2;
@@ -29,7 +29,7 @@ crop.factory('cropAreaCircle', ['cropArea', function(CropArea) {
 
     CropAreaCircle.prototype.getType = function() {
         return 'circle';
-    }
+    };
 
     CropAreaCircle.prototype._calcCirclePerimeterCoords = function(angleDegrees) {
         var hSize = this._size.w / 2;

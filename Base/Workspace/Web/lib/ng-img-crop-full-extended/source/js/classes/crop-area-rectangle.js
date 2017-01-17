@@ -5,8 +5,8 @@ crop.factory('cropAreaRectangle', ['cropArea', function (CropArea) {
         CropArea.apply(this, arguments);
 
         this._resizeCtrlBaseRadius = 15;
-        this._resizeCtrlNormalRatio = 0.75;
-        this._resizeCtrlHoverRatio = 1;
+        this._resizeCtrlNormalRatio = 0.6;
+        this._resizeCtrlHoverRatio = 0.70;
         this._iconMoveNormalRatio = 0.9;
         this._iconMoveHoverRatio = 1.2;
 
@@ -91,7 +91,7 @@ crop.factory('cropAreaRectangle', ['cropArea', function (CropArea) {
         var resizeIconsCenterCoords = this._calcRectangleCorners();
         for (var i = 0, len = resizeIconsCenterCoords.length; i < len; i++) {
             var resizeIconCenterCoords = resizeIconsCenterCoords[i];
-            this._cropCanvas.drawIconResizeCircle(resizeIconCenterCoords, this._resizeCtrlBaseRadius, this._resizeCtrlIsHover === i ? this._resizeCtrlHoverRatio : this._resizeCtrlNormalRatio);
+            this._cropCanvas.drawIconResizeBoxBase(resizeIconCenterCoords, this._resizeCtrlBaseRadius, this._resizeCtrlIsHover === i ? this._resizeCtrlHoverRatio : this._resizeCtrlNormalRatio);
         }
     };
 
@@ -117,7 +117,9 @@ crop.factory('cropAreaRectangle', ['cropArea', function (CropArea) {
             var posX = mouseCurX;
             switch (this._resizeCtrlIsDragging) {
                 case 0: // Top Left
-                    if (this._aspect) posX = se.x - ((se.y - mouseCurY) * this._aspect);
+                    if (this._aspect) {
+                        posX = se.x - ((se.y - mouseCurY) * this._aspect);
+                    }
                     this.setSizeByCorners({
                         x: posX,
                         y: mouseCurY
@@ -128,7 +130,9 @@ crop.factory('cropAreaRectangle', ['cropArea', function (CropArea) {
                     cursor = 'nwse-resize';
                     break;
                 case 1: // Top Right
-                    if (this._aspect) posX = s.x + ((se.y - mouseCurY) * this._aspect);
+                    if (this._aspect) {
+                        posX = s.x + ((se.y - mouseCurY) * this._aspect);
+                    }
                     this.setSizeByCorners({
                         x: s.x,
                         y: mouseCurY
@@ -139,7 +143,9 @@ crop.factory('cropAreaRectangle', ['cropArea', function (CropArea) {
                     cursor = 'nesw-resize';
                     break;
                 case 2: // Bottom Left
-                    if (this._aspect) posX = se.x - ((mouseCurY - s.y) * this._aspect);
+                    if (this._aspect) {
+                        posX = se.x - ((mouseCurY - s.y) * this._aspect);
+                    }
                     this.setSizeByCorners({
                         x: posX,
                         y: s.y
@@ -150,7 +156,9 @@ crop.factory('cropAreaRectangle', ['cropArea', function (CropArea) {
                     cursor = 'nesw-resize';
                     break;
                 case 3: // Bottom Right
-                    if (this._aspect) posX = s.x + ((mouseCurY - s.y) * this._aspect);
+                    if (this._aspect) {
+                        posX = s.x + ((mouseCurY - s.y) * this._aspect);
+                    }
                     this.setSizeByCorners({
                         x: s.x,
                         y: s.y

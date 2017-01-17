@@ -43,7 +43,7 @@ namespace Tests.Remote
 
             this.iisProcess = new Process { StartInfo = startInfo };
 
-            this.iisProcess.Start();
+            var result = this.iisProcess.Start();
         }
 
         private void TearDownIISExpress()
