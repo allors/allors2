@@ -28,6 +28,7 @@
         RadioTemplate.register($templateCache);
         RadioButtonTemplate.register($templateCache);
         DatepickerPopupTemplate.register($templateCache);
+        ContentTemplate.register($templateCache);
 
         // Field Groups
         // ------------
@@ -36,8 +37,8 @@
         LabelTemplate.register($templateCache);
         LabeledInputTemplate.register($templateCache);
         // Controls
+        LabeledStaticEnumTemplate.register($templateCache);
         LabeledStaticTemplate.register($templateCache);
-        StaticEnumGroupTemplate.register($templateCache);
         LabeledTextTemplate.register($templateCache);
         LabeledTextareaTemplate.register($templateCache);
         LabeledTextAngularTemplate.register($templateCache);
@@ -49,6 +50,7 @@
         LabeledRadioTemplate.register($templateCache);
         LabeledRadioButtonTemplate.register($templateCache);
         LabeledDatepickerPopupTemplate.register($templateCache);
+        LabeledContentTemplate.register($templateCache);
 
         // Model
         // -----

@@ -1,5 +1,5 @@
 ﻿namespace Allors.Bootstrap {
-    export class StaticEnumGroupTemplate {
+    export class LabeledStaticEnumTemplate {
         static name = "allors/bootstrap/labeled-static-enum";
 
         private static createDefaultView() {
@@ -13,8 +13,8 @@
 `;
         }
 
-        static register(templateCache: angular.ITemplateCacheService, view = StaticEnumGroupTemplate.createDefaultView()) {
-            templateCache.put(StaticEnumGroupTemplate.name, view);
+        static register(templateCache: angular.ITemplateCacheService, view = LabeledStaticEnumTemplate.createDefaultView()) {
+            templateCache.put(LabeledStaticEnumTemplate.name, view);
         }
     }
 
@@ -22,7 +22,7 @@
         .module("allors")
         .component("bLabeledStaticEnum", {
             controller: StaticEnumController,
-            templateUrl: StaticEnumGroupTemplate.name,
+            templateUrl: LabeledStaticEnumTemplate.name,
             require: FormController.require,
             bindings: StaticEnumController.bindings
         });
