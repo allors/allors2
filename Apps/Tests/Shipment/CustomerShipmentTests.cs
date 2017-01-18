@@ -156,13 +156,6 @@ namespace Allors.Domain
 
             this.DatabaseSession.Rollback();
 
-            builder.WithCarrier(new Carriers(this.DatabaseSession).Fedex);
-            builder.Build();
-
-            Assert.IsTrue(this.DatabaseSession.Derive().HasErrors);
-
-            this.DatabaseSession.Rollback();
-
             builder.WithShipToAddress(shipToAddress);
             builder.Build();
 
@@ -282,6 +275,7 @@ namespace Allors.Domain
             this.DatabaseSession.Derive(true);
 
             var acl = new AccessControlList(shipment, new Users(this.DatabaseSession).GetCurrentUser());
+            Assert.AreEqual(new CustomerShipmentObjectStates(this.DatabaseSession).Created, shipment.CurrentObjectState);
             Assert.IsTrue(acl.CanExecute(M.CustomerShipment.Cancel));
         }
 

@@ -15,6 +15,7 @@ namespace Allors.Repository.Domain
         [RoleId("6fe551cd-0808-466b-9ec9-833098ebad79")]
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
+        [Required]
         [Indexed]
 
         ShipmentMethod ShipmentMethod { get; set; }
@@ -126,6 +127,7 @@ namespace Allors.Repository.Domain
         [RoleId("14f6385d-4e20-4ffe-89e7-f7a261eda78e")]
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
+        [Required]
         [Indexed]
 
         PostalAddress ShipToAddress { get; set; }
@@ -165,6 +167,7 @@ namespace Allors.Repository.Domain
         [RoleId("81367cbd-4713-46bd-8f4d-0df30c3daf96")]
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
+        [Required]
         [Indexed]
 
         Carrier Carrier { get; set; }
