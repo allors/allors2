@@ -108,7 +108,7 @@ namespace Allors.Domain
             this.DatabaseSession.Derive(true);
             this.DatabaseSession.Commit();
 
-            var shipment = new PurchaseShipmentBuilder(this.DatabaseSession).WithShipFromParty(supplier).Build();
+            var shipment = new PurchaseShipmentBuilder(this.DatabaseSession).WithShipmentMethod(new ShipmentMethods(this.DatabaseSession).Ground).WithShipFromParty(supplier).Build();
             var shipmentItem = new ShipmentItemBuilder(this.DatabaseSession).WithPart(part).Build();
             shipment.AddShipmentItem(shipmentItem);
 
@@ -154,7 +154,7 @@ namespace Allors.Domain
 
             order.Confirm();
 
-            var shipment = new PurchaseShipmentBuilder(this.DatabaseSession).WithShipFromParty(supplier).Build();
+            var shipment = new PurchaseShipmentBuilder(this.DatabaseSession).WithShipmentMethod(new ShipmentMethods(this.DatabaseSession).Ground).WithShipFromParty(supplier).Build();
             var shipmentItem = new ShipmentItemBuilder(this.DatabaseSession).WithGood(good).Build();
             shipment.AddShipmentItem(shipmentItem);
 
@@ -240,7 +240,7 @@ namespace Allors.Domain
 
             order.Confirm();
 
-            var shipment = new PurchaseShipmentBuilder(this.DatabaseSession).WithShipFromParty(supplier).Build();
+            var shipment = new PurchaseShipmentBuilder(this.DatabaseSession).WithShipmentMethod(new ShipmentMethods(this.DatabaseSession).Ground).WithShipFromParty(supplier).Build();
             var shipmentItem = new ShipmentItemBuilder(this.DatabaseSession).WithGood(good).Build();
             shipment.AddShipmentItem(shipmentItem);
 
@@ -290,7 +290,7 @@ namespace Allors.Domain
 
             order.Confirm();
 
-            var shipment = new PurchaseShipmentBuilder(this.DatabaseSession).WithShipFromParty(supplier).Build();
+            var shipment = new PurchaseShipmentBuilder(this.DatabaseSession).WithShipmentMethod(new ShipmentMethods(this.DatabaseSession).Ground).WithShipFromParty(supplier).Build();
             var shipmentItem = new ShipmentItemBuilder(this.DatabaseSession).WithGood(good).Build();
             shipment.AddShipmentItem(shipmentItem);
 

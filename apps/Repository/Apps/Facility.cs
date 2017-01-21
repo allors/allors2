@@ -69,6 +69,7 @@ namespace Allors.Repository.Domain
         [RoleId("61dedec6-5aa1-4717-9b7b-34b77a1b31b9")]
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
+        [Required]
         [Indexed]
 
         InternalOrganisation Owner { get; set; }

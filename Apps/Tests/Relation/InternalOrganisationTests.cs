@@ -81,13 +81,6 @@ namespace Allors.Domain
             builder.WithName("Organisation");
             builder.Build();
 
-            Assert.IsTrue(this.DatabaseSession.Derive().HasErrors);
-
-            this.DatabaseSession.Rollback();
-
-            builder.WithPartyContactMechanism(this.billingAddress);
-            builder.Build();
-
             Assert.IsFalse(this.DatabaseSession.Derive().HasErrors);
         }
 
@@ -164,7 +157,7 @@ namespace Allors.Domain
 
             this.DatabaseSession.Derive(true);
 
-            Assert.AreEqual(new InvoiceSequences(this.DatabaseSession).FindBy(M.UniquelyIdentifiable.UniqueId, new InvoiceSequences(this.DatabaseSession).RestartOnFiscalYear), internalOrganisation.InvoiceSequence);
+            Assert.AreEqual(new InvoiceSequences(this.DatabaseSession).RestartOnFiscalYear, internalOrganisation.InvoiceSequence);
         }
 
         [Test]
@@ -203,75 +196,6 @@ namespace Allors.Domain
             this.DatabaseSession.Derive(true);
 
             Assert.AreEqual(Singleton.Instance(this.DatabaseSession).DefaultInternalOrganisation.PreferredCurrency, internalOrganisation.PreferredCurrency);
-        }
-
-        [Test]
-        public void GivenInternalOrganisation_WhenBuild_ThenUserGroupForInternalOrganisationIsCreated()
-        {
-            this.InstantiateObjects(this.DatabaseSession);
-
-            var internalOrganisation = new InternalOrganisationBuilder(this.DatabaseSession)
-                .WithName("Internal")
-                .WithLocale(new Locales(this.DatabaseSession).EnglishGreatBritain)
-                .WithPreferredCurrency(this.euro)
-                .WithEmployeeRole(new Roles(this.DatabaseSession).Administrator)
-                .WithDefaultPaymentMethod(this.ownBankAccount)
-                .WithPartyContactMechanism(this.billingAddress)
-                .Build();
-
-            this.DatabaseSession.Derive(true);
-
-            var name = string.Format("{0} for {1})", new Roles(this.DatabaseSession).Administrator.Name, internalOrganisation.Name);
-
-            Assert.IsNotNull(new UserGroups(this.DatabaseSession).FindBy(M.UserGroup.Name, name));
-        }
-
-        [Test]
-        public void GivenInternalOrganisation_WhenOperationsRoleIsUsed_ThenOperationsUserGroupIsDerived()
-        {
-            this.InstantiateObjects(this.DatabaseSession);
-
-            var internalOrganisation = new InternalOrganisationBuilder(this.DatabaseSession)
-                .WithName("Internal")
-                .WithLocale(new Locales(this.DatabaseSession).EnglishGreatBritain)
-                .WithPreferredCurrency(this.euro)
-                .WithEmployeeRole(new Roles(this.DatabaseSession).Administrator)
-                .WithDefaultPaymentMethod(this.ownBankAccount)
-                .WithPartyContactMechanism(this.billingAddress)
-                .Build();
-
-            this.DatabaseSession.Derive(true);
-
-            var name = string.Format("{0} for {1})", new Roles(this.DatabaseSession).Administrator.Name, internalOrganisation.Name);
-            var userGroup = new UserGroups(this.DatabaseSession).FindBy(M.UserGroup.Name, name);
-            Assert.IsNotNull(userGroup);
-        }
-
-        [Test]
-        public void GivenInternalOrganisation_WhenOperationsRoleIsNoLongerUsed_ThenInternalOrganisationOperationsUserGroupIsRemoved()
-        {
-            this.InstantiateObjects(this.DatabaseSession);
-
-            var internalOrganisation = new InternalOrganisationBuilder(this.DatabaseSession)
-                .WithName("Internal")
-                .WithLocale(new Locales(this.DatabaseSession).EnglishGreatBritain)
-                .WithPreferredCurrency(this.euro)
-                .WithEmployeeRole(new Roles(this.DatabaseSession).Administrator)
-                .WithDefaultPaymentMethod(this.ownBankAccount)
-                .WithPartyContactMechanism(this.billingAddress)
-                .Build();
-
-            this.DatabaseSession.Derive(true);
-
-            var name = string.Format("{0} for {1})", new Roles(this.DatabaseSession).Administrator.Name, internalOrganisation.Name);
-            var userGroup = new UserGroups(this.DatabaseSession).FindBy(M.UserGroup.Name, name);
-            Assert.IsNotNull(userGroup);
-
-            internalOrganisation.RemoveEmployeeRole(new Roles(this.DatabaseSession).Administrator);
-
-            this.DatabaseSession.Derive(true);
-            
-            Assert.IsNotNull(userGroup);
         }
 
         [Test]

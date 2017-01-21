@@ -21,6 +21,8 @@
 
 namespace Allors.Domain
 {
+    using Allors.Meta;
+
     using NUnit.Framework;
 
     [TestFixture]
@@ -33,6 +35,7 @@ namespace Allors.Domain
             var addresseeEmail = new EmailAddressBuilder(this.DatabaseSession).WithElectronicAddressString("addressee@allors.com").Build();
 
             var communication = new EmailCommunicationBuilder(this.DatabaseSession)
+                .WithOwner(new People(this.DatabaseSession).FindBy(M.Person.UserName, Users.AdministratorUserName))
                 .WithSubject("Hello")
                 .WithDescription("Hello world!")
                 .WithOriginator(originatorEmail)

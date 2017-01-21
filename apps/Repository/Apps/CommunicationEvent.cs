@@ -200,6 +200,7 @@ namespace Allors.Repository.Domain
         [RoleId("bc58b136-9b36-4065-babb-934ede99aefd")]
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
+        [Required]
         [Indexed]
         Person Owner { get; set; }
 

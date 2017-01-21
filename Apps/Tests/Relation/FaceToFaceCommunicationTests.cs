@@ -25,6 +25,8 @@ namespace Allors.Domain
     using System.Security.Principal;
     using System.Threading;
 
+    using Allors.Meta;
+
     using NUnit.Framework;
 
     [TestFixture]
@@ -78,28 +80,6 @@ namespace Allors.Domain
             this.DatabaseSession.Derive(true);
             
             Assert.AreEqual(3, communication.InvolvedParties.Count);
-        }
-
-        [Test]
-        public void GivenCurrentUserIsUnknown_WhenAccessingFaceToFaceCommunicationWithoutOwner_ThenDefaultSecurityTokenIsApplied()
-        {
-            var participant1 = new PersonBuilder(this.DatabaseSession).WithLastName("participant1").Build();
-            var participant2 = new PersonBuilder(this.DatabaseSession).WithLastName("participant2").Build();
-
-            this.DatabaseSession.Derive(true);
-            this.DatabaseSession.Commit();
-
-            var communication = new FaceToFaceCommunicationBuilder(this.DatabaseSession)
-                .WithSubject("subject")
-                .WithParticipant(participant1)
-                .WithParticipant(participant2)
-                .WithActualStart(DateTime.UtcNow)
-                .Build();
-
-            this.DatabaseSession.Derive(true);
-
-            Assert.AreEqual(1, communication.SecurityTokens.Count);
-            Assert.Contains(Singleton.Instance(this.DatabaseSession).DefaultSecurityToken, communication.SecurityTokens);
         }
 
         [Test]

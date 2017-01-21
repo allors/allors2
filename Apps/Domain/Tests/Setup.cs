@@ -54,6 +54,7 @@ namespace Allors
                 }
 
                 security.GrantAdministrator(@class, Operations.Read, Operations.Write, Operations.Execute);
+                security.GrantCreator(@class, Operations.Read, Operations.Write, Operations.Execute);
             }
         }
     }

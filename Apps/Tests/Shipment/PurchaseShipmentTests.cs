@@ -21,9 +21,6 @@
 
 namespace Allors.Domain
 {
-    using System;
-    using System.Security.Principal;
-    using System.Threading;
     using Meta;
     using NUnit.Framework;
 
@@ -35,7 +32,7 @@ namespace Allors.Domain
         {
             var supplier = new OrganisationBuilder(this.DatabaseSession).WithName("supplier").Build();
             var internalOrganisation = new InternalOrganisations(this.DatabaseSession).FindBy(M.InternalOrganisation.Name, "internalOrganisation");
-            var shipment = new PurchaseShipmentBuilder(this.DatabaseSession).WithShipFromParty(supplier).Build();
+            var shipment = new PurchaseShipmentBuilder(this.DatabaseSession).WithShipmentMethod(new ShipmentMethods(this.DatabaseSession).Ground).WithShipFromParty(supplier).Build();
 
             this.DatabaseSession.Derive(true);
 
@@ -108,7 +105,7 @@ namespace Allors.Domain
                 }
             }
 
-            var shipment = new PurchaseShipmentBuilder(this.DatabaseSession).WithShipFromParty(supplier).Build();
+            var shipment = new PurchaseShipmentBuilder(this.DatabaseSession).WithShipmentMethod(new ShipmentMethods(this.DatabaseSession).Ground).WithShipFromParty(supplier).Build();
             
             this.DatabaseSession.Derive(true);
 
@@ -133,7 +130,7 @@ namespace Allors.Domain
             
             this.DatabaseSession.Derive(true);
 
-            var order = new PurchaseShipmentBuilder(this.DatabaseSession).WithShipFromParty(supplier).Build();
+            var order = new PurchaseShipmentBuilder(this.DatabaseSession).WithShipmentMethod(new ShipmentMethods(this.DatabaseSession).Ground).WithShipFromParty(supplier).Build();
 
             this.DatabaseSession.Derive(true);
 

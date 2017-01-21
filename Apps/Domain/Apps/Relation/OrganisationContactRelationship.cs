@@ -59,7 +59,7 @@ namespace Allors.Domain
         {
             if (this.ExistContact && this.ExistOrganisation && this.Organisation.ExistContactsUserGroup)
             {
-                this.Organisation.ContactsUserGroup.RemoveMembers();
+                this.Organisation.ContactsUserGroup.RemoveMember(this.Contact);
                 if (this.FromDate <= DateTime.UtcNow && (!this.ExistThroughDate || this.ThroughDate >= DateTime.UtcNow))
                 {
                     if (this.Organisation.AppsIsActiveCustomer(this.FromDate) ||

@@ -88,6 +88,7 @@ namespace Allors.Domain
                     if (!this.Employee.ExistInternalOrganisationWhereEmployee)
                     {
                         this.Employer.AddEmployee(this.Employee);
+                        new UserGroups(this.Strategy.Session).Creators.AddMember(this.Employee);
                     }
                 }
 
@@ -96,6 +97,7 @@ namespace Allors.Domain
                     if (this.Employee.ExistInternalOrganisationWhereEmployee)
                     {
                         this.Employer.RemoveEmployee(this.Employee);
+                        new UserGroups(this.Strategy.Session).Creators.RemoveMember(this.Employee);
                     }
                 }
             }

@@ -29,6 +29,13 @@ namespace Allors.Domain
         [Test]
         public void GivenPhoneCommunication_WhenDeriving_ThenRequiredRelationsMustExist()
         {
+            var receiver = new PersonBuilder(this.DatabaseSession).WithLastName("receiver").Build();
+            var caller = new PersonBuilder(this.DatabaseSession).WithLastName("caller").Build();
+            var owner = new PersonBuilder(this.DatabaseSession).WithLastName("owner").Build();
+
+            this.DatabaseSession.Derive();
+            this.DatabaseSession.Commit();
+
             var builder = new PhoneCommunicationBuilder(this.DatabaseSession);
             var communication = builder.Build();
 
@@ -45,8 +52,15 @@ namespace Allors.Domain
 
             this.DatabaseSession.Rollback();
 
-            builder.WithReceiver(new PersonBuilder(this.DatabaseSession).WithLastName("receiver").Build());
-            builder.WithCaller(new PersonBuilder(this.DatabaseSession).WithLastName("caller").Build());
+            builder.WithReceiver(receiver);
+            builder.WithCaller(caller);
+            communication = builder.Build();
+
+            Assert.IsTrue(this.DatabaseSession.Derive().HasErrors);
+
+            this.DatabaseSession.Rollback();
+
+            builder.WithOwner(owner);
             communication = builder.Build();
 
             Assert.IsFalse(this.DatabaseSession.Derive().HasErrors);

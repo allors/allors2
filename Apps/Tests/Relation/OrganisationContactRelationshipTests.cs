@@ -97,7 +97,7 @@ namespace Allors.Domain
             Assert.AreEqual(1, usergroup.Members.Count);
             Assert.IsTrue(usergroup.Members.Contains(this.organisationContactRelationship.Contact));
 
-            var secondContact = new OrganisationContactRelationshipBuilder(this.DatabaseSession)
+            var secondRelationship = new OrganisationContactRelationshipBuilder(this.DatabaseSession)
                 .WithContact(new PersonBuilder(this.DatabaseSession).WithLastName("contact 2").Build())
                 .WithOrganisation(new Organisations(this.DatabaseSession).FindBy(M.Organisation.Name, "customer"))
                 .WithFromDate(DateTime.UtcNow)
@@ -106,7 +106,7 @@ namespace Allors.Domain
             this.DatabaseSession.Derive(true);
 
             Assert.AreEqual(2, usergroup.Members.Count);
-            Assert.IsTrue(usergroup.Members.Contains(secondContact.Contact));
+            Assert.IsTrue(usergroup.Members.Contains(secondRelationship.Contact));
         }
 
         [Test]

@@ -167,7 +167,6 @@ namespace Allors.Repository.Domain
         [RoleId("81367cbd-4713-46bd-8f4d-0df30c3daf96")]
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
-        [Required]
         [Indexed]
 
         Carrier Carrier { get; set; }

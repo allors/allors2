@@ -424,7 +424,7 @@ namespace Allors.Domain
 
             this.DatabaseSession.Derive(true);
 
-            var shipment = new PurchaseShipmentBuilder(this.DatabaseSession).WithShipFromParty(this.supplier).Build();
+            var shipment = new PurchaseShipmentBuilder(this.DatabaseSession).WithShipmentMethod(new ShipmentMethods(this.DatabaseSession).Ground).WithShipFromParty(this.supplier).Build();
             var shipmentItem = new ShipmentItemBuilder(this.DatabaseSession).WithGood(good).Build();
             shipment.AddShipmentItem(shipmentItem);
 
@@ -566,7 +566,7 @@ namespace Allors.Domain
             
             this.DatabaseSession.Derive(true);
 
-            var shipment = new PurchaseShipmentBuilder(this.DatabaseSession).WithShipFromParty(this.supplier).Build();
+            var shipment = new PurchaseShipmentBuilder(this.DatabaseSession).WithShipFromParty(this.supplier).WithShipmentMethod(new ShipmentMethods(this.DatabaseSession).Ground).Build();
             var shipmentItem = new ShipmentItemBuilder(this.DatabaseSession).WithGood(good).Build();
             shipment.AddShipmentItem(shipmentItem);
 
@@ -662,7 +662,7 @@ namespace Allors.Domain
             
             this.DatabaseSession.Derive(true);
 
-            var shipment = new PurchaseShipmentBuilder(this.DatabaseSession).WithShipFromParty(this.supplier).Build();
+            var shipment = new PurchaseShipmentBuilder(this.DatabaseSession).WithShipmentMethod(new ShipmentMethods(this.DatabaseSession).Ground).WithShipFromParty(this.supplier).Build();
             var shipmentItem = new ShipmentItemBuilder(this.DatabaseSession).WithGood(good).Build();
             shipment.AddShipmentItem(shipmentItem);
 

@@ -400,7 +400,7 @@ namespace Allors.Domain
 
             this.DatabaseSession.Derive(true);
 
-            var shipment1 = new PurchaseShipmentBuilder(this.DatabaseSession).WithShipFromParty(supplier).Build();
+            var shipment1 = new PurchaseShipmentBuilder(this.DatabaseSession).WithShipmentMethod(new ShipmentMethods(this.DatabaseSession).Ground).WithShipFromParty(supplier).Build();
             var shipmentItem = new ShipmentItemBuilder(this.DatabaseSession).WithPart(part).Build();
             shipment1.AddShipmentItem(shipmentItem);
 

@@ -35,7 +35,7 @@ namespace Allors.Domain
 
         public void AppsOnDeriveOrderItemAdjustment(IDerivation derivation)
         {
-            if (this.ActualQuantity.HasValue && this.ExistPickListWherePickListItem && this.PickListWherePickListItem.CurrentObjectState.UniqueId.Equals(new PickListObjectStates(this.strategy.Session).Picked))
+            if (this.ActualQuantity.HasValue && this.ExistPickListWherePickListItem && this.PickListWherePickListItem.CurrentObjectState.Equals(new PickListObjectStates(this.strategy.Session).Picked))
             {
                 var diff = this.RequestedQuantity - this.ActualQuantity.Value;
 
