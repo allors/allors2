@@ -27,6 +27,7 @@ var Allors;
             Bootstrap.RadioTemplate.register($templateCache);
             Bootstrap.RadioButtonTemplate.register($templateCache);
             Bootstrap.DatepickerPopupTemplate.register($templateCache);
+            Bootstrap.ContentTemplate.register($templateCache);
             // Field Groups
             // ------------
             // Internals
@@ -34,8 +35,8 @@ var Allors;
             Bootstrap.LabelTemplate.register($templateCache);
             Bootstrap.LabeledInputTemplate.register($templateCache);
             // Controls
+            Bootstrap.LabeledStaticEnumTemplate.register($templateCache);
             Bootstrap.LabeledStaticTemplate.register($templateCache);
-            Bootstrap.StaticEnumGroupTemplate.register($templateCache);
             Bootstrap.LabeledTextTemplate.register($templateCache);
             Bootstrap.LabeledTextareaTemplate.register($templateCache);
             Bootstrap.LabeledTextAngularTemplate.register($templateCache);
@@ -47,6 +48,7 @@ var Allors;
             Bootstrap.LabeledRadioTemplate.register($templateCache);
             Bootstrap.LabeledRadioButtonTemplate.register($templateCache);
             Bootstrap.LabeledDatepickerPopupTemplate.register($templateCache);
+            Bootstrap.LabeledContentTemplate.register($templateCache);
             // Model
             // -----
             Bootstrap.SelectOneTemplate.register($templateCache);

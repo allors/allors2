@@ -8,7 +8,7 @@ var Tests;
     var SessionTests = (function (_super) {
         __extends(SessionTests, _super);
         function SessionTests() {
-            return _super.apply(this, arguments) || this;
+            return _super !== null && _super.apply(this, arguments) || this;
         }
         SessionTests.prototype.unitGet = function () {
             var workspace = new Allors.Workspace(Allors.Data.metaPopulation);

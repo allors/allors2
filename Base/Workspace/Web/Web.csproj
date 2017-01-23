@@ -338,6 +338,7 @@
     <Content Include="Settings.StyleCop" />
     <Content Include="typings.json" />
     <TypeScriptCompile Include="Allors\Client\Base\Angular\allors.module.ts" />
+    <TypeScriptCompile Include="Allors\Client\Base\Angular\components\bootstrap\Content.ts" />
     <TypeScriptCompile Include="Allors\Client\Base\Angular\components\bootstrap\DatepickerPopup.ts" />
     <TypeScriptCompile Include="Allors\Client\Base\Angular\components\bootstrap\Enum.ts" />
     <TypeScriptCompile Include="Allors\Client\Base\Angular\components\bootstrap\Form.ts" />
@@ -349,6 +350,7 @@
     <TypeScriptCompile Include="Allors\Client\Base\Angular\components\bootstrap\internal\Label.ts" />
     <TypeScriptCompile Include="Allors\Client\Base\Angular\components\bootstrap\internal\Labeled.ts" />
     <TypeScriptCompile Include="Allors\Client\Base\Angular\components\bootstrap\internal\LabeledInput.ts" />
+    <TypeScriptCompile Include="Allors\Client\Base\Angular\components\bootstrap\labeled\LabeledContent.ts" />
     <TypeScriptCompile Include="Allors\Client\Base\Angular\components\bootstrap\labeled\LabeledDatepickerPopup.ts" />
     <TypeScriptCompile Include="Allors\Client\Base\Angular\components\bootstrap\labeled\LabeledEnum.ts" />
     <TypeScriptCompile Include="Allors\Client\Base\Angular\components\bootstrap\labeled\LabeledCroppedImage.ts" />

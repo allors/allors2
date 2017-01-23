@@ -8,7 +8,7 @@ var Tests;
     var WorkspaceTests = (function (_super) {
         __extends(WorkspaceTests, _super);
         function WorkspaceTests() {
-            return _super.apply(this, arguments) || this;
+            return _super !== null && _super.apply(this, arguments) || this;
         }
         WorkspaceTests.prototype.load = function () {
             var workspace = new Allors.Workspace(Allors.Data.metaPopulation);

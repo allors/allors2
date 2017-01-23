@@ -2,25 +2,25 @@ var Allors;
 (function (Allors) {
     var Bootstrap;
     (function (Bootstrap) {
-        var StaticEnumGroupTemplate = (function () {
-            function StaticEnumGroupTemplate() {
+        var LabeledStaticEnumTemplate = (function () {
+            function LabeledStaticEnumTemplate() {
             }
-            StaticEnumGroupTemplate.createDefaultView = function () {
+            LabeledStaticEnumTemplate.createDefaultView = function () {
                 return "\n<b-labeled field=\"$ctrl\">\n    <b-label field=\"$ctrl\"/>\n    <b-labeled-input field=\"$ctrl\">\n" + Bootstrap.StaticEnumTemplate.createDefaultView() + "\n    </b-labeled-input>\n</b-group>\n";
             };
-            StaticEnumGroupTemplate.register = function (templateCache, view) {
-                if (view === void 0) { view = StaticEnumGroupTemplate.createDefaultView(); }
-                templateCache.put(StaticEnumGroupTemplate.name, view);
+            LabeledStaticEnumTemplate.register = function (templateCache, view) {
+                if (view === void 0) { view = LabeledStaticEnumTemplate.createDefaultView(); }
+                templateCache.put(LabeledStaticEnumTemplate.name, view);
             };
-            return StaticEnumGroupTemplate;
+            return LabeledStaticEnumTemplate;
         }());
-        StaticEnumGroupTemplate.name = "allors/bootstrap/labeled-static-enum";
-        Bootstrap.StaticEnumGroupTemplate = StaticEnumGroupTemplate;
+        LabeledStaticEnumTemplate.name = "allors/bootstrap/labeled-static-enum";
+        Bootstrap.LabeledStaticEnumTemplate = LabeledStaticEnumTemplate;
         angular
             .module("allors")
             .component("bLabeledStaticEnum", {
             controller: Bootstrap.StaticEnumController,
-            templateUrl: StaticEnumGroupTemplate.name,
+            templateUrl: LabeledStaticEnumTemplate.name,
             require: Bootstrap.FormController.require,
             bindings: Bootstrap.StaticEnumController.bindings
         });

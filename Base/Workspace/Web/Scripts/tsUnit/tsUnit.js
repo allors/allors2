@@ -429,7 +429,7 @@ var tsUnit;
     var TestClass = (function (_super) {
         __extends(TestClass, _super);
         function TestClass() {
-            return _super.apply(this, arguments) || this;
+            return _super !== null && _super.apply(this, arguments) || this;
         }
         TestClass.prototype.parameterizeUnitTest = function (method, parametersArray) {
             method.parameters = parametersArray;

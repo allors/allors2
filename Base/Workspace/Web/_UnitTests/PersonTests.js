@@ -8,7 +8,7 @@ var Tests;
     var PersonTests = (function (_super) {
         __extends(PersonTests, _super);
         function PersonTests() {
-            return _super.apply(this, arguments) || this;
+            return _super !== null && _super.apply(this, arguments) || this;
         }
         PersonTests.prototype.displayName = function () {
             var workspace = new Allors.Workspace(Allors.Data.metaPopulation);
