@@ -343,7 +343,9 @@ namespace Allors.Domain
             this.DatabaseSession.Derive(true);
 
             Assert.AreEqual(new PurchaseOrderItemObjectStates(this.DatabaseSession).Created, item.CurrentObjectState);
-            var acl = new AccessControlList(item, new Users(this.DatabaseSession).GetCurrentUser());
+            var currentUser = new Users(this.DatabaseSession).GetCurrentUser();
+            var acl = new AccessControlList(item, currentUser);
+
             Assert.IsTrue(acl.CanExecute(M.PurchaseOrderItem.Delete));
             Assert.IsFalse(acl.CanExecute(M.PurchaseOrderItem.Cancel));
             Assert.IsFalse(acl.CanExecute(M.PurchaseOrderItem.Reject));

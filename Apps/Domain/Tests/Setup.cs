@@ -42,13 +42,13 @@ namespace Allors
 
         private void TestOnPostSetup()
         {
-            var singleton = Singleton.Instance(session);
-            singleton.DefaultLocale = new Locales(session).EnglishGreatBritain;
+            var singleton = Singleton.Instance(this.session);
+            singleton.DefaultLocale = new Locales(this.session).EnglishGreatBritain;
 
-            var security = new Security(session);
+            var security = new Security(this.session);
             foreach (var @class in this.session.Database.MetaPopulation.Classes)
             {
-                if (@class.Equals(M.InternalOrganisation.Class))
+                if (@class.Equals(M.PurchaseOrderItem.Class))
                 {
                     Console.WriteLine(1);   
                 }
