@@ -202,6 +202,21 @@ namespace Allors
                 session.Derive(true);
                 session.Commit();
 
+                var security = new Security(session);
+                foreach (var @class in session.Database.MetaPopulation.Classes)
+                {
+                    if (@class.Equals(M.PurchaseOrderItem.Class))
+                    {
+                        Console.WriteLine(1);
+                    }
+
+                    security.GrantAdministrator(@class, Operations.Read, Operations.Write, Operations.Execute);
+                    security.GrantCreator(@class, Operations.Read, Operations.Write, Operations.Execute);
+                }
+
+                session.Derive(true);
+                session.Commit();
+
                 using (var stringWriter = new StringWriter())
                 {
                     using (var writer = new XmlTextWriter(stringWriter))

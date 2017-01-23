@@ -44,18 +44,6 @@ namespace Allors
         {
             var singleton = Singleton.Instance(this.session);
             singleton.DefaultLocale = new Locales(this.session).EnglishGreatBritain;
-
-            var security = new Security(this.session);
-            foreach (var @class in this.session.Database.MetaPopulation.Classes)
-            {
-                if (@class.Equals(M.PurchaseOrderItem.Class))
-                {
-                    Console.WriteLine(1);   
-                }
-
-                security.GrantAdministrator(@class, Operations.Read, Operations.Write, Operations.Execute);
-                security.GrantCreator(@class, Operations.Read, Operations.Write, Operations.Execute);
-            }
         }
     }
 }
