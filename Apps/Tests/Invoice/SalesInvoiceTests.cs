@@ -740,6 +740,7 @@ namespace Allors.Domain
             new CustomerRelationshipBuilder(this.DatabaseSession).WithFromDate(DateTime.UtcNow).WithCustomer(customer).WithInternalOrganisation(Singleton.Instance(this.DatabaseSession).DefaultInternalOrganisation).Build();
 
             this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Commit();
 
             var acl = new AccessControlList(invoice, new Users(this.DatabaseSession).GetCurrentUser());
             Assert.IsTrue(acl.CanExecute(M.SalesInvoice.Send));
@@ -782,6 +783,7 @@ namespace Allors.Domain
             invoice.Send();
 
             this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Commit();
 
             var acl = new AccessControlList(invoice, new Users(this.DatabaseSession).GetCurrentUser());
             Assert.IsFalse(acl.CanExecute(M.SalesInvoice.Send));
@@ -919,6 +921,7 @@ namespace Allors.Domain
                 .Build();
 
             this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Commit();
 
             var acl = new AccessControlList(invoice, new Users(this.DatabaseSession).GetCurrentUser());
             Assert.IsFalse(acl.CanExecute(M.SalesInvoice.Send));
@@ -1010,46 +1013,6 @@ namespace Allors.Domain
             Assert.IsFalse(acl.CanExecute(M.SalesInvoice.Send));
             Assert.IsFalse(acl.CanExecute(M.SalesInvoice.WriteOff));
             Assert.IsFalse(acl.CanExecute(M.SalesInvoice.CancelInvoice));
-        }
-
-        [Test]
-        public void GivenSalesInvoiceCreatedByEmloyee_WhenCurrentUserIsCustomerContactForThisInvoice_ThenReadAccessIsGranted()
-        {
-            var customer = new Organisations(this.DatabaseSession).FindBy(M.Organisation.Name, "customer");
-            var customerContact = new PersonBuilder(this.DatabaseSession).WithUserName("customercontact").WithLastName("customercontact").Build();
-            var contactMechanism = new PostalAddressBuilder(this.DatabaseSession)
-                .WithAddress1("Haverwerf 15")
-                .WithPostalBoundary(new PostalBoundaryBuilder(this.DatabaseSession)
-                                        .WithLocality("Mechelen")
-                                        .WithCountry(new Countries(this.DatabaseSession).FindBy(M.Country.IsoCode, "BE"))
-                                        .Build())
-
-                .Build();
-
-            new OrganisationContactRelationshipBuilder(this.DatabaseSession).WithContact(customerContact).WithOrganisation(customer).WithFromDate(DateTime.UtcNow).Build();
-
-            this.DatabaseSession.Derive(true);
-            this.DatabaseSession.Commit();
-
-            Thread.CurrentPrincipal = new GenericPrincipal(new GenericIdentity("salesRep", "Forms"), new string[0]);
-            var invoice = new SalesInvoiceBuilder(this.DatabaseSession)
-                .WithBillToCustomer(customer)
-                .WithBillToContactMechanism(contactMechanism)
-                .WithBilledFromInternalOrganisation(new InternalOrganisations(this.DatabaseSession).FindBy(M.InternalOrganisation.Name, "internalOrganisation"))
-                .Build();
-
-            new CustomerRelationshipBuilder(this.DatabaseSession).WithFromDate(DateTime.UtcNow).WithCustomer(customer).WithInternalOrganisation(Singleton.Instance(this.DatabaseSession).DefaultInternalOrganisation).Build();
-
-            this.DatabaseSession.Derive(true);
-
-            Thread.CurrentPrincipal = new GenericPrincipal(new GenericIdentity("customercontact", "Forms"), new string[0]);
-            var acl = new AccessControlList(invoice, new Users(this.DatabaseSession).GetCurrentUser());
-
-            Assert.IsFalse(acl.CanWrite(M.SalesInvoice.InvoiceDate));
-            Assert.IsTrue(acl.CanRead(M.SalesInvoice.InvoiceDate));
-            Assert.IsTrue(acl.CanRead(M.SalesInvoice.InvoiceNumber));
-            Assert.IsTrue(acl.CanRead(M.SalesInvoice.TotalExVat));
-            Assert.IsFalse(acl.CanExecute(M.SalesInvoice.Send));
         }
 
         [Test]

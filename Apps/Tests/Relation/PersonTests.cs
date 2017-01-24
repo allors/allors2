@@ -67,8 +67,6 @@ namespace Allors.Domain
             var internalOrganisation = new InternalOrganisations(this.DatabaseSession).FindBy(M.InternalOrganisation.Name, "internalOrganisation");
 
             this.DatabaseSession.Derive(true);
-            var roles = new Roles(this.DatabaseSession).Extent();
-            var people = new People(this.DatabaseSession).Extent();
 
             Thread.CurrentPrincipal = new GenericPrincipal(new GenericIdentity(Users.AdministratorUserName, "Forms"), new string[0]);
             var acl = new AccessControlList(internalOrganisation, existingAdministrator);
@@ -86,48 +84,6 @@ namespace Allors.Domain
 
             acl = new AccessControlList(internalOrganisation, secondAdministrator);
             Assert.IsTrue(acl.CanWrite(M.InternalOrganisation.Name));
-        }
-
-        [Test]
-        public void GivenPerson_WhenCurrentUserIsContactForOrganisation_ThenCustomerPermissionsAreGranted()
-        {
-            var organisation = new OrganisationBuilder(this.DatabaseSession).WithName("organisation").Build();
-            var customer = new PersonBuilder(this.DatabaseSession).WithLastName("Customer").WithUserName("customer").Build();
-            var anotherCustomer = new PersonBuilder(this.DatabaseSession).WithLastName("Customer2").WithUserName("customer2").Build();
-
-            new CustomerRelationshipBuilder(this.DatabaseSession).WithCustomer(organisation).Build();
-            new OrganisationContactRelationshipBuilder(this.DatabaseSession).WithContact(customer).WithOrganisation(organisation).WithFromDate(DateTime.UtcNow).Build();
-            new OrganisationContactRelationshipBuilder(this.DatabaseSession).WithContact(anotherCustomer).WithOrganisation(organisation).WithFromDate(DateTime.UtcNow).Build();
-
-            this.DatabaseSession.Derive(true);
-            this.DatabaseSession.Commit();
-
-            Thread.CurrentPrincipal = new GenericPrincipal(new GenericIdentity("customer", "Forms"), new string[0]);
-            var acl = new AccessControlList(anotherCustomer, new Users(this.DatabaseSession).GetCurrentUser());
-
-            Assert.IsTrue(acl.CanRead(M.Person.FirstName));
-            Assert.IsTrue(acl.CanWrite(M.Person.FirstName));
-            Assert.IsFalse(acl.CanRead(M.Person.Height));
-            Assert.IsFalse(acl.CanWrite(M.Person.Height));
-        }
-
-        [Test]
-        public void GivenPerson_WhenCurrentUserIsperson_ThenOwnerPermissionsAreGranted()
-        {
-            var customer = new PersonBuilder(this.DatabaseSession).WithLastName("Customer").WithUserName("customer").Build();
-
-            new CustomerRelationshipBuilder(this.DatabaseSession).WithCustomer(customer).Build();
-
-            this.DatabaseSession.Derive(true);
-            this.DatabaseSession.Commit();
-
-            Thread.CurrentPrincipal = new GenericPrincipal(new GenericIdentity("customer", "Forms"), new string[0]);
-            var acl = new AccessControlList(customer, new Users(this.DatabaseSession).GetCurrentUser());
-
-            Assert.IsTrue(acl.CanRead(M.Person.FirstName));
-            Assert.IsTrue(acl.CanWrite(M.Person.FirstName));
-            Assert.IsTrue(acl.CanRead(M.Person.Height));
-            Assert.IsTrue(acl.CanWrite(M.Person.Height));
         }
 
         [Test]

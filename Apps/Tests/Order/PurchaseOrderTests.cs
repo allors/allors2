@@ -262,38 +262,6 @@ namespace Allors.Domain
         }
 
         [Test]
-        public void GivenPurchaseOrderCreatedByProcurementLevel1Role_WhenCurrentUserIsSupplierContactForThisOrder_ThenReadAccessIsGranted()
-        {
-            var supplierContact = new PersonBuilder(this.DatabaseSession).WithUserName("suppliercontact").WithLastName("suppliercontact").Build();
-            var supplier = new OrganisationBuilder(this.DatabaseSession).WithName("supplier").Build();
-
-            new SupplierRelationshipBuilder(this.DatabaseSession)
-                .WithSupplier(supplier)
-                .WithInternalOrganisation(new InternalOrganisations(this.DatabaseSession).FindBy(M.InternalOrganisation.Name, "internalOrganisation"))
-                .WithFromDate(DateTime.UtcNow)
-                .Build();
-
-            new OrganisationContactRelationshipBuilder(this.DatabaseSession).WithContact(supplierContact).WithOrganisation(supplier).WithFromDate(DateTime.UtcNow).Build();
-
-            this.DatabaseSession.Derive(true);
-            this.DatabaseSession.Commit();
-
-            Thread.CurrentPrincipal = new GenericPrincipal(new GenericIdentity("purchaser", "Forms"), new string[0]);
-            var order = new PurchaseOrderBuilder(this.DatabaseSession).WithTakenViaSupplier(supplier).Build();
-
-            this.DatabaseSession.Derive(true);
-
-            Thread.CurrentPrincipal = new GenericPrincipal(new GenericIdentity("suppliercontact", "Forms"), new string[0]);
-            var acl = new AccessControlList(order, new Users(this.DatabaseSession).GetCurrentUser());
-
-            Assert.IsFalse(acl.CanWrite(M.PurchaseOrder.OrderDate));
-            Assert.IsTrue(acl.CanRead(M.PurchaseOrder.OrderDate));
-            Assert.IsTrue(acl.CanRead(M.PurchaseOrder.OrderNumber));
-            Assert.IsTrue(acl.CanRead(M.PurchaseOrder.TotalExVat));
-            Assert.IsFalse(acl.CanExecute(M.PurchaseOrder.Confirm));
-        }
-
-        [Test]
         public void GivenPurchaseOrder_WhenConfirming_ThenAllValidItemsAreInConfirmedState()
         {
             var supplier = new OrganisationBuilder(this.DatabaseSession).WithName("supplier").Build();

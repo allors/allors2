@@ -849,6 +849,7 @@ namespace Allors.Domain
             this.order.AddSalesOrderItem(item);
 
             this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Commit();
 
             Assert.AreEqual(new SalesOrderItemObjectStates(this.DatabaseSession).Created, item.CurrentObjectState);
             var acl = new AccessControlList(item, new Users(this.DatabaseSession).GetCurrentUser());
@@ -882,6 +883,7 @@ namespace Allors.Domain
             this.order.Confirm();
 
             this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Commit();
 
             Assert.AreEqual(new SalesOrderItemObjectStates(this.DatabaseSession).InProcess, item.CurrentObjectState);
             var acl = new AccessControlList(item, new Users(this.DatabaseSession).GetCurrentUser());

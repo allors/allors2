@@ -1863,6 +1863,7 @@ namespace Allors.Domain
                 .Build();
 
             this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Commit();
 
             Assert.AreEqual(new SalesOrderObjectStates(this.DatabaseSession).Provisional, order.CurrentObjectState);
             var acl = new AccessControlList(order, new Users(this.DatabaseSession).GetCurrentUser());
@@ -1899,6 +1900,7 @@ namespace Allors.Domain
             order.Confirm();
 
             this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Commit();
 
             var acl = new AccessControlList(order, new Users(this.DatabaseSession).GetCurrentUser());
             Assert.IsTrue(acl.CanExecute(M.SalesOrder.Cancel));
@@ -2050,6 +2052,7 @@ namespace Allors.Domain
             order.Hold();
 
             this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Commit();
 
             Assert.AreEqual(new SalesOrderObjectStates(this.DatabaseSession).OnHold, order.CurrentObjectState);
             var acl = new AccessControlList(order, new Users(this.DatabaseSession).GetCurrentUser());

@@ -47,31 +47,5 @@ namespace Allors.Domain
 
             Assert.IsFalse(this.DatabaseSession.Derive().HasErrors);
         }
-
-        [Test]
-        public void GivenOrganisation_WhenCurrentUserIsContactForOrganisation_ThenCustomerPermissionsAreGranted()
-        {
-            var internalOrganisation = new InternalOrganisations(this.DatabaseSession).FindBy(M.InternalOrganisation.Name, "internalOrganisation");
-            var organisation = new OrganisationBuilder(this.DatabaseSession).WithName("organisation").Build();
-            var customer = new PersonBuilder(this.DatabaseSession).WithLastName("Customer").WithUserName("customer").Build();
-
-            new CustomerRelationshipBuilder(this.DatabaseSession).WithCustomer(organisation).WithInternalOrganisation(internalOrganisation).Build();
-            new OrganisationContactRelationshipBuilder(this.DatabaseSession).WithContact(customer).WithOrganisation(organisation).WithFromDate(DateTime.UtcNow).Build();
-
-            this.DatabaseSession.Derive(true);
-            this.DatabaseSession.Commit();
-
-            Thread.CurrentPrincipal = new GenericPrincipal(new GenericIdentity("customer", "Forms"), new string[0]);
-            var acl = new AccessControlList(organisation, new Users(this.DatabaseSession).GetCurrentUser());
-
-            Assert.IsTrue(acl.CanRead(M.Organisation.Name));
-            Assert.IsTrue(acl.CanWrite(M.Organisation.Name));
-            Assert.IsTrue(acl.CanRead(M.Organisation.LegalForm));
-            Assert.IsTrue(acl.CanWrite(M.Organisation.LegalForm));
-            Assert.IsTrue(acl.CanRead(M.Organisation.LogoImage));
-            Assert.IsTrue(acl.CanWrite(M.Organisation.LogoImage));
-            Assert.IsTrue(acl.CanRead(M.Organisation.Locale));
-            Assert.IsTrue(acl.CanWrite(M.Organisation.Locale));
-        }
     }
 }

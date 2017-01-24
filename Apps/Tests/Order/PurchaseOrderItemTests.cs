@@ -341,6 +341,7 @@ namespace Allors.Domain
             this.order.AddPurchaseOrderItem(item);
 
             this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Commit();
 
             Assert.AreEqual(new PurchaseOrderItemObjectStates(this.DatabaseSession).Created, item.CurrentObjectState);
             var currentUser = new Users(this.DatabaseSession).GetCurrentUser();
@@ -384,6 +385,7 @@ namespace Allors.Domain
             this.order.Confirm();
 
             this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Commit();
 
             Assert.AreEqual(new PurchaseOrderItemObjectStates(this.DatabaseSession).InProcess, item.CurrentObjectState);
             var acl = new AccessControlList(item, new Users(this.DatabaseSession).GetCurrentUser());

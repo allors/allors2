@@ -91,7 +91,7 @@ namespace Allors.Domain
             }
 
             if (this.ExistCurrentObjectState && 
-                this.CurrentObjectState.UniqueId.Equals(new PurchaseShipmentObjectStates(this.strategy.Session).Completed) &&
+                this.CurrentObjectState.Equals(new PurchaseShipmentObjectStates(this.strategy.Session).Completed) &&
                 !this.CurrentObjectState.Equals(this.LastObjectState))
             {
 
