@@ -72,7 +72,7 @@ namespace Allors.Domain
 
             this.DatabaseSession.Rollback();
 
-            var shipment = new PurchaseShipmentBuilder(this.DatabaseSession).WithShipFromParty(supplier).Build();
+            var shipment = new PurchaseShipmentBuilder(this.DatabaseSession).WithShipmentMethod(new ShipmentMethods(this.DatabaseSession).Ground).WithShipFromParty(supplier).Build();
             var shipmentItem = new ShipmentItemBuilder(this.DatabaseSession).WithGood(good).Build();
             shipment.AddShipmentItem(shipmentItem);
 

@@ -1855,7 +1855,7 @@ namespace Allors.Domain
 
             this.DatabaseSession.Derive(true);
 
-            Thread.CurrentPrincipal = new GenericPrincipal(new GenericIdentity("customer", "Forms"), new string[0]);
+            Thread.CurrentPrincipal = new GenericPrincipal(new GenericIdentity(Users.AdministratorUserName, "Forms"), new string[0]);
             var order = new SalesOrderBuilder(this.DatabaseSession)
                 .WithBillToCustomer(customer)
                 .WithShipToCustomer(customer)
@@ -1887,7 +1887,7 @@ namespace Allors.Domain
 
             this.DatabaseSession.Derive(true);
 
-            Thread.CurrentPrincipal = new GenericPrincipal(new GenericIdentity("customer", "Forms"), new string[0]);
+            Thread.CurrentPrincipal = new GenericPrincipal(new GenericIdentity(Users.AdministratorUserName, "Forms"), new string[0]);
 
             var order = new SalesOrderBuilder(this.DatabaseSession)
                 .WithBillToCustomer(customer)
@@ -2035,7 +2035,7 @@ namespace Allors.Domain
 
             this.DatabaseSession.Derive(true);
 
-            Thread.CurrentPrincipal = new GenericPrincipal(new GenericIdentity("customer", "Forms"), new string[0]);
+            Thread.CurrentPrincipal = new GenericPrincipal(new GenericIdentity(Users.AdministratorUserName, "Forms"), new string[0]);
 
             var order = new SalesOrderBuilder(this.DatabaseSession)
                 .WithBillToCustomer(customer)

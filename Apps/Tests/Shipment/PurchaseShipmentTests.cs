@@ -56,6 +56,13 @@ namespace Allors.Domain
 
             this.DatabaseSession.Rollback();
 
+            builder.WithShipmentMethod(new ShipmentMethods(this.DatabaseSession).Ground);
+            builder.Build();
+
+            Assert.IsTrue(this.DatabaseSession.Derive().HasErrors);
+
+            this.DatabaseSession.Rollback();
+
             builder.WithShipFromParty(supplier);
             builder.Build();
 

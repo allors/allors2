@@ -386,7 +386,7 @@ namespace Allors.Domain
             Assert.AreEqual(new PurchaseOrderObjectStates(this.DatabaseSession).PartiallyReceived, order.CurrentShipmentStatus.PurchaseOrderObjectState);
             Assert.AreEqual(new PurchaseOrderObjectStates(this.DatabaseSession).InProcess, order.CurrentOrderStatus.PurchaseOrderObjectState);
 
-            var shipment2 = new PurchaseShipmentBuilder(this.DatabaseSession).WithShipFromParty(supplier).Build();
+            var shipment2 = new PurchaseShipmentBuilder(this.DatabaseSession).WithShipmentMethod(new ShipmentMethods(this.DatabaseSession).Ground).WithShipFromParty(supplier).Build();
             shipmentItem = new ShipmentItemBuilder(this.DatabaseSession).WithPart(part).Build();
             shipment2.AddShipmentItem(shipmentItem);
 
@@ -404,7 +404,7 @@ namespace Allors.Domain
             Assert.AreEqual(new PurchaseOrderObjectStates(this.DatabaseSession).PartiallyReceived, order.CurrentShipmentStatus.PurchaseOrderObjectState);
             Assert.AreEqual(new PurchaseOrderObjectStates(this.DatabaseSession).InProcess, order.CurrentOrderStatus.PurchaseOrderObjectState);
 
-            var shipment3 = new PurchaseShipmentBuilder(this.DatabaseSession).WithShipFromParty(supplier).Build();
+            var shipment3 = new PurchaseShipmentBuilder(this.DatabaseSession).WithShipmentMethod(new ShipmentMethods(this.DatabaseSession).Ground).WithShipFromParty(supplier).Build();
             shipmentItem = new ShipmentItemBuilder(this.DatabaseSession).WithPart(part).Build();
             shipment3.AddShipmentItem(shipmentItem);
 
