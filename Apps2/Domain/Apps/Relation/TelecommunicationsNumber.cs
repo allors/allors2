@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------------------------------------------
-// <copyright file="PhoneCommunication.cs" company="Allors bvba">
+// <copyright file="TelecommunicationsNumber.cs" company="Allors bvba">
 //   Copyright 2002-2012 Allors bvba.
 // Dual Licensed under
 //   a) the General Public Licence v3 (GPL)
@@ -13,15 +13,16 @@
 // For more information visit http://www.allors.com/legal
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
-using Allors.Meta;
-
 namespace Allors.Domain
 {
-    public partial class PostalAddress
+    public partial class TelecommunicationsNumber
     {
-        public void AppsDelete(DeletableDelete method)
+        public bool IsPostalAddress => false;
+
+        public void AppsOnDerive(ObjectOnDerive method)
         {
-            this.PostalBoundary.Delete();
+            this.Description =
+                $"{(this.ExistCountryCode ? this.CountryCode : null)} {(this.ExistAreaCode ? this.AreaCode : null)} {(this.ExistContactNumber ? this.ContactNumber : null)}";
         }
     }
 }
