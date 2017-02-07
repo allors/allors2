@@ -1,0 +1,255 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{953F37B8-865D-4D8C-A084-FFE10F360ECE}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Tests</RootNamespace>
+    <AssemblyName>Tests</AssemblyName>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x64\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
+    <OutputPath>bin\x64\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="nunit.framework">
+      <HintPath>..\packages\NUnit.2.6.4\lib\nunit.framework.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Accounting\AccountingPeriodTests.cs" />
+    <Compile Include="Accounting\BankAccountTests.cs" />
+    <Compile Include="Accounting\BankTests.cs" />
+    <Compile Include="Accounting\BudgetTests.cs" />
+    <Compile Include="Accounting\CashTests.cs" />
+    <Compile Include="Accounting\ChartOfAccountsTests.cs" />
+    <Compile Include="Accounting\CostCenterCategoryTests.cs" />
+    <Compile Include="Accounting\CostCenterTests.cs" />
+    <Compile Include="Accounting\CreditCardTests.cs" />
+    <Compile Include="Accounting\ExternalAccountingTransactionTests.cs" />
+    <Compile Include="Accounting\GeneralLedgerAccountGroupTests.cs" />
+    <Compile Include="Accounting\GeneralLedgerAccountTests.cs" />
+    <Compile Include="Accounting\GeneralLedgerAccountTypeTests.cs" />
+    <Compile Include="Accounting\InternalOrganisationRevenueHistoryTests.cs" />
+    <Compile Include="Accounting\InternalOrganisationRevenuesTests.cs" />
+    <Compile Include="Accounting\JournalTests.cs" />
+    <Compile Include="Accounting\OrganisationGlAccountTests.cs" />
+    <Compile Include="Accounting\OwnBankAccountTests.cs" />
+    <Compile Include="Accounting\OwnCreditCardTests.cs" />
+    <Compile Include="Accounting\PackageRevenuesTests.cs" />
+    <Compile Include="Accounting\PartyPackageRevenueHistoryTests.cs" />
+    <Compile Include="Accounting\PartyPackageRevenuesTests.cs" />
+    <Compile Include="Accounting\PartyProductCategoryRevenueHistoryTests.cs" />
+    <Compile Include="Accounting\PartyProductCategoryRevenuesTests.cs" />
+    <Compile Include="Accounting\PartyProductRevenueHistoryTests.cs" />
+    <Compile Include="Accounting\PartyProductRevenuesTests.cs" />
+    <Compile Include="Accounting\PartyRevenueHistoryTests.cs" />
+    <Compile Include="Accounting\PartyRevenuesTests.cs" />
+    <Compile Include="Accounting\ProductCategoryRevenueHistoryTests.cs" />
+    <Compile Include="Accounting\ProductCategoryRevenuesTests.cs" />
+    <Compile Include="Accounting\ProductRevenueHistoryTests.cs" />
+    <Compile Include="Accounting\ProductRevenuesTests.cs" />
+    <Compile Include="Accounting\SalesChannelRevenueHistoryTests.cs" />
+    <Compile Include="Accounting\SalesChannelRevenuesTests.cs" />
+    <Compile Include="Accounting\SalesRepPartyProductCategoryRevenuesTests.cs" />
+    <Compile Include="Accounting\SalesRepPartyRevenuesTests.cs" />
+    <Compile Include="Accounting\SalesRepProductCategoryRevenuesTests.cs" />
+    <Compile Include="Accounting\SalesRepRevenueHistoryTests.cs" />
+    <Compile Include="Accounting\SalesRepRevenuesTests.cs" />
+    <Compile Include="Accounting\StoreRevenueHistoryTests.cs" />
+    <Compile Include="Accounting\StoreRevenuesTests.cs" />
+    <Compile Include="DomainTest.cs" />
+    <Compile Include="Fixture.cs" />
+    <Compile Include="Import\ChartOfAccountsImportTests.cs" />
+    <Compile Include="Invoice\InvoiceTermTests.cs" />
+    <Compile Include="Invoice\PaymentApplicationTests.cs" />
+    <Compile Include="Invoice\PurchaseInvoiceItemTests.cs" />
+    <Compile Include="Invoice\PurchaseInvoiceTests.cs" />
+    <Compile Include="Invoice\ReceiptTests.cs" />
+    <Compile Include="Invoice\SalesInvoiceItemTests.cs" />
+    <Compile Include="Invoice\SalesInvoiceTests.cs" />
+    <Compile Include="Localization\CountryTests.cs" />
+    <Compile Include="Localization\FacilityTests.cs" />
+    <Compile Include="Localization\PostalAddressPostalBoundaryTests.cs" />
+    <Compile Include="Localization\PostalAddressTests.cs" />
+    <Compile Include="Localization\StoreTests.cs" />
+    <Compile Include="Order\CustomerRequirementTests.cs" />
+    <Compile Include="Order\DesiredProductFeatureTests.cs" />
+    <Compile Include="Order\DiscountAdjustmentTests.cs" />
+    <Compile Include="Order\EngagementItemTests.cs" />
+    <Compile Include="Order\EngagementRateTests.cs" />
+    <Compile Include="Order\EngagementTests.cs" />
+    <Compile Include="Order\FeeTests.cs" />
+    <Compile Include="Order\NeededSkillTests.cs" />
+    <Compile Include="Order\OrderKindTests.cs" />
+    <Compile Include="Order\OrderRequirementCommitmentTests.cs" />
+    <Compile Include="Order\OrderTermTests.cs" />
+    <Compile Include="Order\PurchaseOrderItemTests.cs" />
+    <Compile Include="Order\PurchaseOrderTests.cs" />
+    <Compile Include="Order\QuoteTests.cs" />
+    <Compile Include="Order\RequirementTests.cs" />
+    <Compile Include="Order\SalesOrderItemPricingTests.cs" />
+    <Compile Include="Order\SalesOrderItemTests.cs" />
+    <Compile Include="Order\SalesOrderStatusTests.cs" />
+    <Compile Include="Order\SalesOrderTests.cs" />
+    <Compile Include="Order\ShippingAndHandlingChargeTests.cs" />
+    <Compile Include="Order\SurchargeAdjustmentTests.cs" />
+    <Compile Include="Product\ConstraintSpecificationTests.cs" />
+    <Compile Include="Product\EstimatedProductCostTests.cs" />
+    <Compile Include="Product\GoodsImportTests.cs" />
+    <Compile Include="Product\InventoryItemTests.cs" />
+    <Compile Include="Product\IUnitOfMeasureTests.cs" />
+    <Compile Include="Product\NonSerializedInventoryItemTests.cs" />
+    <Compile Include="Product\PackageQuantityBreakTests.cs" />
+    <Compile Include="Product\PackageTests.cs" />
+    <Compile Include="Product\PartSpecificationTests.cs" />
+    <Compile Include="Product\PartTests.cs" />
+    <Compile Include="Product\PriceComponentTests.cs" />
+    <Compile Include="Product\ProductCategoriesImportTests.cs" />
+    <Compile Include="Product\ProductCategoryTests.cs" />
+    <Compile Include="Product\ProductFeatureTests.cs" />
+    <Compile Include="Product\ProductPurchasePriceTests.cs" />
+    <Compile Include="Product\ProductTests.cs" />
+    <Compile Include="Product\RevenueQuantityBreakTests.cs" />
+    <Compile Include="Product\SerializedInventoryItemTests.cs" />
+    <Compile Include="Product\SupplierOfferingTests.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Relation\AddendumTest.cs" />
+    <Compile Include="Relation\AgreementItemTest.cs" />
+    <Compile Include="Relation\AgreementTermTest.cs" />
+    <Compile Include="Relation\AgreementTest.cs" />
+    <Compile Include="Relation\CaseTests.cs" />
+    <Compile Include="Relation\CommunicationEventTests.cs" />
+    <Compile Include="Relation\ContactMechanismTests.cs" />
+    <Compile Include="Relation\CustomerRelationshipTests.cs" />
+    <Compile Include="Relation\EmailCommunicationTests.cs" />
+    <Compile Include="Relation\EmploymentTests.cs" />
+    <Compile Include="Relation\FaceToFaceCommunicationTests.cs" />
+    <Compile Include="Relation\FaxCommunicationTests.cs" />
+    <Compile Include="Relation\InternalOrganisationTests.cs" />
+    <Compile Include="Relation\LetterCorrespondenceTests.cs" />
+    <Compile Include="Relation\OrganisationContactKindTests.cs" />
+    <Compile Include="Relation\OrganisationContactRelationshipTests.cs" />
+    <Compile Include="Relation\OrganisationTests.cs" />
+    <Compile Include="Relation\PartnershipTests.cs" />
+    <Compile Include="Relation\PartyContactMechanismTests.cs" />
+    <Compile Include="Relation\PartyTests.cs" />
+    <Compile Include="Relation\PersonTests.cs" />
+    <Compile Include="Relation\PhoneCommunicationTests.cs" />
+    <Compile Include="Relation\SalesRepRelationshipTests.cs" />
+    <Compile Include="Relation\SupplierRelationshipTests.cs" />
+    <Compile Include="Relation\WebSiteCommunicationTests.cs" />
+    <Compile Include="Sandbox\SandboxTests.cs" />
+    <Compile Include="SetupConfigurationTests.cs" />
+    <Compile Include="Shipment\CustomerShipmentTests.cs" />
+    <Compile Include="Shipment\PackagingContentTests.cs" />
+    <Compile Include="Shipment\PickListTests.cs" />
+    <Compile Include="Shipment\PurchaseShipmentTests.cs" />
+    <Compile Include="Shipment\ShipmentPackageTests.cs" />
+    <Compile Include="Shipment\ShipmentReceiptTests.cs" />
+    <Compile Include="WorkEffort\ActivityTests.cs" />
+    <Compile Include="WorkEffort\WorkEffortTests.cs" />
+    <Compile Include="XmlStrictValidation.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Import\minimaal genormaliseerd rekeningstelsel 1.xml" />
+    <Content Include="Import\minimaal genormaliseerd rekeningstelsel 2.xml" />
+    <Content Include="Import\minimaal genormaliseerd rekeningstelsel 3.xml" />
+    <EmbeddedResource Include="Resources\logo.png" />
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+    <None Include="packages.config" />
+    <None Include="Settings.StyleCop" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\platform\Adapters\Allors.Adapters.Memory\Allors.Adapters.Memory.csproj">
+      <Project>{cb9b7108-c8f3-459c-b2da-88187c84cfc1}</Project>
+      <Name>Allors.Adapters.Memory</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\platform\Adapters\Allors.Adapters.Object.SqlClient\Allors.Adapters.Object.SqlClient.csproj">
+      <Project>{06bc1665-8fe8-4f04-9e80-ec2d54404ba7}</Project>
+      <Name>Allors.Adapters.Object.SqlClient</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\platform\Framework\Allors\Allors.csproj">
+      <Project>{5b4e2d7c-8ef8-45f5-bfb2-e595c401a95f}</Project>
+      <Name>Allors</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Domain\Domain.csproj">
+      <Project>{b4eddcc1-ba69-4415-bfc8-78098aeff221}</Project>
+      <Name>Domain</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Meta\Meta.csproj">
+      <Project>{6fa12f00-07b3-4aa8-9c50-c8d412891500}</Project>
+      <Name>Meta</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Resources\Resources.csproj">
+      <Project>{514ab4d1-cc77-49dc-8bc4-0dede041ffd1}</Project>
+      <Name>Resources</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

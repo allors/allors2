@@ -24,21 +24,27 @@ SET PATH=%PATH%;C:\Program Files\MSBuild\14.0\Bin;C:\Program Files (x86)\MSBuild
 :: purge files
 rmdir /s /q .\Domain\Generated >nul 2>&1
 
-:: Repository
-msbuild Repository.sln /target:Clean /verbosity:minimal
-..\Tools\dist\Allors.Tools.Cmd.exe repository generate repository.sln repository repository/templates/meta.cs.stg database/meta/generated || SET /A errno^|=%ERROR_GENERATE_META% && GOTO :END
+@echo ==========
+@echo Repository
+@echo ==========
 
-:: Repository -> Database.Meta
+msbuild Repository.sln /target:Clean /verbosity:minimal
+..\Tools\Generate\dist\Allors.Generate.Cmd.exe repository generate repository.sln repository ../Core/Repository/Templates/meta.cs.stg database/meta/generated || SET /A errno^|=%ERROR_GENERATE_META% && GOTO :END
+
+@echo ========
+@echo Database
+@echo ========
+
 msbuild Base.sln /target:Clean /verbosity:minimal
 msbuild Base.sln /target:Database\Meta:Rebuild /p:Configuration="Debug" /verbosity:minimal || SET /A errno^|=%ERROR_BUILD_META% && GOTO :END
 
-:: Database
-msbuild Base.sln /target:Allors\Merge:Rebuild /p:Configuration="Debug" /verbosity:minimal
-msbuild Database/Resources/Merge.proj /verbosity:minimal
 msbuild Database/Domain/Generate.proj /verbosity:minimal
+msbuild Database/Resources/Merge.proj /verbosity:minimal
 msbuild Database/Domain.Diagrams/Generate.proj /verbosity:minimal
 
-@echo workspace
+@echo =========
+@echo Workspace
+@echo =========
 
 :: Workspace
 msbuild Workspace/Diagrams/Generate.proj /verbosity:minimal

@@ -23,20 +23,23 @@ SET PATH=%PATH%;C:\Program Files\MSBuild\14.0\Bin;C:\Program Files (x86)\MSBuild
 
 rmdir /s /q .\Domain\Generated >nul 2>&1
 
+@echo ==========
+@echo Repository
+@echo ==========
+
 msbuild Repository.sln /target:Clean /verbosity:minimal
+..\Tools\Generate\dist\Allors.Generate.Cmd.exe repository generate repository.sln repository ../Core/Repository/Templates/meta.cs.stg database/meta/generated || SET /A errno^|=%ERROR_GENERATE_META% && GOTO :END
 
-..\Tools\dist\Allors.Tools.Cmd.exe repository generate repository.sln repository ../base/repository/templates/meta.cs.stg meta/generated || SET /A errno^|=%ERROR_GENERATE_META% && GOTO :END
+@echo ========
+@echo Database
+@echo ========
 
-msbuild Apps.sln /target:Clean /verbosity:minimal
+msbuild Database.sln /target:Clean /verbosity:minimal
+msbuild Database.sln /target:Meta:Rebuild /p:Configuration="Debug" /verbosity:minimal || SET /A errno^|=%ERROR_BUILD_META% && GOTO :END
 
-msbuild Apps.sln /target:Merge:Rebuild /p:Configuration="Debug" /verbosity:minimal
-msbuild Resources/Merge.proj /verbosity:minimal
-
-msbuild Apps.sln /target:Meta:Rebuild /p:Configuration="Debug" /verbosity:minimal || SET /A errno^|=%ERROR_BUILD_META% && GOTO :END
-
-msbuild Domain/Generate.proj /verbosity:minimal
-msbuild Domain.Diagrams/Generate.proj /verbosity:minimal
-
+msbuild Database/Domain/Generate.proj /verbosity:minimal
+msbuild Database/Resources/Merge.proj /verbosity:minimal
+msbuild Database/Domain.Diagrams/Generate.proj /verbosity:minimal
 
 :END
 IF "%interactive%"=="1" PAUSE
