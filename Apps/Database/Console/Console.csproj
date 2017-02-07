@@ -72,15 +72,15 @@
     <None Include="Requirement.cd" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\platform\Adapters\Allors.Adapters.Memory\Allors.Adapters.Memory.csproj">
+    <ProjectReference Include="..\..\..\platform\Adapters\Allors.Adapters.Memory\Allors.Adapters.Memory.csproj">
       <Project>{cb9b7108-c8f3-459c-b2da-88187c84cfc1}</Project>
       <Name>Allors.Adapters.Memory</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\platform\Adapters\Allors.Adapters.Object.SqlClient\Allors.Adapters.Object.SqlClient.csproj">
+    <ProjectReference Include="..\..\..\platform\Adapters\Allors.Adapters.Object.SqlClient\Allors.Adapters.Object.SqlClient.csproj">
       <Project>{06bc1665-8fe8-4f04-9e80-ec2d54404ba7}</Project>
       <Name>Allors.Adapters.Object.SqlClient</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\platform\Framework\Allors\Allors.csproj">
+    <ProjectReference Include="..\..\..\platform\Framework\Allors\Allors.csproj">
       <Project>{5b4e2d7c-8ef8-45f5-bfb2-e595c401a95f}</Project>
       <Name>Allors</Name>
     </ProjectReference>
