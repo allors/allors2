@@ -34,8 +34,8 @@ msbuild Repository.sln /target:Clean /verbosity:minimal
 @echo Database
 @echo ========
 
-msbuild Database.sln /target:Clean /verbosity:minimal
-msbuild Database.sln /target:Meta:Rebuild /p:Configuration="Debug" /verbosity:minimal || SET /A errno^|=%ERROR_BUILD_META% && GOTO :END
+msbuild Apps.sln /target:Clean /verbosity:minimal
+msbuild Apps.sln /target:Database\Meta:Rebuild /p:Configuration="Debug" /verbosity:minimal || SET /A errno^|=%ERROR_BUILD_META% && GOTO :END
 
 msbuild Database/Domain/Generate.proj /verbosity:minimal
 msbuild Database/Resources/Merge.proj /verbosity:minimal
