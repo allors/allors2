@@ -7,8 +7,6 @@ namespace Allors.Repository.Domain
     #endregion
 	public partial interface Product : UniquelyIdentifiable, AccessControlledObject 
     {
-
-
         #region Allors
         [Id("039a9481-940b-4953-a1b5-6c56f35a238b")]
         [AssociationId("ee6d841a-78f4-47c7-be8a-d4bd7ed81609")]
