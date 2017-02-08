@@ -1119,6 +1119,7 @@
     <Compile Include="Generated\ProductCategory.g.cs" />
     <Compile Include="Generated\ProductCategoryRevenue.g.cs" />
     <Compile Include="Generated\ProductCategoryRevenueHistory.g.cs" />
+    <Compile Include="Generated\ProductCharacteristic.g.cs" />
     <Compile Include="Generated\ProductConfiguration.g.cs" />
     <Compile Include="Generated\ProductDeliverySkillRequirement.g.cs" />
     <Compile Include="Generated\ProductDrawing.g.cs" />
@@ -1132,6 +1133,7 @@
     <Compile Include="Generated\ProductRequirement.g.cs" />
     <Compile Include="Generated\ProductRevenue.g.cs" />
     <Compile Include="Generated\ProductRevenueHistory.g.cs" />
+    <Compile Include="Generated\ProductType.g.cs" />
     <Compile Include="Generated\ProfessionalAssignment.g.cs" />
     <Compile Include="Generated\ProfessionalPlacement.g.cs" />
     <Compile Include="Generated\ProfessionalServicesRelationship.g.cs" />
