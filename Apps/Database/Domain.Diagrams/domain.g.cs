@@ -2288,6 +2288,8 @@ namespace Allors.Domain
 		}
 		public interface Good  : Product, Deletable 
 		{
+						ProductType ProductType {set;}
+
 						global::System.Decimal AvailableToPromise {set;}
 
 						Media Thumbnail {set;}
@@ -3464,6 +3466,20 @@ namespace Allors.Domain
 		}
 		public interface Priority  : Enumeration 
 		{
+		}
+		public interface ProductCharacteristic  : UniquelyIdentifiable, AccessControlledObject 
+		{
+						global::System.String Characteristic {set;}
+
+						global::System.String Value {set;}
+
+		}
+		public interface ProductType  : UniquelyIdentifiable, AccessControlledObject 
+		{
+						ProductCharacteristic Characteristics {set;}
+
+						global::System.String Name {set;}
+
 		}
 		public interface ProductCategory  : AccessControlledObject, UniquelyIdentifiable 
 		{
