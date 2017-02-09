@@ -720,6 +720,8 @@ namespace Allors.Adapters.Memory
                     var newRolePreviousAssociationStrategy = this.session.GetStrategy(newRolePreviousAssociation);
                     if (!this.Equals(newRolePreviousAssociationStrategy))
                     {
+                        this.ChangeSet.OnChangingCompositeRole(newRolePreviousAssociationStrategy, roleType, previousRole, null);
+
                         newRolePreviousAssociationStrategy.Backup(roleType);
                         newRolePreviousAssociationStrategy.compositeRoleByRoleType.Remove(roleType);
                     }
@@ -1097,6 +1099,8 @@ namespace Allors.Adapters.Memory
             newRoleStrategy.compositeAssociationByAssociationType.TryGetValue(roleType.AssociationType, out newRolePreviousAssociationStrategy);
             if (newRolePreviousAssociationStrategy != null)
             {
+                this.ChangeSet.OnChangingCompositesRole(newRolePreviousAssociationStrategy, roleType, (Strategy)null);
+
                 // Remove obsolete role
                 newRolePreviousAssociationStrategy.Backup(roleType);
                 HashSet<Strategy> newRolePreviousAssociationStrategyRoleStrategies;

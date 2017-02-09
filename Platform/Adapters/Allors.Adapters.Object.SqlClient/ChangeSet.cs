@@ -79,16 +79,16 @@ namespace Allors.Adapters.Object.SqlClient
             this.deleted.Add(objectId);
         }
 
-        internal void OnChangingUnitRole(Roles association, IRoleType roleType)
+        internal void OnChangingUnitRole(long association, IRoleType roleType)
         {
-            this.associations.Add(association.Reference.ObjectId);
+            this.associations.Add(association);
 
-            this.RoleTypes(association.Reference.ObjectId).Add(roleType);
+            this.RoleTypes(association).Add(roleType);
         }
 
-        internal void OnChangingCompositeRole(Roles association, IRoleType roleType, long? previousRole, long? newRole)
+        internal void OnChangingCompositeRole(long association, IRoleType roleType, long? previousRole, long? newRole)
         {
-            this.associations.Add(association.Reference.ObjectId);
+            this.associations.Add(association);
 
             if (previousRole != null)
             {
@@ -100,19 +100,19 @@ namespace Allors.Adapters.Object.SqlClient
                 this.roles.Add(newRole.Value);
             }
 
-            this.RoleTypes(association.Reference.ObjectId).Add(roleType);
+            this.RoleTypes(association).Add(roleType);
         }
 
-        internal void OnChangingCompositesRole(Roles association, IRoleType roleType, Strategy changedRole)
+        internal void OnChangingCompositesRole(long association, IRoleType roleType, Strategy changedRole)
         {
-            this.associations.Add(association.Reference.ObjectId);
+            this.associations.Add(association);
 
             if (changedRole != null)
             {
                 this.roles.Add(changedRole.ObjectId);
             }
 
-            this.RoleTypes(association.Reference.ObjectId).Add(roleType);
+            this.RoleTypes(association).Add(roleType);
         }
 
         private ISet<IRoleType> RoleTypes(long associationId)

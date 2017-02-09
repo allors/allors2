@@ -628,6 +628,8 @@ END
 
                 if (existingAssociation != null)
                 {
+                    this.ChangeSet.OnChangingCompositeRole(existingAssociation.Value, roleType, existingRole, null);
+
                     roleByAssociation[existingAssociation.Value] = null;
                     this.OnObjectChanged(existingAssociation.Value);
                 }
@@ -871,6 +873,8 @@ END
 
                 if (existingAssociation != null)
                 {
+                    this.ChangeSet.OnChangingCompositesRole(existingAssociation.Value, roleType, null);
+
                     long[] rolesOfExistingAssociation;
                     if (currentRoleByAssociation.TryGetValue(existingAssociation.Value, out rolesOfExistingAssociation))
                     {

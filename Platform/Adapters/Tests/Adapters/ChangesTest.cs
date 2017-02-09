@@ -232,16 +232,17 @@ namespace Allors.Adapters
             {
                 init();
 
-                var a = (C1)this.Session.Create(MetaC1.Instance.ObjectType);
-                var c = (C2)this.Session.Create(MetaC2.Instance.ObjectType);
+                var c1a = (C1)this.Session.Create(MetaC1.Instance.ObjectType);
+                var c1b = (C1)this.Session.Create(MetaC1.Instance.ObjectType);
+                var c2a = (C2)this.Session.Create(MetaC2.Instance.ObjectType);
 
                 this.Session.Commit();
 
-                a = (C1)this.Session.Instantiate(a);
-                var b = C2.Create(this.Session);
-                this.Session.Instantiate(c);
+                c1a = (C1)this.Session.Instantiate(c1a);
+                var c2b = C2.Create(this.Session);
+                this.Session.Instantiate(c2a);
 
-                a.C1C2one2one = b;
+                c1a.C1C2one2one = c2b;
 
                 var changes = this.Session.Checkpoint();
 
@@ -249,21 +250,21 @@ namespace Allors.Adapters
                 var roles = changes.Roles.ToArray();
 
                 Assert.AreEqual(1, associations.Length);
-                Assert.Contains(a.Id, associations);
+                Assert.Contains(c1a.Id, associations);
 
                 Assert.AreEqual(1, roles.Length);
-                Assert.Contains(b.Id, roles);
+                Assert.Contains(c2b.Id, roles);
 
-                Assert.AreEqual(1, changes.GetRoleTypes(a.Id).Count());
-                Assert.AreEqual(MetaC1.Instance.C1C2one2one, changes.GetRoleTypes(a.Id).First());
+                Assert.AreEqual(1, changes.GetRoleTypes(c1a.Id).Count());
+                Assert.AreEqual(MetaC1.Instance.C1C2one2one, changes.GetRoleTypes(c1a.Id).First());
 
-                Assert.IsTrue(associations.Contains(a.Id));
-                Assert.IsFalse(associations.Contains(b.Id));
-                Assert.IsFalse(associations.Contains(c.Id));
+                Assert.IsTrue(associations.Contains(c1a.Id));
+                Assert.IsFalse(associations.Contains(c2b.Id));
+                Assert.IsFalse(associations.Contains(c2a.Id));
 
-                Assert.IsFalse(roles.Contains(a.Id));
-                Assert.IsTrue(roles.Contains(b.Id));
-                Assert.IsFalse(roles.Contains(c.Id));
+                Assert.IsFalse(roles.Contains(c1a.Id));
+                Assert.IsTrue(roles.Contains(c2b.Id));
+                Assert.IsFalse(roles.Contains(c2a.Id));
 
                 changes = this.Session.Checkpoint();
 
@@ -272,11 +273,11 @@ namespace Allors.Adapters
 
                 Assert.AreEqual(0, associations.Length);
                 Assert.AreEqual(0, roles.Length);
-                Assert.AreEqual(0, changes.GetRoleTypes(a.Id).Count());
-                Assert.AreEqual(0, changes.GetRoleTypes(b.Id).Count());
-                Assert.AreEqual(0, changes.GetRoleTypes(c.Id).Count());
+                Assert.AreEqual(0, changes.GetRoleTypes(c1a.Id).Count());
+                Assert.AreEqual(0, changes.GetRoleTypes(c2b.Id).Count());
+                Assert.AreEqual(0, changes.GetRoleTypes(c2a.Id).Count());
 
-                a.C1C2one2one = c;
+                c1a.C1C2one2one = c2a;
 
                 changes = this.Session.Checkpoint();
 
@@ -284,22 +285,22 @@ namespace Allors.Adapters
                 roles = changes.Roles.ToArray();
 
                 Assert.AreEqual(1, associations.Length);
-                Assert.Contains(a.Id, associations);
+                Assert.Contains(c1a.Id, associations);
 
                 Assert.AreEqual(2, roles.Length);
-                Assert.Contains(b.Id, roles);
-                Assert.Contains(c.Id, roles);
+                Assert.Contains(c2b.Id, roles);
+                Assert.Contains(c2a.Id, roles);
 
-                Assert.AreEqual(1, changes.GetRoleTypes(a.Id).Count());
-                Assert.AreEqual(MetaC1.Instance.C1C2one2one, changes.GetRoleTypes(a.Id).First());
+                Assert.AreEqual(1, changes.GetRoleTypes(c1a.Id).Count());
+                Assert.AreEqual(MetaC1.Instance.C1C2one2one, changes.GetRoleTypes(c1a.Id).First());
 
-                Assert.IsTrue(associations.Contains(a.Id));
-                Assert.IsFalse(associations.Contains(b.Id));
-                Assert.IsFalse(associations.Contains(c.Id));
+                Assert.IsTrue(associations.Contains(c1a.Id));
+                Assert.IsFalse(associations.Contains(c2b.Id));
+                Assert.IsFalse(associations.Contains(c2a.Id));
 
-                Assert.IsFalse(roles.Contains(a.Id));
-                Assert.IsTrue(roles.Contains(b.Id));
-                Assert.IsTrue(roles.Contains(c.Id));
+                Assert.IsFalse(roles.Contains(c1a.Id));
+                Assert.IsTrue(roles.Contains(c2b.Id));
+                Assert.IsTrue(roles.Contains(c2a.Id));
 
                 changes = this.Session.Checkpoint();
 
@@ -308,11 +309,11 @@ namespace Allors.Adapters
 
                 Assert.AreEqual(0, associations.Length);
                 Assert.AreEqual(0, roles.Length);
-                Assert.AreEqual(0, changes.GetRoleTypes(a.Id).Count());
-                Assert.AreEqual(0, changes.GetRoleTypes(b.Id).Count());
-                Assert.AreEqual(0, changes.GetRoleTypes(c.Id).Count());
+                Assert.AreEqual(0, changes.GetRoleTypes(c1a.Id).Count());
+                Assert.AreEqual(0, changes.GetRoleTypes(c2b.Id).Count());
+                Assert.AreEqual(0, changes.GetRoleTypes(c2a.Id).Count());
 
-                a.RemoveC1C2one2one();
+                c1a.RemoveC1C2one2one();
 
                 changes = this.Session.Checkpoint();
 
@@ -320,21 +321,21 @@ namespace Allors.Adapters
                 roles = changes.Roles.ToArray();
 
                 Assert.AreEqual(1, associations.Length);
-                Assert.Contains(a.Strategy.ObjectId, associations);
+                Assert.Contains(c1a.Strategy.ObjectId, associations);
 
                 Assert.AreEqual(1, roles.Length);
-                Assert.Contains(c.Id, roles);
+                Assert.Contains(c2a.Id, roles);
 
-                Assert.AreEqual(1, changes.GetRoleTypes(a.Id).Count());
-                Assert.AreEqual(MetaC1.Instance.C1C2one2one, changes.GetRoleTypes(a.Id).First());
+                Assert.AreEqual(1, changes.GetRoleTypes(c1a.Id).Count());
+                Assert.AreEqual(MetaC1.Instance.C1C2one2one, changes.GetRoleTypes(c1a.Id).First());
 
-                Assert.IsTrue(associations.Contains(a.Id));
-                Assert.IsFalse(associations.Contains(b.Id));
-                Assert.IsFalse(associations.Contains(c.Id));
+                Assert.IsTrue(associations.Contains(c1a.Id));
+                Assert.IsFalse(associations.Contains(c2b.Id));
+                Assert.IsFalse(associations.Contains(c2a.Id));
 
-                Assert.IsFalse(roles.Contains(a.Id));
-                Assert.IsFalse(roles.Contains(b.Id));
-                Assert.IsTrue(roles.Contains(c.Id));
+                Assert.IsFalse(roles.Contains(c1a.Id));
+                Assert.IsFalse(roles.Contains(c2b.Id));
+                Assert.IsTrue(roles.Contains(c2a.Id));
 
                 changes = this.Session.Checkpoint();
 
@@ -343,11 +344,11 @@ namespace Allors.Adapters
 
                 Assert.AreEqual(0, associations.Length);
                 Assert.AreEqual(0, roles.Length);
-                Assert.AreEqual(0, changes.GetRoleTypes(a.Id).Count());
-                Assert.AreEqual(0, changes.GetRoleTypes(b.Id).Count());
-                Assert.AreEqual(0, changes.GetRoleTypes(c.Id).Count());
+                Assert.AreEqual(0, changes.GetRoleTypes(c1a.Id).Count());
+                Assert.AreEqual(0, changes.GetRoleTypes(c2b.Id).Count());
+                Assert.AreEqual(0, changes.GetRoleTypes(c2a.Id).Count());
 
-                a.C1C2one2one = c;
+                c1a.C1C2one2one = c2a;
 
                 this.Session.Rollback();
 
@@ -356,11 +357,11 @@ namespace Allors.Adapters
 
                 Assert.AreEqual(0, associations.Length);
                 Assert.AreEqual(0, roles.Length);
-                Assert.AreEqual(0, changes.GetRoleTypes(a.Id).Count());
-                Assert.AreEqual(0, changes.GetRoleTypes(b.Id).Count());
-                Assert.AreEqual(0, changes.GetRoleTypes(c.Id).Count());
+                Assert.AreEqual(0, changes.GetRoleTypes(c1a.Id).Count());
+                Assert.AreEqual(0, changes.GetRoleTypes(c2b.Id).Count());
+                Assert.AreEqual(0, changes.GetRoleTypes(c2a.Id).Count());
 
-                a.C1C2one2one = c;
+                c1a.C1C2one2one = c2a;
 
                 this.Session.Commit();
 
@@ -369,9 +370,23 @@ namespace Allors.Adapters
 
                 Assert.AreEqual(0, associations.Length);
                 Assert.AreEqual(0, roles.Length);
-                Assert.AreEqual(0, changes.GetRoleTypes(a.Id).Count());
-                Assert.AreEqual(0, changes.GetRoleTypes(b.Id).Count());
-                Assert.AreEqual(0, changes.GetRoleTypes(c.Id).Count());
+                Assert.AreEqual(0, changes.GetRoleTypes(c1a.Id).Count());
+                Assert.AreEqual(0, changes.GetRoleTypes(c2b.Id).Count());
+                Assert.AreEqual(0, changes.GetRoleTypes(c2a.Id).Count());
+
+                c1b.C1C2one2one = c2a;
+
+                changes = this.Session.Checkpoint();
+
+                associations = changes.Associations.ToArray();
+                roles = changes.Roles.ToArray();
+
+                Assert.AreEqual(2, associations.Length);
+                Assert.AreEqual(1, roles.Length);
+                Assert.AreEqual(1, changes.GetRoleTypes(c1a.Id).Count());
+                Assert.AreEqual(1, changes.GetRoleTypes(c1b.Id).Count());
+                Assert.AreEqual(0, changes.GetRoleTypes(c2b.Id).Count());
+                Assert.AreEqual(0, changes.GetRoleTypes(c2a.Id).Count());
             }
         }
 
@@ -382,16 +397,17 @@ namespace Allors.Adapters
             {
                 init();
 
-                var a = (C1)this.Session.Create(MetaC1.Instance.ObjectType);
-                var c = (C2)this.Session.Create(MetaC2.Instance.ObjectType);
+                var c1a = (C1)this.Session.Create(MetaC1.Instance.ObjectType);
+                var c1b = (C1)this.Session.Create(MetaC1.Instance.ObjectType);
+                var c2a = (C2)this.Session.Create(MetaC2.Instance.ObjectType);
 
                 this.Session.Commit();
 
-                a = (C1)this.Session.Instantiate(a);
-                var b = C2.Create(this.Session);
-                this.Session.Instantiate(c);
+                c1a = (C1)this.Session.Instantiate(c1a);
+                var c2b = C2.Create(this.Session);
+                this.Session.Instantiate(c2a);
 
-                a.AddC1C2one2many(b);
+                c1a.AddC1C2one2many(c2b);
 
                 var changes = this.Session.Checkpoint();
 
@@ -399,21 +415,21 @@ namespace Allors.Adapters
                 var roles = changes.Roles.ToArray();
 
                 Assert.AreEqual(1, associations.Length);
-                Assert.Contains(a.Id, associations);
+                Assert.Contains(c1a.Id, associations);
 
                 Assert.AreEqual(1, roles.Length);
-                Assert.Contains(b.Id, roles);
+                Assert.Contains(c2b.Id, roles);
 
-                Assert.AreEqual(1, changes.GetRoleTypes(a.Id).Count());
-                Assert.AreEqual(MetaC1.Instance.C1C2one2manies, changes.GetRoleTypes(a.Id).First());
+                Assert.AreEqual(1, changes.GetRoleTypes(c1a.Id).Count());
+                Assert.AreEqual(MetaC1.Instance.C1C2one2manies, changes.GetRoleTypes(c1a.Id).First());
 
-                Assert.IsTrue(associations.Contains(a.Id));
-                Assert.IsFalse(associations.Contains(b.Id));
-                Assert.IsFalse(associations.Contains(c.Id));
+                Assert.IsTrue(associations.Contains(c1a.Id));
+                Assert.IsFalse(associations.Contains(c2b.Id));
+                Assert.IsFalse(associations.Contains(c2a.Id));
 
-                Assert.IsFalse(roles.Contains(a.Id));
-                Assert.IsTrue(roles.Contains(b.Id));
-                Assert.IsFalse(roles.Contains(c.Id));
+                Assert.IsFalse(roles.Contains(c1a.Id));
+                Assert.IsTrue(roles.Contains(c2b.Id));
+                Assert.IsFalse(roles.Contains(c2a.Id));
 
                 changes = this.Session.Checkpoint();
 
@@ -422,11 +438,11 @@ namespace Allors.Adapters
 
                 Assert.AreEqual(0, associations.Length);
                 Assert.AreEqual(0, roles.Length);
-                Assert.AreEqual(0, changes.GetRoleTypes(a.Id).Count());
-                Assert.AreEqual(0, changes.GetRoleTypes(b.Id).Count());
-                Assert.AreEqual(0, changes.GetRoleTypes(c.Id).Count());
+                Assert.AreEqual(0, changes.GetRoleTypes(c1a.Id).Count());
+                Assert.AreEqual(0, changes.GetRoleTypes(c2b.Id).Count());
+                Assert.AreEqual(0, changes.GetRoleTypes(c2a.Id).Count());
 
-                a.AddC1C2one2many(c);
+                c1a.AddC1C2one2many(c2a);
 
                 changes = this.Session.Checkpoint();
 
@@ -434,21 +450,21 @@ namespace Allors.Adapters
                 roles = changes.Roles.ToArray();
 
                 Assert.AreEqual(1, associations.Length);
-                Assert.Contains(a.Id, associations);
+                Assert.Contains(c1a.Id, associations);
 
                 Assert.AreEqual(1, roles.Length);
-                Assert.Contains(c.Id, roles);
+                Assert.Contains(c2a.Id, roles);
 
-                Assert.AreEqual(1, changes.GetRoleTypes(a.Id).Count());
-                Assert.AreEqual(MetaC1.Instance.C1C2one2manies, changes.GetRoleTypes(a.Id).First());
+                Assert.AreEqual(1, changes.GetRoleTypes(c1a.Id).Count());
+                Assert.AreEqual(MetaC1.Instance.C1C2one2manies, changes.GetRoleTypes(c1a.Id).First());
 
-                Assert.IsTrue(associations.Contains(a.Id));
-                Assert.IsFalse(associations.Contains(b.Id));
-                Assert.IsFalse(associations.Contains(c.Id));
+                Assert.IsTrue(associations.Contains(c1a.Id));
+                Assert.IsFalse(associations.Contains(c2b.Id));
+                Assert.IsFalse(associations.Contains(c2a.Id));
 
-                Assert.IsFalse(roles.Contains(a.Id));
-                Assert.IsFalse(roles.Contains(b.Id));
-                Assert.IsTrue(roles.Contains(c.Id));
+                Assert.IsFalse(roles.Contains(c1a.Id));
+                Assert.IsFalse(roles.Contains(c2b.Id));
+                Assert.IsTrue(roles.Contains(c2a.Id));
 
                 changes = this.Session.Checkpoint();
 
@@ -457,11 +473,11 @@ namespace Allors.Adapters
 
                 Assert.AreEqual(0, associations.Length);
                 Assert.AreEqual(0, roles.Length);
-                Assert.AreEqual(0, changes.GetRoleTypes(a.Id).Count());
-                Assert.AreEqual(0, changes.GetRoleTypes(b.Id).Count());
-                Assert.AreEqual(0, changes.GetRoleTypes(c.Id).Count());
+                Assert.AreEqual(0, changes.GetRoleTypes(c1a.Id).Count());
+                Assert.AreEqual(0, changes.GetRoleTypes(c2b.Id).Count());
+                Assert.AreEqual(0, changes.GetRoleTypes(c2a.Id).Count());
 
-                a.RemoveC1C2one2many(c);
+                c1a.RemoveC1C2one2many(c2a);
 
                 changes = this.Session.Checkpoint();
 
@@ -469,21 +485,21 @@ namespace Allors.Adapters
                 roles = changes.Roles.ToArray();
 
                 Assert.AreEqual(1, associations.Length);
-                Assert.Contains(a.Id, associations);
+                Assert.Contains(c1a.Id, associations);
 
                 Assert.AreEqual(1, roles.Length);
-                Assert.Contains(c.Id, roles);
+                Assert.Contains(c2a.Id, roles);
 
-                Assert.AreEqual(1, changes.GetRoleTypes(a.Id).Count());
-                Assert.AreEqual(MetaC1.Instance.C1C2one2manies, changes.GetRoleTypes(a.Id).First());
+                Assert.AreEqual(1, changes.GetRoleTypes(c1a.Id).Count());
+                Assert.AreEqual(MetaC1.Instance.C1C2one2manies, changes.GetRoleTypes(c1a.Id).First());
 
-                Assert.IsTrue(associations.Contains(a.Id));
-                Assert.IsFalse(associations.Contains(b.Id));
-                Assert.IsFalse(associations.Contains(c.Id));
+                Assert.IsTrue(associations.Contains(c1a.Id));
+                Assert.IsFalse(associations.Contains(c2b.Id));
+                Assert.IsFalse(associations.Contains(c2a.Id));
 
-                Assert.IsFalse(roles.Contains(a.Id));
-                Assert.IsFalse(roles.Contains(b.Id));
-                Assert.IsTrue(roles.Contains(c.Id));
+                Assert.IsFalse(roles.Contains(c1a.Id));
+                Assert.IsFalse(roles.Contains(c2b.Id));
+                Assert.IsTrue(roles.Contains(c2a.Id));
 
                 changes = this.Session.Checkpoint();
 
@@ -492,11 +508,11 @@ namespace Allors.Adapters
 
                 Assert.AreEqual(0, associations.Length);
                 Assert.AreEqual(0, roles.Length);
-                Assert.AreEqual(0, changes.GetRoleTypes(a.Id).Count());
-                Assert.AreEqual(0, changes.GetRoleTypes(b.Id).Count());
-                Assert.AreEqual(0, changes.GetRoleTypes(c.Id).Count());
+                Assert.AreEqual(0, changes.GetRoleTypes(c1a.Id).Count());
+                Assert.AreEqual(0, changes.GetRoleTypes(c2b.Id).Count());
+                Assert.AreEqual(0, changes.GetRoleTypes(c2a.Id).Count());
 
-                a.RemoveC1C2one2many(b);
+                c1a.RemoveC1C2one2many(c2b);
 
                 changes = this.Session.Checkpoint();
 
@@ -504,21 +520,21 @@ namespace Allors.Adapters
                 roles = changes.Roles.ToArray();
 
                 Assert.AreEqual(1, associations.Length);
-                Assert.Contains(a.Id, associations);
+                Assert.Contains(c1a.Id, associations);
 
                 Assert.AreEqual(1, roles.Length);
-                Assert.Contains(b.Id, roles);
+                Assert.Contains(c2b.Id, roles);
 
-                Assert.AreEqual(1, changes.GetRoleTypes(a.Id).Count());
-                Assert.AreEqual(MetaC1.Instance.C1C2one2manies, changes.GetRoleTypes(a.Id).First());
+                Assert.AreEqual(1, changes.GetRoleTypes(c1a.Id).Count());
+                Assert.AreEqual(MetaC1.Instance.C1C2one2manies, changes.GetRoleTypes(c1a.Id).First());
 
-                Assert.IsTrue(associations.Contains(a.Id));
-                Assert.IsFalse(associations.Contains(b.Id));
-                Assert.IsFalse(associations.Contains(c.Id));
+                Assert.IsTrue(associations.Contains(c1a.Id));
+                Assert.IsFalse(associations.Contains(c2b.Id));
+                Assert.IsFalse(associations.Contains(c2a.Id));
 
-                Assert.IsFalse(roles.Contains(a.Id));
-                Assert.IsTrue(roles.Contains(b.Id));
-                Assert.IsFalse(roles.Contains(c.Id));
+                Assert.IsFalse(roles.Contains(c1a.Id));
+                Assert.IsTrue(roles.Contains(c2b.Id));
+                Assert.IsFalse(roles.Contains(c2a.Id));
 
                 changes = this.Session.Checkpoint();
 
@@ -527,11 +543,11 @@ namespace Allors.Adapters
 
                 Assert.AreEqual(0, associations.Length);
                 Assert.AreEqual(0, roles.Length);
-                Assert.AreEqual(0, changes.GetRoleTypes(a.Id).Count());
-                Assert.AreEqual(0, changes.GetRoleTypes(b.Id).Count());
-                Assert.AreEqual(0, changes.GetRoleTypes(c.Id).Count());
+                Assert.AreEqual(0, changes.GetRoleTypes(c1a.Id).Count());
+                Assert.AreEqual(0, changes.GetRoleTypes(c2b.Id).Count());
+                Assert.AreEqual(0, changes.GetRoleTypes(c2a.Id).Count());
 
-                a.AddC1C2one2many(c);
+                c1a.AddC1C2one2many(c2a);
 
                 this.Session.Rollback();
 
@@ -543,11 +559,11 @@ namespace Allors.Adapters
                 Assert.AreEqual(0, associations.Length);
                 Assert.AreEqual(0, roles.Length);
 
-                Assert.AreEqual(0, changes.GetRoleTypes(a.Id).Count());
-                Assert.AreEqual(0, changes.GetRoleTypes(b.Id).Count());
-                Assert.AreEqual(0, changes.GetRoleTypes(c.Id).Count());
+                Assert.AreEqual(0, changes.GetRoleTypes(c1a.Id).Count());
+                Assert.AreEqual(0, changes.GetRoleTypes(c2b.Id).Count());
+                Assert.AreEqual(0, changes.GetRoleTypes(c2a.Id).Count());
 
-                a.AddC1C2one2many(c);
+                c1a.AddC1C2one2many(c2a);
 
                 this.Session.Commit();
 
@@ -559,9 +575,23 @@ namespace Allors.Adapters
                 Assert.AreEqual(0, associations.Length);
                 Assert.AreEqual(0, roles.Length);
 
-                Assert.AreEqual(0, changes.GetRoleTypes(a.Id).Count());
-                Assert.AreEqual(0, changes.GetRoleTypes(b.Id).Count());
-                Assert.AreEqual(0, changes.GetRoleTypes(c.Id).Count());
+                Assert.AreEqual(0, changes.GetRoleTypes(c1a.Id).Count());
+                Assert.AreEqual(0, changes.GetRoleTypes(c2b.Id).Count());
+                Assert.AreEqual(0, changes.GetRoleTypes(c2a.Id).Count());
+
+                c1b.AddC1C2one2many(c2a);
+
+                changes = this.Session.Checkpoint();
+
+                associations = changes.Associations.ToArray();
+                roles = changes.Roles.ToArray();
+
+                Assert.AreEqual(2, associations.Length);
+                Assert.AreEqual(1, roles.Length);
+                Assert.AreEqual(1, changes.GetRoleTypes(c1a.Id).Count());
+                Assert.AreEqual(1, changes.GetRoleTypes(c1b.Id).Count());
+                Assert.AreEqual(0, changes.GetRoleTypes(c2b.Id).Count());
+                Assert.AreEqual(0, changes.GetRoleTypes(c2a.Id).Count());
             }
         }
 
