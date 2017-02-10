@@ -19,21 +19,21 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Allors.Adapters.Object.SqlC
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domain.Tests", "Database\Domain.Tests\Domain.Tests.csproj", "{F89CBFCF-B8A4-4664-AB02-6C9E0B643C92}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Web", "Workspace\Web\Web.csproj", "{CF73B788-225B-42AF-BD53-13C4E833B530}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Web", "Workspace\CSharp\Web\Web.csproj", "{CF73B788-225B-42AF-BD53-13C4E833B530}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Diagrams", "Workspace\Diagrams\Diagrams.csproj", "{29AE6C72-CCD6-4737-A8A9-16868F2C7850}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Diagrams", "Workspace\CSharp\Diagrams\Diagrams.csproj", "{29AE6C72-CCD6-4737-A8A9-16868F2C7850}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Web.Tests", "Workspace\Web.Tests\Web.Tests.csproj", "{B6C3E754-1228-4DA6-8630-8BC3AF8B2AA9}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Web.Tests", "Workspace\CSharp\Web.Tests\Web.Tests.csproj", "{B6C3E754-1228-4DA6-8630-8BC3AF8B2AA9}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domain.Diagrams", "Database\Domain.Diagrams\Domain.Diagrams.csproj", "{86E451C8-D3BE-4FF8-887A-5F0574E892D9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Meta", "Workspace\Meta\Meta.csproj", "{7B37DFF9-8CEF-4189-8D9D-BE29E34EB68C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Meta", "Workspace\CSharp\Meta\Meta.csproj", "{7B37DFF9-8CEF-4189-8D9D-BE29E34EB68C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domain", "Workspace\Domain\Domain.csproj", "{305E4EE6-EA87-4B53-92B7-F6E39100213D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domain", "Workspace\CSharp\Domain\Domain.csproj", "{305E4EE6-EA87-4B53-92B7-F6E39100213D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domain.Tests", "Workspace\Domain.Tests\Domain.Tests.csproj", "{4455F80D-5DF4-435D-9D18-48F5D9AB35EA}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domain.Tests", "Workspace\CSharp\Domain.Tests\Domain.Tests.csproj", "{4455F80D-5DF4-435D-9D18-48F5D9AB35EA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExcelAddIn", "Workspace\ExcelAddIn\ExcelAddIn.csproj", "{D3637D58-D6E4-466D-92CB-88671FB3C05C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExcelAddIn", "Workspace\CSharp\ExcelAddIn\ExcelAddIn.csproj", "{D3637D58-D6E4-466D-92CB-88671FB3C05C}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Workspace", "Workspace", "{5F1A9D94-4B6E-4AE5-AF11-8968A1C7D8A7}"
 EndProject
