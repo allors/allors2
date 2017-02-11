@@ -324,6 +324,7 @@
     <Compile Include="Apps\LegalForm.cs" />
     <Compile Include="Apps\LegalTerm.cs" />
     <Compile Include="Apps\LetterCorrespondence.cs" />
+    <Compile Include="Apps\LocalisedProductCharacteristicValue.cs" />
     <Compile Include="Apps\Lot.cs" />
     <Compile Include="Apps\Maintenance.cs" />
     <Compile Include="Apps\Manifest.cs" />

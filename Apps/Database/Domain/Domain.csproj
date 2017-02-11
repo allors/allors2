@@ -971,6 +971,7 @@
     <Compile Include="Generated\Locale.g.cs" />
     <Compile Include="Generated\Localised.g.cs" />
     <Compile Include="Generated\LocalisedProductCharacteristic.g.cs" />
+    <Compile Include="Generated\LocalisedProductCharacteristicValue.g.cs" />
     <Compile Include="Generated\LocalisedText.g.cs" />
     <Compile Include="Generated\Login.g.cs" />
     <Compile Include="Generated\Lot.g.cs" />

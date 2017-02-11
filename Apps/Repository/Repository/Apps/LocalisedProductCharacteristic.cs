@@ -28,14 +28,6 @@ namespace Allors.Repository.Domain
 
         public string Characteristic { get; set; }
 
-        #region Allors
-        [Id("C426FF0F-455F-4DE3-8E6D-B09E78EE7AA1")]
-        [AssociationId("D405F5AE-944A-4F08-862D-32FA2F638D3C")]
-        [RoleId("34B66C42-21FE-422E-A5A8-B4D4003F8B3A")]
-        #endregion
-        [Size(-1)]
-        public string Value { get; set; }
-
         #region inherited methods
 
         public void OnBuild()
