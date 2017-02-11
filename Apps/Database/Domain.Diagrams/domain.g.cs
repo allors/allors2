@@ -2618,13 +2618,6 @@ namespace Allors.Domain
 						Party Receivers {set;}
 
 		}
-		public interface LocalisedProductCharacteristicValue  : Localised 
-		{
-						LocalisedProductCharacteristic LocalisedProductCharacteristic {set;}
-
-						global::System.String Value {set;}
-
-		}
 		public interface Lot  : AccessControlledObject 
 		{
 						global::System.DateTime? ExpirationDate {set;}
@@ -3482,14 +3475,14 @@ namespace Allors.Domain
 		public interface Priority  : Enumeration 
 		{
 		}
-		public interface LocalisedProductCharacteristic  : Localised, UniquelyIdentifiable, AccessControlledObject 
+		public interface ProductCharacteristic  : UniquelyIdentifiable, AccessControlledObject 
 		{
-						global::System.String Characteristic {set;}
+						LocalisedText LocalisedCharacteristics {set;}
 
 		}
 		public interface ProductType  : UniquelyIdentifiable, AccessControlledObject 
 		{
-						LocalisedProductCharacteristicValue LocalisedProductCharacteristicValues {set;}
+						ProductCharacteristic ProductCharacteristics {set;}
 
 						global::System.String Name {set;}
 

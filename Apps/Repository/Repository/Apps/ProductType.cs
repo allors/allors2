@@ -24,7 +24,7 @@ namespace Allors.Repository.Domain
         [Multiplicity(Multiplicity.ManyToMany)]
         [Indexed]
 
-        public LocalisedProductCharacteristicValue[] LocalisedProductCharacteristicValues { get; set; }
+        public ProductCharacteristic[] ProductCharacteristics { get; set; }
 
 
         #region Allors

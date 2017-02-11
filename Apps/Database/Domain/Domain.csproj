@@ -970,8 +970,6 @@
     <Compile Include="Generated\LetterCorrespondence.g.cs" />
     <Compile Include="Generated\Locale.g.cs" />
     <Compile Include="Generated\Localised.g.cs" />
-    <Compile Include="Generated\LocalisedProductCharacteristic.g.cs" />
-    <Compile Include="Generated\LocalisedProductCharacteristicValue.g.cs" />
     <Compile Include="Generated\LocalisedText.g.cs" />
     <Compile Include="Generated\Login.g.cs" />
     <Compile Include="Generated\Lot.g.cs" />
@@ -1123,6 +1121,7 @@
     <Compile Include="Generated\ProductCategory.g.cs" />
     <Compile Include="Generated\ProductCategoryRevenue.g.cs" />
     <Compile Include="Generated\ProductCategoryRevenueHistory.g.cs" />
+    <Compile Include="Generated\ProductCharacteristic.g.cs" />
     <Compile Include="Generated\ProductConfiguration.g.cs" />
     <Compile Include="Generated\ProductDeliverySkillRequirement.g.cs" />
     <Compile Include="Generated\ProductDrawing.g.cs" />
