@@ -439,7 +439,7 @@
     <Compile Include="Apps\Printable.cs" />
     <Compile Include="Apps\PrintQueue.cs" />
     <Compile Include="Apps\Priority.cs" />
-    <Compile Include="Apps\ProductCharacteristic.cs" />
+    <Compile Include="Apps\LocalisedProductCharacteristic.cs" />
     <Compile Include="Apps\ProductType.cs" />
     <Compile Include="Apps\Product.cs" />
     <Compile Include="Apps\ProductAssociation.cs" />

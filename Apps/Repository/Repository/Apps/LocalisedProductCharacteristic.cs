@@ -5,10 +5,13 @@ namespace Allors.Repository.Domain
     #region Allors
     [Id("5A0B6477-7B54-48FA-AF59-7B664587F197")]
     #endregion
-    public partial class ProductCharacteristic : UniquelyIdentifiable, AccessControlledObject
+    public partial class LocalisedProductCharacteristic : Localised, UniquelyIdentifiable, AccessControlledObject
     {
 
         #region inherited properties
+
+        public Locale Locale { get; set; }
+
         public Guid UniqueId { get; set; }
 
         public Permission[] DeniedPermissions { get; set; }

@@ -14,6 +14,14 @@ namespace Allors.Repository.Domain
 
         public DateTime SalesDiscontinuationDate { get; set; }
 
+        public LocalisedText[] LocalisedNames { get; set; }
+
+        public LocalisedText[] LocalisedDescriptions { get; set; }
+
+        public LocalisedText[] LocalisedComments { get; set; }
+
+        public string InternalComment { get; set; }
+
         public string Description { get; set; }
 
         public PriceComponent[] VirtualProductPriceComponents { get; set; }
