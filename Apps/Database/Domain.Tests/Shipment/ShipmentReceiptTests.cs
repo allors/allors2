@@ -46,7 +46,7 @@ namespace Allors.Domain
             new SupplierRelationshipBuilder(this.DatabaseSession).WithSupplier(supplier).WithInternalOrganisation(internalOrganisation).Build();
 
             var good = new GoodBuilder(this.DatabaseSession)
-                .WithName("Good")
+                .WithLocalisedName(new LocalisedTextBuilder(this.DatabaseSession).WithText("good").WithLocale(Singleton.Instance(this.DatabaseSession).DefaultLocale).Build())
                 .WithSku("10101")
                 .WithVatRate(new VatRateBuilder(this.DatabaseSession).WithRate(21).Build())
                 .WithInventoryItemKind(new InventoryItemKinds(this.DatabaseSession).NonSerialized)
@@ -137,7 +137,7 @@ namespace Allors.Domain
             new SupplierRelationshipBuilder(this.DatabaseSession).WithSupplier(supplier).WithInternalOrganisation(internalOrganisation).Build();
 
             var good = new GoodBuilder(this.DatabaseSession)
-                .WithName("Good")
+                .WithLocalisedName(new LocalisedTextBuilder(this.DatabaseSession).WithText("good").WithLocale(Singleton.Instance(this.DatabaseSession).DefaultLocale).Build())
                 .WithSku("10101")
                 .WithVatRate(new VatRateBuilder(this.DatabaseSession).WithRate(21).Build())
                 .WithInventoryItemKind(new InventoryItemKinds(this.DatabaseSession).NonSerialized)
@@ -191,7 +191,7 @@ namespace Allors.Domain
             new CustomerRelationshipBuilder(this.DatabaseSession).WithFromDate(DateTime.UtcNow).WithCustomer(customer).WithInternalOrganisation(internalOrganisation).Build();
 
             var good = new GoodBuilder(this.DatabaseSession)
-                .WithName("Good")
+                .WithLocalisedName(new LocalisedTextBuilder(this.DatabaseSession).WithText("good").WithLocale(Singleton.Instance(this.DatabaseSession).DefaultLocale).Build())
                 .WithSku("10101")
                 .WithVatRate(new VatRateBuilder(this.DatabaseSession).WithRate(21).Build())
                 .WithInventoryItemKind(new InventoryItemKinds(this.DatabaseSession).NonSerialized)
@@ -273,7 +273,7 @@ namespace Allors.Domain
             new SupplierRelationshipBuilder(this.DatabaseSession).WithSupplier(supplier).WithInternalOrganisation(internalOrganisation).Build();
 
             var good = new GoodBuilder(this.DatabaseSession)
-                .WithName("Good")
+                .WithLocalisedName(new LocalisedTextBuilder(this.DatabaseSession).WithText("good").WithLocale(Singleton.Instance(this.DatabaseSession).DefaultLocale).Build())
                 .WithSku("10101")
                 .WithVatRate(new VatRateBuilder(this.DatabaseSession).WithRate(21).Build())
                 .WithInventoryItemKind(new InventoryItemKinds(this.DatabaseSession).NonSerialized)

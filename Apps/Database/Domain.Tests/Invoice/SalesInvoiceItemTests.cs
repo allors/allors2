@@ -78,7 +78,7 @@ namespace Allors.Domain
             this.good = new GoodBuilder(this.DatabaseSession)
                 .WithSku("10101")
                 .WithVatRate(this.vatRate21)
-                .WithName("good")
+                .WithLocalisedName(new LocalisedTextBuilder(this.DatabaseSession).WithText("good").WithLocale(Singleton.Instance(this.DatabaseSession).DefaultLocale).Build())
                 .WithInventoryItemKind(new InventoryItemKinds(this.DatabaseSession).NonSerialized)
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.DatabaseSession).Piece)
                 .Build();
@@ -905,7 +905,10 @@ namespace Allors.Domain
             const decimal quantity = 3;
             const decimal amount = 1;
 
-            var category = new ProductCategoryBuilder(this.DatabaseSession).WithDescription("gizmo").Build();
+            var category = new ProductCategoryBuilder(this.DatabaseSession)
+                .WithLocalisedName(new LocalisedTextBuilder(this.DatabaseSession).WithText("gizmo").WithLocale(Singleton.Instance(this.DatabaseSession).DefaultLocale).Build())
+                .Build();
+
             new DiscountComponentBuilder(this.DatabaseSession)
                 .WithSpecifiedFor(this.internalOrganisation)
                 .WithDescription("discount good for product category")
@@ -948,7 +951,10 @@ namespace Allors.Domain
             const decimal quantity = 3;
             const decimal percentage = 5;
 
-            var category = new ProductCategoryBuilder(this.DatabaseSession).WithDescription("gizmo").Build();
+            var category = new ProductCategoryBuilder(this.DatabaseSession)
+                .WithLocalisedName(new LocalisedTextBuilder(this.DatabaseSession).WithText("gizmo").WithLocale(Singleton.Instance(this.DatabaseSession).DefaultLocale).Build())
+                .Build();
+
             new DiscountComponentBuilder(this.DatabaseSession)
                 .WithSpecifiedFor(this.internalOrganisation)
                 .WithDescription("discount good for product category")
@@ -993,7 +999,10 @@ namespace Allors.Domain
             const decimal quantity = 3;
             const decimal amount = 1;
 
-            var category = new ProductCategoryBuilder(this.DatabaseSession).WithDescription("gizmo").Build();
+            var category = new ProductCategoryBuilder(this.DatabaseSession)
+                .WithLocalisedName(new LocalisedTextBuilder(this.DatabaseSession).WithText("gizmo").WithLocale(Singleton.Instance(this.DatabaseSession).DefaultLocale).Build())
+                .Build();
+
             new SurchargeComponentBuilder(this.DatabaseSession)
                 .WithSpecifiedFor(this.internalOrganisation)
                 .WithDescription("discount good for product category")
@@ -1036,7 +1045,10 @@ namespace Allors.Domain
             const decimal quantity = 3;
             const decimal percentage = 5;
 
-            var category = new ProductCategoryBuilder(this.DatabaseSession).WithDescription("gizmo").Build();
+            var category = new ProductCategoryBuilder(this.DatabaseSession)
+                .WithLocalisedName(new LocalisedTextBuilder(this.DatabaseSession).WithText("gizmo").WithLocale(Singleton.Instance(this.DatabaseSession).DefaultLocale).Build())
+                .Build();
+
             new SurchargeComponentBuilder(this.DatabaseSession)
                 .WithSpecifiedFor(this.internalOrganisation)
                 .WithDescription("discount good for product category")
@@ -2297,8 +2309,14 @@ namespace Allors.Domain
             var salesrep1 = new PersonBuilder(this.DatabaseSession).WithLastName("salesrep for child product category").Build();
             var salesrep2  = new PersonBuilder(this.DatabaseSession).WithLastName("salesrep for parent category").Build();
             var salesrep3 = new PersonBuilder(this.DatabaseSession).WithLastName("salesrep for everything else").Build();
-            var parentProductCategory = new ProductCategoryBuilder(this.DatabaseSession).WithDescription("parent").Build();
-            var childProductCategory = new ProductCategoryBuilder(this.DatabaseSession).WithDescription("child").WithParent(parentProductCategory).Build();
+            var parentProductCategory = new ProductCategoryBuilder(this.DatabaseSession)
+                .WithLocalisedName(new LocalisedTextBuilder(this.DatabaseSession).WithText("parent").WithLocale(Singleton.Instance(this.DatabaseSession).DefaultLocale).Build())
+                .Build();
+
+            var childProductCategory = new ProductCategoryBuilder(this.DatabaseSession)
+                .WithLocalisedName(new LocalisedTextBuilder(this.DatabaseSession).WithText("child").WithLocale(Singleton.Instance(this.DatabaseSession).DefaultLocale).Build())
+                .WithParent(parentProductCategory).
+                Build();
 
             new SalesRepRelationshipBuilder(this.DatabaseSession)
                 .WithFromDate(DateTime.UtcNow.AddMinutes(-1))
@@ -2346,8 +2364,14 @@ namespace Allors.Domain
             var salesrep1 = new PersonBuilder(this.DatabaseSession).WithLastName("salesrep for child product category").Build();
             var salesrep2 = new PersonBuilder(this.DatabaseSession).WithLastName("salesrep for parent category").Build();
             var salesrep3 = new PersonBuilder(this.DatabaseSession).WithLastName("salesrep for everything else").Build();
-            var parentProductCategory = new ProductCategoryBuilder(this.DatabaseSession).WithDescription("parent").Build();
-            var childProductCategory = new ProductCategoryBuilder(this.DatabaseSession).WithDescription("child").WithParent(parentProductCategory).Build();
+            var parentProductCategory = new ProductCategoryBuilder(this.DatabaseSession)
+                .WithLocalisedName(new LocalisedTextBuilder(this.DatabaseSession).WithText("parent").WithLocale(Singleton.Instance(this.DatabaseSession).DefaultLocale).Build())
+                .Build();
+
+            var childProductCategory = new ProductCategoryBuilder(this.DatabaseSession)
+                .WithLocalisedName(new LocalisedTextBuilder(this.DatabaseSession).WithText("child").WithLocale(Singleton.Instance(this.DatabaseSession).DefaultLocale).Build())
+                .WithParent(parentProductCategory).
+                Build();
 
             new SalesRepRelationshipBuilder(this.DatabaseSession)
                 .WithFromDate(DateTime.UtcNow.AddMinutes(-1))
@@ -2395,8 +2419,14 @@ namespace Allors.Domain
             var salesrep1 = new PersonBuilder(this.DatabaseSession).WithLastName("salesrep for child product category").Build();
             var salesrep2 = new PersonBuilder(this.DatabaseSession).WithLastName("salesrep for parent category").Build();
             var salesrep3 = new PersonBuilder(this.DatabaseSession).WithLastName("salesrep for everything else").Build();
-            var parentProductCategory = new ProductCategoryBuilder(this.DatabaseSession).WithDescription("parent").Build();
-            var childProductCategory = new ProductCategoryBuilder(this.DatabaseSession).WithDescription("child").WithParent(parentProductCategory).Build();
+            var parentProductCategory = new ProductCategoryBuilder(this.DatabaseSession)
+                .WithLocalisedName(new LocalisedTextBuilder(this.DatabaseSession).WithText("parent").WithLocale(Singleton.Instance(this.DatabaseSession).DefaultLocale).Build())
+                .Build();
+
+            var childProductCategory = new ProductCategoryBuilder(this.DatabaseSession)
+                .WithLocalisedName(new LocalisedTextBuilder(this.DatabaseSession).WithText("child").WithLocale(Singleton.Instance(this.DatabaseSession).DefaultLocale).Build())
+                .WithParent(parentProductCategory).
+                Build();
 
             new SalesRepRelationshipBuilder(this.DatabaseSession)
                 .WithFromDate(DateTime.UtcNow.AddMinutes(-1))

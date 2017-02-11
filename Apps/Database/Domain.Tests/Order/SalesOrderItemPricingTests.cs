@@ -98,15 +98,25 @@ namespace Allors.Domain
 
             this.part = new FinishedGoodBuilder(this.DatabaseSession).WithName("part").Build();
 
-            this.ancestorProductCategory = new ProductCategoryBuilder(this.DatabaseSession).WithDescription("ancestor").Build();
-            this.parentProductCategory = new ProductCategoryBuilder(this.DatabaseSession).WithDescription("parent").WithParent(this.ancestorProductCategory).Build();
-            this.productCategory = new ProductCategoryBuilder(this.DatabaseSession).WithDescription("gizmo").Build();
+            this.ancestorProductCategory = new ProductCategoryBuilder(this.DatabaseSession)
+                .WithLocalisedName(new LocalisedTextBuilder(this.DatabaseSession).WithText("ancestor").WithLocale(Singleton.Instance(this.DatabaseSession).DefaultLocale).Build())
+                .Build();
+
+            this.parentProductCategory = new ProductCategoryBuilder(this.DatabaseSession)
+                .WithLocalisedName(new LocalisedTextBuilder(this.DatabaseSession).WithText("parent").WithLocale(Singleton.Instance(this.DatabaseSession).DefaultLocale).Build())
+                .WithParent(this.ancestorProductCategory)
+                .Build();
+
+            this.productCategory = new ProductCategoryBuilder(this.DatabaseSession)
+                .WithLocalisedName(new LocalisedTextBuilder(this.DatabaseSession).WithText("gizmo").WithLocale(Singleton.Instance(this.DatabaseSession).DefaultLocale).Build())
+                .Build();
+
             this.productCategory.AddParent(this.parentProductCategory);
 
             this.good = new GoodBuilder(this.DatabaseSession)
                 .WithSku("10101")
                 .WithVatRate(this.vatRate21)
-                .WithName("good")
+                .WithLocalisedName(new LocalisedTextBuilder(this.DatabaseSession).WithText("good").WithLocale(Singleton.Instance(this.DatabaseSession).DefaultLocale).Build())
                 .WithProductCategory(this.productCategory)
                 .WithFinishedGood(this.part)
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.DatabaseSession).Piece)
@@ -149,7 +159,7 @@ namespace Allors.Domain
             this.variantGood = new GoodBuilder(this.DatabaseSession)
                 .WithSku("v10101")
                 .WithVatRate(this.vatRate21)
-                .WithName("variant good")
+                .WithLocalisedName(new LocalisedTextBuilder(this.DatabaseSession).WithText("variant good").WithLocale(Singleton.Instance(this.DatabaseSession).DefaultLocale).Build())
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.DatabaseSession).Piece)
                 .WithInventoryItemKind(new InventoryItemKinds(this.DatabaseSession).NonSerialized)
                 .Build();
@@ -157,14 +167,14 @@ namespace Allors.Domain
             this.variantGood2 = new GoodBuilder(this.DatabaseSession)
                 .WithSku("v10102")
                 .WithVatRate(this.vatRate21)
-                .WithName("variant good2")
+                .WithLocalisedName(new LocalisedTextBuilder(this.DatabaseSession).WithText("variant good2").WithLocale(Singleton.Instance(this.DatabaseSession).DefaultLocale).Build())
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.DatabaseSession).Piece)
                 .WithInventoryItemKind(new InventoryItemKinds(this.DatabaseSession).NonSerialized)
                 .Build();
 
             this.virtualGood = new GoodBuilder(this.DatabaseSession)
                 .WithVatRate(this.vatRate21)
-                .WithName("virtual good")
+                .WithLocalisedName(new LocalisedTextBuilder(this.DatabaseSession).WithText("virtual good").WithLocale(Singleton.Instance(this.DatabaseSession).DefaultLocale).Build())
                 .WithVariant(this.variantGood)
                 .WithVariant(this.variantGood2)
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.DatabaseSession).Piece)

@@ -48,7 +48,7 @@ namespace Allors.Domain
             this.good = new GoodBuilder(this.DatabaseSession)
                 .WithSku("10101")
                 .WithVatRate(new VatRateBuilder(this.DatabaseSession).WithRate(21).Build())
-                .WithName("good")
+                .WithLocalisedName(new LocalisedTextBuilder(this.DatabaseSession).WithText("good").WithLocale(Singleton.Instance(this.DatabaseSession).DefaultLocale).Build())
                 .WithInventoryItemKind(new InventoryItemKinds(this.DatabaseSession).NonSerialized)
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.DatabaseSession).Piece)
                 .Build();

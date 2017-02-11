@@ -15,6 +15,8 @@
 // --------------------------------------------------------------------------------------------------------------------
 namespace Allors.Domain
 {
+    using System.Linq;
+
     using Meta;
 
     public partial class Good
@@ -132,9 +134,20 @@ namespace Allors.Domain
         public void AppsOnDerive(ObjectOnDerive method)
         {
             var derivation = method.Derivation;
+            var defaultLocale = Singleton.Instance(this.strategy.Session).DefaultLocale;
 
             derivation.Validation.AssertAtLeastOne(this, M.Good.FinishedGood, M.Good.InventoryItemKind);
             derivation.Validation.AssertExistsAtMostOne(this, M.Good.FinishedGood, M.Good.InventoryItemKind);
+
+            if (this.LocalisedNames.Any(x => x.Locale.Equals(defaultLocale)))
+            {
+                this.Name = this.LocalisedNames.First(x => x.Locale.Equals(defaultLocale)).Text;
+            }
+
+            if (this.LocalisedDescriptions.Any(x => x.Locale.Equals(defaultLocale)))
+            {
+                this.Description = this.LocalisedDescriptions.First(x => x.Locale.Equals(defaultLocale)).Text;
+            }
 
             if (this.ProductCategories.Count == 1 && !this.ExistPrimaryProductCategory)
             {

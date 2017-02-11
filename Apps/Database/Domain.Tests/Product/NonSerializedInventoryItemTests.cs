@@ -57,7 +57,7 @@ namespace Allors.Domain
         public void GivenInventoryItem_WhenDeriving_ThenRequiredRelationsMustExist()
         {
             var good = new GoodBuilder(this.DatabaseSession)
-                .WithName("Good")
+                .WithLocalisedName(new LocalisedTextBuilder(this.DatabaseSession).WithText("good").WithLocale(Singleton.Instance(this.DatabaseSession).DefaultLocale).Build())
                 .WithSku("10101")
                 .WithVatRate(new VatRateBuilder(this.DatabaseSession).WithRate(21).Build())
                 .WithInventoryItemKind(new InventoryItemKinds(this.DatabaseSession).NonSerialized)
@@ -119,12 +119,14 @@ namespace Allors.Domain
         {
             var vatRate21 = new VatRateBuilder(this.DatabaseSession).WithRate(21).Build();
 
-            var category = new ProductCategoryBuilder(this.DatabaseSession).WithDescription("category").Build();
+            var category = new ProductCategoryBuilder(this.DatabaseSession)
+                .WithLocalisedName(new LocalisedTextBuilder(this.DatabaseSession).WithText("category").WithLocale(Singleton.Instance(this.DatabaseSession).DefaultLocale).Build())
+                .Build();
 
             var good = new GoodBuilder(this.DatabaseSession)
              .WithSku("10101")
              .WithVatRate(vatRate21)
-             .WithName("good1")
+                .WithLocalisedName(new LocalisedTextBuilder(this.DatabaseSession).WithText("good1").WithLocale(Singleton.Instance(this.DatabaseSession).DefaultLocale).Build())
              .WithInventoryItemKind(new InventoryItemKinds(this.DatabaseSession).NonSerialized)
              .WithUnitOfMeasure(new UnitsOfMeasure(this.DatabaseSession).Piece)
              .WithPrimaryProductCategory(category)
@@ -134,7 +136,7 @@ namespace Allors.Domain
                 .WithGood(good)
                 .Build();
 
-            this.DatabaseSession.Derive(true);
+             this.DatabaseSession.Derive(true);
 
             Assert.AreEqual(good.Sku, item.Sku);
         }
@@ -158,12 +160,14 @@ namespace Allors.Domain
 
             var vatRate21 = new VatRateBuilder(this.DatabaseSession).WithRate(21).Build();
 
-            var category = new ProductCategoryBuilder(this.DatabaseSession).WithDescription("category").Build();
+            var category = new ProductCategoryBuilder(this.DatabaseSession)
+                .WithLocalisedName(new LocalisedTextBuilder(this.DatabaseSession).WithText("category").WithLocale(Singleton.Instance(this.DatabaseSession).DefaultLocale).Build())
+                .Build();
 
             var good = new GoodBuilder(this.DatabaseSession)
              .WithSku("10101")
              .WithVatRate(vatRate21)
-             .WithName("good1")
+                .WithLocalisedName(new LocalisedTextBuilder(this.DatabaseSession).WithText("good1").WithLocale(Singleton.Instance(this.DatabaseSession).DefaultLocale).Build())
              .WithInventoryItemKind(new InventoryItemKinds(this.DatabaseSession).NonSerialized)
              .WithUnitOfMeasure(new UnitsOfMeasure(this.DatabaseSession).Piece)
              .WithPrimaryProductCategory(category)
@@ -198,11 +202,14 @@ namespace Allors.Domain
             var uom = new UnitsOfMeasure(this.DatabaseSession).Centimeter;
 
             var vatRate21 = new VatRateBuilder(this.DatabaseSession).WithRate(21).Build();
-            var category = new ProductCategoryBuilder(this.DatabaseSession).WithDescription("category").Build();
+            var category = new ProductCategoryBuilder(this.DatabaseSession)
+                .WithLocalisedName(new LocalisedTextBuilder(this.DatabaseSession).WithText("category").WithLocale(Singleton.Instance(this.DatabaseSession).DefaultLocale).Build())
+                .Build();
+
             var good = new GoodBuilder(this.DatabaseSession)
              .WithSku("10101")
              .WithVatRate(vatRate21)
-             .WithName("good1")
+                .WithLocalisedName(new LocalisedTextBuilder(this.DatabaseSession).WithText("good1").WithLocale(Singleton.Instance(this.DatabaseSession).DefaultLocale).Build())
              .WithInventoryItemKind(new InventoryItemKinds(this.DatabaseSession).NonSerialized)
              .WithUnitOfMeasure(uom)
              .WithPrimaryProductCategory(category)
@@ -222,12 +229,14 @@ namespace Allors.Domain
         {
             var vatRate21 = new VatRateBuilder(this.DatabaseSession).WithRate(21).Build();
 
-            var category = new ProductCategoryBuilder(this.DatabaseSession).WithDescription("category").Build();
+            var category = new ProductCategoryBuilder(this.DatabaseSession)
+                .WithLocalisedName(new LocalisedTextBuilder(this.DatabaseSession).WithText("category").WithLocale(Singleton.Instance(this.DatabaseSession).DefaultLocale).Build())
+                .Build();
 
             var good = new GoodBuilder(this.DatabaseSession)
              .WithSku("10101")
              .WithVatRate(vatRate21)
-             .WithName("good1")
+                .WithLocalisedName(new LocalisedTextBuilder(this.DatabaseSession).WithText("good1").WithLocale(Singleton.Instance(this.DatabaseSession).DefaultLocale).Build())
              .WithInventoryItemKind(new InventoryItemKinds(this.DatabaseSession).NonSerialized)
              .WithUnitOfMeasure(new UnitsOfMeasure(this.DatabaseSession).Piece)
              .WithPrimaryProductCategory(category)
@@ -378,12 +387,14 @@ namespace Allors.Domain
         {
             var vatRate21 = new VatRateBuilder(this.DatabaseSession).WithRate(21).Build();
 
-            var category = new ProductCategoryBuilder(this.DatabaseSession).WithDescription("category").Build();
+            var category = new ProductCategoryBuilder(this.DatabaseSession)
+                .WithLocalisedName(new LocalisedTextBuilder(this.DatabaseSession).WithText("category").WithLocale(Singleton.Instance(this.DatabaseSession).DefaultLocale).Build())
+                .Build();
 
             var good = new GoodBuilder(this.DatabaseSession)
              .WithSku("10101")
              .WithVatRate(vatRate21)
-             .WithName("good1")
+                .WithLocalisedName(new LocalisedTextBuilder(this.DatabaseSession).WithText("good1").WithLocale(Singleton.Instance(this.DatabaseSession).DefaultLocale).Build())
              .WithInventoryItemKind(new InventoryItemKinds(this.DatabaseSession).NonSerialized)
              .WithUnitOfMeasure(new UnitsOfMeasure(this.DatabaseSession).Piece)
              .WithPrimaryProductCategory(category)

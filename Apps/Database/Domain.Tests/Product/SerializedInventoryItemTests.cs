@@ -52,7 +52,11 @@ namespace Allors.Domain
 
             Assert.IsFalse(this.DatabaseSession.Derive().HasErrors);
 
-            builder.WithGood(new GoodBuilder(this.DatabaseSession).WithSku("10101").WithName("good").Build());
+            builder.WithGood(new GoodBuilder(this.DatabaseSession)
+                .WithSku("10101")
+                .WithLocalisedName(new LocalisedTextBuilder(this.DatabaseSession).WithText("good").WithLocale(Singleton.Instance(this.DatabaseSession).DefaultLocale).Build())
+                .Build());
+
             builder.Build();
 
             Assert.IsTrue(this.DatabaseSession.Derive().HasErrors);

@@ -48,7 +48,7 @@ namespace Allors.Domain
             var good1 = new GoodBuilder(this.DatabaseSession)
                 .WithSku("10101")
                 .WithVatRate(vatRate21)
-                .WithName("good1")
+                .WithLocalisedName(new LocalisedTextBuilder(this.DatabaseSession).WithText("good1").WithLocale(Singleton.Instance(this.DatabaseSession).DefaultLocale).Build())
                 .WithInventoryItemKind(new InventoryItemKinds(this.DatabaseSession).NonSerialized)
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.DatabaseSession).Piece)
                 .Build();
@@ -56,7 +56,7 @@ namespace Allors.Domain
             var good2 = new GoodBuilder(this.DatabaseSession)
                 .WithSku("10102")
                 .WithVatRate(vatRate21)
-                .WithName("good2")
+                .WithLocalisedName(new LocalisedTextBuilder(this.DatabaseSession).WithText("good2").WithLocale(Singleton.Instance(this.DatabaseSession).DefaultLocale).Build())
                 .WithInventoryItemKind(new InventoryItemKinds(this.DatabaseSession).NonSerialized)
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.DatabaseSession).Piece)
                 .Build();
@@ -119,7 +119,7 @@ namespace Allors.Domain
             var good1 = new GoodBuilder(this.DatabaseSession)
                 .WithSku("10101")
                 .WithVatRate(vatRate21)
-                .WithName("good1")
+                .WithLocalisedName(new LocalisedTextBuilder(this.DatabaseSession).WithText("good1").WithLocale(Singleton.Instance(this.DatabaseSession).DefaultLocale).Build())
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.DatabaseSession).Piece)
                 .WithInventoryItemKind(new InventoryItemKinds(this.DatabaseSession).NonSerialized)
                 .Build();
@@ -127,7 +127,7 @@ namespace Allors.Domain
             var good2 = new GoodBuilder(this.DatabaseSession)
                 .WithSku("10102")
                 .WithVatRate(vatRate21)
-                .WithName("good2")
+                .WithLocalisedName(new LocalisedTextBuilder(this.DatabaseSession).WithText("good2").WithLocale(Singleton.Instance(this.DatabaseSession).DefaultLocale).Build())
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.DatabaseSession).Piece)
                 .WithInventoryItemKind(new InventoryItemKinds(this.DatabaseSession).NonSerialized)
                 .Build();

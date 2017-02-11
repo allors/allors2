@@ -71,7 +71,9 @@ namespace Allors.Domain
             new SalesRepRelationshipBuilder(this.DatabaseSession)
                 .WithCustomer(organisation)
                 .WithSalesRepresentative(salesRep3)
-                .WithProductCategory(new ProductCategoryBuilder(this.DatabaseSession).WithDescription("category").Build())
+                .WithProductCategory(new ProductCategoryBuilder(this.DatabaseSession)
+                                        .WithLocalisedName(new LocalisedTextBuilder(this.DatabaseSession).WithText("category").WithLocale(Singleton.Instance(this.DatabaseSession).DefaultLocale).Build())
+                                        .Build())
                 .Build();
 
             this.DatabaseSession.Derive(true);
@@ -98,7 +100,7 @@ namespace Allors.Domain
             var good = new GoodBuilder(this.DatabaseSession)
                 .WithSku("10101")
                 .WithVatRate(new VatRateBuilder(this.DatabaseSession).WithRate(21).Build())
-                .WithName("good")
+                .WithLocalisedName(new LocalisedTextBuilder(this.DatabaseSession).WithText("good").WithLocale(Singleton.Instance(this.DatabaseSession).DefaultLocale).Build())
                 .WithInventoryItemKind(new InventoryItemKinds(this.DatabaseSession).NonSerialized)
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.DatabaseSession).Piece)
                 .Build();
@@ -148,7 +150,7 @@ namespace Allors.Domain
             var good = new GoodBuilder(this.DatabaseSession)
                 .WithSku("10101")
                 .WithVatRate(new VatRateBuilder(this.DatabaseSession).WithRate(0).Build())
-                .WithName("good")
+                .WithLocalisedName(new LocalisedTextBuilder(this.DatabaseSession).WithText("goof").WithLocale(Singleton.Instance(this.DatabaseSession).DefaultLocale).Build())
                 .WithInventoryItemKind(new InventoryItemKinds(this.DatabaseSession).NonSerialized)
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.DatabaseSession).Piece)
                 .Build();

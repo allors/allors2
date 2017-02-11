@@ -909,6 +909,14 @@ namespace Allors.Domain
 
 						global::System.DateTime? SalesDiscontinuationDate {set;}
 
+						LocalisedText LocalisedNames {set;}
+
+						LocalisedText LocalisedDescriptions {set;}
+
+						LocalisedText LocalisedComments {set;}
+
+						global::System.String InternalComment {set;}
+
 						global::System.String Description {set;}
 
 						PriceComponent VirtualProductPriceComponents {set;}
@@ -3467,7 +3475,7 @@ namespace Allors.Domain
 		public interface Priority  : Enumeration 
 		{
 		}
-		public interface ProductCharacteristic  : UniquelyIdentifiable, AccessControlledObject 
+		public interface LocalisedProductCharacteristic  : Localised, UniquelyIdentifiable, AccessControlledObject 
 		{
 						global::System.String Characteristic {set;}
 
@@ -3476,7 +3484,7 @@ namespace Allors.Domain
 		}
 		public interface ProductType  : UniquelyIdentifiable, AccessControlledObject 
 		{
-						ProductCharacteristic Characteristics {set;}
+						LocalisedProductCharacteristic Characteristics {set;}
 
 						global::System.String Name {set;}
 
@@ -3496,6 +3504,10 @@ namespace Allors.Domain
 						global::System.String Description {set;}
 
 						global::System.String Name {set;}
+
+						LocalisedText LocalisedNames {set;}
+
+						LocalisedText LocalisedDescriptions {set;}
 
 						Media CategoryImage {set;}
 

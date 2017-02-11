@@ -37,9 +37,17 @@ namespace Allors.Domain
             var customer2 = new OrganisationBuilder(this.DatabaseSession).WithName("customer2").Build();
             var salesRep1 = new PersonBuilder(this.DatabaseSession).WithLastName("salesRep1").Build();
             var salesRep2 = new PersonBuilder(this.DatabaseSession).WithLastName("salesRep2").Build();
-            var catMain = new ProductCategoryBuilder(this.DatabaseSession).WithDescription("main cat").Build();
-            var cat1 = new ProductCategoryBuilder(this.DatabaseSession).WithDescription("cat for good1").WithParent(catMain).Build();
-            var cat2 = new ProductCategoryBuilder(this.DatabaseSession).WithDescription("cat for good2").WithParent(catMain).Build();
+            var catMain = new ProductCategoryBuilder(this.DatabaseSession)
+                .WithLocalisedName(new LocalisedTextBuilder(this.DatabaseSession).WithText("main cat").WithLocale(Singleton.Instance(this.DatabaseSession).DefaultLocale).Build())
+                .Build();
+            var cat1 = new ProductCategoryBuilder(this.DatabaseSession)
+                .WithLocalisedName(new LocalisedTextBuilder(this.DatabaseSession).WithText("cat for good1").WithLocale(Singleton.Instance(this.DatabaseSession).DefaultLocale).Build())
+                .WithParent(catMain)
+                .Build();
+            var cat2 = new ProductCategoryBuilder(this.DatabaseSession)
+                .WithLocalisedName(new LocalisedTextBuilder(this.DatabaseSession).WithText("cat for good2").WithLocale(Singleton.Instance(this.DatabaseSession).DefaultLocale).Build())
+                .WithParent(catMain)
+                .Build();
 
             new SalesRepRelationshipBuilder(this.DatabaseSession).WithFromDate(DateTime.UtcNow).WithCustomer(customer1).WithProductCategory(cat1).WithSalesRepresentative(salesRep1).Build();
             new SalesRepRelationshipBuilder(this.DatabaseSession).WithFromDate(DateTime.UtcNow).WithCustomer(customer1).WithProductCategory(cat2).WithSalesRepresentative(salesRep2).Build();
@@ -57,7 +65,7 @@ namespace Allors.Domain
             var good1 = new GoodBuilder(this.DatabaseSession)
                 .WithSku("10101")
                 .WithVatRate(vatRate21)
-                .WithName("good1")
+                .WithLocalisedName(new LocalisedTextBuilder(this.DatabaseSession).WithText("good1").WithLocale(Singleton.Instance(this.DatabaseSession).DefaultLocale).Build())
                 .WithInventoryItemKind(new InventoryItemKinds(this.DatabaseSession).NonSerialized)
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.DatabaseSession).Piece)
                 .WithPrimaryProductCategory(cat1)
@@ -66,7 +74,7 @@ namespace Allors.Domain
             var good2 = new GoodBuilder(this.DatabaseSession)
                 .WithSku("10102")
                 .WithVatRate(vatRate21)
-                .WithName("good2")
+                .WithLocalisedName(new LocalisedTextBuilder(this.DatabaseSession).WithText("good2").WithLocale(Singleton.Instance(this.DatabaseSession).DefaultLocale).Build())
                 .WithInventoryItemKind(new InventoryItemKinds(this.DatabaseSession).NonSerialized)
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.DatabaseSession).Piece)
                 .WithPrimaryProductCategory(cat2)
@@ -121,7 +129,7 @@ namespace Allors.Domain
             Singleton.Instance(this.DatabaseSession).DeriveRevenues(new NonLogging.Derivation(this.DatabaseSession));
 
             var internalOrganisationRevenueHistory = internalOrganisation.InternalOrganisationRevenueHistoriesWhereInternalOrganisation.First;
-             Assert.AreEqual(280, internalOrganisationRevenueHistory.Revenue);
+            Assert.AreEqual(280, internalOrganisationRevenueHistory.Revenue);
 
             var invoice3 = new SalesInvoiceBuilder(this.DatabaseSession)
                 .WithInvoiceDate(DateTime.UtcNow)

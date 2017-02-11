@@ -29,14 +29,24 @@ namespace Allors.Domain
         [Test]
         public void GivenInventoryItem_WhenDeriving_ThenProductCategoriesAreDerived()
         {
-            var level1 = new ProductCategoryBuilder(this.DatabaseSession).WithDescription("level1").Build();
-            var level2 = new ProductCategoryBuilder(this.DatabaseSession).WithDescription("level2").WithParent(level1).Build();
-            var level3 = new ProductCategoryBuilder(this.DatabaseSession).WithDescription("level3").WithParent(level2).Build();
-            var category = new ProductCategoryBuilder(this.DatabaseSession).WithDescription("category").Build();
+            var level1 = new ProductCategoryBuilder(this.DatabaseSession)
+                .WithLocalisedName(new LocalisedTextBuilder(this.DatabaseSession).WithText("level1").WithLocale(Singleton.Instance(this.DatabaseSession).DefaultLocale).Build())
+                .Build();
+            var level2 = new ProductCategoryBuilder(this.DatabaseSession)
+                .WithLocalisedName(new LocalisedTextBuilder(this.DatabaseSession).WithText("level2").WithLocale(Singleton.Instance(this.DatabaseSession).DefaultLocale).Build())
+                .WithParent(level1)
+                .Build();
+            var level3 = new ProductCategoryBuilder(this.DatabaseSession)
+                .WithLocalisedName(new LocalisedTextBuilder(this.DatabaseSession).WithText("level3").WithLocale(Singleton.Instance(this.DatabaseSession).DefaultLocale).Build())
+                .WithParent(level2)
+                .Build();
+            var category = new ProductCategoryBuilder(this.DatabaseSession)
+                .WithLocalisedName(new LocalisedTextBuilder(this.DatabaseSession).WithText("category").WithLocale(Singleton.Instance(this.DatabaseSession).DefaultLocale).Build())
+                .Build();
 
             var vatRate21 = new VatRateBuilder(this.DatabaseSession).WithRate(21).Build();
             var good = new GoodBuilder(this.DatabaseSession)
-                .WithName("Good")
+                .WithLocalisedName(new LocalisedTextBuilder(this.DatabaseSession).WithText("good").WithLocale(Singleton.Instance(this.DatabaseSession).DefaultLocale).Build())
                 .WithSku("10101")
                 .WithVatRate(vatRate21)
                 .WithInventoryItemKind(new InventoryItemKinds(this.DatabaseSession).NonSerialized)

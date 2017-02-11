@@ -44,7 +44,7 @@ namespace Allors.Domain
 
             var vatRate21 = new VatRateBuilder(this.DatabaseSession).WithRate(21).Build();
             var good = new GoodBuilder(this.DatabaseSession)
-                .WithName("Gizmo")
+                .WithLocalisedName(new LocalisedTextBuilder(this.DatabaseSession).WithText("Gizmo").WithLocale(Singleton.Instance(this.DatabaseSession).DefaultLocale).Build())
                 .WithSku("10101")
                 .WithVatRate(vatRate21)
                 .WithInventoryItemKind(new InventoryItemKinds(this.DatabaseSession).NonSerialized)

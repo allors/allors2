@@ -32,7 +32,7 @@ namespace Allors.Domain
         {
             var vatRate21 = new VatRateBuilder(this.DatabaseSession).WithRate(21).Build();
             var good = new GoodBuilder(this.DatabaseSession)
-                .WithName("gizmo")
+                .WithLocalisedName(new LocalisedTextBuilder(this.DatabaseSession).WithText("Gizmo").WithLocale(Singleton.Instance(this.DatabaseSession).DefaultLocale).Build())
                 .WithSku("10101")
                 .WithVatRate(vatRate21)
                 .WithInventoryItemKind(new InventoryItemKinds(this.DatabaseSession).NonSerialized)
@@ -97,14 +97,14 @@ namespace Allors.Domain
         {
             var vatRate21 = new VatRateBuilder(this.DatabaseSession).WithRate(21).Build();
             var virtualGood = new GoodBuilder(this.DatabaseSession)
-                .WithName("virtual gizmo")
+                .WithLocalisedName(new LocalisedTextBuilder(this.DatabaseSession).WithText("virtual gizmo").WithLocale(Singleton.Instance(this.DatabaseSession).DefaultLocale).Build())
                 .WithVatRate(vatRate21)
                 .WithInventoryItemKind(new InventoryItemKinds(this.DatabaseSession).NonSerialized)
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.DatabaseSession).Piece)
                 .Build();
 
             var physicalGood = new GoodBuilder(this.DatabaseSession)
-                .WithName("real gizmo")
+                .WithLocalisedName(new LocalisedTextBuilder(this.DatabaseSession).WithText("real gizmo").WithLocale(Singleton.Instance(this.DatabaseSession).DefaultLocale).Build())
                 .WithSku("10101")
                 .WithVatRate(vatRate21)
                 .WithInventoryItemKind(new InventoryItemKinds(this.DatabaseSession).NonSerialized)
@@ -135,7 +135,7 @@ namespace Allors.Domain
             var vatRate21 = new VatRateBuilder(this.DatabaseSession).WithRate(21).Build();
 
             var physicalGood = new GoodBuilder(this.DatabaseSession)
-                .WithName("real gizmo")
+                .WithLocalisedName(new LocalisedTextBuilder(this.DatabaseSession).WithText("real gizmo").WithLocale(Singleton.Instance(this.DatabaseSession).DefaultLocale).Build())
                 .WithSku("10101")
                 .WithVatRate(vatRate21)
                 .WithInventoryItemKind(new InventoryItemKinds(this.DatabaseSession).NonSerialized)
@@ -157,7 +157,7 @@ namespace Allors.Domain
         {
             var vatRate21 = new VatRateBuilder(this.DatabaseSession).WithRate(21).Build();
             var good = new GoodBuilder(this.DatabaseSession)
-                .WithName("gizmo")
+                .WithLocalisedName(new LocalisedTextBuilder(this.DatabaseSession).WithText("gizmo").WithLocale(Singleton.Instance(this.DatabaseSession).DefaultLocale).Build())
                 .WithSku("10101")
                 .WithVatRate(vatRate21)
                 .WithInventoryItemKind(new InventoryItemKinds(this.DatabaseSession).NonSerialized)
@@ -225,12 +225,12 @@ namespace Allors.Domain
         {
             var vatRate21 = new VatRateBuilder(this.DatabaseSession).WithRate(21).Build();
             var virtualService = new DeliverableBasedServiceBuilder(this.DatabaseSession)
-                .WithName("virtual service")
+                .WithLocalisedName(new LocalisedTextBuilder(this.DatabaseSession).WithText("virtual service").WithLocale(Singleton.Instance(this.DatabaseSession).DefaultLocale).Build())
                 .WithVatRate(vatRate21)
                 .Build();
 
             var physicalService = new DeliverableBasedServiceBuilder(this.DatabaseSession)
-                .WithName("real service")
+                .WithLocalisedName(new LocalisedTextBuilder(this.DatabaseSession).WithText("real service").WithLocale(Singleton.Instance(this.DatabaseSession).DefaultLocale).Build())
                 .WithVatRate(vatRate21)
                 .Build();
 
@@ -257,7 +257,7 @@ namespace Allors.Domain
         {
             var vatRate21 = new VatRateBuilder(this.DatabaseSession).WithRate(21).Build();
             var physicalService = new DeliverableBasedServiceBuilder(this.DatabaseSession)
-                .WithName("real service")
+                .WithLocalisedName(new LocalisedTextBuilder(this.DatabaseSession).WithText("real service").WithLocale(Singleton.Instance(this.DatabaseSession).DefaultLocale).Build())
                 .WithVatRate(vatRate21)
                 .Build();
 
@@ -276,7 +276,7 @@ namespace Allors.Domain
         {
             var vatRate21 = new VatRateBuilder(this.DatabaseSession).WithRate(21).Build();
             var good = new GoodBuilder(this.DatabaseSession)
-                .WithName("gizmo")
+                .WithLocalisedName(new LocalisedTextBuilder(this.DatabaseSession).WithText("gizmo").WithLocale(Singleton.Instance(this.DatabaseSession).DefaultLocale).Build())
                 .WithSku("10101")
                 .WithVatRate(vatRate21)
                 .WithInventoryItemKind(new InventoryItemKinds(this.DatabaseSession).NonSerialized)
@@ -342,12 +342,12 @@ namespace Allors.Domain
         {
             var vatRate21 = new VatRateBuilder(this.DatabaseSession).WithRate(21).Build();
             var virtualService = new TimeAndMaterialsServiceBuilder(this.DatabaseSession)
-                .WithName("virtual service")
+                .WithLocalisedName(new LocalisedTextBuilder(this.DatabaseSession).WithText("virtual service").WithLocale(Singleton.Instance(this.DatabaseSession).DefaultLocale).Build())
                 .WithVatRate(vatRate21)
                 .Build();
 
             var physicalService = new TimeAndMaterialsServiceBuilder(this.DatabaseSession)
-                .WithName("real service")
+                .WithLocalisedName(new LocalisedTextBuilder(this.DatabaseSession).WithText("real service").WithLocale(Singleton.Instance(this.DatabaseSession).DefaultLocale).Build())
                 .WithVatRate(vatRate21)
                 .Build();
 
@@ -374,7 +374,7 @@ namespace Allors.Domain
         {
             var vatRate21 = new VatRateBuilder(this.DatabaseSession).WithRate(21).Build();
             var physicalService = new TimeAndMaterialsServiceBuilder(this.DatabaseSession)
-                .WithName("real service")
+                .WithLocalisedName(new LocalisedTextBuilder(this.DatabaseSession).WithText("real service").WithLocale(Singleton.Instance(this.DatabaseSession).DefaultLocale).Build())
                 .WithVatRate(vatRate21)
                 .Build();
 

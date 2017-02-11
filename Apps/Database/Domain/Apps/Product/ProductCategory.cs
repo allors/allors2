@@ -16,6 +16,8 @@
 namespace Allors.Domain
 {
     using System.Collections.Generic;
+    using System.Linq;
+
     using Meta;
     using Resources;
 
@@ -56,6 +58,17 @@ namespace Allors.Domain
         public void AppsOnDerive(ObjectOnDerive method)
         {
             var derivation = method.Derivation;
+            var defaultLocale = Singleton.Instance(this.strategy.Session).DefaultLocale;
+
+            if (this.LocalisedNames.Any(x => x.Locale.Equals(defaultLocale)))
+            {
+                this.Name = this.LocalisedNames.First(x => x.Locale.Equals(defaultLocale)).Text;
+            }
+
+            if (this.LocalisedDescriptions.Any(x => x.Locale.Equals(defaultLocale)))
+            {
+                this.Description = this.LocalisedDescriptions.First(x => x.Locale.Equals(defaultLocale)).Text;
+            }
 
             if (this.ExistProductCategoriesWhereParent && this.ExistPackage)
             {

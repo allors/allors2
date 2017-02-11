@@ -47,8 +47,8 @@ namespace Allors.Domain
 
             this.DatabaseSession.Rollback();
 
-            builder.WithName("DeliverableCoredService");
-            deliverableBasedService = builder.Build();
+            builder.WithLocalisedName(new LocalisedTextBuilder(this.DatabaseSession).WithText("service").WithLocale(Singleton.Instance(this.DatabaseSession).DefaultLocale).Build());
+            builder.Build();
 
             Assert.IsFalse(this.DatabaseSession.Derive().HasErrors);
         }
@@ -57,10 +57,12 @@ namespace Allors.Domain
         public void GivenDeliverableCoredServiceWithPrimaryProductCategoryWithoutProductCategory_WhenDeriving_ThenFirstProductCategoryIsCopiedFromPrimaryCategory()
         {
             var vatRate21 = new VatRateBuilder(this.DatabaseSession).WithRate(21).Build();
-            var productCategory = new ProductCategoryBuilder(this.DatabaseSession).WithDescription("category").Build();
+            var productCategory = new ProductCategoryBuilder(this.DatabaseSession)
+                .WithLocalisedName(new LocalisedTextBuilder(this.DatabaseSession).WithText("category").WithLocale(Singleton.Instance(this.DatabaseSession).DefaultLocale).Build())
+                .Build();
 
             var deliverableBasedService = new DeliverableBasedServiceBuilder(this.DatabaseSession)
-                .WithName("DeliverableCoredService")
+                .WithLocalisedName(new LocalisedTextBuilder(this.DatabaseSession).WithText("service").WithLocale(Singleton.Instance(this.DatabaseSession).DefaultLocale).Build())
                 .WithPrimaryProductCategory(productCategory)
                 .WithVatRate(vatRate21)
                 .Build();
@@ -74,10 +76,12 @@ namespace Allors.Domain
         public void GivenDeliverableCoredServiceWithoutPrimaryProductCategoryWithOneProductCategory_WhenDeriving_ThenPrimaryProductCategoryIsCopiedFromCategory()
         {
             var vatRate21 = new VatRateBuilder(this.DatabaseSession).WithRate(21).Build();
-            var productCategory = new ProductCategoryBuilder(this.DatabaseSession).WithDescription("category").Build();
+            var productCategory = new ProductCategoryBuilder(this.DatabaseSession)
+                .WithLocalisedName(new LocalisedTextBuilder(this.DatabaseSession).WithText("category").WithLocale(Singleton.Instance(this.DatabaseSession).DefaultLocale).Build())
+                .Build();
 
             var deliverableBasedService = new DeliverableBasedServiceBuilder(this.DatabaseSession)
-                .WithName("DeliverableCoredService")
+                .WithLocalisedName(new LocalisedTextBuilder(this.DatabaseSession).WithText("service").WithLocale(Singleton.Instance(this.DatabaseSession).DefaultLocale).Build())
                 .WithProductCategory(productCategory)
                 .WithVatRate(vatRate21)
                 .Build();
@@ -92,8 +96,9 @@ namespace Allors.Domain
         {
             var vatRate21 = new VatRateBuilder(this.DatabaseSession).WithRate(21).Build();
             var finishedGood = new FinishedGoodBuilder(this.DatabaseSession).WithName("finishedGood").Build();
+            var localdesc = new LocalisedTextBuilder(this.DatabaseSession).WithText("good").WithLocale(Singleton.Instance(this.DatabaseSession).DefaultLocale).Build();
             
-            this.DatabaseSession.Derive(true);
+                this.DatabaseSession.Derive(true);
             this.DatabaseSession.Commit();
             
             var builder = new GoodBuilder(this.DatabaseSession);
@@ -103,7 +108,7 @@ namespace Allors.Domain
 
             this.DatabaseSession.Rollback();
             
-            builder.WithName("Good");
+            builder.WithLocalisedName(localdesc);
             good = builder.Build();
 
             Assert.IsTrue(this.DatabaseSession.Derive().HasErrors);
@@ -143,10 +148,12 @@ namespace Allors.Domain
         public void GivenGoodWithPrimaryProductCategoryWithoutProductCategory_WhenDeriving_ThenFirstProductCategoryIsCopiedFromPrimaryCategory()
         {
             var vatRate21 = new VatRateBuilder(this.DatabaseSession).WithRate(21).Build();
-            var productCategory = new ProductCategoryBuilder(this.DatabaseSession).WithDescription("category").Build();
+            var productCategory = new ProductCategoryBuilder(this.DatabaseSession)
+                .WithLocalisedName(new LocalisedTextBuilder(this.DatabaseSession).WithText("category").WithLocale(Singleton.Instance(this.DatabaseSession).DefaultLocale).Build())
+                .Build();
 
             var good = new GoodBuilder(this.DatabaseSession)
-                .WithName("Good")
+                .WithLocalisedName(new LocalisedTextBuilder(this.DatabaseSession).WithText("good").WithLocale(Singleton.Instance(this.DatabaseSession).DefaultLocale).Build())
                 .WithSku("10101")
                 .WithVatRate(vatRate21)
                 .WithPrimaryProductCategory(productCategory)
@@ -163,10 +170,12 @@ namespace Allors.Domain
         public void GivenGoodWithoutPrimaryProductCategoryWithOneProductCategory_WhenDeriving_ThenPrimaryProductCategoryIsCopiedFromCategory()
         {
             var vatRate21 = new VatRateBuilder(this.DatabaseSession).WithRate(21).Build();
-            var productCategory = new ProductCategoryBuilder(this.DatabaseSession).WithDescription("category").Build();
+            var productCategory = new ProductCategoryBuilder(this.DatabaseSession)
+                .WithLocalisedName(new LocalisedTextBuilder(this.DatabaseSession).WithText("category").WithLocale(Singleton.Instance(this.DatabaseSession).DefaultLocale).Build())
+                .Build();
 
             var good = new GoodBuilder(this.DatabaseSession)
-                .WithName("Good")
+                .WithLocalisedName(new LocalisedTextBuilder(this.DatabaseSession).WithText("good").WithLocale(Singleton.Instance(this.DatabaseSession).DefaultLocale).Build())
                 .WithSku("10101")
                 .WithVatRate(vatRate21)
                 .WithProductCategory(productCategory)
@@ -182,16 +191,34 @@ namespace Allors.Domain
         [Test]
         public void GivenGoodWithProductCategory_WhenDeriving_ThenProductCategoriesExpandedIsSet()
         {
-            var productCategory1 = new ProductCategoryBuilder(this.DatabaseSession).WithDescription("1").Build();
-            var productCategory2 = new ProductCategoryBuilder(this.DatabaseSession).WithDescription("2").Build();
-            var productCategory11 = new ProductCategoryBuilder(this.DatabaseSession).WithDescription("1.1").WithParent(productCategory1).WithParent(productCategory2).Build();
-            var productCategory12 = new ProductCategoryBuilder(this.DatabaseSession).WithDescription("1.2").WithParent(productCategory1).WithParent(productCategory2).Build();
-            var productCategory111 = new ProductCategoryBuilder(this.DatabaseSession).WithDescription("1.1.1").WithParent(productCategory11).Build();
-            var productCategory121 = new ProductCategoryBuilder(this.DatabaseSession).WithDescription("1.2.1").WithParent(productCategory12).Build();
+            var productCategory1 = new ProductCategoryBuilder(this.DatabaseSession)
+                .WithLocalisedName(new LocalisedTextBuilder(this.DatabaseSession).WithText("1").WithLocale(Singleton.Instance(this.DatabaseSession).DefaultLocale).Build())
+                .Build();
+            var productCategory2 = new ProductCategoryBuilder(this.DatabaseSession)
+                .WithLocalisedName(new LocalisedTextBuilder(this.DatabaseSession).WithText("2").WithLocale(Singleton.Instance(this.DatabaseSession).DefaultLocale).Build())
+                .Build();
+            var productCategory11 = new ProductCategoryBuilder(this.DatabaseSession)
+                .WithLocalisedName(new LocalisedTextBuilder(this.DatabaseSession).WithText("1.1").WithLocale(Singleton.Instance(this.DatabaseSession).DefaultLocale).Build())
+                .WithParent(productCategory1)
+                .WithParent(productCategory2)
+                .Build();
+            var productCategory12 = new ProductCategoryBuilder(this.DatabaseSession)
+                .WithLocalisedName(new LocalisedTextBuilder(this.DatabaseSession).WithText("1.2").WithLocale(Singleton.Instance(this.DatabaseSession).DefaultLocale).Build())
+                .WithParent(productCategory1)
+                .WithParent(productCategory2)
+                .Build();
+            var productCategory111 = new ProductCategoryBuilder(this.DatabaseSession)
+                .WithLocalisedName(new LocalisedTextBuilder(this.DatabaseSession).WithText("1.1.1").WithLocale(Singleton.Instance(this.DatabaseSession).DefaultLocale).Build())
+                .WithParent(productCategory11)
+                .Build();
+            var productCategory121 = new ProductCategoryBuilder(this.DatabaseSession)
+                .WithLocalisedName(new LocalisedTextBuilder(this.DatabaseSession).WithText("1.2.1").WithLocale(Singleton.Instance(this.DatabaseSession).DefaultLocale).Build())
+                .WithParent(productCategory12)
+                .Build();
 
             var vatRate21 = new VatRateBuilder(this.DatabaseSession).WithRate(21).Build();
             var good = new GoodBuilder(this.DatabaseSession)
-                .WithName("Good")
+                .WithLocalisedName(new LocalisedTextBuilder(this.DatabaseSession).WithText("good").WithLocale(Singleton.Instance(this.DatabaseSession).DefaultLocale).Build())
                 .WithSku("10101")
                 .WithPrimaryProductCategory(productCategory111)
                 .WithInventoryItemKind(new InventoryItemKinds(this.DatabaseSession).NonSerialized)
@@ -223,16 +250,34 @@ namespace Allors.Domain
         [Test]
         public void GivenGood_WhenProductCategoryParentsAreInserted_ThenProductCategoriesExpandedAreRecalculated()
         {
-            var productCategory1 = new ProductCategoryBuilder(this.DatabaseSession).WithDescription("1").Build();
-            var productCategory2 = new ProductCategoryBuilder(this.DatabaseSession).WithDescription("2").Build();
-            var productCategory11 = new ProductCategoryBuilder(this.DatabaseSession).WithDescription("1.1").WithParent(productCategory1).WithParent(productCategory2).Build();
-            var productCategory12 = new ProductCategoryBuilder(this.DatabaseSession).WithDescription("1.2").WithParent(productCategory1).WithParent(productCategory2).Build();
-            var productCategory111 = new ProductCategoryBuilder(this.DatabaseSession).WithDescription("1.1.1").WithParent(productCategory11).Build();
-            var productCategory121 = new ProductCategoryBuilder(this.DatabaseSession).WithDescription("1.2.1").WithParent(productCategory12).Build();
+            var productCategory1 = new ProductCategoryBuilder(this.DatabaseSession)
+                .WithLocalisedName(new LocalisedTextBuilder(this.DatabaseSession).WithText("1").WithLocale(Singleton.Instance(this.DatabaseSession).DefaultLocale).Build())
+                .Build();
+            var productCategory2 = new ProductCategoryBuilder(this.DatabaseSession)
+                .WithLocalisedName(new LocalisedTextBuilder(this.DatabaseSession).WithText("2").WithLocale(Singleton.Instance(this.DatabaseSession).DefaultLocale).Build())
+                .Build();
+            var productCategory11 = new ProductCategoryBuilder(this.DatabaseSession)
+                .WithLocalisedName(new LocalisedTextBuilder(this.DatabaseSession).WithText("1.1").WithLocale(Singleton.Instance(this.DatabaseSession).DefaultLocale).Build())
+                .WithParent(productCategory1)
+                .WithParent(productCategory2)
+                .Build();
+            var productCategory12 = new ProductCategoryBuilder(this.DatabaseSession)
+                .WithLocalisedName(new LocalisedTextBuilder(this.DatabaseSession).WithText("1.2").WithLocale(Singleton.Instance(this.DatabaseSession).DefaultLocale).Build())
+                .WithParent(productCategory1)
+                .WithParent(productCategory2)
+                .Build();
+            var productCategory111 = new ProductCategoryBuilder(this.DatabaseSession)
+                .WithLocalisedName(new LocalisedTextBuilder(this.DatabaseSession).WithText("1.1.1").WithLocale(Singleton.Instance(this.DatabaseSession).DefaultLocale).Build())
+                .WithParent(productCategory11)
+                .Build();
+            var productCategory121 = new ProductCategoryBuilder(this.DatabaseSession)
+                .WithLocalisedName(new LocalisedTextBuilder(this.DatabaseSession).WithText("1.2.1").WithLocale(Singleton.Instance(this.DatabaseSession).DefaultLocale).Build())
+                .WithParent(productCategory12)
+                .Build();
 
             var vatRate21 = new VatRateBuilder(this.DatabaseSession).WithRate(21).Build();
             var good = new GoodBuilder(this.DatabaseSession)
-                .WithName("Good")
+                .WithLocalisedName(new LocalisedTextBuilder(this.DatabaseSession).WithText("good").WithLocale(Singleton.Instance(this.DatabaseSession).DefaultLocale).Build())
                 .WithSku("10101")
                 .WithPrimaryProductCategory(productCategory111)
                 .WithInventoryItemKind(new InventoryItemKinds(this.DatabaseSession).NonSerialized)
@@ -248,7 +293,9 @@ namespace Allors.Domain
             Assert.Contains(productCategory1, good.ProductCategoriesExpanded);
             Assert.Contains(productCategory2, good.ProductCategoriesExpanded);
 
-            var productCategory3 = new ProductCategoryBuilder(this.DatabaseSession).WithDescription("3").Build();
+            var productCategory3 = new ProductCategoryBuilder(this.DatabaseSession)
+                .WithLocalisedName(new LocalisedTextBuilder(this.DatabaseSession).WithText("3").WithLocale(Singleton.Instance(this.DatabaseSession).DefaultLocale).Build())
+                .Build();
             productCategory11.AddParent(productCategory3);
 
             this.DatabaseSession.Derive(true);
@@ -264,7 +311,10 @@ namespace Allors.Domain
 
             this.DatabaseSession.Derive(true);
 
-            var productCategory13 = new ProductCategoryBuilder(this.DatabaseSession).WithDescription("1.3").WithParent(productCategory1).Build();
+            var productCategory13 = new ProductCategoryBuilder(this.DatabaseSession)
+                .WithLocalisedName(new LocalisedTextBuilder(this.DatabaseSession).WithText("1.3").WithLocale(Singleton.Instance(this.DatabaseSession).DefaultLocale).Build())
+                .WithParent(productCategory1)
+                .Build();
             productCategory121.AddParent(productCategory13);
 
             this.DatabaseSession.Derive(true);
@@ -283,16 +333,30 @@ namespace Allors.Domain
         [Test]
         public void GivenGood_WhenProductCategoryParentsAreRemoved_ThenProductCategoriesExpandedAreRecalculated()
         {
-            var productCategory1 = new ProductCategoryBuilder(this.DatabaseSession).WithDescription("1").Build();
-            var productCategory2 = new ProductCategoryBuilder(this.DatabaseSession).WithDescription("2").Build();
-            var productCategory11 = new ProductCategoryBuilder(this.DatabaseSession).WithDescription("1.1").WithParent(productCategory1).WithParent(productCategory2).Build();
-            var productCategory12 = new ProductCategoryBuilder(this.DatabaseSession).WithDescription("1.2").WithParent(productCategory1).WithParent(productCategory2).Build();
-            var productCategory111 = new ProductCategoryBuilder(this.DatabaseSession).WithDescription("1.1.1").WithParent(productCategory11).Build();
-            var productCategory121 = new ProductCategoryBuilder(this.DatabaseSession).WithDescription("1.2.1").WithParent(productCategory12).Build();
+            var productCategory1 = new ProductCategoryBuilder(this.DatabaseSession)
+                .WithLocalisedName(new LocalisedTextBuilder(this.DatabaseSession).WithText("1").WithLocale(Singleton.Instance(this.DatabaseSession).DefaultLocale).Build())
+                .Build();
+            var productCategory2 = new ProductCategoryBuilder(this.DatabaseSession)
+                .WithLocalisedName(new LocalisedTextBuilder(this.DatabaseSession).WithText("2").WithLocale(Singleton.Instance(this.DatabaseSession).DefaultLocale).Build())
+                .Build();
+            var productCategory11 = new ProductCategoryBuilder(this.DatabaseSession)
+                .WithLocalisedName(new LocalisedTextBuilder(this.DatabaseSession).WithText("1.1").WithLocale(Singleton.Instance(this.DatabaseSession).DefaultLocale).Build())
+                .WithParent(productCategory1)
+                .WithParent(productCategory2)
+                .Build();
+            var productCategory12 = new ProductCategoryBuilder(this.DatabaseSession)
+                .WithLocalisedName(new LocalisedTextBuilder(this.DatabaseSession).WithText("1.2").WithLocale(Singleton.Instance(this.DatabaseSession).DefaultLocale).Build())
+                .WithParent(productCategory1)
+                .WithParent(productCategory2)
+                .Build();
+            var productCategory111 = new ProductCategoryBuilder(this.DatabaseSession)
+                .WithLocalisedName(new LocalisedTextBuilder(this.DatabaseSession).WithText("1.1.1").WithLocale(Singleton.Instance(this.DatabaseSession).DefaultLocale).Build())
+                .WithParent(productCategory11)
+                .Build();
 
             var vatRate21 = new VatRateBuilder(this.DatabaseSession).WithRate(21).Build();
             var good = new GoodBuilder(this.DatabaseSession)
-                .WithName("Good")
+                .WithLocalisedName(new LocalisedTextBuilder(this.DatabaseSession).WithText("good").WithLocale(Singleton.Instance(this.DatabaseSession).DefaultLocale).Build())
                 .WithSku("10101")
                 .WithPrimaryProductCategory(productCategory111)
                 .WithInventoryItemKind(new InventoryItemKinds(this.DatabaseSession).NonSerialized)
@@ -322,25 +386,27 @@ namespace Allors.Domain
         public void GivenTimeAndMaterialsService_WhenDeriving_ThenRequiredRelationsMustExist()
         {
             var vatRate21 = new VatRateBuilder(this.DatabaseSession).WithRate(21).Build();
+            var localdesc = new LocalisedTextBuilder(this.DatabaseSession).WithText("good").WithLocale(Singleton.Instance(this.DatabaseSession).DefaultLocale).Build();
+
             this.DatabaseSession.Derive(true);
             this.DatabaseSession.Commit();
 
             var builder = new TimeAndMaterialsServiceBuilder(this.DatabaseSession);
-            var good = builder.Build();
+            builder.Build();
 
             Assert.IsTrue(this.DatabaseSession.Derive().HasErrors);
 
             this.DatabaseSession.Rollback();
 
-            builder.WithName("TimeAndMaterialsService");
-            good = builder.Build();
+            builder.WithLocalisedName(localdesc);
+            builder.Build();
 
             Assert.IsTrue(this.DatabaseSession.Derive().HasErrors);
 
             this.DatabaseSession.Rollback();
 
             builder.WithVatRate(vatRate21);
-            good = builder.Build();
+            builder.Build();
 
             Assert.IsFalse(this.DatabaseSession.Derive().HasErrors);
         }
@@ -349,10 +415,12 @@ namespace Allors.Domain
         public void GivenTimeAndMaterialsServiceWithPrimaryProductCategoryWithoutProductCategory_WhenDeriving_ThenFirstProductCategoryIsCopiedFromPrimaryCategory()
         {
             var vatRate21 = new VatRateBuilder(this.DatabaseSession).WithRate(21).Build();
-            var productCategory = new ProductCategoryBuilder(this.DatabaseSession).WithDescription("category").Build();
+            var productCategory = new ProductCategoryBuilder(this.DatabaseSession)
+                .WithLocalisedName(new LocalisedTextBuilder(this.DatabaseSession).WithText("category").WithLocale(Singleton.Instance(this.DatabaseSession).DefaultLocale).Build())
+                .Build();
 
             var timeAndMaterialsService = new TimeAndMaterialsServiceBuilder(this.DatabaseSession)
-                .WithName("TimeAndMaterialsService")
+                .WithLocalisedName(new LocalisedTextBuilder(this.DatabaseSession).WithText("TimeAndMaterialsService").WithLocale(Singleton.Instance(this.DatabaseSession).DefaultLocale).Build())
                 .WithPrimaryProductCategory(productCategory)
                 .WithVatRate(vatRate21)
                 .Build();
@@ -366,10 +434,12 @@ namespace Allors.Domain
         public void GivenTimeAndMaterialsServiceWithoutPrimaryProductCategoryWithOneProductCategory_WhenDeriving_ThenPrimaryProductCategoryIsCopiedFromCategory()
         {
             var vatRate21 = new VatRateBuilder(this.DatabaseSession).WithRate(21).Build();
-            var productCategory = new ProductCategoryBuilder(this.DatabaseSession).WithDescription("category").Build();
+            var productCategory = new ProductCategoryBuilder(this.DatabaseSession)
+                .WithLocalisedName(new LocalisedTextBuilder(this.DatabaseSession).WithText("category").WithLocale(Singleton.Instance(this.DatabaseSession).DefaultLocale).Build())
+                .Build();
 
             var timeAndMaterialsService = new TimeAndMaterialsServiceBuilder(this.DatabaseSession)
-                .WithName("TimeAndMaterialsService")
+                .WithLocalisedName(new LocalisedTextBuilder(this.DatabaseSession).WithText("TimeAndMaterialsService").WithLocale(Singleton.Instance(this.DatabaseSession).DefaultLocale).Build())
                 .WithProductCategory(productCategory)
                 .WithVatRate(vatRate21)
                 .Build();
