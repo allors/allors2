@@ -8,6 +8,15 @@ namespace Allors.Repository.Domain
 	public partial interface Product : UniquelyIdentifiable, AccessControlledObject 
     {
         #region Allors
+        [Id("91D1A28D-AE04-4445-B4AC-2053559DCFB7")]
+        [AssociationId("2FBE6AA9-9E34-4A9A-9972-88E729AAEFBC")]
+        [RoleId("6FE84CF4-959C-48AE-9923-C91D77E1C439")]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Indexed]
+        ProductCharacteristicValue ProductCharacteristicValue { get; set; }
+
+        #region Allors
         [Id("039a9481-940b-4953-a1b5-6c56f35a238b")]
         [AssociationId("ee6d841a-78f4-47c7-be8a-d4bd7ed81609")]
         [RoleId("922b63dc-1714-4cf2-aa0c-cb81831e59b1")]

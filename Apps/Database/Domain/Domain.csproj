@@ -1122,6 +1122,7 @@
     <Compile Include="Generated\ProductCategoryRevenue.g.cs" />
     <Compile Include="Generated\ProductCategoryRevenueHistory.g.cs" />
     <Compile Include="Generated\ProductCharacteristic.g.cs" />
+    <Compile Include="Generated\ProductCharacteristicValue.g.cs" />
     <Compile Include="Generated\ProductConfiguration.g.cs" />
     <Compile Include="Generated\ProductDeliverySkillRequirement.g.cs" />
     <Compile Include="Generated\ProductDrawing.g.cs" />

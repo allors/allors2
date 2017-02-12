@@ -23,9 +23,7 @@ namespace Allors.Repository.Domain
         #endregion
         [Multiplicity(Multiplicity.ManyToMany)]
         [Indexed]
-
         public ProductCharacteristic[] ProductCharacteristics { get; set; }
-
 
         #region Allors
         [Id("B1DFD523-A9A4-4B7B-BEC4-4EAF107E196C")]
@@ -34,7 +32,6 @@ namespace Allors.Repository.Domain
         #endregion
         [Required]
         [Size(256)]
-
         public string Name { get; set; }
 
         #region inherited methods

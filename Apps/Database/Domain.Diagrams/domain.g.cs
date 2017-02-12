@@ -903,6 +903,8 @@ namespace Allors.Domain
 		}
 		public interface Product  : UniquelyIdentifiable, AccessControlledObject 
 		{
+						ProductCharacteristicValue ProductCharacteristicValue {set;}
+
 						ProductCategory PrimaryProductCategory {set;}
 
 						global::System.DateTime? SupportDiscontinuationDate {set;}
@@ -3475,10 +3477,15 @@ namespace Allors.Domain
 		public interface Priority  : Enumeration 
 		{
 		}
-		public interface ProductCharacteristic  : UniquelyIdentifiable, AccessControlledObject 
+		public interface ProductCharacteristicValue  : Localised 
 		{
-						LocalisedText LocalisedCharacteristics {set;}
+						ProductCharacteristic ProductCharacteristic {set;}
 
+						global::System.String Value {set;}
+
+		}
+		public interface ProductCharacteristic  : Enumeration 
+		{
 		}
 		public interface ProductType  : UniquelyIdentifiable, AccessControlledObject 
 		{

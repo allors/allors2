@@ -5,10 +5,16 @@ namespace Allors.Repository.Domain
     #region Allors
     [Id("5A0B6477-7B54-48FA-AF59-7B664587F197")]
     #endregion
-    public partial class ProductCharacteristic : UniquelyIdentifiable, AccessControlledObject
+    public partial class ProductCharacteristic : Enumeration
     {
 
         #region inherited properties
+
+        public LocalisedText[] LocalisedNames { get; set; }
+
+        public string Name { get; set; }
+
+        public bool IsActive { get; set; }
 
         public Guid UniqueId { get; set; }
 
@@ -17,14 +23,6 @@ namespace Allors.Repository.Domain
         public SecurityToken[] SecurityTokens { get; set; }
         #endregion
 
-        #region Allors
-        [Id("31CD485D-510D-4F98-97F6-32561025CD8E")]
-        [AssociationId("CEBFE99A-AFE5-4EF7-B6C1-A8BACEE88D90")]
-        [RoleId("C3A19721-5EAD-4FD0-8358-291A816DC35B")]
-        #endregion
-        [Multiplicity(Multiplicity.OneToMany)]
-        [Indexed]
-        public LocalisedText[] LocalisedCharacteristics { get; set; }
 
         #region inherited methods
 

@@ -5,7 +5,7 @@ namespace Allors.Repository.Domain
     #region Allors
     [Id("8bae9154-ec37-4139-b52c-6c3df860fb20")]
     #endregion
-    public partial class Colour : Enumeration, ProductFeature 
+    public partial class  Colour : Enumeration, ProductFeature 
     {
         #region inherited properties
         public LocalisedText[] LocalisedNames { get; set; }

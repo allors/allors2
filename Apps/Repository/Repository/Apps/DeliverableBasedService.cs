@@ -8,6 +8,9 @@ namespace Allors.Repository.Domain
     public partial class DeliverableBasedService : Service 
     {
         #region inherited properties
+
+        public ProductCharacteristicValue ProductCharacteristicValue { get; set; }
+
         public ProductCategory PrimaryProductCategory { get; set; }
 
         public DateTime SupportDiscontinuationDate { get; set; }
