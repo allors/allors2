@@ -12,7 +12,7 @@ namespace Allors.Repository.Domain
         [AssociationId("2FBE6AA9-9E34-4A9A-9972-88E729AAEFBC")]
         [RoleId("6FE84CF4-959C-48AE-9923-C91D77E1C439")]
         #endregion
-        [Multiplicity(Multiplicity.ManyToOne)]
+        [Multiplicity(Multiplicity.ManyToMany)]
         [Indexed]
         ProductCharacteristicValue ProductCharacteristicValue { get; set; }
 
