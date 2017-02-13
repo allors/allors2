@@ -22,7 +22,8 @@ SET /A ERROR_BUILD_META=2
 SET PATH=%PATH%;C:\Program Files\MSBuild\14.0\Bin;C:\Program Files (x86)\MSBuild\14.0\Bin;C:\Windows\Microsoft.NET\Framework64\v4.0.30319;C:\Windows\Microsoft.NET\Framework\v4.0.30319
 
 :: purge files
-rmdir /s /q .\Domain\Generated >nul 2>&1
+rmdir /s /q .\Database\Domain\Generated >nul 2>&1
+rmdir /s /q .\Workspace\CSharp\Domain\Generated >nul 2>&1
 
 @echo ==========
 @echo Repository
@@ -47,10 +48,9 @@ msbuild Database/Domain.Diagrams/Generate.proj /verbosity:minimal
 @echo =========
 
 :: Workspace
-msbuild Workspace/Diagrams/Generate.proj /verbosity:minimal
-msbuild Workspace/Meta/Generate.proj /verbosity:minimal
-msbuild Workspace/Domain/Generate.proj /verbosity:minimal
-msbuild Workspace/Web/Generate.proj /verbosity:minimal
+msbuild Workspace/CSharp/Diagrams/Generate.proj /verbosity:minimal
+msbuild Workspace/CSharp/Meta/Generate.proj /verbosity:minimal
+msbuild Workspace/CSharp/Domain/Generate.proj /verbosity:minimal
 
 :END
 IF "%interactive%"=="1" PAUSE

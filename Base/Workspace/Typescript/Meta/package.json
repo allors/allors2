@@ -1,20 +1,21 @@
 {
-  "name": "typescript-workspace-meta",
-  "version": "2.0.0",
-  "description": "The Typescript workspace meta.",
+  "name": "meta",
+  "version": "2.0",
+  "main": "lib/index.js",
   "scripts": {
-    "test": "ts-node node_modules/jasmine/bin/jasmine.js JASMINE_CONFIG_PATH=jasmine.json",
-    "test:coverage": "ts-node node_modules/istanbul/lib/cli.js cover -e .ts  -x \"*.d.ts\" -x \"*.spec.ts\" node_modules/jasmine/bin/jasmine.js -- JASMINE_CONFIG_PATH=jasmine.json"
+    "prestart": "tsc",
+    "start": "node .",
+    "dev": "tsc -w",
+    "pretest": "tsc",
+    "test": "mocha",
+    "cover": "istanbul cover ./node_modules/mocha/bin/_mocha"
   },
   "devDependencies": {
-    "@types/jasmine": "^2.5.41",
-    "istanbul": "^1.1.0-alpha.1",
-    "jasmine": "^2.5.3",
-    "ts-node": "~2.1.0",
-    "typescript": "^2.1.6"
-  },
-  "bugs": {
-    "url": "https://github.com/Allors/Allors2/issues"
-  },
-  "homepage": "https://github.com/Allors/Allors2#readme"
+    "@types/chai": "^3.0.0",
+    "@types/mocha": "^2.0.0",
+    "@types/node": "7.0.5",
+    "chai": "^3.5.0",
+    "istanbul": "^0.4.5",
+    "mocha": "^3.2.0"
+  }
 }
