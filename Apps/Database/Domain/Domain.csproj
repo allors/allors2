@@ -577,6 +577,7 @@
     <Compile Include="Apps\Product\EngineeringChanges.cs" />
     <Compile Include="Apps\Product\EngineeringChangeStatus.cs" />
     <Compile Include="Apps\Product\FinishedGood.cs" />
+    <Compile Include="Apps\Product\ProductCharacteristic.cs" />
     <Compile Include="Apps\Product\Good.cs" />
     <Compile Include="Apps\Product\Good.v.cs" />
     <Compile Include="Apps\Product\Goods.cs" />
