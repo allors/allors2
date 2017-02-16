@@ -1,2 +1,2 @@
-lib/test/**/*.test.js
+lib/**/*.test.js
 --recursive

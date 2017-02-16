@@ -7,8 +7,8 @@
     "outDir": "./lib",
     "sourceMap": true,
     "removeComments": true
-  },  
- "include": [
+  },
+  "include": [
     "src/**/*",
     "test/**/*"
   ],

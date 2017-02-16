@@ -1,22 +1,21 @@
 import * as chai from "chai";
 import * as meta from "../src/meta";
-import * as data from "../src/meta/base/Data";
 
 const expect = chai.expect;
 
 describe("MetaDomain",
     () => {
-        describe("default constructor",
+        describe("using default constructor",
         () => {
 
             let metaPopulation = new meta.Population();
 
-            it("should be newable",
+            it("should exist",
                 () => {
                     expect(metaPopulation).not.null;
                 });
 
-            describe("init with empty data population", () => {
+            describe("and init", () => {
 
                 metaPopulation.init();
 
