@@ -1,0 +1,9 @@
+<Project DefaultTargets="Generate" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+
+  <UsingTask TaskName="Generate" AssemblyFile="..\..\..\database\meta\bin\Debug\Meta.dll"/>
+
+  <Target Name="Generate">
+    <Generate Template="../Templates/meta.base.ts.stg" Output="src/meta/generated"/>
+  </Target>
+
+</Project>
