@@ -28,7 +28,7 @@ rmdir /s /q .\Domain\Generated >nul 2>&1
 @echo ==========
 
 msbuild Repository.sln /target:Clean /verbosity:minimal
-..\Tools\Generate\dist\Allors.Generate.Cmd.exe repository generate repository.sln repository ../Core/Repository/Templates/meta.cs.stg database/meta/generated || SET /A errno^|=%ERROR_GENERATE_META% && GOTO :END
+..\..\Tools\Generate\dist\Allors.Generate.Cmd.exe repository generate repository.sln repository ../Core/Repository/Templates/meta.cs.stg database/meta/generated || SET /A errno^|=%ERROR_GENERATE_META% && GOTO :END
 
 @echo ========
 @echo Database
