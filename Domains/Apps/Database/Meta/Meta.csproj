@@ -315,7 +315,7 @@
     <Folder Include="Apps\Domain\" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\platform\Framework\Allors\Allors.csproj">
+    <ProjectReference Include="..\..\..\..\Platform\Framework\Allors\Allors.csproj">
       <Project>{5b4e2d7c-8ef8-45f5-bfb2-e595c401a95f}</Project>
       <Name>Allors</Name>
     </ProjectReference>

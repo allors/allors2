@@ -13,11 +13,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Resources", "Database\Resou
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domain.Tests", "Database\Domain.Tests\Domain.Tests.csproj", "{953F37B8-865D-4D8C-A084-FFE10F360ECE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Allors", "..\platform\Framework\Allors\Allors.csproj", "{5B4E2D7C-8EF8-45F5-BFB2-E595C401A95F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Allors", "..\..\Platform\Framework\Allors\Allors.csproj", "{5B4E2D7C-8EF8-45F5-BFB2-E595C401A95F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Allors.Adapters.Memory", "..\platform\Adapters\Allors.Adapters.Memory\Allors.Adapters.Memory.csproj", "{CB9B7108-C8F3-459C-B2DA-88187C84CFC1}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Allors.Adapters.Memory", "..\..\Platform\Adapters\Allors.Adapters.Memory\Allors.Adapters.Memory.csproj", "{CB9B7108-C8F3-459C-B2DA-88187C84CFC1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Allors.Adapters.Object.SqlClient", "..\platform\Adapters\Allors.Adapters.Object.SqlClient\Allors.Adapters.Object.SqlClient.csproj", "{06BC1665-8FE8-4F04-9E80-EC2D54404BA7}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Allors.Adapters.Object.SqlClient", "..\..\Platform\Adapters\Allors.Adapters.Object.SqlClient\Allors.Adapters.Object.SqlClient.csproj", "{06BC1665-8FE8-4F04-9E80-EC2D54404BA7}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Allors", "Allors", "{00113E18-8657-4208-B453-1EB128032710}"
 EndProject
