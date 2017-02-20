@@ -4,7 +4,7 @@
 
   <Target Name="Merge">
     <ItemGroup>
-      <InputDirectories Include="Base"/>
+      <InputDirectories Include="..\..\..\Base\Database\Resource\Base"/>
       <InputDirectories Include="Test"/>
     </ItemGroup>
 
