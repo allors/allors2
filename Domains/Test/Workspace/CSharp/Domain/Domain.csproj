@@ -7,8 +7,8 @@
     <ProjectGuid>{305E4EE6-EA87-4B53-92B7-F6E39100213D}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Workspace</RootNamespace>
-    <AssemblyName>Workspace</AssemblyName>
+    <RootNamespace>Domain</RootNamespace>
+    <AssemblyName>Domain</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>

@@ -7,8 +7,8 @@
     <ProjectGuid>{7B37DFF9-8CEF-4189-8D9D-BE29E34EB68C}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Workspace.Meta</RootNamespace>
-    <AssemblyName>Workspace.Meta</AssemblyName>
+    <RootNamespace>Meta</RootNamespace>
+    <AssemblyName>Meta</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>

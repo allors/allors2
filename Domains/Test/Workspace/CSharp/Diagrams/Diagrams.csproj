@@ -7,8 +7,8 @@
     <ProjectGuid>{29AE6C72-CCD6-4737-A8A9-16868F2C7850}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Diagrams.Website</RootNamespace>
-    <AssemblyName>Diagrams.Website</AssemblyName>
+    <RootNamespace>Diagrams</RootNamespace>
+    <AssemblyName>Diagrams</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
