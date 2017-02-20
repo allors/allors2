@@ -28,7 +28,7 @@ rmdir /s /q .\Domain\Generated >nul 2>&1
 @echo ==========
 
 msbuild Repository.sln /target:Clean /verbosity:minimal
-..\..\Tools\Generate\dist\Allors.Generate.Cmd.exe repository generate Repository.sln repository ../../core/repository/templates/meta.cs.stg meta/generated || SET /A errno^|=%ERROR_BUILD_META% && GOTO :END
+..\..\Tools\Generate\dist\Allors.Generate.Cmd.exe repository generate Repository.sln repository ../../domains/core/repository/templates/meta.cs.stg meta/generated || SET /A errno^|=%ERROR_BUILD_META% && GOTO :END
 
 @echo ========
 @echo Adapters

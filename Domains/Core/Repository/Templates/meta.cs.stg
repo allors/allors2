@@ -58,7 +58,6 @@ $repository.Classes:{class|             $class.SingularName$ = Meta$class.Singul
 	{
 		public void Extend()
 		{
-			this.CoreExtend();
 			$repository.SortedAssemblies:{assembly|this.$assembly.Name$Extend();}; separator="\n"$
 		}
 
@@ -69,7 +68,6 @@ $repository.SortedAssemblies:{assembly|        internal virtual void $assembly.N
 	{
 		public void Extend()
 		{
-			this.CoreExtend();
 			$repository.SortedAssemblies:{assembly|this.$assembly.Name$Extend();}; separator="\n"$
 		}
 

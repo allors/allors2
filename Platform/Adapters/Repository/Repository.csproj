@@ -41,10 +41,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\..\..\Core\Repository\Repository\Core\AssemblyInfo.cs">
+    <Compile Include="..\..\..\Domains\Core\Repository\Repository\Core\AssemblyInfo.cs">
       <Link>Core\AssemblyInfo.cs</Link>
     </Compile>
-    <Compile Include="..\..\..\Core\Repository\Repository\Core\Object.cs">
+    <Compile Include="..\..\..\Domains\Core\Repository\Repository\Core\Object.cs">
       <Link>Core\Object.cs</Link>
     </Compile>
     <Compile Include="Adapters\C1.cs" />

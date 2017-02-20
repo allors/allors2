@@ -23,7 +23,7 @@ namespace Allors.Meta
 {
     public partial class Composite
     {
-        internal virtual void TestsExtend()
+        internal virtual void CoreExtend()
         {
         }
     }

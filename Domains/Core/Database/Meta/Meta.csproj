@@ -106,7 +106,6 @@
     <Compile Include="Generated\meta.g.cs" />
     <Compile Include="Generated\units.g.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Test\MetaPopulation.v.cs" />
     <Compile Include="Test\Meta\Composite.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -114,9 +113,8 @@
     <None Include="packages.config" />
     <None Include="Settings.StyleCop" />
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
-    <ProjectReference Include="..\..\..\Platform\Framework\Allors\Allors.csproj">
+    <ProjectReference Include="..\..\..\..\Platform\Framework\Allors\Allors.csproj">
       <Project>{5b4e2d7c-8ef8-45f5-bfb2-e595c401a95f}</Project>
       <Name>Allors</Name>
     </ProjectReference>
