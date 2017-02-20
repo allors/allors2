@@ -1,6 +1,5 @@
 import * as chai from "chai";
-import * as meta from "../src/meta";
-import * as data from "../src/meta/base/Data";
+import { Population } from "../src/meta/base/Population";
 
 const expect = chai.expect;
 
@@ -9,7 +8,7 @@ describe("MetaDomain",
         describe("default constructor",
         () => {
 
-            let metaPopulation = new meta.Population();
+            let metaPopulation = new Population();
 
             it("should be newable",
                 () => {
