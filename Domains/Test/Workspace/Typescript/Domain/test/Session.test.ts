@@ -18,361 +18,408 @@ describe("Session",
         let metaPopulation: MetaPopulation;
         let workspace: Workspace;
 
-        metaPopulation = new MetaPopulation();
-        metaPopulation.init();
+        beforeEach(() => {
+            metaPopulation = new MetaPopulation();
+            metaPopulation.init();
+            workspace = new Workspace(metaPopulation, constructorByName);
+        });
 
         describe("sync",
         () => {
-            workspace = new Workspace(metaPopulation, constructorByName);
-            workspace.sync(syncResponse);
+            let session: Session;
 
-            let session = new Session(workspace);
+            beforeEach(() => {
+                workspace.sync(syncResponse);
+                session = new Session(workspace);
+            });
 
-            describe("get", () =>{
-                describe("koen", () =>{
-                    let koen = session.get("1") as Person;
+            it("should get unit roles", () => {
+                let koen = session.get("1") as Person;
 
-                    it("should have its properties synced", () => {
-                        expect(koen.FirstName).to.equal("Koen");
-                        expect(koen.MiddleName).to.equal(null);
-                        expect(koen.LastName).to.equal("Van Exem");
-                        expect(koen.BirthDate.toUTCString()).to.equal(new Date("1973-03-27T18:00:00Z").toUTCString());
-                        expect(koen.IsStudent).to.equal(true);
+                expect(koen.FirstName).to.equal("Koen");
+                expect(koen.MiddleName).to.equal(null);
+                expect(koen.LastName).to.equal("Van Exem");
+                expect(koen.BirthDate.toUTCString()).to.equal(new Date("1973-03-27T18:00:00Z").toUTCString());
+                expect(koen.IsStudent).to.equal(true);
+
+                let patrick = session.get("2") as Person;
+
+                expect(patrick.FirstName).to.equal("Patrick");
+                expect(patrick.MiddleName).to.equal(null);
+                expect(patrick.LastName).to.equal("De Boeck");
+                expect(patrick.BirthDate).to.equal(null);
+                expect(patrick.IsStudent).to.equal(false);
+
+                let martien = session.get("3") as Person;
+
+                expect(martien.FirstName).to.equal("Martien");
+                expect(martien.MiddleName).to.equal("van");
+                expect(martien.LastName).to.equal("Knippenberg");
+                expect(martien.BirthDate).to.equal(null);
+                expect(martien.IsStudent).to.equal(null);
+            });
+
+            it("should get composite roles", () => {
+                let koen = session.get("1") as Person;
+                let patrick = session.get("2") as Person;
+                let martien = session.get("3") as Person;
+
+                let acme = session.get("101") as Organisation;
+
+                expect(acme.Owner).to.equal(koen);
+                expect(acme.Manager).to.equal(null);
+
+                let ocme = session.get("102") as Organisation;
+
+                expect(ocme.Owner).to.equal(patrick);
+                expect(ocme.Manager).to.equal(null);
+
+                let icme = session.get("103") as Organisation;
+
+                expect(icme.Owner).to.equal(martien);
+                expect(icme.Manager).to.equal(null);
+            });
+
+            it("should get composites roles", () => {
+                let koen = session.get("1") as Person;
+                let patrick = session.get("2") as Person;
+                let martien = session.get("3") as Person;
+
+                let acme = session.get("101") as Organisation;
+                let ocme = session.get("102") as Organisation;
+                let icme = session.get("103") as Organisation;
+
+                expect(acme.Employees).to.have.members([koen, patrick, martien]);
+                expect(ocme.Employees).to.have.members([koen]);
+                expect(icme.Employees).to.have.members([]);
+
+                expect(acme.Shareholders).to.have.members([]);
+                expect(ocme.Shareholders).to.have.members([]);
+                expect(icme.Shareholders).to.have.members([]);
+            });
+
+            describe("two different sessions with same objects",
+            () => {
+                let session1: Session;
+                let session2: Session;
+
+                let koen1: Person;
+                let patrick1: Person;
+                let martien1: Person;
+
+                let acme1: Organisation;
+                let ocme1:  Organisation;
+                let icme1:  Organisation;
+
+                let koen2: Person;
+                let patrick2:  Person;
+                let martien2:  Person;
+
+                let acme2: Organisation;
+                let ocme2: Organisation;
+                let icme2: Organisation;
+
+                beforeEach(() => {
+                    session1 = new Session(workspace);
+                    session2 = new Session(workspace);
+
+                    koen1 = session1.get("1") as Person;
+                    patrick1 = session1.get("2") as Person;
+                    martien1 = session1.get("3") as Person;
+
+                    acme1 = session1.get("101") as Organisation;
+                    ocme1 = session1.get("102") as Organisation;
+                    icme1 = session1.get("103") as Organisation;
+
+                    koen2 = session2.get("1") as Person;
+                    patrick2 = session2.get("2") as Person;
+                    martien2 = session2.get("3") as Person;
+
+                    acme2 = session2.get("101") as Organisation;
+                    ocme2 = session2.get("102") as Organisation;
+                    icme2 = session2.get("103") as Organisation;
+                });
+
+                describe("update unit roles", () => {
+
+                    beforeEach(() => {
+                        martien2.FirstName = "Martinus";
+                        martien2.MiddleName = "X";
+                    });
+
+                    it("should see changes in this session", () => {
+                        expect(martien1.FirstName).to.equal("Martien");
+                        expect(martien1.LastName).to.equal("Knippenberg");
+                        expect(martien1.MiddleName).to.equal("van");
+                    });
+
+                    it("should not see changes in the other session", () => {
+                        expect(martien2.FirstName).to.equal("Martinus");
+                        expect(martien2.LastName).to.equal("Knippenberg");
+                        expect(martien2.MiddleName).to.equal("X");
                     });
                 });
 
-                 describe("patrick", () =>{
-                    let patrick = session.get("2") as Person;
+                describe("update composite roles", () => {
 
-                    it("should have its properties synced", () => {
-                        expect(patrick.FirstName).to.equal("Patrick");
-                        expect(patrick.MiddleName).to.equal(null);
-                        expect(patrick.LastName).to.equal("De Boeck");
-                        expect(patrick.BirthDate).to.equal(null);
-                        expect(patrick.IsStudent).to.equal(false);
+                    beforeEach(() => {
+                        acme2.Owner = martien2;
+                        ocme2.Owner = null;
+                        acme2.Manager = patrick2;
+                    });
+
+                    it("should see changes in this session", () => {
+                        expect(acme1.Owner).to.equal(koen1);
+                        expect(ocme1.Owner).to.equal(patrick1);
+                        expect(icme1.Owner).to.equal(martien1);
+
+                        expect(acme1.Manager).to.equal(null);
+                        expect(ocme1.Manager).to.equal(null);
+                        expect(icme1.Manager).to.equal(null);
+                    });
+
+                    it("should not see changes in the other session", () => {
+                        expect(acme2.Owner).to.equal(martien2);
+                        expect(ocme2.Owner).to.equal(null);
+                        expect(icme2.Owner).to.equal(martien2);
+
+                        expect(acme2.Manager).to.equal(patrick2);
+                        expect(ocme2.Manager).to.equal(null);
+                        expect(icme2.Manager).to.equal(null);
                     });
                 });
 
-                 describe("martien", () => {
-                    let patrick = session.get("3") as Person;
+                describe("update composites roles", () => {
 
-                    it("should have its properties synced", () => {
-                        expect(patrick.FirstName).to.equal("Martien");
-                        expect(patrick.MiddleName).to.equal("van");
-                        expect(patrick.LastName).to.equal("Knippenberg");
-                        expect(patrick.BirthDate).to.equal(null);
-                        expect(patrick.IsStudent).to.equal(null);
+                    beforeEach(() => {
+                        acme2.Employees = null;
+                        icme2.Employees = [koen2, patrick2, martien2];
+                    });
+
+                    it("should see changes in this session", () => {
+                        expect(acme1.Employees).to.have.members([koen1, patrick1, martien1]);
+                        expect(ocme1.Employees).to.have.members([koen1]);
+                        expect(icme1.Employees).to.have.members([]);
+                    });
+
+                    it("should not see changes in the other session", () => {
+                        expect(acme2.Employees).to.have.members([]);
+                        expect(ocme2.Employees).to.have.members([koen2]);
+                        expect(icme2.Employees).to.have.members([koen2, patrick2, martien2]);
                     });
                 });
             });
+
+            it("pushRequest should have all changes from session",
+            () => {
+                let koen = session.get("1") as Person;
+                let patrick = session.get("2") as Person;
+                let martien = session.get("3") as Person;
+
+                let acme = session.get("101") as Organisation;
+                let ocme = session.get("102") as Organisation;
+                let icme = session.get("103") as Organisation;
+
+                acme.Owner = martien;
+                ocme.Owner = null;
+
+                acme.Manager = patrick;
+
+                let save = session.pushRequest();
+
+                expect(save.objects.length).to.equal(2);
+
+                let savedAcme = _.find(save.objects, v => (v.i === "101"));
+
+                expect(savedAcme.v).to.equal("1101");
+                expect(savedAcme.roles.length).to.equal(2);
+
+                let savedAcmeOwner = _.find(savedAcme.roles, v => (v.t === "Owner"));
+                let savedAcmeManager = _.find(savedAcme.roles, v => (v.t === "Manager"));
+
+                expect(savedAcmeOwner.s).to.equal("3");
+                expect(savedAcmeOwner.a).to.equal(undefined);
+                expect(savedAcmeOwner.r).to.equal(undefined);
+                expect(savedAcmeManager.s).to.equal("2");
+                expect(savedAcmeManager.a).to.equal(undefined);
+                expect(savedAcmeManager.r).to.equal(undefined);
+
+                let savedOcme = _.find(save.objects, v => (v.i === "102"));
+
+                expect(savedOcme.v).to.equal("1102");
+                expect(savedOcme.roles.length).to.equal(1);
+
+                let savedOcmeOwner = _.find(savedOcme.roles, v => (v.t === "Owner"));
+
+                expect(savedOcmeOwner.s).to.equal(null);
+                expect(savedOcmeOwner.a).to.equal(undefined);
+                expect(savedOcmeOwner.r).to.equal(undefined);
+            });
+
+            it("pushRequest should have all changes from session",
+            () => {
+                let koen = session.get("1") as Person;
+                let patrick = session.get("2") as Person;
+                let martien = session.get("3") as Person;
+
+                let acme = session.get("101") as Organisation;
+                let ocme = session.get("102") as Organisation;
+                let icme = session.get("103") as Organisation;
+
+                acme.Owner = martien;
+                ocme.Owner = null;
+
+                acme.Manager = patrick;
+
+                let save = session.pushRequest();
+
+                expect(save.objects.length).to.equal(2);
+
+                let savedAcme = _.find(save.objects, v => (v.i === "101"));
+
+                expect(savedAcme.v).to.equal("1101");
+                expect(savedAcme.roles.length).to.equal(2);
+
+                let savedAcmeOwner = _.find(savedAcme.roles, v => (v.t === "Owner"));
+                let savedAcmeManager = _.find(savedAcme.roles, v => (v.t === "Manager"));
+
+                expect(savedAcmeOwner.s).to.equal("3");
+                expect(savedAcmeOwner.a).to.equal(undefined);
+                expect(savedAcmeOwner.r).to.equal(undefined);
+                expect(savedAcmeManager.s).to.equal("2");
+                expect(savedAcmeManager.a).to.equal(undefined);
+                expect(savedAcmeManager.r).to.equal(undefined);
+
+                let savedOcme = _.find(save.objects, v => (v.i === "102"));
+
+                expect(savedOcme.v).to.equal("1102");
+                expect(savedOcme.roles.length).to.equal(1);
+
+                let savedOcmeOwner = _.find(savedOcme.roles, v => (v.t === "Owner"));
+
+                expect(savedOcmeOwner.s).to.equal(null);
+                expect(savedOcmeOwner.a).to.equal(undefined);
+                expect(savedOcmeOwner.r).to.equal(undefined);
+            });
+
+            it("should save with existing objects", () => {
+                let koen = session.get("1") as Person;
+                let patrick = session.get("2") as Person;
+                let martien = session.get("3") as Person;
+
+                let acme = session.get("101") as Organisation;
+                let ocme = session.get("102") as Organisation;
+                let icme = session.get("103") as Organisation;
+
+                acme.Employees = null;
+                ocme.Employees = [martien, patrick];
+                icme.Employees = [koen, patrick, martien];
+
+                let save = session.pushRequest();
+
+                expect(save.newObjects.length).to.equal(0);
+                expect(save.objects.length).to.equal(3);
+
+                let savedAcme = _.find(save.objects, v => (v.i === "101"));
+
+                expect(savedAcme.v).to.equal("1101");
+                expect(savedAcme.roles.length).to.equal(1);
+
+                let savedAcmeEmployees = _.find(savedAcme.roles, v => (v.t === "Employees"));
+
+                expect(savedAcmeEmployees.s).to.equal(undefined);
+                expect(savedAcmeEmployees.a).to.have.members([]);
+                expect(savedAcmeEmployees.r).to.have.members(["1", "2", "3"]);
+
+                let savedOcme = _.find(save.objects, v => (v.i === "102"));
+
+                expect(savedOcme.v).to.equal("1102");
+                expect(savedOcme.roles.length).to.equal(1);
+
+                let savedOcmeEmployees = _.find(savedOcme.roles, v => (v.t === "Employees"));
+
+                expect(savedOcmeEmployees.s).to.equal(undefined);
+                expect(savedOcmeEmployees.a).to.have.members(["2", "3"]);
+                expect(savedOcmeEmployees.r).to.have.members(["1"]);
+
+                let savedIcme = _.find(save.objects, v => (v.i === "103"));
+
+                expect(savedIcme.v).to.equal("1103");
+                expect(savedIcme.roles.length).to.equal(1);
+
+                let savedIcmeEmployees = _.find(savedIcme.roles, v => (v.t === "Employees"));
+
+                expect(savedIcmeEmployees.s).to.equal(undefined);
+                expect(savedIcmeEmployees.a).to.have.members(["1", "2", "3"]);
+                expect(savedIcmeEmployees.r).to.equal(undefined);
+            });
+
+            it("should save with many objects", () => {
+                let martien = session.get("3") as Person;
+
+                let mathijs = session.create("Person") as Person;
+                mathijs.FirstName = "Mathijs";
+                mathijs.LastName = "Verwer";
+
+                let acme2 = session.create("Organisation") as Organisation;
+                acme2.Name = "Acme 2";
+                acme2.Manager = mathijs;
+                acme2.AddEmployee(mathijs);
+
+                let acme3 = session.create("Organisation") as Organisation;
+                acme3.Name = "Acme 3";
+                acme3.Manager = martien;
+                acme3.AddEmployee(martien);
+
+                let save = session.pushRequest();
+                expect(save.newObjects.length).to.equal(3);
+                expect(save.objects.length).to.equal(0);
+
+                {
+                    let savedMathijs = _.find(save.newObjects, v => (v.ni === mathijs.newId));
+                    expect(savedMathijs.t).to.equal("Person");
+                    expect(savedMathijs.roles.length).to.equal(2);
+
+                    let savedMathijsFirstName = _.find(savedMathijs.roles, v => (v.t === "FirstName"));
+                    expect(savedMathijsFirstName.s).to.equal("Mathijs");
+
+                    let savedMathijsLastName = _.find(savedMathijs.roles, v => (v.t === "LastName"));
+                    expect(savedMathijsLastName.s).to.equal("Verwer");
+                }
+
+                {
+                    let savedAcme2 = _.find(save.newObjects, v => (v.ni === acme2.newId));
+                    expect(savedAcme2.t).to.equal("Organisation");
+                    expect(savedAcme2.roles.length).to.equal(3);
+
+                    let savedAcme2Manager = _.find(savedAcme2.roles, v => (v.t === "Manager"));
+                    expect(savedAcme2Manager.s).to.equal(mathijs.newId);
+
+                    let savedAcme2Employees = _.find(savedAcme2.roles, v => (v.t === "Employees"));
+                    expect(savedAcme2Employees.s).to.equal(undefined);
+                    expect(savedAcme2Employees.a).to.have.members([mathijs.newId]);
+                    expect(savedAcme2Employees.r).to.equal(undefined);
+                }
+
+                {
+                    let savedAcme3 = _.find(save.newObjects, v => (v.ni === acme3.newId));
+                    expect(savedAcme3.t).to.equal("Organisation");
+                    expect(savedAcme3.roles.length).to.equal(3);
+
+                    let savedAcme3Manager = _.find(savedAcme3.roles, v => (v.t === "Manager"));
+                    expect(savedAcme3Manager.s).to.equal("3");
+
+                    let savedAcme3Employees = _.find(savedAcme3.roles, v => (v.t === "Employees"));
+                    expect(savedAcme3Employees.s).to.equal(undefined);
+                    expect(savedAcme3Employees.a).to.have.members(["3"]);
+                    expect(savedAcme3Employees.r).to.equal(undefined);
+                }
+            });
         });
+});
 
-/*        describe("unitSet",
-        () => {
-            workspace.sync(syncResponse);
-
-            let session1 = new Session(workspace);
-            let martien1 = session1.get("3") as Person;
-
-            let session2 = new Session(workspace);
-            let martien2 = session2.get("3") as Person;
-
-            martien2.FirstName = "Martinus";
-            martien2.MiddleName = "X";
-
-            this.areIdentical("Martien", martien1.FirstName);
-            this.areIdentical("Knippenberg", martien1.LastName);
-            this.areIdentical("van", martien1.MiddleName);
-
-            this.areIdentical("Martinus", martien2.FirstName);
-            this.areIdentical("Knippenberg", martien2.LastName);
-            this.areIdentical("X", martien2.MiddleName);
-        });
-
-         describe("unitSave",
-        () => {
-            workspace.sync(syncResponse);
-
-            let session = new Session(workspace);
-            let koen = session.get("1") as Person;
-            let patrick = session.get("2") as Person;
-            let martien = session.get("3") as Person;
-
-            koen.FirstName = "K";
-            koen.LastName = "VE";
-            martien.FirstName = "Martinus";
-            martien.MiddleName = "X";
-
-            let save = session.pushRequest();
-
-            this.areIdentical(2, save.objects.length);
-
-            let savedKoen = _.find(save.objects, v => (v.i === "1"));
-
-            this.areIdentical("1001", savedKoen.v);
-            this.areIdentical(2, savedKoen.roles.length);
-
-            let savedKoenFirstName = _.find(savedKoen.roles, v => (v.t === "FirstName"));
-            let savedKoenLastName = _.find(savedKoen.roles, v => (v.t === "LastName"));
-
-            this.areIdentical("K", savedKoenFirstName.s);
-            this.areIdentical(undefined, savedKoenFirstName.a);
-            this.areIdentical(undefined, savedKoenFirstName.r);
-            this.areIdentical("VE", savedKoenLastName.s);
-            this.areIdentical(undefined, savedKoenLastName.a);
-            this.areIdentical(undefined, savedKoenLastName.r);
-
-            let savedMartien = _.find(save.objects, v => (v.i === "3"));
-
-            this.areIdentical("1003", savedMartien.v);
-            this.areIdentical(2, savedMartien.roles.length);
-
-            let savedMartienFirstName = _.find(savedMartien.roles, v => (v.t === "FirstName"));
-            let savedMartienMiddleName = _.find(savedMartien.roles, v => (v.t === "MiddleName"));
-
-            this.areIdentical("Martinus", savedMartienFirstName.s);
-            this.areIdentical(undefined, savedMartienFirstName.a);
-            this.areIdentical(undefined, savedMartienFirstName.r);
-            this.areIdentical("X", savedMartienMiddleName.s);
-            this.areIdentical(undefined, savedMartienMiddleName.a);
-            this.areIdentical(undefined, savedMartienMiddleName.r);
-        });
-
-         describe("oneGet",
-        () => {
-            workspace.sync(syncResponse);
-
-            let session = new Session(workspace);
-
-            let koen = session.get("1") as Person;
-            let patrick = session.get("2") as Person;
-            let martien = session.get("3") as Person;
-
-            let acme = session.get("101") as Organisation;
-            let ocme = session.get("102") as Organisation;
-            let icme = session.get("103") as Organisation;
-
-            this.areIdentical(koen, acme.Owner);
-            this.areIdentical(patrick, ocme.Owner);
-            this.areIdentical(martien, icme.Owner);
-
-            this.areIdentical(null, acme.Manager);
-            this.areIdentical(null, ocme.Manager);
-            this.areIdentical(null, icme.Manager);
-        });
-         describe("oneSet",
-        () => {
-            workspace.sync(syncResponse);
-
-            let session1 = new Session(workspace);
-
-            let session2 = new Session(workspace);
-
-            let koen1 = session1.get("1") as Person;
-            let patrick1 = session1.get("2") as Person;
-            let martien1 = session1.get("3") as Person;
-
-            let acme1 = session1.get("101") as Organisation;
-            let ocme1 = session1.get("102") as Organisation;
-            let icme1 = session1.get("103") as Organisation;
-
-            let koen2 = session2.get("1") as Person;
-            let patrick2 = session2.get("2") as Person;
-            let martien2 = session2.get("3") as Person;
-
-            let acme2 = session2.get("101") as Organisation;
-            let ocme2 = session2.get("102") as Organisation;
-            let icme2 = session2.get("103") as Organisation;
-
-            acme2.Owner = martien2;
-            ocme2.Owner = null;
-            acme2.Manager = patrick2;
-
-            this.areIdentical(koen1, acme1.Owner);
-            this.areIdentical(patrick1, ocme1.Owner);
-            this.areIdentical(martien1, icme1.Owner);
-
-            this.areIdentical(null, acme1.Manager);
-            this.areIdentical(null, ocme1.Manager);
-            this.areIdentical(null, icme1.Manager);
-
-            this.areIdentical(martien2, acme2.Owner); // x
-            this.areIdentical(null, ocme2.Owner);
-            this.areIdentical(martien2, icme2.Owner);
-
-            this.areIdentical(patrick2, acme2.Manager); // x
-            this.areIdentical(null, ocme2.Manager);
-            this.areIdentical(null, icme2.Manager);
-        });
-
-         describe("oneSave",
-        () => {
-            workspace.sync(syncResponse);
-
-            let session = new Session(workspace);
-
-            let koen = session.get("1") as Person;
-            let patrick = session.get("2") as Person;
-            let martien = session.get("3") as Person;
-
-            let acme = session.get("101") as Organisation;
-            let ocme = session.get("102") as Organisation;
-            let icme = session.get("103") as Organisation;
-
-            acme.Owner = martien;
-            ocme.Owner = null;
-
-            acme.Manager = patrick;
-
-            let save = session.pushRequest();
-
-            this.areIdentical(2, save.objects.length);
-
-            let savedAcme = _.find(save.objects, v => (v.i === "101"));
-
-            this.areIdentical("1101", savedAcme.v);
-            this.areIdentical(2, savedAcme.roles.length);
-
-            let savedAcmeOwner = _.find(savedAcme.roles, v => (v.t === "Owner"));
-            let savedAcmeManager = _.find(savedAcme.roles, v => (v.t === "Manager"));
-
-            this.areIdentical("3", savedAcmeOwner.s);
-            this.areIdentical(undefined, savedAcmeOwner.a);
-            this.areIdentical(undefined, savedAcmeOwner.r);
-            this.areIdentical("2", savedAcmeManager.s);
-            this.areIdentical(undefined, savedAcmeManager.a);
-            this.areIdentical(undefined, savedAcmeManager.r);
-
-            let savedOcme = _.find(save.objects, v => (v.i === "102"));
-
-            this.areIdentical("1102", savedOcme.v);
-            this.areIdentical(1, savedOcme.roles.length);
-
-            let savedOcmeOwner = _.find(savedOcme.roles, v => (v.t === "Owner"));
-
-            this.areIdentical(null, savedOcmeOwner.s);
-            this.areIdentical(undefined, savedOcmeOwner.a);
-            this.areIdentical(undefined, savedOcmeOwner.r);
-        });
-
-         describe("manyGet",
-        () => {
-            workspace.sync(syncResponse);
-
-            let session = new Session(workspace);
-
-            let koen = session.get("1") as Person;
-            let patrick = session.get("2") as Person;
-            let martien = session.get("3") as Person;
-
-            let acme = session.get("101") as Organisation;
-            let ocme = session.get("102") as Organisation;
-            let icme = session.get("103") as Organisation;
-
-            this.isTrue(this.arrayEqual([koen, patrick, martien], acme.Employees));
-            this.isTrue(this.arrayEqual([koen], ocme.Employees));
-            this.isTrue(this.arrayEqual([], icme.Employees));
-
-            this.isTrue(this.arrayEqual([], acme.Shareholders));
-            this.isTrue(this.arrayEqual([], ocme.Shareholders));
-            this.isTrue(this.arrayEqual([], icme.Shareholders));
-        });
-
-          describe("manySet",
-        () => {
-            workspace.sync(syncResponse);
-
-            let session1 = new Session(workspace);
-
-            let session2 = new Session(workspace);
-
-            let koen1 = session1.get("1") as Person;
-            let patrick1 = session1.get("2") as Person;
-            let martien1 = session1.get("3") as Person;
-
-            let acme1 = session1.get("101") as Organisation;
-            let ocme1 = session1.get("102") as Organisation;
-            let icme1 = session1.get("103") as Organisation;
-
-            let koen2 = session2.get("1") as Person;
-            let patrick2 = session2.get("2") as Person;
-            let martien2 = session2.get("3") as Person;
-
-            let acme2 = session2.get("101") as Organisation;
-            let ocme2 = session2.get("102") as Organisation;
-            let icme2 = session2.get("103") as Organisation;
-
-            acme2.Employees = null;
-            icme2.Employees = [koen2, patrick2, martien2];
-
-            this.isTrue(this.arrayEqual([koen1, patrick1, martien1], acme1.Employees));
-            this.isTrue(this.arrayEqual([koen1], ocme1.Employees));
-            this.isTrue(this.arrayEqual([], icme1.Employees));
-
-            this.isTrue(this.arrayEqual([], acme2.Employees));
-            this.isTrue(this.arrayEqual([koen2], ocme2.Employees));
-            this.isTrue(this.arrayEqual([koen2, patrick2, martien2], icme2.Employees));
-        });
-
-            describe("manySaveWithExistingObjects",
-        () => {
-            workspace.sync(syncResponse);
-
-            let session = new Session(workspace);
-
-            let koen = session.get("1") as Person;
-            let patrick = session.get("2") as Person;
-            let martien = session.get("3") as Person;
-
-            let acme = session.get("101") as Organisation;
-            let ocme = session.get("102") as Organisation;
-            let icme = session.get("103") as Organisation;
-
-            acme.Employees = null;
-            ocme.Employees = [martien, patrick];
-            icme.Employees = [koen, patrick, martien];
-
-            let save = session.pushRequest();
-
-            this.areIdentical(0, save.newObjects.length);
-            this.areIdentical(3, save.objects.length);
-
-            let savedAcme = _.find(save.objects, v => (v.i === "101"));
-
-            this.areIdentical(savedAcme.v, "1101");
-            this.areIdentical(savedAcme.roles.length, 1);
-
-            let savedAcmeEmployees = _.find(savedAcme.roles, v => (v.t === "Employees"));
-
-            this.areIdentical(undefined, savedAcmeEmployees.s);
-            this.isTrue(this.arrayEqual([], savedAcmeEmployees.a));
-            this.isTrue(this.arrayEqual(["1", "2", "3"], savedAcmeEmployees.r));
-
-            let savedOcme = _.find(save.objects, v => (v.i === "102"));
-
-            this.areIdentical("1102", savedOcme.v);
-            this.areIdentical(1, savedOcme.roles.length);
-
-            let savedOcmeEmployees = _.find(savedOcme.roles, v => (v.t === "Employees"));
-
-            this.areIdentical(undefined, savedOcmeEmployees.s);
-            this.isTrue(this.arrayEqual(["2", "3"], savedOcmeEmployees.a));
-            this.isTrue(this.arrayEqual(["1"], savedOcmeEmployees.r));
-
-            let savedIcme = _.find(save.objects, v => (v.i === "103"));
-
-            this.areIdentical("1103", savedIcme.v);
-            this.areIdentical(1, savedIcme.roles.length);
-
-            let savedIcmeEmployees = _.find(savedIcme.roles, v => (v.t === "Employees"));
-
-            this.areIdentical(undefined, savedIcmeEmployees.s);
-            this.isTrue(this.arrayEqual(["1", "2", "3"], savedIcmeEmployees.a));
-            this.areIdentical(undefined, savedIcmeEmployees.r);
-        });
-
-
-            describe("manySaveWithNewObjects",
+/*
+        describe("manySaveWithNewObjects",
         () => {
             workspace.sync(syncResponse);
 

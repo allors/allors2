@@ -6,67 +6,61 @@ const expect = chai.expect;
 
 describe("Person",
     () => {
+        let session: Session;
+
+        beforeEach(() => {
+            session = new Session(workspace);
+        });
+
         describe("displayName",
             () => {
-                const session = new Session(workspace);
+                let person: Person;
 
-                const person = session.create("Person") as Person;
-
-                describe("nothing set", () => {
-                    it("should be N/A", () => {
-                        expect(person.displayName()).to.equal("N/A");
-                    });
+                beforeEach(() => {
+                    person = session.create("Person") as Person;
                 });
 
-                describe("with username john@doe.com", () => {
-                    beforeEach(() => {
-                        person.UserName = "john@doe.com";
-                    });
-
-                    it("should be john@doe.com", () => {
-                        expect(person.displayName()).to.equal("john@doe.com");
-                    });
+                it("should be N/A when nothing set", () => {
+                    expect(person.displayName()).to.equal("N/A");
                 });
 
-                describe("with lastName Doe", () => {
-                    beforeEach(() => {
-                        person.LastName = "Doe";
-                    });
-
-                    it("should be Doe", () => {
-                        expect(person.displayName()).to.equal("Doe");
-                    });
+                it("should be john@doe.com when username is john@doe.com", () => {
+                    person.UserName = "john@doe.com";
+                    expect(person.displayName()).to.equal("john@doe.com");
                 });
 
-                describe("with firstName John", () => {
-                    beforeEach(() => {
-                        person.FirstName = "John";
-                    });
+                it("should be Doe when lastName is Doe", () => {
+                    person.LastName = "Doe";
+                    expect(person.displayName()).to.equal("Doe");
+                });
 
-                    it("should be John Doe", () => {
-                        expect(person.displayName()).to.equal("John Doe");
-                    });
+                it("should be John with firstName John", () => {
+                    person.FirstName = "John";
+                    expect(person.displayName()).to.equal("John");
+                });
 
-                    it("should be John Doe when executed twice", () => {
-                        expect(person.displayName()).to.equal("John Doe");
-                    });
+                it("should be John Doe (even twice) with firstName John and lastName Doe", () => {
+                    person.FirstName = "John";
+                    person.LastName = "Doe";
+                    expect(person.displayName()).to.equal("John Doe");
+                    expect(person.displayName()).to.equal("John Doe");
                 });
             }
         );
 
         describe("hello",
             () => {
-            const session = new Session(workspace);
+                let person: Person;
 
-            const person = session.create("Person") as Person;
+                beforeEach(() => {
+                    person = session.create("Person") as Person;
+                });
 
-            describe("with lastName Doe and firstName John", () => {
-                person.LastName = "Doe";
-                person.FirstName = "John";
+                it("should be Hello John Doe when lastName Doe and firstName John", () => {
+                    person.LastName = "Doe";
+                    person.FirstName = "John";
 
-                it("should be Hello John Doe", () => {
                     expect(person.hello()).to.equal("Hello John Doe");
                 });
-            });
         });
 });

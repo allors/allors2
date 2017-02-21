@@ -12,73 +12,86 @@ const expect = chai.expect;
 
 describe("Workspace",
     () => {
-/*
+
+        let metaPopulation: MetaPopulation;
         let workspace: Workspace;
 
         beforeEach(() => {
-            let metaPopulation = new MetaPopulation();
+            metaPopulation = new MetaPopulation();
             metaPopulation.init();
-
             workspace = new Workspace(metaPopulation, constructorByName);
         });
 
 
-        describe("load",
+        it("should have its relations set when synced", () => {
+            workspace.sync(syncResponse);
+
+            let martien = workspace.get("3");
+
+            expect(martien.id).to.equal("3");
+            expect(martien.version).to.equal("1003");
+            expect(martien.objectType.name).to.equal("Person");
+            expect(martien.roles.FirstName).to.equal("Martien");
+            expect(martien.roles.MiddleName).to.equal("van");
+            expect(martien.roles.LastName).to.equal("Knippenberg");
+            expect(martien.roles.IsStudent).to.equal(undefined);
+            expect(martien.roles.BirthDate).to.equal(undefined);
+        });
+
+         describe("synced with same securityHash",
             () => {
-                workspace.sync(syncResponse);
 
-                let martien = workspace.get("3");
+                beforeEach(() => {
+                    workspace.userSecurityHash = "#";
+                    workspace.sync(syncResponse);
+                });
 
-                this.areIdentical("3", martien.id);
-                this.areIdentical("1003", martien.version);
-                this.areIdentical("Person", martien.objectType.name);
-                this.areIdentical("Martien", martien.roles.FirstName);
-                this.areIdentical("van", martien.roles.MiddleName);
-                this.areIdentical("Knippenberg", martien.roles.LastName);
-                this.areIdentical(undefined, martien.roles.IsStudent);
-                this.areIdentical(undefined, martien.roles.BirthDate);
+                it("should require load objects only for changed version", () => {
+                    let pullResponse = {
+                            responseType: ResponseType.Pull,
+                            userSecurityHash: "#",
+                            objects: [
+                                ["1", "1001"],
+                                ["2", "1002"],
+                                ["3", "1004"]
+                            ]
+                        };
+
+                    let requireLoad = workspace.diff(pullResponse);
+
+                    expect(requireLoad.objects.length).to.equal(1);
+                    expect(requireLoad.objects[0]).to.equal("3");
+                });
+
             }
         );
 
-         describe("checkVersions",
+        describe("synced with different securityHash",
             () => {
-                workspace.userSecurityHash = "#";
-                workspace.sync(syncResponse);
-
-                let pullResponse = {
-                        responseType: ResponseType.Pull,
-                        userSecurityHash: "#",
-                        objects: [
-                            ["1", "1001"],
-                            ["2", "1002"],
-                            ["3", "1004"]
-                        ]
-                    };
-
-                let requireLoad = workspace.diff(pullResponse);
-
-                this.areIdentical(1, requireLoad.objects.length);
-            }
-        );
-
-         describe("checkVersionsUserSecurityHash",
-            () => {
+                beforeEach(() => {
                 workspace.userSecurityHash = "abc";
                 workspace.sync(syncResponse);
+                });
 
-                let pullResponse = {
-                        responseType: ResponseType.Pull,
-                        userSecurityHash: "def",
-                        objects: [
-                            ["1", "1001"],
-                            ["2", "1002"],
-                            ["3", "1004"]
-                        ]
-                    };
 
-                let requireLoad = workspace.diff(pullResponse);
+                it("should require load objects for all objects", () => {
+                    let pullResponse = {
+                            responseType: ResponseType.Pull,
+                            userSecurityHash: "def",
+                            objects: [
+                                ["1", "1001"],
+                                ["2", "1002"],
+                                ["3", "1004"]
+                            ]
+                        };
 
-                this.areIdentical(3, requireLoad.objects.length);
-            }
-        );
-*/});
+                    let requireLoad = workspace.diff(pullResponse);
+
+                    expect(requireLoad.objects.length).to.equal(3);
+                    expect(requireLoad.objects).to.contain("1");
+                    expect(requireLoad.objects).to.contain("2");
+                    expect(requireLoad.objects).to.contain("3");
+                });
+            });
+        }
+);
