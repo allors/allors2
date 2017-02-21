@@ -1,0 +1,26 @@
+{
+  "name": "meta",
+  "description": "Allors Core Workspace Meta",
+  "repository": "https://github.com/Allors/allors2",
+  "license": "LGPL3",
+  "main": "lib/index.js",
+  "scripts": {
+    "postinstall": "sync-files ../Meta/src/meta src/meta && sync-files ../../../../Base/Workspace/Typescript/Domain/src/domain/base src/domain/base",
+    "prestest": "tsc -w",
+    "test": "mocha -w",
+    "cover": "istanbul cover ./node_modules/mocha/bin/_mocha"
+  },
+  "devDependencies": {
+    "@types/chai": "^3.0.0",
+    "@types/lodash": "^4.14.52",
+    "@types/mocha": "^2.0.0",
+    "@types/node": "7.0.5",
+    "chai": "^3.5.0",
+    "istanbul": "^0.4.5",
+    "mocha": "^3.2.0",
+    "sync-files": "^1.0.3"
+  },
+  "dependencies": {
+    "lodash": "^4.17.4"
+  }
+}

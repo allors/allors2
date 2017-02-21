@@ -167,5 +167,14 @@ namespace Allors.Meta
                 return this.ConcreteRoleTypes.Where(m => m.RoleType.Workspace);
             }
         }
+
+        public IEnumerable<ObjectType> WorkspaceRelatedComposites
+        {
+            get
+            {
+                this.MetaPopulation.Derive();
+                return this.WorkspaceSupertypes.Union(this.WorkspaceConcreteRoleTypes.Where(v => v.RoleType.ObjectType.IsComposite).Select(v => v.RoleType.ObjectType)).Distinct().Except(new[] { this });
+            }
+        }
     }
 }
