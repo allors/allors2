@@ -10,6 +10,7 @@
 
 namespace Resources {
     using System;
+    using System.Reflection;
     
     
     /// <summary>
@@ -22,7 +23,7 @@ namespace Resources {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    public class WorkspaceMeta {
+    internal class WorkspaceMeta {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
@@ -36,10 +37,10 @@ namespace Resources {
         ///   Returns the cached ResourceManager instance used by this class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        public static global::System.Resources.ResourceManager ResourceManager {
+        internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Resources.WorkspaceMeta", typeof(WorkspaceMeta).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Resources.WorkspaceMeta", typeof(WorkspaceMeta).GetTypeInfo().Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -51,57 +52,12 @@ namespace Resources {
         ///   resource lookups using this strongly typed resource class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        public static global::System.Globalization.CultureInfo Culture {
+        internal static global::System.Globalization.CultureInfo Culture {
             get {
                 return resourceCulture;
             }
             set {
                 resourceCulture = value;
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Enter all the employees.
-        /// </summary>
-        public static string Organisation_Employees_Help {
-            get {
-                return ResourceManager.GetString("Organisation.Employees.Help", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Employees.
-        /// </summary>
-        public static string Organisation_Employees_Label {
-            get {
-                return ResourceManager.GetString("Organisation.Employees.Label", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Enter the name of the organisation.
-        /// </summary>
-        public static string Organisation_Name_Help {
-            get {
-                return ResourceManager.GetString("Organisation.Name.Help", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Name.
-        /// </summary>
-        public static string Organisation_Name_Label {
-            get {
-                return ResourceManager.GetString("Organisation.Name.Label", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Enter a name ....
-        /// </summary>
-        public static string Organisation_Name_Placeholder {
-            get {
-                return ResourceManager.GetString("Organisation.Name.Placeholder", resourceCulture);
             }
         }
     }

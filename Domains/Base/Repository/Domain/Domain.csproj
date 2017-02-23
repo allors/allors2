@@ -1,0 +1,115 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{35602680-968F-43BA-B56E-4ABCC9576CCF}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Repository</RootNamespace>
+    <AssemblyName>Repository</AssemblyName>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\..\..\Core\Repository\Domain\Core\AssemblyInfo.cs">
+      <Link>Core\AssemblyInfo.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\Core\Repository\Domain\Core\Attributes\DerivedAttribute.cs">
+      <Link>Core\Attributes\DerivedAttribute.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\Core\Repository\Domain\Core\Attributes\IndexedAttribute.cs">
+      <Link>Core\Attributes\IndexedAttribute.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\Core\Repository\Domain\Core\Attributes\PrecisionAttribute.cs">
+      <Link>Core\Attributes\PrecisionAttribute.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\Core\Repository\Domain\Core\Attributes\ScaleAttribute.cs">
+      <Link>Core\Attributes\ScaleAttribute.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\Core\Repository\Domain\Core\Attributes\SizeAttribute.cs">
+      <Link>Core\Attributes\SizeAttribute.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\Core\Repository\Domain\Core\Attributes\SyncedAttribute.cs">
+      <Link>Core\Attributes\SyncedAttribute.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\Core\Repository\Domain\Core\Attributes\WorkspaceAttribute.cs">
+      <Link>Core\Attributes\WorkspaceAttribute.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\Core\Repository\Domain\Core\Object.cs">
+      <Link>Core\Object.cs</Link>
+    </Compile>
+    <Compile Include="Base\Attributes\RequiredAttribute.cs" />
+    <Compile Include="Base\Attributes\UniqueAttribute.cs" />
+    <Compile Include="Base\Object.cs" />
+    <Compile Include="Base\AccessControl.cs" />
+    <Compile Include="Base\AccessControlledObject.cs" />
+    <Compile Include="Base\AssemblyInfo.cs" />
+    <Compile Include="Base\AsyncDerivable.cs" />
+    <Compile Include="Base\AsyncDerivation.cs" />
+    <Compile Include="Base\Counter.cs" />
+    <Compile Include="Base\Country.cs" />
+    <Compile Include="Base\Currency.cs" />
+    <Compile Include="Base\Deletable.cs" />
+    <Compile Include="Base\Enumeration.cs" />
+    <Compile Include="Base\Language.cs" />
+    <Compile Include="Base\Locale.cs" />
+    <Compile Include="Base\Localised.cs" />
+    <Compile Include="Base\LocalisedText.cs" />
+    <Compile Include="Base\Login.cs" />
+    <Compile Include="Base\Media.cs" />
+    <Compile Include="Base\MediaContent.cs" />
+    <Compile Include="Base\ObjectState.cs" />
+    <Compile Include="Base\Permission.cs" />
+    <Compile Include="Base\Person.cs" />
+    <Compile Include="Base\Role.cs" />
+    <Compile Include="Base\SecurityToken.cs" />
+    <Compile Include="Base\SecurityTokenOwner.cs" />
+    <Compile Include="Base\Singleton.cs" />
+    <Compile Include="Base\Transitional.cs" />
+    <Compile Include="Base\UniquelyIdentifiable.cs" />
+    <Compile Include="Base\User.cs" />
+    <Compile Include="Base\UserGroup.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Settings.StyleCop" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\..\Platform\Repository\Attributes\Attributes.csproj">
+      <Project>{5db05e81-88cc-4d0d-92f8-18a8ecb50bc2}</Project>
+      <Name>Attributes</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

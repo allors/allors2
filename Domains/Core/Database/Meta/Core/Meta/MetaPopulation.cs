@@ -304,10 +304,10 @@ namespace Allors.Meta
                     domain.Bind(assembly);
                 }
 
-                var types = assembly.GetTypes().Where(type =>
+                var types = assembly.ExportedTypes.Where(type =>
                     type.Namespace != null &&
                     type.Namespace.Equals(NamespaceName) &&
-                    type.GetInterfaces().Contains(typeof(IObject)));
+                    type.GetTypeInfo().ImplementedInterfaces.Contains(typeof(IObject)));
 
                 var typeByName = types.ToDictionary(type => type.Name, type => type);
 
@@ -329,10 +329,10 @@ namespace Allors.Meta
                 var sortedDomains = new List<Domain>(this.domains);
                 sortedDomains.Sort((a, b) => a.Superdomains.Contains(b) ? -1 : 1);
 
-                var extensionMethods = (from type in assembly.GetTypes()
-                            where type.IsSealed && !type.IsGenericType && !type.IsNested
-                            from method in type.GetMethods(BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic)
-                            where method.IsDefined(typeof(ExtensionAttribute), false)
+                var extensionMethods = (from type in assembly.ExportedTypes
+                            where type.GetTypeInfo().IsSealed && !type.GetTypeInfo().IsGenericType && !type.IsNested
+                            from method in type.GetTypeInfo().DeclaredMethods
+                            where method.IsStatic && method.IsDefined(typeof(ExtensionAttribute), false) 
                             select method).ToArray();
 
                 var actionByMethodInfoByType = new Dictionary<Type, Dictionary<MethodInfo, Action<object, object>>>();

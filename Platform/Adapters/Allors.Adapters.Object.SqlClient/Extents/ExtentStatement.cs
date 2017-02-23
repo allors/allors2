@@ -18,6 +18,8 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
+using System.Collections.Generic;
+
 namespace Allors.Adapters.Object.SqlClient
 {
     using System.Collections;
@@ -25,10 +27,10 @@ namespace Allors.Adapters.Object.SqlClient
 
     internal abstract class ExtentStatement
     {
-        private readonly ArrayList referenceAssociationInstances;
-        private readonly ArrayList referenceAssociations;
-        private readonly ArrayList referenceRoleInstances;
-        private readonly ArrayList referenceRoles;
+        private readonly List<IAssociationType> referenceAssociationInstances;
+        private readonly List<IAssociationType> referenceAssociations;
+        private readonly List<IRoleType> referenceRoleInstances;
+        private readonly List<IRoleType> referenceRoles;
 
         private readonly SqlExtent extent;
 
@@ -36,11 +38,11 @@ namespace Allors.Adapters.Object.SqlClient
         {
             this.extent = extent;
 
-            this.referenceRoles = new ArrayList();
-            this.referenceAssociations = new ArrayList();
+            this.referenceRoles = new List<IRoleType>();
+            this.referenceAssociations = new List<IAssociationType>();
 
-            this.referenceRoleInstances = new ArrayList();
-            this.referenceAssociationInstances = new ArrayList();
+            this.referenceRoleInstances = new List<IRoleType>();
+            this.referenceAssociationInstances = new List<IAssociationType>();
         }
 
         internal SqlExtent Extent

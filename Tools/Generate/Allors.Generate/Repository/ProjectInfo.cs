@@ -5,6 +5,8 @@
     using System.IO;
     using System.Linq;
 
+    using Allors.Repository.Attributes;
+
     using Microsoft.CodeAnalysis;
     using Microsoft.CodeAnalysis.CSharp.Syntax;
     using Microsoft.CodeAnalysis.Emit;
@@ -36,8 +38,8 @@
             this.SemanticModelBySyntaxTree = this.Compilation.SyntaxTrees.ToDictionary(v => v, v => this.Compilation.GetSemanticModel(v));
             this.DocumentBySyntaxTree = this.Compilation.SyntaxTrees.ToDictionary(v => v, v => this.Solution.GetDocument(v));
 
-            this.DomainAttributeType = this.Compilation.GetTypeByMetadataName(typeof(Allors.Repository.DomainAttribute).FullName);
-            this.ExtendAttributeType = this.Compilation.GetTypeByMetadataName(typeof(Allors.Repository.ExtendsAttribute).FullName);
+            this.DomainAttributeType = this.Compilation.GetTypeByMetadataName(typeof(DomainAttribute).FullName);
+            this.ExtendAttributeType = this.Compilation.GetTypeByMetadataName(typeof(ExtendsAttribute).FullName);
 
             using (var ms = new MemoryStream())
             {

@@ -19,14 +19,12 @@ SET /A errno=0
 SET /A ERROR_GENERATE_META=1
 SET /A ERROR_BUILD_META=2
 
-SET PATH=%PATH%;C:\Program Files\MSBuild\14.0\Bin;C:\Program Files (x86)\MSBuild\14.0\Bin;C:\Windows\Microsoft.NET\Framework64\v4.0.30319;C:\Windows\Microsoft.NET\Framework\v4.0.30319
-
 :: purge files
 rmdir /s /q .\Database\Domain\Generated >nul 2>&1
 
 :: Repository
-msbuild Repository.sln /target:Clean /verbosity:minimal
-..\..\Tools\Generate\dist\Allors.Generate.Cmd.exe repository generate repository.sln repository repository/templates/meta.cs.stg database/meta/generated || SET /A errno^|=%ERROR_GENERATE_META% && GOTO :END
+dotnet msbuild Repository.sln /target:Clean /verbosity:minimal
+..\..\Tools\Generate\dist\Allors.Generate.Cmd.exe repository generate repository.sln domain repository/templates/meta.cs.stg database/meta/generated || SET /A errno^|=%ERROR_GENERATE_META% && GOTO :END
 
 :END
 IF "%interactive%"=="1" PAUSE

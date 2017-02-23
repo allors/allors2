@@ -26,6 +26,8 @@ namespace Allors.Adapters.Object.SqlClient
     using System;
     using System.Collections;
     using System.Collections.Generic;
+    using System.Linq;
+
     using Adapters;
 
     using Meta;
@@ -166,13 +168,7 @@ namespace Allors.Adapters.Object.SqlClient
             {
                 if (relationType.RoleType.IsMany)
                 {
-                    var roleExtent = value as Allors.Extent;
-                    if (roleExtent == null)
-                    {
-                        var roleList = new ArrayList((ICollection)value);
-                        roleExtent = (IObject[])roleList.ToArray(typeof(IObject));
-                    }
-
+                    var roleExtent = value as Allors.Extent ?? ((ICollection<IObject>)value).ToArray();
                     this.SetCompositeRoles(relationType, roleExtent);
                 }
                 else

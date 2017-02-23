@@ -86,7 +86,7 @@ namespace Allors
             var types = assembly.GetTypes().Where(type => 
                 type.Namespace != null && 
                 type.Namespace.Equals(@namespace) && 
-                type.GetInterfaces().Contains(typeof(IObject)));
+                type.GetTypeInfo().ImplementedInterfaces.Contains(typeof(IObject)));
 
             var typeByName = types.ToDictionary(type => type.Name, type => type);
 
@@ -101,7 +101,7 @@ namespace Allors
                 if (objectType is IClass)
                 {
                     var parameterTypes = new[] { typeof(IStrategy) };
-                    var constructor = type.GetConstructor(parameterTypes);
+                    var constructor = type.GetTypeInfo().GetConstructor(parameterTypes);
                     if (constructor == null)
                     {
                         throw new ArgumentException(objectType.Name + " has no Allors constructor.");

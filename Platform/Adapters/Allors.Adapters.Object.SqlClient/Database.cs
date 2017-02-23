@@ -14,6 +14,8 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
+using System.Configuration;
+
 namespace Allors.Adapters.Object.SqlClient
 {
     using System;
@@ -61,6 +63,8 @@ namespace Allors.Adapters.Object.SqlClient
 
         private ICacheFactory cacheFactory;
 
+        internal string ConnectionString { get; set; }
+
         public Database(Configuration configuration)
         {
             this.objectFactory = configuration.ObjectFactory;
@@ -69,6 +73,7 @@ namespace Allors.Adapters.Object.SqlClient
                 throw new ArgumentException("Domain is invalid");
             }
 
+            this.ConnectionString = configuration.ConnectionString;
             this.ConnectionFactory = configuration.ConnectionFactory;
             this.ManagementConnectionFactory = configuration.ManagementConnectionFactory;
 
@@ -241,21 +246,6 @@ namespace Allors.Adapters.Object.SqlClient
         }
 
         internal ICache Cache { get; }
-
-        internal string ConnectionString
-        {
-            get
-            {
-                if (this.connectionString == null)
-                {
-                    return
-                        System.Configuration.ConfigurationManager.ConnectionStrings[ConnectionStringsKey]
-                            .ConnectionString;
-                }
-
-                return this.connectionString;
-            }
-        }
 
         internal int CommandTimeout { get; }
 

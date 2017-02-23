@@ -23,7 +23,6 @@ namespace Allors.Adapters.Object.SqlClient
 {
     using System.Collections.Generic;
     using System.Linq;
-    using System.Security.Policy;
 
     using Allors;
     using Allors.Meta;

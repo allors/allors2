@@ -24,7 +24,7 @@ namespace Allors.Tools.Repository
     using System;
     using System.Collections.Generic;
 
-    using Allors.Repository;
+    using Allors.Repository.Attributes;
 
     public class Property
     {

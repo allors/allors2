@@ -153,7 +153,7 @@ namespace Allors.Adapters.Memory
                                 var objectTypeId = new Guid(objectTypeIdString);
                                 var objectType = this.session.Database.ObjectFactory.GetObjectTypeForType(objectTypeId);
 
-                                var objectIdsString = this.reader.ReadString();
+                                var objectIdsString = this.reader.ReadContentAsString();
                                 var objectIdStringArray = objectIdsString.Split(Serialization.ObjectsSplitterCharArray);
 
                                 foreach (var objectIdString in objectIdStringArray)
@@ -309,7 +309,7 @@ namespace Allors.Adapters.Memory
                             var value = string.Empty;
                             if (!this.reader.IsEmptyElement)
                             {
-                                value = this.reader.ReadString();
+                                value = this.reader.ReadContentAsString();
                             }
 
                             if (strategy == null)
@@ -382,7 +382,7 @@ namespace Allors.Adapters.Memory
                             var value = string.Empty;
                             if (!this.reader.IsEmptyElement)
                             {
-                                value = this.reader.ReadString();
+                                value = this.reader.ReadContentAsString();
                             }
 
                             if (!this.reader.IsEmptyElement)
@@ -486,7 +486,7 @@ namespace Allors.Adapters.Memory
 
                             if (!this.reader.IsEmptyElement)
                             {
-                                value = this.reader.ReadString();
+                                value = this.reader.ReadContentAsString();
                             }
 
                             this.session.MemoryDatabase.OnRelationNotLoaded(relationTypeId, a, value);
@@ -520,7 +520,7 @@ namespace Allors.Adapters.Memory
                             }
                             else
                             {
-                                var value = this.reader.ReadString();
+                                var value = this.reader.ReadContentAsString();
                                 var rs = value.Split(Serialization.ObjectsSplitterCharArray);
                                 foreach (var r in rs)
                                 {

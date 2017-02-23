@@ -34,12 +34,12 @@ msbuild Repository.sln /target:Clean /verbosity:minimal
 @echo Database
 @echo ========
 
-msbuild Apps.sln /target:Clean /verbosity:minimal
-msbuild Apps.sln /target:Database\Meta:Rebuild /p:Configuration="Debug" /verbosity:minimal || SET /A errno^|=%ERROR_BUILD_META% && GOTO :END
+dotnet msbuild Apps.sln /target:Clean /verbosity:minimal
+dotnet msbuild Apps.sln /target:Database\Meta:Rebuild /p:Configuration="Debug" /verbosity:minimal || SET /A errno^|=%ERROR_BUILD_META% && GOTO :END
 
-msbuild Database/Domain/Generate.proj /verbosity:minimal
-msbuild Database/Resources/Merge.proj /verbosity:minimal
-msbuild Database/Domain.Diagrams/Generate.proj /verbosity:minimal
+dotnet msbuild Database/Domain/Generate.proj /verbosity:minimal
+dotnet msbuild Database/Resources/Merge.proj /verbosity:minimal
+dotnet msbuild Database/Domain.Diagrams/Generate.proj /verbosity:minimal
 
 :END
 IF "%interactive%"=="1" PAUSE

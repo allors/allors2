@@ -42,7 +42,6 @@ namespace Allors.Adapters.Object.SqlClient
 
         private readonly Dictionary<IRelationType, Dictionary<long, long>> associationIdByRoleIdByRelationTypeId;
         private readonly Dictionary<IRelationType, Dictionary<long, object>> roleByAssociationIdByRelationTypeId;
-        private string tableName;
 
         internal Load(Database database, ObjectNotLoadedEventHandler objectNotLoaded, RelationNotLoadedEventHandler relationNotLoaded, XmlReader reader)
         {
@@ -213,7 +212,7 @@ namespace Allors.Adapters.Object.SqlClient
 
                                 var canLoad = objectType != null && objectType.IsClass;
 
-                                var objectIdsString = this.reader.ReadString();
+                                var objectIdsString = this.reader.ReadContentAsString();
                                 var objectIdStringArray = objectIdsString.Split(Serialization.ObjectsSplitterCharArray);
 
                                 foreach (var objectIdString in objectIdStringArray)
@@ -414,7 +413,7 @@ namespace Allors.Adapters.Object.SqlClient
                             }
                             else
                             {
-                                var value = this.reader.ReadString();
+                                var value = this.reader.ReadContentAsString();
                                 if (associationConcreteClass == null || !this.database.ContainsConcreteClass(relationType.AssociationType.ObjectType, associationConcreteClass))
                                 {
                                     this.OnRelationNotLoaded(relationType.Id, associationIdString, value);
@@ -476,7 +475,7 @@ namespace Allors.Adapters.Object.SqlClient
                             IObjectType associationConcreteClass;
                             this.objectTypeByObjectId.TryGetValue(associationId, out associationConcreteClass);
 
-                            var value = this.reader.ReadString();
+                            var value = this.reader.ReadContentAsString();
                             var rs = value.Split(Serialization.ObjectsSplitterCharArray);
 
                             if (associationConcreteClass == null ||
@@ -548,7 +547,7 @@ namespace Allors.Adapters.Object.SqlClient
                             IObjectType associationConcreteClass;
                             this.objectTypeByObjectId.TryGetValue(associationId, out associationConcreteClass);
 
-                            var value = this.reader.ReadString();
+                            var value = this.reader.ReadContentAsString();
                             var rs = value.Split(Serialization.ObjectsSplitterCharArray);
 
                             if (associationConcreteClass == null ||
@@ -609,14 +608,10 @@ namespace Allors.Adapters.Object.SqlClient
 
         private void WriteObjectsTable(SqlConnection connection)
         {
-            var mapping = this.database.Mapping;
-            var tableName = mapping.TableNameForObjects;
+            var tableName = this.database.Mapping.TableNameForObjects;
 
-            var command = new SqlCommand("SELECT * FROM " + tableName, connection);
-            var dataTable = new DataTable();
-            dataTable.Load(command.ExecuteReader());
-
-            var objectsTableReader = new ObjectsTableReader(this.objectTypeByObjectId, this.objectVersionByObjectId, dataTable.Columns);
+            var columnNames = GetColumnNames(connection, tableName);
+            var objectsTableReader = new ObjectsTableReader(this.objectTypeByObjectId, this.objectVersionByObjectId, columnNames);
 
             using (var sqlBulkCopy = new SqlBulkCopy(connection, SqlBulkCopyOptions.KeepIdentity, null))
             {
@@ -626,12 +621,12 @@ namespace Allors.Adapters.Object.SqlClient
                 sqlBulkCopy.WriteToServer(objectsTableReader);
             }
         }
-        
+
         private void WriteObjectTables(SqlConnection connection)
         {
             var mapping = this.database.Mapping;
 
-            var associationIdsByClass = this.objectTypeByObjectId.GroupBy(v => (IClass)v.Value, v=>v.Key).ToDictionary(g => g.Key, g => g.ToArray()); ;
+            var associationIdsByClass = this.objectTypeByObjectId.GroupBy(v => (IClass)v.Value, v => v.Key).ToDictionary(g => g.Key, g => g.ToArray());
 
             foreach (var pair in associationIdsByClass)
             {
@@ -640,11 +635,8 @@ namespace Allors.Adapters.Object.SqlClient
 
                 var tableName = mapping.TableNameForObjectByClass[@class];
 
-                var command = new SqlCommand("SELECT * FROM " + tableName, connection);
-                var dataTable = new DataTable();
-                dataTable.Load(command.ExecuteReader());
-
-                var objectTableReader = new ObjectTableReader(@class, mapping, objectIds, this.associationIdByRoleIdByRelationTypeId, this.roleByAssociationIdByRelationTypeId, dataTable.Columns);
+                var columnNames = GetColumnNames(connection, tableName);
+                var objectTableReader = new ObjectTableReader(@class, mapping, objectIds, this.associationIdByRoleIdByRelationTypeId, this.roleByAssociationIdByRelationTypeId, columnNames);
 
                 using (var sqlBulkCopy = new SqlBulkCopy(connection))
                 {
@@ -670,13 +662,10 @@ namespace Allors.Adapters.Object.SqlClient
                     Dictionary<long, object> roleByAssociationId;
                     if (this.roleByAssociationIdByRelationTypeId.TryGetValue(relationType, out roleByAssociationId))
                     {
-                        tableName = mapping.TableNameForRelationByRelationType[relationType];
+                        var tableName = mapping.TableNameForRelationByRelationType[relationType];
+                        var columnNames = GetColumnNames(connection, tableName);
 
-                        var command = new SqlCommand("SELECT * FROM " + tableName, connection);
-                        var dataTable = new DataTable();
-                        dataTable.Load(command.ExecuteReader());
-
-                        var relationTableReader = new RelationTableReader(roleByAssociationId, dataTable.Columns);
+                        var relationTableReader = new RelationTableReader(roleByAssociationId, columnNames);
 
                         using (var sqlBulkCopy = new SqlBulkCopy(connection))
                         {
@@ -710,6 +699,21 @@ namespace Allors.Adapters.Object.SqlClient
                 this.roleByAssociationIdByRelationTypeId[relationType] = roleByAssociationId;
             }
             return roleByAssociationId;
+        }
+
+        private static string[] GetColumnNames(SqlConnection connection, string tableName)
+        {
+            var command = new SqlCommand("SELECT * FROM " + tableName, connection);
+
+            var columns = new List<string>();
+            using (var reader = command.ExecuteReader())
+            {
+                for (var i = 0; i < reader.FieldCount; i++)
+                {
+                    columns.Add(reader.GetName(i));
+                }
+            }
+            return columns.ToArray();
         }
 
         #region Load Errors
@@ -752,7 +756,7 @@ namespace Allors.Adapters.Object.SqlClient
 
                             if (!this.reader.IsEmptyElement)
                             {
-                                value = this.reader.ReadString();
+                                value = this.reader.ReadContentAsString();
                             }
 
                             this.OnRelationNotLoaded(relationTypeId, a, value);
@@ -786,7 +790,7 @@ namespace Allors.Adapters.Object.SqlClient
                             }
                             else
                             {
-                                var value = this.reader.ReadString();
+                                var value = this.reader.ReadContentAsString();
                                 var rs = value.Split(Serialization.ObjectsSplitterCharArray);
                                 foreach (var r in rs)
                                 {

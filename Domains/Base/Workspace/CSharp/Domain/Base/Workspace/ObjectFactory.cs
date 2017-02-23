@@ -25,7 +25,6 @@ namespace Allors.Workspace
     using System.Linq;
     using System.Reflection;
 
-    using Meta;
 
     public class ObjectFactory
     {

@@ -22,7 +22,6 @@ namespace Allors.Adapters.Object.SqlClient
 {
     using System;
     using System.Collections.Generic;
-    using System.Collections.Specialized;
 
     using Allors.Meta;
 
@@ -31,15 +30,40 @@ namespace Allors.Adapters.Object.SqlClient
         internal const long InitialVersion = 0;
         private const long UnknownVersion = -1;
 
-        private static readonly int MaskIsNew = BitVector32.CreateMask();
-        private static readonly int MaskExists = BitVector32.CreateMask(MaskIsNew);
-        private static readonly int MaskExistsKnown = BitVector32.CreateMask(MaskExists);
+        [FlagsAttribute]
+        public enum Flags: byte
+        {
+            MaskIsNew  = 1,
+            MaskExists = 2,
+            MaskExistsKnown = 4,
+        }
 
         private long version;
 
-        private BitVector32 flags;
+        private Flags flags;
 
         private WeakReference<Strategy> weakReference;
+
+        private bool FlagIsNew
+        {
+            get { return flags.HasFlag(Flags.MaskIsNew); }
+
+            set { flags = value ? flags | Flags.MaskIsNew : flags & ~Flags.MaskIsNew; }
+        }
+
+        private bool FlagExists
+        {
+            get { return flags.HasFlag(Flags.MaskExists); }
+
+            set { flags = value ? flags | Flags.MaskExists : flags & ~Flags.MaskExists; }
+        }
+
+        private bool FlagExistsKnown
+        {
+            get { return flags.HasFlag(Flags.MaskExistsKnown); }
+
+            set { flags = value ? flags | Flags.MaskExistsKnown : flags & ~Flags.MaskExistsKnown; }
+        }
 
         internal Reference(Session session, IClass @class, long objectId, bool isNew)
         {
@@ -47,11 +71,11 @@ namespace Allors.Adapters.Object.SqlClient
             this.Class = @class;
             this.ObjectId = objectId;
 
-            this.flags[MaskIsNew] = isNew;
+            this.FlagIsNew = true;
             if (isNew)
             {
-                this.flags[MaskExistsKnown] = true;
-                this.flags[MaskExists] = true;
+                this.FlagExistsKnown = true;
+                this.FlagExists = true;
             }
         }
 
@@ -59,8 +83,8 @@ namespace Allors.Adapters.Object.SqlClient
             : this(session, @class, objectId, false)
         {
             this.version = version;
-            this.flags[MaskExistsKnown] = true;
-            this.flags[MaskExists] = true;
+            this.FlagExistsKnown = true;
+            this.FlagExists = true;
         }
 
         internal virtual Strategy Strategy
@@ -104,7 +128,7 @@ namespace Allors.Adapters.Object.SqlClient
             }
         }
 
-        internal bool IsNew => this.flags[MaskIsNew];
+        internal bool IsNew => this.FlagIsNew;
 
         internal bool IsUnknownVersion
         {
@@ -119,20 +143,20 @@ namespace Allors.Adapters.Object.SqlClient
         {
             get
             {
-                var flagsExistsKnown = this.flags[MaskExistsKnown];
+                var flagsExistsKnown = this.FlagExistsKnown;
                 if (!flagsExistsKnown)
                 {
                     this.Session.AddReferenceWithoutVersionOrExistsKnown(this);
                     this.Session.GetVersionAndExists();
                 }
 
-                return this.flags[MaskExists];
+                return this.FlagExists;
             }
 
             set
             {
-                this.flags[MaskExistsKnown] = true;
-                this.flags[MaskExists] = value;
+                this.FlagExistsKnown = true;
+                this.FlagExists = value;
             }
         }
         
@@ -140,7 +164,7 @@ namespace Allors.Adapters.Object.SqlClient
         {
             get
             {
-                var existsKnown = this.flags[MaskExistsKnown];
+                var existsKnown = this.FlagExistsKnown;
                 return existsKnown;
             }
         }
@@ -173,8 +197,8 @@ namespace Allors.Adapters.Object.SqlClient
 
         internal virtual void Commit(HashSet<Reference> referencesWithStrategy)
         {
-            this.flags[MaskExistsKnown] = false;
-            this.flags[MaskIsNew] = false;
+            this.FlagExistsKnown = false;
+            this.FlagIsNew = false;
             this.version = UnknownVersion;
 
             var strategy = this.Target;
@@ -187,14 +211,14 @@ namespace Allors.Adapters.Object.SqlClient
 
         internal virtual void Rollback(HashSet<Reference> referencesWithStrategy)
         {
-            if (this.flags[MaskIsNew])
+            if (this.FlagIsNew)
             {
-                this.flags[MaskExistsKnown] = true;
-                this.flags[MaskExists] = false;
+                this.FlagExistsKnown = true;
+                this.FlagExists = false;
             }
             else
             {
-                this.flags[MaskExistsKnown] = false;
+                this.FlagExistsKnown = false;
             }
 
             this.version = UnknownVersion;

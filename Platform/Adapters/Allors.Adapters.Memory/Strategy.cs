@@ -147,8 +147,8 @@ namespace Allors.Adapters.Memory
                     var roles = value as Allors.Extent;
                     if (roles == null)
                     {
-                        var roleList = new ArrayList((ICollection)value);
-                        roles = (IObject[])roleList.ToArray(typeof(IObject));
+                        var roleList = new List<IObject>((IEnumerable<IObject>)value);
+                        roles = roleList.ToArray();
                     }
 
                     this.SetCompositeRoles(relationType, roles);

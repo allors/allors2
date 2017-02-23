@@ -102,8 +102,6 @@ namespace Allors.Adapters.Object.SqlClient
                         var objectId = this.Session.State.GetObjectIdForExistingObject(reader.GetValue(0).ToString());
                         objectIds.Add(objectId);
                     }
-
-                    reader.Close();
                 }
             }
 

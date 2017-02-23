@@ -21,6 +21,7 @@
 namespace Allors.Meta
 {
     using System;
+    using System.Reflection;
 
     using Allors.Repository;
 
@@ -35,7 +36,7 @@ namespace Allors.Meta
         {
             this.MetaPopulation = metaPopulation;
 
-            var idAttribute = (IdAttribute)Attribute.GetCustomAttribute(this.GetType(), typeof (IdAttribute));
+            var idAttribute = this.GetType().GetTypeInfo().GetCustomAttribute<IdAttribute>();
             if (idAttribute != null)
             {
                 this.Id = new Guid(idAttribute.Value);

@@ -468,7 +468,9 @@ namespace Allors
             /// </returns>
             public override IObject[] ToArray(Type type)
             {
-                return (IObject[])new ArrayList(this.objects).ToArray(type);
+                var typedArray = (IObject[])Array.CreateInstance(type, this.objects?.Length ?? 0);
+                this.objects?.CopyTo(typedArray, 0);
+                return typedArray;
             }
 
             /// <summary>

@@ -13,8 +13,12 @@
 
     using NLog;
 
+    using TypeInfo = System.Reflection.TypeInfo;
+
     public class Repository
     {
+        private const string RepositoryNamespaceName = "Allors.Repository";
+
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
         private readonly Inflector.Inflector inflector;
@@ -262,49 +266,55 @@
                         if (interfaceDeclaration != null)
                         {
                             var symbol = semanticModel.GetDeclaredSymbol(interfaceDeclaration);
-                            var interfaceSingularName = symbol.Name;
-
-                            var partialInterface = new PartialInterface(interfaceSingularName);
-                            assembly.PartialInterfaceByName.Add(interfaceSingularName, partialInterface);
-                            assembly.PartialTypeBySingularName.Add(interfaceSingularName, partialInterface);
-
-                            Interface @interface;
-                            if (!this.InterfaceBySingularName.TryGetValue(interfaceSingularName, out @interface))
+                            if (RepositoryNamespaceName.Equals(symbol.ContainingNamespace.ToDisplayString()))
                             {
-                                @interface = new Interface(this.inflector, interfaceSingularName);
-                                this.InterfaceBySingularName.Add(interfaceSingularName,  @interface);
-                                this.CompositeByName.Add(interfaceSingularName, @interface);
-                                this.TypeBySingularName.Add(interfaceSingularName, @interface);
-                            }
+                                var interfaceSingularName = symbol.Name;
 
-                            @interface.PartialByAssemblyName.Add(assemblyName, partialInterface);
-                            var xmlDoc = symbol.GetDocumentationCommentXml(null, true);
-                            @interface.XmlDoc = !string.IsNullOrWhiteSpace(xmlDoc) ? new XmlDoc(xmlDoc) : null;
+                                var partialInterface = new PartialInterface(interfaceSingularName);
+                                assembly.PartialInterfaceByName.Add(interfaceSingularName, partialInterface);
+                                assembly.PartialTypeBySingularName.Add(interfaceSingularName, partialInterface);
+
+                                Interface @interface;
+                                if (!this.InterfaceBySingularName.TryGetValue(interfaceSingularName, out @interface))
+                                {
+                                    @interface = new Interface(this.inflector, interfaceSingularName);
+                                    this.InterfaceBySingularName.Add(interfaceSingularName, @interface);
+                                    this.CompositeByName.Add(interfaceSingularName, @interface);
+                                    this.TypeBySingularName.Add(interfaceSingularName, @interface);
+                                }
+
+                                @interface.PartialByAssemblyName.Add(assemblyName, partialInterface);
+                                var xmlDoc = symbol.GetDocumentationCommentXml(null, true);
+                                @interface.XmlDoc = !string.IsNullOrWhiteSpace(xmlDoc) ? new XmlDoc(xmlDoc) : null;
+                            }
                         }
 
                         var classDeclaration = root.DescendantNodes().OfType<ClassDeclarationSyntax>().SingleOrDefault();
                         if (classDeclaration != null)
                         {
                             var symbol = semanticModel.GetDeclaredSymbol(classDeclaration);
-                            var classSingularName = symbol.Name;
-
-                            var partialClass = new PartialClass(classSingularName);
-                            assembly.PartialClassBySingularName.Add(classSingularName, partialClass);
-                            assembly.PartialTypeBySingularName.Add(classSingularName, partialClass);
-                            
-                            Class @class;
-                            if (!this.ClassBySingularName.TryGetValue(classSingularName, out @class))
+                            if (RepositoryNamespaceName.Equals(symbol.ContainingNamespace.ToDisplayString()))
                             {
-                                @class = new Class(this.inflector, classSingularName);
-                                this.ClassBySingularName.Add(classSingularName, @class);
-                                this.CompositeByName.Add(classSingularName, @class);
-                                this.TypeBySingularName.Add(classSingularName, @class);
+                                var classSingularName = symbol.Name;
+
+                                var partialClass = new PartialClass(classSingularName);
+                                assembly.PartialClassBySingularName.Add(classSingularName, partialClass);
+                                assembly.PartialTypeBySingularName.Add(classSingularName, partialClass);
+
+                                Class @class;
+                                if (!this.ClassBySingularName.TryGetValue(classSingularName, out @class))
+                                {
+                                    @class = new Class(this.inflector, classSingularName);
+                                    this.ClassBySingularName.Add(classSingularName, @class);
+                                    this.CompositeByName.Add(classSingularName, @class);
+                                    this.TypeBySingularName.Add(classSingularName, @class);
+                                }
+
+                                @class.PartialByAssemblyName.Add(assemblyName, partialClass);
+
+                                var xmlDoc = symbol.GetDocumentationCommentXml(null, true);
+                                @class.XmlDoc = !string.IsNullOrWhiteSpace(xmlDoc) ? new XmlDoc(xmlDoc) : null;
                             }
-
-                            @class.PartialByAssemblyName.Add(assemblyName, partialClass);
-
-                            var xmlDoc = symbol.GetDocumentationCommentXml(null, true);
-                            @class.XmlDoc = !string.IsNullOrWhiteSpace(xmlDoc) ? new XmlDoc(xmlDoc) : null;
                         }
                     }
                 }
@@ -313,12 +323,11 @@
 
         private void CreateHierarchy(ProjectInfo projectInfo)
         {
-            var definedTypeBySingularName = projectInfo.Assembly.DefinedTypes.Where(v => "Allors.Repository.Domain".Equals(v.Namespace)).ToDictionary(v => v.Name);
+            var definedTypeBySingularName = projectInfo.Assembly.DefinedTypes.Where(v => RepositoryNamespaceName.Equals(v.Namespace)).ToDictionary(v => v.Name);
 
             foreach (var composite in this.CompositeByName.Values)
             {
                 var definedType = definedTypeBySingularName[composite.SingularName];
-
                 var allInterfaces = definedType.GetInterfaces();
                 var directInterfaces = allInterfaces.Except(allInterfaces.SelectMany(t => t.GetInterfaces()));
                 foreach (var definedImplementedInterface in directInterfaces)
@@ -357,43 +366,46 @@
                         {
                             var typeSymbol = semanticModel.GetDeclaredSymbol(typeDeclaration);
                             var typeName = typeSymbol.Name;
-                            var partialType = assembly.PartialTypeBySingularName[typeName];
-                            var composite = this.CompositeByName[typeName];
 
-                            var propertyDeclarations = typeDeclaration.DescendantNodes().OfType<PropertyDeclarationSyntax>();
-                            foreach (var propertyDeclaration in propertyDeclarations)
+                            PartialType partialType;
+                            if (assembly.PartialTypeBySingularName.TryGetValue(typeName, out partialType))
                             {
-                                var propertySymbol = semanticModel.GetDeclaredSymbol(propertyDeclaration);
-                                var propertyRoleName = propertySymbol.Name;
+                                var composite = this.CompositeByName[typeName];
+                                var propertyDeclarations = typeDeclaration.DescendantNodes().OfType<PropertyDeclarationSyntax>();
+                                foreach (var propertyDeclaration in propertyDeclarations)
+                                {
+                                    var propertySymbol = semanticModel.GetDeclaredSymbol(propertyDeclaration);
+                                    var propertyRoleName = propertySymbol.Name;
 
-                                var xmlDocString = propertySymbol.GetDocumentationCommentXml(null, true);
-                                var xmlDoc = !string.IsNullOrWhiteSpace(xmlDocString) ? new XmlDoc(xmlDocString) : null;
+                                    var xmlDocString = propertySymbol.GetDocumentationCommentXml(null, true);
+                                    var xmlDoc = !string.IsNullOrWhiteSpace(xmlDocString) ? new XmlDoc(xmlDocString) : null;
 
-                                var property = new Property(this.inflector, composite, propertyRoleName)
-                                                   {
-                                                       XmlDoc = xmlDoc
-                                };
+                                    var property = new Property(this.inflector, composite, propertyRoleName)
+                                    {
+                                        XmlDoc = xmlDoc
+                                    };
 
-                                partialType.PropertyByName.Add(propertyRoleName, property);
-                                composite.PropertyByRoleName.Add(propertyRoleName, property);
-                            }
+                                    partialType.PropertyByName.Add(propertyRoleName, property);
+                                    composite.PropertyByRoleName.Add(propertyRoleName, property);
+                                }
 
-                            var methodDeclarations = typeDeclaration.DescendantNodes().OfType<MethodDeclarationSyntax>();
-                            foreach (var methodDeclaration in methodDeclarations)
-                            {
-                                var methodSymbol = semanticModel.GetDeclaredSymbol(methodDeclaration);
-                                var methodName = methodSymbol.Name;
+                                var methodDeclarations = typeDeclaration.DescendantNodes().OfType<MethodDeclarationSyntax>();
+                                foreach (var methodDeclaration in methodDeclarations)
+                                {
+                                    var methodSymbol = semanticModel.GetDeclaredSymbol(methodDeclaration);
+                                    var methodName = methodSymbol.Name;
 
-                                var xmlDocString = methodSymbol.GetDocumentationCommentXml(null, true);
-                                var xmlDoc = !string.IsNullOrWhiteSpace(xmlDocString) ? new XmlDoc(xmlDocString) : null;
+                                    var xmlDocString = methodSymbol.GetDocumentationCommentXml(null, true);
+                                    var xmlDoc = !string.IsNullOrWhiteSpace(xmlDocString) ? new XmlDoc(xmlDocString) : null;
 
-                                var method = new Method(composite, methodName)
-                                                 {
-                                                     XmlDoc = xmlDoc
-                                };
+                                    var method = new Method(composite, methodName)
+                                    {
+                                        XmlDoc = xmlDoc
+                                    };
 
-                                partialType.MethodByName.Add(methodName, method);
-                                composite.MethodByName.Add(methodName, method);
+                                    partialType.MethodByName.Add(methodName, method);
+                                    composite.MethodByName.Add(methodName, method);
+                                }
                             }
                         }
                     }
@@ -403,7 +415,7 @@
 
         private void FromReflection(ProjectInfo projectInfo)
         {
-            var declaredTypeBySingularName = projectInfo.Assembly.DefinedTypes.Where(v => "Allors.Repository.Domain".Equals(v.Namespace)).ToDictionary(v => v.Name);
+            var declaredTypeBySingularName = projectInfo.Assembly.DefinedTypes.Where(v => RepositoryNamespaceName.Equals(v.Namespace)).ToDictionary(v => v.Name);
 
             foreach (var composite in this.CompositeByName.Values)
             {

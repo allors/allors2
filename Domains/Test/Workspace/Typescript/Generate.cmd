@@ -33,6 +33,7 @@ rmdir /s /q .\Domain\src\domain\generated >nul 2>&1
 
 msbuild Meta/Generate.proj /verbosity:minimal
 msbuild Domain/Generate.proj /verbosity:minimal
+msbuild Angular/Generate.proj /verbosity:minimal
 
 :END
 IF "%interactive%"=="1" PAUSE

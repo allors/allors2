@@ -22,6 +22,8 @@ namespace Allors.Adapters.Object.SqlClient
 {
     using System;
     using System.Collections;
+    using System.Collections.Generic;
+
     using Meta;
 
     internal class ExtentRoles : Extent
@@ -85,6 +87,15 @@ namespace Allors.Adapters.Object.SqlClient
 
         public override IComposite ObjectType => this.strategy.Class;
 
+        private Reference[] References
+        {
+            get
+            {
+                var roles = this.strategy.Roles.GetCompositesRole(this.roleType);
+                return this.strategy.Session.GetOrCreateReferencesForExistingObjects(roles);
+            }
+        }
+
         public override void CopyTo(Array array, int index)
         {
             this.upgrade?.CopyTo(array, index);
@@ -99,8 +110,7 @@ namespace Allors.Adapters.Object.SqlClient
                 return this.upgrade.GetEnumerator();
             }
 
-            var roles = this.strategy.Roles.GetCompositesRole(this.roleType);
-            var references = this.strategy.Session.GetOrCreateReferencesForExistingObjects(roles);
+            var references = this.References;
             return new ExtentEnumerator(references);
         }
 
@@ -135,10 +145,16 @@ namespace Allors.Adapters.Object.SqlClient
             if (this.upgrade != null)
             {
                 return this.upgrade.ToArray(type);
-            } 
-            
-            var objects = new ArrayList(this);
-            return (IObject[])objects.ToArray(type);
+            }
+
+            var references = this.References;
+            var objects = (IObject[])Array.CreateInstance(type);
+            for (var i = 0; i < references.Length; i++)
+            {
+                objects[i] = references[i].Strategy.GetObject();
+            }
+
+            return objects;
         }
 
         public override Allors.Extent AddSort(IRoleType sort)

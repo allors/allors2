@@ -106,8 +106,6 @@ namespace Allors.Adapters.Object.SqlClient
 
                             this.writer.WriteString(objectId + Serialization.ObjectSplitter + version);
                         }
-
-                        reader.Close();
                     }
                 }
 

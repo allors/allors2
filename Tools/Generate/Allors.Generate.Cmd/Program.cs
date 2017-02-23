@@ -3,7 +3,7 @@
     using System;
     using System.IO;
 
-    using Allors.Tools.Repository;
+    using Repository;
 
     using NLog;
 

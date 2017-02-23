@@ -36,23 +36,25 @@ msbuild Repository.sln /target:Clean /verbosity:minimal
 @echo Database
 @echo ========
 
-msbuild Test.sln /target:Clean /verbosity:minimal
-msbuild Test.sln /target:Database\Meta:Rebuild /p:Configuration="Debug" /verbosity:minimal || SET /A errno^|=%ERROR_BUILD_META% && GOTO :END
+dotnet msbuild Test.sln /target:Clean /verbosity:minimal
+dotnet msbuild Test.sln /target:Database\Meta:Rebuild /p:Configuration="Debug" /verbosity:minimal || SET /A errno^|=%ERROR_BUILD_META% && GOTO :END
 
-msbuild Database/Domain/Generate.proj /verbosity:minimal
-msbuild Database/Resources/Merge.proj /verbosity:minimal
-msbuild Database/Domain.Diagrams/Generate.proj /verbosity:minimal
+dotnet msbuild Database/Domain/Generate.proj /verbosity:minimal
+dotnet msbuild Database/Resources/Merge.proj /verbosity:minimal
+dotnet msbuild Database/Domain.Diagrams/Generate.proj /verbosity:minimal
 
 @echo =========
 @echo Workspace
 @echo =========
 
 :: Workspace
-msbuild Workspace/CSharp/Diagrams/Generate.proj /verbosity:minimal
-msbuild Workspace/CSharp/Meta/Generate.proj /verbosity:minimal
-msbuild Workspace/CSharp/Domain/Generate.proj /verbosity:minimal
+dotnet msbuild Workspace/CSharp/Diagrams/Generate.proj /verbosity:minimal
+dotnet msbuild Workspace/CSharp/Meta/Generate.proj /verbosity:minimal
+dotnet msbuild Workspace/CSharp/Domain/Generate.proj /verbosity:minimal
 
-msbuild Workspace/Typescript/Meta/Generate.proj /verbosity:minimal
+dotnet msbuild Workspace/Typescript/Meta/Generate.proj /verbosity:minimal
+dotnet msbuild Workspace/Typescript/Domain/Generate.proj /verbosity:minimal
+dotnet msbuild Workspace/Typescript/Angular/Generate.proj /verbosity:minimal
 
 :END
 IF "%interactive%"=="1" PAUSE

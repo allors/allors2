@@ -17,17 +17,19 @@
 namespace Allors.Adapters.Object.SqlClient
 {
     using System;
+    using System.Collections;
     using System.Collections.Generic;
     using System.Data;
     using Allors.Meta;
+    using System.Data.Common;
 
-    internal class ObjectTableReader : IDataReader
+    internal class ObjectTableReader : DbDataReader
     {
         private readonly IEnumerator<long> enumerator;
 
         private readonly Func<long, object>[] getValueFuncs;
 
-        public ObjectTableReader(IClass @class, Mapping mapping, IEnumerable<long> objectIds, Dictionary<IRelationType, Dictionary<long, long>> associationIdByRoleIdByRelationTypeId, Dictionary<IRelationType, Dictionary<long, object>> roleByAssociationIdByRelationTypeId, DataColumnCollection columns)
+        public ObjectTableReader(IClass @class, Mapping mapping, IEnumerable<long> objectIds, Dictionary<IRelationType, Dictionary<long, long>> associationIdByRoleIdByRelationTypeId, Dictionary<IRelationType, Dictionary<long, object>> roleByAssociationIdByRelationTypeId, string[] columnNames)
         {
             this.enumerator = objectIds.GetEnumerator();
 
@@ -64,12 +66,12 @@ namespace Allors.Adapters.Object.SqlClient
                 }
             }
 
-            this.getValueFuncs = new Func<long, object>[columns.Count];
-            for (var i = 0; i < columns.Count; i++)
+            this.getValueFuncs = new Func<long, object>[columnNames.Length];
+            for (var i = 0; i < columnNames.Length; i++)
             {
-                var column = columns[i];
+                var columnName = columnNames[i];
 
-                var lowerCasedColumnName = column.ColumnName.ToLowerInvariant();
+                var lowerCasedColumnName = columnName.ToLowerInvariant();
 
                 switch (lowerCasedColumnName)
                 {
@@ -132,179 +134,164 @@ namespace Allors.Adapters.Object.SqlClient
                             continue;
                         }
 
-                        throw new Exception("Unhandled column " + column.ColumnName);
+                        throw new Exception("Unhandled column " + columnName);
                 }
             }
 
-            this.FieldCount = columns.Count;
+            this.FieldCount = columnNames.Length;
         }
 
-        public int FieldCount { get; }
+        public override int FieldCount { get; }
         
-        public bool Read()
+        public override bool Read()
         {
             var result = this.enumerator.MoveNext();
             return result;
         }
         
-        public object GetValue(int i)
+        public override object GetValue(int i)
         {
             var current = this.enumerator.Current;
             var getFunction = this.getValueFuncs[i];
             var value = getFunction(current);
             return value;
         }
-
+        
         #region Not Supported
-        public void Close()
+
+        public override bool GetBoolean(int ordinal)
         {
-            throw new NotSupportedException();
+            throw new NotImplementedException();
         }
 
-        public int Depth
+        public override byte GetByte(int ordinal)
         {
-            get { throw new NotSupportedException(); }
+            throw new NotImplementedException();
         }
 
-        public DataTable GetSchemaTable()
+        public override long GetBytes(int ordinal, long dataOffset, byte[] buffer, int bufferOffset, int length)
         {
-            throw new NotSupportedException();
+            throw new NotImplementedException();
         }
 
-        public string GetName(int i)
+        public override char GetChar(int ordinal)
         {
-            throw new NotSupportedException();
+            throw new NotImplementedException();
         }
 
-        public int GetOrdinal(string name)
+        public override long GetChars(int ordinal, long dataOffset, char[] buffer, int bufferOffset, int length)
         {
-            throw new NotSupportedException();
+            throw new NotImplementedException();
         }
 
-        public bool IsClosed
+        public override string GetDataTypeName(int ordinal)
         {
-            get { throw new NotSupportedException(); }
+            throw new NotImplementedException();
         }
 
-        public bool NextResult()
+        public override DateTime GetDateTime(int ordinal)
         {
-            throw new NotSupportedException();
+            throw new NotImplementedException();
         }
 
-        public int RecordsAffected
+        public override decimal GetDecimal(int ordinal)
         {
-            get { throw new NotSupportedException(); }
+            throw new NotImplementedException();
         }
 
-        public void Dispose()
+        public override double GetDouble(int ordinal)
         {
-            throw new NotSupportedException();
+            throw new NotImplementedException();
         }
 
-        public bool GetBoolean(int i)
+        public override IEnumerator GetEnumerator()
         {
-            throw new NotSupportedException();
+            throw new NotImplementedException();
         }
 
-        public byte GetByte(int i)
+        public override Type GetFieldType(int ordinal)
         {
-            throw new NotSupportedException();
+            throw new NotImplementedException();
         }
 
-        public long GetBytes(int i, long fieldOffset, byte[] buffer, int bufferoffset, int length)
+        public override float GetFloat(int ordinal)
         {
-            throw new NotSupportedException();
+            throw new NotImplementedException();
         }
 
-        public char GetChar(int i)
+        public override Guid GetGuid(int ordinal)
         {
-            throw new NotSupportedException();
+            throw new NotImplementedException();
         }
 
-        public long GetChars(int i, long fieldoffset, char[] buffer, int bufferoffset, int length)
+        public override short GetInt16(int ordinal)
         {
-            throw new NotSupportedException();
+            throw new NotImplementedException();
         }
 
-        public IDataReader GetData(int i)
+        public override int GetInt32(int ordinal)
         {
-            throw new NotSupportedException();
+            throw new NotImplementedException();
         }
 
-        public string GetDataTypeName(int i)
+        public override long GetInt64(int ordinal)
         {
-            throw new NotSupportedException();
+            throw new NotImplementedException();
         }
 
-        public DateTime GetDateTime(int i)
+        public override string GetName(int ordinal)
         {
-            throw new NotSupportedException();
+            throw new NotImplementedException();
         }
 
-        public decimal GetDecimal(int i)
+        public override int GetOrdinal(string name)
         {
-            throw new NotSupportedException();
+            throw new NotImplementedException();
         }
 
-        public double GetDouble(int i)
+        public override string GetString(int ordinal)
         {
-            throw new NotSupportedException();
+            throw new NotImplementedException();
         }
 
-        public Type GetFieldType(int i)
+        public override int GetValues(object[] values)
         {
-            throw new NotSupportedException();
+            throw new NotImplementedException();
         }
 
-        public float GetFloat(int i)
+        public override bool IsDBNull(int ordinal)
         {
-            throw new NotSupportedException();
+            throw new NotImplementedException();
         }
 
-        public Guid GetGuid(int i)
+        public override bool NextResult()
         {
-            throw new NotSupportedException();
+            throw new NotImplementedException();
         }
 
-        public short GetInt16(int i)
+        public override int Depth { get; }
+
+        public override bool HasRows { get; }
+
+        public override bool IsClosed { get; }
+
+        public override object this[int ordinal]
         {
-            throw new NotSupportedException();
+            get
+            {
+                throw new NotImplementedException();
+            }
         }
 
-        public int GetInt32(int i)
+        public override object this[string name]
         {
-            throw new NotSupportedException();
+            get
+            {
+                throw new NotImplementedException();
+            }
         }
 
-        public long GetInt64(int i)
-        {
-            throw new NotSupportedException();
-        }
-
-        public string GetString(int i)
-        {
-            throw new NotSupportedException();
-        }
-
-        public int GetValues(object[] values)
-        {
-            throw new NotSupportedException();
-        }
-
-        public bool IsDBNull(int i)
-        {
-            throw new NotSupportedException();
-        }
-
-        public object this[string name]
-        {
-            get { throw new NotSupportedException(); }
-        }
-
-        public object this[int i]
-        {
-            get { throw new NotSupportedException(); }
-        }
+        public override int RecordsAffected { get; }
         #endregion
     }
 }

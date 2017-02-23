@@ -297,7 +297,7 @@ namespace Allors.Adapters.Memory
                 return EmptyObjects;
             }
 
-            var allorsObjects = new ArrayList(objectIds.Length);
+            var allorsObjects = new List<IObject>(objectIds.Length);
 
             foreach (var objectId in objectIds)
             {
@@ -308,7 +308,7 @@ namespace Allors.Adapters.Memory
                 }
             }
 
-            return (IObject[])allorsObjects.ToArray(typeof(IObject));
+            return allorsObjects.ToArray();
         }
 
         public void Prefetch(PrefetchPolicy prefetchPolicy, params string[] objectIds)

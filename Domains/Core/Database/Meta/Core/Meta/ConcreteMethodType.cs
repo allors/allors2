@@ -140,7 +140,7 @@ namespace Allors.Meta
                 {
                     var methodName = domain.Name + this.methodType.Name;
 
-                    var methodInfo = this.Class.ClrType.GetMethod(methodName);
+                    var methodInfo = this.Class.ClrType.GetTypeInfo().GetDeclaredMethod(methodName);
                     if (methodInfo != null)
                     {
                         try
