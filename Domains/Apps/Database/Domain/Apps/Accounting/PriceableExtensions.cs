@@ -15,6 +15,8 @@
 // --------------------------------------------------------------------------------------------------------------------
 namespace Allors.Domain
 {
+    using System;
+
     using Meta;
     internal static class PriceableExtensions
     {
@@ -33,7 +35,7 @@ namespace Allors.Domain
                 else
                 {
                     var percentage = surchargeComponent.Percentage ?? 0;
-                    surcharge = decimal.Round((@this.UnitBasePrice * percentage) / 100, 2);
+                    surcharge = Math.Round((@this.UnitBasePrice * percentage) / 100, 2);
                     @this.UnitSurcharge += surcharge;
                 }
 
@@ -77,7 +79,7 @@ namespace Allors.Domain
                 else
                 {
                     var percentage = discountComponent.Percentage ?? 0;
-                    discount = decimal.Round((@this.UnitBasePrice * percentage) / 100, 2);
+                    discount = Math.Round((@this.UnitBasePrice * percentage) / 100, 2);
                     @this.UnitDiscount += discount;
                 }
 

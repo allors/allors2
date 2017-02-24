@@ -460,14 +460,14 @@ namespace Allors.Domain
         {
             if (this.DiscountAdjustment != null)
             {
-                decimal discount = this.DiscountAdjustment.Percentage.HasValue ? decimal.Round((this.TotalExVat * this.DiscountAdjustment.Percentage.Value) / 100, 2) : this.DiscountAdjustment.Amount.HasValue ? this.DiscountAdjustment.Amount.Value : 0;
+                decimal discount = this.DiscountAdjustment.Percentage.HasValue ? Math.Round((this.TotalExVat * this.DiscountAdjustment.Percentage.Value) / 100, 2) : this.DiscountAdjustment.Amount.HasValue ? this.DiscountAdjustment.Amount.Value : 0;
 
                 this.TotalDiscount += discount;
                 this.TotalExVat -= discount;
 
                 if (this.ExistVatRegime)
                 {
-                    decimal vat = decimal.Round((discount * this.VatRegime.VatRate.Rate) / 100, 2);
+                    decimal vat = Math.Round((discount * this.VatRegime.VatRate.Rate) / 100, 2);
                     this.TotalVat -= vat;
                     this.TotalIncVat -= discount + vat;
                 }
@@ -478,14 +478,14 @@ namespace Allors.Domain
         {
             if (this.ExistSurchargeAdjustment)
             {
-                decimal surcharge = this.SurchargeAdjustment.Percentage.HasValue ? decimal.Round((this.TotalExVat * this.SurchargeAdjustment.Percentage.Value) / 100, 2) : this.SurchargeAdjustment.Amount.HasValue ? this.SurchargeAdjustment.Amount.Value : 0;
+                decimal surcharge = this.SurchargeAdjustment.Percentage.HasValue ? Math.Round((this.TotalExVat * this.SurchargeAdjustment.Percentage.Value) / 100, 2) : this.SurchargeAdjustment.Amount.HasValue ? this.SurchargeAdjustment.Amount.Value : 0;
 
                 this.TotalSurcharge += surcharge;
                 this.TotalExVat += surcharge;
 
                 if (this.ExistVatRegime)
                 {
-                    decimal vat = decimal.Round((surcharge * this.VatRegime.VatRate.Rate) / 100, 2);
+                    decimal vat = Math.Round((surcharge * this.VatRegime.VatRate.Rate) / 100, 2);
                     this.TotalVat += vat;
                     this.TotalIncVat += surcharge + vat;
                 }
@@ -496,14 +496,14 @@ namespace Allors.Domain
         {
             if (this.ExistFee)
             {
-                decimal fee = this.Fee.Percentage.HasValue ? decimal.Round((this.TotalExVat * this.Fee.Percentage.Value) / 100, 2) : this.Fee.Amount.HasValue ? this.Fee.Amount.Value : 0;
+                decimal fee = this.Fee.Percentage.HasValue ? Math.Round((this.TotalExVat * this.Fee.Percentage.Value) / 100, 2) : this.Fee.Amount.HasValue ? this.Fee.Amount.Value : 0;
 
                 this.TotalFee += fee;
                 this.TotalExVat += fee;
 
                 if (this.Fee.ExistVatRate)
                 {
-                    decimal vat = decimal.Round((fee * this.Fee.VatRate.Rate) / 100, 2);
+                    decimal vat = Math.Round((fee * this.Fee.VatRate.Rate) / 100, 2);
                     this.TotalVat += vat;
                     this.TotalIncVat += fee + vat;
                 }
@@ -515,14 +515,14 @@ namespace Allors.Domain
             if (this.ExistShippingAndHandlingCharge)
             {
                 decimal shipping = this.ShippingAndHandlingCharge.Percentage.HasValue ? 
-                    decimal.Round((this.TotalExVat * this.ShippingAndHandlingCharge.Percentage.Value) / 100, 2) : this.ShippingAndHandlingCharge.Amount.HasValue ? this.ShippingAndHandlingCharge.Amount.Value : 0;
+                    Math.Round((this.TotalExVat * this.ShippingAndHandlingCharge.Percentage.Value) / 100, 2) : this.ShippingAndHandlingCharge.Amount.HasValue ? this.ShippingAndHandlingCharge.Amount.Value : 0;
 
                 this.TotalShippingAndHandling += shipping;
                 this.TotalExVat += shipping;
 
                 if (this.ShippingAndHandlingCharge.ExistVatRate)
                 {
-                    decimal vat = decimal.Round((shipping * this.ShippingAndHandlingCharge.VatRate.Rate) / 100, 2);
+                    decimal vat = Math.Round((shipping * this.ShippingAndHandlingCharge.VatRate.Rate) / 100, 2);
 
                     this.TotalVat += vat;
                     this.TotalIncVat += shipping + vat;
@@ -550,11 +550,11 @@ namespace Allors.Domain
 
             if (totalPurchasePrice != 0 && totalListPrice != 0 && totalUnitBasePrice != 0)
             {
-                this.InitialMarkupPercentage = decimal.Round(((totalUnitBasePrice / totalPurchasePrice) - 1) * 100, 2);
-                this.MaintainedMarkupPercentage = decimal.Round(((totalListPrice / totalPurchasePrice) - 1) * 100, 2);
+                this.InitialMarkupPercentage = Math.Round(((totalUnitBasePrice / totalPurchasePrice) - 1) * 100, 2);
+                this.MaintainedMarkupPercentage = Math.Round(((totalListPrice / totalPurchasePrice) - 1) * 100, 2);
 
-                this.InitialProfitMargin = decimal.Round(((totalUnitBasePrice - totalPurchasePrice) / totalUnitBasePrice) * 100, 2);
-                this.MaintainedProfitMargin = decimal.Round(((totalListPrice - totalPurchasePrice) / totalListPrice) * 100, 2);
+                this.InitialProfitMargin = Math.Round(((totalUnitBasePrice - totalPurchasePrice) / totalUnitBasePrice) * 100, 2);
+                this.MaintainedProfitMargin = Math.Round(((totalListPrice - totalPurchasePrice) / totalListPrice) * 100, 2);
             }
         }
 

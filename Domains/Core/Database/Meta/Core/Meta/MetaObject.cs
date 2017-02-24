@@ -23,8 +23,6 @@ namespace Allors.Meta
     using System;
     using System.Reflection;
 
-    using Allors.Repository;
-
     /// <summary>
     /// Base class for Meta objects.
     /// </summary>
@@ -35,12 +33,6 @@ namespace Allors.Meta
         protected MetaObjectBase(MetaPopulation metaPopulation)
         {
             this.MetaPopulation = metaPopulation;
-
-            var idAttribute = this.GetType().GetTypeInfo().GetCustomAttribute<IdAttribute>();
-            if (idAttribute != null)
-            {
-                this.Id = new Guid(idAttribute.Value);
-            }
         }
 
         IMetaPopulation IMetaObject.MetaPopulation => this.MetaPopulation;

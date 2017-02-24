@@ -1,59 +1,72 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio 15
+VisualStudioVersion = 15.0.26206.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Meta", "Database\Meta\Meta.csproj", "{BA6EFCFE-CB7F-4994-A5A4-C11DDAAC32DD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests", "Database\Tests\Tests.csproj", "{5582AF89-13A9-43B9-A208-230242323001}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Console", "Database\Console\Console.csproj", "{5DA41687-F93A-4B0C-B5F8-44B318DAA6ED}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Allors", "..\..\Platform\Framework\Allors\Allors.csproj", "{5B4E2D7C-8EF8-45F5-BFB2-E595C401A95F}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Generate", "Database\Generate\Generate.csproj", "{E2015E19-0C43-43D8-91DA-489ACA9B98FD}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Allors", "Allors", "{7A8B4793-9B0B-45AC-A291-9AE8522D6BE5}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Database", "Database", "{E2C738D2-7D03-40E6-B08E-09FDC19EF57D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Debug|x64 = Debug|x64
+		Debug|x86 = Debug|x86
 		Release|Any CPU = Release|Any CPU
 		Release|x64 = Release|x64
+		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{BA6EFCFE-CB7F-4994-A5A4-C11DDAAC32DD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{BA6EFCFE-CB7F-4994-A5A4-C11DDAAC32DD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BA6EFCFE-CB7F-4994-A5A4-C11DDAAC32DD}.Debug|x64.ActiveCfg = Debug|x64
 		{BA6EFCFE-CB7F-4994-A5A4-C11DDAAC32DD}.Debug|x64.Build.0 = Debug|x64
+		{BA6EFCFE-CB7F-4994-A5A4-C11DDAAC32DD}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{BA6EFCFE-CB7F-4994-A5A4-C11DDAAC32DD}.Debug|x86.Build.0 = Debug|Any CPU
 		{BA6EFCFE-CB7F-4994-A5A4-C11DDAAC32DD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BA6EFCFE-CB7F-4994-A5A4-C11DDAAC32DD}.Release|Any CPU.Build.0 = Release|Any CPU
 		{BA6EFCFE-CB7F-4994-A5A4-C11DDAAC32DD}.Release|x64.ActiveCfg = Release|x64
 		{BA6EFCFE-CB7F-4994-A5A4-C11DDAAC32DD}.Release|x64.Build.0 = Release|x64
-		{5582AF89-13A9-43B9-A208-230242323001}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{5582AF89-13A9-43B9-A208-230242323001}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{5582AF89-13A9-43B9-A208-230242323001}.Debug|x64.ActiveCfg = Debug|x64
-		{5582AF89-13A9-43B9-A208-230242323001}.Debug|x64.Build.0 = Debug|x64
-		{5582AF89-13A9-43B9-A208-230242323001}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{5582AF89-13A9-43B9-A208-230242323001}.Release|Any CPU.Build.0 = Release|Any CPU
-		{5582AF89-13A9-43B9-A208-230242323001}.Release|x64.ActiveCfg = Release|x64
-		{5582AF89-13A9-43B9-A208-230242323001}.Release|x64.Build.0 = Release|x64
-		{5DA41687-F93A-4B0C-B5F8-44B318DAA6ED}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{5DA41687-F93A-4B0C-B5F8-44B318DAA6ED}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{5DA41687-F93A-4B0C-B5F8-44B318DAA6ED}.Debug|x64.ActiveCfg = Debug|x64
-		{5DA41687-F93A-4B0C-B5F8-44B318DAA6ED}.Debug|x64.Build.0 = Debug|x64
-		{5DA41687-F93A-4B0C-B5F8-44B318DAA6ED}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{5DA41687-F93A-4B0C-B5F8-44B318DAA6ED}.Release|Any CPU.Build.0 = Release|Any CPU
-		{5DA41687-F93A-4B0C-B5F8-44B318DAA6ED}.Release|x64.ActiveCfg = Release|x64
-		{5DA41687-F93A-4B0C-B5F8-44B318DAA6ED}.Release|x64.Build.0 = Release|x64
+		{BA6EFCFE-CB7F-4994-A5A4-C11DDAAC32DD}.Release|x86.ActiveCfg = Release|Any CPU
+		{BA6EFCFE-CB7F-4994-A5A4-C11DDAAC32DD}.Release|x86.Build.0 = Release|Any CPU
 		{5B4E2D7C-8EF8-45F5-BFB2-E595C401A95F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{5B4E2D7C-8EF8-45F5-BFB2-E595C401A95F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5B4E2D7C-8EF8-45F5-BFB2-E595C401A95F}.Debug|x64.ActiveCfg = Debug|x64
 		{5B4E2D7C-8EF8-45F5-BFB2-E595C401A95F}.Debug|x64.Build.0 = Debug|x64
+		{5B4E2D7C-8EF8-45F5-BFB2-E595C401A95F}.Debug|x86.ActiveCfg = Debug|x86
+		{5B4E2D7C-8EF8-45F5-BFB2-E595C401A95F}.Debug|x86.Build.0 = Debug|x86
 		{5B4E2D7C-8EF8-45F5-BFB2-E595C401A95F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5B4E2D7C-8EF8-45F5-BFB2-E595C401A95F}.Release|Any CPU.Build.0 = Release|Any CPU
 		{5B4E2D7C-8EF8-45F5-BFB2-E595C401A95F}.Release|x64.ActiveCfg = Release|x64
 		{5B4E2D7C-8EF8-45F5-BFB2-E595C401A95F}.Release|x64.Build.0 = Release|x64
+		{5B4E2D7C-8EF8-45F5-BFB2-E595C401A95F}.Release|x86.ActiveCfg = Release|x86
+		{5B4E2D7C-8EF8-45F5-BFB2-E595C401A95F}.Release|x86.Build.0 = Release|x86
+		{E2015E19-0C43-43D8-91DA-489ACA9B98FD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E2015E19-0C43-43D8-91DA-489ACA9B98FD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E2015E19-0C43-43D8-91DA-489ACA9B98FD}.Debug|x64.ActiveCfg = Debug|x64
+		{E2015E19-0C43-43D8-91DA-489ACA9B98FD}.Debug|x64.Build.0 = Debug|x64
+		{E2015E19-0C43-43D8-91DA-489ACA9B98FD}.Debug|x86.ActiveCfg = Debug|x86
+		{E2015E19-0C43-43D8-91DA-489ACA9B98FD}.Debug|x86.Build.0 = Debug|x86
+		{E2015E19-0C43-43D8-91DA-489ACA9B98FD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E2015E19-0C43-43D8-91DA-489ACA9B98FD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E2015E19-0C43-43D8-91DA-489ACA9B98FD}.Release|x64.ActiveCfg = Release|x64
+		{E2015E19-0C43-43D8-91DA-489ACA9B98FD}.Release|x64.Build.0 = Release|x64
+		{E2015E19-0C43-43D8-91DA-489ACA9B98FD}.Release|x86.ActiveCfg = Release|x86
+		{E2015E19-0C43-43D8-91DA-489ACA9B98FD}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{BA6EFCFE-CB7F-4994-A5A4-C11DDAAC32DD} = {E2C738D2-7D03-40E6-B08E-09FDC19EF57D}
+		{5B4E2D7C-8EF8-45F5-BFB2-E595C401A95F} = {7A8B4793-9B0B-45AC-A291-9AE8522D6BE5}
+		{E2015E19-0C43-43D8-91DA-489ACA9B98FD} = {E2C738D2-7D03-40E6-B08E-09FDC19EF57D}
 	EndGlobalSection
 	GlobalSection(MonoDevelopProperties) = preSolution
 		StartupItem = Meta\Meta.csproj

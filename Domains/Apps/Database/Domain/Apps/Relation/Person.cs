@@ -13,7 +13,6 @@
 // For more information visit http://www.allors.com/legal
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
-using System.Diagnostics.Contracts;
 
 namespace Allors.Domain
 {

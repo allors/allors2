@@ -60,7 +60,7 @@ namespace Allors.Domain
             }
         }
 
-        public string ShortShipDateString => this.EstimatedShipDate.ToShortDateString();
+        public string ShortShipDateString => this.EstimatedShipDate?.ToString("d");
 
         private PickList PendingPickList
         {

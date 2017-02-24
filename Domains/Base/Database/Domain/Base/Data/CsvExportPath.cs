@@ -128,7 +128,7 @@ namespace Allors.Domain
                             break;
 
                         case UnitTags.Boolean:
-                            stringValue = ((bool)value).ToString(formatProvider);
+                            stringValue = ((bool)value).ToString();
                             break;
 
                         case UnitTags.Unique:

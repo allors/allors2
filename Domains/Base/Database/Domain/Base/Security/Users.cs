@@ -22,6 +22,7 @@ namespace Allors.Domain
 {
     using System;
     using System.Collections.Generic;
+    using System.Security.Claims;
     using System.Threading;
     using System.Xml;
     using System.Xml.Serialization;
@@ -54,7 +55,7 @@ namespace Allors.Domain
 
         public User GetCurrentAuthenticatedUser()
         {
-            var userId = Thread.CurrentPrincipal.Identity.Name;
+            var userId = ClaimsPrincipal.Current.Identity.Name;
 
             if (string.IsNullOrWhiteSpace(userId))
             {

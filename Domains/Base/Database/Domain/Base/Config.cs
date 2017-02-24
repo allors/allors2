@@ -20,6 +20,8 @@
 
 namespace Allors
 {
+    using System.Reflection;
+
     using Allors.Domain;
     using Allors.Meta;
 
@@ -33,7 +35,7 @@ namespace Allors
 
         static Config()
         {
-            ObjectFactory = new ObjectFactory(MetaPopulation.Instance, typeof(Config).Assembly, typeof(Singleton).Namespace);
+            ObjectFactory = new ObjectFactory(MetaPopulation.Instance, typeof(Config).GetTypeInfo().Assembly, typeof(Singleton).Namespace);
         }
     }
 }

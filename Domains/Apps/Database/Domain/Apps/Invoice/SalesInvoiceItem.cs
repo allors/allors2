@@ -1,5 +1,6 @@
 namespace Allors.Domain
 {
+    using System;
     using System.Collections.Generic;
 
     using Meta;
@@ -36,7 +37,7 @@ namespace Allors.Domain
 
         public decimal PriceAdjustment => this.TotalSurcharge - this.TotalDiscount;
 
-        public decimal PriceAdjustmentAsPercentage => decimal.Round(((this.TotalSurcharge - this.TotalDiscount) / this.TotalBasePrice) * 100, 2);
+        public decimal PriceAdjustmentAsPercentage => Math.Round(((this.TotalSurcharge - this.TotalDiscount) / this.TotalBasePrice) * 100, 2);
 
         public void SetActualDiscountAmount(decimal amount)
         {
@@ -318,7 +319,7 @@ namespace Allors.Domain
                 {
                     if (this.DiscountAdjustment.Percentage.HasValue)
                     {
-                        discountAdjustmentAmount = decimal.Round((adjustmentBase * this.DiscountAdjustment.Percentage.Value) / 100, 2);
+                        discountAdjustmentAmount = Math.Round((adjustmentBase * this.DiscountAdjustment.Percentage.Value) / 100, 2);
                     }
                     else
                     {
@@ -332,7 +333,7 @@ namespace Allors.Domain
                 {
                     if (this.SurchargeAdjustment.Percentage.HasValue)
                     {
-                        surchargeAdjustmentAmount = decimal.Round((adjustmentBase * this.SurchargeAdjustment.Percentage.Value) / 100, 2);
+                        surchargeAdjustmentAmount = Math.Round((adjustmentBase * this.SurchargeAdjustment.Percentage.Value) / 100, 2);
                     }
                     else
                     {
@@ -350,7 +351,7 @@ namespace Allors.Domain
             {
                 var vatRate = this.DerivedVatRate.Rate;
                 var vatBase = price - this.UnitDiscount + this.UnitSurcharge;
-                vat = decimal.Round((vatBase * vatRate) / 100, 2);
+                vat = Math.Round((vatBase * vatRate) / 100, 2);
             }
 
             this.UnitVat = vat;
@@ -361,8 +362,8 @@ namespace Allors.Domain
 
             if (this.TotalBasePrice > 0)
             {
-                this.TotalDiscountAsPercentage = decimal.Round((this.TotalDiscount / this.TotalBasePrice) * 100, 2);
-                this.TotalSurchargeAsPercentage = decimal.Round((this.TotalSurcharge / this.TotalBasePrice) * 100, 2);
+                this.TotalDiscountAsPercentage = Math.Round((this.TotalDiscount / this.TotalBasePrice) * 100, 2);
+                this.TotalSurchargeAsPercentage = Math.Round((this.TotalSurcharge / this.TotalBasePrice) * 100, 2);
             }
 
             if (this.ActualUnitPrice.HasValue)
@@ -507,7 +508,7 @@ namespace Allors.Domain
                         {
                             if (unitOfMeasureConversion.ToUnitOfMeasure.Equals(this.Product.UnitOfMeasure))
                             {
-                                this.UnitPurchasePrice = decimal.Round(this.UnitPurchasePrice * (1 / unitOfMeasureConversion.ConversionFactor), 2);
+                                this.UnitPurchasePrice = Math.Round(this.UnitPurchasePrice * (1 / unitOfMeasureConversion.ConversionFactor), 2);
                             }
                         }
                     }
@@ -515,11 +516,11 @@ namespace Allors.Domain
                     ////internet wiki page on markup business
                     if (this.UnitPurchasePrice != 0 && this.TotalExVat != 0 && this.UnitBasePrice != 0)
                     {
-                        this.InitialMarkupPercentage = decimal.Round(((this.UnitBasePrice / this.UnitPurchasePrice) - 1) * 100, 2);
-                        this.MaintainedMarkupPercentage = decimal.Round(((this.CalculatedUnitPrice / this.UnitPurchasePrice) - 1) * 100, 2);
+                        this.InitialMarkupPercentage = Math.Round(((this.UnitBasePrice / this.UnitPurchasePrice) - 1) * 100, 2);
+                        this.MaintainedMarkupPercentage = Math.Round(((this.CalculatedUnitPrice / this.UnitPurchasePrice) - 1) * 100, 2);
 
-                        this.InitialProfitMargin = decimal.Round(((this.UnitBasePrice - this.UnitPurchasePrice) / this.UnitBasePrice) * 100, 2);
-                        this.MaintainedProfitMargin = decimal.Round(((this.CalculatedUnitPrice - this.UnitPurchasePrice) / this.CalculatedUnitPrice) * 100, 2);
+                        this.InitialProfitMargin = Math.Round(((this.UnitBasePrice - this.UnitPurchasePrice) / this.UnitBasePrice) * 100, 2);
+                        this.MaintainedProfitMargin = Math.Round(((this.CalculatedUnitPrice - this.UnitPurchasePrice) / this.CalculatedUnitPrice) * 100, 2);
                     }
                 }
             }

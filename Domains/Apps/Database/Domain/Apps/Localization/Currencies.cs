@@ -15,6 +15,8 @@
 // --------------------------------------------------------------------------------------------------------------------
 namespace Allors.Domain
 {
+    using System;
+
     public partial class Currencies
     {
         public static decimal ConvertCurrency(decimal amount, Currency fromCurrency, Currency toCurrency)
@@ -25,7 +27,7 @@ namespace Allors.Domain
                 {
                     if (unitOfMeasureConversion.ToUnitOfMeasure.Equals(toCurrency))
                     {
-                        return decimal.Round(amount * unitOfMeasureConversion.ConversionFactor, 2);
+                        return Math.Round(amount * unitOfMeasureConversion.ConversionFactor, 2);
                     }
                 }
             }

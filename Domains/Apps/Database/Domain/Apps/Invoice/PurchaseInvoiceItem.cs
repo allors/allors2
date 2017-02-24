@@ -15,6 +15,8 @@
 // --------------------------------------------------------------------------------------------------------------------
 namespace Allors.Domain
 {
+    using System;
+
     public partial class PurchaseInvoiceItem
     {
         ObjectState Transitional.CurrentObjectState => this.CurrentObjectState;
@@ -53,7 +55,7 @@ namespace Allors.Domain
                 {
                     if (discountAdjustment.Percentage.HasValue)
                     {
-                        this.UnitDiscount += decimal.Round((this.UnitBasePrice * discountAdjustment.Percentage.Value) / 100, 2);
+                        this.UnitDiscount += Math.Round((this.UnitBasePrice * discountAdjustment.Percentage.Value) / 100, 2);
                     }
                     else
                     {
@@ -70,7 +72,7 @@ namespace Allors.Domain
                 {
                     if (surchargeAdjustment.Percentage.HasValue)
                     {
-                        this.UnitSurcharge += decimal.Round((this.UnitBasePrice * surchargeAdjustment.Percentage.Value) / 100, 2);
+                        this.UnitSurcharge += Math.Round((this.UnitBasePrice * surchargeAdjustment.Percentage.Value) / 100, 2);
                     }
                     else
                     {
@@ -87,7 +89,7 @@ namespace Allors.Domain
                 {
                     var vatRate = this.DerivedVatRate.Rate;
                     var vatBase = this.UnitBasePrice - this.UnitDiscount + this.UnitSurcharge;
-                    vat = decimal.Round((vatBase * vatRate) / 100, 2);
+                    vat = Math.Round((vatBase * vatRate) / 100, 2);
                 }
 
                 this.UnitVat = vat;

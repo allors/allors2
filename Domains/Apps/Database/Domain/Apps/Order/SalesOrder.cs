@@ -520,7 +520,7 @@ namespace Allors.Domain
             if (this.ExistDiscountAdjustment)
             {
                 decimal discount = this.DiscountAdjustment.Percentage.HasValue ?
-                    decimal.Round((this.TotalExVat * this.DiscountAdjustment.Percentage.Value) / 100, 2) :
+                    Math.Round((this.TotalExVat * this.DiscountAdjustment.Percentage.Value) / 100, 2) :
                     this.DiscountAdjustment.Amount ?? 0;
 
                 this.TotalDiscount += discount;
@@ -528,7 +528,7 @@ namespace Allors.Domain
 
                 if (this.ExistVatRegime)
                 {
-                    decimal vat = decimal.Round((discount * this.VatRegime.VatRate.Rate) / 100, 2);
+                    decimal vat = Math.Round((discount * this.VatRegime.VatRate.Rate) / 100, 2);
 
                     this.TotalVat -= vat;
                     this.TotalIncVat -= discount + vat;
@@ -538,7 +538,7 @@ namespace Allors.Domain
             if (this.ExistSurchargeAdjustment)
             {
                 decimal surcharge = this.SurchargeAdjustment.Percentage.HasValue ?
-                    decimal.Round((this.TotalExVat * this.SurchargeAdjustment.Percentage.Value) / 100, 2) :
+                    Math.Round((this.TotalExVat * this.SurchargeAdjustment.Percentage.Value) / 100, 2) :
                     this.SurchargeAdjustment.Amount ?? 0;
 
                 this.TotalSurcharge += surcharge;
@@ -546,7 +546,7 @@ namespace Allors.Domain
 
                 if (this.ExistVatRegime)
                 {
-                    decimal vat = decimal.Round((surcharge * this.VatRegime.VatRate.Rate) / 100, 2);
+                    decimal vat = Math.Round((surcharge * this.VatRegime.VatRate.Rate) / 100, 2);
                     this.TotalVat += vat;
                     this.TotalIncVat += surcharge + vat;
                 }
@@ -558,7 +558,7 @@ namespace Allors.Domain
             if (this.ExistFee)
             {
                 decimal fee = this.Fee.Percentage.HasValue ?
-                    decimal.Round((this.TotalExVat * this.Fee.Percentage.Value) / 100, 2) :
+                    Math.Round((this.TotalExVat * this.Fee.Percentage.Value) / 100, 2) :
                     this.Fee.Amount ?? 0;
 
                 this.TotalFee += fee;
@@ -566,7 +566,7 @@ namespace Allors.Domain
 
                 if (this.Fee.ExistVatRate)
                 {
-                    decimal vat = decimal.Round((fee * this.Fee.VatRate.Rate) / 100, 2);
+                    decimal vat = Math.Round((fee * this.Fee.VatRate.Rate) / 100, 2);
                     this.TotalVat += vat;
                     this.TotalIncVat += fee + vat;
                 }
@@ -578,7 +578,7 @@ namespace Allors.Domain
             if (this.ExistShippingAndHandlingCharge)
             {
                 decimal shipping = this.ShippingAndHandlingCharge.Percentage.HasValue ?
-                    decimal.Round((this.TotalExVat * this.ShippingAndHandlingCharge.Percentage.Value) / 100, 2) :
+                    Math.Round((this.TotalExVat * this.ShippingAndHandlingCharge.Percentage.Value) / 100, 2) :
                     this.ShippingAndHandlingCharge.Amount ?? 0;
 
                 this.TotalShippingAndHandling += shipping;
@@ -586,7 +586,7 @@ namespace Allors.Domain
 
                 if (this.ShippingAndHandlingCharge.ExistVatRate)
                 {
-                    decimal vat = decimal.Round((shipping * this.ShippingAndHandlingCharge.VatRate.Rate) / 100, 2);
+                    decimal vat = Math.Round((shipping * this.ShippingAndHandlingCharge.VatRate.Rate) / 100, 2);
                     this.TotalVat += vat;
                     this.TotalIncVat += shipping + vat;
                 }
@@ -613,11 +613,11 @@ namespace Allors.Domain
 
             if (totalPurchasePrice != 0 && totalListPrice != 0 && totalUnitBasePrice != 0)
             {
-                this.InitialMarkupPercentage = decimal.Round(((totalUnitBasePrice / totalPurchasePrice) - 1) * 100, 2);
-                this.MaintainedMarkupPercentage = decimal.Round(((totalListPrice / totalPurchasePrice) - 1) * 100, 2);
+                this.InitialMarkupPercentage = Math.Round(((totalUnitBasePrice / totalPurchasePrice) - 1) * 100, 2);
+                this.MaintainedMarkupPercentage = Math.Round(((totalListPrice / totalPurchasePrice) - 1) * 100, 2);
 
-                this.InitialProfitMargin = decimal.Round(((totalUnitBasePrice - totalPurchasePrice) / totalUnitBasePrice) * 100, 2);
-                this.MaintainedProfitMargin = decimal.Round(((totalListPrice - totalPurchasePrice) / totalListPrice) * 100, 2);
+                this.InitialProfitMargin = Math.Round(((totalUnitBasePrice - totalPurchasePrice) / totalUnitBasePrice) * 100, 2);
+                this.MaintainedProfitMargin = Math.Round(((totalListPrice - totalPurchasePrice) / totalListPrice) * 100, 2);
             }
         }
 

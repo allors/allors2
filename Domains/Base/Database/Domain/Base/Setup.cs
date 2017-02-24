@@ -88,19 +88,6 @@ namespace Allors
         {
             this.objectsGraph.AddDependency(this.objectsByObjectType[dependent], this.objectsByObjectType[dependee]);
         }
-        
-        private static byte[] GetEmbeddedResource(string resourceName)
-        {
-            var stream = Assembly.GetExecutingAssembly().GetManifestResourceStream(resourceName);
-            if (stream != null)
-            {
-                var content = new byte[stream.Length];
-                stream.Read(content, 0, content.Length);
-                return content;
-            }
-
-            return null;
-        }
 
         private void BaseOnPrePrepare()
         {

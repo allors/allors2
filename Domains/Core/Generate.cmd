@@ -24,7 +24,13 @@ rmdir /s /q .\Database\Domain\Generated >nul 2>&1
 
 :: Repository
 dotnet msbuild Repository.sln /target:Clean /verbosity:minimal
-..\..\Tools\Generate\dist\Allors.Generate.Cmd.exe repository generate repository.sln domain repository/templates/meta.cs.stg database/meta/generated || SET /A errno^|=%ERROR_GENERATE_META% && GOTO :END
+..\..\Platform\Repository\Generate\dist\Allors.Generate.Cmd.exe repository generate repository.sln domain repository/templates/meta.cs.stg database/meta/generated || SET /A errno^|=%ERROR_GENERATE_META% && GOTO :END
+
+:: Docs
+dotnet msbuild Core.sln /target:Clean /verbosity:minimal
+dotnet msbuild Core.sln /target:Database\Generate /verbosity:minimal
+
+dotnet Database\Generate\bin\Debug\netcoreapp1.1\Generate.dll Templates\docs.html.stg Docs
 
 :END
 IF "%interactive%"=="1" PAUSE

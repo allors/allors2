@@ -20,6 +20,7 @@
 
 namespace Allors.Domain
 {
+    using System;
     using System.Collections.Generic;
     using System.ComponentModel;
     using System.Linq;
@@ -176,7 +177,7 @@ namespace Allors.Domain
             {
                 if (this.DerivedObjects.Contains(derivable))
                 {
-                    throw new InvalidEnumArgumentException("Object has alreadry been derived.");
+                    throw new ArgumentException("Object has alreadry been derived.");
                 }
                 
                 this.derivationGraph.Add(derivable);
