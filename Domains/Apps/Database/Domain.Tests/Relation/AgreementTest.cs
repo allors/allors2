@@ -21,48 +21,48 @@
 
 namespace Allors.Domain
 {
-    using NUnit.Framework;
+    using Xunit;
 
-    [TestFixture]
+    
     public class AgreementTest : DomainTest
     {
-        [Test]
+        [Fact]
         public void GivenClientAgreement_WhenDeriving_ThenRequiredRelationsMustExist()
         {
             var builder = new ClientAgreementBuilder(this.DatabaseSession);
             builder.Build();
 
-            Assert.IsTrue(this.DatabaseSession.Derive().HasErrors);
+            Assert.True(this.DatabaseSession.Derive().HasErrors);
 
             this.DatabaseSession.Rollback();
 
             builder.WithFromDate(DateTimeFactory.CreateDate(2010, 12, 31));
             builder.Build();
 
-            Assert.IsTrue(this.DatabaseSession.Derive().HasErrors);
+            Assert.True(this.DatabaseSession.Derive().HasErrors);
 
             this.DatabaseSession.Rollback();
 
             builder.WithDescription("client agreement");
             builder.Build();
 
-            Assert.IsFalse(this.DatabaseSession.Derive().HasErrors);
+            Assert.False(this.DatabaseSession.Derive().HasErrors);
         }
 
-        [Test]
+        [Fact]
         public void GivenEmploymentAgreement_WhenDeriving_ThenRequiredRelationsMustExist()
         {
             var builder = new EmploymentAgreementBuilder(this.DatabaseSession);
             builder.Build();
 
-            Assert.IsTrue(this.DatabaseSession.Derive().HasErrors);
+            Assert.True(this.DatabaseSession.Derive().HasErrors);
 
             this.DatabaseSession.Rollback();
 
             builder.WithFromDate(DateTimeFactory.CreateDate(2010, 12, 31));
             builder.Build();
 
-            Assert.IsTrue(this.DatabaseSession.Derive().HasErrors);
+            Assert.True(this.DatabaseSession.Derive().HasErrors);
 
             this.DatabaseSession.Rollback();
 
@@ -71,76 +71,76 @@ namespace Allors.Domain
             builder.WithDescription("employment agreement");
             builder.Build();
 
-            Assert.IsFalse(this.DatabaseSession.Derive().HasErrors);
+            Assert.False(this.DatabaseSession.Derive().HasErrors);
         }
 
-        [Test]
+        [Fact]
         public void GivenPurchaseAgreement_WhenDeriving_ThenRequiredRelationsMustExist()
         {
             var builder = new PurchaseAgreementBuilder(this.DatabaseSession);
             builder.Build();
 
-            Assert.IsTrue(this.DatabaseSession.Derive().HasErrors);
+            Assert.True(this.DatabaseSession.Derive().HasErrors);
 
             this.DatabaseSession.Rollback();
 
             builder.WithFromDate(DateTimeFactory.CreateDate(2010, 12, 31));
             builder.Build();
 
-            Assert.IsTrue(this.DatabaseSession.Derive().HasErrors);
+            Assert.True(this.DatabaseSession.Derive().HasErrors);
 
             this.DatabaseSession.Rollback();
 
             builder.WithDescription("purchase agreement");
             builder.Build();
 
-            Assert.IsFalse(this.DatabaseSession.Derive().HasErrors);
+            Assert.False(this.DatabaseSession.Derive().HasErrors);
         }
 
-        [Test]
+        [Fact]
         public void GivenSalesAgreement_WhenDeriving_ThenRequiredRelationsMustExist()
         {
             var builder = new SalesAgreementBuilder(this.DatabaseSession);
             builder.Build();
 
-            Assert.IsTrue(this.DatabaseSession.Derive().HasErrors);
+            Assert.True(this.DatabaseSession.Derive().HasErrors);
 
             this.DatabaseSession.Rollback();
 
             builder.WithFromDate(DateTimeFactory.CreateDate(2010, 12, 31));
             builder.Build();
 
-            Assert.IsTrue(this.DatabaseSession.Derive().HasErrors);
+            Assert.True(this.DatabaseSession.Derive().HasErrors);
 
             this.DatabaseSession.Rollback();
 
             builder.WithDescription("sales agreement");
             builder.Build();
 
-            Assert.IsFalse(this.DatabaseSession.Derive().HasErrors);
+            Assert.False(this.DatabaseSession.Derive().HasErrors);
         }
 
-        [Test]
+        [Fact]
         public void GivenSubContractorAgreement_WhenDeriving_ThenRequiredRelationsMustExist()
         {
             var builder = new SubContractorAgreementBuilder(this.DatabaseSession);
             builder.Build();
 
-            Assert.IsTrue(this.DatabaseSession.Derive().HasErrors);
+            Assert.True(this.DatabaseSession.Derive().HasErrors);
 
             this.DatabaseSession.Rollback();
 
             builder.WithFromDate(DateTimeFactory.CreateDate(2010, 12, 31));
             builder.Build();
 
-            Assert.IsTrue(this.DatabaseSession.Derive().HasErrors);
+            Assert.True(this.DatabaseSession.Derive().HasErrors);
 
             this.DatabaseSession.Rollback();
 
             builder.WithDescription("subContractor agreement");
             builder.Build();
 
-            Assert.IsFalse(this.DatabaseSession.Derive().HasErrors);
+            Assert.False(this.DatabaseSession.Derive().HasErrors);
         }
     }
 }

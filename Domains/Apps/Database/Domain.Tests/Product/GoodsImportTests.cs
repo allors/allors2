@@ -22,10 +22,10 @@
 namespace Allors.Domain
 {
     // TODO: 
-    //[TestFixture]
+    //
     //public class GoodsImportTests : DomainTest
     //{
-    //    [Test]
+    //    [Fact]
     //    public void InsertNoSettingsCodeOnly()
     //    {
     //        var table = new GoodsTable
@@ -47,18 +47,18 @@ namespace Allors.Domain
 
     //        var skus = new List<string>();
 
-    //        Assert.AreEqual(2, goods.Length);
+    //        Assert.Equal(2, goods.Length);
     //        foreach (Good good in goods)
     //        {
     //            // From CatalogueItem
-    //            Assert.IsTrue(good.ExistSku);
-    //            Assert.IsFalse(good.ExistName);
-    //            Assert.IsFalse(good.ExistDescription);
+    //            Assert.True(good.ExistSku);
+    //            Assert.False(good.ExistName);
+    //            Assert.False(good.ExistDescription);
 
     //            // From Good
-    //            Assert.IsFalse(good.ExistPrimaryProductCategory);
-    //            Assert.IsFalse(good.ExistVatRate);
-    //            Assert.IsFalse(good.ExistUnitOfMeasure);
+    //            Assert.False(good.ExistPrimaryProductCategory);
+    //            Assert.False(good.ExistVatRate);
+    //            Assert.False(good.ExistUnitOfMeasure);
 
     //            skus.Add(good.Sku);
     //        }
@@ -67,7 +67,7 @@ namespace Allors.Domain
     //        Assert.Contains("X-002", skus);
     //    }
 
-    //    [Test]
+    //    [Fact]
     //    public void InsertNoSettingsAndEverything()
     //    {
     //        var primaryProductCategory = new ProductCategoryBuilder(this.DatabaseSession).WithCode("PRIM").Build();
@@ -104,18 +104,18 @@ namespace Allors.Domain
 
     //        var goods = this.GetObjects(this.DatabaseSession, M.Good.ObjectType);
 
-    //        Assert.AreEqual(1, goods.Length);
+    //        Assert.Equal(1, goods.Length);
     //        foreach (Good good in goods)
     //        {
     //            // From CatalogueItem
-    //            Assert.AreEqual("X-001", good.Sku);
-    //            Assert.AreEqual("naam", good.Name);
-    //            Assert.AreEqual("beschrijving", good.Description);
+    //            Assert.Equal("X-001", good.Sku);
+    //            Assert.Equal("naam", good.Name);
+    //            Assert.Equal("beschrijving", good.Description);
 
     //            // From Good
-    //            Assert.AreEqual(primaryProductCategory, good.PrimaryProductCategory);
-    //            Assert.AreEqual(0.21m, good.VatRate);
-    //            Assert.AreEqual("Kilogram", good.UnitOfMeasure);
+    //            Assert.Equal(primaryProductCategory, good.PrimaryProductCategory);
+    //            Assert.Equal(0.21m, good.VatRate);
+    //            Assert.Equal("Kilogram", good.UnitOfMeasure);
     //        }
     //    }
     //}

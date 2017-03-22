@@ -22,12 +22,12 @@ namespace Allors.Domain
 {
     using System;
     using Meta;
-    using NUnit.Framework;
+    using Xunit;
 
-    [TestFixture]
+    
     public class StoreRevenuesTests : DomainTest
     {
-        [Test]
+        [Fact]
         public void DeriveRevenues()
         {
             var productItem = new SalesInvoiceItemTypes(this.DatabaseSession).ProductItem;
@@ -110,7 +110,7 @@ namespace Allors.Domain
             Singleton.Instance(this.DatabaseSession).DeriveRevenues(new NonLogging.Derivation(this.DatabaseSession));
 
             var storeRevenue = invoice1.Store.StoreRevenuesWhereStore[0];
-            Assert.AreEqual(140, storeRevenue.Revenue);
+            Assert.Equal(140, storeRevenue.Revenue);
 
             var invoice2 = new SalesInvoiceBuilder(this.DatabaseSession)
                 .WithInvoiceDate(DateTime.UtcNow)
@@ -132,7 +132,7 @@ namespace Allors.Domain
 
             Singleton.Instance(this.DatabaseSession).DeriveRevenues(new NonLogging.Derivation(this.DatabaseSession));
 
-            Assert.AreEqual(165, storeRevenue.Revenue);
+            Assert.Equal(165, storeRevenue.Revenue);
         }
     }
 }

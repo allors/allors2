@@ -21,33 +21,33 @@
 
 namespace Allors.Domain
 {
-    using NUnit.Framework;
+    using Xunit;
 
-    [TestFixture]
+    
     public class PackageQuantityBreakTests : DomainTest
     {
-        [Test]
+        [Fact]
         public void GivenPackageQuantityBreak_WhenDeriving_ThenRequiredRelationsMustExist()
         {
             var builder = new PackageQuantityBreakBuilder(this.DatabaseSession);
             var revenueQuantityBreak = builder.Build();
 
-            Assert.IsTrue(this.DatabaseSession.Derive().HasErrors);
+            Assert.True(this.DatabaseSession.Derive().HasErrors);
 
             this.DatabaseSession.Rollback();
 
             builder.WithFrom(10);
             revenueQuantityBreak = builder.Build();
 
-            Assert.IsFalse(this.DatabaseSession.Derive().HasErrors);
+            Assert.False(this.DatabaseSession.Derive().HasErrors);
             builder.WithThrough(20);
             revenueQuantityBreak = builder.Build();
 
-            Assert.IsFalse(this.DatabaseSession.Derive().HasErrors);
+            Assert.False(this.DatabaseSession.Derive().HasErrors);
 
             revenueQuantityBreak.RemoveFrom();
 
-            Assert.IsFalse(this.DatabaseSession.Derive().HasErrors);
+            Assert.False(this.DatabaseSession.Derive().HasErrors);
         }
     }
 }

@@ -23,25 +23,25 @@
 
 namespace Allors.Domain
 {
-    using NUnit.Framework;
+    using Xunit;
 
-    [TestFixture]
+    
     public class OrganisationContactKindTests : DomainTest
     {
-        [Test]
+        [Fact]
         public void GivenOrganisationContactKind_WhenDeriving_ThenRequiredRelationsMustExist()
         {
             var builder = new OrganisationContactKindBuilder(this.DatabaseSession);
             var contactKind = builder.Build();
 
-            Assert.IsTrue(this.DatabaseSession.Derive().HasErrors);
+            Assert.True(this.DatabaseSession.Derive().HasErrors);
 
             this.DatabaseSession.Rollback();
 
             builder.WithDescription("contactkind");
             contactKind = builder.Build();
 
-            Assert.IsFalse(this.DatabaseSession.Derive().HasErrors);
+            Assert.False(this.DatabaseSession.Derive().HasErrors);
         }
     }
 }

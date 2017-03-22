@@ -23,12 +23,12 @@ namespace Allors.Domain
 {
     using System;
     using Meta;
-    using NUnit.Framework;
+    using Xunit;
 
-    [TestFixture]
+    
     public class PackagingContentTests : DomainTest
     {
-        [Test]
+        [Fact]
         public void GivenPackingingContent_WhenDeriving_ThenAssertQuantityPackedIsNotGreaterThanQuantityShipped()
         {
             var mechelen = new CityBuilder(this.DatabaseSession).WithName("Mechelen").Build();
@@ -97,10 +97,10 @@ namespace Allors.Domain
                                             .WithQuantity(shipment.ShipmentItems[0].Quantity + 1)
                                             .Build());
 
-            Assert.IsTrue(this.DatabaseSession.Derive().HasErrors);
+            Assert.True(this.DatabaseSession.Derive().HasErrors);
         }
 
-        [Test]
+        [Fact]
         public void GivenPackingingContent_WhenDerived_ThenShipmentItemsQuantityPackedIsSet()
         {
             var mechelen = new CityBuilder(this.DatabaseSession).WithName("Mechelen").Build();
@@ -171,7 +171,7 @@ namespace Allors.Domain
 
             foreach (ShipmentItem shipmentItem in shipment.ShipmentItems)
             {
-                Assert.AreEqual(shipmentItem.QuantityShipped, shipmentItem.Quantity);
+                Assert.Equal(shipmentItem.QuantityShipped, shipmentItem.Quantity);
             }
         }
     }

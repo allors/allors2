@@ -21,12 +21,12 @@
 
 namespace Allors.Domain
 {
-    using NUnit.Framework;
+    using Xunit;
 
-    [TestFixture]
+    
     public class OrderRequirementCommitmentTests : DomainTest
     {
-        [Test]
+        [Fact]
         public void GivenOrderRequirementCommitment_WhenDeriving_ThenRequiredRelationsMustExist()
         {
             var shipToCustomer = new OrganisationBuilder(this.DatabaseSession).WithName("shipToCustomer").Build();
@@ -70,21 +70,21 @@ namespace Allors.Domain
             var builder = new OrderRequirementCommitmentBuilder(this.DatabaseSession);
             builder.Build();
 
-            Assert.IsTrue(this.DatabaseSession.Derive().HasErrors);
+            Assert.True(this.DatabaseSession.Derive().HasErrors);
 
             this.DatabaseSession.Rollback();
 
             builder.WithOrderItem(goodOrderItem);
             builder.Build();
 
-            Assert.IsTrue(this.DatabaseSession.Derive().HasErrors);
+            Assert.True(this.DatabaseSession.Derive().HasErrors);
 
             this.DatabaseSession.Rollback();
 
             builder.WithRequirement(customerRequirement);
             var tsts = builder.Build();
 
-            Assert.IsFalse(this.DatabaseSession.Derive().HasErrors);
+            Assert.False(this.DatabaseSession.Derive().HasErrors);
         }
     }
 }

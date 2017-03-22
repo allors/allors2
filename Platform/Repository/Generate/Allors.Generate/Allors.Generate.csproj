@@ -34,10 +34,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="..\..\..\Platform\Framework\Allors\Meta\UnitIds.cs">
+    <Compile Include="..\..\..\Framework\Allors\Meta\UnitIds.cs">
       <Link>Meta\UnitIds.cs</Link>
     </Compile>
-    <Compile Include="..\..\..\Platform\Framework\Allors\Meta\UnitNames.cs">
+    <Compile Include="..\..\..\Framework\Allors\Meta\UnitNames.cs">
       <Link>Meta\UnitNames.cs</Link>
     </Compile>
     <Compile Include="Repository\Assembly.cs" />

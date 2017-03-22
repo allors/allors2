@@ -25,12 +25,12 @@ namespace Allors.Domain
 {
     using System;
     using Meta;
-    using NUnit.Framework;
+    using Xunit;
 
-    [TestFixture]
+    
     public class PartyTests : DomainTest
     {
-        [Test]
+        [Fact]
         public void GivenParty_WhenSalesRepRelationshipIsUpdated_ThenCurrentSalesRepsAreUpdated()
         {
             var salesRep1 = new PersonBuilder(this.DatabaseSession).WithLastName("salesRep1").Build();
@@ -46,7 +46,7 @@ namespace Allors.Domain
 
             this.DatabaseSession.Derive(true);
 
-            Assert.AreEqual(1, organisation.CurrentSalesReps.Count);
+            Assert.Equal(1, organisation.CurrentSalesReps.Count);
             Assert.Contains(salesRep1, organisation.CurrentSalesReps);
 
             new SalesRepRelationshipBuilder(this.DatabaseSession)
@@ -57,7 +57,7 @@ namespace Allors.Domain
 
             this.DatabaseSession.Derive(true);
 
-            Assert.AreEqual(2, organisation.CurrentSalesReps.Count);
+            Assert.Equal(2, organisation.CurrentSalesReps.Count);
             Assert.Contains(salesRep1, organisation.CurrentSalesReps);
             Assert.Contains(salesRep2, organisation.CurrentSalesReps);
 
@@ -65,7 +65,7 @@ namespace Allors.Domain
             
             this.DatabaseSession.Derive(true);
 
-            Assert.AreEqual(1, organisation.CurrentSalesReps.Count);
+            Assert.Equal(1, organisation.CurrentSalesReps.Count);
             Assert.Contains(salesRep2, organisation.CurrentSalesReps);
 
             new SalesRepRelationshipBuilder(this.DatabaseSession)
@@ -78,12 +78,12 @@ namespace Allors.Domain
 
             this.DatabaseSession.Derive(true);
 
-            Assert.AreEqual(2, organisation.CurrentSalesReps.Count);
+            Assert.Equal(2, organisation.CurrentSalesReps.Count);
             Assert.Contains(salesRep2, organisation.CurrentSalesReps);
             Assert.Contains(salesRep3, organisation.CurrentSalesReps);
         }
 
-        [Test]
+        [Fact]
         public void GivenPartyWithOpenOrders_WhenDeriving_ThenOpenOrderAmountIsUpdated()
         {
             var organisation = new OrganisationBuilder(this.DatabaseSession).WithName("customer").Build();
@@ -134,10 +134,10 @@ namespace Allors.Domain
 
             this.DatabaseSession.Derive(true);
 
-            Assert.AreEqual(242M, organisation.OpenOrderAmount);
+            Assert.Equal(242M, organisation.OpenOrderAmount);
         }
 
-        [Test]
+        [Fact]
         public void GivenPartyWithRevenue_WhenDeriving_ThenTotalRevenuesAreUpdated()
         {
             var customer = new OrganisationBuilder(this.DatabaseSession).WithName("customer").Build();
@@ -190,8 +190,8 @@ namespace Allors.Domain
 
             this.DatabaseSession.Derive(true);
 
-            Assert.AreEqual(10M, customer.LastYearsRevenue);
-            Assert.AreEqual(200M, customer.YTDRevenue);
+            Assert.Equal(10M, customer.LastYearsRevenue);
+            Assert.Equal(200M, customer.YTDRevenue);
         }
     }
 }

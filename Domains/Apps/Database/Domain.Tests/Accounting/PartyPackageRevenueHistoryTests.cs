@@ -22,12 +22,12 @@ namespace Allors.Domain
 {
     using System;
     using Meta;
-    using NUnit.Framework;
+    using Xunit;
 
-    [TestFixture]
+    
     public class PartyPackageRevenueHistoryTests : DomainTest
     {
-        [Test]
+        [Fact]
         public void GivenSalesInvoice_WhenDerived_ThenTotalExVatIsAddedToPartyPackageRevenueHistory()
         {
             var productItem = new SalesInvoiceItemTypes(this.DatabaseSession).ProductItem;
@@ -86,14 +86,14 @@ namespace Allors.Domain
                 ////date in first iteration is too old, no history yet.
                 if (history != null)
                 {
-                    Assert.AreEqual(revenuePastTwelveMonths, history.Revenue);
+                    Assert.Equal(revenuePastTwelveMonths, history.Revenue);
                 }
 
                 date = date.AddMonths(1);
             }
         }
 
-        [Test]
+        [Fact]
         public void DeriveHistory()
         {
             var productItem = new SalesInvoiceItemTypes(this.DatabaseSession).ProductItem;
@@ -206,8 +206,8 @@ namespace Allors.Domain
             customer1Package2RevenueHistories.Filter.AddEquals(M.PartyPackageRevenueHistory.Package, package2);
             var customer1Package2RevenueHistory = customer1Package2RevenueHistories.First;
 
-            Assert.AreEqual(180, customer1Package1RevenueHistory.Revenue);
-            Assert.AreEqual(100, customer1Package2RevenueHistory.Revenue);
+            Assert.Equal(180, customer1Package1RevenueHistory.Revenue);
+            Assert.Equal(100, customer1Package2RevenueHistory.Revenue);
 
             var invoice3 = new SalesInvoiceBuilder(this.DatabaseSession)
                 .WithInvoiceDate(DateTime.UtcNow)
@@ -235,11 +235,11 @@ namespace Allors.Domain
             customer2Package2RevenueHistories.Filter.AddEquals(M.PartyPackageRevenueHistory.Package, package2);
             var customer2Package2RevenueHistory = customer2Package2RevenueHistories.First;
 
-            Assert.AreEqual(180, customer1Package1RevenueHistory.Revenue);
-            Assert.AreEqual(100, customer1Package2RevenueHistory.Revenue);
+            Assert.Equal(180, customer1Package1RevenueHistory.Revenue);
+            Assert.Equal(100, customer1Package2RevenueHistory.Revenue);
 
-            Assert.AreEqual(15, customer2Package1RevenueHistory.Revenue);
-            Assert.AreEqual(10, customer2Package2RevenueHistory.Revenue);
+            Assert.Equal(15, customer2Package1RevenueHistory.Revenue);
+            Assert.Equal(10, customer2Package2RevenueHistory.Revenue);
         }
     }
 }

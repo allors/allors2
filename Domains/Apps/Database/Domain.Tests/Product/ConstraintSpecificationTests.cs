@@ -21,29 +21,29 @@
 
 namespace Allors.Domain
 {
-    using NUnit.Framework;
+    using Xunit;
 
-    [TestFixture]
+    
     public class ConstraintSpecificationTests : DomainTest
     {
-        [Test]
+        [Fact]
         public void GivenConstraintSpecification_WhenDeriving_ThenRequiredRelationsMustExist()
         {
             var builder = new ConstraintSpecificationBuilder(this.DatabaseSession);
             var specification = builder.Build();
 
-            Assert.IsTrue(this.DatabaseSession.Derive().HasErrors);
+            Assert.True(this.DatabaseSession.Derive().HasErrors);
 
             this.DatabaseSession.Rollback();
 
             builder.WithDescription("Description");
             specification = builder.Build();
 
-            Assert.IsFalse(this.DatabaseSession.Derive().HasErrors);
+            Assert.False(this.DatabaseSession.Derive().HasErrors);
 
-            Assert.AreEqual(specification.CurrentPartSpecificationStatus.PartSpecificationObjectState, new PartSpecificationObjectStates(this.DatabaseSession).Created);
-            Assert.AreEqual(specification.CurrentObjectState, new PartSpecificationObjectStates(this.DatabaseSession).Created);
-            Assert.AreEqual(specification.CurrentObjectState, specification.LastObjectState);
+            Assert.Equal(specification.CurrentPartSpecificationStatus.PartSpecificationObjectState, new PartSpecificationObjectStates(this.DatabaseSession).Created);
+            Assert.Equal(specification.CurrentObjectState, new PartSpecificationObjectStates(this.DatabaseSession).Created);
+            Assert.Equal(specification.CurrentObjectState, specification.LastObjectState);
         }
     }
 }

@@ -23,10 +23,10 @@
 namespace Allors.Domain
 {
     // TODO: 
-    //[TestFixture]
+    //
     //public class ProductCategoriesImportTests : DomainTest
     //{
-    //    [Test]
+    //    [Fact]
     //    public void InsertNoSettingsCodeOnly()
     //    {
     //        var table = new ProductCategoriesTable
@@ -46,18 +46,18 @@ namespace Allors.Domain
 
     //        var skus = new List<string>();
 
-    //        Assert.AreEqual(2, productCategories.Length);
+    //        Assert.Equal(2, productCategories.Length);
     //        foreach (ProductCategory productCategory in productCategories)
     //        {
     //            // From CatalogueItem
-    //            Assert.IsTrue(productCategory.ExistCode);
-    //            Assert.IsFalse(productCategory.ExistName);
-    //            Assert.IsFalse(productCategory.ExistDescription);
+    //            Assert.True(productCategory.ExistCode);
+    //            Assert.False(productCategory.ExistName);
+    //            Assert.False(productCategory.ExistDescription);
 
     //            // From ProductCategory
-    //            Assert.IsFalse(productCategory.ExistDescription);
-    //            Assert.IsFalse(productCategory.ExistName);
-    //            Assert.IsTrue(productCategory.ExistCode);
+    //            Assert.False(productCategory.ExistDescription);
+    //            Assert.False(productCategory.ExistName);
+    //            Assert.True(productCategory.ExistCode);
 
     //            skus.Add(productCategory.Code);
     //        }

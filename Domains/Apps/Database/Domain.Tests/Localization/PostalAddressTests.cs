@@ -22,44 +22,44 @@
 namespace Allors.Domain
 {
     using Meta;
-    using NUnit.Framework;
+    using Xunit;
 
-    [TestFixture]
+    
     public class PostalAddressGeographicBoundaryTests : DomainTest
     {
-        [Test]
+        [Fact]
         public void GivenGeographicBoundary_WhenDeriving_ThenRequiredRelationsMustExist()
         {
             var country = new Countries(this.DatabaseSession).CountryByIsoCode["BE"];
 
             new PostalAddressBuilder(this.DatabaseSession).Build();
  
-            Assert.IsTrue(this.DatabaseSession.Derive().HasErrors);
+            Assert.True(this.DatabaseSession.Derive().HasErrors);
 
             this.DatabaseSession.Rollback();
 
             new PostalAddressBuilder(this.DatabaseSession).WithAddress1("address1").Build();
 
-            Assert.IsTrue(this.DatabaseSession.Derive().HasErrors);
+            Assert.True(this.DatabaseSession.Derive().HasErrors);
 
             this.DatabaseSession.Rollback();
 
             new PostalAddressBuilder(this.DatabaseSession).WithGeographicBoundary(country).Build();
 
-            Assert.IsTrue(this.DatabaseSession.Derive().HasErrors);
+            Assert.True(this.DatabaseSession.Derive().HasErrors);
 
             this.DatabaseSession.Rollback();
 
-            Assert.IsFalse(this.DatabaseSession.Derive().HasErrors);
+            Assert.False(this.DatabaseSession.Derive().HasErrors);
 
             this.DatabaseSession.Rollback();
 
             new PostalAddressBuilder(this.DatabaseSession).WithAddress1("address1").WithGeographicBoundary(country).Build();
 
-            Assert.IsFalse(this.DatabaseSession.Derive().HasErrors);        
+            Assert.False(this.DatabaseSession.Derive().HasErrors);        
         }
 
-        [Test]
+        [Fact]
         public void GivenGeographicBoundary_WhenDeriving_ThenFormattedFullAddressIsSet()
         {
             var city = new CityBuilder(this.DatabaseSession).WithName("Mechelen").Build();
@@ -70,13 +70,13 @@ namespace Allors.Domain
 
             this.DatabaseSession.Derive(false);
 
-            Assert.AreEqual("Haverwerf 15", address.FormattedFullAddress);
+            Assert.Equal("Haverwerf 15", address.FormattedFullAddress);
 
             address.Address2 = "address2";
             
             this.DatabaseSession.Derive(false);
             
-            Assert.AreEqual("Haverwerf 15<br />address2", address.FormattedFullAddress);
+            Assert.Equal("Haverwerf 15<br />address2", address.FormattedFullAddress);
 
             address.RemoveAddress2();
 
@@ -85,16 +85,16 @@ namespace Allors.Domain
 
             this.DatabaseSession.Derive(true);
             
-            Assert.AreEqual("Haverwerf 15<br />2800 Mechelen", address.FormattedFullAddress);
+            Assert.Equal("Haverwerf 15<br />2800 Mechelen", address.FormattedFullAddress);
 
             address.AddGeographicBoundary(country);
 
             this.DatabaseSession.Derive(true);
             
-            Assert.AreEqual("Haverwerf 15<br />2800 Mechelen<br />Belgium", address.FormattedFullAddress);
+            Assert.Equal("Haverwerf 15<br />2800 Mechelen<br />Belgium", address.FormattedFullAddress);
         }
 
-        [Test]
+        [Fact]
         public void GivenGeographicBoundary_WhenDeriving_ThenCountryCityAndPostalCodeAreDerived()
         {
             var city = new CityBuilder(this.DatabaseSession).WithName("Mechelen").Build();
@@ -110,12 +110,12 @@ namespace Allors.Domain
 
             this.DatabaseSession.Derive(true);
 
-            Assert.AreEqual(postalCode, address.PostalCode);
-            Assert.AreEqual(city, address.City);
-            Assert.AreEqual(country, address.Country);
+            Assert.Equal(postalCode, address.PostalCode);
+            Assert.Equal(city, address.City);
+            Assert.Equal(country, address.Country);
         }
 
-        [Test]
+        [Fact]
         public void GivenPostalBoundary_WhenDeriving_ThenRequiredRelationsMustExist()
         {
             var country = new Countries(this.DatabaseSession).CountryByIsoCode["BE"];
@@ -125,32 +125,32 @@ namespace Allors.Domain
 
             new PostalAddressBuilder(this.DatabaseSession).Build();
 
-            Assert.IsTrue(this.DatabaseSession.Derive().HasErrors);
+            Assert.True(this.DatabaseSession.Derive().HasErrors);
 
             this.DatabaseSession.Rollback();
 
             new PostalAddressBuilder(this.DatabaseSession).WithAddress1("address1").Build();
 
-            Assert.IsTrue(this.DatabaseSession.Derive().HasErrors);
+            Assert.True(this.DatabaseSession.Derive().HasErrors);
 
             this.DatabaseSession.Rollback();
 
             new PostalAddressBuilder(this.DatabaseSession).WithPostalBoundary(postalBoundary).Build();
 
-            Assert.IsTrue(this.DatabaseSession.Derive().HasErrors);
+            Assert.True(this.DatabaseSession.Derive().HasErrors);
 
             this.DatabaseSession.Rollback();
 
-            Assert.IsFalse(this.DatabaseSession.Derive().HasErrors);
+            Assert.False(this.DatabaseSession.Derive().HasErrors);
 
             this.DatabaseSession.Rollback();
 
             new PostalAddressBuilder(this.DatabaseSession).WithAddress1("address1").WithPostalBoundary(postalBoundary).Build();
 
-            Assert.IsFalse(this.DatabaseSession.Derive().HasErrors);
+            Assert.False(this.DatabaseSession.Derive().HasErrors);
         }
 
-        [Test]
+        [Fact]
         public void GivenPostalBoundary_WhenDeriving_ThenFormattedFullAddressIsSet()
         {
             var country = new Countries(this.DatabaseSession).CountryByIsoCode["BE"];
@@ -162,13 +162,13 @@ namespace Allors.Domain
 
             this.DatabaseSession.Derive(false);
 
-            Assert.AreEqual("Haverwerf 15", address.FormattedFullAddress);
+            Assert.Equal("Haverwerf 15", address.FormattedFullAddress);
 
             address.Address2 = "address2";
 
             this.DatabaseSession.Derive(false);
 
-            Assert.AreEqual("Haverwerf 15<br />address2", address.FormattedFullAddress);
+            Assert.Equal("Haverwerf 15<br />address2", address.FormattedFullAddress);
 
             address.RemoveAddress2();
 
@@ -176,16 +176,16 @@ namespace Allors.Domain
 
             this.DatabaseSession.Derive(true);
 
-            Assert.AreEqual("Haverwerf 15<br />Mechelen<br />Belgium", address.FormattedFullAddress);
+            Assert.Equal("Haverwerf 15<br />Mechelen<br />Belgium", address.FormattedFullAddress);
 
             address.PostalBoundary.PostalCode = "2800";
 
             this.DatabaseSession.Derive(true);
 
-            Assert.AreEqual("Haverwerf 15<br />2800 Mechelen<br />Belgium", address.FormattedFullAddress);
+            Assert.Equal("Haverwerf 15<br />2800 Mechelen<br />Belgium", address.FormattedFullAddress);
         }
 
-        [Test]
+        [Fact]
         public void GivenPostalBoundary_WhenDeriving_ThenCountryIsDerived()
         {
             var country = new Countries(this.DatabaseSession).FindBy(M.Country.IsoCode, "BE");
@@ -198,9 +198,9 @@ namespace Allors.Domain
 
             this.DatabaseSession.Derive(true);
 
-            Assert.IsNull(address.PostalCode);
-            Assert.IsNull(address.City);
-            Assert.AreEqual(country, address.Country);
+            Assert.Null(address.PostalCode);
+            Assert.Null(address.City);
+            Assert.Equal(country, address.Country);
         }
     }
 }

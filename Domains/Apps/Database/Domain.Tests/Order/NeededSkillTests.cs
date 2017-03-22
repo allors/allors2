@@ -21,12 +21,12 @@
 
 namespace Allors.Domain
 {
-    using NUnit.Framework;
+    using Xunit;
 
-    [TestFixture]
+    
     public class NeededSkillTests : DomainTest
     {
-        [Test]
+        [Fact]
         public void GivenNeededSkill_WhenDeriving_ThenRequiredRelationsMustExist()
         {
             var projectManagement = new Skills(this.DatabaseSession).ProjectManagement;
@@ -35,21 +35,21 @@ namespace Allors.Domain
             var builder = new NeededSkillBuilder(this.DatabaseSession);
             var neededSkill = builder.Build();
 
-            Assert.IsTrue(this.DatabaseSession.Derive().HasErrors);
+            Assert.True(this.DatabaseSession.Derive().HasErrors);
 
             this.DatabaseSession.Rollback();
 
             builder.WithSkill(projectManagement);
             neededSkill = builder.Build();
 
-            Assert.IsTrue(this.DatabaseSession.Derive().HasErrors);
+            Assert.True(this.DatabaseSession.Derive().HasErrors);
 
             this.DatabaseSession.Rollback();
 
             builder.WithSkillLevel(expert);
             neededSkill = builder.Build();
 
-            Assert.IsFalse(this.DatabaseSession.Derive().HasErrors);
+            Assert.False(this.DatabaseSession.Derive().HasErrors);
         }
     }
 }

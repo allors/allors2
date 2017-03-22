@@ -37,8 +37,10 @@ msbuild Repository.sln /target:Clean /verbosity:minimal
 dotnet msbuild Apps.sln /target:Clean /verbosity:minimal
 dotnet msbuild Apps.sln /target:Database\Generate:Rebuild /p:Configuration="Debug" /verbosity:minimal || SET /A errno^|=%ERROR_BUILD_META% && GOTO :END
 
-dotnet Database\Generate\bin\Debug\netcoreapp1.1\Generate.dll .
+dotnet Database\Generate\bin\Debug\netcoreapp1.1\Generate.dll || SET /A errno^|=%ERROR_BUILD_META% && GOTO :END
 msbuild Database/Resources/Merge.proj /verbosity:minimal
+
+@echo Finished successfully
 
 :END
 IF "%interactive%"=="1" PAUSE

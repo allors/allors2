@@ -21,12 +21,12 @@
 
 namespace Allors.Domain
 {
-    using NUnit.Framework;
+    using Xunit;
 
-    [TestFixture]
+    
     public class DesiredProductFeatureTests : DomainTest
     {
-        [Test]
+        [Fact]
         public void GivenDesiredProductFeature_WhenDeriving_ThenRequiredRelationsMustExist()
         {
             var vatRate21 = new VatRateBuilder(this.DatabaseSession).WithRate(21).Build();
@@ -42,21 +42,21 @@ namespace Allors.Domain
             var builder = new DesiredProductFeatureBuilder(this.DatabaseSession);
             builder.Build();
 
-            Assert.IsTrue(this.DatabaseSession.Derive().HasErrors);
+            Assert.True(this.DatabaseSession.Derive().HasErrors);
 
             this.DatabaseSession.Rollback();
             
             builder.WithRequired(false);
             builder.Build();
 
-            Assert.IsTrue(this.DatabaseSession.Derive().HasErrors);
+            Assert.True(this.DatabaseSession.Derive().HasErrors);
 
             this.DatabaseSession.Rollback();
 
             builder.WithProductFeature(softwareFeature);
             builder.Build();
 
-            Assert.IsFalse(this.DatabaseSession.Derive().HasErrors);
+            Assert.False(this.DatabaseSession.Derive().HasErrors);
         }
     }
 }

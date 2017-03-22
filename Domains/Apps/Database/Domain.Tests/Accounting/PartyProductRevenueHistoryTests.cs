@@ -22,12 +22,12 @@ namespace Allors.Domain
 {
     using System;
     using Meta;
-    using NUnit.Framework;
+    using Xunit;
 
-    [TestFixture]
+    
     public class PartyProductRevenueHistoryTests : DomainTest
     {
-        [Test]
+        [Fact]
         public void GivenSalesInvoice_WhenDerived_ThenTotalExVatIsAddedToPartyProductRevenueHistory()
         {
             var productItem = new SalesInvoiceItemTypes(this.DatabaseSession).ProductItem;
@@ -90,14 +90,14 @@ namespace Allors.Domain
                 ////date in first iteration is too old, no history yet.
                 if (history != null)
                 {
-                    Assert.AreEqual(revenuePastTwelveMonths, history.Revenue);
+                    Assert.Equal(revenuePastTwelveMonths, history.Revenue);
                 }
 
                 date = date.AddMonths(1);
             }
         }
 
-        [Test]
+        [Fact]
         public void DeriveHistory()
         {
             var productItem = new SalesInvoiceItemTypes(this.DatabaseSession).ProductItem;
@@ -206,8 +206,8 @@ namespace Allors.Domain
             customer1Good2RevenueHistories.Filter.AddEquals(M.PartyProductRevenueHistory.Product, good2);
             var customer1Good2RevenueHistory = customer1Good2RevenueHistories.First;
 
-            Assert.AreEqual(180, customer1Good1RevenueHistory.Revenue);
-            Assert.AreEqual(100, customer1Good2RevenueHistory.Revenue);
+            Assert.Equal(180, customer1Good1RevenueHistory.Revenue);
+            Assert.Equal(100, customer1Good2RevenueHistory.Revenue);
 
             var invoice3 = new SalesInvoiceBuilder(this.DatabaseSession)
                 .WithInvoiceDate(DateTime.UtcNow)
@@ -235,11 +235,11 @@ namespace Allors.Domain
             customer2Good2RevenueHistories.Filter.AddEquals(M.PartyProductRevenueHistory.Product, good2);
             var customer2Good2RevenueHistory = customer2Good2RevenueHistories.First;
 
-            Assert.AreEqual(180, customer1Good1RevenueHistory.Revenue);
-            Assert.AreEqual(100, customer1Good2RevenueHistory.Revenue);
+            Assert.Equal(180, customer1Good1RevenueHistory.Revenue);
+            Assert.Equal(100, customer1Good2RevenueHistory.Revenue);
 
-            Assert.AreEqual(15, customer2Good1RevenueHistory.Revenue);
-            Assert.AreEqual(10, customer2Good2RevenueHistory.Revenue);
+            Assert.Equal(15, customer2Good1RevenueHistory.Revenue);
+            Assert.Equal(10, customer2Good2RevenueHistory.Revenue);
         }
     }
 }

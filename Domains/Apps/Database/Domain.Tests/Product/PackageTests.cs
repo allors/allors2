@@ -21,25 +21,25 @@
 
 namespace Allors.Domain
 {
-    using NUnit.Framework;
+    using Xunit;
 
-    [TestFixture]
+    
     public class PackageTests : DomainTest
     {
-        [Test]
+        [Fact]
         public void GivenPackage_WhenDeriving_ThenRequiredRelationsMustExist()
         {
             var builder = new PackageBuilder(this.DatabaseSession);
             var package = builder.Build();
 
-            Assert.IsTrue(this.DatabaseSession.Derive().HasErrors);
+            Assert.True(this.DatabaseSession.Derive().HasErrors);
 
             this.DatabaseSession.Rollback();
 
             builder.WithName("package");
             package = builder.Build();
 
-            Assert.IsFalse(this.DatabaseSession.Derive().HasErrors);
+            Assert.False(this.DatabaseSession.Derive().HasErrors);
         }
     }
 }

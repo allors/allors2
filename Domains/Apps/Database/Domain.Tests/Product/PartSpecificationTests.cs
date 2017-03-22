@@ -24,48 +24,48 @@ namespace Allors.Domain
     
 
     
-    using NUnit.Framework;
+    using Xunit;
 
-    [TestFixture]
+    
     public class PartSpecificationTests : DomainTest
     {
-        [Test]
+        [Fact]
         public void GivenConstraintSpecification_WhenBuild_ThenLastObjectStateEqualsCurrencObjectState()
         {
             var specification = new ConstraintSpecificationBuilder(this.DatabaseSession).WithDescription("specification").Build();
 
             this.DatabaseSession.Derive(true);
 
-            Assert.AreEqual(new PartSpecificationObjectStates(this.DatabaseSession).Created, specification.CurrentObjectState);
-            Assert.AreEqual(specification.LastObjectState, specification.CurrentObjectState);
+            Assert.Equal(new PartSpecificationObjectStates(this.DatabaseSession).Created, specification.CurrentObjectState);
+            Assert.Equal(specification.LastObjectState, specification.CurrentObjectState);
         }
 
-        [Test]
+        [Fact]
         public void GivenConstraintSpecification_WhenBuild_ThenPreviousObjectStateIsNull()
         {
             var specification = new ConstraintSpecificationBuilder(this.DatabaseSession).WithDescription("specification").Build();
 
             this.DatabaseSession.Derive(true);
 
-            Assert.IsNull(specification.PreviousObjectState);
+            Assert.Null(specification.PreviousObjectState);
         }
 
-        [Test]
+        [Fact]
         public void GivenConstraintSpecification_WhenConfirmed_ThenCurrentSpecificationStatusMustBeDerived()
         {
             var specification = new ConstraintSpecificationBuilder(this.DatabaseSession).WithDescription("specification").Build();
 
             this.DatabaseSession.Derive(true);
 
-            Assert.AreEqual(1, specification.PartSpecificationStatuses.Count);
-            Assert.AreEqual(new PartSpecificationObjectStates(this.DatabaseSession).Created, specification.CurrentPartSpecificationStatus.PartSpecificationObjectState);
+            Assert.Equal(1, specification.PartSpecificationStatuses.Count);
+            Assert.Equal(new PartSpecificationObjectStates(this.DatabaseSession).Created, specification.CurrentPartSpecificationStatus.PartSpecificationObjectState);
 
             specification.Approve();
 
             this.DatabaseSession.Derive(true);
 
-            Assert.AreEqual(2, specification.PartSpecificationStatuses.Count);
-            Assert.AreEqual(new PartSpecificationObjectStates(this.DatabaseSession).Approved, specification.CurrentPartSpecificationStatus.PartSpecificationObjectState);
+            Assert.Equal(2, specification.PartSpecificationStatuses.Count);
+            Assert.Equal(new PartSpecificationObjectStates(this.DatabaseSession).Approved, specification.CurrentPartSpecificationStatus.PartSpecificationObjectState);
         }
     }
 }

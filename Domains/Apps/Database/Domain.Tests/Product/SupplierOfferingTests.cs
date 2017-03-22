@@ -23,12 +23,12 @@ namespace Allors.Domain
 {
     using System;
     using Meta;
-    using NUnit.Framework;
+    using Xunit;
 
-    [TestFixture]
+    
     public class SupplierOfferingTests : DomainTest
     {
-        [Test]
+        [Fact]
         public void GivenSupplierOffering_WhenDeriving_ThenRequiredRelationsMustExist()
         {
             var supplier = new OrganisationBuilder(this.DatabaseSession).WithName("organisation").Build();
@@ -54,50 +54,50 @@ namespace Allors.Domain
             var builder = new SupplierOfferingBuilder(this.DatabaseSession);
             builder.Build();
 
-            Assert.IsTrue(this.DatabaseSession.Derive().HasErrors);
+            Assert.True(this.DatabaseSession.Derive().HasErrors);
 
             this.DatabaseSession.Rollback();
 
             builder.WithProduct(good);
             builder.Build();
 
-            Assert.IsTrue(this.DatabaseSession.Derive().HasErrors);
+            Assert.True(this.DatabaseSession.Derive().HasErrors);
 
             this.DatabaseSession.Rollback();
 
             builder.WithProductPurchasePrice(purchasePrice);
             builder.Build();
 
-            Assert.IsTrue(this.DatabaseSession.Derive().HasErrors);
+            Assert.True(this.DatabaseSession.Derive().HasErrors);
 
             this.DatabaseSession.Rollback();
 
             builder.WithSupplier(supplier);
             builder.Build();
 
-            Assert.IsTrue(this.DatabaseSession.Derive().HasErrors);
+            Assert.True(this.DatabaseSession.Derive().HasErrors);
 
             this.DatabaseSession.Rollback();
 
             builder.WithFromDate(DateTime.UtcNow);
             builder.Build();
 
-            Assert.IsFalse(this.DatabaseSession.Derive().HasErrors);
+            Assert.False(this.DatabaseSession.Derive().HasErrors);
 
             builder.WithPart(part);
             builder.Build();
 
-            Assert.IsTrue(this.DatabaseSession.Derive().HasErrors);
+            Assert.True(this.DatabaseSession.Derive().HasErrors);
 
             this.DatabaseSession.Rollback();
 
             var supplierOffering = builder.Build(); 
             supplierOffering.RemoveProduct();
 
-            Assert.IsFalse(this.DatabaseSession.Derive().HasErrors);
+            Assert.False(this.DatabaseSession.Derive().HasErrors);
         }
 
-        [Test]
+        [Fact]
         public void GivenNewGood_WhenDeriving_ThenNonSerializedInventryItemIsCreatedForEveryFacility()
         {
             var supplier = new OrganisationBuilder(this.DatabaseSession).WithName("supplier").Build();
@@ -134,12 +134,12 @@ namespace Allors.Domain
 
             this.DatabaseSession.Derive(true); 
 
-            Assert.AreEqual(2, good.InventoryItemsWhereGood.Count);
-            Assert.AreEqual(1, internalOrganisation.DefaultFacility.InventoryItemsWhereFacility.Count);
-            Assert.AreEqual(1, secondFacility.InventoryItemsWhereFacility.Count);
+            Assert.Equal(2, good.InventoryItemsWhereGood.Count);
+            Assert.Equal(1, internalOrganisation.DefaultFacility.InventoryItemsWhereFacility.Count);
+            Assert.Equal(1, secondFacility.InventoryItemsWhereFacility.Count);
         }
 
-        [Test]
+        [Fact]
         public void GivenNewGoodCoredOnFinishedGood_WhenDeriving_ThenNonSerializedInventryItemIsCreatedForEveryFinishedGoodAndFacility()
         {
             var supplier = new OrganisationBuilder(this.DatabaseSession).WithName("supplier").Build();
@@ -180,9 +180,9 @@ namespace Allors.Domain
 
             this.DatabaseSession.Derive(true); 
 
-            Assert.AreEqual(2, good.FinishedGood.InventoryItemsWherePart.Count);
-            Assert.AreEqual(1, internalOrganisation.DefaultFacility.InventoryItemsWhereFacility.Count);
-            Assert.AreEqual(1, secondFacility.InventoryItemsWhereFacility.Count);
+            Assert.Equal(2, good.FinishedGood.InventoryItemsWherePart.Count);
+            Assert.Equal(1, internalOrganisation.DefaultFacility.InventoryItemsWhereFacility.Count);
+            Assert.Equal(1, secondFacility.InventoryItemsWhereFacility.Count);
         }
     }
 }

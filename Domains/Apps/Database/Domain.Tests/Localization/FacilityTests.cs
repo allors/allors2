@@ -23,32 +23,32 @@
 
 namespace Allors.Domain
 {
-    using NUnit.Framework;
+    using Xunit;
 
-    [TestFixture]
+    
     public class FacilityTests : DomainTest
     {
-        [Test]
+        [Fact]
         public void GivenFacility_WhenDeriving_ThenRequiredRelationsMustExist()
         {
             var builder = new WarehouseBuilder(this.DatabaseSession);
             var facility = builder.Build();
 
-            Assert.IsTrue(this.DatabaseSession.Derive().HasErrors);
+            Assert.True(this.DatabaseSession.Derive().HasErrors);
 
             this.DatabaseSession.Rollback();
 
             builder.WithName("facility");
             facility = builder.Build();
 
-            Assert.IsTrue(this.DatabaseSession.Derive().HasErrors);
+            Assert.True(this.DatabaseSession.Derive().HasErrors);
 
             this.DatabaseSession.Rollback();
 
             builder.WithOwner(new InternalOrganisations(this.DatabaseSession).Extent().First);
             facility = builder.Build();
 
-            Assert.IsFalse(this.DatabaseSession.Derive().HasErrors);
+            Assert.False(this.DatabaseSession.Derive().HasErrors);
         }
     }
 }

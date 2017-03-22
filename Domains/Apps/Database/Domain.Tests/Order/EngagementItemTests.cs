@@ -24,89 +24,89 @@ namespace Allors.Domain
     
 
     
-    using NUnit.Framework;
+    using Xunit;
 
-    [TestFixture]
+    
     public class EngagementItemTests : DomainTest
     {
-        [Test]
+        [Fact]
         public void GivenCustomEngagementItem_WhenDeriving_ThenDescriptionIsRequired()
         {
             var builder = new CustomEngagementItemBuilder(this.DatabaseSession);
             var customEngagementItem = builder.Build();
 
-            Assert.IsTrue(this.DatabaseSession.Derive().HasErrors);
+            Assert.True(this.DatabaseSession.Derive().HasErrors);
 
             this.DatabaseSession.Rollback();
 
             builder.WithDescription("CustomEngagementItem");
             customEngagementItem = builder.Build();
 
-            Assert.IsFalse(this.DatabaseSession.Derive().HasErrors);
+            Assert.False(this.DatabaseSession.Derive().HasErrors);
         }
 
-        [Test]
+        [Fact]
         public void GivenDeliverableOrderItem_WhenDeriving_ThenDescriptionIsRequired()
         {
             var builder = new DeliverableOrderItemBuilder(this.DatabaseSession);
             var deliverableOrderItem = builder.Build();
 
-            Assert.IsTrue(this.DatabaseSession.Derive().HasErrors);
+            Assert.True(this.DatabaseSession.Derive().HasErrors);
 
             this.DatabaseSession.Rollback();
 
             builder.WithDescription("DeliverableOrderItem");
             deliverableOrderItem = builder.Build();
 
-            Assert.IsFalse(this.DatabaseSession.Derive().HasErrors);
+            Assert.False(this.DatabaseSession.Derive().HasErrors);
         }
 
-        [Test]
+        [Fact]
         public void GivenGoodOrderItem_WhenDeriving_ThenDescriptionIsRequired()
         {
             var builder = new GoodOrderItemBuilder(this.DatabaseSession);
             var goodOrderItem = builder.Build();
 
-            Assert.IsTrue(this.DatabaseSession.Derive().HasErrors);
+            Assert.True(this.DatabaseSession.Derive().HasErrors);
 
             this.DatabaseSession.Rollback();
 
             builder.WithDescription("GoodOrderItem");
             goodOrderItem = builder.Build();
 
-            Assert.IsFalse(this.DatabaseSession.Derive().HasErrors);
+            Assert.False(this.DatabaseSession.Derive().HasErrors);
         }
 
-        [Test]
+        [Fact]
         public void GivenProfessionalPlacement_WhenDeriving_ThenDescriptionIsRequired()
         {
             var builder = new ProfessionalPlacementBuilder(this.DatabaseSession);
             var professionalPlacement = builder.Build();
 
-            Assert.IsTrue(this.DatabaseSession.Derive().HasErrors);
+            Assert.True(this.DatabaseSession.Derive().HasErrors);
 
             this.DatabaseSession.Rollback();
 
             builder.WithDescription("ProfessionalPlacement");
             professionalPlacement = builder.Build();
 
-            Assert.IsFalse(this.DatabaseSession.Derive().HasErrors);
+            Assert.False(this.DatabaseSession.Derive().HasErrors);
         }
 
-        [Test]
+        [Fact]
         public void GivenStandardServiceOrderItem_WhenDeriving_ThenDescriptionIsRequired()
         {
             var builder = new StandardServiceOrderItemBuilder(this.DatabaseSession);
             var standardServiceOrderItem = builder.Build();
 
-            Assert.IsTrue(this.DatabaseSession.Derive().HasErrors);
+            Assert.True(this.DatabaseSession.Derive().HasErrors);
 
             this.DatabaseSession.Rollback();
 
             builder.WithDescription("StandardServiceOrderItem");
             standardServiceOrderItem = builder.Build();
 
-            Assert.IsFalse(this.DatabaseSession.Derive().HasErrors);
+            Assert.False(this.DatabaseSession.Derive().HasErrors);
         }
     }
 }

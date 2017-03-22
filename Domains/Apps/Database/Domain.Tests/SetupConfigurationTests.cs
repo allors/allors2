@@ -21,31 +21,31 @@
 namespace Allors.Domain
 {
     using Meta;
-    using NUnit.Framework;
+    using Xunit;
 
-    [TestFixture]
+    
     public class SetupConfigurationTests : DomainTest
     {
-        [Test]
+        [Fact]
         public void GivenSetConfiguration_WhenApplied_ThenCountryEuMemberStateIsSet()
         {
             var finland = new Countries(this.DatabaseSession).FindBy(M.Country.IsoCode, "FI");
-            Assert.IsTrue(finland.EuMemberState.Value);
+            Assert.True(finland.EuMemberState.Value);
 
             var norway = new Countries(this.DatabaseSession).FindBy(M.Country.IsoCode, "NO");
-            Assert.IsFalse(norway.EuMemberState.Value);
+            Assert.False(norway.EuMemberState.Value);
         }
 
-        [Test]
+        [Fact]
         public void GivenSetConfiguration_WhenApplied_ThenCountryIbanDataIsSet()
         {
             var finland = new Countries(this.DatabaseSession).FindBy(M.Country.IsoCode, "FI");
-            Assert.AreEqual(18, finland.IbanLength);
-            Assert.AreEqual(@"\d{14}", finland.IbanRegex);
+            Assert.Equal(18, finland.IbanLength);
+            Assert.Equal(@"\d{14}", finland.IbanRegex);
 
             var norway = new Countries(this.DatabaseSession).FindBy(M.Country.IsoCode, "NO");
-            Assert.AreEqual(15, norway.IbanLength);
-            Assert.AreEqual(@"\d{11}", norway.IbanRegex);
+            Assert.Equal(15, norway.IbanLength);
+            Assert.Equal(@"\d{11}", norway.IbanRegex);
         }
     }
 }

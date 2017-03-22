@@ -24,12 +24,12 @@ using System;
 namespace Allors.Domain
 {
     using Meta;
-    using NUnit.Framework;
+    using Xunit;
 
-    [TestFixture]
+    
     public class JournalTests : DomainTest
     {
-        [Test]
+        [Fact]
         public void GivenJournal_WhenDeriving_ThenDescriptionMustExist()
         {
             var internalOrganisation = new InternalOrganisations(this.DatabaseSession).FindBy(M.InternalOrganisation.Name, "internalOrganisation");
@@ -56,17 +56,17 @@ namespace Allors.Domain
             builder.WithContraAccount(internalOrganisationGlAccount);
             builder.Build();
 
-            Assert.IsTrue(this.DatabaseSession.Derive().HasErrors);
+            Assert.True(this.DatabaseSession.Derive().HasErrors);
 
             this.DatabaseSession.Rollback();
 
             builder.WithDescription("description");
             builder.Build();
 
-            Assert.IsFalse(this.DatabaseSession.Derive().HasErrors);
+            Assert.False(this.DatabaseSession.Derive().HasErrors);
         }
 
-        [Test]
+        [Fact]
         public void GivenJournal_WhenDeriving_ThenInternalOrganisationMustExist()
         {
             var internalOrganisation = new InternalOrganisations(this.DatabaseSession).FindBy(M.InternalOrganisation.Name, "internalOrganisation");
@@ -93,10 +93,10 @@ namespace Allors.Domain
             builder.WithContraAccount(internalOrganisationGlAccount);
             builder.Build();
 
-            Assert.IsFalse(this.DatabaseSession.Derive().HasErrors);
+            Assert.False(this.DatabaseSession.Derive().HasErrors);
         }
 
-        [Test]
+        [Fact]
         public void GivenJournal_WhenDeriving_ThenJournalTypeMustExist()
         {
             var internalOrganisation = new InternalOrganisations(this.DatabaseSession).FindBy(M.InternalOrganisation.Name, "internalOrganisation");
@@ -122,17 +122,17 @@ namespace Allors.Domain
             builder.WithContraAccount(internalOrganisationGlAccount);
             builder.Build();
 
-            Assert.IsTrue(this.DatabaseSession.Derive().HasErrors);
+            Assert.True(this.DatabaseSession.Derive().HasErrors);
 
             this.DatabaseSession.Rollback();
 
             builder.WithJournalType(new JournalTypes(this.DatabaseSession).Bank);
             builder.Build();
 
-            Assert.IsFalse(this.DatabaseSession.Derive().HasErrors);
+            Assert.False(this.DatabaseSession.Derive().HasErrors);
         }
 
-        [Test]
+        [Fact]
         public void GivenJournal_WhenDeriving_ThenContraAccountMustExist()
         {
             var internalOrganisation = new InternalOrganisations(this.DatabaseSession).FindBy(M.InternalOrganisation.Name, "internalOrganisation");
@@ -142,7 +142,7 @@ namespace Allors.Domain
             builder.WithJournalType(new JournalTypes(this.DatabaseSession).Bank);
             builder.Build();
 
-            Assert.IsTrue(this.DatabaseSession.Derive().HasErrors);
+            Assert.True(this.DatabaseSession.Derive().HasErrors);
 
             this.DatabaseSession.Rollback();
 
@@ -164,10 +164,10 @@ namespace Allors.Domain
             builder.WithContraAccount(internalOrganisationGlAccount);
             builder.Build();
 
-            Assert.IsFalse(this.DatabaseSession.Derive().HasErrors);
+            Assert.False(this.DatabaseSession.Derive().HasErrors);
         }
 
-        [Test]
+        [Fact]
         public void GivenJournal_WhenBuildWithout_ThenBlockUnpaidTransactionsIsFalse()
         {
             var internalOrganisation = new InternalOrganisations(this.DatabaseSession).FindBy(M.InternalOrganisation.Name, "internalOrganisation");
@@ -192,10 +192,10 @@ namespace Allors.Domain
 
             this.DatabaseSession.Derive();
 
-            Assert.IsFalse(journal.BlockUnpaidTransactions);
+            Assert.False(journal.BlockUnpaidTransactions);
         }
 
-        [Test]
+        [Fact]
         public void GivenJournal_WhenBuildWithout_ThenCloseWhenInBalanceIsFalse()
         {
             var internalOrganisation = new InternalOrganisations(this.DatabaseSession).FindBy(M.InternalOrganisation.Name, "internalOrganisation");
@@ -220,10 +220,10 @@ namespace Allors.Domain
 
             this.DatabaseSession.Derive();
 
-            Assert.IsFalse(journal.CloseWhenInBalance);
+            Assert.False(journal.CloseWhenInBalance);
         }
 
-        [Test]
+        [Fact]
         public void GivenJournal_WhenBuildWithout_ThenUseAsDefaultIsFalse()
         {
             var internalOrganisation = new InternalOrganisations(this.DatabaseSession).FindBy(M.InternalOrganisation.Name, "internalOrganisation");
@@ -248,10 +248,10 @@ namespace Allors.Domain
 
             this.DatabaseSession.Derive();
 
-            Assert.IsFalse(journal.UseAsDefault);
+            Assert.False(journal.UseAsDefault);
         }
 
-        [Test]
+        [Fact]
         public void GivenJournal_WhenDeriving_ThenContraAccountCanBeChangedWhenNotUsedYet()
         {
             var internalOrganisation = new InternalOrganisations(this.DatabaseSession).FindBy(M.InternalOrganisation.Name, "internalOrganisation");
@@ -294,16 +294,16 @@ namespace Allors.Domain
 
             this.DatabaseSession.Derive(true);
 
-            Assert.AreEqual(generalLedgerAccount1, journal.PreviousContraAccount.GeneralLedgerAccount);
+            Assert.Equal(generalLedgerAccount1, journal.PreviousContraAccount.GeneralLedgerAccount);
 
             journal.ContraAccount = internalOrganisationGlAccount2;
 
             this.DatabaseSession.Derive(true);
 
-            Assert.AreEqual(generalLedgerAccount2, journal.PreviousContraAccount.GeneralLedgerAccount);
+            Assert.Equal(generalLedgerAccount2, journal.PreviousContraAccount.GeneralLedgerAccount);
         }
 
-        [Test]
+        [Fact]
         public void GivenJournal_WhenDeriving_ThenContraAccountCanNotBeChangedWhenJournalEntriesArePresent()
         {
             var internalOrganisation = new InternalOrganisations(this.DatabaseSession).FindBy(M.InternalOrganisation.Name, "internalOrganisation");
@@ -346,7 +346,7 @@ namespace Allors.Domain
 
             this.DatabaseSession.Derive(true);
 
-            Assert.AreEqual(generalLedgerAccount1, journal.PreviousContraAccount.GeneralLedgerAccount);
+            Assert.Equal(generalLedgerAccount1, journal.PreviousContraAccount.GeneralLedgerAccount);
 
             journal.AddJournalEntry(new JournalEntryBuilder(this.DatabaseSession)
                                         .WithJournalEntryDetail(new JournalEntryDetailBuilder(this.DatabaseSession)
@@ -358,10 +358,10 @@ namespace Allors.Domain
 
             journal.ContraAccount = internalOrganisationGlAccount2;
 
-            Assert.AreEqual("Journal.ContraAccount, Journal.PreviousContraAccount are not equal", this.DatabaseSession.Derive().Errors[0].Message);
+            Assert.Equal("Journal.ContraAccount, Journal.PreviousContraAccount are not equal", this.DatabaseSession.Derive().Errors[0].Message);
         }
 
-        [Test]
+        [Fact]
         public void GivenJournal_WhenDeriving_ThenJournalTypeCanBeChangedWhenJournalIsNotUsedYet()
         {
             var internalOrganisation = new InternalOrganisations(this.DatabaseSession).FindBy(M.InternalOrganisation.Name, "internalOrganisation");
@@ -389,16 +389,16 @@ namespace Allors.Domain
 
             this.DatabaseSession.Derive(true);
 
-            Assert.AreEqual(generalLedgerAccount1, journal.PreviousContraAccount.GeneralLedgerAccount);
+            Assert.Equal(generalLedgerAccount1, journal.PreviousContraAccount.GeneralLedgerAccount);
 
             journal.JournalType = new JournalTypes(this.DatabaseSession).Cash;
 
             this.DatabaseSession.Derive(true);
 
-            Assert.AreEqual(new JournalTypes(this.DatabaseSession).Cash, journal.PreviousJournalType);
+            Assert.Equal(new JournalTypes(this.DatabaseSession).Cash, journal.PreviousJournalType);
         }
 
-        [Test]
+        [Fact]
         public void GivenJournal_WhenDeriving_ThenJournalTypeCanNotBeChangedWhenJournalEntriesArePresent()
         {
             var internalOrganisation = new InternalOrganisations(this.DatabaseSession).FindBy(M.InternalOrganisation.Name, "internalOrganisation");
@@ -426,7 +426,7 @@ namespace Allors.Domain
 
             this.DatabaseSession.Derive(true);
 
-            Assert.AreEqual(generalLedgerAccount1, journal.PreviousContraAccount.GeneralLedgerAccount);
+            Assert.Equal(generalLedgerAccount1, journal.PreviousContraAccount.GeneralLedgerAccount);
 
             journal.AddJournalEntry(new JournalEntryBuilder(this.DatabaseSession)
                                         .WithJournalEntryDetail(new JournalEntryDetailBuilder(this.DatabaseSession)
@@ -438,7 +438,7 @@ namespace Allors.Domain
 
             journal.JournalType = new JournalTypes(this.DatabaseSession).Cash;
 
-            Assert.AreEqual("Journal.JournalType, Journal.PreviousJournalType are not equal", this.DatabaseSession.Derive().Errors[0].Message);
+            Assert.Equal("Journal.JournalType, Journal.PreviousJournalType are not equal", this.DatabaseSession.Derive().Errors[0].Message);
         }
     }
 }

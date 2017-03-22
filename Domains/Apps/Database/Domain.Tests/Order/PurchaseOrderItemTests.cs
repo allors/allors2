@@ -25,21 +25,18 @@ namespace Allors.Domain
     using System.Security.Principal;
     using System.Threading;
     using Meta;
-    using NUnit.Framework;
+    using Xunit;
 
-    [TestFixture]
+    
     public class PurchaseOrderItemTests : DomainTest
     {
         private FinishedGood finishedGood;
         private ProductPurchasePrice currentPurchasePrice;
         private PurchaseOrder order;
         private Organisation supplier;
-
-        [SetUp]
-        public override void Init()
+        
+        public PurchaseOrderItemTests()
         {
-            base.Init();
-
             var euro = new Currencies(this.DatabaseSession).FindBy(M.Currency.IsoCode, "EUR");
 
             var mechelen = new CityBuilder(this.DatabaseSession).WithName("Mechelen").Build();
@@ -106,7 +103,7 @@ namespace Allors.Domain
             this.DatabaseSession.Commit();
         }
 
-        [Test]
+        [Fact]
         public void GivenOrderItem_WhenDeriving_ThenRequiredRelationsMustExist()
         {
             this.InstantiateObjects(this.DatabaseSession);
@@ -124,27 +121,27 @@ namespace Allors.Domain
             var builder = new PurchaseOrderItemBuilder(this.DatabaseSession);
             order.AddPurchaseOrderItem(builder.Build());
 
-            Assert.IsTrue(this.DatabaseSession.Derive().HasErrors);
+            Assert.True(this.DatabaseSession.Derive().HasErrors);
 
             this.DatabaseSession.Rollback();
 
             builder.WithPart(part);
             order.AddPurchaseOrderItem(builder.Build());
 
-            Assert.IsFalse(this.DatabaseSession.Derive().HasErrors);
+            Assert.False(this.DatabaseSession.Derive().HasErrors);
 
             builder.WithProduct(new GoodBuilder(this.DatabaseSession).Build());
             var orderItem = builder.Build();
             order.AddPurchaseOrderItem(orderItem);
 
-            Assert.IsTrue(this.DatabaseSession.Derive().HasErrors);
+            Assert.True(this.DatabaseSession.Derive().HasErrors);
 
             orderItem.RemovePart();
 
-            Assert.IsFalse(this.DatabaseSession.Derive().HasErrors);
+            Assert.False(this.DatabaseSession.Derive().HasErrors);
         }
 
-        [Test]
+        [Fact]
         public void GivenConfirmedOrderItemForGood_WhenOrderItemIsRemoved_ThenItemIsRemovedFromValidOrderItems()
         {
             this.InstantiateObjects(this.DatabaseSession);
@@ -171,16 +168,16 @@ namespace Allors.Domain
 
             this.DatabaseSession.Derive(true);
 
-            Assert.AreEqual(1, this.order.ValidOrderItems.Count);
+            Assert.Equal(1, this.order.ValidOrderItems.Count);
 
             item.Cancel();
 
             this.DatabaseSession.Derive(true);
 
-            Assert.AreEqual(0, this.order.ValidOrderItems.Count);
+            Assert.Equal(0, this.order.ValidOrderItems.Count);
         }
 
-        [Test]
+        [Fact]
         public void GivenOrderItemForPart_WhenDerivingPrices_ThenUsePartCurrentPurchasePrice()
         {
             this.InstantiateObjects(this.DatabaseSession);
@@ -191,23 +188,23 @@ namespace Allors.Domain
 
             this.DatabaseSession.Derive(true);
 
-            Assert.AreEqual(this.currentPurchasePrice.Price, item1.UnitBasePrice);
-            Assert.AreEqual(0, item1.UnitDiscount);
-            Assert.AreEqual(0, item1.UnitSurcharge);
-            Assert.AreEqual(this.currentPurchasePrice.Price, item1.CalculatedUnitPrice);
+            Assert.Equal(this.currentPurchasePrice.Price, item1.UnitBasePrice);
+            Assert.Equal(0, item1.UnitDiscount);
+            Assert.Equal(0, item1.UnitSurcharge);
+            Assert.Equal(this.currentPurchasePrice.Price, item1.CalculatedUnitPrice);
 
-            Assert.AreEqual(this.currentPurchasePrice.Price * QuantityOrdered, item1.TotalBasePrice);
-            Assert.AreEqual(0, item1.TotalDiscount);
-            Assert.AreEqual(0, item1.TotalSurcharge);
-            Assert.AreEqual(this.currentPurchasePrice.Price * QuantityOrdered, item1.TotalExVat);
+            Assert.Equal(this.currentPurchasePrice.Price * QuantityOrdered, item1.TotalBasePrice);
+            Assert.Equal(0, item1.TotalDiscount);
+            Assert.Equal(0, item1.TotalSurcharge);
+            Assert.Equal(this.currentPurchasePrice.Price * QuantityOrdered, item1.TotalExVat);
 
-            Assert.AreEqual(this.currentPurchasePrice.Price * QuantityOrdered, this.order.TotalBasePrice);
-            Assert.AreEqual(0, this.order.TotalDiscount);
-            Assert.AreEqual(0, this.order.TotalSurcharge);
-            Assert.AreEqual(this.currentPurchasePrice.Price * QuantityOrdered, this.order.TotalExVat);
+            Assert.Equal(this.currentPurchasePrice.Price * QuantityOrdered, this.order.TotalBasePrice);
+            Assert.Equal(0, this.order.TotalDiscount);
+            Assert.Equal(0, this.order.TotalSurcharge);
+            Assert.Equal(this.currentPurchasePrice.Price * QuantityOrdered, this.order.TotalExVat);
         }
 
-        [Test]
+        [Fact]
         public void GivenOrderItemForProduct_WhenDerivingPrices_ThenUseProductCurrentPurchasePrice()
         {
             var euro = new Currencies(this.DatabaseSession).FindBy(M.Currency.IsoCode, "EUR");
@@ -264,23 +261,23 @@ namespace Allors.Domain
 
             this.DatabaseSession.Derive(true);
 
-            Assert.AreEqual(currentPurchasePriceGood.Price, item1.UnitBasePrice);
-            Assert.AreEqual(0, item1.UnitDiscount);
-            Assert.AreEqual(0, item1.UnitSurcharge);
-            Assert.AreEqual(currentPurchasePriceGood.Price, item1.CalculatedUnitPrice);
+            Assert.Equal(currentPurchasePriceGood.Price, item1.UnitBasePrice);
+            Assert.Equal(0, item1.UnitDiscount);
+            Assert.Equal(0, item1.UnitSurcharge);
+            Assert.Equal(currentPurchasePriceGood.Price, item1.CalculatedUnitPrice);
 
-            Assert.AreEqual(currentPurchasePriceGood.Price * QuantityOrdered, item1.TotalBasePrice);
-            Assert.AreEqual(0, item1.TotalDiscount);
-            Assert.AreEqual(0, item1.TotalSurcharge);
-            Assert.AreEqual(currentPurchasePriceGood.Price * QuantityOrdered, item1.TotalExVat);
+            Assert.Equal(currentPurchasePriceGood.Price * QuantityOrdered, item1.TotalBasePrice);
+            Assert.Equal(0, item1.TotalDiscount);
+            Assert.Equal(0, item1.TotalSurcharge);
+            Assert.Equal(currentPurchasePriceGood.Price * QuantityOrdered, item1.TotalExVat);
 
-            Assert.AreEqual(currentPurchasePriceGood.Price * QuantityOrdered, this.order.TotalBasePrice);
-            Assert.AreEqual(0, this.order.TotalDiscount);
-            Assert.AreEqual(0, this.order.TotalSurcharge);
-            Assert.AreEqual(currentPurchasePriceGood.Price * QuantityOrdered, this.order.TotalExVat);
+            Assert.Equal(currentPurchasePriceGood.Price * QuantityOrdered, this.order.TotalBasePrice);
+            Assert.Equal(0, this.order.TotalDiscount);
+            Assert.Equal(0, this.order.TotalSurcharge);
+            Assert.Equal(currentPurchasePriceGood.Price * QuantityOrdered, this.order.TotalExVat);
         }
 
-        [Test]
+        [Fact]
         public void GivenOrderItemForPartWithActualPrice_WhenDerivingPrices_ThenUseActualPrice()
         {
             this.InstantiateObjects(this.DatabaseSession);
@@ -290,27 +287,27 @@ namespace Allors.Domain
 
             this.DatabaseSession.Derive(true);
 
-            Assert.AreEqual(15, item1.UnitBasePrice);
-            Assert.AreEqual(0, item1.UnitDiscount);
-            Assert.AreEqual(0, item1.UnitSurcharge);
-            Assert.AreEqual(15, item1.CalculatedUnitPrice);
-            Assert.AreEqual(0, item1.UnitVat);
-            Assert.AreEqual(45, item1.TotalBasePrice);
-            Assert.AreEqual(0, item1.TotalDiscount);
-            Assert.AreEqual(0, item1.TotalSurcharge);
-            Assert.AreEqual(45, item1.TotalExVat);
-            Assert.AreEqual(0, item1.TotalVat);
-            Assert.AreEqual(45, item1.TotalIncVat);
+            Assert.Equal(15, item1.UnitBasePrice);
+            Assert.Equal(0, item1.UnitDiscount);
+            Assert.Equal(0, item1.UnitSurcharge);
+            Assert.Equal(15, item1.CalculatedUnitPrice);
+            Assert.Equal(0, item1.UnitVat);
+            Assert.Equal(45, item1.TotalBasePrice);
+            Assert.Equal(0, item1.TotalDiscount);
+            Assert.Equal(0, item1.TotalSurcharge);
+            Assert.Equal(45, item1.TotalExVat);
+            Assert.Equal(0, item1.TotalVat);
+            Assert.Equal(45, item1.TotalIncVat);
 
-            Assert.AreEqual(45, this.order.TotalBasePrice);
-            Assert.AreEqual(0, this.order.TotalDiscount);
-            Assert.AreEqual(0, this.order.TotalSurcharge);
-            Assert.AreEqual(45, this.order.TotalExVat);
-            Assert.AreEqual(0, this.order.TotalVat);
-            Assert.AreEqual(45, this.order.TotalIncVat);
+            Assert.Equal(45, this.order.TotalBasePrice);
+            Assert.Equal(0, this.order.TotalDiscount);
+            Assert.Equal(0, this.order.TotalSurcharge);
+            Assert.Equal(45, this.order.TotalExVat);
+            Assert.Equal(0, this.order.TotalVat);
+            Assert.Equal(45, this.order.TotalIncVat);
         }
 
-        [Test]
+        [Fact]
         public void GivenOrderItem_WhenObjectStateIsCreated_ThenItemMayBeDeletedButNotCancelledOrRejected()
         {
             var administrator = new PersonBuilder(this.DatabaseSession).WithFirstName("Koen").WithUserName("admin").Build();
@@ -330,7 +327,7 @@ namespace Allors.Domain
                 .WithVatRate(new VatRates(this.DatabaseSession).FindBy(M.VatRate.Rate,21))
                 .Build();
 
-            Thread.CurrentPrincipal = new GenericPrincipal(new GenericIdentity("admin", "Forms"), new string[0]);
+            this.SetIdentity("admin");
 
             var item = new PurchaseOrderItemBuilder(this.DatabaseSession)
                 .WithProduct(good)
@@ -343,16 +340,16 @@ namespace Allors.Domain
             this.DatabaseSession.Derive(true);
             this.DatabaseSession.Commit();
 
-            Assert.AreEqual(new PurchaseOrderItemObjectStates(this.DatabaseSession).Created, item.CurrentObjectState);
+            Assert.Equal(new PurchaseOrderItemObjectStates(this.DatabaseSession).Created, item.CurrentObjectState);
             var currentUser = new Users(this.DatabaseSession).GetCurrentUser();
             var acl = new AccessControlList(item, currentUser);
 
-            Assert.IsTrue(acl.CanExecute(M.PurchaseOrderItem.Delete));
-            Assert.IsFalse(acl.CanExecute(M.PurchaseOrderItem.Cancel));
-            Assert.IsFalse(acl.CanExecute(M.PurchaseOrderItem.Reject));
+            Assert.True(acl.CanExecute(M.PurchaseOrderItem.Delete));
+            Assert.False(acl.CanExecute(M.PurchaseOrderItem.Cancel));
+            Assert.False(acl.CanExecute(M.PurchaseOrderItem.Reject));
         }
 
-        [Test]
+        [Fact]
         public void GivenOrderItem_WhenObjectStateIsConfirmed_ThenItemMayBeCancelledOrRejectedButNotDeleted()
         {
             var administrator = new PersonBuilder(this.DatabaseSession).WithFirstName("Koen").WithUserName("admin").Build();
@@ -372,7 +369,7 @@ namespace Allors.Domain
                 .WithVatRate(new VatRates(this.DatabaseSession).FindBy(M.VatRate.Rate,21))
                 .Build();
 
-            Thread.CurrentPrincipal = new GenericPrincipal(new GenericIdentity("admin", "Forms"), new string[0]);
+            this.SetIdentity("admin");
 
             var item = new PurchaseOrderItemBuilder(this.DatabaseSession)
                 .WithProduct(good)
@@ -387,14 +384,14 @@ namespace Allors.Domain
             this.DatabaseSession.Derive(true);
             this.DatabaseSession.Commit();
 
-            Assert.AreEqual(new PurchaseOrderItemObjectStates(this.DatabaseSession).InProcess, item.CurrentObjectState);
+            Assert.Equal(new PurchaseOrderItemObjectStates(this.DatabaseSession).InProcess, item.CurrentObjectState);
             var acl = new AccessControlList(item, new Users(this.DatabaseSession).GetCurrentUser());
-            Assert.IsTrue(acl.CanExecute(M.PurchaseOrderItem.Cancel));
-            Assert.IsTrue(acl.CanExecute(M.PurchaseOrderItem.Reject));
-            Assert.IsFalse(acl.CanExecute(M.PurchaseOrderItem.Delete));
+            Assert.True(acl.CanExecute(M.PurchaseOrderItem.Cancel));
+            Assert.True(acl.CanExecute(M.PurchaseOrderItem.Reject));
+            Assert.False(acl.CanExecute(M.PurchaseOrderItem.Delete));
         }
 
-        [Test]
+        [Fact]
         public void GivenOrderItem_WhenObjectStateIsPartiallyReceived_ThenItemMayNotBeCancelledOrRejectedOrDeleted()
         {
             var administrator = new PersonBuilder(this.DatabaseSession).WithFirstName("Koen").WithUserName("admin").Build();
@@ -414,7 +411,7 @@ namespace Allors.Domain
                 .WithVatRate(new VatRates(this.DatabaseSession).FindBy(M.VatRate.Rate,21))
                 .Build();
 
-            Thread.CurrentPrincipal = new GenericPrincipal(new GenericIdentity("admin", "Forms"), new string[0]);
+            this.SetIdentity("admin");
 
             var item = new PurchaseOrderItemBuilder(this.DatabaseSession)
                 .WithProduct(good)
@@ -442,14 +439,14 @@ namespace Allors.Domain
 
             this.DatabaseSession.Derive(true);
 
-            Assert.AreEqual(new PurchaseOrderItemObjectStates(this.DatabaseSession).PartiallyReceived, item.CurrentObjectState);
+            Assert.Equal(new PurchaseOrderItemObjectStates(this.DatabaseSession).PartiallyReceived, item.CurrentObjectState);
             var acl = new AccessControlList(item, new Users(this.DatabaseSession).GetCurrentUser());
-            Assert.IsFalse(acl.CanExecute(M.PurchaseOrderItem.Cancel));
-            Assert.IsFalse(acl.CanExecute(M.PurchaseOrderItem.Reject));
-            Assert.IsFalse(acl.CanExecute(M.PurchaseOrderItem.Delete));
+            Assert.False(acl.CanExecute(M.PurchaseOrderItem.Cancel));
+            Assert.False(acl.CanExecute(M.PurchaseOrderItem.Reject));
+            Assert.False(acl.CanExecute(M.PurchaseOrderItem.Delete));
         }
 
-        [Test]
+        [Fact]
         public void GivenOrderItem_WhenObjectStateIsCancelled_ThenItemMayNotBeCancelledOrRejectedOrDeleted()
         {
             var administrator = new PersonBuilder(this.DatabaseSession).WithFirstName("Koen").WithUserName("admin").Build();
@@ -469,7 +466,7 @@ namespace Allors.Domain
                 .WithVatRate(new VatRates(this.DatabaseSession).FindBy(M.VatRate.Rate,21))
                 .Build();
 
-            Thread.CurrentPrincipal = new GenericPrincipal(new GenericIdentity("admin", "Forms"), new string[0]);
+            this.SetIdentity("admin");
 
             var item = new PurchaseOrderItemBuilder(this.DatabaseSession)
                 .WithProduct(good)
@@ -486,14 +483,14 @@ namespace Allors.Domain
 
             this.DatabaseSession.Derive(true);
 
-            Assert.AreEqual(new PurchaseOrderItemObjectStates(this.DatabaseSession).Cancelled, item.CurrentObjectState);
+            Assert.Equal(new PurchaseOrderItemObjectStates(this.DatabaseSession).Cancelled, item.CurrentObjectState);
             var acl = new AccessControlList(item, new Users(this.DatabaseSession).GetCurrentUser());
-            Assert.IsFalse(acl.CanExecute(M.PurchaseOrderItem.Cancel));
-            Assert.IsFalse(acl.CanExecute(M.PurchaseOrderItem.Reject));
-            Assert.IsFalse(acl.CanExecute(M.PurchaseOrderItem.Delete));
+            Assert.False(acl.CanExecute(M.PurchaseOrderItem.Cancel));
+            Assert.False(acl.CanExecute(M.PurchaseOrderItem.Reject));
+            Assert.False(acl.CanExecute(M.PurchaseOrderItem.Delete));
         }
 
-        [Test]
+        [Fact]
         public void GivenOrderItem_WhenObjectStateIsRejected_ThenItemMayNotBeCancelledOrRejectedOrDeleted()
         {
             var administrator = new PersonBuilder(this.DatabaseSession).WithFirstName("Koen").WithUserName("admin").Build();
@@ -513,7 +510,7 @@ namespace Allors.Domain
                 .WithVatRate(new VatRates(this.DatabaseSession).FindBy(M.VatRate.Rate,21))
                 .Build();
 
-            Thread.CurrentPrincipal = new GenericPrincipal(new GenericIdentity("admin", "Forms"), new string[0]);
+            this.SetIdentity("admin");
 
             var item = new PurchaseOrderItemBuilder(this.DatabaseSession)
                 .WithProduct(good)
@@ -529,14 +526,14 @@ namespace Allors.Domain
 
             this.DatabaseSession.Derive(true);
 
-            Assert.AreEqual(new PurchaseOrderItemObjectStates(this.DatabaseSession).Rejected, item.CurrentObjectState);
+            Assert.Equal(new PurchaseOrderItemObjectStates(this.DatabaseSession).Rejected, item.CurrentObjectState);
             var acl = new AccessControlList(item, new Users(this.DatabaseSession).GetCurrentUser());
-            Assert.IsFalse(acl.CanExecute(M.PurchaseOrderItem.Cancel));
-            Assert.IsFalse(acl.CanExecute(M.PurchaseOrderItem.Reject));
-            Assert.IsFalse(acl.CanExecute(M.PurchaseOrderItem.Delete));
+            Assert.False(acl.CanExecute(M.PurchaseOrderItem.Cancel));
+            Assert.False(acl.CanExecute(M.PurchaseOrderItem.Reject));
+            Assert.False(acl.CanExecute(M.PurchaseOrderItem.Delete));
         }
 
-        [Test]
+        [Fact]
         public void GivenOrderItem_WhenObjectStateIsCompleted_ThenItemMayNotBeCancelledOrRejectedOrDeleted()
         {
             var administrator = new PersonBuilder(this.DatabaseSession).WithFirstName("Koen").WithUserName("admin").Build();
@@ -556,7 +553,7 @@ namespace Allors.Domain
                 .WithVatRate(new VatRates(this.DatabaseSession).FindBy(M.VatRate.Rate,21))
                 .Build();
 
-            Thread.CurrentPrincipal = new GenericPrincipal(new GenericIdentity("admin", "Forms"), new string[0]);
+            this.SetIdentity("admin");
 
             var item = new PurchaseOrderItemBuilder(this.DatabaseSession)
                 .WithProduct(good)
@@ -584,14 +581,14 @@ namespace Allors.Domain
             
             this.DatabaseSession.Derive(true);
 
-            Assert.AreEqual(new PurchaseOrderItemObjectStates(this.DatabaseSession).Completed, item.CurrentObjectState);
+            Assert.Equal(new PurchaseOrderItemObjectStates(this.DatabaseSession).Completed, item.CurrentObjectState);
             var acl = new AccessControlList(item, new Users(this.DatabaseSession).GetCurrentUser());
-            Assert.IsFalse(acl.CanExecute(M.PurchaseOrderItem.Cancel));
-            Assert.IsFalse(acl.CanExecute(M.PurchaseOrderItem.Reject));
-            Assert.IsFalse(acl.CanExecute(M.PurchaseOrderItem.Delete));
+            Assert.False(acl.CanExecute(M.PurchaseOrderItem.Cancel));
+            Assert.False(acl.CanExecute(M.PurchaseOrderItem.Reject));
+            Assert.False(acl.CanExecute(M.PurchaseOrderItem.Delete));
         }
 
-        [Test]
+        [Fact]
         public void GivenOrderItem_WhenObjectStateIsFinished_ThenItemMayNotBeCancelledOrRejectedOrDeleted()
         {
             var administrator = new PersonBuilder(this.DatabaseSession).WithFirstName("Koen").WithUserName("admin").Build();
@@ -611,7 +608,7 @@ namespace Allors.Domain
                 .WithVatRate(new VatRates(this.DatabaseSession).FindBy(M.VatRate.Rate,21))
                 .Build();
 
-            Thread.CurrentPrincipal = new GenericPrincipal(new GenericIdentity("admin", "Forms"), new string[0]);
+            this.SetIdentity("admin");
 
             var item = new PurchaseOrderItemBuilder(this.DatabaseSession)
                 .WithProduct(good)
@@ -625,14 +622,14 @@ namespace Allors.Domain
             
             this.DatabaseSession.Derive(true);
 
-            Assert.AreEqual(new PurchaseOrderItemObjectStates(this.DatabaseSession).Finished, item.CurrentObjectState);
+            Assert.Equal(new PurchaseOrderItemObjectStates(this.DatabaseSession).Finished, item.CurrentObjectState);
             var acl = new AccessControlList(item, new Users(this.DatabaseSession).GetCurrentUser());
-            Assert.IsFalse(acl.CanExecute(M.PurchaseOrderItem.Cancel));
-            Assert.IsFalse(acl.CanExecute(M.PurchaseOrderItem.Reject));
-            Assert.IsFalse(acl.CanExecute(M.PurchaseOrderItem.Delete));
+            Assert.False(acl.CanExecute(M.PurchaseOrderItem.Cancel));
+            Assert.False(acl.CanExecute(M.PurchaseOrderItem.Reject));
+            Assert.False(acl.CanExecute(M.PurchaseOrderItem.Delete));
         }
 
-        [Test]
+        [Fact]
         public void GivenOrderItem_WhenObjectStateIsPartiallyReceived_ThenProductChangeIsNotAllowed()
         {
             var administrator = new PersonBuilder(this.DatabaseSession).WithFirstName("Koen").WithUserName("admin").Build();
@@ -652,7 +649,7 @@ namespace Allors.Domain
                 .WithVatRate(new VatRates(this.DatabaseSession).FindBy(M.VatRate.Rate,21))
                 .Build();
 
-            Thread.CurrentPrincipal = new GenericPrincipal(new GenericIdentity("admin", "Forms"), new string[0]);
+            this.SetIdentity("admin");
 
             var item = new PurchaseOrderItemBuilder(this.DatabaseSession)
                 .WithProduct(good)
@@ -680,12 +677,12 @@ namespace Allors.Domain
             
             this.DatabaseSession.Derive(true);
 
-            Assert.AreEqual(new PurchaseOrderItemObjectStates(this.DatabaseSession).PartiallyReceived, item.CurrentObjectState);
+            Assert.Equal(new PurchaseOrderItemObjectStates(this.DatabaseSession).PartiallyReceived, item.CurrentObjectState);
             var acl = new AccessControlList(item, new Users(this.DatabaseSession).GetCurrentUser());
-            Assert.IsFalse(acl.CanWrite(M.PurchaseOrderItem.Product));
+            Assert.False(acl.CanWrite(M.PurchaseOrderItem.Product));
         }
 
-        [Test]
+        [Fact]
         public void GivenOrderItemWithAssignedDeliveryDate_WhenDeriving_ThenDeliveryDateIsOrderItemAssignedDeliveryDate()
         {
             this.InstantiateObjects(this.DatabaseSession);
@@ -708,10 +705,10 @@ namespace Allors.Domain
             
             this.DatabaseSession.Derive(true);
 
-            Assert.AreEqual(item.DeliveryDate, item.AssignedDeliveryDate);
+            Assert.Equal(item.DeliveryDate, item.AssignedDeliveryDate);
         }
 
-        [Test]
+        [Fact]
         public void GivenOrderItemWithoutDeliveryDate_WhenDeriving_ThenDerivedDeliveryDateIsOrderDeliveryDate()
         {
             this.InstantiateObjects(this.DatabaseSession);
@@ -733,7 +730,7 @@ namespace Allors.Domain
             
             this.DatabaseSession.Derive(true);
 
-            Assert.AreEqual(item.DeliveryDate, this.order.DeliveryDate);
+            Assert.Equal(item.DeliveryDate, this.order.DeliveryDate);
         }
 
         private void InstantiateObjects(ISession session)

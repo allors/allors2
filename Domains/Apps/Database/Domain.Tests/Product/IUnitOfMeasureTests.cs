@@ -21,24 +21,24 @@
 
 namespace Allors.Domain
 {
-    using NUnit.Framework;
+    using Xunit;
 
-    [TestFixture]
+    
     public class IUnitOfMeasureTests : DomainTest
     {
-        [Test]
+        [Fact]
         public void GivenUnitOfMeasure_WhenDeriving_ThenRequiredRelationsMustExist()
         {
             var builder = new UnitOfMeasureBuilder(this.DatabaseSession);
             builder.Build();
 
-            Assert.IsTrue(this.DatabaseSession.Derive().HasErrors);
+            Assert.True(this.DatabaseSession.Derive().HasErrors);
 
             this.DatabaseSession.Rollback();
 
             builder.WithName("uom");
 
-            Assert.IsFalse(this.DatabaseSession.Derive().HasErrors);
+            Assert.False(this.DatabaseSession.Derive().HasErrors);
         }
     }
 }

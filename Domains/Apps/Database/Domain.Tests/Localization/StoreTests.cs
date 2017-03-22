@@ -25,52 +25,52 @@ namespace Allors.Domain
 {
     using System;
     using Meta;
-    using NUnit.Framework;
+    using Xunit;
 
-    [TestFixture]
+    
     public class StoreTests : DomainTest
     {
-        [Test]
+        [Fact]
         public void GivenStore_WhenDeriving_ThenRequiredRelationsMustExist()
         {
             var builder = new StoreBuilder(this.DatabaseSession);
             builder.Build();
 
-            Assert.IsTrue(this.DatabaseSession.Derive().HasErrors);
+            Assert.True(this.DatabaseSession.Derive().HasErrors);
 
             this.DatabaseSession.Rollback();
 
             builder.WithName("Organisation store");
             builder.Build();
 
-            Assert.IsTrue(this.DatabaseSession.Derive().HasErrors);
+            Assert.True(this.DatabaseSession.Derive().HasErrors);
 
             this.DatabaseSession.Rollback();
 
             builder.WithDefaultCarrier(new Carriers(this.DatabaseSession).Fedex);
             builder.Build();
 
-            Assert.IsTrue(this.DatabaseSession.Derive().HasErrors);
+            Assert.True(this.DatabaseSession.Derive().HasErrors);
 
             this.DatabaseSession.Rollback();
 
             builder.WithDefaultShipmentMethod(new ShipmentMethods(this.DatabaseSession).Ground);
             builder.Build();
 
-            Assert.IsFalse(this.DatabaseSession.Derive().HasErrors);
+            Assert.False(this.DatabaseSession.Derive().HasErrors);
 
             builder.WithSalesInvoiceCounter( new CounterBuilder(this.DatabaseSession).Build() ).Build();
             builder.Build();
 
-            Assert.IsFalse(this.DatabaseSession.Derive().HasErrors);
+            Assert.False(this.DatabaseSession.Derive().HasErrors);
 
             builder.WithFiscalYearInvoiceNumber(new FiscalYearInvoiceNumberBuilder(this.DatabaseSession).WithFiscalYear(DateTime.Today.Year).Build());
             builder.Build();
 
-            Assert.IsTrue(this.DatabaseSession.Derive().HasErrors);
+            Assert.True(this.DatabaseSession.Derive().HasErrors);
         }
 
-        [Test]
+        [Fact]
         public void GivenStore_WhenBuild_ThenPostBuildRelationsMustExist()
         {
             var internalOrganisation = new InternalOrganisations(this.DatabaseSession).FindBy(M.InternalOrganisation.Name, "internalOrganisation");
@@ -83,16 +83,16 @@ namespace Allors.Domain
 
             this.DatabaseSession.Derive(true);
 
-            Assert.AreEqual(0, store.CreditLimit);
-            Assert.AreEqual(0, store.PaymentGracePeriod);
-            Assert.AreEqual(0, store.ShipmentThreshold);
-            Assert.AreEqual(internalOrganisation, store.Owner);
-            Assert.AreEqual(internalOrganisation.DefaultPaymentMethod, store.DefaultPaymentMethod);
-            Assert.AreEqual(1, store.PaymentMethods.Count);
-            Assert.AreEqual(new Warehouses(this.DatabaseSession).FindBy(M.Warehouse.Name, "facility"), store.DefaultFacility);
+            Assert.Equal(0, store.CreditLimit);
+            Assert.Equal(0, store.PaymentGracePeriod);
+            Assert.Equal(0, store.ShipmentThreshold);
+            Assert.Equal(internalOrganisation, store.Owner);
+            Assert.Equal(internalOrganisation.DefaultPaymentMethod, store.DefaultPaymentMethod);
+            Assert.Equal(1, store.PaymentMethods.Count);
+            Assert.Equal(new Warehouses(this.DatabaseSession).FindBy(M.Warehouse.Name, "facility"), store.DefaultFacility);
         }
 
-        [Test]
+        [Fact]
         public void GivenStore_WhenDefaultPaymentMethodIsSet_ThenPaymentMethodIsAddedToCollectionPaymentMethods()
         {
             Singleton.Instance(this.DatabaseSession).RemoveDefaultInternalOrganisation();
@@ -117,11 +117,11 @@ namespace Allors.Domain
 
             this.DatabaseSession.Derive(true);
 
-            Assert.AreEqual(1, store.PaymentMethods.Count);
-            Assert.AreEqual(ownBankAccount, store.PaymentMethods.First);
+            Assert.Equal(1, store.PaymentMethods.Count);
+            Assert.Equal(ownBankAccount, store.PaymentMethods.First);
         }
 
-        [Test]
+        [Fact]
         public void GivenStoreWithoutDefaultPaymentMethod_WhenSinglePaymentMethodIsAdded_ThenDefaultPaymentMethodIsSet()
         {
             Singleton.Instance(this.DatabaseSession).RemoveDefaultInternalOrganisation();
@@ -146,7 +146,7 @@ namespace Allors.Domain
 
             this.DatabaseSession.Derive(true);
 
-            Assert.AreEqual(ownBankAccount, store.DefaultPaymentMethod);
+            Assert.Equal(ownBankAccount, store.DefaultPaymentMethod);
         }
     }
 }

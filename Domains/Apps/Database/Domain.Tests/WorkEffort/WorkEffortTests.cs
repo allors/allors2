@@ -21,48 +21,48 @@
 
 namespace Allors.Domain
 {
-    using NUnit.Framework;
+    using Xunit;
 
-    [TestFixture]
+    
     public class WorkEffortTests : DomainTest
     {
-        [Test]
+        [Fact]
         public void GivenCustomerShipment_WhenBuild_ThenLastObjectStateEqualsCurrencObjectState()
         {
             var workEffort = new ActivityBuilder(this.DatabaseSession).WithDescription("Activity").Build();
 
             this.DatabaseSession.Derive(true);
 
-            Assert.AreEqual(new WorkEffortObjectStates(this.DatabaseSession).NeedsAction, workEffort.CurrentObjectState);
-            Assert.AreEqual(workEffort.LastObjectState, workEffort.CurrentObjectState);
+            Assert.Equal(new WorkEffortObjectStates(this.DatabaseSession).NeedsAction, workEffort.CurrentObjectState);
+            Assert.Equal(workEffort.LastObjectState, workEffort.CurrentObjectState);
         }
 
-        [Test]
+        [Fact]
         public void GivenCustomerShipment_WhenBuild_ThenPreviousObjectStateIsNull()
         {
             var workEffort = new ActivityBuilder(this.DatabaseSession).WithDescription("Activity").Build();
 
             this.DatabaseSession.Derive(true);
 
-            Assert.IsNull(workEffort.PreviousObjectState);
+            Assert.Null(workEffort.PreviousObjectState);
         }
 
-        [Test]
+        [Fact]
         public void GivenCustomerShipment_WhenConfirmed_ThenCurrentShipmentStatusMustBeDerived()
         {
             var workEffort = new ActivityBuilder(this.DatabaseSession).WithDescription("Activity").Build();
 
             this.DatabaseSession.Derive(true);
 
-            Assert.AreEqual(1, workEffort.WorkEffortStatuses.Count);
-            Assert.AreEqual(new WorkEffortObjectStates(this.DatabaseSession).NeedsAction, workEffort.CurrentWorkEffortStatus.WorkEffortObjectState);
+            Assert.Equal(1, workEffort.WorkEffortStatuses.Count);
+            Assert.Equal(new WorkEffortObjectStates(this.DatabaseSession).NeedsAction, workEffort.CurrentWorkEffortStatus.WorkEffortObjectState);
 
             workEffort.Finish();
 
             this.DatabaseSession.Derive(true);
 
-            Assert.AreEqual(2, workEffort.WorkEffortStatuses.Count);
-            Assert.AreEqual(new WorkEffortObjectStates(this.DatabaseSession).Completed, workEffort.CurrentWorkEffortStatus.WorkEffortObjectState);
+            Assert.Equal(2, workEffort.WorkEffortStatuses.Count);
+            Assert.Equal(new WorkEffortObjectStates(this.DatabaseSession).Completed, workEffort.CurrentWorkEffortStatus.WorkEffortObjectState);
         }
     }
 }

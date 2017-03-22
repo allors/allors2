@@ -21,25 +21,25 @@
 
 namespace Allors.Domain
 {
-    using NUnit.Framework;
+    using Xunit;
 
-    [TestFixture]
+    
     public class GeneralLedgerAccountTypeTests : DomainTest
     {
-        [Test]
+        [Fact]
         public void GivenGeneralLedgerAccountType_WhenDeriving_ThenRequiredRelationsMustExist()
         {
             var builder = new GeneralLedgerAccountTypeBuilder(this.DatabaseSession);
             builder.Build();
 
-            Assert.IsTrue(this.DatabaseSession.Derive().HasErrors);
+            Assert.True(this.DatabaseSession.Derive().HasErrors);
 
             this.DatabaseSession.Rollback();
 
             builder.WithDescription("GeneralLedgerAccountType");
             builder.Build();
 
-            Assert.IsFalse(this.DatabaseSession.Derive().HasErrors);
+            Assert.False(this.DatabaseSession.Derive().HasErrors);
         }
     }
 }

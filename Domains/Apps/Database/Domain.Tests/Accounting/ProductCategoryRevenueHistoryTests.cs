@@ -22,12 +22,12 @@ namespace Allors.Domain
 {
     using System;
     using Meta;
-    using NUnit.Framework;
+    using Xunit;
 
-    [TestFixture]
+    
     public class ProductCategoryRevenueHistoryTests : DomainTest
     {
-        [Test]
+        [Fact]
         public void DeriveHistory()
         {
             var productItem = new SalesInvoiceItemTypes(this.DatabaseSession).ProductItem;
@@ -131,13 +131,13 @@ namespace Allors.Domain
             Singleton.Instance(this.DatabaseSession).DeriveRevenues(new NonLogging.Derivation(this.DatabaseSession));
 
             var cat1RevenueHistory = cat1.ProductCategoryRevenueHistoriesWhereProductCategory.First;
-            Assert.AreEqual(180, cat1RevenueHistory.Revenue);
+            Assert.Equal(180, cat1RevenueHistory.Revenue);
 
             var cat2RevenueHistory = cat2.ProductCategoryRevenueHistoriesWhereProductCategory.First;
-            Assert.AreEqual(100, cat2RevenueHistory.Revenue);
+            Assert.Equal(100, cat2RevenueHistory.Revenue);
 
             var catMainRevenueHistory = catMain.ProductCategoryRevenueHistoriesWhereProductCategory.First;
-            Assert.AreEqual(280, catMainRevenueHistory.Revenue);
+            Assert.Equal(280, catMainRevenueHistory.Revenue);
 
             var invoice3 = new SalesInvoiceBuilder(this.DatabaseSession)
                 .WithInvoiceDate(DateTime.UtcNow.AddMonths(-1))
@@ -157,9 +157,9 @@ namespace Allors.Domain
 
             Singleton.Instance(this.DatabaseSession).DeriveRevenues(new NonLogging.Derivation(this.DatabaseSession));
 
-            Assert.AreEqual(195, cat1RevenueHistory.Revenue);
-            Assert.AreEqual(110, cat2RevenueHistory.Revenue);
-            Assert.AreEqual(305, catMainRevenueHistory.Revenue);
+            Assert.Equal(195, cat1RevenueHistory.Revenue);
+            Assert.Equal(110, cat2RevenueHistory.Revenue);
+            Assert.Equal(305, catMainRevenueHistory.Revenue);
         }
     }
 }

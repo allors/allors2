@@ -22,13 +22,13 @@
 namespace Allors.Domain
 {
     using Meta;
-    using NUnit.Framework;
+    using Xunit;
     using Resources;
 
-    [TestFixture]
+    
     public class GeneralLedgerAccountTests : DomainTest
     {
-        [Test]
+        [Fact]
         public void GivenGeneralLedgerAccount_WhenDeriving_ThenRequiredRelationsMustExist()
         {
             var accountGroup = new GeneralLedgerAccountGroupBuilder(this.DatabaseSession).WithDescription("accountGroup").Build();
@@ -39,21 +39,21 @@ namespace Allors.Domain
             var builder = new GeneralLedgerAccountBuilder(this.DatabaseSession);
             builder.Build();
 
-            Assert.IsTrue(this.DatabaseSession.Derive().HasErrors);
+            Assert.True(this.DatabaseSession.Derive().HasErrors);
 
             this.DatabaseSession.Rollback();
 
             builder.WithAccountNumber("0001");
             builder.Build();
 
-            Assert.IsTrue(this.DatabaseSession.Derive().HasErrors); 
+            Assert.True(this.DatabaseSession.Derive().HasErrors); 
 
             this.DatabaseSession.Rollback();
 
             builder.WithName("GeneralLedgerAccount");
             builder.Build();
 
-            Assert.IsTrue(this.DatabaseSession.Derive().HasErrors);
+            Assert.True(this.DatabaseSession.Derive().HasErrors);
 
             this.DatabaseSession.Rollback();
 
@@ -65,24 +65,24 @@ namespace Allors.Domain
             builder.WithSide(new DebitCreditConstants(this.DatabaseSession).Debit);
             builder.Build();
 
-            Assert.IsTrue(this.DatabaseSession.Derive().HasErrors);
+            Assert.True(this.DatabaseSession.Derive().HasErrors);
 
             this.DatabaseSession.Rollback();
 
             builder.WithGeneralLedgerAccountGroup(accountGroup);
             builder.Build();
 
-            Assert.IsTrue(this.DatabaseSession.Derive().HasErrors);
+            Assert.True(this.DatabaseSession.Derive().HasErrors);
 
             this.DatabaseSession.Rollback();
 
             builder.WithGeneralLedgerAccountType(accountType);
             builder.Build();
 
-            Assert.IsFalse(this.DatabaseSession.Derive().HasErrors);
+            Assert.False(this.DatabaseSession.Derive().HasErrors);
         }
 
-        [Test]
+        [Fact]
         public void GivenGeneralLedgerAccount_WhenBuild_ThenPostBuildRelationsMustExist()
         {
             var generalLedgerAccount = new GeneralLedgerAccountBuilder(this.DatabaseSession)
@@ -91,17 +91,17 @@ namespace Allors.Domain
                 .WithBalanceSheetAccount(true)
                 .Build();
 
-            Assert.IsTrue(generalLedgerAccount.ExistUniqueId);
-            Assert.AreEqual(generalLedgerAccount.CashAccount, false);
-            Assert.AreEqual(generalLedgerAccount.CostCenterAccount, false);
-            Assert.AreEqual(generalLedgerAccount.CostCenterRequired, false);
-            Assert.AreEqual(generalLedgerAccount.CostUnitAccount, false);
-            Assert.AreEqual(generalLedgerAccount.CostUnitRequired, false);
-            Assert.AreEqual(generalLedgerAccount.Protected, false);
-            Assert.AreEqual(generalLedgerAccount.ReconciliationAccount, false);
+            Assert.True(generalLedgerAccount.ExistUniqueId);
+            Assert.Equal(generalLedgerAccount.CashAccount, false);
+            Assert.Equal(generalLedgerAccount.CostCenterAccount, false);
+            Assert.Equal(generalLedgerAccount.CostCenterRequired, false);
+            Assert.Equal(generalLedgerAccount.CostUnitAccount, false);
+            Assert.Equal(generalLedgerAccount.CostUnitRequired, false);
+            Assert.Equal(generalLedgerAccount.Protected, false);
+            Assert.Equal(generalLedgerAccount.ReconciliationAccount, false);
         }
 
-        [Test]
+        [Fact]
         public void GivenGeneralLedgerAccount_WhenAddedToChartOfAccounts_ThenAccountNumberMustBeUnique()
         {
             var glAccount0001 = new GeneralLedgerAccountBuilder(this.DatabaseSession)
@@ -124,21 +124,21 @@ namespace Allors.Domain
 
             var chart = new ChartOfAccountsBuilder(this.DatabaseSession).WithName("name").WithGeneralLedgerAccount(glAccount0001).Build();
 
-            Assert.IsFalse(this.DatabaseSession.Derive().HasErrors);
+            Assert.False(this.DatabaseSession.Derive().HasErrors);
 
             chart.AddGeneralLedgerAccount(glAccount0001Dup);
 
             var derivationLog = this.DatabaseSession.Derive();
             var expectedMessage = ErrorMessages.AccountNumberUniqueWithinChartOfAccounts;
 
-            Assert.AreEqual(derivationLog.Errors[0].Message, expectedMessage);
+            Assert.Equal(derivationLog.Errors[0].Message, expectedMessage);
 
             new ChartOfAccountsBuilder(this.DatabaseSession).WithName("another Chart").WithGeneralLedgerAccount(glAccount0001Dup).Build();
 
-            Assert.IsFalse(this.DatabaseSession.Derive().HasErrors);
+            Assert.False(this.DatabaseSession.Derive().HasErrors);
         }
 
-        [Test]
+        [Fact]
         public void GivenGeneralLedgerAccount_WhenSettingCostCenterRequired_ThenAccountMustBeMarkedAsCostCenterAccount()
         {
             new GeneralLedgerAccountBuilder(this.DatabaseSession)
@@ -155,10 +155,10 @@ namespace Allors.Domain
             
             var expectedMessage = ErrorMessages.NotACostCenterAccount;
             
-            Assert.AreEqual(derivationLog.Errors[0].Message, expectedMessage);
+            Assert.Equal(derivationLog.Errors[0].Message, expectedMessage);
         }
 
-        [Test]
+        [Fact]
         public void GivenGeneralLedgerAccount_WhenSettingCostUnitRequired_ThenAccountMustBeMarkedAsCostUnitAccount()
         {
             new GeneralLedgerAccountBuilder(this.DatabaseSession)
@@ -174,10 +174,10 @@ namespace Allors.Domain
             var derivationLog = this.DatabaseSession.Derive();
             var expectedMessage = ErrorMessages.NotACostUnitAccount;
 
-            Assert.AreEqual(derivationLog.Errors[0].Message, expectedMessage);
+            Assert.Equal(derivationLog.Errors[0].Message, expectedMessage);
         }
 
-        [Test]
+        [Fact]
         public void GivenGeneralLedgerAccount_WhenSettingDefaultCostCenter_ThenDefaultCostCenterMustBeInListOfAllowedCostCenters()
         {
             var costCenter = new CostCenterBuilder(this.DatabaseSession).WithName("costCenter").Build();
@@ -198,14 +198,14 @@ namespace Allors.Domain
 
             var expectedMessage = ErrorMessages.CostCenterNotAllowed;
 
-            Assert.AreEqual(derivationLog.Errors[0].Message, expectedMessage);
+            Assert.Equal(derivationLog.Errors[0].Message, expectedMessage);
 
             glAccount.AddCostCentersAllowed(costCenter);
 
-            Assert.IsFalse(this.DatabaseSession.Derive().HasErrors);
+            Assert.False(this.DatabaseSession.Derive().HasErrors);
         }
 
-        [Test]
+        [Fact]
         public void GivenGeneralLedgerAccount_WhenSettingDefaultCostUnit_ThenDefaultCostUnitMustBeInListOfAllowedCostUnits()
         {
             var costUnit = new GoodBuilder(this.DatabaseSession)
@@ -231,11 +231,11 @@ namespace Allors.Domain
             var derivationLog = this.DatabaseSession.Derive();
             var expectedMessage = ErrorMessages.CostUnitNotAllowed;
 
-            Assert.AreEqual(derivationLog.Errors[0].Message, expectedMessage);
+            Assert.Equal(derivationLog.Errors[0].Message, expectedMessage);
 
             glAccount.AddCostUnitsAllowed(costUnit);
 
-            Assert.IsFalse(this.DatabaseSession.Derive().HasErrors);
+            Assert.False(this.DatabaseSession.Derive().HasErrors);
         }
     }
 }

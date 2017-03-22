@@ -22,12 +22,12 @@ namespace Allors.Domain
 {
     using System;
     using Meta;
-    using NUnit.Framework;
+    using Xunit;
 
-    [TestFixture]
+    
     public class PartyRevenueHistoryTests : DomainTest
     {
-        [Test]
+        [Fact]
         public void GivenSalesInvoice_WhenDerived_ThenTotalExVatIsAddedToPartyRevenueHistory()
         {
             var productItem = new SalesInvoiceItemTypes(this.DatabaseSession).ProductItem;
@@ -90,14 +90,14 @@ namespace Allors.Domain
                 ////date in first iteration is too old, no history yet.
                 if (history != null)
                 {
-                    Assert.AreEqual(revenuePastTwelveMonths, history.Revenue);
+                    Assert.Equal(revenuePastTwelveMonths, history.Revenue);
                 }
 
                 date = date.AddMonths(1);
             }
         }
 
-        [Test]
+        [Fact]
         public void DeriveHistory()
         {
             var productItem = new SalesInvoiceItemTypes(this.DatabaseSession).ProductItem;
@@ -200,7 +200,7 @@ namespace Allors.Domain
             Singleton.Instance(this.DatabaseSession).DeriveRevenues(new NonLogging.Derivation(this.DatabaseSession));
 
             var customer1RevenueHistory = customer1.PartyRevenueHistoriesWhereParty.First;
-            Assert.AreEqual(280, customer1RevenueHistory.Revenue);
+            Assert.Equal(280, customer1RevenueHistory.Revenue);
 
             var invoice3 = new SalesInvoiceBuilder(this.DatabaseSession)
                 .WithInvoiceDate(DateTime.UtcNow)
@@ -221,8 +221,8 @@ namespace Allors.Domain
             Singleton.Instance(this.DatabaseSession).DeriveRevenues(new NonLogging.Derivation(this.DatabaseSession));
 
             var customer2RevenueHistory = customer2.PartyRevenueHistoriesWhereParty.First;
-            Assert.AreEqual(280, customer1RevenueHistory.Revenue);
-            Assert.AreEqual(25, customer2RevenueHistory.Revenue);
+            Assert.Equal(280, customer1RevenueHistory.Revenue);
+            Assert.Equal(25, customer2RevenueHistory.Revenue);
         }
     }
 }

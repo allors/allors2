@@ -22,12 +22,12 @@
 namespace Allors.Domain
 {
     using Meta;
-    using NUnit.Framework;
+    using Xunit;
 
-    [TestFixture]
+    
     public class PurchaseShipmentTests : DomainTest
     {
-        [Test]
+        [Fact]
         public void GivenPurchaseShipmentBuilder_WhenBuild_ThenPostBuildRelationsMustExist()
         {
             var supplier = new OrganisationBuilder(this.DatabaseSession).WithName("supplier").Build();
@@ -36,13 +36,13 @@ namespace Allors.Domain
 
             this.DatabaseSession.Derive(true);
 
-            Assert.AreEqual(new PurchaseShipmentObjectStates(this.DatabaseSession).Created, shipment.CurrentObjectState);
-            Assert.AreEqual(internalOrganisation, shipment.ShipToParty);
-            Assert.AreEqual(internalOrganisation.ShippingAddress, shipment.ShipToAddress);
-            Assert.AreEqual(shipment.ShipToParty, shipment.ShipToParty);
+            Assert.Equal(new PurchaseShipmentObjectStates(this.DatabaseSession).Created, shipment.CurrentObjectState);
+            Assert.Equal(internalOrganisation, shipment.ShipToParty);
+            Assert.Equal(internalOrganisation.ShippingAddress, shipment.ShipToAddress);
+            Assert.Equal(shipment.ShipToParty, shipment.ShipToParty);
         }
 
-        [Test]
+        [Fact]
         public void GivenPurchaseShipment_WhenDeriving_ThenRequiredRelationsMustExist()
         {
             var supplier = new OrganisationBuilder(this.DatabaseSession).WithName("supplier").Build();
@@ -52,38 +52,38 @@ namespace Allors.Domain
             var builder = new PurchaseShipmentBuilder(this.DatabaseSession);
             builder.Build();
 
-            Assert.IsTrue(this.DatabaseSession.Derive().HasErrors);
+            Assert.True(this.DatabaseSession.Derive().HasErrors);
 
             this.DatabaseSession.Rollback();
 
             builder.WithShipmentMethod(new ShipmentMethods(this.DatabaseSession).Ground);
             builder.Build();
 
-            Assert.IsTrue(this.DatabaseSession.Derive().HasErrors);
+            Assert.True(this.DatabaseSession.Derive().HasErrors);
 
             this.DatabaseSession.Rollback();
 
             builder.WithShipFromParty(supplier);
             builder.Build();
 
-            Assert.IsFalse(this.DatabaseSession.Derive().HasErrors);
+            Assert.False(this.DatabaseSession.Derive().HasErrors);
         }
 
-        [Test]
+        [Fact]
         public void GivenPurchaseShipment_WhenGettingShipmentNumberWithoutFormat_ThenShipmentNumberShouldBeReturned()
         {
             var internalOrganisation = new InternalOrganisationBuilder(this.DatabaseSession).Build();
 
             var shipment1 = new PurchaseShipmentBuilder(this.DatabaseSession).WithShipToParty(internalOrganisation).Build();
 
-            Assert.AreEqual("1", shipment1.ShipmentNumber);
+            Assert.Equal("1", shipment1.ShipmentNumber);
 
             var shipment2 = new PurchaseShipmentBuilder(this.DatabaseSession).WithShipToParty(internalOrganisation).Build();
 
-            Assert.AreEqual("2", shipment2.ShipmentNumber);
+            Assert.Equal("2", shipment2.ShipmentNumber);
         }
 
-        [Test]
+        [Fact]
         public void GivenPurchaseShipment_WhenGettingShipmentNumberWithFormat_ThenFormattedShipmentNumberShouldBeReturned()
         {
             var internalOrganisation = new InternalOrganisationBuilder(this.DatabaseSession).Build();
@@ -91,14 +91,14 @@ namespace Allors.Domain
 
             var shipment1 = new PurchaseShipmentBuilder(this.DatabaseSession).WithShipToParty(internalOrganisation).Build();
 
-            Assert.AreEqual("the format is 1", shipment1.ShipmentNumber);
+            Assert.Equal("the format is 1", shipment1.ShipmentNumber);
 
             var shipment2 = new PurchaseShipmentBuilder(this.DatabaseSession).WithShipToParty(internalOrganisation).Build();
 
-            Assert.AreEqual("the format is 2", shipment2.ShipmentNumber);
+            Assert.Equal("the format is 2", shipment2.ShipmentNumber);
         }
 
-        [Test]
+        [Fact]
         public void GivenPurchaseShipmentWithShipToAddress_WhenDeriving_ThenDerivedShipToAddressMustExist()
         {
             var supplier = new OrganisationBuilder(this.DatabaseSession).WithName("supplier").Build();
@@ -116,10 +116,10 @@ namespace Allors.Domain
             
             this.DatabaseSession.Derive(true);
 
-            Assert.AreEqual(postalAddress, shipment.ShipToAddress);
+            Assert.Equal(postalAddress, shipment.ShipToAddress);
         }
 
-        [Test]
+        [Fact]
         public void GivenPurchaseShipmentWithShipToCustomerWithshippingAddress_WhenDeriving_ThenDerivedShipToCustomerAndDerivedShipToAddressMustExist()
         {
             var supplier = new OrganisationBuilder(this.DatabaseSession).WithName("supplier").Build();
@@ -141,7 +141,7 @@ namespace Allors.Domain
 
             this.DatabaseSession.Derive(true);
 
-            Assert.AreEqual(shippingAddress.ContactMechanism, order.ShipToAddress);
+            Assert.Equal(shippingAddress.ContactMechanism, order.ShipToAddress);
         }
     }
 }

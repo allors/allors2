@@ -27,12 +27,12 @@ namespace Allors.Domain
     using System.Security.Principal;
     using System.Threading;
     using Meta;
-    using NUnit.Framework;
+    using Xunit;
 
-    [TestFixture]
+    
     public class PurchaseOrderTests : DomainTest
     {
-        [Test]
+        [Fact]
         public void GivenPurchaseOrderBuilder_WhenBuild_ThenPostBuildRelationsMustExist()
         {
             var supplier = new OrganisationBuilder(this.DatabaseSession).WithName("supplier").Build();
@@ -41,17 +41,17 @@ namespace Allors.Domain
 
             var order = new PurchaseOrderBuilder(this.DatabaseSession).WithTakenViaSupplier(supplier).Build();
 
-            Assert.AreEqual(new PurchaseOrderObjectStates(this.DatabaseSession).Provisional, order.CurrentObjectState);
-            Assert.AreEqual(DateTime.UtcNow.Date, order.OrderDate.Date);
-            Assert.AreEqual(DateTime.UtcNow.Date, order.EntryDate.Date);
-            Assert.AreEqual(order.PreviousTakenViaSupplier, order.TakenViaSupplier);
-            Assert.AreEqual(internalOrganisation, order.ShipToBuyer);
-            Assert.AreEqual(internalOrganisation, order.BillToPurchaser);
-            Assert.AreEqual(order.ShipToBuyer.PreferredCurrency, order.CustomerCurrency);
-            Assert.IsTrue(order.ExistUniqueId);
+            Assert.Equal(new PurchaseOrderObjectStates(this.DatabaseSession).Provisional, order.CurrentObjectState);
+            Assert.Equal(DateTime.UtcNow.Date, order.OrderDate.Date);
+            Assert.Equal(DateTime.UtcNow.Date, order.EntryDate.Date);
+            Assert.Equal(order.PreviousTakenViaSupplier, order.TakenViaSupplier);
+            Assert.Equal(internalOrganisation, order.ShipToBuyer);
+            Assert.Equal(internalOrganisation, order.BillToPurchaser);
+            Assert.Equal(order.ShipToBuyer.PreferredCurrency, order.CustomerCurrency);
+            Assert.True(order.ExistUniqueId);
         }
 
-        [Test]
+        [Fact]
         public void GivenOrder_WhenDeriving_ThenRequiredRelationsMustExist()
         {
             var supplier = new OrganisationBuilder(this.DatabaseSession).WithName("supplier").Build();
@@ -73,22 +73,22 @@ namespace Allors.Domain
             var builder = new PurchaseOrderBuilder(this.DatabaseSession);
             builder.Build();
 
-            Assert.IsTrue(this.DatabaseSession.Derive().HasErrors);
+            Assert.True(this.DatabaseSession.Derive().HasErrors);
 
             this.DatabaseSession.Rollback();
 
             builder.WithTakenViaSupplier(supplier);
             builder.Build();
 
-            Assert.IsFalse(this.DatabaseSession.Derive().HasErrors);
+            Assert.False(this.DatabaseSession.Derive().HasErrors);
 
             builder.WithTakenViaContactMechanism(takenViaContactMechanism);
             builder.Build();
 
-            Assert.IsFalse(this.DatabaseSession.Derive().HasErrors);
+            Assert.False(this.DatabaseSession.Derive().HasErrors);
         }
 
-        [Test]
+        [Fact]
         public void GivenPurchaseOrder_WhenDeriving_ThenTakenViaSupplierMustBeInSupplierRelationship()
         {
             var supplier = new OrganisationBuilder(this.DatabaseSession).WithName("supplier").Build();
@@ -100,14 +100,14 @@ namespace Allors.Domain
                 .Build();
 
             var expectedError = ErrorMessages.PartyIsNotASupplier;
-            Assert.AreEqual(expectedError, this.DatabaseSession.Derive().Errors[0].Message);
+            Assert.Equal(expectedError, this.DatabaseSession.Derive().Errors[0].Message);
 
             new SupplierRelationshipBuilder(this.DatabaseSession).WithSupplier(supplier).WithInternalOrganisation(internalOrganisation).Build();
 
-            Assert.IsFalse(this.DatabaseSession.Derive().HasErrors);
+            Assert.False(this.DatabaseSession.Derive().HasErrors);
         }
 
-        [Test]
+        [Fact]
         public void GivenOrder_WhenDeriving_ThenLocaleMustExist()
         {
             var englischLocale = new Locales(this.DatabaseSession).EnglishGreatBritain;
@@ -132,10 +132,10 @@ namespace Allors.Domain
 
             this.DatabaseSession.Derive(true);
 
-            Assert.AreEqual(englischLocale, order.Locale);
+            Assert.Equal(englischLocale, order.Locale);
         }
 
-        [Test]
+        [Fact]
         public void GivenPurchaseOrder_WhenGettingOrderNumberWithoutFormat_ThenOrderNumberShouldBeReturned()
         {
             var internalOrganisation = new InternalOrganisationBuilder(this.DatabaseSession).Build();
@@ -143,13 +143,13 @@ namespace Allors.Domain
             var supplier = new OrganisationBuilder(this.DatabaseSession).WithName("supplier").Build();
 
             var order1 = new PurchaseOrderBuilder(this.DatabaseSession).WithTakenViaSupplier(supplier).WithBillToPurchaser(internalOrganisation).Build();
-            Assert.AreEqual("1", order1.OrderNumber);
+            Assert.Equal("1", order1.OrderNumber);
 
             var order2 = new PurchaseOrderBuilder(this.DatabaseSession).WithTakenViaSupplier(supplier).WithBillToPurchaser(internalOrganisation).Build();
-            Assert.AreEqual("2", order2.OrderNumber);
+            Assert.Equal("2", order2.OrderNumber);
         }
 
-        [Test]
+        [Fact]
         public void GivenPurchaseOrder_WhenGettingOrderNumberWithFormat_ThenFormattedOrderNumberShouldBeReturned()
         {
             var supplier = new OrganisationBuilder(this.DatabaseSession).WithName("supplier").Build();
@@ -161,20 +161,20 @@ namespace Allors.Domain
                 .WithBillToPurchaser(internalOrganisation)
                 .Build();
 
-            Assert.AreEqual("the format is 1", order1.OrderNumber);
+            Assert.Equal("the format is 1", order1.OrderNumber);
 
             var order2 = new PurchaseOrderBuilder(this.DatabaseSession)
                 .WithTakenViaSupplier(supplier)
                 .WithBillToPurchaser(internalOrganisation)
                 .Build();
 
-            Assert.AreEqual("the format is 2", order2.OrderNumber);
+            Assert.Equal("the format is 2", order2.OrderNumber);
         }
 
-        [Test]
+        [Fact]
         public void GivenPurchaseOrder_WhenObjectStateIsApproved_ThenCheckTransitions()
         {
-            Thread.CurrentPrincipal = new GenericPrincipal(new GenericIdentity("orderProcessor", "Forms"), new string[0]);
+            this.SetIdentity("orderProcessor");
 
             var supplier = new OrganisationBuilder(this.DatabaseSession).WithName("supplier").Build();
             var internalOrganisation = new InternalOrganisations(this.DatabaseSession).FindBy(M.InternalOrganisation.Name, "internalOrganisation");
@@ -193,18 +193,18 @@ namespace Allors.Domain
 
             this.DatabaseSession.Derive(true);
 
-            Assert.AreEqual(new PurchaseOrderObjectStates(this.DatabaseSession).RequestsApproval, order.CurrentObjectState);
+            Assert.Equal(new PurchaseOrderObjectStates(this.DatabaseSession).RequestsApproval, order.CurrentObjectState);
             var acl = new AccessControlList(order, new Users(this.DatabaseSession).GetCurrentUser());
-            Assert.IsFalse(acl.CanExecute(M.PurchaseOrder.Confirm));
-            Assert.IsFalse(acl.CanExecute(M.PurchaseOrder.Reject));
-            Assert.IsFalse(acl.CanExecute(M.PurchaseOrder.Approve));
-            Assert.IsFalse(acl.CanExecute(M.PurchaseOrder.Continue));
+            Assert.False(acl.CanExecute(M.PurchaseOrder.Confirm));
+            Assert.False(acl.CanExecute(M.PurchaseOrder.Reject));
+            Assert.False(acl.CanExecute(M.PurchaseOrder.Approve));
+            Assert.False(acl.CanExecute(M.PurchaseOrder.Continue));
         }
 
-        [Test]
+        [Fact]
         public void GivenPurchaseOrder_WhenObjectStateIsInProcess_ThenCheckTransitions()
         {
-            Thread.CurrentPrincipal = new GenericPrincipal(new GenericIdentity("orderProcessor", "Forms"), new string[0]);
+            this.SetIdentity("orderProcessor");
 
             var supplier = new OrganisationBuilder(this.DatabaseSession).WithName("supplier").Build();
             var internalOrganisation = new InternalOrganisations(this.DatabaseSession).FindBy(M.InternalOrganisation.Name, "internalOrganisation");
@@ -219,20 +219,20 @@ namespace Allors.Domain
 
             this.DatabaseSession.Derive(true);
 
-            Assert.AreEqual(new PurchaseOrderObjectStates(this.DatabaseSession).InProcess, order.CurrentObjectState);
+            Assert.Equal(new PurchaseOrderObjectStates(this.DatabaseSession).InProcess, order.CurrentObjectState);
             var acl = new AccessControlList(order, new Users(this.DatabaseSession).GetCurrentUser());
-            Assert.IsTrue(acl.CanExecute(M.PurchaseOrder.Cancel));
-            Assert.IsTrue(acl.CanExecute(M.PurchaseOrder.Hold));
-            Assert.IsFalse(acl.CanExecute(M.PurchaseOrder.Confirm));
-            Assert.IsFalse(acl.CanExecute(M.PurchaseOrder.Reject));
-            Assert.IsFalse(acl.CanExecute(M.PurchaseOrder.Approve));
-            Assert.IsFalse(acl.CanExecute(M.PurchaseOrder.Continue));
+            Assert.True(acl.CanExecute(M.PurchaseOrder.Cancel));
+            Assert.True(acl.CanExecute(M.PurchaseOrder.Hold));
+            Assert.False(acl.CanExecute(M.PurchaseOrder.Confirm));
+            Assert.False(acl.CanExecute(M.PurchaseOrder.Reject));
+            Assert.False(acl.CanExecute(M.PurchaseOrder.Approve));
+            Assert.False(acl.CanExecute(M.PurchaseOrder.Continue));
         }
 
-        [Test]
+        [Fact]
         public void GivenPurchaseOrder_WhenObjectStateIsOnHold_ThenCheckTransitions()
         {
-            Thread.CurrentPrincipal = new GenericPrincipal(new GenericIdentity("orderProcessor", "Forms"), new string[0]);
+            this.SetIdentity("orderProcessor");
 
             var supplier = new OrganisationBuilder(this.DatabaseSession).WithName("supplier").Build();
             var internalOrganisation = new InternalOrganisations(this.DatabaseSession).FindBy(M.InternalOrganisation.Name, "internalOrganisation");
@@ -251,17 +251,17 @@ namespace Allors.Domain
 
             this.DatabaseSession.Derive(true);
 
-            Assert.AreEqual(new PurchaseOrderObjectStates(this.DatabaseSession).OnHold, order.CurrentObjectState);
+            Assert.Equal(new PurchaseOrderObjectStates(this.DatabaseSession).OnHold, order.CurrentObjectState);
             var acl = new AccessControlList(order, new Users(this.DatabaseSession).GetCurrentUser());
-            Assert.IsTrue(acl.CanExecute(M.PurchaseOrder.Cancel));
-            Assert.IsTrue(acl.CanExecute(M.PurchaseOrder.Continue));
-            Assert.IsFalse(acl.CanExecute(M.PurchaseOrder.Confirm));
-            Assert.IsFalse(acl.CanExecute(M.PurchaseOrder.Reject));
-            Assert.IsFalse(acl.CanExecute(M.PurchaseOrder.Approve));
-            Assert.IsFalse(acl.CanExecute(M.PurchaseOrder.Hold));
+            Assert.True(acl.CanExecute(M.PurchaseOrder.Cancel));
+            Assert.True(acl.CanExecute(M.PurchaseOrder.Continue));
+            Assert.False(acl.CanExecute(M.PurchaseOrder.Confirm));
+            Assert.False(acl.CanExecute(M.PurchaseOrder.Reject));
+            Assert.False(acl.CanExecute(M.PurchaseOrder.Approve));
+            Assert.False(acl.CanExecute(M.PurchaseOrder.Hold));
         }
 
-        [Test]
+        [Fact]
         public void GivenPurchaseOrder_WhenConfirming_ThenAllValidItemsAreInConfirmedState()
         {
             var supplier = new OrganisationBuilder(this.DatabaseSession).WithName("supplier").Build();
@@ -294,17 +294,17 @@ namespace Allors.Domain
 
             this.DatabaseSession.Derive(true); 
 
-            Assert.AreEqual(3, order.ValidOrderItems.Count);
+            Assert.Equal(3, order.ValidOrderItems.Count);
             Assert.Contains(item1, order.ValidOrderItems);
             Assert.Contains(item2, order.ValidOrderItems);
             Assert.Contains(item3, order.ValidOrderItems);
-            Assert.AreEqual(new PurchaseOrderItemObjectStates(this.DatabaseSession).InProcess, item1.CurrentObjectState);
-            Assert.AreEqual(new PurchaseOrderItemObjectStates(this.DatabaseSession).InProcess, item2.CurrentObjectState);
-            Assert.AreEqual(new PurchaseOrderItemObjectStates(this.DatabaseSession).InProcess, item3.CurrentObjectState);
-            Assert.AreEqual(new PurchaseOrderItemObjectStates(this.DatabaseSession).Cancelled, item4.CurrentObjectState);
+            Assert.Equal(new PurchaseOrderItemObjectStates(this.DatabaseSession).InProcess, item1.CurrentObjectState);
+            Assert.Equal(new PurchaseOrderItemObjectStates(this.DatabaseSession).InProcess, item2.CurrentObjectState);
+            Assert.Equal(new PurchaseOrderItemObjectStates(this.DatabaseSession).InProcess, item3.CurrentObjectState);
+            Assert.Equal(new PurchaseOrderItemObjectStates(this.DatabaseSession).Cancelled, item4.CurrentObjectState);
         }
 
-        [Test]
+        [Fact]
         public void GivenPurchaseOrder_WhenOrdering_ThenAllValidItemsAreInInProcessState()
         {
             var supplier = new OrganisationBuilder(this.DatabaseSession).WithName("supplier").Build();
@@ -331,16 +331,16 @@ namespace Allors.Domain
 
             this.DatabaseSession.Derive(true);
 
-            Assert.AreEqual(3, order.ValidOrderItems.Count);
+            Assert.Equal(3, order.ValidOrderItems.Count);
             Assert.Contains(item1, order.ValidOrderItems);
             Assert.Contains(item2, order.ValidOrderItems);
             Assert.Contains(item3, order.ValidOrderItems);
-            Assert.AreEqual(new PurchaseOrderItemObjectStates(this.DatabaseSession).InProcess, item1.CurrentObjectState);
-            Assert.AreEqual(new PurchaseOrderItemObjectStates(this.DatabaseSession).InProcess, item2.CurrentObjectState);
-            Assert.AreEqual(new PurchaseOrderItemObjectStates(this.DatabaseSession).InProcess, item3.CurrentObjectState);
+            Assert.Equal(new PurchaseOrderItemObjectStates(this.DatabaseSession).InProcess, item1.CurrentObjectState);
+            Assert.Equal(new PurchaseOrderItemObjectStates(this.DatabaseSession).InProcess, item2.CurrentObjectState);
+            Assert.Equal(new PurchaseOrderItemObjectStates(this.DatabaseSession).InProcess, item3.CurrentObjectState);
         }
 
-        [Test]
+        [Fact]
         public void GivenPurchaseOrder_WhenShipmentIsReceived_ThenCurrenShipmentStatusIsUpdated()
         {
             var supplier = new OrganisationBuilder(this.DatabaseSession).WithName("supplier").Build();
@@ -382,9 +382,9 @@ namespace Allors.Domain
 
             this.DatabaseSession.Derive(true);
 
-            Assert.AreEqual(new PurchaseOrderItemObjectStates(this.DatabaseSession).Received, item1.CurrentShipmentStatus.PurchaseOrderItemObjectState);
-            Assert.AreEqual(new PurchaseOrderObjectStates(this.DatabaseSession).PartiallyReceived, order.CurrentShipmentStatus.PurchaseOrderObjectState);
-            Assert.AreEqual(new PurchaseOrderObjectStates(this.DatabaseSession).InProcess, order.CurrentOrderStatus.PurchaseOrderObjectState);
+            Assert.Equal(new PurchaseOrderItemObjectStates(this.DatabaseSession).Received, item1.CurrentShipmentStatus.PurchaseOrderItemObjectState);
+            Assert.Equal(new PurchaseOrderObjectStates(this.DatabaseSession).PartiallyReceived, order.CurrentShipmentStatus.PurchaseOrderObjectState);
+            Assert.Equal(new PurchaseOrderObjectStates(this.DatabaseSession).InProcess, order.CurrentOrderStatus.PurchaseOrderObjectState);
 
             var shipment2 = new PurchaseShipmentBuilder(this.DatabaseSession).WithShipmentMethod(new ShipmentMethods(this.DatabaseSession).Ground).WithShipFromParty(supplier).Build();
             shipmentItem = new ShipmentItemBuilder(this.DatabaseSession).WithPart(part).Build();
@@ -400,9 +400,9 @@ namespace Allors.Domain
 
             this.DatabaseSession.Derive(true);
 
-            Assert.AreEqual(new PurchaseOrderItemObjectStates(this.DatabaseSession).Received, item2.CurrentShipmentStatus.PurchaseOrderItemObjectState);
-            Assert.AreEqual(new PurchaseOrderObjectStates(this.DatabaseSession).PartiallyReceived, order.CurrentShipmentStatus.PurchaseOrderObjectState);
-            Assert.AreEqual(new PurchaseOrderObjectStates(this.DatabaseSession).InProcess, order.CurrentOrderStatus.PurchaseOrderObjectState);
+            Assert.Equal(new PurchaseOrderItemObjectStates(this.DatabaseSession).Received, item2.CurrentShipmentStatus.PurchaseOrderItemObjectState);
+            Assert.Equal(new PurchaseOrderObjectStates(this.DatabaseSession).PartiallyReceived, order.CurrentShipmentStatus.PurchaseOrderObjectState);
+            Assert.Equal(new PurchaseOrderObjectStates(this.DatabaseSession).InProcess, order.CurrentOrderStatus.PurchaseOrderObjectState);
 
             var shipment3 = new PurchaseShipmentBuilder(this.DatabaseSession).WithShipmentMethod(new ShipmentMethods(this.DatabaseSession).Ground).WithShipFromParty(supplier).Build();
             shipmentItem = new ShipmentItemBuilder(this.DatabaseSession).WithPart(part).Build();
@@ -418,9 +418,9 @@ namespace Allors.Domain
 
             this.DatabaseSession.Derive(true);
 
-            Assert.AreEqual(new PurchaseOrderItemObjectStates(this.DatabaseSession).Received, item3.CurrentShipmentStatus.PurchaseOrderItemObjectState);
-            Assert.AreEqual(new PurchaseOrderObjectStates(this.DatabaseSession).Received, order.CurrentShipmentStatus.PurchaseOrderObjectState);
-            Assert.AreEqual(new PurchaseOrderObjectStates(this.DatabaseSession).Completed, order.CurrentOrderStatus.PurchaseOrderObjectState);
+            Assert.Equal(new PurchaseOrderItemObjectStates(this.DatabaseSession).Received, item3.CurrentShipmentStatus.PurchaseOrderItemObjectState);
+            Assert.Equal(new PurchaseOrderObjectStates(this.DatabaseSession).Received, order.CurrentShipmentStatus.PurchaseOrderObjectState);
+            Assert.Equal(new PurchaseOrderObjectStates(this.DatabaseSession).Completed, order.CurrentOrderStatus.PurchaseOrderObjectState);
         }
     }
 }

@@ -21,11 +21,11 @@
 
 namespace Allors
 {
-    using NUnit.Framework;
+    using Xunit;
 
     public class SandboxTests : DomainTest
     {
-        [Test]
+        [Fact]
         public void Dummy()
         {
         }

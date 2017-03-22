@@ -22,12 +22,12 @@ namespace Allors.Domain
 {
     using System;
     using Meta;
-    using NUnit.Framework;
+    using Xunit;
 
-    [TestFixture]
+    
     public class SalesRepProductCategoryRevenuesTests : DomainTest
     {
-        [Test]
+        [Fact]
         public void DeriveRevenues()
         {
             var productItem = new SalesInvoiceItemTypes(this.DatabaseSession).ProductItem;
@@ -110,7 +110,7 @@ namespace Allors.Domain
             Singleton.Instance(this.DatabaseSession).DeriveRevenues(new NonLogging.Derivation(this.DatabaseSession));
 
             var salesRep1ProductCategoryRevenues = salesRep1.SalesRepProductCategoryRevenuesWhereSalesRep;
-            Assert.AreEqual(2, salesRep1ProductCategoryRevenues.Count);
+            Assert.Equal(2, salesRep1ProductCategoryRevenues.Count);
 
             salesRep1ProductCategoryRevenues.Filter.AddEquals(M.SalesRepProductCategoryRevenue.ProductCategory, cat1);
             var salesRep1Cat1Revenue = salesRep1ProductCategoryRevenues.First;
@@ -120,7 +120,7 @@ namespace Allors.Domain
             var salesRep1CatMainRevenue = salesRep1ProductCategoryRevenues.First;
 
             var salesRep2ProductCategoryRevenues = salesRep2.SalesRepProductCategoryRevenuesWhereSalesRep;
-            Assert.AreEqual(2, salesRep2ProductCategoryRevenues.Count);
+            Assert.Equal(2, salesRep2ProductCategoryRevenues.Count);
 
             salesRep2ProductCategoryRevenues.Filter.AddEquals(M.SalesRepProductCategoryRevenue.ProductCategory, cat2);
             var salesRep2Cat2Revenue = salesRep2ProductCategoryRevenues.First;
@@ -129,10 +129,10 @@ namespace Allors.Domain
             salesRep2ProductCategoryRevenues.Filter.AddEquals(M.SalesRepProductCategoryRevenue.ProductCategory, catMain);
             var salesRep2CatMainRevenue = salesRep2ProductCategoryRevenues.First;
 
-            Assert.AreEqual(90, salesRep1Cat1Revenue.Revenue);
-            Assert.AreEqual(90, salesRep1CatMainRevenue.Revenue);
-            Assert.AreEqual(50, salesRep2Cat2Revenue.Revenue);
-            Assert.AreEqual(50, salesRep2CatMainRevenue.Revenue);
+            Assert.Equal(90, salesRep1Cat1Revenue.Revenue);
+            Assert.Equal(90, salesRep1CatMainRevenue.Revenue);
+            Assert.Equal(50, salesRep2Cat2Revenue.Revenue);
+            Assert.Equal(50, salesRep2CatMainRevenue.Revenue);
 
             var invoice2 = new SalesInvoiceBuilder(this.DatabaseSession)
                 .WithInvoiceDate(DateTime.UtcNow)
@@ -154,10 +154,10 @@ namespace Allors.Domain
 
             Singleton.Instance(this.DatabaseSession).DeriveRevenues(new NonLogging.Derivation(this.DatabaseSession));
 
-            Assert.AreEqual(105, salesRep1Cat1Revenue.Revenue);
-            Assert.AreEqual(105, salesRep1CatMainRevenue.Revenue);
-            Assert.AreEqual(60, salesRep2Cat2Revenue.Revenue);
-            Assert.AreEqual(60, salesRep2CatMainRevenue.Revenue);
+            Assert.Equal(105, salesRep1Cat1Revenue.Revenue);
+            Assert.Equal(105, salesRep1CatMainRevenue.Revenue);
+            Assert.Equal(60, salesRep2Cat2Revenue.Revenue);
+            Assert.Equal(60, salesRep2CatMainRevenue.Revenue);
         }
     }
 }

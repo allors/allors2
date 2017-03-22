@@ -21,12 +21,12 @@
 
 namespace Allors.Domain
 {
-    using NUnit.Framework;
+    using Xunit;
 
-    [TestFixture]
+    
     public class FaxCommunicationTests : DomainTest
     {
-        [Test]
+        [Fact]
         public void GivenFaxCommunicationIsBuild_WhenDeriving_ThenStatusIsSet()
         {
             var communication = new FaxCommunicationBuilder(this.DatabaseSession)
@@ -36,14 +36,14 @@ namespace Allors.Domain
                 .WithReceiver(new PersonBuilder(this.DatabaseSession).WithLastName("receiver").Build())
                 .Build();
 
-            Assert.IsFalse(this.DatabaseSession.Derive().HasErrors);
+            Assert.False(this.DatabaseSession.Derive().HasErrors);
 
-            Assert.AreEqual(communication.CurrentCommunicationEventStatus.CommunicationEventObjectState, new CommunicationEventObjectStates(this.DatabaseSession).Scheduled);
-            Assert.AreEqual(communication.CurrentObjectState, new CommunicationEventObjectStates(this.DatabaseSession).Scheduled);
-            Assert.AreEqual(communication.CurrentObjectState, communication.LastObjectState);
+            Assert.Equal(communication.CurrentCommunicationEventStatus.CommunicationEventObjectState, new CommunicationEventObjectStates(this.DatabaseSession).Scheduled);
+            Assert.Equal(communication.CurrentObjectState, new CommunicationEventObjectStates(this.DatabaseSession).Scheduled);
+            Assert.Equal(communication.CurrentObjectState, communication.LastObjectState);
         }
 
-        [Test]
+        [Fact]
         public void GivenFaxCommunication_WhenDeriving_ThenInvolvedPartiesAreDerived()
         {
             var owner = new PersonBuilder(this.DatabaseSession).WithLastName("owner").Build();
@@ -62,7 +62,7 @@ namespace Allors.Domain
 
             this.DatabaseSession.Derive(true);
 
-            Assert.AreEqual(3, communication.InvolvedParties.Count);
+            Assert.Equal(3, communication.InvolvedParties.Count);
             Assert.Contains(owner, communication.InvolvedParties);
             Assert.Contains(originator, communication.InvolvedParties);
             Assert.Contains(receiver, communication.InvolvedParties);

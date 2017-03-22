@@ -1,8 +1,3 @@
-:: Name:     Generate.cmd
-:: Purpose:  Phase 1 generates from Repository to Meta and phase 2 generates from Meta.
-:: Author:   koen@allors.com
-:: Revision: December 2016 - refactored from old cmd file
-
 @ECHO OFF
 SETLOCAL ENABLEEXTENSIONS ENABLEDELAYEDEXPANSION
 
@@ -28,7 +23,7 @@ rmdir /s /q .\Domain\Generated >nul 2>&1
 @echo ==========
 
 msbuild Repository.sln /target:Clean /verbosity:minimal
-..\..\Tools\Generate\dist\Allors.Generate.Cmd.exe repository generate Repository.sln repository ../../domains/core/repository/templates/meta.cs.stg meta/generated || SET /A errno^|=%ERROR_BUILD_META% && GOTO :END
+..\Repository\Generate\dist\Allors.Generate.Cmd.exe repository generate Repository.sln repository ../../domains/core/repository/templates/meta.cs.stg meta/generated || SET /A errno^|=%ERROR_BUILD_META% && GOTO :END
 
 @echo ========
 @echo Adapters

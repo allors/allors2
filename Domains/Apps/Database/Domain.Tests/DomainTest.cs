@@ -19,46 +19,31 @@
 // <summary>Defines the DomainTest type.</summary>
 //-------------------------------------------------------------------------------------------------
 
+using System;
+using System.Security.Claims;
+using System.Security.Principal;
+
 namespace Allors
 {
     using System.IO;
     using System.Xml;
 
-
     using Allors.Meta;
 
-    using global::Allors.Domain;
-
-    using NUnit.Framework;
-
-    public class DomainTest
+    public class DomainTest : IDisposable
     {
         private ISession databaseSession;
 
-        public ISession DatabaseSession
+        public DomainTest() : this(true)
         {
-            get { return this.databaseSession; }
         }
 
-        [SetUp]
-        public virtual void Init()
-        {
-            this.Init(true);
-        }
-
-        [TearDown]
-        public virtual void TearDown()
-        {
-            this.databaseSession.Rollback();
-            this.databaseSession = null;
-        }
-
-        protected void Init(bool setup)
+        public DomainTest(bool setup)
         {
             if (setup)
             {
                 var stringReader = new StringReader(Fixture.FullXml);
-                var reader = new XmlTextReader(stringReader);
+                var reader = XmlReader.Create(stringReader);
                 Config.Default.Load(reader);
             }
             else
@@ -69,9 +54,22 @@ namespace Allors
             this.databaseSession = Config.Default.CreateSession();
         }
 
+        public void Dispose()
+        {
+            this.databaseSession.Rollback();
+            this.databaseSession = null;
+        }
+
+        public ISession DatabaseSession => this.databaseSession;
+
         protected IObject[] GetObjects(ISession session, Composite objectType)
         {
             return session.Extent(objectType);
+        }
+
+        protected void SetIdentity(string identity)
+        {
+            ClaimsPrincipal.ClaimsPrincipalSelector = () => new GenericPrincipal(new GenericIdentity(identity, "Forms"), new string[0]);
         }
     }
 }

@@ -25,20 +25,17 @@ namespace Allors.Domain
 {
     using System;
     using Meta;
-    using NUnit.Framework;
+    using Xunit;
 
-    [TestFixture]
+    
     public class InternalOrganisationTests : DomainTest
     {
         private OwnBankAccount ownBankAccount;
         private Currency euro;
         private PartyContactMechanism billingAddress;
-
-        [SetUp]
-        public override void Init()
+        
+        public InternalOrganisationTests()
         {
-            base.Init();
-
             var belgium = new Countries(this.DatabaseSession).CountryByIsoCode["BE"];
             this.euro = belgium.Currency;
 
@@ -59,7 +56,7 @@ namespace Allors.Domain
             this.DatabaseSession.Commit();
         }
 
-        [Test]
+        [Fact]
         public void GivenInternalOrganisation_WhenDeriving_ThenRequiredRelationsMustExist()
         {
             this.InstantiateObjects(this.DatabaseSession);
@@ -67,24 +64,24 @@ namespace Allors.Domain
             var builder = new InternalOrganisationBuilder(this.DatabaseSession);
             builder.Build();
 
-            Assert.IsTrue(this.DatabaseSession.Derive().HasErrors);
+            Assert.True(this.DatabaseSession.Derive().HasErrors);
 
             this.DatabaseSession.Rollback();
 
             builder.WithPaymentMethod(this.ownBankAccount);
             builder.Build();
 
-            Assert.IsTrue(this.DatabaseSession.Derive().HasErrors);
+            Assert.True(this.DatabaseSession.Derive().HasErrors);
 
             this.DatabaseSession.Rollback();
 
             builder.WithName("Organisation");
             builder.Build();
 
-            Assert.IsFalse(this.DatabaseSession.Derive().HasErrors);
+            Assert.False(this.DatabaseSession.Derive().HasErrors);
         }
 
-        [Test]
+        [Fact]
         public void GivenInternalOrganisation_WhenBuildWithout_ThenDoAccountingIsFalse()
         {
             this.InstantiateObjects(this.DatabaseSession);
@@ -100,10 +97,10 @@ namespace Allors.Domain
 
             this.DatabaseSession.Derive(true);
 
-            Assert.IsFalse(internalOrganisation.DoAccounting);
+            Assert.False(internalOrganisation.DoAccounting);
         }
 
-        [Test]
+        [Fact]
         public void GivenInternalOrganisation_WhenBuildWithout_ThenFiscalYearStartMonthIsJanuary()
         {
             this.InstantiateObjects(this.DatabaseSession);
@@ -119,10 +116,10 @@ namespace Allors.Domain
 
             this.DatabaseSession.Derive(true);
 
-            Assert.AreEqual(1, internalOrganisation.FiscalYearStartMonth);
+            Assert.Equal(1, internalOrganisation.FiscalYearStartMonth);
         }
 
-        [Test]
+        [Fact]
         public void GivenInternalOrganisation_WhenBuildWithout_ThenFiscalYearStartDayIsFirstDayOfMonth()
         {
             this.InstantiateObjects(this.DatabaseSession);
@@ -138,10 +135,10 @@ namespace Allors.Domain
 
             this.DatabaseSession.Derive(true);
 
-            Assert.AreEqual(1, internalOrganisation.FiscalYearStartDay);
+            Assert.Equal(1, internalOrganisation.FiscalYearStartDay);
         }
 
-        [Test]
+        [Fact]
         public void GivenInternalOrganisation_WhenBuildWithout_ThenInvoiceSequenceIsEqualRestartOnFiscalYear()
         {
             this.InstantiateObjects(this.DatabaseSession);
@@ -157,10 +154,10 @@ namespace Allors.Domain
 
             this.DatabaseSession.Derive(true);
 
-            Assert.AreEqual(new InvoiceSequences(this.DatabaseSession).RestartOnFiscalYear, internalOrganisation.InvoiceSequence);
+            Assert.Equal(new InvoiceSequences(this.DatabaseSession).RestartOnFiscalYear, internalOrganisation.InvoiceSequence);
         }
 
-        [Test]
+        [Fact]
         public void GivenInternalOrganisation_WhenBuildWithout_ThenLocaleIsEqualDefaultInternalOrganisationLocale()
         {
             this.InstantiateObjects(this.DatabaseSession);
@@ -176,10 +173,10 @@ namespace Allors.Domain
 
             this.DatabaseSession.Derive(true);
 
-            Assert.AreEqual(Singleton.Instance(this.DatabaseSession).DefaultInternalOrganisation.Locale, internalOrganisation.Locale);
+            Assert.Equal(Singleton.Instance(this.DatabaseSession).DefaultInternalOrganisation.Locale, internalOrganisation.Locale);
         }
 
-        [Test]
+        [Fact]
         public void GivenInternalOrganisation_WhenBuildWithout_ThenPreferredCurrencyIsEqualInternalOrganisationPreferredCurrency()
         {
             this.InstantiateObjects(this.DatabaseSession);
@@ -195,10 +192,10 @@ namespace Allors.Domain
 
             this.DatabaseSession.Derive(true);
 
-            Assert.AreEqual(Singleton.Instance(this.DatabaseSession).DefaultInternalOrganisation.PreferredCurrency, internalOrganisation.PreferredCurrency);
+            Assert.Equal(Singleton.Instance(this.DatabaseSession).DefaultInternalOrganisation.PreferredCurrency, internalOrganisation.PreferredCurrency);
         }
 
-        [Test]
+        [Fact]
         public void GivenInternalOrganisation_WhenPreferredCurrencyIsChanged_ThenValidationErrorIsTrhown()
         {
             this.InstantiateObjects(this.DatabaseSession);
@@ -212,18 +209,18 @@ namespace Allors.Domain
                 .Build();
 
             this.DatabaseSession.Derive(true);
-            Assert.IsNotNull(organisation.PreviousCurrency);
+            Assert.NotNull(organisation.PreviousCurrency);
                
             organisation.PreferredCurrency = new Currencies(this.DatabaseSession).FindBy(M.Currency.IsoCode, "GBP");
 
-            Assert.IsTrue(this.DatabaseSession.Derive().HasErrors);
+            Assert.True(this.DatabaseSession.Derive().HasErrors);
 
             organisation.PreferredCurrency = new Currencies(this.DatabaseSession).FindBy(M.Currency.IsoCode, "EUR");
 
-            Assert.IsFalse(this.DatabaseSession.Derive().HasErrors);
+            Assert.False(this.DatabaseSession.Derive().HasErrors);
         }
 
-        [Test]
+        [Fact]
         public void GivenInternalOrganisationWithDefaultFiscalYearStartMonthAndNotExistActualAccountingPeriod_WhenStartingNewFiscalYear_ThenAccountingPeriodsAreCreated()
         {
             this.InstantiateObjects(this.DatabaseSession);
@@ -240,38 +237,38 @@ namespace Allors.Domain
             var fromDate = DateTimeFactory.CreateDate(DateTime.UtcNow.Year, 01, 01).Date;
             var month = organisation.ActualAccountingPeriod;
 
-            Assert.AreEqual(1, month.PeriodNumber);
-            Assert.AreEqual(new TimeFrequencies(this.DatabaseSession).Month, month.TimeFrequency);
-            Assert.AreEqual(fromDate, month.FromDate);
-            Assert.AreEqual(fromDate.AddMonths(1).AddSeconds(-1).Date, month.ThroughDate);
-            Assert.IsTrue(month.ExistParent);
+            Assert.Equal(1, month.PeriodNumber);
+            Assert.Equal(new TimeFrequencies(this.DatabaseSession).Month, month.TimeFrequency);
+            Assert.Equal(fromDate, month.FromDate);
+            Assert.Equal(fromDate.AddMonths(1).AddSeconds(-1).Date, month.ThroughDate);
+            Assert.True(month.ExistParent);
 
             var trimester = month.Parent;
 
-            Assert.AreEqual(1, trimester.PeriodNumber);
-            Assert.AreEqual(new TimeFrequencies(this.DatabaseSession).Trimester, trimester.TimeFrequency);
-            Assert.AreEqual(fromDate, trimester.FromDate);
-            Assert.AreEqual(fromDate.AddMonths(3).AddSeconds(-1).Date, trimester.ThroughDate);
-            Assert.IsTrue(trimester.ExistParent);
+            Assert.Equal(1, trimester.PeriodNumber);
+            Assert.Equal(new TimeFrequencies(this.DatabaseSession).Trimester, trimester.TimeFrequency);
+            Assert.Equal(fromDate, trimester.FromDate);
+            Assert.Equal(fromDate.AddMonths(3).AddSeconds(-1).Date, trimester.ThroughDate);
+            Assert.True(trimester.ExistParent);
 
             var semester = trimester.Parent;
 
-            Assert.AreEqual(1, semester.PeriodNumber);
-            Assert.AreEqual(new TimeFrequencies(this.DatabaseSession).Semester, semester.TimeFrequency);
-            Assert.AreEqual(fromDate, semester.FromDate);
-            Assert.AreEqual(fromDate.AddMonths(6).AddSeconds(-1).Date, semester.ThroughDate);
-            Assert.IsTrue(semester.ExistParent);
+            Assert.Equal(1, semester.PeriodNumber);
+            Assert.Equal(new TimeFrequencies(this.DatabaseSession).Semester, semester.TimeFrequency);
+            Assert.Equal(fromDate, semester.FromDate);
+            Assert.Equal(fromDate.AddMonths(6).AddSeconds(-1).Date, semester.ThroughDate);
+            Assert.True(semester.ExistParent);
 
             var year = semester.Parent;
 
-            Assert.AreEqual(1, year.PeriodNumber);
-            Assert.AreEqual(new TimeFrequencies(this.DatabaseSession).Year, year.TimeFrequency);
-            Assert.AreEqual(fromDate, year.FromDate);
-            Assert.AreEqual(fromDate.AddMonths(12).AddSeconds(-1).Date, year.ThroughDate);
-            Assert.IsFalse(year.ExistParent);
+            Assert.Equal(1, year.PeriodNumber);
+            Assert.Equal(new TimeFrequencies(this.DatabaseSession).Year, year.TimeFrequency);
+            Assert.Equal(fromDate, year.FromDate);
+            Assert.Equal(fromDate.AddMonths(12).AddSeconds(-1).Date, year.ThroughDate);
+            Assert.False(year.ExistParent);
         }
 
-        [Test]
+        [Fact]
         public void GivenInternalOrganisationWithCustomFiscalYearStartMonthAndNotExistActualAccountingPeriod_WhenStartingNewFiscalYear_ThenAccountingPeriodsAreCreated()
         {
             this.InstantiateObjects(this.DatabaseSession);
@@ -290,44 +287,44 @@ namespace Allors.Domain
             var fromDate = DateTimeFactory.CreateDate(DateTime.UtcNow.Year, 05, 15).Date;
             var month = organisation.ActualAccountingPeriod;
 
-            Assert.AreEqual(1, month.PeriodNumber);
-            Assert.AreEqual(new TimeFrequencies(this.DatabaseSession).Month, month.TimeFrequency);
-            Assert.AreEqual(fromDate, month.FromDate);
-            Assert.AreEqual(fromDate.AddMonths(1).AddSeconds(-1).Date, month.ThroughDate);
-            Assert.IsTrue(month.ExistParent);
+            Assert.Equal(1, month.PeriodNumber);
+            Assert.Equal(new TimeFrequencies(this.DatabaseSession).Month, month.TimeFrequency);
+            Assert.Equal(fromDate, month.FromDate);
+            Assert.Equal(fromDate.AddMonths(1).AddSeconds(-1).Date, month.ThroughDate);
+            Assert.True(month.ExistParent);
 
             var trimester = month.Parent;
 
-            Assert.AreEqual(1, trimester.PeriodNumber);
-            Assert.AreEqual(new TimeFrequencies(this.DatabaseSession).Trimester, trimester.TimeFrequency);
-            Assert.AreEqual(fromDate, trimester.FromDate);
-            Assert.AreEqual(fromDate.AddMonths(3).AddSeconds(-1).Date, trimester.ThroughDate);
-            Assert.IsTrue(trimester.ExistParent);
+            Assert.Equal(1, trimester.PeriodNumber);
+            Assert.Equal(new TimeFrequencies(this.DatabaseSession).Trimester, trimester.TimeFrequency);
+            Assert.Equal(fromDate, trimester.FromDate);
+            Assert.Equal(fromDate.AddMonths(3).AddSeconds(-1).Date, trimester.ThroughDate);
+            Assert.True(trimester.ExistParent);
 
             var semester = trimester.Parent;
 
-            Assert.AreEqual(1, semester.PeriodNumber);
-            Assert.AreEqual(new TimeFrequencies(this.DatabaseSession).Semester, semester.TimeFrequency);
-            Assert.AreEqual(fromDate, semester.FromDate);
-            Assert.AreEqual(fromDate.AddMonths(6).AddSeconds(-1).Date, semester.ThroughDate);
-            Assert.IsTrue(semester.ExistParent);
+            Assert.Equal(1, semester.PeriodNumber);
+            Assert.Equal(new TimeFrequencies(this.DatabaseSession).Semester, semester.TimeFrequency);
+            Assert.Equal(fromDate, semester.FromDate);
+            Assert.Equal(fromDate.AddMonths(6).AddSeconds(-1).Date, semester.ThroughDate);
+            Assert.True(semester.ExistParent);
 
             var year = semester.Parent;
 
-            Assert.AreEqual(1, year.PeriodNumber);
-            Assert.AreEqual(new TimeFrequencies(this.DatabaseSession).Year, year.TimeFrequency);
-            Assert.AreEqual(fromDate, year.FromDate);
-            Assert.AreEqual(fromDate.AddMonths(12).AddSeconds(-1).Date, year.ThroughDate);
-            Assert.IsFalse(year.ExistParent);
+            Assert.Equal(1, year.PeriodNumber);
+            Assert.Equal(new TimeFrequencies(this.DatabaseSession).Year, year.TimeFrequency);
+            Assert.Equal(fromDate, year.FromDate);
+            Assert.Equal(fromDate.AddMonths(12).AddSeconds(-1).Date, year.ThroughDate);
+            Assert.False(year.ExistParent);
 
-            Assert.IsTrue(organisation.ExistActualAccountingPeriod);
+            Assert.True(organisation.ExistActualAccountingPeriod);
             Assert.Contains(organisation.ActualAccountingPeriod, organisation.AccountingPeriods);
             Assert.Contains(trimester, organisation.AccountingPeriods);
             Assert.Contains(semester, organisation.AccountingPeriods);
             Assert.Contains(year, organisation.AccountingPeriods);
         }
 
-        [Test]
+        [Fact]
         public void GivenInternalOrganisationWithActiveActualAccountingPeriod_WhenStartingNewFiscalYear_ThenNothingHappens()
         {
             this.InstantiateObjects(this.DatabaseSession);
@@ -343,14 +340,14 @@ namespace Allors.Domain
 
             organisation.AppsStartNewFiscalYear();
 
-            Assert.AreEqual(4, this.DatabaseSession.Extent<AccountingPeriod>().Count);
+            Assert.Equal(4, this.DatabaseSession.Extent<AccountingPeriod>().Count);
 
             organisation.AppsStartNewFiscalYear();
 
-            Assert.AreEqual(4, this.DatabaseSession.Extent<AccountingPeriod>().Count);
+            Assert.Equal(4, this.DatabaseSession.Extent<AccountingPeriod>().Count);
         }
 
-        [Test]
+        [Fact]
         public void GivenInternalOrganisation_WhenDefaultPaymentMethodIsSet_ThenPaymentMethodIsAddedToCollectionPaymentMethods()
         {
             this.InstantiateObjects(this.DatabaseSession);
@@ -365,11 +362,11 @@ namespace Allors.Domain
 
             this.DatabaseSession.Derive(true);
 
-            Assert.AreEqual(1, organisation.PaymentMethods.Count);
-            Assert.AreEqual(ownBankAccount, organisation.PaymentMethods.First);
+            Assert.Equal(1, organisation.PaymentMethods.Count);
+            Assert.Equal(ownBankAccount, organisation.PaymentMethods.First);
         }
 
-        [Test]
+        [Fact]
         public void GivenInternalOrganisationWithoutDefaultPaymentMethod_WhenSinglePaymentMethodIsAdded_ThenDefaultPaymentMethodIsSet()
         {
             this.InstantiateObjects(this.DatabaseSession);
@@ -384,10 +381,10 @@ namespace Allors.Domain
 
             this.DatabaseSession.Derive(true);
 
-            Assert.AreEqual(ownBankAccount, organisation.DefaultPaymentMethod);
+            Assert.Equal(ownBankAccount, organisation.DefaultPaymentMethod);
         }
 
-        [Test]
+        [Fact]
         public void GivenInternalOrganisationWithSinglePaymentMethod_WhenPaymentMethodIsRemoved_ThenDefaultPaymentMethodIsAdded()
         {
             this.InstantiateObjects(this.DatabaseSession);
@@ -406,8 +403,8 @@ namespace Allors.Domain
 
             this.DatabaseSession.Derive();
 
-            Assert.IsTrue(organisation.ExistDefaultPaymentMethod);
-            Assert.AreEqual(1, organisation.PaymentMethods.Count);
+            Assert.True(organisation.ExistDefaultPaymentMethod);
+            Assert.Equal(1, organisation.PaymentMethods.Count);
         }
         
         private void InstantiateObjects(ISession session)

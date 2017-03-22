@@ -17,19 +17,10 @@ namespace Allors.Domain
 {
     using System;
     using System.Collections.Generic;
-    using System.Globalization;
     using Meta;
 
     public static class PartyExtensions
     {
-        public static NumberFormatInfo AppsGetCurrencyFormat(this Party party)
-        {
-            var cultureInfo = new CultureInfo(party.Locale.Name);
-            var currencyFormat = (NumberFormatInfo)cultureInfo.NumberFormat.Clone();
-            currencyFormat.CurrencySymbol = party.PreferredCurrency.Symbol;
-            return currencyFormat;
-        }
-
         public static List<SalesOrder> AppsGetPreOrders(this Party party)
         {
             var preOrders = new List<SalesOrder>();

@@ -21,25 +21,25 @@
 
 namespace Allors.Domain
 {
-    using NUnit.Framework;
+    using Xunit;
 
-    [TestFixture]
+    
     public class InvoiceTermTests : DomainTest
     {
-        [Test]
+        [Fact]
         public void GivenInvoiceTerm_WhenDeriving_ThenRequiredRelationsMustExist()
         {
             var builder = new InvoiceTermBuilder(this.DatabaseSession);
             var invoiceTerm = builder.Build();
 
-            Assert.IsTrue(this.DatabaseSession.Derive().HasErrors);
+            Assert.True(this.DatabaseSession.Derive().HasErrors);
 
             this.DatabaseSession.Rollback();
 
             builder.WithTermType(new TermTypes(this.DatabaseSession).LateFee);
             invoiceTerm = builder.Build();
 
-            Assert.IsFalse(this.DatabaseSession.Derive().HasErrors);
+            Assert.False(this.DatabaseSession.Derive().HasErrors);
         }
     }
 }

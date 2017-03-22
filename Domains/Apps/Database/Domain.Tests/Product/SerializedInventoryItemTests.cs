@@ -22,12 +22,12 @@
 namespace Allors.Domain
 {
     using Meta;
-    using NUnit.Framework;
+    using Xunit;
 
-    [TestFixture]
+    
     public class SerializedInventoryItemTests : DomainTest
     {
-        [Test]
+        [Fact]
         public void GivenInventoryItem_WhenDeriving_ThenRequiredRelationsMustExist()
         {
             var part = new FinishedGoodBuilder(this.DatabaseSession).WithName("part").WithManufacturerId("10101").WithSku("sku").Build();
@@ -36,21 +36,21 @@ namespace Allors.Domain
             var builder = new SerializedInventoryItemBuilder(this.DatabaseSession);
             builder.Build();
 
-            Assert.IsTrue(this.DatabaseSession.Derive().HasErrors);
+            Assert.True(this.DatabaseSession.Derive().HasErrors);
 
             this.DatabaseSession.Rollback();
 
             builder.WithPart(part);
             builder.Build();
 
-            Assert.IsTrue(this.DatabaseSession.Derive().HasErrors);
+            Assert.True(this.DatabaseSession.Derive().HasErrors);
 
             this.DatabaseSession.Rollback();
 
             builder.WithSerialNumber("1");
             builder.Build();
 
-            Assert.IsFalse(this.DatabaseSession.Derive().HasErrors);
+            Assert.False(this.DatabaseSession.Derive().HasErrors);
 
             builder.WithGood(new GoodBuilder(this.DatabaseSession)
                 .WithSku("10101")
@@ -59,18 +59,18 @@ namespace Allors.Domain
 
             builder.Build();
 
-            Assert.IsTrue(this.DatabaseSession.Derive().HasErrors);
+            Assert.True(this.DatabaseSession.Derive().HasErrors);
         }
 
-        [Test]
+        [Fact]
         public void GivenInventoryItem_WhenBuild_ThenPostBuildRelationsMustExist()
         {
             var item = new SerializedInventoryItemBuilder(this.DatabaseSession)
                 .WithPart(new FinishedGoodBuilder(this.DatabaseSession).WithName("part").WithManufacturerId("10101").Build())
                 .Build();
 
-            Assert.AreEqual(new SerializedInventoryItemObjectStates(this.DatabaseSession).Good, item.CurrentObjectState);
-            Assert.AreEqual(new Warehouses(this.DatabaseSession).FindBy(M.Warehouse.Name, "facility"), item.Facility);
+            Assert.Equal(new SerializedInventoryItemObjectStates(this.DatabaseSession).Good, item.CurrentObjectState);
+            Assert.Equal(new Warehouses(this.DatabaseSession).FindBy(M.Warehouse.Name, "facility"), item.Facility);
         }
     }
 }

@@ -25,12 +25,12 @@ namespace Allors.Domain
     using System.Security.Principal;
     using System.Threading;
     using Meta;
-    using NUnit.Framework;
+    using Xunit;
 
-    [TestFixture]
+    
     public class CustomerShipmentTests : DomainTest
     {
-        [Test]
+        [Fact]
         public void GivenCustomerShipment_WhenBuild_ThenLastObjectStateEqualsCurrencObjectState()
         {
             var customer = new PersonBuilder(this.DatabaseSession).WithLastName("customer").Build();
@@ -45,11 +45,11 @@ namespace Allors.Domain
 
             this.DatabaseSession.Derive(true);
 
-            Assert.AreEqual(new CustomerShipmentObjectStates(this.DatabaseSession).Created, shipment.CurrentObjectState);
-            Assert.AreEqual(shipment.LastObjectState, shipment.CurrentObjectState);
+            Assert.Equal(new CustomerShipmentObjectStates(this.DatabaseSession).Created, shipment.CurrentObjectState);
+            Assert.Equal(shipment.LastObjectState, shipment.CurrentObjectState);
         }
 
-        [Test]
+        [Fact]
         public void GivenCustomerShipment_WhenBuild_ThenPreviousObjectStateIsNull()
         {
             var customer = new PersonBuilder(this.DatabaseSession).WithLastName("customer").Build();
@@ -64,10 +64,10 @@ namespace Allors.Domain
 
             this.DatabaseSession.Derive(true);
 
-            Assert.IsNull(shipment.PreviousObjectState);
+            Assert.Null(shipment.PreviousObjectState);
         }
 
-        [Test]
+        [Fact]
         public void GivenCustomerShipment_WhenCancelled_ThenCurrentShipmentStatusEqualsCancelled()
         {
             var customer = new PersonBuilder(this.DatabaseSession).WithLastName("customer").Build();
@@ -82,18 +82,18 @@ namespace Allors.Domain
 
             this.DatabaseSession.Derive(true);
 
-            Assert.AreEqual(1, shipment.ShipmentStatuses.Count);
-            Assert.AreEqual(new CustomerShipmentObjectStates(this.DatabaseSession).Created, shipment.CurrentShipmentStatus.CustomerShipmentObjectState);
+            Assert.Equal(1, shipment.ShipmentStatuses.Count);
+            Assert.Equal(new CustomerShipmentObjectStates(this.DatabaseSession).Created, shipment.CurrentShipmentStatus.CustomerShipmentObjectState);
 
             shipment.Cancel();
 
             this.DatabaseSession.Derive(true);
 
-            Assert.AreEqual(2, shipment.ShipmentStatuses.Count);
-            Assert.AreEqual(new CustomerShipmentObjectStates(this.DatabaseSession).Cancelled, shipment.CurrentShipmentStatus.CustomerShipmentObjectState);
+            Assert.Equal(2, shipment.ShipmentStatuses.Count);
+            Assert.Equal(new CustomerShipmentObjectStates(this.DatabaseSession).Cancelled, shipment.CurrentShipmentStatus.CustomerShipmentObjectState);
         }
 
-        [Test]
+        [Fact]
         public void GivenCustomerShipmentBuilder_WhenBuild_ThenPostBuildRelationsMustExist()
         {
             var customer = new PersonBuilder(this.DatabaseSession).WithLastName("customer").Build();
@@ -119,14 +119,14 @@ namespace Allors.Domain
 
             this.DatabaseSession.Derive(true);
 
-            Assert.AreEqual(new CustomerShipmentObjectStates(this.DatabaseSession).Created, shipment.CurrentObjectState);
-            Assert.AreEqual(new InternalOrganisations(this.DatabaseSession).FindBy(M.InternalOrganisation.Name, "internalOrganisation"), shipment.ShipFromParty);
-            Assert.AreEqual(shipFromAddress, shipment.ShipFromAddress);
-            Assert.AreEqual(shipment.ShipFromParty, shipment.ShipFromParty);
-            Assert.AreEqual(new Stores(this.DatabaseSession).FindBy(M.Store.Name, "store"), shipment.Store);
+            Assert.Equal(new CustomerShipmentObjectStates(this.DatabaseSession).Created, shipment.CurrentObjectState);
+            Assert.Equal(new InternalOrganisations(this.DatabaseSession).FindBy(M.InternalOrganisation.Name, "internalOrganisation"), shipment.ShipFromParty);
+            Assert.Equal(shipFromAddress, shipment.ShipFromAddress);
+            Assert.Equal(shipment.ShipFromParty, shipment.ShipFromParty);
+            Assert.Equal(new Stores(this.DatabaseSession).FindBy(M.Store.Name, "store"), shipment.Store);
         }
 
-        [Test]
+        [Fact]
         public void GivenCustomerShipment_WhenDeriving_ThenRequiredRelationsMustExist()
         {
             var mechelen = new CityBuilder(this.DatabaseSession).WithName("Mechelen").Build();
@@ -138,31 +138,31 @@ namespace Allors.Domain
             var builder = new CustomerShipmentBuilder(this.DatabaseSession);
             builder.Build();
 
-            Assert.IsTrue(this.DatabaseSession.Derive().HasErrors);
+            Assert.True(this.DatabaseSession.Derive().HasErrors);
 
             this.DatabaseSession.Rollback();
 
             builder.WithShipToParty(customer);
             builder.Build();
 
-            Assert.IsTrue(this.DatabaseSession.Derive().HasErrors);
+            Assert.True(this.DatabaseSession.Derive().HasErrors);
 
             this.DatabaseSession.Rollback();
 
             builder.WithShipmentMethod(new ShipmentMethods(this.DatabaseSession).Ground);
             builder.Build();
 
-            Assert.IsTrue(this.DatabaseSession.Derive().HasErrors);
+            Assert.True(this.DatabaseSession.Derive().HasErrors);
 
             this.DatabaseSession.Rollback();
 
             builder.WithShipToAddress(shipToAddress);
             builder.Build();
 
-            Assert.IsFalse(this.DatabaseSession.Derive().HasErrors);
+            Assert.False(this.DatabaseSession.Derive().HasErrors);
         }
 
-        [Test]
+        [Fact]
         public void GivenCustomerShipment_WhenGettingShipmentNumberWithoutFormat_ThenShipmentNumberShouldBeReturned()
         {
             var mechelen = new CityBuilder(this.DatabaseSession).WithName("Mechelen").Build();
@@ -183,7 +183,7 @@ namespace Allors.Domain
                 .WithShipmentMethod(store.DefaultShipmentMethod)
                 .Build();
 
-            Assert.AreEqual("1", shipment1.ShipmentNumber);
+            Assert.Equal("1", shipment1.ShipmentNumber);
 
             var shipment2 = new CustomerShipmentBuilder(this.DatabaseSession)
                 .WithShipToParty(new PersonBuilder(this.DatabaseSession).WithLastName("person1").Build())
@@ -191,10 +191,10 @@ namespace Allors.Domain
                 .WithShipmentMethod(store.DefaultShipmentMethod)
                 .Build();
 
-            Assert.AreEqual("2", shipment2.ShipmentNumber);
+            Assert.Equal("2", shipment2.ShipmentNumber);
         }
 
-        [Test]
+        [Fact]
         public void GivenCustomerShipment_WhenGettingShipmentNumberWithFormat_ThenFormattedShipmentNumberShouldBeReturned()
         {
             var mechelen = new CityBuilder(this.DatabaseSession).WithName("Mechelen").Build();
@@ -216,7 +216,7 @@ namespace Allors.Domain
                 .WithShipmentMethod(store.DefaultShipmentMethod)
                 .Build();
 
-            Assert.AreEqual("the format is 1", shipment1.ShipmentNumber);
+            Assert.Equal("the format is 1", shipment1.ShipmentNumber);
 
             var shipment2 = new CustomerShipmentBuilder(this.DatabaseSession)
                 .WithShipToParty(new PersonBuilder(this.DatabaseSession).WithLastName("person1").Build())
@@ -225,10 +225,10 @@ namespace Allors.Domain
                 .WithShipmentMethod(store.DefaultShipmentMethod)
                 .Build();
 
-            Assert.AreEqual("the format is 2", shipment2.ShipmentNumber);
+            Assert.Equal("the format is 2", shipment2.ShipmentNumber);
         }
 
-        [Test]
+        [Fact]
         public void GivenCustomerShipmentWithShipToCustomerWithShippingAddress_WhenDeriving_ThenShipToAddressMustExist()
         {
             var customer = new OrganisationBuilder(this.DatabaseSession).WithName("customer").Build();
@@ -253,16 +253,16 @@ namespace Allors.Domain
 
             this.DatabaseSession.Derive(true);
 
-            Assert.AreEqual(shippingAddress.ContactMechanism, customerShipment.ShipToAddress);
+            Assert.Equal(shippingAddress.ContactMechanism, customerShipment.ShipToAddress);
         }
 
-        [Test]
+        [Fact]
         public void GivenCustomerShipment_WhenObjectStateIsCreated_ThenCheckTransitions()
         {
             var mechelen = new CityBuilder(this.DatabaseSession).WithName("Mechelen").Build();
             var shipToAddress = new PostalAddressBuilder(this.DatabaseSession).WithGeographicBoundary(mechelen).WithAddress1("Haverwerf 15").Build();
 
-            Thread.CurrentPrincipal = new GenericPrincipal(new GenericIdentity("orderProcessor", "Forms"), new string[0]);
+            this.SetIdentity("orderProcessor");
 
             var customer = new PersonBuilder(this.DatabaseSession).WithLastName("customer").Build();
 
@@ -275,17 +275,17 @@ namespace Allors.Domain
             this.DatabaseSession.Derive(true);
 
             var acl = new AccessControlList(shipment, new Users(this.DatabaseSession).GetCurrentUser());
-            Assert.AreEqual(new CustomerShipmentObjectStates(this.DatabaseSession).Created, shipment.CurrentObjectState);
-            Assert.IsTrue(acl.CanExecute(M.CustomerShipment.Cancel));
+            Assert.Equal(new CustomerShipmentObjectStates(this.DatabaseSession).Created, shipment.CurrentObjectState);
+            Assert.True(acl.CanExecute(M.CustomerShipment.Cancel));
         }
 
-        [Test]
+        [Fact]
         public void GivenCustomerShipment_WhenObjectStateIsCancelled_ThenCheckTransitions()
         {
             var mechelen = new CityBuilder(this.DatabaseSession).WithName("Mechelen").Build();
             var shipToAddress = new PostalAddressBuilder(this.DatabaseSession).WithGeographicBoundary(mechelen).WithAddress1("Haverwerf 15").Build();
 
-            Thread.CurrentPrincipal = new GenericPrincipal(new GenericIdentity("orderProcessor", "Forms"), new string[0]);
+            this.SetIdentity("orderProcessor");
 
             var customer = new PersonBuilder(this.DatabaseSession).WithLastName("customer").Build();
 
@@ -300,10 +300,10 @@ namespace Allors.Domain
             this.DatabaseSession.Derive(true);
 
             var acl = new AccessControlList(shipment, new Users(this.DatabaseSession).GetCurrentUser());
-            Assert.IsFalse(acl.CanExecute(M.CustomerShipment.Cancel));
+            Assert.False(acl.CanExecute(M.CustomerShipment.Cancel));
         }
 
-        [Test]
+        [Fact]
         public void GivenCustomerShipment_WhenObjectStateIsShipped_ThenCheckTransitions()
         {
             var assessable = new VatRegimes(this.DatabaseSession).Assessable;
@@ -377,12 +377,12 @@ namespace Allors.Domain
             shipment.Ship();
 
             var acl = new AccessControlList(shipment, new Users(this.DatabaseSession).GetCurrentUser());
-            Assert.AreEqual(new CustomerShipmentObjectStates(this.DatabaseSession).Shipped, shipment.CurrentObjectState);
-            Assert.IsFalse(acl.CanExecute(M.CustomerShipment.Cancel));
-            Assert.IsFalse(acl.CanWrite(M.CustomerShipment.HandlingInstruction));
+            Assert.Equal(new CustomerShipmentObjectStates(this.DatabaseSession).Shipped, shipment.CurrentObjectState);
+            Assert.False(acl.CanExecute(M.CustomerShipment.Cancel));
+            Assert.False(acl.CanWrite(M.CustomerShipment.HandlingInstruction));
         }
 
-        [Test]
+        [Fact]
         public void GivenCustomerShipment_WhenAllItemsArePutIntoShipmentPackages_ThenCustomerShipmentStateIsPacked()
         {
             var mechelen = new CityBuilder(this.DatabaseSession).WithName("Mechelen").Build();
@@ -454,10 +454,10 @@ namespace Allors.Domain
 
             this.DatabaseSession.Derive(true);
 
-            Assert.AreEqual(new CustomerShipmentObjectStates(this.DatabaseSession).Packed, shipment.CurrentObjectState);
+            Assert.Equal(new CustomerShipmentObjectStates(this.DatabaseSession).Packed, shipment.CurrentObjectState);
         }
 
-        [Test]
+        [Fact]
         public void GivenCustomerShipment_WhenAddingAndRemovingPackages_ThenPackageSequenceNumberIsRecalculated()
         {
             var shipment = new CustomerShipmentBuilder(this.DatabaseSession)
@@ -471,37 +471,37 @@ namespace Allors.Domain
 
             this.DatabaseSession.Derive(true);
 
-            Assert.AreEqual(1, package1.SequenceNumber);
+            Assert.Equal(1, package1.SequenceNumber);
 
             var package2 = new ShipmentPackageBuilder(this.DatabaseSession).Build();
             shipment.AddShipmentPackage(package2);
 
             this.DatabaseSession.Derive(true);
 
-            Assert.AreEqual(2, package2.SequenceNumber);
+            Assert.Equal(2, package2.SequenceNumber);
 
             var package3 = new ShipmentPackageBuilder(this.DatabaseSession).Build();
             shipment.AddShipmentPackage(package3);
 
             this.DatabaseSession.Derive(true);
 
-            Assert.AreEqual(3, package3.SequenceNumber);
+            Assert.Equal(3, package3.SequenceNumber);
 
             shipment.RemoveShipmentPackage(package1);
 
             this.DatabaseSession.Derive(true);
 
-            Assert.AreEqual(2, package2.SequenceNumber);
-            Assert.AreEqual(3, package3.SequenceNumber);
+            Assert.Equal(2, package2.SequenceNumber);
+            Assert.Equal(3, package3.SequenceNumber);
 
             var package4 = new ShipmentPackageBuilder(this.DatabaseSession).Build();
             shipment.AddShipmentPackage(package4);
 
             this.DatabaseSession.Derive(true);
 
-            Assert.AreEqual(2, package2.SequenceNumber);
-            Assert.AreEqual(3, package3.SequenceNumber);
-            Assert.AreEqual(4, package4.SequenceNumber);
+            Assert.Equal(2, package2.SequenceNumber);
+            Assert.Equal(3, package3.SequenceNumber);
+            Assert.Equal(4, package4.SequenceNumber);
 
             shipment.RemoveShipmentPackage(package4);
 
@@ -512,12 +512,12 @@ namespace Allors.Domain
 
             this.DatabaseSession.Derive(true);
 
-            Assert.AreEqual(2, package2.SequenceNumber);
-            Assert.AreEqual(3, package3.SequenceNumber);
-            Assert.AreEqual(4, package5.SequenceNumber);
+            Assert.Equal(2, package2.SequenceNumber);
+            Assert.Equal(3, package3.SequenceNumber);
+            Assert.Equal(4, package5.SequenceNumber);
         }
 
-        [Test]
+        [Fact]
         public void GivenCustomerShipment_WhenDeriving_ThenTotalShipmentValueIsCalculated()
         {
             Singleton.Instance(this.DatabaseSession).DefaultInternalOrganisation.StoresWhereOwner.First.ShipmentThreshold = 100;
@@ -574,23 +574,23 @@ namespace Allors.Domain
             this.DatabaseSession.Derive(true);
 
             var shipment = (CustomerShipment)item1.OrderShipmentsWhereSalesOrderItem[0].ShipmentItem.ShipmentWhereShipmentItem;
-            Assert.AreEqual(75, shipment.ShipmentValue);
+            Assert.Equal(75, shipment.ShipmentValue);
 
             item1.QuantityOrdered = 3;
 
             this.DatabaseSession.Derive(true);
 
-            Assert.AreEqual(45, shipment.ShipmentValue);
+            Assert.Equal(45, shipment.ShipmentValue);
 
             var item2 = new SalesOrderItemBuilder(this.DatabaseSession).WithProduct(good1).WithQuantityOrdered(10).WithActualUnitPrice(10).Build();
             order.AddSalesOrderItem(item2);
 
             this.DatabaseSession.Derive(true);
 
-            Assert.AreEqual(145, shipment.ShipmentValue);
+            Assert.Equal(145, shipment.ShipmentValue);
         }
 
-        [Test]
+        [Fact]
         public void GivenShipmentThreshold_WhenNewCustomerShipmentIsBelowThreshold_ThenShipmentAndPicklistAreSetOnHold()
         {
             Singleton.Instance(this.DatabaseSession).DefaultInternalOrganisation.StoresWhereOwner.First.ShipmentThreshold = 100;
@@ -638,11 +638,11 @@ namespace Allors.Domain
             var shipment = (CustomerShipment)item.OrderShipmentsWhereSalesOrderItem[0].ShipmentItem.ShipmentWhereShipmentItem;
             var pickList = shipment.ShipmentItems[0].ItemIssuancesWhereShipmentItem[0].PickListItem.PickListWherePickListItem;
 
-            Assert.AreEqual(new CustomerShipmentObjectStates(this.DatabaseSession).OnHold, shipment.CurrentObjectState);
-            Assert.AreEqual(new PickListObjectStates(this.DatabaseSession).OnHold, pickList.CurrentObjectState);
+            Assert.Equal(new CustomerShipmentObjectStates(this.DatabaseSession).OnHold, shipment.CurrentObjectState);
+            Assert.Equal(new PickListObjectStates(this.DatabaseSession).OnHold, pickList.CurrentObjectState);
         }
 
-        [Test]
+        [Fact]
         public void GivenCustomerShipment_WhenShipmentValueFallsBelowThreshold_ThenShipmentAndPendigPicklistAreSetOnHold()
         {
             Singleton.Instance(this.DatabaseSession).DefaultInternalOrganisation.StoresWhereOwner.First.ShipmentThreshold = 100;
@@ -690,18 +690,18 @@ namespace Allors.Domain
             var shipment = (CustomerShipment)item.OrderShipmentsWhereSalesOrderItem[0].ShipmentItem.ShipmentWhereShipmentItem;
             var pickList = shipment.ShipmentItems[0].ItemIssuancesWhereShipmentItem[0].PickListItem.PickListWherePickListItem;
 
-            Assert.AreEqual(new CustomerShipmentObjectStates(this.DatabaseSession).Created, shipment.CurrentObjectState);
-            Assert.AreEqual(new PickListObjectStates(this.DatabaseSession).Created, pickList.CurrentObjectState);
+            Assert.Equal(new CustomerShipmentObjectStates(this.DatabaseSession).Created, shipment.CurrentObjectState);
+            Assert.Equal(new PickListObjectStates(this.DatabaseSession).Created, pickList.CurrentObjectState);
 
             item.QuantityOrdered = 5;
 
             this.DatabaseSession.Derive(true);
 
-            Assert.AreEqual(new CustomerShipmentObjectStates(this.DatabaseSession).OnHold, shipment.CurrentObjectState);
-            Assert.AreEqual(new PickListObjectStates(this.DatabaseSession).OnHold, pickList.CurrentObjectState);
+            Assert.Equal(new CustomerShipmentObjectStates(this.DatabaseSession).OnHold, shipment.CurrentObjectState);
+            Assert.Equal(new PickListObjectStates(this.DatabaseSession).OnHold, pickList.CurrentObjectState);
         }
 
-        [Test]
+        [Fact]
         public void GivenCustomerShipmentOnHold_WhenShipmentValueRisesAboveThreshold_ThenShipmentAndPendigPicklistAreReleased()
         {
             Singleton.Instance(this.DatabaseSession).DefaultInternalOrganisation.StoresWhereOwner.First.ShipmentThreshold = 100;
@@ -751,18 +751,18 @@ namespace Allors.Domain
             var shipment = (CustomerShipment)item.OrderShipmentsWhereSalesOrderItem[0].ShipmentItem.ShipmentWhereShipmentItem;
             var pickList = shipment.ShipmentItems[0].ItemIssuancesWhereShipmentItem[0].PickListItem.PickListWherePickListItem;
 
-            Assert.AreEqual(new CustomerShipmentObjectStates(this.DatabaseSession).OnHold, shipment.CurrentObjectState);
-            Assert.AreEqual(new PickListObjectStates(this.DatabaseSession).OnHold, pickList.CurrentObjectState);
+            Assert.Equal(new CustomerShipmentObjectStates(this.DatabaseSession).OnHold, shipment.CurrentObjectState);
+            Assert.Equal(new PickListObjectStates(this.DatabaseSession).OnHold, pickList.CurrentObjectState);
 
             item.QuantityOrdered = 10;
 
             this.DatabaseSession.Derive(true);
 
-            Assert.AreEqual(new CustomerShipmentObjectStates(this.DatabaseSession).Created, shipment.CurrentObjectState);
-            Assert.AreEqual(new PickListObjectStates(this.DatabaseSession).Created, pickList.CurrentObjectState);
+            Assert.Equal(new CustomerShipmentObjectStates(this.DatabaseSession).Created, shipment.CurrentObjectState);
+            Assert.Equal(new PickListObjectStates(this.DatabaseSession).Created, pickList.CurrentObjectState);
         }
 
-        [Test]
+        [Fact]
         public void GivenCustomerShipmentOnHold_WhenTrySetStateToShipped_ThenActionIsNotAllowed()
         {
             var vatRate21 = new VatRateBuilder(this.DatabaseSession).WithRate(21).Build();
@@ -824,21 +824,21 @@ namespace Allors.Domain
 
             this.DatabaseSession.Derive(true);
 
-            Assert.AreEqual(new CustomerShipmentObjectStates(this.DatabaseSession).Packed, shipment.CurrentObjectState);
+            Assert.Equal(new CustomerShipmentObjectStates(this.DatabaseSession).Packed, shipment.CurrentObjectState);
 
             shipment.Hold();
 
             this.DatabaseSession.Derive(true);
 
-            Assert.AreEqual(new CustomerShipmentObjectStates(this.DatabaseSession).OnHold, shipment.CurrentObjectState);
+            Assert.Equal(new CustomerShipmentObjectStates(this.DatabaseSession).OnHold, shipment.CurrentObjectState);
 
             shipment.Ship();
             this.DatabaseSession.Derive(true);
 
-            Assert.AreEqual(new CustomerShipmentObjectStates(this.DatabaseSession).OnHold, shipment.CurrentObjectState);
+            Assert.Equal(new CustomerShipmentObjectStates(this.DatabaseSession).OnHold, shipment.CurrentObjectState);
         }
 
-        [Test]
+        [Fact]
         public void GivenCustomerShipmentOnHoldWithPendingPickList_WhenShipmentIsReleased_ThenShipmentObjecStateIsSetToCreated()
         {
             Singleton.Instance(this.DatabaseSession).DefaultInternalOrganisation.StoresWhereOwner.First.ShipmentThreshold = 100;
@@ -885,16 +885,16 @@ namespace Allors.Domain
 
             this.DatabaseSession.Derive(true);
 
-            Assert.AreEqual(new CustomerShipmentObjectStates(this.DatabaseSession).OnHold, shipment.CurrentObjectState);
+            Assert.Equal(new CustomerShipmentObjectStates(this.DatabaseSession).OnHold, shipment.CurrentObjectState);
 
             shipment.ReleasedManually = true;
 
             this.DatabaseSession.Derive(true);
 
-            Assert.AreEqual(new CustomerShipmentObjectStates(this.DatabaseSession).Created, shipment.CurrentObjectState);
+            Assert.Equal(new CustomerShipmentObjectStates(this.DatabaseSession).Created, shipment.CurrentObjectState);
         }
 
-        [Test]
+        [Fact]
         public void GivenCustomerShipmentOnHoldWithPickedPickList_WhenShipmentIsReleased_ThenShipmentObjecStateIsSetToPicked()
         {
             Singleton.Instance(this.DatabaseSession).DefaultInternalOrganisation.StoresWhereOwner.First.ShipmentThreshold = 100;
@@ -947,22 +947,22 @@ namespace Allors.Domain
 
             this.DatabaseSession.Derive(true);
 
-            Assert.AreEqual(new CustomerShipmentObjectStates(this.DatabaseSession).Picked, shipment.CurrentObjectState);
+            Assert.Equal(new CustomerShipmentObjectStates(this.DatabaseSession).Picked, shipment.CurrentObjectState);
 
             item.QuantityOrdered = 1;
 
             this.DatabaseSession.Derive(true);
 
-            Assert.AreEqual(new CustomerShipmentObjectStates(this.DatabaseSession).OnHold, shipment.CurrentObjectState);
+            Assert.Equal(new CustomerShipmentObjectStates(this.DatabaseSession).OnHold, shipment.CurrentObjectState);
 
             shipment.Continue();
 
             this.DatabaseSession.Derive(true);
 
-            Assert.AreEqual(new CustomerShipmentObjectStates(this.DatabaseSession).Picked, shipment.CurrentObjectState);
+            Assert.Equal(new CustomerShipmentObjectStates(this.DatabaseSession).Picked, shipment.CurrentObjectState);
         }
 
-        [Test]
+        [Fact]
         public void GivenCustomerShipmentOnHoldWithAllItemsPacked_WhenShipmentIsReleased_ThenShipmentObjecStateIsSetToPacked()
         {
             Singleton.Instance(this.DatabaseSession).DefaultInternalOrganisation.StoresWhereOwner.First.ShipmentThreshold = 100;
@@ -1024,16 +1024,16 @@ namespace Allors.Domain
 
             this.DatabaseSession.Derive(true);
 
-            Assert.AreEqual(new CustomerShipmentObjectStates(this.DatabaseSession).OnHold, shipment.CurrentObjectState);
+            Assert.Equal(new CustomerShipmentObjectStates(this.DatabaseSession).OnHold, shipment.CurrentObjectState);
 
             shipment.Continue();
 
             this.DatabaseSession.Derive(true);
 
-            Assert.AreEqual(new CustomerShipmentObjectStates(this.DatabaseSession).Packed, shipment.CurrentObjectState);
+            Assert.Equal(new CustomerShipmentObjectStates(this.DatabaseSession).Packed, shipment.CurrentObjectState);
         }
 
-        [Test]
+        [Fact]
         public void GivenCustomerBuyingFromDifferentStores_WhenShipping_ThenDifferentShipmentIsCreatedForEachStore()
         {
             new StoreBuilder(this.DatabaseSession).WithName("second store")
@@ -1086,8 +1086,8 @@ namespace Allors.Domain
 
             this.DatabaseSession.Derive(true);
 
-            Assert.AreEqual(1, customer.ShipmentsWhereShipToParty.Count);
-            Assert.AreEqual(1, customer.PickListsWhereShipToParty.Count);
+            Assert.Equal(1, customer.ShipmentsWhereShipToParty.Count);
+            Assert.Equal(1, customer.PickListsWhereShipToParty.Count);
 
             var order2 = new SalesOrderBuilder(this.DatabaseSession)
                 .WithStore(new Stores(this.DatabaseSession).FindBy(M.Store.Name, "store"))
@@ -1104,8 +1104,8 @@ namespace Allors.Domain
 
             this.DatabaseSession.Derive(true);
 
-            Assert.AreEqual(1, customer.ShipmentsWhereShipToParty.Count);
-            Assert.AreEqual(1, customer.PickListsWhereShipToParty.Count);
+            Assert.Equal(1, customer.ShipmentsWhereShipToParty.Count);
+            Assert.Equal(1, customer.PickListsWhereShipToParty.Count);
 
             var order3 = new SalesOrderBuilder(this.DatabaseSession)
                 .WithStore(new Stores(this.DatabaseSession).FindBy(M.Store.Name, "second store"))
@@ -1122,11 +1122,11 @@ namespace Allors.Domain
 
             this.DatabaseSession.Derive(true);
 
-            Assert.AreEqual(2, customer.ShipmentsWhereShipToParty.Count);
-            Assert.AreEqual(1, customer.PickListsWhereShipToParty.Count);
+            Assert.Equal(2, customer.ShipmentsWhereShipToParty.Count);
+            Assert.Equal(1, customer.PickListsWhereShipToParty.Count);
         }
 
-        [Test]
+        [Fact]
         public void GivenCustomerShipment_WhenDeriving_ThenBillFromContactMechanismMustExist()
         {
             var belgium = new Countries(this.DatabaseSession).CountryByIsoCode["BE"];
@@ -1169,10 +1169,10 @@ namespace Allors.Domain
 
             this.DatabaseSession.Derive(true);
 
-            Assert.AreEqual(address1, shipment1.BillFromContactMechanism);
+            Assert.Equal(address1, shipment1.BillFromContactMechanism);
         }
 
-        [Test]
+        [Fact]
         public void GivenCustomerShipment_WhenStateIsSetToShipped_ThenInvoiceIsCreated()
         {
             var assessable = new VatRegimes(this.DatabaseSession).Assessable;
@@ -1250,10 +1250,10 @@ namespace Allors.Domain
             var salesInvoiceitem = (SalesInvoiceItem)shipment.ShipmentItems[0].InvoiceItems[0];
             var invoice = salesInvoiceitem.SalesInvoiceWhereSalesInvoiceItem;
 
-            Assert.IsNotNull(invoice);
+            Assert.NotNull(invoice);
         }
 
-        [Test]
+        [Fact]
         public void GivenCustomerShipmentWithPendingPickList_WhenTrySetStateToShipped_ThenActionIsNotAllowed()
         {
             var assessable = new VatRegimes(this.DatabaseSession).Assessable;
@@ -1327,10 +1327,10 @@ namespace Allors.Domain
 
             this.DatabaseSession.Derive(true);
 
-            Assert.AreEqual(new CustomerShipmentObjectStates(this.DatabaseSession).Packed, shipment.CurrentObjectState);
+            Assert.Equal(new CustomerShipmentObjectStates(this.DatabaseSession).Packed, shipment.CurrentObjectState);
         }
 
-        [Test]
+        [Fact]
         public void GivenCustomerShipmentContainingOrderOnHold_WhenTrySetStateToShipped_ThenActionIsNotAllowed()
         {
             var assessable = new VatRegimes(this.DatabaseSession).Assessable;
@@ -1409,10 +1409,10 @@ namespace Allors.Domain
 
             this.DatabaseSession.Derive(true);
 
-            Assert.AreEqual(new CustomerShipmentObjectStates(this.DatabaseSession).Packed, shipment.CurrentObjectState);
+            Assert.Equal(new CustomerShipmentObjectStates(this.DatabaseSession).Packed, shipment.CurrentObjectState);
         }
 
-        [Test]
+        [Fact]
         public void GivenCustomerShipmentWithQuantityPackagedDifferentFromShippingQuantity_WhenTrySetStateToShipped_ThenActionIsNotAllowed()
         {
             var assessable = new VatRegimes(this.DatabaseSession).Assessable;
@@ -1482,10 +1482,10 @@ namespace Allors.Domain
 
             shipment.Ship();
 
-            Assert.AreEqual(new CustomerShipmentObjectStates(this.DatabaseSession).Picked, shipment.CurrentObjectState);
+            Assert.Equal(new CustomerShipmentObjectStates(this.DatabaseSession).Picked, shipment.CurrentObjectState);
         }
 
-        [Test]
+        [Fact]
         public void GivenCustomerShipmentWithValueBelowThreshold_WhenShippingToBelgium_TheninvoiceIncludesCosts()
         {
             var mechelen = new CityBuilder(this.DatabaseSession).WithName("Mechelen").Build();
@@ -1579,7 +1579,7 @@ namespace Allors.Domain
             this.DatabaseSession.Derive(true);
 
             var invoice = customer.SalesInvoicesWhereBillToCustomer.First;
-            Assert.AreEqual(15M, invoice.ShippingAndHandlingCharge.Amount);
+            Assert.Equal(15M, invoice.ShippingAndHandlingCharge.Amount);
         }
     }
 }

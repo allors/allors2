@@ -22,12 +22,12 @@ namespace Allors.Domain
 {
     using System;
     using Meta;
-    using NUnit.Framework;
+    using Xunit;
 
-    [TestFixture]
+    
     public class SalesRepPartyRevenuesTests : DomainTest
     {
-        [Test]
+        [Fact]
         public void DeriveRevenues()
         {
             var productItem = new SalesInvoiceItemTypes(this.DatabaseSession).ProductItem;
@@ -117,8 +117,8 @@ namespace Allors.Domain
             salesRep2Customer1Revenues.Filter.AddEquals(M.SalesRepPartyRevenue.Party, customer1);
             var salesRep2Customer1Revenue = salesRep2Customer1Revenues.First;
 
-            Assert.AreEqual(90, salesRep1Customer1Revenue.Revenue);
-            Assert.AreEqual(50, salesRep2Customer1Revenue.Revenue);
+            Assert.Equal(90, salesRep1Customer1Revenue.Revenue);
+            Assert.Equal(50, salesRep2Customer1Revenue.Revenue);
 
             var invoice2 = new SalesInvoiceBuilder(this.DatabaseSession)
                 .WithInvoiceDate(DateTime.UtcNow)
@@ -156,10 +156,10 @@ namespace Allors.Domain
             salesRep2Customer2Revenues.Filter.AddEquals(M.SalesRepPartyRevenue.Party, customer2);
             var salesRep2Customer2Revenue = salesRep2Customer2Revenues.First;
 
-            Assert.AreEqual(90, salesRep1Customer1Revenue.Revenue);
-            Assert.AreEqual(50, salesRep2Customer1Revenue.Revenue);
-            Assert.AreEqual(15, salesRep1Customer2Revenue.Revenue);
-            Assert.AreEqual(10, salesRep2Customer2Revenue.Revenue);
+            Assert.Equal(90, salesRep1Customer1Revenue.Revenue);
+            Assert.Equal(50, salesRep2Customer1Revenue.Revenue);
+            Assert.Equal(15, salesRep1Customer2Revenue.Revenue);
+            Assert.Equal(10, salesRep2Customer2Revenue.Revenue);
         }
     }
 }

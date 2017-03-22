@@ -21,29 +21,29 @@
 
 namespace Allors.Domain
 {
-    using NUnit.Framework;
+    using Xunit;
 
-    [TestFixture]
+    
     public class CustomerRequirementTests : DomainTest
     {
-        [Test]
+        [Fact]
         public void GivenCustomerRequirement_WhenDeriving_ThenRequiredRelationsMustExist()
         {
             var builder = new CustomerRequirementBuilder(this.DatabaseSession);
             var requirement = builder.Build();
 
-            Assert.IsTrue(this.DatabaseSession.Derive().HasErrors);
+            Assert.True(this.DatabaseSession.Derive().HasErrors);
 
             this.DatabaseSession.Rollback();
 
             builder.WithDescription("requirement");
             requirement = builder.Build();
 
-            Assert.IsFalse(this.DatabaseSession.Derive().HasErrors);
+            Assert.False(this.DatabaseSession.Derive().HasErrors);
 
-            Assert.AreEqual(requirement.CurrentRequirementStatus.RequirementObjectState, new RequirementObjectStates(this.DatabaseSession).Active);
-            Assert.AreEqual(requirement.CurrentObjectState, new RequirementObjectStates(this.DatabaseSession).Active);
-            Assert.AreEqual(requirement.CurrentObjectState, requirement.LastObjectState);
+            Assert.Equal(requirement.CurrentRequirementStatus.RequirementObjectState, new RequirementObjectStates(this.DatabaseSession).Active);
+            Assert.Equal(requirement.CurrentObjectState, new RequirementObjectStates(this.DatabaseSession).Active);
+            Assert.Equal(requirement.CurrentObjectState, requirement.LastObjectState);
         }
     }
 }

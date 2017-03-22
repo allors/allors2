@@ -27,21 +27,21 @@ namespace Allors.Domain
     using System.Security.Principal;
     using System.Threading;
     using Meta;
-    using NUnit.Framework;
+    using Xunit;
 
-    [TestFixture]
+    
     public class PersonTests : DomainTest
     {
-        [Test]
+        [Fact]
         public void GivenPerson_WhenDeriving_ThenRequiredRelationsMustExist()
         {
             var builder = new PersonBuilder(this.DatabaseSession);
             builder.Build();
                 
-            Assert.IsFalse(this.DatabaseSession.Derive().HasErrors);
+            Assert.False(this.DatabaseSession.Derive().HasErrors);
         }
 
-        [Test]
+        [Fact]
         public void GivenPerson_WhenEmployed_ThenCurrentEmploymentIsDerived()
         {
             var salesRep = new PersonBuilder(this.DatabaseSession).WithLastName("salesRep").Build();
@@ -54,39 +54,40 @@ namespace Allors.Domain
 
             this.DatabaseSession.Derive(true);
 
-            Assert.AreEqual(employment, salesRep.CurrentEmployment);
+            Assert.Equal(employment, salesRep.CurrentEmployment);
         }
 
-        [Test]
+        [Fact]
         public void GivenLoggedUserIsAdministrator_WhenAccessingInternalOrganisation_ThenLoggedInUserIsGrantedAccess()
         {
             var existingAdministrator = new People(this.DatabaseSession).FindBy(M.Person.UserName, Users.AdministratorUserName);
             var secondAdministrator = new PersonBuilder(this.DatabaseSession).WithLastName("second admin").Build();
-            Assert.IsFalse(secondAdministrator.IsAdministrator);
+            Assert.False(secondAdministrator.IsAdministrator);
 
             var internalOrganisation = new InternalOrganisations(this.DatabaseSession).FindBy(M.InternalOrganisation.Name, "internalOrganisation");
 
             this.DatabaseSession.Derive(true);
 
-            Thread.CurrentPrincipal = new GenericPrincipal(new GenericIdentity(Users.AdministratorUserName, "Forms"), new string[0]);
+            this.SetIdentity(Users.AdministratorUserName);
+
             var acl = new AccessControlList(internalOrganisation, existingAdministrator);
-            Assert.IsTrue(acl.CanWrite(M.InternalOrganisation.Name));
+            Assert.True(acl.CanWrite(M.InternalOrganisation.Name));
             
             acl = new AccessControlList(internalOrganisation, secondAdministrator);
-            Assert.IsFalse(acl.CanRead(M.InternalOrganisation.Name));
+            Assert.False(acl.CanRead(M.InternalOrganisation.Name));
 
             var administrators = new UserGroups(this.DatabaseSession).Administrators;
             administrators.AddMember(secondAdministrator);
 
             this.DatabaseSession.Derive(true);
 
-            Assert.IsTrue(secondAdministrator.IsAdministrator);
+            Assert.True(secondAdministrator.IsAdministrator);
 
             acl = new AccessControlList(internalOrganisation, secondAdministrator);
-            Assert.IsTrue(acl.CanWrite(M.InternalOrganisation.Name));
+            Assert.True(acl.CanWrite(M.InternalOrganisation.Name));
         }
 
-        [Test]
+        [Fact]
         public void GivenPerson_WhenInActiveContactRelationship_ThenPersonIsActiveContact()
         {
             var contact = new PersonBuilder(this.DatabaseSession).WithLastName("organisationContact").Build();
@@ -104,18 +105,18 @@ namespace Allors.Domain
                 .WithFromDate(DateTime.UtcNow.Date)
                 .Build();
 
-            Assert.IsTrue(contact.IsActiveContact(DateTime.UtcNow.Date));
-            Assert.IsTrue(contact.IsActiveContact(DateTime.UtcNow.Date.AddDays(1)));
-            Assert.IsFalse(contact.IsActiveContact(DateTime.UtcNow.Date.AddDays(-1)));
+            Assert.True(contact.IsActiveContact(DateTime.UtcNow.Date));
+            Assert.True(contact.IsActiveContact(DateTime.UtcNow.Date.AddDays(1)));
+            Assert.False(contact.IsActiveContact(DateTime.UtcNow.Date.AddDays(-1)));
 
             organisationContactRelationship.FromDate = DateTimeFactory.CreateDate(2010, 01, 01);
             organisationContactRelationship.ThroughDate = DateTimeFactory.CreateDate(2011, 01, 01);
 
-            Assert.IsFalse(contact.IsActiveContact(DateTime.UtcNow.Date));
-            Assert.IsTrue(contact.IsActiveContact(DateTimeFactory.CreateDate(2010, 01, 01)));
-            Assert.IsTrue(contact.IsActiveContact(DateTimeFactory.CreateDate(2010, 06, 01)));
-            Assert.IsTrue(contact.IsActiveContact(DateTimeFactory.CreateDate(2011, 01, 01)));
-            Assert.IsFalse(contact.IsActiveContact(DateTimeFactory.CreateDate(2011, 01, 02)));
+            Assert.False(contact.IsActiveContact(DateTime.UtcNow.Date));
+            Assert.True(contact.IsActiveContact(DateTimeFactory.CreateDate(2010, 01, 01)));
+            Assert.True(contact.IsActiveContact(DateTimeFactory.CreateDate(2010, 06, 01)));
+            Assert.True(contact.IsActiveContact(DateTimeFactory.CreateDate(2011, 01, 01)));
+            Assert.False(contact.IsActiveContact(DateTimeFactory.CreateDate(2011, 01, 02)));
         }
     }
 }

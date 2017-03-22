@@ -23,12 +23,12 @@ namespace Allors.Domain
 {
     using System;
 
-    using NUnit.Framework;
+    using Xunit;
 
-    [TestFixture]
+    
     public class CommunicationEventTests : DomainTest
     {
-        [Test]
+        [Fact]
         public void GivenCommunicationEvent_WhenInProgress_ThenCurrentObjectStateIsInProgress()
         {
             var communication = new FaceToFaceCommunicationBuilder(this.DatabaseSession)
@@ -41,10 +41,10 @@ namespace Allors.Domain
 
             this.DatabaseSession.Derive(true);
 
-            Assert.AreEqual(new CommunicationEventObjectStates(this.DatabaseSession).InProgress, communication.CurrentObjectState);
+            Assert.Equal(new CommunicationEventObjectStates(this.DatabaseSession).InProgress, communication.CurrentObjectState);
         }
 
-        [Test]
+        [Fact]
         public void GivenCommunicationEvent_WhenInPast_ThenCurrencObjectStateIsCompleted()
         {
             var communication = new FaceToFaceCommunicationBuilder(this.DatabaseSession)
@@ -58,10 +58,10 @@ namespace Allors.Domain
 
             this.DatabaseSession.Derive(true);
 
-            Assert.AreEqual(new CommunicationEventObjectStates(this.DatabaseSession).Completed, communication.CurrentObjectState);
+            Assert.Equal(new CommunicationEventObjectStates(this.DatabaseSession).Completed, communication.CurrentObjectState);
         }
 
-        [Test]
+        [Fact]
         public void GivenCommunicationEvent_WhenInFuture_ThenCurrencObjectStateIsScheduled()
         {
             var communication = new FaceToFaceCommunicationBuilder(this.DatabaseSession)
@@ -75,10 +75,10 @@ namespace Allors.Domain
 
             this.DatabaseSession.Derive(true);
 
-            Assert.AreEqual(new CommunicationEventObjectStates(this.DatabaseSession).Scheduled, communication.CurrentObjectState);
+            Assert.Equal(new CommunicationEventObjectStates(this.DatabaseSession).Scheduled, communication.CurrentObjectState);
         }
 
-        [Test]
+        [Fact]
         public void GivenFaceToFaceCommunication_WhenConfirmed_ThenCurrentCommunicationEventStatusMustBeDerived()
         {
             var communication = new FaceToFaceCommunicationBuilder(this.DatabaseSession)
@@ -91,15 +91,15 @@ namespace Allors.Domain
 
             this.DatabaseSession.Derive(true);
 
-            Assert.AreEqual(1, communication.CommunicationEventStatuses.Count);
-            Assert.AreEqual(new CommunicationEventObjectStates(this.DatabaseSession).InProgress, communication.CurrentCommunicationEventStatus.CommunicationEventObjectState);
+            Assert.Equal(1, communication.CommunicationEventStatuses.Count);
+            Assert.Equal(new CommunicationEventObjectStates(this.DatabaseSession).InProgress, communication.CurrentCommunicationEventStatus.CommunicationEventObjectState);
 
             communication.Close();
             
             this.DatabaseSession.Derive(true);
 
-            Assert.AreEqual(2, communication.CommunicationEventStatuses.Count);
-            Assert.AreEqual(new CommunicationEventObjectStates(this.DatabaseSession).Completed, communication.CurrentCommunicationEventStatus.CommunicationEventObjectState);
+            Assert.Equal(2, communication.CommunicationEventStatuses.Count);
+            Assert.Equal(new CommunicationEventObjectStates(this.DatabaseSession).Completed, communication.CurrentCommunicationEventStatus.CommunicationEventObjectState);
         }
     }
 }

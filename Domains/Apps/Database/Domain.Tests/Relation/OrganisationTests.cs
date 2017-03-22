@@ -27,25 +27,25 @@ namespace Allors.Domain
     using System.Security.Principal;
     using System.Threading;
     using Meta;
-    using NUnit.Framework;
+    using Xunit;
 
-    [TestFixture]
+    
     public class OrganisationTests : DomainTest
     {
-        [Test]
+        [Fact]
         public void GivenOrganisation_WhenDeriving_ThenRequiredRelationsMustExist()
         {
             var builder = new OrganisationBuilder(this.DatabaseSession);
             var organisation = builder.Build();
 
-            Assert.IsTrue(this.DatabaseSession.Derive().HasErrors);
+            Assert.True(this.DatabaseSession.Derive().HasErrors);
 
             this.DatabaseSession.Rollback();
 
             builder.WithName("Organisation");
             organisation = builder.Build();
 
-            Assert.IsFalse(this.DatabaseSession.Derive().HasErrors);
+            Assert.False(this.DatabaseSession.Derive().HasErrors);
         }
     }
 }

@@ -22,12 +22,12 @@ namespace Allors.Domain
 {
     using System;
     using Meta;
-    using NUnit.Framework;
+    using Xunit;
 
-    [TestFixture]
+    
     public class PackageRevenuesTests : DomainTest
     {
-        [Test]
+        [Fact]
         public void DeriveRevenues()
         {
             var productItem = new SalesInvoiceItemTypes(this.DatabaseSession).ProductItem;
@@ -116,8 +116,8 @@ namespace Allors.Domain
             var package1Revenue = package1.PackageRevenuesWherePackage[0];
             var package2Revenue = package2.PackageRevenuesWherePackage[0];
 
-            Assert.AreEqual(90, package1Revenue.Revenue);
-            Assert.AreEqual(50, package2Revenue.Revenue);
+            Assert.Equal(90, package1Revenue.Revenue);
+            Assert.Equal(50, package2Revenue.Revenue);
 
             var invoice2 = new SalesInvoiceBuilder(this.DatabaseSession)
                 .WithInvoiceDate(DateTime.UtcNow)
@@ -139,11 +139,11 @@ namespace Allors.Domain
 
             Singleton.Instance(this.DatabaseSession).DeriveRevenues(new NonLogging.Derivation(this.DatabaseSession));
         
-            Assert.AreEqual(105, package1Revenue.Revenue);
-            Assert.AreEqual(60, package2Revenue.Revenue);
+            Assert.Equal(105, package1Revenue.Revenue);
+            Assert.Equal(60, package2Revenue.Revenue);
         }
 
-        [Test]
+        [Fact]
         public void DeriveHistory()
         {
             var productItem = new SalesInvoiceItemTypes(this.DatabaseSession).ProductItem;
@@ -249,10 +249,10 @@ namespace Allors.Domain
             Singleton.Instance(this.DatabaseSession).DeriveRevenues(new NonLogging.Derivation(this.DatabaseSession));
 
             var packageRevenueHistory1 = package1.PackageRevenueHistoriesWherePackage.First;
-            Assert.AreEqual(180, packageRevenueHistory1.Revenue);
+            Assert.Equal(180, packageRevenueHistory1.Revenue);
 
             var packageRevenueHistory2 = package2.PackageRevenueHistoriesWherePackage.First;
-            Assert.AreEqual(100, packageRevenueHistory2.Revenue);
+            Assert.Equal(100, packageRevenueHistory2.Revenue);
 
             var invoice3 = new SalesInvoiceBuilder(this.DatabaseSession)
                 .WithInvoiceDate(DateTime.UtcNow.AddMonths(-1))
@@ -272,8 +272,8 @@ namespace Allors.Domain
 
             Singleton.Instance(this.DatabaseSession).DeriveRevenues(new NonLogging.Derivation(this.DatabaseSession));
 
-            Assert.AreEqual(195, packageRevenueHistory1.Revenue);
-            Assert.AreEqual(110, packageRevenueHistory2.Revenue);
+            Assert.Equal(195, packageRevenueHistory1.Revenue);
+            Assert.Equal(110, packageRevenueHistory2.Revenue);
         }
     }
 }

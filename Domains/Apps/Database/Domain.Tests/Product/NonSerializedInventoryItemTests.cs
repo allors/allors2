@@ -23,12 +23,12 @@ namespace Allors.Domain
 {
     using System;
     using Meta;
-    using NUnit.Framework;
+    using Xunit;
 
-    [TestFixture]
+    
     public class NonSerializedInventoryItemTests : DomainTest
     {
-        [Test]
+        [Fact]
         public void GivenInventoryItem_WhenBuild_ThenLastObjectStateEqualsCurrencObjectState()
         {
             var item = new NonSerializedInventoryItemBuilder(this.DatabaseSession)
@@ -37,11 +37,11 @@ namespace Allors.Domain
 
             this.DatabaseSession.Derive(true);
 
-            Assert.AreEqual(new NonSerializedInventoryItemObjectStates(this.DatabaseSession).Good, item.CurrentObjectState);
-            Assert.AreEqual(item.LastObjectState, item.CurrentObjectState);
+            Assert.Equal(new NonSerializedInventoryItemObjectStates(this.DatabaseSession).Good, item.CurrentObjectState);
+            Assert.Equal(item.LastObjectState, item.CurrentObjectState);
         }
 
-        [Test]
+        [Fact]
         public void GivenInventoryItem_WhenBuild_ThenPreviousObjectStateIsNull()
         {
             var item = new NonSerializedInventoryItemBuilder(this.DatabaseSession)
@@ -50,10 +50,10 @@ namespace Allors.Domain
 
             this.DatabaseSession.Derive(true);
 
-            Assert.IsNull(item.PreviousObjectState);
+            Assert.Null(item.PreviousObjectState);
         }
 
-        [Test]
+        [Fact]
         public void GivenInventoryItem_WhenDeriving_ThenRequiredRelationsMustExist()
         {
             var good = new GoodBuilder(this.DatabaseSession)
@@ -70,51 +70,51 @@ namespace Allors.Domain
             var builder = new NonSerializedInventoryItemBuilder(this.DatabaseSession);
             var item = builder.Build();
 
-            Assert.IsTrue(this.DatabaseSession.Derive().HasErrors);
+            Assert.True(this.DatabaseSession.Derive().HasErrors);
 
             this.DatabaseSession.Rollback();
 
             builder.WithPart(new FinishedGoodBuilder(this.DatabaseSession).WithName("part").WithManufacturerId("10101").Build());
             item = builder.Build();
 
-            Assert.IsFalse(this.DatabaseSession.Derive().HasErrors);
+            Assert.False(this.DatabaseSession.Derive().HasErrors);
 
             builder.WithGood(good);
             item = builder.Build();
 
-            Assert.IsTrue(this.DatabaseSession.Derive().HasErrors);
+            Assert.True(this.DatabaseSession.Derive().HasErrors);
 
             item.RemovePart();
 
-            Assert.IsFalse(this.DatabaseSession.Derive().HasErrors);
+            Assert.False(this.DatabaseSession.Derive().HasErrors);
         }
 
-        [Test]
+        [Fact]
         public void GivenInventoryItem_WhenBuild_ThenPostBuildRelationsMustExist()
         {
             var item = new NonSerializedInventoryItemBuilder(this.DatabaseSession)
                 .WithPart(new FinishedGoodBuilder(this.DatabaseSession).WithName("part").WithManufacturerId("10101").Build())
                 .Build();
 
-            Assert.IsNotNull(item.AvailableToPromise);
-            Assert.IsNotNull(item.QuantityCommittedOut);
-            Assert.IsNotNull(item.QuantityExpectedIn);
-            Assert.IsNotNull(item.QuantityOnHand);
-            Assert.AreEqual(new NonSerializedInventoryItemObjectStates(this.DatabaseSession).Good, item.CurrentObjectState);
-            Assert.AreEqual(new Warehouses(this.DatabaseSession).FindBy(M.Warehouse.Name, "facility"), item.Facility);
+            Assert.NotNull(item.AvailableToPromise);
+            Assert.NotNull(item.QuantityCommittedOut);
+            Assert.NotNull(item.QuantityExpectedIn);
+            Assert.NotNull(item.QuantityOnHand);
+            Assert.Equal(new NonSerializedInventoryItemObjectStates(this.DatabaseSession).Good, item.CurrentObjectState);
+            Assert.Equal(new Warehouses(this.DatabaseSession).FindBy(M.Warehouse.Name, "facility"), item.Facility);
         }
 
-        [Test]
+        [Fact]
         public void GivenInventoryItemForPart_WhenDerived_ThenSkuIsEmpty()
         {
             var item = new NonSerializedInventoryItemBuilder(this.DatabaseSession)
                 .WithPart(new FinishedGoodBuilder(this.DatabaseSession).WithName("part").WithManufacturerId("10101").Build())
                 .Build();
 
-            Assert.IsNullOrEmpty(item.Sku);
+            Assert.False(item.ExistSku);
         }
 
-        [Test]
+        [Fact]
         public void GivenInventoryItemForGood_WhenDerived_ThenSkuIsFromGood()
         {
             var vatRate21 = new VatRateBuilder(this.DatabaseSession).WithRate(21).Build();
@@ -138,10 +138,10 @@ namespace Allors.Domain
 
              this.DatabaseSession.Derive(true);
 
-            Assert.AreEqual(good.Sku, item.Sku);
+            Assert.Equal(good.Sku, item.Sku);
         }
 
-        [Test]
+        [Fact]
         public void GivenInventoryItemForPart_WhenDerived_ThenNameIsPartName()
         {
             var part = new FinishedGoodBuilder(this.DatabaseSession).WithName("part").WithManufacturerId("10101").Build();
@@ -151,10 +151,10 @@ namespace Allors.Domain
 
             this.DatabaseSession.Derive(true);
 
-            Assert.AreEqual(part.Name, item.Name);
+            Assert.Equal(part.Name, item.Name);
         }
 
-        [Test]
+        [Fact]
         public void GivenInventoryItemForGood_WhenDerived_ThenNameIsGoodName()
         {
 
@@ -179,10 +179,10 @@ namespace Allors.Domain
 
             this.DatabaseSession.Derive(true);
 
-            Assert.AreEqual(good.Name, item.Name);
+            Assert.Equal(good.Name, item.Name);
         }
 
-        [Test]
+        [Fact]
         public void GivenInventoryItemForPart_WhenDerived_ThenUnitOfMeasureIsPartUnitOfMeasure()
         {
             var uom = new UnitsOfMeasure(this.DatabaseSession).Centimeter;
@@ -193,10 +193,10 @@ namespace Allors.Domain
 
             this.DatabaseSession.Derive(true);
 
-            Assert.AreEqual(part.UnitOfMeasure, item.UnitOfMeasure);
+            Assert.Equal(part.UnitOfMeasure, item.UnitOfMeasure);
         }
 
-        [Test]
+        [Fact]
         public void GivenInventoryItemForGood_WhenDerived_ThenUnitOfMeasureIsGoodUnitOfMeasure()
         {
             var uom = new UnitsOfMeasure(this.DatabaseSession).Centimeter;
@@ -221,10 +221,10 @@ namespace Allors.Domain
 
             this.DatabaseSession.Derive(true);
 
-            Assert.AreEqual(good.UnitOfMeasure, item.UnitOfMeasure);
+            Assert.Equal(good.UnitOfMeasure, item.UnitOfMeasure);
         }
 
-        [Test]
+        [Fact]
         public void GivenInventoryItem_WhenQuantityOnHandIsRaised_ThenSalesOrderItemsWithQuantityShortFalledAreUpdated()
         {
             var vatRate21 = new VatRateBuilder(this.DatabaseSession).WithRate(21).Build();
@@ -300,28 +300,28 @@ namespace Allors.Domain
 
             this.DatabaseSession.Derive(true);
 
-            //Assert.AreEqual(0, item1.QuantityRequestsShipping);
-            //Assert.AreEqual(5, item1.QuantityPendingShipment);
-            //Assert.AreEqual(10, item1.QuantityReserved);
-            //Assert.AreEqual(5, item1.QuantityShortFalled);
+            //Assert.Equal(0, item1.QuantityRequestsShipping);
+            //Assert.Equal(5, item1.QuantityPendingShipment);
+            //Assert.Equal(10, item1.QuantityReserved);
+            //Assert.Equal(5, item1.QuantityShortFalled);
 
-            //Assert.AreEqual(0, item2.QuantityRequestsShipping);
-            //Assert.AreEqual(0, item2.QuantityPendingShipment);
-            //Assert.AreEqual(20, item2.QuantityReserved);
-            //Assert.AreEqual(20, item2.QuantityShortFalled);
+            //Assert.Equal(0, item2.QuantityRequestsShipping);
+            //Assert.Equal(0, item2.QuantityPendingShipment);
+            //Assert.Equal(20, item2.QuantityReserved);
+            //Assert.Equal(20, item2.QuantityShortFalled);
 
-            //Assert.AreEqual(0, item3.QuantityRequestsShipping);                
-            //Assert.AreEqual(0, item3.QuantityPendingShipment);
-            //Assert.AreEqual(10, item3.QuantityReserved);
-            //Assert.AreEqual(10, item3.QuantityShortFalled);
+            //Assert.Equal(0, item3.QuantityRequestsShipping);                
+            //Assert.Equal(0, item3.QuantityPendingShipment);
+            //Assert.Equal(10, item3.QuantityReserved);
+            //Assert.Equal(10, item3.QuantityShortFalled);
                 
-            //Assert.AreEqual(0, item4.QuantityRequestsShipping);
-            //Assert.AreEqual(0, item4.QuantityPendingShipment);
-            //Assert.AreEqual(20, item4.QuantityReserved);
-            //Assert.AreEqual(20, item4.QuantityShortFalled);
+            //Assert.Equal(0, item4.QuantityRequestsShipping);
+            //Assert.Equal(0, item4.QuantityPendingShipment);
+            //Assert.Equal(20, item4.QuantityReserved);
+            //Assert.Equal(20, item4.QuantityShortFalled);
                 
-            Assert.AreEqual(0, item1.ReservedFromInventoryItem.AvailableToPromise);
-            Assert.AreEqual(5, item1.ReservedFromInventoryItem.QuantityOnHand);
+            Assert.Equal(0, item1.ReservedFromInventoryItem.AvailableToPromise);
+            Assert.Equal(5, item1.ReservedFromInventoryItem.QuantityOnHand);
 
             inventoryItem.AddInventoryItemVariance(new InventoryItemVarianceBuilder(this.DatabaseSession).WithQuantity(15).WithReason(new VarianceReasons(this.DatabaseSession).Unknown).Build());
 
@@ -329,28 +329,28 @@ namespace Allors.Domain
             this.DatabaseSession.Commit();
 
             //// Orderitems are sorted as follows: item1, item2, item3, item4
-            //Assert.AreEqual(0, item1.QuantityRequestsShipping);
-            //Assert.AreEqual(10, item1.QuantityPendingShipment);
-            //Assert.AreEqual(10, item1.QuantityReserved);
-            //Assert.AreEqual(0, item1.QuantityShortFalled);
+            //Assert.Equal(0, item1.QuantityRequestsShipping);
+            //Assert.Equal(10, item1.QuantityPendingShipment);
+            //Assert.Equal(10, item1.QuantityReserved);
+            //Assert.Equal(0, item1.QuantityShortFalled);
                 
-            //Assert.AreEqual(0, item2.QuantityRequestsShipping);
-            //Assert.AreEqual(10, item2.QuantityPendingShipment);
-            //Assert.AreEqual(20, item2.QuantityReserved);
-            //Assert.AreEqual(10, item2.QuantityShortFalled);
+            //Assert.Equal(0, item2.QuantityRequestsShipping);
+            //Assert.Equal(10, item2.QuantityPendingShipment);
+            //Assert.Equal(20, item2.QuantityReserved);
+            //Assert.Equal(10, item2.QuantityShortFalled);
                 
-            //Assert.AreEqual(0, item3.QuantityRequestsShipping);
-            //Assert.AreEqual(0, item3.QuantityPendingShipment);
-            //Assert.AreEqual(10, item3.QuantityReserved);
-            //Assert.AreEqual(10, item3.QuantityShortFalled);
+            //Assert.Equal(0, item3.QuantityRequestsShipping);
+            //Assert.Equal(0, item3.QuantityPendingShipment);
+            //Assert.Equal(10, item3.QuantityReserved);
+            //Assert.Equal(10, item3.QuantityShortFalled);
                 
-            //Assert.AreEqual(0, item4.QuantityRequestsShipping);
-            //Assert.AreEqual(0, item4.QuantityPendingShipment);
-            //Assert.AreEqual(20, item4.QuantityReserved);
-            //Assert.AreEqual(20, item4.QuantityShortFalled);
+            //Assert.Equal(0, item4.QuantityRequestsShipping);
+            //Assert.Equal(0, item4.QuantityPendingShipment);
+            //Assert.Equal(20, item4.QuantityReserved);
+            //Assert.Equal(20, item4.QuantityShortFalled);
                 
-            Assert.AreEqual(0, item1.ReservedFromInventoryItem.AvailableToPromise);
-            Assert.AreEqual(20, item1.ReservedFromInventoryItem.QuantityOnHand);
+            Assert.Equal(0, item1.ReservedFromInventoryItem.AvailableToPromise);
+            Assert.Equal(20, item1.ReservedFromInventoryItem.QuantityOnHand);
 
             inventoryItem.AddInventoryItemVariance(new InventoryItemVarianceBuilder(this.DatabaseSession).WithQuantity(85).WithReason(new VarianceReasons(this.DatabaseSession).Unknown).Build());
 
@@ -358,31 +358,31 @@ namespace Allors.Domain
             this.DatabaseSession.Commit();
 
             //// Orderitems are sorted as follows: item2, item1, item4, item 3
-            Assert.AreEqual(0, item1.QuantityRequestsShipping);
-            Assert.AreEqual(10, item1.QuantityPendingShipment);
-            Assert.AreEqual(10, item1.QuantityReserved);
-            Assert.AreEqual(0, item1.QuantityShortFalled);
+            Assert.Equal(0, item1.QuantityRequestsShipping);
+            Assert.Equal(10, item1.QuantityPendingShipment);
+            Assert.Equal(10, item1.QuantityReserved);
+            Assert.Equal(0, item1.QuantityShortFalled);
                 
-            Assert.AreEqual(0, item2.QuantityRequestsShipping);
-            Assert.AreEqual(20, item2.QuantityPendingShipment);
-            Assert.AreEqual(20, item2.QuantityReserved);
-            Assert.AreEqual(0, item2.QuantityShortFalled);
+            Assert.Equal(0, item2.QuantityRequestsShipping);
+            Assert.Equal(20, item2.QuantityPendingShipment);
+            Assert.Equal(20, item2.QuantityReserved);
+            Assert.Equal(0, item2.QuantityShortFalled);
                 
-            Assert.AreEqual(0, item3.QuantityRequestsShipping);
-            Assert.AreEqual(10, item3.QuantityPendingShipment);
-            Assert.AreEqual(10, item3.QuantityReserved);
-            Assert.AreEqual(0, item3.QuantityShortFalled);
+            Assert.Equal(0, item3.QuantityRequestsShipping);
+            Assert.Equal(10, item3.QuantityPendingShipment);
+            Assert.Equal(10, item3.QuantityReserved);
+            Assert.Equal(0, item3.QuantityShortFalled);
                 
-            Assert.AreEqual(0, item4.QuantityRequestsShipping);
-            Assert.AreEqual(20, item4.QuantityPendingShipment);
-            Assert.AreEqual(20, item4.QuantityReserved);
-            Assert.AreEqual(0, item4.QuantityShortFalled);
+            Assert.Equal(0, item4.QuantityRequestsShipping);
+            Assert.Equal(20, item4.QuantityPendingShipment);
+            Assert.Equal(20, item4.QuantityReserved);
+            Assert.Equal(0, item4.QuantityShortFalled);
                 
-            Assert.AreEqual(45, item1.ReservedFromInventoryItem.AvailableToPromise);
-            Assert.AreEqual(105, item1.ReservedFromInventoryItem.QuantityOnHand);
+            Assert.Equal(45, item1.ReservedFromInventoryItem.AvailableToPromise);
+            Assert.Equal(105, item1.ReservedFromInventoryItem.QuantityOnHand);
         }
 
-        [Test]
+        [Fact]
         public void GivenInventoryItem_WhenQuantityOnHandIsDecreased_ThenSalesOrderItemsWithQuantityRequestsShippingAreUpdated()
         {
             var vatRate21 = new VatRateBuilder(this.DatabaseSession).WithRate(21).Build();
@@ -437,22 +437,22 @@ namespace Allors.Domain
 
             this.DatabaseSession.Derive(true);
 
-            Assert.AreEqual(5, item1.QuantityRequestsShipping);
-            Assert.AreEqual(0, item1.QuantityPendingShipment);
-            Assert.AreEqual(10, item1.QuantityReserved);
-            Assert.AreEqual(5, item1.QuantityShortFalled);
+            Assert.Equal(5, item1.QuantityRequestsShipping);
+            Assert.Equal(0, item1.QuantityPendingShipment);
+            Assert.Equal(10, item1.QuantityReserved);
+            Assert.Equal(5, item1.QuantityShortFalled);
 
             inventoryItem.AddInventoryItemVariance(new InventoryItemVarianceBuilder(this.DatabaseSession).WithQuantity(-2).WithReason(new VarianceReasons(this.DatabaseSession).Unknown).Build());
 
             this.DatabaseSession.Derive(true);
 
-            Assert.AreEqual(3, item1.QuantityRequestsShipping);
-            Assert.AreEqual(0, item1.QuantityPendingShipment);
-            Assert.AreEqual(10, item1.QuantityReserved);
-            Assert.AreEqual(7, item1.QuantityShortFalled);
+            Assert.Equal(3, item1.QuantityRequestsShipping);
+            Assert.Equal(0, item1.QuantityPendingShipment);
+            Assert.Equal(10, item1.QuantityReserved);
+            Assert.Equal(7, item1.QuantityShortFalled);
         }
         
-        //[Test]
+        //[Fact]
         //public void ReportNonSerializedInventory()
         //{
         //    var supplier = new OrganisationBuilder(this.DatabaseSession).WithName("supplier").Build();
@@ -521,7 +521,7 @@ namespace Allors.Domain
 
             //var extent = preparedExtent.Execute(valueByParameter);
 
-            //Assert.AreEqual(3, extent.Count);
+            //Assert.Equal(3, extent.Count);
             //Assert.Contains(goodItem, extent);
             //Assert.Contains(damagedItem, extent);
             //Assert.Contains(partItem, extent);
@@ -530,7 +530,7 @@ namespace Allors.Domain
 
             //extent = preparedExtent.Execute(valueByParameter);
 
-            //Assert.AreEqual(1, extent.Count);
+            //Assert.Equal(1, extent.Count);
             //Assert.Contains(damagedItem, extent);
 
             //valueByParameter.Clear();
@@ -538,7 +538,7 @@ namespace Allors.Domain
 
             //extent = preparedExtent.Execute(valueByParameter);
 
-            //Assert.AreEqual(2, extent.Count);
+            //Assert.Equal(2, extent.Count);
             //Assert.Contains(goodItem, extent);
             //Assert.Contains(damagedItem, extent);
         //}

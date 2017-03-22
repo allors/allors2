@@ -23,22 +23,22 @@ namespace Allors.Domain
 {
     using System;
     using Meta;
-    using NUnit.Framework;
+    using Xunit;
 
-    [TestFixture]
+    
     public class ShipmentReceiptTests : DomainTest
     {
-        [Test]
+        [Fact]
         public void GivenShipmentReceiptBuilderWhenBuildThenPostBuildRelationsMustExist()
         {
             var receipt = new ShipmentReceiptBuilder(this.DatabaseSession).Build();
 
-            Assert.IsNotNull(receipt.ReceivedDateTime);
-            Assert.AreEqual(0, receipt.QuantityAccepted);
-            Assert.AreEqual(0, receipt.QuantityRejected);
+            Assert.NotNull(receipt.ReceivedDateTime);
+            Assert.Equal(0, receipt.QuantityAccepted);
+            Assert.Equal(0, receipt.QuantityRejected);
         }
 
-        [Test]
+        [Fact]
         public void GivenShipmentReceiptWhenValidatingThenRequiredRelationsMustExist()
         {
             var supplier = new OrganisationBuilder(this.DatabaseSession).WithName("supplier").Build();
@@ -61,14 +61,14 @@ namespace Allors.Domain
             var builder = new ShipmentReceiptBuilder(this.DatabaseSession);
             builder.Build();
 
-            Assert.IsTrue(this.DatabaseSession.Derive().HasErrors);
+            Assert.True(this.DatabaseSession.Derive().HasErrors);
 
             this.DatabaseSession.Rollback();
 
             builder.WithInventoryItem(inventoryItem);
             builder.Build();
 
-            Assert.IsTrue(this.DatabaseSession.Derive().HasErrors);
+            Assert.True(this.DatabaseSession.Derive().HasErrors);
 
             this.DatabaseSession.Rollback();
 
@@ -79,10 +79,10 @@ namespace Allors.Domain
             builder.WithShipmentItem(shipmentItem);
             builder.Build();
 
-            Assert.IsFalse(this.DatabaseSession.Derive().HasErrors);
+            Assert.False(this.DatabaseSession.Derive().HasErrors);
         }
 
-        [Test]
+        [Fact]
         public void GivenShipmentReceiptForPartWithoutSelectedInventoryItemWhenDerivingThenInventoryItemIsFromDefaultFacility()
         {
             var supplier = new OrganisationBuilder(this.DatabaseSession).WithName("supplier").Build();
@@ -123,13 +123,13 @@ namespace Allors.Domain
             this.DatabaseSession.Derive(true);
             this.DatabaseSession.Commit();
 
-            Assert.AreEqual(new Warehouses(this.DatabaseSession).FindBy(M.Warehouse.Name, "facility"), receipt.InventoryItem.Facility);
-            Assert.AreEqual(part.InventoryItemsWherePart[0], receipt.InventoryItem);
+            Assert.Equal(new Warehouses(this.DatabaseSession).FindBy(M.Warehouse.Name, "facility"), receipt.InventoryItem.Facility);
+            Assert.Equal(part.InventoryItemsWherePart[0], receipt.InventoryItem);
 
             this.DatabaseSession.Rollback();
         }
 
-        [Test]
+        [Fact]
         public void GivenShipmentReceiptForGoodWithoutSelectedInventoryItemWhenDerivingThenInventoryItemIsFromDefaultFacility()
         {
             var supplier = new OrganisationBuilder(this.DatabaseSession).WithName("supplier").Build();
@@ -169,13 +169,13 @@ namespace Allors.Domain
 
             shipment.AppsComplete();
 
-            Assert.AreEqual(new Warehouses(this.DatabaseSession).FindBy(M.Warehouse.Name, "facility"), receipt.InventoryItem.Facility);
-            Assert.AreEqual(good.InventoryItemsWhereGood[0], receipt.InventoryItem);
+            Assert.Equal(new Warehouses(this.DatabaseSession).FindBy(M.Warehouse.Name, "facility"), receipt.InventoryItem.Facility);
+            Assert.Equal(good.InventoryItemsWhereGood[0], receipt.InventoryItem);
 
             this.DatabaseSession.Rollback();
         }
 
-        [Test]
+        [Fact]
         public void GivenShipmentReceiptWhenDerivingThenInventoryItemQuantityOnHandIsUpdated()
         {
             var mechelen = new CityBuilder(this.DatabaseSession).WithName("Mechelen").Build();
@@ -226,9 +226,9 @@ namespace Allors.Domain
             var supplier = new OrganisationBuilder(this.DatabaseSession).WithName("supplier").Build();
             new SupplierRelationshipBuilder(this.DatabaseSession).WithSupplier(supplier).WithInternalOrganisation(internalOrganisation).Build();
 
-            Assert.AreEqual(20, sessionSalesItem.QuantityPendingShipment);
-            Assert.AreEqual(30, sessionSalesItem.QuantityReserved);
-            Assert.AreEqual(10, sessionSalesItem.QuantityShortFalled);
+            Assert.Equal(20, sessionSalesItem.QuantityPendingShipment);
+            Assert.Equal(30, sessionSalesItem.QuantityReserved);
+            Assert.Equal(10, sessionSalesItem.QuantityShortFalled);
 
             var order = new PurchaseOrderBuilder(this.DatabaseSession).WithTakenViaSupplier(supplier).Build();
 
@@ -258,14 +258,14 @@ namespace Allors.Domain
             this.DatabaseSession.Derive(true);
             this.DatabaseSession.Commit();
 
-            Assert.AreEqual(30, sessionInventoryItem.QuantityOnHand);
+            Assert.Equal(30, sessionInventoryItem.QuantityOnHand);
 
-            Assert.AreEqual(30, sessionSalesItem.QuantityPendingShipment);
-            Assert.AreEqual(30, sessionSalesItem.QuantityReserved);
-            Assert.AreEqual(0, sessionSalesItem.QuantityShortFalled);
+            Assert.Equal(30, sessionSalesItem.QuantityPendingShipment);
+            Assert.Equal(30, sessionSalesItem.QuantityReserved);
+            Assert.Equal(0, sessionSalesItem.QuantityShortFalled);
         }
 
-        [Test]
+        [Fact]
         public void GivenShipmentReceiptWhenDerivingThenOrderItemQuantityReceivedIsUpdated()
         {
             var supplier = new OrganisationBuilder(this.DatabaseSession).WithName("supplier").Build();
@@ -305,7 +305,7 @@ namespace Allors.Domain
             this.DatabaseSession.Derive(true);
             this.DatabaseSession.Commit();
 
-            Assert.AreEqual(10, item1.QuantityReceived);
+            Assert.Equal(10, item1.QuantityReceived);
 
             this.DatabaseSession.Rollback();
         }

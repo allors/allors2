@@ -1,4 +1,6 @@
-﻿namespace Allors
+﻿using System;
+
+namespace Allors
 {
     using Allors.Development.Repository.Tasks;
 
@@ -21,12 +23,13 @@
         {
             var config = new System.Collections.Generic.Dictionary<string, string>()
                              {
-                                { "../Base/Database/Templates/domain.cs.stg", "Domain/Generated" },
-                                { "../Base/Database/Templates/uml.cs.stg", "Domain/Domain.Diagrams" },
+                                { "../Base/Database/Templates/domain.cs.stg", "DataBase/Domain/Generated" },
+                                { "../Base/Database/Templates/uml.cs.stg", "DataBase/Domain.Diagrams" },
                              };
 
             foreach (var entry in config)
             {
+                Console.WriteLine("-> " + entry.Value);
                 var log = Generate.Execute(entry.Key, entry.Value);
                 if (log.ErrorOccured)
                 {

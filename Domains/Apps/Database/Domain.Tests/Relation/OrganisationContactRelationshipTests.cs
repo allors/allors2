@@ -23,19 +23,16 @@ namespace Allors.Domain
 {
     using System;
     using Meta;
-    using NUnit.Framework;
+    using Xunit;
 
-    [TestFixture]
+    
     public class OrganisationContactRelationshipTests : DomainTest
     {
         private Person contact;
         private OrganisationContactRelationship organisationContactRelationship;
-
-        [SetUp]
-        public override void Init()
+        
+        public OrganisationContactRelationshipTests()
         {
-            base.Init();
-
             this.contact = new PersonBuilder(this.DatabaseSession).WithLastName("organisationContact").Build();
 
             this.organisationContactRelationship = new OrganisationContactRelationshipBuilder(this.DatabaseSession)
@@ -48,7 +45,7 @@ namespace Allors.Domain
             this.DatabaseSession.Commit();
         }
 
-        [Test]
+        [Fact]
         public void GivenorganisationContactRelationship_WhenDeriving_ThenRequiredRelationsMustExist()
         {
             var contact = new PersonBuilder(this.DatabaseSession).WithLastName("organisationContact").Build();
@@ -61,7 +58,7 @@ namespace Allors.Domain
             var relationship = builder.Build();
 
             this.DatabaseSession.Derive();
-            Assert.IsTrue(relationship.Strategy.IsDeleted);
+            Assert.True(relationship.Strategy.IsDeleted);
 
             this.DatabaseSession.Rollback();
 
@@ -69,33 +66,33 @@ namespace Allors.Domain
             relationship = builder.Build();
 
             this.DatabaseSession.Derive();
-            Assert.IsTrue(relationship.Strategy.IsDeleted);
+            Assert.True(relationship.Strategy.IsDeleted);
 
             this.DatabaseSession.Rollback();
 
             builder.WithOrganisation(new OrganisationBuilder(this.DatabaseSession).WithName("organisation").WithLocale(Singleton.Instance(this.DatabaseSession).DefaultLocale).Build());
             builder.Build();
 
-            Assert.IsFalse(this.DatabaseSession.Derive().HasErrors);
+            Assert.False(this.DatabaseSession.Derive().HasErrors);
         }
 
-        [Test]
+        [Fact]
         public void GivenPerson_WhenFirstContactForOrganisationIsCreated_ThenContactUserGroupIsCreated()
         {
             this.InstantiateObjects(this.DatabaseSession);
 
             var usergroup = this.organisationContactRelationship.Organisation.ContactsUserGroup;
-            Assert.IsTrue(usergroup.Members.Contains(this.organisationContactRelationship.Contact));
+            Assert.True(usergroup.Members.Contains(this.organisationContactRelationship.Contact));
         }
 
-        [Test]
+        [Fact]
         public void GivenNextPerson_WhenContactForOrganisationIsCreated_ThenContactIsAddedToUserGroup()
         {
             this.InstantiateObjects(this.DatabaseSession);
 
             var usergroup = this.organisationContactRelationship.Organisation.ContactsUserGroup;
-            Assert.AreEqual(1, usergroup.Members.Count);
-            Assert.IsTrue(usergroup.Members.Contains(this.organisationContactRelationship.Contact));
+            Assert.Equal(1, usergroup.Members.Count);
+            Assert.True(usergroup.Members.Contains(this.organisationContactRelationship.Contact));
 
             var secondRelationship = new OrganisationContactRelationshipBuilder(this.DatabaseSession)
                 .WithContact(new PersonBuilder(this.DatabaseSession).WithLastName("contact 2").Build())
@@ -105,41 +102,41 @@ namespace Allors.Domain
 
             this.DatabaseSession.Derive(true);
 
-            Assert.AreEqual(2, usergroup.Members.Count);
-            Assert.IsTrue(usergroup.Members.Contains(secondRelationship.Contact));
+            Assert.Equal(2, usergroup.Members.Count);
+            Assert.True(usergroup.Members.Contains(secondRelationship.Contact));
         }
 
-        [Test]
+        [Fact]
         public void GivenOrganisationContactRelationship_WhenRelationshipPeriodIsNotValid_ThenContactIsNotInCustomerContactUserGroup()
         {
             this.InstantiateObjects(this.DatabaseSession);
 
             var usergroup = this.organisationContactRelationship.Organisation.ContactsUserGroup;
 
-            Assert.AreEqual(1, usergroup.Members.Count);
-            Assert.IsTrue(usergroup.Members.Contains(this.contact));
+            Assert.Equal(1, usergroup.Members.Count);
+            Assert.True(usergroup.Members.Contains(this.contact));
 
             this.organisationContactRelationship.FromDate = DateTime.UtcNow.AddDays(+1);
             this.organisationContactRelationship.RemoveThroughDate();
 
             this.DatabaseSession.Derive(true);
 
-            Assert.AreEqual(0, usergroup.Members.Count);
+            Assert.Equal(0, usergroup.Members.Count);
 
             this.organisationContactRelationship.FromDate = DateTime.UtcNow;
             this.organisationContactRelationship.RemoveThroughDate();
 
             this.DatabaseSession.Derive(true);
 
-            Assert.AreEqual(1, usergroup.Members.Count);
-            Assert.IsTrue(usergroup.Members.Contains(this.contact));
+            Assert.Equal(1, usergroup.Members.Count);
+            Assert.True(usergroup.Members.Contains(this.contact));
 
             this.organisationContactRelationship.FromDate = DateTime.UtcNow.AddDays(-2);
             this.organisationContactRelationship.ThroughDate = DateTime.UtcNow.AddDays(-1);
 
             this.DatabaseSession.Derive(true);
 
-            Assert.AreEqual(0, usergroup.Members.Count);
+            Assert.Equal(0, usergroup.Members.Count);
         }
 
         private void InstantiateObjects(ISession session)

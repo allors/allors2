@@ -21,57 +21,57 @@
 
 namespace Allors.Domain
 {
-    using NUnit.Framework;
+    using Xunit;
 
-    [TestFixture]
+    
     public class QuoteTests : DomainTest
     {
-        [Test]
+        [Fact]
         public void GivenProductQuote_WhenDeriving_ThenDescriptionIsRequired()
         {
             var builder = new ProductQuoteBuilder(this.DatabaseSession);
             var productQuote = builder.Build();
 
-            Assert.IsTrue(this.DatabaseSession.Derive().HasErrors);
+            Assert.True(this.DatabaseSession.Derive().HasErrors);
 
             this.DatabaseSession.Rollback();
 
             builder.WithDescription("ProductQuote");
             productQuote = builder.Build();
 
-            Assert.IsFalse(this.DatabaseSession.Derive().HasErrors);
+            Assert.False(this.DatabaseSession.Derive().HasErrors);
         }
 
-        [Test]
+        [Fact]
         public void GivenProposal_WhenDeriving_ThenDescriptionIsRequired()
         {
             var builder = new ProposalBuilder(this.DatabaseSession);
             var requirement = builder.Build();
 
-            Assert.IsTrue(this.DatabaseSession.Derive().HasErrors);
+            Assert.True(this.DatabaseSession.Derive().HasErrors);
 
             this.DatabaseSession.Rollback();
 
             builder.WithDescription("Proposal");
             requirement = builder.Build();
 
-            Assert.IsFalse(this.DatabaseSession.Derive().HasErrors);
+            Assert.False(this.DatabaseSession.Derive().HasErrors);
         }
 
-        [Test]
+        [Fact]
         public void GivenStatementOfWork_WhenDeriving_ThenDescriptionIsRequired()
         {
             var builder = new StatementOfWorkBuilder(this.DatabaseSession);
             var statementOfWork = builder.Build();
 
-            Assert.IsTrue(this.DatabaseSession.Derive().HasErrors);
+            Assert.True(this.DatabaseSession.Derive().HasErrors);
 
             this.DatabaseSession.Rollback();
 
             builder.WithDescription("StatementOfWork");
             statementOfWork = builder.Build();
 
-            Assert.IsFalse(this.DatabaseSession.Derive().HasErrors);
+            Assert.False(this.DatabaseSession.Derive().HasErrors);
         }
     }
 }

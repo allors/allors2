@@ -23,12 +23,12 @@ namespace Allors.Domain
 {
     using System;
     using Meta;
-    using NUnit.Framework;
+    using Xunit;
 
-    [TestFixture]
+    
     public class CashTests : DomainTest
     {
-        [Test]
+        [Fact]
         public void GivenCashPaymentMethodForInternalOrganisationThatDoesAccounting_WhenDeriving_ThenCreditorIsRequired()
         {
             var cash = new CashBuilder(this.DatabaseSession)
@@ -41,14 +41,14 @@ namespace Allors.Domain
             internalOrganisation.AddPaymentMethod(cash);
             internalOrganisation.DoAccounting = false;
 
-            Assert.IsFalse(this.DatabaseSession.Derive().HasErrors);
+            Assert.False(this.DatabaseSession.Derive().HasErrors);
 
             internalOrganisation.DoAccounting = true;
 
-            Assert.IsTrue(this.DatabaseSession.Derive().HasErrors);
+            Assert.True(this.DatabaseSession.Derive().HasErrors);
         }
 
-        [Test]
+        [Fact]
         public void GivenCashPaymentMethod_WhenDeriving_ThenGeneralLedgerAccountAndJournalCannotExistBoth()
         {
             var supplier = new OrganisationBuilder(this.DatabaseSession)
@@ -89,18 +89,18 @@ namespace Allors.Domain
             internalOrganisation.AddPaymentMethod(cash);
             internalOrganisation.DoAccounting = true;
 
-            Assert.IsFalse(this.DatabaseSession.Derive().HasErrors);
+            Assert.False(this.DatabaseSession.Derive().HasErrors);
 
             cash.Journal = journal;
 
-            Assert.IsTrue(this.DatabaseSession.Derive().HasErrors);
+            Assert.True(this.DatabaseSession.Derive().HasErrors);
 
             cash.RemoveGeneralLedgerAccount();
 
-            Assert.IsFalse(this.DatabaseSession.Derive().HasErrors);
+            Assert.False(this.DatabaseSession.Derive().HasErrors);
         }
 
-        [Test]
+        [Fact]
         public void GivenCashPaymentMethodForInternalOrganisationThatDoesAccounting_WhenDeriving_ThenEitherGeneralLedgerAccountOrJournalMustExist()
         {
             var supplier = new OrganisationBuilder(this.DatabaseSession)
@@ -140,16 +140,16 @@ namespace Allors.Domain
             internalOrganisation.AddPaymentMethod(cash);
             internalOrganisation.DoAccounting = true;
 
-            Assert.IsTrue(this.DatabaseSession.Derive().HasErrors);
+            Assert.True(this.DatabaseSession.Derive().HasErrors);
 
             cash.Journal = journal;
 
-            Assert.IsFalse(this.DatabaseSession.Derive().HasErrors);
+            Assert.False(this.DatabaseSession.Derive().HasErrors);
 
             cash.RemoveJournal();
             cash.GeneralLedgerAccount = internalOrganisationGlAccount;
 
-            Assert.IsFalse(this.DatabaseSession.Derive().HasErrors);
+            Assert.False(this.DatabaseSession.Derive().HasErrors);
         }
     }
 }

@@ -23,25 +23,25 @@ namespace Allors.Domain
 {
     using System;
     using Meta;
-    using NUnit.Framework;
+    using Xunit;
 
-    [TestFixture]
+    
     public class OrganisationGlAccountTests : DomainTest
     {
-        [Test]
+        [Fact]
         public void GivenOrganisationGlAccount_WhenDeriving_ThenRequiredRelationsMustExist()
         {
             var builder = new OrganisationGlAccountBuilder(this.DatabaseSession);
             builder.Build();
 
-            Assert.IsTrue(this.DatabaseSession.Derive().HasErrors);
+            Assert.True(this.DatabaseSession.Derive().HasErrors);
 
             this.DatabaseSession.Rollback();
 
             builder.WithInternalOrganisation(new InternalOrganisations(this.DatabaseSession).FindBy(M.InternalOrganisation.Name, "internalOrganisation"));
             builder.Build();
 
-            Assert.IsTrue(this.DatabaseSession.Derive().HasErrors);
+            Assert.True(this.DatabaseSession.Derive().HasErrors);
 
             this.DatabaseSession.Rollback();
 
@@ -55,10 +55,10 @@ namespace Allors.Domain
                                                 .Build());
             builder.Build();
 
-            Assert.IsFalse(this.DatabaseSession.Derive().HasErrors);
+            Assert.False(this.DatabaseSession.Derive().HasErrors);
         }
 
-        [Test]
+        [Fact]
         public void GivenOrganisationGlAccount_WhenBuild_ThenHasBankStatementTransactionsIsAlwaysFalse()
         {
             var internalOrganisation = new InternalOrganisations(this.DatabaseSession).FindBy(M.InternalOrganisation.Name, "internalOrganisation");
@@ -79,10 +79,10 @@ namespace Allors.Domain
 
             this.DatabaseSession.Derive();
 
-            Assert.IsFalse(organisationGlAccount.HasBankStatementTransactions);
+            Assert.False(organisationGlAccount.HasBankStatementTransactions);
         }
 
-        [Test]
+        [Fact]
         public void GivenOrganisationGlAccount_WhenNotReferenced_ThenAccountIsNeutral()
         {
             var internalOrganisation = new InternalOrganisations(this.DatabaseSession).FindBy(M.InternalOrganisation.Name, "internalOrganisation");
@@ -101,14 +101,14 @@ namespace Allors.Domain
                 .WithGeneralLedgerAccount(generalLedgerAccount)
                 .Build();
 
-            Assert.IsTrue(organisationGlAccount.IsNeutralAccount());
-            Assert.IsFalse(organisationGlAccount.IsBankAccount());
-            Assert.IsFalse(organisationGlAccount.IsCashAccount());
-            Assert.IsFalse(organisationGlAccount.IsCostAccount());
-            Assert.IsFalse(organisationGlAccount.IsCreditorAccount());
-            Assert.IsFalse(organisationGlAccount.IsDebtorAccount());
-            Assert.IsFalse(organisationGlAccount.IsInventoryAccount());
-            Assert.IsFalse(organisationGlAccount.IsTurnOverAccount());
+            Assert.True(organisationGlAccount.IsNeutralAccount());
+            Assert.False(organisationGlAccount.IsBankAccount());
+            Assert.False(organisationGlAccount.IsCashAccount());
+            Assert.False(organisationGlAccount.IsCostAccount());
+            Assert.False(organisationGlAccount.IsCreditorAccount());
+            Assert.False(organisationGlAccount.IsDebtorAccount());
+            Assert.False(organisationGlAccount.IsInventoryAccount());
+            Assert.False(organisationGlAccount.IsTurnOverAccount());
         }
     }
 }

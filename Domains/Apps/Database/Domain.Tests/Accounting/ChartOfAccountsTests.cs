@@ -22,35 +22,35 @@
 namespace Allors.Domain
 {
     using Meta;
-    using NUnit.Framework;
+    using Xunit;
 
-    [TestFixture]
+    
     public class ChartOfAccountsTests : DomainTest
     {
-        [Test]
+        [Fact]
         public void GivenChartOfAccounts_WhenDeriving_ThenRequiredRelationsMustExist()
         {
             var builder = new ChartOfAccountsBuilder(this.DatabaseSession);
             builder.Build();
 
-            Assert.IsTrue(this.DatabaseSession.Derive().HasErrors);
+            Assert.True(this.DatabaseSession.Derive().HasErrors);
 
             this.DatabaseSession.Rollback();
 
             builder.WithName("ChartOfAccounts");
             builder.Build();
 
-            Assert.IsFalse(this.DatabaseSession.Derive().HasErrors);
+            Assert.False(this.DatabaseSession.Derive().HasErrors);
         }
 
-        [Test]
+        [Fact]
         public void GivenChartOfAccounts_WhenDeriving_ThenPostBuildRelationsMustExist()
         {
             var chartOfAccounts = new ChartOfAccountsBuilder(this.DatabaseSession)
                 .WithName("ChartOfAccounts")
                 .Build();
 
-            Assert.IsTrue(chartOfAccounts.ExistUniqueId);
+            Assert.True(chartOfAccounts.ExistUniqueId);
         }
     }
 }

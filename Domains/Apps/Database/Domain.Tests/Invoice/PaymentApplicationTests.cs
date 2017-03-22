@@ -23,12 +23,12 @@ namespace Allors.Domain
 {
     using System;
     using Meta;
-    using NUnit.Framework;
+    using Xunit;
 
-    [TestFixture]
+    
     public class PaymentApplicationTests : DomainTest
     {
-        [Test]
+        [Fact]
         public void GivenPaymentApplication_WhenDeriving_ThenRequiredRelationsMustExist()
         {
             var billToContactMechanism = new EmailAddressBuilder(this.DatabaseSession).WithElectronicAddressString("info@allors.com").Build();
@@ -56,17 +56,17 @@ namespace Allors.Domain
             var builder = new PaymentApplicationBuilder(this.DatabaseSession);
             builder.Build();
 
-            Assert.IsTrue(this.DatabaseSession.Derive().HasErrors);
+            Assert.True(this.DatabaseSession.Derive().HasErrors);
 
             this.DatabaseSession.Rollback();
 
             builder.WithAmountApplied(0);
             builder.Build();
 
-            Assert.IsFalse(this.DatabaseSession.Derive().HasErrors);
+            Assert.False(this.DatabaseSession.Derive().HasErrors);
         }
 
-        [Test]
+        [Fact]
         public void GivenPaymentApplication_WhenDeriving_ThenAmountAppliedCannotBeLargerThenAmountReceived()
         {
             var contactMechanism = new ContactMechanisms(this.DatabaseSession).Extent().First;
@@ -109,7 +109,7 @@ namespace Allors.Domain
             receipt.AddPaymentApplication(paymentApplication);
 
             var derivationLog = this.DatabaseSession.Derive();
-            Assert.IsTrue(derivationLog.HasErrors);
+            Assert.True(derivationLog.HasErrors);
             Assert.Contains(M.PaymentApplication.AmountApplied, derivationLog.Errors[0].RoleTypes);
         }
     }

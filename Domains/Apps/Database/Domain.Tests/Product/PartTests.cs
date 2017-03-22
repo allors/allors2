@@ -22,39 +22,39 @@
 namespace Allors.Domain
 {
     using Meta;
-    using NUnit.Framework;
+    using Xunit;
 
-    [TestFixture]
+    
     public class PartTests : DomainTest
     {
-        [Test]
+        [Fact]
         public void GivenFinishedGood_WhenDeriving_ThenRequiredRelationsMustExist()
         {
             var builder = new FinishedGoodBuilder(this.DatabaseSession);
             var finishedGood = builder.Build();
 
-            Assert.IsTrue(this.DatabaseSession.Derive().HasErrors);
+            Assert.True(this.DatabaseSession.Derive().HasErrors);
 
             this.DatabaseSession.Rollback();
 
             builder.WithName("FinishedGood");
             finishedGood = builder.Build();
 
-            Assert.IsFalse(this.DatabaseSession.Derive().HasErrors);
+            Assert.False(this.DatabaseSession.Derive().HasErrors);
         }
 
-        [Test]
+        [Fact]
         public void GivenFinishedGood_WhenBuild_ThenPostBuildRelationsMustExist()
         {
             var finishedGood = new FinishedGoodBuilder(this.DatabaseSession)
                 .WithName("FinishedGood")
                 .Build();
 
-            Assert.AreEqual(new InventoryItemKinds(this.DatabaseSession).NonSerialized, finishedGood.InventoryItemKind);
-            Assert.AreEqual(new InternalOrganisations(this.DatabaseSession).FindBy(M.InternalOrganisation.Name, "internalOrganisation"), finishedGood.OwnedByParty);
+            Assert.Equal(new InventoryItemKinds(this.DatabaseSession).NonSerialized, finishedGood.InventoryItemKind);
+            Assert.Equal(new InternalOrganisations(this.DatabaseSession).FindBy(M.InternalOrganisation.Name, "internalOrganisation"), finishedGood.OwnedByParty);
         }
 
-        [Test]
+        [Fact]
         public void GivenNewFinishedGood_WhenDeriving_ThenInventoryItemIsCreated()
         {
             var finishedGood = new FinishedGoodBuilder(this.DatabaseSession)
@@ -63,38 +63,38 @@ namespace Allors.Domain
 
             this.DatabaseSession.Derive(true);
             
-            Assert.AreEqual(1, finishedGood.InventoryItemsWherePart.Count);
-            Assert.AreEqual(new Warehouses(this.DatabaseSession).FindBy(M.Warehouse.Name, "facility"), finishedGood.InventoryItemsWherePart.First.Facility);
+            Assert.Equal(1, finishedGood.InventoryItemsWherePart.Count);
+            Assert.Equal(new Warehouses(this.DatabaseSession).FindBy(M.Warehouse.Name, "facility"), finishedGood.InventoryItemsWherePart.First.Facility);
         }
 
-        [Test]
+        [Fact]
         public void GivenRawMaterial_WhenDeriving_ThenRequiredRelationsMustExist()
         {
             var builder = new RawMaterialBuilder(this.DatabaseSession);
             var deliverableBasedService = builder.Build();
 
-            Assert.IsTrue(this.DatabaseSession.Derive().HasErrors);
+            Assert.True(this.DatabaseSession.Derive().HasErrors);
 
             this.DatabaseSession.Rollback();
 
             builder.WithName("RawMaterial");
             deliverableBasedService = builder.Build();
 
-            Assert.IsFalse(this.DatabaseSession.Derive().HasErrors);
+            Assert.False(this.DatabaseSession.Derive().HasErrors);
         }
 
-        [Test]
+        [Fact]
         public void GivenRawMaterial_WhenBuild_ThenPostBuildRelationsMustExist()
         {
             var rawMaterial = new RawMaterialBuilder(this.DatabaseSession)
                 .WithName("rawMaterial")
                 .Build();
 
-            Assert.AreEqual(new InventoryItemKinds(this.DatabaseSession).NonSerialized, rawMaterial.InventoryItemKind);
-            Assert.AreEqual(new InternalOrganisations(this.DatabaseSession).FindBy(M.InternalOrganisation.Name, "internalOrganisation"), rawMaterial.OwnedByParty);
+            Assert.Equal(new InventoryItemKinds(this.DatabaseSession).NonSerialized, rawMaterial.InventoryItemKind);
+            Assert.Equal(new InternalOrganisations(this.DatabaseSession).FindBy(M.InternalOrganisation.Name, "internalOrganisation"), rawMaterial.OwnedByParty);
         }
 
-        [Test]
+        [Fact]
         public void GivenNewRawMaterial_WhenDeriving_ThenInventoryItemIsCreated()
         {
             var rawMaterial = new RawMaterialBuilder(this.DatabaseSession)
@@ -103,38 +103,38 @@ namespace Allors.Domain
 
             this.DatabaseSession.Derive(true);
 
-            Assert.AreEqual(1, rawMaterial.InventoryItemsWherePart.Count);
-            Assert.AreEqual(new Warehouses(this.DatabaseSession).FindBy(M.Warehouse.Name, "facility"), rawMaterial.InventoryItemsWherePart.First.Facility);
+            Assert.Equal(1, rawMaterial.InventoryItemsWherePart.Count);
+            Assert.Equal(new Warehouses(this.DatabaseSession).FindBy(M.Warehouse.Name, "facility"), rawMaterial.InventoryItemsWherePart.First.Facility);
         }
 
-        [Test]
+        [Fact]
         public void GivenSubAssembly_WhenDeriving_ThenRequiredRelationsMustExist()
         {
             var builder = new SubAssemblyBuilder(this.DatabaseSession);
             var subAssembly = builder.Build();
 
-            Assert.IsTrue(this.DatabaseSession.Derive().HasErrors);
+            Assert.True(this.DatabaseSession.Derive().HasErrors);
 
             this.DatabaseSession.Rollback();
 
             builder.WithName("SubAssembly");
             subAssembly = builder.Build();
 
-            Assert.IsFalse(this.DatabaseSession.Derive().HasErrors);
+            Assert.False(this.DatabaseSession.Derive().HasErrors);
         }
 
-        [Test]
+        [Fact]
         public void GivenSubAssembly_WhenBuild_ThenPostBuildRelationsMustExist()
         {
             var subAssembly = new SubAssemblyBuilder(this.DatabaseSession)
                 .WithName("subAssembly")
                 .Build();
 
-            Assert.AreEqual(new InventoryItemKinds(this.DatabaseSession).NonSerialized, subAssembly.InventoryItemKind);
-            Assert.AreEqual(new InternalOrganisations(this.DatabaseSession).FindBy(M.InternalOrganisation.Name, "internalOrganisation"), subAssembly.OwnedByParty);
+            Assert.Equal(new InventoryItemKinds(this.DatabaseSession).NonSerialized, subAssembly.InventoryItemKind);
+            Assert.Equal(new InternalOrganisations(this.DatabaseSession).FindBy(M.InternalOrganisation.Name, "internalOrganisation"), subAssembly.OwnedByParty);
         }
 
-        [Test]
+        [Fact]
         public void GivenNewSubAssembly_WhenDeriving_ThenInventoryItemIsCreated()
         {
             var subAssembly = new SubAssemblyBuilder(this.DatabaseSession)
@@ -143,8 +143,8 @@ namespace Allors.Domain
 
             this.DatabaseSession.Derive(true);
 
-            Assert.AreEqual(1, subAssembly.InventoryItemsWherePart.Count);
-            Assert.AreEqual(new Warehouses(this.DatabaseSession).FindBy(M.Warehouse.Name, "facility"), subAssembly.InventoryItemsWherePart.First.Facility);
+            Assert.Equal(1, subAssembly.InventoryItemsWherePart.Count);
+            Assert.Equal(new Warehouses(this.DatabaseSession).FindBy(M.Warehouse.Name, "facility"), subAssembly.InventoryItemsWherePart.First.Facility);
         }
     }
 }

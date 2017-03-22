@@ -19,19 +19,21 @@
 // <summary>Defines the MediaTests type.</summary>
 //-------------------------------------------------------------------------------------------------
 
+using System.Security.Claims;
+
 namespace Allors.Domain
 {
     using System;
     using System.Security.Principal;
     using System.Threading;
     using Meta;
-    using NUnit.Framework;
+    using Xunit;
     using Resources;
 
-    [TestFixture]
+    
     public class SalesInvoiceTests : DomainTest
     {
-        [Test]
+        [Fact]
         public void GivenSalesInvoice_WhenBuild_ThenLastObjectStateEqualsCurrencObjectState()
         {
             var customer = new OrganisationBuilder(this.DatabaseSession).WithName("customer").Build();
@@ -56,11 +58,11 @@ namespace Allors.Domain
 
             this.DatabaseSession.Derive(true);
 
-            Assert.AreEqual(new SalesInvoiceObjectStates(this.DatabaseSession).ReadyForPosting, invoice.CurrentObjectState);
-            Assert.AreEqual(invoice.LastObjectState, invoice.CurrentObjectState);
+            Assert.Equal(new SalesInvoiceObjectStates(this.DatabaseSession).ReadyForPosting, invoice.CurrentObjectState);
+            Assert.Equal(invoice.LastObjectState, invoice.CurrentObjectState);
         }
 
-        [Test]
+        [Fact]
         public void GivenSalesInvoice_WhenBuild_ThenPreviousObjectStateIsNull()
         {
             var customer = new OrganisationBuilder(this.DatabaseSession).WithName("customer").Build();
@@ -85,10 +87,10 @@ namespace Allors.Domain
 
             this.DatabaseSession.Derive(true);
 
-            Assert.IsNull(invoice.PreviousObjectState);
+            Assert.Null(invoice.PreviousObjectState);
         }
 
-        [Test]
+        [Fact]
         public void GivenSalesInvoice_WhenPaid_ThenCurrentInvoiceStatusMustBeDerived()
         {
             var customer = new OrganisationBuilder(this.DatabaseSession).WithName("customer").Build();
@@ -125,8 +127,8 @@ namespace Allors.Domain
 
             this.DatabaseSession.Derive(true);
 
-            Assert.AreEqual(1, invoice.InvoiceStatuses.Count);
-            Assert.AreEqual(new SalesInvoiceObjectStates(this.DatabaseSession).ReadyForPosting, invoice.CurrentInvoiceStatus.SalesInvoiceObjectState);
+            Assert.Equal(1, invoice.InvoiceStatuses.Count);
+            Assert.Equal(new SalesInvoiceObjectStates(this.DatabaseSession).ReadyForPosting, invoice.CurrentInvoiceStatus.SalesInvoiceObjectState);
 
             this.DatabaseSession.Derive(true);
 
@@ -137,11 +139,11 @@ namespace Allors.Domain
 
             this.DatabaseSession.Derive(true);
 
-            Assert.AreEqual(2, invoice.InvoiceStatuses.Count);
-            Assert.AreEqual(new SalesInvoiceObjectStates(this.DatabaseSession).Paid, invoice.CurrentInvoiceStatus.SalesInvoiceObjectState);
+            Assert.Equal(2, invoice.InvoiceStatuses.Count);
+            Assert.Equal(new SalesInvoiceObjectStates(this.DatabaseSession).Paid, invoice.CurrentInvoiceStatus.SalesInvoiceObjectState);
         }
 
-        [Test]
+        [Fact]
         public void GivenSalesInvoice_WhenDeriving_ThenRequiredRelationsMustExist()
         {
             var customer = new OrganisationBuilder(this.DatabaseSession).WithName("customer").Build();
@@ -158,40 +160,40 @@ namespace Allors.Domain
             var builder = new SalesInvoiceBuilder(this.DatabaseSession);
             builder.Build();
 
-            Assert.IsTrue(this.DatabaseSession.Derive().HasErrors);
+            Assert.True(this.DatabaseSession.Derive().HasErrors);
 
             this.DatabaseSession.Rollback();
 
             builder.WithSalesInvoiceType(new SalesInvoiceTypes(this.DatabaseSession).SalesInvoice);
             builder.Build();
 
-            Assert.IsTrue(this.DatabaseSession.Derive().HasErrors);
+            Assert.True(this.DatabaseSession.Derive().HasErrors);
 
             this.DatabaseSession.Rollback();
 
             builder.WithBillToCustomer(customer);
             builder.Build();
             
-            Assert.IsTrue(this.DatabaseSession.Derive().HasErrors);
+            Assert.True(this.DatabaseSession.Derive().HasErrors);
 
             this.DatabaseSession.Rollback();
 
             builder.WithBillToContactMechanism(billToContactMechanism);
             var invoice = builder.Build();
 
-            Assert.IsFalse(this.DatabaseSession.Derive().HasErrors);
+            Assert.False(this.DatabaseSession.Derive().HasErrors);
 
-            Assert.AreEqual(invoice.CurrentInvoiceStatus.SalesInvoiceObjectState, new SalesInvoiceObjectStates(this.DatabaseSession).ReadyForPosting);
-            Assert.AreEqual(invoice.CurrentObjectState, new SalesInvoiceObjectStates(this.DatabaseSession).ReadyForPosting);
-            Assert.AreEqual(invoice.CurrentObjectState, invoice.LastObjectState);
+            Assert.Equal(invoice.CurrentInvoiceStatus.SalesInvoiceObjectState, new SalesInvoiceObjectStates(this.DatabaseSession).ReadyForPosting);
+            Assert.Equal(invoice.CurrentObjectState, new SalesInvoiceObjectStates(this.DatabaseSession).ReadyForPosting);
+            Assert.Equal(invoice.CurrentObjectState, invoice.LastObjectState);
 
             builder.WithBilledFromInternalOrganisation(new InternalOrganisations(this.DatabaseSession).FindBy(M.InternalOrganisation.Name, "internalOrganisation"));
             builder.Build();
 
-            Assert.IsFalse(this.DatabaseSession.Derive().HasErrors);
+            Assert.False(this.DatabaseSession.Derive().HasErrors);
         }
 
-        [Test]
+        [Fact]
         public void GivenSalesInvoice_WhenDeriving_ThenBillToCustomerMustBeInternalOrganisationCustomer()
         {
             var customer = new OrganisationBuilder(this.DatabaseSession).WithName("customer").Build();
@@ -213,14 +215,14 @@ namespace Allors.Domain
                 .Build();
 
             var expectedError = ErrorMessages.PartyIsNotACustomer;
-            Assert.AreEqual(expectedError, this.DatabaseSession.Derive().Errors[0].Message);
+            Assert.Equal(expectedError, this.DatabaseSession.Derive().Errors[0].Message);
 
             new CustomerRelationshipBuilder(this.DatabaseSession).WithFromDate(DateTime.UtcNow).WithCustomer(customer).WithInternalOrganisation(Singleton.Instance(this.DatabaseSession).DefaultInternalOrganisation).Build();
 
-            Assert.IsFalse(this.DatabaseSession.Derive().HasErrors);
+            Assert.False(this.DatabaseSession.Derive().HasErrors);
         }
 
-        [Test]
+        [Fact]
         public void GivenSalesInvoice_WhenDeriving_ThenShipToCustomerMustBeInternalOrganisationCustomer()
         {
             var billtoCcustomer = new OrganisationBuilder(this.DatabaseSession).WithName("billToCustomer").Build();
@@ -246,14 +248,14 @@ namespace Allors.Domain
             new CustomerRelationshipBuilder(this.DatabaseSession).WithFromDate(DateTime.UtcNow).WithCustomer(billtoCcustomer).WithInternalOrganisation(Singleton.Instance(this.DatabaseSession).DefaultInternalOrganisation).Build();
 
             var expectedError = ErrorMessages.PartyIsNotACustomer;
-            Assert.AreEqual(expectedError, this.DatabaseSession.Derive().Errors[0].Message);
+            Assert.Equal(expectedError, this.DatabaseSession.Derive().Errors[0].Message);
 
             new CustomerRelationshipBuilder(this.DatabaseSession).WithFromDate(DateTime.UtcNow).WithCustomer(shipToCustomer).WithInternalOrganisation(Singleton.Instance(this.DatabaseSession).DefaultInternalOrganisation).Build();
 
-            Assert.IsFalse(this.DatabaseSession.Derive().HasErrors);
+            Assert.False(this.DatabaseSession.Derive().HasErrors);
         }
 
-        [Test]
+        [Fact]
         public void GivenSalesInvoice_WhenGettingInvoiceNumberWithoutFormat_ThenInvoiceNumberShouldBeReturned()
         {
             var store = new StoreBuilder(this.DatabaseSession).WithName("store")
@@ -283,7 +285,7 @@ namespace Allors.Domain
 
             new CustomerRelationshipBuilder(this.DatabaseSession).WithFromDate(DateTime.UtcNow).WithCustomer(customer).WithInternalOrganisation(Singleton.Instance(this.DatabaseSession).DefaultInternalOrganisation).Build();
 
-            Assert.AreEqual("1", invoice1.InvoiceNumber);
+            Assert.Equal("1", invoice1.InvoiceNumber);
 
             var invoice2 = new SalesInvoiceBuilder(this.DatabaseSession)
                 .WithStore(store)
@@ -293,10 +295,10 @@ namespace Allors.Domain
                 .WithBilledFromInternalOrganisation(new InternalOrganisations(this.DatabaseSession).FindBy(M.InternalOrganisation.Name, "internalOrganisation"))
                 .Build();
 
-            Assert.AreEqual("2", invoice2.InvoiceNumber);
+            Assert.Equal("2", invoice2.InvoiceNumber);
         }
 
-        [Test]
+        [Fact]
         public void GivenInternalOrganisationWithInvoiceSequenceFiscalYear_WhenCreatingInvoice_ThenInvoiceNumberFromFiscalYearMustBeUsed()
         {
             var store = new StoreBuilder(this.DatabaseSession).WithName("store")
@@ -326,9 +328,9 @@ namespace Allors.Domain
 
             new CustomerRelationshipBuilder(this.DatabaseSession).WithFromDate(DateTime.UtcNow).WithCustomer(customer).WithInternalOrganisation(Singleton.Instance(this.DatabaseSession).DefaultInternalOrganisation).Build();
 
-            Assert.IsFalse(store.ExistSalesInvoiceCounter);
-            Assert.AreEqual(DateTime.UtcNow.Year, store.FiscalYearInvoiceNumbers.First.FiscalYear);
-            Assert.AreEqual("1", invoice1.InvoiceNumber);
+            Assert.False(store.ExistSalesInvoiceCounter);
+            Assert.Equal(DateTime.UtcNow.Year, store.FiscalYearInvoiceNumbers.First.FiscalYear);
+            Assert.Equal("1", invoice1.InvoiceNumber);
 
             var invoice2 = new SalesInvoiceBuilder(this.DatabaseSession)
                 .WithStore(store)
@@ -338,12 +340,12 @@ namespace Allors.Domain
                 .WithBilledFromInternalOrganisation(new InternalOrganisations(this.DatabaseSession).FindBy(M.InternalOrganisation.Name, "internalOrganisation"))
                 .Build();
 
-            Assert.IsFalse(store.ExistSalesInvoiceCounter);
-            Assert.AreEqual(DateTime.UtcNow.Year, store.FiscalYearInvoiceNumbers.First.FiscalYear);
-            Assert.AreEqual("2", invoice2.InvoiceNumber);
+            Assert.False(store.ExistSalesInvoiceCounter);
+            Assert.Equal(DateTime.UtcNow.Year, store.FiscalYearInvoiceNumbers.First.FiscalYear);
+            Assert.Equal("2", invoice2.InvoiceNumber);
         }
 
-        [Test]
+        [Fact]
         public void GivenSalesInvoice_WhenGettingInvoiceNumberWithFormat_ThenFormattedInvoiceNumberShouldBeReturned()
         {
             var store = new StoreBuilder(this.DatabaseSession).WithName("store")
@@ -374,10 +376,10 @@ namespace Allors.Domain
 
             new CustomerRelationshipBuilder(this.DatabaseSession).WithFromDate(DateTime.UtcNow).WithCustomer(customer).WithInternalOrganisation(Singleton.Instance(this.DatabaseSession).DefaultInternalOrganisation).Build();
 
-            Assert.AreEqual("the format is 1", invoice.InvoiceNumber);
+            Assert.Equal("the format is 1", invoice.InvoiceNumber);
         }
 
-        [Test]
+        [Fact]
         public void GivenSalesInvoice_WhenDeriving_ThenDerivedSalesRepMustExist()
         {
             var customer = new OrganisationBuilder(this.DatabaseSession).WithName("customer").Build();
@@ -430,7 +432,7 @@ namespace Allors.Domain
             Assert.Contains(salesrep, invoice.SalesReps);
         }
 
-        [Test]
+        [Fact]
         public void GivenSalesInvoice_WhenDeriving_ThenBilledFromContactMechanismMustExist()
         {
             var customer = new OrganisationBuilder(this.DatabaseSession).WithName("customer").Build();
@@ -476,10 +478,10 @@ namespace Allors.Domain
 
             this.DatabaseSession.Derive(true);
 
-            Assert.AreEqual(homeAddress, invoice.BilledFromContactMechanism);
+            Assert.Equal(homeAddress, invoice.BilledFromContactMechanism);
         }
 
-        [Test]
+        [Fact]
         public void GivenSalesInvoiceWithBillToCustomerWithBillingAsdress_WhenDeriving_ThendBillToContactMechanismMustExist()
         {
             var customer = new OrganisationBuilder(this.DatabaseSession).WithName("customer").Build();
@@ -501,10 +503,10 @@ namespace Allors.Domain
 
             this.DatabaseSession.Derive(true); 
 
-            Assert.AreEqual(billingAddress.ContactMechanism, invoice.BillToContactMechanism);
+            Assert.Equal(billingAddress.ContactMechanism, invoice.BillToContactMechanism);
         }
 
-        [Test]
+        [Fact]
         public void GivenSalesInvoiceBuilderWithBillToCustomerWithPreferredCurrency_WhenBuilding_ThenDerivedCurrencyIsCustomersPreferredCurrency()
         {
             var euro = new Currencies(this.DatabaseSession).FindBy(M.Currency.IsoCode, "EUR");
@@ -523,10 +525,10 @@ namespace Allors.Domain
 
             new CustomerRelationshipBuilder(this.DatabaseSession).WithFromDate(DateTime.UtcNow).WithCustomer(customer).WithInternalOrganisation(Singleton.Instance(this.DatabaseSession).DefaultInternalOrganisation).Build();
 
-            Assert.AreEqual(euro, invoice.CustomerCurrency);
+            Assert.Equal(euro, invoice.CustomerCurrency);
         }
 
-        [Test]
+        [Fact]
         public void GivenSalesInvoiceWithShipToCustomerWithShippingAddress_WhenDeriving_ThenShipToAddressMustExist()
         {
             var customer = new OrganisationBuilder(this.DatabaseSession).WithName("customer").Build();
@@ -553,10 +555,10 @@ namespace Allors.Domain
 
             this.DatabaseSession.Derive(true);
 
-            Assert.AreEqual(shippingAddress.ContactMechanism, invoice.ShipToAddress);
+            Assert.Equal(shippingAddress.ContactMechanism, invoice.ShipToAddress);
         }
 
-        [Test]
+        [Fact]
         public void GivenSalesInvoiceBuilderWithoutBillToCustomer_WhenBuilding_ThenDerivedCurrencyIsInternalOrganisationsPreferredCurrency()
         {
             var euro = new Currencies(this.DatabaseSession).FindBy(M.Currency.IsoCode, "EUR");
@@ -583,10 +585,10 @@ namespace Allors.Domain
 
             new CustomerRelationshipBuilder(this.DatabaseSession).WithFromDate(DateTime.UtcNow).WithCustomer(customer).WithInternalOrganisation(Singleton.Instance(this.DatabaseSession).DefaultInternalOrganisation).Build();
 
-            Assert.AreEqual(euro, invoice.CustomerCurrency);
+            Assert.Equal(euro, invoice.CustomerCurrency);
         }
 
-        [Test]
+        [Fact]
         public void GivenSalesInvoice_WhenDeriving_ThenLocaleMustExist()
         {
             var englischLocale = new Locales(this.DatabaseSession).EnglishGreatBritain;
@@ -608,7 +610,7 @@ namespace Allors.Domain
 
             this.DatabaseSession.Derive(true);
 
-            Assert.AreEqual(englischLocale, invoice1.Locale);
+            Assert.Equal(englischLocale, invoice1.Locale);
 
             customer.Locale = dutchLocale;
 
@@ -616,10 +618,10 @@ namespace Allors.Domain
 
             this.DatabaseSession.Derive(true);
 
-            Assert.AreEqual(dutchLocale, invoice2.Locale);
+            Assert.Equal(dutchLocale, invoice2.Locale);
         }
 
-        [Test]
+        [Fact]
         public void GivenSalesInvoice_WhenDeriving_ThenTotalAmountMustBeDerived()
         {
             var euro = new Currencies(this.DatabaseSession).FindBy(M.Currency.IsoCode, "EUR");
@@ -677,9 +679,9 @@ namespace Allors.Domain
 
             this.DatabaseSession.Derive(true);
 
-            Assert.AreEqual(8, invoice.TotalExVat);
-            Assert.AreEqual(1.52M, invoice.TotalVat);
-            Assert.AreEqual(9.52M, invoice.TotalIncVat);
+            Assert.Equal(8, invoice.TotalExVat);
+            Assert.Equal(1.52M, invoice.TotalVat);
+            Assert.Equal(9.52M, invoice.TotalIncVat);
 
             var item2 = new SalesInvoiceItemBuilder(this.DatabaseSession)
                 .WithProduct(good)
@@ -700,14 +702,14 @@ namespace Allors.Domain
 
             this.DatabaseSession.Derive(true);
 
-            Assert.AreEqual(24, invoice.TotalExVat);
-            Assert.AreEqual(4.56M, invoice.TotalVat);
-            Assert.AreEqual(28.56M, invoice.TotalIncVat);
-            Assert.AreEqual(21, invoice.TotalPurchasePrice);
-            Assert.AreEqual(invoice.TotalListPrice, invoice.TotalExVat);
+            Assert.Equal(24, invoice.TotalExVat);
+            Assert.Equal(4.56M, invoice.TotalVat);
+            Assert.Equal(28.56M, invoice.TotalIncVat);
+            Assert.Equal(21, invoice.TotalPurchasePrice);
+            Assert.Equal(invoice.TotalListPrice, invoice.TotalExVat);
         }
 
-        [Test]
+        [Fact]
         public void GivenSalesInvoice_WhenObjectStateIsReadyForPosting_ThenCheckTransitions()
         {
             var customer = new OrganisationBuilder(this.DatabaseSession).WithName("customer").Build();
@@ -726,8 +728,8 @@ namespace Allors.Domain
 
             this.DatabaseSession.Derive(true);
             this.DatabaseSession.Commit();
-            
-            Thread.CurrentPrincipal = new GenericPrincipal(new GenericIdentity("administrator", "Forms"), new string[0]);
+
+            SetIdentity("administrator");
 
             var invoice = new SalesInvoiceBuilder(this.DatabaseSession)
                 .WithInvoiceNumber("1")
@@ -743,12 +745,12 @@ namespace Allors.Domain
             this.DatabaseSession.Commit();
 
             var acl = new AccessControlList(invoice, new Users(this.DatabaseSession).GetCurrentUser());
-            Assert.IsTrue(acl.CanExecute(M.SalesInvoice.Send));
-            Assert.IsTrue(acl.CanExecute(M.SalesInvoice.WriteOff));
-            Assert.IsTrue(acl.CanExecute(M.SalesInvoice.CancelInvoice));
+            Assert.True(acl.CanExecute(M.SalesInvoice.Send));
+            Assert.True(acl.CanExecute(M.SalesInvoice.WriteOff));
+            Assert.True(acl.CanExecute(M.SalesInvoice.CancelInvoice));
         }
 
-        [Test]
+        [Fact]
         public void GivenSalesInvoice_WhenObjectStateIsSent_ThenCheckTransitions()
         {
             var customer = new OrganisationBuilder(this.DatabaseSession).WithName("customer").Build();
@@ -768,7 +770,7 @@ namespace Allors.Domain
             this.DatabaseSession.Derive(true);
             this.DatabaseSession.Commit();
 
-            Thread.CurrentPrincipal = new GenericPrincipal(new GenericIdentity("administrator", "Forms"), new string[0]);
+            this.SetIdentity("administrator");
 
             var invoice = new SalesInvoiceBuilder(this.DatabaseSession)
                 .WithInvoiceNumber("1")
@@ -786,12 +788,12 @@ namespace Allors.Domain
             this.DatabaseSession.Commit();
 
             var acl = new AccessControlList(invoice, new Users(this.DatabaseSession).GetCurrentUser());
-            Assert.IsFalse(acl.CanExecute(M.SalesInvoice.Send));
-            Assert.IsTrue(acl.CanExecute(M.SalesInvoice.WriteOff));
-            Assert.IsFalse(acl.CanExecute(M.SalesInvoice.CancelInvoice));
+            Assert.False(acl.CanExecute(M.SalesInvoice.Send));
+            Assert.True(acl.CanExecute(M.SalesInvoice.WriteOff));
+            Assert.False(acl.CanExecute(M.SalesInvoice.CancelInvoice));
         }
 
-        ////[Test]
+        ////[Fact]
         ////public void GivenSalesInvoice_WhenObjectStateIsReceived_ThenCheckTransitions()
         ////{
         ////    SecurityPopulation securityPopulation = new SecurityPopulation(this.Session);
@@ -809,14 +811,14 @@ namespace Allors.Domain
         ////        .Build();
 
         ////    AccessControlList acl = new AccessControlList(invoice, new Users(this.Session).CurrentUser());
-        ////    Assert.IsFalse(acl.CanExecute(Invoices.ReadyForPostingId));
-        ////    Assert.IsFalse(acl.CanExecute(Invoices.ApproveId));
-        ////    Assert.IsFalse(acl.CanExecute(Invoices.SendId));
-        ////    Assert.IsFalse(acl.CanExecute(Invoices.WriteOffId));
-        ////    Assert.IsFalse(acl.CanExecute(Invoices.CancelId));
+        ////    Assert.False(acl.CanExecute(Invoices.ReadyForPostingId));
+        ////    Assert.False(acl.CanExecute(Invoices.ApproveId));
+        ////    Assert.False(acl.CanExecute(Invoices.SendId));
+        ////    Assert.False(acl.CanExecute(Invoices.WriteOffId));
+        ////    Assert.False(acl.CanExecute(Invoices.CancelId));
         ////}
 
-        [Test]
+        [Fact]
         public void GivenSalesInvoice_WhenObjectStateIsPaid_ThenCheckTransitions()
         {
             var customer = new OrganisationBuilder(this.DatabaseSession).WithName("customer").Build();
@@ -844,7 +846,7 @@ namespace Allors.Domain
             this.DatabaseSession.Derive(true);
             this.DatabaseSession.Commit();
 
-            Thread.CurrentPrincipal = new GenericPrincipal(new GenericIdentity("administrator", "Forms"), new string[0]);
+            this.SetIdentity("administrator");
 
             var invoice = new SalesInvoiceBuilder(this.DatabaseSession)
                 .WithInvoiceNumber("1")
@@ -867,12 +869,12 @@ namespace Allors.Domain
             this.DatabaseSession.Derive(true);
 
             var acl = new AccessControlList(invoice, new Users(this.DatabaseSession).GetCurrentUser());
-            Assert.IsFalse(acl.CanExecute(M.SalesInvoice.Send));
-            Assert.IsFalse(acl.CanExecute(M.SalesInvoice.WriteOff));
-            Assert.IsFalse(acl.CanExecute(M.SalesInvoice.CancelInvoice));
+            Assert.False(acl.CanExecute(M.SalesInvoice.Send));
+            Assert.False(acl.CanExecute(M.SalesInvoice.WriteOff));
+            Assert.False(acl.CanExecute(M.SalesInvoice.CancelInvoice));
         }
 
-        [Test]
+        [Fact]
         public void GivenSalesInvoice_WhenObjectStateIsPartiallyPaid_ThenCheckTransitions()
         {
             var customer = new OrganisationBuilder(this.DatabaseSession).WithName("customer").Build();
@@ -900,7 +902,7 @@ namespace Allors.Domain
             this.DatabaseSession.Derive(true);
             this.DatabaseSession.Commit();
 
-            Thread.CurrentPrincipal = new GenericPrincipal(new GenericIdentity("administrator", "Forms"), new string[0]);
+            this.SetIdentity("administrator");
 
             var invoice = new SalesInvoiceBuilder(this.DatabaseSession)
                 .WithInvoiceNumber("1")
@@ -924,12 +926,12 @@ namespace Allors.Domain
             this.DatabaseSession.Commit();
 
             var acl = new AccessControlList(invoice, new Users(this.DatabaseSession).GetCurrentUser());
-            Assert.IsFalse(acl.CanExecute(M.SalesInvoice.Send));
-            Assert.IsTrue(acl.CanExecute(M.SalesInvoice.WriteOff));
-            Assert.IsFalse(acl.CanExecute(M.SalesInvoice.CancelInvoice));
+            Assert.False(acl.CanExecute(M.SalesInvoice.Send));
+            Assert.True(acl.CanExecute(M.SalesInvoice.WriteOff));
+            Assert.False(acl.CanExecute(M.SalesInvoice.CancelInvoice));
         }
 
-        [Test]
+        [Fact]
         public void GivenSalesInvoice_WhenObjectStateIsWrittenOff_ThenCheckTransitions()
         {
             var customer = new OrganisationBuilder(this.DatabaseSession).WithName("customer").Build();
@@ -949,7 +951,7 @@ namespace Allors.Domain
             this.DatabaseSession.Derive(true);
             this.DatabaseSession.Commit();
 
-            Thread.CurrentPrincipal = new GenericPrincipal(new GenericIdentity("administrator", "Forms"), new string[0]);
+            this.SetIdentity("administrator");
 
             var invoice = new SalesInvoiceBuilder(this.DatabaseSession)
                 .WithInvoiceNumber("1")
@@ -967,12 +969,12 @@ namespace Allors.Domain
             this.DatabaseSession.Derive(true);
 
             var acl = new AccessControlList(invoice, new Users(this.DatabaseSession).GetCurrentUser());
-            Assert.IsFalse(acl.CanExecute(M.SalesInvoice.Send));
-            Assert.IsFalse(acl.CanExecute(M.SalesInvoice.WriteOff));
-            Assert.IsFalse(acl.CanExecute(M.SalesInvoice.CancelInvoice));
+            Assert.False(acl.CanExecute(M.SalesInvoice.Send));
+            Assert.False(acl.CanExecute(M.SalesInvoice.WriteOff));
+            Assert.False(acl.CanExecute(M.SalesInvoice.CancelInvoice));
         }
 
-        [Test]
+        [Fact]
         public void GivenSalesInvoice_WhenObjectStateIsCancelled_ThenCheckTransitions()
         {
             var customer = new OrganisationBuilder(this.DatabaseSession).WithName("customer").Build();
@@ -992,7 +994,7 @@ namespace Allors.Domain
             this.DatabaseSession.Derive(true);
             this.DatabaseSession.Commit();
 
-            Thread.CurrentPrincipal = new GenericPrincipal(new GenericIdentity("administrator", "Forms"), new string[0]);
+            this.SetIdentity("administrator");
 
             var invoice = new SalesInvoiceBuilder(this.DatabaseSession)
                 .WithInvoiceNumber("1")
@@ -1009,13 +1011,13 @@ namespace Allors.Domain
             this.DatabaseSession.Derive(true);
 
             var acl = new AccessControlList(invoice, new Users(this.DatabaseSession).GetCurrentUser());
-            Assert.AreEqual(new SalesInvoiceObjectStates(this.DatabaseSession).Cancelled, invoice.CurrentObjectState);
-            Assert.IsFalse(acl.CanExecute(M.SalesInvoice.Send));
-            Assert.IsFalse(acl.CanExecute(M.SalesInvoice.WriteOff));
-            Assert.IsFalse(acl.CanExecute(M.SalesInvoice.CancelInvoice));
+            Assert.Equal(new SalesInvoiceObjectStates(this.DatabaseSession).Cancelled, invoice.CurrentObjectState);
+            Assert.False(acl.CanExecute(M.SalesInvoice.Send));
+            Assert.False(acl.CanExecute(M.SalesInvoice.WriteOff));
+            Assert.False(acl.CanExecute(M.SalesInvoice.CancelInvoice));
         }
 
-        [Test]
+        [Fact]
         public void GivenSalesInvoiceWithShippingAndHandlingAmount_WhenDeriving_ThenInvoiceTotalsMustIncludeShippingAndHandlingAmount()
         {
             var euro = new Currencies(this.DatabaseSession).FindBy(M.Currency.IsoCode, "EUR");
@@ -1056,17 +1058,17 @@ namespace Allors.Domain
 
             this.DatabaseSession.Derive(true);
 
-            Assert.AreEqual(45, invoice.TotalBasePrice);
-            Assert.AreEqual(0, invoice.TotalDiscount);
-            Assert.AreEqual(0, invoice.TotalSurcharge);
-            Assert.AreEqual(7.5, invoice.TotalShippingAndHandling);
-            Assert.AreEqual(0, invoice.TotalFee);
-            Assert.AreEqual(52.5, invoice.TotalExVat);
-            Assert.AreEqual(11.03, invoice.TotalVat);
-            Assert.AreEqual(63.53, invoice.TotalIncVat);
+            Assert.Equal(45, invoice.TotalBasePrice);
+            Assert.Equal(0, invoice.TotalDiscount);
+            Assert.Equal(0, invoice.TotalSurcharge);
+            Assert.Equal(7.5m, invoice.TotalShippingAndHandling);
+            Assert.Equal(0, invoice.TotalFee);
+            Assert.Equal(52.5m, invoice.TotalExVat);
+            Assert.Equal(11.03m, invoice.TotalVat);
+            Assert.Equal(63.53m, invoice.TotalIncVat);
         }
 
-        [Test]
+        [Fact]
         public void GivenSalesInvoiceWithShippingAndHandlingPercentage_WhenDeriving_ThenSalesInvoiceTotalsMustIncludeShippingAndHandlingAmount()
         {
             var euro = new Currencies(this.DatabaseSession).FindBy(M.Currency.IsoCode, "EUR");
@@ -1107,17 +1109,17 @@ namespace Allors.Domain
 
             this.DatabaseSession.Derive(true);
 
-            Assert.AreEqual(45, invoice.TotalBasePrice);
-            Assert.AreEqual(0, invoice.TotalDiscount);
-            Assert.AreEqual(0, invoice.TotalSurcharge);
-            Assert.AreEqual(2.25, invoice.TotalShippingAndHandling);
-            Assert.AreEqual(0, invoice.TotalFee);
-            Assert.AreEqual(47.25, invoice.TotalExVat);
-            Assert.AreEqual(9.92, invoice.TotalVat);
-            Assert.AreEqual(57.17, invoice.TotalIncVat);
+            Assert.Equal(45, invoice.TotalBasePrice);
+            Assert.Equal(0, invoice.TotalDiscount);
+            Assert.Equal(0, invoice.TotalSurcharge);
+            Assert.Equal(2.25m, invoice.TotalShippingAndHandling);
+            Assert.Equal(0, invoice.TotalFee);
+            Assert.Equal(47.25m, invoice.TotalExVat);
+            Assert.Equal(9.92m, invoice.TotalVat);
+            Assert.Equal(57.17m, invoice.TotalIncVat);
         }
 
-        [Test]
+        [Fact]
         public void GivenSalesInvoiceWithFeeAmount_WhenDeriving_ThenSalesInvoiceTotalsMustIncludeFeeAmount()
         {
             var euro = new Currencies(this.DatabaseSession).FindBy(M.Currency.IsoCode, "EUR");
@@ -1158,17 +1160,17 @@ namespace Allors.Domain
 
             this.DatabaseSession.Derive(true);
 
-            Assert.AreEqual(45, invoice.TotalBasePrice);
-            Assert.AreEqual(0, invoice.TotalDiscount);
-            Assert.AreEqual(0, invoice.TotalSurcharge);
-            Assert.AreEqual(0, invoice.TotalShippingAndHandling);
-            Assert.AreEqual(7.5, invoice.TotalFee);
-            Assert.AreEqual(52.5, invoice.TotalExVat);
-            Assert.AreEqual(11.03, invoice.TotalVat);
-            Assert.AreEqual(63.53, invoice.TotalIncVat);
+            Assert.Equal(45, invoice.TotalBasePrice);
+            Assert.Equal(0, invoice.TotalDiscount);
+            Assert.Equal(0, invoice.TotalSurcharge);
+            Assert.Equal(0, invoice.TotalShippingAndHandling);
+            Assert.Equal(7.5m, invoice.TotalFee);
+            Assert.Equal(52.5m, invoice.TotalExVat);
+            Assert.Equal(11.03m, invoice.TotalVat);
+            Assert.Equal(63.53m, invoice.TotalIncVat);
         }
 
-        [Test]
+        [Fact]
         public void GivenSalesInvoiceWithFeePercentage_WhenDeriving_ThenSalesInvoiceTotalsMustIncludeFeeAmount()
         {
             var euro = new Currencies(this.DatabaseSession).FindBy(M.Currency.IsoCode, "EUR");
@@ -1209,17 +1211,17 @@ namespace Allors.Domain
 
             this.DatabaseSession.Derive(true);
 
-            Assert.AreEqual(45, invoice.TotalBasePrice);
-            Assert.AreEqual(0, invoice.TotalDiscount);
-            Assert.AreEqual(0, invoice.TotalSurcharge);
-            Assert.AreEqual(0, invoice.TotalShippingAndHandling);
-            Assert.AreEqual(2.25, invoice.TotalFee);
-            Assert.AreEqual(47.25, invoice.TotalExVat);
-            Assert.AreEqual(9.92, invoice.TotalVat);
-            Assert.AreEqual(57.17, invoice.TotalIncVat);
+            Assert.Equal(45, invoice.TotalBasePrice);
+            Assert.Equal(0, invoice.TotalDiscount);
+            Assert.Equal(0, invoice.TotalSurcharge);
+            Assert.Equal(0, invoice.TotalShippingAndHandling);
+            Assert.Equal(2.25m, invoice.TotalFee);
+            Assert.Equal(47.25m, invoice.TotalExVat);
+            Assert.Equal(9.92m, invoice.TotalVat);
+            Assert.Equal(57.17m, invoice.TotalIncVat);
         }
 
-        [Test]
+        [Fact]
         public void GivenSalesInvoice_WhenShipToAndBillToAreSameCustomer_ThenDerivedCustomersIsSingleCustomer()
         {
             var customer = new OrganisationBuilder(this.DatabaseSession).WithName("customer").Build();
@@ -1242,11 +1244,11 @@ namespace Allors.Domain
 
             this.DatabaseSession.Derive(true); 
             
-            Assert.AreEqual(1, invoice.Customers.Count);
-            Assert.AreEqual(customer, invoice.Customers.First);
+            Assert.Equal(1, invoice.Customers.Count);
+            Assert.Equal(customer, invoice.Customers.First);
         }
 
-        [Test]
+        [Fact]
         public void GivenSalesInvoice_WhenShipToAndBillToAreDifferentCustomers_ThenDerivedCustomersHoldsBothCustomers()
         {
             var billToCustomer = new OrganisationBuilder(this.DatabaseSession).WithName("customer").Build();
@@ -1271,12 +1273,12 @@ namespace Allors.Domain
 
             this.DatabaseSession.Derive(true); 
             
-            Assert.AreEqual(2, invoice.Customers.Count);
+            Assert.Equal(2, invoice.Customers.Count);
             Assert.Contains(billToCustomer, invoice.Customers);
             Assert.Contains(shipToCustomer, invoice.Customers);
         }
 
-        [Test]
+        [Fact]
         public void GivenSalesInvoice_WhenDerivingSalesReps_ThenSalesRepsAreCollectedFromSalesInvoiceItems()
         {
             var salesrep1 = new PersonBuilder(this.DatabaseSession).WithLastName("salesrep for child product category").Build();
@@ -1376,14 +1378,14 @@ namespace Allors.Domain
 
             this.DatabaseSession.Derive(true);
 
-            Assert.AreEqual(1, invoice.SalesReps.Count);
+            Assert.Equal(1, invoice.SalesReps.Count);
             Assert.Contains(salesrep1, invoice.SalesReps);
 
             invoice.AddSalesInvoiceItem(item2);
 
             this.DatabaseSession.Derive(true);
 
-            Assert.AreEqual(2, invoice.SalesReps.Count);
+            Assert.Equal(2, invoice.SalesReps.Count);
             Assert.Contains(salesrep1, invoice.SalesReps);
             Assert.Contains(salesrep2, invoice.SalesReps);
 
@@ -1391,13 +1393,13 @@ namespace Allors.Domain
 
             this.DatabaseSession.Derive(true);
 
-            Assert.AreEqual(3, invoice.SalesReps.Count);
+            Assert.Equal(3, invoice.SalesReps.Count);
             Assert.Contains(salesrep1, invoice.SalesReps);
             Assert.Contains(salesrep2, invoice.SalesReps);
             Assert.Contains(salesrep3, invoice.SalesReps);
         }
 
-        [Test]
+        [Fact]
         public void GivenSalesInvoice_WhenPartialPaymentIsReceived_ThenInvoiceStateIsSetToPartiallyPaid()
         {
             var billToCustomer = new OrganisationBuilder(this.DatabaseSession).WithName("customer").Build();
@@ -1439,10 +1441,10 @@ namespace Allors.Domain
 
             this.DatabaseSession.Derive(true);
 
-            Assert.AreEqual(new SalesInvoiceObjectStates(this.DatabaseSession).PartiallyPaid, invoice.CurrentObjectState);
+            Assert.Equal(new SalesInvoiceObjectStates(this.DatabaseSession).PartiallyPaid, invoice.CurrentObjectState);
         }
 
-        [Test]
+        [Fact]
         public void GiveninvoiceItem_WhenFullPaymentIsReceived_ThenInvoiceItemStateIsSetToPaid()
         {
             var billToCustomer = new OrganisationBuilder(this.DatabaseSession).WithName("customer").Build();
@@ -1484,10 +1486,10 @@ namespace Allors.Domain
 
             this.DatabaseSession.Derive(true);
 
-            Assert.AreEqual(new SalesInvoiceObjectStates(this.DatabaseSession).Paid, invoice.CurrentObjectState);
+            Assert.Equal(new SalesInvoiceObjectStates(this.DatabaseSession).Paid, invoice.CurrentObjectState);
         }
 
-        [Test]
+        [Fact]
         public void GiveninvoiceItem_WhenCancelled_ThenInvoiceItemsAreCancelled()
         {
             var billToCustomer = new OrganisationBuilder(this.DatabaseSession).WithName("customer").Build();
@@ -1526,12 +1528,12 @@ namespace Allors.Domain
 
             this.DatabaseSession.Derive(true);
 
-            Assert.AreEqual(new SalesInvoiceObjectStates(this.DatabaseSession).Cancelled, invoice.CurrentObjectState);
-            Assert.AreEqual(new SalesInvoiceItemObjectStates(this.DatabaseSession).Cancelled, invoice.SalesInvoiceItems[0].CurrentObjectState);
-            Assert.AreEqual(new SalesInvoiceItemObjectStates(this.DatabaseSession).Cancelled, invoice.SalesInvoiceItems[1].CurrentObjectState);
+            Assert.Equal(new SalesInvoiceObjectStates(this.DatabaseSession).Cancelled, invoice.CurrentObjectState);
+            Assert.Equal(new SalesInvoiceItemObjectStates(this.DatabaseSession).Cancelled, invoice.SalesInvoiceItems[0].CurrentObjectState);
+            Assert.Equal(new SalesInvoiceItemObjectStates(this.DatabaseSession).Cancelled, invoice.SalesInvoiceItems[1].CurrentObjectState);
         }
 
-        [Test]
+        [Fact]
         public void GiveninvoiceItem_WhenWrittenOff_ThenInvoiceItemsAreWrittenOff()
         {
             var billToCustomer = new OrganisationBuilder(this.DatabaseSession).WithName("customer").Build();
@@ -1568,12 +1570,12 @@ namespace Allors.Domain
 
             this.DatabaseSession.Derive(true);
 
-            Assert.AreEqual(new SalesInvoiceObjectStates(this.DatabaseSession).WrittenOff, invoice.CurrentObjectState);
-            Assert.AreEqual(new SalesInvoiceItemObjectStates(this.DatabaseSession).WrittenOff, invoice.SalesInvoiceItems[0].CurrentObjectState);
-            Assert.AreEqual(new SalesInvoiceItemObjectStates(this.DatabaseSession).WrittenOff, invoice.SalesInvoiceItems[1].CurrentObjectState);
+            Assert.Equal(new SalesInvoiceObjectStates(this.DatabaseSession).WrittenOff, invoice.CurrentObjectState);
+            Assert.Equal(new SalesInvoiceItemObjectStates(this.DatabaseSession).WrittenOff, invoice.SalesInvoiceItems[0].CurrentObjectState);
+            Assert.Equal(new SalesInvoiceItemObjectStates(this.DatabaseSession).WrittenOff, invoice.SalesInvoiceItems[1].CurrentObjectState);
         }
 
-        [Test]
+        [Fact]
         public void GivenSalesInvoice_WhenDeriving_ThenRevenuesAreCreatedAndUpdated()
         {
             var productItem = new SalesInvoiceItemTypes(this.DatabaseSession).ProductItem;
@@ -1664,7 +1666,7 @@ namespace Allors.Domain
             var catMainRevenue = catMain.ProductCategoryRevenuesWhereProductCategory[0];
 
             var customer1ProductRevenues = customer1.PartyProductRevenuesWhereParty;
-            Assert.AreEqual(2, customer1ProductRevenues.Count);
+            Assert.Equal(2, customer1ProductRevenues.Count);
 
             customer1ProductRevenues = customer1.PartyProductRevenuesWhereParty;
             customer1ProductRevenues.Filter.AddEquals(M.PartyProductRevenue.Product, good1);
@@ -1675,7 +1677,7 @@ namespace Allors.Domain
             var customer1Good2Revenue = customer1ProductRevenues.First;
 
             var customer1ProductCategoryRevenues = customer1.PartyProductCategoryRevenuesWhereParty;
-            Assert.AreEqual(3, customer1ProductCategoryRevenues.Count);
+            Assert.Equal(3, customer1ProductCategoryRevenues.Count);
 
             customer1ProductCategoryRevenues.Filter.AddEquals(M.PartyProductCategoryRevenue.ProductCategory, cat1);
             var customer1Cat1Revenue = customer1ProductCategoryRevenues.First;
@@ -1697,7 +1699,7 @@ namespace Allors.Domain
             var salesRep2Customer1Revenue = salesRep2Customer1Revenues.First;
 
             var salesRep1Customer1ProductCategoryRevenues = salesRep1.SalesRepPartyProductCategoryRevenuesWhereSalesRep;
-            Assert.AreEqual(2, salesRep1Customer1ProductCategoryRevenues.Count);
+            Assert.Equal(2, salesRep1Customer1ProductCategoryRevenues.Count);
 
             salesRep1Customer1ProductCategoryRevenues.Filter.AddEquals(M.SalesRepPartyProductCategoryRevenue.ProductCategory, cat1);
             salesRep1Customer1ProductCategoryRevenues.Filter.AddEquals(M.SalesRepPartyProductCategoryRevenue.Party, customer1);
@@ -1709,7 +1711,7 @@ namespace Allors.Domain
             var salesRep1Customer1CatMainRevenue = salesRep1Customer1ProductCategoryRevenues.First;
 
             var salesRep2Customer1ProductCategoryRevenues = salesRep2.SalesRepPartyProductCategoryRevenuesWhereSalesRep;
-            Assert.AreEqual(2, salesRep2Customer1ProductCategoryRevenues.Count);
+            Assert.Equal(2, salesRep2Customer1ProductCategoryRevenues.Count);
 
             salesRep2Customer1ProductCategoryRevenues.Filter.AddEquals(M.SalesRepPartyProductCategoryRevenue.ProductCategory, cat2);
             salesRep2Customer1ProductCategoryRevenues.Filter.AddEquals(M.SalesRepPartyProductCategoryRevenue.Party, customer1);
@@ -1721,7 +1723,7 @@ namespace Allors.Domain
             var salesRep2Customer1CatMainRevenue = salesRep2Customer1ProductCategoryRevenues.First;
 
             var salesRep1ProductCategoryRevenues = salesRep1.SalesRepProductCategoryRevenuesWhereSalesRep;
-            Assert.AreEqual(2, salesRep1ProductCategoryRevenues.Count);
+            Assert.Equal(2, salesRep1ProductCategoryRevenues.Count);
 
             salesRep1ProductCategoryRevenues.Filter.AddEquals(M.SalesRepProductCategoryRevenue.ProductCategory, cat1);
             var salesRep1Cat1Revenue = salesRep1ProductCategoryRevenues.First;
@@ -1731,7 +1733,7 @@ namespace Allors.Domain
             var salesRep1CatMainRevenue = salesRep1ProductCategoryRevenues.First;
 
             var salesRep2ProductCategoryRevenues = salesRep2.SalesRepProductCategoryRevenuesWhereSalesRep;
-            Assert.AreEqual(2, salesRep2ProductCategoryRevenues.Count);
+            Assert.Equal(2, salesRep2ProductCategoryRevenues.Count);
 
             salesRep2ProductCategoryRevenues.Filter.AddEquals(M.SalesRepProductCategoryRevenue.ProductCategory, cat2);
             var salesRep2Cat2Revenue = salesRep2ProductCategoryRevenues.First;
@@ -1742,32 +1744,32 @@ namespace Allors.Domain
 
             this.DatabaseSession.Derive(true);
 
-            Assert.AreEqual(140, internalOrganisationRevenue.Revenue);
-            Assert.AreEqual(140, storeRevenue.Revenue);
-            Assert.AreEqual(140, salesChannelRevenue.Revenue);
-            Assert.AreEqual(90, salesRep1Revenue.Revenue);
-            Assert.AreEqual(50, salesRep2Revenue.Revenue);
-            Assert.AreEqual(90, salesRep1Customer1Revenue.Revenue);
-            Assert.AreEqual(50, salesRep2Customer1Revenue.Revenue);
-            Assert.AreEqual(90, good1Revenue.Revenue);
-            Assert.AreEqual(50, good2Revenue.Revenue);
-            Assert.AreEqual(90, cat1Revenue.Revenue);
-            Assert.AreEqual(50, cat2Revenue.Revenue);
-            Assert.AreEqual(140, catMainRevenue.Revenue);
-            Assert.AreEqual(90, customer1Cat1Revenue.Revenue);
-            Assert.AreEqual(50, customer1Cat2Revenue.Revenue);
-            Assert.AreEqual(140, customer1CatMainRevenue.Revenue);
-            Assert.AreEqual(90, salesRep1Cat1Revenue.Revenue);
-            Assert.AreEqual(90, salesRep1CatMainRevenue.Revenue);
-            Assert.AreEqual(50, salesRep2Cat2Revenue.Revenue);
-            Assert.AreEqual(50, salesRep2CatMainRevenue.Revenue);
-            Assert.AreEqual(90, salesRep1Customer1Cat1Revenue.Revenue);
-            Assert.AreEqual(90, salesRep1Customer1CatMainRevenue.Revenue);
-            Assert.AreEqual(50, salesRep2Customer1Cat2Revenue.Revenue);
-            Assert.AreEqual(50, salesRep2Customer1CatMainRevenue.Revenue);
-            Assert.AreEqual(140, customer1Revenue.Revenue);
-            Assert.AreEqual(90, customer1Good1Revenue.Revenue);
-            Assert.AreEqual(50, customer1Good2Revenue.Revenue);
+            Assert.Equal(140, internalOrganisationRevenue.Revenue);
+            Assert.Equal(140, storeRevenue.Revenue);
+            Assert.Equal(140, salesChannelRevenue.Revenue);
+            Assert.Equal(90, salesRep1Revenue.Revenue);
+            Assert.Equal(50, salesRep2Revenue.Revenue);
+            Assert.Equal(90, salesRep1Customer1Revenue.Revenue);
+            Assert.Equal(50, salesRep2Customer1Revenue.Revenue);
+            Assert.Equal(90, good1Revenue.Revenue);
+            Assert.Equal(50, good2Revenue.Revenue);
+            Assert.Equal(90, cat1Revenue.Revenue);
+            Assert.Equal(50, cat2Revenue.Revenue);
+            Assert.Equal(140, catMainRevenue.Revenue);
+            Assert.Equal(90, customer1Cat1Revenue.Revenue);
+            Assert.Equal(50, customer1Cat2Revenue.Revenue);
+            Assert.Equal(140, customer1CatMainRevenue.Revenue);
+            Assert.Equal(90, salesRep1Cat1Revenue.Revenue);
+            Assert.Equal(90, salesRep1CatMainRevenue.Revenue);
+            Assert.Equal(50, salesRep2Cat2Revenue.Revenue);
+            Assert.Equal(50, salesRep2CatMainRevenue.Revenue);
+            Assert.Equal(90, salesRep1Customer1Cat1Revenue.Revenue);
+            Assert.Equal(90, salesRep1Customer1CatMainRevenue.Revenue);
+            Assert.Equal(50, salesRep2Customer1Cat2Revenue.Revenue);
+            Assert.Equal(50, salesRep2Customer1CatMainRevenue.Revenue);
+            Assert.Equal(140, customer1Revenue.Revenue);
+            Assert.Equal(90, customer1Good1Revenue.Revenue);
+            Assert.Equal(50, customer1Good2Revenue.Revenue);
 
             var invoice2 = new SalesInvoiceBuilder(this.DatabaseSession)
                 .WithInvoiceDate(DateTime.UtcNow)
@@ -1793,7 +1795,7 @@ namespace Allors.Domain
             var customer2Revenue = customer2.PartyRevenuesWhereParty[0];
 
             var customer2ProductRevenues = customer2.PartyProductRevenuesWhereParty;
-            Assert.AreEqual(2, customer2ProductRevenues.Count);
+            Assert.Equal(2, customer2ProductRevenues.Count);
 
             customer2ProductRevenues.Filter.AddEquals(M.PartyProductRevenue.Product, good1);
             var customer2Good1Revenue = customer2ProductRevenues.First;
@@ -1803,7 +1805,7 @@ namespace Allors.Domain
             var customer2Good2Revenue = customer2ProductRevenues.First;
 
             var customer2ProductCategoryRevenues = customer2.PartyProductCategoryRevenuesWhereParty;
-            Assert.AreEqual(3, customer2ProductCategoryRevenues.Count);
+            Assert.Equal(3, customer2ProductCategoryRevenues.Count);
 
             customer2ProductCategoryRevenues.Filter.AddEquals(M.PartyProductCategoryRevenue.ProductCategory, cat1);
             var customer2Cat1Revenue = customer2ProductCategoryRevenues.First;
@@ -1826,7 +1828,7 @@ namespace Allors.Domain
 
             var salesRep1Customer2ProductCategoryRevenues = salesRep1.SalesRepPartyProductCategoryRevenuesWhereSalesRep;
             salesRep1Customer2ProductCategoryRevenues.Filter.AddEquals(M.SalesRepPartyProductCategoryRevenue.Party, customer2);
-            Assert.AreEqual(2, salesRep1Customer2ProductCategoryRevenues.Count);
+            Assert.Equal(2, salesRep1Customer2ProductCategoryRevenues.Count);
 
             salesRep1Customer2ProductCategoryRevenues.Filter.AddEquals(M.SalesRepPartyProductCategoryRevenue.ProductCategory, cat1);
             salesRep1Customer2ProductCategoryRevenues.Filter.AddEquals(M.SalesRepPartyProductCategoryRevenue.Party, customer2);
@@ -1839,7 +1841,7 @@ namespace Allors.Domain
 
             var salesRep2Customer2ProductCategoryRevenues = salesRep2.SalesRepPartyProductCategoryRevenuesWhereSalesRep;
             salesRep2Customer2ProductCategoryRevenues.Filter.AddEquals(M.SalesRepPartyProductCategoryRevenue.Party, customer2);
-            Assert.AreEqual(2, salesRep2Customer2ProductCategoryRevenues.Count);
+            Assert.Equal(2, salesRep2Customer2ProductCategoryRevenues.Count);
 
             salesRep2Customer2ProductCategoryRevenues.Filter.AddEquals(M.SalesRepPartyProductCategoryRevenue.ProductCategory, cat2);
             salesRep2Customer2ProductCategoryRevenues.Filter.AddEquals(M.SalesRepPartyProductCategoryRevenue.Party, customer2);
@@ -1850,35 +1852,35 @@ namespace Allors.Domain
             salesRep2Customer2ProductCategoryRevenues.Filter.AddEquals(M.SalesRepPartyProductCategoryRevenue.ProductCategory, catMain);
             var salesRep2Customer2CatMainRevenue = salesRep2Customer2ProductCategoryRevenues.First;
 
-            Assert.AreEqual(165, internalOrganisationRevenue.Revenue);
-            Assert.AreEqual(165, storeRevenue.Revenue);
-            Assert.AreEqual(165, salesChannelRevenue.Revenue);
-            Assert.AreEqual(105, salesRep1Revenue.Revenue);
-            Assert.AreEqual(60, salesRep2Revenue.Revenue);
-            Assert.AreEqual(15, salesRep1Customer2Revenue.Revenue);
-            Assert.AreEqual(10, salesRep2Customer2Revenue.Revenue);
-            Assert.AreEqual(105, cat1Revenue.Revenue);
-            Assert.AreEqual(60, cat2Revenue.Revenue);
-            Assert.AreEqual(165, catMainRevenue.Revenue);
-            Assert.AreEqual(15, customer2Cat1Revenue.Revenue);
-            Assert.AreEqual(10, customer2Cat2Revenue.Revenue);
-            Assert.AreEqual(25, customer2CatMainRevenue.Revenue);
-            Assert.AreEqual(105, salesRep1Cat1Revenue.Revenue);
-            Assert.AreEqual(105, salesRep1CatMainRevenue.Revenue);
-            Assert.AreEqual(60, salesRep2Cat2Revenue.Revenue);
-            Assert.AreEqual(60, salesRep2CatMainRevenue.Revenue);
-            Assert.AreEqual(15, salesRep1Customer2Cat1Revenue.Revenue);
-            Assert.AreEqual(15, salesRep1Customer2CatMainRevenue.Revenue);
-            Assert.AreEqual(10, salesRep2Customer2Cat2Revenue.Revenue);
-            Assert.AreEqual(10, salesRep2Customer2CatMainRevenue.Revenue);
-            Assert.AreEqual(105, good1Revenue.Revenue);
-            Assert.AreEqual(60, good2Revenue.Revenue);
-            Assert.AreEqual(25, customer2Revenue.Revenue);
-            Assert.AreEqual(15, customer2Good1Revenue.Revenue);
-            Assert.AreEqual(10, customer2Good2Revenue.Revenue);
+            Assert.Equal(165, internalOrganisationRevenue.Revenue);
+            Assert.Equal(165, storeRevenue.Revenue);
+            Assert.Equal(165, salesChannelRevenue.Revenue);
+            Assert.Equal(105, salesRep1Revenue.Revenue);
+            Assert.Equal(60, salesRep2Revenue.Revenue);
+            Assert.Equal(15, salesRep1Customer2Revenue.Revenue);
+            Assert.Equal(10, salesRep2Customer2Revenue.Revenue);
+            Assert.Equal(105, cat1Revenue.Revenue);
+            Assert.Equal(60, cat2Revenue.Revenue);
+            Assert.Equal(165, catMainRevenue.Revenue);
+            Assert.Equal(15, customer2Cat1Revenue.Revenue);
+            Assert.Equal(10, customer2Cat2Revenue.Revenue);
+            Assert.Equal(25, customer2CatMainRevenue.Revenue);
+            Assert.Equal(105, salesRep1Cat1Revenue.Revenue);
+            Assert.Equal(105, salesRep1CatMainRevenue.Revenue);
+            Assert.Equal(60, salesRep2Cat2Revenue.Revenue);
+            Assert.Equal(60, salesRep2CatMainRevenue.Revenue);
+            Assert.Equal(15, salesRep1Customer2Cat1Revenue.Revenue);
+            Assert.Equal(15, salesRep1Customer2CatMainRevenue.Revenue);
+            Assert.Equal(10, salesRep2Customer2Cat2Revenue.Revenue);
+            Assert.Equal(10, salesRep2Customer2CatMainRevenue.Revenue);
+            Assert.Equal(105, good1Revenue.Revenue);
+            Assert.Equal(60, good2Revenue.Revenue);
+            Assert.Equal(25, customer2Revenue.Revenue);
+            Assert.Equal(15, customer2Good1Revenue.Revenue);
+            Assert.Equal(10, customer2Good2Revenue.Revenue);
         }
 
-        [Test]
+        [Fact]
         public void GivenSalesInvoice_WhenWrittenOff_ThenRevenueIsUpdated()
         {
             var euro = new Currencies(this.DatabaseSession).FindBy(M.Currency.IsoCode, "EUR");
@@ -1946,18 +1948,18 @@ namespace Allors.Domain
             var partyRevenue = customer.PartyRevenuesWhereParty[0];
             var partypPrductRevenue = customer.PartyProductRevenuesWhereParty[0];
 
-            Assert.AreEqual(60, internalOrganisationRevenue.Revenue);
-            Assert.AreEqual(2010, internalOrganisationRevenue.Year);
-            Assert.AreEqual(60, storeRevenue.Revenue);
-            Assert.AreEqual(2010, storeRevenue.Year);
-            Assert.AreEqual(60, salesChannelRevenue.Revenue);
-            Assert.AreEqual(2010, salesChannelRevenue.Year);
-            Assert.AreEqual(60, productRevenue.Revenue);
-            Assert.AreEqual(2010, productRevenue.Year);
-            Assert.AreEqual(60, partyRevenue.Revenue);
-            Assert.AreEqual(2010, partyRevenue.Year);
-            Assert.AreEqual(60, partypPrductRevenue.Revenue);
-            Assert.AreEqual(2010, partypPrductRevenue.Year);
+            Assert.Equal(60, internalOrganisationRevenue.Revenue);
+            Assert.Equal(2010, internalOrganisationRevenue.Year);
+            Assert.Equal(60, storeRevenue.Revenue);
+            Assert.Equal(2010, storeRevenue.Year);
+            Assert.Equal(60, salesChannelRevenue.Revenue);
+            Assert.Equal(2010, salesChannelRevenue.Year);
+            Assert.Equal(60, productRevenue.Revenue);
+            Assert.Equal(2010, productRevenue.Year);
+            Assert.Equal(60, partyRevenue.Revenue);
+            Assert.Equal(2010, partyRevenue.Year);
+            Assert.Equal(60, partypPrductRevenue.Revenue);
+            Assert.Equal(2010, partypPrductRevenue.Year);
 
             invoice2.WriteOff();
 
@@ -1970,18 +1972,18 @@ namespace Allors.Domain
             partyRevenue = customer.PartyRevenuesWhereParty[0];
             partypPrductRevenue = customer.PartyProductRevenuesWhereParty[0];
 
-            Assert.AreEqual(45, internalOrganisationRevenue.Revenue);
-            Assert.AreEqual(2010, internalOrganisationRevenue.Year);
-            Assert.AreEqual(45, storeRevenue.Revenue);
-            Assert.AreEqual(2010, storeRevenue.Year);
-            Assert.AreEqual(45, salesChannelRevenue.Revenue);
-            Assert.AreEqual(2010, salesChannelRevenue.Year);
-            Assert.AreEqual(45, productRevenue.Revenue);
-            Assert.AreEqual(2010, productRevenue.Year);
-            Assert.AreEqual(45, partyRevenue.Revenue);
-            Assert.AreEqual(2010, partyRevenue.Year);
-            Assert.AreEqual(45, partypPrductRevenue.Revenue);
-            Assert.AreEqual(2010, partypPrductRevenue.Year);
+            Assert.Equal(45, internalOrganisationRevenue.Revenue);
+            Assert.Equal(2010, internalOrganisationRevenue.Year);
+            Assert.Equal(45, storeRevenue.Revenue);
+            Assert.Equal(2010, storeRevenue.Year);
+            Assert.Equal(45, salesChannelRevenue.Revenue);
+            Assert.Equal(2010, salesChannelRevenue.Year);
+            Assert.Equal(45, productRevenue.Revenue);
+            Assert.Equal(2010, productRevenue.Year);
+            Assert.Equal(45, partyRevenue.Revenue);
+            Assert.Equal(2010, partyRevenue.Year);
+            Assert.Equal(45, partypPrductRevenue.Revenue);
+            Assert.Equal(2010, partypPrductRevenue.Year);
         }
     }
 }

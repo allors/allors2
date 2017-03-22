@@ -21,35 +21,35 @@
 
 namespace Allors.Domain
 {
-    using NUnit.Framework;
+    using Xunit;
 
-    [TestFixture]
+    
     public class CostCenterTests : DomainTest
     {
-        [Test]
+        [Fact]
         public void GivenCostCenter_WhenDeriving_ThenRequiredRelationsMustExist()
         {
             var builder = new CostCenterBuilder(this.DatabaseSession);
             builder.Build();
 
-            Assert.IsTrue(this.DatabaseSession.Derive().HasErrors);
+            Assert.True(this.DatabaseSession.Derive().HasErrors);
 
             this.DatabaseSession.Rollback();
 
             builder.WithName("CostCenter");
             builder.Build();
 
-            Assert.IsFalse(this.DatabaseSession.Derive().HasErrors);
+            Assert.False(this.DatabaseSession.Derive().HasErrors);
         }
 
-        [Test]
+        [Fact]
         public void GivenCostCenter_WhenDeriving_ThenPostBuildRelationsMustExist()
         {
             var costCenter = new CostCenterBuilder(this.DatabaseSession)
                 .WithName("CostCenter")
                 .Build();
 
-            Assert.IsTrue(costCenter.ExistUniqueId);
+            Assert.True(costCenter.ExistUniqueId);
         }
     }
 }

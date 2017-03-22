@@ -23,12 +23,12 @@ namespace Allors.Domain
 {
     using System;
     using Meta;
-    using NUnit.Framework;
+    using Xunit;
 
-    [TestFixture]
+    
     public class OwnCreditCardTests : DomainTest
     {
-        [Test]
+        [Fact]
         public void GivenOwnCreditCard_WhenDeriving_ThenCreditCardRelationMustExist()
         {
             var creditCard = new CreditCardBuilder(this.DatabaseSession)
@@ -44,17 +44,17 @@ namespace Allors.Domain
             var builder = new OwnCreditCardBuilder(this.DatabaseSession);
             builder.Build();
 
-            Assert.IsTrue(this.DatabaseSession.Derive().HasErrors);
+            Assert.True(this.DatabaseSession.Derive().HasErrors);
 
             this.DatabaseSession.Rollback();
 
             builder.WithCreditCard(creditCard);
             builder.Build();
 
-            Assert.IsFalse(this.DatabaseSession.Derive().HasErrors);
+            Assert.False(this.DatabaseSession.Derive().HasErrors);
         }
 
-        [Test]
+        [Fact]
         public void GivenOwnCreditCard_WhenBuild_ThenPostBuildRelationsMustExist()
         {
             var creditCard = new CreditCardBuilder(this.DatabaseSession)
@@ -71,10 +71,10 @@ namespace Allors.Domain
 
             this.DatabaseSession.Derive(true);
 
-            Assert.IsTrue(paymentMethod.IsActive);
+            Assert.True(paymentMethod.IsActive);
         }
 
-        [Test]
+        [Fact]
         public void GivenOwnCreditCardForInternalOrganisationThatDoesAccounting_WhenDeriving_ThenCreditorIsRequired()
         {
             var creditCard = new CreditCardBuilder(this.DatabaseSession)
@@ -95,14 +95,14 @@ namespace Allors.Domain
             internalOrganisation.AddPaymentMethod(paymentMethod);
             internalOrganisation.DoAccounting = false;
 
-            Assert.IsFalse(this.DatabaseSession.Derive().HasErrors);
+            Assert.False(this.DatabaseSession.Derive().HasErrors);
 
             internalOrganisation.DoAccounting = true;
 
-            Assert.IsTrue(this.DatabaseSession.Derive().HasErrors);
+            Assert.True(this.DatabaseSession.Derive().HasErrors);
         }
 
-        [Test]
+        [Fact]
         public void GivenOwnCreditCardForInternalOrganisationThatDoesAccounting_WhenDeriving_ThenExpiredCardIsBlocked()
         {
             var creditCard = new CreditCardBuilder(this.DatabaseSession)
@@ -121,16 +121,16 @@ namespace Allors.Domain
             internalOrganisation.AddPaymentMethod(paymentMethod);
 
             this.DatabaseSession.Derive(true);
-            Assert.IsTrue(paymentMethod.IsActive);
+            Assert.True(paymentMethod.IsActive);
 
             creditCard.ExpirationYear = DateTime.UtcNow.Year;
             creditCard.ExpirationMonth = DateTime.UtcNow.Month;
 
             this.DatabaseSession.Derive(true);
-            Assert.IsFalse(paymentMethod.IsActive);
+            Assert.False(paymentMethod.IsActive);
         }
 
-        [Test]
+        [Fact]
         public void GivenOwnCreditCard_WhenDeriving_ThenGeneralLedgerAccountAndJournalCannotExistBoth()
         {
             var supplier = new OrganisationBuilder(this.DatabaseSession)
@@ -179,18 +179,18 @@ namespace Allors.Domain
             internalOrganisation.AddPaymentMethod(paymentMethod);
             internalOrganisation.DoAccounting = true;
 
-            Assert.IsFalse(this.DatabaseSession.Derive().HasErrors);
+            Assert.False(this.DatabaseSession.Derive().HasErrors);
 
             paymentMethod.Journal = journal;
 
-            Assert.IsTrue(this.DatabaseSession.Derive().HasErrors);
+            Assert.True(this.DatabaseSession.Derive().HasErrors);
 
             paymentMethod.RemoveGeneralLedgerAccount();
 
-            Assert.IsFalse(this.DatabaseSession.Derive().HasErrors);
+            Assert.False(this.DatabaseSession.Derive().HasErrors);
         }
 
-        [Test]
+        [Fact]
         public void GivenOwnCreditCardForInternalOrganisationThatDoesAccounting_WhenDeriving_ThenEitherGeneralLedgerAccountOrJournalMustExist()
         {
             var supplier = new OrganisationBuilder(this.DatabaseSession)
@@ -238,16 +238,16 @@ namespace Allors.Domain
             internalOrganisation.AddPaymentMethod(paymentMethod);
             internalOrganisation.DoAccounting = true;
 
-            Assert.IsTrue(this.DatabaseSession.Derive().HasErrors);
+            Assert.True(this.DatabaseSession.Derive().HasErrors);
 
             paymentMethod.Journal = journal;
 
-            Assert.IsFalse(this.DatabaseSession.Derive().HasErrors);
+            Assert.False(this.DatabaseSession.Derive().HasErrors);
 
             paymentMethod.RemoveJournal();
             paymentMethod.GeneralLedgerAccount = internalOrganisationGlAccount;
 
-            Assert.IsFalse(this.DatabaseSession.Derive().HasErrors);
+            Assert.False(this.DatabaseSession.Derive().HasErrors);
         }
     }
 }

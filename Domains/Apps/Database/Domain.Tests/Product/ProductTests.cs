@@ -21,12 +21,12 @@
 
 namespace Allors.Domain
 {
-    using NUnit.Framework;
+    using Xunit;
 
-    [TestFixture]
+    
     public class ProductTests : DomainTest
     {
-        [Test]
+        [Fact]
         public void GivenDeliverableCoredService_WhenDeriving_ThenRequiredRelationsMustExist()
         {
             var vatRate21 = new VatRateBuilder(this.DatabaseSession).WithRate(21).Build();
@@ -36,24 +36,24 @@ namespace Allors.Domain
             var builder = new DeliverableBasedServiceBuilder(this.DatabaseSession);
             var deliverableBasedService = builder.Build();
 
-            Assert.IsTrue(this.DatabaseSession.Derive().HasErrors);
+            Assert.True(this.DatabaseSession.Derive().HasErrors);
 
             this.DatabaseSession.Rollback();
 
             builder.WithVatRate(vatRate21);
             deliverableBasedService = builder.Build();
 
-            Assert.IsTrue(this.DatabaseSession.Derive().HasErrors);
+            Assert.True(this.DatabaseSession.Derive().HasErrors);
 
             this.DatabaseSession.Rollback();
 
             builder.WithLocalisedName(new LocalisedTextBuilder(this.DatabaseSession).WithText("service").WithLocale(Singleton.Instance(this.DatabaseSession).DefaultLocale).Build());
             builder.Build();
 
-            Assert.IsFalse(this.DatabaseSession.Derive().HasErrors);
+            Assert.False(this.DatabaseSession.Derive().HasErrors);
         }
 
-        [Test]
+        [Fact]
         public void GivenDeliverableCoredServiceWithPrimaryProductCategoryWithoutProductCategory_WhenDeriving_ThenFirstProductCategoryIsCopiedFromPrimaryCategory()
         {
             var vatRate21 = new VatRateBuilder(this.DatabaseSession).WithRate(21).Build();
@@ -72,7 +72,7 @@ namespace Allors.Domain
             Assert.Contains(productCategory, deliverableBasedService.ProductCategories);
         }
 
-        [Test]
+        [Fact]
         public void GivenDeliverableCoredServiceWithoutPrimaryProductCategoryWithOneProductCategory_WhenDeriving_ThenPrimaryProductCategoryIsCopiedFromCategory()
         {
             var vatRate21 = new VatRateBuilder(this.DatabaseSession).WithRate(21).Build();
@@ -88,10 +88,10 @@ namespace Allors.Domain
 
             this.DatabaseSession.Derive(true); 
 
-            Assert.AreEqual(productCategory, deliverableBasedService.PrimaryProductCategory);
+            Assert.Equal(productCategory, deliverableBasedService.PrimaryProductCategory);
         }
 
-        [Test]
+        [Fact]
         public void GivenGood_WhenDeriving_ThenRequiredRelationsMustExist()
         {
             var vatRate21 = new VatRateBuilder(this.DatabaseSession).WithRate(21).Build();
@@ -104,47 +104,47 @@ namespace Allors.Domain
             var builder = new GoodBuilder(this.DatabaseSession);
             var good = builder.Build();
 
-            Assert.IsTrue(this.DatabaseSession.Derive().HasErrors);
+            Assert.True(this.DatabaseSession.Derive().HasErrors);
 
             this.DatabaseSession.Rollback();
             
             builder.WithLocalisedName(localdesc);
             good = builder.Build();
 
-            Assert.IsTrue(this.DatabaseSession.Derive().HasErrors);
+            Assert.True(this.DatabaseSession.Derive().HasErrors);
 
             this.DatabaseSession.Rollback();
 
             builder.WithUnitOfMeasure(new UnitsOfMeasure(this.DatabaseSession).Piece);
             good = builder.Build();
 
-            Assert.IsTrue(this.DatabaseSession.Derive().HasErrors);
+            Assert.True(this.DatabaseSession.Derive().HasErrors);
 
             this.DatabaseSession.Rollback();
 
             builder.WithVatRate(vatRate21);
             good = builder.Build();
 
-            Assert.IsTrue(this.DatabaseSession.Derive().HasErrors);
+            Assert.True(this.DatabaseSession.Derive().HasErrors);
 
             this.DatabaseSession.Rollback();
 
             builder.WithFinishedGood(finishedGood);
             good = builder.Build();
 
-            Assert.IsFalse(this.DatabaseSession.Derive().HasErrors);
+            Assert.False(this.DatabaseSession.Derive().HasErrors);
 
             builder.WithInventoryItemKind(new InventoryItemKinds(this.DatabaseSession).NonSerialized);
             good = builder.Build();
 
-            Assert.IsTrue(this.DatabaseSession.Derive().HasErrors);
+            Assert.True(this.DatabaseSession.Derive().HasErrors);
 
             good.RemoveFinishedGood();
 
-            Assert.IsFalse(this.DatabaseSession.Derive().HasErrors);
+            Assert.False(this.DatabaseSession.Derive().HasErrors);
         }
 
-        [Test]
+        [Fact]
         public void GivenGoodWithPrimaryProductCategoryWithoutProductCategory_WhenDeriving_ThenFirstProductCategoryIsCopiedFromPrimaryCategory()
         {
             var vatRate21 = new VatRateBuilder(this.DatabaseSession).WithRate(21).Build();
@@ -166,7 +166,7 @@ namespace Allors.Domain
             Assert.Contains(productCategory, good.ProductCategories);
         }
 
-        [Test]
+        [Fact]
         public void GivenGoodWithoutPrimaryProductCategoryWithOneProductCategory_WhenDeriving_ThenPrimaryProductCategoryIsCopiedFromCategory()
         {
             var vatRate21 = new VatRateBuilder(this.DatabaseSession).WithRate(21).Build();
@@ -185,10 +185,10 @@ namespace Allors.Domain
 
             this.DatabaseSession.Derive(true); 
 
-            Assert.AreEqual(productCategory, good.PrimaryProductCategory);
+            Assert.Equal(productCategory, good.PrimaryProductCategory);
         }
 
-        [Test]
+        [Fact]
         public void GivenGoodWithProductCategory_WhenDeriving_ThenProductCategoriesExpandedIsSet()
         {
             var productCategory1 = new ProductCategoryBuilder(this.DatabaseSession)
@@ -228,7 +228,7 @@ namespace Allors.Domain
 
             this.DatabaseSession.Derive(true); 
 
-            Assert.AreEqual(4, good.ProductCategoriesExpanded.Count);
+            Assert.Equal(4, good.ProductCategoriesExpanded.Count);
             Assert.Contains(productCategory111, good.ProductCategoriesExpanded);
             Assert.Contains(productCategory11, good.ProductCategoriesExpanded);
             Assert.Contains(productCategory1, good.ProductCategoriesExpanded);
@@ -238,7 +238,7 @@ namespace Allors.Domain
 
             this.DatabaseSession.Derive(true);
 
-            Assert.AreEqual(6, good.ProductCategoriesExpanded.Count);
+            Assert.Equal(6, good.ProductCategoriesExpanded.Count);
             Assert.Contains(productCategory111, good.ProductCategoriesExpanded);
             Assert.Contains(productCategory121, good.ProductCategoriesExpanded);
             Assert.Contains(productCategory11, good.ProductCategoriesExpanded);
@@ -247,7 +247,7 @@ namespace Allors.Domain
             Assert.Contains(productCategory2, good.ProductCategoriesExpanded);
         }
 
-        [Test]
+        [Fact]
         public void GivenGood_WhenProductCategoryParentsAreInserted_ThenProductCategoriesExpandedAreRecalculated()
         {
             var productCategory1 = new ProductCategoryBuilder(this.DatabaseSession)
@@ -287,7 +287,7 @@ namespace Allors.Domain
 
             this.DatabaseSession.Derive(true); 
 
-            Assert.AreEqual(4, good.ProductCategoriesExpanded.Count);
+            Assert.Equal(4, good.ProductCategoriesExpanded.Count);
             Assert.Contains(productCategory111, good.ProductCategoriesExpanded);
             Assert.Contains(productCategory11, good.ProductCategoriesExpanded);
             Assert.Contains(productCategory1, good.ProductCategoriesExpanded);
@@ -300,7 +300,7 @@ namespace Allors.Domain
 
             this.DatabaseSession.Derive(true);
 
-            Assert.AreEqual(5, good.ProductCategoriesExpanded.Count);
+            Assert.Equal(5, good.ProductCategoriesExpanded.Count);
             Assert.Contains(productCategory111, good.ProductCategoriesExpanded);
             Assert.Contains(productCategory11, good.ProductCategoriesExpanded);
             Assert.Contains(productCategory1, good.ProductCategoriesExpanded);
@@ -319,7 +319,7 @@ namespace Allors.Domain
 
             this.DatabaseSession.Derive(true);
 
-            Assert.AreEqual(8, good.ProductCategoriesExpanded.Count);
+            Assert.Equal(8, good.ProductCategoriesExpanded.Count);
             Assert.Contains(productCategory111, good.ProductCategoriesExpanded);
             Assert.Contains(productCategory121, good.ProductCategoriesExpanded);
             Assert.Contains(productCategory11, good.ProductCategoriesExpanded);
@@ -330,7 +330,7 @@ namespace Allors.Domain
             Assert.Contains(productCategory3, good.ProductCategoriesExpanded);
         }
 
-        [Test]
+        [Fact]
         public void GivenGood_WhenProductCategoryParentsAreRemoved_ThenProductCategoriesExpandedAreRecalculated()
         {
             var productCategory1 = new ProductCategoryBuilder(this.DatabaseSession)
@@ -366,7 +366,7 @@ namespace Allors.Domain
 
             this.DatabaseSession.Derive(true); 
 
-            Assert.AreEqual(4, good.ProductCategoriesExpanded.Count);
+            Assert.Equal(4, good.ProductCategoriesExpanded.Count);
             Assert.Contains(productCategory111, good.ProductCategoriesExpanded);
             Assert.Contains(productCategory11, good.ProductCategoriesExpanded);
             Assert.Contains(productCategory1, good.ProductCategoriesExpanded);
@@ -376,13 +376,13 @@ namespace Allors.Domain
 
             this.DatabaseSession.Derive(true);
 
-            Assert.AreEqual(3, good.ProductCategoriesExpanded.Count);
+            Assert.Equal(3, good.ProductCategoriesExpanded.Count);
             Assert.Contains(productCategory111, good.ProductCategoriesExpanded);
             Assert.Contains(productCategory11, good.ProductCategoriesExpanded);
             Assert.Contains(productCategory1, good.ProductCategoriesExpanded);
         }
 
-        [Test]
+        [Fact]
         public void GivenTimeAndMaterialsService_WhenDeriving_ThenRequiredRelationsMustExist()
         {
             var vatRate21 = new VatRateBuilder(this.DatabaseSession).WithRate(21).Build();
@@ -394,24 +394,24 @@ namespace Allors.Domain
             var builder = new TimeAndMaterialsServiceBuilder(this.DatabaseSession);
             builder.Build();
 
-            Assert.IsTrue(this.DatabaseSession.Derive().HasErrors);
+            Assert.True(this.DatabaseSession.Derive().HasErrors);
 
             this.DatabaseSession.Rollback();
 
             builder.WithLocalisedName(localdesc);
             builder.Build();
 
-            Assert.IsTrue(this.DatabaseSession.Derive().HasErrors);
+            Assert.True(this.DatabaseSession.Derive().HasErrors);
 
             this.DatabaseSession.Rollback();
 
             builder.WithVatRate(vatRate21);
             builder.Build();
 
-            Assert.IsFalse(this.DatabaseSession.Derive().HasErrors);
+            Assert.False(this.DatabaseSession.Derive().HasErrors);
         }
 
-        [Test]
+        [Fact]
         public void GivenTimeAndMaterialsServiceWithPrimaryProductCategoryWithoutProductCategory_WhenDeriving_ThenFirstProductCategoryIsCopiedFromPrimaryCategory()
         {
             var vatRate21 = new VatRateBuilder(this.DatabaseSession).WithRate(21).Build();
@@ -430,7 +430,7 @@ namespace Allors.Domain
             Assert.Contains(productCategory, timeAndMaterialsService.ProductCategories);
         }
 
-        [Test]
+        [Fact]
         public void GivenTimeAndMaterialsServiceWithoutPrimaryProductCategoryWithOneProductCategory_WhenDeriving_ThenPrimaryProductCategoryIsCopiedFromCategory()
         {
             var vatRate21 = new VatRateBuilder(this.DatabaseSession).WithRate(21).Build();
@@ -446,7 +446,7 @@ namespace Allors.Domain
 
             this.DatabaseSession.Derive(true); 
 
-            Assert.AreEqual(productCategory, timeAndMaterialsService.PrimaryProductCategory);
+            Assert.Equal(productCategory, timeAndMaterialsService.PrimaryProductCategory);
         }
     }
 }

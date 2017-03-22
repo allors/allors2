@@ -21,12 +21,12 @@
 
 namespace Allors.Domain
 {
-    using NUnit.Framework;
+    using Xunit;
 
-    [TestFixture]
+    
     public class InventoryItemTests : DomainTest
     {
-        [Test]
+        [Fact]
         public void GivenInventoryItem_WhenDeriving_ThenProductCategoriesAreDerived()
         {
             var level1 = new ProductCategoryBuilder(this.DatabaseSession)
@@ -61,7 +61,7 @@ namespace Allors.Domain
 
             this.DatabaseSession.Derive(true);
 
-            Assert.AreEqual(4, goodInventory.DerivedProductCategories.Count);
+            Assert.Equal(4, goodInventory.DerivedProductCategories.Count);
             Assert.Contains(level3, goodInventory.DerivedProductCategories);
             Assert.Contains(level2, goodInventory.DerivedProductCategories);
             Assert.Contains(level1, goodInventory.DerivedProductCategories);

@@ -21,17 +21,17 @@
 
 namespace Allors.Domain
 {
-    using NUnit.Framework;
+    using Xunit;
 
-    [TestFixture]
+    
     public class ShipmentPackageTests : DomainTest
     {
-        [Test]
+        [Fact]
         public void GivenShipmentPackageBuilder_WhenBuild_ThenPostBuildRelationsMustExist()
         {
             var package = new ShipmentPackageBuilder(this.DatabaseSession).Build();
 
-            Assert.IsNotNull(package.CreationDate);
+            Assert.NotNull(package.CreationDate);
         }
     }
 }

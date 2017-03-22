@@ -21,12 +21,12 @@
 
 namespace Allors.Domain
 {
-    using NUnit.Framework;
+    using Xunit;
 
-    [TestFixture]
+    
     public class PartyContactMechanismTests : DomainTest
     {
-        [Test]
+        [Fact]
         public void GivenPartyContactMechanism_WhenDeriving_ThenRequiredRelationsMustExist()
         {
             var contactMechanism = new TelecommunicationsNumberBuilder(this.DatabaseSession).WithAreaCode("0495").WithContactNumber("493499").WithDescription("cellphone").Build();
@@ -36,14 +36,14 @@ namespace Allors.Domain
             var builder = new PartyContactMechanismBuilder(this.DatabaseSession);
             builder.Build();
 
-            Assert.IsTrue(this.DatabaseSession.Derive().HasErrors);
+            Assert.True(this.DatabaseSession.Derive().HasErrors);
 
             this.DatabaseSession.Rollback();
             
             builder.WithContactMechanism(contactMechanism);
             builder.Build();
 
-            Assert.IsFalse(this.DatabaseSession.Derive().HasErrors);
+            Assert.False(this.DatabaseSession.Derive().HasErrors);
         }
     }
 }

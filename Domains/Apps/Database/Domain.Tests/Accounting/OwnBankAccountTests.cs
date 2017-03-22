@@ -23,12 +23,12 @@ namespace Allors.Domain
 {
     using System;
     using Meta;
-    using NUnit.Framework;
+    using Xunit;
 
-    [TestFixture]
+    
     public class OwnBankAccountTests : DomainTest
     {
-        [Test]
+        [Fact]
         public void GivenOwnBankAccount_WhenDeriving_ThenBankAccountRelationMustExist()
         {
             var netherlands = new Countries(this.DatabaseSession).CountryByIsoCode["NL"];
@@ -42,17 +42,17 @@ namespace Allors.Domain
             var builder = new OwnBankAccountBuilder(this.DatabaseSession);
             builder.Build();
 
-            Assert.IsTrue(this.DatabaseSession.Derive().HasErrors);
+            Assert.True(this.DatabaseSession.Derive().HasErrors);
 
             this.DatabaseSession.Rollback();
 
             builder.WithBankAccount(bankAccount);
             builder.Build();
 
-            Assert.IsFalse(this.DatabaseSession.Derive().HasErrors);
+            Assert.False(this.DatabaseSession.Derive().HasErrors);
         }
 
-        [Test]
+        [Fact]
         public void GivenOwnBankAccount_WhenBuild_ThenPostBuildRelationsMustExist()
         {
             var netherlands = new Countries(this.DatabaseSession).CountryByIsoCode["NL"];
@@ -68,11 +68,11 @@ namespace Allors.Domain
 
             this.DatabaseSession.Derive(true);
 
-            Assert.IsTrue(paymentMethod.IsActive);
-            Assert.IsTrue(paymentMethod.ExistDescription);
+            Assert.True(paymentMethod.IsActive);
+            Assert.True(paymentMethod.ExistDescription);
         }
 
-        [Test]
+        [Fact]
         public void GivenOwnBankAccount_WhenDeriving_ThenBankAccountMustBeValidated()
         {
             var netherlands = new Countries(this.DatabaseSession).CountryByIsoCode["NL"];
@@ -85,7 +85,7 @@ namespace Allors.Domain
                 .WithDescription("own account")
                 .WithBankAccount(bankAccount).Build();
 
-            Assert.IsTrue(this.DatabaseSession.Derive().HasErrors);
+            Assert.True(this.DatabaseSession.Derive().HasErrors);
 
             this.DatabaseSession.Rollback();
 
@@ -98,22 +98,22 @@ namespace Allors.Domain
                 .WithDescription("own account")
                 .WithBankAccount(bankAccount).Build();
 
-            Assert.IsFalse(this.DatabaseSession.Derive().HasErrors);
+            Assert.False(this.DatabaseSession.Derive().HasErrors);
         }
 
-        [Test]
+        [Fact]
         public void GivenOwnBankAccountForInternalOrganisationThatDoesAccounting_WhenDeriving_ThenCreditorIsRequired()
         {
             Singleton.Instance(this.DatabaseSession).DefaultInternalOrganisation.DoAccounting = false;
 
-            Assert.IsFalse(this.DatabaseSession.Derive().HasErrors);
+            Assert.False(this.DatabaseSession.Derive().HasErrors);
 
             Singleton.Instance(this.DatabaseSession).DefaultInternalOrganisation.DoAccounting = true;
 
-            Assert.IsTrue(this.DatabaseSession.Derive().HasErrors);
+            Assert.True(this.DatabaseSession.Derive().HasErrors);
         }
 
-        [Test]
+        [Fact]
         public void GivenOwnBankAccount_WhenDeriving_ThenGeneralLedgerAccountAndJournalCannotExistBoth()
         {
             var supplier = new OrganisationBuilder(this.DatabaseSession)
@@ -161,18 +161,18 @@ namespace Allors.Domain
             internalOrganisation.AddPaymentMethod(paymentMethod);
             internalOrganisation.DoAccounting = true;
 
-            Assert.IsFalse(this.DatabaseSession.Derive().HasErrors);
+            Assert.False(this.DatabaseSession.Derive().HasErrors);
 
             paymentMethod.Journal = journal;
 
-            Assert.IsTrue(this.DatabaseSession.Derive().HasErrors);
+            Assert.True(this.DatabaseSession.Derive().HasErrors);
 
             paymentMethod.RemoveGeneralLedgerAccount();
 
-            Assert.IsFalse(this.DatabaseSession.Derive().HasErrors);
+            Assert.False(this.DatabaseSession.Derive().HasErrors);
         }
 
-        [Test]
+        [Fact]
         public void GivenOwnBankAccountForInternalOrganisationThatDoesAccounting_WhenDeriving_ThenEitherGeneralLedgerAccountOrJournalMustExist()
         {
             var supplier = new OrganisationBuilder(this.DatabaseSession)
@@ -219,16 +219,16 @@ namespace Allors.Domain
             internalOrganisation.AddPaymentMethod(paymentMethod);
             internalOrganisation.DoAccounting = true;
 
-            Assert.IsTrue(this.DatabaseSession.Derive().HasErrors);
+            Assert.True(this.DatabaseSession.Derive().HasErrors);
 
             paymentMethod.Journal = journal;
 
-            Assert.IsFalse(this.DatabaseSession.Derive().HasErrors);
+            Assert.False(this.DatabaseSession.Derive().HasErrors);
 
             paymentMethod.RemoveJournal();
             paymentMethod.GeneralLedgerAccount = internalOrganisationGlAccount;
 
-            Assert.IsFalse(this.DatabaseSession.Derive().HasErrors);
+            Assert.False(this.DatabaseSession.Derive().HasErrors);
         }
     }
 }

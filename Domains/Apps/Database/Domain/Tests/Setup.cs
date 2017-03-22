@@ -18,12 +18,8 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-using Allors.Meta;
-
 namespace Allors
 {
-    using System;
-
     using Allors.Domain;
 
     public partial class Setup

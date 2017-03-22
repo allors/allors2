@@ -26,39 +26,39 @@ namespace Allors.Domain
 {
     using System;
     using Meta;
-    using NUnit.Framework;
+    using Xunit;
 
-    [TestFixture]
+    
     public class PickListTests : DomainTest
     {
-        [Test]
+        [Fact]
         public void GivenPickListBuilder_WhenBuild_ThenPostBuildRelationsMustExist()
         {
             var pickList = new PickListBuilder(this.DatabaseSession).Build();
 
             this.DatabaseSession.Derive(true);
 
-            Assert.AreEqual(new PickListObjectStates(this.DatabaseSession).Created, pickList.CurrentObjectState);
-            Assert.AreEqual(pickList.CurrentPickListStatus.StartDateTime.Date, pickList.CreationDate.Date);
+            Assert.Equal(new PickListObjectStates(this.DatabaseSession).Created, pickList.CurrentObjectState);
+            Assert.Equal(pickList.CurrentPickListStatus.StartDateTime.Date, pickList.CreationDate.Date);
         }
 
-        [Test]
+        [Fact]
         public void GivenPickList_WhenObjectStateIsCreated_ThenCheckTransitions()
         {
-            Thread.CurrentPrincipal = new GenericPrincipal(new GenericIdentity("orderProcessor", "Forms"), new string[0]);
+            this.SetIdentity("orderProcessor");
 
             var pickList = new PickListBuilder(this.DatabaseSession).Build();
 
             this.DatabaseSession.Derive(true);
 
             var acl = new AccessControlList(pickList, new Users(this.DatabaseSession).GetCurrentUser());
-            Assert.IsTrue(acl.CanExecute(M.PickList.Cancel));
+            Assert.True(acl.CanExecute(M.PickList.Cancel));
         }
 
-        [Test]
+        [Fact]
         public void GivenPickList_WhenObjectStateIsCancelled_ThenCheckTransitions()
         {
-            Thread.CurrentPrincipal = new GenericPrincipal(new GenericIdentity("orderProcessor", "Forms"), new string[0]);
+            this.SetIdentity("orderProcessor");
 
             var pickList = new PickListBuilder(this.DatabaseSession).Build();
 
@@ -69,14 +69,14 @@ namespace Allors.Domain
             this.DatabaseSession.Derive(true);
 
             var acl = new AccessControlList(pickList, new Users(this.DatabaseSession).GetCurrentUser());
-            Assert.IsFalse(acl.CanExecute(M.PickList.Cancel));
-            Assert.IsFalse(acl.CanExecute(M.PickList.SetPicked));
+            Assert.False(acl.CanExecute(M.PickList.Cancel));
+            Assert.False(acl.CanExecute(M.PickList.SetPicked));
         }
 
-        [Test]
+        [Fact]
         public void GivenPickList_WhenObjectStateIsPicked_ThenCheckTransitions()
         {
-            Thread.CurrentPrincipal = new GenericPrincipal(new GenericIdentity("orderProcessor", "Forms"), new string[0]);
+            this.SetIdentity("orderProcessor");
 
             var pickList = new PickListBuilder(this.DatabaseSession).Build();
 
@@ -87,11 +87,11 @@ namespace Allors.Domain
             this.DatabaseSession.Derive(true);
 
             var acl = new AccessControlList(pickList, new Users(this.DatabaseSession).GetCurrentUser());
-            Assert.IsFalse(acl.CanExecute(M.PickList.Cancel));
-            Assert.IsFalse(acl.CanExecute(M.PickList.SetPicked));
+            Assert.False(acl.CanExecute(M.PickList.Cancel));
+            Assert.False(acl.CanExecute(M.PickList.SetPicked));
         }
 
-        [Test]
+        [Fact]
         public void GivenPickList_WhenPicked_ThenInventoryIsAdjustedAndOrderItemsQuantityPickedIsSet()
         {
             var mechelen = new CityBuilder(this.DatabaseSession).WithName("Mechelen").Build();
@@ -231,24 +231,24 @@ namespace Allors.Domain
             this.DatabaseSession.Derive(true);
 
             //// all orderitems have same physical finished good, so there is only one picklist item.
-            Assert.AreEqual(new CustomerShipmentObjectStates(this.DatabaseSession).Picked, shipment.CurrentShipmentStatus.CustomerShipmentObjectState);
-            Assert.AreEqual(new PickListObjectStates(this.DatabaseSession).Picked, pickList.CurrentPickListStatus.PickListObjectState);
-            Assert.AreEqual(1, item1.QuantityPicked);
-            Assert.AreEqual(0, item1.QuantityReserved);
-            Assert.AreEqual(0, item1.QuantityRequestsShipping);
-            Assert.AreEqual(2, item4.QuantityPicked);
-            Assert.AreEqual(0, item4.QuantityReserved);
-            Assert.AreEqual(0, item4.QuantityRequestsShipping);
-            Assert.AreEqual(4, item5.QuantityPicked);
-            Assert.AreEqual(1, item5.QuantityReserved);
-            Assert.AreEqual(0, item5.QuantityRequestsShipping);
-            Assert.AreEqual(97, good1Inventory.QuantityOnHand);
-            Assert.AreEqual(0, good1Inventory.QuantityCommittedOut);
-            Assert.AreEqual(96, good2Inventory.QuantityOnHand);
-            Assert.AreEqual(1, good2Inventory.QuantityCommittedOut);
+            Assert.Equal(new CustomerShipmentObjectStates(this.DatabaseSession).Picked, shipment.CurrentShipmentStatus.CustomerShipmentObjectState);
+            Assert.Equal(new PickListObjectStates(this.DatabaseSession).Picked, pickList.CurrentPickListStatus.PickListObjectState);
+            Assert.Equal(1, item1.QuantityPicked);
+            Assert.Equal(0, item1.QuantityReserved);
+            Assert.Equal(0, item1.QuantityRequestsShipping);
+            Assert.Equal(2, item4.QuantityPicked);
+            Assert.Equal(0, item4.QuantityReserved);
+            Assert.Equal(0, item4.QuantityRequestsShipping);
+            Assert.Equal(4, item5.QuantityPicked);
+            Assert.Equal(1, item5.QuantityReserved);
+            Assert.Equal(0, item5.QuantityRequestsShipping);
+            Assert.Equal(97, good1Inventory.QuantityOnHand);
+            Assert.Equal(0, good1Inventory.QuantityCommittedOut);
+            Assert.Equal(96, good2Inventory.QuantityOnHand);
+            Assert.Equal(1, good2Inventory.QuantityCommittedOut);
         }
 
-        [Test]
+        [Fact]
         public void GivenPickList_WhenActualQuantityPickedIsLess_ThenShipmentItemQuantityIsAdjusted()
         {
             var mechelen = new CityBuilder(this.DatabaseSession).WithName("Mechelen").Build();
@@ -362,8 +362,8 @@ namespace Allors.Domain
             var itemIssuance = adjustedPicklistItem.ItemIssuancesWherePickListItem[0];
             var shipmentItem = adjustedPicklistItem.ItemIssuancesWherePickListItem[0].ShipmentItem;
 
-            Assert.AreEqual(5, itemIssuance.Quantity);
-            Assert.AreEqual(5, shipmentItem.Quantity);
+            Assert.Equal(5, itemIssuance.Quantity);
+            Assert.Equal(5, shipmentItem.Quantity);
 
             adjustedPicklistItem.ActualQuantity = 4;
 
@@ -371,11 +371,11 @@ namespace Allors.Domain
 
             this.DatabaseSession.Derive(true);
 
-            Assert.AreEqual(4, itemIssuance.Quantity);
-            Assert.AreEqual(4, shipmentItem.Quantity);
+            Assert.Equal(4, itemIssuance.Quantity);
+            Assert.Equal(4, shipmentItem.Quantity);
         }
 
-        [Test]
+        [Fact]
         public void GivenSalesOrder_WhenShipmentIsCreated_ThenOrdertemsAreAddedToPickList()
         {
             var mechelen = new CityBuilder(this.DatabaseSession).WithName("Mechelen").Build();
@@ -476,18 +476,18 @@ namespace Allors.Domain
 
             var pickList = good1.InventoryItemsWhereGood[0].PickListItemsWhereInventoryItem[0].PickListWherePickListItem;
 
-            Assert.AreEqual(2, pickList.PickListItems.Count);
+            Assert.Equal(2, pickList.PickListItems.Count);
 
             var extent1 = pickList.PickListItems;
             extent1.Filter.AddEquals(M.PickListItem.InventoryItem, good1Inventory);
-            Assert.AreEqual(3, extent1.First.RequestedQuantity);
+            Assert.Equal(3, extent1.First.RequestedQuantity);
 
             var extent2 = pickList.PickListItems;
             extent2.Filter.AddEquals(M.PickListItem.InventoryItem, good2Inventory);
-            Assert.AreEqual(5, extent2.First.RequestedQuantity);
+            Assert.Equal(5, extent2.First.RequestedQuantity);
         }
 
-        [Test]
+        [Fact]
         public void GivenMultipleOrders_WhenCombinedPickListIsPicked_ThenSingleShipmentIsPickedState()
         {
             var mechelen = new CityBuilder(this.DatabaseSession).WithName("Mechelen").Build();
@@ -608,10 +608,10 @@ namespace Allors.Domain
 
             this.DatabaseSession.Derive(true);
 
-            Assert.AreEqual(1, customer.ShipmentsWhereBillToParty.Count);
+            Assert.Equal(1, customer.ShipmentsWhereBillToParty.Count);
 
             var customerShipment = customer.ShipmentsWhereBillToParty.First;
-            Assert.AreEqual(new CustomerShipmentObjectStates(this.DatabaseSession).Picked, customerShipment.CurrentObjectState);
+            Assert.Equal(new CustomerShipmentObjectStates(this.DatabaseSession).Picked, customerShipment.CurrentObjectState);
         }
     }
 }

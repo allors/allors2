@@ -21,144 +21,144 @@
 
 namespace Allors.Domain
 {
-    using NUnit.Framework;
+    using Xunit;
 
-    [TestFixture]
+    
     public class RequirementTests : DomainTest
     {
-        [Test]
+        [Fact]
         public void GivenCustomerRequirement_WhenBuild_ThenLastObjectStateEqualsCurrencObjectState()
         {
             var requirement = new CustomerRequirementBuilder(this.DatabaseSession).WithDescription("CustomerRequirement").Build();
 
             this.DatabaseSession.Derive(true);
 
-            Assert.AreEqual(new RequirementObjectStates(this.DatabaseSession).Active, requirement.CurrentObjectState);
-            Assert.AreEqual(requirement.LastObjectState, requirement.CurrentObjectState);
+            Assert.Equal(new RequirementObjectStates(this.DatabaseSession).Active, requirement.CurrentObjectState);
+            Assert.Equal(requirement.LastObjectState, requirement.CurrentObjectState);
         }
 
-        [Test]
+        [Fact]
         public void GivenCustomerRequirement_WhenBuild_ThenPreviousObjectStateIsNull()
         {
             var requirement = new CustomerRequirementBuilder(this.DatabaseSession).WithDescription("CustomerRequirement").Build();
 
             this.DatabaseSession.Derive(true);
 
-            Assert.IsNull(requirement.PreviousObjectState);
+            Assert.Null(requirement.PreviousObjectState);
         }
 
-        [Test]
+        [Fact]
         public void GivenCustomerRequirement_WhenConfirmed_ThenCurrentRequirementStatusMustBeDerived()
         {
             var requirement = new CustomerRequirementBuilder(this.DatabaseSession).WithDescription("CustomerRequirement").Build();
 
             this.DatabaseSession.Derive(true);
 
-            Assert.AreEqual(1, requirement.RequirementStatuses.Count);
-            Assert.AreEqual(new RequirementObjectStates(this.DatabaseSession).Active, requirement.CurrentRequirementStatus.RequirementObjectState);
+            Assert.Equal(1, requirement.RequirementStatuses.Count);
+            Assert.Equal(new RequirementObjectStates(this.DatabaseSession).Active, requirement.CurrentRequirementStatus.RequirementObjectState);
 
             requirement.Close();
 
             this.DatabaseSession.Derive(true);
 
-            Assert.AreEqual(2, requirement.RequirementStatuses.Count);
-            Assert.AreEqual(new RequirementObjectStates(this.DatabaseSession).Closed, requirement.CurrentRequirementStatus.RequirementObjectState);
+            Assert.Equal(2, requirement.RequirementStatuses.Count);
+            Assert.Equal(new RequirementObjectStates(this.DatabaseSession).Closed, requirement.CurrentRequirementStatus.RequirementObjectState);
         }
 
-        [Test]
+        [Fact]
         public void GivenCustomerRequirement_WhenDeriving_ThenDescriptionIsRequired()
         {
             var builder = new CustomerRequirementBuilder(this.DatabaseSession);
             var customerRequirement = builder.Build();
 
-            Assert.IsTrue(this.DatabaseSession.Derive().HasErrors);
+            Assert.True(this.DatabaseSession.Derive().HasErrors);
 
             this.DatabaseSession.Rollback();
 
             builder.WithDescription("CustomerRequirement");
             builder.Build();
 
-            Assert.IsFalse(this.DatabaseSession.Derive().HasErrors);
+            Assert.False(this.DatabaseSession.Derive().HasErrors);
         }
 
-        [Test]
+        [Fact]
         public void GivenInternalRequirement_WhenDeriving_ThenDescriptionIsRequired()
         {
             var builder = new InternalRequirementBuilder(this.DatabaseSession);
             var internalRequirement = builder.Build();
 
-            Assert.IsTrue(this.DatabaseSession.Derive().HasErrors);
+            Assert.True(this.DatabaseSession.Derive().HasErrors);
 
             this.DatabaseSession.Rollback();
 
             builder.WithDescription("InternalRequirement");
             builder.Build();
 
-            Assert.IsFalse(this.DatabaseSession.Derive().HasErrors);
+            Assert.False(this.DatabaseSession.Derive().HasErrors);
         }
 
-        [Test]
+        [Fact]
         public void GivenProductRequirement_WhenDeriving_ThenDescriptionIsRequired()
         {
             var builder = new ProductRequirementBuilder(this.DatabaseSession);
             var productRequirement = builder.Build();
 
-            Assert.IsTrue(this.DatabaseSession.Derive().HasErrors);
+            Assert.True(this.DatabaseSession.Derive().HasErrors);
 
             this.DatabaseSession.Rollback();
 
             builder.WithDescription("ProductRequirement");
             builder.Build();
 
-            Assert.IsFalse(this.DatabaseSession.Derive().HasErrors);
+            Assert.False(this.DatabaseSession.Derive().HasErrors);
         }
 
-        [Test]
+        [Fact]
         public void GivenProjectRequirement_WhenDeriving_ThenDescriptionIsRequired()
         {
             var builder = new ProjectRequirementBuilder(this.DatabaseSession);
             var projectRequirement = builder.Build();
 
-            Assert.IsTrue(this.DatabaseSession.Derive().HasErrors);
+            Assert.True(this.DatabaseSession.Derive().HasErrors);
 
             this.DatabaseSession.Rollback();
 
             builder.WithDescription("ProjectRequirement");
             builder.Build();
 
-            Assert.IsFalse(this.DatabaseSession.Derive().HasErrors);
+            Assert.False(this.DatabaseSession.Derive().HasErrors);
         }
 
-        [Test]
+        [Fact]
         public void GivenResourceRequirement_WhenDeriving_ThenDescriptionIsRequired()
         {
             var builder = new ResourceRequirementBuilder(this.DatabaseSession);
             var resourceRequirement = builder.Build();
 
-            Assert.IsTrue(this.DatabaseSession.Derive().HasErrors);
+            Assert.True(this.DatabaseSession.Derive().HasErrors);
 
             this.DatabaseSession.Rollback();
 
             builder.WithDescription("ResourceRequirement");
             builder.Build();
 
-            Assert.IsFalse(this.DatabaseSession.Derive().HasErrors);
+            Assert.False(this.DatabaseSession.Derive().HasErrors);
         }
 
-        [Test]
+        [Fact]
         public void GivenWorkRequirement_WhenDeriving_ThenDescriptionIsRequired()
         {
             var builder = new WorkRequirementBuilder(this.DatabaseSession);
             var workRequirement = builder.Build();
 
-            Assert.IsTrue(this.DatabaseSession.Derive().HasErrors);
+            Assert.True(this.DatabaseSession.Derive().HasErrors);
 
             this.DatabaseSession.Rollback();
 
             builder.WithDescription("WorkRequirement");
             builder.Build();
 
-            Assert.IsFalse(this.DatabaseSession.Derive().HasErrors);
+            Assert.False(this.DatabaseSession.Derive().HasErrors);
         }
     }
 }

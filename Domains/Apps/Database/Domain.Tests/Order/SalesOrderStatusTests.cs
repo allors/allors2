@@ -24,25 +24,25 @@ namespace Allors.Domain
     
 
     
-    using NUnit.Framework;
+    using Xunit;
 
-    [TestFixture]
+    
     public class SalesOrderStatusTests : DomainTest
     {
-        [Test]
+        [Fact]
         public void GivenOrderStatusWhenValidatingThenRequiredRelationsMustExist()
         {
             var builder = new SalesOrderStatusBuilder(this.DatabaseSession);
             var orderStatus = builder.Build();
 
-            Assert.IsTrue(this.DatabaseSession.Derive().HasErrors);
+            Assert.True(this.DatabaseSession.Derive().HasErrors);
 
             this.DatabaseSession.Rollback();
 
             builder.WithSalesOrderObjectState(new SalesOrderObjectStates(this.DatabaseSession).Provisional);
             orderStatus = builder.Build();
 
-            Assert.IsFalse(this.DatabaseSession.Derive().HasErrors);
+            Assert.False(this.DatabaseSession.Derive().HasErrors);
         }
     }
 }

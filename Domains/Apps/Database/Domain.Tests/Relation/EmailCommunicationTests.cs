@@ -23,12 +23,12 @@ namespace Allors.Domain
 {
     using Allors.Meta;
 
-    using NUnit.Framework;
+    using Xunit;
 
-    [TestFixture]
+    
     public class EmailCommunicationTests : DomainTest
     {
-        [Test]
+        [Fact]
         public void GivenEmailCommunicationIsBuild_WhenDeriving_ThenStatusIsSet()
         {
             var originatorEmail = new EmailAddressBuilder(this.DatabaseSession).WithElectronicAddressString("originator@allors.com").Build();
@@ -42,14 +42,14 @@ namespace Allors.Domain
                 .WithAddressee(addresseeEmail)
                 .Build();
 
-            Assert.IsFalse(this.DatabaseSession.Derive().HasErrors);
+            Assert.False(this.DatabaseSession.Derive().HasErrors);
 
-            Assert.AreEqual(communication.CurrentCommunicationEventStatus.CommunicationEventObjectState, new CommunicationEventObjectStates(this.DatabaseSession).Scheduled);
-            Assert.AreEqual(communication.CurrentObjectState, new CommunicationEventObjectStates(this.DatabaseSession).Scheduled);
-            Assert.AreEqual(communication.CurrentObjectState, communication.LastObjectState);
+            Assert.Equal(communication.CurrentCommunicationEventStatus.CommunicationEventObjectState, new CommunicationEventObjectStates(this.DatabaseSession).Scheduled);
+            Assert.Equal(communication.CurrentObjectState, new CommunicationEventObjectStates(this.DatabaseSession).Scheduled);
+            Assert.Equal(communication.CurrentObjectState, communication.LastObjectState);
         }
 
-        [Test]
+        [Fact]
         public void GivenEmailCommunication_WhenDeriving_ThenInvolvedPartiesAreDerived()
         {
             var owner = new PersonBuilder(this.DatabaseSession).WithLastName("owner").Build();
@@ -87,7 +87,7 @@ namespace Allors.Domain
 
             this.DatabaseSession.Derive(true);
 
-            Assert.AreEqual(5, communication.InvolvedParties.Count);
+            Assert.Equal(5, communication.InvolvedParties.Count);
             Assert.Contains(owner, communication.InvolvedParties);
             Assert.Contains(originator, communication.InvolvedParties);
             Assert.Contains(addressee, communication.InvolvedParties);

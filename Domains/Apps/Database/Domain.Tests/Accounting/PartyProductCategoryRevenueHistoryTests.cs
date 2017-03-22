@@ -22,12 +22,12 @@ namespace Allors.Domain
 {
     using System;
     using Meta;
-    using NUnit.Framework;
+    using Xunit;
 
-    [TestFixture]
+    
     public class PartyProductCategoryRevenueHistoryTests : DomainTest
     {
-        [Test]
+        [Fact]
         public void GivenSalesInvoice_WhenDerived_ThenTotalExVatIsAddedToPartyProductCategoryRevenueHistory()
         {
             var productItem = new SalesInvoiceItemTypes(this.DatabaseSession).ProductItem;
@@ -90,14 +90,14 @@ namespace Allors.Domain
                 ////date in first iteration is too old, no history yet.
                 if (history != null)
                 {
-                    Assert.AreEqual(revenuePastTwelveMonths, history.Revenue);
+                    Assert.Equal(revenuePastTwelveMonths, history.Revenue);
                 }
 
                 date = date.AddMonths(1);
             }
         }
 
-        [Test]
+        [Fact]
         public void DeriveHistory()
         {
             var productItem = new SalesInvoiceItemTypes(this.DatabaseSession).ProductItem;
@@ -210,9 +210,9 @@ namespace Allors.Domain
             customer1CatMainRevenueHistories.Filter.AddEquals(M.PartyProductCategoryRevenueHistory.ProductCategory, catMain);
             var customer1CatMainRevenueHistory = customer1CatMainRevenueHistories.First;
 
-            Assert.AreEqual(180, customer1Cat1RevenueHistory.Revenue);
-            Assert.AreEqual(100, customer1Cat2RevenueHistory.Revenue);
-            Assert.AreEqual(280, customer1CatMainRevenueHistory.Revenue);
+            Assert.Equal(180, customer1Cat1RevenueHistory.Revenue);
+            Assert.Equal(100, customer1Cat2RevenueHistory.Revenue);
+            Assert.Equal(280, customer1CatMainRevenueHistory.Revenue);
 
             var invoice3 = new SalesInvoiceBuilder(this.DatabaseSession)
                 .WithInvoiceDate(DateTime.UtcNow)
@@ -244,13 +244,13 @@ namespace Allors.Domain
             customer2CatMainRevenueHistories.Filter.AddEquals(M.PartyProductCategoryRevenueHistory.ProductCategory, catMain);
             var customer2CatMainRevenueHistory = customer2CatMainRevenueHistories.First;
 
-            Assert.AreEqual(180, customer1Cat1RevenueHistory.Revenue);
-            Assert.AreEqual(100, customer1Cat2RevenueHistory.Revenue);
-            Assert.AreEqual(280, customer1CatMainRevenueHistory.Revenue);
+            Assert.Equal(180, customer1Cat1RevenueHistory.Revenue);
+            Assert.Equal(100, customer1Cat2RevenueHistory.Revenue);
+            Assert.Equal(280, customer1CatMainRevenueHistory.Revenue);
 
-            Assert.AreEqual(15, customer2Cat1RevenueHistory.Revenue);
-            Assert.AreEqual(10, customer2Cat2RevenueHistory.Revenue);
-            Assert.AreEqual(25, customer2CatMainRevenueHistory.Revenue);
+            Assert.Equal(15, customer2Cat1RevenueHistory.Revenue);
+            Assert.Equal(10, customer2Cat2RevenueHistory.Revenue);
+            Assert.Equal(25, customer2CatMainRevenueHistory.Revenue);
         }
     }
 }

@@ -18,6 +18,8 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Allors.Adapters.Memory;
+
 namespace Allors
 {
     using System;
@@ -65,8 +67,8 @@ namespace Allors
             var configuration = new Configuration { ObjectFactory = Config.ObjectFactory };
             Config.Default = new Database(configuration);
 
-            Thread.CurrentThread.CurrentCulture = CultureInfo.GetCultureInfo("en-GB");
-            Thread.CurrentThread.CurrentUICulture = CultureInfo.GetCultureInfo("en-GB");
+            CultureInfo.CurrentCulture = new CultureInfo("en-GB");
+            CultureInfo.CurrentUICulture = new CultureInfo("en-GB");
 
             var database = Config.Default;
             database.Init();
@@ -81,7 +83,7 @@ namespace Allors
 
                 using (var stringWriter = new StringWriter())
                 {
-                    using (var writer = new XmlTextWriter(stringWriter))
+                    using (var writer = XmlWriter.Create(stringWriter))
                     {
                         database.Save(writer);
                         basicXml = stringWriter.ToString();
@@ -95,8 +97,8 @@ namespace Allors
             var configuration = new Configuration { ObjectFactory = Config.ObjectFactory };
             Config.Default = new Database(configuration);
 
-            Thread.CurrentThread.CurrentCulture = CultureInfo.GetCultureInfo("en-GB");
-            Thread.CurrentThread.CurrentUICulture = CultureInfo.GetCultureInfo("en-GB");
+            CultureInfo.CurrentCulture = new CultureInfo("en-GB");
+            CultureInfo.CurrentUICulture = new CultureInfo("en-GB");
 
             var database = Config.Default;
             database.Init();
@@ -113,7 +115,7 @@ namespace Allors
 
                 using (var stringWriter = new StringWriter())
                 {
-                    using (var writer = new XmlTextWriter(stringWriter))
+                    using (var writer = XmlWriter.Create(stringWriter))
                     {
                         database.Save(writer);
                         basicXml = stringWriter.ToString();
@@ -217,7 +219,7 @@ namespace Allors
 
                 using (var stringWriter = new StringWriter())
                 {
-                    using (var writer = new XmlTextWriter(stringWriter))
+                    using (var writer = XmlWriter.Create(stringWriter))
                     {
                         database.Save(writer);
                         fullXml = stringWriter.ToString();

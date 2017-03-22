@@ -27,12 +27,12 @@ namespace Allors.Domain
 
     using Allors.Meta;
 
-    using NUnit.Framework;
+    using Xunit;
 
-    [TestFixture]
+    
     public class FaceToFaceCommunicationTests : DomainTest
     {
-        [Test]
+        [Fact]
         public void GivenFaceToFaceCommunicationIsBuild_WhenDeriving_ThenStatusIsSet()
         {
             var communication = new FaceToFaceCommunicationBuilder(this.DatabaseSession)
@@ -43,14 +43,14 @@ namespace Allors.Domain
                 .WithActualStart(DateTime.UtcNow)
                 .Build();
 
-            Assert.IsFalse(this.DatabaseSession.Derive().HasErrors);
+            Assert.False(this.DatabaseSession.Derive().HasErrors);
 
-            Assert.AreEqual(communication.CurrentCommunicationEventStatus.CommunicationEventObjectState, new CommunicationEventObjectStates(this.DatabaseSession).InProgress);
-            Assert.AreEqual(communication.CurrentObjectState, new CommunicationEventObjectStates(this.DatabaseSession).InProgress);
-            Assert.AreEqual(communication.CurrentObjectState, communication.LastObjectState);
+            Assert.Equal(communication.CurrentCommunicationEventStatus.CommunicationEventObjectState, new CommunicationEventObjectStates(this.DatabaseSession).InProgress);
+            Assert.Equal(communication.CurrentObjectState, new CommunicationEventObjectStates(this.DatabaseSession).InProgress);
+            Assert.Equal(communication.CurrentObjectState, communication.LastObjectState);
         }
 
-        [Test]
+        [Fact]
         public void GivenFaceToFaceCommunication_WhenDeriving_ThenInvolvedPartiesAreDerived()
         {
             var owner = new PersonBuilder(this.DatabaseSession).WithLastName("owner").Build();
@@ -70,7 +70,7 @@ namespace Allors.Domain
 
             this.DatabaseSession.Derive(true);
             
-            Assert.AreEqual(3, communication.InvolvedParties.Count);
+            Assert.Equal(3, communication.InvolvedParties.Count);
             Assert.Contains(participant1, communication.InvolvedParties);
             Assert.Contains(participant2, communication.InvolvedParties);
             Assert.Contains(owner, communication.InvolvedParties);
@@ -79,10 +79,10 @@ namespace Allors.Domain
 
             this.DatabaseSession.Derive(true);
             
-            Assert.AreEqual(3, communication.InvolvedParties.Count);
+            Assert.Equal(3, communication.InvolvedParties.Count);
         }
 
-        [Test]
+        [Fact]
         public void GivenCurrentUserIsUnknown_WhenAccessingFaceToFaceCommunicationWithOwner_ThenOwnerSecurityTokenIsApplied()
         {
             var owner = new PersonBuilder(this.DatabaseSession).WithLastName("owner").Build();
@@ -102,15 +102,15 @@ namespace Allors.Domain
 
             this.DatabaseSession.Derive(true);
 
-            Assert.AreEqual(2, communication.SecurityTokens.Count);
+            Assert.Equal(2, communication.SecurityTokens.Count);
             Assert.Contains(Singleton.Instance(this.DatabaseSession).DefaultSecurityToken, communication.SecurityTokens);
             Assert.Contains(owner.OwnerSecurityToken, communication.SecurityTokens);
         }
 
-        [Test]
+        [Fact]
         public void GivenCurrentUserIsKnown_WhenAccessingFaceToFaceCommunicationWithOwner_ThenOwnerSecurityTokenIsApplied()
         {
-            Thread.CurrentPrincipal = new GenericPrincipal(new GenericIdentity("user"), new string[0]);
+            this.SetIdentity("user");
 
             var user = new PersonBuilder(this.DatabaseSession).WithLastName("user").WithUserName("user").Build();
 
@@ -131,7 +131,7 @@ namespace Allors.Domain
 
             this.DatabaseSession.Derive(true);
 
-            Assert.AreEqual(2, communication.SecurityTokens.Count);
+            Assert.Equal(2, communication.SecurityTokens.Count);
             Assert.Contains(Singleton.Instance(this.DatabaseSession).DefaultSecurityToken, communication.SecurityTokens);
             Assert.Contains(owner.OwnerSecurityToken, communication.SecurityTokens);
         }

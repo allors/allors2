@@ -22,30 +22,30 @@
 namespace Allors.Domain
 {
     using System;
-    using NUnit.Framework;
+    using Xunit;
 
-    [TestFixture]
+    
     public class SurchargeAdjustmentTests : DomainTest
     {
-        [Test]
+        [Fact]
         public void GivenSurchargeAdjustment_WhenDeriving_ThenRequiredRelationsMustExist()
         {
             var builder = new SurchargeAdjustmentBuilder(this.DatabaseSession);
             builder.Build();
 
-            Assert.IsTrue(this.DatabaseSession.Derive().HasErrors);
+            Assert.True(this.DatabaseSession.Derive().HasErrors);
 
             this.DatabaseSession.Rollback();
 
             builder.WithAmount(1);
             builder.Build();
 
-            Assert.IsFalse(this.DatabaseSession.Derive().HasErrors);
+            Assert.False(this.DatabaseSession.Derive().HasErrors);
 
             builder.WithPercentage(1);
             builder.Build();
 
-            Assert.IsTrue(this.DatabaseSession.Derive().HasErrors);
+            Assert.True(this.DatabaseSession.Derive().HasErrors);
         }
     }
 }

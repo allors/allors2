@@ -23,20 +23,17 @@ namespace Allors.Domain
 {
     using System;
     using Meta;
-    using NUnit.Framework;
+    using Xunit;
 
-    [TestFixture]
+    
     public class EmploymentTests : DomainTest
     {
         private Person employee;
         private InternalOrganisation internalOrganisation;
         private Employment employment;
 
-        [SetUp]
-        public override void Init()
+        public EmploymentTests()
         {
-            base.Init();
-
             this.employee = new PersonBuilder(this.DatabaseSession).WithLastName("slave").Build();
             this.internalOrganisation = new InternalOrganisations(this.DatabaseSession).FindBy(M.InternalOrganisation.Name, "internalOrganisation");
 
@@ -50,7 +47,7 @@ namespace Allors.Domain
             this.DatabaseSession.Commit();
         }
 
-        [Test]
+        [Fact]
         public void GivenPerson_WhenEmploymentIsCreated_ThenNoOtherActiveEmploymentMayExist()
         {
             var secondEmployment = new EmploymentBuilder(this.DatabaseSession)
@@ -59,13 +56,13 @@ namespace Allors.Domain
                 .WithFromDate(DateTime.UtcNow)
                 .Build();
 
-            Assert.IsTrue(this.DatabaseSession.Derive().HasErrors);
+            Assert.True(this.DatabaseSession.Derive().HasErrors);
 
             this.DatabaseSession.Rollback();
 
             this.employment.ThroughDate = DateTime.UtcNow;
         
-            Assert.IsFalse(this.DatabaseSession.Derive().HasErrors);
+            Assert.False(this.DatabaseSession.Derive().HasErrors);
         }
 
         private void InstantiateObjects(ISession session)

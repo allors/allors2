@@ -58,8 +58,8 @@ namespace Allors.Domain
             var belgium = countries.CountryByIsoCode["BE"];
 
             var languages = new Languages(this.Session);
-            var english = languages.LanguageByCode["EN"];
-            var dutch = languages.LanguageByCode["NL"];
+            var english = languages.LanguageByCode["en"];
+            var dutch = languages.LanguageByCode["nl"];
 
             new LocaleBuilder(this.Session).WithName(EnglishGreatBritainName).WithCountry(greatBritain).WithLanguage(english).Build();
             new LocaleBuilder(this.Session).WithName(EnglishUnitedStatesName).WithCountry(usa).WithLanguage(english).Build();

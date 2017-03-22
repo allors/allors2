@@ -23,20 +23,17 @@ namespace Allors.Domain
 {
     using System;
     using Meta;
-    using NUnit.Framework;
+    using Xunit;
 
-    [TestFixture]
+    
     public class ReceiptTests : DomainTest
     {
         private Good good;
         private InternalOrganisation internalOrganisation;
         private Organisation billToCustomer;
-
-        [SetUp]
-        public override void Init()
+        
+        public ReceiptTests()
         {
-            base.Init();
-
             var euro = new Currencies(this.DatabaseSession).FindBy(M.Currency.IsoCode, "EUR");
 
             this.internalOrganisation = new InternalOrganisations(this.DatabaseSession).FindBy(M.InternalOrganisation.Name, "internalOrganisation");
@@ -80,17 +77,17 @@ namespace Allors.Domain
             this.DatabaseSession.Commit();
         }
 
-        [Test]
+        [Fact]
         public void GivenReceipt_WhenBuild_ThenPostBuildRelationsMustExist()
         {
             this.InstantiateObjects(this.DatabaseSession);
 
             var receipt = new ReceiptBuilder(this.DatabaseSession).WithEffectiveDate(DateTime.UtcNow).Build();
 
-            Assert.IsTrue(receipt.ExistUniqueId);
+            Assert.True(receipt.ExistUniqueId);
         }
 
-        [Test]
+        [Fact]
         public void GivenReceipt_WhenApplied_ThenInvoiceItemAmountPaidIsUpdated()
         {
             this.InstantiateObjects(this.DatabaseSession);
@@ -121,9 +118,9 @@ namespace Allors.Domain
 
             this.DatabaseSession.Derive(true);
 
-            Assert.AreEqual(0, item1.AmountPaid);
-            Assert.AreEqual(50, item2.AmountPaid);
-            Assert.AreEqual(0, item3.AmountPaid);
+            Assert.Equal(0, item1.AmountPaid);
+            Assert.Equal(50, item2.AmountPaid);
+            Assert.Equal(0, item3.AmountPaid);
 
             new ReceiptBuilder(this.DatabaseSession)
                 .WithAmount(350)
@@ -135,12 +132,12 @@ namespace Allors.Domain
 
             this.DatabaseSession.Derive(true);
 
-            Assert.AreEqual(100, item1.AmountPaid);
-            Assert.AreEqual(200, item2.AmountPaid);
-            Assert.AreEqual(100, item3.AmountPaid);
+            Assert.Equal(100, item1.AmountPaid);
+            Assert.Equal(200, item2.AmountPaid);
+            Assert.Equal(100, item3.AmountPaid);
         }
 
-        [Test]
+        [Fact]
         public void GivenReceipt_WhenDeriving_ThenAmountCanNotBeSmallerThenAmountApplied()
         {
             this.InstantiateObjects(this.DatabaseSession);
@@ -173,16 +170,16 @@ namespace Allors.Domain
                 .WithPaymentApplication(new PaymentApplicationBuilder(this.DatabaseSession).WithInvoiceItem(invoice.SalesInvoiceItems[0]).WithAmountApplied(50).Build())
                 .Build();
 
-            Assert.IsFalse(this.DatabaseSession.Derive().HasErrors);
+            Assert.False(this.DatabaseSession.Derive().HasErrors);
 
             receipt.AddPaymentApplication(new PaymentApplicationBuilder(this.DatabaseSession).WithInvoiceItem(invoice.SalesInvoiceItems[0]).WithAmountApplied(50).Build());
 
-            Assert.IsFalse(this.DatabaseSession.Derive().HasErrors);
+            Assert.False(this.DatabaseSession.Derive().HasErrors);
 
             receipt.AddPaymentApplication(new PaymentApplicationBuilder(this.DatabaseSession).WithInvoiceItem(invoice.SalesInvoiceItems[0]).WithAmountApplied(1).Build());
 
             var derivationLog = this.DatabaseSession.Derive();
-            Assert.IsTrue(derivationLog.HasErrors);
+            Assert.True(derivationLog.HasErrors);
             Assert.Contains(M.Receipt.Amount.RoleType, derivationLog.Errors[0].RoleTypes);
         }
 

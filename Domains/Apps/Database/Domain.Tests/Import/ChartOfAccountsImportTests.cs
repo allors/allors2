@@ -21,164 +21,164 @@
 
 namespace Allors.Domain
 {
-    using NUnit.Framework;
+    using Xunit;
 
-    [TestFixture]
+    
     public class ChartOfAccountsImportTests : DomainTest
     {
         //TODO: Import
-        //[Test]
+        //[Fact]
         //public void GivenGeneralLedgerAccountXml_WhenImported_ThenGeneralLedgerAccountIsCreated()
         //{
         //    var filepath = string.Format("domain\\import\\minimaal genormaliseerd rekeningstelsel 1.xml");
 
         //    new ChartOfAccountsImport(this.DatabaseSession).ImportChartOfAccounts(filepath);
 
-        //    Assert.AreEqual(1, new GeneralLedgerAccounts(this.DatabaseSession).Extent().Count);
-        //    Assert.AreEqual(1, this.DatabaseSession.Extent<GeneralLedgerAccount>().Count);
-        //    Assert.AreEqual(1, this.DatabaseSession.Extent<ChartOfAccounts>().Count);
-        //    Assert.AreEqual(1, this.DatabaseSession.Extent<GeneralLedgerAccountGroup>().Count);
-        //    Assert.AreEqual(1, this.DatabaseSession.Extent<GeneralLedgerAccountType>().Count);
-        //    Assert.AreEqual(0, this.DatabaseSession.Extent<CostCenter>().Count);
+        //    Assert.Equal(1, new GeneralLedgerAccounts(this.DatabaseSession).Extent().Count);
+        //    Assert.Equal(1, this.DatabaseSession.Extent<GeneralLedgerAccount>().Count);
+        //    Assert.Equal(1, this.DatabaseSession.Extent<ChartOfAccounts>().Count);
+        //    Assert.Equal(1, this.DatabaseSession.Extent<GeneralLedgerAccountGroup>().Count);
+        //    Assert.Equal(1, this.DatabaseSession.Extent<GeneralLedgerAccountType>().Count);
+        //    Assert.Equal(0, this.DatabaseSession.Extent<CostCenter>().Count);
 
         //    var chartOfAccounts = (ChartOfAccounts)this.DatabaseSession.Extent<ChartOfAccounts>().First;
-        //    Assert.AreEqual("Minimum Algemeen Rekeningenstelsel", chartOfAccounts.Name);
-        //    Assert.AreEqual(1, chartOfAccounts.GeneralLedgerAccounts.Count);
+        //    Assert.Equal("Minimum Algemeen Rekeningenstelsel", chartOfAccounts.Name);
+        //    Assert.Equal(1, chartOfAccounts.GeneralLedgerAccounts.Count);
 
         //    var generalLedgerAccountGroup = (GeneralLedgerAccountGroup)this.DatabaseSession.Extent<GeneralLedgerAccountGroup>().First;
-        //    Assert.AreEqual("Kapitaal", generalLedgerAccountGroup.Description);
-        //    Assert.IsFalse(generalLedgerAccountGroup.ExistParent);
+        //    Assert.Equal("Kapitaal", generalLedgerAccountGroup.Description);
+        //    Assert.False(generalLedgerAccountGroup.ExistParent);
 
         //    var generalLedgerAccountType = (GeneralLedgerAccountType)this.DatabaseSession.Extent<GeneralLedgerAccountType>().First;
-        //    Assert.AreEqual("Eigen vermogen, voorzieningen voor risico's en kosten en schulden op langer dan een jaar", generalLedgerAccountType.Description);
+        //    Assert.Equal("Eigen vermogen, voorzieningen voor risico's en kosten en schulden op langer dan een jaar", generalLedgerAccountType.Description);
 
         //    var generalLedgerAccount = (GeneralLedgerAccount)this.DatabaseSession.Extent<GeneralLedgerAccount>().First;
-        //    Assert.AreEqual("100000", generalLedgerAccount.AccountNumber);
-        //    Assert.IsTrue(generalLedgerAccount.BalanceSheetAccount);
-        //    Assert.IsFalse(generalLedgerAccount.CashAccount);
-        //    Assert.AreEqual(chartOfAccounts, generalLedgerAccount.ChartOfAccountsWhereGeneralLedgerAccount);
-        //    Assert.IsFalse(generalLedgerAccount.CostCenterAccount);
-        //    Assert.IsFalse(generalLedgerAccount.CostCenterRequired);
-        //    Assert.IsFalse(generalLedgerAccount.ExistCostCentersAllowed);
-        //    Assert.IsFalse(generalLedgerAccount.CostUnitAccount);
-        //    Assert.IsFalse(generalLedgerAccount.CostUnitRequired);
-        //    Assert.IsFalse(generalLedgerAccount.ExistCostUnitsAllowed);
-        //    Assert.AreEqual(new DebitCreditConstants(this.DatabaseSession).Credit, generalLedgerAccount.Side);
-        //    Assert.IsFalse(generalLedgerAccount.ExistDefaultCostCenter);
-        //    Assert.IsFalse(generalLedgerAccount.ExistDefaultCostUnit);
+        //    Assert.Equal("100000", generalLedgerAccount.AccountNumber);
+        //    Assert.True(generalLedgerAccount.BalanceSheetAccount);
+        //    Assert.False(generalLedgerAccount.CashAccount);
+        //    Assert.Equal(chartOfAccounts, generalLedgerAccount.ChartOfAccountsWhereGeneralLedgerAccount);
+        //    Assert.False(generalLedgerAccount.CostCenterAccount);
+        //    Assert.False(generalLedgerAccount.CostCenterRequired);
+        //    Assert.False(generalLedgerAccount.ExistCostCentersAllowed);
+        //    Assert.False(generalLedgerAccount.CostUnitAccount);
+        //    Assert.False(generalLedgerAccount.CostUnitRequired);
+        //    Assert.False(generalLedgerAccount.ExistCostUnitsAllowed);
+        //    Assert.Equal(new DebitCreditConstants(this.DatabaseSession).Credit, generalLedgerAccount.Side);
+        //    Assert.False(generalLedgerAccount.ExistDefaultCostCenter);
+        //    Assert.False(generalLedgerAccount.ExistDefaultCostUnit);
         //    Assert.IsNullOrEmpty(generalLedgerAccount.Description);
-        //    Assert.AreEqual(generalLedgerAccountGroup, generalLedgerAccount.GeneralLedgerAccountGroup);
-        //    Assert.AreEqual(generalLedgerAccountType, generalLedgerAccount.GeneralLedgerAccountType);
-        //    Assert.AreEqual("Geplaats kapitaal", generalLedgerAccount.Name);
-        //    Assert.IsFalse(generalLedgerAccount.Protected);
-        //    Assert.IsFalse(generalLedgerAccount.ReconciliationAccount);
+        //    Assert.Equal(generalLedgerAccountGroup, generalLedgerAccount.GeneralLedgerAccountGroup);
+        //    Assert.Equal(generalLedgerAccountType, generalLedgerAccount.GeneralLedgerAccountType);
+        //    Assert.Equal("Geplaats kapitaal", generalLedgerAccount.Name);
+        //    Assert.False(generalLedgerAccount.Protected);
+        //    Assert.False(generalLedgerAccount.ReconciliationAccount);
         //}
 
-        //[Test]
+        //[Fact]
         //public void GivenGeneralLedgerAccountXmlWithGroupHierarchy_WhenImported_ThenGeneralLedgerAccountGroupsAreCreated()
         //{
         //    var filepath = string.Format("domain\\import\\minimaal genormaliseerd rekeningstelsel 2.xml");
 
         //    new ChartOfAccountsImport(this.DatabaseSession).ImportChartOfAccounts(filepath);
 
-        //    Assert.AreEqual(1, new GeneralLedgerAccounts(this.DatabaseSession).Extent().Count);
-        //    Assert.AreEqual(1, this.DatabaseSession.Extent<GeneralLedgerAccount>().Count);
-        //    Assert.AreEqual(1, this.DatabaseSession.Extent<ChartOfAccounts>().Count);
-        //    Assert.AreEqual(3, this.DatabaseSession.Extent<GeneralLedgerAccountGroup>().Count);
-        //    Assert.AreEqual(1, this.DatabaseSession.Extent<GeneralLedgerAccountType>().Count);
-        //    Assert.AreEqual(0, this.DatabaseSession.Extent<CostCenter>().Count);
+        //    Assert.Equal(1, new GeneralLedgerAccounts(this.DatabaseSession).Extent().Count);
+        //    Assert.Equal(1, this.DatabaseSession.Extent<GeneralLedgerAccount>().Count);
+        //    Assert.Equal(1, this.DatabaseSession.Extent<ChartOfAccounts>().Count);
+        //    Assert.Equal(3, this.DatabaseSession.Extent<GeneralLedgerAccountGroup>().Count);
+        //    Assert.Equal(1, this.DatabaseSession.Extent<GeneralLedgerAccountType>().Count);
+        //    Assert.Equal(0, this.DatabaseSession.Extent<CostCenter>().Count);
 
         //    var chartOfAccounts = (ChartOfAccounts)this.DatabaseSession.Extent<ChartOfAccounts>().First;
-        //    Assert.AreEqual("Minimum Algemeen Rekeningenstelsel", chartOfAccounts.Name);
-        //    Assert.AreEqual(1, chartOfAccounts.GeneralLedgerAccounts.Count);
+        //    Assert.Equal("Minimum Algemeen Rekeningenstelsel", chartOfAccounts.Name);
+        //    Assert.Equal(1, chartOfAccounts.GeneralLedgerAccounts.Count);
 
         //    var generalLedgerAccountGroups = this.DatabaseSession.Extent<GeneralLedgerAccountGroup>();
         //    generalLedgerAccountGroups.Filter.AddEquals(GeneralLedgerAccountGroups.Meta.Description, "Verworpen uitgaven");
 
         //    var generalLedgerAccountGroup = (GeneralLedgerAccountGroup)generalLedgerAccountGroups.First; 
-        //    Assert.IsTrue(generalLedgerAccountGroup.ExistParent);
+        //    Assert.True(generalLedgerAccountGroup.ExistParent);
 
         //    var parent = generalLedgerAccountGroup.Parent;
-        //    Assert.AreEqual("Overige kosten", parent.Description);
-        //    Assert.IsTrue(parent.ExistParent);
+        //    Assert.Equal("Overige kosten", parent.Description);
+        //    Assert.True(parent.ExistParent);
 
         //    var grandParent = parent.Parent;
-        //    Assert.AreEqual("Diensten en diverse goederen", grandParent.Description);
-        //    Assert.IsFalse(grandParent.ExistParent);
+        //    Assert.Equal("Diensten en diverse goederen", grandParent.Description);
+        //    Assert.False(grandParent.ExistParent);
 
         //    var generalLedgerAccountType = (GeneralLedgerAccountType)this.DatabaseSession.Extent<GeneralLedgerAccountType>().First;
-        //    Assert.AreEqual("Kosten", generalLedgerAccountType.Description);
+        //    Assert.Equal("Kosten", generalLedgerAccountType.Description);
 
         //    var generalLedgerAccount = (GeneralLedgerAccount)this.DatabaseSession.Extent<GeneralLedgerAccount>().First;
-        //    Assert.AreEqual("617910", generalLedgerAccount.AccountNumber);
-        //    Assert.IsFalse(generalLedgerAccount.BalanceSheetAccount);
-        //    Assert.IsFalse(generalLedgerAccount.CashAccount);
-        //    Assert.AreEqual(chartOfAccounts, generalLedgerAccount.ChartOfAccountsWhereGeneralLedgerAccount);
-        //    Assert.IsFalse(generalLedgerAccount.CostCenterAccount);
-        //    Assert.IsFalse(generalLedgerAccount.CostCenterRequired);
-        //    Assert.IsFalse(generalLedgerAccount.ExistCostCentersAllowed);
-        //    Assert.IsFalse(generalLedgerAccount.CostUnitAccount);
-        //    Assert.IsFalse(generalLedgerAccount.CostUnitRequired);
-        //    Assert.IsFalse(generalLedgerAccount.ExistCostUnitsAllowed);
-        //    Assert.AreEqual(new DebitCreditConstants(this.DatabaseSession).Debit, generalLedgerAccount.Side);
-        //    Assert.IsFalse(generalLedgerAccount.ExistDefaultCostCenter);
-        //    Assert.IsFalse(generalLedgerAccount.ExistDefaultCostUnit);
+        //    Assert.Equal("617910", generalLedgerAccount.AccountNumber);
+        //    Assert.False(generalLedgerAccount.BalanceSheetAccount);
+        //    Assert.False(generalLedgerAccount.CashAccount);
+        //    Assert.Equal(chartOfAccounts, generalLedgerAccount.ChartOfAccountsWhereGeneralLedgerAccount);
+        //    Assert.False(generalLedgerAccount.CostCenterAccount);
+        //    Assert.False(generalLedgerAccount.CostCenterRequired);
+        //    Assert.False(generalLedgerAccount.ExistCostCentersAllowed);
+        //    Assert.False(generalLedgerAccount.CostUnitAccount);
+        //    Assert.False(generalLedgerAccount.CostUnitRequired);
+        //    Assert.False(generalLedgerAccount.ExistCostUnitsAllowed);
+        //    Assert.Equal(new DebitCreditConstants(this.DatabaseSession).Debit, generalLedgerAccount.Side);
+        //    Assert.False(generalLedgerAccount.ExistDefaultCostCenter);
+        //    Assert.False(generalLedgerAccount.ExistDefaultCostUnit);
         //    Assert.IsNullOrEmpty(generalLedgerAccount.Description);
-        //    Assert.AreEqual(generalLedgerAccountGroup, generalLedgerAccount.GeneralLedgerAccountGroup);
-        //    Assert.AreEqual(generalLedgerAccountType, generalLedgerAccount.GeneralLedgerAccountType);
-        //    Assert.AreEqual("Verworpen uitgaven niet-aftrekbare belastingen", generalLedgerAccount.Name);
-        //    Assert.IsFalse(generalLedgerAccount.Protected);
-        //    Assert.IsFalse(generalLedgerAccount.ReconciliationAccount);
+        //    Assert.Equal(generalLedgerAccountGroup, generalLedgerAccount.GeneralLedgerAccountGroup);
+        //    Assert.Equal(generalLedgerAccountType, generalLedgerAccount.GeneralLedgerAccountType);
+        //    Assert.Equal("Verworpen uitgaven niet-aftrekbare belastingen", generalLedgerAccount.Name);
+        //    Assert.False(generalLedgerAccount.Protected);
+        //    Assert.False(generalLedgerAccount.ReconciliationAccount);
         //}
 
-        //[Test]
+        //[Fact]
         //public void GivenGeneralLedgerAccountXmlWithCostCenter_WhenImported_ThenCostCenterIsCreated()
         //{
         //    var filepath = string.Format("domain\\import\\minimaal genormaliseerd rekeningstelsel 3.xml");
 
         //    new ChartOfAccountsImport(this.DatabaseSession).ImportChartOfAccounts(filepath);
 
-        //    Assert.AreEqual(1, new GeneralLedgerAccounts(this.DatabaseSession).Extent().Count);
-        //    Assert.AreEqual(1, this.DatabaseSession.Extent<GeneralLedgerAccount>().Count);
-        //    Assert.AreEqual(1, this.DatabaseSession.Extent<ChartOfAccounts>().Count);
-        //    Assert.AreEqual(1, this.DatabaseSession.Extent<GeneralLedgerAccountGroup>().Count);
-        //    Assert.AreEqual(1, this.DatabaseSession.Extent<GeneralLedgerAccountType>().Count);
-        //    Assert.AreEqual(1, this.DatabaseSession.Extent<CostCenter>().Count);
+        //    Assert.Equal(1, new GeneralLedgerAccounts(this.DatabaseSession).Extent().Count);
+        //    Assert.Equal(1, this.DatabaseSession.Extent<GeneralLedgerAccount>().Count);
+        //    Assert.Equal(1, this.DatabaseSession.Extent<ChartOfAccounts>().Count);
+        //    Assert.Equal(1, this.DatabaseSession.Extent<GeneralLedgerAccountGroup>().Count);
+        //    Assert.Equal(1, this.DatabaseSession.Extent<GeneralLedgerAccountType>().Count);
+        //    Assert.Equal(1, this.DatabaseSession.Extent<CostCenter>().Count);
 
         //    var chartOfAccounts = (ChartOfAccounts)this.DatabaseSession.Extent<ChartOfAccounts>().First;
-        //    Assert.AreEqual("Minimum Algemeen Rekeningenstelsel", chartOfAccounts.Name);
-        //    Assert.AreEqual(1, chartOfAccounts.GeneralLedgerAccounts.Count);
+        //    Assert.Equal("Minimum Algemeen Rekeningenstelsel", chartOfAccounts.Name);
+        //    Assert.Equal(1, chartOfAccounts.GeneralLedgerAccounts.Count);
 
         //    var generalLedgerAccountGroup = (GeneralLedgerAccountGroup)this.DatabaseSession.Extent<GeneralLedgerAccountGroup>().First;
-        //    Assert.AreEqual("Kapitaal", generalLedgerAccountGroup.Description);
-        //    Assert.IsFalse(generalLedgerAccountGroup.ExistParent);
+        //    Assert.Equal("Kapitaal", generalLedgerAccountGroup.Description);
+        //    Assert.False(generalLedgerAccountGroup.ExistParent);
 
         //    var generalLedgerAccountType = (GeneralLedgerAccountType)this.DatabaseSession.Extent<GeneralLedgerAccountType>().First;
-        //    Assert.AreEqual("Eigen vermogen, voorzieningen voor risico's en kosten en schulden op langer dan een jaar", generalLedgerAccountType.Description);
+        //    Assert.Equal("Eigen vermogen, voorzieningen voor risico's en kosten en schulden op langer dan een jaar", generalLedgerAccountType.Description);
 
         //    var costCenter = (CostCenter)this.DatabaseSession.Extent<CostCenter>().First;
-        //    Assert.AreEqual("Misc", costCenter.Name);
+        //    Assert.Equal("Misc", costCenter.Name);
 
         //    var generalLedgerAccount = (GeneralLedgerAccount)this.DatabaseSession.Extent<GeneralLedgerAccount>().First;
-        //    Assert.AreEqual("100000", generalLedgerAccount.AccountNumber);
-        //    Assert.IsTrue(generalLedgerAccount.BalanceSheetAccount);
-        //    Assert.IsFalse(generalLedgerAccount.CashAccount);
-        //    Assert.AreEqual(chartOfAccounts, generalLedgerAccount.ChartOfAccountsWhereGeneralLedgerAccount);
-        //    Assert.IsTrue(generalLedgerAccount.CostCenterAccount);
-        //    Assert.IsFalse(generalLedgerAccount.CostCenterRequired);
-        //    Assert.AreEqual(costCenter, generalLedgerAccount.CostCentersAllowed.First);
-        //    Assert.IsFalse(generalLedgerAccount.CostUnitAccount);
-        //    Assert.IsFalse(generalLedgerAccount.CostUnitRequired);
-        //    Assert.IsFalse(generalLedgerAccount.ExistCostUnitsAllowed);
-        //    Assert.AreEqual(new DebitCreditConstants(this.DatabaseSession).Credit, generalLedgerAccount.Side);
-        //    Assert.AreEqual(costCenter, generalLedgerAccount.DefaultCostCenter);
-        //    Assert.IsFalse(generalLedgerAccount.ExistDefaultCostUnit);
+        //    Assert.Equal("100000", generalLedgerAccount.AccountNumber);
+        //    Assert.True(generalLedgerAccount.BalanceSheetAccount);
+        //    Assert.False(generalLedgerAccount.CashAccount);
+        //    Assert.Equal(chartOfAccounts, generalLedgerAccount.ChartOfAccountsWhereGeneralLedgerAccount);
+        //    Assert.True(generalLedgerAccount.CostCenterAccount);
+        //    Assert.False(generalLedgerAccount.CostCenterRequired);
+        //    Assert.Equal(costCenter, generalLedgerAccount.CostCentersAllowed.First);
+        //    Assert.False(generalLedgerAccount.CostUnitAccount);
+        //    Assert.False(generalLedgerAccount.CostUnitRequired);
+        //    Assert.False(generalLedgerAccount.ExistCostUnitsAllowed);
+        //    Assert.Equal(new DebitCreditConstants(this.DatabaseSession).Credit, generalLedgerAccount.Side);
+        //    Assert.Equal(costCenter, generalLedgerAccount.DefaultCostCenter);
+        //    Assert.False(generalLedgerAccount.ExistDefaultCostUnit);
         //    Assert.IsNullOrEmpty(generalLedgerAccount.Description);
-        //    Assert.AreEqual(generalLedgerAccountGroup, generalLedgerAccount.GeneralLedgerAccountGroup);
-        //    Assert.AreEqual(generalLedgerAccountType, generalLedgerAccount.GeneralLedgerAccountType);
-        //    Assert.AreEqual("Geplaats kapitaal", generalLedgerAccount.Name);
-        //    Assert.IsFalse(generalLedgerAccount.Protected);
-        //    Assert.IsFalse(generalLedgerAccount.ReconciliationAccount);
+        //    Assert.Equal(generalLedgerAccountGroup, generalLedgerAccount.GeneralLedgerAccountGroup);
+        //    Assert.Equal(generalLedgerAccountType, generalLedgerAccount.GeneralLedgerAccountType);
+        //    Assert.Equal("Geplaats kapitaal", generalLedgerAccount.Name);
+        //    Assert.False(generalLedgerAccount.Protected);
+        //    Assert.False(generalLedgerAccount.ReconciliationAccount);
         //}
     }
 }
