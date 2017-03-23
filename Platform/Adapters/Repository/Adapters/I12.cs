@@ -1,14 +1,13 @@
-namespace Allors.Repository.Domain
+namespace Allors.Repository
 {
     using System;
+    using Attributes;
 
     #region Allors
     [Id("97755724-b934-4cc5-beb4-3d49a7a4b27e")]
     #endregion
-	public partial interface I12 :  Object, S12 
+	public partial interface I12 : Object, S12 
     {
-
-
         #region Allors
         [Id("1a0eb6ea-d877-42c9-a35a-889fb347f883")]
         [AssociationId("4a18e24c-e031-49e4-b77a-51ebdc29952b")]

@@ -1,11 +1,12 @@
-namespace Allors.Repository.Domain
+namespace Allors.Repository
 {
     using System;
+    using Attributes;
 
     #region Allors
     [Id("73970b0f-1ff4-4d39-aad8-fdbfbaae472f")]
     #endregion
-    public partial class Sandbox :  Object 
+    public partial class Sandbox :  System.Object 
     {
         #region inherited properties
         #endregion

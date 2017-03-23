@@ -1,11 +1,12 @@
-namespace Allors.Repository.Domain
+namespace Allors.Repository
 {
     using System;
+    using Attributes;
 
     #region Allors
     [Id("72c07e8a-03f5-4da8-ab37-236333d4f74e")]
     #endregion
-    public partial class C2 :  Object, I2, I23, I12 
+    public partial class C2 :  System.Object, I2, I23, I12 
     {
         #region inherited properties
         public bool I2AllorsBoolean { get; set; }
