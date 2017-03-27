@@ -61,6 +61,7 @@ namespace Allors.Adapters.Relation.SqlClient
         public const string SqlTypeForCache = "bigint";
         public const string SqlTypeForCount = "int";
 
+        public const SqlDbType SqlDbTypeForCount = SqlDbType.Int;
         public const SqlDbType SqlDbTypeForType = SqlDbType.UniqueIdentifier;
         public const SqlDbType SqlDbTypeForCache = SqlDbType.Int;
 

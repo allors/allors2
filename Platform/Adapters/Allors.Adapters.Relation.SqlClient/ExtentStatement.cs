@@ -22,61 +22,42 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Text;
 using Allors;
 using Allors.Meta;
 
 namespace Allors.Adapters.Relation.SqlClient
 {
-    using System.Data;
-    using System.Data.SqlClient;
-
     internal abstract class AllorsExtentStatementSql
     {
-        private readonly ArrayList associationInstances;
-        private readonly ArrayList associations;
+        private readonly List<Object> associationInstances;
+        private readonly List<Object> associations;
         private readonly AllorsExtentSql extent;
         private readonly Dictionary<object, string> paramNameByParamValue;
-        private readonly ArrayList roleInstances;
-        private readonly ArrayList roles;
+        private readonly List<Object> roleInstances;
+        private readonly List<Object> roles;
 
         internal AllorsExtentStatementSql(AllorsExtentSql extent)
         {
             this.extent = extent;
             paramNameByParamValue = new Dictionary<object, string>();
 
-            roles = new ArrayList();
-            associations = new ArrayList();
-            roleInstances = new ArrayList();
-            associationInstances = new ArrayList();
+            associations = new List<Object>();
+            roleInstances = new List<Object>();
+            associationInstances = new List<Object>();
+            roles = new List<object>();
         }
 
-        internal AllorsExtentSql Extent
-        {
-            get { return extent; }
-        }
+        internal AllorsExtentSql Extent => extent;
 
         internal abstract bool IsRoot { get; }
 
-        internal Mapping Mapping
-        {
-            get { return Session.Database.Mapping; }
-        }
+        internal Mapping Mapping => Session.Database.Mapping;
 
-        protected Session Session
-        {
-            get { return extent.Session; }
-        }
+        protected Session Session => extent.Session;
 
-        internal AllorsExtentSortSql Sorter
-        {
-            get { return extent.Sorter; }
-        }
+        internal AllorsExtentSortSql Sorter => extent.Sorter;
 
-        protected IComposite Type
-        {
-            get { return this.extent.ObjectType; }
-        }
+        protected IComposite Type => this.extent.ObjectType;
 
         internal void AddJoins(string alias)
         {
@@ -183,162 +164,6 @@ namespace Allors.Adapters.Relation.SqlClient
             {
                 this.roleInstances.Add(role);
             }
-        }
-    }
-
-    internal class AllorsExtentStatementRootSql : AllorsExtentStatementSql
-    {
-        private readonly Dictionary<object, string> paramNameByParamValue;
-        private readonly StringBuilder sql;
-        private int aliasIndex;
-        private int parameterIndex;
-
-        internal AllorsExtentStatementRootSql(AllorsExtentSql extent)
-            : base(extent)
-        {
-            this.parameterIndex = 0;
-            this.aliasIndex = 0;
-            this.sql = new StringBuilder();
-            this.paramNameByParamValue = new Dictionary<object, string>();
-        }
-
-        internal override bool IsRoot
-        {
-            get { return true; }
-        }
-
-        public override string ToString()
-        {
-            return this.sql.ToString();
-        }
-
-        internal override string AddParameter(object obj)
-        {
-            if (!this.paramNameByParamValue.ContainsKey(obj))
-            {
-                var param = Mapping.ParamPrefix + "p" + (this.parameterIndex++);
-                this.paramNameByParamValue[obj] = param;
-                return param;
-            }
-
-            return this.paramNameByParamValue[obj];
-        }
-
-        internal override void Append(string part)
-        {
-            this.sql.Append(part);
-        }
-
-        internal override string CreateAlias()
-        {
-            return "alias" + (this.aliasIndex++);
-        }
-
-        internal override AllorsExtentStatementSql CreateChild(AllorsExtentSql extent, IAssociationType association)
-        {
-            return new AllorsExtentStatementChildSql(this, extent, association);
-        }
-
-        internal override AllorsExtentStatementSql CreateChild(AllorsExtentSql extent, IRoleType roleType)
-        {
-            return new AllorsExtentStatementChildSql(this, extent, roleType);
-        }
-
-        internal SqlCommand CreateSqlCommand()
-        {
-            var command = Session.CreateCommand(this.sql.ToString());
-
-            foreach (KeyValuePair<object, string> paramNameByParamValuePair in this.paramNameByParamValue)
-            {
-                var paramName = paramNameByParamValuePair.Value;
-                var paramValue = paramNameByParamValuePair.Key;
-
-                if (paramValue == null || paramValue == DBNull.Value)
-                {
-                    command.Parameters.AddWithValue(paramName, DBNull.Value);
-                }
-                else if (paramValue is IObject)
-                {
-                    command.Parameters.AddWithValue(paramName, ((IObject)paramValue).Id);
-                }
-                else
-                {
-                    var param = command.Parameters.AddWithValue(paramName, paramValue);
-
-                    if (paramValue is DateTime)
-                    {
-                        param.SqlDbType = SqlDbType.DateTime2;
-                    }
-                }
-            }
-
-            return command;
-        }
-    }
-
-    internal class AllorsExtentStatementChildSql : AllorsExtentStatementSql
-    {
-        private readonly IAssociationType association;
-        private readonly IRoleType role;
-        private readonly AllorsExtentStatementRootSql root;
-
-        internal AllorsExtentStatementChildSql(AllorsExtentStatementRootSql root, AllorsExtentSql extent, IRoleType role)
-            : base(extent)
-        {
-            this.root = root;
-            this.role = role;
-        }
-
-        internal AllorsExtentStatementChildSql(AllorsExtentStatementRootSql root, AllorsExtentSql extent, IAssociationType association)
-            : base(extent)
-        {
-            this.root = root;
-            this.association = association;
-        }
-
-        public IAssociationType Association
-        {
-            get { return this.association; }
-        }
-
-        internal override bool IsRoot
-        {
-            get { return false; }
-        }
-
-        public IRoleType Role
-        {
-            get { return role; }
-        }
-
-        public override string ToString()
-        {
-            return this.root.ToString();
-        }
-
-        internal override string AddParameter(object obj)
-        {
-            return this.root.AddParameter(obj);
-        }
-
-        internal override void Append(string part)
-        {
-            this.root.Append(part);
-        }
-
-        internal override string CreateAlias()
-        {
-            return this.root.CreateAlias();
-        }
-
-        internal override AllorsExtentStatementSql CreateChild(AllorsExtentSql extent, IAssociationType associationType)
-        {
-            return new AllorsExtentStatementChildSql(this.root, extent, associationType);
-        }
-
-        internal override AllorsExtentStatementSql CreateChild(AllorsExtentSql extent, IRoleType roleType)
-        {
-            return new AllorsExtentStatementChildSql(this.root, extent, roleType);
         }
     }
 }

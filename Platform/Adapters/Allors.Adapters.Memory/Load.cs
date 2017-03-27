@@ -134,8 +134,11 @@ namespace Allors.Adapters.Memory
 
         private void LoadObjectTypes()
         {
-            while (this.reader.Read())
+            var skip = false;
+            while (skip || this.reader.Read())
             {
+                skip = false;
+
                 switch (this.reader.NodeType)
                 {
                     // eat everything but elements
@@ -153,7 +156,7 @@ namespace Allors.Adapters.Memory
                                 var objectTypeId = new Guid(objectTypeIdString);
                                 var objectType = this.session.Database.ObjectFactory.GetObjectTypeForType(objectTypeId);
 
-                                var objectIdsString = this.reader.ReadContentAsString();
+                                var objectIdsString = this.reader.ReadElementContentAsString();
                                 var objectIdStringArray = objectIdsString.Split(Serialization.ObjectsSplitterCharArray);
 
                                 foreach (var objectIdString in objectIdStringArray)
@@ -161,22 +164,29 @@ namespace Allors.Adapters.Memory
                                     var objectArray = objectIdString.Split(Serialization.ObjectSplitterCharArray);
 
                                     var objectId = long.Parse(objectArray[0]);
-                                    var objectVersion = objectArray.Length > 1 ? long.Parse(objectArray[1]) : Database.IntialVersion; 
+                                    var objectVersion = objectArray.Length > 1
+                                        ? long.Parse(objectArray[1])
+                                        : Database.IntialVersion;
 
                                     if (objectType is IClass)
                                     {
-                                        this.session.InsertStrategy((IClass)objectType, objectId, objectVersion);
+                                        this.session.InsertStrategy((IClass) objectType, objectId, objectVersion);
                                     }
                                     else
                                     {
-                                        this.session.MemoryDatabase.OnObjectNotLoaded(objectTypeId, objectId.ToString());
+                                        this.session.MemoryDatabase.OnObjectNotLoaded(objectTypeId,
+                                            objectId.ToString());
                                     }
                                 }
+
+                                skip = reader.IsStartElement() ||
+                                       (reader.NodeType == XmlNodeType.EndElement && this.reader.Name.Equals(Serialization.Database));
                             }
                         }
                         else
                         {
-                            throw new Exception("Unknown child element <" + this.reader.Name + "> in parent element <" + Serialization.Database + ">");
+                            throw new Exception("Unknown child element <" + this.reader.Name + "> in parent element <" +
+                                                Serialization.Database + ">");
                         }
 
                         break;
@@ -294,8 +304,11 @@ namespace Allors.Adapters.Memory
 
         private void LoadUnitRelations(IRelationType relationType)
         {
-            while (this.reader.Read())
+            var skip = false;
+            while (skip || this.reader.Read())
             {
+                skip = false;
+
                 switch (this.reader.NodeType)
                 {
                     // eat everything but elements
@@ -309,7 +322,11 @@ namespace Allors.Adapters.Memory
                             var value = string.Empty;
                             if (!this.reader.IsEmptyElement)
                             {
-                                value = this.reader.ReadContentAsString();
+                                value = this.reader.ReadElementContentAsString();
+
+                                skip = reader.IsStartElement() ||
+                                       (reader.NodeType == XmlNodeType.EndElement &&
+                                        this.reader.Name.Equals(Serialization.RelationTypeUnit));
                             }
 
                             if (strategy == null)
@@ -323,7 +340,7 @@ namespace Allors.Adapters.Memory
                                     this.session.MemoryDatabase.UnitRoleChecks(strategy, relationType.RoleType);
                                     if (this.reader.IsEmptyElement)
                                     {
-                                        var unitType = (IUnit)relationType.RoleType.ObjectType;
+                                        var unitType = (IUnit) relationType.RoleType.ObjectType;
                                         switch (unitType.UnitTag)
                                         {
                                             case UnitTags.String:
@@ -336,7 +353,7 @@ namespace Allors.Adapters.Memory
                                     }
                                     else
                                     {
-                                        var unitType = (IUnit)relationType.RoleType.ObjectType;
+                                        var unitType = (IUnit) relationType.RoleType.ObjectType;
                                         var unitTypeTag = unitType.UnitTag;
 
                                         var unit = Serialization.ReadString(value, unitTypeTag);
@@ -345,16 +362,19 @@ namespace Allors.Adapters.Memory
                                 }
                                 catch
                                 {
-                                    this.session.MemoryDatabase.OnRelationNotLoaded(relationType.Id, associationId.ToString(), value);
+                                    this.session.MemoryDatabase.OnRelationNotLoaded(relationType.Id,
+                                        associationId.ToString(), value);
                                 }
                             }
                         }
                         else
                         {
-                            throw new Exception("Unknown child element <" + this.reader.Name + "> in parent element <" + Serialization.RelationTypeUnit + ">");
+                            throw new Exception("Unknown child element <" + this.reader.Name + "> in parent element <" +
+                                                Serialization.RelationTypeUnit + ">");
                         }
 
                         break;
+
                     case XmlNodeType.EndElement:
                         if (!this.reader.Name.Equals(Serialization.RelationTypeUnit))
                         {
@@ -368,8 +388,11 @@ namespace Allors.Adapters.Memory
 
         private void LoadCompositeRelations(IRelationType relationType)
         {
-            while (this.reader.Read())
+            var skip = false;
+            while (skip || this.reader.Read())
             {
+                skip = false;
+
                 switch (this.reader.NodeType)
                 {
                     // eat everything but elements
@@ -382,21 +405,24 @@ namespace Allors.Adapters.Memory
                             var value = string.Empty;
                             if (!this.reader.IsEmptyElement)
                             {
-                                value = this.reader.ReadContentAsString();
-                            }
+                                value = this.reader.ReadElementContentAsString();
 
-                            if (!this.reader.IsEmptyElement)
-                            {
+                                skip = reader.IsStartElement() ||
+                                       (reader.NodeType == XmlNodeType.EndElement &&
+                                        this.reader.Name.Equals(Serialization.RelationTypeComposite));
+
                                 var roleIdsString = value;
                                 var roleIdStringArray = roleIdsString.Split(Serialization.ObjectsSplitterCharArray);
 
                                 if (association == null ||
-                                    !this.session.MemoryDatabase.ContainsConcreteClass(relationType.AssociationType.ObjectType, association.UncheckedObjectType) || 
+                                    !this.session.MemoryDatabase.ContainsConcreteClass(
+                                        relationType.AssociationType.ObjectType, association.UncheckedObjectType) ||
                                     (relationType.RoleType.IsOne && roleIdStringArray.Length != 1))
                                 {
                                     foreach (var roleId in roleIdStringArray)
                                     {
-                                        this.session.MemoryDatabase.OnRelationNotLoaded(relationType.Id, associationId.ToString(), roleId);
+                                        this.session.MemoryDatabase.OnRelationNotLoaded(relationType.Id,
+                                            associationId.ToString(), roleId);
                                     }
                                 }
                                 else
@@ -405,19 +431,24 @@ namespace Allors.Adapters.Memory
                                     {
                                         var roleIdString = long.Parse(roleIdStringArray[0]);
                                         var role = this.LoadInstantiateStrategy(roleIdString);
-                                        if (role == null || !this.session.MemoryDatabase.ContainsConcreteClass((IComposite)relationType.RoleType.ObjectType, role.UncheckedObjectType))
+                                        if (role == null || !this.session.MemoryDatabase.ContainsConcreteClass(
+                                                (IComposite) relationType.RoleType.ObjectType,
+                                                role.UncheckedObjectType))
                                         {
-                                            this.session.MemoryDatabase.OnRelationNotLoaded(relationType.Id, associationId.ToString(), roleIdStringArray[0]);
+                                            this.session.MemoryDatabase.OnRelationNotLoaded(relationType.Id,
+                                                associationId.ToString(), roleIdStringArray[0]);
                                         }
                                         else
                                         {
                                             if (relationType.RoleType.AssociationType.IsMany)
                                             {
-                                                association.SetCompositeRoleMany2One(relationType.RoleType, role.GetObject());
+                                                association.SetCompositeRoleMany2One(relationType.RoleType,
+                                                    role.GetObject());
                                             }
                                             else
                                             {
-                                                association.SetCompositeRoleOne2One(relationType.RoleType, role.GetObject());
+                                                association.SetCompositeRoleOne2One(relationType.RoleType,
+                                                    role.GetObject());
                                             }
                                         }
                                     }
@@ -428,9 +459,13 @@ namespace Allors.Adapters.Memory
                                         {
                                             var roleId = long.Parse(roleIdString);
                                             var role = this.LoadInstantiateStrategy(roleId);
-                                            if (role == null || !this.session.MemoryDatabase.ContainsConcreteClass((IComposite)relationType.RoleType.ObjectType, role.UncheckedObjectType))
+                                            if (role == null ||
+                                                !this.session.MemoryDatabase.ContainsConcreteClass(
+                                                    (IComposite) relationType.RoleType.ObjectType,
+                                                    role.UncheckedObjectType))
                                             {
-                                                this.session.MemoryDatabase.OnRelationNotLoaded(relationType.Id, associationId.ToString(), roleId.ToString());
+                                                this.session.MemoryDatabase.OnRelationNotLoaded(relationType.Id,
+                                                    associationId.ToString(), roleId.ToString());
                                             }
                                             else
                                             {
@@ -440,11 +475,13 @@ namespace Allors.Adapters.Memory
 
                                         if (relationType.RoleType.AssociationType.IsMany)
                                         {
-                                            association.SetCompositeRolesMany2Many(relationType.RoleType, roleStrategies);
+                                            association.SetCompositeRolesMany2Many(relationType.RoleType,
+                                                roleStrategies);
                                         }
                                         else
                                         {
-                                            association.SetCompositesRoleOne2Many(relationType.RoleType, roleStrategies);
+                                            association.SetCompositesRoleOne2Many(relationType.RoleType,
+                                                roleStrategies);
                                         }
                                     }
                                 }
@@ -452,14 +489,16 @@ namespace Allors.Adapters.Memory
                         }
                         else
                         {
-                            throw new Exception("Unknown child element <" + this.reader.Name + "> in parent element <" + Serialization.RelationTypeComposite + ">");
+                            throw new Exception("Unknown child element <" + this.reader.Name + "> in parent element <" +
+                                                Serialization.RelationTypeComposite + ">");
                         }
 
                         break;
                     case XmlNodeType.EndElement:
                         if (!this.reader.Name.Equals(Serialization.RelationTypeComposite))
                         {
-                            throw new Exception("Expected closing element </" + Serialization.RelationTypeComposite + ">");
+                            throw new Exception("Expected closing element </" + Serialization.RelationTypeComposite +
+                                                ">");
                         }
 
                         return;
@@ -486,7 +525,7 @@ namespace Allors.Adapters.Memory
 
                             if (!this.reader.IsEmptyElement)
                             {
-                                value = this.reader.ReadContentAsString();
+                                value = this.reader.ReadElementContentAsString();
                             }
 
                             this.session.MemoryDatabase.OnRelationNotLoaded(relationTypeId, a, value);
@@ -520,7 +559,7 @@ namespace Allors.Adapters.Memory
                             }
                             else
                             {
-                                var value = this.reader.ReadContentAsString();
+                                var value = this.reader.ReadElementContentAsString();
                                 var rs = value.Split(Serialization.ObjectsSplitterCharArray);
                                 foreach (var r in rs)
                                 {

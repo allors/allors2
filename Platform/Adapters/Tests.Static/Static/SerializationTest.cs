@@ -19,8 +19,6 @@ namespace Allors.Adapters
     using System;
     using System.Globalization;
     using System.IO;
-    using System.Text;
-    using System.Threading;
     using System.Xml;
 
     using Allors;
@@ -31,6 +29,7 @@ namespace Allors.Adapters
 
     public abstract class SerializationTest
     {
+        protected static readonly bool[] TrueFalse = { true, false };
         private static readonly string GuidString = Guid.NewGuid().ToString();
 
         #region population
@@ -66,7 +65,6 @@ namespace Allors.Adapters
         protected Action[] Inits => this.Profile.Inits;
 
         [Fact]
-        [Trait("Category", "Save & Load")]
         public void DifferentVersion()
         {
             foreach (var init in this.Inits)
@@ -169,44 +167,50 @@ namespace Allors.Adapters
         }
 
         [Fact]
-        [Trait("Category", "Save & Load")]
         public void Load()
         {
-            foreach (var init in this.Inits)
+            foreach (var indentation in TrueFalse)
             {
-                init();
-
-                var otherPopulation = this.CreatePopulation();
-                using (var otherSession = otherPopulation.CreateSession())
+                foreach (var init in this.Inits)
                 {
-                    this.Populate(otherSession);
-                    otherSession.Commit();
+                    init();
 
-                    var stringWriter = new StringWriter();
-                    using (var writer = XmlWriter.Create(stringWriter))
+                    var otherPopulation = this.CreatePopulation();
+                    using (var otherSession = otherPopulation.CreateSession())
                     {
-                        otherPopulation.Save(writer);
-                    }
+                        this.Populate(otherSession);
+                        otherSession.Commit();
 
-                    //var xml = stringWriter.ToString();
-                    //Console.Out.WriteLine(xml);
+                        var stringWriter = new StringWriter();
+                        var xmlWriterSettings = new XmlWriterSettings { Indent = indentation };
+                        using (var writer = XmlWriter.Create(stringWriter, xmlWriterSettings))
+                        {
+                            otherPopulation.Save(writer);
+                        }
 
-                    var stringReader = new StringReader(stringWriter.ToString());
-                    using (var reader = XmlReader.Create(stringReader))
-                    {
-                        this.Population.Load(reader);
-                    }
+                        var xml = stringWriter.ToString();
+                        //Console.Out.WriteLine(xml);
 
-                    using (var session = this.Population.CreateSession())
-                    {
-                        this.AssertPopulation(session);
+                        var stringReader = new StringReader(xml);
+                        using (var reader = XmlReader.Create(stringReader))
+                        {
+                            this.Population.Load(reader);
+                        }
+
+
+                        using (var session = this.Population.CreateSession())
+                        {
+                            var x = (C1)session.Instantiate(1);
+                            var str = x.C1AllorsString;
+
+                            this.AssertPopulation(session);
+                        }
                     }
                 }
             }
         }
 
         [Fact]
-        [Trait("Category", "Save & Load")]
         public void LoadVersions()
         {
             foreach (var init in this.Inits)
@@ -272,7 +276,6 @@ namespace Allors.Adapters
         }
 
         [Fact]
-        [Trait("Category", "Save & Load")]
         public void LoadRollback()
         {
             foreach (var init in this.Inits)
@@ -294,7 +297,7 @@ namespace Allors.Adapters
                     var xml = stringWriter.ToString();
                     Console.Out.WriteLine(xml);
 
-                    var stringReader = new StringReader(stringWriter.ToString());
+                    var stringReader = new StringReader(xml);
                     using (var reader = XmlReader.Create(stringReader))
                     {
                         this.Population.Load(reader);
@@ -311,7 +314,6 @@ namespace Allors.Adapters
         }
 
         [Fact]
-        [Trait("Category", "Save & Load")]
         public void LoadDifferenMode()
         {
             foreach (var init in this.Inits)
@@ -379,7 +381,8 @@ namespace Allors.Adapters
                 CultureInfo.CurrentCulture = readCultureInfo;
                 CultureInfo.CurrentUICulture = readCultureInfo;
 
-                var stringReader = new StringReader(stringWriter.ToString());
+                var xml = stringWriter.ToString();
+                var stringReader = new StringReader(xml);
                 using (var reader = XmlReader.Create(stringReader))
                 {
                     this.Population.Load(reader);
@@ -395,7 +398,6 @@ namespace Allors.Adapters
         }
 
         [Fact]
-        [Trait("Category", "Save & Load")]
         public void LoadDifferenVersion()
         {
             foreach (var init in this.Inits)
@@ -502,7 +504,6 @@ namespace Allors.Adapters
         }
 
         [Fact]
-        [Trait("Category", "Save & Load")]
         public void Save()
         {
             foreach (var init in this.Inits)
@@ -539,10 +540,8 @@ namespace Allors.Adapters
                 }
             }
         }
-
-
+        
         [Fact]
-        [Trait("Category", "Save & Load")]
         public void SaveVersions()
         {
             foreach (var init in this.Inits)
@@ -656,7 +655,6 @@ namespace Allors.Adapters
         }
 
         [Fact]
-        [Trait("Category", "Save & Load")]
         public void LoadBinary()
         {
             foreach (var init in this.Inits)
@@ -685,8 +683,7 @@ namespace Allors.Adapters
                     }
 
                     var xml = stringWriter.ToString();
-                    Console.WriteLine(xml);
-
+                   
                     var stringReader = new StringReader(stringWriter.ToString());
                     using (var reader = XmlReader.Create(stringReader))
                     {

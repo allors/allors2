@@ -71,7 +71,7 @@ namespace Allors.Adapters.Object.SqlClient
             this.Class = @class;
             this.ObjectId = objectId;
 
-            this.FlagIsNew = true;
+            this.FlagIsNew = isNew;
             if (isNew)
             {
                 this.FlagExistsKnown = true;

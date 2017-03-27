@@ -19,9 +19,7 @@ namespace Allors.Adapters.Object.SqlClient
     using System;
     using System.Collections;
     using System.Collections.Generic;
-    using System.Data;
     using System.Data.Common;
-    using System.Data.SqlClient;
 
     internal class RelationTableReader : DbDataReader
     {

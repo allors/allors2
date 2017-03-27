@@ -260,7 +260,7 @@ namespace Allors.Adapters.Relation.SqlClient
             {
                 command.CommandType = CommandType.StoredProcedure;
 
-                command.Parameters.Add(Mapping.ParameterNameForCount, Mapping.SqlTypeForCount).Value = count;
+                command.Parameters.Add(Mapping.ParameterNameForCount, Mapping.SqlDbTypeForCount).Value = count;
                 command.Parameters.Add(Mapping.ParameterNameForType, Mapping.SqlDbTypeForType).Value = objectType.Id;
                 command.Parameters.Add(Mapping.ParameterNameForCache, Mapping.SqlDbTypeForCache).Value = Database.CacheDefaultValue;
 

@@ -97,8 +97,6 @@ namespace Allors.Adapters.Relation.SqlClient
                         var objectId = long.Parse(reader.GetValue(0).ToString());
                         objects.Add(objectId);
                     }
-
-                    reader.Close();
                 }
             }
 

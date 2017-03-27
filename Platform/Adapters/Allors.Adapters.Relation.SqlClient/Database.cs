@@ -341,8 +341,11 @@ namespace Allors.Adapters.Relation.SqlClient
 
         private void LoadObjectTypes(XmlReader reader)
         {
-            while (reader.Read())
+            var skip = false;
+            while (skip || reader.Read())
             {
+                skip = false;
+
                 switch (reader.NodeType)
                 {
                     // only process elements, ignore others
@@ -352,6 +355,9 @@ namespace Allors.Adapters.Relation.SqlClient
                             if (!reader.IsEmptyElement)
                             {
                                 this.LoadObjects(reader);
+
+                                skip = reader.IsStartElement() ||
+                                       (reader.NodeType == XmlNodeType.EndElement && reader.Name.Equals(Serialization.Database));
                             }
                         }
                         else
@@ -380,7 +386,7 @@ namespace Allors.Adapters.Relation.SqlClient
 
             if (!reader.IsEmptyElement)
             {
-                var oidsString = reader.ReadString();
+                var oidsString = reader.ReadElementContentAsString();
                 var oids = oidsString.Split(Serialization.ObjectsSplitterCharArray);
 
                 foreach (var oid in oids)
@@ -416,8 +422,11 @@ VALUES (" + Mapping.ParameterNameForObject + "," + Mapping.ParameterNameForType 
 
         private void LoadCompositeRelations(XmlReader reader, IRelationType relationType)
         {
-            while (reader.Read())
+            var skip = false;
+            while (skip || reader.Read())
             {
+                skip = false;
+
                 switch (reader.NodeType)
                 {
                     case XmlNodeType.Element:
@@ -432,7 +441,7 @@ VALUES (" + Mapping.ParameterNameForObject + "," + Mapping.ParameterNameForType 
                             }
                             else
                             {
-                                var value = reader.ReadString();
+                                var value = reader.ReadElementContentAsString();
                                 var roleStrings = value.Split(Serialization.ObjectsSplitterCharArray);
 
                                 if (relationType.RoleType.IsOne && roleStrings.Length > 1)
@@ -460,11 +469,21 @@ VALUES (" + Mapping.ParameterNameForAssociation + "," + Mapping.ParameterNameFor
                                         command.ExecuteNonQuery();
                                     }
                                 }
+
+                                skip = reader.IsStartElement() ||
+                                       (reader.NodeType == XmlNodeType.EndElement && reader.Name.Equals(Serialization.RelationTypeComposite));
+
                             }
                         }
 
                         break;
+
                     case XmlNodeType.EndElement:
+
+                        if (!reader.Name.Equals(Serialization.RelationTypeComposite))
+                        {
+                            throw new Exception("Expected closing element </" + Serialization.Database + ">");
+                        }
                         return;
                 }
             }
@@ -528,8 +547,11 @@ VALUES (" + Mapping.ParameterNameForAssociation + "," + Mapping.ParameterNameFor
 
         private void LoadUnitRelations(XmlReader reader, IRelationType relationType)
         {
-            while (reader.Read())
+            var skip = false;
+            while (skip || reader.Read())
             {
+                skip = false;
+
                 switch (reader.NodeType)
                 {
                     case XmlNodeType.Element:
@@ -570,7 +592,7 @@ VALUES (" + Mapping.ParameterNameForAssociation + "," + Mapping.ParameterNameFor
                             }
                             else
                             {
-                                var value = reader.ReadString();
+                                var value = reader.ReadElementContentAsString();
                                 try
                                 {
                                     // TODO:
@@ -594,11 +616,21 @@ VALUES (" + Mapping.ParameterNameForAssociation + "," + Mapping.ParameterNameFor
                                 {
                                     this.OnRelationNotLoaded(relationType.Id, association.ToString(), value);
                                 }
+
+                                skip = reader.IsStartElement() ||
+                                       (reader.NodeType == XmlNodeType.EndElement && reader.Name.Equals(Serialization.RelationTypeUnit));
+
                             }
                         }
 
                         break;
+
                     case XmlNodeType.EndElement:
+                        if (!reader.Name.Equals(Serialization.RelationTypeComposite))
+                        {
+                            throw new Exception("Expected closing element </" + Serialization.RelationTypeUnit + ">");
+                        }
+
                         return;
                 }
             }
@@ -643,13 +675,14 @@ VALUES (" + Mapping.ParameterNameForAssociation + "," + Mapping.ParameterNameFor
 
                             if (!reader.IsEmptyElement)
                             {
-                                value = reader.ReadString();
+                                value = reader.ReadElementContentAsString();
                             }
 
                             this.OnRelationNotLoaded(metaRelationId, a, value);
                         }
 
                         break;
+
                     case XmlNodeType.EndElement:
                         return;
                 }
@@ -735,8 +768,6 @@ WHERE " + Mapping.ColumnNameForType + "=" + Mapping.ParameterNameForType;
 
                             writer.WriteString(objectId + Serialization.ObjectSplitter + objectVersion);
                         }
-
-                        reader.Close();
                     }
                 }
 

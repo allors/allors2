@@ -148,7 +148,7 @@ namespace Allors.Adapters.Object.SqlClient
             }
 
             var references = this.References;
-            var objects = (IObject[])Array.CreateInstance(type);
+            var objects = (IObject[])Array.CreateInstance(type, references.Length);
             for (var i = 0; i < references.Length; i++)
             {
                 objects[i] = references[i].Strategy.GetObject();

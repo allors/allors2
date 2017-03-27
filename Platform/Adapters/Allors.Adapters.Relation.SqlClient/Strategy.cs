@@ -14,6 +14,8 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
+using System.Linq;
+
 namespace Allors.Adapters.Relation.SqlClient
 {
     using System;
@@ -201,14 +203,7 @@ namespace Allors.Adapters.Relation.SqlClient
             {
                 if (relationType.RoleType.IsMany)
                 {
-                    var roleExtent = value as Extent;
-                    if (roleExtent == null)
-                    {
-                        // TODO: Use Linq
-                        var roleList = new ArrayList((ICollection)value);
-                        roleExtent = (IObject[])roleList.ToArray(typeof(IObject));
-                    }
-
+                    var roleExtent = value as Extent ?? ((ICollection<IObject>)value).ToArray();
                     this.SetCompositeRoles(relationType, roleExtent);
                 }
                 else

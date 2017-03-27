@@ -143,6 +143,7 @@ namespace Allors.Adapters.Object.SqlClient
                         }
 
                         break;
+
                     case XmlNodeType.EndElement:
                         if (!this.reader.Name.Equals(Serialization.Population))
                         {
@@ -191,8 +192,11 @@ namespace Allors.Adapters.Object.SqlClient
 
         private void ReadObjectTypes()
         {
-            while (this.reader.Read())
+            var skip = false;
+            while (skip || this.reader.Read())
             {
+                skip = false;
+
                 switch (this.reader.NodeType)
                 {
                     // only process elements, ignore others
@@ -212,7 +216,7 @@ namespace Allors.Adapters.Object.SqlClient
 
                                 var canLoad = objectType != null && objectType.IsClass;
 
-                                var objectIdsString = this.reader.ReadContentAsString();
+                                var objectIdsString = this.reader.ReadElementContentAsString();
                                 var objectIdStringArray = objectIdsString.Split(Serialization.ObjectsSplitterCharArray);
 
                                 foreach (var objectIdString in objectIdStringArray)
@@ -232,6 +236,9 @@ namespace Allors.Adapters.Object.SqlClient
                                         this.OnObjectNotLoaded(objectTypeId, objectIdString);
                                     }
                                 }
+
+                                skip = reader.IsStartElement() ||
+                                       (reader.NodeType == XmlNodeType.EndElement && this.reader.Name.Equals(Serialization.Database));
                             }
                         }
                         else
@@ -240,6 +247,7 @@ namespace Allors.Adapters.Object.SqlClient
                         }
 
                         break;
+
                     case XmlNodeType.EndElement:
                         if (!this.reader.Name.Equals(Serialization.Database))
                         {
@@ -344,9 +352,7 @@ namespace Allors.Adapters.Object.SqlClient
                             }
                             else
                             {
-                                throw new Exception(
-                                    "Unknown child element <" + this.reader.Name + "> in parent element <"
-                                    + Serialization.Database + ">");
+                                throw new Exception("Unknown child element <" + this.reader.Name + "> in parent element <" + Serialization.Database + ">");
                             }
                         }
 
@@ -364,8 +370,11 @@ namespace Allors.Adapters.Object.SqlClient
 
         private void ReadUnitRelations(IRelationType relationType, Dictionary<long, object> roleByObjectId)
         {
-            while (this.reader.Read())
+            var skip = false;
+            while (skip || this.reader.Read())
             {
+                skip = false;
+
                 switch (this.reader.NodeType)
                 {
                     case XmlNodeType.Element:
@@ -413,7 +422,7 @@ namespace Allors.Adapters.Object.SqlClient
                             }
                             else
                             {
-                                var value = this.reader.ReadContentAsString();
+                                var value = this.reader.ReadElementContentAsString();
                                 if (associationConcreteClass == null || !this.database.ContainsConcreteClass(relationType.AssociationType.ObjectType, associationConcreteClass))
                                 {
                                     this.OnRelationNotLoaded(relationType.Id, associationIdString, value);
@@ -432,6 +441,9 @@ namespace Allors.Adapters.Object.SqlClient
                                         this.OnRelationNotLoaded(relationType.Id, associationIdString, value);
                                     }
                                 }
+
+                                skip = reader.IsStartElement() ||
+                                       (reader.NodeType == XmlNodeType.EndElement && this.reader.Name.Equals(Serialization.RelationTypeUnit));
                             }
                         }
                         else
@@ -440,6 +452,7 @@ namespace Allors.Adapters.Object.SqlClient
                         }
 
                         break;
+
                     case XmlNodeType.EndElement:
                         if (!this.reader.Name.Equals(Serialization.RelationTypeUnit))
                         {
@@ -453,8 +466,11 @@ namespace Allors.Adapters.Object.SqlClient
 
         private void ReadCompositeRelations(IRelationType relationType, Dictionary<long,long> associationIdByRoleId)
         {
-            while (this.reader.Read())
+            var skip = false;
+            while (skip || this.reader.Read())
             {
+                skip = false;
+
                 switch (this.reader.NodeType)
                 {
                     case XmlNodeType.Element:
@@ -471,39 +487,48 @@ namespace Allors.Adapters.Object.SqlClient
                                 throw new Exception("Role is missing");
                             }
 
-                            var associationId = long.Parse(associationIdString);
-                            IObjectType associationConcreteClass;
-                            this.objectTypeByObjectId.TryGetValue(associationId, out associationConcreteClass);
-
-                            var value = this.reader.ReadContentAsString();
-                            var rs = value.Split(Serialization.ObjectsSplitterCharArray);
-
-                            if (associationConcreteClass == null ||
-                                !this.database.ContainsConcreteClass(relationType.AssociationType.ObjectType, associationConcreteClass) ||
-                                (relationType.RoleType.IsOne && rs.Length > 1))
+                            if (!this.reader.IsEmptyElement)
                             {
-                                foreach (var r in rs)
-                                {
-                                    this.OnRelationNotLoaded(relationType.Id, associationIdString, r);
-                                }
-                            }
-                            else
-                            {
-                                foreach (var r in rs)
-                                {
-                                    var roleId = long.Parse(r);
-                                    IObjectType roleConcreteClass;
-                                    this.objectTypeByObjectId.TryGetValue(roleId, out roleConcreteClass);
 
-                                    if (roleConcreteClass == null || !this.database.ContainsConcreteClass(relationType.RoleType.ObjectType, roleConcreteClass))
+                                var associationId = long.Parse(associationIdString);
+                                IObjectType associationConcreteClass;
+                                this.objectTypeByObjectId.TryGetValue(associationId, out associationConcreteClass);
+
+                                var value = this.reader.ReadElementContentAsString();
+                                var rs = value.Split(Serialization.ObjectsSplitterCharArray);
+
+                                if (associationConcreteClass == null ||
+                                    !this.database.ContainsConcreteClass(relationType.AssociationType.ObjectType,associationConcreteClass) ||
+                                    (relationType.RoleType.IsOne && rs.Length > 1))
+                                {
+                                    foreach (var r in rs)
                                     {
                                         this.OnRelationNotLoaded(relationType.Id, associationIdString, r);
                                     }
-                                    else
+                                }
+                                else
+                                {
+                                    foreach (var r in rs)
                                     {
-                                        associationIdByRoleId.Add(roleId, associationId);
+                                        var roleId = long.Parse(r);
+                                        IObjectType roleConcreteClass;
+                                        this.objectTypeByObjectId.TryGetValue(roleId, out roleConcreteClass);
+
+                                        if (roleConcreteClass == null ||
+                                            !this.database.ContainsConcreteClass(relationType.RoleType.ObjectType, roleConcreteClass))
+                                        {
+                                            this.OnRelationNotLoaded(relationType.Id, associationIdString, r);
+                                        }
+                                        else
+                                        {
+                                            associationIdByRoleId.Add(roleId, associationId);
+                                        }
                                     }
                                 }
+
+                                skip = reader.IsStartElement() ||
+                                       (reader.NodeType == XmlNodeType.EndElement &&
+                                        this.reader.Name.Equals(Serialization.RelationTypeComposite));
                             }
                         }
                         else
@@ -525,8 +550,11 @@ namespace Allors.Adapters.Object.SqlClient
 
         private void ReadCompositeRelations(IRelationType relationType, Dictionary<long, object> roleByAssociationId)
         {
-            while (this.reader.Read())
+            var skip = false;
+            while (skip || this.reader.Read())
             {
+                skip = false;
+
                 switch (this.reader.NodeType)
                 {
                     case XmlNodeType.Element:
@@ -547,46 +575,55 @@ namespace Allors.Adapters.Object.SqlClient
                             IObjectType associationConcreteClass;
                             this.objectTypeByObjectId.TryGetValue(associationId, out associationConcreteClass);
 
-                            var value = this.reader.ReadContentAsString();
-                            var rs = value.Split(Serialization.ObjectsSplitterCharArray);
+                            if (!this.reader.IsEmptyElement)
+                            {
 
-                            if (associationConcreteClass == null ||
-                                !this.database.ContainsConcreteClass(relationType.AssociationType.ObjectType, associationConcreteClass) ||
-                                (relationType.RoleType.IsOne && rs.Length > 1))
-                            {
-                                foreach (var r in rs)
+                                var value = this.reader.ReadElementContentAsString();
+                                var rs = value.Split(Serialization.ObjectsSplitterCharArray);
+
+                                if (associationConcreteClass == null ||
+                                    !this.database.ContainsConcreteClass(relationType.AssociationType.ObjectType, associationConcreteClass) ||
+                                    (relationType.RoleType.IsOne && rs.Length > 1))
                                 {
-                                    this.OnRelationNotLoaded(relationType.Id, associationIdString, r);
-                                }
-                            }
-                            else
-                            {
-                                if (relationType.RoleType.IsOne)
-                                {
-                                    var roleId = long.Parse(rs[0]);
-                                    roleByAssociationId.Add(associationId, roleId);
+                                    foreach (var r in rs)
+                                    {
+                                        this.OnRelationNotLoaded(relationType.Id, associationIdString, r);
+                                    }
                                 }
                                 else
                                 {
-                                    var roleList = new List<long>();
-                                    foreach (var r in rs)
+                                    if (relationType.RoleType.IsOne)
                                     {
-                                        var role = long.Parse(r);
-                                        IObjectType roleConcreteClass;
-                                        this.objectTypeByObjectId.TryGetValue(role, out roleConcreteClass);
-
-                                        if (roleConcreteClass == null || !this.database.ContainsConcreteClass(relationType.RoleType.ObjectType, roleConcreteClass))
-                                        {
-                                            this.OnRelationNotLoaded(relationType.Id, associationIdString, r);
-                                        }
-                                        else
-                                        {
-                                            roleList.Add(role);
-                                        }
+                                        var roleId = long.Parse(rs[0]);
+                                        roleByAssociationId.Add(associationId, roleId);
                                     }
+                                    else
+                                    {
+                                        var roleList = new List<long>();
+                                        foreach (var r in rs)
+                                        {
+                                            var role = long.Parse(r);
+                                            IObjectType roleConcreteClass;
+                                            this.objectTypeByObjectId.TryGetValue(role, out roleConcreteClass);
 
-                                    roleByAssociationId.Add(associationId, roleList.ToArray());
+                                            if (roleConcreteClass == null ||
+                                                !this.database.ContainsConcreteClass(relationType.RoleType.ObjectType, roleConcreteClass))
+                                            {
+                                                this.OnRelationNotLoaded(relationType.Id, associationIdString, r);
+                                            }
+                                            else
+                                            {
+                                                roleList.Add(role);
+                                            }
+                                        }
+
+                                        roleByAssociationId.Add(associationId, roleList.ToArray());
+                                    }
                                 }
+
+                                skip = reader.IsStartElement() ||
+                                       (reader.NodeType == XmlNodeType.EndElement &&
+                                        this.reader.Name.Equals(Serialization.RelationTypeComposite));
                             }
                         }
                         else
@@ -756,7 +793,7 @@ namespace Allors.Adapters.Object.SqlClient
 
                             if (!this.reader.IsEmptyElement)
                             {
-                                value = this.reader.ReadContentAsString();
+                                value = this.reader.ReadElementContentAsString();
                             }
 
                             this.OnRelationNotLoaded(relationTypeId, a, value);
@@ -790,7 +827,7 @@ namespace Allors.Adapters.Object.SqlClient
                             }
                             else
                             {
-                                var value = this.reader.ReadContentAsString();
+                                var value = this.reader.ReadElementContentAsString();
                                 var rs = value.Split(Serialization.ObjectsSplitterCharArray);
                                 foreach (var r in rs)
                                 {
