@@ -18,90 +18,19 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-using Allors.Adapters.Memory;
-
 namespace Allors
 {
     using System;
     using System.Globalization;
-    using System.IO;
-    using System.Linq;
-    using System.Threading;
-    using System.Xml;
     using Domain;
     using Meta;
 
     public class Fixture
     {
-        private static string basicXml;
-        private static string fullXml;
-
-        public static string BasicXml
+        public static void Setup(IDatabase database)
         {
-            get
-            {
-                if (basicXml == null)
-                {
-                    SetupBasic();
-                }
-
-                return basicXml;
-            }
-        }
-
-        public static string FullXml
-        {
-            get
-            {
-                if (fullXml == null)
-                {
-                    SetupFull();
-                }
-
-                return fullXml;
-            }
-        }
-
-        private static void SetupBasic()
-        {
-            var configuration = new Configuration { ObjectFactory = Config.ObjectFactory };
-            Config.Default = new Database(configuration);
-
             CultureInfo.CurrentCulture = new CultureInfo("en-GB");
             CultureInfo.CurrentUICulture = new CultureInfo("en-GB");
-
-            var database = Config.Default;
-            database.Init();
-
-            using (var session = database.CreateSession())
-            {
-                new Setup(session, null).Apply();
-                new Security(session).Apply();
-
-                session.Derive(true);
-                session.Commit();
-
-                using (var stringWriter = new StringWriter())
-                {
-                    using (var writer = XmlWriter.Create(stringWriter))
-                    {
-                        database.Save(writer);
-                        basicXml = stringWriter.ToString();
-                    }
-                }
-            }
-        }
-
-        private static void SetupFull()
-        {
-            var configuration = new Configuration { ObjectFactory = Config.ObjectFactory };
-            Config.Default = new Database(configuration);
-
-            CultureInfo.CurrentCulture = new CultureInfo("en-GB");
-            CultureInfo.CurrentUICulture = new CultureInfo("en-GB");
-
-            var database = Config.Default;
-            database.Init();
 
             using (var session = database.CreateSession())
             {
@@ -112,15 +41,6 @@ namespace Allors
 
                 session.Derive(true);
                 session.Commit();
-
-                using (var stringWriter = new StringWriter())
-                {
-                    using (var writer = XmlWriter.Create(stringWriter))
-                    {
-                        database.Save(writer);
-                        basicXml = stringWriter.ToString();
-                    }
-                }
 
                 var singleton = Singleton.Instance(session);
                 singleton.Guest = new PersonBuilder(session).WithUserName("guest").WithLastName("guest").Build();
@@ -216,15 +136,6 @@ namespace Allors
 
                 session.Derive(true);
                 session.Commit();
-
-                using (var stringWriter = new StringWriter())
-                {
-                    using (var writer = XmlWriter.Create(stringWriter))
-                    {
-                        database.Save(writer);
-                        fullXml = stringWriter.ToString();
-                    }
-                }
             }
         }
     }

@@ -22,12 +22,10 @@
 using System;
 using System.Security.Claims;
 using System.Security.Principal;
+using Allors.Adapters.Memory;
 
 namespace Allors
 {
-    using System.IO;
-    using System.Xml;
-
     using Allors.Meta;
 
     public class DomainTest : IDisposable
@@ -40,18 +38,18 @@ namespace Allors
 
         public DomainTest(bool setup)
         {
+            var configuration = new Configuration { ObjectFactory = Config.ObjectFactory };
+            Config.Default = new Database(configuration);
+
+            var database = Config.Default;
+            database.Init();
+
             if (setup)
             {
-                var stringReader = new StringReader(Fixture.FullXml);
-                var reader = XmlReader.Create(stringReader);
-                Config.Default.Load(reader);
-            }
-            else
-            {
-                Config.Default.Init();
+                Fixture.Setup(database);
             }
 
-            this.databaseSession = Config.Default.CreateSession();
+            this.databaseSession = database.CreateSession();
         }
 
         public void Dispose()
