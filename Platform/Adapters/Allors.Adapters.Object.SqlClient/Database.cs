@@ -14,8 +14,6 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-using System.Configuration;
-
 namespace Allors.Adapters.Object.SqlClient
 {
     using System;

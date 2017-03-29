@@ -173,6 +173,7 @@ namespace Allors.Repository
         [Indexed]
 
         public Product[] ProductIncompatibilities { get; set; }
+
         #region Allors
         [Id("f52c0b7e-dbc4-4082-a2b9-9b1a05ce7179")]
         [AssociationId("50478ca9-3eb4-487b-8c8a-6ff48d9155b5")]
@@ -180,7 +181,6 @@ namespace Allors.Repository
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
-
         public Media Photo { get; set; }
 
 
