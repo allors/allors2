@@ -1,8 +1,7 @@
 namespace Allors.Repository
 {
     using System;
-
-    using Allors.Repository.Attributes;
+    using Attributes;
 
     #region Allors
     [Id("6c255f71-ce18-4d51-b0d9-e402ec0e570e")]
@@ -17,6 +16,14 @@ namespace Allors.Repository
         public Permission[] DeniedPermissions { get; set; }
 
         public SecurityToken[] SecurityTokens { get; set; }
+
+        public User CreatedBy { get; set; }
+
+        public User LastModifiedBy { get; set; }
+
+        public DateTime CreationDate { get; set; }
+
+        public DateTime LastModifiedDate { get; set; }
 
         #endregion
 

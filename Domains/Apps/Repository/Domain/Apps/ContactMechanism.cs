@@ -1,13 +1,11 @@
 namespace Allors.Repository
 {
-    using System;
-
-    using Allors.Repository.Attributes;
+    using Attributes;
 
     #region Allors
     [Id("b033f9c9-c799-485c-a199-914a9e9119d9")]
     #endregion
-	public partial interface ContactMechanism : AccessControlledObject, Deletable 
+	public partial interface ContactMechanism : Auditable, Deletable 
     {
 
 

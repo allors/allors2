@@ -1,13 +1,13 @@
 namespace Allors.Repository
 {
     using System;
+    using Attributes;
 
-    using Allors.Repository.Attributes;
 
     #region Allors
     [Id("b05371ff-0c9e-4ee3-b31d-e2edeed8649e")]
     #endregion
-    public partial interface CommunicationEvent : Transitional, Deletable, Commentable, UniquelyIdentifiable
+    public partial interface CommunicationEvent : Transitional, Deletable, Commentable, UniquelyIdentifiable, Auditable
     {
         #region Allors
         [Id("7535B38A-A9EE-4990-B80B-10B83E29999D")]

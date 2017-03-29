@@ -1,8 +1,7 @@
 namespace Allors.Repository
 {
     using System;
-
-    using Allors.Repository.Attributes;
+    using Attributes;
 
     #region Allors
     [Id("5459f555-cf6a-49c1-8015-b43cad74da17")]
@@ -35,7 +34,23 @@ namespace Allors.Repository
 
         public SecurityToken[] SecurityTokens { get; set; }
 
+        public ObjectState PreviousObjectState { get; set; }
+
+        public ObjectState LastObjectState { get; set; }
+
         #endregion
+
+        #region Allors
+        [Id("11822B78-6C35-42E3-A2FC-56C09D83912E")]
+        [AssociationId("5EDCD272-B32B-452C-88C0-43B074A4FB51")]
+        [RoleId("14D5DB87-1F9E-4320-BF18-885A00F60BB6")]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Derived]
+        [Indexed]
+        [Required]
+
+        public StatementOfWorkObjectState CurrentObjectState { get; set; }
 
         #region inherited methods
 

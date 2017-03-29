@@ -1,8 +1,7 @@
 namespace Allors.Repository
 {
     using System;
-
-    using Allors.Repository.Attributes;
+    using Attributes;
 
     public partial class Person : Party, Deletable 
     {
@@ -94,6 +93,14 @@ namespace Allors.Repository
         public Currency PreferredCurrency { get; set; }
 
         public VatRegime VatRegime { get; set; }
+
+        public User CreatedBy { get; set; }
+
+        public User LastModifiedBy { get; set; }
+
+        public DateTime CreationDate { get; set; }
+
+        public DateTime LastModifiedDate { get; set; }
 
         #endregion
 

@@ -1,8 +1,7 @@
 namespace Allors.Repository
 {
     using System;
-
-    using Allors.Repository.Attributes;
+    using Attributes;
 
     #region Allors
     [Id("d54b4bba-a84c-4826-85ba-7340714035c7")]
@@ -23,6 +22,14 @@ namespace Allors.Repository
         public decimal Longitude { get; set; }
 
         public Guid UniqueId { get; set; }
+
+        public User CreatedBy { get; set; }
+
+        public User LastModifiedBy { get; set; }
+
+        public DateTime CreationDate { get; set; }
+
+        public DateTime LastModifiedDate { get; set; }
 
         #endregion
 

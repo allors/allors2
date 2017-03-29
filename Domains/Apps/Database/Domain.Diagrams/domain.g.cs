@@ -121,6 +121,17 @@ namespace Allors.Domain
 						global::System.String Description {set;}
 
 		}
+		public interface Auditable  : AccessControlledObject 
+		{
+						User CreatedBy {set;}
+
+						User LastModifiedBy {set;}
+
+						global::System.DateTime? CreationDate {set;}
+
+						global::System.DateTime? LastModifiedDate {set;}
+
+		}
 		public interface Budget  : Period, Commentable, UniquelyIdentifiable, Transitional 
 		{
 						global::System.String Description {set;}
@@ -153,7 +164,7 @@ namespace Allors.Domain
 		public interface CommunicationAttachment  : AccessControlledObject 
 		{
 		}
-		public interface CommunicationEvent  : Transitional, Deletable, Commentable, UniquelyIdentifiable 
+		public interface CommunicationEvent  : Transitional, Deletable, Commentable, UniquelyIdentifiable, Auditable 
 		{
 						SecurityToken OwnerSecurityToken {set;}
 
@@ -206,7 +217,7 @@ namespace Allors.Domain
 						global::System.DateTime? ActualStart {set;}
 
 		}
-		public interface ContactMechanism  : AccessControlledObject, Deletable 
+		public interface ContactMechanism  : Auditable, Deletable 
 		{
 						global::System.String Description {set;}
 
@@ -643,7 +654,7 @@ namespace Allors.Domain
 						global::System.String Description {set;}
 
 		}
-		public interface Party  : Localised, AccessControlledObject, UniquelyIdentifiable 
+		public interface Party  : Localised, Auditable, UniquelyIdentifiable 
 		{
 						PostalAddress GeneralCorrespondence {set;}
 
@@ -978,7 +989,7 @@ namespace Allors.Domain
 						VatRate VatRate {set;}
 
 		}
-		public interface Quote  : AccessControlledObject 
+		public interface Quote  : Transitional 
 		{
 						global::System.DateTime? ValidFromDate {set;}
 
@@ -3012,7 +3023,7 @@ namespace Allors.Domain
 						Employment Employment {set;}
 
 		}
-		public interface PartyContactMechanism  : Commentable, AccessControlledObject, Period, Deletable 
+		public interface PartyContactMechanism  : Commentable, Auditable, Period, Deletable 
 		{
 						ContactMechanismPurpose ContactPurpose {set;}
 
@@ -3477,23 +3488,6 @@ namespace Allors.Domain
 		public interface Priority  : Enumeration 
 		{
 		}
-		public interface ProductCharacteristicValue  : Localised 
-		{
-						ProductCharacteristic ProductCharacteristic {set;}
-
-						global::System.String Value {set;}
-
-		}
-		public interface ProductCharacteristic  : Enumeration 
-		{
-		}
-		public interface ProductType  : UniquelyIdentifiable, AccessControlledObject 
-		{
-						ProductCharacteristic ProductCharacteristics {set;}
-
-						global::System.String Name {set;}
-
-		}
 		public interface ProductCategory  : AccessControlledObject, UniquelyIdentifiable 
 		{
 						Package Package {set;}
@@ -3545,6 +3539,16 @@ namespace Allors.Domain
 						InternalOrganisation InternalOrganisation {set;}
 
 						ProductCategory ProductCategory {set;}
+
+		}
+		public interface ProductCharacteristic  : Enumeration 
+		{
+		}
+		public interface ProductCharacteristicValue  : Localised 
+		{
+						ProductCharacteristic ProductCharacteristic {set;}
+
+						global::System.String Value {set;}
 
 		}
 		public interface ProductConfiguration  : ProductAssociation 
@@ -3603,6 +3607,11 @@ namespace Allors.Domain
 		}
 		public interface ProductQuote  : Quote 
 		{
+						ProductQuoteObjectState CurrentObjectState {set;}
+
+		}
+		public interface ProductQuoteObjectState  : ObjectState 
+		{
 		}
 		public interface ProductRequirement  : Requirement 
 		{
@@ -3639,6 +3648,13 @@ namespace Allors.Domain
 						Product Product {set;}
 
 		}
+		public interface ProductType  : UniquelyIdentifiable, AccessControlledObject 
+		{
+						ProductCharacteristic ProductCharacteristics {set;}
+
+						global::System.String Name {set;}
+
+		}
 		public interface ProfessionalAssignment  : AccessControlledObject, Period 
 		{
 						Person Professional {set;}
@@ -3671,6 +3687,11 @@ namespace Allors.Domain
 		{
 		}
 		public interface Proposal  : Quote 
+		{
+						ProposalObjectState CurrentObjectState {set;}
+
+		}
+		public interface ProposalObjectState  : ObjectState 
 		{
 		}
 		public interface ProspectRelationship  : PartyRelationship 
@@ -4678,6 +4699,11 @@ namespace Allors.Domain
 
 		}
 		public interface StatementOfWork  : Quote 
+		{
+						StatementOfWorkObjectState CurrentObjectState {set;}
+
+		}
+		public interface StatementOfWorkObjectState  : ObjectState 
 		{
 		}
 		public interface Store  : UniquelyIdentifiable, AccessControlledObject 

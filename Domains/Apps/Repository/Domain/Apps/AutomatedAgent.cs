@@ -1,7 +1,6 @@
 namespace Allors.Repository
 {
     using System;
-
     using Allors.Repository.Attributes;
 
     #region Allors
@@ -118,6 +117,14 @@ namespace Allors.Repository
         public VatRegime VatRegime { get; set; }
 
         public Guid UniqueId { get; set; }
+
+        public User CreatedBy { get; set; }
+
+        public User LastModifiedBy { get; set; }
+
+        public DateTime CreationDate { get; set; }
+
+        public DateTime LastModifiedDate { get; set; }
 
         #endregion
 

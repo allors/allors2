@@ -155,7 +155,6 @@
     <Compile Include="..\..\..\Core\Repository\Domain\Core\Object.cs">
       <Link>Core\Object.cs</Link>
     </Compile>
-    <Compile Include="Apps\AssemblyInfo.cs" />
     <Compile Include="Apps\AccountAdjustment.cs" />
     <Compile Include="Apps\AccountingPeriod.cs" />
     <Compile Include="Apps\AccountingTransaction.cs" />
@@ -173,7 +172,9 @@
     <Compile Include="Apps\AgreementTerm.cs" />
     <Compile Include="Apps\Amortization.cs" />
     <Compile Include="Apps\AmountDue.cs" />
+    <Compile Include="Apps\AssemblyInfo.cs" />
     <Compile Include="Apps\AssetAssignmentStatus.cs" />
+    <Compile Include="Apps\Auditable.cs" />
     <Compile Include="Apps\AutomatedAgent.cs" />
     <Compile Include="Apps\Bank.cs" />
     <Compile Include="Apps\BankAccount.cs" />
@@ -182,7 +183,6 @@
     <Compile Include="Apps\Benefit.cs" />
     <Compile Include="Apps\BillingAccount.cs" />
     <Compile Include="Apps\BillOfLading.cs" />
-    <Compile Include="Apps\Currency.cs" />
     <Compile Include="Apps\Bin.cs" />
     <Compile Include="Apps\Brand.cs" />
     <Compile Include="Apps\Budget.cs" />
@@ -227,6 +227,7 @@
     <Compile Include="Apps\CreditCard.cs" />
     <Compile Include="Apps\CreditCardCompany.cs" />
     <Compile Include="Apps\CreditLine.cs" />
+    <Compile Include="Apps\Currency.cs" />
     <Compile Include="Apps\CustomEngagementItem.cs" />
     <Compile Include="Apps\CustomerRelationship.cs" />
     <Compile Include="Apps\CustomerRequirement.cs" />
@@ -460,14 +461,13 @@
     <Compile Include="Apps\Printable.cs" />
     <Compile Include="Apps\PrintQueue.cs" />
     <Compile Include="Apps\Priority.cs" />
-    <Compile Include="Apps\ProductCharacteristicValue.cs" />
-    <Compile Include="Apps\ProductCharacteristic.cs" />
-    <Compile Include="Apps\ProductType.cs" />
     <Compile Include="Apps\Product.cs" />
     <Compile Include="Apps\ProductAssociation.cs" />
     <Compile Include="Apps\ProductCategory.cs" />
     <Compile Include="Apps\ProductCategoryRevenue.cs" />
     <Compile Include="Apps\ProductCategoryRevenueHistory.cs" />
+    <Compile Include="Apps\ProductCharacteristic.cs" />
+    <Compile Include="Apps\ProductCharacteristicValue.cs" />
     <Compile Include="Apps\ProductConfiguration.cs" />
     <Compile Include="Apps\ProductDeliverySkillRequirement.cs" />
     <Compile Include="Apps\ProductDrawing.cs" />
@@ -478,9 +478,11 @@
     <Compile Include="Apps\ProductPurchasePrice.cs" />
     <Compile Include="Apps\ProductQuality.cs" />
     <Compile Include="Apps\ProductQuote.cs" />
+    <Compile Include="Apps\ProductQuoteObjectState.cs" />
     <Compile Include="Apps\ProductRequirement.cs" />
     <Compile Include="Apps\ProductRevenue.cs" />
     <Compile Include="Apps\ProductRevenueHistory.cs" />
+    <Compile Include="Apps\ProductType.cs" />
     <Compile Include="Apps\ProfessionalAssignment.cs" />
     <Compile Include="Apps\ProfessionalPlacement.cs" />
     <Compile Include="Apps\ProfessionalServicesRelationship.cs" />
@@ -489,6 +491,7 @@
     <Compile Include="Apps\ProjectRequirement.cs" />
     <Compile Include="Apps\Property.cs" />
     <Compile Include="Apps\Proposal.cs" />
+    <Compile Include="Apps\ProposalObjectState.cs" />
     <Compile Include="Apps\ProspectRelationship.cs" />
     <Compile Include="Apps\Province.cs" />
     <Compile Include="Apps\PurchaseAgreement.cs" />
@@ -599,6 +602,7 @@
     <Compile Include="Apps\StandardServiceOrderItem.cs" />
     <Compile Include="Apps\State.cs" />
     <Compile Include="Apps\StatementOfWork.cs" />
+    <Compile Include="Apps\StatementOfWorkObjectState.cs" />
     <Compile Include="Apps\Store.cs" />
     <Compile Include="Apps\StoreRevenue.cs" />
     <Compile Include="Apps\StoreRevenueHistory.cs" />

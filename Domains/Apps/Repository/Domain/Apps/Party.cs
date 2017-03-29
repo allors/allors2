@@ -1,14 +1,13 @@
 namespace Allors.Repository
 {
     using System;
-
-    using Allors.Repository.Attributes;
+    using Attributes;
 
     #region Allors
     [Id("3bba6e5a-dc2d-4838-b6c4-881f6c8c3013")]
     #endregion
     [Plural("Parties")]
-    public partial interface Party : Localised, AccessControlledObject, UniquelyIdentifiable 
+    public partial interface Party : Localised, Auditable, UniquelyIdentifiable 
     {
         #region Allors
         [Id("008618c4-6252-4643-a0a8-e736f9288946")]

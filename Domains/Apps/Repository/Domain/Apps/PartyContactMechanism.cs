@@ -1,13 +1,12 @@
 namespace Allors.Repository
 {
     using System;
-
-    using Allors.Repository.Attributes;
+    using Attributes;
 
     #region Allors
     [Id("ca633037-ba1e-4304-9f2c-3353c287474b")]
     #endregion
-    public partial class PartyContactMechanism : Commentable, AccessControlledObject, Period, Deletable 
+    public partial class PartyContactMechanism : Commentable, Auditable, Period, Deletable 
     {
         #region inherited properties
         public string Comment { get; set; }
@@ -19,6 +18,14 @@ namespace Allors.Repository
         public DateTime FromDate { get; set; }
 
         public DateTime ThroughDate { get; set; }
+
+        public User CreatedBy { get; set; }
+
+        public User LastModifiedBy { get; set; }
+
+        public DateTime CreationDate { get; set; }
+
+        public DateTime LastModifiedDate { get; set; }
 
         #endregion
 
@@ -77,6 +84,5 @@ namespace Allors.Repository
 
         public void Delete(){}
         #endregion
-
     }
 }
