@@ -1,4 +1,4 @@
-// --------------------------------------------------------------------------------------------------------------------
+﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="TestPopulation.cs" company="Allors bvba">
 //   Copyright 2002-2012 Allors bvba.
 // Dual Licensed under
@@ -63,81 +63,81 @@ namespace Allors.Adapters
 
             // String
             // class
-            this.C1B.C1AllorsString = "Abra";
-            this.C1C.C1AllorsString = "Abracadabra";
-            this.C1D.C1AllorsString = "Abracadabra";
+            this.C1B.C1AllorsString = "ᴀbra";
+            this.C1C.C1AllorsString = "ᴀbracadabra";
+            this.C1D.C1AllorsString = "ᴀbracadabra";
 
-            this.C1A.C1StringEquals = "Abra";
-            this.C1B.C1StringEquals = "Abra";
-            this.C1C.C1StringEquals = "Abra";
+            this.C1A.C1StringEquals = "ᴀbra";
+            this.C1B.C1StringEquals = "ᴀbra";
+            this.C1C.C1StringEquals = "ᴀbra";
 
-            this.C2B.C2AllorsString = "Abra";
-            this.C2C.C2AllorsString = "Abracadabra";
-            this.C2D.C2AllorsString = "Abracadabra";
+            this.C2B.C2AllorsString = "ᴀbra";
+            this.C2C.C2AllorsString = "ᴀbracadabra";
+            this.C2D.C2AllorsString = "ᴀbracadabra";
 
-            this.C3B.C3AllorsString = "Abra";
-            this.C3C.C3AllorsString = "Abracadabra";
-            this.C3D.C3AllorsString = "Abracadabra";
+            this.C3B.C3AllorsString = "ᴀbra";
+            this.C3C.C3AllorsString = "ᴀbracadabra";
+            this.C3D.C3AllorsString = "ᴀbracadabra";
 
-            this.C3A.C3StringEquals = "Abra";
-            this.C3B.C3StringEquals = "Abra";
-            this.C3C.C3StringEquals = "Abra";
+            this.C3A.C3StringEquals = "ᴀbra";
+            this.C3B.C3StringEquals = "ᴀbra";
+            this.C3C.C3StringEquals = "ᴀbra";
 
             // exclusive interface
-            this.C1B.I1AllorsString = "Abra";
-            this.C1C.I1AllorsString = "Abracadabra";
-            this.C1D.I1AllorsString = "Abracadabra";
+            this.C1B.I1AllorsString = "ᴀbra";
+            this.C1C.I1AllorsString = "ᴀbracadabra";
+            this.C1D.I1AllorsString = "ᴀbracadabra";
 
-            this.C1A.I1StringEquals = "Abra";
-            this.C1B.I1StringEquals = "Abra";
-            this.C1C.I1StringEquals = "Abra";
+            this.C1A.I1StringEquals = "ᴀbra";
+            this.C1B.I1StringEquals = "ᴀbra";
+            this.C1C.I1StringEquals = "ᴀbra";
 
-            this.C3B.I3AllorsString = "Abra";
-            this.C3C.I3AllorsString = "Abracadabra";
-            this.C3D.I3AllorsString = "Abracadabra";
+            this.C3B.I3AllorsString = "ᴀbra";
+            this.C3C.I3AllorsString = "ᴀbracadabra";
+            this.C3D.I3AllorsString = "ᴀbracadabra";
 
-            this.C3A.I3StringEquals = "Abra";
-            this.C3B.I3StringEquals = "Abra";
-            this.C3C.I3StringEquals = "Abra";
+            this.C3A.I3StringEquals = "ᴀbra";
+            this.C3B.I3StringEquals = "ᴀbra";
+            this.C3C.I3StringEquals = "ᴀbra";
 
             // shared interface
-            this.C1B.I12AllorsString = "Abra";
-            this.C1C.I12AllorsString = "Abracadabra";
-            this.C1D.I12AllorsString = "Abracadabra";
-            this.C2B.I12AllorsString = "Abra";
-            this.C2C.I12AllorsString = "Abracadabra";
-            this.C2D.I12AllorsString = "Abracadabra";
+            this.C1B.I12AllorsString = "ᴀbra";
+            this.C1C.I12AllorsString = "ᴀbracadabra";
+            this.C1D.I12AllorsString = "ᴀbracadabra";
+            this.C2B.I12AllorsString = "ᴀbra";
+            this.C2C.I12AllorsString = "ᴀbracadabra";
+            this.C2D.I12AllorsString = "ᴀbracadabra";
 
-            this.C2B.I23AllorsString = "Abra";
-            this.C2C.I23AllorsString = "Abracadabra";
-            this.C2D.I23AllorsString = "Abracadabra";
-            this.C3B.I23AllorsString = "Abra";
-            this.C3C.I23AllorsString = "Abracadabra";
-            this.C3D.I23AllorsString = "Abracadabra";
+            this.C2B.I23AllorsString = "ᴀbra";
+            this.C2C.I23AllorsString = "ᴀbracadabra";
+            this.C2D.I23AllorsString = "ᴀbracadabra";
+            this.C3B.I23AllorsString = "ᴀbra";
+            this.C3C.I23AllorsString = "ᴀbracadabra";
+            this.C3D.I23AllorsString = "ᴀbracadabra";
 
-            this.C3B.I34AllorsString = "Abra";
-            this.C3C.I34AllorsString = "Abracadabra";
-            this.C3D.I34AllorsString = "Abracadabra";
-            this.C4B.I34AllorsString = "Abra";
-            this.C4C.I34AllorsString = "Abracadabra";
-            this.C4D.I34AllorsString = "Abracadabra";
+            this.C3B.I34AllorsString = "ᴀbra";
+            this.C3C.I34AllorsString = "ᴀbracadabra";
+            this.C3D.I34AllorsString = "ᴀbracadabra";
+            this.C4B.I34AllorsString = "ᴀbra";
+            this.C4C.I34AllorsString = "ᴀbracadabra";
+            this.C4D.I34AllorsString = "ᴀbracadabra";
 
-            this.C1B.S1AllorsString = "Abra";
-            this.C1C.S1AllorsString = "Abracadabra";
-            this.C1D.S1AllorsString = "Abracadabra";
+            this.C1B.S1AllorsString = "ᴀbra";
+            this.C1C.S1AllorsString = "ᴀbracadabra";
+            this.C1D.S1AllorsString = "ᴀbracadabra";
 
-            this.C1B.S1234AllorsString = "Abra";
-            this.C1C.S1234AllorsString = "Abracadabra";
-            this.C1D.S1234AllorsString = "Abracadabra";
-            this.C2B.S1234AllorsString = "Abra";
-            this.C2C.S1234AllorsString = "Abracadabra";
-            this.C2D.S1234AllorsString = "Abracadabra";
-            this.C3B.S1234AllorsString = "Abra";
-            this.C3C.S1234AllorsString = "Abracadabra";
-            this.C3D.S1234AllorsString = "Abracadabra";
-            this.C4B.S1234AllorsString = "Abra";
-            this.C4C.S1234AllorsString = "Abracadabra";
-            this.C4D.S1234AllorsString = "Abracadabra";
+            this.C1B.S1234AllorsString = "ᴀbra";
+            this.C1C.S1234AllorsString = "ᴀbracadabra";
+            this.C1D.S1234AllorsString = "ᴀbracadabra";
+            this.C2B.S1234AllorsString = "ᴀbra";
+            this.C2C.S1234AllorsString = "ᴀbracadabra";
+            this.C2D.S1234AllorsString = "ᴀbracadabra";
+            this.C3B.S1234AllorsString = "ᴀbra";
+            this.C3C.S1234AllorsString = "ᴀbracadabra";
+            this.C3D.S1234AllorsString = "ᴀbracadabra";
+            this.C4B.S1234AllorsString = "ᴀbra";
+            this.C4C.S1234AllorsString = "ᴀbracadabra";
+            this.C4D.S1234AllorsString = "ᴀbracadabra";
 
             // Integer
             this.C1B.C1AllorsInteger = 1;

@@ -19,17 +19,19 @@
 // <summary>Defines the DomainTest type.</summary>
 //-------------------------------------------------------------------------------------------------
 
-using System;
-using System.Security.Claims;
-using System.Security.Principal;
-using Allors.Adapters.Memory;
-
 namespace Allors
 {
     using Allors.Meta;
+    using System;
+    using System.Reflection;
+    using System.Security.Claims;
+    using System.Security.Principal;
+    using Allors.Domain;
 
     public class DomainTest : IDisposable
     {
+        protected ObjectFactory ObjectFactory => new ObjectFactory(MetaPopulation.Instance, typeof(Singleton).GetTypeInfo().Assembly, typeof(Singleton).Namespace);
+        
         private ISession databaseSession;
 
         public DomainTest() : this(true)
@@ -38,10 +40,8 @@ namespace Allors
 
         public DomainTest(bool setup)
         {
-            var configuration = new Configuration { ObjectFactory = Config.ObjectFactory };
-            Config.Default = new Database(configuration);
-
-            var database = Config.Default;
+            var configuration = new Allors.Adapters.Memory.Configuration { ObjectFactory = this.ObjectFactory };
+            var database = new Allors.Adapters.Memory.Database(configuration);
             database.Init();
 
             if (setup)

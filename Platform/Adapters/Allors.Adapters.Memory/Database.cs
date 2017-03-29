@@ -59,52 +59,21 @@ namespace Allors.Adapters.Memory
             get { return this.id; }
         }
 
-        public bool IsDatabase
-        {
-            get
-            {
-                return true;
-            }
-        }
+        public bool IsDatabase => true;
 
-        public bool IsWorkspace
-        {
-            get
-            {
-                return false;
-            }
-        }
+        public bool IsWorkspace => false;
 
-        public bool IsShared
-        {
-            get
-            {
-                return false;
-            }
-        }
-        
-        public IObjectFactory ObjectFactory
-        {
-            get
-            {
-                return this.objectFactory;
-            }
-        }
+        public bool IsShared => false;
 
-        public IMetaPopulation MetaPopulation 
-        {
-            get
-            {
-                return this.objectFactory.MetaPopulation;
-            }
-        }
+        public IObjectFactory ObjectFactory => this.objectFactory;
+
+        public IMetaPopulation MetaPopulation => this.objectFactory.MetaPopulation;
+
+        public IDatabase Serializable => null;
 
         internal bool IsLoading { get; private set; }
 
-        protected virtual Memory.Session Session
-        {
-            get { return this.session ?? (this.session = new Session(this)); }
-        }
+        protected virtual Memory.Session Session => this.session ?? (this.session = new Session(this));
 
         public object this[string name]
         {

@@ -124,7 +124,7 @@ namespace Allors.Domain
                 { "ln", "Lingala", "Lingála"},
                 { "lo", "Lao", "ພາສາລາວ"},
                 { "lt", "Lithuanian", "lietuvių kalba"},
-                { "lu", "Luba-Katanga", ""},
+                { "lu", "Luba-Katanga", "Luba-Katanga"},
                 { "lv", "Latvian", "latviešu valoda"},
                 { "gv", "Manx", "Gaelg, Gailck"},
                 { "mk", "Macedonian", "македонски јазик"},

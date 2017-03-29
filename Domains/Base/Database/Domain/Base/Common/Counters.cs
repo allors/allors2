@@ -33,9 +33,10 @@ namespace Allors.Domain
         
         public static int NextValue(ISession session, Guid counterId)
         {
-            if (Config.Serializable != null)
+            var serializable = session.Database.Serializable;
+            if (serializable != null)
             {
-                using (var counterSession = Config.Serializable.CreateSession())
+                using (var counterSession = serializable.CreateSession())
                 {
                     var serializableCounter = new Counters(counterSession).Cache[counterId];
                     var newValue = serializableCounter.Value + 1;
@@ -55,9 +56,10 @@ namespace Allors.Domain
 
         public static int NextElfProefValue(ISession session, Guid counterId)
         {
-            if (Config.Serializable != null)
+            var serializable = session.Database.Serializable;
+            if (serializable != null)
             {
-                using (var counterSession = Config.Default.CreateSession())
+                using (var counterSession = serializable.CreateSession())
                 {
                     var serializableCounter = new Counters(counterSession).Cache[counterId];
                     var newValue = serializableCounter.Value + 1;

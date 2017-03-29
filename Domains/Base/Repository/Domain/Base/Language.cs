@@ -42,7 +42,7 @@ namespace Allors.Repository
         #endregion
         [Indexed]
         [Required]
-        [Unique]
+        // [Unique] If Unique is enabled then make sure your database supports the range of unicode characters (e.g. use collation 'Latin1_General_100_CI_AS_SC' in sql server)
         [Size(256)]
         public string NativeName { get; set; }
 

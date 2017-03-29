@@ -1541,10 +1541,7 @@ namespace Allors.Domain
                 new CountryBuilder(this.Session)
                     .WithName(data[i, 0])
                     .WithIsoCode(data[i, 1])
-                    .WithAbbreviation(data[i, 2]) // Abbreviation shoud be IsCode3Chars
                     .Build();
-
-                // TODO: Country number
             }
             
             var currencyCodeByCountryCode = new Dictionary<string, string>

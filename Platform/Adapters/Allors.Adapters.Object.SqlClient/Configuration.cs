@@ -18,7 +18,7 @@ namespace Allors.Adapters.Object.SqlClient
 {
     using System.Data;
 
-    using Adapters.Object.SqlClient.Caching;
+    using Caching;
 
     public class Configuration : Adapters.Configuration
     {
@@ -41,5 +41,7 @@ namespace Allors.Adapters.Object.SqlClient
         public IsolationLevel IsolationLevel { get; set; }
 
         public string SchemaName { get; set; }
+
+        public IDatabase Serializable { get; set; }
     }
 }

@@ -33,8 +33,6 @@ namespace Allors.Adapters.Object.SqlClient
 
     public class Database : IDatabase
     {
-        private const string ConnectionStringsKey = "allors";
-
         public static readonly long[] EmptyObjectIds = { };
 
         private readonly object lockObject = new object();
@@ -42,8 +40,6 @@ namespace Allors.Adapters.Object.SqlClient
         private readonly IObjectFactory objectFactory;
 
         private readonly Dictionary<IObjectType, HashSet<IObjectType>> concreteClassesByObjectType;
-
-        private readonly string connectionString;
 
         private readonly Dictionary<IObjectType, IRoleType[]> sortedUnitRolesByObjectType;
 
@@ -77,9 +73,10 @@ namespace Allors.Adapters.Object.SqlClient
 
             this.concreteClassesByObjectType = new Dictionary<IObjectType, HashSet<IObjectType>>();
             
-            this.connectionString = configuration.ConnectionString;
             this.CommandTimeout = configuration.CommandTimeout;
             this.IsolationLevel = configuration.IsolationLevel;
+
+            this.Serializable = configuration.Serializable;
 
             this.sortedUnitRolesByObjectType = new Dictionary<IObjectType, IRoleType[]>();
 
@@ -173,6 +170,8 @@ namespace Allors.Adapters.Object.SqlClient
                 return this.objectFactory.MetaPopulation;
             }
         }
+
+        public IDatabase Serializable { get; }
 
         public bool IsDatabase
         {

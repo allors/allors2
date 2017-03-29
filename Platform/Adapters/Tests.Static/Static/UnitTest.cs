@@ -1,4 +1,4 @@
-// --------------------------------------------------------------------------------------------------------------------
+﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="UnitTest.cs" company="Allors bvba">
 //   Copyright 2002-2012 Allors bvba.
 // Dual Licensed under
@@ -1653,7 +1653,7 @@ namespace Allors.Adapters
                 }
             }
         }
-
+        
         [Fact]
         public void AllorsSmallStringWeakReference()
         {

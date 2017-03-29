@@ -210,7 +210,7 @@
     <Analyzer Include="..\packages\Microsoft.CodeAnalysis.Analyzers.1.1.0\analyzers\dotnet\cs\Microsoft.CodeAnalysis.CSharp.Analyzers.dll" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\Platform\Repository\Attributes\Attributes.csproj">
+    <ProjectReference Include="..\..\Attributes\Attributes.csproj">
       <Project>{5db05e81-88cc-4d0d-92f8-18a8ecb50bc2}</Project>
       <Name>Attributes</Name>
     </ProjectReference>

@@ -84,6 +84,13 @@ namespace Allors
         IMetaPopulation MetaPopulation { get; }
 
         /// <summary>
+        /// Gets the Serializable alias for this Database if it exists.
+        /// If this Database is the Serializable alias then this property should return null;
+        /// </summary>
+        IDatabase Serializable { get; }
+
+
+        /// <summary>
         /// Population properties are simple key/value pairs.
         /// Because Allors objects can not hold instance variables, this is the only way
         /// for Allors objects to hold references to Non Allors objects or Allors objects

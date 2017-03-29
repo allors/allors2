@@ -1,4 +1,4 @@
-// --------------------------------------------------------------------------------------------------------------------
+﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="ExtentTest.cs" company="Allors bvba">
 //   Copyright 2002-2012 Allors bvba.
 // 
@@ -297,13 +297,13 @@ namespace Allors.Adapters
 
                         // Filtered
                         inExtent = this.LocalExtent(MetaC1.Instance.ObjectType);
-                        inExtent.Filter.AddEquals(MetaC1.Instance.C1AllorsString, "Abra");
+                        inExtent.Filter.AddEquals(MetaC1.Instance.C1AllorsString, "ᴀbra");
                         if (useOperator)
                         {
                             var inExtentA = this.LocalExtent(MetaC1.Instance.ObjectType);
-                            inExtentA.Filter.AddEquals(MetaC1.Instance.C1AllorsString, "Abra");
+                            inExtentA.Filter.AddEquals(MetaC1.Instance.C1AllorsString, "ᴀbra");
                             var inExtentB = this.LocalExtent(MetaC1.Instance.ObjectType);
-                            inExtentB.Filter.AddEquals(MetaC1.Instance.C1AllorsString, "Abra");
+                            inExtentB.Filter.AddEquals(MetaC1.Instance.C1AllorsString, "ᴀbra");
                             inExtent = this.Session.Union(inExtentA, inExtentB);
                         }
 
@@ -382,13 +382,13 @@ namespace Allors.Adapters
 
                         // Filtered
                         inExtent = this.LocalExtent(MetaI12.Instance.ObjectType);
-                        inExtent.Filter.AddEquals(MetaI12.Instance.I12AllorsString, "Abra");
+                        inExtent.Filter.AddEquals(MetaI12.Instance.I12AllorsString, "ᴀbra");
                         if (useOperator)
                         {
                             var inExtentA = this.LocalExtent(MetaI12.Instance.ObjectType);
-                            inExtentA.Filter.AddEquals(MetaI12.Instance.I12AllorsString, "Abra");
+                            inExtentA.Filter.AddEquals(MetaI12.Instance.I12AllorsString, "ᴀbra");
                             var inExtentB = this.LocalExtent(MetaI12.Instance.ObjectType);
-                            inExtentB.Filter.AddEquals(MetaI12.Instance.I12AllorsString, "Abra");
+                            inExtentB.Filter.AddEquals(MetaI12.Instance.I12AllorsString, "ᴀbra");
                             inExtent = this.Session.Union(inExtentA, inExtentB);
                         }
 
@@ -469,13 +469,13 @@ namespace Allors.Adapters
 
                         // Filtered
                         inExtent = this.LocalExtent(MetaC1.Instance.ObjectType);
-                        inExtent.Filter.AddEquals(MetaC1.Instance.C1AllorsString, "Abra");
+                        inExtent.Filter.AddEquals(MetaC1.Instance.C1AllorsString, "ᴀbra");
                         if (useOperator)
                         {
                             var inExtentA = this.LocalExtent(MetaC1.Instance.ObjectType);
-                            inExtentA.Filter.AddEquals(MetaC1.Instance.C1AllorsString, "Abra");
+                            inExtentA.Filter.AddEquals(MetaC1.Instance.C1AllorsString, "ᴀbra");
                             var inExtentB = this.LocalExtent(MetaC1.Instance.ObjectType);
-                            inExtentB.Filter.AddEquals(MetaC1.Instance.C1AllorsString, "Abra");
+                            inExtentB.Filter.AddEquals(MetaC1.Instance.C1AllorsString, "ᴀbra");
                             inExtent = this.Session.Union(inExtentA, inExtentB);
                         }
 
@@ -554,13 +554,13 @@ namespace Allors.Adapters
 
                         // Filtered
                         inExtent = this.LocalExtent(MetaI12.Instance.ObjectType);
-                        inExtent.Filter.AddEquals(MetaI12.Instance.I12AllorsString, "Abra");
+                        inExtent.Filter.AddEquals(MetaI12.Instance.I12AllorsString, "ᴀbra");
                         if (useOperator)
                         {
                             var inExtentA = this.LocalExtent(MetaI12.Instance.ObjectType);
-                            inExtentA.Filter.AddEquals(MetaI12.Instance.I12AllorsString, "Abra");
+                            inExtentA.Filter.AddEquals(MetaI12.Instance.I12AllorsString, "ᴀbra");
                             var inExtentB = this.LocalExtent(MetaI12.Instance.ObjectType);
-                            inExtentB.Filter.AddEquals(MetaI12.Instance.I12AllorsString, "Abra");
+                            inExtentB.Filter.AddEquals(MetaI12.Instance.I12AllorsString, "ᴀbra");
                             inExtent = this.Session.Union(inExtentA, inExtentB);
                         }
 
@@ -860,13 +860,13 @@ namespace Allors.Adapters
 
                     // Filtered
                     inExtent = this.LocalExtent(MetaC1.Instance.ObjectType);
-                    inExtent.Filter.AddEquals(MetaC1.Instance.C1AllorsString, "Abra");
+                    inExtent.Filter.AddEquals(MetaC1.Instance.C1AllorsString, "ᴀbra");
                     if (useOperator)
                     {
                         var inExtentA = this.LocalExtent(MetaC1.Instance.ObjectType);
-                        inExtentA.Filter.AddEquals(MetaC1.Instance.C1AllorsString, "Abra");
+                        inExtentA.Filter.AddEquals(MetaC1.Instance.C1AllorsString, "ᴀbra");
                         var inExtentB = this.LocalExtent(MetaC1.Instance.ObjectType);
-                        inExtentB.Filter.AddEquals(MetaC1.Instance.C1AllorsString, "Abra");
+                        inExtentB.Filter.AddEquals(MetaC1.Instance.C1AllorsString, "ᴀbra");
                         inExtent = this.Session.Union(inExtentA, inExtentB);
                     }
 
@@ -921,13 +921,13 @@ namespace Allors.Adapters
 
                     // Filtered
                     inExtent = this.LocalExtent(MetaI12.Instance.ObjectType);
-                    inExtent.Filter.AddEquals(MetaI12.Instance.I12AllorsString, "Abra");
+                    inExtent.Filter.AddEquals(MetaI12.Instance.I12AllorsString, "ᴀbra");
                     if (useOperator)
                     {
                         var inExtentA = this.LocalExtent(MetaI12.Instance.ObjectType);
-                        inExtentA.Filter.AddEquals(MetaI12.Instance.I12AllorsString, "Abra");
+                        inExtentA.Filter.AddEquals(MetaI12.Instance.I12AllorsString, "ᴀbra");
                         var inExtentB = this.LocalExtent(MetaI12.Instance.ObjectType);
-                        inExtentB.Filter.AddEquals(MetaI12.Instance.I12AllorsString, "Abra");
+                        inExtentB.Filter.AddEquals(MetaI12.Instance.I12AllorsString, "ᴀbra");
                         inExtent = this.Session.Union(inExtentA, inExtentB);
                     }
 
@@ -984,13 +984,13 @@ namespace Allors.Adapters
 
                     // Filtered
                     inExtent = this.LocalExtent(MetaC1.Instance.ObjectType);
-                    inExtent.Filter.AddEquals(MetaC1.Instance.C1AllorsString, "Abra");
+                    inExtent.Filter.AddEquals(MetaC1.Instance.C1AllorsString, "ᴀbra");
                     if (useOperator)
                     {
                         var inExtentA = this.LocalExtent(MetaC1.Instance.ObjectType);
-                        inExtentA.Filter.AddEquals(MetaC1.Instance.C1AllorsString, "Abra");
+                        inExtentA.Filter.AddEquals(MetaC1.Instance.C1AllorsString, "ᴀbra");
                         var inExtentB = this.LocalExtent(MetaC1.Instance.ObjectType);
-                        inExtentB.Filter.AddEquals(MetaC1.Instance.C1AllorsString, "Abra");
+                        inExtentB.Filter.AddEquals(MetaC1.Instance.C1AllorsString, "ᴀbra");
                         inExtent = this.Session.Union(inExtentA, inExtentB);
                     }
 
@@ -1045,13 +1045,13 @@ namespace Allors.Adapters
 
                     // Filtered
                     inExtent = this.LocalExtent(MetaI12.Instance.ObjectType);
-                    inExtent.Filter.AddEquals(MetaI12.Instance.I12AllorsString, "Abra");
+                    inExtent.Filter.AddEquals(MetaI12.Instance.I12AllorsString, "ᴀbra");
                     if (useOperator)
                     {
                         var inExtentA = this.LocalExtent(MetaI12.Instance.ObjectType);
-                        inExtentA.Filter.AddEquals(MetaI12.Instance.I12AllorsString, "Abra");
+                        inExtentA.Filter.AddEquals(MetaI12.Instance.I12AllorsString, "ᴀbra");
                         var inExtentB = this.LocalExtent(MetaI12.Instance.ObjectType);
-                        inExtentB.Filter.AddEquals(MetaI12.Instance.I12AllorsString, "Abra");
+                        inExtentB.Filter.AddEquals(MetaI12.Instance.I12AllorsString, "ᴀbra");
                         inExtent = this.Session.Union(inExtentA, inExtentB);
                     }
 
@@ -1221,13 +1221,13 @@ namespace Allors.Adapters
 
                     // Filtered
                     inExtent = this.LocalExtent(MetaC1.Instance.ObjectType);
-                    inExtent.Filter.AddEquals(MetaC1.Instance.C1AllorsString, "Abra");
+                    inExtent.Filter.AddEquals(MetaC1.Instance.C1AllorsString, "ᴀbra");
                     if (useOperator)
                     {
                         var inExtentA = this.LocalExtent(MetaC1.Instance.ObjectType);
-                        inExtentA.Filter.AddEquals(MetaC1.Instance.C1AllorsString, "Abra");
+                        inExtentA.Filter.AddEquals(MetaC1.Instance.C1AllorsString, "ᴀbra");
                         var inExtentB = this.LocalExtent(MetaC1.Instance.ObjectType);
-                        inExtentB.Filter.AddEquals(MetaC1.Instance.C1AllorsString, "Abra");
+                        inExtentB.Filter.AddEquals(MetaC1.Instance.C1AllorsString, "ᴀbra");
                         inExtent = this.Session.Union(inExtentA, inExtentB);
                     }
 
@@ -1282,13 +1282,13 @@ namespace Allors.Adapters
 
                     // Filtered
                     inExtent = this.LocalExtent(MetaI12.Instance.ObjectType);
-                    inExtent.Filter.AddEquals(MetaI12.Instance.I12AllorsString, "Abra");
+                    inExtent.Filter.AddEquals(MetaI12.Instance.I12AllorsString, "ᴀbra");
                     if (useOperator)
                     {
                         var inExtentA = this.LocalExtent(MetaI12.Instance.ObjectType);
-                        inExtentA.Filter.AddEquals(MetaI12.Instance.I12AllorsString, "Abra");
+                        inExtentA.Filter.AddEquals(MetaI12.Instance.I12AllorsString, "ᴀbra");
                         var inExtentB = this.LocalExtent(MetaI12.Instance.ObjectType);
-                        inExtentB.Filter.AddEquals(MetaI12.Instance.I12AllorsString, "Abra");
+                        inExtentB.Filter.AddEquals(MetaI12.Instance.I12AllorsString, "ᴀbra");
                         inExtent = this.Session.Union(inExtentA, inExtentB);
                     }
 
@@ -1345,13 +1345,13 @@ namespace Allors.Adapters
 
                     // Filtered
                     inExtent = this.LocalExtent(MetaC1.Instance.ObjectType);
-                    inExtent.Filter.AddEquals(MetaC1.Instance.C1AllorsString, "Abra");
+                    inExtent.Filter.AddEquals(MetaC1.Instance.C1AllorsString, "ᴀbra");
                     if (useOperator)
                     {
                         var inExtentA = this.LocalExtent(MetaC1.Instance.ObjectType);
-                        inExtentA.Filter.AddEquals(MetaC1.Instance.C1AllorsString, "Abra");
+                        inExtentA.Filter.AddEquals(MetaC1.Instance.C1AllorsString, "ᴀbra");
                         var inExtentB = this.LocalExtent(MetaC1.Instance.ObjectType);
-                        inExtentB.Filter.AddEquals(MetaC1.Instance.C1AllorsString, "Abra");
+                        inExtentB.Filter.AddEquals(MetaC1.Instance.C1AllorsString, "ᴀbra");
                         inExtent = this.Session.Union(inExtentA, inExtentB);
                     }
 
@@ -1406,13 +1406,13 @@ namespace Allors.Adapters
 
                     // Filtered
                     inExtent = this.LocalExtent(MetaI12.Instance.ObjectType);
-                    inExtent.Filter.AddEquals(MetaI12.Instance.I12AllorsString, "Abra");
+                    inExtent.Filter.AddEquals(MetaI12.Instance.I12AllorsString, "ᴀbra");
                     if (useOperator)
                     {
                         var inExtentA = this.LocalExtent(MetaI12.Instance.ObjectType);
-                        inExtentA.Filter.AddEquals(MetaI12.Instance.I12AllorsString, "Abra");
+                        inExtentA.Filter.AddEquals(MetaI12.Instance.I12AllorsString, "ᴀbra");
                         var inExtentB = this.LocalExtent(MetaI12.Instance.ObjectType);
-                        inExtentB.Filter.AddEquals(MetaI12.Instance.I12AllorsString, "Abra");
+                        inExtentB.Filter.AddEquals(MetaI12.Instance.I12AllorsString, "ᴀbra");
                         inExtent = this.Session.Union(inExtentA, inExtentB);
                     }
 
@@ -2577,10 +2577,10 @@ namespace Allors.Adapters
 
                 // Role In + Except
                 var firstExtent = this.LocalExtent(MetaC2.Instance.ObjectType);
-                firstExtent.Filter.AddLike(MetaI12.Instance.I12AllorsString, "Abra%");
+                firstExtent.Filter.AddLike(MetaI12.Instance.I12AllorsString, "ᴀbra%");
 
                 var secondExtent = this.LocalExtent(MetaC2.Instance.ObjectType);
-                secondExtent.Filter.AddLike(MetaI12.Instance.I12AllorsString, "Abracadabra");
+                secondExtent.Filter.AddLike(MetaI12.Instance.I12AllorsString, "ᴀbracadabra");
 
                 var inExtent = this.Session.Except(firstExtent, secondExtent);
 
@@ -2607,10 +2607,10 @@ namespace Allors.Adapters
 
                 // AssociationType In + Except
                 firstExtent = this.LocalExtent(MetaC1.Instance.ObjectType);
-                firstExtent.Filter.AddLike(MetaI12.Instance.I12AllorsString, "Abra%");
+                firstExtent.Filter.AddLike(MetaI12.Instance.I12AllorsString, "ᴀbra%");
 
                 secondExtent = this.LocalExtent(MetaC1.Instance.ObjectType);
-                secondExtent.Filter.AddLike(MetaI12.Instance.I12AllorsString, "Abracadabra");
+                secondExtent.Filter.AddLike(MetaI12.Instance.I12AllorsString, "ᴀbracadabra");
 
                 inExtent = this.Session.Except(firstExtent, secondExtent);
 
@@ -2650,7 +2650,7 @@ namespace Allors.Adapters
                 firstExtent.Filter.AddNot().AddExists(MetaC1.Instance.C1AllorsString);
 
                 var secondExtent = this.LocalExtent(MetaC1.Instance.ObjectType);
-                secondExtent.Filter.AddLike(MetaC1.Instance.C1AllorsString, "Abracadabra");
+                secondExtent.Filter.AddLike(MetaC1.Instance.C1AllorsString, "ᴀbracadabra");
 
                 var unionExtent = this.Session.Union(firstExtent, secondExtent);
                 var topExtent = this.LocalExtent(MetaC1.Instance.ObjectType);
@@ -2680,7 +2680,7 @@ namespace Allors.Adapters
                 firstExtent.Filter.AddExists(MetaC1.Instance.C1AllorsString);
 
                 secondExtent = this.LocalExtent(MetaC1.Instance.ObjectType);
-                secondExtent.Filter.AddLike(MetaC1.Instance.C1AllorsString, "Abracadabra");
+                secondExtent.Filter.AddLike(MetaC1.Instance.C1AllorsString, "ᴀbracadabra");
 
                 var intersectExtent = this.Session.Intersect(firstExtent, secondExtent);
                 topExtent = this.LocalExtent(MetaC1.Instance.ObjectType);
@@ -3051,7 +3051,7 @@ namespace Allors.Adapters
                 var firstExtent = this.LocalExtent(MetaC1.Instance.ObjectType);
 
                 var secondExtent = this.LocalExtent(MetaC1.Instance.ObjectType);
-                secondExtent.Filter.AddLike(MetaC1.Instance.C1AllorsString, "Abracadabra");
+                secondExtent.Filter.AddLike(MetaC1.Instance.C1AllorsString, "ᴀbracadabra");
 
                 var extent = this.Session.Except(firstExtent, secondExtent);
 
@@ -3063,10 +3063,10 @@ namespace Allors.Adapters
 
                 // interface
                 firstExtent = this.LocalExtent(MetaI12.Instance.ObjectType);
-                firstExtent.Filter.AddLike(MetaI12.Instance.I12AllorsString, "Abra%");
+                firstExtent.Filter.AddLike(MetaI12.Instance.I12AllorsString, "ᴀbra%");
 
                 secondExtent = this.LocalExtent(MetaI12.Instance.ObjectType);
-                secondExtent.Filter.AddLike(MetaI12.Instance.I12AllorsString, "Abracadabra");
+                secondExtent.Filter.AddLike(MetaI12.Instance.I12AllorsString, "ᴀbracadabra");
 
                 extent = this.Session.Except(firstExtent, secondExtent);
 
@@ -3126,7 +3126,7 @@ namespace Allors.Adapters
                 var extent = this.LocalExtent(MetaC1.Instance.ObjectType);
                 extent.Filter.AddExists(MetaC1.Instance.C1AllorsString);
                 Assert.Equal(3, extent.Count);
-                extent.Filter.AddLike(MetaC1.Instance.C1AllorsString, "Abra");
+                extent.Filter.AddLike(MetaC1.Instance.C1AllorsString, "ᴀbra");
                 Assert.Equal(1, extent.Count);
 
                 // TODO: all possible combinations
@@ -3242,7 +3242,7 @@ namespace Allors.Adapters
                 var firstExtent = this.LocalExtent(MetaC1.Instance.ObjectType);
 
                 var secondExtent = this.LocalExtent(MetaC1.Instance.ObjectType);
-                secondExtent.Filter.AddLike(MetaC1.Instance.C1AllorsString, "Abracadabra");
+                secondExtent.Filter.AddLike(MetaC1.Instance.C1AllorsString, "ᴀbracadabra");
 
                 var extent = this.Session.Intersect(firstExtent, secondExtent);
 
@@ -3421,13 +3421,13 @@ namespace Allors.Adapters
 
                     // Filtered
                     inExtent = this.LocalExtent(MetaC1.Instance.ObjectType);
-                    inExtent.Filter.AddEquals(MetaC1.Instance.C1AllorsString, "Abra");
+                    inExtent.Filter.AddEquals(MetaC1.Instance.C1AllorsString, "ᴀbra");
                     if (useOperator)
                     {
                         var inExtentA = this.LocalExtent(MetaC1.Instance.ObjectType);
-                        inExtentA.Filter.AddEquals(MetaC1.Instance.C1AllorsString, "Abra");
+                        inExtentA.Filter.AddEquals(MetaC1.Instance.C1AllorsString, "ᴀbra");
                         var inExtentB = this.LocalExtent(MetaC1.Instance.ObjectType);
-                        inExtentB.Filter.AddEquals(MetaC1.Instance.C1AllorsString, "Abra");
+                        inExtentB.Filter.AddEquals(MetaC1.Instance.C1AllorsString, "ᴀbra");
                         inExtent = this.Session.Union(inExtentA, inExtentB);
                     }
 
@@ -3482,13 +3482,13 @@ namespace Allors.Adapters
 
                     // Filtered
                     inExtent = this.LocalExtent(MetaI12.Instance.ObjectType);
-                    inExtent.Filter.AddEquals(MetaI12.Instance.I12AllorsString, "Abra");
+                    inExtent.Filter.AddEquals(MetaI12.Instance.I12AllorsString, "ᴀbra");
                     if (useOperator)
                     {
                         var inExtentA = this.LocalExtent(MetaI12.Instance.ObjectType);
-                        inExtentA.Filter.AddEquals(MetaI12.Instance.I12AllorsString, "Abra");
+                        inExtentA.Filter.AddEquals(MetaI12.Instance.I12AllorsString, "ᴀbra");
                         var inExtentB = this.LocalExtent(MetaI12.Instance.ObjectType);
-                        inExtentB.Filter.AddEquals(MetaI12.Instance.I12AllorsString, "Abra");
+                        inExtentB.Filter.AddEquals(MetaI12.Instance.I12AllorsString, "ᴀbra");
                         inExtent = this.Session.Union(inExtentA, inExtentB);
                     }
 
@@ -3545,13 +3545,13 @@ namespace Allors.Adapters
 
                     // Filtered
                     inExtent = this.LocalExtent(MetaC1.Instance.ObjectType);
-                    inExtent.Filter.AddEquals(MetaC1.Instance.C1AllorsString, "Abra");
+                    inExtent.Filter.AddEquals(MetaC1.Instance.C1AllorsString, "ᴀbra");
                     if (useOperator)
                     {
                         var inExtentA = this.LocalExtent(MetaC1.Instance.ObjectType);
-                        inExtentA.Filter.AddEquals(MetaC1.Instance.C1AllorsString, "Abra");
+                        inExtentA.Filter.AddEquals(MetaC1.Instance.C1AllorsString, "ᴀbra");
                         var inExtentB = this.LocalExtent(MetaC1.Instance.ObjectType);
-                        inExtentB.Filter.AddEquals(MetaC1.Instance.C1AllorsString, "Abra");
+                        inExtentB.Filter.AddEquals(MetaC1.Instance.C1AllorsString, "ᴀbra");
                         inExtent = this.Session.Union(inExtentA, inExtentB);
                     }
 
@@ -3606,13 +3606,13 @@ namespace Allors.Adapters
 
                     // Filtered
                     inExtent = this.LocalExtent(MetaI12.Instance.ObjectType);
-                    inExtent.Filter.AddEquals(MetaI12.Instance.I12AllorsString, "Abra");
+                    inExtent.Filter.AddEquals(MetaI12.Instance.I12AllorsString, "ᴀbra");
                     if (useOperator)
                     {
                         var inExtentA = this.LocalExtent(MetaI12.Instance.ObjectType);
-                        inExtentA.Filter.AddEquals(MetaI12.Instance.I12AllorsString, "Abra");
+                        inExtentA.Filter.AddEquals(MetaI12.Instance.I12AllorsString, "ᴀbra");
                         var inExtentB = this.LocalExtent(MetaI12.Instance.ObjectType);
-                        inExtentB.Filter.AddEquals(MetaI12.Instance.I12AllorsString, "Abra");
+                        inExtentB.Filter.AddEquals(MetaI12.Instance.I12AllorsString, "ᴀbra");
                         inExtent = this.Session.Union(inExtentA, inExtentB);
                     }
 
@@ -3769,13 +3769,13 @@ namespace Allors.Adapters
 
                     // Filtered
                     inExtent = this.LocalExtent(MetaC1.Instance.ObjectType);
-                    inExtent.Filter.AddEquals(MetaC1.Instance.C1AllorsString, "Abra");
+                    inExtent.Filter.AddEquals(MetaC1.Instance.C1AllorsString, "ᴀbra");
                     if (useOperator)
                     {
                         var inExtentA = this.LocalExtent(MetaC1.Instance.ObjectType);
-                        inExtentA.Filter.AddEquals(MetaC1.Instance.C1AllorsString, "Abra");
+                        inExtentA.Filter.AddEquals(MetaC1.Instance.C1AllorsString, "ᴀbra");
                         var inExtentB = this.LocalExtent(MetaC1.Instance.ObjectType);
-                        inExtentB.Filter.AddEquals(MetaC1.Instance.C1AllorsString, "Abra");
+                        inExtentB.Filter.AddEquals(MetaC1.Instance.C1AllorsString, "ᴀbra");
                         inExtent = this.Session.Union(inExtentA, inExtentB);
                     }
 
@@ -3830,13 +3830,13 @@ namespace Allors.Adapters
 
                     // Filtered
                     inExtent = this.LocalExtent(MetaI12.Instance.ObjectType);
-                    inExtent.Filter.AddEquals(MetaI12.Instance.I12AllorsString, "Abra");
+                    inExtent.Filter.AddEquals(MetaI12.Instance.I12AllorsString, "ᴀbra");
                     if (useOperator)
                     {
                         var inExtentA = this.LocalExtent(MetaI12.Instance.ObjectType);
-                        inExtentA.Filter.AddEquals(MetaI12.Instance.I12AllorsString, "Abra");
+                        inExtentA.Filter.AddEquals(MetaI12.Instance.I12AllorsString, "ᴀbra");
                         var inExtentB = this.LocalExtent(MetaI12.Instance.ObjectType);
-                        inExtentB.Filter.AddEquals(MetaI12.Instance.I12AllorsString, "Abra");
+                        inExtentB.Filter.AddEquals(MetaI12.Instance.I12AllorsString, "ᴀbra");
                         inExtent = this.Session.Union(inExtentA, inExtentB);
                     }
 
@@ -3893,13 +3893,13 @@ namespace Allors.Adapters
 
                     // Filtered
                     inExtent = this.LocalExtent(MetaC1.Instance.ObjectType);
-                    inExtent.Filter.AddEquals(MetaC1.Instance.C1AllorsString, "Abra");
+                    inExtent.Filter.AddEquals(MetaC1.Instance.C1AllorsString, "ᴀbra");
                     if (useOperator)
                     {
                         var inExtentA = this.LocalExtent(MetaC1.Instance.ObjectType);
-                        inExtentA.Filter.AddEquals(MetaC1.Instance.C1AllorsString, "Abra");
+                        inExtentA.Filter.AddEquals(MetaC1.Instance.C1AllorsString, "ᴀbra");
                         var inExtentB = this.LocalExtent(MetaC1.Instance.ObjectType);
-                        inExtentB.Filter.AddEquals(MetaC1.Instance.C1AllorsString, "Abra");
+                        inExtentB.Filter.AddEquals(MetaC1.Instance.C1AllorsString, "ᴀbra");
                         inExtent = this.Session.Union(inExtentA, inExtentB);
                     }
 
@@ -3954,13 +3954,13 @@ namespace Allors.Adapters
 
                     // Filtered
                     inExtent = this.LocalExtent(MetaI12.Instance.ObjectType);
-                    inExtent.Filter.AddEquals(MetaI12.Instance.I12AllorsString, "Abra");
+                    inExtent.Filter.AddEquals(MetaI12.Instance.I12AllorsString, "ᴀbra");
                     if (useOperator)
                     {
                         var inExtentA = this.LocalExtent(MetaI12.Instance.ObjectType);
-                        inExtentA.Filter.AddEquals(MetaI12.Instance.I12AllorsString, "Abra");
+                        inExtentA.Filter.AddEquals(MetaI12.Instance.I12AllorsString, "ᴀbra");
                         var inExtentB = this.LocalExtent(MetaI12.Instance.ObjectType);
-                        inExtentB.Filter.AddEquals(MetaI12.Instance.I12AllorsString, "Abra");
+                        inExtentB.Filter.AddEquals(MetaI12.Instance.I12AllorsString, "ᴀbra");
                         inExtent = this.Session.Union(inExtentA, inExtentB);
                     }
 
@@ -4032,13 +4032,13 @@ namespace Allors.Adapters
 
                     // Filtered
                     inExtent = this.LocalExtent(MetaC1.Instance.ObjectType);
-                    inExtent.Filter.AddEquals(MetaC1.Instance.C1AllorsString, "Abra");
+                    inExtent.Filter.AddEquals(MetaC1.Instance.C1AllorsString, "ᴀbra");
                     if (useOperator)
                     {
                         var inExtentA = this.LocalExtent(MetaC1.Instance.ObjectType);
-                        inExtentA.Filter.AddEquals(MetaC1.Instance.C1AllorsString, "Abra");
+                        inExtentA.Filter.AddEquals(MetaC1.Instance.C1AllorsString, "ᴀbra");
                         var inExtentB = this.LocalExtent(MetaC1.Instance.ObjectType);
-                        inExtentB.Filter.AddEquals(MetaC1.Instance.C1AllorsString, "Abra");
+                        inExtentB.Filter.AddEquals(MetaC1.Instance.C1AllorsString, "ᴀbra");
                         inExtent = this.Session.Union(inExtentA, inExtentB);
                     }
 
@@ -4093,13 +4093,13 @@ namespace Allors.Adapters
 
                     // Filtered
                     inExtent = this.LocalExtent(MetaI12.Instance.ObjectType);
-                    inExtent.Filter.AddEquals(MetaI12.Instance.I12AllorsString, "Abra");
+                    inExtent.Filter.AddEquals(MetaI12.Instance.I12AllorsString, "ᴀbra");
                     if (useOperator)
                     {
                         var inExtentA = this.LocalExtent(MetaI12.Instance.ObjectType);
-                        inExtentA.Filter.AddEquals(MetaI12.Instance.I12AllorsString, "Abra");
+                        inExtentA.Filter.AddEquals(MetaI12.Instance.I12AllorsString, "ᴀbra");
                         var inExtentB = this.LocalExtent(MetaI12.Instance.ObjectType);
-                        inExtentB.Filter.AddEquals(MetaI12.Instance.I12AllorsString, "Abra");
+                        inExtentB.Filter.AddEquals(MetaI12.Instance.I12AllorsString, "ᴀbra");
                         inExtent = this.Session.Union(inExtentA, inExtentB);
                     }
 
@@ -4156,13 +4156,13 @@ namespace Allors.Adapters
 
                     // Filtered
                     inExtent = this.LocalExtent(MetaC1.Instance.ObjectType);
-                    inExtent.Filter.AddEquals(MetaC1.Instance.C1AllorsString, "Abra");
+                    inExtent.Filter.AddEquals(MetaC1.Instance.C1AllorsString, "ᴀbra");
                     if (useOperator)
                     {
                         var inExtentA = this.LocalExtent(MetaC1.Instance.ObjectType);
-                        inExtentA.Filter.AddEquals(MetaC1.Instance.C1AllorsString, "Abra");
+                        inExtentA.Filter.AddEquals(MetaC1.Instance.C1AllorsString, "ᴀbra");
                         var inExtentB = this.LocalExtent(MetaC1.Instance.ObjectType);
-                        inExtentB.Filter.AddEquals(MetaC1.Instance.C1AllorsString, "Abra");
+                        inExtentB.Filter.AddEquals(MetaC1.Instance.C1AllorsString, "ᴀbra");
                         inExtent = this.Session.Union(inExtentA, inExtentB);
                     }
 
@@ -4217,13 +4217,13 @@ namespace Allors.Adapters
 
                     // Filtered
                     inExtent = this.LocalExtent(MetaI12.Instance.ObjectType);
-                    inExtent.Filter.AddEquals(MetaI12.Instance.I12AllorsString, "Abra");
+                    inExtent.Filter.AddEquals(MetaI12.Instance.I12AllorsString, "ᴀbra");
                     if (useOperator)
                     {
                         var inExtentA = this.LocalExtent(MetaI12.Instance.ObjectType);
-                        inExtentA.Filter.AddEquals(MetaI12.Instance.I12AllorsString, "Abra");
+                        inExtentA.Filter.AddEquals(MetaI12.Instance.I12AllorsString, "ᴀbra");
                         var inExtentB = this.LocalExtent(MetaI12.Instance.ObjectType);
-                        inExtentB.Filter.AddEquals(MetaI12.Instance.I12AllorsString, "Abra");
+                        inExtentB.Filter.AddEquals(MetaI12.Instance.I12AllorsString, "ᴀbra");
                         inExtent = this.Session.Union(inExtentA, inExtentB);
                     }
 
@@ -5876,13 +5876,13 @@ namespace Allors.Adapters
 
                     // Filtered
                     inExtent = this.LocalExtent(MetaC2.Instance.ObjectType);
-                    inExtent.Filter.AddEquals(MetaC2.Instance.C2AllorsString, "Abra");
+                    inExtent.Filter.AddEquals(MetaC2.Instance.C2AllorsString, "ᴀbra");
                     if (useOperator)
                     {
                         var inExtentA = this.LocalExtent(MetaC2.Instance.ObjectType);
-                        inExtentA.Filter.AddEquals(MetaC2.Instance.C2AllorsString, "Abra");
+                        inExtentA.Filter.AddEquals(MetaC2.Instance.C2AllorsString, "ᴀbra");
                         var inExtentB = this.LocalExtent(MetaC2.Instance.ObjectType);
-                        inExtentB.Filter.AddEquals(MetaC2.Instance.C2AllorsString, "Abra");
+                        inExtentB.Filter.AddEquals(MetaC2.Instance.C2AllorsString, "ᴀbra");
                         inExtent = this.Session.Union(inExtentA, inExtentB);
                     }
 
@@ -5937,13 +5937,13 @@ namespace Allors.Adapters
 
                     // Filtered
                     inExtent = this.LocalExtent(MetaI12.Instance.ObjectType);
-                    inExtent.Filter.AddEquals(MetaI12.Instance.I12AllorsString, "Abra");
+                    inExtent.Filter.AddEquals(MetaI12.Instance.I12AllorsString, "ᴀbra");
                     if (useOperator)
                     {
                         var inExtentA = this.LocalExtent(MetaI12.Instance.ObjectType);
-                        inExtentA.Filter.AddEquals(MetaI12.Instance.I12AllorsString, "Abra");
+                        inExtentA.Filter.AddEquals(MetaI12.Instance.I12AllorsString, "ᴀbra");
                         var inExtentB = this.LocalExtent(MetaI12.Instance.ObjectType);
-                        inExtentB.Filter.AddEquals(MetaI12.Instance.I12AllorsString, "Abra");
+                        inExtentB.Filter.AddEquals(MetaI12.Instance.I12AllorsString, "ᴀbra");
                         inExtent = this.Session.Union(inExtentA, inExtentB);
                     }
 
@@ -6000,13 +6000,13 @@ namespace Allors.Adapters
 
                     // Filtered
                     inExtent = this.LocalExtent(MetaC1.Instance.ObjectType);
-                    inExtent.Filter.AddEquals(MetaC1.Instance.C1AllorsString, "Abra");
+                    inExtent.Filter.AddEquals(MetaC1.Instance.C1AllorsString, "ᴀbra");
                     if (useOperator)
                     {
                         var inExtentA = this.LocalExtent(MetaC1.Instance.ObjectType);
-                        inExtentA.Filter.AddEquals(MetaC1.Instance.C1AllorsString, "Abra");
+                        inExtentA.Filter.AddEquals(MetaC1.Instance.C1AllorsString, "ᴀbra");
                         var inExtentB = this.LocalExtent(MetaC1.Instance.ObjectType);
-                        inExtentB.Filter.AddEquals(MetaC1.Instance.C1AllorsString, "Abra");
+                        inExtentB.Filter.AddEquals(MetaC1.Instance.C1AllorsString, "ᴀbra");
                         inExtent = this.Session.Union(inExtentA, inExtentB);
                     }
 
@@ -6061,13 +6061,13 @@ namespace Allors.Adapters
 
                     // Filtered
                     inExtent = this.LocalExtent(MetaI12.Instance.ObjectType);
-                    inExtent.Filter.AddEquals(MetaI12.Instance.I12AllorsString, "Abra");
+                    inExtent.Filter.AddEquals(MetaI12.Instance.I12AllorsString, "ᴀbra");
                     if (useOperator)
                     {
                         var inExtentA = this.LocalExtent(MetaI12.Instance.ObjectType);
-                        inExtentA.Filter.AddEquals(MetaI12.Instance.I12AllorsString, "Abra");
+                        inExtentA.Filter.AddEquals(MetaI12.Instance.I12AllorsString, "ᴀbra");
                         var inExtentB = this.LocalExtent(MetaI12.Instance.ObjectType);
-                        inExtentB.Filter.AddEquals(MetaI12.Instance.I12AllorsString, "Abra");
+                        inExtentB.Filter.AddEquals(MetaI12.Instance.I12AllorsString, "ᴀbra");
                         inExtent = this.Session.Union(inExtentA, inExtentB);
                     }
 
@@ -6124,13 +6124,13 @@ namespace Allors.Adapters
 
                     // Filtered
                     inExtent = this.LocalExtent(MetaC1.Instance.ObjectType);
-                    inExtent.Filter.AddEquals(MetaC1.Instance.C1AllorsString, "Abra");
+                    inExtent.Filter.AddEquals(MetaC1.Instance.C1AllorsString, "ᴀbra");
                     if (useOperator)
                     {
                         var inExtentA = this.LocalExtent(MetaC1.Instance.ObjectType);
-                        inExtentA.Filter.AddEquals(MetaC1.Instance.C1AllorsString, "Abra");
+                        inExtentA.Filter.AddEquals(MetaC1.Instance.C1AllorsString, "ᴀbra");
                         var inExtentB = this.LocalExtent(MetaC1.Instance.ObjectType);
-                        inExtentB.Filter.AddEquals(MetaC1.Instance.C1AllorsString, "Abra");
+                        inExtentB.Filter.AddEquals(MetaC1.Instance.C1AllorsString, "ᴀbra");
                         inExtent = this.Session.Union(inExtentA, inExtentB);
                     }
 
@@ -6185,13 +6185,13 @@ namespace Allors.Adapters
 
                     // Filtered
                     inExtent = this.LocalExtent(MetaI12.Instance.ObjectType);
-                    inExtent.Filter.AddEquals(MetaI12.Instance.I12AllorsString, "Abra");
+                    inExtent.Filter.AddEquals(MetaI12.Instance.I12AllorsString, "ᴀbra");
                     if (useOperator)
                     {
                         var inExtentA = this.LocalExtent(MetaI12.Instance.ObjectType);
-                        inExtentA.Filter.AddEquals(MetaI12.Instance.I12AllorsString, "Abra");
+                        inExtentA.Filter.AddEquals(MetaI12.Instance.I12AllorsString, "ᴀbra");
                         var inExtentB = this.LocalExtent(MetaI12.Instance.ObjectType);
-                        inExtentB.Filter.AddEquals(MetaI12.Instance.I12AllorsString, "Abra");
+                        inExtentB.Filter.AddEquals(MetaI12.Instance.I12AllorsString, "ᴀbra");
                         inExtent = this.Session.Union(inExtentA, inExtentB);
                     }
 
@@ -6246,7 +6246,7 @@ namespace Allors.Adapters
 
                 // Filtered
                 inExtent = this.LocalExtent(MetaC2.Instance.ObjectType);
-                inExtent.Filter.AddEquals(MetaC2.Instance.C2AllorsString, "Abra");
+                inExtent.Filter.AddEquals(MetaC2.Instance.C2AllorsString, "ᴀbra");
                
                 extent = this.LocalExtent(MetaC1.Instance.ObjectType);
                 extent.Filter.AddNot().AddContainedIn(MetaC1.Instance.C1C2many2manies, (IEnumerable<IObject>)inExtent.ToArray());
@@ -6285,7 +6285,7 @@ namespace Allors.Adapters
 
                 // Filtered
                 inExtent = this.LocalExtent(MetaI12.Instance.ObjectType);
-                inExtent.Filter.AddEquals(MetaI12.Instance.I12AllorsString, "Abra");
+                inExtent.Filter.AddEquals(MetaI12.Instance.I12AllorsString, "ᴀbra");
 
                 extent = this.LocalExtent(MetaC1.Instance.ObjectType);
                 extent.Filter.AddNot().AddContainedIn(MetaC1.Instance.C1C2many2manies, (IEnumerable<IObject>)inExtent.ToArray());
@@ -6326,7 +6326,7 @@ namespace Allors.Adapters
 
                 // Filtered
                 inExtent = this.LocalExtent(MetaC1.Instance.ObjectType);
-                inExtent.Filter.AddEquals(MetaC1.Instance.C1AllorsString, "Abra");
+                inExtent.Filter.AddEquals(MetaC1.Instance.C1AllorsString, "ᴀbra");
                 
                 extent = this.LocalExtent(MetaC1.Instance.ObjectType);
                 extent.Filter.AddNot().AddContainedIn(MetaC1.Instance.C1C1many2manies, (IEnumerable<IObject>)inExtent.ToArray());
@@ -6365,7 +6365,7 @@ namespace Allors.Adapters
 
                 // Filtered
                 inExtent = this.LocalExtent(MetaI12.Instance.ObjectType);
-                inExtent.Filter.AddEquals(MetaI12.Instance.I12AllorsString, "Abra");
+                inExtent.Filter.AddEquals(MetaI12.Instance.I12AllorsString, "ᴀbra");
                 
                 extent = this.LocalExtent(MetaC1.Instance.ObjectType);
                 extent.Filter.AddNot().AddContainedIn(MetaC1.Instance.C1C1many2manies, (IEnumerable<IObject>)inExtent.ToArray());
@@ -6408,7 +6408,7 @@ namespace Allors.Adapters
 
                 // Filtered
                 inExtent = this.LocalExtent(MetaC1.Instance.ObjectType);
-                inExtent.Filter.AddEquals(MetaC1.Instance.C1AllorsString, "Abra");
+                inExtent.Filter.AddEquals(MetaC1.Instance.C1AllorsString, "ᴀbra");
               
                 extent = this.LocalExtent(MetaC1.Instance.ObjectType);
                 extent.Filter.AddNot().AddContainedIn(MetaC1.Instance.C1I12many2manies, (IEnumerable<IObject>)inExtent.ToArray());
@@ -6447,7 +6447,7 @@ namespace Allors.Adapters
 
                 // Filtered
                 inExtent = this.LocalExtent(MetaI12.Instance.ObjectType);
-                inExtent.Filter.AddEquals(MetaI12.Instance.I12AllorsString, "Abra");
+                inExtent.Filter.AddEquals(MetaI12.Instance.I12AllorsString, "ᴀbra");
                
                 extent = this.LocalExtent(MetaC1.Instance.ObjectType);
                 extent.Filter.AddNot().AddContainedIn(MetaC1.Instance.C1I12many2manies, (IEnumerable<IObject>)inExtent.ToArray());
@@ -7344,9 +7344,9 @@ namespace Allors.Adapters
                 this.AssertC3(extent, false, true, true, true);
                 this.AssertC4(extent, false, false, false, false);
 
-                // Equal "Abra"
+                // Equal "ᴀbra"
                 extent = this.LocalExtent(MetaC1.Instance.ObjectType);
-                extent.Filter.AddNot().AddEquals(MetaC1.Instance.C1AllorsString, "Abra");
+                extent.Filter.AddNot().AddEquals(MetaC1.Instance.C1AllorsString, "ᴀbra");
 
                 Assert.Equal(2, extent.Count);
                 this.AssertC1(extent, false, false, true, true);
@@ -7355,7 +7355,7 @@ namespace Allors.Adapters
                 this.AssertC4(extent, false, false, false, false);
 
                 extent = this.LocalExtent(MetaC3.Instance.ObjectType);
-                extent.Filter.AddNot().AddEquals(MetaC3.Instance.C3AllorsString, "Abra");
+                extent.Filter.AddNot().AddEquals(MetaC3.Instance.C3AllorsString, "ᴀbra");
 
                 Assert.Equal(2, extent.Count);
                 this.AssertC1(extent, false, false, false, false);
@@ -7363,9 +7363,9 @@ namespace Allors.Adapters
                 this.AssertC3(extent, false, false, true, true);
                 this.AssertC4(extent, false, false, false, false);
 
-                // Equal "Abracadabra"
+                // Equal "ᴀbracadabra"
                 extent = this.LocalExtent(MetaC1.Instance.ObjectType);
-                extent.Filter.AddNot().AddEquals(MetaC1.Instance.C1AllorsString, "Abracadabra");
+                extent.Filter.AddNot().AddEquals(MetaC1.Instance.C1AllorsString, "ᴀbracadabra");
 
                 Assert.Equal(1, extent.Count);
                 this.AssertC1(extent, false, true, false, false);
@@ -7374,7 +7374,7 @@ namespace Allors.Adapters
                 this.AssertC4(extent, false, false, false, false);
 
                 extent = this.LocalExtent(MetaC3.Instance.ObjectType);
-                extent.Filter.AddNot().AddEquals(MetaC3.Instance.C3AllorsString, "Abracadabra");
+                extent.Filter.AddNot().AddEquals(MetaC3.Instance.C3AllorsString, "ᴀbracadabra");
 
                 Assert.Equal(1, extent.Count);
                 this.AssertC1(extent, false, false, false, false);
@@ -7403,9 +7403,9 @@ namespace Allors.Adapters
                 this.AssertC3(extent, false, true, true, true);
                 this.AssertC4(extent, false, false, false, false);
 
-                // Equal "Abra"
+                // Equal "ᴀbra"
                 extent = this.LocalExtent(MetaI1.Instance.ObjectType);
-                extent.Filter.AddNot().AddEquals(MetaI1.Instance.I1AllorsString, "Abra");
+                extent.Filter.AddNot().AddEquals(MetaI1.Instance.I1AllorsString, "ᴀbra");
 
                 Assert.Equal(2, extent.Count);
                 this.AssertC1(extent, false, false, true, true);
@@ -7414,7 +7414,7 @@ namespace Allors.Adapters
                 this.AssertC4(extent, false, false, false, false);
 
                 extent = this.LocalExtent(MetaI3.Instance.ObjectType);
-                extent.Filter.AddNot().AddEquals(MetaI3.Instance.I3AllorsString, "Abra");
+                extent.Filter.AddNot().AddEquals(MetaI3.Instance.I3AllorsString, "ᴀbra");
 
                 Assert.Equal(2, extent.Count);
                 this.AssertC1(extent, false, false, false, false);
@@ -7422,9 +7422,9 @@ namespace Allors.Adapters
                 this.AssertC3(extent, false, false, true, true);
                 this.AssertC4(extent, false, false, false, false);
 
-                // Equal "Abracadabra"
+                // Equal "ᴀbracadabra"
                 extent = this.LocalExtent(MetaI1.Instance.ObjectType);
-                extent.Filter.AddNot().AddEquals(MetaI1.Instance.I1AllorsString, "Abracadabra");
+                extent.Filter.AddNot().AddEquals(MetaI1.Instance.I1AllorsString, "ᴀbracadabra");
 
                 Assert.Equal(1, extent.Count);
                 this.AssertC1(extent, false, true, false, false);
@@ -7433,7 +7433,7 @@ namespace Allors.Adapters
                 this.AssertC4(extent, false, false, false, false);
 
                 extent = this.LocalExtent(MetaI3.Instance.ObjectType);
-                extent.Filter.AddNot().AddEquals(MetaI3.Instance.I3AllorsString, "Abracadabra");
+                extent.Filter.AddNot().AddEquals(MetaI3.Instance.I3AllorsString, "ᴀbracadabra");
 
                 Assert.Equal(1, extent.Count);
                 this.AssertC1(extent, false, false, false, false);
@@ -7462,9 +7462,9 @@ namespace Allors.Adapters
                 this.AssertC3(extent, false, true, true, true);
                 this.AssertC4(extent, false, true, true, true);
 
-                // Equal "Abra"
+                // Equal "ᴀbra"
                 extent = this.LocalExtent(MetaI12.Instance.ObjectType);
-                extent.Filter.AddNot().AddEquals(MetaI12.Instance.I12AllorsString, "Abra");
+                extent.Filter.AddNot().AddEquals(MetaI12.Instance.I12AllorsString, "ᴀbra");
 
                 Assert.Equal(4, extent.Count);
                 this.AssertC1(extent, false, false, true, true);
@@ -7473,7 +7473,7 @@ namespace Allors.Adapters
                 this.AssertC4(extent, false, false, false, false);
 
                 extent = this.LocalExtent(MetaC1.Instance.ObjectType);
-                extent.Filter.AddNot().AddEquals(MetaI12.Instance.I12AllorsString, "Abra");
+                extent.Filter.AddNot().AddEquals(MetaI12.Instance.I12AllorsString, "ᴀbra");
 
                 Assert.Equal(2, extent.Count);
                 this.AssertC1(extent, false, false, true, true);
@@ -7482,7 +7482,7 @@ namespace Allors.Adapters
                 this.AssertC4(extent, false, false, false, false);
 
                 extent = this.LocalExtent(MetaI23.Instance.ObjectType);
-                extent.Filter.AddNot().AddEquals(MetaI23.Instance.I23AllorsString, "Abra");
+                extent.Filter.AddNot().AddEquals(MetaI23.Instance.I23AllorsString, "ᴀbra");
 
                 Assert.Equal(4, extent.Count);
                 this.AssertC1(extent, false, false, false, false);
@@ -7491,7 +7491,7 @@ namespace Allors.Adapters
                 this.AssertC4(extent, false, false, false, false);
 
                 extent = this.LocalExtent(MetaC2.Instance.ObjectType);
-                extent.Filter.AddNot().AddEquals(MetaI23.Instance.I23AllorsString, "Abra");
+                extent.Filter.AddNot().AddEquals(MetaI23.Instance.I23AllorsString, "ᴀbra");
 
                 Assert.Equal(2, extent.Count);
                 this.AssertC1(extent, false, false, false, false);
@@ -7500,7 +7500,7 @@ namespace Allors.Adapters
                 this.AssertC4(extent, false, false, false, false);
 
                 extent = this.LocalExtent(MetaC3.Instance.ObjectType);
-                extent.Filter.AddNot().AddEquals(MetaI23.Instance.I23AllorsString, "Abra");
+                extent.Filter.AddNot().AddEquals(MetaI23.Instance.I23AllorsString, "ᴀbra");
 
                 Assert.Equal(2, extent.Count);
                 this.AssertC1(extent, false, false, false, false);
@@ -7509,7 +7509,7 @@ namespace Allors.Adapters
                 this.AssertC4(extent, false, false, false, false);
 
                 extent = this.LocalExtent(MetaI34.Instance.ObjectType);
-                extent.Filter.AddNot().AddEquals(MetaI34.Instance.I34AllorsString, "Abra");
+                extent.Filter.AddNot().AddEquals(MetaI34.Instance.I34AllorsString, "ᴀbra");
 
                 Assert.Equal(4, extent.Count);
                 this.AssertC1(extent, false, false, false, false);
@@ -7518,7 +7518,7 @@ namespace Allors.Adapters
                 this.AssertC4(extent, false, false, true, true);
 
                 extent = this.LocalExtent(MetaC3.Instance.ObjectType);
-                extent.Filter.AddNot().AddEquals(MetaI34.Instance.I34AllorsString, "Abra");
+                extent.Filter.AddNot().AddEquals(MetaI34.Instance.I34AllorsString, "ᴀbra");
 
                 Assert.Equal(2, extent.Count);
                 this.AssertC1(extent, false, false, false, false);
@@ -7526,9 +7526,9 @@ namespace Allors.Adapters
                 this.AssertC3(extent, false, false, true, true);
                 this.AssertC4(extent, false, false, false, false);
 
-                // Equal "Abracadabra"
+                // Equal "ᴀbracadabra"
                 extent = this.LocalExtent(MetaI12.Instance.ObjectType);
-                extent.Filter.AddNot().AddEquals(MetaI12.Instance.I12AllorsString, "Abracadabra");
+                extent.Filter.AddNot().AddEquals(MetaI12.Instance.I12AllorsString, "ᴀbracadabra");
 
                 Assert.Equal(2, extent.Count);
                 this.AssertC1(extent, false, true, false, false);
@@ -7537,7 +7537,7 @@ namespace Allors.Adapters
                 this.AssertC4(extent, false, false, false, false);
 
                 extent = this.LocalExtent(MetaC1.Instance.ObjectType);
-                extent.Filter.AddNot().AddEquals(MetaI12.Instance.I12AllorsString, "Abracadabra");
+                extent.Filter.AddNot().AddEquals(MetaI12.Instance.I12AllorsString, "ᴀbracadabra");
 
                 Assert.Equal(1, extent.Count);
                 this.AssertC1(extent, false, true, false, false);
@@ -7546,7 +7546,7 @@ namespace Allors.Adapters
                 this.AssertC4(extent, false, false, false, false);
 
                 extent = this.LocalExtent(MetaI34.Instance.ObjectType);
-                extent.Filter.AddNot().AddEquals(MetaI34.Instance.I34AllorsString, "Abracadabra");
+                extent.Filter.AddNot().AddEquals(MetaI34.Instance.I34AllorsString, "ᴀbracadabra");
 
                 Assert.Equal(2, extent.Count);
                 this.AssertC1(extent, false, false, false, false);
@@ -7566,9 +7566,9 @@ namespace Allors.Adapters
                 this.AssertC3(extent, false, true, true, true);
                 this.AssertC4(extent, false, true, true, true);
 
-                // Equal "Abra"
+                // Equal "ᴀbra"
                 extent = this.LocalExtent(MetaS1234.Instance.ObjectType);
-                extent.Filter.AddNot().AddEquals(MetaS1234.Instance.S1234AllorsString, "Abra");
+                extent.Filter.AddNot().AddEquals(MetaS1234.Instance.S1234AllorsString, "ᴀbra");
 
                 Assert.Equal(8, extent.Count);
                 this.AssertC1(extent, false, false, true, true);
@@ -7576,9 +7576,9 @@ namespace Allors.Adapters
                 this.AssertC3(extent, false, false, true, true);
                 this.AssertC4(extent, false, false, true, true);
 
-                // Equal "Abracadabra"
+                // Equal "ᴀbracadabra"
                 extent = this.LocalExtent(MetaS1234.Instance.ObjectType);
-                extent.Filter.AddNot().AddEquals(MetaS1234.Instance.S1234AllorsString, "Abracadabra");
+                extent.Filter.AddNot().AddEquals(MetaS1234.Instance.S1234AllorsString, "ᴀbracadabra");
 
                 Assert.Equal(4, extent.Count);
                 this.AssertC1(extent, false, true, false, false);
@@ -7603,13 +7603,13 @@ namespace Allors.Adapters
 
                 Assert.True(exception);
 
-                // Equal "Abra"
+                // Equal "ᴀbra"
                 extent = this.LocalExtent(MetaC1.Instance.ObjectType);
 
                 exception = false;
                 try
                 {
-                    extent.Filter.AddNot().AddEquals(MetaC2.Instance.C2AllorsString, "Abra");
+                    extent.Filter.AddNot().AddEquals(MetaC2.Instance.C2AllorsString, "ᴀbra");
                 }
                 catch
                 {
@@ -7618,13 +7618,13 @@ namespace Allors.Adapters
 
                 Assert.True(exception);
 
-                // Equal "Abracadabra"
+                // Equal "ᴀbracadabra"
                 extent = this.LocalExtent(MetaC1.Instance.ObjectType);
 
                 exception = false;
                 try
                 {
-                    extent.Filter.AddNot().AddEquals(MetaC2.Instance.C2AllorsString, "Abracadabra");
+                    extent.Filter.AddNot().AddEquals(MetaC2.Instance.C2AllorsString, "ᴀbracadabra");
                 }
                 catch
                 {
@@ -7650,13 +7650,13 @@ namespace Allors.Adapters
 
                 Assert.True(exception);
 
-                // Equal "Abra"
+                // Equal "ᴀbra"
                 extent = this.LocalExtent(MetaC1.Instance.ObjectType);
 
                 exception = false;
                 try
                 {
-                    extent.Filter.AddNot().AddEquals(MetaI2.Instance.I2AllorsString, "Abra");
+                    extent.Filter.AddNot().AddEquals(MetaI2.Instance.I2AllorsString, "ᴀbra");
                 }
                 catch
                 {
@@ -7665,13 +7665,13 @@ namespace Allors.Adapters
 
                 Assert.True(exception);
 
-                // Equal "Abracadabra"
+                // Equal "ᴀbracadabra"
                 extent = this.LocalExtent(MetaC1.Instance.ObjectType);
 
                 exception = false;
                 try
                 {
-                    extent.Filter.AddNot().AddEquals(MetaI2.Instance.I2AllorsString, "Abracadabra");
+                    extent.Filter.AddNot().AddEquals(MetaI2.Instance.I2AllorsString, "ᴀbracadabra");
                 }
                 catch
                 {
@@ -7697,13 +7697,13 @@ namespace Allors.Adapters
 
                 Assert.True(exception);
 
-                // Equal "Abra"
+                // Equal "ᴀbra"
                 extent = this.LocalExtent(MetaC1.Instance.ObjectType);
 
                 exception = false;
                 try
                 {
-                    extent.Filter.AddNot().AddEquals(MetaS2.Instance.S2AllorsString, "Abra");
+                    extent.Filter.AddNot().AddEquals(MetaS2.Instance.S2AllorsString, "ᴀbra");
                 }
                 catch
                 {
@@ -7712,13 +7712,13 @@ namespace Allors.Adapters
 
                 Assert.True(exception);
 
-                // Equal "Abracadabra"
+                // Equal "ᴀbracadabra"
                 extent = this.LocalExtent(MetaC1.Instance.ObjectType);
 
                 exception = false;
                 try
                 {
-                    extent.Filter.AddNot().AddEquals(MetaS2.Instance.S2AllorsString, "Abracadabra");
+                    extent.Filter.AddNot().AddEquals(MetaS2.Instance.S2AllorsString, "ᴀbracadabra");
                 }
                 catch
                 {
@@ -7834,9 +7834,9 @@ namespace Allors.Adapters
                 this.AssertC3(extent, false, false, false, false);
                 this.AssertC4(extent, false, false, false, false);
 
-                // Like "Abra"
+                // Like "ᴀbra"
                 extent = this.LocalExtent(MetaC1.Instance.ObjectType);
-                extent.Filter.AddNot().AddLike(MetaC1.Instance.C1AllorsString, "Abra");
+                extent.Filter.AddNot().AddLike(MetaC1.Instance.C1AllorsString, "ᴀbra");
 
                 Assert.Equal(2, extent.Count);
                 this.AssertC1(extent, false, false, true, true);
@@ -7844,9 +7844,9 @@ namespace Allors.Adapters
                 this.AssertC3(extent, false, false, false, false);
                 this.AssertC4(extent, false, false, false, false);
 
-                // Like "Abracadabra"
+                // Like "ᴀbracadabra"
                 extent = this.LocalExtent(MetaC1.Instance.ObjectType);
-                extent.Filter.AddNot().AddLike(MetaC1.Instance.C1AllorsString, "Abracadabra");
+                extent.Filter.AddNot().AddLike(MetaC1.Instance.C1AllorsString, "ᴀbracadabra");
 
                 Assert.Equal(1, extent.Count);
                 this.AssertC1(extent, false, true, false, false);
@@ -7906,9 +7906,9 @@ namespace Allors.Adapters
                 this.AssertC3(extent, false, false, false, false);
                 this.AssertC4(extent, false, false, false, false);
 
-                // Like "Abra"
+                // Like "ᴀbra"
                 extent = this.LocalExtent(MetaI12.Instance.ObjectType);
-                extent.Filter.AddNot().AddLike(MetaI12.Instance.I12AllorsString, "Abra");
+                extent.Filter.AddNot().AddLike(MetaI12.Instance.I12AllorsString, "ᴀbra");
 
                 Assert.Equal(4, extent.Count);
                 this.AssertC1(extent, false, false, true, true);
@@ -7916,9 +7916,9 @@ namespace Allors.Adapters
                 this.AssertC3(extent, false, false, false, false);
                 this.AssertC4(extent, false, false, false, false);
 
-                // Like "Abracadabra"
+                // Like "ᴀbracadabra"
                 extent = this.LocalExtent(MetaI12.Instance.ObjectType);
-                extent.Filter.AddNot().AddLike(MetaI12.Instance.I12AllorsString, "Abracadabra");
+                extent.Filter.AddNot().AddLike(MetaI12.Instance.I12AllorsString, "ᴀbracadabra");
 
                 Assert.Equal(2, extent.Count);
                 this.AssertC1(extent, false, true, false, false);
@@ -7938,9 +7938,9 @@ namespace Allors.Adapters
                 this.AssertC3(extent, false, true, true, true);
                 this.AssertC4(extent, false, true, true, true);
 
-                // Like "Abra"
+                // Like "ᴀbra"
                 extent = this.LocalExtent(MetaS1234.Instance.ObjectType);
-                extent.Filter.AddNot().AddLike(MetaS1234.Instance.S1234AllorsString, "Abra");
+                extent.Filter.AddNot().AddLike(MetaS1234.Instance.S1234AllorsString, "ᴀbra");
 
                 Assert.Equal(8, extent.Count);
                 this.AssertC1(extent, false, false, true, true);
@@ -7948,9 +7948,9 @@ namespace Allors.Adapters
                 this.AssertC3(extent, false, false, true, true);
                 this.AssertC4(extent, false, false, true, true);
 
-                // Like "Abracadabra"
+                // Like "ᴀbracadabra"
                 extent = this.LocalExtent(MetaS1234.Instance.ObjectType);
-                extent.Filter.AddNot().AddLike(MetaS1234.Instance.S1234AllorsString, "Abracadabra");
+                extent.Filter.AddNot().AddLike(MetaS1234.Instance.S1234AllorsString, "ᴀbracadabra");
 
                 Assert.Equal(4, extent.Count);
                 this.AssertC1(extent, false, true, false, false);
@@ -7975,13 +7975,13 @@ namespace Allors.Adapters
 
                 Assert.True(exception);
 
-                // Like "Abra"
+                // Like "ᴀbra"
                 extent = this.LocalExtent(MetaC1.Instance.ObjectType);
 
                 exception = false;
                 try
                 {
-                    extent.Filter.AddNot().AddLike(MetaC2.Instance.C2AllorsString, "Abra");
+                    extent.Filter.AddNot().AddLike(MetaC2.Instance.C2AllorsString, "ᴀbra");
                 }
                 catch
                 {
@@ -7990,13 +7990,13 @@ namespace Allors.Adapters
 
                 Assert.True(exception);
 
-                // Like "Abracadabra"
+                // Like "ᴀbracadabra"
                 extent = this.LocalExtent(MetaC1.Instance.ObjectType);
 
                 exception = false;
                 try
                 {
-                    extent.Filter.AddNot().AddLike(MetaC2.Instance.C2AllorsString, "Abracadabra");
+                    extent.Filter.AddNot().AddLike(MetaC2.Instance.C2AllorsString, "ᴀbracadabra");
                 }
                 catch
                 {
@@ -8022,13 +8022,13 @@ namespace Allors.Adapters
 
                 Assert.True(exception);
 
-                // Like "Abra"
+                // Like "ᴀbra"
                 extent = this.LocalExtent(MetaC1.Instance.ObjectType);
 
                 exception = false;
                 try
                 {
-                    extent.Filter.AddNot().AddLike(MetaI2.Instance.I2AllorsString, "Abra");
+                    extent.Filter.AddNot().AddLike(MetaI2.Instance.I2AllorsString, "ᴀbra");
                 }
                 catch
                 {
@@ -8037,13 +8037,13 @@ namespace Allors.Adapters
 
                 Assert.True(exception);
 
-                // Like "Abracadabra"
+                // Like "ᴀbracadabra"
                 extent = this.LocalExtent(MetaC1.Instance.ObjectType);
 
                 exception = false;
                 try
                 {
-                    extent.Filter.AddNot().AddLike(MetaI2.Instance.I2AllorsString, "Abracadabra");
+                    extent.Filter.AddNot().AddLike(MetaI2.Instance.I2AllorsString, "ᴀbracadabra");
                 }
                 catch
                 {
@@ -8069,13 +8069,13 @@ namespace Allors.Adapters
 
                 Assert.True(exception);
 
-                // Like "Abra"
+                // Like "ᴀbra"
                 extent = this.LocalExtent(MetaC1.Instance.ObjectType);
 
                 exception = false;
                 try
                 {
-                    extent.Filter.AddNot().AddLike(MetaS2.Instance.S2AllorsString, "Abra");
+                    extent.Filter.AddNot().AddLike(MetaS2.Instance.S2AllorsString, "ᴀbra");
                 }
                 catch
                 {
@@ -8084,13 +8084,13 @@ namespace Allors.Adapters
 
                 Assert.True(exception);
 
-                // Like "Abracadabra"
+                // Like "ᴀbracadabra"
                 extent = this.LocalExtent(MetaC1.Instance.ObjectType);
 
                 exception = false;
                 try
                 {
-                    extent.Filter.AddNot().AddLike(MetaS2.Instance.S2AllorsString, "Abracadabra");
+                    extent.Filter.AddNot().AddLike(MetaS2.Instance.S2AllorsString, "ᴀbracadabra");
                 }
                 catch
                 {
@@ -8110,10 +8110,10 @@ namespace Allors.Adapters
                 this.Populate();
 
                 var firstExtent = this.LocalExtent(MetaC1.Instance.ObjectType);
-                firstExtent.Filter.AddEquals(MetaC1.Instance.C1AllorsString, "Abra");
+                firstExtent.Filter.AddEquals(MetaC1.Instance.C1AllorsString, "ᴀbra");
 
                 var secondExtent = this.LocalExtent(MetaC1.Instance.ObjectType);
-                secondExtent.Filter.AddLike(MetaC1.Instance.C1AllorsString, "Abracadabra");
+                secondExtent.Filter.AddLike(MetaC1.Instance.C1AllorsString, "ᴀbracadabra");
 
                 var extent = this.Session.Union(firstExtent, secondExtent);
 
@@ -13643,13 +13643,13 @@ namespace Allors.Adapters
 
                     // Filtered
                     inExtent = this.LocalExtent(MetaC1.Instance.ObjectType);
-                    inExtent.Filter.AddEquals(MetaC1.Instance.C1AllorsString, "Abra");
+                    inExtent.Filter.AddEquals(MetaC1.Instance.C1AllorsString, "ᴀbra");
                     if (useOperator)
                     {
                         var inExtentA = this.LocalExtent(MetaC1.Instance.ObjectType);
-                        inExtentA.Filter.AddEquals(MetaC1.Instance.C1AllorsString, "Abra");
+                        inExtentA.Filter.AddEquals(MetaC1.Instance.C1AllorsString, "ᴀbra");
                         var inExtentB = this.LocalExtent(MetaC1.Instance.ObjectType);
-                        inExtentB.Filter.AddEquals(MetaC1.Instance.C1AllorsString, "Abra");
+                        inExtentB.Filter.AddEquals(MetaC1.Instance.C1AllorsString, "ᴀbra");
                         inExtent = this.Session.Union(inExtentA, inExtentB);
                     }
 
@@ -13722,13 +13722,13 @@ namespace Allors.Adapters
 
                     // Filtered
                     inExtent = this.LocalExtent(MetaI12.Instance.ObjectType);
-                    inExtent.Filter.AddEquals(MetaI12.Instance.I12AllorsString, "Abra");
+                    inExtent.Filter.AddEquals(MetaI12.Instance.I12AllorsString, "ᴀbra");
                     if (useOperator)
                     {
                         var inExtentA = this.LocalExtent(MetaI12.Instance.ObjectType);
-                        inExtentA.Filter.AddEquals(MetaI12.Instance.I12AllorsString, "Abra");
+                        inExtentA.Filter.AddEquals(MetaI12.Instance.I12AllorsString, "ᴀbra");
                         var inExtentB = this.LocalExtent(MetaI12.Instance.ObjectType);
-                        inExtentB.Filter.AddEquals(MetaI12.Instance.I12AllorsString, "Abra");
+                        inExtentB.Filter.AddEquals(MetaI12.Instance.I12AllorsString, "ᴀbra");
                         inExtent = this.Session.Union(inExtentA, inExtentB);
                     }
 
@@ -13785,13 +13785,13 @@ namespace Allors.Adapters
 
                     // Filtered
                     inExtent = this.LocalExtent(MetaC1.Instance.ObjectType);
-                    inExtent.Filter.AddEquals(MetaC1.Instance.C1AllorsString, "Abra");
+                    inExtent.Filter.AddEquals(MetaC1.Instance.C1AllorsString, "ᴀbra");
                     if (useOperator)
                     {
                         var inExtentA = this.LocalExtent(MetaC1.Instance.ObjectType);
-                        inExtentA.Filter.AddEquals(MetaC1.Instance.C1AllorsString, "Abra");
+                        inExtentA.Filter.AddEquals(MetaC1.Instance.C1AllorsString, "ᴀbra");
                         var inExtentB = this.LocalExtent(MetaC1.Instance.ObjectType);
-                        inExtentB.Filter.AddEquals(MetaC1.Instance.C1AllorsString, "Abra");
+                        inExtentB.Filter.AddEquals(MetaC1.Instance.C1AllorsString, "ᴀbra");
                         inExtent = this.Session.Union(inExtentA, inExtentB);
                     }
 
@@ -13846,13 +13846,13 @@ namespace Allors.Adapters
 
                     // Filtered
                     inExtent = this.LocalExtent(MetaI12.Instance.ObjectType);
-                    inExtent.Filter.AddEquals(MetaI12.Instance.I12AllorsString, "Abra");
+                    inExtent.Filter.AddEquals(MetaI12.Instance.I12AllorsString, "ᴀbra");
                     if (useOperator)
                     {
                         var inExtentA = this.LocalExtent(MetaI12.Instance.ObjectType);
-                        inExtentA.Filter.AddEquals(MetaI12.Instance.I12AllorsString, "Abra");
+                        inExtentA.Filter.AddEquals(MetaI12.Instance.I12AllorsString, "ᴀbra");
                         var inExtentB = this.LocalExtent(MetaI12.Instance.ObjectType);
-                        inExtentB.Filter.AddEquals(MetaI12.Instance.I12AllorsString, "Abra");
+                        inExtentB.Filter.AddEquals(MetaI12.Instance.I12AllorsString, "ᴀbra");
                         inExtent = this.Session.Union(inExtentA, inExtentB);
                     }
 
@@ -14620,13 +14620,13 @@ namespace Allors.Adapters
 
                     // With filter
                     var inExtent = this.LocalExtent(MetaC1.Instance.ObjectType);
-                    inExtent.Filter.AddEquals(MetaC1.Instance.C1AllorsString, "Abra");
+                    inExtent.Filter.AddEquals(MetaC1.Instance.C1AllorsString, "ᴀbra");
                     if (useOperator)
                     {
                         var inExtentA = this.LocalExtent(MetaC1.Instance.ObjectType);
-                        inExtentA.Filter.AddEquals(MetaC1.Instance.C1AllorsString, "Abra");
+                        inExtentA.Filter.AddEquals(MetaC1.Instance.C1AllorsString, "ᴀbra");
                         var inExtentB = this.LocalExtent(MetaC1.Instance.ObjectType);
-                        inExtentB.Filter.AddEquals(MetaC1.Instance.C1AllorsString, "Abra");
+                        inExtentB.Filter.AddEquals(MetaC1.Instance.C1AllorsString, "ᴀbra");
                         inExtent = this.Session.Union(inExtentA, inExtentB);
                     }
 
@@ -15074,9 +15074,9 @@ namespace Allors.Adapters
                 this.AssertC3(extent, false, false, false, false);
                 this.AssertC4(extent, false, false, false, false);
 
-                // Equal "Abra"
+                // Equal "ᴀbra"
                 extent = this.LocalExtent(MetaC1.Instance.ObjectType);
-                extent.Filter.AddEquals(MetaC1.Instance.C1AllorsString, "Abra");
+                extent.Filter.AddEquals(MetaC1.Instance.C1AllorsString, "ᴀbra");
 
                 Assert.Equal(1, extent.Count);
                 this.AssertC1(extent, false, true, false, false);
@@ -15085,7 +15085,7 @@ namespace Allors.Adapters
                 this.AssertC4(extent, false, false, false, false);
 
                 extent = this.LocalExtent(MetaC3.Instance.ObjectType);
-                extent.Filter.AddEquals(MetaC3.Instance.C3AllorsString, "Abra");
+                extent.Filter.AddEquals(MetaC3.Instance.C3AllorsString, "ᴀbra");
 
                 Assert.Equal(1, extent.Count);
                 this.AssertC1(extent, false, false, false, false);
@@ -15093,9 +15093,9 @@ namespace Allors.Adapters
                 this.AssertC3(extent, false, true, false, false);
                 this.AssertC4(extent, false, false, false, false);
 
-                // Equal "Abracadabra"
+                // Equal "ᴀbracadabra"
                 extent = this.LocalExtent(MetaC1.Instance.ObjectType);
-                extent.Filter.AddEquals(MetaC1.Instance.C1AllorsString, "Abracadabra");
+                extent.Filter.AddEquals(MetaC1.Instance.C1AllorsString, "ᴀbracadabra");
 
                 Assert.Equal(2, extent.Count);
                 this.AssertC1(extent, false, false, true, true);
@@ -15104,7 +15104,7 @@ namespace Allors.Adapters
                 this.AssertC4(extent, false, false, false, false);
 
                 extent = this.LocalExtent(MetaC3.Instance.ObjectType);
-                extent.Filter.AddEquals(MetaC3.Instance.C3AllorsString, "Abracadabra");
+                extent.Filter.AddEquals(MetaC3.Instance.C3AllorsString, "ᴀbracadabra");
 
                 Assert.Equal(2, extent.Count);
                 this.AssertC1(extent, false, false, false, false);
@@ -15133,9 +15133,9 @@ namespace Allors.Adapters
                 this.AssertC3(extent, false, false, false, false);
                 this.AssertC4(extent, false, false, false, false);
 
-                // Equal "Abra"
+                // Equal "ᴀbra"
                 extent = this.LocalExtent(MetaI1.Instance.ObjectType);
-                extent.Filter.AddEquals(MetaI1.Instance.I1AllorsString, "Abra");
+                extent.Filter.AddEquals(MetaI1.Instance.I1AllorsString, "ᴀbra");
 
                 Assert.Equal(1, extent.Count);
                 this.AssertC1(extent, false, true, false, false);
@@ -15144,7 +15144,7 @@ namespace Allors.Adapters
                 this.AssertC4(extent, false, false, false, false);
 
                 extent = this.LocalExtent(MetaI3.Instance.ObjectType);
-                extent.Filter.AddEquals(MetaI3.Instance.I3AllorsString, "Abra");
+                extent.Filter.AddEquals(MetaI3.Instance.I3AllorsString, "ᴀbra");
 
                 Assert.Equal(1, extent.Count);
                 this.AssertC1(extent, false, false, false, false);
@@ -15152,9 +15152,9 @@ namespace Allors.Adapters
                 this.AssertC3(extent, false, true, false, false);
                 this.AssertC4(extent, false, false, false, false);
 
-                // Equal "Abracadabra"
+                // Equal "ᴀbracadabra"
                 extent = this.LocalExtent(MetaI1.Instance.ObjectType);
-                extent.Filter.AddEquals(MetaI1.Instance.I1AllorsString, "Abracadabra");
+                extent.Filter.AddEquals(MetaI1.Instance.I1AllorsString, "ᴀbracadabra");
 
                 Assert.Equal(2, extent.Count);
                 this.AssertC1(extent, false, false, true, true);
@@ -15163,7 +15163,7 @@ namespace Allors.Adapters
                 this.AssertC4(extent, false, false, false, false);
 
                 extent = this.LocalExtent(MetaI3.Instance.ObjectType);
-                extent.Filter.AddEquals(MetaI3.Instance.I3AllorsString, "Abracadabra");
+                extent.Filter.AddEquals(MetaI3.Instance.I3AllorsString, "ᴀbracadabra");
 
                 Assert.Equal(2, extent.Count);
                 this.AssertC1(extent, false, false, false, false);
@@ -15192,9 +15192,9 @@ namespace Allors.Adapters
                 this.AssertC3(extent, false, false, false, false);
                 this.AssertC4(extent, false, false, false, false);
 
-                // Equal "Abra"
+                // Equal "ᴀbra"
                 extent = this.LocalExtent(MetaI12.Instance.ObjectType);
-                extent.Filter.AddEquals(MetaI12.Instance.I12AllorsString, "Abra");
+                extent.Filter.AddEquals(MetaI12.Instance.I12AllorsString, "ᴀbra");
 
                 Assert.Equal(2, extent.Count);
                 this.AssertC1(extent, false, true, false, false);
@@ -15203,7 +15203,7 @@ namespace Allors.Adapters
                 this.AssertC4(extent, false, false, false, false);
 
                 extent = this.LocalExtent(MetaC1.Instance.ObjectType);
-                extent.Filter.AddEquals(MetaI12.Instance.I12AllorsString, "Abra");
+                extent.Filter.AddEquals(MetaI12.Instance.I12AllorsString, "ᴀbra");
 
                 Assert.Equal(1, extent.Count);
                 this.AssertC1(extent, false, true, false, false);
@@ -15212,7 +15212,7 @@ namespace Allors.Adapters
                 this.AssertC4(extent, false, false, false, false);
 
                 extent = this.LocalExtent(MetaI23.Instance.ObjectType);
-                extent.Filter.AddEquals(MetaI23.Instance.I23AllorsString, "Abra");
+                extent.Filter.AddEquals(MetaI23.Instance.I23AllorsString, "ᴀbra");
 
                 Assert.Equal(2, extent.Count);
                 this.AssertC1(extent, false, false, false, false);
@@ -15221,7 +15221,7 @@ namespace Allors.Adapters
                 this.AssertC4(extent, false, false, false, false);
 
                 extent = this.LocalExtent(MetaC2.Instance.ObjectType);
-                extent.Filter.AddEquals(MetaI23.Instance.I23AllorsString, "Abra");
+                extent.Filter.AddEquals(MetaI23.Instance.I23AllorsString, "ᴀbra");
 
                 Assert.Equal(1, extent.Count);
                 this.AssertC1(extent, false, false, false, false);
@@ -15230,7 +15230,7 @@ namespace Allors.Adapters
                 this.AssertC4(extent, false, false, false, false);
 
                 extent = this.LocalExtent(MetaC3.Instance.ObjectType);
-                extent.Filter.AddEquals(MetaI23.Instance.I23AllorsString, "Abra");
+                extent.Filter.AddEquals(MetaI23.Instance.I23AllorsString, "ᴀbra");
 
                 Assert.Equal(1, extent.Count);
                 this.AssertC1(extent, false, false, false, false);
@@ -15239,7 +15239,7 @@ namespace Allors.Adapters
                 this.AssertC4(extent, false, false, false, false);
 
                 extent = this.LocalExtent(MetaI34.Instance.ObjectType);
-                extent.Filter.AddEquals(MetaI34.Instance.I34AllorsString, "Abra");
+                extent.Filter.AddEquals(MetaI34.Instance.I34AllorsString, "ᴀbra");
 
                 Assert.Equal(2, extent.Count);
                 this.AssertC1(extent, false, false, false, false);
@@ -15248,7 +15248,7 @@ namespace Allors.Adapters
                 this.AssertC4(extent, false, true, false, false);
 
                 extent = this.LocalExtent(MetaC3.Instance.ObjectType);
-                extent.Filter.AddEquals(MetaI34.Instance.I34AllorsString, "Abra");
+                extent.Filter.AddEquals(MetaI34.Instance.I34AllorsString, "ᴀbra");
 
                 Assert.Equal(1, extent.Count);
                 this.AssertC1(extent, false, false, false, false);
@@ -15256,9 +15256,9 @@ namespace Allors.Adapters
                 this.AssertC3(extent, false, true, false, false);
                 this.AssertC4(extent, false, false, false, false);
 
-                // Equal "Abracadabra"
+                // Equal "ᴀbracadabra"
                 extent = this.LocalExtent(MetaI12.Instance.ObjectType);
-                extent.Filter.AddEquals(MetaI12.Instance.I12AllorsString, "Abracadabra");
+                extent.Filter.AddEquals(MetaI12.Instance.I12AllorsString, "ᴀbracadabra");
 
                 Assert.Equal(4, extent.Count);
                 this.AssertC1(extent, false, false, true, true);
@@ -15267,7 +15267,7 @@ namespace Allors.Adapters
                 this.AssertC4(extent, false, false, false, false);
 
                 extent = this.LocalExtent(MetaC1.Instance.ObjectType);
-                extent.Filter.AddEquals(MetaI12.Instance.I12AllorsString, "Abracadabra");
+                extent.Filter.AddEquals(MetaI12.Instance.I12AllorsString, "ᴀbracadabra");
 
                 Assert.Equal(2, extent.Count);
                 this.AssertC1(extent, false, false, true, true);
@@ -15276,7 +15276,7 @@ namespace Allors.Adapters
                 this.AssertC4(extent, false, false, false, false);
 
                 extent = this.LocalExtent(MetaI34.Instance.ObjectType);
-                extent.Filter.AddEquals(MetaI34.Instance.I34AllorsString, "Abracadabra");
+                extent.Filter.AddEquals(MetaI34.Instance.I34AllorsString, "ᴀbracadabra");
 
                 Assert.Equal(4, extent.Count);
                 this.AssertC1(extent, false, false, false, false);
@@ -15296,9 +15296,9 @@ namespace Allors.Adapters
                 this.AssertC3(extent, false, false, false, false);
                 this.AssertC4(extent, false, false, false, false);
 
-                // Equal "Abra"
+                // Equal "ᴀbra"
                 extent = this.LocalExtent(MetaS1234.Instance.ObjectType);
-                extent.Filter.AddEquals(MetaS1234.Instance.S1234AllorsString, "Abra");
+                extent.Filter.AddEquals(MetaS1234.Instance.S1234AllorsString, "ᴀbra");
 
                 Assert.Equal(4, extent.Count);
                 this.AssertC1(extent, false, true, false, false);
@@ -15306,9 +15306,9 @@ namespace Allors.Adapters
                 this.AssertC3(extent, false, true, false, false);
                 this.AssertC4(extent, false, true, false, false);
 
-                // Equal "Abracadabra"
+                // Equal "ᴀbracadabra"
                 extent = this.LocalExtent(MetaS1234.Instance.ObjectType);
-                extent.Filter.AddEquals(MetaS1234.Instance.S1234AllorsString, "Abracadabra");
+                extent.Filter.AddEquals(MetaS1234.Instance.S1234AllorsString, "ᴀbracadabra");
 
                 Assert.Equal(8, extent.Count);
                 this.AssertC1(extent, false, false, true, true);
@@ -15333,13 +15333,13 @@ namespace Allors.Adapters
 
                 Assert.True(exception);
 
-                // Equal "Abra"
+                // Equal "ᴀbra"
                 extent = this.LocalExtent(MetaC1.Instance.ObjectType);
 
                 exception = false;
                 try
                 {
-                    extent.Filter.AddEquals(MetaC2.Instance.C2AllorsString, "Abra");
+                    extent.Filter.AddEquals(MetaC2.Instance.C2AllorsString, "ᴀbra");
                 }
                 catch
                 {
@@ -15348,13 +15348,13 @@ namespace Allors.Adapters
 
                 Assert.True(exception);
 
-                // Equal "Abracadabra"
+                // Equal "ᴀbracadabra"
                 extent = this.LocalExtent(MetaC1.Instance.ObjectType);
 
                 exception = false;
                 try
                 {
-                    extent.Filter.AddEquals(MetaC2.Instance.C2AllorsString, "Abracadabra");
+                    extent.Filter.AddEquals(MetaC2.Instance.C2AllorsString, "ᴀbracadabra");
                 }
                 catch
                 {
@@ -15380,13 +15380,13 @@ namespace Allors.Adapters
 
                 Assert.True(exception);
 
-                // Equal "Abra"
+                // Equal "ᴀbra"
                 extent = this.LocalExtent(MetaC1.Instance.ObjectType);
 
                 exception = false;
                 try
                 {
-                    extent.Filter.AddEquals(MetaI2.Instance.I2AllorsString, "Abra");
+                    extent.Filter.AddEquals(MetaI2.Instance.I2AllorsString, "ᴀbra");
                 }
                 catch
                 {
@@ -15395,13 +15395,13 @@ namespace Allors.Adapters
 
                 Assert.True(exception);
 
-                // Equal "Abracadabra"
+                // Equal "ᴀbracadabra"
                 extent = this.LocalExtent(MetaC1.Instance.ObjectType);
 
                 exception = false;
                 try
                 {
-                    extent.Filter.AddEquals(MetaI2.Instance.I2AllorsString, "Abracadabra");
+                    extent.Filter.AddEquals(MetaI2.Instance.I2AllorsString, "ᴀbracadabra");
                 }
                 catch
                 {
@@ -15427,13 +15427,13 @@ namespace Allors.Adapters
 
                 Assert.True(exception);
 
-                // Equal "Abra"
+                // Equal "ᴀbra"
                 extent = this.LocalExtent(MetaC1.Instance.ObjectType);
 
                 exception = false;
                 try
                 {
-                    extent.Filter.AddEquals(MetaS2.Instance.S2AllorsString, "Abra");
+                    extent.Filter.AddEquals(MetaS2.Instance.S2AllorsString, "ᴀbra");
                 }
                 catch
                 {
@@ -15442,13 +15442,13 @@ namespace Allors.Adapters
 
                 Assert.True(exception);
 
-                // Equal "Abracadabra"
+                // Equal "ᴀbracadabra"
                 extent = this.LocalExtent(MetaC1.Instance.ObjectType);
 
                 exception = false;
                 try
                 {
-                    extent.Filter.AddEquals(MetaS2.Instance.S2AllorsString, "Abracadabra");
+                    extent.Filter.AddEquals(MetaS2.Instance.S2AllorsString, "ᴀbracadabra");
                 }
                 catch
                 {
@@ -15458,7 +15458,7 @@ namespace Allors.Adapters
                 Assert.True(exception);
             }
         }
-
+        
         [Fact]
         public void RoleStringExist()
         {
@@ -15564,9 +15564,9 @@ namespace Allors.Adapters
                 this.AssertC3(extent, false, false, false, false);
                 this.AssertC4(extent, false, false, false, false);
 
-                // Like "Abra"
+                // Like "ᴀbra"
                 extent = this.LocalExtent(MetaC1.Instance.ObjectType);
-                extent.Filter.AddLike(MetaC1.Instance.C1AllorsString, "Abra");
+                extent.Filter.AddLike(MetaC1.Instance.C1AllorsString, "ᴀbra");
 
                 Assert.Equal(1, extent.Count);
                 this.AssertC1(extent, false, true, false, false);
@@ -15574,9 +15574,9 @@ namespace Allors.Adapters
                 this.AssertC3(extent, false, false, false, false);
                 this.AssertC4(extent, false, false, false, false);
 
-                // Like "Abracadabra"
+                // Like "ᴀbracadabra"
                 extent = this.LocalExtent(MetaC1.Instance.ObjectType);
-                extent.Filter.AddLike(MetaC1.Instance.C1AllorsString, "Abracadabra");
+                extent.Filter.AddLike(MetaC1.Instance.C1AllorsString, "ᴀbracadabra");
 
                 Assert.Equal(2, extent.Count);
                 this.AssertC1(extent, false, false, true, true);
@@ -15636,9 +15636,9 @@ namespace Allors.Adapters
                 this.AssertC3(extent, false, false, false, false);
                 this.AssertC4(extent, false, false, false, false);
 
-                // Like "Abra"
+                // Like "ᴀbra"
                 extent = this.LocalExtent(MetaI12.Instance.ObjectType);
-                extent.Filter.AddLike(MetaI12.Instance.I12AllorsString, "Abra");
+                extent.Filter.AddLike(MetaI12.Instance.I12AllorsString, "ᴀbra");
 
                 Assert.Equal(2, extent.Count);
                 this.AssertC1(extent, false, true, false, false);
@@ -15646,9 +15646,9 @@ namespace Allors.Adapters
                 this.AssertC3(extent, false, false, false, false);
                 this.AssertC4(extent, false, false, false, false);
 
-                // Like "Abracadabra"
+                // Like "ᴀbracadabra"
                 extent = this.LocalExtent(MetaI12.Instance.ObjectType);
-                extent.Filter.AddLike(MetaI12.Instance.I12AllorsString, "Abracadabra");
+                extent.Filter.AddLike(MetaI12.Instance.I12AllorsString, "ᴀbracadabra");
 
                 Assert.Equal(4, extent.Count);
                 this.AssertC1(extent, false, false, true, true);
@@ -15668,9 +15668,9 @@ namespace Allors.Adapters
                 this.AssertC3(extent, false, false, false, false);
                 this.AssertC4(extent, false, false, false, false);
 
-                // Like "Abra"
+                // Like "ᴀbra"
                 extent = this.LocalExtent(MetaS1234.Instance.ObjectType);
-                extent.Filter.AddLike(MetaS1234.Instance.S1234AllorsString, "Abra");
+                extent.Filter.AddLike(MetaS1234.Instance.S1234AllorsString, "ᴀbra");
 
                 Assert.Equal(4, extent.Count);
                 this.AssertC1(extent, false, true, false, false);
@@ -15678,9 +15678,9 @@ namespace Allors.Adapters
                 this.AssertC3(extent, false, true, false, false);
                 this.AssertC4(extent, false, true, false, false);
 
-                // Like "Abracadabra"
+                // Like "ᴀbracadabra"
                 extent = this.LocalExtent(MetaS1234.Instance.ObjectType);
-                extent.Filter.AddLike(MetaS1234.Instance.S1234AllorsString, "Abracadabra");
+                extent.Filter.AddLike(MetaS1234.Instance.S1234AllorsString, "ᴀbracadabra");
 
                 Assert.Equal(8, extent.Count);
                 this.AssertC1(extent, false, false, true, true);
@@ -15705,13 +15705,13 @@ namespace Allors.Adapters
 
                 Assert.True(exception);
 
-                // Like "Abra"
+                // Like "ᴀbra"
                 extent = this.LocalExtent(MetaC1.Instance.ObjectType);
 
                 exception = false;
                 try
                 {
-                    extent.Filter.AddLike(MetaC2.Instance.C2AllorsString, "Abra");
+                    extent.Filter.AddLike(MetaC2.Instance.C2AllorsString, "ᴀbra");
                 }
                 catch
                 {
@@ -15720,13 +15720,13 @@ namespace Allors.Adapters
 
                 Assert.True(exception);
 
-                // Like "Abracadabra"
+                // Like "ᴀbracadabra"
                 extent = this.LocalExtent(MetaC1.Instance.ObjectType);
 
                 exception = false;
                 try
                 {
-                    extent.Filter.AddLike(MetaC2.Instance.C2AllorsString, "Abracadabra");
+                    extent.Filter.AddLike(MetaC2.Instance.C2AllorsString, "ᴀbracadabra");
                 }
                 catch
                 {
@@ -15752,13 +15752,13 @@ namespace Allors.Adapters
 
                 Assert.True(exception);
 
-                // Like "Abra"
+                // Like "ᴀbra"
                 extent = this.LocalExtent(MetaC1.Instance.ObjectType);
 
                 exception = false;
                 try
                 {
-                    extent.Filter.AddLike(MetaI2.Instance.I2AllorsString, "Abra");
+                    extent.Filter.AddLike(MetaI2.Instance.I2AllorsString, "ᴀbra");
                 }
                 catch
                 {
@@ -15767,13 +15767,13 @@ namespace Allors.Adapters
 
                 Assert.True(exception);
 
-                // Like "Abracadabra"
+                // Like "ᴀbracadabra"
                 extent = this.LocalExtent(MetaC1.Instance.ObjectType);
 
                 exception = false;
                 try
                 {
-                    extent.Filter.AddLike(MetaI2.Instance.I2AllorsString, "Abracadabra");
+                    extent.Filter.AddLike(MetaI2.Instance.I2AllorsString, "ᴀbracadabra");
                 }
                 catch
                 {
@@ -15799,13 +15799,13 @@ namespace Allors.Adapters
 
                 Assert.True(exception);
 
-                // Like "Abra"
+                // Like "ᴀbra"
                 extent = this.LocalExtent(MetaC1.Instance.ObjectType);
 
                 exception = false;
                 try
                 {
-                    extent.Filter.AddLike(MetaS2.Instance.S2AllorsString, "Abra");
+                    extent.Filter.AddLike(MetaS2.Instance.S2AllorsString, "ᴀbra");
                 }
                 catch
                 {
@@ -15814,13 +15814,13 @@ namespace Allors.Adapters
 
                 Assert.True(exception);
 
-                // Like "Abracadabra"
+                // Like "ᴀbracadabra"
                 extent = this.LocalExtent(MetaC1.Instance.ObjectType);
 
                 exception = false;
                 try
                 {
-                    extent.Filter.AddLike(MetaS2.Instance.S2AllorsString, "Abracadabra");
+                    extent.Filter.AddLike(MetaS2.Instance.S2AllorsString, "ᴀbracadabra");
                 }
                 catch
                 {
@@ -16004,10 +16004,10 @@ namespace Allors.Adapters
 
                 // Filtered
                 var firstExtent = this.LocalExtent(MetaC1.Instance.ObjectType);
-                firstExtent.Filter.AddEquals(MetaC1.Instance.C1AllorsString, "Abra");
+                firstExtent.Filter.AddEquals(MetaC1.Instance.C1AllorsString, "ᴀbra");
 
                 var secondExtent = this.LocalExtent(MetaC1.Instance.ObjectType);
-                secondExtent.Filter.AddLike(MetaC1.Instance.C1AllorsString, "Abracadabra");
+                secondExtent.Filter.AddLike(MetaC1.Instance.C1AllorsString, "ᴀbracadabra");
 
                 var extent = this.Session.Union(firstExtent, secondExtent);
 
@@ -16399,7 +16399,7 @@ namespace Allors.Adapters
                 // With Filter
                 // Shortcut
                 extent = this.c1B.Strategy.GetCompositeRoles(MetaC1.Instance.C1C1one2manies.RelationType);
-                extent.Filter.AddEquals(MetaC1.Instance.C1AllorsString, "Abracadabra");
+                extent.Filter.AddEquals(MetaC1.Instance.C1AllorsString, "ᴀbracadabra");
 
                 Assert.Equal(0, extent.Count);
                 this.AssertC1(extent, false, false, false, false);

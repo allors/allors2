@@ -25,10 +25,10 @@ namespace Allors.Domain
 
     public partial class Locales
     {
-        private const string EnglishGreatBritainName = "en-GB";
-        private const string EnglishUnitedStatesName = "en-US";
-        private const string DutchNetherlandsName = "nl-NL";
-        private const string DutchBelgiumName = "nl-BE";
+        public const string EnglishGreatBritainName = "en-GB";
+        public const string EnglishUnitedStatesName = "en-US";
+        public const string DutchNetherlandsName = "nl-NL";
+        public const string DutchBelgiumName = "nl-BE";
 
         private Cache<string, Locale> localeByIdentifier;
 
