@@ -18,6 +18,8 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Allors.Meta;
+
 namespace Allors.Domain
 {
     using System.Collections.Generic;
@@ -48,7 +50,13 @@ namespace Allors.Domain
         public Locale DutchNetherlands => this.FindBy(this.Meta.Name, DutchNetherlandsName);
 
         public Locale DutchBelgium => this.FindBy(this.Meta.Name, DutchBelgiumName);
-        
+
+        protected override void BasePrepare(Setup config)
+        {
+            config.AddDependency(this.ObjectType, M.Country);
+            config.AddDependency(this.ObjectType, M.Language);
+        }
+
         protected override void BaseSetup(Setup config)
         {
             var countries = new Countries(this.Session);
