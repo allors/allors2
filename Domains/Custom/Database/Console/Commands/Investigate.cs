@@ -1,6 +1,5 @@
 ﻿namespace Allors.Commands
 {
-    using System.Configuration;
     using System.Data;
 
     using Allors.Adapters.Object.SqlClient;
@@ -28,8 +27,8 @@
 
             var configuration = new Configuration
             {
-                ConnectionString = ConfigurationManager.ConnectionStrings["allors"].ConnectionString,
-                ObjectFactory = Config.ObjectFactory,
+                ConnectionString = this.ConnectionString,
+                ObjectFactory = this.ObjectFactory,
                 IsolationLevel = IsolationLevel.Snapshot,
                 CommandTimeout = 0,
                 ConnectionFactory = this.connectionFactory,

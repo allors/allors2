@@ -1,4 +1,6 @@
-﻿namespace Allors.Web.Database
+﻿using System.Reflection;
+
+namespace Allors.Web.Database
 {
     using System;
     using System.Linq;

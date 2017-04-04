@@ -18,6 +18,9 @@
 // </copyright>
 // <summary>Defines the ObjectBase type.</summary>
 //-------------------------------------------------------------------------------------------------
+
+using Allors.Meta;
+
 namespace Allors.Workspace
 {
     using System;
@@ -62,10 +65,9 @@ namespace Allors.Workspace
         /// <param name="namespace">
         /// The namespace
         /// </param>
-        public ObjectFactory(IMetaPopulation metaPopulation, Assembly assembly, string @namespace)
+        public ObjectFactory(IMetaPopulation metaPopulation, Type[] types, MethodInfo[] methods, string @namespace)
         {
             this.MetaPopulation = metaPopulation;
-            this.Assembly = assembly;
             this.Namespace = @namespace;
 
             var validationLog = metaPopulation.Validate();
@@ -74,18 +76,13 @@ namespace Allors.Workspace
                 throw new Exception(validationLog.ToString());
             }
 
-            metaPopulation.Bind(assembly);
+            metaPopulation.Bind(types, methods);
 
             this.typeByObjectType = new Dictionary<IObjectType, Type>();
             this.objectTypeByType = new Dictionary<Type, IObjectType>();
             this.objectTypeByName = new Dictionary<string, IObjectType>();
             this.objectTypeByObjectTypeId = new Dictionary<Guid, IObjectType>();
             this.contructorInfoByObjectType = new Dictionary<IObjectType, ConstructorInfo>();
-
-            var types = assembly.GetTypes().Where(type => 
-                type.Namespace != null && 
-                type.Namespace.Equals(@namespace) && 
-                type.GetInterfaces().Contains(typeof(ISessionObject)));
 
             var typeByName = types.ToDictionary(type => type.Name, type => type);
 
@@ -101,13 +98,8 @@ namespace Allors.Workspace
                 if (objectType is IClass)
                 {
                     var parameterTypes = new[] { typeof(Session) };
-                    var constructor = type.GetConstructor(parameterTypes);
-                    if (constructor == null)
-                    {
-                        throw new ArgumentException(objectType.Name + " has no Allors constructor.");
-                    }
-
-                    this.contructorInfoByObjectType[objectType] = constructor;
+                    var constructor = type.GetTypeInfo().GetConstructor(parameterTypes);
+                    this.contructorInfoByObjectType[objectType] = constructor ?? throw new ArgumentException(objectType.Name + " has no Allors constructor.");
                 }
             }
         }
@@ -116,11 +108,6 @@ namespace Allors.Workspace
         /// Gets the namespace.
         /// </summary>
         public string Namespace { get; }
-
-        /// <summary>
-        /// Gets the assembly.
-        /// </summary>
-        public Assembly Assembly { get; }
 
         /// <summary>
         /// Gets the domain.

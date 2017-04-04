@@ -11,10 +11,10 @@
 
             Console.WriteLine("Are you sure, all current data will be destroyed? (Y/N)\n");
 
-            var confirmationKey = Console.ReadKey(true).KeyChar.ToString(CultureInfo.InvariantCulture);
+            var confirmationKey = Console.ReadKey(true).KeyChar.ToString();
             if (confirmationKey.ToLower().Equals("y"))
             {
-                this.Logger.Info("Creating Demo");
+                Console.WriteLine("Creating Demo");
 
                 database.Init();
 
@@ -31,16 +31,16 @@
                     {
                         foreach (var error in validation.Errors)
                         {
-                            this.Logger.Error(error);
+                            Console.WriteLine(error);
                         }
 
-                        this.Logger.Info("Demo not created");
+                        Console.WriteLine("Demo not created");
                     }
                     else
                     {
                         session.Commit();
 
-                        this.Logger.Info("Demo created");
+                        Console.WriteLine("Demo created");
                     }
                 }
             }

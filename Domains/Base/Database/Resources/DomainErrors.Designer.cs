@@ -23,7 +23,7 @@ namespace Resources {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class DomainErrors {
+    public class DomainErrors {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
@@ -37,7 +37,7 @@ namespace Resources {
         ///   Returns the cached ResourceManager instance used by this class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Resources.ResourceManager ResourceManager {
+        public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
                     global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Resources.DomainErrors", typeof(DomainErrors).GetTypeInfo().Assembly);
@@ -52,12 +52,102 @@ namespace Resources {
         ///   resource lookups using this strongly typed resource class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Globalization.CultureInfo Culture {
+        public static global::System.Globalization.CultureInfo Culture {
             get {
                 return resourceCulture;
             }
             set {
                 resourceCulture = value;
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} at least one.
+        /// </summary>
+        public static string DerivationErrorAtLeastOne {
+            get {
+                return ResourceManager.GetString("DerivationErrorAtLeastOne", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} at most one.
+        /// </summary>
+        public static string DerivationErrorAtMostOne {
+            get {
+                return ResourceManager.GetString("DerivationErrorAtMostOne", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} is in conflict.
+        /// </summary>
+        public static string DerivationErrorConflict {
+            get {
+                return ResourceManager.GetString("DerivationErrorConflict", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} are not equal.
+        /// </summary>
+        public static string DerivationErrorEquals {
+            get {
+                return ResourceManager.GetString("DerivationErrorEquals", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} is not allowed.
+        /// </summary>
+        public static string DerivationErrorNotAllowed {
+            get {
+                return ResourceManager.GetString("DerivationErrorNotAllowed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} is required.
+        /// </summary>
+        public static string DerivationErrorRequired {
+            get {
+                return ResourceManager.GetString("DerivationErrorRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} is not unique.
+        /// </summary>
+        public static string DerivationErrorUnique {
+            get {
+                return ResourceManager.GetString("DerivationErrorUnique", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to only execute is allowed for method type.
+        /// </summary>
+        public static string PermissionOnlyExecuteForMethodType {
+            get {
+                return ResourceManager.GetString("PermissionOnlyExecuteForMethodType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to only read is allowed for a role or an association type.
+        /// </summary>
+        public static string PermissionOnlyReadForRoleOrAssociationType {
+            get {
+                return ResourceManager.GetString("PermissionOnlyReadForRoleOrAssociationType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to only write is allowed for a role type.
+        /// </summary>
+        public static string PermissionOnlyWriteForRoleType {
+            get {
+                return ResourceManager.GetString("PermissionOnlyWriteForRoleType", resourceCulture);
             }
         }
     }

@@ -7,13 +7,13 @@ namespace Tests.Remote
 
     using Nito.AsyncEx;
 
-    using NUnit.Framework;
+    using Xunit;
 
-    using Should;
+    
 
     public class UnitSamplesTests : Test
     {
-        [Test]
+        [Fact]
         public void Null()
         {
             AsyncContext.Run(
@@ -25,18 +25,18 @@ namespace Tests.Remote
 
                         var unitSample = (UnitSample)context.Objects["unitSample"];
 
-                        unitSample.ExistAllorsBinary.ShouldBeFalse();
-                        unitSample.ExistAllorsBoolean.ShouldBeFalse();
-                        unitSample.ExistAllorsDateTime.ShouldBeFalse();
-                        unitSample.ExistAllorsDecimal.ShouldBeFalse();
-                        unitSample.ExistAllorsDouble.ShouldBeFalse();
-                        unitSample.ExistAllorsInteger.ShouldBeFalse();
-                        unitSample.ExistAllorsString.ShouldBeFalse();
-                        unitSample.ExistAllorsUnique.ShouldBeFalse();
+                        Assert.False(unitSample.ExistAllorsBinary);
+                        Assert.False(unitSample.ExistAllorsBoolean);
+                        Assert.False(unitSample.ExistAllorsDateTime);
+                        Assert.False(unitSample.ExistAllorsDecimal);
+                        Assert.False(unitSample.ExistAllorsDouble);
+                        Assert.False(unitSample.ExistAllorsInteger);
+                        Assert.False(unitSample.ExistAllorsString);
+                        Assert.False(unitSample.ExistAllorsUnique);
                     });
         }
 
-        [Test]
+        [Fact]
         public void Values()
         {
             AsyncContext.Run(
@@ -48,23 +48,23 @@ namespace Tests.Remote
 
                        var unitSample = (UnitSample)context.Objects["unitSample"];
 
-                       unitSample.ExistAllorsBinary.ShouldBeTrue();
-                       unitSample.ExistAllorsBoolean.ShouldBeTrue();
-                       unitSample.ExistAllorsDateTime.ShouldBeTrue();
-                       unitSample.ExistAllorsDecimal.ShouldBeTrue();
-                       unitSample.ExistAllorsDouble.ShouldBeTrue();
-                       unitSample.ExistAllorsInteger.ShouldBeTrue();
-                       unitSample.ExistAllorsString.ShouldBeTrue();
-                       unitSample.ExistAllorsUnique.ShouldBeTrue();
+                       Assert.True(unitSample.ExistAllorsBinary);
+                       Assert.True(unitSample.ExistAllorsBoolean);
+                       Assert.True(unitSample.ExistAllorsDateTime);
+                       Assert.True(unitSample.ExistAllorsDecimal);
+                       Assert.True(unitSample.ExistAllorsDouble);
+                       Assert.True(unitSample.ExistAllorsInteger);
+                       Assert.True(unitSample.ExistAllorsString);
+                       Assert.True(unitSample.ExistAllorsUnique);
                        
-                       unitSample.AllorsBinary.ShouldEqual(new byte[] { 1, 2, 3 });
-                       unitSample.AllorsBoolean.ShouldEqual(true);
-                       unitSample.AllorsDateTime.ShouldEqual(new DateTime(1973, 3, 27, 0, 0, 0, DateTimeKind.Utc));
-                       unitSample.AllorsDecimal.ShouldEqual(12.34m);
-                       unitSample.AllorsDouble.ShouldEqual(123d);
-                       unitSample.AllorsInteger.ShouldEqual(1000);
-                       unitSample.AllorsString.ShouldEqual("a string");
-                       unitSample.AllorsUnique.ShouldEqual(new Guid("2946CF37-71BE-4681-8FE6-D0024D59BEFF"));
+                       Assert.Equal(unitSample.AllorsBinary, new byte[] { 1, 2, 3 });
+                       Assert.Equal(unitSample.AllorsBoolean, true);
+                       Assert.Equal(unitSample.AllorsDateTime, new DateTime(1973, 3, 27, 0, 0, 0, DateTimeKind.Utc));
+                       Assert.Equal(unitSample.AllorsDecimal, 12.34m);
+                       Assert.Equal(unitSample.AllorsDouble, 123d);
+                       Assert.Equal(unitSample.AllorsInteger, 1000);
+                       Assert.Equal(unitSample.AllorsString, "a string");
+                       Assert.Equal(unitSample.AllorsUnique, new Guid("2946CF37-71BE-4681-8FE6-D0024D59BEFF"));
                    });
         }
     }

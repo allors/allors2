@@ -24,7 +24,12 @@ namespace Allors
             var config = new System.Collections.Generic.Dictionary<string, string>()
                              {
                                 { "../Base/Database/Templates/domain.cs.stg", "DataBase/Domain/Generated" },
-                                { "../Base/Database/Templates/uml.cs.stg", "DataBase/Domain.Diagrams" },
+                                { "../Base/Database/Templates/uml.cs.stg", "DataBase/Diagrams" },
+                                { "../Base/Workspace/CSharp/Templates/meta.cs.stg", "Workspace/CSharp/Meta/Generated" },
+                                { "../Base/Workspace/CSharp/Templates/domain.cs.stg", "Workspace/CSharp/Domain/Generated" },
+                                { "../Base/Workspace/CSharp/Templates/uml.cs.stg", "Workspace/CSharp/Diagrams" },
+                                { "../Base/Workspace/Typescript/Templates/meta.ts.stg", "Workspace/Typescript/Domain/src/meta/generated" },
+                                { "../Base/Workspace/Typescript/Templates/domain.ts.stg", "Workspace/Typescript/Meta/src/domain/generated" },
                              };
 
             foreach (var entry in config)

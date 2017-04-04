@@ -39,7 +39,9 @@ dotnet msbuild Repository.sln /target:Clean /verbosity:minimal
 dotnet msbuild Base.sln /target:Clean /verbosity:minimal
 dotnet msbuild Base.sln /target:Database\Generate:Rebuild /p:Configuration="Debug" /verbosity:minimal || SET /A errno^|=%ERROR_BUILD_META% && GOTO :END
 
-dotnet Database\Generate\bin\Debug\netcoreapp1.1\Generate.dll .
+@echo Generating
+
+dotnet Database\Generate\bin\Debug\netcoreapp1.1\Generate.dll
 msbuild Database\Resources/Merge.proj /verbosity:minimal
 
 :END

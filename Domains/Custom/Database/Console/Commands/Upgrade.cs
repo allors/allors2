@@ -24,11 +24,11 @@
             
             try
             {
-                this.Logger.Info("Upgrading");
+                Console.WriteLine("Upgrading");
 
                 var notLoadedObjectTypeIds = new HashSet<Guid>();
                 var notLoadedRelationTypeIds = new HashSet<Guid>();
-                using (var reader = new XmlTextReader(this.PopulationFileName))
+                using (var reader = XmlReader.Create(this.PopulationFileName))
                 {
                     database.ObjectNotLoaded += (sender, args) =>
                     {
@@ -46,9 +46,9 @@
                         }
                     };
 
-                    this.Logger.Info("Loading");
+                    Console.WriteLine("Loading");
                     database.Load(reader);
-                    this.Logger.Info("Loaded");
+                    Console.WriteLine("Loaded");
                 }
 
                 if (notLoadedObjectTypeIds.Count > 0)
@@ -56,7 +56,7 @@
                     var notLoaded = notLoadedObjectTypeIds
                         .Aggregate("Could not load following ObjectTypeIds: ", (current, objectTypeId) => current + ("- " + objectTypeId));
 
-                    this.Logger.Error(notLoaded);
+                    Console.WriteLine(notLoaded);
                     return;
                 }
 
@@ -65,13 +65,13 @@
                     var notLoaded = notLoadedRelationTypeIds
                         .Aggregate("Could not load following RelationTypeIds: ", (current, relationTypeId) => current + ("- " + relationTypeId));
 
-                    this.Logger.Error(notLoaded);
+                    Console.WriteLine(notLoaded);
                     return;
                 }
 
                 using (var session = database.CreateSession())
                 {
-                    this.Logger.Info("Processing");
+                    Console.WriteLine("Processing");
 
                     // Call upgrade methods
 
@@ -80,11 +80,11 @@
                     session.Commit();
                 }
 
-                this.Logger.Info("Upgraded");
+                Console.WriteLine("Upgraded");
             }
             catch
             {
-                this.Logger.Info("Please correct errors or restore from backup");
+                Console.WriteLine("Please correct errors or restore from backup");
                 throw;
             }
         }

@@ -1,18 +1,16 @@
+using Tests.Local;
+
 namespace Tests.Remote
 {
     using System;
     using System.IO;
     using System.Net.Http;
-    using System.Threading.Tasks;
-
     using Allors.Workspace;
     using Allors.Workspace.Client;
 
     using Nito.AsyncEx;
 
-    using NUnit.Framework;
-
-    public class Test
+    public class Test : IDisposable
     {
         public static DirectoryInfo AppLocation => new DirectoryInfo("../../../Workspace.Web");
         
@@ -25,8 +23,7 @@ namespace Tests.Remote
 
         public Database Database { get; set; }
 
-        [SetUp]
-        public virtual void SetUp()
+        public Test()
         {
             var client = new HttpClient()
             {
@@ -34,9 +31,15 @@ namespace Tests.Remote
             };
 
             this.Database = new Database(client);
-            this.Workspace = new Workspace(Config.ObjectFactory);
+
+            var config = new Config();
+            this.Workspace = new Workspace(config.ObjectFactory);
 
             this.Init();
+        }
+
+        public void Dispose()
+        {
         }
 
         private void Init()
@@ -50,9 +53,5 @@ namespace Tests.Remote
                     });
         }
 
-        [TearDown]
-        public virtual void TearDown()
-        {
-        }
     }
 }

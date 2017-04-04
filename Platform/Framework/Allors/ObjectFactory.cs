@@ -18,6 +18,9 @@
 // </copyright>
 // <summary>Defines the ObjectBase type.</summary>
 //-------------------------------------------------------------------------------------------------
+
+using System.Runtime.CompilerServices;
+
 namespace Allors
 {
     using System;
@@ -64,11 +67,25 @@ namespace Allors
         /// <param name="namespace">
         /// The namespace
         /// </param>
-        public ObjectFactory(IMetaPopulation metaPopulation, Assembly assembly, string @namespace)
+        public ObjectFactory(IMetaPopulation metaPopulation, Type @object, Type instance)
         {
+            var assembly = instance.GetTypeInfo().Assembly;
+
+            var types = assembly.GetTypes()
+                .Where(type => type.Namespace != null &&
+                               type.Namespace.Equals(instance.Namespace) &&
+                               type.GetTypeInfo().ImplementedInterfaces.Contains(@object))
+                .ToArray();
+
+            var extensionMethods = (from type in assembly.ExportedTypes
+                where type.GetTypeInfo().IsSealed && !type.GetTypeInfo().IsGenericType && !type.IsNested
+                from method in type.GetTypeInfo().DeclaredMethods
+                where method.IsStatic && method.IsDefined(typeof(ExtensionAttribute), false)
+                select method).ToArray();
+
+
             this.MetaPopulation = metaPopulation;
-            this.Assembly = assembly;
-            this.Namespace = @namespace;
+            this.Namespace = instance.Namespace;
 
             var validationLog = metaPopulation.Validate();
             if (validationLog.ContainsErrors)
@@ -76,17 +93,12 @@ namespace Allors
                 throw new Exception(validationLog.ToString());
             }
 
-            metaPopulation.Bind(assembly);
+            metaPopulation.Bind(types, extensionMethods);
             
             this.typeByObjectType = new Dictionary<IObjectType, Type>();
             this.objectTypeByType = new Dictionary<Type, IObjectType>();
             this.objectTypeByObjectTypeId = new Dictionary<Guid, IObjectType>();
             this.contructorInfoByObjectType = new Dictionary<IObjectType, ConstructorInfo>();
-
-            var types = assembly.GetTypes().Where(type => 
-                type.Namespace != null && 
-                type.Namespace.Equals(@namespace) && 
-                type.GetTypeInfo().ImplementedInterfaces.Contains(typeof(IObject)));
 
             var typeByName = types.ToDictionary(type => type.Name, type => type);
 
@@ -102,12 +114,7 @@ namespace Allors
                 {
                     var parameterTypes = new[] { typeof(IStrategy) };
                     var constructor = type.GetTypeInfo().GetConstructor(parameterTypes);
-                    if (constructor == null)
-                    {
-                        throw new ArgumentException(objectType.Name + " has no Allors constructor.");
-                    }
-
-                    this.contructorInfoByObjectType[objectType] = constructor;
+                    this.contructorInfoByObjectType[objectType] = constructor ?? throw new ArgumentException(objectType.Name + " has no Allors constructor.");
                 }
             }
         }

@@ -1,7 +1,8 @@
 ﻿namespace Allors.Commands
 {
-    using System.Text;
+    using System;
     using System.Xml;
+    using System.IO;
 
     public class Save : Command
     {
@@ -9,13 +10,16 @@
         {
             var database = this.SnapshotDatabase;
 
-            using (var writer = new XmlTextWriter(this.PopulationFileName, Encoding.UTF8))
+            using (var stream = File.Create(this.PopulationFileName))
             {
-                this.Logger.Info("Saving to " + this.PopulationFileName);
+                using (var writer = XmlWriter.Create(stream))
+                {
+                    Console.WriteLine("Saving to " + this.PopulationFileName);
 
-                database.Save(writer);
+                    database.Save(writer);
 
-                this.Logger.Info("Saved to " + this.PopulationFileName);
+                    Console.WriteLine("Saved to " + this.PopulationFileName);
+                }
             }
         }
     }

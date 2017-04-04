@@ -8,77 +8,70 @@ namespace Tests.Local
     using Allors.Workspace;
     using Allors.Workspace.Domain;
 
-    using NUnit.Framework;
-
-    using Should;
-
-    [TestFixture]
-    public class SessionTests
+    using Xunit;
+    
+    public class SessionTests : Test
     {
-        [Test]
+        [Fact]
         public void UnitGet()
         {
-            var workspace = new Workspace(Config.ObjectFactory);
-            workspace.Sync(Fixture.loadData);
-
-            var session = new Session(workspace);
+            this.Workspace.Sync(Fixture.loadData);
+            var session = new Session(this.Workspace);
 
             var koen = session.Get(1) as Person;
 
-            Assert.AreEqual("Koen", koen.FirstName);
-            Assert.AreEqual(null, koen.MiddleName);
-            Assert.AreEqual("Van Exem", koen.LastName);
-            Assert.AreEqual(DateTime.Parse("1973-03-27T18:00:00Z"), koen.BirthDate);
-            Assert.AreEqual(true, koen.IsStudent);
+            Assert.Equal("Koen", koen.FirstName);
+            Assert.Equal(null, koen.MiddleName);
+            Assert.Equal("Van Exem", koen.LastName);
+            Assert.Equal(DateTime.Parse("1973-03-27T18:00:00Z"), koen.BirthDate);
+            Assert.Equal(true, koen.IsStudent);
 
             var patrick = session.Get(2) as Person;
 
-            Assert.AreEqual("Patrick", patrick.FirstName);
-            Assert.AreEqual("De Boeck", patrick.LastName);
-            Assert.AreEqual(null, patrick.MiddleName);
-            Assert.AreEqual(null, patrick.BirthDate);
-            Assert.AreEqual(false, patrick.IsStudent);
+            Assert.Equal("Patrick", patrick.FirstName);
+            Assert.Equal("De Boeck", patrick.LastName);
+            Assert.Equal(null, patrick.MiddleName);
+            Assert.Equal(null, patrick.BirthDate);
+            Assert.Equal(false, patrick.IsStudent);
 
             var martien = session.Get(3) as Person;
 
-            Assert.AreEqual("Martien", martien.FirstName);
-            Assert.AreEqual("Knippenberg", martien.LastName);
-            Assert.AreEqual("van", martien.MiddleName);
-            Assert.AreEqual(null, martien.BirthDate);
-            Assert.AreEqual(null, martien.IsStudent);
+            Assert.Equal("Martien", martien.FirstName);
+            Assert.Equal("Knippenberg", martien.LastName);
+            Assert.Equal("van", martien.MiddleName);
+            Assert.Equal(null, martien.BirthDate);
+            Assert.Equal(null, martien.IsStudent);
         }
 
-        [Test]
+        [Fact]
         public void UnitSet()
         {
-            var workspace = new Workspace(Config.ObjectFactory);
-            workspace.Sync(Fixture.loadData);
+            this.Workspace.Sync(Fixture.loadData);
 
-            var session1 = new Session(workspace);
+            var session1 = new Session(this.Workspace);
             var martien1 = session1.Get(3) as Person;
 
-            var session2 = new Session(workspace);
+            var session2 = new Session(this.Workspace);
             var martien2 = session2.Get(3) as Person;
 
             martien2.FirstName = "Martinus";
             martien2.MiddleName = "X";
 
-            Assert.AreEqual("Martien", martien1.FirstName);
-            Assert.AreEqual("Knippenberg", martien1.LastName);
-            Assert.AreEqual("van", martien1.MiddleName);
+            Assert.Equal("Martien", martien1.FirstName);
+            Assert.Equal("Knippenberg", martien1.LastName);
+            Assert.Equal("van", martien1.MiddleName);
 
-            Assert.AreEqual("Martinus", martien2.FirstName);
-            Assert.AreEqual("Knippenberg", martien2.LastName);
-            Assert.AreEqual("X", martien2.MiddleName);
+            Assert.Equal("Martinus", martien2.FirstName);
+            Assert.Equal("Knippenberg", martien2.LastName);
+            Assert.Equal("X", martien2.MiddleName);
         }
 
-        [Test]
+        [Fact]
         public void UnitSave()
         {
-            var workspace = new Workspace(Config.ObjectFactory);
-            workspace.Sync(Fixture.loadData);
+            this.Workspace.Sync(Fixture.loadData);
+            var session = new Session(this.Workspace);
 
-            var session = new Session(workspace);
             var koen = session.Get(1) as Person;
             var patrick = session.Get(2) as Person;
             var martien = session.Get(3) as Person;
@@ -90,46 +83,44 @@ namespace Tests.Local
 
             var save = session.PushRequest();
 
-            Assert.AreEqual(2, save.objects.Count);
+            Assert.Equal(2, save.objects.Count);
 
             var savedKoen = save.objects.First(v => (v.i == "1"));
 
-            Assert.AreEqual("1001", savedKoen.v);
-            Assert.AreEqual(2, savedKoen.roles.Length);
+            Assert.Equal("1001", savedKoen.v);
+            Assert.Equal(2, savedKoen.roles.Length);
 
             var savedKoenFirstName = savedKoen.roles.First(v => v.t == "FirstName");
             var savedKoenLastName = savedKoen.roles.First(v => v.t == "LastName");
 
-            Assert.AreEqual("K", savedKoenFirstName.s);
-            Assert.IsNull(savedKoenFirstName.a);
-            Assert.IsNull(savedKoenFirstName.r);
-            Assert.AreEqual("VE", savedKoenLastName.s);
-            Assert.IsNull(savedKoenLastName.a);
-            Assert.IsNull(savedKoenLastName.r);
+            Assert.Equal("K", savedKoenFirstName.s);
+            Assert.Null(savedKoenFirstName.a);
+            Assert.Null(savedKoenFirstName.r);
+            Assert.Equal("VE", savedKoenLastName.s);
+            Assert.Null(savedKoenLastName.a);
+            Assert.Null(savedKoenLastName.r);
 
             var savedMartien = save.objects.First(v => v.i == "3");
 
-            Assert.AreEqual("1003", savedMartien.v);
-            Assert.AreEqual(2, savedMartien.roles.Length);
+            Assert.Equal("1003", savedMartien.v);
+            Assert.Equal(2, savedMartien.roles.Length);
 
             var savedMartienFirstName = savedMartien.roles.First(v => v.t == "FirstName");
             var savedMartienMiddleName = savedMartien.roles.First(v => v.t == "MiddleName");
 
-            Assert.AreEqual("Martinus", savedMartienFirstName.s);
-            Assert.IsNull(savedMartienFirstName.a);
-            Assert.IsNull(savedMartienFirstName.r);
-            Assert.AreEqual("X", savedMartienMiddleName.s);
-            Assert.IsNull(savedMartienMiddleName.a);
-            Assert.IsNull(savedMartienMiddleName.r);
+            Assert.Equal("Martinus", savedMartienFirstName.s);
+            Assert.Null(savedMartienFirstName.a);
+            Assert.Null(savedMartienFirstName.r);
+            Assert.Equal("X", savedMartienMiddleName.s);
+            Assert.Null(savedMartienMiddleName.a);
+            Assert.Null(savedMartienMiddleName.r);
         }
 
-        [Test]
+        [Fact]
         public void OneGet()
         {
-            var workspace = new Workspace(Config.ObjectFactory);
-            workspace.Sync(Fixture.loadData);
-
-            var session = new Session(workspace);
+            this.Workspace.Sync(Fixture.loadData);
+            var session = new Session(this.Workspace);
 
             var koen = session.Get(1) as Person;
             var patrick = session.Get(2) as Person;
@@ -139,24 +130,23 @@ namespace Tests.Local
             var ocme = session.Get(102) as Organisation;
             var icme = session.Get(103) as Organisation;
 
-            Assert.AreEqual(koen, acme.Owner);
-            Assert.AreEqual(patrick, ocme.Owner);
-            Assert.AreEqual(martien, icme.Owner);
+            Assert.Equal(koen, acme.Owner);
+            Assert.Equal(patrick, ocme.Owner);
+            Assert.Equal(martien, icme.Owner);
 
-            Assert.AreEqual(null, acme.Manager);
-            Assert.AreEqual(null, ocme.Manager);
-            Assert.AreEqual(null, icme.Manager);
+            Assert.Equal(null, acme.Manager);
+            Assert.Equal(null, ocme.Manager);
+            Assert.Equal(null, icme.Manager);
         }
 
-        [Test]
+        [Fact]
         public void OneSet()
         {
-            var workspace = new Workspace(Config.ObjectFactory);
-            workspace.Sync(Fixture.loadData);
+            this.Workspace.Sync(Fixture.loadData);
 
-            var session1 = new Session(workspace);
+            var session1 = new Session(this.Workspace);
 
-            var session2 = new Session(workspace);
+            var session2 = new Session(this.Workspace);
 
             var koen1 = session1.Get(1) as Person;
             var patrick1 = session1.Get(2) as Person;
@@ -178,30 +168,28 @@ namespace Tests.Local
             ocme2.Owner = null;
             acme2.Manager = patrick2;
 
-            Assert.AreEqual(koen1, acme1.Owner);
-            Assert.AreEqual(patrick1, ocme1.Owner);
-            Assert.AreEqual(martien1, icme1.Owner);
+            Assert.Equal(koen1, acme1.Owner);
+            Assert.Equal(patrick1, ocme1.Owner);
+            Assert.Equal(martien1, icme1.Owner);
 
-            Assert.AreEqual(null, acme1.Manager);
-            Assert.AreEqual(null, ocme1.Manager);
-            Assert.AreEqual(null, icme1.Manager);
+            Assert.Equal(null, acme1.Manager);
+            Assert.Equal(null, ocme1.Manager);
+            Assert.Equal(null, icme1.Manager);
 
-            Assert.AreEqual(martien2, acme2.Owner); //x
-            Assert.AreEqual(null, ocme2.Owner);
-            Assert.AreEqual(martien2, icme2.Owner);
+            Assert.Equal(martien2, acme2.Owner); //x
+            Assert.Equal(null, ocme2.Owner);
+            Assert.Equal(martien2, icme2.Owner);
 
-            Assert.AreEqual(patrick2, acme2.Manager); //x
-            Assert.AreEqual(null, ocme2.Manager);
-            Assert.AreEqual(null, icme2.Manager);
+            Assert.Equal(patrick2, acme2.Manager); //x
+            Assert.Equal(null, ocme2.Manager);
+            Assert.Equal(null, icme2.Manager);
         }
 
-        [Test]
+        [Fact]
         public void OneSave()
         {
-            var workspace = new Workspace(Config.ObjectFactory);
-            workspace.Sync(Fixture.loadData);
-
-            var session = new Session(workspace);
+            this.Workspace.Sync(Fixture.loadData);
+            var session = new Session(this.Workspace);
 
             var koen = session.Get(1) as Person;
             var patrick = session.Get(2) as Person;
@@ -218,42 +206,40 @@ namespace Tests.Local
 
             var save = session.PushRequest();
 
-            Assert.AreEqual(2, save.objects.Count);
+            Assert.Equal(2, save.objects.Count);
 
             var savedAcme = save.objects.First(v => v.i == "101");
 
-            Assert.AreEqual("1101", savedAcme.v);
-            Assert.AreEqual(2, savedAcme.roles.Length);
+            Assert.Equal("1101", savedAcme.v);
+            Assert.Equal(2, savedAcme.roles.Length);
 
             var savedAcmeOwner = savedAcme.roles.First(v => v.t == "Owner");
             var savedAcmeManager = savedAcme.roles.First(v => v.t == "Manager");
 
-            Assert.AreEqual("3", savedAcmeOwner.s);
-            Assert.IsNull(savedAcmeOwner.a);
-            Assert.IsNull(savedAcmeOwner.r);
-            Assert.AreEqual("2", savedAcmeManager.s);
-            Assert.IsNull(savedAcmeManager.a);
-            Assert.IsNull(savedAcmeManager.r);
+            Assert.Equal("3", savedAcmeOwner.s);
+            Assert.Null(savedAcmeOwner.a);
+            Assert.Null(savedAcmeOwner.r);
+            Assert.Equal("2", savedAcmeManager.s);
+            Assert.Null(savedAcmeManager.a);
+            Assert.Null(savedAcmeManager.r);
 
             var savedOcme = save.objects.First(v => v.i == "102");
 
-            Assert.AreEqual("1102", savedOcme.v);
-            Assert.AreEqual(1, savedOcme.roles.Length);
+            Assert.Equal("1102", savedOcme.v);
+            Assert.Equal(1, savedOcme.roles.Length);
 
             var savedOcmeOwner = savedOcme.roles.First(v => v.t == "Owner");
 
-            Assert.AreEqual(null, savedOcmeOwner.s);
-            Assert.IsNull(savedOcmeOwner.a);
-            Assert.IsNull(savedOcmeOwner.r);
+            Assert.Equal(null, savedOcmeOwner.s);
+            Assert.Null(savedOcmeOwner.a);
+            Assert.Null(savedOcmeOwner.r);
         }
 
-        [Test]
+        [Fact]
         public void ManyGet()
         {
-            var workspace = new Workspace(Config.ObjectFactory);
-            workspace.Sync(Fixture.loadData);
-
-            var session = new Session(workspace);
+            this.Workspace.Sync(Fixture.loadData);
+            var session = new Session(this.Workspace);
 
             var koen = (Person)session.Get(1);
             var patrick = (Person)session.Get(2);
@@ -262,25 +248,30 @@ namespace Tests.Local
             var acme = (Organisation)session.Get(101);
             var ocme = (Organisation)session.Get(102);
             var icme = (Organisation)session.Get(103);
-            
-            Assert.That(new[] { koen, martien, patrick }, Is.EquivalentTo(acme.Employees));
-            Assert.That(new[] { koen }, Is.EquivalentTo(ocme.Employees));
-            Assert.AreEqual(0, icme.Employees.Length);
 
-            Assert.AreEqual(0, acme.Shareholders.Length);
-            Assert.AreEqual(0, ocme.Shareholders.Length);
-            Assert.AreEqual(0, icme.Shareholders.Length);
+            Assert.Equal(3, acme.Employees.Length);
+            Assert.Contains(koen, acme.Employees);
+            Assert.Contains(martien, acme.Employees);
+            Assert.Contains(patrick, acme.Employees);
+
+            Assert.Equal(1, ocme.Employees.Length);
+            Assert.Contains(koen, ocme.Employees);
+
+            Assert.Equal(0, icme.Employees.Length);
+
+            Assert.Equal(0, acme.Shareholders.Length);
+            Assert.Equal(0, ocme.Shareholders.Length);
+            Assert.Equal(0, icme.Shareholders.Length);
         }
 
-        [Test]
+        [Fact]
         public void ManySet()
         {
-            var workspace = new Workspace(Config.ObjectFactory);
-            workspace.Sync(Fixture.loadData);
+            this.Workspace.Sync(Fixture.loadData);
 
-            var session1 = new Session(workspace);
+            var session1 = new Session(this.Workspace);
 
-            var session2 = new Session(workspace);
+            var session2 = new Session(this.Workspace);
 
             var koen1 = session1.Get(1) as Person;
             var patrick1 = session1.Get(2) as Person;
@@ -301,22 +292,33 @@ namespace Tests.Local
             acme2.Employees = null;
             icme2.Employees = new[] {koen2, patrick2, martien2};
 
-            Assert.That(new[] { koen1, patrick1, martien1 }, Is.EquivalentTo(acme1.Employees));
-            Assert.That(new[] { koen1 }, Is.EquivalentTo(ocme1.Employees));
-            Assert.AreEqual(0, icme1.Employees.Count());
+            Assert.Equal(3, acme1.Employees.Length);
+            Assert.Contains(koen1, acme1.Employees);
+            Assert.Contains(martien1, acme1.Employees);
+            Assert.Contains(patrick1, acme1.Employees);
 
-            Assert.AreEqual(0, acme2.Employees.Count());
-            Assert.That(new[] { koen2 }, Is.EquivalentTo(ocme2.Employees));
-            Assert.That(new[] { koen2, patrick2, martien2 }, Is.EquivalentTo(icme2.Employees));
+            Assert.Equal(1, ocme1.Employees.Length);
+            Assert.Contains(koen1, ocme1.Employees);
+
+            Assert.Equal(0, icme1.Employees.Count());
+
+            Assert.Equal(0, acme2.Employees.Count());
+
+            Assert.Equal(1, ocme2.Employees.Length);
+            Assert.Contains(koen2, ocme2.Employees);
+
+            Assert.Equal(3, icme2.Employees.Length);
+            Assert.Contains(koen2, icme2.Employees);
+            Assert.Contains(martien2, icme2.Employees);
+            Assert.Contains(patrick2, icme2.Employees);
         }
 
-        [Test]
+        [Fact]
         public void ManySaveWithExistingObjects()
         {
-            var workspace = new Workspace(Config.ObjectFactory);
-            workspace.Sync(Fixture.loadData);
+            this.Workspace.Sync(Fixture.loadData);
 
-            var session = new Session(workspace);
+            var session = new Session(this.Workspace);
 
             var koen = session.Get(1) as Person;
             var patrick = session.Get(2) as Person;
@@ -332,50 +334,57 @@ namespace Tests.Local
 
             var save = session.PushRequest();
 
-            Assert.AreEqual(0, save.newObjects.Count);
-            Assert.AreEqual(3, save.objects.Count);
+            Assert.Equal(0, save.newObjects.Count);
+            Assert.Equal(3, save.objects.Count);
 
             var savedAcme = save.objects.First(v => v.i == "101");
 
-            Assert.AreEqual(savedAcme.v, "1101");
-            Assert.AreEqual(savedAcme.roles.Length, 1);
+            Assert.Equal(savedAcme.v, "1101");
+            Assert.Equal(savedAcme.roles.Length, 1);
 
             var savedAcmeEmployees = savedAcme.roles.First(v => v.t == "Employees");
 
-            Assert.IsNull(savedAcmeEmployees.s);
-            Assert.AreEqual(0, savedAcmeEmployees.a.Length);
-            Assert.That(new[] { "1", "2", "3" }, Is.EquivalentTo(savedAcmeEmployees.r));
-
+            Assert.Null(savedAcmeEmployees.s);
+            Assert.Equal(0, savedAcmeEmployees.a.Length);
+            Assert.Contains("1", savedAcmeEmployees.r);
+            Assert.Contains("2", savedAcmeEmployees.r);
+            Assert.Contains("3", savedAcmeEmployees.r);
             var savedOcme = save.objects.First(v => v.i == "102");
 
-            Assert.AreEqual("1102", savedOcme.v);
-            Assert.AreEqual(1, savedOcme.roles.Length);
+            Assert.Equal("1102", savedOcme.v);
+            Assert.Equal(1, savedOcme.roles.Length);
 
             var savedOcmeEmployees = savedOcme.roles.First(v => v.t == "Employees");
 
-            Assert.IsNull(savedOcmeEmployees.s);
-            Assert.That(new[] { "2", "3" }, Is.EquivalentTo(savedOcmeEmployees.a));
-            Assert.That(new[] { "1" }, Is.EquivalentTo(savedOcmeEmployees.r));
+            Assert.Null(savedOcmeEmployees.s);
+            Assert.Equal(2, savedOcmeEmployees.a.Length);
+            Assert.Contains("2", savedOcmeEmployees.a);
+            Assert.Contains("3", savedOcmeEmployees.a);
+
+            Assert.Equal(1, savedOcmeEmployees.r.Length);
+            Assert.Contains("1", savedOcmeEmployees.r);
 
             var savedIcme = save.objects.First(v => v.i == "103");
 
-            Assert.AreEqual("1103", savedIcme.v);
-            Assert.AreEqual(1, savedIcme.roles.Length);
+            Assert.Equal("1103", savedIcme.v);
+            Assert.Equal(1, savedIcme.roles.Length);
 
             var savedIcmeEmployees = savedIcme.roles.First(v => v.t == "Employees");
 
-            Assert.IsNull(savedIcmeEmployees.s);
-            Assert.That(new[] { "1", "2", "3" }, Is.EquivalentTo(savedIcmeEmployees.a));
-            Assert.IsNull(savedIcmeEmployees.r);
+            Assert.Null(savedIcmeEmployees.s);
+            Assert.Equal(3, savedIcmeEmployees.a.Length);
+            Assert.Contains("1", savedIcmeEmployees.a);
+            Assert.Contains("2", savedIcmeEmployees.a);
+            Assert.Contains("3", savedIcmeEmployees.a);
+            Assert.Null(savedIcmeEmployees.r);
         }
 
-        [Test]
+        [Fact]
         public void ManySaveWithNewObjects()
         {
-            var workspace = new Workspace(Config.ObjectFactory);
-            workspace.Sync(Fixture.loadData);
+            this.Workspace.Sync(Fixture.loadData);
 
-            var session = new Session(workspace);
+            var session = new Session(this.Workspace);
 
             var martien = session.Get(3) as Person;
 
@@ -395,64 +404,63 @@ namespace Tests.Local
 
             var save = session.PushRequest();
 
-            Assert.AreEqual(3, save.newObjects.Count);
-            Assert.AreEqual(0, save.objects.Count);
+            Assert.Equal(3, save.newObjects.Count);
+            Assert.Equal(0, save.objects.Count);
             {
                 var savedMathijs = save.newObjects.First(v => v.ni == mathijs.NewId?.ToString());
 
-                Assert.AreEqual("Person", savedMathijs.t);
-                Assert.AreEqual(2, savedMathijs.roles.Length);
+                Assert.Equal("Person", savedMathijs.t);
+                Assert.Equal(2, savedMathijs.roles.Length);
 
                 var savedMathijsFirstName = savedMathijs.roles.First(v => v.t == "FirstName");
-                Assert.AreEqual("Mathijs", savedMathijsFirstName.s);
+                Assert.Equal("Mathijs", savedMathijsFirstName.s);
 
                 var savedMathijsLastName = savedMathijs.roles.First(v => v.t == "LastName");
-                Assert.AreEqual("Verwer", savedMathijsLastName.s);
+                Assert.Equal("Verwer", savedMathijsLastName.s);
             }
 
             {
                 var savedAcme2 = save.newObjects.First(v => v.ni == acme2.NewId?.ToString());
 
-                Assert.AreEqual("Organisation", savedAcme2.t);
-                Assert.AreEqual(3, savedAcme2.roles.Length);
+                Assert.Equal("Organisation", savedAcme2.t);
+                Assert.Equal(3, savedAcme2.roles.Length);
 
                 var savedAcme2Manager = savedAcme2.roles.First(v => v.t == "Manager");
 
-                Assert.AreEqual(mathijs.NewId.ToString(), savedAcme2Manager.s);
+                Assert.Equal(mathijs.NewId.ToString(), savedAcme2Manager.s);
 
                 var savedAcme2Employees = savedAcme2.roles.First(v => v.t == "Employees");
 
-                Assert.IsNull(savedAcme2Employees.s);
-                Assert.That(new[] { mathijs.NewId?.ToString() }, Is.EquivalentTo(savedAcme2Employees.a));
-                Assert.IsNull(savedAcme2Employees.r);
+                Assert.Null(savedAcme2Employees.s);
+                Assert.Contains(mathijs.NewId?.ToString(), savedAcme2Employees.a);
+                Assert.Null(savedAcme2Employees.r);
             }
 
             {
                 var savedAcme3 = save.newObjects.First(v => v.ni == acme3.NewId?.ToString());
 
-                Assert.AreEqual("Organisation", savedAcme3.t);
-                Assert.AreEqual(3, savedAcme3.roles.Length);
+                Assert.Equal("Organisation", savedAcme3.t);
+                Assert.Equal(3, savedAcme3.roles.Length);
 
                 var savedAcme3Manager = savedAcme3.roles.First(v => v.t == "Manager");
 
-                Assert.AreEqual("3", savedAcme3Manager.s);
+                Assert.Equal("3", savedAcme3Manager.s);
 
                 var savedAcme3Employees = savedAcme3.roles.First(v => v.t == "Employees");
 
-                Assert.IsNull(savedAcme3Employees.s);
-                Assert.That(new[] { "3" }, Is.EquivalentTo(savedAcme3Employees.a));
-                Assert.IsNull(savedAcme3Employees.r);
+                Assert.Null(savedAcme3Employees.s);
+                Assert.Contains("3", savedAcme3Employees.a);
+                Assert.Null(savedAcme3Employees.r);
             }
 
         }
 
-        [Test]
+        [Fact]
         public void SyncWithNewObjects()
         {
-            var workspace = new Workspace(Config.ObjectFactory);
-            workspace.Sync(Fixture.loadData);
+            this.Workspace.Sync(Fixture.loadData);
 
-            var session = new Session(workspace);
+            var session = new Session(this.Workspace);
 
             var martien = session.Get(3) as Person;
 
@@ -469,26 +477,25 @@ namespace Tests.Local
 
             session.Reset();
 
-            Assert.IsNull(mathijs.Id);
-            Assert.IsTrue(mathijs.NewId < 0);
-            Assert.AreEqual(null, mathijs.FirstName);
-            Assert.AreEqual(null, mathijs.LastName);
+            //Assert.Null(mathijs.Id);
+            Assert.True(mathijs.NewId < 0);
+            Assert.Equal(null, mathijs.FirstName);
+            Assert.Equal(null, mathijs.LastName);
 
-            Assert.IsNull(acme2.Id);
-            Assert.IsTrue(acme2.NewId < 0);
-            Assert.AreEqual(null, acme2.Owner);
-            Assert.AreEqual(null, acme2.Manager);
+            //Assert.Null(acme2.Id);
+            Assert.True(acme2.NewId < 0);
+            Assert.Equal(null, acme2.Owner);
+            Assert.Equal(null, acme2.Manager);
 
-            Assert.AreEqual(0, acme2.Employees.Count());
+            Assert.Equal(0, acme2.Employees.Count());
         }
 
-        [Test]
+        [Fact]
         public void Onsaved()
         {
-            var workspace = new Workspace(Config.ObjectFactory);
-            workspace.Sync(Fixture.loadData);
+            this.Workspace.Sync(Fixture.loadData);
 
-            var session = new Session(workspace);
+            var session = new Session(this.Workspace);
 
             var saveResponse = new PushResponse { hasErrors = false };
 
@@ -508,13 +515,13 @@ namespace Tests.Local
 
             session.PushResponse(saveResponse);
 
-            Assert.IsNull(mathijs.NewId);
-            Assert.AreEqual(10000, mathijs.Id);
-            Assert.AreEqual("Person", mathijs.ObjectType.Name);
+            Assert.Null(mathijs.NewId);
+            Assert.Equal(10000, mathijs.Id);
+            Assert.Equal("Person", mathijs.ObjectType.Name);
 
             mathijs = session.Get(10000) as Person;
 
-            Assert.IsNotNull(mathijs);
+            Assert.NotNull(mathijs);
 
             var exceptionThrown = false;
             try
@@ -526,10 +533,10 @@ namespace Tests.Local
                 exceptionThrown = true;
             }
 
-            Assert.IsTrue(exceptionThrown);
+            Assert.True(exceptionThrown);
         }
 
-        //[Test]
+        //[Fact]
         //public void methodCanExecute()
         //{
         //    var workspace = new Workspace();
@@ -541,28 +548,27 @@ namespace Tests.Local
         //    var ocme = session.Get("102") as Organisation;
         //    var icme = session.Get("102") as Organisation;
 
-        //    Assert.IsTrue(acme.CanExecuteJustDoIt);
+        //    Assert.True(acme.CanExecuteJustDoIt);
         //    this.isFalse(ocme.CanExecuteJustDoIt);
         //    this.isFalse(icme.CanExecuteJustDoIt);
         //}
 
-        [Test]
+        [Fact]
         public void Get()
         {
-            var workspace = new Workspace(Config.ObjectFactory);
-            workspace.Sync(Fixture.loadData);
+            this.Workspace.Sync(Fixture.loadData);
 
-            var session = new Session(workspace);
+            var session = new Session(this.Workspace);
 
             var acme = (Organisation)session.Create(M.Organisation);
 
             var acmeAgain = session.Get(acme.Id);
 
-            acme.ShouldEqual(acmeAgain);
+            Assert.Equal(acme, acmeAgain);
 
             acmeAgain = session.Get(acme.NewId.Value);
 
-            acme.ShouldEqual(acmeAgain);
+            Assert.Equal(acme, acmeAgain);
         }
     }
 }

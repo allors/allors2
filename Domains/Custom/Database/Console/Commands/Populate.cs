@@ -12,23 +12,23 @@
 
             Console.WriteLine("Are you sure, all current data will be destroyed? (Y/N)\n");
 
-            var confirmationKey = Console.ReadKey(true).KeyChar.ToString(CultureInfo.InvariantCulture);
+            var confirmationKey = Console.ReadKey(true).KeyChar.ToString();
             if (confirmationKey.ToLower().Equals("y"))
             {
-                this.Logger.Info("Populating");
+                Console.WriteLine("Populating");
 
-                this.Logger.Info("Init database");
+                Console.WriteLine("Init database");
                 database.Init();
 
                 using (var session = database.CreateSession())
                 {
-                    this.Logger.Info("Processing");
+                    Console.WriteLine("Processing");
 
                     var dataDirectory = new DirectoryInfo(this.DataPath);
                     new Setup(session, dataDirectory).Apply();
                     session.Commit();
 
-                    this.Logger.Info("Populated");
+                    Console.WriteLine("Populated");
                 }
             }
         }

@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26228.4
+VisualStudioVersion = 15.0.26228.12
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Meta", "Database\Meta\Meta.csproj", "{BA6EFCFE-CB7F-4994-A5A4-C11DDAAC32DD}"
 EndProject
@@ -36,6 +36,8 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CSharp", "CSharp", "{89CAA088-D88D-4E21-A0F2-2DA4981E0F4A}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Generate", "Database\Generate\Generate.csproj", "{8375BAD1-937D-434F-AEE0-8463139D763B}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Server", "Database\Server\Server.csproj", "{901E18E3-257C-46F9-AC89-F55BCFB2630B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -203,6 +205,18 @@ Global
 		{8375BAD1-937D-434F-AEE0-8463139D763B}.Release|x64.Build.0 = Release|Any CPU
 		{8375BAD1-937D-434F-AEE0-8463139D763B}.Release|x86.ActiveCfg = Release|Any CPU
 		{8375BAD1-937D-434F-AEE0-8463139D763B}.Release|x86.Build.0 = Release|Any CPU
+		{901E18E3-257C-46F9-AC89-F55BCFB2630B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{901E18E3-257C-46F9-AC89-F55BCFB2630B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{901E18E3-257C-46F9-AC89-F55BCFB2630B}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{901E18E3-257C-46F9-AC89-F55BCFB2630B}.Debug|x64.Build.0 = Debug|Any CPU
+		{901E18E3-257C-46F9-AC89-F55BCFB2630B}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{901E18E3-257C-46F9-AC89-F55BCFB2630B}.Debug|x86.Build.0 = Debug|Any CPU
+		{901E18E3-257C-46F9-AC89-F55BCFB2630B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{901E18E3-257C-46F9-AC89-F55BCFB2630B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{901E18E3-257C-46F9-AC89-F55BCFB2630B}.Release|x64.ActiveCfg = Release|Any CPU
+		{901E18E3-257C-46F9-AC89-F55BCFB2630B}.Release|x64.Build.0 = Release|Any CPU
+		{901E18E3-257C-46F9-AC89-F55BCFB2630B}.Release|x86.ActiveCfg = Release|Any CPU
+		{901E18E3-257C-46F9-AC89-F55BCFB2630B}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -222,6 +236,7 @@ Global
 		{D3637D58-D6E4-466D-92CB-88671FB3C05C} = {89CAA088-D88D-4E21-A0F2-2DA4981E0F4A}
 		{89CAA088-D88D-4E21-A0F2-2DA4981E0F4A} = {5F1A9D94-4B6E-4AE5-AF11-8968A1C7D8A7}
 		{8375BAD1-937D-434F-AEE0-8463139D763B} = {09BC5334-44E4-4CA1-9055-C12249937D16}
+		{901E18E3-257C-46F9-AC89-F55BCFB2630B} = {09BC5334-44E4-4CA1-9055-C12249937D16}
 	EndGlobalSection
 	GlobalSection(MonoDevelopProperties) = preSolution
 		StartupItem = Meta\Meta.csproj

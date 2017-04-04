@@ -1,5 +1,6 @@
 ﻿namespace Allors.Commands
 {
+    using System;
     using System.Xml;
 
     public class Load : Command
@@ -8,13 +9,13 @@
         {
             var database = this.RepeatableReadDatabase; // Or Serializable
 
-            using (var reader = new XmlTextReader(this.PopulationFileName))
+            using (var reader = XmlReader.Create(this.PopulationFileName))
             {
-                this.Logger.Info("Loading from " + this.PopulationFileName);
+                Console.WriteLine("Loading from " + this.PopulationFileName);
 
                 database.Load(reader);
 
-                this.Logger.Info("Loaded from " + this.PopulationFileName);
+                Console.WriteLine("Loaded from " + this.PopulationFileName);
             }
         }
     }

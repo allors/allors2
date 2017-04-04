@@ -45,6 +45,6 @@ namespace Allors.Meta
 
         IValidationLog Validate();
 
-        void Bind(Assembly assembly);
+        void Bind(Type[] types, MethodInfo[] methods);
     }
 }

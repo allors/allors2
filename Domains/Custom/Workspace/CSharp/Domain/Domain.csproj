@@ -1,163 +1,24 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{305E4EE6-EA87-4B53-92B7-F6E39100213D}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Domain</RootNamespace>
-    <AssemblyName>Domain</AssemblyName>
-    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
+    <TargetFramework>netstandard1.5</TargetFramework>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
+
   <ItemGroup>
-    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\..\..\packages\Newtonsoft.Json.6.0.4\lib\net45\Newtonsoft.Json.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Net.Http.Formatting, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\..\..\packages\Microsoft.AspNet.WebApi.Client.5.2.3\lib\net45\System.Net.Http.Formatting.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Net.Http" />
-    <Reference Include="System.Xml" />
+    <Compile Include="..\..\..\..\Base\Workspace\CSharp\Domain\Base\**\*.cs" />
   </ItemGroup>
+  
   <ItemGroup>
-    <Compile Include="..\..\..\..\Base\Workspace\CSharp\Domain\Base\Client\Context.cs">
-      <Link>Base\Client\Context.cs</Link>
-    </Compile>
-    <Compile Include="..\..\..\..\Base\Workspace\CSharp\Domain\Base\Client\Database.cs">
-      <Link>Base\Client\Database.cs</Link>
-    </Compile>
-    <Compile Include="..\..\..\..\Base\Workspace\CSharp\Domain\Base\Client\Indexer.cs">
-      <Link>Base\Client\Indexer.cs</Link>
-    </Compile>
-    <Compile Include="..\..\..\..\Base\Workspace\CSharp\Domain\Base\Client\Result.cs">
-      <Link>Base\Client\Result.cs</Link>
-    </Compile>
-    <Compile Include="..\..\..\..\Base\Workspace\CSharp\Domain\Base\Workspace\Config.cs">
-      <Link>Base\Workspace\Config.cs</Link>
-    </Compile>
-    <Compile Include="..\..\..\..\Base\Workspace\CSharp\Domain\Base\Workspace\Data\ErrorResponse.cs">
-      <Link>Base\Workspace\Data\ErrorResponse.cs</Link>
-    </Compile>
-    <Compile Include="..\..\..\..\Base\Workspace\CSharp\Domain\Base\Workspace\Data\InvokeRequest.cs">
-      <Link>Base\Workspace\Data\InvokeRequest.cs</Link>
-    </Compile>
-    <Compile Include="..\..\..\..\Base\Workspace\CSharp\Domain\Base\Workspace\Data\InvokeResponse.cs">
-      <Link>Base\Workspace\Data\InvokeResponse.cs</Link>
-    </Compile>
-    <Compile Include="..\..\..\..\Base\Workspace\CSharp\Domain\Base\Workspace\Data\PullResponse.cs">
-      <Link>Base\Workspace\Data\PullResponse.cs</Link>
-    </Compile>
-    <Compile Include="..\..\..\..\Base\Workspace\CSharp\Domain\Base\Workspace\Data\PullResponseDerivationError.cs">
-      <Link>Base\Workspace\Data\PullResponseDerivationError.cs</Link>
-    </Compile>
-    <Compile Include="..\..\..\..\Base\Workspace\CSharp\Domain\Base\Workspace\Data\PushRequest.cs">
-      <Link>Base\Workspace\Data\PushRequest.cs</Link>
-    </Compile>
-    <Compile Include="..\..\..\..\Base\Workspace\CSharp\Domain\Base\Workspace\Data\PushResponse.cs">
-      <Link>Base\Workspace\Data\PushResponse.cs</Link>
-    </Compile>
-    <Compile Include="..\..\..\..\Base\Workspace\CSharp\Domain\Base\Workspace\Data\PushResponseNewObject.cs">
-      <Link>Base\Workspace\Data\PushResponseNewObject.cs</Link>
-    </Compile>
-    <Compile Include="..\..\..\..\Base\Workspace\CSharp\Domain\Base\Workspace\Data\SyncRequest.cs">
-      <Link>Base\Workspace\Data\SyncRequest.cs</Link>
-    </Compile>
-    <Compile Include="..\..\..\..\Base\Workspace\CSharp\Domain\Base\Workspace\Data\SyncResponse.cs">
-      <Link>Base\Workspace\Data\SyncResponse.cs</Link>
-    </Compile>
-    <Compile Include="..\..\..\..\Base\Workspace\CSharp\Domain\Base\Workspace\Method.cs">
-      <Link>Base\Workspace\Method.cs</Link>
-    </Compile>
-    <Compile Include="..\..\..\..\Base\Workspace\CSharp\Domain\Base\Workspace\ObjectFactory.cs">
-      <Link>Base\Workspace\ObjectFactory.cs</Link>
-    </Compile>
-    <Compile Include="..\..\..\..\Base\Workspace\CSharp\Domain\Base\Workspace\Session.cs">
-      <Link>Base\Workspace\Session.cs</Link>
-    </Compile>
-    <Compile Include="..\..\..\..\Base\Workspace\CSharp\Domain\Base\Workspace\SessionObject.cs">
-      <Link>Base\Workspace\SessionObject.cs</Link>
-    </Compile>
-    <Compile Include="..\..\..\..\Base\Workspace\CSharp\Domain\Base\Workspace\Workspace.cs">
-      <Link>Base\Workspace\Workspace.cs</Link>
-    </Compile>
-    <Compile Include="..\..\..\..\Base\Workspace\CSharp\Domain\Base\Workspace\WorkspaceObject.cs">
-      <Link>Base\Workspace\WorkspaceObject.cs</Link>
-    </Compile>
-    <Compile Include="Generated\AccessControl.g.cs" />
-    <Compile Include="Generated\AsyncDerivation.g.cs" />
-    <Compile Include="Generated\C1.g.cs" />
-    <Compile Include="Generated\Counter.g.cs" />
-    <Compile Include="Generated\Deletable.g.cs" />
-    <Compile Include="Generated\Dependent.g.cs" />
-    <Compile Include="Generated\Enumeration.g.cs" />
-    <Compile Include="Generated\Gender.g.cs" />
-    <Compile Include="Generated\I1.g.cs" />
-    <Compile Include="Generated\Login.g.cs" />
-    <Compile Include="Generated\Media.g.cs" />
-    <Compile Include="Generated\MediaContent.g.cs" />
-    <Compile Include="Generated\ObjectState.g.cs" />
-    <Compile Include="Generated\OrderObjectState.g.cs" />
-    <Compile Include="Generated\Organisation.g.cs" />
-    <Compile Include="Generated\Permission.g.cs" />
-    <Compile Include="Generated\Person.g.cs" />
-    <Compile Include="Generated\Role.g.cs" />
-    <Compile Include="Generated\SecurityToken.g.cs" />
-    <Compile Include="Generated\UniquelyIdentifiable.g.cs" />
-    <Compile Include="Generated\UnitSample.g.cs" />
-    <Compile Include="Generated\User.g.cs" />
-    <Compile Include="Generated\UserGroup.g.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
+    <PackageReference Include="Newtonsoft.Json" Version="10.0.1" />
+    <PackageReference Include="System.Security.Claims" Version="4.3.0" />
+    <PackageReference Include="System.Security.Cryptography.Algorithms" Version="4.3.0" />
+    <PackageReference Include="System.Threading.Thread" Version="4.3.0" />
+    <PackageReference Include="System.Xml.XmlSerializer" Version="4.3.0" />
   </ItemGroup>
+  
   <ItemGroup>
-    <None Include="app.config" />
-    <None Include="Generate.proj" />
-    <None Include="packages.config" />
-    <None Include="Settings.StyleCop" />
+    <ProjectReference Include="..\..\..\..\..\Platform\Framework\Allors\Allors.csproj" />
+    <ProjectReference Include="..\Meta\Meta.csproj" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\..\..\..\Platform\Framework\Allors\Allors.csproj">
-      <Project>{5b4e2d7c-8ef8-45f5-bfb2-e595c401a95f}</Project>
-      <Name>Allors</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Meta\Meta.csproj">
-      <Project>{7b37dff9-8cef-4189-8d9d-be29e34eb68c}</Project>
-      <Name>Meta</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
+
 </Project>

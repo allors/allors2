@@ -189,7 +189,8 @@
                                     }
                                 }
 
-                                return new ArrayList().ToArray(roleType.ObjectType.ClrType);
+                                // TODO: Optimize
+                                return Array.CreateInstance(roleType.ObjectType.ClrType, 0);
                             }
                         }
                         catch(Exception e)
@@ -209,7 +210,8 @@
                 {
                     if (roleType.ObjectType.IsComposite && roleType.IsMany)
                     {
-                        value = new ArrayList(new ISessionObject[0]).ToArray(roleType.ObjectType.ClrType);
+                        // TODO: Optimize
+                        value = Array.CreateInstance(roleType.ObjectType.ClrType, 0);
                     }
                 }
 
@@ -232,7 +234,10 @@
 
             if (roleType.ObjectType.IsComposite && roleType.IsMany)
             {
-                value = new ArrayList((Array)value).ToArray(roleType.ObjectType.ClrType);
+                var untypedArray = (Array)value;
+                var typedArray = Array.CreateInstance(roleType.ObjectType.ClrType);
+                Array.Copy(untypedArray, typedArray, typedArray.Length);
+                value = typedArray;
             }
             
             this.roleByRoleType[roleType] = value;

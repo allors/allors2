@@ -8,13 +8,11 @@ namespace Tests.Remote
 
     using Nito.AsyncEx;
 
-    using NUnit.Framework;
-
-    using Should;
+    using Xunit;
 
     public class ObjectTests : Test
     {
-        [Test]
+        [Fact]
         public void NonExistingPullController()
         {
             AsyncContext.Run(
@@ -32,11 +30,11 @@ namespace Tests.Remote
                             exceptionThrown = true;
                         }
 
-                        exceptionThrown.ShouldBeTrue();
+                        Assert.True(exceptionThrown);
                     });
         }
 
-        [Test]
+        [Fact]
         public void NonExistingContextObject()
         {
             AsyncContext.Run(
@@ -50,7 +48,7 @@ namespace Tests.Remote
                    });
         }
 
-        [Test]
+        [Fact]
         public void NonExistingContextCollection()
         {
             AsyncContext.Run(
@@ -64,7 +62,7 @@ namespace Tests.Remote
                    });
         }
 
-        [Test]
+        [Fact]
         public void NonExistingContextValues()
         {
             AsyncContext.Run(

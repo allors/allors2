@@ -2,13 +2,18 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Allors;
+using Allors.Domain;
+using Allors.Meta;
+using Allors.Web.Database;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using ObjectFactory = Microsoft.Extensions.DependencyInjection.ObjectFactory;
 
-namespace Server
+namespace WebApi
 {
     public class Startup
     {
@@ -27,7 +32,10 @@ namespace Server
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddSingleton<IDatabase>();
+            // Allors
+            var objectFactory = new Allors.ObjectFactory(MetaPopulation.Instance, typeof(IObject), typeof(User));
+            services.AddSingleton<IObjectFactory>(objectFactory);
+            services.AddScoped<IAllorsContext, AllorsContext>();
 
             // Add framework services.
             services.AddMvc();

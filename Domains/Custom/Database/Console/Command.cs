@@ -1,15 +1,17 @@
-﻿namespace Allors
-{
-    using System;
-    using System.Configuration;
+﻿using System;
 
-    using NLog;
+namespace Allors
+{
+    using Allors.Meta;
+    using Allors.Domain;
 
     public abstract class Command
     {
-        protected Logger Logger { get; }
+        protected ObjectFactory ObjectFactory = new Allors.ObjectFactory(MetaPopulation.Instance, typeof(IObject), typeof(User));
 
-        protected string DataPath => ConfigurationManager.AppSettings["dataPath"];
+        protected string ConnectionString = "server=(custom);database=base;Integrated Security=SSPI";
+
+        protected string DataPath => "../../data";
 
         protected string PopulationFileName = "population.xml";
 
@@ -19,8 +21,8 @@
             {
                 var configuration = new Adapters.Object.SqlClient.Configuration
                 {
-                    ConnectionString = ConfigurationManager.ConnectionStrings["allors"].ConnectionString,
-                    ObjectFactory = Config.ObjectFactory,
+                    ConnectionString = this.ConnectionString,
+                    ObjectFactory = this.ObjectFactory,
                     IsolationLevel = System.Data.IsolationLevel.Snapshot,
                     CommandTimeout = 0
                 };
@@ -34,8 +36,8 @@
             {
                 var configuration = new Adapters.Object.SqlClient.Configuration
                 {
-                    ConnectionString = ConfigurationManager.ConnectionStrings["allors"].ConnectionString,
-                    ObjectFactory = Config.ObjectFactory,
+                    ConnectionString = this.ConnectionString,
+                    ObjectFactory = this.ObjectFactory,
                     IsolationLevel = System.Data.IsolationLevel.RepeatableRead,
                     CommandTimeout = 0
                 };
@@ -49,8 +51,8 @@
             {
                 var configuration = new Adapters.Object.SqlClient.Configuration
                 {
-                    ConnectionString = ConfigurationManager.ConnectionStrings["allors"].ConnectionString,
-                    ObjectFactory = Config.ObjectFactory,
+                    ConnectionString = this.ConnectionString,
+                    ObjectFactory = this.ObjectFactory,
                     IsolationLevel = System.Data.IsolationLevel.Serializable,
                     CommandTimeout = 0
                 };
@@ -60,11 +62,6 @@
 
         public abstract void Execute();
 
-        protected Command()
-        {
-            this.Logger = LogManager.GetCurrentClassLogger();
-        }
-
         protected void Derive(ISession session, Extent extent)
         {
             var derivation = new Domain.NonLogging.Derivation(session, extent.ToArray());
@@ -73,7 +70,7 @@
             {
                 foreach (var error in validation.Errors)
                 {
-                    this.Logger.Error(error.Message);
+                    Console.WriteLine(error.Message);
                 }
 
                 throw new Exception("Derivation Error");

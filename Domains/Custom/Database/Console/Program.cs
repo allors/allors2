@@ -2,13 +2,9 @@
 {
     using System;
 
-    using NLog;
-
     public class Program
     {
-        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
-        
-        public static void Main(string[] args)
+        public static int Main(string[] args)
         {
             var interactive = args.Length == 0;
 
@@ -68,7 +64,7 @@
                             break;
 
                         case Options.Exit:
-                            return;
+                            return 0;
 
                         default:
                             throw new ArgumentException("Non supported option");
@@ -83,8 +79,8 @@
             }
             catch (Exception e)
             {
-                Environment.ExitCode = -1;
-                Logger.Error(e);
+                Console.WriteLine(e);
+                return (1);
             }
             finally
             {
@@ -94,6 +90,8 @@
                     Console.ReadKey(false);
                 }
             }
+
+            return 0;
         }
     }
 }

@@ -24,28 +24,27 @@ using System.IO;
 using System.Reflection;
 using System.Security.Claims;
 using System.Security.Principal;
+using Allors.Domain;
 
 namespace Domain
 {
     using Allors;
-    using Allors.Domain;
     using Allors.Meta;
-
-    using Xunit;
 
     public class DomainTest : IDisposable
     {
-        protected ObjectFactory ObjectFactory => new ObjectFactory(MetaPopulation.Instance, typeof(Singleton).GetTypeInfo().Assembly, typeof(Singleton).Namespace);
-
         protected ISession Session { get; private set; }
 
         public DomainTest()
         {
+            this.ObjectFactory = new ObjectFactory(MetaPopulation.Instance, typeof(IObject), typeof(User));
             var configuration = new Allors.Adapters.Memory.Configuration { ObjectFactory = this.ObjectFactory };
             var database = new Allors.Adapters.Memory.Database(configuration);
 
             this.SetUp(database, true);
         }
+
+        protected ObjectFactory ObjectFactory { get; }
 
         protected void SetUp(IDatabase database, bool setup)
         {
