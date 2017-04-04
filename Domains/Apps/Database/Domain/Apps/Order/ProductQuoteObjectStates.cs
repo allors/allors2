@@ -28,11 +28,11 @@ namespace Allors.Domain
 
         public ProductQuoteObjectState Created => this.StateCache.Get(CreatedId);
 
-        public ProductQuoteObjectState Cancelled => this.StateCache.Get(ApprovedId);
+        public ProductQuoteObjectState Approved => this.StateCache.Get(ApprovedId);
 
-        public ProductQuoteObjectState PartiallyShipped => this.StateCache.Get(OrderedId);
+        public ProductQuoteObjectState Ordered => this.StateCache.Get(OrderedId);
 
-        public ProductQuoteObjectState Shipped => this.StateCache.Get(RejectedId);
+        public ProductQuoteObjectState Rejected => this.StateCache.Get(RejectedId);
 
         private UniquelyIdentifiableCache<ProductQuoteObjectState> StateCache => this.stateCache ?? (this.stateCache = new UniquelyIdentifiableCache<ProductQuoteObjectState>(this.Session));
 

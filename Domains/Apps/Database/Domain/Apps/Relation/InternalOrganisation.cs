@@ -75,6 +75,12 @@ namespace Allors.Domain
             return string.Concat(this.PurchaseInvoiceNumberPrefix, purchaseInvoiceNumber);
         }
 
+        public string DeriveNextQuoteNumber()
+        {
+            var quoteNumber = this.QuoteCounter.NextValue();
+            return string.Concat(this.QuoteNumberPrefix, quoteNumber);
+        }
+
         public string DeriveNextShipmentNumber()
         {
             var shipmentNumber = this.IncomingShipmentCounter.NextValue();
