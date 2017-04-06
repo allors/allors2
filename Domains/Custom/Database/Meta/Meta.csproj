@@ -5,7 +5,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Include="..\..\..\..\Platform\Framework\Meta\Meta\**\*.cs" />
     <Compile Include="..\..\..\Core\Database\Meta\Core\**\*.cs" />
     <Compile Include="..\..\..\Base\Database\Meta\Base\**\*.cs" />
   </ItemGroup>

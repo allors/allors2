@@ -1,11 +1,10 @@
-﻿using Allors.Meta;
-
-namespace Allors.Web.Database
+﻿namespace Allors.Server
 {
     using Allors.Domain;
+    using Allors.Meta;
+
     using Microsoft.AspNetCore.Mvc;
 
-    [Route("api/[controller]")]
     public class DatabaseController : Controller
     {
         public ISession AllorsSession { get; }

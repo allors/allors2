@@ -1,4 +1,6 @@
-﻿namespace Allors.Web.Database
+﻿using Allors;
+
+namespace Allors.Server
 {
     public interface IAllorsContext
     {

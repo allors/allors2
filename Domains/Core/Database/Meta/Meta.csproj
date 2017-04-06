@@ -9,10 +9,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Include="..\..\..\..\Platform\Framework\Meta\Meta\**\*.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\..\..\..\Platform\Framework\Allors\Allors.csproj" />
   </ItemGroup>
 

@@ -94,11 +94,11 @@ namespace Allors.Domain
 		{
 						Currency Currency {set;}
 
+						global::System.String IsoCode {set;}
+
 						global::System.String Name {set;}
 
 						LocalisedText LocalisedNames {set;}
-
-						global::System.String IsoCode {set;}
 
 		}
 		public interface Currency  : AccessControlledObject 
@@ -107,16 +107,16 @@ namespace Allors.Domain
 
 						global::System.String Name {set;}
 
-						global::System.String Symbol {set;}
-
 						LocalisedText LocalisedNames {set;}
 
 		}
 		public interface Language  : AccessControlledObject 
 		{
+						global::System.String IsoCode {set;}
+
 						global::System.String Name {set;}
 
-						global::System.String IsoCode {set;}
+						global::System.String NativeName {set;}
 
 						LocalisedText LocalisedNames {set;}
 

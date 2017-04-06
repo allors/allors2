@@ -1,6 +1,8 @@
-﻿namespace Allors.Web.Database
+﻿namespace Allors.Server
 {
     using System;
+
+    using Allors.Adapters.Object.SqlClient;
 
     public class AllorsContext : IAllorsContext, IDisposable
     {
@@ -8,13 +10,13 @@
 
         public AllorsContext(IObjectFactory objectFactory)
         {
-            var configuration = new Adapters.Object.SqlClient.Configuration
+            var configuration = new Configuration
             {
                 ObjectFactory = objectFactory,
                 ConnectionString = "server=(local);database=custom;Integrated Security=SSPI"
             };
 
-            var database = new Adapters.Object.SqlClient.Database(configuration);
+            var database = new Database(configuration);
             this.Session = database.CreateSession();
         }
 

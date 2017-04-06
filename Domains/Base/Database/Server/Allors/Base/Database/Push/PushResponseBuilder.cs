@@ -1,6 +1,7 @@
 ﻿using System;
+using Allors;
 
-namespace Allors.Web.Database
+namespace Allors.Server
 {
     using System.Collections.Generic;
     using System.Linq;

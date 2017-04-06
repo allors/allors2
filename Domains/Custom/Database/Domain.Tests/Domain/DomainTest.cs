@@ -37,7 +37,7 @@ namespace Domain
 
         public DomainTest()
         {
-            this.ObjectFactory = new ObjectFactory(MetaPopulation.Instance, typeof(IObject), typeof(User));
+            this.ObjectFactory = new ObjectFactory(MetaPopulation.Instance, typeof(User));
             var configuration = new Allors.Adapters.Memory.Configuration { ObjectFactory = this.ObjectFactory };
             var database = new Allors.Adapters.Memory.Database(configuration);
 

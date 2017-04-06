@@ -1,13 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
-
-namespace WebApi
+﻿namespace Allors.Server
 {
+    using System.IO;
+
+    using Microsoft.AspNetCore.Hosting;
+
+    using Allors.Server;
+
     public class Program
     {
         public static void Main(string[] args)

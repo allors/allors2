@@ -2,7 +2,7 @@ group AllorsCSharpRepository;
 
 TemplateId() ::= <<7B7D955D-7C87-4198-A40D-4B70CABC7525>>
 TemplateName() ::= <<Allors C# Workspace Meta>>
-TemplateVersion() ::= <<1.0.0>>
+TemplateVersion() ::= <<1.0.1>>
 TemplateAllors() ::= <<1.0>>
 TemplateConfiguration(meta) ::= <<
 $! 
@@ -33,8 +33,10 @@ For more information visit http://www.allors.com/legal
 >>
 
 meta(meta) ::= <<
-namespace Allors.Meta
+namespace Allors.Workspace.Meta
 {
+	using Allors.Meta;
+
 	public static class M
 	{
 		// Interfaces
@@ -79,8 +81,10 @@ $meta.SortedDomains:{assembly|        internal virtual void $assembly.Name$Exten
 >>
 
 builder(meta) ::= <<
-namespace Allors.Meta
+namespace Allors.Workspace.Meta
 {
+	using Allors.Meta;
+
 	internal class MetaBuilder
 	{
 	    private readonly MetaPopulation metaPopulation;
@@ -195,8 +199,10 @@ inheritedMethods(composite) ::= <<$composite.WorkspaceInheritedMethods:{method|$
 inheritedMethod(method) ::= <<				Meta$composite.SingularName$.Instance.$method.Name$ = Meta$method.ObjectType.SingularName$.Instance.$method.Name$;>>
 
 domains(meta) ::= <<
-namespace Allors.Meta
+namespace Allors.Workspace.Meta
 {
+	using Allors.Meta;
+
 $meta.SortedDomains:{assembly|$domain(assembly)$}; separator="\n\n"$
 }
 >>
@@ -219,8 +225,10 @@ domain(assembly) ::= <<
 >>
 
 units(meta) ::= <<
-namespace Allors.Meta
+namespace Allors.Workspace.Meta
 {
+	using Allors.Meta;
+
 $meta.Units:{unit|$unit(unit)$}; separator="\n\n"$
 }
 >>
@@ -244,8 +252,10 @@ unit(unit) ::= <<
 >>
 
 interfaces(meta) ::= <<
-namespace Allors.Meta
+namespace Allors.Workspace.Meta
 {
+	using Allors.Meta;
+
 $meta.Interfaces:{interface|$interface(interface)$}; separator="\n\n"$
 }
 >>
@@ -282,8 +292,10 @@ $interface.AssociationTypes:{property|         public AssociationType $property.
 >>
 
 classes(meta) ::= <<
-namespace Allors.Meta
+namespace Allors.Workspace.Meta
 {
+	using Allors.Meta;
+
 $meta.Classes:{class|$class(class)$}; separator="\n\n"$
 }
 >>

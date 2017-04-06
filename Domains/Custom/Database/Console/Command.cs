@@ -7,7 +7,7 @@ namespace Allors
 
     public abstract class Command
     {
-        protected ObjectFactory ObjectFactory = new Allors.ObjectFactory(MetaPopulation.Instance, typeof(IObject), typeof(User));
+        protected ObjectFactory ObjectFactory = new ObjectFactory(MetaPopulation.Instance, typeof(User));
 
         protected string ConnectionString = "server=(custom);database=base;Integrated Security=SSPI";
 

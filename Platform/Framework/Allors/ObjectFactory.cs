@@ -67,17 +67,17 @@ namespace Allors
         /// <param name="namespace">
         /// The namespace
         /// </param>
-        public ObjectFactory(IMetaPopulation metaPopulation, Type @object, Type instance)
+        public ObjectFactory(IMetaPopulation metaPopulation, Type instance)
         {
-            var assembly = instance.GetTypeInfo().Assembly;
+            this.Assembly = instance.GetTypeInfo().Assembly;
 
-            var types = assembly.GetTypes()
+            var types = this.Assembly.GetTypes()
                 .Where(type => type.Namespace != null &&
                                type.Namespace.Equals(instance.Namespace) &&
-                               type.GetTypeInfo().ImplementedInterfaces.Contains(@object))
+                               type.GetTypeInfo().ImplementedInterfaces.Contains(typeof(IObject)))
                 .ToArray();
 
-            var extensionMethods = (from type in assembly.ExportedTypes
+            var extensionMethods = (from type in this.Assembly.ExportedTypes
                 where type.GetTypeInfo().IsSealed && !type.GetTypeInfo().IsGenericType && !type.IsNested
                 from method in type.GetTypeInfo().DeclaredMethods
                 where method.IsStatic && method.IsDefined(typeof(ExtensionAttribute), false)
@@ -114,7 +114,12 @@ namespace Allors
                 {
                     var parameterTypes = new[] { typeof(IStrategy) };
                     var constructor = type.GetTypeInfo().GetConstructor(parameterTypes);
-                    this.contructorInfoByObjectType[objectType] = constructor ?? throw new ArgumentException(objectType.Name + " has no Allors constructor.");
+                    if (constructor == null)
+                    {
+                        throw new ArgumentException(objectType.Name + " has no Allors constructor.");
+                    }
+
+                    this.contructorInfoByObjectType[objectType] = constructor;
                 }
             }
         }

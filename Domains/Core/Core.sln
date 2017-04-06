@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26228.10
+VisualStudioVersion = 15.0.26403.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Meta", "Database\Meta\Meta.csproj", "{BA6EFCFE-CB7F-4994-A5A4-C11DDAAC32DD}"
 EndProject
@@ -12,6 +12,12 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Allors", "Allors", "{7A8B4793-9B0B-45AC-A291-9AE8522D6BE5}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Database", "Database", "{E2C738D2-7D03-40E6-B08E-09FDC19EF57D}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Worspace", "Worspace", "{406BCAF5-1ED4-4EAF-80D3-D01E76EB3F3A}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CSharp", "CSharp", "{2DC459A0-C92F-44FD-8E04-3B995C686A13}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Workspace.Meta", "Workspace\CSharp\Meta\Workspace.Meta.csproj", "{8376C90C-5F93-47D1-807E-9E5DEA850F00}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -59,6 +65,18 @@ Global
 		{E2015E19-0C43-43D8-91DA-489ACA9B98FD}.Release|x64.Build.0 = Release|Any CPU
 		{E2015E19-0C43-43D8-91DA-489ACA9B98FD}.Release|x86.ActiveCfg = Release|Any CPU
 		{E2015E19-0C43-43D8-91DA-489ACA9B98FD}.Release|x86.Build.0 = Release|Any CPU
+		{8376C90C-5F93-47D1-807E-9E5DEA850F00}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8376C90C-5F93-47D1-807E-9E5DEA850F00}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8376C90C-5F93-47D1-807E-9E5DEA850F00}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{8376C90C-5F93-47D1-807E-9E5DEA850F00}.Debug|x64.Build.0 = Debug|Any CPU
+		{8376C90C-5F93-47D1-807E-9E5DEA850F00}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{8376C90C-5F93-47D1-807E-9E5DEA850F00}.Debug|x86.Build.0 = Debug|Any CPU
+		{8376C90C-5F93-47D1-807E-9E5DEA850F00}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8376C90C-5F93-47D1-807E-9E5DEA850F00}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8376C90C-5F93-47D1-807E-9E5DEA850F00}.Release|x64.ActiveCfg = Release|Any CPU
+		{8376C90C-5F93-47D1-807E-9E5DEA850F00}.Release|x64.Build.0 = Release|Any CPU
+		{8376C90C-5F93-47D1-807E-9E5DEA850F00}.Release|x86.ActiveCfg = Release|Any CPU
+		{8376C90C-5F93-47D1-807E-9E5DEA850F00}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -67,6 +85,8 @@ Global
 		{BA6EFCFE-CB7F-4994-A5A4-C11DDAAC32DD} = {E2C738D2-7D03-40E6-B08E-09FDC19EF57D}
 		{5B4E2D7C-8EF8-45F5-BFB2-E595C401A95F} = {7A8B4793-9B0B-45AC-A291-9AE8522D6BE5}
 		{E2015E19-0C43-43D8-91DA-489ACA9B98FD} = {E2C738D2-7D03-40E6-B08E-09FDC19EF57D}
+		{2DC459A0-C92F-44FD-8E04-3B995C686A13} = {406BCAF5-1ED4-4EAF-80D3-D01E76EB3F3A}
+		{8376C90C-5F93-47D1-807E-9E5DEA850F00} = {2DC459A0-C92F-44FD-8E04-3B995C686A13}
 	EndGlobalSection
 	GlobalSection(MonoDevelopProperties) = preSolution
 		StartupItem = Meta\Meta.csproj

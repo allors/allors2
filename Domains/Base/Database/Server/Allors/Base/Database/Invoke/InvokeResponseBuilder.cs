@@ -1,6 +1,7 @@
 ﻿using System.Reflection;
+using Allors;
 
-namespace Allors.Web.Database
+namespace Allors.Server
 {
     using System;
     using System.Linq;

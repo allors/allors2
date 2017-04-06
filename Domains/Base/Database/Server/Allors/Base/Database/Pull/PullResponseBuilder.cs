@@ -1,4 +1,6 @@
-﻿namespace Allors.Web.Database
+﻿using Allors;
+
+namespace Allors.Server
 {
     using System.Collections.Generic;
     using System.Linq;

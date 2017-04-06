@@ -1,20 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Allors;
-using Allors.Domain;
-using Allors.Meta;
-using Allors.Web.Database;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
-using ObjectFactory = Microsoft.Extensions.DependencyInjection.ObjectFactory;
-
-namespace WebApi
+﻿namespace Allors.Server
 {
+    using Allors;
+    using Allors.Domain;
+    using Allors.Meta;
+
+    using Microsoft.AspNetCore.Builder;
+    using Microsoft.AspNetCore.Hosting;
+    using Microsoft.Extensions.Configuration;
+    using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.Extensions.Logging;
+
+    using Allors.Server;
+
     public class Startup
     {
         public Startup(IHostingEnvironment env)

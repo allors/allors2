@@ -1,15 +1,16 @@
-﻿using System;
-
-namespace Allors.Web.Database
+﻿namespace Allors.Server
 {
+    using System;
+    using Allors;
+
     public class AllorsContext : IAllorsContext, IDisposable
     {
         public ISession Session { get; set; }
 
         public AllorsContext(IObjectFactory objectFactory)
         {
-            var configuration = new Adapters.Object.SqlClient.Configuration{ ObjectFactory = objectFactory};
-            var database = new Adapters.Object.SqlClient.Database(configuration);
+            var configuration = new Allors.Adapters.Object.SqlClient.Configuration{ ObjectFactory = objectFactory};
+            var database = new Allors.Adapters.Object.SqlClient.Database(configuration);
             this.Session = database.CreateSession();
         }
 

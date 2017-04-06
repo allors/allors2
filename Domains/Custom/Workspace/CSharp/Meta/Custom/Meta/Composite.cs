@@ -19,7 +19,7 @@
 // <summary>Defines the ObjectType type.</summary>
 //-------------------------------------------------------------------------------------------------
 
-namespace Allors.Meta
+namespace Allors.Workspace.Meta
 {
     public partial class Composite
     {

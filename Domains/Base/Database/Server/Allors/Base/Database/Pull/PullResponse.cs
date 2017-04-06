@@ -1,4 +1,4 @@
-﻿namespace Allors.Web.Database
+﻿namespace Allors.Server
 {
     using System.Collections.Generic;
 

@@ -1,19 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Allors;
-using Allors.Domain;
-using Allors.Meta;
-using Allors.Web.Database;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
-
-namespace WebApi
+﻿namespace Allors.Server
 {
+    using Allors.Domain;
+    using Allors.Meta;
+
+    using Microsoft.AspNetCore.Builder;
+    using Microsoft.AspNetCore.Hosting;
+    using Microsoft.Extensions.Configuration;
+    using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.Extensions.Logging;
+
     public class Startup
     {
         public Startup(IHostingEnvironment env)
@@ -32,7 +27,7 @@ namespace WebApi
         public void ConfigureServices(IServiceCollection services)
         {
             // Allors
-            var objectFactory = new Allors.ObjectFactory(MetaPopulation.Instance, typeof(IObject), typeof(User));
+            var objectFactory = new Allors.ObjectFactory(MetaPopulation.Instance, typeof(User));
             services.AddSingleton<IObjectFactory>(objectFactory);
             services.AddScoped<IAllorsContext, AllorsContext>();
 
@@ -46,7 +41,12 @@ namespace WebApi
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
 
-            app.UseMvc();
+            app.UseMvc(routes =>
+                {
+                    routes.MapRoute(
+                        name: "default",
+                        template: "{controller=Home}/{action=Index}/{id?}");
+                });
         }
     }
 }
