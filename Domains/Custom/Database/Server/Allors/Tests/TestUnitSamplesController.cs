@@ -7,6 +7,14 @@ namespace Allors.Server.Controllers
     using Allors.Domain;
     using Allors.Server;
 
+    public class TestUnitSamplesParams
+    {
+        public int Step {
+            get;
+            set;
+        }
+    }
+
     public class TestUnitSamplesController : PullController
     {
         public TestUnitSamplesController(IAllorsContext allorsContext): base(allorsContext)
@@ -14,7 +22,7 @@ namespace Allors.Server.Controllers
         }
 
         [HttpPost]
-        public ActionResult Pull(int step)
+        public ActionResult Pull([FromBody] TestUnitSamplesParams @params)
         {
             try
             {
@@ -27,7 +35,7 @@ namespace Allors.Server.Controllers
 
                 var responseBuilder = new PullResponseBuilder(this.AllorsUser);
 
-                switch (step)
+                switch (@params.Step)
                 {
                     case 0:
                         unitSample.RemoveAllorsBinary();

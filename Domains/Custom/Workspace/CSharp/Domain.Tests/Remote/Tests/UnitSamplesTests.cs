@@ -9,9 +9,7 @@ namespace Tests.Remote
 
     using Xunit;
 
-    
-
-    public class UnitSamplesTests : RemoteTest
+  public class UnitSamplesTests : RemoteTest
     {
         [Fact]
         public void Null()

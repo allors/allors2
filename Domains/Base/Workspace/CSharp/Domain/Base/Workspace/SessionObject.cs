@@ -237,7 +237,7 @@
             if (roleType.ObjectType.IsComposite && roleType.IsMany)
             {
                 var untypedArray = (Array)value;
-                var typedArray = Array.CreateInstance(roleType.ObjectType.ClrType);
+                var typedArray = Array.CreateInstance(roleType.ObjectType.ClrType, untypedArray.Length);
                 Array.Copy(untypedArray, typedArray, typedArray.Length);
                 value = typedArray;
             }
