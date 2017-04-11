@@ -5,6 +5,8 @@
 
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
+    using Microsoft.AspNetCore.Mvc;
+    using Microsoft.AspNetCore.Mvc.Cors.Internal;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Logging;
@@ -32,7 +34,25 @@
             services.AddScoped<IAllorsContext, AllorsContext>();
 
             // Add framework services.
+            services.AddCors(options =>
+                {
+                    options.AddPolicy(
+                        "AllowAll",
+                        builder =>
+                            {
+                                builder
+                                    .AllowAnyOrigin()
+                                    .AllowAnyHeader()
+                                    .AllowAnyMethod()
+                                    .AllowCredentials();
+                            });
+                });
+
             services.AddMvc();
+            services.Configure<MvcOptions>(options =>
+                {
+                    options.Filters.Add(new CorsAuthorizationFilterFactory("AllowAll"));
+                });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -40,6 +60,8 @@
         {
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
+
+            app.UseCors("AllowAll");
 
             app.UseMvc(routes =>
                 {

@@ -1,4 +1,4 @@
-import { Population } from "./base/Population";
+import { Population } from ".";
 import { data } from "./generated/base.g";
 
 declare module "./base/Population" {
