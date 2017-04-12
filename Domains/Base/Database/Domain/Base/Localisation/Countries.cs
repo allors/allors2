@@ -364,7 +364,7 @@ namespace Allors.Domain
                     "188"
                 },
                 {
-                    "Côte d\"Ivoire",
+                    "Côte d'Ivoire",
                     "CI",
                     "CIV",
                     "384"
