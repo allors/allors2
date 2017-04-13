@@ -1,139 +1,115 @@
-﻿import {Observable} from "rxjs";
+﻿import { Observable, Observer } from 'rxjs/Rx';
 
 import { Http, Response, Headers, RequestOptions } from '@angular/http';
 
-import { Method } from "../../domain/base/Method";
+import { Method } from '../../domain/base/Method';
 
-import { ResponseType } from "../../domain/base/data/responses/ResponseType";
-import { PushRequest } from "../../domain/base/data/requests/PushRequest";
-import { SyncRequest } from "../../domain/base/data/requests/SyncRequest";
-import { InvokeRequest } from "../../domain/base/data/requests/InvokeRequest";
-import { PullResponse } from "../../domain/base/data/responses/PullResponse";
-import { SyncResponse } from "../../domain/base/data/responses/SyncResponse";
-import { PushResponse } from "../../domain/base/data/responses/PushResponse";
-import { InvokeResponse } from "../../domain/base/data/responses/InvokeResponse";
+import { ResponseType } from '../../domain/base/data/responses/ResponseType';
+import { PushRequest } from '../../domain/base/data/requests/PushRequest';
+import { SyncRequest } from '../../domain/base/data/requests/SyncRequest';
+import { InvokeRequest } from '../../domain/base/data/requests/InvokeRequest';
+import { PullResponse } from '../../domain/base/data/responses/PullResponse';
+import { SyncResponse } from '../../domain/base/data/responses/SyncResponse';
+import { PushResponse } from '../../domain/base/data/responses/PushResponse';
+import { InvokeResponse } from '../../domain/base/data/responses/InvokeResponse';
 
 export class Database {
     options: RequestOptions;
 
-    constructor(private $http: Http, public url: string) {
-        let headers = new Headers(
-            { 
+    constructor(private http: Http, public url: string) {
+        const headers = new Headers(
+            {
                 'Content-Type': 'application/json',
                 'Accept': 'application/json',
             });
         this.options = new RequestOptions({ headers: headers });
     }
 
-    pull(name: string, params?: any): Promise<PullResponse> {
-        return new Promise((resolve, reject) => {
-
-            const serviceName = this.fullyQualifiedUrl(name + "/Pull");
-            this.$http.post(serviceName, params, this.options)
-                .toPromise()
-                .then((callbackArg) => {
-                    var response = callbackArg.json();
-                    response.responseType = ResponseType.Pull;
-                    resolve(response);
-                })
-                .catch(e => {
-                    reject(e);
-                });
-
-        });
+    pull(name: string, params?: any): Observable<PullResponse> {
+        const serviceName = this.fullyQualifiedUrl(name + '/Pull');
+        return this.http
+            .post(serviceName, params, this.options)
+            .map(v => {
+                const response = v.json() as PullResponse;
+                response.responseType = ResponseType.Pull;
+                return response;
+            });
     }
 
-    sync(syncRequest: SyncRequest): Promise<SyncResponse> {
-        return new Promise((resolve, reject) => {
+    sync(syncRequest: SyncRequest): Observable<SyncResponse> {
 
-            const serviceName = this.fullyQualifiedUrl("Database/Sync");
-            this.$http.post(serviceName, syncRequest, this.options)
-                .toPromise()
-                .then((callbackArg) => {
-                    var response = callbackArg.json();
-                    response.responseType = ResponseType.Sync;
-                    resolve(response);
-                })
-                .catch(e => {
-                    reject(e);
-                });
-
-        });
+        const serviceName = this.fullyQualifiedUrl('Database/Sync');
+        return this.http
+            .post(serviceName, syncRequest, this.options)
+            .map(v => {
+                const response = v.json() as SyncResponse;
+                response.responseType = ResponseType.Sync;
+                return response;
+            });
     }
 
-    push(pushRequest: PushRequest): Promise<PushResponse> {
-        return new Promise((resolve, reject) => {
-         
-            const serviceName = this.fullyQualifiedUrl("Database/Push");
-            this.$http.post(serviceName, pushRequest, this.options)
-                .toPromise()
-                .then((callbackArg) => {
-                    var response = callbackArg.json();
-                    response.responseType = ResponseType.Sync;
+    push(pushRequest: PushRequest): Observable<PushResponse> {
+
+        const serviceName = this.fullyQualifiedUrl('Database/Push');
+        return this.http.post(serviceName, pushRequest, this.options)
+            .map(v => {
+                const response = v.json() as PushResponse;
+                response.responseType = ResponseType.Sync;
+
+                if (response.hasErrors) {
+                    return Observable.throw(response);
+                }
+
+                return response;
+            });
+    }
+
+    invoke(method: Method): Observable<InvokeResponse>;
+    invoke(service: string, args?: any): Observable<InvokeResponse>;
+    invoke(methodOrService: Method | string, args?: any): Observable<InvokeResponse> {
+
+        if (methodOrService instanceof Method) {
+            return this.invokeMethod(methodOrService);
+        } else {
+            return this.invokeService(methodOrService, args);
+        }
+    }
+
+    private invokeMethod(method: Method): Observable<InvokeResponse>{
+            const invokeRequest: InvokeRequest = {
+                i: method.object.id,
+                v: method.object.version,
+                m: method.name
+            };
+
+            const serviceName = this.fullyQualifiedUrl('Database/Invoke');
+            return this.http.post(serviceName, invokeRequest, this.options)
+                .map(v => {
+                    const response = v.json() as InvokeResponse;
+                    response.responseType = ResponseType.Invoke;
 
                     if (response.hasErrors) {
-                        reject(response);
-                    } else {
-                        resolve(response);
+                        return Observable.throw(response);
                     }
-                })
-                .catch(e => {
-                    reject(e);
-                });
 
-        });
+                    return response;
+                });
     }
 
-    invoke(method: Method): Promise<InvokeResponse>;
-    invoke(service: string, args?: any): Promise<InvokeResponse>;
-    invoke(methodOrService: Method | string, args?: any): Promise<InvokeResponse> {
-        return new Promise((resolve, reject) => {
-    
-            if (methodOrService instanceof Method) {
-                const method = methodOrService;
-                const invokeRequest: InvokeRequest = {
-                    i: method.object.id,
-                    v: method.object.version,
-                    m: method.name
-                };
+  private invokeService(methodOrService: string, args?: any): Observable<InvokeResponse> {
+            const service =  this.fullyQualifiedUrl(methodOrService + '/Pull');
+            return this.http.post(service, args, this.options)
+                .map(v => {
+                    const response = v.json();
+                    response.responseType = ResponseType.Invoke;
 
-                const serviceName = this.fullyQualifiedUrl("Database/Invoke");
-                this.$http.post(serviceName, invokeRequest, this.options)
-                    .toPromise()
-                    .then((callbackArg) => {
-                        var response = callbackArg.json();
-                        response.responseType = ResponseType.Invoke;
+                    if (response.hasErrors) {
+                        return Observable.throw(response);
+                    }
 
-                        if (response.hasErrors) {
-                            reject(response);
-                        } else {
-                            resolve(response);
-                        }
-                    })
-                    .catch(e => {
-                        reject(e);
-                    });
-            }
-            else {
-                const service =  this.fullyQualifiedUrl(methodOrService + "/Pull");
-                this.$http.post(service, args, this.options)
-                    .toPromise()
-                    .then((callbackArg) => {
-                        var response = callbackArg.json();
-                        response.responseType = ResponseType.Invoke;
+                    return response;
+                });
 
-                        if (response.hasErrors) {
-                            reject(response);
-                        } else {
-                            resolve(response);
-                        }
-                    })
-                    .catch(e => {
-                        reject(e);
-                    });
-            }
-
-        });
     }
 
     private fullyQualifiedUrl(localUrl: string): string {
