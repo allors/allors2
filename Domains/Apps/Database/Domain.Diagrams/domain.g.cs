@@ -400,7 +400,7 @@ namespace Allors.Domain
 						InventoryItem ComponentInventoryItem {set;}
 
 		}
-		public interface Invoice  : Localised, Transitional, Commentable, Printable 
+		public interface Invoice  : Localised, Transitional, Commentable, Printable, Auditable 
 		{
 						global::System.Decimal TotalShippingAndHandlingCustomerCurrency {set;}
 
@@ -497,7 +497,7 @@ namespace Allors.Domain
 						global::System.String Abbreviation {set;}
 
 		}
-		public interface Order  : Printable, Transitional, Commentable, Localised 
+		public interface Order  : Printable, Transitional, Commentable, Localised, Auditable 
 		{
 						Currency CustomerCurrency {set;}
 
@@ -989,7 +989,7 @@ namespace Allors.Domain
 						VatRate VatRate {set;}
 
 		}
-		public interface Quote  : Transitional 
+		public interface Quote  : Transitional, Auditable 
 		{
 						global::System.DateTime? ValidFromDate {set;}
 
@@ -1012,7 +1012,7 @@ namespace Allors.Domain
 						global::System.String QuoteNumber {set;}
 
 		}
-		public interface Request  : AccessControlledObject, Commentable 
+		public interface Request  : Commentable, Auditable 
 		{
 						global::System.String Description {set;}
 
@@ -1127,7 +1127,7 @@ namespace Allors.Domain
 						global::System.DateTime? EstimatedArrivalDate {set;}
 
 		}
-		public interface WorkEffort  : Transitional, UniquelyIdentifiable, Deletable 
+		public interface WorkEffort  : Transitional, UniquelyIdentifiable, Deletable, Auditable 
 		{
 						WorkEffortStatus CurrentWorkEffortStatus {set;}
 
@@ -3488,6 +3488,21 @@ namespace Allors.Domain
 		public interface Priority  : Enumeration 
 		{
 		}
+		public interface Catalogue  : AccessControlledObject, UniquelyIdentifiable 
+		{
+						Media NoImageAvailableImage {set;}
+
+						global::System.String Name {set;}
+
+						global::System.String Description {set;}
+
+						LocalisedText LocalisedNames {set;}
+
+						LocalisedText LocalisedDescriptions {set;}
+
+						Media CatalogueImage {set;}
+
+		}
 		public interface ProductCategory  : AccessControlledObject, UniquelyIdentifiable 
 		{
 						Package Package {set;}
@@ -4708,6 +4723,8 @@ namespace Allors.Domain
 		}
 		public interface Store  : UniquelyIdentifiable, AccessControlledObject 
 		{
+						Catalogue Catalogues {set;}
+
 						global::System.Decimal ShipmentThreshold {set;}
 
 						Counter SalesOrderCounter {set;}

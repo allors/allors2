@@ -29,6 +29,14 @@ namespace Allors.Repository
 
         public string Comment { get; set; }
 
+        public User CreatedBy { get; set; }
+
+        public User LastModifiedBy { get; set; }
+
+        public DateTime CreationDate { get; set; }
+
+        public DateTime LastModifiedDate { get; set; }
+
         #endregion
 
 

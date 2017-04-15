@@ -19,6 +19,14 @@ namespace Allors.Repository
         #endregion
 
         #region Allors
+        [Id("5A052D80-CD0D-4C95-9281-4DD59A3BE26B")]
+        [AssociationId("AF4D8425-2521-460F-B4D2-F3DE128CBF58")]
+        [RoleId("7458412B-92C3-46A0-9887-4F144455F822")]
+        [Multiplicity(Multiplicity.OneToMany)]
+        #endregion
+        public Catalogue Catalogues { get; set; }
+
+        #region Allors
         [Id("0a0ad3b1-afa2-4c78-8414-e657fabebb3e")]
         [AssociationId("c460c53b-1460-4bc2-8390-98e9c1492b71")]
         [RoleId("06502486-41cb-4840-856e-7d44c0038375")]
@@ -27,6 +35,7 @@ namespace Allors.Repository
         [Precision(19)]
         [Scale(2)]
         public decimal ShipmentThreshold { get; set; }
+
         #region Allors
         [Id("124a58f1-f7a3-43d1-8f4d-0a068b7a2659")]
         [AssociationId("87a6b9dd-5c38-4b79-a0e4-75e6777f5207")]

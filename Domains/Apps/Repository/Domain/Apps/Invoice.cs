@@ -7,7 +7,7 @@ namespace Allors.Repository
     #region Allors
     [Id("a6f4eedb-b0b5-491d-bcc0-09d2bc109e86")]
     #endregion
-	public partial interface Invoice : AccessControlledObject, Localised, Transitional, Commentable, Printable, UniquelyIdentifiable 
+	public partial interface Invoice : AccessControlledObject, Localised, Transitional, Commentable, Printable, Auditable, UniquelyIdentifiable 
     {
 
 

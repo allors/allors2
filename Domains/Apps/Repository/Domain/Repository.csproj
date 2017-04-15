@@ -463,6 +463,7 @@
     <Compile Include="Apps\Priority.cs" />
     <Compile Include="Apps\Product.cs" />
     <Compile Include="Apps\ProductAssociation.cs" />
+    <Compile Include="Apps\Catalogue.cs" />
     <Compile Include="Apps\ProductCategory.cs" />
     <Compile Include="Apps\ProductCategoryRevenue.cs" />
     <Compile Include="Apps\ProductCategoryRevenueHistory.cs" />
