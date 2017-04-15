@@ -46,14 +46,23 @@ namespace Allors.Repository
         [Required]
 
         public Counter SalesOrderCounter { get; set; }
+
+        #region Allors
+        [Id("7C21D9D3-1F69-4DE2-B51C-C5EC8DFD33E5")]
+        [AssociationId("D8EB657A-D818-458D-B39C-19B28C17FE5B")]
+        [RoleId("DC04CDA6-4BFF-4EB6-AFDA-C57D5EBE84C1")]
+        #endregion
+        [Size(256)]
+        public string QuoteNumberPrefix { get; set; }
+
         #region Allors
         [Id("3a837bae-993a-4765-8d4f-b690bf65dc79")]
         [AssociationId("0304eacc-65bc-475d-9a82-00b0cdb233ad")]
         [RoleId("21c8c056-2997-4f75-82db-597e258dceb6")]
         #endregion
         [Size(256)]
-
         public string OutgoingShipmentNumberPrefix { get; set; }
+
         #region Allors
         [Id("3e378f04-0d14-4b03-b8e2-b58da3039184")]
         [AssociationId("b4f8b63a-d4c6-4a40-a603-84c4225f02ed")]

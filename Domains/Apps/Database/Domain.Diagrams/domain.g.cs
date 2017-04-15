@@ -4729,6 +4729,8 @@ namespace Allors.Domain
 
 						Counter SalesOrderCounter {set;}
 
+						global::System.String QuoteNumberPrefix {set;}
+
 						global::System.String OutgoingShipmentNumberPrefix {set;}
 
 						global::System.String SalesInvoiceNumberPrefix {set;}
