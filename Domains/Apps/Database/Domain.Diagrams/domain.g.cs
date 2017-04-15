@@ -3502,6 +3502,8 @@ namespace Allors.Domain
 
 						Media CatalogueImage {set;}
 
+						ProductCategory ProductCategories {set;}
+
 		}
 		public interface ProductCategory  : AccessControlledObject, UniquelyIdentifiable 
 		{

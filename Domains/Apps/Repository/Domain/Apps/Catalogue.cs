@@ -73,6 +73,15 @@ namespace Allors.Repository
         [Indexed]
         public Media CatalogueImage { get; set; }
 
+        #region Allors
+        [Id("902035D4-5333-448D-A161-3D2BC8B0F2F6")]
+        [AssociationId("69B97A91-413F-4865-84D2-7FC111CDD43B")]
+        [RoleId("73C4D1D9-7980-49C7-8DB8-F024A14351BA")]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Indexed]
+        public ProductCategory ProductCategories { get; set; }
+
         #region inherited methods
 
 
