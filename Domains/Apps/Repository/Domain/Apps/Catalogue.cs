@@ -78,7 +78,7 @@ namespace Allors.Repository
         [AssociationId("69B97A91-413F-4865-84D2-7FC111CDD43B")]
         [RoleId("73C4D1D9-7980-49C7-8DB8-F024A14351BA")]
         #endregion
-        [Multiplicity(Multiplicity.ManyToOne)]
+        [Multiplicity(Multiplicity.OneToMany)]
         [Indexed]
         public ProductCategory ProductCategories { get; set; }
 
