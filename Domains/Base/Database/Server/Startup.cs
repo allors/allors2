@@ -10,8 +10,6 @@
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Logging;
 
-    using Allors.Server;
-
     public class Startup
     {
         public Startup(IHostingEnvironment env)
@@ -21,16 +19,18 @@
                 .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
                 .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true)
                 .AddEnvironmentVariables();
-            Configuration = builder.Build();
+
+            this.Configuration = builder.Build();
         }
 
         public IConfigurationRoot Configuration { get; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
             // Allors
-            var objectFactory = new Allors.ObjectFactory(MetaPopulation.Instance, typeof(IObject), typeof(User));
+            services.AddSingleton(this.Configuration);
+
+            var objectFactory = new Allors.ObjectFactory(MetaPopulation.Instance, typeof(User));
             services.AddSingleton<IObjectFactory>(objectFactory);
             services.AddScoped<IAllorsContext, AllorsContext>();
 
@@ -38,13 +38,22 @@
             services.AddMvc();
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
-            loggerFactory.AddConsole(Configuration.GetSection("Logging"));
+            loggerFactory.AddConsole(this.Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
 
+            // Allors
+            app.UseAuthentication();
+
             app.UseMvc();
+
+            app.UseMvc(routes =>
+                {
+                    routes.MapRoute(
+                        name: "default",
+                        template: "{controller=Home}/{action=Index}/{id?}");
+                });
         }
     }
 }

@@ -2,15 +2,23 @@
 {
     using System;
     using Allors;
+    using Allors.Adapters.Object.SqlClient;
+
+    using Microsoft.Extensions.Configuration;
 
     public class AllorsContext : IAllorsContext, IDisposable
     {
         public ISession Session { get; set; }
 
-        public AllorsContext(IObjectFactory objectFactory)
+        public AllorsContext(IObjectFactory objectFactory, IConfigurationRoot configurationRoot)
         {
-            var configuration = new Allors.Adapters.Object.SqlClient.Configuration{ ObjectFactory = objectFactory};
-            var database = new Allors.Adapters.Object.SqlClient.Database(configuration);
+            var configuration = new Configuration
+                                    {
+                                        ObjectFactory = objectFactory,
+                                        ConnectionString = configurationRoot.GetConnectionString("DefaultConnection")
+                                    };
+
+            var database = new Database(configuration);
             this.Session = database.CreateSession();
         }
 

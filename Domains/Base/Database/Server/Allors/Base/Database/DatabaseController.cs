@@ -1,25 +1,22 @@
 ﻿namespace Allors.Server
 {
+    using System.Threading.Tasks;
+
     using Allors.Domain;
-    using Allors.Meta;
 
     using Microsoft.AspNetCore.Mvc;
 
-    public class DatabaseController : Controller
+    public class DatabaseController : AllorsController
     {
-        public ISession AllorsSession { get; }
-
-        public User AllorsUser { get; }
-
-        public DatabaseController(IAllorsContext allorsContext)
+        public DatabaseController(IAllorsContext allorsContext) : base(allorsContext)
         {
-            this.AllorsSession = allorsContext.Session;
-            this.AllorsUser = new Users(this.AllorsSession).FindBy(M.User.UserName, "administrator");
         }
 
         [HttpPost]
-        public IActionResult Sync([FromBody]SyncRequest syncRequest)
+        public async Task<IActionResult> Sync([FromBody]SyncRequest syncRequest)
         {
+            await this.OnInit();
+
             var user = this.AllorsUser ?? Singleton.Instance(this.AllorsSession).Guest;
             var responseBuilder = new SyncResponseBuilder(this.AllorsSession, user, syncRequest);
             var response = responseBuilder.Build();
@@ -27,8 +24,10 @@
         }
 
         [HttpPost]
-        public IActionResult Push([FromBody]PushRequest pushRequest)
+        public async Task<IActionResult> Push([FromBody]PushRequest pushRequest)
         {
+            await this.OnInit();
+
             var user = this.AllorsUser ?? Singleton.Instance(this.AllorsSession).Guest;
             var responseBuilder = new PushResponseBuilder(this.AllorsSession, user, pushRequest);
             var response = responseBuilder.Build();
@@ -36,8 +35,10 @@
         }
 
         [HttpPost]
-        public IActionResult Invoke([FromBody]InvokeRequest invokeRequest)
+        public async Task<IActionResult> Invoke([FromBody]InvokeRequest invokeRequest)
         {
+            await this.OnInit();
+
             var user = this.AllorsUser ?? Singleton.Instance(this.AllorsSession).Guest;
             var responseBuilder = new InvokeResponseBuilder(this.AllorsSession, user, invokeRequest);
             var response = responseBuilder.Build();

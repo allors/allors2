@@ -20,7 +20,7 @@
                 .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
                 .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true)
                 .AddEnvironmentVariables();
-            Configuration = builder.Build();
+            this.Configuration = builder.Build();
         }
 
         public IConfigurationRoot Configuration { get; }
@@ -29,6 +29,8 @@
         public void ConfigureServices(IServiceCollection services)
         {
             // Allors
+            services.AddSingleton(this.Configuration);
+
             var objectFactory = new Allors.ObjectFactory(MetaPopulation.Instance, typeof(User));
             services.AddSingleton<IObjectFactory>(objectFactory);
             services.AddScoped<IAllorsContext, AllorsContext>();
@@ -58,7 +60,7 @@
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
-            loggerFactory.AddConsole(Configuration.GetSection("Logging"));
+            loggerFactory.AddConsole(this.Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
 
             app.UseCors("AllowAll");

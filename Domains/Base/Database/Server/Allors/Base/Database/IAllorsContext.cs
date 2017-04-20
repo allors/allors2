@@ -1,6 +1,4 @@
-﻿using Allors;
-
-namespace Allors.Server
+﻿namespace Allors.Server
 {
     public interface IAllorsContext
     {

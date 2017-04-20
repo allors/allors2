@@ -31,14 +31,7 @@
 
             return this.Ok("Setup");
         }
-
-        [HttpGet]
-        public IActionResult Login(string user, string returnUrl)
-        {
-            // TODO:
-            return this.Ok("Login");
-        }
-
+        
         [HttpGet]
         public IActionResult TimeShift(int days, int hours = 0, int minutes = 0, int seconds = 0)
         {

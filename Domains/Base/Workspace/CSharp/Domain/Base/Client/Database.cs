@@ -1,15 +1,14 @@
-﻿using System.Text;
-using Newtonsoft.Json;
-
-namespace Allors.Workspace.Client
+﻿namespace Allors.Workspace.Client
 {
     using System;
     using System.Net.Http;
     using System.Net.Http.Headers;
-    using System.Security.Cryptography.X509Certificates;
+    using System.Text;
     using System.Threading.Tasks;
 
     using Data;
+
+    using Newtonsoft.Json;
 
     public class Database
     {
