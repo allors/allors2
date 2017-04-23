@@ -22,7 +22,11 @@ export class Database {
                 'Content-Type': 'application/json',
                 'Accept': 'application/json',
             });
-        this.options = new RequestOptions({ headers: headers });
+        this.options = new RequestOptions(
+            {
+                headers: headers,
+                withCredentials: true
+            });
     }
 
     pull(name: string, params?: any): Observable<PullResponse> {
