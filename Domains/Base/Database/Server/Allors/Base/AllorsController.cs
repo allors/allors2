@@ -2,7 +2,6 @@
 {
     using System.Linq;
     using System.Security.Claims;
-    using System.Threading.Tasks;
 
     using Allors.Domain;
 
@@ -21,7 +20,7 @@
 
         public User AllorsUser { get; private set; }
 
-        protected async Task OnInit()
+        protected async System.Threading.Tasks.Task OnInit()
         {
             await this.HttpContext.Authentication.GetAuthenticateInfoAsync(AuthenticationController.Scheme);
             var claim = this.HttpContext.User.Claims.FirstOrDefault(v => ClaimTypes.NameIdentifier.Equals(v.Type));
