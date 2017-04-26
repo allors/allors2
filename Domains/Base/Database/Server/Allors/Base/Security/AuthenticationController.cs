@@ -6,6 +6,7 @@
     using Allors.Domain;
     using Allors.Meta;
 
+    using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Http.Authentication;
     using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Mvc;
@@ -46,6 +47,13 @@
         public async Task<IActionResult> SignOut()
         {
             await this.HttpContext.Authentication.SignOutAsync(Scheme);
+            return this.Ok();
+        }
+
+        [HttpPost]
+        [Authorize]
+        public IActionResult Refresh()
+        {
             return this.Ok();
         }
     }
