@@ -53,6 +53,8 @@ interface(meta, objectType) ::= <<
 import { SessionObject } from "../base/SessionObject";
 $objectType.WorkspaceDirectSupertypes:{directSupertype|import { $directSupertype.SingularName$ \} from "./$directSupertype.SingularName$.g";}; separator="\n"$
 
+$objectType.WorkspaceRelatedComposites:{composite|import { $composite.SingularName$ \} from "./$composite.SingularName$.g";}; separator="\n"$
+
 export interface $objectType.name$ extends SessionObject $if(objectType.WorkspaceDirectSupertypes)$, $objectType.WorkspaceDirectSupertypes:{directSupertype|$directSupertype.SingularName$}; separator=", "$$endif$ {
 $objectType.WorkspaceExclusiveRoleTypes:{roleType|$interfaceRoleType()$}; separator="\n"$
 }
