@@ -409,6 +409,18 @@ namespace Allors.Meta
         public IEnumerable<AssociationType> InheritedAssociations => this.AssociationTypes.Except(this.ExclusiveAssociationTypes);
 
         // Workspace
+        public IEnumerable<Composite> WorkspaceRelatedComposites
+        {
+            get
+            {
+                this.MetaPopulation.Derive();
+                return this.Supertypes.Where(m => m.Workspace)
+                    .Union(this.RoleTypes.Where(m => m.Workspace && m.ObjectType.IsComposite).Select(v => (Composite)v.ObjectType))
+                    .Union(this.AssociationTypes.Where(m => m.Workspace).Select(v => v.ObjectType))
+                    .ToArray();
+            }
+        }
+        
         public IEnumerable<Interface> WorkspaceSupertypes
         {
             get

@@ -153,15 +153,6 @@ namespace Allors.Meta
 
         #endregion
 
-        public IEnumerable<ObjectType> WorkspaceRelatedComposites
-        {
-            get
-            {
-                this.MetaPopulation.Derive();
-                return this.WorkspaceSupertypes.Union(this.WorkspaceRoleTypes.Where(v => v.ObjectType.IsComposite).Select(v => v.ObjectType)).Distinct().Except(new[] { this });
-            }
-        }
-
         /// <summary>
         /// Derive direct sub type derivations.
         /// </summary>
