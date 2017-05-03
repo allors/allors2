@@ -1,4 +1,4 @@
-﻿import { Response } from "./Response";
+﻿import { Response } from './Response';
 
 export interface SyncResponseObject {
     i: string;

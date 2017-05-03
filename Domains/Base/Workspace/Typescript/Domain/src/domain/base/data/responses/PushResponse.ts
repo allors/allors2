@@ -1,6 +1,6 @@
-﻿import { ErrorResponse } from "./ErrorResponse";
-import { PullResponseDerivationError } from "./PullResponseDerivationError";
-import { PushResponseNewObject } from "./PushResponseNewObject";
+﻿import { ErrorResponse } from './ErrorResponse';
+import { PullResponseDerivationError } from './PullResponseDerivationError';
+import { PushResponseNewObject } from './PushResponseNewObject';
 
 export interface PushResponse extends ErrorResponse {
     hasErrors: boolean;

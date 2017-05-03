@@ -1,11 +1,11 @@
-﻿import { IWorkspace } from "./Workspace";
-import { ISessionObject, INewSessionObject } from "./SessionObject";
-import { PushRequest } from "./data/requests/PushRequest";
-import { PushResponse } from "./data/responses/PushResponse";
-import { SyncResponse } from "./data/responses/SyncResponse";
-import { ResponseType } from "./data/responses/ResponseType";
+﻿import { IWorkspace } from './Workspace';
+import { ISessionObject, INewSessionObject } from './SessionObject';
+import { PushRequest } from './data/requests/PushRequest';
+import { PushResponse } from './data/responses/PushResponse';
+import { SyncResponse } from './data/responses/SyncResponse';
+import { ResponseType } from './data/responses/ResponseType';
 
-import * as _ from "lodash";
+import * as _ from 'lodash';
 
 export interface ISession {
     hasChanges: boolean;
@@ -21,9 +21,9 @@ export interface ISession {
 }
 
 export class Session implements ISession {
-    hasChanges: boolean;
-
     private static idCounter = 0;
+
+    hasChanges: boolean;
 
     private sessionObjectById: { [id: string]: ISessionObject; } = {};
     private newSessionObjectById: { [id: string]: INewSessionObject; } = {};
@@ -86,13 +86,13 @@ export class Session implements ISession {
     }
 
     pushRequest(): PushRequest {
-        let data = new PushRequest();
+        const data = new PushRequest();
         data.newObjects = [];
         data.objects = [];
 
         if (this.newSessionObjectById) {
             _.forEach(this.newSessionObjectById, newSessionObject => {
-                let objectData = newSessionObject.saveNew();
+                const objectData = newSessionObject.saveNew();
                 if (objectData !== undefined) {
                     data.newObjects.push(objectData);
                 }
@@ -100,7 +100,7 @@ export class Session implements ISession {
         }
 
         _.forEach(this.sessionObjectById, sessionObject => {
-            let objectData = sessionObject.save();
+            const objectData = sessionObject.save();
             if (objectData !== undefined) {
                 data.objects.push(objectData);
             }
@@ -112,18 +112,18 @@ export class Session implements ISession {
     pushResponse(pushResponse: PushResponse): void {
         if (pushResponse.newObjects) {
             _.forEach(pushResponse.newObjects, pushResponseNewObject => {
-                let newId = pushResponseNewObject.ni;
-                let id = pushResponseNewObject.i;
+                const newId = pushResponseNewObject.ni;
+                const id = pushResponseNewObject.i;
 
-                let newSessionObject = this.newSessionObjectById[newId];
+                const newSessionObject = this.newSessionObjectById[newId];
 
-                let syncResponse: SyncResponse = {
+                const syncResponse: SyncResponse = {
                     responseType: ResponseType.Sync,
-                    userSecurityHash: "#", // This should trigger a load on next check
+                    userSecurityHash: '#', // This should trigger a load on next check
                     objects: [
                         {
                             i: id,
-                            v: "",
+                            v: '',
                             t: newSessionObject.objectType.name,
                             roles: [],
                             methods: []
@@ -135,7 +135,7 @@ export class Session implements ISession {
                 delete(newSessionObject.newId);
 
                 this.workspace.sync(syncResponse);
-                let workspaceObject = this.workspace.get(id);
+                const workspaceObject = this.workspace.get(id);
                 newSessionObject.workspaceObject = workspaceObject;
 
                 this.sessionObjectById[id] = newSessionObject;
@@ -143,7 +143,7 @@ export class Session implements ISession {
         }
 
         if (Object.getOwnPropertyNames(this.newSessionObjectById).length !== 0) {
-            throw new Error("Not all new objects received ids");
+            throw new Error('Not all new objects received ids');
         }
     }
 }

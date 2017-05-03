@@ -1,5 +1,5 @@
-﻿import { Response } from "./Response";
-import { PullResponseDerivationError } from "./PullResponseDerivationError";
+﻿import { Response } from './Response';
+import { PullResponseDerivationError } from './PullResponseDerivationError';
 
 export interface ErrorResponse extends Response {
     hasErrors: boolean;

@@ -1,5 +1,5 @@
-﻿import { ErrorResponse } from "./ErrorResponse";
-import { PullResponseDerivationError } from "./PullResponseDerivationError";
+﻿import { ErrorResponse } from './ErrorResponse';
+import { PullResponseDerivationError } from './PullResponseDerivationError';
 
 export interface InvokeResponse extends ErrorResponse {
     hasErrors: boolean;

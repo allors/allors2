@@ -40,12 +40,12 @@ export class WorkspaceObject implements IWorkspaceObject {
         this.roles = {};
         this.methods = {};
 
-        let objectType = this.workspace.metaPopulation.objectTypeByName[this.t];
+        const objectType = this.workspace.metaPopulation.objectTypeByName[this.t];
 
         _.forEach(loadObject.roles, role => {
-            let [name, access] = role;
-            let canRead = access.indexOf("r") !== -1;
-            let canWrite = access.indexOf("w") !== -1;
+            const [name, access] = role;
+            const canRead = access.indexOf('r') !== -1;
+            const canWrite = access.indexOf('w') !== -1;
 
             this.roles[`CanRead${name}`] = canRead;
             this.roles[`CanWrite${name}`] = canWrite;
@@ -53,7 +53,8 @@ export class WorkspaceObject implements IWorkspaceObject {
             if (canRead) {
                 const roleType = objectType.roleTypeByName[name];
                 let value = role[2];
-                if (value && roleType.objectType.isUnit && roleType.objectType.name === "DateTime") {
+
+                if (value && roleType.objectType.isUnit && roleType.objectType.name === 'DateTime') {
                     value = new Date(value as string);
                 }
                 this.roles[name] = value;
@@ -62,8 +63,8 @@ export class WorkspaceObject implements IWorkspaceObject {
         });
 
         _.forEach(loadObject.methods, method => {
-            let [name, access] = method;
-            let canExecute = access.indexOf("x") !== -1;
+            const [name, access] = method;
+            const canExecute = access.indexOf('x') !== -1;
 
             this.methods[`CanExecute${name}`] = canExecute;
         });

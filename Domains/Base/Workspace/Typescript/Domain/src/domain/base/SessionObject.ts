@@ -1,10 +1,10 @@
-﻿import { ISession } from "./Session";
-import { IWorkspaceObject } from "./WorkspaceObject";
-import { PushRequestObject, PushRequestNewObject, PushRequestRole } from "./data/requests/PushRequest";
+﻿import { ISession } from './Session';
+import { IWorkspaceObject } from './WorkspaceObject';
+import { PushRequestObject, PushRequestNewObject, PushRequestRole } from './data/requests/PushRequest';
 
-import { ObjectType } from "../../meta";
+import { ObjectType } from '../../meta';
 
-import * as _ from "lodash";
+import * as _ from 'lodash';
 
 export interface ISessionObject {
     id: string;
@@ -70,8 +70,7 @@ export class SessionObject implements INewSessionObject {
     canRead(roleTypeName: string): boolean {
         if (this.newId) {
             return true;
-        }
-        else if (this.workspaceObject) {
+        } else if (this.workspaceObject) {
             return this.workspaceObject.canRead(roleTypeName);
         }
 
@@ -81,8 +80,7 @@ export class SessionObject implements INewSessionObject {
     canWrite(roleTypeName: string): boolean {
         if (this.newId) {
             return true;
-        }
-        else if (this.workspaceObject) {
+        } else if (this.workspaceObject) {
             return this.workspaceObject.canWrite(roleTypeName);
         }
 
@@ -92,8 +90,7 @@ export class SessionObject implements INewSessionObject {
     canExecute(methodName: string): boolean {
         if (this.newId) {
             return true;
-        }
-        else if (this.workspaceObject) {
+        } else if (this.workspaceObject) {
             return this.workspaceObject.canExecute(methodName);
         }
 
@@ -125,15 +122,15 @@ export class SessionObject implements INewSessionObject {
                                     return this.session.get(role);
                             }) : [];
                         }
-                    }
-                    catch (e) {
-                        let value = "N/A";
+                    } catch (e) {
+                        let stringValue = 'N/A';
                         try {
-                            value = this.toString();
-                        }
-                        catch (e2) { };
+                            stringValue = this.toString();
+                        } catch (e2) {
+                        };
 
-                        throw new Error(`Could not get role ${roleTypeName} from [objectType: ${this.objectType.name}, id: ${this.id}, value: '${value}']`);
+                        // tslint:disable-next-line:max-line-length
+                        throw new Error(`Could not get role ${roleTypeName} from [objectType: ${this.objectType.name}, id: ${this.id}, value: '${stringValue}']`);
                     }
                 }
             } else {
@@ -243,17 +240,17 @@ export class SessionObject implements INewSessionObject {
 
     private assertExists() {
         if (!this.roleByRoleTypeName) {
-            throw "Object doesn't exist anymore.";
+            throw new Error('Object doesn\'t exist anymore.');
         }
     }
 
     private saveRoles(): PushRequestRole[] {
-        let saveRoles = new Array<PushRequestRole>();
+        const saveRoles = new Array<PushRequestRole>();
 
         _.forEach(this.changedRoleByRoleTypeName, (role, roleTypeName) => {
-            let roleType = this.objectType.roleTypeByName[roleTypeName];
+            const roleType = this.objectType.roleTypeByName[roleTypeName];
 
-            let saveRole = new PushRequestRole;
+            const saveRole = new PushRequestRole;
             saveRole.t = roleType.name;
 
             if (roleType.objectType.isUnit) {
