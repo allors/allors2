@@ -22,7 +22,6 @@ namespace Allors
 {
     using System.Collections.Generic;
     using System.IO;
-    using System.Reflection;
 
     using Allors.Domain;
     using Allors.Meta;
@@ -33,6 +32,10 @@ namespace Allors
 
         private readonly Dictionary<IObjectType, IObjects> objectsByObjectType;
         private readonly ObjectsGraph objectsGraph;
+
+        public Setup(ISession session) : this(session, null)
+        {
+        }
 
         public Setup(ISession session, DirectoryInfo dataPath)
         {
