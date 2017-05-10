@@ -485,6 +485,26 @@
                             property.AttributeByName.Add(attributeTypeName, group.First());
                         }
                     }
+
+                    if (property.AttributeByName.Keys.Contains("Multiplicity"))
+                    {
+                        if (reflectedPropertyType.Name.EndsWith("[]"))
+                        {
+                            if (property.IsRoleOne)
+                            {
+                                this.HasErrors = true;
+                                Logger.Error($"{reflectedType.Name}.{property.RoleName} should be many");
+                            }
+                        }
+                        else
+                        {
+                            if (property.IsRoleMany)
+                            {
+                                this.HasErrors = true;
+                                Logger.Error($"{reflectedType.Name}.{property.RoleName} should be one");
+                            }
+                        }
+                    }
                 }
 
                 foreach (var method in composite.Methods)
