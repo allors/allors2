@@ -59,7 +59,9 @@ namespace Allors.Workspace.Meta
         {
             Instance = new MetaPopulation();
             var metaBuilder = new MetaBuilder(Instance);
-            metaBuilder.Build();
+            metaBuilder.BuildDomains();
+            metaBuilder.BuildObjectTypes();
+            metaBuilder.BuildOperandTypes();
         }
 
         private MetaPopulation()

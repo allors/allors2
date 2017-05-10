@@ -94,13 +94,17 @@ namespace Allors.Workspace.Meta
 			this.metaPopulation = metaPopulation;
 		}
 
-		internal void Build()
+		internal void BuildDomains()
 		{
 			// Domains
 $meta.SortedDomains:{assembly|             Meta$assembly.Name$.Instance = new Meta$assembly.Name$(this.metaPopulation);}; separator="\n"$
 
 			// Domain Inheritance
 $meta.SortedDomains:{assembly|$domain_inheritance(assembly)$}; separator="\n"$
+		}
+
+		internal void BuildObjectTypes()
+		{
 
 			// Units
 $meta.Units:{unit|             Meta$unit.SingularName$.Instance = new Meta$unit.SingularName$(this.metaPopulation);}; separator="\n"$
@@ -113,7 +117,10 @@ $meta.WorkspaceClasses:{class|             Meta$class.SingularName$.Instance = n
 
 			// Inheritance
 $meta.WorkspaceComposites:{composite|$inheritance(composite)$}; separator="\n"$
+		}
 
+		internal void BuildOperandTypes()
+		{
 			// Exclusive Roles
 $meta.WorkspaceComposites:{composite|$relations(composite)$}; separator="\n"$
 

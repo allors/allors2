@@ -88,14 +88,17 @@ namespace Allors.Meta
 			this.metaPopulation = metaPopulation;
 		}
 
-		internal void Build()
+		internal void BuildDomains()
 		{
 			// Domains
 $repository.Assemblies:{assembly|             Meta$assembly.Name$.Instance = new Meta$assembly.Name$(this.metaPopulation);}; separator="\n"$
 
 			// Domain Inheritance
 $repository.Assemblies:{assembly|$domain_inheritance(assembly)$}; separator="\n"$
+		}
 
+		internal void BuildObjectTypes()
+		{
 			// Units
 $repository.Units:{unit|             Meta$unit.SingularName$.Instance = new Meta$unit.SingularName$(this.metaPopulation);}; separator="\n"$
 
@@ -107,7 +110,10 @@ $repository.Classes:{class|             Meta$class.SingularName$.Instance = new 
 
 			// Inheritance
 $repository.Composites:{composite|$inheritance(composite)$}; separator="\n"$
+		}
 
+		internal void BuildOperandTypes()
+		{
 			// Roles
 $repository.Composites:{composite|$relations(composite)$}; separator="\n"$
 
