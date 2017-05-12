@@ -22,9 +22,9 @@ namespace Allors.Repository
         [Id("5A052D80-CD0D-4C95-9281-4DD59A3BE26B")]
         [AssociationId("AF4D8425-2521-460F-B4D2-F3DE128CBF58")]
         [RoleId("7458412B-92C3-46A0-9887-4F144455F822")]
-        [Multiplicity(Multiplicity.OneToMany)]
         #endregion
-        public Catalogue Catalogues { get; set; }
+        [Multiplicity(Multiplicity.OneToMany)]
+        public Catalogue[] Catalogues { get; set; }
 
         #region Allors
         [Id("0a0ad3b1-afa2-4c78-8414-e657fabebb3e")]

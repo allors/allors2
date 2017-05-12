@@ -5,7 +5,7 @@
   "license": "LGPL3",
   "main": "lib/index.js",
   "scripts": {
-    "postinstall": "sync-files ../Meta/src/meta src/meta",
+    "sync": "sync-files ../Meta/src/meta src/meta",
     "prestest": "tsc -w",
     "test": "mocha -w",
     "cover": "istanbul cover ./node_modules/mocha/bin/_mocha"

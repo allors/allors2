@@ -80,7 +80,7 @@ namespace Allors.Repository
         #endregion
         [Multiplicity(Multiplicity.OneToMany)]
         [Indexed]
-        public ProductCategory ProductCategories { get; set; }
+        public ProductCategory[] ProductCategories { get; set; }
 
         #region inherited methods
 

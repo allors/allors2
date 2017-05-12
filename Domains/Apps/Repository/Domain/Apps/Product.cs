@@ -7,7 +7,7 @@ namespace Allors.Repository
     #region Allors
     [Id("56b79619-d04a-4924-96e8-e3e7be9faa09")]
     #endregion
-	public partial interface Product : UniquelyIdentifiable, AccessControlledObject 
+    public partial interface Product : UniquelyIdentifiable, AccessControlledObject 
     {
         #region Allors
         [Id("91D1A28D-AE04-4445-B4AC-2053559DCFB7")]
@@ -16,7 +16,7 @@ namespace Allors.Repository
         #endregion
         [Multiplicity(Multiplicity.ManyToMany)]
         [Indexed]
-        ProductCharacteristicValue ProductCharacteristicValue { get; set; }
+        ProductCharacteristicValue[] ProductCharacteristicValues { get; set; }
 
         #region Allors
         [Id("039a9481-940b-4953-a1b5-6c56f35a238b")]
@@ -26,16 +26,14 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
         ProductCategory PrimaryProductCategory { get; set; }
-
-
+        
         #region Allors
         [Id("05a2e95a-e5f1-45bc-a8ca-4ebfad3290b5")]
         [AssociationId("1674a9e0-00de-45fa-bde4-63a716a31557")]
         [RoleId("594503f3-c081-46b3-9695-92b921c15a6b")]
         #endregion
         DateTime SupportDiscontinuationDate { get; set; }
-
-
+        
         #region Allors
         [Id("0b283eb9-2972-47ae-80d8-1a7aa8f77673")]
         [AssociationId("aa3ccdc9-7286-4a82-912a-dd2e53c7410b")]

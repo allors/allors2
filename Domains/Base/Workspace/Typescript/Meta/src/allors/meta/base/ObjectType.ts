@@ -1,5 +1,5 @@
-import { RoleType } from "./RoleType";
-import { MethodType } from "./MethodType";
+import { RoleType } from './RoleType';
+import { MethodType } from './MethodType';
 
 export enum Kind {
     unit,
