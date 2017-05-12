@@ -1,5 +1,5 @@
-﻿import { SyncResponse } from "../src/domain/base/data/responses/SyncResponse";
-import { ResponseType } from "../src/domain/base/data/responses/ResponseType";
+﻿import { SyncResponse } from "../src/allors/domain/base/data/responses/SyncResponse";
+import { ResponseType } from "../src/allors/domain/base/data/responses/ResponseType";
 
 export let syncResponse: SyncResponse = {
     responseType: ResponseType.Sync,

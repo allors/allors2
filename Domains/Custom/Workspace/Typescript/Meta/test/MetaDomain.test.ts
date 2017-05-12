@@ -1,6 +1,6 @@
 import * as chai from "chai";
-import * as meta from "../src/meta";
-import * as data from "../src/meta/base/Data";
+import * as meta from "../src/allors/meta";
+import * as data from "../src/allors/meta/base/Data";
 
 const expect = chai.expect;
 

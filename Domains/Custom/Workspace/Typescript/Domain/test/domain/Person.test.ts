@@ -1,4 +1,4 @@
-import { workspace, Session, Person } from "../../src/domain";
+import { workspace, Session, Person } from "../../src/allors/domain";
 
 import * as chai from "chai";
 

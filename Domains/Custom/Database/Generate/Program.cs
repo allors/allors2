@@ -28,11 +28,11 @@ namespace Allors
                                 { "../Base/Workspace/CSharp/Templates/meta.cs.stg", "Workspace/CSharp/Meta/Generated" },
                                 { "../Base/Workspace/CSharp/Templates/domain.cs.stg", "Workspace/CSharp/Domain/Generated" },
                                 { "../Base/Workspace/CSharp/Templates/uml.cs.stg", "Workspace/CSharp/Diagrams" },
-                                { "../Base/Workspace/Typescript/Templates/meta.ts.stg", "Workspace/Typescript/Meta/src/meta/generated" },
-                                { "../Base/Workspace/Typescript/Templates/meta.ts.stg", "Workspace/Typescript/Domain/src/meta/generated" },
-                                { "../Base/Workspace/Typescript/Templates/domain.ts.stg", "Workspace/Typescript/Domain/src/domain/generated" },
-                                { "../Base/Workspace/Typescript/Templates/meta.ts.stg", "Workspace/Typescript/Angular/src/meta/generated" },
-                                { "../Base/Workspace/Typescript/Templates/domain.ts.stg", "Workspace/Typescript/Angular/src/domain/generated" },
+                                { "../Base/Workspace/Typescript/Templates/meta.ts.stg", "Workspace/Typescript/Meta/src/allors/meta/generated" },
+                                { "../Base/Workspace/Typescript/Templates/meta.ts.stg", "Workspace/Typescript/Domain/src/allors/meta/generated" },
+                                { "../Base/Workspace/Typescript/Templates/domain.ts.stg", "Workspace/Typescript/Domain/src/allors/domain/generated" },
+                                { "../Base/Workspace/Typescript/Templates/meta.ts.stg", "Workspace/Typescript/Angular/src/allors/meta/generated" },
+                                { "../Base/Workspace/Typescript/Templates/domain.ts.stg", "Workspace/Typescript/Angular/src/allors/domain/generated" },
                              };
 
             for (var i = 0; i < config.GetLength(0); i++)

@@ -1,10 +1,10 @@
 import { Observable } from 'rxjs/Rx';
 import { Component, OnInit } from '@angular/core';
-import { Scope } from '../../angular/base/Scope';
+import { Scope } from '../../allors/angular/base/Scope';
 
 import { AllorsService } from '../allors.service';
 
-import { UnitSample } from '../../domain';
+import { UnitSample } from '../../allors/domain';
 
 @Component({
   selector: 'app-about',

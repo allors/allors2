@@ -5,7 +5,7 @@
   "license": "LGPL3",
   "main": "lib/index.js",
   "scripts": {
-    "postinstall": "sync-files ../Meta/src/meta src/meta && sync-files ../../../../Base/Workspace/Typescript/Domain/src/domain/base src/domain/base",
+    "sync": "sync-files ../Meta/src/allors/meta src/allors/meta && sync-files ../../../../Base/Workspace/Typescript/Domain/src/allors/domain/base src/allors/domain/base",
     "test": "mocha",
     "cover": "istanbul cover ./node_modules/mocha/bin/_mocha"
   },

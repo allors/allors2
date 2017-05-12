@@ -1,11 +1,11 @@
-import { Session, Person, Organisation } from "../src/domain";
-import { Workspace } from "../src/domain/base/Workspace";
-import { PushResponse } from "../src/domain/base/data/responses/PushResponse";
-import { ResponseType } from "../src/domain/base/data/responses/ResponseType";
+import { Session, Person, Organisation } from "../src/allors/domain";
+import { Workspace } from "../src/allors/domain/base/Workspace";
+import { PushResponse } from "../src/allors/domain/base/data/responses/PushResponse";
+import { ResponseType } from "../src/allors/domain/base/data/responses/ResponseType";
 import { syncResponse } from "./fixture";
 
-import { Population as MetaPopulation } from "../src/meta";
-import { constructorByName } from "../src/domain/generated/domain.g";
+import { Population as MetaPopulation } from "../src/allors/meta";
+import { constructorByName } from "../src/allors/domain/generated/domain.g";
 
 import * as chai from "chai";
 

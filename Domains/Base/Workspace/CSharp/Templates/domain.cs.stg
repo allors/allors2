@@ -140,7 +140,7 @@ $class.XmlDocComment$
         }
 
 
-$class.WorkspaceConcreteRoleTypes:{concreteRoleType|$classConcreteRoleType_Class()$}$
+$class.workspaceConcreteRoleTypes:{concreteRoleType|$classConcreteRoleType_Class()$}$
 
 $class.workspaceMethodTypes:{methodType|$classMethodType()$}; separator="\n"$
 	}

@@ -414,10 +414,11 @@ namespace Allors.Meta
             get
             {
                 this.MetaPopulation.Derive();
-                return this.Supertypes.Where(m => m.Workspace)
+                return this
+                    .Supertypes.Where(m => m.Workspace)
                     .Union(this.RoleTypes.Where(m => m.Workspace && m.ObjectType.IsComposite).Select(v => (Composite)v.ObjectType))
-                    .Union(this.AssociationTypes.Where(m => m.Workspace).Select(v => v.ObjectType))
-                    .ToArray();
+                    .Union(this.AssociationTypes.Where(m => m.Workspace).Select(v => v.ObjectType)).Distinct()
+                    .Except(new[] { this }).ToArray();
             }
         }
         

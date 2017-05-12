@@ -1,5 +1,7 @@
 ﻿namespace Allors
 {
+    using System;
+
     using Allors.Development.Repository.Tasks;
 
     class Program
@@ -26,13 +28,14 @@
                                 { "Workspace/Csharp/Templates/uml.cs.stg", "Workspace/CSharp/Diagrams" },
                                 { "Workspace/Csharp/Templates/meta.cs.stg", "Workspace/CSharp/Meta/Generated" },
                                 { "Workspace/Csharp/Templates/domain.cs.stg", "Workspace/CSharp/Domain/Generated" },
-                                { "Workspace/Typescript/Templates/meta.ts.stg", "Workspace/Typescript/Meta/src/meta/Generated" },
-                                { "Workspace/Typescript/Templates/domain.ts.stg", "Workspace/Typescript/Meta/src/domain/Generated" },
+                                { "Workspace/Typescript/Templates/meta.ts.stg", "Workspace/Typescript/Meta/src/allors/meta/Generated" },
+                                { "Workspace/Typescript/Templates/domain.ts.stg", "Workspace/Typescript/Meta/src/allors/domain/Generated" },
                              };
 
             foreach (var entry in config)
             {
-                
+                Console.WriteLine("-> " + entry.Value);
+
                 var log = Generate.Execute(entry.Key, entry.Value);
                 if (log.ErrorOccured)
                 {

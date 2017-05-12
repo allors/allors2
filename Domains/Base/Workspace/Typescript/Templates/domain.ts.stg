@@ -76,7 +76,7 @@ class(meta, objectType) ::= <<
 import { SessionObject } from '../base/SessionObject';
 import { Method } from '../base/Method';
 
-$objectType.WorkspaceRelatedComposites:{directSupertype|import { $directSupertype.SingularName$ \} from './$directSupertype.SingularName$.g';}; separator="\n"$
+$objectType.WorkspaceRelatedComposites:{composite|import { $composite.SingularName$ \} from './$composite.SingularName$.g';}; separator="\n"$
 
 export class $objectType.name$ extends SessionObject $if(objectType.WorkspaceDirectSupertypes)$implements $objectType.WorkspaceDirectSupertypes:{directSupertype|$directSupertype.SingularName$}; separator=", "$$endif$ {
 $objectType.workspaceRoleTypes:{roleType|$classRoleType()$}; separator="\n"$
