@@ -24,7 +24,7 @@ namespace Allors.Domain
 {
     public static class AuditableExtension
     {
-        public static void DipuOnDerive(this Auditable @this, ObjectOnDerive method)
+        public static void AppsOnDerive(this Auditable @this, ObjectOnDerive method)
         {
             var derivation = method.Derivation;
             var user = new Users(@this.Strategy.Session).GetCurrentAuthenticatedUser();
