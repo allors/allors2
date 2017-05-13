@@ -55,7 +55,7 @@ namespace Allors.Domain
 
         public User GetCurrentAuthenticatedUser()
         {
-            var userId = ClaimsPrincipal.Current.Identity.Name;
+            var userId = ClaimsPrincipal.Current?.Identity?.Name;
 
             if (string.IsNullOrWhiteSpace(userId))
             {

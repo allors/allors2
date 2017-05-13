@@ -32,15 +32,15 @@ namespace Allors.Domain
             if (user != null)
             {
                 var changeSet = derivation.ChangeSet;
-                if (changeSet.Created.Contains(@this.Id))
-                {
-                    @this.CreationDate = DateTime.UtcNow;
+            if (changeSet.Created.Contains(@this.Id))
+            {
+                @this.CreationDate = DateTime.UtcNow;
                     @this.CreatedBy = user;
                 }
 
-                if (changeSet.Associations.Contains(@this.Id))
-                {
-                    @this.LastModifiedDate = DateTime.UtcNow;
+            if (changeSet.Associations.Contains(@this.Id))
+            {
+                @this.LastModifiedDate = DateTime.UtcNow;
                     @this.LastModifiedBy = user;
                 }
             }
