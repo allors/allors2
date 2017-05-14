@@ -181,7 +181,7 @@ namespace Allors.Repository
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
-        public Media Photo { get; set; }
+        public Image Photo { get; set; }
 
 
         #region inherited methods

@@ -41,17 +41,12 @@ namespace Allors.Domain
                 {
                     if (!good.ExistPhoto)
                     {
-                        good.Photo = new MediaBuilder(this.Session).Build();
-                    }
-
-                    try
-                    {
-                        good.Photo.MediaContent.Data = File.ReadAllBytes(fileInfo.FullName);
-                    }
-                    catch (Exception e)
-                    {
-                        Console.Write(fileInfo.FullName + @" " + e.Message);
-                        good.Photo.Delete();
+                        var fileName = Path.GetFileNameWithoutExtension(fileInfo.FullName).ToLowerInvariant();
+                        var content = File.ReadAllBytes(fileInfo.FullName);
+                        var image = new ImageBuilder(this.Session).WithOriginalFilename(fileName).Build();
+                        var mediaContent = new MediaContentBuilder(this.Session).WithType("").WithData(content).Build();
+                        image.Original = new MediaBuilder(this.Session).WithMediaContent(mediaContent).Build();
+                        good.Photo = image;
                     }
                 }
             }
