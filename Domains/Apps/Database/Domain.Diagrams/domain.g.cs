@@ -914,7 +914,7 @@ namespace Allors.Domain
 		}
 		public interface Product  : UniquelyIdentifiable, AccessControlledObject 
 		{
-						ProductCharacteristicValue ProductCharacteristicValue {set;}
+						ProductCharacteristicValue ProductCharacteristicValues {set;}
 
 						ProductCategory PrimaryProductCategory {set;}
 
@@ -2835,7 +2835,7 @@ namespace Allors.Domain
 
 						UserGroup ContactsUserGroup {set;}
 
-						Image LogoImage {set;}
+						Media LogoImage {set;}
 
 						global::System.String TaxNumber {set;}
 

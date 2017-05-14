@@ -30,8 +30,8 @@ namespace Allors
 
     public class DomainTest : IDisposable
     {
-        protected ObjectFactory ObjectFactory => new ObjectFactory(MetaPopulation.Instance, typeof(Singleton).GetTypeInfo().Assembly, typeof(Singleton).Namespace);
-        
+        protected ObjectFactory ObjectFactory => new ObjectFactory(MetaPopulation.Instance, typeof(User));
+
         private ISession databaseSession;
 
         public DomainTest() : this(true)
