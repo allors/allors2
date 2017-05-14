@@ -268,7 +268,7 @@ namespace Allors.Repository
         #endregion
         [Multiplicity(Multiplicity.OneToOne)]
         [Indexed]
-        public Media Picture { get; set; }
+        public Image Picture { get; set; }
         
         #region Allors
         [Id("fefb8dc2-cfe5-4078-b3a9-8c4622047c34")]

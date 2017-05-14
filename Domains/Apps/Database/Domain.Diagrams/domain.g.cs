@@ -1340,7 +1340,7 @@ namespace Allors.Domain
 
 						MaritalStatus MaritalStatus {set;}
 
-						Media Picture {set;}
+						Image Picture {set;}
 
 						global::System.String SocialSecurityNumber {set;}
 
@@ -2384,7 +2384,7 @@ namespace Allors.Domain
 
 						global::System.Decimal? MaximumAllowedPaymentDifference {set;}
 
-						Media LogoImage {set;}
+						Image LogoImage {set;}
 
 						CostCenterSplitMethod CostCenterSplitMethod {set;}
 
@@ -2835,7 +2835,7 @@ namespace Allors.Domain
 
 						UserGroup ContactsUserGroup {set;}
 
-						Media LogoImage {set;}
+						Image LogoImage {set;}
 
 						global::System.String TaxNumber {set;}
 
