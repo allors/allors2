@@ -35,20 +35,8 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\..\..\Base\Repository\Domain\Base\AccessControl.cs">
-      <Link>Base\AccessControl.cs</Link>
-    </Compile>
-    <Compile Include="..\..\..\Base\Repository\Domain\Base\AccessControlledObject.cs">
-      <Link>Base\AccessControlledObject.cs</Link>
-    </Compile>
     <Compile Include="..\..\..\Base\Repository\Domain\Base\AssemblyInfo.cs">
       <Link>Base\AssemblyInfo.cs</Link>
-    </Compile>
-    <Compile Include="..\..\..\Base\Repository\Domain\Base\AsyncDerivable.cs">
-      <Link>Base\AsyncDerivable.cs</Link>
-    </Compile>
-    <Compile Include="..\..\..\Base\Repository\Domain\Base\AsyncDerivation.cs">
-      <Link>Base\AsyncDerivation.cs</Link>
     </Compile>
     <Compile Include="..\..\..\Base\Repository\Domain\Base\Attributes\RequiredAttribute.cs">
       <Link>Base\Attributes\RequiredAttribute.cs</Link>
@@ -56,77 +44,83 @@
     <Compile Include="..\..\..\Base\Repository\Domain\Base\Attributes\UniqueAttribute.cs">
       <Link>Base\Attributes\UniqueAttribute.cs</Link>
     </Compile>
-    <Compile Include="..\..\..\Base\Repository\Domain\Base\Counter.cs">
-      <Link>Base\Counter.cs</Link>
+    <Compile Include="..\..\..\Base\Repository\Domain\Base\Common\Counter.cs">
+      <Link>Base\Common\Counter.cs</Link>
     </Compile>
-    <Compile Include="..\..\..\Base\Repository\Domain\Base\Country.cs">
-      <Link>Base\Country.cs</Link>
+    <Compile Include="..\..\..\Base\Repository\Domain\Base\Common\Deletable.cs">
+      <Link>Base\Common\Deletable.cs</Link>
     </Compile>
-    <Compile Include="..\..\..\Base\Repository\Domain\Base\Currency.cs">
-      <Link>Base\Currency.cs</Link>
+    <Compile Include="..\..\..\Base\Repository\Domain\Base\Common\Enumeration.cs">
+      <Link>Base\Common\Enumeration.cs</Link>
     </Compile>
-    <Compile Include="..\..\..\Base\Repository\Domain\Base\Deletable.cs">
-      <Link>Base\Deletable.cs</Link>
+    <Compile Include="..\..\..\Base\Repository\Domain\Base\Common\Object.cs">
+      <Link>Base\Common\Object.cs</Link>
     </Compile>
-    <Compile Include="..\..\..\Base\Repository\Domain\Base\Enumeration.cs">
-      <Link>Base\Enumeration.cs</Link>
+    <Compile Include="..\..\..\Base\Repository\Domain\Base\Common\ObjectState.cs">
+      <Link>Base\Common\ObjectState.cs</Link>
     </Compile>
-    <Compile Include="..\..\..\Base\Repository\Domain\Base\Language.cs">
-      <Link>Base\Language.cs</Link>
+    <Compile Include="..\..\..\Base\Repository\Domain\Base\Common\Singleton.cs">
+      <Link>Base\Common\Singleton.cs</Link>
     </Compile>
-    <Compile Include="..\..\..\Base\Repository\Domain\Base\Locale.cs">
-      <Link>Base\Locale.cs</Link>
+    <Compile Include="..\..\..\Base\Repository\Domain\Base\Common\Transitional.cs">
+      <Link>Base\Common\Transitional.cs</Link>
     </Compile>
-    <Compile Include="..\..\..\Base\Repository\Domain\Base\Localised.cs">
-      <Link>Base\Localised.cs</Link>
+    <Compile Include="..\..\..\Base\Repository\Domain\Base\Common\UniquelyIdentifiable.cs">
+      <Link>Base\Common\UniquelyIdentifiable.cs</Link>
     </Compile>
-    <Compile Include="..\..\..\Base\Repository\Domain\Base\LocalisedText.cs">
-      <Link>Base\LocalisedText.cs</Link>
+    <Compile Include="..\..\..\Base\Repository\Domain\Base\Content\Media.cs">
+      <Link>Base\Content\Media.cs</Link>
     </Compile>
-    <Compile Include="..\..\..\Base\Repository\Domain\Base\Login.cs">
-      <Link>Base\Login.cs</Link>
+    <Compile Include="..\..\..\Base\Repository\Domain\Base\Content\MediaContent.cs">
+      <Link>Base\Content\MediaContent.cs</Link>
     </Compile>
-    <Compile Include="..\..\..\Base\Repository\Domain\Base\Media.cs">
-      <Link>Base\Media.cs</Link>
+    <Compile Include="..\..\..\Base\Repository\Domain\Base\Localisation\Country.cs">
+      <Link>Base\Localisation\Country.cs</Link>
     </Compile>
-    <Compile Include="..\..\..\Base\Repository\Domain\Base\MediaContent.cs">
-      <Link>Base\MediaContent.cs</Link>
+    <Compile Include="..\..\..\Base\Repository\Domain\Base\Localisation\Currency.cs">
+      <Link>Base\Localisation\Currency.cs</Link>
     </Compile>
-    <Compile Include="..\..\..\Base\Repository\Domain\Base\Object.cs">
-      <Link>Base\Object.cs</Link>
+    <Compile Include="..\..\..\Base\Repository\Domain\Base\Localisation\Language.cs">
+      <Link>Base\Localisation\Language.cs</Link>
     </Compile>
-    <Compile Include="..\..\..\Base\Repository\Domain\Base\ObjectState.cs">
-      <Link>Base\ObjectState.cs</Link>
+    <Compile Include="..\..\..\Base\Repository\Domain\Base\Localisation\Locale.cs">
+      <Link>Base\Localisation\Locale.cs</Link>
     </Compile>
-    <Compile Include="..\..\..\Base\Repository\Domain\Base\Permission.cs">
-      <Link>Base\Permission.cs</Link>
+    <Compile Include="..\..\..\Base\Repository\Domain\Base\Localisation\Localised.cs">
+      <Link>Base\Localisation\Localised.cs</Link>
     </Compile>
-    <Compile Include="..\..\..\Base\Repository\Domain\Base\Person.cs">
-      <Link>Base\Person.cs</Link>
+    <Compile Include="..\..\..\Base\Repository\Domain\Base\Localisation\LocalisedText.cs">
+      <Link>Base\Localisation\LocalisedText.cs</Link>
     </Compile>
-    <Compile Include="..\..\..\Base\Repository\Domain\Base\Role.cs">
-      <Link>Base\Role.cs</Link>
+    <Compile Include="..\..\..\Base\Repository\Domain\Base\Relation\Person.cs">
+      <Link>Base\Relation\Person.cs</Link>
     </Compile>
-    <Compile Include="..\..\..\Base\Repository\Domain\Base\SecurityToken.cs">
-      <Link>Base\SecurityToken.cs</Link>
+    <Compile Include="..\..\..\Base\Repository\Domain\Base\Security\AccessControl.cs">
+      <Link>Base\Security\AccessControl.cs</Link>
     </Compile>
-    <Compile Include="..\..\..\Base\Repository\Domain\Base\SecurityTokenOwner.cs">
-      <Link>Base\SecurityTokenOwner.cs</Link>
+    <Compile Include="..\..\..\Base\Repository\Domain\Base\Security\AccessControlledObject.cs">
+      <Link>Base\Security\AccessControlledObject.cs</Link>
     </Compile>
-    <Compile Include="..\..\..\Base\Repository\Domain\Base\Singleton.cs">
-      <Link>Base\Singleton.cs</Link>
+    <Compile Include="..\..\..\Base\Repository\Domain\Base\Security\Login.cs">
+      <Link>Base\Security\Login.cs</Link>
     </Compile>
-    <Compile Include="..\..\..\Base\Repository\Domain\Base\Transitional.cs">
-      <Link>Base\Transitional.cs</Link>
+    <Compile Include="..\..\..\Base\Repository\Domain\Base\Security\Permission.cs">
+      <Link>Base\Security\Permission.cs</Link>
     </Compile>
-    <Compile Include="..\..\..\Base\Repository\Domain\Base\UniquelyIdentifiable.cs">
-      <Link>Base\UniquelyIdentifiable.cs</Link>
+    <Compile Include="..\..\..\Base\Repository\Domain\Base\Security\Role.cs">
+      <Link>Base\Security\Role.cs</Link>
     </Compile>
-    <Compile Include="..\..\..\Base\Repository\Domain\Base\User.cs">
-      <Link>Base\User.cs</Link>
+    <Compile Include="..\..\..\Base\Repository\Domain\Base\Security\SecurityToken.cs">
+      <Link>Base\Security\SecurityToken.cs</Link>
     </Compile>
-    <Compile Include="..\..\..\Base\Repository\Domain\Base\UserGroup.cs">
-      <Link>Base\UserGroup.cs</Link>
+    <Compile Include="..\..\..\Base\Repository\Domain\Base\Security\SecurityTokenOwner.cs">
+      <Link>Base\Security\SecurityTokenOwner.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\Base\Repository\Domain\Base\Security\User.cs">
+      <Link>Base\Security\User.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\Base\Repository\Domain\Base\Security\UserGroup.cs">
+      <Link>Base\Security\UserGroup.cs</Link>
     </Compile>
     <Compile Include="..\..\..\Core\Repository\Domain\Core\AssemblyInfo.cs">
       <Link>Core\AssemblyInfo.cs</Link>
