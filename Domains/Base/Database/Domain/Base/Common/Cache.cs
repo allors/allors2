@@ -20,10 +20,11 @@
 
 namespace Allors.Domain
 {
-    using Allors;
-    using Allors.Meta;
     using System;
     using System.Collections.Concurrent;
+
+    using Allors;
+    using Allors.Meta;
 
     public class Cache<TKey, TObject>
         where TObject : class, IObject

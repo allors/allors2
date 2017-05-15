@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------------------------------------------
-// <copyright file="AccessControl.cs" company="Allors bvba">
+// <copyright file="DateTimeFactory.cs" company="Allors bvba">
 //   Copyright 2002-2016 Allors bvba.
 //
 // Dual Licensed under

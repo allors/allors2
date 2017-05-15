@@ -64,35 +64,33 @@
     </Compile>
     <Compile Include="Base\Attributes\RequiredAttribute.cs" />
     <Compile Include="Base\Attributes\UniqueAttribute.cs" />
-    <Compile Include="Base\Object.cs" />
-    <Compile Include="Base\AccessControl.cs" />
-    <Compile Include="Base\AccessControlledObject.cs" />
+    <Compile Include="Base\Common\Object.cs" />
+    <Compile Include="Base\Security\AccessControl.cs" />
+    <Compile Include="Base\Security\AccessControlledObject.cs" />
     <Compile Include="Base\AssemblyInfo.cs" />
-    <Compile Include="Base\AsyncDerivable.cs" />
-    <Compile Include="Base\AsyncDerivation.cs" />
-    <Compile Include="Base\Counter.cs" />
-    <Compile Include="Base\Country.cs" />
-    <Compile Include="Base\Currency.cs" />
-    <Compile Include="Base\Deletable.cs" />
-    <Compile Include="Base\Enumeration.cs" />
-    <Compile Include="Base\Language.cs" />
-    <Compile Include="Base\Locale.cs" />
-    <Compile Include="Base\Localised.cs" />
-    <Compile Include="Base\LocalisedText.cs" />
-    <Compile Include="Base\Login.cs" />
-    <Compile Include="Base\Media.cs" />
-    <Compile Include="Base\MediaContent.cs" />
-    <Compile Include="Base\ObjectState.cs" />
-    <Compile Include="Base\Permission.cs" />
-    <Compile Include="Base\Person.cs" />
-    <Compile Include="Base\Role.cs" />
-    <Compile Include="Base\SecurityToken.cs" />
-    <Compile Include="Base\SecurityTokenOwner.cs" />
-    <Compile Include="Base\Singleton.cs" />
-    <Compile Include="Base\Transitional.cs" />
-    <Compile Include="Base\UniquelyIdentifiable.cs" />
-    <Compile Include="Base\User.cs" />
-    <Compile Include="Base\UserGroup.cs" />
+    <Compile Include="Base\Common\Counter.cs" />
+    <Compile Include="Base\Localisation\Country.cs" />
+    <Compile Include="Base\Localisation\Currency.cs" />
+    <Compile Include="Base\Common\Deletable.cs" />
+    <Compile Include="Base\Common\Enumeration.cs" />
+    <Compile Include="Base\Localisation\Language.cs" />
+    <Compile Include="Base\Localisation\Locale.cs" />
+    <Compile Include="Base\Localisation\Localised.cs" />
+    <Compile Include="Base\Localisation\LocalisedText.cs" />
+    <Compile Include="Base\Security\Login.cs" />
+    <Compile Include="Base\Content\Media.cs" />
+    <Compile Include="Base\Content\MediaContent.cs" />
+    <Compile Include="Base\Common\ObjectState.cs" />
+    <Compile Include="Base\Security\Permission.cs" />
+    <Compile Include="Base\Relation\Person.cs" />
+    <Compile Include="Base\Security\Role.cs" />
+    <Compile Include="Base\Security\SecurityToken.cs" />
+    <Compile Include="Base\Security\SecurityTokenOwner.cs" />
+    <Compile Include="Base\Common\Singleton.cs" />
+    <Compile Include="Base\Common\Transitional.cs" />
+    <Compile Include="Base\Common\UniquelyIdentifiable.cs" />
+    <Compile Include="Base\Security\User.cs" />
+    <Compile Include="Base\Security\UserGroup.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -104,6 +102,7 @@
       <Name>Attributes</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

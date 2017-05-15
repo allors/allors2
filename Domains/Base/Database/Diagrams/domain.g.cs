@@ -10,9 +10,6 @@ namespace Allors.Domain
 						SecurityToken SecurityTokens {set;}
 
 		}
-		public interface AsyncDerivable  : Object 
-		{
-		}
 		public interface Deletable  : Object 
 		{
 		}
@@ -78,11 +75,6 @@ namespace Allors.Domain
 						Permission EffectivePermissions {set;}
 
 						User EffectiveUsers {set;}
-
-		}
-		public interface AsyncDerivation  : Deletable 
-		{
-						AsyncDerivable AsyncDerivable {set;}
 
 		}
 		public interface Counter  : UniquelyIdentifiable 

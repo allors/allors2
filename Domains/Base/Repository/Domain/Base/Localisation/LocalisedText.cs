@@ -20,9 +20,9 @@ namespace Allors.Repository
         [Id("50dc85f0-3d22-4bc1-95d9-153674b89f7a")]
         [AssociationId("accd061b-20b9-4a24-bb2c-c2f7276f43ab")]
         [RoleId("8d3f68e1-fa6e-414f-aa4d-25fcc2c975d6")]
+        #endregion
         [Required]
         [Size(-1)]
-        #endregion
         public string Text { get; set; }
 
         #region inherited methods

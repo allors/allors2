@@ -21,8 +21,8 @@ namespace Allors.Repository
         [AssociationId("3442728c-164a-477c-87be-19a789229585")]
         [RoleId("3fd81194-2f6f-43e7-9c6b-91f5e3e118ac")]
         [Indexed]
-        [Required]
         #endregion
+        [Required]
         public Guid OperandTypePointer { get; set; }
 
         #region Allors
@@ -30,8 +30,8 @@ namespace Allors.Repository
         [AssociationId("8ffed1eb-b64e-4341-bbb6-348ed7f06e83")]
         [RoleId("cadaca05-55ba-4a13-8758-786ff29c8e46")]
         [Indexed]
-        [Required]
         #endregion
+        [Required]
         public Guid ConcreteClassPointer { get; set; }
         
         #region Allors
@@ -39,8 +39,8 @@ namespace Allors.Repository
         [AssociationId("891734d6-4855-4b33-8b3b-f46fd6103149")]
         [RoleId("d29ce0ed-fba8-409d-8675-dc95e1566cfb")]
         [Indexed]
-        [Required]
         #endregion
+        [Required]
         public int OperationEnum { get; set; }
 
         #region inherited methods
