@@ -24,7 +24,7 @@ namespace Allors.Server
     using Allors.Adapters.Object.SqlClient;
     using Allors.Domain;
     using Allors.Meta;
-    using Allors.Services.Production;
+    using Allors.Services.Base;
 
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
@@ -60,7 +60,7 @@ namespace Allors.Server
             var database = new Database(configuration);
 
             var timeService = new TimeService();
-            var mailService = new MailService();
+            var mailService = new MailService { DefaultSender = "noreply@example.com" };
             var serviceLocator = new ServiceLocator
                                      {
                                          TimeServiceFactory = () => timeService,

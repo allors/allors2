@@ -1,97 +1,73 @@
-﻿namespace Allors
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="Program.cs" company="Allors bvba">
+//   Copyright 2002-2017 Allors bvba.
+// 
+// Dual Licensed under
+//   a) the General Public Licence v3 (GPL)
+//   b) the Allors License
+// 
+// The GPL License is included in the file gpl.txt.
+// The Allors License is an addendum to your contract.
+// 
+// Allors Applications is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+// 
+// For more information visit http://www.allors.com/legal
+// </copyright>
+// --------------------------------------------------------------------------------------------------------------------
+
+namespace Allors
 {
     using System;
+    using System.CommandLine;
 
     public class Program
     {
         public static int Main(string[] args)
         {
-            var interactive = args.Length == 0;
-
-            if (interactive)
-            {
-                Console.WriteLine("Please select an option:\n");
-                foreach (var option in Enum.GetValues(typeof(Options)))
-                {
-                    Console.WriteLine((int)option + ". " + Enum.GetName(typeof(Options), option));
-                }
-
-                Console.WriteLine();
-            }
-
             try
             {
-                var choice = interactive ? Console.ReadLine() : args[0];
-                Options option;
-                if (Enum.TryParse(choice, out option))
+                Commands? command = null;
+                var file = "population.xml";
+
+                ArgumentSyntax.Parse(
+                    args,
+                    syntax =>
+                        {
+                            syntax.DefineCommand("populate", ref command, Commands.Populate, "Populate the database");
+
+                            syntax.DefineCommand("save", ref command, Commands.Save, "Load the database");
+                            syntax.DefineOption("f|file", ref file, "The source xml file.");
+
+                            syntax.DefineCommand("load", ref command, Commands.Load, "Save the database");
+                            syntax.DefineOption("f|file", ref file, "The destination xml file.");
+                        });
+
+
+                switch (command)
                 {
-                    if (interactive)
-                    {
-                        Console.WriteLine("-> " + (int)option + ". " + Enum.GetName(typeof(Options), option));
-                        Console.WriteLine();
-                    }
+                    case Commands.Populate:
+                        new Populate().Execute();
+                        break;
 
-                    Command command;
+                    case Commands.Save:
+                        new Save(file).Execute();
+                        break;
 
-                    switch (option)
-                    {
-                        case Options.Save:
-                            command = new Commands.Save();
-                            break;
-
-                        case Options.Load:
-                            command = new Commands.Load();
-                            break;
-
-                        case Options.Upgrade:
-                            command = new Commands.Upgrade();
-                            break;
-                            
-                        case Options.Populate:
-                            command = new Commands.Populate();
-                            break;
-
-                        case Options.Demo:
-                            command = new Commands.Demo();
-                            break;
-
-                        case Options.Report:
-                            command = new Commands.Report();
-                            break;
-
-                        case Options.Investigate:
-                            command = new Commands.Investigate();
-                            break;
-
-                        case Options.Exit:
-                            return 0;
-
-                        default:
-                            throw new ArgumentException("Non supported option");
-                    }
-
-                    command.Execute();
+                    case Commands.Load:
+                        new Load(file).Execute();
+                        break;
                 }
-                else
-                {
-                    throw new ArgumentException("Unknown option");
-                }
+
+                return 0;
             }
             catch (Exception e)
             {
-                Console.WriteLine(e);
-                return (1);
+                Console.Error.WriteLine(e.ToString());
+                return 1;
             }
-            finally
-            {
-                if (interactive)
-                {
-                    Console.WriteLine("Press any key to exit.");
-                    Console.ReadKey(false);
-                }
-            }
-
-            return 0;
         }
     }
 }

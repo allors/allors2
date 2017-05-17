@@ -1,15 +1,5 @@
 namespace Allors.Domain
 {
-		public interface AccessControlledObject  : Object 
-		{
-						Permission DeniedPermissions {set;}
-
-						SecurityToken SecurityTokens {set;}
-
-		}
-		public interface AsyncDerivable  : Object 
-		{
-		}
 		public interface Deletable  : Object 
 		{
 		}
@@ -22,19 +12,24 @@ namespace Allors.Domain
 						global::System.Boolean IsActive {set;}
 
 		}
+		public interface Object 
+		{
+		}
+		public interface UniquelyIdentifiable  : Object 
+		{
+						global::System.Guid UniqueId {set;}
+
+		}
 		public interface Localised  : Object 
 		{
 						Locale Locale {set;}
 
 		}
-		public interface Object 
-		{
-		}
-		public interface ObjectState  : UniquelyIdentifiable 
+		public interface AccessControlledObject  : Object 
 		{
 						Permission DeniedPermissions {set;}
 
-						global::System.String Name {set;}
+						SecurityToken SecurityTokens {set;}
 
 		}
 		public interface SecurityTokenOwner  : Object 
@@ -44,16 +39,43 @@ namespace Allors.Domain
 						AccessControl OwnerAccessControl {set;}
 
 		}
+		public interface ApproveTask  : Task 
+		{
+						Notification RejectionNotification {set;}
+
+		}
+		public interface EmailSource  : Object 
+		{
+						EmailMessage EmailMessage {set;}
+
+		}
+		public interface ObjectState  : UniquelyIdentifiable 
+		{
+						Permission DeniedPermissions {set;}
+
+						global::System.String Name {set;}
+
+		}
+		public interface Task  : AccessControlledObject, UniquelyIdentifiable, Deletable 
+		{
+						WorkItem WorkItem {set;}
+
+						global::System.DateTime DateCreated {set;}
+
+						global::System.DateTime? DateClosed {set;}
+
+						Person Participants {set;}
+
+						Person Performer {set;}
+
+						global::System.String Comment {set;}
+
+		}
 		public interface Transitional  : AccessControlledObject 
 		{
 						ObjectState PreviousObjectState {set;}
 
 						ObjectState LastObjectState {set;}
-
-		}
-		public interface UniquelyIdentifiable  : Object 
-		{
-						global::System.Guid UniqueId {set;}
 
 		}
 		public interface User  : SecurityTokenOwner, AccessControlledObject, Localised 
@@ -65,6 +87,15 @@ namespace Allors.Domain
 						global::System.String UserEmail {set;}
 
 						global::System.String UserPasswordHash {set;}
+
+						TaskList TaskList {set;}
+
+						NotificationList NotificationList {set;}
+
+		}
+		public interface WorkItem  : Object 
+		{
+						global::System.String WorkItemDescription {set;}
 
 		}
 		public interface SyncDepth2  : Object 
@@ -275,27 +306,52 @@ namespace Allors.Domain
 		public interface Shared  : Object 
 		{
 		}
-		public interface AccessControl  : Deletable, AccessControlledObject 
-		{
-						UserGroup SubjectGroups {set;}
-
-						User Subjects {set;}
-
-						Role Role {set;}
-
-						Permission EffectivePermissions {set;}
-
-						User EffectiveUsers {set;}
-
-		}
-		public interface AsyncDerivation  : Deletable 
-		{
-						AsyncDerivable AsyncDerivable {set;}
-
-		}
 		public interface Counter  : UniquelyIdentifiable 
 		{
 						global::System.Int32 Value {set;}
+
+		}
+		public interface Singleton  : AccessControlledObject 
+		{
+						Locale DefaultLocale {set;}
+
+						Locale Locales {set;}
+
+						User Guest {set;}
+
+						SecurityToken InitialSecurityToken {set;}
+
+						SecurityToken DefaultSecurityToken {set;}
+
+						AccessControl CreatorsAccessControl {set;}
+
+						AccessControl GuestAccessControl {set;}
+
+						AccessControl AdministratorsAccessControl {set;}
+
+						AccessControl SalesAccessControl {set;}
+
+						AccessControl OperationsAccessControl {set;}
+
+						AccessControl ProcurementAccessControl {set;}
+
+		}
+		public interface Media  : UniquelyIdentifiable, AccessControlledObject, Deletable 
+		{
+						global::System.Guid? Revision {set;}
+
+						MediaContent MediaContent {set;}
+
+						global::System.Byte[] InData {set;}
+
+						global::System.String InDataUri {set;}
+
+		}
+		public interface MediaContent  : AccessControlledObject, Deletable 
+		{
+						global::System.String Type {set;}
+
+						global::System.Byte[] Data {set;}
 
 		}
 		public interface Country  : AccessControlledObject 
@@ -343,6 +399,19 @@ namespace Allors.Domain
 						global::System.String Text {set;}
 
 		}
+		public interface AccessControl  : Deletable, AccessControlledObject 
+		{
+						UserGroup SubjectGroups {set;}
+
+						User Subjects {set;}
+
+						Role Role {set;}
+
+						Permission EffectivePermissions {set;}
+
+						User EffectiveUsers {set;}
+
+		}
 		public interface Login  : Deletable 
 		{
 						global::System.String Key {set;}
@@ -352,24 +421,6 @@ namespace Allors.Domain
 						User User {set;}
 
 		}
-		public interface Media  : UniquelyIdentifiable, AccessControlledObject, Deletable 
-		{
-						global::System.Guid? Revision {set;}
-
-						MediaContent MediaContent {set;}
-
-						global::System.Byte[] InData {set;}
-
-						global::System.String InDataUri {set;}
-
-		}
-		public interface MediaContent  : AccessControlledObject, Deletable 
-		{
-						global::System.String Type {set;}
-
-						global::System.Byte[] Data {set;}
-
-		}
 		public interface Permission  : Deletable, AccessControlledObject 
 		{
 						global::System.Guid OperandTypePointer {set;}
@@ -377,6 +428,64 @@ namespace Allors.Domain
 						global::System.Guid ConcreteClassPointer {set;}
 
 						global::System.Int32 OperationEnum {set;}
+
+		}
+		public interface Role  : AccessControlledObject, UniquelyIdentifiable 
+		{
+						Permission Permissions {set;}
+
+						global::System.String Name {set;}
+
+		}
+		public interface SecurityToken  : Deletable 
+		{
+						AccessControl AccessControls {set;}
+
+		}
+		public interface AutomatedAgent  : User 
+		{
+						global::System.String Name {set;}
+
+						global::System.String Description {set;}
+
+		}
+		public interface EmailMessage  : Object 
+		{
+						global::System.DateTime DateCreated {set;}
+
+						global::System.DateTime? DateSending {set;}
+
+						global::System.DateTime? DateSent {set;}
+
+						User Sender {set;}
+
+						User Recipients {set;}
+
+						global::System.String Subject {set;}
+
+						global::System.String Body {set;}
+
+		}
+		public interface Notification  : AccessControlledObject 
+		{
+						UniquelyIdentifiable Target {set;}
+
+						global::System.Boolean Confirmed {set;}
+
+						global::System.String Title {set;}
+
+						global::System.String Description {set;}
+
+						global::System.DateTime DateCreated {set;}
+
+		}
+		public interface NotificationList  : AccessControlledObject, Deletable 
+		{
+						Notification Notifications {set;}
+
+						Notification UnconfirmedNotifications {set;}
+
+						Notification ConfirmedNotifications {set;}
 
 		}
 		public interface Person  : User, UniquelyIdentifiable, Deletable 
@@ -420,41 +529,22 @@ namespace Allors.Domain
 						Organisation CycleMany {set;}
 
 		}
-		public interface Role  : AccessControlledObject, UniquelyIdentifiable 
+		public interface TaskAssignment  : AccessControlledObject, Deletable 
 		{
-						Permission Permissions {set;}
+						User User {set;}
 
-						global::System.String Name {set;}
+						Notification Notification {set;}
+
+						Task Task {set;}
 
 		}
-		public interface SecurityToken  : Deletable 
+		public interface TaskList  : Deletable 
 		{
-						AccessControl AccessControls {set;}
+						TaskAssignment TaskAssignments {set;}
 
-		}
-		public interface Singleton  : AccessControlledObject 
-		{
-						Locale DefaultLocale {set;}
+						TaskAssignment OpenTaskAssignments {set;}
 
-						Locale Locales {set;}
-
-						User Guest {set;}
-
-						SecurityToken InitialSecurityToken {set;}
-
-						SecurityToken DefaultSecurityToken {set;}
-
-						AccessControl CreatorsAccessControl {set;}
-
-						AccessControl GuestAccessControl {set;}
-
-						AccessControl AdministratorsAccessControl {set;}
-
-						AccessControl SalesAccessControl {set;}
-
-						AccessControl OperationsAccessControl {set;}
-
-						AccessControl ProcurementAccessControl {set;}
+						global::System.Int32? Count {set;}
 
 		}
 		public interface UserGroup  : UniquelyIdentifiable, AccessControlledObject 

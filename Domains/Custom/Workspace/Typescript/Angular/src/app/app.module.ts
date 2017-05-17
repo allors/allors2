@@ -5,20 +5,16 @@ import { HttpModule } from '@angular/http';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { HomeComponent } from './home/home.component';
-import { AboutComponent } from './about/about.component';
-import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 
-import { AllorsService } from './allors.service'
-
-import "rxjs";
+import { AllorsService } from './allors/allors.service';
+import { LoginComponent } from './auth/login.component';
+import { AuthService } from './auth/auth.service';
+import { AuthGuard } from './auth/auth-guard.service';
 
 @NgModule({
   declarations: [
     AppComponent,
-    HomeComponent,
-    AboutComponent,
-    PageNotFoundComponent
+    LoginComponent
   ],
   imports: [
     BrowserModule,
@@ -27,7 +23,9 @@ import "rxjs";
     AppRoutingModule
   ],
   providers: [
-    AllorsService
+    AllorsService,
+    AuthService,
+    AuthGuard,
   ],
   bootstrap: [AppComponent]
 })

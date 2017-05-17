@@ -107,14 +107,11 @@
     <Compile Include="..\..\..\Base\Repository\Domain\Base\Security\SecurityTokenOwner.cs">
       <Link>Base\Security\SecurityTokenOwner.cs</Link>
     </Compile>
-    <Compile Include="..\..\..\Base\Repository\Domain\Base\Security\User.cs">
-      <Link>Base\Security\User.cs</Link>
-    </Compile>
-    <Compile Include="..\..\..\Base\Repository\Domain\Base\Security\UserGroup.cs">
-      <Link>Base\Security\UserGroup.cs</Link>
-    </Compile>
     <Compile Include="..\..\..\Base\Repository\Domain\Base\Workflow\ApproveTask.cs">
       <Link>Base\Workflow\ApproveTask.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\Base\Repository\Domain\Base\Workflow\AutomatedAgent.cs">
+      <Link>Base\Workflow\AutomatedAgent.cs</Link>
     </Compile>
     <Compile Include="..\..\..\Base\Repository\Domain\Base\Workflow\EmailMessage.cs">
       <Link>Base\Workflow\EmailMessage.cs</Link>
@@ -145,6 +142,12 @@
     </Compile>
     <Compile Include="..\..\..\Base\Repository\Domain\Base\Workflow\Transitional.cs">
       <Link>Base\Workflow\Transitional.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\Base\Repository\Domain\Base\Workflow\User.cs">
+      <Link>Base\Workflow\User.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\Base\Repository\Domain\Base\Workflow\UserGroup.cs">
+      <Link>Base\Workflow\UserGroup.cs</Link>
     </Compile>
     <Compile Include="..\..\..\Base\Repository\Domain\Base\Workflow\WorkItem.cs">
       <Link>Base\Workflow\WorkItem.cs</Link>

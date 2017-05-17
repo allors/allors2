@@ -6,15 +6,24 @@ import { Database } from '../allors/angular/base/Database';
 import { Workspace } from '../allors/domain/base/Workspace';
 import { workspace } from '../allors/domain';
 
+import { environment } from '../environments/environment';
+
 @Injectable()
 export class AllorsService {
 
     workspace: Workspace;
     database: Database;
 
-  constructor(public http: Http) {
-      const url = 'http://localhost:50001/';
-      this.database = new Database(http, url);
+    url: string;
+
+    constructor(public http: Http) {
+      this.url = 'http://localhost:50001/';
+
+      if (environment.production) {
+          this.url = 'https://petite-app.inxin.net/';
+      }
+
+      this.database = new Database(http, this.url);
       this.workspace = workspace;
   }
 }

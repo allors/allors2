@@ -18,7 +18,7 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Allors.Services.Production
+namespace Allors.Services.Base
 {
     using System;
     using System.Linq;

@@ -18,19 +18,17 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Allors.Services.Production
+namespace Allors.Services.Base
 {
-    using System;
-
     using Allors.Domain;
 
     using MailKit.Net.Smtp;
 
     using MimeKit;
 
-    public class MailService : Services.IMailService
+    public class MailService : IMailService
     {
-        public const string DefaultSender = "noreply@allors.com";
+        public string DefaultSender { get; set; }
 
         public void Send(EmailMessage emailMesssage)
         {
@@ -40,12 +38,12 @@ namespace Allors.Services.Production
                                           Body = new TextPart("html") { Text = emailMesssage.Body }
                                       };
 
-            var sender = emailMesssage.Sender?.UserEmail ?? DefaultSender;
-            message.From.Add(new MailboxAddress(sender));
+            var sender = emailMesssage.Sender?.UserEmail ?? this.DefaultSender;
+            message.From.Add(new MimeKit.MailboxAddress(sender));
 
             foreach (User recipient in emailMesssage.Recipients)
             {
-                message.To.Add(new MailboxAddress(recipient.UserEmail));
+                message.To.Add(new MimeKit.MailboxAddress(recipient.UserEmail));
             }
             
             using (var client = new SmtpClient())

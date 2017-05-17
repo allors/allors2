@@ -55,7 +55,7 @@ namespace Allors.Domain
 
         protected override void BaseSecure(Security config)
         {
-            var full = new[] { Operations.Read, Operations.Write, Operations.Execute };
+            var full = new[] { Domain.Operations.Read, Domain.Operations.Write, Domain.Operations.Execute };
 
             config.GrantAdministrator(this.ObjectType, full);
         }

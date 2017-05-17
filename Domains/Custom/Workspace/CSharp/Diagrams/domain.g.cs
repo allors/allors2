@@ -6,14 +6,37 @@ namespace Allors.Domain
 				public interface Enumeration : UniquelyIdentifiable 
 				{
 				}
+				public interface UniquelyIdentifiable 
+				{
+								global::System.Guid UniqueId {set;}
+
+				}
+				public interface ApproveTask : Task 
+				{
+				}
 				public interface ObjectState : UniquelyIdentifiable 
 				{
 								global::System.String Name {set;}
 
 				}
-				public interface UniquelyIdentifiable 
+				public interface Task : UniquelyIdentifiable, Deletable 
 				{
-								global::System.Guid UniqueId {set;}
+								WorkItem WorkItem {set;}
+
+
+								global::System.DateTime DateCreated {set;}
+
+
+								global::System.DateTime? DateClosed {set;}
+
+
+								Person Participants {set;}
+
+
+								Person Performer {set;}
+
+
+								global::System.String Comment {set;}
 
 				}
 				public interface User 
@@ -23,22 +46,24 @@ namespace Allors.Domain
 
 								global::System.String UserEmail {set;}
 
+
+								TaskList TaskList {set;}
+
+
+								NotificationList NotificationList {set;}
+
+				}
+				public interface WorkItem 
+				{
+								global::System.String WorkItemDescription {set;}
+
 				}
 				public interface I1 
 				{
 								global::System.String I1AllorsString {set;}
 
 				}
-				public interface AccessControl : Deletable 
-				{
-				}
-				public interface AsyncDerivation : Deletable 
-				{
-				}
 				public interface Counter : UniquelyIdentifiable 
-				{
-				}
-				public interface Login : Deletable 
 				{
 				}
 				public interface Media : UniquelyIdentifiable, Deletable 
@@ -52,8 +77,42 @@ namespace Allors.Domain
 				public interface MediaContent : Deletable 
 				{
 				}
+				public interface AccessControl : Deletable 
+				{
+				}
+				public interface Login : Deletable 
+				{
+				}
 				public interface Permission : Deletable 
 				{
+				}
+				public interface Role : UniquelyIdentifiable 
+				{
+				}
+				public interface SecurityToken : Deletable 
+				{
+				}
+				public interface AutomatedAgent : User 
+				{
+				}
+				public interface Notification 
+				{
+								global::System.Boolean Confirmed {set;}
+
+
+								global::System.String Title {set;}
+
+
+								global::System.String Description {set;}
+
+
+								global::System.DateTime DateCreated {set;}
+
+				}
+				public interface NotificationList : Deletable 
+				{
+								Notification UnconfirmedNotifications {set;}
+
 				}
 				public interface Person : User, UniquelyIdentifiable, Deletable 
 				{
@@ -84,11 +143,24 @@ namespace Allors.Domain
 								Organisation CycleMany {set;}
 
 				}
-				public interface Role : UniquelyIdentifiable 
+				public interface TaskAssignment : Deletable 
 				{
+								User User {set;}
+
+
+								Task Task {set;}
+
 				}
-				public interface SecurityToken : Deletable 
+				public interface TaskList : Deletable 
 				{
+								TaskAssignment TaskAssignments {set;}
+
+
+								TaskAssignment OpenTaskAssignments {set;}
+
+
+								global::System.Int32? Count {set;}
+
 				}
 				public interface UserGroup : UniquelyIdentifiable 
 				{

@@ -5,7 +5,7 @@
     using Allors.Adapters.Object.SqlClient;
     using Allors.Domain;
     using Allors.Meta;
-    using Allors.Services.Production;
+    using Allors.Services.Base;
 
     using Microsoft.Extensions.Configuration;
 

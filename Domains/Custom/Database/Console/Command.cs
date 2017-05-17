@@ -1,80 +1,52 @@
-﻿using System;
-
-namespace Allors
+﻿namespace Allors
 {
-    using Allors.Meta;
+    using System.Data;
+
+    using Allors.Adapters.Object.SqlClient;
     using Allors.Domain;
+    using Allors.Meta;
+    using Allors.Services.Base;
+
+    using Microsoft.Extensions.Configuration;
 
     public abstract class Command
     {
-        protected ObjectFactory ObjectFactory = new ObjectFactory(MetaPopulation.Instance, typeof(User));
-
-        protected string ConnectionString = "server=(custom);database=base;Integrated Security=SSPI";
-
-        protected string DataPath => "../../data";
-
-        protected string PopulationFileName = "population.xml";
-
-        protected IDatabase SnapshotDatabase
+        protected Command()
         {
-            get
-            {
-                var configuration = new Adapters.Object.SqlClient.Configuration
-                {
-                    ConnectionString = this.ConnectionString,
-                    ObjectFactory = this.ObjectFactory,
-                    IsolationLevel = System.Data.IsolationLevel.Snapshot,
-                    CommandTimeout = 0
-                };
-                return new Adapters.Object.SqlClient.Database(configuration);
-            }
+            this.Configuration = new ConfigurationBuilder()
+                .AddJsonFile(@"appSettings.json")
+                .Build();
+            this.ObjectFactory = new ObjectFactory(MetaPopulation.Instance, typeof(User));
         }
 
-        protected IDatabase RepeatableReadDatabase
-        {
-            get
-            {
-                var configuration = new Adapters.Object.SqlClient.Configuration
-                {
-                    ConnectionString = this.ConnectionString,
-                    ObjectFactory = this.ObjectFactory,
-                    IsolationLevel = System.Data.IsolationLevel.RepeatableRead,
-                    CommandTimeout = 0
-                };
-                return new Adapters.Object.SqlClient.Database(configuration);
-            }
-        }
+        protected ObjectFactory ObjectFactory { get; }
 
-        protected IDatabase SerializableDatabase
-        {
-            get
-            {
-                var configuration = new Adapters.Object.SqlClient.Configuration
-                {
-                    ConnectionString = this.ConnectionString,
-                    ObjectFactory = this.ObjectFactory,
-                    IsolationLevel = System.Data.IsolationLevel.Serializable,
-                    CommandTimeout = 0
-                };
-                return new Adapters.Object.SqlClient.Database(configuration);
-            }
-        }
+        protected IConfigurationRoot Configuration { get; }
 
         public abstract void Execute();
 
-        protected void Derive(ISession session, Extent extent)
+        protected IDatabase CreateDatabase(IsolationLevel isolationLevel = IsolationLevel.Snapshot)
         {
-            var derivation = new Domain.NonLogging.Derivation(session, extent.ToArray());
-            var validation = derivation.Derive();
-            if (validation.HasErrors)
+            var configuration = new Configuration
             {
-                foreach (var error in validation.Errors)
-                {
-                    Console.WriteLine(error.Message);
-                }
+                ConnectionString = this.Configuration["allors"],
+                ObjectFactory = this.ObjectFactory,
+                IsolationLevel = isolationLevel,
+                CommandTimeout = 0
+            };
 
-                throw new Exception("Derivation Error");
-            }
+            var database = new Database(configuration);
+
+            var timeService = new TimeService();
+            var mailService = new MailService();
+            var serviceLocator = new ServiceLocator
+                                        {
+                                            TimeServiceFactory = () => timeService,
+                                            MailServiceFactory = () => mailService
+                                        };
+            database.SetServiceLocator(serviceLocator.Assert());
+
+            return database;
         }
     }
 }

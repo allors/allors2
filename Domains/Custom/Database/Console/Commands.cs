@@ -1,5 +1,5 @@
-// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="TimeService.cs" company="Allors bvba">
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="Commands.cs" company="Allors bvba">
 //   Copyright 2002-2017 Allors bvba.
 // 
 // Dual Licensed under
@@ -18,21 +18,14 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Allors.Services.Production
+namespace Allors
 {
-    using System;
-
-    public class TimeService : ITimeService
+    public enum Commands
     {
-        public TimeSpan? Shift { get; set; }
+        Populate,
 
-        public DateTime Now()
-        {
-            return this.Shift.HasValue ? DateTime.UtcNow.Add(this.Shift.Value) : DateTime.UtcNow;
-        }
+        Save,
 
-        public void Dispose()
-        {
-        }
+        Load,
     }
 }

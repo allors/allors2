@@ -1,35 +1,38 @@
 // --------------------------------------------------------------------------------------------------------------------
-// <copyright file="Task.cs" company="Allors bvba">
-//   Copyright 2002-2012 Allors bvba.
+// <copyright file="TimeService.cs" company="Allors bvba">
+//   Copyright 2002-2017 Allors bvba.
+// 
 // Dual Licensed under
 //   a) the General Public Licence v3 (GPL)
 //   b) the Allors License
+// 
 // The GPL License is included in the file gpl.txt.
 // The Allors License is an addendum to your contract.
+// 
 // Allors Applications is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
+// 
 // For more information visit http://www.allors.com/legal
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
-namespace Allors.Domain
+
+namespace Allors.Services.Base
 {
-    public partial class WorkTask
+    using System;
+
+    public class TimeService : ITimeService
     {
-        ObjectState Transitional.CurrentObjectState => this.CurrentObjectState;
+        public TimeSpan? Shift { get; set; }
 
-        public void AppsDelete(DeletableDelete method)
+        public DateTime Now()
         {
-            foreach (WorkEffortStatus workEffortStatus in this.WorkEffortStatuses)
-            {
-                workEffortStatus.Delete();
-            }
+            return this.Shift.HasValue ? DateTime.UtcNow.Add(this.Shift.Value) : DateTime.UtcNow;
+        }
 
-            foreach (WorkEffortAssignment workEffortAssignment in this.WorkEffortAssignmentsWhereAssignment)
-            {
-                workEffortAssignment.Delete();
-            }
+        public void Dispose()
+        {
         }
     }
 }

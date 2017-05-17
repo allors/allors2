@@ -1,7 +1,9 @@
 ﻿namespace Allors.Server
 {
+    using Allors.Adapters.Object.SqlClient;
     using Allors.Domain;
     using Allors.Meta;
+    using Allors.Services.Base;
 
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
@@ -25,14 +27,28 @@
 
         public IConfigurationRoot Configuration { get; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
             // Allors
-            services.AddSingleton(this.Configuration);
-
             var objectFactory = new Allors.ObjectFactory(MetaPopulation.Instance, typeof(User));
-            services.AddSingleton<IObjectFactory>(objectFactory);
+            var configuration = new Configuration
+                                    {
+                                        ObjectFactory = objectFactory,
+                                        ConnectionString = this.Configuration.GetConnectionString("DefaultConnection")
+                                    };
+
+            var database = new Database(configuration);
+
+            var timeService = new TimeService();
+            var mailService = new MailService { DefaultSender = "noreply@example.com" };
+            var serviceLocator = new ServiceLocator
+                                     {
+                                         TimeServiceFactory = () => timeService,
+                                         MailServiceFactory = () => mailService
+                                     };
+            database.SetServiceLocator(serviceLocator.Assert());
+
+            services.AddSingleton<IDatabase>(database);
             services.AddScoped<IAllorsContext, AllorsContext>();
 
             // Add framework services.
@@ -57,7 +73,6 @@
                 });
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
             loggerFactory.AddConsole(this.Configuration.GetSection("Logging"));

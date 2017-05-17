@@ -15,20 +15,6 @@ namespace Allors.Domain
 		public interface Object 
 		{
 		}
-		public interface ObjectState  : UniquelyIdentifiable 
-		{
-						Permission DeniedPermissions {set;}
-
-						global::System.String Name {set;}
-
-		}
-		public interface Transitional  : AccessControlledObject 
-		{
-						ObjectState PreviousObjectState {set;}
-
-						ObjectState LastObjectState {set;}
-
-		}
 		public interface UniquelyIdentifiable  : Object 
 		{
 						global::System.Guid UniqueId {set;}
@@ -53,6 +39,45 @@ namespace Allors.Domain
 						AccessControl OwnerAccessControl {set;}
 
 		}
+		public interface ApproveTask  : Task 
+		{
+						Notification RejectionNotification {set;}
+
+		}
+		public interface EmailSource  : Object 
+		{
+						EmailMessage EmailMessage {set;}
+
+		}
+		public interface ObjectState  : UniquelyIdentifiable 
+		{
+						Permission DeniedPermissions {set;}
+
+						global::System.String Name {set;}
+
+		}
+		public interface Task  : AccessControlledObject, UniquelyIdentifiable, Deletable 
+		{
+						WorkItem WorkItem {set;}
+
+						global::System.DateTime DateCreated {set;}
+
+						global::System.DateTime? DateClosed {set;}
+
+						Person Participants {set;}
+
+						Person Performer {set;}
+
+						global::System.String Comment {set;}
+
+		}
+		public interface Transitional  : AccessControlledObject 
+		{
+						ObjectState PreviousObjectState {set;}
+
+						ObjectState LastObjectState {set;}
+
+		}
 		public interface User  : SecurityTokenOwner, AccessControlledObject, Localised 
 		{
 						global::System.Boolean? UserEmailConfirmed {set;}
@@ -62,6 +87,15 @@ namespace Allors.Domain
 						global::System.String UserEmail {set;}
 
 						global::System.String UserPasswordHash {set;}
+
+						TaskList TaskList {set;}
+
+						NotificationList NotificationList {set;}
+
+		}
+		public interface WorkItem  : Object 
+		{
+						global::System.String WorkItemDescription {set;}
 
 		}
 		public interface AccountingTransaction  : AccessControlledObject 
@@ -1286,6 +1320,95 @@ namespace Allors.Domain
 						global::System.String Text {set;}
 
 		}
+		public interface AccessControl  : Deletable, AccessControlledObject 
+		{
+						UserGroup SubjectGroups {set;}
+
+						User Subjects {set;}
+
+						Role Role {set;}
+
+						Permission EffectivePermissions {set;}
+
+						User EffectiveUsers {set;}
+
+		}
+		public interface Login  : Deletable 
+		{
+						global::System.String Key {set;}
+
+						global::System.String Provider {set;}
+
+						User User {set;}
+
+		}
+		public interface Permission  : Deletable, AccessControlledObject 
+		{
+						global::System.Guid OperandTypePointer {set;}
+
+						global::System.Guid ConcreteClassPointer {set;}
+
+						global::System.Int32 OperationEnum {set;}
+
+		}
+		public interface Role  : AccessControlledObject, UniquelyIdentifiable 
+		{
+						Permission Permissions {set;}
+
+						global::System.String Name {set;}
+
+		}
+		public interface SecurityToken  : Deletable 
+		{
+						AccessControl AccessControls {set;}
+
+		}
+		public interface AutomatedAgent  : User, Party 
+		{
+						global::System.String Name {set;}
+
+						global::System.String Description {set;}
+
+		}
+		public interface EmailMessage  : Object 
+		{
+						global::System.DateTime DateCreated {set;}
+
+						global::System.DateTime? DateSending {set;}
+
+						global::System.DateTime? DateSent {set;}
+
+						User Sender {set;}
+
+						User Recipients {set;}
+
+						global::System.String Subject {set;}
+
+						global::System.String Body {set;}
+
+		}
+		public interface Notification  : AccessControlledObject 
+		{
+						UniquelyIdentifiable Target {set;}
+
+						global::System.Boolean Confirmed {set;}
+
+						global::System.String Title {set;}
+
+						global::System.String Description {set;}
+
+						global::System.DateTime DateCreated {set;}
+
+		}
+		public interface NotificationList  : AccessControlledObject, Deletable 
+		{
+						Notification Notifications {set;}
+
+						Notification UnconfirmedNotifications {set;}
+
+						Notification ConfirmedNotifications {set;}
+
+		}
 		public interface Person  : User, Party, Deletable 
 		{
 						global::System.String FirstName {set;}
@@ -1337,47 +1460,22 @@ namespace Allors.Domain
 						global::System.DateTime? DeceasedDate {set;}
 
 		}
-		public interface AccessControl  : Deletable, AccessControlledObject 
+		public interface TaskAssignment  : AccessControlledObject, Deletable 
 		{
-						UserGroup SubjectGroups {set;}
-
-						User Subjects {set;}
-
-						Role Role {set;}
-
-						Permission EffectivePermissions {set;}
-
-						User EffectiveUsers {set;}
-
-		}
-		public interface Login  : Deletable 
-		{
-						global::System.String Key {set;}
-
-						global::System.String Provider {set;}
-
 						User User {set;}
 
-		}
-		public interface Permission  : Deletable, AccessControlledObject 
-		{
-						global::System.Guid OperandTypePointer {set;}
+						Notification Notification {set;}
 
-						global::System.Guid ConcreteClassPointer {set;}
-
-						global::System.Int32 OperationEnum {set;}
+						Task Task {set;}
 
 		}
-		public interface Role  : AccessControlledObject, UniquelyIdentifiable 
+		public interface TaskList  : Deletable 
 		{
-						Permission Permissions {set;}
+						TaskAssignment TaskAssignments {set;}
 
-						global::System.String Name {set;}
+						TaskAssignment OpenTaskAssignments {set;}
 
-		}
-		public interface SecurityToken  : Deletable 
-		{
-						AccessControl AccessControls {set;}
+						global::System.Int32? Count {set;}
 
 		}
 		public interface UserGroup  : UniquelyIdentifiable, AccessControlledObject 
@@ -1500,13 +1598,6 @@ namespace Allors.Domain
 		}
 		public interface AssetAssignmentStatus  : Enumeration 
 		{
-		}
-		public interface AutomatedAgent  : User, Party 
-		{
-						global::System.String Name {set;}
-
-						global::System.String Description {set;}
-
 		}
 		public interface Bank  : AccessControlledObject 
 		{
@@ -4857,7 +4948,7 @@ namespace Allors.Domain
 						global::System.Decimal? Percentage {set;}
 
 		}
-		public interface Task  : WorkEffort 
+		public interface WorkTask  : WorkEffort 
 		{
 		}
 		public interface TaxDocument  : Document 
