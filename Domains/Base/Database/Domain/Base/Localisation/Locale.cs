@@ -1,6 +1,6 @@
 // --------------------------------------------------------------------------------------------------------------------
 // <copyright file="Locale.cs" company="Allors bvba">
-//   Copyright 2002-2016 Allors bvba.
+//   Copyright 2002-2017 Allors bvba.
 //
 // Dual Licensed under
 //   a) the General Public Licence v3 (GPL)
@@ -24,26 +24,12 @@ namespace Allors.Domain
 
     public partial class Locale
     {
-        public bool ExistCultureInfo
-        {
-            get
-            {
-                return this.ExistName;
-            }
-        }
+        public bool ExistCultureInfo => this.ExistName;
 
-        public CultureInfo CultureInfo
-        {
-            get
-            {
-                return this.ExistName ? new CultureInfo(this.Name) : null;
-            }
-        }
+        public CultureInfo CultureInfo => this.ExistName ? new CultureInfo(this.Name) : null;
 
         public void BaseOnDerive(ObjectOnDerive method)
         {
-            var derivation = method.Derivation;
-
             if (!this.ExistName && this.ExistLanguage && this.ExistCountry)
             {
                 this.Name = this.Language.IsoCode + "-" + this.Country.IsoCode;

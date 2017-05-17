@@ -1,17 +1,13 @@
 namespace Allors.Repository
 {
-    using System;
-
     using Allors.Repository.Attributes;
 
     #region Allors
     [Id("130aa2ff-4f14-4ad7-8a27-f80e8aebfa00")]
     #endregion
     [Plural("Addresses")]
-    public partial interface Address :  Object 
+    public partial interface Address : Object 
     {
-
-
         #region Allors
         [Id("36e7d935-a9c7-484d-8551-9bdc5bdeab68")]
         [AssociationId("113a8abd-e587-45a3-b118-92e60182c94b")]
@@ -20,6 +16,5 @@ namespace Allors.Repository
         [Indexed]
         #endregion
         Place Place { get; set; }
-
     }
 }

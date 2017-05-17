@@ -5,7 +5,7 @@ namespace Allors.Repository
     #region Allors
     [Id("320985b6-d571-4b6c-b940-e02c04ad37d3")]
     #endregion
-    public partial class SimpleJob :  Object 
+    public partial class SimpleJob : Object 
     {
         #region inherited properties
         #endregion

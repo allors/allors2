@@ -6,7 +6,7 @@ namespace Allors.Repository
     [Id("62859bfb-7949-4f7f-a428-658447576d0a")]
     #endregion
     [Plural("StatefulCompanies")]
-    public partial class StatefulCompany :  Object 
+    public partial class StatefulCompany : Object 
     {
         #region inherited properties
         #endregion

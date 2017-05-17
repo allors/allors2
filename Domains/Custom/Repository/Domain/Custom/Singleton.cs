@@ -2,7 +2,7 @@ namespace Allors.Repository
 {
     using Allors.Repository.Attributes;
 
-    public partial class Singleton :  Object, AccessControlledObject 
+    public partial class Singleton : Object, AccessControlledObject 
     {
         #region inherited properties
         #endregion

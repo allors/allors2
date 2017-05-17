@@ -7,7 +7,7 @@ namespace Allors.Repository
     #region Allors
     [Id("830cdcb1-31f1-4481-8399-00c034661450")]
     #endregion
-    public partial class Extender :  Object 
+    public partial class Extender : Object 
     {
         #region inherited properties
         #endregion

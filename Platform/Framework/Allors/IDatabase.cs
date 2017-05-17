@@ -1,6 +1,6 @@
 // --------------------------------------------------------------------------------------------------------------------
 // <copyright file="IDatabase.cs" company="Allors bvba">
-//   Copyright 2002-2016 Allors bvba.
+//   Copyright 2002-2017 Allors bvba.
 // 
 // Dual Licensed under
 //   a) the Lesser General Public Licence v3 (LGPL)

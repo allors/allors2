@@ -1,6 +1,6 @@
 // --------------------------------------------------------------------------------------------------------------------
 // <copyright file="Locales.cs" company="Allors bvba">
-//   Copyright 2002-2016 Allors bvba.
+//   Copyright 2002-2017 Allors bvba.
 //
 // Dual Licensed under
 //   a) the General Public Licence v3 (GPL)
@@ -18,12 +18,9 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-using Allors.Meta;
-
 namespace Allors.Domain
 {
-    using System.Collections.Generic;
-    using System.Globalization;
+    using Allors.Meta;
 
     public partial class Locales
     {

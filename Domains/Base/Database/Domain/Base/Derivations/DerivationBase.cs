@@ -1,6 +1,6 @@
 // --------------------------------------------------------------------------------------------------------------------
 // <copyright file="DerivationBase.cs" company="Allors bvba">
-//   Copyright 2002-2016 Allors bvba.
+//   Copyright 2002-2017 Allors bvba.
 //
 // Dual Licensed under
 //   a) the General Public Licence v3 (GPL)
@@ -22,7 +22,6 @@ namespace Allors.Domain
 {
     using System;
     using System.Collections.Generic;
-    using System.ComponentModel;
     using System.Linq;
 
     using Allors;
@@ -62,22 +61,16 @@ namespace Allors.Domain
         protected DerivationBase(ISession session, IEnumerable<IObject> markedAsModified)
             : this(session)
         {
-            this.markedAsModified.UnionWith(markedAsModified.Where(v=>v!=null).Select(v=>v.Id));
+            this.markedAsModified.UnionWith(markedAsModified.Where(v => v != null).Select(v => v.Id));
         }
 
         public ISession Session { get; }
 
         public IValidation Validation
         {
-            get
-            {
-                return this.validation;
-            }
+            get => this.validation;
 
-            protected set
-            {
-                this.validation = value;
-            }
+            protected set => this.validation = value;
         }
 
         public IChangeSet ChangeSet { get; private set; }
@@ -92,8 +85,7 @@ namespace Allors.Domain
             {
                 var lowerName = name.ToLowerInvariant();
 
-                object value;
-                if (this.properties != null && this.properties.TryGetValue(lowerName, out value))
+                if (this.properties != null && this.properties.TryGetValue(lowerName, out object value))
                 {
                     return value;
                 }
@@ -195,11 +187,6 @@ namespace Allors.Domain
             }
         }
 
-        /// <summary>
-        /// The dependee is derived before the dependent object;
-        /// </summary>
-        /// <param name="dependent"></param>
-        /// <param name="dependee"></param>
         public void AddDependency(Object dependent, Object dependee)
         {
             if (dependent != null && dependee != null)
@@ -263,8 +250,10 @@ namespace Allors.Domain
 
                     this.addedDerivables = new HashSet<IObject>();
 
-                    foreach (Object dependencyObject in dependencyObjectsToPrepare)
+                    foreach (var o in dependencyObjectsToPrepare)
                     {
+                        var dependencyObject = (Object)o;
+
                         this.OnPreDeriving(dependencyObject);
 
                         dependencyObject.OnPreDerive(x => x.WithDerivation(this));

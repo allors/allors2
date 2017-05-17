@@ -1,6 +1,6 @@
 // --------------------------------------------------------------------------------------------------------------------
 // <copyright file="Countries.cs" company="Allors bvba">
-//   Copyright 2002-2016 Allors bvba.
+//   Copyright 2002-2017 Allors bvba.
 //
 // Dual Licensed under
 //   a) the General Public Licence v3 (GPL)
@@ -18,10 +18,10 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-using System.Collections.Generic;
-
 namespace Allors.Domain
 {
+    using System.Collections.Generic;
+
     using Allors.Meta;
 
     public partial class Countries

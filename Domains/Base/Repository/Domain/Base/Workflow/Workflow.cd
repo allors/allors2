@@ -1,0 +1,103 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1" MembersFormat="NameAndType">
+  <Class Name="Allors.Repository.TaskList" BaseTypeListCollapsed="true">
+    <Position X="3.5" Y="5" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAEAAAAAAAAAAAAAIAAAAAQAAAkAAAAAAAAEAAIABAA=</HashCode>
+      <FileName>Apps\Workflow\TaskList.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="OpenTaskAssignments" />
+      <Property Name="TaskAssignments" />
+    </ShowAsAssociation>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Allors.Repository.TaskAssignment" BaseTypeListCollapsed="true">
+    <Position X="6.75" Y="3.25" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AIEAAAAAAAAAAAAAIAAAAIAAAAkAQAAAAEAAAAIIAAA=</HashCode>
+      <FileName>Apps\Workflow\TaskAssignment.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Notification" />
+      <Property Name="Person" />
+      <Property Name="Task" />
+    </ShowAsAssociation>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Allors.Repository.NotificationList" BaseTypeListCollapsed="true">
+    <Position X="14.75" Y="0.75" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAEAAAAAAAAgAAABIAEAAAAAAAkAAAAAAAAAAAIAAAA=</HashCode>
+      <FileName>Apps\Workflow\NotificationList.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="ConfirmedNotifications" />
+      <Property Name="UnconfirmedNotifications" />
+      <Property Name="Notifications" />
+    </ShowAsAssociation>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Allors.Repository.Notification" BaseTypeListCollapsed="true">
+    <Position X="10.25" Y="0.5" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAEAAAAAAAAgAEAAIAAAAKAAAAkAAAAgAAAkAAIIAAA=</HashCode>
+      <FileName>Apps\Workflow\Notification.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="EmailMessage" />
+    </ShowAsAssociation>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Allors.Repository.EmailMessage" BaseTypeListCollapsed="true">
+    <Position X="10.75" Y="5.25" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAEAAAAAAAIAAAAAIIABAAAAAEkAAAAAAAAEAAIIAAE=</HashCode>
+      <FileName>Apps\Workflow\EmailMessage.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Allors.Repository.Person" Collapsed="true">
+    <Position X="4.25" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAEAAEAAAAAAAAAAIACQAIAAAglAAAAAAQAACBIIQAg=</HashCode>
+      <FileName>C:\Users\KoenVanExem\Documents\Subversion\wickey\src\allors\Domains\Base\Repository\Domain\Base\Person.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Interface Name="Allors.Repository.WorkItem">
+    <Position X="4.25" Y="0.5" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Apps\Workflow\WorkItem.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Allors.Repository.Task">
+    <Position X="0.5" Y="0.5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAEAAAAAAAABAAAAAAAAQAAAAAAACAEAAAACAA=</HashCode>
+      <FileName>Apps\Workflow\Task.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="WorkItem" />
+    </ShowAsAssociation>
+  </Interface>
+  <Interface Name="Allors.Repository.EmailSource">
+    <Position X="14" Y="6" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAA=</HashCode>
+      <FileName>Apps\Workflow\EmailSource.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="EmailMessage" />
+    </ShowAsAssociation>
+  </Interface>
+  <Interface Name="Allors.Repository.ApproveTask">
+    <Position X="0.5" Y="3.5" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAgAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAIA=</HashCode>
+      <FileName>Apps\Workflow\ApproveTask.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

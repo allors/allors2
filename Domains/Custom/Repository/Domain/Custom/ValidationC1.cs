@@ -7,7 +7,7 @@ namespace Allors.Repository
     #region Allors
     [Id("2361c456-b624-493a-8377-2dd1e697e17a")]
     #endregion
-    public partial class ValidationC1 :  Object, ValidationI12 
+    public partial class ValidationC1 : Object, ValidationI12 
     {
         #region inherited properties
         public Guid UniqueId { get; set; }

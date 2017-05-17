@@ -19,10 +19,10 @@
 // <summary>Defines the Extent type.</summary>
 //-------------------------------------------------------------------------------------------------
 
-using System;
-
 namespace Allors.Repository.Attributes
 {
+    using System;
+
     [AttributeUsage(AttributeTargets.Property)]
     public class ScaleAttribute : RepositoryAttribute
     {

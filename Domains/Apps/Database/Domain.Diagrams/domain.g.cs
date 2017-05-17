@@ -1,15 +1,5 @@
 namespace Allors.Domain
 {
-		public interface AccessControlledObject  : Object 
-		{
-						Permission DeniedPermissions {set;}
-
-						SecurityToken SecurityTokens {set;}
-
-		}
-		public interface AsyncDerivable  : Object 
-		{
-		}
 		public interface Deletable  : Object 
 		{
 		}
@@ -22,11 +12,6 @@ namespace Allors.Domain
 						global::System.Boolean IsActive {set;}
 
 		}
-		public interface Localised  : Object 
-		{
-						Locale Locale {set;}
-
-		}
 		public interface Object 
 		{
 		}
@@ -35,13 +20,6 @@ namespace Allors.Domain
 						Permission DeniedPermissions {set;}
 
 						global::System.String Name {set;}
-
-		}
-		public interface SecurityTokenOwner  : Object 
-		{
-						SecurityToken OwnerSecurityToken {set;}
-
-						AccessControl OwnerAccessControl {set;}
 
 		}
 		public interface Transitional  : AccessControlledObject 
@@ -54,6 +32,25 @@ namespace Allors.Domain
 		public interface UniquelyIdentifiable  : Object 
 		{
 						global::System.Guid UniqueId {set;}
+
+		}
+		public interface Localised  : Object 
+		{
+						Locale Locale {set;}
+
+		}
+		public interface AccessControlledObject  : Object 
+		{
+						Permission DeniedPermissions {set;}
+
+						SecurityToken SecurityTokens {set;}
+
+		}
+		public interface SecurityTokenOwner  : Object 
+		{
+						SecurityToken OwnerSecurityToken {set;}
+
+						AccessControl OwnerAccessControl {set;}
 
 		}
 		public interface User  : SecurityTokenOwner, AccessControlledObject, Localised 
@@ -1178,27 +1175,56 @@ namespace Allors.Domain
 						global::System.Decimal? EstimatedHours {set;}
 
 		}
-		public interface AccessControl  : Deletable, AccessControlledObject 
-		{
-						UserGroup SubjectGroups {set;}
-
-						User Subjects {set;}
-
-						Role Role {set;}
-
-						Permission EffectivePermissions {set;}
-
-						User EffectiveUsers {set;}
-
-		}
-		public interface AsyncDerivation  : Deletable 
-		{
-						AsyncDerivable AsyncDerivable {set;}
-
-		}
 		public interface Counter  : UniquelyIdentifiable 
 		{
 						global::System.Int32 Value {set;}
+
+		}
+		public interface Singleton  : AccessControlledObject 
+		{
+						Locale DefaultLocale {set;}
+
+						Locale Locales {set;}
+
+						User Guest {set;}
+
+						SecurityToken InitialSecurityToken {set;}
+
+						SecurityToken DefaultSecurityToken {set;}
+
+						AccessControl CreatorsAccessControl {set;}
+
+						AccessControl GuestAccessControl {set;}
+
+						AccessControl AdministratorsAccessControl {set;}
+
+						PrintQueue DefaultPrintQueue {set;}
+
+						SecurityToken AdministratorSecurityToken {set;}
+
+						Currency DefaultCurrency {set;}
+
+						Media NoImageAvailableImage {set;}
+
+						InternalOrganisation DefaultInternalOrganisation {set;}
+
+		}
+		public interface Media  : UniquelyIdentifiable, AccessControlledObject, Deletable 
+		{
+						global::System.Guid? Revision {set;}
+
+						MediaContent MediaContent {set;}
+
+						global::System.Byte[] InData {set;}
+
+						global::System.String InDataUri {set;}
+
+		}
+		public interface MediaContent  : AccessControlledObject, Deletable 
+		{
+						global::System.String Type {set;}
+
+						global::System.Byte[] Data {set;}
 
 		}
 		public interface Country  : GeographicBoundary, CityBound 
@@ -1260,42 +1286,6 @@ namespace Allors.Domain
 						global::System.String Text {set;}
 
 		}
-		public interface Login  : Deletable 
-		{
-						global::System.String Key {set;}
-
-						global::System.String Provider {set;}
-
-						User User {set;}
-
-		}
-		public interface Media  : UniquelyIdentifiable, AccessControlledObject, Deletable 
-		{
-						global::System.Guid? Revision {set;}
-
-						MediaContent MediaContent {set;}
-
-						global::System.Byte[] InData {set;}
-
-						global::System.String InDataUri {set;}
-
-		}
-		public interface MediaContent  : AccessControlledObject, Deletable 
-		{
-						global::System.String Type {set;}
-
-						global::System.Byte[] Data {set;}
-
-		}
-		public interface Permission  : Deletable, AccessControlledObject 
-		{
-						global::System.Guid OperandTypePointer {set;}
-
-						global::System.Guid ConcreteClassPointer {set;}
-
-						global::System.Int32 OperationEnum {set;}
-
-		}
 		public interface Person  : User, Party, Deletable 
 		{
 						global::System.String FirstName {set;}
@@ -1347,6 +1337,37 @@ namespace Allors.Domain
 						global::System.DateTime? DeceasedDate {set;}
 
 		}
+		public interface AccessControl  : Deletable, AccessControlledObject 
+		{
+						UserGroup SubjectGroups {set;}
+
+						User Subjects {set;}
+
+						Role Role {set;}
+
+						Permission EffectivePermissions {set;}
+
+						User EffectiveUsers {set;}
+
+		}
+		public interface Login  : Deletable 
+		{
+						global::System.String Key {set;}
+
+						global::System.String Provider {set;}
+
+						User User {set;}
+
+		}
+		public interface Permission  : Deletable, AccessControlledObject 
+		{
+						global::System.Guid OperandTypePointer {set;}
+
+						global::System.Guid ConcreteClassPointer {set;}
+
+						global::System.Int32 OperationEnum {set;}
+
+		}
 		public interface Role  : AccessControlledObject, UniquelyIdentifiable 
 		{
 						Permission Permissions {set;}
@@ -1357,35 +1378,6 @@ namespace Allors.Domain
 		public interface SecurityToken  : Deletable 
 		{
 						AccessControl AccessControls {set;}
-
-		}
-		public interface Singleton  : AccessControlledObject 
-		{
-						Locale DefaultLocale {set;}
-
-						Locale Locales {set;}
-
-						User Guest {set;}
-
-						SecurityToken InitialSecurityToken {set;}
-
-						SecurityToken DefaultSecurityToken {set;}
-
-						AccessControl CreatorsAccessControl {set;}
-
-						AccessControl GuestAccessControl {set;}
-
-						AccessControl AdministratorsAccessControl {set;}
-
-						PrintQueue DefaultPrintQueue {set;}
-
-						SecurityToken AdministratorSecurityToken {set;}
-
-						Currency DefaultCurrency {set;}
-
-						Media NoImageAvailableImage {set;}
-
-						InternalOrganisation DefaultInternalOrganisation {set;}
 
 		}
 		public interface UserGroup  : UniquelyIdentifiable, AccessControlledObject 
@@ -2331,7 +2323,7 @@ namespace Allors.Domain
 
 						Product ProductIncompatibilities {set;}
 
-						Media Photo {set;}
+						Image Photo {set;}
 
 		}
 		public interface GoodOrderItem  : EngagementItem 

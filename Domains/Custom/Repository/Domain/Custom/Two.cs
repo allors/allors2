@@ -5,7 +5,7 @@ namespace Allors.Repository
     #region Allors
     [Id("9ec7e136-815c-4726-9991-e95a3ec9e092")]
     #endregion
-    public partial class Two :  Object, Shared 
+    public partial class Two : Object, Shared 
     {
         #region inherited properties
         #endregion

@@ -42,7 +42,7 @@
     <Compile Include="Core\Attributes\SizeAttribute.cs" />
     <Compile Include="Core\Attributes\SyncedAttribute.cs" />
     <Compile Include="Core\Attributes\WorkspaceAttribute.cs" />
-    <Compile Include="Core\Object.cs" />
+    <Compile Include="Core\Common\Object.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -50,6 +50,9 @@
       <Project>{5db05e81-88cc-4d0d-92f8-18a8ecb50bc2}</Project>
       <Name>Allors.Repository.Attributes</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Settings.StyleCop" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -56,14 +56,8 @@
     <Compile Include="..\..\..\Base\Repository\Domain\Base\Common\Object.cs">
       <Link>Base\Common\Object.cs</Link>
     </Compile>
-    <Compile Include="..\..\..\Base\Repository\Domain\Base\Common\ObjectState.cs">
-      <Link>Base\Common\ObjectState.cs</Link>
-    </Compile>
     <Compile Include="..\..\..\Base\Repository\Domain\Base\Common\Singleton.cs">
       <Link>Base\Common\Singleton.cs</Link>
-    </Compile>
-    <Compile Include="..\..\..\Base\Repository\Domain\Base\Common\Transitional.cs">
-      <Link>Base\Common\Transitional.cs</Link>
     </Compile>
     <Compile Include="..\..\..\Base\Repository\Domain\Base\Common\UniquelyIdentifiable.cs">
       <Link>Base\Common\UniquelyIdentifiable.cs</Link>
@@ -92,9 +86,6 @@
     <Compile Include="..\..\..\Base\Repository\Domain\Base\Localisation\LocalisedText.cs">
       <Link>Base\Localisation\LocalisedText.cs</Link>
     </Compile>
-    <Compile Include="..\..\..\Base\Repository\Domain\Base\Relation\Person.cs">
-      <Link>Base\Relation\Person.cs</Link>
-    </Compile>
     <Compile Include="..\..\..\Base\Repository\Domain\Base\Security\AccessControl.cs">
       <Link>Base\Security\AccessControl.cs</Link>
     </Compile>
@@ -122,6 +113,45 @@
     <Compile Include="..\..\..\Base\Repository\Domain\Base\Security\UserGroup.cs">
       <Link>Base\Security\UserGroup.cs</Link>
     </Compile>
+    <Compile Include="..\..\..\Base\Repository\Domain\Base\Workflow\ApproveTask.cs">
+      <Link>Base\Workflow\ApproveTask.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\Base\Repository\Domain\Base\Workflow\AutomatedAgent.cs">
+      <Link>Base\Workflow\AutomatedAgent.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\Base\Repository\Domain\Base\Workflow\EmailMessage.cs">
+      <Link>Base\Workflow\EmailMessage.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\Base\Repository\Domain\Base\Workflow\EmailSource.cs">
+      <Link>Base\Workflow\EmailSource.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\Base\Repository\Domain\Base\Workflow\Notification.cs">
+      <Link>Base\Workflow\Notification.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\Base\Repository\Domain\Base\Workflow\NotificationList.cs">
+      <Link>Base\Workflow\NotificationList.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\Base\Repository\Domain\Base\Workflow\ObjectState.cs">
+      <Link>Base\Workflow\ObjectState.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\Base\Repository\Domain\Base\Workflow\Person.cs">
+      <Link>Base\Workflow\Person.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\Base\Repository\Domain\Base\Workflow\Task.cs">
+      <Link>Base\Workflow\Task.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\Base\Repository\Domain\Base\Workflow\TaskAssignment.cs">
+      <Link>Base\Workflow\TaskAssignment.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\Base\Repository\Domain\Base\Workflow\TaskList.cs">
+      <Link>Base\Workflow\TaskList.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\Base\Repository\Domain\Base\Workflow\Transitional.cs">
+      <Link>Base\Workflow\Transitional.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\Base\Repository\Domain\Base\Workflow\WorkItem.cs">
+      <Link>Base\Workflow\WorkItem.cs</Link>
+    </Compile>
     <Compile Include="..\..\..\Core\Repository\Domain\Core\AssemblyInfo.cs">
       <Link>Core\AssemblyInfo.cs</Link>
     </Compile>
@@ -146,8 +176,8 @@
     <Compile Include="..\..\..\Core\Repository\Domain\Core\Attributes\WorkspaceAttribute.cs">
       <Link>Core\Attributes\WorkspaceAttribute.cs</Link>
     </Compile>
-    <Compile Include="..\..\..\Core\Repository\Domain\Core\Object.cs">
-      <Link>Core\Object.cs</Link>
+    <Compile Include="..\..\..\Core\Repository\Domain\Core\Common\Object.cs">
+      <Link>Core\Common\Object.cs</Link>
     </Compile>
     <Compile Include="Apps\AccountAdjustment.cs" />
     <Compile Include="Apps\AccountingPeriod.cs" />
@@ -610,7 +640,7 @@
     <Compile Include="Apps\SupplierRelationship.cs" />
     <Compile Include="Apps\SurchargeAdjustment.cs" />
     <Compile Include="Apps\SurchargeComponent.cs" />
-    <Compile Include="Apps\Task.cs" />
+    <Compile Include="Apps\WorkTask.cs" />
     <Compile Include="Apps\TaxDocument.cs" />
     <Compile Include="Apps\TaxDue.cs" />
     <Compile Include="Apps\TelecommunicationsNumber.cs" />
@@ -668,6 +698,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\..\..\Base\Repository\Domain\Base\Workflow\Workflow.cd">
+      <Link>Base\Workflow\Workflow.cd</Link>
+    </None>
     <None Include="Settings.StyleCop" />
   </ItemGroup>
   <ItemGroup>

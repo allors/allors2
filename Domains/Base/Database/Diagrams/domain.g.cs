@@ -63,6 +63,45 @@ namespace Allors.Domain
 
 						global::System.String UserPasswordHash {set;}
 
+						TaskList TaskList {set;}
+
+						NotificationList NotificationList {set;}
+
+		}
+		public interface ApproveTask  : Task 
+		{
+						Notification RejectionNotification {set;}
+
+		}
+		public interface EmailSource  : Object 
+		{
+						EmailMessage EmailMessage {set;}
+
+		}
+		public interface Task  : AccessControlledObject, UniquelyIdentifiable, Deletable 
+		{
+						WorkItem WorkItem {set;}
+
+						global::System.DateTime DateCreated {set;}
+
+						global::System.DateTime? DateClosed {set;}
+
+						Person Participants {set;}
+
+						Person Performer {set;}
+
+						global::System.String Comment {set;}
+
+		}
+		public interface WorkItem  : Object 
+		{
+						global::System.String WorkItemDescription {set;}
+
+		}
+		public interface LocalisedText  : AccessControlledObject, Localised 
+		{
+						global::System.String Text {set;}
+
 		}
 		public interface AccessControl  : Deletable, AccessControlledObject 
 		{
@@ -122,11 +161,6 @@ namespace Allors.Domain
 						Country Country {set;}
 
 		}
-		public interface LocalisedText  : AccessControlledObject, Localised 
-		{
-						global::System.String Text {set;}
-
-		}
 		public interface Login  : Deletable 
 		{
 						global::System.String Key {set;}
@@ -152,6 +186,13 @@ namespace Allors.Domain
 						global::System.String Type {set;}
 
 						global::System.Byte[] Data {set;}
+
+		}
+		public interface AutomatedAgent  : User 
+		{
+						global::System.String Name {set;}
+
+						global::System.String Description {set;}
 
 		}
 		public interface Permission  : Deletable, AccessControlledObject 
@@ -208,6 +249,63 @@ namespace Allors.Domain
 						User Members {set;}
 
 						global::System.String Name {set;}
+
+		}
+		public interface EmailMessage  : Object 
+		{
+						global::System.DateTime DateCreated {set;}
+
+						global::System.DateTime? DateSending {set;}
+
+						global::System.DateTime? DateSent {set;}
+
+						User Sender {set;}
+
+						User Recipients {set;}
+
+						global::System.String Subject {set;}
+
+						global::System.String Body {set;}
+
+		}
+		public interface Notification  : AccessControlledObject 
+		{
+						UniquelyIdentifiable Target {set;}
+
+						global::System.Boolean Confirmed {set;}
+
+						global::System.String Title {set;}
+
+						global::System.String Description {set;}
+
+						global::System.DateTime DateCreated {set;}
+
+		}
+		public interface NotificationList  : AccessControlledObject, Deletable 
+		{
+						Notification Notifications {set;}
+
+						Notification UnconfirmedNotifications {set;}
+
+						Notification ConfirmedNotifications {set;}
+
+		}
+		public interface TaskAssignment  : AccessControlledObject, Deletable 
+		{
+						User User {set;}
+
+						Notification Notification {set;}
+
+						Task Task {set;}
+
+		}
+		public interface TaskList  : Deletable 
+		{
+						TaskAssignment TaskAssignments {set;}
+
+						TaskAssignment OpenTaskAssignments {set;}
+
+						global::System.Int32? Count {set;}
 
 		}
 }

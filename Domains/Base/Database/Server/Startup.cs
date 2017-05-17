@@ -1,8 +1,30 @@
-﻿namespace Allors.Server
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="Startup.cs" company="Allors bvba">
+//   Copyright 2002-2017 Allors bvba.
+//
+// Dual Licensed under
+//   a) the General Public Licence v3 (GPL)
+//   b) the Allors License
+//
+// The GPL License is included in the file gpl.txt.
+// The Allors License is an addendum to your contract.
+//
+// Allors Applications is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// For more information visit http://www.allors.com/legal
+// </copyright>
+// --------------------------------------------------------------------------------------------------------------------
+
+namespace Allors.Server
 {
     using Allors;
+    using Allors.Adapters.Object.SqlClient;
     using Allors.Domain;
     using Allors.Meta;
+    using Allors.Services.Production;
 
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
@@ -28,10 +50,25 @@
         public void ConfigureServices(IServiceCollection services)
         {
             // Allors
-            services.AddSingleton(this.Configuration);
-
             var objectFactory = new Allors.ObjectFactory(MetaPopulation.Instance, typeof(User));
-            services.AddSingleton<IObjectFactory>(objectFactory);
+            var configuration = new Configuration
+                                    {
+                                        ObjectFactory = objectFactory,
+                                        ConnectionString = this.Configuration.GetConnectionString("DefaultConnection")
+                                    };
+
+            var database = new Database(configuration);
+
+            var timeService = new TimeService();
+            var mailService = new MailService();
+            var serviceLocator = new ServiceLocator
+                                     {
+                                         TimeServiceFactory = () => timeService,
+                                         MailServiceFactory = () => mailService
+                                     };
+            database.SetServiceLocator(serviceLocator.Assert());
+
+            services.AddSingleton<IDatabase>(database);
             services.AddScoped<IAllorsContext, AllorsContext>();
 
             // Add framework services.

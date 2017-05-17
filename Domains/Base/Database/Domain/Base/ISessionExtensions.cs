@@ -1,6 +1,6 @@
 //-------------------------------------------------------------------------------------------------
 // <copyright file="ISessionExtensions.cs" company="Allors bvba">
-// Copyright 2002-2016 Allors bvba.
+// Copyright 2002-2017 Allors bvba.
 //
 // Dual Licensed under
 //   a) the General Public Licence v3 (GPL)
@@ -26,7 +26,7 @@ namespace Allors
 
     public static partial class ISessionExtensions
     {
-        public static void Derive(this ISession session, bool throwExceptionOnError)
+        public static IValidation Derive(this ISession session, bool throwExceptionOnError = true)
         {
             var derivation = new Derivation(session);
             var validation = derivation.Derive();
@@ -34,12 +34,8 @@ namespace Allors
             {
                 throw new DerivationException(validation);
             }
-        }
 
-        public static IValidation Derive(this ISession session)
-        {
-            var derivation = new Derivation(session);
-            return derivation.Derive();
+            return validation;
         }
     }
 }

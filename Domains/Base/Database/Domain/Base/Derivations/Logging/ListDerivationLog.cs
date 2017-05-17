@@ -1,6 +1,6 @@
 // --------------------------------------------------------------------------------------------------------------------
 // <copyright file="DebugLog.cs" company="Allors bvba">
-//   Copyright 2002-2016 Allors bvba.
+//   Copyright 2002-2017 Allors bvba.
 //
 // Dual Licensed under
 //   a) the General Public Licence v3 (GPL)
@@ -20,11 +20,7 @@
 
 namespace Allors.Domain.Logging
 {
-    using System;
     using System.Collections.Generic;
-    using System.Linq;
-
-    using Object = Allors.Domain.Object;
 
     public class ListDerivationLog : IDerivationLog
     {

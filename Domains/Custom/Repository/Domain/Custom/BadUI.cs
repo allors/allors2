@@ -7,7 +7,7 @@ namespace Allors.Repository
     #region Allors
     [Id("bb1b0a2e-66d1-4e09-860f-52dc7145029e")]
     #endregion
-    public partial class BadUI :  Object 
+    public partial class BadUI : Object 
     {
         #region inherited properties
         #endregion

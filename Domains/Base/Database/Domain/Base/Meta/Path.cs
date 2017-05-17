@@ -1,6 +1,6 @@
 // --------------------------------------------------------------------------------------------------------------------
 // <copyright file="Path.cs" company="Allors bvba">
-//   Copyright 2002-2016 Allors bvba.
+//   Copyright 2002-2017 Allors bvba.
 //
 // Dual Licensed under
 //   a) the General Public Licence v3 (GPL)
@@ -25,7 +25,6 @@ namespace Allors.Meta
     using System.Collections.Generic;
 
     using Allors.Domain;
-    using Allors;
 
     public static class PathExtensions
     {

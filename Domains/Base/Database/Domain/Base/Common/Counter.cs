@@ -1,6 +1,6 @@
 // --------------------------------------------------------------------------------------------------------------------
 // <copyright file="Counter.cs" company="Allors bvba">
-//   Copyright 2002-2016 Allors bvba.
+//   Copyright 2002-2017 Allors bvba.
 //
 // Dual Licensed under
 //   a) the General Public Licence v3 (GPL)
@@ -33,11 +33,6 @@ namespace Allors.Domain
         public int NextValue()
         {
             return Counters.NextValue(this.Strategy.Session, this.UniqueId);
-        }
-
-        public int NextElfProefValue()
-        {
-            return Counters.NextElfProefValue(this.Strategy.Session, this.UniqueId);
         }
     }
 }

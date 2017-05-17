@@ -8,7 +8,7 @@ namespace Allors.Repository
     [Id("2561e93c-5b85-44fb-a924-a1c0d1f78846")]
     #endregion
     [Plural("HomeAddresses")]
-    public partial class HomeAddress :  Object, Address 
+    public partial class HomeAddress : Object, Address 
     {
         #region inherited properties
         public Place Place { get; set; }

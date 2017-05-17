@@ -59,12 +59,13 @@
     <Compile Include="..\..\..\Core\Repository\Domain\Core\Attributes\WorkspaceAttribute.cs">
       <Link>Core\Attributes\WorkspaceAttribute.cs</Link>
     </Compile>
-    <Compile Include="..\..\..\Core\Repository\Domain\Core\Object.cs">
-      <Link>Core\Object.cs</Link>
+    <Compile Include="..\..\..\Core\Repository\Domain\Core\Common\Object.cs">
+      <Link>Core\Common\Object.cs</Link>
     </Compile>
     <Compile Include="Base\Attributes\RequiredAttribute.cs" />
     <Compile Include="Base\Attributes\UniqueAttribute.cs" />
     <Compile Include="Base\Common\Object.cs" />
+    <Compile Include="Base\Localisation\LocalisedText.cs" />
     <Compile Include="Base\Security\AccessControl.cs" />
     <Compile Include="Base\Security\AccessControlledObject.cs" />
     <Compile Include="Base\AssemblyInfo.cs" />
@@ -76,24 +77,34 @@
     <Compile Include="Base\Localisation\Language.cs" />
     <Compile Include="Base\Localisation\Locale.cs" />
     <Compile Include="Base\Localisation\Localised.cs" />
-    <Compile Include="Base\Localisation\LocalisedText.cs" />
     <Compile Include="Base\Security\Login.cs" />
     <Compile Include="Base\Content\Media.cs" />
     <Compile Include="Base\Content\MediaContent.cs" />
-    <Compile Include="Base\Common\ObjectState.cs" />
+    <Compile Include="Base\Workflow\AutomatedAgent.cs" />
+    <Compile Include="Base\Workflow\ObjectState.cs" />
     <Compile Include="Base\Security\Permission.cs" />
-    <Compile Include="Base\Relation\Person.cs" />
+    <Compile Include="Base\Workflow\Person.cs" />
     <Compile Include="Base\Security\Role.cs" />
     <Compile Include="Base\Security\SecurityToken.cs" />
     <Compile Include="Base\Security\SecurityTokenOwner.cs" />
     <Compile Include="Base\Common\Singleton.cs" />
-    <Compile Include="Base\Common\Transitional.cs" />
+    <Compile Include="Base\Workflow\Transitional.cs" />
     <Compile Include="Base\Common\UniquelyIdentifiable.cs" />
-    <Compile Include="Base\Security\User.cs" />
-    <Compile Include="Base\Security\UserGroup.cs" />
+    <Compile Include="Base\Workflow\User.cs" />
+    <Compile Include="Base\Workflow\UserGroup.cs" />
+    <Compile Include="Base\Workflow\ApproveTask.cs" />
+    <Compile Include="Base\Workflow\EmailMessage.cs" />
+    <Compile Include="Base\Workflow\EmailSource.cs" />
+    <Compile Include="Base\Workflow\Notification.cs" />
+    <Compile Include="Base\Workflow\NotificationList.cs" />
+    <Compile Include="Base\Workflow\Task.cs" />
+    <Compile Include="Base\Workflow\TaskAssignment.cs" />
+    <Compile Include="Base\Workflow\TaskList.cs" />
+    <Compile Include="Base\Workflow\WorkItem.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Base\Workflow\Workflow.cd" />
     <None Include="Settings.StyleCop" />
   </ItemGroup>
   <ItemGroup>

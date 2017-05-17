@@ -1,6 +1,6 @@
 // --------------------------------------------------------------------------------------------------------------------
 // <copyright file="Singleton.cs" company="Allors bvba">
-//   Copyright 2002-2016 Allors bvba.
+//   Copyright 2002-2017 Allors bvba.
 //
 // Dual Licensed under
 //   a) the General Public Licence v3 (GPL)
@@ -24,7 +24,7 @@ namespace Allors.Domain
 
     public partial class Singleton
     {
-        private static readonly string SessionKey = "Allors.Cache." + typeof(Singleton);
+        private const string SessionKey = nameof(Singleton) + ".Key";
 
         public static Singleton Instance(ISession session)
         {
