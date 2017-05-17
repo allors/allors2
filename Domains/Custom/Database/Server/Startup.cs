@@ -41,13 +41,15 @@
 
             var timeService = new TimeService();
             var mailService = new MailService { DefaultSender = "noreply@example.com" };
+            var securityService = new SecurityService();
             var serviceLocator = new ServiceLocator
                                      {
                                          TimeServiceFactory = () => timeService,
-                                         MailServiceFactory = () => mailService
+                                         MailServiceFactory = () => mailService,
+                                         SecurityServiceFactory = () => securityService
                                      };
             database.SetServiceLocator(serviceLocator.Assert());
-
+            
             services.AddSingleton<IDatabase>(database);
             services.AddScoped<IAllorsContext, AllorsContext>();
 
@@ -77,6 +79,9 @@
         {
             loggerFactory.AddConsole(this.Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
+            
+            // Allors
+            app.UseAuthentication();
 
             app.UseCors("AllowAll");
 

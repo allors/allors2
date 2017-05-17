@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 
 import { Http, Response } from '@angular/http';
 
-import { Database } from '../allors/angular/base/Database';
+import { Database } from '../allors/angular';
 import { Workspace } from '../allors/domain/base/Workspace';
 import { workspace } from '../allors/domain';
 

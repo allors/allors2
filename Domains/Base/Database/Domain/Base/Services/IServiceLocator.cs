@@ -27,5 +27,7 @@ namespace Allors
         ITimeService CreateTimeService();
 
         IMailService CreateMailService();
+
+        ISecurityService CreateSecurityService();
     }
 }

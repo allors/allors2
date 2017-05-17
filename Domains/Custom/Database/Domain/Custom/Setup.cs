@@ -38,11 +38,21 @@ namespace Allors
 
         private void CustomOnPostSetup()
         {
-            new OrganisationBuilder(this.session).WithName("Acme").Build();
-            
-            new PersonBuilder(this.session).WithFirstName("John").WithLastName("Doe").WithUserName("john@doe.org").Build();
-            new PersonBuilder(this.session).WithFirstName("Jane").WithLastName("Doe").WithUserName("jane@doe.org").Build();
-            
+            var john = new PersonBuilder(this.session).WithFirstName("John").WithLastName("Doe").WithUserName("john@doe.org").Build();
+            var jane = new PersonBuilder(this.session).WithFirstName("Jane").WithLastName("Doe").WithUserName("jane@doe.org").Build();
+            var jenny = new PersonBuilder(this.session).WithFirstName("Jenny").WithLastName("Doe").Build();
+
+            john.SetPassword("john");
+            jane.SetPassword("jane");
+            jenny.SetPassword("jenny");
+
+            var acme = new OrganisationBuilder(this.session)
+                .WithName("Acme")
+                .WithOwner(jane)
+                .WithEmployee(john)
+                .WithEmployee(jenny)
+                .Build();
+
             // Create cycles between Organisation and Person
             var cycleOrganisation1 = new OrganisationBuilder(this.session).WithName("Organisatin Cycle One").Build();
             var cycleOrganisation2 = new OrganisationBuilder(this.session).WithName("Organisatin Cycle Two").Build();
@@ -69,21 +79,6 @@ namespace Allors
 
             cyclePerson2.AddCycleMany(cycleOrganisation1);
             cyclePerson2.AddCycleMany(cycleOrganisation2);
-        }
-
-        public void ApplyDemo()
-        {
-            var john = new PersonBuilder(this.session).WithFirstName("John").WithLastName("Doe").Build();
-            var jane = new PersonBuilder(this.session).WithFirstName("Jane").WithLastName("Doe").Build();
-            var jenny = new PersonBuilder(this.session).WithFirstName("Jenny").WithLastName("Doe").Build();
-            var jude = new PersonBuilder(this.session).WithFirstName("Jude").WithLastName("Doe").Build();
-
-            var acme = new OrganisationBuilder(this.session)
-                .WithName("Acme")
-                .WithOwner(jane)
-                .WithEmployee(john)
-                .WithEmployee(jenny)
-                .Build();
         }
     }
 }

@@ -30,6 +30,8 @@ namespace Allors.Services.Base
 
         public Func<IMailService> MailServiceFactory { get; set; }
 
+        public Func<ISecurityService> SecurityServiceFactory { get; set; }
+
         public ITimeService CreateTimeService()
         {
             return this.TimeServiceFactory();
@@ -38,6 +40,11 @@ namespace Allors.Services.Base
         public IMailService CreateMailService()
         {
             return this.MailServiceFactory();
+        }
+
+        public ISecurityService CreateSecurityService()
+        {
+            return this.SecurityServiceFactory();
         }
 
         public ServiceLocator Assert()

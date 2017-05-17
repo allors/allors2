@@ -37,10 +37,12 @@
 
             var timeService = new TimeService();
             var mailService = new MailService();
+            var securityService = new SecurityService();
             var serviceLocator = new ServiceLocator
                                         {
                                             TimeServiceFactory = () => timeService,
-                                            MailServiceFactory = () => mailService
+                                            MailServiceFactory = () => mailService,
+                                            SecurityServiceFactory = () => securityService,
                                         };
             database.SetServiceLocator(serviceLocator.Assert());
 

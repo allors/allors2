@@ -38,13 +38,16 @@
             var database = new Database(configuration);
 
             var timeService = new TimeService();
-            var mailService = new MailService();
+            var mailService = new MailService { DefaultSender = "noreply@example.com" };
+            var securityService = new SecurityService();
             var serviceLocator = new ServiceLocator
-                                        {
-                                            TimeServiceFactory = () => timeService,
-                                            MailServiceFactory = () => mailService
-                                        };
+                                     {
+                                         TimeServiceFactory = () => timeService,
+                                         MailServiceFactory = () => mailService,
+                                         SecurityServiceFactory = () => securityService
+                                     };
             database.SetServiceLocator(serviceLocator.Assert());
+
 
             return database;
         }

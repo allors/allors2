@@ -37,6 +37,8 @@ namespace Allors
             {
                 database.Init();
 
+                database = this.CreateDatabase(IsolationLevel.Serializable);
+
                 using (var session = database.CreateSession())
                 {
                     var dataPath = this.Configuration["dataPath"];

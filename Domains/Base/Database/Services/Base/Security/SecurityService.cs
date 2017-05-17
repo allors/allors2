@@ -1,51 +1,49 @@
 // --------------------------------------------------------------------------------------------------------------------
-// <copyright file="UserExtensions.cs" company="Allors bvba">
+// <copyright file="SecurityService.cs" company="Allors bvba">
 //   Copyright 2002-2017 Allors bvba.
-//
+// 
 // Dual Licensed under
 //   a) the General Public Licence v3 (GPL)
 //   b) the Allors License
-//
+// 
 // The GPL License is included in the file gpl.txt.
 // The Allors License is an addendum to your contract.
-//
+// 
 // Allors Applications is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-//
+// 
 // For more information visit http://www.allors.com/legal
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Allors.Domain
+namespace Allors.Services.Base
 {
-    public static partial class UserExtensions
-    {
-        public static void BaseDelete(this User @this, DeletableDelete method)
-        {
-            if (@this.ExistTaskList)
-            {
-                @this.TaskList.Delete();
-            }
+    using Microsoft.AspNetCore.Identity;
 
-            if (@this.ExistNotificationList)
-            {
-                @this.NotificationList.Delete();
-            }
+    public class SecurityService : ISecurityService
+    {
+        private readonly PasswordHasher<string> passwordHasher;
+
+        public SecurityService()
+        {
+            this.passwordHasher = new PasswordHasher<string>();
         }
 
-        public static void BaseOnBuild(this User @this, ObjectOnBuild method)
+        public string HashPassword(string user, string password)
         {
-            if (!@this.ExistTaskList)
-            {
-                @this.TaskList = new TaskListBuilder(@this.Strategy.Session).Build();
-            }
+            return this.passwordHasher.HashPassword(user, password);
+        }
 
-            if (!@this.ExistNotificationList)
-            {
-                @this.NotificationList = new NotificationListBuilder(@this.Strategy.Session).Build();
-            }
+        public bool VerifyHashedPassword(string user, string hashedPassword, string providedPassword)
+        {
+            var result = this.passwordHasher.VerifyHashedPassword(user, hashedPassword, providedPassword);
+            return result != PasswordVerificationResult.Failed;
+        }
+
+        public void Dispose()
+        {
         }
     }
 }

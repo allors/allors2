@@ -2,7 +2,7 @@ import { Workspace } from './base/Workspace';
 import { Population as MetaPopulation } from '../meta';
 import { constructorByName } from './generated/domain.g';
 
-let metaPopulation = new MetaPopulation();
+const metaPopulation = new MetaPopulation();
 metaPopulation.init();
 
 export let workspace = new Workspace(metaPopulation, constructorByName);
