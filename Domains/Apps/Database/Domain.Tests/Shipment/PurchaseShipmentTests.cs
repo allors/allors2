@@ -106,7 +106,7 @@ namespace Allors.Domain
             PostalAddress postalAddress = null;
             foreach (PartyContactMechanism partyContactMechanism in internalOrganisation.PartyContactMechanisms)
             {
-                if (partyContactMechanism.ContactPurpose.Equals(new ContactMechanismPurposes(this.DatabaseSession).ShippingAddress))
+                if (partyContactMechanism.ContactPurposes.Contains(new ContactMechanismPurposes(this.DatabaseSession).ShippingAddress))
                 {
                     postalAddress = partyContactMechanism.ContactMechanism as PostalAddress;
                 }

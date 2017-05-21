@@ -135,7 +135,6 @@ namespace Allors
                 }
 
                 session.Derive(true);
-                session.Commit();
             }
         }
     }

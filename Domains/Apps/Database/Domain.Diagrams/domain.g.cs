@@ -3108,7 +3108,7 @@ namespace Allors.Domain
 		}
 		public interface PartyContactMechanism  : Commentable, Auditable, Period, Deletable 
 		{
-						ContactMechanismPurpose ContactPurpose {set;}
+						ContactMechanismPurpose ContactPurposes {set;}
 
 						ContactMechanism ContactMechanism {set;}
 

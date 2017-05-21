@@ -210,118 +210,99 @@ namespace Allors.Domain
             {
                 if (partyContactMechanism.UseAsDefault)
                 {
-                    if (partyContactMechanism.ContactPurpose.IsBillingAddress)
+                    if (partyContactMechanism.ContactPurposes.Contains(new ContactMechanismPurposes(@this.Strategy.Session).BillingAddress))
                     {
                         @this.BillingAddress = partyContactMechanism.ContactMechanism;
-                        continue;
                     }
 
-                    if (partyContactMechanism.ContactPurpose.IsBillingInquiriesFax)
+                    if (partyContactMechanism.ContactPurposes.Contains(new ContactMechanismPurposes(@this.Strategy.Session).BillingInquiriesFax))
                     {
                         @this.BillingInquiriesFax = partyContactMechanism.ContactMechanism as TelecommunicationsNumber;
-                        continue;
                     }
 
-                    if (partyContactMechanism.ContactPurpose.IsBillingInquiriesPhone)
+                    if (partyContactMechanism.ContactPurposes.Contains(new ContactMechanismPurposes(@this.Strategy.Session).BillingInquiriesPhone))
                     {
                         @this.BillingInquiriesPhone = partyContactMechanism.ContactMechanism as TelecommunicationsNumber;
-                        continue;
                     }
 
-                    if (partyContactMechanism.ContactPurpose.IsCellPhoneNumber)
+                    if (partyContactMechanism.ContactPurposes.Contains(new ContactMechanismPurposes(@this.Strategy.Session).CellPhoneNumber))
                     {
                         @this.CellPhoneNumber = partyContactMechanism.ContactMechanism as TelecommunicationsNumber;
-                        continue;
                     }
 
-                    if (partyContactMechanism.ContactPurpose.IsGeneralCorrespondence)
+                    if (partyContactMechanism.ContactPurposes.Contains(new ContactMechanismPurposes(@this.Strategy.Session).GeneralCorrespondence))
                     {
                         @this.GeneralCorrespondence = partyContactMechanism.ContactMechanism as PostalAddress;
-                        continue;
                     }
 
-                    if (partyContactMechanism.ContactPurpose.IsGeneralEmail)
+                    if (partyContactMechanism.ContactPurposes.Contains(new ContactMechanismPurposes(@this.Strategy.Session).GeneralEmail))
                     {
                         @this.GeneralEmail = partyContactMechanism.ContactMechanism as ElectronicAddress;
-                        continue;
                     }
 
-                    if (partyContactMechanism.ContactPurpose.IsGeneralFaxNumber)
+                    if (partyContactMechanism.ContactPurposes.Contains(new ContactMechanismPurposes(@this.Strategy.Session).GeneralFaxNumber))
                     {
                         @this.GeneralFaxNumber = partyContactMechanism.ContactMechanism as TelecommunicationsNumber;
-                        continue;
                     }
 
-                    if (partyContactMechanism.ContactPurpose.IsGeneralPhoneNumber)
+                    if (partyContactMechanism.ContactPurposes.Contains(new ContactMechanismPurposes(@this.Strategy.Session).GeneralPhoneNumber))
                     {
                         @this.GeneralPhoneNumber = partyContactMechanism.ContactMechanism as TelecommunicationsNumber;
-                        continue;
                     }
 
-                    if (partyContactMechanism.ContactPurpose.IsHeadQuarters)
+                    if (partyContactMechanism.ContactPurposes.Contains(new ContactMechanismPurposes(@this.Strategy.Session).HeadQuarters))
                     {
                         @this.HeadQuarter = partyContactMechanism.ContactMechanism;
-                        continue;
                     }
 
-                    if (partyContactMechanism.ContactPurpose.IsHomeAddress)
+                    if (partyContactMechanism.ContactPurposes.Contains(new ContactMechanismPurposes(@this.Strategy.Session).HomeAddress))
                     {
                         @this.HomeAddress = partyContactMechanism.ContactMechanism;
-                        continue;
                     }
 
-                    if (partyContactMechanism.ContactPurpose.IsInternetAddress)
+                    if (partyContactMechanism.ContactPurposes.Contains(new ContactMechanismPurposes(@this.Strategy.Session).InternetAddress))
                     {
                         @this.InternetAddress = partyContactMechanism.ContactMechanism as ElectronicAddress;
-                        continue;
                     }
 
-                    if (partyContactMechanism.ContactPurpose.IsOrderAddress)
+                    if (partyContactMechanism.ContactPurposes.Contains(new ContactMechanismPurposes(@this.Strategy.Session).OrderAddress))
                     {
                         @this.OrderAddress = partyContactMechanism.ContactMechanism;
-                        continue;
                     }
 
-                    if (partyContactMechanism.ContactPurpose.IsOrderInquiriesFax)
+                    if (partyContactMechanism.ContactPurposes.Contains(new ContactMechanismPurposes(@this.Strategy.Session).OrderInquiriesFax))
                     {
                         @this.OrderInquiriesFax = partyContactMechanism.ContactMechanism as TelecommunicationsNumber;
-                        continue;
                     }
 
-                    if (partyContactMechanism.ContactPurpose.IsOrderInquiriesPhone)
+                    if (partyContactMechanism.ContactPurposes.Contains(new ContactMechanismPurposes(@this.Strategy.Session).OrderInquiriesPhone))
                     {
                         @this.OrderInquiriesPhone = partyContactMechanism.ContactMechanism as TelecommunicationsNumber;
-                        continue;
                     }
 
-                    if (partyContactMechanism.ContactPurpose.IsPersonalEmailAddress)
+                    if (partyContactMechanism.ContactPurposes.Contains(new ContactMechanismPurposes(@this.Strategy.Session).PersonalEmailAddress))
                     {
                         @this.PersonalEmailAddress = partyContactMechanism.ContactMechanism as ElectronicAddress;
-                        continue;
                     }
 
-                    if (partyContactMechanism.ContactPurpose.IsSalesOffice)
+                    if (partyContactMechanism.ContactPurposes.Contains(new ContactMechanismPurposes(@this.Strategy.Session).SalesOffice))
                     {
                         @this.SalesOffice = partyContactMechanism.ContactMechanism;
-                        continue;
                     }
 
-                    if (partyContactMechanism.ContactPurpose.IsShippingAddress)
+                    if (partyContactMechanism.ContactPurposes.Contains(new ContactMechanismPurposes(@this.Strategy.Session).ShippingAddress))
                     {
                         @this.ShippingAddress = partyContactMechanism.ContactMechanism as PostalAddress;
-                        continue;
                     }
 
-                    if (partyContactMechanism.ContactPurpose.IsShippingInquiriesFax)
+                    if (partyContactMechanism.ContactPurposes.Contains(new ContactMechanismPurposes(@this.Strategy.Session).ShippingInquiriesFax))
                     {
                         @this.ShippingInquiriesFax = partyContactMechanism.ContactMechanism as TelecommunicationsNumber;
-                        continue;
                     }
 
-                    if (partyContactMechanism.ContactPurpose.IsShippingInquiriesPhone)
+                    if (partyContactMechanism.ContactPurposes.Contains(new ContactMechanismPurposes(@this.Strategy.Session).ShippingInquiriesPhone))
                     {
                         @this.ShippingInquiriesPhone = partyContactMechanism.ContactMechanism as TelecommunicationsNumber;
-                        continue;
                     }
                 }
             }

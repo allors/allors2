@@ -50,21 +50,24 @@ namespace Allors.Domain
 
             if (this.ExistUseAsDefault && this.UseAsDefault)
             {
-                derivation.Validation.AssertExists(this, M.PartyContactMechanism.ContactPurpose);
+                derivation.Validation.AssertExists(this, M.PartyContactMechanism.ContactPurposes);
             }
 
-            if (this.UseAsDefault && this.ExistPartyWherePartyContactMechanism && this.ExistContactPurpose)
+            if (this.UseAsDefault && this.ExistPartyWherePartyContactMechanism && this.ExistContactPurposes)
             {
-                var partyContactMechanisms = this.PartyWherePartyContactMechanism.PartyContactMechanisms;
-                partyContactMechanisms.Filter.AddEquals(M.PartyContactMechanism.ContactPurpose, this.ContactPurpose);
-
-                foreach (PartyContactMechanism partyContactMechanism in partyContactMechanisms)
+                foreach (var contactMechanismPurpose in this.ContactPurposes)
                 {
-                    if (!partyContactMechanism.Equals(this))
+                    var partyContactMechanisms = this.PartyWherePartyContactMechanism.PartyContactMechanisms;
+                    partyContactMechanisms.Filter.AddEquals(M.PartyContactMechanism.ContactPurposes, contactMechanismPurpose);
+
+                    foreach (PartyContactMechanism partyContactMechanism in partyContactMechanisms)
                     {
-                        partyContactMechanism.UseAsDefault = false;
+                        if (!partyContactMechanism.Equals(this))
+                        {
+                            partyContactMechanism.UseAsDefault = false;
+                        }
                     }
-                }   
+                }
             }
         }
 
