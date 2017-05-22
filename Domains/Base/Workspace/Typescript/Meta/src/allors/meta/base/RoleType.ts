@@ -1,4 +1,4 @@
-import { ObjectType } from './ObjectType';
+import { ObjectType } from "./ObjectType";
 
 export class RoleType {
     name: string;

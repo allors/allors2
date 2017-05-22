@@ -15,7 +15,7 @@ export class LoginComponent implements OnDestroy {
         password: ['', Validators.required]
     });
 
-    private postStream$: Subscription;
+    private subscription: Subscription;
 
     constructor(private authService: AuthenticationService, private router: Router, public fb: FormBuilder) { }
 
@@ -23,23 +23,24 @@ export class LoginComponent implements OnDestroy {
         const userName = this.loginForm.controls.userName.value;
         const password = this.loginForm.controls.password.value;
 
-        if (this.postStream$) { this.postStream$.unsubscribe(); }
+        if (this.subscription) { this.subscription.unsubscribe(); }
 
-        this.postStream$ = this.authService.login$(userName, password)
-        .subscribe(
-            result => {
-                if (result.authenticated) {
-                    this.router.navigate(['/']);
-                } else {
-                    alert(result.msg);
+        this.subscription = this.authService
+            .login$(userName, password)
+            .subscribe(
+                result => {
+                    if (result.authenticated) {
+                        this.router.navigate(['/']);
+                    } else {
+                        alert(result.msg);
+                    }
                 }
-            }
-        );
+            );
     }
 
      ngOnDestroy() {
-         if (this.postStream$) {
-             this.postStream$.unsubscribe();
-            }
+         if (this.subscription) {
+             this.subscription.unsubscribe();
+        }
      }
 }

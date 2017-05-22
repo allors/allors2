@@ -32,6 +32,10 @@ export class Population {
             metaClass.name = dataClass.name;
             metaClass.kind = Kind.class;
             this.objectTypeByName[metaClass.name] = metaClass;
+        });
+
+        data.classes.forEach(dataClass => {
+            const metaClass = this.objectTypeByName[dataClass.name];
 
             dataClass.interfaces.forEach(dataInterface => {
                 let metaInterface = this.objectTypeByName[dataInterface];
@@ -44,10 +48,6 @@ export class Population {
 
                 metaClass.interfaceByName[metaInterface.name] = metaInterface;
             });
-        });
-
-        data.classes.forEach(dataClass => {
-            const metaClass = this.objectTypeByName[dataClass.name];
 
             dataClass.roleTypes.forEach(dataRoleType => {
                 const objectType = this.objectTypeByName[dataRoleType.objectType];
