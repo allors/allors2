@@ -1,5 +1,7 @@
 ﻿namespace Allors.Server
 {
+    using System;
+
     using Microsoft.IdentityModel.Tokens;
 
     public interface IAuthenticationContext 
@@ -9,6 +11,8 @@
         string Audience { get; }
 
         RsaSecurityKey Key { get; }
+
+        DateTime? Expires();
     }
 }
 

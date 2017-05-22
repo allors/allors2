@@ -13,21 +13,15 @@
 
     public class AuthenticationController : Controller
     {
+        private readonly IAuthenticationContext authenticationContext;
+
         public AuthenticationController(IAllorsContext allorsContext, IAuthenticationContext authenticationContext)
         {
+            this.authenticationContext = authenticationContext;
             this.AllorsSession = allorsContext.Session;
-            this.Key = authenticationContext.Key;
-            this.Issuer = authenticationContext.Issuer;
-            this.Audience = authenticationContext.Audience;
         }
 
         public ISession AllorsSession { get; }
-
-        public RsaSecurityKey Key { get; }
-
-        public string Issuer { get; set; }
-
-        public string Audience { get; set; }
 
         [HttpPost]
         public IActionResult SignIn([FromBody]SignInRequest signInRequest)
@@ -43,11 +37,11 @@
                 var handler = new JwtSecurityTokenHandler();
                 var securityToken = handler.CreateToken(new SecurityTokenDescriptor
                                                             {
-                                                                Issuer = this.Issuer,
-                                                                Audience = this.Audience,
-                                                                SigningCredentials = new SigningCredentials(this.Key, SecurityAlgorithms.RsaSha256Signature),
+                                                                Issuer = this.authenticationContext.Issuer,
+                                                                Audience = this.authenticationContext.Audience,
+                                                                SigningCredentials = new SigningCredentials(this.authenticationContext.Key, SecurityAlgorithms.RsaSha256Signature),
                                                                 Subject = claimsIdentity,
-                                                                Expires = DateTime.Now.AddDays(1)
+                                                                Expires = this.authenticationContext.Expires()
                                                             });
                 var token = handler.WriteToken(securityToken);
 

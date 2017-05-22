@@ -1,5 +1,6 @@
 ﻿namespace Allors.Server
 {
+    using System;
     using System.IO;
     using System.Security.Cryptography;
 
@@ -35,7 +36,12 @@
         public string Audience { get; set; }
 
         public RsaSecurityKey Key { get; }
-     
+
+        public DateTime? Expires()
+        {
+            return DateTime.UtcNow.AddDays(1);
+        }
+
         private class JsonParameters
         {
             public JsonParameters()
