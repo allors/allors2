@@ -8,7 +8,7 @@
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
 
-    [Authorize(ActiveAuthenticationSchemes = AuthenticationController.Scheme)]
+    [Authorize]
     public abstract class AllorsController : Controller
     {
         protected AllorsController(IAllorsContext allorsContext)

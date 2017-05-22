@@ -1,0 +1,27 @@
+<div fxLayoutAlign="center center" style="margin-top: 20px">
+  <div fxLayout="column">
+  <md-toolbar color="secondary">Login</md-toolbar>
+  <md-card>
+    <form [formGroup]="loginForm" (ngSubmit)="login($event)">
+      <md-card-content>
+
+        <div>
+          <md-input-container>
+            <input mdInput formControlName="userName" placeholder="Username" type="text" name="username" required>
+          </md-input-container>
+        </div>
+
+        <div>
+          <md-input-container>
+            <input mdInput formControlName="password" placeholder="Password" type="password" name="password" required>
+          </md-input-container>
+        </div>
+
+      </md-card-content>
+      <md-card-actions align="start|end">
+        <button md-button>Sign In</button>
+      </md-card-actions>
+    </form>
+  </md-card>
+  </div>
+</div>

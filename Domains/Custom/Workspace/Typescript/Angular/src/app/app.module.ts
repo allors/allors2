@@ -9,7 +9,6 @@ import { AppComponent } from './app.component';
 import { AllorsService } from './allors.service';
 import { LoginComponent } from './auth/login.component';
 import { AuthService } from './auth/auth.service';
-import { AuthGuard } from './auth/auth-guard.service';
 
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { FormComponent } from './form/form.component';
@@ -31,7 +30,6 @@ import { FormComponent } from './form/form.component';
   providers: [
     AllorsService,
     AuthService,
-    AuthGuard,
   ],
   bootstrap: [AppComponent]
 })

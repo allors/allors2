@@ -53,6 +53,8 @@ namespace Allors
                 .WithEmployee(jenny)
                 .Build();
 
+            new UserGroups(this.session).Administrators.AddMember(john);
+
             // Create cycles between Organisation and Person
             var cycleOrganisation1 = new OrganisationBuilder(this.session).WithName("Organisatin Cycle One").Build();
             var cycleOrganisation2 = new OrganisationBuilder(this.session).WithName("Organisatin Cycle Two").Build();

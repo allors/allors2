@@ -1,0 +1,21 @@
+<div>
+  <md-toolbar color="primary">
+    <div fxFlex>
+      <span>Angular Material</span>
+    </div>
+
+    <div>
+      <button md-icon-button [md-menu-trigger-for]="menu">
+        <md-icon>more_vert</md-icon>
+      </button>
+    </div>
+  </md-toolbar>
+
+  <md-menu x-position="before" #menu="mdMenu">
+    <button md-menu-item routerLink="/">Dashboard</button>
+    <button md-menu-item routerLink="/form">Form</button>
+  </md-menu>
+
+  <router-outlet></router-outlet>
+
+</div>

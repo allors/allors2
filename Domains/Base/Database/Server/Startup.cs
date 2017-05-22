@@ -82,9 +82,6 @@ namespace Allors.Server
             loggerFactory.AddConsole(this.Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
 
-            // Allors
-            app.UseAuthentication();
-
             app.UseMvc();
 
             app.UseMvc(routes =>

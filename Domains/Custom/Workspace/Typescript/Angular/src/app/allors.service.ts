@@ -20,7 +20,7 @@ export class AllorsService {
       this.url = 'http://localhost:50001/';
 
       if (environment.production) {
-          this.url = 'https://petite-app.inxin.net/';
+          this.url = 'https://app.example.com/';
       }
 
       this.database = new Database(http, this.url);

@@ -1,91 +1,75 @@
 import { Injectable } from '@angular/core';
-import { Observable, Observer } from 'rxjs/Rx';
+import { Headers, Http, Response, RequestOptions } from '@angular/http';
 
-import { Http, Response, Headers, RequestOptions } from '@angular/http';
+import { Router, CanActivate } from '@angular/router';
+
+import { Observable } from 'rxjs/Observable';
 
 import { AllorsService } from '../allors.service';
-import { IUser } from './user';
 
 @Injectable()
-export class AuthService {
+export class AuthService implements CanActivate {
+    private tokeyKey = 'token';
 
-    isLoggedIn: boolean;
-    redirectUrl: string;
+    constructor(private http: Http, private router: Router, private allorsService: AllorsService) { }
 
-
-    constructor(private http: Http, private allorsService: AllorsService) {
-        this.logout();
+    public canActivate() {
+        if (this.checkLogin()) {
+            return true;
+        } else {
+            this.router.navigate(['login']);
+            return false;
+        }
     }
 
-    checkLoggedIn(): Promise<boolean> {
-        return new Promise<boolean>( (resolve, reject) => {
-            if (this.isLoggedIn) {
-                resolve(this.isLoggedIn);
-            } else {
-                this.refresh()
-                    .then(v => {
-                        resolve(this.isLoggedIn);
-                    })
-                    .catch(v => {
-                        resolve(this.isLoggedIn);
-                    });
-            };
-        });
-    }
-
-    login(userName: string, password: string): Promise<boolean> {
+    public login$(userName: string, password: string) {
+        const header = new Headers({ 'Content-Type': 'application/json' });
+        const body = JSON.stringify({ 'Username': userName, 'Password': password });
+        const options = new RequestOptions({ headers: header });
         const url = this.allorsService.url + 'Authentication/SignIn';
-        const body = {
-            userName: userName,
-            password: password,
-            isPersistent: true
-        };
-        const headers = new Headers(
-            {
-                'Content-Type': 'application/json',
-                'Accept': 'application/json',
-            });
-        const options = new RequestOptions(
-            {
-                headers: headers,
-                withCredentials: true
-             });
 
         return this.http.post(url, body, options)
-            .toPromise()
-            .then(v => {
-                this.isLoggedIn = true;
-                return true;
-            })
-            .catch(v => {
-                return false;
-            });
+        .map(
+            res => {
+                const result = res.json();
+                if (result.state === 1 && result.data && result.data.accessToken) {
+                    sessionStorage.setItem(this.tokeyKey, result.data.accessToken);
+                }
+                return result;
+            }
+        ).catch(this.handleError);
     }
 
-    logout(): void {
-        // TODO: Call logout on server
-        this.isLoggedIn = false;
+    public authGet$(url) {
+        const headers = this.initAuthHeaders();
+        const options = new RequestOptions({ headers: headers });
+        return this.http.get(url, options).map(
+            response => response.json()
+        ).catch(this.handleError);
     }
 
-    private refresh(): Promise<boolean> {
-        const url = this.fullyQualifiedUrl('Authentication/Refresh');
-        const options = new RequestOptions(
-            {
-                withCredentials: true
-             });
-
-        return this.http.post(url, null, options)
-            .toPromise()
-            .then(v => {
-                this.isLoggedIn = true;
-                return true;
-            })
-            .catch(v => {
-                return false;
-            });
+    public checkLogin(): boolean {
+        const token = sessionStorage.getItem(this.tokeyKey);
+        return token != null;
     }
 
-     private fullyQualifiedUrl(localUrl: string): string {
-        return this.allorsService.url + localUrl;
+    private getLocalToken(): string {
+           return sessionStorage.getItem(this.tokeyKey);
+    }
+
+    private initAuthHeaders(): Headers {
+        const token = this.getLocalToken();
+        if (token == null) {throw new Error('No token')};
+
+        const headers = new Headers({ 'Content-Type': 'application/json' });
+        headers.append('Authorization', 'Bearer ' + token);
+        return headers;
+    }
+
+    private handleError(error: any) {
+        const errMsg = (error.message) ? error.message :
+            error.status ? `${error.status} - ${error.statusText}` : 'Server error';
+        console.error(errMsg);
+        return Observable.throw(errMsg);
     }
 }

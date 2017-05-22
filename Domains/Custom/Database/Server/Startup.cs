@@ -5,13 +5,20 @@
     using Allors.Meta;
     using Allors.Services.Base;
 
+    using Microsoft.AspNetCore.Authentication.JwtBearer;
+    using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Builder;
+    using Microsoft.AspNetCore.Diagnostics;
     using Microsoft.AspNetCore.Hosting;
+    using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.AspNetCore.Mvc.Cors.Internal;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Logging;
+    using Microsoft.IdentityModel.Tokens;
+
+    using Newtonsoft.Json;
 
     public class Startup
     {
@@ -52,6 +59,12 @@
             
             services.AddSingleton<IDatabase>(database);
             services.AddScoped<IAllorsContext, AllorsContext>();
+            var authenticationContext = new FileAuthenticationContext(@"\config\custom\authentication.key.json")
+                                            {
+                                                Issuer = @"https://issuer.allors.com",
+                                                Audience = @"https://app.allors.com"
+                                            };
+            services.AddSingleton<IAuthenticationContext>(authenticationContext);
 
             // Add framework services.
             services.AddCors(options =>
@@ -67,6 +80,13 @@
                                     .AllowCredentials();
                             });
                 });
+            
+            services.AddAuthorization(auth =>
+                {
+                    auth.AddPolicy("Bearer", new AuthorizationPolicyBuilder()
+                        .AddAuthenticationSchemes(JwtBearerDefaults.AuthenticationScheme‌​)
+                        .RequireAuthenticatedUser().Build());
+                });
 
             services.AddMvc();
             services.Configure<MvcOptions>(options =>
@@ -75,15 +95,49 @@
                 });
         }
 
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory, IAuthenticationContext authenticationContext)
         {
             loggerFactory.AddConsole(this.Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
-            
-            // Allors
-            app.UseAuthentication();
+
+            app.UseExceptionHandler(appBuilder =>
+                {
+                    appBuilder.Use(async (context, next) =>
+                        {
+                            var error = context.Features[typeof(IExceptionHandlerFeature)] as IExceptionHandlerFeature;
+                            var message = error?.Error.GetType().ToString();
+
+                            if (error?.Error is SecurityTokenExpiredException)
+                            {
+                                context.Response.StatusCode = 401;
+                                context.Response.ContentType = "application/json";
+
+                                await context.Response.WriteAsync(JsonConvert.SerializeObject(message));
+                            }
+                            else if (error?.Error != null)
+                            {
+                                context.Response.StatusCode = 500;
+                                context.Response.ContentType = "application/json";
+                                await context.Response.WriteAsync(JsonConvert.SerializeObject(message));
+                            }
+                            else await next();
+                        });
+                });
 
             app.UseCors("AllowAll");
+
+            app.UseJwtBearerAuthentication(new JwtBearerOptions()
+                                               {
+                                                    AutomaticAuthenticate = true,
+                                                    AutomaticChallenge = true,
+                                                    TokenValidationParameters = new TokenValidationParameters
+                                                                                   {
+                                                                                       IssuerSigningKey = authenticationContext.Key,
+                                                                                       ValidIssuer = authenticationContext.Issuer,
+                                                                                       ValidAudience = authenticationContext.Audience,
+                                                                                   }
+                                               });
+
 
             app.UseMvc(routes =>
                 {
