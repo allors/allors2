@@ -58,7 +58,7 @@ namespace Allors.Domain
                 foreach (var contactMechanismPurpose in this.ContactPurposes)
                 {
                     var partyContactMechanisms = this.PartyWherePartyContactMechanism.PartyContactMechanisms;
-                    partyContactMechanisms.Filter.AddEquals(M.PartyContactMechanism.ContactPurposes, contactMechanismPurpose);
+                    partyContactMechanisms.Filter.AddContains(M.PartyContactMechanism.ContactPurposes, (IObject)contactMechanismPurpose);
 
                     foreach (PartyContactMechanism partyContactMechanism in partyContactMechanisms)
                     {
