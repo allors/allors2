@@ -1,5 +1,5 @@
-import { Observable, Subject } from 'rxjs/Rx';
-import { Component, OnInit } from '@angular/core';
+import { Observable, Subscription } from 'rxjs/Rx';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 
 import { Scope } from '../../allors/angular/base/Scope';
 import { AllorsService } from '../allors.service';
@@ -10,14 +10,16 @@ import { Person } from '../../allors/domain';
   selector: 'app-form',
   templateUrl: './form.component.html',
 })
-export class FormComponent implements OnInit {
+export class FormComponent implements OnInit, OnDestroy {
 
   private scope: Scope;
 
   people: Person[];
   selected: Person;
 
- constructor(private allors: AllorsService) {
+  private subscription: Subscription;
+
+  constructor(private allors: AllorsService) {
     this.scope = new Scope('People', allors.database, allors.workspace);
   }
 
@@ -28,15 +30,25 @@ export class FormComponent implements OnInit {
   protected refresh(): Observable<any> {
     this.scope.session.reset();
 
+    if (this.subscription) {
+      this.subscription.unsubscribe();
+    }
+
     return this.scope
-        .load({})
-        .do(() => {
-            this.people = this.scope.collections.people as Person[];
-            this.people = this.people.filter(v => v.FirstName);
-        })
-        .catch((e) => {
-          this.allors.onError(e);
-          return Observable.empty();
-        });
+      .load({})
+      .do(() => {
+        this.people = this.scope.collections.people as Person[];
+        this.people = this.people.filter(v => v.FirstName);
+      })
+      .catch((e) => {
+        this.allors.onError(e);
+        return Observable.empty();
+      });
+  }
+
+  ngOnDestroy() {
+    if (this.subscription) {
+      this.subscription.unsubscribe();
+    }
   }
 }

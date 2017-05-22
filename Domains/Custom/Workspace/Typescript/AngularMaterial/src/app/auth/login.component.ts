@@ -10,14 +10,14 @@ import { Subscription } from 'rxjs/Subscription';
 })
 export class LoginComponent implements OnDestroy {
 
-    public loginForm = this.fb.group({
+    public loginForm = this.formBuilder.group({
         userName: ['', Validators.required],
         password: ['', Validators.required]
     });
 
     private subscription: Subscription;
 
-    constructor(private authService: AuthenticationService, private router: Router, public fb: FormBuilder) { }
+    constructor(private authService: AuthenticationService, private router: Router, public formBuilder: FormBuilder) { }
 
     login(event) {
         const userName = this.loginForm.controls.userName.value;

@@ -44,7 +44,7 @@ export class Scope {
                 } else {
                     this.update(response);
                     this.session.reset();
-                    return null;
+                    return Observable.of(null);
                 }
             });
     }
