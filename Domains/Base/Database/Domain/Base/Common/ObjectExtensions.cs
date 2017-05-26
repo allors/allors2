@@ -48,7 +48,8 @@ namespace Allors.Domain
             var @class = (Class)@this.Strategy.Class;
 
             // Required
-            if (!RequiredRoleTypesByClassName.TryGetValue(@class.Name, out RoleType[] requiredRoleTypes))
+            RoleType[] requiredRoleTypes;
+            if (!RequiredRoleTypesByClassName.TryGetValue(@class.Name, out requiredRoleTypes))
             {
                 requiredRoleTypes = @class.ConcreteRoleTypes
                     .Where(concreteRoleType => concreteRoleType.IsRequired)
@@ -64,7 +65,8 @@ namespace Allors.Domain
             }
 
             // Unique
-            if (!UniqueRoleTypesByClassName.TryGetValue(@class.Name, out RoleType[] uniqueRoleTypes))
+            RoleType[] uniqueRoleTypes;
+            if (!UniqueRoleTypesByClassName.TryGetValue(@class.Name, out uniqueRoleTypes))
             {
                 uniqueRoleTypes = @class.ConcreteRoleTypes
                     .Where(concreteRoleType => concreteRoleType.IsUnique)

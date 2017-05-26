@@ -24,11 +24,6 @@ namespace Allors.Domain
     
     public partial class TaskList
     {
-        public override string ToString()
-        {   
-            return this.UserWhereTaskList.UserName + ": " + this.OpenTaskAssignments.Count + " open tasks.";
-        }
-
         public void BaseOnDerive(ObjectOnDerive method)
         {
             if (!this.ExistUserWhereTaskList)

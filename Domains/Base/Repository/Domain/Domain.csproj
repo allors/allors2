@@ -92,9 +92,7 @@
     <Compile Include="Base\Common\UniquelyIdentifiable.cs" />
     <Compile Include="Base\Workflow\User.cs" />
     <Compile Include="Base\Workflow\UserGroup.cs" />
-    <Compile Include="Base\Workflow\ApproveTask.cs" />
     <Compile Include="Base\Workflow\EmailMessage.cs" />
-    <Compile Include="Base\Workflow\EmailSource.cs" />
     <Compile Include="Base\Workflow\Notification.cs" />
     <Compile Include="Base\Workflow\NotificationList.cs" />
     <Compile Include="Base\Workflow\Task.cs" />

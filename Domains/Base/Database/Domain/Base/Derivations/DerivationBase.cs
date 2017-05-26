@@ -68,9 +68,15 @@ namespace Allors.Domain
 
         public IValidation Validation
         {
-            get => this.validation;
+            get
+            {
+                return this.validation;
+            }
 
-            protected set => this.validation = value;
+            protected set
+            {
+                this.validation = value;
+            }
         }
 
         public IChangeSet ChangeSet { get; private set; }
@@ -85,7 +91,8 @@ namespace Allors.Domain
             {
                 var lowerName = name.ToLowerInvariant();
 
-                if (this.properties != null && this.properties.TryGetValue(lowerName, out object value))
+                object value;
+                if (this.properties != null && this.properties.TryGetValue(lowerName, out value))
                 {
                     return value;
                 }

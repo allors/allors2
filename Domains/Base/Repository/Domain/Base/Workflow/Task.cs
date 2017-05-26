@@ -81,14 +81,5 @@ namespace Allors.Repository
         #endregion
         [Workspace]
         Person Performer { get; set; }
-
-        #region Allors
-        [Id("a280bf60-2eb7-488a-abf7-f03c9d9197b5")]
-        [AssociationId("33be2d23-16d7-4739-8ef2-42391b0f4bd1")]
-        [RoleId("9f88a8cf-84c1-42cc-be52-1d08597e56fa")]
-        [Size(-1)]
-        #endregion
-        [Workspace]
-        string Comment { get; set; }
     }
 }
