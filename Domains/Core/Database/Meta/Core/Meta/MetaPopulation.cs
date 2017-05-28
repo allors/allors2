@@ -25,12 +25,9 @@ namespace Allors.Meta
     using System.Collections.Generic;
     using System.Linq;
     using System.Reflection;
-    using System.Runtime.CompilerServices;
 
     public sealed partial class MetaPopulation : IMetaPopulation
     {
-        private const string NamespaceName = "Allors.Domain";
-
         private readonly Dictionary<Guid, MetaObjectBase> metaObjectById;
 
         private Dictionary<string, Class> derivedClassByLowercaseName;
@@ -58,8 +55,20 @@ namespace Allors.Meta
             Instance = new MetaPopulation();
             var metaBuilder = new MetaBuilder(Instance);
             metaBuilder.BuildDomains();
-            metaBuilder.BuildObjectTypes();
-            metaBuilder.BuildOperandTypes();
+            metaBuilder.BuildDomainInheritances();
+            metaBuilder.BuildUnits();
+            metaBuilder.BuildInterfaces();
+            metaBuilder.BuildClasses();
+            metaBuilder.BuildInheritances();
+            metaBuilder.BuildRoles();
+            metaBuilder.BuildInheritedRoles();
+            metaBuilder.BuildImplementedRoles();
+            metaBuilder.BuildAssociations();
+            metaBuilder.BuildInheritedAssociations();
+            metaBuilder.BuildDefinedMethods();
+            metaBuilder.BuildInheritedMethods();
+            metaBuilder.ExtendInterfaces();
+            metaBuilder.ExtendClasses();
         }
 
         private MetaPopulation()

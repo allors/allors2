@@ -90,54 +90,76 @@ namespace Allors.Meta
 
 		internal void BuildDomains()
 		{
-			// Domains
 $repository.Assemblies:{assembly|             Meta$assembly.Name$.Instance = new Meta$assembly.Name$(this.metaPopulation);}; separator="\n"$
+		}
 
-			// Domain Inheritance
+		internal void BuildDomainInheritances()
+		{
 $repository.Assemblies:{assembly|$domain_inheritance(assembly)$}; separator="\n"$
 		}
 
-		internal void BuildObjectTypes()
+		internal void BuildUnits()
 		{
-			// Units
 $repository.Units:{unit|             Meta$unit.SingularName$.Instance = new Meta$unit.SingularName$(this.metaPopulation);}; separator="\n"$
-
-			// Interfaces
-$repository.Interfaces:{interface|             Meta$interface.SingularName$.Instance = new Meta$interface.SingularName$(this.metaPopulation);}; separator="\n"$
-
-			// Classes
-$repository.Classes:{class|             Meta$class.SingularName$.Instance = new Meta$class.SingularName$(this.metaPopulation);}; separator="\n"$
-
-			// Inheritance
-$repository.Composites:{composite|$inheritance(composite)$}; separator="\n"$
 		}
 
-		internal void BuildOperandTypes()
+		internal void BuildInterfaces()
 		{
-			// Roles
+$repository.Interfaces:{interface|             Meta$interface.SingularName$.Instance = new Meta$interface.SingularName$(this.metaPopulation);}; separator="\n"$
+		}
+
+		internal void BuildClasses()
+		{
+$repository.Classes:{class|             Meta$class.SingularName$.Instance = new Meta$class.SingularName$(this.metaPopulation);}; separator="\n"$
+		}
+
+		internal void BuildInheritances()
+		{
+$repository.Composites:{composite|$inheritance(composite)$}; separator="\n"$
+		}
+		
+		internal void BuildRoles()
+		{
 $repository.Composites:{composite|$relations(composite)$}; separator="\n"$
+		}
 
-			// Inherited Roles
+		internal void BuildInheritedRoles()
+		{
 $repository.Interfaces:{interface|$inheritedRoles(interface)$}; separator="\n"$
+		}
 
-			// Implemented Roles
+		internal void BuildImplementedRoles()
+		{
 $repository.Classes:{class|$implementedRoles(class)$}; separator="\n"$
+		}
 
-			// Associations
+		internal void BuildAssociations()
+		{
 $repository.Composites:{composite|$associations(composite)$}; separator="\n"$
+		}
 
-			// InheritedAssociations
+		internal void BuildInheritedAssociations()
+		{
 $repository.Composites:{composite|$inherited_associations(composite)$}; separator="\n"$
+		}
 
-			// Defined Methods
+		internal void BuildDefinedMethods()
+		{
 $repository.Composites:{composite|$definedMethods(composite)$}; separator="\n"$
+		}
 
-			// Inherited Methods
+		internal void BuildInheritedMethods()
+		{
 $repository.Composites:{composite|$inheritedMethods(composite)$}; separator="\n"$
+		}
 
-			// Extend
+		internal void ExtendInterfaces()
+		{
             $repository.Interfaces:{interface|Meta$interface.SingularName$.Instance.Extend();}; separator="\n"$
+		}
 
+		internal void ExtendClasses()
+		{
             $repository.Classes:{class|Meta$class.SingularName$.Instance.Extend();}; separator="\n"$
 		}
 	}
