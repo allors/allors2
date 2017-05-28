@@ -24,6 +24,8 @@ namespace Allors.Services
 
     public interface ITimeService : IService
     {
+        TimeSpan? Shift { get; set; }
+
         DateTime Now();
     }
 }
