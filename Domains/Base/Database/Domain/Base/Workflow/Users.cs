@@ -53,7 +53,11 @@ namespace Allors.Domain
 
         public User GetCurrentAuthenticatedUser()
         {
-            var userId = ClaimsPrincipal.Current?.Identity?.Name;
+            string userId;
+            using (var userService = this.Session.Database.GetServiceLocator().CreateUserService())
+            {
+                userId = userService.GetUser();
+            }
 
             if (string.IsNullOrWhiteSpace(userId))
             {
