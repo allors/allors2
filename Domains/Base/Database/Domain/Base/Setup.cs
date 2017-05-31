@@ -72,7 +72,7 @@ namespace Allors
 
             this.OnPostSetup();
 
-            this.session.Derive(true);
+            this.session.Derive();
 
             new Security(this.session).Apply();
         }

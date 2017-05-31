@@ -141,7 +141,7 @@ namespace Allors.Domain
                 objects.Secure(this);
             }
 
-            this.session.Derive(true);
+            this.session.Derive();
         }
 
         public void Deny(ObjectType objectType, ObjectState objectState, params Operations[] operations)

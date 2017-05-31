@@ -41,13 +41,13 @@ namespace Allors.Domain
                     {
                         emailMessage.DateSending = timeService.Now();
 
-                        session.Derive(true);
+                        session.Derive();
                         session.Commit();
 
                         mailService.Send(emailMessage);
                         emailMessage.DateSent = timeService.Now();
 
-                        session.Derive(true);
+                        session.Derive();
                         session.Commit();
                     }
                     catch (Exception e)
