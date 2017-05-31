@@ -269,8 +269,8 @@ export class SessionObject implements INewSessionObject {
                                 if (!originalRoleIds) {
                                     saveRole.a = roleIds;
                                 } else {
-                                    saveRole.a = roleIds.filter(v => !originalRoleIds.indexOf(v));
-                                    saveRole.r = originalRoleIds.filter(v => !roleIds.indexOf(v));
+                                    saveRole.a = roleIds.filter(v => originalRoleIds.indexOf(v) < 0);
+                                    saveRole.r = originalRoleIds.filter(v => roleIds.indexOf(v) < 0);
                                 }
                             }
                         }
