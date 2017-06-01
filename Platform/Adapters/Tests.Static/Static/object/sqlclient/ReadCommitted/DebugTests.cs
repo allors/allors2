@@ -39,7 +39,7 @@ namespace Allors.Adapters.Object.SqlClient.ReadCommitted
 
         protected override IProfile Profile => this.profile;
 
-        protected DebugTests()
+        public DebugTests()
         {
             this.connectionFactory = new DebugConnectionFactory();
             this.cacheFactory = new DebugCacheFactory();
