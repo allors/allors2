@@ -99,6 +99,8 @@ namespace Allors.Adapters.Relation.SqlClient
             this.IsolationLevel = configuration.IsolationLevel ?? IsolationLevel.Snapshot;
             this.SchemaName = configuration.SchemaName ?? "allors";
             this.useViews = configuration.UseViews ?? true;
+
+            this.Serializable = configuration.Serializable;
         }
 
         public event ObjectNotLoadedEventHandler ObjectNotLoaded;
@@ -128,6 +130,8 @@ namespace Allors.Adapters.Relation.SqlClient
         public int CommandTimeout { get; }
 
         public IsolationLevel IsolationLevel { get; }
+
+        public IDatabase Serializable { get; }
 
         public Mapping Mapping { get; set; }
 

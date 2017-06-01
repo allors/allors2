@@ -65,8 +65,8 @@
     <Compile Include="..\..\..\Domains\Core\Repository\Domain\Core\Attributes\WorkspaceAttribute.cs">
       <Link>Core\Attributes\WorkspaceAttribute.cs</Link>
     </Compile>
-    <Compile Include="..\..\..\Domains\Core\Repository\Domain\Core\Object.cs">
-      <Link>Core\Object.cs</Link>
+    <Compile Include="..\..\..\Domains\Core\Repository\Domain\Core\Common\Object.cs">
+      <Link>Core\Common\Object.cs</Link>
     </Compile>
     <Compile Include="Adapters\AssemblyInfo.cs" />
     <Compile Include="Adapters\C1.cs" />

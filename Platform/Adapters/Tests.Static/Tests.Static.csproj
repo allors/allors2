@@ -5,7 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.Data.SQLite" Version="1.1.0" />
+    <PackageReference Include="Microsoft.Data.SQLite" Version="1.1.1" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.0.0" />
     <PackageReference Include="xunit" Version="2.2.0" />
     <PackageReference Include="xunit.runner.visualstudio" Version="2.2.0" />
@@ -15,6 +15,7 @@
     <ProjectReference Include="..\..\Framework\Allors\Allors.csproj" />
     <ProjectReference Include="..\Allors.Adapters.Memory\Allors.Adapters.Memory.csproj" />
     <ProjectReference Include="..\Allors.Adapters.Object.SqlClient\Allors.Adapters.Object.SqlClient.csproj" />
+    <ProjectReference Include="..\Allors.Adapters.Relation.SqlClient\Allors.Adapters.Relation.SqlClient.csproj" />
     <ProjectReference Include="..\Domain\Domain.csproj" />
     <ProjectReference Include="..\Meta\Meta.csproj" />
   </ItemGroup>

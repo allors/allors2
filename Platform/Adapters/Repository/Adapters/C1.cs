@@ -546,7 +546,7 @@ namespace Allors.Repository
         [Id("b2071550-cc1b-4543-b98f-006e7564a74b")]
         [AssociationId("313bf740-637d-4f6a-af82-74a488bde357")]
         [RoleId("2a00cf34-3dda-4c12-9adc-10843460df40")]
-        [Multiplicity(Multiplicity.ManyToOne)]
+        [Multiplicity(Multiplicity.ManyToMany)]
         #endregion
         public S2[] C1S2many2manies { get; set; }
         #region Allors

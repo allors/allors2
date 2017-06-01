@@ -33,5 +33,7 @@ namespace Allors.Adapters.Relation.SqlClient
         public string SchemaName { get; set; }
 
         public bool? UseViews { get; set; }
+
+        public IDatabase Serializable { get; set; }
     }
 }

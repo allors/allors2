@@ -18,8 +18,6 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-using System.Reflection;
-
 namespace Allors.Adapters
 {
     using System;
@@ -109,7 +107,7 @@ namespace Allors.Adapters
 
         protected ObjectFactory CreateObjectFactory(IMetaPopulation metaPopulation)
         {
-            return new ObjectFactory(metaPopulation, typeof(C1).GetTypeInfo().Assembly, "Allors.Domain");
+            return new ObjectFactory(metaPopulation, typeof(C1));
         }
     }
 }
