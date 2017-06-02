@@ -60,6 +60,8 @@ namespace Allors
             Fixture.Setup(database);
 
             this.DatabaseSession = database.CreateSession();
+
+            this.SetIdentity(Users.AdministratorUserName);
         }
 
         public ISession DatabaseSession { get; private set; }

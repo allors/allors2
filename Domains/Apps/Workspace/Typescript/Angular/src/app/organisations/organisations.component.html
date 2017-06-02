@@ -1,0 +1,55 @@
+<td-layout-nav logo="assets:covalent">
+  <div td-toolbar-content layout="row" layout-align="center center" flex>
+    <span>Apps</span>
+    <span flex></span>
+    <a md-icon-button mdTooltip="Docs" href="https://www.inxin.com/" target="_blank"><md-icon>chrome_reader_mode</md-icon></a>
+  </div>
+  <td-layout-manage-list #manageList
+                        [opened]="media.registerQuery('gt-sm') | async"
+                        [mode]="(media.registerQuery('gt-sm') | async) ? 'side' : 'push'"
+                        [sidenavWidth]="(media.registerQuery('gt-xs') | async) ? '257px' : '100%'">
+    <md-toolbar td-sidenav-content>
+      <span>Organisations</span>
+    </md-toolbar>
+
+    <md-nav-list td-sidenav-content (click)="!media.query('gt-sm') && manageList.close()">
+      <a md-list-item>
+        <md-icon md-list-icon>account_circle</md-icon>
+        All Organisations
+      </a>
+      <a md-list-item>
+        <md-icon md-list-icon>star</md-icon>
+        Customers
+      </a>
+      <a md-list-item>
+        <md-icon md-list-icon>verified_user</md-icon>
+        Suppliers
+      </a>
+    </md-nav-list>
+
+    <div td-toolbar-content layout="row" layout-align="start center" flex>
+      <span>All Organisations</span>
+      <span flex></span>
+      <button md-icon-button><md-icon class="md-24">view_module</md-icon></button>
+      <button md-icon-button><md-icon class="md-24">sort</md-icon></button>
+      <button md-icon-button><md-icon class="md-24">settings</md-icon></button>
+    </div>
+
+    <div class="md-content">
+    </div>
+
+    <md-card tdMediaToggle="gt-xs" [mediaClasses]="['push']">
+      <md-card-content>
+        <td-search-box class="push-left push-right" placeholder="search" [alwaysVisible]="true" (searchDebounce)="search($event)"></td-search-box>
+      </md-card-content>
+    </md-card>
+
+    <md-card tdMediaToggle="gt-xs" [mediaClasses]="['push']" *ngIf="data">
+      <organisations-table [data]="data" (view)="onView($event)"></organisations-table>
+    </md-card>
+  </td-layout-manage-list>
+</td-layout-nav>
+
+<a md-fab color="accent" class="mat-fab-bottom-right" [routerLink]="['add']">
+  <md-icon>add</md-icon>
+</a>

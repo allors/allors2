@@ -17,8 +17,6 @@
   
 	<ItemGroup>
     
-		<Folder Include="Allors\Apps\" />
-    
 		<Folder Include="wwwroot\" />
   
 	</ItemGroup>

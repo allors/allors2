@@ -31,13 +31,7 @@ namespace Allors.Meta
             this.concreteMethodType = @class.ConcreteMethodTypeByMethodType[methodType];
         }
 
-        public ConcreteMethodType ConcreteConcreteMethodType
-        {
-            get
-            {
-                return this.concreteMethodType;
-            }
-        }
+        public ConcreteMethodType ConcreteConcreteMethodType => this.concreteMethodType;
 
         public void Execute(Method method)
         {

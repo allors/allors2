@@ -36,12 +36,12 @@ namespace Allors.Console
                     args,
                     syntax =>
                         {
-                            syntax.DefineCommand("populate", ref command, Commands.Populate, "Populate the database");
+                            syntax.DefineCommand("populate", ref command, Commands.Populate, "Setup the database with an initial population");
 
-                            syntax.DefineCommand("save", ref command, Commands.Save, "Load the database");
+                            syntax.DefineCommand("save", ref command, Commands.Save, "Save the database");
                             syntax.DefineOption("f|file", ref file, "The source xml file.");
 
-                            syntax.DefineCommand("load", ref command, Commands.Load, "Save the database");
+                            syntax.DefineCommand("load", ref command, Commands.Load, "Load the database");
                             syntax.DefineOption("f|file", ref file, "The destination xml file.");
 
                             syntax.DefineCommand("upgrade", ref command, Commands.Upgrade, "Upgrade the database");

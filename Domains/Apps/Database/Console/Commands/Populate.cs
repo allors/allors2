@@ -24,8 +24,6 @@ namespace Allors.Console
     using System.Data;
     using System.IO;
 
-    using Allors.Domain;
-
     public class Populate : Command
     {
         public override void Execute()
@@ -50,6 +48,9 @@ namespace Allors.Console
                     new Setup(session, directoryInfo).Apply();
 
                     new Allors.Upgrade(session, directoryInfo).Execute();
+
+                    // new Initial(session, directoryInfo).Execute();
+                    new Demo(session, directoryInfo).Execute();
 
                     session.Derive();
                     session.Commit();
