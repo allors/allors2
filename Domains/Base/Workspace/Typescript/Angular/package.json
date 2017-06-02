@@ -6,7 +6,7 @@
     "sync": "npm run sync-meta && npm run sync-domain",
     "sync-meta": "sync-files ../Meta/src/allors/meta/base src/allors/meta/base",
     "sync-domain": "sync-files ../Domain/src/allors/domain/base src/allors/domain/base",
-    "preinstall": "npm run sync",
+    "postinstall": "npm run sync",
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",

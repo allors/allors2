@@ -6,7 +6,7 @@
   "main": "lib/index.js",
   "scripts": {
     "sync": "sync-files ../Meta/src/allors/meta/base src/allors/meta/base",
-    "preinstall": "npm run sync",
+    "postinstall": "npm run sync",
     "pretest": "tsc",
     "test": "mocha",
     "cover": "istanbul cover ./node_modules/mocha/bin/_mocha"
