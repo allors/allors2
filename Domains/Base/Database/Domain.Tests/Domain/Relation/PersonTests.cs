@@ -36,7 +36,7 @@ namespace Domain
         public void LastNameIsRequired()
         {
             var rainer = new PersonBuilder(this.Session).WithFirstName("Rainer").Build();
-            var log = this.Session.Derive();
+            var log = this.Session.Derive(false);
 
             Assert.Equal(log.Errors.Length, 1);
             var error = log.Errors[0];
@@ -52,6 +52,5 @@ namespace Domain
 
             Assert.Equal(john.FullName, "John Doe");
         }
-
     }
 }

@@ -38,7 +38,7 @@ namespace Domain
         {
             new UserGroupBuilder(this.Session).Build();
 
-            var validation = this.Session.Derive();
+            var validation = this.Session.Derive(false);
 
             Assert.True(validation.HasErrors);
             Assert.Equal(1, validation.Errors.Length);
@@ -56,7 +56,7 @@ namespace Domain
             new UserGroupBuilder(this.Session).WithName("Same").Build();
             new UserGroupBuilder(this.Session).WithName("Same").Build();
 
-            var validation = this.Session.Derive();
+            var validation = this.Session.Derive(false);
 
             Assert.True(validation.HasErrors);
             Assert.Equal(2, validation.Errors.Length);

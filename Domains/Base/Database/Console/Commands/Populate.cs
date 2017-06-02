@@ -49,7 +49,7 @@ namespace Allors.Console
 
                     new Allors.Upgrade(session, directoryInfo).Execute();
 
-                    var validation = session.Derive();
+                    var validation = session.Derive(false);
                     if (validation.HasErrors)
                     {
                         foreach (var error in validation.Errors)

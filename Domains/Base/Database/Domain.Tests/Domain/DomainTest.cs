@@ -19,44 +19,52 @@
 // <summary>Defines the DomainTest type.</summary>
 //-------------------------------------------------------------------------------------------------
 
-using System;
-using System.IO;
-using System.Reflection;
-using System.Security.Claims;
-using System.Security.Principal;
-using Allors.Domain;
-
 namespace Domain
 {
+    using System;
+    using System.IO;
+    using System.Reflection;
+    using System.Security.Claims;
+    using System.Security.Principal;
+
     using Allors;
+    using Allors.Adapters.Memory;
+    using Allors.Domain;
     using Allors.Meta;
+    using Allors.Services.Base;
+
+    using Configuration = Allors.Adapters.Memory.Configuration;
+    using Extent = Allors.Extent;
 
     public class DomainTest : IDisposable
     {
-        protected ISession Session { get; private set; }
-
-        public DomainTest()
+        public DomainTest(bool populate = true)
         {
-            this.ObjectFactory = new ObjectFactory(MetaPopulation.Instance, typeof(User));
-            var configuration = new Allors.Adapters.Memory.Configuration { ObjectFactory = this.ObjectFactory };
-            var database = new Allors.Adapters.Memory.Database(configuration);
-
-            this.SetUp(database, true);
+            this.Setup(populate);
         }
 
-        protected ObjectFactory ObjectFactory { get; }
+        public ISession Session { get; private set; }
 
-        protected void SetUp(IDatabase database, bool setup)
+        public TimeSpan? TimeShift
         {
-            database.Init();
-            this.Session = database.CreateSession();
-
-            if (setup)
+            get
             {
-                new Setup(this.Session, null).Apply();
-                this.Session.Commit();
+                using (var timeService = this.Session.Database.GetServiceLocator().CreateTimeService())
+                {
+                    return timeService.Shift;
+                }
+            }
+
+            set
+            {
+                using (var timeService = this.Session.Database.GetServiceLocator().CreateTimeService())
+                {
+                    timeService.Shift = value;
+                }
             }
         }
+
+        protected ObjectFactory ObjectFactory => new ObjectFactory(MetaPopulation.Instance, typeof(User));
 
         public void Dispose()
         {
@@ -64,9 +72,46 @@ namespace Domain
             this.Session = null;
         }
 
-        protected IObject[] GetObjects(ISession session, Composite objectType)
+        protected void Setup(bool populate)
         {
-            return session.Extent(objectType);
+            var configuration = new Configuration
+                                    {
+                                        ObjectFactory = this.ObjectFactory,
+                                    };
+
+            var database = new Database(configuration);
+            this.Setup(database, populate);
+        }
+
+        protected void Setup(IDatabase database, bool populate)
+        {
+            database.Init();
+
+            var userService = new ClaimsPrincipalUserService();
+            var timeService = new TimeService();
+            var mailService = new MailService { DefaultSender = "noreply@example.com" };
+            var securityService = new SecurityService();
+            var serviceLocator = new ServiceLocator
+                                     {
+                                         UserServiceFactory = () => userService,
+                                         TimeServiceFactory = () => timeService,
+                                         MailServiceFactory = () => mailService,
+                                         SecurityServiceFactory = () => securityService
+                                     };
+            database.SetServiceLocator(serviceLocator.Assert());
+
+            this.Session = database.CreateSession();
+
+            if (populate)
+            {
+                new Setup(this.Session, null).Apply();
+                this.Session.Commit();
+            }
+        }
+
+        protected void SetIdentity(string identity)
+        {
+            ClaimsPrincipal.ClaimsPrincipalSelector = () => new GenericPrincipal(new GenericIdentity(identity, "Forms"), new string[0]);
         }
 
         protected Stream GetResource(string name)
@@ -76,9 +121,29 @@ namespace Domain
             return resource;
         }
 
-        protected void SetIdentity(string identity)
+        protected IObject[] GetObjects(ISession session, Composite objectType)
         {
-            ClaimsPrincipal.ClaimsPrincipalSelector = () => new GenericPrincipal(new GenericIdentity(identity, "Forms"), new string[0]);
+            return session.Extent(objectType);
+        }
+
+        protected void Derive(Extent extent, bool throwExceptionOnError = true)
+        {
+            var derivation = new Allors.Domain.NonLogging.Derivation(this.Session, extent.ToArray());
+            var validation = derivation.Derive();
+            if (validation.HasErrors)
+            {
+                throw new Exception("Derivation Error");
+            }
+        }
+
+        protected void Derive(IObject @object, bool throwExceptionOnError = true)
+        {
+            var derivation = new Allors.Domain.NonLogging.Derivation(this.Session, new[] { @object });
+            var validation = derivation.Derive();
+            if (validation.HasErrors)
+            {
+                throw new Exception("Derivation Error");
+            }
         }
     }
 }

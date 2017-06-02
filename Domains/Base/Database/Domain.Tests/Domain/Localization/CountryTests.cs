@@ -34,12 +34,12 @@ namespace Domain
             var builder = new CountryBuilder(this.Session);
             builder.Build();
             
-            Assert.True(this.Session.Derive().HasErrors);
+            Assert.True(this.Session.Derive(false).HasErrors);
 
             builder.WithIsoCode("XX").Build();
             builder.Build();
 
-            Assert.True(this.Session.Derive().HasErrors);
+            Assert.True(this.Session.Derive(false).HasErrors);
 
             this.Session.Rollback();
 
@@ -47,7 +47,7 @@ namespace Domain
 
             builder.Build();
 
-            Assert.False(this.Session.Derive().HasErrors);
+            Assert.False(this.Session.Derive(false).HasErrors);
 
             this.Session.Rollback();
 
@@ -56,7 +56,7 @@ namespace Domain
 
             builder.Build();
 
-            Assert.True(this.Session.Derive().HasErrors);
+            Assert.True(this.Session.Derive(false).HasErrors);
         }
     }
 }

@@ -111,7 +111,7 @@ namespace Domain
             //var permission = (Permission)this.DatabaseSession.Extent<Permission>().First;
             //permission.RemoveOperationEnum();
 
-            //var validation = this.DatabaseSession.Derive();
+            //var validation = this.DatabaseSession.Derive(false);
 
             //Assert.True(validation.HasErrors);
             //Assert.Equal(1, validation.Errors.Length);
@@ -130,7 +130,7 @@ namespace Domain
             //var permission = this.DatabaseSession.Extent<Permission>().First;
             //permission.RemoveOperandTypePointer();
 
-            //var validation = this.DatabaseSession.Derive();
+            //var validation = this.DatabaseSession.Derive(false);
 
             //Assert.True(validation.HasErrors);
             //Assert.Equal(1, validation.Errors.Length);

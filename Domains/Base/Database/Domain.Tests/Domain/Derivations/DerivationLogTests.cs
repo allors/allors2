@@ -29,7 +29,6 @@ namespace Domain
     using Allors.Domain;
 
     using Xunit;
-
     
     public class DerivationLogTests : DomainTest
     {
@@ -39,15 +38,15 @@ namespace Domain
             var c1 = new ValidationC1Builder(this.Session).Build();
             var c2 = new ValidationC2Builder(this.Session).Build();
 
-            Assert.False(this.Session.Derive().HasErrors);
+            Assert.False(this.Session.Derive(false).HasErrors);
 
             c1.UniqueId = Guid.NewGuid();
 
-            Assert.False(this.Session.Derive().HasErrors);
+            Assert.False(this.Session.Derive(false).HasErrors);
 
             c2.UniqueId = c1.UniqueId;
 
-            Assert.True(this.Session.Derive().HasErrors);
+            Assert.True(this.Session.Derive(false).HasErrors);
         }
    }
 }

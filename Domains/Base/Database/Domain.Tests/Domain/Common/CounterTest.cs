@@ -63,7 +63,7 @@ namespace Domain
 
             var database = new Allors.Adapters.Object.SqlClient.Database(configuration);
 
-            this.SetUp(database, true);
+            this.Setup(database, true);
 
             var id = Guid.NewGuid();
 
@@ -98,7 +98,7 @@ namespace Domain
 
             var database = new Allors.Adapters.Object.SqlClient.Database(configuration);
 
-            this.SetUp(database, true);
+            this.Setup(database, true);
 
             var id = Guid.NewGuid();
 

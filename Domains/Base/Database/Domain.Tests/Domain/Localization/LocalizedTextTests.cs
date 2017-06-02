@@ -34,11 +34,11 @@ namespace Domain
             var builder = new LocalisedTextBuilder(this.Session);
             builder.Build();
 
-            Assert.True(this.Session.Derive().HasErrors);
+            Assert.True(this.Session.Derive(false).HasErrors);
 
             builder.WithText("description");
 
-            Assert.False(this.Session.Derive().HasErrors);
+            Assert.False(this.Session.Derive(false).HasErrors);
         }
     }
 }

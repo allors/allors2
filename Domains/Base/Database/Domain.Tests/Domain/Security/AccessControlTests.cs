@@ -43,7 +43,7 @@ namespace Domain
                 .WithSubjectGroup(userGroup)
                 .Build());
 
-            var validation = this.Session.Derive();
+            var validation = this.Session.Derive(false);
 
             Assert.True(validation.HasErrors);
             Assert.Equal(1, validation.Errors.Length);
@@ -66,7 +66,7 @@ namespace Domain
                 .WithRole(role)
                 .Build());
 
-            var validation = this.Session.Derive();
+            var validation = this.Session.Derive(false);
 
             Assert.True(validation.HasErrors);
             Assert.Equal(1, validation.Errors.Length);

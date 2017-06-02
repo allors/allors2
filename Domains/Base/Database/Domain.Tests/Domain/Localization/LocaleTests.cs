@@ -35,21 +35,21 @@ namespace Domain
             var builder = new LocaleBuilder(this.Session);
             builder.Build();
 
-            Assert.True(this.Session.Derive().HasErrors);
+            Assert.True(this.Session.Derive(false).HasErrors);
 
             this.Session.Rollback();
 
             builder.WithLanguage(new Languages(this.Session).FindBy(M.Language.IsoCode, "en"));
             builder.Build();
 
-            Assert.True(this.Session.Derive().HasErrors);
+            Assert.True(this.Session.Derive(false).HasErrors);
 
             this.Session.Rollback();
 
             builder.WithCountry(new Countries(this.Session).FindBy(M.Country.IsoCode, "BE"));
             builder.Build();
 
-            Assert.False(this.Session.Derive().HasErrors);
+            Assert.False(this.Session.Derive(false).HasErrors);
         }
 
         [Fact]
@@ -74,15 +74,15 @@ namespace Domain
             var builder = new LocaleBuilder(this.Session);
             builder.Build();
             
-            Assert.True(this.Session.Derive().HasErrors);
+            Assert.True(this.Session.Derive(false).HasErrors);
 
             builder.WithLanguage(dutch).Build();
 
-            Assert.True(this.Session.Derive().HasErrors);
+            Assert.True(this.Session.Derive(false).HasErrors);
 
             builder.WithCountry(netherlands).Build();
 
-            Assert.False(this.Session.Derive().HasErrors);
+            Assert.False(this.Session.Derive(false).HasErrors);
         }
 
         [Fact]

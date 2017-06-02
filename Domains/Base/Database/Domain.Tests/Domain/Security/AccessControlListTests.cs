@@ -87,7 +87,7 @@ namespace Domain
 
                 this.Session.Derive(true);
 
-                Assert.False(this.Session.Derive().HasErrors);
+                Assert.False(this.Session.Derive(false).HasErrors);
 
                 var accessList = new AccessControlList(organisation, person);
 
@@ -123,7 +123,7 @@ namespace Domain
                 var accessControl = (AccessControl)session.Instantiate(role.AccessControlsWhereRole.First);
                 token.AddAccessControl(accessControl);
 
-                Assert.False(this.Session.Derive().HasErrors);
+                Assert.False(this.Session.Derive(false).HasErrors);
 
                 var accessList = new AccessControlList(organisation, person);
 
@@ -139,7 +139,7 @@ namespace Domain
             var readOrganisationName = this.FindPermission(M.Organisation.Name, Operations.Read);
             var databaseRole = new RoleBuilder(this.Session).WithName("Role").WithPermission(readOrganisationName).Build();
 
-            Assert.False(this.Session.Derive().HasErrors);
+            Assert.False(this.Session.Derive(false).HasErrors);
 
             var person = new PersonBuilder(this.Session).WithFirstName("John").WithLastName("Doe").Build();
             var anotherPerson = new PersonBuilder(this.Session).WithFirstName("Jane").WithLastName("Doe").Build();
@@ -164,7 +164,7 @@ namespace Domain
                 var accessControl = (AccessControl)session.Instantiate(role.AccessControlsWhereRole.First);
                 token.AddAccessControl(accessControl);
 
-                Assert.False(this.Session.Derive().HasErrors);
+                Assert.False(this.Session.Derive(false).HasErrors);
 
                 var accessList = new AccessControlList(organisation, person);
 
@@ -205,7 +205,7 @@ namespace Domain
                 var accessControl = (AccessControl)session.Instantiate(role.AccessControlsWhereRole.First);
                 token.AddAccessControl(accessControl);
 
-                Assert.False(this.Session.Derive().HasErrors);
+                Assert.False(this.Session.Derive(false).HasErrors);
 
                 var accessList = new AccessControlList(organisation, person);
 
@@ -240,7 +240,7 @@ namespace Domain
                 var accessControl = (AccessControl)session.Instantiate(role.AccessControlsWhereRole.First);
                 token.AddAccessControl(accessControl);
 
-                Assert.False(this.Session.Derive().HasErrors);
+                Assert.False(this.Session.Derive(false).HasErrors);
 
                 var accessList = new AccessControlList(organisation, person);
 
