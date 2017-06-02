@@ -34,7 +34,8 @@ export class LoginComponent implements OnDestroy {
                   } else {
                       alert('Could not log in');
                   }
-              }
+              },
+              error => alert(JSON.stringify(error))
             );
     }
 
