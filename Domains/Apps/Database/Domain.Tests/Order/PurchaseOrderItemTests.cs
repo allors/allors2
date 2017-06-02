@@ -121,24 +121,24 @@ namespace Allors.Domain
             var builder = new PurchaseOrderItemBuilder(this.DatabaseSession);
             order.AddPurchaseOrderItem(builder.Build());
 
-            Assert.True(this.DatabaseSession.Derive().HasErrors);
+            Assert.True(this.DatabaseSession.Derive(false).HasErrors);
 
             this.DatabaseSession.Rollback();
 
             builder.WithPart(part);
             order.AddPurchaseOrderItem(builder.Build());
 
-            Assert.False(this.DatabaseSession.Derive().HasErrors);
+            Assert.False(this.DatabaseSession.Derive(false).HasErrors);
 
             builder.WithProduct(new GoodBuilder(this.DatabaseSession).Build());
             var orderItem = builder.Build();
             order.AddPurchaseOrderItem(orderItem);
 
-            Assert.True(this.DatabaseSession.Derive().HasErrors);
+            Assert.True(this.DatabaseSession.Derive(false).HasErrors);
 
             orderItem.RemovePart();
 
-            Assert.False(this.DatabaseSession.Derive().HasErrors);
+            Assert.False(this.DatabaseSession.Derive(false).HasErrors);
         }
 
         [Fact]

@@ -79,7 +79,7 @@ namespace Allors.Domain
             builder.WithInternalOrganisation(this.internalOrganisation);
             builder.Build();
 
-            Assert.False(this.DatabaseSession.Derive().HasErrors);
+            Assert.False(this.DatabaseSession.Derive(false).HasErrors);
         }
 
         [Fact]

@@ -38,14 +38,14 @@ namespace Allors.Domain
             var builder = new OrganisationBuilder(this.DatabaseSession);
             var organisation = builder.Build();
 
-            Assert.True(this.DatabaseSession.Derive().HasErrors);
+            Assert.True(this.DatabaseSession.Derive(false).HasErrors);
 
             this.DatabaseSession.Rollback();
 
             builder.WithName("Organisation");
             organisation = builder.Build();
 
-            Assert.False(this.DatabaseSession.Derive().HasErrors);
+            Assert.False(this.DatabaseSession.Derive(false).HasErrors);
         }
     }
 }

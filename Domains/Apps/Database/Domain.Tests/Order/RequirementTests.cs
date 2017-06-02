@@ -71,14 +71,14 @@ namespace Allors.Domain
             var builder = new CustomerRequirementBuilder(this.DatabaseSession);
             var customerRequirement = builder.Build();
 
-            Assert.True(this.DatabaseSession.Derive().HasErrors);
+            Assert.True(this.DatabaseSession.Derive(false).HasErrors);
 
             this.DatabaseSession.Rollback();
 
             builder.WithDescription("CustomerRequirement");
             builder.Build();
 
-            Assert.False(this.DatabaseSession.Derive().HasErrors);
+            Assert.False(this.DatabaseSession.Derive(false).HasErrors);
         }
 
         [Fact]
@@ -87,14 +87,14 @@ namespace Allors.Domain
             var builder = new InternalRequirementBuilder(this.DatabaseSession);
             var internalRequirement = builder.Build();
 
-            Assert.True(this.DatabaseSession.Derive().HasErrors);
+            Assert.True(this.DatabaseSession.Derive(false).HasErrors);
 
             this.DatabaseSession.Rollback();
 
             builder.WithDescription("InternalRequirement");
             builder.Build();
 
-            Assert.False(this.DatabaseSession.Derive().HasErrors);
+            Assert.False(this.DatabaseSession.Derive(false).HasErrors);
         }
 
         [Fact]
@@ -103,14 +103,14 @@ namespace Allors.Domain
             var builder = new ProductRequirementBuilder(this.DatabaseSession);
             var productRequirement = builder.Build();
 
-            Assert.True(this.DatabaseSession.Derive().HasErrors);
+            Assert.True(this.DatabaseSession.Derive(false).HasErrors);
 
             this.DatabaseSession.Rollback();
 
             builder.WithDescription("ProductRequirement");
             builder.Build();
 
-            Assert.False(this.DatabaseSession.Derive().HasErrors);
+            Assert.False(this.DatabaseSession.Derive(false).HasErrors);
         }
 
         [Fact]
@@ -119,14 +119,14 @@ namespace Allors.Domain
             var builder = new ProjectRequirementBuilder(this.DatabaseSession);
             var projectRequirement = builder.Build();
 
-            Assert.True(this.DatabaseSession.Derive().HasErrors);
+            Assert.True(this.DatabaseSession.Derive(false).HasErrors);
 
             this.DatabaseSession.Rollback();
 
             builder.WithDescription("ProjectRequirement");
             builder.Build();
 
-            Assert.False(this.DatabaseSession.Derive().HasErrors);
+            Assert.False(this.DatabaseSession.Derive(false).HasErrors);
         }
 
         [Fact]
@@ -135,14 +135,14 @@ namespace Allors.Domain
             var builder = new ResourceRequirementBuilder(this.DatabaseSession);
             var resourceRequirement = builder.Build();
 
-            Assert.True(this.DatabaseSession.Derive().HasErrors);
+            Assert.True(this.DatabaseSession.Derive(false).HasErrors);
 
             this.DatabaseSession.Rollback();
 
             builder.WithDescription("ResourceRequirement");
             builder.Build();
 
-            Assert.False(this.DatabaseSession.Derive().HasErrors);
+            Assert.False(this.DatabaseSession.Derive(false).HasErrors);
         }
 
         [Fact]
@@ -151,14 +151,14 @@ namespace Allors.Domain
             var builder = new WorkRequirementBuilder(this.DatabaseSession);
             var workRequirement = builder.Build();
 
-            Assert.True(this.DatabaseSession.Derive().HasErrors);
+            Assert.True(this.DatabaseSession.Derive(false).HasErrors);
 
             this.DatabaseSession.Rollback();
 
             builder.WithDescription("WorkRequirement");
             builder.Build();
 
-            Assert.False(this.DatabaseSession.Derive().HasErrors);
+            Assert.False(this.DatabaseSession.Derive(false).HasErrors);
         }
     }
 }

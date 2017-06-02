@@ -170,11 +170,11 @@ namespace Allors.Domain
                 .WithPaymentApplication(new PaymentApplicationBuilder(this.DatabaseSession).WithInvoiceItem(invoice.SalesInvoiceItems[0]).WithAmountApplied(50).Build())
                 .Build();
 
-            Assert.False(this.DatabaseSession.Derive().HasErrors);
+            Assert.False(this.DatabaseSession.Derive(false).HasErrors);
 
             receipt.AddPaymentApplication(new PaymentApplicationBuilder(this.DatabaseSession).WithInvoiceItem(invoice.SalesInvoiceItems[0]).WithAmountApplied(50).Build());
 
-            Assert.False(this.DatabaseSession.Derive().HasErrors);
+            Assert.False(this.DatabaseSession.Derive(false).HasErrors);
 
             receipt.AddPaymentApplication(new PaymentApplicationBuilder(this.DatabaseSession).WithInvoiceItem(invoice.SalesInvoiceItems[0]).WithAmountApplied(1).Build());
 

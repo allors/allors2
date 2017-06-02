@@ -32,14 +32,14 @@ namespace Allors.Domain
             var builder = new CustomerRequirementBuilder(this.DatabaseSession);
             var requirement = builder.Build();
 
-            Assert.True(this.DatabaseSession.Derive().HasErrors);
+            Assert.True(this.DatabaseSession.Derive(false).HasErrors);
 
             this.DatabaseSession.Rollback();
 
             builder.WithDescription("requirement");
             requirement = builder.Build();
 
-            Assert.False(this.DatabaseSession.Derive().HasErrors);
+            Assert.False(this.DatabaseSession.Derive(false).HasErrors);
 
             Assert.Equal(requirement.CurrentRequirementStatus.RequirementObjectState, new RequirementObjectStates(this.DatabaseSession).Active);
             Assert.Equal(requirement.CurrentObjectState, new RequirementObjectStates(this.DatabaseSession).Active);

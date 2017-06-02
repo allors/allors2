@@ -228,7 +228,7 @@ namespace Allors.Domain
 
             customerRelationship2.SubAccountNumber = 19;
 
-            Assert.False(this.DatabaseSession.Derive().HasErrors);
+            Assert.False(this.DatabaseSession.Derive(false).HasErrors);
         }
 
         [Fact]
@@ -367,7 +367,7 @@ namespace Allors.Domain
 
             customerRelationship.SubAccountNumber = customerRelationship.InternalOrganisation.CustomerRelationshipsWhereInternalOrganisation.First.SubAccountNumber;
 
-            Assert.True(this.DatabaseSession.Derive().HasErrors);
+            Assert.True(this.DatabaseSession.Derive(false).HasErrors);
         }
     }
 }

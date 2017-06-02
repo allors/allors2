@@ -43,7 +43,7 @@ namespace Allors.Domain
                 .WithActualStart(DateTime.UtcNow)
                 .Build();
 
-            Assert.False(this.DatabaseSession.Derive().HasErrors);
+            Assert.False(this.DatabaseSession.Derive(false).HasErrors);
 
             Assert.Equal(communication.CurrentCommunicationEventStatus.CommunicationEventObjectState, new CommunicationEventObjectStates(this.DatabaseSession).InProgress);
             Assert.Equal(communication.CurrentObjectState, new CommunicationEventObjectStates(this.DatabaseSession).InProgress);

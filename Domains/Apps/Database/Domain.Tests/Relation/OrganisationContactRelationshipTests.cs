@@ -73,7 +73,7 @@ namespace Allors.Domain
             builder.WithOrganisation(new OrganisationBuilder(this.DatabaseSession).WithName("organisation").WithLocale(Singleton.Instance(this.DatabaseSession).DefaultLocale).Build());
             builder.Build();
 
-            Assert.False(this.DatabaseSession.Derive().HasErrors);
+            Assert.False(this.DatabaseSession.Derive(false).HasErrors);
         }
 
         [Fact]

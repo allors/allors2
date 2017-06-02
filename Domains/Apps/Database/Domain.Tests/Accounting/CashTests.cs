@@ -41,11 +41,11 @@ namespace Allors.Domain
             internalOrganisation.AddPaymentMethod(cash);
             internalOrganisation.DoAccounting = false;
 
-            Assert.False(this.DatabaseSession.Derive().HasErrors);
+            Assert.False(this.DatabaseSession.Derive(false).HasErrors);
 
             internalOrganisation.DoAccounting = true;
 
-            Assert.True(this.DatabaseSession.Derive().HasErrors);
+            Assert.True(this.DatabaseSession.Derive(false).HasErrors);
         }
 
         [Fact]
@@ -89,15 +89,15 @@ namespace Allors.Domain
             internalOrganisation.AddPaymentMethod(cash);
             internalOrganisation.DoAccounting = true;
 
-            Assert.False(this.DatabaseSession.Derive().HasErrors);
+            Assert.False(this.DatabaseSession.Derive(false).HasErrors);
 
             cash.Journal = journal;
 
-            Assert.True(this.DatabaseSession.Derive().HasErrors);
+            Assert.True(this.DatabaseSession.Derive(false).HasErrors);
 
             cash.RemoveGeneralLedgerAccount();
 
-            Assert.False(this.DatabaseSession.Derive().HasErrors);
+            Assert.False(this.DatabaseSession.Derive(false).HasErrors);
         }
 
         [Fact]
@@ -140,16 +140,16 @@ namespace Allors.Domain
             internalOrganisation.AddPaymentMethod(cash);
             internalOrganisation.DoAccounting = true;
 
-            Assert.True(this.DatabaseSession.Derive().HasErrors);
+            Assert.True(this.DatabaseSession.Derive(false).HasErrors);
 
             cash.Journal = journal;
 
-            Assert.False(this.DatabaseSession.Derive().HasErrors);
+            Assert.False(this.DatabaseSession.Derive(false).HasErrors);
 
             cash.RemoveJournal();
             cash.GeneralLedgerAccount = internalOrganisationGlAccount;
 
-            Assert.False(this.DatabaseSession.Derive().HasErrors);
+            Assert.False(this.DatabaseSession.Derive(false).HasErrors);
         }
     }
 }

@@ -34,21 +34,21 @@ namespace Allors.Domain
             var builder = new WarehouseBuilder(this.DatabaseSession);
             var facility = builder.Build();
 
-            Assert.True(this.DatabaseSession.Derive().HasErrors);
+            Assert.True(this.DatabaseSession.Derive(false).HasErrors);
 
             this.DatabaseSession.Rollback();
 
             builder.WithName("facility");
             facility = builder.Build();
 
-            Assert.True(this.DatabaseSession.Derive().HasErrors);
+            Assert.True(this.DatabaseSession.Derive(false).HasErrors);
 
             this.DatabaseSession.Rollback();
 
             builder.WithOwner(new InternalOrganisations(this.DatabaseSession).Extent().First);
             facility = builder.Build();
 
-            Assert.False(this.DatabaseSession.Derive().HasErrors);
+            Assert.False(this.DatabaseSession.Derive(false).HasErrors);
         }
     }
 }

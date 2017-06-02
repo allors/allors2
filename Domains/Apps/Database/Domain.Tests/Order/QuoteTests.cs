@@ -32,14 +32,14 @@ namespace Allors.Domain
             var builder = new ProductQuoteBuilder(this.DatabaseSession);
             var productQuote = builder.Build();
 
-            Assert.True(this.DatabaseSession.Derive().HasErrors);
+            Assert.True(this.DatabaseSession.Derive(false).HasErrors);
 
             this.DatabaseSession.Rollback();
 
             builder.WithDescription("ProductQuote");
             productQuote = builder.Build();
 
-            Assert.False(this.DatabaseSession.Derive().HasErrors);
+            Assert.False(this.DatabaseSession.Derive(false).HasErrors);
         }
 
         [Fact]
@@ -48,14 +48,14 @@ namespace Allors.Domain
             var builder = new ProposalBuilder(this.DatabaseSession);
             var requirement = builder.Build();
 
-            Assert.True(this.DatabaseSession.Derive().HasErrors);
+            Assert.True(this.DatabaseSession.Derive(false).HasErrors);
 
             this.DatabaseSession.Rollback();
 
             builder.WithDescription("Proposal");
             requirement = builder.Build();
 
-            Assert.False(this.DatabaseSession.Derive().HasErrors);
+            Assert.False(this.DatabaseSession.Derive(false).HasErrors);
         }
 
         [Fact]
@@ -64,14 +64,14 @@ namespace Allors.Domain
             var builder = new StatementOfWorkBuilder(this.DatabaseSession);
             var statementOfWork = builder.Build();
 
-            Assert.True(this.DatabaseSession.Derive().HasErrors);
+            Assert.True(this.DatabaseSession.Derive(false).HasErrors);
 
             this.DatabaseSession.Rollback();
 
             builder.WithDescription("StatementOfWork");
             statementOfWork = builder.Build();
 
-            Assert.False(this.DatabaseSession.Derive().HasErrors);
+            Assert.False(this.DatabaseSession.Derive(false).HasErrors);
         }
     }
 }

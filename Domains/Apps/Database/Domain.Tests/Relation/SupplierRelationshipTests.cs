@@ -126,7 +126,7 @@ namespace Allors.Domain
 
             supplierRelationship2.SubAccountNumber = 19;
 
-            Assert.False(this.DatabaseSession.Derive().HasErrors);
+            Assert.False(this.DatabaseSession.Derive(false).HasErrors);
         }
 
         [Fact]
@@ -143,7 +143,7 @@ namespace Allors.Domain
 
             supplierRelationship1.SubAccountNumber = this.supplier.SupplierRelationshipsWhereSupplier.First.SubAccountNumber;
 
-            Assert.True(this.DatabaseSession.Derive().HasErrors);
+            Assert.True(this.DatabaseSession.Derive(false).HasErrors);
         }
 
         [Fact]
@@ -162,7 +162,7 @@ namespace Allors.Domain
             builder.WithSupplier(this.supplier);
             builder.Build();
 
-            Assert.False(this.DatabaseSession.Derive().HasErrors);
+            Assert.False(this.DatabaseSession.Derive(false).HasErrors);
         }
 
         [Fact]

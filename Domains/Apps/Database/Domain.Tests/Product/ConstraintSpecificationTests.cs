@@ -32,14 +32,14 @@ namespace Allors.Domain
             var builder = new ConstraintSpecificationBuilder(this.DatabaseSession);
             var specification = builder.Build();
 
-            Assert.True(this.DatabaseSession.Derive().HasErrors);
+            Assert.True(this.DatabaseSession.Derive(false).HasErrors);
 
             this.DatabaseSession.Rollback();
 
             builder.WithDescription("Description");
             specification = builder.Build();
 
-            Assert.False(this.DatabaseSession.Derive().HasErrors);
+            Assert.False(this.DatabaseSession.Derive(false).HasErrors);
 
             Assert.Equal(specification.CurrentPartSpecificationStatus.PartSpecificationObjectState, new PartSpecificationObjectStates(this.DatabaseSession).Created);
             Assert.Equal(specification.CurrentObjectState, new PartSpecificationObjectStates(this.DatabaseSession).Created);

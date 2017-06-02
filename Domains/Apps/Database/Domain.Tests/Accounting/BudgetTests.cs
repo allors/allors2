@@ -85,21 +85,21 @@ namespace Allors.Domain
             var builder = new OperatingBudgetBuilder(this.DatabaseSession);
             var budget = builder.Build();
 
-            Assert.True(this.DatabaseSession.Derive().HasErrors);
+            Assert.True(this.DatabaseSession.Derive(false).HasErrors);
 
             this.DatabaseSession.Rollback();
 
             builder.WithDescription("Budget");
             budget = builder.Build();
 
-            Assert.True(this.DatabaseSession.Derive().HasErrors);
+            Assert.True(this.DatabaseSession.Derive(false).HasErrors);
 
             this.DatabaseSession.Rollback();
 
             builder.WithFromDate(DateTime.UtcNow);
             budget = builder.Build();
 
-            Assert.False(this.DatabaseSession.Derive().HasErrors);
+            Assert.False(this.DatabaseSession.Derive(false).HasErrors);
 
             Assert.Equal(budget.CurrentBudgetStatus.BudgetObjectState, new BudgetObjectStates(this.DatabaseSession).Opened);
             Assert.Equal(budget.CurrentObjectState, new BudgetObjectStates(this.DatabaseSession).Opened);

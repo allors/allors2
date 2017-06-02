@@ -35,14 +35,14 @@ namespace Allors.Domain
             var builder = new SalesOrderStatusBuilder(this.DatabaseSession);
             var orderStatus = builder.Build();
 
-            Assert.True(this.DatabaseSession.Derive().HasErrors);
+            Assert.True(this.DatabaseSession.Derive(false).HasErrors);
 
             this.DatabaseSession.Rollback();
 
             builder.WithSalesOrderObjectState(new SalesOrderObjectStates(this.DatabaseSession).Provisional);
             orderStatus = builder.Build();
 
-            Assert.False(this.DatabaseSession.Derive().HasErrors);
+            Assert.False(this.DatabaseSession.Derive(false).HasErrors);
         }
     }
 }

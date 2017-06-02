@@ -34,14 +34,14 @@ namespace Allors.Domain
             var builder = new WebSiteCommunicationBuilder(this.DatabaseSession).WithOwner(owner);
             var communication = builder.Build();
 
-            Assert.True(this.DatabaseSession.Derive().HasErrors);
+            Assert.True(this.DatabaseSession.Derive(false).HasErrors);
 
             builder.WithSubject("Website communication");
             communication = builder.Build();
 
             this.DatabaseSession.Derive(true);
 
-            Assert.False(this.DatabaseSession.Derive().HasErrors);
+            Assert.False(this.DatabaseSession.Derive(false).HasErrors);
 
             Assert.Equal(communication.CurrentCommunicationEventStatus.CommunicationEventObjectState, new CommunicationEventObjectStates(this.DatabaseSession).Scheduled);
             Assert.Equal(communication.CurrentObjectState, new CommunicationEventObjectStates(this.DatabaseSession).Scheduled);

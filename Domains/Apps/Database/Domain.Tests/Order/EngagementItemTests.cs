@@ -35,14 +35,14 @@ namespace Allors.Domain
             var builder = new CustomEngagementItemBuilder(this.DatabaseSession);
             var customEngagementItem = builder.Build();
 
-            Assert.True(this.DatabaseSession.Derive().HasErrors);
+            Assert.True(this.DatabaseSession.Derive(false).HasErrors);
 
             this.DatabaseSession.Rollback();
 
             builder.WithDescription("CustomEngagementItem");
             customEngagementItem = builder.Build();
 
-            Assert.False(this.DatabaseSession.Derive().HasErrors);
+            Assert.False(this.DatabaseSession.Derive(false).HasErrors);
         }
 
         [Fact]
@@ -51,14 +51,14 @@ namespace Allors.Domain
             var builder = new DeliverableOrderItemBuilder(this.DatabaseSession);
             var deliverableOrderItem = builder.Build();
 
-            Assert.True(this.DatabaseSession.Derive().HasErrors);
+            Assert.True(this.DatabaseSession.Derive(false).HasErrors);
 
             this.DatabaseSession.Rollback();
 
             builder.WithDescription("DeliverableOrderItem");
             deliverableOrderItem = builder.Build();
 
-            Assert.False(this.DatabaseSession.Derive().HasErrors);
+            Assert.False(this.DatabaseSession.Derive(false).HasErrors);
         }
 
         [Fact]
@@ -67,14 +67,14 @@ namespace Allors.Domain
             var builder = new GoodOrderItemBuilder(this.DatabaseSession);
             var goodOrderItem = builder.Build();
 
-            Assert.True(this.DatabaseSession.Derive().HasErrors);
+            Assert.True(this.DatabaseSession.Derive(false).HasErrors);
 
             this.DatabaseSession.Rollback();
 
             builder.WithDescription("GoodOrderItem");
             goodOrderItem = builder.Build();
 
-            Assert.False(this.DatabaseSession.Derive().HasErrors);
+            Assert.False(this.DatabaseSession.Derive(false).HasErrors);
         }
 
         [Fact]
@@ -83,14 +83,14 @@ namespace Allors.Domain
             var builder = new ProfessionalPlacementBuilder(this.DatabaseSession);
             var professionalPlacement = builder.Build();
 
-            Assert.True(this.DatabaseSession.Derive().HasErrors);
+            Assert.True(this.DatabaseSession.Derive(false).HasErrors);
 
             this.DatabaseSession.Rollback();
 
             builder.WithDescription("ProfessionalPlacement");
             professionalPlacement = builder.Build();
 
-            Assert.False(this.DatabaseSession.Derive().HasErrors);
+            Assert.False(this.DatabaseSession.Derive(false).HasErrors);
         }
 
         [Fact]
@@ -99,14 +99,14 @@ namespace Allors.Domain
             var builder = new StandardServiceOrderItemBuilder(this.DatabaseSession);
             var standardServiceOrderItem = builder.Build();
 
-            Assert.True(this.DatabaseSession.Derive().HasErrors);
+            Assert.True(this.DatabaseSession.Derive(false).HasErrors);
 
             this.DatabaseSession.Rollback();
 
             builder.WithDescription("StandardServiceOrderItem");
             standardServiceOrderItem = builder.Build();
 
-            Assert.False(this.DatabaseSession.Derive().HasErrors);
+            Assert.False(this.DatabaseSession.Derive(false).HasErrors);
         }
     }
 }

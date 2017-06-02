@@ -64,21 +64,21 @@ namespace Allors.Domain
             var builder = new InternalOrganisationBuilder(this.DatabaseSession);
             builder.Build();
 
-            Assert.True(this.DatabaseSession.Derive().HasErrors);
+            Assert.True(this.DatabaseSession.Derive(false).HasErrors);
 
             this.DatabaseSession.Rollback();
 
             builder.WithPaymentMethod(this.ownBankAccount);
             builder.Build();
 
-            Assert.True(this.DatabaseSession.Derive().HasErrors);
+            Assert.True(this.DatabaseSession.Derive(false).HasErrors);
 
             this.DatabaseSession.Rollback();
 
             builder.WithName("Organisation");
             builder.Build();
 
-            Assert.False(this.DatabaseSession.Derive().HasErrors);
+            Assert.False(this.DatabaseSession.Derive(false).HasErrors);
         }
 
         [Fact]
@@ -213,11 +213,11 @@ namespace Allors.Domain
                
             organisation.PreferredCurrency = new Currencies(this.DatabaseSession).FindBy(M.Currency.IsoCode, "GBP");
 
-            Assert.True(this.DatabaseSession.Derive().HasErrors);
+            Assert.True(this.DatabaseSession.Derive(false).HasErrors);
 
             organisation.PreferredCurrency = new Currencies(this.DatabaseSession).FindBy(M.Currency.IsoCode, "EUR");
 
-            Assert.False(this.DatabaseSession.Derive().HasErrors);
+            Assert.False(this.DatabaseSession.Derive(false).HasErrors);
         }
 
         [Fact]

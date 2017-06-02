@@ -33,14 +33,14 @@ namespace Allors.Domain
             var builder = new FinishedGoodBuilder(this.DatabaseSession);
             var finishedGood = builder.Build();
 
-            Assert.True(this.DatabaseSession.Derive().HasErrors);
+            Assert.True(this.DatabaseSession.Derive(false).HasErrors);
 
             this.DatabaseSession.Rollback();
 
             builder.WithName("FinishedGood");
             finishedGood = builder.Build();
 
-            Assert.False(this.DatabaseSession.Derive().HasErrors);
+            Assert.False(this.DatabaseSession.Derive(false).HasErrors);
         }
 
         [Fact]
@@ -73,14 +73,14 @@ namespace Allors.Domain
             var builder = new RawMaterialBuilder(this.DatabaseSession);
             var deliverableBasedService = builder.Build();
 
-            Assert.True(this.DatabaseSession.Derive().HasErrors);
+            Assert.True(this.DatabaseSession.Derive(false).HasErrors);
 
             this.DatabaseSession.Rollback();
 
             builder.WithName("RawMaterial");
             deliverableBasedService = builder.Build();
 
-            Assert.False(this.DatabaseSession.Derive().HasErrors);
+            Assert.False(this.DatabaseSession.Derive(false).HasErrors);
         }
 
         [Fact]
@@ -113,14 +113,14 @@ namespace Allors.Domain
             var builder = new SubAssemblyBuilder(this.DatabaseSession);
             var subAssembly = builder.Build();
 
-            Assert.True(this.DatabaseSession.Derive().HasErrors);
+            Assert.True(this.DatabaseSession.Derive(false).HasErrors);
 
             this.DatabaseSession.Rollback();
 
             builder.WithName("SubAssembly");
             subAssembly = builder.Build();
 
-            Assert.False(this.DatabaseSession.Derive().HasErrors);
+            Assert.False(this.DatabaseSession.Derive(false).HasErrors);
         }
 
         [Fact]

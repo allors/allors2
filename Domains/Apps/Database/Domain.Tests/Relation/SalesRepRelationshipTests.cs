@@ -54,7 +54,7 @@ namespace Allors.Domain
             builder.WithSalesRepresentative(new PersonBuilder(this.DatabaseSession).WithLastName("salesrep.").Build());
             builder.Build();
 
-            Assert.False(this.DatabaseSession.Derive().HasErrors);
+            Assert.False(this.DatabaseSession.Derive(false).HasErrors);
         }
     }
 }

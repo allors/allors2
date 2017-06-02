@@ -97,7 +97,7 @@ namespace Allors.Domain
                                             .WithQuantity(shipment.ShipmentItems[0].Quantity + 1)
                                             .Build());
 
-            Assert.True(this.DatabaseSession.Derive().HasErrors);
+            Assert.True(this.DatabaseSession.Derive(false).HasErrors);
         }
 
         [Fact]

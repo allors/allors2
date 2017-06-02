@@ -34,28 +34,28 @@ namespace Allors.Domain
             var builder = new PurchaseInvoiceBuilder(this.DatabaseSession);
             builder.Build();
 
-            Assert.True(this.DatabaseSession.Derive().HasErrors);
+            Assert.True(this.DatabaseSession.Derive(false).HasErrors);
 
             this.DatabaseSession.Rollback();
 
             builder.WithPurchaseInvoiceType(new PurchaseInvoiceTypes(this.DatabaseSession).PurchaseInvoice);
             builder.Build();
 
-            Assert.True(this.DatabaseSession.Derive().HasErrors);
+            Assert.True(this.DatabaseSession.Derive(false).HasErrors);
 
             this.DatabaseSession.Rollback();
 
             builder.WithBilledToInternalOrganisation(new InternalOrganisations(this.DatabaseSession).FindBy(M.InternalOrganisation.Name, "internalOrganisation"));
             builder.Build();
 
-            Assert.True(this.DatabaseSession.Derive().HasErrors);
+            Assert.True(this.DatabaseSession.Derive(false).HasErrors);
 
             this.DatabaseSession.Rollback();
 
             builder.WithBilledFromParty(new Organisations(this.DatabaseSession).FindBy(M.Organisation.Name, "supplier"));
             builder.Build();
 
-            Assert.False(this.DatabaseSession.Derive().HasErrors);
+            Assert.False(this.DatabaseSession.Derive(false).HasErrors);
         }
 
         [Fact]
@@ -74,7 +74,7 @@ namespace Allors.Domain
 
             new SupplierRelationshipBuilder(this.DatabaseSession).WithSupplier(supplier2).WithInternalOrganisation(invoice.BilledToInternalOrganisation).Build();
 
-            Assert.False(this.DatabaseSession.Derive().HasErrors);
+            Assert.False(this.DatabaseSession.Derive(false).HasErrors);
         }
 
         [Fact]

@@ -39,21 +39,21 @@ namespace Allors.Domain
             var builder = new GeneralLedgerAccountBuilder(this.DatabaseSession);
             builder.Build();
 
-            Assert.True(this.DatabaseSession.Derive().HasErrors);
+            Assert.True(this.DatabaseSession.Derive(false).HasErrors);
 
             this.DatabaseSession.Rollback();
 
             builder.WithAccountNumber("0001");
             builder.Build();
 
-            Assert.True(this.DatabaseSession.Derive().HasErrors); 
+            Assert.True(this.DatabaseSession.Derive(false).HasErrors); 
 
             this.DatabaseSession.Rollback();
 
             builder.WithName("GeneralLedgerAccount");
             builder.Build();
 
-            Assert.True(this.DatabaseSession.Derive().HasErrors);
+            Assert.True(this.DatabaseSession.Derive(false).HasErrors);
 
             this.DatabaseSession.Rollback();
 
@@ -65,21 +65,21 @@ namespace Allors.Domain
             builder.WithSide(new DebitCreditConstants(this.DatabaseSession).Debit);
             builder.Build();
 
-            Assert.True(this.DatabaseSession.Derive().HasErrors);
+            Assert.True(this.DatabaseSession.Derive(false).HasErrors);
 
             this.DatabaseSession.Rollback();
 
             builder.WithGeneralLedgerAccountGroup(accountGroup);
             builder.Build();
 
-            Assert.True(this.DatabaseSession.Derive().HasErrors);
+            Assert.True(this.DatabaseSession.Derive(false).HasErrors);
 
             this.DatabaseSession.Rollback();
 
             builder.WithGeneralLedgerAccountType(accountType);
             builder.Build();
 
-            Assert.False(this.DatabaseSession.Derive().HasErrors);
+            Assert.False(this.DatabaseSession.Derive(false).HasErrors);
         }
 
         [Fact]
@@ -124,7 +124,7 @@ namespace Allors.Domain
 
             var chart = new ChartOfAccountsBuilder(this.DatabaseSession).WithName("name").WithGeneralLedgerAccount(glAccount0001).Build();
 
-            Assert.False(this.DatabaseSession.Derive().HasErrors);
+            Assert.False(this.DatabaseSession.Derive(false).HasErrors);
 
             chart.AddGeneralLedgerAccount(glAccount0001Dup);
 
@@ -135,7 +135,7 @@ namespace Allors.Domain
 
             new ChartOfAccountsBuilder(this.DatabaseSession).WithName("another Chart").WithGeneralLedgerAccount(glAccount0001Dup).Build();
 
-            Assert.False(this.DatabaseSession.Derive().HasErrors);
+            Assert.False(this.DatabaseSession.Derive(false).HasErrors);
         }
 
         [Fact]
@@ -202,7 +202,7 @@ namespace Allors.Domain
 
             glAccount.AddCostCentersAllowed(costCenter);
 
-            Assert.False(this.DatabaseSession.Derive().HasErrors);
+            Assert.False(this.DatabaseSession.Derive(false).HasErrors);
         }
 
         [Fact]
@@ -235,7 +235,7 @@ namespace Allors.Domain
 
             glAccount.AddCostUnitsAllowed(costUnit);
 
-            Assert.False(this.DatabaseSession.Derive().HasErrors);
+            Assert.False(this.DatabaseSession.Derive(false).HasErrors);
         }
     }
 }

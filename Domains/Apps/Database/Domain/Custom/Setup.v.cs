@@ -1,6 +1,6 @@
 // --------------------------------------------------------------------------------------------------------------------
-// <copyright file="ObjectsBase.v.cs" company="Allors bvba">
-//   Copyright 2002-2013 Allors bvba.
+// <copyright file="Setup.v.cs" company="Allors bvba">
+//   Copyright 2002-2016 Allors bvba.
 // 
 // Dual Licensed under
 //   a) the General Public Licence v3 (GPL)
@@ -20,29 +20,34 @@
 
 namespace Allors
 {
-    using Allors.Domain;
-
-    public abstract partial class ObjectsBase<T> where T : IObject
+    public partial class Setup
     {
-        public void Prepare(Setup setup)
+        private void OnPrePrepare()
         {
-            this.BasePrepare(setup);
-            this.AppsPrepare(setup);
-            this.TestPrepare(setup);
+            this.BaseOnPrePrepare();
+            this.AppsOnPrePrepare();
+            this.CustomOnPrePrepare();
         }
 
-        public void Setup(Setup setup)
+        private void OnPostPrepare()
         {
-            this.BaseSetup(setup);
-            this.AppsSetup(setup);
-            this.TestSetup(setup);
+            this.BaseOnPostPrepare();
+            this.AppsOnPostPrepare();
+            this.CustomOnPostPrepare();
         }
 
-        public void Secure(Security security)
+        private void OnPreSetup()
         {
-            this.BaseSecure(security);
-            this.AppsSecure(security);
-            this.TestSecure(security);
+            this.BaseOnPreSetup();
+            this.AppsOnPreSetup();
+            this.CustomOnPreSetup();
+        }
+
+        private void OnPostSetup()
+        {
+            this.BaseOnPostSetup();
+            this.AppsOnPostSetup();
+            this.CustomOnPostSetup();
         }
     }
 }

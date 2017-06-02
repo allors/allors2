@@ -32,42 +32,42 @@ namespace Allors.Domain
             var builder = new CreditCardBuilder(this.DatabaseSession);
             builder.Build();
 
-            Assert.True(this.DatabaseSession.Derive().HasErrors);
+            Assert.True(this.DatabaseSession.Derive(false).HasErrors);
 
             this.DatabaseSession.Rollback();
 
             builder.WithCardNumber("4012888888881881");
             builder.Build();
 
-            Assert.True(this.DatabaseSession.Derive().HasErrors);
+            Assert.True(this.DatabaseSession.Derive(false).HasErrors);
 
             this.DatabaseSession.Rollback();
 
             builder.WithExpirationYear(2016);
             builder.Build();
 
-            Assert.True(this.DatabaseSession.Derive().HasErrors);
+            Assert.True(this.DatabaseSession.Derive(false).HasErrors);
 
             this.DatabaseSession.Rollback();
 
             builder.WithExpirationMonth(03);
             builder.Build();
 
-            Assert.True(this.DatabaseSession.Derive().HasErrors);
+            Assert.True(this.DatabaseSession.Derive(false).HasErrors);
 
             this.DatabaseSession.Rollback();
 
             builder.WithNameOnCard("M.E. van Knippenberg");
             builder.Build();
 
-            Assert.True(this.DatabaseSession.Derive().HasErrors);
+            Assert.True(this.DatabaseSession.Derive(false).HasErrors);
 
             this.DatabaseSession.Rollback();
 
             builder.WithCreditCardCompany(new CreditCardCompanyBuilder(this.DatabaseSession).WithName("Visa").Build());
             builder.Build();
 
-            Assert.False(this.DatabaseSession.Derive().HasErrors);
+            Assert.False(this.DatabaseSession.Derive(false).HasErrors);
         }
 
         [Fact]
@@ -81,7 +81,7 @@ namespace Allors.Domain
                 .WithCreditCardCompany(new CreditCardCompanyBuilder(this.DatabaseSession).WithName("Visa").Build())
                 .Build();
 
-            Assert.False(this.DatabaseSession.Derive().HasErrors);
+            Assert.False(this.DatabaseSession.Derive(false).HasErrors);
 
             new CreditCardBuilder(this.DatabaseSession)
                 .WithCardNumber("4012888888881881")
@@ -91,7 +91,7 @@ namespace Allors.Domain
                 .WithCreditCardCompany(new CreditCardCompanyBuilder(this.DatabaseSession).WithName("Visa").Build())
                 .Build();
             
-            Assert.True(this.DatabaseSession.Derive().HasErrors);
+            Assert.True(this.DatabaseSession.Derive(false).HasErrors);
         }
     }
 }

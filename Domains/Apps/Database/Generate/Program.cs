@@ -1,7 +1,8 @@
-﻿using System;
-
-namespace Allors
+﻿namespace Allors
 {
+    using System;
+    using System.IO;
+
     using Allors.Development.Repository.Tasks;
 
     class Program
@@ -21,23 +22,48 @@ namespace Allors
 
         private static int Default()
         {
-            var config = new System.Collections.Generic.Dictionary<string, string>()
-                             {
-                                { "../Base/Database/Templates/domain.cs.stg", "DataBase/Domain/Generated" },
-                                { "../Base/Database/Templates/uml.cs.stg", "DataBase/Domain.Diagrams" },
-                             };
+            string[,] config =
+                {
+                    { "../Base/Database/Templates/domain.cs.stg", "DataBase/Domain/Generated" },
+                    { "../Base/Database/Templates/uml.cs.stg", "DataBase/Domain.Diagrams" },
 
-            foreach (var entry in config)
+                    { "../Base/Workspace/Typescript/Templates/meta.ts.stg", "Workspace/Typescript/Angular/src/allors/meta/generated" },
+                    { "../Base/Workspace/Typescript/Templates/domain.ts.stg", "Workspace/Typescript/Angular/src/allors/domain/generated" },
+            };
+
+            for (var i = 0; i < config.GetLength(0); i++)
             {
-                Console.WriteLine("-> " + entry.Value);
-                var log = Generate.Execute(entry.Key, entry.Value);
+                var template = config[i, 0];
+                var output = config[i, 1];
+
+                Console.WriteLine("-> " + output);
+
+                RemoveDirectory(output);
+
+                var log = Generate.Execute(template, output);
                 if (log.ErrorOccured)
                 {
                     return 1;
                 }
             }
 
+
             return 0;
+        }
+
+        private static void RemoveDirectory(string output)
+        {
+            var directoryInfo = new DirectoryInfo(output);
+            if (directoryInfo.Exists)
+            {
+                try
+                {
+                    directoryInfo.Delete(true);
+                }
+                catch
+                {
+                }
+            }
         }
     }
 }

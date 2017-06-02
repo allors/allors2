@@ -34,14 +34,14 @@ namespace Allors.Domain
             var builder = new OrderTermBuilder(this.DatabaseSession);
             var orderTerm = builder.Build();
 
-            Assert.True(this.DatabaseSession.Derive().HasErrors);
+            Assert.True(this.DatabaseSession.Derive(false).HasErrors);
 
             this.DatabaseSession.Rollback();
 
             builder.WithTermType(new TermTypes(this.DatabaseSession).PercentageCancellationCharge);
             orderTerm = builder.Build();
 
-            Assert.False(this.DatabaseSession.Derive().HasErrors);
+            Assert.False(this.DatabaseSession.Derive(false).HasErrors);
         }
     }
 }

@@ -32,14 +32,14 @@ namespace Allors.Domain
             var builder = new AgreementExhibitBuilder(this.DatabaseSession);
             var agreementExhibit = builder.Build();
 
-            Assert.True(this.DatabaseSession.Derive().HasErrors);
+            Assert.True(this.DatabaseSession.Derive(false).HasErrors);
 
             this.DatabaseSession.Rollback();
 
             builder.WithDescription("AgreementExhibit");
             agreementExhibit = builder.Build();
 
-            Assert.False(this.DatabaseSession.Derive().HasErrors);
+            Assert.False(this.DatabaseSession.Derive(false).HasErrors);
         }
 
         [Fact]
@@ -48,14 +48,14 @@ namespace Allors.Domain
             var builder = new AgreementPricingProgramBuilder(this.DatabaseSession);
             var agreementPricingProgram = builder.Build();
 
-            Assert.True(this.DatabaseSession.Derive().HasErrors);
+            Assert.True(this.DatabaseSession.Derive(false).HasErrors);
 
             this.DatabaseSession.Rollback();
 
             builder.WithDescription("AgreementPricingProgram");
             agreementPricingProgram = builder.Build();
 
-            Assert.False(this.DatabaseSession.Derive().HasErrors);
+            Assert.False(this.DatabaseSession.Derive(false).HasErrors);
         }
 
         [Fact]
@@ -64,14 +64,14 @@ namespace Allors.Domain
             var builder = new AgreementSectionBuilder(this.DatabaseSession);
             var agreementSection = builder.Build();
 
-            Assert.True(this.DatabaseSession.Derive().HasErrors);
+            Assert.True(this.DatabaseSession.Derive(false).HasErrors);
 
             this.DatabaseSession.Rollback();
 
             builder.WithDescription("AgreementSection");
             agreementSection = builder.Build();
 
-            Assert.False(this.DatabaseSession.Derive().HasErrors);
+            Assert.False(this.DatabaseSession.Derive(false).HasErrors);
         }
 
         [Fact]
@@ -80,14 +80,14 @@ namespace Allors.Domain
             var builder = new SubAgreementBuilder(this.DatabaseSession);
             var subAgreement = builder.Build();
 
-            Assert.True(this.DatabaseSession.Derive().HasErrors);
+            Assert.True(this.DatabaseSession.Derive(false).HasErrors);
 
             this.DatabaseSession.Rollback();
 
             builder.WithDescription("SubAgreement");
             subAgreement = builder.Build();
 
-            Assert.False(this.DatabaseSession.Derive().HasErrors);
+            Assert.False(this.DatabaseSession.Derive(false).HasErrors);
         }
     }
 }

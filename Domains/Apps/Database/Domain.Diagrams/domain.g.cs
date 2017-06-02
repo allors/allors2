@@ -39,16 +39,6 @@ namespace Allors.Domain
 						AccessControl OwnerAccessControl {set;}
 
 		}
-		public interface ApproveTask  : Task 
-		{
-						Notification RejectionNotification {set;}
-
-		}
-		public interface EmailSource  : Object 
-		{
-						EmailMessage EmailMessage {set;}
-
-		}
 		public interface ObjectState  : UniquelyIdentifiable 
 		{
 						Permission DeniedPermissions {set;}
@@ -67,8 +57,6 @@ namespace Allors.Domain
 						Person Participants {set;}
 
 						Person Performer {set;}
-
-						global::System.String Comment {set;}
 
 		}
 		public interface Transitional  : AccessControlledObject 

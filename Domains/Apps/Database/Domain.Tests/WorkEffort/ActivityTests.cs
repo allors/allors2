@@ -34,14 +34,14 @@ namespace Allors.Domain
             var builder = new ActivityBuilder(this.DatabaseSession);
             builder.Build();
 
-            Assert.True(this.DatabaseSession.Derive().HasErrors);
+            Assert.True(this.DatabaseSession.Derive(false).HasErrors);
 
             this.DatabaseSession.Rollback();
 
             builder.WithDescription("Description");
             var activity = builder.Build();
 
-            Assert.False(this.DatabaseSession.Derive().HasErrors);
+            Assert.False(this.DatabaseSession.Derive(false).HasErrors);
 
             Assert.Equal(activity.CurrentWorkEffortStatus.WorkEffortObjectState, new WorkEffortObjectStates(this.DatabaseSession).NeedsAction);
             Assert.Equal(activity.CurrentObjectState, new WorkEffortObjectStates(this.DatabaseSession).NeedsAction);

@@ -21,7 +21,6 @@
 namespace Allors.Domain
 {
     using System.Collections.Generic;
-    using System.Security.Claims;
     using System.Xml;
     using System.Xml.Serialization;
 

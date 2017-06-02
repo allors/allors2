@@ -26,39 +26,49 @@ namespace Allors
     using System.Reflection;
     using System.Security.Claims;
     using System.Security.Principal;
+
+    using Allors.Adapters.Memory;
     using Allors.Domain;
+    using Allors.Services.Base;
 
     public class DomainTest : IDisposable
     {
-        protected ObjectFactory ObjectFactory => new ObjectFactory(MetaPopulation.Instance, typeof(User));
-
-        private ISession databaseSession;
-
-        public DomainTest() : this(true)
+        public DomainTest()
         {
-        }
+            var configuration = new Configuration
+                                    {
+                                        ObjectFactory = new ObjectFactory(MetaPopulation.Instance, typeof(User)),
+                                    };
 
-        public DomainTest(bool setup)
-        {
-            var configuration = new Allors.Adapters.Memory.Configuration { ObjectFactory = this.ObjectFactory };
-            var database = new Allors.Adapters.Memory.Database(configuration);
+            var database = new Database(configuration);
+
             database.Init();
 
-            if (setup)
-            {
-                Fixture.Setup(database);
-            }
+            var userService = new ClaimsPrincipalUserService();
+            var timeService = new TimeService();
+            var mailService = new MailService { DefaultSender = "noreply@example.com" };
+            var securityService = new SecurityService();
+            var serviceLocator = new ServiceLocator
+                                     {
+                                         UserServiceFactory = () => userService,
+                                         TimeServiceFactory = () => timeService,
+                                         MailServiceFactory = () => mailService,
+                                         SecurityServiceFactory = () => securityService
+                                     };
+            database.SetServiceLocator(serviceLocator.Assert());
 
-            this.databaseSession = database.CreateSession();
+            Fixture.Setup(database);
+
+            this.DatabaseSession = database.CreateSession();
         }
+
+        public ISession DatabaseSession { get; private set; }
 
         public void Dispose()
         {
-            this.databaseSession.Rollback();
-            this.databaseSession = null;
+            this.DatabaseSession.Rollback();
+            this.DatabaseSession = null;
         }
-
-        public ISession DatabaseSession => this.databaseSession;
 
         protected IObject[] GetObjects(ISession session, Composite objectType)
         {

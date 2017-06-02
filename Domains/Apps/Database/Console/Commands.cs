@@ -1,6 +1,6 @@
-// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="Setup.cs" company="Allors bvba">
-//   Copyright 2002-2013 Allors bvba.
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="Commands.cs" company="Allors bvba">
+//   Copyright 2002-2017 Allors bvba.
 // 
 // Dual Licensed under
 //   a) the General Public Licence v3 (GPL)
@@ -18,28 +18,20 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Allors
+namespace Allors.Console
 {
-    using Allors.Domain;
-
-    public partial class Setup
+    public enum Commands
     {
-        private void TestOnPrePrepare()
-        {
-        }
+        Populate,
 
-        private void TestOnPostPrepare()
-        {
-        }
+        Save,
 
-        private void TestOnPreSetup()
-        {
-        }
+        Load,
 
-        private void TestOnPostSetup()
-        {
-            var singleton = Singleton.Instance(this.session);
-            singleton.DefaultLocale = new Locales(this.session).EnglishGreatBritain;
-        }
+        Upgrade,
+
+        Import,
+
+        Custom,
     }
 }

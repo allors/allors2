@@ -534,7 +534,7 @@ namespace Allors.Domain
 
             this.order.AddSalesOrderItem(orderItem);
 
-            Assert.True(this.DatabaseSession.Derive().HasErrors);
+            Assert.True(this.DatabaseSession.Derive(false).HasErrors);
 
             this.DatabaseSession.Rollback();
 
@@ -543,14 +543,14 @@ namespace Allors.Domain
 
             this.order.AddSalesOrderItem(orderItem);
 
-            Assert.False(this.DatabaseSession.Derive().HasErrors);
+            Assert.False(this.DatabaseSession.Derive(false).HasErrors);
 
             builder.WithProductFeature(this.feature1);
             orderItem = builder.Build();
 
             this.order.AddSalesOrderItem(orderItem);
 
-            Assert.True(this.DatabaseSession.Derive().HasErrors);
+            Assert.True(this.DatabaseSession.Derive(false).HasErrors);
         }
 
         [Fact]
@@ -590,12 +590,12 @@ namespace Allors.Domain
             salesOrder.AddSalesOrderItem(productOrderItem);
             salesOrder.AddSalesOrderItem(productFeatureOrderItem);
 
-            Assert.False(this.DatabaseSession.Derive().HasErrors);
+            Assert.False(this.DatabaseSession.Derive(false).HasErrors);
 
             productFeatureOrderItem.RemoveProductFeature();
             productFeatureOrderItem.Product = this.good;
 
-            Assert.True(this.DatabaseSession.Derive().HasErrors);
+            Assert.True(this.DatabaseSession.Derive(false).HasErrors);
         }
 
         [Fact]
@@ -611,7 +611,7 @@ namespace Allors.Domain
             this.DatabaseSession.Derive(true);
 
             Assert.Null(orderItem.ShipToAddress);
-            Assert.False(this.DatabaseSession.Derive().HasErrors);
+            Assert.False(this.DatabaseSession.Derive(false).HasErrors);
         }
 
         [Fact]
