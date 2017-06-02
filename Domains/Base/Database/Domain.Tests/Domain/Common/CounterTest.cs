@@ -35,7 +35,7 @@ namespace Domain
     {
         // Teamcity doesn't pick up connection string from app.config,
         // that's why it's here.
-        private const string ConnectionString = "server=(local);database=custom;Integrated Security=SSPI";
+        private const string ConnectionString = "server=(local);database=base;Integrated Security=SSPI";
 
         [Fact]
         public void Meta()
