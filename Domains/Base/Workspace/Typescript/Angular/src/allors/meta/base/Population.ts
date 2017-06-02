@@ -1,7 +1,7 @@
-import { Data } from "./Data";
-import { ObjectType, Kind } from "./ObjectType";
-import { RoleType } from "./RoleType";
-import { MethodType } from "./MethodType";
+import { Data } from './Data';
+import { ObjectType, Kind } from './ObjectType';
+import { RoleType } from './RoleType';
+import { MethodType } from './MethodType';
 
 export class Population {
     readonly domains: string[] = [];
@@ -18,9 +18,9 @@ export class Population {
         });
 
         // Units
-        ["Binary", "Boolean", "DateTime", "Decimal", "Float", "Integer", "String", "Unique"]
+        ['Binary', 'Boolean', 'DateTime', 'Decimal', 'Float', 'Integer', 'String', 'Unique']
         .forEach((name) => {
-            let metaUnit = new ObjectType();
+            const metaUnit = new ObjectType();
             metaUnit.name = name;
             metaUnit.kind = Kind.unit;
             this.objectTypeByName[metaUnit.name] = metaUnit;
@@ -28,10 +28,14 @@ export class Population {
 
         // Composites
         data.classes.forEach(dataClass => {
-            let metaClass = new ObjectType();
+            const metaClass = new ObjectType();
             metaClass.name = dataClass.name;
             metaClass.kind = Kind.class;
             this.objectTypeByName[metaClass.name] = metaClass;
+        });
+
+        data.classes.forEach(dataClass => {
+            const metaClass = this.objectTypeByName[dataClass.name];
 
             dataClass.interfaces.forEach(dataInterface => {
                 let metaInterface = this.objectTypeByName[dataInterface];
@@ -46,8 +50,8 @@ export class Population {
             });
 
             dataClass.roleTypes.forEach(dataRoleType => {
-                let objectType = this.objectTypeByName[dataRoleType.objectType];
-                let metaRoleType = new RoleType();
+                const objectType = this.objectTypeByName[dataRoleType.objectType];
+                const metaRoleType = new RoleType();
                 metaRoleType.name = dataRoleType.name;
                 metaRoleType.objectType = objectType;
                 metaRoleType.isOne = dataRoleType.isOne;
@@ -56,10 +60,9 @@ export class Population {
             });
 
             dataClass.methodTypes.forEach(dataMethodType => {
-                let metaMethodType: MethodType = { name: dataMethodType.name };
+                const metaMethodType: MethodType = { name: dataMethodType.name };
                 metaClass.methodTypeByName[metaMethodType.name] = metaMethodType;
             });
         });
-
-};
+    };
 }

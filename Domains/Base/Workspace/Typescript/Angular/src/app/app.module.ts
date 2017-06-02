@@ -6,12 +6,13 @@ import { HttpModule } from '@angular/http';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 
-import { AllorsService } from './allors.service';
-import { LoginComponent } from './auth/login.component';
-import { AuthService } from './auth/auth.service';
-
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { FormComponent } from './form/form.component';
+
+import { ENVIRONMENT, AuthenticationService } from '../allors/angular';
+import { environment } from '../environments/environment';
+import { AllorsService } from './allors.service';
+import { LoginComponent } from './auth/login.component';
 
 @NgModule({
   declarations: [
@@ -28,8 +29,9 @@ import { FormComponent } from './form/form.component';
     AppRoutingModule
   ],
   providers: [
+    { provide: ENVIRONMENT, useValue: environment },
     AllorsService,
-    AuthService,
+    AuthenticationService,
   ],
   bootstrap: [AppComponent]
 })

@@ -5,8 +5,6 @@ import { PushResponse } from './data/responses/PushResponse';
 import { SyncResponse } from './data/responses/SyncResponse';
 import { ResponseType } from './data/responses/ResponseType';
 
-import * as _ from 'lodash';
-
 export interface ISession {
     hasChanges: boolean;
 
@@ -72,15 +70,17 @@ export class Session implements ISession {
     }
 
     reset(): void {
-        _.forEach(this.newSessionObjectById, v => {
-            v.reset();
-        });
+        if (this.newSessionObjectById) {
+            Object
+                .keys(this.newSessionObjectById)
+                .forEach((v) => this.newSessionObjectById[v].reset());
+        }
 
-        this.newSessionObjectById = {};
-
-        _.forEach(this.sessionObjectById, v => {
-            v.reset();
-        });
+        if (this.sessionObjectById) {
+            Object
+                .keys(this.sessionObjectById)
+                .forEach((v) => this.sessionObjectById[v].reset());
+        }
 
         this.hasChanges = false;
     }
@@ -91,55 +91,66 @@ export class Session implements ISession {
         data.objects = [];
 
         if (this.newSessionObjectById) {
-            _.forEach(this.newSessionObjectById, newSessionObject => {
-                const objectData = newSessionObject.saveNew();
-                if (objectData !== undefined) {
-                    data.newObjects.push(objectData);
-                }
-            });
+            Object
+                .keys(this.newSessionObjectById)
+                .forEach((v) => {
+                    const newSessionObject = this.newSessionObjectById[v];
+                    const objectData = newSessionObject.saveNew();
+                    if (objectData !== undefined) {
+                        data.newObjects.push(objectData);
+                    }
+                });
         }
 
-        _.forEach(this.sessionObjectById, sessionObject => {
-            const objectData = sessionObject.save();
-            if (objectData !== undefined) {
-                data.objects.push(objectData);
-            }
-        });
+        if (this.sessionObjectById) {
+            Object
+                .keys(this.sessionObjectById)
+                .forEach((v) => {
+                    const sessionObject = this.sessionObjectById[v];
+                    const objectData = sessionObject.save();
+                    if (objectData !== undefined) {
+                        data.objects.push(objectData);
+                    }
+                });
+        }
 
         return data;
     }
 
     pushResponse(pushResponse: PushResponse): void {
         if (pushResponse.newObjects) {
-            _.forEach(pushResponse.newObjects, pushResponseNewObject => {
-                const newId = pushResponseNewObject.ni;
-                const id = pushResponseNewObject.i;
+            Object
+                .keys(pushResponse.newObjects)
+                .forEach((v) => {
+                    const pushResponseNewObject = pushResponse.newObjects[v];
+                     const newId = pushResponseNewObject.ni;
+                    const id = pushResponseNewObject.i;
 
-                const newSessionObject = this.newSessionObjectById[newId];
+                    const newSessionObject = this.newSessionObjectById[newId];
 
-                const syncResponse: SyncResponse = {
-                    responseType: ResponseType.Sync,
-                    userSecurityHash: '#', // This should trigger a load on next check
-                    objects: [
-                        {
-                            i: id,
-                            v: '',
-                            t: newSessionObject.objectType.name,
-                            roles: [],
-                            methods: []
-                        }
-                    ]
-                };
+                    const syncResponse: SyncResponse = {
+                        responseType: ResponseType.Sync,
+                        userSecurityHash: '#', // This should trigger a load on next check
+                        objects: [
+                            {
+                                i: id,
+                                v: '',
+                                t: newSessionObject.objectType.name,
+                                roles: [],
+                                methods: []
+                            }
+                        ]
+                    };
 
-                delete (this.newSessionObjectById[newId]);
-                delete(newSessionObject.newId);
+                    delete (this.newSessionObjectById[newId]);
+                    delete (newSessionObject.newId);
 
-                this.workspace.sync(syncResponse);
-                const workspaceObject = this.workspace.get(id);
-                newSessionObject.workspaceObject = workspaceObject;
+                    this.workspace.sync(syncResponse);
+                    const workspaceObject = this.workspace.get(id);
+                    newSessionObject.workspaceObject = workspaceObject;
 
-                this.sessionObjectById[id] = newSessionObject;
-            });
+                    this.sessionObjectById[id] = newSessionObject;
+                });
         }
 
         if (Object.getOwnPropertyNames(this.newSessionObjectById).length !== 0) {

@@ -4,8 +4,6 @@ import { PushRequestObject, PushRequestNewObject, PushRequestRole } from './data
 
 import { ObjectType } from '../../meta';
 
-import * as _ from 'lodash';
-
 export interface ISessionObject {
     id: string;
     version: string;
@@ -23,7 +21,7 @@ export interface ISessionObject {
     canExecute(methodName: string): boolean;
 
     get(roleTypeName: string): any;
-    set(roleTypeName: string, value: any) ;
+    set(roleTypeName: string, value: any);
     add(roleTypeName: string, value: any);
     remove(roleTypeName: string, value: any);
 
@@ -119,7 +117,7 @@ export class SessionObject implements INewSessionObject {
                         } else {
                             const roles: string[] = this.workspaceObject.roles[roleTypeName];
                             value = roles ? roles.map(role => {
-                                    return this.session.get(role);
+                                return this.session.get(role);
                             }) : [];
                         }
                     } catch (e) {
@@ -247,35 +245,40 @@ export class SessionObject implements INewSessionObject {
     private saveRoles(): PushRequestRole[] {
         const saveRoles = new Array<PushRequestRole>();
 
-        _.forEach(this.changedRoleByRoleTypeName, (role, roleTypeName) => {
-            const roleType = this.objectType.roleTypeByName[roleTypeName];
+        if (this.changedRoleByRoleTypeName) {
+            Object
+                .keys(this.changedRoleByRoleTypeName)
+                .forEach((roleTypeName) => {
+                    const role = this.changedRoleByRoleTypeName[roleTypeName];
+                    const roleType = this.objectType.roleTypeByName[roleTypeName];
 
-            const saveRole = new PushRequestRole;
-            saveRole.t = roleType.name;
+                    const saveRole = new PushRequestRole;
+                    saveRole.t = roleType.name;
 
-            if (roleType.objectType.isUnit) {
-                saveRole.s = role;
-            } else {
-                if (roleType.isOne) {
-                    saveRole.s = role ? role.id || role.newId : null;
-                } else {
-                    const roleIds = role.map(item => { return (<SessionObject>item).id || (<SessionObject>item).newId; });
-                    if (this.newId) {
-                        saveRole.a = roleIds;
+                    if (roleType.objectType.isUnit) {
+                        saveRole.s = role;
                     } else {
-                        const originalRoleIds = <string[]>this.workspaceObject.roles[roleTypeName];
-                        if (!originalRoleIds) {
-                            saveRole.a = roleIds;
+                        if (roleType.isOne) {
+                            saveRole.s = role ? role.id || role.newId : null;
                         } else {
-                            saveRole.a = _.difference(roleIds, originalRoleIds);
-                            saveRole.r = _.difference(originalRoleIds, roleIds);
+                            const roleIds = role.map(item => { return (<SessionObject>item).id || (<SessionObject>item).newId; });
+                            if (this.newId) {
+                                saveRole.a = roleIds;
+                            } else {
+                                const originalRoleIds = <string[]>this.workspaceObject.roles[roleTypeName];
+                                if (!originalRoleIds) {
+                                    saveRole.a = roleIds;
+                                } else {
+                                    saveRole.a = roleIds.filter(v => originalRoleIds.indexOf(v) < 0);
+                                    saveRole.r = originalRoleIds.filter(v => roleIds.indexOf(v) < 0);
+                                }
+                            }
                         }
                     }
-                }
-            }
 
-            saveRoles.push(saveRole);
-        });
+                    saveRoles.push(saveRole);
+                });
+        }
 
         return saveRoles;
     }
