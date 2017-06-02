@@ -1,36 +1,24 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="Startup.cs" company="Allors bvba">
-//   Copyright 2002-2017 Allors bvba.
-//
-// Dual Licensed under
-//   a) the General Public Licence v3 (GPL)
-//   b) the Allors License
-//
-// The GPL License is included in the file gpl.txt.
-// The Allors License is an addendum to your contract.
-//
-// Allors Applications is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU General Public License for more details.
-//
-// For more information visit http://www.allors.com/legal
-// </copyright>
-// --------------------------------------------------------------------------------------------------------------------
-
-namespace Allors.Server
+﻿namespace Allors.Server
 {
-    using Allors;
     using Allors.Adapters.Object.SqlClient;
     using Allors.Domain;
     using Allors.Meta;
     using Allors.Services.Base;
 
+    using Microsoft.AspNetCore.Authentication.JwtBearer;
+    using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Builder;
+    using Microsoft.AspNetCore.Diagnostics;
     using Microsoft.AspNetCore.Hosting;
+    using Microsoft.AspNetCore.Http;
+    using Microsoft.AspNetCore.Mvc;
+    using Microsoft.AspNetCore.Mvc.Cors.Internal;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Logging;
+    using Microsoft.IdentityModel.Tokens;
+
+    using Newtonsoft.Json;
 
     public class Startup
     {
@@ -41,7 +29,6 @@ namespace Allors.Server
                 .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
                 .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true)
                 .AddEnvironmentVariables();
-
             this.Configuration = builder.Build();
         }
 
@@ -59,30 +46,100 @@ namespace Allors.Server
 
             var database = new Database(configuration);
 
+            var userService = new ClaimsPrincipalUserService();
             var timeService = new TimeService();
-            var mailService = new MailService { DefaultSender = "noreply@example.com" };
+            var mailService = new MailService { DefaultSender = this.Configuration["DefaultSender"] };
             var securityService = new SecurityService();
             var serviceLocator = new ServiceLocator
                                      {
+                                         UserServiceFactory = () => userService,
                                          TimeServiceFactory = () => timeService,
                                          MailServiceFactory = () => mailService,
                                          SecurityServiceFactory = () => securityService
-                                    };
+                                     };
             database.SetServiceLocator(serviceLocator.Assert());
 
             services.AddSingleton<IDatabase>(database);
             services.AddScoped<IAllorsContext, AllorsContext>();
+            var authenticationContext = new FileAuthenticationContext(this.Configuration["AuthenticationKey"])
+                                            {
+                                                Issuer = @"https://issuer.allors.com",
+                                                Audience = @"https://app.allors.com"
+                                            };
+            services.AddSingleton<IAuthenticationContext>(authenticationContext);
 
             // Add framework services.
+            services.AddCors(options =>
+                {
+                    options.AddPolicy(
+                        "AllowAll",
+                        builder =>
+                            {
+                                builder
+                                    .AllowAnyOrigin()
+                                    .AllowAnyHeader()
+                                    .AllowAnyMethod()
+                                    .AllowCredentials();
+                            });
+                });
+
+            services.AddAuthorization(auth =>
+                {
+                    auth.AddPolicy("Bearer", new AuthorizationPolicyBuilder()
+                        .AddAuthenticationSchemes(JwtBearerDefaults.AuthenticationScheme‌​)
+                        .RequireAuthenticatedUser().Build());
+                });
+
             services.AddMvc();
+            services.Configure<MvcOptions>(options =>
+                {
+                    options.Filters.Add(new CorsAuthorizationFilterFactory("AllowAll"));
+                });
         }
 
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory, IAuthenticationContext authenticationContext)
         {
             loggerFactory.AddConsole(this.Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
 
-            app.UseMvc();
+            app.UseExceptionHandler(appBuilder =>
+                {
+                    appBuilder.Use(async (context, next) =>
+                        {
+                            var error = context.Features[typeof(IExceptionHandlerFeature)] as IExceptionHandlerFeature;
+                            var message = error?.Error.GetType().ToString();
+
+                            if (error?.Error is SecurityTokenExpiredException)
+                            {
+                                context.Response.StatusCode = 401;
+                                context.Response.ContentType = "application/json";
+
+                                await context.Response.WriteAsync(JsonConvert.SerializeObject(message));
+                            }
+                            else if (error?.Error != null)
+                            {
+                                context.Response.StatusCode = 500;
+                                context.Response.ContentType = "application/json";
+                                await context.Response.WriteAsync(JsonConvert.SerializeObject(message));
+                            }
+                            else await next();
+                        });
+                });
+
+            app.UseCors("AllowAll");
+
+            app.UseJwtBearerAuthentication(new JwtBearerOptions()
+                                               {
+                                                   AutomaticAuthenticate = true,
+                                                   AutomaticChallenge = true,
+                                                   TokenValidationParameters = new TokenValidationParameters
+                                                                                   {
+                                                                                       IssuerSigningKey = authenticationContext.Key,
+                                                                                       ValidIssuer = authenticationContext.Issuer,
+                                                                                       ValidAudience = authenticationContext.Audience,
+                                                                                   }
+                                               });
+
 
             app.UseMvc(routes =>
                 {

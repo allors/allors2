@@ -1,6 +1,8 @@
-﻿namespace Allors
+﻿namespace Allors.Console
 {
     using System.Data;
+    using System.Security.Claims;
+    using System.Security.Principal;
 
     using Allors.Adapters.Object.SqlClient;
     using Allors.Domain;
@@ -13,15 +15,24 @@
     {
         protected Command()
         {
-            this.Configuration = new ConfigurationBuilder().AddJsonFile(@"appSettings.json").Build();
+            this.Configuration = new ConfigurationBuilder()
+                .AddJsonFile(@"appSettings.json")
+                .Build();
             this.ObjectFactory = new ObjectFactory(MetaPopulation.Instance, typeof(User));
         }
 
-        protected ObjectFactory ObjectFactory { get; }
-
         protected IConfigurationRoot Configuration { get; }
 
+        protected ObjectFactory ObjectFactory { get; }
+
+        protected string DataPath => this.Configuration["dataPath"];
+
         public abstract void Execute();
+        
+        protected void SetIdentity(string identity)
+        {
+            ClaimsPrincipal.ClaimsPrincipalSelector = () => new GenericPrincipal(new GenericIdentity(identity, "Forms"), new string[0]);
+        }
 
         protected IDatabase CreateDatabase(IsolationLevel isolationLevel = IsolationLevel.Snapshot)
         {
@@ -35,16 +46,19 @@
 
             var database = new Database(configuration);
 
+            var userService = new ClaimsPrincipalUserService();
             var timeService = new TimeService();
             var mailService = new MailService();
             var securityService = new SecurityService();
             var serviceLocator = new ServiceLocator
-                                        {
-                                            TimeServiceFactory = () => timeService,
-                                            MailServiceFactory = () => mailService,
-                                            SecurityServiceFactory = () => securityService,
-                                        };
+                                     {
+                                         UserServiceFactory = () => userService,
+                                         TimeServiceFactory = () => timeService,
+                                         MailServiceFactory = () => mailService,
+                                         SecurityServiceFactory = () => securityService
+                                     };
             database.SetServiceLocator(serviceLocator.Assert());
+
 
             return database;
         }

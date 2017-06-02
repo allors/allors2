@@ -18,7 +18,7 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Allors
+namespace Allors.Console
 {
     using System;
     using System.Data;
@@ -32,10 +32,14 @@ namespace Allors
 
             Console.WriteLine("Are you sure, all current data will be destroyed? (Y/N)\n");
 
+            this.SetIdentity("Administrator");
+
             var confirmationKey = Console.ReadKey(true).KeyChar.ToString();
             if (confirmationKey.ToLower().Equals("y"))
             {
                 database.Init();
+
+                database = this.CreateDatabase(IsolationLevel.Serializable);
 
                 using (var session = database.CreateSession())
                 {
@@ -43,7 +47,7 @@ namespace Allors
                     var directoryInfo = dataPath != null ? new DirectoryInfo(dataPath) : null;
                     new Setup(session, directoryInfo).Apply();
 
-                    //// new Allors.Upgrade(session, null).Execute();
+                    new Allors.Upgrade(session, directoryInfo).Execute();
 
                     var validation = session.Derive();
                     if (validation.HasErrors)

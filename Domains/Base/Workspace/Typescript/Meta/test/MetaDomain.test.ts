@@ -1,5 +1,5 @@
 import * as chai from "chai";
-import { Population } from "../src/meta/base/Population";
+import { Population } from "../src/allors/meta";
 
 const expect = chai.expect;
 
@@ -18,12 +18,7 @@ describe("MetaDomain",
             describe("init with empty data population", () => {
 
                 metaPopulation.init();
-
-                it("should contain 14 types",
-                    () => {
-                        expect(Object.keys(metaPopulation.objectTypeByName).length).equal(14);
-                    });
-
+              
                 it("should contain Binary, Boolean, DateTime, Decimal, Float, Integer, String, Unique (from Core)",
                     () => {
                         ["Binary", "Boolean", "DateTime", "Decimal", "Float", "Integer", "String", "Unique"].forEach(name => {

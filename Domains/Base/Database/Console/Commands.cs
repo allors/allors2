@@ -18,7 +18,7 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Allors
+namespace Allors.Console
 {
     public enum Commands
     {
@@ -27,5 +27,11 @@ namespace Allors
         Save,
 
         Load,
+
+        Upgrade,
+
+        Import,
+
+        Custom,
     }
 }

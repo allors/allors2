@@ -18,7 +18,7 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Allors
+namespace Allors.Console
 {
     using System;
     using System.CommandLine;
@@ -43,6 +43,13 @@ namespace Allors
 
                             syntax.DefineCommand("load", ref command, Commands.Load, "Save the database");
                             syntax.DefineOption("f|file", ref file, "The destination xml file.");
+
+                            syntax.DefineCommand("upgrade", ref command, Commands.Upgrade, "Upgrade the database");
+                            syntax.DefineOption("f|file", ref file, "The destination xml file.");
+
+                            syntax.DefineCommand("import", ref command, Commands.Import, "Import from external sources");
+
+                            syntax.DefineCommand("custom", ref command, Commands.Custom, "Custom code");
                         });
 
 
@@ -59,13 +66,21 @@ namespace Allors
                     case Commands.Load:
                         new Load(file).Execute();
                         break;
+
+                    case Commands.Upgrade:
+                        new Upgrade(file).Execute();
+                        break;
+
+                    case Commands.Custom:
+                        new Custom().Execute();
+                        break;
                 }
 
                 return 0;
             }
             catch (Exception e)
             {
-                Console.Error.WriteLine(e.ToString());
+                Console.WriteLine(e.ToString());
                 return 1;
             }
         }

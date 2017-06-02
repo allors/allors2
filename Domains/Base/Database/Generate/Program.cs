@@ -1,6 +1,7 @@
 ﻿namespace Allors
 {
     using System;
+    using System.IO;
 
     using Allors.Development.Repository.Tasks;
 
@@ -21,29 +22,54 @@
 
         private static int Default()
         {
-            var config = new System.Collections.Generic.Dictionary<string, string>()
-                             {
-                                { "Database/Templates/domain.cs.stg", "Database/Domain/Generated" },
-                                { "Database/Templates/uml.cs.stg", "Database/Diagrams" },
-                                { "Workspace/Csharp/Templates/uml.cs.stg", "Workspace/CSharp/Diagrams" },
-                                { "Workspace/Csharp/Templates/meta.cs.stg", "Workspace/CSharp/Meta/Generated" },
-                                { "Workspace/Csharp/Templates/domain.cs.stg", "Workspace/CSharp/Domain/Generated" },
-                                { "Workspace/Typescript/Templates/meta.ts.stg", "Workspace/Typescript/Meta/src/allors/meta/Generated" },
-                                { "Workspace/Typescript/Templates/domain.ts.stg", "Workspace/Typescript/Meta/src/allors/domain/Generated" },
-                             };
+            string[,] config =
+                {
+                    { "Database/Templates/domain.cs.stg", "Database/Domain/Generated" },
+                    { "Database/Templates/uml.cs.stg", "Database/Diagrams" },
 
-            foreach (var entry in config)
+                    { "Workspace/Csharp/Templates/uml.cs.stg", "Workspace/CSharp/Diagrams" },
+                    { "Workspace/Csharp/Templates/meta.cs.stg", "Workspace/CSharp/Meta/Generated" },
+                    { "Workspace/Csharp/Templates/domain.cs.stg", "Workspace/CSharp/Domain/Generated" },
+
+                    { "Workspace/Typescript/Templates/meta.ts.stg", "Workspace/Typescript/Meta/src/allors/meta/Generated" },
+
+                    { "Workspace/Typescript/Templates/meta.ts.stg", "Workspace/Typescript/Domain/src/allors/meta/Generated" },
+                    { "Workspace/Typescript/Templates/domain.ts.stg", "Workspace/Typescript/Domain/src/allors/domain/Generated" },
+                };
+
+            for (var i = 0; i < config.GetLength(0); i++)
             {
-                Console.WriteLine("-> " + entry.Value);
+                var template = config[i, 0];
+                var output = config[i, 1];
 
-                var log = Generate.Execute(entry.Key, entry.Value);
+                Console.WriteLine("-> " + output);
+
+                RemoveDirectory(output);
+
+                var log = Generate.Execute(template, output);
                 if (log.ErrorOccured)
                 {
                     return 1;
                 }
             }
 
+
             return 0;
+        }
+
+        private static void RemoveDirectory(string output)
+        {
+            var directoryInfo = new DirectoryInfo(output);
+            if (directoryInfo.Exists)
+            {
+                try
+                {
+                    directoryInfo.Delete(true);
+                }
+                catch
+                {
+                }
+            }
         }
     }
 }
