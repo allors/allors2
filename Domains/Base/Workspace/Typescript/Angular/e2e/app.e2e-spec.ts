@@ -5,10 +5,12 @@ describe('angular App', () => {
 
   beforeEach(() => {
     page = new AngularPage();
+    page.login('john@doe.org', 'john');
   });
 
-  it('should display message saying app works', () => {
+  it('should have title Dashboard', () => {
     page.navigateTo();
-    expect(page.getParagraphText()).toEqual('app works!');
+
+    expect('Dashboard').toEqual(page.title);
   });
 });

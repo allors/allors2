@@ -1,15 +1,15 @@
 import { Component, OnInit } from '@angular/core';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-form',
-  templateUrl: './form.component.html',
-  styleUrls: ['./form.component.css']
+  templateUrl: './form.component.html'
 })
 export class FormComponent implements OnInit {
 
-  constructor() { }
+  constructor(private title: Title) { }
 
   ngOnInit() {
+    this.title.setTitle('Form');
   }
-
 }

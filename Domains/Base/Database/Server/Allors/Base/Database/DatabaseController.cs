@@ -13,6 +13,17 @@
         }
 
         [HttpPost]
+        public async Task<IActionResult> Query([FromBody]QueryRequest pullRequest)
+        {
+            await this.OnInit();
+
+            var user = this.AllorsUser ?? Singleton.Instance(this.AllorsSession).Guest;
+            var responseBuilder = new QueryResponseBuilder(this.AllorsSession, user, pullRequest);
+            var response = responseBuilder.Build();
+            return this.Ok(response);
+        }
+
+        [HttpPost]
         public async Task<IActionResult> Sync([FromBody]SyncRequest syncRequest)
         {
             await this.OnInit();
