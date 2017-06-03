@@ -1451,7 +1451,7 @@ namespace Allors.Domain
                 .Build();
 
             var expectedError = ErrorMessages.PartyIsNotACustomer;
-            Assert.Equal(expectedError, this.DatabaseSession.Derive().Errors[0].Message);
+            Assert.Equal(expectedError, this.DatabaseSession.Derive(false).Errors[0].Message);
 
             new CustomerRelationshipBuilder(this.DatabaseSession).WithFromDate(DateTime.UtcNow).WithCustomer(customer).WithInternalOrganisation(Singleton.Instance(this.DatabaseSession).DefaultInternalOrganisation).Build();
 
@@ -1476,7 +1476,7 @@ namespace Allors.Domain
             new CustomerRelationshipBuilder(this.DatabaseSession).WithFromDate(DateTime.UtcNow).WithCustomer(billToCustomer).WithInternalOrganisation(Singleton.Instance(this.DatabaseSession).DefaultInternalOrganisation).Build();
 
             var expectedError = ErrorMessages.PartyIsNotACustomer;
-            Assert.Equal(expectedError, this.DatabaseSession.Derive().Errors[0].Message);
+            Assert.Equal(expectedError, this.DatabaseSession.Derive(false).Errors[0].Message);
 
             new CustomerRelationshipBuilder(this.DatabaseSession).WithFromDate(DateTime.UtcNow).WithCustomer(shipToCustomer).WithInternalOrganisation(Singleton.Instance(this.DatabaseSession).DefaultInternalOrganisation).Build();
 

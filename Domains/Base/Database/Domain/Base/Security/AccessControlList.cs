@@ -103,7 +103,7 @@ namespace Allors.Domain
             }
 
             return false;
-        }
+         }
 
         private void LazyLoad()
         {

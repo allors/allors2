@@ -70,7 +70,7 @@ namespace Allors.Domain
                 .WithBilledToInternalOrganisation(new InternalOrganisations(this.DatabaseSession).FindBy(M.InternalOrganisation.Name, "internalOrganisation"))
                 .Build();
 
-            Assert.Equal(ErrorMessages.PartyIsNotASupplier, this.DatabaseSession.Derive().Errors[0].Message);
+            Assert.Equal(ErrorMessages.PartyIsNotASupplier, this.DatabaseSession.Derive(false).Errors[0].Message);
 
             new SupplierRelationshipBuilder(this.DatabaseSession).WithSupplier(supplier2).WithInternalOrganisation(invoice.BilledToInternalOrganisation).Build();
 

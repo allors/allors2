@@ -100,7 +100,7 @@ namespace Allors.Domain
                 .Build();
 
             var expectedError = ErrorMessages.PartyIsNotASupplier;
-            Assert.Equal(expectedError, this.DatabaseSession.Derive().Errors[0].Message);
+            Assert.Equal(expectedError, this.DatabaseSession.Derive(false).Errors[0].Message);
 
             new SupplierRelationshipBuilder(this.DatabaseSession).WithSupplier(supplier).WithInternalOrganisation(internalOrganisation).Build();
 

@@ -1886,7 +1886,7 @@ namespace Allors.Domain
             this.DatabaseSession.Derive(true);
 
             item1.QuantityShipNow = 5;          
-            var derivationLog = this.DatabaseSession.Derive();
+            var derivationLog = this.DatabaseSession.Derive(false);
 
             Assert.True(derivationLog.HasErrors);
             Assert.Contains(M.SalesOrderItem.QuantityShipNow, derivationLog.Errors[0].RoleTypes);

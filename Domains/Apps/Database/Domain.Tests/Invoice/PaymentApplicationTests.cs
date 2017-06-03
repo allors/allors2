@@ -108,7 +108,7 @@ namespace Allors.Domain
             
             receipt.AddPaymentApplication(paymentApplication);
 
-            var derivationLog = this.DatabaseSession.Derive();
+            var derivationLog = this.DatabaseSession.Derive(false);
             Assert.True(derivationLog.HasErrors);
             Assert.Contains(M.PaymentApplication.AmountApplied, derivationLog.Errors[0].RoleTypes);
         }

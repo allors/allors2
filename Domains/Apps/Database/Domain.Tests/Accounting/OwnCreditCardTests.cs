@@ -33,7 +33,7 @@ namespace Allors.Domain
         {
             var creditCard = new CreditCardBuilder(this.DatabaseSession)
                 .WithCardNumber("4012888888881881")
-                .WithExpirationYear(2016)
+                .WithExpirationYear(DateTime.UtcNow.Year + 1)
                 .WithExpirationMonth(03)
                 .WithNameOnCard("M.E. van Knippenberg")
                 .WithCreditCardCompany(new CreditCardCompanyBuilder(this.DatabaseSession).WithName("Visa").Build())
@@ -59,7 +59,7 @@ namespace Allors.Domain
         {
             var creditCard = new CreditCardBuilder(this.DatabaseSession)
                 .WithCardNumber("4012888888881881")
-                .WithExpirationYear(2016)
+                .WithExpirationYear(DateTime.UtcNow.Year + 1)
                 .WithExpirationMonth(03)
                 .WithNameOnCard("M.E. van Knippenberg")
                 .WithCreditCardCompany(new CreditCardCompanyBuilder(this.DatabaseSession).WithName("Visa").Build())
@@ -79,7 +79,7 @@ namespace Allors.Domain
         {
             var creditCard = new CreditCardBuilder(this.DatabaseSession)
                 .WithCardNumber("4012888888881881")
-                .WithExpirationYear(2016)
+                .WithExpirationYear(DateTime.UtcNow.Year + 1)
                 .WithExpirationMonth(03)
                 .WithNameOnCard("M.E. van Knippenberg")
                 .WithCreditCardCompany(new CreditCardCompanyBuilder(this.DatabaseSession).WithName("Visa").Build())
@@ -107,7 +107,7 @@ namespace Allors.Domain
         {
             var creditCard = new CreditCardBuilder(this.DatabaseSession)
                 .WithCardNumber("4012888888881881")
-                .WithExpirationYear(2016)
+                .WithExpirationYear(DateTime.UtcNow.Year + 1)
                 .WithExpirationMonth(03)
                 .WithNameOnCard("M.E. van Knippenberg")
                 .WithCreditCardCompany(new CreditCardCompanyBuilder(this.DatabaseSession).WithName("Visa").Build())
@@ -161,7 +161,7 @@ namespace Allors.Domain
 
             var creditCard = new CreditCardBuilder(this.DatabaseSession)
                 .WithCardNumber("4012888888881881")
-                .WithExpirationYear(2016)
+                .WithExpirationYear(DateTime.UtcNow.Year + 1)
                 .WithExpirationMonth(03)
                 .WithNameOnCard("M.E. van Knippenberg")
                 .WithCreditCardCompany(new CreditCardCompanyBuilder(this.DatabaseSession).WithName("Visa").Build())
@@ -221,7 +221,7 @@ namespace Allors.Domain
 
             var creditCard = new CreditCardBuilder(this.DatabaseSession)
                 .WithCardNumber("4012888888881881")
-                .WithExpirationYear(2016)
+                .WithExpirationYear(DateTime.UtcNow.Year + 1)
                 .WithExpirationMonth(03)
                 .WithNameOnCard("M.E. van Knippenberg")
                 .WithCreditCardCompany(new CreditCardCompanyBuilder(this.DatabaseSession).WithName("Visa").Build())

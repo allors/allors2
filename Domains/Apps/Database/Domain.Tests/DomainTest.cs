@@ -36,7 +36,7 @@ namespace Allors
         public DomainTest()
         {
             var configuration = new Configuration
-                                    {
+                                    { 
                                         ObjectFactory = new ObjectFactory(MetaPopulation.Instance, typeof(User)),
                                     };
 
