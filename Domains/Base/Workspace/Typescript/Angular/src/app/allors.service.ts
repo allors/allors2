@@ -17,7 +17,7 @@ export class AllorsService {
     url: string;
 
     constructor(public http: Http) {
-      this.url = 'http://localhost:50001/';
+      this.url = 'http://localhost:5000/';
 
       if (environment.production) {
           this.url = 'https://app.example.com/';

@@ -2,7 +2,7 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "Launch Chrome against localhost, with sourcemaps",
+      "name": "Debug",
       "type": "chrome",
       "request": "launch",
       "url": "http://localhost:4200",
@@ -20,7 +20,15 @@
       }
     },
     {
-      "name": "Launch e2e Tests",
+      "name": "Debug Karma",
+      "type": "chrome",
+      "request": "attach",
+      "port": 9222,
+      "sourceMaps": true,
+      "webRoot": "${workspaceRoot}"
+    },
+    {
+      "name": "Debug Protractor",
       "type": "node",
       "request": "launch",
       "stopOnEntry": false,
