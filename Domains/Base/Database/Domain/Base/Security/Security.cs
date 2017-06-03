@@ -22,7 +22,6 @@ namespace Allors.Domain
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
 
     using Allors;
     using Allors.Meta;
@@ -136,10 +135,14 @@ namespace Allors.Domain
                 role.RemoveDeniedPermissions();
             }
 
+            this.OnPreSetup();
+
             foreach (var objects in this.objectsByObjectType.Values)
             {
                 objects.Secure(this);
             }
+
+            this.OnPostSetup();
 
             this.session.Derive();
         }
@@ -294,6 +297,14 @@ namespace Allors.Domain
         public void GrantOwner(ObjectType objectType, params Operations[] operations)
         {
             this.Grant(Roles.OwnerId, objectType, operations);
+        }
+
+        private void BaseOnPreSetup()
+        {
+        }
+
+        private void BaseOnPostSetup()
+        {
         }
     }
 }

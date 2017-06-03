@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------------------------------------------
-// <copyright file="Setup.cs" company="Allors bvba">
+// <copyright file="Security.v.cs" company="Allors bvba">
 //   Copyright 2002-2016 Allors bvba.
 // 
 // Dual Licensed under
@@ -18,25 +18,21 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Allors
+namespace Allors.Domain
 {
-    using System;
-
-    using Allors.Domain;
     using Allors.Meta;
 
-    public partial class Setup
+    public partial class Security
     {
-        private void CustomOnPrePrepare()
-        {
-        }
-
-        private void CustomOnPostPrepare()
-        {
-        }
-
         private void CustomOnPreSetup()
         {
+            // Default access policy
+            var security = new Security(this.session);
+            foreach (ObjectType @class in session.Database.MetaPopulation.Classes)
+            {
+                security.GrantAdministrator(@class, Operations.Read, Operations.Write, Operations.Execute);
+                security.GrantCreator(@class, Operations.Read, Operations.Write, Operations.Execute);
+            }
         }
 
         private void CustomOnPostSetup()

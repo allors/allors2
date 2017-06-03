@@ -22,11 +22,9 @@
 namespace Allors.Domain
 {
     using System;
-    using System.Security.Principal;
-    using System.Threading;
+
     using Meta;
     using Xunit;
-
     
     public class CustomerShipmentTests : DomainTest
     {
@@ -263,6 +261,7 @@ namespace Allors.Domain
             var shipToAddress = new PostalAddressBuilder(this.DatabaseSession).WithGeographicBoundary(mechelen).WithAddress1("Haverwerf 15").Build();
 
             this.SetIdentity("orderProcessor");
+            //this.SetIdentity("Administrator");
 
             var customer = new PersonBuilder(this.DatabaseSession).WithLastName("customer").Build();
 
@@ -272,7 +271,7 @@ namespace Allors.Domain
                 .WithShipmentMethod(new ShipmentMethods(this.DatabaseSession).Ground)
                 .Build();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             var acl = new AccessControlList(shipment, new Users(this.DatabaseSession).GetCurrentUser());
             Assert.Equal(new CustomerShipmentObjectStates(this.DatabaseSession).Created, shipment.CurrentObjectState);

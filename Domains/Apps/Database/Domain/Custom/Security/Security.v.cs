@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------------------------------------------
-// <copyright file="Setup.cs" company="Allors bvba">
+// <copyright file="Security.v.cs" company="Allors bvba">
 //   Copyright 2002-2016 Allors bvba.
 // 
 // Dual Licensed under
@@ -18,29 +18,22 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Allors
+namespace Allors.Domain
 {
-    using System;
-
-    using Allors.Domain;
-    using Allors.Meta;
-
-    public partial class Setup
+    public partial class Security
     {
-        private void CustomOnPrePrepare()
+        private void OnPreSetup()
         {
+            this.BaseOnPreSetup();
+            this.AppsOnPreSetup();
+            this.CustomOnPreSetup();
         }
 
-        private void CustomOnPostPrepare()
+        private void OnPostSetup()
         {
-        }
-
-        private void CustomOnPreSetup()
-        {
-        }
-
-        private void CustomOnPostSetup()
-        {
+            this.BaseOnPostSetup();
+            this.AppsOnPostSetup();
+            this.CustomOnPostSetup();
         }
     }
 }

@@ -53,5 +53,13 @@ namespace Allors.Domain
         {
             this.Grant(Roles.ProcurementId, objectType, operandType, operations);
         }
+
+        private void CustomOnPreSetup()
+        {
+        }
+
+        private void CustomOnPostSetup()
+        {
+        }
     }
 }
