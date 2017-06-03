@@ -23,6 +23,7 @@ namespace Allors
     using System;
 
     using Allors.Domain;
+    using Allors.Meta;
 
     public partial class Setup
     {
@@ -42,7 +43,7 @@ namespace Allors
         {
             // Default access policy
             var security = new Security(session);
-            foreach (var @class in session.Database.MetaPopulation.Classes)
+            foreach (ObjectType @class in session.Database.MetaPopulation.Classes)
             {
                 security.GrantAdministrator(@class, Operations.Read, Operations.Write, Operations.Execute);
                 security.GrantCreator(@class, Operations.Read, Operations.Write, Operations.Execute);
