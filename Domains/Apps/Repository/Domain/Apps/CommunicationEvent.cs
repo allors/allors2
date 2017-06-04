@@ -26,6 +26,7 @@ namespace Allors.Repository
         [RoleId("B7C74220-F30C-49D6-9930-53A582FFDE08")]
         #endregion
         [Multiplicity(Multiplicity.OneToOne)]
+        [Required]
         [Indexed]
         [Derived]
         AccessControl OwnerAccessControl { get; set; }

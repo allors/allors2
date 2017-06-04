@@ -60,36 +60,12 @@
           <md-card-content>
             <ng-template tdLoading="this.communicationEvents">
               <md-list class="will-load">
-                <div class="md-padding" *ngIf="this.communicationEvents.length === 0" layout="row" layout-align="center center">
+                <div class="md-padding" *ngIf="!data" layout="row" layout-align="center center">
                   <h3>No communications to display.</h3>
                 </div>
-                <ng-template let-communicationEvent let-last="last" ngFor [ngForOf]="this.communicationEvents">
-                  <md-list-item>
-
-                    <!--<h3 md-line> {{communicationEvent.Description}}</h3>-->
-
-                    <!--<p md-line hide-gt-md class="md-caption"> last modified: {{ contact.LastModifiedDate | timeAgo }} </p>
-
-                    <span flex></span>
-
-                    <span hide-xs hide-sm hide-md flex-gt-xs="60" flex-xs="40" layout-gt-xs="row">
-                  <div class="md-caption tc-grey-500" flex-gt-xs="50"> created: {{ contact.CreationDate | date }} </div>
-                  <div class="md-caption tc-grey-500" flex-gt-xs="50"> modified: {{ contact.LastModifiedDate | timeAgo }} </div>
-              </span>-->
-
-                    <span>
-                  <button md-icon-button [md-menu-trigger-for]="menu">
-                    <md-icon>more_vert</md-icon>
-                  </button>
-                  <md-menu x-position="before" #menu="mdMenu">
-                      <a [routerLink]="[organisation.id + '/overview']" md-menu-item>Details</a>
-                      <button md-menu-item (click)="delete(organisation)">Delete</button>
-                  </md-menu>
-              </span>
-
-                  </md-list-item>
-                  <md-divider *ngIf="!last" md-inset></md-divider>
-                </ng-template>
+                <div *ngIf="data">
+                  <communicationEvents-table [data]="data" (view)="onView($event)"></communicationEvents-table>
+                </div>
               </md-list>
             </ng-template>
           </md-card-content>

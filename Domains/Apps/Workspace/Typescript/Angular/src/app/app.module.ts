@@ -40,6 +40,7 @@ import { AppComponent } from './app.component';
 import { MainComponent } from './main/main.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 
+import { CommunicationEventsTableComponent } from './communicationEvents/communicationEvents.table.component';
 import { EmailAddressAddComponent } from './contactMechanisms/contactMechanism/emailAddressAdd.component';
 import { EmailAddressEditComponent } from './contactMechanisms/contactMechanism/emailAddressEdit.component';
 import { OrganisationAddContactComponent } from './organisations/organisation/organisationAddContact.component';
@@ -70,6 +71,7 @@ import { LoginComponent } from './auth/login.component';
     LoginComponent,
     AppComponent,
     MainComponent,
+    CommunicationEventsTableComponent,
     DashboardComponent,
     EmailAddressAddComponent,
     EmailAddressEditComponent,

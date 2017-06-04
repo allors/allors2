@@ -20,17 +20,19 @@ namespace Allors
 
         public void Execute()
         {
+            this.SetupUser("admin1@allors.com", "administrator1", "", "x");
+
             var euro = new Currencies(this.Session).FindBy(M.Currency.IsoCode, "EUR");
             var city = new CityBuilder(this.Session).WithName("Mechelen").Build();
             var postalCode = new PostalCodeBuilder(this.Session).WithCode("2800").WithAbbreviation("Mechelen").Build();
 
-            var belgie = new Countries(this.Session).FindBy(M.Country.IsoCode, "BE");
+            var belgium = new Countries(this.Session).FindBy(M.Country.IsoCode, "BE");
 
             var postalAddress = new PostalAddressBuilder(this.Session)
                 .WithAddress1("Kleine Nieuwedijkstraat 4")
                 .WithGeographicBoundary(postalCode)
                 .WithGeographicBoundary(city)
-                .WithGeographicBoundary(belgie)
+                .WithGeographicBoundary(belgium)
                 .Build();
 
             var phone = new TelecommunicationsNumberBuilder(this.Session)
@@ -61,7 +63,7 @@ namespace Allors
                 .Build();
 
             var ing = new BankBuilder(this.Session).WithName("ING België")
-                .WithBic("BBRUBEBB").WithCountry(belgie).Build();
+                .WithBic("BBRUBEBB").WithCountry(belgium).Build();
 
             var bankaccount = new BankAccountBuilder(this.Session)
                 .WithBank(ing)
@@ -116,7 +118,87 @@ namespace Allors
                 .WithDefaultCarrier(new Carriers(this.Session).Fedex)
                 .Build();
 
-            this.SetupUser("koen@allors.com", "Koen", "Van Exem", "x");
+            var acmePostalAddress = new PostalAddressBuilder(this.Session)
+                .WithAddress1("Acme address 1")
+                .WithGeographicBoundary(new CityBuilder(this.Session).WithName("Acme city").Build())
+                .WithGeographicBoundary(new PostalCodeBuilder(this.Session).WithCode("1111").Build())
+                .Build();
+
+            var acmeBillingAddress = new PartyContactMechanismBuilder(this.Session)
+                .WithContactMechanism(acmePostalAddress)
+                .WithContactPurpose(new ContactMechanismPurposes(this.Session).GeneralCorrespondence)
+                .WithUseAsDefault(true)
+                .Build();
+
+            var acmeInquiries= new PartyContactMechanismBuilder(this.Session)
+                .WithContactMechanism(new TelecommunicationsNumberBuilder(this.Session).WithCountryCode("+1").WithContactNumber("111 222 333").Build())
+                .WithContactPurpose(new ContactMechanismPurposes(this.Session).GeneralPhoneNumber)
+                .WithContactPurpose(new ContactMechanismPurposes(this.Session).OrderInquiriesPhone)
+                .WithUseAsDefault(true)
+                .Build();
+
+            var acme = new OrganisationBuilder(this.Session)
+                .WithName("Acme")
+                .WithLocale(new Locales(this.Session).EnglishUnitedStates)
+                .WithPartyContactMechanism(acmeBillingAddress)
+                .WithPartyContactMechanism(acmeInquiries)
+                .Build();
+
+            new CustomerRelationshipBuilder(this.Session)
+                .WithInternalOrganisation(Singleton.Instance(this.Session).DefaultInternalOrganisation)
+                .WithCustomer(acme)
+                .WithFromDate(DateTime.UtcNow)
+                .Build();
+
+            var contact1Email = new PartyContactMechanismBuilder(this.Session)
+                .WithContactMechanism(new EmailAddressBuilder(this.Session).WithElectronicAddressString("employee1@acme.com").Build())
+                .WithContactPurpose(new ContactMechanismPurposes(this.Session).PersonalEmailAddress)
+                .WithUseAsDefault(true)
+                .Build();
+
+            var contact2PhoneNumber = new PartyContactMechanismBuilder(this.Session)
+                .WithContactMechanism(new TelecommunicationsNumberBuilder(this.Session).WithCountryCode("+1").WithAreaCode("123").WithContactNumber("456").Build())
+                .WithContactPurpose(new ContactMechanismPurposes(this.Session).GeneralPhoneNumber)
+                .WithUseAsDefault(true)
+                .Build();
+
+            var contact1 = new PersonBuilder(this.Session)
+                .WithFirstName("employee1")
+                .WithGender(new GenderTypes(this.Session).Male)
+                .WithLocale(new Locales(this.Session).EnglishUnitedStates)
+                .WithPartyContactMechanism(contact1Email)
+                .Build();
+
+            var contact2 = new PersonBuilder(this.Session)
+                .WithFirstName("employee2")
+                .WithGender(new GenderTypes(this.Session).Male)
+                .WithLocale(new Locales(this.Session).EnglishUnitedStates)
+                .WithPartyContactMechanism(contact2PhoneNumber)
+                .Build();
+
+            new OrganisationContactRelationshipBuilder(this.Session)
+                .WithOrganisation(acme)
+                .WithContact(contact1)
+                .WithContactKind(new OrganisationContactKinds(this.Session).FindBy(M.OrganisationContactKind.Description, "General contact"))
+                .WithFromDate(DateTime.UtcNow)
+                .Build();
+
+            new OrganisationContactRelationshipBuilder(this.Session)
+                .WithOrganisation(acme)
+                .WithContact(contact2)
+                .WithContactKind(new OrganisationContactKinds(this.Session).FindBy(M.OrganisationContactKind.Description, "General contact"))
+                .WithFromDate(DateTime.UtcNow)
+                .Build();
+
+            new FaceToFaceCommunicationBuilder(this.Session)
+                .WithDescription("Meeting")
+                .WithSubject("review")
+                .WithEventPurpose(new CommunicationEventPurposes(this.Session).Meeting)
+                .WithParticipant(contact1)
+                .WithParticipant(contact2)
+                .WithParticipant(new People(this.Session).FindBy(M.Person.UserName, "administrator1"))
+                .WithActualStart(DateTime.UtcNow)
+                .Build();
         }
 
         private void SetupUser(string email, string firstName, string lastName, string password)
