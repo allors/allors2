@@ -1,21 +1,49 @@
-﻿namespace Allors.Server
+﻿namespace Allors.Server.Controllers
 {
-    using System.Threading.Tasks;
-
     using Microsoft.AspNetCore.Mvc;
 
-    public class TestAllorsController : AllorsController
+    public class TestController : Controller
     {
-        public TestAllorsController(IAllorsContext allorsContext) : base(allorsContext)
+        public ISession AllorsSession { get; set; }
+
+        public TestController(IAllorsContext allorsContext)
         {
+            this.AllorsSession = allorsContext.Session;
         }
 
-        [HttpPost]
-        public async Task<IActionResult> UserInfo()
+        [HttpGet]
+        public IActionResult Init()
         {
-            await this.OnInit();
+            this.AllorsSession.Database.Init();
 
-            return this.Ok(this.AllorsUser.UserName);
+            return this.Ok("Init");
+        }
+
+        [HttpGet]
+        public IActionResult Setup()
+        {
+            this.AllorsSession.Database.Init();
+            using (var session = this.AllorsSession.Database.CreateSession())
+            {
+                new Setup(session, null).Apply();
+                session.Commit();
+            }
+
+            return this.Ok("Setup");
+        }
+
+        [HttpGet]
+        public IActionResult Login(string user, string returnUrl)
+        {
+            // TODO:
+            return this.Ok("Login");
+        }
+
+        [HttpGet]
+        public IActionResult TimeShift(int days, int hours = 0, int minutes = 0, int seconds = 0)
+        {
+            // TODO:
+            return this.Ok("TimeShift");
         }
     }
 }

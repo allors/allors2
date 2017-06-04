@@ -15,6 +15,7 @@ export class Equals extends Predicate {
     }
 
     return {
+      _T: 'Equals',
       rt: this.roleType.name,
       v: value,
     };

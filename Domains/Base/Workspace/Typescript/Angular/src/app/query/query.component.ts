@@ -6,11 +6,16 @@ import { Query, Equals } from '../../allors/domain';
 import { Scope } from '../../allors/angular';
 import { AllorsService } from '../allors.service';
 
+import { Person } from '../../allors/domain';
+
 @Component({
   templateUrl: './query.component.html'
 })
 export class QueryComponent implements OnInit, OnDestroy {
-  scope: Scope;
+
+  people: Person[];
+
+  private scope: Scope;
   private subscription: Subscription;
 
   constructor(private title: Title, private allors: AllorsService) {
@@ -38,7 +43,12 @@ export class QueryComponent implements OnInit, OnDestroy {
     this.scope.session.reset();
     this.subscription = this.scope
       .load('Query', [query])
-      .subscribe();
+      .subscribe(() => {
+        this.people = this.scope.collections.people as Person[];
+      },
+      (error) => {
+        alert(error);
+      });
   }
 
   ngOnDestroy(): void {

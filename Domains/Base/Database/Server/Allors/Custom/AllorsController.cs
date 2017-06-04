@@ -17,7 +17,7 @@
         {
             this.AllorsSession = allorsContext.Session;
         }
-        
+
         public ISession AllorsSession { get; }
 
         public User AllorsUser { get; private set; }

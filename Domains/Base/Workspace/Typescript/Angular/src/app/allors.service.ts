@@ -1,12 +1,11 @@
-import { Injectable } from '@angular/core';
-
+import { Injectable, Inject } from '@angular/core';
 import { Http, Response } from '@angular/http';
 
-import { Database } from '../allors/angular';
 import { Workspace } from '../allors/domain/base/Workspace';
 import { workspace } from '../allors/domain';
 
-import { environment } from '../environments/environment';
+import { Database } from '../allors/angular';
+import { ENVIRONMENT, Environment, AuthenticationService } from '../allors/angular';
 
 @Injectable()
 export class AllorsService {
@@ -14,16 +13,16 @@ export class AllorsService {
     workspace: Workspace;
     database: Database;
 
-    url: string;
+    constructor(
+        public http: Http,
+        private authService: AuthenticationService,
+        @Inject(ENVIRONMENT) private environment: Environment) {
 
-    constructor(public http: Http) {
-      this.url = 'http://localhost:5000/';
-
-      if (environment.production) {
-          this.url = 'https://app.example.com/';
-      }
-
-      this.database = new Database(http, this.url);
+      this.database = new Database(http, environment.url, (requestOptions) => this.authService.postProcessRequestOptions(requestOptions));
       this.workspace = workspace;
-  }
+    }
+
+    onError(error) {
+        alert(error);
+    }
 }

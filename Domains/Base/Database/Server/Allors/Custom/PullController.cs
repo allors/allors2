@@ -12,7 +12,7 @@
         {
             var invokeResponse = new InvokeResponse();
 
-            var validation = this.AllorsSession.Derive(false);
+            var validation = this.AllorsSession.Derive();
             if (validation.HasErrors)
             {
                 invokeResponse.AddDerivationErrors(validation);
