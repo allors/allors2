@@ -8,6 +8,11 @@
 	</PropertyGroup>
 
   
+
+<ItemGroup>
+  <DotNetCliToolReference Include="Microsoft.DotNet.Watcher.Tools" Version="1.0.0" />
+</ItemGroup> 
+
 	<ItemGroup>
     
 		<Compile Include="..\..\..\Base\Database\Server\Allors\Base\**\*.cs" />
