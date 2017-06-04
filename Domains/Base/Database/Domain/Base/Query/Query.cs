@@ -24,6 +24,8 @@ namespace Allors.Domain.Query
 
     public class Query
     {
+        public string Name { get; set; }
+
         public Composite Type { get; set; }
 
         public Predicate Predicate { get; set; }

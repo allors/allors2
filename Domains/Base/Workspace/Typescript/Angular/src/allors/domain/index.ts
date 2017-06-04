@@ -9,6 +9,8 @@ export let workspace = new Workspace(metaPopulation, constructorByName);
 export { Session } from './base/Session';
 
 // Base
+export { Query, Predicate, And, Equals } from './base/Query';
+
 export { Counter } from './generated/Counter.g';
 export { Enumeration } from './generated/Enumeration.g';
 export { Media } from './generated/Media.g';

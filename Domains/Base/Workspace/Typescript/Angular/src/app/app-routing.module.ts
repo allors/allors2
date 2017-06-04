@@ -4,8 +4,9 @@ import { Routes, RouterModule } from '@angular/router';
 import { AuthenticationService } from '../allors/angular';
 import { LoginComponent } from './auth/login.component';
 
-import { DashboardComponent } from './dashboard/dashboard.component';
+import { HomeComponent } from './home/home.component';
 import { FormComponent } from './form/form.component';
+import { QueryComponent } from './query/query.component';
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent},
@@ -14,11 +15,15 @@ const routes: Routes = [
     path: '',
     children: [{
         path: '',
-        component: DashboardComponent,
+        component: HomeComponent,
       },
       {
         path: 'form',
         component: FormComponent,
+      },
+      {
+        path: 'query',
+        component: QueryComponent,
       }]
   }
 ];

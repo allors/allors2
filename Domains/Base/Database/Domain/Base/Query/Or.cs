@@ -24,6 +24,6 @@ namespace Allors.Domain.Query
 
     public abstract class Or : Predicate
     {
-        public IList<Predicate> Predicates { get; } = new List<Predicate>();
+        public IList<Predicate> Predicates { get; set; }
     }
 }

@@ -3,6 +3,8 @@
 namespace Allors.Server.Controllers
 {
     using System;
+    using System.Threading.Tasks;
+
     using Allors.Domain;
     using Allors.Meta;
     using Allors.Server;
@@ -12,10 +14,12 @@ namespace Allors.Server.Controllers
         public TestShareHoldersController(IAllorsContext allorsContext): base(allorsContext)
         {
         }
-        
+
         [HttpPost]
-        public ActionResult Pull()
+        public async Task<IActionResult> Pull()
         {
+            await this.OnInit();
+
             try
             {
                 var response = new PullResponseBuilder(this.AllorsUser);

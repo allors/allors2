@@ -2,6 +2,8 @@
 
 namespace Allors.Server.Controllers
 {
+    using System.Threading.Tasks;
+
     using Allors.Domain;
     using Allors.Server;
 
@@ -12,8 +14,10 @@ namespace Allors.Server.Controllers
         }
 
         [HttpPost]
-        public ActionResult Pull()
+        public async Task<IActionResult> Pull()
         {
+            await this.OnInit();
+
             var response = new PullResponseBuilder(this.AllorsUser);
             response.AddObject("object", this.AllorsUser);
             response.AddCollection("collection", new Organisations(this.AllorsSession).Extent());

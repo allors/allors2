@@ -8,9 +8,9 @@ describe('angular App', () => {
     page.login('john@doe.org', 'john');
   });
 
-  it('should have title Dashboard', () => {
+  it('should have title Home', () => {
     page.navigateTo();
 
-    expect('Dashboard').toEqual(page.title);
+    expect('Home').toEqual(page.title);
   });
 });

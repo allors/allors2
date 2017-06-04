@@ -3,6 +3,8 @@
 namespace Allors.Server.Controllers
 {
     using System;
+    using System.Threading.Tasks;
+
     using Allors.Server;
 
     public class TestPullController : PullController
@@ -12,8 +14,10 @@ namespace Allors.Server.Controllers
         }
 
         [HttpPost]
-        public ActionResult Pull()
+        public async Task<IActionResult> Pull()
         {
+            await this.OnInit();
+
             try
             {
                 var response = new PullResponseBuilder(this.AllorsUser);

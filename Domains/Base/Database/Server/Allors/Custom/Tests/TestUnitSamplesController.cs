@@ -3,18 +3,11 @@
 namespace Allors.Server.Controllers
 {
     using System;
+    using System.Threading.Tasks;
 
     using Allors.Domain;
     using Allors.Server;
-
-    public class TestUnitSamplesParams
-    {
-        public int Step {
-            get;
-            set;
-        }
-    }
-
+    
     public class TestUnitSamplesController : PullController
     {
         public TestUnitSamplesController(IAllorsContext allorsContext): base(allorsContext)
@@ -22,8 +15,10 @@ namespace Allors.Server.Controllers
         }
 
         [HttpPost]
-        public ActionResult Pull([FromBody] TestUnitSamplesParams @params)
+        public async Task<IActionResult> Pull([FromBody] TestUnitSamplesParams @params)
         {
+            await this.OnInit();
+
             try
             {
                 var unitSample = new UnitSamples(this.AllorsSession).Extent().First;
@@ -71,6 +66,15 @@ namespace Allors.Server.Controllers
             catch (Exception e)
             {
                 return this.BadRequest(e.Message);
+            }
+        }
+
+        public class TestUnitSamplesParams
+        {
+            public int Step
+            {
+                get;
+                set;
             }
         }
     }

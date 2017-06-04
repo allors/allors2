@@ -2,14 +2,13 @@ import { Component, OnInit } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 
 @Component({
-  selector: 'app-dashboard',
-  templateUrl: './dashboard.component.html'
+  templateUrl: './home.component.html'
 })
-export class DashboardComponent implements OnInit {
+export class HomeComponent implements OnInit {
 
   constructor(private title: Title) { }
 
   ngOnInit() {
-    this.title.setTitle('Dashboard');
+    this.title.setTitle('Home');
   }
 }

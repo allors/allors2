@@ -1,10 +1,8 @@
-﻿using System.Reflection;
-using Allors;
-
-namespace Allors.Server
+﻿namespace Allors.Server
 {
     using System;
     using System.Linq;
+    using System.Reflection;
 
     using Allors.Domain;
     using Allors.Meta;

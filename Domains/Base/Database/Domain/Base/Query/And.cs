@@ -24,7 +24,7 @@ namespace Allors.Domain.Query
 
     public class And : Predicate
     {
-        public IList<Predicate> Predicates { get; } = new List<Predicate>();
+        public IList<Predicate> Predicates { get; set; }
 
         public override void Build(ICompositePredicate compositePredicate)
         {
