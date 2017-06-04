@@ -5,7 +5,7 @@
 
     using Allors.Meta;
 
-    using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc;
 
     public class QueryController : PullController
     {
@@ -21,7 +21,7 @@
             var response = new PullResponseBuilder(this.AllorsUser);
 
             var metaPopulation = (MetaPopulation)this.AllorsSession.Database.MetaPopulation;
-            var queries = req.Select(v => v.ToQuery(metaPopulation));
+            var queries = req.Select(v => v.ToQuery(metaPopulation)).ToArray();
 
             foreach (var query in queries)
             {
