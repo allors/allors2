@@ -1428,7 +1428,7 @@ namespace Allors.Domain
             Assert.Equal(100, item.QuantityShipped);
 
             item.QuantityOrdered = 90;
-            var derivationLog = this.DatabaseSession.Derive();
+            var derivationLog = this.DatabaseSession.Derive(false);
 
             Assert.True(derivationLog.HasErrors);
         }

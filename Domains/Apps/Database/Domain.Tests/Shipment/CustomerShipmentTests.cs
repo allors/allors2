@@ -375,6 +375,8 @@ namespace Allors.Domain
 
             shipment.Ship();
 
+            this.DatabaseSession.Derive(true);
+
             var acl = new AccessControlList(shipment, new Users(this.DatabaseSession).GetCurrentUser());
             Assert.Equal(new CustomerShipmentObjectStates(this.DatabaseSession).Shipped, shipment.CurrentObjectState);
             Assert.False(acl.CanExecute(M.CustomerShipment.Cancel));
