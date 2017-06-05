@@ -56,13 +56,6 @@ namespace Allors.Domain
             builder.WithCaller(caller);
             communication = builder.Build();
 
-            Assert.True(this.DatabaseSession.Derive(false).HasErrors);
-
-            this.DatabaseSession.Rollback();
-
-            builder.WithOwner(owner);
-            communication = builder.Build();
-
             Assert.False(this.DatabaseSession.Derive(false).HasErrors);
 
             Assert.Equal(communication.CurrentCommunicationEventStatus.CommunicationEventObjectState, new CommunicationEventObjectStates(this.DatabaseSession).Scheduled);

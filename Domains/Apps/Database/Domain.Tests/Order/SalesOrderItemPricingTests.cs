@@ -417,12 +417,16 @@ namespace Allors.Domain
             Assert.Equal(this.currentGoodBasePrice.Price, item1.UnitBasePrice);
 
             this.productCategoryRevenueHistory.Revenue = 50M;
+            this.order.RemoveSalesOrderItem(item1);
+            this.order.AddSalesOrderItem(item1);
 
             this.DatabaseSession.Derive(true);
 
             Assert.Equal(priceIs1, item1.UnitBasePrice);
 
             this.productCategoryRevenueHistory.Revenue = 110M;
+            this.order.RemoveSalesOrderItem(item1);
+            this.order.AddSalesOrderItem(item1);
 
             this.DatabaseSession.Derive(true);
 
@@ -478,6 +482,8 @@ namespace Allors.Domain
             Assert.Equal(this.goodPurchasePrice.Price, item1.UnitPurchasePrice);
 
             this.partyRevenueHistory.Revenue = 50M;
+            this.order.RemoveSalesOrderItem(item1);
+            this.order.AddSalesOrderItem(item1);
 
             this.DatabaseSession.Derive(true);
 
@@ -488,6 +494,8 @@ namespace Allors.Domain
             Assert.Equal(this.goodPurchasePrice.Price, item1.UnitPurchasePrice);
 
             this.partyRevenueHistory.Revenue = 110M;
+            this.order.RemoveSalesOrderItem(item1);
+            this.order.AddSalesOrderItem(item1);
 
             this.DatabaseSession.Derive(true);
 
@@ -572,6 +580,8 @@ namespace Allors.Domain
 
             this.productCategoryRevenueHistory.Revenue = 50M;
             this.productCategoryRevenueHistory.Quantity = 3;
+            this.order.RemoveSalesOrderItem(item1);
+            this.order.AddSalesOrderItem(item1);
 
             this.DatabaseSession.Derive(true);
 
@@ -583,6 +593,8 @@ namespace Allors.Domain
 
             this.productCategoryRevenueHistory.Revenue = 110M;
             this.productCategoryRevenueHistory.Quantity = 10;
+            this.order.RemoveSalesOrderItem(item1);
+            this.order.AddSalesOrderItem(item1);
 
             this.DatabaseSession.Derive(true);
 
@@ -669,7 +681,8 @@ namespace Allors.Domain
 
             this.productCategoryRevenueHistory.Revenue = 50M;
             this.productCategoryRevenueHistory.Quantity = 3;
-            
+            this.order.RemoveSalesOrderItem(item1);
+            this.order.AddSalesOrderItem(item1);
 
             this.DatabaseSession.Derive(true);
 
@@ -681,7 +694,8 @@ namespace Allors.Domain
 
             this.productCategoryRevenueHistory.Revenue = 110M;
             this.productCategoryRevenueHistory.Quantity = 10;
-            
+            this.order.RemoveSalesOrderItem(item1);
+            this.order.AddSalesOrderItem(item1);
 
             this.DatabaseSession.Derive(true);
 
@@ -769,7 +783,8 @@ namespace Allors.Domain
 
             this.productCategoryRevenueHistory.Revenue = 50M;
             this.productCategoryRevenueHistory.Quantity = 3;
-            
+            this.order.RemoveSalesOrderItem(item1);
+            this.order.AddSalesOrderItem(item1);
 
             this.DatabaseSession.Derive(true);
 
@@ -781,7 +796,8 @@ namespace Allors.Domain
 
             this.productCategoryRevenueHistory.Revenue = 110M;
             this.productCategoryRevenueHistory.Quantity = 10;
-            
+            this.order.RemoveSalesOrderItem(item1);
+            this.order.AddSalesOrderItem(item1);
 
             this.DatabaseSession.Derive(true);
 
@@ -842,7 +858,8 @@ namespace Allors.Domain
             Assert.Equal(this.goodPurchasePrice.Price, item1.UnitPurchasePrice);
 
             this.ancestorProductCategoryRevenueHistory.Revenue = 50M;
-            
+            this.order.RemoveSalesOrderItem(item1);
+            this.order.AddSalesOrderItem(item1);
 
             this.DatabaseSession.Derive(true);
 
@@ -853,7 +870,8 @@ namespace Allors.Domain
             Assert.Equal(this.goodPurchasePrice.Price, item1.UnitPurchasePrice);
 
             this.ancestorProductCategoryRevenueHistory.Revenue = 110M;
-            
+            this.order.RemoveSalesOrderItem(item1);
+            this.order.AddSalesOrderItem(item1);
 
             this.DatabaseSession.Derive(true);
 
@@ -914,7 +932,8 @@ namespace Allors.Domain
             Assert.Equal(this.goodPurchasePrice.Price, item1.UnitPurchasePrice);
 
             this.parentProductCategoryRevenueHistory.Revenue = 50M;
-            
+            this.order.RemoveSalesOrderItem(item1);
+            this.order.AddSalesOrderItem(item1);
 
             this.DatabaseSession.Derive(true);
 
@@ -925,7 +944,8 @@ namespace Allors.Domain
             Assert.Equal(this.goodPurchasePrice.Price, item1.UnitPurchasePrice);
 
             this.parentProductCategoryRevenueHistory.Revenue = 110M;
-            
+            this.order.RemoveSalesOrderItem(item1);
+            this.order.AddSalesOrderItem(item1);
 
             this.DatabaseSession.Derive(true);
 
@@ -986,7 +1006,8 @@ namespace Allors.Domain
             Assert.Equal(this.goodPurchasePrice.Price, item1.UnitPurchasePrice);
 
             this.productCategoryRevenueHistory.Revenue = 50M;
-            
+            this.order.RemoveSalesOrderItem(item1);
+            this.order.AddSalesOrderItem(item1);
 
             this.DatabaseSession.Derive(true);
 
@@ -997,7 +1018,8 @@ namespace Allors.Domain
             Assert.Equal(this.goodPurchasePrice.Price, item1.UnitPurchasePrice);
 
             this.productCategoryRevenueHistory.Revenue = 110M;
-            
+            this.order.RemoveSalesOrderItem(item1);
+            this.order.AddSalesOrderItem(item1);
 
             this.DatabaseSession.Derive(true);
 
@@ -1058,7 +1080,8 @@ namespace Allors.Domain
             Assert.Equal(this.goodPurchasePrice.Price, item1.UnitPurchasePrice);
 
             this.partyRevenueHistory.Revenue = 50M;
-            
+            this.order.RemoveSalesOrderItem(item1);
+            this.order.AddSalesOrderItem(item1);
 
             this.DatabaseSession.Derive(true);
 
@@ -1071,7 +1094,8 @@ namespace Allors.Domain
             Assert.Equal(this.goodPurchasePrice.Price, item1.UnitPurchasePrice);
 
             this.partyRevenueHistory.Revenue = 110M;
-            
+            this.order.RemoveSalesOrderItem(item1);
+            this.order.AddSalesOrderItem(item1);
 
             this.DatabaseSession.Derive(true);
 
@@ -1134,7 +1158,8 @@ namespace Allors.Domain
             Assert.Equal(this.goodPurchasePrice.Price, item1.UnitPurchasePrice);
 
             this.productCategoryRevenueHistory.Revenue = 50M;
-            
+            this.order.RemoveSalesOrderItem(item1);
+            this.order.AddSalesOrderItem(item1);
 
             this.DatabaseSession.Derive(true);
 
@@ -1147,7 +1172,8 @@ namespace Allors.Domain
             Assert.Equal(this.goodPurchasePrice.Price, item1.UnitPurchasePrice);
 
             this.productCategoryRevenueHistory.Revenue = 110M;
-            
+            this.order.RemoveSalesOrderItem(item1);
+            this.order.AddSalesOrderItem(item1);
 
             this.DatabaseSession.Derive(true);
 
@@ -1196,7 +1222,6 @@ namespace Allors.Domain
             this.InstantiateObjects(this.DatabaseSession);
 
             this.partyRevenueHistory.Revenue = 20M;
-            
 
             var item1 = new SalesOrderItemBuilder(this.DatabaseSession).WithProduct(this.good).WithQuantityOrdered(quantityOrdered1).Build();
             this.order.AddSalesOrderItem(item1);
@@ -1210,7 +1235,8 @@ namespace Allors.Domain
             Assert.Equal(this.goodPurchasePrice.Price, item1.UnitPurchasePrice);
 
             this.partyRevenueHistory.Revenue = 50M;
-            
+            this.order.RemoveSalesOrderItem(item1);
+            this.order.AddSalesOrderItem(item1);
 
             this.DatabaseSession.Derive(true);
 
@@ -1221,7 +1247,8 @@ namespace Allors.Domain
             Assert.Equal(this.goodPurchasePrice.Price, item1.UnitPurchasePrice);
 
             this.partyRevenueHistory.Revenue = 110M;
-            
+            this.order.RemoveSalesOrderItem(item1);
+            this.order.AddSalesOrderItem(item1);
 
             this.DatabaseSession.Derive(true);
 
@@ -1268,7 +1295,6 @@ namespace Allors.Domain
             this.InstantiateObjects(this.DatabaseSession);
 
             this.productCategoryRevenueHistory.Revenue = 20M;
-            
 
             var item1 = new SalesOrderItemBuilder(this.DatabaseSession).WithProduct(this.good).WithQuantityOrdered(quantityOrdered1).Build();
             this.order.AddSalesOrderItem(item1);
@@ -1282,7 +1308,8 @@ namespace Allors.Domain
             Assert.Equal(this.goodPurchasePrice.Price, item1.UnitPurchasePrice);
 
             this.productCategoryRevenueHistory.Revenue = 50M;
-            
+            this.order.RemoveSalesOrderItem(item1);
+            this.order.AddSalesOrderItem(item1);
 
             this.DatabaseSession.Derive(true);
 
@@ -1293,7 +1320,8 @@ namespace Allors.Domain
             Assert.Equal(this.goodPurchasePrice.Price, item1.UnitPurchasePrice);
 
             this.productCategoryRevenueHistory.Revenue = 110M;
-            
+            this.order.RemoveSalesOrderItem(item1);
+            this.order.AddSalesOrderItem(item1);
 
             this.DatabaseSession.Derive(true);
 
@@ -1342,7 +1370,6 @@ namespace Allors.Domain
             this.InstantiateObjects(this.DatabaseSession);
 
             this.partyRevenueHistory.Revenue = 20M;
-            
 
             var item1 = new SalesOrderItemBuilder(this.DatabaseSession).WithProduct(this.good).WithQuantityOrdered(quantityOrdered1).Build();
             this.order.AddSalesOrderItem(item1);
@@ -1356,7 +1383,8 @@ namespace Allors.Domain
             Assert.Equal(this.goodPurchasePrice.Price, item1.UnitPurchasePrice);
 
             this.partyRevenueHistory.Revenue = 50M;
-            
+            this.order.RemoveSalesOrderItem(item1);
+            this.order.AddSalesOrderItem(item1);
 
             this.DatabaseSession.Derive(true);
 
@@ -1369,7 +1397,8 @@ namespace Allors.Domain
             Assert.Equal(this.goodPurchasePrice.Price, item1.UnitPurchasePrice);
 
             this.partyRevenueHistory.Revenue = 110M;
-            
+            this.order.RemoveSalesOrderItem(item1);
+            this.order.AddSalesOrderItem(item1);
 
             this.DatabaseSession.Derive(true);
 
@@ -1431,7 +1460,8 @@ namespace Allors.Domain
             Assert.Equal(this.goodPurchasePrice.Price, item1.UnitPurchasePrice);
 
             this.ancestorProductCategoryRevenueHistory.Quantity = 5;
-            
+            this.order.RemoveSalesOrderItem(item1);
+            this.order.AddSalesOrderItem(item1);
 
             this.DatabaseSession.Derive(true);
 
@@ -1442,7 +1472,8 @@ namespace Allors.Domain
             Assert.Equal(this.goodPurchasePrice.Price, item1.UnitPurchasePrice);
 
             this.ancestorProductCategoryRevenueHistory.Quantity = 11M;
-            
+            this.order.RemoveSalesOrderItem(item1);
+            this.order.AddSalesOrderItem(item1);
 
             this.DatabaseSession.Derive(true);
 
@@ -1502,7 +1533,8 @@ namespace Allors.Domain
             Assert.Equal(this.goodPurchasePrice.Price, item1.UnitPurchasePrice);
 
             this.parentProductCategoryRevenueHistory.Quantity = 5;
-            
+            this.order.RemoveSalesOrderItem(item1);
+            this.order.AddSalesOrderItem(item1);
 
             this.DatabaseSession.Derive(true);
 
@@ -1513,7 +1545,8 @@ namespace Allors.Domain
             Assert.Equal(this.goodPurchasePrice.Price, item1.UnitPurchasePrice);
 
             this.parentProductCategoryRevenueHistory.Quantity = 11;
-            
+            this.order.RemoveSalesOrderItem(item1);
+            this.order.AddSalesOrderItem(item1);
 
             this.DatabaseSession.Derive(true);
 
@@ -1574,7 +1607,8 @@ namespace Allors.Domain
             Assert.Equal(this.goodPurchasePrice.Price, item1.UnitPurchasePrice);
 
             this.productCategoryRevenueHistory.Quantity = 50M;
-            
+            this.order.RemoveSalesOrderItem(item1);
+            this.order.AddSalesOrderItem(item1);
 
             this.DatabaseSession.Derive(true);
 
@@ -1585,7 +1619,8 @@ namespace Allors.Domain
             Assert.Equal(this.goodPurchasePrice.Price, item1.UnitPurchasePrice);
 
             this.productCategoryRevenueHistory.Quantity = 110M;
-            
+            this.order.RemoveSalesOrderItem(item1);
+            this.order.AddSalesOrderItem(item1);
 
             this.DatabaseSession.Derive(true);
 
@@ -1646,7 +1681,8 @@ namespace Allors.Domain
             Assert.Equal(this.goodPurchasePrice.Price, item1.UnitPurchasePrice);
 
             this.productCategoryRevenueHistory.Quantity = 50M;
-            
+            this.order.RemoveSalesOrderItem(item1);
+            this.order.AddSalesOrderItem(item1);
 
             this.DatabaseSession.Derive(true);
 
@@ -1659,7 +1695,8 @@ namespace Allors.Domain
             Assert.Equal(this.goodPurchasePrice.Price, item1.UnitPurchasePrice);
 
             this.productCategoryRevenueHistory.Quantity = 110M;
-            
+            this.order.RemoveSalesOrderItem(item1);
+            this.order.AddSalesOrderItem(item1);
 
             this.DatabaseSession.Derive(true);
 
@@ -1708,7 +1745,6 @@ namespace Allors.Domain
             this.InstantiateObjects(this.DatabaseSession);
 
             this.productCategoryRevenueHistory.Quantity = 20M;
-            
 
             var item1 = new SalesOrderItemBuilder(this.DatabaseSession).WithProduct(this.good).WithQuantityOrdered(quantityOrdered1).Build();
             this.order.AddSalesOrderItem(item1);
@@ -1722,7 +1758,8 @@ namespace Allors.Domain
             Assert.Equal(this.goodPurchasePrice.Price, item1.UnitPurchasePrice);
 
             this.productCategoryRevenueHistory.Quantity = 50M;
-            
+            this.order.RemoveSalesOrderItem(item1);
+            this.order.AddSalesOrderItem(item1);
 
             this.DatabaseSession.Derive(true);
 
@@ -1733,7 +1770,8 @@ namespace Allors.Domain
             Assert.Equal(this.goodPurchasePrice.Price, item1.UnitPurchasePrice);
 
             this.productCategoryRevenueHistory.Quantity = 110M;
-            
+            this.order.RemoveSalesOrderItem(item1);
+            this.order.AddSalesOrderItem(item1);
 
             this.DatabaseSession.Derive(true);
 
@@ -1794,7 +1832,8 @@ namespace Allors.Domain
             Assert.Equal(this.goodPurchasePrice.Price, item1.UnitPurchasePrice);
 
             this.productCategoryRevenueHistory.Quantity = 50M;
-            
+            this.order.RemoveSalesOrderItem(item1);
+            this.order.AddSalesOrderItem(item1);
 
             this.DatabaseSession.Derive(true);
 
@@ -1807,7 +1846,8 @@ namespace Allors.Domain
             Assert.Equal(this.goodPurchasePrice.Price, item1.UnitPurchasePrice);
 
             this.productCategoryRevenueHistory.Quantity = 110M;
-            
+            this.order.RemoveSalesOrderItem(item1);
+            this.order.AddSalesOrderItem(item1);
 
             this.DatabaseSession.Derive(true);
 
@@ -1884,7 +1924,6 @@ namespace Allors.Domain
             package2RevenueHistory.Revenue = 0;
             package3RevenueHistory.Revenue = 0;
             
-
             var item1 = new SalesOrderItemBuilder(this.DatabaseSession).WithProduct(this.good).WithQuantityOrdered(3).Build();
             this.order.AddSalesOrderItem(item1);
             this.DatabaseSession.Derive(true);
@@ -1893,7 +1932,8 @@ namespace Allors.Domain
 
             package2RevenueHistory.Revenue = 100M;
             package3RevenueHistory.Revenue = 0;
-            
+            this.order.RemoveSalesOrderItem(item1);
+            this.order.AddSalesOrderItem(item1);
 
             this.DatabaseSession.Derive(true);
 
@@ -1901,7 +1941,8 @@ namespace Allors.Domain
 
             package2RevenueHistory.Revenue = 100;
             package3RevenueHistory.Revenue = 100;
-            
+            this.order.RemoveSalesOrderItem(item1);
+            this.order.AddSalesOrderItem(item1);
 
             this.DatabaseSession.Derive(true);
 
@@ -1983,7 +2024,8 @@ namespace Allors.Domain
 
             package2RevenueHistory.Revenue = 100;
             package3RevenueHistory.Revenue = 0;
-            
+            this.order.RemoveSalesOrderItem(item1);
+            this.order.AddSalesOrderItem(item1);
 
             this.DatabaseSession.Derive(true);
 
@@ -1995,7 +2037,8 @@ namespace Allors.Domain
 
             package2RevenueHistory.Revenue = 100;
             package3RevenueHistory.Revenue = 100;
-            
+            this.order.RemoveSalesOrderItem(item1);
+            this.order.AddSalesOrderItem(item1);
 
             this.DatabaseSession.Derive(true);
 
@@ -2066,7 +2109,6 @@ namespace Allors.Domain
 
             package2RevenueHistory.Revenue = 0;
             package3RevenueHistory.Revenue = 0;
-            
 
             var item1 = new SalesOrderItemBuilder(this.DatabaseSession).WithProduct(this.good).WithQuantityOrdered(quantityOrdered1).Build();
             this.order.AddSalesOrderItem(item1);
@@ -2081,7 +2123,8 @@ namespace Allors.Domain
 
             package2RevenueHistory.Revenue = 100;
             package3RevenueHistory.Revenue = 0;
-            
+            this.order.RemoveSalesOrderItem(item1);
+            this.order.AddSalesOrderItem(item1);
 
             this.DatabaseSession.Derive(true);
 
@@ -2095,7 +2138,8 @@ namespace Allors.Domain
 
             package2RevenueHistory.Revenue = 100;
             package3RevenueHistory.Revenue = 100;
-            
+            this.order.RemoveSalesOrderItem(item1);
+            this.order.AddSalesOrderItem(item1);
 
             this.DatabaseSession.Derive(true);
 

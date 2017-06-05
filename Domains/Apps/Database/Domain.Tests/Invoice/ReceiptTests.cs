@@ -178,7 +178,7 @@ namespace Allors.Domain
 
             receipt.AddPaymentApplication(new PaymentApplicationBuilder(this.DatabaseSession).WithInvoiceItem(invoice.SalesInvoiceItems[0]).WithAmountApplied(1).Build());
 
-            var derivationLog = this.DatabaseSession.Derive();
+            var derivationLog = this.DatabaseSession.Derive(false);
             Assert.True(derivationLog.HasErrors);
             Assert.Contains(M.Receipt.Amount.RoleType, derivationLog.Errors[0].RoleTypes);
         }
