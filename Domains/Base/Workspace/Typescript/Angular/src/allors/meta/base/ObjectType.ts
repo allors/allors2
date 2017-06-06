@@ -1,32 +1,75 @@
-import { RoleType } from './RoleType';
-import { MethodType } from './MethodType';
+import { MetaObject } from './MetaObject';
+import { RoleType, ExclusiveRoleType, ConcreteRoleType } from './RoleType';
+import { MethodType, ExclusiveMethodType, ConcreteMethodType } from './MethodType';
 
 export enum Kind {
-    unit,
-    class,
-    interface
+  unit,
+  class,
+  interface
 }
 
-export class ObjectType {
-    name: string;
-    kind: Kind;
-    interfaceByName: { [name: string]: ObjectType; } = {};
-    roleTypeByName: { [name: string]: RoleType; } = {};
-    methodTypeByName: { [name: string]: MethodType; } = {};
+export class ObjectType implements MetaObject {
+  id: string;
+  name: string;
+  kind: Kind;
 
-    get isUnit(): boolean{
-        return this.kind === Kind.unit;
-    }
+  interfaceByName: { [name: string]: ObjectType; } = {};
 
-    get isComposite(): boolean{
-        return this.kind !== Kind.unit;
-    }
+  roleTypeByName: { [name: string]: RoleType; } = {};
+  exclusiveRoleTypes: ExclusiveRoleType[] = [];
+  concreteRoleTypes: ConcreteRoleType[] = [];
 
-    get isInterface(): boolean{
-        return this.kind === Kind.interface;
-    }
+  methodTypeByName: { [name: string]: MethodType; } = {};
+  exclusiveMethodTypes: ExclusiveMethodType[] = [];
+  concreteMethodTypes: ConcreteMethodType[] = [];
 
-    get isClass(): boolean{
-        return this.kind === Kind.class;
-    }
+  get isUnit(): boolean {
+    return this.kind === Kind.unit;
+  }
+
+  get isComposite(): boolean {
+    return this.kind !== Kind.unit;
+  }
+
+  get isInterface(): boolean {
+    return this.kind === Kind.interface;
+  }
+
+  get isClass(): boolean {
+    return this.kind === Kind.class;
+  }
+
+  derive() {
+    const interfaces: ObjectType[] = [];
+    this.addInterfaces(interfaces);
+
+    this.exclusiveRoleTypes.forEach(v => this.roleTypeByName[v.name] = v);
+    this.concreteRoleTypes.forEach(v => this.roleTypeByName[v.name] = v);
+
+    this.exclusiveMethodTypes.forEach(v => this.methodTypeByName[v.name] = v);
+    this.concreteMethodTypes.forEach(v => this.methodTypeByName[v.name] = v);
+
+    interfaces.forEach(v => {
+      v.exclusiveRoleTypes.forEach((roleType) => {
+        if (!this.roleTypeByName[roleType.name]) {
+          this.roleTypeByName[roleType.name] = roleType;
+        }
+      });
+
+       v.exclusiveMethodTypes.forEach((methodType) => {
+        if (!this.methodTypeByName[methodType.name]) {
+          this.methodTypeByName[methodType.name] = methodType;
+        }
+      });
+    });
+  }
+
+  private addInterfaces(interfaces: ObjectType[]) {
+    Object.keys(this.interfaceByName)
+      .map((name) => this.interfaceByName[name])
+      .forEach((objectType) => {
+        interfaces.push(objectType);
+        objectType.addInterfaces(interfaces);
+      });
+  }
 }

@@ -166,5 +166,14 @@ namespace Allors.Meta
                 return this.ConcreteRoleTypes.Where(m => m.RoleType.Workspace);
             }
         }
+
+        public IEnumerable<ConcreteMethodType> WorkspaceConcreteMethodTypes
+        {
+            get
+            {
+                this.MetaPopulation.Derive();
+                return this.ConcreteMethodTypes.Where(m => m.MethodType.Workspace);
+            }
+        }
     }
 }

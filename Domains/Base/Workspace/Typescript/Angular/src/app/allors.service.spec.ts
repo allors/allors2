@@ -35,9 +35,9 @@ describe('VideoService', () => {
           })));
         });
 
-        const scope = new Scope('Organisations', allorsService.database, allorsService.workspace);
+        const scope = new Scope(allorsService.database, allorsService.workspace);
 
-        scope.load()
+        scope.load('Organisations')
           .subscribe(() => {
             const organisations = scope.collections.organisations as Organisation[];
             expect(organisations.length).toBe(1);

@@ -2,18 +2,18 @@ import { Observable, Subject, Subscription } from 'rxjs/Rx';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 
-import { Query, Equals } from '../../allors/domain';
+import { Query, Equals, TreeNode } from '../../allors/domain';
 import { Scope } from '../../allors/angular';
 import { AllorsService } from '../allors.service';
 
-import { Person } from '../../allors/domain';
+import { Organisation, Person } from '../../allors/domain';
 
 @Component({
   templateUrl: './query.component.html'
 })
 export class QueryComponent implements OnInit, OnDestroy {
 
-  people: Person[];
+  organisations: Organisation[];
 
   private scope: Scope;
   private subscription: Subscription;
@@ -29,22 +29,31 @@ export class QueryComponent implements OnInit, OnDestroy {
       this.subscription.unsubscribe();
     }
 
-    const metaPopulation = this.allors.workspace.metaPopulation;
+    const organisation = this.allors.workspace.metaPopulation.objectTypeByName['Organisation'];
+    const person = this.allors.workspace.metaPopulation.objectTypeByName['Person'];
 
-    const query = new Query();
-    query.name = 'people';
-    query.type = metaPopulation.objectTypeByName['Person'];
+    const query = new Query(
+      {
+        name: 'organisations',
+        type: organisation,
+        predicate: new Equals(
+          {
+            roleType: organisation.roleTypeByName['Name'],
+            value: 'Acme'
+          }),
+        tree: [new TreeNode(
+          {
+            roleType: organisation.roleTypeByName['Owner'],
+          })]
+      });
 
-    const equals = new Equals();
-    equals.roleType = query.type.roleTypeByName['LastName'];
-    equals.value = 'Doe';
-    query.predicate = equals;
+    const json = JSON.stringify(query);
 
     this.scope.session.reset();
     this.subscription = this.scope
       .load('Query', [query])
       .subscribe(() => {
-        this.people = this.scope.collections.people as Person[];
+        this.organisations = this.scope.collections.organisations as Organisation[];
       },
       (error) => {
         alert(error);

@@ -30,6 +30,8 @@ namespace Allors.Domain.Query
 
         public Predicate Predicate { get; set; }
 
+        public Tree Tree { get; set; }
+
         internal Extent Build(ISession session)
         {
             var extent = session.Extent(this.Type);

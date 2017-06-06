@@ -3,7 +3,7 @@
 </p>
 
 <ul>
-  <li *ngFor="let person of people">
-      {{person.FirstName}}
+  <li *ngFor="let organisation of organisations">
+    {{organisation.Name}} with owner {{organisation.Owner.displayName()}}
   </li>
 </ul>

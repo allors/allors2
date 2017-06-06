@@ -23,6 +23,8 @@
 
 namespace Domain
 {
+    using System.Net.Sockets;
+
     using Allors;
     using Allors.Domain.Query;
     using Allors.Meta;

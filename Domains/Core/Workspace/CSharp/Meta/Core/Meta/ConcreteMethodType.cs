@@ -30,6 +30,7 @@ namespace Allors.Workspace.Meta
     public sealed partial class ConcreteMethodType
     {
         private readonly Class @class;
+
         private readonly MethodType methodType;
 
         private IList<Action<object, object>> actions;
@@ -39,7 +40,7 @@ namespace Allors.Workspace.Meta
             this.@class = @class;
             this.methodType = methodType;
         }
-
+        
         public MethodType MethodType
         {
             get

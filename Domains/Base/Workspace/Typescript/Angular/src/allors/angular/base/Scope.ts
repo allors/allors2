@@ -10,11 +10,7 @@ import { ISessionObject } from '../../domain/base/SessionObject';
 import { Method } from '../../domain/base/Method';
 import { Query } from '../../domain/base/query/Query';
 
-import { SyncRequest } from '../../domain/base/data/requests/SyncRequest';
-import { PullResponse } from '../../domain/base/data/responses/PullResponse';
-import { SyncResponse } from '../../domain/base/data/responses/SyncResponse';
-import { PushResponse } from '../../domain/base/data/responses/PushResponse';
-import { InvokeResponse } from '../../domain/base/data/responses/InvokeResponse';
+import { SyncRequest, PullResponse, SyncResponse, PushResponse, InvokeResponse } from '../../domain/base/database';
 
 
 export class Scope {

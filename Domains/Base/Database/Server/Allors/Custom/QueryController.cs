@@ -21,12 +21,12 @@ using Microsoft.AspNetCore.Mvc;
             var response = new PullResponseBuilder(this.AllorsUser);
 
             var metaPopulation = (MetaPopulation)this.AllorsSession.Database.MetaPopulation;
-            var queries = req.Select(v => v.ToQuery(metaPopulation)).ToArray();
+            var queries = req.Select(v => v.Parse(metaPopulation)).ToArray();
 
             foreach (var query in queries)
             {
                 var extent = this.AllorsSession.Query(query);
-                response.AddCollection(query.Name, extent.ToArray());
+                response.AddCollection(query.Name, extent.ToArray(), query.Tree);
             }
 
             return this.Ok(response.Build());

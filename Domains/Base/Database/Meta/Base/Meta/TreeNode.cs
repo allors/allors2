@@ -18,10 +18,10 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-using System.Collections.Generic;
-
 namespace Allors.Meta
 {
+    using System.Collections.Generic;
+
     public class TreeNode
     {
         public TreeNode(IRoleType roleType, IComposite composite = null, TreeNodes nodes = null)

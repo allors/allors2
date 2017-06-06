@@ -40,7 +40,7 @@
         {
             var predicate = new Equals
                                 {
-                                    RoleType = metaPopulation.RelationTypes.First(v => v.RoleType.Name.Equals(this.RT)).RoleType,
+                                    RoleType = (RoleType)metaPopulation.Find(new Guid(this.RT)),
                                     Value = this.V
                                 };
 
