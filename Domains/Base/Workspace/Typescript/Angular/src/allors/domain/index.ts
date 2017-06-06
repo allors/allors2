@@ -9,7 +9,7 @@ export let workspace = new Workspace(metaPopulation, constructorByName);
 export { Session } from './base/Session';
 
 // Base
-export { Query, Predicate, And, Equals, TreeNode } from './base/Query';
+export { Query, Predicate, And, Equals, Like, TreeNode, Sort } from './base/Query';
 
 export { Counter } from './generated/Counter.g';
 export { Enumeration } from './generated/Enumeration.g';

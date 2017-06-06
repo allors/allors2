@@ -1,6 +1,7 @@
 ﻿namespace Allors.Server
 {
     using System;
+    using System.Linq;
 
     using Allors.Domain.Query;
     using Allors.Meta;
@@ -15,34 +16,39 @@
         /// <summary>
         /// The ObjectType.
         /// </summary>
-        public string T { get; set; }
+        public string OT { get; set; }
 
         /// <summary>
         /// The predicate
         /// </summary>
         public QueryRequestPredicate P { get; set; }
 
-        public QueryRequestTreeNode[] TN { get; set; }
+        public QueryRequestTreeNode[] F { get; set; }
+
+        public QueryRequestSort[] S { get; set; }
 
         public Query Parse(MetaPopulation metaPopulation)
         {
-            var composite = (Composite)metaPopulation.Find(new Guid(this.T));
+            var composite = (Composite)metaPopulation.Find(new Guid(this.OT));
             var predicate = this.P?.ToPredicate(metaPopulation);
-            var tree = new Tree(composite);
-            if (this.TN != null)
+            var fetch = new Tree(composite);
+            if (this.F != null)
             {
-                foreach (var treeNode in this.TN)
+                foreach (var treeNode in this.F)
                 {
-                    treeNode.Parse(tree);
+                    treeNode.Parse(fetch);
                 }
             }
+
+            var sort = this.S?.Select(v => v.Parse(metaPopulation)).ToArray();
 
             var query = new Query
                             {
                                 Name = this.N,
-                                Type = composite,
+                                ObjectType = composite,
                                 Predicate = predicate,
-                                Tree = tree
+                                Fetch = fetch,
+                                Sort = sort,
                             };
 
             return query;

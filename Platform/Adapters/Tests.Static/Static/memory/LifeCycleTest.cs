@@ -18,27 +18,21 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-using System;
-
 namespace Allors.Adapters.Memory
 {
-    using Allors;
+    using System;
+
     using Adapters;
+
+    using Allors;
 
     using Xunit;
 
-    
     public class LifeCycleTest : Adapters.LifeCycleTest, IDisposable
     {
         private readonly Profile profile = new Profile();
 
-        protected override IProfile Profile
-        {
-            get
-            {
-                return this.profile;
-            }
-        }
+        protected override IProfile Profile => this.profile;
 
         [Fact]
         public override void DifferentSessions()

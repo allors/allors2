@@ -1,15 +1,18 @@
 ﻿import { ObjectType } from '../../../meta';
-import { TreeNode } from './TreeNode';
 import { Predicate } from './Predicate';
+import { TreeNode } from './TreeNode';
+import { Sort } from './Sort';
 
 export class Query {
     name: String;
 
-    type: ObjectType;
+    objectType: ObjectType;
 
     predicate: Predicate;
 
-    tree: TreeNode[];
+    fetch: TreeNode[];
+
+    sort: Sort[];
 
     constructor(fields?: Partial<Query>) {
        Object.assign(this, fields);
@@ -18,9 +21,10 @@ export class Query {
     toJSON() {
       return {
         n: this.name,
-        t: this.type.id,
+        ot: this.objectType.id,
         p: this.predicate,
-        tn: this.tree
+        f: this.fetch,
+        s: this.sort
       };
     }
 }

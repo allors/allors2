@@ -52,23 +52,32 @@ $if(roleType.ObjectType.IsUnit)$
 		$roleType_ObjectType(roleType)$ $roleType.SingularPropertyName$ 
 		{
 			get;
+$if(!roleType.RelationType.IsDerived)$
 			set;
+$endif$
 		}
 
 		bool Exist$roleType.SingularPropertyName${get;}
 
+$if(!roleType.RelationType.IsDerived)$
 		void Remove$roleType.SingularPropertyName$();
+$endif$
+
 $else$
 $if(roleType.IsMany)$
 		$roleType_ObjectType(roleType)$[] $roleType.PluralPropertyName$
 		{ 
 			get;
+$if(!roleType.RelationType.IsDerived)$
 			set;
+$endif$
 		}
 
+$if(!roleType.RelationType.IsDerived)$
 		void Add$roleType.SingularPropertyName$ ($roleType_ObjectType(roleType)$ value);
 
 		void Remove$roleType.SingularPropertyName$ ($roleType_ObjectType(roleType)$ value);
+$endif$
 
 		bool Exist$roleType.PluralPropertyName$
 		{
@@ -80,7 +89,9 @@ $else$
 		$roleType_ObjectType(roleType)$ $roleType.SingularPropertyName$
 		{ 
 			get;
+$if(!roleType.RelationType.IsDerived)$
 			set;
+$endif$
 		}
 
 		bool Exist$roleType.SingularPropertyName$
@@ -88,7 +99,9 @@ $else$
 			get;
 		}
 
+$if(!roleType.RelationType.IsDerived)$
 		void Remove$roleType.SingularPropertyName$();
+$endif$
 $endif$
 $endif$
 >>

@@ -2,7 +2,7 @@ import { Observable, Subject, Subscription } from 'rxjs/Rx';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 
-import { Query, Equals, TreeNode } from '../../allors/domain';
+import { Query, Equals, Like, TreeNode, Sort } from '../../allors/domain';
 import { Scope } from '../../allors/angular';
 import { AllorsService } from '../allors.service';
 
@@ -35,19 +35,22 @@ export class QueryComponent implements OnInit, OnDestroy {
     const query = new Query(
       {
         name: 'organisations',
-        type: organisation,
-        predicate: new Equals(
+        objectType: organisation,
+        predicate: new Like(
           {
             roleType: organisation.roleTypeByName['Name'],
-            value: 'Acme'
+            value: 'Org%'
           }),
-        tree: [new TreeNode(
+        fetch: [new TreeNode(
           {
             roleType: organisation.roleTypeByName['Owner'],
+          })],
+        sort: [new Sort(
+          {
+            roleType: organisation.roleTypeByName['Name'],
+            direction: 'Desc'
           })]
       });
-
-    const json = JSON.stringify(query);
 
     this.scope.session.reset();
     this.subscription = this.scope

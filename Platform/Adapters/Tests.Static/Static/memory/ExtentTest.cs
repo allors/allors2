@@ -18,15 +18,12 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-using System;
-
 namespace Allors.Adapters.Memory
 {
+    using System;
+
     using Adapters;
 
-    using Xunit;
-
-    
     public class ExtentTest : Adapters.ExtentTest, IDisposable
     {
         private readonly Profile profile = new Profile();
@@ -36,6 +33,11 @@ namespace Allors.Adapters.Memory
         public void Dispose()
         {
             this.profile.Dispose();
+        }
+        
+        protected override ISession CreateSession()
+        {
+            return this.profile.CreateSession();
         }
     }
 }

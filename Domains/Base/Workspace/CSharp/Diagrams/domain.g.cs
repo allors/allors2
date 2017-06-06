@@ -97,6 +97,9 @@ namespace Allors.Domain
 								global::System.DateTime? BirthDate {set;}
 
 
+								global::System.String FullName {set;}
+
+
 								global::System.Boolean? IsStudent {set;}
 
 

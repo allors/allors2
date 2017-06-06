@@ -23,5 +23,9 @@ namespace Allors.Domain
 {
     public partial class Organisation
     {
+        public override string ToString()
+        {
+            return this.Name;
+        }
     }
 }

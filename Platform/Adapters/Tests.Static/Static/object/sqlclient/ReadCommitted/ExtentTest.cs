@@ -18,15 +18,12 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-using System;
-
 namespace Allors.Adapters.Object.SqlClient.ReadCommitted
 {
+    using System;
+
     using Adapters;
 
-    using Xunit;
-
-    
     public class ExtentTest : SqlClient.ExtentTest, IDisposable
     {
         private readonly Profile profile = new Profile();
@@ -36,6 +33,11 @@ namespace Allors.Adapters.Object.SqlClient.ReadCommitted
         public void Dispose()
         {
             this.profile.Dispose();
+        }
+
+        protected override ISession CreateSession()
+        {
+            return this.profile.CreateSession();
         }
     }
 }

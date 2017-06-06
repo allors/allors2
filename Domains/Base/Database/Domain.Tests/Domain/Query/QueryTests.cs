@@ -23,8 +23,6 @@
 
 namespace Domain
 {
-    using System.Net.Sockets;
-
     using Allors;
     using Allors.Domain.Query;
     using Allors.Meta;
@@ -38,7 +36,7 @@ namespace Domain
         {
             var query = new Query
                             {
-                                Type = M.Person.ObjectType
+                                ObjectType = M.Person.ObjectType
                             };
 
             var queryExtent = this.Session.Query(query);
@@ -53,7 +51,7 @@ namespace Domain
         {
             var query = new Query
                             {
-                                Type = M.Person.ObjectType,
+                                ObjectType = M.Person.ObjectType,
                                 Predicate = new Equals
                                                 {
                                                     RoleType = M.Person.FirstName,
@@ -72,9 +70,10 @@ namespace Domain
         [Fact]
         public void And()
         {
+            // select from Person where FirstName='John' and LastName='Doe'
             var query = new Query
                             {
-                                Type = M.Person.ObjectType,
+                                ObjectType = M.Person.ObjectType,
                                 Predicate = new And
                                                 {
                                                     Predicates =

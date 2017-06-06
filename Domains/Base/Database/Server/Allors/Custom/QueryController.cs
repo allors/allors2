@@ -1,8 +1,10 @@
 ﻿namespace Allors.Server.Controllers
 {
+    using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
 
+    using Allors.Domain;
     using Allors.Meta;
 
 using Microsoft.AspNetCore.Mvc;
@@ -25,8 +27,9 @@ using Microsoft.AspNetCore.Mvc;
 
             foreach (var query in queries)
             {
-                var extent = this.AllorsSession.Query(query);
-                response.AddCollection(query.Name, extent.ToArray(), query.Tree);
+                Extent<Organisation> extent = this.AllorsSession.Query(query);
+                var collection = extent.ToArray();
+                response.AddCollection(query.Name, collection, query.Fetch);
             }
 
             return this.Ok(response.Build());

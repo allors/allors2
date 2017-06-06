@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------------------------------------------
-// <copyright file="Query.cs" company="Allors bvba">
+// <copyright file="Equals.cs" company="Allors bvba">
 //   Copyright 2002-2017 Allors bvba.
 //
 // Dual Licensed under
@@ -22,30 +22,15 @@ namespace Allors.Domain.Query
 {
     using Allors.Meta;
 
-    public class Query
+    public class Like : Predicate
     {
-        public string Name { get; set; }
+        public RoleType RoleType { get; set; }
 
-        public Composite ObjectType { get; set; }
+        public string Value { get; set; }
 
-        public Predicate Predicate { get; set; }
-
-        public Tree Fetch { get; set; }
-
-        public Sort[] Sort { get; set; }
-
-        internal Extent Build(ISession session)
+        public override void Build(ICompositePredicate compositePredicate)
         {
-            var extent = session.Extent(this.ObjectType);
-
-            this.Predicate?.Build(extent.Filter);
-
-            foreach (var sort in this.Sort)
-            {
-                extent.AddSort(sort.RoleType, sort.Direction);
-            }
-
-            return extent;
+            compositePredicate.AddLike(this.RoleType, this.Value);
         }
     }
 }

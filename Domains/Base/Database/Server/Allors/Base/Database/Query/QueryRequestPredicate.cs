@@ -31,6 +31,8 @@
 
                 case "Equals": return this.Equals(metaPopulation);
 
+                case "Like": return this.Like(metaPopulation);
+
                 default:
                     throw new NotSupportedException($"Predicate {this._T} is not supported");
             }
@@ -42,6 +44,17 @@
                                 {
                                     RoleType = (RoleType)metaPopulation.Find(new Guid(this.RT)),
                                     Value = this.V
+                                };
+
+            return predicate;
+        }
+
+        private Predicate Like(MetaPopulation metaPopulation)
+        {
+            var predicate = new Like
+                                {
+                                    RoleType = (RoleType)metaPopulation.Find(new Guid(this.RT)),
+                                    Value = (string)this.V
                                 };
 
             return predicate;

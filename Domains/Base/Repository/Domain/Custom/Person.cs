@@ -39,6 +39,7 @@ namespace Allors.Repository
         [RoleId("e431d53c-37ed-4fde-86a9-755f354c1d75")]
         [Size(256)]
         #endregion
+        [Workspace]
         [Derived]
         public string FullName { get; set; }
         

@@ -125,10 +125,10 @@ namespace Allors.Repository
         [Id("845ff004-516f-4ad5-9870-3d0e966a9f7d")]
         [AssociationId("3820f65f-0e79-4f30-a973-5d17dca6ad33")]
         [RoleId("58d7df91-fbc5-4bcb-9398-a9957949402b")]
-        [Multiplicity(Multiplicity.OneToOne)]
         [Indexed]
-        [Workspace]
         #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Workspace]
         public Person Owner { get; set; }
 
         #region Allors
