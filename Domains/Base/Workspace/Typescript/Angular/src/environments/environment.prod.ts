@@ -2,5 +2,6 @@ import { Environment } from '../allors/angular';
 
 export const environment: Environment = {
   production: true,
-  url: 'https://base.allors.com/'
+  url: 'https://base.allors.com/',
+  authenticationUrl: 'Authentication/SignIn'
 };

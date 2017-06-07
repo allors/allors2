@@ -27,7 +27,7 @@ export class EmailAddressAddComponent implements OnInit, AfterViewInit, OnDestro
     public fb: FormBuilder,
     public snackBar: MdSnackBar,
     public media: TdMediaService) {
-    this.scope = new Scope('Organisation', allors.database, allors.workspace);
+    this.scope = new Scope(allors.database, allors.workspace);
   }
 
   ngOnInit(): void {
@@ -45,7 +45,7 @@ export class EmailAddressAddComponent implements OnInit, AfterViewInit, OnDestro
         this.scope.session.reset();
 
         return this.scope
-          .load({ id: this.id })
+          .load('Organisation', { id: this.id })
           .do(() => {
             this.contactMechanismPurposes = this.scope.collections.contactMechanismPurposes as Enumeration[];
 

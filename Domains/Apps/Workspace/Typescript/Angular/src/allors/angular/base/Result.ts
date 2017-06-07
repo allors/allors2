@@ -1,7 +1,7 @@
 ﻿import { ISession } from '../../domain/base/Session';
 import { ISessionObject } from '../../domain/base/SessionObject';
 
-import { PullResponse } from '../../domain/base/data/responses/PullResponse';
+import { PullResponse } from '../../domain/base/database';
 
 export class Result {
 

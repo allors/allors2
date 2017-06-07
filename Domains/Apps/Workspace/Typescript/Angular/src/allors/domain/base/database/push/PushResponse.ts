@@ -1,5 +1,5 @@
-﻿import { ErrorResponse } from './ErrorResponse';
-import { PullResponseDerivationError } from './PullResponseDerivationError';
+﻿import { ErrorResponse } from '../ErrorResponse';
+import { DerivationError } from '../DerivationError';
 import { PushResponseNewObject } from './PushResponseNewObject';
 
 export interface PushResponse extends ErrorResponse {
@@ -8,7 +8,7 @@ export interface PushResponse extends ErrorResponse {
     versionErrors?: string[];
     accessErrors?: string[];
     missingErrors?: string[];
-    derivationErrors?: PullResponseDerivationError[];
+    derivationErrors?: DerivationError[];
 
     newObjects?: PushResponseNewObject[];
 }

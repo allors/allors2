@@ -28,7 +28,7 @@ export class OrganisationsComponent implements AfterViewInit, OnDestroy {
     private snackBarService: MdSnackBar,
     public media: TdMediaService,
     allors: AllorsService) {
-    this.scope = new Scope('Organisations', allors.database, allors.workspace);
+    this.scope = new Scope(allors.database, allors.workspace);
   }
 
   goBack(route: string): void {
@@ -60,7 +60,7 @@ export class OrganisationsComponent implements AfterViewInit, OnDestroy {
     this.scope.session.reset();
 
     return this.scope
-      .load({ criteria: criteria })
+      .load('Organisations', { criteria: criteria })
       .do(() => {
         this.data = this.scope.collections.organisations as Organisation[];
       })

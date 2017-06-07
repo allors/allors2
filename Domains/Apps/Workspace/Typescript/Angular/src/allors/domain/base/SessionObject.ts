@@ -1,6 +1,6 @@
 ﻿import { ISession } from './Session';
 import { IWorkspaceObject } from './WorkspaceObject';
-import { PushRequestObject, PushRequestNewObject, PushRequestRole } from './data/requests/PushRequest';
+import { PushRequestObject, PushRequestNewObject, PushRequestRole } from './database';
 
 import { ObjectType } from '../../meta';
 

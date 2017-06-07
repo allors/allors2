@@ -30,7 +30,7 @@ export class OrganisationEditContactComponent implements OnInit, AfterViewInit, 
     public fb: FormBuilder,
     public snackBar: MdSnackBar,
     public media: TdMediaService) {
-    this.scope = new Scope('OrganisationContactRelationship', allors.database, allors.workspace);
+    this.scope = new Scope(allors.database, allors.workspace);
   }
 
   ngOnInit(): void {
@@ -53,7 +53,7 @@ export class OrganisationEditContactComponent implements OnInit, AfterViewInit, 
         this.scope.session.reset();
 
         return this.scope
-          .load({ id: this.id })
+          .load('OrganisationContactRelationship', { id: this.id })
           .do(() => {
             this.locales = this.scope.collections.locales as Locale[];
             this.genders = this.scope.collections.genders as Enumeration[];

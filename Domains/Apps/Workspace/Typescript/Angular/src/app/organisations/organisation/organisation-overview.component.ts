@@ -25,7 +25,7 @@ export class OrganisationOverviewComponent implements OnInit, AfterViewInit, OnD
     private route: ActivatedRoute,
     public snackBar: MdSnackBar,
     public media: TdMediaService) {
-    this.scope = new Scope('Organisation', allors.database, allors.workspace);
+    this.scope = new Scope(allors.database, allors.workspace);
   }
 
   ngOnInit(): void {
@@ -37,7 +37,7 @@ export class OrganisationOverviewComponent implements OnInit, AfterViewInit, OnD
         this.scope.session.reset();
 
         return this.scope
-          .load({ id: this.id })
+          .load('Organisation', { id: this.id })
           .do(() => {
             this.organisation = this.scope.objects.organisation as Organisation;
             this.communicationEvents = this.scope.collections.communicationEvents as CommunicationEvent[];

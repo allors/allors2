@@ -27,7 +27,7 @@ export class TelecommunicationsNumberEditComponent implements OnInit, AfterViewI
     public fb: FormBuilder,
     public snackBar: MdSnackBar,
     public media: TdMediaService) {
-    this.scope = new Scope('PartyContactMechanism', allors.database, allors.workspace);
+    this.scope = new Scope(allors.database, allors.workspace);
   }
 
   ngOnInit(): void {
@@ -47,7 +47,7 @@ export class TelecommunicationsNumberEditComponent implements OnInit, AfterViewI
         this.scope.session.reset();
 
         return this.scope
-          .load({ id: this.id })
+          .load('PartyContactMechanism', { id: this.id })
           .do(() => {
             this.contactMechanismPurposes = this.scope.collections.contactMechanismPurposes as Enumeration[];
 

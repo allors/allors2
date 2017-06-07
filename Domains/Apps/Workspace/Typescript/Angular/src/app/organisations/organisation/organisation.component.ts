@@ -28,7 +28,7 @@ export class OrganisationFormComponent implements OnInit, AfterViewInit, OnDestr
     public fb: FormBuilder,
     public snackBar: MdSnackBar,
     public media: TdMediaService) {
-    this.scope = new Scope('Organisation', allors.database, allors.workspace);
+    this.scope = new Scope(allors.database, allors.workspace);
   }
 
   ngOnInit(): void {
@@ -45,7 +45,7 @@ export class OrganisationFormComponent implements OnInit, AfterViewInit, OnDestr
         this.scope.session.reset();
 
         return this.scope
-          .load({ id: this.id })
+          .load('Organisation', { id: this.id })
           .do(() => {
             this.internalOrganisation = this.scope.objects.internalOrganisation as InternalOrganisation;
             this.locales = this.scope.collections.locales as Locale[];

@@ -27,7 +27,7 @@ export class PeopleComponent implements AfterViewInit, OnDestroy {
               private snackBarService: MdSnackBar,
               public media: TdMediaService,
               allors: AllorsService) {
-    this.scope = new Scope('People', allors.database, allors.workspace);
+    this.scope = new Scope(allors.database, allors.workspace);
   }
 
   goBack(route: string): void {
@@ -66,7 +66,7 @@ export class PeopleComponent implements AfterViewInit, OnDestroy {
     this.scope.session.reset();
 
     return this.scope
-        .load({})
+        .load('People', {})
         .do(() => {
             this.people = this.scope.collections.people as Person[];
             this.filter();
