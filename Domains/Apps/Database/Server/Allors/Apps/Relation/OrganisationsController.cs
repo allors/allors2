@@ -9,7 +9,7 @@ namespace Allors.Server.Controllers
 
     using Microsoft.AspNetCore.Mvc;
 
-    public class OrganisationsController : PullController
+    public class OrganisationsController : AllorsController
     {
         public OrganisationsController(IAllorsContext allorsContext): base(allorsContext)
         {

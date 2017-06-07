@@ -6,9 +6,9 @@
 
     using Microsoft.AspNetCore.Mvc;
 
-    public class PersonController : PullController
+    public class PersonController : AllorsController
     {
-        public PersonController(IAllorsContext allorsContext): base(allorsContext)
+        public PersonController(IAllorsContext allorsContext) : base(allorsContext)
         {
         }
 

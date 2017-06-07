@@ -8,7 +8,6 @@ import { ISession } from '../../domain/base/Session';
 import { Session } from '../../domain/base/Session';
 import { ISessionObject } from '../../domain/base/SessionObject';
 import { Method } from '../../domain/base/Method';
-import { Query } from '../../domain/base/query/Query';
 
 import { SyncRequest, PullResponse, SyncResponse, PushResponse, InvokeResponse } from '../../domain/base/database';
 

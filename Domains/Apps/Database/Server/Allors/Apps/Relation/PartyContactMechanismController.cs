@@ -9,7 +9,7 @@ namespace Allors.Server.Controllers
 
     using Microsoft.AspNetCore.Mvc;
 
-    public class PartyContactMechanismController : PullController
+    public class PartyContactMechanismController : AllorsController
     {
         public PartyContactMechanismController(IAllorsContext allorsContext): base(allorsContext)
         {

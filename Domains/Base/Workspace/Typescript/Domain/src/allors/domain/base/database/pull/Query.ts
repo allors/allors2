@@ -1,4 +1,4 @@
-﻿import { ObjectType } from '../../../meta';
+﻿import { ObjectType } from '../../../../meta';
 import { Predicate } from './Predicate';
 import { TreeNode } from './TreeNode';
 import { Sort } from './Sort';
@@ -11,7 +11,7 @@ export class Query {
 
     predicate: Predicate;
 
-    fetch: TreeNode[];
+    include: TreeNode[];
 
     sort: Sort[];
 
@@ -26,7 +26,7 @@ export class Query {
         n: this.name,
         ot: this.objectType.id,
         p: this.predicate,
-        f: this.fetch,
+        i: this.include,
         s: this.sort,
         pa: this.page
       };

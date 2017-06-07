@@ -1,4 +1,4 @@
-﻿import { RoleType } from '../../../meta';
+﻿import { RoleType } from '../../../../meta';
 
 export class TreeNode {
 

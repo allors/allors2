@@ -8,7 +8,7 @@
 
     using Microsoft.AspNetCore.Mvc;
 
-    public class OrganisationController : PullController
+    public class OrganisationController : AllorsController
     {
         public OrganisationController(IAllorsContext allorsContext): base(allorsContext)
         {

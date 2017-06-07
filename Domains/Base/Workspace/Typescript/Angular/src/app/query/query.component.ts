@@ -63,8 +63,6 @@ export class QueryComponent implements OnInit, OnDestroy {
         })
       });
 
-    const json = JSON.stringify(query);
-
     this.scope.session.reset();
     this.subscription = this.scope
       .load('Pull', new PullRequest({
