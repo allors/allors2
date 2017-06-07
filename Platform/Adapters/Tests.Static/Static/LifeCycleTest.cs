@@ -3585,7 +3585,7 @@ namespace Allors.Adapters
             {
                 init();
 
-int[] runs = { 1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024, 2048 };
+                int[] runs = { 1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024, 2048 };
 
                 foreach (int run in runs)
                 {
@@ -3731,6 +3731,37 @@ int[] runs = { 1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024, 2048 };
                     string[] doesntExistIds = new[] { (1000 * 1000 * 1000).ToString() };
 
                     Assert.Equal(0, this.Session.Instantiate(doesntExistIds).Length);
+
+                    // Preserve order
+                    var c1A = C1.Create(this.Session);
+                    var c1B = C1.Create(this.Session);
+                    var c1C = C1.Create(this.Session);
+                    var c1D = C1.Create(this.Session);
+
+                    var objectIds = new[] { c1A.Id, c1B.Id, c1C.Id, c1D.Id };
+
+                    var instantiatedObjects = this.Session.Instantiate(objectIds);
+
+                    Assert.Equal(4, instantiatedObjects.Length);
+                    Assert.Equal(c1A, instantiatedObjects[0]);
+                    Assert.Equal(c1B, instantiatedObjects[1]);
+                    Assert.Equal(c1C, instantiatedObjects[2]);
+                    Assert.Equal(c1D, instantiatedObjects[3]);
+
+                    this.Session.Commit();
+
+                    using (var session2 = this.CreateSession())
+                    {
+                        c1C = (C1)session2.Instantiate(objectIds[2]);
+
+                        instantiatedObjects = session2.Instantiate(objectIds);
+
+                        Assert.Equal(4, instantiatedObjects.Length);
+                        Assert.Equal(c1A, instantiatedObjects[0]);
+                        Assert.Equal(c1B, instantiatedObjects[1]);
+                        Assert.Equal(c1C, instantiatedObjects[2]);
+                        Assert.Equal(c1D, instantiatedObjects[3]);
+                    }
                 }
             }
         }

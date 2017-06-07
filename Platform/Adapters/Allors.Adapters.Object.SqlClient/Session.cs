@@ -273,6 +273,17 @@ namespace Allors.Adapters.Object.SqlClient
             {
                 var nonCachedReferences = this.Commands.InstantiateReferences(nonCachedObjectIds);
                 references.AddRange(nonCachedReferences);
+
+                // Return objects in the same order as objectIds
+                var referenceById = references.ToDictionary(v => v.ObjectId);
+                references = new List<Reference>();
+                foreach (var objectId in objectIds)
+                {
+                    if (referenceById.TryGetValue(objectId, out Reference reference))
+                    {
+                        references.Add(reference);
+                    }
+                }
             }
 
             var allorsObjects = new IObject[references.Count];
