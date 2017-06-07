@@ -2,6 +2,7 @@
 import { Predicate } from './Predicate';
 import { TreeNode } from './TreeNode';
 import { Sort } from './Sort';
+import { Page } from './Page';
 
 export class Query {
     name: String;
@@ -14,6 +15,8 @@ export class Query {
 
     sort: Sort[];
 
+    page: Page;
+
     constructor(fields?: Partial<Query>) {
        Object.assign(this, fields);
     }
@@ -24,7 +27,8 @@ export class Query {
         ot: this.objectType.id,
         p: this.predicate,
         f: this.fetch,
-        s: this.sort
+        s: this.sort,
+        pa: this.page
       };
     }
 }

@@ -1,13 +1,12 @@
 ﻿namespace Allors.Server.Controllers
 {
-    using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
 
     using Allors.Domain;
     using Allors.Meta;
 
-using Microsoft.AspNetCore.Mvc;
+    using Microsoft.AspNetCore.Mvc;
 
     public class QueryController : PullController
     {
@@ -28,8 +27,17 @@ using Microsoft.AspNetCore.Mvc;
             foreach (var query in queries)
             {
                 Extent<Organisation> extent = this.AllorsSession.Query(query);
-                var collection = extent.ToArray();
-                response.AddCollection(query.Name, collection, query.Fetch);
+                if (query.Page != null)
+                {
+                    var page = query.Page;
+                    var paged = extent.Skip(page.Skip).Take(page.Take).ToArray();
+                    response.AddValue(query.Name + "_count", extent.Count);
+                    response.AddCollection(query.Name, paged, query.Fetch);
+                }
+                else
+                {
+                    response.AddCollection(query.Name, extent, query.Fetch);
+                }
             }
 
             return this.Ok(response.Build());

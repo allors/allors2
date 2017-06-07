@@ -23,11 +23,11 @@
 
         public object V { get; set; }
 
-        public Predicate ToPredicate(MetaPopulation metaPopulation)
+        public Predicate Parse(MetaPopulation metaPopulation)
         {
             switch (this._T)
             {
-                case "And": return new And { Predicates = this.PS.Select(v => v.ToPredicate(metaPopulation)).ToList() };
+                case "And": return new And { Predicates = this.PS.Select(v => v.Parse(metaPopulation)).ToList() };
 
                 case "Equals": return this.Equals(metaPopulation);
 

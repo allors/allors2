@@ -27,10 +27,12 @@
 
         public QueryRequestSort[] S { get; set; }
 
+        public QueryRequestPage PA { get; set; }
+
         public Query Parse(MetaPopulation metaPopulation)
         {
             var composite = (Composite)metaPopulation.Find(new Guid(this.OT));
-            var predicate = this.P?.ToPredicate(metaPopulation);
+            var predicate = this.P?.Parse(metaPopulation);
             var fetch = new Tree(composite);
             if (this.F != null)
             {
@@ -42,6 +44,8 @@
 
             var sort = this.S?.Select(v => v.Parse(metaPopulation)).ToArray();
 
+            var page = this.PA?.Parse();
+
             var query = new Query
                             {
                                 Name = this.N,
@@ -49,6 +53,7 @@
                                 Predicate = predicate,
                                 Fetch = fetch,
                                 Sort = sort,
+                                Page = page
                             };
 
             return query;

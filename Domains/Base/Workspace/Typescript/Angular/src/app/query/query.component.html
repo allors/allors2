@@ -1,6 +1,17 @@
-<p>
-  query works!
-</p>
+<form>
+  <div>
+    Skip: <input name="skip" [(ngModel)]="skip" type="number">
+  </div>
+  <div>
+    Take: <input name="take" [(ngModel)]="take" type="number">
+  </div>
+  <div>
+    Total: {{organisationCount}}
+  </div>
+  <button (click)="query()">Query</button>
+</form>
+
+<hr>
 
 <ul>
   <li *ngFor="let organisation of organisations">

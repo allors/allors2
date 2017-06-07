@@ -2,7 +2,7 @@ import { Observable, Subject, Subscription } from 'rxjs/Rx';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 
-import { Query, Equals, Like, TreeNode, Sort } from '../../allors/domain';
+import { Query, Equals, Like, TreeNode, Sort, Page } from '../../allors/domain';
 import { Scope } from '../../allors/angular';
 import { AllorsService } from '../allors.service';
 
@@ -15,6 +15,10 @@ export class QueryComponent implements OnInit, OnDestroy {
 
   organisations: Organisation[];
 
+  organisationCount: number;
+  skip = 5;
+  take = 5;
+
   private scope: Scope;
   private subscription: Subscription;
 
@@ -24,7 +28,10 @@ export class QueryComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.title.setTitle('Query');
+    this.query();
+  }
 
+  query() {
     if (this.subscription) {
       this.subscription.unsubscribe();
     }
@@ -48,15 +55,22 @@ export class QueryComponent implements OnInit, OnDestroy {
         sort: [new Sort(
           {
             roleType: organisation.roleTypeByName['Name'],
-            direction: 'Desc'
-          })]
+            direction: 'Asc'
+          })],
+        page: new Page({
+          skip: this.skip || 0,
+          take: this.take || 10
+        })
       });
+
+    const json = JSON.stringify(query);
 
     this.scope.session.reset();
     this.subscription = this.scope
       .load('Query', [query])
       .subscribe(() => {
         this.organisations = this.scope.collections.organisations as Organisation[];
+        this.organisationCount = this.scope.values.organisations_count;
       },
       (error) => {
         alert(error);

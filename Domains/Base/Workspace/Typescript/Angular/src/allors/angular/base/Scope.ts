@@ -117,6 +117,6 @@ export class Scope {
 
     Object.keys(namedObjects).map((k) => this.objects[k] = this.session.get(namedObjects[k]));
     Object.keys(namedCollections).map((k) => this.collections[k] = namedCollections[k].map((obj) => { return this.session.get(obj); }));
-    Object.keys(namedValues).map((k) => this.values[k] = this.session.get(namedValues[k]));
+    Object.keys(namedValues).map((k) => this.values[k] = namedValues[k]);
   }
 }

@@ -20,34 +20,10 @@
 
 namespace Allors.Domain.Query
 {
-    using Allors.Meta;
-
-    public class Query
+    public class Page
     {
-        public string Name { get; set; }
+        public int Skip { get; set; }
 
-        public Composite ObjectType { get; set; }
-
-        public Predicate Predicate { get; set; }
-
-        public Tree Fetch { get; set; }
-
-        public Sort[] Sort { get; set; }
-
-        public Page Page { get; set; }
-
-        internal Extent Build(ISession session)
-        {
-            var extent = session.Extent(this.ObjectType);
-
-            this.Predicate?.Build(extent.Filter);
-
-            foreach (var sort in this.Sort)
-            {
-                extent.AddSort(sort.RoleType, sort.Direction);
-            }
-
-            return extent;
-        }
+        public int Take { get; set; }
     }
 }
