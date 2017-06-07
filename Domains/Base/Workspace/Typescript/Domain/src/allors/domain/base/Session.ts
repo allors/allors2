@@ -1,9 +1,6 @@
 ﻿import { IWorkspace } from './Workspace';
 import { ISessionObject, INewSessionObject } from './SessionObject';
-import { PushRequest } from './data/requests/PushRequest';
-import { PushResponse } from './data/responses/PushResponse';
-import { SyncResponse } from './data/responses/SyncResponse';
-import { ResponseType } from './data/responses/ResponseType';
+import { PushRequest, PushResponse, SyncResponse , ResponseType } from './database';
 
 export interface ISession {
     hasChanges: boolean;

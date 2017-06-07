@@ -1,12 +1,15 @@
 ﻿import { RoleType } from '../../../meta';
 import { Predicate } from './Predicate';
 
-export class Equals extends Predicate {
+export class Equals implements Predicate {
   roleType: RoleType;
   value: any;
 
-  toJSON() {
+  constructor(fields?: Partial<Equals>) {
+    Object.assign(this, fields);
+  }
 
+  toJSON() {
     let value = null;
     if (this.roleType.objectType.isUnit) {
       value = this.value;
@@ -15,7 +18,8 @@ export class Equals extends Predicate {
     }
 
     return {
-      rt: this.roleType.name,
+      _T: 'Equals',
+      rt: this.roleType.id,
       v: value,
     };
   }
