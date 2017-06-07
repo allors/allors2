@@ -35,7 +35,7 @@ export class AuthenticationService implements CanActivate {
     const header = new Headers({ 'Content-Type': 'application/json' });
     const body = JSON.stringify({ 'Username': userName, 'Password': password });
     const options = new RequestOptions({ headers: header });
-    const url = this.environment.url + 'Authentication/SignIn';
+    const url = this.environment.url + this.environment.authenticationUrl;
 
     return this.http
       .post(url, body, options)

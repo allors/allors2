@@ -42,9 +42,12 @@ namespace Allors.Domain.Query
 
             this.Predicate?.Build(extent.Filter);
 
-            foreach (var sort in this.Sort)
+            if (this.Sort != null)
             {
-                extent.AddSort(sort.RoleType, sort.Direction);
+                foreach (var sort in this.Sort)
+                {
+                    extent.AddSort(sort.RoleType, sort.Direction);
+                }
             }
 
             return extent;

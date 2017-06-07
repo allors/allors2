@@ -7,4 +7,5 @@ export let ENVIRONMENT = new OpaqueToken('environment');
 export abstract class Environment {
     production: boolean;
     url: string;
+    authenticationUrl: string;
 }
