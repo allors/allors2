@@ -9,7 +9,16 @@ export let workspace = new Workspace(metaPopulation, constructorByName);
 export { Session } from './base/Session';
 
 // Base
-export { Query, Predicate, And, Equals, Like, TreeNode, Sort, Page } from './base/Query';
+export { PullRequest } from './base/database/pull/PullRequest';
+export { Fetch } from './base/database/pull/Fetch';
+export { Query } from './base/database/pull/Query';
+export { Predicate } from './base/database/pull/Predicate';
+export { And } from './base/database/pull/And';
+export { Equals } from './base/database/pull/Equals';
+export { Like } from './base/database/pull/Like';
+export { TreeNode } from './base/database/pull/TreeNode';
+export { Sort } from './base/database/pull/Sort';
+export { Page } from './base/database/pull/Page';
 
 export { Counter } from './generated/Counter.g';
 export { Enumeration } from './generated/Enumeration.g';

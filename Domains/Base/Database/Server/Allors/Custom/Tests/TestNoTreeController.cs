@@ -1,13 +1,13 @@
-﻿using Microsoft.AspNetCore.Mvc;
-
-namespace Allors.Server.Controllers
+﻿namespace Allors.Server.Controllers
 {
     using System.Threading.Tasks;
 
     using Allors.Domain;
     using Allors.Server;
 
-    public class TestNoTreeController : PullController
+    using Microsoft.AspNetCore.Mvc;
+
+    public class TestNoTreeController : AllorsController
     {
         public TestNoTreeController(IAllorsContext allorsContext): base(allorsContext)
         {

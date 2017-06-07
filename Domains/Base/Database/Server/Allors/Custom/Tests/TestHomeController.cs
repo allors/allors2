@@ -1,6 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
-
-namespace Allors.Server.Controllers
+﻿namespace Allors.Server.Controllers
 {
     using System.Threading.Tasks;
 
@@ -8,9 +6,11 @@ namespace Allors.Server.Controllers
     using Allors.Meta;
     using Allors.Server;
 
-    public class TestHomeController : PullController
+    using Microsoft.AspNetCore.Mvc;
+
+    public class TestHomeController : AllorsController
     {
-        public TestHomeController(IAllorsContext allorsContext): base(allorsContext)
+        public TestHomeController(IAllorsContext allorsContext) : base(allorsContext)
         {
         }
 

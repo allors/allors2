@@ -1,13 +1,13 @@
-﻿using Microsoft.AspNetCore.Mvc;
-
-namespace Allors.Server.Controllers
+﻿namespace Allors.Server.Controllers
 {
     using System;
     using System.Threading.Tasks;
 
     using Allors.Server;
 
-    public class TestPullController : PullController
+    using Microsoft.AspNetCore.Mvc;
+
+    public class TestPullController : AllorsController
     {
         public TestPullController(IAllorsContext allorsContext): base(allorsContext)
         {

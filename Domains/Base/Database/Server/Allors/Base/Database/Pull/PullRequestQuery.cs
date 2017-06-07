@@ -6,7 +6,7 @@
     using Allors.Domain.Query;
     using Allors.Meta;
 
-    public class QueryRequestQuery
+    public class PullRequestQuery
     {
         /// <summary>
         /// The name of the Query
@@ -21,24 +21,24 @@
         /// <summary>
         /// The predicate
         /// </summary>
-        public QueryRequestPredicate P { get; set; }
+        public PullRequestPredicate P { get; set; }
 
-        public QueryRequestTreeNode[] F { get; set; }
+        public PullRequestTreeNode[] I { get; set; }
 
-        public QueryRequestSort[] S { get; set; }
+        public PullRequestSort[] S { get; set; }
 
-        public QueryRequestPage PA { get; set; }
+        public PullRequestPage PA { get; set; }
 
         public Query Parse(MetaPopulation metaPopulation)
         {
             var composite = (Composite)metaPopulation.Find(new Guid(this.OT));
             var predicate = this.P?.Parse(metaPopulation);
-            var fetch = new Tree(composite);
-            if (this.F != null)
+            var include = new Tree(composite);
+            if (this.I != null)
             {
-                foreach (var treeNode in this.F)
+                foreach (var treeNode in this.I)
                 {
-                    treeNode.Parse(fetch);
+                    treeNode.Parse(include);
                 }
             }
 
@@ -51,7 +51,7 @@
                                 Name = this.N,
                                 ObjectType = composite,
                                 Predicate = predicate,
-                                Fetch = fetch,
+                                Include = include,
                                 Sort = sort,
                                 Page = page
                             };

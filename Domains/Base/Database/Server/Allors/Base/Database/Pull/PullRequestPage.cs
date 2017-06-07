@@ -2,7 +2,7 @@
 {
     using Allors.Domain.Query;
 
-    public class QueryRequestPage
+    public class PullRequestPage
     {
         /// <summary>
         /// The RoleType.

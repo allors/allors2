@@ -1,10 +1,10 @@
-import { Person } from "../generated/Person.g";
+import { Person } from '../generated/Person.g';
 
-declare module "../generated/Person.g" {
+declare module '../generated/Person.g' {
     interface Person {
-        hello();
-
         displayName;
+
+        hello();
     }
 }
 
@@ -15,7 +15,7 @@ Person.prototype.hello = function(this: Person) {
 Person.prototype.displayName = function (this: Person) {
     if (this.FirstName || this.LastName) {
         if (this.FirstName && this.LastName) {
-            return this.FirstName + " " + this.LastName;
+            return this.FirstName + ' ' + this.LastName;
         } else if (this.LastName) {
             return this.LastName;
         } else {

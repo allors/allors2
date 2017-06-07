@@ -14,6 +14,7 @@ import { LoginComponent } from './auth/login.component';
 import { HomeComponent } from './home/home.component';
 import { FormComponent } from './form/form.component';
 import { QueryComponent } from './query/query.component';
+import { FetchComponent } from './fetch/fetch.component';
 
 @NgModule({
   declarations: [
@@ -21,7 +22,8 @@ import { QueryComponent } from './query/query.component';
     LoginComponent,
     HomeComponent,
     FormComponent,
-    QueryComponent
+    QueryComponent,
+    FetchComponent
   ],
   imports: [
     BrowserModule,

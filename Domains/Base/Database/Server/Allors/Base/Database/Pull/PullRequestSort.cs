@@ -4,7 +4,7 @@
 
     using Allors.Meta;
 
-    public class QueryRequestSort
+    public class PullRequestSort
     {
         /// <summary>
         /// The RoleType.

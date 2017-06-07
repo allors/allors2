@@ -7,24 +7,29 @@ import { LoginComponent } from './auth/login.component';
 import { HomeComponent } from './home/home.component';
 import { FormComponent } from './form/form.component';
 import { QueryComponent } from './query/query.component';
+import { FetchComponent } from './fetch/fetch.component';
 
 const routes: Routes = [
-  { path: 'login', component: LoginComponent},
+  { path: 'login', component: LoginComponent },
   {
-    canActivate: [ AuthenticationService ],
+    canActivate: [AuthenticationService],
     path: '',
     children: [{
-        path: '',
-        component: HomeComponent,
-      },
-      {
-        path: 'form',
-        component: FormComponent,
-      },
-      {
-        path: 'query',
-        component: QueryComponent,
-      }]
+      path: '',
+      component: HomeComponent,
+    },
+    {
+      path: 'form',
+      component: FormComponent,
+    },
+    {
+      path: 'query',
+      component: QueryComponent,
+    },
+    {
+      path: 'fetch/:id',
+      component: FetchComponent,
+    }]
   }
 ];
 

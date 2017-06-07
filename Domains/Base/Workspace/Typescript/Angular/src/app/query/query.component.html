@@ -15,6 +15,6 @@
 
 <ul>
   <li *ngFor="let organisation of organisations">
-    {{organisation.Name}} with owner {{organisation.Owner?.displayName()}}
+    <a [routerLink]="['/fetch/' + organisation.id]">{{organisation.Name}}</a> with owner {{organisation.Owner?.displayName()}}
   </li>
 </ul>

@@ -30,7 +30,7 @@ namespace Allors.Domain.Query
 
         public Predicate Predicate { get; set; }
 
-        public Tree Fetch { get; set; }
+        public Tree Include { get; set; }
 
         public Sort[] Sort { get; set; }
 

@@ -6,18 +6,16 @@
     using Allors.Domain.Query;
     using Allors.Meta;
 
-    using Microsoft.AspNetCore.DataProtection.AuthenticatedEncryption;
-
-    public class QueryRequestPredicate
+    public class PullRequestPredicate
     {
         /// <summary>
         /// Predicate Type
         /// </summary>
         public string _T { get; set; }
 
-        public QueryRequestPredicate P { get; set; }
+        public PullRequestPredicate P { get; set; }
 
-        public QueryRequestPredicate[] PS { get; set; }
+        public PullRequestPredicate[] PS { get; set; }
 
         public string RT { get; set; }
 

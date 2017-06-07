@@ -8,7 +8,7 @@
 
     using Microsoft.AspNetCore.Mvc;
 
-    public class TestEmployeesController : PullController
+    public class TestEmployeesController : AllorsController
     {
         public TestEmployeesController(IAllorsContext allorsContext): base(allorsContext)
         {

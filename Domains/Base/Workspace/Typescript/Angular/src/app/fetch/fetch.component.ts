@@ -1,37 +1,37 @@
 import { Observable, Subject, Subscription } from 'rxjs/Rx';
 import { Component, OnInit, OnDestroy } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { Title } from '@angular/platform-browser';
 
-import { PullRequest, Query, Equals, Like, TreeNode, Sort, Page } from '../../allors/domain';
+import { PullRequest, Fetch, Query, Equals, Like, TreeNode, Sort, Page } from '../../allors/domain';
 import { Scope } from '../../allors/angular';
 import { AllorsService } from '../allors.service';
 
 import { Organisation, Person } from '../../allors/domain';
 
 @Component({
-  templateUrl: './query.component.html'
+  templateUrl: './fetch.component.html'
 })
-export class QueryComponent implements OnInit, OnDestroy {
+export class FetchComponent implements OnInit, OnDestroy {
 
-  organisations: Organisation[];
-
-  organisationCount: number;
-  skip = 5;
-  take = 5;
+  organisation: Organisation;
 
   private scope: Scope;
   private subscription: Subscription;
 
-  constructor(private title: Title, private allors: AllorsService) {
+  constructor(
+    private title: Title,
+    private route: ActivatedRoute,
+    private allors: AllorsService) {
     this.scope = new Scope(allors.database, allors.workspace);
   }
 
   ngOnInit() {
-    this.title.setTitle('Query');
-    this.query();
+    this.title.setTitle('Fetch');
+    this.fetch();
   }
 
-  query() {
+  fetch() {
     if (this.subscription) {
       this.subscription.unsubscribe();
     }
@@ -39,40 +39,25 @@ export class QueryComponent implements OnInit, OnDestroy {
     const organisation = this.allors.workspace.metaPopulation.objectTypeByName['Organisation'];
     const person = this.allors.workspace.metaPopulation.objectTypeByName['Person'];
 
-    const query = new Query(
+    const id = this.route.snapshot.paramMap.get('id');
+
+    const fetch = new Fetch(
       {
-        name: 'organisations',
-        objectType: organisation,
-        predicate: new Like(
-          {
-            roleType: organisation.roleTypeByName['Name'],
-            value: 'Org%'
-          }),
+        name: 'organisation',
+        id: id,
         include: [new TreeNode(
           {
             roleType: organisation.roleTypeByName['Owner'],
           })],
-        sort: [new Sort(
-          {
-            roleType: organisation.roleTypeByName['Name'],
-            direction: 'Asc'
-          })],
-        page: new Page({
-          skip: this.skip || 0,
-          take: this.take || 10
-        })
       });
-
-    const json = JSON.stringify(query);
 
     this.scope.session.reset();
     this.subscription = this.scope
       .load('Pull', new PullRequest({
-        query: [ query ],
+        fetch: [fetch],
       }))
       .subscribe(() => {
-        this.organisations = this.scope.collections.organisations as Organisation[];
-        this.organisationCount = this.scope.values.organisations_count;
+        this.organisation = this.scope.objects.organisation as Organisation;
       },
       (error) => {
         alert(error);

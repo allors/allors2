@@ -6,6 +6,7 @@ export { ResponseType } from './ResponseType';
 export { InvokeRequest } from './invoke/InvokeRequest';
 export { InvokeResponse } from './invoke/InvokeResponse';
 
+export { PullRequest } from './pull/PullRequest';
 export { PullResponse } from './pull/PullResponse';
 
 export { PushRequest, PushRequestNewObject, PushRequestObject, PushRequestRole } from './push/PushRequest';

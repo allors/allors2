@@ -4,7 +4,7 @@
 
     using Allors.Meta;
 
-    public class QueryRequestTreeNode
+    public class PullRequestTreeNode
     {
         /// <summary>
         /// The RoleType.
@@ -14,7 +14,7 @@
         /// <summary>
         /// The TreeNodes
         /// </summary>
-        public QueryRequestTreeNode N { get; set; }
+        public PullRequestTreeNode N { get; set; }
 
         public void Parse(Tree tree)
         {

@@ -1,6 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
-
-namespace Allors.Server.Controllers
+﻿namespace Allors.Server.Controllers
 {
     using System;
     using System.Threading.Tasks;
@@ -9,7 +7,9 @@ namespace Allors.Server.Controllers
     using Allors.Meta;
     using Allors.Server;
 
-    public class TestShareHoldersController : PullController
+    using Microsoft.AspNetCore.Mvc;
+
+    public class TestShareHoldersController : AllorsController
     {
         public TestShareHoldersController(IAllorsContext allorsContext): base(allorsContext)
         {
