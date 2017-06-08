@@ -2,6 +2,7 @@ import { Data, Interface, Class } from './Data';
 import { MetaObject } from './MetaObject';
 import { ObjectType, Kind } from './ObjectType';
 import { RoleType, ExclusiveRoleType, ConcreteRoleType } from './RoleType';
+import { AssociationType } from './AssociationType';
 import { MethodType, ExclusiveMethodType, ConcreteMethodType } from './MethodType';
 
 export class Population {
@@ -10,6 +11,30 @@ export class Population {
   readonly objectTypeByName: { [name: string]: ObjectType; } = {};
 
   readonly metaObjectById: { [id: string]: MetaObject; } = {};
+
+  createMetaDomain(): any {
+    const metaDomain = {};
+    Object.keys(this.objectTypeByName)
+      .forEach((objectTypeName) => {
+        const objectType = this.objectTypeByName[objectTypeName];
+        const metaObjectType = {
+          ObjectType: objectType
+        };
+        metaDomain[objectTypeName] = metaObjectType;
+
+        Object.keys(objectType.roleTypeByName)
+          .forEach((roleTypeName) => {
+            const roleType = objectType.roleTypeByName[roleTypeName];
+            metaObjectType[roleTypeName] = roleType;
+          });
+
+        objectType.associationTypes.forEach((associationType) => {
+          metaObjectType[associationType.name] = associationType;
+        });
+      });
+
+    return metaDomain;
+  }
 
   baseInit(this: Population, data: Data) {
 
@@ -83,6 +108,16 @@ export class Population {
           metaRoleType.isRequired = dataRoleType.isRequired;
           metaObjectType.exclusiveRoleTypes.push(metaRoleType);
           this.metaObjectById[metaRoleType.id] = metaRoleType;
+        });
+      }
+
+      if (dataObjectType.associationTypes) {
+        dataObjectType.associationTypes.forEach(dataAssociationType => {
+          const metaAssociationType = new AssociationType();
+          metaAssociationType.id = dataAssociationType.id;
+          metaAssociationType.name = dataAssociationType.name;
+          metaObjectType.associationTypes.push(metaAssociationType);
+          this.metaObjectById[metaAssociationType.id] = metaAssociationType;
         });
       }
 

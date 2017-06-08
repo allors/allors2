@@ -14,14 +14,21 @@
         /// <summary>
         /// The TreeNodes
         /// </summary>
-        public PullRequestTreeNode N { get; set; }
+        public PullRequestTreeNode[] N { get; set; }
 
-        public void Parse(Tree tree)
+        public void Parse(MetaPopulation metaPopulation, out TreeNode treeNode)
         {
-            var metaPopulation = tree.Composite.MetaPopulation;
             var roleType = (RoleType)metaPopulation.Find(new Guid(this.RT));
+            treeNode = new TreeNode(roleType);
 
-            tree.Add(roleType);
+            if (this.N != null)
+            {
+                foreach (var n in this.N)
+                {
+                    n.Parse(metaPopulation, out TreeNode childTreeNode);
+                    treeNode.Nodes.Add(childTreeNode);
+                }
+            }
         }
     }
 }

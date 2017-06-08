@@ -33,12 +33,15 @@
         {
             var composite = (Composite)metaPopulation.Find(new Guid(this.OT));
             var predicate = this.P?.Parse(metaPopulation);
-            var include = new Tree(composite);
+
+            Tree include = null;
             if (this.I != null)
             {
-                foreach (var treeNode in this.I)
+                include = new Tree(composite);
+                foreach (var i in this.I)
                 {
-                    treeNode.Parse(include);
+                    i.Parse(metaPopulation, out TreeNode treeNode);
+                    include.Nodes.Add(treeNode);
                 }
             }
 

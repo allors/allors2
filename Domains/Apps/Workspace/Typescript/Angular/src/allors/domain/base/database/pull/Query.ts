@@ -1,34 +1,38 @@
-﻿import { ObjectType } from '../../../../meta';
+﻿import { ObjectType, ObjectTyped } from '../../../../meta';
 import { Predicate } from './Predicate';
 import { TreeNode } from './TreeNode';
 import { Sort } from './Sort';
 import { Page } from './Page';
 
 export class Query {
-    name: String;
+  name: String;
 
-    objectType: ObjectType;
+  objectType: ObjectType | ObjectTyped;
 
-    predicate: Predicate;
+  predicate: Predicate;
 
-    include: TreeNode[];
+  include: TreeNode[];
 
-    sort: Sort[];
+  sort: Sort[];
 
-    page: Page;
+  page: Page;
 
-    constructor(fields?: Partial<Query>) {
-       Object.assign(this, fields);
+  constructor(fields?: Partial<Query>) {
+    Object.assign(this, fields);
+  }
+
+  toJSON() {
+    function isObjectTyped(objectType: ObjectType | ObjectTyped): objectType is ObjectTyped {
+      return (<ObjectTyped>objectType).ObjectType !== undefined;
     }
 
-    toJSON() {
-      return {
-        n: this.name,
-        ot: this.objectType.id,
-        p: this.predicate,
-        i: this.include,
-        s: this.sort,
-        pa: this.page
-      };
-    }
+    return {
+      n: this.name,
+      ot: isObjectTyped(this.objectType) ? this.objectType.ObjectType.id : this.objectType.id,
+      p: this.predicate,
+      i: this.include,
+      s: this.sort,
+      pa: this.page
+    };
+  }
 }

@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { Title } from '@angular/platform-browser';
 import { MdSnackBar } from '@angular/material';
 
+import { PullRequest, Query, Equals, Like, TreeNode, Sort, Page } from '../../allors/domain';
 import { Scope } from '../../allors/angular/base/Scope';
 import { AllorsService } from '../allors.service';
 
@@ -27,11 +28,11 @@ export class OrganisationsComponent implements AfterViewInit, OnDestroy {
     private dialogService: TdDialogService,
     private snackBarService: MdSnackBar,
     public media: TdMediaService,
-    allors: AllorsService) {
+    private allors: AllorsService) {
     this.scope = new Scope(allors.database, allors.workspace);
   }
 
-  goBack(route: string): void {
+  goBack(): void {
     this.router.navigate(['/']);
   }
 
@@ -48,23 +49,42 @@ export class OrganisationsComponent implements AfterViewInit, OnDestroy {
 
   search(criteria: string) {
 
-    if (!criteria || criteria.length <= 2) {
-      this.data = undefined;
-      return;
-    }
-
     if (this.subscription) {
       this.subscription.unsubscribe();
     }
 
+    const m = this.allors.meta;
+
+    const query = [new Query(
+      {
+        name: 'organisations',
+        objectType: m.Organisation,
+        include: [
+          new TreeNode({
+            roleType: m.Organisation.GeneralCorrespondence,
+            nodes: [
+              new TreeNode({
+                roleType: m.PostalAddress.PostalBoundary,
+                nodes: [
+                  new TreeNode({roleType: m.PostalBoundary.Country})
+                ]
+              })
+            ]
+          })
+        ]
+      })];
+
     this.scope.session.reset();
 
-    return this.scope
-      .load('Organisations', { criteria: criteria })
-      .do(() => {
+    this.subscription = this.scope
+      .load('Pull', new PullRequest({ query: query }))
+      .subscribe(() => {
         this.data = this.scope.collections.organisations as Organisation[];
-      })
-      .subscribe();
+      },
+      error => {
+        console.log(error);
+        this.goBack();
+      });
   }
 
   delete(organisation: Organisation): void {

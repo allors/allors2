@@ -1,5 +1,6 @@
 ﻿namespace Allors.Server.Controllers
 {
+    using System;
     using System.Linq;
     using System.Threading.Tasks;
 
@@ -17,58 +18,65 @@
         [HttpPost]
         public async Task<IActionResult> Pull([FromBody] PullRequest req)
         {
-            await this.OnInit();
-
-            var response = new PullResponseBuilder(this.AllorsUser);
-
-            if (req.Q != null)
+            try
             {
-                var metaPopulation = (MetaPopulation)this.AllorsSession.Database.MetaPopulation;
-                var queries = req.Q.Select(v => v.Parse(metaPopulation)).ToArray();
-                foreach (var query in queries)
-                {
-                    Extent extent = this.AllorsSession.Query(query);
-                    if (query.Page != null)
-                    {
-                        var page = query.Page;
-                        var paged = extent.ToArray().Skip(page.Skip).Take(page.Take).ToArray();
-                        response.AddValue(query.Name + "_count", extent.Count);
-                        response.AddCollection(query.Name, paged, query.Include);
-                    }
-                    else
-                    {
-                        response.AddCollection(query.Name, extent.ToArray(), query.Include);
-                    }
-                }
-            }
+                await this.OnInit();
 
-            if (req.F != null)
-            {
-                foreach (var fetch in req.F)
-                {
-                    fetch.Parse(this.AllorsSession, out IObject @object, out Path path, out Tree include);
+                var response = new PullResponseBuilder(this.AllorsUser);
 
-                    if (path != null)
+                if (req.Q != null)
+                {
+                    var metaPopulation = (MetaPopulation)this.AllorsSession.Database.MetaPopulation;
+                    var queries = req.Q.Select(v => v.Parse(metaPopulation)).ToArray();
+                    foreach (var query in queries)
                     {
-                        var acls = new AccessControlListCache(this.AllorsUser);
-                        var result = path.Get(@object, acls);
-                        if (result is IObject)
+                        Extent extent = this.AllorsSession.Query(query);
+                        if (query.Page != null)
                         {
-                            response.AddObject(fetch.Name, (IObject)result, include);
+                            var page = query.Page;
+                            var paged = extent.ToArray().Skip(page.Skip).Take(page.Take).ToArray();
+                            response.AddValue(query.Name + "_count", extent.Count);
+                            response.AddCollection(query.Name, paged, query.Include);
                         }
                         else
                         {
-                            response.AddCollection(fetch.Name, ((Extent)result).ToArray(), include);
+                            response.AddCollection(query.Name, extent.ToArray(), query.Include);
                         }
                     }
-                    else
+                }
+
+                if (req.F != null)
+                {
+                    foreach (var fetch in req.F)
                     {
-                        response.AddObject(fetch.Name, @object, include);
+                        fetch.Parse(this.AllorsSession, out IObject @object, out Path path, out Tree include);
+
+                        if (path != null)
+                        {
+                            var acls = new AccessControlListCache(this.AllorsUser);
+                            var result = path.Get(@object, acls);
+                            if (result is IObject)
+                            {
+                                response.AddObject(fetch.Name, (IObject)result, include);
+                            }
+                            else
+                            {
+                                response.AddCollection(fetch.Name, ((Extent)result).ToArray(), include);
+                            }
+                        }
+                        else
+                        {
+                            response.AddObject(fetch.Name, @object, include);
+                        }
                     }
                 }
-            }
 
-            return this.Ok(response.Build());
+                return this.Ok(response.Build());
+            }
+            catch (Exception e)
+            {
+                return this.BadRequest(e.Message);
+            }
         }
     }
 }

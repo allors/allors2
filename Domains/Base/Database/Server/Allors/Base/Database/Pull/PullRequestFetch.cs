@@ -28,7 +28,6 @@
             where T : IObject
         {
             @object = (T)session.Instantiate(this.Id);
-            var composite = @object.Strategy.Class;
 
             path = null;
             if (this.Path != null)
@@ -37,15 +36,26 @@
                 this.Path.Parse(path, session.Database.MetaPopulation);
             }
 
-            include = new Tree(composite);
+            include = null;
             if (this.Include != null)
             {
-                foreach (var treeNode in this.Include)
+                if (path == null)
                 {
-                    treeNode.Parse(include);
+                    var composite = @object.Strategy.Class;
+                    include = new Tree(composite);
                 }
-            }
-            
+                else
+                {
+                    include = new Tree((IComposite)path.End.GetObjectType());
+                }
+
+                var metaPopulation = (MetaPopulation)@object.Strategy.Session.Database.MetaPopulation;
+                foreach (var i in this.Include)
+                {
+                    i.Parse(metaPopulation, out TreeNode treeNode);
+                    include.Nodes.Add(treeNode);
+                }
+            }            
         }
     }
 }
