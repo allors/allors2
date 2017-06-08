@@ -3,7 +3,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Title } from '@angular/platform-browser';
 
-import { PullRequest, Fetch, Query, Equals, Like, TreeNode, Sort, Page } from '../../allors/domain';
+import { PullRequest, Fetch, Path, Query, Equals, Like, TreeNode, Sort, Page } from '../../allors/domain';
 import { Scope } from '../../allors/angular';
 import { AllorsService } from '../allors.service';
 
@@ -15,6 +15,7 @@ import { Organisation, Person } from '../../allors/domain';
 export class FetchComponent implements OnInit, OnDestroy {
 
   organisation: Organisation;
+  organisations: Organisation[];
 
   private scope: Scope;
   private subscription: Subscription;
@@ -40,7 +41,7 @@ export class FetchComponent implements OnInit, OnDestroy {
 
     const id = this.route.snapshot.paramMap.get('id');
 
-    const fetch = new Fetch(
+    const fetch = [new Fetch(
       {
         name: 'organisation',
         id: id,
@@ -48,15 +49,30 @@ export class FetchComponent implements OnInit, OnDestroy {
           {
             roleType: m.Organisation.Owner,
           })],
-      });
+      }),
+      new Fetch({
+        name: 'organisations',
+        id: id,
+        path: new Path({
+          step: m.Organisation.Owner,
+          next: new Path({
+            step: m.Person.OrganisationsWhereOwner
+          })
+        }),
+        include: [new TreeNode(
+          {
+            roleType: m.Organisation.Owner,
+          })],
+      })];
 
     this.scope.session.reset();
     this.subscription = this.scope
       .load('Pull', new PullRequest({
-        fetch: [fetch],
+        fetch: fetch,
       }))
       .subscribe(() => {
         this.organisation = this.scope.objects.organisation as Organisation;
+        this.organisations = this.scope.collections.organisations as Organisation[];
       },
       (error) => {
         alert(error);

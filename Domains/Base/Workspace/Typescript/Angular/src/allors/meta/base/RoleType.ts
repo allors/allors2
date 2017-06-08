@@ -1,7 +1,7 @@
-import { Object } from './Object';
+import { MetaObject } from './MetaObject';
 import { ObjectType } from './ObjectType';
 
-export interface RoleType extends Object {
+export interface RoleType extends MetaObject {
     id: string;
     name: string;
     objectType: ObjectType;

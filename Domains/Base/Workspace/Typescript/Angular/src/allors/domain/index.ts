@@ -11,6 +11,7 @@ export { Session } from './base/Session';
 // Base
 export { PullRequest } from './base/database/pull/PullRequest';
 export { Fetch } from './base/database/pull/Fetch';
+export { Path } from './base/database/pull/Path';
 export { Query } from './base/database/pull/Query';
 export { Predicate } from './base/database/pull/Predicate';
 export { And } from './base/database/pull/And';

@@ -9,6 +9,7 @@ export interface Interface {
     id: string;
     interfaces?: string[];
     exclusiveRoleTypes?: RoleType[];
+    associationTypes?: AssociationType[];
     exclusiveMethodTypes?: MethodType[];
 }
 
@@ -18,6 +19,7 @@ export interface Class {
     interfaces?: string[];
     exclusiveRoleTypes?: RoleType[];
     concreteRoleTypes?: ConcreteRoleType[];
+    associationTypes?: AssociationType[];
     exclusiveMethodTypes?: MethodType[];
     concreteMethodTypes?: ConcreteMethodType[];
 }
@@ -34,6 +36,11 @@ export interface RoleType {
 export interface ConcreteRoleType {
     id: string;
     isRequired: boolean;
+}
+
+export interface AssociationType {
+    name: string;
+    id: string;
 }
 
 export interface MethodType {

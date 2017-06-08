@@ -1,10 +1,13 @@
 ﻿import { WorkspaceObject } from '../../WorkspaceObject';
+import { Path } from './Path';
 import { TreeNode } from './TreeNode';
 
 export class Fetch {
     name: string;
 
     id: string;
+
+    path: Path;
 
     include: TreeNode[];
 
@@ -16,6 +19,7 @@ export class Fetch {
       return {
         name: this.name,
         id: this.id,
+        path: this.path,
         include: this.include,
       };
     }

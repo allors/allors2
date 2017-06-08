@@ -46,8 +46,25 @@
             {
                 foreach (var fetch in req.F)
                 {
-                    fetch.Parse(this.AllorsSession, out IObject @object, out Tree include);
-                    response.AddObject(fetch.Name, @object, include);
+                    fetch.Parse(this.AllorsSession, out IObject @object, out Path path, out Tree include);
+
+                    if (path != null)
+                    {
+                        var acls = new AccessControlListCache(this.AllorsUser);
+                        var result = path.Get(@object, acls);
+                        if (result is IObject)
+                        {
+                            response.AddObject(fetch.Name, (IObject)result, include);
+                        }
+                        else
+                        {
+                            response.AddCollection(fetch.Name, ((Extent)result).ToArray(), include);
+                        }
+                    }
+                    else
+                    {
+                        response.AddObject(fetch.Name, @object, include);
+                    }
                 }
             }
 

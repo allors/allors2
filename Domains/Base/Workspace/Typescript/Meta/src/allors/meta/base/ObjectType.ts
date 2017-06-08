@@ -1,5 +1,6 @@
-import { Object } from './Object';
+import { MetaObject } from './MetaObject';
 import { RoleType, ExclusiveRoleType, ConcreteRoleType } from './RoleType';
+import { AssociationType } from './AssociationType';
 import { MethodType, ExclusiveMethodType, ConcreteMethodType } from './MethodType';
 
 export enum Kind {
@@ -8,7 +9,7 @@ export enum Kind {
   interface
 }
 
-export class ObjectType implements Object {
+export class ObjectType implements MetaObject {
   id: string;
   name: string;
   kind: Kind;
@@ -18,6 +19,8 @@ export class ObjectType implements Object {
   roleTypeByName: { [name: string]: RoleType; } = {};
   exclusiveRoleTypes: ExclusiveRoleType[] = [];
   concreteRoleTypes: ConcreteRoleType[] = [];
+
+  associationTypes: AssociationType[] = [];
 
   methodTypeByName: { [name: string]: MethodType; } = {};
   exclusiveMethodTypes: ExclusiveMethodType[] = [];

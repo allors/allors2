@@ -523,6 +523,15 @@ namespace Allors.Meta
             }
         }
 
+        public IEnumerable<AssociationType> WorkspaceAssociationTypes
+        {
+            get
+            {
+                this.MetaPopulation.Derive();
+                return this.AssociationTypes.Where(m => m.Workspace);
+            }
+        }
+
         public IEnumerable<AssociationType> WorkspaceExclusiveAssociationTypes
         {
             get
