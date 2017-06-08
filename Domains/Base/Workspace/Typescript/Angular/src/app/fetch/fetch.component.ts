@@ -36,8 +36,7 @@ export class FetchComponent implements OnInit, OnDestroy {
       this.subscription.unsubscribe();
     }
 
-    const organisation = this.allors.workspace.metaPopulation.objectTypeByName['Organisation'];
-    const person = this.allors.workspace.metaPopulation.objectTypeByName['Person'];
+    const m = this.allors.meta;
 
     const id = this.route.snapshot.paramMap.get('id');
 
@@ -47,7 +46,7 @@ export class FetchComponent implements OnInit, OnDestroy {
         id: id,
         include: [new TreeNode(
           {
-            roleType: organisation.roleTypeByName['Owner'],
+            roleType: m.Organisation.Owner,
           })],
       });
 

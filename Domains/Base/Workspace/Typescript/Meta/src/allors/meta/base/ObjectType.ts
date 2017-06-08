@@ -1,4 +1,4 @@
-import { MetaObject } from './MetaObject';
+import { Object } from './Object';
 import { RoleType, ExclusiveRoleType, ConcreteRoleType } from './RoleType';
 import { MethodType, ExclusiveMethodType, ConcreteMethodType } from './MethodType';
 
@@ -8,7 +8,7 @@ export enum Kind {
   interface
 }
 
-export class ObjectType implements MetaObject {
+export class ObjectType implements Object {
   id: string;
   name: string;
   kind: Kind;

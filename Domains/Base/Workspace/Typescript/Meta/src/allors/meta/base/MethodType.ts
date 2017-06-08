@@ -1,6 +1,6 @@
-import { MetaObject } from './MetaObject';
+import { Object } from './Object';
 
-export interface MethodType extends MetaObject {
+export interface MethodType extends Object {
     id: string;
     name: string;
 }

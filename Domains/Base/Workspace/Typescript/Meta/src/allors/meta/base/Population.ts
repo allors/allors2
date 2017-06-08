@@ -1,5 +1,5 @@
 import { Data, Interface, Class } from './Data';
-import { MetaObject } from './MetaObject';
+import { Object } from './Object';
 import { ObjectType, Kind } from './ObjectType';
 import { RoleType, ExclusiveRoleType, ConcreteRoleType } from './RoleType';
 import { MethodType, ExclusiveMethodType, ConcreteMethodType } from './MethodType';
@@ -9,7 +9,26 @@ export class Population {
 
   readonly objectTypeByName: { [name: string]: ObjectType; } = {};
 
-  readonly metaObjectById: { [id: string]: MetaObject; } = {};
+  readonly objectById: { [id: string]: Object; } = {};
+
+  createMetaDomain(): any {
+    const metaDomain = {};
+    Object.keys(this.objectTypeByName)
+      .forEach((objectTypeName) => {
+        const objectType = this.objectTypeByName[objectTypeName];
+        const metaObjectType = {
+          ObjectType: objectType
+        };
+        metaDomain[objectTypeName] = metaObjectType;
+        Object.keys(objectType.roleTypeByName)
+          .forEach((roleTypeName) => {
+            const roleType = objectType.roleTypeByName[roleTypeName];
+            metaObjectType[roleTypeName] = roleType;
+          });
+      });
+
+    return metaDomain;
+  }
 
   baseInit(this: Population, data: Data) {
 
@@ -39,7 +58,7 @@ export class Population {
         metaUnit.name = name;
         metaUnit.kind = Kind.unit;
         this.objectTypeByName[metaUnit.name] = metaUnit;
-        this.metaObjectById[metaUnit.id] = metaUnit;
+        this.objectById[metaUnit.id] = metaUnit;
       });
 
     // Interfaces
@@ -49,7 +68,7 @@ export class Population {
       metaInterface.name = dataInterface.name;
       metaInterface.kind = Kind.interface;
       this.objectTypeByName[metaInterface.name] = metaInterface;
-      this.metaObjectById[metaInterface.id] = metaInterface;
+      this.objectById[metaInterface.id] = metaInterface;
     });
 
     // Classes
@@ -59,7 +78,7 @@ export class Population {
       metaClass.name = dataClass.name;
       metaClass.kind = Kind.class;
       this.objectTypeByName[metaClass.name] = metaClass;
-      this.metaObjectById[metaClass.id] = metaClass;
+      this.objectById[metaClass.id] = metaClass;
     });
 
     const dataObjectTypes = [].concat(data.interfaces).concat(data.classes);
@@ -82,7 +101,7 @@ export class Population {
           metaRoleType.isOne = dataRoleType.isOne;
           metaRoleType.isRequired = dataRoleType.isRequired;
           metaObjectType.exclusiveRoleTypes.push(metaRoleType);
-          this.metaObjectById[metaRoleType.id] = metaRoleType;
+          this.objectById[metaRoleType.id] = metaRoleType;
         });
       }
 
@@ -92,7 +111,7 @@ export class Population {
           metaMethodType.id = dataMethodType.id;
           metaMethodType.name = dataMethodType.name;
           metaObjectType.exclusiveMethodTypes.push(metaMethodType);
-          this.metaObjectById[metaMethodType.id] = metaMethodType;
+          this.objectById[metaMethodType.id] = metaMethodType;
         });
       }
     });
@@ -106,7 +125,7 @@ export class Population {
 
       if (dataClass.concreteRoleTypes) {
         dataClass.concreteRoleTypes.forEach(dataRoleType => {
-          const metaRoleType: RoleType = this.metaObjectById[dataRoleType.id] as RoleType;
+          const metaRoleType: RoleType = this.objectById[dataRoleType.id] as RoleType;
           const metaConcreteRoleType: ConcreteRoleType = new ConcreteRoleType();
           metaConcreteRoleType.roleType = metaRoleType;
           metaConcreteRoleType.isRequired = dataRoleType.isRequired;
@@ -116,7 +135,7 @@ export class Population {
 
       if (dataClass.concreteMethodTypes) {
         dataClass.concreteMethodTypes.forEach(dataMethodType => {
-          const metaMethodType: MethodType = this.metaObjectById[dataMethodType.id] as MethodType;
+          const metaMethodType: MethodType = this.objectById[dataMethodType.id] as MethodType;
           const metaConcreteMethodType: ConcreteMethodType = new ConcreteMethodType();
           metaConcreteMethodType.methodType = metaMethodType;
           metaObjectType.concreteMethodTypes.push(metaConcreteMethodType);

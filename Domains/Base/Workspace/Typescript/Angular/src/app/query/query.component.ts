@@ -36,25 +36,24 @@ export class QueryComponent implements OnInit, OnDestroy {
       this.subscription.unsubscribe();
     }
 
-    const organisation = this.allors.workspace.metaPopulation.objectTypeByName['Organisation'];
-    const person = this.allors.workspace.metaPopulation.objectTypeByName['Person'];
+    const m = this.allors.meta;
 
     const query = new Query(
       {
         name: 'organisations',
-        objectType: organisation,
+        objectType: m.Organisation,
         predicate: new Like(
           {
-            roleType: organisation.roleTypeByName['Name'],
+            roleType: m.Organisation.Name,
             value: 'Org%'
           }),
         include: [new TreeNode(
           {
-            roleType: organisation.roleTypeByName['Owner'],
+            roleType: m.Organisation.Owner,
           })],
         sort: [new Sort(
           {
-            roleType: organisation.roleTypeByName['Name'],
+            roleType: m.Organisation.Name,
             direction: 'Asc'
           })],
         page: new Page({
@@ -66,7 +65,7 @@ export class QueryComponent implements OnInit, OnDestroy {
     this.scope.session.reset();
     this.subscription = this.scope
       .load('Pull', new PullRequest({
-        query: [ query ],
+        query: [query],
       }))
       .subscribe(() => {
         this.organisations = this.scope.collections.organisations as Organisation[];
