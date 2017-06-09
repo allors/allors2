@@ -1,0 +1,29 @@
+<md-card tdMediaToggle="gt-xs" [mediaClasses]="['push']">
+  <form [formGroup]="form" (ngSubmit)="save($event)">
+
+    <md-card-title>Organisation</md-card-title>
+
+    <md-divider></md-divider>
+    <md-card-content class="push-bottom-none">
+
+      <div layout="row">
+        <md-input-container flex>
+          <input mdInput formControlName="Name" type="text" placeholder="Name">
+        </md-input-container>
+      </div>
+
+      <div layout="row" class="push-top">
+        <select flex="50" placeholder="Locale" formControlName="Locale">
+              <option *ngFor="let locale of locales" [value]="locale">{{ locale.Name }}</option>
+            </select>
+      </div>
+    </md-card-content>
+
+    <md-divider></md-divider>
+    <md-card-actions>
+      <button md-button color="primary" type="submit">SAVE</button>
+      <button md-button [routerLink]="['/organisations/' + id + '/overview']">CANCEL</button>
+    </md-card-actions>
+
+  </form>
+</md-card>

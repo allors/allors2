@@ -1,0 +1,65 @@
+<md-card tdMediaToggle="gt-xs" [mediaClasses]="['push']">
+  <form [formGroup]="form" (ngSubmit)="save($event)">
+
+    <md-card-title>Organisation Contact Form</md-card-title>
+
+    <md-divider></md-divider>
+    <md-card-content class="push-bottom-none">
+
+      <div layout="row">
+        <select flex="50" placeholder="Contact kind" formControlName="OrganisationContactKind">
+              <option *ngFor="let contactKind of organisationContactKinds" [value]="contactKind">{{ contactKind.Description }}</option>
+            </select>
+      </div>
+
+      <div layout="row" class="push-top">
+        <md-input-container flex>
+          <input mdInput formControlName="FirstName" type="text" placeholder="Fist name">
+        </md-input-container>
+      </div>
+
+      <div layout="row" class="push-top">
+        <md-input-container flex>
+          <input mdInput formControlName="MiddleName" type="text" placeholder="Middle name">
+        </md-input-container>
+      </div>
+
+      <div layout="row" class="push-top">
+        <md-input-container flex>
+          <input mdInput formControlName="LastName" type="text" placeholder="Last name">
+        </md-input-container>
+      </div>
+
+      <div layout="row" class="push-top">
+        <md-input-container flex>
+          <input mdInput formControlName="Function" type="text" placeholder="function">
+        </md-input-container>
+      </div>
+
+      <div layout="row" class="push-top">
+        <select flex="50" placeholder="Gender" formControlName="Gender">
+              <option *ngFor="let gender of genders" [value]="gender">{{ gender.Name }}</option>
+            </select>
+      </div>
+
+      <div layout="row" class="push-top">
+        <select flex="50" placeholder="Salutation" formControlName="Salutation">
+              <option *ngFor="let salutation of salutations" [value]="salutation">{{ salutation.Name }}</option>
+            </select>
+      </div>
+
+      <div layout="row" class="push-top">
+        <select flex="50" placeholder="Locale" formControlName="Locale">
+              <option *ngFor="let locale of locales" [value]="locale">{{ locale.Name }}</option>
+            </select>
+      </div>
+    </md-card-content>
+
+    <md-divider></md-divider>
+    <md-card-actions>
+      <button md-button color="primary" type="submit">SAVE</button>
+      <button md-button [routerLink]="['/organisations/' + id + '/overview']">CANCEL</button>
+    </md-card-actions>
+
+  </form>
+</md-card>

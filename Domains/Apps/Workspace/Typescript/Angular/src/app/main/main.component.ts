@@ -13,14 +13,10 @@ export class MainComponent {
       route: '/',
       icon: 'dashboard',
     }, {
-      title: 'Manage People',
-      route: '/people',
+      title: 'Relations',
+      route: '/relations',
       icon: 'people',
-    }, {
-      title: 'Manage Organisations',
-      route: '/organisations',
-      icon: 'business',
-    },
+    }
   ];
 
   constructor(private _router: Router) {}
