@@ -53,10 +53,11 @@ export class OrganisationFormComponent implements OnInit, AfterViewInit, OnDestr
             if (this.id) {
               const organisation: Organisation = this.scope.objects.organisation as Organisation;
               this.form.controls.Name.patchValue(organisation.Name);
-              this.form.controls.Locale.patchValue(organisation.Locale);
+              this.form.controls.Locale.patchValue(organisation.Locale ? organisation.Locale.id : undefined);
             }
             else {
-              this.form.controls.Locale.patchValue(this.locales);
+              this.form.controls.Name.patchValue(undefined);
+              this.form.controls.Locale.patchValue(undefined);
             }
 
           })
@@ -96,7 +97,7 @@ export class OrganisationFormComponent implements OnInit, AfterViewInit, OnDestr
     }
 
     organisation.Name = this.form.controls.Name.value;
-    organisation.Locale = this.form.controls.Locale.value;
+    organisation.Locale = this.scope.session.get(this.form.controls.Locale.value) as Locale;
 
     this.scope
       .save()

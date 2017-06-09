@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
+    "postinstall": "npm run sync",
     "sync": "npm run sync-base",
     "sync-base": "npm run sync-base-meta && npm run sync-base-domain && npm run sync-base-angular",
     "sync-base-meta": "sync-files ../../../../Base/Workspace/Typescript/Meta/src/allors/meta/base src/allors/meta/base",

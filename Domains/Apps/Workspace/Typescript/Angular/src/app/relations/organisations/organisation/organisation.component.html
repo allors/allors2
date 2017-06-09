@@ -13,10 +13,12 @@
       </div>
 
       <div layout="row" class="push-top">
-        <select flex="50" placeholder="Locale" formControlName="Locale">
-              <option *ngFor="let locale of locales" [value]="locale">{{ locale.Name }}</option>
-            </select>
+        <md-select flex="50" placeholder="Locale" formControlName="Locale">
+          <md-option>Select a Locale</md-option>
+          <md-option *ngFor="let locale of locales" [value]="locale.id">{{ locale.Name }}</md-option>
+        </md-select>
       </div>
+
     </md-card-content>
 
     <md-divider></md-divider>
