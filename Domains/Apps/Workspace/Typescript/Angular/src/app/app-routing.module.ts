@@ -44,7 +44,8 @@ const routes: Routes = [
             ]
           },
           {
-            path: 'organisations', children: [
+            path: 'organisations',
+            children: [
               { path: '', component: OrganisationsComponent },
               { path: 'add', component: OrganisationFormComponent },
               { path: ':id/edit', component: OrganisationFormComponent },

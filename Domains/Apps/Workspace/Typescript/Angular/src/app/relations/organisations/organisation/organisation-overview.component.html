@@ -22,7 +22,7 @@
 
       <md-divider></md-divider>
       <md-card-actions>
-        <button md-button [routerLink]="['/organisations/' + id + '/edit']">Edit</button>
+        <button md-button [routerLink]="[ '../edit']">Edit</button>
       </md-card-actions>
     </md-card>
 
@@ -45,10 +45,10 @@
 
       <md-divider></md-divider>
       <md-card-actions>
-        <button md-button [routerLink]="['/organisations/' + id + '/addContact']">+ Mail</button>
-        <button md-button [routerLink]="['/organisations/' + id + '/addContact']">+ Postal</button>
-        <button md-button [routerLink]="['/organisations/' + id + '/addContact']">+ Telecom</button>
-        <button md-button [routerLink]="['/organisations/' + id + '/addContact']">+ Web</button>
+        <button md-button [routerLink]="['../addContact']">+ Mail</button>
+        <button md-button [routerLink]="['../addContact']">+ Postal</button>
+        <button md-button [routerLink]="['../addContact']">+ Telecom</button>
+        <button md-button [routerLink]="['../addContact']">+ Web</button>
       </md-card-actions>
     </md-card>
 
@@ -117,7 +117,7 @@
 
       <md-divider></md-divider>
       <md-card-actions>
-        <button md-button [routerLink]="['/organisations/' + id + '/addContact']">Add new</button>
+        <button md-button [routerLink]="['../addContact']">Add new</button>
       </md-card-actions>
     </md-card>
 
@@ -186,10 +186,10 @@
 
       <md-divider></md-divider>
       <md-card-actions>
-        <button md-button [routerLink]="['/organisations/' + id + '/addWeb']">+ Web</button>
-        <button md-button [routerLink]="['/organisations/' + id + '/addEmail']">+ Email</button>
-        <button md-button [routerLink]="['/organisations/' + id + '/addPostal']">+ Postal</button>
-        <button md-button [routerLink]="['/organisations/' + id + '/addTelecom']">+ Telecom</button>
+        <button md-button [routerLink]="[ '../addWeb']">+ Web</button>
+        <button md-button [routerLink]="[ '../addEmail']">+ Email</button>
+        <button md-button [routerLink]="[ '../addPostal']">+ Postal</button>
+        <button md-button [routerLink]="[ '../addTelecom']">+ Telecom</button>
       </md-card-actions>
     </md-card>
   </div>

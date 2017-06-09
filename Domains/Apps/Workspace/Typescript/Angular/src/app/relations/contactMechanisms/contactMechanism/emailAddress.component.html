@@ -1,63 +1,33 @@
-<td-layout-nav logo="assets:covalent">
-  <div td-toolbar-content layout="row" layout-align="center center" flex>
-    <span>Apps</span>
-    <span flex></span>
-    <a md-icon-button mdTooltip="Docs" href="https://teradata.github.io/covalent/" target="_blank">
-      <md-icon>chrome_reader_mode</md-icon>
-    </a>
-    <a md-icon-button mdTooltip="Github" href="https://github.com/teradata/covalent" target="_blank">
-      <md-icon svgIcon="assets:github"></md-icon>
-    </a>
-  </div>
-  <td-layout-manage-list #manageList [opened]="media.registerQuery('gt-sm') | async" [mode]="(media.registerQuery('gt-sm') | async) ? 'side' : 'push'"
-    [sidenavWidth]="(media.registerQuery('gt-xs') | async) ? '257px' : '100%'">
-    <md-toolbar td-sidenav-content>
-      <span>Organisation</span>
-    </md-toolbar>
-    <md-nav-list td-sidenav-content (click)="!media.query('gt-sm') && manageList.close()">
-      <a md-list-item>
-        <md-icon md-list-icon>account_circle</md-icon>
-        Todo
-      </a>
-    </md-nav-list>
+<md-card tdMediaToggle="gt-xs" [mediaClasses]="['push']">
+  <form [formGroup]="form" (ngSubmit)="save($event)">
 
-    <div td-toolbar-content layout="row" layout-align="start center" flex>
-      <span class="text-capital">emailAddress</span>
-    </div>
+    <md-card-title>Email address Contact Form</md-card-title>
 
-    <md-card tdMediaToggle="gt-xs" [mediaClasses]="['push']">
-      <form [formGroup]="form" (ngSubmit)="save($event)">
+    <md-divider></md-divider>
+    <md-card-content class="push-bottom-none">
 
-        <md-card-title>Email address Contact Form</md-card-title>
-
-        <md-divider></md-divider>
-        <md-card-content class="push-bottom-none">
-
-          <div layout="row">
-            <select flex="50" placeholder="Purpose" formControlName="ContactMechanismPurposes">
+      <div layout="row">
+        <select flex="50" placeholder="Purpose" formControlName="ContactMechanismPurposes">
               <option *ngFor="let contactMechanismPurpose of contactMechanismPurposes" [value]="contactMechanismPurpose">{{ contactMechanismPurpose.Name }}</option>
             </select>
-          </div>
+      </div>
 
-          <div layout="row" class="push-top">
-            <md-input-container flex>
-              <input mdInput formControlName="ElectronicAddress" type="text" placeholder="Email address">
-            </md-input-container>
-          </div>
+      <div layout="row" class="push-top">
+        <md-input-container flex>
+          <input mdInput formControlName="ElectronicAddress" type="text" placeholder="Email address">
+        </md-input-container>
+      </div>
 
-          <div layout="row" class="push-top">
-            <md-slide-toggle formControlName="Default" >Use as default</md-slide-toggle>
-          </div>
-        </md-card-content>
+      <div layout="row" class="push-top">
+        <md-slide-toggle formControlName="Default">Use as default</md-slide-toggle>
+      </div>
+    </md-card-content>
 
-        <md-divider></md-divider>
-        <md-card-actions>
-          <button md-button color="primary" type="submit">SAVE</button>
-          <button md-button [routerLink]="['/organisations/' + id + '/overview']">CANCEL</button>
-        </md-card-actions>
+    <md-divider></md-divider>
+    <md-card-actions>
+      <button md-button color="primary" type="submit">SAVE</button>
+      <button md-button [routerLink]="['/organisations/' + id + '/overview']">CANCEL</button>
+    </md-card-actions>
 
-      </form>
-    </md-card>
-
-  </td-layout-manage-list>
-</td-layout-nav>
+  </form>
+</md-card>
