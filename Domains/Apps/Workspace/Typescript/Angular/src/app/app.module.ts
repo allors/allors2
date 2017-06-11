@@ -2,10 +2,6 @@ import { NgModule, Type } from '@angular/core';
 import { BrowserModule, Title } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
-import { CovalentHttpModule, IHttpInterceptor } from '@covalent/http';
-import { CovalentHighlightModule } from '@covalent/highlight';
-import { CovalentMarkdownModule } from '@covalent/markdown';
-
 import { AppComponent } from './app.component';
 
 import { routedComponents, AppRoutingModule } from './app-routing.module';
@@ -32,8 +28,6 @@ const components = [CommunicationEventsTableComponent, OrganisationsTableCompone
     BrowserModule,
     BrowserAnimationsModule,
     SharedModule,
-    CovalentHighlightModule,
-    CovalentMarkdownModule,
   ],
   providers: [
     { provide: ENVIRONMENT, useValue: environment },

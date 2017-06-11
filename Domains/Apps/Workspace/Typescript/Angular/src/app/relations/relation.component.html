@@ -1,4 +1,5 @@
 <td-layout-nav logo="assets:covalent">
+
   <div td-toolbar-content layout="row" layout-align="center center" flex>
     <span>Apps</span>
     <span flex></span>
@@ -6,8 +7,12 @@
       <md-icon>chrome_reader_mode</md-icon>
     </a>
   </div>
-  <td-layout-manage-list #manageList [opened]="media.registerQuery('gt-sm') | async" [mode]="(media.registerQuery('gt-sm') | async) ? 'side' : 'push'"
-    [sidenavWidth]="(media.registerQuery('gt-xs') | async) ? '257px' : '100%'">
+
+  <td-layout-manage-list #manageList
+                        [opened]="media.registerQuery('gt-sm') | async"
+                        [mode]="(media.registerQuery('gt-sm') | async) ? 'side' : 'push'"
+                        [sidenavWidth]="(media.registerQuery('gt-xs') | async) ? '257px' : '100%'">
+
     <md-toolbar td-sidenav-content>
       <span>Relations</span>
     </md-toolbar>
@@ -28,5 +33,6 @@
     </div>
 
     <router-outlet></router-outlet>
+
   </td-layout-manage-list>
 </td-layout-nav>
