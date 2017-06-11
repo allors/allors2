@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { TdMediaService } from '@covalent/core';
 
 @Component({
-  templateUrl: './relation.component.html'
+  templateUrl: './relation.component.html',
 })
 export class RelationComponent implements AfterViewInit {
 
@@ -15,7 +15,7 @@ export class RelationComponent implements AfterViewInit {
       title: 'People',
       route: 'people',
       icon: 'people',
-    }
+    },
   ];
 
   constructor(public media: TdMediaService) {
