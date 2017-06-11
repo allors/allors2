@@ -39,11 +39,10 @@ namespace Allors.Domain
             var customer = new OrganisationBuilder(this.DatabaseSession).WithName("customer").Build();
             var contactMechanism = new PostalAddressBuilder(this.DatabaseSession)
                 .WithAddress1("Haverwerf 15")
-                .WithPostalBoundary(new PostalBoundaryBuilder(this.DatabaseSession)
-                                        .WithLocality("Mechelen")
+                .WithGeographicBoundary(new CityBuilder(this.DatabaseSession)
+                                        .WithName("Mechelen")
                                         .WithCountry(new Countries(this.DatabaseSession).FindBy(M.Country.IsoCode, "BE"))
                                         .Build())
-
                 .Build();
 
             var invoice = new SalesInvoiceBuilder(this.DatabaseSession)
@@ -68,11 +67,10 @@ namespace Allors.Domain
             var customer = new OrganisationBuilder(this.DatabaseSession).WithName("customer").Build();
             var contactMechanism = new PostalAddressBuilder(this.DatabaseSession)
                 .WithAddress1("Haverwerf 15")
-                .WithPostalBoundary(new PostalBoundaryBuilder(this.DatabaseSession)
-                                        .WithLocality("Mechelen")
-                                        .WithCountry(new Countries(this.DatabaseSession).FindBy(M.Country.IsoCode, "BE"))
-                                        .Build())
-
+                .WithGeographicBoundary(new CityBuilder(this.DatabaseSession)
+                    .WithName("Mechelen")
+                    .WithCountry(new Countries(this.DatabaseSession).FindBy(M.Country.IsoCode, "BE"))
+                    .Build())
                 .Build();
 
             var invoice = new SalesInvoiceBuilder(this.DatabaseSession)
@@ -96,11 +94,10 @@ namespace Allors.Domain
             var customer = new OrganisationBuilder(this.DatabaseSession).WithName("customer").Build();
             var contactMechanism = new PostalAddressBuilder(this.DatabaseSession)
                 .WithAddress1("Haverwerf 15")
-                .WithPostalBoundary(new PostalBoundaryBuilder(this.DatabaseSession)
-                                        .WithLocality("Mechelen")
-                                        .WithCountry(new Countries(this.DatabaseSession).FindBy(M.Country.IsoCode, "BE"))
-                                        .Build())
-
+                .WithGeographicBoundary(new CityBuilder(this.DatabaseSession)
+                    .WithName("Mechelen")
+                    .WithCountry(new Countries(this.DatabaseSession).FindBy(M.Country.IsoCode, "BE"))
+                    .Build())
                 .Build();
 
             var good = new GoodBuilder(this.DatabaseSession)
@@ -199,11 +196,10 @@ namespace Allors.Domain
             var customer = new OrganisationBuilder(this.DatabaseSession).WithName("customer").Build();
             var contactMechanism = new PostalAddressBuilder(this.DatabaseSession)
                 .WithAddress1("Haverwerf 15")
-                .WithPostalBoundary(new PostalBoundaryBuilder(this.DatabaseSession)
-                                        .WithLocality("Mechelen")
-                                        .WithCountry(new Countries(this.DatabaseSession).FindBy(M.Country.IsoCode, "BE"))
-                                        .Build())
-
+                .WithGeographicBoundary(new CityBuilder(this.DatabaseSession)
+                    .WithName("Mechelen")
+                    .WithCountry(new Countries(this.DatabaseSession).FindBy(M.Country.IsoCode, "BE"))
+                    .Build())
                 .Build();
 
             new SalesInvoiceBuilder(this.DatabaseSession)
@@ -229,11 +225,10 @@ namespace Allors.Domain
             var shipToCustomer = new OrganisationBuilder(this.DatabaseSession).WithName("shipToCustomer").Build();
             var contactMechanism = new PostalAddressBuilder(this.DatabaseSession)
                 .WithAddress1("Haverwerf 15")
-                .WithPostalBoundary(new PostalBoundaryBuilder(this.DatabaseSession)
-                                        .WithLocality("Mechelen")
-                                        .WithCountry(new Countries(this.DatabaseSession).FindBy(M.Country.IsoCode, "BE"))
-                                        .Build())
-
+                .WithGeographicBoundary(new CityBuilder(this.DatabaseSession)
+                    .WithName("Mechelen")
+                    .WithCountry(new Countries(this.DatabaseSession).FindBy(M.Country.IsoCode, "BE"))
+                    .Build())
                 .Build();
 
             new SalesInvoiceBuilder(this.DatabaseSession)
@@ -268,11 +263,10 @@ namespace Allors.Domain
             var customer = new OrganisationBuilder(this.DatabaseSession).WithName("customer").Build();
             var contactMechanism = new PostalAddressBuilder(this.DatabaseSession)
                 .WithAddress1("Haverwerf 15")
-                .WithPostalBoundary(new PostalBoundaryBuilder(this.DatabaseSession)
-                                        .WithLocality("Mechelen")
-                                        .WithCountry(new Countries(this.DatabaseSession).FindBy(M.Country.IsoCode, "BE"))
-                                        .Build())
-
+                .WithGeographicBoundary(new CityBuilder(this.DatabaseSession)
+                    .WithName("Mechelen")
+                    .WithCountry(new Countries(this.DatabaseSession).FindBy(M.Country.IsoCode, "BE"))
+                    .Build())
                 .Build();
 
             var invoice1 = new SalesInvoiceBuilder(this.DatabaseSession)
@@ -311,11 +305,10 @@ namespace Allors.Domain
             var customer = new OrganisationBuilder(this.DatabaseSession).WithName("customer").Build();
             var contactMechanism = new PostalAddressBuilder(this.DatabaseSession)
                 .WithAddress1("Haverwerf 15")
-                .WithPostalBoundary(new PostalBoundaryBuilder(this.DatabaseSession)
-                                        .WithLocality("Mechelen")
-                                        .WithCountry(new Countries(this.DatabaseSession).FindBy(M.Country.IsoCode, "BE"))
-                                        .Build())
-
+                .WithGeographicBoundary(new CityBuilder(this.DatabaseSession)
+                    .WithName("Mechelen")
+                    .WithCountry(new Countries(this.DatabaseSession).FindBy(M.Country.IsoCode, "BE"))
+                    .Build())
                 .Build();
 
             var invoice1 = new SalesInvoiceBuilder(this.DatabaseSession)
@@ -359,11 +352,10 @@ namespace Allors.Domain
             var customer = new OrganisationBuilder(this.DatabaseSession).WithName("customer").Build();
             var contactMechanism = new PostalAddressBuilder(this.DatabaseSession)
                 .WithAddress1("Haverwerf 15")
-                .WithPostalBoundary(new PostalBoundaryBuilder(this.DatabaseSession)
-                                        .WithLocality("Mechelen")
-                                        .WithCountry(new Countries(this.DatabaseSession).FindBy(M.Country.IsoCode, "BE"))
-                                        .Build())
-
+                .WithGeographicBoundary(new CityBuilder(this.DatabaseSession)
+                    .WithName("Mechelen")
+                    .WithCountry(new Countries(this.DatabaseSession).FindBy(M.Country.IsoCode, "BE"))
+                    .Build())
                 .Build();
 
             var invoice = new SalesInvoiceBuilder(this.DatabaseSession)
@@ -386,11 +378,10 @@ namespace Allors.Domain
             var salesrep = new PersonBuilder(this.DatabaseSession).WithLastName("salesrep").Build();
             var contactMechanism = new PostalAddressBuilder(this.DatabaseSession)
                 .WithAddress1("Haverwerf 15")
-                .WithPostalBoundary(new PostalBoundaryBuilder(this.DatabaseSession)
-                                        .WithLocality("Mechelen")
-                                        .WithCountry(new Countries(this.DatabaseSession).FindBy(M.Country.IsoCode, "BE"))
-                                        .Build())
-
+                .WithGeographicBoundary(new CityBuilder(this.DatabaseSession)
+                    .WithName("Mechelen")
+                    .WithCountry(new Countries(this.DatabaseSession).FindBy(M.Country.IsoCode, "BE"))
+                    .Build())
                 .Build();
 
             var good = new GoodBuilder(this.DatabaseSession)
@@ -438,20 +429,18 @@ namespace Allors.Domain
             var customer = new OrganisationBuilder(this.DatabaseSession).WithName("customer").Build();
             var contactMechanism = new PostalAddressBuilder(this.DatabaseSession)
                 .WithAddress1("Haverwerf 15")
-                .WithPostalBoundary(new PostalBoundaryBuilder(this.DatabaseSession)
-                                        .WithLocality("Mechelen")
-                                        .WithCountry(new Countries(this.DatabaseSession).FindBy(M.Country.IsoCode, "BE"))
-                                        .Build())
-
+                .WithGeographicBoundary(new CityBuilder(this.DatabaseSession)
+                    .WithName("Mechelen")
+                    .WithCountry(new Countries(this.DatabaseSession).FindBy(M.Country.IsoCode, "BE"))
+                    .Build())
                 .Build();
 
             var homeAddress = new PostalAddressBuilder(this.DatabaseSession)
                 .WithAddress1("Sint-Lambertuslaan 78")
-                .WithPostalBoundary(new PostalBoundaryBuilder(this.DatabaseSession)
-                                        .WithLocality("Muizen")
-                                        .WithCountry(new Countries(this.DatabaseSession).FindBy(M.Country.IsoCode, "BE"))
-                                        .Build())
-
+                .WithGeographicBoundary(new CityBuilder(this.DatabaseSession)
+                    .WithName("Muizen")
+                    .WithCountry(new Countries(this.DatabaseSession).FindBy(M.Country.IsoCode, "BE"))
+                    .Build())
                 .Build();
 
             var home = new PartyContactMechanismBuilder(this.DatabaseSession)
@@ -568,11 +557,10 @@ namespace Allors.Domain
             var customer = new OrganisationBuilder(this.DatabaseSession).WithName("customer").Build();
             var contactMechanism = new PostalAddressBuilder(this.DatabaseSession)
                 .WithAddress1("Haverwerf 15")
-                .WithPostalBoundary(new PostalBoundaryBuilder(this.DatabaseSession)
-                                        .WithLocality("Mechelen")
-                                        .WithCountry(new Countries(this.DatabaseSession).FindBy(M.Country.IsoCode, "BE"))
-                                        .Build())
-
+                .WithGeographicBoundary(new CityBuilder(this.DatabaseSession)
+                    .WithName("Mechelen")
+                    .WithCountry(new Countries(this.DatabaseSession).FindBy(M.Country.IsoCode, "BE"))
+                    .Build())
                 .Build();
 
             var invoice = new SalesInvoiceBuilder(this.DatabaseSession)
@@ -597,11 +585,10 @@ namespace Allors.Domain
             var customer = new OrganisationBuilder(this.DatabaseSession).WithName("customer").Build();
             var contactMechanism = new PostalAddressBuilder(this.DatabaseSession)
                 .WithAddress1("Haverwerf 15")
-                .WithPostalBoundary(new PostalBoundaryBuilder(this.DatabaseSession)
-                                        .WithLocality("Mechelen")
-                                        .WithCountry(new Countries(this.DatabaseSession).FindBy(M.Country.IsoCode, "BE"))
-                                        .Build())
-
+                .WithGeographicBoundary(new CityBuilder(this.DatabaseSession)
+                    .WithName("Mechelen")
+                    .WithCountry(new Countries(this.DatabaseSession).FindBy(M.Country.IsoCode, "BE"))
+                    .Build())
                 .Build();
 
             var invoice1 = new SalesInvoiceBuilder(this.DatabaseSession).WithBillToCustomer(customer).WithBillToContactMechanism(contactMechanism).Build();
@@ -655,11 +642,10 @@ namespace Allors.Domain
             var customer = new OrganisationBuilder(this.DatabaseSession).WithName("customer").Build();
             var contactMechanism = new PostalAddressBuilder(this.DatabaseSession)
                 .WithAddress1("Haverwerf 15")
-                .WithPostalBoundary(new PostalBoundaryBuilder(this.DatabaseSession)
-                                        .WithLocality("Mechelen")
-                                        .WithCountry(new Countries(this.DatabaseSession).FindBy(M.Country.IsoCode, "BE"))
-                                        .Build())
-
+                .WithGeographicBoundary(new CityBuilder(this.DatabaseSession)
+                    .WithName("Mechelen")
+                    .WithCountry(new Countries(this.DatabaseSession).FindBy(M.Country.IsoCode, "BE"))
+                    .Build())
                 .Build();
 
             new CustomerRelationshipBuilder(this.DatabaseSession).WithFromDate(DateTime.UtcNow).WithCustomer(customer).WithInternalOrganisation(Singleton.Instance(this.DatabaseSession).DefaultInternalOrganisation).Build();
@@ -715,11 +701,10 @@ namespace Allors.Domain
             var customer = new OrganisationBuilder(this.DatabaseSession).WithName("customer").Build();
             var contactMechanism = new PostalAddressBuilder(this.DatabaseSession)
                 .WithAddress1("Haverwerf 15")
-                .WithPostalBoundary(new PostalBoundaryBuilder(this.DatabaseSession)
-                                        .WithLocality("Mechelen")
-                                        .WithCountry(new Countries(this.DatabaseSession).FindBy(M.Country.IsoCode, "BE"))
-                                        .Build())
-
+                .WithGeographicBoundary(new CityBuilder(this.DatabaseSession)
+                    .WithName("Mechelen")
+                    .WithCountry(new Countries(this.DatabaseSession).FindBy(M.Country.IsoCode, "BE"))
+                    .Build())
                 .Build();
 
             var administrator = new PersonBuilder(this.DatabaseSession).WithLastName("Administrator").WithUserName("administrator").Build();
@@ -756,11 +741,10 @@ namespace Allors.Domain
             var customer = new OrganisationBuilder(this.DatabaseSession).WithName("customer").Build();
             var contactMechanism = new PostalAddressBuilder(this.DatabaseSession)
                 .WithAddress1("Haverwerf 15")
-                .WithPostalBoundary(new PostalBoundaryBuilder(this.DatabaseSession)
-                                        .WithLocality("Mechelen")
-                                        .WithCountry(new Countries(this.DatabaseSession).FindBy(M.Country.IsoCode, "BE"))
-                                        .Build())
-
+                .WithGeographicBoundary(new CityBuilder(this.DatabaseSession)
+                    .WithName("Mechelen")
+                    .WithCountry(new Countries(this.DatabaseSession).FindBy(M.Country.IsoCode, "BE"))
+                    .Build())
                 .Build();
 
             var administrator = new PersonBuilder(this.DatabaseSession).WithFirstName("Koen").WithUserName("administrator").Build();
@@ -824,11 +808,10 @@ namespace Allors.Domain
             var customer = new OrganisationBuilder(this.DatabaseSession).WithName("customer").Build();
             var contactMechanism = new PostalAddressBuilder(this.DatabaseSession)
                 .WithAddress1("Haverwerf 15")
-                .WithPostalBoundary(new PostalBoundaryBuilder(this.DatabaseSession)
-                                        .WithLocality("Mechelen")
-                                        .WithCountry(new Countries(this.DatabaseSession).FindBy(M.Country.IsoCode, "BE"))
-                                        .Build())
-
+                .WithGeographicBoundary(new CityBuilder(this.DatabaseSession)
+                    .WithName("Mechelen")
+                    .WithCountry(new Countries(this.DatabaseSession).FindBy(M.Country.IsoCode, "BE"))
+                    .Build())
                 .Build();
 
             var administrator = new PersonBuilder(this.DatabaseSession).WithFirstName("Koen").WithUserName("administrator").Build();
@@ -880,11 +863,10 @@ namespace Allors.Domain
             var customer = new OrganisationBuilder(this.DatabaseSession).WithName("customer").Build();
             var contactMechanism = new PostalAddressBuilder(this.DatabaseSession)
                 .WithAddress1("Haverwerf 15")
-                .WithPostalBoundary(new PostalBoundaryBuilder(this.DatabaseSession)
-                                        .WithLocality("Mechelen")
-                                        .WithCountry(new Countries(this.DatabaseSession).FindBy(M.Country.IsoCode, "BE"))
-                                        .Build())
-
+                .WithGeographicBoundary(new CityBuilder(this.DatabaseSession)
+                    .WithName("Mechelen")
+                    .WithCountry(new Countries(this.DatabaseSession).FindBy(M.Country.IsoCode, "BE"))
+                    .Build())
                 .Build();
 
             var administrator = new PersonBuilder(this.DatabaseSession).WithFirstName("Koen").WithUserName("administrator").Build();
@@ -937,11 +919,10 @@ namespace Allors.Domain
             var customer = new OrganisationBuilder(this.DatabaseSession).WithName("customer").Build();
             var contactMechanism = new PostalAddressBuilder(this.DatabaseSession)
                 .WithAddress1("Haverwerf 15")
-                .WithPostalBoundary(new PostalBoundaryBuilder(this.DatabaseSession)
-                                        .WithLocality("Mechelen")
-                                        .WithCountry(new Countries(this.DatabaseSession).FindBy(M.Country.IsoCode, "BE"))
-                                        .Build())
-
+                .WithGeographicBoundary(new CityBuilder(this.DatabaseSession)
+                    .WithName("Mechelen")
+                    .WithCountry(new Countries(this.DatabaseSession).FindBy(M.Country.IsoCode, "BE"))
+                    .Build())
                 .Build();
 
             var administrator = new PersonBuilder(this.DatabaseSession).WithFirstName("Koen").WithUserName("administrator").Build();
@@ -980,11 +961,10 @@ namespace Allors.Domain
             var customer = new OrganisationBuilder(this.DatabaseSession).WithName("customer").Build();
             var contactMechanism = new PostalAddressBuilder(this.DatabaseSession)
                 .WithAddress1("Haverwerf 15")
-                .WithPostalBoundary(new PostalBoundaryBuilder(this.DatabaseSession)
-                                        .WithLocality("Mechelen")
-                                        .WithCountry(new Countries(this.DatabaseSession).FindBy(M.Country.IsoCode, "BE"))
-                                        .Build())
-
+                .WithGeographicBoundary(new CityBuilder(this.DatabaseSession)
+                    .WithName("Mechelen")
+                    .WithCountry(new Countries(this.DatabaseSession).FindBy(M.Country.IsoCode, "BE"))
+                    .Build())
                 .Build();
 
             var administrator = new PersonBuilder(this.DatabaseSession).WithFirstName("Koen").WithUserName("administrator").Build();
@@ -1025,11 +1005,10 @@ namespace Allors.Domain
             var adjustment = new ShippingAndHandlingChargeBuilder(this.DatabaseSession).WithAmount(7.5M).WithVatRate(vatRate21).Build();
             var contactMechanism = new PostalAddressBuilder(this.DatabaseSession)
                 .WithAddress1("Haverwerf 15")
-                .WithPostalBoundary(new PostalBoundaryBuilder(this.DatabaseSession)
-                                        .WithLocality("Mechelen")
-                                        .WithCountry(new Countries(this.DatabaseSession).FindBy(M.Country.IsoCode, "BE"))
-                                        .Build())
-
+                .WithGeographicBoundary(new CityBuilder(this.DatabaseSession)
+                    .WithName("Mechelen")
+                    .WithCountry(new Countries(this.DatabaseSession).FindBy(M.Country.IsoCode, "BE"))
+                    .Build())
                 .Build();
 
             var good = new GoodBuilder(this.DatabaseSession)
@@ -1076,11 +1055,10 @@ namespace Allors.Domain
             var adjustment = new ShippingAndHandlingChargeBuilder(this.DatabaseSession).WithPercentage(5).WithVatRate(vatRate21).Build();
             var contactMechanism = new PostalAddressBuilder(this.DatabaseSession)
                 .WithAddress1("Haverwerf 15")
-                .WithPostalBoundary(new PostalBoundaryBuilder(this.DatabaseSession)
-                                        .WithLocality("Mechelen")
-                                        .WithCountry(new Countries(this.DatabaseSession).FindBy(M.Country.IsoCode, "BE"))
-                                        .Build())
-
+                .WithGeographicBoundary(new CityBuilder(this.DatabaseSession)
+                    .WithName("Mechelen")
+                    .WithCountry(new Countries(this.DatabaseSession).FindBy(M.Country.IsoCode, "BE"))
+                    .Build())
                 .Build();
 
             var good = new GoodBuilder(this.DatabaseSession)
@@ -1127,11 +1105,10 @@ namespace Allors.Domain
             var adjustment = new FeeBuilder(this.DatabaseSession).WithAmount(7.5M).WithVatRate(vatRate21).Build();
             var contactMechanism = new PostalAddressBuilder(this.DatabaseSession)
                 .WithAddress1("Haverwerf 15")
-                .WithPostalBoundary(new PostalBoundaryBuilder(this.DatabaseSession)
-                                        .WithLocality("Mechelen")
-                                        .WithCountry(new Countries(this.DatabaseSession).FindBy(M.Country.IsoCode, "BE"))
-                                        .Build())
-
+                .WithGeographicBoundary(new CityBuilder(this.DatabaseSession)
+                    .WithName("Mechelen")
+                    .WithCountry(new Countries(this.DatabaseSession).FindBy(M.Country.IsoCode, "BE"))
+                    .Build())
                 .Build();
 
             var good = new GoodBuilder(this.DatabaseSession)
@@ -1178,11 +1155,10 @@ namespace Allors.Domain
             var adjustment = new FeeBuilder(this.DatabaseSession).WithPercentage(5).WithVatRate(vatRate21).Build();
             var contactMechanism = new PostalAddressBuilder(this.DatabaseSession)
                 .WithAddress1("Haverwerf 15")
-                .WithPostalBoundary(new PostalBoundaryBuilder(this.DatabaseSession)
-                                        .WithLocality("Mechelen")
-                                        .WithCountry(new Countries(this.DatabaseSession).FindBy(M.Country.IsoCode, "BE"))
-                                        .Build())
-
+                .WithGeographicBoundary(new CityBuilder(this.DatabaseSession)
+                    .WithName("Mechelen")
+                    .WithCountry(new Countries(this.DatabaseSession).FindBy(M.Country.IsoCode, "BE"))
+                    .Build())
                 .Build();
 
             var good = new GoodBuilder(this.DatabaseSession)
@@ -1227,11 +1203,10 @@ namespace Allors.Domain
             var customer = new OrganisationBuilder(this.DatabaseSession).WithName("customer").Build();
             var contactMechanism = new PostalAddressBuilder(this.DatabaseSession)
                 .WithAddress1("Haverwerf 15")
-                .WithPostalBoundary(new PostalBoundaryBuilder(this.DatabaseSession)
-                                        .WithLocality("Mechelen")
-                                        .WithCountry(new Countries(this.DatabaseSession).FindBy(M.Country.IsoCode, "BE"))
-                                        .Build())
-
+                .WithGeographicBoundary(new CityBuilder(this.DatabaseSession)
+                    .WithName("Mechelen")
+                    .WithCountry(new Countries(this.DatabaseSession).FindBy(M.Country.IsoCode, "BE"))
+                    .Build())
                 .Build();
 
             var invoice = new SalesInvoiceBuilder(this.DatabaseSession)
@@ -1255,11 +1230,10 @@ namespace Allors.Domain
             var shipToCustomer = new OrganisationBuilder(this.DatabaseSession).WithName("customer").Build();
             var contactMechanism = new PostalAddressBuilder(this.DatabaseSession)
                 .WithAddress1("Haverwerf 15")
-                .WithPostalBoundary(new PostalBoundaryBuilder(this.DatabaseSession)
-                                        .WithLocality("Mechelen")
-                                        .WithCountry(new Countries(this.DatabaseSession).FindBy(M.Country.IsoCode, "BE"))
-                                        .Build())
-
+                .WithGeographicBoundary(new CityBuilder(this.DatabaseSession)
+                    .WithName("Mechelen")
+                    .WithCountry(new Countries(this.DatabaseSession).FindBy(M.Country.IsoCode, "BE"))
+                    .Build())
                 .Build();
 
             var invoice = new SalesInvoiceBuilder(this.DatabaseSession)
@@ -1296,11 +1270,10 @@ namespace Allors.Domain
             var billToCustomer = new OrganisationBuilder(this.DatabaseSession).WithName("customer").Build();
             var contactMechanism = new PostalAddressBuilder(this.DatabaseSession)
                 .WithAddress1("Haverwerf 15")
-                .WithPostalBoundary(new PostalBoundaryBuilder(this.DatabaseSession)
-                                        .WithLocality("Mechelen")
-                                        .WithCountry(new Countries(this.DatabaseSession).FindBy(M.Country.IsoCode, "BE"))
-                                        .Build())
-
+                .WithGeographicBoundary(new CityBuilder(this.DatabaseSession)
+                    .WithName("Mechelen")
+                    .WithCountry(new Countries(this.DatabaseSession).FindBy(M.Country.IsoCode, "BE"))
+                    .Build())
                 .Build();
 
             new SalesRepRelationshipBuilder(this.DatabaseSession)
@@ -1405,11 +1378,10 @@ namespace Allors.Domain
             var billToCustomer = new OrganisationBuilder(this.DatabaseSession).WithName("customer").Build();
             var contactMechanism = new PostalAddressBuilder(this.DatabaseSession)
                 .WithAddress1("Haverwerf 15")
-                .WithPostalBoundary(new PostalBoundaryBuilder(this.DatabaseSession)
-                                        .WithLocality("Mechelen")
-                                        .WithCountry(new Countries(this.DatabaseSession).FindBy(M.Country.IsoCode, "BE"))
-                                        .Build())
-
+                .WithGeographicBoundary(new CityBuilder(this.DatabaseSession)
+                    .WithName("Mechelen")
+                    .WithCountry(new Countries(this.DatabaseSession).FindBy(M.Country.IsoCode, "BE"))
+                    .Build())
                 .Build();
 
             var good = new GoodBuilder(this.DatabaseSession)
@@ -1450,11 +1422,10 @@ namespace Allors.Domain
             var billToCustomer = new OrganisationBuilder(this.DatabaseSession).WithName("customer").Build();
             var contactMechanism = new PostalAddressBuilder(this.DatabaseSession)
                 .WithAddress1("Haverwerf 15")
-                .WithPostalBoundary(new PostalBoundaryBuilder(this.DatabaseSession)
-                                        .WithLocality("Mechelen")
-                                        .WithCountry(new Countries(this.DatabaseSession).FindBy(M.Country.IsoCode, "BE"))
-                                        .Build())
-
+                .WithGeographicBoundary(new CityBuilder(this.DatabaseSession)
+                    .WithName("Mechelen")
+                    .WithCountry(new Countries(this.DatabaseSession).FindBy(M.Country.IsoCode, "BE"))
+                    .Build())
                 .Build();
 
             var good = new GoodBuilder(this.DatabaseSession)
@@ -1495,11 +1466,10 @@ namespace Allors.Domain
             var billToCustomer = new OrganisationBuilder(this.DatabaseSession).WithName("customer").Build();
             var contactMechanism = new PostalAddressBuilder(this.DatabaseSession)
                 .WithAddress1("Haverwerf 15")
-                .WithPostalBoundary(new PostalBoundaryBuilder(this.DatabaseSession)
-                                        .WithLocality("Mechelen")
-                                        .WithCountry(new Countries(this.DatabaseSession).FindBy(M.Country.IsoCode, "BE"))
-                                        .Build())
-
+                .WithGeographicBoundary(new CityBuilder(this.DatabaseSession)
+                    .WithName("Mechelen")
+                    .WithCountry(new Countries(this.DatabaseSession).FindBy(M.Country.IsoCode, "BE"))
+                    .Build())
                 .Build();
 
             var good = new GoodBuilder(this.DatabaseSession)
@@ -1539,11 +1509,10 @@ namespace Allors.Domain
             var billToCustomer = new OrganisationBuilder(this.DatabaseSession).WithName("customer").Build();
             var contactMechanism = new PostalAddressBuilder(this.DatabaseSession)
                 .WithAddress1("Haverwerf 15")
-                .WithPostalBoundary(new PostalBoundaryBuilder(this.DatabaseSession)
-                                        .WithLocality("Mechelen")
-                                        .WithCountry(new Countries(this.DatabaseSession).FindBy(M.Country.IsoCode, "BE"))
-                                        .Build())
-
+                .WithGeographicBoundary(new CityBuilder(this.DatabaseSession)
+                    .WithName("Mechelen")
+                    .WithCountry(new Countries(this.DatabaseSession).FindBy(M.Country.IsoCode, "BE"))
+                    .Build())
                 .Build();
 
             var good = new GoodBuilder(this.DatabaseSession)
@@ -1887,11 +1856,10 @@ namespace Allors.Domain
             var vatRate21 = new VatRateBuilder(this.DatabaseSession).WithRate(21).Build();
             var contactMechanism = new PostalAddressBuilder(this.DatabaseSession)
                 .WithAddress1("Haverwerf 15")
-                .WithPostalBoundary(new PostalBoundaryBuilder(this.DatabaseSession)
-                                        .WithLocality("Mechelen")
-                                        .WithCountry(new Countries(this.DatabaseSession).FindBy(M.Country.IsoCode, "BE"))
-                                        .Build())
-
+                .WithGeographicBoundary(new CityBuilder(this.DatabaseSession)
+                    .WithName("Mechelen")
+                    .WithCountry(new Countries(this.DatabaseSession).FindBy(M.Country.IsoCode, "BE"))
+                    .Build())
                 .Build();
 
             var good = new GoodBuilder(this.DatabaseSession)

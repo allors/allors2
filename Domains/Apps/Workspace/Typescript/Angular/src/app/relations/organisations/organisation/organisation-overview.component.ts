@@ -6,6 +6,7 @@ import { TdMediaService } from '@covalent/core';
 
 import { Scope } from '../../../../allors/angular/base/Scope';
 import { AllorsService } from '../../../allors.service';
+import { PullRequest, Fetch, Path, Query, Equals, Like, TreeNode, Sort, Page } from '../../../../allors/domain';
 import { CommunicationEvent, Organisation, Locale } from '../../../../allors/domain';
 
 @Component({
@@ -34,22 +35,134 @@ export class OrganisationOverviewComponent implements OnInit, AfterViewInit, OnD
       .mergeMap((url: any) => {
 
         this.id = this.route.snapshot.paramMap.get('id');
+
+        const m = this.allors.meta;
+
+        const fetch = [
+          new Fetch({
+            name: 'organisation',
+            id: this.id,
+            include: [
+              new TreeNode({
+                roleType: m.Party.CurrentContacts,
+                nodes: [
+                  new TreeNode({
+                    roleType: m.Person.PartyContactMechanisms,
+                    nodes: [
+                      new TreeNode({ roleType: m.PartyContactMechanism.ContactPurposes }),
+                      new TreeNode({ roleType: m.PartyContactMechanism.ContactMechanism })
+                    ]
+                  })
+                ]
+              }),
+              new TreeNode({
+                roleType: m.Party.CurrentOrganisationContactRelationships,
+                nodes: [
+                  new TreeNode({ roleType: m.OrganisationContactRelationship.ContactKinds }),
+                  new TreeNode({ roleType: m.OrganisationContactRelationship.Contact })
+                ]
+              }),
+              new TreeNode({
+                roleType: m.Party.InactiveOrganisationContactRelationships,
+                nodes: [
+                  new TreeNode({ roleType: m.OrganisationContactRelationship.ContactKinds }),
+                  new TreeNode({ roleType: m.OrganisationContactRelationship.Contact })
+                ]
+              }),
+              new TreeNode({
+                roleType: m.Party.PartyContactMechanisms,
+                nodes: [
+                  new TreeNode({ roleType: m.PartyContactMechanism.ContactPurposes }),
+                  new TreeNode({ roleType: m.PartyContactMechanism.ContactMechanism })
+                ]
+              }),
+              new TreeNode({
+                roleType: m.Party.CurrentPartyContactMechanisms,
+                nodes: [
+                  new TreeNode({ roleType: m.PartyContactMechanism.ContactPurposes }),
+                  new TreeNode({ roleType: m.PartyContactMechanism.ContactMechanism })
+                ]
+              }),
+              new TreeNode({
+                roleType: m.Party.InactivePartyContactMechanisms,
+                nodes: [
+                  new TreeNode({ roleType: m.PartyContactMechanism.ContactPurposes }),
+                  new TreeNode({ roleType: m.PartyContactMechanism.ContactMechanism })
+                ]
+              }),
+              new TreeNode({
+                roleType: m.Organisation.GeneralCorrespondence,
+                nodes: [
+                  new TreeNode({
+                    roleType: m.PostalAddress.PostalBoundary,
+                    nodes: [
+                      new TreeNode({ roleType: m.PostalBoundary.Country })
+                    ]
+                  })
+                ]
+              })
+            ]
+          }),
+          new Fetch({
+            name: 'communicationEvents',
+            id: this.id,
+            path: new Path({ step: m.Organisation.CommunicationEventsWhereInvolvedParty }),
+          }),
+          // new Fetch({
+          //   name: 'internalOrganisation',
+          //   id:
+          //   path: new Path({ step: m.Organi }),
+          // }),
+        ];
+
+        const query = [
+          new Query(
+            {
+              name: 'locales',
+              objectType: m.Locale
+            }),
+          new Query(
+            {
+              name: 'countries',
+              objectType: m.Country
+            }),
+          new Query(
+            {
+              name: 'genders',
+              objectType: m.GenderType
+            }),
+          new Query(
+            {
+              name: 'salutations',
+              objectType: m.Salutation
+            }),
+          new Query(
+            {
+              name: 'organisationContactKinds',
+              objectType: m.OrganisationContactKind
+            }),
+          new Query(
+            {
+              name: 'contactMechanismPurposes',
+              objectType: m.ContactMechanismPurpose
+            })
+        ];
+
         this.scope.session.reset();
 
         return this.scope
-          .load('Organisation', { id: this.id })
-          .do(() => {
-            this.organisation = this.scope.objects.organisation as Organisation;
-            this.communicationEvents = this.scope.collections.communicationEvents as CommunicationEvent[];
-
-          })
-          .catch((e: any) => {
-            this.snackBar.open(e.toString(), 'close', { duration: 5000 });
-            this.goBack();
-            return Observable.empty()
-          });
+          .load('Pull', new PullRequest({ fetch: fetch, query: query }))
       })
-      .subscribe();
+      .subscribe(() => {
+        this.organisation = this.scope.objects.organisation as Organisation;
+        this.communicationEvents = this.scope.collections.communicationEvents as CommunicationEvent[];
+      },
+      error => {
+        console.log(error);
+        this.snackBar.open(error, 'close', { duration: 5000 });
+        this.goBack();
+      }
+      );
   }
 
   ngAfterViewInit(): void {

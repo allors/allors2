@@ -519,6 +519,5 @@ namespace Allors.Repository
         [Indexed]
 
         VatRegime VatRegime { get; set; }
-
     }
 }
