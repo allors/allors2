@@ -23,7 +23,7 @@
             return new Sort
                        {
                            RoleType = roleType,
-                           Direction = "Desc".Equals(this.D) ? SortDirection.Descending : SortDirection.Ascending
+                           Direction = "DESC".Equals(this.D?.ToUpper()) ? SortDirection.Descending : SortDirection.Ascending
                        };
         }
     }
