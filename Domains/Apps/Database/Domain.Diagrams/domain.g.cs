@@ -1405,6 +1405,8 @@ namespace Allors.Domain
 
 						global::System.String MiddleName {set;}
 
+						PersonRole PersonRoles {set;}
+
 						Salutation Salutation {set;}
 
 						global::System.Decimal? YTDCommission {set;}
@@ -1768,13 +1770,6 @@ namespace Allors.Domain
 		public interface ClientAgreement  : Agreement 
 		{
 		}
-		public interface ClientRelationship  : PartyRelationship 
-		{
-						Party Client {set;}
-
-						InternalOrganisation InternalOrganisation {set;}
-
-		}
 		public interface Colour  : Enumeration, ProductFeature 
 		{
 		}
@@ -2034,13 +2029,6 @@ namespace Allors.Domain
 		public interface DiscountComponent  : PriceComponent 
 		{
 						global::System.Decimal? Percentage {set;}
-
-		}
-		public interface DistributionChannelRelationship  : PartyRelationship 
-		{
-						InternalOrganisation InternalOrganisation {set;}
-
-						Organisation Distributor {set;}
 
 		}
 		public interface DropShipment  : Shipment 
@@ -2894,6 +2882,8 @@ namespace Allors.Domain
 		}
 		public interface Organisation  : Party, Deletable 
 		{
+						OrganisationRole OrganisationRoles {set;}
+
 						SecurityToken ContactsSecurityToken {set;}
 
 						AccessControl ContactsAccessControl {set;}
@@ -2954,6 +2944,9 @@ namespace Allors.Domain
 
 						AccountingPeriod AccountingPeriod {set;}
 
+		}
+		public interface OrganisationRole  : Enumeration 
+		{
 		}
 		public interface OrganisationRollUp  : PartyRelationship 
 		{
@@ -3038,13 +3031,6 @@ namespace Allors.Domain
 						global::System.Int32? Quantity {set;}
 
 						PartBillOfMaterial PartBillOfMaterial {set;}
-
-		}
-		public interface Partnership  : PartyRelationship 
-		{
-						InternalOrganisation InternalOrganisation {set;}
-
-						Organisation Partner {set;}
 
 		}
 		public interface PartRevision  : Period, AccessControlledObject 
@@ -3373,6 +3359,9 @@ namespace Allors.Domain
 		{
 		}
 		public interface PersonalTitle  : Enumeration 
+		{
+		}
+		public interface PersonRole  : Enumeration 
 		{
 		}
 		public interface PersonTraining  : Period, AccessControlledObject 
@@ -3781,13 +3770,6 @@ namespace Allors.Domain
 		}
 		public interface ProposalObjectState  : ObjectState 
 		{
-		}
-		public interface ProspectRelationship  : PartyRelationship 
-		{
-						InternalOrganisation InternalOrganisation {set;}
-
-						Party Prospect {set;}
-
 		}
 		public interface Province  : CityBound, GeographicBoundary, CountryBound 
 		{

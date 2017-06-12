@@ -138,7 +138,7 @@ namespace Allors.Domain
             if (!this.ExistFiscalYearStartDay)
             {
                 this.FiscalYearStartDay = 1;
-            }            
+            }
         }
 
         public void AppsOnPreDerive(ObjectOnPreDerive method)
@@ -148,48 +148,31 @@ namespace Allors.Domain
             // TODO:
             if (derivation.ChangeSet.Associations.Contains(this.Id))
             {
-                if (this.ExistClientRelationshipsWhereClient)
+
+                foreach (CustomerRelationship relationship in this.CustomerRelationshipsWhereInternalOrganisation)
                 {
-                    foreach (ClientRelationship relationship in this.ClientRelationshipsWhereInternalOrganisation)
-                    {
-                        derivation.AddDependency(relationship, this);
-                    }
-
-                    foreach (CustomerRelationship relationship in this.CustomerRelationshipsWhereInternalOrganisation)
-                    {
-                        derivation.AddDependency(relationship, this);
-                    }
-
-                    foreach (DistributionChannelRelationship relationship in this.DistributionChannelRelationshipsWhereInternalOrganisation)
-                    {
-                        derivation.AddDependency(relationship, this);
-                    }
-
-                    foreach (Employment relationship in this.EmploymentsWhereEmployer)
-                    {
-                        derivation.AddDependency(relationship, this);
-                    }
-
-                    foreach (Partnership relationship in this.PartnershipsWhereInternalOrganisation)
-                    {
-                        derivation.AddDependency(relationship, this);
-                    }
-
-                    foreach (SalesRepRelationship relationship in this.SalesRepRelationshipsWhereInternalOrganisation)
-                    {
-                        derivation.AddDependency(relationship, this);
-                    }
-
-                    foreach (SupplierRelationship relationship in this.SupplierRelationshipsWhereInternalOrganisation)
-                    {
-                        derivation.AddDependency(relationship, this);
-                    }
+                    derivation.AddDependency(relationship, this);
                 }
 
-                foreach (PaymentMethod paymentMethod in this.PaymentMethods)
+                foreach (Employment relationship in this.EmploymentsWhereEmployer)
                 {
-                    derivation.AddDependency(paymentMethod, this);
+                    derivation.AddDependency(relationship, this);
                 }
+
+                foreach (SalesRepRelationship relationship in this.SalesRepRelationshipsWhereInternalOrganisation)
+                {
+                    derivation.AddDependency(relationship, this);
+                }
+
+                foreach (SupplierRelationship relationship in this.SupplierRelationshipsWhereInternalOrganisation)
+                {
+                    derivation.AddDependency(relationship, this);
+                }
+            }
+
+            foreach (PaymentMethod paymentMethod in this.PaymentMethods)
+            {
+                derivation.AddDependency(paymentMethod, this);
             }
         }
 
@@ -395,9 +378,9 @@ namespace Allors.Domain
                 {
                     sum += int.Parse(candidate.Substring(candidate.Length - i, 1)) * i;
                 }
-                
+
                 valid = sum % 11 == 0;
-                
+
                 if (!valid)
                 {
                     previous++;
@@ -406,11 +389,11 @@ namespace Allors.Domain
 
             return int.Parse(candidate);
         }
- 
+
         public bool IsPerson => false;
 
         public bool IsOrganisation => false;
 
-        public List<string> Roles => new List<string>() {"Internal organisation"};
+        public List<string> Roles => new List<string>() { "Internal organisation" };
     }
 }

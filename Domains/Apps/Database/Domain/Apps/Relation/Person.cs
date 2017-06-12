@@ -56,7 +56,7 @@ namespace Allors.Domain
             var organisationContactRelationships = this.OrganisationContactRelationshipsWhereContact;
             foreach (OrganisationContactRelationship relationship in organisationContactRelationships)
             {
-                if (relationship.FromDate.Date<= date &&
+                if (relationship.FromDate.Date <= date &&
                     (!relationship.ExistThroughDate || relationship.ThroughDate >= date))
                 {
                     return true;
@@ -84,46 +84,6 @@ namespace Allors.Domain
             }
 
             return false;
-        }
-
-        public List<string> Roles
-        {
-            get
-            {
-                var roles = new List<string>();
-
-                if (this.AppsIsActiveClient(DateTime.UtcNow.Date))
-                {
-                    roles.Add("Client");
-                }
-
-                if (this.AppsIsActiveCustomer(DateTime.UtcNow.Date))
-                {
-                    roles.Add("Customer");
-                }
-
-                if (this.AppsIsActiveEmployee(DateTime.UtcNow.Date))
-                {
-                    roles.Add("Employee");
-                }
-
-                if (this.AppsIsActiveOrganisationContact(DateTime.UtcNow.Date))
-                {
-                    roles.Add("Organisation contact");
-                }
-
-                if (this.AppsIsActiveSalesRep(DateTime.UtcNow.Date))
-                {
-                    roles.Add("Sales representative");
-                }
-
-                if (this.AppsIsActiveProspect(DateTime.UtcNow.Date))
-                {
-                    roles.Add("Prospect");
-                }
-
-                return roles;
-            }
         }
 
         public bool IsActiveContact(DateTime date)
@@ -172,42 +132,34 @@ namespace Allors.Domain
             // TODO:
             if (derivation.ChangeSet.Associations.Contains(this.Id))
             {
-                if (this.ExistClientRelationshipsWhereClient)
+                foreach (CustomerRelationship relationship in this.CustomerRelationshipsWhereCustomer)
                 {
-                    foreach (ClientRelationship relationship in this.ClientRelationshipsWhereClient)
-                    {
-                        derivation.AddDependency(relationship, this);
-                    }
+                    derivation.AddDependency(relationship, this);
+                }
 
-                    foreach (CustomerRelationship relationship in this.CustomerRelationshipsWhereCustomer)
-                    {
-                        derivation.AddDependency(relationship, this);
-                    }
+                foreach (Employment relationship in this.EmploymentsWhereEmployee)
+                {
+                    derivation.AddDependency(relationship, this);
+                }
 
-                    foreach (Employment relationship in this.EmploymentsWhereEmployee)
-                    {
-                        derivation.AddDependency(relationship, this);
-                    }
+                foreach (OrganisationContactRelationship relationship in this.OrganisationContactRelationshipsWhereContact)
+                {
+                    derivation.AddDependency(relationship, this);
+                }
 
-                    foreach (OrganisationContactRelationship relationship in this.OrganisationContactRelationshipsWhereContact)
-                    {
-                        derivation.AddDependency(relationship, this);
-                    }
+                foreach (ProfessionalServicesRelationship relationship in this.ProfessionalServicesRelationshipsWhereProfessional)
+                {
+                    derivation.AddDependency(relationship, this);
+                }
 
-                    foreach (ProfessionalServicesRelationship relationship in this.ProfessionalServicesRelationshipsWhereProfessional)
-                    {
-                        derivation.AddDependency(relationship, this);
-                    }
+                foreach (SalesRepRelationship relationship in this.SalesRepRelationshipsWhereSalesRepresentative)
+                {
+                    derivation.AddDependency(relationship, this);
+                }
 
-                    foreach (SalesRepRelationship relationship in this.SalesRepRelationshipsWhereSalesRepresentative)
-                    {
-                        derivation.AddDependency(relationship, this);
-                    }
-
-                    foreach (SubContractorRelationship relationship in this.SubContractorRelationshipsWhereContractor)
-                    {
-                        derivation.AddDependency(relationship, this);
-                    }
+                foreach (SubContractorRelationship relationship in this.SubContractorRelationshipsWhereContractor)
+                {
+                    derivation.AddDependency(relationship, this);
                 }
             }
         }

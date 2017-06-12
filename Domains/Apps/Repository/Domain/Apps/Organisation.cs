@@ -117,6 +117,15 @@ namespace Allors.Repository
         #endregion
 
         #region Allors
+        [Id("6B9E0BC1-5CE5-48D3-BDDB-E364E8566AAA")]
+        [AssociationId("35A4477A-C742-417C-9167-7A1306B01373")]
+        [RoleId("CCEDB2E8-4428-4FB6-B67B-0443ED7AC3A4")]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToMany)]
+        [Indexed]
+        public OrganisationRole[] OrganisationRoles { get; set; }
+
+        #region Allors
         [Id("124181AE-3BB2-42E2-A27B-D9B811824282")]
         [AssociationId("E85FE7C7-0B10-4ABB-AD84-1B920DB767E2")]
         [RoleId("5E5718DC-1060-4BF1-9E76-B2D2927E028D")]
@@ -153,7 +162,7 @@ namespace Allors.Repository
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
-
+        [Workspace]
         public LegalForm LegalForm { get; set; }
 
         #region Allors
@@ -164,6 +173,7 @@ namespace Allors.Repository
         [Indexed]
         [Required]
         [Size(256)]
+        [Workspace]
         public string Name { get; set; }
 
         #region Allors
@@ -183,7 +193,7 @@ namespace Allors.Repository
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
-
+        [Workspace]
         public Image LogoImage { get; set; }
 
         #region Allors

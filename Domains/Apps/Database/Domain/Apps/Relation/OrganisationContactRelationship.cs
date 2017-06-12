@@ -64,8 +64,6 @@ namespace Allors.Domain
                 {
                     if (this.Organisation.AppsIsActiveCustomer(this.FromDate) ||
                         this.Organisation.AppsIsActiveSupplier(this.FromDate) ||
-                        this.Organisation.AppsIsActiveDistributor(this.FromDate) ||
-                        this.Organisation.AppsIsActivePartner(this.FromDate) ||
                         this.Organisation.AppsIsActiveProfessionalServicesProvider(this.FromDate) ||
                         this.Organisation.AppsIsActiveSubContractor(this.FromDate))
                     {

@@ -223,7 +223,6 @@
     <Compile Include="Apps\City.cs" />
     <Compile Include="Apps\CityBound.cs" />
     <Compile Include="Apps\ClientAgreement.cs" />
-    <Compile Include="Apps\ClientRelationship.cs" />
     <Compile Include="Apps\Colour.cs" />
     <Compile Include="Apps\Commentable.cs" />
     <Compile Include="Apps\CommunicationAttachment.cs" />
@@ -274,7 +273,6 @@
     <Compile Include="Apps\DisbursementAccountingTransaction.cs" />
     <Compile Include="Apps\DiscountAdjustment.cs" />
     <Compile Include="Apps\DiscountComponent.cs" />
-    <Compile Include="Apps\DistributionChannelRelationship.cs" />
     <Compile Include="Apps\Document.cs" />
     <Compile Include="Apps\DropShipment.cs" />
     <Compile Include="Apps\DropShipmentObjectState.cs" />
@@ -403,6 +401,7 @@
     <Compile Include="Apps\OrganisationContactRelationship.cs" />
     <Compile Include="Apps\OrganisationGlAccount.cs" />
     <Compile Include="Apps\OrganisationGlAccountBalance.cs" />
+    <Compile Include="Apps\OrganisationRole.cs" />
     <Compile Include="Apps\OrganisationRollUp.cs" />
     <Compile Include="Apps\OrganisationUnit.cs" />
     <Compile Include="Apps\OwnBankAccount.cs" />
@@ -416,7 +415,6 @@
     <Compile Include="Apps\Part.cs" />
     <Compile Include="Apps\PartBillOfMaterial.cs" />
     <Compile Include="Apps\PartBillOfMaterialSubstitute.cs" />
-    <Compile Include="Apps\Partnership.cs" />
     <Compile Include="Apps\PartRevision.cs" />
     <Compile Include="Apps\PartSpecification.cs" />
     <Compile Include="Apps\PartSpecificationObjectState.cs" />
@@ -456,6 +454,7 @@
     <Compile Include="Apps\Person.cs" />
     <Compile Include="Apps\PersonalTitle.cs" />
     <Compile Include="Apps\PersonClassification.cs" />
+    <Compile Include="Apps\PersonRole.cs" />
     <Compile Include="Apps\PersonTraining.cs" />
     <Compile Include="Apps\Phase.cs" />
     <Compile Include="Apps\PhoneCommunication.cs" />
@@ -511,7 +510,6 @@
     <Compile Include="Apps\Property.cs" />
     <Compile Include="Apps\Proposal.cs" />
     <Compile Include="Apps\ProposalObjectState.cs" />
-    <Compile Include="Apps\ProspectRelationship.cs" />
     <Compile Include="Apps\Province.cs" />
     <Compile Include="Apps\PurchaseAgreement.cs" />
     <Compile Include="Apps\PurchaseInvoice.cs" />
