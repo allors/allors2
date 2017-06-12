@@ -13,7 +13,7 @@ import { Organisation } from '../../../allors/domain';
 import { TdLoadingService, TdDialogService, TdMediaService } from '@covalent/core';
 
 @Component({
-  templateUrl: './organisations.component.html'
+  templateUrl: './organisations.component.html',
 })
 export class OrganisationsComponent implements AfterViewInit, OnDestroy {
 
@@ -41,7 +41,7 @@ export class OrganisationsComponent implements AfterViewInit, OnDestroy {
     this.titleService.setTitle('Organisations');
   }
 
-  ngOnDestroy() {
+  ngOnDestroy(): void {
     if (this.subscription) {
       this.subscription.unsubscribe();
     }
@@ -55,7 +55,7 @@ export class OrganisationsComponent implements AfterViewInit, OnDestroy {
 
     const m = this.allors.meta;
 
-    const query = [new Query(
+    const query: Query[] = [new Query(
       {
         name: 'organisations',
         objectType: m.Organisation,
@@ -66,12 +66,12 @@ export class OrganisationsComponent implements AfterViewInit, OnDestroy {
               new TreeNode({
                 roleType: m.PostalAddress.PostalBoundary,
                 nodes: [
-                  new TreeNode({roleType: m.PostalBoundary.Country})
-                ]
-              })
-            ]
-          })
-        ]
+                  new TreeNode({roleType: m.PostalBoundary.Country}),
+                ],
+              }),
+            ],
+          }),
+        ],
       })];
 
     this.scope.session.reset();
@@ -81,7 +81,7 @@ export class OrganisationsComponent implements AfterViewInit, OnDestroy {
       .subscribe(() => {
         this.data = this.scope.collections.organisations as Organisation[];
       },
-      error => {
+      (error: any) => {
         console.log(error);
         this.goBack();
       });

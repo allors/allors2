@@ -46,26 +46,6 @@ namespace Allors.Domain
             return false;
         }
 
-        public bool AppsIsActiveOrganisationContact(DateTime? date)
-        {
-            if (date == DateTime.MinValue)
-            {
-                return false;
-            }
-
-            var organisationContactRelationships = this.OrganisationContactRelationshipsWhereContact;
-            foreach (OrganisationContactRelationship relationship in organisationContactRelationships)
-            {
-                if (relationship.FromDate.Date <= date &&
-                    (!relationship.ExistThroughDate || relationship.ThroughDate >= date))
-                {
-                    return true;
-                }
-            }
-
-            return false;
-        }
-
         public bool AppsIsActiveSalesRep(DateTime? date)
         {
             if (date == DateTime.MinValue)
@@ -93,25 +73,6 @@ namespace Allors.Domain
                 return false;
             }
 
-            // var contactRelationships = this.OrganisationContactRelationshipsWhereContact;
-            // contactRelationships.Filter.AddLessThan(OrganisationContactRelationships.Meta.FromDate, date.AddDays(1));
-            // var or1 = contactRelationships.Filter.AddOr();
-            // or1.AddNot().AddExists(PartyRelationships.Meta.ThroughDate);
-            // or1.AddGreaterThan(PartyRelationships.Meta.ThroughDate, date.AddDays(-1));
-
-            // foreach (OrganisationContactRelationship contactRelationship in contactRelationships)
-            // {
-            // var customerRelationships = contactRelationship.Organisation.CustomerRelationshipsWhereCustomer;
-            // customerRelationships.Filter.AddLessThan(M.CustomerRelationship.FromDate, date.AddDays(1));
-            // var or2 = contactRelationships.Filter.AddOr();
-            // or2.AddNot().AddExists(PartyRelationships.Meta.ThroughDate);
-            // or2.AddGreaterThan(PartyRelationships.Meta.ThroughDate, date.AddDays(-1));
-
-            // if (customerRelationships.Count > 0)
-            // {
-            // return true;
-            // }
-            // }
             var contactRelationships = this.OrganisationContactRelationshipsWhereContact;
             foreach (OrganisationContactRelationship relationship in contactRelationships)
             {
@@ -130,38 +91,38 @@ namespace Allors.Domain
             var derivation = method.Derivation;
 
             // TODO:
-            if (derivation.ChangeSet.Associations.Contains(this.Id))
-            {
-                foreach (CustomerRelationship relationship in this.CustomerRelationshipsWhereCustomer)
-                {
-                    derivation.AddDependency(relationship, this);
-                }
+            //if (derivation.ChangeSet.Associations.Contains(this.Id))
+            //{
+            //    foreach (CustomerRelationship relationship in this.CustomerRelationshipsWhereCustomer)
+            //    {
+            //        derivation.AddDependency(relationship, this);
+            //    }
 
-                foreach (Employment relationship in this.EmploymentsWhereEmployee)
-                {
-                    derivation.AddDependency(relationship, this);
-                }
+            //    foreach (Employment relationship in this.EmploymentsWhereEmployee)
+            //    {
+            //        derivation.AddDependency(relationship, this);
+            //    }
 
-                foreach (OrganisationContactRelationship relationship in this.OrganisationContactRelationshipsWhereContact)
-                {
-                    derivation.AddDependency(relationship, this);
-                }
+            //    foreach (OrganisationContactRelationship relationship in this.OrganisationContactRelationshipsWhereContact)
+            //    {
+            //        derivation.AddDependency(relationship, this);
+            //    }
 
-                foreach (ProfessionalServicesRelationship relationship in this.ProfessionalServicesRelationshipsWhereProfessional)
-                {
-                    derivation.AddDependency(relationship, this);
-                }
+            //    foreach (ProfessionalServicesRelationship relationship in this.ProfessionalServicesRelationshipsWhereProfessional)
+            //    {
+            //        derivation.AddDependency(relationship, this);
+            //    }
 
-                foreach (SalesRepRelationship relationship in this.SalesRepRelationshipsWhereSalesRepresentative)
-                {
-                    derivation.AddDependency(relationship, this);
-                }
+            //    foreach (SalesRepRelationship relationship in this.SalesRepRelationshipsWhereSalesRepresentative)
+            //    {
+            //        derivation.AddDependency(relationship, this);
+            //    }
 
-                foreach (SubContractorRelationship relationship in this.SubContractorRelationshipsWhereContractor)
-                {
-                    derivation.AddDependency(relationship, this);
-                }
-            }
+            //    foreach (SubContractorRelationship relationship in this.SubContractorRelationshipsWhereContractor)
+            //    {
+            //        derivation.AddDependency(relationship, this);
+            //    }
+            //}
         }
 
         public void AppsOnDerive(ObjectOnDerive method)
@@ -169,7 +130,6 @@ namespace Allors.Domain
             var derivation = method.Derivation;
 
             this.PartyName = this.DerivePartyName();
-            this.AppsOnDeriveCurrentEmployment(derivation);
             this.AppsOnDeriveCurrentContacts(derivation);
             this.AppsOnDeriveInactiveContacts(derivation);
             this.AppsOnDeriveCurrentOrganisationContactRelationships(derivation);
@@ -287,27 +247,6 @@ namespace Allors.Domain
                 if (this.ExistOwnerSecurityToken)
                 {
                     this.OwnerSecurityToken.Delete();
-                }
-            }
-        }
-
-        public void AppsOnDeriveCurrentEmployment(IDerivation derivation)
-        {
-            InternalOrganisation previousEmployer = null;
-
-            if (this.ExistCurrentEmployment)
-            {
-                previousEmployer = this.CurrentEmployment.Employer;
-                this.RemoveCurrentEmployment();
-            }
-
-            var employments = this.EmploymentsWhereEmployee;
-            foreach (Employment employment in employments)
-            {
-                if (employment.ExistEmployer &&
-                    employment.FromDate <= DateTime.UtcNow && (!employment.ExistThroughDate || employment.ThroughDate >= DateTime.UtcNow))
-                {
-                    this.CurrentEmployment = employment;
                 }
             }
         }

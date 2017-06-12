@@ -23,16 +23,12 @@ namespace Allors
             this.SetupUser("admin1@allors.com", "administrator1", "", "x");
 
             var euro = new Currencies(this.Session).FindBy(M.Currency.IsoCode, "EUR");
-            var city = new CityBuilder(this.Session).WithName("Mechelen").Build();
-            var postalCode = new PostalCodeBuilder(this.Session).WithCode("2800").WithAbbreviation("Mechelen").Build();
 
             var belgium = new Countries(this.Session).FindBy(M.Country.IsoCode, "BE");
 
             var postalAddress = new PostalAddressBuilder(this.Session)
                 .WithAddress1("Kleine Nieuwedijkstraat 4")
-                .WithGeographicBoundary(postalCode)
-                .WithGeographicBoundary(city)
-                .WithGeographicBoundary(belgium)
+                .WithPostalBoundary(new PostalBoundaryBuilder(this.Session).WithLocality("Mechelen").WithPostalCode("2800").WithCountry(belgium).Build())
                 .Build();
 
             var phone = new TelecommunicationsNumberBuilder(this.Session)
