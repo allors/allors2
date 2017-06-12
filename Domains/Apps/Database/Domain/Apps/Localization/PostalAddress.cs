@@ -41,6 +41,9 @@ namespace Allors.Domain
         {
             var derivation = method.Derivation;
 
+            derivation.Validation.AssertAtLeastOne(this, M.PostalAddress.GeographicBoundaries, M.PostalAddress.PostalBoundary);
+            derivation.Validation.AssertExistsAtMostOne(this, M.PostalAddress.GeographicBoundaries, M.PostalAddress.PostalBoundary);
+
             this.DeriveFormattedfullAddress();
             this.AppsOnDerivePostalCode();
             this.AppsOnDeriveCity();
@@ -90,6 +93,11 @@ namespace Allors.Domain
                     this.Country = (Country)geographicBoundary;
                     break;
                 }
+            }
+
+            if (this.ExistPostalBoundary)
+            {
+                this.Country = this.PostalBoundary.Country;
             }
         }
 
@@ -145,6 +153,40 @@ namespace Allors.Domain
                         AppendNextLine(fullAddress);
                         fullAddress.Append(country.Name);
                     }
+                }
+            }
+
+            if (this.ExistPostalBoundary)
+            {
+                AppendNextLine(fullAddress);
+                if (this.PostalBoundary.ExistPostalCode)
+                {
+                    fullAddress.Append(this.PostalBoundary.PostalCode);
+                    if (this.PostalBoundary.ExistLocality)
+                    {
+                        fullAddress.Append(" ");
+                    }
+                    else
+                    {
+                        AppendNextLine(fullAddress);
+                    }
+                }
+
+                if (this.PostalBoundary.ExistLocality)
+                {
+                    fullAddress.Append(this.PostalBoundary.Locality);
+                    AppendNextLine(fullAddress);
+                }
+            
+                if (this.PostalBoundary.ExistRegion)
+                {
+                    fullAddress.Append(this.PostalBoundary.Region);
+                    AppendNextLine(fullAddress);
+                }
+
+                if (this.PostalBoundary.ExistCountry)
+                {
+                    fullAddress.Append(this.PostalBoundary.Country.Name);
                 }
             }
 

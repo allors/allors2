@@ -45,12 +45,103 @@ namespace Allors.Domain
             this.AppsOnDeriverContactUserGroup(derivation);
         }
 
+        public ClientRelationship ClientRelationShip(InternalOrganisation internalOrganisation)
+        {
+            var relationships = this.ClientRelationshipsWhereClient;
+            relationships.Filter.AddEquals(M.ClientRelationship.InternalOrganisation, internalOrganisation);
+
+            foreach (ClientRelationship relationship in relationships)
+            {
+                if (relationship.FromDate <= DateTime.Now &&
+                    (!relationship.ExistThroughDate || relationship.ThroughDate >= DateTime.Now))
+                {
+                    return relationship;
+                }
+            }
+
+            return null;
+        }
+
         public CustomerRelationship CustomerRelationship(InternalOrganisation internalOrganisation)
         {
             var relationships = this.CustomerRelationshipsWhereCustomer;
             relationships.Filter.AddEquals(M.CustomerRelationship.InternalOrganisation, internalOrganisation);
 
             foreach (CustomerRelationship relationship in relationships)
+            {
+                if (relationship.FromDate <= DateTime.Now &&
+                    (!relationship.ExistThroughDate || relationship.ThroughDate >= DateTime.Now))
+                {
+                    return relationship;
+                }
+            }
+
+            return null;
+        }
+
+        public bool AppsIsActiveDistributor(DateTime? date)
+        {
+            if (date == DateTime.MinValue)
+            {
+                return false;
+            }
+
+            var distributorRelationships = this.DistributionChannelRelationshipsWhereDistributor;
+            foreach (DistributionChannelRelationship relationship in distributorRelationships)
+            {
+                if (relationship.FromDate.Date <= date &&
+                    (!relationship.ExistThroughDate || relationship.ThroughDate >= date))
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        public DistributionChannelRelationship DistributionChannelRelationship(InternalOrganisation internalOrganisation)
+        {
+            var relationships = this.DistributionChannelRelationshipsWhereDistributor;
+            relationships.Filter.AddEquals(M.DistributionChannelRelationship.InternalOrganisation, internalOrganisation);
+
+            foreach (DistributionChannelRelationship relationship in relationships)
+            {
+                if (relationship.FromDate <= DateTime.Now &&
+                    (!relationship.ExistThroughDate || relationship.ThroughDate >= DateTime.Now))
+                {
+                    return relationship;
+                }
+            }
+
+            return null;
+        }
+
+        public bool AppsIsActivePartner(DateTime? date)
+        {
+            if (date == DateTime.MinValue)
+            {
+                return false;
+            }
+
+            var partnerships = this.PartnershipsWherePartner;
+            foreach (Partnership partnership in partnerships)
+            {
+                if (partnership.FromDate.Date <= date &&
+                    (!partnership.ExistThroughDate || partnership.ThroughDate >= date))
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        public Partnership Partnership(InternalOrganisation internalOrganisation)
+        {
+            var relationships = this.PartnershipsWherePartner;
+            relationships.Filter.AddEquals(M.Partnership.InternalOrganisation, internalOrganisation);
+
+            foreach (Partnership relationship in relationships)
             {
                 if (relationship.FromDate <= DateTime.Now &&
                     (!relationship.ExistThroughDate || relationship.ThroughDate >= DateTime.Now))
@@ -80,6 +171,23 @@ namespace Allors.Domain
             }
 
             return false;
+        }
+
+        public ProspectRelationship ProspectRelationship(InternalOrganisation internalOrganisation)
+        {
+            var relationships = this.ProspectRelationshipsWhereProspect;
+            relationships.Filter.AddEquals(M.ProspectRelationship.InternalOrganisation, internalOrganisation);
+
+            foreach (ProspectRelationship relationship in relationships)
+            {
+                if (relationship.FromDate <= DateTime.Now &&
+                    (!relationship.ExistThroughDate || relationship.ThroughDate >= DateTime.Now))
+                {
+                    return relationship;
+                }
+            }
+
+            return null;
         }
 
         public bool AppsIsActiveSubContractor(DateTime? date)
@@ -240,6 +348,56 @@ namespace Allors.Domain
                 {
                     organisationContactRelationship.Contact.Delete();
                 }
+            }
+        }
+
+        public List<string> Roles
+        {
+            get
+            {
+                var roles = new List<string>();
+
+                if (this.AppsIsActiveClient(DateTime.UtcNow.Date))
+                {
+                    roles.Add("Client");
+                }
+
+                if (this.AppsIsActiveCustomer(DateTime.UtcNow.Date))
+                {
+                    roles.Add("Customer");
+                }
+
+                if (this.AppsIsActiveDistributor(DateTime.UtcNow.Date))
+                {
+                    roles.Add("Distributor");
+                }
+
+                if (this.AppsIsActivePartner(DateTime.UtcNow.Date))
+                {
+                    roles.Add("Partner");
+                }
+
+                if (this.AppsIsActiveProfessionalServicesProvider(DateTime.UtcNow.Date))
+                {
+                    roles.Add("Professional Service Provider");
+                }
+
+                if (this.AppsIsActiveProspect(DateTime.UtcNow.Date))
+                {
+                    roles.Add("Prospect");
+                }
+
+                if (this.AppsIsActiveSubContractor(DateTime.UtcNow.Date))
+                {
+                    roles.Add("Subcontractor");
+                }
+
+                if (this.AppsIsActiveSupplier(DateTime.UtcNow.Date))
+                {
+                    roles.Add("Supplier");
+                }
+
+                return roles;
             }
         }
     }

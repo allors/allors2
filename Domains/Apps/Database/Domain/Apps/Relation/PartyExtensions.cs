@@ -97,6 +97,46 @@ namespace Allors.Domain
             return null;
         }
 
+        public static bool AppsIsActiveProspect(this Party party, DateTime? date)
+        {
+            if (date == DateTime.MinValue)
+            {
+                return false;
+            }
+
+            var prospectRelationships = party.ProspectRelationshipsWhereProspect;
+            foreach (ProspectRelationship relationship in prospectRelationships)
+            {
+                if (relationship.FromDate.Date <= date &&
+                    (!relationship.ExistThroughDate || relationship.ThroughDate >= date))
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        public static bool AppsIsActiveClient(this Party party, DateTime? date)
+        {
+            if (date == DateTime.MinValue)
+            {
+                return false;
+            }
+
+            var clientRelationships = party.ClientRelationshipsWhereClient;
+            foreach (ClientRelationship relationship in clientRelationships)
+            {
+                if (relationship.FromDate.Date <= date &&
+                    (!relationship.ExistThroughDate || relationship.ThroughDate >= date))
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
         public static bool AppsIsActiveCustomer(this Party party, DateTime? date)
         {
             if (date == DateTime.MinValue)

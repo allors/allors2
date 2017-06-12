@@ -223,6 +223,7 @@
     <Compile Include="Apps\City.cs" />
     <Compile Include="Apps\CityBound.cs" />
     <Compile Include="Apps\ClientAgreement.cs" />
+    <Compile Include="Apps\ClientRelationship.cs" />
     <Compile Include="Apps\Colour.cs" />
     <Compile Include="Apps\Commentable.cs" />
     <Compile Include="Apps\CommunicationAttachment.cs" />
@@ -273,6 +274,7 @@
     <Compile Include="Apps\DisbursementAccountingTransaction.cs" />
     <Compile Include="Apps\DiscountAdjustment.cs" />
     <Compile Include="Apps\DiscountComponent.cs" />
+    <Compile Include="Apps\DistributionChannelRelationship.cs" />
     <Compile Include="Apps\Document.cs" />
     <Compile Include="Apps\DropShipment.cs" />
     <Compile Include="Apps\DropShipmentObjectState.cs" />
@@ -414,6 +416,7 @@
     <Compile Include="Apps\Part.cs" />
     <Compile Include="Apps\PartBillOfMaterial.cs" />
     <Compile Include="Apps\PartBillOfMaterialSubstitute.cs" />
+    <Compile Include="Apps\Partnership.cs" />
     <Compile Include="Apps\PartRevision.cs" />
     <Compile Include="Apps\PartSpecification.cs" />
     <Compile Include="Apps\PartSpecificationObjectState.cs" />
@@ -453,7 +456,6 @@
     <Compile Include="Apps\Person.cs" />
     <Compile Include="Apps\PersonalTitle.cs" />
     <Compile Include="Apps\PersonClassification.cs" />
-    <Compile Include="Apps\OrganisationRole.cs" />
     <Compile Include="Apps\PersonTraining.cs" />
     <Compile Include="Apps\Phase.cs" />
     <Compile Include="Apps\PhoneCommunication.cs" />
@@ -470,6 +472,7 @@
     <Compile Include="Apps\PositionType.cs" />
     <Compile Include="Apps\PositionTypeRate.cs" />
     <Compile Include="Apps\PostalAddress.cs" />
+    <Compile Include="Apps\PostalBoundary.cs" />
     <Compile Include="Apps\PostalCode.cs" />
     <Compile Include="Apps\Priceable.cs" />
     <Compile Include="Apps\PriceComponent.cs" />
@@ -508,6 +511,7 @@
     <Compile Include="Apps\Property.cs" />
     <Compile Include="Apps\Proposal.cs" />
     <Compile Include="Apps\ProposalObjectState.cs" />
+    <Compile Include="Apps\ProspectRelationship.cs" />
     <Compile Include="Apps\Province.cs" />
     <Compile Include="Apps\PurchaseAgreement.cs" />
     <Compile Include="Apps\PurchaseInvoice.cs" />
@@ -612,7 +616,6 @@
     <Compile Include="Apps\Size.cs" />
     <Compile Include="Apps\Skill.cs" />
     <Compile Include="Apps\SkillLevel.cs" />
-    <Compile Include="Apps\PersonRole.cs" />
     <Compile Include="Apps\SkillRating.cs" />
     <Compile Include="Apps\SoftwareFeature.cs" />
     <Compile Include="Apps\StandardServiceOrderItem.cs" />

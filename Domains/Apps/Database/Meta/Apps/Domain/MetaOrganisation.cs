@@ -17,7 +17,14 @@ namespace Allors.Meta
 
             this.AngularList = new Tree(organisation)
                 .Add(M.Party.GeneralCorrespondence,
-                    new Tree(M.PostalAddress));
+                    new Tree(M.PostalAddress)
+                        .Add(M.PostalAddress.Address1)
+                        .Add(M.PostalAddress.Address2)
+                        .Add(M.PostalAddress.Address3)
+                        .Add(M.PostalAddress.PostalBoundary, new Tree(M.PostalBoundary)
+                            .Add(M.PostalBoundary.PostalCode)
+                            .Add(M.PostalBoundary.Locality)
+                            .Add(M.PostalBoundary.Country)));
 
             this.AngularDetail = new Tree(organisation)
                 .Add(organisation.IndustryClassification)
@@ -43,7 +50,14 @@ namespace Allors.Meta
                         .Add(M.PartyContactMechanism.ContactPurposes)
                         .Add(M.PartyContactMechanism.ContactMechanism))
                 .Add(M.Party.GeneralCorrespondence,
-                    new Tree(M.PostalAddress))
+                    new Tree(M.PostalAddress)
+                    .Add(M.PostalAddress.Address1)
+                    .Add(M.PostalAddress.Address2)
+                    .Add(M.PostalAddress.Address3)
+                    .Add(M.PostalAddress.PostalBoundary, new Tree(M.PostalBoundary)
+                        .Add(M.PostalBoundary.PostalCode)
+                        .Add(M.PostalBoundary.Locality)
+                        .Add(M.PostalBoundary.Country)))
                 .Add(M.Party.Locale,
                     new Tree(M.Locale)
                         .Add(M.Locale.Country)
