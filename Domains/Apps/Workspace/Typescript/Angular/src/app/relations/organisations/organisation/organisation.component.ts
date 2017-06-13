@@ -7,7 +7,8 @@ import { TdMediaService } from '@covalent/core';
 
 import { Scope } from '../../../../allors/angular/base/Scope';
 import { AllorsService } from '../../../allors.service';
-import { InternalOrganisation, Organisation, Locale, CustomerRelationship } from '../../../../allors/domain';
+import { PullRequest, Fetch, Path, Query, Equals, Like, TreeNode, Sort, Page, Locale, OrganisationRole, Organisation } from '../../../../allors/domain';
+import { MetaDomain } from '../../../../allors/meta/index';
 
 @Component({
   templateUrl: './organisation.component.html',
@@ -16,12 +17,12 @@ export class OrganisationFormComponent implements OnInit, AfterViewInit, OnDestr
 
   private subscription: Subscription;
   private scope: Scope;
+  private id: string;
 
   locales: Locale[];
-  internalOrganisation: InternalOrganisation;
+  roles: OrganisationRole[];
 
   form: FormGroup;
-  id: string;
 
   constructor(private allors: AllorsService,
     private route: ActivatedRoute,
@@ -31,50 +32,78 @@ export class OrganisationFormComponent implements OnInit, AfterViewInit, OnDestr
     this.scope = new Scope(allors.database, allors.workspace);
   }
 
+  createForm(): void {
+    this.form = this.fb.group(
+      {
+        Roles: ['', Validators.required],
+        Name: ['', Validators.required],
+        Locale: [''],
+      },
+    );
+  }
+
   ngOnInit(): void {
     this.subscription = this.route.url
       .mergeMap((url: any) => {
 
         this.id = this.route.snapshot.paramMap.get('id');
 
-        this.form = this.fb.group({
-          Name: ['', Validators.required],
-          Locale: [''],
-        });
+        const m: MetaDomain = this.allors.meta;
+
+        const fetch: Fetch[] = [
+          new Fetch({
+            name: 'organisation',
+            id: this.id,
+          }),
+        ];
+
+        const query: Query[] = [
+          new Query(
+            {
+              name: 'locales',
+              objectType: m.Locale,
+            }),
+          new Query(
+            {
+              name: 'roles',
+              objectType: m.OrganisationRole,
+            }),
+        ];
 
         this.scope.session.reset();
 
         return this.scope
-          .load('Organisation', { id: this.id })
-          .do(() => {
-            this.internalOrganisation = this.scope.objects.internalOrganisation as InternalOrganisation;
-            this.locales = this.scope.collections.locales as Locale[];
-
-            if (this.id) {
-              const organisation: Organisation = this.scope.objects.organisation as Organisation;
-              this.form.controls.Name.patchValue(organisation.Name);
-              this.form.controls.Locale.patchValue(organisation.Locale ? organisation.Locale.id : undefined);
-            }
-            else {
-              this.form.controls.Name.patchValue(undefined);
-              this.form.controls.Locale.patchValue(undefined);
-            }
-
-          })
-          .catch((e: any) => {
-            this.snackBar.open(e.toString(), 'close', { duration: 5000 });
-            this.goBack();
-            return Observable.empty()
-          });
+          .load('Pull', new PullRequest({ fetch: fetch, query: query }))
       })
-      .subscribe();
+      .subscribe(() => {
+
+        this.locales = this.scope.collections.locales as Locale[];
+        this.roles = this.scope.collections.roles as OrganisationRole[];
+
+        if (this.id) {
+          const organisation: Organisation = this.scope.objects.organisation as Organisation;
+          this.form.controls.Roles.patchValue(organisation.OrganisationRoles);
+          this.form.controls.Name.patchValue(organisation.Name);
+          this.form.controls.Locale.patchValue(organisation.Locale ? organisation.Locale.id : undefined);
+        }
+        // else {
+        //   this.form.controls.Name.patchValue(undefined);
+        //   this.form.controls.Locale.patchValue(undefined);
+        // }
+      },
+      (error) => {
+        console.log(error);
+        this.snackBar.open(error, 'close', { duration: 5000 });
+        this.goBack();
+      },
+    );
   }
 
   ngAfterViewInit(): void {
     this.media.broadcast();
   }
 
-  ngOnDestroy() {
+  ngOnDestroy(): void {
     if (this.subscription) {
       this.subscription.unsubscribe();
     }
@@ -86,14 +115,8 @@ export class OrganisationFormComponent implements OnInit, AfterViewInit, OnDestr
 
     if (this.id) {
       organisation = this.scope.session.get(this.id) as Organisation;
-    }
-    else {
+    } else {
       organisation = this.scope.session.create('Organisation') as Organisation;
-
-      let customerRelationship = this.scope.session.create('CustomerRelationship') as CustomerRelationship
-      customerRelationship.InternalOrganisation = this.internalOrganisation;
-      customerRelationship.Customer = organisation;
-      customerRelationship.FromDate = new Date();
     }
 
     organisation.Name = this.form.controls.Name.value;

@@ -25,6 +25,7 @@ namespace Allors
             var euro = new Currencies(this.Session).FindBy(M.Currency.IsoCode, "EUR");
 
             var belgium = new Countries(this.Session).FindBy(M.Country.IsoCode, "BE");
+            var usa = new Countries(this.Session).FindBy(M.Country.IsoCode, "US");
 
             var postalAddress = new PostalAddressBuilder(this.Session)
                 .WithAddress1("Kleine Nieuwedijkstraat 4")
@@ -116,8 +117,7 @@ namespace Allors
 
             var acmePostalAddress = new PostalAddressBuilder(this.Session)
                 .WithAddress1("Acme address 1")
-                .WithGeographicBoundary(new CityBuilder(this.Session).WithName("Acme city").Build())
-                .WithGeographicBoundary(new PostalCodeBuilder(this.Session).WithCode("1111").Build())
+                .WithPostalBoundary(new PostalBoundaryBuilder(this.Session).WithLocality("Acme city").WithPostalCode("1111").WithCountry(usa).Build())
                 .Build();
 
             var acmeBillingAddress = new PartyContactMechanismBuilder(this.Session)
@@ -135,15 +135,10 @@ namespace Allors
 
             var acme = new OrganisationBuilder(this.Session)
                 .WithName("Acme")
+                .WithOrganisationRole(new OrganisationRoles(this.Session).Customer)
                 .WithLocale(new Locales(this.Session).EnglishUnitedStates)
                 .WithPartyContactMechanism(acmeBillingAddress)
                 .WithPartyContactMechanism(acmeInquiries)
-                .Build();
-
-            new CustomerRelationshipBuilder(this.Session)
-                .WithInternalOrganisation(Singleton.Instance(this.Session).DefaultInternalOrganisation)
-                .WithCustomer(acme)
-                .WithFromDate(DateTime.UtcNow)
                 .Build();
 
             var contact1Email = new PartyContactMechanismBuilder(this.Session)
@@ -159,14 +154,16 @@ namespace Allors
                 .Build();
 
             var contact1 = new PersonBuilder(this.Session)
-                .WithFirstName("employee1")
+                .WithFirstName("contact1")
+                .WithPersonRole(new PersonRoles(this.Session).Contact)
                 .WithGender(new GenderTypes(this.Session).Male)
                 .WithLocale(new Locales(this.Session).EnglishUnitedStates)
                 .WithPartyContactMechanism(contact1Email)
                 .Build();
 
             var contact2 = new PersonBuilder(this.Session)
-                .WithFirstName("employee2")
+                .WithFirstName("contact2")
+                .WithPersonRole(new PersonRoles(this.Session).Contact)
                 .WithGender(new GenderTypes(this.Session).Male)
                 .WithLocale(new Locales(this.Session).EnglishUnitedStates)
                 .WithPartyContactMechanism(contact2PhoneNumber)
@@ -201,8 +198,14 @@ namespace Allors
         {
             var userEmail = new EmailAddressBuilder(this.Session).WithElectronicAddressString(email).Build();
 
-            var person = new PersonBuilder(this.Session).WithUserName(email).WithFirstName(firstName)
-                .WithLastName(lastName).WithUserEmail(userEmail.ElectronicAddressString).WithUserEmailConfirmed(true).Build();
+            var person = new PersonBuilder(this.Session)
+                .WithPersonRole(new PersonRoles(this.Session).Employee)
+                .WithUserName(email)
+                .WithFirstName(firstName)
+                .WithLastName(lastName)
+                .WithUserEmail(userEmail.ElectronicAddressString)
+                .WithUserEmailConfirmed(true)
+                .Build();
 
             person.AddPartyContactMechanism(
                 new PartyContactMechanismBuilder(this.Session).WithContactMechanism(userEmail)

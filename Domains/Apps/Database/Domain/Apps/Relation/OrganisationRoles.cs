@@ -24,9 +24,9 @@ namespace Allors.Domain
 
         private UniquelyIdentifiableCache<OrganisationRole> cache;
 
-        public OrganisationRole Employee => this.Cache.Get(CustomerId);
+        public OrganisationRole Customer => this.Cache.Get(CustomerId);
 
-        public OrganisationRole Contact => this.Cache.Get(SupplierId);
+        public OrganisationRole Supplier => this.Cache.Get(SupplierId);
 
         private UniquelyIdentifiableCache<OrganisationRole> Cache => this.cache ?? (this.cache = new UniquelyIdentifiableCache<OrganisationRole>(this.Session));
 

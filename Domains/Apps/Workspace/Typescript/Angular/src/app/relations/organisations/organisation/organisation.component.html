@@ -6,7 +6,14 @@
     <md-divider></md-divider>
     <md-card-content class="push-bottom-none">
 
-      <div layout="row">
+      <div layout="row" class="push-top">
+        <md-select flex="50" placeholder="Roles" formControlName="Roles">
+          <md-option>Select Role(s)</md-option>
+          <md-option *ngFor="let role of roles" [value]="role.id">{{ role.Name }}</md-option>
+        </md-select>
+      </div>
+
+      <div layout="row"  class="push-top">
         <md-input-container flex>
           <input mdInput formControlName="Name" type="text" placeholder="Name">
         </md-input-container>

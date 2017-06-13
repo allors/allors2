@@ -103,24 +103,14 @@ export class OrganisationOverviewComponent implements OnInit, AfterViewInit, OnD
               }),
             ],
           }),
-          new Fetch({
-            name: 'communicationEvents',
-            id: this.id,
-            path: new Path({ step: m.Organisation.CommunicationEventsWhereInvolvedParty }),
-          }),
+          // new Fetch({
+          //   name: 'communicationEvents',
+          //   id: this.id,
+          //   path: new Path({ step: m.Organisation.CommunicationEventsWhereInvolvedParty }),
+          // }),
         ];
 
         const query: Query[] = [
-          new Query(
-            {
-              name: 'locales',
-              objectType: m.Locale,
-            }),
-          new Query(
-            {
-              name: 'organisationRoles',
-              objectType: m.OrganisationRole,
-            }),
           new Query(
             {
               name: 'countries',
@@ -153,7 +143,7 @@ export class OrganisationOverviewComponent implements OnInit, AfterViewInit, OnD
             }),
         ];
 
-        // this.scope.session.reset();
+        this.scope.session.reset();
 
         return this.scope
           .load('Pull', new PullRequest({ fetch: fetch, query: query }));
