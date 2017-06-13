@@ -2,7 +2,7 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "Debug",
+      "name": "Launch Chrome against localhost, with sourcemaps",
       "type": "chrome",
       "request": "launch",
       "url": "http://localhost:4200",
@@ -16,7 +16,8 @@
       ],
       "userDataDir": "${workspaceRoot}/.vscode/chrome",
       "sourceMapPathOverrides": {
-        "webpack:///./*": "${webRoot}/*"
+        "webpack:///C:*": "C:/*",
+        "webpack:///*": "${workspaceRoot}/*"
       }
     },
     {

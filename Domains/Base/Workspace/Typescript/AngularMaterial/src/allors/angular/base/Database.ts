@@ -4,14 +4,7 @@ import { Http, Response, Headers, RequestOptions } from '@angular/http';
 
 import { Method } from '../../domain/base/Method';
 
-import { ResponseType } from '../../domain/base/data/responses/ResponseType';
-import { PushRequest } from '../../domain/base/data/requests/PushRequest';
-import { SyncRequest } from '../../domain/base/data/requests/SyncRequest';
-import { InvokeRequest } from '../../domain/base/data/requests/InvokeRequest';
-import { PullResponse } from '../../domain/base/data/responses/PullResponse';
-import { SyncResponse } from '../../domain/base/data/responses/SyncResponse';
-import { PushResponse } from '../../domain/base/data/responses/PushResponse';
-import { InvokeResponse } from '../../domain/base/data/responses/InvokeResponse';
+import { ResponseType, PushRequest, SyncRequest, InvokeRequest, PullResponse, SyncResponse, PushResponse, InvokeResponse } from '../../domain/base/database';
 
 export class Database {
     options: RequestOptions;

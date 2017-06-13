@@ -1,5 +1,5 @@
 ﻿import { IWorkspace } from './Workspace';
-import { SyncResponse, SyncResponseObject } from './data/responses/SyncResponse';
+import { SyncResponse, SyncResponseObject } from './database';
 
 import { ObjectType } from '../../meta';
 
