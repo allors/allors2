@@ -2,9 +2,9 @@
 
 import { Http, Response, Headers, RequestOptions } from '@angular/http';
 
-import { Method } from '../../domain/base/Method';
+import { Method } from '../../domain';
 
-import { ResponseType, PushRequest, SyncRequest, InvokeRequest, PullResponse, SyncResponse, PushResponse, InvokeResponse } from '../../domain/base/database';
+import { ResponseType, PushRequest, SyncRequest, InvokeRequest, PullResponse, SyncResponse, PushResponse, InvokeResponse } from '../../domain';
 
 export class Database {
     options: RequestOptions;

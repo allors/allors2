@@ -1,16 +1,10 @@
 ﻿import { Observable } from 'rxjs/Rx';
 
+import { Workspace, ISession, Session, ISessionObject, Method,
+         SyncRequest, PullResponse, SyncResponse, PushResponse, InvokeResponse } from '../../domain';
+
 import { Database } from './Database';
 import { Result } from './Result';
-
-import { Workspace } from '../../domain/base/Workspace';
-import { ISession } from '../../domain/base/Session';
-import { Session } from '../../domain/base/Session';
-import { ISessionObject } from '../../domain/base/SessionObject';
-import { Method } from '../../domain/base/Method';
-
-import { SyncRequest, PullResponse, SyncResponse, PushResponse, InvokeResponse } from '../../domain/base/database';
-
 
 export class Scope {
   session: ISession;

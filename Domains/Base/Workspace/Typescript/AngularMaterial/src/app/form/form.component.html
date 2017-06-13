@@ -1,24 +1,16 @@
 <md-card>
-  <h1>Form</h1>
+  <md-card-header>Person Form</md-card-header>
 
-  <form>
-    <md-select placeholder="Select a Person" [(ngModel)]="selected" name="person">
-      <md-option *ngFor="let person of people" [value]="person">
-        {{person.FirstName}} {{person.LastName}}
-      </md-option>
-    </md-select>
-  </form>
+  <md-card-content>
+    <form ng-if="organisation">
+      <md-input-container>
+        <input mdInput [mdDatepicker]="picker" placeholder="Choose a date">
+        <button mdSuffix [mdDatepickerToggle]="picker"></button>
+      </md-input-container>
 
-</md-card>
+      <md-datepicker #picker></md-datepicker>
 
-<md-card>
-
-  <md-input-container>
-    <input mdInput [mdDatepicker]="picker" placeholder="Choose a date">
-    <button mdSuffix [mdDatepickerToggle]="picker"></button>
-  </md-input-container>
-
-  <md-datepicker #picker></md-datepicker>
+    </form>
+  </md-card-content>
 
 </md-card>
-

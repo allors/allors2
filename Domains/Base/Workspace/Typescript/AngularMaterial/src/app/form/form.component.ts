@@ -5,7 +5,9 @@ import { PullRequest, Query, Equals, Like, TreeNode, Sort, Page } from '../../al
 import { Scope } from '../../allors/angular/base/Scope';
 import { AllorsService } from '../allors.service';
 
-import { Person } from '../../allors/domain';
+import { Organisation } from '../../allors/domain';
+
+import { Form } from '../../allors/domain/base/forms'
 
 @Component({
   selector: 'app-form',
@@ -15,8 +17,9 @@ export class FormComponent implements OnInit, OnDestroy {
 
   private scope: Scope;
 
-  people: Person[];
-  selected: Person;
+  public form: Form;
+
+  organisation: Organisation;
 
   private subscription: Subscription;
 
@@ -26,6 +29,9 @@ export class FormComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.refresh().subscribe();
+    this.form = new Form({
+
+    });
   }
 
   protected refresh(): Observable<any> {
@@ -37,16 +43,15 @@ export class FormComponent implements OnInit, OnDestroy {
 
     const m = this.allors.meta;
 
-    const  query = new Query({
-      name: 'people',
-      objectType: m.Person
+    const query = new Query({
+      name: 'organisations',
+      objectType: m.Organisation
     });
 
     return this.scope
       .load('Pull', new PullRequest({query: [query]}))
       .do(() => {
-        this.people = this.scope.collections.people as Person[];
-        this.people = this.people.filter(v => v.FirstName);
+        this.organisation = (this.scope.collections.organisations as Organisation[])[0];
       })
       .catch((e) => {
         this.allors.onError(e);

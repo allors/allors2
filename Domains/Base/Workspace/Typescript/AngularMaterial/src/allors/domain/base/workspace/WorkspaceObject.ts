@@ -1,7 +1,7 @@
-﻿import { IWorkspace } from './Workspace';
-import { SyncResponse, SyncResponseObject } from './database';
+﻿import { SyncResponse, SyncResponseObject } from '../database';
+import { ObjectType } from '../../../meta';
 
-import { ObjectType } from '../../meta';
+import { IWorkspace } from './Workspace';
 
 export interface IWorkspaceObject {
     id: string;

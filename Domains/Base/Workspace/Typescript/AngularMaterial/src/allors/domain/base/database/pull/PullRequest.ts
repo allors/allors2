@@ -1,5 +1,4 @@
-﻿import { Query } from './Query';
-import { Fetch } from './Fetch';
+﻿import { Query, Fetch } from '..';
 
 export class PullRequest {
     query: Query[];

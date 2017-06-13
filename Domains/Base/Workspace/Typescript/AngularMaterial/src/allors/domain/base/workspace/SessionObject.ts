@@ -1,8 +1,8 @@
 ﻿import { ISession } from './Session';
 import { IWorkspaceObject } from './WorkspaceObject';
-import { PushRequestObject, PushRequestNewObject, PushRequestRole } from './database';
+import { PushRequestObject, PushRequestNewObject, PushRequestRole } from '../database';
 
-import { ObjectType } from '../../meta';
+import { ObjectType } from '../../../meta';
 
 export interface ISessionObject {
     id: string;
@@ -261,7 +261,7 @@ export class SessionObject implements INewSessionObject {
                         if (roleType.isOne) {
                             saveRole.s = role ? role.id || role.newId : null;
                         } else {
-                            const roleIds = role.map(item => { return (<SessionObject>item).id || (<SessionObject>item).newId; });
+                            const roleIds = role.map(item => (<SessionObject>item).id || (<SessionObject>item).newId);
                             if (this.newId) {
                                 saveRole.a = roleIds;
                             } else {
