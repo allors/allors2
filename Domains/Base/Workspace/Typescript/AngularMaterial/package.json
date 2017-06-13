@@ -13,7 +13,7 @@
     "sync-meta": "sync-files ../Meta/src/allors/meta/base src/allors/meta/base",
     "sync-domain": "sync-files ../Domain/src/allors/domain/base src/allors/domain/base",
     "sync-angular": "sync-files ../Angular/src/allors/angular/base src/allors/angular/base",
-    "syncback": "npm run syncback-meta && npm run syncback-domain && syncback-angular",
+    "syncback": "npm run syncback-meta && npm run syncback-domain && npm run syncback-angular",
     "syncback-meta": "sync-files src/allors/meta/base ../Meta/src/allors/meta/base",
     "syncback-domain": "sync-files src/allors/domain/base ../Domain/src/allors/domain/base",
     "syncback-angular": "sync-files src/allors/angular/base ../Angular/src/allors/angular/base",

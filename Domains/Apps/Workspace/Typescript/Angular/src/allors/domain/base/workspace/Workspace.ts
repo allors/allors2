@@ -1,7 +1,7 @@
 ﻿import { WorkspaceObject } from './WorkspaceObject';
 import { SessionObject } from './SessionObject';
-import { PullResponse, SyncRequest, SyncResponse } from './database';
-import { ObjectType, Population as MetaPopulation } from '../../meta';
+import { PullResponse, SyncRequest, SyncResponse } from '../database';
+import { ObjectType, Population as MetaPopulation } from '../../../meta';
 
 export interface IWorkspace {
     metaPopulation: MetaPopulation;

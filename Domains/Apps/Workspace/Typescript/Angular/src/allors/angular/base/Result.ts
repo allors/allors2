@@ -1,7 +1,4 @@
-﻿import { ISession } from '../../domain/base/Session';
-import { ISessionObject } from '../../domain/base/SessionObject';
-
-import { PullResponse } from '../../domain/base/database';
+﻿import { ISession, ISessionObject, PullResponse } from '../../domain';
 
 export class Result {
 
@@ -16,7 +13,7 @@ export class Result {
         const namedValues = response.namedValues;
 
         Object.keys(namedObjects).map((k) => this.objects[k] = session.get(namedObjects[k]));
-        Object.keys(namedCollections).map((k) => this.collections[k] = namedCollections[k].map((obj) => { return session.get(obj); }));
+        Object.keys(namedCollections).map((k) => this.collections[k] = namedCollections[k].map((obj) => session.get(obj)));
         Object.keys(namedValues).map((k) => this.values[k] = session.get(namedValues[k]));
     }
 }
