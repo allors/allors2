@@ -7,3 +7,5 @@ export { RoleType } from './base/RoleType';
 export { AssociationType } from './base/AssociationType';
 export { MethodType } from './base/MethodType';
 
+export { MetaDomain } from './generated/meta.g';
+
