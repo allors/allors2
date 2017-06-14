@@ -4,10 +4,11 @@ import { ActivatedRoute } from '@angular/router';
 import { MdSnackBar, MdSnackBarConfig } from '@angular/material';
 import { TdMediaService } from '@covalent/core';
 
-import { Scope } from '../../../../allors/angular/base/Scope';
-import { AllorsService } from '../../../allors.service';
+import { MetaDomain } from '../../../../allors/meta';
 import { PullRequest, Fetch, Path, Query, Equals, Like, TreeNode, Sort, Page } from '../../../../allors/domain';
 import { CommunicationEvent, Organisation, Locale } from '../../../../allors/domain';
+import { Scope } from '../../../../allors/angular';
+import { AllorsService } from '../../../allors.service';
 
 @Component({
   templateUrl: './organisation-overview.component.html',
@@ -36,7 +37,7 @@ export class OrganisationOverviewComponent implements OnInit, AfterViewInit, OnD
 
         this.id = this.route.snapshot.paramMap.get('id');
 
-        const m = this.allors.meta;
+        const m: MetaDomain = this.allors.meta;
 
         const fetch: Fetch[] = [
           new Fetch({
@@ -103,11 +104,11 @@ export class OrganisationOverviewComponent implements OnInit, AfterViewInit, OnD
               }),
             ],
           }),
-          // new Fetch({
-          //   name: 'communicationEvents',
-          //   id: this.id,
-          //   path: new Path({ step: m.Organisation.CommunicationEventsWhereInvolvedParty }),
-          // }),
+          new Fetch({
+            name: 'communicationEvents',
+            id: this.id,
+            path: new Path({ step: m.Organisation.CommunicationEventsWhereInvolvedParty }),
+          }),
         ];
 
         const query: Query[] = [
@@ -153,7 +154,6 @@ export class OrganisationOverviewComponent implements OnInit, AfterViewInit, OnD
         this.communicationEvents = this.scope.collections.communicationEvents as CommunicationEvent[];
       },
       (error: any) => {
-        console.log(error);
         this.snackBar.open(error, 'close', { duration: 5000 });
         this.goBack();
       },

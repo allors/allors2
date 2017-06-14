@@ -82,7 +82,7 @@ export class OrganisationsComponent implements AfterViewInit, OnDestroy {
         this.data = this.scope.collections.organisations as Organisation[];
       },
       (error: any) => {
-        console.log(error);
+        alert(error);
         this.goBack();
       });
   }

@@ -21,12 +21,12 @@ export class Database {
     }
 
     pull(name: string, params?: any): Observable<PullResponse> {
-        const serviceName = this.fullyQualifiedUrl(name + '/Pull');
+        const serviceName: string = this.fullyQualifiedUrl(name + '/Pull');
 
         return this.http
             .post(serviceName, params, this.postProcessRequestOptions(this.options))
             .map(v => {
-                const response = v.json() as PullResponse;
+                const response: PullResponse = v.json() as PullResponse;
                 response.responseType = ResponseType.Pull;
                 return response;
             });

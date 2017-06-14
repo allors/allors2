@@ -40,7 +40,7 @@
                 var notLoadedObjectTypeIds = new HashSet<Guid>();
                 var notLoadedRelationTypeIds = new HashSet<Guid>();
 
-                var notLoadedObjects = new HashSet<string>();
+                var notLoadedObjects = new HashSet<long>();
 
                 using (var reader = XmlReader.Create(this.fileInfo.FullName))
                 {
@@ -52,7 +52,7 @@
                         }
                         else
                         {
-                            var id = args.ObjectId.Substring(0, args.ObjectId.IndexOf(":", StringComparison.Ordinal));
+                            var id = args.ObjectId;
                             notLoadedObjects.Add(id);
                         }
                     };
