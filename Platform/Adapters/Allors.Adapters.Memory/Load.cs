@@ -45,7 +45,13 @@ namespace Allors.Adapters.Memory
                 {
                     if (this.reader.Name.Equals(Serialization.Population))
                     {
-                        Serialization.CheckVersion(this.reader);
+                        var version = this.reader.GetAttribute(Serialization.Version);
+                        if (string.IsNullOrEmpty(version))
+                        {
+                            throw new ArgumentException("Save population has no version.");
+                        }
+
+                        Serialization.CheckVersion(int.Parse(version));
 
                         if (!this.reader.IsEmptyElement)
                         {
@@ -174,8 +180,7 @@ namespace Allors.Adapters.Memory
                                     }
                                     else
                                     {
-                                        this.session.MemoryDatabase.OnObjectNotLoaded(objectTypeId,
-                                            objectId.ToString());
+                                        this.session.MemoryDatabase.OnObjectNotLoaded(objectTypeId, objectId);
                                     }
                                 }
 
@@ -331,7 +336,7 @@ namespace Allors.Adapters.Memory
 
                             if (strategy == null)
                             {
-                                this.session.MemoryDatabase.OnRelationNotLoaded(relationType.Id, associationIdString, value);
+                                this.session.MemoryDatabase.OnRelationNotLoaded(relationType.Id, associationId, value);
                             }
                             else
                             {
@@ -362,8 +367,7 @@ namespace Allors.Adapters.Memory
                                 }
                                 catch
                                 {
-                                    this.session.MemoryDatabase.OnRelationNotLoaded(relationType.Id,
-                                        associationId.ToString(), value);
+                                    this.session.MemoryDatabase.OnRelationNotLoaded(relationType.Id, associationId, value);
                                 }
                             }
                         }
@@ -421,8 +425,7 @@ namespace Allors.Adapters.Memory
                                 {
                                     foreach (var roleId in roleIdStringArray)
                                     {
-                                        this.session.MemoryDatabase.OnRelationNotLoaded(relationType.Id,
-                                            associationId.ToString(), roleId);
+                                        this.session.MemoryDatabase.OnRelationNotLoaded(relationType.Id, associationId, roleId);
                                     }
                                 }
                                 else
@@ -435,8 +438,7 @@ namespace Allors.Adapters.Memory
                                                 (IComposite) relationType.RoleType.ObjectType,
                                                 role.UncheckedObjectType))
                                         {
-                                            this.session.MemoryDatabase.OnRelationNotLoaded(relationType.Id,
-                                                associationId.ToString(), roleIdStringArray[0]);
+                                            this.session.MemoryDatabase.OnRelationNotLoaded(relationType.Id, associationId, roleIdStringArray[0]);
                                         }
                                         else
                                         {
@@ -464,8 +466,7 @@ namespace Allors.Adapters.Memory
                                                     (IComposite) relationType.RoleType.ObjectType,
                                                     role.UncheckedObjectType))
                                             {
-                                                this.session.MemoryDatabase.OnRelationNotLoaded(relationType.Id,
-                                                    associationId.ToString(), roleId.ToString());
+                                                this.session.MemoryDatabase.OnRelationNotLoaded(relationType.Id, associationId, roleId.ToString());
                                             }
                                             else
                                             {
@@ -528,7 +529,7 @@ namespace Allors.Adapters.Memory
                                 value = this.reader.ReadElementContentAsString();
                             }
 
-                            this.session.MemoryDatabase.OnRelationNotLoaded(relationTypeId, a, value);
+                            this.session.MemoryDatabase.OnRelationNotLoaded(relationTypeId, long.Parse(a), value);
                         }
 
                         break;
@@ -548,6 +549,7 @@ namespace Allors.Adapters.Memory
                         if (this.reader.Name.Equals(Serialization.Relation))
                         {
                             var associationIdString = this.reader.GetAttribute(Serialization.Association);
+                            var associationId = long.Parse(associationIdString);
                             if (string.IsNullOrEmpty(associationIdString))
                             {
                                 throw new Exception("Association id is missing");
@@ -555,7 +557,7 @@ namespace Allors.Adapters.Memory
 
                             if (this.reader.IsEmptyElement)
                             {
-                                this.session.MemoryDatabase.OnRelationNotLoaded(relationTypeId, associationIdString, null);
+                                this.session.MemoryDatabase.OnRelationNotLoaded(relationTypeId, associationId, null);
                             }
                             else
                             {
@@ -563,7 +565,7 @@ namespace Allors.Adapters.Memory
                                 var rs = value.Split(Serialization.ObjectsSplitterCharArray);
                                 foreach (var r in rs)
                                 {
-                                    this.session.MemoryDatabase.OnRelationNotLoaded(relationTypeId, associationIdString, r);
+                                    this.session.MemoryDatabase.OnRelationNotLoaded(relationTypeId, associationId, r);
                                 }
                             }
                         }

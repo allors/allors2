@@ -18,16 +18,14 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-using System;
-
 namespace Allors.Adapters.Object.SqlClient.ReadCommitted
 {
-    using Allors;
+    using System;
+
     using Adapters;
 
-    using Xunit;
+    using Allors;
 
-    
     public class SerializationTest : Adapters.SerializationTest, IDisposable
     {
         private readonly Profile profile = new Profile();

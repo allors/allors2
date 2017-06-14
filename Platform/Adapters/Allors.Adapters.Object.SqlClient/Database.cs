@@ -23,10 +23,12 @@ namespace Allors.Adapters.Object.SqlClient
     using System.Data.SqlClient;
     using System.Linq;
     using System.Xml;
+    using System.Xml.Serialization;
 
     using Adapters.Object.SqlClient.Caching;
 
     using Allors;
+    using Allors.Adapters.Schema;
     using Allors.Meta;
 
     using Microsoft.SqlServer.Server;
@@ -331,7 +333,9 @@ namespace Allors.Adapters.Object.SqlClient
         {
             lock (this)
             {
-                var load = new Load(this, this.ObjectNotLoaded, this.RelationNotLoaded, reader);
+                var xmlSerializer = new XmlSerializer(typeof(Xml));
+                var xml = (Xml)xmlSerializer.Deserialize(reader);
+                var load = new Load(this, this.ObjectNotLoaded, this.RelationNotLoaded, xml);
                 load.Execute();
             }
         }

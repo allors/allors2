@@ -189,6 +189,7 @@ namespace Allors.Adapters
                         }
 
                         var xml = stringWriter.ToString();
+                        File.WriteAllText(@"c:\temp\population.xml", xml);
                         //Console.Out.WriteLine(xml);
 
                         var stringReader = new StringReader(xml);

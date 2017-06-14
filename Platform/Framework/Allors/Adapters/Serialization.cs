@@ -48,7 +48,7 @@ namespace Allors.Adapters
         /// <summary>
         /// The current <see cref="Serialization#Version"/> of the serialization schema.
         /// </summary>
-        public const string VersionCurrent = "1";
+        public const int VersionCurrent = 1;
         
         /// <summary>
         /// This attribute holds the <see cref="ObjectId"/> of the association of a relation. 
@@ -160,15 +160,9 @@ namespace Allors.Adapters
         /// Checks if the <see cref="IDatabase#Version"/> is correct.
         /// </summary>
         /// <param name="reader">The reader.</param>
-        public static void CheckVersion(XmlReader reader)
+        public static void CheckVersion(int version)
         {
-            var version = reader.GetAttribute(Version);
-            if (string.IsNullOrEmpty(version))
-            {
-                throw new ArgumentException("Save population has no version.");
-            }
-
-            if (!VersionCurrent.Equals(version))
+            if (VersionCurrent != version)
             {
                 throw new ArgumentException("Database supports version " + VersionCurrent + " but found version " + version + ".");
             }

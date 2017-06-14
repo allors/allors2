@@ -40,7 +40,7 @@ namespace Allors
         /// <summary>
         /// The object id.
         /// </summary>
-        private readonly string objectId;
+        private readonly long objectId;
 
         /// <summary>
         /// The object type id.
@@ -52,7 +52,7 @@ namespace Allors
         /// </summary>
         /// <param name="objectTypeId">The object type id.</param>
         /// <param name="objectId">The object id.</param>
-        public ObjectNotLoadedEventArgs(Guid objectTypeId, string objectId)
+        public ObjectNotLoadedEventArgs(Guid objectTypeId, long objectId)
         {
             this.objectTypeId = objectTypeId;
             this.objectId = objectId;
@@ -62,7 +62,7 @@ namespace Allors
         /// Gets the object id.
         /// </summary>
         /// <value>The object id.</value>
-        public string ObjectId
+        public long ObjectId
         {
             get { return this.objectId; }
         }

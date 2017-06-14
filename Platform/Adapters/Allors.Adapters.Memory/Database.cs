@@ -208,7 +208,7 @@ namespace Allors.Adapters.Memory
             }
         }
 
-        internal void OnObjectNotLoaded(Guid metaTypeId, string allorsObjectId)
+        internal void OnObjectNotLoaded(Guid metaTypeId, long allorsObjectId)
         {
             var args = new ObjectNotLoadedEventArgs(metaTypeId, allorsObjectId);
             if (this.ObjectNotLoaded != null)
@@ -221,7 +221,7 @@ namespace Allors.Adapters.Memory
             }
         }
 
-        internal void OnRelationNotLoaded(Guid relationTypeId, string associationObjectId, string roleContents)
+        internal void OnRelationNotLoaded(Guid relationTypeId, long associationObjectId, string roleContents)
         {
             var args = new RelationNotLoadedEventArgs(relationTypeId, associationObjectId, roleContents);
             if (this.RelationNotLoaded != null)

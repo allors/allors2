@@ -57,7 +57,7 @@ namespace Allors.Adapters.Memory
         internal void SavePopulation()
         {
             this.writer.WriteStartElement(Serialization.Population);
-            this.writer.WriteAttributeString(Serialization.Version, Serialization.VersionCurrent);
+            this.writer.WriteAttributeString(Serialization.Version, Serialization.VersionCurrent.ToString());
 
             this.SaveObjectType();
 

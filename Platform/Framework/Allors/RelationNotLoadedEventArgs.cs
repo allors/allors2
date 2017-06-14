@@ -44,7 +44,7 @@ namespace Allors
         /// <summary>
         /// The association id.
         /// </summary>
-        private readonly string associationId;
+        private readonly long associationId;
 
         /// <summary>
         /// The contents of the role.
@@ -57,7 +57,7 @@ namespace Allors
         /// <param name="relationTypeId">The relation type id.</param>
         /// <param name="associationId">The association id.</param>
         /// <param name="roleContents">The role contents.</param>
-        public RelationNotLoadedEventArgs(Guid relationTypeId, string associationId, string roleContents)
+        public RelationNotLoadedEventArgs(Guid relationTypeId, long associationId, string roleContents)
         {
             this.relationTypeId = relationTypeId;
             this.associationId = associationId;
@@ -77,7 +77,7 @@ namespace Allors
         /// Gets the association id.
         /// </summary>
         /// <value>The association id.</value>
-        public string AssociationId
+        public long AssociationId
         {
             get { return this.associationId; }
         }

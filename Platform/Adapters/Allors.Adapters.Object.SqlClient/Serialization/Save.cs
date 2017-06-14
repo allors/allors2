@@ -44,7 +44,7 @@ namespace Allors.Adapters.Object.SqlClient
             }
 
             this.writer.WriteStartElement(Serialization.Population);
-            this.writer.WriteAttributeString(Serialization.Version, Serialization.VersionCurrent);
+            this.writer.WriteAttributeString(Serialization.Version, Serialization.VersionCurrent.ToString());
 
             this.writer.WriteStartElement(Serialization.Objects);
             this.writer.WriteStartElement(Serialization.Database);

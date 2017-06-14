@@ -14,18 +14,18 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-using System.Linq;
-
 namespace Allors.Adapters.Object.SqlClient
 {
     using System;
     using System.Collections.Generic;
     using System.Data;
     using System.Data.SqlClient;
+    using System.Linq;
     using System.Xml;
 
     using Adapters;
 
+    using Allors.Adapters.Schema;
     using Allors.Meta;
 
     internal class Load
@@ -35,7 +35,7 @@ namespace Allors.Adapters.Object.SqlClient
         private readonly Database database;
         private readonly ObjectNotLoadedEventHandler objectNotLoaded;
         private readonly RelationNotLoadedEventHandler relationNotLoaded;
-        private readonly XmlReader reader;
+        private readonly Xml xml;
 
         private readonly Dictionary<long, IObjectType> objectTypeByObjectId;
         private readonly Dictionary<long, long> objectVersionByObjectId;
@@ -43,12 +43,12 @@ namespace Allors.Adapters.Object.SqlClient
         private readonly Dictionary<IRelationType, Dictionary<long, long>> associationIdByRoleIdByRelationTypeId;
         private readonly Dictionary<IRelationType, Dictionary<long, object>> roleByAssociationIdByRelationTypeId;
 
-        internal Load(Database database, ObjectNotLoadedEventHandler objectNotLoaded, RelationNotLoadedEventHandler relationNotLoaded, XmlReader reader)
+        internal Load(Database database, ObjectNotLoadedEventHandler objectNotLoaded, RelationNotLoadedEventHandler relationNotLoaded, Xml xml)
         {
             this.database = database;
             this.objectNotLoaded = objectNotLoaded;
             this.relationNotLoaded = relationNotLoaded;
-            this.reader = reader;
+            this.xml = xml;
 
             this.objectTypeByObjectId = new Dictionary<long, IObjectType>();
             this.objectVersionByObjectId = new Dictionary<long, long>();
@@ -92,553 +92,255 @@ namespace Allors.Adapters.Object.SqlClient
             }
         }
 
-        private bool Read()
+        private void Read()
         {
-            while (this.reader.Read())
+            Serialization.CheckVersion(this.xml.Population.Version);
+
+            foreach (var xmlObjectType in this.xml.Population.Objects.ObjectTypes)
             {
-                // only process elements, ignore others
-                if (this.reader.NodeType.Equals(XmlNodeType.Element))
+                if (!string.IsNullOrWhiteSpace(xmlObjectType.Objects))
                 {
-                    if (this.reader.Name.Equals(Serialization.Population))
+                    var objectTypeId = xmlObjectType.Id;
+                    var objectType = this.database.ObjectFactory.GetObjectTypeForType(objectTypeId);
+
+                    var canLoad = objectType != null && objectType.IsClass;
+
+                    var objectIdsString = xmlObjectType.Objects;
+                    var objectIdStringArray = objectIdsString.Split(Serialization.ObjectsSplitterCharArray);
+
+                    foreach (var objectIdString in objectIdStringArray)
                     {
-                        Serialization.CheckVersion(this.reader);
+                        var objectArray = objectIdString.Split(Serialization.ObjectSplitterCharArray);
+                        var objectId = long.Parse(objectArray[0]);
 
-                        if (!this.reader.IsEmptyElement)
+                        if (canLoad)
                         {
-                            this.ReadPopulation();
-                        }
+                            var version = objectArray.Length > 1 ? long.Parse(objectArray[1]) : Reference.InitialVersion;
 
-                        return true;
+                            this.objectTypeByObjectId.Add(objectId, objectType);
+                            this.objectVersionByObjectId.Add(objectId, version);
+                        }
+                        else
+                        {
+                            this.OnObjectNotLoaded(objectTypeId, objectId);
+                        }
                     }
                 }
             }
-            return false;
-        }
 
-        private void ReadPopulation()
-        {
-            while (this.reader.Read())
+            foreach (var xmlRelationType in this.xml.Population.Relations.RelationTypes)
             {
-                switch (this.reader.NodeType)
+                var xmlRelationTypeUnit = xmlRelationType as RelationTypeUnit;
+                if (xmlRelationTypeUnit != null)
                 {
-                    // only process elements, ignore others
-                    case XmlNodeType.Element:
-                        if (this.reader.Name.Equals(Serialization.Objects))
+                    var relationTypeId = xmlRelationTypeUnit.Id;
+                    var relationType = (IRelationType)this.database.MetaPopulation.Find(relationTypeId);
+
+                    if (relationType == null || relationType.RoleType.ObjectType.IsComposite)
+                    {
+                        foreach (var xmlRelation in xmlRelationTypeUnit.Relations)
                         {
-                            if (!this.reader.IsEmptyElement)
-                            {
-                                this.ReadObjects();
-                            }
+                            this.OnRelationNotLoaded(relationTypeId, xmlRelation.Association, xmlRelation.Role);
                         }
-                        else if (this.reader.Name.Equals(Serialization.Relations))
+                    }
+                    else
+                    {
+                        var roleByObjectId = this.GetRoleByAssociationId(relationType);
+                        this.ReadUnitRelations(xmlRelationTypeUnit, relationType, roleByObjectId);
+                    }
+                }
+                else
+                {
+                    var xmlRelationTypeComposite = (RelationTypeComposite)xmlRelationType;
+                    var relationTypeId = xmlRelationTypeComposite.Id;
+                    var relationType = (IRelationType)this.database.MetaPopulation.Find(relationTypeId);
+
+                    if (relationType == null || relationType.RoleType.ObjectType.IsUnit)
+                    {
+                        foreach (var xmlRelation in xmlRelationTypeComposite.Relations)
                         {
-                            if (!this.reader.IsEmptyElement)
-                            {
-                                this.ReadRelations();
-                            }
+                            this.OnRelationNotLoaded(relationTypeId, xmlRelation.Association, xmlRelation.Role);
+                        }
+                    }
+                    else
+                    {
+                        if (!(relationType.AssociationType.IsMany && relationType.RoleType.IsMany) && relationType.ExistExclusiveClasses && relationType.RoleType.IsMany)
+                        {
+                            var associationIdByRoleId = this.GetAssociationIdByRoleId(relationType);
+                            this.ReadCompositeRelations(xmlRelationTypeComposite, relationType, associationIdByRoleId);
                         }
                         else
                         {
-                            throw new Exception("Unknown child element <" + this.reader.Name + "> in parent element <" + Serialization.Population + ">");
+                            var roleByObjectId = this.GetRoleByAssociationId(relationType);
+                            this.ReadCompositeRelations(xmlRelationTypeComposite, relationType, roleByObjectId);
                         }
+                    }
+                }
+            }
+        }
+      
+        private void ReadUnitRelations(RelationTypeUnit xmlRelationTypeUnit, IRelationType relationType, Dictionary<long, object> roleByObjectId)
+        {
+            foreach (var xmlRelation in xmlRelationTypeUnit.Relations)
+            {
+                var associationId = xmlRelation.Association;
+                IObjectType associationConcreteClass;
+                this.objectTypeByObjectId.TryGetValue(associationId, out associationConcreteClass);
 
-                        break;
-
-                    case XmlNodeType.EndElement:
-                        if (!this.reader.Name.Equals(Serialization.Population))
+                if (xmlRelation.Role == null)
+                {
+                    if (associationConcreteClass == null || !this.database.ContainsConcreteClass(relationType.AssociationType.ObjectType, associationConcreteClass))
+                    {
+                        this.OnRelationNotLoaded(relationType.Id, associationId, string.Empty);
+                    }
+                    else
+                    {
+                        switch (((IUnit)relationType.RoleType.ObjectType).UnitTag)
                         {
-                            throw new Exception("Expected closing element </" + Serialization.Population + ">");
-                        }
+                            case UnitTags.String:
+                                {
+                                    roleByObjectId.Add(associationId, string.Empty);
+                                }
 
-                        return;
+                                break;
+
+                            case UnitTags.Binary:
+                                {
+                                    roleByObjectId.Add(associationId, EmptyByteArray);
+                                }
+
+                                break;
+
+                            default:
+                                this.OnRelationNotLoaded(relationType.Id, associationId, string.Empty);
+                                break;
+                        }
+                    }
+                }
+                else
+                {
+                    var value = xmlRelation.Role;
+                    if (associationConcreteClass == null || !this.database.ContainsConcreteClass(relationType.AssociationType.ObjectType, associationConcreteClass))
+                    {
+                        this.OnRelationNotLoaded(relationType.Id, associationId, value);
+                    }
+                    else
+                    {
+                        try
+                        {
+                            var unitTypeTag = ((IUnit)relationType.RoleType.ObjectType).UnitTag;
+                            var unit = Serialization.ReadString(value, unitTypeTag);
+
+                            roleByObjectId.Add(associationId, unit);
+                        }
+                        catch
+                        {
+                            this.OnRelationNotLoaded(relationType.Id, associationId, value);
+                        }
+                    }
                 }
             }
         }
 
-        private void ReadObjects()
+        private void ReadCompositeRelations(RelationTypeComposite xmlRelationTypeComposite, IRelationType relationType, Dictionary<long, long> associationIdByRoleId)
         {
-            while (this.reader.Read())
+            foreach (var xmlRelation in xmlRelationTypeComposite.Relations)
             {
-                switch (this.reader.NodeType)
+                if (!string.IsNullOrWhiteSpace(xmlRelation.Role))
                 {
-                    case XmlNodeType.Element:
-                        if (this.reader.Name.Equals(Serialization.Database))
+                    var associationId = xmlRelation.Association;
+                    IObjectType associationConcreteClass;
+                    this.objectTypeByObjectId.TryGetValue(associationId, out associationConcreteClass);
+
+                    var value = xmlRelation.Role;
+                    var rs = value.Split(Serialization.ObjectsSplitterCharArray);
+
+                    if (associationConcreteClass == null ||
+                        !this.database.ContainsConcreteClass(relationType.AssociationType.ObjectType, associationConcreteClass) ||
+                        (relationType.RoleType.IsOne && rs.Length > 1))
+                    {
+                        foreach (var r in rs)
                         {
-                            if (!this.reader.IsEmptyElement)
+                            this.OnRelationNotLoaded(relationType.Id, associationId, r);
+                        }
+                    }
+                    else
+                    {
+                        foreach (var r in rs)
+                        {
+                            var roleId = long.Parse(r);
+                            IObjectType roleConcreteClass;
+                            this.objectTypeByObjectId.TryGetValue(roleId, out roleConcreteClass);
+
+                            if (roleConcreteClass == null ||
+                                !this.database.ContainsConcreteClass(relationType.RoleType.ObjectType, roleConcreteClass))
                             {
-                                this.ReadObjectTypes();
-                            }
-                        }
-                        else if (reader.Name.Equals(Serialization.Workspace))
-                        {
-                            throw new Exception("Can not load workspace objects in a Database.");
-                        }
-                        else
-                        {
-                            throw new Exception("Unknown child element <" + this.reader.Name + "> in parent element <" + Serialization.Objects + ">");
-                        }
-
-                        break;
-                    case XmlNodeType.EndElement:
-                        if (!this.reader.Name.Equals(Serialization.Objects))
-                        {
-                            throw new Exception("Expected closing element </" + Serialization.Objects + ">");
-                        }
-
-                        return;
-                }
-            }
-        }
-
-        private void ReadObjectTypes()
-        {
-            var skip = false;
-            while (skip || this.reader.Read())
-            {
-                skip = false;
-
-                switch (this.reader.NodeType)
-                {
-                    // only process elements, ignore others
-                    case XmlNodeType.Element:
-                        if (this.reader.Name.Equals(Serialization.ObjectType))
-                        {
-                            if (!this.reader.IsEmptyElement)
-                            {
-                                var objectTypeIdString = this.reader.GetAttribute(Serialization.Id);
-                                if (string.IsNullOrEmpty(objectTypeIdString))
-                                {
-                                    throw new Exception("Object type id is missing");
-                                }
-
-                                var objectTypeId = new Guid(objectTypeIdString);
-                                var objectType = this.database.ObjectFactory.GetObjectTypeForType(objectTypeId);
-
-                                var canLoad = objectType != null && objectType.IsClass;
-
-                                var objectIdsString = this.reader.ReadElementContentAsString();
-                                var objectIdStringArray = objectIdsString.Split(Serialization.ObjectsSplitterCharArray);
-
-                                foreach (var objectIdString in objectIdStringArray)
-                                {
-                                    if (canLoad)
-                                    {
-                                        var objectArray = objectIdString.Split(Serialization.ObjectSplitterCharArray);
-
-                                        var objectId = long.Parse(objectArray[0]);
-                                        var version = objectArray.Length > 1 ? long.Parse(objectArray[1]) : Reference.InitialVersion;
-                                        
-                                        this.objectTypeByObjectId.Add(objectId, objectType);
-                                        this.objectVersionByObjectId.Add(objectId, version);
-                                    }
-                                    else
-                                    {
-                                        this.OnObjectNotLoaded(objectTypeId, objectIdString);
-                                    }
-                                }
-
-                                skip = reader.IsStartElement() ||
-                                       (reader.NodeType == XmlNodeType.EndElement && this.reader.Name.Equals(Serialization.Database));
-                            }
-                        }
-                        else
-                        {
-                            throw new Exception("Unknown child element <" + this.reader.Name + "> in parent element <" + Serialization.Database + ">");
-                        }
-
-                        break;
-
-                    case XmlNodeType.EndElement:
-                        if (!this.reader.Name.Equals(Serialization.Database))
-                        {
-                            throw new Exception("Expected closing element </" + Serialization.Database + ">");
-                        }
-
-                        return;
-                }
-            }
-        }
-
-        private void ReadRelations()
-        {
-            while (this.reader.Read())
-            {
-                switch (this.reader.NodeType)
-                {
-                    case XmlNodeType.Element:
-                        if (this.reader.Name.Equals(Serialization.Database))
-                        {
-                            if (!this.reader.IsEmptyElement)
-                            {
-                                this.ReadRelationTypes();
-                            }
-                        }
-                        else if (this.reader.Name.Equals(Serialization.Workspace))
-                        {
-                            throw new Exception("Can not load workspace relations in a Database.");
-                        }
-                        else
-                        {
-                            throw new Exception("Unknown child element <" + this.reader.Name + "> in parent element <" + Serialization.Relations + ">");
-                        }
-
-                        break;
-
-                    case XmlNodeType.EndElement:
-                        if (!this.reader.Name.Equals(Serialization.Relations))
-                        {
-                            throw new Exception("Expected closing element </" + Serialization.Relations + ">");
-                        }
-
-                        return;
-                }
-            }
-        }
-
-        private void ReadRelationTypes()
-        {
-            while (this.reader.Read())
-            {
-                switch (this.reader.NodeType)
-                {
-                    // only process elements, ignore others
-                    case XmlNodeType.Element:
-                        if (!this.reader.IsEmptyElement)
-                        {
-                            if (this.reader.Name.Equals(Serialization.RelationTypeUnit)
-                                || this.reader.Name.Equals(Serialization.RelationTypeComposite))
-                            {
-                                var relationTypeIdString = this.reader.GetAttribute(Serialization.Id);
-                                if (string.IsNullOrEmpty(relationTypeIdString))
-                                {
-                                    throw new Exception("Relation type has no id");
-                                }
-
-                                var relationTypeId = new Guid(relationTypeIdString);
-                                var relationType = (IRelationType)this.database.MetaPopulation.Find(relationTypeId);
-
-                                if (this.reader.Name.Equals(Serialization.RelationTypeUnit))
-                                {
-                                    if (relationType == null || relationType.RoleType.ObjectType.IsComposite)
-                                    {
-                                        this.CantLoadUnitRole(relationTypeId);
-                                    }
-                                    else
-                                    {
-                                        var roleByObjectId = GetRoleByAssociationId(relationType);
-                                        this.ReadUnitRelations(relationType, roleByObjectId);
-                                    }
-                                }
-                                else if (this.reader.Name.Equals(Serialization.RelationTypeComposite))
-                                {
-                                    if (relationType == null || relationType.RoleType.ObjectType.IsUnit)
-                                    {
-                                        this.CantLoadCompositeRole(relationTypeId);
-                                    }
-                                    else
-                                    {
-                                        if (!(relationType.AssociationType.IsMany && relationType.RoleType.IsMany) && relationType.ExistExclusiveClasses && relationType.RoleType.IsMany)
-                                        {
-                                            var associationIdByRoleId = GetAssociationIdByRoleId(relationType);
-                                            this.ReadCompositeRelations(relationType, associationIdByRoleId);
-                                        }
-                                        else
-                                        {
-                                            var roleByObjectId = GetRoleByAssociationId(relationType);
-                                            this.ReadCompositeRelations(relationType, roleByObjectId);
-                                        }
-                                    }
-                                }
+                                this.OnRelationNotLoaded(relationType.Id, associationId, r);
                             }
                             else
                             {
-                                throw new Exception("Unknown child element <" + this.reader.Name + "> in parent element <" + Serialization.Database + ">");
+                                associationIdByRoleId.Add(roleId, associationId);
                             }
                         }
-
-                        break;
-                    case XmlNodeType.EndElement:
-                        if (!this.reader.Name.Equals(Serialization.Database))
-                        {
-                            throw new Exception("Expected closing element </" + Serialization.Database + ">");
-                        }
-
-                        return;
+                    }
                 }
             }
         }
 
-        private void ReadUnitRelations(IRelationType relationType, Dictionary<long, object> roleByObjectId)
+        private void ReadCompositeRelations(RelationTypeComposite xmlRelationTypeComposite, IRelationType relationType, Dictionary<long, object> roleByAssociationId)
         {
-            var skip = false;
-            while (skip || this.reader.Read())
+            foreach (var xmlRelation in xmlRelationTypeComposite.Relations)
             {
-                skip = false;
-
-                switch (this.reader.NodeType)
+                if (!string.IsNullOrWhiteSpace(xmlRelation.Role))
                 {
-                    case XmlNodeType.Element:
-                        if (this.reader.Name.Equals(Serialization.Relation))
+                    var associationId = xmlRelation.Association;
+                    IObjectType associationConcreteClass;
+                    this.objectTypeByObjectId.TryGetValue(associationId, out associationConcreteClass);
+
+                    var value = xmlRelation.Role;
+                    var rs = value.Split(Serialization.ObjectsSplitterCharArray);
+
+                    if (associationConcreteClass == null
+                        || !this.database.ContainsConcreteClass(
+                            relationType.AssociationType.ObjectType,
+                            associationConcreteClass) || (relationType.RoleType.IsOne && rs.Length > 1))
+                    {
+                        foreach (var r in rs)
                         {
-                            var associationIdString = this.reader.GetAttribute(Serialization.Association);
-                            if (string.IsNullOrEmpty(associationIdString))
-                            {
-                                throw new Exception("Association id is missing");
-                            }
-
-                            var associationId = long.Parse(associationIdString);
-                            IObjectType associationConcreteClass;
-                            this.objectTypeByObjectId.TryGetValue(associationId, out associationConcreteClass);
-
-                            if (this.reader.IsEmptyElement)
-                            {
-                                if (associationConcreteClass == null || !this.database.ContainsConcreteClass(relationType.AssociationType.ObjectType, associationConcreteClass))
-                                {
-                                    this.OnRelationNotLoaded(relationType.Id, associationIdString, string.Empty);
-                                }
-                                else
-                                {
-                                    switch (((IUnit)relationType.RoleType.ObjectType).UnitTag)
-                                    {
-                                        case UnitTags.String:
-                                            {
-                                                roleByObjectId.Add(associationId, string.Empty);
-                                            }
-
-                                            break;
-
-                                        case UnitTags.Binary:
-                                            {
-                                                roleByObjectId.Add(associationId, EmptyByteArray);
-                                            }
-
-                                            break;
-
-                                        default:
-                                            this.OnRelationNotLoaded(relationType.Id, associationIdString, string.Empty);
-                                            break;
-                                    }
-                                }
-                            }
-                            else
-                            {
-                                var value = this.reader.ReadElementContentAsString();
-                                if (associationConcreteClass == null || !this.database.ContainsConcreteClass(relationType.AssociationType.ObjectType, associationConcreteClass))
-                                {
-                                    this.OnRelationNotLoaded(relationType.Id, associationIdString, value);
-                                }
-                                else
-                                {
-                                    try
-                                    {
-                                        var unitTypeTag = ((IUnit)relationType.RoleType.ObjectType).UnitTag;
-                                        var unit = Serialization.ReadString(value, unitTypeTag);
-
-                                        roleByObjectId.Add(associationId, unit);
-                                    }
-                                    catch
-                                    {
-                                        this.OnRelationNotLoaded(relationType.Id, associationIdString, value);
-                                    }
-                                }
-
-                                skip = reader.IsStartElement() ||
-                                       (reader.NodeType == XmlNodeType.EndElement && this.reader.Name.Equals(Serialization.RelationTypeUnit));
-                            }
+                            this.OnRelationNotLoaded(relationType.Id, associationId, r);
+                        }
+                    }
+                    else
+                    {
+                        if (relationType.RoleType.IsOne)
+                        {
+                            var roleId = long.Parse(rs[0]);
+                            roleByAssociationId.Add(associationId, roleId);
                         }
                         else
                         {
-                            throw new Exception("Unknown child element <" + this.reader.Name + "> in parent element <" + Serialization.RelationTypeUnit + ">");
-                        }
-
-                        break;
-
-                    case XmlNodeType.EndElement:
-                        if (!this.reader.Name.Equals(Serialization.RelationTypeUnit))
-                        {
-                            throw new Exception("Expected closing element </" + Serialization.RelationTypeUnit + ">");
-                        }
-
-                        return;
-                }
-            }
-        }
-
-        private void ReadCompositeRelations(IRelationType relationType, Dictionary<long,long> associationIdByRoleId)
-        {
-            var skip = false;
-            while (skip || this.reader.Read())
-            {
-                skip = false;
-
-                switch (this.reader.NodeType)
-                {
-                    case XmlNodeType.Element:
-                        if (this.reader.Name.Equals(Serialization.Relation))
-                        {
-                            var associationIdString = this.reader.GetAttribute(Serialization.Association);
-                            if (string.IsNullOrEmpty(associationIdString))
+                            var roleList = new List<long>();
+                            foreach (var r in rs)
                             {
-                                throw new Exception("Association id is missing");
-                            }
+                                var role = long.Parse(r);
+                                IObjectType roleConcreteClass;
+                                this.objectTypeByObjectId.TryGetValue(role, out roleConcreteClass);
 
-                            if (this.reader.IsEmptyElement)
-                            {
-                                throw new Exception("Role is missing");
-                            }
-
-                            if (!this.reader.IsEmptyElement)
-                            {
-
-                                var associationId = long.Parse(associationIdString);
-                                IObjectType associationConcreteClass;
-                                this.objectTypeByObjectId.TryGetValue(associationId, out associationConcreteClass);
-
-                                var value = this.reader.ReadElementContentAsString();
-                                var rs = value.Split(Serialization.ObjectsSplitterCharArray);
-
-                                if (associationConcreteClass == null ||
-                                    !this.database.ContainsConcreteClass(relationType.AssociationType.ObjectType,associationConcreteClass) ||
-                                    (relationType.RoleType.IsOne && rs.Length > 1))
+                                if (roleConcreteClass == null || !this.database.ContainsConcreteClass(
+                                        relationType.RoleType.ObjectType,
+                                        roleConcreteClass))
                                 {
-                                    foreach (var r in rs)
-                                    {
-                                        this.OnRelationNotLoaded(relationType.Id, associationIdString, r);
-                                    }
+                                    this.OnRelationNotLoaded(relationType.Id, associationId, r);
                                 }
                                 else
                                 {
-                                    foreach (var r in rs)
-                                    {
-                                        var roleId = long.Parse(r);
-                                        IObjectType roleConcreteClass;
-                                        this.objectTypeByObjectId.TryGetValue(roleId, out roleConcreteClass);
-
-                                        if (roleConcreteClass == null ||
-                                            !this.database.ContainsConcreteClass(relationType.RoleType.ObjectType, roleConcreteClass))
-                                        {
-                                            this.OnRelationNotLoaded(relationType.Id, associationIdString, r);
-                                        }
-                                        else
-                                        {
-                                            associationIdByRoleId.Add(roleId, associationId);
-                                        }
-                                    }
+                                    roleList.Add(role);
                                 }
-
-                                skip = reader.IsStartElement() ||
-                                       (reader.NodeType == XmlNodeType.EndElement &&
-                                        this.reader.Name.Equals(Serialization.RelationTypeComposite));
-                            }
-                        }
-                        else
-                        {
-                            throw new Exception("Unknown child element <" + this.reader.Name + "> in parent element <" + Serialization.RelationTypeComposite + ">");
-                        }
-
-                        break;
-                    case XmlNodeType.EndElement:
-                        if (!this.reader.Name.Equals(Serialization.RelationTypeComposite))
-                        {
-                            throw new Exception("Expected closing element </" + Serialization.RelationTypeComposite + ">");
-                        }
-
-                        return;
-                }
-            }
-        }
-
-        private void ReadCompositeRelations(IRelationType relationType, Dictionary<long, object> roleByAssociationId)
-        {
-            var skip = false;
-            while (skip || this.reader.Read())
-            {
-                skip = false;
-
-                switch (this.reader.NodeType)
-                {
-                    case XmlNodeType.Element:
-                        if (this.reader.Name.Equals(Serialization.Relation))
-                        {
-                            var associationIdString = this.reader.GetAttribute(Serialization.Association);
-                            if (string.IsNullOrEmpty(associationIdString))
-                            {
-                                throw new Exception("Association id is missing");
                             }
 
-                            if (this.reader.IsEmptyElement)
-                            {
-                                throw new Exception("Role is missing");
-                            }
-
-                            var associationId = long.Parse(associationIdString);
-                            IObjectType associationConcreteClass;
-                            this.objectTypeByObjectId.TryGetValue(associationId, out associationConcreteClass);
-
-                            if (!this.reader.IsEmptyElement)
-                            {
-
-                                var value = this.reader.ReadElementContentAsString();
-                                var rs = value.Split(Serialization.ObjectsSplitterCharArray);
-
-                                if (associationConcreteClass == null ||
-                                    !this.database.ContainsConcreteClass(relationType.AssociationType.ObjectType, associationConcreteClass) ||
-                                    (relationType.RoleType.IsOne && rs.Length > 1))
-                                {
-                                    foreach (var r in rs)
-                                    {
-                                        this.OnRelationNotLoaded(relationType.Id, associationIdString, r);
-                                    }
-                                }
-                                else
-                                {
-                                    if (relationType.RoleType.IsOne)
-                                    {
-                                        var roleId = long.Parse(rs[0]);
-                                        roleByAssociationId.Add(associationId, roleId);
-                                    }
-                                    else
-                                    {
-                                        var roleList = new List<long>();
-                                        foreach (var r in rs)
-                                        {
-                                            var role = long.Parse(r);
-                                            IObjectType roleConcreteClass;
-                                            this.objectTypeByObjectId.TryGetValue(role, out roleConcreteClass);
-
-                                            if (roleConcreteClass == null ||
-                                                !this.database.ContainsConcreteClass(relationType.RoleType.ObjectType, roleConcreteClass))
-                                            {
-                                                this.OnRelationNotLoaded(relationType.Id, associationIdString, r);
-                                            }
-                                            else
-                                            {
-                                                roleList.Add(role);
-                                            }
-                                        }
-
-                                        roleByAssociationId.Add(associationId, roleList.ToArray());
-                                    }
-                                }
-
-                                skip = reader.IsStartElement() ||
-                                       (reader.NodeType == XmlNodeType.EndElement &&
-                                        this.reader.Name.Equals(Serialization.RelationTypeComposite));
-                            }
+                            roleByAssociationId.Add(associationId, roleList.ToArray());
                         }
-                        else
-                        {
-                            throw new Exception("Unknown child element <" + this.reader.Name + "> in parent element <" + Serialization.RelationTypeComposite + ">");
-                        }
-
-                        break;
-                    case XmlNodeType.EndElement:
-                        if (!this.reader.Name.Equals(Serialization.RelationTypeComposite))
-                        {
-                            throw new Exception("Expected closing element </" + Serialization.RelationTypeComposite + ">");
-                        }
-
-                        return;
+                    }
                 }
             }
         }
@@ -724,6 +426,7 @@ namespace Allors.Adapters.Object.SqlClient
                 associationIdByRoleId = new Dictionary<long, long>();
                 this.associationIdByRoleIdByRelationTypeId[relationType] = associationIdByRoleId;
             }
+
             return associationIdByRoleId;
         }
 
@@ -735,6 +438,7 @@ namespace Allors.Adapters.Object.SqlClient
                 roleByAssociationId = new Dictionary<long, object>();
                 this.roleByAssociationIdByRelationTypeId[relationType] = roleByAssociationId;
             }
+
             return roleByAssociationId;
         }
 
@@ -750,11 +454,12 @@ namespace Allors.Adapters.Object.SqlClient
                     columns.Add(reader.GetName(i));
                 }
             }
+
             return columns.ToArray();
         }
 
         #region Load Errors
-        private void OnObjectNotLoaded(Guid objectTypeId, string allorsObjectId)
+        private void OnObjectNotLoaded(Guid objectTypeId, long allorsObjectId)
         {
             if (this.objectNotLoaded != null)
             {
@@ -766,7 +471,7 @@ namespace Allors.Adapters.Object.SqlClient
             }
         }
 
-        private void OnRelationNotLoaded(Guid relationTypeId, string associationObjectId, string roleContents)
+        private void OnRelationNotLoaded(Guid relationTypeId, long associationObjectId, string roleContents)
         {
             var args = new RelationNotLoadedEventArgs(relationTypeId, associationObjectId, roleContents);
             if (this.relationNotLoaded != null)
@@ -776,70 +481,6 @@ namespace Allors.Adapters.Object.SqlClient
             else
             {
                 throw new Exception("Role not loaded: " + args);
-            }
-        }
-
-        private void CantLoadUnitRole(Guid relationTypeId)
-        {
-            while (this.reader.Read())
-            {
-                switch (this.reader.NodeType)
-                {
-                    case XmlNodeType.Element:
-                        if (this.reader.Name.Equals(Serialization.Relation))
-                        {
-                            var a = this.reader.GetAttribute(Serialization.Association);
-                            var value = string.Empty;
-
-                            if (!this.reader.IsEmptyElement)
-                            {
-                                value = this.reader.ReadElementContentAsString();
-                            }
-
-                            this.OnRelationNotLoaded(relationTypeId, a, value);
-                        }
-
-                        break;
-                    case XmlNodeType.EndElement:
-                        return;
-                }
-            }
-        }
-
-        private void CantLoadCompositeRole(Guid relationTypeId)
-        {
-            while (this.reader.Read())
-            {
-                switch (this.reader.NodeType)
-                {
-                    case XmlNodeType.Element:
-                        if (this.reader.Name.Equals(Serialization.Relation))
-                        {
-                            var associationIdString = this.reader.GetAttribute(Serialization.Association);
-                            if (string.IsNullOrEmpty(associationIdString))
-                            {
-                                throw new Exception("Association id is missing");
-                            }
-
-                            if (this.reader.IsEmptyElement)
-                            {
-                                this.OnRelationNotLoaded(relationTypeId, associationIdString, null);
-                            }
-                            else
-                            {
-                                var value = this.reader.ReadElementContentAsString();
-                                var rs = value.Split(Serialization.ObjectsSplitterCharArray);
-                                foreach (var r in rs)
-                                {
-                                    this.OnRelationNotLoaded(relationTypeId, associationIdString, r);
-                                }
-                            }
-                        }
-
-                        break;
-                    case XmlNodeType.EndElement:
-                        return;
-                }
             }
         }
         #endregion
