@@ -17,7 +17,7 @@ import { LoginComponent } from './auth/login.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { FormComponent } from './form/form.component';
 
-import * as angularMaterial from '../allors/angularMaterial';
+import { MATERIAL } from '../allors/material';
 
 @NgModule({
   declarations: [
@@ -25,13 +25,7 @@ import * as angularMaterial from '../allors/angularMaterial';
     LoginComponent,
     DashboardComponent,
     FormComponent,
-    angularMaterial.DatepickerComponent,
-    angularMaterial.EnumComponent,
-    angularMaterial.RadioButtonComponent,
-    angularMaterial.SelectComponent,
-    angularMaterial.StaticComponent,
-    angularMaterial.TextareaComponent,
-    angularMaterial.TextComponent,
+    MATERIAL
   ],
   imports: [
     BrowserModule,

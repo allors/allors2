@@ -8,17 +8,10 @@ import { Field } from './Field';
   selector: 'a-md-radio-button',
   template: `
   <md-input-container flex>
-    <md-radio-group [(ngModel)]="model" [name]="name" [disabled]="canWrite" [required]="required">
-      <md-radio-button class="example-radio-button" [value]="true">
-        {{trueLabel}}
-      </md-radio-button>
-      <md-radio-button class="example-radio-button" [value]="false">
-        {{falseLabel}}
-      </md-radio-button>
+    <md-radio-group [(ngModel)]="model" [name]="name" [disabled]="!canWrite" [required]="required">
+      <md-radio-button value="true">{{trueLabel}}</md-radio-button>
+      <md-radio-button value="false">{{falseLabel}}</md-radio-button>
     </md-radio-group>
-
-    <input mdInput type="text" >
-
   </md-input-container>
   `,
 })

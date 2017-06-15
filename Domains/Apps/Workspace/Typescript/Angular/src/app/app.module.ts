@@ -15,13 +15,16 @@ import { AllorsService } from './allors.service';
 import { CommunicationEventsTableComponent } from './relations/communicationEvents/communicationEvents.table.component';
 import { OrganisationsTableComponent } from './relations/organisations/organisations.table.component';
 
-const components = [CommunicationEventsTableComponent, OrganisationsTableComponent];
+import { MATERIAL } from '../allors/material';
+
+const components: any[] = [CommunicationEventsTableComponent, OrganisationsTableComponent];
 
 @NgModule({
   declarations: [
+    MATERIAL,
     AppComponent,
     routedComponents,
-    components
+    components,
   ],
   imports: [
     AppRoutingModule,
@@ -33,7 +36,7 @@ const components = [CommunicationEventsTableComponent, OrganisationsTableCompone
     { provide: ENVIRONMENT, useValue: environment },
     AllorsService,
     AuthenticationService,
-    Title
+    Title,
   ],
   entryComponents: [],
   bootstrap: [AppComponent],

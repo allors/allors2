@@ -7,8 +7,10 @@ import { TdMediaService } from '@covalent/core';
 
 import { Scope } from '../../../../allors/angular/base/Scope';
 import { AllorsService } from '../../../allors.service';
-import { PullRequest, Fetch, Path, Query, Equals, Like, TreeNode, Sort, Page, Locale, OrganisationRole, Organisation } from '../../../../allors/domain';
+import { PullRequest, PushResponse, Fetch, Path, Query, Equals, Like, TreeNode, Sort, Page } from '../../../../allors/domain';
 import { MetaDomain } from '../../../../allors/meta/index';
+
+import { Locale, OrganisationRole, Organisation } from '../../../../allors/domain';
 
 @Component({
   templateUrl: './organisation.component.html',
@@ -17,12 +19,13 @@ export class OrganisationFormComponent implements OnInit, AfterViewInit, OnDestr
 
   private subscription: Subscription;
   private scope: Scope;
-  private id: string;
+
+  m: MetaDomain;
+
+  organisation: Organisation;
 
   locales: Locale[];
   roles: OrganisationRole[];
-
-  form: FormGroup;
 
   constructor(private allors: AllorsService,
     private route: ActivatedRoute,
@@ -30,30 +33,19 @@ export class OrganisationFormComponent implements OnInit, AfterViewInit, OnDestr
     public snackBar: MdSnackBar,
     public media: TdMediaService) {
     this.scope = new Scope(allors.database, allors.workspace);
-  }
-
-  createForm(): void {
-    this.form = this.fb.group(
-      {
-        Roles: ['', Validators.required],
-        Name: ['', Validators.required],
-        Locale: [''],
-      },
-    );
+    this.m = this.allors.meta;
   }
 
   ngOnInit(): void {
     this.subscription = this.route.url
       .mergeMap((url: any) => {
 
-        this.id = this.route.snapshot.paramMap.get('id');
-
-        const m: MetaDomain = this.allors.meta;
+        const id: string = this.route.snapshot.paramMap.get('id');
 
         const fetch: Fetch[] = [
           new Fetch({
             name: 'organisation',
-            id: this.id,
+            id: id,
           }),
         ];
 
@@ -61,35 +53,29 @@ export class OrganisationFormComponent implements OnInit, AfterViewInit, OnDestr
           new Query(
             {
               name: 'locales',
-              objectType: m.Locale,
+              objectType: this.m.Locale,
             }),
           new Query(
             {
               name: 'roles',
-              objectType: m.OrganisationRole,
+              objectType: this.m.OrganisationRole,
             }),
         ];
 
         this.scope.session.reset();
 
         return this.scope
-          .load('Pull', new PullRequest({ fetch: fetch, query: query }))
+          .load('Pull', new PullRequest({ fetch: fetch, query: query }));
       })
       .subscribe(() => {
 
+        this.organisation = this.scope.objects.organisation as Organisation;
+        if (!this.organisation) {
+          this.organisation = this.scope.session.create('Organisation') as Organisation;
+        }
+
         this.locales = this.scope.collections.locales as Locale[];
         this.roles = this.scope.collections.roles as OrganisationRole[];
-
-        if (this.id) {
-          const organisation: Organisation = this.scope.objects.organisation as Organisation;
-          // this.form.controls.Roles.patchValue(organisation.OrganisationRoles);
-          this.form.controls.Name.patchValue(organisation.Name);
-          this.form.controls.Locale.patchValue(organisation.Locale ? organisation.Locale.id : undefined);
-        }
-        // else {
-        //   this.form.controls.Name.patchValue(undefined);
-        //   this.form.controls.Locale.patchValue(undefined);
-        // }
       },
       (error: any) => {
         this.snackBar.open(error, 'close', { duration: 5000 });
@@ -108,26 +94,14 @@ export class OrganisationFormComponent implements OnInit, AfterViewInit, OnDestr
     }
   }
 
-  save(event: Event): void {
-
-    let organisation: Organisation;
-
-    if (this.id) {
-      organisation = this.scope.session.get(this.id) as Organisation;
-    } else {
-      organisation = this.scope.session.create('Organisation') as Organisation;
-    }
-
-    organisation.Name = this.form.controls.Name.value;
-    organisation.Locale = this.scope.session.get(this.form.controls.Locale.value) as Locale;
+  save(): void {
 
     this.scope
       .save()
-      .toPromise()
-      .then(() => {
+      .subscribe((pushResponse: PushResponse) => {
         this.goBack();
-      })
-      .catch((e: any) => {
+      },
+      (e: any) => {
         this.snackBar.open(e.toString(), 'close', { duration: 5000 });
       });
   }

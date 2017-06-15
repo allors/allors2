@@ -8,7 +8,7 @@ import { Field } from './Field';
   selector: 'a-md-select',
   template: `
 <md-input-container flex>
-  <md-select [(ngModel)]="model" [name]="name" [placeholder]="roleType.name" [disabled]="canWrite" [required]="required">
+  <md-select [(ngModel)]="model" [name]="name" [placeholder]="roleType.name" [disabled]="!canWrite" [required]="required">
     <md-option *ngFor="let option of options" [value]="option">
       {{option[display]}}
     </md-option>

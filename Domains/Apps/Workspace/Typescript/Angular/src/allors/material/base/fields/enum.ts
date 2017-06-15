@@ -12,7 +12,7 @@ class Enum {
   selector: 'a-md-select-enum',
   template: `
   <md-input-container flex>
-  <md-select [(ngModel)]="model" [name]="name" [placeholder]="roleType.name" [disabled]="canWrite" [required]="required">
+  <md-select [(ngModel)]="model" [name]="name" [placeholder]="roleType.name" [disabled]="!canWrite" [required]="required">
     <md-option *ngFor="let enum of enums" [value]="enum.number">
       {{enum.name}}
     </md-option>

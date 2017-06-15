@@ -46,7 +46,7 @@ export class Field {
     }
   }
 
-  private get isReady(): boolean {
+  get isReady(): boolean {
     return !!(this.object && this.roleType);
   }
 }

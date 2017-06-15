@@ -9,7 +9,7 @@ import { Field } from './Field';
   template: `
   <md-input-container flex>
     <input mdInput [mdDatepicker]="picker"
-        [(ngModel)]="model" [name]="name" [placeholder]="roleType.name" [disabled]="canWrite" [required]="required">
+        [(ngModel)]="model" [name]="name" [placeholder]="roleType.name" [disabled]="!canWrite" [required]="required">
     <button mdSuffix [mdDatepickerToggle]="picker"></button>
   </md-input-container>
   <md-datepicker #picker></md-datepicker>
