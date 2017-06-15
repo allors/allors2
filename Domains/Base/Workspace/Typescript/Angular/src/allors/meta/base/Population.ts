@@ -122,7 +122,7 @@ export class Population {
       }
 
       if (dataObjectType.exclusiveMethodTypes) {
-        dataObjectType.exclusiveMethodTypes.forEach(dataMethodType => {
+        dataObjectType.exclusiveMethodTypes.forEach((dataMethodType) => {
           const metaMethodType: ExclusiveMethodType = new ExclusiveMethodType();
           metaMethodType.id = dataMethodType.id;
           metaMethodType.name = dataMethodType.name;
@@ -140,7 +140,7 @@ export class Population {
       const metaObjectType = this.objectTypeByName[dataClass.name];
 
       if (dataClass.concreteRoleTypes) {
-        dataClass.concreteRoleTypes.forEach(dataRoleType => {
+        dataClass.concreteRoleTypes.forEach((dataRoleType) => {
           const metaRoleType: RoleType = this.metaObjectById[dataRoleType.id] as RoleType;
           const metaConcreteRoleType: ConcreteRoleType = new ConcreteRoleType();
           metaConcreteRoleType.roleType = metaRoleType;
@@ -150,7 +150,7 @@ export class Population {
       }
 
       if (dataClass.concreteMethodTypes) {
-        dataClass.concreteMethodTypes.forEach(dataMethodType => {
+        dataClass.concreteMethodTypes.forEach((dataMethodType) => {
           const metaMethodType: MethodType = this.metaObjectById[dataMethodType.id] as MethodType;
           const metaConcreteMethodType: ConcreteMethodType = new ConcreteMethodType();
           metaConcreteMethodType.methodType = metaMethodType;
@@ -162,5 +162,5 @@ export class Population {
     Object.keys(this.objectTypeByName)
       .map((name) => this.objectTypeByName[name])
       .forEach((objectType) => objectType.derive());
-  };
+  }
 }

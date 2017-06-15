@@ -6,7 +6,7 @@ import { MethodType, ExclusiveMethodType, ConcreteMethodType } from './MethodTyp
 export enum Kind {
   unit,
   class,
-  interface
+  interface,
 }
 
 export class ObjectType implements MetaObject {
@@ -42,7 +42,7 @@ export class ObjectType implements MetaObject {
     return this.kind === Kind.class;
   }
 
-  derive() {
+  derive(): void {
     const interfaces: ObjectType[] = [];
     this.addInterfaces(interfaces);
 
@@ -59,15 +59,21 @@ export class ObjectType implements MetaObject {
         }
       });
 
-       v.exclusiveMethodTypes.forEach((methodType) => {
+      v.exclusiveMethodTypes.forEach((methodType) => {
         if (!this.methodTypeByName[methodType.name]) {
           this.methodTypeByName[methodType.name] = methodType;
+        }
+      });
+
+      v.associationTypes.forEach((associationType) => {
+        if (this.associationTypes.indexOf(associationType) < 0) {
+          this.associationTypes.push(associationType);
         }
       });
     });
   }
 
-  private addInterfaces(interfaces: ObjectType[]) {
+  private addInterfaces(interfaces: ObjectType[]): void {
     Object.keys(this.interfaceByName)
       .map((name) => this.interfaceByName[name])
       .forEach((objectType) => {

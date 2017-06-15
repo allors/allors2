@@ -1,1 +1,0 @@
-export { MaterialTextComponent } from './text';

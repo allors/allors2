@@ -1,12 +1,12 @@
 import { Observable, Subscription } from 'rxjs/Rx';
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
+import { MetaDomain } from '../../allors/meta';
 import { PullRequest, Query, Equals, Like, TreeNode, Sort, Page } from '../../allors/domain';
 import { Scope } from '../../allors/angular/base/Scope';
 import { AllorsService } from '../allors.service';
 
-import { Organisation } from '../../allors/domain';
+import { Organisation } from '../../allors/domain/generated/Organisation.g';
 
 @Component({
   selector: 'app-form',
@@ -17,11 +17,12 @@ export class FormComponent implements OnInit, OnDestroy {
   private scope: Scope;
   private subscription: Subscription;
 
-  form: FormGroup;
+  m: MetaDomain;
   organisation: Organisation;
 
-  constructor(private fb: FormBuilder, private allors: AllorsService) {
+  constructor(private allors: AllorsService) {
     this.scope = new Scope(allors.database, allors.workspace);
+    this.m = allors.meta;
   }
 
   ngOnInit() {
@@ -47,9 +48,6 @@ export class FormComponent implements OnInit, OnDestroy {
       .load('Pull', new PullRequest({ query: [query] }))
       .subscribe(() => {
         this.organisation = (this.scope.collections.organisations as Organisation[])[0];
-        this.form = this.fb.group({
-          Name: {}
-        })
       },
       (e) => {
         this.allors.onError(e);
@@ -60,5 +58,11 @@ export class FormComponent implements OnInit, OnDestroy {
     if (this.subscription) {
       this.subscription.unsubscribe();
     }
+  }
+
+  save(): void {
+    this.scope.save().subscribe(() => {
+      alert('saved');
+    });
   }
 }

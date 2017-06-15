@@ -1,4 +1,5 @@
-﻿import { WorkspaceObject } from '../../WorkspaceObject';
+﻿import { WorkspaceObject } from '../../workspace';
+
 import { Path } from './Path';
 import { TreeNode } from './TreeNode';
 

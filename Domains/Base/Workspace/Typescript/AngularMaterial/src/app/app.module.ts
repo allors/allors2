@@ -17,14 +17,21 @@ import { LoginComponent } from './auth/login.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { FormComponent } from './form/form.component';
 
-import { }
+import * as angularMaterial from '../allors/angularMaterial';
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
     DashboardComponent,
-    FormComponent
+    FormComponent,
+    angularMaterial.DatepickerComponent,
+    angularMaterial.EnumComponent,
+    angularMaterial.RadioButtonComponent,
+    angularMaterial.SelectComponent,
+    angularMaterial.StaticComponent,
+    angularMaterial.TextareaComponent,
+    angularMaterial.TextComponent,
   ],
   imports: [
     BrowserModule,

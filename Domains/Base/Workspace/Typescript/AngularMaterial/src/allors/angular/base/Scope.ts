@@ -21,8 +21,8 @@ export class Scope {
   load(service: string, params?: any): Observable<any> {
     return this.database
       .pull(service, params)
-      .mergeMap(response => {
-        const requireLoadIds = this.workspace.diff(response);
+      .mergeMap((response: PullResponse) => {
+        const requireLoadIds: SyncRequest = this.workspace.diff(response);
 
         if (requireLoadIds.objects.length > 0) {
           return this.database
@@ -35,7 +35,7 @@ export class Scope {
         } else {
           this.update(response);
           this.session.reset();
-          return Observable.of(null);
+          return Observable.of(undefined);
         }
       });
   }
