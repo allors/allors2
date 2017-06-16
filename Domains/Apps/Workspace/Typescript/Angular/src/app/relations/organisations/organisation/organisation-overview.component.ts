@@ -17,17 +17,18 @@ export class OrganisationOverviewComponent implements OnInit, AfterViewInit, OnD
 
   private subscription: Subscription;
   private scope: Scope;
+  m: MetaDomain;
 
-  private communicationEvents: CommunicationEvent[];
+  communicationEvents: CommunicationEvent[];
 
-  private organisation: Organisation;
-  id: string;
+  organisation: Organisation;
 
   constructor(private allors: AllorsService,
     private route: ActivatedRoute,
     public snackBar: MdSnackBar,
     public media: TdMediaService) {
     this.scope = new Scope(allors.database, allors.workspace);
+    this.m = this.allors.meta;
   }
 
   ngOnInit(): void {
@@ -35,18 +36,16 @@ export class OrganisationOverviewComponent implements OnInit, AfterViewInit, OnD
     this.subscription = this.route.url
       .mergeMap((url: any) => {
 
-        this.id = this.route.snapshot.paramMap.get('id');
-
-        const m: MetaDomain = this.allors.meta;
+        const id: string = this.route.snapshot.paramMap.get('id');
+        const m: MetaDomain = this.m;
 
         const fetch: Fetch[] = [
           new Fetch({
             name: 'organisation',
-            id: this.id,
+            id: id,
             include: [
-              new TreeNode({
-                roleType: m.Party.Locale,
-              }),
+              new TreeNode({roleType: m.Party.Locale}),
+              new TreeNode({roleType: m.Organisation.OrganisationRoles}),
               new TreeNode({
                 roleType: m.Party.CurrentContacts,
                 nodes: [
@@ -109,7 +108,7 @@ export class OrganisationOverviewComponent implements OnInit, AfterViewInit, OnD
           }),
           new Fetch({
             name: 'communicationEvents',
-            id: this.id,
+            id: id,
             path: new Path({ step: m.Organisation.CommunicationEventsWhereInvolvedParty }),
           }),
         ];

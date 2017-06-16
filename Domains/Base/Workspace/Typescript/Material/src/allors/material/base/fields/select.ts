@@ -8,7 +8,7 @@ import { Field } from './Field';
   selector: 'a-md-select',
   template: `
 <div flex>
-  <md-select [(ngModel)]="model" [name]="name" [placeholder]="roleType.name" [disabled]="!canWrite" [required]="required">
+  <md-select [(ngModel)]="model" [name]="name" [placeholder]="roleType.name" [disabled]="!canWrite" [required]="required" [multiple]="roleType.isMany">
     <md-option *ngFor="let option of options" [value]="option">
       {{option[display]}}
     </md-option>
@@ -16,15 +16,11 @@ import { Field } from './Field';
 </div>
 `,
 })
-export class SelectComponent extends Field implements AfterViewInit {
+export class SelectComponent extends Field {
   @Input()
   display: string = 'display';
 
   @Input()
   options: ISessionObject[];
-
-  ngAfterViewInit(): void {
-    console.debug('ok');
-  }
 
 }

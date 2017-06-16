@@ -6,10 +6,11 @@
       <md-card-content>
 
         <div layout="row">
-          <md-input-container flex>
-            <label>Name</label>
-            <input mdInput value="{{ organisation.Name }}" type="text" disabled="">
-          </md-input-container>
+          <a-md-static [object]="organisation" [roleType]="m.Organisation.OrganisationRoles" display="Name"></a-md-static>
+        </div>
+
+        <div layout="row">
+          <a-md-static [object]="organisation" [roleType]="m.Organisation.Name"></a-md-static>
         </div>
 
         <div layout="row">
@@ -36,9 +37,9 @@
             <div class="md-padding" *ngIf="!data" layout="row" layout-align="center center">
               <h3>No communications to display.</h3>
             </div>
-            <div *ngIf="data">
+            <!--<div *ngIf="data">
               <communicationEvents-table [data]="data" (view)="onView($event)"></communicationEvents-table>
-            </div>
+            </div>-->
           </md-list>
         </ng-template>
       </md-card-content>
@@ -104,7 +105,7 @@
                   <md-menu x-position="before" #menu="mdMenu">
                       <a [routerLink]="[contactRelationship.Contact.id + '/overview']" md-menu-item>Details</a>
                       <a [routerLink]="['../contact/' + contactRelationship.id + '/edit' ]" md-menu-item>Edit</a>
-                      <button md-menu-item (click)="delete(organisation)">Delete</button>
+                      <!--<button md-menu-item (click)="delete(organisation)">Delete</button>-->
                   </md-menu>
               </span>
 
@@ -173,7 +174,7 @@
                           [routerLink]="['../telecom/' + partyContactMechanism.id + '/edit' ]" md-menu-item>Edit</a>
                       <a *ngIf="this.checkType(partyContactMechanism.ContactMechanism) === &quot;PostalAddress&quot;"
                           [routerLink]="['../postal/' + partyContactMechanism.id + '/edit' ]" md-menu-item>Edit</a>
-                      <button md-menu-item (click)="delete(organisation)">Delete</button>
+                      <!--<button md-menu-item (click)="delete(organisation)">Delete</button>-->
                   </md-menu>
               </span>
 

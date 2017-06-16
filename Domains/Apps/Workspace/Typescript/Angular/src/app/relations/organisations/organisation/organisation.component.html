@@ -1,17 +1,10 @@
 <md-card tdMediaToggle="gt-xs" [mediaClasses]="['push']">
-  <form #form="ngForm" ng-if="organisation" (submit)="save()">
+  <form #form="ngForm" *ngIf="organisation" (submit)="save()">
 
     <md-card-title>Organisation</md-card-title>
 
     <md-divider></md-divider>
     <md-card-content class="push-bottom-none">
-
-      <!--<div layout="row" class="push-top">
-        <md-select flex="50" placeholder="Roles" formControlName="Roles">
-          <md-option>Select Role(s)</md-option>
-          <md-option *ngFor="let role of roles" [value]="role.id">{{ role.Name }}</md-option>
-        </md-select>
-      </div>-->
 
       <div layout="row" class="push-top">
         <a-md-select [object]="organisation" [roleType]="m.Organisation.OrganisationRoles" [options]="roles" display="Name"></a-md-select>
@@ -30,7 +23,7 @@
     <md-divider></md-divider>
     <md-card-actions>
       <button md-button color="primary" type="submit">SAVE</button>
-      <button md-button (click)="goBack()">CANCEL</button>
+      <button md-button (click)="goBack()" type="button">CANCEL</button>
     </md-card-actions>
 
   </form>
