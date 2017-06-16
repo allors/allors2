@@ -45,6 +45,9 @@ export class OrganisationOverviewComponent implements OnInit, AfterViewInit, OnD
             id: this.id,
             include: [
               new TreeNode({
+                roleType: m.Party.Locale,
+              }),
+              new TreeNode({
                 roleType: m.Party.CurrentContacts,
                 nodes: [
                   new TreeNode({

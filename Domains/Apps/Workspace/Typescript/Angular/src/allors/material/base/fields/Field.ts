@@ -18,6 +18,12 @@ export class Field {
     }
   }
 
+  set model(value: any){
+    if (this.isReady) {
+      this.object[this.roleType.name] = value;
+    }
+  }
+
   get name(): string {
     if (this.isReady) {
       return this.roleType.name;
