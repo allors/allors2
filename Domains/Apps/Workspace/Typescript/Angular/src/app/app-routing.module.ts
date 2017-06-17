@@ -41,7 +41,7 @@ const routes: Routes = [
             path: 'people',
             children: [
               { path: '', component: PeopleComponent },
-            ]
+            ],
           },
           {
             path: 'organisations',
@@ -60,10 +60,10 @@ const routes: Routes = [
               { path: ':id/addTelecom', component: TelecommunicationsNumberAddComponent },
               { path: ':id/postal/:partyContactMechanismId/edit', component: PostalAddressEditComponent },
               { path: ':id/addPostal', component: PostalAddressAddComponent },
-            ]
+            ],
           },
-        ]
-      }]
+        ],
+      }],
   },
 ];
 
@@ -73,7 +73,7 @@ const routes: Routes = [
   ],
   exports: [
     RouterModule,
-  ]
+  ],
 })
 export class AppRoutingModule { }
 export const routedComponents: any[] = [
@@ -85,5 +85,5 @@ export const routedComponents: any[] = [
   PeopleComponent,
   PostalAddressAddComponent, PostalAddressEditComponent,
   TelecommunicationsNumberAddComponent, TelecommunicationsNumberEditComponent,
-  WebAddressAddComponent, WebAddressEditComponent
+  WebAddressAddComponent, WebAddressEditComponent,
 ];

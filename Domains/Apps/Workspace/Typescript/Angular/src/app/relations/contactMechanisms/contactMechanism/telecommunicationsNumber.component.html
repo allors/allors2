@@ -1,5 +1,5 @@
 <md-card tdMediaToggle="gt-xs" [mediaClasses]="['push']">
-  <form [formGroup]="form" (ngSubmit)="save($event)">
+  <form #form="ngForm" *ngIf="contactMechanism" (submit)="save()">
 
     <md-card-title>Telecommunications number Contact Form</md-card-title>
 
@@ -7,38 +7,30 @@
     <md-card-content class="push-bottom-none">
 
       <div layout="row">
-        <select flex="50" placeholder="Purpose" formControlName="ContactMechanismPurposes">
-              <option *ngFor="let contactMechanismPurpose of contactMechanismPurposes" [value]="contactMechanismPurpose">{{ contactMechanismPurpose.Name }}</option>
-            </select>
+        <a-md-select [object]="partyContactMechanism" [roleType]="m.PartyContactMechanism.ContactPurposes" [options]="contactMechanismPurposes" display="Name"></a-md-select>
       </div>
 
       <div layout="row" class="push-top">
-        <md-input-container flex>
-          <input mdInput formControlName="CountryCode" type="text" placeholder="Country code">
-        </md-input-container>
+        <a-md-text [object]="contactMechanism" [roleType]="m.TelecommunicationsNumber.CountryCode"></a-md-text>
       </div>
 
       <div layout="row" class="push-top">
-        <md-input-container flex>
-          <input mdInput formControlName="AreaCode" type="text" placeholder="Area code">
-        </md-input-container>
+        <a-md-text [object]="contactMechanism" [roleType]="m.TelecommunicationsNumber.AreaCode"></a-md-text>
       </div>
 
       <div layout="row" class="push-top">
-        <md-input-container flex>
-          <input mdInput formControlName="ContactNumber" type="text" placeholder="Contact number">
-        </md-input-container>
+        <a-md-text [object]="contactMechanism" [roleType]="m.TelecommunicationsNumber.ContactNumber"></a-md-text>
       </div>
 
       <div layout="row" class="push-top">
-        <md-slide-toggle formControlName="Default">Use as default</md-slide-toggle>
+        <p>Implement Use as default (slide-toggle)</p>
       </div>
     </md-card-content>
 
     <md-divider></md-divider>
     <md-card-actions>
       <button md-button color="primary" type="submit">SAVE</button>
-      <button md-button [routerLink]="['/organisations/' + id + '/overview']">CANCEL</button>
+      <button md-button (click)="goBack()" type="button">CANCEL</button>
     </md-card-actions>
 
   </form>

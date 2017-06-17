@@ -1,12 +1,15 @@
 import { Observable, Subject, Subscription } from 'rxjs/Rx';
 import { Component, OnInit, AfterViewInit, OnDestroy } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { MdSnackBar, MdSnackBarConfig } from '@angular/material';
 import { TdMediaService } from '@covalent/core';
 
 import { Scope } from '../../../../allors/angular/base/Scope';
 import { AllorsService } from '../../../allors.service';
+import { PullRequest, PushResponse, Fetch, Path, Query, Equals, Like, TreeNode, Sort, Page } from '../../../../allors/domain';
+import { MetaDomain } from '../../../../allors/meta/index';
+
 import { Organisation, PartyContactMechanism, EmailAddress, Enumeration } from '../../../../allors/domain';
 
 @Component({
@@ -17,80 +20,97 @@ export class EmailAddressAddComponent implements OnInit, AfterViewInit, OnDestro
   private subscription: Subscription;
   private scope: Scope;
 
-  contactMechanismPurposes: Enumeration[ ];
+  m: MetaDomain;
 
-  form: FormGroup;
-  id: string;
+  organisation: Organisation;
+  partyContactMechanism: PartyContactMechanism;
+  contactMechanism: EmailAddress;
+  contactMechanismPurposes: Enumeration[];
 
   constructor(private allors: AllorsService,
     private route: ActivatedRoute,
-    public fb: FormBuilder,
     public snackBar: MdSnackBar,
     public media: TdMediaService) {
     this.scope = new Scope(allors.database, allors.workspace);
+    this.m = this.allors.meta;
   }
 
   ngOnInit(): void {
     this.subscription = this.route.url
       .mergeMap((url: any) => {
 
-        this.id = this.route.snapshot.paramMap.get('id');
+        const id: string = this.route.snapshot.paramMap.get('id');
+        const m: MetaDomain = this.m;
 
-        this.form = this.fb.group({
-          ContactMechanismPurposes: [''],
-          ElectronicAddress: ['', Validators.required],
-          Default: ['', Validators.required],
-        });
+        const fetch: Fetch[] = [
+          new Fetch({
+            name: 'organisation',
+            id: id,
+            include: [
+              new TreeNode({
+                roleType: m.Organisation.PartyContactMechanisms,
+                nodes: [
+                  new TreeNode({ roleType: m.PartyContactMechanism.ContactPurposes }),
+                  new TreeNode({ roleType: m.PartyContactMechanism.ContactMechanism }),
+                ],
+              }),
+            ],
+          }),
+        ];
+
+        const query: Query[] = [
+          new Query(
+            {
+              name: 'contactMechanismPurposes',
+              objectType: this.m.ContactMechanismPurpose,
+            }),
+        ];
 
         this.scope.session.reset();
 
         return this.scope
-          .load('Organisation', { id: this.id })
-          .do(() => {
-            this.contactMechanismPurposes = this.scope.collections.contactMechanismPurposes as Enumeration[];
-
-            this.form.controls.ContactMechanismPurposes.patchValue(this.contactMechanismPurposes);
-          })
-          .catch((e: any) => {
-            this.snackBar.open(e.toString(), 'close', { duration: 5000 });
-            this.goBack();
-            return Observable.empty()
-          });
+          .load('Pull', new PullRequest({ fetch: fetch, query: query }));
       })
-      .subscribe();
+      .subscribe(() => {
+
+        this.organisation = this.scope.objects.organisation as Organisation;
+
+        if (!this.contactMechanism) {
+          this.contactMechanism = this.scope.session.create('EmailAddress') as EmailAddress;
+        }
+
+        this.partyContactMechanism = this.scope.session.create('PartyContactMechanism') as PartyContactMechanism;
+        this.partyContactMechanism.ContactMechanism = this.contactMechanism;
+
+        this.organisation.AddPartyContactMechanism(this.partyContactMechanism);
+
+        this.contactMechanismPurposes = this.scope.collections.contactMechanismPurposes as Enumeration[];
+      },
+      (error: any) => {
+        this.snackBar.open(error, 'close', { duration: 5000 });
+        this.goBack();
+      },
+    );
   }
 
   ngAfterViewInit(): void {
     this.media.broadcast();
   }
 
-  ngOnDestroy() {
+  ngOnDestroy(): void {
     if (this.subscription) {
       this.subscription.unsubscribe();
     }
   }
 
-  save(event: Event): void {
-
-    const organisation: Organisation = this.scope.session.get(this.id) as Organisation;
-
-    let emailAddress = this.scope.session.create('EmailAddress') as EmailAddress
-    emailAddress.ElectronicAddressString = this.form.controls.ElectronicAddress.value;
-
-    let partyContactMechanism = this.scope.session.create('PartyContactMechanism') as PartyContactMechanism
-    partyContactMechanism.ContactMechanism = emailAddress;
-    // partyContactMechanism.UseAsDefault = this.form.controls.Default.value;
-
-    organisation.AddPartyContactMechanism(partyContactMechanism);
-
+  save(): void {
 
     this.scope
       .save()
-      .toPromise()
-      .then(() => {
+      .subscribe((pushResponse: PushResponse) => {
         this.goBack();
-      })
-      .catch((e: any) => {
+      },
+      (e: any) => {
         this.snackBar.open(e.toString(), 'close', { duration: 5000 });
       });
   }

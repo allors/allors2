@@ -20,7 +20,6 @@ export class PostalAddressEditComponent implements OnInit, AfterViewInit, OnDest
   private subscription: Subscription;
   private scope: Scope;
 
-  id: string;
   m: MetaDomain;
 
   partyContactMechanism: PartyContactMechanism;
@@ -40,13 +39,13 @@ export class PostalAddressEditComponent implements OnInit, AfterViewInit, OnDest
     this.subscription = this.route.url
       .mergeMap((url: any) => {
 
-        this.id = this.route.snapshot.paramMap.get('partyContactMechanismId');
+        const id: string = this.route.snapshot.paramMap.get('partyContactMechanismId');
         const m: MetaDomain = this.m;
 
         const fetch: Fetch[] = [
           new Fetch({
             name: 'partyContactMechanism',
-            id: this.id,
+            id: id,
             include: [
               new TreeNode({roleType: m.PartyContactMechanism.ContactPurposes}),
               new TreeNode({
