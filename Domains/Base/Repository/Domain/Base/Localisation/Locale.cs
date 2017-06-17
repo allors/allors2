@@ -41,6 +41,7 @@ namespace Allors.Repository
         [RoleId("647db2b3-997b-4c3a-9ae2-d49b410933c1")]
         [Size(256)]
         #endregion
+        [Workspace]
         public string Name { get; set; }
 
         #region Allors
@@ -51,6 +52,7 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
         [Required]
+        [Workspace]
         public Language Language { get; set; }
         
         #region Allors
@@ -61,6 +63,7 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
         [Required]
+        [Workspace]
         public Country Country { get; set; }
         
         #region inherited methods

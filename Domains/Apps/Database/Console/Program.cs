@@ -81,6 +81,7 @@ namespace Allors.Console
             catch (Exception e)
             {
                 Console.WriteLine(e.ToString());
+                Console.ReadLine();
                 return 1;
             }
         }

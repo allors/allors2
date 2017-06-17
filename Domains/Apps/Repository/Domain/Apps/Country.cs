@@ -48,6 +48,7 @@ namespace Allors.Repository
         #endregion
         [Multiplicity(Multiplicity.OneToMany)]
         [Indexed]
+        [Workspace]
         public VatRate[] VatRates { get; set; }
 
         #region Allors
@@ -55,6 +56,7 @@ namespace Allors.Repository
         [AssociationId("ebdfd8e3-9d24-4721-b72b-5a5e4327d62b")]
         [RoleId("45aa4f50-a23b-4ce6-872f-d72b648e4e90")]
         #endregion
+        [Workspace]
         public int IbanLength { get; set; }
         
         #region Allors
@@ -62,6 +64,7 @@ namespace Allors.Repository
         [AssociationId("0a5662c3-1f60-41d5-a703-638480cb3c15")]
         [RoleId("a14f5154-bcf2-44f4-a49e-3c17aca71247")]
         #endregion
+        [Workspace]
         public bool EuMemberState { get; set; }
         
         #region Allors
@@ -70,6 +73,7 @@ namespace Allors.Repository
         [RoleId("38546e92-a238-4d72-a731-a3f91dbcc61f")]
         #endregion
         [Size(256)]
+        [Workspace]
         public string TelephoneCode { get; set; }
         
         #region Allors
@@ -78,6 +82,7 @@ namespace Allors.Repository
         [RoleId("4f6f041b-a1ea-47bc-92e4-650bddaa46ed")]
         #endregion
         [Size(256)]
+        [Workspace]
         public string IbanRegex { get; set; }
         
         #region Allors
@@ -87,6 +92,7 @@ namespace Allors.Repository
         #endregion
         [Multiplicity(Multiplicity.OneToOne)]
         [Indexed]
+        [Workspace]
         public VatForm VatForm { get; set; }
         
         #region Allors
@@ -95,6 +101,7 @@ namespace Allors.Repository
         [RoleId("e72228ee-ae28-406c-b7ee-a9be1a4d3286")]
         #endregion
         [Size(256)]
+        [Workspace]
         public string UriExtension { get; set; }
         
         #region inherited methods

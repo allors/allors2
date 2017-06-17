@@ -42,8 +42,9 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
         [Required]
-
+        [Workspace]
         public Person Professional { get; set; }
+
         #region Allors
         [Id("a587695e-a9b3-4b5b-b211-a19096b88815")]
         [AssociationId("d3fc269c-debf-4ada-b1be-b2f48d2ae027")]
@@ -52,9 +53,8 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
         [Required]
-
+        [Workspace]
         public Organisation ProfessionalServicesProvider { get; set; }
-
 
         #region inherited methods
 

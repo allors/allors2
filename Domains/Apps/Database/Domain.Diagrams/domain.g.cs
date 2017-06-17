@@ -3503,23 +3503,21 @@ namespace Allors.Domain
 		{
 						GeographicBoundary GeographicBoundaries {set;}
 
-						global::System.String Address3 {set;}
-
-						Country Country {set;}
+						global::System.String Address1 {set;}
 
 						global::System.String Address2 {set;}
 
-						City City {set;}
-
-						global::System.String Address1 {set;}
+						global::System.String Address3 {set;}
 
 						PostalBoundary PostalBoundary {set;}
 
 						PostalCode PostalCode {set;}
 
-						global::System.String Directions {set;}
+						City City {set;}
 
-						global::System.String FormattedFullAddress {set;}
+						Country Country {set;}
+
+						global::System.String Directions {set;}
 
 		}
 		public interface PostalBoundary  : AccessControlledObject, Deletable 
@@ -4929,9 +4927,9 @@ namespace Allors.Domain
 		}
 		public interface TelecommunicationsNumber  : ContactMechanism 
 		{
-						global::System.String AreaCode {set;}
-
 						global::System.String CountryCode {set;}
+
+						global::System.String AreaCode {set;}
 
 						global::System.String ContactNumber {set;}
 

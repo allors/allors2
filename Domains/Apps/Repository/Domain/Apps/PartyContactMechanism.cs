@@ -36,6 +36,7 @@ namespace Allors.Repository
         #endregion
         [Multiplicity(Multiplicity.ManyToMany)]
         [Indexed]
+        [Workspace]
         public ContactMechanismPurpose[] ContactPurposes { get; set; }
 
         #region Allors
@@ -46,6 +47,7 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
         [Required]
+        [Workspace]
         public ContactMechanism ContactMechanism { get; set; }
 
         #region Allors
@@ -54,6 +56,7 @@ namespace Allors.Repository
         [RoleId("a9168214-b208-4a21-905c-da53f9a4619d")]
         #endregion
         [Required]
+        [Workspace]
         public bool UseAsDefault { get; set; }
 
         #region Allors
@@ -61,6 +64,7 @@ namespace Allors.Repository
         [AssociationId("0935e3ed-7141-47b2-b4cc-72274b9e7680")]
         [RoleId("1c57da10-ffcb-4b97-a930-ae10c2059b98")]
         #endregion
+        [Workspace]
         public bool NonSolicitationIndicator { get; set; }
 
         #region inherited methods

@@ -42,8 +42,9 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
         [Required]
-
+        [Workspace]
         public Party Contractor { get; set; }
+
         #region Allors
         [Id("d95ecb34-dfe4-42df-bc9f-1ad4af72abaa")]
         [AssociationId("597810f4-da06-4d63-837e-6cd0419f3d4b")]
@@ -52,9 +53,8 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
         [Required]
-
+        [Workspace]
         public Party SubContractor { get; set; }
-
 
         #region inherited methods
 

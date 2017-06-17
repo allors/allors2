@@ -17,7 +17,7 @@ namespace Allors.Repository
         [RoleId("8b41d441-cd12-49d0-823c-b8a3163baadc")]
         #endregion
         [Size(-1)]
-
+        [Workspace]
         string Comment { get; set; }
 
     }

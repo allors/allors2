@@ -42,8 +42,9 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
         [Required]
-
+        [Workspace]
         public Person Contact { get; set; }
+
         #region Allors
         [Id("96f4c9af-eeff-477f-8a93-1168cc383b4c")]
         [AssociationId("a34e218b-26c0-4c88-a202-0353e693833a")]
@@ -52,8 +53,9 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
         [Required]
-
+        [Workspace]
         public Organisation Organisation { get; set; }
+
         #region Allors
         [Id("af7e007e-c325-453a-923e-55299eda2a8c")]
         [AssociationId("337e305a-da68-42da-b508-d9f010138a09")]
@@ -61,7 +63,7 @@ namespace Allors.Repository
         #endregion
         [Multiplicity(Multiplicity.ManyToMany)]
         [Indexed]
-
+        [Workspace]
         public OrganisationContactKind[] ContactKinds { get; set; }
 
 

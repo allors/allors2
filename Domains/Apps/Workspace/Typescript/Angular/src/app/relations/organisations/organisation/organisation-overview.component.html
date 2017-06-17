@@ -14,10 +14,7 @@
         </div>
 
         <div layout="row">
-          <md-input-container flex>
-            <label>Locale</label>
-            <input mdInput value="{{ organisation.Locale?.Name }}" type="text" disabled="">
-          </md-input-container>
+          <a-md-static [object]="organisation" [roleType]="m.Organisation.Locale" display="Name"></a-md-static>
         </div>
       </md-card-content>
 
@@ -159,7 +156,7 @@
                 <span hide-xs hide-sm hide-md flex-gt-xs="60" flex-xs="40" layout-gt-xs="row">
                   <div class="md-caption tc-grey-500" flex-gt-xs="50"> created: {{ partyContactMechanism.CreationDate | date }} </div>
                   <div class="md-caption tc-grey-500" flex-gt-xs="50"> modified: {{ partyContactMechanism.LastModifiedDate | timeAgo }} </div>
-              </span>e
+              </span>
 
                 <span>
                   <button md-icon-button [md-menu-trigger-for]="menu">

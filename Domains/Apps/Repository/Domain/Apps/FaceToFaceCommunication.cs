@@ -90,15 +90,16 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.ManyToMany)]
         [Indexed]
         [Required]
-
+        [Workspace]
         public Party[] Participants { get; set; }
+
         #region Allors
         [Id("95ae979f-d549-4ea1-87f0-46aa55e4b14a")]
         [AssociationId("d34e4203-0bd2-4fe4-a2ef-9f9f52b49cf9")]
         [RoleId("9f67b296-953d-4e04-b94d-6ffece87ceef")]
         #endregion
         [Size(256)]
-
+        [Workspace]
         public string Location { get; set; }
 
 

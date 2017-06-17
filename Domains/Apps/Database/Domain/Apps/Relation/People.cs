@@ -35,9 +35,19 @@ namespace Allors.Domain
             }
         }
 
+        protected override void AppsSetup(Setup config)
+        {
+            var users = new Users(this.Session).Extent();
+            foreach (Person person in users)
+            {
+                person.AddPersonRole(new PersonRoles(this.Session).Employee);
+            }
+        }
+
         protected override void AppsPrepare(Setup setup)
         {
             setup.AddDependency(this.Meta.ObjectType, M.Role);
+            setup.AddDependency(this.Meta.ObjectType, M.PersonRole);
         }
 
         protected override void AppsSecure(Security config)

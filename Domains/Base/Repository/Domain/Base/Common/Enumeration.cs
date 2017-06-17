@@ -35,6 +35,7 @@ namespace Allors.Repository
         #endregion
         [Multiplicity(Multiplicity.OneToMany)]
         [Indexed]
+        [Workspace]
         LocalisedText[] LocalisedNames { get; set; }
         
         #region Allors
@@ -45,6 +46,7 @@ namespace Allors.Repository
         [Indexed]
         [Required]
         [Size(256)]
+        [Workspace]
         string Name { get; set; }
         
         #region Allors
@@ -54,6 +56,7 @@ namespace Allors.Repository
         #endregion
         [Indexed]
         [Required]
+        [Workspace]
         bool IsActive { get; set; }
     }
 }

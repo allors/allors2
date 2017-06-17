@@ -63,6 +63,7 @@ namespace Allors.Repository
         [RoleId("f10ea049-6d24-4ca2-8efa-032fcf3000b3")]
         [Size(256)]
         #endregion
+        [Workspace]
         public string FirstName { get; set; }
 
         #region Allors
@@ -71,6 +72,7 @@ namespace Allors.Repository
         [RoleId("ace04ad8-bf64-4fc3-8216-14a720d3105d")]
         [Size(256)]
         #endregion
+        [Workspace]
         public string LastName { get; set; }
         
         #region Allors
@@ -79,6 +81,7 @@ namespace Allors.Repository
         [RoleId("a86fc7a6-dedd-4da9-a250-75c9ec730d22")]
         [Size(256)]
         #endregion
+        [Workspace]
         public string MiddleName { get; set; }
         
         #region inherited methods

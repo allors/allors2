@@ -36,6 +36,7 @@ namespace Allors.Repository
         [AssociationId("82c1dad0-6d6d-440c-8bf0-f20d35ab0863")]
         [RoleId("0dd9728e-0887-4029-af20-dd69371fbba0")]
         #endregion
+        [Workspace]
         DateTime ScheduledStart { get; set; }
 
         #region Allors
@@ -46,6 +47,7 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.ManyToMany)]
         [Derived]
         [Indexed]
+        [Workspace]
         Party[] ToParties { get; set; }
 
         #region Allors
@@ -55,6 +57,7 @@ namespace Allors.Repository
         #endregion
         [Multiplicity(Multiplicity.ManyToMany)]
         [Indexed]
+        [Workspace]
         ContactMechanism[] ToContactMechanisms { get; set; }
 
         #region Allors
@@ -65,6 +68,7 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.OneToMany)]
         [Derived]
         [Indexed]
+        [Workspace]
         CommunicationEventStatus[] CommunicationEventStatuses { get; set; }
 
         #region Allors
@@ -75,6 +79,7 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.ManyToMany)]
         [Derived]
         [Indexed]
+        [Workspace]
         Party[] InvolvedParties { get; set; }
 
         #region Allors
@@ -82,6 +87,7 @@ namespace Allors.Repository
         [AssociationId("6b5d29f8-7016-4cdb-9af9-8320b1c7304d")]
         [RoleId("8e7c8bab-063d-4f77-99ae-6e7979b63ce4")]
         #endregion
+        [Workspace]
         DateTime InitialScheduledStart { get; set; }
 
         #region Allors
@@ -93,6 +99,7 @@ namespace Allors.Repository
         [Derived]
         [Indexed]
         [Required]
+        [Workspace]
         CommunicationEventObjectState CurrentObjectState { get; set; }
 
         #region Allors
@@ -102,6 +109,7 @@ namespace Allors.Repository
         #endregion
         [Multiplicity(Multiplicity.ManyToMany)]
         [Indexed]
+        [Workspace]
         CommunicationEventPurpose[] EventPurposes { get; set; }
 
         #region Allors
@@ -109,6 +117,7 @@ namespace Allors.Repository
         [AssociationId("439ec2e8-0f9c-474f-8cca-6b33887897ae")]
         [RoleId("1d09f872-86ef-4970-9459-d03075799145")]
         #endregion
+        [Workspace]
         DateTime ScheduledEnd { get; set; }
 
         #region Allors
@@ -116,6 +125,7 @@ namespace Allors.Repository
         [AssociationId("feaad4be-f3e2-4f76-9a87-9676d86bda35")]
         [RoleId("10be3680-44d1-41c9-a084-fbd27a36ecbb")]
         #endregion
+        [Workspace]
         DateTime ActualEnd { get; set; }
 
         #region Allors
@@ -125,6 +135,7 @@ namespace Allors.Repository
         #endregion
         [Multiplicity(Multiplicity.ManyToMany)]
         [Indexed]
+        [Workspace]
         WorkEffort[] WorkEfforts { get; set; }
 
         #region Allors
@@ -133,6 +144,7 @@ namespace Allors.Repository
         [RoleId("8722394b-3873-4eb2-8bf4-d70abaf0a77a")]
         #endregion
         [Size(-1)]
+        [Workspace]
         string Description { get; set; }
 
         #region Allors
@@ -140,6 +152,7 @@ namespace Allors.Repository
         [AssociationId("e4844fd8-62d1-4057-8a9b-4ad4fdc3186b")]
         [RoleId("346af9bb-6091-4d5b-ad8e-92d254876f4a")]
         #endregion
+        [Workspace]
         DateTime InitialScheduledEnd { get; set; }
 
         #region Allors
@@ -150,6 +163,7 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.ManyToMany)]
         [Derived]
         [Indexed]
+        [Workspace]
         Party[] FromParties { get; set; }
 
         #region Allors
@@ -159,6 +173,7 @@ namespace Allors.Repository
         #endregion
         [Required]
         [Size(-1)]
+        [Workspace]
         string Subject { get; set; }
 
         #region Allors
@@ -168,6 +183,7 @@ namespace Allors.Repository
         #endregion
         [Multiplicity(Multiplicity.OneToMany)]
         [Indexed]
+        [Workspace]
         Media[] Documents { get; set; }
 
         #region Allors
@@ -177,6 +193,7 @@ namespace Allors.Repository
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
+        [Workspace]
         Case Case { get; set; }
 
         #region Allors
@@ -186,6 +203,7 @@ namespace Allors.Repository
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
+        [Workspace]
         Priority Priority { get; set; }
 
         #region Allors
@@ -195,6 +213,7 @@ namespace Allors.Repository
         #endregion
         [Multiplicity(Multiplicity.ManyToMany)]
         [Indexed]
+        [Workspace]
         ContactMechanism[] FromContactMechanisms { get; set; }
 
         #region Allors
@@ -205,6 +224,7 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.ManyToOne)]
         [Required]
         [Indexed]
+        [Workspace]
         Person Owner { get; set; }
 
         #region Allors
@@ -215,6 +235,7 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.OneToOne)]
         [Derived]
         [Indexed]
+        [Workspace]
         CommunicationEventStatus CurrentCommunicationEventStatus { get; set; }
 
         #region Allors
@@ -223,6 +244,7 @@ namespace Allors.Repository
         [RoleId("1b5cc695-29d7-48b7-991f-c8271f9a00d4")]
         #endregion
         [Size(-1)]
+        [Workspace]
         string Note { get; set; }
 
         #region Allors
@@ -230,7 +252,7 @@ namespace Allors.Repository
         [AssociationId("abdb3a26-ae86-4500-a9d9-d9546fb6f856")]
         [RoleId("406f48d7-a0be-48c9-81f5-7b506b41e114")]
         #endregion
-
+        [Workspace]
         DateTime ActualStart { get; set; }
 
         #region Allors

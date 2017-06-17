@@ -42,23 +42,26 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
         [Required]
-
+        [Workspace]
         public Organisation Supplier { get; set; }
+
         #region Allors
         [Id("17aa6ceb-0cbd-45fa-9f6d-848ce4a365b1")]
         [AssociationId("b5057208-9823-4a54-8394-6100d18dbe4a")]
         [RoleId("6ddbeb86-39ea-4bd8-ae17-af4b9a1968ce")]
         #endregion
         [Required]
-
+        [Workspace]
         public int SubAccountNumber { get; set; }
+        
         #region Allors
         [Id("b12a68f6-0eaa-4a8a-a741-398a0be43f62")]
         [AssociationId("01adc720-91a4-47c6-9235-d21a3215ee6f")]
         [RoleId("0363121b-d92e-4722-81dc-47032aae5440")]
         #endregion
-
+        [Workspace]
         public DateTime LastReminderDate { get; set; }
+
         #region Allors
         [Id("b1832c65-8b46-4060-bd2a-22c12ff01714")]
         [AssociationId("f320e24c-61b1-4820-a091-d8b63b21184d")]
@@ -66,8 +69,9 @@ namespace Allors.Repository
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
-
+        [Workspace]
         public DunningType DunningType { get; set; }
+
         #region Allors
         [Id("e96a79e7-c161-4ed9-a5cc-8de4f67bf954")]
         [AssociationId("1a406db2-268a-4669-a629-e0e15fdbd826")]
@@ -76,14 +80,14 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
         [Required]
-
         public InternalOrganisation InternalOrganisation { get; set; }
+
         #region Allors
         [Id("ee871786-8840-404d-9b41-932a9f59be13")]
         [AssociationId("5b98959d-5589-4958-a86f-4c9b465c1632")]
         [RoleId("056ca61a-1ab4-4e53-8d5f-328ada5f3b11")]
         #endregion
-
+        [Workspace]
         public DateTime BlockedForDunning { get; set; }
 
 

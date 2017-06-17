@@ -18,7 +18,7 @@ namespace Allors.Repository
         #endregion
         [Required]
         [Size(256)]
-
+        [Workspace]
         string ElectronicAddressString { get; set; }
 
     }

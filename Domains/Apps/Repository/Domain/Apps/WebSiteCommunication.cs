@@ -89,8 +89,9 @@ namespace Allors.Repository
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
-
+        [Workspace]
         public Party Originator { get; set; }
+
         #region Allors
         [Id("39077571-13b2-4cc4-be85-517dbc11703e")]
         [AssociationId("be25f23d-6c17-4940-abe6-b6936244bcea")]
@@ -98,7 +99,7 @@ namespace Allors.Repository
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
-
+        [Workspace]
         public Party Receiver { get; set; }
 
 

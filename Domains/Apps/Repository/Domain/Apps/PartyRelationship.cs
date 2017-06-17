@@ -18,7 +18,7 @@ namespace Allors.Repository
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
-
+        [Workspace]
         PartyRelationshipStatus PartyRelationshipStatus { get; set; }
 
 
@@ -29,7 +29,7 @@ namespace Allors.Repository
         #endregion
         [Multiplicity(Multiplicity.OneToMany)]
         [Indexed]
-
+        [Workspace]
         Agreement[] RelationshipAgreements { get; set; }
 
 
@@ -40,7 +40,7 @@ namespace Allors.Repository
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
-
+        [Workspace]
         Priority PartyRelationshipPriority { get; set; }
 
 
@@ -61,7 +61,7 @@ namespace Allors.Repository
         #endregion
         [Multiplicity(Multiplicity.OneToMany)]
         [Indexed]
-
+        [Workspace]
         CommunicationEvent[] CommunicationEvents { get; set; }
 
 
@@ -73,7 +73,7 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.ManyToMany)]
         [Derived]
         [Indexed]
-
+        [Workspace]
         Party[] Parties { get; set; }
 
     }

@@ -42,8 +42,9 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
         [Required]
-
+        [Workspace]
         public Person SalesRepresentative { get; set; }
+
         #region Allors
         [Id("4ffa4073-8359-48c0-8562-9c30e6426ad2")]
         [AssociationId("ba0a1788-bd88-4d93-91c9-a51af7831ba2")]
@@ -53,7 +54,9 @@ namespace Allors.Repository
         [Required]
         [Precision(19)]
         [Scale(2)]
+        [Workspace]
         public decimal LastYearsCommission { get; set; }
+
         #region Allors
         [Id("61a10565-62ac-4529-a3b1-709f3b5da306")]
         [AssociationId("8a3b5d2e-3be7-4c54-9571-d2466f5323ff")]
@@ -61,8 +64,9 @@ namespace Allors.Repository
         #endregion
         [Multiplicity(Multiplicity.ManyToMany)]
         [Indexed]
-
+        [Workspace]
         public ProductCategory[] ProductCategories { get; set; }
+
         #region Allors
         [Id("7dc11a0c-72af-4296-94a4-068edae0021a")]
         [AssociationId("8f82d5f9-8f9e-4f57-bb39-4bab9f9813a3")]
@@ -71,8 +75,8 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
         [Required]
-
         public InternalOrganisation InternalOrganisation { get; set; }
+
         #region Allors
         [Id("98dab364-0db6-438f-ac12-9b0238e81afd")]
         [AssociationId("eb32c549-bb3e-4789-abdb-9073905077bb")]
@@ -82,7 +86,9 @@ namespace Allors.Repository
         [Required]
         [Precision(19)]
         [Scale(2)]
+        [Workspace]
         public decimal YTDCommission { get; set; }
+
         #region Allors
         [Id("b770e679-2da6-45e7-b8e0-2ee39ab67f1e")]
         [AssociationId("95817787-34eb-42f5-82a0-d28bfa93cd88")]
@@ -91,9 +97,8 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
         [Required]
-
+        [Workspace]
         public Party Customer { get; set; }
-
 
         #region inherited methods
 

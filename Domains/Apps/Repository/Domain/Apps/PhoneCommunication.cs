@@ -87,16 +87,18 @@ namespace Allors.Repository
         [AssociationId("5fb6405b-2d06-425d-9e42-cb6638a2e308")]
         [RoleId("209e3d12-b5cf-49c9-a39c-15f14690ec69")]
         #endregion
-
+        [Workspace]
         public bool LeftVoiceMail { get; set; }
+
         #region Allors
         [Id("53df1269-a6f0-49a4-bd2f-af4aff75565a")]
         [AssociationId("32e719bd-39c7-4fc3-bff2-e0091cebd0b7")]
         [RoleId("5bbb6e8a-7c82-492e-b497-3579007f9294")]
         #endregion
         [Required]
-
+        [Workspace]
         public bool IncomingCall { get; set; }
+
         #region Allors
         [Id("5e3c675b-b329-47a4-9d53-b0e95837a23b")]
         [AssociationId("16fa813c-15d6-4bfb-a7b3-c295efe47a1c")]
@@ -105,8 +107,9 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.ManyToMany)]
         [Indexed]
         [Required]
-
+        [Workspace]
         public Party[] Receivers { get; set; }
+
         #region Allors
         [Id("7a37ab85-222a-4d13-b832-b222faefcf39")]
         [AssociationId("79c04646-6f62-4867-9f89-f2ce1876e981")]
@@ -115,7 +118,7 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.ManyToMany)]
         [Indexed]
         [Required]
-
+        [Workspace]
         public Party[] Callers { get; set; }
 
 

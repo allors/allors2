@@ -89,8 +89,9 @@ namespace Allors.Repository
         #endregion
         [Multiplicity(Multiplicity.ManyToMany)]
         [Indexed]
-
+        [Workspace]
         public PostalAddress[] PostalAddresses { get; set; }
+
         #region Allors
         [Id("e8fd2c39-bcb7-4914-8cd3-6dcc6a7a9997")]
         [AssociationId("d5ed6948-f657-4d47-89c8-d860e2971138")]
@@ -99,8 +100,9 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
         [Required]
-
+        [Workspace]
         public Party Originator { get; set; }
+
         #region Allors
         [Id("ece02647-000a-4373-8f01-f4b7d1c75dd5")]
         [AssociationId("e580ed8f-a7a4-40c3-9c0a-4cdbe95354a6")]
@@ -109,7 +111,7 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.ManyToMany)]
         [Indexed]
         [Required]
-
+        [Workspace]
         public Party[] Receivers { get; set; }
 
 

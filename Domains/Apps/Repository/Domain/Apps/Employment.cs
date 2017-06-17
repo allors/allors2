@@ -42,8 +42,8 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
         [Required]
-
         public InternalOrganisation Employer { get; set; }
+
         #region Allors
         [Id("a243feb0-e5f0-41b4-9b13-a09bb8413fb3")]
         [AssociationId("03bac42d-dcbc-40f3-a130-7b4f3b37f523")]
@@ -52,8 +52,9 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
         [Required]
-
+        [Workspace]
         public Person Employee { get; set; }
+
         #region Allors
         [Id("ba6d2658-9c07-4254-a664-21df0e2fcb6a")]
         [AssociationId("f512d8bd-5ea3-461c-9310-6ab93696763d")]
@@ -61,8 +62,9 @@ namespace Allors.Repository
         #endregion
         [Multiplicity(Multiplicity.OneToMany)]
         [Indexed]
-
+        [Workspace]
         public PayrollPreference[] PayrollPreferences { get; set; }
+
         #region Allors
         [Id("c8fd6c79-f909-414e-b9e3-5e911e2e2080")]
         [AssociationId("da451dab-03db-4bc5-8641-93ec74570f4f")]
@@ -70,8 +72,9 @@ namespace Allors.Repository
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
-
+        [Workspace]
         public EmploymentTerminationReason EmploymentTerminationReason { get; set; }
+
         #region Allors
         [Id("e79807d4-dcf8-47e2-b510-e8535f1ec436")]
         [AssociationId("6b4896d8-8bf6-4908-acb9-dc2438263fb7")]
@@ -79,7 +82,7 @@ namespace Allors.Repository
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
-
+        [Workspace]
         public EmploymentTermination EmploymentTermination { get; set; }
 
 

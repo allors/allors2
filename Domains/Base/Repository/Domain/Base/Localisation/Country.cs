@@ -43,6 +43,7 @@ namespace Allors.Repository
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
+        [Workspace]
         public Currency Currency { get; set; }
 
         #region Allors
@@ -53,6 +54,7 @@ namespace Allors.Repository
         [Required]
         [Unique]
         [Size(2)]
+        [Workspace]
         public string IsoCode { get; set; }
 
         #region Allors
@@ -64,6 +66,7 @@ namespace Allors.Repository
         [Unique]
         [Size(256)]
         [Required]
+        [Workspace]
         public string Name { get; set; }
         
         #region Allors
@@ -73,6 +76,7 @@ namespace Allors.Repository
         #endregion
         [Multiplicity(Multiplicity.OneToMany)]
         [Indexed]
+        [Workspace]
         public LocalisedText[] LocalisedNames { get; set; }
         
         #region inherited methods

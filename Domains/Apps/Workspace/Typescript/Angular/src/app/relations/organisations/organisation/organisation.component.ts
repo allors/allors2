@@ -1,6 +1,6 @@
 import { Observable, Subject, Subscription } from 'rxjs/Rx';
 import { Component, OnInit, AfterViewInit, OnDestroy } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { MdSnackBar, MdSnackBarConfig } from '@angular/material';
 import { TdMediaService } from '@covalent/core';
@@ -29,7 +29,6 @@ export class OrganisationFormComponent implements OnInit, AfterViewInit, OnDestr
 
   constructor(private allors: AllorsService,
     private route: ActivatedRoute,
-    public fb: FormBuilder,
     public snackBar: MdSnackBar,
     public media: TdMediaService) {
     this.scope = new Scope(allors.database, allors.workspace);

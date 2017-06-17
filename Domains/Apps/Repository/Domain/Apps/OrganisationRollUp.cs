@@ -42,8 +42,9 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
         [Required]
-
+        [Workspace]
         public Organisation Parent { get; set; }
+
         #region Allors
         [Id("4301bb17-43b6-4bf3-a874-7441dd419dd0")]
         [AssociationId("5b6d83a4-a7f5-4097-bc9b-7ba91e3b96ee")]
@@ -52,8 +53,9 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
         [Required]
-
+        [Workspace]
         public OrganisationUnit RollupKind { get; set; }
+
         #region Allors
         [Id("92ebf310-72ea-468b-a880-7268b48df41a")]
         [AssociationId("71b8ea7b-5316-42df-adc0-2aded71c9eaf")]
@@ -62,7 +64,7 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
         [Required]
-
+        [Workspace]
         public Organisation Child { get; set; }
 
 

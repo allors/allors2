@@ -16,6 +16,7 @@
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
+        [Workspace]
         User CreatedBy { get; set; }
 
         #region Allors
@@ -25,6 +26,7 @@
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
+        [Workspace]
         User LastModifiedBy { get; set; }
 
         #region Allors
@@ -32,7 +34,7 @@
         [AssociationId("06A58270-F1C3-4C64-A268-FCEA208EBC29")]
         [RoleId("EC78160B-49E1-4F92-9FA3-79A0CE7EA645")]
         #endregion
-
+        [Workspace]
         DateTime CreationDate { get; set; }
 
 
@@ -41,7 +43,7 @@
         [AssociationId("994394D7-A4CD-4540-BD26-7EFF0A28EDB1")]
         [RoleId("316D738B-FDB7-4849-B74C-2D3B97C4C58E")]
         #endregion
-
+        [Workspace]
         DateTime LastModifiedDate { get; set; }
     }
 }
