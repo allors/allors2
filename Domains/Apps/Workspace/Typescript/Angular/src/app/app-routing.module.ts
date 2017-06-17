@@ -51,7 +51,7 @@ const routes: Routes = [
               { path: ':id/edit', component: OrganisationFormComponent },
               { path: ':id/overview', component: OrganisationOverviewComponent },
               { path: ':id/addContact', component: OrganisationAddContactComponent },
-              { path: ':id/contact/:contactId/edit', component: OrganisationEditContactComponent },
+              { path: ':id/contact/:contactRelationshipId/edit', component: OrganisationEditContactComponent },
               { path: ':id/web/:partyContactMechanismId/edit', component: WebAddressEditComponent },
               { path: ':id/addWeb', component: WebAddressAddComponent },
               { path: ':id/email/:partyContactMechanismId/edit', component: EmailAddressEditComponent },

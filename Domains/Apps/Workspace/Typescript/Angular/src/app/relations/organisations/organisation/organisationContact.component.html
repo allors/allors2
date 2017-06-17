@@ -1,5 +1,5 @@
 <md-card tdMediaToggle="gt-xs" [mediaClasses]="['push']">
-  <form [formGroup]="form" (ngSubmit)="save($event)">
+  <form #form="ngForm" *ngIf="organisationContactRelationship" (submit)="save()">
 
     <md-card-title>Organisation Contact Form</md-card-title>
 
@@ -7,58 +7,38 @@
     <md-card-content class="push-bottom-none">
 
       <div layout="row">
-        <select flex="50" placeholder="Contact kind" formControlName="OrganisationContactKind">
-              <option *ngFor="let contactKind of organisationContactKinds" [value]="contactKind">{{ contactKind.Description }}</option>
-            </select>
+        <a-md-select [object]="organisationContactRelationship" [roleType]="m.OrganisationContactRelationship.ContactKinds" [options]="organisationContactKinds" display="Description"></a-md-select>
       </div>
 
       <div layout="row" class="push-top">
-        <md-input-container flex>
-          <input mdInput formControlName="FirstName" type="text" placeholder="Fist name">
-        </md-input-container>
+        <a-md-text [object]="organisationContactRelationship.Contact" [roleType]="m.Person.FirstName"></a-md-text>
       </div>
 
       <div layout="row" class="push-top">
-        <md-input-container flex>
-          <input mdInput formControlName="MiddleName" type="text" placeholder="Middle name">
-        </md-input-container>
+        <a-md-text [object]="organisationContactRelationship.Contact" [roleType]="m.Person.MiddleName"></a-md-text>
       </div>
 
       <div layout="row" class="push-top">
-        <md-input-container flex>
-          <input mdInput formControlName="LastName" type="text" placeholder="Last name">
-        </md-input-container>
+        <a-md-text [object]="organisationContactRelationship.Contact" [roleType]="m.Person.LastName"></a-md-text>
       </div>
 
       <div layout="row" class="push-top">
-        <md-input-container flex>
-          <input mdInput formControlName="Function" type="text" placeholder="function">
-        </md-input-container>
+        <a-md-select [object]="organisationContactRelationship.Contact" [roleType]="m.Person.Gender" [options]="genders" display="Name"></a-md-select>
       </div>
 
       <div layout="row" class="push-top">
-        <select flex="50" placeholder="Gender" formControlName="Gender">
-              <option *ngFor="let gender of genders" [value]="gender">{{ gender.Name }}</option>
-            </select>
+        <a-md-select [object]="organisationContactRelationship.Contact" [roleType]="m.Person.Salutation" [options]="salutations" display="Name"></a-md-select>
       </div>
 
       <div layout="row" class="push-top">
-        <select flex="50" placeholder="Salutation" formControlName="Salutation">
-              <option *ngFor="let salutation of salutations" [value]="salutation">{{ salutation.Name }}</option>
-            </select>
-      </div>
-
-      <div layout="row" class="push-top">
-        <select flex="50" placeholder="Locale" formControlName="Locale">
-              <option *ngFor="let locale of locales" [value]="locale">{{ locale.Name }}</option>
-            </select>
+        <a-md-select [object]="organisationContactRelationship.Contact" [roleType]="m.Person.Locale" [options]="locales" display="Name"></a-md-select>
       </div>
     </md-card-content>
 
     <md-divider></md-divider>
     <md-card-actions>
       <button md-button color="primary" type="submit">SAVE</button>
-      <button md-button [routerLink]="['/organisations/' + id + '/overview']">CANCEL</button>
+      <button md-button (click)="goBack()" type="button">CANCEL</button>
     </md-card-actions>
 
   </form>

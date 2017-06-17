@@ -1,12 +1,15 @@
 import { Observable, Subject, Subscription } from 'rxjs/Rx';
 import { Component, OnInit, AfterViewInit, OnDestroy } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { MdSnackBar, MdSnackBarConfig } from '@angular/material';
 import { TdMediaService } from '@covalent/core';
 
 import { Scope } from '../../../../allors/angular/base/Scope';
 import { AllorsService } from '../../../allors.service';
+import { PullRequest, PushResponse, Fetch, Path, Query, Equals, Like, TreeNode, Sort, Page } from '../../../../allors/domain';
+import { MetaDomain } from '../../../../allors/meta/index';
+
 import { Organisation, Person, Locale, OrganisationContactRelationship, OrganisationContactKind, Enumeration } from '../../../../allors/domain';
 
 @Component({
@@ -17,98 +20,101 @@ export class OrganisationEditContactComponent implements OnInit, AfterViewInit, 
   private subscription: Subscription;
   private scope: Scope;
 
+  m: MetaDomain;
+
+  organisationContactRelationship: OrganisationContactRelationship;
   locales: Locale[];
   genders: Enumeration[];
   salutations: Enumeration[];
   organisationContactKinds: Enumeration[];
 
-  form: FormGroup;
-  id: string;
-
   constructor(private allors: AllorsService,
     private route: ActivatedRoute,
-    public fb: FormBuilder,
     public snackBar: MdSnackBar,
     public media: TdMediaService) {
     this.scope = new Scope(allors.database, allors.workspace);
+    this.m = this.allors.meta;
   }
 
   ngOnInit(): void {
     this.subscription = this.route.url
       .mergeMap((url: any) => {
 
-        this.id = this.route.snapshot.paramMap.get('contactId');
+        const id: string = this.route.snapshot.paramMap.get('contactRelationshipId');
+        const m: MetaDomain = this.m;
 
-        this.form = this.fb.group({
-          OrganisationContactKind: [''],
-          FirstName: [''],
-          MiddleName: [''],
-          LastName: ['', Validators.required],
-          Function: [''],
-          Gender: ['', Validators.required],
-          Salutation: [''],
-          Locale: [''],
-        });
+        const fetch: Fetch[] = [
+          new Fetch({
+            name: 'organisationContactRelationship',
+            id: id,
+            include: [
+              new TreeNode({ roleType: m.OrganisationContactRelationship.ContactKinds }),
+            ],
+          }),
+        ];
+
+        const query: Query[] = [
+          new Query(
+            {
+              name: 'organisationContactKinds',
+              objectType: this.m.OrganisationContactKind,
+            }),
+          new Query(
+            {
+              name: 'locales',
+              objectType: this.m.Locale,
+            }),
+          new Query(
+            {
+              name: 'genders',
+              objectType: this.m.GenderType,
+            }),
+          new Query(
+            {
+              name: 'salutations',
+              objectType: this.m.Salutation,
+            }),
+        ];
 
         this.scope.session.reset();
 
         return this.scope
-          .load('OrganisationContactRelationship', { id: this.id })
-          .do(() => {
-            this.locales = this.scope.collections.locales as Locale[];
-            this.genders = this.scope.collections.genders as Enumeration[];
-            this.salutations = this.scope.collections.salutations as Enumeration[];
-            this.organisationContactKinds = this.scope.collections.organisationContactKinds as Enumeration[];
-
-            const organisationContactRelationship: OrganisationContactRelationship = this.scope.objects.organisationContactRelationship as OrganisationContactRelationship;
-            const contact: Person = this.scope.objects.contact as Person;
-
-            this.form.controls.OrganisationContactKind.patchValue(organisationContactRelationship.ContactKinds);
-            this.form.controls.FirstName.patchValue(contact.FirstName);
-            this.form.controls.MiddleName.patchValue(contact.MiddleName);
-            this.form.controls.LastName.patchValue(contact.LastName);
-            this.form.controls.Gender.patchValue(contact.Gender);
-            this.form.controls.Salutation.patchValue(contact.Salutation);
-            this.form.controls.Locale.patchValue(contact.Locale);
-          })
-          .catch((e: any) => {
-            this.snackBar.open(e.toString(), 'close', { duration: 5000 });
-            this.goBack();
-            return Observable.empty()
-          });
+          .load('Pull', new PullRequest({ fetch: fetch, query: query }));
       })
-      .subscribe();
+      .subscribe(() => {
+
+        this.organisationContactRelationship = this.scope.objects.organisationContactRelationship as OrganisationContactRelationship;
+
+        this.locales = this.scope.collections.locales as Locale[];
+        this.genders = this.scope.collections.genders as Enumeration[];
+        this.salutations = this.scope.collections.salutations as Enumeration[];
+        this.organisationContactKinds = this.scope.collections.organisationContactKinds as Enumeration[];
+      },
+      (error: any) => {
+        this.snackBar.open(error, 'close', { duration: 5000 });
+        this.goBack();
+      },
+    );
   }
 
   ngAfterViewInit(): void {
     this.media.broadcast();
   }
 
-  ngOnDestroy() {
+  ngOnDestroy(): void {
     if (this.subscription) {
       this.subscription.unsubscribe();
     }
   }
 
-  save(event: Event): void {
-
-    const organisationContactRelationship: OrganisationContactRelationship = this.scope.session.get(this.id) as OrganisationContactRelationship;
-
-    let person = organisationContactRelationship.Contact as Person
-    person.FirstName = this.form.controls.FirstName.value;
-    person.MiddleName = this.form.controls.MiddleName.value;
-    person.LastName = this.form.controls.LastName.value;
-    person.Gender = this.form.controls.Gender.value;
-    person.Salutation = this.form.controls.Salutation.value;
-    person.Locale = this.form.controls.Locale.value;
+  save(): void {
 
     this.scope
       .save()
-      .toPromise()
-      .then(() => {
+      .subscribe((pushResponse: PushResponse) => {
         this.goBack();
-      })
-      .catch((e: any) => {
+      },
+      (e: any) => {
         this.snackBar.open(e.toString(), 'close', { duration: 5000 });
       });
   }
