@@ -7,11 +7,11 @@ import { Field } from '../../../angular';
 @Component({
   selector: 'a-md-checkbox',
   template: `
-<md-input-container fxLayout="row">
+<div fxLayout="row">
   <md-checkbox fxFlex [(ngModel)]="model" [name]="name" [disabled]="!canWrite" [required]="required">
   {{label}}
   </md-checkbox>
-</md-input-container>
+</div>
 `,
 })
 export class CheckboxComponent extends Field {
