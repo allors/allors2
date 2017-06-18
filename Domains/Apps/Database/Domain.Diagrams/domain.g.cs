@@ -1243,6 +1243,8 @@ namespace Allors.Domain
 
 						global::System.String FileName {set;}
 
+						global::System.String Type {set;}
+
 		}
 		public interface MediaContent  : AccessControlledObject, Deletable 
 		{
@@ -1445,7 +1447,7 @@ namespace Allors.Domain
 
 						MaritalStatus MaritalStatus {set;}
 
-						Image Picture {set;}
+						Media Picture {set;}
 
 						global::System.String SocialSecurityNumber {set;}
 
@@ -2392,7 +2394,7 @@ namespace Allors.Domain
 
 						Product ProductIncompatibilities {set;}
 
-						Image Photo {set;}
+						Media Photo {set;}
 
 		}
 		public interface GoodOrderItem  : EngagementItem 
@@ -2407,17 +2409,6 @@ namespace Allors.Domain
 		}
 		public interface Hobby  : Enumeration 
 		{
-		}
-		public interface Image  : Deletable 
-		{
-						Media Original {set;}
-
-						Media Responsive {set;}
-
-						global::System.String OriginalFilename {set;}
-
-						Media Thumbnail {set;}
-
 		}
 		public interface Incentive  : AgreementTerm 
 		{
@@ -2445,7 +2436,7 @@ namespace Allors.Domain
 
 						global::System.Decimal? MaximumAllowedPaymentDifference {set;}
 
-						Image LogoImage {set;}
+						Media LogoImage {set;}
 
 						CostCenterSplitMethod CostCenterSplitMethod {set;}
 
@@ -2898,7 +2889,7 @@ namespace Allors.Domain
 
 						UserGroup ContactsUserGroup {set;}
 
-						Image LogoImage {set;}
+						Media LogoImage {set;}
 
 						global::System.String TaxNumber {set;}
 

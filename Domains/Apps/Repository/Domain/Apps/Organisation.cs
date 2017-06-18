@@ -196,7 +196,7 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
         [Workspace]
-        public Image LogoImage { get; set; }
+        public Media LogoImage { get; set; }
 
         #region Allors
         [Id("813633df-c6cb-44a6-9fdf-579aa8180ebd")]

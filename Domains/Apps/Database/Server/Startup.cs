@@ -90,6 +90,7 @@
                         .RequireAuthenticatedUser().Build());
                 });
 
+            services.AddResponseCaching();
             services.AddMvc();
             services.Configure<MvcOptions>(options =>
                 {
@@ -101,7 +102,7 @@
         {
             loggerFactory.AddConsole(this.Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
-
+            app.UseResponseCaching();
             app.UseExceptionHandler(appBuilder =>
                 {
                     appBuilder.Use(async (context, next) =>

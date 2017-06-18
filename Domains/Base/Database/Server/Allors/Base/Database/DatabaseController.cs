@@ -1,5 +1,6 @@
 ﻿namespace Allors.Server
 {
+    using System;
     using System.Threading.Tasks;
 
     using Allors.Domain;
@@ -17,10 +18,17 @@
         {
             await this.OnInit();
 
-            var user = this.AllorsUser ?? Singleton.Instance(this.AllorsSession).Guest;
-            var responseBuilder = new SyncResponseBuilder(this.AllorsSession, user, syncRequest);
-            var response = responseBuilder.Build();
-            return this.Ok(response);
+            try
+            {
+                var user = this.AllorsUser ?? Singleton.Instance(this.AllorsSession).Guest;
+                var responseBuilder = new SyncResponseBuilder(this.AllorsSession, user, syncRequest);
+                var response = responseBuilder.Build();
+                return this.Ok(response);
+            }
+            catch (Exception e)
+            {
+                return this.StatusCode(500, e.Message);
+            }
         }
 
         [HttpPost]
@@ -28,10 +36,17 @@
         {
             await this.OnInit();
 
-            var user = this.AllorsUser ?? Singleton.Instance(this.AllorsSession).Guest;
-            var responseBuilder = new PushResponseBuilder(this.AllorsSession, user, pushRequest);
-            var response = responseBuilder.Build();
-            return this.Ok(response);
+            try
+            {
+                var user = this.AllorsUser ?? Singleton.Instance(this.AllorsSession).Guest;
+                var responseBuilder = new PushResponseBuilder(this.AllorsSession, user, pushRequest);
+                var response = responseBuilder.Build();
+                return this.Ok(response);
+            }
+            catch (Exception e)
+            {
+                return this.StatusCode(500, e.Message);
+            }
         }
 
         [HttpPost]
@@ -39,10 +54,17 @@
         {
             await this.OnInit();
 
-            var user = this.AllorsUser ?? Singleton.Instance(this.AllorsSession).Guest;
-            var responseBuilder = new InvokeResponseBuilder(this.AllorsSession, user, invokeRequest);
-            var response = responseBuilder.Build();
-            return this.Ok(response);
+            try
+            {
+                var user = this.AllorsUser ?? Singleton.Instance(this.AllorsSession).Guest;
+                var responseBuilder = new InvokeResponseBuilder(this.AllorsSession, user, invokeRequest);
+                var response = responseBuilder.Build();
+                return this.Ok(response);
+            }
+            catch (Exception e)
+            {
+                return this.StatusCode(500, e.Message);
+            }
         }
     }
 }

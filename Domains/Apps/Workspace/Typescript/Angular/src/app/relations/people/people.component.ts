@@ -5,9 +5,11 @@ import { Title } from '@angular/platform-browser';
 import { MdSnackBar } from '@angular/material';
 import { TdLoadingService, TdDialogService, TdMediaService } from '@covalent/core';
 
+import { PullRequest, Query, Equals, Like, TreeNode, Sort, Page } from '../../../allors/domain';
 import { Scope } from '../../../allors/angular/base/Scope';
 import { AllorsService } from '../../allors.service';
 import { Person } from '../../../allors/domain';
+import { MetaDomain } from '../../../allors/meta/index';
 
 @Component({
   templateUrl: './people.component.html',
@@ -17,25 +19,24 @@ export class PeopleComponent implements AfterViewInit, OnDestroy {
   private subscription: Subscription;
   private scope: Scope;
 
-  people: Person[];
-  filtered: Person[];
+  data: Person[];
 
   constructor(private titleService: Title,
-              private router: Router,
-              private loadingService: TdLoadingService,
-              private dialogService: TdDialogService,
-              private snackBarService: MdSnackBar,
-              allors: AllorsService) {
+    private router: Router,
+    private loadingService: TdLoadingService,
+    private dialogService: TdDialogService,
+    private snackBarService: MdSnackBar,
+    private allors: AllorsService) {
     this.scope = new Scope(allors.database, allors.workspace);
   }
 
-  goBack(route: string): void {
+  goBack(): void {
     this.router.navigate(['/']);
   }
 
   ngAfterViewInit(): void {
-    this.titleService.setTitle( 'People' );
-    this.subscription = this.refresh().subscribe();
+    this.titleService.setTitle('People');
+    this.search();
   }
 
   ngOnDestroy(): void {
@@ -44,30 +45,43 @@ export class PeopleComponent implements AfterViewInit, OnDestroy {
     }
   }
 
-  filter(displayName: string = ''): void {
-    this.filtered = this.people.filter((person: Person) => {
-      return person.FirstName && person.FirstName.toLowerCase().indexOf(displayName.toLowerCase()) > -1;
-    });
+  search(criteria?: string): void {
+
+    if (this.subscription) {
+      this.subscription.unsubscribe();
+    }
+
+    const m: MetaDomain = this.allors.meta;
+
+    const query: Query[] = [new Query(
+      {
+        name: 'people',
+        objectType: m.Person,
+        include: [
+          new TreeNode({roleType: m.Person.Picture}),
+        ],
+      })];
+
+    this.scope.session.reset();
+
+    this.subscription = this.scope
+      .load('Pull', new PullRequest({ query: query }))
+      .subscribe(() => {
+        this.data = this.scope.collections.people as Person[];
+      },
+      (error: any) => {
+        alert(error);
+        this.goBack();
+      });
   }
 
   delete(person: Person): void {
     this.dialogService
-      .openConfirm({message: 'Are you sure you want to delete this person?'})
+      .openConfirm({ message: 'Are you sure you want to delete this person?' })
       .afterClosed().subscribe((confirm: boolean) => {
         if (confirm) {
           // TODO: Logical, physical or workflow delete
         }
       });
-  }
-
-  protected refresh(): Observable<any> {
-    this.scope.session.reset();
-
-    return this.scope
-        .load('People', {})
-        .do(() => {
-            this.people = this.scope.collections.people as Person[];
-            this.filter();
-        });
   }
 }

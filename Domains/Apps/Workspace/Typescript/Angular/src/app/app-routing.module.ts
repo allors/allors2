@@ -2,9 +2,9 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
 import { AuthenticationService } from '../allors/angular';
-import { LoginComponent } from './auth/login.component';
-import { MainComponent } from './main/main.component';
-import { DashboardComponent } from './dashboard/dashboard.component';
+import { LoginComponent } from './common/auth/login.component';
+import { MainComponent } from './common/main/main.component';
+import { DashboardComponent } from './common/dashboard/dashboard.component';
 
 import { CatalogueComponent } from './catalogues/catalogue.component';
 import { CatalogueDashboardComponent } from './catalogues/dashboard/catalogue-dashboard.component';

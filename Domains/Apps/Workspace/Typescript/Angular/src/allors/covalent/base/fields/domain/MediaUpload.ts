@@ -16,7 +16,7 @@ import { Field } from '../../../../angular';
     <md-icon>cancel</md-icon>
   </button>
 
-  <td-file-input #fileInput [(ngModel)]="file" color="primary" (select)="selectEvent($event)" accept="accept">
+  <td-file-input #fileInput [(ngModel)]="file" color="primary" (select)="selectEvent($event)" accept="accept" [disabled]="!canWrite" [required]="required">
     <md-icon>attach_file</md-icon><span>Choose a file ...</span>
   </td-file-input>
 </div>
@@ -43,12 +43,12 @@ export class MediaUploadComponent extends Field {
     }
   }
 
-  dropEvent(file: FileList): void {
-    alert('drop');
-  }
-
   delete(): void {
     this.model = undefined;
+  }
+
+  dropEvent(files: FileList): void {
+    this.selectEvent(files[0]);
   }
 
   selectEvent(file: File): void {
@@ -61,6 +61,7 @@ export class MediaUploadComponent extends Field {
 
     const reader: FileReader = new FileReader();
     const load: () => void =  () => {
+      this.media.FileName = file.name;
       this.media.InDataUri = reader.result;
     };
 
