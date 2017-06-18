@@ -6,7 +6,11 @@
     <md-divider></md-divider>
     <md-card-content class="push-bottom-none">
 
-      <div layout="row">
+      <div layout="row" class="push-top">
+        <a-md-select [object]="organisationContactRelationship.Contact" [roleType]="m.Person.PersonRoles" [options]="roles" display="Name"></a-md-select>
+      </div>
+
+      <div layout="row" class="push-top">
         <a-md-select [object]="organisationContactRelationship" [roleType]="m.OrganisationContactRelationship.ContactKinds" [options]="organisationContactKinds" display="Description"></a-md-select>
       </div>
 

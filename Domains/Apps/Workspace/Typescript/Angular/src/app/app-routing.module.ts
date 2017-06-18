@@ -16,6 +16,8 @@ import { OrganisationFormComponent } from './relations/organisations/organisatio
 import { OrganisationOverviewComponent } from './relations/organisations/organisation/organisation-overview.component';
 import { OrganisationsComponent } from './relations/organisations/organisations.component';
 import { PeopleComponent } from './relations/people/people.component';
+import { PersonFormComponent } from './relations/people/person/person.component';
+import { PersonOverviewComponent } from './relations/people/person/person-overview.component';
 import { PostalAddressAddComponent } from './relations/contactMechanisms/contactMechanism/postalAddressAdd.component';
 import { PostalAddressEditComponent } from './relations/contactMechanisms/contactMechanism/postalAddressEdit.component';
 import { TelecommunicationsNumberAddComponent } from './relations/contactMechanisms/contactMechanism/telecommunicationsNumberAdd.component';
@@ -41,6 +43,17 @@ const routes: Routes = [
             path: 'people',
             children: [
               { path: '', component: PeopleComponent },
+              { path: 'add', component: PersonFormComponent },
+              { path: ':id/edit', component: PersonFormComponent },
+              { path: ':id/overview', component: PersonOverviewComponent },
+              { path: ':id/web/:partyContactMechanismId/edit', component: WebAddressEditComponent },
+              { path: ':id/addWeb', component: WebAddressAddComponent },
+              { path: ':id/email/:partyContactMechanismId/edit', component: EmailAddressEditComponent },
+              { path: ':id/addEmail', component: EmailAddressAddComponent },
+              { path: ':id/telecom/:partyContactMechanismId/edit', component: TelecommunicationsNumberEditComponent },
+              { path: ':id/addTelecom', component: TelecommunicationsNumberAddComponent },
+              { path: ':id/postal/:partyContactMechanismId/edit', component: PostalAddressEditComponent },
+              { path: ':id/addPostal', component: PostalAddressAddComponent },
             ],
           },
           {
@@ -82,7 +95,7 @@ export const routedComponents: any[] = [
   RelationComponent, RelationDashboardComponent,
   EmailAddressAddComponent, EmailAddressEditComponent,
   OrganisationAddContactComponent, OrganisationEditContactComponent, OrganisationFormComponent, OrganisationOverviewComponent, OrganisationsComponent,
-  PeopleComponent,
+  PeopleComponent, PersonFormComponent, PersonOverviewComponent,
   PostalAddressAddComponent, PostalAddressEditComponent,
   TelecommunicationsNumberAddComponent, TelecommunicationsNumberEditComponent,
   WebAddressAddComponent, WebAddressEditComponent,

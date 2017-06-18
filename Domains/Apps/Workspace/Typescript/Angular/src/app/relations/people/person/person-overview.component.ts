@@ -6,14 +6,14 @@ import { TdMediaService } from '@covalent/core';
 
 import { MetaDomain } from '../../../../allors/meta';
 import { PullRequest, Fetch, Path, Query, Equals, Like, TreeNode, Sort, Page } from '../../../../allors/domain';
-import { CommunicationEvent, Organisation, Locale } from '../../../../allors/domain';
+import { CommunicationEvent, Person, Locale, Organisation, OrganisationContactRelationship } from '../../../../allors/domain';
 import { Scope } from '../../../../allors/angular';
 import { AllorsService } from '../../../allors.service';
 
 @Component({
-  templateUrl: './organisation-overview.component.html',
+  templateUrl: './person-overview.component.html',
 })
-export class OrganisationOverviewComponent implements OnInit, AfterViewInit, OnDestroy {
+export class PersonOverviewComponent implements OnInit, AfterViewInit, OnDestroy {
 
   private subscription: Subscription;
   private scope: Scope;
@@ -21,6 +21,7 @@ export class OrganisationOverviewComponent implements OnInit, AfterViewInit, OnD
 
   communicationEvents: CommunicationEvent[];
 
+  person: Person;
   organisation: Organisation;
 
   constructor(private allors: AllorsService,
@@ -41,37 +42,11 @@ export class OrganisationOverviewComponent implements OnInit, AfterViewInit, OnD
 
         const fetch: Fetch[] = [
           new Fetch({
-            name: 'organisation',
+            name: 'person',
             id: id,
             include: [
               new TreeNode({roleType: m.Party.Locale}),
-              new TreeNode({roleType: m.Organisation.OrganisationRoles}),
-              new TreeNode({
-                roleType: m.Party.CurrentContacts,
-                nodes: [
-                  new TreeNode({
-                    roleType: m.Person.PartyContactMechanisms,
-                    nodes: [
-                      new TreeNode({ roleType: m.PartyContactMechanism.ContactPurposes }),
-                      new TreeNode({ roleType: m.PartyContactMechanism.ContactMechanism }),
-                    ],
-                  }),
-                ],
-              }),
-              new TreeNode({
-                roleType: m.Party.CurrentOrganisationContactRelationships,
-                nodes: [
-                  new TreeNode({ roleType: m.OrganisationContactRelationship.ContactKinds }),
-                  new TreeNode({ roleType: m.OrganisationContactRelationship.Contact }),
-                ],
-              }),
-              new TreeNode({
-                roleType: m.Party.InactiveOrganisationContactRelationships,
-                nodes: [
-                  new TreeNode({ roleType: m.OrganisationContactRelationship.ContactKinds }),
-                  new TreeNode({ roleType: m.OrganisationContactRelationship.Contact }),
-                ],
-              }),
+              new TreeNode({roleType: m.Person.PersonRoles}),
               new TreeNode({
                 roleType: m.Party.PartyContactMechanisms,
                 nodes: [
@@ -94,7 +69,7 @@ export class OrganisationOverviewComponent implements OnInit, AfterViewInit, OnD
                 ],
               }),
               new TreeNode({
-                roleType: m.Organisation.GeneralCorrespondence,
+                roleType: m.Person.GeneralCorrespondence,
                 nodes: [
                   new TreeNode({
                     roleType: m.PostalAddress.PostalBoundary,
@@ -110,6 +85,11 @@ export class OrganisationOverviewComponent implements OnInit, AfterViewInit, OnD
             name: 'communicationEvents',
             id: id,
             path: new Path({ step: m.Party.CommunicationEventsWhereInvolvedParty }),
+          }),
+          new Fetch({
+            name: 'organisationContactRelationships',
+            id: id,
+            path: new Path({ step: m.Person.OrganisationContactRelationshipsWhereContact}),
           }),
         ];
 
@@ -152,7 +132,9 @@ export class OrganisationOverviewComponent implements OnInit, AfterViewInit, OnD
           .load('Pull', new PullRequest({ fetch: fetch, query: query }));
       })
       .subscribe(() => {
-        this.organisation = this.scope.objects.organisation as Organisation;
+        this.person = this.scope.objects.person as Person;
+        const organisationContactRelationships: OrganisationContactRelationship[] = this.scope.collections.organisationContactRelationships as OrganisationContactRelationship[];
+        this.organisation = organisationContactRelationships[0].Organisation as Organisation;
         this.communicationEvents = this.scope.collections.communicationEvents as CommunicationEvent[];
       },
       (error: any) => {

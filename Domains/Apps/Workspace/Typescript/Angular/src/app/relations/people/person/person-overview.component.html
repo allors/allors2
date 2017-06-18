@@ -1,20 +1,36 @@
-<div *ngIf="organisation" layout-gt-md="row">
+<div *ngIf="person" layout-gt-md="row">
   <div flex-gt-xs="50">
     <md-card tdMediaToggle="gt-xs" [mediaClasses]="['push']">
-      <md-card-title>Organisation</md-card-title>
+      <md-card-title>Person</md-card-title>
       <md-divider></md-divider>
       <md-card-content>
 
         <div layout="row" class="push-top">
-          <a-md-static [object]="organisation" [roleType]="m.Organisation.OrganisationRoles" display="Name"></a-md-static>
+          <a [routerLink]="['../../../organisations/' + organisation.id + '/overview']">
+           <a-md-static [object]="organisation" [roleType]="m.Organisation.Name"></a-md-static>
+           </a>
         </div>
 
         <div layout="row" class="push-top">
-          <a-md-static [object]="organisation" [roleType]="m.Organisation.Name"></a-md-static>
+          <a-md-static [object]="person" [roleType]="m.Person.PersonRoles" display="Name"></a-md-static>
         </div>
 
         <div layout="row" class="push-top">
-          <a-md-static [object]="organisation" [roleType]="m.Organisation.Locale" display="Name"></a-md-static>
+          <a-md-static [object]="person" [roleType]="m.Person.FirstName"></a-md-static>
+          <a-md-static [object]="person" [roleType]="m.Person.MiddleName"></a-md-static>
+          <a-md-static [object]="person" [roleType]="m.Person.LastName"></a-md-static>
+        </div>
+
+        <div layout="row" class="push-top">
+          <a-md-static [object]="person" [roleType]="m.Person.Gender" display="Name"></a-md-static>
+        </div>
+
+        <div layout="row" class="push-top">
+          <a-md-static [object]="person" [roleType]="m.Person.Salutation" display="Name"></a-md-static>
+        </div>
+
+        <div layout="row" class="push-top">
+          <a-md-static [object]="person" [roleType]="m.Person.Locale" display="Name"></a-md-static>
         </div>
       </md-card-content>
 
@@ -54,81 +70,16 @@
 
   <div flex-gt-xs="50">
     <md-card tdMediaToggle="gt-xs" [mediaClasses]="['push']">
-      <md-card-title>Contact persons</md-card-title>
-
-      <md-divider></md-divider>
-      <md-card-content>
-        <ng-template tdLoading="organisation.CurrentContacts">
-          <md-list class="will-load">
-            <div class="md-padding" *ngIf="organisation.CurrentOrganisationContactRelationships.length === 0" layout="row" layout-align="center center">
-              <h3>No contact persons to display.</h3>
-            </div>
-            <ng-template let-contactRelationship let-last="last" ngFor [ngForOf]="organisation.CurrentOrganisationContactRelationships">
-              <md-list-item>
-                  <a [routerLink]="['../../../people/' + contactRelationship.Contact.id + '/overview' ]" md-line>{{contactRelationship.Contact.FirstName}} {{contactRelationship.Contact.MiddleName}} {{contactRelationship.Contact.LastName}}</a>
-                <div md-line *ngFor="let partyContactMechanism of contactRelationship.Contact.CurrentPartyContactMechanisms">
-                  <p *ngIf="this.checkType(partyContactMechanism.ContactMechanism) === &quot;EmailAddress&quot;  && partyContactMechanism.UseAsDefault"
-                    md-line class="md-caption">
-                    {{ partyContactMechanism.ContactMechanism?.ElectronicAddressString}}
-                  </p>
-                  <p *ngIf="this.checkType(partyContactMechanism.ContactMechanism) === &quot;WebAddress&quot;  && partyContactMechanism.UseAsDefault"
-                    md-line class="md-caption">
-                    {{ partyContactMechanism.ContactMechanism?.ElectronicAddressString}}
-                  </p>
-                  <p *ngIf="this.checkType(partyContactMechanism.ContactMechanism) === &quot;TelecommunicationsNumber&quot;  && partyContactMechanism.UseAsDefault"
-                    md-line class="md-caption">
-                    {{ partyContactMechanism.ContactMechanism?.CountryCode}} {{ partyContactMechanism.ContactMechanism?.AreaCode}} {{ partyContactMechanism.ContactMechanism?.ContactNumber}}
-                  </p>
-                  <p *ngIf="this.checkType(partyContactMechanism.ContactMechanism) === &quot;PostalAddress&quot;  && partyContactMechanism.UseAsDefault"
-                    md-line class="md-caption">
-                    {{ partyContactMechanism.ContactMechanism?.Address1}} {{ partyContactMechanism.ContactMechanism?.PostalBoundary?.PostalCode}}
-                    {{ partyContactMechanism.ContactMechanism?.PostalBoundary?.Locality}} {{ partyContactMechanism.ContactMechanism?.PostalBoundary?.Country.Name}}
-                  </p>
-                </div>
-                <p md-line hide-gt-md class="md-caption"> last modified: {{ contactRelationship.Contact.LastModifiedDate | timeAgo }} </p>
-
-                <span flex></span>
-
-                <span hide-xs hide-sm hide-md flex-gt-xs="60" flex-xs="40" layout-gt-xs="row">
-                  <div class="md-caption tc-grey-500" flex-gt-xs="50"> created: {{ contactRelationship.Contact.CreationDate | date }} </div>
-                  <div class="md-caption tc-grey-500" flex-gt-xs="50"> modified: {{ contactRelationship.Contact.LastModifiedDate | timeAgo }} </div>
-              </span>
-
-                <span>
-                  <button md-icon-button [md-menu-trigger-for]="menu">
-                    <md-icon>more_vert</md-icon>
-                  </button>
-                  <md-menu x-position="before" #menu="mdMenu">
-                      <a [routerLink]="[contactRelationship.Contact.id + '/overview']" md-menu-item>Details</a>
-                      <a [routerLink]="['../contact/' + contactRelationship.id + '/edit' ]" md-menu-item>Edit</a>
-                      <!--<button md-menu-item (click)="delete(organisation)">Delete</button>-->
-                  </md-menu>
-              </span>
-
-              </md-list-item>
-              <md-divider *ngIf="!last" md-inset></md-divider>
-            </ng-template>
-          </md-list>
-        </ng-template>
-      </md-card-content>
-
-      <md-divider></md-divider>
-      <md-card-actions>
-        <button md-button [routerLink]="['../addContact']">Add new</button>
-      </md-card-actions>
-    </md-card>
-
-    <md-card tdMediaToggle="gt-xs" [mediaClasses]="['push']">
       <md-card-title>Contact info</md-card-title>
 
       <md-divider></md-divider>
       <md-card-content>
-        <ng-template tdLoading="organisation.CurrentPartyContactMechanisms">
+        <ng-template tdLoading="person.CurrentPartyContactMechanisms">
           <md-list class="will-load">
-            <div class="md-padding" *ngIf="organisation.CurrentPartyContactMechanisms.length === 0" layout="row" layout-align="center center">
+            <div class="md-padding" *ngIf="person.CurrentPartyContactMechanisms.length === 0" layout="row" layout-align="center center">
               <h3>No info to display.</h3>
             </div>
-            <ng-template let-partyContactMechanism let-last="last" ngFor [ngForOf]="organisation.CurrentPartyContactMechanisms">
+            <ng-template let-partyContactMechanism let-last="last" ngFor [ngForOf]="person.CurrentPartyContactMechanisms">
               <md-list-item>
 
                 <h3 md-line> {{partyContactMechanism.ContactPurpose?.Name}}</h3>
@@ -170,7 +121,7 @@
                           [routerLink]="['../telecom/' + partyContactMechanism.id + '/edit' ]" md-menu-item>Edit</a>
                       <a *ngIf="this.checkType(partyContactMechanism.ContactMechanism) === &quot;PostalAddress&quot;"
                           [routerLink]="['../postal/' + partyContactMechanism.id + '/edit' ]" md-menu-item>Edit</a>
-                      <!--<button md-menu-item (click)="delete(organisation)">Delete</button>-->
+                      <!--<button md-menu-item (click)="delete(person)">Delete</button>-->
                   </md-menu>
               </span>
 

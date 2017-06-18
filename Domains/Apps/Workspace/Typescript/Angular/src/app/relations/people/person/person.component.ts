@@ -10,23 +10,23 @@ import { AllorsService } from '../../../allors.service';
 import { PullRequest, PushResponse, Fetch, Path, Query, Equals, Like, TreeNode, Sort, Page } from '../../../../allors/domain';
 import { MetaDomain } from '../../../../allors/meta/index';
 
-import { Organisation, Person, PersonRole, Locale, OrganisationContactRelationship, OrganisationContactKind, Enumeration } from '../../../../allors/domain';
+import { Organisation, Person, PersonRole, Locale, Enumeration } from '../../../../allors/domain';
 
 @Component({
-  templateUrl: './organisationContact.component.html',
+  templateUrl: './person.component.html',
 })
-export class OrganisationEditContactComponent implements OnInit, AfterViewInit, OnDestroy {
+export class PersonFormComponent implements OnInit, AfterViewInit, OnDestroy {
 
   private subscription: Subscription;
   private scope: Scope;
 
   m: MetaDomain;
 
-  organisationContactRelationship: OrganisationContactRelationship;
+  person: Person;
+
   locales: Locale[];
   genders: Enumeration[];
   salutations: Enumeration[];
-  organisationContactKinds: Enumeration[];
   roles: PersonRole[];
 
   constructor(private allors: AllorsService,
@@ -41,25 +41,16 @@ export class OrganisationEditContactComponent implements OnInit, AfterViewInit, 
     this.subscription = this.route.url
       .mergeMap((url: any) => {
 
-        const id: string = this.route.snapshot.paramMap.get('contactRelationshipId');
-        const m: MetaDomain = this.m;
+        const id: string = this.route.snapshot.paramMap.get('id');
 
         const fetch: Fetch[] = [
           new Fetch({
-            name: 'organisationContactRelationship',
+            name: 'organisation',
             id: id,
-            include: [
-              new TreeNode({ roleType: m.OrganisationContactRelationship.ContactKinds }),
-            ],
           }),
         ];
 
         const query: Query[] = [
-          new Query(
-            {
-              name: 'organisationContactKinds',
-              objectType: this.m.OrganisationContactKind,
-            }),
           new Query(
             {
               name: 'locales',
@@ -89,12 +80,14 @@ export class OrganisationEditContactComponent implements OnInit, AfterViewInit, 
       })
       .subscribe(() => {
 
-        this.organisationContactRelationship = this.scope.objects.organisationContactRelationship as OrganisationContactRelationship;
+        this.person = this.scope.objects.organisation as Person;
+        if (!this.person) {
+          this.person = this.scope.session.create('Person') as Person;
+        }
 
         this.locales = this.scope.collections.locales as Locale[];
         this.genders = this.scope.collections.genders as Enumeration[];
         this.salutations = this.scope.collections.salutations as Enumeration[];
-        this.organisationContactKinds = this.scope.collections.organisationContactKinds as Enumeration[];
         this.roles = this.scope.collections.roles as PersonRole[];
       },
       (error: any) => {

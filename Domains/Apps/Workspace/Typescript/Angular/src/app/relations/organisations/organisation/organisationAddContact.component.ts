@@ -10,7 +10,7 @@ import { AllorsService } from '../../../allors.service';
 import { PullRequest, PushResponse, Fetch, Path, Query, Equals, Like, TreeNode, Sort, Page } from '../../../../allors/domain';
 import { MetaDomain } from '../../../../allors/meta/index';
 
-import { Organisation, Person, Locale, OrganisationContactRelationship, OrganisationContactKind, Enumeration } from '../../../../allors/domain';
+import { Organisation, Person, PersonRole, Locale, OrganisationContactRelationship, OrganisationContactKind, Enumeration } from '../../../../allors/domain';
 
 @Component({
   templateUrl: './organisationContact.component.html',
@@ -28,6 +28,7 @@ export class OrganisationAddContactComponent implements OnInit, AfterViewInit, O
   genders: Enumeration[];
   salutations: Enumeration[];
   organisationContactKinds: Enumeration[];
+  roles: PersonRole[];
 
   constructor(private allors: AllorsService,
     private route: ActivatedRoute,
@@ -72,6 +73,11 @@ export class OrganisationAddContactComponent implements OnInit, AfterViewInit, O
               name: 'salutations',
               objectType: this.m.Salutation,
             }),
+          new Query(
+            {
+              name: 'roles',
+              objectType: this.m.PersonRole,
+            }),
         ];
 
         this.scope.session.reset();
@@ -95,6 +101,7 @@ export class OrganisationAddContactComponent implements OnInit, AfterViewInit, O
         this.genders = this.scope.collections.genders as Enumeration[];
         this.salutations = this.scope.collections.salutations as Enumeration[];
         this.organisationContactKinds = this.scope.collections.organisationContactKinds as Enumeration[];
+        this.roles = this.scope.collections.roles as PersonRole[];
       },
       (error: any) => {
         this.snackBar.open(error, 'close', { duration: 5000 });

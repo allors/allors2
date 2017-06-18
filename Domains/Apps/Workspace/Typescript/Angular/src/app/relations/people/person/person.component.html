@@ -1,0 +1,46 @@
+<md-card tdMediaToggle="gt-xs" [mediaClasses]="['push']">
+  <form #form="ngForm" *ngIf="person" (submit)="save()">
+
+    <md-card-title>Person</md-card-title>
+
+    <md-divider></md-divider>
+    <md-card-content class="push-bottom-none">
+
+      <div layout="row" class="push-top">
+        <a-md-select [object]="person" [roleType]="m.Person.PersonRoles" [options]="roles" display="Name"></a-md-select>
+      </div>
+
+      <div layout="row" class="push-top">
+        <a-md-text [object]="person" [roleType]="m.Person.FirstName"></a-md-text>
+      </div>
+
+      <div layout="row" class="push-top">
+        <a-md-text [object]="person" [roleType]="m.Person.MiddleName"></a-md-text>
+      </div>
+
+      <div layout="row" class="push-top">
+        <a-md-text [object]="person" [roleType]="m.Person.LastName"></a-md-text>
+      </div>
+
+      <div layout="row" class="push-top">
+        <a-md-select [object]="person" [roleType]="m.Person.Gender" [options]="genders" display="Name"></a-md-select>
+      </div>
+
+      <div layout="row" class="push-top">
+        <a-md-select [object]="person" [roleType]="m.Person.Salutation" [options]="salutations" display="Name"></a-md-select>
+      </div>
+
+      <div layout="row" class="push-top">
+        <a-md-select [object]="person" [roleType]="m.Person.Locale" [options]="locales" display="Name"></a-md-select>
+      </div>
+
+    </md-card-content>
+
+    <md-divider></md-divider>
+    <md-card-actions>
+      <button md-button color="primary" type="submit">SAVE</button>
+      <button md-button (click)="goBack()" type="button">CANCEL</button>
+    </md-card-actions>
+
+  </form>
+</md-card>
