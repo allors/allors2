@@ -1,5 +1,3 @@
-import { Field } from './base/fields/Field';
-
 import { CheckboxComponent } from './base/fields/checkbox';
 import { DatepickerComponent } from './base/fields/datepicker';
 import { InputComponent } from './base/fields/input';

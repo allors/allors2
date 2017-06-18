@@ -7,6 +7,10 @@
     <md-card-content class="push-bottom-none">
 
       <div layout="row" class="push-top">
+        <a-md-media-upload [object]="person" [roleType]="m.Person.Picture"></a-md-media-upload>
+      </div>
+
+      <div layout="row" class="push-top">
         <a-md-select [object]="person" [roleType]="m.Person.PersonRoles" [options]="roles" display="Name"></a-md-select>
       </div>
 

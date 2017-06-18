@@ -17,12 +17,14 @@ import { CommunicationEventsTableComponent } from './relations/communicationEven
 import { OrganisationsTableComponent } from './relations/organisations/organisations.table.component';
 
 import { MATERIAL } from '../allors/material';
+import { COVALENT } from '../allors/covalent';
 
 const components: any[] = [CataloguesTableComponent, CommunicationEventsTableComponent, OrganisationsTableComponent];
 
 @NgModule({
   declarations: [
     MATERIAL,
+    COVALENT,
     AppComponent,
     routedComponents,
     components,
