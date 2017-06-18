@@ -64,6 +64,11 @@ namespace Allors.Domain
             }
         }
 
+        public void BaseOnPostDerive(ObjectOnPostDerive method)
+        {
+            this.Type = this.MediaContent?.Type;
+        }
+
         public void BaseDelete(DeletableDelete method)
         {
             this.MediaContent?.Delete();

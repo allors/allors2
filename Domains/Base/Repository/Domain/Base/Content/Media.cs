@@ -75,7 +75,7 @@ namespace Allors.Repository
         [Workspace]
         [Size(-1)]
         public string InDataUri { get; set; }
-        
+
         #region Allors
         [Id("DDD6C005-0104-44CA-A19C-1150B8BEB4A3")]
         [AssociationId("4F43B520-404E-436D-A514-71E4AEC55EC8")]
@@ -85,6 +85,17 @@ namespace Allors.Repository
         [Workspace]
         #endregion
         public string FileName { get; set; }
+
+        #region Allors
+        [Id("29541613-0B16-49AD-8F40-3309A7C7D7B8")]
+        [AssociationId("EFB76140-4A2A-4E7F-B51D-C95BCA774664")]
+        [RoleId("7CFC8B40-5199-4457-BBBD-27A786721465")]
+        #endregion
+        [Indexed]
+        [Size(1024)]
+        [Workspace]
+        [Derived]
+        public string Type { get; set; }
 
         #region inherited methods
         public void OnBuild(){}
