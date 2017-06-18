@@ -7,9 +7,11 @@ import { Field } from '../../../angular';
 @Component({
   selector: 'a-md-slide-toggle',
   template: `
-<md-slide-toggle [(ngModel)]="model" [name]="name" [disabled]="!canWrite" [required]="required">
-{{label}}
-</md-slide-toggle>
+<div fxLayout="row">
+  <md-slide-toggle fxFlex [(ngModel)]="model" [name]="name" [disabled]="!canWrite" [required]="required">
+  {{label}}
+  </md-slide-toggle>
+</div>
 `,
 })
 export class SlideToggleComponent extends Field {

@@ -7,8 +7,8 @@ import { Field } from '../../../angular';
 @Component({
   selector: 'a-md-static',
   template: `
-<md-input-container>
-  <input mdInput type="type" [ngModel]="static" [name]="name" [placeholder]="label" readonly>
+<md-input-container fxLayout="row">
+  <input fxFlex mdInput type="type" [ngModel]="static" [name]="name" [placeholder]="label" readonly>
 </md-input-container>
 `,
 })

@@ -7,8 +7,8 @@ import { Field } from '../../../angular';
 @Component({
   selector: 'a-md-checkbox',
   template: `
-<md-input-container>
-  <md-checkbox [(ngModel)]="model" [name]="name" [disabled]="!canWrite" [required]="required">
+<md-input-container fxLayout="row">
+  <md-checkbox fxFlex [(ngModel)]="model" [name]="name" [disabled]="!canWrite" [required]="required">
   {{label}}
   </md-checkbox>
 </md-input-container>

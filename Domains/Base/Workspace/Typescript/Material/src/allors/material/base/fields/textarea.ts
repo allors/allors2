@@ -7,8 +7,8 @@ import { Field } from '../../../angular';
 @Component({
   selector: 'a-md-textarea',
   template: `
-  <md-input-container>
-    <textarea mdInput [(ngModel)]="model" [name]="name" [placeholder]="label" [disabled]="!canWrite" [required]="required">
+  <md-input-container fxLayout="row">
+    <textarea fxFlex mdInput [(ngModel)]="model" [name]="name" [placeholder]="label" [disabled]="!canWrite" [required]="required">
     </textarea>
   </md-input-container>
 `,

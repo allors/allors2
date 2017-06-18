@@ -12,8 +12,8 @@ export class RadioGroupOption {
 @Component({
   selector: 'a-md-radio-group',
   template: `
-  <md-input-container>
-    <md-radio-group [(ngModel)]="model" [name]="name" [disabled]="!canWrite" [required]="required">
+  <md-input-container fxLayout="row">
+    <md-radio-group fxFlex [(ngModel)]="model" [name]="name" [disabled]="!canWrite" [required]="required">
       <md-radio-button *ngFor="let option of options" [value]="optionValue(option)">{{optionLabel(option)}}</md-radio-button>
     </md-radio-group>
   </md-input-container>

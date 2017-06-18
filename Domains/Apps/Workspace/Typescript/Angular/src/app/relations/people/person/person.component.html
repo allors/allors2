@@ -6,36 +6,17 @@
     <md-divider></md-divider>
     <md-card-content class="push-bottom-none">
 
-      <div layout="row" class="push-top">
-        <a-md-media-upload [object]="person" [roleType]="m.Person.Picture" accept="image/*"></a-md-media-upload>
-      </div>
+      <div fxLayout="row wrap" fxLayoutGap="3rem" fxLayoutAlign="start stretch">
 
-      <div layout="row" class="push-top">
-        <a-md-select [object]="person" [roleType]="m.Person.PersonRoles" [options]="roles" display="Name"></a-md-select>
-      </div>
+        <a-md-media-upload [fxFlex]="flex" [object]="person" [roleType]="m.Person.Picture" accept="image/*"></a-md-media-upload>
+        <a-md-select [fxFlex]="flex" [object]="person" [roleType]="m.Person.PersonRoles" [options]="roles" display="Name"></a-md-select>
+        <a-md-input  [fxFlex]="flex" [object]="person" [roleType]="m.Person.FirstName"></a-md-input>
+        <a-md-input  [fxFlex]="flex" [object]="person" [roleType]="m.Person.MiddleName"></a-md-input>
+        <a-md-input  [fxFlex]="flex" [object]="person" [roleType]="m.Person.LastName"></a-md-input>
+        <a-md-select [fxFlex]="flex" [object]="person" [roleType]="m.Person.Gender" [options]="genders" display="Name"></a-md-select>
+        <a-md-select [fxFlex]="flex" [object]="person" [roleType]="m.Person.Salutation" [options]="salutations" display="Name"></a-md-select>
+        <a-md-select [fxFlex]="flex" [object]="person" [roleType]="m.Person.Locale" [options]="locales" display="Name"></a-md-select>
 
-      <div layout="row" class="push-top">
-        <a-md-input [object]="person" [roleType]="m.Person.FirstName"></a-md-input>
-      </div>
-
-      <div layout="row" class="push-top">
-        <a-md-input [object]="person" [roleType]="m.Person.MiddleName"></a-md-input>
-      </div>
-
-      <div layout="row" class="push-top">
-        <a-md-input [object]="person" [roleType]="m.Person.LastName"></a-md-input>
-      </div>
-
-      <div layout="row" class="push-top">
-        <a-md-select [object]="person" [roleType]="m.Person.Gender" [options]="genders" display="Name"></a-md-select>
-      </div>
-
-      <div layout="row" class="push-top">
-        <a-md-select [object]="person" [roleType]="m.Person.Salutation" [options]="salutations" display="Name"></a-md-select>
-      </div>
-
-      <div layout="row" class="push-top">
-        <a-md-select [object]="person" [roleType]="m.Person.Locale" [options]="locales" display="Name"></a-md-select>
       </div>
 
     </md-card-content>

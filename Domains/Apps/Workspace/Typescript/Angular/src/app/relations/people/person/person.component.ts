@@ -20,6 +20,7 @@ export class PersonFormComponent implements OnInit, AfterViewInit, OnDestroy {
   private subscription: Subscription;
   private scope: Scope;
 
+  flex: string = '1 1 30rem';
   m: MetaDomain;
 
   person: Person;
@@ -43,10 +44,15 @@ export class PersonFormComponent implements OnInit, AfterViewInit, OnDestroy {
 
         const id: string = this.route.snapshot.paramMap.get('id');
 
+        const m: MetaDomain = this.allors.meta;
+
         const fetch: Fetch[] = [
           new Fetch({
-            name: 'organisation',
+            name: 'person',
             id: id,
+            include: [
+              new TreeNode({ roleType: m.Person.Picture }),
+            ],
           }),
         ];
 
@@ -80,7 +86,7 @@ export class PersonFormComponent implements OnInit, AfterViewInit, OnDestroy {
       })
       .subscribe(() => {
 
-        this.person = this.scope.objects.organisation as Person;
+        this.person = this.scope.objects.person as Person;
         if (!this.person) {
           this.person = this.scope.session.create('Person') as Person;
         }
