@@ -25,6 +25,7 @@ namespace Allors.Repository
         #endregion
         [Multiplicity(Multiplicity.ManyToMany)]
         [Indexed]
+        [Workspace]
         public ProductCharacteristic[] ProductCharacteristics { get; set; }
 
         #region Allors
@@ -34,6 +35,7 @@ namespace Allors.Repository
         #endregion
         [Required]
         [Size(256)]
+        [Workspace]
         public string Name { get; set; }
 
         #region inherited methods

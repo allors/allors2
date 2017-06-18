@@ -193,6 +193,20 @@ namespace Allors
                 .WithActualStart(DateTime.UtcNow)
                 .Build();
 
+            new ProductCharacteristicBuilder(this.Session)
+                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Size").WithLocale(Singleton.Instance(this.Session).DefaultLocale).Build())
+                .Build();
+
+            new ProductTypeBuilder(this.Session)
+                .WithName("Gizmo")
+                .WithProductCharacteristic(new ProductCharacteristicBuilder(this.Session)
+                                            .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Size").WithLocale(Singleton.Instance(this.Session).DefaultLocale).Build())
+                                            .Build())
+                .WithProductCharacteristic(new ProductCharacteristicBuilder(this.Session)
+                    .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Weight").WithLocale(Singleton.Instance(this.Session).DefaultLocale).Build())
+                    .Build())
+                .Build();
+
             var productCategory1 = new ProductCategoryBuilder(this.Session)
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Best selling gizmo's").WithLocale(Singleton.Instance(this.Session).DefaultLocale).Build())
                 .Build();
@@ -209,6 +223,15 @@ namespace Allors
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("New gizmo's").WithLocale(Singleton.Instance(this.Session).DefaultLocale).Build())
                 .WithLocalisedDescription(new LocalisedTextBuilder(this.Session).WithText("Latest in the world of Gizmo's").WithLocale(Singleton.Instance(this.Session).DefaultLocale).Build())
                 .WithProductCategory(productCategory1)
+                .Build();
+
+            new GoodBuilder(this.Session)
+                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Tiny blue round gizmo").WithLocale(Singleton.Instance(this.Session).DefaultLocale).Build())
+                .WithLocalisedDescription(new LocalisedTextBuilder(this.Session).WithText("perfect blue with nice curves").WithLocale(Singleton.Instance(this.Session).DefaultLocale).Build())
+                .WithSku("10101")
+                .WithVatRate(new VatRateBuilder(this.Session).WithRate(21).Build())
+                .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialized)
+                .WithPrimaryProductCategory(productCategory3)
                 .Build();
         }
 

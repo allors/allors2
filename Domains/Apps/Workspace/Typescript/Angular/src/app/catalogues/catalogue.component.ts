@@ -20,8 +20,12 @@ export class CatalogueComponent implements AfterViewInit {
       route: 'categories',
       icon: 'categories',
     }, {
+      title: 'ProductTypes',
+      route: 'productTypes',
+      icon: 'productTypes',
+    }, {
       title: 'Products',
-      route: 'products',
+      route: 'goods',
       icon: 'products',
     },
   ];

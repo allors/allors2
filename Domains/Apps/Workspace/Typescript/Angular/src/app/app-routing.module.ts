@@ -12,8 +12,8 @@ import { CatalogueFormComponent } from './catalogues/catalogues/catalogue/catalo
 import { CataloguesComponent } from './catalogues/catalogues/catalogues.component';
 import { CategoryFormComponent } from './catalogues/categories/category/category.component';
 import { CategoriesComponent } from './catalogues/categories/categories.component';
-import { RelationComponent } from './relations/relation.component';
-import { RelationDashboardComponent } from './relations/dashboard/relation-dashboard.component';
+import { GoodFormComponent } from './catalogues/goods/good/good.component';
+import { GoodsComponent } from './catalogues/goods/goods.component';
 import { EmailAddressAddComponent } from './relations/contactMechanisms/contactMechanism/emailAddressAdd.component';
 import { EmailAddressEditComponent } from './relations/contactMechanisms/contactMechanism/emailAddressEdit.component';
 import { OrganisationAddContactComponent } from './relations/organisations/organisation/organisationAddContact.component';
@@ -26,6 +26,10 @@ import { PersonFormComponent } from './relations/people/person/person.component'
 import { PersonOverviewComponent } from './relations/people/person/person-overview.component';
 import { PostalAddressAddComponent } from './relations/contactMechanisms/contactMechanism/postalAddressAdd.component';
 import { PostalAddressEditComponent } from './relations/contactMechanisms/contactMechanism/postalAddressEdit.component';
+import { ProductTypeFormComponent } from './catalogues/producttypes/producttype/producttype.component';
+import { ProductTypesComponent } from './catalogues/producttypes/producttypes.component';
+import { RelationComponent } from './relations/relation.component';
+import { RelationDashboardComponent } from './relations/dashboard/relation-dashboard.component';
 import { TelecommunicationsNumberAddComponent } from './relations/contactMechanisms/contactMechanism/telecommunicationsNumberAdd.component';
 import { TelecommunicationsNumberEditComponent } from './relations/contactMechanisms/contactMechanism/telecommunicationsNumberEdit.component';
 import { WebAddressAddComponent } from './relations/contactMechanisms/contactMechanism/webAddressAdd.component';
@@ -102,6 +106,20 @@ const routes: Routes = [
               { path: 'add', component: CategoryFormComponent },
               { path: ':id/edit', component: CategoryFormComponent },
             ],
+          }, {
+            path: 'goods',
+            children: [
+              { path: '', component: GoodsComponent },
+              { path: 'add', component: GoodFormComponent },
+              { path: ':id/edit', component: GoodFormComponent },
+            ],
+          }, {
+            path: 'productTypes',
+            children: [
+              { path: '', component: ProductTypesComponent },
+              { path: 'add', component: ProductTypeFormComponent },
+              { path: ':id/edit', component: ProductTypeFormComponent },
+            ],
           },
         ],
       },
@@ -122,11 +140,12 @@ export const routedComponents: any[] = [
   MainComponent, LoginComponent, DashboardComponent,
 
   CatalogueComponent, CatalogueDashboardComponent, CatalogueFormComponent, CataloguesComponent, CategoriesComponent, CategoryFormComponent,
-  RelationComponent, RelationDashboardComponent,
+  GoodFormComponent, GoodsComponent,
   EmailAddressAddComponent, EmailAddressEditComponent,
   OrganisationAddContactComponent, OrganisationEditContactComponent, OrganisationFormComponent, OrganisationOverviewComponent, OrganisationsComponent,
   PeopleComponent, PersonFormComponent, PersonOverviewComponent,
-  PostalAddressAddComponent, PostalAddressEditComponent,
+  PostalAddressAddComponent, PostalAddressEditComponent, ProductTypeFormComponent, ProductTypesComponent,
+  RelationComponent, RelationDashboardComponent,
   TelecommunicationsNumberAddComponent, TelecommunicationsNumberEditComponent,
   WebAddressAddComponent, WebAddressEditComponent,
 ];

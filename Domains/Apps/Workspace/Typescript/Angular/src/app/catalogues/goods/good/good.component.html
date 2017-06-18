@@ -1,0 +1,38 @@
+<md-card tdMediaToggle="gt-xs" [mediaClasses]="['push']">
+  <form #form="ngForm" *ngIf="good" (submit)="save()" >
+
+    <md-card-title>Product</md-card-title>
+
+    <md-divider></md-divider>
+    <md-card-content class="push-bottom-none">
+
+      <div layout="row" class="push-top">
+        <a-md-input [object]="good.LocalisedNames" [roleType]="m.LocalisedText.Text"></a-md-input>
+      </div>
+
+      <div layout="row" class="push-top">
+        <a-md-input [object]="good.LocalisedDescriptions" [roleType]="m.LocalisedText.Text"></a-md-input>
+      </div>
+
+      <div layout="row" class="push-top">
+        <a-md-select [object]="good" [roleType]="m.Good.ProductType" [options]="productTypes" display="Name"></a-md-select>
+      </div>
+
+      <div layout="row" class="push-top">
+        <a-md-select [object]="good" [roleType]="m.Good.ProductCategories" [options]="categories" display="Name"></a-md-select>
+      </div>
+
+      <div layout="row" class="push-top">
+        <a-md-select [object]="good" [roleType]="m.Good.PrimaryProductCategory" [options]="categories" display="Name"></a-md-select>
+      </div>
+
+    </md-card-content>
+
+    <md-divider></md-divider>
+    <md-card-actions>
+      <button md-button color="primary" type="submit">SAVE</button>
+      <button md-button (click)="goBack()" type="button">CANCEL</button>
+    </md-card-actions>
+
+  </form>
+</md-card>

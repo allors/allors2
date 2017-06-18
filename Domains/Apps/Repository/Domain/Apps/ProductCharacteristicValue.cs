@@ -23,6 +23,7 @@ namespace Allors.Repository
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
         [Required]
+        [Workspace]
         public ProductCharacteristic ProductCharacteristic { get; set; }
 
         #region Allors
@@ -33,6 +34,7 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.ManyToOne)]
         [Size(-1)]
         [Required]
+        [Workspace]
         public string Value { get; set; }
 
         #region inherited methods

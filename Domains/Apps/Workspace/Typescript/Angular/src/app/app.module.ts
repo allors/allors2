@@ -15,11 +15,14 @@ import { AllorsService } from './allors.service';
 import { CataloguesTableComponent } from './catalogues/catalogues/catalogues.table.component';
 import { CategoriesTableComponent } from './catalogues/categories/categories.table.component';
 import { CommunicationEventsTableComponent } from './relations/communicationEvents/communicationEvents.table.component';
+import { GoodsTableComponent } from './catalogues/goods/goods.table.component';
 import { OrganisationsTableComponent } from './relations/organisations/organisations.table.component';
+import { ProductTypesTableComponent } from './catalogues/producttypes/producttypes.table.component';
 
 import { MATERIAL } from '../allors/material';
 
-const components: any[] = [CataloguesTableComponent, CategoriesTableComponent, CommunicationEventsTableComponent, OrganisationsTableComponent];
+const components: any[] = [CataloguesTableComponent, CategoriesTableComponent, CommunicationEventsTableComponent,
+                            GoodsTableComponent, OrganisationsTableComponent, ProductTypesTableComponent, ];
 
 @NgModule({
   declarations: [
