@@ -194,7 +194,15 @@ namespace Allors
                 .Build();
 
             var productCategory1 = new ProductCategoryBuilder(this.Session)
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Best selling").WithLocale(Singleton.Instance(this.Session).DefaultLocale).Build())
+                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Best selling gizmo's").WithLocale(Singleton.Instance(this.Session).DefaultLocale).Build())
+                .Build();
+
+            var productCategory2 = new ProductCategoryBuilder(this.Session)
+                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Big Gizmo's").WithLocale(Singleton.Instance(this.Session).DefaultLocale).Build())
+                .Build();
+
+            var productCategory3 = new ProductCategoryBuilder(this.Session)
+                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Small gizmo's").WithLocale(Singleton.Instance(this.Session).DefaultLocale).Build())
                 .Build();
 
             new CatalogueBuilder(this.Session)

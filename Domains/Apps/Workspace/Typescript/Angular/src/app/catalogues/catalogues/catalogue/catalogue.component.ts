@@ -10,7 +10,7 @@ import { AllorsService } from '../../../allors.service';
 import { PullRequest, PushResponse, Fetch, Path, Query, Equals, Like, TreeNode, Sort, Page } from '../../../../allors/domain';
 import { MetaDomain } from '../../../../allors/meta/index';
 
-import { Catalogue, Locale } from '../../../../allors/domain';
+import { Catalogue, ProductCategory, Locale } from '../../../../allors/domain';
 
 @Component({
   templateUrl: './catalogue.component.html',
@@ -25,6 +25,7 @@ export class CatalogueFormComponent implements OnInit, AfterViewInit, OnDestroy 
   catalogue: Catalogue;
 
   locales: Locale[];
+  categories: ProductCategory[];
 
   constructor(private allors: AllorsService,
     private route: ActivatedRoute,
@@ -58,6 +59,11 @@ export class CatalogueFormComponent implements OnInit, AfterViewInit, OnDestroy 
               name: 'locales',
               objectType: this.m.Locale,
             }),
+          new Query(
+            {
+              name: 'categories',
+              objectType: this.m.ProductCategory,
+            }),
         ];
 
         this.scope.session.reset();
@@ -72,6 +78,7 @@ export class CatalogueFormComponent implements OnInit, AfterViewInit, OnDestroy 
           this.catalogue = this.scope.session.create('Catalogue') as Catalogue;
         }
 
+        this.categories = this.scope.collections.categories as ProductCategory[];
         this.locales = this.scope.collections.locales as Locale[];
       },
       (error: any) => {

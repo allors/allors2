@@ -14,6 +14,10 @@
         <a-md-input [object]="catalogue.LocalisedDescriptions" [roleType]="m.LocalisedText.Text"></a-md-input>
       </div>
 
+      <div layout="row" class="push-top">
+        <a-md-select [object]="catalogue" [roleType]="m.Catalogue.ProductCategories" [options]="categories" display="Name"></a-md-select>
+      </div>
+
     </md-card-content>
 
     <md-divider></md-divider>
