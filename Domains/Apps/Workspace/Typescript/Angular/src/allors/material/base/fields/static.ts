@@ -7,17 +7,17 @@ import { Field } from './Field';
 @Component({
   selector: 'a-md-static',
   template: `
-  <md-input-container flex>
-    <input mdInput type="text" [ngModel]="static" [name]="name" [placeholder]="roleType.name" readonly>
-  </md-input-container>
-  `,
+<md-input-container flex>
+  <input mdInput type="type" [ngModel]="static" [name]="name" [placeholder]="label" readonly>
+</md-input-container>
+`,
 })
 export class StaticComponent extends Field {
   @Input()
   display: string;
 
   get static(): string {
-    if (this.isReady) {
+    if (this.ExistObject) {
       if (this.roleType.objectType.isUnit) {
         return this.model;
       } else {

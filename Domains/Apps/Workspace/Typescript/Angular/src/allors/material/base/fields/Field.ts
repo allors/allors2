@@ -2,57 +2,70 @@ import { Component, Input } from '@angular/core';
 import { ISessionObject } from '../../../../allors/domain';
 import { MetaDomain, RoleType } from '../../../../allors/meta';
 
-export class Field {
+export abstract class Field {
   @Input()
   object: ISessionObject;
 
   @Input()
   roleType: RoleType;
 
-  @Input()
-  required: boolean;
+  @Input('required')
+  assignedRequired: boolean;
+
+  @Input('label')
+  assignedLabel: string;
+
+  get ExistObject(): boolean {
+    return !!this.object;
+  }
 
   get model(): any {
-    if (this.isReady) {
-      return this.object[this.roleType.name];
-    }
+    return this.ExistObject ? this.object.get(this.roleType.name) : undefined;
   }
 
-  set model(value: any){
-    if (this.isReady) {
-      this.object[this.roleType.name] = value;
-    }
-  }
-
-  get name(): string {
-    if (this.isReady) {
-      return this.roleType.name;
+  set model(value: any) {
+    if (this.ExistObject) {
+      this.object.set(this.roleType.name, value);
     }
   }
 
   get canRead(): boolean {
-    if (this.isReady) {
+    if (this.ExistObject) {
       return this.object.canRead(this.roleType.name);
     }
   }
 
   get canWrite(): boolean {
-    if (this.isReady) {
+    if (this.ExistObject) {
       return this.object.canWrite(this.roleType.name);
     }
   }
 
-  get isRequired(): boolean {
-    if (this.required) {
-      return this.required;
+  get textType(): string {
+    if (this.roleType.objectType.name === 'Integer' ||
+      this.roleType.objectType.name === 'Decimal' ||
+      this.roleType.objectType.name === 'Float') {
+      return 'number';
     }
 
-    if (this.isReady) {
-      return this.roleType.isRequired;
-    }
+    return 'text';
   }
 
-  get isReady(): boolean {
-    return !!(this.object && this.roleType);
+  get name(): string {
+    return this.roleType.name;
+  }
+
+  get label(): string {
+    return this.assignedLabel ? this.assignedLabel : this.humanize(this.roleType.name);
+  }
+
+  get required(): boolean {
+    return this.assignedRequired ? this.assignedRequired : this.roleType.isRequired;
+  }
+
+  protected humanize(input: string): string {
+    return input ? input.replace(/([a-z\d])([A-Z])/g, '$1 $2')
+                        .replace(/([A-Z]+)([A-Z][a-z\d]+)/g, '$1 $2')
+                        : undefined;
   }
 }

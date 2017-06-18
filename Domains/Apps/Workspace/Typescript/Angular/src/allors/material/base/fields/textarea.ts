@@ -8,7 +8,7 @@ import { Field } from './Field';
   selector: 'a-md-textarea',
   template: `
   <md-input-container flex>
-    <textarea mdInput [(ngModel)]="model" [name]="name" [placeholder]="roleType.name" [disabled]="!canWrite" [required]="required">
+    <textarea mdInput [(ngModel)]="model" [name]="name" [placeholder]="label" [disabled]="!canWrite" [required]="required">
     </textarea>
   </md-input-container>
 `,

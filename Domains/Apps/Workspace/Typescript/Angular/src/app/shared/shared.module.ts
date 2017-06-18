@@ -14,7 +14,7 @@ import {
   MdListModule, MdMenuModule, MdTooltipModule,
   MdSlideToggleModule, MdInputModule, MdCheckboxModule,
   MdToolbarModule, MdSnackBarModule, MdSidenavModule,
-  MdTabsModule, MdSelectModule,
+  MdTabsModule, MdSelectModule, MdRadioModule,
 } from '@angular/material';
 import { NgxChartsModule, } from '@swimlane/ngx-charts';
 
@@ -31,7 +31,7 @@ const MATERIAL_MODULES: any[] = [
   MdListModule, MdMenuModule, MdTooltipModule,
   MdSlideToggleModule, MdInputModule, MdCheckboxModule,
   MdToolbarModule, MdSnackBarModule, MdSidenavModule,
-  MdTabsModule, MdSelectModule,
+  MdTabsModule, MdSelectModule, MdRadioModule,
 ];
 
 const COVALENT_MODULES: any[] = [
@@ -63,6 +63,6 @@ const CHART_MODULES: any[] = [
     COVALENT_MODULES,
     CHART_MODULES,
     FLEX_LAYOUT_MODULES,
-  ]
+  ],
 })
 export class SharedModule { }

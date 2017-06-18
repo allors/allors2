@@ -5,12 +5,14 @@ import { MetaDomain, RoleType } from '../../../../allors/meta';
 import { Field } from './Field';
 
 @Component({
-  selector: 'a-md-input',
+  selector: 'a-md-checkbox',
   template: `
-<md-input-container flex>
-  <input mdInput [type]="textType" [(ngModel)]="model" [name]="name" [placeholder]="label" [disabled]="!canWrite" [required]="required">
+<md-input-container>
+  <md-checkbox [(ngModel)]="model" [name]="name" [disabled]="!canWrite" [required]="required">
+  {{label}}
+  </md-checkbox>
 </md-input-container>
 `,
 })
-export class InputComponent extends Field {
+export class CheckboxComponent extends Field {
 }

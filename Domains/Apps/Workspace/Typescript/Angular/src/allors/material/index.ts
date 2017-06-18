@@ -1,27 +1,32 @@
+import { Field } from './base/fields/Field';
+
+import { CheckboxComponent } from './base/fields/checkbox';
 import { DatepickerComponent } from './base/fields/datepicker';
-import { EnumComponent } from './base/fields/enum';
 import { InputComponent } from './base/fields/input';
-import { RadioButtonComponent } from './base/fields/radioButton';
+import { RadioGroupComponent } from './base/fields/radioGroup';
 import { SelectComponent } from './base/fields/select';
+import { SlideToggleComponent } from './base/fields/slideToggle';
 import { StaticComponent } from './base/fields/static';
 import { TextareaComponent } from './base/fields/textArea';
 
-export const MATERIAL = [
+export const MATERIAL: any[] = [
+  CheckboxComponent,
   DatepickerComponent,
-  EnumComponent,
   InputComponent,
-  RadioButtonComponent,
+  RadioGroupComponent,
   SelectComponent,
+  SlideToggleComponent,
   StaticComponent,
   TextareaComponent,
  ];
 
 export {
+  CheckboxComponent,
   DatepickerComponent,
-  EnumComponent,
-  RadioButtonComponent,
-  SelectComponent,
-  StaticComponent,
   InputComponent,
+  RadioGroupComponent,
+  SelectComponent,
+  SlideToggleComponent,
+  StaticComponent,
   TextareaComponent,
 };
