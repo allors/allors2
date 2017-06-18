@@ -1,0 +1,30 @@
+<md-card tdMediaToggle="gt-xs" [mediaClasses]="['push']">
+  <form #form="ngForm" *ngIf="category" (submit)="save()" >
+
+    <md-card-title>Catalogue</md-card-title>
+
+    <md-divider></md-divider>
+    <md-card-content class="push-bottom-none">
+
+      <div layout="row" class="push-top">
+        <a-md-input [object]="category.LocalisedNames" [roleType]="m.LocalisedText.Text"></a-md-input>
+      </div>
+
+      <div layout="row" class="push-top">
+        <a-md-input [object]="category.LocalisedDescriptions" [roleType]="m.LocalisedText.Text"></a-md-input>
+      </div>
+
+      <div layout="row" class="push-top">
+        <a-md-select [object]="category" [roleType]="m.ProductCategory.Parents" [options]="categories" display="Name"></a-md-select>
+      </div>
+
+    </md-card-content>
+
+    <md-divider></md-divider>
+    <md-card-actions>
+      <button md-button color="primary" type="submit">SAVE</button>
+      <button md-button (click)="goBack()" type="button">CANCEL</button>
+    </md-card-actions>
+
+  </form>
+</md-card>
