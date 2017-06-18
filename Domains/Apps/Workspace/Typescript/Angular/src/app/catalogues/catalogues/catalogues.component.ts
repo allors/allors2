@@ -3,24 +3,25 @@ import { Component, OnInit, AfterViewInit, OnDestroy, ViewChild } from '@angular
 import { Router } from '@angular/router';
 import { Title } from '@angular/platform-browser';
 import { MdSnackBar } from '@angular/material';
-
-import { PullRequest, Query, Equals, Like, TreeNode, Sort, Page } from '../../../allors/domain';
-import { Scope } from '../../../allors/angular/base/Scope';
-import { AllorsService } from '../../allors.service';
-import { Organisation } from '../../../allors/domain';
-import { MetaDomain } from '../../../allors/meta/index';
-
 import { TdLoadingService, TdDialogService, TdMediaService } from '@covalent/core';
 
+import { Scope } from '../../../allors/angular/base/Scope';
+import { AllorsService } from '../../allors.service';
+import { PullRequest, Query, Equals, Like, TreeNode, Sort, Page } from '../../../allors/domain';
+import { MetaDomain } from '../../../allors/meta/index';
+
+import { Catalogue } from '../../../allors/domain';
+
 @Component({
-  templateUrl: './organisations.component.html',
+  templateUrl: './catalogues.component.html',
 })
-export class OrganisationsComponent implements AfterViewInit, OnDestroy {
+export class CataloguesComponent implements AfterViewInit, OnDestroy {
 
   private subscription: Subscription;
   private scope: Scope;
 
-  data: Organisation[];
+  data: Catalogue[];
+  filtered: Catalogue[];
 
   constructor(private titleService: Title,
     private router: Router,
@@ -38,7 +39,7 @@ export class OrganisationsComponent implements AfterViewInit, OnDestroy {
 
   ngAfterViewInit(): void {
     this.media.broadcast();
-    this.titleService.setTitle('Organisations');
+    this.titleService.setTitle('Catalogues');
   }
 
   ngOnDestroy(): void {
@@ -47,7 +48,7 @@ export class OrganisationsComponent implements AfterViewInit, OnDestroy {
     }
   }
 
-  search (criteria: string): void {
+  search(criteria: string): void {
 
     if (this.subscription) {
       this.subscription.unsubscribe();
@@ -57,20 +58,10 @@ export class OrganisationsComponent implements AfterViewInit, OnDestroy {
 
     const query: Query[] = [new Query(
       {
-        name: 'organisations',
-        objectType: m.Organisation,
+        name: 'catalogues',
+        objectType: m.Catalogue,
         include: [
-          new TreeNode({
-            roleType: m.Organisation.GeneralCorrespondence,
-            nodes: [
-              new TreeNode({
-                roleType: m.PostalAddress.PostalBoundary,
-                nodes: [
-                  new TreeNode({roleType: m.PostalBoundary.Country}),
-                ],
-              }),
-            ],
-          }),
+          new TreeNode({ roleType: m.Catalogue.ProductCategories }),
         ],
       })];
 
@@ -79,7 +70,7 @@ export class OrganisationsComponent implements AfterViewInit, OnDestroy {
     this.subscription = this.scope
       .load('Pull', new PullRequest({ query: query }))
       .subscribe(() => {
-        this.data = this.scope.collections.organisations as Organisation[];
+        this.data = this.scope.collections.catalogues as Catalogue[];
       },
       (error: any) => {
         alert(error);
@@ -87,9 +78,9 @@ export class OrganisationsComponent implements AfterViewInit, OnDestroy {
       });
   }
 
-  delete(organisation: Organisation): void {
+  delete(catalogue: Catalogue): void {
     this.dialogService
-      .openConfirm({ message: 'Are you sure you want to delete this organisation?' })
+      .openConfirm({ message: 'Are you sure you want to delete this catalogue?' })
       .afterClosed().subscribe((confirm: boolean) => {
         if (confirm) {
           // TODO: Logical, physical or workflow delete
@@ -97,7 +88,7 @@ export class OrganisationsComponent implements AfterViewInit, OnDestroy {
       });
   }
 
-  onView(organisation: Organisation): void {
-    this.router.navigate(['/relations/organisations/' + organisation.id + '/overview']);
+  onView(catalogue: Catalogue): void {
+    this.router.navigate(['/catalogues/catalogues/' + catalogue.id + '/edit']);
   }
 }

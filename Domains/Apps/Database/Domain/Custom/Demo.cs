@@ -192,6 +192,16 @@ namespace Allors
                 .WithParticipant(new People(this.Session).FindBy(M.Person.UserName, "administrator1"))
                 .WithActualStart(DateTime.UtcNow)
                 .Build();
+
+            var productCategory1 = new ProductCategoryBuilder(this.Session)
+                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Best selling").WithLocale(Singleton.Instance(this.Session).DefaultLocale).Build())
+                .Build();
+
+            new CatalogueBuilder(this.Session)
+                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("New gizmo's").WithLocale(Singleton.Instance(this.Session).DefaultLocale).Build())
+                .WithLocalisedDescription(new LocalisedTextBuilder(this.Session).WithText("Latest in the world of Gizmo's").WithLocale(Singleton.Instance(this.Session).DefaultLocale).Build())
+                .WithProductCategory(productCategory1)
+                .Build();
         }
 
         private void SetupUser(string email, string firstName, string lastName, string password)

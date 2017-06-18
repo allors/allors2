@@ -44,6 +44,7 @@ namespace Allors.Repository
         #endregion
         [Required]
         [Size(-1)]
+        [Workspace]
         public string Text { get; set; }
 
         #region inherited methods

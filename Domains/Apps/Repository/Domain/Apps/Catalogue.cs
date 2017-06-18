@@ -25,6 +25,7 @@ namespace Allors.Repository
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
+        [Workspace]
         public Media NoImageAvailableImage { get; set; }
 
         #region Allors
@@ -32,8 +33,9 @@ namespace Allors.Repository
         [AssociationId("E5F96073-E3F1-41FE-8DB4-D387CA3A8C34")]
         [RoleId("DDE889D2-FF86-45E3-AC75-214EDCD13EB8")]
         #endregion
-        [Size(256)]
         [Derived]
+        [Size(256)]
+        [Workspace]
         public string Name { get; set; }
 
         #region Allors
@@ -41,8 +43,9 @@ namespace Allors.Repository
         [AssociationId("DF683A76-FC63-45E6-837E-A80D298E01F2")]
         [RoleId("2E69FB7A-53D1-4AC0-A95A-6AF17867D4B3")]
         #endregion
-        [Size(-1)]
+        [Workspace]
         [Derived]
+        [Size(-1)]
         public string Description { get; set; }
 
         #region Allors
@@ -53,6 +56,7 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.OneToMany)]
         [Required]
         [Indexed]
+        [Workspace]
         public LocalisedText[] LocalisedNames { get; set; }
 
         #region Allors
@@ -62,6 +66,7 @@ namespace Allors.Repository
         #endregion
         [Multiplicity(Multiplicity.OneToMany)]
         [Indexed]
+        [Workspace]
         public LocalisedText[] LocalisedDescriptions { get; set; }
 
         #region Allors
@@ -71,6 +76,7 @@ namespace Allors.Repository
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
+        [Workspace]
         public Media CatalogueImage { get; set; }
 
         #region Allors
@@ -80,6 +86,7 @@ namespace Allors.Repository
         #endregion
         [Multiplicity(Multiplicity.OneToMany)]
         [Indexed]
+        [Workspace]
         public ProductCategory[] ProductCategories { get; set; }
 
         #region inherited methods

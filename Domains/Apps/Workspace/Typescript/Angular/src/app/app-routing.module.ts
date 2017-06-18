@@ -6,6 +6,10 @@ import { LoginComponent } from './auth/login.component';
 import { MainComponent } from './main/main.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 
+import { CatalogueComponent } from './catalogues/catalogue.component';
+import { CatalogueDashboardComponent } from './catalogues/dashboard/catalogue-dashboard.component';
+import { CatalogueFormComponent } from './catalogues/catalogues/catalogue/catalogue.component';
+import { CataloguesComponent } from './catalogues/catalogues/catalogues.component';
 import { RelationComponent } from './relations/relation.component';
 import { RelationDashboardComponent } from './relations/dashboard/relation-dashboard.component';
 import { EmailAddressAddComponent } from './relations/contactMechanisms/contactMechanism/emailAddressAdd.component';
@@ -76,7 +80,23 @@ const routes: Routes = [
             ],
           },
         ],
-      }],
+      },
+      {
+        path: 'catalogues', component: CatalogueComponent,
+        children: [
+          {
+            path: '', component: CatalogueDashboardComponent,
+          }, {
+            path: 'catalogues',
+            children: [
+              { path: '', component: CataloguesComponent },
+              { path: 'add', component: CatalogueFormComponent },
+              { path: ':id/edit', component: CatalogueFormComponent },
+            ],
+          },
+        ],
+      },
+    ],
   },
 ];
 
@@ -92,6 +112,7 @@ export class AppRoutingModule { }
 export const routedComponents: any[] = [
   MainComponent, LoginComponent, DashboardComponent,
 
+  CatalogueComponent, CatalogueDashboardComponent, CatalogueFormComponent, CataloguesComponent,
   RelationComponent, RelationDashboardComponent,
   EmailAddressAddComponent, EmailAddressEditComponent,
   OrganisationAddContactComponent, OrganisationEditContactComponent, OrganisationFormComponent, OrganisationOverviewComponent, OrganisationsComponent,

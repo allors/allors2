@@ -12,12 +12,13 @@ import { ENVIRONMENT, AuthenticationService } from '../allors/angular';
 import { environment } from '../environments/environment';
 import { AllorsService } from './allors.service';
 
+import { CataloguesTableComponent } from './catalogues/catalogues/catalogues.table.component';
 import { CommunicationEventsTableComponent } from './relations/communicationEvents/communicationEvents.table.component';
 import { OrganisationsTableComponent } from './relations/organisations/organisations.table.component';
 
 import { MATERIAL } from '../allors/material';
 
-const components: any[] = [CommunicationEventsTableComponent, OrganisationsTableComponent];
+const components: any[] = [CataloguesTableComponent, CommunicationEventsTableComponent, OrganisationsTableComponent];
 
 @NgModule({
   declarations: [
