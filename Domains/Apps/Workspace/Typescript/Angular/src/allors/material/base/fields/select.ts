@@ -2,7 +2,7 @@ import { Component, Input, AfterViewInit } from '@angular/core';
 import { ISessionObject } from '../../../../allors/domain';
 import { MetaDomain, RoleType } from '../../../../allors/meta';
 
-import { Field } from './Field';
+import { Field } from '../../../angular';
 
 @Component({
   selector: 'a-md-select',

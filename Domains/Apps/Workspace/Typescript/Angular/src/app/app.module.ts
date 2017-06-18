@@ -20,6 +20,7 @@ import { OrganisationsTableComponent } from './relations/organisations/organisat
 import { ProductTypesTableComponent } from './catalogues/producttypes/producttypes.table.component';
 
 import { MATERIAL } from '../allors/material';
+import { COVALENT } from '../allors/covalent';
 
 const components: any[] = [CataloguesTableComponent, CategoriesTableComponent, CommunicationEventsTableComponent,
                             GoodsTableComponent, OrganisationsTableComponent, ProductTypesTableComponent, ];
@@ -27,6 +28,7 @@ const components: any[] = [CataloguesTableComponent, CategoriesTableComponent, C
 @NgModule({
   declarations: [
     MATERIAL,
+    COVALENT,
     AppComponent,
     routedComponents,
     components,

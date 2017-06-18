@@ -301,7 +301,7 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.OneToOne)]
         [Indexed]
         [Workspace]
-        public Image Picture { get; set; }
+        public Media Picture { get; set; }
         
         #region Allors
         [Id("fefb8dc2-cfe5-4078-b3a9-8c4622047c34")]

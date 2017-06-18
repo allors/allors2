@@ -332,7 +332,6 @@
     <Compile Include="Apps\GoodOrderItem.cs" />
     <Compile Include="Apps\HazardousMaterialsDocument.cs" />
     <Compile Include="Apps\Hobby.cs" />
-    <Compile Include="Apps\Image.cs" />
     <Compile Include="Apps\Incentive.cs" />
     <Compile Include="Apps\IndustryClassification.cs" />
     <Compile Include="Apps\InternalAccountingTransaction.cs" />

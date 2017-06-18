@@ -115,7 +115,7 @@ export class PersonFormComponent implements OnInit, AfterViewInit, OnDestroy {
         this.goBack();
       },
       (e: any) => {
-        this.snackBar.open(e.toString(), 'close', { duration: 5000 });
+        this.allors.onSaveError(e);
       });
   }
 

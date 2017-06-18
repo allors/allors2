@@ -3,7 +3,7 @@ import { Component, OnDestroy } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 
-import { AuthenticationService } from '../../allors/angular';
+import { AuthenticationService } from '../../../allors/angular';
 
 @Component({
     styleUrls: ['./login.component.scss'],

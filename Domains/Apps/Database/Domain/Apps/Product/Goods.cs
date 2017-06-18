@@ -43,9 +43,7 @@ namespace Allors.Domain
                     {
                         var fileName = Path.GetFileNameWithoutExtension(fileInfo.FullName).ToLowerInvariant();
                         var content = File.ReadAllBytes(fileInfo.FullName);
-                        var image = new ImageBuilder(this.Session).WithOriginalFilename(fileName).Build();
-                        var mediaContent = new MediaContentBuilder(this.Session).WithType("").WithData(content).Build();
-                        image.Original = new MediaBuilder(this.Session).WithMediaContent(mediaContent).Build();
+                        var image = new MediaBuilder(this.Session).WithFileName(fileName).WithInData(content).Build();
                         good.Photo = image;
                     }
                 }
