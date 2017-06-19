@@ -191,7 +191,7 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
         [Workspace]
-        public Image Photo { get; set; }
+        public Media Photo { get; set; }
 
         #region inherited methods
 

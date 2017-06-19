@@ -5,6 +5,19 @@ namespace Allors.Domain
 				}
 				public interface Enumeration : UniquelyIdentifiable 
 				{
+								LocalisedText LocalisedNames {set;}
+
+
+								global::System.String Name {set;}
+
+
+								global::System.Boolean IsActive {set;}
+
+				}
+				public interface Localised 
+				{
+								Locale Locale {set;}
+
 				}
 				public interface ObjectState : UniquelyIdentifiable 
 				{
@@ -16,8 +29,11 @@ namespace Allors.Domain
 								global::System.Guid UniqueId {set;}
 
 				}
-				public interface User 
+				public interface User : Localised 
 				{
+								global::System.Boolean? UserEmailConfirmed {set;}
+
+
 								global::System.String UserName {set;}
 
 
@@ -57,11 +73,47 @@ namespace Allors.Domain
 								global::System.String I1AllorsString {set;}
 
 				}
+				public interface LocalisedText : Localised 
+				{
+								global::System.String Text {set;}
+
+				}
 				public interface AccessControl : Deletable 
 				{
 				}
 				public interface Counter : UniquelyIdentifiable 
 				{
+				}
+				public interface Country 
+				{
+								Currency Currency {set;}
+
+
+								global::System.String IsoCode {set;}
+
+
+								global::System.String Name {set;}
+
+
+								LocalisedText LocalisedNames {set;}
+
+				}
+				public interface Currency 
+				{
+				}
+				public interface Language 
+				{
+				}
+				public interface Locale 
+				{
+								global::System.String Name {set;}
+
+
+								Language Language {set;}
+
+
+								Country Country {set;}
+
 				}
 				public interface Login : Deletable 
 				{
@@ -72,6 +124,12 @@ namespace Allors.Domain
 
 
 								global::System.String InDataUri {set;}
+
+
+								global::System.String FileName {set;}
+
+
+								global::System.String Type {set;}
 
 				}
 				public interface MediaContent : Deletable 

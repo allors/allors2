@@ -376,6 +376,10 @@ namespace Allors.Domain
 
 						global::System.String InDataUri {set;}
 
+						global::System.String FileName {set;}
+
+						global::System.String Type {set;}
+
 		}
 		public interface MediaContent  : AccessControlledObject, Deletable 
 		{
