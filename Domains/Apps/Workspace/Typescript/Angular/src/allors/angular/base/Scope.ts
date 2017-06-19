@@ -43,7 +43,7 @@ export class Scope {
   fetch(service: string, params?: any): Observable<Result> {
     return this.database
       .pull(service, params)
-      .mergeMap(response => {
+      .mergeMap((response) => {
         const requireLoadIds = this.workspace.diff(response);
 
         if (requireLoadIds.objects.length > 0) {
