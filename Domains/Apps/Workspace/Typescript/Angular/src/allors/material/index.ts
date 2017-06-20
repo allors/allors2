@@ -7,7 +7,8 @@ import { SlideToggleComponent } from './base/components/slideToggle';
 import { StaticComponent } from './base/components/static';
 import { TextareaComponent } from './base/components/textArea';
 
-// Content
+// Domain
+import { LocalisedTextComponent } from './base/components/localisation/LocalisedText';
 import { MediaUploadComponent } from './base/components/content/MediaUpload';
 
 export const MATERIAL: any[] = [
@@ -19,7 +20,8 @@ export const MATERIAL: any[] = [
   SlideToggleComponent,
   StaticComponent,
   TextareaComponent,
-  // Content
+  // Domain
+  LocalisedTextComponent,
   MediaUploadComponent,
  ];
 
@@ -32,6 +34,7 @@ export {
   SlideToggleComponent,
   StaticComponent,
   TextareaComponent,
-  // Content
+  // Domain
+  LocalisedTextComponent,
   MediaUploadComponent,
 };
