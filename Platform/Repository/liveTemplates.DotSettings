@@ -1,0 +1,111 @@
+﻿<wpf:ResourceDictionary xml:space="preserve" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:ss="urn:shemas-jetbrains-com:settings-storage-xaml" xmlns:wpf="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
+	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=8B3A86DB826E0A4DBD96E95B256AA518/@KeyIndexDefined">True</s:Boolean>
+	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=8B3A86DB826E0A4DBD96E95B256AA518/Shortcut/@EntryValue">a-many</s:String>
+	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=8B3A86DB826E0A4DBD96E95B256AA518/Description/@EntryValue">Code snippet for Allors To Many Role</s:String>
+	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=8B3A86DB826E0A4DBD96E95B256AA518/Text/@EntryValue">		#region Allors&#xD;
+        [Id("$id$")]&#xD;
+        [AssociationId("$associationId$")]&#xD;
+        [RoleId("$roleId$")]&#xD;
+		[Indexed]&#xD;
+        #endregion&#xD;
+		[Multiplicity($multiplicity$)]&#xD;
+        public $type$[] $name$ { get; set; }</s:String>
+	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=8B3A86DB826E0A4DBD96E95B256AA518/IsBlessed/@EntryValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=8B3A86DB826E0A4DBD96E95B256AA518/ShortenQualifiedReferences/@EntryValue">True</s:Boolean>
+	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=8B3A86DB826E0A4DBD96E95B256AA518/Categories/=Allors/@EntryIndexedValue">Allors</s:String>
+	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=8B3A86DB826E0A4DBD96E95B256AA518/Applicability/=Live/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=8B3A86DB826E0A4DBD96E95B256AA518/Scope/=B68999B9D6B43E47A02B22C12A54C3CC/@KeyIndexDefined">True</s:Boolean>
+	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=8B3A86DB826E0A4DBD96E95B256AA518/Scope/=B68999B9D6B43E47A02B22C12A54C3CC/Type/@EntryValue">InCSharpTypeMember</s:String>
+	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=8B3A86DB826E0A4DBD96E95B256AA518/Scope/=B68999B9D6B43E47A02B22C12A54C3CC/CustomProperties/=minimumLanguageVersion/@EntryIndexedValue">2.0</s:String>
+	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=8B3A86DB826E0A4DBD96E95B256AA518/Field/=id/@KeyIndexDefined">True</s:Boolean>
+	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=8B3A86DB826E0A4DBD96E95B256AA518/Field/=id/Expression/@EntryValue">guid()</s:String>
+	<s:Int64 x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=8B3A86DB826E0A4DBD96E95B256AA518/Field/=id/InitialRange/@EntryValue">-1</s:Int64>
+	<s:Int64 x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=8B3A86DB826E0A4DBD96E95B256AA518/Field/=id/Order/@EntryValue">0</s:Int64>
+	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=8B3A86DB826E0A4DBD96E95B256AA518/Field/=roleId/@KeyIndexDefined">True</s:Boolean>
+	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=8B3A86DB826E0A4DBD96E95B256AA518/Field/=roleId/Expression/@EntryValue">guid()</s:String>
+	<s:Int64 x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=8B3A86DB826E0A4DBD96E95B256AA518/Field/=roleId/InitialRange/@EntryValue">-1</s:Int64>
+	<s:Int64 x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=8B3A86DB826E0A4DBD96E95B256AA518/Field/=roleId/Order/@EntryValue">1</s:Int64>
+	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=8B3A86DB826E0A4DBD96E95B256AA518/Field/=associationId/@KeyIndexDefined">True</s:Boolean>
+	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=8B3A86DB826E0A4DBD96E95B256AA518/Field/=associationId/Expression/@EntryValue">guid()</s:String>
+	<s:Int64 x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=8B3A86DB826E0A4DBD96E95B256AA518/Field/=associationId/InitialRange/@EntryValue">-1</s:Int64>
+	<s:Int64 x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=8B3A86DB826E0A4DBD96E95B256AA518/Field/=associationId/Order/@EntryValue">2</s:Int64>
+	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=8B3A86DB826E0A4DBD96E95B256AA518/Field/=multiplicity/@KeyIndexDefined">True</s:Boolean>
+	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=8B3A86DB826E0A4DBD96E95B256AA518/Field/=multiplicity/Expression/@EntryValue">list("Multiplicity.OneToMany,Multiplicity.ManyToMany,")</s:String>
+	<s:Int64 x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=8B3A86DB826E0A4DBD96E95B256AA518/Field/=multiplicity/Order/@EntryValue">3</s:Int64>
+	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=8B3A86DB826E0A4DBD96E95B256AA518/Field/=type/@KeyIndexDefined">True</s:Boolean>
+	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=8B3A86DB826E0A4DBD96E95B256AA518/Field/=type/Expression/@EntryValue">fixedTypeName("Allors.Repository.Object")</s:String>
+	<s:Int64 x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=8B3A86DB826E0A4DBD96E95B256AA518/Field/=type/Order/@EntryValue">4</s:Int64>
+	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=8B3A86DB826E0A4DBD96E95B256AA518/Field/=name/@KeyIndexDefined">True</s:Boolean>
+	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=8B3A86DB826E0A4DBD96E95B256AA518/Field/=name/Expression/@EntryValue">suggestVariableName()</s:String>
+	<s:Int64 x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=8B3A86DB826E0A4DBD96E95B256AA518/Field/=name/Order/@EntryValue">5</s:Int64>
+	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=56C220D0A078B649B6C296253D953832/@KeyIndexDefined">True</s:Boolean>
+	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=56C220D0A078B649B6C296253D953832/Shortcut/@EntryValue">a-one</s:String>
+	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=56C220D0A078B649B6C296253D953832/Description/@EntryValue">Code snippet for Allors To One Role</s:String>
+	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=56C220D0A078B649B6C296253D953832/Text/@EntryValue">		#region Allors&#xD;
+        [Id("$id$")]&#xD;
+        [AssociationId("$associationId$")]&#xD;
+        [RoleId("$roleId$")]&#xD;
+		[Indexed]&#xD;
+        #endregion&#xD;
+		[Multiplicity($multiplicity$)]&#xD;
+        public $type$ $name$ { get; set; }</s:String>
+	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=56C220D0A078B649B6C296253D953832/ShortenQualifiedReferences/@EntryValue">True</s:Boolean>
+	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=56C220D0A078B649B6C296253D953832/Categories/=Allors/@EntryIndexedValue">Allors</s:String>
+	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=56C220D0A078B649B6C296253D953832/Applicability/=Live/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=56C220D0A078B649B6C296253D953832/Scope/=B68999B9D6B43E47A02B22C12A54C3CC/@KeyIndexDefined">True</s:Boolean>
+	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=56C220D0A078B649B6C296253D953832/Scope/=B68999B9D6B43E47A02B22C12A54C3CC/Type/@EntryValue">InCSharpTypeMember</s:String>
+	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=56C220D0A078B649B6C296253D953832/Scope/=B68999B9D6B43E47A02B22C12A54C3CC/CustomProperties/=minimumLanguageVersion/@EntryIndexedValue">2.0</s:String>
+	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=56C220D0A078B649B6C296253D953832/Field/=id/@KeyIndexDefined">True</s:Boolean>
+	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=56C220D0A078B649B6C296253D953832/Field/=id/Expression/@EntryValue">guid()</s:String>
+	<s:Int64 x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=56C220D0A078B649B6C296253D953832/Field/=id/InitialRange/@EntryValue">-1</s:Int64>
+	<s:Int64 x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=56C220D0A078B649B6C296253D953832/Field/=id/Order/@EntryValue">0</s:Int64>
+	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=56C220D0A078B649B6C296253D953832/Field/=associationId/@KeyIndexDefined">True</s:Boolean>
+	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=56C220D0A078B649B6C296253D953832/Field/=associationId/Expression/@EntryValue">guid()</s:String>
+	<s:Int64 x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=56C220D0A078B649B6C296253D953832/Field/=associationId/InitialRange/@EntryValue">-1</s:Int64>
+	<s:Int64 x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=56C220D0A078B649B6C296253D953832/Field/=associationId/Order/@EntryValue">1</s:Int64>
+	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=56C220D0A078B649B6C296253D953832/Field/=roleId/@KeyIndexDefined">True</s:Boolean>
+	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=56C220D0A078B649B6C296253D953832/Field/=roleId/Expression/@EntryValue">guid()</s:String>
+	<s:Int64 x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=56C220D0A078B649B6C296253D953832/Field/=roleId/InitialRange/@EntryValue">-1</s:Int64>
+	<s:Int64 x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=56C220D0A078B649B6C296253D953832/Field/=roleId/Order/@EntryValue">2</s:Int64>
+	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=56C220D0A078B649B6C296253D953832/Field/=multiplicity/@KeyIndexDefined">True</s:Boolean>
+	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=56C220D0A078B649B6C296253D953832/Field/=multiplicity/Expression/@EntryValue">list("Multiplicity.OneToOne,Multiplicity.ManyToOne,")</s:String>
+	<s:Int64 x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=56C220D0A078B649B6C296253D953832/Field/=multiplicity/Order/@EntryValue">3</s:Int64>
+	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=56C220D0A078B649B6C296253D953832/Field/=type/@KeyIndexDefined">True</s:Boolean>
+	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=56C220D0A078B649B6C296253D953832/Field/=type/Expression/@EntryValue">fixedTypeName("Allors.Repository.Object")</s:String>
+	<s:Int64 x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=56C220D0A078B649B6C296253D953832/Field/=type/Order/@EntryValue">4</s:Int64>
+	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=56C220D0A078B649B6C296253D953832/Field/=name/@KeyIndexDefined">True</s:Boolean>
+	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=56C220D0A078B649B6C296253D953832/Field/=name/Expression/@EntryValue">suggestVariableName()</s:String>
+	<s:Int64 x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=56C220D0A078B649B6C296253D953832/Field/=name/Order/@EntryValue">5</s:Int64>
+	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=13DE14E26020614E965163F2455EC343/@KeyIndexDefined">True</s:Boolean>
+	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=13DE14E26020614E965163F2455EC343/Shortcut/@EntryValue">a-unit</s:String>
+	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=13DE14E26020614E965163F2455EC343/Description/@EntryValue">Code snippet for Allors Unit Role</s:String>
+	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=13DE14E26020614E965163F2455EC343/Text/@EntryValue">		#region Allors&#xD;
+        [Id("$id$")]&#xD;
+        [AssociationId("$associationId$")]&#xD;
+        [RoleId("$roleId$")]&#xD;
+        #endregion&#xD;
+        public $type$ $name$ { get; set; }</s:String>
+	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=13DE14E26020614E965163F2455EC343/ShortenQualifiedReferences/@EntryValue">True</s:Boolean>
+	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=13DE14E26020614E965163F2455EC343/Categories/=Allors/@EntryIndexedValue">Allors</s:String>
+	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=13DE14E26020614E965163F2455EC343/Applicability/=Live/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=13DE14E26020614E965163F2455EC343/Scope/=C3001E7C0DA78E4487072B7E050D86C5/@KeyIndexDefined">True</s:Boolean>
+	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=13DE14E26020614E965163F2455EC343/Scope/=C3001E7C0DA78E4487072B7E050D86C5/Type/@EntryValue">InCSharpFile</s:String>
+	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=13DE14E26020614E965163F2455EC343/Scope/=C3001E7C0DA78E4487072B7E050D86C5/CustomProperties/=minimumLanguageVersion/@EntryIndexedValue">2.0</s:String>
+	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=13DE14E26020614E965163F2455EC343/Field/=id/@KeyIndexDefined">True</s:Boolean>
+	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=13DE14E26020614E965163F2455EC343/Field/=id/Expression/@EntryValue">guid()</s:String>
+	<s:Int64 x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=13DE14E26020614E965163F2455EC343/Field/=id/InitialRange/@EntryValue">-1</s:Int64>
+	<s:Int64 x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=13DE14E26020614E965163F2455EC343/Field/=id/Order/@EntryValue">0</s:Int64>
+	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=13DE14E26020614E965163F2455EC343/Field/=associationId/@KeyIndexDefined">True</s:Boolean>
+	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=13DE14E26020614E965163F2455EC343/Field/=associationId/Expression/@EntryValue">guid()</s:String>
+	<s:Int64 x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=13DE14E26020614E965163F2455EC343/Field/=associationId/InitialRange/@EntryValue">-1</s:Int64>
+	<s:Int64 x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=13DE14E26020614E965163F2455EC343/Field/=associationId/Order/@EntryValue">1</s:Int64>
+	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=13DE14E26020614E965163F2455EC343/Field/=roleId/@KeyIndexDefined">True</s:Boolean>
+	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=13DE14E26020614E965163F2455EC343/Field/=roleId/Expression/@EntryValue">guid()</s:String>
+	<s:Int64 x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=13DE14E26020614E965163F2455EC343/Field/=roleId/InitialRange/@EntryValue">-1</s:Int64>
+	<s:Int64 x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=13DE14E26020614E965163F2455EC343/Field/=roleId/Order/@EntryValue">2</s:Int64>
+	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=13DE14E26020614E965163F2455EC343/Field/=type/@KeyIndexDefined">True</s:Boolean>
+	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=13DE14E26020614E965163F2455EC343/Field/=type/Expression/@EntryValue">list("bool,byte[],DateTime,decimal,double,Guid,int,string")</s:String>
+	<s:Int64 x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=13DE14E26020614E965163F2455EC343/Field/=type/Order/@EntryValue">3</s:Int64>
+	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=13DE14E26020614E965163F2455EC343/Field/=name/@KeyIndexDefined">True</s:Boolean>
+	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=13DE14E26020614E965163F2455EC343/Field/=name/Expression/@EntryValue">suggestVariableName()</s:String>
+	<s:Int64 x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=13DE14E26020614E965163F2455EC343/Field/=name/Order/@EntryValue">4</s:Int64></wpf:ResourceDictionary>

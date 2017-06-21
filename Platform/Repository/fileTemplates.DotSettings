@@ -1,0 +1,93 @@
+﻿<wpf:ResourceDictionary xml:space="preserve" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:ss="urn:shemas-jetbrains-com:settings-storage-xaml" xmlns:wpf="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
+	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=2E277074F479FE449FAA48FABBC8F31B/@KeyIndexDefined">True</s:Boolean>
+	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=2E277074F479FE449FAA48FABBC8F31B/Description/@EntryValue">Allors Interface</s:String>
+	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=2E277074F479FE449FAA48FABBC8F31B/Text/@EntryValue">namespace Allors.Repository&#xD;
+{&#xD;
+    using Allors.Repository.Attributes;&#xD;
+&#xD;
+    #region&#xD;
+    [Id("$id$")]&#xD;
+    #endregion&#xD;
+    public partial interface $type$ : AccessControlledObject&#xD;
+    {&#xD;
+    }&#xD;
+}</s:String>
+	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=2E277074F479FE449FAA48FABBC8F31B/Reformat/@EntryValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=2E277074F479FE449FAA48FABBC8F31B/ShortenQualifiedReferences/@EntryValue">True</s:Boolean>
+	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=2E277074F479FE449FAA48FABBC8F31B/Categories/=Allors/@EntryIndexedValue">Allors</s:String>
+	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=2E277074F479FE449FAA48FABBC8F31B/CustomProperties/=FileName/@EntryIndexedValue">Interface</s:String>
+	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=2E277074F479FE449FAA48FABBC8F31B/CustomProperties/=Extension/@EntryIndexedValue">cs</s:String>
+	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=2E277074F479FE449FAA48FABBC8F31B/CustomProperties/=ValidateFileName/@EntryIndexedValue">True</s:String>
+	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=2E277074F479FE449FAA48FABBC8F31B/Applicability/=File/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=2E277074F479FE449FAA48FABBC8F31B/Scope/=E8F0594528C33E45BBFEC6CFE851095D/@KeyIndexDefined">True</s:Boolean>
+	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=2E277074F479FE449FAA48FABBC8F31B/Scope/=E8F0594528C33E45BBFEC6CFE851095D/Type/@EntryValue">InCSharpProjectFile</s:String>
+	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=2E277074F479FE449FAA48FABBC8F31B/Field/=id/@KeyIndexDefined">True</s:Boolean>
+	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=2E277074F479FE449FAA48FABBC8F31B/Field/=id/Expression/@EntryValue">guid()</s:String>
+	<s:Int64 x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=2E277074F479FE449FAA48FABBC8F31B/Field/=id/InitialRange/@EntryValue">-1</s:Int64>
+	<s:Int64 x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=2E277074F479FE449FAA48FABBC8F31B/Field/=id/Order/@EntryValue">0</s:Int64>
+	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=2E277074F479FE449FAA48FABBC8F31B/Field/=type/@KeyIndexDefined">True</s:Boolean>
+	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=2E277074F479FE449FAA48FABBC8F31B/Field/=type/Expression/@EntryValue">getFileNameWithoutExtension()</s:String>
+	<s:Int64 x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=2E277074F479FE449FAA48FABBC8F31B/Field/=type/InitialRange/@EntryValue">-1</s:Int64>
+	<s:Int64 x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=2E277074F479FE449FAA48FABBC8F31B/Field/=type/Order/@EntryValue">1</s:Int64>
+	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=EEEDF8CF071A974D9B73BC6524F93E7D/@KeyIndexDefined">True</s:Boolean>
+	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=EEEDF8CF071A974D9B73BC6524F93E7D/Description/@EntryValue">Allors Class</s:String>
+	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=EEEDF8CF071A974D9B73BC6524F93E7D/Text/@EntryValue">namespace Allors.Repository&#xD;
+{&#xD;
+    using Allors.Repository.Attributes;&#xD;
+&#xD;
+    #region&#xD;
+    [Id("$id$")]&#xD;
+    #endregion&#xD;
+    public partial class $type$ : AccessControlledObject&#xD;
+    {&#xD;
+        #region inherited properties&#xD;
+&#xD;
+        public Permission[] DeniedPermissions { get; set; }&#xD;
+&#xD;
+        public SecurityToken[] SecurityTokens { get; set; }&#xD;
+&#xD;
+        #endregion&#xD;
+    &#xD;
+&#xD;
+        #region inherited methods&#xD;
+&#xD;
+        public void OnBuild()&#xD;
+        {&#xD;
+        }&#xD;
+&#xD;
+        public void OnPostBuild()&#xD;
+        {&#xD;
+        }&#xD;
+&#xD;
+        public void OnPreDerive()&#xD;
+        {&#xD;
+        }&#xD;
+&#xD;
+        public void OnDerive()&#xD;
+        {&#xD;
+        }&#xD;
+&#xD;
+        public void OnPostDerive()&#xD;
+        {&#xD;
+        }&#xD;
+&#xD;
+        #endregion&#xD;
+    }&#xD;
+}</s:String>
+	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=EEEDF8CF071A974D9B73BC6524F93E7D/Reformat/@EntryValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=EEEDF8CF071A974D9B73BC6524F93E7D/ShortenQualifiedReferences/@EntryValue">True</s:Boolean>
+	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=EEEDF8CF071A974D9B73BC6524F93E7D/Categories/=Allors/@EntryIndexedValue">Allors</s:String>
+	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=EEEDF8CF071A974D9B73BC6524F93E7D/CustomProperties/=FileName/@EntryIndexedValue">Class</s:String>
+	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=EEEDF8CF071A974D9B73BC6524F93E7D/CustomProperties/=Extension/@EntryIndexedValue">cs</s:String>
+	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=EEEDF8CF071A974D9B73BC6524F93E7D/CustomProperties/=ValidateFileName/@EntryIndexedValue">True</s:String>
+	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=EEEDF8CF071A974D9B73BC6524F93E7D/Applicability/=File/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=EEEDF8CF071A974D9B73BC6524F93E7D/Scope/=E8F0594528C33E45BBFEC6CFE851095D/@KeyIndexDefined">True</s:Boolean>
+	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=EEEDF8CF071A974D9B73BC6524F93E7D/Scope/=E8F0594528C33E45BBFEC6CFE851095D/Type/@EntryValue">InCSharpProjectFile</s:String>
+	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=EEEDF8CF071A974D9B73BC6524F93E7D/Field/=id/@KeyIndexDefined">True</s:Boolean>
+	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=EEEDF8CF071A974D9B73BC6524F93E7D/Field/=id/Expression/@EntryValue">guid()</s:String>
+	<s:Int64 x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=EEEDF8CF071A974D9B73BC6524F93E7D/Field/=id/InitialRange/@EntryValue">-1</s:Int64>
+	<s:Int64 x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=EEEDF8CF071A974D9B73BC6524F93E7D/Field/=id/Order/@EntryValue">0</s:Int64>
+	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=EEEDF8CF071A974D9B73BC6524F93E7D/Field/=type/@KeyIndexDefined">True</s:Boolean>
+	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=EEEDF8CF071A974D9B73BC6524F93E7D/Field/=type/Expression/@EntryValue">getFileNameWithoutExtension()</s:String>
+	<s:Int64 x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=EEEDF8CF071A974D9B73BC6524F93E7D/Field/=type/InitialRange/@EntryValue">-1</s:Int64>
+	<s:Int64 x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=EEEDF8CF071A974D9B73BC6524F93E7D/Field/=type/Order/@EntryValue">1</s:Int64></wpf:ResourceDictionary>
