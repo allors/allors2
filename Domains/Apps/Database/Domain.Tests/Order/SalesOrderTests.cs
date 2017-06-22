@@ -1867,7 +1867,7 @@ namespace Allors.Domain
             this.DatabaseSession.Commit();
 
             Assert.Equal(new SalesOrderObjectStates(this.DatabaseSession).Provisional, order.CurrentObjectState);
-            var acl = new AccessControlList(order, new Users(this.DatabaseSession).GetCurrentUser());
+            var acl = new AccessControlList(order, new Users(this.DatabaseSession).CurrentUser);
             Assert.True(acl.CanExecute(M.SalesOrder.Confirm));
             Assert.True(acl.CanExecute(M.SalesOrder.Cancel));
             Assert.False(acl.CanExecute(M.SalesOrder.Approve));
@@ -1903,7 +1903,7 @@ namespace Allors.Domain
             this.DatabaseSession.Derive(true);
             this.DatabaseSession.Commit();
 
-            var acl = new AccessControlList(order, new Users(this.DatabaseSession).GetCurrentUser());
+            var acl = new AccessControlList(order, new Users(this.DatabaseSession).CurrentUser);
             Assert.True(acl.CanExecute(M.SalesOrder.Cancel));
             Assert.False(acl.CanExecute(M.SalesOrder.Reject));
             Assert.False(acl.CanExecute(M.SalesOrder.Approve));
@@ -1939,7 +1939,7 @@ namespace Allors.Domain
             this.DatabaseSession.Derive(true);
 
             Assert.Equal(new SalesOrderObjectStates(this.DatabaseSession).Cancelled, order.CurrentObjectState);
-            var acl = new AccessControlList(order, new Users(this.DatabaseSession).GetCurrentUser());
+            var acl = new AccessControlList(order, new Users(this.DatabaseSession).CurrentUser);
             Assert.False(acl.CanExecute(M.SalesOrder.Confirm));
             Assert.False(acl.CanExecute(M.SalesOrder.Cancel));
             Assert.False(acl.CanExecute(M.SalesOrder.Reject));
@@ -1975,7 +1975,7 @@ namespace Allors.Domain
             this.DatabaseSession.Derive(true);
 
             Assert.Equal(new SalesOrderObjectStates(this.DatabaseSession).Rejected, order.CurrentObjectState);
-            var acl = new AccessControlList(order, new Users(this.DatabaseSession).GetCurrentUser());
+            var acl = new AccessControlList(order, new Users(this.DatabaseSession).CurrentUser);
             Assert.False(acl.CanExecute(M.SalesOrder.Confirm));
             Assert.False(acl.CanExecute(M.SalesOrder.Cancel));
             Assert.False(acl.CanExecute(M.SalesOrder.Reject));
@@ -2015,7 +2015,7 @@ namespace Allors.Domain
             this.DatabaseSession.Derive(true);
 
             Assert.Equal(new SalesOrderObjectStates(this.DatabaseSession).Finished, order.CurrentObjectState);
-            var acl = new AccessControlList(order, new Users(this.DatabaseSession).GetCurrentUser());
+            var acl = new AccessControlList(order, new Users(this.DatabaseSession).CurrentUser);
             Assert.False(acl.CanExecute(M.SalesOrder.Confirm));
             Assert.False(acl.CanExecute(M.SalesOrder.Cancel));
             Assert.False(acl.CanExecute(M.SalesOrder.Reject));
@@ -2056,7 +2056,7 @@ namespace Allors.Domain
             this.DatabaseSession.Commit();
 
             Assert.Equal(new SalesOrderObjectStates(this.DatabaseSession).OnHold, order.CurrentObjectState);
-            var acl = new AccessControlList(order, new Users(this.DatabaseSession).GetCurrentUser());
+            var acl = new AccessControlList(order, new Users(this.DatabaseSession).CurrentUser);
             Assert.True(acl.CanExecute(M.SalesOrder.Cancel));
             Assert.True(acl.CanExecute(M.SalesOrder.Continue));
             Assert.False(acl.CanExecute(M.SalesOrder.Confirm));

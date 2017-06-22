@@ -8,42 +8,43 @@
 
     using Microsoft.AspNetCore.Mvc;
 
-    public class OrganisationContactRelationshipController : AllorsController
+    public class OrganisationContactRelationshipController : Controller
     {
-    public OrganisationContactRelationshipController(IAllorsContext allorsContext) : base(allorsContext)
-    {
-    }
+        private readonly IAllorsContext allors;
 
-    [HttpPost]
-    public async Task<IActionResult> Pull([FromBody] Model model)
-    {
-        await this.OnInit();
+        public OrganisationContactRelationshipController(IAllorsContext allorsContext)
+        {
+            this.allors = allorsContext;
+        }
 
-        var response = new PullResponseBuilder(this.AllorsUser);
+        [HttpPost]
+        public IActionResult Pull([FromBody] Model model)
+        {
+            var response = new PullResponseBuilder(this.allors.User);
 
-        var organisationContactRelationship = (OrganisationContactRelationship) this.AllorsSession.Instantiate(model.Id);
-        response.AddObject("organisationContactRelationship", organisationContactRelationship);
+            var organisationContactRelationship = (OrganisationContactRelationship)this.allors.Session.Instantiate(model.Id);
+            response.AddObject("organisationContactRelationship", organisationContactRelationship);
 
-        response.AddObject("contact", organisationContactRelationship.Contact);
+            response.AddObject("contact", organisationContactRelationship.Contact);
 
-        var locales = new Locales(this.AllorsSession).Extent();
-        response.AddCollection("locales", locales);
+            var locales = new Locales(this.allors.Session).Extent();
+            response.AddCollection("locales", locales);
 
-        var genders = new GenderTypes(this.AllorsSession).Extent();
-        response.AddCollection("genders", genders);
+            var genders = new GenderTypes(this.allors.Session).Extent();
+            response.AddCollection("genders", genders);
 
-        var salutations = new Salutations(this.AllorsSession).Extent();
-        response.AddCollection("salutations", salutations);
+            var salutations = new Salutations(this.allors.Session).Extent();
+            response.AddCollection("salutations", salutations);
 
-        var contactKinds = new OrganisationContactKinds(this.AllorsSession).Extent();
-        response.AddCollection("organisationContactKinds", contactKinds);
+            var contactKinds = new OrganisationContactKinds(this.allors.Session).Extent();
+            response.AddCollection("organisationContactKinds", contactKinds);
 
-        return this.Ok(response.Build());
-    }
+            return this.Ok(response.Build());
+        }
 
-    public class Model
-    {
-        public string Id { get; set; }
-    }
+        public class Model
+        {
+            public string Id { get; set; }
+        }
     }
 }

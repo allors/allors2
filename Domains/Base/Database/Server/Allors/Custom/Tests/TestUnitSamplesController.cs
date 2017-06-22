@@ -8,27 +8,28 @@
 
     using Microsoft.AspNetCore.Mvc;
 
-    public class TestUnitSamplesController : AllorsController
+    public class TestUnitSamplesController : Controller
     {
-        public TestUnitSamplesController(IAllorsContext allorsContext): base(allorsContext)
+        private readonly IAllorsContext allors;
+
+        public TestUnitSamplesController(IAllorsContext allorsContext)
         {
+            this.allors = allorsContext;
         }
 
         [HttpPost]
         public async Task<IActionResult> Pull([FromBody] TestUnitSamplesParams @params)
         {
-            await this.OnInit();
-
             try
             {
-                var unitSample = new UnitSamples(this.AllorsSession).Extent().First;
+                var unitSample = new UnitSamples(this.allors.Session).Extent().First;
                 if (unitSample == null)
                 {
-                    unitSample = new UnitSampleBuilder(this.AllorsSession).Build();
-                    this.AllorsSession.Commit();
+                    unitSample = new UnitSampleBuilder(this.allors.Session).Build();
+                    this.allors.Session.Commit();
                 }
 
-                var responseBuilder = new PullResponseBuilder(this.AllorsUser);
+                var responseBuilder = new PullResponseBuilder(this.allors.User);
 
                 switch (@params.Step)
                 {
@@ -57,7 +58,7 @@
                         break;
                 }
 
-                this.AllorsSession.Commit();
+                this.allors.Session.Commit();
 
                 responseBuilder.AddObject("unitSample", unitSample);
 

@@ -2,35 +2,35 @@
 {
     using System;
     using System.Linq;
-    using System.Threading.Tasks;
 
     using Allors.Domain;
     using Allors.Meta;
 
     using Microsoft.AspNetCore.Mvc;
 
-    public class PullController : AllorsController
+    public class PullController : Controller
     {
-        public PullController(IAllorsContext allorsContext) : base(allorsContext)
+        private readonly IAllorsContext allors;
+
+        public PullController(IAllorsContext allorsContext)
         {
+            this.allors = allorsContext;
         }
 
         [HttpPost]
-        public async Task<IActionResult> Pull([FromBody] PullRequest req)
+        public IActionResult Pull([FromBody] PullRequest req)
         {
             try
             {
-                await this.OnInit();
-
-                var response = new PullResponseBuilder(this.AllorsUser);
+                var response = new PullResponseBuilder(this.allors.User);
 
                 if (req.Q != null)
                 {
-                    var metaPopulation = (MetaPopulation)this.AllorsSession.Database.MetaPopulation;
+                    var metaPopulation = (MetaPopulation)this.allors.Session.Database.MetaPopulation;
                     var queries = req.Q.Select(v => v.Parse(metaPopulation)).ToArray();
                     foreach (var query in queries)
                     {
-                        Extent extent = this.AllorsSession.Query(query);
+                        Extent extent = this.allors.Session.Query(query);
                         if (query.Page != null)
                         {
                             var page = query.Page;
@@ -49,11 +49,11 @@
                 {
                     foreach (var fetch in req.F)
                     {
-                        fetch.Parse(this.AllorsSession, out IObject @object, out Path path, out Tree include);
+                        fetch.Parse(this.allors.Session, out IObject @object, out Path path, out Tree include);
 
                         if (path != null)
                         {
-                            var acls = new AccessControlListCache(this.AllorsUser);
+                            var acls = new AccessControlListCache(this.allors.User);
                             var result = path.Get(@object, acls);
                             if (result is IObject)
                             {

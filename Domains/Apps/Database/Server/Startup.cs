@@ -46,13 +46,11 @@
 
             var database = new Database(configuration);
 
-            var userService = new ClaimsPrincipalUserService();
             var timeService = new TimeService();
             var mailService = new MailService { DefaultSender = this.Configuration["DefaultSender"] };
             var securityService = new SecurityService();
             var serviceLocator = new ServiceLocator
                                      {
-                                         UserServiceFactory = () => userService,
                                          TimeServiceFactory = () => timeService,
                                          MailServiceFactory = () => mailService,
                                          SecurityServiceFactory = () => securityService
@@ -61,6 +59,7 @@
 
             services.AddSingleton<IDatabase>(database);
             services.AddScoped<IAllorsContext, AllorsContext>();
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             var authenticationContext = new FileAuthenticationContext(this.Configuration["AuthenticationKey"])
                                             {
                                                 Issuer = @"https://issuer.allors.com",

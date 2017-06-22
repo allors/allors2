@@ -87,13 +87,11 @@ namespace Domain
         {
             database.Init();
 
-            var userService = new ClaimsPrincipalUserService();
             var timeService = new TimeService();
             var mailService = new MailService { DefaultSender = "noreply@example.com" };
             var securityService = new SecurityService();
             var serviceLocator = new ServiceLocator
                                      {
-                                         UserServiceFactory = () => userService,
                                          TimeServiceFactory = () => timeService,
                                          MailServiceFactory = () => mailService,
                                          SecurityServiceFactory = () => securityService

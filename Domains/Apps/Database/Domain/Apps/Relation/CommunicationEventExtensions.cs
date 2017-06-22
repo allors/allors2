@@ -40,7 +40,7 @@ namespace Allors.Domain
         {
             if (!@this.ExistOwner)
             {
-                @this.Owner = (Person)new Users(@this.Strategy.Session).GetCurrentAuthenticatedUser();
+                @this.Owner = (Person)new Users(@this.Strategy.Session).CurrentUser;
             }
 
             if (!@this.ExistCurrentObjectState)

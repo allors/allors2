@@ -21,14 +21,11 @@
 
 namespace Allors
 {
-    using Allors.Meta;
     using System;
-    using System.Reflection;
-    using System.Security.Claims;
-    using System.Security.Principal;
 
     using Allors.Adapters.Memory;
     using Allors.Domain;
+    using Allors.Meta;
     using Allors.Services.Base;
 
     public class DomainTest : IDisposable
@@ -44,13 +41,11 @@ namespace Allors
 
             database.Init();
 
-            var userService = new ClaimsPrincipalUserService();
             var timeService = new TimeService();
             var mailService = new MailService { DefaultSender = "noreply@example.com" };
             var securityService = new SecurityService();
             var serviceLocator = new ServiceLocator
                                      {
-                                         UserServiceFactory = () => userService,
                                          TimeServiceFactory = () => timeService,
                                          MailServiceFactory = () => mailService,
                                          SecurityServiceFactory = () => securityService
@@ -79,7 +74,8 @@ namespace Allors
 
         protected void SetIdentity(string identity)
         {
-            ClaimsPrincipal.ClaimsPrincipalSelector = () => new GenericPrincipal(new GenericIdentity(identity, "Forms"), new string[0]);
+            var users = new Users(this.DatabaseSession);
+            users.CurrentUser = users.GetUser(identity) ?? Singleton.Instance(this.DatabaseSession).Guest;
         }
     }
 }

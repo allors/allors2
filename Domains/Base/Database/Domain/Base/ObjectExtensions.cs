@@ -67,7 +67,7 @@ namespace Allors
             var accessControlledObject = @this as AccessControlledObject;
             if (accessControlledObject != null)
             {
-                var creator = new Users(@this.Strategy.Session).GetCurrentAuthenticatedUser();
+                var creator = new Users(@this.Strategy.Session).CurrentUser;
 
                 if (creator != null)
                 {

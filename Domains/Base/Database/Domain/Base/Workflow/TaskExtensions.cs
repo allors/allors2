@@ -48,7 +48,7 @@ namespace Allors.Domain
 
         public static void AssignPerformer(this Task @this)
         {
-            var currentUser = (Person)new Users(@this.Strategy.Session).GetCurrentAuthenticatedUser();
+            var currentUser = (Person)new Users(@this.Strategy.Session).CurrentUser;
             @this.Performer = currentUser;
         }
 

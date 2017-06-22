@@ -1,7 +1,6 @@
 ﻿namespace Allors.Server.Controllers
 {
     using System;
-    using System.Threading.Tasks;
 
     using Allors.Domain;
     using Allors.Meta;
@@ -9,21 +8,22 @@
 
     using Microsoft.AspNetCore.Mvc;
 
-    public class TestShareHoldersController : AllorsController
+    public class TestShareHoldersController : Controller
     {
-        public TestShareHoldersController(IAllorsContext allorsContext): base(allorsContext)
+        private readonly IAllorsContext allors;
+
+        public TestShareHoldersController(IAllorsContext allorsContext)
         {
+            this.allors = allorsContext;
         }
 
         [HttpPost]
-        public async Task<IActionResult> Pull()
+        public IActionResult Pull()
         {
-            await this.OnInit();
-
             try
             {
-                var response = new PullResponseBuilder(this.AllorsUser);
-                var organisation = new Organisations(this.AllorsSession).FindBy(M.Organisation.Owner, this.AllorsUser);
+                var response = new PullResponseBuilder(this.allors.User);
+                var organisation = new Organisations(this.allors.Session).FindBy(M.Organisation.Owner, this.allors.User);
                 response.AddObject("root", organisation, M.Organisation.AngularShareholders);
                 return this.Ok(response.Build());
             }

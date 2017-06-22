@@ -1,27 +1,24 @@
 ﻿namespace Allors.Server
 {
     using System;
-    using System.Threading.Tasks;
-
-    using Allors.Domain;
 
     using Microsoft.AspNetCore.Mvc;
 
-    public class DatabaseController : AllorsController
+    public class DatabaseController : Controller
     {
-        public DatabaseController(IAllorsContext allorsContext) : base(allorsContext)
-        {
-        }
-        
-        [HttpPost]
-        public async Task<IActionResult> Sync([FromBody]SyncRequest syncRequest)
-        {
-            await this.OnInit();
+        private readonly IAllorsContext allors;
 
+        public DatabaseController(IAllorsContext allorsContext)
+        {
+            this.allors = allorsContext;
+        }
+
+        [HttpPost]
+        public IActionResult Sync([FromBody]SyncRequest syncRequest)
+        {
             try
             {
-                var user = this.AllorsUser ?? Singleton.Instance(this.AllorsSession).Guest;
-                var responseBuilder = new SyncResponseBuilder(this.AllorsSession, user, syncRequest);
+                var responseBuilder = new SyncResponseBuilder(this.allors.Session, this.allors.User, syncRequest);
                 var response = responseBuilder.Build();
                 return this.Ok(response);
             }
@@ -32,14 +29,11 @@
         }
 
         [HttpPost]
-        public async Task<IActionResult> Push([FromBody]PushRequest pushRequest)
+        public IActionResult Push([FromBody]PushRequest pushRequest)
         {
-            await this.OnInit();
-
             try
             {
-                var user = this.AllorsUser ?? Singleton.Instance(this.AllorsSession).Guest;
-                var responseBuilder = new PushResponseBuilder(this.AllorsSession, user, pushRequest);
+                var responseBuilder = new PushResponseBuilder(this.allors.Session, this.allors.User, pushRequest);
                 var response = responseBuilder.Build();
                 return this.Ok(response);
             }
@@ -50,14 +44,11 @@
         }
 
         [HttpPost]
-        public async Task<IActionResult> Invoke([FromBody]InvokeRequest invokeRequest)
+        public IActionResult Invoke([FromBody]InvokeRequest invokeRequest)
         {
-            await this.OnInit();
-
             try
             {
-                var user = this.AllorsUser ?? Singleton.Instance(this.AllorsSession).Guest;
-                var responseBuilder = new InvokeResponseBuilder(this.AllorsSession, user, invokeRequest);
+                var responseBuilder = new InvokeResponseBuilder(this.allors.Session, this.allors.User, invokeRequest);
                 var response = responseBuilder.Build();
                 return this.Ok(response);
             }

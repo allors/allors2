@@ -2,19 +2,21 @@
 {
     using System;
 
-    using Microsoft.AspNetCore.Mvc;
     using Allors.Domain;
     using Allors.Meta;
 
     using Microsoft.AspNetCore.Authorization;
+    using Microsoft.AspNetCore.Mvc;
 
-    public abstract partial class BaseMediaController : AllorsController
+    public abstract partial class BaseMediaController : Controller
     {
         private const int OneYearInSeconds = 60 * 60 * 24 * 356;
 
-        public BaseMediaController(IAllorsContext allorsContext)
-            : base(allorsContext)
+        private readonly IAllorsContext allors;
+
+        protected BaseMediaController(IAllorsContext allorsContext)
         {
+            this.allors = allorsContext;
         }
 
         [AllowAnonymous]
@@ -23,7 +25,7 @@
         {
             if (Guid.TryParse(id, out Guid uniqueId))
             {
-                var media = new Medias(this.AllorsSession).FindBy(M.Media.UniqueId, uniqueId);
+                var media = new Medias(this.allors.Session).FindBy(M.Media.UniqueId, uniqueId);
                 var mediaContent = media?.MediaContent;
 
                 if (mediaContent != null)

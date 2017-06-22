@@ -1,25 +1,24 @@
 ﻿namespace Allors.Server.Controllers
 {
-    using System.Threading.Tasks;
-
     using Allors.Server;
 
     using Microsoft.AspNetCore.Mvc;
 
-    public class PersonController : AllorsController
+    public class PersonController : Controller
     {
-        public PersonController(IAllorsContext allorsContext) : base(allorsContext)
+        private IAllorsContext allors;
+
+        public PersonController(IAllorsContext allorsContext)
         {
+            this.allors = allorsContext;
         }
 
         [HttpPost]
-        public async Task<IActionResult> Pull([FromBody] Model model)
+        public IActionResult Pull([FromBody] Model model)
         {
-            await this.OnInit();
+            var response = new PullResponseBuilder(this.allors.User);
 
-            var response = new PullResponseBuilder(this.AllorsUser);
-
-            var person = this.AllorsSession.Instantiate(model.Id);
+            var person = this.allors.Session.Instantiate(model.Id);
             response.AddObject("person", person);
 
             return this.Ok(response.Build());

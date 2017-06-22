@@ -273,7 +273,7 @@ namespace Allors.Domain
 
             this.DatabaseSession.Derive();
 
-            var acl = new AccessControlList(shipment, new Users(this.DatabaseSession).GetCurrentUser());
+            var acl = new AccessControlList(shipment, new Users(this.DatabaseSession).CurrentUser);
             Assert.Equal(new CustomerShipmentObjectStates(this.DatabaseSession).Created, shipment.CurrentObjectState);
             Assert.True(acl.CanExecute(M.CustomerShipment.Cancel));
         }
@@ -298,7 +298,7 @@ namespace Allors.Domain
 
             this.DatabaseSession.Derive(true);
 
-            var acl = new AccessControlList(shipment, new Users(this.DatabaseSession).GetCurrentUser());
+            var acl = new AccessControlList(shipment, new Users(this.DatabaseSession).CurrentUser);
             Assert.False(acl.CanExecute(M.CustomerShipment.Cancel));
         }
 
@@ -377,7 +377,7 @@ namespace Allors.Domain
 
             this.DatabaseSession.Derive(true);
 
-            var acl = new AccessControlList(shipment, new Users(this.DatabaseSession).GetCurrentUser());
+            var acl = new AccessControlList(shipment, new Users(this.DatabaseSession).CurrentUser);
             Assert.Equal(new CustomerShipmentObjectStates(this.DatabaseSession).Shipped, shipment.CurrentObjectState);
             Assert.False(acl.CanExecute(M.CustomerShipment.Cancel));
             Assert.False(acl.CanWrite(M.CustomerShipment.HandlingInstruction));

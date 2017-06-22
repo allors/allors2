@@ -26,18 +26,11 @@ namespace Allors.Services.Base
 
     public class ServiceLocator : IServiceLocator
     {
-        public Func<IUserService> UserServiceFactory { get; set; }
-
         public Func<ITimeService> TimeServiceFactory { get; set; }
 
         public Func<IMailService> MailServiceFactory { get; set; }
 
         public Func<ISecurityService> SecurityServiceFactory { get; set; }
-
-        public IUserService CreateUserService()
-        {
-            return this.UserServiceFactory();
-        }
 
         public ITimeService CreateTimeService()
         {

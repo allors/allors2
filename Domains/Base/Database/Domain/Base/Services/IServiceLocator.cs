@@ -24,8 +24,6 @@ namespace Allors
 
     public partial interface IServiceLocator
     {
-        IUserService CreateUserService();
-
         ITimeService CreateTimeService();
 
         IMailService CreateMailService();

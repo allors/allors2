@@ -1,26 +1,26 @@
 ﻿namespace Allors.Server.Controllers
 {
     using System;
-    using System.Threading.Tasks;
 
     using Allors.Server;
 
     using Microsoft.AspNetCore.Mvc;
 
-    public class TestPullController : AllorsController
+    public class TestPullController : Controller
     {
-        public TestPullController(IAllorsContext allorsContext): base(allorsContext)
+        private readonly IAllorsContext allors;
+
+        public TestPullController(IAllorsContext allorsContext)
         {
+            this.allors = allorsContext;
         }
 
         [HttpPost]
-        public async Task<IActionResult> Pull()
+        public IActionResult Pull()
         {
-            await this.OnInit();
-
             try
             {
-                var response = new PullResponseBuilder(this.AllorsUser);
+                var response = new PullResponseBuilder(this.allors.User);
                 return this.Ok(response.Build());
             }
             catch (Exception e)

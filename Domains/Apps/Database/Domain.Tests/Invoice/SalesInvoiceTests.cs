@@ -19,18 +19,16 @@
 // <summary>Defines the MediaTests type.</summary>
 //-------------------------------------------------------------------------------------------------
 
-using System.Security.Claims;
-
 namespace Allors.Domain
 {
     using System;
-    using System.Security.Principal;
-    using System.Threading;
+
     using Meta;
-    using Xunit;
+
     using Resources;
 
-    
+    using Xunit;
+
     public class SalesInvoiceTests : DomainTest
     {
         [Fact]
@@ -744,7 +742,7 @@ namespace Allors.Domain
             this.DatabaseSession.Derive(true);
             this.DatabaseSession.Commit();
 
-            var acl = new AccessControlList(invoice, new Users(this.DatabaseSession).GetCurrentUser());
+            var acl = new AccessControlList(invoice, new Users(this.DatabaseSession).CurrentUser);
             Assert.True(acl.CanExecute(M.SalesInvoice.Send));
             Assert.True(acl.CanExecute(M.SalesInvoice.WriteOff));
             Assert.True(acl.CanExecute(M.SalesInvoice.CancelInvoice));
@@ -787,7 +785,7 @@ namespace Allors.Domain
             this.DatabaseSession.Derive(true);
             this.DatabaseSession.Commit();
 
-            var acl = new AccessControlList(invoice, new Users(this.DatabaseSession).GetCurrentUser());
+            var acl = new AccessControlList(invoice, new Users(this.DatabaseSession).CurrentUser);
             Assert.False(acl.CanExecute(M.SalesInvoice.Send));
             Assert.True(acl.CanExecute(M.SalesInvoice.WriteOff));
             Assert.False(acl.CanExecute(M.SalesInvoice.CancelInvoice));
@@ -868,7 +866,7 @@ namespace Allors.Domain
 
             this.DatabaseSession.Derive(true);
 
-            var acl = new AccessControlList(invoice, new Users(this.DatabaseSession).GetCurrentUser());
+            var acl = new AccessControlList(invoice, new Users(this.DatabaseSession).CurrentUser);
             Assert.False(acl.CanExecute(M.SalesInvoice.Send));
             Assert.False(acl.CanExecute(M.SalesInvoice.WriteOff));
             Assert.False(acl.CanExecute(M.SalesInvoice.CancelInvoice));
@@ -925,7 +923,7 @@ namespace Allors.Domain
             this.DatabaseSession.Derive(true);
             this.DatabaseSession.Commit();
 
-            var acl = new AccessControlList(invoice, new Users(this.DatabaseSession).GetCurrentUser());
+            var acl = new AccessControlList(invoice, new Users(this.DatabaseSession).CurrentUser);
             Assert.False(acl.CanExecute(M.SalesInvoice.Send));
             Assert.True(acl.CanExecute(M.SalesInvoice.WriteOff));
             Assert.False(acl.CanExecute(M.SalesInvoice.CancelInvoice));
@@ -968,7 +966,7 @@ namespace Allors.Domain
 
             this.DatabaseSession.Derive(true);
 
-            var acl = new AccessControlList(invoice, new Users(this.DatabaseSession).GetCurrentUser());
+            var acl = new AccessControlList(invoice, new Users(this.DatabaseSession).CurrentUser);
             Assert.False(acl.CanExecute(M.SalesInvoice.Send));
             Assert.False(acl.CanExecute(M.SalesInvoice.WriteOff));
             Assert.False(acl.CanExecute(M.SalesInvoice.CancelInvoice));
@@ -1010,7 +1008,7 @@ namespace Allors.Domain
 
             this.DatabaseSession.Derive(true);
 
-            var acl = new AccessControlList(invoice, new Users(this.DatabaseSession).GetCurrentUser());
+            var acl = new AccessControlList(invoice, new Users(this.DatabaseSession).CurrentUser);
             Assert.Equal(new SalesInvoiceObjectStates(this.DatabaseSession).Cancelled, invoice.CurrentObjectState);
             Assert.False(acl.CanExecute(M.SalesInvoice.Send));
             Assert.False(acl.CanExecute(M.SalesInvoice.WriteOff));

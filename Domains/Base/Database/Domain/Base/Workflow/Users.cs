@@ -34,51 +34,16 @@ namespace Allors.Domain
         public const string GuestUserName = "Guest";
         public const string AdministratorUserName = "Administrator";
 
+        private const string CurrentKey = nameof(User) + ".Current";
         private const string SessionKey = nameof(User) + ".Key";
 
-        public User GetCurrentUser()
+        public User CurrentUser
         {
-            if (this.GetCurrentAuthenticatedUser() == null)
-            {
-                var singleton = Singleton.Instance(this.Session);
-                if (singleton != null)
-                {
-                    return singleton.Guest;
-                }
-            }
+            get => (User)this.Session.Instantiate((string)this.Session[CurrentKey]);
 
-            return this.GetCurrentAuthenticatedUser();
+            set => this.Session[CurrentKey] = value?.Id.ToString();
         }
 
-        public User GetCurrentAuthenticatedUser()
-        {
-            string userId;
-            using (var userService = this.Session.Database.GetServiceLocator().CreateUserService())
-            {
-                userId = userService.GetUser();
-            }
-
-            if (string.IsNullOrWhiteSpace(userId))
-            {
-                return null;
-            }
-
-            var cached = (CachedUser)this.Session[SessionKey];
-            if (cached == null || !userId.ToLower().Equals(cached.UserId))
-            {
-                var user = this.FindBy(this.Meta.UserName, userId);
-
-                if (user == null)
-                {
-                    return null;
-                }
-
-                cached = new CachedUser(user);
-                this.Session[SessionKey] = cached;
-            }
-
-            return cached.GetUser(this.Session);
-        }
 
         public User GetUser(string userId)
         {

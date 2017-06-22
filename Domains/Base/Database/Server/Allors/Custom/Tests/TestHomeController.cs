@@ -1,26 +1,25 @@
 ﻿namespace Allors.Server.Controllers
 {
-    using System.Threading.Tasks;
-
     using Allors.Domain;
     using Allors.Meta;
     using Allors.Server;
 
     using Microsoft.AspNetCore.Mvc;
 
-    public class TestHomeController : AllorsController
+    public class TestHomeController : Controller
     {
-        public TestHomeController(IAllorsContext allorsContext) : base(allorsContext)
+        private readonly IAllorsContext allors;
+
+        public TestHomeController(IAllorsContext allorsContext)
         {
+            this.allors = allorsContext;
         }
 
         [HttpPost]
-        public async Task<IActionResult> Pull()
+        public IActionResult Pull()
         {
-            await this.OnInit();
-
-            var response = new PullResponseBuilder(this.AllorsUser);
-            var organisation = new Organisations(this.AllorsSession).FindBy(M.Organisation.Owner, this.AllorsUser);
+            var response = new PullResponseBuilder(this.allors.User);
+            var organisation = new Organisations(this.allors.Session).FindBy(M.Organisation.Owner, this.allors.User);
             response.AddObject("root", organisation, M.Organisation.AngularShareholders);
             return this.Ok(response.Build());
         }

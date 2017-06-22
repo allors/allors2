@@ -1,26 +1,25 @@
 ﻿namespace Allors.Server.Controllers
 {
-    using System.Threading.Tasks;
-
     using Allors.Domain;
     using Allors.Server;
 
     using Microsoft.AspNetCore.Mvc;
 
-    public class TestNoTreeController : AllorsController
+    public class TestNoTreeController : Controller
     {
-        public TestNoTreeController(IAllorsContext allorsContext): base(allorsContext)
+        private IAllorsContext allors;
+
+        public TestNoTreeController(IAllorsContext allorsContext)
         {
+            this.allors = allorsContext;
         }
 
         [HttpPost]
-        public async Task<IActionResult> Pull()
+        public IActionResult Pull()
         {
-            await this.OnInit();
-
-            var response = new PullResponseBuilder(this.AllorsUser);
-            response.AddObject("object", this.AllorsUser);
-            response.AddCollection("collection", new Organisations(this.AllorsSession).Extent());
+            var response = new PullResponseBuilder(this.allors.User);
+            response.AddObject("object", this.allors.User);
+            response.AddCollection("collection", new Organisations(this.allors.Session).Extent());
             return this.Ok(response.Build());
         }
     }

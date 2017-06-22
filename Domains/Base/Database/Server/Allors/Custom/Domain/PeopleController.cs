@@ -7,19 +7,20 @@
 
     using Microsoft.AspNetCore.Mvc;
 
-    public class PeopleController : PullController
+    public class PeopleController : Controller
     {
-        public PeopleController(IAllorsContext allorsContext) : base(allorsContext)
+        private readonly IAllorsContext allors;
+
+        public PeopleController(IAllorsContext allorsContext)
         {
+            this.allors = allorsContext;
         }
 
         [HttpPost]
         public async Task<IActionResult> Pull()
         {
-            await this.OnInit();
-
-            var response = new PullResponseBuilder(this.AllorsUser);
-            var people = new People(this.AllorsSession).Extent().ToArray();
+            var response = new PullResponseBuilder(this.allors.User);
+            var people = new People(this.allors.Session).Extent().ToArray();
             response.AddCollection("people", people);
             return this.Ok(response.Build());
         }

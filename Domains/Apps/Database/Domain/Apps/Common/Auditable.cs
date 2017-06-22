@@ -7,7 +7,7 @@
         public static void AppsOnDerive(this Auditable @this, ObjectOnDerive method)
         {
             var derivation = method.Derivation;
-            var user = new Users(@this.Strategy.Session).GetCurrentAuthenticatedUser();
+            var user = new Users(@this.Strategy.Session).CurrentUser;
 
             if (user != null)
             {
