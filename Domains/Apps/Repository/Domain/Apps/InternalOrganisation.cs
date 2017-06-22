@@ -122,33 +122,38 @@ namespace Allors.Repository
         [RoleId("b9a508e2-2931-4ddc-ab34-947d19c2d742")]
         #endregion
         [Size(256)]
+        [Workspace]
         public string PurchaseOrderNumberPrefix { get; set; }
+
         #region Allors
         [Id("01d4f5d8-da57-4524-b35f-69a1a4adfa1c")]
         [AssociationId("84ff4f9a-b1d3-4e2c-aff6-52a9f75e874a")]
         [RoleId("ee1b0251-ba57-490a-bdc9-c4e8fd6142ce")]
         #endregion
+        [Workspace]
         [Size(256)]
-
         public string TransactionReferenceNumber { get; set; }
+
         #region Allors
         [Id("0994b73e-8d4c-4fa4-aca2-287449b22ca7")]
         [AssociationId("17a9138e-76c8-42e1-85b8-7af73b551a22")]
         [RoleId("09fbb64d-c32e-4734-8df9-6e741a5070a5")]
         #endregion
         [Multiplicity(Multiplicity.OneToMany)]
+        [Workspace]
         [Indexed]
-
         public JournalEntryNumber[] JournalEntryNumbers { get; set; }
+
         #region Allors
         [Id("1a2533cb-9b75-4597-83ab-9bbfc49e0103")]
         [AssociationId("b4cb12ba-0ea1-41e5-945a-030503bf2c7b")]
         [RoleId("031ba0aa-32e4-470c-9a79-fae65cace2f2")]
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
+        [Workspace]
         [Indexed]
-
         public Country EuListingState { get; set; }
+
         #region Allors
         [Id("1a986cbf-b7db-4850-af06-d96e1339beb7")]
         [AssociationId("fc69f819-2ca0-4ac4-b36e-cfff791679a1")]
@@ -156,9 +161,10 @@ namespace Allors.Repository
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
+        [Workspace]
         [Required]
-
         public Counter PurchaseInvoiceCounter { get; set; }
+
         #region Allors
         [Id("219a1d97-9615-47c5-bc4d-20a7d37313bd")]
         [AssociationId("4fd6a9e2-174c-41db-b519-44c317de0f96")]
@@ -166,8 +172,9 @@ namespace Allors.Repository
         #endregion
         [Multiplicity(Multiplicity.OneToOne)]
         [Indexed]
-
+        [Workspace]
         public AccountingPeriod ActualAccountingPeriod { get; set; }
+
         #region Allors
         [Id("23aee857-9cea-481c-a4a3-72dd8b808d71")]
         [AssociationId("61c64e66-4647-439d-9efa-28500319e8ca")]
@@ -176,8 +183,9 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
         [Required]
-
+        [Workspace]
         public InvoiceSequence InvoiceSequence { get; set; }
+
         #region Allors
         [Id("293758d7-cc0a-4f1c-b122-84f609a828c2")]
         [AssociationId("afe9d80b-2984-4e46-b45c-e5a25af3bccd")]
@@ -186,8 +194,9 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.OneToMany)]
         [Derived]
         [Indexed]
-
+        [Workspace]
         public PaymentMethod[] ActivePaymentMethods { get; set; }
+
         #region Allors
         [Id("37b4bf2c-5b09-42b0-84d9-59b57793cf37")]
         [AssociationId("22aff7e0-1b45-4f06-b281-19cbf0d1c511")]
@@ -195,7 +204,9 @@ namespace Allors.Repository
         #endregion
         [Precision(19)]
         [Scale(2)]
+        [Workspace]
         public decimal MaximumAllowedPaymentDifference { get; set; }
+
         #region Allors
         [Id("39a09487-dcf4-4bc8-8494-859d7a8cc3dd")]
         [AssociationId("da98358b-fb19-4b40-ad32-ffc0b48583fe")]
@@ -203,8 +214,9 @@ namespace Allors.Repository
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
-
+        [Workspace]
         public Media LogoImage { get; set; }
+
         #region Allors
         [Id("3b32c442-9cbc-41d8-8eb2-2ae41beca2c4")]
         [AssociationId("eda352cd-00cc-4d04-99cf-f7ad667cb20a")]
@@ -212,8 +224,9 @@ namespace Allors.Repository
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
-
+        [Workspace]
         public CostCenterSplitMethod CostCenterSplitMethod { get; set; }
+
         #region Allors
         [Id("44f165ed-a6ca-4979-9046-a0f7391bef7d")]
         [AssociationId("5e581649-0b45-498f-b274-fdcc05bb3894")]
@@ -222,8 +235,9 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
         [Required]
-
+        [Workspace]
         public Counter PurchaseOrderCounter { get; set; }
+
         #region Allors
         [Id("496f6d33-2259-442e-924f-636d73cec52f")]
         [AssociationId("4ac05596-41d8-402a-8308-d9f458d604e0")]
@@ -231,8 +245,9 @@ namespace Allors.Repository
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
-
+        [Workspace]
         public LegalForm LegalForm { get; set; }
+
         #region Allors
         [Id("49b087e2-9f55-463e-8e77-2500149ad771")]
         [AssociationId("1da60a2b-5359-4688-b925-edee515a2427")]
@@ -240,8 +255,9 @@ namespace Allors.Repository
         #endregion
         [Multiplicity(Multiplicity.OneToMany)]
         [Indexed]
-
+        [Workspace]
         public AccountingPeriod[] AccountingPeriods { get; set; }
+
         #region Allors
         [Id("4fc741ef-fe95-49a8-8bcd-8ff43092db88")]
         [AssociationId("0e58cd98-94e6-42ab-8501-394f8b8d3624")]
@@ -249,8 +265,9 @@ namespace Allors.Repository
         #endregion
         [Multiplicity(Multiplicity.OneToOne)]
         [Indexed]
-
+        [Workspace]
         public GeneralLedgerAccount SalesPaymentDifferencesAccount { get; set; }
+
         #region Allors
         [Id("538fc59e-42da-471a-96a4-d8a93b2de229")]
         [AssociationId("d0f6dc1f-a056-4a8c-b138-d68a5cf10247")]
@@ -258,33 +275,37 @@ namespace Allors.Repository
         #endregion
         [Required]
         [Size(256)]
-
+        [Workspace]
         public string Name { get; set; }
+
         #region Allors
         [Id("5b64038f-5ad9-46a6-9af6-b95819ac9830")]
         [AssociationId("753f6fa9-ff10-402c-9812-d2c738d35dbb")]
         [RoleId("8411c910-14d4-4629-aa39-c58602a799d4")]
         #endregion
         [Size(256)]
-
+        [Workspace]
         public string PurchaseTransactionReferenceNumber { get; set; }
+
         #region Allors
         [Id("5b64cf9d-e990-491e-b009-3481d73db67e")]
         [AssociationId("40296302-a559-4014-ba68-929d4238f4d8")]
         [RoleId("5b966f3d-cc80-44f4-b255-87182aa796d4")]
         #endregion
         [Required]
-
+        [Workspace]
         public int FiscalYearStartMonth { get; set; }
+
         #region Allors
         [Id("63c9ceb1-d583-41e1-a9a9-0c2576e9adfc")]
         [AssociationId("fd1ac2ff-6869-44bd-9b4e-05a3b14fbad9")]
         [RoleId("41058049-5c44-47b7-bbb9-34ab0bdcfbcb")]
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
+        [Workspace]
         [Indexed]
-
         public CostOfGoodsSoldMethod CostOfGoodsSoldMethod { get; set; }
+
         #region Allors
         [Id("76acc9c6-0aa1-4b30-8cca-4629fdd56b91")]
         [AssociationId("b9f585f4-a612-451a-ac0e-4a2584982385")]
@@ -292,23 +313,26 @@ namespace Allors.Repository
         #endregion
         [Multiplicity(Multiplicity.ManyToMany)]
         [Indexed]
-
+        [Workspace]
         public Role[] EmployeeRoles { get; set; }
+
         #region Allors
         [Id("77ae5145-791a-4ef0-94cc-6c9683b02f13")]
         [AssociationId("0da6cc82-b538-4346-bb48-19b02223a566")]
         [RoleId("bef210d2-7af6-4653-872b-a5eebba2af87")]
         #endregion
-
+        [Workspace]
         public bool VatDeactivated { get; set; }
+
         #region Allors
         [Id("7e210c5e-a68b-4ea0-b019-1dd452d8e407")]
         [AssociationId("b9c41192-1666-44c0-9365-b24df29a2cdf")]
         [RoleId("dfe3042c-babb-416b-a414-5dda0a2958c0")]
         #endregion
         [Required]
-
+        [Workspace]
         public int FiscalYearStartDay { get; set; }
+
         #region Allors
         [Id("848f3098-ce8b-400c-9775-85c00ac68f28")]
         [AssociationId("44649646-ccf8-48b7-9ebf-a09df75d23fc")]
@@ -317,8 +341,9 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.OneToMany)]
         [Derived]
         [Indexed]
-
+        [Workspace]
         public GeneralLedgerAccount[] GeneralLedgerAccounts { get; set; }
+
         #region Allors
         [Id("859d95c2-7321-4408-bcd1-405dc0b31efc")]
         [AssociationId("47674006-74f4-497e-b9b6-1d5cff1ada0f")]
@@ -326,8 +351,9 @@ namespace Allors.Repository
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
-
+        [Workspace]
         public Counter AccountingTransactionCounter { get; set; }
+
         #region Allors
         [Id("86dd32e2-74e7-4ced-bfbd-4e1fdc723588")]
         [AssociationId("ab8ace70-5d23-4ba0-83f7-471a8dbefeb6")]
@@ -336,8 +362,9 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
         [Required]
-
+        [Workspace]
         public Counter IncomingShipmentCounter { get; set; }
+
         #region Allors
         [Id("89f4907d-4a10-428d-9e6b-ef9fb045c019")]
         [AssociationId("a0fd3167-5d4e-400f-b593-1497fce5d024")]
@@ -345,8 +372,9 @@ namespace Allors.Repository
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
-
+        [Workspace]
         public GeneralLedgerAccount RetainedEarningsAccount { get; set; }
+
         #region Allors
         [Id("9a2ab89e-c3bc-4b6b-a82d-417dc21c8f9e")]
         [AssociationId("fcc6e653-3787-44a0-8a3a-35e80e232a02")]
@@ -355,16 +383,17 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.OneToMany)]
         [Derived]
         [Indexed]
-
         public Party[] Customers { get; set; }
+
         #region Allors
         [Id("9d6aaa81-9f97-427e-9f46-1f1e93748248")]
         [AssociationId("b251ce10-b4ac-45da-bc57-0a42e75f3660")]
         [RoleId("6ffd36cd-37de-444b-93b6-4128de34254f")]
         #endregion
         [Size(256)]
-
+        [Workspace]
         public string PurchaseInvoiceNumberPrefix { get; set; }
+
         #region Allors
         [Id("ab2004c1-fd91-4298-87cd-532a6fe5efb0")]
         [AssociationId("b53b80a4-92f5-4e08-a9fb-86bf2bd9572e")]
@@ -372,8 +401,9 @@ namespace Allors.Repository
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
-
+        [Workspace]
         public GeneralLedgerAccount SalesPaymentDiscountDifferencesAccount { get; set; }
+
         #region Allors
         [Id("ad7c8532-59d2-4668-bd9f-6c67ddc4e4bc")]
         [AssociationId("7028e722-f29d-42f6-b7c5-d73c2e99c907")]
@@ -382,8 +412,9 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
         [Required]
-
+        [Workspace]
         public Counter SubAccountCounter { get; set; }
+
         #region Allors
         [Id("afbaffe6-b03c-463e-b074-08b32641b482")]
         [AssociationId("4a02dff3-4bd3-4453-b2fa-e6e79f1b18b0")]
@@ -391,16 +422,18 @@ namespace Allors.Repository
         #endregion
         [Multiplicity(Multiplicity.OneToMany)]
         [Indexed]
-
+        [Workspace]
         public AccountingTransactionNumber[] AccountingTransactionNumbers { get; set; }
+
         #region Allors
         [Id("b8af8dce-d0e8-4e16-8d72-e56b920a04b4")]
         [AssociationId("57168fae-0b31-4370-afff-ab5a02c9a8ee")]
         [RoleId("d4c44bcf-c38b-46b9-86f6-462a48714389")]
         #endregion
         [Size(256)]
-
+        [Workspace]
         public string TransactionReferenceNumberPrefix { get; set; }
+
         #region Allors
         [Id("ba00c0d2-6067-4584-bdc4-e6c72be77232")]
         [AssociationId("687afb94-445e-41e2-bf22-deaac5b40e5a")]
@@ -409,8 +442,9 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
         [Required]
-
+        [Workspace]
         public Counter QuoteCounter { get; set; }
+
         #region Allors
         [Id("bce0d7d9-cfc9-4092-99a1-93ff5c0b94dd")]
         [AssociationId("5c4cfec8-5bc0-48d2-ac92-132c0538e614")]
@@ -419,8 +453,8 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.ManyToOne)]
         [Derived]
         [Indexed]
-
         public Currency PreviousCurrency { get; set; }
+
         #region Allors
         [Id("cd40057a-5211-4289-a4ef-c30aa4049957")]
         [AssociationId("5dd54980-fa14-434c-80fc-64dec203fd8b")]
@@ -429,8 +463,8 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.OneToMany)]
         [Derived]
         [Indexed]
-
         public Person[] Employees { get; set; }
+
         #region Allors
         [Id("d0ebaa65-260a-4511-a137-89f25016f12c")]
         [AssociationId("70e0b1a9-4c82-4c47-a6b8-df7a62423a08")]
@@ -438,8 +472,9 @@ namespace Allors.Repository
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
-
+        [Workspace]
         public GeneralLedgerAccount PurchasePaymentDifferencesAccount { get; set; }
+
         #region Allors
         [Id("d2ad57d5-de30-4bc0-90a7-9aea7a9da8c7")]
         [AssociationId("dbd28e59-d5d6-4d95-aef1-6881e0fe2d48")]
@@ -447,8 +482,9 @@ namespace Allors.Repository
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
-
+        [Workspace]
         public GeneralLedgerAccount SuspenceAccount { get; set; }
+
         #region Allors
         [Id("d48ef8bb-064b-4360-8162-a138fb601761")]
         [AssociationId("91252cf4-eca3-4b9d-b06d-5df795c3709c")]
@@ -456,16 +492,18 @@ namespace Allors.Repository
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
-
+        [Workspace]
         public GeneralLedgerAccount NetIncomeAccount { get; set; }
+
         #region Allors
         [Id("d5645df8-2b10-435d-8e47-57b5d268541a")]
         [AssociationId("4d145acb-007a-46b9-98a8-a86888221e28")]
         [RoleId("c2fe67e4-a100-4d96-b4ff-df1ec73db5fe")]
         #endregion
         [Required]
-
+        [Workspace]
         public bool DoAccounting { get; set; }
+
         #region Allors
         [Id("dcf24d2f-7bf2-43fd-82b4-bd30fd545022")]
         [AssociationId("b4b8b2e6-141c-416f-89a8-746c72c26e5c")]
@@ -473,8 +511,9 @@ namespace Allors.Repository
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
-
+        [Workspace]
         public Facility DefaultFacility { get; set; }
+
         #region Allors
         [Id("dd008dfe-a219-42ab-bc08-d091da3f8ea4")]
         [AssociationId("77ce8418-a00b-46d0-ab7b-4a782b7387da")]
@@ -482,8 +521,9 @@ namespace Allors.Repository
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
-
+        [Workspace]
         public GeneralLedgerAccount PurchasePaymentDiscountDifferencesAccount { get; set; }
+
         #region Allors
         [Id("e09976e8-dc99-4539-9b0b-0bbe98cc5404")]
         [AssociationId("0d828c12-82bd-4b37-96c8-68997a7c2f48")]
@@ -492,32 +532,35 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.OneToMany)]
         [Derived]
         [Indexed]
-
         public Party[] Suppliers { get; set; }
+
         #region Allors
         [Id("e9af1ca5-d24f-4af2-8687-833744941b24")]
         [AssociationId("ca041d3d-7adf-43da-ac42-c749633bd9b8")]
         [RoleId("4b50a77e-4343-415b-ad45-6cd074b681b5")]
         #endregion
         [Size(256)]
-
+        [Workspace]
         public string QuoteNumberPrefix { get; set; }
+
         #region Allors
         [Id("ec8e7400-0088-4237-af32-a687e1c45d77")]
         [AssociationId("3ee2e0b2-6835-490b-937a-a853c85dd3e4")]
         [RoleId("c70fd771-87a6-4e97-98ea-34c2c0265450")]
         #endregion
         [Size(256)]
-
+        [Workspace]
         public string PurchaseTransactionReferenceNumberPrefix { get; set; }
+
         #region Allors
         [Id("f14f1865-7820-4ed5-8ca9-dffcbeb6b1ec")]
         [AssociationId("4b8a7531-3996-4af2-a921-3b5653dc46ba")]
         [RoleId("0b574be0-2369-41df-9f64-71235c0b9e9a")]
         #endregion
         [Size(256)]
-
+        [Workspace]
         public string TaxNumber { get; set; }
+
         #region Allors
         [Id("f353e7ef-d24d-4a27-8ec9-e930ef936240")]
         [AssociationId("cf556dfd-4b43-48e4-8243-df2650d8ce97")]
@@ -525,26 +568,27 @@ namespace Allors.Repository
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
-
+        [Workspace]
         public GeneralLedgerAccount CalculationDifferencesAccount { get; set; }
+
         #region Allors
         [Id("f7ad4cfe-fc31-412c-8df7-2a514783e2ed")]
         [AssociationId("4145ddcd-726a-405f-b4cb-2e85b0bd60a2")]
         [RoleId("7940e9e6-e6f6-4eac-bfa4-e14f63315276")]
         #endregion
         [Multiplicity(Multiplicity.OneToMany)]
+        [Workspace]
         [Indexed]
-
         public PaymentMethod[] PaymentMethods { get; set; }
+
         #region Allors
         [Id("fe96e14b-9dbd-4497-935f-f605abd2ada7")]
         [AssociationId("68f9e5fd-7398-456b-bcb8-27b23dbce3f1")]
         [RoleId("3fc3517d-0d36-4401-a56f-ac3a83f1f892")]
         #endregion
+        [Workspace]
         [Size(256)]
-
         public string IncomingShipmentNumberPrefix { get; set; }
-
 
         #region inherited methods
 

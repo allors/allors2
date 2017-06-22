@@ -5,7 +5,7 @@ namespace Allors.Repository
     #region Allors
     [Id("313b97a5-328c-4600-9dd2-b5bc146fb13b")]
     #endregion
-    public partial class Singleton : AccessControlledObject 
+    public partial class Singleton : AccessControlledObject
     {
         #region inherited properties
         public Permission[] DeniedPermissions { get; set; }
@@ -20,6 +20,7 @@ namespace Allors.Repository
         [RoleId("1e051b37-cf30-43ed-a623-dd2928d6d0a3")]
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
+        [Workspace]
         [Indexed]
         public Locale DefaultLocale { get; set; }
 
@@ -30,17 +31,19 @@ namespace Allors.Repository
         #endregion
         [Multiplicity(Multiplicity.OneToMany)]
         [Indexed]
+        [Workspace]
         public Locale[] Locales { get; set; }
-        
+
         #region Allors
         [Id("f16652b0-b712-43d7-8d4e-34a22487514d")]
         [AssociationId("c92466b5-55ba-496a-8880-2821f32f8f8e")]
         [RoleId("3a12d798-40c3-40e0-ba9f-9d01b1e39e89")]
         #endregion
         [Multiplicity(Multiplicity.OneToOne)]
+        [Workspace]
         [Indexed]
         public User Guest { get; set; }
-        
+
         #region Allors
         [Id("6A6E0852-C984-47B8-939D-8E0B0B042B9D")]
         [AssociationId("E783AFBE-EF70-4AC1-8C0A-5DFE6FEDFBE0")]
@@ -76,7 +79,7 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.OneToOne)]
         [Indexed]
         public AccessControl GuestAccessControl { get; set; }
-        
+
         #region Allors
         [Id("829aa4a4-8232-4625-8cab-db7dc96da53f")]
         [AssociationId("56f18f8b-380b-4236-9a85-ed989c1a6e44")]
@@ -85,18 +88,18 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.OneToOne)]
         [Indexed]
         public AccessControl AdministratorsAccessControl { get; set; }
-    
+
         #region inherited methods
-        
-        public void OnBuild(){}
 
-        public void OnPostBuild(){}
+        public void OnBuild() { }
 
-        public void OnPreDerive(){}
+        public void OnPostBuild() { }
 
-        public void OnDerive(){}
+        public void OnPreDerive() { }
 
-        public void OnPostDerive(){}
+        public void OnDerive() { }
+
+        public void OnPostDerive() { }
 
         #endregion
     }
