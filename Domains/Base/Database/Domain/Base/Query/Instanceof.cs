@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------------------------------------------
-// <copyright file="Predicate.cs" company="Allors bvba">
+// <copyright file="Instanceof.cs" company="Allors bvba">
 //   Copyright 2002-2017 Allors bvba.
 //
 // Dual Licensed under
@@ -20,8 +20,30 @@
 
 namespace Allors.Domain.Query
 {
-    public abstract class Predicate
+    using Allors.Meta;
+
+    public class Instanceof : Predicate
     {
-        public abstract void Build(ISession session, ICompositePredicate compositePredicate);
+        public AssociationType AssociationType { get; set; }
+
+        public RoleType RoleType { get; set; }
+
+        public IComposite ObjectType { get; set; }
+
+        public override void Build(ISession session, ICompositePredicate compositePredicate)
+        {
+            if (this.AssociationType != null)
+            {
+                compositePredicate.AddInstanceof(this.AssociationType, this.ObjectType);
+            }
+            else if (this.RoleType != null)
+            {
+                compositePredicate.AddInstanceof(this.RoleType, this.ObjectType);
+            }
+            else
+            {
+                compositePredicate.AddInstanceof(this.ObjectType);
+            }
+        }
     }
 }

@@ -20,8 +20,14 @@
 
 namespace Allors.Domain.Query
 {
-    public abstract class Not : Predicate
+    public class Not : Predicate
     {
-        public Predicate Predicates { get; set; }
+        public Predicate Predicate { get; set; }
+
+        public override void Build(ISession session, ICompositePredicate compositePredicate)
+        {
+            var not = compositePredicate.AddNot();
+            this.Predicate.Build(session, not);
+        }
     }
 }

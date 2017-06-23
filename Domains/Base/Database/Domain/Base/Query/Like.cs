@@ -28,7 +28,7 @@ namespace Allors.Domain.Query
 
         public string Value { get; set; }
 
-        public override void Build(ICompositePredicate compositePredicate)
+        public override void Build(ISession session, ICompositePredicate compositePredicate)
         {
             compositePredicate.AddLike(this.RoleType, this.Value);
         }

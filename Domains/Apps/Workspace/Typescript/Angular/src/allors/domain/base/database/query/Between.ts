@@ -1,19 +1,21 @@
 ﻿import { RoleType } from '../../../../meta';
 import { Predicate } from './Predicate';
 
-export class Like implements Predicate {
+export class Equals implements Predicate {
   roleType: RoleType;
-  value: any;
+  first: any;
+  second: any;
 
-  constructor(fields?: Partial<Like>) {
+  constructor(fields?: Partial<Equals>) {
     Object.assign(this, fields);
   }
 
-  toJSON(): any {
+  toJSON() {
     return {
-      _T: 'Like',
+      _T: 'Equals',
       rt: this.roleType.id,
-      v: this.value,
+      f: first,
+      s: second,
     };
   }
 }

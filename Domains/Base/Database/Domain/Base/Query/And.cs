@@ -26,12 +26,12 @@ namespace Allors.Domain.Query
     {
         public IList<Predicate> Predicates { get; set; }
 
-        public override void Build(ICompositePredicate compositePredicate)
+        public override void Build(ISession session, ICompositePredicate compositePredicate)
         {
             var and = compositePredicate.AddAnd();
             foreach (var predicate in this.Predicates)
             {
-                predicate.Build(and);
+                predicate.Build(session, and);
             }
         }
     }

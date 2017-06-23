@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------------------------------------------
-// <copyright file="Predicate.cs" company="Allors bvba">
+// <copyright file="Contains.cs" company="Allors bvba">
 //   Copyright 2002-2017 Allors bvba.
 //
 // Dual Licensed under
@@ -20,8 +20,26 @@
 
 namespace Allors.Domain.Query
 {
-    public abstract class Predicate
+    using Allors.Meta;
+
+    public class Contains : Predicate
     {
-        public abstract void Build(ISession session, ICompositePredicate compositePredicate);
+        public AssociationType AssociationType { get; set; }
+
+        public RoleType RoleType { get; set; }
+
+        public long ObjectId { get; set; }
+
+        public override void Build(ISession session, ICompositePredicate compositePredicate)
+        {
+            if (this.AssociationType != null)
+            {
+                compositePredicate.AddContains(this.AssociationType, session.Instantiate(this.ObjectId));
+            }
+            else
+            {
+                compositePredicate.AddContains(this.RoleType, session.Instantiate(this.ObjectId));
+            }
+        }
     }
 }

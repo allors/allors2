@@ -22,8 +22,17 @@ namespace Allors.Domain.Query
 {
     using System.Collections.Generic;
 
-    public abstract class Or : Predicate
+    public class Or : Predicate
     {
         public IList<Predicate> Predicates { get; set; }
+
+        public override void Build(ISession session, ICompositePredicate compositePredicate)
+        {
+            var or = compositePredicate.AddOr();
+            foreach (var predicate in this.Predicates)
+            {
+                predicate.Build(session, or);
+            }
+        }
     }
 }

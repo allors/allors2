@@ -19,7 +19,7 @@ export class MainComponent {
     }, {
       title: 'Catalogues',
       route: '/catalogues',
-      icon: 'catalogues',
+      icon: 'dashboard',
     },
   ];
 

@@ -59,6 +59,7 @@
 
             services.AddSingleton<IDatabase>(database);
             services.AddScoped<IAllorsContext, AllorsContext>();
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             var authenticationContext = new FileAuthenticationContext(this.Configuration["AuthenticationKey"])
                                             {
                                                 Issuer = @"https://issuer.allors.com",

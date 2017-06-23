@@ -21,10 +21,9 @@ export { Path } from './query/Path';
 export { Query } from './query/Query';
 export { Predicate } from './query/Predicate';
 export { And } from './query/And';
+export { Or } from './query/Or';
 export { Equals } from './query/Equals';
 export { Like } from './query/Like';
 export { TreeNode } from './query/TreeNode';
 export { Sort } from './query/Sort';
 export { Page } from './query/Page';
-
-

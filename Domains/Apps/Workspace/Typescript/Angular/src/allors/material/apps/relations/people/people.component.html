@@ -1,4 +1,26 @@
 <md-card tdMediaToggle="gt-xs" [mediaClasses]="['push']">
+  <form #form="ngForm" (submit)="search()">
+    <md-card-content class="push-bottom-none">
+
+      <div fxLayout="row wrap" fxLayoutAlign="start stretch" fxLayoutGap.gt-md="25px">
+        <md-input-container fxFlex>
+          <input mdInput [(ngModel)]="criteria.firstName" name="firstName" placeholder="First Name">
+        </md-input-container>
+
+        <md-input-container fxFlex>
+          <input mdInput [(ngModel)]="criteria.lastName" name="lastName" placeholder="Last Name">
+        </md-input-container>
+
+        <div fxFlex>
+          <button md-icon-button><md-icon>search</md-icon></button>
+        </div>
+      </div>
+
+    </md-card-content>
+  </form>
+</md-card>
+
+<md-card tdMediaToggle="gt-xs" [mediaClasses]="['push']">
   <td-search-box class="push-left push-right" placeholder="search" [alwaysVisible]="true" (searchDebounce)="search($event)"></td-search-box>
   <md-divider></md-divider>
   <ng-template tdLoading="people">
@@ -10,7 +32,8 @@
         <md-list-item>
 
           <md-icon *ngIf="!person.Picture" md-list-avatar>person</md-icon>
-          <img *ngIf="person.Picture" md-list-avatar src="http://localhost:5000/Media/Download/{{person.Picture.UniqueId}}?revision={{person.Picture.Revision}}" />
+          <img *ngIf="person.Picture" md-list-avatar src="http://localhost:5000/Media/Download/{{person.Picture.UniqueId}}?revision={{person.Picture.Revision}}"
+          />
 
           <h3 md-line> {{person.FirstName}} {{person.MiddleName}} {{person.LastName}}</h3>
           <p md-line> {{person.UserEmail}} </p>

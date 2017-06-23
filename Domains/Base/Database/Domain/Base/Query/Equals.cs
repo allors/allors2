@@ -24,13 +24,31 @@ namespace Allors.Domain.Query
 
     public class Equals : Predicate
     {
+        public AssociationType AssociationType { get; set; }
+
         public RoleType RoleType { get; set; }
 
         public object Value { get; set; }
 
-        public override void Build(ICompositePredicate compositePredicate)
+        public long? ObjectId { get; set; }
+
+        public override void Build(ISession session, ICompositePredicate compositePredicate)
         {
-            compositePredicate.AddEquals(this.RoleType, this.Value);
+            if (this.AssociationType != null)
+            {
+                compositePredicate.AddContains(this.AssociationType, session.Instantiate(this.ObjectId.Value));
+            }
+            else
+            {
+                if (this.ObjectId.HasValue)
+                {
+                    compositePredicate.AddContains(this.RoleType, session.Instantiate(this.ObjectId.Value));
+                }
+                else
+                {
+                    compositePredicate.AddEquals(this.RoleType, this.Value);
+                }
+            }
         }
     }
 }

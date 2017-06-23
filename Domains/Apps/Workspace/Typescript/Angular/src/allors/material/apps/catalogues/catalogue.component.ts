@@ -14,19 +14,19 @@ export class CatalogueComponent implements AfterViewInit {
     }, {
       title: 'Catalogues',
       route: 'catalogues',
-      icon: 'catalogues',
+      icon: 'dashboard',
     }, {
       title: 'Categories',
       route: 'categories',
-      icon: 'categories',
+      icon: 'dashboard',
     }, {
       title: 'ProductTypes',
       route: 'productTypes',
-      icon: 'productTypes',
+      icon: 'dashboard',
     }, {
       title: 'Products',
       route: 'goods',
-      icon: 'products',
+      icon: 'dashboard',
     },
   ];
 

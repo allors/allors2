@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------------------------------------------
-// <copyright file="Predicate.cs" company="Allors bvba">
+// <copyright file="GreaterThan.cs" company="Allors bvba">
 //   Copyright 2002-2017 Allors bvba.
 //
 // Dual Licensed under
@@ -20,8 +20,17 @@
 
 namespace Allors.Domain.Query
 {
-    public abstract class Predicate
+    using Allors.Meta;
+
+    public class GreaterThan : Predicate
     {
-        public abstract void Build(ISession session, ICompositePredicate compositePredicate);
+        public RoleType RoleType { get; set; }
+
+        public object Value { get; set; }
+
+        public override void Build(ISession session, ICompositePredicate compositePredicate)
+        {
+            compositePredicate.AddGreaterThan(this.RoleType, this.Value);
+        }
     }
 }

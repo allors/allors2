@@ -9,7 +9,7 @@ export class Path {
        Object.assign(this, fields);
     }
 
-    toJSON() {
+    toJSON(): any {
       return {
         step: this.step.id,
         next: this.next,

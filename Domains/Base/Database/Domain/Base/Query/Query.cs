@@ -40,7 +40,7 @@ namespace Allors.Domain.Query
         {
             var extent = session.Extent(this.ObjectType);
 
-            this.Predicate?.Build(extent.Filter);
+            this.Predicate?.Build(session, extent.Filter);
 
             if (this.Sort != null)
             {

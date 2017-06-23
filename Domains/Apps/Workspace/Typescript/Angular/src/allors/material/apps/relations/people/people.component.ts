@@ -5,7 +5,7 @@ import { Title } from '@angular/platform-browser';
 import { MdSnackBar } from '@angular/material';
 import { TdLoadingService, TdDialogService, TdMediaService } from '@covalent/core';
 
-import { PullRequest, Query, Equals, Like, TreeNode, Sort, Page } from '../../../../domain';
+import { PullRequest, Query, Or, Equals, Like, TreeNode, Sort, Page } from '../../../../domain';
 import { MetaDomain } from '../../../../meta/index';
 import { Scope } from '../../../../angular/base/Scope';
 import { Person } from '../../../../domain';
@@ -19,6 +19,8 @@ export class PeopleComponent implements AfterViewInit, OnDestroy {
 
   private subscription: Subscription;
   private scope: Scope;
+
+  criteria: { firstName?: string, lastName?: string } = {};
 
   data: Person[];
 
@@ -46,13 +48,15 @@ export class PeopleComponent implements AfterViewInit, OnDestroy {
     }
   }
 
-  search(criteria?: string): void {
+  search(): void {
 
     if (this.subscription) {
       this.subscription.unsubscribe();
     }
 
     const m: MetaDomain = this.allors.meta;
+
+    const predicate: Or = new Or()
 
     const query: Query[] = [new Query(
       {

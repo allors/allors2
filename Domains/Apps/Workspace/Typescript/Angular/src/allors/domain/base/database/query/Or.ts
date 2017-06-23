@@ -1,16 +1,16 @@
 ﻿import { ObjectType } from '../../../../meta';
 import { Predicate } from './Predicate';
 
-export class And implements Predicate {
+export class Or implements Predicate {
   predicates: Predicate[];
 
-  constructor(fields?: Partial<And>) {
+  constructor(fields?: Partial<Or>) {
     Object.assign(this, fields);
   }
 
-  toJSON(): any {
+  toJSON() {
     return {
-      _T: 'And',
+      _T: 'Or',
       ps: this.predicates,
     };
   }
