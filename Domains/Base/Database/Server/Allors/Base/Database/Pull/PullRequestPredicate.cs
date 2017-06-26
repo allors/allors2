@@ -67,11 +67,15 @@
 
         private Predicate Between(MetaPopulation metaPopulation)
         {
+            var roleType = this.RT != null ? (RoleType)metaPopulation.Find(new Guid(this.RT)) : null;
+            var first = this.GetUnitRole(roleType, this.F);
+            var second = this.GetUnitRole(roleType, this.S);
+
             var predicate = new Between
                                 {
-                                    RoleType = this.RT != null ? (RoleType)metaPopulation.Find(new Guid(this.RT)) : null,
-                                    First = this.F,
-                                    Second = this.S
+                                    RoleType = roleType,
+                                    First = first,
+                                    Second = second
                                 };
 
             return predicate;
@@ -105,7 +109,7 @@
         private Predicate Equals(MetaPopulation metaPopulation)
         {
             var roleType = this.GetRoleType(metaPopulation);
-            var value = this.GetValue(roleType, this.V);
+            var value = this.GetUnitRole(roleType, this.V);
 
             var predicate = new Equals
                                 {
@@ -130,10 +134,13 @@
 
         private Predicate GreaterThan(MetaPopulation metaPopulation)
         {
+            var roleType = this.RT != null ? (RoleType)metaPopulation.Find(new Guid(this.RT)) : null;
+            var value = this.GetUnitRole(roleType, this.V);
+
             var predicate = new GreaterThan
                                 {
-                                    RoleType = this.RT != null ? (RoleType)metaPopulation.Find(new Guid(this.RT)) : null,
-                                    Value = this.V,
+                                    RoleType = roleType,
+                                    Value = value
                                };
 
             return predicate;
@@ -153,10 +160,13 @@
 
         private Predicate LessThan(MetaPopulation metaPopulation)
         {
+            var roleType = this.RT != null ? (RoleType)metaPopulation.Find(new Guid(this.RT)) : null;
+            var value = this.GetUnitRole(roleType, this.V);
+
             var predicate = new LessThan
             {
-                                    RoleType = this.RT != null ? (RoleType)metaPopulation.Find(new Guid(this.RT)) : null,
-                                    Value = this.V,
+                                    RoleType = roleType,
+                                    Value = value,
                                 };
 
             return predicate;
@@ -178,7 +188,7 @@
             return this.RT != null ? (RoleType)metaPopulation.Find(new Guid(this.RT)) : null;
         }
 
-        private object GetValue(RoleType roleType, object value)
+        private object GetUnitRole(RoleType roleType, object value)
         {
             if (value != null)
             {
