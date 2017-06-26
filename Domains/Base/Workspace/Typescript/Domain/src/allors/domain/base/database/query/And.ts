@@ -8,7 +8,7 @@ export class And implements Predicate {
     Object.assign(this, fields);
   }
 
-  toJSON() {
+  toJSON(): any {
     return {
       _T: 'And',
       ps: this.predicates,

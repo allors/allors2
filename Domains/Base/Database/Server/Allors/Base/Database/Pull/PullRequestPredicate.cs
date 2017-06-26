@@ -69,7 +69,6 @@
         {
             var predicate = new Between
                                 {
-                                    AssociationType = this.AT != null ? (AssociationType)metaPopulation.Find(new Guid(this.AT)) : null,
                                     RoleType = this.RT != null ? (RoleType)metaPopulation.Find(new Guid(this.RT)) : null,
                                     First = this.F,
                                     Second = this.S
@@ -105,11 +104,14 @@
 
         private Predicate Equals(MetaPopulation metaPopulation)
         {
+            var roleType = this.GetRoleType(metaPopulation);
+            var value = this.GetValue(roleType, this.V);
+
             var predicate = new Equals
                                 {
                                     AssociationType = this.AT != null ? (AssociationType)metaPopulation.Find(new Guid(this.AT)) : null,
-                                    RoleType = this.RT != null ? (RoleType)metaPopulation.Find(new Guid(this.RT)) : null,
-                                    Value = this.V
+                                    RoleType = roleType,
+                                    Value = value
                                 };
 
             return predicate;
@@ -169,6 +171,48 @@
                                 };
 
             return predicate;
+        }
+
+        private RoleType GetRoleType(MetaPopulation metaPopulation)
+        {
+            return this.RT != null ? (RoleType)metaPopulation.Find(new Guid(this.RT)) : null;
+        }
+
+        private object GetValue(RoleType roleType, object value)
+        {
+            if (value != null)
+            {
+                var unit = roleType?.ObjectType as Unit;
+                if (unit != null)
+                {
+                    var stringValue = value as string;
+                    if (stringValue != null)
+                    {
+                        switch (unit.UnitTag)
+                        {
+                            case UnitTags.Binary: return Convert.FromBase64String(stringValue);
+                            case UnitTags.Boolean: return bool.Parse(stringValue);
+                            case UnitTags.DateTime: return Convert.ToDateTime(stringValue);
+                            case UnitTags.Decimal: return Convert.ToDecimal(stringValue);
+                            case UnitTags.Float: return Convert.ToDouble(stringValue);
+                            case UnitTags.Integer: return Convert.ToInt32(stringValue);
+                            case UnitTags.Unique: return Guid.Parse(stringValue);
+                        }
+                    }
+                    else
+                    {
+                        switch (unit.UnitTag)
+                        {
+                            case UnitTags.DateTime: return Convert.ToDateTime(value);
+                            case UnitTags.Decimal: return Convert.ToDecimal(value);
+                            case UnitTags.Float: return Convert.ToDouble(value);
+                            case UnitTags.Integer: return Convert.ToInt32(value);
+                        }
+                    }
+                }
+            }
+
+            return value;
         }
     }
 }

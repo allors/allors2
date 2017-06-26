@@ -1,17 +1,17 @@
 ﻿import { ObjectType } from '../../../../meta';
 import { Predicate } from './Predicate';
 
-export class And implements Predicate {
-  predicates: Predicate[];
+export class Not implements Predicate {
+  predicate: Predicate;
 
-  constructor(fields?: Partial<And>) {
+  constructor(fields?: Partial<Not>) {
     Object.assign(this, fields);
   }
 
   toJSON(): any {
     return {
-      _T: 'And',
-      ps: this.predicates,
+      _T: 'Not',
+      p: this.predicate,
     };
   }
 }

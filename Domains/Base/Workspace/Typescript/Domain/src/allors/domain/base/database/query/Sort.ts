@@ -9,7 +9,7 @@ export class Sort {
        Object.assign(this, fields);
     }
 
-    toJSON() {
+    toJSON(): any {
       return {
         rt: this.roleType.id,
         d: this.direction,

@@ -30,6 +30,12 @@ namespace Allors.Domain.Query
 
         public Predicate Predicate { get; set; }
 
+        public Query[] Union { get; set; }
+
+        public Query[] Intersect { get; set; }
+
+        public Query[] Except { get; set; }
+
         public Tree Include { get; set; }
 
         public Sort[] Sort { get; set; }
@@ -41,6 +47,21 @@ namespace Allors.Domain.Query
             var extent = session.Extent(this.ObjectType);
 
             this.Predicate?.Build(session, extent.Filter);
+
+            if (this.Union != null)
+            {
+                return session.Union(this.Union[0].Build(session), this.Union[1].Build(session));
+            }
+
+            if (this.Intersect != null)
+            {
+                return session.Intersect(this.Intersect[0].Build(session), this.Intersect[1].Build(session));
+            }
+
+            if (this.Except != null)
+            {
+                return session.Except(this.Except[0].Build(session), this.Except[1].Build(session));
+            }
 
             if (this.Sort != null)
             {

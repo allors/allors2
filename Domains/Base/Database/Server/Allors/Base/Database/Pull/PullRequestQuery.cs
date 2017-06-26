@@ -23,6 +23,12 @@
         /// </summary>
         public PullRequestPredicate P { get; set; }
 
+        public PullRequestQuery[] UN { get; set; }
+
+        public PullRequestQuery[] IN { get; set; }
+
+        public PullRequestQuery[] EX { get; set; }
+        
         public PullRequestTreeNode[] I { get; set; }
 
         public PullRequestSort[] S { get; set; }
@@ -33,7 +39,7 @@
         {
             var composite = (Composite)metaPopulation.Find(new Guid(this.OT));
             var predicate = this.P?.Parse(metaPopulation);
-
+            
             Tree include = null;
             if (this.I != null)
             {
@@ -45,6 +51,12 @@
                 }
             }
 
+            var union = this.UN?.Select(v => v.Parse(metaPopulation)).ToArray();
+
+            var intersect = this.IN?.Select(v => v.Parse(metaPopulation)).ToArray();
+
+            var except = this.EX?.Select(v => v.Parse(metaPopulation)).ToArray();
+
             var sort = this.S?.Select(v => v.Parse(metaPopulation)).ToArray();
 
             var page = this.PA?.Parse();
@@ -54,6 +66,9 @@
                                 Name = this.N,
                                 ObjectType = composite,
                                 Predicate = predicate,
+                                Union = union,
+                                Intersect = intersect,
+                                Except = except,
                                 Include = include,
                                 Sort = sort,
                                 Page = page

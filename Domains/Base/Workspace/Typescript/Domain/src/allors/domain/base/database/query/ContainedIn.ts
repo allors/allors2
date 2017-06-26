@@ -1,28 +1,25 @@
 ﻿import { AssociationType, RoleType } from '../../../../meta';
+import { ISessionObject } from '../../workspace';
 import { Predicate } from './Predicate';
+import { Query } from './Query';
 
-export class Equals implements Predicate {
+export class ContainedIn implements Predicate {
   associationType: AssociationType;
   roleType: RoleType;
-  value: any;
+  query: Query;
+  objects: ISessionObject[];
 
-  constructor(fields?: Partial<Equals>) {
+  constructor(fields?: Partial<ContainedIn>) {
     Object.assign(this, fields);
   }
 
   toJSON(): any {
-    let value: any;
-    if (this.roleType.objectType.isUnit) {
-      value = this.value;
-    } else {
-      value = this.value ? this.value.id : undefined;
-    }
-
     return {
-      _T: 'Equals',
+      _T: 'ContainedIn',
       at: this.associationType ? this.associationType.id : undefined,
       rt: this.roleType.id ? this.roleType.id : undefined,
-      v: value,
+      q: this.query,
+      o: this.objects ? this.objects.map((v: ISessionObject) => v.id) : undefined,
     };
   }
 }

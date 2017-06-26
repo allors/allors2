@@ -16,7 +16,7 @@ export class Fetch {
        Object.assign(this, fields);
     }
 
-    toJSON() {
+    toJSON(): any {
       return {
         name: this.name,
         id: this.id,

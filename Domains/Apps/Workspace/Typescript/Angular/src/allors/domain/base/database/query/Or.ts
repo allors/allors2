@@ -8,7 +8,7 @@ export class Or implements Predicate {
     Object.assign(this, fields);
   }
 
-  toJSON() {
+  toJSON(): any {
     return {
       _T: 'Or',
       ps: this.predicates,

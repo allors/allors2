@@ -24,8 +24,6 @@ namespace Allors.Domain.Query
 
     public class Between : Predicate
     {
-        public AssociationType AssociationType { get; set; }
-
         public RoleType RoleType { get; set; }
 
         public object First { get; set; }

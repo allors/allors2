@@ -9,7 +9,7 @@ export class TreeNode {
        Object.assign(this, fields);
     }
 
-    toJSON() {
+    toJSON(): any {
       return {
         rt: this.roleType.id,
         n: this.nodes,

@@ -11,6 +11,12 @@ export class Query {
 
   predicate: Predicate;
 
+  union: Query[];
+
+  intersect: Query[];
+
+  except: Query[];
+
   include: TreeNode[];
 
   sort: Sort[];
@@ -21,7 +27,7 @@ export class Query {
     Object.assign(this, fields);
   }
 
-  toJSON() {
+  toJSON(): any {
     function isObjectTyped(objectType: ObjectType | ObjectTyped): objectType is ObjectTyped {
       return (<ObjectTyped>objectType).ObjectType !== undefined;
     }
@@ -30,9 +36,12 @@ export class Query {
       n: this.name,
       ot: isObjectTyped(this.objectType) ? this.objectType.ObjectType.id : this.objectType.id,
       p: this.predicate,
+      un: this.union,
+      in: this.intersect,
+      ex: this.except,
       i: this.include,
       s: this.sort,
-      pa: this.page
+      pa: this.page,
     };
   }
 }

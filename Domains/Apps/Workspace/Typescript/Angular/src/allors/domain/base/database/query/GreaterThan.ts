@@ -1,21 +1,19 @@
 ﻿import { RoleType } from '../../../../meta';
 import { Predicate } from './Predicate';
 
-export class Between implements Predicate {
+export class GreaterThan implements Predicate {
   roleType: RoleType;
-  first: any;
-  second: any;
+  value: any;
 
-  constructor(fields?: Partial<Between>) {
+  constructor(fields?: Partial<GreaterThan>) {
     Object.assign(this, fields);
   }
 
   toJSON(): any {
     return {
-      _T: 'Between',
+      _T: 'GreaterThan',
       rt: this.roleType.id,
-      f: this.first,
-      s: this.second,
+      v: this.value,
     };
   }
 }

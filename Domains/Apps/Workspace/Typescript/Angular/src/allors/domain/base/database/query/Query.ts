@@ -21,7 +21,7 @@ export class Query {
     Object.assign(this, fields);
   }
 
-  toJSON() {
+  toJSON(): any {
     function isObjectTyped(objectType: ObjectType | ObjectTyped): objectType is ObjectTyped {
       return (<ObjectTyped>objectType).ObjectType !== undefined;
     }
@@ -32,7 +32,7 @@ export class Query {
       p: this.predicate,
       i: this.include,
       s: this.sort,
-      pa: this.page
+      pa: this.page,
     };
   }
 }

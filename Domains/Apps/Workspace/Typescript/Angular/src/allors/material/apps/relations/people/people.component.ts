@@ -56,11 +56,17 @@ export class PeopleComponent implements AfterViewInit, OnDestroy {
 
     const m: MetaDomain = this.allors.meta;
 
-    const predicate: Or = new Or()
+    const predicate: Or = new Or({
+      predicates: [
+        new Like({roleType: m.Person.FirstName, value: this.criteria.lastName}),
+        new Like({roleType: m.Person.LastName, value: this.criteria.lastName}),
+      ],
+    });
 
     const query: Query[] = [new Query(
       {
         name: 'people',
+        predicate: predicate,
         objectType: m.Person,
         include: [
           new TreeNode({roleType: m.Person.Picture}),

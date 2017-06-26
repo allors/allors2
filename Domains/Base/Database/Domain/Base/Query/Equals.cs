@@ -36,13 +36,13 @@ namespace Allors.Domain.Query
         {
             if (this.AssociationType != null)
             {
-                compositePredicate.AddContains(this.AssociationType, session.Instantiate(this.ObjectId.Value));
+                compositePredicate.AddEquals(this.AssociationType, session.Instantiate(this.ObjectId.Value));
             }
             else
             {
                 if (this.ObjectId.HasValue)
                 {
-                    compositePredicate.AddContains(this.RoleType, session.Instantiate(this.ObjectId.Value));
+                    compositePredicate.AddEquals(this.RoleType, session.Instantiate(this.ObjectId.Value));
                 }
                 else
                 {

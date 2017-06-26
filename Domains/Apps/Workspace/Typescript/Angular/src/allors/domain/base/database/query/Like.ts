@@ -9,7 +9,7 @@ export class Like implements Predicate {
     Object.assign(this, fields);
   }
 
-  toJSON() {
+  toJSON(): any {
     return {
       _T: 'Like',
       rt: this.roleType.id,

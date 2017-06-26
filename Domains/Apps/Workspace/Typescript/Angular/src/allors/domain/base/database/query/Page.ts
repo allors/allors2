@@ -7,7 +7,7 @@
        Object.assign(this, fields);
     }
 
-    toJSON() {
+    toJSON(): any {
       return {
         s: this.skip,
         t: this.take,

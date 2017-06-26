@@ -1,21 +1,21 @@
 ﻿import { RoleType } from '../../../../meta';
 import { Predicate } from './Predicate';
 
-export class Equals implements Predicate {
+export class Between implements Predicate {
   roleType: RoleType;
   first: any;
   second: any;
 
-  constructor(fields?: Partial<Equals>) {
+  constructor(fields?: Partial<Between>) {
     Object.assign(this, fields);
   }
 
-  toJSON() {
+  toJSON(): any {
     return {
-      _T: 'Equals',
+      _T: 'Between',
       rt: this.roleType.id,
-      f: first,
-      s: second,
+      f: this.first,
+      s: this.second,
     };
   }
 }
