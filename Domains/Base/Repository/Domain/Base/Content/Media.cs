@@ -64,6 +64,7 @@ namespace Allors.Repository
         [AssociationId("8A79E6C5-4BAE-468D-B57C-C7788D3E21E3")]
         [RoleId("877ABDC8-8915-4640-8871-8CEF7EF69072")]
         #endregion
+        [Workspace]
         [Size(-1)]
         public byte[] InData { get; set; }
 
@@ -80,10 +81,10 @@ namespace Allors.Repository
         [Id("DDD6C005-0104-44CA-A19C-1150B8BEB4A3")]
         [AssociationId("4F43B520-404E-436D-A514-71E4AEC55EC8")]
         [RoleId("4C4EC21C-A3C0-4720-92E0-CF6532000265")]
+        #endregion
         [Indexed]
         [Size(256)]
         [Workspace]
-        #endregion
         public string FileName { get; set; }
 
         #region Allors

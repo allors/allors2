@@ -89,11 +89,11 @@ namespace Allors.Domain
 
         public void DeriveThumbnail()
         {
-            if (this.ExistPhoto)
+            if (this.ExistPrimaryPhoto)
             {
                 if (!this.ExistThumbnail)
                 {
-                    this.Thumbnail = new MediaBuilder(this.Strategy.Session).Build();
+                    this.Thumbnail = new MediaBuilder(this.Strategy.Session).WithInData(this.PrimaryPhoto.InData).Build();
                 }
 
                 // TODO: Resize

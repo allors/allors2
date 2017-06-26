@@ -188,10 +188,20 @@ namespace Allors.Repository
         [AssociationId("50478ca9-3eb4-487b-8c8a-6ff48d9155b5")]
         [RoleId("802b6cdb-873a-4455-9fa7-7f2267407f0f")]
         #endregion
-        [Multiplicity(Multiplicity.ManyToOne)]
+        [Multiplicity(Multiplicity.OneToOne)]
         [Indexed]
         [Workspace]
-        public Media Photo { get; set; }
+        public Media PrimaryPhoto { get; set; }
+
+        #region Allors
+        [Id("C7FB85EB-CF47-4FE1-BD67-E2832E5893B9")]
+        [AssociationId("1DE2FF68-A4CB-4244-8C34-6E9D08A6DFBF")]
+        [RoleId("2A1DB194-1B06-498D-BA0D-C2FDA629A45D")]
+        [Indexed]
+        #endregion
+        [Workspace]
+        [Multiplicity(Multiplicity.OneToMany)]
+        public Media[] Photos { get; set; }
 
         #region inherited methods
 

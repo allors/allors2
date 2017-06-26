@@ -37,7 +37,7 @@
             }
 
             include = null;
-            if (this.Include != null)
+            if (this.Include != null && @object != null)
             {
                 if (path == null)
                 {

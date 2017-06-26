@@ -23,29 +23,26 @@ namespace Allors.Domain
     {
         public void ImportPhotos(DirectoryInfo directoryInfo)
         {
-            var goodBySku = new Dictionary<string, Good>();
+            var goodByArticleNumber = new Dictionary<string, Good>();
 
             foreach (Good good in new Goods(this.Session).Extent())
             {
-                if (good.ExistSku)
+                if (good.ExistArticleNumber)
                 {
-                    goodBySku.Add(good.Sku, good);
+                    goodByArticleNumber.Add(good.ArticleNumber, good);
                 }
             }
 
             foreach (var fileInfo in directoryInfo.EnumerateFiles())
             {
-                var sku = Path.GetFileNameWithoutExtension(fileInfo.Name);
+                var articleNumber = Path.GetFileNameWithoutExtension(fileInfo.Name);
                 Good good;
-                if (goodBySku.TryGetValue(sku, out good))
+                if (goodByArticleNumber.TryGetValue(articleNumber, out good))
                 {
-                    if (!good.ExistPhoto)
-                    {
-                        var fileName = Path.GetFileNameWithoutExtension(fileInfo.FullName).ToLowerInvariant();
-                        var content = File.ReadAllBytes(fileInfo.FullName);
-                        var image = new MediaBuilder(this.Session).WithFileName(fileName).WithInData(content).Build();
-                        good.Photo = image;
-                    }
+                    var fileName = Path.GetFileNameWithoutExtension(fileInfo.FullName).ToLowerInvariant();
+                    var content = File.ReadAllBytes(fileInfo.FullName);
+                    var image = new MediaBuilder(this.Session).WithFileName(fileName).WithInData(content).Build();
+                    good.AddPhoto(image);
                 }
             }
         }
