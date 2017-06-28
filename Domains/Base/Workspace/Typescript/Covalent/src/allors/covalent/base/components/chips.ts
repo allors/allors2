@@ -1,10 +1,10 @@
 import { Component, Input } from '@angular/core';
 
 @Component({
-  selector: 'a-td-layout',
+  selector: 'a-td-chips',
   template: `
   Layout!!
 `,
 })
-export class LayoutComponent {
+export class ChipsComponent {
 }

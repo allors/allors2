@@ -20,16 +20,16 @@ const routes: Routes = [
         path: '', component: DashboardComponent,
       },
       {
-        path: 'relations', component: relations.RelationComponent,
+        path: 'relations',
         children: [
           {
-            path: '', component: relations.RelationDashboardComponent,
+            path: '', component: relations.DashboardComponent,
           }, {
             path: 'people',
             children: [
               { path: '', component: relations.PeopleComponent },
-              { path: 'add', component: relations.PersonFormComponent },
-              { path: ':id/edit', component: relations.PersonFormComponent },
+              { path: 'add', component: relations.PersonComponent },
+              { path: ':id/edit', component: relations.PersonComponent },
               { path: ':id/overview', component: relations.PersonOverviewComponent },
             ],
           },

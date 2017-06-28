@@ -1,9 +1,9 @@
-import { LayoutComponent } from './base/components/layout';
+import { ChipsComponent } from './base/components/chips';
 
 export const COVALENT: any[] = [
-  LayoutComponent,
+  ChipsComponent,
  ];
 
 export {
-  LayoutComponent,
+  ChipsComponent,
 };

@@ -15,19 +15,17 @@ import { AllorsService } from '../../../../../../app/allors.service';
 @Component({
   templateUrl: './person.component.html',
 })
-export class PersonFormComponent implements OnInit, AfterViewInit, OnDestroy {
+export class PersonComponent implements OnInit, AfterViewInit, OnDestroy {
 
   private subscription: Subscription;
   private scope: Scope;
 
-  flex: string = '1 1 30rem';
+  flex: string = '100%';
+  flex2: string = `calc(50%-25px)`;
+
   m: MetaDomain;
-
-  person: Person;
-
   locales: Locale[];
-  genders: Enumeration[];
-  salutations: Enumeration[];
+  person: Person;
 
   constructor(private allors: AllorsService,
     private route: ActivatedRoute,
@@ -73,8 +71,6 @@ export class PersonFormComponent implements OnInit, AfterViewInit, OnDestroy {
         }
 
         this.locales = this.scope.collections.locales as Locale[];
-        this.genders = this.scope.collections.genders as Enumeration[];
-        this.salutations = this.scope.collections.salutations as Enumeration[];
       },
       (error: any) => {
         this.snackBar.open(error, 'close', { duration: 5000 });

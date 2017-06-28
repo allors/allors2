@@ -1,27 +1,39 @@
-<md-card tdMediaToggle="gt-xs" [mediaClasses]="['push']">
-  <form #form="ngForm" *ngIf="person" (submit)="save()">
+<a-td-layout-relation>
 
-    <md-card-title>Person</md-card-title>
+  <div toolbar1>
+    <a md-icon-button mdTooltip="Docs" href="https://www.inxin.com/" target="_blank">
+      <md-icon>chrome_reader_mode</md-icon>
+    </a>
+  </div>
 
-    <md-divider></md-divider>
-    <md-card-content class="push-bottom-none">
+  <div toolbar2 layout="row" layout-align="start center" flex>
+    <span>Person</span>
+    <span flex></span>
+    <button md-icon-button><md-icon class="md-24">settings</md-icon></button>
+  </div>
 
-      <div fxLayout="row wrap" fxLayoutGap="3rem" fxLayoutAlign="start stretch">
 
-        <a-md-input  [fxFlex]="flex" class="push-top" [object]="person" [roleType]="m.Person.FirstName"></a-md-input>
-        <a-md-input  [fxFlex]="flex" class="push-top" [object]="person" [roleType]="m.Person.MiddleName"></a-md-input>
-        <a-md-input  [fxFlex]="flex" class="push-top" [object]="person" [roleType]="m.Person.LastName"></a-md-input>
-        <a-md-select [fxFlex]="flex" class="push-top" [object]="person" [roleType]="m.Person.Locale" [options]="locales" display="Name"></a-md-select>
+  <md-card body tdMediaToggle="gt-xs" [mediaClasses]="['push']">
+    <form #form="ngForm" *ngIf="person" (submit)="save()">
+      <md-card-content class="push-bottom-none">
 
-      </div>
+        <div fxLayout="row wrap" fxLayoutAlign="start stretch" fxLayoutGap.gt-md="25px">
+          <a-md-input class="push-top" [object]="person" [roleType]="m.Person.FirstName" [fxFlex]="flex" [fxFlex.gt-md]="flex2"></a-md-input>
+          <a-md-input class="push-top" [object]="person" [roleType]="m.Person.MiddleName" [fxFlex]="flex" [fxFlex.gt-md]="flex2"></a-md-input>
+          <a-md-input class="push-top" [object]="person" [roleType]="m.Person.LastName" [fxFlex]="flex" [fxFlex.gt-md]="flex2"></a-md-input>
+          <a-md-select class="push-top" [object]="person" [roleType]="m.Person.Locale" [options]="locales" display="Name" [fxFlex]="flex" [fxFlex.gt-md]="flex2"></a-md-select>
+        </div>
 
-    </md-card-content>
+      </md-card-content>
 
-    <md-divider></md-divider>
-    <md-card-actions>
-      <button md-button color="primary" type="submit">SAVE</button>
-      <button md-button (click)="goBack()" type="button">CANCEL</button>
-    </md-card-actions>
+      <md-divider></md-divider>
 
-  </form>
-</md-card>
+      <md-card-actions>
+        <button md-button color="primary" type="submit">SAVE</button>
+        <button md-button (click)="goBack()" type="button">CANCEL</button>
+      </md-card-actions>
+
+    </form>
+  </md-card>
+
+</a-td-layout-relation>

@@ -3,15 +3,13 @@ import { Router } from '@angular/router';
 import { TdMediaService } from '@covalent/core';
 
 @Component({
-  templateUrl: './relation.component.html',
+  selector: 'a-td-layout-relation',
+  templateUrl: './layout.component.html',
 })
-export class RelationComponent implements AfterViewInit {
+export class LayoutComponent implements AfterViewInit {
 
-  routes: Object[] = [{
-      title: 'People',
-      route: 'people',
-      icon: 'people',
-    },
+  routes: Object[] = [
+    { title: 'People', route: 'people', icon: 'people' },
   ];
 
   constructor(public media: TdMediaService) {
