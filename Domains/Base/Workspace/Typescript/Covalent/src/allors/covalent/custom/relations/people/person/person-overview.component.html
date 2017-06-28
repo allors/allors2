@@ -1,0 +1,26 @@
+<div *ngIf="person" layout-gt-md="row">
+  <div flex-gt-xs="50">
+    <md-card tdMediaToggle="gt-xs" [mediaClasses]="['push']">
+      <md-card-title>Person</md-card-title>
+      <md-divider></md-divider>
+      <md-card-content>
+
+        <div layout="row" class="push-top">
+          <a-md-static [object]="person" [roleType]="m.Person.FirstName"></a-md-static>
+          <a-md-static [object]="person" [roleType]="m.Person.MiddleName"></a-md-static>
+          <a-md-static [object]="person" [roleType]="m.Person.LastName"></a-md-static>
+        </div>
+
+        <div layout="row" class="push-top">
+          <a-md-static [object]="person" [roleType]="m.Person.Locale" display="Name"></a-md-static>
+        </div>
+
+      </md-card-content>
+
+      <md-divider></md-divider>
+      <md-card-actions>
+        <button md-button [routerLink]="[ '../edit']">Edit</button>
+      </md-card-actions>
+    </md-card>
+  </div>
+</div>
