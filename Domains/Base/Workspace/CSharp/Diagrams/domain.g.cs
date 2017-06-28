@@ -123,9 +123,6 @@ namespace Allors.Domain
 								global::System.Guid? Revision {set;}
 
 
-								global::System.Byte[] InData {set;}
-
-
 								global::System.String InDataUri {set;}
 
 
@@ -181,17 +178,6 @@ namespace Allors.Domain
 				}
 				public interface SecurityToken : Deletable 
 				{
-				}
-				public interface Singleton 
-				{
-								Locale DefaultLocale {set;}
-
-
-								Locale Locales {set;}
-
-
-								User Guest {set;}
-
 				}
 				public interface UserGroup : UniquelyIdentifiable 
 				{
