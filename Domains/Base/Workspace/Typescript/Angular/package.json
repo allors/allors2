@@ -8,8 +8,7 @@
     "sync-domain": "sync-files ../Domain/src/allors/domain/base src/allors/domain/base",
     "syncback": "npm run syncback-meta && npm run syncback-domain",
     "syncback-meta": "sync-files src/allors/meta/base ../Meta/src/allors/meta/base",
-    "syncback-domain": "sync-files src/allors/domain/base ../Domain/src/allors/domain/base",
-    "postinstall": "npm run sync",
+    "syncback-domain": "sync-files src/allors/domain/base ../Domain/src/allors/domain/base"
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",

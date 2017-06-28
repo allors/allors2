@@ -13,7 +13,6 @@
     "e2e": "ng e2e",
     "lint": "ng lint",
     "test": "ng test --code-coverage --single-run",
-    "postinstall": "npm run sync",
     "sync": "npm run sync-base",
     "sync-base": "npm run sync-base-meta && npm run sync-base-domain && npm run sync-base-angular && npm run sync-base-material",
     "sync-base-meta": "sync-files ../../../../Base/Workspace/Typescript/Meta/src/allors/meta/base src/allors/meta/base",

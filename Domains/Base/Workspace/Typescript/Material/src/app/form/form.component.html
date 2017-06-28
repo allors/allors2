@@ -3,7 +3,7 @@
   <md-card-content>
     <form #form="ngForm" ng-if="organisation" (submit)="save()">
 
-      <a-md-text [object]="organisation" [roleType]="m.Organisation.Name"></a-md-text>
+      <a-md-input [object]="organisation" [roleType]="m.Organisation.Name"></a-md-input>
 
       <div>
         <button md-raised-button>Submit</button>
