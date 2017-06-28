@@ -8,14 +8,14 @@
 
       <div fxLayout="row wrap" fxLayoutGap="3rem" fxLayoutAlign="start stretch">
 
-        <a-md-media-upload [fxFlex]="flex" [object]="person" [roleType]="m.Person.Picture" accept="image/*"></a-md-media-upload>
-        <a-md-select [fxFlex]="flex" [object]="person" [roleType]="m.Person.PersonRoles" [options]="roles" display="Name"></a-md-select>
-        <a-md-input  [fxFlex]="flex" [object]="person" [roleType]="m.Person.FirstName"></a-md-input>
-        <a-md-input  [fxFlex]="flex" [object]="person" [roleType]="m.Person.MiddleName"></a-md-input>
-        <a-md-input  [fxFlex]="flex" [object]="person" [roleType]="m.Person.LastName"></a-md-input>
-        <a-md-select [fxFlex]="flex" [object]="person" [roleType]="m.Person.Gender" [options]="genders" display="Name"></a-md-select>
-        <a-md-select [fxFlex]="flex" [object]="person" [roleType]="m.Person.Salutation" [options]="salutations" display="Name"></a-md-select>
-        <a-md-select [fxFlex]="flex" [object]="person" [roleType]="m.Person.Locale" [options]="locales" display="Name"></a-md-select>
+        <a-md-media-upload [fxFlex]="flex" class="push-top" [object]="person" [roleType]="m.Person.Picture" accept="image/*"></a-md-media-upload>
+        <a-md-select [fxFlex]="flex" class="push-top" [object]="person" [roleType]="m.Person.PersonRoles" [options]="roles" display="Name"></a-md-select>
+        <a-md-input  [fxFlex]="flex" class="push-top" [object]="person" [roleType]="m.Person.FirstName"></a-md-input>
+        <a-md-input  [fxFlex]="flex" class="push-top" [object]="person" [roleType]="m.Person.MiddleName"></a-md-input>
+        <a-md-input  [fxFlex]="flex" class="push-top" [object]="person" [roleType]="m.Person.LastName"></a-md-input>
+        <a-md-select [fxFlex]="flex" class="push-top" [object]="person" [roleType]="m.Person.Gender" [options]="genders" display="Name"></a-md-select>
+        <a-md-select [fxFlex]="flex" class="push-top" [object]="person" [roleType]="m.Person.Salutation" [options]="salutations" display="Name"></a-md-select>
+        <a-md-select [fxFlex]="flex" class="push-top" [object]="person" [roleType]="m.Person.Locale" [options]="locales" display="Name"></a-md-select>
 
       </div>
 

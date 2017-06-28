@@ -20,6 +20,7 @@ export class PostalAddressEditComponent implements OnInit, AfterViewInit, OnDest
   private subscription: Subscription;
   private scope: Scope;
 
+  flex: string = '1 1 30rem';
   m: MetaDomain;
 
   partyContactMechanism: PartyContactMechanism;
@@ -47,7 +48,7 @@ export class PostalAddressEditComponent implements OnInit, AfterViewInit, OnDest
             name: 'partyContactMechanism',
             id: id,
             include: [
-              new TreeNode({roleType: m.PartyContactMechanism.ContactPurposes}),
+              new TreeNode({ roleType: m.PartyContactMechanism.ContactPurposes }),
               new TreeNode({
                 roleType: m.PartyContactMechanism.ContactMechanism,
                 nodes: [

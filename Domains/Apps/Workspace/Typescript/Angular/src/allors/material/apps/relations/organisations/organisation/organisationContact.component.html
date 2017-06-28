@@ -6,37 +6,19 @@
     <md-divider></md-divider>
     <md-card-content class="push-bottom-none">
 
-      <div layout="row" class="push-top">
-        <a-md-select [object]="organisationContactRelationship.Contact" [roleType]="m.Person.PersonRoles" [options]="roles" display="Name"></a-md-select>
+      <div fxLayout="row wrap" fxLayoutGap="3rem" fxLayoutAlign="start stretch">
+
+        <a-md-select [fxFlex]="flex" class="push-top" [object]="organisationContactRelationship.Contact" [roleType]="m.Person.PersonRoles" [options]="roles" display="Name"></a-md-select>
+        <a-md-select [fxFlex]="flex" class="push-top" [object]="organisationContactRelationship" [roleType]="m.OrganisationContactRelationship.ContactKinds" [options]="organisationContactKinds" display="Description"></a-md-select>
+        <a-md-input [fxFlex]="flex" class="push-top" [object]="organisationContactRelationship.Contact" [roleType]="m.Person.FirstName"></a-md-input>
+        <a-md-input [fxFlex]="flex" class="push-top" [object]="organisationContactRelationship.Contact" [roleType]="m.Person.MiddleName"></a-md-input>
+        <a-md-input [fxFlex]="flex" class="push-top" [object]="organisationContactRelationship.Contact" [roleType]="m.Person.LastName"></a-md-input>
+        <a-md-select [fxFlex]="flex" class="push-top" [object]="organisationContactRelationship.Contact" [roleType]="m.Person.Gender" [options]="genders" display="Name"></a-md-select>
+        <a-md-select [fxFlex]="flex" class="push-top" [object]="organisationContactRelationship.Contact" [roleType]="m.Person.Salutation" [options]="salutations" display="Name"></a-md-select>
+        <a-md-select [fxFlex]="flex" class="push-top" [object]="organisationContactRelationship.Contact" [roleType]="m.Person.Locale" [options]="locales" display="Name"></a-md-select>
+
       </div>
 
-      <div layout="row" class="push-top">
-        <a-md-select [object]="organisationContactRelationship" [roleType]="m.OrganisationContactRelationship.ContactKinds" [options]="organisationContactKinds" display="Description"></a-md-select>
-      </div>
-
-      <div layout="row" class="push-top">
-        <a-md-input [object]="organisationContactRelationship.Contact" [roleType]="m.Person.FirstName"></a-md-input>
-      </div>
-
-      <div layout="row" class="push-top">
-        <a-md-input [object]="organisationContactRelationship.Contact" [roleType]="m.Person.MiddleName"></a-md-input>
-      </div>
-
-      <div layout="row" class="push-top">
-        <a-md-input [object]="organisationContactRelationship.Contact" [roleType]="m.Person.LastName"></a-md-input>
-      </div>
-
-      <div layout="row" class="push-top">
-        <a-md-select [object]="organisationContactRelationship.Contact" [roleType]="m.Person.Gender" [options]="genders" display="Name"></a-md-select>
-      </div>
-
-      <div layout="row" class="push-top">
-        <a-md-select [object]="organisationContactRelationship.Contact" [roleType]="m.Person.Salutation" [options]="salutations" display="Name"></a-md-select>
-      </div>
-
-      <div layout="row" class="push-top">
-        <a-md-select [object]="organisationContactRelationship.Contact" [roleType]="m.Person.Locale" [options]="locales" display="Name"></a-md-select>
-      </div>
     </md-card-content>
 
     <md-divider></md-divider>

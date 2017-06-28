@@ -20,6 +20,7 @@ export class ProductTypeFormComponent implements OnInit, AfterViewInit, OnDestro
   private subscription: Subscription;
   private scope: Scope;
 
+  flex: string = '1 1 30rem';
   m: MetaDomain;
 
   productType: ProductType;

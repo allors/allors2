@@ -5,7 +5,7 @@
       <md-divider></md-divider>
       <md-card-content>
 
-        <div layout="row" class="push-top">
+        <div *ngIf="organisation" layout="row" class="push-top">
           <a [routerLink]="['../../../organisations/' + organisation.id + '/overview']">
            <a-md-static [object]="organisation" [roleType]="m.Organisation.Name"></a-md-static>
            </a>

@@ -1,21 +1,20 @@
 <md-card tdMediaToggle="gt-xs" [mediaClasses]="['push']">
-  <form #form="ngForm" *ngIf="catalogue" (submit)="save()" >
+  <form #form="ngForm" *ngIf="catalogue" (submit)="save()">
 
-    <md-card-title>Catalogue</md-card-title>
+    <md-card-title>Catalogue Form</md-card-title>
 
     <md-divider></md-divider>
     <md-card-content class="push-bottom-none">
 
-      <div layout="row" class="push-top">
-        <a-md-input [object]="catalogue.LocalisedNames" [roleType]="m.LocalisedText.Text"></a-md-input>
-      </div>
+      <div fxLayout="row wrap" fxLayoutGap="3rem" fxLayoutAlign="start stretch">
 
-      <div layout="row" class="push-top">
-        <a-md-input [object]="catalogue.LocalisedDescriptions" [roleType]="m.LocalisedText.Text"></a-md-input>
-      </div>
+        <a-md-media-upload [fxFlex]="flex" class="push-top" [object]="catalogue" [roleType]="m.Catalogue.CatalogueImage" accept="image/*"></a-md-media-upload>
+        <a-md-localised-text [fxFlex]="flex" class="push-top" [object]="catalogue" [roleType]="m.Catalogue.LocalisedNames" [locales]="locales"></a-md-localised-text>
+        <a-md-localised-text [fxFlex]="flex" class="push-top" [object]="catalogue" [roleType]="m.Catalogue.LocalisedDescriptions"
+          [locales]="locales"></a-md-localised-text>
+        <a-md-select [fxFlex]="flex" class="push-top" [object]="catalogue" [roleType]="m.Catalogue.ProductCategories" [options]="categories"
+          display="Name"></a-md-select>
 
-      <div layout="row" class="push-top">
-        <a-md-select [object]="catalogue" [roleType]="m.Catalogue.ProductCategories" [options]="categories" display="Name"></a-md-select>
       </div>
 
     </md-card-content>

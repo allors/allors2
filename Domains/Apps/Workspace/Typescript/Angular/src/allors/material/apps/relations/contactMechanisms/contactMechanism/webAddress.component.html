@@ -6,18 +6,14 @@
     <md-divider></md-divider>
     <md-card-content class="push-bottom-none">
 
+      <div fxLayout="row wrap" fxLayoutGap="3rem" fxLayoutAlign="start stretch">
 
-      <div layout="row" class="push-top">
-        <a-md-select [object]="partyContactMechanism" [roleType]="m.PartyContactMechanism.ContactPurposes" [options]="contactMechanismPurposes" display="Name"></a-md-select>
+        <a-md-select [fxFlex]="flex" class="push-top" [object]="partyContactMechanism" [roleType]="m.PartyContactMechanism.ContactPurposes" [options]="contactMechanismPurposes" display="Name"></a-md-select>
+        <a-md-input [fxFlex]="flex" class="push-top" [object]="contactMechanism" [roleType]="m.WebAddress.ElectronicAddressString"></a-md-input>
+        <a-md-slide-toggle [fxFlex]="flex" class="push-top" [object]="partyContactMechanism" [roleType]="m.PartyContactMechanism.UseAsDefault" label="Use as default"></a-md-slide-toggle>
+
       </div>
 
-      <div layout="row" class="push-top">
-        <a-md-input [object]="contactMechanism" [roleType]="m.WebAddress.ElectronicAddressString"></a-md-input>
-      </div>
-
-      <div layout="row" class="push-top">
-        <a-md-slide-toggle [object]="partyContactMechanism" [roleType]="m.PartyContactMechanism.UseAsDefault" label="Use as default"></a-md-slide-toggle>
-      </div>
     </md-card-content>
 
     <md-divider></md-divider>

@@ -61,6 +61,7 @@ export class CategoriesComponent implements AfterViewInit, OnDestroy {
         name: 'categories',
         objectType: m.ProductCategory,
         include: [
+          new TreeNode({ roleType: m.ProductCategory.CategoryImage }),
           new TreeNode({ roleType: m.ProductCategory.LocalisedNames }),
           new TreeNode({ roleType: m.ProductCategory.LocalisedDescriptions }),
         ],

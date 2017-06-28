@@ -8,7 +8,7 @@ import { TdMediaService } from '@covalent/core';
 import { Scope } from '../../../../../angular';
 import { MetaDomain } from '../../../../../meta/index';
 import { PullRequest, PushResponse, Fetch, Path, Query, Equals, Like, TreeNode, Sort, Page } from '../../../../../domain';
-import { ProductCategory, Locale } from '../../../../../domain';
+import { ProductCategory, Locale, Singleton } from '../../../../../domain';
 
 import { AllorsService } from '../../../../../../app/allors.service';
 
@@ -20,10 +20,12 @@ export class CategoryFormComponent implements OnInit, AfterViewInit, OnDestroy {
   private subscription: Subscription;
   private scope: Scope;
 
+  flex: string = '1 1 30rem';
   m: MetaDomain;
 
   category: ProductCategory;
 
+  singleton: Singleton;
   locales: Locale[];
   categories: ProductCategory[];
 
@@ -47,8 +49,14 @@ export class CategoryFormComponent implements OnInit, AfterViewInit, OnDestroy {
             name: 'category',
             id: id,
             include: [
-              new TreeNode({ roleType: m.ProductCategory.LocalisedNames }),
-              new TreeNode({ roleType: m.ProductCategory.LocalisedDescriptions }),
+              new TreeNode({
+                roleType: m.ProductCategory.LocalisedNames,
+                nodes: [new TreeNode({ roleType: m.LocalisedText.Locale })],
+              }),
+              new TreeNode({
+                roleType: m.ProductCategory.LocalisedDescriptions,
+                nodes: [new TreeNode({ roleType: m.LocalisedText.Locale })],
+              }),
             ],
           }),
         ];
@@ -56,8 +64,11 @@ export class CategoryFormComponent implements OnInit, AfterViewInit, OnDestroy {
         const query: Query[] = [
           new Query(
             {
-              name: 'locales',
-              objectType: this.m.Locale,
+              name: 'singletons',
+              objectType: this.m.Singleton,
+              include: [
+                new TreeNode({ roleType: m.Singleton.Locales }),
+              ],
             }),
           new Query(
             {
@@ -73,13 +84,14 @@ export class CategoryFormComponent implements OnInit, AfterViewInit, OnDestroy {
       })
       .subscribe(() => {
 
-        this.category = this.scope.objects.organisation as ProductCategory;
+        this.category = this.scope.objects.category as ProductCategory;
         if (!this.category) {
-          this.category = this.scope.session.create('Catalogue') as ProductCategory;
+          this.category = this.scope.session.create('Category') as ProductCategory;
         }
 
+        this.singleton = this.scope.collections.singletons[0] as Singleton;
         this.categories = this.scope.collections.categories as ProductCategory[];
-        this.locales = this.scope.collections.locales as Locale[];
+        this.locales = this.singleton.Locales;
       },
       (error: any) => {
         this.snackBar.open(error, 'close', { duration: 5000 });
@@ -103,7 +115,11 @@ export class CategoryFormComponent implements OnInit, AfterViewInit, OnDestroy {
     this.scope
       .save()
       .subscribe((pushResponse: PushResponse) => {
-        this.goBack();
+        if (pushResponse.hasErrors) {
+          this.allors.onSaveError(pushResponse);
+        } else {
+          this.goBack();
+        }
       },
       (e: any) => {
         this.snackBar.open(e.toString(), 'close', { duration: 5000 });

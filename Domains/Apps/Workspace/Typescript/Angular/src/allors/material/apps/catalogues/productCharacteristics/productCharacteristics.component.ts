@@ -5,28 +5,30 @@ import { Title } from '@angular/platform-browser';
 import { MdSnackBar } from '@angular/material';
 import { TdLoadingService, TdDialogService, TdMediaService } from '@covalent/core';
 
-import { PullRequest, Query, Equals, Like, TreeNode, Sort, Page } from '../../../../domain';
-import { MetaDomain } from '../../../../meta/index';
 import { Scope } from '../../../../angular/base/Scope';
-import { Person, OrganisationContactRelationship } from '../../../../domain';
+import { MetaDomain } from '../../../../meta/index';
+import { PullRequest, Query, Equals, Like, TreeNode, Sort, Page } from '../../../../domain';
+import { ProductCharacteristic } from '../../../../domain';
 
-import { AllorsService } from '../../../../../app/allors.service';
+import { AllorsService } from '../../../.././../app/allors.service';
 
 @Component({
-  templateUrl: './people.component.html',
+  templateUrl: './productCharacteristics.component.html',
 })
-export class PeopleComponent implements AfterViewInit, OnDestroy {
+export class ProductCharacteristicsComponent implements AfterViewInit, OnDestroy {
 
   private subscription: Subscription;
   private scope: Scope;
 
-  data: Person[];
+  data: ProductCharacteristic[];
+  filtered: ProductCharacteristic[];
 
   constructor(private titleService: Title,
     private router: Router,
     private loadingService: TdLoadingService,
     private dialogService: TdDialogService,
     private snackBarService: MdSnackBar,
+    public media: TdMediaService,
     private allors: AllorsService) {
     this.scope = new Scope(allors.database, allors.workspace);
   }
@@ -36,8 +38,8 @@ export class PeopleComponent implements AfterViewInit, OnDestroy {
   }
 
   ngAfterViewInit(): void {
-    this.titleService.setTitle('People');
-    this.search();
+    this.media.broadcast();
+    this.titleService.setTitle('Product Characteristics');
   }
 
   ngOnDestroy(): void {
@@ -46,7 +48,7 @@ export class PeopleComponent implements AfterViewInit, OnDestroy {
     }
   }
 
-  search(criteria?: string): void {
+  search(criteria: string): void {
 
     if (this.subscription) {
       this.subscription.unsubscribe();
@@ -56,10 +58,10 @@ export class PeopleComponent implements AfterViewInit, OnDestroy {
 
     const query: Query[] = [new Query(
       {
-        name: 'people',
-        objectType: m.Person,
+        name: 'productCharacteristic',
+        objectType: m.ProductCharacteristic,
         include: [
-          new TreeNode({ roleType: m.Person.Picture }),
+          new TreeNode({ roleType: m.ProductCharacteristic.LocalisedNames }),
         ],
       })];
 
@@ -68,8 +70,7 @@ export class PeopleComponent implements AfterViewInit, OnDestroy {
     this.subscription = this.scope
       .load('Pull', new PullRequest({ query: query }))
       .subscribe(() => {
-        this.data = this.scope.collections.people as Person[];
-
+        this.data = this.scope.collections.productCharacteristic as ProductCharacteristic[];
       },
       (error: any) => {
         alert(error);
@@ -77,9 +78,9 @@ export class PeopleComponent implements AfterViewInit, OnDestroy {
       });
   }
 
-  delete(person: Person): void {
+  delete(productCharacteristic: ProductCharacteristic): void {
     this.dialogService
-      .openConfirm({ message: 'Are you sure you want to delete this person?' })
+      .openConfirm({ message: 'Are you sure you want to delete this characteristic?' })
       .afterClosed().subscribe((confirm: boolean) => {
         if (confirm) {
           // TODO: Logical, physical or workflow delete
@@ -87,7 +88,7 @@ export class PeopleComponent implements AfterViewInit, OnDestroy {
       });
   }
 
-  onView(person: Person): void {
-    this.router.navigate(['/relations/people/' + person.id + '/overview']);
+  onView(productCharacteristic: ProductCharacteristic): void {
+    this.router.navigate(['/catalogues/productCharacteristics/' + productCharacteristic.id + '/edit']);
   }
 }

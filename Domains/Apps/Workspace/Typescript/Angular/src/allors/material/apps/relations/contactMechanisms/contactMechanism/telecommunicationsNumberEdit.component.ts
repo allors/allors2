@@ -20,6 +20,7 @@ export class TelecommunicationsNumberEditComponent implements OnInit, AfterViewI
   private subscription: Subscription;
   private scope: Scope;
 
+  flex: string = '1 1 30rem';
   m: MetaDomain;
 
   partyContactMechanism: PartyContactMechanism;
@@ -46,7 +47,7 @@ export class TelecommunicationsNumberEditComponent implements OnInit, AfterViewI
             name: 'partyContactMechanism',
             id: id,
             include: [
-              new TreeNode({roleType: m.PartyContactMechanism.ContactPurposes}),
+              new TreeNode({ roleType: m.PartyContactMechanism.ContactPurposes }),
             ],
           }),
         ];

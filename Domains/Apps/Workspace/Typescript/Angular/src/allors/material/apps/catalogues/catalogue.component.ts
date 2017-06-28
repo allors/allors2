@@ -8,10 +8,6 @@ import { TdMediaService } from '@covalent/core';
 export class CatalogueComponent implements AfterViewInit {
 
   routes: Object[] = [{
-      title: 'Dashboard',
-      route: 'dashboard',
-      icon: 'dashboard',
-    }, {
       title: 'Catalogues',
       route: 'catalogues',
       icon: 'dashboard',
@@ -20,12 +16,16 @@ export class CatalogueComponent implements AfterViewInit {
       route: 'categories',
       icon: 'dashboard',
     }, {
+      title: 'Products',
+      route: 'goods',
+      icon: 'dashboard',
+    }, {
       title: 'ProductTypes',
       route: 'productTypes',
       icon: 'dashboard',
     }, {
-      title: 'Products',
-      route: 'goods',
+      title: 'Characteristics',
+      route: 'productCharacteristics',
       icon: 'dashboard',
     },
   ];

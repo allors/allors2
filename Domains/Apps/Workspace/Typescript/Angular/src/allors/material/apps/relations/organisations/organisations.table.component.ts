@@ -98,7 +98,7 @@ export class OrganisationsTableComponent implements OnChanges {
     this.filteredData = newData;
   }
 
-  onView (organisation: Organisation) {
+  onView (organisation: Organisation): void {
     this.view.emit(organisation);
   }
 }

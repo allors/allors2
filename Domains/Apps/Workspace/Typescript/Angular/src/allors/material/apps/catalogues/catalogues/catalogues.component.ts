@@ -61,6 +61,7 @@ export class CataloguesComponent implements AfterViewInit, OnDestroy {
         name: 'catalogues',
         objectType: m.Catalogue,
         include: [
+          new TreeNode({ roleType: m.Catalogue.CatalogueImage }),
           new TreeNode({ roleType: m.Catalogue.ProductCategories }),
         ],
       })];

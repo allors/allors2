@@ -135,7 +135,7 @@ export class PersonOverviewComponent implements OnInit, AfterViewInit, OnDestroy
       .subscribe(() => {
         this.person = this.scope.objects.person as Person;
         const organisationContactRelationships: OrganisationContactRelationship[] = this.scope.collections.organisationContactRelationships as OrganisationContactRelationship[];
-        this.organisation = organisationContactRelationships[0].Organisation as Organisation;
+        this.organisation = organisationContactRelationships.length > 0 ? organisationContactRelationships[0].Organisation as Organisation : undefined;
         this.communicationEvents = this.scope.collections.communicationEvents as CommunicationEvent[];
       },
       (error: any) => {

@@ -1,5 +1,6 @@
 import { CommunicationEventsTableComponent } from './communicationEvents/communicationEvents.table.component';
 import { OrganisationsTableComponent } from './organisations/organisations.table.component';
+
 // Routing
 import { EmailAddressAddComponent } from './contactMechanisms/contactMechanism/emailAddressAdd.component';
 import { EmailAddressEditComponent } from './contactMechanisms/contactMechanism/emailAddressEdit.component';

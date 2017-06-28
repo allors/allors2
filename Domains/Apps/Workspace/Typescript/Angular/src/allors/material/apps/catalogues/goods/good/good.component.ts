@@ -8,7 +8,7 @@ import { TdMediaService } from '@covalent/core';
 import { Scope } from '../../../../../angular/base/Scope';
 import { MetaDomain } from '../../../../../meta/index';
 import { PullRequest, PushResponse, Fetch, Path, Query, Equals, Like, TreeNode, Sort, Page } from '../../../../../domain';
-import { Good, ProductCategory, ProductType, Locale } from '../../../../../domain';
+import { Good, ProductCategory, ProductType, Locale, Singleton } from '../../../../../domain';
 
 import { AllorsService } from '../../../../../../app/allors.service';
 
@@ -20,10 +20,12 @@ export class GoodFormComponent implements OnInit, AfterViewInit, OnDestroy {
   private subscription: Subscription;
   private scope: Scope;
 
+  flex: string = '1 1 30rem';
   m: MetaDomain;
 
   good: Good;
 
+  singleton: Singleton;
   locales: Locale[];
   categories: ProductCategory[];
   productTypes: ProductType[];
@@ -48,14 +50,16 @@ export class GoodFormComponent implements OnInit, AfterViewInit, OnDestroy {
             name: 'good',
             id: id,
             include: [
-              new TreeNode({ roleType: m.Good.ProductType  }),
+              new TreeNode({ roleType: m.Good.ProductType }),
+              new TreeNode({ roleType: m.Good.PrimaryPhoto }),
               new TreeNode({ roleType: m.Product.LocalisedNames }),
               new TreeNode({ roleType: m.Product.LocalisedDescriptions }),
+              new TreeNode({ roleType: m.Product.LocalisedComments }),
               new TreeNode({ roleType: m.Product.ProductCategories }),
               new TreeNode({
                 roleType: m.Product.ProductCharacteristicValues,
                 nodes: [
-                   new TreeNode({ roleType: m.ProductCharacteristicValue.ProductCharacteristic }),
+                  new TreeNode({ roleType: m.ProductCharacteristicValue.ProductCharacteristic }),
                 ],
               }),
             ],
@@ -65,8 +69,11 @@ export class GoodFormComponent implements OnInit, AfterViewInit, OnDestroy {
         const query: Query[] = [
           new Query(
             {
-              name: 'locales',
-              objectType: this.m.Locale,
+              name: 'singletons',
+              objectType: this.m.Singleton,
+              include: [
+                new TreeNode({ roleType: m.Singleton.Locales }),
+              ],
             }),
           new Query(
             {
@@ -87,14 +94,15 @@ export class GoodFormComponent implements OnInit, AfterViewInit, OnDestroy {
       })
       .subscribe(() => {
 
-        this.good = this.scope.objects.organisation as Good;
+        this.good = this.scope.objects.good as Good;
         if (!this.good) {
           this.good = this.scope.session.create('Good') as Good;
         }
 
         this.categories = this.scope.collections.categories as ProductCategory[];
         this.productTypes = this.scope.collections.productTypes as ProductType[];
-        this.locales = this.scope.collections.locales as Locale[];
+        this.singleton = this.scope.collections.singletons[0] as Singleton;
+        this.locales = this.singleton.Locales;
       },
       (error: any) => {
         this.snackBar.open(error, 'close', { duration: 5000 });

@@ -1,10 +1,10 @@
 import { Component, OnChanges, SimpleChanges, Input, Output, EventEmitter } from '@angular/core';
 import { TdDataTableService, TdDataTableSortingOrder, ITdDataTableSortChangeEvent, ITdDataTableRowClickEvent, ITdDataTableColumn, IPageChangeEvent } from '@covalent/core';
 
-import { Catalogue } from '../../../../domain';
+import { ProductCharacteristic } from '../../../../domain';
 
 @Component({
-  selector: 'catalogues-table',
+  selector: 'productcharacteristics-table',
   template: `
 <ng-template tdLoading="objects">
   <md-list class="will-load">
@@ -13,9 +13,6 @@ import { Catalogue } from '../../../../domain';
 
 
 <table td-data-table>
-  <th td-data-table-column>
-    Photo
-  </th>
   <th td-data-table-column
       *ngFor="let column of columns"
       [numeric]="column.numeric">
@@ -24,11 +21,6 @@ import { Catalogue } from '../../../../domain';
   <th td-data-table-column>
   </th>
   <tr td-data-table-row *ngFor="let row of filteredData">
-    <td>
-      <md-icon *ngIf="!row['CatalogueImage']" md-list-avatar>photo_camera</md-icon>
-      <img *ngIf="row['CatalogueImage']" md-list-avatar src="http://localhost:5000/Media/Download/{{row['CatalogueImage'].UniqueId}}?revision={{row['CatalogueImage'].Revision}}"
-      width="90" height="60" />
-    </td>
     <td td-data-table-cell *ngFor="let column of columns" [numeric]="column.numeric">
       {{column.format ? column.format(row[column.name]) : row[column.name]}}
     </td>
@@ -47,18 +39,17 @@ import { Catalogue } from '../../../../domain';
 </ng-template>
 `,
 })
-export class CataloguesTableComponent implements OnChanges {
+export class ProductCharacteristicsTableComponent implements OnChanges {
 
   columns: ITdDataTableColumn[] = [
     { name: 'Name', label: 'Name', sortable: true },
-    { name: 'Description', label: 'Description', sortable: true },
   ];
 
   @Input()
-  data: Catalogue[];
+  data: ProductCharacteristic[];
 
   @Output()
-  view: EventEmitter<Catalogue> = new EventEmitter();
+  view: EventEmitter<ProductCharacteristic> = new EventEmitter();
 
   fromRow: number = 1;
   currentPage: number = 1;
@@ -66,7 +57,7 @@ export class CataloguesTableComponent implements OnChanges {
   sortBy: string = 'Name';
   sortOrder: TdDataTableSortingOrder = TdDataTableSortingOrder.Descending;
 
-  filteredData: Catalogue[];
+  filteredData: ProductCharacteristic[];
   filteredTotal: number;
 
   constructor(private _dataTableService: TdDataTableService) {
@@ -94,14 +85,14 @@ export class CataloguesTableComponent implements OnChanges {
   }
 
   filter(): void {
-    let newData: any[] = this.data ? this.data.map(v => v) : [];
+    let newData: any[] = this.data ? this.data.map((v: any) => v) : [];
     this.filteredTotal = newData.length;
     newData = this._dataTableService.sortData(newData, this.sortBy, this.sortOrder);
     newData = this._dataTableService.pageData(newData, this.fromRow, this.currentPage * this.pageSize);
     this.filteredData = newData;
   }
 
-  onView(catalogue: Catalogue): void {
-    this.view.emit(catalogue);
+  onView(productCharacteristic: ProductCharacteristic): void {
+    this.view.emit(productCharacteristic);
   }
 }

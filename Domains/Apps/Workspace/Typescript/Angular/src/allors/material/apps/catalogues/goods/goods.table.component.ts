@@ -13,6 +13,9 @@ import { Good } from '../../../../domain';
 
 
 <table td-data-table>
+  <th td-data-table-column>
+    Photo
+  </th>
   <th td-data-table-column
       *ngFor="let column of columns"
       [numeric]="column.numeric">
@@ -21,6 +24,11 @@ import { Good } from '../../../../domain';
   <th td-data-table-column>
   </th>
   <tr td-data-table-row *ngFor="let row of filteredData">
+  <td>
+    <md-icon *ngIf="!row['PrimaryPhoto']" md-list-avatar>photo_camera</md-icon>
+    <img *ngIf="row['PrimaryPhoto']" md-list-avatar src="http://localhost:5000/Media/Download/{{row['PrimaryPhoto'].UniqueId}}?revision={{row['PrimaryPhoto'].Revision}}"
+    width="90" height="60" />
+  </td>
     <td td-data-table-cell *ngFor="let column of columns" [numeric]="column.numeric">
       {{column.format ? column.format(row[column.name]) : row[column.name]}}
     </td>
@@ -42,9 +50,11 @@ import { Good } from '../../../../domain';
 export class GoodsTableComponent implements OnChanges {
 
   columns: ITdDataTableColumn[] = [
+    // { name: 'PrimaryPhoto', label: 'Photo', sortable: false },
     { name: 'Name', label: 'Name', sortable: true },
     { name: 'Description', label: 'Description', sortable: true },
     { name: 'Primary category', label: 'PrimaryCategory', sortable: true },
+    { name: 'ArticleNumber', label: 'Article number', sortable: true },
   ];
 
   @Input()

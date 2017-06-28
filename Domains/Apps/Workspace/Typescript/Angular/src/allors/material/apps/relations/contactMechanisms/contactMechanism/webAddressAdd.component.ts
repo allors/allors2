@@ -20,6 +20,7 @@ export class WebAddressAddComponent implements OnInit, AfterViewInit, OnDestroy 
   private subscription: Subscription;
   private scope: Scope;
 
+  flex: string = '1 1 30rem';
   m: MetaDomain;
 
   organisation: Organisation;

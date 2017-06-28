@@ -1,21 +1,18 @@
 <md-card tdMediaToggle="gt-xs" [mediaClasses]="['push']">
-  <form #form="ngForm" *ngIf="organisation" (submit)="save()" >
+  <form #form="ngForm" *ngIf="organisation" (submit)="save()">
 
     <md-card-title>Organisation</md-card-title>
 
     <md-divider></md-divider>
     <md-card-content class="push-bottom-none">
 
-      <div layout="row" class="push-top">
-        <a-md-select [object]="organisation" [roleType]="m.Organisation.OrganisationRoles" [options]="roles" display="Name"></a-md-select>
-      </div>
+      <div fxLayout="row wrap" fxLayoutGap="3rem" fxLayoutAlign="start stretch">
 
-      <div layout="row" class="push-top">
-        <a-md-input [object]="organisation" [roleType]="m.Organisation.Name"></a-md-input>
-      </div>
+        <a-md-media-upload [fxFlex]="flex" class="push-top" [object]="organisation" [roleType]="m.Organisation.LogoImage" accept="image/*"></a-md-media-upload>
+        <a-md-select [fxFlex]="flex" class="push-top"  [object]="organisation" [roleType]="m.Organisation.OrganisationRoles" [options]="roles" display="Name"></a-md-select>
+        <a-md-input [fxFlex]="flex" class="push-top"  [object]="organisation" [roleType]="m.Organisation.Name"></a-md-input>
+        <a-md-select [fxFlex]="flex" class="push-top"  [object]="organisation" [roleType]="m.Organisation.Locale" [options]="locales" display="Name"></a-md-select>
 
-      <div layout="row" class="push-top">
-        <a-md-select [object]="organisation" [roleType]="m.Organisation.Locale" [options]="locales" display="Name"></a-md-select>
       </div>
 
     </md-card-content>

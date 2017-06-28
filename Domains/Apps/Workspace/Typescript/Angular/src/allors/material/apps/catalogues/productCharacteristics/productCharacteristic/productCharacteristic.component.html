@@ -1,15 +1,14 @@
 <md-card tdMediaToggle="gt-xs" [mediaClasses]="['push']">
-  <form #form="ngForm" *ngIf="productType" (submit)="save()" >
+  <form #form="ngForm" *ngIf="productCharacteristic" (submit)="save()" >
 
-    <md-card-title>Product Type Form</md-card-title>
+    <md-card-title>Product Characteristic Form</md-card-title>
 
     <md-divider></md-divider>
     <md-card-content class="push-bottom-none">
 
       <div fxLayout="row wrap" fxLayoutGap="3rem" fxLayoutAlign="start stretch">
 
-        <a-md-input [fxFlex]="flex" class="push-top" [object]="productType" [roleType]="m.ProductType.Name"></a-md-input>
-        <a-md-select [fxFlex]="flex" class="push-top" [object]="productType" [roleType]="m.ProductType.ProductCharacteristics" [options]="characteristics" display="Name"></a-md-select>
+        <a-md-localised-text [fxFlex]="flex" class="push-top" [object]="productCharacteristic" [roleType]="m.ProductCharacteristic.LocalisedNames" [locales]="locales"></a-md-localised-text>
 
       </div>
 

@@ -6,16 +6,16 @@ import { MdSnackBar, MdSnackBarConfig } from '@angular/material';
 import { TdMediaService } from '@covalent/core';
 
 import { Scope } from '../../../../../angular/base/Scope';
+import { MetaDomain } from '../../../../../meta';
 import { PullRequest, PushResponse, Fetch, Path, Query, Equals, Like, TreeNode, Sort, Page } from '../../../../../domain';
-import { MetaDomain } from '../../../../../meta/index';
-import { Organisation, PartyContactMechanism, EmailAddress, Enumeration } from '../../../../../domain';
+import { ProductCharacteristic, Singleton, Locale } from '../../../../../domain';
 
 import { AllorsService } from '../../../../../../app/allors.service';
 
 @Component({
-  templateUrl: './emailAddress.component.html',
+  templateUrl: './productCharacteristic.component.html',
 })
-export class EmailAddressEditComponent implements OnInit, AfterViewInit, OnDestroy {
+export class ProductCharacteristicFormComponent implements OnInit, AfterViewInit, OnDestroy {
 
   private subscription: Subscription;
   private scope: Scope;
@@ -23,9 +23,10 @@ export class EmailAddressEditComponent implements OnInit, AfterViewInit, OnDestr
   flex: string = '1 1 30rem';
   m: MetaDomain;
 
-  partyContactMechanism: PartyContactMechanism;
-  contactMechanism: EmailAddress;
-  contactMechanismPurposes: Enumeration[];
+  productCharacteristic: ProductCharacteristic;
+
+  singleton: Singleton;
+  locales: Locale[];
 
   constructor(private allors: AllorsService,
     private route: ActivatedRoute,
@@ -39,15 +40,15 @@ export class EmailAddressEditComponent implements OnInit, AfterViewInit, OnDestr
     this.subscription = this.route.url
       .mergeMap((url: any) => {
 
-        const id: string = this.route.snapshot.paramMap.get('partyContactMechanismId');
+        const id: string = this.route.snapshot.paramMap.get('id');
         const m: MetaDomain = this.m;
 
         const fetch: Fetch[] = [
           new Fetch({
-            name: 'partyContactMechanism',
+            name: 'productCharacteristic',
             id: id,
             include: [
-              new TreeNode({roleType: m.PartyContactMechanism.ContactPurposes}),
+              new TreeNode({ roleType: m.ProductCharacteristic.LocalisedNames }),
             ],
           }),
         ];
@@ -55,8 +56,11 @@ export class EmailAddressEditComponent implements OnInit, AfterViewInit, OnDestr
         const query: Query[] = [
           new Query(
             {
-              name: 'contactMechanismPurposes',
-              objectType: this.m.ContactMechanismPurpose,
+              name: 'singletons',
+              objectType: this.m.Singleton,
+              include: [
+                new TreeNode({ roleType: m.Singleton.Locales }),
+              ],
             }),
         ];
 
@@ -67,9 +71,13 @@ export class EmailAddressEditComponent implements OnInit, AfterViewInit, OnDestr
       })
       .subscribe(() => {
 
-        this.partyContactMechanism = this.scope.objects.partyContactMechanism as PartyContactMechanism;
-        this.contactMechanism = this.partyContactMechanism.ContactMechanism as EmailAddress;
-        this.contactMechanismPurposes = this.scope.collections.contactMechanismPurposes as Enumeration[];
+        this.productCharacteristic = this.scope.objects.productCharacteristic as ProductCharacteristic;
+        if (!this.productCharacteristic) {
+          this.productCharacteristic = this.scope.session.create('ProductCharacteristic') as ProductCharacteristic;
+        }
+
+        this.singleton = this.scope.collections.singletons[0] as Singleton;
+        this.locales = this.singleton.Locales;
       },
       (error: any) => {
         this.snackBar.open(error, 'close', { duration: 5000 });

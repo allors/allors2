@@ -10,7 +10,7 @@ export class RelationComponent implements AfterViewInit {
   routes: Object[] = [{
       title: 'Organisations',
       route: 'organisations',
-      icon: 'dashboard',
+      icon: 'business',
     }, {
       title: 'People',
       route: 'people',

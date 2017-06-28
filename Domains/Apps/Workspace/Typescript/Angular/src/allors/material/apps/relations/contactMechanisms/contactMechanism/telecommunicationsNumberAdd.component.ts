@@ -20,6 +20,7 @@ export class TelecommunicationsNumberAddComponent implements OnInit, AfterViewIn
   private subscription: Subscription;
   private scope: Scope;
 
+  flex: string = '1 1 30rem';
   m: MetaDomain;
 
   organisation: Organisation;

@@ -61,6 +61,7 @@ export class GoodsComponent implements AfterViewInit, OnDestroy {
         name: 'goods',
         objectType: m.Good,
         include: [
+          new TreeNode({ roleType: m.Good.PrimaryPhoto }),
           new TreeNode({ roleType: m.Good.LocalisedNames }),
           new TreeNode({ roleType: m.Good.LocalisedDescriptions }),
           new TreeNode({ roleType: m.Good.PrimaryProductCategory }),

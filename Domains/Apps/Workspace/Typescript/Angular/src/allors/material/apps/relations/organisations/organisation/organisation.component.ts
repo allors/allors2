@@ -20,6 +20,7 @@ export class OrganisationFormComponent implements OnInit, AfterViewInit, OnDestr
   private subscription: Subscription;
   private scope: Scope;
 
+  flex: string = '1 1 30rem';
   m: MetaDomain;
 
   organisation: Organisation;

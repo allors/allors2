@@ -13,6 +13,9 @@ import { ProductCategory } from '../../../../domain';
 
 
 <table td-data-table>
+  <th td-data-table-column>
+    Photo
+  </th>
   <th td-data-table-column
       *ngFor="let column of columns"
       [numeric]="column.numeric">
@@ -21,6 +24,11 @@ import { ProductCategory } from '../../../../domain';
   <th td-data-table-column>
   </th>
   <tr td-data-table-row *ngFor="let row of filteredData">
+    <td>
+      <md-icon *ngIf="!row['CategoryImage']" md-list-avatar>photo_camera</md-icon>
+      <img *ngIf="row['CategoryImage']" md-list-avatar src="http://localhost:5000/Media/Download/{{row['CategoryImage'].UniqueId}}?revision={{row['CategoryImage'].Revision}}"
+      width="90" height="60" />
+    </td>
     <td td-data-table-cell *ngFor="let column of columns" [numeric]="column.numeric">
       {{column.format ? column.format(row[column.name]) : row[column.name]}}
     </td>
