@@ -1,14 +1,7 @@
-﻿import { ErrorResponse } from '../ErrorResponse';
+﻿import { Response } from '../Response';
 import { DerivationError } from '../DerivationError';
 import { PushResponseNewObject } from './PushResponseNewObject';
 
-export interface PushResponse extends ErrorResponse {
-    hasErrors: boolean;
-    errorMessage?: string;
-    versionErrors?: string[];
-    accessErrors?: string[];
-    missingErrors?: string[];
-    derivationErrors?: DerivationError[];
-
+export interface PushResponse extends Response {
     newObjects?: PushResponseNewObject[];
 }

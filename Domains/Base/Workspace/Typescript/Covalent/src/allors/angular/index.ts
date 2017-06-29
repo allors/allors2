@@ -1,10 +1,16 @@
 // Base
 export { ENVIRONMENT, Environment } from './base/Environment';
 
+export { AllorsService } from './base/AllorsService';
 export { Database } from './base/Database';
-export { Result } from './base/Result';
 export { Scope } from './base/Scope';
+
+export { ErrorService } from './base/errors/ErrorService';
+
+export { Loaded } from './base/responses/Loaded';
+export { Saved } from './base/responses/Saved';
+export { Invoked } from './base/responses/Invoked';
 
 export * from './base/authentication';
 
-export { Field } from './base/fields/Field';
+export { Field } from './base/components/Field';

@@ -2,15 +2,12 @@ import { Observable, Subject, Subscription } from 'rxjs/Rx';
 import { Component, OnInit, AfterViewInit, OnDestroy } from '@angular/core';
 import { Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { MdSnackBar, MdSnackBarConfig } from '@angular/material';
-import { TdMediaService } from '@covalent/core';
+import { TdMediaService, TdDialogService } from '@covalent/core';
 
-import { Scope } from '../../../../../angular/base/Scope';
 import { MetaDomain } from '../../../../../meta/index';
 import { PullRequest, PushResponse, Fetch, Path, Query, Equals, Like, TreeNode, Sort, Page } from '../../../../../domain';
 import { Organisation, Person, Locale, Enumeration } from '../../../../../domain';
-
-import { AllorsService } from '../../../../../../app/allors.service';
+import { Scope, Loaded, Saved, AllorsService, ErrorService } from '../../../../../angular';
 
 @Component({
   templateUrl: './person.component.html',
@@ -27,12 +24,14 @@ export class PersonComponent implements OnInit, AfterViewInit, OnDestroy {
   locales: Locale[];
   person: Person;
 
-  constructor(private allors: AllorsService,
+  constructor(
+    private allorsService: AllorsService,
+    private errorService: ErrorService,
     private route: ActivatedRoute,
-    public snackBar: MdSnackBar,
-    public media: TdMediaService) {
-    this.scope = new Scope(allors.database, allors.workspace);
-    this.m = this.allors.meta;
+    private media: TdMediaService) {
+
+    this.scope = new Scope(allorsService.database, allorsService.workspace);
+    this.m = this.allorsService.meta;
   }
 
   ngOnInit(): void {
@@ -41,7 +40,7 @@ export class PersonComponent implements OnInit, AfterViewInit, OnDestroy {
 
         const id: string = this.route.snapshot.paramMap.get('id');
 
-        const m: MetaDomain = this.allors.meta;
+        const m: MetaDomain = this.allorsService.meta;
 
         const fetch: Fetch[] = [
           new Fetch({
@@ -63,17 +62,17 @@ export class PersonComponent implements OnInit, AfterViewInit, OnDestroy {
         return this.scope
           .load('Pull', new PullRequest({ fetch: fetch, query: query }));
       })
-      .subscribe(() => {
+      .subscribe((loaded: Loaded) => {
 
-        this.person = this.scope.objects.person as Person;
+        this.person = loaded.objects.person as Person;
         if (!this.person) {
           this.person = this.scope.session.create('Person') as Person;
         }
 
-        this.locales = this.scope.collections.locales as Locale[];
+        this.locales = loaded.collections.locales as Locale[];
       },
       (error: any) => {
-        this.snackBar.open(error, 'close', { duration: 5000 });
+        this.errorService.message(error);
         this.goBack();
       },
     );
@@ -93,11 +92,11 @@ export class PersonComponent implements OnInit, AfterViewInit, OnDestroy {
 
     this.scope
       .save()
-      .subscribe((pushResponse: PushResponse) => {
+      .subscribe((saved: Saved) => {
         this.goBack();
       },
-      (e: any) => {
-        this.allors.onSaveError(e);
+      (error: Error) => {
+        this.errorService.dialog(error);
       });
   }
 

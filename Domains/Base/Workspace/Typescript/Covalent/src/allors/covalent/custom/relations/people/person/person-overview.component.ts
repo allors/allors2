@@ -1,15 +1,12 @@
 import { Observable, Subject, Subscription } from 'rxjs/Rx';
 import { Component, OnInit, AfterViewInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { MdSnackBar, MdSnackBarConfig } from '@angular/material';
 import { TdMediaService } from '@covalent/core';
 
 import { MetaDomain } from '../../../../../meta';
 import { PullRequest, Fetch, Path, Query, Equals, Like, TreeNode, Sort, Page } from '../../../../../domain';
 import { Person, Locale, Organisation } from '../../../../../domain';
-import { Scope } from '../../../../../angular';
-
-import { AllorsService } from '../../../../../../app/allors.service';
+import { Scope, Loaded, AllorsService, ErrorService } from '../../../../../angular';
 
 @Component({
   templateUrl: './person-overview.component.html',
@@ -23,12 +20,14 @@ export class PersonOverviewComponent implements OnInit, AfterViewInit, OnDestroy
   person: Person;
   locales: Locale[];
 
-  constructor(private allors: AllorsService,
+  constructor(
+    private allorsService: AllorsService,
+    private errorService: ErrorService,
     private route: ActivatedRoute,
-    public snackBar: MdSnackBar,
     public media: TdMediaService) {
-    this.scope = new Scope(allors.database, allors.workspace);
-    this.m = this.allors.meta;
+
+    this.scope = new Scope(allorsService.database, allorsService.workspace);
+    this.m = this.allorsService.meta;
   }
 
   ngOnInit(): void {
@@ -54,11 +53,11 @@ export class PersonOverviewComponent implements OnInit, AfterViewInit, OnDestroy
         return this.scope
           .load('Pull', new PullRequest({ fetch: fetch }));
       })
-      .subscribe(() => {
-        this.person = this.scope.objects.person as Person;
+      .subscribe((loaded: Loaded) => {
+        this.person = loaded.objects.person as Person;
       },
       (error: any) => {
-        this.snackBar.open(error, 'close', { duration: 5000 });
+        this.errorService.message(error);
         this.goBack();
       },
       );

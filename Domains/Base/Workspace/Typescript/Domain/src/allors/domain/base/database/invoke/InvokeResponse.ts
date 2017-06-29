@@ -1,11 +1,5 @@
-﻿import { ErrorResponse } from '../ErrorResponse';
+﻿import { Response } from '../Response';
 import { DerivationError } from '../DerivationError';
 
-export interface InvokeResponse extends ErrorResponse {
-    hasErrors: boolean;
-    errorMessage?: string;
-    versionErrors?: string[];
-    accessErrors?: string[];
-    missingErrors?: string[];
-    derivationErrors?: DerivationError[];
+export interface InvokeResponse extends Response {
 }

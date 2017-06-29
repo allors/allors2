@@ -1,157 +1,160 @@
 ﻿import { IWorkspace } from './Workspace';
+import { WorkspaceObject } from './WorkspaceObject';
 import { ISessionObject, INewSessionObject } from './SessionObject';
-import { PushRequest, PushResponse, SyncResponse , ResponseType } from '../database';
+import { PushRequest, PushRequestObject, PushRequestNewObject, PushResponse, PushResponseNewObject, SyncResponse, ResponseType } from '../database';
 
 export interface ISession {
-    hasChanges: boolean;
+  hasChanges: boolean;
 
-    get(id: string): ISessionObject;
+  get(id: string): ISessionObject;
 
-    create(objectTypeName: string): ISessionObject;
+  create(objectTypeName: string): ISessionObject;
 
-    pushRequest(): PushRequest;
+  pushRequest(): PushRequest;
 
-    pushResponse(saveResponse: PushResponse): void;
-    reset(): void;
+  pushResponse(saveResponse: PushResponse): void;
+
+  reset(): void;
 }
 
 export class Session implements ISession {
-    private static idCounter = 0;
+  private static idCounter: number = 0;
 
-    hasChanges: boolean;
+  private sessionObjectById: { [id: string]: ISessionObject; } = {};
+  private newSessionObjectById: { [id: string]: INewSessionObject; } = {};
 
-    private sessionObjectById: { [id: string]: ISessionObject; } = {};
-    private newSessionObjectById: { [id: string]: INewSessionObject; } = {};
+  hasChanges: boolean;
 
-    constructor(private workspace: IWorkspace) {
-        this.hasChanges = false;
+  constructor(private workspace: IWorkspace) {
+    this.hasChanges = false;
+  }
+
+  get(id: string): ISessionObject {
+    if (!id) {
+      return undefined;
     }
 
-    get(id: string): ISessionObject {
-        if (id === undefined || id === null) {
-            return undefined;
-        }
+    let sessionObject: ISessionObject = this.sessionObjectById[id];
+    if (sessionObject === undefined) {
+      sessionObject = this.newSessionObjectById[id];
 
-        let sessionObject = this.sessionObjectById[id];
-        if (sessionObject === undefined) {
-            sessionObject = this.newSessionObjectById[id];
+      if (sessionObject === undefined) {
+        const workspaceObject: WorkspaceObject = this.workspace.get(id);
 
-            if (sessionObject === undefined) {
-                const workspaceObject = this.workspace.get(id);
+        const constructor: any = this.workspace.constructorByName[workspaceObject.objectType.name];
+        sessionObject = new constructor();
+        sessionObject.session = this;
+        sessionObject.workspaceObject = workspaceObject;
+        sessionObject.objectType = workspaceObject.objectType;
 
-                const constructor = this.workspace.constructorByName[workspaceObject.objectType.name];
-                sessionObject = new constructor();
-                sessionObject.session = this;
-                sessionObject.workspaceObject = workspaceObject;
-                sessionObject.objectType = workspaceObject.objectType;
-
-                this.sessionObjectById[sessionObject.id] = sessionObject;
-            }
-        }
-
-        return sessionObject;
+        this.sessionObjectById[sessionObject.id] = sessionObject;
+      }
     }
 
-    create(objectTypeName: string): ISessionObject {
-        const constructor = this.workspace.constructorByName[objectTypeName];
-        const newSessionObject: INewSessionObject = new constructor();
-        newSessionObject.session = this;
-        newSessionObject.objectType = this.workspace.metaPopulation.objectTypeByName[objectTypeName];
-        newSessionObject.newId = (--Session.idCounter).toString();
+    return sessionObject;
+  }
 
-        this.newSessionObjectById[newSessionObject.newId] = newSessionObject;
+  create(objectTypeName: string): ISessionObject {
+    const constructor: any = this.workspace.constructorByName[objectTypeName];
+    const newSessionObject: INewSessionObject = new constructor();
+    newSessionObject.session = this;
+    newSessionObject.objectType = this.workspace.metaPopulation.objectTypeByName[objectTypeName];
+    newSessionObject.newId = (--Session.idCounter).toString();
 
-        this.hasChanges = true;
+    this.newSessionObjectById[newSessionObject.newId] = newSessionObject;
 
-        return newSessionObject;
+    this.hasChanges = true;
+
+    return newSessionObject;
+  }
+
+  reset(): void {
+    if (this.newSessionObjectById) {
+      Object
+        .keys(this.newSessionObjectById)
+        .forEach((key: string) => this.newSessionObjectById[key].reset());
     }
 
-    reset(): void {
-        if (this.newSessionObjectById) {
-            Object
-                .keys(this.newSessionObjectById)
-                .forEach((v) => this.newSessionObjectById[v].reset());
-        }
-
-        if (this.sessionObjectById) {
-            Object
-                .keys(this.sessionObjectById)
-                .forEach((v) => this.sessionObjectById[v].reset());
-        }
-
-        this.hasChanges = false;
+    if (this.sessionObjectById) {
+      Object
+        .keys(this.sessionObjectById)
+        .forEach((key: string) => this.sessionObjectById[key].reset());
     }
 
-    pushRequest(): PushRequest {
-        const data = new PushRequest();
-        data.newObjects = [];
-        data.objects = [];
+    this.hasChanges = false;
+  }
 
-        if (this.newSessionObjectById) {
-            Object
-                .keys(this.newSessionObjectById)
-                .forEach((v) => {
-                    const newSessionObject = this.newSessionObjectById[v];
-                    const objectData = newSessionObject.saveNew();
-                    if (objectData !== undefined) {
-                        data.newObjects.push(objectData);
-                    }
-                });
-        }
+  pushRequest(): PushRequest {
+    const data: PushRequest = new PushRequest();
+    data.newObjects = [];
+    data.objects = [];
 
-        if (this.sessionObjectById) {
-            Object
-                .keys(this.sessionObjectById)
-                .forEach((v) => {
-                    const sessionObject = this.sessionObjectById[v];
-                    const objectData = sessionObject.save();
-                    if (objectData !== undefined) {
-                        data.objects.push(objectData);
-                    }
-                });
-        }
-
-        return data;
+    if (this.newSessionObjectById) {
+      Object
+        .keys(this.newSessionObjectById)
+        .forEach((key: string) => {
+          const newSessionObject: INewSessionObject = this.newSessionObjectById[key];
+          const objectData: PushRequestNewObject = newSessionObject.saveNew();
+          if (objectData !== undefined) {
+            data.newObjects.push(objectData);
+          }
+        });
     }
 
-    pushResponse(pushResponse: PushResponse): void {
-        if (pushResponse.newObjects) {
-            Object
-                .keys(pushResponse.newObjects)
-                .forEach((v) => {
-                    const pushResponseNewObject = pushResponse.newObjects[v];
-                     const newId = pushResponseNewObject.ni;
-                    const id = pushResponseNewObject.i;
-
-                    const newSessionObject = this.newSessionObjectById[newId];
-
-                    const syncResponse: SyncResponse = {
-                        responseType: ResponseType.Sync,
-                        userSecurityHash: '#', // This should trigger a load on next check
-                        objects: [
-                            {
-                                i: id,
-                                v: '',
-                                t: newSessionObject.objectType.name,
-                                roles: [],
-                                methods: []
-                            }
-                        ]
-                    };
-
-                    delete (this.newSessionObjectById[newId]);
-                    delete (newSessionObject.newId);
-
-                    this.workspace.sync(syncResponse);
-                    const workspaceObject = this.workspace.get(id);
-                    newSessionObject.workspaceObject = workspaceObject;
-
-                    this.sessionObjectById[id] = newSessionObject;
-                });
-        }
-
-        if (Object.getOwnPropertyNames(this.newSessionObjectById).length !== 0) {
-            throw new Error('Not all new objects received ids');
-        }
+    if (this.sessionObjectById) {
+      Object
+        .keys(this.sessionObjectById)
+        .forEach((key: string) => {
+          const sessionObject: ISessionObject = this.sessionObjectById[key];
+          const objectData: PushRequestObject = sessionObject.save();
+          if (objectData !== undefined) {
+            data.objects.push(objectData);
+          }
+        });
     }
+
+    return data;
+  }
+
+  pushResponse(pushResponse: PushResponse): void {
+    if (pushResponse.newObjects) {
+      Object
+        .keys(pushResponse.newObjects)
+        .forEach((key: string) => {
+          const pushResponseNewObject: PushResponseNewObject = pushResponse.newObjects[key];
+          const newId: string = pushResponseNewObject.ni;
+          const id: string = pushResponseNewObject.i;
+
+          const newSessionObject: INewSessionObject = this.newSessionObjectById[newId];
+
+          const syncResponse: SyncResponse = {
+            responseType: ResponseType.Sync,
+            hasErrors: false,
+            userSecurityHash: '#', // This should trigger a load on next check
+            objects: [
+              {
+                i: id,
+                v: '',
+                t: newSessionObject.objectType.name,
+                roles: [],
+                methods: [],
+              },
+            ],
+          };
+
+          delete (this.newSessionObjectById[newId]);
+          delete (newSessionObject.newId);
+
+          this.workspace.sync(syncResponse);
+          const workspaceObject: WorkspaceObject = this.workspace.get(id);
+          newSessionObject.workspaceObject = workspaceObject;
+
+          this.sessionObjectById[id] = newSessionObject;
+        });
+    }
+
+    if (Object.getOwnPropertyNames(this.newSessionObjectById).length !== 0) {
+      throw new Error('Not all new objects received ids');
+    }
+  }
 }

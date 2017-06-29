@@ -22,7 +22,7 @@
     "syncback-meta": "sync-files src/allors/meta/base ../Meta/src/allors/meta/base",
     "syncback-domain": "sync-files src/allors/domain/base ../Domain/src/allors/domain/base",
     "syncback-angular": "sync-files src/allors/angular/base ../Angular/src/allors/angular/base",
-    "syncback-material": "sync-files src/allors/material/base ../Angular/src/allors/material/base"
+    "syncback-material": "sync-files src/allors/material/base ../Material/src/allors/material/base"
   },
   "repository": "https://github.com/allors/allors2.git",
   "license": "LGPL",

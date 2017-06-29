@@ -2,15 +2,12 @@ import { Observable, Subject, Subscription } from 'rxjs/Rx';
 import { Component, OnInit, AfterViewInit, OnDestroy, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { Title } from '@angular/platform-browser';
-import { MdSnackBar } from '@angular/material';
-import { TdLoadingService, TdDialogService, TdMediaService } from '@covalent/core';
+import { TdLoadingService, TdMediaService, TdDialogService } from '@covalent/core';
 
-import { PullRequest, Query, Equals, Like, TreeNode, Sort, Page } from '../../../../domain';
 import { MetaDomain } from '../../../../meta/index';
-import { Scope } from '../../../../angular/base/Scope';
+import { PullRequest, Query, Equals, Like, TreeNode, Sort, Page } from '../../../../domain';
 import { Person } from '../../../../domain';
-
-import { AllorsService } from '../../../../../app/allors.service';
+import { Scope, Loaded, AllorsService, ErrorService } from '../../../../angular';
 
 @Component({
   templateUrl: './people.component.html',
@@ -22,13 +19,14 @@ export class PeopleComponent implements AfterViewInit, OnDestroy {
 
   data: Person[];
 
-  constructor(private titleService: Title,
+  constructor(
+    private allorsService: AllorsService,
+    private errorService: ErrorService,
+    private titleService: Title,
     private router: Router,
-    private loadingService: TdLoadingService,
     private dialogService: TdDialogService,
-    private snackBarService: MdSnackBar,
-    private allors: AllorsService) {
-    this.scope = new Scope(allors.database, allors.workspace);
+    private loadingService: TdLoadingService) {
+    this.scope = new Scope(allorsService.database, allorsService.workspace);
   }
 
   goBack(): void {
@@ -52,7 +50,7 @@ export class PeopleComponent implements AfterViewInit, OnDestroy {
       this.subscription.unsubscribe();
     }
 
-    const m: MetaDomain = this.allors.meta;
+    const m: MetaDomain = this.allorsService.meta;
 
     const query: Query[] = [new Query(
       {
@@ -64,9 +62,8 @@ export class PeopleComponent implements AfterViewInit, OnDestroy {
 
     this.subscription = this.scope
       .load('Pull', new PullRequest({ query: query }))
-      .subscribe(() => {
-        this.data = this.scope.collections.people as Person[];
-
+      .subscribe((loaded: Loaded) => {
+        this.data = loaded.collections.people as Person[];
       },
       (error: any) => {
         alert(error);

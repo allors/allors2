@@ -1,7 +1,7 @@
-﻿export { ErrorResponse } from './ErrorResponse';
-export { DerivationError } from './DerivationError';
-export { Response } from './Response';
+﻿export { Response } from './Response';
 export { ResponseType } from './ResponseType';
+export { ResponseError } from './ResponseError';
+export { DerivationError } from './DerivationError';
 
 export { InvokeRequest } from './invoke/InvokeRequest';
 export { InvokeResponse } from './invoke/InvokeResponse';
@@ -17,10 +17,8 @@ export { SyncRequest } from './sync/SyncRequest';
 export { SyncResponse, SyncResponseObject } from './sync/SyncResponse';
 
 export { TreeNode } from './query/TreeNode';
-
 export { Fetch } from './query/Fetch';
 export { Path } from './query/Path';
-
 export { Query } from './query/Query';
 export { Sort } from './query/Sort';
 export { Page } from './query/Page';
