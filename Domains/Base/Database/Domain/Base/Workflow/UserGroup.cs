@@ -30,11 +30,6 @@ namespace Allors.Domain
             {
                 derivation.AddDependency(accessControl, this);
             }
-
-            foreach (User member in this.Members)
-            {
-                derivation.AddDependency(member, this);
-            }
         }
     }
 }
