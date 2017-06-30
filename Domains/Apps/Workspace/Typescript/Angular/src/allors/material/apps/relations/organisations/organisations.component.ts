@@ -6,12 +6,10 @@ import { MdSnackBar } from '@angular/material';
 
 import { TdLoadingService, TdDialogService, TdMediaService } from '@covalent/core';
 
-import { Scope } from '../../../../angular/base/Scope';
 import { MetaDomain } from '../../../../meta/index';
-import { PullRequest, Query, Equals, Like, TreeNode, Sort, Page } from '../../../../domain';
-import { Organisation } from '../../../../domain';
-
-import { AllorsService } from '../../../../../app/allors.service';
+import { PullRequest, Query, Equals, Like, Contains, TreeNode, Sort, Page } from '../../../../domain';
+import { Organisation, OrganisationRole } from '../../../../domain';
+import { AllorsService, ErrorService, Scope, Loaded, Saved } from '../../../../angular';
 
 @Component({
   templateUrl: './organisations.component.html',
@@ -23,13 +21,14 @@ export class OrganisationsComponent implements AfterViewInit, OnDestroy {
 
   data: Organisation[];
 
-  constructor(private titleService: Title,
+  constructor(
+    private allors: AllorsService,
+    private errorService: ErrorService,
+    private titleService: Title,
     private router: Router,
-    private loadingService: TdLoadingService,
     private dialogService: TdDialogService,
-    private snackBarService: MdSnackBar,
     public media: TdMediaService,
-    private allors: AllorsService) {
+  ) {
     this.scope = new Scope(allors.database, allors.workspace);
   }
 
@@ -48,7 +47,7 @@ export class OrganisationsComponent implements AfterViewInit, OnDestroy {
     }
   }
 
-  search (criteria: string): void {
+  search(criteria: string): void {
 
     if (this.subscription) {
       this.subscription.unsubscribe();
@@ -56,34 +55,45 @@ export class OrganisationsComponent implements AfterViewInit, OnDestroy {
 
     const m: MetaDomain = this.allors.meta;
 
-    const query: Query[] = [new Query(
+    const organisationRolesQuery: Query[] = [new Query(
       {
-        name: 'organisations',
-        objectType: m.Organisation,
-        include: [
-          new TreeNode({
-            roleType: m.Organisation.GeneralCorrespondence,
-            nodes: [
+        name: 'organisationRoles',
+        objectType: m.OrganisationRole,
+      })];
+
+    this.subscription = this.scope
+      .load('Pull', new PullRequest({ query: organisationRolesQuery }))
+      .mergeMap((loaded: Loaded) => {
+        const organisationRoles: OrganisationRole[] = loaded.collections.organisationRoles as OrganisationRole[];
+        const customerRole: OrganisationRole = organisationRoles.find((v: OrganisationRole) => v.Name === 'Customer');
+
+        const query: Query[] = [new Query(
+          {
+            name: 'organisations',
+            objectType: m.Organisation,
+            predicate: new Contains({roleType: m.Organisation.OrganisationRoles, object: customerRole}),
+            include: [
               new TreeNode({
-                roleType: m.PostalAddress.PostalBoundary,
+                roleType: m.Organisation.GeneralCorrespondence,
                 nodes: [
-                  new TreeNode({roleType: m.PostalBoundary.Country}),
+                  new TreeNode({
+                    roleType: m.PostalAddress.PostalBoundary,
+                    nodes: [
+                      new TreeNode({ roleType: m.PostalBoundary.Country }),
+                    ],
+                  }),
                 ],
               }),
             ],
-          }),
-        ],
-      })];
+          })];
 
-    this.scope.session.reset();
-
-    this.subscription = this.scope
-      .load('Pull', new PullRequest({ query: query }))
-      .subscribe(() => {
-        this.data = this.scope.collections.organisations as Organisation[];
+        return this.scope.load('Pull', new PullRequest({ query: query }));
+      })
+      .subscribe((loaded: Loaded) => {
+        this.data = loaded.collections.organisations as Organisation[];
       },
       (error: any) => {
-        alert(error);
+        this.errorService.message(error);
         this.goBack();
       });
   }

@@ -7,9 +7,7 @@ import { TdMediaService } from '@covalent/core';
 import { MetaDomain } from '../../../../../meta';
 import { PullRequest, Fetch, Path, Query, Equals, Like, TreeNode, Sort, Page } from '../../../../../domain';
 import { CommunicationEvent, Organisation, Locale } from '../../../../../domain';
-import { Scope } from '../../../../../angular';
-
-import { AllorsService } from '../../../../../../app/allors.service';
+import { AllorsService, ErrorService, Scope, Loaded, Saved } from '../../../../../angular';
 
 @Component({
   templateUrl: './organisation-overview.component.html',
@@ -24,10 +22,12 @@ export class OrganisationOverviewComponent implements OnInit, AfterViewInit, OnD
 
   organisation: Organisation;
 
-  constructor(private allors: AllorsService,
+  constructor(
+    private allors: AllorsService,
+    private errorService: ErrorService,
     private route: ActivatedRoute,
-    public snackBar: MdSnackBar,
     public media: TdMediaService) {
+
     this.scope = new Scope(allors.database, allors.workspace);
     this.m = this.allors.meta;
   }
@@ -152,12 +152,12 @@ export class OrganisationOverviewComponent implements OnInit, AfterViewInit, OnD
         return this.scope
           .load('Pull', new PullRequest({ fetch: fetch, query: query }));
       })
-      .subscribe(() => {
-        this.organisation = this.scope.objects.organisation as Organisation;
-        this.communicationEvents = this.scope.collections.communicationEvents as CommunicationEvent[];
+      .subscribe((loaded: Loaded) => {
+        this.organisation = loaded.objects.organisation as Organisation;
+        this.communicationEvents = loaded.collections.communicationEvents as CommunicationEvent[];
       },
       (error: any) => {
-        this.snackBar.open(error, 'close', { duration: 5000 });
+        this.errorService.message(error);
         this.goBack();
       },
       );

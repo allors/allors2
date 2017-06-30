@@ -5,12 +5,10 @@ import { ActivatedRoute } from '@angular/router';
 import { MdSnackBar, MdSnackBarConfig } from '@angular/material';
 import { TdMediaService } from '@covalent/core';
 
-import { Scope } from '../../../../../angular/base/Scope';
 import { MetaDomain } from '../../../../../meta/index';
 import { PullRequest, PushResponse, Fetch, Path, Query, Equals, Like, TreeNode, Sort, Page } from '../../../../../domain';
 import { Organisation, Person, PersonRole, Locale, OrganisationContactRelationship, OrganisationContactKind, Enumeration } from '../../../../../domain';
-
-import { AllorsService } from '../../../../../../app/allors.service';
+import { AllorsService, ErrorService, Scope, Loaded, Saved } from '../../../../../angular';
 
 @Component({
   templateUrl: './organisationContact.component.html',
@@ -30,10 +28,12 @@ export class OrganisationEditContactComponent implements OnInit, AfterViewInit, 
   organisationContactKinds: Enumeration[];
   roles: PersonRole[];
 
-  constructor(private allors: AllorsService,
+  constructor(
+    private allors: AllorsService,
+    private errorService: ErrorService,
     private route: ActivatedRoute,
-    public snackBar: MdSnackBar,
     public media: TdMediaService) {
+
     this.scope = new Scope(allors.database, allors.workspace);
     this.m = this.allors.meta;
   }
@@ -88,18 +88,18 @@ export class OrganisationEditContactComponent implements OnInit, AfterViewInit, 
         return this.scope
           .load('Pull', new PullRequest({ fetch: fetch, query: query }));
       })
-      .subscribe(() => {
+      .subscribe((loaded: Loaded) => {
 
-        this.organisationContactRelationship = this.scope.objects.organisationContactRelationship as OrganisationContactRelationship;
+        this.organisationContactRelationship = loaded.objects.organisationContactRelationship as OrganisationContactRelationship;
 
-        this.locales = this.scope.collections.locales as Locale[];
-        this.genders = this.scope.collections.genders as Enumeration[];
-        this.salutations = this.scope.collections.salutations as Enumeration[];
-        this.organisationContactKinds = this.scope.collections.organisationContactKinds as Enumeration[];
-        this.roles = this.scope.collections.roles as PersonRole[];
+        this.locales = loaded.collections.locales as Locale[];
+        this.genders = loaded.collections.genders as Enumeration[];
+        this.salutations = loaded.collections.salutations as Enumeration[];
+        this.organisationContactKinds = loaded.collections.organisationContactKinds as Enumeration[];
+        this.roles = loaded.collections.roles as PersonRole[];
       },
       (error: any) => {
-        this.snackBar.open(error, 'close', { duration: 5000 });
+        this.errorService.message(error);
         this.goBack();
       },
     );
@@ -119,11 +119,11 @@ export class OrganisationEditContactComponent implements OnInit, AfterViewInit, 
 
     this.scope
       .save()
-      .subscribe((pushResponse: PushResponse) => {
+      .subscribe((saved: Saved) => {
         this.goBack();
       },
-      (e: any) => {
-        this.snackBar.open(e.toString(), 'close', { duration: 5000 });
+      (error: Error) => {
+        this.errorService.dialog(error);
       });
   }
 

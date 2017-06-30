@@ -5,12 +5,10 @@ import { ActivatedRoute } from '@angular/router';
 import { MdSnackBar, MdSnackBarConfig } from '@angular/material';
 import { TdMediaService } from '@covalent/core';
 
-import { Scope } from '../../../../../angular/base/Scope';
 import { MetaDomain } from '../../../../../meta/index';
 import { PullRequest, PushResponse, Fetch, Path, Query, Equals, Like, TreeNode, Sort, Page } from '../../../../../domain';
 import { Organisation, PartyContactMechanism, PostalAddress, PostalBoundary, Country, Enumeration } from '../../../../../domain';
-
-import { AllorsService } from '../../../../../../app/allors.service';
+import { AllorsService, ErrorService, Scope, Loaded, Saved } from '../../../../../angular';
 
 @Component({
   templateUrl: './postalAddress.component.html',
@@ -28,10 +26,12 @@ export class PostalAddressEditComponent implements OnInit, AfterViewInit, OnDest
   contactMechanismPurposes: Enumeration[];
   countries: Country[];
 
-  constructor(private allors: AllorsService,
+  constructor(
+    private allors: AllorsService,
+    private errorService: ErrorService,
     private route: ActivatedRoute,
-    public snackBar: MdSnackBar,
     public media: TdMediaService) {
+
     this.scope = new Scope(allors.database, allors.workspace);
     this.m = this.allors.meta;
   }
@@ -82,15 +82,15 @@ export class PostalAddressEditComponent implements OnInit, AfterViewInit, OnDest
         return this.scope
           .load('Pull', new PullRequest({ fetch: fetch, query: query }));
       })
-      .subscribe(() => {
+      .subscribe((loaded: Loaded) => {
 
-        this.partyContactMechanism = this.scope.objects.partyContactMechanism as PartyContactMechanism;
+        this.partyContactMechanism = loaded.objects.partyContactMechanism as PartyContactMechanism;
         this.contactMechanism = this.partyContactMechanism.ContactMechanism as PostalAddress;
-        this.contactMechanismPurposes = this.scope.collections.contactMechanismPurposes as Enumeration[];
-        this.countries = this.scope.collections.countries as Country[];
+        this.contactMechanismPurposes = loaded.collections.contactMechanismPurposes as Enumeration[];
+        this.countries = loaded.collections.countries as Country[];
       },
       (error: any) => {
-        this.snackBar.open(error, 'close', { duration: 5000 });
+        this.errorService.message(error);
         this.goBack();
       },
     );
@@ -110,11 +110,11 @@ export class PostalAddressEditComponent implements OnInit, AfterViewInit, OnDest
 
     this.scope
       .save()
-      .subscribe((pushResponse: PushResponse) => {
+      .subscribe((saved: Saved) => {
         this.goBack();
       },
-      (e: any) => {
-        this.snackBar.open(e.toString(), 'close', { duration: 5000 });
+      (error: Error) => {
+        this.errorService.dialog(error);
       });
   }
 

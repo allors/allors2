@@ -7,9 +7,7 @@ import { TdMediaService } from '@covalent/core';
 import { MetaDomain } from '../../../../../meta';
 import { PullRequest, Fetch, Path, Query, Equals, Like, TreeNode, Sort, Page } from '../../../../../domain';
 import { CommunicationEvent, Person, Locale, Organisation, OrganisationContactRelationship } from '../../../../../domain';
-import { Scope } from '../../../../../angular';
-
-import { AllorsService } from '../../../../../../app/allors.service';
+import { AllorsService, ErrorService, Scope, Loaded, Saved } from '../../../../../angular';
 
 @Component({
   templateUrl: './person-overview.component.html',
@@ -25,10 +23,12 @@ export class PersonOverviewComponent implements OnInit, AfterViewInit, OnDestroy
   person: Person;
   organisation: Organisation;
 
-  constructor(private allors: AllorsService,
+  constructor(
+    private allors: AllorsService,
+    private errorService: ErrorService,
     private route: ActivatedRoute,
-    public snackBar: MdSnackBar,
     public media: TdMediaService) {
+
     this.scope = new Scope(allors.database, allors.workspace);
     this.m = this.allors.meta;
   }
@@ -132,14 +132,14 @@ export class PersonOverviewComponent implements OnInit, AfterViewInit, OnDestroy
         return this.scope
           .load('Pull', new PullRequest({ fetch: fetch, query: query }));
       })
-      .subscribe(() => {
-        this.person = this.scope.objects.person as Person;
-        const organisationContactRelationships: OrganisationContactRelationship[] = this.scope.collections.organisationContactRelationships as OrganisationContactRelationship[];
+      .subscribe((loaded: Loaded) => {
+        this.person = loaded.objects.person as Person;
+        const organisationContactRelationships: OrganisationContactRelationship[] = loaded.collections.organisationContactRelationships as OrganisationContactRelationship[];
         this.organisation = organisationContactRelationships.length > 0 ? organisationContactRelationships[0].Organisation as Organisation : undefined;
-        this.communicationEvents = this.scope.collections.communicationEvents as CommunicationEvent[];
+        this.communicationEvents = loaded.collections.communicationEvents as CommunicationEvent[];
       },
       (error: any) => {
-        this.snackBar.open(error, 'close', { duration: 5000 });
+        this.errorService.message(error);
         this.goBack();
       },
       );

@@ -5,12 +5,10 @@ import { Title } from '@angular/platform-browser';
 import { MdSnackBar } from '@angular/material';
 import { TdLoadingService, TdDialogService, TdMediaService } from '@covalent/core';
 
-import { Scope } from '../../../../angular/base/Scope';
 import { MetaDomain } from '../../../../meta/index';
 import { PullRequest, Query, Equals, Like, TreeNode, Sort, Page } from '../../../../domain';
 import { Good } from '../../../../domain';
-
-import { AllorsService } from '../../../../../app/allors.service';
+import { AllorsService, ErrorService, Scope, Loaded, Saved } from '../../../../angular';
 
 @Component({
   templateUrl: './goods.component.html',
@@ -23,14 +21,15 @@ export class GoodsComponent implements AfterViewInit, OnDestroy {
   data: Good[];
   filtered: Good[];
 
-  constructor(private titleService: Title,
+  constructor(
+    private allorsService: AllorsService,
+    private errorService: ErrorService,
+    private titleService: Title,
     private router: Router,
-    private loadingService: TdLoadingService,
     private dialogService: TdDialogService,
-    private snackBarService: MdSnackBar,
-    public media: TdMediaService,
-    private allors: AllorsService) {
-    this.scope = new Scope(allors.database, allors.workspace);
+    public media: TdMediaService) {
+
+    this.scope = new Scope(allorsService.database, allorsService.workspace);
   }
 
   goBack(): void {
@@ -54,7 +53,7 @@ export class GoodsComponent implements AfterViewInit, OnDestroy {
       this.subscription.unsubscribe();
     }
 
-    const m: MetaDomain = this.allors.meta;
+    const m: MetaDomain = this.allorsService.meta;
 
     const query: Query[] = [new Query(
       {
@@ -72,8 +71,8 @@ export class GoodsComponent implements AfterViewInit, OnDestroy {
 
     this.subscription = this.scope
       .load('Pull', new PullRequest({ query: query }))
-      .subscribe(() => {
-        this.data = this.scope.collections.goods as Good[];
+      .subscribe((loaded: Loaded) => {
+        this.data = loaded.collections.goods as Good[];
       },
       (error: any) => {
         alert(error);

@@ -5,12 +5,10 @@ import { Title } from '@angular/platform-browser';
 import { MdSnackBar } from '@angular/material';
 import { TdLoadingService, TdDialogService, TdMediaService } from '@covalent/core';
 
-import { Scope } from '../../../../angular/base/Scope';
 import { MetaDomain } from '../../../../meta/index';
 import { PullRequest, Query, Equals, Like, TreeNode, Sort, Page } from '../../../../domain';
 import { ProductType } from '../../../../domain';
-
-import { AllorsService } from '../../../.././../app/allors.service';
+import { AllorsService, ErrorService, Scope, Loaded, Saved } from '../../../../angular';
 
 @Component({
   templateUrl: './productTypes.component.html',
@@ -69,8 +67,8 @@ export class ProductTypesComponent implements AfterViewInit, OnDestroy {
 
     this.subscription = this.scope
       .load('Pull', new PullRequest({ query: query }))
-      .subscribe(() => {
-        this.data = this.scope.collections.productTypes as ProductType[];
+      .subscribe((loaded: Loaded) => {
+        this.data = loaded.collections.productTypes as ProductType[];
       },
       (error: any) => {
         alert(error);

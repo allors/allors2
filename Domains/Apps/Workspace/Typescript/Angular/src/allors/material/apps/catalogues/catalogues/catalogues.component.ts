@@ -5,12 +5,10 @@ import { Title } from '@angular/platform-browser';
 import { MdSnackBar } from '@angular/material';
 import { TdLoadingService, TdDialogService, TdMediaService } from '@covalent/core';
 
-import { Scope } from '../../../../angular';
 import { MetaDomain } from '../../../../meta';
 import { PullRequest, PushResponse, Fetch, Path, Query, Equals, Like, TreeNode, Sort, Page } from '../../../../domain';
 import { Catalogue } from '../../../../domain';
-
-import { AllorsService } from '../../../../../app/allors.service';
+import { AllorsService, ErrorService, Scope, Loaded } from '../../../../angular';
 
 @Component({
   templateUrl: './catalogues.component.html',
@@ -23,14 +21,16 @@ export class CataloguesComponent implements AfterViewInit, OnDestroy {
   data: Catalogue[];
   filtered: Catalogue[];
 
-  constructor(private titleService: Title,
+  constructor(
+    private allorsService: AllorsService,
+    private errorService: ErrorService,
+    private titleService: Title,
     private router: Router,
-    private loadingService: TdLoadingService,
-    private dialogService: TdDialogService,
-    private snackBarService: MdSnackBar,
+    public dialogService: TdDialogService,
     public media: TdMediaService,
-    private allors: AllorsService) {
-    this.scope = new Scope(allors.database, allors.workspace);
+    ) {
+
+    this.scope = new Scope(allorsService.database, allorsService.workspace);
   }
 
   goBack(): void {
@@ -54,7 +54,7 @@ export class CataloguesComponent implements AfterViewInit, OnDestroy {
       this.subscription.unsubscribe();
     }
 
-    const m: MetaDomain = this.allors.meta;
+    const m: MetaDomain = this.allorsService.meta;
 
     const query: Query[] = [new Query(
       {
@@ -70,11 +70,11 @@ export class CataloguesComponent implements AfterViewInit, OnDestroy {
 
     this.subscription = this.scope
       .load('Pull', new PullRequest({ query: query }))
-      .subscribe(() => {
-        this.data = this.scope.collections.catalogues as Catalogue[];
+      .subscribe((loaded: Loaded) => {
+        this.data = loaded.collections.catalogues as Catalogue[];
       },
-      (error: any) => {
-        alert(error);
+      (error: Error) => {
+        this.errorService.message(error);
         this.goBack();
       });
   }

@@ -7,10 +7,8 @@ import { TdLoadingService, TdDialogService, TdMediaService } from '@covalent/cor
 
 import { PullRequest, Query, Equals, Like, TreeNode, Sort, Page } from '../../../../domain';
 import { MetaDomain } from '../../../../meta/index';
-import { Scope } from '../../../../angular/base/Scope';
 import { Person, OrganisationContactRelationship } from '../../../../domain';
-
-import { AllorsService } from '../../../../../app/allors.service';
+import { AllorsService, ErrorService, Scope, Loaded, Saved } from '../../../../angular';
 
 @Component({
   templateUrl: './people.component.html',
@@ -22,12 +20,14 @@ export class PeopleComponent implements AfterViewInit, OnDestroy {
 
   data: Person[];
 
-  constructor(private titleService: Title,
+  constructor(
+    private allors: AllorsService,
+    private errorService: ErrorService,
+    private titleService: Title,
     private router: Router,
-    private loadingService: TdLoadingService,
     private dialogService: TdDialogService,
-    private snackBarService: MdSnackBar,
-    private allors: AllorsService) {
+    private snackBarService: MdSnackBar) {
+
     this.scope = new Scope(allors.database, allors.workspace);
   }
 
@@ -67,8 +67,8 @@ export class PeopleComponent implements AfterViewInit, OnDestroy {
 
     this.subscription = this.scope
       .load('Pull', new PullRequest({ query: query }))
-      .subscribe(() => {
-        this.data = this.scope.collections.people as Person[];
+      .subscribe((loaded: Loaded) => {
+        this.data = loaded.collections.people as Person[];
 
       },
       (error: any) => {

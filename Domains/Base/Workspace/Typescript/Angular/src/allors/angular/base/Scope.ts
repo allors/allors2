@@ -23,19 +23,19 @@ export class Scope {
 
     return this.database
       .pull(service, params)
-      .mergeMap((response: PullResponse) => {
-        const requireLoadIds: SyncRequest = this.workspace.diff(response);
+      .mergeMap((pullResponse: PullResponse) => {
+        const requireLoadIds: SyncRequest = this.workspace.diff(pullResponse);
 
         if (requireLoadIds.objects.length > 0) {
           return this.database
             .sync(requireLoadIds)
-            .map((loadResponse: SyncResponse) => {
-              this.workspace.sync(loadResponse);
-              const loaded: Loaded = new Loaded(this.session, response);
+            .map((syncResponse: SyncResponse) => {
+              this.workspace.sync(syncResponse);
+              const loaded: Loaded = new Loaded(this.session, pullResponse);
               return loaded;
             });
         } else {
-          const loaded: Loaded = new Loaded(this.session, response);
+          const loaded: Loaded = new Loaded(this.session, pullResponse);
           return Observable.of(loaded);
         }
       });

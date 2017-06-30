@@ -5,12 +5,10 @@ import { ActivatedRoute } from '@angular/router';
 import { MdSnackBar, MdSnackBarConfig } from '@angular/material';
 import { TdMediaService } from '@covalent/core';
 
-import { Scope } from '../../../../../angular';
 import { MetaDomain } from '../../../../../meta';
 import { PullRequest, PushResponse, Fetch, Path, Query, Equals, Like, TreeNode, Sort, Page } from '../../../../../domain';
 import { Catalogue, ProductCategory, Locale, Singleton } from '../../../../../domain';
-
-import { AllorsService } from '../../../../../../app/allors.service';
+import { AllorsService, ErrorService, Scope, Loaded, Saved } from '../../../../../angular';
 
 @Component({
   templateUrl: './catalogue.component.html',
@@ -29,12 +27,14 @@ export class CatalogueFormComponent implements OnInit, AfterViewInit, OnDestroy 
   locales: Locale[];
   categories: ProductCategory[];
 
-  constructor(private allors: AllorsService,
+  constructor(
+    private allorsService: AllorsService,
+    private errorService: ErrorService,
     private route: ActivatedRoute,
-    public snackBar: MdSnackBar,
     public media: TdMediaService) {
-    this.scope = new Scope(allors.database, allors.workspace);
-    this.m = this.allors.meta;
+
+    this.scope = new Scope(allorsService.database, allorsService.workspace);
+    this.m = this.allorsService.meta;
   }
 
   ngOnInit(): void {
@@ -76,19 +76,19 @@ export class CatalogueFormComponent implements OnInit, AfterViewInit, OnDestroy 
         return this.scope
           .load('Pull', new PullRequest({ fetch: fetch, query: query }));
       })
-      .subscribe(() => {
+      .subscribe((loaded: Loaded) => {
 
-        this.catalogue = this.scope.objects.catalogue as Catalogue;
+        this.catalogue = loaded.objects.catalogue as Catalogue;
         if (!this.catalogue) {
           this.catalogue = this.scope.session.create('Catalogue') as Catalogue;
         }
 
-        this.singleton = this.scope.collections.singletons[0] as Singleton;
-        this.categories = this.scope.collections.categories as ProductCategory[];
+        this.singleton = loaded.collections.singletons[0] as Singleton;
+        this.categories = loaded.collections.categories as ProductCategory[];
         this.locales = this.singleton.Locales;
       },
-      (error: any) => {
-        this.snackBar.open(error, 'close', { duration: 5000 });
+      (error: Error) => {
+        this.errorService.message(error);
         this.goBack();
       },
     );
@@ -108,11 +108,11 @@ export class CatalogueFormComponent implements OnInit, AfterViewInit, OnDestroy 
 
     this.scope
       .save()
-      .subscribe((pushResponse: PushResponse) => {
+      .subscribe((saved: Saved) => {
         this.goBack();
       },
-      (e: any) => {
-        this.snackBar.open(e.toString(), 'close', { duration: 5000 });
+      (error: Error) => {
+        this.errorService.dialog(error);
       });
   }
 

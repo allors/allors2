@@ -5,12 +5,10 @@ import { ActivatedRoute } from '@angular/router';
 import { MdSnackBar, MdSnackBarConfig } from '@angular/material';
 import { TdMediaService } from '@covalent/core';
 
-import { Scope } from '../../../../../angular/base/Scope';
 import { MetaDomain } from '../../../../../meta';
 import { PullRequest, PushResponse, Fetch, Path, Query, Equals, Like, TreeNode, Sort, Page } from '../../../../../domain';
 import { ProductCharacteristic, Singleton, Locale } from '../../../../../domain';
-
-import { AllorsService } from '../../../../../../app/allors.service';
+import { AllorsService, ErrorService, Scope, Loaded, Saved } from '../../../../../angular';
 
 @Component({
   templateUrl: './productCharacteristic.component.html',
@@ -28,10 +26,12 @@ export class ProductCharacteristicFormComponent implements OnInit, AfterViewInit
   singleton: Singleton;
   locales: Locale[];
 
-  constructor(private allors: AllorsService,
+  constructor(
+    private allors: AllorsService,
+    private errorService: ErrorService,
     private route: ActivatedRoute,
-    public snackBar: MdSnackBar,
     public media: TdMediaService) {
+
     this.scope = new Scope(allors.database, allors.workspace);
     this.m = this.allors.meta;
   }
@@ -69,18 +69,18 @@ export class ProductCharacteristicFormComponent implements OnInit, AfterViewInit
         return this.scope
           .load('Pull', new PullRequest({ fetch: fetch, query: query }));
       })
-      .subscribe(() => {
+      .subscribe((loaded: Loaded) => {
 
-        this.productCharacteristic = this.scope.objects.productCharacteristic as ProductCharacteristic;
+        this.productCharacteristic = loaded.objects.productCharacteristic as ProductCharacteristic;
         if (!this.productCharacteristic) {
           this.productCharacteristic = this.scope.session.create('ProductCharacteristic') as ProductCharacteristic;
         }
 
-        this.singleton = this.scope.collections.singletons[0] as Singleton;
+        this.singleton = loaded.collections.singletons[0] as Singleton;
         this.locales = this.singleton.Locales;
       },
       (error: any) => {
-        this.snackBar.open(error, 'close', { duration: 5000 });
+        this.errorService.message(error);
         this.goBack();
       },
     );
@@ -100,11 +100,11 @@ export class ProductCharacteristicFormComponent implements OnInit, AfterViewInit
 
     this.scope
       .save()
-      .subscribe((pushResponse: PushResponse) => {
+      .subscribe((saved: Saved) => {
         this.goBack();
       },
-      (e: any) => {
-        this.snackBar.open(e.toString(), 'close', { duration: 5000 });
+      (error: Error) => {
+        this.errorService.dialog(error);
       });
   }
 

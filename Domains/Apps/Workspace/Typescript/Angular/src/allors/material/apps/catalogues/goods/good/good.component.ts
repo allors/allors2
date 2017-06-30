@@ -5,12 +5,10 @@ import { ActivatedRoute } from '@angular/router';
 import { MdSnackBar, MdSnackBarConfig } from '@angular/material';
 import { TdMediaService } from '@covalent/core';
 
-import { Scope } from '../../../../../angular/base/Scope';
 import { MetaDomain } from '../../../../../meta/index';
 import { PullRequest, PushResponse, Fetch, Path, Query, Equals, Like, TreeNode, Sort, Page } from '../../../../../domain';
 import { Good, ProductCategory, ProductType, Locale, Singleton } from '../../../../../domain';
-
-import { AllorsService } from '../../../../../../app/allors.service';
+import { AllorsService, ErrorService, Scope, Loaded, Saved } from '../../../../../angular';
 
 @Component({
   templateUrl: './good.component.html',
@@ -30,12 +28,14 @@ export class GoodFormComponent implements OnInit, AfterViewInit, OnDestroy {
   categories: ProductCategory[];
   productTypes: ProductType[];
 
-  constructor(private allors: AllorsService,
+  constructor(
+    private allorsService: AllorsService,
+    private errorService: ErrorService,
     private route: ActivatedRoute,
-    public snackBar: MdSnackBar,
     public media: TdMediaService) {
-    this.scope = new Scope(allors.database, allors.workspace);
-    this.m = this.allors.meta;
+
+    this.scope = new Scope(allorsService.database, allorsService.workspace);
+    this.m = this.allorsService.meta;
   }
 
   ngOnInit(): void {
@@ -92,20 +92,20 @@ export class GoodFormComponent implements OnInit, AfterViewInit, OnDestroy {
         return this.scope
           .load('Pull', new PullRequest({ fetch: fetch, query: query }));
       })
-      .subscribe(() => {
+      .subscribe((loaded: Loaded) => {
 
-        this.good = this.scope.objects.good as Good;
+        this.good = loaded.objects.good as Good;
         if (!this.good) {
           this.good = this.scope.session.create('Good') as Good;
         }
 
-        this.categories = this.scope.collections.categories as ProductCategory[];
-        this.productTypes = this.scope.collections.productTypes as ProductType[];
-        this.singleton = this.scope.collections.singletons[0] as Singleton;
+        this.categories = loaded.collections.categories as ProductCategory[];
+        this.productTypes = loaded.collections.productTypes as ProductType[];
+        this.singleton = loaded.collections.singletons[0] as Singleton;
         this.locales = this.singleton.Locales;
       },
       (error: any) => {
-        this.snackBar.open(error, 'close', { duration: 5000 });
+        this.errorService.message(error);
         this.goBack();
       },
     );
@@ -125,11 +125,11 @@ export class GoodFormComponent implements OnInit, AfterViewInit, OnDestroy {
 
     this.scope
       .save()
-      .subscribe((pushResponse: PushResponse) => {
+      .subscribe((saved: Saved) => {
         this.goBack();
       },
-      (e: any) => {
-        this.snackBar.open(e.toString(), 'close', { duration: 5000 });
+      (error: Error) => {
+        this.errorService.dialog(error);
       });
   }
 

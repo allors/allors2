@@ -1,3 +1,4 @@
+import { LayoutComponent } from './layout.component';
 import { CommunicationEventsTableComponent } from './communicationEvents/communicationEvents.table.component';
 import { OrganisationsTableComponent } from './organisations/organisations.table.component';
 
@@ -14,7 +15,6 @@ import { PersonFormComponent } from './people/person/person.component';
 import { PersonOverviewComponent } from './people/person/person-overview.component';
 import { PostalAddressAddComponent } from './contactMechanisms/contactMechanism/postalAddressAdd.component';
 import { PostalAddressEditComponent } from './contactMechanisms/contactMechanism/postalAddressEdit.component';
-import { RelationComponent } from './relation.component';
 import { RelationDashboardComponent } from './dashboard/relation-dashboard.component';
 import { TelecommunicationsNumberAddComponent } from './contactMechanisms/contactMechanism/telecommunicationsNumberAdd.component';
 import { TelecommunicationsNumberEditComponent } from './contactMechanisms/contactMechanism/telecommunicationsNumberEdit.component';
@@ -22,6 +22,7 @@ import { WebAddressAddComponent } from './contactMechanisms/contactMechanism/web
 import { WebAddressEditComponent } from './contactMechanisms/contactMechanism/webAddressEdit.component';
 
 export const RELATIONS: any[] = [
+  LayoutComponent,
   CommunicationEventsTableComponent,
   OrganisationsTableComponent,
 ];
@@ -31,7 +32,7 @@ export const RELATIONS_ROUTING: any[] = [
   OrganisationAddContactComponent, OrganisationEditContactComponent, OrganisationFormComponent, OrganisationOverviewComponent, OrganisationsComponent,
   PeopleComponent, PersonFormComponent, PersonOverviewComponent,
   PostalAddressAddComponent, PostalAddressEditComponent,
-  RelationComponent, RelationDashboardComponent,
+  RelationDashboardComponent,
   TelecommunicationsNumberAddComponent, TelecommunicationsNumberEditComponent,
   WebAddressAddComponent, WebAddressEditComponent,
 ];
@@ -52,7 +53,6 @@ export {
   PersonOverviewComponent,
   PostalAddressAddComponent,
   PostalAddressEditComponent,
-  RelationComponent,
   RelationDashboardComponent,
   TelecommunicationsNumberAddComponent,
   TelecommunicationsNumberEditComponent,

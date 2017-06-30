@@ -5,12 +5,10 @@ import { ActivatedRoute } from '@angular/router';
 import { MdSnackBar, MdSnackBarConfig } from '@angular/material';
 import { TdMediaService } from '@covalent/core';
 
-import { Scope } from '../../../../../angular';
 import { MetaDomain } from '../../../../../meta/index';
 import { PullRequest, PushResponse, Fetch, Path, Query, Equals, Like, TreeNode, Sort, Page } from '../../../../../domain';
 import { ProductCategory, Locale, Singleton } from '../../../../../domain';
-
-import { AllorsService } from '../../../../../../app/allors.service';
+import { AllorsService, ErrorService, Scope, Loaded, Saved } from '../../../../../angular';
 
 @Component({
   templateUrl: './category.component.html',
@@ -29,9 +27,10 @@ export class CategoryFormComponent implements OnInit, AfterViewInit, OnDestroy {
   locales: Locale[];
   categories: ProductCategory[];
 
-  constructor(private allors: AllorsService,
+  constructor(
+    private allors: AllorsService,
+    private errorService: ErrorService,
     private route: ActivatedRoute,
-    public snackBar: MdSnackBar,
     public media: TdMediaService) {
     this.scope = new Scope(allors.database, allors.workspace);
     this.m = this.allors.meta;
@@ -82,19 +81,19 @@ export class CategoryFormComponent implements OnInit, AfterViewInit, OnDestroy {
         return this.scope
           .load('Pull', new PullRequest({ fetch: fetch, query: query }));
       })
-      .subscribe(() => {
+      .subscribe((loaded: Loaded) => {
 
-        this.category = this.scope.objects.category as ProductCategory;
+        this.category = loaded.objects.category as ProductCategory;
         if (!this.category) {
           this.category = this.scope.session.create('Category') as ProductCategory;
         }
 
-        this.singleton = this.scope.collections.singletons[0] as Singleton;
-        this.categories = this.scope.collections.categories as ProductCategory[];
+        this.singleton = loaded.collections.singletons[0] as Singleton;
+        this.categories = loaded.collections.categories as ProductCategory[];
         this.locales = this.singleton.Locales;
       },
       (error: any) => {
-        this.snackBar.open(error, 'close', { duration: 5000 });
+        this.errorService.message(error);
         this.goBack();
       },
     );
@@ -114,15 +113,11 @@ export class CategoryFormComponent implements OnInit, AfterViewInit, OnDestroy {
 
     this.scope
       .save()
-      .subscribe((pushResponse: PushResponse) => {
-        if (pushResponse.hasErrors) {
-          this.allors.onSaveError(pushResponse);
-        } else {
-          this.goBack();
-        }
+      .subscribe((saved: Saved) => {
+        this.goBack();
       },
-      (e: any) => {
-        this.snackBar.open(e.toString(), 'close', { duration: 5000 });
+      (error: Error) => {
+        this.errorService.dialog(error);
       });
   }
 

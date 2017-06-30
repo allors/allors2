@@ -5,12 +5,10 @@ import { Title } from '@angular/platform-browser';
 import { MdSnackBar } from '@angular/material';
 import { TdLoadingService, TdDialogService, TdMediaService } from '@covalent/core';
 
-import { Scope } from '../../../../angular/base/Scope';
 import { MetaDomain } from '../../../../meta/index';
 import { PullRequest, Query, Equals, Like, TreeNode, Sort, Page } from '../../../../domain';
 import { ProductCharacteristic } from '../../../../domain';
-
-import { AllorsService } from '../../../.././../app/allors.service';
+import { AllorsService, ErrorService, Scope, Loaded, Saved } from '../../../../angular';
 
 @Component({
   templateUrl: './productCharacteristics.component.html',
@@ -23,13 +21,13 @@ export class ProductCharacteristicsComponent implements AfterViewInit, OnDestroy
   data: ProductCharacteristic[];
   filtered: ProductCharacteristic[];
 
-  constructor(private titleService: Title,
+  constructor(
+    private titleService: Title,
     private router: Router,
-    private loadingService: TdLoadingService,
     private dialogService: TdDialogService,
-    private snackBarService: MdSnackBar,
     public media: TdMediaService,
     private allors: AllorsService) {
+
     this.scope = new Scope(allors.database, allors.workspace);
   }
 
@@ -69,8 +67,8 @@ export class ProductCharacteristicsComponent implements AfterViewInit, OnDestroy
 
     this.subscription = this.scope
       .load('Pull', new PullRequest({ query: query }))
-      .subscribe(() => {
-        this.data = this.scope.collections.productCharacteristic as ProductCharacteristic[];
+      .subscribe((loaded: Loaded) => {
+        this.data = loaded.collections.productCharacteristic as ProductCharacteristic[];
       },
       (error: any) => {
         alert(error);

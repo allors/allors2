@@ -5,12 +5,10 @@ import { Title } from '@angular/platform-browser';
 import { MdSnackBar } from '@angular/material';
 import { TdLoadingService, TdDialogService, TdMediaService } from '@covalent/core';
 
-import { Scope } from '../../../../angular/base/Scope';
-import { PullRequest, Query, Equals, Like, TreeNode, Sort, Page } from '../../../../domain';
 import { MetaDomain } from '../../../../meta/index';
+import { PullRequest, Query, Equals, Like, TreeNode, Sort, Page } from '../../../../domain';
 import { ProductCategory } from '../../../../domain';
-
-import { AllorsService } from '../../../../../app/allors.service';
+import { AllorsService, ErrorService, Scope, Loaded, Saved } from '../../../../angular';
 
 @Component({
   templateUrl: './categories.component.html',
@@ -23,13 +21,14 @@ export class CategoriesComponent implements AfterViewInit, OnDestroy {
   data: ProductCategory[];
   filtered: ProductCategory[];
 
-  constructor(private titleService: Title,
+  constructor(
+    private allors: AllorsService,
+    private errorService: ErrorService,
+    private titleService: Title,
     private router: Router,
-    private loadingService: TdLoadingService,
     private dialogService: TdDialogService,
-    private snackBarService: MdSnackBar,
-    public media: TdMediaService,
-    private allors: AllorsService) {
+    public media: TdMediaService) {
+
     this.scope = new Scope(allors.database, allors.workspace);
   }
 
@@ -71,11 +70,11 @@ export class CategoriesComponent implements AfterViewInit, OnDestroy {
 
     this.subscription = this.scope
       .load('Pull', new PullRequest({ query: query }))
-      .subscribe(() => {
-        this.data = this.scope.collections.categories as ProductCategory[];
+      .subscribe((loaded: Loaded) => {
+        this.data = loaded.collections.categories as ProductCategory[];
       },
       (error: any) => {
-        alert(error);
+        this.errorService.message(error);
         this.goBack();
       });
   }
