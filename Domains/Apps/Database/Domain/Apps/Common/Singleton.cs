@@ -28,6 +28,19 @@ namespace Allors.Domain
     /// </summary>
     public partial class Singleton
     {
+        public void AppsOnPreDerive(ObjectOnPreDerive method)
+        {
+            var derivation = method.Derivation;
+
+            if (derivation.HasChangedRole(this, this.Meta.Locales))
+            {
+                foreach (Good product in new Goods(this.strategy.Session).Extent())
+                {
+                    derivation.AddDerivable(product);
+                }
+            }
+        }
+
         public void AppsOnDeriveRevenues(IDerivation derivation)
         {
             PartyPackageRevenues.AppsOnDeriveRevenues(this.Strategy.Session);

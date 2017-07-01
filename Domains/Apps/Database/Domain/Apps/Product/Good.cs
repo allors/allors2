@@ -15,12 +15,73 @@
 // --------------------------------------------------------------------------------------------------------------------
 namespace Allors.Domain
 {
+    using System.Collections.Generic;
     using System.Linq;
 
     using Meta;
 
     public partial class Good
     {
+        public void AppsOnBuild(ObjectOnBuild method)
+        {
+            if (!this.ExistSoldBy)
+            {
+                this.SoldBy = Singleton.Instance(this.Strategy.Session).DefaultInternalOrganisation;
+            }
+        }
+
+        public void AppsOnPreDerive(ObjectOnPreDerive method)
+        {
+            var derivation = method.Derivation;
+
+            // TODO:
+            if (derivation.ChangeSet.Associations.Contains(this.Id))
+            {
+                if (this.ExistInventoryItemsWhereGood)
+                {
+                    foreach (InventoryItem inventoryItem in this.InventoryItemsWhereGood)
+                    {
+                        derivation.AddDependency(inventoryItem, this);
+                    }
+                }
+            }
+        }
+
+        public void AppsOnDerive(ObjectOnDerive method)
+        {
+            var derivation = method.Derivation;
+            var defaultLocale = Singleton.Instance(this.strategy.Session).DefaultLocale;
+
+            derivation.Validation.AssertAtLeastOne(this, M.Good.FinishedGood, M.Good.InventoryItemKind);
+            derivation.Validation.AssertExistsAtMostOne(this, M.Good.FinishedGood, M.Good.InventoryItemKind);
+
+            if (this.LocalisedNames.Any(x => x.Locale.Equals(defaultLocale)))
+            {
+                this.Name = this.LocalisedNames.First(x => x.Locale.Equals(defaultLocale)).Text;
+            }
+
+            if (this.LocalisedDescriptions.Any(x => x.Locale.Equals(defaultLocale)))
+            {
+                this.Description = this.LocalisedDescriptions.First(x => x.Locale.Equals(defaultLocale)).Text;
+            }
+
+            if (this.ProductCategories.Count == 1 && !this.ExistPrimaryProductCategory)
+            {
+                this.PrimaryProductCategory = this.ProductCategories.First;
+            }
+
+            if (this.ExistPrimaryProductCategory && !this.ExistProductCategories)
+            {
+                this.AddProductCategory(this.PrimaryProductCategory);
+            }
+
+            this.DeriveVirtualProductPriceComponent();
+            this.DeriveProductCategoriesExpanded();
+            this.DeriveAvailableToPromise();
+            this.DeriveThumbnail();
+            this.Sync();
+        }
+
         public void DeriveVirtualProductPriceComponent()
         {
             if (!this.ExistProductWhereVariant)
@@ -106,63 +167,57 @@ namespace Allors.Domain
             }
         }
 
-        public void AppsOnBuild(ObjectOnBuild method)
+        private void Sync()
         {
-            if (!this.ExistSoldBy)
+            if (!this.ExistProductType)
             {
-                this.SoldBy = Singleton.Instance(this.Strategy.Session).DefaultInternalOrganisation;
-            }
-        }
-
-        public void AppsOnPreDerive(ObjectOnPreDerive method)
-        {
-            var derivation = method.Derivation;
-
-            // TODO:
-            if (derivation.ChangeSet.Associations.Contains(this.Id))
-            {
-                if(this.ExistInventoryItemsWhereGood)
+                foreach (ProductCharacteristicValue productCharacteristicValue in this.ProductCharacteristicValues)
                 {
-                    foreach (InventoryItem inventoryItem in this.InventoryItemsWhereGood)
+                    productCharacteristicValue.Delete();
+                }
+            }
+            else
+            { 
+                var productCharacteristics = new HashSet<ProductCharacteristic>(this.ProductType.ProductCharacteristics);
+                var locales = new HashSet<Locale>(Singleton.Instance(this.strategy.Session).Locales);
+
+                var currentProductCharacteristicValueByLocaleByProductCharacteristic = this.ProductCharacteristicValues
+                    .GroupBy(v => v.ProductCharacteristic)
+                    .ToDictionary(g => g.Key, g => g.GroupBy(v => v.Locale).ToDictionary(h => h.Key, h => h.First()));
+
+                foreach (ProductCharacteristicValue productCharacteristicValue in this.ProductCharacteristicValues)
+                {
+                    // Delete obsolete ProductCharacteristic
+                    if (!productCharacteristics.Contains(productCharacteristicValue.ProductCharacteristic) ||
+                        !locales.Contains(productCharacteristicValue.Locale))
                     {
-                        derivation.AddDependency(inventoryItem, this);
+                        productCharacteristicValue.Delete();
+                    }
+                }
+
+                foreach (var productCharacteristic in productCharacteristics)
+                {
+                    foreach (var locale in locales)
+                    {
+                        ProductCharacteristicValue productCharacteristicValue = null;
+                        Dictionary<Locale, ProductCharacteristicValue> currentProductCharacteristicValueByLocale;
+                        if (currentProductCharacteristicValueByLocaleByProductCharacteristic.TryGetValue(productCharacteristic, out currentProductCharacteristicValueByLocale))
+                        {
+                            currentProductCharacteristicValueByLocale.TryGetValue(locale, out productCharacteristicValue);
+                        }
+
+                        if (productCharacteristicValue == null)
+                        {
+                            productCharacteristicValue = new ProductCharacteristicValueBuilder(this.strategy.Session)
+                                .WithProductCharacteristic(productCharacteristic)
+                                .WithLocale(locale)
+                                .Build();
+
+                            this.AddProductCharacteristicValue(productCharacteristicValue);
+                        }
                     }
                 }
             }
-        }
-
-        public void AppsOnDerive(ObjectOnDerive method)
-        {
-            var derivation = method.Derivation;
-            var defaultLocale = Singleton.Instance(this.strategy.Session).DefaultLocale;
-
-            derivation.Validation.AssertAtLeastOne(this, M.Good.FinishedGood, M.Good.InventoryItemKind);
-            derivation.Validation.AssertExistsAtMostOne(this, M.Good.FinishedGood, M.Good.InventoryItemKind);
-
-            if (this.LocalisedNames.Any(x => x.Locale.Equals(defaultLocale)))
-            {
-                this.Name = this.LocalisedNames.First(x => x.Locale.Equals(defaultLocale)).Text;
-            }
-
-            if (this.LocalisedDescriptions.Any(x => x.Locale.Equals(defaultLocale)))
-            {
-                this.Description = this.LocalisedDescriptions.First(x => x.Locale.Equals(defaultLocale)).Text;
-            }
-
-            if (this.ProductCategories.Count == 1 && !this.ExistPrimaryProductCategory)
-            {
-                this.PrimaryProductCategory = this.ProductCategories.First;
-            }
-
-            if (this.ExistPrimaryProductCategory && !this.ExistProductCategories)
-            {
-                this.AddProductCategory(this.PrimaryProductCategory);
-            }
-
-            this.DeriveVirtualProductPriceComponent();
-            this.DeriveProductCategoriesExpanded();
-            this.DeriveAvailableToPromise();
-            this.DeriveThumbnail();
         }
     }
 }

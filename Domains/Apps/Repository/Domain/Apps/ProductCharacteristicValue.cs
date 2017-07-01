@@ -7,7 +7,7 @@ namespace Allors.Repository
     #region Allors
     [Id("C3A647C2-1073-4D8B-99EB-AE5293AADB6B")]
     #endregion
-    public partial class ProductCharacteristicValue :  Localised
+    public partial class ProductCharacteristicValue : Deletable, Localised
     {
 
         #region inherited properties
@@ -33,7 +33,6 @@ namespace Allors.Repository
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
         [Size(-1)]
-        [Required]
         [Workspace]
         public string Value { get; set; }
 
@@ -63,6 +62,12 @@ namespace Allors.Repository
         {
             throw new NotImplementedException();
         }
+
+        public void Delete()
+        {
+            throw new NotImplementedException();
+        }
+
         #endregion
     }
 }
