@@ -1,12 +1,13 @@
 namespace Allors.Repository
 {
     using System;
+
     using Attributes;
 
     #region Allors
-    [Id("E4C73B17-6805-482A-93E5-8F22E8BFFD9D")]
+    [Id("71CD083D-8928-4797-8332-0023A8855A66")]
     #endregion
-    public partial class ProductQuoteObjectState : ObjectState 
+    public partial class QuoteObjectState : ObjectState 
     {
         #region inherited properties
         public Permission[] DeniedPermissions { get; set; }

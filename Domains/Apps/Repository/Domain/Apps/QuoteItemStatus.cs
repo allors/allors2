@@ -5,9 +5,9 @@ namespace Allors.Repository
     using Attributes;
 
     #region Allors
-    [Id("de70746f-2c82-4f01-8de9-b4f78105426a")]
+    [Id("9ABDED82-E917-433F-A002-B4B6C8C4B390")]
     #endregion
-    public partial class SalesOrderItemStatus : AccessControlledObject 
+    public partial class QuoteItemStatus : AccessControlledObject 
     {
         #region inherited properties
         public Permission[] DeniedPermissions { get; set; }
@@ -17,20 +17,20 @@ namespace Allors.Repository
         #endregion
 
         #region Allors
-        [Id("90dd5f56-af80-4f78-a0b6-c13f34c87193")]
-        [AssociationId("05167075-7e33-42ba-a40a-ef2233af019a")]
-        [RoleId("3b0a60b9-b8f3-41f0-af4f-75598240bde1")]
+        [Id("90C09C05-C71D-460A-A29B-D3CD412B333B")]
+        [AssociationId("2D465E49-64D3-4D75-9EE9-A96AC5BCF014")]
+        [RoleId("0F02F1AA-D95F-49B2-B64C-43848C6ED5C9")]
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
         [Required]
         [Workspace]
-        public SalesOrderItemObjectState SalesOrderItemObjectState { get; set; }
+        public QuoteItemObjectState QuoteItemObjectState { get; set; }
 
         #region Allors
-        [Id("f31a9949-c0b3-45c5-854f-29884ce45c9b")]
-        [AssociationId("73152227-ec98-4b5a-9fad-0e2d38cd7c61")]
-        [RoleId("47852a3a-f906-4757-87b9-29c6e8d560f9")]
+        [Id("435DB1E7-0A96-4666-BDFD-A0339070987D")]
+        [AssociationId("D9A00EFD-FEB4-43F4-AF40-B6CA35FCB9C7")]
+        [RoleId("21E4AC09-BF01-4028-8907-B48B750EE7B8")]
         #endregion
         [Required]
         [Workspace]

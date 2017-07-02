@@ -30,6 +30,10 @@ namespace Allors.Repository
 
         public string QuoteNumber { get; set; }
 
+        public QuoteStatus[] QuotesStatuses { get; set; }
+
+        public QuoteObjectState CurrentObjectState { get; set; }
+
         public Permission[] DeniedPermissions { get; set; }
 
         public SecurityToken[] SecurityTokens { get; set; }
@@ -46,19 +50,11 @@ namespace Allors.Repository
 
         public DateTime LastModifiedDate { get; set; }
 
-        #endregion
 
-        #region Allors
-        [Id("11822B78-6C35-42E3-A2FC-56C09D83912E")]
-        [AssociationId("5EDCD272-B32B-452C-88C0-43B074A4FB51")]
-        [RoleId("14D5DB87-1F9E-4320-BF18-885A00F60BB6")]
-        #endregion
-        [Multiplicity(Multiplicity.ManyToOne)]
-        [Derived]
-        [Indexed]
-        [Required]
+        public Guid UniqueId { get; set; }
 
-        public StatementOfWorkObjectState CurrentObjectState { get; set; }
+        public string PrintContent { get; set; }
+        #endregion
 
         #region inherited methods
 

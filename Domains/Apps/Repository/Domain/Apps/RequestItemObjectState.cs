@@ -1,12 +1,13 @@
 namespace Allors.Repository
 {
     using System;
+
     using Attributes;
 
     #region Allors
-    [Id("B257CA11-1CE5-49D1-AC1B-B16D8882682F")]
+    [Id("498BDEC2-FD25-40C1-B0E7-CE393E2F12D9")]
     #endregion
-    public partial class ProposalObjectState : ObjectState 
+    public partial class RequestItemObjectState : ObjectState 
     {
         #region inherited properties
         public Permission[] DeniedPermissions { get; set; }

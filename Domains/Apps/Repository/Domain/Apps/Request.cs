@@ -91,5 +91,26 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.ManyToOne)]
         [Workspace]
         Currency Currency { get; set; }
+
+        #region Allors
+        [Id("FC848AAB-C683-4338-B9E2-000A5B1C36B1")]
+        [AssociationId("F60BB9C7-D8BA-4E85-90B5-2448DCA74818")]
+        [RoleId("90EA5CB9-54E3-44D2-8E0F-02183CEFD8C4")]
+        #endregion
+        [Multiplicity(Multiplicity.OneToMany)]
+        [Derived]
+        [Indexed]
+        RequestStatus[] RequestStatuses { get; set; }
+
+        #region Allors
+        [Id("BF08C594-A59A-4994-BA91-DB158269DC6E")]
+        [AssociationId("53FFEECC-29F9-4F89-A798-AEEBE586DF8A")]
+        [RoleId("0FA2602B-2AC0-4904-AA43-4129BC125F84")]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Derived]
+        [Indexed]
+        [Required]
+        RequestObjectState CurrentObjectState { get; set; }
     }
 }

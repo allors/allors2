@@ -495,7 +495,6 @@
     <Compile Include="Apps\ProductPurchasePrice.cs" />
     <Compile Include="Apps\ProductQuality.cs" />
     <Compile Include="Apps\ProductQuote.cs" />
-    <Compile Include="Apps\ProductQuoteObjectState.cs" />
     <Compile Include="Apps\ProductRequirement.cs" />
     <Compile Include="Apps\ProductRevenue.cs" />
     <Compile Include="Apps\ProductRevenueHistory.cs" />
@@ -508,7 +507,6 @@
     <Compile Include="Apps\ProjectRequirement.cs" />
     <Compile Include="Apps\Property.cs" />
     <Compile Include="Apps\Proposal.cs" />
-    <Compile Include="Apps\ProposalObjectState.cs" />
     <Compile Include="Apps\Province.cs" />
     <Compile Include="Apps\PurchaseAgreement.cs" />
     <Compile Include="Apps\PurchaseInvoice.cs" />
@@ -547,6 +545,10 @@
     <Compile Include="Apps\RequestForProposal.cs" />
     <Compile Include="Apps\RequestForQuote.cs" />
     <Compile Include="Apps\RequestItem.cs" />
+    <Compile Include="Apps\QuoteObjectState.cs" />
+    <Compile Include="Apps\QuoteStatus.cs" />
+    <Compile Include="Apps\QuoteItemObjectState.cs" />
+    <Compile Include="Apps\QuoteItemStatus.cs" />
     <Compile Include="Apps\Requirement.cs" />
     <Compile Include="Apps\RequirementBudgetAllocation.cs" />
     <Compile Include="Apps\RequirementCommunication.cs" />
@@ -576,9 +578,13 @@
     <Compile Include="Apps\SalesInvoiceType.cs" />
     <Compile Include="Apps\SalesOrder.cs" />
     <Compile Include="Apps\SalesOrderItem.cs" />
+    <Compile Include="Apps\RequestItemObjectState.cs" />
     <Compile Include="Apps\SalesOrderItemObjectState.cs" />
+    <Compile Include="Apps\RequestItemStatus.cs" />
     <Compile Include="Apps\SalesOrderItemStatus.cs" />
+    <Compile Include="Apps\RequestObjectState.cs" />
     <Compile Include="Apps\SalesOrderObjectState.cs" />
+    <Compile Include="Apps\RequestStatus.cs" />
     <Compile Include="Apps\SalesOrderStatus.cs" />
     <Compile Include="Apps\SalesRepCommission.cs" />
     <Compile Include="Apps\SalesRepPartyProductCategoryRevenue.cs" />
@@ -618,7 +624,6 @@
     <Compile Include="Apps\StandardServiceOrderItem.cs" />
     <Compile Include="Apps\State.cs" />
     <Compile Include="Apps\StatementOfWork.cs" />
-    <Compile Include="Apps\StatementOfWorkObjectState.cs" />
     <Compile Include="Apps\Store.cs" />
     <Compile Include="Apps\StoreRevenue.cs" />
     <Compile Include="Apps\StoreRevenueHistory.cs" />

@@ -19,6 +19,8 @@ namespace Allors.Domain
 
     public partial class RequestItem
     {
+        ObjectState Transitional.CurrentObjectState => this.CurrentObjectState;
+
         public void AppsOnDerive(ObjectOnDerive method)
         {
             var derivation = method.Derivation;

@@ -1008,7 +1008,7 @@ namespace Allors.Domain
 						VatRate VatRate {set;}
 
 		}
-		public interface Quote  : Transitional, Auditable 
+		public interface Quote  : Transitional, Printable, Auditable 
 		{
 						global::System.DateTime? ValidFromDate {set;}
 
@@ -1030,6 +1030,10 @@ namespace Allors.Domain
 
 						global::System.String QuoteNumber {set;}
 
+						QuoteStatus QuotesStatuses {set;}
+
+						QuoteObjectState CurrentObjectState {set;}
+
 		}
 		public interface Request  : Commentable, Auditable, Printable, Transitional 
 		{
@@ -1050,6 +1054,10 @@ namespace Allors.Domain
 						global::System.String InternalComment {set;}
 
 						Currency Currency {set;}
+
+						RequestStatus RequestStatuses {set;}
+
+						RequestObjectState CurrentObjectState {set;}
 
 		}
 		public interface Requirement  : Transitional, UniquelyIdentifiable 
@@ -3683,11 +3691,6 @@ namespace Allors.Domain
 		}
 		public interface ProductQuote  : Quote 
 		{
-						ProductQuoteObjectState CurrentObjectState {set;}
-
-		}
-		public interface ProductQuoteObjectState  : ObjectState 
-		{
 		}
 		public interface ProductRequirement  : Requirement 
 		{
@@ -3763,11 +3766,6 @@ namespace Allors.Domain
 		{
 		}
 		public interface Proposal  : Quote 
-		{
-						ProposalObjectState CurrentObjectState {set;}
-
-		}
-		public interface ProposalObjectState  : ObjectState 
 		{
 		}
 		public interface Province  : CityBound, GeographicBoundary, CountryBound 
@@ -3957,7 +3955,7 @@ namespace Allors.Domain
 		public interface Qualification  : Enumeration 
 		{
 		}
-		public interface QuoteItem  : Commentable, AccessControlledObject 
+		public interface QuoteItem  : Commentable, Transitional 
 		{
 						Party Authorizer {set;}
 
@@ -3982,6 +3980,12 @@ namespace Allors.Domain
 						global::System.Int32? Quantity {set;}
 
 						RequestItem RequestItem {set;}
+
+						QuoteItemStatus QuoteItemStatuses {set;}
+
+						QuoteItemStatus CurrentQuoteItemStatus {set;}
+
+						QuoteItemObjectState CurrentObjectState {set;}
 
 		}
 		public interface QuoteTerm  : AccessControlledObject 
@@ -4027,7 +4031,7 @@ namespace Allors.Domain
 		public interface RequestForQuote  : Request 
 		{
 		}
-		public interface RequestItem  : AccessControlledObject, Commentable 
+		public interface RequestItem  : Commentable, Transitional 
 		{
 						global::System.String Description {set;}
 
@@ -4046,6 +4050,32 @@ namespace Allors.Domain
 						global::System.Decimal? MaximumAllowedPrice {set;}
 
 						global::System.DateTime? RequiredByDate {set;}
+
+						RequestItemStatus RequestItemStatuses {set;}
+
+						RequestItemStatus CurrentRequestItemStatus {set;}
+
+						RequestItemObjectState CurrentObjectState {set;}
+
+		}
+		public interface QuoteObjectState  : ObjectState 
+		{
+		}
+		public interface QuoteStatus  : AccessControlledObject 
+		{
+						global::System.DateTime StartDateTime {set;}
+
+						QuoteObjectState QuoteObjectState {set;}
+
+		}
+		public interface QuoteItemObjectState  : ObjectState 
+		{
+		}
+		public interface QuoteItemStatus  : AccessControlledObject 
+		{
+						QuoteItemObjectState QuoteItemObjectState {set;}
+
+						global::System.DateTime StartDateTime {set;}
 
 		}
 		public interface RequirementBudgetAllocation  : AccessControlledObject 
@@ -4438,8 +4468,18 @@ namespace Allors.Domain
 						SalesOrderItemStatus PaymentStatuses {set;}
 
 		}
+		public interface RequestItemObjectState  : ObjectState 
+		{
+		}
 		public interface SalesOrderItemObjectState  : ObjectState 
 		{
+		}
+		public interface RequestItemStatus  : AccessControlledObject 
+		{
+						RequestItemObjectState RequestItemObjectState {set;}
+
+						global::System.DateTime StartDateTime {set;}
+
 		}
 		public interface SalesOrderItemStatus  : AccessControlledObject 
 		{
@@ -4448,8 +4488,18 @@ namespace Allors.Domain
 						global::System.DateTime StartDateTime {set;}
 
 		}
+		public interface RequestObjectState  : ObjectState 
+		{
+		}
 		public interface SalesOrderObjectState  : ObjectState 
 		{
+		}
+		public interface RequestStatus  : AccessControlledObject 
+		{
+						global::System.DateTime StartDateTime {set;}
+
+						RequestObjectState RequestObjectState {set;}
+
 		}
 		public interface SalesOrderStatus  : AccessControlledObject 
 		{
@@ -4768,11 +4818,6 @@ namespace Allors.Domain
 
 		}
 		public interface StatementOfWork  : Quote 
-		{
-						StatementOfWorkObjectState CurrentObjectState {set;}
-
-		}
-		public interface StatementOfWorkObjectState  : ObjectState 
 		{
 		}
 		public interface Store  : UniquelyIdentifiable, AccessControlledObject 

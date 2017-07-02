@@ -26,7 +26,7 @@ namespace Allors.Domain
         {
             if (!this.ExistCurrentObjectState)
             {
-                this.CurrentObjectState = new ProposalObjectStates(this.Strategy.Session).Created;
+                this.CurrentObjectState = new QuoteObjectStates(this.Strategy.Session).Created;
             }
 
             if (!this.ExistIssueDate)

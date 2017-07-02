@@ -7,7 +7,7 @@ namespace Allors.Repository
     #region Allors
     [Id("daf83fcc-832e-4d5e-ba71-5a08f42355db")]
     #endregion
-    public partial class RequestItem : AccessControlledObject, Commentable 
+    public partial class RequestItem : AccessControlledObject, Commentable, Transitional
     {
         #region inherited properties
         public Permission[] DeniedPermissions { get; set; }
@@ -15,6 +15,10 @@ namespace Allors.Repository
         public SecurityToken[] SecurityTokens { get; set; }
 
         public string Comment { get; set; }
+
+        public ObjectState PreviousObjectState { get; set; }
+
+        public ObjectState LastObjectState { get; set; }
 
         #endregion
 
@@ -103,6 +107,37 @@ namespace Allors.Repository
         [Workspace]
         public DateTime RequiredByDate { get; set; }
 
+        #region Allors
+        [Id("A83391E7-BEC1-49D4-893E-B0E9C1B7A7A3")]
+        [AssociationId("C3D94498-C3BD-4B45-891D-5E82DD239BD5")]
+        [RoleId("E122C673-0820-4695-8A5C-768E5E8BB109")]
+        #endregion
+        [Multiplicity(Multiplicity.OneToMany)]
+        [Derived]
+        [Indexed]
+        public RequestItemStatus[] RequestItemStatuses { get; set; }
+
+        #region Allors
+        [Id("8CA86BDE-3548-4F3C-A920-C379747EB715")]
+        [AssociationId("C45544D6-CFDC-4A12-BA01-19EE852CCCED")]
+        [RoleId("99B9F14D-ACD0-461E-AE3D-5E570130854E")]
+        #endregion
+        [Multiplicity(Multiplicity.OneToOne)]
+        [Derived]
+        [Indexed]
+        public RequestItemStatus CurrentRequestItemStatus { get; set; }
+
+        #region Allors
+        [Id("DF6D8AA3-21C6-4FDF-A2F2-F50C2F7AA447")]
+        [AssociationId("63AEABDE-A66E-44E2-8090-532297DD4F41")]
+        [RoleId("8441F20E-887C-4852-B8A1-7BAC2A69E197")]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Derived]
+        [Indexed]
+        [Required]
+        public RequestItemObjectState CurrentObjectState { get; set; }
+
         #region inherited methods
 
 
@@ -118,6 +153,5 @@ namespace Allors.Repository
 
 
         #endregion
-
     }
 }
