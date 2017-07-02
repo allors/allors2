@@ -12,6 +12,7 @@ namespace Allors.Repository
     {
         #region inherited properties
         public string Description { get; set; }
+        public DateTime RequestDate { get; set; }
 
         public DateTime RequiredResponseDate { get; set; }
 
@@ -22,6 +23,8 @@ namespace Allors.Repository
         public RespondingParty[] RespondingParties { get; set; }
 
         public Party Originator { get; set; }
+        public string InternalComment { get; set; }
+        public Currency Currency { get; set; }
 
         public Permission[] DeniedPermissions { get; set; }
 
@@ -36,6 +39,14 @@ namespace Allors.Repository
         public DateTime CreationDate { get; set; }
 
         public DateTime LastModifiedDate { get; set; }
+
+        public Guid UniqueId { get; set; }
+
+        public string PrintContent { get; set; }
+
+        public ObjectState PreviousObjectState { get; set; }
+
+        public ObjectState LastObjectState { get; set; }
 
         #endregion
 
@@ -56,6 +67,5 @@ namespace Allors.Repository
 
 
         #endregion
-
     }
 }

@@ -1031,9 +1031,11 @@ namespace Allors.Domain
 						global::System.String QuoteNumber {set;}
 
 		}
-		public interface Request  : Commentable, Auditable 
+		public interface Request  : Commentable, Auditable, Printable, Transitional 
 		{
 						global::System.String Description {set;}
+
+						global::System.DateTime? RequestDate {set;}
 
 						global::System.DateTime? RequiredResponseDate {set;}
 
@@ -1044,6 +1046,10 @@ namespace Allors.Domain
 						RespondingParty RespondingParties {set;}
 
 						Party Originator {set;}
+
+						global::System.String InternalComment {set;}
+
+						Currency Currency {set;}
 
 		}
 		public interface Requirement  : Transitional, UniquelyIdentifiable 
@@ -2394,7 +2400,9 @@ namespace Allors.Domain
 
 						Product ProductIncompatibilities {set;}
 
-						Media Photo {set;}
+						Media PrimaryPhoto {set;}
+
+						Media Photos {set;}
 
 		}
 		public interface GoodOrderItem  : EngagementItem 
@@ -3612,7 +3620,7 @@ namespace Allors.Domain
 		public interface ProductCharacteristic  : Enumeration 
 		{
 		}
-		public interface ProductCharacteristicValue  : Localised 
+		public interface ProductCharacteristicValue  : Deletable, Localised 
 		{
 						ProductCharacteristic ProductCharacteristic {set;}
 

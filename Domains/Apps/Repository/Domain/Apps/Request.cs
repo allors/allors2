@@ -7,10 +7,8 @@ namespace Allors.Repository
     #region Allors
     [Id("321a6047-2233-4bec-a1b1-9b965c0099e5")]
     #endregion
-	public partial interface Request : AccessControlledObject, Commentable, Auditable
+	public partial interface Request : AccessControlledObject, Commentable, Auditable, Printable, Transitional
     {
-
-
         #region Allors
         [Id("1bb3a4b8-224a-47ab-b05b-c0c8a87ec09c")]
         [AssociationId("57109e48-b116-4ea5-b636-73816c0dda68")]
@@ -18,18 +16,24 @@ namespace Allors.Repository
         #endregion
         [Required]
         [Size(256)]
-
+        [Workspace]
         string Description { get; set; }
 
+        #region Allors
+        [Id("0DE2002C-D38C-44A3-9475-471C95B90919")]
+        [AssociationId("081B764E-6CC9-44DB-8026-63F83F99A138")]
+        [RoleId("4736F9E2-6814-406A-8E35-72E312D50640")]
+        #endregion
+        [Workspace]
+        DateTime RequestDate { get; set; }
 
         #region Allors
         [Id("208f711f-5d9d-4dc3-89ad-b1583ad06582")]
         [AssociationId("d91ef645-f5ef-4f09-9d6b-c023d02978f5")]
         [RoleId("c1467dbc-9b64-49a0-8715-90ad277b02c9")]
         #endregion
-
+        [Workspace]
         DateTime RequiredResponseDate { get; set; }
-
 
         #region Allors
         [Id("25332874-3ec6-41d8-ac6a-77dd4328e503")]
@@ -38,9 +42,8 @@ namespace Allors.Repository
         #endregion
         [Multiplicity(Multiplicity.OneToMany)]
         [Indexed]
-
+        [Workspace]
         RequestItem[] RequestItems { get; set; }
-
 
         #region Allors
         [Id("8ac90ec6-9d3e-45fe-aaba-27d0c1c058a1")]
@@ -48,9 +51,8 @@ namespace Allors.Repository
         [RoleId("c16a1509-cfd6-4f9d-87ce-4b903365b9e5")]
         #endregion
         [Size(256)]
-
+        [Workspace]
         string RequestNumber { get; set; }
-
 
         #region Allors
         [Id("c3389cec-ee8e-45e2-a1eb-01c9a87b2df0")]
@@ -59,9 +61,8 @@ namespace Allors.Repository
         #endregion
         [Multiplicity(Multiplicity.ManyToMany)]
         [Indexed]
-
+        [Workspace]
         RespondingParty[] RespondingParties { get; set; }
-
 
         #region Allors
         [Id("f1a50d9d-2e79-45ac-8f23-8f38fab985c1")]
@@ -70,8 +71,25 @@ namespace Allors.Repository
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
-
+        [Workspace]
         Party Originator { get; set; }
 
+        #region Allors
+        [Id("20028FAE-94FF-47F8-9944-EA558CBDC93B")]
+        [AssociationId("D152DF4A-3A5B-48DA-AE5E-BBDE1706EEDF")]
+        [RoleId("80216604-A123-4F1B-BDCF-F77AE5D31DFF")]
+        #endregion
+        [Workspace]
+        string InternalComment { get; set; }
+
+        #region Allors
+        [Id("BBCF2C40-E793-4FA4-B4E1-612E20971408")]
+        [AssociationId("820C9384-8ADE-4AC7-8B34-7CC781C56595")]
+        [RoleId("FCE8FB5A-4171-4247-90BC-6EFA6BA43B64")]
+        [Indexed]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Workspace]
+        Currency Currency { get; set; }
     }
 }
