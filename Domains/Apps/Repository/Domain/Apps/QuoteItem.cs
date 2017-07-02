@@ -145,6 +145,7 @@ namespace Allors.Repository
         #endregion
         [Multiplicity(Multiplicity.OneToMany)]
         [Derived]
+        [Workspace]
         [Indexed]
         public QuoteItemStatus[] QuoteItemStatuses { get; set; }
 
@@ -155,6 +156,7 @@ namespace Allors.Repository
         #endregion
         [Multiplicity(Multiplicity.OneToOne)]
         [Derived]
+        [Workspace]
         [Indexed]
         public QuoteItemStatus CurrentQuoteItemStatus { get; set; }
 
@@ -167,6 +169,7 @@ namespace Allors.Repository
         [Derived]
         [Indexed]
         [Required]
+        [Workspace]
         public QuoteItemObjectState CurrentObjectState { get; set; }
 
         #region inherited methods

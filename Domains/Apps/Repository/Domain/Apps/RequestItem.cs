@@ -125,6 +125,7 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.OneToOne)]
         [Derived]
         [Indexed]
+        [Workspace]
         public RequestItemStatus CurrentRequestItemStatus { get; set; }
 
         #region Allors
@@ -136,6 +137,7 @@ namespace Allors.Repository
         [Derived]
         [Indexed]
         [Required]
+        [Workspace]
         public RequestItemObjectState CurrentObjectState { get; set; }
 
         #region inherited methods

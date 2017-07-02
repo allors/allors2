@@ -115,6 +115,7 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.OneToMany)]
         [Derived]
         [Indexed]
+        [Workspace]
         public SalesOrderStatus[] ShipmentStatuses { get; set; }
 
         #region Allors
@@ -125,6 +126,7 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.OneToOne)]
         [Derived]
         [Indexed]
+        [Workspace]
         public SalesOrderStatus CurrentShipmentStatus { get; set; }
 
         #region Allors
@@ -135,6 +137,7 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.OneToOne)]
         [Derived]
         [Indexed]
+        [Workspace]
         public SalesOrderStatus CurrentPaymentStatus { get; set; }
 
         #region Allors
@@ -144,6 +147,7 @@ namespace Allors.Repository
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
+        [Workspace]
         public Party ShipToCustomer { get; set; }
 
         #region Allors
@@ -152,6 +156,7 @@ namespace Allors.Repository
         [RoleId("97e7045d-cf35-46ee-acfc-34f6b2572096")]
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
+        [Workspace]
         [Indexed]
         public Party BillToCustomer { get; set; }
 
@@ -164,6 +169,7 @@ namespace Allors.Repository
         [Required]
         [Precision(19)]
         [Scale(2)]
+        [Workspace]
         public decimal TotalPurchasePrice { get; set; }
 
         #region Allors
@@ -173,6 +179,7 @@ namespace Allors.Repository
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
+        [Workspace]
         public ShipmentMethod ShipmentMethod { get; set; }
 
         #region Allors
@@ -184,6 +191,7 @@ namespace Allors.Repository
         [Required]
         [Precision(19)]
         [Scale(2)]
+        [Workspace]
         public decimal TotalListPriceCustomerCurrency { get; set; }
 
         #region Allors
@@ -204,6 +212,7 @@ namespace Allors.Repository
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
+        [Workspace]
         public PostalAddress ShipToAddress { get; set; }
 
         #region Allors
@@ -223,6 +232,7 @@ namespace Allors.Repository
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
+        [Workspace]
         public ContactMechanism BillToContactMechanism { get; set; }
 
         #region Allors
@@ -255,6 +265,7 @@ namespace Allors.Repository
         [Required]
         [Precision(19)]
         [Scale(2)]
+        [Workspace]
         public decimal TotalListPrice { get; set; }
 
         #region Allors
@@ -273,6 +284,7 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.OneToMany)]
         [Derived]
         [Indexed]
+        [Workspace]
         public SalesOrderStatus[] PaymentStatuses { get; set; }
 
         #region Allors
@@ -322,6 +334,7 @@ namespace Allors.Repository
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
+        [Workspace]
         public PaymentMethod PaymentMethod { get; set; }
 
         #region Allors
@@ -331,6 +344,7 @@ namespace Allors.Repository
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
+        [Workspace]
         public ContactMechanism PlacingContactMechanism { get; set; }
 
         #region Allors
@@ -341,6 +355,7 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.OneToOne)]
         [Derived]
         [Indexed]
+        [Workspace]
         public SalesOrderStatus CurrentOrderStatus { get; set; }
 
         #region Allors
@@ -369,6 +384,7 @@ namespace Allors.Repository
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
+        [Workspace]
         public Party PlacingCustomer { get; set; }
 
         #region Allors
@@ -379,6 +395,7 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.OneToMany)]
         [Derived]
         [Indexed]
+        [Workspace]
         public SalesOrderStatus[] OrderStatuses { get; set; }
 
         #region Allors
@@ -398,6 +415,7 @@ namespace Allors.Repository
         #endregion
         [Multiplicity(Multiplicity.OneToMany)]
         [Indexed]
+        [Workspace]
         public SalesOrderItem[] SalesOrderItems { get; set; }
 
         #region Allors
@@ -409,6 +427,7 @@ namespace Allors.Repository
         [Derived]
         [Indexed]
         [Required]
+        [Workspace]
         public SalesOrderObjectState CurrentObjectState { get; set; }
 
         #region Allors

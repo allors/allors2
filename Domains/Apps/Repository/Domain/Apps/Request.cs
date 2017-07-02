@@ -100,6 +100,7 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.OneToMany)]
         [Derived]
         [Indexed]
+        [Workspace]
         RequestStatus[] RequestStatuses { get; set; }
 
         #region Allors
@@ -111,6 +112,7 @@ namespace Allors.Repository
         [Derived]
         [Indexed]
         [Required]
+        [Workspace]
         RequestObjectState CurrentObjectState { get; set; }
     }
 }

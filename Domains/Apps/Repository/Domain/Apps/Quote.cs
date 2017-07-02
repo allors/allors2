@@ -109,6 +109,7 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.OneToMany)]
         [Derived]
         [Indexed]
+        [Workspace]
         QuoteStatus[] QuotesStatuses { get; set; }
 
         #region Allors
@@ -120,6 +121,7 @@ namespace Allors.Repository
         [Derived]
         [Indexed]
         [Required]
+        [Workspace]
         QuoteObjectState CurrentObjectState { get; set; }
 
     }

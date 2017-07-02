@@ -120,6 +120,7 @@ namespace Allors.Repository
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
+        [Workspace]
         public SalesOrderItemStatus CurrentPaymentStatus { get; set; }
         
         #region Allors
@@ -140,6 +141,7 @@ namespace Allors.Repository
         #endregion
         [Multiplicity(Multiplicity.OneToMany)]
         [Indexed]
+        [Workspace]
         public OrderItem[] OrderedWithFeatures { get; set; }
         
         #region Allors
@@ -170,6 +172,7 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.OneToMany)]
         [Derived]
         [Indexed]
+        [Workspace]
         public SalesOrderItemStatus[] OrderItemStatuses { get; set; }
         
         #region Allors
@@ -179,6 +182,7 @@ namespace Allors.Repository
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
+        [Workspace]
         public SalesOrderItemStatus CurrentShipmentStatus { get; set; }
         
         #region Allors
@@ -198,6 +202,7 @@ namespace Allors.Repository
         #endregion
         [Precision(19)]
         [Scale(2)]
+        [Workspace]
         public decimal QuantityShipNow { get; set; }
         
         #region Allors
@@ -218,6 +223,7 @@ namespace Allors.Repository
         [Required]
         [Precision(19)]
         [Scale(2)]
+        [Workspace]
         public decimal QuantityShipped { get; set; }
         
         #region Allors
@@ -228,6 +234,7 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.OneToOne)]
         [Derived]
         [Indexed]
+        [Workspace]
         public SalesOrderItemStatus CurrentOrderItemStatus { get; set; }
         
         #region Allors
@@ -238,6 +245,7 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.ManyToOne)]
         [Derived]
         [Indexed]
+        [Workspace]
         public PostalAddress ShipToAddress { get; set; }
         
         #region Allors
@@ -249,6 +257,7 @@ namespace Allors.Repository
         [Required]
         [Precision(19)]
         [Scale(2)]
+        [Workspace]
         public decimal QuantityPicked { get; set; }
         
         #region Allors
@@ -270,6 +279,7 @@ namespace Allors.Repository
         [Derived]
         [Indexed]
         [Required]
+        [Workspace]
         public SalesOrderItemObjectState CurrentObjectState { get; set; }
         
         #region Allors
@@ -281,6 +291,7 @@ namespace Allors.Repository
         [Required]
         [Precision(19)]
         [Scale(2)]
+        [Workspace]
         public decimal UnitPurchasePrice { get; set; }
         
         #region Allors
@@ -291,6 +302,7 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.ManyToOne)]
         [Derived]
         [Indexed]
+        [Workspace]
         public Party ShipToParty { get; set; }
         
         #region Allors
@@ -300,6 +312,7 @@ namespace Allors.Repository
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
+        [Workspace]
         public PostalAddress AssignedShipToAddress { get; set; }
         
         #region Allors
@@ -310,6 +323,7 @@ namespace Allors.Repository
         [Required]
         [Precision(19)]
         [Scale(2)]
+        [Workspace]
         public decimal QuantityReturned { get; set; }
         
         #region Allors
@@ -321,6 +335,7 @@ namespace Allors.Repository
         [Required]
         [Precision(19)]
         [Scale(2)]
+        [Workspace]
         public decimal QuantityReserved { get; set; }
         
         #region Allors
@@ -341,6 +356,7 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.OneToMany)]
         [Derived]
         [Indexed]
+        [Workspace]
         public SalesOrderItemStatus[] ShipmentStatuses { get; set; }
         
         #region Allors
@@ -350,6 +366,7 @@ namespace Allors.Repository
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
+        [Workspace]
         public Party AssignedShipToParty { get; set; }
         
         #region Allors
@@ -361,6 +378,7 @@ namespace Allors.Repository
         [Required]
         [Precision(19)]
         [Scale(2)]
+        [Workspace]
         public decimal QuantityPendingShipment { get; set; }
         
         #region Allors
@@ -392,6 +410,7 @@ namespace Allors.Repository
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
+        [Workspace]
         public NonSerializedInventoryItem ReservedFromInventoryItem { get; set; }
         
         #region Allors
@@ -401,6 +420,7 @@ namespace Allors.Repository
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
+        [Workspace]
         public Product Product { get; set; }
         
         #region Allors
@@ -410,6 +430,7 @@ namespace Allors.Repository
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
+        [Workspace]
         public ProductFeature ProductFeature { get; set; }
         
         #region Allors
@@ -421,6 +442,7 @@ namespace Allors.Repository
         [Required]
         [Precision(19)]
         [Scale(2)]
+        [Workspace]
         public decimal QuantityRequestsShipping { get; set; }
 
         #region Allors
@@ -431,6 +453,7 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.OneToMany)]
         [Derived]
         [Indexed]
+        [Workspace]
         public SalesOrderItemStatus[] PaymentStatuses { get; set; }
 
         #region Allors
