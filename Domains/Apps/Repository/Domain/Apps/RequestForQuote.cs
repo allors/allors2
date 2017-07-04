@@ -71,6 +71,10 @@ namespace Allors.Repository
 
         public void OnPostDerive(){}
 
+        public void Cancel() { }
+
+        public void Complete() { }
+
 
 
         #endregion

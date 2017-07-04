@@ -114,5 +114,16 @@ namespace Allors.Repository
         [Required]
         [Workspace]
         RequestObjectState CurrentObjectState { get; set; }
+
+        #region Allors
+        [Id("1C897312-5897-4F04-98DC-899179B58680")]
+        #endregion
+        void Cancel();
+
+        #region Allors
+        [Id("01CA10DA-C0EE-4435-8E23-F2CC8C98AE59")]
+        #endregion
+        void Complete();
+
     }
 }

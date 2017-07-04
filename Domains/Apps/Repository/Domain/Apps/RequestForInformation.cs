@@ -32,6 +32,15 @@ namespace Allors.Repository
         public RequestStatus[] RequestStatuses { get; set; }
 
         public RequestObjectState CurrentObjectState { get; set; }
+        public void Cancel()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Complete()
+        {
+            throw new NotImplementedException();
+        }
 
         public Permission[] DeniedPermissions { get; set; }
 
@@ -70,8 +79,6 @@ namespace Allors.Repository
         public void OnDerive(){}
 
         public void OnPostDerive(){}
-
-
 
         #endregion
     }
