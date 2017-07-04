@@ -32,15 +32,7 @@ namespace Allors.Repository
         public RequestStatus[] RequestStatuses { get; set; }
 
         public RequestObjectState CurrentObjectState { get; set; }
-        public void Cancel()
-        {
-            throw new NotImplementedException();
-        }
-
-        public void Complete()
-        {
-            throw new NotImplementedException();
-        }
+        public ContactMechanism FullfillContactMechanism { get; set; }
 
         public Permission[] DeniedPermissions { get; set; }
 
@@ -66,9 +58,10 @@ namespace Allors.Repository
 
         #endregion
 
-
         #region inherited methods
-
+        public void Cancel() { }
+        
+        public void Complete() { }
 
         public void OnBuild(){}
 

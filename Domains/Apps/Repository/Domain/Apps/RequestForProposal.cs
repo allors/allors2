@@ -33,6 +33,8 @@ namespace Allors.Repository
 
         public RequestObjectState CurrentObjectState { get; set; }
 
+        public ContactMechanism FullfillContactMechanism { get; set; }
+
         public Permission[] DeniedPermissions { get; set; }
 
         public SecurityToken[] SecurityTokens { get; set; }

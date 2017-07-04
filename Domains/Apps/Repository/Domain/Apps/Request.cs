@@ -72,7 +72,7 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
         [Workspace]
-        Party Originator { get; set; }
+        Party Originator  { get; set; }
 
         #region Allors
         [Id("20028FAE-94FF-47F8-9944-EA558CBDC93B")]
@@ -114,6 +114,16 @@ namespace Allors.Repository
         [Required]
         [Workspace]
         RequestObjectState CurrentObjectState { get; set; }
+
+        #region Allors
+        [Id("0FB57C62-05C2-47FA-940C-5285BECB7458")]
+        [AssociationId("A9D6D0BA-8DDA-4C9E-BCC7-61A6B5FE4231")]
+        [RoleId("56F9E691-52C3-4E8F-84E0-38AA7B53CA4C")]
+        [Indexed]
+        [Workspace]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        ContactMechanism FullfillContactMechanism { get; set; }
 
         #region Allors
         [Id("1C897312-5897-4F04-98DC-899179B58680")]
