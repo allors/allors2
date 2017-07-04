@@ -1,6 +1,5 @@
 import { LayoutComponent } from './layout.component';
 import { CommunicationEventsTableComponent } from './communicationEvents/communicationEvents.table.component';
-import { OrganisationsTableComponent } from './organisations/organisations.table.component';
 
 // Routing
 import { EmailAddressAddComponent } from './contactMechanisms/contactMechanism/emailAddressAdd.component';
@@ -24,7 +23,6 @@ import { WebAddressEditComponent } from './contactMechanisms/contactMechanism/we
 export const RELATIONS: any[] = [
   LayoutComponent,
   CommunicationEventsTableComponent,
-  OrganisationsTableComponent,
 ];
 
 export const RELATIONS_ROUTING: any[] = [
@@ -39,7 +37,6 @@ export const RELATIONS_ROUTING: any[] = [
 
 export {
   CommunicationEventsTableComponent,
-  OrganisationsTableComponent,
   // Routing
   EmailAddressAddComponent,
   EmailAddressEditComponent,

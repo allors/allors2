@@ -1,29 +1,46 @@
-<md-card tdMediaToggle="gt-xs" [mediaClasses]="['push']">
-  <td-search-box class="push-left push-right" placeholder="search" [alwaysVisible]="true" (searchDebounce)="search($event)"></td-search-box>
-  <md-divider></md-divider>
-  <ng-template tdLoading="organisations">
-    <md-list class="will-load">
-      <div class="md-padding" *ngIf="data && data.length === 0" layout="row" layout-align="center center">
-        <h3>No organisations to display.</h3>
-      </div>
-      <ng-template let-organisation let-last="last" ngFor [ngForOf]="data">
-        <md-list-item>
+<a-td-layout-relation>
 
-          <md-icon *ngIf="!organisation.LogoImage" md-list-avatar>person</md-icon>
-          <img *ngIf="organisation.LogoImage" md-list-avatar src="http://localhost:5000/Media/Download/{{organisation.LogoImage.UniqueId}}?revision={{organisation.LogoImage.Revision}}"/>
+  <div toolbar1>
+    <a md-icon-button mdTooltip="Docs" href="https://www.inxin.com/" target="_blank">
+      <md-icon>chrome_reader_mode</md-icon>
+    </a>
+  </div>
 
-          <h3 md-line> {{organisation.PartyName}}</h3>
-          <p md-line> {{organisation.Adddress1}} </p>
-          <p md-line hide-gt-md class="md-caption"> last login: {{ organisation.LastAccess | timeAgo }} </p>
+  <div toolbar2 layout="row" layout-align="start center" flex>
+    <span>Organisations</span>
+    <span flex></span>
+    <button md-icon-button><md-icon class="md-24">settings</md-icon></button>
+  </div>
 
-          <span flex></span>
+  <md-card body tdMediaToggle="gt-xs" [mediaClasses]="['push']">
+    <td-search-box class="push-left push-right" placeholder="search" [alwaysVisible]="true" (searchDebounce)="search($event)"></td-search-box>
+    <md-divider></md-divider>
+    <ng-template tdLoading="organisations">
+      <md-list class="will-load">
+        <div class="md-padding" *ngIf="data && data.length === 0" layout="row" layout-align="center center">
+          <h3>No organisations to display.</h3>
+        </div>
+        <ng-template let-organisation let-last="last" ngFor [ngForOf]="data">
+          <md-list-item>
 
-          <span hide-xs hide-sm hide-md flex-gt-xs="60" flex-xs="40" layout-gt-xs="row">
-            <div class="md-caption tc-grey-500" flex-gt-xs="50"> {{ organisation.Created | date }} </div>
-            <div class="md-caption tc-grey-500" flex-gt-xs="50"> {{ organisation.LastAccess | timeAgo }} </div>
+            <md-icon *ngIf="!organisation.LogoImage" md-list-avatar>person</md-icon>
+            <img *ngIf="organisation.LogoImage" md-list-avatar src="http://localhost:5000/Media/Download/{{organisation.LogoImage.UniqueId}}?revision={{organisation.LogoImage.Revision}}"
+            />
+
+            <h3 md-line> {{organisation.PartyName}}</h3>
+            <p *ngIf="organisation.GeneralCorrespondence" md-line> {{organisation.GeneralCorrespondence?.Address1}} {{organisation.GeneralCorrespondence?.Address2}} {{organisation.GeneralCorrespondence?.Address3}}
+            </p>
+            <p *ngIf="organisation.GeneralCorrespondence" md-line> {{organisation.GeneralCorrespondence?.PostalBoundary?.PostalCode}} {{organisation.GeneralCorrespondence?.PostalBoundary?.Locality}} {{organisation.GeneralCorrespondence?.PostalBoundary?.Country.Name}} </p>
+            <p md-line hide-gt-md class="md-caption"> last modified: {{ organisation.LastModifiedDate | timeAgo }} </p>
+
+            <span flex></span>
+
+            <span hide-xs hide-sm hide-md flex-gt-xs="60" flex-xs="40" layout-gt-xs="row">
+            <div class="md-caption tc-grey-500" flex-gt-xs="50"> {{ organisation.CreationDate | date }} </div>
+            <div class="md-caption tc-grey-500" flex-gt-xs="50"> {{ organisation.LastModifiedDate | timeAgo }} </div>
           </span>
 
-          <span>
+            <span>
           <button md-icon-button [md-menu-trigger-for]="menu">
           <md-icon>more_vert</md-icon>
           </button>
@@ -33,12 +50,18 @@
           </md-menu>
           </span>
 
-        </md-list-item>
-        <md-divider *ngIf="!last" md-inset></md-divider>
-      </ng-template>
-    </md-list>
-  </ng-template>
-</md-card>
+          </md-list-item>
+          <md-divider *ngIf="!last" md-inset></md-divider>
+        </ng-template>
+      </md-list>
+    </ng-template>
+  </md-card>
+
+  <a md-fab color="accent" class="mat-fab-bottom-right" [routerLink]="['add']">
+    <md-icon>add</md-icon>
+  </a>
+
+</a-td-layout-relation>
 
 <a md-fab color="accent" class="mat-fab-bottom-right" [routerLink]="['add']">
   <md-icon>add</md-icon>

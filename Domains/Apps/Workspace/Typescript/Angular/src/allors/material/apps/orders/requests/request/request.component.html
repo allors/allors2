@@ -1,0 +1,44 @@
+<a-td-layout-order>
+
+  <div toolbar1>
+    <a md-icon-button mdTooltip="Docs" href="https://www.inxin.com/" target="_blank">
+      <md-icon>chrome_reader_mode</md-icon>
+    </a>
+  </div>
+
+  <div toolbar2 layout="row" layout-align="start center" flex>
+    <span>Requests</span>
+    <span flex></span>
+    <button md-icon-button><md-icon class="md-24">settings</md-icon></button>
+  </div>
+
+  <md-card body tdMediaToggle="gt-xs" [mediaClasses]="['push']">
+    <form #form="ngForm" *ngIf="request" (submit)="save()">
+
+      <md-card-title>Request Form</md-card-title>
+
+      <md-divider></md-divider>
+      <md-card-content class="push-bottom-none">
+
+        <div fxLayout="row wrap" fxLayoutGap="3rem" fxLayoutAlign="start stretch">
+          <a-md-select [fxFlex]="flex" class="push-top" [object]="request" [roleType]="m.Request.Originator" [options]="parties" display="PartyName"></a-md-select>
+          <a-md-datepicker [fxFlex]="flex" class="push-top" [object]="request" [roleType]="m.Request.RequestDate"></a-md-datepicker>
+          <a-md-datepicker [fxFlex]="flex" class="push-top" [object]="request" [roleType]="m.Request.RequiredResponseDate"></a-md-datepicker>
+          <a-md-input [fxFlex]="flex" class="push-top" [object]="request" [roleType]="m.Request.Description"></a-md-input>
+          <a-md-select [fxFlex]="flex" class="push-top" [object]="request" [roleType]="m.Request.Currency" [options]="currencies" display="Description"></a-md-select>
+          <a-md-textarea [fxFlex]="flex" class="push-top" [object]="request" [roleType]="m.Request.Comment"></a-md-textarea>
+          <a-md-textarea [fxFlex]="flex" class="push-top" [object]="request" [roleType]="m.Request.InternalComment"></a-md-textarea>
+        </div>
+
+      </md-card-content>
+
+      <md-divider></md-divider>
+      <md-card-actions>
+        <button md-button color="primary" type="submit">SAVE</button>
+        <button md-button (click)="goBack()" type="button">CANCEL</button>
+      </md-card-actions>
+
+    </form>
+  </md-card>
+
+</a-td-layout-order>

@@ -2,12 +2,12 @@ import { Observable, Subject, Subscription } from 'rxjs/Rx';
 import { Component, OnInit, AfterViewInit, OnDestroy } from '@angular/core';
 import { Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { MdSnackBar, MdSnackBarConfig } from '@angular/material';
+import { MdSnackBar, MdSnackBarConfig, MdNativeDateModule } from '@angular/material';
 import { TdMediaService } from '@covalent/core';
 
 import { MetaDomain } from '../../../../../meta/index';
-import { PullRequest, PushResponse, Fetch, Path, Query, Equals, Like, TreeNode, Sort, Page } from '../../../../../domain';
-import { Good, ProductCategory, ProductType, Locale, Singleton } from '../../../../../domain';
+import { PullRequest, PushResponse, Contains, Fetch, Path, Query, Equals, Like, TreeNode, Sort, Page } from '../../../../../domain';
+import { Good, Organisation, OrganisationRole, ProductCharacteristicValue, ProductCharacteristic, ProductCategory, ProductType, Locale, LocalisedText, Singleton } from '../../../../../domain';
 import { AllorsService, ErrorService, Scope, Loaded, Saved } from '../../../../../angular';
 
 @Component({
@@ -27,6 +27,9 @@ export class GoodFormComponent implements OnInit, AfterViewInit, OnDestroy {
   locales: Locale[];
   categories: ProductCategory[];
   productTypes: ProductType[];
+  locale: Locale;
+  productCharacteristicValues: ProductCharacteristicValue[];
+  manufacturers: Organisation[];
 
   constructor(
     private allorsService: AllorsService,
@@ -50,12 +53,21 @@ export class GoodFormComponent implements OnInit, AfterViewInit, OnDestroy {
             name: 'good',
             id: id,
             include: [
-              new TreeNode({ roleType: m.Good.ProductType }),
               new TreeNode({ roleType: m.Good.PrimaryPhoto }),
               new TreeNode({ roleType: m.Product.LocalisedNames }),
               new TreeNode({ roleType: m.Product.LocalisedDescriptions }),
               new TreeNode({ roleType: m.Product.LocalisedComments }),
               new TreeNode({ roleType: m.Product.ProductCategories }),
+              new TreeNode({ roleType: m.Good.ManufacturedBy }),
+              new TreeNode({
+                roleType: m.Good.ProductType,
+                nodes: [
+                  new TreeNode({
+                    roleType: m.ProductType.ProductCharacteristics,
+                    nodes: [new TreeNode({ roleType: m.ProductCharacteristic.LocalisedNames })],
+                  }),
+                ],
+              }),
               new TreeNode({
                 roleType: m.Product.ProductCharacteristicValues,
                 nodes: [
@@ -77,6 +89,11 @@ export class GoodFormComponent implements OnInit, AfterViewInit, OnDestroy {
             }),
           new Query(
             {
+              name: 'organisationRoles',
+              objectType: this.m.OrganisationRole,
+            }),
+          new Query(
+            {
               name: 'categories',
               objectType: this.m.ProductCategory,
             }),
@@ -90,19 +107,39 @@ export class GoodFormComponent implements OnInit, AfterViewInit, OnDestroy {
         this.scope.session.reset();
 
         return this.scope
-          .load('Pull', new PullRequest({ fetch: fetch, query: query }));
+          .load('Pull', new PullRequest({ fetch: fetch, query: query }))
+          .mergeMap((loaded: Loaded) => {
+
+            this.good = loaded.objects.good as Good;
+            if (!this.good) {
+              this.good = this.scope.session.create('Good') as Good;
+            }
+
+            this.categories = loaded.collections.categories as ProductCategory[];
+            this.productTypes = loaded.collections.productTypes as ProductType[];
+            this.singleton = loaded.collections.singletons[0] as Singleton;
+            this.locales = this.singleton.Locales;
+
+            this.locale = this.singleton.DefaultLocale;
+            // this.locale = this.locales.find(v => v.Name === 'en-GB');
+
+            this.setProductCharacteristicValues();
+
+            const organisationRoles: OrganisationRole[] = loaded.collections.organisationRoles as OrganisationRole[];
+            const customerRole: OrganisationRole = organisationRoles.find((v: OrganisationRole) => v.Name === 'Manufacturer');
+
+            const manufacturersQuery: Query[] = [new Query(
+              {
+                name: 'manufacturers',
+                objectType: m.Organisation,
+                predicate: new Contains({ roleType: m.Organisation.OrganisationRoles, object: customerRole }),
+              })];
+
+            return this.scope.load('Pull', new PullRequest({ query: manufacturersQuery }));
+          });
       })
       .subscribe((loaded: Loaded) => {
-
-        this.good = loaded.objects.good as Good;
-        if (!this.good) {
-          this.good = this.scope.session.create('Good') as Good;
-        }
-
-        this.categories = loaded.collections.categories as ProductCategory[];
-        this.productTypes = loaded.collections.productTypes as ProductType[];
-        this.singleton = loaded.collections.singletons[0] as Singleton;
-        this.locales = this.singleton.Locales;
+        this.manufacturers = loaded.collections.manufacturers as Organisation[];
       },
       (error: any) => {
         this.errorService.message(error);
@@ -135,5 +172,18 @@ export class GoodFormComponent implements OnInit, AfterViewInit, OnDestroy {
 
   goBack(): void {
     window.history.back();
+  }
+
+  localisedName(productCharacteristic: ProductCharacteristic): string {
+    const localisedText: LocalisedText = productCharacteristic.LocalisedNames.find((v: LocalisedText) => v.Locale === this.locale);
+    if (localisedText) {
+      return localisedText.Text;
+    }
+
+    return productCharacteristic.Name;
+  }
+
+  setProductCharacteristicValues(): void {
+    this.productCharacteristicValues = this.good.ProductCharacteristicValues.filter((v: ProductCharacteristicValue) => v.Locale === this.locale);
   }
 }

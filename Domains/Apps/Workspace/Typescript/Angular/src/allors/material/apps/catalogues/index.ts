@@ -1,10 +1,5 @@
-import { CataloguesTableComponent } from './catalogues/catalogues.table.component';
-import { CategoriesTableComponent } from './categories/categories.table.component';
-import { GoodsTableComponent } from './goods/goods.table.component';
-import { ProductCharacteristicsTableComponent } from './productcharacteristics/productcharacteristics.table.component';
-import { ProductTypesTableComponent } from './producttypes/producttypes.table.component';
+import { LayoutComponent } from './layout.component';
 // Routing
-import { CatalogueComponent } from './catalogue.component';
 import { CatalogueDashboardComponent } from './dashboard/catalogue-dashboard.component';
 import { CatalogueFormComponent } from './catalogues/catalogue/catalogue.component';
 import { CataloguesComponent } from './catalogues/catalogues.component';
@@ -18,15 +13,10 @@ import { ProductCharacteristicFormComponent } from './productCharacteristics/pro
 import { ProductCharacteristicsComponent } from './productcharacteristics/productcharacteristics.component';
 
 export const CATALOGUES: any[] = [
-  CataloguesTableComponent,
-  CategoriesTableComponent,
-  GoodsTableComponent,
-  ProductCharacteristicsTableComponent,
-  ProductTypesTableComponent,
+  LayoutComponent,
 ];
 
 export const CATALOGUES_ROUTING: any[] = [
-  CatalogueComponent,
   CatalogueDashboardComponent,
   CatalogueFormComponent,
   CataloguesComponent,
@@ -41,13 +31,7 @@ export const CATALOGUES_ROUTING: any[] = [
 ];
 
 export {
-  CataloguesTableComponent,
-  CategoriesTableComponent,
-  GoodsTableComponent,
-  ProductCharacteristicsTableComponent,
-  ProductTypesTableComponent,
   // Routing
-  CatalogueComponent,
   CatalogueDashboardComponent,
   CatalogueFormComponent,
   CataloguesComponent,

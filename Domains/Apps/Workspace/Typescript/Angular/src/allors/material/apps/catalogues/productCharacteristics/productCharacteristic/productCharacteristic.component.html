@@ -1,24 +1,41 @@
-<md-card tdMediaToggle="gt-xs" [mediaClasses]="['push']">
-  <form #form="ngForm" *ngIf="productCharacteristic" (submit)="save()" >
+<a-td-layout-catalogue>
 
-    <md-card-title>Product Characteristic Form</md-card-title>
+  <div toolbar1>
+    <a md-icon-button mdTooltip="Docs" href="https://www.inxin.com/" target="_blank">
+      <md-icon>chrome_reader_mode</md-icon>
+    </a>
+  </div>
 
-    <md-divider></md-divider>
-    <md-card-content class="push-bottom-none">
+  <div toolbar2 layout="row" layout-align="start center" flex>
+    <span>Product Characteristics</span>
+    <span flex></span>
+    <button md-icon-button><md-icon class="md-24">settings</md-icon></button>
+  </div>
 
-      <div fxLayout="row wrap" fxLayoutGap="3rem" fxLayoutAlign="start stretch">
+  <md-card body tdMediaToggle="gt-xs" [mediaClasses]="['push']">
+    <form #form="ngForm" *ngIf="productCharacteristic" (submit)="save()">
 
-        <a-md-localised-text [fxFlex]="flex" class="push-top" [object]="productCharacteristic" [roleType]="m.ProductCharacteristic.LocalisedNames" [locales]="locales"></a-md-localised-text>
+      <md-card-title>Product Characteristic Form</md-card-title>
 
-      </div>
+      <md-divider></md-divider>
+      <md-card-content class="push-bottom-none">
 
-    </md-card-content>
+        <div fxLayout="row wrap" fxLayoutGap="3rem" fxLayoutAlign="start stretch">
 
-    <md-divider></md-divider>
-    <md-card-actions>
-      <button md-button color="primary" type="submit">SAVE</button>
-      <button md-button (click)="goBack()" type="button">CANCEL</button>
-    </md-card-actions>
+          <a-md-localised-text [fxFlex]="flex" class="push-top" [object]="productCharacteristic" [roleType]="m.ProductCharacteristic.LocalisedNames"
+            [locales]="locales"></a-md-localised-text>
 
-  </form>
-</md-card>
+        </div>
+
+      </md-card-content>
+
+      <md-divider></md-divider>
+      <md-card-actions>
+        <button md-button color="primary" type="submit">SAVE</button>
+        <button md-button (click)="goBack()" type="button">CANCEL</button>
+      </md-card-actions>
+
+    </form>
+  </md-card>
+
+</a-td-layout-catalogue>

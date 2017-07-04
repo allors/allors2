@@ -36,8 +36,8 @@ export class ProductTypesComponent implements AfterViewInit, OnDestroy {
   }
 
   ngAfterViewInit(): void {
-    this.media.broadcast();
     this.titleService.setTitle('Product Types');
+    this.search();
   }
 
   ngOnDestroy(): void {
@@ -46,7 +46,7 @@ export class ProductTypesComponent implements AfterViewInit, OnDestroy {
     }
   }
 
-  search(criteria: string): void {
+  search(criteria?: string): void {
 
     if (this.subscription) {
       this.subscription.unsubscribe();

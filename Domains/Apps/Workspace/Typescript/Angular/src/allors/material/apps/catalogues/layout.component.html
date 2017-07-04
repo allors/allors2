@@ -3,9 +3,8 @@
   <div td-toolbar-content layout="row" layout-align="center center" flex>
     <span>Apps</span>
     <span flex></span>
-    <a md-icon-button mdTooltip="Docs" href="https://www.inxin.com/" target="_blank">
-      <md-icon>chrome_reader_mode</md-icon>
-    </a>
+    <ng-content select="[toolbar1]">
+    </ng-content>
   </div>
 
   <td-layout-manage-list #manageList
@@ -24,15 +23,9 @@
       </ng-template>
     </md-nav-list>
 
-    <div td-toolbar-content layout="row" layout-align="start center" flex>
-      <span>[TODO]</span>
-      <span flex></span>
-      <button md-icon-button><md-icon class="md-24">view_module</md-icon></button>
-      <button md-icon-button><md-icon class="md-24">sort</md-icon></button>
-      <button md-icon-button><md-icon class="md-24">settings</md-icon></button>
-    </div>
+    <ng-content select="[toolbar2]" td-toolbar-content></ng-content>
 
-    <router-outlet></router-outlet>
+    <ng-content select="[body]"></ng-content>
 
   </td-layout-manage-list>
 </td-layout-nav>

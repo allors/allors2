@@ -88,7 +88,7 @@ export class WebAddressAddComponent implements OnInit, AfterViewInit, OnDestroy 
         this.contactMechanismPurposes = loaded.collections.contactMechanismPurposes as Enumeration[];
       },
       (error: any) => {
-         this.errorService.message(error);
+        this.errorService.message(error);
         this.goBack();
       },
     );

@@ -36,8 +36,8 @@ export class ProductCharacteristicsComponent implements AfterViewInit, OnDestroy
   }
 
   ngAfterViewInit(): void {
-    this.media.broadcast();
     this.titleService.setTitle('Product Characteristics');
+    this.search();
   }
 
   ngOnDestroy(): void {
@@ -46,7 +46,7 @@ export class ProductCharacteristicsComponent implements AfterViewInit, OnDestroy
     }
   }
 
-  search(criteria: string): void {
+  search(criteria?: string): void {
 
     if (this.subscription) {
       this.subscription.unsubscribe();
@@ -62,8 +62,6 @@ export class ProductCharacteristicsComponent implements AfterViewInit, OnDestroy
           new TreeNode({ roleType: m.ProductCharacteristic.LocalisedNames }),
         ],
       })];
-
-    this.scope.session.reset();
 
     this.subscription = this.scope
       .load('Pull', new PullRequest({ query: query }))

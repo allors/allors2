@@ -1,4 +1,4 @@
-<a-td-layout-catalogue>
+<a-td-layout-order>
 
   <div toolbar1>
     <a md-icon-button mdTooltip="Docs" href="https://www.inxin.com/" target="_blank">
@@ -7,7 +7,7 @@
   </div>
 
   <div toolbar2 layout="row" layout-align="start center" flex>
-    <span>Product Types</span>
+    <span>Orders</span>
     <span flex></span>
     <button md-icon-button><md-icon class="md-24">settings</md-icon></button>
   </div>
@@ -19,20 +19,21 @@
       <ng-template tdLoading="data">
         <md-list class="will-load">
           <div class="md-padding" *ngIf="data && data.length === 0" layout="row" layout-align="center center">
-            <h3>No product types to display.</h3>
+            <h3>No requests to display.</h3>
           </div>
-          <ng-template let-productType let-last="last" ngFor [ngForOf]="data">
+          <ng-template let-request let-last="last" ngFor [ngForOf]="data">
             <md-list-item>
 
-              <h3 md-line> {{productType.Name}}</h3>
+              <h3 md-line> {{request.Originator.PartyName}}</h3>
+              <p md-line> {{request.Description}} </p>
+              <p md-line> status: {{request.CurrentObjectState.Name}} closing date: {{request.RequiredResponseDate}} </p>
 
               <span>
                 <button md-icon-button [md-menu-trigger-for]="menu">
                 <md-icon>more_vert</md-icon>
                 </button>
                 <md-menu x-position="before" #menu="mdMenu">
-                <a [routerLink]="[productType.id + '/edit']" md-menu-item>Edit</a>
-                <button md-menu-item (click)="delete(productType)">Delete</button>
+                <a [routerLink]="[request.id + '/overview']" md-menu-item>Details</a>
                 </md-menu>
               </span>
 
@@ -45,7 +46,7 @@
     </md-card-content>
   </md-card>
 
-</a-td-layout-catalogue>
+</a-td-layout-order>
 
 <a md-fab color="accent" class="mat-fab-bottom-right" [routerLink]="['add']">
   <md-icon>add</md-icon>

@@ -37,8 +37,8 @@ export class CategoriesComponent implements AfterViewInit, OnDestroy {
   }
 
   ngAfterViewInit(): void {
-    this.media.broadcast();
     this.titleService.setTitle('Categories');
+    this.search();
   }
 
   ngOnDestroy(): void {
@@ -47,7 +47,7 @@ export class CategoriesComponent implements AfterViewInit, OnDestroy {
     }
   }
 
-  search(criteria: string): void {
+  search(criteria?: string): void {
 
     if (this.subscription) {
       this.subscription.unsubscribe();

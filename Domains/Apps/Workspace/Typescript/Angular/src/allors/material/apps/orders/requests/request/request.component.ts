@@ -5,15 +5,15 @@ import { ActivatedRoute } from '@angular/router';
 import { MdSnackBar, MdSnackBarConfig } from '@angular/material';
 import { TdMediaService } from '@covalent/core';
 
-import { MetaDomain } from '../../../../../meta/index';
+import { MetaDomain } from '../../../../../meta';
 import { PullRequest, PushResponse, Fetch, Path, Query, Equals, Like, TreeNode, Sort, Page } from '../../../../../domain';
-import { ProductCategory, Locale, Singleton } from '../../../../../domain';
+import { Currency, Party, RequestForQuote } from '../../../../../domain';
 import { AllorsService, ErrorService, Scope, Loaded, Saved } from '../../../../../angular';
 
 @Component({
-  templateUrl: './category.component.html',
+  templateUrl: './request.component.html',
 })
-export class CategoryFormComponent implements OnInit, AfterViewInit, OnDestroy {
+export class RequestFormComponent implements OnInit, AfterViewInit, OnDestroy {
 
   private subscription: Subscription;
   private scope: Scope;
@@ -21,19 +21,18 @@ export class CategoryFormComponent implements OnInit, AfterViewInit, OnDestroy {
   flex: string = '1 1 30rem';
   m: MetaDomain;
 
-  category: ProductCategory;
-
-  singleton: Singleton;
-  locales: Locale[];
-  categories: ProductCategory[];
+  request: RequestForQuote;
+  parties: Party[];
+  currencies: Currency[];
 
   constructor(
-    private allors: AllorsService,
+    private allorsService: AllorsService,
     private errorService: ErrorService,
     private route: ActivatedRoute,
     public media: TdMediaService) {
-    this.scope = new Scope(allors.database, allors.workspace);
-    this.m = this.allors.meta;
+
+    this.scope = new Scope(allorsService.database, allorsService.workspace);
+    this.m = this.allorsService.meta;
   }
 
   ngOnInit(): void {
@@ -45,17 +44,10 @@ export class CategoryFormComponent implements OnInit, AfterViewInit, OnDestroy {
 
         const fetch: Fetch[] = [
           new Fetch({
-            name: 'category',
+            name: 'requestForQuote',
             id: id,
             include: [
-              new TreeNode({
-                roleType: m.ProductCategory.LocalisedNames,
-                nodes: [new TreeNode({ roleType: m.LocalisedText.Locale })],
-              }),
-              new TreeNode({
-                roleType: m.ProductCategory.LocalisedDescriptions,
-                nodes: [new TreeNode({ roleType: m.LocalisedText.Locale })],
-              }),
+              new TreeNode({ roleType: m.Request.Originator }),
             ],
           }),
         ];
@@ -63,34 +55,32 @@ export class CategoryFormComponent implements OnInit, AfterViewInit, OnDestroy {
         const query: Query[] = [
           new Query(
             {
-              name: 'singletons',
-              objectType: this.m.Singleton,
-              include: [
-                new TreeNode({ roleType: m.Singleton.Locales }),
-              ],
+              name: 'parties',
+              objectType: this.m.Party,
             }),
           new Query(
             {
-              name: 'categories',
-              objectType: this.m.ProductCategory,
+              name: 'currencies',
+              objectType: this.m.Currency,
             }),
         ];
+
+        this.scope.session.reset();
 
         return this.scope
           .load('Pull', new PullRequest({ fetch: fetch, query: query }));
       })
       .subscribe((loaded: Loaded) => {
 
-        this.category = loaded.objects.category as ProductCategory;
-        if (!this.category) {
-          this.category = this.scope.session.create('ProductCategory') as ProductCategory;
+        this.request = loaded.objects.requestForQuote as RequestForQuote;
+        if (!this.request) {
+          this.request = this.scope.session.create('RequestForQuote') as RequestForQuote;
         }
 
-        this.singleton = loaded.collections.singletons[0] as Singleton;
-        this.categories = loaded.collections.categories as ProductCategory[];
-        this.locales = this.singleton.Locales;
+        this.parties = loaded.collections.parties as Party[];
+        this.currencies = loaded.collections.currencies as Currency[];
       },
-      (error: any) => {
+      (error: Error) => {
         this.errorService.message(error);
         this.goBack();
       },

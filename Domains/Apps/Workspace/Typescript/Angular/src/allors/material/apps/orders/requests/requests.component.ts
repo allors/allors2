@@ -7,19 +7,19 @@ import { TdLoadingService, TdDialogService, TdMediaService } from '@covalent/cor
 
 import { MetaDomain } from '../../../../meta';
 import { PullRequest, PushResponse, Fetch, Path, Query, Equals, Like, TreeNode, Sort, Page } from '../../../../domain';
-import { Catalogue } from '../../../../domain';
+import { Request } from '../../../../domain';
 import { AllorsService, ErrorService, Scope, Loaded } from '../../../../angular';
 
 @Component({
-  templateUrl: './catalogues.component.html',
+  templateUrl: './requests.component.html',
 })
-export class CataloguesComponent implements AfterViewInit, OnDestroy {
+export class RequestsComponent implements AfterViewInit, OnDestroy {
 
   private subscription: Subscription;
   private scope: Scope;
 
-  data: Catalogue[];
-  filtered: Catalogue[];
+  data: Request[];
+  filtered: Request[];
 
   constructor(
     private allorsService: AllorsService,
@@ -28,7 +28,7 @@ export class CataloguesComponent implements AfterViewInit, OnDestroy {
     private router: Router,
     public dialogService: TdDialogService,
     public media: TdMediaService,
-    ) {
+  ) {
 
     this.scope = new Scope(allorsService.database, allorsService.workspace);
   }
@@ -38,7 +38,7 @@ export class CataloguesComponent implements AfterViewInit, OnDestroy {
   }
 
   ngAfterViewInit(): void {
-    this.titleService.setTitle('Catalogues');
+    this.titleService.setTitle('Requests');
     this.search();
   }
 
@@ -58,18 +58,18 @@ export class CataloguesComponent implements AfterViewInit, OnDestroy {
 
     const query: Query[] = [new Query(
       {
-        name: 'catalogues',
-        objectType: m.Catalogue,
+        name: 'requests',
+        objectType: m.Request,
         include: [
-          new TreeNode({ roleType: m.Catalogue.CatalogueImage }),
-          new TreeNode({ roleType: m.Catalogue.ProductCategories }),
+          new TreeNode({ roleType: m.Request.Originator }),
+          new TreeNode({ roleType: m.Request.CurrentObjectState }),
         ],
       })];
 
     this.subscription = this.scope
       .load('Pull', new PullRequest({ query: query }))
       .subscribe((loaded: Loaded) => {
-        this.data = loaded.collections.catalogues as Catalogue[];
+        this.data = loaded.collections.requests as Request[];
       },
       (error: Error) => {
         this.errorService.message(error);
@@ -77,17 +77,7 @@ export class CataloguesComponent implements AfterViewInit, OnDestroy {
       });
   }
 
-  delete(catalogue: Catalogue): void {
-    this.dialogService
-      .openConfirm({ message: 'Are you sure you want to delete this catalogue?' })
-      .afterClosed().subscribe((confirm: boolean) => {
-        if (confirm) {
-          // TODO: Logical, physical or workflow delete
-        }
-      });
-  }
-
-  onView(catalogue: Catalogue): void {
-    this.router.navigate(['/catalogues/catalogues/' + catalogue.id + '/edit']);
+  onView(request: Request): void {
+    this.router.navigate(['/orders/requests/' + request.id + '/edit']);
   }
 }

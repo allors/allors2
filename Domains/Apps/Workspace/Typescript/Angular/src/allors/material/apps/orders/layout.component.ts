@@ -3,14 +3,13 @@ import { Router } from '@angular/router';
 import { TdMediaService } from '@covalent/core';
 
 @Component({
-  selector: 'a-td-layout-relation',
+  selector: 'a-td-layout-order',
   templateUrl: './layout.component.html',
 })
 export class LayoutComponent implements AfterViewInit {
 
   routes: Object[] = [
-    { title: 'Organisations', route: '/relations/organisations', icon: 'business', },
-    { title: 'People', route: '/relations/people', icon: 'people' },
+    { title: 'Requests', route: '/orders/requests', icon: 'dashboard', },
   ];
 
   constructor(public media: TdMediaService) {
