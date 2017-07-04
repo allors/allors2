@@ -6,6 +6,7 @@ export class And implements Predicate {
 
   constructor(fields?: Partial<And>) {
     Object.assign(this, fields);
+    this.predicates = this.predicates ? this.predicates : [];
   }
 
   toJSON(): any {

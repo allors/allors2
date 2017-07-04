@@ -9,7 +9,8 @@ import { TdMediaService } from '@covalent/core';
 export class LayoutComponent implements AfterViewInit {
 
   routes: Object[] = [
-    { title: 'People', route: 'people', icon: 'people' },
+    { title: 'Organisations', route: '/relations/organisations', icon: 'business center' },
+    { title: 'People', route: '/relations/people', icon: 'people' },
   ];
 
   constructor(public media: TdMediaService) {

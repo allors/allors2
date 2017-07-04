@@ -1,3 +1,4 @@
+import { AutocompleteComponent } from './base/components/autocomplete';
 import { CheckboxComponent } from './base/components/checkbox';
 import { DatepickerComponent } from './base/components/datepicker';
 import { InputComponent } from './base/components/input';
@@ -12,6 +13,7 @@ import { LocalisedTextComponent } from './base/components/localisation/Localised
 import { MediaUploadComponent } from './base/components/content/MediaUpload';
 
 export const MATERIAL: any[] = [
+  AutocompleteComponent,
   CheckboxComponent,
   DatepickerComponent,
   InputComponent,
@@ -23,9 +25,10 @@ export const MATERIAL: any[] = [
   // Domain
   LocalisedTextComponent,
   MediaUploadComponent,
- ];
+];
 
 export {
+  AutocompleteComponent,
   CheckboxComponent,
   DatepickerComponent,
   InputComponent,

@@ -11,7 +11,7 @@ import {
 } from '@covalent/core';
 import {
   MdButtonModule, MdCardModule, MdDatepickerModule, MdIconModule,
-  MdListModule, MdMenuModule, MdTooltipModule,
+  MdListModule, MdMenuModule, MdTooltipModule, MdAutocompleteModule,
   MdSlideToggleModule, MdInputModule, MdCheckboxModule,
   MdToolbarModule, MdSnackBarModule, MdSidenavModule,
   MdTabsModule, MdSelectModule, MdRadioModule,
@@ -27,7 +27,7 @@ const ANGULAR_MODULES: any[] = [
 ];
 
 const MATERIAL_MODULES: any[] = [
-  MdButtonModule, MdCardModule, MdDatepickerModule, MdIconModule,
+  MdButtonModule, MdCardModule, MdDatepickerModule, MdIconModule, MdAutocompleteModule,
   MdListModule, MdMenuModule, MdTooltipModule,
   MdSlideToggleModule, MdInputModule, MdCheckboxModule,
   MdToolbarModule, MdSnackBarModule, MdSidenavModule,

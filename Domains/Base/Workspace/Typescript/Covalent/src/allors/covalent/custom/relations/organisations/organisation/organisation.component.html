@@ -1,0 +1,38 @@
+<a-td-layout-relation>
+
+  <div toolbar1>
+    <a md-icon-button mdTooltip="Docs" href="https://www.inxin.com/" target="_blank">
+      <md-icon>chrome_reader_mode</md-icon>
+    </a>
+  </div>
+
+  <div toolbar2 layout="row" layout-align="start center" flex>
+    <span>Organisation</span>
+    <span flex></span>
+    <button md-icon-button><md-icon class="md-24">settings</md-icon></button>
+  </div>
+
+
+  <md-card body tdMediaToggle="gt-xs" [mediaClasses]="['push']">
+    <form #form="ngForm" *ngIf="organisation" (submit)="save()">
+      <md-card-content class="push-bottom-none">
+
+        <div fxLayout="row wrap" fxLayoutAlign="start stretch" fxLayoutGap.gt-md="25px">
+          <a-md-input class="push-top" [object]="organisation" [roleType]="m.Organisation.Name" [fxFlex]="flex" [fxFlex.gt-md]="flex2"></a-md-input>
+          <!--<a-md-autocomplete class="push-top" [object]="organisation" [roleType]="m.Organisation.Owner" [options]="people" display="displayName" [fxFlex]="flex" [fxFlex.gt-md]="flex2"></a-md-autocomplete>-->
+          <a-md-autocomplete class="push-top" [object]="organisation" [roleType]="m.Organisation.Owner" [filter]="peopleFilter.create()" display="displayName" (onSelect)="ownerSelected($event)" [fxFlex]="flex" [fxFlex.gt-md]="flex2"></a-md-autocomplete>
+        </div>
+
+      </md-card-content>
+
+      <md-divider></md-divider>
+
+      <md-card-actions>
+        <button md-button color="primary" type="submit">SAVE</button>
+        <button md-button (click)="goBack()" type="button">CANCEL</button>
+      </md-card-actions>
+
+    </form>
+  </md-card>
+
+</a-td-layout-relation>

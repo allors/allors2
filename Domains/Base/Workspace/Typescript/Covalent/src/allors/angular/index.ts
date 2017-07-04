@@ -4,6 +4,7 @@ export { ENVIRONMENT, Environment } from './base/Environment';
 export { AllorsService } from './base/AllorsService';
 export { Database } from './base/Database';
 export { Scope } from './base/Scope';
+export { Filter } from './base/Filter';
 
 export { ErrorService } from './base/errors/ErrorService';
 

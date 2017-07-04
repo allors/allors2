@@ -6,7 +6,8 @@ export class Or implements Predicate {
 
   constructor(fields?: Partial<Or>) {
     Object.assign(this, fields);
-  }
+    this.predicates = this.predicates ? this.predicates : [];
+   }
 
   toJSON(): any {
     return {

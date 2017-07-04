@@ -25,6 +25,14 @@ const routes: Routes = [
           {
             path: '', component: relations.DashboardComponent,
           }, {
+            path: 'organisations',
+            children: [
+              { path: '', component: relations.OrganisationsComponent },
+              { path: 'add', component: relations.OrganisationComponent },
+              { path: ':id/edit', component: relations.OrganisationComponent },
+              { path: ':id/overview', component: relations.OrganisationOverviewComponent },
+            ],
+          }, {
             path: 'people',
             children: [
               { path: '', component: relations.PeopleComponent },
