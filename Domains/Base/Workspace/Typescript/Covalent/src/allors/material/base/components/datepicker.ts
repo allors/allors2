@@ -9,8 +9,9 @@ import { Field } from '../../../angular';
   template: `
 <md-input-container fxLayout="row">
   <input fxFlex mdInput [mdDatepicker]="picker"
-      [(ngModel)]="model" [name]="name" [placeholder]="label" [disabled]="!canWrite" [required]="required">
+      [(ngModel)]="model" [name]="name" [placeholder]="label" [required]="required" [disabled]="disabled" [readonly]="readonly">
   <button mdSuffix [mdDatepickerToggle]="picker"></button>
+  <md-hint *ngIf="hint">{{hint}}</md-hint>
 </md-input-container>
 <md-datepicker fxFlex #picker></md-datepicker>
 `,

@@ -20,8 +20,8 @@
         <div fxLayout="row wrap" fxLayoutAlign="start stretch" fxLayoutGap.gt-md="25px">
           <a-md-input class="push-top" [object]="organisation" [roleType]="m.Organisation.Name" [fxFlex]="flex" [fxFlex.gt-md]="flex2"></a-md-input>
           <!--<a-md-autocomplete class="push-top" [object]="organisation" [roleType]="m.Organisation.Owner" [options]="people" display="displayName" [fxFlex]="flex" [fxFlex.gt-md]="flex2"></a-md-autocomplete>-->
-          <a-md-autocomplete class="push-top" [object]="organisation" [roleType]="m.Organisation.Owner" [filter]="peopleFilter.create()" display="displayName" (onSelect)="ownerSelected($event)" [fxFlex]="flex" [fxFlex.gt-md]="flex2"></a-md-autocomplete>
-          <a-td-chips class="push-top" [object]="organisation" [roleType]="m.Organisation.Employees" [filter]="peopleFilter.create()" display="displayName" [fxFlex]="flex" [fxFlex.gt-md]="flex2"></a-td-chips>
+          <a-md-autocomplete class="push-top" [object]="organisation" [roleType]="m.Organisation.Owner" [filter]="peopleFilter.create()" display="displayName" (onSelect)="ownerSelected($event)" hint="Current owner" [fxFlex]="flex" [fxFlex.gt-md]="flex2"></a-md-autocomplete>
+          <a-td-chips class="push-top" [object]="organisation" [roleType]="m.Organisation.Employees" [filter]="peopleFilter.create()" display="displayName" hint="All current employees" [fxFlex]="flex" [fxFlex.gt-md]="flex2"></a-td-chips>
         </div>
 
       </md-card-content>

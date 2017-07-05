@@ -10,7 +10,8 @@ import { Field } from '../../../angular';
   selector: 'a-md-autocomplete',
   template: `
 <md-input-container>
-  <input type="text" mdInput [formControl]="searchControl" [mdAutocomplete]="usersComp"/>
+  <input type="text" mdInput [formControl]="searchControl" [mdAutocomplete]="usersComp" [placeholder]="label" [required]="required" [disabled]="disabled" [readonly]="readonly">
+  <md-hint *ngIf="hint">{{hint}}</md-hint>
 </md-input-container>
 
 <md-autocomplete #usersComp="mdAutocomplete" [displayWith]="displayFn()">

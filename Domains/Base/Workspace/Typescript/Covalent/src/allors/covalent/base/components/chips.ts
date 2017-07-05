@@ -16,7 +16,10 @@ import { Field } from '../../../angular';
           (inputChange)="inputChange($event)"
           (add)="add($event)"
           (remove)="remove($event)"
-          requireMatch>
+          requireMatch
+          [disabled]="disabled"
+          [readOnly]="readonly"
+          >
 
   <ng-template td-chip let-chip="chip">
     {{chip[this.display]}}
@@ -26,7 +29,7 @@ import { Field } from '../../../angular';
       {{option[this.display]}}
     </div>
   </ng-template>
-
+  <md-hint *ngIf="hint">{{hint}}</md-hint>
 </td-chips>
 `,
 })

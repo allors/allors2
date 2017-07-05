@@ -5,6 +5,7 @@ import { InputComponent } from './base/components/input';
 import { RadioGroupComponent } from './base/components/radioGroup';
 import { SelectComponent } from './base/components/select';
 import { SlideToggleComponent } from './base/components/slideToggle';
+import { SliderComponent } from './base/components/slider';
 import { StaticComponent } from './base/components/static';
 import { TextareaComponent } from './base/components/textArea';
 
@@ -20,6 +21,7 @@ export const MATERIAL: any[] = [
   RadioGroupComponent,
   SelectComponent,
   SlideToggleComponent,
+  SliderComponent,
   StaticComponent,
   TextareaComponent,
   // Domain
@@ -35,6 +37,7 @@ export {
   RadioGroupComponent,
   SelectComponent,
   SlideToggleComponent,
+  SliderComponent,
   StaticComponent,
   TextareaComponent,
   // Domain

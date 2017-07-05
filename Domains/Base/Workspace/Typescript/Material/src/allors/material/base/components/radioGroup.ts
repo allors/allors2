@@ -12,12 +12,13 @@ export class RadioGroupOption {
 @Component({
   selector: 'a-md-radio-group',
   template: `
-  <md-input-container fxLayout="row">
-    <md-radio-group fxFlex [(ngModel)]="model" [name]="name" [disabled]="!canWrite" [required]="required">
-      <md-radio-button *ngFor="let option of options" [value]="optionValue(option)">{{optionLabel(option)}}</md-radio-button>
-    </md-radio-group>
-  </md-input-container>
-  `,
+<md-input-container fxLayout="row">
+  <md-radio-group fxFlex [(ngModel)]="model" [name]="name" [required]="required" [disabled]="disabled">
+    <md-radio-button *ngFor="let option of options" [value]="optionValue(option)">{{optionLabel(option)}}</md-radio-button>
+  </md-radio-group>
+  <md-hint *ngIf="hint">{{hint}}</md-hint>
+</md-input-container>
+`,
 })
 export class RadioGroupComponent extends Field {
   @Input()

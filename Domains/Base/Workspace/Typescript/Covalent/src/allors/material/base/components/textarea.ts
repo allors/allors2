@@ -7,10 +7,11 @@ import { Field } from '../../../angular';
 @Component({
   selector: 'a-md-textarea',
   template: `
-  <md-input-container fxLayout="row">
-    <textarea fxFlex mdInput [(ngModel)]="model" [name]="name" [placeholder]="label" [disabled]="!canWrite" [required]="required">
-    </textarea>
-  </md-input-container>
+<md-input-container fxLayout="row">
+  <textarea fxFlex mdInput [(ngModel)]="model" [name]="name" [placeholder]="label" [required]="required" [disabled]="disabled" [readonly]="readonly">
+  </textarea>
+  <md-hint *ngIf="hint">{{hint}}</md-hint>
+</md-input-container>
 `,
 })
 export class TextareaComponent extends Field {
