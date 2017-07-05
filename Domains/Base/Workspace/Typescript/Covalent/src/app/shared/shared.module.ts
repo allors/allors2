@@ -8,6 +8,7 @@ import {
   CovalentNotificationsModule, CovalentLayoutModule, CovalentMenuModule,
   CovalentPagingModule, CovalentSearchModule, CovalentStepsModule,
   CovalentCommonModule, CovalentDialogsModule, CovalentFileModule,
+  CovalentChipsModule,
 } from '@covalent/core';
 import {
   MdButtonModule, MdCardModule, MdDatepickerModule, MdIconModule,
@@ -39,6 +40,7 @@ const COVALENT_MODULES: any[] = [
   CovalentNotificationsModule, CovalentLayoutModule, CovalentMenuModule,
   CovalentPagingModule, CovalentSearchModule, CovalentStepsModule,
   CovalentCommonModule, CovalentDialogsModule, CovalentFileModule,
+  CovalentChipsModule,
 ];
 
 const CHART_MODULES: any[] = [
