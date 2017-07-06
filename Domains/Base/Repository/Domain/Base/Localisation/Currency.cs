@@ -44,6 +44,7 @@ namespace Allors.Repository
         [Required]
         [Unique]
         [Size(256)]
+        [Workspace]
         public string IsoCode { get; set; }
 
         #region Allors
@@ -55,6 +56,7 @@ namespace Allors.Repository
         [Required]
         [Unique]
         [Size(256)]
+        [Workspace]
         public string Name { get; set; }
         
         #region Allors
@@ -64,6 +66,7 @@ namespace Allors.Repository
         #endregion
         [Multiplicity(Multiplicity.OneToMany)]
         [Indexed]
+        [Workspace]
         public LocalisedText[] LocalisedNames { get; set; }
 
         #region inherited methods
