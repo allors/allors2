@@ -10,7 +10,7 @@ import { Field } from '../../../angular';
   selector: 'a-md-autocomplete',
   template: `
 <md-input-container>
-  <input type="text" mdInput [formControl]="searchControl" [mdAutocomplete]="usersComp" [placeholder]="label" [required]="required" [disabled]="disabled" [readonly]="readonly">
+  <input type="text" mdInput (focusout)="focusout($event)" [formControl]="searchControl" [mdAutocomplete]="usersComp" [placeholder]="label" [required]="required" [disabled]="disabled" [readonly]="readonly">
   <md-hint *ngIf="hint">{{hint}}</md-hint>
 </md-input-container>
 
@@ -52,9 +52,9 @@ export class AutocompleteComponent extends Field implements OnInit {
             return this.filter(search);
           }));
     } else {
-      this.filteredOptions = Observable.of(new Array<ISessionObject>())
-        .concat(this.searchControl
+      this.filteredOptions = this.searchControl
           .valueChanges
+          .startWith(null)
           .debounceTime(this.debounceTime)
           .distinctUntilChanged()
           .map((search: string) => {
@@ -67,7 +67,7 @@ export class AutocompleteComponent extends Field implements OnInit {
                 }
               })
               .sort((a: ISessionObject, b: ISessionObject) => a[this.display] !== b[this.display] ? a[this.display] < b[this.display] ? -1 : 1 : 0);
-          }));
+          });
     }
 
     this.searchControl.setValue(this.model);
@@ -84,5 +84,13 @@ export class AutocompleteComponent extends Field implements OnInit {
   selected(option: ISessionObject): void {
     this.model = option;
     this.onSelect.emit(option);
+  }
+
+  focusout(): void {
+    if (!this.searchControl.value) {
+      this.model = undefined;
+      this.onSelect.emit(undefined);
+    } else {
+    }
   }
 }

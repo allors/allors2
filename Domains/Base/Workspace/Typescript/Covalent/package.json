@@ -17,7 +17,7 @@
     "sync-meta": "sync-files ../Meta/src/allors/meta/base src/allors/meta/base",
     "sync-domain": "sync-files ../Domain/src/allors/domain/base src/allors/domain/base",
     "sync-angular": "sync-files ../Angular/src/allors/angular/base src/allors/angular/base",
-    "sync-material": "sync-files ../Angular/src/allors/material/base src/allors/material/base",
+    "sync-material": "sync-files ../Material/src/allors/material/base src/allors/material/base",
     "syncback": "npm run syncback-meta && npm run syncback-domain && npm run syncback-angular && npm run syncback-material",
     "syncback-meta": "sync-files src/allors/meta/base ../Meta/src/allors/meta/base",
     "syncback-domain": "sync-files src/allors/domain/base ../Domain/src/allors/domain/base",
@@ -77,8 +77,5 @@
     "tslint": "^5.2.0",
     "typescript": "~2.3.1",
     "sync-files": "^1.0.3"
-  },
-  "optionalDependencies": {
-    "@covalent/data": "0.7.0"
   }
 }
