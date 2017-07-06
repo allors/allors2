@@ -39,11 +39,16 @@ namespace Allors.Domain
 
         public User CurrentUser
         {
-            get { return (User) this.Session.Instantiate((string) this.Session[CurrentKey]); }
+            get
+            {
+                return (User)this.Session.Instantiate((string)this.Session[CurrentKey]);
+            }
 
-            set { this.Session[CurrentKey] = value?.Id.ToString(); }
+            set
+            {
+                this.Session[CurrentKey] = value?.Id.ToString();
+            }
         }
-
 
         public User GetUser(string userId)
         {
