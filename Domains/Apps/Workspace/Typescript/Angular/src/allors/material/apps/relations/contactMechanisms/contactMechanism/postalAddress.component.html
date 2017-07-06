@@ -19,8 +19,7 @@
       <md-divider></md-divider>
       <md-card-content class="push-bottom-none">
 
-        <div fxLayout="row wrap" fxLayoutGap="3rem" fxLayoutAlign="start stretch">
-
+        <div fxLayout="row wrap" fxLayoutAlign="start stretch" fxLayoutGap.gt-md="25px">
           <a-md-select [fxFlex]="flex" class="push-top" [object]="partyContactMechanism" [roleType]="m.PartyContactMechanism.ContactPurposes"
             [options]="contactMechanismPurposes" display="Name"></a-md-select>
           <a-md-input [fxFlex]="flex" class="push-top" [object]="contactMechanism" [roleType]="m.PostalAddress.Address1"></a-md-input>
@@ -32,7 +31,6 @@
             [options]="countries" display="Name"></a-md-select>
           <a-md-slide-toggle [fxFlex]="flex" class="push-top" [object]="partyContactMechanism" [roleType]="m.PartyContactMechanism.UseAsDefault"
             label="Use as default"></a-md-slide-toggle>
-
         </div>
 
       </md-card-content>

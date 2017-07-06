@@ -20,8 +20,7 @@
     <md-divider></md-divider>
     <md-card-content class="push-bottom-none">
 
-      <div fxLayout="row wrap" fxLayoutGap="3rem" fxLayoutAlign="start stretch">
-
+        <div fxLayout="row wrap" fxLayoutAlign="start stretch" fxLayoutGap.gt-md="25px">
         <a-md-media-upload [fxFlex]="flex" class="push-top" [object]="good" [roleType]="m.Good.PrimaryPhoto" accept="image/*"></a-md-media-upload>
         <a-md-localised-text [fxFlex]="flex" class="push-top" [object]="good" [roleType]="m.Good.LocalisedNames" [locales]="locales"></a-md-localised-text>
         <a-md-localised-text [fxFlex]="flex" class="push-top" [object]="good" [roleType]="m.Good.LocalisedDescriptions" [locales]="locales"></a-md-localised-text>

@@ -18,7 +18,9 @@ export class GoodFormComponent implements OnInit, AfterViewInit, OnDestroy {
   private subscription: Subscription;
   private scope: Scope;
 
-  flex: string = '1 1 30rem';
+  flex: string = '100%';
+  flex2: string = `calc(50%-25px)`;
+
   m: MetaDomain;
 
   good: Good;

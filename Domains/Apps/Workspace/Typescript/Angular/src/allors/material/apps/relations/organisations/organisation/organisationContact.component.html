@@ -20,8 +20,7 @@
       <md-divider></md-divider>
       <md-card-content class="push-bottom-none">
 
-        <div fxLayout="row wrap" fxLayoutGap="3rem" fxLayoutAlign="start stretch">
-
+        <div fxLayout="row wrap" fxLayoutAlign="start stretch" fxLayoutGap.gt-md="25px">
           <a-md-select [fxFlex]="flex" class="push-top" [object]="organisationContactRelationship.Contact" [roleType]="m.Person.PersonRoles"
             [options]="roles" display="Name"></a-md-select>
           <a-md-select [fxFlex]="flex" class="push-top" [object]="organisationContactRelationship" [roleType]="m.OrganisationContactRelationship.ContactKinds"
@@ -35,7 +34,6 @@
             [options]="salutations" display="Name"></a-md-select>
           <a-md-select [fxFlex]="flex" class="push-top" [object]="organisationContactRelationship.Contact" [roleType]="m.Person.Locale"
             [options]="locales" display="Name"></a-md-select>
-
         </div>
 
       </md-card-content>

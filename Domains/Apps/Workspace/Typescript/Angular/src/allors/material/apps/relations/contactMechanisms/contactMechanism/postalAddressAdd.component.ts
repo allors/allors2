@@ -18,7 +18,9 @@ export class PostalAddressAddComponent implements OnInit, AfterViewInit, OnDestr
   private subscription: Subscription;
   private scope: Scope;
 
-  flex: string = '1 1 30rem';
+  flex: string = '100%';
+  flex2: string = `calc(50%-25px)`;
+
   m: MetaDomain;
 
   organisation: Organisation;

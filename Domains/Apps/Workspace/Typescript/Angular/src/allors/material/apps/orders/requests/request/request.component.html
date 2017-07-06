@@ -20,14 +20,16 @@
       <md-divider></md-divider>
       <md-card-content class="push-bottom-none">
 
-        <div fxLayout="row wrap" fxLayoutGap="3rem" fxLayoutAlign="start stretch">
-          <a-md-select [fxFlex]="flex" class="push-top" [object]="request" [roleType]="m.Request.Originator" [options]="parties" display="PartyName"></a-md-select>
-          <a-md-datepicker [fxFlex]="flex" class="push-top" [object]="request" [roleType]="m.Request.RequestDate"></a-md-datepicker>
-          <a-md-datepicker [fxFlex]="flex" class="push-top" [object]="request" [roleType]="m.Request.RequiredResponseDate"></a-md-datepicker>
-          <a-md-input [fxFlex]="flex" class="push-top" [object]="request" [roleType]="m.Request.Description"></a-md-input>
-          <a-md-select [fxFlex]="flex" class="push-top" [object]="request" [roleType]="m.Request.Currency" [options]="currencies" display="Description"></a-md-select>
-          <a-md-textarea [fxFlex]="flex" class="push-top" [object]="request" [roleType]="m.Request.Comment"></a-md-textarea>
-          <a-md-textarea [fxFlex]="flex" class="push-top" [object]="request" [roleType]="m.Request.InternalComment"></a-md-textarea>
+        <div fxLayout="row wrap" fxLayoutAlign="start stretch" fxLayoutGap.gt-md="25px">
+          <a-md-autocomplete *ngIf="showOrganisations" class="push-top" [object]="request" [roleType]="m.Request.Originator" [filter]="organisationsFilter.create()" display="Name" (onSelect)="originatorSelected($event)" label="Requesting organisation"[fxFlex]="flex" [fxFlex.gt-md]="flex2"></a-md-autocomplete>
+          <a-md-autocomplete *ngIf="showPeople" class="push-top" [object]="request" [roleType]="m.Request.Originator" [filter]="peopleFilter.create()" display="displayName" (onSelect)="originatorSelected($event)" label="Requesting person" [fxFlex]="flex" [fxFlex.gt-md]="flex2"></a-md-autocomplete>
+          <a-md-select class="push-top" [object]="request" [roleType]="m.Request.FullfillContactMechanism" [options]="contactMechanisms" display="displayName" [fxFlex]="flex" [fxFlex.gt-md]="flex2"></a-md-select>
+          <a-md-datepicker class="push-top" [object]="request" [roleType]="m.Request.RequestDate" [fxFlex]="flex" [fxFlex.gt-md]="flex2"></a-md-datepicker>
+          <a-md-datepicker class="push-top" [object]="request" [roleType]="m.Request.RequiredResponseDate" [fxFlex]="flex" [fxFlex.gt-md]="flex2"></a-md-datepicker>
+          <a-md-input class="push-top" [object]="request" [roleType]="m.Request.Description" [fxFlex]="flex" [fxFlex.gt-md]="flex2"></a-md-input>
+          <a-md-autocomplete class="push-top" [object]="request" [roleType]="m.Request.Currency" [filter]="currenciesFilter.create()" display="Name" [fxFlex]="flex" [fxFlex.gt-md]="flex2"></a-md-autocomplete>
+          <a-md-textarea class="push-top" [object]="request" [roleType]="m.Request.Comment" [fxFlex]="flex" [fxFlex.gt-md]="flex2"></a-md-textarea>
+          <a-md-textarea class="push-top" [object]="request" [roleType]="m.Request.InternalComment" [fxFlex]="flex" [fxFlex.gt-md]="flex2"></a-md-textarea>
         </div>
 
       </md-card-content>

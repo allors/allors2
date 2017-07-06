@@ -6,9 +6,12 @@ import { MdSnackBar, MdSnackBarConfig } from '@angular/material';
 import { TdMediaService } from '@covalent/core';
 
 import { MetaDomain } from '../../../../../meta';
-import { PullRequest, PushResponse, Fetch, Path, Query, Equals, Like, TreeNode, Sort, Page } from '../../../../../domain';
-import { Currency, Party, RequestForQuote } from '../../../../../domain';
-import { AllorsService, ErrorService, Scope, Loaded, Saved } from '../../../../../angular';
+import { PullRequest, PushResponse, Contains, Fetch, Path, Query, Equals, Like, TreeNode, Sort, Page } from '../../../../../domain';
+import {
+  Currency, Organisation, Party, Person, PartyContactMechanism, ContactMechanism,
+  OrganisationRole, PersonRole, RequestForQuote,
+} from '../../../../../domain';
+import { AllorsService, ErrorService, Scope, Loaded, Saved, Filter } from '../../../../../angular';
 
 @Component({
   templateUrl: './request.component.html',
@@ -18,12 +21,27 @@ export class RequestFormComponent implements OnInit, AfterViewInit, OnDestroy {
   private subscription: Subscription;
   private scope: Scope;
 
-  flex: string = '1 1 30rem';
+  flex: string = '100%';
+  flex2: string = `calc(50%-25px)`;
+
   m: MetaDomain;
 
   request: RequestForQuote;
-  parties: Party[];
+  people: Person[];
+  organisations: Organisation[];
   currencies: Currency[];
+  contactMechanisms: ContactMechanism[];
+
+  peopleFilter: Filter;
+  organisationsFilter: Filter;
+  currenciesFilter: Filter;
+
+  get showOrganisations(): boolean {
+    return !this.request.Originator || this.request.Originator instanceof (Organisation);
+  }
+  get showPeople(): boolean {
+    return !this.request.Originator || this.request.Originator instanceof (Person);
+  }
 
   constructor(
     private allorsService: AllorsService,
@@ -33,6 +51,10 @@ export class RequestFormComponent implements OnInit, AfterViewInit, OnDestroy {
 
     this.scope = new Scope(allorsService.database, allorsService.workspace);
     this.m = this.allorsService.meta;
+
+    this.peopleFilter = new Filter(this.scope, this.m.Person, [this.m.Person.FirstName, this.m.Person.LastName]);
+    this.organisationsFilter = new Filter(this.scope, this.m.Organisation, [this.m.Organisation.Name]);
+    this.currenciesFilter = new Filter(this.scope, this.m.Currency, [this.m.Currency.Name]);
   }
 
   ngOnInit(): void {
@@ -52,11 +74,16 @@ export class RequestFormComponent implements OnInit, AfterViewInit, OnDestroy {
           }),
         ];
 
-        const query: Query[] = [
+        const rolesQuery: Query[] = [
           new Query(
             {
-              name: 'parties',
-              objectType: this.m.Party,
+              name: 'organisationRoles',
+              objectType: m.OrganisationRole,
+            }),
+          new Query(
+            {
+              name: 'personRoles',
+              objectType: m.PersonRole,
             }),
           new Query(
             {
@@ -68,7 +95,33 @@ export class RequestFormComponent implements OnInit, AfterViewInit, OnDestroy {
         this.scope.session.reset();
 
         return this.scope
-          .load('Pull', new PullRequest({ fetch: fetch, query: query }));
+          .load('Pull', new PullRequest({ query: rolesQuery }))
+          .mergeMap((loaded: Loaded) => {
+            this.currencies = loaded.collections.currencies as Currency[];
+
+            const organisationRoles: OrganisationRole[] = loaded.collections.organisationRoles as OrganisationRole[];
+            const oCustomerRole: OrganisationRole = organisationRoles.find((v: OrganisationRole) => v.Name === 'Customer');
+
+            const personRoles: OrganisationRole[] = loaded.collections.organisationRoles as OrganisationRole[];
+            const pCustomerRole: OrganisationRole = organisationRoles.find((v: OrganisationRole) => v.Name === 'Customer');
+
+            const query: Query[] = [
+              new Query(
+                {
+                  name: 'organisations',
+                  predicate: new Contains({ roleType: m.Organisation.OrganisationRoles, object: oCustomerRole }),
+                  objectType: this.m.Organisation,
+                }),
+              new Query(
+                {
+                  name: 'persons',
+                  predicate: new Contains({ roleType: m.Person.PersonRoles, object: pCustomerRole }),
+                  objectType: this.m.Person,
+                }),
+            ];
+
+            return this.scope.load('Pull', new PullRequest({ fetch: fetch, query: query }));
+          });
       })
       .subscribe((loaded: Loaded) => {
 
@@ -77,8 +130,8 @@ export class RequestFormComponent implements OnInit, AfterViewInit, OnDestroy {
           this.request = this.scope.session.create('RequestForQuote') as RequestForQuote;
         }
 
-        this.parties = loaded.collections.parties as Party[];
-        this.currencies = loaded.collections.currencies as Currency[];
+        this.organisations = loaded.collections.organisations as Organisation[];
+        this.people = loaded.collections.parties as Person[];
       },
       (error: Error) => {
         this.errorService.message(error);
@@ -107,6 +160,43 @@ export class RequestFormComponent implements OnInit, AfterViewInit, OnDestroy {
       (error: Error) => {
         this.errorService.dialog(error);
       });
+  }
+
+  originatorSelected(party: Party): void {
+
+    const fetch: Fetch[] = [
+      new Fetch({
+        name: 'partyContactMechanisms',
+        id: party.id,
+        path: new Path({ step: this.m.Party.CurrentPartyContactMechanisms }),
+        include: [
+          new TreeNode({
+            roleType: this.m.PartyContactMechanism.ContactMechanism,
+            nodes: [
+              new TreeNode({
+                roleType: this.m.PostalAddress.PostalBoundary,
+                nodes: [
+                  new TreeNode({ roleType: this.m.PostalBoundary.Country }),
+                ],
+              }),
+            ],
+          }),
+        ],
+      }),
+    ];
+
+    this.scope
+      .load('Pull', new PullRequest({ fetch: fetch }))
+      .subscribe((loaded: Loaded) => {
+
+        const partyContactMechanisms: PartyContactMechanism[] = loaded.collections.partyContactMechanisms as PartyContactMechanism[];
+        this.contactMechanisms = partyContactMechanisms.map((v: PartyContactMechanism) => v.ContactMechanism);
+      },
+      (error: Error) => {
+        this.errorService.message(error);
+        this.goBack();
+      },
+    );
   }
 
   goBack(): void {
