@@ -5,7 +5,7 @@ import { MetaDomain, RoleType } from '../../../../allors/meta';
 import { Field } from '../../../angular';
 
 @Component({
-  selector: 'a-md-input',
+  selector: 'a-md-slider',
   template: `
 <md-input-container fxLayout="column" fxLayoutAlign="top stretch">
   <md-slider fxFlex [(ngModel)]="model" [name]="name" [invert]="invert" [min]="min" [max]="max" [step]="step" [thumbLabel]="thumbLabel" [tickInterval]="tickInterval" [vertical]="vertical" [color]="color" [required]="required" [disabled]="disabled"></md-slider>
