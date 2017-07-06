@@ -22,18 +22,18 @@
 
         <div fxLayout="row wrap" fxLayoutAlign="start stretch" fxLayoutGap.gt-md="25px">
           <a-md-select [fxFlex]="flex" class="push-top" [object]="organisationContactRelationship.Contact" [roleType]="m.Person.PersonRoles"
-            [options]="roles" display="Name"></a-md-select>
+            [options]="roles" display="Name" [fxFlex]="flex" [fxFlex.gt-md]="flex2"></a-md-select>
           <a-md-select [fxFlex]="flex" class="push-top" [object]="organisationContactRelationship" [roleType]="m.OrganisationContactRelationship.ContactKinds"
-            [options]="organisationContactKinds" display="Description"></a-md-select>
-          <a-md-input [fxFlex]="flex" class="push-top" [object]="organisationContactRelationship.Contact" [roleType]="m.Person.FirstName"></a-md-input>
-          <a-md-input [fxFlex]="flex" class="push-top" [object]="organisationContactRelationship.Contact" [roleType]="m.Person.MiddleName"></a-md-input>
-          <a-md-input [fxFlex]="flex" class="push-top" [object]="organisationContactRelationship.Contact" [roleType]="m.Person.LastName"></a-md-input>
+            [options]="organisationContactKinds" display="Description" [fxFlex]="flex" [fxFlex.gt-md]="flex2"></a-md-select>
+          <a-md-input [fxFlex]="flex" class="push-top" [object]="organisationContactRelationship.Contact" [roleType]="m.Person.FirstName" [fxFlex]="flex" [fxFlex.gt-md]="flex2"></a-md-input>
+          <a-md-input [fxFlex]="flex" class="push-top" [object]="organisationContactRelationship.Contact" [roleType]="m.Person.MiddleName" [fxFlex]="flex" [fxFlex.gt-md]="flex2"></a-md-input>
+          <a-md-input [fxFlex]="flex" class="push-top" [object]="organisationContactRelationship.Contact" [roleType]="m.Person.LastName" [fxFlex]="flex" [fxFlex.gt-md]="flex2"></a-md-input>
           <a-md-select [fxFlex]="flex" class="push-top" [object]="organisationContactRelationship.Contact" [roleType]="m.Person.Gender"
-            [options]="genders" display="Name"></a-md-select>
+            [options]="genders" display="Name" [fxFlex]="flex" [fxFlex.gt-md]="flex2"></a-md-select>
           <a-md-select [fxFlex]="flex" class="push-top" [object]="organisationContactRelationship.Contact" [roleType]="m.Person.Salutation"
-            [options]="salutations" display="Name"></a-md-select>
+            [options]="salutations" display="Name" [fxFlex]="flex" [fxFlex.gt-md]="flex2"></a-md-select>
           <a-md-select [fxFlex]="flex" class="push-top" [object]="organisationContactRelationship.Contact" [roleType]="m.Person.Locale"
-            [options]="locales" display="Name"></a-md-select>
+            [options]="locales" display="Name" [fxFlex]="flex" [fxFlex.gt-md]="flex2"></a-md-select>
         </div>
 
       </md-card-content>

@@ -21,12 +21,10 @@
       <md-card-content class="push-bottom-none">
 
         <div fxLayout="row wrap" fxLayoutAlign="start stretch" fxLayoutGap.gt-md="25px">
-          <a-md-media-upload [fxFlex]="flex" class="push-top" [object]="category" [roleType]="m.ProductCategory.CategoryImage" accept="image/*"></a-md-media-upload>
-          <a-md-localised-text [fxFlex]="flex" class="push-top" [object]="category" [roleType]="m.ProductCategory.LocalisedNames" [locales]="locales"></a-md-localised-text>
-          <a-md-localised-text [fxFlex]="flex" class="push-top" [object]="category" [roleType]="m.ProductCategory.LocalisedDescriptions"
-            [locales]="locales"></a-md-localised-text>
-          <a-md-select [fxFlex]="flex" class="push-top" [object]="category" [roleType]="m.ProductCategory.Parents" [options]="categories"
-            display="Name"></a-md-select>
+          <a-md-media-upload [fxFlex]="flex" class="push-top" [object]="category" [roleType]="m.ProductCategory.CategoryImage" accept="image/*" [fxFlex]="flex" [fxFlex.gt-md]="flex2"></a-md-media-upload>
+          <a-md-localised-text [fxFlex]="flex" class="push-top" [object]="category" [roleType]="m.ProductCategory.LocalisedNames" [locales]="locales" label="Name" [fxFlex]="flex" [fxFlex.gt-md]="flex2"></a-md-localised-text>
+          <a-md-localised-text [fxFlex]="flex" class="push-top" [object]="category" [roleType]="m.ProductCategory.LocalisedDescriptions" [locales]="locales" label="Description" [fxFlex]="flex" [fxFlex.gt-md]="flex2"></a-md-localised-text>
+          <a-td-chips [fxFlex]="flex" class="push-top" [object]="category" [roleType]="m.ProductCategory.Parents" [options]="categories" display="Name" [fxFlex]="flex" [fxFlex.gt-md]="flex2"></a-td-chips>
         </div>
 
       </md-card-content>

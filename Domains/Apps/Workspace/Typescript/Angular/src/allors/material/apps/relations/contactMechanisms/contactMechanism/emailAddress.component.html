@@ -22,11 +22,11 @@
 
         <div fxLayout="row wrap" fxLayoutAlign="start stretch" fxLayoutGap.gt-md="25px">
           <a-md-select [fxFlex]="flex" class="push-top" [object]="partyContactMechanism" [roleType]="m.PartyContactMechanism.ContactPurposes"
-            [options]="contactMechanismPurposes" display="Name"></a-md-select>
+            [options]="contactMechanismPurposes" display="Name" [fxFlex]="flex" [fxFlex.gt-md]="flex2"></a-md-select>
           <a-md-input [fxFlex]="flex" class="push-top" [object]="contactMechanism" [roleType]="m.EmailAddress.ElectronicAddressString"
-            label="Email address"></a-md-input>
+            label="Email address" [fxFlex]="flex" [fxFlex.gt-md]="flex2"></a-md-input>
           <a-md-slide-toggle [fxFlex]="flex" class="push-top" [object]="partyContactMechanism" [roleType]="m.PartyContactMechanism.UseAsDefault"
-            label="Use as default"></a-md-slide-toggle>
+            label="Use as default" [fxFlex]="flex" [fxFlex.gt-md]="flex2"></a-md-slide-toggle>
         </div>
 
       </md-card-content>

@@ -21,7 +21,7 @@
       <md-card-content class="push-bottom-none">
 
         <div fxLayout="row wrap" fxLayoutAlign="start stretch" fxLayoutGap.gt-md="25px">
-          <a-md-autocomplete *ngIf="showOrganisations" class="push-top" [object]="request" [roleType]="m.Request.Originator" [filter]="organisationsFilter.create()" display="Name" (onSelect)="originatorSelected($event)" label="Requesting organisation"[fxFlex]="flex" [fxFlex.gt-md]="flex2"></a-md-autocomplete>
+          <a-md-autocomplete *ngIf="showOrganisations" class="push-top" [object]="request" [roleType]="m.Request.Originator" [filter]="organisationsFilter.create()" display="Name" (onSelect)="originatorSelected($event)" label="Requesting organisation" [fxFlex]="flex" [fxFlex.gt-md]="flex2"></a-md-autocomplete>
           <a-md-autocomplete *ngIf="showPeople" class="push-top" [object]="request" [roleType]="m.Request.Originator" [filter]="peopleFilter.create()" display="displayName" (onSelect)="originatorSelected($event)" label="Requesting person" [fxFlex]="flex" [fxFlex.gt-md]="flex2"></a-md-autocomplete>
           <a-md-select class="push-top" [object]="request" [roleType]="m.Request.FullfillContactMechanism" [options]="contactMechanisms" display="displayName" [fxFlex]="flex" [fxFlex.gt-md]="flex2"></a-md-select>
           <a-md-datepicker class="push-top" [object]="request" [roleType]="m.Request.RequestDate" [fxFlex]="flex" [fxFlex.gt-md]="flex2"></a-md-datepicker>

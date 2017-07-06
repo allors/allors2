@@ -8,7 +8,7 @@ import { TdMediaService } from '@covalent/core';
 import { MetaDomain } from '../../../../../meta/index';
 import { PullRequest, PushResponse, Contains, Fetch, Path, Query, Equals, Like, TreeNode, Sort, Page } from '../../../../../domain';
 import { Good, Organisation, OrganisationRole, ProductCharacteristicValue, ProductCharacteristic, ProductCategory, ProductType, Locale, LocalisedText, Singleton } from '../../../../../domain';
-import { AllorsService, ErrorService, Scope, Loaded, Saved } from '../../../../../angular';
+import { AllorsService, ErrorService, Scope, Loaded, Saved, Filter } from '../../../../../angular';
 
 @Component({
   templateUrl: './good.component.html',
@@ -33,6 +33,8 @@ export class GoodFormComponent implements OnInit, AfterViewInit, OnDestroy {
   productCharacteristicValues: ProductCharacteristicValue[];
   manufacturers: Organisation[];
 
+  manufacturersFilter: Filter;
+
   constructor(
     private allorsService: AllorsService,
     private errorService: ErrorService,
@@ -41,6 +43,7 @@ export class GoodFormComponent implements OnInit, AfterViewInit, OnDestroy {
 
     this.scope = new Scope(allorsService.database, allorsService.workspace);
     this.m = this.allorsService.meta;
+    this.manufacturersFilter = new Filter(this.scope, this.m.Organisation, [this.m.Organisation.Name]);
   }
 
   ngOnInit(): void {
