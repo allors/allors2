@@ -1,9 +1,9 @@
 import { LayoutComponent } from './layout.component';
-import { CommunicationEventsTableComponent } from './communicationEvents/communicationEvents.table.component';
 
 // Routing
 import { EmailAddressAddComponent } from './contactMechanisms/contactMechanism/emailAddressAdd.component';
 import { EmailAddressEditComponent } from './contactMechanisms/contactMechanism/emailAddressEdit.component';
+import { FaceToFaceCommunicationEventFormComponent } from './communicationevents/communicationevent/faceToFaceCommunicationEvent.component';
 import { OrganisationAddContactComponent } from './organisations/organisation/organisationAddContact.component';
 import { OrganisationEditContactComponent } from './organisations/organisation/organisationEditContact.component';
 import { OrganisationFormComponent } from './organisations/organisation/organisation.component';
@@ -22,11 +22,10 @@ import { WebAddressEditComponent } from './contactMechanisms/contactMechanism/we
 
 export const RELATIONS: any[] = [
   LayoutComponent,
-  CommunicationEventsTableComponent,
 ];
 
 export const RELATIONS_ROUTING: any[] = [
-  EmailAddressAddComponent, EmailAddressEditComponent,
+  EmailAddressAddComponent, EmailAddressEditComponent, FaceToFaceCommunicationEventFormComponent,
   OrganisationAddContactComponent, OrganisationEditContactComponent, OrganisationFormComponent, OrganisationOverviewComponent, OrganisationsComponent,
   PeopleComponent, PersonFormComponent, PersonOverviewComponent,
   PostalAddressAddComponent, PostalAddressEditComponent,
@@ -36,10 +35,10 @@ export const RELATIONS_ROUTING: any[] = [
 ];
 
 export {
-  CommunicationEventsTableComponent,
   // Routing
   EmailAddressAddComponent,
   EmailAddressEditComponent,
+  FaceToFaceCommunicationEventFormComponent,
   OrganisationAddContactComponent,
   OrganisationEditContactComponent,
   OrganisationFormComponent,

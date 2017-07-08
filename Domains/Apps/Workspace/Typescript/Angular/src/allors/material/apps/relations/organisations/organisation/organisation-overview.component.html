@@ -48,16 +48,13 @@
               <div class="md-padding" *ngIf="!data" layout="row" layout-align="center center">
                 <h3>No communications to display.</h3>
               </div>
-              <!--<div *ngIf="data">
-              <communicationEvents-table [data]="data" (view)="onView($event)"></communicationEvents-table>
-            </div>-->
             </md-list>
           </ng-template>
         </md-card-content>
 
         <md-divider></md-divider>
         <md-card-actions>
-          <button md-button [routerLink]="['../addContact']">+ Mail</button>
+          <button md-button [routerLink]="['/relations/communications/facetoface/add']">+ Meeting</button>
           <button md-button [routerLink]="['../addContact']">+ Postal</button>
           <button md-button [routerLink]="['../addContact']">+ Telecom</button>
           <button md-button [routerLink]="['../addContact']">+ Web</button>

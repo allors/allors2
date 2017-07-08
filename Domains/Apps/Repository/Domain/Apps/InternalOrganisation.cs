@@ -90,6 +90,8 @@ namespace Allors.Repository
 
         public PaymentMethod DefaultPaymentMethod { get; set; }
 
+        public PartyRelationship[] CurrentPartyRelationships { get; set; }
+
         public PartyContactMechanism[] CurrentPartyContactMechanisms { get; set; }
 
         public TelecommunicationsNumber GeneralPhoneNumber { get; set; }

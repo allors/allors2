@@ -64,19 +64,58 @@
               <div class="md-padding" *ngIf="!data" layout="row" layout-align="center center">
                 <h3>No communications to display.</h3>
               </div>
-              <!--<div *ngIf="data">
-              <communicationEvents-table [data]="data" (view)="onView($event)"></communicationEvents-table>
-            </div>-->
+
+              <ng-template let-communicationEvent let-last="last" ngFor [ngForOf]="this.communicationEvents">
+                <md-list-item>
+
+                  <h3 md-line> {{communicationEvent.objectType.name}}</h3>
+                  <div>
+                    <span flex>
+                      <p md-line class="md-caption">From: </p>
+                      <p md-line class="md-caption" *ngFor="let party of communicationEvent.FromParties">{{ party.displayName }} </p>
+                    </span>
+                  </div>
+                  <div>
+                    <span flex>
+                      <p md-line class="md-caption">From: </p>
+                      <p md-line class="md-caption" *ngFor="let party of communicationEvent.ToParties">{{ party.displayName }} </p>
+                    </span>
+                  </div>
+
+                  <p md-line class="md-caption">{{ communicationEvent.Subject }} </p>
+                  <p md-line class="md-caption">{{ communicationEvent.CurrentObjectState.Name }} </p>
+
+                  <span>
+                    <button md-icon-button [md-menu-trigger-for]="menu">
+                      <md-icon>more_vert</md-icon>
+                    </button>
+                    <md-menu x-position="before" #menu="mdMenu">
+                        <a *ngIf="this.checkType(communicationEvent) === &quot;FaceToFaceCommunication&quot;"
+                            [routerLink]="['../facetofacecommunication/' + communicationEvent.id + '/edit' ]" md-menu-item>Edit</a>
+                        <a *ngIf="this.checkType(communicationEvent) === &quot;EmailCommunication&quot;"
+                            [routerLink]="['../emailcommunication/' + communicationEvent.id + '/edit' ]" md-menu-item>Edit</a>
+                        <a *ngIf="this.checkType(communicationEvent) === &quot;PhoneCommunication&quot;"
+                            [routerLink]="['../phonecommunication/' + communicationEvent.id + '/edit' ]" md-menu-item>Edit</a>
+                        <a *ngIf="this.checkType(communicationEvent) === &quot;LetterCorrespondence&quot;"
+                            [routerLink]="['../lettercorrespondence/' + communicationEvent.id + '/edit' ]" md-menu-item>Edit</a>
+                        <!--<button md-menu-item (click)="delete(person)">Delete</button>-->
+                    </md-menu>
+                  </span>
+
+                </md-list-item>
+                <md-divider *ngIf="!last" md-inset></md-divider>
+              </ng-template>
+
             </md-list>
           </ng-template>
         </md-card-content>
 
         <md-divider></md-divider>
         <md-card-actions>
-          <button md-button [routerLink]="['../addContact']">+ Mail</button>
-          <button md-button [routerLink]="['../addContact']">+ Postal</button>
-          <button md-button [routerLink]="['../addContact']">+ Telecom</button>
-          <button md-button [routerLink]="['../addContact']">+ Web</button>
+          <button md-button [routerLink]="['/relations/communications/facetofacecommunication/add']">+ Meeting</button>
+          <button md-button [routerLink]="['/relations/communications/phonecommunication/add']">+ Phone</button>
+          <button md-button [routerLink]="['/relations/communications/emailcommunication/add']">+ Mail</button>
+          <button md-button [routerLink]="['/relations/communications/lettercorrespondence/add']">+ Letter</button>
         </md-card-actions>
       </md-card>
 

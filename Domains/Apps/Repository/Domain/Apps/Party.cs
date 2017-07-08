@@ -443,6 +443,17 @@ namespace Allors.Repository
         PaymentMethod DefaultPaymentMethod { get; set; }
 
         #region Allors
+        [Id("A0E0CC97-79E4-4992-BA7F-74FA091DF581")]
+        [AssociationId("AC3106FE-675B-43B4-ABC8-87EF9051A37E")]
+        [RoleId("DD29D621-F628-4169-86CF-56E9207A6B91")]
+        #endregion
+        [Multiplicity(Multiplicity.OneToMany)]
+        [Derived]
+        [Indexed]
+        [Workspace]
+        PartyRelationship[] CurrentPartyRelationships { get; set; }
+
+        #region Allors
         [Id("e16b9c8f-cb53-4d58-aa13-ac92d5de1465")]
         [AssociationId("5476eeb1-246c-43e0-9939-2263dfead9a5")]
         [RoleId("3c3c6c4a-3b7b-4b3f-a843-fa5c334f33fb")]

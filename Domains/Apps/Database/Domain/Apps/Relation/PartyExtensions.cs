@@ -117,6 +117,20 @@ namespace Allors.Domain
             return false;
         }
 
+        public static void AppsOnDeriveCurrentPartyRelationships(this Party party, IDerivation derivation)
+        {
+            party.RemoveCurrentPartyRelationships();
+
+            foreach (PartyRelationship partyRelationship in party.PartyRelationshipsWhereParty)
+            {
+                if (partyRelationship.FromDate <= DateTime.UtcNow &&
+                    (!partyRelationship.ExistThroughDate || partyRelationship.ThroughDate >= DateTime.UtcNow))
+                {
+                    party.AddCurrentPartyRelationship(partyRelationship);
+                }
+            }
+        }
+
         public static void AppsOnDeriveCurrentPartyContactMechanisms(this Party party, IDerivation derivation)
         {
             party.RemoveCurrentPartyContactMechanisms();

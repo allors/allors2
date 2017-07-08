@@ -135,6 +135,7 @@ namespace Allors.Domain
             this.AppsOnDeriveCurrentOrganisationContactRelationships(derivation);
             this.AppsOnDeriveInactiveOrganisationContactRelationships(derivation);
             this.AppsOnDeriveCurrentPartyContactMechanisms(derivation);
+            this.AppsOnDeriveCurrentPartyRelationships(derivation);
             this.AppsOnDeriveInactivePartyContactMechanisms(derivation);
             this.AppsOnDeriveCommission();
         }

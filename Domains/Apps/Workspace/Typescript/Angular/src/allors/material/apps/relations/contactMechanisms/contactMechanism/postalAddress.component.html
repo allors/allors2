@@ -20,16 +20,16 @@
       <md-card-content class="push-bottom-none">
 
         <div fxLayout="row wrap" fxLayoutAlign="start stretch" fxLayoutGap.gt-md="25px">
-          <a-md-select [fxFlex]="flex" class="push-top" [object]="partyContactMechanism" [roleType]="m.PartyContactMechanism.ContactPurposes"
-            [options]="contactMechanismPurposes" display="Name" [fxFlex]="flex" [fxFlex.gt-md]="flex2"></a-md-select>
-          <a-md-input [fxFlex]="flex" class="push-top" [object]="contactMechanism" [roleType]="m.PostalAddress.Address1" [fxFlex]="flex" [fxFlex.gt-md]="flex2"></a-md-input>
-          <a-md-input [fxFlex]="flex" class="push-top" [object]="contactMechanism" [roleType]="m.PostalAddress.Address2" [fxFlex]="flex" [fxFlex.gt-md]="flex2"></a-md-input>
-          <a-md-input [fxFlex]="flex" class="push-top" [object]="contactMechanism" [roleType]="m.PostalAddress.Address3" [fxFlex]="flex" [fxFlex.gt-md]="flex2"></a-md-input>
-          <a-md-input [fxFlex]="flex" class="push-top" [object]="contactMechanism.PostalBoundary" [roleType]="m.PostalBoundary.Locality" [fxFlex]="flex" [fxFlex.gt-md]="flex2"></a-md-input>
-          <a-md-input [fxFlex]="flex" class="push-top" [object]="contactMechanism.PostalBoundary" [roleType]="m.PostalBoundary.PostalCode" [fxFlex]="flex" [fxFlex.gt-md]="flex2"></a-md-input>
-          <a-md-select [fxFlex]="flex" class="push-top" [object]="contactMechanism.PostalBoundary" [roleType]="m.PostalBoundary.Country"
-            [options]="countries" display="Name" [fxFlex]="flex" [fxFlex.gt-md]="flex2"></a-md-select>
-          <a-md-slide-toggle [fxFlex]="flex" class="push-top" [object]="partyContactMechanism" [roleType]="m.PartyContactMechanism.UseAsDefault"
+          <a-td-chips class="push-top" [object]="partyContactMechanism" [roleType]="m.PartyContactMechanism.ContactPurposes"
+            [options]="contactMechanismPurposes" display="Name" label="Contact purposes" [fxFlex]="flex" [fxFlex.gt-md]="flex2"></a-td-chips>
+          <a-md-input class="push-top" [object]="contactMechanism" [roleType]="m.PostalAddress.Address1" label="Address line 1" [fxFlex]="flex" [fxFlex.gt-md]="flex2"></a-md-input>
+          <a-md-input class="push-top" [object]="contactMechanism" [roleType]="m.PostalAddress.Address2" label="Address line 2"[fxFlex]="flex" [fxFlex.gt-md]="flex2"></a-md-input>
+          <a-md-input class="push-top" [object]="contactMechanism" [roleType]="m.PostalAddress.Address3" label="Address line 3"[fxFlex]="flex" [fxFlex.gt-md]="flex2"></a-md-input>
+          <a-md-input class="push-top" [object]="contactMechanism.PostalBoundary" [roleType]="m.PostalBoundary.Locality" label="City" [fxFlex]="flex" [fxFlex.gt-md]="flex2"></a-md-input>
+          <a-md-input class="push-top" [object]="contactMechanism.PostalBoundary" [roleType]="m.PostalBoundary.PostalCode" label="Postal code" [fxFlex]="flex" [fxFlex.gt-md]="flex2"></a-md-input>
+          <a-md-autocomplete class="push-top" [object]="contactMechanism.PostalBoundary" [roleType]="m.PostalBoundary.Country"
+            [options]="countries" display="Name" [fxFlex]="flex" [fxFlex.gt-md]="flex2"></a-md-autocomplete>
+          <a-md-slide-toggle class="push-top" [object]="partyContactMechanism" [roleType]="m.PartyContactMechanism.UseAsDefault"
             label="Use as default" [fxFlex]="flex" [fxFlex.gt-md]="flex2"></a-md-slide-toggle>
         </div>
 
