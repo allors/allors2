@@ -56,10 +56,7 @@ $meta.WorkspaceClasses:{class|import { $class.name$ \} from './$class.name$.g';}
 export let constructorByName = {
     $meta.WorkspaceClasses:{class|'$class.name$': $class.name$}; separator=",\n"$
 };
-
 >>
-
-
 
 interface(meta, objectType) ::= <<
 // Allors generated file.
@@ -82,6 +79,10 @@ $if(roleType.IsOne)$
         $roleType.PropertyName$ : $objectType_Name(roleType.ObjectType)$;
 $else$
         $roleType.PropertyName$ : $objectType_Name(roleType.ObjectType)$[];
+$if(!roleType.RelationType.IsDerived)$
+        Add$roleType.SingularPropertyName$(value: $objectType_Name(roleType.ObjectType)$);
+        Remove$roleType.SingularPropertyName$(value: $objectType_Name(roleType.ObjectType)$);
+$endif$
 $endif$
 $endif$
 >>
