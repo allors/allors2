@@ -52,9 +52,9 @@ export class AutocompleteComponent extends Field implements OnInit {
             return this.filter(search);
           }));
     } else {
-      this.filteredOptions = this.searchControl
+      this.filteredOptions = Observable.of(new Array<ISessionObject>())
+        .concat(this.searchControl
           .valueChanges
-          .startWith(null)
           .debounceTime(this.debounceTime)
           .distinctUntilChanged()
           .map((search: string) => {
@@ -67,7 +67,7 @@ export class AutocompleteComponent extends Field implements OnInit {
                 }
               })
               .sort((a: ISessionObject, b: ISessionObject) => a[this.display] !== b[this.display] ? a[this.display] < b[this.display] ? -1 : 1 : 0);
-          });
+          }));
     }
 
     this.searchControl.setValue(this.model);
