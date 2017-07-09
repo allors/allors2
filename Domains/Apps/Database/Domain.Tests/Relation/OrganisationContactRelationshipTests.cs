@@ -33,7 +33,7 @@ namespace Allors.Domain
         
         public OrganisationContactRelationshipTests()
         {
-            this.contact = new PersonBuilder(this.DatabaseSession).WithLastName("organisationContact").Build();
+            this.contact = new PersonBuilder(this.DatabaseSession).WithLastName("organisationContact").WithPersonRole(new PersonRoles(this.DatabaseSession).Contact).Build();
 
             this.organisationContactRelationship = new OrganisationContactRelationshipBuilder(this.DatabaseSession)
                 .WithContact(this.contact)
@@ -48,7 +48,7 @@ namespace Allors.Domain
         [Fact]
         public void GivenorganisationContactRelationship_WhenDeriving_ThenRequiredRelationsMustExist()
         {
-            var contact = new PersonBuilder(this.DatabaseSession).WithLastName("organisationContact").Build();
+            var contact = new PersonBuilder(this.DatabaseSession).WithLastName("organisationContact").WithPersonRole(new PersonRoles(this.DatabaseSession).Contact).Build();
             this.DatabaseSession.Derive(true);
             this.DatabaseSession.Commit();
 
@@ -70,7 +70,7 @@ namespace Allors.Domain
 
             this.DatabaseSession.Rollback();
 
-            builder.WithOrganisation(new OrganisationBuilder(this.DatabaseSession).WithName("organisation").WithLocale(Singleton.Instance(this.DatabaseSession).DefaultLocale).Build());
+            builder.WithOrganisation(new OrganisationBuilder(this.DatabaseSession).WithName("organisation").WithLocale(Singleton.Instance(this.DatabaseSession).DefaultLocale).WithOrganisationRole(new OrganisationRoles(this.DatabaseSession).Customer).Build());
             builder.Build();
 
             Assert.False(this.DatabaseSession.Derive(false).HasErrors);
@@ -95,7 +95,7 @@ namespace Allors.Domain
             Assert.True(usergroup.Members.Contains(this.organisationContactRelationship.Contact));
 
             var secondRelationship = new OrganisationContactRelationshipBuilder(this.DatabaseSession)
-                .WithContact(new PersonBuilder(this.DatabaseSession).WithLastName("contact 2").Build())
+                .WithContact(new PersonBuilder(this.DatabaseSession).WithLastName("contact 2").WithPersonRole(new PersonRoles(this.DatabaseSession).Contact).Build())
                 .WithOrganisation(new Organisations(this.DatabaseSession).FindBy(M.Organisation.Name, "customer"))
                 .WithFromDate(DateTime.UtcNow)
                 .Build();

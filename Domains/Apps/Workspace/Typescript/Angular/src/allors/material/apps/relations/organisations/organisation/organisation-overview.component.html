@@ -54,8 +54,8 @@
 
         <md-divider></md-divider>
         <md-card-actions>
-          <button md-button [routerLink]="['/relations/communications/facetoface/add']">+ Meeting</button>
-          <button md-button [routerLink]="['../addContact']">+ Postal</button>
+          <button md-button [routerLink]="['/relations/communications/' + organisation.id +'/facetofacecommunication/add']">+ Meeting</button>
+          <button md-button [routerLink]="['/relations/communications/' + organisation.id +'/phonecommunication/add']">+ Phone</button>
           <button md-button [routerLink]="['../addContact']">+ Telecom</button>
           <button md-button [routerLink]="['../addContact']">+ Web</button>
         </md-card-actions>

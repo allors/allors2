@@ -34,7 +34,7 @@ namespace Allors.Domain
 
         public EmploymentTests()
         {
-            this.employee = new PersonBuilder(this.DatabaseSession).WithLastName("slave").Build();
+            this.employee = new PersonBuilder(this.DatabaseSession).WithLastName("slave").WithPersonRole(new PersonRoles(this.DatabaseSession).Employee).Build();
             this.internalOrganisation = new InternalOrganisations(this.DatabaseSession).FindBy(M.InternalOrganisation.Name, "internalOrganisation");
 
             this.employment = new EmploymentBuilder(this.DatabaseSession)

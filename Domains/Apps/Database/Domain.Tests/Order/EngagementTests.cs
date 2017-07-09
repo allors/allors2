@@ -37,7 +37,7 @@ namespace Allors.Domain
                 .WithUseAsDefault(true)
                 .Build();
 
-            var customer = new OrganisationBuilder(this.DatabaseSession).WithName("customer").WithPartyContactMechanism(partyContactMechanism).Build();
+            var customer = new OrganisationBuilder(this.DatabaseSession).WithName("customer").WithPartyContactMechanism(partyContactMechanism).WithOrganisationRole(new OrganisationRoles(this.DatabaseSession).Customer).Build();
 
             this.DatabaseSession.Derive(true);
             this.DatabaseSession.Commit();

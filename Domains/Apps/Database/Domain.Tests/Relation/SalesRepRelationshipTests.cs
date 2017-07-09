@@ -31,7 +31,7 @@ namespace Allors.Domain
         [Fact]
         public void GivenSalesRepRelationship_WhenDeriving_ThenRequiredRelationsMustExist()
         {
-            var customer = new OrganisationBuilder(this.DatabaseSession).WithName("customer").WithLocale(new Locales(this.DatabaseSession).EnglishGreatBritain).Build();
+            var customer = new OrganisationBuilder(this.DatabaseSession).WithName("customer").WithLocale(new Locales(this.DatabaseSession).EnglishGreatBritain).WithOrganisationRole(new OrganisationRoles(this.DatabaseSession).Customer).Build();
             this.DatabaseSession.Derive(true);
             this.DatabaseSession.Commit();
 
@@ -51,7 +51,7 @@ namespace Allors.Domain
 
             this.DatabaseSession.Rollback();
 
-            builder.WithSalesRepresentative(new PersonBuilder(this.DatabaseSession).WithLastName("salesrep.").Build());
+            builder.WithSalesRepresentative(new PersonBuilder(this.DatabaseSession).WithLastName("salesrep.").WithPersonRole(new PersonRoles(this.DatabaseSession).Employee).Build());
             builder.Build();
 
             Assert.False(this.DatabaseSession.Derive(false).HasErrors);

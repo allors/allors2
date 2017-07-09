@@ -97,7 +97,7 @@ namespace Allors.Domain
                 {
                     foreach (OrganisationContactRelationship contactRelationship in customer.OrganisationContactRelationshipsWhereOrganisation)
                     {
-                        derivation.AddDerivable(contactRelationship);
+                        derivation.AddDependency(contactRelationship, this);
                     }
                 }
             }

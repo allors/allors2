@@ -61,7 +61,7 @@ namespace Allors.Domain
         [Fact]
         public void GivenPurchaseInvoice_WhenDeriving_ThenBilledFromPartyMustBeInSupplierRelationship()
         {
-            var supplier2 = new OrganisationBuilder(this.DatabaseSession).WithName("supplier2").Build();
+            var supplier2 = new OrganisationBuilder(this.DatabaseSession).WithName("supplier2").WithOrganisationRole(new OrganisationRoles(this.DatabaseSession).Supplier).Build();
 
             var invoice = new PurchaseInvoiceBuilder(this.DatabaseSession)
                 .WithInvoiceNumber("1")

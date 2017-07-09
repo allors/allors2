@@ -43,7 +43,7 @@ namespace Allors
                 session.Commit();
 
                 var singleton = Singleton.Instance(session);
-                singleton.Guest = new PersonBuilder(session).WithUserName("guest").WithLastName("guest").Build();
+                singleton.Guest = new PersonBuilder(session).WithUserName("guest").WithLastName("guest").WithPersonRole(new PersonRoles(session).Contact).Build();
 
                 var belgium = new Countries(session).CountryByIsoCode["BE"];
                 var euro = belgium.Currency;
@@ -101,11 +101,11 @@ namespace Allors
                     .WithPaymentGracePeriod(10)
                     .Build();
 
-                var customer = new OrganisationBuilder(session).WithName("customer").WithLocale(singleton.DefaultLocale).Build();
-                var supplier = new OrganisationBuilder(session).WithName("supplier").WithLocale(singleton.DefaultLocale).Build();
-                var purchaser = new PersonBuilder(session).WithLastName("purchaser").WithUserName("purchaser").Build();
-                var salesrep = new PersonBuilder(session).WithLastName("salesRep").WithUserName("salesRep").Build();
-                var orderProcessor = new PersonBuilder(session).WithLastName("orderProcessor").WithUserName("orderProcessor").Build();
+                var customer = new OrganisationBuilder(session).WithName("customer").WithOrganisationRole(new OrganisationRoles(session).Customer).WithLocale(singleton.DefaultLocale).Build();
+                var supplier = new OrganisationBuilder(session).WithName("supplier").WithOrganisationRole(new OrganisationRoles(session).Customer).WithLocale(singleton.DefaultLocale).Build();
+                var purchaser = new PersonBuilder(session).WithLastName("purchaser").WithUserName("purchaser").WithPersonRole(new PersonRoles(session).Contact).Build();
+                var salesrep = new PersonBuilder(session).WithLastName("salesRep").WithUserName("salesRep").WithPersonRole(new PersonRoles(session).Contact).Build();
+                var orderProcessor = new PersonBuilder(session).WithLastName("orderProcessor").WithUserName("orderProcessor").WithPersonRole(new PersonRoles(session).Employee).Build();
 
                 new CustomerRelationshipBuilder(session).WithCustomer(customer).WithInternalOrganisation(internalOrganisation).WithFromDate(DateTime.UtcNow).Build();
 

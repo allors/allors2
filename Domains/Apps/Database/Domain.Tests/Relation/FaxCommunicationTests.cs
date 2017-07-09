@@ -31,9 +31,9 @@ namespace Allors.Domain
         {
             var communication = new FaxCommunicationBuilder(this.DatabaseSession)
                 .WithSubject("subject")
-                .WithOwner(new PersonBuilder(this.DatabaseSession).WithLastName("owner").Build())
-                .WithOriginator(new PersonBuilder(this.DatabaseSession).WithLastName("originator").Build())
-                .WithReceiver(new PersonBuilder(this.DatabaseSession).WithLastName("receiver").Build())
+                .WithOwner(new PersonBuilder(this.DatabaseSession).WithLastName("owner").WithPersonRole(new PersonRoles(this.DatabaseSession).Employee).Build())
+                .WithOriginator(new PersonBuilder(this.DatabaseSession).WithLastName("originator").WithPersonRole(new PersonRoles(this.DatabaseSession).Customer).Build())
+                .WithReceiver(new PersonBuilder(this.DatabaseSession).WithLastName("receiver").WithPersonRole(new PersonRoles(this.DatabaseSession).Customer).Build())
                 .Build();
 
             Assert.False(this.DatabaseSession.Derive(false).HasErrors);
@@ -46,9 +46,9 @@ namespace Allors.Domain
         [Fact]
         public void GivenFaxCommunication_WhenDeriving_ThenInvolvedPartiesAreDerived()
         {
-            var owner = new PersonBuilder(this.DatabaseSession).WithLastName("owner").Build();
-            var originator = new PersonBuilder(this.DatabaseSession).WithLastName("originator").Build();
-            var receiver = new PersonBuilder(this.DatabaseSession).WithLastName("receiver").Build();
+            var owner = new PersonBuilder(this.DatabaseSession).WithLastName("owner").WithPersonRole(new PersonRoles(this.DatabaseSession).Employee).Build();
+            var originator = new PersonBuilder(this.DatabaseSession).WithLastName("originator").WithPersonRole(new PersonRoles(this.DatabaseSession).Customer).Build();
+            var receiver = new PersonBuilder(this.DatabaseSession).WithLastName("receiver").WithPersonRole(new PersonRoles(this.DatabaseSession).Customer).Build();
 
             this.DatabaseSession.Derive(true);
             this.DatabaseSession.Commit();

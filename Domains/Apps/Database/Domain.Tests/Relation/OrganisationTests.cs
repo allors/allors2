@@ -45,6 +45,14 @@ namespace Allors.Domain
             builder.WithName("Organisation");
             organisation = builder.Build();
 
+            Assert.True(this.DatabaseSession.Derive(false).HasErrors);
+
+            this.DatabaseSession.Rollback();
+
+            builder.WithName("Organisation");
+            builder.WithOrganisationRole(new OrganisationRoles(this.DatabaseSession).Customer);
+            organisation = builder.Build();
+
             Assert.False(this.DatabaseSession.Derive(false).HasErrors);
         }
     }

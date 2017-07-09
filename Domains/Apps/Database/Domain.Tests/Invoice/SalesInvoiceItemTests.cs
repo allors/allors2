@@ -52,7 +52,7 @@ namespace Allors.Domain
         {
             var euro = new Currencies(this.DatabaseSession).FindBy(M.Currency.IsoCode, "EUR");
 
-            this.supplier = new OrganisationBuilder(this.DatabaseSession).WithName("supplier").WithLocale(new Locales(this.DatabaseSession).EnglishGreatBritain).Build();
+            this.supplier = new OrganisationBuilder(this.DatabaseSession).WithName("supplier").WithLocale(new Locales(this.DatabaseSession).EnglishGreatBritain).WithOrganisationRole(new OrganisationRoles(this.DatabaseSession).Supplier).Build();
 
             this.internalOrganisation = new InternalOrganisations(this.DatabaseSession).FindBy(M.InternalOrganisation.Name, "internalOrganisation");
 
@@ -63,9 +63,9 @@ namespace Allors.Domain
 
             this.billToContactMechanismMechelen = new PostalAddressBuilder(this.DatabaseSession).WithAddress1("Mechelen").WithGeographicBoundary(this.mechelen).Build();
             this.shipToContactMechanismKiev = new PostalAddressBuilder(this.DatabaseSession).WithAddress1("Kiev").WithGeographicBoundary(this.kiev).Build();
-            this.billToCustomer = new OrganisationBuilder(this.DatabaseSession).WithName("billToCustomer").WithPreferredCurrency(euro).Build();
+            this.billToCustomer = new OrganisationBuilder(this.DatabaseSession).WithName("billToCustomer").WithPreferredCurrency(euro).WithOrganisationRole(new OrganisationRoles(this.DatabaseSession).Customer).Build();
 
-            this.shipToCustomer = new OrganisationBuilder(this.DatabaseSession).WithName("shipToCustomer").WithPreferredCurrency(euro).Build();
+            this.shipToCustomer = new OrganisationBuilder(this.DatabaseSession).WithName("shipToCustomer").WithPreferredCurrency(euro).WithOrganisationRole(new OrganisationRoles(this.DatabaseSession).Customer).Build();
 
             new CustomerRelationshipBuilder(this.DatabaseSession).WithFromDate(DateTime.UtcNow).WithCustomer(this.billToCustomer).WithInternalOrganisation(this.internalOrganisation).Build();
             new CustomerRelationshipBuilder(this.DatabaseSession).WithFromDate(DateTime.UtcNow).WithCustomer(this.shipToCustomer).WithInternalOrganisation(this.internalOrganisation).Build();
@@ -2303,9 +2303,9 @@ namespace Allors.Domain
         {
             this.InstantiateObjects(this.DatabaseSession);
 
-            var salesrep1 = new PersonBuilder(this.DatabaseSession).WithLastName("salesrep for child product category").Build();
-            var salesrep2  = new PersonBuilder(this.DatabaseSession).WithLastName("salesrep for parent category").Build();
-            var salesrep3 = new PersonBuilder(this.DatabaseSession).WithLastName("salesrep for everything else").Build();
+            var salesrep1 = new PersonBuilder(this.DatabaseSession).WithLastName("salesrep for child product category").WithPersonRole(new PersonRoles(this.DatabaseSession).Employee).Build();
+            var salesrep2  = new PersonBuilder(this.DatabaseSession).WithLastName("salesrep for parent category").WithPersonRole(new PersonRoles(this.DatabaseSession).Employee).Build();
+            var salesrep3 = new PersonBuilder(this.DatabaseSession).WithLastName("salesrep for everything else").WithPersonRole(new PersonRoles(this.DatabaseSession).Employee).Build();
             var parentProductCategory = new ProductCategoryBuilder(this.DatabaseSession)
                 .WithLocalisedName(new LocalisedTextBuilder(this.DatabaseSession).WithText("parent").WithLocale(Singleton.Instance(this.DatabaseSession).DefaultLocale).Build())
                 .Build();
@@ -2358,9 +2358,9 @@ namespace Allors.Domain
         {
             this.InstantiateObjects(this.DatabaseSession);
 
-            var salesrep1 = new PersonBuilder(this.DatabaseSession).WithLastName("salesrep for child product category").Build();
-            var salesrep2 = new PersonBuilder(this.DatabaseSession).WithLastName("salesrep for parent category").Build();
-            var salesrep3 = new PersonBuilder(this.DatabaseSession).WithLastName("salesrep for everything else").Build();
+            var salesrep1 = new PersonBuilder(this.DatabaseSession).WithLastName("salesrep for child product category").WithPersonRole(new PersonRoles(this.DatabaseSession).Employee).Build();
+            var salesrep2 = new PersonBuilder(this.DatabaseSession).WithLastName("salesrep for parent category").WithPersonRole(new PersonRoles(this.DatabaseSession).Employee).Build();
+            var salesrep3 = new PersonBuilder(this.DatabaseSession).WithLastName("salesrep for everything else").WithPersonRole(new PersonRoles(this.DatabaseSession).Employee).Build();
             var parentProductCategory = new ProductCategoryBuilder(this.DatabaseSession)
                 .WithLocalisedName(new LocalisedTextBuilder(this.DatabaseSession).WithText("parent").WithLocale(Singleton.Instance(this.DatabaseSession).DefaultLocale).Build())
                 .Build();
@@ -2413,9 +2413,9 @@ namespace Allors.Domain
         {
             this.InstantiateObjects(this.DatabaseSession);
 
-            var salesrep1 = new PersonBuilder(this.DatabaseSession).WithLastName("salesrep for child product category").Build();
-            var salesrep2 = new PersonBuilder(this.DatabaseSession).WithLastName("salesrep for parent category").Build();
-            var salesrep3 = new PersonBuilder(this.DatabaseSession).WithLastName("salesrep for everything else").Build();
+            var salesrep1 = new PersonBuilder(this.DatabaseSession).WithLastName("salesrep for child product category").WithPersonRole(new PersonRoles(this.DatabaseSession).Employee).Build();
+            var salesrep2 = new PersonBuilder(this.DatabaseSession).WithLastName("salesrep for parent category").WithPersonRole(new PersonRoles(this.DatabaseSession).Employee).Build();
+            var salesrep3 = new PersonBuilder(this.DatabaseSession).WithLastName("salesrep for everything else").WithPersonRole(new PersonRoles(this.DatabaseSession).Employee).Build();
             var parentProductCategory = new ProductCategoryBuilder(this.DatabaseSession)
                 .WithLocalisedName(new LocalisedTextBuilder(this.DatabaseSession).WithText("parent").WithLocale(Singleton.Instance(this.DatabaseSession).DefaultLocale).Build())
                 .Build();

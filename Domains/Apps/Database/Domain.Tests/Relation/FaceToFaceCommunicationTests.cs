@@ -36,10 +36,10 @@ namespace Allors.Domain
         public void GivenFaceToFaceCommunicationIsBuild_WhenDeriving_ThenStatusIsSet()
         {
             var communication = new FaceToFaceCommunicationBuilder(this.DatabaseSession)
-                .WithOwner(new PersonBuilder(this.DatabaseSession).WithLastName("owner").Build())
+                .WithOwner(new PersonBuilder(this.DatabaseSession).WithLastName("owner").WithPersonRole(new PersonRoles(this.DatabaseSession).Employee).Build())
                 .WithSubject("subject")
-                .WithParticipant(new PersonBuilder(this.DatabaseSession).WithLastName("participant1").Build())
-                .WithParticipant(new PersonBuilder(this.DatabaseSession).WithLastName("participant2").Build())
+                .WithParticipant(new PersonBuilder(this.DatabaseSession).WithLastName("participant1").WithPersonRole(new PersonRoles(this.DatabaseSession).Contact).Build())
+                .WithParticipant(new PersonBuilder(this.DatabaseSession).WithLastName("participant2").WithPersonRole(new PersonRoles(this.DatabaseSession).Contact).Build())
                 .WithActualStart(DateTime.UtcNow)
                 .Build();
 
@@ -53,9 +53,9 @@ namespace Allors.Domain
         [Fact]
         public void GivenFaceToFaceCommunication_WhenDeriving_ThenInvolvedPartiesAreDerived()
         {
-            var owner = new PersonBuilder(this.DatabaseSession).WithLastName("owner").Build();
-            var participant1 = new PersonBuilder(this.DatabaseSession).WithLastName("participant1").Build();
-            var participant2 = new PersonBuilder(this.DatabaseSession).WithLastName("participant2").Build();
+            var owner = new PersonBuilder(this.DatabaseSession).WithLastName("owner").WithPersonRole(new PersonRoles(this.DatabaseSession).Employee).Build();
+            var participant1 = new PersonBuilder(this.DatabaseSession).WithLastName("participant1").WithPersonRole(new PersonRoles(this.DatabaseSession).Contact).Build();
+            var participant2 = new PersonBuilder(this.DatabaseSession).WithLastName("participant2").WithPersonRole(new PersonRoles(this.DatabaseSession).Contact).Build();
 
             this.DatabaseSession.Derive(true);
             this.DatabaseSession.Commit();
@@ -85,9 +85,9 @@ namespace Allors.Domain
         [Fact]
         public void GivenCurrentUserIsUnknown_WhenAccessingFaceToFaceCommunicationWithOwner_ThenOwnerSecurityTokenIsApplied()
         {
-            var owner = new PersonBuilder(this.DatabaseSession).WithLastName("owner").Build();
-            var participant1 = new PersonBuilder(this.DatabaseSession).WithLastName("participant1").Build();
-            var participant2 = new PersonBuilder(this.DatabaseSession).WithLastName("participant2").Build();
+            var owner = new PersonBuilder(this.DatabaseSession).WithLastName("owner").WithPersonRole(new PersonRoles(this.DatabaseSession).Employee).Build();
+            var participant1 = new PersonBuilder(this.DatabaseSession).WithLastName("participant1").WithPersonRole(new PersonRoles(this.DatabaseSession).Contact).Build();
+            var participant2 = new PersonBuilder(this.DatabaseSession).WithLastName("participant2").WithPersonRole(new PersonRoles(this.DatabaseSession).Contact).Build();
 
             this.DatabaseSession.Derive(true);
             this.DatabaseSession.Commit();
@@ -112,11 +112,9 @@ namespace Allors.Domain
         {
             this.SetIdentity("user");
 
-            var user = new PersonBuilder(this.DatabaseSession).WithLastName("user").WithUserName("user").Build();
-
-            var owner = new PersonBuilder(this.DatabaseSession).WithLastName("owner").Build();
-            var participant1 = new PersonBuilder(this.DatabaseSession).WithLastName("participant1").Build();
-            var participant2 = new PersonBuilder(this.DatabaseSession).WithLastName("participant2").Build();
+            var owner = new PersonBuilder(this.DatabaseSession).WithLastName("owner").WithPersonRole(new PersonRoles(this.DatabaseSession).Employee).Build();
+            var participant1 = new PersonBuilder(this.DatabaseSession).WithLastName("participant1").WithPersonRole(new PersonRoles(this.DatabaseSession).Contact).Build();
+            var participant2 = new PersonBuilder(this.DatabaseSession).WithLastName("participant2").WithPersonRole(new PersonRoles(this.DatabaseSession).Contact).Build();
 
             this.DatabaseSession.Derive(true);
             this.DatabaseSession.Commit();

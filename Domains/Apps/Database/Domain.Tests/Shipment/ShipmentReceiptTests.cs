@@ -41,7 +41,7 @@ namespace Allors.Domain
         [Fact]
         public void GivenShipmentReceiptWhenValidatingThenRequiredRelationsMustExist()
         {
-            var supplier = new OrganisationBuilder(this.DatabaseSession).WithName("supplier").Build();
+            var supplier = new OrganisationBuilder(this.DatabaseSession).WithName("supplier").WithOrganisationRole(new OrganisationRoles(this.DatabaseSession).Supplier).Build();
             var internalOrganisation = new InternalOrganisations(this.DatabaseSession).FindBy(M.InternalOrganisation.Name, "internalOrganisation");
             new SupplierRelationshipBuilder(this.DatabaseSession).WithSupplier(supplier).WithInternalOrganisation(internalOrganisation).Build();
 
@@ -85,7 +85,7 @@ namespace Allors.Domain
         [Fact]
         public void GivenShipmentReceiptForPartWithoutSelectedInventoryItemWhenDerivingThenInventoryItemIsFromDefaultFacility()
         {
-            var supplier = new OrganisationBuilder(this.DatabaseSession).WithName("supplier").Build();
+            var supplier = new OrganisationBuilder(this.DatabaseSession).WithName("supplier").WithOrganisationRole(new OrganisationRoles(this.DatabaseSession).Supplier).Build();
             var internalOrganisation = new InternalOrganisations(this.DatabaseSession).FindBy(M.InternalOrganisation.Name, "internalOrganisation");
             new SupplierRelationshipBuilder(this.DatabaseSession).WithSupplier(supplier).WithInternalOrganisation(internalOrganisation).Build();
             
@@ -132,7 +132,7 @@ namespace Allors.Domain
         [Fact]
         public void GivenShipmentReceiptForGoodWithoutSelectedInventoryItemWhenDerivingThenInventoryItemIsFromDefaultFacility()
         {
-            var supplier = new OrganisationBuilder(this.DatabaseSession).WithName("supplier").Build();
+            var supplier = new OrganisationBuilder(this.DatabaseSession).WithName("supplier").WithOrganisationRole(new OrganisationRoles(this.DatabaseSession).Supplier).Build();
             var internalOrganisation = new InternalOrganisations(this.DatabaseSession).FindBy(M.InternalOrganisation.Name, "internalOrganisation");
             new SupplierRelationshipBuilder(this.DatabaseSession).WithSupplier(supplier).WithInternalOrganisation(internalOrganisation).Build();
 
@@ -186,7 +186,7 @@ namespace Allors.Domain
                 .WithUseAsDefault(true)
                 .Build();
 
-            var customer = new PersonBuilder(this.DatabaseSession).WithLastName("customer").WithPartyContactMechanism(shipToMechelen).Build();
+            var customer = new PersonBuilder(this.DatabaseSession).WithLastName("customer").WithPartyContactMechanism(shipToMechelen).WithPersonRole(new PersonRoles(this.DatabaseSession).Customer).Build();
             var internalOrganisation = new InternalOrganisations(this.DatabaseSession).FindBy(M.InternalOrganisation.Name, "internalOrganisation");
             new CustomerRelationshipBuilder(this.DatabaseSession).WithFromDate(DateTime.UtcNow).WithCustomer(customer).WithInternalOrganisation(internalOrganisation).Build();
 
@@ -223,7 +223,7 @@ namespace Allors.Domain
             var sessionInventoryItem = (NonSerializedInventoryItem)this.DatabaseSession.Instantiate(inventoryItem);
             var sessionSalesItem = (SalesOrderItem)this.DatabaseSession.Instantiate(salesItem);
 
-            var supplier = new OrganisationBuilder(this.DatabaseSession).WithName("supplier").Build();
+            var supplier = new OrganisationBuilder(this.DatabaseSession).WithName("supplier").WithOrganisationRole(new OrganisationRoles(this.DatabaseSession).Supplier).Build();
             new SupplierRelationshipBuilder(this.DatabaseSession).WithSupplier(supplier).WithInternalOrganisation(internalOrganisation).Build();
 
             Assert.Equal(20, sessionSalesItem.QuantityPendingShipment);
@@ -268,7 +268,7 @@ namespace Allors.Domain
         [Fact]
         public void GivenShipmentReceiptWhenDerivingThenOrderItemQuantityReceivedIsUpdated()
         {
-            var supplier = new OrganisationBuilder(this.DatabaseSession).WithName("supplier").Build();
+            var supplier = new OrganisationBuilder(this.DatabaseSession).WithName("supplier").WithOrganisationRole(new OrganisationRoles(this.DatabaseSession).Supplier).Build();
             var internalOrganisation = new InternalOrganisations(this.DatabaseSession).FindBy(M.InternalOrganisation.Name, "internalOrganisation");
             new SupplierRelationshipBuilder(this.DatabaseSession).WithSupplier(supplier).WithInternalOrganisation(internalOrganisation).Build();
 

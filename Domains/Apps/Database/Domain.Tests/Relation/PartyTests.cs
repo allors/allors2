@@ -33,10 +33,10 @@ namespace Allors.Domain
         [Fact]
         public void GivenParty_WhenSalesRepRelationshipIsUpdated_ThenCurrentSalesRepsAreUpdated()
         {
-            var salesRep1 = new PersonBuilder(this.DatabaseSession).WithLastName("salesRep1").Build();
-            var salesRep2 = new PersonBuilder(this.DatabaseSession).WithLastName("salesRep2").Build();
-            var salesRep3 = new PersonBuilder(this.DatabaseSession).WithLastName("salesRep3").Build();
-            var organisation = new OrganisationBuilder(this.DatabaseSession).WithName("customer").Build();
+            var salesRep1 = new PersonBuilder(this.DatabaseSession).WithLastName("salesRep1").WithPersonRole(new PersonRoles(this.DatabaseSession).Employee).Build();
+            var salesRep2 = new PersonBuilder(this.DatabaseSession).WithLastName("salesRep2").WithPersonRole(new PersonRoles(this.DatabaseSession).Employee).Build();
+            var salesRep3 = new PersonBuilder(this.DatabaseSession).WithLastName("salesRep3").WithPersonRole(new PersonRoles(this.DatabaseSession).Employee).Build();
+            var organisation = new OrganisationBuilder(this.DatabaseSession).WithName("customer").WithOrganisationRole(new OrganisationRoles(this.DatabaseSession).Customer).Build();
 
             var salesRepRelationship1 = new SalesRepRelationshipBuilder(this.DatabaseSession)
                 .WithCustomer(organisation)
@@ -86,7 +86,7 @@ namespace Allors.Domain
         [Fact]
         public void GivenPartyWithOpenOrders_WhenDeriving_ThenOpenOrderAmountIsUpdated()
         {
-            var organisation = new OrganisationBuilder(this.DatabaseSession).WithName("customer").Build();
+            var organisation = new OrganisationBuilder(this.DatabaseSession).WithName("customer").WithOrganisationRole(new OrganisationRoles(this.DatabaseSession).Customer).Build();
             var internalOrganisation = new InternalOrganisations(this.DatabaseSession).FindBy(M.InternalOrganisation.Name, "internalOrganisation");
             new CustomerRelationshipBuilder(this.DatabaseSession).WithCustomer(organisation).WithInternalOrganisation(internalOrganisation).Build();
 
@@ -140,7 +140,7 @@ namespace Allors.Domain
         [Fact]
         public void GivenPartyWithRevenue_WhenDeriving_ThenTotalRevenuesAreUpdated()
         {
-            var customer = new OrganisationBuilder(this.DatabaseSession).WithName("customer").Build();
+            var customer = new OrganisationBuilder(this.DatabaseSession).WithName("customer").WithOrganisationRole(new OrganisationRoles(this.DatabaseSession).Customer).Build();
             var internalOrganisation = new InternalOrganisations(this.DatabaseSession).FindBy(M.InternalOrganisation.Name, "internalOrganisation");
             var productItem = new SalesInvoiceItemTypes(this.DatabaseSession).ProductItem;
             var contactMechanism = new ContactMechanisms(this.DatabaseSession).Extent().First;

@@ -111,6 +111,11 @@ export class OrganisationOverviewComponent implements OnInit, AfterViewInit, OnD
             name: 'communicationEvents',
             id: id,
             path: new Path({ step: m.Party.CommunicationEventsWhereInvolvedParty }),
+            include: [
+              new TreeNode({ roleType: m.CommunicationEvent.CurrentObjectState }),
+              new TreeNode({ roleType: m.CommunicationEvent.FromParties }),
+              new TreeNode({ roleType: m.CommunicationEvent.ToParties }),
+            ],
           }),
         ];
 

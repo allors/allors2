@@ -136,6 +136,7 @@ namespace Allors.Domain
             var supplier = new OrganisationBuilder(this.DatabaseSession)
                 .WithName("supplier")
                 .WithLocale(new Locales(this.DatabaseSession).EnglishGreatBritain)
+                .WithOrganisationRole(new OrganisationRoles(this.DatabaseSession).Supplier)
                 .Build();
 
             var internalOrganisation = new InternalOrganisations(this.DatabaseSession).FindBy(M.InternalOrganisation.Name, "internalOrganisation");
@@ -196,6 +197,7 @@ namespace Allors.Domain
             var supplier = new OrganisationBuilder(this.DatabaseSession)
                 .WithName("supplier")
                 .WithLocale(new Locales(this.DatabaseSession).EnglishGreatBritain)
+                .WithOrganisationRole(new OrganisationRoles(this.DatabaseSession).Supplier)
                 .Build();
 
             var internalOrganisation = new InternalOrganisations(this.DatabaseSession).FindBy(M.InternalOrganisation.Name, "internalOrganisation");

@@ -33,10 +33,10 @@ namespace Allors.Domain
             var productItem = new SalesInvoiceItemTypes(this.DatabaseSession).ProductItem;
             var contactMechanism = new ContactMechanisms(this.DatabaseSession).Extent().First;
 
-            var customer1 = new OrganisationBuilder(this.DatabaseSession).WithName("customer1").Build();
-            var customer2 = new OrganisationBuilder(this.DatabaseSession).WithName("customer2").Build();
-            var salesRep1 = new PersonBuilder(this.DatabaseSession).WithLastName("salesRep1").Build();
-            var salesRep2 = new PersonBuilder(this.DatabaseSession).WithLastName("salesRep2").Build();
+            var customer1 = new OrganisationBuilder(this.DatabaseSession).WithName("customer1").WithOrganisationRole(new OrganisationRoles(this.DatabaseSession).Customer).Build();
+            var customer2 = new OrganisationBuilder(this.DatabaseSession).WithName("customer2").WithOrganisationRole(new OrganisationRoles(this.DatabaseSession).Customer).Build();
+            var salesRep1 = new PersonBuilder(this.DatabaseSession).WithLastName("salesRep1").WithPersonRole(new PersonRoles(this.DatabaseSession).Employee).Build();
+            var salesRep2 = new PersonBuilder(this.DatabaseSession).WithLastName("salesRep2").WithPersonRole(new PersonRoles(this.DatabaseSession).Employee).Build();
             var package1 = new PackageBuilder(this.DatabaseSession).WithName("package1").Build();
             var package2 = new PackageBuilder(this.DatabaseSession).WithName("package2").Build();
             var catMain = new ProductCategoryBuilder(this.DatabaseSession)

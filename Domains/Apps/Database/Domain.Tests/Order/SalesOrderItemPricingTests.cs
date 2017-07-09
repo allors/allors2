@@ -68,7 +68,7 @@ namespace Allors.Domain
             this.internalOrganisation = new InternalOrganisations(this.DatabaseSession).FindBy(M.InternalOrganisation.Name, "internalOrganisation");
             this.internalOrganisation.PreferredCurrency = euro;
 
-            this.supplier = new OrganisationBuilder(this.DatabaseSession).WithName("supplier").Build();
+            this.supplier = new OrganisationBuilder(this.DatabaseSession).WithName("supplier").WithOrganisationRole(new OrganisationRoles(this.DatabaseSession).Supplier).Build();
 
             this.vatRate21 = new VatRateBuilder(this.DatabaseSession).WithRate(21).Build();
 
@@ -77,7 +77,7 @@ namespace Allors.Domain
 
             this.shipToContactMechanismMechelen = new PostalAddressBuilder(this.DatabaseSession).WithGeographicBoundary(mechelen).WithAddress1("Haverwerf 15").Build();
             this.shipToContactMechanismKiev = new PostalAddressBuilder(this.DatabaseSession).WithGeographicBoundary(this.kiev).WithAddress1("Dnieper").Build();
-            this.shipToCustomer = new OrganisationBuilder(this.DatabaseSession).WithName("shipToCustomer").Build();
+            this.shipToCustomer = new OrganisationBuilder(this.DatabaseSession).WithName("shipToCustomer").WithOrganisationRole(new OrganisationRoles(this.DatabaseSession).Customer).Build();
             this.shipToCustomer.AddPartyContactMechanism(new PartyContactMechanismBuilder(this.DatabaseSession)
                                                             .WithContactMechanism(this.shipToContactMechanismKiev)
                                                             .WithContactPurpose(new ContactMechanismPurposes(this.DatabaseSession).ShippingAddress)
@@ -88,6 +88,7 @@ namespace Allors.Domain
             this.billToCustomer = new OrganisationBuilder(this.DatabaseSession)
                 .WithName("billToCustomer")
                 .WithPreferredCurrency(euro)
+                .WithOrganisationRole(new OrganisationRoles(this.DatabaseSession).Customer)
                 .Build();
 
             new CustomerRelationshipBuilder(this.DatabaseSession).WithFromDate(DateTime.UtcNow).WithCustomer(billToCustomer).WithInternalOrganisation(internalOrganisation).Build();

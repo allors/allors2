@@ -29,7 +29,7 @@ namespace Allors.Domain
         [Fact]
         public void GivenWebSiteCommunication_WhenDeriving_ThenRequiredRelationsMustExist()
         {
-            var owner = new PersonBuilder(this.DatabaseSession).WithLastName("owner").Build();
+            var owner = new PersonBuilder(this.DatabaseSession).WithLastName("owner").WithPersonRole(new PersonRoles(this.DatabaseSession).Employee).Build();
 
             var builder = new WebSiteCommunicationBuilder(this.DatabaseSession).WithOwner(owner);
             var communication = builder.Build();
@@ -51,9 +51,9 @@ namespace Allors.Domain
         [Fact]
         public void GivenWebSiteCommunication_WhenDeriving_ThenInvolvedPartiesAreDerived()
         {
-            var owner = new PersonBuilder(this.DatabaseSession).WithLastName("owner").Build();
-            var originator = new PersonBuilder(this.DatabaseSession).WithLastName("originator").Build();
-            var receiver = new PersonBuilder(this.DatabaseSession).WithLastName("receiver").Build();
+            var owner = new PersonBuilder(this.DatabaseSession).WithLastName("owner").WithPersonRole(new PersonRoles(this.DatabaseSession).Employee).Build();
+            var originator = new PersonBuilder(this.DatabaseSession).WithLastName("originator").WithPersonRole(new PersonRoles(this.DatabaseSession).Customer).Build();
+            var receiver = new PersonBuilder(this.DatabaseSession).WithLastName("receiver").WithPersonRole(new PersonRoles(this.DatabaseSession).Customer).Build();
 
             this.DatabaseSession.Derive(true);
             this.DatabaseSession.Commit();

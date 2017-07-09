@@ -21,12 +21,15 @@ namespace Allors.Domain
     {
         private static readonly Guid EmployeeId = new Guid("DB06A3E1-6146-4C18-A60D-DD10E19F7243");
         private static readonly Guid ContactId = new Guid("FA2DF11E-7795-4DF7-8B3F-4FD87D0C4D8E");
+        private static readonly Guid CustomerId = new Guid("B29444EF-0950-4D6F-AB3E-9C6DC44C050F");
 
         private UniquelyIdentifiableCache<PersonRole> cache;
 
         public PersonRole Employee => this.Cache.Get(EmployeeId);
 
         public PersonRole Contact => this.Cache.Get(ContactId);
+
+        public PersonRole Customer => this.Cache.Get(CustomerId);
 
         private UniquelyIdentifiableCache<PersonRole> Cache => this.cache ?? (this.cache = new UniquelyIdentifiableCache<PersonRole>(this.Session));
 
@@ -48,6 +51,13 @@ namespace Allors.Domain
                 .WithName("Contact")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Contact").WithLocale(englishLocale).Build())
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Contact").WithLocale(dutchLocale).Build())
+                .WithUniqueId(ContactId)
+                .Build();
+
+            new PersonRoleBuilder(this.Session)
+                .WithName("Customer")
+                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Customer").WithLocale(englishLocale).Build())
+                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Klant").WithLocale(dutchLocale).Build())
                 .WithUniqueId(ContactId)
                 .Build();
         }

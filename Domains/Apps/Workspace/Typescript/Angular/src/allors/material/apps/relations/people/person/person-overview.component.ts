@@ -86,6 +86,12 @@ export class PersonOverviewComponent implements OnInit, AfterViewInit, OnDestroy
             name: 'communicationEvents',
             id: id,
             path: new Path({ step: m.Party.CommunicationEventsWhereInvolvedParty }),
+            include: [
+              new TreeNode({ roleType: m.CommunicationEvent.CurrentObjectState }),
+              new TreeNode({ roleType: m.CommunicationEvent.FromParties }),
+              new TreeNode({ roleType: m.CommunicationEvent.ToParties }),
+              new TreeNode({ roleType: m.CommunicationEvent.InvolvedParties }),
+            ],
           }),
           new Fetch({
             name: 'organisationContactRelationships',

@@ -29,9 +29,9 @@ namespace Allors.Domain
         [Fact]
         public void GivenPhoneCommunication_WhenDeriving_ThenRequiredRelationsMustExist()
         {
-            var receiver = new PersonBuilder(this.DatabaseSession).WithLastName("receiver").Build();
-            var caller = new PersonBuilder(this.DatabaseSession).WithLastName("caller").Build();
-            var owner = new PersonBuilder(this.DatabaseSession).WithLastName("owner").Build();
+            var receiver = new PersonBuilder(this.DatabaseSession).WithLastName("receiver").WithPersonRole(new PersonRoles(this.DatabaseSession).Customer).Build();
+            var caller = new PersonBuilder(this.DatabaseSession).WithLastName("caller").WithPersonRole(new PersonRoles(this.DatabaseSession).Customer).Build();
+            var owner = new PersonBuilder(this.DatabaseSession).WithLastName("owner").WithPersonRole(new PersonRoles(this.DatabaseSession).Employee).Build();
 
             this.DatabaseSession.Derive();
             this.DatabaseSession.Commit();
@@ -68,9 +68,9 @@ namespace Allors.Domain
         {
             var communication = new PhoneCommunicationBuilder(this.DatabaseSession)
                 .WithSubject("Hello world!")
-                .WithOwner(new PersonBuilder(this.DatabaseSession).WithLastName("owner").Build())
-                .WithCaller(new PersonBuilder(this.DatabaseSession).WithLastName("caller").Build())
-                .WithReceiver(new PersonBuilder(this.DatabaseSession).WithLastName("receiver").Build())
+                .WithOwner(new PersonBuilder(this.DatabaseSession).WithLastName("owner").WithPersonRole(new PersonRoles(this.DatabaseSession).Employee).Build())
+                .WithCaller(new PersonBuilder(this.DatabaseSession).WithLastName("caller").WithPersonRole(new PersonRoles(this.DatabaseSession).Customer).Build())
+                .WithReceiver(new PersonBuilder(this.DatabaseSession).WithLastName("receiver").WithPersonRole(new PersonRoles(this.DatabaseSession).Customer).Build())
                 .Build();
 
             Assert.False(this.DatabaseSession.Derive(false).HasErrors);
@@ -83,9 +83,9 @@ namespace Allors.Domain
         [Fact]
         public void GivenPhoneCommunication_WhenDeriving_ThenInvolvedPartiesAreDerived()
         {
-            var owner = new PersonBuilder(this.DatabaseSession).WithLastName("owner").Build();
-            var caller = new PersonBuilder(this.DatabaseSession).WithLastName("caller").Build();
-            var receiver = new PersonBuilder(this.DatabaseSession).WithLastName("receiver").Build();
+            var owner = new PersonBuilder(this.DatabaseSession).WithLastName("owner").WithPersonRole(new PersonRoles(this.DatabaseSession).Employee).Build();
+            var caller = new PersonBuilder(this.DatabaseSession).WithLastName("caller").WithPersonRole(new PersonRoles(this.DatabaseSession).Customer).Build();
+            var receiver = new PersonBuilder(this.DatabaseSession).WithLastName("receiver").WithPersonRole(new PersonRoles(this.DatabaseSession).Customer).Build();
 
             this.DatabaseSession.Derive(true);
             this.DatabaseSession.Commit();

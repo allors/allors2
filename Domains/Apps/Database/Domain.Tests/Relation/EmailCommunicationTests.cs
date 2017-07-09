@@ -52,7 +52,7 @@ namespace Allors.Domain
         [Fact]
         public void GivenEmailCommunication_WhenDeriving_ThenInvolvedPartiesAreDerived()
         {
-            var owner = new PersonBuilder(this.DatabaseSession).WithLastName("owner").Build();
+            var owner = new PersonBuilder(this.DatabaseSession).WithLastName("owner").WithPersonRole(new PersonRoles(this.DatabaseSession).Employee).Build();
 
             var personalEmailAddress = new ContactMechanismPurposes(this.DatabaseSession).PersonalEmailAddress;
 
@@ -62,15 +62,15 @@ namespace Allors.Domain
 
             var addresseeEmail = new EmailAddressBuilder(this.DatabaseSession).WithElectronicAddressString("addressee@allors.com").Build();
             var addresseeContact = new PartyContactMechanismBuilder(this.DatabaseSession).WithContactMechanism(addresseeEmail).WithContactPurpose(personalEmailAddress).WithUseAsDefault(true).Build();
-            var addressee = new PersonBuilder(this.DatabaseSession).WithLastName("addressee").WithPartyContactMechanism(addresseeContact).Build();
+            var addressee = new PersonBuilder(this.DatabaseSession).WithLastName("addressee").WithPartyContactMechanism(addresseeContact).WithPersonRole(new PersonRoles(this.DatabaseSession).Contact).Build();
 
             var carbonCopeeEmail = new EmailAddressBuilder(this.DatabaseSession).WithElectronicAddressString("carbonCopee@allors.com").Build();
             var carbonCopeeContact = new PartyContactMechanismBuilder(this.DatabaseSession).WithContactMechanism(carbonCopeeEmail).WithContactPurpose(personalEmailAddress).WithUseAsDefault(true).Build();
-            var carbonCopee = new PersonBuilder(this.DatabaseSession).WithLastName("carbon copee").WithPartyContactMechanism(carbonCopeeContact).Build();
+            var carbonCopee = new PersonBuilder(this.DatabaseSession).WithLastName("carbon copee").WithPartyContactMechanism(carbonCopeeContact).WithPersonRole(new PersonRoles(this.DatabaseSession).Contact).Build();
 
             var blindCopeeEmail = new EmailAddressBuilder(this.DatabaseSession).WithElectronicAddressString("blindCopee@allors.com").Build();
             var blindCopeeContact = new PartyContactMechanismBuilder(this.DatabaseSession).WithContactMechanism(blindCopeeEmail).WithContactPurpose(personalEmailAddress).WithUseAsDefault(true).Build();
-            var blindCopee = new PersonBuilder(this.DatabaseSession).WithLastName("blind copee").WithPartyContactMechanism(blindCopeeContact).Build();
+            var blindCopee = new PersonBuilder(this.DatabaseSession).WithLastName("blind copee").WithPartyContactMechanism(blindCopeeContact).WithPersonRole(new PersonRoles(this.DatabaseSession).Contact).Build();
 
             this.DatabaseSession.Derive(true);
             this.DatabaseSession.Commit();

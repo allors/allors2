@@ -36,10 +36,11 @@ namespace Allors.Domain
         
         public SupplierRelationshipTests()
         {
-            this.contact = new PersonBuilder(this.DatabaseSession).WithLastName("contact").Build();
+            this.contact = new PersonBuilder(this.DatabaseSession).WithLastName("contact").WithPersonRole(new PersonRoles(this.DatabaseSession).Contact).Build();
             this.supplier = new OrganisationBuilder(this.DatabaseSession)
                 .WithName("supplier")
                 .WithLocale(new Locales(this.DatabaseSession).EnglishGreatBritain)
+                .WithOrganisationRole(new OrganisationRoles(this.DatabaseSession).Supplier)
                 .Build();
             this.internalOrganisation = new InternalOrganisations(this.DatabaseSession).FindBy(M.InternalOrganisation.Name, "internalOrganisation");
 
@@ -66,21 +67,21 @@ namespace Allors.Domain
 
             this.DatabaseSession.Commit();
 
-            var supplier1 = new OrganisationBuilder(this.DatabaseSession).WithName("supplier1").Build();
+            var supplier1 = new OrganisationBuilder(this.DatabaseSession).WithName("supplier1").WithOrganisationRole(new OrganisationRoles(this.DatabaseSession).Supplier).Build();
             var supplierRelationship1 = new SupplierRelationshipBuilder(this.DatabaseSession).WithSupplier(supplier1).Build();
 
             this.DatabaseSession.Derive(true);
 
             Assert.Equal(1007, supplierRelationship1.SubAccountNumber);
 
-            var supplier2 = new OrganisationBuilder(this.DatabaseSession).WithName("supplier2").Build();
+            var supplier2 = new OrganisationBuilder(this.DatabaseSession).WithName("supplier2").WithOrganisationRole(new OrganisationRoles(this.DatabaseSession).Supplier).Build();
             var supplierRelationship2 = new SupplierRelationshipBuilder(this.DatabaseSession).WithSupplier(supplier2).Build();
 
             this.DatabaseSession.Derive(true);
 
             Assert.Equal(1015, supplierRelationship2.SubAccountNumber);
 
-            var supplier3 = new OrganisationBuilder(this.DatabaseSession).WithName("supplier3").Build();
+            var supplier3 = new OrganisationBuilder(this.DatabaseSession).WithName("supplier3").WithOrganisationRole(new OrganisationRoles(this.DatabaseSession).Supplier).Build();
             var supplierRelationship3 = new SupplierRelationshipBuilder(this.DatabaseSession).WithSupplier(supplier3).Build();
 
             this.DatabaseSession.Derive(true);
@@ -91,7 +92,7 @@ namespace Allors.Domain
         [Fact]
         public void GivenSupplierRelationship_WhenDeriving_ThenSubAccountNumberMustBeUniqueWithinInternalOrganisation()
         {
-            var supplier2 = new OrganisationBuilder(this.DatabaseSession).WithName("supplier").Build();
+            var supplier2 = new OrganisationBuilder(this.DatabaseSession).WithName("supplier").WithOrganisationRole(new OrganisationRoles(this.DatabaseSession).Supplier).Build();
 
             var belgium = new Countries(this.DatabaseSession).CountryByIsoCode["BE"];
             var euro = belgium.Currency;
@@ -132,7 +133,7 @@ namespace Allors.Domain
         [Fact]
         public void GivenSupplierRelationship_WhenDeriving_ThenSameSubAccountNumberIsAllowedAtInternalOrganisation()
         {
-            var supplier1 = new OrganisationBuilder(this.DatabaseSession).WithName("supplier").Build();
+            var supplier1 = new OrganisationBuilder(this.DatabaseSession).WithName("supplier").WithOrganisationRole(new OrganisationRoles(this.DatabaseSession).Supplier).Build();
 
             var supplierRelationship1 = new SupplierRelationshipBuilder(this.DatabaseSession)
                 .WithSupplier(supplier1)
@@ -210,7 +211,7 @@ namespace Allors.Domain
         {
             this.InstantiateObjects(this.DatabaseSession);
 
-            var contact2 = new PersonBuilder(this.DatabaseSession).WithLastName("contact2").Build();
+            var contact2 = new PersonBuilder(this.DatabaseSession).WithLastName("contact2").WithPersonRole(new PersonRoles(this.DatabaseSession).Contact).Build();
             var contactRelationship2 = new OrganisationContactRelationshipBuilder(this.DatabaseSession)
                 .WithOrganisation(this.supplier)
                 .WithContact(contact2)

@@ -37,7 +37,7 @@ namespace Allors.Domain
             var euro = new Currencies(this.DatabaseSession).FindBy(M.Currency.IsoCode, "EUR");
 
             this.internalOrganisation = new InternalOrganisations(this.DatabaseSession).FindBy(M.InternalOrganisation.Name, "internalOrganisation");
-            this.billToCustomer = new OrganisationBuilder(this.DatabaseSession).WithName("billToCustomer").WithPreferredCurrency(euro).Build();
+            this.billToCustomer = new OrganisationBuilder(this.DatabaseSession).WithName("billToCustomer").WithPreferredCurrency(euro).WithOrganisationRole(new OrganisationRoles(this.DatabaseSession).Customer).Build();
             var supplier = new OrganisationBuilder(this.DatabaseSession).WithName("supplier").WithLocale(new Locales(this.DatabaseSession).EnglishGreatBritain).Build();
 
             new CustomerRelationshipBuilder(this.DatabaseSession).WithFromDate(DateTime.UtcNow).WithCustomer(this.billToCustomer).WithInternalOrganisation(this.internalOrganisation).Build();
@@ -144,7 +144,7 @@ namespace Allors.Domain
 
             var billToContactMechanism = new EmailAddressBuilder(this.DatabaseSession).WithElectronicAddressString("info@allors.com").Build();
 
-            var customer = new PersonBuilder(this.DatabaseSession).WithLastName("customer").Build();
+            var customer = new PersonBuilder(this.DatabaseSession).WithLastName("customer").WithPersonRole(new PersonRoles(this.DatabaseSession).Customer).Build();
             new CustomerRelationshipBuilder(this.DatabaseSession)
                 .WithCustomer(customer)
                 .WithInternalOrganisation(Singleton.Instance(this.DatabaseSession).DefaultInternalOrganisation)

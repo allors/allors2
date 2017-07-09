@@ -49,7 +49,7 @@ namespace Allors.Domain
                 .Build();
 
             var internalOrganisation = new InternalOrganisations(this.DatabaseSession).FindBy(M.InternalOrganisation.Name, "internalOrganisation");
-            this.supplier = new OrganisationBuilder(this.DatabaseSession).WithName("supplier").Build();
+            this.supplier = new OrganisationBuilder(this.DatabaseSession).WithName("supplier").WithOrganisationRole(new OrganisationRoles(this.DatabaseSession).Supplier).Build();
             this.supplier.AddPartyContactMechanism(supplierContactMechanism);
 
             new SupplierRelationshipBuilder(this.DatabaseSession).WithSupplier(supplier).WithInternalOrganisation(internalOrganisation).Build();
@@ -108,7 +108,7 @@ namespace Allors.Domain
         {
             this.InstantiateObjects(this.DatabaseSession);
 
-            var buyer = new OrganisationBuilder(this.DatabaseSession).WithName("buyer").Build();
+            var buyer = new OrganisationBuilder(this.DatabaseSession).WithName("buyer").WithOrganisationRole(new OrganisationRoles(this.DatabaseSession).Customer).Build();
             var mechelen = new CityBuilder(this.DatabaseSession).WithName("Mechelen").Build();
             var shipToContactMechanism = new PostalAddressBuilder(this.DatabaseSession).WithGeographicBoundary(mechelen).WithAddress1("Haverwerf 15").Build();
             var partyContactMechanism = new PartyContactMechanismBuilder(this.DatabaseSession).WithContactMechanism(shipToContactMechanism).Build();
@@ -310,7 +310,7 @@ namespace Allors.Domain
         [Fact]
         public void GivenOrderItem_WhenObjectStateIsCreated_ThenItemMayBeDeletedButNotCancelledOrRejected()
         {
-            var administrator = new PersonBuilder(this.DatabaseSession).WithFirstName("Koen").WithUserName("admin").Build();
+            var administrator = new PersonBuilder(this.DatabaseSession).WithFirstName("Koen").WithUserName("admin").WithPersonRole(new PersonRoles(this.DatabaseSession).Employee).Build();
             var administrators = new UserGroups(this.DatabaseSession).Administrators;
             administrators.AddMember(administrator);
             
@@ -352,7 +352,7 @@ namespace Allors.Domain
         [Fact]
         public void GivenOrderItem_WhenObjectStateIsConfirmed_ThenItemMayBeCancelledOrRejectedButNotDeleted()
         {
-            var administrator = new PersonBuilder(this.DatabaseSession).WithFirstName("Koen").WithUserName("admin").Build();
+            var administrator = new PersonBuilder(this.DatabaseSession).WithFirstName("Koen").WithUserName("admin").WithPersonRole(new PersonRoles(this.DatabaseSession).Employee).Build();
             var administrators = new UserGroups(this.DatabaseSession).Administrators;
             administrators.AddMember(administrator);
             
@@ -394,7 +394,7 @@ namespace Allors.Domain
         [Fact]
         public void GivenOrderItem_WhenObjectStateIsPartiallyReceived_ThenItemMayNotBeCancelledOrRejectedOrDeleted()
         {
-            var administrator = new PersonBuilder(this.DatabaseSession).WithFirstName("Koen").WithUserName("admin").Build();
+            var administrator = new PersonBuilder(this.DatabaseSession).WithFirstName("Koen").WithUserName("admin").WithPersonRole(new PersonRoles(this.DatabaseSession).Employee).Build();
             var administrators = new UserGroups(this.DatabaseSession).Administrators;
             administrators.AddMember(administrator);
             
@@ -449,7 +449,7 @@ namespace Allors.Domain
         [Fact]
         public void GivenOrderItem_WhenObjectStateIsCancelled_ThenItemMayNotBeCancelledOrRejectedOrDeleted()
         {
-            var administrator = new PersonBuilder(this.DatabaseSession).WithFirstName("Koen").WithUserName("admin").Build();
+            var administrator = new PersonBuilder(this.DatabaseSession).WithFirstName("Koen").WithUserName("admin").WithPersonRole(new PersonRoles(this.DatabaseSession).Employee).Build();
             var administrators = new UserGroups(this.DatabaseSession).Administrators;
             administrators.AddMember(administrator);
             
@@ -493,7 +493,7 @@ namespace Allors.Domain
         [Fact]
         public void GivenOrderItem_WhenObjectStateIsRejected_ThenItemMayNotBeCancelledOrRejectedOrDeleted()
         {
-            var administrator = new PersonBuilder(this.DatabaseSession).WithFirstName("Koen").WithUserName("admin").Build();
+            var administrator = new PersonBuilder(this.DatabaseSession).WithFirstName("Koen").WithUserName("admin").WithPersonRole(new PersonRoles(this.DatabaseSession).Employee).Build();
             var administrators = new UserGroups(this.DatabaseSession).Administrators;
             administrators.AddMember(administrator);
             
@@ -536,7 +536,7 @@ namespace Allors.Domain
         [Fact]
         public void GivenOrderItem_WhenObjectStateIsCompleted_ThenItemMayNotBeCancelledOrRejectedOrDeleted()
         {
-            var administrator = new PersonBuilder(this.DatabaseSession).WithFirstName("Koen").WithUserName("admin").Build();
+            var administrator = new PersonBuilder(this.DatabaseSession).WithFirstName("Koen").WithUserName("admin").WithPersonRole(new PersonRoles(this.DatabaseSession).Employee).Build();
             var administrators = new UserGroups(this.DatabaseSession).Administrators;
             administrators.AddMember(administrator);
             
@@ -591,7 +591,7 @@ namespace Allors.Domain
         [Fact]
         public void GivenOrderItem_WhenObjectStateIsFinished_ThenItemMayNotBeCancelledOrRejectedOrDeleted()
         {
-            var administrator = new PersonBuilder(this.DatabaseSession).WithFirstName("Koen").WithUserName("admin").Build();
+            var administrator = new PersonBuilder(this.DatabaseSession).WithFirstName("Koen").WithUserName("admin").WithPersonRole(new PersonRoles(this.DatabaseSession).Employee).Build();
             var administrators = new UserGroups(this.DatabaseSession).Administrators;
             administrators.AddMember(administrator);
             
@@ -632,7 +632,7 @@ namespace Allors.Domain
         [Fact]
         public void GivenOrderItem_WhenObjectStateIsPartiallyReceived_ThenProductChangeIsNotAllowed()
         {
-            var administrator = new PersonBuilder(this.DatabaseSession).WithFirstName("Koen").WithUserName("admin").Build();
+            var administrator = new PersonBuilder(this.DatabaseSession).WithFirstName("Koen").WithUserName("admin").WithPersonRole(new PersonRoles(this.DatabaseSession).Employee).Build();
             var administrators = new UserGroups(this.DatabaseSession).Administrators;
             administrators.AddMember(administrator);
             

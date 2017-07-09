@@ -31,7 +31,7 @@ namespace Allors.Domain
         [Fact]
         public void GivenSupplierOffering_WhenDeriving_ThenRequiredRelationsMustExist()
         {
-            var supplier = new OrganisationBuilder(this.DatabaseSession).WithName("organisation").Build();
+            var supplier = new OrganisationBuilder(this.DatabaseSession).WithName("organisation").WithOrganisationRole(new OrganisationRoles(this.DatabaseSession).Customer).Build();
             var part = new FinishedGoodBuilder(this.DatabaseSession).WithName("finishedGood").Build();
 
             var good = new GoodBuilder(this.DatabaseSession)
@@ -100,7 +100,7 @@ namespace Allors.Domain
         [Fact]
         public void GivenNewGood_WhenDeriving_ThenNonSerializedInventryItemIsCreatedForEveryFacility()
         {
-            var supplier = new OrganisationBuilder(this.DatabaseSession).WithName("supplier").Build();
+            var supplier = new OrganisationBuilder(this.DatabaseSession).WithName("supplier").WithOrganisationRole(new OrganisationRoles(this.DatabaseSession).Supplier).Build();
             var internalOrganisation = new InternalOrganisations(this.DatabaseSession).FindBy(M.InternalOrganisation.Name, "internalOrganisation");
             var secondFacility = new WarehouseBuilder(this.DatabaseSession).WithName("second facility").WithOwner(internalOrganisation).Build();
 
@@ -142,7 +142,7 @@ namespace Allors.Domain
         [Fact]
         public void GivenNewGoodCoredOnFinishedGood_WhenDeriving_ThenNonSerializedInventryItemIsCreatedForEveryFinishedGoodAndFacility()
         {
-            var supplier = new OrganisationBuilder(this.DatabaseSession).WithName("supplier").Build();
+            var supplier = new OrganisationBuilder(this.DatabaseSession).WithName("supplier").WithOrganisationRole(new OrganisationRoles(this.DatabaseSession).Supplier).Build();
             var internalOrganisation = new InternalOrganisations(this.DatabaseSession).FindBy(M.InternalOrganisation.Name, "internalOrganisation");
             var secondFacility = new WarehouseBuilder(this.DatabaseSession).WithName("second facility").WithOwner(internalOrganisation).Build();
 

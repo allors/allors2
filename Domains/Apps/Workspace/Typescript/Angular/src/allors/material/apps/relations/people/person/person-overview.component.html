@@ -61,29 +61,22 @@
         <md-card-content>
           <ng-template tdLoading="this.communicationEvents">
             <md-list class="will-load">
-              <div class="md-padding" *ngIf="!data" layout="row" layout-align="center center">
+              <div class="md-padding" *ngIf="!this.communicationEvents" layout="row" layout-align="center center">
                 <h3>No communications to display.</h3>
               </div>
 
               <ng-template let-communicationEvent let-last="last" ngFor [ngForOf]="this.communicationEvents">
                 <md-list-item>
 
-                  <h3 md-line> {{communicationEvent.objectType.name}}</h3>
-                  <div>
-                    <span flex>
-                      <p md-line class="md-caption">From: </p>
-                      <p md-line class="md-caption" *ngFor="let party of communicationEvent.FromParties">{{ party.displayName }} </p>
-                    </span>
-                  </div>
-                  <div>
-                    <span flex>
-                      <p md-line class="md-caption">From: </p>
-                      <p md-line class="md-caption" *ngFor="let party of communicationEvent.ToParties">{{ party.displayName }} </p>
-                    </span>
-                  </div>
-
+                  <h3 *ngIf="this.checkType(communicationEvent) === &quot;FaceToFaceCommunication&quot;" md-line>Meeting, {{ communicationEvent.CurrentObjectState.Name }}</h3>
                   <p md-line class="md-caption">{{ communicationEvent.Subject }} </p>
-                  <p md-line class="md-caption">{{ communicationEvent.CurrentObjectState.Name }} </p>
+                  <p md-line class="md-caption">Involved:
+                    <span *ngFor="let party of communicationEvent.InvolvedParties">{{ party.displayName }} </span>
+                  </p>
+
+                  <span hide-xs hide-sm hide-md flex-gt-xs="60" flex-xs="40" layout-gt-xs="row">
+                  <div class="md-caption tc-grey-500" flex-gt-xs="50"> started: {{ communicationEvent.ActualStart | date }} </div>
+                  <div class="md-caption tc-grey-500" flex-gt-xs="50"> ended: {{ communicationEvent.ActualEnd | date }} </div>
 
                   <span>
                     <button md-icon-button [md-menu-trigger-for]="menu">
@@ -113,8 +106,8 @@
         <md-divider></md-divider>
         <md-card-actions>
           <button md-button [routerLink]="['/relations/communications/' + person.id +'/facetofacecommunication/add']">+ Meeting</button>
-          <!--<button md-button [routerLink]="['/relations/communications/' + person.Id +'/phonecommunication/add']">+ Phone</button>
-          <button md-button [routerLink]="['/relations/communications/' + person.Id +'/emailcommunication/add']">+ Mail</button>
+          <button md-button [routerLink]="['/relations/communications/' + person.id +'/phonecommunication/add']">+ Phone</button>
+          <!--<button md-button [routerLink]="['/relations/communications/' + person.Id +'/emailcommunication/add']">+ Mail</button>
           <button md-button [routerLink]="['/relations/communications/' + person.Id +'/lettercorrespondence/add']">+ Letter</button>-->
         </md-card-actions>
       </md-card>

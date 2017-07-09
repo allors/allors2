@@ -30,8 +30,8 @@ namespace Allors.Domain
         [Fact]
         public void GivenTaxDue_WhenDeriving_ThenRequiredRelationsMustExist()
         {
-            var partyFrom = new OrganisationBuilder(this.DatabaseSession).WithName("party from").Build();
-            var partyTo = new OrganisationBuilder(this.DatabaseSession).WithName("party to").Build();
+            var partyFrom = new OrganisationBuilder(this.DatabaseSession).WithName("party from").WithOrganisationRole(new OrganisationRoles(this.DatabaseSession).Customer).Build();
+            var partyTo = new OrganisationBuilder(this.DatabaseSession).WithName("party to").WithOrganisationRole(new OrganisationRoles(this.DatabaseSession).Customer).Build();
             
             this.DatabaseSession.Derive(true);
             this.DatabaseSession.Commit();

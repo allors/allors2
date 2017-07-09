@@ -33,7 +33,7 @@ namespace Allors.Domain
         {
             var billToContactMechanism = new EmailAddressBuilder(this.DatabaseSession).WithElectronicAddressString("info@allors.com").Build();
 
-            var customer = new PersonBuilder(this.DatabaseSession).WithLastName("customer").Build();
+            var customer = new PersonBuilder(this.DatabaseSession).WithLastName("customer").WithPersonRole(new PersonRoles(this.DatabaseSession).Customer).Build();
             new CustomerRelationshipBuilder(this.DatabaseSession)
                 .WithCustomer(customer)
                 .WithInternalOrganisation(Singleton.Instance(this.DatabaseSession).DefaultInternalOrganisation)
@@ -79,7 +79,7 @@ namespace Allors.Domain
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.DatabaseSession).Piece)
                 .Build();
 
-            var customer = new PersonBuilder(this.DatabaseSession).WithLastName("customer").Build();
+            var customer = new PersonBuilder(this.DatabaseSession).WithLastName("customer").WithPersonRole(new PersonRoles(this.DatabaseSession).Customer).Build();
             new CustomerRelationshipBuilder(this.DatabaseSession)
                 .WithCustomer(customer)
                 .WithInternalOrganisation(Singleton.Instance(this.DatabaseSession).DefaultInternalOrganisation)
