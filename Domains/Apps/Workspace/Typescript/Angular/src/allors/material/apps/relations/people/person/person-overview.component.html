@@ -112,10 +112,10 @@
 
         <md-divider></md-divider>
         <md-card-actions>
-          <button md-button [routerLink]="['/relations/communications/facetofacecommunication/add']">+ Meeting</button>
-          <button md-button [routerLink]="['/relations/communications/phonecommunication/add']">+ Phone</button>
-          <button md-button [routerLink]="['/relations/communications/emailcommunication/add']">+ Mail</button>
-          <button md-button [routerLink]="['/relations/communications/lettercorrespondence/add']">+ Letter</button>
+          <button md-button [routerLink]="['/relations/communications/' + person.id +'/facetofacecommunication/add']">+ Meeting</button>
+          <!--<button md-button [routerLink]="['/relations/communications/' + person.Id +'/phonecommunication/add']">+ Phone</button>
+          <button md-button [routerLink]="['/relations/communications/' + person.Id +'/emailcommunication/add']">+ Mail</button>
+          <button md-button [routerLink]="['/relations/communications/' + person.Id +'/lettercorrespondence/add']">+ Letter</button>-->
         </md-card-actions>
       </md-card>
 

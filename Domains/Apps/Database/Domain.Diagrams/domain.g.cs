@@ -755,6 +755,8 @@ namespace Allors.Domain
 
 						PaymentMethod DefaultPaymentMethod {set;}
 
+						PartyRelationship CurrentPartyRelationships {set;}
+
 						PartyContactMechanism CurrentPartyContactMechanisms {set;}
 
 						TelecommunicationsNumber GeneralPhoneNumber {set;}
@@ -1058,6 +1060,8 @@ namespace Allors.Domain
 						RequestStatus RequestStatuses {set;}
 
 						RequestObjectState CurrentObjectState {set;}
+
+						ContactMechanism FullfillContactMechanism {set;}
 
 		}
 		public interface Requirement  : Transitional, UniquelyIdentifiable 
