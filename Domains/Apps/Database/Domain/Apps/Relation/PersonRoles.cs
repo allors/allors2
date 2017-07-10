@@ -58,7 +58,7 @@ namespace Allors.Domain
                 .WithName("Customer")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Customer").WithLocale(englishLocale).Build())
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Klant").WithLocale(dutchLocale).Build())
-                .WithUniqueId(ContactId)
+                .WithUniqueId(CustomerId)
                 .Build();
         }
     }

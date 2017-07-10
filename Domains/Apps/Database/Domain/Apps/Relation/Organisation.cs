@@ -30,6 +30,31 @@ namespace Allors.Domain
             }
         }
 
+        public void AppsOnPreDerive(ObjectOnPreDerive method)
+        {
+            var derivation = method.Derivation;
+
+            // TODO:
+            if (derivation.ChangeSet.Associations.Contains(this.Id))
+            {
+                foreach (CustomerRelationship relationship in this.CustomerRelationshipsWhereCustomer)
+                {
+                    derivation.AddDependency(relationship, this);
+                }
+
+                foreach (SubContractorRelationship relationship in this.SubContractorRelationshipsWhereContractor)
+                {
+                    derivation.AddDependency(relationship, this);
+                }
+
+                foreach (SupplierRelationship relationship in this.SupplierRelationshipsWhereSupplier)
+                {
+                    derivation.AddDependency(relationship, this);
+                }
+            }
+        }
+
+
         public void AppsOnDerive(ObjectOnDerive method)
         {
             var derivation = method.Derivation;

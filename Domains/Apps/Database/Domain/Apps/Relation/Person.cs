@@ -91,38 +91,38 @@ namespace Allors.Domain
             var derivation = method.Derivation;
 
             // TODO:
-            //if (derivation.ChangeSet.Associations.Contains(this.Id))
-            //{
-            //    foreach (CustomerRelationship relationship in this.CustomerRelationshipsWhereCustomer)
-            //    {
-            //        derivation.AddDependency(relationship, this);
-            //    }
+            if (derivation.ChangeSet.Associations.Contains(this.Id))
+            {
+                foreach (CustomerRelationship relationship in this.CustomerRelationshipsWhereCustomer)
+                {
+                    derivation.AddDependency(relationship, this);
+                }
 
-            //    foreach (Employment relationship in this.EmploymentsWhereEmployee)
-            //    {
-            //        derivation.AddDependency(relationship, this);
-            //    }
+                foreach (Employment relationship in this.EmploymentsWhereEmployee)
+                {
+                    derivation.AddDependency(relationship, this);
+                }
 
-            //    foreach (OrganisationContactRelationship relationship in this.OrganisationContactRelationshipsWhereContact)
-            //    {
-            //        derivation.AddDependency(relationship, this);
-            //    }
+                foreach (OrganisationContactRelationship relationship in this.OrganisationContactRelationshipsWhereContact)
+                {
+                    derivation.AddDependency(relationship, this);
+                }
 
-            //    foreach (ProfessionalServicesRelationship relationship in this.ProfessionalServicesRelationshipsWhereProfessional)
-            //    {
-            //        derivation.AddDependency(relationship, this);
-            //    }
+                foreach (ProfessionalServicesRelationship relationship in this.ProfessionalServicesRelationshipsWhereProfessional)
+                {
+                    derivation.AddDependency(relationship, this);
+                }
 
-            //    foreach (SalesRepRelationship relationship in this.SalesRepRelationshipsWhereSalesRepresentative)
-            //    {
-            //        derivation.AddDependency(relationship, this);
-            //    }
+                foreach (SalesRepRelationship relationship in this.SalesRepRelationshipsWhereSalesRepresentative)
+                {
+                    derivation.AddDependency(relationship, this);
+                }
 
-            //    foreach (SubContractorRelationship relationship in this.SubContractorRelationshipsWhereContractor)
-            //    {
-            //        derivation.AddDependency(relationship, this);
-            //    }
-            //}
+                foreach (SubContractorRelationship relationship in this.SubContractorRelationshipsWhereContractor)
+                {
+                    derivation.AddDependency(relationship, this);
+                }
+            }
         }
 
         public void AppsOnDerive(ObjectOnDerive method)

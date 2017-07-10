@@ -58,7 +58,7 @@ namespace Allors.Domain
         [Fact]
         public void GivenActiveCustomerRelationship_WhenDeriving_ThenInternalOrganisationCustomersContainsCustomer()
         {
-            var customer = new PersonBuilder(this.DatabaseSession).WithLastName("customer").WithPersonRole(new PersonRoles(this.DatabaseSession).Customer).Build();
+            var customer = new PersonBuilder(this.DatabaseSession).WithLastName("customer1").WithPersonRole(new PersonRoles(this.DatabaseSession).Customer).Build();
             var internalOrganisation = Singleton.Instance(this.DatabaseSession).DefaultInternalOrganisation;
 
             new CustomerRelationshipBuilder(this.DatabaseSession)
