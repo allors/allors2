@@ -13,7 +13,7 @@
             var userName = httpContext.User.Identity.Name;
 
             var users = new Users(this.Session);
-            this.User = users.GetUser(userName) ?? Singleton.Instance(this.Session).Guest;
+            this.User = users.GetUser(userName) ?? Singleton.Instance(this.Session)?.Guest;
             users.CurrentUser = this.User;
         }
 
