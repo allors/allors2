@@ -145,31 +145,6 @@ namespace Allors.Domain
         {
             var derivation = method.Derivation;
 
-            // TODO:
-            if (derivation.ChangeSet.Associations.Contains(this.Id))
-            {
-
-                foreach (CustomerRelationship relationship in this.CustomerRelationshipsWhereInternalOrganisation)
-                {
-                    derivation.AddDependency(relationship, this);
-                }
-
-                foreach (Employment relationship in this.EmploymentsWhereEmployer)
-                {
-                    derivation.AddDependency(relationship, this);
-                }
-
-                foreach (SalesRepRelationship relationship in this.SalesRepRelationshipsWhereInternalOrganisation)
-                {
-                    derivation.AddDependency(relationship, this);
-                }
-
-                foreach (SupplierRelationship relationship in this.SupplierRelationshipsWhereInternalOrganisation)
-                {
-                    derivation.AddDependency(relationship, this);
-                }
-            }
-
             foreach (PaymentMethod paymentMethod in this.PaymentMethods)
             {
                 derivation.AddDependency(paymentMethod, this);

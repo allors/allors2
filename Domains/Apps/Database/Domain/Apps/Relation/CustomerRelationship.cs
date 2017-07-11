@@ -90,7 +90,7 @@ namespace Allors.Domain
 
             if (this.ExistCustomer)
             {
-                derivation.AddDependency(this, this.Customer);
+                derivation.AddDependency(this.Customer, this);
             
                 var customer = this.Customer as Organisation;
                 if (customer != null)

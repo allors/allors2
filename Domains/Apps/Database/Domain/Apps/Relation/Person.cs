@@ -86,45 +86,6 @@ namespace Allors.Domain
             return false;
         }
 
-        public void AppsOnPreDerive(ObjectOnPreDerive method)
-        {
-            var derivation = method.Derivation;
-
-            // TODO:
-            if (derivation.ChangeSet.Associations.Contains(this.Id))
-            {
-                foreach (CustomerRelationship relationship in this.CustomerRelationshipsWhereCustomer)
-                {
-                    derivation.AddDependency(relationship, this);
-                }
-
-                foreach (Employment relationship in this.EmploymentsWhereEmployee)
-                {
-                    derivation.AddDependency(relationship, this);
-                }
-
-                foreach (OrganisationContactRelationship relationship in this.OrganisationContactRelationshipsWhereContact)
-                {
-                    derivation.AddDependency(relationship, this);
-                }
-
-                foreach (ProfessionalServicesRelationship relationship in this.ProfessionalServicesRelationshipsWhereProfessional)
-                {
-                    derivation.AddDependency(relationship, this);
-                }
-
-                foreach (SalesRepRelationship relationship in this.SalesRepRelationshipsWhereSalesRepresentative)
-                {
-                    derivation.AddDependency(relationship, this);
-                }
-
-                foreach (SubContractorRelationship relationship in this.SubContractorRelationshipsWhereContractor)
-                {
-                    derivation.AddDependency(relationship, this);
-                }
-            }
-        }
-
         public void AppsOnDerive(ObjectOnDerive method)
         {
             var derivation = method.Derivation;
@@ -134,6 +95,7 @@ namespace Allors.Domain
             this.AppsOnDeriveInactiveContacts(derivation);
             this.AppsOnDeriveCurrentOrganisationContactRelationships(derivation);
             this.AppsOnDeriveInactiveOrganisationContactRelationships(derivation);
+            this.AppsOnDeriveCurrentEmployment(derivation);
             this.AppsOnDeriveCurrentPartyContactMechanisms(derivation);
             this.AppsOnDeriveCurrentPartyRelationships(derivation);
             this.AppsOnDeriveInactivePartyContactMechanisms(derivation);
@@ -158,6 +120,20 @@ namespace Allors.Domain
         public void AppsOnDeriveInactiveOrganisationContactRelationships(IDerivation derivation)
         {
             this.RemoveInactiveOrganisationContactRelationships();
+        }
+
+        public void AppsOnDeriveCurrentEmployment(IDerivation derivation)
+        {
+            this.RemoveCurrentEmployment();
+
+            foreach (Employment employment in this.EmploymentsWhereEmployee)
+            {
+                if (employment.FromDate <= DateTime.UtcNow &&
+                    (!employment.ExistThroughDate || employment.ThroughDate >= DateTime.UtcNow))
+                {
+                    this.CurrentEmployment = employment;
+                }
+            }
         }
 
         public void AppsOnDeriveInactivePartyContactMechanisms(IDerivation derivation)

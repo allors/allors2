@@ -27,8 +27,12 @@ namespace Allors.Domain
 
             if (this.ExistEmployer)
             {
-                derivation.AddDependency(this, this.Employer);
-                //derivation.AddDependency(this.Employee, this );
+                derivation.AddDependency(this.Employer, this);
+            }
+
+            if (this.ExistEmployee)
+            {
+                derivation.AddDependency(this.Employee, this);
             }
         }
 
@@ -46,16 +50,6 @@ namespace Allors.Domain
                     derivation.Validation.AddError(this, M.Employment.FromDate, ErrorMessages.ActiveDeploymentRegistered, this.Employer.Name);
                 }
             }
-
-            //if (this.ExistEmployee)
-            //{
-            //    this.Employee.OnDerive(x => x.WithDerivation(derivation));
-            //}
-
-            //if (this.ExistEmployer)
-            //{
-            //    this.Employer.OnDerive(x => x.WithDerivation(derivation));
-            //}
 
             if (this.ExistEmployee && this.Employee.ExistSalesRepRelationshipsWhereSalesRepresentative)
             {

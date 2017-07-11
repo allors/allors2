@@ -65,6 +65,57 @@ namespace Allors.Domain
             Assert.False(this.DatabaseSession.Derive(false).HasErrors);
         }
 
+        [Fact]
+        public void GivenActiveEmployment_WhenDeriving_ThenInternalOrganisationEmployeesContainsEmployee()
+        {
+            var employee = new PersonBuilder(this.DatabaseSession).WithLastName("customer").WithPersonRole(new PersonRoles(this.DatabaseSession).Customer).Build();
+            var employer = Singleton.Instance(this.DatabaseSession).DefaultInternalOrganisation;
+
+            new EmploymentBuilder(this.DatabaseSession)
+                .WithEmployee(employee)
+                .WithEmployer(employer)
+                .Build();
+
+            this.DatabaseSession.Derive(true);
+
+            Assert.Contains(employee, employer.Employees);
+        }
+
+        [Fact]
+        public void GivenEmploymentToCome_WhenDeriving_ThenInternalOrganisationEmployeesDosNotContainEmployee()
+        {
+            var employee = new PersonBuilder(this.DatabaseSession).WithLastName("customer").WithPersonRole(new PersonRoles(this.DatabaseSession).Customer).Build();
+            var employer = Singleton.Instance(this.DatabaseSession).DefaultInternalOrganisation;
+
+            new EmploymentBuilder(this.DatabaseSession)
+                .WithEmployee(employee)
+                .WithEmployer(employer)
+                .WithFromDate(DateTime.UtcNow.AddDays(1))
+                .Build();
+
+            this.DatabaseSession.Derive(true);
+
+            Assert.False(employer.Customers.Contains(employee));
+        }
+
+        [Fact]
+        public void GivenEmploymentThatHasEnded_WhenDeriving_ThenInternalOrganisationEmployeesDosNotContainEmployee()
+        {
+            var employee = new PersonBuilder(this.DatabaseSession).WithLastName("customer").WithPersonRole(new PersonRoles(this.DatabaseSession).Customer).Build();
+            var employer = Singleton.Instance(this.DatabaseSession).DefaultInternalOrganisation;
+
+            new EmploymentBuilder(this.DatabaseSession)
+                .WithEmployee(employee)
+                .WithEmployer(employer)
+                .WithFromDate(DateTime.UtcNow.AddDays(-10))
+                .WithThroughDate(DateTime.UtcNow.AddDays(-1))
+                .Build();
+
+            this.DatabaseSession.Derive(true);
+
+            Assert.False(employer.Customers.Contains(employee));
+        }
+
         private void InstantiateObjects(ISession session)
         {
             this.employee = (Person)session.Instantiate(this.employee);

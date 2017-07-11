@@ -58,7 +58,7 @@ namespace Allors.Domain
 
             var originatorEmail = new EmailAddressBuilder(this.DatabaseSession).WithElectronicAddressString("originator@allors.com").Build();
             var originatorContact = new PartyContactMechanismBuilder(this.DatabaseSession).WithContactMechanism(originatorEmail).WithContactPurpose(personalEmailAddress).WithUseAsDefault(true).Build();
-            var originator = new PersonBuilder(this.DatabaseSession).WithLastName("originator").WithPartyContactMechanism(originatorContact).Build();
+            var originator = new PersonBuilder(this.DatabaseSession).WithLastName("originator").WithPartyContactMechanism(originatorContact).WithPersonRole(new PersonRoles(this.DatabaseSession).Contact).Build();
 
             var addresseeEmail = new EmailAddressBuilder(this.DatabaseSession).WithElectronicAddressString("addressee@allors.com").Build();
             var addresseeContact = new PartyContactMechanismBuilder(this.DatabaseSession).WithContactMechanism(addresseeEmail).WithContactPurpose(personalEmailAddress).WithUseAsDefault(true).Build();

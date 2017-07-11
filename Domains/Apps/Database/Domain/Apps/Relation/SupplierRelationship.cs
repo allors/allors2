@@ -39,7 +39,7 @@ namespace Allors.Domain
 
             if (this.ExistSupplier)
             {
-                derivation.AddDerivable(this.Supplier);
+                derivation.AddDependency(this.Supplier, this);
 
                 foreach (OrganisationContactRelationship contactRelationship in this.Supplier.OrganisationContactRelationshipsWhereOrganisation)
                 {
