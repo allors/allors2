@@ -67,7 +67,7 @@ export class ChipsComponent extends Field implements OnInit, OnDestroy {
       this.subscription = this.subject
         .debounceTime(this.debounceTime)
         .distinctUntilChanged()
-        .mergeMap((search: string) => {
+        .switchMap((search: string) => {
           return this.filter(search);
         })
         .do((options: ISessionObject[]) => {

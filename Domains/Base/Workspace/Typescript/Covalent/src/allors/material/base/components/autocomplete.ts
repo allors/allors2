@@ -48,7 +48,7 @@ export class AutocompleteComponent extends Field implements OnInit {
           .valueChanges
           .debounceTime(this.debounceTime)
           .distinctUntilChanged()
-          .mergeMap((search: string) => {
+          .switchMap((search: string) => {
             return this.filter(search);
           }));
     } else {
