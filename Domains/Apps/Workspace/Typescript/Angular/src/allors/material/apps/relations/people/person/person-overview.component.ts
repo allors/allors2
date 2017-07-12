@@ -48,6 +48,7 @@ export class PersonOverviewComponent implements OnInit, AfterViewInit, OnDestroy
             include: [
               new TreeNode({roleType: m.Party.Locale}),
               new TreeNode({roleType: m.Person.PersonRoles}),
+              new TreeNode({roleType: m.Person.LastModifiedBy}),
               new TreeNode({
                 roleType: m.Party.PartyContactMechanisms,
                 nodes: [

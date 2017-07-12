@@ -46,6 +46,11 @@
           <div *ngIf="person.Locale" layout="row" class="push-top">
             <a-md-static [object]="person" [roleType]="m.Person.Locale" display="Name"></a-md-static>
           </div>
+
+          <div layout="row" class="push-top">
+            <p class="md-caption tc-grey-500"> last modified: {{ person.LastModifiedDate | date}} by {{ person.LastModifiedBy.displayName}}</p>
+          </div>
+
         </md-card-content>
 
         <md-divider></md-divider>
@@ -67,30 +72,27 @@
 
               <ng-template let-communicationEvent let-last="last" ngFor [ngForOf]="this.communicationEvents">
                 <md-list-item>
+                  <a *ngIf="this.checkType(communicationEvent) === &quot;FaceToFaceCommunication&quot;" md-line class="md-caption" [routerLink]="['/relations/communications/' + person.id + '/facetofacecommunication/' + communicationEvent.id + '/edit' ]">
+                  Meeting, {{ communicationEvent.CurrentObjectState.Name }}</a>
 
-                  <h3 *ngIf="this.checkType(communicationEvent) === &quot;FaceToFaceCommunication&quot;" md-line>Meeting, {{ communicationEvent.CurrentObjectState.Name }}</h3>
+                  <a *ngIf="this.checkType(communicationEvent) === &quot;PhoneCommunication&quot;" md-line class="md-caption" [routerLink]="['/relations/communications/' + person.id + '/phonecommunication/' + communicationEvent.id + '/edit' ]">
+                  Phone call, {{ communicationEvent.CurrentObjectState.Name }}</a>
+
                   <p md-line class="md-caption">{{ communicationEvent.Subject }} </p>
                   <p md-line class="md-caption">Involved:
                     <span *ngFor="let party of communicationEvent.InvolvedParties">{{ party.displayName }} </span>
                   </p>
-<!--
+
                   <span hide-xs hide-sm hide-md flex-gt-xs="60" flex-xs="40" layout-gt-xs="row">
-                  <div class="md-caption tc-grey-500" flex-gt-xs="50"> started: {{ communicationEvent.ActualStart | date }} </div>
-                  <div class="md-caption tc-grey-500" flex-gt-xs="50"> ended: {{ communicationEvent.ActualEnd | date }} </div>-->
+                  <div class="md-caption tc-grey-500" flex-gt-xs="50"> started: {{ communicationEvent.ActualStart | date}} </div>
+                  <div class="md-caption tc-grey-500" flex-gt-xs="50"> ended: {{ communicationEvent.ActualEnd | date }} </div>
+                  </span>
 
                   <span>
                     <button md-icon-button [md-menu-trigger-for]="menu">
                       <md-icon>more_vert</md-icon>
                     </button>
                     <md-menu x-position="before" #menu="mdMenu">
-                        <a *ngIf="this.checkType(communicationEvent) === &quot;FaceToFaceCommunication&quot;"
-                            [routerLink]="['../facetofacecommunication/' + communicationEvent.id + '/edit' ]" md-menu-item>Edit</a>
-                        <a *ngIf="this.checkType(communicationEvent) === &quot;EmailCommunication&quot;"
-                            [routerLink]="['../emailcommunication/' + communicationEvent.id + '/edit' ]" md-menu-item>Edit</a>
-                        <a *ngIf="this.checkType(communicationEvent) === &quot;PhoneCommunication&quot;"
-                            [routerLink]="['../phonecommunication/' + communicationEvent.id + '/edit' ]" md-menu-item>Edit</a>
-                        <a *ngIf="this.checkType(communicationEvent) === &quot;LetterCorrespondence&quot;"
-                            [routerLink]="['../lettercorrespondence/' + communicationEvent.id + '/edit' ]" md-menu-item>Edit</a>
                         <!--<button md-menu-item (click)="delete(person)">Delete</button>-->
                     </md-menu>
                   </span>
