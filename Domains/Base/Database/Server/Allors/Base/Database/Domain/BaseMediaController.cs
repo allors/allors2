@@ -8,7 +8,7 @@
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
 
-    public abstract partial class BaseMediaController : Controllers
+    public abstract partial class BaseMediaController : Controller
     {
         private const int OneYearInSeconds = 60 * 60 * 24 * 356;
 

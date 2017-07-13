@@ -10,7 +10,7 @@
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.IdentityModel.Tokens;
 
-    public class AuthenticationController : Controllers
+    public class AuthenticationController : Controller
     {
         private readonly IAuthenticationContext authenticationContext;
 

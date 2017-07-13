@@ -3,7 +3,7 @@
     using System;
     using Microsoft.AspNetCore.Mvc;
 
-    public class DatabaseController : Controllers
+    public class DatabaseController : Controller
     {
         private readonly IAllorsContext allors;
 
