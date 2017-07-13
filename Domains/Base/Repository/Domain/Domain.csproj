@@ -99,6 +99,7 @@
     <Compile Include="Base\Workflow\TaskAssignment.cs" />
     <Compile Include="Base\Workflow\TaskList.cs" />
     <Compile Include="Base\Workflow\WorkItem.cs" />
+    <Compile Include="Custom\Build.cs" />
     <Compile Include="Custom\Address.cs" />
     <Compile Include="Custom\AssemblyInfo.cs" />
     <Compile Include="Custom\BadUI.cs" />

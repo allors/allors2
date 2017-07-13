@@ -546,6 +546,13 @@ namespace Allors.Domain
 						global::System.Int32? Count {set;}
 
 		}
+		public interface Build  : Object 
+		{
+						global::System.Guid? Guid {set;}
+
+						global::System.String String {set;}
+
+		}
 		public interface BadUI  : Object 
 		{
 						Person PersonsMany {set;}
