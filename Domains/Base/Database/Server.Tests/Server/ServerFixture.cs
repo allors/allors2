@@ -1,4 +1,4 @@
-namespace Tests.Remote
+namespace Tests
 {
     using System;
     using System.IO;

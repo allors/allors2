@@ -19,7 +19,7 @@
 // <summary>Defines the PermissionTests type.</summary>
 //-------------------------------------------------------------------------------------------------
 
-namespace Domain
+namespace Tests
 {
     using System;
 

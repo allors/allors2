@@ -100,6 +100,14 @@ namespace Allors.Domain
 				}
 				public interface Currency 
 				{
+								global::System.String IsoCode {set;}
+
+
+								global::System.String Name {set;}
+
+
+								LocalisedText LocalisedNames {set;}
+
 				}
 				public interface Language 
 				{

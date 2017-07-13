@@ -1,10 +1,9 @@
 ﻿namespace Allors.Server
 {
     using System;
-
     using Microsoft.AspNetCore.Mvc;
 
-    public class DatabaseController : Controller
+    public class DatabaseController : Controllers
     {
         private readonly IAllorsContext allors;
 

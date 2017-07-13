@@ -1,4 +1,4 @@
-﻿namespace Allors.Server
+﻿namespace Allors.Server.Controllers
 {
     using System;
     using System.IdentityModel.Tokens.Jwt;

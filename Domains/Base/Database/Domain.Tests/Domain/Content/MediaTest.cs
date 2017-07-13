@@ -19,7 +19,7 @@
 // <summary>Defines the MediaTests type.</summary>
 //-------------------------------------------------------------------------------------------------
 
-namespace Domain
+namespace Tests
 {
     using System.IO;
 

@@ -85,10 +85,7 @@ namespace Allors.Repository
         public string MiddleName { get; set; }
         
         #region inherited methods
-
         public void OnBuild(){}
-
-        public void OnPostBuild(){}
 
         public void OnPreDerive(){}
 

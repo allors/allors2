@@ -73,6 +73,11 @@ namespace Allors.Server
                         this.SaveRequestRoles(saveRequestRoles, obj, saveResponse, objectByNewId);
                     }
                 }
+
+                foreach (Object newObject in objectByNewId.Values)
+                {
+                    newObject.OnBuild();
+                }
             }
             
             var validation = this.session.Derive(false);

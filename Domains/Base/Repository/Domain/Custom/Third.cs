@@ -20,8 +20,6 @@ namespace Allors.Repository
         #region inherited methods
         public void OnBuild(){}
 
-        public void OnPostBuild(){}
-
         public void OnPreDerive(){}
 
         public void OnDerive(){}

@@ -41,19 +41,14 @@ namespace Allors.Repository
         public AccessControl[] AccessControls { get; set; }
 
         #region inherited methods
-
-
         public void OnBuild(){}
-
-        public void OnPostBuild(){}
 
         public void OnPreDerive(){}
 
         public void OnDerive(){}
 
         public void OnPostDerive(){}
-
-
+        
         public void Delete(){}
         #endregion
     }

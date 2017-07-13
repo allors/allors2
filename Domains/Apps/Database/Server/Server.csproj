@@ -17,13 +17,13 @@
     
 		<Compile Include="..\..\..\Base\Database\Server\Allors\Base\**\*.cs" />
   
-	</ItemGroup>
+	</ItemGroup> 
 
-  
 	<ItemGroup>
-    
-		<Folder Include="wwwroot\" />
-  
+	  <Compile Remove="wwwroot\**" />
+	  <Content Remove="wwwroot\**" />
+	  <EmbeddedResource Remove="wwwroot\**" />
+	  <None Remove="wwwroot\**" />
 	</ItemGroup>
   
 

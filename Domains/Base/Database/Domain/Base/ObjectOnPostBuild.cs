@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------------------------------------------
-// <copyright file="ObjectOnPostBuild.cs" company="Allors bvba">
+// <copyright file="ObjectOnBuild.cs" company="Allors bvba">
 //   Copyright 2002-2017 Allors bvba.
 //
 // Dual Licensed under
@@ -20,11 +20,11 @@
 
 namespace Allors.Domain
 {
-    public partial class ObjectOnPostBuild
+    public partial class ObjectOnBuild
     {
         public IObjectBuilder Builder { get; private set; }
 
-        public ObjectOnPostBuild WithBuilder(IObjectBuilder builder)
+        public ObjectOnBuild WithBuilder(IObjectBuilder builder)
         {
             this.Builder = builder;
             return this;

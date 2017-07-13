@@ -19,7 +19,7 @@
 // <summary>Defines the ContentTests type.</summary>
 //-------------------------------------------------------------------------------------------------
 
-namespace Domain
+namespace Tests
 {
     public abstract class ContentTests : DomainTest
     {

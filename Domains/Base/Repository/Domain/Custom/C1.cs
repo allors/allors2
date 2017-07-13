@@ -360,18 +360,14 @@ namespace Allors.Repository
 
         public void OnBuild(){}
 
-        public void OnPostBuild(){}
-
         public void OnPreDerive(){}
 
         public void OnDerive(){}
 
         public void OnPostDerive(){}
-
-
+        
         public void InterfaceMethod(){}
-
-
+        
 
         public void SuperinterfaceMethod(){}
 

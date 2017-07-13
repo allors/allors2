@@ -19,7 +19,7 @@
 // <summary>Defines the AccessControlTests type.</summary>
 //-------------------------------------------------------------------------------------------------
 
-namespace Domain
+namespace Tests
 {
     using System.Collections;
 

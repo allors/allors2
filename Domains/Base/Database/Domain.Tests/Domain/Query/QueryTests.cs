@@ -21,8 +21,10 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Domain
+namespace Tests
 {
+    using System.Collections.Generic;
+
     using Allors;
     using Allors.Domain.Query;
     using Allors.Meta;
@@ -76,7 +78,7 @@ namespace Domain
                                 ObjectType = M.Person.ObjectType,
                                 Predicate = new And
                                                 {
-                                                    Predicates =
+                                                    Predicates = new List<Predicate>
                                                                 {
                                                                     new Equals
                                                                        {

@@ -28,7 +28,8 @@ namespace Allors.Domain
     {
         public static void SetPassword(this User @this, string clearTextPassword)
         {
-            using (var securityService = @this.GetServiceLocator().CreateSecurityService())
+            var serviceLocator = @this.GetServiceLocator();
+            using (var securityService = serviceLocator.CreateSecurityService())
             {
                 var passwordHash = securityService.HashPassword(@this.UserName, clearTextPassword);
                 @this.UserPasswordHash = passwordHash;
@@ -37,6 +38,11 @@ namespace Allors.Domain
 
         public static bool VerifyPassword(this User @this, string clearTextPassword)
         {
+            if (string.IsNullOrWhiteSpace(clearTextPassword))
+            {
+                return false;
+            }
+
             using (var securityService = @this.GetServiceLocator().CreateSecurityService())
             {
                 return securityService.VerifyHashedPassword(@this.UserName, @this.UserPasswordHash, clearTextPassword);

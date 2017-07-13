@@ -80,11 +80,8 @@ namespace Allors.Repository
         public LocalisedText[] LocalisedNames { get; set; }
         
         #region inherited methods
-
-
+        
         public void OnBuild(){}
-
-        public void OnPostBuild(){}
 
         public void OnPreDerive(){}
 

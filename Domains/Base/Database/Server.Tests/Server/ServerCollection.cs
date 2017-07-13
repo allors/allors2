@@ -1,4 +1,4 @@
-namespace Tests.Remote
+namespace Tests
 {
     using Xunit;
 

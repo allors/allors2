@@ -21,7 +21,7 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Domain
+namespace Tests
 {
     using System;
     using System.Data;

@@ -18,7 +18,7 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Domain
+namespace Tests
 {
     using Allors;
     using Allors.Meta;

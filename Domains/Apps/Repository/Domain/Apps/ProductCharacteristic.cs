@@ -33,11 +33,6 @@ namespace Allors.Repository
             throw new NotImplementedException();
         }
 
-        public void OnPostBuild()
-        {
-            throw new NotImplementedException();
-        }
-
         public void OnPreDerive()
         {
             throw new NotImplementedException();

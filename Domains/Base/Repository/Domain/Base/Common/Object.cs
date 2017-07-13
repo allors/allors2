@@ -28,9 +28,6 @@ namespace Allors.Repository
         [Id("FDD32313-CF62-4166-9167-EF90BE3A3C75")]
         void OnBuild();
 
-        [Id("2B827E22-155D-4AA8-BA9F-46A64D7C79C8")]
-        void OnPostBuild();
-
         [Id("B33F8EAE-17DC-4BF9-AFBB-E7FC38F42695")]
         void OnPreDerive();
 

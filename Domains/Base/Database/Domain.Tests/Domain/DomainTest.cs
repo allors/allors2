@@ -19,7 +19,7 @@
 // <summary>Defines the DomainTest type.</summary>
 //-------------------------------------------------------------------------------------------------
 
-namespace Domain
+namespace Tests
 {
     using System;
     using System.IO;

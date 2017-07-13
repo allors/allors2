@@ -18,7 +18,7 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Domain
+namespace Tests
 {
     using System.Collections;
     using System.Collections.Generic;
