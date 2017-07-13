@@ -78,8 +78,13 @@ namespace Allors.Server
                 {
                     newObject.OnBuild();
                 }
+
+                foreach (Object newObject in objectByNewId.Values)
+                {
+                    newObject.OnPostBuild();
+                }
             }
-            
+
             var validation = this.session.Derive(false);
 
             if (validation.HasErrors)

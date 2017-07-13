@@ -29,48 +29,16 @@ namespace Allors
     {
         public static readonly Dictionary<IObjectType, Type> BuilderTypeByObjectTypeId = new Dictionary<IObjectType, Type>();
 
-        public static object Build(ISession session, IObjectType objectType)
+        public static object Build(ISession session, IClass @class)
         {
-            if (objectType.IsUnit)
-            {
-                var unit = (Unit)objectType;
-                var unitTypeTag = unit.UnitTag;
-                switch (unitTypeTag)
-                {
-                    case UnitTags.String:
-                        return string.Empty;
-
-                    case UnitTags.Integer:
-                        return 0;
-
-                    case UnitTags.Decimal:
-                        return 0m;
-
-                    case UnitTags.Float:
-                        return 0d;
-
-                    case UnitTags.Boolean:
-                        return false;
-
-                    case UnitTags.Binary:
-                        return new byte[0];
-
-                    case UnitTags.Unique:
-                        return Guid.NewGuid();
-
-                    default:
-                        throw new ArgumentException("Unknown Unit ObjectType: " + unitTypeTag);
-                }
-            }
-
             Type builderType;
-            if (!BuilderTypeByObjectTypeId.TryGetValue(objectType, out builderType))
+            if (!BuilderTypeByObjectTypeId.TryGetValue(@class, out builderType))
             {
-                var builderTypeName = "Allors.Domain." + objectType.Name + "Builder";
+                var builderTypeName = "Allors.Domain." + @class.Name + "Builder";
                 builderType = Type.GetType(builderTypeName, false);
                 if (builderType != null)
                 {
-                    BuilderTypeByObjectTypeId[objectType] = builderType;
+                    BuilderTypeByObjectTypeId[@class] = builderType;
                 }
             }
 
@@ -81,7 +49,7 @@ namespace Allors
                 return builder.DefaultBuild();
             }
 
-            return session.Create((Class)objectType);
+            return session.Create(@class);
         }
 
         public abstract void Dispose();

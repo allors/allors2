@@ -54,6 +54,8 @@ namespace Allors.Repository
 
         public void OnBuild(){}
 
+        public void OnPostBuild(){}
+
         public void OnPreDerive(){}
 
         public void OnDerive(){}

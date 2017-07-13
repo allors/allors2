@@ -69,7 +69,9 @@ namespace Allors
             {
                 var instance = this.session.Create<T>();
                 this.OnBuild(instance);
+
                 instance.OnBuild();
+                instance.OnPostBuild();
 
                 this.built = true;
 

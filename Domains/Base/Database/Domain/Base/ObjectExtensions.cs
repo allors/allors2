@@ -27,7 +27,7 @@ namespace Allors
 
     public static partial class ObjectExtensions
     {
-        public static void BaseOnBuild(this Domain.Object @this, ObjectOnBuild method)
+        public static void BaseOnPostBuild(this Domain.Object @this, ObjectOnPostBuild method)
         {
             // TODO: Optimize
             foreach (var concreteRoleType in ((Class)@this.Strategy.Class).ConcreteRoleTypes)
