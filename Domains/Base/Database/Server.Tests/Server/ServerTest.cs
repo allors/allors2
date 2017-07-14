@@ -27,6 +27,7 @@ namespace Tests
     using System.Net.Http.Headers;
     using System.Reflection;
     using System.Text;
+    using System.Threading;
     using System.Threading.Tasks;
 
     using Allors;
@@ -43,6 +44,8 @@ namespace Tests
 
     public abstract class ServerTest : IDisposable
     {
+        public const int RetryCount = 3;
+
         protected ServerTest()
         {
             var builder = new ConfigurationBuilder()
@@ -123,7 +126,7 @@ namespace Tests
                            };
 
             var uri = new Uri("TestAuthentication/SignIn", UriKind.Relative);
-            var response = await this.PostAsJsonAsync(uri, args);
+            var response = await this.PostAsJsonAsync(uri, args, RetryCount);
             var siginInResponse = await this.ReadAsAsync<SignInResponse>(response);
             this.HttpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", siginInResponse.Token);
         }
@@ -135,10 +138,23 @@ namespace Tests
             return resource;
         }
 
-        protected async Task<HttpResponseMessage> PostAsJsonAsync(Uri uri, object args)
+        protected async Task<HttpResponseMessage> PostAsJsonAsync(Uri uri, object args, int retryCount = 0)
         {
             var json = JsonConvert.SerializeObject(args);
-            return await this.HttpClient.PostAsync(uri, new StringContent(json, Encoding.UTF8, "application/json"));
+
+            HttpResponseMessage response = null;
+            for (var i = 0; i <= retryCount; i++)
+            {
+                response = await this.HttpClient.PostAsync(uri, new StringContent(json, Encoding.UTF8, "application/json"));
+                if (response.IsSuccessStatusCode)
+                {
+                    break;
+                }
+
+                Thread.Sleep((i + 1) * 1000);
+            }
+
+            return response;
         }
 
         protected async Task<T> ReadAsAsync<T>(HttpResponseMessage response)
