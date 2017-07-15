@@ -385,6 +385,7 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.OneToMany)]
         [Derived]
         [Indexed]
+        [Workspace]
         public Party[] Customers { get; set; }
 
         #region Allors
@@ -463,6 +464,7 @@ namespace Allors.Repository
         [RoleId("ca87441c-6ce7-4041-bdd4-ca83f3b19289")]
         #endregion
         [Multiplicity(Multiplicity.OneToMany)]
+        [Workspace]
         [Derived]
         [Indexed]
         public Person[] Employees { get; set; }
@@ -532,6 +534,7 @@ namespace Allors.Repository
         [RoleId("3d362cd1-d49c-422f-9722-7276a6ee07c4")]
         #endregion
         [Multiplicity(Multiplicity.OneToMany)]
+        [Workspace]
         [Derived]
         [Indexed]
         public Party[] Suppliers { get; set; }

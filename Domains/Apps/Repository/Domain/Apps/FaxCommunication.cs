@@ -18,7 +18,7 @@ namespace Allors.Repository
 
         public Party[] ToParties { get; set; }
 
-        public ContactMechanism[] ToContactMechanisms { get; set; }
+        public ContactMechanism[] ContactMechanisms { get; set; }
 
         public CommunicationEventStatus[] CommunicationEventStatuses { get; set; }
 
@@ -49,8 +49,6 @@ namespace Allors.Repository
         public Case Case { get; set; }
 
         public Priority Priority { get; set; }
-
-        public ContactMechanism[] FromContactMechanisms { get; set; }
 
         public Person Owner { get; set; }
 

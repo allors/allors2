@@ -14,6 +14,7 @@ namespace Allors.Repository
         #endregion
         [Multiplicity(Multiplicity.OneToOne)]
         [Indexed]
+        [Workspace]
         public PrintQueue DefaultPrintQueue { get; set; }
     
         #region Allors
@@ -32,6 +33,7 @@ namespace Allors.Repository
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
+        [Workspace]
         public Currency DefaultCurrency { get; set; }
         
         #region Allors
@@ -41,6 +43,7 @@ namespace Allors.Repository
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
+        [Workspace]
         public Media NoImageAvailableImage { get; set; }
         
         #region Allors
@@ -50,6 +53,7 @@ namespace Allors.Repository
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
+        [Workspace]
         public InternalOrganisation DefaultInternalOrganisation { get; set; }
         
         #region inherited methods

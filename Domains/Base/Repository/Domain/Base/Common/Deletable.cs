@@ -29,6 +29,7 @@ namespace Allors.Repository
     public partial interface Deletable : Object 
     {
         [Id("430702D2-E02B-45AD-9B22-B8331DC75A3F")]
+        [Workspace]
         void Delete();
     }
 }

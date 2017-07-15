@@ -58,7 +58,7 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.ManyToMany)]
         [Indexed]
         [Workspace]
-        ContactMechanism[] ToContactMechanisms { get; set; }
+        ContactMechanism[] ContactMechanisms { get; set; }
 
         #region Allors
         [Id("250911c2-1f8d-4946-8c7f-3e3fa47d66a5")]
@@ -207,16 +207,6 @@ namespace Allors.Repository
         Priority Priority { get; set; }
 
         #region Allors
-        [Id("c1655c56-9e3d-4fe3-9592-681087dfac13")]
-        [AssociationId("c92e6264-1872-4cc5-b6d3-6ab1c8c0f877")]
-        [RoleId("a2b30174-2efe-4517-be55-c8d4b16d4402")]
-        #endregion
-        [Multiplicity(Multiplicity.ManyToMany)]
-        [Indexed]
-        [Workspace]
-        ContactMechanism[] FromContactMechanisms { get; set; }
-
-        #region Allors
         [Id("c43b6f6f-0fda-4794-9199-84b39373ecb3")]
         [AssociationId("f8f85fd4-3b97-4a67-8b42-12e17938c802")]
         [RoleId("bc58b136-9b36-4065-babb-934ede99aefd")]
@@ -258,16 +248,19 @@ namespace Allors.Repository
         #region Allors
         [Id("F1D66D21-15CC-45C3-980C-E4179F66FD57")]
         #endregion
+        [Workspace]
         void Cancel();
 
         #region Allors
         [Id("97011DA3-10B1-4B27-A4A0-E06D5D6CE04A")]
         #endregion
+        [Workspace]
         void Close();
 
         #region Allors
         [Id("731D1CF2-01CE-44FE-8065-762E4DB1C5E0")]
         #endregion
+        [Workspace]
         void Reopen();
     }
 }

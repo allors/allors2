@@ -2,7 +2,7 @@ import { Observable, Subject, Subscription } from 'rxjs/Rx';
 import { Component, OnInit, AfterViewInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { MdSnackBar, MdSnackBarConfig } from '@angular/material';
-import { TdMediaService } from '@covalent/core';
+import { TdDialogService, TdMediaService } from '@covalent/core';
 
 import { MetaDomain } from '../../../../../meta';
 import { PullRequest, Fetch, Path, Query, Equals, Like, TreeNode, Sort, Page } from '../../../../../domain';
@@ -26,6 +26,7 @@ export class OrganisationOverviewComponent implements OnInit, AfterViewInit, OnD
     private allors: AllorsService,
     private errorService: ErrorService,
     private route: ActivatedRoute,
+    public dialogService: TdDialogService,
     public media: TdMediaService) {
 
     this.scope = new Scope(allors.database, allors.workspace);
@@ -177,6 +178,16 @@ export class OrganisationOverviewComponent implements OnInit, AfterViewInit, OnD
     if (this.subscription) {
       this.subscription.unsubscribe();
     }
+  }
+
+  delete(communicationEvent: CommunicationEvent): void {
+    this.dialogService
+      .openConfirm({ message: 'Are you sure you want to delete this?' })
+      .afterClosed().subscribe((confirm: boolean) => {
+        if (confirm) {
+          // communicationEvent.Delete();
+        }
+      });
   }
 
   goBack(): void {
