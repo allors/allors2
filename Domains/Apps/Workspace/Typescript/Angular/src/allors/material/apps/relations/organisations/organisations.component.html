@@ -13,10 +13,11 @@
   </div>
 
   <md-card body tdMediaToggle="gt-xs" [mediaClasses]="['push']">
-    <div class="td-search-box">
+    <div class="pad-top-xs pad-left pad-right">
       <form novalidate [formGroup]="searchForm">
         <md-input-container>
           <input fxFlex mdInput placeholder="Name" formControlName="name">
+          <md-icon mdSuffix>search</md-icon>
         </md-input-container>
       </form>
     </div>

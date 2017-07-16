@@ -94,7 +94,7 @@ export class OrganisationsComponent implements AfterViewInit, OnDestroy {
                 name: 'organisations',
                 objectType: m.Organisation,
                 predicate: predicate,
-                page: new Page({skip: 0, take: take}),
+                page: new Page({ skip: 0, take: take }),
                 include: [
                   new TreeNode({
                     roleType: m.Organisation.GeneralCorrespondence,
@@ -108,6 +108,7 @@ export class OrganisationsComponent implements AfterViewInit, OnDestroy {
                     ],
                   }),
                 ],
+                sort: [new Sort({ roleType: m.Organisation.Name })],
               })];
 
             return this.scope.load('Pull', new PullRequest({ query: query }));
