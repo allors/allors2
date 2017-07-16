@@ -39,7 +39,7 @@ export class ChipsComponent extends Field implements OnInit, OnDestroy {
   display: string = 'display';
 
   @Input()
-  debounceTime: number = 200;
+  debounceTime: number = 400;
 
   @Input()
   options: ISessionObject[];

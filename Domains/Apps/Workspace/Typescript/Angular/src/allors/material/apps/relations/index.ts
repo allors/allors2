@@ -11,6 +11,7 @@ import { OrganisationOverviewComponent } from './organisations/organisation/orga
 import { OrganisationsComponent } from './organisations/organisations.component';
 import { PeopleComponent } from './people/people.component';
 import { PersonFormComponent } from './people/person/person.component';
+import { PersonInlineComponent } from './people/person/person-inline.component';
 import { PersonOverviewComponent } from './people/person/person-overview.component';
 import { PhoneCommunicationEventFormComponent } from './communicationevents/communicationevent/phoneCommunicationEvent.component';
 import { PostalAddressAddComponent } from './contactMechanisms/contactMechanism/postalAddressAdd.component';
@@ -28,7 +29,7 @@ export const RELATIONS: any[] = [
 export const RELATIONS_ROUTING: any[] = [
   EmailAddressAddComponent, EmailAddressEditComponent, FaceToFaceCommunicationEventFormComponent,
   OrganisationAddContactComponent, OrganisationEditContactComponent, OrganisationFormComponent, OrganisationOverviewComponent, OrganisationsComponent,
-  PeopleComponent, PersonFormComponent, PersonOverviewComponent, PhoneCommunicationEventFormComponent,
+  PeopleComponent, PersonFormComponent, PersonInlineComponent, PersonOverviewComponent, PhoneCommunicationEventFormComponent,
   PostalAddressAddComponent, PostalAddressEditComponent,
   RelationDashboardComponent,
   TelecommunicationsNumberAddComponent, TelecommunicationsNumberEditComponent,

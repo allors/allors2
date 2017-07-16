@@ -13,6 +13,6 @@ export class Loaded {
 
         Object.keys(namedObjects).map((key: string) => this.objects[key] = session.get(namedObjects[key]));
         Object.keys(namedCollections).map((key: string) => this.collections[key] = namedCollections[key].map((id: string) => session.get(id)));
-        Object.keys(namedValues).map((key: string) => this.values[key] = session.get(namedValues[key]));
+        Object.keys(namedValues).map((key: string) => this.values[key] = namedValues[key]);
     }
 }

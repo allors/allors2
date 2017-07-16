@@ -16,7 +16,8 @@ export class DefaultErrorService extends ErrorService {
   }
 
   message(error: Error): void {
-    this.snackBar.open(error.message, 'close', { duration: 5000 });
+    const message: string = (error as any)._body || error.message;
+    this.snackBar.open(message, 'close', { duration: 5000 });
   }
 
   dialog(error: Error): MdDialogRef<any> {

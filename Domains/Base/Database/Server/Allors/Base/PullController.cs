@@ -35,7 +35,7 @@
                         {
                             var page = query.Page;
                             var paged = extent.ToArray().Skip(page.Skip).Take(page.Take).ToArray();
-                            response.AddValue(query.Name + "_count", extent.Count);
+                            response.AddValue(query.Name + "_total", extent.Count);
                             response.AddCollection(query.Name, paged, query.Include);
                         }
                         else

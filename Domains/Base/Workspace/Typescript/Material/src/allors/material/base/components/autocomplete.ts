@@ -26,7 +26,7 @@ export class AutocompleteComponent extends Field implements OnInit {
   display: string = 'display';
 
   @Input()
-  debounceTime: number = 200;
+  debounceTime: number = 400;
 
   @Input()
   options: ISessionObject[];
