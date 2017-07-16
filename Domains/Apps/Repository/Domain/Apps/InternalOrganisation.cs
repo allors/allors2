@@ -449,6 +449,17 @@ namespace Allors.Repository
         public Counter QuoteCounter { get; set; }
 
         #region Allors
+        [Id("A49663B5-A432-41FA-BBCA-8368D1B9D53D")]
+        [AssociationId("27E7D099-3D94-4DCF-AFD2-9143A4815ECC")]
+        [RoleId("A82306DA-FFA4-48D5-81EC-B657E2CB99C1")]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Indexed]
+        [Required]
+        [Workspace]
+        public Counter RequestCounter { get; set; }
+
+        #region Allors
         [Id("bce0d7d9-cfc9-4092-99a1-93ff5c0b94dd")]
         [AssociationId("5c4cfec8-5bc0-48d2-ac92-132c0538e614")]
         [RoleId("bece103b-dde6-4319-938b-e08d23d9f99e")]
@@ -594,6 +605,15 @@ namespace Allors.Repository
         [Workspace]
         [Size(256)]
         public string IncomingShipmentNumberPrefix { get; set; }
+
+        #region Allors
+        [Id("06FABCD6-EFA4-45DD-B76C-8F791A0E10EF")]
+        [AssociationId("83D3C799-B76E-481D-90D4-FCC5DF9FABCE")]
+        [RoleId("BF7CB693-CCE3-4BDA-9A7F-C3165AD5134D")]
+        #endregion
+        [Size(256)]
+        [Workspace]
+        public string RequestNumberPrefix { get; set; }
 
         #region inherited methods
 

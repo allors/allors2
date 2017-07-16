@@ -80,6 +80,11 @@ namespace Allors.Domain
             var quoteNumber = this.QuoteCounter.NextValue();
             return string.Concat(this.QuoteNumberPrefix, quoteNumber);
         }
+        public string DeriveNextRequestNumber()
+        {
+            var requestNumber = this.RequestCounter.NextValue();
+            return string.Concat(this.RequestNumberPrefix, requestNumber);
+        }
 
         public string DeriveNextShipmentNumber()
         {
@@ -98,6 +103,11 @@ namespace Allors.Domain
             if (!this.ExistPurchaseInvoiceCounter)
             {
                 this.PurchaseInvoiceCounter = new CounterBuilder(this.strategy.Session).WithUniqueId(Guid.NewGuid()).WithValue(0).Build();
+            }
+
+            if (!this.ExistRequestCounter)
+            {
+                this.RequestCounter = new CounterBuilder(this.strategy.Session).WithUniqueId(Guid.NewGuid()).WithValue(0).Build();
             }
 
             if (!this.ExistQuoteCounter)

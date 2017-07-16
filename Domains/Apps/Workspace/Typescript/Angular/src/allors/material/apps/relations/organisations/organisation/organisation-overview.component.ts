@@ -185,7 +185,7 @@ export class OrganisationOverviewComponent implements OnInit, AfterViewInit, OnD
       .openConfirm({ message: 'Are you sure you want to delete this?' })
       .afterClosed().subscribe((confirm: boolean) => {
         if (confirm) {
-          // communicationEvent.Delete();
+          // communicationEvent.Delet e();
         }
       });
   }

@@ -193,7 +193,7 @@ namespace Allors.Domain
 
 						Party ToParties {set;}
 
-						ContactMechanism ToContactMechanisms {set;}
+						ContactMechanism ContactMechanisms {set;}
 
 						CommunicationEventStatus CommunicationEventStatuses {set;}
 
@@ -224,8 +224,6 @@ namespace Allors.Domain
 						Case Case {set;}
 
 						Priority Priority {set;}
-
-						ContactMechanism FromContactMechanisms {set;}
 
 						Person Owner {set;}
 
@@ -1041,7 +1039,7 @@ namespace Allors.Domain
 		{
 						global::System.String Description {set;}
 
-						global::System.DateTime? RequestDate {set;}
+						global::System.DateTime RequestDate {set;}
 
 						global::System.DateTime? RequiredResponseDate {set;}
 
@@ -1060,6 +1058,8 @@ namespace Allors.Domain
 						RequestStatus RequestStatuses {set;}
 
 						RequestObjectState CurrentObjectState {set;}
+
+						RequestStatus CurrentRequestStatus {set;}
 
 						ContactMechanism FullfillContactMechanism {set;}
 
@@ -2504,6 +2504,8 @@ namespace Allors.Domain
 
 						Counter QuoteCounter {set;}
 
+						Counter RequestCounter {set;}
+
 						Currency PreviousCurrency {set;}
 
 						Person Employees {set;}
@@ -2533,6 +2535,8 @@ namespace Allors.Domain
 						PaymentMethod PaymentMethods {set;}
 
 						global::System.String IncomingShipmentNumberPrefix {set;}
+
+						global::System.String RequestNumberPrefix {set;}
 
 		}
 		public interface InternalOrganisationAccountingPreference  : AccessControlledObject 
@@ -4831,8 +4835,6 @@ namespace Allors.Domain
 						global::System.Decimal ShipmentThreshold {set;}
 
 						Counter SalesOrderCounter {set;}
-
-						global::System.String QuoteNumberPrefix {set;}
 
 						global::System.String OutgoingShipmentNumberPrefix {set;}
 

@@ -33,6 +33,8 @@ namespace Allors.Repository
 
         public RequestObjectState CurrentObjectState { get; set; }
 
+        public RequestStatus CurrentRequestStatus { get; set; }
+
         public ContactMechanism FullfillContactMechanism { get; set; }
 
         public Permission[] DeniedPermissions { get; set; }
@@ -75,6 +77,12 @@ namespace Allors.Repository
         public void Cancel() {}
 
         public void Complete() { }
+
+        public void Reject() { }
+
+        public void Submit() { }
+
+        public void Hold() { }
 
 
         #endregion

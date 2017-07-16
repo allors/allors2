@@ -24,6 +24,7 @@ namespace Allors.Repository
         [AssociationId("081B764E-6CC9-44DB-8026-63F83F99A138")]
         [RoleId("4736F9E2-6814-406A-8E35-72E312D50640")]
         #endregion
+        [Required]
         [Workspace]
         DateTime RequestDate { get; set; }
 
@@ -116,6 +117,17 @@ namespace Allors.Repository
         RequestObjectState CurrentObjectState { get; set; }
 
         #region Allors
+        [Id("229BF770-66BA-4896-90CB-BC0B72990619")]
+        [AssociationId("EA680DEF-92EE-4505-BE15-B8BD576A58A6")]
+        [RoleId("D5DD35D9-AB40-4AD8-9C3E-2D28B4C105FC")]
+        #endregion
+        [Multiplicity(Multiplicity.OneToOne)]
+        [Indexed]
+        [Derived]
+        [Workspace]
+        RequestStatus CurrentRequestStatus { get; set; }
+
+        #region Allors
         [Id("0FB57C62-05C2-47FA-940C-5285BECB7458")]
         [AssociationId("A9D6D0BA-8DDA-4C9E-BCC7-61A6B5FE4231")]
         [RoleId("56F9E691-52C3-4E8F-84E0-38AA7B53CA4C")]
@@ -128,12 +140,32 @@ namespace Allors.Repository
         #region Allors
         [Id("1C897312-5897-4F04-98DC-899179B58680")]
         #endregion
+        [Workspace]
         void Cancel();
 
         #region Allors
         [Id("01CA10DA-C0EE-4435-8E23-F2CC8C98AE59")]
         #endregion
+        [Workspace]
         void Complete();
+
+        #region Allors
+        [Id("2510F8F6-52E1-4024-A0B1-623DFB62395A")]
+        #endregion
+        [Workspace]
+        void Reject();
+
+        #region Allors
+        [Id("7458A51F-5EAD-41A0-B44C-A22B4BA2A372")]
+        #endregion
+        [Workspace]
+        void Submit();
+
+        #region Allors
+        [Id("0E26CA10-B0D4-47B0-BEDE-F8EC1AE6BD36")]
+        #endregion
+        [Workspace]
+        void Hold();
 
     }
 }
