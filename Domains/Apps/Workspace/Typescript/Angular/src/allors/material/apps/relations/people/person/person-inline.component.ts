@@ -14,7 +14,7 @@ import { AllorsService, ErrorService,  Scope, Loaded, Saved } from '../../../../
   selector: 'person-inline',
   template:
 `
-  <a-td-chips class="push-top" [object]="person" [roleType]="m.Person.PersonRoles" [options]="roles" display="Name"></a-td-chips>
+  <a-td-chips  [object]="person" [roleType]="m.Person.PersonRoles" [options]="roles" display="Name"></a-td-chips>
   <a-md-input [object]="person" [roleType]="m.Person.FirstName" ></a-md-input>
   <a-md-input [object]="person" [roleType]="m.Person.MiddleName" ></a-md-input>
   <a-md-input [object]="person" [roleType]="m.Person.LastName" ></a-md-input>

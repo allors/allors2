@@ -19,35 +19,35 @@
         <md-divider></md-divider>
         <md-card-content>
 
-          <div *ngIf="organisation" layout="row" class="push-top">
+          <div *ngIf="organisation" layout="row" >
             <a [routerLink]="['../../../organisations/' + organisation.id + '/overview']">
            <a-md-static [object]="organisation" [roleType]="m.Organisation.Name"></a-md-static>
            </a>
           </div>
 
-          <div layout="row" class="push-top">
+          <div layout="row" >
             <a-md-static [object]="person" [roleType]="m.Person.PersonRoles" display="Name"></a-md-static>
           </div>
 
-          <div layout="row" class="push-top">
+          <div layout="row" >
             <a-md-static [object]="person" [roleType]="m.Person.FirstName"></a-md-static>
             <a-md-static [object]="person" [roleType]="m.Person.MiddleName"></a-md-static>
             <a-md-static [object]="person" [roleType]="m.Person.LastName"></a-md-static>
           </div>
 
-          <div *ngIf="person.Gender" layout="row" class="push-top">
+          <div *ngIf="person.Gender" layout="row" >
             <a-md-static *ngIf="person.Gender" [object]="person" [roleType]="m.Person.Gender" display="Name"></a-md-static>
           </div>
 
-          <div *ngIf="person.Salutation" layout="row" class="push-top">
+          <div *ngIf="person.Salutation" layout="row" >
             <a-md-static *ngIf="person.Gender" [object]="person" [roleType]="m.Person.Salutation" display="Name"></a-md-static>
           </div>
 
-          <div *ngIf="person.Locale" layout="row" class="push-top">
+          <div *ngIf="person.Locale" layout="row" >
             <a-md-static [object]="person" [roleType]="m.Person.Locale" display="Name"></a-md-static>
           </div>
 
-          <div layout="row" class="push-top">
+          <div layout="row" >
             <p class="md-caption tc-grey-500"> last modified: {{ person.LastModifiedDate | date}} by {{ person.LastModifiedBy.displayName}}</p>
           </div>
 

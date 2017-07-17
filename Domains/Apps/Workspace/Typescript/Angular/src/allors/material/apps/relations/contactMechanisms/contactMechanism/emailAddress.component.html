@@ -21,9 +21,9 @@
       <md-card-content class="push-bottom-none">
 
         <div fxLayout="row wrap" fxLayoutAlign="start stretch" fxLayoutGap.gt-md="25px">
-          <a-td-chips class="push-top" [object]="partyContactMechanism" [roleType]="m.PartyContactMechanism.ContactPurposes" [options]="contactMechanismPurposes" display="Name" [fxFlex]="flex" label="Contact purposes" [fxFlex.gt-md]="flex2"></a-td-chips>
-          <a-md-input class="push-top" [object]="contactMechanism" [roleType]="m.EmailAddress.ElectronicAddressString" label="Email address" [fxFlex]="flex" [fxFlex.gt-md]="flex2"></a-md-input>
-          <a-md-slide-toggle class="push-top" [object]="partyContactMechanism" [roleType]="m.PartyContactMechanism.UseAsDefault" label="Use as default" [fxFlex]="flex" [fxFlex.gt-md]="flex2"></a-md-slide-toggle>
+          <a-td-chips  [object]="partyContactMechanism" [roleType]="m.PartyContactMechanism.ContactPurposes" [options]="contactMechanismPurposes" display="Name" [fxFlex]="flex" label="Contact purposes" [fxFlex.gt-md]="flex2"></a-td-chips>
+          <a-md-input  [object]="contactMechanism" [roleType]="m.EmailAddress.ElectronicAddressString" label="Email address" [fxFlex]="flex" [fxFlex.gt-md]="flex2"></a-md-input>
+          <a-md-slide-toggle  [object]="partyContactMechanism" [roleType]="m.PartyContactMechanism.UseAsDefault" label="Use as default" [fxFlex]="flex" [fxFlex.gt-md]="flex2"></a-md-slide-toggle>
         </div>
 
       </md-card-content>

@@ -22,16 +22,16 @@
 
         <div fxLayout="row wrap" fxLayoutAlign="start stretch" fxLayoutGap.gt-md="25px">
           <a-md-static *ngIf="communicationEvent.CurrentObjectState" [object]="communicationEvent" [roleType]="m.EmailCommunication.CurrentObjectState.Name"></a-md-static>
-          <a-td-chips class="push-top" [object]="communicationEvent" [roleType]="m.EmailCommunication.EventPurposes" [options]="purposes"
+          <a-td-chips  [object]="communicationEvent" [roleType]="m.EmailCommunication.EventPurposes" [options]="purposes"
             display="Name" [fxFlex]="flex" [fxFlex.gt-md]="flex2"></a-td-chips>
-          <a-td-chips class="push-top" [object]="communicationEvent" [roleType]="m.EmailCommunication.Originator" [filter]="partiesFilter.create()"
+          <a-td-chips  [object]="communicationEvent" [roleType]="m.EmailCommunication.Originator" [filter]="partiesFilter.create()"
             display="PartyName" [fxFlex]="flex" [fxFlex.gt-md]="flex2"></a-td-chips>
-          <a-td-chips class="push-top" [object]="communicationEvent" [roleType]="m.EmailCommunication.Receivers" [filter]="partiesFilter.create()"
+          <a-td-chips  [object]="communicationEvent" [roleType]="m.EmailCommunication.Receivers" [filter]="partiesFilter.create()"
             display="PartyName" [fxFlex]="flex" [fxFlex.gt-md]="flex2"></a-td-chips>
-          <a-md-input class="push-top" [object]="communicationEvent" [roleType]="m.EmailCommunication.Subject" [fxFlex]="flex" [fxFlex.gt-md]="flex2"></a-md-input>
-          <a-md-textarea class="push-top" [object]="communicationEvent" [roleType]="m.EmailCommunication.Note" [fxFlex]="flex" [fxFlex.gt-md]="flex2"></a-md-textarea>
-          <a-md-datepicker class="push-top" [object]="communicationEvent" [roleType]="m.EmailCommunication.ActualStart" [fxFlex]="flex" [fxFlex.gt-md]="flex2"></a-md-datepicker>
-          <a-md-datepicker class="push-top" [object]="communicationEvent" [roleType]="m.EmailCommunication.ActualEnd" [fxFlex]="flex" [fxFlex.gt-md]="flex2"></a-md-datepicker>
+          <a-md-input  [object]="communicationEvent" [roleType]="m.EmailCommunication.Subject" [fxFlex]="flex" [fxFlex.gt-md]="flex2"></a-md-input>
+          <a-md-textarea  [object]="communicationEvent" [roleType]="m.EmailCommunication.Note" [fxFlex]="flex" [fxFlex.gt-md]="flex2"></a-md-textarea>
+          <a-md-datepicker  [object]="communicationEvent" [roleType]="m.EmailCommunication.ActualStart" [fxFlex]="flex" [fxFlex.gt-md]="flex2"></a-md-datepicker>
+          <a-md-datepicker  [object]="communicationEvent" [roleType]="m.EmailCommunication.ActualEnd" [fxFlex]="flex" [fxFlex.gt-md]="flex2"></a-md-datepicker>
         </div>
 
       </md-card-content>

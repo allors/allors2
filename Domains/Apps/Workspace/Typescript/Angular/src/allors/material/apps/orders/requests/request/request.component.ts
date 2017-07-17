@@ -59,7 +59,7 @@ export class RequestFormComponent implements OnInit, AfterViewInit, OnDestroy {
 
   ngOnInit(): void {
     this.subscription = this.route.url
-      .mergeMap((url: any) => {
+      .switchMap((url: any) => {
 
         const id: string = this.route.snapshot.paramMap.get('id');
         const m: MetaDomain = this.m;
@@ -96,7 +96,7 @@ export class RequestFormComponent implements OnInit, AfterViewInit, OnDestroy {
 
         return this.scope
           .load('Pull', new PullRequest({ query: rolesQuery }))
-          .mergeMap((loaded: Loaded) => {
+          .switchMap((loaded: Loaded) => {
             this.currencies = loaded.collections.currencies as Currency[];
 
             const organisationRoles: OrganisationRole[] = loaded.collections.organisationRoles as OrganisationRole[];

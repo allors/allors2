@@ -11,7 +11,7 @@ import {
   Person, Party, PartyRelationship, CommunicationEvent, CommunicationEventPurpose, TelecommunicationsNumber,
   PersonRole, Locale, Enumeration, PhoneCommunication, Singleton, ContactMechanism, PartyContactMechanism, OrganisationContactRelationship, Organisation,
 } from '../../../../../domain';
-import { AllorsService, ErrorService, Scope, Loaded, Saved, Filter } from '../../../../../angular';
+import { AllorsService, ErrorService, Scope, Loaded, Saved, Invoked, Filter } from '../../../../../angular';
 
 @Component({
   templateUrl: './phoneCommunicationEvent.component.html',
@@ -44,6 +44,7 @@ export class PhoneCommunicationEventFormComponent implements OnInit, AfterViewIn
     private allors: AllorsService,
     private errorService: ErrorService,
     private route: ActivatedRoute,
+    private snackBar: MdSnackBar,
     public media: TdMediaService) {
 
     this.scope = new Scope(allors.database, allors.workspace);
@@ -56,7 +57,7 @@ export class PhoneCommunicationEventFormComponent implements OnInit, AfterViewIn
 
   ngOnInit(): void {
     this.subscription = this.route.url
-      .mergeMap((url: any) => {
+      .switchMap((url: any) => {
 
         const partyId: string = this.route.snapshot.paramMap.get('partyId');
         const id: string = this.route.snapshot.paramMap.get('id');
@@ -189,8 +190,14 @@ export class PhoneCommunicationEventFormComponent implements OnInit, AfterViewIn
     this.communicationEvent.AddCaller(caller);
   }
 
-  CancelClicked(): void {
-    // this.communicationEvent.Cancel();
+  cancel(): void {
+    this.scope.invoke(this.communicationEvent.Cancel)
+      .subscribe((invoked: Invoked) => {
+        this.snackBar.open('Successfully cancelled.', 'close', { duration: 5000 });
+      },
+      (error: Error) => {
+        this.errorService.dialog(error);
+      });
   }
 
   save(): void {

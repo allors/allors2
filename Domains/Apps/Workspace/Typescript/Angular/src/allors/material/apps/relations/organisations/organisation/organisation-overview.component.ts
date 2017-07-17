@@ -36,7 +36,7 @@ export class OrganisationOverviewComponent implements OnInit, AfterViewInit, OnD
   ngOnInit(): void {
 
     this.subscription = this.route.url
-      .mergeMap((url: any) => {
+      .switchMap((url: any) => {
 
         const id: string = this.route.snapshot.paramMap.get('id');
         const m: MetaDomain = this.m;
@@ -46,9 +46,9 @@ export class OrganisationOverviewComponent implements OnInit, AfterViewInit, OnD
             name: 'organisation',
             id: id,
             include: [
-              new TreeNode({roleType: m.Party.Locale}),
-              new TreeNode({roleType: m.Organisation.OrganisationRoles}),
-              new TreeNode({roleType: m.Organisation.LastModifiedBy}),
+              new TreeNode({ roleType: m.Party.Locale }),
+              new TreeNode({ roleType: m.Organisation.OrganisationRoles }),
+              new TreeNode({ roleType: m.Organisation.LastModifiedBy }),
               new TreeNode({
                 roleType: m.Party.CurrentContacts,
                 nodes: [
@@ -79,21 +79,51 @@ export class OrganisationOverviewComponent implements OnInit, AfterViewInit, OnD
                 roleType: m.Party.PartyContactMechanisms,
                 nodes: [
                   new TreeNode({ roleType: m.PartyContactMechanism.ContactPurposes }),
-                  new TreeNode({ roleType: m.PartyContactMechanism.ContactMechanism }),
+                  new TreeNode({
+                    roleType: m.PartyContactMechanism.ContactMechanism,
+                    nodes: [
+                      new TreeNode({
+                        roleType: m.PostalAddress.PostalBoundary,
+                        nodes: [
+                          new TreeNode({ roleType: m.PostalBoundary.Country }),
+                        ],
+                      }),
+                    ],
+                  }),
                 ],
               }),
               new TreeNode({
                 roleType: m.Party.CurrentPartyContactMechanisms,
                 nodes: [
                   new TreeNode({ roleType: m.PartyContactMechanism.ContactPurposes }),
-                  new TreeNode({ roleType: m.PartyContactMechanism.ContactMechanism }),
+                  new TreeNode({
+                    roleType: m.PartyContactMechanism.ContactMechanism,
+                    nodes: [
+                      new TreeNode({
+                        roleType: m.PostalAddress.PostalBoundary,
+                        nodes: [
+                          new TreeNode({ roleType: m.PostalBoundary.Country }),
+                        ],
+                      }),
+                    ],
+                  }),
                 ],
               }),
               new TreeNode({
                 roleType: m.Party.InactivePartyContactMechanisms,
                 nodes: [
                   new TreeNode({ roleType: m.PartyContactMechanism.ContactPurposes }),
-                  new TreeNode({ roleType: m.PartyContactMechanism.ContactMechanism }),
+                  new TreeNode({
+                    roleType: m.PartyContactMechanism.ContactMechanism,
+                    nodes: [
+                      new TreeNode({
+                        roleType: m.PostalAddress.PostalBoundary,
+                        nodes: [
+                          new TreeNode({ roleType: m.PostalBoundary.Country }),
+                        ],
+                      }),
+                    ],
+                  }),
                 ],
               }),
               new TreeNode({
@@ -167,7 +197,7 @@ export class OrganisationOverviewComponent implements OnInit, AfterViewInit, OnD
         this.errorService.message(error);
         this.goBack();
       },
-      );
+    );
   }
 
   ngAfterViewInit(): void {

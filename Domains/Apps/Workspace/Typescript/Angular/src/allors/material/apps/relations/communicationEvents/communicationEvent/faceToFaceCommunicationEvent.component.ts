@@ -44,7 +44,7 @@ export class FaceToFaceCommunicationEventFormComponent implements OnInit, AfterV
 
   ngOnInit(): void {
     this.subscription = this.route.url
-      .mergeMap((url: any) => {
+      .switchMap((url: any) => {
 
         const partyId: string = this.route.snapshot.paramMap.get('partyId');
         const id: string = this.route.snapshot.paramMap.get('id');

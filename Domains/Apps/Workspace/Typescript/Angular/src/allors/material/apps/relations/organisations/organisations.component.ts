@@ -73,7 +73,7 @@ export class OrganisationsComponent implements AfterViewInit, OnDestroy {
 
         return this.scope
           .load('Pull', new PullRequest({ query: organisationRolesQuery }))
-          .mergeMap((loaded: Loaded) => {
+          .switchMap((loaded: Loaded) => {
             const organisationRoles: OrganisationRole[] = loaded.collections.organisationRoles as OrganisationRole[];
             const customerRole: OrganisationRole = organisationRoles.find((v: OrganisationRole) => v.Name === 'Customer');
 

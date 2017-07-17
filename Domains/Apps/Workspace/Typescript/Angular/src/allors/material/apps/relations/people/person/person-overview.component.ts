@@ -36,7 +36,7 @@ export class PersonOverviewComponent implements OnInit, AfterViewInit, OnDestroy
   ngOnInit(): void {
 
     this.subscription = this.route.url
-      .mergeMap((url: any) => {
+      .switchMap((url: any) => {
 
         const id: string = this.route.snapshot.paramMap.get('id');
         const m: MetaDomain = this.m;

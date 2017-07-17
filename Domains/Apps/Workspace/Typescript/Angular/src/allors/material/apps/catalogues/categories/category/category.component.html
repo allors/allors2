@@ -21,10 +21,10 @@
       <md-card-content class="push-bottom-none">
 
         <div fxLayout="row wrap" fxLayoutAlign="start stretch" fxLayoutGap.gt-md="25px">
-          <a-md-media-upload class="push-top" [object]="category" [roleType]="m.ProductCategory.CategoryImage" accept="image/*" [fxFlex]="flex" [fxFlex.gt-md]="flex2"></a-md-media-upload>
-          <a-md-localised-text class="push-top" [object]="category" [roleType]="m.ProductCategory.LocalisedNames" [locales]="locales" label="Name" [fxFlex]="flex" [fxFlex.gt-md]="flex2"></a-md-localised-text>
-          <a-md-localised-text  class="push-top" [object]="category" [roleType]="m.ProductCategory.LocalisedDescriptions" [locales]="locales" label="Description" [fxFlex]="flex" [fxFlex.gt-md]="flex2"></a-md-localised-text>
-          <a-td-chips class="push-top" [object]="category" [roleType]="m.ProductCategory.Parents" [options]="categories" display="Name" [fxFlex]="flex" [fxFlex.gt-md]="flex2"></a-td-chips>
+          <a-md-media-upload  [object]="category" [roleType]="m.ProductCategory.CategoryImage" accept="image/*" [fxFlex]="flex" [fxFlex.gt-md]="flex2"></a-md-media-upload>
+          <a-md-localised-text  [object]="category" [roleType]="m.ProductCategory.LocalisedNames" [locales]="locales" label="Name" [fxFlex]="flex" [fxFlex.gt-md]="flex2"></a-md-localised-text>
+          <a-md-localised-text   [object]="category" [roleType]="m.ProductCategory.LocalisedDescriptions" [locales]="locales" label="Description" [fxFlex]="flex" [fxFlex.gt-md]="flex2"></a-md-localised-text>
+          <a-td-chips  [object]="category" [roleType]="m.ProductCategory.Parents" [options]="categories" display="Name" [fxFlex]="flex" [fxFlex.gt-md]="flex2"></a-td-chips>
         </div>
 
       </md-card-content>

@@ -19,19 +19,19 @@
         <md-divider></md-divider>
         <md-card-content>
 
-          <div layout="row" class="push-top">
+          <div layout="row" >
             <a-md-static [object]="organisation" [roleType]="m.Organisation.OrganisationRoles" display="Name"></a-md-static>
           </div>
 
-          <div layout="row" class="push-top">
+          <div layout="row" >
             <a-md-static [object]="organisation" [roleType]="m.Organisation.Name"></a-md-static>
           </div>
 
-          <div layout="row" class="push-top">
+          <div layout="row" >
             <a-md-static [object]="organisation" [roleType]="m.Organisation.Locale" display="Name"></a-md-static>
           </div>
 
-          <div layout="row" class="push-top">
+          <div layout="row" >
             <p class="md-caption tc-grey-500"> last modified: {{ organisation.LastModifiedDate | date}} by {{ organisation.LastModifiedBy.displayName}}</p>
           </div>
 
