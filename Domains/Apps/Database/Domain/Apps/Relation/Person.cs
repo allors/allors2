@@ -100,6 +100,16 @@ namespace Allors.Domain
             this.AppsOnDeriveCurrentPartyRelationships(derivation);
             this.AppsOnDeriveInactivePartyContactMechanisms(derivation);
             this.AppsOnDeriveCommission();
+
+            var deletePermission = new Permissions(this.strategy.Session).Get(this.Meta.ObjectType, this.Meta.Delete, Operations.Execute);
+            if (this.IsDeletable)
+            {
+                this.AddDeniedPermission(deletePermission);
+            }
+            else
+            {
+                this.RemoveDeniedPermission(deletePermission);
+            }
         }
 
         public void AppsOnDeriveCurrentContacts(IDerivation derivation)

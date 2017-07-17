@@ -28,6 +28,17 @@ namespace Allors.Domain
 
     public partial class Permissions
     {
+		// TODO: Cache permissions
+        public Permission Get(Class @class, OperandType operand, Operations operation)
+        {
+            var extent = this.Extent();
+            extent.Filter.AddEquals(this.Meta.ConcreteClassPointer, @class.Id);
+            extent.Filter.AddEquals(this.Meta.OperandTypePointer, operand.Id);
+            extent.Filter.AddEquals(this.Meta.OperationEnum, operation);
+
+            return extent.First;
+        }
+
         public void Sync()
         {
             var permissionByOperationByConcreteClassByOperandType = new Dictionary<OperandType, Dictionary<ObjectType, Dictionary<Operations, Permission>>>();
