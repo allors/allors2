@@ -22,69 +22,7 @@ namespace Allors.Domain
 
     public partial class Person
     {
-        public bool IsPerson => true;
-
-        public bool IsOrganisation => false;
-
-        public bool AppsIsActiveEmployee(DateTime? date)
-        {
-            if (date == DateTime.MinValue)
-            {
-                return false;
-            }
-
-            var employments = this.EmploymentsWhereEmployee;
-            foreach (Employment relationship in employments)
-            {
-                if (relationship.FromDate.Date <= date &&
-                    (!relationship.ExistThroughDate || relationship.ThroughDate >= date))
-                {
-                    return true;
-                }
-            }
-
-            return false;
-        }
-
-        public bool AppsIsActiveSalesRep(DateTime? date)
-        {
-            if (date == DateTime.MinValue)
-            {
-                return false;
-            }
-
-            var salesRepRelationships = this.SalesRepRelationshipsWhereSalesRepresentative;
-            foreach (SalesRepRelationship relationship in salesRepRelationships)
-            {
-                if (relationship.FromDate.Date <= date &&
-                    (!relationship.ExistThroughDate || relationship.ThroughDate >= date))
-                {
-                    return true;
-                }
-            }
-
-            return false;
-        }
-
-        public bool IsActiveContact(DateTime date)
-        {
-            if (date == DateTime.MinValue)
-            {
-                return false;
-            }
-
-            var contactRelationships = this.OrganisationContactRelationshipsWhereContact;
-            foreach (OrganisationContactRelationship relationship in contactRelationships)
-            {
-                if (relationship.FromDate <= date &&
-                    (!relationship.ExistThroughDate || relationship.ThroughDate >= date))
-                {
-                    return true;
-                }
-            }
-
-            return false;
-        }
+        private bool IsDeletable => !this.ExistCurrentOrganisationContactRelationships;
 
         public void AppsOnDerive(ObjectOnDerive method)
         {
@@ -104,11 +42,11 @@ namespace Allors.Domain
             var deletePermission = new Permissions(this.strategy.Session).Get(this.Meta.ObjectType, this.Meta.Delete, Operations.Execute);
             if (this.IsDeletable)
             {
-                this.AddDeniedPermission(deletePermission);
+                this.RemoveDeniedPermission(deletePermission);
             }
             else
             {
-                this.RemoveDeniedPermission(deletePermission);
+                this.AddDeniedPermission(deletePermission);
             }
         }
 
@@ -125,11 +63,31 @@ namespace Allors.Domain
         public void AppsOnDeriveCurrentOrganisationContactRelationships(IDerivation derivation)
         {
             this.RemoveCurrentOrganisationContactRelationships();
+
+            var contactRelationships = this.OrganisationContactRelationshipsWhereContact;
+            foreach (OrganisationContactRelationship relationship in contactRelationships)
+            {
+                if (relationship.FromDate <= DateTime.UtcNow &&
+                    (!relationship.ExistThroughDate || relationship.ThroughDate >= DateTime.UtcNow))
+                {
+                    this.AddCurrentOrganisationContactRelationship(relationship);
+                }
+            }
         }
 
         public void AppsOnDeriveInactiveOrganisationContactRelationships(IDerivation derivation)
         {
             this.RemoveInactiveOrganisationContactRelationships();
+
+            var contactRelationships = this.OrganisationContactRelationshipsWhereContact;
+            foreach (OrganisationContactRelationship relationship in contactRelationships)
+            {
+                if (relationship.FromDate > DateTime.UtcNow ||
+                    (relationship.ExistThroughDate && relationship.ThroughDate < DateTime.UtcNow))
+                {
+                    this.AddInactiveOrganisationContactRelationship(relationship);
+                }
+            }
         }
 
         public void AppsOnDeriveCurrentEmployment(IDerivation derivation)
@@ -213,8 +171,6 @@ namespace Allors.Domain
 
             return partyName.ToString();
         }
-
-        public bool IsDeletable => !this.IsActiveContact(DateTime.UtcNow);
 
         public void AppsDelete(DeletableDelete method)
         {

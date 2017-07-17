@@ -20,10 +20,6 @@ namespace Allors.Domain
 
     public partial interface Party
     {
-        bool IsPerson { get; }
-
-        bool IsOrganisation { get; }
-
         void AppsOnDeriveCurrentContacts(IDerivation derivation);
 
         void AppsOnDeriveInactiveContacts(IDerivation derivation);

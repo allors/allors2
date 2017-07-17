@@ -46,23 +46,6 @@ namespace Allors.Domain
             this.AppsOnDeriverContactUserGroup(derivation);
         }
 
-        public CustomerRelationship CustomerRelationship(InternalOrganisation internalOrganisation)
-        {
-            var relationships = this.CustomerRelationshipsWhereCustomer;
-            relationships.Filter.AddEquals(M.CustomerRelationship.InternalOrganisation, internalOrganisation);
-
-            foreach (CustomerRelationship relationship in relationships)
-            {
-                if (relationship.FromDate <= DateTime.Now &&
-                    (!relationship.ExistThroughDate || relationship.ThroughDate >= DateTime.Now))
-                {
-                    return relationship;
-                }
-            }
-
-            return null;
-        }
-
         public bool AppsIsActiveProfessionalServicesProvider(DateTime? date)
         {
             if (date == DateTime.MinValue)
@@ -121,23 +104,6 @@ namespace Allors.Domain
             }
 
             return false;
-        }
-
-        public SupplierRelationship SupplierRelationship(InternalOrganisation internalOrganisation)
-        {
-            var relationships = this.SupplierRelationshipsWhereSupplier;
-            relationships.Filter.AddEquals(M.SupplierRelationship.InternalOrganisation, internalOrganisation);
-
-            foreach (SupplierRelationship relationship in relationships)
-            {
-                if (relationship.FromDate <= DateTime.Now &&
-                    (!relationship.ExistThroughDate || relationship.ThroughDate >= DateTime.Now))
-                {
-                    return relationship;
-                }
-            }
-
-            return null;
         }
 
         public void AppsOnDeriveCurrentContacts(IDerivation derivation)
@@ -220,10 +186,6 @@ namespace Allors.Domain
                 this.ContactsUserGroup = new UserGroupBuilder(this.strategy.Session).WithName(customerContactGroupName).Build();
             }
         }
-
-        public bool IsPerson => false;
-
-        public bool IsOrganisation => true;
 
         public bool IsDeletable => this.CurrentContacts.Count == 0;
 

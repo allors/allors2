@@ -375,10 +375,6 @@ namespace Allors.Domain
             return int.Parse(candidate);
         }
 
-        public bool IsPerson => false;
-
-        public bool IsOrganisation => false;
-
         public List<string> Roles => new List<string>() { "Internal organisation" };
     }
 }

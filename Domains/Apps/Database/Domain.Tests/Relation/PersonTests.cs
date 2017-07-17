@@ -88,7 +88,7 @@ namespace Allors.Domain
         }
 
         [Fact]
-        public void GivenPerson_WhenInActiveContactRelationship_ThenPersonIsActiveContact()
+        public void GivenPerson_WhenActiveContactRelationship_ThenPersonCurrentOrganisationContactRelationshipsContainsPerson()
         {
             var contact = new PersonBuilder(this.DatabaseSession).WithLastName("organisationContact").WithPersonRole(new PersonRoles(this.DatabaseSession).Contact).Build();
             var organisation = new OrganisationBuilder(this.DatabaseSession).WithName("organisation").WithOrganisationRole(new OrganisationRoles(this.DatabaseSession).Customer).Build();
@@ -99,24 +99,41 @@ namespace Allors.Domain
                 .WithFromDate(DateTimeFactory.CreateDate(2010, 01, 01))
                 .Build();
 
-            var organisationContactRelationship = new OrganisationContactRelationshipBuilder(this.DatabaseSession)
+            new OrganisationContactRelationshipBuilder(this.DatabaseSession)
                 .WithContact(contact)
                 .WithOrganisation(organisation)
                 .WithFromDate(DateTime.UtcNow.Date)
                 .Build();
 
-            Assert.True(contact.IsActiveContact(DateTime.UtcNow.Date));
-            Assert.True(contact.IsActiveContact(DateTime.UtcNow.Date.AddDays(1)));
-            Assert.False(contact.IsActiveContact(DateTime.UtcNow.Date.AddDays(-1)));
+            this.DatabaseSession.Derive(true);
 
-            organisationContactRelationship.FromDate = DateTimeFactory.CreateDate(2010, 01, 01);
-            organisationContactRelationship.ThroughDate = DateTimeFactory.CreateDate(2011, 01, 01);
+            Assert.Equal(contact.CurrentOrganisationContactRelationships[0].Contact, contact);
+            Assert.Equal(0, contact.InactiveOrganisationContactRelationships.Count);
+        }
 
-            Assert.False(contact.IsActiveContact(DateTime.UtcNow.Date));
-            Assert.True(contact.IsActiveContact(DateTimeFactory.CreateDate(2010, 01, 01)));
-            Assert.True(contact.IsActiveContact(DateTimeFactory.CreateDate(2010, 06, 01)));
-            Assert.True(contact.IsActiveContact(DateTimeFactory.CreateDate(2011, 01, 01)));
-            Assert.False(contact.IsActiveContact(DateTimeFactory.CreateDate(2011, 01, 02)));
+        [Fact]
+        public void GivenPerson_WhenInActiveContactRelationship_ThenPersonInactiveOrganisationContactRelationshipsContainsPerson()
+        {
+            var contact = new PersonBuilder(this.DatabaseSession).WithLastName("organisationContact").WithPersonRole(new PersonRoles(this.DatabaseSession).Contact).Build();
+            var organisation = new OrganisationBuilder(this.DatabaseSession).WithName("organisation").WithOrganisationRole(new OrganisationRoles(this.DatabaseSession).Customer).Build();
+
+            new CustomerRelationshipBuilder(this.DatabaseSession)
+                .WithInternalOrganisation(new InternalOrganisations(this.DatabaseSession).FindBy(M.InternalOrganisation.Name, "internalOrganisation"))
+                .WithCustomer(organisation)
+                .WithFromDate(DateTimeFactory.CreateDate(2010, 01, 01))
+                .Build();
+
+            new OrganisationContactRelationshipBuilder(this.DatabaseSession)
+                .WithContact(contact)
+                .WithOrganisation(organisation)
+                .WithFromDate(DateTime.UtcNow.Date.AddDays(-1))
+                .WithThroughDate(DateTime.UtcNow.Date.AddDays(-1))
+                .Build();
+
+            this.DatabaseSession.Derive(true);
+
+            Assert.Equal(contact.InactiveOrganisationContactRelationships[0].Contact, contact);
+            Assert.Equal(0, contact.CurrentOrganisationContactRelationships.Count);
         }
     }
 }

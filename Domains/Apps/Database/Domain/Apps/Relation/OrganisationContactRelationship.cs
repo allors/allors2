@@ -23,10 +23,8 @@ namespace Allors.Domain
         {
             var derivation = method.Derivation;
 
-            if (this.ExistOrganisation)
-            {
-                derivation.AddDependency(this, this.Organisation);
-            }
+            derivation.AddDependency(this.Organisation, this);
+            derivation.AddDependency(this.Contact, this);
         }
 
         public void AppsOnDerive(ObjectOnDerive method)
@@ -35,24 +33,7 @@ namespace Allors.Domain
 
             this.AppsOnDeriveContactMembership(derivation);
 
-            ////Before deriving this.Contact
-            if (this.ExistOrganisation)
-            {
-                this.Organisation.AppsOnDeriveCurrentContacts(derivation);
-            }
-
-            ////After deriving this.Organisation
-            if (this.ExistContact)
-            {
-                this.Contact.OnDerive(x => x.WithDerivation(derivation));
-            }
-
             this.Parties = new Party[] { this.Contact, this.Organisation };
-
-            if (!this.ExistContact || !this.ExistOrganisation)
-            {
-                this.Delete();
-            }
         }
 
         public void AppsOnDeriveContactMembership(IDerivation derivation)
@@ -75,7 +56,5 @@ namespace Allors.Domain
                 }
             }
         }
-
-        public bool IsActive => this.ExistPartyWhereCurrentOrganisationContactRelationship;
     }
 }

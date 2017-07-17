@@ -55,18 +55,16 @@ namespace Allors.Domain
             this.InstantiateObjects(this.DatabaseSession);
 
             var builder = new OrganisationContactRelationshipBuilder(this.DatabaseSession);
-            var relationship = builder.Build();
+            builder.Build();
 
-            this.DatabaseSession.Derive();
-            Assert.True(relationship.Strategy.IsDeleted);
+            Assert.True(this.DatabaseSession.Derive(false).HasErrors);
 
             this.DatabaseSession.Rollback();
 
             builder.WithContact(contact);
-            relationship = builder.Build();
+            builder.Build();
 
-            this.DatabaseSession.Derive();
-            Assert.True(relationship.Strategy.IsDeleted);
+            Assert.True(this.DatabaseSession.Derive(false).HasErrors);
 
             this.DatabaseSession.Rollback();
 

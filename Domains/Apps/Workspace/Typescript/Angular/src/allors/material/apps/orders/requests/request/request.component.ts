@@ -1,7 +1,7 @@
 import { Observable, Subject, Subscription } from 'rxjs/Rx';
 import { Component, OnInit, AfterViewInit, OnDestroy } from '@angular/core';
 import { Validators } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { MdSnackBar, MdSnackBarConfig } from '@angular/material';
 import { TdMediaService } from '@covalent/core';
 
@@ -46,6 +46,7 @@ export class RequestFormComponent implements OnInit, AfterViewInit, OnDestroy {
   constructor(
     private allorsService: AllorsService,
     private errorService: ErrorService,
+    private router: Router,
     private route: ActivatedRoute,
     public media: TdMediaService) {
 
@@ -155,7 +156,7 @@ export class RequestFormComponent implements OnInit, AfterViewInit, OnDestroy {
     this.scope
       .save()
       .subscribe((saved: Saved) => {
-        this.goBack();
+        this.router.navigate(['/orders/requests/' + this.request.id + '/overview']);
       },
       (error: Error) => {
         this.errorService.dialog(error);

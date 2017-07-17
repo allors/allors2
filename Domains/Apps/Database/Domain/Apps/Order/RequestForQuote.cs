@@ -43,6 +43,8 @@ namespace Allors.Domain
             {
                 this.RequestNumber = Singleton.Instance(this.Strategy.Session).DefaultInternalOrganisation.DeriveNextRequestNumber();
             }
+
+            this.DeriveCurrentObjectState(derivation);
         }
 
         private void DeriveCurrentObjectState(IDerivation derivation)

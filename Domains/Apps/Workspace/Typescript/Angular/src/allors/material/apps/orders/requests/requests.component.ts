@@ -78,13 +78,13 @@ export class RequestsComponent implements AfterViewInit, OnDestroy {
         }
 
         if (data.company) {
-          const companyQuery: Query = new Query({
-            objectType: m.Organisation, predicate: new Like({
-              roleType: m.Request.Originator, value: data.company.replace('*', '%') + '%',
+          const partyQuery: Query = new Query({
+            objectType: m.Party, predicate: new Like({
+              roleType: m.Party.PartyName, value: data.company.replace('*', '%') + '%',
             }),
           });
 
-          const containedIn: ContainedIn = new ContainedIn({ roleType: m.Request.Originator, query: companyQuery });
+          const containedIn: ContainedIn = new ContainedIn({ roleType: m.Request.Originator, query: partyQuery });
           predicates.push(containedIn);
         }
 
