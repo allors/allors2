@@ -1,7 +1,7 @@
-import { Observable, Subject, Subscription } from 'rxjs/Rx';
+import { Observable, BehaviorSubject, Subscription } from 'rxjs/Rx';
 import { Component, OnInit, AfterViewInit, OnDestroy } from '@angular/core';
 import { Validators } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, UrlSegment } from '@angular/router';
 import { MdSnackBar, MdSnackBarConfig } from '@angular/material';
 import { TdMediaService } from '@covalent/core';
 
@@ -15,7 +15,9 @@ import { AllorsService, ErrorService, Scope, Loaded, Saved } from '../../../../.
 })
 export class OrganisationFormComponent implements OnInit, AfterViewInit, OnDestroy {
 
+  private refresh$: BehaviorSubject<Date>;
   private subscription: Subscription;
+
   private scope: Scope;
 
   flex: string = '100%';
@@ -36,11 +38,16 @@ export class OrganisationFormComponent implements OnInit, AfterViewInit, OnDestr
 
     this.scope = new Scope(allors.database, allors.workspace);
     this.m = this.allors.meta;
+    this.refresh$ = new BehaviorSubject<Date>(undefined);
   }
 
   ngOnInit(): void {
-    this.subscription = this.route.url
-      .switchMap((url: any) => {
+    const route$: Observable<UrlSegment[]> = this.route.url;
+
+    const combined$: Observable<[UrlSegment[], Date]> = Observable.combineLatest(route$, this.refresh$);
+
+    this.subscription = combined$
+      .switchMap(([urlSegments, date]: [UrlSegment[], Date]) => {
 
         const id: string = this.route.snapshot.paramMap.get('id');
 

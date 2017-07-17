@@ -54,7 +54,7 @@ export class Database {
         pushResponse.responseType = ResponseType.Sync;
 
         if (pushResponse.hasErrors) {
-          return Observable.throw(new ResponseError(pushResponse));
+          throw new ResponseError(pushResponse);
         }
 
         return pushResponse;
@@ -86,7 +86,7 @@ export class Database {
         invokeResponse.responseType = ResponseType.Invoke;
 
         if (invokeResponse.hasErrors) {
-          return Observable.throw(new ResponseError(invokeResponse));
+          throw new ResponseError(invokeResponse);
         }
 
         return invokeResponse;
@@ -101,7 +101,7 @@ export class Database {
         invokeResponse.responseType = ResponseType.Invoke;
 
         if (invokeResponse.hasErrors) {
-          return Observable.throw(new ResponseError(invokeResponse));
+          throw new ResponseError(invokeResponse);
         }
 
         return invokeResponse;

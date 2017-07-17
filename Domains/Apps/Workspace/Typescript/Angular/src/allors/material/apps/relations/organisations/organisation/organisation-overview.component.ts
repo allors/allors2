@@ -1,20 +1,22 @@
-import { Observable, Subject, Subscription } from 'rxjs/Rx';
+import { Observable, BehaviorSubject, Subscription } from 'rxjs/Rx';
 import { Component, OnInit, AfterViewInit, OnDestroy } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, UrlSegment } from '@angular/router';
 import { MdSnackBar, MdSnackBarConfig } from '@angular/material';
 import { TdDialogService, TdMediaService } from '@covalent/core';
 
 import { MetaDomain } from '../../../../../meta';
 import { PullRequest, Fetch, Path, Query, Equals, Like, TreeNode, Sort, Page } from '../../../../../domain';
 import { CommunicationEvent, Organisation, Locale } from '../../../../../domain';
-import { AllorsService, ErrorService, Scope, Loaded, Saved } from '../../../../../angular';
+import { AllorsService, ErrorService, Scope, Loaded, Saved, Invoked } from '../../../../../angular';
 
 @Component({
   templateUrl: './organisation-overview.component.html',
 })
 export class OrganisationOverviewComponent implements OnInit, AfterViewInit, OnDestroy {
 
+  private refresh$: BehaviorSubject<Date>;
   private subscription: Subscription;
+
   private scope: Scope;
   m: MetaDomain;
 
@@ -26,17 +28,23 @@ export class OrganisationOverviewComponent implements OnInit, AfterViewInit, OnD
     private allors: AllorsService,
     private errorService: ErrorService,
     private route: ActivatedRoute,
-    public dialogService: TdDialogService,
+    private dialogService: TdDialogService,
+    private snackBar: MdSnackBar,
     public media: TdMediaService) {
 
     this.scope = new Scope(allors.database, allors.workspace);
     this.m = this.allors.meta;
+    this.refresh$ = new BehaviorSubject<Date>(undefined);
   }
 
   ngOnInit(): void {
 
-    this.subscription = this.route.url
-      .switchMap((url: any) => {
+    const route$: Observable<UrlSegment[]> = this.route.url;
+
+    const combined$: Observable<[UrlSegment[], Date]> = Observable.combineLatest(route$, this.refresh$);
+
+    this.subscription = combined$
+      .switchMap(([urlSegments, date]: [UrlSegment[], Date]) => {
 
         const id: string = this.route.snapshot.paramMap.get('id');
         const m: MetaDomain = this.m;
@@ -215,13 +223,24 @@ export class OrganisationOverviewComponent implements OnInit, AfterViewInit, OnD
       .openConfirm({ message: 'Are you sure you want to delete this?' })
       .afterClosed().subscribe((confirm: boolean) => {
         if (confirm) {
-          // communicationEvent.Delet e();
+          this.scope.invoke(communicationEvent.Delete)
+            .subscribe((invoked: Invoked) => {
+              this.snackBar.open('Successfully deleted.', 'close', { duration: 5000 });
+              this.refresh();
+            },
+            (error: Error) => {
+              this.errorService.dialog(error);
+            });
         }
       });
   }
 
   goBack(): void {
     window.history.back();
+  }
+
+  refresh(): void {
+    this.refresh$.next(new Date());
   }
 
   checkType(obj: any): string {

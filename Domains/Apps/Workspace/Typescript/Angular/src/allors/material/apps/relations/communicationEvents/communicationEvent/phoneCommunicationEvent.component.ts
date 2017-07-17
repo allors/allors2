@@ -1,9 +1,9 @@
-import { Observable, Subject, Subscription } from 'rxjs/Rx';
+import { Observable, BehaviorSubject, Subscription } from 'rxjs/Rx';
 import { Component, OnInit, AfterViewInit, OnDestroy } from '@angular/core';
 import { Validators } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, UrlSegment } from '@angular/router';
 import { MdSnackBar, MdSnackBarConfig } from '@angular/material';
-import { TdMediaService } from '@covalent/core';
+import { TdMediaService, TdDialogService } from '@covalent/core';
 
 import { MetaDomain } from '../../../../../meta/index';
 import { PullRequest, PushResponse, Fetch, Path, Query, Equals, Like, TreeNode, Sort, Page } from '../../../../../domain';
@@ -18,7 +18,9 @@ import { AllorsService, ErrorService, Scope, Loaded, Saved, Invoked, Filter } fr
 })
 export class PhoneCommunicationEventFormComponent implements OnInit, AfterViewInit, OnDestroy {
 
+  private refresh$: BehaviorSubject<Date>;
   private subscription: Subscription;
+
   private scope: Scope;
 
   addCaller: boolean = false;
@@ -45,10 +47,12 @@ export class PhoneCommunicationEventFormComponent implements OnInit, AfterViewIn
     private errorService: ErrorService,
     private route: ActivatedRoute,
     private snackBar: MdSnackBar,
+    private dialogService: TdDialogService,
     public media: TdMediaService) {
 
     this.scope = new Scope(allors.database, allors.workspace);
     this.m = this.allors.meta;
+    this.refresh$ = new BehaviorSubject<Date>(undefined);
   }
 
   personAdd(): void {
@@ -56,8 +60,12 @@ export class PhoneCommunicationEventFormComponent implements OnInit, AfterViewIn
   }
 
   ngOnInit(): void {
-    this.subscription = this.route.url
-      .switchMap((url: any) => {
+    const route$: Observable<UrlSegment[]> = this.route.url;
+
+    const combined$: Observable<[UrlSegment[], Date]> = Observable.combineLatest(route$, this.refresh$);
+
+    this.subscription = combined$
+      .switchMap(([urlSegments, date]: [UrlSegment[], Date]) => {
 
         const partyId: string = this.route.snapshot.paramMap.get('partyId');
         const id: string = this.route.snapshot.paramMap.get('id');
@@ -128,6 +136,8 @@ export class PhoneCommunicationEventFormComponent implements OnInit, AfterViewIn
       })
       .subscribe((loaded: Loaded) => {
 
+        this.scope.session.reset();
+
         this.partyRelationships = loaded.collections.partyRelationships as PartyRelationship[];
         this.communicationEvent = loaded.objects.communicationEvent as PhoneCommunication;
 
@@ -191,13 +201,38 @@ export class PhoneCommunicationEventFormComponent implements OnInit, AfterViewIn
   }
 
   cancel(): void {
-    this.scope.invoke(this.communicationEvent.Cancel)
-      .subscribe((invoked: Invoked) => {
-        this.snackBar.open('Successfully cancelled.', 'close', { duration: 5000 });
-      },
-      (error: Error) => {
-        this.errorService.dialog(error);
-      });
+    const cancelFn: () => void = () => {
+      this.scope.invoke(this.communicationEvent.Cancel)
+        .subscribe((invoked: Invoked) => {
+          this.refresh();
+          this.snackBar.open('Successfully cancelled.', 'close', { duration: 5000 });
+        },
+        (error: Error) => {
+          this.errorService.dialog(error);
+        });
+    };
+
+    if (this.scope.session.hasChanges) {
+      this.dialogService
+        .openConfirm({ message: 'Save changes?' })
+        .afterClosed().subscribe((confirm: boolean) => {
+          if (confirm) {
+            this.scope
+              .save()
+              .subscribe((saved: Saved) => {
+                this.scope.session.reset();
+                cancelFn();
+              },
+              (error: Error) => {
+                this.errorService.dialog(error);
+              });
+          } else {
+            cancelFn();
+          }
+        });
+    } else {
+      cancelFn();
+    }
   }
 
   save(): void {
@@ -210,6 +245,10 @@ export class PhoneCommunicationEventFormComponent implements OnInit, AfterViewIn
       (error: Error) => {
         this.errorService.dialog(error);
       });
+  }
+
+  refresh(): void {
+    this.refresh$.next(new Date());
   }
 
   goBack(): void {
