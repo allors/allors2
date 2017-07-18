@@ -2,7 +2,25 @@ import { Component, AfterViewInit } from '@angular/core';
 import { TdMediaService } from '@covalent/core';
 
 @Component({
-  templateUrl: './relations.component.html',
+  template: `
+<td-layout>
+  <td-navigation-drawer flex sidenavTitle="Covalent" logo="assets:teradata" name="Firstname Lastname" email="firstname.lastname@company.com">
+    <md-nav-list>
+      <a *ngFor="let item of routes" md-list-item>
+        <md-icon>{{item.icon}}</md-icon>{{item.title}}</a>
+    </md-nav-list>
+    <div td-navigation-drawer-menu>
+      <md-nav-list>
+        <a *ngFor="let item of usermenu" md-list-item>
+          <md-icon>{{item.icon}}</md-icon>{{item.title}}</a>
+      </md-nav-list>
+    </div>
+  </td-navigation-drawer>
+
+  <router-outlet></router-outlet>
+
+</td-layout>
+`,
 })
 export class RelationsComponent implements AfterViewInit {
 

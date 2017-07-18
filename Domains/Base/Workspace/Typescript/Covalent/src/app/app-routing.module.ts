@@ -9,8 +9,8 @@ import * as relations from '../allors/covalent/custom/relations';
 import { RELATIONS_ROUTING } from '../allors/covalent/custom/relations';
 
 const routes: Routes = [
-  { path: '', redirectTo: '/relations', pathMatch: 'full', },
   { path: 'login', component: LoginComponent },
+  { path: '', redirectTo: '/relations', pathMatch: 'full', },
   {
     canActivate: [AuthenticationService],
     path: '',

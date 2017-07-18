@@ -1,13 +1,24 @@
-import { Component, AfterViewInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { Component } from '@angular/core';
 import { TdMediaService } from '@covalent/core';
 
 @Component({
-  templateUrl: './dashboard.component.html',
+  selector: 'relations-navigation',
+  template: `
+<md-nav-list>
+  <ng-template let-item let-last="last" ngFor [ngForOf]="navmenu">
+    <a md-list-item [routerLink]="[item.route]">
+      <md-icon md-list-avatar>{{item.icon}}</md-icon>
+      <h3 md-line> {{item.title}} </h3>
+      <p md-line> {{item.description}} </p>
+    </a>
+    <md-divider md-inset *ngIf="!last"></md-divider>
+  </ng-template>
+</md-nav-list>
+`,
 })
-export class DashboardComponent {
+export class RelationsNavigationComponent {
 
-  routes: Object[] = [{
+ routes: Object[] = [{
     title: 'Dashboard',
     route: '/',
     icon: 'dashboard',

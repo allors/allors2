@@ -17,10 +17,13 @@ import { DefaultAllorsService } from './allors.service';
 import { MATERIAL } from '../allors/material';
 import { COVALENT } from '../allors/covalent';
 
+import { RELATIONS } from '../allors/covalent/custom/relations';
+
 @NgModule({
   declarations: [
     MATERIAL,
     COVALENT,
+    RELATIONS,
     AppComponent,
     routedComponents,
   ],
