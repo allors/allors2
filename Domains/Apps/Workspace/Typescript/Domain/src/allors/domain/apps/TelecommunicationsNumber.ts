@@ -8,7 +8,7 @@ declare module '../generated/TelecommunicationsNumber.g' {
 
 Object.defineProperty(TelecommunicationsNumber.prototype, 'displayName', {
   get: function (this: TelecommunicationsNumber) {
-    let numberString: string;
+    let numberString: string = '';
     if (this.CountryCode || this.AreaCode) {
       if (this.CountryCode && this.AreaCode) {
         numberString = this.CountryCode + ' ' + this.AreaCode;

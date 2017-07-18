@@ -82,7 +82,10 @@ namespace Allors.Domain
         public void AppsOnDeriveInvolvedParties()
         {
             this.RemoveInvolvedParties();
-            this.AddInvolvedParty(this.Owner);
+            if (this.ExistOwner)
+            {
+                this.AddInvolvedParty(this.Owner);
+            }
 
             foreach (Party party in this.FromParties)
             {

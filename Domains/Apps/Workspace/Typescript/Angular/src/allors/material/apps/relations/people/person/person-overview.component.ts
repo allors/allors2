@@ -98,6 +98,9 @@ export class PersonOverviewComponent implements OnInit, AfterViewInit, OnDestroy
             name: 'organisationContactRelationships',
             id: id,
             path: new Path({ step: m.Person.OrganisationContactRelationshipsWhereContact}),
+            include: [
+              new TreeNode({ roleType: m.OrganisationContactRelationship.Organisation }),
+            ],
           }),
         ];
 

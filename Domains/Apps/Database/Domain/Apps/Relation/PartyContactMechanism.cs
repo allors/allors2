@@ -70,7 +70,5 @@ namespace Allors.Domain
                 }
             }
         }
-
-        public bool IsActive => this.ExistPartyWhereCurrentPartyContactMechanism;
     }
 }

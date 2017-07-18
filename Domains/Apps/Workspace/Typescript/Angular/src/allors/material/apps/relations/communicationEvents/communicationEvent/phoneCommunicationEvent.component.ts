@@ -25,6 +25,7 @@ export class PhoneCommunicationEventFormComponent implements OnInit, AfterViewIn
 
   addCaller: boolean = false;
   addReceiver: boolean = false;
+  addPhoneNumber: boolean = false;
 
   flex: string = '100%';
   flex2: string = `calc(50%-25px)`;
@@ -38,8 +39,6 @@ export class PhoneCommunicationEventFormComponent implements OnInit, AfterViewIn
   party: Party;
   purposes: CommunicationEventPurpose[];
   partyRelationships: PartyRelationship[];
-  caller: Person;
-  receiver: Person;
   phonenumbers: ContactMechanism[] = [];
 
   constructor(
@@ -53,10 +52,6 @@ export class PhoneCommunicationEventFormComponent implements OnInit, AfterViewIn
     this.scope = new Scope(allors.database, allors.workspace);
     this.m = this.allors.meta;
     this.refresh$ = new BehaviorSubject<Date>(undefined);
-  }
-
-  personAdd(): void {
-    this.addCaller = true;
   }
 
   ngOnInit(): void {
@@ -129,8 +124,6 @@ export class PhoneCommunicationEventFormComponent implements OnInit, AfterViewIn
             }),
         ];
 
-        this.scope.session.reset();
-
         return this.scope
           .load('Pull', new PullRequest({ fetch: fetch, query: query }));
       })
@@ -185,8 +178,28 @@ export class PhoneCommunicationEventFormComponent implements OnInit, AfterViewIn
     }
   }
 
+  phoneNumberCancelled(): void {
+    this.addPhoneNumber = false;
+  }
+
   callerCancelled(): void {
     this.addCaller = false;
+  }
+
+  receiverCancelled(): void {
+    this.addReceiver = false;
+  }
+
+  phoneNumberAdded(id: string): void {
+    this.addPhoneNumber = false;
+
+    const telecommunicationsNumber: TelecommunicationsNumber = this.scope.session.get(id) as TelecommunicationsNumber;
+    const partyContactMechanism: PartyContactMechanism = this.scope.session.create('PartyContactMechanism') as PartyContactMechanism;
+    partyContactMechanism.ContactMechanism = telecommunicationsNumber;
+    this.party.AddPartyContactMechanism(partyContactMechanism);
+
+    this.phonenumbers.push(telecommunicationsNumber);
+    this.communicationEvent.AddContactMechanism(telecommunicationsNumber);
   }
 
   callerAdded(id: string): void {
@@ -198,6 +211,17 @@ export class PhoneCommunicationEventFormComponent implements OnInit, AfterViewIn
     relationShip.Organisation = this.party as Organisation;
 
     this.communicationEvent.AddCaller(caller);
+  }
+
+  receiverAdded(id: string): void {
+    this.addReceiver = false;
+
+    const receiver: Person = this.scope.session.get(id) as Person;
+    const relationShip: OrganisationContactRelationship = this.scope.session.create('OrganisationContactRelationship') as OrganisationContactRelationship;
+    relationShip.Contact = receiver;
+    relationShip.Organisation = this.party as Organisation;
+
+    this.communicationEvent.AddReceiver(receiver);
   }
 
   cancel(): void {

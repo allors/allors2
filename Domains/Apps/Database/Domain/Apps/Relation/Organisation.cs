@@ -22,6 +22,8 @@ namespace Allors.Domain
 
     public partial class Organisation
     {
+        private bool IsDeletable => !this.ExistCurrentContacts;
+
         public void AppsOnBuild(ObjectOnBuild method)
         {
             if (!this.ExistLocale)
@@ -44,6 +46,17 @@ namespace Allors.Domain
             this.AppsOnDeriveCurrentPartyRelationships(derivation);
             this.AppsOnDeriveInactivePartyContactMechanisms(derivation);
             this.AppsOnDeriverContactUserGroup(derivation);
+
+            var deletePermission = new Permissions(this.strategy.Session).Get(this.Meta.ObjectType, this.Meta.Delete, Operations.Execute);
+            if (this.IsDeletable)
+            {
+                this.RemoveDeniedPermission(deletePermission);
+            }
+            else
+            {
+                this.AddDeniedPermission(deletePermission);
+            }
+
         }
 
         public bool AppsIsActiveProfessionalServicesProvider(DateTime? date)
@@ -186,8 +199,6 @@ namespace Allors.Domain
                 this.ContactsUserGroup = new UserGroupBuilder(this.strategy.Session).WithName(customerContactGroupName).Build();
             }
         }
-
-        public bool IsDeletable => this.CurrentContacts.Count == 0;
 
         public void AppsDelete(DeletableDelete method)
         {

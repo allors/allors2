@@ -212,7 +212,6 @@ namespace Allors.Repository
         [RoleId("bc58b136-9b36-4065-babb-934ede99aefd")]
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
-        [Required]
         [Indexed]
         [Workspace]
         Person Owner { get; set; }

@@ -23,17 +23,17 @@
         <div fxLayout="row wrap" fxLayoutAlign="start stretch" fxLayoutGap.gt-md="25px">
           <div *ngIf="communicationEvent.CurrentObjectState" [fxFlex]="flex" [fxFlex.gt-md]="flex2">
             <a-md-static [object]="communicationEvent" [roleType]="m.CommunicationEvent.CurrentObjectState" display="Name" label="Status"></a-md-static>
-            <button *ngIf="communicationEvent.CanExecuteClose" md-button type="button"  (click)="CloseClicked()">Close</button>
-            <button *ngIf="communicationEvent.CanExecuteCancel" md-button type="button"  (click)="cancel()">Cancel</button>
-            <button *ngIf="communicationEvent.CanExecuteReopen" md-button type="button"  (click)="ReopenClicked()">Reopen</button>
+            <button *ngIf="communicationEvent.CanExecuteClose" md-button type="button" (click)="CloseClicked()">Close</button>
+            <button *ngIf="communicationEvent.CanExecuteCancel" md-button type="button" (click)="cancel()">Cancel</button>
+            <button *ngIf="communicationEvent.CanExecuteReopen" md-button type="button" (click)="ReopenClicked()">Reopen</button>
           </div>
-          <a-td-chips  [object]="communicationEvent" [roleType]="m.PhoneCommunication.EventPurposes" [options]="purposes"
-            display="Name" [fxFlex]="flex" [fxFlex.gt-md]="flex2"></a-td-chips>
+          <a-td-chips [object]="communicationEvent" [roleType]="m.PhoneCommunication.EventPurposes" [options]="purposes" display="Name"
+            [fxFlex]="flex" [fxFlex.gt-md]="flex2"></a-td-chips>
+
           <div [fxFlex]="flex" [fxFlex.gt-md]="flex2">
             <div fxLayout="row">
-              <a-td-chips fxFlex  [object]="communicationEvent" [roleType]="m.PhoneCommunication.Callers" [options]="contacts"
-                display="PartyName"></a-td-chips>
-              <button fxFlex type="button" md-icon-button  (click)="addCaller = true"><md-icon>person_add</md-icon></button>
+              <a-td-chips fxFlex [object]="communicationEvent" [roleType]="m.PhoneCommunication.Callers" [options]="contacts" display="PartyName"></a-td-chips>
+              <button fxFlex type="button" md-icon-button (click)="addCaller = true"><md-icon>person_add</md-icon></button>
             </div>
 
             <div *ngIf="addCaller" style="background: orange">
@@ -42,27 +42,42 @@
               </person-inline>
             </div>
           </div>
+
           <div [fxFlex]="flex" [fxFlex.gt-md]="flex2">
-            <a-td-chips  [object]="communicationEvent" [roleType]="m.PhoneCommunication.Receivers" [options]="contacts"
-              display="PartyName"></a-td-chips>
-            <button type="button" md-icon-button  (click)="OnAddReceiver()"><md-icon>person_add</md-icon></button>
+            <div fxLayout="row">
+              <a-td-chips [object]="communicationEvent" [roleType]="m.PhoneCommunication.Receivers" [options]="contacts" display="PartyName"></a-td-chips>
+              <button type="button" md-icon-button (click)="addReceiver = true"><md-icon>person_add</md-icon></button>
+            </div>
+
+            <div *ngIf="addReceiver" style="background: orange">
+              <person-inline fxLayout="row wrap" fxLayoutAlign="start stretch" fxLayoutGap.gt-md="25px" (cancelled)="receiverCancelled($event)"
+                (saved)="receiverAdded($event)">
+              </person-inline>
+            </div>
           </div>
-          <a-md-select  [object]="communicationEvent" [roleType]="m.PhoneCommunication.ContactMechanisms" [options]="phonenumbers"
-            display="displayName" label="Phone number" [fxFlex]="flex" [fxFlex.gt-md]="flex2"></a-md-select>
-          <a-md-input  [object]="communicationEvent" [roleType]="m.PhoneCommunication.Subject" [fxFlex]="flex" [fxFlex.gt-md]="flex2"></a-md-input>
-          <a-md-textarea  [object]="communicationEvent" [roleType]="m.PhoneCommunication.Note" [fxFlex]="flex" [fxFlex.gt-md]="flex2"></a-md-textarea>
-          <a-md-slide-toggle  [object]="communicationEvent" [roleType]="m.PhoneCommunication.IncomingCall" [fxFlex]="flex"
-            [fxFlex.gt-md]="flex2"></a-md-slide-toggle>
-          <a-md-slide-toggle  [object]="communicationEvent" [roleType]="m.PhoneCommunication.LeftVoiceMail" [fxFlex]="flex"
-            [fxFlex.gt-md]="flex2"></a-md-slide-toggle>
-          <a-md-datepicker  [object]="communicationEvent" [roleType]="m.PhoneCommunication.ScheduledStart" [fxFlex]="flex"
-            [fxFlex.gt-md]="flex2"></a-md-datepicker>
-          <a-md-datepicker  [object]="communicationEvent" [roleType]="m.PhoneCommunication.ScheduledEnd" [fxFlex]="flex"
-            [fxFlex.gt-md]="flex2"></a-md-datepicker>
-          <a-md-datepicker  [object]="communicationEvent" [roleType]="m.PhoneCommunication.ActualStart" [fxFlex]="flex"
-            [fxFlex.gt-md]="flex2"></a-md-datepicker>
-          <a-md-datepicker  [object]="communicationEvent" [roleType]="m.PhoneCommunication.ActualEnd" [fxFlex]="flex"
-            [fxFlex.gt-md]="flex2"></a-md-datepicker>
+
+          <div [fxFlex]="flex" [fxFlex.gt-md]="flex2">
+            <div fxLayout="row">
+              <a-md-select [object]="communicationEvent" [roleType]="m.PhoneCommunication.ContactMechanisms" [options]="phonenumbers" display="displayName"
+                label="Phone number"></a-md-select>
+              <button type="button" md-icon-button (click)="addPhoneNumber = true"><md-icon>add</md-icon></button>
+            </div>
+
+            <div *ngIf="addPhoneNumber" style="background: orange">
+              <telecommunicationsNumber-inline fxLayout="row wrap" fxLayoutAlign="start stretch" fxLayoutGap.gt-md="25px" (cancelled)="phoneNumberCancelled($event)"
+                (saved)="phoneNumberAdded($event)">
+              </telecommunicationsNumber-inline>
+            </div>
+          </div>
+
+          <a-md-input [object]="communicationEvent" [roleType]="m.PhoneCommunication.Subject" [fxFlex]="flex" [fxFlex.gt-md]="flex2"></a-md-input>
+          <a-md-textarea [object]="communicationEvent" [roleType]="m.PhoneCommunication.Note" [fxFlex]="flex" [fxFlex.gt-md]="flex2"></a-md-textarea>
+          <a-md-slide-toggle [object]="communicationEvent" [roleType]="m.PhoneCommunication.IncomingCall" [fxFlex]="flex" [fxFlex.gt-md]="flex2"></a-md-slide-toggle>
+          <a-md-slide-toggle [object]="communicationEvent" [roleType]="m.PhoneCommunication.LeftVoiceMail" [fxFlex]="flex" [fxFlex.gt-md]="flex2"></a-md-slide-toggle>
+          <a-md-datepicker [object]="communicationEvent" [roleType]="m.PhoneCommunication.ScheduledStart" [fxFlex]="flex" [fxFlex.gt-md]="flex2"></a-md-datepicker>
+          <a-md-datepicker [object]="communicationEvent" [roleType]="m.PhoneCommunication.ScheduledEnd" [fxFlex]="flex" [fxFlex.gt-md]="flex2"></a-md-datepicker>
+          <a-md-datepicker [object]="communicationEvent" [roleType]="m.PhoneCommunication.ActualStart" [fxFlex]="flex" [fxFlex.gt-md]="flex2"></a-md-datepicker>
+          <a-md-datepicker [object]="communicationEvent" [roleType]="m.PhoneCommunication.ActualEnd" [fxFlex]="flex" [fxFlex.gt-md]="flex2"></a-md-datepicker>
         </div>
 
       </md-card-content>

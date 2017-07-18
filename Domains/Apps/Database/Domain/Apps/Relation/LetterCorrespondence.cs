@@ -47,8 +47,11 @@ namespace Allors.Domain
         {
             this.RemoveInvolvedParties();
             this.InvolvedParties = this.Receivers;
-            this.AddInvolvedParty(this.Owner);
             this.AddInvolvedParty(this.Originator);
+            if (this.ExistOwner)
+            {
+                this.AddInvolvedParty(this.Owner);
+            }
 
             if (this.ExistPartyRelationshipWhereCommunicationEvent)
             {

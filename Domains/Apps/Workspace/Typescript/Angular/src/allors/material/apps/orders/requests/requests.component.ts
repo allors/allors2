@@ -30,6 +30,7 @@ export class RequestsComponent implements AfterViewInit, OnDestroy {
   total: number;
 
   searchForm: FormGroup;
+
   data: Request[];
   filtered: Request[];
 

@@ -56,7 +56,7 @@
           </button>
           <md-menu x-position="before" #menu="mdMenu">
           <a [routerLink]="[organisation.id + '/overview']" md-menu-item>Details</a>
-          <button md-menu-item (click)="delete(organisation)">Delete</button>
+          <button md-menu-item (click)="delete(organisation)" [disabled]="!organisation.CanExecuteDelete">Delete</button>
           </md-menu>
           </span>
 

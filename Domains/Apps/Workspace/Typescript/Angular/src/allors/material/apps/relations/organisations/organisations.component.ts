@@ -3,14 +3,14 @@ import { Component, OnInit, AfterViewInit, OnDestroy, ViewChild } from '@angular
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Title } from '@angular/platform-browser';
-import { MdSnackBar } from '@angular/material';
+import { MdSnackBar, MdSnackBarConfig } from '@angular/material';
 
 import { TdLoadingService, TdDialogService, TdMediaService } from '@covalent/core';
 
 import { MetaDomain } from '../../../../meta/index';
 import { PullRequest, Query, Predicate, And, Or, Not, Equals, Like, Contains, TreeNode, Sort, Page } from '../../../../domain';
 import { Organisation, OrganisationRole } from '../../../../domain';
-import { AllorsService, ErrorService, Scope, Loaded, Saved } from '../../../../angular';
+import { AllorsService, ErrorService, Scope, Loaded, Saved, Invoked } from '../../../../angular';
 
 interface SearchData {
   name: string;
@@ -21,6 +21,7 @@ interface SearchData {
 })
 export class OrganisationsComponent implements AfterViewInit, OnDestroy {
 
+  private refresh$: BehaviorSubject<Date>;
   private subscription: Subscription;
   private scope: Scope;
 
@@ -36,11 +37,13 @@ export class OrganisationsComponent implements AfterViewInit, OnDestroy {
     private errorService: ErrorService,
     private formBuilder: FormBuilder,
     private titleService: Title,
+    private snackBar: MdSnackBar,
     private router: Router,
     private dialogService: TdDialogService,
     public media: TdMediaService,
   ) {
     this.scope = new Scope(allors.database, allors.workspace);
+    this.refresh$ = new BehaviorSubject<Date>(undefined);
 
     this.searchForm = this.formBuilder.group({
       name: [''],
@@ -115,6 +118,9 @@ export class OrganisationsComponent implements AfterViewInit, OnDestroy {
           });
       })
       .subscribe((loaded: Loaded) => {
+
+        this.scope.session.reset();
+
         this.data = loaded.collections.organisations as Organisation[];
         this.total = loaded.values.organisations_total;
       },
@@ -142,13 +148,24 @@ export class OrganisationsComponent implements AfterViewInit, OnDestroy {
     }
   }
 
+  refresh(): void {
+    this.refresh$.next(new Date());
+  }
+
   delete(organisation: Organisation): void {
     this.dialogService
-      .openConfirm({ message: 'Are you sure you want to delete this organisation?' })
+      .openConfirm({ message: 'Are you sure you want to delete this person?' })
       .afterClosed()
       .subscribe((confirm: boolean) => {
         if (confirm) {
-          // TODO: Logical, physical or workflow delete
+          this.scope.invoke(organisation.Delete)
+            .subscribe((invoked: Invoked) => {
+              this.snackBar.open('Successfully deleted.', 'close', { duration: 5000 });
+              this.refresh();
+            },
+            (error: Error) => {
+              this.errorService.dialog(error);
+            });
         }
       });
   }

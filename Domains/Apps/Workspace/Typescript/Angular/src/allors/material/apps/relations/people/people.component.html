@@ -13,9 +13,22 @@
   </div>
 
   <md-card body tdMediaToggle="gt-xs" [mediaClasses]="['push']">
+    <div class="pad-top-xs pad-left pad-right">
+       <form novalidate [formGroup]="searchForm">
+        <md-input-container>
+          <input fxFlex mdInput placeholder="First Name" formControlName="firstName">
+          <md-icon mdSuffix>search</md-icon>
+        </md-input-container>
+        <md-input-container>
+          <input fxFlex mdInput placeholder="Last Name" formControlName="lastName">
+          <md-icon mdSuffix>search</md-icon>
+        </md-input-container>
+      </form>
+    </div>
+
+    <md-divider></md-divider>
+
     <md-card-content>
-      <td-search-box class="push-left push-right" placeholder="search" [alwaysVisible]="true" (searchDebounce)="search($event)"></td-search-box>
-      <md-divider></md-divider>
       <ng-template tdLoading="people">
         <md-list class="will-load">
           <div class="md-padding" *ngIf="data && data.length === 0" layout="row" layout-align="center center">
@@ -25,7 +38,8 @@
             <md-list-item>
 
               <md-icon *ngIf="!person.Picture" md-list-avatar>person</md-icon>
-              <img *ngIf="person.Picture" md-list-avatar src="http://localhost:5000/Media/Download/{{person.Picture.UniqueId}}?revision={{person.Picture.Revision}}" />
+              <img *ngIf="person.Picture" md-list-avatar src="http://localhost:5000/Media/Download/{{person.Picture.UniqueId}}?revision={{person.Picture.Revision}}"
+              />
 
               <h3 md-line> {{person.PartyName}}</h3>
               <!--<p md-line> {{person.UserEmail}} </p>-->
@@ -44,7 +58,7 @@
           </button>
           <md-menu x-position="before" #menu="mdMenu">
           <a [routerLink]="[person.id + '/overview']" md-menu-item>Details</a>
-          <button md-menu-item (click)="delete(person)">Delete</button>
+          <button  md-menu-item (click)="delete(person)" [disabled]="!person.CanExecuteDelete">Delete</button>
           </md-menu>
           </span>
 
@@ -54,6 +68,12 @@
         </md-list>
       </ng-template>
 
+    </md-card-content>
+  </md-card>
+
+  <md-card body tdMediaToggle="gt-xs" [mediaClasses]="['push']" *ngIf="this.data?.length !== total">
+    <md-card-content>
+      <button md-button (click)="more()">More</button> {{this.data.length}}/{{total}}
     </md-card-content>
   </md-card>
 

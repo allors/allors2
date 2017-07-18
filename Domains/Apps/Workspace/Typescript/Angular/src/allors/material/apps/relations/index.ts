@@ -17,6 +17,7 @@ import { PhoneCommunicationEventFormComponent } from './communicationevents/comm
 import { PostalAddressAddComponent } from './contactMechanisms/contactMechanism/postalAddressAdd.component';
 import { PostalAddressEditComponent } from './contactMechanisms/contactMechanism/postalAddressEdit.component';
 import { RelationDashboardComponent } from './dashboard/relation-dashboard.component';
+import { TelecommunicationsNumberInlineComponent } from './contactMechanisms/contactMechanism/telecommunicationsNumber-inline.component';
 import { TelecommunicationsNumberAddComponent } from './contactMechanisms/contactMechanism/telecommunicationsNumberAdd.component';
 import { TelecommunicationsNumberEditComponent } from './contactMechanisms/contactMechanism/telecommunicationsNumberEdit.component';
 import { WebAddressAddComponent } from './contactMechanisms/contactMechanism/webAddressAdd.component';
@@ -32,7 +33,7 @@ export const RELATIONS_ROUTING: any[] = [
   PeopleComponent, PersonFormComponent, PersonInlineComponent, PersonOverviewComponent, PhoneCommunicationEventFormComponent,
   PostalAddressAddComponent, PostalAddressEditComponent,
   RelationDashboardComponent,
-  TelecommunicationsNumberAddComponent, TelecommunicationsNumberEditComponent,
+  TelecommunicationsNumberInlineComponent, TelecommunicationsNumberAddComponent, TelecommunicationsNumberEditComponent,
   WebAddressAddComponent, WebAddressEditComponent,
 ];
 
