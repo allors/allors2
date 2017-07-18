@@ -21,16 +21,37 @@
       <md-card-content class="push-bottom-none">
 
         <div fxLayout="row wrap" fxLayoutAlign="start stretch" fxLayoutGap.gt-md="25px">
-          <!--<a-md-static *ngIf="communicationEvent.CurrentObjectState" [object]="communicationEvent" [roleType]="m.FaceToFaceCommunication.CurrentObjectState.Name"></a-md-static>-->
-          <a-td-chips  [object]="communicationEvent" [roleType]="m.FaceToFaceCommunication.EventPurposes" [options]="purposes"
-            display="Name" [fxFlex]="flex" [fxFlex.gt-md]="flex2"></a-td-chips>
-          <a-td-chips  [object]="communicationEvent" [roleType]="m.FaceToFaceCommunication.Participants" [filter]="partiesFilter.create()"
-            display="PartyName" [fxFlex]="flex" [fxFlex.gt-md]="flex2"></a-td-chips>
-          <a-md-input  [object]="communicationEvent" [roleType]="m.FaceToFaceCommunication.Location" [fxFlex]="flex" [fxFlex.gt-md]="flex2"></a-md-input>
-          <a-md-input  [object]="communicationEvent" [roleType]="m.FaceToFaceCommunication.Subject" [fxFlex]="flex" [fxFlex.gt-md]="flex2"></a-md-input>
-          <a-md-textarea  [object]="communicationEvent" [roleType]="m.FaceToFaceCommunication.Note" [fxFlex]="flex" [fxFlex.gt-md]="flex2"></a-md-textarea>
-          <a-md-datepicker  [object]="communicationEvent" [roleType]="m.FaceToFaceCommunication.ActualStart" [fxFlex]="flex" [fxFlex.gt-md]="flex2"></a-md-datepicker>
-          <a-md-datepicker  [object]="communicationEvent" [roleType]="m.FaceToFaceCommunication.ActualEnd" [fxFlex]="flex" [fxFlex.gt-md]="flex2"></a-md-datepicker>
+          <div *ngIf="communicationEvent.CurrentObjectState" [fxFlex]="flex" [fxFlex.gt-md]="flex2">
+            <a-md-static [object]="communicationEvent" [roleType]="m.CommunicationEvent.CurrentObjectState" display="Name" label="Status"></a-md-static>
+            <button *ngIf="communicationEvent.CanExecuteClose" md-button type="button" (click)="CloseClicked()">Close</button>
+            <button *ngIf="communicationEvent.CanExecuteCancel" md-button type="button" (click)="cancel()">Cancel</button>
+            <button *ngIf="communicationEvent.CanExecuteReopen" md-button type="button" (click)="ReopenClicked()">Reopen</button>
+          </div>
+
+          <a-td-chips [object]="communicationEvent" [roleType]="m.FaceToFaceCommunication.EventPurposes" [options]="purposes" display="Name"
+            [fxFlex]="flex" [fxFlex.gt-md]="flex2"></a-td-chips>
+
+          <div [fxFlex]="flex" [fxFlex.gt-md]="flex2">
+            <div fxLayout="row">
+              <a-td-chips fxFlex [object]="communicationEvent" [roleType]="m.FaceToFaceCommunication.Participants" [options]="contacts"
+                display="PartyName"></a-td-chips>
+              <button fxFlex type="button" md-icon-button (click)="addParticipant = true"><md-icon>person_add</md-icon></button>
+            </div>
+
+            <div *ngIf="addParticipant" style="background: orange">
+              <person-inline fxLayout="row wrap" fxLayoutAlign="start stretch" fxLayoutGap.gt-md="25px" (cancelled)="participantCancelled($event)"
+                (saved)="participantAdded($event)">
+              </person-inline>
+            </div>
+          </div>
+
+          <a-md-input [object]="communicationEvent" [roleType]="m.FaceToFaceCommunication.Location" [fxFlex]="flex" [fxFlex.gt-md]="flex2"></a-md-input>
+          <a-md-input [object]="communicationEvent" [roleType]="m.FaceToFaceCommunication.Subject" [fxFlex]="flex" [fxFlex.gt-md]="flex2"></a-md-input>
+          <a-md-textarea [object]="communicationEvent" [roleType]="m.FaceToFaceCommunication.Note" [fxFlex]="flex" [fxFlex.gt-md]="flex2"></a-md-textarea>
+          <a-md-datepicker [object]="communicationEvent" [roleType]="m.PhoneCommunication.ScheduledStart" [fxFlex]="flex" [fxFlex.gt-md]="flex2"></a-md-datepicker>
+          <a-md-datepicker [object]="communicationEvent" [roleType]="m.PhoneCommunication.ScheduledEnd" [fxFlex]="flex" [fxFlex.gt-md]="flex2"></a-md-datepicker>
+          <a-md-datepicker [object]="communicationEvent" [roleType]="m.PhoneCommunication.ActualStart" [fxFlex]="flex" [fxFlex.gt-md]="flex2"></a-md-datepicker>
+          <a-md-datepicker [object]="communicationEvent" [roleType]="m.PhoneCommunication.ActualEnd" [fxFlex]="flex" [fxFlex.gt-md]="flex2"></a-md-datepicker>
         </div>
 
       </md-card-content>

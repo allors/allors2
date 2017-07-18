@@ -38,6 +38,11 @@ namespace Allors.Domain
         
         public static void AppsOnDerive(this CommunicationEvent @this, ObjectOnDerive method)
         {
+            if (!@this.ExistOwner)
+            {
+                @this.Owner = (Person)new Users(@this.Strategy.Session).CurrentUser;
+            }
+
             if (!@this.ExistCurrentObjectState)
             {
                 if (!@this.ExistActualStart || (@this.ExistActualStart && @this.ActualStart > DateTime.UtcNow))

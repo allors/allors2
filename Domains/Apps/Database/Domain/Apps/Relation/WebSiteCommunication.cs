@@ -43,10 +43,6 @@ namespace Allors.Domain
         public void AppsOnDeriveInvolvedParties(IDerivation derivation)
         {
             this.RemoveInvolvedParties();
-            if (this.ExistOwner)
-            {
-                this.AddInvolvedParty(this.Owner);
-            }
 
             this.AddInvolvedParty(this.Originator);
             this.AddInvolvedParty(this.Receiver);

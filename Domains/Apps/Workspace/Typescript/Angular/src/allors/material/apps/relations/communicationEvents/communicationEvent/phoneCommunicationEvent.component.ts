@@ -20,7 +20,6 @@ export class PhoneCommunicationEventFormComponent implements OnInit, AfterViewIn
 
   private refresh$: BehaviorSubject<Date>;
   private subscription: Subscription;
-
   private scope: Scope;
 
   addCaller: boolean = false;
