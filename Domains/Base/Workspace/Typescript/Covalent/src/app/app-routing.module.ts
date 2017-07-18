@@ -3,24 +3,20 @@ import { Routes, RouterModule } from '@angular/router';
 
 import { AuthenticationService } from '../allors/angular';
 import { LoginComponent } from './common/auth/login.component';
-import { MainComponent } from './common/main/main.component';
-import { DashboardComponent } from './common/dashboard/dashboard.component';
 
 import * as relations from '../allors/covalent/custom/relations';
 
 import { RELATIONS_ROUTING } from '../allors/covalent/custom/relations';
 
 const routes: Routes = [
+  { path: '', redirectTo: '/relations', pathMatch: 'full', },
   { path: 'login', component: LoginComponent },
   {
     canActivate: [AuthenticationService],
-    path: '', component: MainComponent,
+    path: '',
     children: [
       {
-        path: '', component: DashboardComponent,
-      },
-      {
-        path: 'relations',
+        path: 'relations', component: relations.RelationsComponent,
         children: [
           {
             path: '', component: relations.DashboardComponent,
@@ -57,6 +53,6 @@ const routes: Routes = [
 })
 export class AppRoutingModule { }
 export const routedComponents: any[] = [
-  MainComponent, LoginComponent, DashboardComponent,
+  LoginComponent,
   RELATIONS_ROUTING,
 ];

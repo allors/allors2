@@ -1,18 +1,5 @@
-<a-td-layout-relation>
-
-  <div toolbar1>
-    <a md-icon-button mdTooltip="Docs" href="https://www.inxin.com/" target="_blank">
-      <md-icon>chrome_reader_mode</md-icon>
-    </a>
-  </div>
-
-  <div toolbar2 layout="row" layout-align="start center" flex>
-    <span>People</span>
-    <span flex></span>
-    <button md-icon-button><md-icon class="md-24">settings</md-icon></button>
-  </div>
-
-  <md-card body tdMediaToggle="gt-xs" [mediaClasses]="['push']">
+<div tdMediaToggle="gt-xs" [mediaClasses]="['push-sm']">
+  <md-card>
     <md-card-content>
       <ng-template tdLoading="people">
         <md-list class="will-load">
@@ -54,9 +41,4 @@
       </ng-template>
     </md-card-content>
   </md-card>
-
-</a-td-layout-relation>
-
-<a md-fab color="accent" class="mat-fab-bottom-right" [routerLink]="['add']">
-  <md-icon>add</md-icon>
-</a>
+</div>

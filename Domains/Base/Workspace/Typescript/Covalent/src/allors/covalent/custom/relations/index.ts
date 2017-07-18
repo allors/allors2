@@ -1,4 +1,4 @@
-import { LayoutComponent } from './layout.component';
+import { RelationsComponent } from './relations.component';
 import { OrganisationsComponent } from './organisations/organisations.component';
 import { OrganisationComponent } from './organisations/organisation/organisation.component';
 import { OrganisationOverviewComponent } from './organisations/organisation/organisation-overview.component';
@@ -8,13 +8,13 @@ import { PersonOverviewComponent } from './people/person/person-overview.compone
 import { DashboardComponent } from './dashboard/dashboard.component';
 
 export const RELATIONS_ROUTING: any[] = [
-  LayoutComponent, DashboardComponent,
+  RelationsComponent, DashboardComponent,
   OrganisationsComponent, OrganisationComponent, OrganisationOverviewComponent,
   PeopleComponent, PersonComponent, PersonOverviewComponent,
 ];
 
 export {
-  LayoutComponent,
+  RelationsComponent,
   DashboardComponent,
   OrganisationsComponent,
   OrganisationComponent,

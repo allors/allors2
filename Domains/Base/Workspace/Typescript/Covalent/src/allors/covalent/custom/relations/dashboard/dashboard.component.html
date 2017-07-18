@@ -1,20 +1,17 @@
-<a-td-layout-relation>
-
-  <div toolbar1>
-    <a md-icon-button mdTooltip="Docs" href="https://www.inxin.com/" target="_blank">
-      <md-icon>chrome_reader_mode</md-icon>
-    </a>
-  </div>
-
-  <div toolbar2 layout="row" layout-align="start center" flex>
-    <span>Dashboard</span>
-    <span flex></span>
-    <button md-icon-button><md-icon class="md-24">settings</md-icon></button>
-  </div>
-
-  <md-card body tdMediaToggle="gt-xs" [mediaClasses]="['push']">
-    <md-card-title>Blah Blah</md-card-title>
-    <md-card-content>More Blah Blah</md-card-content>
+<div tdMediaToggle="gt-xs" [mediaClasses]="['push-sm']">
+  <md-card>
+    <md-card-title>Main Content</md-card-title>
+    <md-card-subtitle>content area</md-card-subtitle>
+    <md-divider></md-divider>
+    <md-card-content>
+      card content
+    </md-card-content>
+    <md-divider></md-divider>
+    <md-card-actions>
+      <a md-button color="accent" class="text-upper" [routerLink]="['/']">
+            <span>View More</span>
+          </a>
+    </md-card-actions>
   </md-card>
+</div>
 
-</a-td-layout-relation>

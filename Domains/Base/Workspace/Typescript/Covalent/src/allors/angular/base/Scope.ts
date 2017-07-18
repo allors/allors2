@@ -23,7 +23,7 @@ export class Scope {
 
     return this.database
       .pull(service, params)
-      .mergeMap((pullResponse: PullResponse) => {
+      .switchMap((pullResponse: PullResponse) => {
         const requireLoadIds: SyncRequest = this.workspace.diff(pullResponse);
 
         if (requireLoadIds.objects.length > 0) {
@@ -46,7 +46,7 @@ export class Scope {
     const pushRequest: PushRequest = this.session.pushRequest();
     return this.database
       .push(pushRequest)
-      .mergeMap((pushResponse: PushResponse) => {
+      .switchMap((pushResponse: PushResponse) => {
 
         this.session.pushResponse(pushResponse);
         const syncRequest: SyncRequest = new SyncRequest();

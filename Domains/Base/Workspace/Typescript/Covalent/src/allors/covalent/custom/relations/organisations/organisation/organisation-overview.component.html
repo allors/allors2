@@ -1,34 +1,18 @@
-<a-td-layout-relation>
+<md-card body *ngIf="organisation" tdMediaToggle="gt-xs" [mediaClasses]="['push']">
+  <md-card-content>
 
-  <div toolbar1>
-    <a md-icon-button mdTooltip="Docs" href="https://www.inxin.com/" target="_blank">
-      <md-icon>chrome_reader_mode</md-icon>
-    </a>
-  </div>
+    <div layout="row" class="push-top">
+      <a-md-static [object]="organisation" [roleType]="m.Organisation.Name"></a-md-static>
+    </div>
 
-  <div toolbar2 layout="row" layout-align="start center" flex>
-    <span>Organisation Overview</span>
-    <span flex></span>
-    <button md-icon-button><md-icon class="md-24">settings</md-icon></button>
-  </div>
+    <div layout="row" class="push-top">
+      <a-md-static [object]="organisation" [roleType]="m.Organisation.Owner" display="displayName"></a-md-static>
+    </div>
 
-  <md-card body *ngIf="organisation" tdMediaToggle="gt-xs" [mediaClasses]="['push']">
-    <md-card-content>
+  </md-card-content>
 
-      <div layout="row" class="push-top">
-        <a-md-static [object]="organisation" [roleType]="m.Organisation.Name"></a-md-static>
-      </div>
-
-      <div layout="row" class="push-top">
-        <a-md-static [object]="organisation" [roleType]="m.Organisation.Owner" display="displayName"></a-md-static>
-      </div>
-
-    </md-card-content>
-
-    <md-divider></md-divider>
-    <md-card-actions>
-      <button md-button [routerLink]="[ '../edit']">Edit</button>
-    </md-card-actions>
-  </md-card>
-
-</a-td-layout-relation>
+  <md-divider></md-divider>
+  <md-card-actions>
+    <button md-button [routerLink]="[ '../edit']">Edit</button>
+  </md-card-actions>
+</md-card>
