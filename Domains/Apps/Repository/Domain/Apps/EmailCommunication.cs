@@ -130,6 +130,14 @@ namespace Allors.Repository
         [Workspace]
         public EmailTemplate EmailTemplate { get; set; }
 
+        #region Allors
+        [Id("3F61CB07-4E36-4AA3-AE0D-ABAC9D95DB49")]
+        [AssociationId("8E130A0F-A905-4420-A661-D40BD14C8100")]
+        [RoleId("B6702349-D126-4244-A0EF-214F8043A52E")]
+        #endregion
+        [Workspace]
+        [Required]
+        public bool IncomingMail { get; set; }
 
         #region inherited methods
 

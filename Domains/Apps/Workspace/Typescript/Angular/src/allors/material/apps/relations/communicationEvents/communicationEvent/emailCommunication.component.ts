@@ -1,4 +1,4 @@
-import { Observable, BehaviorSubject, Subject, Subscription } from 'rxjs/Rx';
+import { Observable, BehaviorSubject, Subscription } from 'rxjs/Rx';
 import { Component, OnInit, AfterViewInit, OnDestroy } from '@angular/core';
 import { Validators } from '@angular/forms';
 import { ActivatedRoute, UrlSegment } from '@angular/router';
@@ -8,41 +8,42 @@ import { TdMediaService, TdDialogService } from '@covalent/core';
 import { MetaDomain } from '../../../../../meta/index';
 import { PullRequest, PushResponse, Fetch, Path, Query, Equals, Like, TreeNode, Sort, Page } from '../../../../../domain';
 import {
-  CommunicationEvent, CommunicationEventPurpose, OrganisationContactRelationship, Party, PartyRelationship, Person,
-  FaceToFaceCommunication, Organisation, PartyContactMechanism, Singleton,
+  Person, Party, PartyRelationship, CommunicationEvent, CommunicationEventPurpose, EmailAddress, EmailTemplate,
+  PersonRole, Locale, Enumeration, EmailCommunication, Singleton, ContactMechanism, PartyContactMechanism, OrganisationContactRelationship, Organisation,
 } from '../../../../../domain';
-import { AllorsService, ErrorService, Scope, Loaded, Saved, Filter, Invoked } from '../../../../../angular';
+import { AllorsService, ErrorService, Scope, Loaded, Saved, Invoked, Filter } from '../../../../../angular';
 
 @Component({
-  templateUrl: './faceToFaceCommunicationEvent.component.html',
+  templateUrl: './emailCommunication.component.html',
 })
-export class FaceToFaceCommunicationEventFormComponent implements OnInit, AfterViewInit, OnDestroy {
+export class EmailCommunicationFormComponent implements OnInit, AfterViewInit, OnDestroy {
 
   private refresh$: BehaviorSubject<Date>;
   private subscription: Subscription;
   private scope: Scope;
 
-  addParticipant: boolean = false;
+  addOriginator: boolean = false;
+  addAddressee: boolean = false;
 
   flex: string = '100%';
   flex2: string = `calc(50%-25px)`;
 
   m: MetaDomain;
 
-  communicationEvent: FaceToFaceCommunication;
-  parties: Party[];
+  singleton: Singleton;
+  communicationEvent: EmailCommunication;
+  employees: Person[];
   party: Party;
   purposes: CommunicationEventPurpose[];
   partyRelationships: PartyRelationship[];
-  singleton: Singleton;
-  employees: Person[];
-  contacts: Party[] = [];
+  emailAddresses: ContactMechanism[] = [];
+  emailTemplate: EmailTemplate;
 
   constructor(
     private allors: AllorsService,
     private errorService: ErrorService,
-    private snackBar: MdSnackBar,
     private route: ActivatedRoute,
+    private snackBar: MdSnackBar,
     private dialogService: TdDialogService,
     public media: TdMediaService) {
 
@@ -68,15 +69,6 @@ export class FaceToFaceCommunicationEventFormComponent implements OnInit, AfterV
           new Fetch({
             name: 'party',
             id: partyId,
-            include: [
-              new TreeNode({ roleType: m.Party.CurrentContacts }),
-              new TreeNode({
-                roleType: m.Party.CurrentPartyContactMechanisms,
-                nodes: [
-                  new TreeNode({ roleType: m.PartyContactMechanism.ContactMechanism }),
-                ],
-              }),
-            ],
           }),
           new Fetch({
             name: 'partyRelationships',
@@ -90,8 +82,9 @@ export class FaceToFaceCommunicationEventFormComponent implements OnInit, AfterV
             name: 'communicationEvent',
             id: id,
             include: [
-              new TreeNode({ roleType: m.CommunicationEvent.FromParties }),
-              new TreeNode({ roleType: m.CommunicationEvent.ToParties }),
+              new TreeNode({ roleType: m.EmailCommunication.Originator }),
+              new TreeNode({ roleType: m.EmailCommunication.Addressees }),
+              new TreeNode({ roleType: m.EmailCommunication.EmailTemplate }),
               new TreeNode({ roleType: m.CommunicationEvent.EventPurposes }),
               new TreeNode({ roleType: m.CommunicationEvent.CurrentObjectState }),
             ],
@@ -109,6 +102,14 @@ export class FaceToFaceCommunicationEventFormComponent implements OnInit, AfterV
                   nodes: [
                     new TreeNode({
                       roleType: m.InternalOrganisation.Employees,
+                      nodes: [
+                        new TreeNode({
+                          roleType: m.Party.CurrentPartyContactMechanisms,
+                          nodes: [
+                            new TreeNode({ roleType: m.PartyContactMechanism.ContactMechanism }),
+                          ],
+                        }),
+                      ],
                     }),
                   ],
                 }),
@@ -129,26 +130,34 @@ export class FaceToFaceCommunicationEventFormComponent implements OnInit, AfterV
         this.scope.session.reset();
 
         this.partyRelationships = loaded.collections.partyRelationships as PartyRelationship[];
-        this.communicationEvent = loaded.objects.communicationEvent as FaceToFaceCommunication;
+        this.communicationEvent = loaded.objects.communicationEvent as EmailCommunication;
 
         if (!this.communicationEvent) {
-          this.communicationEvent = this.scope.session.create('PhoneCommunication') as FaceToFaceCommunication;
+          this.communicationEvent = this.scope.session.create('EmailCommunication') as EmailCommunication;
+          this.emailTemplate = this.scope.session.create('EmailTemplate') as EmailTemplate;
+          this.communicationEvent.EmailTemplate = this.emailTemplate;
           this.partyRelationships.forEach((v: PartyRelationship) => v.AddCommunicationEvent(this.communicationEvent));
         }
 
         this.party = loaded.objects.party as Party;
-
         this.singleton = loaded.collections.singletons[0] as Singleton;
         this.employees = this.singleton.DefaultInternalOrganisation.Employees;
         this.purposes = loaded.collections.purposes as CommunicationEventPurpose[];
 
-        this.contacts.push(this.party);
-        if (this.employees.length > 0) {
-          this.contacts = this.contacts.concat(this.employees);
+        for (let employee of this.employees) {
+          let employeeContactMechanisms: ContactMechanism[] = employee.CurrentPartyContactMechanisms.map((v: PartyContactMechanism) => v.ContactMechanism);
+          for (let contactMechanism of employeeContactMechanisms) {
+            if (contactMechanism instanceof (EmailAddress)) {
+              this.emailAddresses.push(contactMechanism);
+            }
+          }
         }
 
-        if (this.party.CurrentContacts.length > 0) {
-          this.contacts = this.contacts.concat(this.party.CurrentContacts);
+        let contactMechanisms: ContactMechanism[] = this.party.CurrentPartyContactMechanisms.map((v: PartyContactMechanism) => v.ContactMechanism);
+        for (let contactMechanism of contactMechanisms) {
+          if (contactMechanism instanceof (EmailAddress)) {
+            this.emailAddresses.push(contactMechanism);
+          }
         }
       },
       (error: any) => {
@@ -156,21 +165,6 @@ export class FaceToFaceCommunicationEventFormComponent implements OnInit, AfterV
         this.goBack();
       },
     );
-  }
-
-  participantCancelled(): void {
-    this.addParticipant = false;
-  }
-
-  participantAdded(id: string): void {
-    this.addParticipant = false;
-
-    const participant: Person = this.scope.session.get(id) as Person;
-    const relationShip: OrganisationContactRelationship = this.scope.session.create('OrganisationContactRelationship') as OrganisationContactRelationship;
-    relationShip.Contact = participant;
-    relationShip.Organisation = this.party as Organisation;
-
-    this.communicationEvent.AddParticipant(participant);
   }
 
   ngAfterViewInit(): void {
@@ -181,6 +175,38 @@ export class FaceToFaceCommunicationEventFormComponent implements OnInit, AfterV
     if (this.subscription) {
       this.subscription.unsubscribe();
     }
+  }
+
+  originatorCancelled(): void {
+    this.addOriginator = false;
+  }
+
+  addresseeCancelled(): void {
+    this.addAddressee = false;
+  }
+
+  originatorAdded(id: string): void {
+    this.addOriginator = false;
+
+    const emailAddress: EmailAddress = this.scope.session.get(id) as EmailAddress;
+    const partyContactMechanism: PartyContactMechanism = this.scope.session.create('PartyContactMechanism') as PartyContactMechanism;
+    partyContactMechanism.ContactMechanism = emailAddress;
+    this.party.AddPartyContactMechanism(partyContactMechanism);
+
+    this.emailAddresses.push(emailAddress);
+    this.communicationEvent.Originator = emailAddress;
+  }
+
+  addresseeAdded(id: string): void {
+    this.addAddressee = false;
+
+    const emailAddress: EmailAddress = this.scope.session.get(id) as EmailAddress;
+    const partyContactMechanism: PartyContactMechanism = this.scope.session.create('PartyContactMechanism') as PartyContactMechanism;
+    partyContactMechanism.ContactMechanism = emailAddress;
+    this.party.AddPartyContactMechanism(partyContactMechanism);
+
+    this.emailAddresses.push(emailAddress);
+    this.communicationEvent.AddAddressee(emailAddress);
   }
 
   cancel(): void {

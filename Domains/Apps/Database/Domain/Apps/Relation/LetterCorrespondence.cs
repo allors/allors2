@@ -25,7 +25,7 @@ namespace Allors.Domain
             this.AppsOnDeriveToParties();
             this.AppsOnDeriveInvolvedParties();
 
-            if (!this.ExistOriginator || this.Receivers.Count == 0)
+            if (this.Originators.Count == 0 || this.Receivers.Count == 0)
             {
                 this.Delete();
             }
@@ -34,7 +34,7 @@ namespace Allors.Domain
         public void AppsOnDeriveFromParties()
         {
             this.RemoveFromParties();
-            this.AddFromParty(this.Originator);
+            this.FromParties = this.Originators;
         }
 
         public void AppsOnDeriveToParties()
@@ -47,7 +47,11 @@ namespace Allors.Domain
         {
             this.RemoveInvolvedParties();
             this.InvolvedParties = this.Receivers;
-            this.AddInvolvedParty(this.Originator);
+
+            foreach (Party originator in this.Originators)
+            {
+                this.AddInvolvedParty(originator);
+            }
 
             if (this.ExistPartyRelationshipWhereCommunicationEvent)
             {

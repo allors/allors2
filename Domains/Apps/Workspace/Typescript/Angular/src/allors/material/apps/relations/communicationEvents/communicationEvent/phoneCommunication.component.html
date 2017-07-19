@@ -56,7 +56,7 @@
             </div>
           </div>
 
-          <div [fxFlex]="flex" [fxFlex.gt-md]="flex2">
+          <div *ngIf="!communicationEvent.IncomingCall" [fxFlex]="flex" [fxFlex.gt-md]="flex2">
             <div fxLayout="row">
               <a-md-select [object]="communicationEvent" [roleType]="m.PhoneCommunication.ContactMechanisms" [options]="phonenumbers" display="displayName"
                 label="Phone number"></a-md-select>

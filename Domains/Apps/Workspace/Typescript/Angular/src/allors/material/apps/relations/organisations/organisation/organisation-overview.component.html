@@ -63,6 +63,12 @@
                   <a *ngIf="this.checkType(communicationEvent) === &quot;PhoneCommunication&quot;" md-line class="md-caption" [routerLink]="['/relations/communications/' + organisation.id + '/phonecommunication/' + communicationEvent.id + '/edit' ]">
                   Phone call, {{ communicationEvent.CurrentObjectState.Name }}</a>
 
+                  <a *ngIf="this.checkType(communicationEvent) === &quot;EmailCommunication&quot;" md-line class="md-caption" [routerLink]="['/relations/communications/' + organisation.id + '/emailcommunication/' + communicationEvent.id + '/edit' ]">
+                  Email, {{ communicationEvent.CurrentObjectState.Name }}</a>
+
+                  <a *ngIf="this.checkType(communicationEvent) === &quot;LetterCorrespondence&quot;" md-line class="md-caption" [routerLink]="['/relations/communications/' + organisation.id + '/lettercorrespondence/' + communicationEvent.id + '/edit' ]">
+                  Letter, {{ communicationEvent.CurrentObjectState.Name }}</a>
+
                   <p md-line class="md-caption">{{ communicationEvent.Subject }} </p>
                   <p md-line class="md-caption">Involved:
                     <span *ngFor="let party of communicationEvent.InvolvedParties">{{ party.displayName }} </span>
@@ -94,6 +100,8 @@
         <md-card-actions>
           <button md-button [routerLink]="['/relations/communications/' + organisation.id +'/facetofacecommunication/add']">+ Meeting</button>
           <button md-button [routerLink]="['/relations/communications/' + organisation.id +'/phonecommunication/add']">+ Phone</button>
+          <button md-button [routerLink]="['/relations/communications/' + organisation.id +'/emailcommunication/add']">+ Email</button>
+          <button md-button [routerLink]="['/relations/communications/' + organisation.id +'/lettercorrespondence/add']">+ Letter</button>
         </md-card-actions>
       </md-card>
 

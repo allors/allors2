@@ -23,6 +23,11 @@ namespace Allors.Domain
 
         public void AppsOnDerive(ObjectOnDerive method)
         {
+            if (!this.ExistSubject && this.ExistEmailTemplate && this.EmailTemplate.ExistSubjectTemplate)
+            {
+                this.Subject = this.EmailTemplate.SubjectTemplate;
+            }
+
             this.AppsOnDeriveFromParties();
             this.AppsOnDeriveToParties();
             this.AppsOnDeriveInvolvedParties();

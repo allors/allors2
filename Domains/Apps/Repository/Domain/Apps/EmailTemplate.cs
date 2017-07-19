@@ -23,25 +23,26 @@ namespace Allors.Repository
         #endregion
         [Required]
         [Size(256)]
-
+        [Workspace]
         public string Description { get; set; }
+
         #region Allors
         [Id("8bb431b6-a6ea-48d0-ad78-975ec26b470f")]
         [AssociationId("15e1b022-709b-4443-a85c-c1b2956c14e9")]
         [RoleId("8ce6a6a6-2387-4dd7-8bea-dec068aec152")]
         #endregion
         [Size(-1)]
-
+        [Workspace]
         public string BodyTemplate { get; set; }
+        
         #region Allors
         [Id("f05fc608-5dcd-4d7d-b472-5b84c2a195a4")]
         [AssociationId("c00233a0-c9a2-4c01-88fc-9ea5eb7fd564")]
         [RoleId("c39a94b3-455b-4602-8d55-abb2fca560ed")]
         #endregion
         [Size(-1)]
-
+        [Workspace]
         public string SubjectTemplate { get; set; }
-
 
         #region inherited methods
 
@@ -57,6 +58,5 @@ namespace Allors.Repository
         public void OnPostDerive(){}
 
         #endregion
-
     }
 }

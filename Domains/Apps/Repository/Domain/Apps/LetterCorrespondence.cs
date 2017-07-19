@@ -95,11 +95,11 @@ namespace Allors.Repository
         [AssociationId("d5ed6948-f657-4d47-89c8-d860e2971138")]
         [RoleId("b65552b5-99c7-4b91-b9b6-a70ec35c3ae2")]
         #endregion
-        [Multiplicity(Multiplicity.ManyToOne)]
+        [Multiplicity(Multiplicity.ManyToMany)]
         [Indexed]
         [Required]
         [Workspace]
-        public Party Originator { get; set; }
+        public Party[] Originators { get; set; }
 
         #region Allors
         [Id("ece02647-000a-4373-8f01-f4b7d1c75dd5")]
@@ -111,6 +111,15 @@ namespace Allors.Repository
         [Required]
         [Workspace]
         public Party[] Receivers { get; set; }
+
+        #region Allors
+        [Id("87B8680D-4161-420B-82B9-3A4E08A572B3")]
+        [AssociationId("9F127485-9CDE-41A2-8B71-36F8BD1652EE")]
+        [RoleId("22158DC4-A38D-4D48-AA48-19FA6B35B6AC")]
+        #endregion
+        [Required]
+        [Workspace]
+        public bool IncomingLetter { get; set; }
 
 
         #region inherited methods

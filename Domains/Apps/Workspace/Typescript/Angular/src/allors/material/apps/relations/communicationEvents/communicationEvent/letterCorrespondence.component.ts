@@ -8,23 +8,23 @@ import { TdMediaService, TdDialogService } from '@covalent/core';
 import { MetaDomain } from '../../../../../meta/index';
 import { PullRequest, PushResponse, Fetch, Path, Query, Equals, Like, TreeNode, Sort, Page } from '../../../../../domain';
 import {
-  Person, Party, PartyRelationship, CommunicationEvent, CommunicationEventPurpose, TelecommunicationsNumber,
-  PersonRole, Locale, Enumeration, PhoneCommunication, Singleton, ContactMechanism, PartyContactMechanism, OrganisationContactRelationship, Organisation,
+  CommunicationEvent, CommunicationEventPurpose, ContactMechanism, Enumeration, LetterCorrespondence, Locale, Organisation, OrganisationContactRelationship,
+  Person, Party, PartyRelationship, PersonRole, PostalAddress, PartyContactMechanism, Singleton,
 } from '../../../../../domain';
 import { AllorsService, ErrorService, Scope, Loaded, Saved, Invoked, Filter } from '../../../../../angular';
 
 @Component({
-  templateUrl: './phoneCommunicationEvent.component.html',
+  templateUrl: './letterCorrespondence.component.html',
 })
-export class PhoneCommunicationEventFormComponent implements OnInit, AfterViewInit, OnDestroy {
+export class LetterCorrespondenceFormComponent implements OnInit, AfterViewInit, OnDestroy {
 
   private refresh$: BehaviorSubject<Date>;
   private subscription: Subscription;
   private scope: Scope;
 
-  addCaller: boolean = false;
+  addSender: boolean = false;
   addReceiver: boolean = false;
-  addPhoneNumber: boolean = false;
+  addAddress: boolean = false;
 
   flex: string = '100%';
   flex2: string = `calc(50%-25px)`;
@@ -32,13 +32,13 @@ export class PhoneCommunicationEventFormComponent implements OnInit, AfterViewIn
   m: MetaDomain;
 
   singleton: Singleton;
-  communicationEvent: PhoneCommunication;
+  communicationEvent: LetterCorrespondence;
   employees: Person[];
   contacts: Party[] = [];
   party: Party;
   purposes: CommunicationEventPurpose[];
   partyRelationships: PartyRelationship[];
-  phonenumbers: ContactMechanism[] = [];
+  postalAddresses: ContactMechanism[] = [];
 
   constructor(
     private allors: AllorsService,
@@ -75,10 +75,21 @@ export class PhoneCommunicationEventFormComponent implements OnInit, AfterViewIn
               new TreeNode({
                 roleType: m.Party.CurrentPartyContactMechanisms,
                 nodes: [
-                  new TreeNode({ roleType: m.PartyContactMechanism.ContactMechanism }),
+                  new TreeNode({
+                    roleType: m.PartyContactMechanism.ContactMechanism,
+                    nodes: [
+                      new TreeNode({
+                        roleType: m.PostalAddress.PostalBoundary,
+                        nodes: [
+                          new TreeNode({ roleType: m.PostalBoundary.Country }),
+                        ],
+                      }),
+                    ],
+                  }),
                 ],
               }),
             ],
+
           }),
           new Fetch({
             name: 'partyRelationships',
@@ -92,10 +103,21 @@ export class PhoneCommunicationEventFormComponent implements OnInit, AfterViewIn
             name: 'communicationEvent',
             id: id,
             include: [
-              new TreeNode({ roleType: m.CommunicationEvent.FromParties }),
-              new TreeNode({ roleType: m.CommunicationEvent.ToParties }),
+              new TreeNode({ roleType: m.LetterCorrespondence.Originators }),
+              new TreeNode({ roleType: m.LetterCorrespondence.Receivers }),
               new TreeNode({ roleType: m.CommunicationEvent.EventPurposes }),
               new TreeNode({ roleType: m.CommunicationEvent.CurrentObjectState }),
+              new TreeNode({
+                roleType: m.LetterCorrespondence.PostalAddresses,
+                nodes: [
+                  new TreeNode({
+                    roleType: m.PostalAddress.PostalBoundary,
+                    nodes: [
+                      new TreeNode({ roleType: m.PostalBoundary.Country }),
+                    ],
+                  }),
+                ],
+              }),
             ],
           }),
         ];
@@ -111,6 +133,24 @@ export class PhoneCommunicationEventFormComponent implements OnInit, AfterViewIn
                   nodes: [
                     new TreeNode({
                       roleType: m.InternalOrganisation.Employees,
+                      nodes: [
+                        new TreeNode({
+                          roleType: m.Party.CurrentPartyContactMechanisms,
+                          nodes: [
+                            new TreeNode({
+                              roleType: m.PartyContactMechanism.ContactMechanism,
+                              nodes: [
+                                new TreeNode({
+                                  roleType: m.PostalAddress.PostalBoundary,
+                                  nodes: [
+                                    new TreeNode({ roleType: m.PostalBoundary.Country }),
+                                  ],
+                                }),
+                              ],
+                            }),
+                          ],
+                        }),
+                      ],
                     }),
                   ],
                 }),
@@ -131,25 +171,33 @@ export class PhoneCommunicationEventFormComponent implements OnInit, AfterViewIn
         this.scope.session.reset();
 
         this.partyRelationships = loaded.collections.partyRelationships as PartyRelationship[];
-        this.communicationEvent = loaded.objects.communicationEvent as PhoneCommunication;
+        this.communicationEvent = loaded.objects.communicationEvent as LetterCorrespondence;
 
         if (!this.communicationEvent) {
-          this.communicationEvent = this.scope.session.create('PhoneCommunication') as PhoneCommunication;
+          this.communicationEvent = this.scope.session.create('LetterCorrespondence') as LetterCorrespondence;
           this.partyRelationships.forEach((v: PartyRelationship) => v.AddCommunicationEvent(this.communicationEvent));
         }
 
         this.party = loaded.objects.party as Party;
-
-        let contactMechanisms: ContactMechanism[] = this.party.CurrentPartyContactMechanisms.map((v: PartyContactMechanism) => v.ContactMechanism);
-        for (let contactMechanism of contactMechanisms) {
-          if (contactMechanism instanceof (TelecommunicationsNumber)) {
-            this.phonenumbers.push(contactMechanism);
-          }
-        }
-
         this.singleton = loaded.collections.singletons[0] as Singleton;
         this.employees = this.singleton.DefaultInternalOrganisation.Employees;
         this.purposes = loaded.collections.purposes as CommunicationEventPurpose[];
+
+        for (let employee of this.employees) {
+          let employeeContactMechanisms: ContactMechanism[] = employee.CurrentPartyContactMechanisms.map((v: PartyContactMechanism) => v.ContactMechanism);
+          for (let contactMechanism of employeeContactMechanisms) {
+            if (contactMechanism instanceof (PostalAddress)) {
+              this.postalAddresses.push(contactMechanism);
+            }
+          }
+        }
+
+        let contactMechanisms: ContactMechanism[] = this.party.CurrentPartyContactMechanisms.map((v: PartyContactMechanism) => v.ContactMechanism);
+        for (let contactMechanism of contactMechanisms) {
+          if (contactMechanism instanceof (PostalAddress)) {
+            this.postalAddresses.push(contactMechanism);
+          }
+        }
 
         this.contacts.push(this.party);
         if (this.employees.length > 0) {
@@ -159,7 +207,7 @@ export class PhoneCommunicationEventFormComponent implements OnInit, AfterViewIn
         if (this.party.CurrentContacts.length > 0) {
           this.contacts = this.contacts.concat(this.party.CurrentContacts);
         }
-      },
+    },
       (error: any) => {
         this.errorService.message(error);
         this.goBack();
@@ -177,39 +225,27 @@ export class PhoneCommunicationEventFormComponent implements OnInit, AfterViewIn
     }
   }
 
-  phoneNumberCancelled(): void {
-    this.addPhoneNumber = false;
-  }
-
-  callerCancelled(): void {
-    this.addCaller = false;
+  senderCancelled(): void {
+    this.addSender = false;
   }
 
   receiverCancelled(): void {
     this.addReceiver = false;
   }
 
-  phoneNumberAdded(id: string): void {
-    this.addPhoneNumber = false;
-
-    const telecommunicationsNumber: TelecommunicationsNumber = this.scope.session.get(id) as TelecommunicationsNumber;
-    const partyContactMechanism: PartyContactMechanism = this.scope.session.create('PartyContactMechanism') as PartyContactMechanism;
-    partyContactMechanism.ContactMechanism = telecommunicationsNumber;
-    this.party.AddPartyContactMechanism(partyContactMechanism);
-
-    this.phonenumbers.push(telecommunicationsNumber);
-    this.communicationEvent.AddContactMechanism(telecommunicationsNumber);
+  addressCancelled(): void {
+    this.addAddress = false;
   }
 
-  callerAdded(id: string): void {
-    this.addCaller = false;
+  senderAdded(id: string): void {
+    this.addSender = false;
 
-    const caller: Person = this.scope.session.get(id) as Person;
+    const sender: Person = this.scope.session.get(id) as Person;
     const relationShip: OrganisationContactRelationship = this.scope.session.create('OrganisationContactRelationship') as OrganisationContactRelationship;
-    relationShip.Contact = caller;
+    relationShip.Contact = sender;
     relationShip.Organisation = this.party as Organisation;
 
-    this.communicationEvent.AddCaller(caller);
+    this.communicationEvent.AddOriginator(sender);
   }
 
   receiverAdded(id: string): void {
@@ -221,6 +257,18 @@ export class PhoneCommunicationEventFormComponent implements OnInit, AfterViewIn
     relationShip.Organisation = this.party as Organisation;
 
     this.communicationEvent.AddReceiver(receiver);
+  }
+
+  addressAdded(id: string): void {
+    this.addAddress = false;
+
+    const postalAddress: PostalAddress = this.scope.session.get(id) as PostalAddress;
+    const partyContactMechanism: PartyContactMechanism = this.scope.session.create('PartyContactMechanism') as PartyContactMechanism;
+    partyContactMechanism.ContactMechanism = postalAddress;
+    this.party.AddPartyContactMechanism(partyContactMechanism);
+
+    this.postalAddresses.push(postalAddress);
+    this.communicationEvent.AddPostalAddress(postalAddress);
   }
 
   cancel(): void {
