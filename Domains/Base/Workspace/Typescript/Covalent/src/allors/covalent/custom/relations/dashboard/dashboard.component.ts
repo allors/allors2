@@ -1,37 +1,19 @@
 import { Component, AfterViewInit } from '@angular/core';
+import { Title } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 import { TdMediaService } from '@covalent/core';
 
 @Component({
   templateUrl: './dashboard.component.html',
 })
-export class DashboardComponent {
+export class DashboardComponent implements AfterViewInit {
 
-  routes: Object[] = [{
-    title: 'Dashboard',
-    route: '/',
-    icon: 'dashboard',
-  }, {
-    title: 'Relations',
-    route: '/relations',
-    icon: 'people',
-  }];
+  title='Dashboard';
 
-  usermenu: Object[] = [{
-    icon: 'tune',
-    route: '.',
-    title: 'Account settings',
-  }, {
-    icon: 'exit_to_app',
-    route: '.',
-    title: 'Sign out',
-  },
-  ];
+  constructor(public media: TdMediaService, private titleService: Title) { }
 
-  navmenu: Object[] = [
-    { title: 'Organisations', description: 'Manage organisations', route: '/relations/organisations', icon: 'business center' },
-    { title: 'People', description: 'Manage people', route: '/relations/people', icon: 'people' },
-  ];
-
-  constructor(public media: TdMediaService) { }
+  ngAfterViewInit(): void {
+    this.titleService.setTitle(this.title);
+    this.media.broadcast();
+  }
 }

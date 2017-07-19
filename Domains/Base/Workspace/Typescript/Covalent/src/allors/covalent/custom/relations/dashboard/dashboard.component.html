@@ -1,29 +1,20 @@
-<td-layout-nav-list #navList color="accent" [opened]="media.registerQuery('gt-sm') | async" [mode]="(media.registerQuery('gt-sm') | async) ? 'side' : 'over'"
-  [sidenavWidth]="(media.registerQuery('gt-xs') | async) ? '350px' : '100%'">
+<relations [title]="title">
 
-  <relations-header title="Relations" td-sidenav-toolbar-content layout="row" layout-align="start center"></relations-header>
-  <relations-toolbar title="Dashboard" td-toolbar-content layout="row" layout-align="start center" flex></relations-toolbar>
-  <relations-navigation td-sidenav-content [tdLayoutNavListClose]="!media.query('gt-sm')"></relations-navigation>
-
-  <div tdMediaToggle="gt-xs" [mediaClasses]="['push-sm']">
-    <md-card>
-      <md-card-title>Main Content</md-card-title>
-      <md-card-subtitle>content area</md-card-subtitle>
-      <md-divider></md-divider>
-      <md-card-content>
-        card content
-      </md-card-content>
-      <md-divider></md-divider>
-      <md-card-actions>
-        <a md-button color="accent" class="text-upper" [routerLink]="['/']">
-            <span>View More</span>
-          </a>
-      </md-card-actions>
-    </md-card>
+  <div primary-toolbar>
+    <a md-icon-button><md-icon>help</md-icon></a>
   </div>
 
-  <td-layout-footer-inner>
-    Optional inner footer
-  </td-layout-footer-inner>
+  <div secondary-toolbar>
+    <a md-icon-button><md-icon>settings</md-icon></a>
+  </div>
 
-</td-layout-nav-list>
+  <md-card>
+    <md-card-title>Blah Blah</md-card-title>
+    <md-card-subtitle>blah blah blah blah</md-card-subtitle>
+    <md-divider></md-divider>
+    <md-card-content>
+      more blah blah
+    </md-card-content>
+  </md-card>
+
+</relations>

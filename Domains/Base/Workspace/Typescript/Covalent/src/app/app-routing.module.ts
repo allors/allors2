@@ -16,7 +16,7 @@ const routes: Routes = [
     path: '',
     children: [
       {
-        path: 'relations', component: relations.RelationsComponent,
+        path: 'relations',
         children: [
           {
             path: '', component: relations.DashboardComponent,
