@@ -51,6 +51,10 @@ export class FaceToFaceCommunicationFormComponent implements OnInit, AfterViewIn
     this.refresh$ = new BehaviorSubject<Date>(undefined);
   }
 
+  get PartyIsOrganisation(): boolean {
+    return this.party instanceof (Organisation);
+  }
+
   ngOnInit(): void {
     const route$: Observable<UrlSegment[]> = this.route.url;
 
@@ -190,6 +194,76 @@ export class FaceToFaceCommunicationFormComponent implements OnInit, AfterViewIn
         .subscribe((invoked: Invoked) => {
           this.refresh();
           this.snackBar.open('Successfully cancelled.', 'close', { duration: 5000 });
+        },
+        (error: Error) => {
+          this.errorService.dialog(error);
+        });
+    };
+
+    if (this.scope.session.hasChanges) {
+      this.dialogService
+        .openConfirm({ message: 'Save changes?' })
+        .afterClosed().subscribe((confirm: boolean) => {
+          if (confirm) {
+            this.scope
+              .save()
+              .subscribe((saved: Saved) => {
+                this.scope.session.reset();
+                cancelFn();
+              },
+              (error: Error) => {
+                this.errorService.dialog(error);
+              });
+          } else {
+            cancelFn();
+          }
+        });
+    } else {
+      cancelFn();
+    }
+  }
+
+  close(): void {
+    const cancelFn: () => void = () => {
+      this.scope.invoke(this.communicationEvent.Close)
+        .subscribe((invoked: Invoked) => {
+          this.refresh();
+          this.snackBar.open('Successfully closed.', 'close', { duration: 5000 });
+        },
+        (error: Error) => {
+          this.errorService.dialog(error);
+        });
+    };
+
+    if (this.scope.session.hasChanges) {
+      this.dialogService
+        .openConfirm({ message: 'Save changes?' })
+        .afterClosed().subscribe((confirm: boolean) => {
+          if (confirm) {
+            this.scope
+              .save()
+              .subscribe((saved: Saved) => {
+                this.scope.session.reset();
+                cancelFn();
+              },
+              (error: Error) => {
+                this.errorService.dialog(error);
+              });
+          } else {
+            cancelFn();
+          }
+        });
+    } else {
+      cancelFn();
+    }
+  }
+
+  reopen(): void {
+    const cancelFn: () => void = () => {
+      this.scope.invoke(this.communicationEvent.Reopen)
+        .subscribe((invoked: Invoked) => {
+          this.refresh();
+          this.snackBar.open('Successfully reopened.', 'close', { duration: 5000 });
         },
         (error: Error) => {
           this.errorService.dialog(error);

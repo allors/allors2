@@ -192,12 +192,12 @@ export class OrganisationOverviewComponent implements OnInit, AfterViewInit, OnD
             }),
         ];
 
-        this.scope.session.reset();
-
         return this.scope
           .load('Pull', new PullRequest({ fetch: fetch, query: query }));
       })
       .subscribe((loaded: Loaded) => {
+        this.scope.session.reset();
+
         this.organisation = loaded.objects.organisation as Organisation;
         this.communicationEvents = loaded.collections.communicationEvents as CommunicationEvent[];
       },
@@ -226,6 +226,57 @@ export class OrganisationOverviewComponent implements OnInit, AfterViewInit, OnD
           this.scope.invoke(communicationEvent.Delete)
             .subscribe((invoked: Invoked) => {
               this.snackBar.open('Successfully deleted.', 'close', { duration: 5000 });
+              this.refresh();
+            },
+            (error: Error) => {
+              this.errorService.dialog(error);
+            });
+        }
+      });
+  }
+
+  cancel(communicationEvent: CommunicationEvent): void {
+    this.dialogService
+      .openConfirm({ message: 'Are you sure you want to cancel this?' })
+      .afterClosed().subscribe((confirm: boolean) => {
+        if (confirm) {
+          this.scope.invoke(communicationEvent.Cancel)
+            .subscribe((invoked: Invoked) => {
+              this.snackBar.open('Successfully cancelled.', 'close', { duration: 5000 });
+              this.refresh();
+            },
+            (error: Error) => {
+              this.errorService.dialog(error);
+            });
+        }
+      });
+  }
+
+  close(communicationEvent: CommunicationEvent): void {
+    this.dialogService
+      .openConfirm({ message: 'Are you sure you want to close this?' })
+      .afterClosed().subscribe((confirm: boolean) => {
+        if (confirm) {
+          this.scope.invoke(communicationEvent.Close)
+            .subscribe((invoked: Invoked) => {
+              this.snackBar.open('Successfully closed.', 'close', { duration: 5000 });
+              this.refresh();
+            },
+            (error: Error) => {
+              this.errorService.dialog(error);
+            });
+        }
+      });
+  }
+
+  reopen(communicationEvent: CommunicationEvent): void {
+    this.dialogService
+      .openConfirm({ message: 'Are you sure you want to reopen this?' })
+      .afterClosed().subscribe((confirm: boolean) => {
+        if (confirm) {
+          this.scope.invoke(communicationEvent.Reopen)
+            .subscribe((invoked: Invoked) => {
+              this.snackBar.open('Successfully reopened.', 'close', { duration: 5000 });
               this.refresh();
             },
             (error: Error) => {

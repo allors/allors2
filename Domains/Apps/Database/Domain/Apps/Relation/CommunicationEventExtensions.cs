@@ -14,6 +14,8 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 using System.Runtime.CompilerServices;
+using Allors.Meta;
+using Resources;
 
 namespace Allors.Domain
 {
@@ -35,12 +37,24 @@ namespace Allors.Domain
 
             return null;
         }
-        
+
         public static void AppsOnDerive(this CommunicationEvent @this, ObjectOnDerive method)
         {
+            var derivation = method.Derivation;
+
             if (!@this.ExistOwner)
             {
                 @this.Owner = (Person)new Users(@this.Strategy.Session).CurrentUser;
+            }
+
+            if (@this.ExistScheduledStart && @this.ExistScheduledEnd && @this.ScheduledEnd < @this.ScheduledStart)
+            {
+                derivation.Validation.AddError(@this, M.CommunicationEvent.ScheduledEnd, ErrorMessages.EndDateBeforeStartDate);
+            }
+
+            if (@this.ExistActualStart && @this.ExistActualEnd && @this.ActualEnd < @this.ActualStart)
+            {
+                derivation.Validation.AddError(@this, M.CommunicationEvent.ActualEnd, ErrorMessages.EndDateBeforeStartDate);
             }
 
             if (!@this.ExistCurrentObjectState)
@@ -103,7 +117,7 @@ namespace Allors.Domain
 
             @this.RemoveWorkEfforts();
         }
-        
+
         public static void AppsClose(this CommunicationEvent @this, CommunicationEventClose method)
         {
             @this.CurrentObjectState = new CommunicationEventObjectStates(@this.Strategy.Session).Completed;

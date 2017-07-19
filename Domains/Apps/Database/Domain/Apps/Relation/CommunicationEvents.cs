@@ -40,9 +40,10 @@ namespace Allors.Domain
 
             config.Deny(this.ObjectType, scheduled, reopenId);
             config.Deny(this.ObjectType, closed, closeId, cancelId);
+            config.Deny(this.ObjectType, cancelled, cancelId);
 
             config.Deny(this.ObjectType, closed, Operations.Write);
-            config.Deny(this.ObjectType, cancelled, Operations.Execute, Operations.Write);
+            config.Deny(this.ObjectType, cancelled, Operations.Write);
         }
     }
 }

@@ -84,7 +84,10 @@
                       <md-icon>more_vert</md-icon>
                     </button>
                     <md-menu x-position="before" #menu="mdMenu">
-                        <button md-menu-item (click)="delete(communicationEvent)">Delete</button>
+                        <button [disabled]="!communicationEvent.CanExecuteDelete" md-menu-item (click)="delete(communicationEvent)">Delete</button>
+                        <button [disabled]="!communicationEvent.CanExecuteCancel" md-menu-item (click)="cancel(communicationEvent)">Cancel</button>
+                        <button [disabled]="!communicationEvent.CanExecuteClose" md-menu-item (click)="close(communicationEvent)">Close</button>
+                        <button [disabled]="!communicationEvent.CanExecuteReopen" md-menu-item (click)="reopen(communicationEvent)">Reopen</button>
                     </md-menu>
                   </span>
 

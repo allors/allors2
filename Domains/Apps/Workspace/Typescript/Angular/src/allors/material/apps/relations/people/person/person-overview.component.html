@@ -78,6 +78,12 @@
                   <a *ngIf="this.checkType(communicationEvent) === &quot;PhoneCommunication&quot;" md-line class="md-caption" [routerLink]="['/relations/communications/' + person.id + '/phonecommunication/' + communicationEvent.id + '/edit' ]">
                   Phone call, {{ communicationEvent.CurrentObjectState.Name }}</a>
 
+                  <a *ngIf="this.checkType(communicationEvent) === &quot;EmailCommunication&quot;" md-line class="md-caption" [routerLink]="['/relations/communications/' + person.id + '/emailcommunication/' + communicationEvent.id + '/edit' ]">
+                  Email, {{ communicationEvent.CurrentObjectState.Name }}</a>
+
+                  <a *ngIf="this.checkType(communicationEvent) === &quot;LetterCorrespondence&quot;" md-line class="md-caption" [routerLink]="['/relations/communications/' + person.id + '/lettercorrespondence/' + communicationEvent.id + '/edit' ]">
+                  Letter, {{ communicationEvent.CurrentObjectState.Name }}</a>
+
                   <p md-line class="md-caption">{{ communicationEvent.Subject }} </p>
                   <p md-line class="md-caption">Involved:
                     <span *ngFor="let party of communicationEvent.InvolvedParties">{{ party.displayName }} </span>
@@ -93,14 +99,18 @@
                       <md-icon>more_vert</md-icon>
                     </button>
                     <md-menu x-position="before" #menu="mdMenu">
-                        <!--<button md-menu-item (click)="delete(person)">Delete</button>-->
+                        <button [disabled]="!communicationEvent.CanExecuteDelete" md-menu-item (click)="delete(communicationEvent)">Delete</button>
+                        <button [disabled]="!communicationEvent.CanExecuteCancel" md-menu-item (click)="cancel(communicationEvent)">Cancel</button>
+                        <button [disabled]="!communicationEvent.CanExecuteClose" md-menu-item (click)="close(communicationEvent)">Close</button>
+                        <button [disabled]="!communicationEvent.CanExecuteReopen" md-menu-item (click)="reopen(communicationEvent)">Reopen</button>
                     </md-menu>
                   </span>
 
                 </md-list-item>
-                <md-divider *ngIf="!last" md-inset></md-divider>
-              </ng-template>
 
+                <md-divider *ngIf="!last" md-inset></md-divider>
+
+              </ng-template>
             </md-list>
           </ng-template>
         </md-card-content>
@@ -109,8 +119,8 @@
         <md-card-actions>
           <button md-button [routerLink]="['/relations/communications/' + person.id +'/facetofacecommunication/add']">+ Meeting</button>
           <button md-button [routerLink]="['/relations/communications/' + person.id +'/phonecommunication/add']">+ Phone</button>
-          <!--<button md-button [routerLink]="['/relations/communications/' + person.Id +'/emailcommunication/add']">+ Mail</button>
-          <button md-button [routerLink]="['/relations/communications/' + person.Id +'/lettercorrespondence/add']">+ Letter</button>-->
+          <button md-button [routerLink]="['/relations/communications/' + person.id +'/emailcommunication/add']">+ Email</button>
+          <button md-button [routerLink]="['/relations/communications/' + person.id +'/lettercorrespondence/add']">+ Letter</button>
         </md-card-actions>
       </md-card>
 

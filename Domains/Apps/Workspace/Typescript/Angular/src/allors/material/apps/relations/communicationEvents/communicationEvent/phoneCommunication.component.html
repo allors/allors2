@@ -23,9 +23,9 @@
         <div fxLayout="row wrap" fxLayoutAlign="start stretch" fxLayoutGap.gt-md="25px">
           <div *ngIf="communicationEvent.CurrentObjectState" [fxFlex]="flex" [fxFlex.gt-md]="flex2">
             <a-md-static [object]="communicationEvent" [roleType]="m.CommunicationEvent.CurrentObjectState" display="Name" label="Status"></a-md-static>
-            <button *ngIf="communicationEvent.CanExecuteClose" md-button type="button" (click)="CloseClicked()">Close</button>
+            <button *ngIf="communicationEvent.CanExecuteClose" md-button type="button" (click)="close()">Close</button>
             <button *ngIf="communicationEvent.CanExecuteCancel" md-button type="button" (click)="cancel()">Cancel</button>
-            <button *ngIf="communicationEvent.CanExecuteReopen" md-button type="button" (click)="ReopenClicked()">Reopen</button>
+            <button *ngIf="communicationEvent.CanExecuteReopen" md-button type="button" (click)="reopen()">Reopen</button>
           </div>
           <a-td-chips [object]="communicationEvent" [roleType]="m.PhoneCommunication.EventPurposes" [options]="purposes" display="Name"
             [fxFlex]="flex" [fxFlex.gt-md]="flex2"></a-td-chips>
@@ -33,7 +33,7 @@
           <div [fxFlex]="flex" [fxFlex.gt-md]="flex2">
             <div fxLayout="row">
               <a-td-chips fxFlex [object]="communicationEvent" [roleType]="m.PhoneCommunication.Callers" [options]="contacts" display="PartyName"></a-td-chips>
-              <button fxFlex type="button" md-icon-button (click)="addCaller = true"><md-icon>person_add</md-icon></button>
+              <button *ngIf="PartyIsOrganisation" fxFlex type="button" md-icon-button (click)="addCaller = true"><md-icon>person_add</md-icon></button>
             </div>
 
             <div *ngIf="addCaller" style="background: orange">
@@ -46,7 +46,7 @@
           <div [fxFlex]="flex" [fxFlex.gt-md]="flex2">
             <div fxLayout="row">
               <a-td-chips [object]="communicationEvent" [roleType]="m.PhoneCommunication.Receivers" [options]="contacts" display="PartyName"></a-td-chips>
-              <button type="button" md-icon-button (click)="addReceiver = true"><md-icon>person_add</md-icon></button>
+              <button *ngIf="PartyIsOrganisation" type="button" md-icon-button (click)="addReceiver = true"><md-icon>person_add</md-icon></button>
             </div>
 
             <div *ngIf="addReceiver" style="background: orange">
