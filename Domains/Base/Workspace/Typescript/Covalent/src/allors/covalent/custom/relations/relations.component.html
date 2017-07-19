@@ -1,5 +1,5 @@
 <td-layout>
-  <td-navigation-drawer flex sidenavTitle="Covalent" logo="assets:teradata" name="Firstname Lastname" email="firstname.lastname@company.com">
+  <td-navigation-drawer flex sidenavTitle="App" logo="assets:covalent" name="Firstname Lastname" email="firstname.lastname@company.com">
     <md-nav-list>
       <a *ngFor="let item of routes" md-list-item><md-icon>{{item.icon}}</md-icon>{{item.title}}</a>
     </md-nav-list>
@@ -44,7 +44,7 @@
         </div>
       </md-toolbar>
 
-      <ng-content style="height: 100%"></ng-content>
+      <ng-content></ng-content>
 
     </td-layout-manage-list>
   </td-layout-nav>

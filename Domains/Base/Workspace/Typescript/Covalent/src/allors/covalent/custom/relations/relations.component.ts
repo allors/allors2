@@ -7,9 +7,9 @@ import { TdMediaService } from '@covalent/core';
 })
 export class RelationsComponent {
 
- routes = [
-   { title: 'Dashboard', route: '/', icon: 'dashboard', },
-   { title: 'Relations', route: '/relations', icon: 'people', }];
+  routes = [
+    { title: 'Dashboard', route: '/', icon: 'dashboard', },
+    { title: 'Relations', route: '/relations', icon: 'people', }];
 
   usermenu = [
     { icon: 'tune', route: '.', title: 'Account settings', },
