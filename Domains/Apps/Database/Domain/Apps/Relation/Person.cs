@@ -182,6 +182,11 @@ namespace Allors.Domain
                     partyContactMechanism.Delete();
                 }
 
+                foreach (OrganisationContactRelationship contactRelationship in this.OrganisationContactRelationshipsWhereContact)
+                {
+                    contactRelationship.Delete();
+                }
+
                 if (this.ExistOwnerAccessControl)
                 {
                     this.OwnerAccessControl.Delete();

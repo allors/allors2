@@ -1,18 +1,6 @@
-<a-td-layout-catalogue>
+<a-td-layout-catalogue [title]="title">
 
-  <div toolbar1>
-    <a md-icon-button mdTooltip="Docs" href="https://www.inxin.com/" target="_blank">
-      <md-icon>chrome_reader_mode</md-icon>
-    </a>
-  </div>
-
-  <div toolbar2 layout="row" layout-align="start center" flex>
-    <span>Catalogues</span>
-    <span flex></span>
-    <button md-icon-button><md-icon class="md-24">settings</md-icon></button>
-  </div>
-
-  <md-card body tdMediaToggle="gt-xs" [mediaClasses]="['push']">
+  <md-card>
     <md-card-content>
       <td-search-box class="push-left push-right" placeholder="search" [alwaysVisible]="true" (searchDebounce)="search($event)"></td-search-box>
       <md-divider></md-divider>
@@ -25,7 +13,8 @@
             <md-list-item>
 
               <md-icon *ngIf="!catalogue.CatalogueImage" md-list-avatar>photo_camera</md-icon>
-              <img *ngIf="catalogue.CatalogueImage" md-list-avatar src="http://localhost:5000/Media/Download/{{catalogue.CatalogueImage.UniqueId}}?revision={{catalogue.CatalogueImage.Revision}}" />
+              <img *ngIf="catalogue.CatalogueImage" md-list-avatar src="http://localhost:5000/Media/Download/{{catalogue.CatalogueImage.UniqueId}}?revision={{catalogue.CatalogueImage.Revision}}"
+              />
 
               <h3 md-line> {{catalogue.Name}}</h3>
               <p md-line> {{catalogue.Description}} </p>
@@ -45,7 +34,6 @@
           </ng-template>
         </md-list>
       </ng-template>
-
     </md-card-content>
   </md-card>
 

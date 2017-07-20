@@ -22,6 +22,8 @@ export class EmailCommunicationFormComponent implements OnInit, AfterViewInit, O
   private subscription: Subscription;
   private scope: Scope;
 
+  title: string;
+
   addOriginator: boolean = false;
   addAddressee: boolean = false;
 

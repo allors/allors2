@@ -130,6 +130,7 @@ export class RequestsComponent implements AfterViewInit, OnDestroy {
 
   ngAfterViewInit(): void {
     this.titleService.setTitle('Requests');
+    this.media.broadcast();
   }
 
   ngOnDestroy(): void {

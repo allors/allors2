@@ -7,7 +7,7 @@ import { TdMediaService } from '@covalent/core';
 
 import { PullRequest, PushResponse, Fetch, Path, Query, Equals, Like, TreeNode, Sort, Page } from '../../../../../domain';
 import { MetaDomain } from '../../../../../meta/index';
-import { Organisation, PartyContactMechanism, WebAddress, Enumeration } from '../../../../../domain';
+import { Party, PartyContactMechanism, WebAddress, Enumeration } from '../../../../../domain';
 import { AllorsService, ErrorService, Scope, Loaded, Saved } from '../../../../../angular';
 
 @Component({
@@ -23,7 +23,7 @@ export class WebAddressAddComponent implements OnInit, AfterViewInit, OnDestroy 
 
   m: MetaDomain;
 
-  organisation: Organisation;
+  party: Party;
   partyContactMechanism: PartyContactMechanism;
   contactMechanism: WebAddress;
   contactMechanismPurposes: Enumeration[];
@@ -47,11 +47,11 @@ export class WebAddressAddComponent implements OnInit, AfterViewInit, OnDestroy 
 
         const fetch: Fetch[] = [
           new Fetch({
-            name: 'organisation',
+            name: 'party',
             id: id,
             include: [
               new TreeNode({
-                roleType: m.Organisation.PartyContactMechanisms,
+                roleType: m.Party.PartyContactMechanisms,
                 nodes: [
                   new TreeNode({ roleType: m.PartyContactMechanism.ContactPurposes }),
                   new TreeNode({ roleType: m.PartyContactMechanism.ContactMechanism }),
@@ -76,7 +76,7 @@ export class WebAddressAddComponent implements OnInit, AfterViewInit, OnDestroy 
       })
       .subscribe((loaded: Loaded) => {
 
-        this.organisation = loaded.objects.organisation as Organisation;
+        this.party = loaded.objects.party as Party;
 
         if (!this.contactMechanism) {
           this.contactMechanism = this.scope.session.create('WebAddress') as WebAddress;
@@ -85,7 +85,7 @@ export class WebAddressAddComponent implements OnInit, AfterViewInit, OnDestroy 
         this.partyContactMechanism = this.scope.session.create('PartyContactMechanism') as PartyContactMechanism;
         this.partyContactMechanism.ContactMechanism = this.contactMechanism;
 
-        this.organisation.AddPartyContactMechanism(this.partyContactMechanism);
+        this.party.AddPartyContactMechanism(this.partyContactMechanism);
 
         this.contactMechanismPurposes = loaded.collections.contactMechanismPurposes as Enumeration[];
       },

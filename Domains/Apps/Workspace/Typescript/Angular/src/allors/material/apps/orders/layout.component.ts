@@ -1,4 +1,4 @@
-import { Component, AfterViewInit } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { Router } from '@angular/router';
 import { TdMediaService } from '@covalent/core';
 
@@ -6,16 +6,27 @@ import { TdMediaService } from '@covalent/core';
   selector: 'a-td-layout-order',
   templateUrl: './layout.component.html',
 })
-export class LayoutComponent implements AfterViewInit {
+export class LayoutComponent {
 
-  routes: Object[] = [
-    { title: 'Requests', route: '/orders/requests', icon: 'dashboard', },
+  routes: any[] = [
+    { title: 'Dashboard', route: '/', icon: 'dashboard', },
+    { title: 'Relations', route: '/relations', icon: 'people', },
+    { title: 'Catalogues', route: '/catalogues', icon: 'work', },
+    { title: 'Orders', route: '/orders', icon: 'dashboard', },
   ];
 
-  constructor(public media: TdMediaService) {
-  }
+  usermenu: any[] = [
+    { icon: 'tune', route: '.', title: 'Account settings', },
+    { icon: 'exit_to_app', route: '.', title: 'Sign out', },
+  ];
 
-  ngAfterViewInit(): void {
-    this.media.broadcast();
+  navmenu: any[] = [
+    { title: 'Requests', description: 'Manage requests', route: '/orders/requests', icon: 'dashboard', },
+  ];
+
+  @Input()
+  title: string;
+
+  constructor(public media: TdMediaService) {
   }
 }

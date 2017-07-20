@@ -1,18 +1,6 @@
-<a-td-layout-relation>
+<a-td-layout-relation [title]="title">
 
-  <div toolbar1>
-    <a md-icon-button mdTooltip="Docs" href="https://www.inxin.com/" target="_blank">
-      <md-icon>chrome_reader_mode</md-icon>
-    </a>
-  </div>
-
-  <div toolbar2 layout="row" layout-align="start center" flex>
-    <span>Organisations</span>
-    <span flex></span>
-    <button md-icon-button><md-icon class="md-24">settings</md-icon></button>
-  </div>
-
-  <md-card body tdMediaToggle="gt-xs" [mediaClasses]="['push']">
+  <md-card>
     <form #form="ngForm" *ngIf="organisation" (submit)="save()">
 
       <md-card-title>Organisation</md-card-title>
@@ -21,10 +9,12 @@
       <md-card-content class="push-bottom-none">
 
         <div fxLayout="row wrap" fxLayoutAlign="start stretch" fxLayoutGap.gt-md="25px">
-          <a-md-media-upload  [object]="organisation" [roleType]="m.Organisation.LogoImage" accept="image/*" [fxFlex]="flex" [fxFlex.gt-md]="flex2"></a-md-media-upload>
-          <a-td-chips  [object]="organisation" [roleType]="m.Organisation.OrganisationRoles" [options]="roles" display="Name" [fxFlex]="flex" [fxFlex.gt-md]="flex2"></a-td-chips>
-          <a-md-input  [object]="organisation" [roleType]="m.Organisation.Name" [fxFlex]="flex" [fxFlex.gt-md]="flex2"></a-md-input>
-          <a-md-select  [object]="organisation" [roleType]="m.Organisation.Locale" [options]="locales" display="Name" [fxFlex]="flex" [fxFlex.gt-md]="flex2"></a-md-select>
+          <a-md-media-upload [object]="organisation" [roleType]="m.Organisation.LogoImage" accept="image/*" [fxFlex]="flex" [fxFlex.gt-md]="flex2"></a-md-media-upload>
+          <a-td-chips [object]="organisation" [roleType]="m.Organisation.OrganisationRoles" [options]="roles" display="Name" [fxFlex]="flex"
+            [fxFlex.gt-md]="flex2"></a-td-chips>
+          <a-md-input [object]="organisation" [roleType]="m.Organisation.Name" [fxFlex]="flex" [fxFlex.gt-md]="flex2"></a-md-input>
+          <a-md-select [object]="organisation" [roleType]="m.Organisation.Locale" [options]="locales" display="Name" [fxFlex]="flex"
+            [fxFlex.gt-md]="flex2"></a-md-select>
         </div>
 
       </md-card-content>

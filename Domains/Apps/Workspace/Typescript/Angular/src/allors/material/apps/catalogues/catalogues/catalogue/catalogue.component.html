@@ -1,18 +1,6 @@
-<a-td-layout-catalogue>
+<a-td-layout-catalogue [title]="title">
 
-  <div toolbar1>
-    <a md-icon-button mdTooltip="Docs" href="https://www.inxin.com/" target="_blank">
-      <md-icon>chrome_reader_mode</md-icon>
-    </a>
-  </div>
-
-  <div toolbar2 layout="row" layout-align="start center" flex>
-    <span>Catalogues</span>
-    <span flex></span>
-    <button md-icon-button><md-icon class="md-24">settings</md-icon></button>
-  </div>
-
-  <md-card body tdMediaToggle="gt-xs" [mediaClasses]="['push']">
+  <md-card>
     <form #form="ngForm" *ngIf="catalogue" (submit)="save()">
 
       <md-card-title>Catalogue Form</md-card-title>
@@ -22,9 +10,12 @@
 
         <div fxLayout="row wrap" fxLayoutAlign="start stretch" fxLayoutGap.gt-md="25px">
           <a-md-media-upload [object]="catalogue" [roleType]="m.Catalogue.CatalogueImage" accept="image/*" [fxFlex]="flex" [fxFlex.gt-md]="flex2"></a-md-media-upload>
-          <a-md-localised-text  [object]="catalogue" [roleType]="m.Catalogue.LocalisedNames" [locales]="locales" label="Name" [fxFlex]="flex" [fxFlex.gt-md]="flex2"></a-md-localised-text>
-          <a-md-localised-text  [object]="catalogue" [roleType]="m.Catalogue.LocalisedDescriptions" [locales]="locales" label="Description" [fxFlex]="flex" [fxFlex.gt-md]="flex2"></a-md-localised-text>
-          <a-td-chips  [object]="catalogue" [roleType]="m.Catalogue.ProductCategories" [options]="categories" display="Name" [fxFlex]="flex" [fxFlex.gt-md]="flex2"></a-td-chips>
+          <a-md-localised-text [object]="catalogue" [roleType]="m.Catalogue.LocalisedNames" [locales]="locales" label="Name" [fxFlex]="flex"
+            [fxFlex.gt-md]="flex2"></a-md-localised-text>
+          <a-md-localised-text [object]="catalogue" [roleType]="m.Catalogue.LocalisedDescriptions" [locales]="locales" label="Description"
+            [fxFlex]="flex" [fxFlex.gt-md]="flex2"></a-md-localised-text>
+          <a-td-chips [object]="catalogue" [roleType]="m.Catalogue.ProductCategories" [options]="categories" display="Name" [fxFlex]="flex"
+            [fxFlex.gt-md]="flex2"></a-td-chips>
         </div>
 
       </md-card-content>

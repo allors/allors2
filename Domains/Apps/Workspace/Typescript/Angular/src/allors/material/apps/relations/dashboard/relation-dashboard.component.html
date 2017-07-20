@@ -1,8 +1,20 @@
-<a-td-layout-relation>
+<a-td-layout-relation [title]="title">
 
-  <md-card body tdMediaToggle="gt-xs" [mediaClasses]="['push']">
-    <md-card-title>Relations</md-card-title>
-    <md-card-content>Blah Blah</md-card-content>
+  <div primary-toolbar>
+    <a md-icon-button><md-icon>help</md-icon></a>
+  </div>
+
+  <div secondary-toolbar>
+    <a md-icon-button><md-icon>settings</md-icon></a>
+  </div>
+
+  <md-card>
+    <md-card-title>Relations Dashboard</md-card-title>
+    <md-card-subtitle>Overview</md-card-subtitle>
+    <md-divider></md-divider>
+    <md-card-content>
+      Info
+    </md-card-content>
   </md-card>
 
 </a-td-layout-relation>

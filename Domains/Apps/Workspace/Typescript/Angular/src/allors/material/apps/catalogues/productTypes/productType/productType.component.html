@@ -1,18 +1,6 @@
-<a-td-layout-catalogue>
+<a-td-layout-catalogue [title]="title">
 
-  <div toolbar1>
-    <a md-icon-button mdTooltip="Docs" href="https://www.inxin.com/" target="_blank">
-      <md-icon>chrome_reader_mode</md-icon>
-    </a>
-  </div>
-
-  <div toolbar2 layout="row" layout-align="start center" flex>
-    <span>Product Types</span>
-    <span flex></span>
-    <button md-icon-button><md-icon class="md-24">settings</md-icon></button>
-  </div>
-
-  <md-card body tdMediaToggle="gt-xs" [mediaClasses]="['push']">
+  <md-card>
     <form #form="ngForm" *ngIf="productType" (submit)="save()">
 
       <md-card-title>Product Type Form</md-card-title>
@@ -21,8 +9,9 @@
       <md-card-content class="push-bottom-none">
 
         <div fxLayout="row wrap" fxLayoutAlign="start stretch" fxLayoutGap.gt-md="25px">
-          <a-md-input  [object]="productType" [roleType]="m.ProductType.Name" [fxFlex]="flex" [fxFlex.gt-md]="flex2"></a-md-input>
-          <a-td-chips  [object]="productType" [roleType]="m.ProductType.ProductCharacteristics" [options]="characteristics" display="Name" [fxFlex]="flex" [fxFlex.gt-md]="flex2"></a-td-chips>
+          <a-md-input [object]="productType" [roleType]="m.ProductType.Name" [fxFlex]="flex" [fxFlex.gt-md]="flex2"></a-md-input>
+          <a-td-chips [object]="productType" [roleType]="m.ProductType.ProductCharacteristics" [options]="characteristics" display="Name"
+            [fxFlex]="flex" [fxFlex.gt-md]="flex2"></a-td-chips>
         </div>
 
       </md-card-content>

@@ -37,6 +37,7 @@ export class ProductCharacteristicsComponent implements AfterViewInit, OnDestroy
 
   ngAfterViewInit(): void {
     this.titleService.setTitle('Product Characteristics');
+    this.media.broadcast();
     this.search();
   }
 

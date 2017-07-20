@@ -1,16 +1,4 @@
-<a-td-layout-relation>
-
-  <div toolbar1>
-    <a md-icon-button mdTooltip="Docs" href="https://www.inxin.com/" target="_blank">
-      <md-icon>chrome_reader_mode</md-icon>
-    </a>
-  </div>
-
-  <div toolbar2 layout="row" layout-align="start center" flex>
-    <span>People</span>
-    <span flex></span>
-    <button md-icon-button><md-icon class="md-24">settings</md-icon></button>
-  </div>
+<a-td-layout-relation [title]="title">
 
   <div body *ngIf="person" layout-gt-md="row">
     <div flex-gt-xs="50">
@@ -19,35 +7,35 @@
         <md-divider></md-divider>
         <md-card-content>
 
-          <div *ngIf="organisation" layout="row" >
+          <div *ngIf="organisation" layout="row">
             <a [routerLink]="['../../../organisations/' + organisation.id + '/overview']">
            <a-md-static [object]="organisation" [roleType]="m.Organisation.Name" label="Organisation"></a-md-static>
            </a>
           </div>
 
-          <div layout="row" >
+          <div layout="row">
             <a-md-static [object]="person" [roleType]="m.Person.PersonRoles" display="Name"></a-md-static>
           </div>
 
-          <div layout="row" >
+          <div layout="row">
             <a-md-static [object]="person" [roleType]="m.Person.FirstName"></a-md-static>
             <a-md-static [object]="person" [roleType]="m.Person.MiddleName"></a-md-static>
             <a-md-static [object]="person" [roleType]="m.Person.LastName"></a-md-static>
           </div>
 
-          <div *ngIf="person.Gender" layout="row" >
+          <div *ngIf="person.Gender" layout="row">
             <a-md-static *ngIf="person.Gender" [object]="person" [roleType]="m.Person.Gender" display="Name"></a-md-static>
           </div>
 
-          <div *ngIf="person.Salutation" layout="row" >
+          <div *ngIf="person.Salutation" layout="row">
             <a-md-static *ngIf="person.Gender" [object]="person" [roleType]="m.Person.Salutation" display="Name"></a-md-static>
           </div>
 
-          <div *ngIf="person.Locale" layout="row" >
+          <div *ngIf="person.Locale" layout="row">
             <a-md-static [object]="person" [roleType]="m.Person.Locale" display="Name"></a-md-static>
           </div>
 
-          <div layout="row" >
+          <div layout="row">
             <p class="md-caption tc-grey-500"> last modified: {{ person.LastModifiedDate | date}} by {{ person.LastModifiedBy.displayName}}</p>
           </div>
 
@@ -99,10 +87,10 @@
                       <md-icon>more_vert</md-icon>
                     </button>
                     <md-menu x-position="before" #menu="mdMenu">
-                        <button [disabled]="!communicationEvent.CanExecuteDelete" md-menu-item (click)="delete(communicationEvent)">Delete</button>
-                        <button [disabled]="!communicationEvent.CanExecuteCancel" md-menu-item (click)="cancel(communicationEvent)">Cancel</button>
-                        <button [disabled]="!communicationEvent.CanExecuteClose" md-menu-item (click)="close(communicationEvent)">Close</button>
-                        <button [disabled]="!communicationEvent.CanExecuteReopen" md-menu-item (click)="reopen(communicationEvent)">Reopen</button>
+                        <button [disabled]="!communicationEvent.CanExecuteDelete" md-menu-item (click)="deleteCommunication(communicationEvent)">Delete</button>
+                        <button [disabled]="!communicationEvent.CanExecuteCancel" md-menu-item (click)="cancelCommunication(communicationEvent)">Cancel</button>
+                        <button [disabled]="!communicationEvent.CanExecuteClose" md-menu-item (click)="closeCommunication(communicationEvent)">Close</button>
+                        <button [disabled]="!communicationEvent.CanExecuteReopen" md-menu-item (click)="reopenCommunication(communicationEvent)">Reopen</button>
                     </md-menu>
                   </span>
 
@@ -132,12 +120,19 @@
 
         <md-divider></md-divider>
         <md-card-content>
-          <ng-template tdLoading="person.CurrentPartyContactMechanisms">
+
+          <md-radio-group [(ngModel)]="contactMechanismsCollection">
+            <md-radio-button value="Current">Current</md-radio-button>
+            <md-radio-button value="Inactive">Inactive</md-radio-button>
+            <md-radio-button value="All">All</md-radio-button>
+          </md-radio-group>
+
+          <ng-template tdLoading="contactMechanisms">
             <md-list class="will-load">
-              <div class="md-padding" *ngIf="person.CurrentPartyContactMechanisms.length === 0" layout="row" layout-align="center center">
+              <div class="md-padding" *ngIf="contactMechanisms.length === 0" layout="row" layout-align="center center">
                 <h3>No info to display.</h3>
               </div>
-              <ng-template let-partyContactMechanism let-last="last" ngFor [ngForOf]="person.CurrentPartyContactMechanisms">
+              <ng-template let-partyContactMechanism let-last="last" ngFor [ngForOf]="contactMechanisms">
                 <md-list-item>
 
                   <h3 md-line> {{partyContactMechanism.ContactPurpose?.Name}}</h3>
@@ -179,7 +174,9 @@
                           [routerLink]="['../telecom/' + partyContactMechanism.id + '/edit' ]" md-menu-item>Edit</a>
                       <a *ngIf="this.checkType(partyContactMechanism.ContactMechanism) === &quot;PostalAddress&quot;"
                           [routerLink]="['../postal/' + partyContactMechanism.id + '/edit' ]" md-menu-item>Edit</a>
-                      <!--<button md-menu-item (click)="delete(person)">Delete</button>-->
+                      <button md-menu-item (click)="removeContactMechanism(partyContactMechanism)"[disabled]="!!partyContactMechanism.ThroughDate">Remove</button>
+                      <button  md-menu-item (click)="activateContactMechanism(partyContactMechanism)"[disabled]="!partyContactMechanism.ThroughDate">Activate</button>
+                      <button md-menu-item (click)="deleteContactMechanism(partyContactMechanism.ContactMechanism)" [disabled]="!partyContactMechanism.ContactMechanism.CanExecuteDelete">Delete</button>
                   </md-menu>
               </span>
 

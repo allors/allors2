@@ -1,18 +1,6 @@
-<a-td-layout-relation>
+<a-td-layout-relation [title]="title">
 
-  <div toolbar1>
-    <a md-icon-button mdTooltip="Docs" href="https://www.inxin.com/" target="_blank">
-      <md-icon>chrome_reader_mode</md-icon>
-    </a>
-  </div>
-
-  <div toolbar2 layout="row" layout-align="start center" flex>
-    <span>Communications</span>
-    <span flex></span>
-    <button md-icon-button><md-icon class="md-24">settings</md-icon></button>
-  </div>
-
-  <md-card body tdMediaToggle="gt-xs" [mediaClasses]="['push']">
+  <md-card>
     <form #form="ngForm" *ngIf="communicationEvent" (submit)="save()">
 
       <md-card-title>Meeting</md-card-title>

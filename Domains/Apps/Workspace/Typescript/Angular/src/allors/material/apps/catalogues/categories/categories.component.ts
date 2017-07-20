@@ -38,6 +38,7 @@ export class CategoriesComponent implements AfterViewInit, OnDestroy {
 
   ngAfterViewInit(): void {
     this.titleService.setTitle('Categories');
+    this.media.broadcast();
     this.search();
   }
 

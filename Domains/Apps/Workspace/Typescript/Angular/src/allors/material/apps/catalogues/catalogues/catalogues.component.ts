@@ -39,6 +39,7 @@ export class CataloguesComponent implements AfterViewInit, OnDestroy {
 
   ngAfterViewInit(): void {
     this.titleService.setTitle('Catalogues');
+    this.media.broadcast();
     this.search();
   }
 

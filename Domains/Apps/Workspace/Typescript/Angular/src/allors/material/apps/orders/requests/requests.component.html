@@ -1,20 +1,8 @@
-<a-td-layout-order>
+<a-td-layout-order [title]="title">
 
-  <div toolbar1>
-    <a md-icon-button mdTooltip="Docs" href="https://www.inxin.com/" target="_blank">
-      <md-icon>chrome_reader_mode</md-icon>
-    </a>
-  </div>
-
-  <div toolbar2 layout="row" layout-align="start center" flex>
-    <span>Requests</span>
-    <span flex></span>
-    <button md-icon-button><md-icon class="md-24">settings</md-icon></button>
-  </div>
-
-  <md-card body tdMediaToggle="gt-xs" [mediaClasses]="['push']">
+  <md-card>
     <div class="pad-top-xs pad-left pad-right">
-       <form novalidate [formGroup]="searchForm">
+      <form novalidate [formGroup]="searchForm">
         <md-input-container>
           <input fxFlex mdInput placeholder="Organisation" formControlName="company">
           <md-icon mdSuffix>search</md-icon>
@@ -69,9 +57,9 @@
     </ng-template>
   </md-card>
 
-  <md-card body tdMediaToggle="gt-xs" [mediaClasses]="['push']" *ngIf="this.data?.length !== total">
+  <md-card body tdMediaToggle="gt-xs" [mediaClasses]="['push']" *ngIf="this.data && this.data.length !== total">
     <md-card-content>
-      <button md-button (click)="more()">More</button> {{this.data.length}}/{{total}}
+      <button md-button (click)="more()">More</button> {{this.data?.length}}/{{total}}
     </md-card-content>
   </md-card>
 

@@ -1,18 +1,6 @@
-<a-td-layout-catalogue>
+<a-td-layout-catalogue [title]="title">
 
-  <div toolbar1>
-    <a md-icon-button mdTooltip="Docs" href="https://www.inxin.com/" target="_blank">
-      <md-icon>chrome_reader_mode</md-icon>
-    </a>
-  </div>
-
-  <div toolbar2 layout="row" layout-align="start center" flex>
-    <span>Product Characteristics</span>
-    <span flex></span>
-    <button md-icon-button><md-icon class="md-24">settings</md-icon></button>
-  </div>
-
-  <md-card body tdMediaToggle="gt-xs" [mediaClasses]="['push']">
+  <md-card>
     <form #form="ngForm" *ngIf="productCharacteristic" (submit)="save()">
 
       <md-card-title>Product Characteristic Form</md-card-title>
@@ -21,7 +9,8 @@
       <md-card-content class="push-bottom-none">
 
         <div fxLayout="row wrap" fxLayoutAlign="start stretch" fxLayoutGap.gt-md="25px">
-          <a-md-localised-text  [object]="productCharacteristic" [roleType]="m.ProductCharacteristic.LocalisedNames" [locales]="locales" label="Name" [fxFlex]="flex" [fxFlex.gt-md]="flex2"></a-md-localised-text>
+          <a-md-localised-text [object]="productCharacteristic" [roleType]="m.ProductCharacteristic.LocalisedNames" [locales]="locales"
+            label="Name" [fxFlex]="flex" [fxFlex.gt-md]="flex2"></a-md-localised-text>
         </div>
 
       </md-card-content>

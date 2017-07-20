@@ -6,7 +6,7 @@ import { TdMediaService, TdDialogService } from '@covalent/core';
 
 import { MetaDomain } from '../../../../../meta';
 import { PullRequest, Fetch, Path, Query, Equals, Like, TreeNode, Sort, Page } from '../../../../../domain';
-import { CommunicationEvent, Person, Locale, Organisation, OrganisationContactRelationship } from '../../../../../domain';
+import { CommunicationEvent, ContactMechanism, Locale, Organisation, OrganisationContactRelationship, PartyContactMechanism, Person } from '../../../../../domain';
 import { AllorsService, ErrorService, Scope, Loaded, Saved, Invoked } from '../../../../../angular';
 
 @Component({
@@ -21,8 +21,14 @@ export class PersonOverviewComponent implements OnInit, AfterViewInit, OnDestroy
 
   communicationEvents: CommunicationEvent[];
 
+  title: string = 'Person overview';
   person: Person;
   organisation: Organisation;
+
+  contactMechanismsCollection: string = 'Current';
+  currentContactMechanisms: PartyContactMechanism[] = [];
+  inactiveContactMechanisms: PartyContactMechanism[] = [];
+  allContactMechanisms: PartyContactMechanism[] = [];
 
   constructor(
     private allors: AllorsService,
@@ -36,6 +42,19 @@ export class PersonOverviewComponent implements OnInit, AfterViewInit, OnDestroy
     this.scope = new Scope(allors.database, allors.workspace);
     this.m = this.allors.meta;
     this.refresh$ = new BehaviorSubject<Date>(undefined);
+  }
+
+  get contactMechanisms(): any {
+
+    switch (this.contactMechanismsCollection) {
+      case 'Current':
+        return this.currentContactMechanisms;
+      case 'Inactive':
+        return this.inactiveContactMechanisms;
+      case 'All':
+      default:
+        return this.allContactMechanisms;
+    }
   }
 
   ngOnInit(): void {
@@ -66,17 +85,54 @@ export class PersonOverviewComponent implements OnInit, AfterViewInit, OnDestroy
                 ],
               }),
               new TreeNode({
+                roleType: m.Party.PartyContactMechanisms,
+                nodes: [
+                  new TreeNode({ roleType: m.PartyContactMechanism.ContactPurposes }),
+                  new TreeNode({
+                    roleType: m.PartyContactMechanism.ContactMechanism,
+                    nodes: [
+                      new TreeNode({
+                        roleType: m.PostalAddress.PostalBoundary,
+                        nodes: [
+                          new TreeNode({ roleType: m.PostalBoundary.Country }),
+                        ],
+                      }),
+                    ],
+                  }),
+                ],
+              }),
+              new TreeNode({
                 roleType: m.Party.CurrentPartyContactMechanisms,
                 nodes: [
                   new TreeNode({ roleType: m.PartyContactMechanism.ContactPurposes }),
-                  new TreeNode({ roleType: m.PartyContactMechanism.ContactMechanism }),
+                  new TreeNode({
+                    roleType: m.PartyContactMechanism.ContactMechanism,
+                    nodes: [
+                      new TreeNode({
+                        roleType: m.PostalAddress.PostalBoundary,
+                        nodes: [
+                          new TreeNode({ roleType: m.PostalBoundary.Country }),
+                        ],
+                      }),
+                    ],
+                  }),
                 ],
               }),
               new TreeNode({
                 roleType: m.Party.InactivePartyContactMechanisms,
                 nodes: [
                   new TreeNode({ roleType: m.PartyContactMechanism.ContactPurposes }),
-                  new TreeNode({ roleType: m.PartyContactMechanism.ContactMechanism }),
+                  new TreeNode({
+                    roleType: m.PartyContactMechanism.ContactMechanism,
+                    nodes: [
+                      new TreeNode({
+                        roleType: m.PostalAddress.PostalBoundary,
+                        nodes: [
+                          new TreeNode({ roleType: m.PostalBoundary.Country }),
+                        ],
+                      }),
+                    ],
+                  }),
                 ],
               }),
               new TreeNode({
@@ -156,6 +212,10 @@ export class PersonOverviewComponent implements OnInit, AfterViewInit, OnDestroy
         const organisationContactRelationships: OrganisationContactRelationship[] = loaded.collections.organisationContactRelationships as OrganisationContactRelationship[];
         this.organisation = organisationContactRelationships.length > 0 ? organisationContactRelationships[0].Organisation as Organisation : undefined;
         this.communicationEvents = loaded.collections.communicationEvents as CommunicationEvent[];
+
+        this.currentContactMechanisms = this.person.CurrentPartyContactMechanisms as PartyContactMechanism[];
+        this.inactiveContactMechanisms = this.person.InactivePartyContactMechanisms as PartyContactMechanism[];
+        this.allContactMechanisms = this.currentContactMechanisms.concat(this.inactiveContactMechanisms);
       },
       (error: any) => {
         this.errorService.message(error);
@@ -164,12 +224,38 @@ export class PersonOverviewComponent implements OnInit, AfterViewInit, OnDestroy
     );
   }
 
-  delete(communicationEvent: CommunicationEvent): void {
+  removeContactMechanism(partyContactMechanism: PartyContactMechanism): void {
+    partyContactMechanism.ThroughDate = new Date();
+    this.scope
+      .save()
+      .subscribe((saved: Saved) => {
+        this.scope.session.reset();
+        this.refresh();
+      },
+      (error: Error) => {
+        this.errorService.dialog(error);
+      });
+  }
+
+  activateContactMechanism(partyContactMechanism: PartyContactMechanism): void {
+    partyContactMechanism.ThroughDate = undefined;
+    this.scope
+      .save()
+      .subscribe((saved: Saved) => {
+        this.scope.session.reset();
+        this.refresh();
+      },
+      (error: Error) => {
+        this.errorService.dialog(error);
+      });
+  }
+
+  deleteContactMechanism(contactMechanism: ContactMechanism): void {
     this.dialogService
       .openConfirm({ message: 'Are you sure you want to delete this?' })
       .afterClosed().subscribe((confirm: boolean) => {
         if (confirm) {
-          this.scope.invoke(communicationEvent.Delete)
+          this.scope.invoke(contactMechanism.Delete)
             .subscribe((invoked: Invoked) => {
               this.snackBar.open('Successfully deleted.', 'close', { duration: 5000 });
               this.refresh();
@@ -181,7 +267,7 @@ export class PersonOverviewComponent implements OnInit, AfterViewInit, OnDestroy
       });
   }
 
-  cancel(communicationEvent: CommunicationEvent): void {
+  cancelCommunication(communicationEvent: CommunicationEvent): void {
     this.dialogService
       .openConfirm({ message: 'Are you sure you want to cancel this?' })
       .afterClosed().subscribe((confirm: boolean) => {
@@ -198,7 +284,7 @@ export class PersonOverviewComponent implements OnInit, AfterViewInit, OnDestroy
       });
   }
 
-  close(communicationEvent: CommunicationEvent): void {
+  closeCommunication(communicationEvent: CommunicationEvent): void {
     this.dialogService
       .openConfirm({ message: 'Are you sure you want to close this?' })
       .afterClosed().subscribe((confirm: boolean) => {
@@ -215,7 +301,7 @@ export class PersonOverviewComponent implements OnInit, AfterViewInit, OnDestroy
       });
   }
 
-  reopen(communicationEvent: CommunicationEvent): void {
+  reopenCommunication(communicationEvent: CommunicationEvent): void {
     this.dialogService
       .openConfirm({ message: 'Are you sure you want to reopen this?' })
       .afterClosed().subscribe((confirm: boolean) => {
@@ -223,6 +309,23 @@ export class PersonOverviewComponent implements OnInit, AfterViewInit, OnDestroy
           this.scope.invoke(communicationEvent.Reopen)
             .subscribe((invoked: Invoked) => {
               this.snackBar.open('Successfully reopened.', 'close', { duration: 5000 });
+              this.refresh();
+            },
+            (error: Error) => {
+              this.errorService.dialog(error);
+            });
+        }
+      });
+  }
+
+  deleteCommunication(communicationEvent: CommunicationEvent): void {
+    this.dialogService
+      .openConfirm({ message: 'Are you sure you want to delete this?' })
+      .afterClosed().subscribe((confirm: boolean) => {
+        if (confirm) {
+          this.scope.invoke(communicationEvent.Delete)
+            .subscribe((invoked: Invoked) => {
+              this.snackBar.open('Successfully deleted.', 'close', { duration: 5000 });
               this.refresh();
             },
             (error: Error) => {

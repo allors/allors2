@@ -1,52 +1,46 @@
-<a-td-layout-catalogue>
+<a-td-layout-catalogue [title]="title">
 
-  <div toolbar1>
-    <a md-icon-button mdTooltip="Docs" href="https://www.inxin.com/" target="_blank">
-      <md-icon>chrome_reader_mode</md-icon>
-    </a>
-  </div>
+  <md-card>
+    <form #form="ngForm" *ngIf="good" (submit)="save()">
 
-  <div toolbar2 layout="row" layout-align="start center" flex>
-    <span>Products</span>
-    <span flex></span>
-    <button md-icon-button><md-icon class="md-24">settings</md-icon></button>
-  </div>
+      <md-card-title>Product Form</md-card-title>
 
-<md-card body tdMediaToggle="gt-xs" [mediaClasses]="['push']">
-  <form #form="ngForm" *ngIf="good" (submit)="save()" >
-
-    <md-card-title>Product Form</md-card-title>
-
-    <md-divider></md-divider>
-    <md-card-content class="push-bottom-none">
+      <md-divider></md-divider>
+      <md-card-content class="push-bottom-none">
 
         <div fxLayout="row wrap" fxLayoutAlign="start stretch" fxLayoutGap.gt-md="25px">
-        <a-md-media-upload  [object]="good" [roleType]="m.Good.PrimaryPhoto" accept="image/*" [fxFlex]="flex" [fxFlex.gt-md]="flex2"></a-md-media-upload>
-        <a-md-localised-text  [object]="good" [roleType]="m.Good.LocalisedNames" [locales]="locales" label="Name" [fxFlex]="flex" [fxFlex.gt-md]="flex2"></a-md-localised-text>
-        <a-md-localised-text  [object]="good" [roleType]="m.Good.LocalisedDescriptions" [locales]="locales" label="Description" [fxFlex]="flex" [fxFlex.gt-md]="flex2"></a-md-localised-text>
-        <a-md-localised-text  [object]="good" [roleType]="m.Good.LocalisedComments" [locales]="locales" label="Comment" [fxFlex]="flex" [fxFlex.gt-md]="flex2"></a-md-localised-text>
-        <a-md-textarea   [object]="good" [roleType]="m.Good.InternalComment" [fxFlex]="flex" [fxFlex.gt-md]="flex2"></a-md-textarea>
-        <a-md-autocomplete  [object]="good" [roleType]="m.Good.ProductType" [options]="productTypes" display="Name" [fxFlex]="flex" [fxFlex.gt-md]="flex2"></a-md-autocomplete>
-        <a-td-chips  [object]="good" [roleType]="m.Good.ProductCategories" [options]="categories" display="Name" [fxFlex]="flex" [fxFlex.gt-md]="flex2"></a-td-chips>
-        <a-md-autocomplete  [object]="good" [roleType]="m.Good.PrimaryProductCategory" [options]="categories" display="Name" [fxFlex]="flex" [fxFlex.gt-md]="flex2"></a-md-autocomplete>
-        <a-md-autocomplete  [object]="good" [roleType]="m.Good.ManufacturedBy" [filter]="manufacturersFilter.create()" display="Name" [fxFlex]="flex" [fxFlex.gt-md]="flex2"></a-md-autocomplete>
-        <a-md-input  [object]="good" [roleType]="m.Good.ArticleNumber" [fxFlex]="flex" [fxFlex.gt-md]="flex2"></a-md-input>
-        <a-md-static  [object]="good" [roleType]="m.Good.AvailableToPromise" [fxFlex]="flex" [fxFlex.gt-md]="flex2"></a-md-static>
-        <a-md-datepicker  [object]="good" [roleType]="m.Good.SalesDiscontinuationDate" [fxFlex]="flex" [fxFlex.gt-md]="flex2"></a-md-datepicker>
+          <a-md-media-upload [object]="good" [roleType]="m.Good.PrimaryPhoto" accept="image/*" [fxFlex]="flex" [fxFlex.gt-md]="flex2"></a-md-media-upload>
+          <a-md-localised-text [object]="good" [roleType]="m.Good.LocalisedNames" [locales]="locales" label="Name" [fxFlex]="flex"
+            [fxFlex.gt-md]="flex2"></a-md-localised-text>
+          <a-md-localised-text [object]="good" [roleType]="m.Good.LocalisedDescriptions" [locales]="locales" label="Description" [fxFlex]="flex"
+            [fxFlex.gt-md]="flex2"></a-md-localised-text>
+          <a-md-localised-text [object]="good" [roleType]="m.Good.LocalisedComments" [locales]="locales" label="Comment" [fxFlex]="flex"
+            [fxFlex.gt-md]="flex2"></a-md-localised-text>
+          <a-md-textarea [object]="good" [roleType]="m.Good.InternalComment" [fxFlex]="flex" [fxFlex.gt-md]="flex2"></a-md-textarea>
+          <a-md-autocomplete [object]="good" [roleType]="m.Good.ProductType" [options]="productTypes" display="Name" [fxFlex]="flex"
+            [fxFlex.gt-md]="flex2"></a-md-autocomplete>
+          <a-td-chips [object]="good" [roleType]="m.Good.ProductCategories" [options]="categories" display="Name" [fxFlex]="flex" [fxFlex.gt-md]="flex2"></a-td-chips>
+          <a-md-autocomplete [object]="good" [roleType]="m.Good.PrimaryProductCategory" [options]="categories" display="Name" [fxFlex]="flex"
+            [fxFlex.gt-md]="flex2"></a-md-autocomplete>
+          <a-md-autocomplete [object]="good" [roleType]="m.Good.ManufacturedBy" [filter]="manufacturersFilter.create()" display="Name"
+            [fxFlex]="flex" [fxFlex.gt-md]="flex2"></a-md-autocomplete>
+          <a-md-input [object]="good" [roleType]="m.Good.ArticleNumber" [fxFlex]="flex" [fxFlex.gt-md]="flex2"></a-md-input>
+          <a-md-static [object]="good" [roleType]="m.Good.AvailableToPromise" [fxFlex]="flex" [fxFlex.gt-md]="flex2"></a-md-static>
+          <a-md-datepicker [object]="good" [roleType]="m.Good.SalesDiscontinuationDate" [fxFlex]="flex" [fxFlex.gt-md]="flex2"></a-md-datepicker>
 
-        <a-md-input *ngFor="let productCharacteristicValue of productCharacteristicValues"
-                    [object]="productCharacteristicValue" [roleType]="m.ProductCharacteristicValue.Value" [label]="localisedName(productCharacteristicValue.ProductCharacteristic)"
-                    [fxFlex]="flex" [fxFlex.gt-md]="flex2"></a-md-input>
-      </div>
-    </md-card-content>
+          <a-md-input *ngFor="let productCharacteristicValue of productCharacteristicValues" [object]="productCharacteristicValue"
+            [roleType]="m.ProductCharacteristicValue.Value" [label]="localisedName(productCharacteristicValue.ProductCharacteristic)"
+            [fxFlex]="flex" [fxFlex.gt-md]="flex2"></a-md-input>
+        </div>
+      </md-card-content>
 
-    <md-divider></md-divider>
-    <md-card-actions>
-      <button md-button color="primary" type="submit">SAVE</button>
-      <button md-button (click)="goBack()" type="button">CANCEL</button>
-    </md-card-actions>
+      <md-divider></md-divider>
+      <md-card-actions>
+        <button md-button color="primary" type="submit">SAVE</button>
+        <button md-button (click)="goBack()" type="button">CANCEL</button>
+      </md-card-actions>
 
-  </form>
-</md-card>
+    </form>
+  </md-card>
 
 </a-td-layout-catalogue>

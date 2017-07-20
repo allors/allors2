@@ -38,6 +38,7 @@ export class GoodsComponent implements AfterViewInit, OnDestroy {
 
   ngAfterViewInit(): void {
     this.titleService.setTitle('Products');
+    this.media.broadcast();
     this.search();
   }
 

@@ -1,20 +1,8 @@
-<a-td-layout-relation>
+<a-td-layout-relation [title]="title">
 
-  <div toolbar1>
-    <a md-icon-button mdTooltip="Docs" href="https://www.inxin.com/" target="_blank">
-      <md-icon>chrome_reader_mode</md-icon>
-    </a>
-  </div>
-
-  <div toolbar2 layout="row" layout-align="start center" flex>
-    <span>People</span>
-    <span flex></span>
-    <button md-icon-button><md-icon class="md-24">settings</md-icon></button>
-  </div>
-
-  <md-card body tdMediaToggle="gt-xs" [mediaClasses]="['push']">
+  <md-card>
     <div class="pad-top-xs pad-left pad-right">
-       <form novalidate [formGroup]="searchForm">
+      <form novalidate [formGroup]="searchForm">
         <md-input-container>
           <input fxFlex mdInput placeholder="First Name" formControlName="firstName">
           <md-icon mdSuffix>search</md-icon>
@@ -42,7 +30,6 @@
               />
 
               <h3 md-line> {{person.PartyName}}</h3>
-              <!--<p md-line> {{person.UserEmail}} </p>-->
               <p md-line hide-gt-md class="md-caption"> last login: {{ person.LastModifiedDate | timeAgo }} </p>
 
               <span flex></span>
@@ -71,14 +58,15 @@
     </md-card-content>
   </md-card>
 
-  <md-card body tdMediaToggle="gt-xs" [mediaClasses]="['push']" *ngIf="this.data?.length !== total">
+  <md-card body tdMediaToggle="gt-xs" [mediaClasses]="['push']" *ngIf="this.data && this.data.length !== total">
     <md-card-content>
-      <button md-button (click)="more()">More</button> {{this.data.length}}/{{total}}
+      <button md-button (click)="more()">More</button> {{this.data?.length}}/{{total}}
     </md-card-content>
   </md-card>
 
+
 </a-td-layout-relation>
 
-<a md-fab color="accent" class="mat-fab-bottom-right" [routerLink]="['add']">
-  <md-icon>add</md-icon>
-</a>
+  <a md-fab color="accent" class="mat-fab-bottom-right" [routerLink]="['add']">
+    <md-icon>add</md-icon>
+  </a>

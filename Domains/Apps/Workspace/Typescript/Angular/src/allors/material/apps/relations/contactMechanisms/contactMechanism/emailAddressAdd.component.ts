@@ -7,7 +7,7 @@ import { TdMediaService } from '@covalent/core';
 
 import { MetaDomain } from '../../../../../meta/index';
 import { PullRequest, PushResponse, Fetch, Path, Query, Equals, Like, TreeNode, Sort, Page } from '../../../../../domain';
-import { Organisation, PartyContactMechanism, EmailAddress, Enumeration } from '../../../../../domain';
+import { Party, PartyContactMechanism, EmailAddress, Enumeration } from '../../../../../domain';
 import { AllorsService, ErrorService, Scope, Loaded, Saved } from '../../../../../angular';
 
 @Component({
@@ -23,7 +23,7 @@ export class EmailAddressAddComponent implements OnInit, AfterViewInit, OnDestro
 
   m: MetaDomain;
 
-  organisation: Organisation;
+  party: Party;
   partyContactMechanism: PartyContactMechanism;
   contactMechanism: EmailAddress;
   contactMechanismPurposes: Enumeration[];
@@ -47,11 +47,11 @@ export class EmailAddressAddComponent implements OnInit, AfterViewInit, OnDestro
 
         const fetch: Fetch[] = [
           new Fetch({
-            name: 'organisation',
+            name: 'party',
             id: id,
             include: [
               new TreeNode({
-                roleType: m.Organisation.PartyContactMechanisms,
+                roleType: m.Party.PartyContactMechanisms,
                 nodes: [
                   new TreeNode({ roleType: m.PartyContactMechanism.ContactPurposes }),
                   new TreeNode({ roleType: m.PartyContactMechanism.ContactMechanism }),
@@ -76,7 +76,7 @@ export class EmailAddressAddComponent implements OnInit, AfterViewInit, OnDestro
       })
       .subscribe((loaded: Loaded) => {
 
-        this.organisation = loaded.objects.organisation as Organisation;
+        this.party = loaded.objects.party as Party;
 
         if (!this.contactMechanism) {
           this.contactMechanism = this.scope.session.create('EmailAddress') as EmailAddress;
@@ -85,7 +85,7 @@ export class EmailAddressAddComponent implements OnInit, AfterViewInit, OnDestro
         this.partyContactMechanism = this.scope.session.create('PartyContactMechanism') as PartyContactMechanism;
         this.partyContactMechanism.ContactMechanism = this.contactMechanism;
 
-        this.organisation.AddPartyContactMechanism(this.partyContactMechanism);
+        this.party.AddPartyContactMechanism(this.partyContactMechanism);
 
         this.contactMechanismPurposes = loaded.collections.contactMechanismPurposes as Enumeration[];
       },

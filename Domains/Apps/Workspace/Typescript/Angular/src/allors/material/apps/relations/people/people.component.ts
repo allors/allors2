@@ -29,6 +29,8 @@ export class PeopleComponent implements AfterViewInit, OnDestroy {
   private page$: BehaviorSubject<number>;
   total: number;
 
+  title: string = 'People';
+
   searchForm: FormGroup;
 
   data: Person[];
@@ -41,7 +43,8 @@ export class PeopleComponent implements AfterViewInit, OnDestroy {
     private snackBar: MdSnackBar,
     private router: Router,
     private dialogService: TdDialogService,
-    private snackBarService: MdSnackBar) {
+    private snackBarService: MdSnackBar,
+    public media: TdMediaService) {
 
     this.scope = new Scope(allors.database, allors.workspace);
 
@@ -118,7 +121,7 @@ export class PeopleComponent implements AfterViewInit, OnDestroy {
   }
 
   ngAfterViewInit(): void {
-    this.titleService.setTitle('People');
+    this.media.broadcast();
   }
 
   ngOnDestroy(): void {

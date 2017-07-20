@@ -40,8 +40,8 @@ export class OrganisationsComponent implements AfterViewInit, OnDestroy {
     private snackBar: MdSnackBar,
     private router: Router,
     private dialogService: TdDialogService,
-    public media: TdMediaService,
-  ) {
+    public media: TdMediaService) {
+
     this.scope = new Scope(allors.database, allors.workspace);
     this.refresh$ = new BehaviorSubject<Date>(undefined);
 
@@ -140,6 +140,7 @@ export class OrganisationsComponent implements AfterViewInit, OnDestroy {
 
   ngAfterViewInit(): void {
     this.titleService.setTitle('Organisations');
+    this.media.broadcast();
   }
 
   ngOnDestroy(): void {

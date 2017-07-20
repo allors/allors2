@@ -7,7 +7,7 @@ import { TdMediaService } from '@covalent/core';
 
 import { PullRequest, PushResponse, Fetch, Path, Query, Equals, Like, TreeNode, Sort, Page } from '../../../../../domain';
 import { MetaDomain } from '../../../../../meta';
-import { Organisation, PartyContactMechanism, PostalAddress, PostalBoundary, Country, Enumeration } from '../../../../../domain';
+import { Party, PartyContactMechanism, PostalAddress, PostalBoundary, Country, Enumeration } from '../../../../../domain';
 import { AllorsService, ErrorService, Scope, Loaded, Saved } from '../../../../../angular';
 
 @Component({
@@ -23,7 +23,7 @@ export class PostalAddressAddComponent implements OnInit, AfterViewInit, OnDestr
 
   m: MetaDomain;
 
-  organisation: Organisation;
+  party: Party;
   partyContactMechanism: PartyContactMechanism;
   contactMechanism: PostalAddress;
   postalBoundary: PostalBoundary;
@@ -49,11 +49,11 @@ export class PostalAddressAddComponent implements OnInit, AfterViewInit, OnDestr
 
         const fetch: Fetch[] = [
           new Fetch({
-            name: 'organisation',
+            name: 'party',
             id: id,
             include: [
               new TreeNode({
-                roleType: m.Organisation.PartyContactMechanisms,
+                roleType: m.Party.PartyContactMechanisms,
                 nodes: [
                   new TreeNode({ roleType: m.PartyContactMechanism.ContactPurposes }),
                   new TreeNode({
@@ -93,7 +93,7 @@ export class PostalAddressAddComponent implements OnInit, AfterViewInit, OnDestr
       })
       .subscribe((loaded: Loaded) => {
 
-        this.organisation = loaded.objects.organisation as Organisation;
+        this.party = loaded.objects.party as Party;
 
         if (!this.contactMechanism) {
           this.contactMechanism = this.scope.session.create('PostalAddress') as PostalAddress;
@@ -104,7 +104,7 @@ export class PostalAddressAddComponent implements OnInit, AfterViewInit, OnDestr
         this.partyContactMechanism = this.scope.session.create('PartyContactMechanism') as PartyContactMechanism;
         this.partyContactMechanism.ContactMechanism = this.contactMechanism;
 
-        this.organisation.AddPartyContactMechanism(this.partyContactMechanism);
+        this.party.AddPartyContactMechanism(this.partyContactMechanism);
 
         this.contactMechanismPurposes = loaded.collections.contactMechanismPurposes as Enumeration[];
         this.countries = loaded.collections.countries as Country[];

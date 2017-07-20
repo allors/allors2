@@ -31,5 +31,13 @@ namespace Allors.Domain
                 derivation.AddDependency(partyContactMechanism, @this);
             }
         }
+
+        public static void AppsDelete(this ContactMechanism @this, DeletableDelete method)
+        {
+            foreach (PartyContactMechanism partyContactMechanism in @this.PartyContactMechanismsWhereContactMechanism)
+            {
+                partyContactMechanism.Delete();
+            }
+        }
     }
 }
