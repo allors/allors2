@@ -23,6 +23,7 @@ interface SearchData {
 })
 export class RequestsComponent implements AfterViewInit, OnDestroy {
 
+  private refresh$: BehaviorSubject<Date>;
   private subscription: Subscription;
   private scope: Scope;
 
@@ -31,6 +32,7 @@ export class RequestsComponent implements AfterViewInit, OnDestroy {
 
   searchForm: FormGroup;
 
+  title: string = 'Requests';
   data: Request[];
   filtered: Request[];
 
@@ -44,6 +46,7 @@ export class RequestsComponent implements AfterViewInit, OnDestroy {
     public media: TdMediaService,
   ) {
     this.scope = new Scope(allors.database, allors.workspace);
+    this.refresh$ = new BehaviorSubject<Date>(undefined);
 
     this.searchForm = this.formBuilder.group({
       requestNumber: [''],

@@ -1,80 +1,87 @@
-<a-td-layout-relation [title]="title">
+<md-toolbar>
+  <div layout="row" layout-align="start center" flex>
+    <button md-icon-button tdLayoutManageListOpen [hideWhenOpened]="true" style="display: none">
+          <md-icon>arrow_back</md-icon>
+        </button>
+    <span>{{title}}</span>
+    <span flex></span>
+    <button md-icon-button><md-icon>settings</md-icon></button>
+  </div>
+</md-toolbar>
 
-  <div body *ngIf="request" layout-gt-md="row">
-    <div flex-gt-xs="50">
-      <md-card tdMediaToggle="gt-xs" [mediaClasses]="['push']">
-        <md-card-title>Request for Quote</md-card-title>
-        <md-divider></md-divider>
-        <md-card-content>
+<div body *ngIf="request" layout-gt-md="row">
+  <div flex-gt-xs="50">
+    <md-card tdMediaToggle="gt-xs" [mediaClasses]="['push']">
+      <md-card-title>Request for Quote</md-card-title>
+      <md-divider></md-divider>
+      <md-card-content>
 
-          <div layout="row">
-            <a-md-static [object]="request" [roleType]="m.Request.CurrentObjectState" display="Name" label="Status"></a-md-static>
-          </div>
-          <div layout="row">
-            <a-md-static [object]="request" [roleType]="m.Request.RequestNumber"></a-md-static>
-          </div>
-          <div layout="row">
-            <a [routerLink]="['/relations/organisations/' + request.Originator.id + '/overview']">
+        <div layout="row">
+          <a-md-static [object]="request" [roleType]="m.Request.CurrentObjectState" display="Name" label="Status"></a-md-static>
+        </div>
+        <div layout="row">
+          <a-md-static [object]="request" [roleType]="m.Request.RequestNumber"></a-md-static>
+        </div>
+        <div layout="row">
+          <a [routerLink]="['/relations/organisations/' + request.Originator.id + '/overview']">
             <a-md-static [object]="request" [roleType]="m.Request.Originator"  display="displayName" label="From"></a-md-static>
               </a>
-          </div>
-          <div *ngIf="request.FullfillContactMechanism" layout="row">
-            <a-md-static [object]="request" [roleType]="m.Request.FullfillContactMechanism" display="displayName" label="Reply to"></a-md-static>
-          </div>
-          <div *ngIf="request.Comment" layout="row">
-            <a-md-textarea [object]="request" [roleType]="m.Request.Comment" disabled="true"></a-md-textarea>
-          </div>
-          <div *ngIf="request.InternalComment" layout="row">
-            <a-md-textarea [object]="request" [roleType]="m.Request.InternalComment" disabled="true"></a-md-textarea>
-          </div>
-          <div *ngIf="request.RequestDate" layout="row">
-            <a-md-static [object]="request" [roleType]="m.Request.RequestDate"></a-md-static>
-          </div>
-          <div *ngIf="request.RequiredResponseDate" layout="row">
-            <a-md-static [object]="request" [roleType]="m.Request.RequiredResponseDate"></a-md-static>
-          </div>
-          <div layout="row">
-            <p class="md-caption tc-grey-500"> created: {{ request.CreationDate | date}} by {{ request.CreatedBy.displayName}}</p>
-          </div>
-          <div layout="row">
-            <p class="md-caption tc-grey-500"> last modified: {{ request.LastModifiedDate | date}} by {{ request.LastModifiedBy.displayName}}</p>
-          </div>
+        </div>
+        <div *ngIf="request.FullfillContactMechanism" layout="row">
+          <a-md-static [object]="request" [roleType]="m.Request.FullfillContactMechanism" display="displayName" label="Reply to"></a-md-static>
+        </div>
+        <div *ngIf="request.Comment" layout="row">
+          <a-md-textarea [object]="request" [roleType]="m.Request.Comment" disabled="true"></a-md-textarea>
+        </div>
+        <div *ngIf="request.InternalComment" layout="row">
+          <a-md-textarea [object]="request" [roleType]="m.Request.InternalComment" disabled="true"></a-md-textarea>
+        </div>
+        <div *ngIf="request.RequestDate" layout="row">
+          <a-md-static [object]="request" [roleType]="m.Request.RequestDate"></a-md-static>
+        </div>
+        <div *ngIf="request.RequiredResponseDate" layout="row">
+          <a-md-static [object]="request" [roleType]="m.Request.RequiredResponseDate"></a-md-static>
+        </div>
+        <div layout="row">
+          <p class="md-caption tc-grey-500"> created: {{ request.CreationDate | date}} by {{ request.CreatedBy.displayName}}</p>
+        </div>
+        <div layout="row">
+          <p class="md-caption tc-grey-500"> last modified: {{ request.LastModifiedDate | date}} by {{ request.LastModifiedBy.displayName}}</p>
+        </div>
 
-        </md-card-content>
+      </md-card-content>
 
-        <md-divider></md-divider>
-        <md-card-actions>
-          <button md-button [routerLink]="[ '../edit']">Edit</button>
-        </md-card-actions>
-      </md-card>
-    </div>
+      <md-divider></md-divider>
+      <md-card-actions>
+        <button md-button [routerLink]="[ '../edit']">Edit</button>
+      </md-card-actions>
+    </md-card>
+  </div>
 
-    <div flex-gt-xs="50">
-      <md-card tdMediaToggle="gt-xs" [mediaClasses]="['push']">
-        <md-card-title>Status History</md-card-title>
-        <md-divider></md-divider>
-        <md-card-content>
+  <div flex-gt-xs="50">
+    <md-card tdMediaToggle="gt-xs" [mediaClasses]="['push']">
+      <md-card-title>Status History</md-card-title>
+      <md-divider></md-divider>
+      <md-card-content>
 
-          <ng-template tdLoading="request.RequestStatuses">
-            <md-list class="will-load">
+        <ng-template tdLoading="request.RequestStatuses">
+          <md-list class="will-load">
 
-              <ng-template let-status let-last="last" ngFor [ngForOf]="request.RequestStatuses">
-                <md-list-item>
-                  <p md-line class="md-caption">{{ status.RequestObjectState.Name }} </p>
-                  <p md-line hide-gt-md class="md-caption"> Start DateTime: {{ status.StartDateTime }} </p>
+            <ng-template let-status let-last="last" ngFor [ngForOf]="request.RequestStatuses">
+              <md-list-item>
+                <p md-line class="md-caption">{{ status.RequestObjectState.Name }} </p>
+                <p md-line hide-gt-md class="md-caption"> Start DateTime: {{ status.StartDateTime }} </p>
 
-                  <span hide-xs hide-sm hide-md flex-gt-xs="60" flex-xs="40" layout-gt-xs="row">
+                <span hide-xs hide-sm hide-md flex-gt-xs="60" flex-xs="40" layout-gt-xs="row">
                   <div class="md-caption tc-grey-500" flex-gt-xs="50"> Start DateTime: {{ status.StartDateTime }}</div>
                   </span>
 
-                </md-list-item>
-              </ng-template>
-            </md-list>
-          </ng-template>
-        </md-card-content>
+              </md-list-item>
+            </ng-template>
+          </md-list>
+        </ng-template>
+      </md-card-content>
 
-      </md-card>
-    </div>
+    </md-card>
   </div>
-
-</a-td-layout-relation>
+</div>

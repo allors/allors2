@@ -1,6 +1,6 @@
+// Routing
 import { LayoutComponent } from './layout.component';
 
-// Routing
 import { EmailAddressAddComponent } from './contactMechanisms/contactMechanism/emailAddressAdd.component';
 import { EmailAddressEditComponent } from './contactMechanisms/contactMechanism/emailAddressEdit.component';
 import { EmailAddressInlineComponent } from './contactMechanisms/contactMechanism/emailAddress-inline.component';
@@ -28,10 +28,10 @@ import { WebAddressAddComponent } from './contactMechanisms/contactMechanism/web
 import { WebAddressEditComponent } from './contactMechanisms/contactMechanism/webAddressEdit.component';
 
 export const RELATIONS: any[] = [
-  LayoutComponent,
 ];
 
 export const RELATIONS_ROUTING: any[] = [
+  LayoutComponent,
   EmailAddressAddComponent, EmailAddressEditComponent, EmailAddressInlineComponent, EmailCommunicationFormComponent, FaceToFaceCommunicationFormComponent, LetterCorrespondenceFormComponent,
   OrganisationAddContactComponent, OrganisationEditContactComponent, OrganisationFormComponent, OrganisationOverviewComponent, OrganisationsComponent,
   PeopleComponent, PersonFormComponent, PersonInlineComponent, PersonOverviewComponent, PhoneCommunicationFormComponent,
@@ -43,6 +43,7 @@ export const RELATIONS_ROUTING: any[] = [
 
 export {
   // Routing
+  LayoutComponent,
   EmailAddressAddComponent,
   EmailAddressEditComponent,
   EmailCommunicationFormComponent,

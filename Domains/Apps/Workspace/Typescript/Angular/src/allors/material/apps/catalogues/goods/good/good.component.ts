@@ -25,6 +25,7 @@ export class GoodFormComponent implements OnInit, AfterViewInit, OnDestroy {
 
   good: Good;
 
+  title: string;
   singleton: Singleton;
   locales: Locale[];
   categories: ProductCategory[];
@@ -36,13 +37,13 @@ export class GoodFormComponent implements OnInit, AfterViewInit, OnDestroy {
   manufacturersFilter: Filter;
 
   constructor(
-    private allorsService: AllorsService,
+    private allors: AllorsService,
     private errorService: ErrorService,
     private route: ActivatedRoute,
     public media: TdMediaService) {
 
-    this.scope = new Scope(allorsService.database, allorsService.workspace);
-    this.m = this.allorsService.meta;
+    this.scope = new Scope(allors.database, allors.workspace);
+    this.m = this.allors.meta;
     this.manufacturersFilter = new Filter(this.scope, this.m.Organisation, [this.m.Organisation.Name]);
   }
 
@@ -120,6 +121,7 @@ export class GoodFormComponent implements OnInit, AfterViewInit, OnDestroy {
               this.good = this.scope.session.create('Good') as Good;
             }
 
+            this.title = this.good.Name;
             this.categories = loaded.collections.categories as ProductCategory[];
             this.productTypes = loaded.collections.productTypes as ProductType[];
             this.singleton = loaded.collections.singletons[0] as Singleton;

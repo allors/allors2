@@ -1,5 +1,6 @@
-import { LayoutComponent } from './layout.component';
 // Routing
+import { LayoutComponent } from './layout.component';
+
 import { CatalogueDashboardComponent } from './dashboard/catalogue-dashboard.component';
 import { CatalogueFormComponent } from './catalogues/catalogue/catalogue.component';
 import { CataloguesComponent } from './catalogues/catalogues.component';
@@ -13,10 +14,10 @@ import { ProductCharacteristicFormComponent } from './productCharacteristics/pro
 import { ProductCharacteristicsComponent } from './productcharacteristics/productcharacteristics.component';
 
 export const CATALOGUES: any[] = [
-  LayoutComponent,
 ];
 
 export const CATALOGUES_ROUTING: any[] = [
+  LayoutComponent,
   CatalogueDashboardComponent,
   CatalogueFormComponent,
   CataloguesComponent,
@@ -32,6 +33,7 @@ export const CATALOGUES_ROUTING: any[] = [
 
 export {
   // Routing
+  LayoutComponent,
   CatalogueDashboardComponent,
   CatalogueFormComponent,
   CataloguesComponent,

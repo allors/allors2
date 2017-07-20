@@ -26,6 +26,9 @@ export class OrganisationsComponent implements AfterViewInit, OnDestroy {
   private scope: Scope;
 
   private page$: BehaviorSubject<number>;
+
+  title: string = 'Organisations';
+
   total: number;
 
   searchForm: FormGroup;

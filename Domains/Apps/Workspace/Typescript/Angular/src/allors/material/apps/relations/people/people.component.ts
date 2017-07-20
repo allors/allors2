@@ -46,6 +46,7 @@ export class PeopleComponent implements AfterViewInit, OnDestroy {
     private snackBarService: MdSnackBar,
     public media: TdMediaService) {
 
+    titleService.setTitle(this.title);
     this.scope = new Scope(allors.database, allors.workspace);
 
     this.searchForm = this.formBuilder.group({

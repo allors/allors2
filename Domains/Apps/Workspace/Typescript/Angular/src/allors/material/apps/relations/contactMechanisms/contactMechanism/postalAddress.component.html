@@ -1,37 +1,44 @@
-<a-td-layout-relation [title]="title">
+<md-toolbar>
+  <div layout="row" layout-align="start center" flex>
+    <button md-icon-button tdLayoutManageListOpen [hideWhenOpened]="true" style="display: none">
+          <md-icon>arrow_back</md-icon>
+        </button>
+    <span>{{title}}</span>
+    <span flex></span>
+    <button md-icon-button><md-icon>settings</md-icon></button>
+  </div>
+</md-toolbar>
 
-  <md-card>
-    <form #form="ngForm" *ngIf="contactMechanism" (submit)="save()">
+<md-card>
+  <form #form="ngForm" *ngIf="contactMechanism" (submit)="save()">
 
-      <md-card-title>Postal address Contact Form</md-card-title>
-      <md-divider></md-divider>
-      <md-card-content class="push-bottom-none">
+    <md-card-title>Postal address Contact Form</md-card-title>
+    <md-divider></md-divider>
+    <md-card-content class="push-bottom-none">
 
-        <div fxLayout="row wrap" fxLayoutAlign="start stretch" fxLayoutGap.gt-md="25px">
-          <a-td-chips [object]="partyContactMechanism" [roleType]="m.PartyContactMechanism.ContactPurposes" [options]="contactMechanismPurposes"
-            display="Name" label="Contact purposes" [fxFlex]="flex" [fxFlex.gt-md]="flex2"></a-td-chips>
-          <a-md-input [object]="contactMechanism" [roleType]="m.PostalAddress.Address1" label="Address line 1" [fxFlex]="flex" [fxFlex.gt-md]="flex2"></a-md-input>
-          <a-md-input [object]="contactMechanism" [roleType]="m.PostalAddress.Address2" label="Address line 2" [fxFlex]="flex" [fxFlex.gt-md]="flex2"></a-md-input>
-          <a-md-input [object]="contactMechanism" [roleType]="m.PostalAddress.Address3" label="Address line 3" [fxFlex]="flex" [fxFlex.gt-md]="flex2"></a-md-input>
-          <a-md-input [object]="contactMechanism.PostalBoundary" [roleType]="m.PostalBoundary?.Locality" label="City" [fxFlex]="flex"
-            [fxFlex.gt-md]="flex2"></a-md-input>
-          <a-md-input [object]="contactMechanism.PostalBoundary" [roleType]="m.PostalBoundary?.PostalCode" label="Postal code" [fxFlex]="flex"
-            [fxFlex.gt-md]="flex2"></a-md-input>
-          <a-md-autocomplete [object]="contactMechanism.PostalBoundary" [roleType]="m.PostalBoundary?.Country" [options]="countries"
-            display="Name" [fxFlex]="flex" [fxFlex.gt-md]="flex2"></a-md-autocomplete>
-          <a-md-slide-toggle [object]="partyContactMechanism" [roleType]="m.PartyContactMechanism.UseAsDefault" label="Use as default"
-            [fxFlex]="flex" [fxFlex.gt-md]="flex2"></a-md-slide-toggle>
-        </div>
+      <div fxLayout="row wrap" fxLayoutAlign="start stretch" fxLayoutGap.gt-md="25px">
+        <a-td-chips [object]="partyContactMechanism" [roleType]="m.PartyContactMechanism.ContactPurposes" [options]="contactMechanismPurposes"
+          display="Name" label="Contact purposes" [fxFlex]="flex" [fxFlex.gt-md]="flex2"></a-td-chips>
+        <a-md-input [object]="contactMechanism" [roleType]="m.PostalAddress.Address1" label="Address line 1" [fxFlex]="flex" [fxFlex.gt-md]="flex2"></a-md-input>
+        <a-md-input [object]="contactMechanism" [roleType]="m.PostalAddress.Address2" label="Address line 2" [fxFlex]="flex" [fxFlex.gt-md]="flex2"></a-md-input>
+        <a-md-input [object]="contactMechanism" [roleType]="m.PostalAddress.Address3" label="Address line 3" [fxFlex]="flex" [fxFlex.gt-md]="flex2"></a-md-input>
+        <a-md-input [object]="contactMechanism.PostalBoundary" [roleType]="m.PostalBoundary?.Locality" label="City" [fxFlex]="flex"
+          [fxFlex.gt-md]="flex2"></a-md-input>
+        <a-md-input [object]="contactMechanism.PostalBoundary" [roleType]="m.PostalBoundary?.PostalCode" label="Postal code" [fxFlex]="flex"
+          [fxFlex.gt-md]="flex2"></a-md-input>
+        <a-md-autocomplete [object]="contactMechanism.PostalBoundary" [roleType]="m.PostalBoundary?.Country" [options]="countries"
+          display="Name" [fxFlex]="flex" [fxFlex.gt-md]="flex2"></a-md-autocomplete>
+        <a-md-slide-toggle [object]="partyContactMechanism" [roleType]="m.PartyContactMechanism.UseAsDefault" label="Use as default"
+          [fxFlex]="flex" [fxFlex.gt-md]="flex2"></a-md-slide-toggle>
+      </div>
 
-      </md-card-content>
+    </md-card-content>
 
-      <md-divider></md-divider>
-      <md-card-actions>
-        <button md-button color="primary" type="submit">SAVE</button>
-        <button md-button (click)="goBack()" type="button">CANCEL</button>
-      </md-card-actions>
+    <md-divider></md-divider>
+    <md-card-actions>
+      <button md-button color="primary" type="submit">SAVE</button>
+      <button md-button (click)="goBack()" type="button">CANCEL</button>
+    </md-card-actions>
 
-    </form>
-  </md-card>
-
-</a-td-layout-relation>
+  </form>
+</md-card>

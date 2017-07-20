@@ -18,6 +18,7 @@ export class RequestOverviewComponent implements OnInit, AfterViewInit, OnDestro
   private scope: Scope;
   m: MetaDomain;
 
+  title: string = 'Requests Overview';
   request: Request;
 
   constructor(
@@ -46,26 +47,33 @@ export class RequestOverviewComponent implements OnInit, AfterViewInit, OnDestro
             include: [
               new TreeNode({ roleType: m.Request.Originator }),
               new TreeNode({ roleType: m.Request.CurrentObjectState }),
-              new TreeNode({ roleType: m.Request.CurrentRequestStatus }),
-              new TreeNode({ roleType: m.Request.FullfillContactMechanism }),
               new TreeNode({ roleType: m.Request.CreatedBy }),
               new TreeNode({ roleType: m.Request.LastModifiedBy }),
+              new TreeNode({
+                roleType: m.Request.RequestStatuses,
+                nodes: [
+                  new TreeNode({ roleType: m.RequestStatus.RequestObjectState }),
+                ],
+               }),
+              new TreeNode({
+                roleType: m.Request.FullfillContactMechanism,
+                nodes: [
+                  new TreeNode({
+                    roleType: m.PostalAddress.PostalBoundary,
+                    nodes: [
+                      new TreeNode({ roleType: m.PostalBoundary.Country }),
+                    ],
+                  }),
+                ],
+               }),
             ],
           }),
-        ];
-
-        const query: Query[] = [
-          new Query(
-            {
-              name: 'countries',
-              objectType: m.Country,
-            }),
         ];
 
         this.scope.session.reset();
 
         return this.scope
-          .load('Pull', new PullRequest({ fetch: fetch, query: query }));
+          .load('Pull', new PullRequest({ fetch: fetch  }));
       })
       .subscribe((loaded: Loaded) => {
         this.request = loaded.objects.request as Request;

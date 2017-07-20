@@ -1,56 +1,63 @@
-<a-td-layout-relation [title]="title">
+<md-toolbar>
+  <div layout="row" layout-align="start center" flex>
+    <button md-icon-button tdLayoutManageListOpen [hideWhenOpened]="true" style="display: none">
+          <md-icon>arrow_back</md-icon>
+        </button>
+    <span>{{title}}</span>
+    <span flex></span>
+    <button md-icon-button><md-icon>settings</md-icon></button>
+  </div>
+</md-toolbar>
 
-  <md-card>
-    <form #form="ngForm" *ngIf="communicationEvent" (submit)="save()">
+<md-card>
+  <form #form="ngForm" *ngIf="communicationEvent" (submit)="save()">
 
-      <md-card-title>Meeting</md-card-title>
+    <md-card-title>Meeting</md-card-title>
 
-      <md-divider></md-divider>
-      <md-card-content class="push-bottom-none">
+    <md-divider></md-divider>
+    <md-card-content class="push-bottom-none">
 
-        <div fxLayout="row wrap" fxLayoutAlign="start stretch" fxLayoutGap.gt-md="25px">
-          <div *ngIf="communicationEvent.CurrentObjectState" [fxFlex]="flex" [fxFlex.gt-md]="flex2">
-            <a-md-static [object]="communicationEvent" [roleType]="m.CommunicationEvent.CurrentObjectState" display="Name" label="Status"></a-md-static>
-            <button *ngIf="communicationEvent.CanExecuteClose" md-button type="button" (click)="close()">Close</button>
-            <button *ngIf="communicationEvent.CanExecuteCancel" md-button type="button" (click)="cancel()">Cancel</button>
-            <button *ngIf="communicationEvent.CanExecuteReopen" md-button type="button" (click)="reopen()">Reopen</button>
-          </div>
-
-          <a-td-chips [object]="communicationEvent" [roleType]="m.FaceToFaceCommunication.EventPurposes" [options]="purposes" display="Name"
-            [fxFlex]="flex" [fxFlex.gt-md]="flex2"></a-td-chips>
-
-          <div [fxFlex]="flex" [fxFlex.gt-md]="flex2">
-            <div fxLayout="row">
-              <a-td-chips fxFlex [object]="communicationEvent" [roleType]="m.FaceToFaceCommunication.Participants" [options]="contacts"
-                display="PartyName"></a-td-chips>
-              <button *ngIf="PartyIsOrganisation" fxFlex type="button" md-icon-button (click)="addParticipant = true"><md-icon>person_add</md-icon></button>
-            </div>
-
-            <div *ngIf="addParticipant" style="background: orange">
-              <person-inline fxLayout="row wrap" fxLayoutAlign="start stretch" fxLayoutGap.gt-md="25px" (cancelled)="participantCancelled($event)"
-                (saved)="participantAdded($event)">
-              </person-inline>
-            </div>
-          </div>
-
-          <a-md-input [object]="communicationEvent" [roleType]="m.FaceToFaceCommunication.Location" [fxFlex]="flex" [fxFlex.gt-md]="flex2"></a-md-input>
-          <a-md-input [object]="communicationEvent" [roleType]="m.FaceToFaceCommunication.Subject" [fxFlex]="flex" [fxFlex.gt-md]="flex2"></a-md-input>
-          <a-md-textarea [object]="communicationEvent" [roleType]="m.FaceToFaceCommunication.Note" [fxFlex]="flex" [fxFlex.gt-md]="flex2"></a-md-textarea>
-          <a-md-datepicker [object]="communicationEvent" [roleType]="m.CommunicationEvent.ScheduledStart" [fxFlex]="flex" [fxFlex.gt-md]="flex2"></a-md-datepicker>
-          <a-md-datepicker [object]="communicationEvent" [roleType]="m.CommunicationEvent.ScheduledEnd" [fxFlex]="flex" [fxFlex.gt-md]="flex2"></a-md-datepicker>
-          <a-md-datepicker [object]="communicationEvent" [roleType]="m.CommunicationEvent.ActualStart" [fxFlex]="flex" [fxFlex.gt-md]="flex2"></a-md-datepicker>
-          <a-md-datepicker [object]="communicationEvent" [roleType]="m.CommunicationEvent.ActualEnd" [fxFlex]="flex" [fxFlex.gt-md]="flex2"></a-md-datepicker>
+      <div fxLayout="row wrap" fxLayoutAlign="start stretch" fxLayoutGap.gt-md="25px">
+        <div *ngIf="communicationEvent.CurrentObjectState" [fxFlex]="flex" [fxFlex.gt-md]="flex2">
+          <a-md-static [object]="communicationEvent" [roleType]="m.CommunicationEvent.CurrentObjectState" display="Name" label="Status"></a-md-static>
+          <button *ngIf="communicationEvent.CanExecuteClose" md-button type="button" (click)="close()">Close</button>
+          <button *ngIf="communicationEvent.CanExecuteCancel" md-button type="button" (click)="cancel()">Cancel</button>
+          <button *ngIf="communicationEvent.CanExecuteReopen" md-button type="button" (click)="reopen()">Reopen</button>
         </div>
 
-      </md-card-content>
+        <a-td-chips [object]="communicationEvent" [roleType]="m.FaceToFaceCommunication.EventPurposes" [options]="purposes" display="Name"
+          [fxFlex]="flex" [fxFlex.gt-md]="flex2"></a-td-chips>
 
-      <md-divider></md-divider>
-      <md-card-actions>
-        <button md-button color="primary" type="submit">SAVE</button>
-        <button md-button (click)="goBack()" type="button">CANCEL</button>
-      </md-card-actions>
+        <div [fxFlex]="flex" [fxFlex.gt-md]="flex2">
+          <div fxLayout="row">
+            <a-td-chips fxFlex [object]="communicationEvent" [roleType]="m.FaceToFaceCommunication.Participants" [options]="contacts"
+              display="PartyName"></a-td-chips>
+            <button *ngIf="PartyIsOrganisation" fxFlex type="button" md-icon-button (click)="addParticipant = true"><md-icon>person_add</md-icon></button>
+          </div>
 
-    </form>
-  </md-card>
+          <div *ngIf="addParticipant" style="background: orange">
+            <person-inline fxLayout="row wrap" fxLayoutAlign="start stretch" fxLayoutGap.gt-md="25px" (cancelled)="participantCancelled($event)"
+              (saved)="participantAdded($event)">
+            </person-inline>
+          </div>
+        </div>
 
-</a-td-layout-relation>
+        <a-md-input [object]="communicationEvent" [roleType]="m.FaceToFaceCommunication.Location" [fxFlex]="flex" [fxFlex.gt-md]="flex2"></a-md-input>
+        <a-md-input [object]="communicationEvent" [roleType]="m.FaceToFaceCommunication.Subject" [fxFlex]="flex" [fxFlex.gt-md]="flex2"></a-md-input>
+        <a-md-textarea [object]="communicationEvent" [roleType]="m.FaceToFaceCommunication.Note" [fxFlex]="flex" [fxFlex.gt-md]="flex2"></a-md-textarea>
+        <a-md-datepicker [object]="communicationEvent" [roleType]="m.CommunicationEvent.ScheduledStart" [fxFlex]="flex" [fxFlex.gt-md]="flex2"></a-md-datepicker>
+        <a-md-datepicker [object]="communicationEvent" [roleType]="m.CommunicationEvent.ScheduledEnd" [fxFlex]="flex" [fxFlex.gt-md]="flex2"></a-md-datepicker>
+        <a-md-datepicker [object]="communicationEvent" [roleType]="m.CommunicationEvent.ActualStart" [fxFlex]="flex" [fxFlex.gt-md]="flex2"></a-md-datepicker>
+        <a-md-datepicker [object]="communicationEvent" [roleType]="m.CommunicationEvent.ActualEnd" [fxFlex]="flex" [fxFlex.gt-md]="flex2"></a-md-datepicker>
+      </div>
+
+    </md-card-content>
+
+    <md-divider></md-divider>
+    <md-card-actions>
+      <button md-button color="primary" type="submit">SAVE</button>
+      <button md-button (click)="goBack()" type="button">CANCEL</button>
+    </md-card-actions>
+
+  </form>
+</md-card>

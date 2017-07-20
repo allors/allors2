@@ -1,20 +1,36 @@
-<a-td-layout-catalogue [title]="title">
+<md-toolbar>
+  <div layout="row" layout-align="start center" flex>
+    <button md-icon-button tdLayoutManageListOpen [hideWhenOpened]="true" style="display: none">
+          <md-icon>arrow_back</md-icon>
+        </button>
+    <span>{{title}}</span>
+    <span flex></span>
+    <button md-icon-button><md-icon>settings</md-icon></button>
+  </div>
+</md-toolbar>
 
-  <md-card>
-    <md-card-content>
-      <td-search-box class="push-left push-right" placeholder="search" [alwaysVisible]="true" (searchDebounce)="search($event)"></td-search-box>
-      <md-divider></md-divider>
-      <ng-template tdLoading="data">
-        <md-list class="will-load">
-          <div class="md-padding" *ngIf="data && data.length === 0" layout="row" layout-align="center center">
-            <h3>No characteristics to display.</h3>
-          </div>
-          <ng-template let-characteristic let-last="last" ngFor [ngForOf]="data">
-            <md-list-item>
+<md-card>
+  <div class="pad-top-xs pad-left pad-right">
+    <form novalidate [formGroup]="searchForm">
+      <md-input-container>
+        <input fxFlex mdInput placeholder="Name" formControlName="name">
+        <md-icon mdSuffix>search</md-icon>
+      </md-input-container>
+    </form>
+  </div>
 
-              <h3 md-line> {{characteristic.Name}}</h3>
+  <md-divider></md-divider>
+    <ng-template tdLoading="data">
+      <md-list class="will-load">
+        <div class="md-padding" *ngIf="data && data.length === 0" layout="row" layout-align="center center">
+          <h3>No characteristics to display.</h3>
+        </div>
+        <ng-template let-characteristic let-last="last" ngFor [ngForOf]="data">
+          <md-list-item>
 
-              <span>
+            <h3 md-line> {{characteristic.Name}}</h3>
+
+            <span>
                 <button md-icon-button [md-menu-trigger-for]="menu">
                 <md-icon>more_vert</md-icon>
                 </button>
@@ -24,16 +40,18 @@
                 </md-menu>
               </span>
 
-            </md-list-item>
-            <md-divider *ngIf="!last" md-inset></md-divider>
-          </ng-template>
-        </md-list>
+          </md-list-item>
+          <md-divider *ngIf="!last" md-inset></md-divider>
       </ng-template>
+    </md-list>
+  </ng-template>
+</md-card>
 
-    </md-card-content>
-  </md-card>
-
-</a-td-layout-catalogue>
+<md-card body tdMediaToggle="gt-xs" [mediaClasses]="['push']" *ngIf="this.data && this.data.length !== total">
+  <md-card-content>
+    <button md-button (click)="more()">More</button> {{this.data?.length}}/{{total}}
+  </md-card-content>
+</md-card>
 
 <a md-fab color="accent" class="mat-fab-bottom-right" [routerLink]="['add']">
   <md-icon>add</md-icon>

@@ -1,9 +1,9 @@
-import { Observable, Subject, Subscription } from 'rxjs/Rx';
+import { Observable, BehaviorSubject, Subject, Subscription } from 'rxjs/Rx';
 import { Component, OnInit, AfterViewInit, OnDestroy } from '@angular/core';
 import { Validators } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router, UrlSegment } from '@angular/router';
 import { MdSnackBar, MdSnackBarConfig } from '@angular/material';
-import { TdMediaService } from '@covalent/core';
+import { TdMediaService, TdDialogService } from '@covalent/core';
 
 import { MetaDomain } from '../../../../../meta';
 import { PullRequest, PushResponse, Contains, Fetch, Path, Query, Equals, Like, TreeNode, Sort, Page } from '../../../../../domain';
@@ -11,13 +11,14 @@ import {
   Currency, Organisation, Party, Person, PartyContactMechanism, ContactMechanism,
   OrganisationRole, PersonRole, RequestForQuote,
 } from '../../../../../domain';
-import { AllorsService, ErrorService, Scope, Loaded, Saved, Filter } from '../../../../../angular';
+import { AllorsService, ErrorService, Scope, Loaded, Saved, Filter, Invoked } from '../../../../../angular';
 
 @Component({
   templateUrl: './request.component.html',
 })
 export class RequestFormComponent implements OnInit, AfterViewInit, OnDestroy {
 
+  private refresh$: BehaviorSubject<Date>;
   private subscription: Subscription;
   private scope: Scope;
 
@@ -26,6 +27,7 @@ export class RequestFormComponent implements OnInit, AfterViewInit, OnDestroy {
 
   m: MetaDomain;
 
+  title: string;
   request: RequestForQuote;
   people: Person[];
   organisations: Organisation[];
@@ -48,10 +50,13 @@ export class RequestFormComponent implements OnInit, AfterViewInit, OnDestroy {
     private errorService: ErrorService,
     private router: Router,
     private route: ActivatedRoute,
+    private snackBar: MdSnackBar,
+    private dialogService: TdDialogService,
     public media: TdMediaService) {
 
     this.scope = new Scope(allorsService.database, allorsService.workspace);
     this.m = this.allorsService.meta;
+    this.refresh$ = new BehaviorSubject<Date>(undefined);
 
     this.peopleFilter = new Filter(this.scope, this.m.Person, [this.m.Person.FirstName, this.m.Person.LastName]);
     this.organisationsFilter = new Filter(this.scope, this.m.Organisation, [this.m.Organisation.Name]);
@@ -59,8 +64,12 @@ export class RequestFormComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.subscription = this.route.url
-      .switchMap((url: any) => {
+    const route$: Observable<UrlSegment[]> = this.route.url;
+
+    const combined$: Observable<[UrlSegment[], Date]> = Observable.combineLatest(route$, this.refresh$);
+
+    this.subscription = combined$
+      .switchMap(([urlSegments, date]: [UrlSegment[], Date]) => {
 
         const id: string = this.route.snapshot.paramMap.get('id');
         const m: MetaDomain = this.m;
@@ -133,12 +142,188 @@ export class RequestFormComponent implements OnInit, AfterViewInit, OnDestroy {
 
         this.organisations = loaded.collections.organisations as Organisation[];
         this.people = loaded.collections.parties as Person[];
+        this.title = 'Request from: ' + this.request.Originator.PartyName;
       },
       (error: Error) => {
         this.errorService.message(error);
         this.goBack();
       },
     );
+  }
+
+  submit(): void {
+    const submitFn: () => void = () => {
+      this.scope.invoke(this.request.Submit)
+        .subscribe((invoked: Invoked) => {
+          this.refresh();
+          this.snackBar.open('Successfully submitted.', 'close', { duration: 5000 });
+        },
+        (error: Error) => {
+          this.errorService.dialog(error);
+        });
+    };
+
+    if (this.scope.session.hasChanges) {
+      this.dialogService
+        .openConfirm({ message: 'Save changes?' })
+        .afterClosed().subscribe((confirm: boolean) => {
+          if (confirm) {
+            this.scope
+              .save()
+              .subscribe((saved: Saved) => {
+                this.scope.session.reset();
+                submitFn();
+              },
+              (error: Error) => {
+                this.errorService.dialog(error);
+              });
+          } else {
+            submitFn();
+          }
+        });
+    } else {
+      submitFn();
+    }
+  }
+
+  complete(): void {
+    const completeFn: () => void = () => {
+      this.scope.invoke(this.request.Complete)
+        .subscribe((invoked: Invoked) => {
+          this.refresh();
+          this.snackBar.open('Successfully completed.', 'close', { duration: 5000 });
+        },
+        (error: Error) => {
+          this.errorService.dialog(error);
+        });
+    };
+
+    if (this.scope.session.hasChanges) {
+      this.dialogService
+        .openConfirm({ message: 'Save changes?' })
+        .afterClosed().subscribe((confirm: boolean) => {
+          if (confirm) {
+            this.scope
+              .save()
+              .subscribe((saved: Saved) => {
+                this.scope.session.reset();
+                completeFn();
+              },
+              (error: Error) => {
+                this.errorService.dialog(error);
+              });
+          } else {
+            completeFn();
+          }
+        });
+    } else {
+      completeFn();
+    }
+  }
+
+  cancel(): void {
+    const cancelFn: () => void = () => {
+      this.scope.invoke(this.request.Cancel)
+        .subscribe((invoked: Invoked) => {
+          this.refresh();
+          this.snackBar.open('Successfully cancelled.', 'close', { duration: 5000 });
+        },
+        (error: Error) => {
+          this.errorService.dialog(error);
+        });
+    };
+
+    if (this.scope.session.hasChanges) {
+      this.dialogService
+        .openConfirm({ message: 'Save changes?' })
+        .afterClosed().subscribe((confirm: boolean) => {
+          if (confirm) {
+            this.scope
+              .save()
+              .subscribe((saved: Saved) => {
+                this.scope.session.reset();
+                cancelFn();
+              },
+              (error: Error) => {
+                this.errorService.dialog(error);
+              });
+          } else {
+            cancelFn();
+          }
+        });
+    } else {
+      cancelFn();
+    }
+  }
+
+  hold(): void {
+    const holdFn: () => void = () => {
+      this.scope.invoke(this.request.Hold)
+        .subscribe((invoked: Invoked) => {
+          this.refresh();
+          this.snackBar.open('Successfully held.', 'close', { duration: 5000 });
+        },
+        (error: Error) => {
+          this.errorService.dialog(error);
+        });
+    };
+
+    if (this.scope.session.hasChanges) {
+      this.dialogService
+        .openConfirm({ message: 'Save changes?' })
+        .afterClosed().subscribe((confirm: boolean) => {
+          if (confirm) {
+            this.scope
+              .save()
+              .subscribe((saved: Saved) => {
+                this.scope.session.reset();
+                holdFn();
+              },
+              (error: Error) => {
+                this.errorService.dialog(error);
+              });
+          } else {
+            holdFn();
+          }
+        });
+    } else {
+      holdFn();
+    }
+  }
+
+  reject(): void {
+    const rejectFn: () => void = () => {
+      this.scope.invoke(this.request.Reject)
+        .subscribe((invoked: Invoked) => {
+          this.refresh();
+          this.snackBar.open('Successfully rejected.', 'close', { duration: 5000 });
+        },
+        (error: Error) => {
+          this.errorService.dialog(error);
+        });
+    };
+
+    if (this.scope.session.hasChanges) {
+      this.dialogService
+        .openConfirm({ message: 'Save changes?' })
+        .afterClosed().subscribe((confirm: boolean) => {
+          if (confirm) {
+            this.scope
+              .save()
+              .subscribe((saved: Saved) => {
+                this.scope.session.reset();
+                rejectFn();
+              },
+              (error: Error) => {
+                this.errorService.dialog(error);
+              });
+          } else {
+            rejectFn();
+          }
+        });
+    } else {
+      rejectFn();
+    }
   }
 
   ngAfterViewInit(): void {
@@ -198,6 +383,10 @@ export class RequestFormComponent implements OnInit, AfterViewInit, OnDestroy {
         this.goBack();
       },
     );
+  }
+
+  refresh(): void {
+    this.refresh$.next(new Date());
   }
 
   goBack(): void {
