@@ -17,6 +17,8 @@ export class OrganisationsComponent implements AfterViewInit, OnDestroy {
   private subscription: Subscription;
   private scope: Scope;
 
+  title: string;
+
   data: Organisation[];
 
   constructor(
@@ -25,8 +27,12 @@ export class OrganisationsComponent implements AfterViewInit, OnDestroy {
     private titleService: Title,
     private router: Router,
     private dialogService: TdDialogService,
-    private loadingService: TdLoadingService) {
-    this.scope = new Scope(allorsService.database, allorsService.workspace);
+    private loadingService: TdLoadingService,
+    public media: TdMediaService) {
+
+      this.title = 'Organisation';
+      this.titleService.setTitle(this.title);
+      this.scope = new Scope(allorsService.database, allorsService.workspace);
   }
 
   goBack(): void {
@@ -34,7 +40,6 @@ export class OrganisationsComponent implements AfterViewInit, OnDestroy {
   }
 
   ngAfterViewInit(): void {
-    this.titleService.setTitle('Organisations');
     this.search();
   }
 

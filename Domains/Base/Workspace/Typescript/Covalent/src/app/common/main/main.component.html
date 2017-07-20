@@ -1,0 +1,15 @@
+<td-layout>
+  <td-navigation-drawer flex sidenavTitle="Covalent" logo="assets:covalent" name="Firstname Lastname" email="firstname.lastname@company.com">
+    <md-nav-list>
+      <a *ngFor="let item of routes" md-list-item [routerLink]="item.route" routerLinkActive="active-link"><md-icon>{{item.icon}}</md-icon>{{item.title}}</a>
+    </md-nav-list>
+    <div td-navigation-drawer-menu>
+      <md-nav-list>
+        <a *ngFor="let item of usermenu" md-list-item><md-icon>{{item.icon}}</md-icon>{{item.title}}</a>
+      </md-nav-list>
+    </div>
+  </td-navigation-drawer>
+
+  <router-outlet></router-outlet>
+
+</td-layout>

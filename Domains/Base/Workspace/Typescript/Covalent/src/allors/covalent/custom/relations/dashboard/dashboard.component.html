@@ -1,20 +1,19 @@
-<relations [title]="title">
-
-  <div primary-toolbar>
-    <a md-icon-button><md-icon>help</md-icon></a>
+<md-toolbar>
+  <div layout="row" layout-align="start center" flex>
+    <button md-icon-button tdLayoutManageListOpen [hideWhenOpened]="true" style="display: none">
+          <md-icon>arrow_back</md-icon>
+        </button>
+    <span>{{title}}</span>
+    <span flex></span>
+    <button md-icon-button><md-icon>settings</md-icon></button>
   </div>
+</md-toolbar>
 
-  <!-- <div secondary-toolbar>
-    <a md-icon-button><md-icon>settings</md-icon></a>
-  </div> -->
-
-  <md-card>
-    <md-card-title>Blah Blah</md-card-title>
-    <md-card-subtitle>blah blah blah blah</md-card-subtitle>
-    <md-divider></md-divider>
-    <md-card-content>
-      more blah blah
-    </md-card-content>
-  </md-card>
-
-</relations>
+<md-card>
+  <md-card-title>Blah Blah</md-card-title>
+  <md-card-subtitle>blah blah blah blah</md-card-subtitle>
+  <md-divider></md-divider>
+  <md-card-content>
+    more blah blah
+  </md-card-content>
+</md-card>

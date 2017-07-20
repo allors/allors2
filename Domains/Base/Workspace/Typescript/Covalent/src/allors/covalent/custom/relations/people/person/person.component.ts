@@ -2,6 +2,7 @@ import { Observable, Subject, Subscription } from 'rxjs/Rx';
 import { Component, OnInit, AfterViewInit, OnDestroy } from '@angular/core';
 import { Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
+import { Title } from '@angular/platform-browser';
 import { TdMediaService, TdDialogService } from '@covalent/core';
 
 import { MetaDomain } from '../../../../../meta/index';
@@ -17,6 +18,8 @@ export class PersonComponent implements OnInit, AfterViewInit, OnDestroy {
   private subscription: Subscription;
   private scope: Scope;
 
+  title: string;
+
   flex: string = '100%';
   flex2: string = `calc(50%-25px)`;
 
@@ -27,9 +30,13 @@ export class PersonComponent implements OnInit, AfterViewInit, OnDestroy {
   constructor(
     private allorsService: AllorsService,
     private errorService: ErrorService,
+    private titleService: Title,
     private route: ActivatedRoute,
     private media: TdMediaService) {
 
+
+    this.title = 'Person';
+    this.titleService.setTitle(this.title);
     this.scope = new Scope(allorsService.database, allorsService.workspace);
     this.m = this.allorsService.meta;
   }

@@ -17,6 +17,8 @@ export class PeopleComponent implements AfterViewInit, OnDestroy {
   private subscription: Subscription;
   private scope: Scope;
 
+  title: string;
+
   data: Person[];
 
   constructor(
@@ -25,7 +27,11 @@ export class PeopleComponent implements AfterViewInit, OnDestroy {
     private titleService: Title,
     private router: Router,
     private dialogService: TdDialogService,
-    private loadingService: TdLoadingService) {
+    private loadingService: TdLoadingService,
+    public media: TdMediaService) {
+
+    this.title = 'Person';
+    this.titleService.setTitle(this.title);
     this.scope = new Scope(allorsService.database, allorsService.workspace);
   }
 
@@ -34,8 +40,8 @@ export class PeopleComponent implements AfterViewInit, OnDestroy {
   }
 
   ngAfterViewInit(): void {
-    this.titleService.setTitle('People');
     this.search();
+    this.media.broadcast();
   }
 
   ngOnDestroy(): void {

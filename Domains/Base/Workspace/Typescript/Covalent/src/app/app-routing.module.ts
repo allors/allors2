@@ -3,6 +3,7 @@ import { Routes, RouterModule } from '@angular/router';
 
 import { AuthenticationService } from '../allors/angular';
 import { LoginComponent } from './common/auth/login.component';
+import { MainComponent } from './common/main/main.component';
 
 import * as relations from '../allors/covalent/custom/relations';
 
@@ -13,10 +14,10 @@ const routes: Routes = [
   { path: '', redirectTo: '/relations', pathMatch: 'full', },
   {
     canActivate: [AuthenticationService],
-    path: '',
+    path: '', component: MainComponent,
     children: [
       {
-        path: 'relations',
+        path: 'relations', component: relations.RelationsComponent,
         children: [
           {
             path: '', component: relations.DashboardComponent,
@@ -54,5 +55,6 @@ const routes: Routes = [
 export class AppRoutingModule { }
 export const routedComponents: any[] = [
   LoginComponent,
+  MainComponent,
   RELATIONS_ROUTING,
 ];

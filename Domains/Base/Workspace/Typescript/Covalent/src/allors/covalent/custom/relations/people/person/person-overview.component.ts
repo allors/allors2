@@ -1,6 +1,7 @@
 import { Observable, Subject, Subscription } from 'rxjs/Rx';
 import { Component, OnInit, AfterViewInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { Title } from '@angular/platform-browser';
 import { TdMediaService } from '@covalent/core';
 
 import { MetaDomain } from '../../../../../meta';
@@ -16,16 +17,20 @@ export class PersonOverviewComponent implements OnInit, AfterViewInit, OnDestroy
   private subscription: Subscription;
   private scope: Scope;
   m: MetaDomain;
-
   person: Person;
   locales: Locale[];
+
+  title: string;
 
   constructor(
     private allorsService: AllorsService,
     private errorService: ErrorService,
+    private titleService: Title,
     private route: ActivatedRoute,
     public media: TdMediaService) {
 
+    this.title = 'Person';
+    this.titleService.setTitle(this.title);
     this.scope = new Scope(allorsService.database, allorsService.workspace);
     this.m = this.allorsService.meta;
   }
@@ -43,7 +48,7 @@ export class PersonOverviewComponent implements OnInit, AfterViewInit, OnDestroy
             name: 'person',
             id: id,
             include: [
-              new TreeNode({roleType: m.Person.Locale}),
+              new TreeNode({ roleType: m.Person.Locale }),
             ],
           }),
         ];
@@ -60,7 +65,7 @@ export class PersonOverviewComponent implements OnInit, AfterViewInit, OnDestroy
         this.errorService.message(error);
         this.goBack();
       },
-      );
+    );
   }
 
   ngAfterViewInit(): void {

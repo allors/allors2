@@ -1,5 +1,6 @@
 import { Observable, Subject, Subscription } from 'rxjs/Rx';
 import { Component, OnInit, AfterViewInit, OnDestroy } from '@angular/core';
+import { Title } from '@angular/platform-browser';
 import { ActivatedRoute } from '@angular/router';
 import { TdMediaService } from '@covalent/core';
 
@@ -15,6 +16,9 @@ export class OrganisationOverviewComponent implements OnInit, AfterViewInit, OnD
 
   private subscription: Subscription;
   private scope: Scope;
+
+  title: string;
+
   m: MetaDomain;
 
   organisation: Organisation;
@@ -23,9 +27,12 @@ export class OrganisationOverviewComponent implements OnInit, AfterViewInit, OnD
   constructor(
     private allorsService: AllorsService,
     private errorService: ErrorService,
+    private titleService: Title,
     private route: ActivatedRoute,
     public media: TdMediaService) {
 
+    this.title = 'Organisation';
+    this.titleService.setTitle(this.title);
     this.scope = new Scope(allorsService.database, allorsService.workspace);
     this.m = this.allorsService.meta;
   }
@@ -43,8 +50,8 @@ export class OrganisationOverviewComponent implements OnInit, AfterViewInit, OnD
             name: 'organisation',
             id: id,
             include: [
-              new TreeNode({roleType: m.Organisation.Owner}),
-              new TreeNode({roleType: m.Organisation.Employees}),
+              new TreeNode({ roleType: m.Organisation.Owner }),
+              new TreeNode({ roleType: m.Organisation.Employees }),
             ],
           }),
         ];
@@ -61,7 +68,7 @@ export class OrganisationOverviewComponent implements OnInit, AfterViewInit, OnD
         this.errorService.message(error);
         this.goBack();
       },
-      );
+    );
   }
 
   ngAfterViewInit(): void {

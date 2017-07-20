@@ -1,4 +1,15 @@
-<md-card body tdMediaToggle="gt-xs" [mediaClasses]="['push']">
+<md-toolbar>
+  <div layout="row" layout-align="start center" flex>
+    <button md-icon-button tdLayoutManageListOpen [hideWhenOpened]="true" style="display: none">
+          <md-icon>arrow_back</md-icon>
+        </button>
+    <span>{{title}}</span>
+    <span flex></span>
+    <button md-icon-button><md-icon>settings</md-icon></button>
+  </div>
+</md-toolbar>
+
+<md-card>
   <form #form="ngForm" *ngIf="organisation" (submit)="save()">
     <md-card-content class="push-bottom-none">
 

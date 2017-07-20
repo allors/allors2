@@ -6,15 +6,13 @@ import { TdMediaService } from '@covalent/core';
 @Component({
   templateUrl: './dashboard.component.html',
 })
-export class DashboardComponent implements AfterViewInit {
+export class DashboardComponent {
 
-  title = 'Dashboard';
+  title: string;
 
   constructor(public media: TdMediaService, private titleService: Title) {
-      this.titleService.setTitle(this.title);
-  }
 
-  ngAfterViewInit(): void {
-      this.media.broadcast();
+      this.title = 'Dashboard';
+      this.titleService.setTitle(this.title);
   }
 }
