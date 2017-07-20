@@ -43,6 +43,7 @@ namespace Allors.Repository
         [Required]
         [Unique]
         [Size(256)]
+        [Workspace]
         public string IsoCode { get; set; }
 
         #region Allors
@@ -54,6 +55,7 @@ namespace Allors.Repository
         [Required]
         [Unique]
         [Size(256)]
+        [Workspace]
         public string Name { get; set; }
 
         #region Allors
@@ -65,6 +67,7 @@ namespace Allors.Repository
         [Required]
         // [Unique] If Unique is enabled then make sure your database supports the range of unicode characters (e.g. use collation 'Latin1_General_100_CI_AS_SC' in sql server)
         [Size(256)]
+        [Workspace]
         public string NativeName { get; set; }
 
         #region Allors
@@ -74,6 +77,7 @@ namespace Allors.Repository
         #endregion
         [Multiplicity(Multiplicity.OneToMany)]
         [Indexed]
+        [Workspace]
         public LocalisedText[] LocalisedNames { get; set; }
 
         #region inherited methods

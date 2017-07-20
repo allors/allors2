@@ -86,6 +86,18 @@ namespace Allors.Repository
         public ProductType ProductType { get; set; }
 
         #region Allors
+        [Id("30C81CF6-6295-44C4-ACDD-2A408DA3DC6D")]
+        [AssociationId("9D3328E6-EE12-4A59-B664-967EB5DC6612")]
+        [RoleId("E6010C20-764F-4FD6-BB0B-A5B57B59C840")]
+        #endregion
+        [Derived]
+        [Required]
+        [Precision(19)]
+        [Scale(2)]
+        [Workspace]
+        public decimal QuantityOnHand { get; set; }
+
+        #region Allors
         [Id("04cd1e20-a031-4a4f-9f40-6debb52b002c")]
         [AssociationId("4441b31a-7807-41c6-803b-aeacd18e2867")]
         [RoleId("8dc2ddca-4ae2-48b9-92db-ac68f2f5542e")]

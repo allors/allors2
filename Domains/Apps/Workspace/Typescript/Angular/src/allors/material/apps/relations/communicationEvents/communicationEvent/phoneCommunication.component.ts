@@ -22,12 +22,11 @@ export class PhoneCommunicationFormComponent implements OnInit, AfterViewInit, O
   private subscription: Subscription;
   private scope: Scope;
 
+  title: string = 'Phone call';
+
   addCaller: boolean = false;
   addReceiver: boolean = false;
   addPhoneNumber: boolean = false;
-
-  flex: string = '100%';
-  flex2: string = `calc(50%-25px)`;
 
   m: MetaDomain;
 

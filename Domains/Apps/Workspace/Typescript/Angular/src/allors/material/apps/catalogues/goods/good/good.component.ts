@@ -28,11 +28,12 @@ export class GoodFormComponent implements OnInit, AfterViewInit, OnDestroy {
   title: string;
   singleton: Singleton;
   locales: Locale[];
+  selectedLocaleName: string;
   categories: ProductCategory[];
   productTypes: ProductType[];
-  locale: Locale;
   productCharacteristicValues: ProductCharacteristicValue[];
   manufacturers: Organisation[];
+  actualQuantityOnHand: number;
 
   manufacturersFilter: Filter;
 
@@ -45,6 +46,10 @@ export class GoodFormComponent implements OnInit, AfterViewInit, OnDestroy {
     this.scope = new Scope(allors.database, allors.workspace);
     this.m = this.allors.meta;
     this.manufacturersFilter = new Filter(this.scope, this.m.Organisation, [this.m.Organisation.Name]);
+  }
+
+  get locale(): Locale {
+    return this.locales.find((v: Locale) => v.Name === this.selectedLocaleName);
   }
 
   ngOnInit(): void {
@@ -90,7 +95,13 @@ export class GoodFormComponent implements OnInit, AfterViewInit, OnDestroy {
               name: 'singletons',
               objectType: this.m.Singleton,
               include: [
-                new TreeNode({ roleType: m.Singleton.Locales }),
+                new TreeNode({
+                  roleType: m.Singleton.Locales,
+                  nodes: [
+                    new TreeNode({ roleType: m.Locale.Language }),
+                    new TreeNode({ roleType: m.Locale.Country }),
+                  ],
+                 }),
               ],
             }),
           new Query(
@@ -122,13 +133,12 @@ export class GoodFormComponent implements OnInit, AfterViewInit, OnDestroy {
             }
 
             this.title = this.good.Name;
+            this.actualQuantityOnHand = this.good.QuantityOnHand;
             this.categories = loaded.collections.categories as ProductCategory[];
             this.productTypes = loaded.collections.productTypes as ProductType[];
             this.singleton = loaded.collections.singletons[0] as Singleton;
             this.locales = this.singleton.Locales;
-
-            this.locale = this.singleton.DefaultLocale;
-            // this.locale = this.locales.find(v => v.Name === 'en-GB');
+            this.selectedLocaleName = this.singleton.DefaultLocale.Name;
 
             this.setProductCharacteristicValues();
 

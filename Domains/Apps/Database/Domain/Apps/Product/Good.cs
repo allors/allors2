@@ -77,6 +77,7 @@ namespace Allors.Domain
 
             this.DeriveVirtualProductPriceComponent();
             this.DeriveProductCategoriesExpanded();
+            this.DeriveQuantityOnHand();
             this.DeriveAvailableToPromise();
             this.DeriveThumbnail();
             this.Sync();
@@ -130,6 +131,20 @@ namespace Allors.Domain
                 foreach (ProductCategory ancestor in productCategory.Ancestors)
                 {
                     this.AddProductCategoriesExpanded(ancestor);
+                }
+            }
+        }
+
+        public void DeriveQuantityOnHand()
+        {
+            this.QuantityOnHand = 0;
+
+            foreach (InventoryItem inventoryItem in this.InventoryItemsWhereGood)
+            {
+                if (inventoryItem is NonSerializedInventoryItem)
+                {
+                    var nonSerialized = (NonSerializedInventoryItem)inventoryItem;
+                    this.QuantityOnHand += nonSerialized.QuantityOnHand;
                 }
             }
         }
