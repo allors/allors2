@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------------------------------------------
-// <copyright file="ObjectBuilder.cs" company="Allors bvba">
+// <copyright file="ObjectBuilder`1.cs" company="Allors bvba">
 //   Copyright 2002-2017 Allors bvba.
 //
 // Dual Licensed under
@@ -70,7 +70,7 @@ namespace Allors
                 var instance = this.session.Create<T>();
                 this.OnBuild(instance);
 
-                instance.OnBuild();
+                instance.OnBuild(x => x.WithBuilder(this));
                 instance.OnPostBuild();
 
                 this.built = true;

@@ -22,5 +22,12 @@ namespace Allors.Domain
 {
     public partial class ObjectOnBuild
     {
+        public IObjectBuilder Builder { get; private set; }
+
+        public ObjectOnBuild WithBuilder(IObjectBuilder builder)
+        {
+            this.Builder = builder;
+            return this;
+        }
     }
 }

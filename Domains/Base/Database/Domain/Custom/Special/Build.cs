@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------------------------------------------
-// <copyright file="One.cs" company="Allors bvba">
+// <copyright file="Build.cs" company="Allors bvba">
 //   Copyright 2002-2016 Allors bvba.
 // 
 // Dual Licensed under
