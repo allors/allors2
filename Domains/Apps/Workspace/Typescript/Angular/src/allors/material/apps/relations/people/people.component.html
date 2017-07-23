@@ -53,7 +53,7 @@
           <md-icon>more_vert</md-icon>
           </button>
           <md-menu x-position="before" #menu="mdMenu">
-          <a [routerLink]="[person.id + '/overview']" md-menu-item>Details</a>
+          <a [routerLink]="[person.id]" md-menu-item>Details</a>
           <button  md-menu-item (click)="delete(person)" [disabled]="!person.CanExecuteDelete">Delete</button>
           </md-menu>
           </span>

@@ -1,5 +1,5 @@
 import { Observable, BehaviorSubject, Subject, Subscription } from 'rxjs/Rx';
-import { Component, OnInit, AfterViewInit, OnDestroy, ViewChild } from '@angular/core';
+import { Component, OnInit, AfterViewInit, OnDestroy, ViewChild, ChangeDetectorRef } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Title } from '@angular/platform-browser';
@@ -41,6 +41,7 @@ export class PeopleComponent implements AfterViewInit, OnDestroy {
     private formBuilder: FormBuilder,
     private titleService: Title,
     private snackBar: MdSnackBar,
+    private changeDetectorRef: ChangeDetectorRef,
     private router: Router,
     private dialogService: TdDialogService,
     private snackBarService: MdSnackBar,
@@ -123,6 +124,7 @@ export class PeopleComponent implements AfterViewInit, OnDestroy {
 
   ngAfterViewInit(): void {
     this.media.broadcast();
+    this.changeDetectorRef.detectChanges();
   }
 
   ngOnDestroy(): void {

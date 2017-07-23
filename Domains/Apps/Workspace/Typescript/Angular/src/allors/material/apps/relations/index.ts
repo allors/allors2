@@ -1,5 +1,6 @@
 // Routing
-import { LayoutComponent } from './layout.component';
+import { ViewComponent } from './view.component';
+import { EditComponent } from './edit.component';
 
 import { EmailAddressAddComponent } from './contactMechanisms/contactMechanism/emailAddressAdd.component';
 import { EmailAddressEditComponent } from './contactMechanisms/contactMechanism/emailAddressEdit.component';
@@ -31,7 +32,7 @@ export const RELATIONS: any[] = [
 ];
 
 export const RELATIONS_ROUTING: any[] = [
-  LayoutComponent,
+  ViewComponent, EditComponent,
   EmailAddressAddComponent, EmailAddressEditComponent, EmailAddressInlineComponent, EmailCommunicationFormComponent, FaceToFaceCommunicationFormComponent, LetterCorrespondenceFormComponent,
   OrganisationAddContactComponent, OrganisationEditContactComponent, OrganisationFormComponent, OrganisationOverviewComponent, OrganisationsComponent,
   PeopleComponent, PersonFormComponent, PersonInlineComponent, PersonOverviewComponent, PhoneCommunicationFormComponent,
@@ -43,7 +44,8 @@ export const RELATIONS_ROUTING: any[] = [
 
 export {
   // Routing
-  LayoutComponent,
+  ViewComponent,
+  EditComponent,
   EmailAddressAddComponent,
   EmailAddressEditComponent,
   EmailCommunicationFormComponent,
