@@ -26,21 +26,22 @@ namespace Allors.Repository
         [Id("54bbdb5d-74b9-4ac7-b638-b1ef4a210b6e")]
         [AssociationId("91713efa-721d-43b7-99dd-ec7681456781")]
         [RoleId("dafa5322-4905-40fa-ae14-ae5ee80f0f1c")]
+        [Indexed]
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
-        [Indexed]
         [Required]
-
+        [Workspace]
         public Person Professional { get; set; }
+
         #region Allors
         [Id("93cb0818-2599-4652-addd-4a1032d5dde9")]
         [AssociationId("2d5c955f-4bd5-43d2-a8f4-3df03ef6b78b")]
         [RoleId("c42be8db-6e5a-459c-afbc-39bcac3e1eb2")]
+        [Indexed]
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
-        [Indexed]
         [Required]
-
+        [Workspace]
         public WorkEffort Assignment { get; set; }
 
 
@@ -63,6 +64,5 @@ namespace Allors.Repository
 
         public void Delete(){}
         #endregion
-
     }
 }

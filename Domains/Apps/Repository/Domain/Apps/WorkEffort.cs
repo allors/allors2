@@ -10,6 +10,113 @@ namespace Allors.Repository
     public partial interface WorkEffort : Transitional, UniquelyIdentifiable, Deletable, Auditable 
     {
         #region Allors
+        [Id("97a874e9-10ef-43fb-80d2-10e0974bb3a1")]
+        [AssociationId("29df5d80-5baf-436c-b4ae-48f2f0dad2fd")]
+        [RoleId("bf8f5058-dd2c-439d-bf7c-879ab69a2ca1")]
+        #endregion
+        [Size(256)]
+        [Workspace]
+        string Name { get; set; }
+
+        #region Allors
+        [Id("bac1939b-8cf8-4b18-862c-4c2dc0a591e5")]
+        [AssociationId("7172728e-29d2-498f-bea9-da8ab04a1ae5")]
+        [RoleId("60306059-f537-4fd6-9d31-7b502f39662e")]
+        #endregion
+        [Required]
+        [Size(4096)]
+        [Workspace]
+        string Description { get; set; }
+
+        #region Allors
+        [Id("d71aaad8-20ba-4e7f-a4f8-da43e372e202")]
+        [AssociationId("a1a70f42-fba3-451c-8241-a854a4dba7e2")]
+        [RoleId("e6d3f9cb-5465-44e2-92bf-0844c6dfe806")]
+        [Indexed]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Required]
+        [Workspace]
+        WorkEffortObjectState CurrentObjectState { get; set; }
+        
+        #region Allors
+        [Id("858e42df-d775-4eec-b029-343e8b094311")]
+        [AssociationId("7abda175-3c95-46c7-b7a9-35aafca3df1c")]
+        [RoleId("0490c978-ec91-4418-a5cc-bb014b428dcf")]
+        [Indexed]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Workspace]
+        Priority Priority { get; set; }
+
+        #region Allors
+        [Id("6af30dd9-7f3b-47e7-a929-7ecd28b9b53f")]
+        [AssociationId("74684daa-d716-4af7-b819-0ab224077eac")]
+        [RoleId("e4485ae7-5156-4b97-aaa2-fe7fe6f80699")]
+        [Indexed]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToMany)]
+        [Workspace]
+        WorkEffortPurpose[] WorkEffortPurposes { get; set; }
+
+        #region Allors
+        [Id("30645381-bb0c-4782-a9cc-388c7406456d")]
+        [AssociationId("1187cb7d-4346-4089-b02c-b834a3ff8dca")]
+        [RoleId("754b32ab-f426-41a9-87c1-b701f7952d15")]
+        #endregion
+        [Indexed]
+        [Workspace]
+        DateTime ActualCompletion { get; set; }
+
+        #region Allors
+        [Id("aedad096-b297-47b7-98e4-69c6dde9b128")]
+        [AssociationId("13208331-e72f-4adb-9e78-c6ba7b68ce65")]
+        [RoleId("e23b0aa8-8b02-4274-826c-af140683ad22")]
+        #endregion
+        [Indexed]
+        [Workspace]
+        DateTime ScheduledStart { get; set; }
+
+        #region Allors
+        [Id("e189f9fc-fe3c-44af-985a-cdc3e749e25c")]
+        [AssociationId("9747c7a3-7f5c-4660-9cb3-3635acd954a0")]
+        [RoleId("25dcbbaa-c53a-44de-b248-46b9ec5dfed2")]
+        #endregion
+        [Indexed]
+        [Workspace]
+        DateTime ScheduledCompletion { get; set; }
+
+        #region Allors
+        [Id("b6213705-ed58-4597-9939-a058b89610f8")]
+        [AssociationId("4ad69693-3a44-4403-abed-43fd6f208348")]
+        [RoleId("21381f45-898c-4622-9e26-039cb49a9eaa")]
+        #endregion
+        [Precision(19)]
+        [Scale(2)]
+        [Workspace]
+        decimal ActualHours { get; set; }
+
+        #region Allors
+        [Id("ebd0daa8-ab45-4390-89f7-3bc89faecdfb")]
+        [AssociationId("db761f6b-63e2-41fc-a5d9-1d80daa12fbe")]
+        [RoleId("149d4820-8630-42a0-9458-18671fb09071")]
+        #endregion
+        [Precision(19)]
+        [Scale(2)]
+        [Workspace]
+        decimal EstimatedHours { get; set; }
+        
+        #region Allors
+        [Id("39c8b84f-6925-41f7-aecf-2d73481746cc")]
+        [AssociationId("736b0da0-facc-48ed-a2a2-2d67257c733b")]
+        [RoleId("05694786-18d6-4694-9e37-90f804bab984")]
+        #endregion
+        [Multiplicity(Multiplicity.OneToMany)]
+        [Derived]
+        [Indexed]
+        WorkEffortStatus[] WorkEffortStatuses { get; set; }
+
+        #region Allors
         [Id("039032fa-478b-443f-a58f-0f128e044a4e")]
         [AssociationId("48a38f55-f593-405a-b716-cc1eab4ee18c")]
         [RoleId("f9c76b7a-ff9c-4948-a84e-0d8ae1d22740")]
@@ -73,14 +180,6 @@ namespace Allors.Repository
         WorkEffort[] Children { get; set; }
         
         #region Allors
-        [Id("30645381-bb0c-4782-a9cc-388c7406456d")]
-        [AssociationId("1187cb7d-4346-4089-b02c-b834a3ff8dca")]
-        [RoleId("754b32ab-f426-41a9-87c1-b701f7952d15")]
-        #endregion
-        [Indexed]
-        DateTime ActualCompletion { get; set; }
-        
-        #region Allors
         [Id("3081fa56-272c-43d6-a54c-ad70cb233034")]
         [AssociationId("171d3338-5b58-4776-87de-a0b934e15a0a")]
         [RoleId("3c24f9fa-1ada-42f8-8fe1-90c244189254")]
@@ -88,17 +187,6 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
         OrderItem OrderItemFulfillment { get; set; }
-        
-        #region Allors
-        [Id("39c8b84f-6925-41f7-aecf-2d73481746cc")]
-        [AssociationId("736b0da0-facc-48ed-a2a2-2d67257c733b")]
-        [RoleId("05694786-18d6-4694-9e37-90f804bab984")]
-        #endregion
-        [Multiplicity(Multiplicity.OneToMany)]
-        [Derived]
-        [Indexed]
-        WorkEffortStatus[] WorkEffortStatuses { get; set; }
-
 
         #region Allors
         [Id("3bebd379-65a9-445e-898e-8913c26b94e6")]
@@ -117,33 +205,7 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.ManyToMany)]
         [Indexed]
         InventoryItem[] InventoryItemsProduced { get; set; }
-        
-        #region Allors
-        [Id("6af30dd9-7f3b-47e7-a929-7ecd28b9b53f")]
-        [AssociationId("74684daa-d716-4af7-b819-0ab224077eac")]
-        [RoleId("e4485ae7-5156-4b97-aaa2-fe7fe6f80699")]
-        #endregion
-        [Multiplicity(Multiplicity.ManyToMany)]
-        [Indexed]
-        WorkEffortPurpose[] WorkEffortPurposes { get; set; }
-        
-        #region Allors
-        [Id("858e42df-d775-4eec-b029-343e8b094311")]
-        [AssociationId("7abda175-3c95-46c7-b7a9-35aafca3df1c")]
-        [RoleId("0490c978-ec91-4418-a5cc-bb014b428dcf")]
-        #endregion
-        [Multiplicity(Multiplicity.ManyToOne)]
-        [Indexed]
-        Priority Priority { get; set; }
-        
-        #region Allors
-        [Id("97a874e9-10ef-43fb-80d2-10e0974bb3a1")]
-        [AssociationId("29df5d80-5baf-436c-b4ae-48f2f0dad2fd")]
-        [RoleId("bf8f5058-dd2c-439d-bf7c-879ab69a2ca1")]
-        #endregion
-        [Size(256)]
-        string Name { get; set; }
-        
+      
         #region Allors
         [Id("a60c8797-320d-471f-9755-d3ef20a4feac")]
         [AssociationId("dd8b0f11-0443-4120-be2f-9a43125ccd62")]
@@ -169,60 +231,7 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.ManyToMany)]
         [Indexed]
         WorkEffort[] Concurrencies { get; set; }
-        
-        #region Allors
-        [Id("aedad096-b297-47b7-98e4-69c6dde9b128")]
-        [AssociationId("13208331-e72f-4adb-9e78-c6ba7b68ce65")]
-        [RoleId("e23b0aa8-8b02-4274-826c-af140683ad22")]
-        #endregion
-        [Indexed]
-        DateTime ScheduledStart { get; set; }
-        
-        #region Allors
-        [Id("b6213705-ed58-4597-9939-a058b89610f8")]
-        [AssociationId("4ad69693-3a44-4403-abed-43fd6f208348")]
-        [RoleId("21381f45-898c-4622-9e26-039cb49a9eaa")]
-        #endregion
-        [Precision(19)]
-        [Scale(2)]
-        decimal ActualHours { get; set; }
-        
-        #region Allors
-        [Id("bac1939b-8cf8-4b18-862c-4c2dc0a591e5")]
-        [AssociationId("7172728e-29d2-498f-bea9-da8ab04a1ae5")]
-        [RoleId("60306059-f537-4fd6-9d31-7b502f39662e")]
-        #endregion
-        [Required]
-        [Size(256)]
-        string Description { get; set; }
-        
-        #region Allors
-        [Id("d71aaad8-20ba-4e7f-a4f8-da43e372e202")]
-        [AssociationId("a1a70f42-fba3-451c-8241-a854a4dba7e2")]
-        [RoleId("e6d3f9cb-5465-44e2-92bf-0844c6dfe806")]
-        #endregion
-        [Multiplicity(Multiplicity.ManyToOne)]
-        [Indexed]
-        [Required]
-        WorkEffortObjectState CurrentObjectState { get; set; }
-        
-        #region Allors
-        [Id("e189f9fc-fe3c-44af-985a-cdc3e749e25c")]
-        [AssociationId("9747c7a3-7f5c-4660-9cb3-3635acd954a0")]
-        [RoleId("25dcbbaa-c53a-44de-b248-46b9ec5dfed2")]
-        #endregion
-        [Indexed]
-        DateTime ScheduledCompletion { get; set; }
-        
-        #region Allors
-        [Id("ebd0daa8-ab45-4390-89f7-3bc89faecdfb")]
-        [AssociationId("db761f6b-63e2-41fc-a5d9-1d80daa12fbe")]
-        [RoleId("149d4820-8630-42a0-9458-18671fb09071")]
-        #endregion
-        [Precision(19)]
-        [Scale(2)]
-        decimal EstimatedHours { get; set; }
-
+      
         #region Allors
         [Id("B95571A0-84DF-4648-80FD-C4FE9067991F")]
         #endregion
