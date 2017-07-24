@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable , ChangeDetectorRef } from '@angular/core';
 import { Router, Route, NavigationEnd, ActivatedRoute } from '@angular/router';
 import { Title } from '@angular/platform-browser';
 import { Observable } from 'rxjs/Observable';

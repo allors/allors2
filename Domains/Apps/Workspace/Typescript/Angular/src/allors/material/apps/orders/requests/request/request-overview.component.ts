@@ -1,5 +1,5 @@
 import { Observable, Subject, Subscription } from 'rxjs/Rx';
-import { Component, OnInit, AfterViewInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, AfterViewInit, OnDestroy , ChangeDetectorRef } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { MdSnackBar, MdSnackBarConfig } from '@angular/material';
 import { TdDialogService, TdMediaService } from '@covalent/core';
@@ -26,7 +26,7 @@ export class RequestOverviewComponent implements OnInit, AfterViewInit, OnDestro
     private errorService: ErrorService,
     private route: ActivatedRoute,
     public dialogService: TdDialogService,
-    public media: TdMediaService) {
+    public media: TdMediaService, private changeDetectorRef: ChangeDetectorRef) {
 
     this.scope = new Scope(allors.database, allors.workspace);
     this.m = this.allors.meta;
@@ -87,6 +87,7 @@ export class RequestOverviewComponent implements OnInit, AfterViewInit, OnDestro
 
   ngAfterViewInit(): void {
     this.media.broadcast();
+    this.changeDetectorRef.detectChanges();
   }
 
   ngOnDestroy(): void {

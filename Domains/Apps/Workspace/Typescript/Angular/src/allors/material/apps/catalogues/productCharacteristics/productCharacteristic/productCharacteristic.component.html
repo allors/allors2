@@ -17,16 +17,16 @@
     <md-divider></md-divider>
     <md-card-content class="push-bottom-none">
 
-      <div fxLayout="row wrap" fxLayoutAlign="start stretch" fxLayoutGap.gt-md="25px">
+      <div>
         <a-md-localised-text [object]="productCharacteristic" [roleType]="m.ProductCharacteristic.LocalisedNames" [locales]="locales"
-          label="Name" [fxFlex]="flex" [fxFlex.gt-md]="flex2"></a-md-localised-text>
+          label="Name"></a-md-localised-text>
       </div>
 
     </md-card-content>
 
     <md-divider></md-divider>
     <md-card-actions>
-      <button md-button color="primary" type="submit">SAVE</button>
+      <button md-button color="primary" type="submit" [disabled]="!form.form.valid">SAVE</button>
       <button md-button (click)="goBack()" type="button">CANCEL</button>
     </md-card-actions>
 

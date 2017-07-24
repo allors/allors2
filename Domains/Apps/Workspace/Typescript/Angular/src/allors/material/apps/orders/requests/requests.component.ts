@@ -1,5 +1,5 @@
 import { Observable, BehaviorSubject, Subscription } from 'rxjs/Rx';
-import { Component, OnInit, AfterViewInit, OnDestroy, ViewChild } from '@angular/core';
+import { Component, OnInit, AfterViewInit, OnDestroy, ViewChild , ChangeDetectorRef } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Title } from '@angular/platform-browser';
@@ -44,7 +44,8 @@ export class RequestsComponent implements AfterViewInit, OnDestroy {
     private router: Router,
     public dialogService: TdDialogService,
     public media: TdMediaService,
-  ) {
+    private changeDetectorRef: ChangeDetectorRef) {
+
     this.scope = new Scope(allors.database, allors.workspace);
     this.refresh$ = new BehaviorSubject<Date>(undefined);
 
@@ -134,6 +135,7 @@ export class RequestsComponent implements AfterViewInit, OnDestroy {
   ngAfterViewInit(): void {
     this.titleService.setTitle('Requests');
     this.media.broadcast();
+    this.changeDetectorRef.detectChanges();
   }
 
   ngOnDestroy(): void {

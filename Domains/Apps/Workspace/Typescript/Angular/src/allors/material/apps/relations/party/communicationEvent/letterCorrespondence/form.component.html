@@ -1,0 +1,68 @@
+<td-layout-card-over [cardTitle]="title" [cardSubtitle]="subTitle">
+  <form #form="ngForm" *ngIf="communicationEvent" (submit)="save()">
+
+    <div class="pad">
+
+      <div>
+        <div *ngIf="communicationEvent.CurrentObjectState">
+          <a-md-static [object]="communicationEvent" [roleType]="m.CommunicationEvent.CurrentObjectState" display="Name" label="Status"></a-md-static>
+          <button *ngIf="communicationEvent.CanExecuteClose" md-button type="button" (click)="close()">Close</button>
+          <button *ngIf="communicationEvent.CanExecuteCancel" md-button type="button" (click)="cancel()">Cancel</button>
+          <button *ngIf="communicationEvent.CanExecuteReopen" md-button type="button" (click)="reopen()">Reopen</button>
+        </div>
+
+        <a-md-select [object]="communicationEvent" [roleType]="m.EmailCommunication.EventPurposes" [options]="purposes" display="Name"></a-md-select>
+
+        <div fxLayout="row">
+          <a-td-chips fxFlex [object]="communicationEvent" [roleType]="m.LetterCorrespondence.Originators" [options]="contacts" display="displayName"
+            label="Sender"></a-td-chips>
+          <button *ngIf="communicationEvent.IncomingLetter && PartPartyIsOrganisation" type="button" md-icon-button (click)="addSender = true"><md-icon>add</md-icon></button>
+        </div>
+
+        <div *ngIf="addSender" style="background: lightblue" class="pad">
+          <person-inline (cancelled)="senderCancelled($event)" (saved)="senderAdded($event)">
+          </person-inline>
+        </div>
+
+        <div fxLayout="row">
+          <a-td-chips fxFlex [object]="communicationEvent" [roleType]="m.LetterCorrespondence.Receivers" [options]="contacts" display="displayName"
+            label="Receiver"></a-td-chips>
+          <button *ngIf="!communicationEvent.IncomingLetter && PartPartyIsOrganisation" type="button" md-icon-button (click)="addReceiver = true"><md-icon>add</md-icon></button>
+        </div>
+
+        <div *ngIf="addReceiver" style="background: lightblue" class="pad">
+          <person-inline (cancelled)="receiverCancelled($event)" (saved)="receiverAdded($event)">
+          </person-inline>
+        </div>
+
+        <div fxLayout="row">
+          <a-md-select fxFlex [object]="communicationEvent" [roleType]="m.LetterCorrespondence.ContactMechanisms" [options]="postalAddresses"
+            display="displayName" label="Postal Address"></a-md-select>
+          <button type="button" md-icon-button (click)="addAddress = true"><md-icon>add</md-icon></button>
+        </div>
+
+        <div *ngIf="addAddress" style="background: lightblue" class="pad">
+          <party-contactmechanism-postaladdress (cancelled)="addressCancelled($event)" (saved)="addressAdded($event)">
+          </party-contactmechanism-postaladdress>
+        </div>
+
+        <a-md-input [object]="communicationEvent" [roleType]="m.LetterCorrespondence.Subject"></a-md-input>
+        <a-md-textarea [object]="communicationEvent" [roleType]="m.LetterCorrespondence.Note"></a-md-textarea>
+        <a-md-slide-toggle [object]="communicationEvent" [roleType]="m.LetterCorrespondence.IncomingLetter"></a-md-slide-toggle>
+        <a-md-datepicker [object]="communicationEvent" [roleType]="m.CommunicationEvent.ScheduledStart"></a-md-datepicker>
+        <a-md-datepicker [object]="communicationEvent" [roleType]="m.CommunicationEvent.ScheduledEnd"></a-md-datepicker>
+        <a-md-datepicker [object]="communicationEvent" [roleType]="m.CommunicationEvent.ActualStart"></a-md-datepicker>
+        <a-md-datepicker [object]="communicationEvent" [roleType]="m.CommunicationEvent.ActualEnd"></a-md-datepicker>
+      </div>
+
+    </div>
+
+    <md-divider></md-divider>
+
+    <md-card-actions>
+      <button md-button color="primary" type="submit" [disabled]="!form.form.valid">SAVE</button>
+      <button md-button (click)="goBack()" type="button">CANCEL</button>
+    </md-card-actions>
+
+  </form>
+</td-layout-card-over>

@@ -1,71 +1,109 @@
-// Routing
-import { ViewComponent } from './view.component';
-import { EditComponent } from './edit.component';
+// Overview
+import { OverviewComponent } from './overview/overview.component';
+import { RelationsOverviewComponent } from './overview/relations/relationsOverview.component';
+import { PeopleOverviewComponent } from './overview/people/peopleOverview.component';
+import { PersonOverviewComponent } from './overview/person/personOverview.component';
+import { OrganisationsOverviewComponent } from './overview/organisations/organisationsOverview.component';
+import { OrganisationOverviewComponent } from './overview/organisation/organisationOverview.component';
 
-import { EmailAddressAddComponent } from './contactMechanisms/contactMechanism/emailAddressAdd.component';
-import { EmailAddressEditComponent } from './contactMechanisms/contactMechanism/emailAddressEdit.component';
-import { EmailAddressInlineComponent } from './contactMechanisms/contactMechanism/emailAddress-inline.component';
-import { EmailCommunicationFormComponent } from './communicationevents/communicationevent/emailCommunication.component';
-import { FaceToFaceCommunicationFormComponent } from './communicationevents/communicationevent/faceToFaceCommunication.component';
-import { LetterCorrespondenceFormComponent } from './communicationevents/communicationevent/letterCorrespondence.component';
-import { OrganisationAddContactComponent } from './organisations/organisation/organisationAddContact.component';
-import { OrganisationEditContactComponent } from './organisations/organisation/organisationEditContact.component';
-import { OrganisationFormComponent } from './organisations/organisation/organisation.component';
-import { OrganisationOverviewComponent } from './organisations/organisation/organisation-overview.component';
-import { OrganisationsComponent } from './organisations/organisations.component';
-import { PeopleComponent } from './people/people.component';
-import { PersonFormComponent } from './people/person/person.component';
-import { PersonInlineComponent } from './people/person/person-inline.component';
-import { PersonOverviewComponent } from './people/person/person-overview.component';
-import { PhoneCommunicationFormComponent } from './communicationevents/communicationevent/phoneCommunication.component';
-import { PostalAddressAddComponent } from './contactMechanisms/contactMechanism/postalAddressAdd.component';
-import { PostalAddressEditComponent } from './contactMechanisms/contactMechanism/postalAddressEdit.component';
-import { PostalAddressInlineComponent } from './contactMechanisms/contactMechanism/postaladdress-inline.component';
-import { RelationDashboardComponent } from './dashboard/relation-dashboard.component';
-import { TelecommunicationsNumberInlineComponent } from './contactMechanisms/contactMechanism/telecommunicationsNumber-inline.component';
-import { TelecommunicationsNumberAddComponent } from './contactMechanisms/contactMechanism/telecommunicationsNumberAdd.component';
-import { TelecommunicationsNumberEditComponent } from './contactMechanisms/contactMechanism/telecommunicationsNumberEdit.component';
-import { WebAddressAddComponent } from './contactMechanisms/contactMechanism/webAddressAdd.component';
-import { WebAddressEditComponent } from './contactMechanisms/contactMechanism/webAddressEdit.component';
+// Party
+import { PartyContactMechanismAddEmailAddressComponent } from './party/contactMechanism/emailaddress/add.component';
+import { PartyContactMechanismEditEmailAddressComponent } from './party/contactMechanism/emailaddress/edit.component';
+import { PartyContactMechanismInlineEmailAddressComponent } from './party/contactMechanism/emailaddress/inline.component';
+import { PartyContactMechanismAddPostalAddressComponent } from './party/contactMechanism/postaladdress/add.component';
+import { PartyContactMechanismEditPostalAddressComponent } from './party/contactMechanism/postaladdress/edit.component';
+import { PartyContactMechanismInlinePostalAddressComponent } from './party/contactMechanism/postaladdress/inline.component';
+import { PartyContactMechanismAddTelecommunicationsNumberComponent } from './party/contactMechanism/telecommunicationsnumber/add.component';
+import { PartyContactMechanismEditTelecommunicationsNumberComponent } from './party/contactMechanism/telecommunicationsnumber/edit.component';
+import { PartyContactMechanismInlineTelecommunicationsNumberComponent } from './party/contactMechanism/telecommunicationsnumber/inline.component';
+import { PartyContactMechanismAddWebAddressComponent } from './party/contactMechanism/webAddress/add.component';
+import { PartyContactMechanismEditWebAddressComponent } from './party/contactMechanism/webAddress/edit.component';
+
+import { PartycommunicationEventEditEmailCommunicationComponent } from './party/communicationevent/emailCommunication/edit.component';
+import { PartycommunicationEventEditFaceToFaceCommunicationComponent } from './party/communicationevent/faceToFaceCommunication/edit.component';
+import { PartycommunicationEventEditLetterCorrespondenceComponent } from './party/communicationevent/letterCorrespondence/edit.component';
+import { PartycommunicationEventEditPhoneCommunicationComponent } from './party/communicationevent/phoneCommunication/edit.component';
+
+// Person
+import { PersonEditComponent } from './person/edit.component';
+import { PersonInlineComponent } from './person/inline.component';
+
+// Organisation
+import { OrganisationEditComponent } from './organisation/edit.component';
+import { OrganisationContactrelationshipAddComponent } from './organisation/contactrelationship/add.component';
+import { OrganisationContactrelationshipEditComponent } from './organisation/contactrelationship/edit.component';
 
 export const RELATIONS: any[] = [
 ];
 
 export const RELATIONS_ROUTING: any[] = [
-  ViewComponent, EditComponent,
-  EmailAddressAddComponent, EmailAddressEditComponent, EmailAddressInlineComponent, EmailCommunicationFormComponent, FaceToFaceCommunicationFormComponent, LetterCorrespondenceFormComponent,
-  OrganisationAddContactComponent, OrganisationEditContactComponent, OrganisationFormComponent, OrganisationOverviewComponent, OrganisationsComponent,
-  PeopleComponent, PersonFormComponent, PersonInlineComponent, PersonOverviewComponent, PhoneCommunicationFormComponent,
-  PostalAddressAddComponent, PostalAddressEditComponent, PostalAddressInlineComponent,
-  RelationDashboardComponent,
-  TelecommunicationsNumberInlineComponent, TelecommunicationsNumberAddComponent, TelecommunicationsNumberEditComponent,
-  WebAddressAddComponent, WebAddressEditComponent,
+  // Overview
+  OverviewComponent,
+  RelationsOverviewComponent,
+  PeopleOverviewComponent,
+  PersonOverviewComponent,
+  OrganisationsOverviewComponent,
+  OrganisationOverviewComponent,
+
+  // Party
+  PartyContactMechanismAddEmailAddressComponent,
+  PartyContactMechanismEditEmailAddressComponent,
+  PartyContactMechanismInlineEmailAddressComponent,
+  PartycommunicationEventEditEmailCommunicationComponent,
+  PartycommunicationEventEditFaceToFaceCommunicationComponent,
+  PartycommunicationEventEditLetterCorrespondenceComponent,
+  PartycommunicationEventEditPhoneCommunicationComponent,
+  PartyContactMechanismAddPostalAddressComponent,
+  PartyContactMechanismEditPostalAddressComponent,
+  PartyContactMechanismInlinePostalAddressComponent,
+  PartyContactMechanismInlineTelecommunicationsNumberComponent,
+  PartyContactMechanismAddTelecommunicationsNumberComponent,
+  PartyContactMechanismEditTelecommunicationsNumberComponent,
+  PartyContactMechanismAddWebAddressComponent,
+  PartyContactMechanismEditWebAddressComponent,
+
+  // Person
+  PersonEditComponent,
+  PersonInlineComponent,
+
+  // Organisation
+  OrganisationEditComponent,
+  OrganisationContactrelationshipAddComponent,
+  OrganisationContactrelationshipEditComponent,
 ];
 
 export {
-  // Routing
-  ViewComponent,
-  EditComponent,
-  EmailAddressAddComponent,
-  EmailAddressEditComponent,
-  EmailCommunicationFormComponent,
-  FaceToFaceCommunicationFormComponent,
-  LetterCorrespondenceFormComponent,
-  OrganisationAddContactComponent,
-  OrganisationEditContactComponent,
-  OrganisationFormComponent,
-  OrganisationOverviewComponent,
-  OrganisationsComponent,
-  PeopleComponent,
-  PersonFormComponent,
+   // Overview
+  OverviewComponent,
+  RelationsOverviewComponent,
+  PeopleOverviewComponent,
   PersonOverviewComponent,
-  PhoneCommunicationFormComponent,
-  PostalAddressAddComponent,
-  PostalAddressEditComponent,
-  PostalAddressInlineComponent,
-  RelationDashboardComponent,
-  TelecommunicationsNumberAddComponent,
-  TelecommunicationsNumberEditComponent,
-  WebAddressAddComponent,
-  WebAddressEditComponent,
+  OrganisationsOverviewComponent,
+  OrganisationOverviewComponent,
+
+  // Party
+  PartyContactMechanismAddEmailAddressComponent,
+  PartyContactMechanismEditEmailAddressComponent,
+  PartyContactMechanismInlineEmailAddressComponent,
+  PartycommunicationEventEditEmailCommunicationComponent,
+  PartycommunicationEventEditFaceToFaceCommunicationComponent,
+  PartycommunicationEventEditLetterCorrespondenceComponent,
+  PartycommunicationEventEditPhoneCommunicationComponent,
+  PartyContactMechanismAddPostalAddressComponent,
+  PartyContactMechanismEditPostalAddressComponent,
+  PartyContactMechanismInlinePostalAddressComponent,
+  PartyContactMechanismInlineTelecommunicationsNumberComponent,
+  PartyContactMechanismAddTelecommunicationsNumberComponent,
+  PartyContactMechanismEditTelecommunicationsNumberComponent,
+  PartyContactMechanismAddWebAddressComponent,
+  PartyContactMechanismEditWebAddressComponent,
+
+  // Person
+  PersonEditComponent,
+  PersonInlineComponent,
+
+  // Organisation
+  OrganisationEditComponent,
+  OrganisationContactrelationshipAddComponent,
+  OrganisationContactrelationshipEditComponent,
 };

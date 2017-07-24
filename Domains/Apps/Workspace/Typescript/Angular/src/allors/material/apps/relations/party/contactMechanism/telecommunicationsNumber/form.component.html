@@ -1,0 +1,20 @@
+<td-layout-card-over [cardTitle]="title" [cardSubtitle]="subTitle">
+  <form #form="ngForm" *ngIf="contactMechanism" (submit)="save()">
+
+    <div class="pad">
+      <a-md-select [object]="partyContactMechanism" [roleType]="m.PartyContactMechanism.ContactPurposes" [options]="contactMechanismPurposes"
+        display="Name" label="Contact purposes"></a-md-select>
+      <a-md-input [object]="contactMechanism" [roleType]="m.TelecommunicationsNumber.CountryCode"></a-md-input>
+      <a-md-input [object]="contactMechanism" [roleType]="m.TelecommunicationsNumber.AreaCode"></a-md-input>
+      <a-md-input [object]="contactMechanism" [roleType]="m.TelecommunicationsNumber.ContactNumber"></a-md-input>
+      <a-md-slide-toggle [object]="partyContactMechanism" [roleType]="m.PartyContactMechanism.UseAsDefault" label="Use as default"></a-md-slide-toggle>
+    </div>
+
+    <md-divider></md-divider>
+    <md-card-actions>
+      <button md-button color="primary" type="submit" [disabled]="!form.form.valid">SAVE</button>
+      <button md-button (click)="goBack()" type="button">CANCEL</button>
+    </md-card-actions>
+
+  </form>
+</td-layout-card-over>

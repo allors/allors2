@@ -1,4 +1,5 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, ChangeDetectorRef, ViewChildren, QueryList, AfterViewInit } from '@angular/core';
+import { NgModel, NgForm } from '@angular/forms';
 import { ISessionObject } from '../../../../allors/domain';
 import { MetaDomain, RoleType } from '../../../../allors/meta';
 
@@ -13,5 +14,16 @@ import { Field } from '../../../angular';
 </md-input-container>
 `,
 })
-export class InputComponent extends Field {
+export class InputComponent extends Field implements AfterViewInit {
+  @ViewChildren(NgModel) controls: QueryList<NgModel>;
+
+  constructor(private parentForm: NgForm) {
+    super();
+  }
+
+  ngAfterViewInit(): void {
+    this.controls.forEach((control: NgModel) => {
+      this.parentForm.addControl(control);
+    });
+  }
 }

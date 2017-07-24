@@ -1,6 +1,4 @@
-import { Component, Input } from '@angular/core';
-
-import { Injectable, Inject } from '@angular/core';
+import { Component, Input, Injectable, Inject } from '@angular/core';
 import { Http, RequestOptions } from '@angular/http';
 import { MdSnackBar, MdDialogRef } from '@angular/material';
 import { TdDialogService, TdAlertDialogComponent } from '@covalent/core';

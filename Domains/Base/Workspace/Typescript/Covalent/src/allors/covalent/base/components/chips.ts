@@ -1,5 +1,5 @@
-import { Component, Input, Output, OnInit, OnDestroy, EventEmitter } from '@angular/core';
-import { FormControl } from '@angular/forms';
+import { Component, Input, Output, OnInit, OnDestroy, EventEmitter, ChangeDetectorRef, ViewChildren, QueryList, AfterViewInit } from '@angular/core';
+import { NgModel, NgForm } from '@angular/forms';
 import { ISessionObject } from '../../../../allors/domain';
 import { MetaDomain, RoleType } from '../../../../allors/meta';
 import { Observable, Subscription, Subject } from 'rxjs';
@@ -9,7 +9,7 @@ import { Field } from '../../../angular';
 @Component({
   selector: 'a-td-chips',
   template: `
-<td-chips
+<td-chips [name]="name"
           [items]="filteredOptions"
           [(ngModel)]="model"
           [placeholder]="label"
@@ -19,7 +19,7 @@ import { Field } from '../../../angular';
           requireMatch
           [disabled]="disabled"
           [readOnly]="readonly"
-          >
+          [required]="required">
 
   <ng-template td-chip let-chip="chip">
     {{chip[this.display]}}
@@ -33,7 +33,7 @@ import { Field } from '../../../angular';
 </td-chips>
 `,
 })
-export class ChipsComponent extends Field implements OnInit, OnDestroy {
+export class ChipsComponent extends Field implements OnInit, AfterViewInit, OnDestroy {
 
   @Input()
   display: string = 'display';
@@ -58,7 +58,11 @@ export class ChipsComponent extends Field implements OnInit, OnDestroy {
   subject: Subject<string>;
   subscription: Subscription;
 
-  searchControl: FormControl = new FormControl();
+  @ViewChildren(NgModel) controls: QueryList<NgModel>;
+
+  constructor(private parentForm: NgForm) {
+    super();
+  }
 
   ngOnInit(): void {
     this.subject = new Subject<string>();
@@ -94,6 +98,12 @@ export class ChipsComponent extends Field implements OnInit, OnDestroy {
         })
         .subscribe();
     }
+  }
+
+  ngAfterViewInit(): void {
+    this.controls.forEach((control: NgModel) => {
+      this.parentForm.addControl(control);
+    });
   }
 
   ngOnDestroy(): void {

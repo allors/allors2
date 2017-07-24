@@ -1,4 +1,4 @@
-import { Component, AfterViewInit } from '@angular/core';
+import { Component, AfterViewInit, ChangeDetectorRef } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { TdMediaService } from '@covalent/core';
 
@@ -8,11 +8,12 @@ import { TdMediaService } from '@covalent/core';
 export class CatalogueDashboardComponent implements AfterViewInit {
   title: string = 'Catalogue Dashboard';
 
-  constructor(public media: TdMediaService, private titleService: Title) {
+  constructor(public media: TdMediaService, private changeDetectorRef: ChangeDetectorRef, private titleService: Title) {
     this.titleService.setTitle(this.title);
   }
 
   ngAfterViewInit(): void {
     this.media.broadcast();
+    this.changeDetectorRef.detectChanges();
   }
 }

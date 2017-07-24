@@ -1,0 +1,53 @@
+<td-layout-card-over [cardTitle]="title" [cardSubtitle]="subTitle">
+  <form #form="ngForm" *ngIf="communicationEvent" (submit)="save()">
+
+    <div class="pad">
+      <div *ngIf="communicationEvent.CurrentObjectState">
+        <a-md-static [object]="communicationEvent" [roleType]="m.CommunicationEvent.CurrentObjectState" display="Name" label="Status"></a-md-static>
+        <button *ngIf="communicationEvent.CanExecuteClose" md-button type="button" (click)="close()">Close</button>
+        <button *ngIf="communicationEvent.CanExecuteCancel" md-button type="button" (click)="cancel()">Cancel</button>
+        <button *ngIf="communicationEvent.CanExecuteReopen" md-button type="button" (click)="reopen()">Reopen</button>
+      </div>
+
+      <a-md-select [object]="communicationEvent" [roleType]="m.EmailCommunication.EventPurposes" [options]="purposes" display="Name"></a-md-select>
+      <a-md-slide-toggle [object]="communicationEvent" [roleType]="m.EmailCommunication.IncomingMail"></a-md-slide-toggle>
+
+      <div fxLayout="row">
+        <a-md-select fxFlex [object]="communicationEvent" [roleType]="m.EmailCommunication.Originator" [options]="emailAddresses" display="displayName"
+          label="From"></a-md-select>
+        <button *ngIf="communicationEvent.IncomingMail" type="button" md-icon-button (click)="addOriginator = true"><md-icon>add</md-icon></button>
+      </div>
+
+      <div *ngIf="addOriginator" style="background: lightblue" class="pad">
+        <party-contactmechanism-emailAddress (cancelled)="originatorCancelled($event)" (saved)="originatorAdded($event)">
+        </party-contactmechanism-emailAddress>
+      </div>
+
+      <div fxLayout="row">
+        <a-td-chips fxFlex [object]="communicationEvent" [roleType]="m.EmailCommunication.Addressees" [options]="emailAddresses" display="displayName"
+          label="To"></a-td-chips>
+        <button *ngIf="!communicationEvent.IncomingMail" type="button" md-icon-button (click)="addAddressee = true"><md-icon>add</md-icon></button>
+      </div>
+
+      <div *ngIf="addAddressee" style="background: lightblue" class="pad">
+        <party-contactmechanism-emailAddress (cancelled)="addresseeCancelled($event)" (saved)="addresseeAdded($event)">
+        </party-contactmechanism-emailAddress>
+      </div>
+
+      <a-md-input [object]="emailTemplate" [roleType]="m.EmailTemplate.SubjectTemplate" label="Subject "></a-md-input>
+      <a-md-textarea [object]="emailTemplate" [roleType]="m.EmailTemplate.BodyTemplate" label="Body"></a-md-textarea>
+      <a-md-datepicker [object]="communicationEvent" [roleType]="m.CommunicationEvent.ScheduledStart"></a-md-datepicker>
+      <a-md-datepicker [object]="communicationEvent" [roleType]="m.CommunicationEvent.ScheduledEnd"></a-md-datepicker>
+      <a-md-datepicker [object]="communicationEvent" [roleType]="m.CommunicationEvent.ActualStart"></a-md-datepicker>
+      <a-md-datepicker [object]="communicationEvent" [roleType]="m.CommunicationEvent.ActualEnd"></a-md-datepicker>
+    </div>
+
+    <md-divider></md-divider>
+
+    <md-card-actions>
+      <button md-button color="primary" type="submit" [disabled]="!form.form.valid">SAVE</button>
+      <button md-button (click)="goBack()" type="button">CANCEL</button>
+    </md-card-actions>
+
+  </form>
+</td-layout-card-over>

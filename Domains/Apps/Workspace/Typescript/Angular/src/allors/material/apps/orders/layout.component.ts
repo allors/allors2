@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input , ChangeDetectorRef } from '@angular/core';
 import { Router } from '@angular/router';
 import { TdMediaService } from '@covalent/core';
 
@@ -11,6 +11,6 @@ export class LayoutComponent {
     { title: 'Requests', description: 'Manage requests', route: '/orders/requests', icon: 'dashboard', },
   ];
 
-  constructor(public media: TdMediaService) {
+  constructor(public media: TdMediaService, private changeDetectorRef: ChangeDetectorRef) {
   }
 }

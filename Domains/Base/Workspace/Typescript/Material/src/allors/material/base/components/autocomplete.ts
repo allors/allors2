@@ -1,4 +1,4 @@
-import { Component, Input, Output, OnInit, EventEmitter } from '@angular/core';
+import { Component, Input, Output, OnInit, EventEmitter , ChangeDetectorRef } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { ISessionObject } from '../../../../allors/domain';
 import { MetaDomain, RoleType } from '../../../../allors/meta';
@@ -9,7 +9,7 @@ import { Field } from '../../../angular';
 @Component({
   selector: 'a-md-autocomplete',
   template: `
-<md-input-container>
+<md-input-container fxLayout="column" fxLayoutAlign="top stretch">
   <input type="text" mdInput (focusout)="focusout($event)" [formControl]="searchControl" [mdAutocomplete]="usersComp" [placeholder]="label" [required]="required" [disabled]="disabled" [readonly]="readonly">
   <md-hint *ngIf="hint">{{hint}}</md-hint>
 </md-input-container>

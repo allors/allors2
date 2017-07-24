@@ -1,5 +1,5 @@
 import { Observable, BehaviorSubject, Subject, Subscription } from 'rxjs/Rx';
-import { Component, OnInit, AfterViewInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, AfterViewInit, OnDestroy , ChangeDetectorRef } from '@angular/core';
 import { Validators } from '@angular/forms';
 import { ActivatedRoute, Router, UrlSegment } from '@angular/router';
 import { MdSnackBar, MdSnackBarConfig } from '@angular/material';
@@ -21,9 +21,6 @@ export class RequestFormComponent implements OnInit, AfterViewInit, OnDestroy {
   private refresh$: BehaviorSubject<Date>;
   private subscription: Subscription;
   private scope: Scope;
-
-  flex: string = '100%';
-  flex2: string = `calc(50%-25px)`;
 
   m: MetaDomain;
 
@@ -52,7 +49,7 @@ export class RequestFormComponent implements OnInit, AfterViewInit, OnDestroy {
     private route: ActivatedRoute,
     private snackBar: MdSnackBar,
     private dialogService: TdDialogService,
-    public media: TdMediaService) {
+    public media: TdMediaService, private changeDetectorRef: ChangeDetectorRef) {
 
     this.scope = new Scope(allorsService.database, allorsService.workspace);
     this.m = this.allorsService.meta;
@@ -328,6 +325,7 @@ export class RequestFormComponent implements OnInit, AfterViewInit, OnDestroy {
 
   ngAfterViewInit(): void {
     this.media.broadcast();
+    this.changeDetectorRef.detectChanges();
   }
 
   ngOnDestroy(): void {

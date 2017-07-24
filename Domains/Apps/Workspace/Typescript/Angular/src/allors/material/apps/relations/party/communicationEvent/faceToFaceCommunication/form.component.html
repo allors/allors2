@@ -1,0 +1,33 @@
+<td-layout-card-over [cardTitle]="title" [cardSubtitle]="subTitle">
+  <form #form="ngForm" *ngIf="communicationEvent" (submit)="save(form)" novalidate>
+
+    <div class="pad" fxLayout="column">
+      <div *ngIf="communicationEvent.CurrentObjectState">
+        <a-md-static [object]="communicationEvent" [roleType]="m.CommunicationEvent.CurrentObjectState" display="Name" label="Status"></a-md-static>
+        <button *ngIf="communicationEvent.CanExecuteClose" md-button type="button" (click)="close()">Close</button>
+        <button *ngIf="communicationEvent.CanExecuteCancel" md-button type="button" (click)="cancel()">Cancel</button>
+        <button *ngIf="communicationEvent.CanExecuteReopen" md-button type="button" (click)="reopen()">Reopen</button>
+      </div>
+
+      <a-md-select [object]="communicationEvent" [roleType]="m.FaceToFaceCommunication.EventPurposes" [options]="purposes" display="Name"></a-md-select>
+      <a-td-chips fxFlex [object]="communicationEvent" [roleType]="m.FaceToFaceCommunication.Participants" [options]="contacts"
+        display="PartyName"></a-td-chips>
+
+      <a-md-input [object]="communicationEvent" [roleType]="m.FaceToFaceCommunication.Location"></a-md-input>
+      <a-md-input [object]="communicationEvent" [roleType]="m.FaceToFaceCommunication.Subject"></a-md-input>
+      <a-md-textarea [object]="communicationEvent" [roleType]="m.FaceToFaceCommunication.Note"></a-md-textarea>
+      <a-md-datepicker [object]="communicationEvent" [roleType]="m.CommunicationEvent.ScheduledStart"></a-md-datepicker>
+      <a-md-datepicker [object]="communicationEvent" [roleType]="m.CommunicationEvent.ScheduledEnd"></a-md-datepicker>
+      <a-md-datepicker [object]="communicationEvent" [roleType]="m.CommunicationEvent.ActualStart"></a-md-datepicker>
+      <a-md-datepicker [object]="communicationEvent" [roleType]="m.CommunicationEvent.ActualEnd"></a-md-datepicker>
+
+    </div>
+
+    <md-divider></md-divider>
+    <md-card-actions>
+      <button md-button color="primary" type="submit" [disabled]="!form.valid">SAVE</button>
+      <button md-button (click)="goBack()" type="button">CANCEL</button>
+    </md-card-actions>
+
+  </form>
+</td-layout-card-over>

@@ -1,21 +1,7 @@
-<md-toolbar>
-  <div layout="row" layout-align="start center" flex>
-    <button md-icon-button tdLayoutManageListOpen [hideWhenOpened]="true" style="display: none">
-          <md-icon>arrow_back</md-icon>
-        </button>
-    <span>{{title}}</span>
-    <span flex></span>
-    <button md-icon-button><md-icon>settings</md-icon></button>
-  </div>
-</md-toolbar>
-
-<md-card>
+<td-layout-card-over [cardTitle]="title" [cardSubtitle]="subTitle">
   <form #form="ngForm" *ngIf="good" (submit)="save()">
 
-    <md-card-title>Product Form</md-card-title>
-
-    <md-divider></md-divider>
-    <md-card-content class="push-bottom-none">
+    <div class="pad">
 
       <md-radio-group name="rg" [(ngModel)]="selectedLocaleName">
         <md-radio-button *ngFor="let locale of locales" [value]="locale.Name">
@@ -24,41 +10,35 @@
       </md-radio-group>
       <md-divider></md-divider>
 
-      <div fxLayout="row wrap" fxLayoutAlign="start stretch" fxLayoutGap.gt-md="25px">
-        <a-md-media-upload [object]="good" [roleType]="m.Good.PrimaryPhoto" accept="image/*" [fxFlex]="flex" [fxFlex.gt-md]="flex2"></a-md-media-upload>
-        <a-md-localised-text [object]="good" [roleType]="m.Good.LocalisedNames" [locales]="locales" label="Name" [fxFlex]="flex"
-          [fxFlex.gt-md]="flex2"></a-md-localised-text>
-        <a-md-localised-text [object]="good" [roleType]="m.Good.LocalisedDescriptions" [locales]="locales" label="Description" [fxFlex]="flex"
-          [fxFlex.gt-md]="flex2"></a-md-localised-text>
-        <a-md-localised-text [object]="good" [roleType]="m.Good.LocalisedComments" [locales]="locales" label="Comment" [fxFlex]="flex"
-          [fxFlex.gt-md]="flex2"></a-md-localised-text>
-        <a-md-textarea [object]="good" [roleType]="m.Good.InternalComment" [fxFlex]="flex" [fxFlex.gt-md]="flex2"></a-md-textarea>
-        <a-md-autocomplete [object]="good" [roleType]="m.Good.ProductType" [options]="productTypes" display="Name" [fxFlex]="flex"
-          [fxFlex.gt-md]="flex2"></a-md-autocomplete>
-        <a-td-chips [object]="good" [roleType]="m.Good.ProductCategories" [options]="categories" display="Name" [fxFlex]="flex" [fxFlex.gt-md]="flex2"></a-td-chips>
-        <a-md-autocomplete [object]="good" [roleType]="m.Good.PrimaryProductCategory" [options]="categories" display="Name" [fxFlex]="flex"
-          [fxFlex.gt-md]="flex2"></a-md-autocomplete>
-        <a-md-autocomplete [object]="good" [roleType]="m.Good.ManufacturedBy" [filter]="manufacturersFilter.create()" display="Name"
-          [fxFlex]="flex" [fxFlex.gt-md]="flex2"></a-md-autocomplete>
-        <a-md-input [object]="good" [roleType]="m.Good.ArticleNumber" [fxFlex]="flex" [fxFlex.gt-md]="flex2"></a-md-input>
-        <md-input-container  fxLayout="column" fxLayoutAlign="top stretch">
+      <div>
+        <a-md-media-upload [object]="good" [roleType]="m.Good.PrimaryPhoto" accept="image/*"></a-md-media-upload>
+        <a-md-localised-text [object]="good" [roleType]="m.Good.LocalisedNames" [locales]="locales" label="Name"></a-md-localised-text>
+        <a-md-localised-text [object]="good" [roleType]="m.Good.LocalisedDescriptions" [locales]="locales" label="Description"></a-md-localised-text>
+        <a-md-localised-text [object]="good" [roleType]="m.Good.LocalisedComments" [locales]="locales" label="Comment"></a-md-localised-text>
+        <a-md-textarea [object]="good" [roleType]="m.Good.InternalComment"></a-md-textarea>
+        <a-md-autocomplete [object]="good" [roleType]="m.Good.ProductType" [options]="productTypes" display="Name"></a-md-autocomplete>
+        <a-md-select [object]="good" [roleType]="m.Good.ProductCategories" [options]="categories" display="Name"></a-md-select>
+        <a-md-autocomplete [object]="good" [roleType]="m.Good.PrimaryProductCategory" [options]="categories" display="Name"></a-md-autocomplete>
+        <a-md-autocomplete [object]="good" [roleType]="m.Good.ManufacturedBy" [filter]="manufacturersFilter.create()" display="Name"></a-md-autocomplete>
+        <a-md-input [object]="good" [roleType]="m.Good.ArticleNumber"></a-md-input>
+        <md-input-container fxLayout="column" fxLayoutAlign="top stretch">
           <input fxFlex mdInput name="actualQuantityOnHand" [(ngModel)]="actualQuantityOnHand" placeholder="Actual Quantity in stock">
         </md-input-container>
-        <a-md-static [object]="good" [roleType]="m.Good.QuantityOnHand" [fxFlex]="flex" [fxFlex.gt-md]="flex2"></a-md-static>
-        <a-md-static [object]="good" [roleType]="m.Good.AvailableToPromise" [fxFlex]="flex" [fxFlex.gt-md]="flex2"></a-md-static>
-        <a-md-datepicker [object]="good" [roleType]="m.Good.SalesDiscontinuationDate" [fxFlex]="flex" [fxFlex.gt-md]="flex2"></a-md-datepicker>
+        <a-md-static [object]="good" [roleType]="m.Good.QuantityOnHand"></a-md-static>
+        <a-md-static [object]="good" [roleType]="m.Good.AvailableToPromise"></a-md-static>
+        <a-md-datepicker [object]="good" [roleType]="m.Good.SalesDiscontinuationDate"></a-md-datepicker>
 
         <a-md-input *ngFor="let productCharacteristicValue of productCharacteristicValues" [object]="productCharacteristicValue"
-          [roleType]="m.ProductCharacteristicValue.Value" [label]="localisedName(productCharacteristicValue.ProductCharacteristic)"
-          [fxFlex]="flex" [fxFlex.gt-md]="flex2"></a-md-input>
+          [roleType]="m.ProductCharacteristicValue.Value" [label]="localisedName(productCharacteristicValue.ProductCharacteristic)"></a-md-input>
       </div>
-    </md-card-content>
+    </div>
 
     <md-divider></md-divider>
+
     <md-card-actions>
-      <button md-button color="primary" type="submit">SAVE</button>
+      <button md-button color="primary" type="submit" [disabled]="!form.form.valid">SAVE</button>
       <button md-button (click)="goBack()" type="button">CANCEL</button>
     </md-card-actions>
 
   </form>
-</md-card>
+</td-layout-card-over>

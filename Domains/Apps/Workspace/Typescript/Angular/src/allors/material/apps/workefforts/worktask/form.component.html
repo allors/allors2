@@ -1,0 +1,19 @@
+<td-layout-card-over [cardTitle]="title" [cardSubtitle]="subTitle">
+  <form #form="ngForm" *ngIf="workTask" (submit)="save()" class="pad">
+    <div>
+      <a-md-input [object]="workTask" [roleType]="m.WorkTask.Name"></a-md-input>
+      <a-md-textarea [object]="workTask" [roleType]="m.WorkTask.Description"></a-md-textarea>
+      <a-md-select [object]="workTask" [roleType]="m.WorkTask.CurrentObjectState" [options]="workEffortObjectStates" display="Name"></a-md-select>
+      <a-md-select [object]="workTask" [roleType]="m.WorkTask.Priority" [options]="priorities" display="Name"></a-md-select>
+      <a-md-select [object]="workTask" [roleType]="m.WorkTask.WorkEffortPurposes" [options]="workEffortPurposes" display="Name"></a-md-select>
+    </div>
+
+    <md-divider></md-divider>
+
+    <md-card-actions>
+      <button md-button color="primary" type="submit" [disabled]="!form.form.valid">SAVE</button>
+      <button md-button (click)="goBack()" type="button">CANCEL</button>
+    </md-card-actions>
+
+  </form>
+</td-layout-card-over>

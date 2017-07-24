@@ -1,5 +1,5 @@
 import { Observable, Subject, Subscription } from 'rxjs/Rx';
-import { Component, OnInit, AfterViewInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, AfterViewInit, OnDestroy , ChangeDetectorRef } from '@angular/core';
 import { Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { MdSnackBar, MdSnackBarConfig } from '@angular/material';
@@ -18,8 +18,8 @@ export class CategoryFormComponent implements OnInit, AfterViewInit, OnDestroy {
   private subscription: Subscription;
   private scope: Scope;
 
-  flex: string = '100%';
-  flex2: string = `calc(50%-25px)`;
+  
+  
 
   m: MetaDomain;
 
@@ -33,7 +33,7 @@ export class CategoryFormComponent implements OnInit, AfterViewInit, OnDestroy {
     private allors: AllorsService,
     private errorService: ErrorService,
     private route: ActivatedRoute,
-    public media: TdMediaService) {
+    public media: TdMediaService, private changeDetectorRef: ChangeDetectorRef) {
     this.scope = new Scope(allors.database, allors.workspace);
     this.m = this.allors.meta;
   }
@@ -101,6 +101,7 @@ export class CategoryFormComponent implements OnInit, AfterViewInit, OnDestroy {
 
   ngAfterViewInit(): void {
     this.media.broadcast();
+    this.changeDetectorRef.detectChanges();
   }
 
   ngOnDestroy(): void {
