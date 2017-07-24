@@ -84,9 +84,10 @@ namespace Allors.Repository
         [Id("25b8aa5e-e7c5-4689-b1ed-d9a0ba47b8eb")]
         [AssociationId("11649936-a5fa-488e-8d17-e80619c4d634")]
         [RoleId("6219fd3b-4f38-4f8f-8a5a-783f908ef55a")]
+        [Indexed]
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
-        [Indexed]
+        [Required]
         [Workspace]
         public EmailAddress Originator { get; set; }
 
@@ -94,9 +95,10 @@ namespace Allors.Repository
         [Id("4026fcf7-3fc2-494b-9c4a-3e19eed74134")]
         [AssociationId("f2febf7f-7917-4499-8546-cae1e53d6791")]
         [RoleId("50439b5a-2251-469c-8512-f9dc65b0d9f6")]
+        [Indexed]
         #endregion
         [Multiplicity(Multiplicity.ManyToMany)]
-        [Indexed]
+        [Required]
         [Workspace]
         public EmailAddress[] Addressees { get; set; }
 

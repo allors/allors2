@@ -13,7 +13,6 @@
 // For more information visit http://www.allors.com/legal
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
-using Allors.Meta;
 
 namespace Allors.Domain
 {
@@ -31,11 +30,6 @@ namespace Allors.Domain
             this.AppsOnDeriveFromParties();
             this.AppsOnDeriveToParties();
             this.AppsOnDeriveInvolvedParties();
-
-            if (!this.ExistOriginator || this.Addressees.Count == 0)
-            {
-                this.Delete();
-            }
         }
 
         public void AppsOnDeriveFromParties()

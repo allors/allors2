@@ -25,14 +25,14 @@ namespace Allors.Domain
         {
             var derivation = method.Derivation;
 
+            if (this.Participants.Count <= 1)
+            {
+                derivation.Validation.AddError(this, this.Meta.Participants, "minimum 2 participants");
+            }
+
             this.FromParties = this.Participants;
             this.ToParties = this.Participants;
             this.AppsOnDeriveInvolvedParties(derivation);
-
-            if (this.Participants.Count <= 1)
-            {
-                this.Delete();
-            }
         }
 
         public void AppsOnDeriveInvolvedParties(IDerivation derivation)

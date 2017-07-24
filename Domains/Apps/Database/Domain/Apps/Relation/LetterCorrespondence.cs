@@ -24,11 +24,6 @@ namespace Allors.Domain
             this.AppsOnDeriveFromParties();
             this.AppsOnDeriveToParties();
             this.AppsOnDeriveInvolvedParties();
-
-            if (this.Originators.Count == 0 || this.Receivers.Count == 0)
-            {
-                this.Delete();
-            }
         }
 
         public void AppsOnDeriveFromParties()
