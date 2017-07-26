@@ -1,5 +1,5 @@
 import { Observable, BehaviorSubject, Subscription } from 'rxjs/Rx';
-import { Component, OnInit, AfterViewInit, OnDestroy , ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, AfterViewInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
 import { Validators } from '@angular/forms';
 import { ActivatedRoute, UrlSegment } from '@angular/router';
 import { MdSnackBar, MdSnackBarConfig } from '@angular/material';
@@ -7,7 +7,7 @@ import { TdMediaService } from '@covalent/core';
 
 import { MetaDomain } from '../../../../meta/index';
 import { PullRequest, PushResponse, Fetch, Path, Query, Equals, Like, TreeNode, Sort, Page } from '../../../../domain';
-import { Locale, OrganisationRole, Organisation } from '../../../../domain';
+import { Locale, OrganisationRole, Organisation, IndustryClassification } from '../../../../domain';
 import { AllorsService, ErrorService, Scope, Loaded, Saved } from '../../../../angular';
 
 @Component({
@@ -29,6 +29,7 @@ export class OrganisationEditComponent implements OnInit, AfterViewInit, OnDestr
 
   locales: Locale[];
   roles: OrganisationRole[];
+  industryClassifications: IndustryClassification[];
 
   constructor(
     private allors: AllorsService,
@@ -70,6 +71,11 @@ export class OrganisationEditComponent implements OnInit, AfterViewInit, OnDestr
               name: 'roles',
               objectType: this.m.OrganisationRole,
             }),
+          new Query(
+            {
+              name: 'industryClassifications',
+              objectType: this.m.IndustryClassification,
+            }),
         ];
 
         this.scope.session.reset();
@@ -89,6 +95,7 @@ export class OrganisationEditComponent implements OnInit, AfterViewInit, OnDestr
 
         this.locales = loaded.collections.locales as Locale[];
         this.roles = loaded.collections.roles as OrganisationRole[];
+        this.industryClassifications = loaded.collections.industryClassifications as IndustryClassification[];
       },
       (error: any) => {
         this.errorService.message(error);

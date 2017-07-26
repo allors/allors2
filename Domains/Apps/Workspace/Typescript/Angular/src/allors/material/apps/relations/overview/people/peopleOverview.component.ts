@@ -96,6 +96,7 @@ export class PeopleOverviewComponent implements AfterViewInit, OnDestroy {
             include: [
               new TreeNode({ roleType: m.Person.Picture }),
             ],
+            sort: [new Sort({ roleType: m.Person.FirstName })],
           })];
 
         return this.scope.load('Pull', new PullRequest({ query: query }));

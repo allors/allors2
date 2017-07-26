@@ -1,19 +1,20 @@
 <td-layout-card-over [cardTitle]="title" [cardSubtitle]="subTitle">
   <form #form="ngForm" *ngIf="organisation" (submit)="save()">
 
-    <div>
+    <div class="pad">
       <a-md-media-upload [object]="organisation" [roleType]="m.Organisation.LogoImage" accept="image/*"></a-md-media-upload>
       <a-md-select [object]="organisation" [roleType]="m.Organisation.OrganisationRoles" [options]="roles" display="Name"></a-md-select>
+      <a-md-select [object]="organisation" [roleType]="m.Organisation.IndustryClassification" [options]="industryClassifications" display="Name"></a-md-select>
       <a-md-input [object]="organisation" [roleType]="m.Organisation.Name"></a-md-input>
       <a-md-select [object]="organisation" [roleType]="m.Organisation.Locale" [options]="locales" display="Name"></a-md-select>
     </div>
+
+    <md-divider></md-divider>
+
+    <md-card-actions>
+      <button md-button color="primary" type="submit" [disabled]="!form.form.valid">SAVE</button>
+      <button md-button (click)="goBack()" type="button">CANCEL</button>
+    </md-card-actions>
   </form>
-
-  <md-divider></md-divider>
-
-  <md-card-actions>
-    <button md-button color="primary" type="submit" [disabled]="!form.form.valid">SAVE</button>
-    <button md-button (click)="goBack()" type="button">CANCEL</button>
-  </md-card-actions>
 
 </td-layout-card-over>
