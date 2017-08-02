@@ -73,7 +73,7 @@ namespace Allors.Domain
                 .WithGeographicBoundary(country)
                 .Build();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             Assert.Equal(postalCode, address.PostalCode);
             Assert.Equal(city, address.City);
@@ -126,7 +126,7 @@ namespace Allors.Domain
                 .WithPostalBoundary(postalBoundary)
                 .Build();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             Assert.Null(address.PostalCode);
             Assert.Null(address.City);

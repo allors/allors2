@@ -91,6 +91,11 @@ namespace Allors.Domain
             {
                 this.AddInvolvedParty(party);
             }
+
+            if (this.ExistOwner && !this.InvolvedParties.Contains(this.Owner))
+            {
+                this.AddInvolvedParty(this.Owner);
+            }
         }
     }
 }

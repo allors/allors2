@@ -18,9 +18,6 @@ export class GoodFormComponent implements OnInit, AfterViewInit, OnDestroy {
   private subscription: Subscription;
   private scope: Scope;
 
-  
-  
-
   m: MetaDomain;
 
   good: Good;

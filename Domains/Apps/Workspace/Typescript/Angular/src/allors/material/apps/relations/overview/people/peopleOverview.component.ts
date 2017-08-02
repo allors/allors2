@@ -49,6 +49,7 @@ export class PeopleOverviewComponent implements AfterViewInit, OnDestroy {
 
     titleService.setTitle(this.title);
     this.scope = new Scope(allors.database, allors.workspace);
+    this.refresh$ = new BehaviorSubject<Date>(undefined);
 
     this.searchForm = this.formBuilder.group({
       firstName: [''],

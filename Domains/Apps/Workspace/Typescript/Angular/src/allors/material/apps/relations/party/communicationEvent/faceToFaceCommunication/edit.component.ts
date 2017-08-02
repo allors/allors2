@@ -16,13 +16,13 @@ import { AllorsService, ErrorService, Scope, Loaded, Saved, Filter, Invoked } fr
 @Component({
   templateUrl: './form.component.html',
 })
-export class PartycommunicationEventEditFaceToFaceCommunicationComponent implements OnInit, AfterViewInit, OnDestroy {
+export class PartyCommunicationEventEditFaceToFaceCommunicationComponent implements OnInit, AfterViewInit, OnDestroy {
 
   private refresh$: BehaviorSubject<Date>;
   private subscription: Subscription;
   private scope: Scope;
 
-  title: string = 'Fact to Face Communication (Meeting)';
+  title: string = 'Face to Face Communication (Meeting)';
   subTitle: string;
 
   addParticipant: boolean = false;

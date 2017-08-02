@@ -73,7 +73,7 @@ namespace Allors.Domain
                 .WithFromDate(DateTime.UtcNow.Date)
                 .Build();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             Assert.Equal(contact.CurrentOrganisationContactRelationships[0].Organisation, organisation);
             Assert.Equal(0, contact.InactiveOrganisationContactRelationships.Count);
@@ -98,7 +98,7 @@ namespace Allors.Domain
                 .WithThroughDate(DateTime.UtcNow.Date.AddDays(-1))
                 .Build();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             Assert.Equal(contact.InactiveOrganisationContactRelationships[0].Organisation, organisation);
             Assert.Equal(0, contact.CurrentOrganisationContactRelationships.Count);

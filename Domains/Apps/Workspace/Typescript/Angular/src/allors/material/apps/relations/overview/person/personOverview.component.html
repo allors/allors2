@@ -16,10 +16,8 @@
       <md-divider></md-divider>
       <md-card-content>
 
-        <div *ngIf="organisation" layout="row">
-          <a [routerLink]="['/relations/organisation/' + organisation.id ]">
-           <a-md-static [object]="organisation" [roleType]="m.Organisation.Name" label="Organisation"></a-md-static>
-           </a>
+        <div *ngIf="organisation" class="pointer" [routerLink]="['/relations/organisation/' + organisation.id ]" layout="row">
+          <a-md-static [object]="organisation" [roleType]="m.Organisation.Name" label="Organisation"></a-md-static>
         </div>
 
         <div layout="row">
@@ -69,17 +67,17 @@
 
             <ng-template let-communicationEvent let-last="last" ngFor [ngForOf]="this.communicationEvents">
               <md-list-item>
-                <a *ngIf="this.checkType(communicationEvent) === 'FaceToFaceCommunication'" md-line class="md-caption" [routerLink]="['/party/' + person.id + '/facetofacecommunication/' + communicationEvent.id ]">
-                  Meeting, {{ communicationEvent.CurrentObjectState.Name }}</a>
+                <div *ngIf="this.checkType(communicationEvent) === 'FaceToFaceCommunication'" md-line class="md-caption pointer" [routerLink]="['/relations/party/' + person.id + '/communicationevent/' + communicationEvent.id ]">
+                  Meeting, {{ communicationEvent.CurrentObjectState.Name }}</div>
 
-                <a *ngIf="this.checkType(communicationEvent) === 'PhoneCommunication'" md-line class="md-caption" [routerLink]="['/party/' + person.id + '/phonecommunication/' + communicationEvent.id ]">
-                  Phone call, {{ communicationEvent.CurrentObjectState.Name }}</a>
+                <div *ngIf="this.checkType(communicationEvent) === 'PhoneCommunication'" md-line class="md-caption pointer" [routerLink]="['/relations/party/' + person.id + '/communicationevent/' + communicationEvent.id ]">
+                  Phone call, {{ communicationEvent.CurrentObjectState.Name }}</div>
 
-                <a *ngIf="this.checkType(communicationEvent) === 'EmailCommunication'" md-line class="md-caption" [routerLink]="['/party/' + person.id + '/emailcommunication/' + communicationEvent.id ]">
-                  Email, {{ communicationEvent.CurrentObjectState.Name }}</a>
+                <div *ngIf="this.checkType(communicationEvent) === 'EmailCommunication'" md-line class="md-caption pointer" [routerLink]="['/relations/party/' + person.id + '/communicationevent/' + communicationEvent.id ]">
+                  Email, {{ communicationEvent.CurrentObjectState.Name }}</div>
 
-                <a *ngIf="this.checkType(communicationEvent) === 'LetterCorrespondence'" md-line class="md-caption" [routerLink]="['/party/' + person.id + '/lettercorrespondence/' + communicationEvent.id ]">
-                  Letter, {{ communicationEvent.CurrentObjectState.Name }}</a>
+                <div *ngIf="this.checkType(communicationEvent) === 'LetterCorrespondence'" md-line class="md-caption pointer" [routerLink]="['/relations/party/' + person.id + '/communicationevent/' + communicationEvent.id ]">
+                  Letter, {{ communicationEvent.CurrentObjectState.Name }}</div>
 
                 <p md-line class="md-caption">{{ communicationEvent.Subject }} </p>
                 <p md-line class="md-caption">Involved:
@@ -96,6 +94,11 @@
                       <md-icon>more_vert</md-icon>
                     </button>
                     <md-menu x-position="before" #menu="mdMenu">
+                        <button md-menu-item [routerLink]="['/relations/party/' + person.id + '/communicationevent/' + communicationEvent.id ]">Details</button>
+                        <button *ngIf="this.checkType(communicationEvent) === 'EmailCommunication'" md-menu-item [routerLink]="['/relations/party/' + person.id + '/communicationevent/emailcommunication/' + communicationEvent.id ]">Edit</button>
+                        <button *ngIf="this.checkType(communicationEvent) === 'FaceToFaceCommunication'" md-menu-item [routerLink]="['/relations/party/' + person.id + '/communicationevent/facetofacecommunication/' + communicationEvent.id ]">Edit</button>
+                        <button *ngIf="this.checkType(communicationEvent) === 'LetterCorrespondence'" md-menu-item [routerLink]="['/relations/party/' + person.id + '/communicationevent/lettercorrespondence/' + communicationEvent.id ]">Edit</button>
+                        <button *ngIf="this.checkType(communicationEvent) === 'PhoneCommunication'" md-menu-item [routerLink]="['/relations/party/' + person.id + '/communicationevent/emailcommunication/' + communicationEvent.id ]">Edit</button>
                         <button [disabled]="!communicationEvent.CanExecuteDelete" md-menu-item (click)="deleteCommunication(communicationEvent)">Delete</button>
                         <button [disabled]="!communicationEvent.CanExecuteCancel" md-menu-item (click)="cancelCommunication(communicationEvent)">Cancel</button>
                         <button [disabled]="!communicationEvent.CanExecuteClose" md-menu-item (click)="closeCommunication(communicationEvent)">Close</button>
@@ -124,7 +127,7 @@
   </div>
 
   <div flex-gt-xs="50">
-    <md-card tdMediaToggle="gt-xs" [mediaClasses]="['push']">
+     <md-card tdMediaToggle="gt-xs" [mediaClasses]="['push']">
       <md-card-title>Contact info</md-card-title>
 
       <md-divider></md-divider>
@@ -146,19 +149,20 @@
 
                 <h3 md-line> {{partyContactMechanism.ContactPurpose?.Name}}</h3>
                 <h3 md-line> {{partyContactMechanism.Contact}}</h3>
-                <h3 *ngIf="this.checkType(partyContactMechanism.ContactMechanism) === 'EmailAddress'" md-line>
+                <div md-line class="pointer" *ngIf="this.checkType(partyContactMechanism.ContactMechanism) === 'EmailAddress'" [routerLink]="['/party/' + person.id + '/partycontactmechanism/emailaddress/' + partyContactMechanism.id]">
                   {{ partyContactMechanism.ContactMechanism.ElectronicAddressString}}
-                </h3>
-                <h3 *ngIf="this.checkType(partyContactMechanism.ContactMechanism) === 'WebAddress'" md-line>
+                </div>
+                <div md-line class="pointer" *ngIf="this.checkType(partyContactMechanism.ContactMechanism) === 'WebAddress'" [routerLink]="['/party/' + person.id + '/partycontactmechanism/webaddress/' + partyContactMechanism.id]">
                   {{ partyContactMechanism.ContactMechanism.ElectronicAddressString}}
-                </h3>
-                <h3 *ngIf="this.checkType(partyContactMechanism.ContactMechanism) === 'TelecommunicationsNumber'" md-line>
+                </div>
+                <div md-line class="pointer" *ngIf="this.checkType(partyContactMechanism.ContactMechanism) === 'TelecommunicationsNumber'"
+                  [routerLink]="['/party/' + person.id + '/partycontactmechanism/telecommunicationsnumber/' + partyContactMechanism.id]">
                   {{ partyContactMechanism.ContactMechanism.CountryCode}} {{ partyContactMechanism.ContactMechanism.AreaCode}} {{ partyContactMechanism.ContactMechanism.ContactNumber}}
-                </h3>
-                <h3 *ngIf="this.checkType(partyContactMechanism.ContactMechanism) === 'PostalAddress'" md-line>
+                </div>
+                <div md-line class="pointer" *ngIf="this.checkType(partyContactMechanism.ContactMechanism) === 'PostalAddress'" [routerLink]="['/party/' + person.id + '/partycontactmechanism/postaladdress/' + partyContactMechanism.id]">
                   {{ partyContactMechanism.ContactMechanism.Address1}} {{ partyContactMechanism.ContactMechanism.PostalBoundary?.PostalCode}}
                   {{ partyContactMechanism.ContactMechanism.PostalBoundary?.Locality}} {{ partyContactMechanism.ContactMechanism.PostalBoundary?.Country.Name}}
-                </h3>
+                </div>
                 <p md-line class="md-caption" *ngFor="let contactPurpose of partyContactMechanism.ContactPurposes">{{ contactPurpose.Name }} </p>
 
                 <p md-line hide-gt-md class="md-caption"> last modified: {{ partyContactMechanism.LastModifiedDate | timeAgo }} </p>
@@ -205,6 +209,60 @@
         <button md-button [routerLink]="['/party/' + person.id + '/partycontactmechanism/telecommunicationsnumber']">+ Telecom</button>
       </md-card-actions>
     </md-card>
+
+     <md-card *ngIf="workEffortAssignments" tdMediaToggle="gt-xs" [mediaClasses]="['push']">
+      <md-card-title>Work Efforts</md-card-title>
+
+      <md-divider></md-divider>
+      <md-card-content>
+        <ng-template tdLoading="workEffortAssignments">
+          <md-list class="will-load">
+            <div class="md-padding" *ngIf="workEffortAssignments.length === 0" layout="row" layout-align="center center">
+              <h3>No work efforts to display.</h3>
+            </div>
+
+            <ng-template let-workEffortAssignment let-last="last" ngFor [ngForOf]="workEffortAssignments">
+              <md-list-item>
+                <div md-line class="md-caption pointer" [routerLink]="['/worktask/' + workEffortAssignment.Assignment.id ]">
+                  {{ workEffortAssignment.Assignment.Name }}, {{ workEffortAssignment.Assignment.CurrentObjectState.Name }}
+                </div>
+
+                <p md-line class="md-caption">{{ workEffortAssignment.Assignment.Description }} </p>
+                <p *ngIf="workEffortAssignment.Assignment.Priority" md-line class="md-caption">Priority {{ workEffortAssignment.Assignment.Priority.Name }} </p>
+
+                <span hide-xs hide-sm hide-md flex-gt-xs="60" flex-xs="40" layout-gt-xs="row">
+              <div class="md-caption tc-grey-500" flex-gt-xs="50"> Sched. Start: {{ workEffortAssignment.Assignment.ScheduledStart | date}} </div>
+              <div class="md-caption tc-grey-500" flex-gt-xs="50"> Sched. Compl.: {{ workEffortAssignment.Assignment.ScheduledCompletion | date }} </div>
+              <div class="md-caption tc-grey-500" flex-gt-xs="50"> Act. Start: {{ workEffortAssignment.Assignment.ActualStart | date}} </div>
+              <div class="md-caption tc-grey-500" flex-gt-xs="50"> Act. Compl.: {{ workEffortAssignment.Assignment.ActualCompletion | date }} </div>
+            </span>
+
+                <span>
+              <button md-icon-button [md-menu-trigger-for]="menu">
+                <md-icon>more_vert</md-icon>
+              </button>
+              <md-menu x-position="before" #menu="mdMenu">
+                <a [routerLink]="['/worktask/' + workEffortAssignment.Assignment.id]" md-menu-item>Edit</a>
+                <button  md-menu-item (click)="delete(workEffortAssignment.Assignment)" [disabled]="!workEffortAssignment.Assignment.CanExecuteDelete">Delete</button>
+              </md-menu>
+          </span>
+
+
+              </md-list-item>
+
+              <md-divider *ngIf="!last" md-inset></md-divider>
+
+            </ng-template>
+          </md-list>
+        </ng-template>
+      </md-card-content>
+
+      <md-divider></md-divider>
+      <md-card-actions>
+        <button md-button [routerLink]="['/worktask']">+ Task</button>
+      </md-card-actions>
+    </md-card>
+
   </div>
 
 </div>

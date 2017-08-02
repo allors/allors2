@@ -37,24 +37,25 @@ namespace Allors.Domain
             this.DatabaseSession.Commit();
 
             var builder = new PhoneCommunicationBuilder(this.DatabaseSession);
-            var communication = builder.Build();
+            builder.Build();
 
-            this.DatabaseSession.Derive();
-            Assert.True(communication.Strategy.IsDeleted);
-
+            Assert.True(this.DatabaseSession.Derive(false).HasErrors);
             this.DatabaseSession.Rollback();
 
             builder.WithSubject("Phonecall");
-            communication = builder.Build();
+            builder.Build();
 
-            this.DatabaseSession.Derive();
-            Assert.True(communication.Strategy.IsDeleted);
-
+            Assert.True(this.DatabaseSession.Derive(false).HasErrors);
             this.DatabaseSession.Rollback();
 
             builder.WithReceiver(receiver);
+            builder.Build();
+
+            Assert.True(this.DatabaseSession.Derive(false).HasErrors);
+            this.DatabaseSession.Rollback();
+
             builder.WithCaller(caller);
-            communication = builder.Build();
+            var communication = builder.Build();
 
             Assert.False(this.DatabaseSession.Derive(false).HasErrors);
 
@@ -87,7 +88,7 @@ namespace Allors.Domain
             var caller = new PersonBuilder(this.DatabaseSession).WithLastName("caller").WithPersonRole(new PersonRoles(this.DatabaseSession).Customer).Build();
             var receiver = new PersonBuilder(this.DatabaseSession).WithLastName("receiver").WithPersonRole(new PersonRoles(this.DatabaseSession).Customer).Build();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
             this.DatabaseSession.Commit();
 
             var communication = new PhoneCommunicationBuilder(this.DatabaseSession)
@@ -97,12 +98,39 @@ namespace Allors.Domain
                 .WithReceiver(receiver)
                 .Build();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             Assert.Equal(3, communication.InvolvedParties.Count);
             Assert.Contains(owner, communication.InvolvedParties);
             Assert.Contains(caller, communication.InvolvedParties);
             Assert.Contains(receiver, communication.InvolvedParties);
+        }
+
+        [Fact]
+        public void GivenPhoneCommunication_WhenCallerIsDeleted_ThenCommunicationEventIsDeleted()
+        {
+            var owner = new PersonBuilder(this.DatabaseSession).WithLastName("owner").WithPersonRole(new PersonRoles(this.DatabaseSession).Employee).Build();
+            var originator = new PersonBuilder(this.DatabaseSession).WithLastName("originator").WithPersonRole(new PersonRoles(this.DatabaseSession).Customer).Build();
+            var receiver = new PersonBuilder(this.DatabaseSession).WithLastName("receiver").WithPersonRole(new PersonRoles(this.DatabaseSession).Customer).Build();
+
+            this.DatabaseSession.Derive();
+            this.DatabaseSession.Commit();
+
+            new PhoneCommunicationBuilder(this.DatabaseSession)
+                .WithSubject("Hello world!")
+                .WithOwner(owner)
+                .WithCaller(originator)
+                .WithReceiver(receiver)
+                .Build();
+
+            this.DatabaseSession.Derive();
+
+            Assert.Equal(1, this.DatabaseSession.Extent<PhoneCommunication>().Count);
+
+            originator.Delete();
+            this.DatabaseSession.Derive();
+
+            Assert.Equal(0, this.DatabaseSession.Extent<PhoneCommunication>().Count);
         }
     }
 }

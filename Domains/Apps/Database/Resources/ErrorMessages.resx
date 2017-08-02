@@ -141,6 +141,9 @@
   <data name="CostUnitNotAllowed" xml:space="preserve">
     <value>Cost unit not in list of allowed cost units</value>
   </data>
+  <data name="EndDateBeforeStartDate" xml:space="preserve">
+    <value>End date must be later then start date</value>
+  </data>
   <data name="GeneralLedgerAccountNotBalanceAccount" xml:space="preserve">
     <value>General Ledger Account must be balance sheet account</value>
   </data>

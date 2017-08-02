@@ -12,7 +12,7 @@ export class PullRequest {
     toJSON() {
       return {
         q: this.query,
-        f: this.fetch
+        f: this.fetch,
       };
     }
 }

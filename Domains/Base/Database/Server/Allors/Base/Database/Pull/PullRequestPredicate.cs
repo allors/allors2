@@ -110,12 +110,14 @@
         {
             var roleType = this.GetRoleType(metaPopulation);
             var value = this.GetUnitRole(roleType, this.V);
+            var objectId = this.O;
 
             var predicate = new Equals
                                 {
                                     AssociationType = this.AT != null ? (AssociationType)metaPopulation.Find(new Guid(this.AT)) : null,
                                     RoleType = roleType,
-                                    Value = value
+                                    Value = value,
+                                    ObjectId = long.Parse(objectId)
                                 };
 
             return predicate;

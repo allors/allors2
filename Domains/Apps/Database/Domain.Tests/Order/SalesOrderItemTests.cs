@@ -371,7 +371,7 @@ namespace Allors.Domain
                 .WithFromDate(DateTime.UtcNow)
                 .Build();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
             this.DatabaseSession.Commit();
 
             this.order = new SalesOrderBuilder(this.DatabaseSession)
@@ -380,7 +380,7 @@ namespace Allors.Domain
                 .WithTakenByInternalOrganisation(this.internalOrganisation)
                 .Build();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
             this.DatabaseSession.Commit();
         }
 
@@ -402,7 +402,7 @@ namespace Allors.Domain
                 .Build();
             salesOrder.AddSalesOrderItem(orderItem);
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             Assert.Equal(orderItem.VatRegime, orderItem.VatRegime);
         }
@@ -423,7 +423,7 @@ namespace Allors.Domain
             var orderItem = new SalesOrderItemBuilder(this.DatabaseSession).WithProduct(this.good).WithQuantityOrdered(1).Build();
             salesOrder.AddSalesOrderItem(orderItem);
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             Assert.Equal(salesOrder.VatRegime, orderItem.VatRegime);
         }
@@ -445,7 +445,7 @@ namespace Allors.Domain
             var orderItem = new SalesOrderItemBuilder(this.DatabaseSession).WithProduct(this.good).WithQuantityOrdered(1).Build();
             salesOrder.AddSalesOrderItem(orderItem);
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             Assert.Equal(salesOrder.VatRegime, orderItem.VatRegime);
             Assert.Equal(expected, orderItem.DerivedVatRate);
@@ -467,7 +467,7 @@ namespace Allors.Domain
             var orderItem = new SalesOrderItemBuilder(this.DatabaseSession).WithProduct(this.good).WithQuantityOrdered(1).Build();
             salesOrder.AddSalesOrderItem(orderItem);
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             Assert.Equal(salesOrder.VatRegime, orderItem.VatRegime);
             Assert.Equal(expected, orderItem.DerivedVatRate);
@@ -494,7 +494,7 @@ namespace Allors.Domain
 
             salesOrder.AddSalesOrderItem(orderItem);
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             Assert.Equal(orderItem.DeliveryDate, orderItem.AssignedDeliveryDate);
         }
@@ -520,7 +520,7 @@ namespace Allors.Domain
 
             salesOrder.AddSalesOrderItem(orderItem);
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             Assert.Equal(orderItem.DeliveryDate, salesOrder.DeliveryDate);
         }
@@ -609,7 +609,7 @@ namespace Allors.Domain
             var orderItem = new SalesOrderItemBuilder(this.DatabaseSession).WithProduct(this.good).WithQuantityOrdered(1).Build();
             salesOrder.AddSalesOrderItem(orderItem);
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             Assert.Null(orderItem.ShipToAddress);
             Assert.False(this.DatabaseSession.Derive(false).HasErrors);
@@ -629,7 +629,7 @@ namespace Allors.Domain
             var orderItem = new SalesOrderItemBuilder(this.DatabaseSession).WithProduct(this.good).WithQuantityOrdered(1).Build();
             salesOrder.AddSalesOrderItem(orderItem);
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             Assert.Equal(this.shipToContactMechanismMechelen, orderItem.ShipToAddress);
         }
@@ -648,7 +648,7 @@ namespace Allors.Domain
             var orderItem = new SalesOrderItemBuilder(this.DatabaseSession).WithProduct(this.good).WithQuantityOrdered(1).Build();
             salesOrder.AddSalesOrderItem(orderItem);
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             Assert.Equal(this.shipToCustomer, orderItem.ShipToParty);
         }
@@ -702,11 +702,11 @@ namespace Allors.Domain
             this.order.AddSalesOrderItem(item1);
             this.order.AddSalesOrderItem(item2);
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             this.order.Confirm();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             Assert.Equal(new Warehouses(this.DatabaseSession).FindBy(M.Warehouse.Name, "facility"), item1.ReservedFromInventoryItem.Facility);
             Assert.Equal(new Warehouses(this.DatabaseSession).FindBy(M.Warehouse.Name, "facility"), item2.ReservedFromInventoryItem.Facility);
@@ -730,11 +730,11 @@ namespace Allors.Domain
 
             this.order.AddSalesOrderItem(item);
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             this.order.Confirm();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             Assert.Equal(3, item.QuantityOrdered);
             Assert.Equal(0, item.QuantityPicked);
@@ -753,7 +753,7 @@ namespace Allors.Domain
 
             item.ReservedFromInventoryItem = current;
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             Assert.Equal(3, item.QuantityOrdered);
             Assert.Equal(0, item.QuantityPicked);
@@ -780,22 +780,22 @@ namespace Allors.Domain
 
             this.order.AddSalesOrderItem(item);
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             this.order.Confirm();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             Assert.Equal(item.QuantityOrdered, item.ReservedFromInventoryItem.QuantityCommittedOut);
             Assert.Equal(0, item.ReservedFromInventoryItem.AvailableToPromise);
 
             var previous = item.ReservedFromInventoryItem;
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             item.Cancel();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             Assert.Equal(0, previous.QuantityCommittedOut);
             Assert.Equal(0, previous.AvailableToPromise);
@@ -814,22 +814,22 @@ namespace Allors.Domain
 
             this.order.AddSalesOrderItem(item);
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             this.order.Confirm();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             Assert.Equal(item.QuantityOrdered, item.ReservedFromInventoryItem.QuantityCommittedOut);
             Assert.Equal(0, item.ReservedFromInventoryItem.AvailableToPromise);
 
             var previous = item.ReservedFromInventoryItem;
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             item.Reject();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             Assert.Equal(0, previous.QuantityCommittedOut);
             Assert.Equal(0, previous.AvailableToPromise);
@@ -842,7 +842,7 @@ namespace Allors.Domain
             var administrators = new UserGroups(this.DatabaseSession).Administrators;
             administrators.AddMember(administrator);
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
             this.DatabaseSession.Commit();
 
             this.InstantiateObjects(this.DatabaseSession);
@@ -857,7 +857,7 @@ namespace Allors.Domain
 
             this.order.AddSalesOrderItem(item);
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
             this.DatabaseSession.Commit();
 
             Assert.Equal(new SalesOrderItemObjectStates(this.DatabaseSession).Created, item.CurrentObjectState);
@@ -874,7 +874,7 @@ namespace Allors.Domain
             var administrators = new UserGroups(this.DatabaseSession).Administrators;
             administrators.AddMember(administrator);
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
             this.DatabaseSession.Commit();
 
             this.InstantiateObjects(this.DatabaseSession);
@@ -891,7 +891,7 @@ namespace Allors.Domain
 
             this.order.Confirm();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
             this.DatabaseSession.Commit();
 
             Assert.Equal(new SalesOrderItemObjectStates(this.DatabaseSession).InProcess, item.CurrentObjectState);
@@ -908,7 +908,7 @@ namespace Allors.Domain
             var administrators = new UserGroups(this.DatabaseSession).Administrators;
             administrators.AddMember(administrator);
             
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
             this.DatabaseSession.Commit();
 
             this.InstantiateObjects(this.DatabaseSession);
@@ -918,7 +918,7 @@ namespace Allors.Domain
             var inventoryItem = (NonSerializedInventoryItem)this.part.InventoryItemsWherePart[0];
             inventoryItem.AddInventoryItemVariance(new InventoryItemVarianceBuilder(this.DatabaseSession).WithQuantity(1).WithReason(new VarianceReasons(this.DatabaseSession).Unknown).Build());
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             var item = new SalesOrderItemBuilder(this.DatabaseSession)
                 .WithProduct(this.good)
@@ -928,11 +928,11 @@ namespace Allors.Domain
 
             this.order.AddSalesOrderItem(item);
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             this.order.Confirm();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             var shipment = (CustomerShipment)this.order.ShipToAddress.ShipmentsWhereShipToAddress[0];
 
@@ -940,7 +940,7 @@ namespace Allors.Domain
             pickList.Picker = new People(this.DatabaseSession).FindBy(M.Person.LastName, "orderProcessor");
             pickList.SetPicked();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             var package = new ShipmentPackageBuilder(this.DatabaseSession).Build();
             shipment.AddShipmentPackage(package);
@@ -950,11 +950,11 @@ namespace Allors.Domain
                 package.AddPackagingContent(new PackagingContentBuilder(this.DatabaseSession).WithShipmentItem(shipmentItem).WithQuantity(shipmentItem.Quantity).Build());
             }
 
-            this.DatabaseSession.Derive(true); 
+            this.DatabaseSession.Derive(); 
             
             shipment.Ship();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             Assert.Equal(new SalesOrderItemObjectStates(this.DatabaseSession).PartiallyShipped, item.CurrentObjectState);
             var acl = new AccessControlList(item, new Users(this.DatabaseSession).CurrentUser);
@@ -970,7 +970,7 @@ namespace Allors.Domain
             var administrators = new UserGroups(this.DatabaseSession).Administrators;
             administrators.AddMember(administrator);
             
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
             this.DatabaseSession.Commit();
 
             this.InstantiateObjects(this.DatabaseSession);
@@ -985,11 +985,11 @@ namespace Allors.Domain
 
             this.order.AddSalesOrderItem(item);
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             item.Cancel();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             Assert.Equal(new SalesOrderItemObjectStates(this.DatabaseSession).Cancelled, item.CurrentObjectState);
             var acl = new AccessControlList(item, new Users(this.DatabaseSession).CurrentUser);
@@ -1005,7 +1005,7 @@ namespace Allors.Domain
             var administrators = new UserGroups(this.DatabaseSession).Administrators;
             administrators.AddMember(administrator);
             
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
             this.DatabaseSession.Commit();
             
             this.InstantiateObjects(this.DatabaseSession);
@@ -1020,11 +1020,11 @@ namespace Allors.Domain
 
             this.order.AddSalesOrderItem(item);
             
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             item.Reject();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             Assert.Equal(new SalesOrderItemObjectStates(this.DatabaseSession).Rejected, item.CurrentObjectState);
             var acl = new AccessControlList(item, new Users(this.DatabaseSession).CurrentUser);
@@ -1039,7 +1039,7 @@ namespace Allors.Domain
             var administrators = new UserGroups(this.DatabaseSession).Administrators;
             administrators.AddMember(administrator);
             
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
             this.DatabaseSession.Commit();
 
             this.InstantiateObjects(this.DatabaseSession);
@@ -1049,7 +1049,7 @@ namespace Allors.Domain
             var inventoryItem = (NonSerializedInventoryItem)this.part.InventoryItemsWherePart[0];
             inventoryItem.AddInventoryItemVariance(new InventoryItemVarianceBuilder(this.DatabaseSession).WithQuantity(110).WithReason(new VarianceReasons(this.DatabaseSession).Unknown).Build());
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             var item = new SalesOrderItemBuilder(this.DatabaseSession)
                 .WithProduct(this.good)
@@ -1059,11 +1059,11 @@ namespace Allors.Domain
 
             this.order.AddSalesOrderItem(item);
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             this.order.Confirm();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
             
             var shipment = (CustomerShipment)this.order.ShipToAddress.ShipmentsWhereShipToAddress[0];
 
@@ -1071,7 +1071,7 @@ namespace Allors.Domain
             pickList.Picker = new People(this.DatabaseSession).FindBy(M.Person.LastName, "orderProcessor");
             pickList.SetPicked();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             var package = new ShipmentPackageBuilder(this.DatabaseSession).Build();
             shipment.AddShipmentPackage(package);
@@ -1081,11 +1081,11 @@ namespace Allors.Domain
                 package.AddPackagingContent(new PackagingContentBuilder(this.DatabaseSession).WithShipmentItem(shipmentItem).WithQuantity(shipmentItem.Quantity).Build());
             }
 
-            this.DatabaseSession.Derive(true); 
+            this.DatabaseSession.Derive(); 
             
             shipment.Ship();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             Assert.Equal(new SalesOrderItemObjectStates(this.DatabaseSession).Completed, item.CurrentObjectState);
             var acl = new AccessControlList(item, new Users(this.DatabaseSession).CurrentUser);
@@ -1100,7 +1100,7 @@ namespace Allors.Domain
             var administrators = new UserGroups(this.DatabaseSession).Administrators;
             administrators.AddMember(administrator);
             
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
             this.DatabaseSession.Commit();
 
             this.InstantiateObjects(this.DatabaseSession);
@@ -1115,11 +1115,11 @@ namespace Allors.Domain
 
             this.order.AddSalesOrderItem(item);
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             this.order.Finish();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             Assert.Equal(new SalesOrderItemObjectStates(this.DatabaseSession).Finished, item.CurrentObjectState);
             var acl = new AccessControlList(item, new Users(this.DatabaseSession).CurrentUser);
@@ -1134,7 +1134,7 @@ namespace Allors.Domain
             var administrators = new UserGroups(this.DatabaseSession).Administrators;
             administrators.AddMember(administrator);
             
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
             this.DatabaseSession.Commit();
 
             this.InstantiateObjects(this.DatabaseSession);
@@ -1144,7 +1144,7 @@ namespace Allors.Domain
             var inventoryItem = (NonSerializedInventoryItem)this.part.InventoryItemsWherePart[0];
             inventoryItem.AddInventoryItemVariance(new InventoryItemVarianceBuilder(this.DatabaseSession).WithQuantity(1).WithReason(new VarianceReasons(this.DatabaseSession).Unknown).Build());
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             var item = new SalesOrderItemBuilder(this.DatabaseSession)
                 .WithProduct(this.good)
@@ -1154,11 +1154,11 @@ namespace Allors.Domain
 
             this.order.AddSalesOrderItem(item);
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             this.order.Confirm();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             var shipment = (CustomerShipment)this.order.ShipToAddress.ShipmentsWhereShipToAddress[0];
 
@@ -1166,7 +1166,7 @@ namespace Allors.Domain
             pickList.Picker = new People(this.DatabaseSession).FindBy(M.Person.LastName, "orderProcessor");
             pickList.SetPicked();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             var package = new ShipmentPackageBuilder(this.DatabaseSession).Build();
             shipment.AddShipmentPackage(package);
@@ -1176,11 +1176,11 @@ namespace Allors.Domain
                 package.AddPackagingContent(new PackagingContentBuilder(this.DatabaseSession).WithShipmentItem(shipmentItem).WithQuantity(shipmentItem.Quantity).Build());
             }
 
-            this.DatabaseSession.Derive(true); 
+            this.DatabaseSession.Derive(); 
             
             shipment.Ship();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             Assert.Equal(new SalesOrderItemObjectStates(this.DatabaseSession).PartiallyShipped, item.CurrentObjectState);
             var acl = new AccessControlList(item, new Users(this.DatabaseSession).CurrentUser);
@@ -1195,7 +1195,7 @@ namespace Allors.Domain
             var inventoryItem = (NonSerializedInventoryItem)this.DatabaseSession.Instantiate(this.good.FinishedGood.InventoryItemsWherePart[0]);
             inventoryItem.AddInventoryItemVariance(new InventoryItemVarianceBuilder(this.DatabaseSession).WithQuantity(110).WithReason(new VarianceReasons(this.DatabaseSession).Unknown).Build());
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             var item = new SalesOrderItemBuilder(this.DatabaseSession)
                 .WithProduct(this.good)
@@ -1205,11 +1205,11 @@ namespace Allors.Domain
 
             this.order.AddSalesOrderItem(item);
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             this.order.Confirm();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             Assert.Equal(100, item.QuantityOrdered);
             Assert.Equal(0, item.QuantityPicked);
@@ -1231,7 +1231,7 @@ namespace Allors.Domain
             var inventoryItem = (NonSerializedInventoryItem)this.DatabaseSession.Instantiate(this.good.FinishedGood.InventoryItemsWherePart[0]);
             inventoryItem.AddInventoryItemVariance(new InventoryItemVarianceBuilder(this.DatabaseSession).WithQuantity(110).WithReason(new VarianceReasons(this.DatabaseSession).Unknown).Build());
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             var item1 = new SalesOrderItemBuilder(this.DatabaseSession)
                 .WithProduct(this.good)
@@ -1241,11 +1241,11 @@ namespace Allors.Domain
 
             this.order.AddSalesOrderItem(item1);
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             this.order.Confirm();
             
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
             
             Assert.Equal(120, item1.QuantityOrdered);
             Assert.Equal(0, item1.QuantityPicked);
@@ -1266,11 +1266,11 @@ namespace Allors.Domain
 
             this.order.AddSalesOrderItem(item2);
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             this.order.Confirm();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             Assert.Equal(120, item1.QuantityOrdered);
             Assert.Equal(0, item1.QuantityPicked);
@@ -1300,7 +1300,7 @@ namespace Allors.Domain
             var inventoryItem = (NonSerializedInventoryItem)this.DatabaseSession.Instantiate(this.good.FinishedGood.InventoryItemsWherePart[0]);
             inventoryItem.AddInventoryItemVariance(new InventoryItemVarianceBuilder(this.DatabaseSession).WithQuantity(110).WithReason(new VarianceReasons(this.DatabaseSession).Unknown).Build());
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             var item = new SalesOrderItemBuilder(this.DatabaseSession)
                 .WithProduct(this.good)
@@ -1310,11 +1310,11 @@ namespace Allors.Domain
 
             this.order.AddSalesOrderItem(item);
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             this.order.Confirm();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             Assert.Equal(100, item.QuantityOrdered);
             Assert.Equal(0, item.QuantityPicked);
@@ -1338,7 +1338,7 @@ namespace Allors.Domain
             var inventoryItem = (NonSerializedInventoryItem)this.DatabaseSession.Instantiate(this.good.FinishedGood.InventoryItemsWherePart[0]);
             inventoryItem.AddInventoryItemVariance(new InventoryItemVarianceBuilder(this.DatabaseSession).WithQuantity(110).WithReason(new VarianceReasons(this.DatabaseSession).Unknown).Build());
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             var item = new SalesOrderItemBuilder(this.DatabaseSession)
                 .WithProduct(this.good)
@@ -1348,15 +1348,15 @@ namespace Allors.Domain
 
             this.order.AddSalesOrderItem(item);
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             this.order.Confirm();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             item.QuantityOrdered = 50;
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             Assert.Equal(50, item.QuantityOrdered);
             Assert.Equal(0, item.QuantityPicked);
@@ -1397,13 +1397,13 @@ namespace Allors.Domain
 
             this.order.AddSalesOrderItem(item);
             this.order.OrderKind = manual;
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             this.order.Confirm();
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             item.QuantityShipNow = 100;
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             var shipment = (CustomerShipment)this.order.ShipToAddress.ShipmentsWhereShipToAddress[0];
 
@@ -1411,7 +1411,7 @@ namespace Allors.Domain
             pickList.Picker = new People(this.DatabaseSession).FindBy(M.Person.LastName, "orderProcessor");
             pickList.SetPicked();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             var package = new ShipmentPackageBuilder(this.DatabaseSession).Build();
             shipment.AddShipmentPackage(package);
@@ -1421,10 +1421,10 @@ namespace Allors.Domain
                 package.AddPackagingContent(new PackagingContentBuilder(this.DatabaseSession).WithShipmentItem(shipmentItem).WithQuantity(shipmentItem.Quantity).Build());
             }
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             shipment.Ship();
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             Assert.Equal(100, item.QuantityShipped);
 
@@ -1473,7 +1473,7 @@ namespace Allors.Domain
 
             this.good.PrimaryProductCategory = childProductCategory;
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             var orderItem = new SalesOrderItemBuilder(this.DatabaseSession)
                 .WithProduct(this.good)
@@ -1483,7 +1483,7 @@ namespace Allors.Domain
 
             this.order.AddSalesOrderItem(orderItem);
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             Assert.Equal(orderItem.SalesRep, salesrep1);
         }
@@ -1519,7 +1519,7 @@ namespace Allors.Domain
 
             this.good.PrimaryProductCategory = childProductCategory;
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             var orderItem = new SalesOrderItemBuilder(this.DatabaseSession)
                 .WithProduct(this.good)
@@ -1529,7 +1529,7 @@ namespace Allors.Domain
 
             this.order.AddSalesOrderItem(orderItem);
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             Assert.Equal(orderItem.SalesRep, salesrep2);
         }
@@ -1579,7 +1579,7 @@ namespace Allors.Domain
 
             this.order.AddSalesOrderItem(orderItem);
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             Assert.Equal(orderItem.SalesRep, salesrep3);
         }
@@ -1592,7 +1592,7 @@ namespace Allors.Domain
             var inventoryItem = (NonSerializedInventoryItem)this.part.InventoryItemsWherePart.First;
             inventoryItem.AddInventoryItemVariance(new InventoryItemVarianceBuilder(this.DatabaseSession).WithQuantity(10).WithReason(new VarianceReasons(this.DatabaseSession).Unknown).Build());
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             var item = new SalesOrderItemBuilder(this.DatabaseSession)
                 .WithProduct(this.good)
@@ -1602,11 +1602,11 @@ namespace Allors.Domain
 
             this.order.AddSalesOrderItem(item);
 
-            this.DatabaseSession.Derive(true); 
+            this.DatabaseSession.Derive(); 
             
             this.order.Confirm();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             var shipment = (CustomerShipment)item.OrderShipmentsWhereSalesOrderItem[0].ShipmentItem.ShipmentWhereShipmentItem;
             Assert.Equal(10, shipment.ShipmentItems[0].Quantity);
@@ -1616,7 +1616,7 @@ namespace Allors.Domain
 
             item.QuantityOrdered = 3;
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             Assert.Equal(3, shipment.ShipmentItems[0].Quantity);
             Assert.Equal(3, pickList.PickListItems[0].RequestedQuantity);
@@ -1630,7 +1630,7 @@ namespace Allors.Domain
             var inventoryItem = (NonSerializedInventoryItem)this.part.InventoryItemsWherePart.First;
             inventoryItem.AddInventoryItemVariance(new InventoryItemVarianceBuilder(this.DatabaseSession).WithQuantity(10).WithReason(new VarianceReasons(this.DatabaseSession).Unknown).Build());
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             var item = new SalesOrderItemBuilder(this.DatabaseSession)
                 .WithProduct(this.good)
@@ -1640,11 +1640,11 @@ namespace Allors.Domain
 
             this.order.AddSalesOrderItem(item);
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             this.order.Confirm();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             Assert.Equal(20, item.QuantityShortFalled);
 
@@ -1656,7 +1656,7 @@ namespace Allors.Domain
 
             item.QuantityOrdered = 11;
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             Assert.Equal(1, item.QuantityShortFalled);
 
@@ -1665,7 +1665,7 @@ namespace Allors.Domain
 
             item.QuantityOrdered = 9;
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             Assert.Equal(0, item.QuantityShortFalled);
 
@@ -1679,7 +1679,7 @@ namespace Allors.Domain
             var inventoryItem = (NonSerializedInventoryItem)this.part.InventoryItemsWherePart.First;
             inventoryItem.AddInventoryItemVariance(new InventoryItemVarianceBuilder(this.DatabaseSession).WithQuantity(10).WithReason(new VarianceReasons(this.DatabaseSession).Unknown).Build());
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             var good2 = new GoodBuilder(this.DatabaseSession)
                 .WithSku("10101")
@@ -1692,7 +1692,7 @@ namespace Allors.Domain
             var good2inventoryItem = new NonSerializedInventoryItemBuilder(this.DatabaseSession).WithGood(good2).Build();
             good2inventoryItem.AddInventoryItemVariance(new InventoryItemVarianceBuilder(this.DatabaseSession).WithQuantity(10).WithReason(new VarianceReasons(this.DatabaseSession).Unknown).Build());
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
             this.DatabaseSession.Commit();
 
             this.InstantiateObjects(this.DatabaseSession);
@@ -1719,11 +1719,11 @@ namespace Allors.Domain
             this.order.AddSalesOrderItem(item2);
             this.order.AddSalesOrderItem(item3);
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             this.order.Confirm();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             var shipment = (CustomerShipment)item1.OrderShipmentsWhereSalesOrderItem[0].ShipmentItem.ShipmentWhereShipmentItem;
             Assert.Equal(2, shipment.ShipmentItems.Count);
@@ -1736,7 +1736,7 @@ namespace Allors.Domain
 
             item1.Cancel();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             Assert.Equal(2, shipment.ShipmentItems.Count);
             Assert.Equal(2, shipment.ShipmentItems[0].Quantity);
@@ -1747,7 +1747,7 @@ namespace Allors.Domain
 
             item3.Cancel();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             Assert.Equal(1, shipment.ShipmentItems.Count);
             Assert.Equal(2, shipment.ShipmentItems[0].Quantity);
@@ -1764,7 +1764,7 @@ namespace Allors.Domain
             var inventoryItem = (NonSerializedInventoryItem)this.part.InventoryItemsWherePart.First;
             inventoryItem.AddInventoryItemVariance(new InventoryItemVarianceBuilder(this.DatabaseSession).WithQuantity(10).WithReason(new VarianceReasons(this.DatabaseSession).Unknown).Build());
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             var item = new SalesOrderItemBuilder(this.DatabaseSession)
                 .WithProduct(this.good)
@@ -1774,11 +1774,11 @@ namespace Allors.Domain
 
             this.order.AddSalesOrderItem(item);
 
-            this.DatabaseSession.Derive(true); 
+            this.DatabaseSession.Derive(); 
             
             this.order.Confirm();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             var shipment = (CustomerShipment)item.OrderShipmentsWhereSalesOrderItem[0].ShipmentItem.ShipmentWhereShipmentItem;
             Assert.Equal(10, shipment.ShipmentItems[0].Quantity);
@@ -1788,11 +1788,11 @@ namespace Allors.Domain
 
             pickList.Picker = new People(this.DatabaseSession).FindBy(M.Person.LastName, "orderProcessor");
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             item.QuantityOrdered = 3;
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             var negativePickList = this.order.ShipToCustomer.PickListsWhereShipToParty[1];
 
@@ -1809,7 +1809,7 @@ namespace Allors.Domain
             var inventoryItem = (NonSerializedInventoryItem)this.part.InventoryItemsWherePart.First;
             inventoryItem.AddInventoryItemVariance(new InventoryItemVarianceBuilder(this.DatabaseSession).WithQuantity(10).WithReason(new VarianceReasons(this.DatabaseSession).Unknown).Build());
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             var item1 = new SalesOrderItemBuilder(this.DatabaseSession)
                 .WithProduct(this.good)
@@ -1826,11 +1826,11 @@ namespace Allors.Domain
             this.order.AddSalesOrderItem(item1);
             this.order.AddSalesOrderItem(item2);
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
             
             this.order.Confirm();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             var shipment = (CustomerShipment)this.order.ShipToCustomer.ShipmentsWhereShipToParty.First;
             Assert.Equal(5, shipment.ShipmentItems[0].Quantity);
@@ -1840,11 +1840,11 @@ namespace Allors.Domain
 
             pickList.Picker = new People(this.DatabaseSession).FindBy(M.Person.LastName, "orderProcessor");
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
             
             item1.Cancel();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             var negativePickList = this.order.ShipToCustomer.PickListsWhereShipToParty[1];
 
@@ -1862,7 +1862,7 @@ namespace Allors.Domain
             var inventoryItem = (NonSerializedInventoryItem)this.part.InventoryItemsWherePart.First;
             inventoryItem.AddInventoryItemVariance(new InventoryItemVarianceBuilder(this.DatabaseSession).WithQuantity(3).WithReason(new VarianceReasons(this.DatabaseSession).Unknown).Build());
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             var manual = new OrderKindBuilder(this.DatabaseSession).WithDescription("manual").WithScheduleManually(true).Build();
 
@@ -1881,10 +1881,10 @@ namespace Allors.Domain
                 .Build();
 
             order1.AddSalesOrderItem(item1);
-            this.DatabaseSession.Derive(true); 
+            this.DatabaseSession.Derive(); 
             
             order1.Confirm();
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             item1.QuantityShipNow = 5;          
             var derivationLog = this.DatabaseSession.Derive(false);
@@ -1907,7 +1907,7 @@ namespace Allors.Domain
             var inventoryItem = (NonSerializedInventoryItem)this.part.InventoryItemsWherePart.First;
             inventoryItem.AddInventoryItemVariance(new InventoryItemVarianceBuilder(this.DatabaseSession).WithQuantity(10).WithReason(new VarianceReasons(this.DatabaseSession).Unknown).Build());
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             var manual = new OrderKindBuilder(this.DatabaseSession).WithDescription("manual").WithScheduleManually(true).Build();
 
@@ -1927,15 +1927,15 @@ namespace Allors.Domain
 
             order1.AddSalesOrderItem(item);
 
-            this.DatabaseSession.Derive(true); 
+            this.DatabaseSession.Derive(); 
             
             order1.Confirm();
             
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             item.QuantityShipNow = 10;
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             var shipment = (CustomerShipment)item.OrderShipmentsWhereSalesOrderItem[0].ShipmentItem.ShipmentWhereShipmentItem;
             Assert.Equal(10, shipment.ShipmentItems[0].Quantity);
@@ -1946,7 +1946,7 @@ namespace Allors.Domain
             pickList.Picker = new People(this.DatabaseSession).FindBy(M.Person.LastName, "orderProcessor");
 
             item.QuantityShipNow = -7;
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             var negativePickList = order1.ShipToCustomer.PickListsWhereShipToParty[1];
 

@@ -56,7 +56,7 @@ namespace Allors.Domain
                 .WithFromDate(DateTime.UtcNow)
                 .Build();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
             this.DatabaseSession.Commit();
         }
 
@@ -70,21 +70,21 @@ namespace Allors.Domain
             var supplier1 = new OrganisationBuilder(this.DatabaseSession).WithName("supplier1").WithOrganisationRole(new OrganisationRoles(this.DatabaseSession).Supplier).Build();
             var supplierRelationship1 = new SupplierRelationshipBuilder(this.DatabaseSession).WithSupplier(supplier1).Build();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             Assert.Equal(1007, supplierRelationship1.SubAccountNumber);
 
             var supplier2 = new OrganisationBuilder(this.DatabaseSession).WithName("supplier2").WithOrganisationRole(new OrganisationRoles(this.DatabaseSession).Supplier).Build();
             var supplierRelationship2 = new SupplierRelationshipBuilder(this.DatabaseSession).WithSupplier(supplier2).Build();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             Assert.Equal(1015, supplierRelationship2.SubAccountNumber);
 
             var supplier3 = new OrganisationBuilder(this.DatabaseSession).WithName("supplier3").WithOrganisationRole(new OrganisationRoles(this.DatabaseSession).Supplier).Build();
             var supplierRelationship3 = new SupplierRelationshipBuilder(this.DatabaseSession).WithSupplier(supplier3).Build();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             Assert.Equal(1023, supplierRelationship3.SubAccountNumber);
         }
@@ -140,7 +140,7 @@ namespace Allors.Domain
                 .WithInternalOrganisation(Singleton.Instance(this.DatabaseSession).DefaultInternalOrganisation)
                 .Build();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             supplierRelationship1.SubAccountNumber = this.supplier.SupplierRelationshipsWhereSupplier.First.SubAccountNumber;
 
@@ -186,14 +186,14 @@ namespace Allors.Domain
             this.supplierRelationship.FromDate = DateTime.UtcNow.AddDays(+1);
             this.supplierRelationship.RemoveThroughDate();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             Assert.Equal(0, this.supplierRelationship.Supplier.ContactsUserGroup.Members.Count);
 
             this.supplierRelationship.FromDate = DateTime.UtcNow.AddSeconds(-1);
             this.supplierRelationship.RemoveThroughDate();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             Assert.Equal(1, this.supplierRelationship.Supplier.ContactsUserGroup.Members.Count);
             Assert.True(this.supplierRelationship.Supplier.ContactsUserGroup.Members.Contains(this.contact));
@@ -201,7 +201,7 @@ namespace Allors.Domain
             this.supplierRelationship.FromDate = DateTime.UtcNow.AddDays(-2);
             this.supplierRelationship.ThroughDate = DateTime.UtcNow.AddDays(-1);
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             Assert.Equal(0, this.supplierRelationship.Supplier.ContactsUserGroup.Members.Count);
         }
@@ -218,14 +218,14 @@ namespace Allors.Domain
                 .WithFromDate(DateTime.UtcNow)
                 .Build();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             Assert.Equal(2, this.supplierRelationship.Supplier.ContactsUserGroup.Members.Count);
             Assert.True(this.supplierRelationship.Supplier.ContactsUserGroup.Members.Contains(this.contact));
 
             contactRelationship2.ThroughDate = DateTime.UtcNow.AddDays(-1);
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             Assert.Equal(1, this.supplierRelationship.Supplier.ContactsUserGroup.Members.Count);
             Assert.True(this.supplierRelationship.Supplier.ContactsUserGroup.Members.Contains(this.contact));
@@ -242,7 +242,7 @@ namespace Allors.Domain
         public void GivenSupplierRelationshipToCome_WhenDeriving_ThenInternalOrganisationSuppliersDosNotContainSupplier()
         {
             this.supplierRelationship.FromDate = DateTime.UtcNow.AddDays(1);
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             Assert.False(internalOrganisation.Suppliers.Contains(supplier));
         }
@@ -253,7 +253,7 @@ namespace Allors.Domain
             this.supplierRelationship.FromDate = DateTime.UtcNow.AddDays(-10);
             this.supplierRelationship.ThroughDate = DateTime.UtcNow.AddDays(-1);
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             Assert.False(internalOrganisation.Suppliers.Contains(supplier));
         }

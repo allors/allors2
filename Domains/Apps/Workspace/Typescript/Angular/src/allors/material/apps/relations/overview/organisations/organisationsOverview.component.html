@@ -29,13 +29,14 @@
       <ng-template let-organisation let-last="last" ngFor [ngForOf]="data">
         <md-list-item>
 
-          <md-icon *ngIf="!organisation.LogoImage" md-list-avatar>person</md-icon>
-          <img *ngIf="organisation.LogoImage" md-list-avatar src="http://localhost:5000/Media/Download/{{organisation.LogoImage.UniqueId}}?revision={{organisation.LogoImage.Revision}}"
-          />
+          <md-icon *ngIf="!organisation.LogoImage" md-list-avatar>insert_photo</md-icon>
+          <img *ngIf="organisation.LogoImage" md-list-avatar src="http://localhost:5000/Media/Download/{{organisation.LogoImage.UniqueId}}?revision={{organisation.LogoImage.Revision}}"/>
 
-          <h3 md-line> {{organisation.PartyName}}</h3>
-          <p *ngIf="organisation.GeneralCorrespondence" md-line> {{organisation.GeneralCorrespondence?.Address1}} {{organisation.GeneralCorrespondence?.Address2}} {{organisation.GeneralCorrespondence?.Address3}}
-          </p>
+          <div md-line class="pointer" [routerLink]="['/relations/organisation/' + organisation.id]">
+            {{organisation.PartyName}}
+          </div>
+
+          <p *ngIf="organisation.GeneralCorrespondence" md-line> {{organisation.GeneralCorrespondence?.Address1}} {{organisation.GeneralCorrespondence?.Address2}} {{organisation.GeneralCorrespondence?.Address3}}</p>
           <p *ngIf="organisation.GeneralCorrespondence" md-line> {{organisation.GeneralCorrespondence?.PostalBoundary?.PostalCode}} {{organisation.GeneralCorrespondence?.PostalBoundary?.Locality}}
             {{organisation.GeneralCorrespondence?.PostalBoundary?.Country.Name}} </p>
           <p md-line hide-gt-md class="md-caption"> last modified: {{ organisation.LastModifiedDate | timeAgo }} </p>

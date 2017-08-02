@@ -107,7 +107,7 @@ namespace Allors.Domain
                 .WithParent(productCategory12)
                 .Build();
 
-            this.DatabaseSession.Derive(true); 
+            this.DatabaseSession.Derive(); 
 
             Assert.False(productCategory1.ExistAncestors);
             Assert.False(productCategory2.ExistAncestors);
@@ -168,7 +168,7 @@ namespace Allors.Domain
                 .WithParent(productCategory12)
                 .Build();
 
-            this.DatabaseSession.Derive(true); 
+            this.DatabaseSession.Derive(); 
 
             Assert.False(productCategory1.ExistAncestors);
             Assert.False(productCategory2.ExistAncestors);
@@ -201,7 +201,7 @@ namespace Allors.Domain
                 .Build();
             productCategory11.AddParent(productCategory3);
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             Assert.False(productCategory1.ExistAncestors);
             Assert.False(productCategory2.ExistAncestors);
@@ -238,7 +238,7 @@ namespace Allors.Domain
                 .Build();
             productCategory122.AddParent(productCategory13);
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             Assert.False(productCategory1.ExistAncestors);
             Assert.False(productCategory2.ExistAncestors);
@@ -306,7 +306,7 @@ namespace Allors.Domain
                 .WithParent(productCategory12)
                 .Build();
 
-            this.DatabaseSession.Derive(true); 
+            this.DatabaseSession.Derive(); 
 
             Assert.False(productCategory1.ExistAncestors);
             Assert.False(productCategory2.ExistAncestors);
@@ -336,7 +336,7 @@ namespace Allors.Domain
 
             productCategory11.RemoveParent(productCategory2);
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             Assert.False(productCategory1.ExistAncestors);
             Assert.False(productCategory2.ExistAncestors);
@@ -394,7 +394,7 @@ namespace Allors.Domain
                 .WithParent(productCategory12)
                 .Build();
 
-            this.DatabaseSession.Derive(true); 
+            this.DatabaseSession.Derive(); 
 
             Assert.Equal(5, productCategory1.Children.Count);
             Assert.Contains(productCategory11, productCategory1.Children);

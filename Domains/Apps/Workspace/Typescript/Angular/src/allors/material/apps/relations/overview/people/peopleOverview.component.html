@@ -38,7 +38,10 @@
             <img *ngIf="person.Picture" md-list-avatar src="http://localhost:5000/Media/Download/{{person.Picture.UniqueId}}?revision={{person.Picture.Revision}}"
             />
 
-            <h3 md-line> {{person.PartyName}}</h3>
+            <div md-line class="pointer" [routerLink]="['/relations/person/' + person.id]">
+              {{person.PartyName}}
+            </div>
+
             <p md-line hide-gt-md class="md-caption"> last login: {{ person.LastModifiedDate | timeAgo }} </p>
 
             <span flex></span>

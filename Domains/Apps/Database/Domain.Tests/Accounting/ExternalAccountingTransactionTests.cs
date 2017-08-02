@@ -33,7 +33,7 @@ namespace Allors.Domain
             var partyFrom = new OrganisationBuilder(this.DatabaseSession).WithName("party from").WithOrganisationRole(new OrganisationRoles(this.DatabaseSession).Customer).Build();
             var partyTo = new OrganisationBuilder(this.DatabaseSession).WithName("party to").WithOrganisationRole(new OrganisationRoles(this.DatabaseSession).Customer).Build();
             
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
             this.DatabaseSession.Commit();
 
             var builder = new TaxDueBuilder(this.DatabaseSession);

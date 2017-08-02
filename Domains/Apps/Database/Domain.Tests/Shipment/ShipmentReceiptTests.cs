@@ -55,7 +55,7 @@ namespace Allors.Domain
 
             var inventoryItem = new NonSerializedInventoryItemBuilder(this.DatabaseSession).WithGood(good).Build();
             inventoryItem.AddInventoryItemVariance(new InventoryItemVarianceBuilder(this.DatabaseSession).WithQuantity(100).WithReason(new VarianceReasons(this.DatabaseSession).Order).Build());
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
             this.DatabaseSession.Commit();
 
             var builder = new ShipmentReceiptBuilder(this.DatabaseSession);
@@ -101,11 +101,11 @@ namespace Allors.Domain
             var item1 = new PurchaseOrderItemBuilder(this.DatabaseSession).WithPart(part).WithQuantityOrdered(1).Build();
             order.AddPurchaseOrderItem(item1);
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             order.Confirm();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
             this.DatabaseSession.Commit();
 
             var shipment = new PurchaseShipmentBuilder(this.DatabaseSession).WithShipmentMethod(new ShipmentMethods(this.DatabaseSession).Ground).WithShipFromParty(supplier).Build();
@@ -120,7 +120,7 @@ namespace Allors.Domain
 
             shipment.AppsComplete();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
             this.DatabaseSession.Commit();
 
             Assert.Equal(new Warehouses(this.DatabaseSession).FindBy(M.Warehouse.Name, "facility"), receipt.InventoryItem.Facility);
@@ -149,7 +149,7 @@ namespace Allors.Domain
             var item1 = new PurchaseOrderItemBuilder(this.DatabaseSession).WithProduct(good).WithQuantityOrdered(1).Build();
             order.AddPurchaseOrderItem(item1);
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
             this.DatabaseSession.Commit();
 
             order.Confirm();
@@ -164,7 +164,7 @@ namespace Allors.Domain
                 .WithOrderItem(item1)
                 .Build();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
             this.DatabaseSession.Commit();
 
             shipment.AppsComplete();
@@ -201,7 +201,7 @@ namespace Allors.Domain
             var inventoryItem = new NonSerializedInventoryItemBuilder(this.DatabaseSession).WithGood(good).Build();
             inventoryItem.AddInventoryItemVariance(new InventoryItemVarianceBuilder(this.DatabaseSession).WithQuantity(20).WithReason(new VarianceReasons(this.DatabaseSession).Unknown).Build());
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             var order1 = new SalesOrderBuilder(this.DatabaseSession)
                 .WithBillToCustomer(customer)
@@ -212,12 +212,12 @@ namespace Allors.Domain
             var salesItem = new SalesOrderItemBuilder(this.DatabaseSession).WithDescription("item1").WithProduct(good).WithQuantityOrdered(30).WithActualUnitPrice(15).Build();
             order1.AddSalesOrderItem(salesItem);
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
             this.DatabaseSession.Commit();
 
             order1.Confirm();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
             this.DatabaseSession.Commit();
 
             var sessionInventoryItem = (NonSerializedInventoryItem)this.DatabaseSession.Instantiate(inventoryItem);
@@ -235,7 +235,7 @@ namespace Allors.Domain
             var item1 = new PurchaseOrderItemBuilder(this.DatabaseSession).WithProduct(good).WithQuantityOrdered(10).Build();
             order.AddPurchaseOrderItem(item1);
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
             this.DatabaseSession.Commit();
 
             order.Confirm();
@@ -250,12 +250,12 @@ namespace Allors.Domain
                 .WithOrderItem(item1)
                 .Build();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
             this.DatabaseSession.Commit();
 
             shipment.AppsComplete();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
             this.DatabaseSession.Commit();
 
             Assert.Equal(30, sessionInventoryItem.QuantityOnHand);
@@ -285,7 +285,7 @@ namespace Allors.Domain
             var item1 = new PurchaseOrderItemBuilder(this.DatabaseSession).WithProduct(good).WithQuantityOrdered(10).Build();
             order.AddPurchaseOrderItem(item1);
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
             this.DatabaseSession.Commit();
 
             order.Confirm();
@@ -302,7 +302,7 @@ namespace Allors.Domain
 
             shipment.AppsComplete();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
             this.DatabaseSession.Commit();
 
             Assert.Equal(10, item1.QuantityReceived);

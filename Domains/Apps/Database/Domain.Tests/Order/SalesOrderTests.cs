@@ -42,7 +42,7 @@ namespace Allors.Domain
 
             var mechelen = new CityBuilder(this.DatabaseSession).WithName("Mechelen").Build();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             var order = new SalesOrderBuilder(this.DatabaseSession)
                 .WithBillToCustomer(customer)
@@ -50,7 +50,7 @@ namespace Allors.Domain
                 .WithShipToAddress(new PostalAddressBuilder(this.DatabaseSession).WithGeographicBoundary(mechelen).WithAddress1("Haverwerf 15").Build())
                 .Build();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             Assert.Equal(new SalesOrderObjectStates(this.DatabaseSession).Provisional, order.CurrentObjectState);
             Assert.True(order.PartiallyShip);
@@ -109,12 +109,12 @@ namespace Allors.Domain
             var good1InventoryItem = new NonSerializedInventoryItemBuilder(this.DatabaseSession).WithGood(good1).Build();
             good1InventoryItem.AddInventoryItemVariance(new InventoryItemVarianceBuilder(this.DatabaseSession).WithQuantity(100).WithReason(new VarianceReasons(this.DatabaseSession).Unknown).Build());
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             var good2InventoryItem = new NonSerializedInventoryItemBuilder(this.DatabaseSession).WithGood(good2).Build();
             good2InventoryItem.AddInventoryItemVariance(new InventoryItemVarianceBuilder(this.DatabaseSession).WithQuantity(100).WithReason(new VarianceReasons(this.DatabaseSession).Unknown).Build());
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             var order = new SalesOrderBuilder(this.DatabaseSession)
                 .WithBillToCustomer(customer)
@@ -129,11 +129,11 @@ namespace Allors.Domain
             order.AddSalesOrderItem(item2);
             order.AddSalesOrderItem(item3);
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             order.Confirm();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             var shipment = (CustomerShipment)mechelenAddress.ShipmentsWhereShipToAddress[0];
 
@@ -141,7 +141,7 @@ namespace Allors.Domain
             pickList.Picker = new People(this.DatabaseSession).FindBy(M.Person.LastName, "orderProcessor");
 
             pickList.SetPicked();
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             var package = new ShipmentPackageBuilder(this.DatabaseSession).Build();
             shipment.AddShipmentPackage(package);
@@ -151,11 +151,11 @@ namespace Allors.Domain
                 package.AddPackagingContent(new PackagingContentBuilder(this.DatabaseSession).WithShipmentItem(shipmentItem).WithQuantity(shipmentItem.Quantity).Build());
             }
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             shipment.Ship();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             Assert.Equal(new SalesOrderObjectStates(this.DatabaseSession).Completed, order.CurrentObjectState);
             Assert.Equal(new SalesOrderObjectStates(this.DatabaseSession).Shipped, order.CurrentShipmentStatus.SalesOrderObjectState);
@@ -188,7 +188,7 @@ namespace Allors.Domain
             var good1Inventory = new NonSerializedInventoryItemBuilder(this.DatabaseSession).WithGood(good1).Build();
             good1Inventory.AddInventoryItemVariance(new InventoryItemVarianceBuilder(this.DatabaseSession).WithQuantity(1).WithReason(new VarianceReasons(this.DatabaseSession).Unknown).Build());
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             var good2 = new GoodBuilder(this.DatabaseSession)
                 .WithSku("10102")
@@ -219,7 +219,7 @@ namespace Allors.Domain
 
             new CustomerRelationshipBuilder(this.DatabaseSession).WithFromDate(DateTime.UtcNow).WithCustomer(customer).WithInternalOrganisation(internalOrganisation).Build();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             var order = new SalesOrderBuilder(this.DatabaseSession)
                 .WithBillToCustomer(customer)
@@ -235,11 +235,11 @@ namespace Allors.Domain
             order.AddSalesOrderItem(item2);
             order.AddSalesOrderItem(item3);
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             order.Confirm();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             var shipment = (CustomerShipment)item1.OrderShipmentsWhereSalesOrderItem[0].ShipmentItem.ShipmentWhereShipmentItem;
 
@@ -247,7 +247,7 @@ namespace Allors.Domain
             pickList.Picker = new People(this.DatabaseSession).FindBy(M.Person.LastName, "orderProcessor");
 
             pickList.SetPicked();
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             var package = new ShipmentPackageBuilder(this.DatabaseSession).Build();
             shipment.AddShipmentPackage(package);
@@ -257,13 +257,13 @@ namespace Allors.Domain
                 package.AddPackagingContent(new PackagingContentBuilder(this.DatabaseSession).WithShipmentItem(shipmentItem).WithQuantity(shipmentItem.Quantity).Build());
             }
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             shipment.SetPacked();
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             shipment.Ship();
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             var salesInvoiceitem = (SalesInvoiceItem)shipment.ShipmentItems[0].InvoiceItems[0];
             var invoice1 = salesInvoiceitem.SalesInvoiceWhereSalesInvoiceItem;
@@ -275,7 +275,7 @@ namespace Allors.Domain
                 .WithEffectiveDate(DateTime.UtcNow)
                 .Build();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             Assert.Equal(new SalesOrderObjectStates(this.DatabaseSession).InProcess, order.CurrentObjectState);
             Assert.Equal(new SalesOrderObjectStates(this.DatabaseSession).PartiallyShipped, order.CurrentShipmentStatus.SalesOrderObjectState);
@@ -292,7 +292,7 @@ namespace Allors.Domain
 
             good1Inventory.AddInventoryItemVariance(new InventoryItemVarianceBuilder(this.DatabaseSession).WithQuantity(100).WithReason(new VarianceReasons(this.DatabaseSession).Unknown).Build());
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             shipment = (CustomerShipment)item2.OrderShipmentsWhereSalesOrderItem[0].ShipmentItem.ShipmentWhereShipmentItem;
 
@@ -301,7 +301,7 @@ namespace Allors.Domain
 
             pickList.SetPicked();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             package = new ShipmentPackageBuilder(this.DatabaseSession).Build();
             shipment.AddShipmentPackage(package);
@@ -311,11 +311,11 @@ namespace Allors.Domain
                 package.AddPackagingContent(new PackagingContentBuilder(this.DatabaseSession).WithShipmentItem(shipmentItem).WithQuantity(shipmentItem.Quantity).Build());
             }
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             shipment.Ship();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             salesInvoiceitem = (SalesInvoiceItem)shipment.ShipmentItems[0].InvoiceItems[0];
             var invoice2 = salesInvoiceitem.SalesInvoiceWhereSalesInvoiceItem;
@@ -326,7 +326,7 @@ namespace Allors.Domain
                 .WithPaymentApplication(new PaymentApplicationBuilder(this.DatabaseSession).WithInvoiceItem(invoice2.SalesInvoiceItems[0]).WithAmountApplied(30).Build())
                 .Build();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             Assert.Equal(new SalesOrderObjectStates(this.DatabaseSession).InProcess, order.CurrentObjectState);
             Assert.Equal(new SalesOrderObjectStates(this.DatabaseSession).PartiallyShipped, order.CurrentShipmentStatus.SalesOrderObjectState);
@@ -343,7 +343,7 @@ namespace Allors.Domain
 
             good2Inventory.AddInventoryItemVariance(new InventoryItemVarianceBuilder(this.DatabaseSession).WithQuantity(100).WithReason(new VarianceReasons(this.DatabaseSession).Unknown).Build());
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             shipment = (CustomerShipment)item3.OrderShipmentsWhereSalesOrderItem[0].ShipmentItem.ShipmentWhereShipmentItem;
 
@@ -352,7 +352,7 @@ namespace Allors.Domain
 
             pickList.SetPicked();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             package = new ShipmentPackageBuilder(this.DatabaseSession).Build();
             shipment.AddShipmentPackage(package);
@@ -362,11 +362,11 @@ namespace Allors.Domain
                 package.AddPackagingContent(new PackagingContentBuilder(this.DatabaseSession).WithShipmentItem(shipmentItem).WithQuantity(shipmentItem.Quantity).Build());
             }
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             shipment.Ship();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             salesInvoiceitem = (SalesInvoiceItem)shipment.ShipmentItems[0].InvoiceItems[0];
             var invoice3 = salesInvoiceitem.SalesInvoiceWhereSalesInvoiceItem;
@@ -376,7 +376,7 @@ namespace Allors.Domain
                 .WithPaymentApplication(new PaymentApplicationBuilder(this.DatabaseSession).WithInvoiceItem(invoice3.SalesInvoiceItems[0]).WithAmountApplied(75).Build())
                 .Build();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             Assert.Equal(new SalesOrderObjectStates(this.DatabaseSession).Finished, order.CurrentObjectState);
             Assert.Equal(new SalesOrderObjectStates(this.DatabaseSession).Shipped, order.CurrentShipmentStatus.SalesOrderObjectState);
@@ -410,7 +410,7 @@ namespace Allors.Domain
             var inventoryItem = new NonSerializedInventoryItemBuilder(this.DatabaseSession).WithGood(good).Build();
             inventoryItem.AddInventoryItemVariance(new InventoryItemVarianceBuilder(this.DatabaseSession).WithQuantity(10).WithReason(new VarianceReasons(this.DatabaseSession).Unknown).Build());
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             var mechelen = new CityBuilder(this.DatabaseSession).WithName("Mechelen").Build();
             var mechelenAddress = new PostalAddressBuilder(this.DatabaseSession).WithGeographicBoundary(mechelen).WithAddress1("Haverwerf 15").Build();
@@ -425,7 +425,7 @@ namespace Allors.Domain
 
             new CustomerRelationshipBuilder(this.DatabaseSession).WithFromDate(DateTime.UtcNow).WithCustomer(customer).WithInternalOrganisation(internalOrganisation).Build();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             var order1 = new SalesOrderBuilder(this.DatabaseSession)
                 .WithBillToCustomer(customer)
@@ -442,11 +442,11 @@ namespace Allors.Domain
 
             order1.AddSalesOrderItem(item);
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             order1.Confirm();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             var shipment = (CustomerShipment)item.OrderShipmentsWhereSalesOrderItem[0].ShipmentItem.ShipmentWhereShipmentItem;
             Assert.Equal(3, shipment.ShipmentItems[0].Quantity);
@@ -456,7 +456,7 @@ namespace Allors.Domain
 
             pickList1.Picker = new People(this.DatabaseSession).FindBy(M.Person.LastName, "orderProcessor");
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             var order2 = new SalesOrderBuilder(this.DatabaseSession)
                 .WithBillToCustomer(customer)
@@ -473,11 +473,11 @@ namespace Allors.Domain
 
             order2.AddSalesOrderItem(item);
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             order2.Confirm();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             Assert.Equal(5, shipment.ShipmentItems.First.Quantity);
 
@@ -503,7 +503,7 @@ namespace Allors.Domain
             var inventoryItem = new NonSerializedInventoryItemBuilder(this.DatabaseSession).WithGood(good).Build();
             inventoryItem.AddInventoryItemVariance(new InventoryItemVarianceBuilder(this.DatabaseSession).WithQuantity(10).WithReason(new VarianceReasons(this.DatabaseSession).Unknown).Build());
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             var mechelen = new CityBuilder(this.DatabaseSession).WithName("Mechelen").Build();
             var mechelenAddress = new PostalAddressBuilder(this.DatabaseSession).WithGeographicBoundary(mechelen).WithAddress1("Haverwerf 15").Build();
@@ -518,7 +518,7 @@ namespace Allors.Domain
 
             new CustomerRelationshipBuilder(this.DatabaseSession).WithFromDate(DateTime.UtcNow).WithCustomer(customer).WithInternalOrganisation(internalOrganisation).Build();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             var order = new SalesOrderBuilder(this.DatabaseSession)
                 .WithBillToCustomer(customer)
@@ -535,11 +535,11 @@ namespace Allors.Domain
 
             order.AddSalesOrderItem(item);
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             order.Confirm();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             var shipment = (CustomerShipment)item.OrderShipmentsWhereSalesOrderItem[0].ShipmentItem.ShipmentWhereShipmentItem;
             Assert.Equal(10, shipment.ShipmentItems[0].Quantity);
@@ -549,11 +549,11 @@ namespace Allors.Domain
 
             pickList.Picker = new People(this.DatabaseSession).FindBy(M.Person.LastName, "orderProcessor");
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             order.Cancel();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             var negativePickList = order.ShipToCustomer.PickListsWhereShipToParty[1];
             Assert.Equal(-10, negativePickList.PickListItems[0].RequestedQuantity);
@@ -579,7 +579,7 @@ namespace Allors.Domain
             var inventoryItem = new NonSerializedInventoryItemBuilder(this.DatabaseSession).WithGood(good).Build();
             inventoryItem.AddInventoryItemVariance(new InventoryItemVarianceBuilder(this.DatabaseSession).WithQuantity(100).WithReason(new VarianceReasons(this.DatabaseSession).Unknown).Build());
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             var mechelen = new CityBuilder(this.DatabaseSession).WithName("Mechelen").Build();
             var mechelenAddress = new PostalAddressBuilder(this.DatabaseSession).WithGeographicBoundary(mechelen).WithAddress1("Haverwerf 15").Build();
@@ -594,7 +594,7 @@ namespace Allors.Domain
 
             new CustomerRelationshipBuilder(this.DatabaseSession).WithFromDate(DateTime.UtcNow).WithCustomer(customer).WithInternalOrganisation(internalOrganisation).Build();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             var order1 = new SalesOrderBuilder(this.DatabaseSession)
                 .WithBillToCustomer(customer)
@@ -611,11 +611,11 @@ namespace Allors.Domain
 
             order1.AddSalesOrderItem(item);
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             order1.Confirm();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             var order2 = new SalesOrderBuilder(this.DatabaseSession)
                 .WithBillToCustomer(customer)
@@ -632,11 +632,11 @@ namespace Allors.Domain
 
             order2.AddSalesOrderItem(item);
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             order2.Confirm();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             var shipment = (CustomerShipment)customer.ShipmentsWhereBillToParty[0];
             Assert.Equal(30, shipment.ShipmentItems[0].Quantity);
@@ -646,7 +646,7 @@ namespace Allors.Domain
 
             order1.Cancel();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             Assert.Equal(new CustomerShipmentObjectStates(this.DatabaseSession).Created, shipment.CurrentObjectState);
             Assert.Equal(new PickListObjectStates(this.DatabaseSession).Created, pickList.CurrentObjectState);
@@ -654,7 +654,7 @@ namespace Allors.Domain
 
             order2.Cancel();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             Assert.Equal(new CustomerShipmentObjectStates(this.DatabaseSession).Cancelled, shipment.CurrentObjectState);
             Assert.Equal(new PickListObjectStates(this.DatabaseSession).Cancelled, pickList.CurrentObjectState);
@@ -690,7 +690,7 @@ namespace Allors.Domain
 
             new CustomerRelationshipBuilder(this.DatabaseSession).WithFromDate(DateTime.UtcNow).WithCustomer(customer).WithInternalOrganisation(internalOrganisation).Build();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             var order = new SalesOrderBuilder(this.DatabaseSession)
                 .WithBillToCustomer(customer)
@@ -707,15 +707,15 @@ namespace Allors.Domain
 
             order.AddSalesOrderItem(item);
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             order.Confirm();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             order.Hold();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             Assert.Equal(new SalesOrderObjectStates(this.DatabaseSession).OnHold, order.CurrentObjectState);
             Assert.Equal(0, item.QuantityPendingShipment);
@@ -723,7 +723,7 @@ namespace Allors.Domain
 
             inventory.AddInventoryItemVariance(new InventoryItemVarianceBuilder(this.DatabaseSession).WithQuantity(100).WithReason(new VarianceReasons(this.DatabaseSession).Unknown).Build());
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             Assert.Equal(new SalesOrderObjectStates(this.DatabaseSession).OnHold, order.CurrentObjectState);
             Assert.Equal(0, item.QuantityPendingShipment);
@@ -761,7 +761,7 @@ namespace Allors.Domain
 
             new CustomerRelationshipBuilder(this.DatabaseSession).WithFromDate(DateTime.UtcNow).WithCustomer(customer).WithInternalOrganisation(internalOrganisation).Build();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             var order = new SalesOrderBuilder(this.DatabaseSession)
                 .WithBillToCustomer(customer)
@@ -778,15 +778,15 @@ namespace Allors.Domain
 
             order.AddSalesOrderItem(item);
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             order.Confirm();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             order.Hold();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             Assert.Equal(new SalesOrderObjectStates(this.DatabaseSession).OnHold, order.CurrentObjectState);
             Assert.Equal(0, item.QuantityPendingShipment);
@@ -794,7 +794,7 @@ namespace Allors.Domain
 
             inventory.AddInventoryItemVariance(new InventoryItemVarianceBuilder(this.DatabaseSession).WithQuantity(100).WithReason(new VarianceReasons(this.DatabaseSession).Unknown).Build());
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             Assert.Equal(new SalesOrderObjectStates(this.DatabaseSession).OnHold, order.CurrentObjectState);
             Assert.Equal(0, item.QuantityPendingShipment);
@@ -803,7 +803,7 @@ namespace Allors.Domain
 
             order.Continue();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             Assert.Equal(new SalesOrderObjectStates(this.DatabaseSession).InProcess, order.CurrentObjectState);
             Assert.Equal(10, item.QuantityPendingShipment);
@@ -829,7 +829,7 @@ namespace Allors.Domain
             var inventoryGood1 = new NonSerializedInventoryItemBuilder(this.DatabaseSession).WithGood(good1).Build();
             inventoryGood1.AddInventoryItemVariance(new InventoryItemVarianceBuilder(this.DatabaseSession).WithQuantity(10).WithReason(new VarianceReasons(this.DatabaseSession).Unknown).Build());
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             var good2 = new GoodBuilder(this.DatabaseSession)
                 .WithSku("20202")
@@ -842,7 +842,7 @@ namespace Allors.Domain
             var inventoryGood2 = new NonSerializedInventoryItemBuilder(this.DatabaseSession).WithGood(good2).Build();
             inventoryGood2.AddInventoryItemVariance(new InventoryItemVarianceBuilder(this.DatabaseSession).WithQuantity(10).WithReason(new VarianceReasons(this.DatabaseSession).Unknown).Build());
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             var mechelen = new CityBuilder(this.DatabaseSession).WithName("Mechelen").Build();
             var mechelenAddress = new PostalAddressBuilder(this.DatabaseSession).WithGeographicBoundary(mechelen).WithAddress1("Haverwerf 15").Build();
@@ -857,7 +857,7 @@ namespace Allors.Domain
 
             new CustomerRelationshipBuilder(this.DatabaseSession).WithFromDate(DateTime.UtcNow).WithCustomer(customer).WithInternalOrganisation(internalOrganisation).Build();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             var order = new SalesOrderBuilder(this.DatabaseSession)
                 .WithBillToCustomer(customer)
@@ -882,11 +882,11 @@ namespace Allors.Domain
             order.AddSalesOrderItem(item1);
             order.AddSalesOrderItem(item2);
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             order.Confirm();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             Assert.False(customer.ExistShipmentsWhereShipToParty);
 
@@ -900,7 +900,7 @@ namespace Allors.Domain
 
             inventoryGood1.AddInventoryItemVariance(new InventoryItemVarianceBuilder(this.DatabaseSession).WithQuantity(100).WithReason(new VarianceReasons(this.DatabaseSession).Unknown).Build());
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             Assert.False(customer.ExistShipmentsWhereShipToParty);
 
@@ -914,7 +914,7 @@ namespace Allors.Domain
 
             inventoryGood2.AddInventoryItemVariance(new InventoryItemVarianceBuilder(this.DatabaseSession).WithQuantity(100).WithReason(new VarianceReasons(this.DatabaseSession).Unknown).Build());
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             Assert.True(customer.ExistShipmentsWhereShipToParty);
 
@@ -948,7 +948,7 @@ namespace Allors.Domain
             var inventoryItem = new NonSerializedInventoryItemBuilder(this.DatabaseSession).WithGood(good).Build();
             inventoryItem.AddInventoryItemVariance(new InventoryItemVarianceBuilder(this.DatabaseSession).WithQuantity(100).WithReason(new VarianceReasons(this.DatabaseSession).Unknown).Build());
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             var mechelen = new CityBuilder(this.DatabaseSession).WithName("Mechelen").Build();
             var mechelenAddress = new PostalAddressBuilder(this.DatabaseSession).WithGeographicBoundary(mechelen).WithAddress1("Haverwerf 15").Build();
@@ -968,7 +968,7 @@ namespace Allors.Domain
                 .WithInternalOrganisation(Singleton.Instance(this.DatabaseSession).DefaultInternalOrganisation)
                 .Build();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
             this.DatabaseSession.Commit();
 
             var invoice = new SalesInvoiceBuilder(this.DatabaseSession)
@@ -981,7 +981,7 @@ namespace Allors.Domain
             var invoiceItem = new SalesInvoiceItemBuilder(this.DatabaseSession).WithProduct(good).WithQuantity(10).WithActualUnitPrice(100).WithSalesInvoiceItemType(productItem).Build();
             invoice.AddSalesInvoiceItem(invoiceItem);
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             var order = new SalesOrderBuilder(this.DatabaseSession)
                 .WithBillToCustomer(customer)
@@ -998,11 +998,11 @@ namespace Allors.Domain
 
             order.AddSalesOrderItem(item);
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             order.Confirm();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             Assert.Equal(new SalesOrderObjectStates(this.DatabaseSession).RequestsApproval, order.CurrentObjectState);
             Assert.Equal(0, item.QuantityReserved);
@@ -1012,7 +1012,7 @@ namespace Allors.Domain
 
             order.Approve();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             Assert.Equal(new SalesOrderObjectStates(this.DatabaseSession).InProcess, order.CurrentObjectState);
             Assert.Equal(10, item.QuantityReserved);
@@ -1042,7 +1042,7 @@ namespace Allors.Domain
             var inventoryItem = new NonSerializedInventoryItemBuilder(this.DatabaseSession).WithGood(good).Build();
             inventoryItem.AddInventoryItemVariance(new InventoryItemVarianceBuilder(this.DatabaseSession).WithQuantity(100).WithReason(new VarianceReasons(this.DatabaseSession).Unknown).Build());
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             var mechelen = new CityBuilder(this.DatabaseSession).WithName("Mechelen").Build();
             var mechelenAddress = new PostalAddressBuilder(this.DatabaseSession).WithGeographicBoundary(mechelen).WithAddress1("Haverwerf 15").Build();
@@ -1060,7 +1060,7 @@ namespace Allors.Domain
                 .WithCreditLimit(100M)
                 .Build();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
             this.DatabaseSession.Commit();
 
             var invoice = new SalesInvoiceBuilder(this.DatabaseSession)
@@ -1073,7 +1073,7 @@ namespace Allors.Domain
             var invoiceItem = new SalesInvoiceItemBuilder(this.DatabaseSession).WithProduct(good).WithQuantity(10).WithActualUnitPrice(11).WithSalesInvoiceItemType(productItem).Build();
             invoice.AddSalesInvoiceItem(invoiceItem);
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             var order = new SalesOrderBuilder(this.DatabaseSession)
                 .WithBillToCustomer(customer)
@@ -1090,11 +1090,11 @@ namespace Allors.Domain
 
             order.AddSalesOrderItem(item);
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             order.Confirm();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             Assert.Equal(new SalesOrderObjectStates(this.DatabaseSession).RequestsApproval, order.CurrentObjectState);
             Assert.Equal(0, item.QuantityReserved);
@@ -1104,7 +1104,7 @@ namespace Allors.Domain
 
             order.Approve();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             Assert.Equal(new SalesOrderObjectStates(this.DatabaseSession).InProcess, order.CurrentObjectState);
             Assert.Equal(10, item.QuantityReserved);
@@ -1148,7 +1148,7 @@ namespace Allors.Domain
                 .WithInternalOrganisation(Singleton.Instance(this.DatabaseSession).DefaultInternalOrganisation)
                 .Build();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             var order = new SalesOrderBuilder(this.DatabaseSession)
                 .WithBillToCustomer(customer)
@@ -1165,11 +1165,11 @@ namespace Allors.Domain
 
             order.AddSalesOrderItem(item);
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             order.Confirm();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             Assert.Equal(new SalesOrderObjectStates(this.DatabaseSession).RequestsApproval, order.CurrentObjectState);
         }
@@ -1192,7 +1192,7 @@ namespace Allors.Domain
             var inventoryItem = new NonSerializedInventoryItemBuilder(this.DatabaseSession).WithGood(good).Build();
             inventoryItem.AddInventoryItemVariance(new InventoryItemVarianceBuilder(this.DatabaseSession).WithQuantity(100).WithReason(new VarianceReasons(this.DatabaseSession).Unknown).Build());
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             var mechelen = new CityBuilder(this.DatabaseSession).WithName("Mechelen").Build();
             var mechelenAddress = new PostalAddressBuilder(this.DatabaseSession).WithGeographicBoundary(mechelen).WithAddress1("Haverwerf 15").Build();
@@ -1209,7 +1209,7 @@ namespace Allors.Domain
                 .WithInternalOrganisation(Singleton.Instance(this.DatabaseSession).DefaultInternalOrganisation)
                 .Build();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             var manual = new OrderKindBuilder(this.DatabaseSession).WithDescription("manual").WithScheduleManually(true).Build();
 
@@ -1229,11 +1229,11 @@ namespace Allors.Domain
 
             order.AddSalesOrderItem(item);
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             order.Confirm();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             Assert.Equal(new SalesOrderObjectStates(this.DatabaseSession).InProcess, order.CurrentObjectState);
             Assert.Equal(0, item.QuantityReserved);
@@ -1277,7 +1277,7 @@ namespace Allors.Domain
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.DatabaseSession).Piece)
                 .Build();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             var order = new SalesOrderBuilder(this.DatabaseSession)
                 .WithBillToCustomer(billToCustomer)
@@ -1294,11 +1294,11 @@ namespace Allors.Domain
             order.AddSalesOrderItem(item3);
             order.AddSalesOrderItem(item4);
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             order.Confirm();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             Assert.Equal(3, item1.ReservedFromInventoryItem.QuantityCommittedOut);
             Assert.Equal(0, item1.ReservedFromInventoryItem.AvailableToPromise);
@@ -1307,7 +1307,7 @@ namespace Allors.Domain
 
             order.Reject();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             Assert.Equal(0, item1.ReservedFromInventoryItem.QuantityCommittedOut);
             Assert.Equal(0, item1.ReservedFromInventoryItem.AvailableToPromise);
@@ -1348,7 +1348,7 @@ namespace Allors.Domain
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.DatabaseSession).Piece)
                 .Build();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             var order = new SalesOrderBuilder(this.DatabaseSession)
                 .WithBillToCustomer(billToCustomer)
@@ -1365,11 +1365,11 @@ namespace Allors.Domain
             order.AddSalesOrderItem(item3);
             order.AddSalesOrderItem(item4);
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             order.Confirm();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             Assert.Equal(3, item1.ReservedFromInventoryItem.QuantityCommittedOut);
             Assert.Equal(0, item1.ReservedFromInventoryItem.AvailableToPromise);
@@ -1378,7 +1378,7 @@ namespace Allors.Domain
 
             order.Cancel();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             Assert.Equal(0, item1.ReservedFromInventoryItem.QuantityCommittedOut);
             Assert.Equal(0, item1.ReservedFromInventoryItem.AvailableToPromise);
@@ -1396,7 +1396,7 @@ namespace Allors.Domain
 
             var mechelen = new CityBuilder(this.DatabaseSession).WithName("Mechelen").Build();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             var order = new SalesOrderBuilder(this.DatabaseSession)
                 .WithBillToCustomer(customer)
@@ -1405,7 +1405,7 @@ namespace Allors.Domain
                 .WithTakenByInternalOrganisation(internalOrganisation)
                 .Build();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             Assert.Equal(new SalesOrderObjectStates(this.DatabaseSession).Provisional, order.CurrentObjectState);
             Assert.Equal(order.LastObjectState, order.CurrentObjectState);
@@ -1421,7 +1421,7 @@ namespace Allors.Domain
 
             var mechelen = new CityBuilder(this.DatabaseSession).WithName("Mechelen").Build();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             var order = new SalesOrderBuilder(this.DatabaseSession)
                 .WithBillToCustomer(customer)
@@ -1430,7 +1430,7 @@ namespace Allors.Domain
                 .WithTakenByInternalOrganisation(internalOrganisation)
                 .Build();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             Assert.Null(order.PreviousObjectState);
         }
@@ -1493,7 +1493,7 @@ namespace Allors.Domain
 
             var mechelen = new CityBuilder(this.DatabaseSession).WithName("Mechelen").Build();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             var order = new SalesOrderBuilder(this.DatabaseSession)
                 .WithBillToCustomer(customer)
@@ -1502,14 +1502,14 @@ namespace Allors.Domain
                 .WithTakenByInternalOrganisation(internalOrganisation)
                 .Build();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             Assert.Equal(1, order.OrderStatuses.Count);
             Assert.Equal(new SalesOrderObjectStates(this.DatabaseSession).Provisional, order.CurrentOrderStatus.SalesOrderObjectState);
 
             order.Confirm();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             Assert.Equal(2, order.OrderStatuses.Count);
             Assert.Equal(new SalesOrderObjectStates(this.DatabaseSession).InProcess, order.CurrentOrderStatus.SalesOrderObjectState);
@@ -1546,7 +1546,7 @@ namespace Allors.Domain
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.DatabaseSession).Piece)
                 .Build();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             var order = new SalesOrderBuilder(this.DatabaseSession)
                 .WithBillToCustomer(billToCustomer)
@@ -1563,15 +1563,15 @@ namespace Allors.Domain
             order.AddSalesOrderItem(item3);
             order.AddSalesOrderItem(item4);
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             item4.Cancel();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             order.Confirm();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             Assert.Equal(3, order.ValidOrderItems.Count);
             Assert.Contains(item1, order.ValidOrderItems);
@@ -1606,7 +1606,7 @@ namespace Allors.Domain
                 .WithDefaultCarrier(new Carriers(this.DatabaseSession).Fedex)
                 .Build();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             var order1 = new SalesOrderBuilder(this.DatabaseSession)
                 .WithBillToCustomer(billToCustomer)
@@ -1616,7 +1616,7 @@ namespace Allors.Domain
                 .WithStore(store)
                 .Build();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             Assert.Equal("1", order1.OrderNumber);
 
@@ -1628,7 +1628,7 @@ namespace Allors.Domain
                 .WithStore(store)
                 .Build();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             Assert.Equal("2", order2.OrderNumber);
         }
@@ -1653,7 +1653,7 @@ namespace Allors.Domain
                 .WithDefaultCarrier(new Carriers(this.DatabaseSession).Fedex)
                 .Build();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             var order1 = new SalesOrderBuilder(this.DatabaseSession)
                 .WithBillToCustomer(billToCustomer)
@@ -1663,7 +1663,7 @@ namespace Allors.Domain
                 .WithStore(store)
                 .Build();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             Assert.Equal("the format is 1", order1.OrderNumber);
 
@@ -1675,7 +1675,7 @@ namespace Allors.Domain
                 .WithStore(store)
                 .Build();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             Assert.Equal("the format is 2", order2.OrderNumber);
         }
@@ -1687,7 +1687,7 @@ namespace Allors.Domain
             var customer = new OrganisationBuilder(this.DatabaseSession).WithName("customer").WithOrganisationRole(new OrganisationRoles(this.DatabaseSession).Customer).Build();
             var salesrep = new PersonBuilder(this.DatabaseSession).WithLastName("salesrep").WithPersonRole(new PersonRoles(this.DatabaseSession).Employee).Build();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
             this.DatabaseSession.Commit();
 
             var internalOrganisation = new InternalOrganisations(this.DatabaseSession).FindBy(M.InternalOrganisation.Name, "internalOrganisation");
@@ -1715,7 +1715,7 @@ namespace Allors.Domain
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.DatabaseSession).Piece)
                 .Build();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             var order = new SalesOrderBuilder(this.DatabaseSession)
                 .WithShipToCustomer(customer)
@@ -1724,7 +1724,7 @@ namespace Allors.Domain
 
             order.AddSalesOrderItem(new SalesOrderItemBuilder(this.DatabaseSession).WithProduct(good1).WithQuantityOrdered(1).WithActualUnitPrice(10).Build());
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             Assert.Contains(salesrep, order.SalesReps);
         }
@@ -1748,14 +1748,14 @@ namespace Allors.Domain
 
             internalOrganisation.AddPartyContactMechanism(orderContactMechanism);
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             var order1 = new SalesOrderBuilder(this.DatabaseSession)
                 .WithShipToCustomer(customer)
                 .WithShipToAddress(new PostalAddressBuilder(this.DatabaseSession).WithGeographicBoundary(mechelen).WithAddress1("Haverwerf 15").Build())
                 .Build();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             Assert.Equal(orderContact, order1.TakenByContactMechanism);
         }
@@ -1779,14 +1779,14 @@ namespace Allors.Domain
 
             internalOrganisation.AddPartyContactMechanism(billingContactMechanism);
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             var order1 = new SalesOrderBuilder(this.DatabaseSession)
                 .WithShipToCustomer(customer)
                 .WithShipToAddress(new PostalAddressBuilder(this.DatabaseSession).WithGeographicBoundary(mechelen).WithAddress1("Haverwerf 15").Build())
                 .Build();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             Assert.Equal(billingContact, order1.BillFromContactMechanism);
         }
@@ -1803,21 +1803,21 @@ namespace Allors.Domain
 
             new CustomerRelationshipBuilder(this.DatabaseSession).WithFromDate(DateTime.UtcNow).WithCustomer(customer).WithInternalOrganisation(internalOrganisation).Build();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             var order = new SalesOrderBuilder(this.DatabaseSession)
                 .WithBillToCustomer(customer)
                 .WithShipToAddress(new PostalAddressBuilder(this.DatabaseSession).WithGeographicBoundary(mechelen).WithAddress1("Haverwerf 15").Build())
                 .Build();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             Assert.Equal(poundSterling, order.CustomerCurrency);
 
             var euro = new Currencies(this.DatabaseSession).FindBy(M.Currency.IsoCode, "EUR");
             customer.PreferredCurrency = euro;
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             Assert.Equal(englischLocale.Country.Currency, order.CustomerCurrency);
         }
@@ -1834,11 +1834,11 @@ namespace Allors.Domain
 
             new CustomerRelationshipBuilder(this.DatabaseSession).WithFromDate(DateTime.UtcNow).WithCustomer(customer).WithInternalOrganisation(internalOrganisation).Build();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             var order = new SalesOrderBuilder(this.DatabaseSession).WithBillToCustomer(customer).WithShipToAddress(shipToContactMechanism).Build();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             Assert.Equal(englischLocale, order.Locale);
         }
@@ -1853,7 +1853,7 @@ namespace Allors.Domain
 
             var mechelen = new CityBuilder(this.DatabaseSession).WithName("Mechelen").Build();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             this.SetIdentity(Users.AdministratorUserName);
 
@@ -1863,7 +1863,7 @@ namespace Allors.Domain
                 .WithShipToAddress(new PostalAddressBuilder(this.DatabaseSession).WithGeographicBoundary(mechelen).WithAddress1("Haverwerf 15").Build())
                 .Build();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
             this.DatabaseSession.Commit();
 
             Assert.Equal(new SalesOrderObjectStates(this.DatabaseSession).Provisional, order.CurrentObjectState);
@@ -1886,7 +1886,7 @@ namespace Allors.Domain
 
             var mechelen = new CityBuilder(this.DatabaseSession).WithName("Mechelen").Build();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             this.SetIdentity(Users.AdministratorUserName);
 
@@ -1896,11 +1896,11 @@ namespace Allors.Domain
                 .WithShipToAddress(new PostalAddressBuilder(this.DatabaseSession).WithGeographicBoundary(mechelen).WithAddress1("Haverwerf 15").Build())
                 .Build();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             order.Confirm();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
             this.DatabaseSession.Commit();
 
             var acl = new AccessControlList(order, new Users(this.DatabaseSession).CurrentUser);
@@ -1922,7 +1922,7 @@ namespace Allors.Domain
 
             var mechelen = new CityBuilder(this.DatabaseSession).WithName("Mechelen").Build();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             this.SetIdentity("customer");
 
@@ -1932,11 +1932,11 @@ namespace Allors.Domain
                 .WithShipToAddress(new PostalAddressBuilder(this.DatabaseSession).WithGeographicBoundary(mechelen).WithAddress1("Haverwerf 15").Build())
                 .Build();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             order.Cancel();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             Assert.Equal(new SalesOrderObjectStates(this.DatabaseSession).Cancelled, order.CurrentObjectState);
             var acl = new AccessControlList(order, new Users(this.DatabaseSession).CurrentUser);
@@ -1958,7 +1958,7 @@ namespace Allors.Domain
 
             var mechelen = new CityBuilder(this.DatabaseSession).WithName("Mechelen").Build();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             this.SetIdentity("customer");
 
@@ -1968,11 +1968,11 @@ namespace Allors.Domain
                 .WithShipToAddress(new PostalAddressBuilder(this.DatabaseSession).WithGeographicBoundary(mechelen).WithAddress1("Haverwerf 15").Build())
                 .Build();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             order.Reject();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             Assert.Equal(new SalesOrderObjectStates(this.DatabaseSession).Rejected, order.CurrentObjectState);
             var acl = new AccessControlList(order, new Users(this.DatabaseSession).CurrentUser);
@@ -1994,7 +1994,7 @@ namespace Allors.Domain
 
             var mechelen = new CityBuilder(this.DatabaseSession).WithName("Mechelen").Build();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             this.SetIdentity("customer");
 
@@ -2004,15 +2004,15 @@ namespace Allors.Domain
                 .WithShipToAddress(new PostalAddressBuilder(this.DatabaseSession).WithGeographicBoundary(mechelen).WithAddress1("Haverwerf 15").Build())
                 .Build();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             order.Confirm();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             order.Finish();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             Assert.Equal(new SalesOrderObjectStates(this.DatabaseSession).Finished, order.CurrentObjectState);
             var acl = new AccessControlList(order, new Users(this.DatabaseSession).CurrentUser);
@@ -2034,7 +2034,7 @@ namespace Allors.Domain
 
             var mechelen = new CityBuilder(this.DatabaseSession).WithName("Mechelen").Build();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             this.SetIdentity(Users.AdministratorUserName);
 
@@ -2044,15 +2044,15 @@ namespace Allors.Domain
                 .WithShipToAddress(new PostalAddressBuilder(this.DatabaseSession).WithGeographicBoundary(mechelen).WithAddress1("Haverwerf 15").Build())
                 .Build();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             order.Confirm();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             order.Hold();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
             this.DatabaseSession.Commit();
 
             Assert.Equal(new SalesOrderObjectStates(this.DatabaseSession).OnHold, order.CurrentObjectState);
@@ -2103,7 +2103,7 @@ namespace Allors.Domain
                 .WithProductPurchasePrice(goodPurchasePrice)
                 .Build();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             var order = new SalesOrderBuilder(this.DatabaseSession)
                 .WithBillToCustomer(billToCustomer)
@@ -2116,7 +2116,7 @@ namespace Allors.Domain
             var item1 = new SalesOrderItemBuilder(this.DatabaseSession).WithProduct(good).WithQuantityOrdered(quantityOrdered).WithActualUnitPrice(15).Build();
             order.AddSalesOrderItem(item1);
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             Assert.Equal(45, order.TotalBasePrice);
             Assert.Equal(0, order.TotalDiscount);
@@ -2167,7 +2167,7 @@ namespace Allors.Domain
                 .WithProductPurchasePrice(goodPurchasePrice)
                 .Build();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             var order = new SalesOrderBuilder(this.DatabaseSession)
                 .WithBillToCustomer(billToCustomer)
@@ -2180,7 +2180,7 @@ namespace Allors.Domain
             var item1 = new SalesOrderItemBuilder(this.DatabaseSession).WithProduct(good).WithQuantityOrdered(quantityOrdered).WithActualUnitPrice(15).Build();
             order.AddSalesOrderItem(item1);
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             Assert.Equal(45, order.TotalBasePrice);
             Assert.Equal(0, order.TotalDiscount);
@@ -2231,7 +2231,7 @@ namespace Allors.Domain
                 .WithProductPurchasePrice(goodPurchasePrice)
                 .Build();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             var order = new SalesOrderBuilder(this.DatabaseSession)
                 .WithBillToCustomer(billToCustomer)
@@ -2244,7 +2244,7 @@ namespace Allors.Domain
             var item1 = new SalesOrderItemBuilder(this.DatabaseSession).WithProduct(good).WithQuantityOrdered(quantityOrdered).WithActualUnitPrice(15).Build();
             order.AddSalesOrderItem(item1);
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             Assert.Equal(45, order.TotalBasePrice);
             Assert.Equal(0, order.TotalDiscount);
@@ -2295,7 +2295,7 @@ namespace Allors.Domain
                 .WithProductPurchasePrice(goodPurchasePrice)
                 .Build();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             var order = new SalesOrderBuilder(this.DatabaseSession)
                 .WithBillToCustomer(billToCustomer)
@@ -2308,7 +2308,7 @@ namespace Allors.Domain
             var item1 = new SalesOrderItemBuilder(this.DatabaseSession).WithProduct(good).WithQuantityOrdered(quantityOrdered).WithActualUnitPrice(15).Build();
             order.AddSalesOrderItem(item1);
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             Assert.Equal(45, order.TotalBasePrice);
             Assert.Equal(0, order.TotalDiscount);
@@ -2352,7 +2352,7 @@ namespace Allors.Domain
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.DatabaseSession).Piece)
                 .Build();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             var order = new SalesOrderBuilder(this.DatabaseSession)
                 .WithBillToCustomer(billToCustomer)
@@ -2367,11 +2367,11 @@ namespace Allors.Domain
             order.AddSalesOrderItem(item2);
             order.AddSalesOrderItem(item3);
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             order.Confirm();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             Assert.Equal(6, item1.ReservedFromInventoryItem.QuantityCommittedOut);
             Assert.Equal(0, item1.ReservedFromInventoryItem.AvailableToPromise);
@@ -2410,7 +2410,7 @@ namespace Allors.Domain
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.DatabaseSession).Piece)
                 .Build();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             var order = new SalesOrderBuilder(this.DatabaseSession)
                 .WithBillToCustomer(billToCustomer)
@@ -2427,16 +2427,16 @@ namespace Allors.Domain
             order.AddSalesOrderItem(item3);
             order.AddSalesOrderItem(item4);
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
             Assert.Equal(4, order.ValidOrderItems.Count);
 
             order.Confirm();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             item4.QuantityOrdered = 0;
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             Assert.Equal(3, order.ValidOrderItems.Count);
             Assert.Contains(item1, order.ValidOrderItems);
@@ -2475,7 +2475,7 @@ namespace Allors.Domain
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.DatabaseSession).Piece)
                 .Build();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             var order = new SalesOrderBuilder(this.DatabaseSession)
                 .WithBillToCustomer(billToCustomer)
@@ -2494,11 +2494,11 @@ namespace Allors.Domain
 
             order.Confirm();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             item4.RemoveActualUnitPrice();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             Assert.Equal(0, item4.UnitBasePrice);
             Assert.Equal(3, order.ValidOrderItems.Count);
@@ -2540,7 +2540,7 @@ namespace Allors.Domain
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.DatabaseSession).Piece)
                 .Build();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             var order = new SalesOrderBuilder(this.DatabaseSession)
                 .WithBillToCustomer(billToCustomer)
@@ -2559,11 +2559,11 @@ namespace Allors.Domain
 
             order.Confirm();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             item4.Cancel();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             Assert.Equal(3, order.ValidOrderItems.Count);
             Assert.Contains(item1, order.ValidOrderItems);
@@ -2599,12 +2599,12 @@ namespace Allors.Domain
             var good1InventoryItem = new NonSerializedInventoryItemBuilder(this.DatabaseSession).WithGood(good1).Build();
             good1InventoryItem.AddInventoryItemVariance(new InventoryItemVarianceBuilder(this.DatabaseSession).WithQuantity(100).WithReason(new VarianceReasons(this.DatabaseSession).Unknown).Build());
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             var good2InventoryItem = new NonSerializedInventoryItemBuilder(this.DatabaseSession).WithGood(good2).Build();
             good2InventoryItem.AddInventoryItemVariance(new InventoryItemVarianceBuilder(this.DatabaseSession).WithQuantity(100).WithReason(new VarianceReasons(this.DatabaseSession).Unknown).Build());
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             var mechelen = new CityBuilder(this.DatabaseSession).WithName("Mechelen").Build();
             var mechelenAddress = new PostalAddressBuilder(this.DatabaseSession).WithGeographicBoundary(mechelen).WithAddress1("Haverwerf 15").Build();
@@ -2619,7 +2619,7 @@ namespace Allors.Domain
 
             new CustomerRelationshipBuilder(this.DatabaseSession).WithFromDate(DateTime.UtcNow).WithCustomer(customer).WithInternalOrganisation(internalOrganisation).Build();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             var order = new SalesOrderBuilder(this.DatabaseSession)
                 .WithBillToCustomer(customer)
@@ -2634,11 +2634,11 @@ namespace Allors.Domain
             order.AddSalesOrderItem(item2);
             order.AddSalesOrderItem(item3);
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             order.Confirm();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             var shipment = customer.ShipmentsWhereBillToParty.First;
 
@@ -2680,12 +2680,12 @@ namespace Allors.Domain
                 .WithOwnedByParty(new InternalOrganisations(this.DatabaseSession).FindBy(M.InternalOrganisation.Name, "internalOrganisation"))
                 .Build();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             var partInventory = (NonSerializedInventoryItem)part.InventoryItemsWherePart[0];
             partInventory.AddInventoryItemVariance(new InventoryItemVarianceBuilder(this.DatabaseSession).WithQuantity(100).WithReason(new VarianceReasons(this.DatabaseSession).Unknown).Build());
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             var good1 = new GoodBuilder(this.DatabaseSession)
                 .WithSku("10101")
@@ -2739,17 +2739,17 @@ namespace Allors.Domain
             order.AddSalesOrderItem(item4);
             order.AddSalesOrderItem(item5);
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             order.Confirm();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             var shipmentToMechelen = mechelenAddress.ShipmentsWhereShipToAddress[0];
 
             var shipmentToBaal = baalAddress.ShipmentsWhereShipToAddress[0];
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             Assert.Equal(mechelenAddress, shipmentToMechelen.ShipToAddress);
             Assert.Equal(1, shipmentToMechelen.ShipmentItems.Count);
@@ -2771,7 +2771,7 @@ namespace Allors.Domain
 
             var mechelen = new CityBuilder(this.DatabaseSession).WithName("Mechelen").Build();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             var order = new SalesOrderBuilder(this.DatabaseSession)
                 .WithShipToCustomer(customer)
@@ -2779,7 +2779,7 @@ namespace Allors.Domain
                 .WithShipToAddress(new PostalAddressBuilder(this.DatabaseSession).WithGeographicBoundary(mechelen).WithAddress1("Haverwerf 15").Build())
                 .Build();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             Assert.Equal(1, order.Customers.Count);
             Assert.Equal(customer, order.Customers.First);
@@ -2796,7 +2796,7 @@ namespace Allors.Domain
             new CustomerRelationshipBuilder(this.DatabaseSession).WithFromDate(DateTime.UtcNow).WithCustomer(billToCustomer).WithInternalOrganisation(internalOrganisation).Build();
             new CustomerRelationshipBuilder(this.DatabaseSession).WithFromDate(DateTime.UtcNow).WithCustomer(shipToCustomer).WithInternalOrganisation(internalOrganisation).Build();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             var order = new SalesOrderBuilder(this.DatabaseSession)
                 .WithShipToCustomer(shipToCustomer)
@@ -2804,7 +2804,7 @@ namespace Allors.Domain
                 .WithShipToAddress(new PostalAddressBuilder(this.DatabaseSession).WithGeographicBoundary(mechelen).WithAddress1("Haverwerf 15").Build())
                 .Build();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             Assert.Equal(2, order.Customers.Count);
             Assert.Contains(billToCustomer, order.Customers);
@@ -2876,7 +2876,7 @@ namespace Allors.Domain
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.DatabaseSession).Piece)
                 .Build();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             var order = new SalesOrderBuilder(this.DatabaseSession)
                 .WithBillToCustomer(customer)
@@ -2892,7 +2892,7 @@ namespace Allors.Domain
 
             order.AddSalesOrderItem(item1);
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             Assert.Equal(1, order.SalesReps.Count);
             Assert.Contains(salesrep1, order.SalesReps);
@@ -2905,7 +2905,7 @@ namespace Allors.Domain
 
             order.AddSalesOrderItem(item2);
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             Assert.Equal(2, order.SalesReps.Count);
             Assert.Contains(salesrep1, order.SalesReps);
@@ -2919,7 +2919,7 @@ namespace Allors.Domain
 
             order.AddSalesOrderItem(item3);
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             Assert.Equal(3, order.SalesReps.Count);
             Assert.Contains(salesrep1, order.SalesReps);

@@ -14,6 +14,8 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Allors.Meta;
+
 namespace Allors.Domain
 {
     using System;
@@ -179,7 +181,109 @@ namespace Allors.Domain
                 foreach (PartyContactMechanism partyContactMechanism in this.PartyContactMechanisms)
                 {
                     partyContactMechanism.ContactMechanism.Delete();
-                    partyContactMechanism.Delete();
+                }
+
+                foreach (CommunicationEvent communicationEvent in this.CommunicationEventsWhereInvolvedParty)
+                {
+                    if (communicationEvent.GetType().Name == typeof(WebSiteCommunication).Name)
+                    {
+                        var communication = (WebSiteCommunication)communicationEvent;
+                        if (Equals(communication.Receiver, this))
+                        {
+                            communication.RemoveReceiver();
+                        }
+
+                        if (Equals(communication.Originator, this))
+                        {
+                            communication.RemoveOriginator();
+                        }
+
+                        if (!communication.ExistReceiver || !communication.ExistOriginator)
+                        {
+                            communicationEvent.Delete();
+                        }
+                    }
+
+                    if (communicationEvent.GetType().Name == typeof(FaxCommunication).Name)
+                    {
+                        var communication = (FaxCommunication)communicationEvent;
+                        if (Equals(communication.Receiver, this))
+                        {
+                            communication.RemoveReceiver();
+                        }
+
+                        if (Equals(communication.Originator, this))
+                        {
+                            communication.RemoveOriginator();
+                        }
+
+                        if (!communication.ExistReceiver || !communication.ExistOriginator)
+                        {
+                            communicationEvent.Delete();
+                        }
+                    }
+
+                    if (communicationEvent.GetType().Name == typeof(LetterCorrespondence).Name)
+                    {
+                        var communication = (LetterCorrespondence)communicationEvent;
+                        if (communication.Originators.Contains(this))
+                        {
+                            communication.RemoveOriginator(this);
+                        }
+
+                        if (communication.Receivers.Contains(this))
+                        {
+                            communication.RemoveReceiver(this);
+                        }
+
+                        if (communication.Receivers.Count == 0 || communication.Originators.Count == 0)
+                        {
+                            communicationEvent.Delete();
+                        }
+                    }
+
+                    if (communicationEvent.GetType().Name == typeof(PhoneCommunication).Name)
+                    {
+                        var communication = (PhoneCommunication)communicationEvent;
+                        if (communication.Callers.Contains(this))
+                        {
+                            communication.RemoveCaller(this);
+                        }
+
+                        if (communication.Receivers.Contains(this))
+                        {
+                            communication.RemoveReceiver(this);
+                        }
+
+                        if (communication.Receivers.Count == 0 || communication.Callers.Count == 0)
+                        {
+                            communicationEvent.Delete();
+                        }
+                    }
+
+                    if (communicationEvent.GetType().Name == typeof(EmailCommunication).Name)
+                    {
+                        var communication = (EmailCommunication)communicationEvent;
+
+                        if (communication.Addressees.Count == 0 || !communication.ExistOriginator)
+                        {
+                            communicationEvent.Delete();
+                        }
+                    }
+
+                    if (communicationEvent.GetType().Name == typeof(FaceToFaceCommunication).Name)
+                    {
+                        var communication = (FaceToFaceCommunication)communicationEvent;
+                        if (communication.Participants.Contains(this))
+                        {
+                            communication.RemoveParticipant(this);
+                        }
+
+                        if (communication.Participants.Count <= 1)
+                        {
+                            communicationEvent.Delete();
+                        }
+                    }
                 }
 
                 foreach (OrganisationContactRelationship contactRelationship in this.OrganisationContactRelationshipsWhereContact)

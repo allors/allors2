@@ -31,7 +31,7 @@ namespace Allors.Domain
         {
             var rawMaterial = new RawMaterialBuilder(this.DatabaseSession).WithName("rawmaterial").Build();
             
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
             this.DatabaseSession.Commit();
 
             var builder = new PurchaseInvoiceItemBuilder(this.DatabaseSession);

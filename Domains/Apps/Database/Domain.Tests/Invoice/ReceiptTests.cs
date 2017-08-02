@@ -73,7 +73,7 @@ namespace Allors.Domain
                 .WithThroughDate(DateTime.UtcNow.AddYears(1).AddDays(-1))
                 .Build();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
             this.DatabaseSession.Commit();
         }
 
@@ -108,7 +108,7 @@ namespace Allors.Domain
             invoice.AddSalesInvoiceItem(item2);
             invoice.AddSalesInvoiceItem(item3);
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             new ReceiptBuilder(this.DatabaseSession)
                 .WithAmount(50)
@@ -116,7 +116,7 @@ namespace Allors.Domain
                 .WithEffectiveDate(DateTime.UtcNow)
                 .Build();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             Assert.Equal(0, item1.AmountPaid);
             Assert.Equal(50, item2.AmountPaid);
@@ -130,7 +130,7 @@ namespace Allors.Domain
                 .WithEffectiveDate(DateTime.UtcNow)
                 .Build();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             Assert.Equal(100, item1.AmountPaid);
             Assert.Equal(200, item2.AmountPaid);
@@ -162,7 +162,7 @@ namespace Allors.Domain
                                         .Build())
                 .Build();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             var receipt = new ReceiptBuilder(this.DatabaseSession)
                 .WithAmount(100)

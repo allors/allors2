@@ -9,11 +9,15 @@ import { TdLoadingService, TdDialogService, TdMediaService } from '@covalent/cor
 
 import { PullRequest, Query, Predicate, And, Or, Not, Equals, Like, Contains, ContainedIn, TreeNode, Sort, Page } from '../../../../../domain';
 import { MetaDomain } from '../../../../../meta/index';
-import { Person, WorkEffortAssignment, WorkTask } from '../../../../../domain';
+import { Person, Priority, Singleton, WorkEffortAssignment, WorkEffortObjectState, WorkTask } from '../../../../../domain';
 import { AllorsService, ErrorService, Scope, Loaded, Saved, Invoked } from '../../../../../angular';
 
 interface SearchData {
+  name: string;
   description: string;
+  state: string;
+  priority: string;
+  assignee: string;
 }
 
 @Component({
@@ -32,7 +36,19 @@ export class WorkTasksOverviewComponent implements AfterViewInit, OnDestroy {
 
   searchForm: FormGroup;
 
-  data: WorkTask[];
+  data: WorkEffortAssignment[];
+
+  workEffortObjectStates: WorkEffortObjectState[];
+  selectedWorkEffortObjectState: WorkEffortObjectState;
+  workEffortObjectState: WorkEffortObjectState;
+
+  priorities: Priority[];
+  selectedPriority: Priority;
+  priority: Priority;
+
+  assignees: Person[];
+  selectedAssignee: Person;
+  assignee: Person;
 
   constructor(
     private allors: AllorsService,
@@ -48,9 +64,14 @@ export class WorkTasksOverviewComponent implements AfterViewInit, OnDestroy {
 
     titleService.setTitle(this.title);
     this.scope = new Scope(allors.database, allors.workspace);
+    this.refresh$ = new BehaviorSubject<Date>(undefined);
 
     this.searchForm = this.formBuilder.group({
+      name: [''],
       description: [''],
+      state: [''],
+      priority: [''],
+      assignee: [''],
     });
 
     this.page$ = new BehaviorSubject<number>(50);
@@ -72,34 +93,111 @@ export class WorkTasksOverviewComponent implements AfterViewInit, OnDestroy {
       .switchMap(([data, take]: [SearchData, number]) => {
         const m: MetaDomain = this.allors.meta;
 
-        const predicate: And = new And();
-        const predicates: Predicate[] = predicate.predicates;
+        const objectStatesQuery: Query[] = [
+          new Query(
+            {
+              name: 'workEffortObjectStates',
+              objectType: m.WorkEffortObjectState,
+            }),
+          new Query(
+            {
+              name: 'priorities',
+              objectType: m.Priority,
+            }),
+          new Query(
+            {
+              name: 'singletons',
+              objectType: m.Singleton,
+              include: [
+                new TreeNode({
+                  roleType: m.Singleton.DefaultInternalOrganisation,
+                  nodes: [
+                    new TreeNode({ roleType: m.InternalOrganisation.Employees }),
+                  ],
+                }),
+              ],
+            }),
+        ];
 
-        if (data.description) {
-          const like: string = '%' + data.description + '%';
-          predicates.push(new Like({ roleType: m.WorkTask.Description, value: like }));
-        }
+        return this.scope
+          .load('Pull', new PullRequest({ query: objectStatesQuery }))
+          .switchMap((loaded: Loaded) => {
+            this.workEffortObjectStates = loaded.collections.workEffortObjectStates as WorkEffortObjectState[];
+            this.workEffortObjectState = this.workEffortObjectStates.find((v: WorkEffortObjectState) => v.Name === data.state);
 
-        const query: Query[] = [new Query(
-          {
-            name: 'worktasks',
-            objectType: m.WorkTask,
-            predicate: predicate,
-            page: new Page({ skip: 0, take: take }),
-            // include: [
-            //   new TreeNode({ roleType: m.Person.Picture }),
-            // ],
-          })];
+            this.priorities = loaded.collections.priorities as Priority[];
+            this.priority = this.priorities.find((v: Priority) => v.Name === data.priority);
 
-        return this.scope.load('Pull', new PullRequest({ query: query }));
+            const singleton: Singleton = loaded.collections.singletons[0] as Singleton;
+            this.assignees = singleton.DefaultInternalOrganisation.Employees;
+            this.assignee = this.assignees.find((v: Person) => v.displayName === data.assignee);
 
+            const predicate: And = new And();
+            const predicates: Predicate[] = predicate.predicates;
+
+            if (data.name) {
+              const like: string = '%' + data.name + '%';
+              predicates.push(new Like({ roleType: m.WorkTask.Name, value: like }));
+            }
+
+            if (data.description) {
+              const like: string = '%' + data.description + '%';
+              predicates.push(new Like({ roleType: m.WorkTask.Description, value: like }));
+            }
+
+            if (data.state) {
+              predicates.push(new Equals({ roleType: m.WorkTask.CurrentObjectState, value: this.workEffortObjectState }));
+            }
+
+            if (data.priority) {
+              predicates.push(new Equals({ roleType: m.WorkTask.Priority, value: this.priority }));
+            }
+
+            const workTasksquery: Query = new Query(
+              {
+                name: 'worktasks',
+                objectType: m.WorkTask,
+                predicate: predicate,
+              });
+
+            const assignmentPredicate: And = new And();
+            const assignmentPredicates: Predicate[] = assignmentPredicate.predicates;
+            assignmentPredicates.push(new ContainedIn({ roleType: m.WorkEffortAssignment.Assignment, query: workTasksquery }));
+
+            if (data.assignee) {
+              assignmentPredicates.push(new Equals({ roleType: m.WorkEffortAssignment.Professional, value: this.assignee }));
+            }
+
+            const assignmentsQuery: Query[] = [
+              new Query(
+                {
+                  name: 'workEffortAssignments',
+                  objectType: m.WorkEffortAssignment,
+                  predicate: assignmentPredicate,
+                  page: new Page({ skip: 0, take: take }),
+                  include: [
+                    new TreeNode({ roleType: m.WorkEffortAssignment.Professional }),
+                    new TreeNode({
+                      roleType: m.WorkEffortAssignment.Assignment,
+                      nodes: [
+                        new TreeNode({ roleType: m.WorkEffort.CurrentObjectState }),
+                        new TreeNode({ roleType: m.WorkEffort.Priority }),
+                      ],
+                    }),
+                  ],
+                }),
+            ];
+
+            return this.scope
+              .load('Pull', new PullRequest({ query: assignmentsQuery }));
+          });
       })
       .subscribe((loaded: Loaded) => {
 
         this.scope.session.reset();
 
-        this.data = loaded.collections.worktasks as WorkTask[];
-        this.total = loaded.values.worktasks_total;
+        this.data = loaded.collections.workEffortAssignments as WorkEffortAssignment[];
+        this.total = loaded.values.workEffortAssignments_total;
       },
       (error: any) => {
         this.errorService.message(error);

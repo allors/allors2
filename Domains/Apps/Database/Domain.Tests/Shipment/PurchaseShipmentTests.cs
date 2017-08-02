@@ -34,7 +34,7 @@ namespace Allors.Domain
             var internalOrganisation = new InternalOrganisations(this.DatabaseSession).FindBy(M.InternalOrganisation.Name, "internalOrganisation");
             var shipment = new PurchaseShipmentBuilder(this.DatabaseSession).WithShipmentMethod(new ShipmentMethods(this.DatabaseSession).Ground).WithShipFromParty(supplier).Build();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             Assert.Equal(new PurchaseShipmentObjectStates(this.DatabaseSession).Created, shipment.CurrentObjectState);
             Assert.Equal(internalOrganisation, shipment.ShipToParty);
@@ -114,7 +114,7 @@ namespace Allors.Domain
 
             var shipment = new PurchaseShipmentBuilder(this.DatabaseSession).WithShipmentMethod(new ShipmentMethods(this.DatabaseSession).Ground).WithShipFromParty(supplier).Build();
             
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             Assert.Equal(postalAddress, shipment.ShipToAddress);
         }
@@ -135,11 +135,11 @@ namespace Allors.Domain
 
             internalOrganisation.AddPartyContactMechanism(shippingAddress);
             
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             var order = new PurchaseShipmentBuilder(this.DatabaseSession).WithShipmentMethod(new ShipmentMethods(this.DatabaseSession).Ground).WithShipFromParty(supplier).Build();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             Assert.Equal(shippingAddress.ContactMechanism, order.ShipToAddress);
         }

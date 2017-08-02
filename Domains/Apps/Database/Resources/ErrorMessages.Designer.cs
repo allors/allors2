@@ -134,6 +134,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to End date must be later then start date.
+        /// </summary>
+        public static string EndDateBeforeStartDate {
+            get {
+                return ResourceManager.GetString("EndDateBeforeStartDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to General Ledger Account must be balance sheet account.
         /// </summary>
         public static string GeneralLedgerAccountNotBalanceAccount {

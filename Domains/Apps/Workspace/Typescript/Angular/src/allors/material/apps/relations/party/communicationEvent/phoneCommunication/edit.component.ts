@@ -16,7 +16,7 @@ import { AllorsService, ErrorService, Scope, Loaded, Saved, Invoked, Filter } fr
 @Component({
   templateUrl: './form.component.html',
 })
-export class PartycommunicationEventEditPhoneCommunicationComponent implements OnInit, AfterViewInit, OnDestroy {
+export class PartyCommunicationEventEditPhoneCommunicationComponent implements OnInit, AfterViewInit, OnDestroy {
 
   private refresh$: BehaviorSubject<Date>;
   private subscription: Subscription;

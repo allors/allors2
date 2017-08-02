@@ -81,7 +81,7 @@ namespace Allors.Domain
                 .WithDefaultShipmentMethod(new ShipmentMethods(this.DatabaseSession).Ground)
                 .Build();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             Assert.Equal(0, store.CreditLimit);
             Assert.Equal(0, store.PaymentGracePeriod);
@@ -115,7 +115,7 @@ namespace Allors.Domain
                 .WithDefaultPaymentMethod(ownBankAccount)
                 .Build();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             Assert.Equal(1, store.PaymentMethods.Count);
             Assert.Equal(ownBankAccount, store.PaymentMethods.First);
@@ -144,7 +144,7 @@ namespace Allors.Domain
                 .WithPaymentMethod(ownBankAccount)
                 .Build();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             Assert.Equal(ownBankAccount, store.DefaultPaymentMethod);
         }

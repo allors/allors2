@@ -31,7 +31,7 @@ namespace Allors.Domain
         {
             var complaint = new CaseBuilder(this.DatabaseSession).WithDescription("Complaint").Build();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
             
             Assert.Equal(new CaseObjectStates(this.DatabaseSession).Opened, complaint.CurrentObjectState);
             Assert.Equal(complaint.LastObjectState, complaint.CurrentObjectState);
@@ -42,7 +42,7 @@ namespace Allors.Domain
         {
             var complaint = new CaseBuilder(this.DatabaseSession).WithDescription("Complaint").Build();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             Assert.Null(complaint.PreviousObjectState);
         }
@@ -52,14 +52,14 @@ namespace Allors.Domain
         {
             var complaint = new CaseBuilder(this.DatabaseSession).WithDescription("Complaint").Build();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             Assert.Equal(1, complaint.CaseStatuses.Count);
             Assert.Equal(new CaseObjectStates(this.DatabaseSession).Opened, complaint.CurrentCaseStatus.CaseObjectState);
 
             complaint.AppsClose();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             Assert.Equal(2, complaint.CaseStatuses.Count);
             Assert.Equal(new CaseObjectStates(this.DatabaseSession).Closed, complaint.CurrentCaseStatus.CaseObjectState);

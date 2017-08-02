@@ -48,7 +48,7 @@ namespace Allors.Domain
                                             .Build())
                 .Build();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
             this.DatabaseSession.Commit();
 
             var builder = new BasePriceBuilder(this.DatabaseSession);
@@ -113,7 +113,7 @@ namespace Allors.Domain
 
             virtualGood.AddVariant(physicalGood);
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             var basePrice = new BasePriceBuilder(this.DatabaseSession)
                 .WithDescription("baseprice")
@@ -122,7 +122,7 @@ namespace Allors.Domain
                 .WithFromDate(DateTime.UtcNow)
                 .Build();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             Assert.Equal(1, physicalGood.VirtualProductPriceComponents.Count);
             Assert.Contains(basePrice, physicalGood.VirtualProductPriceComponents);
@@ -173,7 +173,7 @@ namespace Allors.Domain
                                          .Build())
              .Build();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
             this.DatabaseSession.Commit();
 
             var builder = new DiscountComponentBuilder(this.DatabaseSession);
@@ -236,7 +236,7 @@ namespace Allors.Domain
 
             virtualService.AddVariant(physicalService);
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             var discount = new DiscountComponentBuilder(this.DatabaseSession)
                 .WithDescription("discount")
@@ -245,7 +245,7 @@ namespace Allors.Domain
                 .WithFromDate(DateTime.UtcNow)
                 .Build();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             Assert.Equal(1, physicalService.VirtualProductPriceComponents.Count);
             Assert.Contains(discount, physicalService.VirtualProductPriceComponents);
@@ -292,7 +292,7 @@ namespace Allors.Domain
                                             .Build())
                 .Build();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
             this.DatabaseSession.Commit();
 
             var builder = new SurchargeComponentBuilder(this.DatabaseSession);
@@ -353,7 +353,7 @@ namespace Allors.Domain
 
             virtualService.AddVariant(physicalService);
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             var surcharge = new SurchargeComponentBuilder(this.DatabaseSession)
                 .WithDescription("surcharge")
@@ -362,7 +362,7 @@ namespace Allors.Domain
                 .WithFromDate(DateTime.UtcNow)
                 .Build();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             Assert.Equal(1, physicalService.VirtualProductPriceComponents.Count);
             Assert.Contains(surcharge, physicalService.VirtualProductPriceComponents);

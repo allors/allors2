@@ -34,7 +34,7 @@ namespace Allors.Domain
         {
             var specification = new ConstraintSpecificationBuilder(this.DatabaseSession).WithDescription("specification").Build();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             Assert.Equal(new PartSpecificationObjectStates(this.DatabaseSession).Created, specification.CurrentObjectState);
             Assert.Equal(specification.LastObjectState, specification.CurrentObjectState);
@@ -45,7 +45,7 @@ namespace Allors.Domain
         {
             var specification = new ConstraintSpecificationBuilder(this.DatabaseSession).WithDescription("specification").Build();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             Assert.Null(specification.PreviousObjectState);
         }
@@ -55,14 +55,14 @@ namespace Allors.Domain
         {
             var specification = new ConstraintSpecificationBuilder(this.DatabaseSession).WithDescription("specification").Build();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             Assert.Equal(1, specification.PartSpecificationStatuses.Count);
             Assert.Equal(new PartSpecificationObjectStates(this.DatabaseSession).Created, specification.CurrentPartSpecificationStatus.PartSpecificationObjectState);
 
             specification.Approve();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             Assert.Equal(2, specification.PartSpecificationStatuses.Count);
             Assert.Equal(new PartSpecificationObjectStates(this.DatabaseSession).Approved, specification.CurrentPartSpecificationStatus.PartSpecificationObjectState);

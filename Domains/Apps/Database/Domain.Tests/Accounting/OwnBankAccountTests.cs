@@ -66,7 +66,7 @@ namespace Allors.Domain
                 .WithBankAccount(bankAccount)
                 .Build();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             Assert.True(paymentMethod.IsActive);
             Assert.True(paymentMethod.ExistDescription);

@@ -23,14 +23,14 @@ namespace Allors.Domain
 {
     using Xunit;
 
-    
+
     public class PartyContactMechanismTests : DomainTest
     {
         [Fact]
         public void GivenPartyContactMechanism_WhenDeriving_ThenRequiredRelationsMustExist()
         {
             var contactMechanism = new TelecommunicationsNumberBuilder(this.DatabaseSession).WithAreaCode("0495").WithContactNumber("493499").WithDescription("cellphone").Build();
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
             this.DatabaseSession.Commit();
 
             var builder = new PartyContactMechanismBuilder(this.DatabaseSession);
@@ -39,11 +39,28 @@ namespace Allors.Domain
             Assert.True(this.DatabaseSession.Derive(false).HasErrors);
 
             this.DatabaseSession.Rollback();
-            
+
             builder.WithContactMechanism(contactMechanism);
             builder.Build();
 
             Assert.False(this.DatabaseSession.Derive(false).HasErrors);
+        }
+
+        [Fact]
+        public void GivenPartyContactMechanism_WhenPartyIsDeleted_ThenPartyContactMechanismIsDeleted()
+        {
+            var contactMechanism = new TelecommunicationsNumberBuilder(this.DatabaseSession).WithAreaCode("0495").WithContactNumber("493499").WithDescription("cellphone").Build();
+            var partyContactMechanism = new PartyContactMechanismBuilder(this.DatabaseSession).WithContactMechanism(contactMechanism).Build();
+            var party = new PersonBuilder(this.DatabaseSession).WithLastName("party").WithPartyContactMechanism(partyContactMechanism).WithPersonRole(new PersonRoles(this.DatabaseSession).Contact).Build();
+
+            this.DatabaseSession.Derive();
+            var countBefore = this.DatabaseSession.Extent<PartyContactMechanism>().Count;
+
+            party.Delete();
+            this.DatabaseSession.Derive();
+
+            Assert.Equal(countBefore - 1, this.DatabaseSession.Extent<PartyContactMechanism>().Count);
+
         }
     }
 }

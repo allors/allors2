@@ -1,12 +1,12 @@
 import { Observable, BehaviorSubject, Subject, Subscription } from 'rxjs/Rx';
-import { Component, OnInit, AfterViewInit, OnDestroy , ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, AfterViewInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
 import { ActivatedRoute, UrlSegment } from '@angular/router';
 import { MdSnackBar, MdSnackBarConfig } from '@angular/material';
 import { TdMediaService, TdDialogService } from '@covalent/core';
 
 import { MetaDomain } from '../../../../../meta';
 import { PullRequest, Fetch, Path, Query, Equals, Like, TreeNode, Sort, Page } from '../../../../../domain';
-import { CommunicationEvent, ContactMechanism, Locale, Organisation, OrganisationContactRelationship, PartyContactMechanism, Person } from '../../../../../domain';
+import { CommunicationEvent, ContactMechanism, Locale, Organisation, OrganisationContactRelationship, PartyContactMechanism, Person, WorkEffort, WorkEffortAssignment } from '../../../../../domain';
 import { AllorsService, ErrorService, Scope, Loaded, Saved, Invoked } from '../../../../../angular';
 
 @Component({
@@ -20,6 +20,7 @@ export class PersonOverviewComponent implements OnInit, AfterViewInit, OnDestroy
   m: MetaDomain;
 
   communicationEvents: CommunicationEvent[];
+  workEffortAssignments: WorkEffortAssignment[];
 
   title: string = 'Person overview';
   person: Person;
@@ -160,6 +161,20 @@ export class PersonOverviewComponent implements OnInit, AfterViewInit, OnDestroy
             ],
           }),
           new Fetch({
+            name: 'workEffortAssignments',
+            id: id,
+            path: new Path({ step: m.Person.WorkEffortAssignmentsWhereProfessional }),
+            include: [
+              new TreeNode({
+                roleType: m.WorkEffortAssignment.Assignment,
+                nodes: [
+                  new TreeNode({ roleType: m.WorkEffort.CurrentObjectState }),
+                  new TreeNode({ roleType: m.WorkEffort.Priority }),
+                ],
+              }),
+            ],
+          }),
+          new Fetch({
             name: 'organisationContactRelationships',
             id: id,
             path: new Path({ step: m.Person.OrganisationContactRelationshipsWhereContact }),
@@ -212,6 +227,7 @@ export class PersonOverviewComponent implements OnInit, AfterViewInit, OnDestroy
         const organisationContactRelationships: OrganisationContactRelationship[] = loaded.collections.organisationContactRelationships as OrganisationContactRelationship[];
         this.organisation = organisationContactRelationships.length > 0 ? organisationContactRelationships[0].Organisation as Organisation : undefined;
         this.communicationEvents = loaded.collections.communicationEvents as CommunicationEvent[];
+        this.workEffortAssignments = loaded.collections.workEffortAssignments as WorkEffortAssignment[];
 
         this.currentContactMechanisms = this.person.CurrentPartyContactMechanisms as PartyContactMechanism[];
         this.inactiveContactMechanisms = this.person.InactivePartyContactMechanisms as PartyContactMechanism[];
@@ -324,6 +340,24 @@ export class PersonOverviewComponent implements OnInit, AfterViewInit, OnDestroy
       .afterClosed().subscribe((confirm: boolean) => {
         if (confirm) {
           this.scope.invoke(communicationEvent.Delete)
+            .subscribe((invoked: Invoked) => {
+              this.snackBar.open('Successfully deleted.', 'close', { duration: 5000 });
+              this.refresh();
+            },
+            (error: Error) => {
+              this.errorService.dialog(error);
+            });
+        }
+      });
+  }
+
+  delete(workEffort: WorkEffort): void {
+    this.dialogService
+      .openConfirm({ message: 'Are you sure you want to delete this work effort?' })
+      .afterClosed()
+      .subscribe((confirm: boolean) => {
+        if (confirm) {
+          this.scope.invoke(workEffort.Delete)
             .subscribe((invoked: Invoked) => {
               this.snackBar.open('Successfully deleted.', 'close', { duration: 5000 });
               this.refresh();

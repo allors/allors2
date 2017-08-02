@@ -59,7 +59,7 @@ namespace Allors.Domain
                 .WithGood(good)
                 .Build();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             Assert.Equal(4, goodInventory.DerivedProductCategories.Count);
             Assert.Contains(level3, goodInventory.DerivedProductCategories);

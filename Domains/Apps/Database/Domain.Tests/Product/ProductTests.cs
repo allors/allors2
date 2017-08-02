@@ -30,7 +30,7 @@ namespace Allors.Domain
         public void GivenDeliverableCoredService_WhenDeriving_ThenRequiredRelationsMustExist()
         {
             var vatRate21 = new VatRateBuilder(this.DatabaseSession).WithRate(21).Build();
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
             this.DatabaseSession.Commit();
 
             var builder = new DeliverableBasedServiceBuilder(this.DatabaseSession);
@@ -67,7 +67,7 @@ namespace Allors.Domain
                 .WithVatRate(vatRate21)
                 .Build();
 
-            this.DatabaseSession.Derive(true); 
+            this.DatabaseSession.Derive(); 
             
             Assert.Contains(productCategory, deliverableBasedService.ProductCategories);
         }
@@ -86,7 +86,7 @@ namespace Allors.Domain
                 .WithVatRate(vatRate21)
                 .Build();
 
-            this.DatabaseSession.Derive(true); 
+            this.DatabaseSession.Derive(); 
 
             Assert.Equal(productCategory, deliverableBasedService.PrimaryProductCategory);
         }
@@ -98,7 +98,7 @@ namespace Allors.Domain
             var finishedGood = new FinishedGoodBuilder(this.DatabaseSession).WithName("finishedGood").Build();
             var localdesc = new LocalisedTextBuilder(this.DatabaseSession).WithText("good").WithLocale(Singleton.Instance(this.DatabaseSession).DefaultLocale).Build();
             
-                this.DatabaseSession.Derive(true);
+                this.DatabaseSession.Derive();
             this.DatabaseSession.Commit();
             
             var builder = new GoodBuilder(this.DatabaseSession);
@@ -161,7 +161,7 @@ namespace Allors.Domain
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.DatabaseSession).Piece)
                 .Build();
 
-            this.DatabaseSession.Derive(true); 
+            this.DatabaseSession.Derive(); 
 
             Assert.Contains(productCategory, good.ProductCategories);
         }
@@ -183,7 +183,7 @@ namespace Allors.Domain
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.DatabaseSession).Piece)
                 .Build();
 
-            this.DatabaseSession.Derive(true); 
+            this.DatabaseSession.Derive(); 
 
             Assert.Equal(productCategory, good.PrimaryProductCategory);
         }
@@ -226,7 +226,7 @@ namespace Allors.Domain
                 .WithVatRate(vatRate21)
                 .Build();
 
-            this.DatabaseSession.Derive(true); 
+            this.DatabaseSession.Derive(); 
 
             Assert.Equal(4, good.ProductCategoriesExpanded.Count);
             Assert.Contains(productCategory111, good.ProductCategoriesExpanded);
@@ -236,7 +236,7 @@ namespace Allors.Domain
 
             good.AddProductCategory(productCategory121);
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             Assert.Equal(6, good.ProductCategoriesExpanded.Count);
             Assert.Contains(productCategory111, good.ProductCategoriesExpanded);
@@ -285,7 +285,7 @@ namespace Allors.Domain
                 .WithVatRate(vatRate21)
                 .Build();
 
-            this.DatabaseSession.Derive(true); 
+            this.DatabaseSession.Derive(); 
 
             Assert.Equal(4, good.ProductCategoriesExpanded.Count);
             Assert.Contains(productCategory111, good.ProductCategoriesExpanded);
@@ -298,7 +298,7 @@ namespace Allors.Domain
                 .Build();
             productCategory11.AddParent(productCategory3);
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             Assert.Equal(5, good.ProductCategoriesExpanded.Count);
             Assert.Contains(productCategory111, good.ProductCategoriesExpanded);
@@ -309,7 +309,7 @@ namespace Allors.Domain
 
             good.AddProductCategory(productCategory121);
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             var productCategory13 = new ProductCategoryBuilder(this.DatabaseSession)
                 .WithLocalisedName(new LocalisedTextBuilder(this.DatabaseSession).WithText("1.3").WithLocale(Singleton.Instance(this.DatabaseSession).DefaultLocale).Build())
@@ -317,7 +317,7 @@ namespace Allors.Domain
                 .Build();
             productCategory121.AddParent(productCategory13);
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             Assert.Equal(8, good.ProductCategoriesExpanded.Count);
             Assert.Contains(productCategory111, good.ProductCategoriesExpanded);
@@ -364,7 +364,7 @@ namespace Allors.Domain
                 .WithVatRate(vatRate21)
                 .Build();
 
-            this.DatabaseSession.Derive(true); 
+            this.DatabaseSession.Derive(); 
 
             Assert.Equal(4, good.ProductCategoriesExpanded.Count);
             Assert.Contains(productCategory111, good.ProductCategoriesExpanded);
@@ -374,7 +374,7 @@ namespace Allors.Domain
 
             productCategory11.RemoveParent(productCategory2);
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             Assert.Equal(3, good.ProductCategoriesExpanded.Count);
             Assert.Contains(productCategory111, good.ProductCategoriesExpanded);
@@ -388,7 +388,7 @@ namespace Allors.Domain
             var vatRate21 = new VatRateBuilder(this.DatabaseSession).WithRate(21).Build();
             var localdesc = new LocalisedTextBuilder(this.DatabaseSession).WithText("good").WithLocale(Singleton.Instance(this.DatabaseSession).DefaultLocale).Build();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
             this.DatabaseSession.Commit();
 
             var builder = new TimeAndMaterialsServiceBuilder(this.DatabaseSession);
@@ -425,7 +425,7 @@ namespace Allors.Domain
                 .WithVatRate(vatRate21)
                 .Build();
 
-            this.DatabaseSession.Derive(true); 
+            this.DatabaseSession.Derive(); 
 
             Assert.Contains(productCategory, timeAndMaterialsService.ProductCategories);
         }
@@ -444,7 +444,7 @@ namespace Allors.Domain
                 .WithVatRate(vatRate21)
                 .Build();
 
-            this.DatabaseSession.Derive(true); 
+            this.DatabaseSession.Derive(); 
 
             Assert.Equal(productCategory, timeAndMaterialsService.PrimaryProductCategory);
         }

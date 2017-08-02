@@ -51,7 +51,7 @@ namespace Allors.Domain
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.DatabaseSession).Piece)
                 .Build();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             var salesOrder = new SalesOrderBuilder(this.DatabaseSession)
                 .WithShipToCustomer(shipToCustomer)
@@ -64,7 +64,7 @@ namespace Allors.Domain
 
             var customerRequirement = new CustomerRequirementBuilder(this.DatabaseSession).WithDescription("100 gizmo's").Build();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
             this.DatabaseSession.Commit();
 
             var builder = new OrderRequirementCommitmentBuilder(this.DatabaseSession);

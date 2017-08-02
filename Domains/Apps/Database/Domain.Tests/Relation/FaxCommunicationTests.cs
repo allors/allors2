@@ -50,7 +50,7 @@ namespace Allors.Domain
             var originator = new PersonBuilder(this.DatabaseSession).WithLastName("originator").WithPersonRole(new PersonRoles(this.DatabaseSession).Customer).Build();
             var receiver = new PersonBuilder(this.DatabaseSession).WithLastName("receiver").WithPersonRole(new PersonRoles(this.DatabaseSession).Customer).Build();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
             this.DatabaseSession.Commit();
 
             var communication = new FaxCommunicationBuilder(this.DatabaseSession)
@@ -60,12 +60,39 @@ namespace Allors.Domain
                 .WithReceiver(receiver)
                 .Build();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             Assert.Equal(3, communication.InvolvedParties.Count);
             Assert.Contains(owner, communication.InvolvedParties);
             Assert.Contains(originator, communication.InvolvedParties);
             Assert.Contains(receiver, communication.InvolvedParties);
+        }
+
+        [Fact]
+        public void GivenFaxCommunication_WhenOriginatorIsDeleted_ThenCommunicationEventIsDeleted()
+        {
+            var owner = new PersonBuilder(this.DatabaseSession).WithLastName("owner").WithPersonRole(new PersonRoles(this.DatabaseSession).Employee).Build();
+            var originator = new PersonBuilder(this.DatabaseSession).WithLastName("originator").WithPersonRole(new PersonRoles(this.DatabaseSession).Customer).Build();
+            var receiver = new PersonBuilder(this.DatabaseSession).WithLastName("receiver").WithPersonRole(new PersonRoles(this.DatabaseSession).Customer).Build();
+
+            this.DatabaseSession.Derive();
+            this.DatabaseSession.Commit();
+
+            new FaxCommunicationBuilder(this.DatabaseSession)
+                .WithSubject("Hello world!")
+                .WithOwner(owner)
+                .WithOriginator(originator)
+                .WithReceiver(receiver)
+                .Build();
+
+            this.DatabaseSession.Derive();
+
+            Assert.Equal(1, this.DatabaseSession.Extent<FaxCommunication>().Count);
+
+            originator.Delete();
+            this.DatabaseSession.Derive();
+
+            Assert.Equal(0, this.DatabaseSession.Extent<FaxCommunication>().Count);
         }
     }
 }

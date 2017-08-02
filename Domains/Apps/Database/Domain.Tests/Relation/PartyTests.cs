@@ -44,7 +44,7 @@ namespace Allors.Domain
                 .WithFromDate(DateTimeFactory.CreateDate(2010, 01, 01))
                 .Build();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             Assert.Equal(1, organisation.CurrentSalesReps.Count);
             Assert.Contains(salesRep1, organisation.CurrentSalesReps);
@@ -55,7 +55,7 @@ namespace Allors.Domain
                 .WithFromDate(DateTimeFactory.CreateDate(2010, 01, 01))
                 .Build();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             Assert.Equal(2, organisation.CurrentSalesReps.Count);
             Assert.Contains(salesRep1, organisation.CurrentSalesReps);
@@ -63,7 +63,7 @@ namespace Allors.Domain
 
             salesRepRelationship1.ThroughDate = DateTimeFactory.CreateDate(2010, 12, 31);
             
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             Assert.Equal(1, organisation.CurrentSalesReps.Count);
             Assert.Contains(salesRep2, organisation.CurrentSalesReps);
@@ -76,7 +76,7 @@ namespace Allors.Domain
                                         .Build())
                 .Build();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             Assert.Equal(2, organisation.CurrentSalesReps.Count);
             Assert.Contains(salesRep2, organisation.CurrentSalesReps);
@@ -105,7 +105,7 @@ namespace Allors.Domain
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.DatabaseSession).Piece)
                 .Build();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             var salesOrder1 = new SalesOrderBuilder(this.DatabaseSession).WithBillToCustomer(organisation).WithShipToAddress(postalAddress).WithComment("salesorder1").Build();
             var orderItem1 = new SalesOrderItemBuilder(this.DatabaseSession)
@@ -132,7 +132,7 @@ namespace Allors.Domain
             salesOrder3.AddSalesOrderItem(orderItem3);
             salesOrder3.Cancel();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             Assert.Equal(242M, organisation.OpenOrderAmount);
         }
@@ -155,7 +155,7 @@ namespace Allors.Domain
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.DatabaseSession).Piece)
                 .Build();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             var date1 = DateTimeFactory.CreateDate(DateTime.UtcNow.AddYears(-1).Year, 1, 1);
             var date2 = DateTimeFactory.CreateDate(DateTime.UtcNow.Year, 1, 1);
@@ -188,7 +188,7 @@ namespace Allors.Domain
                 .WithComment("invoice3")
                 .Build();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             Assert.Equal(10M, customer.LastYearsRevenue);
             Assert.Equal(200M, customer.YTDRevenue);

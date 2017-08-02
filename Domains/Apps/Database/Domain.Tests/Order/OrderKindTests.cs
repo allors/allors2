@@ -55,7 +55,7 @@ namespace Allors.Domain
                 .WithDescription("Pre order summer collections")
                 .Build();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             Assert.False(orderKind.ScheduleManually);
         }

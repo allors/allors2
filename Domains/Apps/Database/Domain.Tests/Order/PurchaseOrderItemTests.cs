@@ -99,7 +99,7 @@ namespace Allors.Domain
                 .WithVatRegime(new VatRegimes(this.DatabaseSession).Exempt)
                 .Build();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
             this.DatabaseSession.Commit();
         }
 
@@ -115,7 +115,7 @@ namespace Allors.Domain
             var part = new RawMaterialBuilder(this.DatabaseSession).WithName("raw stuff").Build();
             buyer.AddPartyContactMechanism(partyContactMechanism);
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
             this.DatabaseSession.Commit();
 
             var builder = new PurchaseOrderItemBuilder(this.DatabaseSession);
@@ -162,17 +162,17 @@ namespace Allors.Domain
 
             this.order.AddPurchaseOrderItem(item);
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             this.order.Confirm();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             Assert.Equal(1, this.order.ValidOrderItems.Count);
 
             item.Cancel();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             Assert.Equal(0, this.order.ValidOrderItems.Count);
         }
@@ -186,7 +186,7 @@ namespace Allors.Domain
             var item1 = new PurchaseOrderItemBuilder(this.DatabaseSession).WithPart(this.finishedGood).WithQuantityOrdered(QuantityOrdered).Build();
             this.order.AddPurchaseOrderItem(item1);
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             Assert.Equal(this.currentPurchasePrice.Price, item1.UnitBasePrice);
             Assert.Equal(0, item1.UnitDiscount);
@@ -250,7 +250,7 @@ namespace Allors.Domain
             supplierOffering.AddProductPurchasePrice(currentPurchasePriceGood);
             supplierOffering.AddProductPurchasePrice(futurePurchasePriceGood);
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
             this.DatabaseSession.Commit();
 
             this.InstantiateObjects(this.DatabaseSession);
@@ -259,7 +259,7 @@ namespace Allors.Domain
             var item1 = new PurchaseOrderItemBuilder(this.DatabaseSession).WithProduct(good).WithQuantityOrdered(QuantityOrdered).Build();
             this.order.AddPurchaseOrderItem(item1);
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             Assert.Equal(currentPurchasePriceGood.Price, item1.UnitBasePrice);
             Assert.Equal(0, item1.UnitDiscount);
@@ -285,7 +285,7 @@ namespace Allors.Domain
             var item1 = new PurchaseOrderItemBuilder(this.DatabaseSession).WithPart(this.finishedGood).WithQuantityOrdered(3).WithActualUnitPrice(15).Build();
             this.order.AddPurchaseOrderItem(item1);
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             Assert.Equal(15, item1.UnitBasePrice);
             Assert.Equal(0, item1.UnitDiscount);
@@ -314,7 +314,7 @@ namespace Allors.Domain
             var administrators = new UserGroups(this.DatabaseSession).Administrators;
             administrators.AddMember(administrator);
             
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
             this.DatabaseSession.Commit();
 
             this.InstantiateObjects(this.DatabaseSession);
@@ -337,7 +337,7 @@ namespace Allors.Domain
 
             this.order.AddPurchaseOrderItem(item);
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
             this.DatabaseSession.Commit();
 
             Assert.Equal(new PurchaseOrderItemObjectStates(this.DatabaseSession).Created, item.CurrentObjectState);
@@ -356,7 +356,7 @@ namespace Allors.Domain
             var administrators = new UserGroups(this.DatabaseSession).Administrators;
             administrators.AddMember(administrator);
             
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
             this.DatabaseSession.Commit();
 
             this.InstantiateObjects(this.DatabaseSession);
@@ -381,7 +381,7 @@ namespace Allors.Domain
 
             this.order.Confirm();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
             this.DatabaseSession.Commit();
 
             Assert.Equal(new PurchaseOrderItemObjectStates(this.DatabaseSession).InProcess, item.CurrentObjectState);
@@ -398,7 +398,7 @@ namespace Allors.Domain
             var administrators = new UserGroups(this.DatabaseSession).Administrators;
             administrators.AddMember(administrator);
             
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
             this.DatabaseSession.Commit();
 
             this.InstantiateObjects(this.DatabaseSession);
@@ -423,7 +423,7 @@ namespace Allors.Domain
 
             this.order.Confirm();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             var shipment = new PurchaseShipmentBuilder(this.DatabaseSession).WithShipmentMethod(new ShipmentMethods(this.DatabaseSession).Ground).WithShipFromParty(this.supplier).Build();
             var shipmentItem = new ShipmentItemBuilder(this.DatabaseSession).WithGood(good).Build();
@@ -437,7 +437,7 @@ namespace Allors.Domain
 
             shipment.AppsComplete();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             Assert.Equal(new PurchaseOrderItemObjectStates(this.DatabaseSession).PartiallyReceived, item.CurrentObjectState);
             var acl = new AccessControlList(item, new Users(this.DatabaseSession).CurrentUser);
@@ -453,7 +453,7 @@ namespace Allors.Domain
             var administrators = new UserGroups(this.DatabaseSession).Administrators;
             administrators.AddMember(administrator);
             
-            this.DatabaseSession.Derive(true);           
+            this.DatabaseSession.Derive();           
             this.DatabaseSession.Commit();
 
             this.InstantiateObjects(this.DatabaseSession);
@@ -476,12 +476,12 @@ namespace Allors.Domain
 
             this.order.AddPurchaseOrderItem(item);            
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
             this.DatabaseSession.Commit();
 
             item.Cancel();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             Assert.Equal(new PurchaseOrderItemObjectStates(this.DatabaseSession).Cancelled, item.CurrentObjectState);
             var acl = new AccessControlList(item, new Users(this.DatabaseSession).CurrentUser);
@@ -497,7 +497,7 @@ namespace Allors.Domain
             var administrators = new UserGroups(this.DatabaseSession).Administrators;
             administrators.AddMember(administrator);
             
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
             this.DatabaseSession.Commit();
 
             this.InstantiateObjects(this.DatabaseSession);
@@ -520,11 +520,11 @@ namespace Allors.Domain
 
             this.order.AddPurchaseOrderItem(item);
             
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             item.Reject();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             Assert.Equal(new PurchaseOrderItemObjectStates(this.DatabaseSession).Rejected, item.CurrentObjectState);
             var acl = new AccessControlList(item, new Users(this.DatabaseSession).CurrentUser);
@@ -540,7 +540,7 @@ namespace Allors.Domain
             var administrators = new UserGroups(this.DatabaseSession).Administrators;
             administrators.AddMember(administrator);
             
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
             this.DatabaseSession.Commit();
 
             this.InstantiateObjects(this.DatabaseSession);
@@ -565,7 +565,7 @@ namespace Allors.Domain
             
             this.order.Confirm();
             
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             var shipment = new PurchaseShipmentBuilder(this.DatabaseSession).WithShipFromParty(this.supplier).WithShipmentMethod(new ShipmentMethods(this.DatabaseSession).Ground).Build();
             var shipmentItem = new ShipmentItemBuilder(this.DatabaseSession).WithGood(good).Build();
@@ -579,7 +579,7 @@ namespace Allors.Domain
 
             shipment.AppsComplete();
             
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             Assert.Equal(new PurchaseOrderItemObjectStates(this.DatabaseSession).Completed, item.CurrentObjectState);
             var acl = new AccessControlList(item, new Users(this.DatabaseSession).CurrentUser);
@@ -595,7 +595,7 @@ namespace Allors.Domain
             var administrators = new UserGroups(this.DatabaseSession).Administrators;
             administrators.AddMember(administrator);
             
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
             this.DatabaseSession.Commit();
 
             this.InstantiateObjects(this.DatabaseSession);
@@ -620,7 +620,7 @@ namespace Allors.Domain
 
             this.order.Finish();
             
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             Assert.Equal(new PurchaseOrderItemObjectStates(this.DatabaseSession).Finished, item.CurrentObjectState);
             var acl = new AccessControlList(item, new Users(this.DatabaseSession).CurrentUser);
@@ -636,7 +636,7 @@ namespace Allors.Domain
             var administrators = new UserGroups(this.DatabaseSession).Administrators;
             administrators.AddMember(administrator);
             
-            this.DatabaseSession.Derive(true); 
+            this.DatabaseSession.Derive(); 
             this.DatabaseSession.Commit();
 
             this.InstantiateObjects(this.DatabaseSession);
@@ -661,7 +661,7 @@ namespace Allors.Domain
 
             this.order.Confirm();
             
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             var shipment = new PurchaseShipmentBuilder(this.DatabaseSession).WithShipmentMethod(new ShipmentMethods(this.DatabaseSession).Ground).WithShipFromParty(this.supplier).Build();
             var shipmentItem = new ShipmentItemBuilder(this.DatabaseSession).WithGood(good).Build();
@@ -675,7 +675,7 @@ namespace Allors.Domain
 
             shipment.AppsComplete();
             
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             Assert.Equal(new PurchaseOrderItemObjectStates(this.DatabaseSession).PartiallyReceived, item.CurrentObjectState);
             var acl = new AccessControlList(item, new Users(this.DatabaseSession).CurrentUser);
@@ -703,7 +703,7 @@ namespace Allors.Domain
 
             this.order.AddPurchaseOrderItem(item);
             
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             Assert.Equal(item.DeliveryDate, item.AssignedDeliveryDate);
         }
@@ -728,7 +728,7 @@ namespace Allors.Domain
 
             this.order.AddPurchaseOrderItem(item);
             
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             Assert.Equal(item.DeliveryDate, this.order.DeliveryDate);
         }

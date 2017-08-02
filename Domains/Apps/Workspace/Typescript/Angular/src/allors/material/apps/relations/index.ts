@@ -1,10 +1,12 @@
 // Overview
-import { OverviewComponent } from './overview/overview.component';
-import { RelationsOverviewComponent } from './overview/relations/relationsOverview.component';
-import { PeopleOverviewComponent } from './overview/people/peopleOverview.component';
-import { PersonOverviewComponent } from './overview/person/personOverview.component';
+import { CommunicationEventsOverviewComponent } from './overview/communicationevents/communicationeventsoverview.component';
 import { OrganisationsOverviewComponent } from './overview/organisations/organisationsOverview.component';
 import { OrganisationOverviewComponent } from './overview/organisation/organisationOverview.component';
+import { OverviewComponent } from './overview/overview.component';
+import { PartyCommunicationEventOverviewComponent } from './overview/communicationevent/communicationeventoverview.component';
+import { PeopleOverviewComponent } from './overview/people/peopleOverview.component';
+import { PersonOverviewComponent } from './overview/person/personOverview.component';
+import { RelationsOverviewComponent } from './overview/relations/relationsOverview.component';
 
 // Party
 import { PartyContactMechanismAddEmailAddressComponent } from './party/contactMechanism/emailaddress/add.component';
@@ -19,10 +21,11 @@ import { PartyContactMechanismInlineTelecommunicationsNumberComponent } from './
 import { PartyContactMechanismAddWebAddressComponent } from './party/contactMechanism/webAddress/add.component';
 import { PartyContactMechanismEditWebAddressComponent } from './party/contactMechanism/webAddress/edit.component';
 
-import { PartycommunicationEventEditEmailCommunicationComponent } from './party/communicationevent/emailCommunication/edit.component';
-import { PartycommunicationEventEditFaceToFaceCommunicationComponent } from './party/communicationevent/faceToFaceCommunication/edit.component';
-import { PartycommunicationEventEditLetterCorrespondenceComponent } from './party/communicationevent/letterCorrespondence/edit.component';
-import { PartycommunicationEventEditPhoneCommunicationComponent } from './party/communicationevent/phoneCommunication/edit.component';
+import { PartyCommunicationEventAddWorkTaskComponent } from './party/communicationevent/worktask/add.component';
+import { PartyCommunicationEventEditEmailCommunicationComponent } from './party/communicationevent/emailCommunication/edit.component';
+import { PartyCommunicationEventEditFaceToFaceCommunicationComponent } from './party/communicationevent/faceToFaceCommunication/edit.component';
+import { PartyCommunicationEventEditLetterCorrespondenceComponent } from './party/communicationevent/letterCorrespondence/edit.component';
+import { PartyCommunicationEventEditPhoneCommunicationComponent } from './party/communicationevent/phoneCommunication/edit.component';
 
 // Person
 import { PersonEditComponent } from './person/edit.component';
@@ -38,6 +41,7 @@ export const RELATIONS: any[] = [
 
 export const RELATIONS_ROUTING: any[] = [
   // Overview
+  CommunicationEventsOverviewComponent,
   OverviewComponent,
   RelationsOverviewComponent,
   PeopleOverviewComponent,
@@ -46,13 +50,15 @@ export const RELATIONS_ROUTING: any[] = [
   OrganisationOverviewComponent,
 
   // Party
+  PartyCommunicationEventAddWorkTaskComponent,
   PartyContactMechanismAddEmailAddressComponent,
   PartyContactMechanismEditEmailAddressComponent,
   PartyContactMechanismInlineEmailAddressComponent,
-  PartycommunicationEventEditEmailCommunicationComponent,
-  PartycommunicationEventEditFaceToFaceCommunicationComponent,
-  PartycommunicationEventEditLetterCorrespondenceComponent,
-  PartycommunicationEventEditPhoneCommunicationComponent,
+  PartyCommunicationEventEditEmailCommunicationComponent,
+  PartyCommunicationEventEditFaceToFaceCommunicationComponent,
+  PartyCommunicationEventEditLetterCorrespondenceComponent,
+  PartyCommunicationEventEditPhoneCommunicationComponent,
+  PartyCommunicationEventOverviewComponent,
   PartyContactMechanismAddPostalAddressComponent,
   PartyContactMechanismEditPostalAddressComponent,
   PartyContactMechanismInlinePostalAddressComponent,
@@ -73,7 +79,8 @@ export const RELATIONS_ROUTING: any[] = [
 ];
 
 export {
-   // Overview
+  // Overview
+  CommunicationEventsOverviewComponent,
   OverviewComponent,
   RelationsOverviewComponent,
   PeopleOverviewComponent,
@@ -82,13 +89,15 @@ export {
   OrganisationOverviewComponent,
 
   // Party
+  PartyCommunicationEventAddWorkTaskComponent,
   PartyContactMechanismAddEmailAddressComponent,
   PartyContactMechanismEditEmailAddressComponent,
   PartyContactMechanismInlineEmailAddressComponent,
-  PartycommunicationEventEditEmailCommunicationComponent,
-  PartycommunicationEventEditFaceToFaceCommunicationComponent,
-  PartycommunicationEventEditLetterCorrespondenceComponent,
-  PartycommunicationEventEditPhoneCommunicationComponent,
+  PartyCommunicationEventEditEmailCommunicationComponent,
+  PartyCommunicationEventEditFaceToFaceCommunicationComponent,
+  PartyCommunicationEventEditLetterCorrespondenceComponent,
+  PartyCommunicationEventEditPhoneCommunicationComponent,
+  PartyCommunicationEventOverviewComponent,
   PartyContactMechanismAddPostalAddressComponent,
   PartyContactMechanismEditPostalAddressComponent,
   PartyContactMechanismInlinePostalAddressComponent,

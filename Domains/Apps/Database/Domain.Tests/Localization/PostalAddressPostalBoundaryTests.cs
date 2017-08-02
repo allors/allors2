@@ -73,7 +73,7 @@ namespace Allors.Domain
                 .WithPostalBoundary(postalBoundary)
                 .Build();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             Assert.Equal(country, address.Country);
         }

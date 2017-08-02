@@ -54,7 +54,7 @@ namespace Allors.Domain
 
             new CustomerRelationshipBuilder(this.DatabaseSession).WithFromDate(DateTime.UtcNow).WithCustomer(customer).WithInternalOrganisation(Singleton.Instance(this.DatabaseSession).DefaultInternalOrganisation).Build();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             Assert.Equal(new SalesInvoiceObjectStates(this.DatabaseSession).ReadyForPosting, invoice.CurrentObjectState);
             Assert.Equal(invoice.LastObjectState, invoice.CurrentObjectState);
@@ -83,7 +83,7 @@ namespace Allors.Domain
 
             new CustomerRelationshipBuilder(this.DatabaseSession).WithFromDate(DateTime.UtcNow).WithCustomer(customer).WithInternalOrganisation(Singleton.Instance(this.DatabaseSession).DefaultInternalOrganisation).Build();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             Assert.Null(invoice.PreviousObjectState);
         }
@@ -111,7 +111,7 @@ namespace Allors.Domain
 
             new CustomerRelationshipBuilder(this.DatabaseSession).WithFromDate(DateTime.UtcNow).WithCustomer(customer).WithInternalOrganisation(Singleton.Instance(this.DatabaseSession).DefaultInternalOrganisation).Build();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
             this.DatabaseSession.Commit();
 
             var invoice = new SalesInvoiceBuilder(this.DatabaseSession)
@@ -123,19 +123,19 @@ namespace Allors.Domain
                 .WithSalesInvoiceItem(new SalesInvoiceItemBuilder(this.DatabaseSession).WithProduct(good).WithQuantity(1).WithActualUnitPrice(100M).WithSalesInvoiceItemType(new SalesInvoiceItemTypes(this.DatabaseSession).ProductItem).Build())
                 .Build();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             Assert.Equal(1, invoice.InvoiceStatuses.Count);
             Assert.Equal(new SalesInvoiceObjectStates(this.DatabaseSession).ReadyForPosting, invoice.CurrentInvoiceStatus.SalesInvoiceObjectState);
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             new ReceiptBuilder(this.DatabaseSession)
                 .WithAmount(100)
                 .WithPaymentApplication(new PaymentApplicationBuilder(this.DatabaseSession).WithInvoiceItem(invoice.SalesInvoiceItems[0]).WithAmountApplied(100).Build())
                 .Build();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             Assert.Equal(2, invoice.InvoiceStatuses.Count);
             Assert.Equal(new SalesInvoiceObjectStates(this.DatabaseSession).Paid, invoice.CurrentInvoiceStatus.SalesInvoiceObjectState);
@@ -399,7 +399,7 @@ namespace Allors.Domain
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.DatabaseSession).Piece)
                 .Build();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
             this.DatabaseSession.Commit();
 
             var internalOrganisation = new InternalOrganisations(this.DatabaseSession).FindBy(M.InternalOrganisation.Name, "internalOrganisation");
@@ -425,7 +425,7 @@ namespace Allors.Domain
 
             new CustomerRelationshipBuilder(this.DatabaseSession).WithFromDate(DateTime.UtcNow).WithCustomer(customer).WithInternalOrganisation(Singleton.Instance(this.DatabaseSession).DefaultInternalOrganisation).Build();
 
-            this.DatabaseSession.Derive(true); 
+            this.DatabaseSession.Derive(); 
             
             Assert.Contains(salesrep, invoice.SalesReps);
         }
@@ -462,7 +462,7 @@ namespace Allors.Domain
             internalOrganisation.RemovePartyContactMechanisms();
             internalOrganisation.AddPartyContactMechanism(home);
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             var invoice = new SalesInvoiceBuilder(this.DatabaseSession)
                 .WithInvoiceNumber("1")
@@ -474,7 +474,7 @@ namespace Allors.Domain
 
             new CustomerRelationshipBuilder(this.DatabaseSession).WithFromDate(DateTime.UtcNow).WithCustomer(customer).WithInternalOrganisation(Singleton.Instance(this.DatabaseSession).DefaultInternalOrganisation).Build();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             Assert.Equal(homeAddress, invoice.BilledFromContactMechanism);
         }
@@ -493,13 +493,13 @@ namespace Allors.Domain
                 .Build();
 
             customer.AddPartyContactMechanism(billingAddress);
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             var invoice = new SalesInvoiceBuilder(this.DatabaseSession).WithBillToCustomer(customer).Build();
 
             new CustomerRelationshipBuilder(this.DatabaseSession).WithFromDate(DateTime.UtcNow).WithCustomer(customer).WithInternalOrganisation(Singleton.Instance(this.DatabaseSession).DefaultInternalOrganisation).Build();
 
-            this.DatabaseSession.Derive(true); 
+            this.DatabaseSession.Derive(); 
 
             Assert.Equal(billingAddress.ContactMechanism, invoice.BillToContactMechanism);
         }
@@ -542,7 +542,7 @@ namespace Allors.Domain
 
             customer.AddPartyContactMechanism(shippingAddress);
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             var invoice = new SalesInvoiceBuilder(this.DatabaseSession)
                 .WithBillToCustomer(customer)
@@ -552,7 +552,7 @@ namespace Allors.Domain
 
             new CustomerRelationshipBuilder(this.DatabaseSession).WithFromDate(DateTime.UtcNow).WithCustomer(customer).WithInternalOrganisation(Singleton.Instance(this.DatabaseSession).DefaultInternalOrganisation).Build();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             Assert.Equal(shippingAddress.ContactMechanism, invoice.ShipToAddress);
         }
@@ -607,7 +607,7 @@ namespace Allors.Domain
 
             new CustomerRelationshipBuilder(this.DatabaseSession).WithFromDate(DateTime.UtcNow).WithCustomer(customer).WithInternalOrganisation(Singleton.Instance(this.DatabaseSession).DefaultInternalOrganisation).Build();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             Assert.Equal(englischLocale, invoice1.Locale);
 
@@ -615,7 +615,7 @@ namespace Allors.Domain
 
             var invoice2 = new SalesInvoiceBuilder(this.DatabaseSession).WithBillToCustomer(customer).WithBillToContactMechanism(contactMechanism).Build();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             Assert.Equal(dutchLocale, invoice2.Locale);
         }
@@ -663,7 +663,7 @@ namespace Allors.Domain
 
             new CustomerRelationshipBuilder(this.DatabaseSession).WithFromDate(DateTime.UtcNow).WithCustomer(customer).WithInternalOrganisation(Singleton.Instance(this.DatabaseSession).DefaultInternalOrganisation).Build();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             var invoice = new SalesInvoiceBuilder(this.DatabaseSession).WithBillToCustomer(customer).WithBillToContactMechanism(contactMechanism).Build();
 
@@ -676,7 +676,7 @@ namespace Allors.Domain
 
             invoice.AddSalesInvoiceItem(item1);
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             Assert.Equal(8, invoice.TotalExVat);
             Assert.Equal(1.52M, invoice.TotalVat);
@@ -699,7 +699,7 @@ namespace Allors.Domain
             invoice.AddSalesInvoiceItem(item2);
             invoice.AddSalesInvoiceItem(item3);
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             Assert.Equal(24, invoice.TotalExVat);
             Assert.Equal(4.56M, invoice.TotalVat);
@@ -725,7 +725,7 @@ namespace Allors.Domain
             var administrators = new UserGroups(this.DatabaseSession).Administrators;
             administrators.AddMember(administrator);
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
             this.DatabaseSession.Commit();
 
             SetIdentity("administrator");
@@ -740,7 +740,7 @@ namespace Allors.Domain
 
             new CustomerRelationshipBuilder(this.DatabaseSession).WithFromDate(DateTime.UtcNow).WithCustomer(customer).WithInternalOrganisation(Singleton.Instance(this.DatabaseSession).DefaultInternalOrganisation).Build();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
             this.DatabaseSession.Commit();
 
             var acl = new AccessControlList(invoice, new Users(this.DatabaseSession).CurrentUser);
@@ -766,7 +766,7 @@ namespace Allors.Domain
             var administrators = new UserGroups(this.DatabaseSession).Administrators;
             administrators.AddMember(administrator);
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
             this.DatabaseSession.Commit();
 
             this.SetIdentity("administrator");
@@ -783,7 +783,7 @@ namespace Allors.Domain
 
             invoice.Send();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
             this.DatabaseSession.Commit();
 
             var acl = new AccessControlList(invoice, new Users(this.DatabaseSession).CurrentUser);
@@ -842,7 +842,7 @@ namespace Allors.Domain
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.DatabaseSession).Piece)
                 .Build();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
             this.DatabaseSession.Commit();
 
             this.SetIdentity("administrator");
@@ -858,14 +858,14 @@ namespace Allors.Domain
 
             new CustomerRelationshipBuilder(this.DatabaseSession).WithFromDate(DateTime.UtcNow).WithCustomer(customer).WithInternalOrganisation(Singleton.Instance(this.DatabaseSession).DefaultInternalOrganisation).Build();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             new ReceiptBuilder(this.DatabaseSession)
                 .WithAmount(100)
                 .WithPaymentApplication(new PaymentApplicationBuilder(this.DatabaseSession).WithInvoiceItem(invoice.SalesInvoiceItems[0]).WithAmountApplied(100).Build())
                 .Build();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             var acl = new AccessControlList(invoice, new Users(this.DatabaseSession).CurrentUser);
             Assert.False(acl.CanExecute(M.SalesInvoice.Send));
@@ -898,7 +898,7 @@ namespace Allors.Domain
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.DatabaseSession).Piece)
                 .Build();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
             this.DatabaseSession.Commit();
 
             this.SetIdentity("administrator");
@@ -914,14 +914,14 @@ namespace Allors.Domain
 
             new CustomerRelationshipBuilder(this.DatabaseSession).WithFromDate(DateTime.UtcNow).WithCustomer(customer).WithInternalOrganisation(Singleton.Instance(this.DatabaseSession).DefaultInternalOrganisation).Build();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             new ReceiptBuilder(this.DatabaseSession)
                 .WithAmount(90)
                 .WithPaymentApplication(new PaymentApplicationBuilder(this.DatabaseSession).WithInvoiceItem(invoice.SalesInvoiceItems[0]).WithAmountApplied(90).Build())
                 .Build();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
             this.DatabaseSession.Commit();
 
             var acl = new AccessControlList(invoice, new Users(this.DatabaseSession).CurrentUser);
@@ -947,7 +947,7 @@ namespace Allors.Domain
             var administrators = new UserGroups(this.DatabaseSession).Administrators;
             administrators.AddMember(administrator);
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
             this.DatabaseSession.Commit();
 
             this.SetIdentity("administrator");
@@ -965,7 +965,7 @@ namespace Allors.Domain
             invoice.Send();
             invoice.WriteOff();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             var acl = new AccessControlList(invoice, new Users(this.DatabaseSession).CurrentUser);
             Assert.False(acl.CanExecute(M.SalesInvoice.Send));
@@ -990,7 +990,7 @@ namespace Allors.Domain
             var administrators = new UserGroups(this.DatabaseSession).Administrators;
             administrators.AddMember(administrator);
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
             this.DatabaseSession.Commit();
 
             this.SetIdentity("administrator");
@@ -1007,7 +1007,7 @@ namespace Allors.Domain
 
             invoice.CancelInvoice();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             var acl = new AccessControlList(invoice, new Users(this.DatabaseSession).CurrentUser);
             Assert.Equal(new SalesInvoiceObjectStates(this.DatabaseSession).Cancelled, invoice.CurrentObjectState);
@@ -1055,7 +1055,7 @@ namespace Allors.Domain
             var item1 = new SalesInvoiceItemBuilder(this.DatabaseSession).WithProduct(good).WithQuantity(3).WithActualUnitPrice(15).WithSalesInvoiceItemType(new SalesInvoiceItemTypes(this.DatabaseSession).ProductItem).Build();
             invoice.AddSalesInvoiceItem(item1);
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             Assert.Equal(45, invoice.TotalBasePrice);
             Assert.Equal(0, invoice.TotalDiscount);
@@ -1106,7 +1106,7 @@ namespace Allors.Domain
             var item1 = new SalesInvoiceItemBuilder(this.DatabaseSession).WithProduct(good).WithQuantity(3).WithActualUnitPrice(15).WithSalesInvoiceItemType(new SalesInvoiceItemTypes(this.DatabaseSession).ProductItem).Build();
             invoice.AddSalesInvoiceItem(item1);
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             Assert.Equal(45, invoice.TotalBasePrice);
             Assert.Equal(0, invoice.TotalDiscount);
@@ -1157,7 +1157,7 @@ namespace Allors.Domain
             var item1 = new SalesInvoiceItemBuilder(this.DatabaseSession).WithProduct(good).WithQuantity(3).WithActualUnitPrice(15).WithSalesInvoiceItemType(new SalesInvoiceItemTypes(this.DatabaseSession).ProductItem).Build();
             invoice.AddSalesInvoiceItem(item1);
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             Assert.Equal(45, invoice.TotalBasePrice);
             Assert.Equal(0, invoice.TotalDiscount);
@@ -1208,7 +1208,7 @@ namespace Allors.Domain
             var item1 = new SalesInvoiceItemBuilder(this.DatabaseSession).WithProduct(good).WithQuantity(3).WithActualUnitPrice(15).WithSalesInvoiceItemType(new SalesInvoiceItemTypes(this.DatabaseSession).ProductItem).Build();
             invoice.AddSalesInvoiceItem(item1);
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             Assert.Equal(45, invoice.TotalBasePrice);
             Assert.Equal(0, invoice.TotalDiscount);
@@ -1241,7 +1241,7 @@ namespace Allors.Domain
 
             new CustomerRelationshipBuilder(this.DatabaseSession).WithFromDate(DateTime.UtcNow).WithCustomer(customer).WithInternalOrganisation(Singleton.Instance(this.DatabaseSession).DefaultInternalOrganisation).Build();
 
-            this.DatabaseSession.Derive(true); 
+            this.DatabaseSession.Derive(); 
             
             Assert.Equal(1, invoice.Customers.Count);
             Assert.Equal(customer, invoice.Customers.First);
@@ -1270,7 +1270,7 @@ namespace Allors.Domain
             new CustomerRelationshipBuilder(this.DatabaseSession).WithFromDate(DateTime.UtcNow).WithCustomer(invoice.BillToCustomer).WithInternalOrganisation(Singleton.Instance(this.DatabaseSession).DefaultInternalOrganisation).Build();
             new CustomerRelationshipBuilder(this.DatabaseSession).WithFromDate(DateTime.UtcNow).WithCustomer(invoice.ShipToCustomer).WithInternalOrganisation(Singleton.Instance(this.DatabaseSession).DefaultInternalOrganisation).Build();
 
-            this.DatabaseSession.Derive(true); 
+            this.DatabaseSession.Derive(); 
             
             Assert.Equal(2, invoice.Customers.Count);
             Assert.Contains(billToCustomer, invoice.Customers);
@@ -1375,14 +1375,14 @@ namespace Allors.Domain
 
             invoice.AddSalesInvoiceItem(item1);
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             Assert.Equal(1, invoice.SalesReps.Count);
             Assert.Contains(salesrep1, invoice.SalesReps);
 
             invoice.AddSalesInvoiceItem(item2);
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             Assert.Equal(2, invoice.SalesReps.Count);
             Assert.Contains(salesrep1, invoice.SalesReps);
@@ -1390,7 +1390,7 @@ namespace Allors.Domain
 
             invoice.AddSalesInvoiceItem(item3);
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             Assert.Equal(3, invoice.SalesReps.Count);
             Assert.Contains(salesrep1, invoice.SalesReps);
@@ -1419,7 +1419,7 @@ namespace Allors.Domain
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.DatabaseSession).Piece)
                 .Build();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
             this.DatabaseSession.Commit();
 
             var invoice = new SalesInvoiceBuilder(this.DatabaseSession)
@@ -1431,14 +1431,14 @@ namespace Allors.Domain
 
             new CustomerRelationshipBuilder(this.DatabaseSession).WithFromDate(DateTime.UtcNow).WithCustomer(invoice.BillToCustomer).WithInternalOrganisation(Singleton.Instance(this.DatabaseSession).DefaultInternalOrganisation).Build();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             new ReceiptBuilder(this.DatabaseSession)
                 .WithAmount(90)
                 .WithPaymentApplication(new PaymentApplicationBuilder(this.DatabaseSession).WithInvoiceItem(invoice.SalesInvoiceItems[0]).WithAmountApplied(90).Build())
                 .Build();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             Assert.Equal(new SalesInvoiceObjectStates(this.DatabaseSession).PartiallyPaid, invoice.CurrentObjectState);
         }
@@ -1464,7 +1464,7 @@ namespace Allors.Domain
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.DatabaseSession).Piece)
                 .Build();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
             this.DatabaseSession.Commit();
 
             var invoice = new SalesInvoiceBuilder(this.DatabaseSession)
@@ -1476,14 +1476,14 @@ namespace Allors.Domain
 
             invoice.AddSalesInvoiceItem(new SalesInvoiceItemBuilder(this.DatabaseSession).WithProduct(good).WithQuantity(1).WithActualUnitPrice(100M).WithSalesInvoiceItemType(new SalesInvoiceItemTypes(this.DatabaseSession).ProductItem).Build());
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             new ReceiptBuilder(this.DatabaseSession)
                 .WithAmount(100)
                 .WithPaymentApplication(new PaymentApplicationBuilder(this.DatabaseSession).WithInvoiceItem(invoice.InvoiceItems[0]).WithAmountApplied(100).Build())
                 .Build();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             Assert.Equal(new SalesInvoiceObjectStates(this.DatabaseSession).Paid, invoice.CurrentObjectState);
         }
@@ -1509,7 +1509,7 @@ namespace Allors.Domain
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.DatabaseSession).Piece)
                 .Build();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
             this.DatabaseSession.Commit();
 
             var invoice = new SalesInvoiceBuilder(this.DatabaseSession)
@@ -1521,11 +1521,11 @@ namespace Allors.Domain
 
             new CustomerRelationshipBuilder(this.DatabaseSession).WithFromDate(DateTime.UtcNow).WithCustomer(invoice.BillToCustomer).WithInternalOrganisation(Singleton.Instance(this.DatabaseSession).DefaultInternalOrganisation).Build();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             invoice.CancelInvoice();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             Assert.Equal(new SalesInvoiceObjectStates(this.DatabaseSession).Cancelled, invoice.CurrentObjectState);
             Assert.Equal(new SalesInvoiceItemObjectStates(this.DatabaseSession).Cancelled, invoice.SalesInvoiceItems[0].CurrentObjectState);
@@ -1553,7 +1553,7 @@ namespace Allors.Domain
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.DatabaseSession).Piece)
                 .Build();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
             this.DatabaseSession.Commit();
 
             var invoice = new SalesInvoiceBuilder(this.DatabaseSession)
@@ -1567,7 +1567,7 @@ namespace Allors.Domain
 
             invoice.WriteOff();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             Assert.Equal(new SalesInvoiceObjectStates(this.DatabaseSession).WrittenOff, invoice.CurrentObjectState);
             Assert.Equal(new SalesInvoiceItemObjectStates(this.DatabaseSession).WrittenOff, invoice.SalesInvoiceItems[0].CurrentObjectState);
@@ -1599,12 +1599,12 @@ namespace Allors.Domain
             new SalesRepRelationshipBuilder(this.DatabaseSession).WithFromDate(DateTime.UtcNow).WithCustomer(customer1).WithProductCategory(cat1).WithSalesRepresentative(salesRep1).Build();
             new SalesRepRelationshipBuilder(this.DatabaseSession).WithFromDate(DateTime.UtcNow).WithCustomer(customer1).WithProductCategory(cat2).WithSalesRepresentative(salesRep2).Build();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             new SalesRepRelationshipBuilder(this.DatabaseSession).WithFromDate(DateTime.UtcNow).WithCustomer(customer2).WithProductCategory(cat1).WithSalesRepresentative(salesRep1).Build();
             new SalesRepRelationshipBuilder(this.DatabaseSession).WithFromDate(DateTime.UtcNow).WithCustomer(customer2).WithProductCategory(cat2).WithSalesRepresentative(salesRep2).Build();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             var euro = new Currencies(this.DatabaseSession).FindBy(M.Currency.IsoCode, "EUR");
             var vatRate21 = new VatRateBuilder(this.DatabaseSession).WithRate(21).Build();
@@ -1650,7 +1650,7 @@ namespace Allors.Domain
             var item3 = new SalesInvoiceItemBuilder(this.DatabaseSession).WithProduct(good2).WithQuantity(5).WithActualUnitPrice(10).WithSalesInvoiceItemType(productItem).Build();
             invoice1.AddSalesInvoiceItem(item3);
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             var customer1Revenue = customer1.PartyRevenuesWhereParty[0];
             var internalOrganisationRevenue = internalOrganisation.InternalOrganisationRevenuesWhereInternalOrganisation[0];
@@ -1741,7 +1741,7 @@ namespace Allors.Domain
             salesRep2ProductCategoryRevenues.Filter.AddEquals(M.SalesRepProductCategoryRevenue.ProductCategory, catMain);
             var salesRep2CatMainRevenue = salesRep2ProductCategoryRevenues.First;
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             Assert.Equal(140, internalOrganisationRevenue.Revenue);
             Assert.Equal(140, storeRevenue.Revenue);
@@ -1784,12 +1784,12 @@ namespace Allors.Domain
             var item4 = new SalesInvoiceItemBuilder(this.DatabaseSession).WithProduct(good1).WithQuantity(1).WithActualUnitPrice(15).WithSalesInvoiceItemType(productItem).Build();
             invoice2.AddSalesInvoiceItem(item4);
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             var item5 = new SalesInvoiceItemBuilder(this.DatabaseSession).WithProduct(good2).WithQuantity(1).WithActualUnitPrice(10).WithSalesInvoiceItemType(productItem).Build();
             invoice2.AddSalesInvoiceItem(item5);
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             var customer2Revenue = customer2.PartyRevenuesWhereParty[0];
 
@@ -1920,11 +1920,11 @@ namespace Allors.Domain
             var item1 = new SalesInvoiceItemBuilder(this.DatabaseSession).WithProduct(good).WithQuantity(3).WithActualUnitPrice(15).WithSalesInvoiceItemType(new SalesInvoiceItemTypes(this.DatabaseSession).ProductItem).Build();
             invoice1.AddSalesInvoiceItem(item1);
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             invoice1.Send();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             var invoice2 = new SalesInvoiceBuilder(this.DatabaseSession)
                 .WithInvoiceDate(DateTimeFactory.CreateDate(2010, 01, 01))
@@ -1938,7 +1938,7 @@ namespace Allors.Domain
             var item2 = new SalesInvoiceItemBuilder(this.DatabaseSession).WithProduct(good).WithQuantity(1).WithActualUnitPrice(15).WithSalesInvoiceItemType(new SalesInvoiceItemTypes(this.DatabaseSession).ProductItem).Build();
             invoice2.AddSalesInvoiceItem(item2);
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             var internalOrganisationRevenue = internalOrganisation.InternalOrganisationRevenuesWhereInternalOrganisation[0];
             var storeRevenue = invoice1.Store.StoreRevenuesWhereStore[0];
@@ -1962,7 +1962,7 @@ namespace Allors.Domain
 
             invoice2.WriteOff();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             internalOrganisationRevenue = internalOrganisation.InternalOrganisationRevenuesWhereInternalOrganisation[0];
             storeRevenue = invoice1.Store.StoreRevenuesWhereStore[0];

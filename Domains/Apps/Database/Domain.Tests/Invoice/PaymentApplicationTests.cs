@@ -91,7 +91,7 @@ namespace Allors.Domain
                 .WithSalesInvoiceItem(new SalesInvoiceItemBuilder(this.DatabaseSession).WithProduct(good).WithQuantity(1).WithActualUnitPrice(1000M).WithSalesInvoiceItemType(new SalesInvoiceItemTypes(this.DatabaseSession).ProductItem).Build())
                 .Build();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             var receipt = new ReceiptBuilder(this.DatabaseSession)
                 .WithAmount(100)
@@ -103,7 +103,7 @@ namespace Allors.Domain
                 .WithInvoiceItem(invoice.InvoiceItems[0])
                 .Build();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
             this.DatabaseSession.Commit();
             
             receipt.AddPaymentApplication(paymentApplication);

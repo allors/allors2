@@ -32,7 +32,7 @@ namespace Allors.Domain
         public void GivenSalesRepRelationship_WhenDeriving_ThenRequiredRelationsMustExist()
         {
             var customer = new OrganisationBuilder(this.DatabaseSession).WithName("customer").WithLocale(new Locales(this.DatabaseSession).EnglishGreatBritain).WithOrganisationRole(new OrganisationRoles(this.DatabaseSession).Customer).Build();
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
             this.DatabaseSession.Commit();
 
             var builder = new SalesRepRelationshipBuilder(this.DatabaseSession);

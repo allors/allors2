@@ -6,8 +6,8 @@ import { MdSnackBar, MdSnackBarConfig } from '@angular/material';
 import { TdMediaService } from '@covalent/core';
 
 import { MetaDomain } from '../../../../meta/index';
-import { PullRequest, PushResponse, Fetch, Path, Query, Equals, Like, TreeNode, Sort, Page } from '../../../../domain';
-import { WorkTask, WorkEffortObjectState, Priority, WorkEffortPurpose } from '../../../../domain';
+import { PullRequest, PushResponse, Fetch, Path, Query, Predicate, And, Or, Not, Equals, Like, TreeNode, Sort, Page } from '../../../../domain';
+import { CommunicationEvent, Person, Priority, Singleton, WorkEffortAssignment, WorkTask, WorkEffortObjectState, WorkEffortPurpose } from '../../../../domain';
 import { AllorsService, ErrorService, Scope, Loaded, Saved } from '../../../../angular';
 
 @Component({
@@ -28,6 +28,11 @@ export class WorkTaskEditComponent implements OnInit, AfterViewInit, OnDestroy {
   workEffortObjectStates: WorkEffortObjectState[];
   priorities: Priority[];
   workEffortPurposes: WorkEffortPurpose[];
+  singleton: Singleton;
+  employees: Person[];
+  workEffortAssignments: WorkEffortAssignment[];
+  assignees: Person[] = [];
+  existingAssignees: Person[] = [];
 
   constructor(
     private allors: AllorsService,
@@ -70,26 +75,68 @@ export class WorkTaskEditComponent implements OnInit, AfterViewInit, OnDestroy {
               name: 'workEffortPurposes',
               objectType: this.m.WorkEffortPurpose,
             }),
+          new Query(
+            {
+              name: 'singletons',
+              objectType: this.m.Singleton,
+              include: [
+                new TreeNode({
+                  roleType: m.Singleton.DefaultInternalOrganisation,
+                  nodes: [
+                    new TreeNode({ roleType: m.InternalOrganisation.Employees }),
+                  ],
+                }),
+              ],
+            }),
         ];
 
         this.scope.session.reset();
 
         return this.scope
-          .load('Pull', new PullRequest({ fetch: fetch, query: query }));
+          .load('Pull', new PullRequest({ fetch: fetch, query: query }))
+          .switchMap((loaded: Loaded) => {
+            this.scope.session.reset();
+
+            this.subTitle = 'edit work task';
+            this.workTask = loaded.objects.worktask as WorkTask;
+
+            const addMode: boolean = !this.workTask;
+
+            if (addMode) {
+              this.subTitle = 'add a new work task';
+              this.workTask = this.scope.session.create('WorkTask') as WorkTask;
+            }
+
+            this.workEffortObjectStates = loaded.collections.workEffortObjectStates as WorkEffortObjectState[];
+            this.priorities = loaded.collections.priorities as Priority[];
+            this.workEffortPurposes = loaded.collections.workEffortPurposes as WorkEffortPurpose[];
+            this.singleton = loaded.collections.singletons[0] as Singleton;
+            this.employees = this.singleton.DefaultInternalOrganisation.Employees;
+
+            const assignmentsFetch: Fetch[] = [
+              new Fetch(
+                {
+                  name: 'workEffortAssignments',
+                  id: id,
+                  path: new Path({ step: m.WorkEffort.WorkEffortAssignmentsWhereAssignment }),
+                }),
+            ];
+
+            if (addMode) {
+              return this.scope.load('Pull', new PullRequest({}));
+            } else {
+              return this.scope.load('Pull', new PullRequest({ fetch: assignmentsFetch }));
+            }
+          });
       })
       .subscribe((loaded: Loaded) => {
+        this.workEffortAssignments = loaded.collections.workEffortAssignments as WorkEffortAssignment[];
 
-        this.subTitle = 'edit work task';
-        this.workTask = loaded.objects.worktask as WorkTask;
-
-        if (!this.workTask) {
-          this.subTitle = 'add a new work task';
-          this.workTask = this.scope.session.create('WorkTask') as WorkTask;
+        if (this.workEffortAssignments) {
+          this.assignees = this.workEffortAssignments.map((v: WorkEffortAssignment) => v.Professional);
         }
 
-        this.workEffortObjectStates = loaded.collections.workEffortObjectStates as WorkEffortObjectState[];
-        this.priorities = loaded.collections.priorities as Priority[];
-        this.workEffortPurposes = loaded.collections.workEffortPurposes as WorkEffortPurpose[];
+        this.existingAssignees = this.assignees;
       },
       (error: any) => {
         this.errorService.message(error);
@@ -110,6 +157,13 @@ export class WorkTaskEditComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   save(): void {
+    this.assignees.forEach((assignee: Person) => {
+      if (!this.existingAssignees.includes(assignee)) {
+        let workEffortAssignment: WorkEffortAssignment = this.scope.session.create('WorkEffortAssignment') as WorkEffortAssignment;
+        workEffortAssignment.Assignment = this.workTask;
+        workEffortAssignment.Professional = assignee;
+      }
+    });
 
     this.scope
       .save()

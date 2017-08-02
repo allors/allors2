@@ -22,7 +22,8 @@ export class Equals implements Predicate {
       _T: 'Equals',
       at: this.associationType ? this.associationType.id : undefined,
       rt: this.roleType.id ? this.roleType.id : undefined,
-      v: value,
+      v: this.roleType.objectType.isUnit ? value : undefined,
+      o: !this.roleType.objectType.isUnit ? value : undefined,
     };
   }
 }

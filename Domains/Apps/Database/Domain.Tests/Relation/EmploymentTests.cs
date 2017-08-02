@@ -43,7 +43,7 @@ namespace Allors.Domain
                 .WithFromDate(DateTime.UtcNow)
                 .Build();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
             this.DatabaseSession.Commit();
         }
 
@@ -76,7 +76,7 @@ namespace Allors.Domain
                 .WithEmployer(employer)
                 .Build();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             Assert.Contains(employee, employer.Employees);
         }
@@ -93,7 +93,7 @@ namespace Allors.Domain
                 .WithFromDate(DateTime.UtcNow.AddDays(1))
                 .Build();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             Assert.False(employer.Customers.Contains(employee));
         }
@@ -111,7 +111,7 @@ namespace Allors.Domain
                 .WithThroughDate(DateTime.UtcNow.AddDays(-1))
                 .Build();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             Assert.False(employer.Customers.Contains(employee));
         }

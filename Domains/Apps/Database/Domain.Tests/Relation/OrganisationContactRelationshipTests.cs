@@ -41,7 +41,7 @@ namespace Allors.Domain
                 .WithFromDate(DateTime.UtcNow)
                 .Build();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
             this.DatabaseSession.Commit();
         }
 
@@ -49,7 +49,7 @@ namespace Allors.Domain
         public void GivenorganisationContactRelationship_WhenDeriving_ThenRequiredRelationsMustExist()
         {
             var contact = new PersonBuilder(this.DatabaseSession).WithLastName("organisationContact").WithPersonRole(new PersonRoles(this.DatabaseSession).Contact).Build();
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
             this.DatabaseSession.Commit();
 
             this.InstantiateObjects(this.DatabaseSession);
@@ -98,7 +98,7 @@ namespace Allors.Domain
                 .WithFromDate(DateTime.UtcNow)
                 .Build();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             Assert.Equal(2, usergroup.Members.Count);
             Assert.True(usergroup.Members.Contains(secondRelationship.Contact));
@@ -117,14 +117,14 @@ namespace Allors.Domain
             this.organisationContactRelationship.FromDate = DateTime.UtcNow.AddDays(+1);
             this.organisationContactRelationship.RemoveThroughDate();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             Assert.Equal(0, usergroup.Members.Count);
 
             this.organisationContactRelationship.FromDate = DateTime.UtcNow;
             this.organisationContactRelationship.RemoveThroughDate();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             Assert.Equal(1, usergroup.Members.Count);
             Assert.True(usergroup.Members.Contains(this.contact));
@@ -132,7 +132,7 @@ namespace Allors.Domain
             this.organisationContactRelationship.FromDate = DateTime.UtcNow.AddDays(-2);
             this.organisationContactRelationship.ThroughDate = DateTime.UtcNow.AddDays(-1);
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             Assert.Equal(0, usergroup.Members.Count);
         }

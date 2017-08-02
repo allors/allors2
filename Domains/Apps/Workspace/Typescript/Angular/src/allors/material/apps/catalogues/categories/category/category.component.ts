@@ -18,9 +18,6 @@ export class CategoryFormComponent implements OnInit, AfterViewInit, OnDestroy {
   private subscription: Subscription;
   private scope: Scope;
 
-  
-  
-
   m: MetaDomain;
 
   category: ProductCategory;

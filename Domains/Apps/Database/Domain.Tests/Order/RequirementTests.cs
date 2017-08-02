@@ -31,7 +31,7 @@ namespace Allors.Domain
         {
             var requirement = new CustomerRequirementBuilder(this.DatabaseSession).WithDescription("CustomerRequirement").Build();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             Assert.Equal(new RequirementObjectStates(this.DatabaseSession).Active, requirement.CurrentObjectState);
             Assert.Equal(requirement.LastObjectState, requirement.CurrentObjectState);
@@ -42,7 +42,7 @@ namespace Allors.Domain
         {
             var requirement = new CustomerRequirementBuilder(this.DatabaseSession).WithDescription("CustomerRequirement").Build();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             Assert.Null(requirement.PreviousObjectState);
         }
@@ -52,14 +52,14 @@ namespace Allors.Domain
         {
             var requirement = new CustomerRequirementBuilder(this.DatabaseSession).WithDescription("CustomerRequirement").Build();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             Assert.Equal(1, requirement.RequirementStatuses.Count);
             Assert.Equal(new RequirementObjectStates(this.DatabaseSession).Active, requirement.CurrentRequirementStatus.RequirementObjectState);
 
             requirement.Close();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             Assert.Equal(2, requirement.RequirementStatuses.Count);
             Assert.Equal(new RequirementObjectStates(this.DatabaseSession).Closed, requirement.CurrentRequirementStatus.RequirementObjectState);

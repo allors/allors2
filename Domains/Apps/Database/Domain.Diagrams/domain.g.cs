@@ -1166,6 +1166,28 @@ namespace Allors.Domain
 		}
 		public interface WorkEffort  : Transitional, UniquelyIdentifiable, Deletable, Auditable 
 		{
+						global::System.String Name {set;}
+
+						global::System.String Description {set;}
+
+						WorkEffortObjectState CurrentObjectState {set;}
+
+						Priority Priority {set;}
+
+						WorkEffortPurpose WorkEffortPurposes {set;}
+
+						global::System.DateTime? ActualCompletion {set;}
+
+						global::System.DateTime? ScheduledStart {set;}
+
+						global::System.DateTime? ScheduledCompletion {set;}
+
+						global::System.Decimal? ActualHours {set;}
+
+						global::System.Decimal? EstimatedHours {set;}
+
+						WorkEffortStatus WorkEffortStatuses {set;}
+
 						WorkEffortStatus CurrentWorkEffortStatus {set;}
 
 						WorkEffort Precendencies {set;}
@@ -1180,39 +1202,17 @@ namespace Allors.Domain
 
 						WorkEffort Children {set;}
 
-						global::System.DateTime? ActualCompletion {set;}
-
 						OrderItem OrderItemFulfillment {set;}
-
-						WorkEffortStatus WorkEffortStatuses {set;}
 
 						WorkEffortType WorkEffortType {set;}
 
 						InventoryItem InventoryItemsProduced {set;}
-
-						WorkEffortPurpose WorkEffortPurposes {set;}
-
-						Priority Priority {set;}
-
-						global::System.String Name {set;}
 
 						Requirement RequirementFulfillments {set;}
 
 						global::System.String SpecialTerms {set;}
 
 						WorkEffort Concurrencies {set;}
-
-						global::System.DateTime? ScheduledStart {set;}
-
-						global::System.Decimal? ActualHours {set;}
-
-						global::System.String Description {set;}
-
-						WorkEffortObjectState CurrentObjectState {set;}
-
-						global::System.DateTime? ScheduledCompletion {set;}
-
-						global::System.Decimal? EstimatedHours {set;}
 
 		}
 		public interface Counter  : UniquelyIdentifiable 
@@ -2090,6 +2090,8 @@ namespace Allors.Domain
 
 						EmailTemplate EmailTemplate {set;}
 
+						global::System.Boolean IncomingMail {set;}
+
 		}
 		public interface EmailTemplate  : AccessControlledObject 
 		{
@@ -2391,6 +2393,8 @@ namespace Allors.Domain
 		public interface Good  : Product, Deletable 
 		{
 						ProductType ProductType {set;}
+
+						global::System.Decimal QuantityOnHand {set;}
 
 						global::System.Decimal AvailableToPromise {set;}
 
@@ -2702,9 +2706,11 @@ namespace Allors.Domain
 		{
 						PostalAddress PostalAddresses {set;}
 
-						Party Originator {set;}
+						Party Originators {set;}
 
 						Party Receivers {set;}
+
+						global::System.Boolean IncomingLetter {set;}
 
 		}
 		public interface Lot  : AccessControlledObject 

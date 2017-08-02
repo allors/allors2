@@ -1,11 +1,27 @@
 <td-layout-card-over [cardTitle]="title" [cardSubtitle]="subTitle">
   <form #form="ngForm" *ngIf="workTask" (submit)="save()" class="pad">
     <div>
+      <a-md-select [object]="workTask" [roleType]="m.WorkTask.CurrentObjectState" [options]="workEffortObjectStates" display="Name"
+        label="Status"></a-md-select>
       <a-md-input [object]="workTask" [roleType]="m.WorkTask.Name"></a-md-input>
       <a-md-textarea [object]="workTask" [roleType]="m.WorkTask.Description"></a-md-textarea>
-      <a-md-select [object]="workTask" [roleType]="m.WorkTask.CurrentObjectState" [options]="workEffortObjectStates" display="Name"></a-md-select>
+      <div class="mat-input-wrapper">
+        <div class="mat-input-flex">
+          <div class="mat-input-infix">
+            <md-select fxFlex name="assignment" [(ngModel)]="assignees" placeholder="Assign To" multiple="true">
+              <md-option *ngFor="let employee of employees" [value]="employee">{{ employee.displayName }}</md-option>
+            </md-select>
+          </div>
+        </div>
+      </div>
       <a-md-select [object]="workTask" [roleType]="m.WorkTask.Priority" [options]="priorities" display="Name"></a-md-select>
-      <a-md-select [object]="workTask" [roleType]="m.WorkTask.WorkEffortPurposes" [options]="workEffortPurposes" display="Name"></a-md-select>
+      <a-md-select [object]="workTask" [roleType]="m.WorkTask.WorkEffortPurposes" [options]="workEffortPurposes" display="Name" label="Purpose(s)"></a-md-select>
+      <a-md-input [object]="workTask" [roleType]="m.WorkTask.EstimatedHours"></a-md-input>
+      <a-md-input [object]="workTask" [roleType]="m.WorkTask.ActualHours"></a-md-input>
+      <a-md-datepicker [object]="workTask" [roleType]="m.WorkTask.ScheduledStart"></a-md-datepicker>
+      <a-md-datepicker [object]="workTask" [roleType]="m.WorkTask.ScheduledCompletion"></a-md-datepicker>
+      <a-md-datepicker [object]="workTask" [roleType]="m.WorkTask.ActualStart"></a-md-datepicker>
+      <a-md-datepicker [object]="workTask" [roleType]="m.WorkTask.ActualCompletion"></a-md-datepicker>
     </div>
 
     <md-divider></md-divider>

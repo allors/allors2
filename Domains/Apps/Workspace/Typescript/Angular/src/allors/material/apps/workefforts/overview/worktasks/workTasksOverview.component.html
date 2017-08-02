@@ -9,13 +9,28 @@
   </div>
 </md-toolbar>
 
-<md-card>
+<md-card *ngIf="workEffortObjectStates">
   <div class="pad-top-xs pad-left pad-right">
     <form novalidate [formGroup]="searchForm">
       <md-input-container>
-        <input fxFlex mdInput placeholder="Description" formControlName="description">
-        <md-icon mdSuffix>search</md-icon>
+        <input fxFlex mdInput placeholder="Name" formControlName="name">
       </md-input-container>
+      <md-input-container>
+        <input fxFlex mdInput placeholder="Description" formControlName="description">
+      </md-input-container>
+      <md-select formControlName="state" name="state" [(ngModel)]="selectedWorkEffortObjectState" placeholder="State">
+        <md-option>None</md-option>
+        <md-option *ngFor="let objectState of workEffortObjectStates" [value]="objectState.Name">{{ objectState.Name }}</md-option>
+      </md-select>
+      <md-select formControlName="priority" name="priority" [(ngModel)]="selectedPriority" placeholder="Priority">
+        <md-option>None</md-option>
+        <md-option *ngFor="let priority of priorities" [value]="priority.Name">{{ priority.Name }}</md-option>
+      </md-select>
+       <md-select formControlName="assignee" name="assignee" [(ngModel)]="selectedAssignee" placeholder="Assignee">
+        <md-option>None</md-option>
+        <md-option *ngFor="let assignee of assignees" [value]="assignee.displayName">{{ assignee.displayName }}</md-option>
+      </md-select>
+      <md-icon mdSuffix>search</md-icon>
     </form>
   </div>
 
@@ -27,27 +42,31 @@
         <div class="md-padding" *ngIf="data && data.length === 0" layout="row" layout-align="center center">
           <h3>No work tasks to display.</h3>
         </div>
-        <ng-template let-worktask let-last="last" ngFor [ngForOf]="data">
+        <ng-template let-workEffortAssignment let-last="last" ngFor [ngForOf]="data">
           <md-list-item>
+            <div md-line class="md-caption pointer" [routerLink]="['/worktask/' + workEffortAssignment.Assignment.id ]">
+              {{ workEffortAssignment.Assignment.Name }}, {{ workEffortAssignment.Assignment.CurrentObjectState.Name }}
+            </div>
 
-            <h3 md-line> {{worktask.Name}}</h3>
-            <p md-line hide-gt-md class="md-caption"> last login: {{ worktask.LastModifiedDate | timeAgo }} </p>
-
-            <span flex></span>
+            <div md-line class="md-caption pointer" [routerLink]="['/relations/person/' + workEffortAssignment.Professional.id]">Assigned to: {{ workEffortAssignment.Professional.displayName }} </div>
+            <p md-line class="md-caption">{{ workEffortAssignment.Assignment.Description }} </p>
+            <p *ngIf="workEffortAssignment.Assignment.Priority" md-line class="md-caption">Priority {{ workEffortAssignment.Assignment.Priority.Name }} </p>
 
             <span hide-xs hide-sm hide-md flex-gt-xs="60" flex-xs="40" layout-gt-xs="row">
-            <div class="md-caption tc-grey-500" flex-gt-xs="50"> {{ worktask.CreationDate | date }} </div>
-            <div class="md-caption tc-grey-500" flex-gt-xs="50"> {{ worktask.LastModifiedDate | timeAgo }} </div>
-          </span>
+              <div class="md-caption tc-grey-500" flex-gt-xs="50"> Sched. Start: {{ workEffortAssignment.Assignment.ScheduledStart | date}} </div>
+              <div class="md-caption tc-grey-500" flex-gt-xs="50"> Sched. Compl.: {{ workEffortAssignment.Assignment.ScheduledCompletion | date }} </div>
+              <div class="md-caption tc-grey-500" flex-gt-xs="50"> Act. Start: {{ workEffortAssignment.Assignment.ActualStart | date}} </div>
+              <div class="md-caption tc-grey-500" flex-gt-xs="50"> Act. Compl.: {{ workEffortAssignment.Assignment.ActualCompletion | date }} </div>
+            </span>
 
             <span>
-          <button md-icon-button [md-menu-trigger-for]="menu">
-          <md-icon>more_vert</md-icon>
-          </button>
-          <md-menu x-position="before" #menu="mdMenu">
-          <a [routerLink]="['/worktask/' + worktask.id]" md-menu-item>Edit</a>
-          <button  md-menu-item (click)="delete(worktask)" [disabled]="!worktask.CanExecuteDelete">Delete</button>
-          </md-menu>
+              <button md-icon-button [md-menu-trigger-for]="menu">
+                <md-icon>more_vert</md-icon>
+              </button>
+              <md-menu x-position="before" #menu="mdMenu">
+                <a [routerLink]="['/worktask/' + workEffortAssignment.Assignment.id]" md-menu-item>Edit</a>
+                <button  md-menu-item (click)="delete(workEffortAssignment.Assignment)" [disabled]="!workEffortAssignment.Assignment.CanExecuteDelete">Delete</button>
+              </md-menu>
           </span>
 
           </md-list-item>

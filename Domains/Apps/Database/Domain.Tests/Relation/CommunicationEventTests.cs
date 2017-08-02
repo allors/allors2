@@ -39,7 +39,7 @@ namespace Allors.Domain
                 .WithActualStart(DateTime.UtcNow)
                 .Build();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             Assert.Equal(new CommunicationEventObjectStates(this.DatabaseSession).InProgress, communication.CurrentObjectState);
         }
@@ -56,7 +56,7 @@ namespace Allors.Domain
                 .WithActualEnd(DateTime.UtcNow.AddHours(-1))
                 .Build();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             Assert.Equal(new CommunicationEventObjectStates(this.DatabaseSession).Completed, communication.CurrentObjectState);
         }
@@ -73,7 +73,7 @@ namespace Allors.Domain
                 .WithActualEnd(DateTime.UtcNow.AddHours(+2))
                 .Build();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             Assert.Equal(new CommunicationEventObjectStates(this.DatabaseSession).Scheduled, communication.CurrentObjectState);
         }
@@ -89,14 +89,14 @@ namespace Allors.Domain
                 .WithActualStart(DateTime.UtcNow)
                 .Build();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             Assert.Equal(1, communication.CommunicationEventStatuses.Count);
             Assert.Equal(new CommunicationEventObjectStates(this.DatabaseSession).InProgress, communication.CurrentCommunicationEventStatus.CommunicationEventObjectState);
 
             communication.Close();
             
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             Assert.Equal(2, communication.CommunicationEventStatuses.Count);
             Assert.Equal(new CommunicationEventObjectStates(this.DatabaseSession).Completed, communication.CurrentCommunicationEventStatus.CommunicationEventObjectState);

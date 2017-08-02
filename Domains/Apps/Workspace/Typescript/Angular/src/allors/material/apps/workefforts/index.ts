@@ -4,7 +4,7 @@ import { WorkEffortsOverviewComponent } from './overview/workefforts/workEfforts
 import { WorkTasksOverviewComponent } from './overview/worktasks/workTasksOverview.component';
 import { WorkTaskOverviewComponent } from './overview/worktask/workTaskOverview.component';
 
-// Person
+// WorkTask
 import { WorkTaskEditComponent } from './worktask/edit.component';
 import { WorkTaskInlineComponent } from './worktask/inline.component';
 
@@ -24,7 +24,7 @@ export const WORKEFFORTS_ROUTING: any[] = [
 ];
 
 export {
-   // Overview
+  // Overview
   OverviewComponent,
   WorkEffortsOverviewComponent,
   WorkTasksOverviewComponent,

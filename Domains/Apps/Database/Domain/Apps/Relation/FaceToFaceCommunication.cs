@@ -39,6 +39,11 @@ namespace Allors.Domain
         {
             this.InvolvedParties = this.Participants;
 
+            if (this.ExistOwner && !this.InvolvedParties.Contains(this.Owner))
+            {
+                this.AddInvolvedParty(this.Owner);
+            }
+
             if (this.ExistPartyRelationshipWhereCommunicationEvent)
             {
                 foreach (Party party in this.PartyRelationshipWhereCommunicationEvent.Parties)

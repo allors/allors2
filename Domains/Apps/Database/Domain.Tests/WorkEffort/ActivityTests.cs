@@ -38,7 +38,7 @@ namespace Allors.Domain
 
             this.DatabaseSession.Rollback();
 
-            builder.WithDescription("Description");
+            builder.WithName("Name");
             var activity = builder.Build();
 
             Assert.False(this.DatabaseSession.Derive(false).HasErrors);

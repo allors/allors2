@@ -132,7 +132,7 @@ namespace Allors.Domain
                 .WithFromDate(DateTime.UtcNow)
                 .Build();
 
-            this.DatabaseSession.Derive(true); 
+            this.DatabaseSession.Derive(); 
 
             Assert.Equal(2, good.InventoryItemsWhereGood.Count);
             Assert.Equal(1, internalOrganisation.DefaultFacility.InventoryItemsWhereFacility.Count);
@@ -178,7 +178,7 @@ namespace Allors.Domain
                 .WithFromDate(DateTime.UtcNow)
                 .Build();
 
-            this.DatabaseSession.Derive(true); 
+            this.DatabaseSession.Derive(); 
 
             Assert.Equal(2, good.FinishedGood.InventoryItemsWherePart.Count);
             Assert.Equal(1, internalOrganisation.DefaultFacility.InventoryItemsWhereFacility.Count);

@@ -292,13 +292,13 @@ namespace Allors.Domain
                 .WithJournalType(new JournalTypes(this.DatabaseSession).Bank)
                 .Build();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             Assert.Equal(generalLedgerAccount1, journal.PreviousContraAccount.GeneralLedgerAccount);
 
             journal.ContraAccount = internalOrganisationGlAccount2;
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             Assert.Equal(generalLedgerAccount2, journal.PreviousContraAccount.GeneralLedgerAccount);
         }
@@ -344,7 +344,7 @@ namespace Allors.Domain
                 .WithJournalType(new JournalTypes(this.DatabaseSession).Bank)
                 .Build();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             Assert.Equal(generalLedgerAccount1, journal.PreviousContraAccount.GeneralLedgerAccount);
 
@@ -387,13 +387,13 @@ namespace Allors.Domain
                 .WithJournalType(new JournalTypes(this.DatabaseSession).Bank)
                 .Build();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             Assert.Equal(generalLedgerAccount1, journal.PreviousContraAccount.GeneralLedgerAccount);
 
             journal.JournalType = new JournalTypes(this.DatabaseSession).Cash;
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             Assert.Equal(new JournalTypes(this.DatabaseSession).Cash, journal.PreviousJournalType);
         }
@@ -424,7 +424,7 @@ namespace Allors.Domain
                 .WithJournalType(new JournalTypes(this.DatabaseSession).Bank)
                 .Build();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             Assert.Equal(generalLedgerAccount1, journal.PreviousContraAccount.GeneralLedgerAccount);
 

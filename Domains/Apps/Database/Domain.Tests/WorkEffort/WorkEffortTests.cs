@@ -29,9 +29,9 @@ namespace Allors.Domain
         [Fact]
         public void GivenCustomerShipment_WhenBuild_ThenLastObjectStateEqualsCurrencObjectState()
         {
-            var workEffort = new ActivityBuilder(this.DatabaseSession).WithDescription("Activity").Build();
+            var workEffort = new ActivityBuilder(this.DatabaseSession).WithName("Activity").Build();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             Assert.Equal(new WorkEffortObjectStates(this.DatabaseSession).NeedsAction, workEffort.CurrentObjectState);
             Assert.Equal(workEffort.LastObjectState, workEffort.CurrentObjectState);
@@ -40,9 +40,9 @@ namespace Allors.Domain
         [Fact]
         public void GivenCustomerShipment_WhenBuild_ThenPreviousObjectStateIsNull()
         {
-            var workEffort = new ActivityBuilder(this.DatabaseSession).WithDescription("Activity").Build();
+            var workEffort = new ActivityBuilder(this.DatabaseSession).WithName("Activity").Build();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             Assert.Null(workEffort.PreviousObjectState);
         }
@@ -50,16 +50,16 @@ namespace Allors.Domain
         [Fact]
         public void GivenCustomerShipment_WhenConfirmed_ThenCurrentShipmentStatusMustBeDerived()
         {
-            var workEffort = new ActivityBuilder(this.DatabaseSession).WithDescription("Activity").Build();
+            var workEffort = new ActivityBuilder(this.DatabaseSession).WithName("Activity").Build();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             Assert.Equal(1, workEffort.WorkEffortStatuses.Count);
             Assert.Equal(new WorkEffortObjectStates(this.DatabaseSession).NeedsAction, workEffort.CurrentWorkEffortStatus.WorkEffortObjectState);
 
             workEffort.Finish();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             Assert.Equal(2, workEffort.WorkEffortStatuses.Count);
             Assert.Equal(new WorkEffortObjectStates(this.DatabaseSession).Completed, workEffort.CurrentWorkEffortStatus.WorkEffortObjectState);

@@ -18,9 +18,6 @@ export class ProductCharacteristicFormComponent implements OnInit, AfterViewInit
   private subscription: Subscription;
   private scope: Scope;
 
-  
-  
-
   m: MetaDomain;
 
   productCharacteristic: ProductCharacteristic;

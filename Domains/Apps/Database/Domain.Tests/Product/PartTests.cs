@@ -61,7 +61,7 @@ namespace Allors.Domain
                 .WithName("FinishedGood")
                 .Build();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
             
             Assert.Equal(1, finishedGood.InventoryItemsWherePart.Count);
             Assert.Equal(new Warehouses(this.DatabaseSession).FindBy(M.Warehouse.Name, "facility"), finishedGood.InventoryItemsWherePart.First.Facility);
@@ -101,7 +101,7 @@ namespace Allors.Domain
                 .WithName("RawMaterial")
                 .Build();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             Assert.Equal(1, rawMaterial.InventoryItemsWherePart.Count);
             Assert.Equal(new Warehouses(this.DatabaseSession).FindBy(M.Warehouse.Name, "facility"), rawMaterial.InventoryItemsWherePart.First.Facility);
@@ -141,7 +141,7 @@ namespace Allors.Domain
                 .WithName("SubAssembly")
                 .Build();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             Assert.Equal(1, subAssembly.InventoryItemsWherePart.Count);
             Assert.Equal(new Warehouses(this.DatabaseSession).FindBy(M.Warehouse.Name, "facility"), subAssembly.InventoryItemsWherePart.First.Facility);

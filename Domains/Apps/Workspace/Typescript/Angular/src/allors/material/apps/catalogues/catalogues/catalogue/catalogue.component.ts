@@ -18,12 +18,12 @@ export class CatalogueFormComponent implements OnInit, AfterViewInit, OnDestroy 
   private subscription: Subscription;
   private scope: Scope;
 
-  
-  
-
   m: MetaDomain;
 
   catalogue: Catalogue;
+
+  title: string;
+  subTitle: string;
 
   singleton: Singleton;
   locales: Locale[];
@@ -85,6 +85,8 @@ export class CatalogueFormComponent implements OnInit, AfterViewInit, OnDestroy 
         if (!this.catalogue) {
           this.catalogue = this.scope.session.create('Catalogue') as Catalogue;
         }
+
+        this.title = this.catalogue.Name;
 
         this.singleton = loaded.collections.singletons[0] as Singleton;
         this.categories = loaded.collections.categories as ProductCategory[];

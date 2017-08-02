@@ -17,6 +17,22 @@ namespace Allors.Domain
 {
     public static partial class WorkEffortExtensions
     {
+        public static void AppsOnPreDerive(this WorkEffort @this, ObjectOnPreDerive method)
+        {
+            var derivation = method.Derivation;
+
+            if (derivation.ChangeSet.Associations.Contains(@this.Id))
+            {
+                if (@this.ExistWorkEffortAssignmentsWhereAssignment)
+                {
+                    foreach (WorkEffortAssignment workEffortAssignment in @this.WorkEffortAssignmentsWhereAssignment)
+                    {
+                        derivation.AddDependency(workEffortAssignment, @this);
+                    }
+                }
+            }
+        }
+
         public static void AppsOnBuild(this WorkEffort @this, ObjectOnBuild method)
         {
             if (!@this.ExistCurrentObjectState)

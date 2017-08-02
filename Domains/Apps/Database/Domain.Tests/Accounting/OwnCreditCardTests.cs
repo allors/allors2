@@ -69,7 +69,7 @@ namespace Allors.Domain
                 .WithCreditCard(creditCard)
                 .Build();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             Assert.True(paymentMethod.IsActive);
         }
@@ -120,13 +120,13 @@ namespace Allors.Domain
             var internalOrganisation = Singleton.Instance(this.DatabaseSession).DefaultInternalOrganisation;
             internalOrganisation.AddPaymentMethod(paymentMethod);
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
             Assert.True(paymentMethod.IsActive);
 
             creditCard.ExpirationYear = DateTime.UtcNow.Year;
             creditCard.ExpirationMonth = DateTime.UtcNow.Month;
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
             Assert.False(paymentMethod.IsActive);
         }
 

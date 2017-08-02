@@ -15,6 +15,7 @@ namespace Allors.Repository
         [RoleId("bf8f5058-dd2c-439d-bf7c-879ab69a2ca1")]
         #endregion
         [Size(256)]
+        [Required]
         [Workspace]
         string Name { get; set; }
 
@@ -23,7 +24,6 @@ namespace Allors.Repository
         [AssociationId("7172728e-29d2-498f-bea9-da8ab04a1ae5")]
         [RoleId("60306059-f537-4fd6-9d31-7b502f39662e")]
         #endregion
-        [Required]
         [Size(4096)]
         [Workspace]
         string Description { get; set; }
@@ -114,6 +114,7 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.OneToMany)]
         [Derived]
         [Indexed]
+        [Workspace]
         WorkEffortStatus[] WorkEffortStatuses { get; set; }
 
         #region Allors
@@ -124,6 +125,7 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.OneToOne)]
         [Derived]
         [Indexed]
+        [Workspace]
         WorkEffortStatus CurrentWorkEffortStatus { get; set; }
         
         #region Allors
@@ -133,6 +135,7 @@ namespace Allors.Repository
         #endregion
         [Multiplicity(Multiplicity.ManyToMany)]
         [Indexed]
+        [Workspace]
         WorkEffort[] Precendencies { get; set; }
         
         #region Allors
@@ -142,6 +145,7 @@ namespace Allors.Repository
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
+        [Workspace]
         Facility Facility { get; set; }
         
         #region Allors
@@ -151,6 +155,7 @@ namespace Allors.Repository
         #endregion
         [Multiplicity(Multiplicity.OneToMany)]
         [Indexed]
+        [Workspace]
         Deliverable[] DeliverablesProduced { get; set; }
         
         #region Allors
@@ -159,6 +164,7 @@ namespace Allors.Repository
         [RoleId("495fbe3c-8433-4593-bf32-ccfcc11b2a45")]
         #endregion
         [Indexed]
+        [Workspace]
         DateTime ActualStart { get; set; }
         
         #region Allors
@@ -168,6 +174,7 @@ namespace Allors.Repository
         #endregion
         [Multiplicity(Multiplicity.OneToMany)]
         [Indexed]
+        [Workspace]
         WorkEffortInventoryAssignment[] InventoryItemsNeeded { get; set; }
         
         #region Allors
@@ -177,6 +184,7 @@ namespace Allors.Repository
         #endregion
         [Multiplicity(Multiplicity.ManyToMany)]
         [Indexed]
+        [Workspace]
         WorkEffort[] Children { get; set; }
         
         #region Allors
@@ -195,6 +203,7 @@ namespace Allors.Repository
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
+        [Workspace]
         WorkEffortType WorkEffortType { get; set; }
         
         #region Allors
@@ -204,6 +213,7 @@ namespace Allors.Repository
         #endregion
         [Multiplicity(Multiplicity.ManyToMany)]
         [Indexed]
+        [Workspace]
         InventoryItem[] InventoryItemsProduced { get; set; }
       
         #region Allors
@@ -213,6 +223,7 @@ namespace Allors.Repository
         #endregion
         [Multiplicity(Multiplicity.ManyToMany)]
         [Indexed]
+        [Workspace]
         Requirement[] RequirementFulfillments { get; set; }
         
         #region Allors
@@ -221,6 +232,7 @@ namespace Allors.Repository
         [RoleId("8e8c2f0e-562f-4cb8-9b3f-6a255df820a3")]
         #endregion
         [Size(-1)]
+        [Workspace]
         string SpecialTerms { get; set; }
         
         #region Allors
@@ -230,26 +242,31 @@ namespace Allors.Repository
         #endregion
         [Multiplicity(Multiplicity.ManyToMany)]
         [Indexed]
+        [Workspace]
         WorkEffort[] Concurrencies { get; set; }
       
         #region Allors
         [Id("B95571A0-84DF-4648-80FD-C4FE9067991F")]
         #endregion
+        [Workspace]
         void Confirm();
 
         #region Allors
         [Id("46D78F1B-D77A-4240-87AB-14934BA12761")]
         #endregion
+        [Workspace]
         void Finish();
 
         #region Allors
         [Id("D9234724-215F-4F6C-B3E8-9743CB22A245")]
         #endregion
+        [Workspace]
         void Cancel();
 
         #region Allors
         [Id("F581B87C-EE9D-4D43-9719-8BC5CCFAC2C3")]
         #endregion
+        [Workspace]
         void Reopen();
     }
 }

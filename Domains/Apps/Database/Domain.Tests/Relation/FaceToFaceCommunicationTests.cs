@@ -22,11 +22,6 @@
 namespace Allors.Domain
 {
     using System;
-    using System.Security.Principal;
-    using System.Threading;
-
-    using Allors.Meta;
-
     using Xunit;
 
     
@@ -57,7 +52,7 @@ namespace Allors.Domain
             var participant1 = new PersonBuilder(this.DatabaseSession).WithLastName("participant1").WithPersonRole(new PersonRoles(this.DatabaseSession).Contact).Build();
             var participant2 = new PersonBuilder(this.DatabaseSession).WithLastName("participant2").WithPersonRole(new PersonRoles(this.DatabaseSession).Contact).Build();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
             this.DatabaseSession.Commit();
 
             var communication = new FaceToFaceCommunicationBuilder(this.DatabaseSession)
@@ -68,7 +63,7 @@ namespace Allors.Domain
                 .WithActualStart(DateTime.UtcNow)
                 .Build();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
             
             Assert.Equal(3, communication.InvolvedParties.Count);
             Assert.Contains(participant1, communication.InvolvedParties);
@@ -77,7 +72,7 @@ namespace Allors.Domain
 
             communication.AddParticipant(owner);
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
             
             Assert.Equal(3, communication.InvolvedParties.Count);
         }
@@ -89,7 +84,7 @@ namespace Allors.Domain
             var participant1 = new PersonBuilder(this.DatabaseSession).WithLastName("participant1").WithPersonRole(new PersonRoles(this.DatabaseSession).Contact).Build();
             var participant2 = new PersonBuilder(this.DatabaseSession).WithLastName("participant2").WithPersonRole(new PersonRoles(this.DatabaseSession).Contact).Build();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
             this.DatabaseSession.Commit();
 
             var communication = new FaceToFaceCommunicationBuilder(this.DatabaseSession)
@@ -100,7 +95,7 @@ namespace Allors.Domain
                 .WithActualStart(DateTime.UtcNow)
                 .Build();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             Assert.Equal(2, communication.SecurityTokens.Count);
             Assert.Contains(Singleton.Instance(this.DatabaseSession).DefaultSecurityToken, communication.SecurityTokens);
@@ -116,7 +111,7 @@ namespace Allors.Domain
             var participant1 = new PersonBuilder(this.DatabaseSession).WithLastName("participant1").WithPersonRole(new PersonRoles(this.DatabaseSession).Contact).Build();
             var participant2 = new PersonBuilder(this.DatabaseSession).WithLastName("participant2").WithPersonRole(new PersonRoles(this.DatabaseSession).Contact).Build();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
             this.DatabaseSession.Commit();
 
             var communication = new FaceToFaceCommunicationBuilder(this.DatabaseSession)
@@ -127,11 +122,39 @@ namespace Allors.Domain
                 .WithActualStart(DateTime.UtcNow)
                 .Build();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             Assert.Equal(2, communication.SecurityTokens.Count);
             Assert.Contains(Singleton.Instance(this.DatabaseSession).DefaultSecurityToken, communication.SecurityTokens);
             Assert.Contains(owner.OwnerSecurityToken, communication.SecurityTokens);
         }
+
+
+        [Fact]
+        public void GivenFaceToFaceCommunication_WhenParticipantIsDeleted_ThenCommunicationEventIsDeleted()
+        {
+            var participant1 = new PersonBuilder(this.DatabaseSession).WithLastName("participant1").WithPersonRole(new PersonRoles(this.DatabaseSession).Contact).Build();
+            var participant2 = new PersonBuilder(this.DatabaseSession).WithLastName("participant2").WithPersonRole(new PersonRoles(this.DatabaseSession).Contact).Build();
+
+            this.DatabaseSession.Derive();
+            this.DatabaseSession.Commit();
+
+            new FaceToFaceCommunicationBuilder(this.DatabaseSession)
+                .WithSubject("subject")
+                .WithParticipant(participant1)
+                .WithParticipant(participant2)
+                .WithActualStart(DateTime.UtcNow)
+                .Build();
+
+            this.DatabaseSession.Derive();
+
+            Assert.Equal(1, this.DatabaseSession.Extent<FaceToFaceCommunication>().Count);
+
+            participant2.Delete();
+            this.DatabaseSession.Derive();
+
+            Assert.Equal(0, this.DatabaseSession.Extent<FaceToFaceCommunication>().Count);
+        }
+
     }
 }

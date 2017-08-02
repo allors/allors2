@@ -36,7 +36,7 @@ namespace Allors.Domain
         {
             var pickList = new PickListBuilder(this.DatabaseSession).Build();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             Assert.Equal(new PickListObjectStates(this.DatabaseSession).Created, pickList.CurrentObjectState);
             Assert.Equal(pickList.CurrentPickListStatus.StartDateTime.Date, pickList.CreationDate.Date);
@@ -49,7 +49,7 @@ namespace Allors.Domain
 
             var pickList = new PickListBuilder(this.DatabaseSession).Build();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             var acl = new AccessControlList(pickList, new Users(this.DatabaseSession).CurrentUser);
             Assert.True(acl.CanExecute(M.PickList.Cancel));
@@ -62,11 +62,11 @@ namespace Allors.Domain
 
             var pickList = new PickListBuilder(this.DatabaseSession).Build();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             pickList.Cancel();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             var acl = new AccessControlList(pickList, new Users(this.DatabaseSession).CurrentUser);
             Assert.False(acl.CanExecute(M.PickList.Cancel));
@@ -80,11 +80,11 @@ namespace Allors.Domain
 
             var pickList = new PickListBuilder(this.DatabaseSession).Build();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             pickList.SetPicked();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             var acl = new AccessControlList(pickList, new Users(this.DatabaseSession).CurrentUser);
             Assert.False(acl.CanExecute(M.PickList.Cancel));
@@ -159,17 +159,17 @@ namespace Allors.Domain
                 .WithFromDate(DateTime.UtcNow)
                 .Build();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             var good1Inventory = (NonSerializedInventoryItem)good1.InventoryItemsWhereGood[0];
             good1Inventory.AddInventoryItemVariance(new InventoryItemVarianceBuilder(this.DatabaseSession).WithQuantity(100).WithReason(new VarianceReasons(this.DatabaseSession).Unknown).Build());
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             var good2Inventory = (NonSerializedInventoryItem)good2.InventoryItemsWhereGood[0];
             good2Inventory.AddInventoryItemVariance(new InventoryItemVarianceBuilder(this.DatabaseSession).WithQuantity(100).WithReason(new VarianceReasons(this.DatabaseSession).Unknown).Build());
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             var colorWhite = new ColourBuilder(this.DatabaseSession)
                 .WithName("white")
@@ -206,11 +206,11 @@ namespace Allors.Domain
             order.AddSalesOrderItem(item4);
             order.AddSalesOrderItem(item5);
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             order.Confirm();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             var shipment = (CustomerShipment)mechelenAddress.ShipmentsWhereShipToAddress[0];
 
@@ -228,7 +228,7 @@ namespace Allors.Domain
 
             pickList.SetPicked();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             //// all orderitems have same physical finished good, so there is only one picklist item.
             Assert.Equal(new CustomerShipmentObjectStates(this.DatabaseSession).Picked, shipment.CurrentShipmentStatus.CustomerShipmentObjectState);
@@ -316,17 +316,17 @@ namespace Allors.Domain
                 .WithFromDate(DateTime.UtcNow)
                 .Build();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             var good1Inventory = (NonSerializedInventoryItem)good1.InventoryItemsWhereGood[0];
             good1Inventory.AddInventoryItemVariance(new InventoryItemVarianceBuilder(this.DatabaseSession).WithQuantity(100).WithReason(new VarianceReasons(this.DatabaseSession).Unknown).Build());
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             var good2Inventory = (NonSerializedInventoryItem)good2.InventoryItemsWhereGood[0];
             good2Inventory.AddInventoryItemVariance(new InventoryItemVarianceBuilder(this.DatabaseSession).WithQuantity(100).WithReason(new VarianceReasons(this.DatabaseSession).Unknown).Build());
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             var order = new SalesOrderBuilder(this.DatabaseSession)
                 .WithBillToCustomer(customer)
@@ -340,11 +340,11 @@ namespace Allors.Domain
             order.AddSalesOrderItem(item2);
             order.AddSalesOrderItem(item3);
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             order.Confirm();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             var pickList = good1.InventoryItemsWhereGood[0].PickListItemsWhereInventoryItem[0].PickListWherePickListItem;
             pickList.Picker = new People(this.DatabaseSession).FindBy(M.Person.LastName, "orderProcessor");
@@ -369,7 +369,7 @@ namespace Allors.Domain
 
             pickList.SetPicked();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             Assert.Equal(4, itemIssuance.Quantity);
             Assert.Equal(4, shipmentItem.Quantity);
@@ -444,17 +444,17 @@ namespace Allors.Domain
                 .WithFromDate(DateTime.UtcNow)
                 .Build();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             var good1Inventory = (NonSerializedInventoryItem)good1.InventoryItemsWhereGood[0];
             good1Inventory.AddInventoryItemVariance(new InventoryItemVarianceBuilder(this.DatabaseSession).WithQuantity(100).WithReason(new VarianceReasons(this.DatabaseSession).Ruined).Build());
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             var good2Inventory = (NonSerializedInventoryItem)good2.InventoryItemsWhereGood[0];
             good2Inventory.AddInventoryItemVariance(new InventoryItemVarianceBuilder(this.DatabaseSession).WithQuantity(100).WithReason(new VarianceReasons(this.DatabaseSession).Ruined).Build());
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             var order = new SalesOrderBuilder(this.DatabaseSession)
                 .WithBillToCustomer(customer)
@@ -468,11 +468,11 @@ namespace Allors.Domain
             order.AddSalesOrderItem(item2);
             order.AddSalesOrderItem(item3);
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             order.Confirm();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             var pickList = good1.InventoryItemsWhereGood[0].PickListItemsWhereInventoryItem[0].PickListWherePickListItem;
 
@@ -555,17 +555,17 @@ namespace Allors.Domain
                 .WithFromDate(DateTime.UtcNow)
                 .Build();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             var good1Inventory = (NonSerializedInventoryItem)good1.InventoryItemsWhereGood[0];
             good1Inventory.AddInventoryItemVariance(new InventoryItemVarianceBuilder(this.DatabaseSession).WithQuantity(100).WithReason(new VarianceReasons(this.DatabaseSession).Ruined).Build());
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             var good2Inventory = (NonSerializedInventoryItem)good2.InventoryItemsWhereGood[0];
             good2Inventory.AddInventoryItemVariance(new InventoryItemVarianceBuilder(this.DatabaseSession).WithQuantity(100).WithReason(new VarianceReasons(this.DatabaseSession).Ruined).Build());
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             var order1 = new SalesOrderBuilder(this.DatabaseSession)
                 .WithBillToCustomer(customer)
@@ -579,11 +579,11 @@ namespace Allors.Domain
             order1.AddSalesOrderItem(item2);
             order1.AddSalesOrderItem(item3);
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             order1.Confirm();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             var order2 = new SalesOrderBuilder(this.DatabaseSession)
                 .WithBillToCustomer(customer)
@@ -595,18 +595,18 @@ namespace Allors.Domain
             order2.AddSalesOrderItem(itema);
             order2.AddSalesOrderItem(itemb);
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             order2.Confirm();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             var pickList = good1.InventoryItemsWhereGood[0].PickListItemsWhereInventoryItem[0].PickListWherePickListItem;
             pickList.Picker = new People(this.DatabaseSession).FindBy(M.Person.LastName, "orderProcessor");
 
             pickList.SetPicked();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             Assert.Equal(1, customer.ShipmentsWhereBillToParty.Count);
 

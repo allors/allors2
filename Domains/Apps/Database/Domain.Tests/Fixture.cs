@@ -39,7 +39,7 @@ namespace Allors
                 var administrator = new People(session).FindBy(M.Person.UserName, Users.AdministratorUserName);
                 new UserGroups(session).Administrators.AddMember(administrator);
 
-                session.Derive(true);
+                session.Derive();
                 session.Commit();
 
                 var singleton = Singleton.Instance(session);
@@ -119,7 +119,7 @@ namespace Allors
 
                 new SalesRepRelationshipBuilder(session).WithFromDate(DateTime.UtcNow).WithCustomer(customer).WithSalesRepresentative(salesrep).Build();
 
-                session.Derive(true);
+                session.Derive();
                 session.Commit();
 
             }

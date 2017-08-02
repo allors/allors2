@@ -37,7 +37,7 @@ namespace Allors.Domain
                 .WithThroughDate(DateTime.UtcNow.AddYears(1))
                 .Build();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             Assert.Equal(new BudgetObjectStates(this.DatabaseSession).Opened, budget.CurrentObjectState);
             Assert.Equal(budget.LastObjectState, budget.CurrentObjectState);
@@ -52,7 +52,7 @@ namespace Allors.Domain
                 .WithThroughDate(DateTime.UtcNow.AddYears(1))
                 .Build();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             Assert.Null(budget.PreviousObjectState);
         }
@@ -66,14 +66,14 @@ namespace Allors.Domain
                 .WithThroughDate(DateTime.UtcNow.AddYears(1))
                 .Build();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             Assert.Equal(1, budget.BudgetStatuses.Count);
             Assert.Equal(new BudgetObjectStates(this.DatabaseSession).Opened, budget.CurrentBudgetStatus.BudgetObjectState);
 
             budget.Close();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             Assert.Equal(2, budget.BudgetStatuses.Count);
             Assert.Equal(new BudgetObjectStates(this.DatabaseSession).Closed, budget.CurrentBudgetStatus.BudgetObjectState);

@@ -11,7 +11,7 @@ import { Field } from '../../../angular';
 <div class="mat-input-wrapper">
   <div class="mat-input-flex">
     <div class="mat-input-infix">
-      <md-select fxFlex [(ngModel)]="model" [name]="name" [placeholder]="roleType.name" [multiple]="roleType.isMany" [required]="required" [disabled]="disabled">
+      <md-select fxFlex [(ngModel)]="model" [name]="name" [placeholder]="label" [multiple]="roleType.isMany" [required]="required" [disabled]="disabled">
         <md-option *ngFor="let option of options" [value]="option">
           {{option[display]}}
         </md-option>

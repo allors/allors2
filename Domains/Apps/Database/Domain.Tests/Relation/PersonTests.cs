@@ -52,7 +52,7 @@ namespace Allors.Domain
                 .WithFromDate(DateTime.UtcNow)
                 .Build();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             Assert.Equal(employment, salesRep.CurrentEmployment);
         }
@@ -66,7 +66,7 @@ namespace Allors.Domain
 
             var internalOrganisation = new InternalOrganisations(this.DatabaseSession).FindBy(M.InternalOrganisation.Name, "internalOrganisation");
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             this.SetIdentity(Users.AdministratorUserName);
 
@@ -79,7 +79,7 @@ namespace Allors.Domain
             var administrators = new UserGroups(this.DatabaseSession).Administrators;
             administrators.AddMember(secondAdministrator);
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             Assert.True(secondAdministrator.IsAdministrator);
 
@@ -105,7 +105,7 @@ namespace Allors.Domain
                 .WithFromDate(DateTime.UtcNow.Date)
                 .Build();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             Assert.Equal(contact.CurrentOrganisationContactRelationships[0].Contact, contact);
             Assert.Equal(0, contact.InactiveOrganisationContactRelationships.Count);
@@ -130,7 +130,7 @@ namespace Allors.Domain
                 .WithThroughDate(DateTime.UtcNow.Date.AddDays(-1))
                 .Build();
 
-            this.DatabaseSession.Derive(true);
+            this.DatabaseSession.Derive();
 
             Assert.Equal(contact.InactiveOrganisationContactRelationships[0].Contact, contact);
             Assert.Equal(0, contact.CurrentOrganisationContactRelationships.Count);
