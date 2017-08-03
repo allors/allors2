@@ -1,4 +1,4 @@
-import { Component, Input , ChangeDetectorRef } from '@angular/core';
+import { Component, Input, ChangeDetectorRef } from '@angular/core';
 import { ISessionObject } from '../../../../allors/domain';
 import { MetaDomain, RoleType } from '../../../../allors/meta';
 
@@ -8,7 +8,7 @@ import { Field } from '../../../angular';
   selector: 'a-md-slide-toggle',
   template: `
 <div fxLayout="row">
-  <md-slide-toggle fxFlex [(ngModel)]="model" [name]="name" [required]="required" [disabled]="disabled">
+  <md-slide-toggle fxFlex [(ngModel)]="model" [name]="name" [required]="required" [disabled]="disabled" [checked]="checked">
   {{label}}
   </md-slide-toggle>
   <md-hint *ngIf="hint">{{hint}}</md-hint>
@@ -16,4 +16,7 @@ import { Field } from '../../../angular';
 `,
 })
 export class SlideToggleComponent extends Field {
+
+  @Input()
+  checked: boolean;
 }

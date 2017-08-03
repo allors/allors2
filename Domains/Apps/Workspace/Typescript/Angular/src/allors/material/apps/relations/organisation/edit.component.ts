@@ -7,7 +7,7 @@ import { TdMediaService } from '@covalent/core';
 
 import { MetaDomain } from '../../../../meta/index';
 import { PullRequest, PushResponse, Fetch, Path, Query, Equals, Like, TreeNode, Sort, Page } from '../../../../domain';
-import { Locale, OrganisationRole, Organisation, IndustryClassification } from '../../../../domain';
+import { Locale, OrganisationRole, Organisation, CustomOrganisationClassification } from '../../../../domain';
 import { AllorsService, ErrorService, Scope, Loaded, Saved } from '../../../../angular';
 
 @Component({
@@ -29,7 +29,7 @@ export class OrganisationEditComponent implements OnInit, AfterViewInit, OnDestr
 
   locales: Locale[];
   roles: OrganisationRole[];
-  industryClassifications: IndustryClassification[];
+  classifications: CustomOrganisationClassification[];
 
   constructor(
     private allors: AllorsService,
@@ -73,8 +73,8 @@ export class OrganisationEditComponent implements OnInit, AfterViewInit, OnDestr
             }),
           new Query(
             {
-              name: 'industryClassifications',
-              objectType: this.m.IndustryClassification,
+              name: 'classifications',
+              objectType: this.m.CustomOrganisationClassification,
             }),
         ];
 
@@ -95,7 +95,7 @@ export class OrganisationEditComponent implements OnInit, AfterViewInit, OnDestr
 
         this.locales = loaded.collections.locales as Locale[];
         this.roles = loaded.collections.roles as OrganisationRole[];
-        this.industryClassifications = loaded.collections.industryClassifications as IndustryClassification[];
+        this.classifications = loaded.collections.classifications as CustomOrganisationClassification[];
       },
       (error: any) => {
         this.errorService.message(error);

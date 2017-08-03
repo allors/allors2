@@ -14,8 +14,26 @@
     <form novalidate [formGroup]="searchForm">
       <md-input-container>
         <input fxFlex mdInput placeholder="Name" formControlName="name">
-        <md-icon mdSuffix>search</md-icon>
       </md-input-container>
+      <md-select formControlName="country" name="country" [(ngModel)]="selectedCountry" placeholder="Country">
+        <md-option>None</md-option>
+        <md-option *ngFor="let country of countries" [value]="country.Name">{{ country.Name }}</md-option>
+      </md-select>
+      <md-select formControlName="role" name="role" [(ngModel)]="selectedRole" placeholder="Role">
+        <md-option>None</md-option>
+        <md-option *ngFor="let role of roles" [value]="role.Name">{{ role.Name }}</md-option>
+      </md-select>
+      <md-select formControlName="classification" name="classification" [(ngModel)]="selectedClassification" placeholder="Classification">
+        <md-option>None</md-option>
+        <md-option *ngFor="let classification of classifications" [value]="classification.Name">{{ classification.Name }}</md-option>
+      </md-select>
+      <md-input-container>
+        <input fxFlex mdInput placeholder="First Name" formControlName="contactFirstName">
+      </md-input-container>
+      <md-input-container>
+        <input fxFlex mdInput placeholder="Last Name" formControlName="contactLastName">
+      </md-input-container>
+      <md-icon mdSuffix>search</md-icon>
     </form>
   </div>
 
@@ -30,12 +48,14 @@
         <md-list-item>
 
           <md-icon *ngIf="!organisation.LogoImage" md-list-avatar>insert_photo</md-icon>
-          <img *ngIf="organisation.LogoImage" md-list-avatar src="http://localhost:5000/Media/Download/{{organisation.LogoImage.UniqueId}}?revision={{organisation.LogoImage.Revision}}"/>
+          <img *ngIf="organisation.LogoImage" md-list-avatar src="http://localhost:5000/Media/Download/{{organisation.LogoImage.UniqueId}}?revision={{organisation.LogoImage.Revision}}"
+          />
 
           <div md-line class="pointer" [routerLink]="['/relations/organisation/' + organisation.id]">
             {{organisation.PartyName}}
           </div>
 
+          <p *ngIf="organisation.OrganisationClassifications.length > 0" md-line> {{organisation.OrganisationClassifications[0].Name}}</p>
           <p *ngIf="organisation.GeneralCorrespondence" md-line> {{organisation.GeneralCorrespondence?.Address1}} {{organisation.GeneralCorrespondence?.Address2}} {{organisation.GeneralCorrespondence?.Address3}}</p>
           <p *ngIf="organisation.GeneralCorrespondence" md-line> {{organisation.GeneralCorrespondence?.PostalBoundary?.PostalCode}} {{organisation.GeneralCorrespondence?.PostalBoundary?.Locality}}
             {{organisation.GeneralCorrespondence?.PostalBoundary?.Country.Name}} </p>

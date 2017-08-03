@@ -225,7 +225,6 @@ namespace Allors.Repository
         [RoleId("8e2fd09a-eda9-47e2-8908-2527e947ffd1")]
         #endregion
         [Multiplicity(Multiplicity.ManyToMany)]
-        [Derived]
         [Indexed]
         [Workspace]
         public OrganisationClassification[] OrganisationClassifications { get; set; }
