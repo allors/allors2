@@ -214,10 +214,10 @@ namespace Allors.Repository
         [AssociationId("baae72eb-acf3-4dce-b480-fce90e124de3")]
         [RoleId("6458017c-a4bf-4815-a486-66d654f3801a")]
         #endregion
-        [Multiplicity(Multiplicity.ManyToOne)]
+        [Multiplicity(Multiplicity.ManyToMany)]
         [Indexed]
         [Workspace]
-        public IndustryClassification IndustryClassification { get; set; }
+        public IndustryClassification[] IndustryClassifications { get; set; }
 
         #region Allors
         [Id("d0ac426e-4775-4f2f-8055-08cb84e8e9bd")]

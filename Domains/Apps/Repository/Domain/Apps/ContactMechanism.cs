@@ -25,5 +25,13 @@ namespace Allors.Repository
         [Indexed]
         ContactMechanism[] FollowTo { get; set; }
 
+        #region Allors
+        [Id("E1DF1F98-5366-46CF-8A32-FB2ED04986AC")]
+        [AssociationId("CCC62158-F4D6-4A40-BAFF-18F59F1A69EC")]
+        [RoleId("FDF517AC-7AAA-41CF-A3DB-ABD712E0BF4A")]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Workspace]
+        ContactMechanismType ContactMechanismType { get; set; }
     }
 }

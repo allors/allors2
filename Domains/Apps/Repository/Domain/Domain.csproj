@@ -233,6 +233,7 @@
     <Compile Include="Apps\ConstraintSpecification.cs" />
     <Compile Include="Apps\ContactMechanism.cs" />
     <Compile Include="Apps\ContactMechanismPurpose.cs" />
+    <Compile Include="Apps\ContactMechanismType.cs" />
     <Compile Include="Apps\Container.cs" />
     <Compile Include="Apps\CostCenter.cs" />
     <Compile Include="Apps\CostCenterCategory.cs" />
@@ -254,6 +255,7 @@
     <Compile Include="Apps\CustomerShipment.cs" />
     <Compile Include="Apps\CustomerShipmentObjectState.cs" />
     <Compile Include="Apps\CustomerShipmentStatus.cs" />
+    <Compile Include="Apps\CustomOrganisationClassification.cs" />
     <Compile Include="Apps\DebitCreditConstant.cs" />
     <Compile Include="Apps\Deduction.cs" />
     <Compile Include="Apps\DeductionType.cs" />

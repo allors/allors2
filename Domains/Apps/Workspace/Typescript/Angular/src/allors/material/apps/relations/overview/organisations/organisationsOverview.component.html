@@ -59,6 +59,7 @@
           <p *ngIf="organisation.GeneralCorrespondence" md-line> {{organisation.GeneralCorrespondence?.Address1}} {{organisation.GeneralCorrespondence?.Address2}} {{organisation.GeneralCorrespondence?.Address3}}</p>
           <p *ngIf="organisation.GeneralCorrespondence" md-line> {{organisation.GeneralCorrespondence?.PostalBoundary?.PostalCode}} {{organisation.GeneralCorrespondence?.PostalBoundary?.Locality}}
             {{organisation.GeneralCorrespondence?.PostalBoundary?.Country.Name}} </p>
+          <p *ngIf="organisation.GeneralPhoneNumber" md-line> {{organisation.GeneralPhoneNumber.CountryCode}} {{organisation.GeneralPhoneNumber.AreaCode}} {{organisation.GeneralPhoneNumber.ContactNumber}}
           <p md-line hide-gt-md class="md-caption"> last modified: {{ organisation.LastModifiedDate | timeAgo }} </p>
 
           <span flex></span>

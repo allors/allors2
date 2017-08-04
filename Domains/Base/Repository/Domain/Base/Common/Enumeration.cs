@@ -26,7 +26,7 @@ namespace Allors.Repository
     #region Allors
     [Id("b7bcc22f-03f0-46fd-b738-4e035921d445")]
     #endregion
-    public partial interface Enumeration : AccessControlledObject, UniquelyIdentifiable 
+    public partial interface Enumeration : AccessControlledObject, UniquelyIdentifiable, Deletable
     {
         #region Allors
         [Id("07e034f1-246a-4115-9662-4c798f31343f")]

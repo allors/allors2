@@ -28,30 +28,17 @@ namespace Allors.Repository
 
         #region inherited methods
 
-        public void OnBuild()
-        {
-            throw new NotImplementedException();
-        }
+        public void OnBuild() { }
 
-        public void OnPostBuild()
-        {
-            throw new NotImplementedException();
-        }
+        public void OnPostBuild() { }
 
-        public void OnPreDerive()
-        {
-            throw new NotImplementedException();
-        }
+        public void OnPreDerive() { }
 
-        public void OnDerive()
-        {
-            throw new NotImplementedException();
-        }
+        public void OnDerive() { }
 
-        public void OnPostDerive()
-        {
-            throw new NotImplementedException();
-        }
+        public void OnPostDerive() { }
+
+        public void Delete() { }
         #endregion
     }
 }

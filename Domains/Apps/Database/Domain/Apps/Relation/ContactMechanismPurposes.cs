@@ -37,7 +37,7 @@ namespace Allors.Domain
         private static readonly Guid OrderInquiriesFaxId = new Guid("EE74B565-F5A4-4f59-AFBA-D4070BC90F50");
         private static readonly Guid ShippingInquiriesFaxId = new Guid("5AF74DFA-65FF-4512-A0A4-0F9905C94102");
         private static readonly Guid PersonalEmailAddressId = new Guid("A3DBFB0C-3542-4a70-B2FD-EABFC34F8BF3");
-        private static readonly Guid CellPhoneNumberId = new Guid("C81E8F99-169B-4c8e-8C88-761CCCD5BBB0");
+        private static readonly Guid MobilePhoneNumberId = new Guid("C81E8F99-169B-4c8e-8C88-761CCCD5BBB0");
 
         private UniquelyIdentifiableCache<ContactMechanismPurpose> cache;
 
@@ -77,7 +77,7 @@ namespace Allors.Domain
 
         public ContactMechanismPurpose PersonalEmailAddress => this.Cache.Get(PersonalEmailAddressId);
 
-        public ContactMechanismPurpose CellPhoneNumber => this.Cache.Get(CellPhoneNumberId);
+        public ContactMechanismPurpose MobilePhoneNumber => this.Cache.Get(MobilePhoneNumberId);
 
         private UniquelyIdentifiableCache<ContactMechanismPurpose> Cache => this.cache ?? (this.cache = new UniquelyIdentifiableCache<ContactMechanismPurpose>(this.Session));
 
@@ -218,7 +218,7 @@ namespace Allors.Domain
                 .WithName("Cellphone")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Cellphone").WithLocale(englishLocale).Build())
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Mobiel nummer").WithLocale(dutchLocale).Build())
-                .WithUniqueId(CellPhoneNumberId)
+                .WithUniqueId(MobilePhoneNumberId)
                 .Build();
         }
     }

@@ -3,7 +3,7 @@ namespace Allors.Domain
 		public interface Deletable  : Object 
 		{
 		}
-		public interface Enumeration  : AccessControlledObject, UniquelyIdentifiable 
+		public interface Enumeration  : AccessControlledObject, UniquelyIdentifiable, Deletable 
 		{
 						LocalisedText LocalisedNames {set;}
 
@@ -239,6 +239,8 @@ namespace Allors.Domain
 						global::System.String Description {set;}
 
 						ContactMechanism FollowTo {set;}
+
+						ContactMechanismType ContactMechanismType {set;}
 
 		}
 		public interface Container  : AccessControlledObject 
@@ -1814,6 +1816,9 @@ namespace Allors.Domain
 		public interface ContactMechanismPurpose  : Enumeration 
 		{
 		}
+		public interface ContactMechanismType  : Enumeration 
+		{
+		}
 		public interface CostCenter  : AccessControlledObject, UniquelyIdentifiable 
 		{
 						global::System.String Description {set;}
@@ -1960,6 +1965,9 @@ namespace Allors.Domain
 
 						global::System.DateTime StartDateTime {set;}
 
+		}
+		public interface CustomOrganisationClassification  : OrganisationClassification 
+		{
 		}
 		public interface DebitCreditConstant  : Enumeration 
 		{
@@ -2923,7 +2931,7 @@ namespace Allors.Domain
 
 						global::System.String TaxNumber {set;}
 
-						IndustryClassification IndustryClassification {set;}
+						IndustryClassification IndustryClassifications {set;}
 
 						OrganisationClassification OrganisationClassifications {set;}
 

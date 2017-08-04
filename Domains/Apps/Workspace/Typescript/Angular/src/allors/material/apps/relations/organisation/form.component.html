@@ -5,6 +5,7 @@
       <a-md-media-upload [object]="organisation" [roleType]="m.Organisation.LogoImage" accept="image/*"></a-md-media-upload>
       <a-md-select [object]="organisation" [roleType]="m.Organisation.OrganisationRoles" [options]="roles" display="Name"></a-md-select>
       <a-md-select [object]="organisation" [roleType]="m.Organisation.OrganisationClassifications" [options]="classifications" display="Name" label="Classification"></a-md-select>
+      <a-md-select [object]="organisation" [roleType]="m.Organisation.IndustryClassifications" [options]="industries" display="Name" label="Industry"></a-md-select>
       <a-md-input [object]="organisation" [roleType]="m.Organisation.Name"></a-md-input>
       <a-md-select [object]="organisation" [roleType]="m.Organisation.Locale" [options]="locales" display="Name"></a-md-select>
     </div>

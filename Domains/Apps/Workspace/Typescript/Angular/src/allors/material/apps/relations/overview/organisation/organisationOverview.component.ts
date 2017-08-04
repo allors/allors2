@@ -121,6 +121,7 @@ export class OrganisationOverviewComponent implements OnInit, AfterViewInit, OnD
             id: id,
             include: [
               new TreeNode({ roleType: m.Party.Locale }),
+              new TreeNode({ roleType: m.Organisation.IndustryClassifications }),
               new TreeNode({ roleType: m.Organisation.OrganisationRoles }),
               new TreeNode({ roleType: m.Organisation.OrganisationClassifications }),
               new TreeNode({ roleType: m.Organisation.LastModifiedBy }),

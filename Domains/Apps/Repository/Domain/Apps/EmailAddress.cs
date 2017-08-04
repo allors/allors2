@@ -15,6 +15,8 @@ namespace Allors.Repository
 
         public ContactMechanism[] FollowTo { get; set; }
 
+        public ContactMechanismType ContactMechanismType { get; set; }
+
         public Permission[] DeniedPermissions { get; set; }
 
         public SecurityToken[] SecurityTokens { get; set; }

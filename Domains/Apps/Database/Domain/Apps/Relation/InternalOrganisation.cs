@@ -213,7 +213,7 @@ namespace Allors.Domain
                         this.BillingInquiriesPhone = partyContactMechanism.ContactMechanism as TelecommunicationsNumber;
                     }
 
-                    if (partyContactMechanism.ContactPurposes.Contains(new ContactMechanismPurposes(this.strategy.Session).CellPhoneNumber))
+                    if (partyContactMechanism.ContactPurposes.Contains(new ContactMechanismPurposes(this.strategy.Session).MobilePhoneNumber))
                     {
                         this.CellPhoneNumber = partyContactMechanism.ContactMechanism as TelecommunicationsNumber;
                     }

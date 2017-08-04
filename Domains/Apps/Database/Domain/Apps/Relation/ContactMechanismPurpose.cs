@@ -53,6 +53,6 @@ namespace Allors.Domain
 
         public bool IsPersonalEmailAddress => this.Equals(new ContactMechanismPurposes(this.Strategy.Session).PersonalEmailAddress);
 
-        public bool IsCellPhoneNumber => this.Equals(new ContactMechanismPurposes(this.Strategy.Session).CellPhoneNumber);
+        public bool IsCellPhoneNumber => this.Equals(new ContactMechanismPurposes(this.Strategy.Session).MobilePhoneNumber);
     }
 }

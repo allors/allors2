@@ -5,29 +5,22 @@ namespace Allors.Repository
     using Allors.Repository.Attributes;
 
     #region Allors
-    [Id("5cd7ea86-8bc6-4b72-a8f6-788e6453acdc")]
+    [Id("8FCE70A7-0F94-4A28-99F6-52F9EB230EAA")]
     #endregion
-    [Plural("UnitsOfMeasure")]
-    public partial class UnitOfMeasure : IUnitOfMeasure, UniquelyIdentifiable, AccessControlledObject, Enumeration 
+    public partial class ContactMechanismType : Enumeration 
     {
         #region inherited properties
-        public string Description { get; set; }
+        public LocalisedText[] LocalisedNames { get; set; }
 
-        public UnitOfMeasureConversion[] UnitOfMeasureConversions { get; set; }
+        public string Name { get; set; }
 
-        public string Abbreviation { get; set; }
+        public bool IsActive { get; set; }
 
         public Permission[] DeniedPermissions { get; set; }
 
         public SecurityToken[] SecurityTokens { get; set; }
 
         public Guid UniqueId { get; set; }
-
-        public LocalisedText[] LocalisedNames { get; set; }
-
-        public string Name { get; set; }
-
-        public bool IsActive { get; set; }
 
         #endregion
 
@@ -47,7 +40,7 @@ namespace Allors.Repository
 
         public void Delete() { }
 
-
         #endregion
+
     }
 }
