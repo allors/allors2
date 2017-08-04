@@ -41,17 +41,18 @@
             <div md-line class="pointer" [routerLink]="['/relations/person/' + person.id]">
               {{person.PartyName}}
             </div>
+            <p *ngIf="person.GeneralPhoneNumber" md-line> {{person.GeneralPhoneNumber.CountryCode}} {{person.GeneralPhoneNumber.AreaCode}} {{person.GeneralPhoneNumber.ContactNumber}}
 
-            <p md-line hide-gt-md class="md-caption"> last login: {{ person.LastModifiedDate | timeAgo }} </p>
+              <p md-line hide-gt-md class="md-caption"> last login: {{ person.LastModifiedDate | timeAgo }} </p>
 
-            <span flex></span>
+              <span flex></span>
 
-            <span hide-xs hide-sm hide-md flex-gt-xs="60" flex-xs="40" layout-gt-xs="row">
+              <span hide-xs hide-sm hide-md flex-gt-xs="60" flex-xs="40" layout-gt-xs="row">
             <div class="md-caption tc-grey-500" flex-gt-xs="50"> {{ person.CreationDate | date }} </div>
             <div class="md-caption tc-grey-500" flex-gt-xs="50"> {{ person.LastModifiedDate | timeAgo }} </div>
           </span>
 
-            <span>
+              <span>
           <button md-icon-button [md-menu-trigger-for]="menu">
           <md-icon>more_vert</md-icon>
           </button>

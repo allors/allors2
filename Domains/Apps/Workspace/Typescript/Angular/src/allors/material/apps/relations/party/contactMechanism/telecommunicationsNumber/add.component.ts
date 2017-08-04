@@ -7,7 +7,7 @@ import { TdMediaService } from '@covalent/core';
 
 import { MetaDomain } from '../../../../../../meta/index';
 import { PullRequest, PushResponse, Fetch, Path, Query, Equals, Like, TreeNode, Sort, Page } from '../../../../../../domain';
-import { Party, PartyContactMechanism, TelecommunicationsNumber, Enumeration } from '../../../../../../domain';
+import { Party, ContactMechanismType, PartyContactMechanism, TelecommunicationsNumber, Enumeration } from '../../../../../../domain';
 import { AllorsService, ErrorService, Scope, Loaded, Saved } from '../../../../../../angular';
 
 @Component({
@@ -27,6 +27,7 @@ export class PartyContactMechanismAddTelecommunicationsNumberComponent implement
   partyContactMechanism: PartyContactMechanism;
   contactMechanism: TelecommunicationsNumber;
   contactMechanismPurposes: Enumeration[];
+  contactMechanismTypes: ContactMechanismType[];
 
   constructor(
     private allors: AllorsService,
@@ -54,7 +55,10 @@ export class PartyContactMechanismAddTelecommunicationsNumberComponent implement
                 roleType: m.Party.PartyContactMechanisms,
                 nodes: [
                   new TreeNode({ roleType: m.PartyContactMechanism.ContactPurposes }),
-                  new TreeNode({ roleType: m.PartyContactMechanism.ContactMechanism }),
+                  new TreeNode({
+                    roleType: m.PartyContactMechanism.ContactMechanism,
+                    nodes: [ new TreeNode( { roleType: m.ContactMechanism.ContactMechanismType})],
+                   }),
                 ],
               }),
             ],
@@ -67,6 +71,11 @@ export class PartyContactMechanismAddTelecommunicationsNumberComponent implement
               name: 'contactMechanismPurposes',
               objectType: this.m.ContactMechanismPurpose,
             }),
+          new Query(
+            {
+              name: 'contactMechanismTypes',
+              objectType: this.m.ContactMechanismType,
+            }),
         ];
 
         this.scope.session.reset();
@@ -75,19 +84,20 @@ export class PartyContactMechanismAddTelecommunicationsNumberComponent implement
           .load('Pull', new PullRequest({ fetch: fetch, query: query }));
       })
       .subscribe((loaded: Loaded) => {
-
+        this.contactMechanismPurposes = loaded.collections.contactMechanismPurposes as Enumeration[];
+        this.contactMechanismTypes = loaded.collections.contactMechanismTypes as ContactMechanismType[];
+        const phone: ContactMechanismType = this.contactMechanismTypes.find((v: ContactMechanismType) => v.Name === 'Phone');
         this.party = loaded.objects.party as Party;
 
         if (!this.contactMechanism) {
           this.contactMechanism = this.scope.session.create('TelecommunicationsNumber') as TelecommunicationsNumber;
+          // this.contactMechanism.ContactMechanismType = phone;
         }
 
         this.partyContactMechanism = this.scope.session.create('PartyContactMechanism') as PartyContactMechanism;
         this.partyContactMechanism.ContactMechanism = this.contactMechanism;
 
         this.party.AddPartyContactMechanism(this.partyContactMechanism);
-
-        this.contactMechanismPurposes = loaded.collections.contactMechanismPurposes as Enumeration[];
       },
       (error: any) => {
         this.errorService.message(error);

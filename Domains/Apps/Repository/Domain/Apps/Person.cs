@@ -321,7 +321,16 @@ namespace Allors.Repository
         #endregion
         [Workspace]
         public DateTime DeceasedDate { get; set; }
-        
+
+        #region Allors
+        [Id("996809E3-994B-4189-B3A8-77CC1BB99B0A")]
+        [AssociationId("8382F44C-D777-4431-828A-0EA8970751C1")]
+        [RoleId("8EBB2477-95FB-43CA-9A79-0F83D2449449")]
+        #endregion
+        [Size(256)]
+        [Workspace]
+        public string Function { get; set; }
+
         #region inherited methods
         public void Delete(){}
         #endregion

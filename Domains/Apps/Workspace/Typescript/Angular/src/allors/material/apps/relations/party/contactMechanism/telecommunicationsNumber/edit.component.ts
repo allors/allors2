@@ -1,5 +1,5 @@
 import { Observable, Subject, Subscription } from 'rxjs/Rx';
-import { Component, OnInit, AfterViewInit, OnDestroy , ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, AfterViewInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
 import { Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { MdSnackBar, MdSnackBarConfig } from '@angular/material';
@@ -26,6 +26,7 @@ export class PartyContactMechanismEditTelecommunicationsNumberComponent implemen
   partyContactMechanism: PartyContactMechanism;
   contactMechanism: TelecommunicationsNumber;
   contactMechanismPurposes: Enumeration[];
+  contactMechanismTypes: Enumeration[];
 
   constructor(
     private allors: AllorsService,
@@ -50,6 +51,10 @@ export class PartyContactMechanismEditTelecommunicationsNumberComponent implemen
             id: roleId,
             include: [
               new TreeNode({ roleType: m.PartyContactMechanism.ContactPurposes }),
+              new TreeNode({
+                roleType: m.PartyContactMechanism.ContactMechanism,
+                nodes: [new TreeNode({ roleType: m.ContactMechanism.ContactMechanismType })],
+              }),
             ],
           }),
         ];
@@ -59,6 +64,11 @@ export class PartyContactMechanismEditTelecommunicationsNumberComponent implemen
             {
               name: 'contactMechanismPurposes',
               objectType: this.m.ContactMechanismPurpose,
+            }),
+          new Query(
+            {
+              name: 'contactMechanismTypes',
+              objectType: this.m.ContactMechanismType,
             }),
         ];
 
@@ -71,7 +81,8 @@ export class PartyContactMechanismEditTelecommunicationsNumberComponent implemen
 
         this.partyContactMechanism = loaded.objects.partyContactMechanism as PartyContactMechanism;
         this.contactMechanism = this.partyContactMechanism.ContactMechanism as TelecommunicationsNumber;
-        this.contactMechanismPurposes =  loaded.collections.contactMechanismPurposes as Enumeration[];
+        this.contactMechanismPurposes = loaded.collections.contactMechanismPurposes as Enumeration[];
+        this.contactMechanismTypes = loaded.collections.contactMechanismTypes as Enumeration[];
       },
       (error: any) => {
         this.errorService.message(error);

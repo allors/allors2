@@ -2,8 +2,8 @@
   <form #form="ngForm" *ngIf="contactMechanism" (submit)="save()">
 
     <div class="pad">
-      <a-md-select [object]="partyContactMechanism" [roleType]="m.PartyContactMechanism.ContactPurposes" [options]="contactMechanismPurposes"
-        display="Name" label="Contact purposes"></a-md-select>
+      <a-md-select [object]="partyContactMechanism" [roleType]="m.PartyContactMechanism.ContactPurposes" [options]="contactMechanismPurposes" display="Name" label="Contact purposes"></a-md-select>
+      <a-md-select [object]="contactMechanism" [roleType]="m.TelecommunicationsNumber.ContactMechanismType" [options]="contactMechanismTypes" display="Name" label="Type"></a-md-select>
       <a-md-input [object]="contactMechanism" [roleType]="m.TelecommunicationsNumber.CountryCode"></a-md-input>
       <a-md-input [object]="contactMechanism" [roleType]="m.TelecommunicationsNumber.AreaCode"></a-md-input>
       <a-md-input [object]="contactMechanism" [roleType]="m.TelecommunicationsNumber.ContactNumber"></a-md-input>

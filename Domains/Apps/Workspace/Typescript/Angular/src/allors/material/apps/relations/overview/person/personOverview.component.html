@@ -20,27 +20,14 @@
           <a-md-static [object]="organisation" [roleType]="m.Organisation.Name" label="Organisation"></a-md-static>
         </div>
 
-        <div layout="row">
-          <a-md-static [object]="person" [roleType]="m.Person.PersonRoles" display="Name"></a-md-static>
-        </div>
-
-        <div layout="row">
-          <a-md-static [object]="person" [roleType]="m.Person.FirstName"></a-md-static>
-          <a-md-static [object]="person" [roleType]="m.Person.MiddleName"></a-md-static>
-          <a-md-static [object]="person" [roleType]="m.Person.LastName"></a-md-static>
-        </div>
-
-        <div *ngIf="person.Gender" layout="row">
-          <a-md-static *ngIf="person.Gender" [object]="person" [roleType]="m.Person.Gender" display="Name"></a-md-static>
-        </div>
-
-        <div *ngIf="person.Salutation" layout="row">
-          <a-md-static *ngIf="person.Gender" [object]="person" [roleType]="m.Person.Salutation" display="Name"></a-md-static>
-        </div>
-
-        <div *ngIf="person.Locale" layout="row">
-          <a-md-static [object]="person" [roleType]="m.Person.Locale" display="Name"></a-md-static>
-        </div>
+        <a-md-static [object]="person" [roleType]="m.Person.PersonRoles" display="Name"></a-md-static>
+        <a-md-static [object]="person" [roleType]="m.Person.FirstName"></a-md-static>
+        <a-md-static [object]="person" [roleType]="m.Person.MiddleName"></a-md-static>
+        <a-md-static [object]="person" [roleType]="m.Person.LastName"></a-md-static>
+        <a-md-static *ngIf="person.Function" [object]="person" [roleType]="m.Person.Function"></a-md-static>
+        <a-md-static *ngIf="person.Gender" [object]="person" [roleType]="m.Person.Gender" display="Name"></a-md-static>
+        <a-md-static *ngIf="person.Salutation" [object]="person" [roleType]="m.Person.Salutation" display="Name"></a-md-static>
+        <a-md-static [object]="person" [roleType]="m.Person.Locale" display="Name"></a-md-static>
 
         <div layout="row">
           <p class="md-caption tc-grey-500"> last modified: {{ person.LastModifiedDate | date}} by {{ person.LastModifiedBy?.displayName}}</p>
@@ -127,7 +114,7 @@
   </div>
 
   <div flex-gt-xs="50">
-     <md-card tdMediaToggle="gt-xs" [mediaClasses]="['push']">
+    <md-card tdMediaToggle="gt-xs" [mediaClasses]="['push']">
       <md-card-title>Contact info</md-card-title>
 
       <md-divider></md-divider>
@@ -210,7 +197,7 @@
       </md-card-actions>
     </md-card>
 
-     <md-card *ngIf="workEffortAssignments" tdMediaToggle="gt-xs" [mediaClasses]="['push']">
+    <md-card *ngIf="workEffortAssignments" tdMediaToggle="gt-xs" [mediaClasses]="['push']">
       <md-card-title>Work Efforts</md-card-title>
 
       <md-divider></md-divider>

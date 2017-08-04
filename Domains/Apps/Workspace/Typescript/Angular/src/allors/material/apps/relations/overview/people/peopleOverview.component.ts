@@ -96,6 +96,7 @@ export class PeopleOverviewComponent implements AfterViewInit, OnDestroy {
             page: new Page({ skip: 0, take: take }),
             include: [
               new TreeNode({ roleType: m.Person.Picture }),
+              new TreeNode({ roleType: m.Person.GeneralPhoneNumber }),
             ],
             sort: [new Sort({ roleType: m.Person.FirstName })],
           })];
