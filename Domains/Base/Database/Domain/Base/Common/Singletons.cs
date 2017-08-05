@@ -39,7 +39,7 @@ namespace Allors.Domain
         {
             var singleton = new SingletonBuilder(this.Session).Build();
 
-            singleton.DefaultLocale = new Locales(this.Session).DutchBelgium;
+            singleton.DefaultLocale = new Locales(this.Session).EnglishGreatBritain;
 
             singleton.InitialSecurityToken = new SecurityTokenBuilder(this.Session).Build();
             singleton.DefaultSecurityToken = new SecurityTokenBuilder(this.Session).Build();
