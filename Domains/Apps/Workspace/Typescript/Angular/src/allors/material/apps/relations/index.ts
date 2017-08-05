@@ -36,6 +36,9 @@ import { OrganisationEditComponent } from './organisation/edit.component';
 import { OrganisationContactrelationshipAddComponent } from './organisation/contactrelationship/add.component';
 import { OrganisationContactrelationshipEditComponent } from './organisation/contactrelationship/edit.component';
 
+// Export
+import { ExportPeopleComponent } from './export/people/export.people.component';
+
 export const RELATIONS: any[] = [
 ];
 
@@ -76,6 +79,9 @@ export const RELATIONS_ROUTING: any[] = [
   OrganisationEditComponent,
   OrganisationContactrelationshipAddComponent,
   OrganisationContactrelationshipEditComponent,
+
+  // Export
+  ExportPeopleComponent,
 ];
 
 export {
@@ -115,4 +121,7 @@ export {
   OrganisationEditComponent,
   OrganisationContactrelationshipAddComponent,
   OrganisationContactrelationshipEditComponent,
+
+  // Export
+  ExportPeopleComponent,
 };

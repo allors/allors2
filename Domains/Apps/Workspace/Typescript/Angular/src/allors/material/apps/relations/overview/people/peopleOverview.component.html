@@ -5,7 +5,7 @@
         </button>
     <span>{{title}}</span>
     <span flex></span>
-    <button md-icon-button><md-icon>settings</md-icon></button>
+    <button md-icon-button mdTooltip="Export to CSV" [routerLink]="['/export/people']"><md-icon>cloud_download</md-icon></button>
   </div>
 </md-toolbar>
 
@@ -35,8 +35,7 @@
           <md-list-item>
 
             <md-icon *ngIf="!person.Picture" md-list-avatar>person</md-icon>
-            <img *ngIf="person.Picture" md-list-avatar src="http://localhost:5000/Media/Download/{{person.Picture.UniqueId}}?revision={{person.Picture.Revision}}"
-            />
+            <img *ngIf="person.Picture" md-list-avatar src="http://localhost:5000/Media/Download/{{person.Picture.UniqueId}}?revision={{person.Picture.Revision}}"/>
 
             <div md-line class="pointer" [routerLink]="['/relations/person/' + person.id]">
               {{person.PartyName}}

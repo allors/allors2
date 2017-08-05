@@ -1,0 +1,32 @@
+<td-layout-card-over [cardTitle]="title" [cardSubtitle]="subTitle">
+
+  <div class="pad-top-xs pad-left pad-right">
+    <form novalidate [formGroup]="searchForm">
+      <md-input-container>
+        <input fxFlex mdInput placeholder="First Name" formControlName="firstName">
+        <md-icon mdSuffix>search</md-icon>
+      </md-input-container>
+      <md-input-container>
+        <input fxFlex mdInput placeholder="Last Name" formControlName="lastName">
+        <md-icon mdSuffix>search</md-icon>
+      </md-input-container>
+    </form>
+  </div>
+
+  <md-divider></md-divider>
+
+  <md-card-content style="min-height: 60vh">
+    <ng-template tdLoading="csv">
+      <md-list class="will-load" fxLayout="column">
+
+        <textarea #clipSource style="min-height: 60vh" [ngModel]="csv"></textarea>
+
+        <a md-icon-button mdTooltip="Copy to clipboard" (click)="clipSource.select(); copy()">
+          <md-icon>content_copy</md-icon>
+        </a>
+
+      </md-list>
+    </ng-template>
+  </md-card-content>
+
+</td-layout-card-over>

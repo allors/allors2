@@ -1,0 +1,189 @@
+<md-toolbar>
+  <div layout="row" layout-align="start center" flex>
+    <button md-icon-button tdLayoutManageListOpen [hideWhenOpened]="true" style="display: none">
+          <md-icon>arrow_back</md-icon>
+        </button>
+    <span>{{title}}</span>
+    <span flex></span>
+    <button md-icon-button><md-icon>settings</md-icon></button>
+  </div>
+</md-toolbar>
+
+<div body *ngIf="isEmail" layout-gt-md="row">
+  <div flex-gt-xs="50">
+    <md-card *ngIf="communicationEvent" tdMediaToggle="gt-xs" [mediaClasses]="['push']">
+      <md-card-title>Email</md-card-title>
+      <md-divider></md-divider>
+      <md-card-content>
+
+        <div class="pad">
+          <a-md-static [object]="communicationEvent" [roleType]="m.CommunicationEvent.CurrentObjectState" display="Name" label="Status"></a-md-static>
+          <a-md-static [object]="communicationEvent" [roleType]="m.CommunicationEvent.EventPurposes" display="Name" label="Purposes"></a-md-static>
+          <a-md-static [object]="communicationEvent" [roleType]="m.EmailCommunication.IncomingMail"></a-md-static>
+          <a-md-static [object]="communicationEvent" [roleType]="m.EmailCommunication.Originator" display="displayName" label="From"></a-md-static>
+          <a-md-static [object]="communicationEvent" [roleType]="m.EmailCommunication.Addressees" display="displayName" label="To"></a-md-static>
+          <a-md-static [object]="communicationEvent" [roleType]="m.EmailCommunication.EmailTemplate" display="SubjectTemplate" label="Subject"></a-md-static>
+          <a-md-static [object]="communicationEvent" [roleType]="m.EmailCommunication.EmailTemplate" display="BodyTemplate" label="Body"></a-md-static>
+          <a-md-static [object]="communicationEvent" [roleType]="m.CommunicationEvent.ScheduledStart"></a-md-static>
+          <a-md-static [object]="communicationEvent" [roleType]="m.CommunicationEvent.ScheduledEnd"></a-md-static>
+          <a-md-static [object]="communicationEvent" [roleType]="m.CommunicationEvent.ActualStart"></a-md-static>
+          <a-md-static [object]="communicationEvent" [roleType]="m.CommunicationEvent.ActualEnd"></a-md-static>
+        </div>
+
+      </md-card-content>
+
+      <md-divider></md-divider>
+      <md-card-actions>
+        <button md-button [routerLink]="'/party/' + this.party.id + '/communicationevent/emailcommunication/' + this.communicationEvent.id">Edit</button>
+      </md-card-actions>
+    </md-card>
+  </div>
+</div>
+
+<div body *ngIf="isLetter" layout-gt-md="row">
+  <div flex-gt-xs="50">
+    <md-card *ngIf="communicationEvent" tdMediaToggle="gt-xs" [mediaClasses]="['push']">
+      <md-card-title>Letter</md-card-title>
+      <md-divider></md-divider>
+      <md-card-content>
+
+        <div class="pad">
+          <a-md-static [object]="communicationEvent" [roleType]="m.CommunicationEvent.CurrentObjectState" display="Name" label="Status"></a-md-static>
+          <a-md-static [object]="communicationEvent" [roleType]="m.CommunicationEvent.EventPurposes" display="Name" label="Purposes"></a-md-static>
+          <a-md-static [object]="communicationEvent" [roleType]="m.LetterCorrespondence.Originators" display="displayName" label="Sender"></a-md-static>
+          <a-md-static [object]="communicationEvent" [roleType]="m.LetterCorrespondence.Receivers" display="displayName" label="Receiver"></a-md-static>
+          <a-md-static [object]="communicationEvent" [roleType]="m.LetterCorrespondence.ContactMechanisms" display="displayName" label="Postal Address"></a-md-static>
+          <a-md-static [object]="communicationEvent" [roleType]="m.LetterCorrespondence.Subject"></a-md-static>
+          <a-md-static [object]="communicationEvent" [roleType]="m.LetterCorrespondence.Note"></a-md-static>
+          <a-md-static [object]="communicationEvent" [roleType]="m.LetterCorrespondence.IncomingLetter"></a-md-static>
+          <a-md-static [object]="communicationEvent" [roleType]="m.CommunicationEvent.ScheduledStart"></a-md-static>
+          <a-md-static [object]="communicationEvent" [roleType]="m.CommunicationEvent.ScheduledEnd"></a-md-static>
+          <a-md-static [object]="communicationEvent" [roleType]="m.CommunicationEvent.ActualStart"></a-md-static>
+          <a-md-static [object]="communicationEvent" [roleType]="m.CommunicationEvent.ActualEnd"></a-md-static>
+        </div>
+
+      </md-card-content>
+
+      <md-divider></md-divider>
+      <md-card-actions>
+        <button md-button [routerLink]="'/party/' + this.party.id + '/communicationevent/lettercorrespondence/' + this.communicationEvent.id">Edit</button>
+      </md-card-actions>
+    </md-card>
+  </div>
+</div>
+
+<div body *ngIf="isMeeting" layout-gt-md="row">
+  <div flex-gt-xs="50">
+    <md-card *ngIf="communicationEvent" tdMediaToggle="gt-xs" [mediaClasses]="['push']">
+      <md-card-title>Meeting</md-card-title>
+      <md-divider></md-divider>
+      <md-card-content>
+
+        <div class="pad">
+          <a-md-static [object]="communicationEvent" [roleType]="m.CommunicationEvent.CurrentObjectState" display="Name" label="Status"></a-md-static>
+          <a-md-static [object]="communicationEvent" [roleType]="m.CommunicationEvent.EventPurposes" display="Name" label="Purposes"></a-md-static>
+          <a-md-static [object]="communicationEvent" [roleType]="m.FaceToFaceCommunication.Participants" display="PartyName"></a-md-static>
+          <a-md-static [object]="communicationEvent" [roleType]="m.FaceToFaceCommunication.Location"></a-md-static>
+          <a-md-static [object]="communicationEvent" [roleType]="m.FaceToFaceCommunication.Subject"></a-md-static>
+          <a-md-static [object]="communicationEvent" [roleType]="m.FaceToFaceCommunication.Note"></a-md-static>
+          <a-md-static [object]="communicationEvent" [roleType]="m.CommunicationEvent.ScheduledStart"></a-md-static>
+          <a-md-static [object]="communicationEvent" [roleType]="m.CommunicationEvent.ScheduledEnd"></a-md-static>
+          <a-md-static [object]="communicationEvent" [roleType]="m.CommunicationEvent.ActualStart"></a-md-static>
+          <a-md-static [object]="communicationEvent" [roleType]="m.CommunicationEvent.ActualEnd"></a-md-static>
+        </div>
+
+      </md-card-content>
+
+      <md-divider></md-divider>
+      <md-card-actions>
+        <button md-button [routerLink]="'/party/' + this.party.id + '/communicationevent/facetofacecommunication/' + this.communicationEvent.id">Edit</button>
+      </md-card-actions>
+    </md-card>
+  </div>
+</div>
+
+<div body *ngIf="isPhone" layout-gt-md="row">
+  <div flex-gt-xs="50">
+    <md-card *ngIf="communicationEvent" tdMediaToggle="gt-xs" [mediaClasses]="['push']">
+      <md-card-title>Phone call</md-card-title>
+      <md-divider></md-divider>
+      <md-card-content>
+
+        <div class="pad">
+          <a-md-static [object]="communicationEvent" [roleType]="m.CommunicationEvent.CurrentObjectState" display="Name" label="Status"></a-md-static>
+          <a-md-static [object]="communicationEvent" [roleType]="m.CommunicationEvent.EventPurposes" display="Name" label="Purposes"></a-md-static>
+          <a-md-static [object]="communicationEvent" [roleType]="m.PhoneCommunication.Subject"></a-md-static>
+          <a-md-static [object]="communicationEvent" [roleType]="m.PhoneCommunication.Note"></a-md-static>
+          <a-md-static [object]="communicationEvent" [roleType]="m.PhoneCommunication.IncomingCall"></a-md-static>
+          <a-md-static [object]="communicationEvent" [roleType]="m.PhoneCommunication.LeftVoiceMail"></a-md-static>
+          <a-md-static [object]="communicationEvent" [roleType]="m.PhoneCommunication.Callers" display="PartyName"></a-md-static>
+          <a-md-static [object]="communicationEvent" [roleType]="m.PhoneCommunication.Receivers" display="PartyName"></a-md-static>
+          <a-md-static *ngIf="!communicationEvent.IncomingCall" [object]="communicationEvent" [roleType]="m.PhoneCommunication.ContactMechanisms"
+            display="displayName" label="Phone number"></a-md-static>
+          <a-md-static [object]="communicationEvent" [roleType]="m.CommunicationEvent.ScheduledStart"></a-md-static>
+          <a-md-static [object]="communicationEvent" [roleType]="m.CommunicationEvent.ScheduledEnd"></a-md-static>
+          <a-md-static [object]="communicationEvent" [roleType]="m.CommunicationEvent.ActualStart"></a-md-static>
+          <a-md-static [object]="communicationEvent" [roleType]="m.CommunicationEvent.ActualEnd"></a-md-static>
+        </div>
+
+      </md-card-content>
+
+      <md-divider></md-divider>
+      <md-card-actions>
+        <button md-button [routerLink]="'/party/' + this.party.id + '/communicationevent/phonecommunication/' + this.communicationEvent.id">Edit</button>
+      </md-card-actions>
+    </md-card>
+  </div>
+</div>
+
+<md-card *ngIf="communicationEvent" tdMediaToggle="gt-xs" [mediaClasses]="['push']">
+  <md-card-title>Work Efforts</md-card-title>
+
+  <md-divider></md-divider>
+  <md-card-content>
+    <ng-template tdLoading="communicationEvent.WorkEfforts">
+      <md-list class="will-load">
+        <div class="md-padding" *ngIf="communicationEvent.WorkEfforts.length === 0" layout="row" layout-align="center center">
+          <h3>No work efforts to display.</h3>
+        </div>
+
+        <ng-template let-workEffort let-last="last" ngFor [ngForOf]="communicationEvent.WorkEfforts">
+          <md-list-item>
+            <div md-line class="md-caption pointer" [routerLink]="['/worktask/' + workEffort.id ]">
+              {{ workEffort.Name }}, {{ workEffort.CurrentObjectState.Name }}
+            </div>
+
+            <p md-line class="md-caption">{{ workEffort.Description }} </p>
+            <p *ngIf="workEffort.Priority" md-line class="md-caption">Priority {{ workEffort.Priority.Name }} </p>
+
+            <span hide-xs hide-sm hide-md flex-gt-xs="60" flex-xs="40" layout-gt-xs="row">
+              <div class="md-caption tc-grey-500" flex-gt-xs="50"> Sched. Start: {{ workEffort.ScheduledStart | date}} </div>
+              <div class="md-caption tc-grey-500" flex-gt-xs="50"> Sched. Compl.: {{ workEffort.ScheduledCompletion | date }} </div>
+              <div class="md-caption tc-grey-500" flex-gt-xs="50"> Act. Start: {{ workEffort.ActualStart | date}} </div>
+              <div class="md-caption tc-grey-500" flex-gt-xs="50"> Act. Compl.: {{ workEffort.ActualCompletion | date }} </div>
+            </span>
+
+            <span>
+              <button md-icon-button [md-menu-trigger-for]="menu">
+                <md-icon>more_vert</md-icon>
+              </button>
+              <md-menu x-position="before" #menu="mdMenu">
+                <a [routerLink]="['/worktask/' + workEffort.id]" md-menu-item>Edit</a>
+                <button  md-menu-item (click)="deleteWorkEffort(workEffort)" [disabled]="!workEffort.CanExecuteDelete">Delete</button>
+              </md-menu>
+          </span>
+
+          </md-list-item>
+
+          <md-divider *ngIf="!last" md-inset></md-divider>
+
+        </ng-template>
+      </md-list>
+    </ng-template>
+  </md-card-content>
+
+  <md-divider></md-divider>
+  <md-card-actions>
+    <button md-button [routerLink]="['/communicationevent/' + communicationEvent.id +'/worktask']">+ Task</button>
+  </md-card-actions>
+</md-card>
