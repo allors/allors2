@@ -18,6 +18,8 @@
       <a-md-select [object]="workTask" [roleType]="m.WorkTask.WorkEffortPurposes" [options]="workEffortPurposes" display="Name" label="Purpose(s)"></a-md-select>
       <a-md-input [object]="workTask" [roleType]="m.WorkTask.EstimatedHours"></a-md-input>
       <a-md-input [object]="workTask" [roleType]="m.WorkTask.ActualHours"></a-md-input>
+      <a-md-slide-toggle [object]="communicationEvent" [roleType]="m.CommunicationEvent.SendNotification"></a-md-slide-toggle>
+      <a-md-slide-toggle [object]="communicationEvent" [roleType]="m.CommunicationEvent.SendReminder"></a-md-slide-toggle>
       <a-md-datepicker [object]="workTask" [roleType]="m.WorkTask.ScheduledStart"></a-md-datepicker>
       <a-md-datepicker [object]="workTask" [roleType]="m.WorkTask.ScheduledCompletion"></a-md-datepicker>
       <a-md-datepicker [object]="workTask" [roleType]="m.WorkTask.ActualStart"></a-md-datepicker>

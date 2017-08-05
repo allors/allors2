@@ -615,6 +615,8 @@ namespace Allors.Repository
         [Workspace]
         public string RequestNumberPrefix { get; set; }
 
+        public string Comment { get; set; }
+
         #region inherited methods
 
 
@@ -633,6 +635,5 @@ namespace Allors.Repository
 
 
         #endregion
-
     }
 }

@@ -26,6 +26,8 @@
       <a-md-select *ngIf="!communicationEvent.IncomingCall" [object]="communicationEvent" [roleType]="m.PhoneCommunication.ContactMechanisms"
         [options]="phonenumbers" display="displayName" label="Phone number"></a-md-select>
 
+      <a-md-slide-toggle [object]="communicationEvent" [roleType]="m.CommunicationEvent.SendNotification"></a-md-slide-toggle>
+      <a-md-slide-toggle [object]="communicationEvent" [roleType]="m.CommunicationEvent.SendReminder"></a-md-slide-toggle>
       <a-md-datepicker [object]="communicationEvent" [roleType]="m.PhoneCommunication.ScheduledStart"></a-md-datepicker>
       <a-md-datepicker [object]="communicationEvent" [roleType]="m.PhoneCommunication.ScheduledEnd"></a-md-datepicker>
       <a-md-datepicker [object]="communicationEvent" [roleType]="m.PhoneCommunication.ActualStart"></a-md-datepicker>

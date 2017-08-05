@@ -19,8 +19,11 @@
       <md-card-content>
         <a-md-static [object]="organisation" [roleType]="m.Organisation.OrganisationRoles" display="Name"></a-md-static>
         <a-md-static [object]="organisation" [roleType]="m.Organisation.Name"></a-md-static>
-        <a-md-static *ngIf="organisation.OrganisationClassifications.length > 0" [object]="organisation" [roleType]="m.Organisation.OrganisationClassifications" display="Name" label="Classification"></a-md-static>
-        <a-md-static *ngIf="organisation.IndustryClassifications.length > 0" [object]="organisation" [roleType]="m.Organisation.IndustryClassifications" display="Name" label="Industry"></a-md-static>
+        <a-md-static *ngIf="organisation.OrganisationClassifications.length > 0" [object]="organisation" [roleType]="m.Organisation.OrganisationClassifications"
+          display="Name" label="Classification"></a-md-static>
+        <a-md-static *ngIf="organisation.IndustryClassifications.length > 0" [object]="organisation" [roleType]="m.Organisation.IndustryClassifications"
+          display="Name" label="Industry"></a-md-static>
+        <a-md-static *ngIf="organisation.Comment " [object]="organisation" [roleType]="m.Organisation.Comment"></a-md-static>
         <a-md-static [object]="organisation" [roleType]="m.Organisation.Locale" display="Name"></a-md-static>
         <p class="md-caption tc-grey-500"> last modified: {{ organisation.LastModifiedDate | date}} by {{ organisation.LastModifiedBy.displayName}}</p>
       </md-card-content>
@@ -122,6 +125,7 @@
             <ng-template let-contactRelationship let-last="last" ngFor [ngForOf]="contactRelationships">
               <md-list-item>
                 <div class="pointer" [routerLink]="['/relations/person/' + contactRelationship.Contact.id]" md-line>{{contactRelationship.Contact.FirstName}} {{contactRelationship.Contact.MiddleName}} {{contactRelationship.Contact.LastName}}</div>
+                <div *ngIf="contactRelationship.Contact.Function" md-line class="md-caption">{{contactRelationship.Contact.Function}}</div>
                 <div md-line *ngFor="let partyContactMechanism of contactRelationship.Contact.PartyContactMechanisms">
                   <p *ngIf="this.checkType(partyContactMechanism.ContactMechanism) === 'EmailAddress'  && partyContactMechanism.UseAsDefault"
                     md-line class="md-caption">
@@ -131,7 +135,8 @@
                     md-line class="md-caption">
                     {{ partyContactMechanism.ContactMechanism?.ElectronicAddressString}}
                   </p>
-                  <p *ngIf="this.checkType(partyContactMechanism.ContactMechanism) === 'TelecommunicationsNumber'  && partyContactMechanism.UseAsDefault"
+                  <p *ngIf="this.checkType(partyContactMechanism.ContactMechanism) === 'TelecommunicationsNumber' &&
+                    partyContactMechanism.UseAsDefault  && partyContactMechanism.ContactMechanism.ContactMechanismType.Name === 'Phone'"
                     md-line class="md-caption">
                     {{ partyContactMechanism.ContactMechanism?.CountryCode}} {{ partyContactMechanism.ContactMechanism?.AreaCode}} {{ partyContactMechanism.ContactMechanism?.ContactNumber}}
                   </p>
@@ -141,6 +146,7 @@
                     {{ partyContactMechanism.ContactMechanism?.PostalBoundary?.Locality}} {{ partyContactMechanism.ContactMechanism?.PostalBoundary?.Country?.Name}}
                   </p>
                 </div>
+
                 <p md-line hide-gt-md class="md-caption"> last modified: {{ contactRelationship.Contact.LastModifiedDate | timeAgo }} </p>
 
                 <span flex></span>

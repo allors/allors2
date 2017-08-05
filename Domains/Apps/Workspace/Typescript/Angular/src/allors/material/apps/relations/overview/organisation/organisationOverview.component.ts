@@ -93,7 +93,12 @@ export class OrganisationOverviewComponent implements OnInit, AfterViewInit, OnD
               new TreeNode({
                 roleType: m.Person.PartyContactMechanisms,
                 nodes: [
-                  new TreeNode({ roleType: m.PartyContactMechanism.ContactMechanism }),
+                  new TreeNode({
+                    roleType: m.PartyContactMechanism.ContactMechanism,
+                    nodes: [
+                      new TreeNode({ roleType: m.ContactMechanism.ContactMechanismType }),
+                    ],
+                  }),
                 ],
               }),
             ],
@@ -105,6 +110,7 @@ export class OrganisationOverviewComponent implements OnInit, AfterViewInit, OnD
           new TreeNode({
             roleType: m.PartyContactMechanism.ContactMechanism,
             nodes: [
+              new TreeNode({ roleType: m.ContactMechanism.ContactMechanismType }),
               new TreeNode({
                 roleType: m.PostalAddress.PostalBoundary,
                 nodes: [

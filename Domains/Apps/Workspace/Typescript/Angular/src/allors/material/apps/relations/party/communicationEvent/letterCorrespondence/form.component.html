@@ -49,6 +49,8 @@
         <a-md-input [object]="communicationEvent" [roleType]="m.LetterCorrespondence.Subject"></a-md-input>
         <a-md-textarea [object]="communicationEvent" [roleType]="m.LetterCorrespondence.Note"></a-md-textarea>
         <a-md-slide-toggle [object]="communicationEvent" [roleType]="m.LetterCorrespondence.IncomingLetter"></a-md-slide-toggle>
+        <a-md-slide-toggle [object]="communicationEvent" [roleType]="m.CommunicationEvent.SendNotification"></a-md-slide-toggle>
+        <a-md-slide-toggle [object]="communicationEvent" [roleType]="m.CommunicationEvent.SendReminder"></a-md-slide-toggle>
         <a-md-datepicker [object]="communicationEvent" [roleType]="m.CommunicationEvent.ScheduledStart"></a-md-datepicker>
         <a-md-datepicker [object]="communicationEvent" [roleType]="m.CommunicationEvent.ScheduledEnd"></a-md-datepicker>
         <a-md-datepicker [object]="communicationEvent" [roleType]="m.CommunicationEvent.ActualStart"></a-md-datepicker>

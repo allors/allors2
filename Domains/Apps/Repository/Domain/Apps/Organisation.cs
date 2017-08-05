@@ -116,6 +116,8 @@ namespace Allors.Repository
 
         public DateTime LastModifiedDate { get; set; }
 
+        public string Comment { get; set; }
+
         #endregion
 
         #region Allors

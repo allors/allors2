@@ -24,6 +24,7 @@
         <a-md-static [object]="person" [roleType]="m.Person.FirstName"></a-md-static>
         <a-md-static [object]="person" [roleType]="m.Person.MiddleName"></a-md-static>
         <a-md-static [object]="person" [roleType]="m.Person.LastName"></a-md-static>
+        <a-md-static *ngIf="person.Comment "[object]="person" [roleType]="m.Person.Comment"></a-md-static>
         <a-md-static *ngIf="person.Function" [object]="person" [roleType]="m.Person.Function"></a-md-static>
         <a-md-static *ngIf="person.Gender" [object]="person" [roleType]="m.Person.Gender" display="Name"></a-md-static>
         <a-md-static *ngIf="person.Salutation" [object]="person" [roleType]="m.Person.Salutation" display="Name"></a-md-static>
