@@ -57,6 +57,9 @@ namespace Allors.Repository
         public string Note { get; set; }
 
         public DateTime ActualStart { get; set; }
+        public bool SendNotification { get; set; }
+        public bool SendReminder { get; set; }
+        public DateTime RemindAt { get; set; }
 
         public ObjectState PreviousObjectState { get; set; }
 

@@ -8,7 +8,7 @@ import { Field } from '../../../angular';
   selector: 'a-md-slide-toggle',
   template: `
 <div fxLayout="row">
-  <md-slide-toggle fxFlex [(ngModel)]="model" [name]="name" [required]="required" [disabled]="disabled" [checked]="checked">
+  <md-slide-toggle fxFlex [(ngModel)]="model" [name]="name" [required]="required" [disabled]="disabled">
   {{label}}
   </md-slide-toggle>
   <md-hint *ngIf="hint">{{hint}}</md-hint>
@@ -17,6 +17,4 @@ import { Field } from '../../../angular';
 })
 export class SlideToggleComponent extends Field {
 
-  @Input()
-  checked: boolean;
 }

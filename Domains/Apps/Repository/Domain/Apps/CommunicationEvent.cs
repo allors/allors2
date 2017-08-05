@@ -226,7 +226,7 @@ namespace Allors.Repository
         [Indexed]
         [Workspace]
         CommunicationEventStatus CurrentCommunicationEventStatus { get; set; }
-
+        
         #region Allors
         [Id("e85169df-772c-46cc-a0ef-2bf413aec11d")]
         [AssociationId("684ad0be-d99a-4f67-a235-7d17d49ea224")]
@@ -243,6 +243,36 @@ namespace Allors.Repository
         #endregion
         [Workspace]
         DateTime ActualStart { get; set; }
+
+        #region Allors
+        [Id("7A604BA4-05CA-4F01-8DF5-200D1831F8D7")]
+        [AssociationId("2CBE5730-BBD4-40E8-A05F-B7E86CB7DFF6")]
+        [RoleId("05825569-A1B1-4819-ACA6-62DDD6DE551D")]
+        [Indexed]
+        #endregion
+        [Multiplicity(Multiplicity.OneToOne)]
+        [Workspace]
+         bool SendNotification { get; set; }
+
+        #region Allors
+        [Id("A6EBA67F-7C65-44AF-9B66-03EB07165CD6")]
+        [AssociationId("19641C8E-444C-4791-AF6E-6A3FCB764D0B")]
+        [RoleId("819118A2-9EA9-4A94-8241-B2F228E40FDC")]
+        [Indexed]
+        #endregion
+        [Multiplicity(Multiplicity.OneToOne)]
+        [Workspace]
+        bool SendReminder { get; set; }
+
+        #region Allors
+        [Id("93759DE2-9170-41C9-A641-24D44B89F10F")]
+        [AssociationId("A3A3E4D9-96ED-4411-A36F-252B49EEFCFE")]
+        [RoleId("3307F535-E2C5-45C8-AF08-DAB96C6B9A4D")]
+        [Indexed]
+        #endregion
+        [Multiplicity(Multiplicity.OneToOne)]
+        [Workspace]
+        DateTime RemindAt { get; set; }
 
         #region Allors
         [Id("F1D66D21-15CC-45C3-980C-E4179F66FD57")]
