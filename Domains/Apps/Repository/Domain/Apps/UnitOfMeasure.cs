@@ -31,7 +31,6 @@ namespace Allors.Repository
 
         #endregion
 
-
         #region inherited methods
 
 
@@ -47,5 +46,11 @@ namespace Allors.Repository
 
 
         #endregion
+
+        #region Allors
+        [Id("A10DE6C6-9011-43A1-990C-6A0EDDBA279E")]
+        #endregion
+        [Workspace]
+        public void Delete() { }
     }
 }

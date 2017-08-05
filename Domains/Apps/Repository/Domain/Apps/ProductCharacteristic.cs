@@ -38,5 +38,11 @@ namespace Allors.Repository
 
         public void OnPostDerive() { }
         #endregion
+
+        #region Allors
+        [Id("642DC9D7-E6D8-45A5-8109-B80013C6CF32")]
+        #endregion
+        [Workspace]
+        public void Delete() { }
     }
 }

@@ -19,5 +19,13 @@ namespace Allors.Repository
         [Workspace]
         string Name { get; set; }
 
+        #region Allors
+
+        [Id("0058B700-0F45-4EFD-8094-4BE6404BF502")]
+
+        #endregion
+
+        [Workspace]
+        void Delete();
     }
 }

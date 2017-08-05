@@ -40,5 +40,10 @@ namespace Allors.Repository
 
         #endregion
 
+        #region Allors
+        [Id("FB73B5FB-C2A7-48F2-9244-0CD931C63B63")]
+        #endregion
+        [Workspace]
+        public void Delete() { }
     }
 }
