@@ -6,6 +6,7 @@
   "license": "LGPL-3.0",
   "scripts": {
     "sync": "sync-files ../Meta/src/allors/meta/base src/allors/meta/base",
+    "syncback": "sync-files src/allors/meta/base ../Meta/src/allors/meta/base",
     "postinstall": "npm run sync",
     "pretest": "tsc",
     "test": "mocha",

@@ -15,6 +15,7 @@
     "@types/node": "latest",
     "chai": "latest",
     "istanbul": "latest",
-    "mocha": "latest"
+    "mocha": "latest",
+    "mocha-teamcity-reporter": "^1.1.1"
   }
 }
