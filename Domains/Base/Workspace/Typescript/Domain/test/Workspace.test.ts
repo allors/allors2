@@ -1,14 +1,9 @@
-import { Session, Person, Organisation } from "../src/allors/domain";
-import { Workspace } from "../src/allors/domain/base/Workspace";
-import { ResponseType } from "../src/allors/domain/base/data/responses/ResponseType";
+import { Organisation, Person, PullResponse, ResponseType, Session, Workspace } from "../src/allors/domain";
+import { constructorByName } from "../src/allors/domain/generated/domain.g";
+import { Population as MetaPopulation } from "../src/allors/meta";
 import { syncResponse } from "./fixture";
 
-import { Population as MetaPopulation } from "../src/allors/meta";
-import { constructorByName } from "../src/allors/domain/generated/domain.g";
-
-import * as chai from "chai";
-
-const expect = chai.expect;
+import { assert } from "chai";
 
 describe("Workspace",
     () => {
@@ -22,23 +17,22 @@ describe("Workspace",
             workspace = new Workspace(metaPopulation, constructorByName);
         });
 
-
         it("should have its relations set when synced", () => {
             workspace.sync(syncResponse);
 
-            let martien = workspace.get("3");
+            const martien = workspace.get("3");
 
-            expect(martien.id).to.equal("3");
-            expect(martien.version).to.equal("1003");
-            expect(martien.objectType.name).to.equal("Person");
-            expect(martien.roles.FirstName).to.equal("Martien");
-            expect(martien.roles.MiddleName).to.equal("van");
-            expect(martien.roles.LastName).to.equal("Knippenberg");
-            expect(martien.roles.IsStudent).to.equal(undefined);
-            expect(martien.roles.BirthDate).to.equal(undefined);
+            assert.equal(martien.id, "3");
+            assert.equal(martien.version, "1003");
+            assert.equal(martien.objectType.name, "Person");
+            assert.equal(martien.roles.FirstName, "Martien");
+            assert.equal(martien.roles.MiddleName, "van");
+            assert.equal(martien.roles.LastName, "Knippenberg");
+            assert.isUndefined(martien.roles.IsStudent);
+            assert.isUndefined(martien.roles.BirthDate);
         });
 
-         describe("synced with same securityHash",
+        describe("synced with same securityHash",
             () => {
 
                 beforeEach(() => {
@@ -46,23 +40,24 @@ describe("Workspace",
                 });
 
                 it("should require load objects only for changed version", () => {
-                    let pullResponse = {
-                            responseType: ResponseType.Pull,
-                            userSecurityHash: "#",
-                            objects: [
-                                ["1", "1001"],
-                                ["2", "1002"],
-                                ["3", "1004"]
-                            ]
-                        };
+                    const pullResponse: PullResponse = {
+                        hasErrors: false,
+                        objects: [
+                            ["1", "1001"],
+                            ["2", "1002"],
+                            ["3", "1004"],
+                        ],
+                        responseType: ResponseType.Pull,
+                        userSecurityHash: "#",
+                    };
 
-                    let requireLoad = workspace.diff(pullResponse);
+                    const requireLoad = workspace.diff(pullResponse);
 
-                    expect(requireLoad.objects.length).to.equal(1);
-                    expect(requireLoad.objects[0]).to.equal("3");
+                    assert.equal(requireLoad.objects.length, 1);
+                    assert.equal(requireLoad.objects[0], "3");
                 });
 
-            }
+            },
         );
 
         describe("synced with different securityHash",
@@ -72,23 +67,22 @@ describe("Workspace",
                 });
 
                 it("should require load objects for all objects", () => {
-                    let pullResponse = {
-                            responseType: ResponseType.Pull,
-                            userSecurityHash: "abc",
-                            objects: [
-                                ["1", "1001"],
-                                ["2", "1002"],
-                                ["3", "1004"]
-                            ]
-                        };
+                    const pullResponse: PullResponse = {
+                        hasErrors: false,
+                        objects: [
+                            ["1", "1001"],
+                            ["2", "1002"],
+                            ["3", "1004"],
+                        ],
+                        responseType: ResponseType.Pull,
+                        userSecurityHash: "abc",
+                    };
 
-                    let requireLoad = workspace.diff(pullResponse);
+                    const requireLoad = workspace.diff(pullResponse);
 
-                    expect(requireLoad.objects.length).to.equal(3);
-                    expect(requireLoad.objects).to.contain("1");
-                    expect(requireLoad.objects).to.contain("2");
-                    expect(requireLoad.objects).to.contain("3");
+                    assert.equal(requireLoad.objects.length, 3);
+                    assert.sameMembers(requireLoad.objects, ["1", "2", "3"]);
                 });
             });
-        }
+    },
 );

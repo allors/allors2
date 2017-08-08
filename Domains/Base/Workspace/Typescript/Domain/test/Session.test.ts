@@ -1,17 +1,11 @@
-import { Session, Person, Organisation } from "../src/allors/domain";
-import { Workspace } from "../src/allors/domain/base/Workspace";
-import { PushResponse } from "../src/allors/domain/base/data/responses/PushResponse";
-import { ResponseType } from "../src/allors/domain/base/data/responses/ResponseType";
+import { Organisation, Person, PushResponse, ResponseType, Session, Workspace } from "../src/allors/domain";
+import { constructorByName } from "../src/allors/domain/generated/domain.g";
+import { Population as MetaPopulation } from "../src/allors/meta";
 import { syncResponse } from "./fixture";
 
-import { Population as MetaPopulation } from "../src/allors/meta";
-import { constructorByName } from "../src/allors/domain/generated/domain.g";
-
-import * as chai from "chai";
+import { assert } from "chai";
 
 import * as _ from "lodash";
-
-const expect = chai.expect;
 
 describe("Session",
     () => {
@@ -34,68 +28,68 @@ describe("Session",
             });
 
             it("should get unit roles", () => {
-                let koen = session.get("1") as Person;
+                const koen = session.get("1") as Person;
 
-                expect(koen.FirstName).to.equal("Koen");
-                expect(koen.MiddleName).to.equal(null);
-                expect(koen.LastName).to.equal("Van Exem");
-                expect(koen.BirthDate.toUTCString()).to.equal(new Date("1973-03-27T18:00:00Z").toUTCString());
-                expect(koen.IsStudent).to.equal(true);
+                assert.equal(koen.FirstName, "Koen");
+                assert.isNull(koen.MiddleName);
+                assert.equal(koen.LastName, "Van Exem");
+                assert.equal(koen.BirthDate.toUTCString(), new Date("1973-03-27T18:00:00Z").toUTCString());
+                assert.isTrue(koen.IsStudent);
 
-                let patrick = session.get("2") as Person;
+                const patrick = session.get("2") as Person;
 
-                expect(patrick.FirstName).to.equal("Patrick");
-                expect(patrick.MiddleName).to.equal(null);
-                expect(patrick.LastName).to.equal("De Boeck");
-                expect(patrick.BirthDate).to.equal(null);
-                expect(patrick.IsStudent).to.equal(false);
+                assert.equal(patrick.FirstName, "Patrick");
+                assert.isNull(patrick.MiddleName, null);
+                assert.equal(patrick.LastName, "De Boeck");
+                assert.isNull(patrick.BirthDate);
+                assert.isFalse(patrick.IsStudent);
 
-                let martien = session.get("3") as Person;
+                const martien = session.get("3") as Person;
 
-                expect(martien.FirstName).to.equal("Martien");
-                expect(martien.MiddleName).to.equal("van");
-                expect(martien.LastName).to.equal("Knippenberg");
-                expect(martien.BirthDate).to.equal(null);
-                expect(martien.IsStudent).to.equal(null);
+                assert.equal(martien.FirstName, "Martien");
+                assert.equal(martien.MiddleName, "van");
+                assert.equal(martien.LastName, "Knippenberg");
+                assert.isNull(martien.BirthDate);
+                assert.isNull(martien.IsStudent);
             });
 
             it("should get composite roles", () => {
-                let koen = session.get("1") as Person;
-                let patrick = session.get("2") as Person;
-                let martien = session.get("3") as Person;
+                const koen = session.get("1") as Person;
+                const patrick = session.get("2") as Person;
+                const martien = session.get("3") as Person;
 
-                let acme = session.get("101") as Organisation;
+                const acme = session.get("101") as Organisation;
 
-                expect(acme.Owner).to.equal(koen);
-                expect(acme.Manager).to.equal(null);
+                assert.equal(acme.Owner, koen);
+                assert.isNull(acme.Manager);
 
-                let ocme = session.get("102") as Organisation;
+                const ocme = session.get("102") as Organisation;
 
-                expect(ocme.Owner).to.equal(patrick);
-                expect(ocme.Manager).to.equal(null);
+                assert.equal(ocme.Owner, patrick);
+                assert.isNull(ocme.Manager);
 
-                let icme = session.get("103") as Organisation;
+                const icme = session.get("103") as Organisation;
 
-                expect(icme.Owner).to.equal(martien);
-                expect(icme.Manager).to.equal(null);
+                assert.equal(icme.Owner, martien);
+                assert.isNull(icme.Manager);
             });
 
             it("should get composites roles", () => {
-                let koen = session.get("1") as Person;
-                let patrick = session.get("2") as Person;
-                let martien = session.get("3") as Person;
+                const koen = session.get("1") as Person;
+                const patrick = session.get("2") as Person;
+                const martien = session.get("3") as Person;
 
-                let acme = session.get("101") as Organisation;
-                let ocme = session.get("102") as Organisation;
-                let icme = session.get("103") as Organisation;
+                const acme = session.get("101") as Organisation;
+                const ocme = session.get("102") as Organisation;
+                const icme = session.get("103") as Organisation;
 
-                expect(acme.Employees).to.have.members([koen, patrick, martien]);
-                expect(ocme.Employees).to.have.members([koen]);
-                expect(icme.Employees).to.have.members([]);
+                assert.sameMembers(acme.Employees, [koen, patrick, martien]);
+                assert.sameMembers(ocme.Employees, [koen]);
+                assert.sameMembers(icme.Employees, []);
 
-                expect(acme.Shareholders).to.have.members([]);
-                expect(ocme.Shareholders).to.have.members([]);
-                expect(icme.Shareholders).to.have.members([]);
+                assert.sameMembers(acme.Shareholders, []);
+                assert.sameMembers(ocme.Shareholders, []);
+                assert.sameMembers(icme.Shareholders, []);
             });
 
             describe("two different sessions with same objects",
@@ -108,12 +102,12 @@ describe("Session",
                 let martien1: Person;
 
                 let acme1: Organisation;
-                let ocme1:  Organisation;
-                let icme1:  Organisation;
+                let ocme1: Organisation;
+                let icme1: Organisation;
 
                 let koen2: Person;
-                let patrick2:  Person;
-                let martien2:  Person;
+                let patrick2: Person;
+                let martien2: Person;
 
                 let acme2: Organisation;
                 let ocme2: Organisation;
@@ -148,15 +142,15 @@ describe("Session",
                     });
 
                     it("should see changes in this session", () => {
-                        expect(martien1.FirstName).to.equal("Martien");
-                        expect(martien1.LastName).to.equal("Knippenberg");
-                        expect(martien1.MiddleName).to.equal("van");
+                        assert.equal(martien1.FirstName, "Martien");
+                        assert.equal(martien1.LastName, "Knippenberg");
+                        assert.equal(martien1.MiddleName, "van");
                     });
 
                     it("should not see changes in the other session", () => {
-                        expect(martien2.FirstName).to.equal("Martinus");
-                        expect(martien2.LastName).to.equal("Knippenberg");
-                        expect(martien2.MiddleName).to.equal("X");
+                        assert.equal(martien2.FirstName, "Martinus");
+                        assert.equal(martien2.LastName, "Knippenberg");
+                        assert.equal(martien2.MiddleName, "X");
                     });
                 });
 
@@ -169,23 +163,23 @@ describe("Session",
                     });
 
                     it("should see changes in this session", () => {
-                        expect(acme1.Owner).to.equal(koen1);
-                        expect(ocme1.Owner).to.equal(patrick1);
-                        expect(icme1.Owner).to.equal(martien1);
+                        assert.equal(acme1.Owner, koen1);
+                        assert.equal(ocme1.Owner, patrick1);
+                        assert.equal(icme1.Owner, martien1);
 
-                        expect(acme1.Manager).to.equal(null);
-                        expect(ocme1.Manager).to.equal(null);
-                        expect(icme1.Manager).to.equal(null);
+                        assert.isNull(acme1.Manager);
+                        assert.isNull(ocme1.Manager);
+                        assert.isNull(icme1.Manager);
                     });
 
                     it("should not see changes in the other session", () => {
-                        expect(acme2.Owner).to.equal(martien2);
-                        expect(ocme2.Owner).to.equal(null);
-                        expect(icme2.Owner).to.equal(martien2);
+                        assert.equal(acme2.Owner, martien2);
+                        assert.isNull(ocme2.Owner);
+                        assert.equal(icme2.Owner, martien2);
 
-                        expect(acme2.Manager).to.equal(patrick2);
-                        expect(ocme2.Manager).to.equal(null);
-                        expect(icme2.Manager).to.equal(null);
+                        assert.equal(acme2.Manager, patrick2);
+                        assert.isNull(ocme2.Manager);
+                        assert.isNull(icme2.Manager);
                     });
                 });
 
@@ -197,286 +191,286 @@ describe("Session",
                     });
 
                     it("should see changes in this session", () => {
-                        expect(acme1.Employees).to.have.members([koen1, patrick1, martien1]);
-                        expect(ocme1.Employees).to.have.members([koen1]);
-                        expect(icme1.Employees).to.have.members([]);
+                        assert.sameMembers(acme1.Employees, [koen1, patrick1, martien1]);
+                        assert.sameMembers(ocme1.Employees, [koen1]);
+                        assert.sameMembers(icme1.Employees, []);
                     });
 
                     it("should not see changes in the other session", () => {
-                        expect(acme2.Employees).to.have.members([]);
-                        expect(ocme2.Employees).to.have.members([koen2]);
-                        expect(icme2.Employees).to.have.members([koen2, patrick2, martien2]);
+                        assert.sameMembers(acme2.Employees, []);
+                        assert.sameMembers(ocme2.Employees, [koen2]);
+                        assert.sameMembers(icme2.Employees, [koen2, patrick2, martien2]);
                     });
                 });
             });
 
             it("pushRequest should have all changes from session",
             () => {
-                let koen = session.get("1") as Person;
-                let patrick = session.get("2") as Person;
-                let martien = session.get("3") as Person;
+                const koen = session.get("1") as Person;
+                const patrick = session.get("2") as Person;
+                const martien = session.get("3") as Person;
 
-                let acme = session.get("101") as Organisation;
-                let ocme = session.get("102") as Organisation;
-                let icme = session.get("103") as Organisation;
+                const acme = session.get("101") as Organisation;
+                const ocme = session.get("102") as Organisation;
+                const icme = session.get("103") as Organisation;
 
                 acme.Owner = martien;
                 ocme.Owner = null;
 
                 acme.Manager = patrick;
 
-                let save = session.pushRequest();
+                const save = session.pushRequest();
 
-                expect(save.objects.length).to.equal(2);
+                assert.equal(save.objects.length, 2);
 
-                let savedAcme = _.find(save.objects, v => (v.i === "101"));
+                const savedAcme = _.find(save.objects, (v) => (v.i === "101"));
 
-                expect(savedAcme.v).to.equal("1101");
-                expect(savedAcme.roles.length).to.equal(2);
+                assert.equal(savedAcme.v, "1101");
+                assert.equal(savedAcme.roles.length, 2);
 
-                let savedAcmeOwner = _.find(savedAcme.roles, v => (v.t === "Owner"));
-                let savedAcmeManager = _.find(savedAcme.roles, v => (v.t === "Manager"));
+                const savedAcmeOwner = _.find(savedAcme.roles, (v) => (v.t === "Owner"));
+                const savedAcmeManager = _.find(savedAcme.roles, (v) => (v.t === "Manager"));
 
-                expect(savedAcmeOwner.s).to.equal("3");
-                expect(savedAcmeOwner.a).to.equal(undefined);
-                expect(savedAcmeOwner.r).to.equal(undefined);
-                expect(savedAcmeManager.s).to.equal("2");
-                expect(savedAcmeManager.a).to.equal(undefined);
-                expect(savedAcmeManager.r).to.equal(undefined);
+                assert.equal(savedAcmeOwner.s, "3");
+                assert.isUndefined(savedAcmeOwner.a);
+                assert.isUndefined(savedAcmeOwner.r);
+                assert.equal(savedAcmeManager.s, "2");
+                assert.isUndefined(savedAcmeManager.a);
+                assert.isUndefined(savedAcmeManager.r);
 
-                let savedOcme = _.find(save.objects, v => (v.i === "102"));
+                const savedOcme = _.find(save.objects, (v) => (v.i === "102"));
 
-                expect(savedOcme.v).to.equal("1102");
-                expect(savedOcme.roles.length).to.equal(1);
+                assert.equal(savedOcme.v, "1102");
+                assert.equal(savedOcme.roles.length, 1);
 
-                let savedOcmeOwner = _.find(savedOcme.roles, v => (v.t === "Owner"));
+                const savedOcmeOwner = _.find(savedOcme.roles, (v) => (v.t === "Owner"));
 
-                expect(savedOcmeOwner.s).to.equal(null);
-                expect(savedOcmeOwner.a).to.equal(undefined);
-                expect(savedOcmeOwner.r).to.equal(undefined);
+                assert.isNull(savedOcmeOwner.s);
+                assert.isUndefined(savedOcmeOwner.a);
+                assert.isUndefined(savedOcmeOwner.r);
             });
 
             it("pushRequest should have all changes from session",
             () => {
-                let koen = session.get("1") as Person;
-                let patrick = session.get("2") as Person;
-                let martien = session.get("3") as Person;
+                const koen = session.get("1") as Person;
+                const patrick = session.get("2") as Person;
+                const martien = session.get("3") as Person;
 
-                let acme = session.get("101") as Organisation;
-                let ocme = session.get("102") as Organisation;
-                let icme = session.get("103") as Organisation;
+                const acme = session.get("101") as Organisation;
+                const ocme = session.get("102") as Organisation;
+                const icme = session.get("103") as Organisation;
 
                 acme.Owner = martien;
                 ocme.Owner = null;
 
                 acme.Manager = patrick;
 
-                let save = session.pushRequest();
+                const save = session.pushRequest();
 
-                expect(save.objects.length).to.equal(2);
+                assert.equal(save.objects.length, 2);
 
-                let savedAcme = _.find(save.objects, v => (v.i === "101"));
+                const savedAcme = _.find(save.objects, (v) => (v.i === "101"));
 
-                expect(savedAcme.v).to.equal("1101");
-                expect(savedAcme.roles.length).to.equal(2);
+                assert.equal(savedAcme.v, "1101");
+                assert.equal(savedAcme.roles.length, 2);
 
-                let savedAcmeOwner = _.find(savedAcme.roles, v => (v.t === "Owner"));
-                let savedAcmeManager = _.find(savedAcme.roles, v => (v.t === "Manager"));
+                const savedAcmeOwner = _.find(savedAcme.roles, (v) => (v.t === "Owner"));
+                const savedAcmeManager = _.find(savedAcme.roles, (v) => (v.t === "Manager"));
 
-                expect(savedAcmeOwner.s).to.equal("3");
-                expect(savedAcmeOwner.a).to.equal(undefined);
-                expect(savedAcmeOwner.r).to.equal(undefined);
-                expect(savedAcmeManager.s).to.equal("2");
-                expect(savedAcmeManager.a).to.equal(undefined);
-                expect(savedAcmeManager.r).to.equal(undefined);
+                assert.equal(savedAcmeOwner.s, "3");
+                assert.isUndefined(savedAcmeOwner.a);
+                assert.isUndefined(savedAcmeOwner.r);
+                assert.equal(savedAcmeManager.s, "2");
+                assert.isUndefined(savedAcmeManager.a);
+                assert.isUndefined(savedAcmeManager.r);
 
-                let savedOcme = _.find(save.objects, v => (v.i === "102"));
+                const savedOcme = _.find(save.objects, (v) => (v.i === "102"));
 
-                expect(savedOcme.v).to.equal("1102");
-                expect(savedOcme.roles.length).to.equal(1);
+                assert.equal(savedOcme.v, "1102");
+                assert.equal(savedOcme.roles.length, 1);
 
-                let savedOcmeOwner = _.find(savedOcme.roles, v => (v.t === "Owner"));
+                const savedOcmeOwner = _.find(savedOcme.roles, (v) => (v.t === "Owner"));
 
-                expect(savedOcmeOwner.s).to.equal(null);
-                expect(savedOcmeOwner.a).to.equal(undefined);
-                expect(savedOcmeOwner.r).to.equal(undefined);
+                assert.isNull(savedOcmeOwner.s);
+                assert.isUndefined(savedOcmeOwner.a);
+                assert.isUndefined(savedOcmeOwner.r);
             });
 
             it("should save with many objects", () => {
-                let martien = session.get("3") as Person;
+                const martien = session.get("3") as Person;
 
-                let mathijs = session.create("Person") as Person;
+                const mathijs = session.create("Person") as Person;
                 mathijs.FirstName = "Mathijs";
                 mathijs.LastName = "Verwer";
 
-                let acme2 = session.create("Organisation") as Organisation;
+                const acme2 = session.create("Organisation") as Organisation;
                 acme2.Name = "Acme 2";
                 acme2.Manager = mathijs;
                 acme2.AddEmployee(mathijs);
 
-                let acme3 = session.create("Organisation") as Organisation;
+                const acme3 = session.create("Organisation") as Organisation;
                 acme3.Name = "Acme 3";
                 acme3.Manager = martien;
                 acme3.AddEmployee(martien);
 
-                let save = session.pushRequest();
-                expect(save.newObjects.length).to.equal(3);
-                expect(save.objects.length).to.equal(0);
+                const save = session.pushRequest();
+                assert.equal(save.newObjects.length, 3);
+                assert.equal(save.objects.length, 0);
 
                 {
-                    let savedMathijs = _.find(save.newObjects, v => (v.ni === mathijs.newId));
-                    expect(savedMathijs.t).to.equal("Person");
-                    expect(savedMathijs.roles.length).to.equal(2);
+                    const savedMathijs = _.find(save.newObjects, (v) => (v.ni === mathijs.newId));
+                    assert.equal(savedMathijs.t, "Person");
+                    assert.equal(savedMathijs.roles.length, 2);
 
-                    let savedMathijsFirstName = _.find(savedMathijs.roles, v => (v.t === "FirstName"));
-                    expect(savedMathijsFirstName.s).to.equal("Mathijs");
+                    const savedMathijsFirstName = _.find(savedMathijs.roles, (v) => (v.t === "FirstName"));
+                    assert.equal(savedMathijsFirstName.s, "Mathijs");
 
-                    let savedMathijsLastName = _.find(savedMathijs.roles, v => (v.t === "LastName"));
-                    expect(savedMathijsLastName.s).to.equal("Verwer");
+                    const savedMathijsLastName = _.find(savedMathijs.roles, (v) => (v.t === "LastName"));
+                    assert.equal(savedMathijsLastName.s, "Verwer");
                 }
 
                 {
-                    let savedAcme2 = _.find(save.newObjects, v => (v.ni === acme2.newId));
-                    expect(savedAcme2.t).to.equal("Organisation");
-                    expect(savedAcme2.roles.length).to.equal(3);
+                    const savedAcme2 = _.find(save.newObjects, (v) => (v.ni === acme2.newId));
+                    assert.equal(savedAcme2.t, "Organisation");
+                    assert.equal(savedAcme2.roles.length, 3);
 
-                    let savedAcme2Manager = _.find(savedAcme2.roles, v => (v.t === "Manager"));
-                    expect(savedAcme2Manager.s).to.equal(mathijs.newId);
+                    const savedAcme2Manager = _.find(savedAcme2.roles, (v) => (v.t === "Manager"));
+                    assert.equal(savedAcme2Manager.s, mathijs.newId);
 
-                    let savedAcme2Employees = _.find(savedAcme2.roles, v => (v.t === "Employees"));
-                    expect(savedAcme2Employees.s).to.equal(undefined);
-                    expect(savedAcme2Employees.a).to.have.members([mathijs.newId]);
-                    expect(savedAcme2Employees.r).to.equal(undefined);
+                    const savedAcme2Employees = _.find(savedAcme2.roles, (v) => (v.t === "Employees"));
+                    assert.isUndefined(savedAcme2Employees.s);
+                    assert.sameMembers(savedAcme2Employees.a, [mathijs.newId]);
+                    assert.isUndefined(savedAcme2Employees.r);
                 }
 
                 {
-                    let savedAcme3 = _.find(save.newObjects, v => (v.ni === acme3.newId));
-                    expect(savedAcme3.t).to.equal("Organisation");
-                    expect(savedAcme3.roles.length).to.equal(3);
+                    const savedAcme3 = _.find(save.newObjects, (v) => (v.ni === acme3.newId));
+                    assert.equal(savedAcme3.t, "Organisation");
+                    assert.equal(savedAcme3.roles.length, 3);
 
-                    let savedAcme3Manager = _.find(savedAcme3.roles, v => (v.t === "Manager"));
-                    expect(savedAcme3Manager.s).to.equal("3");
+                    const savedAcme3Manager = _.find(savedAcme3.roles, (v) => (v.t === "Manager"));
+                    assert.equal(savedAcme3Manager.s, "3");
 
-                    let savedAcme3Employees = _.find(savedAcme3.roles, v => (v.t === "Employees"));
-                    expect(savedAcme3Employees.s).to.equal(undefined);
-                    expect(savedAcme3Employees.a).to.have.members(["3"]);
-                    expect(savedAcme3Employees.r).to.equal(undefined);
+                    const savedAcme3Employees = _.find(savedAcme3.roles, (v) => (v.t === "Employees"));
+                    assert.isUndefined(savedAcme3Employees.s);
+                    assert.sameMembers(savedAcme3Employees.a, ["3"]);
+                    assert.isUndefined(savedAcme3Employees.r);
                 }
             });
 
             it("should save with existing objects", () => {
-                let koen = session.get("1") as Person;
-                let patrick = session.get("2") as Person;
-                let martien = session.get("3") as Person;
+                const koen = session.get("1") as Person;
+                const patrick = session.get("2") as Person;
+                const martien = session.get("3") as Person;
 
-                let acme = session.get("101") as Organisation;
-                let ocme = session.get("102") as Organisation;
-                let icme = session.get("103") as Organisation;
+                const acme = session.get("101") as Organisation;
+                const ocme = session.get("102") as Organisation;
+                const icme = session.get("103") as Organisation;
 
                 acme.Employees = null;
                 ocme.Employees = [martien, patrick];
                 icme.Employees = [koen, patrick, martien];
 
-                let save = session.pushRequest();
+                const save = session.pushRequest();
 
-                expect(save.newObjects.length).to.equal(0);
-                expect(save.objects.length).to.equal(3);
+                assert.equal(save.newObjects.length, 0);
+                assert.equal(save.objects.length, 3);
 
-                let savedAcme = _.find(save.objects, v => (v.i === "101"));
+                const savedAcme = _.find(save.objects, (v) => (v.i === "101"));
 
-                expect(savedAcme.v).to.equal("1101");
-                expect(savedAcme.roles.length).to.equal(1);
+                assert.equal(savedAcme.v, "1101");
+                assert.equal(savedAcme.roles.length, 1);
 
-                let savedAcmeEmployees = _.find(savedAcme.roles, v => (v.t === "Employees"));
+                const savedAcmeEmployees = _.find(savedAcme.roles, (v) => (v.t === "Employees"));
 
-                expect(savedAcmeEmployees.s).to.equal(undefined);
-                expect(savedAcmeEmployees.a).to.have.members([]);
-                expect(savedAcmeEmployees.r).to.have.members(["1", "2", "3"]);
+                assert.isUndefined(savedAcmeEmployees.s);
+                assert.sameMembers(savedAcmeEmployees.a, []);
+                assert.sameMembers(savedAcmeEmployees.r, ["1", "2", "3"]);
 
-                let savedOcme = _.find(save.objects, v => (v.i === "102"));
+                const savedOcme = _.find(save.objects, (v) => (v.i === "102"));
 
-                expect(savedOcme.v).to.equal("1102");
-                expect(savedOcme.roles.length).to.equal(1);
+                assert.equal(savedOcme.v, "1102");
+                assert.equal(savedOcme.roles.length, 1);
 
-                let savedOcmeEmployees = _.find(savedOcme.roles, v => (v.t === "Employees"));
+                const savedOcmeEmployees = _.find(savedOcme.roles, (v) => (v.t === "Employees"));
 
-                expect(savedOcmeEmployees.s).to.equal(undefined);
-                expect(savedOcmeEmployees.a).to.have.members(["2", "3"]);
-                expect(savedOcmeEmployees.r).to.have.members(["1"]);
+                assert.isUndefined(savedOcmeEmployees.s);
+                assert.sameMembers(savedOcmeEmployees.a, ["2", "3"]);
+                assert.sameMembers(savedOcmeEmployees.r, ["1"]);
 
-                let savedIcme = _.find(save.objects, v => (v.i === "103"));
+                const savedIcme = _.find(save.objects, (v) => (v.i === "103"));
 
-                expect(savedIcme.v).to.equal("1103");
-                expect(savedIcme.roles.length).to.equal(1);
+                assert.equal(savedIcme.v, "1103");
+                assert.equal(savedIcme.roles.length, 1);
 
-                let savedIcmeEmployees = _.find(savedIcme.roles, v => (v.t === "Employees"));
+                const savedIcmeEmployees = _.find(savedIcme.roles, (v) => (v.t === "Employees"));
 
-                expect(savedIcmeEmployees.s).to.equal(undefined);
-                expect(savedIcmeEmployees.a).to.have.members(["1", "2", "3"]);
-                expect(savedIcmeEmployees.r).to.equal(undefined);
+                assert.isUndefined(savedIcmeEmployees.s);
+                assert.sameMembers(savedIcmeEmployees.a, ["1", "2", "3"]);
+                assert.isUndefined(savedIcmeEmployees.r);
             });
 
             it("should save with new objects", () => {
 
-                let martien = session.get("3") as Person;
+                const martien = session.get("3") as Person;
 
-                let mathijs = session.create("Person") as Person;
+                const mathijs = session.create("Person") as Person;
                 mathijs.FirstName = "Mathijs";
                 mathijs.LastName = "Verwer";
 
-                let acme2 = session.create("Organisation") as Organisation;
+                const acme2 = session.create("Organisation") as Organisation;
                 acme2.Name = "Acme 2";
                 acme2.Manager = mathijs;
                 acme2.AddEmployee(mathijs);
 
-                let acme3 = session.create("Organisation") as Organisation;
+                const acme3 = session.create("Organisation") as Organisation;
                 acme3.Name = "Acme 3";
                 acme3.Manager = martien;
                 acme3.AddEmployee(martien);
 
-                let save = session.pushRequest();
+                const save = session.pushRequest();
 
-                expect(save.newObjects.length).to.equal(3);
-                expect(save.objects.length).to.equal(0);
+                assert.equal(save.newObjects.length, 3);
+                assert.equal(save.objects.length, 0);
 
                 {
-                    let savedMathijs = _.find(save.newObjects, v => (v.ni === mathijs.newId));
-                    expect(savedMathijs.t).to.equal("Person");
-                    expect(savedMathijs.roles.length).to.equal(2);
+                    const savedMathijs = _.find(save.newObjects, (v) => (v.ni === mathijs.newId));
+                    assert.equal(savedMathijs.t, "Person");
+                    assert.equal(savedMathijs.roles.length, 2);
 
-                    let savedMathijsFirstName = _.find(savedMathijs.roles, v => (v.t === "FirstName"));
-                    expect(savedMathijsFirstName.s).to.equal("Mathijs");
+                    const savedMathijsFirstName = _.find(savedMathijs.roles, (v) => (v.t === "FirstName"));
+                    assert.equal(savedMathijsFirstName.s, "Mathijs");
 
-                    let savedMathijsLastName = _.find(savedMathijs.roles, v => (v.t === "LastName"));
-                    expect(savedMathijsLastName.s).to.equal("Verwer");
+                    const savedMathijsLastName = _.find(savedMathijs.roles, (v) => (v.t === "LastName"));
+                    assert.equal(savedMathijsLastName.s, "Verwer");
                 }
 
                 {
-                    let savedAcme2 = _.find(save.newObjects, v => (v.ni === acme2.newId));
-                    expect(savedAcme2.t).to.equal("Organisation");
-                    expect(savedAcme2.roles.length).to.equal(3);
+                    const savedAcme2 = _.find(save.newObjects, (v) => (v.ni === acme2.newId));
+                    assert.equal(savedAcme2.t, "Organisation");
+                    assert.equal(savedAcme2.roles.length, 3);
 
-                    let savedAcme2Manager = _.find(savedAcme2.roles, v => (v.t === "Manager"));
-                    expect(savedAcme2Manager.s).to.equal(mathijs.newId);
+                    const savedAcme2Manager = _.find(savedAcme2.roles, (v) => (v.t === "Manager"));
+                    assert.equal(savedAcme2Manager.s, mathijs.newId);
 
-                    let savedAcme2Employees = _.find(savedAcme2.roles, v => (v.t === "Employees"));
-                    expect(savedAcme2Employees.s).to.equal(undefined);
-                    expect(savedAcme2Employees.a).to.have.members([mathijs.newId]);
-                    expect(savedAcme2Employees.r).to.equal(undefined);
+                    const savedAcme2Employees = _.find(savedAcme2.roles, (v) => (v.t === "Employees"));
+                    assert.isUndefined(savedAcme2Employees.s);
+                    assert.sameMembers(savedAcme2Employees.a, [mathijs.newId]);
+                    assert.isUndefined(savedAcme2Employees.r);
                 }
 
                 {
-                    let savedAcme3 = _.find(save.newObjects, v => (v.ni === acme3.newId));
-                    expect(savedAcme3.t).to.equal("Organisation");
-                    expect(savedAcme3.roles.length).to.equal(3);
+                    const savedAcme3 = _.find(save.newObjects, (v) => (v.ni === acme3.newId));
+                    assert.equal(savedAcme3.t, "Organisation");
+                    assert.equal(savedAcme3.roles.length, 3);
 
-                    let savedAcme3Manager = _.find(savedAcme3.roles, v => (v.t === "Manager"));
-                    expect(savedAcme3Manager.s).to.equal("3");
+                    const savedAcme3Manager = _.find(savedAcme3.roles, (v) => (v.t === "Manager"));
+                    assert.equal(savedAcme3Manager.s, "3");
 
-                    let savedAcme3Employees = _.find(savedAcme3.roles, v => (v.t === "Employees"));
-                    expect(savedAcme3Employees.s).to.equal(undefined);
-                    expect(savedAcme3Employees.a).to.have.members(["3"]);
-                    expect(savedAcme3Employees.r).to.equal(undefined);
+                    const savedAcme3Employees = _.find(savedAcme3.roles, (v) => (v.t === "Employees"));
+                    assert.isUndefined(savedAcme3Employees.s);
+                    assert.sameMembers(savedAcme3Employees.a, ["3"]);
+                    assert.isUndefined(savedAcme3Employees.r);
                 }
             });
 
@@ -484,22 +478,22 @@ describe("Session",
 
                 const john = session.create("Person") as Person;
 
-                expect(john).to.exist;
+                assert.exists(john);
 
-                expect(john.FirstName).to.be.null;
-                expect(john.CanReadFirstName).to.be.true;
-                expect(john.CanWriteFirstName).to.be.true;
+                assert.isNull(john.FirstName);
+                assert.isTrue(john.CanReadFirstName);
+                assert.isTrue(john.CanWriteFirstName);
             });
 
             it("reset", () => {
 
-                let martien = session.get("3") as Person;
+                const martien = session.get("3") as Person;
 
-                let mathijs = session.create("Person") as Person;
+                const mathijs = session.create("Person") as Person;
                 mathijs.FirstName = "Mathijs";
                 mathijs.LastName = "Verwer";
 
-                let acme2 = session.create("Organisation") as Organisation;
+                const acme2 = session.create("Organisation") as Organisation;
                 acme2.Name = "Acme 2";
                 acme2.Owner = martien;
                 acme2.Manager = mathijs;
@@ -508,30 +502,30 @@ describe("Session",
 
                 session.reset();
 
-                expect(mathijs.isNew).to.be.false;
-                expect(mathijs.id).to.be.undefined;
-                expect(mathijs.newId).to.be.undefined;
-                expect(mathijs.session).to.be.undefined;
-                expect(mathijs.objectType).to.be.undefined;
-                expect(mathijs.FirstName).to.be.undefined;
-                expect(mathijs.LastName).to.be.undefined;
-                expect(mathijs.CycleOne).to.be.undefined;
-                expect(mathijs.CycleMany).to.be.undefined;
+                assert.isFalse(mathijs.isNew);
+                assert.isUndefined(mathijs.id);
+                assert.isUndefined(mathijs.newId);
+                assert.isUndefined(mathijs.session);
+                assert.isUndefined(mathijs.objectType);
+                assert.isUndefined(mathijs.FirstName);
+                assert.isUndefined(mathijs.LastName);
+                assert.isUndefined(mathijs.CycleOne);
+                assert.isUndefined(mathijs.CycleMany);
 
-                expect(acme2.isNew).to.be.false;
-                expect(acme2.id).to.be.undefined;
-                expect(acme2.newId).to.be.undefined;
-                expect(acme2.session).to.be.undefined;
-                expect(acme2.objectType).to.be.undefined;
-                expect(acme2.Name).to.be.undefined;
-                expect(acme2.Owner).to.be.undefined;
-                expect(acme2.Manager).to.be.undefined;
+                assert.isFalse(acme2.isNew);
+                assert.isUndefined(acme2.id);
+                assert.isUndefined(acme2.newId);
+                assert.isUndefined(acme2.session);
+                assert.isUndefined(acme2.objectType);
+                assert.isUndefined(acme2.Name);
+                assert.isUndefined(acme2.Owner);
+                assert.isUndefined(acme2.Manager);
             });
 
             it("onsaved", () => {
                 let saveResponse: PushResponse = {
+                    hasErrors: false,
                     responseType: ResponseType.Push,
-                    hasErrors: false
                 };
 
                 session.pushResponse(saveResponse);
@@ -540,90 +534,89 @@ describe("Session",
                 mathijs.FirstName = "Mathijs";
                 mathijs.LastName = "Verwer";
 
-                let newId = mathijs.newId;
+                const newId = mathijs.newId;
 
                 saveResponse = {
-                    responseType: ResponseType.Push,
                     hasErrors: false,
                     newObjects: [
                         {
                             i: "10000",
-                            ni: newId
-                        }
-                    ]
+                            ni: newId,
+                        },
+                    ],
+                    responseType: ResponseType.Push,
                 };
 
                 session.pushResponse(saveResponse);
 
-                expect(mathijs.newId).to.be.undefined;
-                expect(mathijs.id).to.equal("10000");
-                expect(mathijs.objectType.name).to.equal("Person");
+                assert.isUndefined(mathijs.newId);
+                assert.equal(mathijs.id, "10000");
+                assert.equal(mathijs.objectType.name, "Person");
 
                 mathijs = session.get("10000") as Person;
 
-                expect(mathijs).to.exist;
+                assert.exists(mathijs);
 
                 let exceptionThrown = false;
                 try {
                     session.get(newId);
-                }
-                catch (e) {
+                }catch (e) {
                     exceptionThrown = true;
                 }
 
-                expect(exceptionThrown).to.be.true;
+                assert.isTrue(exceptionThrown);
             });
 
             it("methodCanExecute", () => {
-                let acme = session.get("101") as Organisation;
-                let ocme = session.get("102") as Organisation;
-                let icme = session.get("102") as Organisation;
+                const acme = session.get("101") as Organisation;
+                const ocme = session.get("102") as Organisation;
+                const icme = session.get("103") as Organisation;
 
-                expect(acme.CanExecuteJustDoIt).to.be.true;
-                expect(ocme.CanExecuteJustDoIt).to.be.false;
-                expect(icme.CanExecuteJustDoIt).to.be.false;
+                assert.isTrue(acme.CanExecuteJustDoIt);
+                assert.isFalse(ocme.CanExecuteJustDoIt);
+                assert.isFalse(icme.CanExecuteJustDoIt);
             });
 
             it("get", () => {
-                let acme = session.create("Organisation") as Organisation;
+                const acme = session.create("Organisation") as Organisation;
 
                 let acmeAgain = session.get(acme.id);
-                expect(acmeAgain).to.equal(acme);
+                assert.equal(acmeAgain, acme);
 
                 acmeAgain = session.get(acme.newId);
-                expect(acmeAgain).to.equal(acme);
+                assert.equal(acmeAgain, acme);
             });
 
             it("hasChangesWithNewObject", () => {
-                expect(session.hasChanges).to.be.false;
+                assert.isFalse(session.hasChanges);
 
                 const walter = session.create("Person") as Person;
 
-                expect(session.hasChanges).to.be.true;
+                assert.isTrue(session.hasChanges);
             });
 
             it("hasChangesWithChangedRelations", () => {
                 const martien = session.get("3") as Person;
 
-                expect(session.hasChanges).to.be.false;
+                assert.isFalse(session.hasChanges);
 
                 // Unit
                 martien.FirstName = "New Name";
 
-                expect(session.hasChanges).to.be.true;
+                assert.isTrue(session.hasChanges);
 
                 session.reset();
 
                 const acme = session.get("101") as Organisation;
 
-                expect(acme.Employees).to.contain(martien);
+                assert.include(acme.Employees, martien);
 
                 // Composites
                 acme.RemoveEmployee(martien);
 
-                expect(session.hasChanges).to.be.true;
+                assert.isTrue(session.hasChanges);
 
-                expect(acme.Employees).not.to.contain(martien);
+                assert.notInclude(acme.Employees, martien);
             });
         });
 });

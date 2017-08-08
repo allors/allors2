@@ -1,47 +1,47 @@
-﻿import { ObjectType, ObjectTyped } from '../../../../meta';
-import { Predicate } from './Predicate';
-import { TreeNode } from './TreeNode';
-import { Sort } from './Sort';
-import { Page } from './Page';
+﻿import { ObjectType, ObjectTyped } from "../../../../meta";
+import { Page } from "./Page";
+import { Predicate } from "./Predicate";
+import { Sort } from "./Sort";
+import { TreeNode } from "./TreeNode";
 
 export class Query {
-  name: String;
+  public name: String;
 
-  objectType: ObjectType | ObjectTyped;
+  public objectType: ObjectType | ObjectTyped;
 
-  predicate: Predicate;
+  public predicate: Predicate;
 
-  union: Query[];
+  public union: Query[];
 
-  intersect: Query[];
+  public intersect: Query[];
 
-  except: Query[];
+  public except: Query[];
 
-  include: TreeNode[];
+  public include: TreeNode[];
 
-  sort: Sort[];
+  public sort: Sort[];
 
-  page: Page;
+  public page: Page;
 
   constructor(fields?: Partial<Query>) {
     Object.assign(this, fields);
   }
 
-  toJSON(): any {
+  public toJSON(): any {
     function isObjectTyped(objectType: ObjectType | ObjectTyped): objectType is ObjectTyped {
-      return (<ObjectTyped>objectType).ObjectType !== undefined;
+      return (objectType as ObjectTyped).ObjectType !== undefined;
     }
 
     return {
+      ex: this.except,
+      i: this.include,
+      in: this.intersect,
       n: this.name,
       ot: isObjectTyped(this.objectType) ? this.objectType.ObjectType.id : this.objectType.id,
       p: this.predicate,
-      un: this.union,
-      in: this.intersect,
-      ex: this.except,
-      i: this.include,
-      s: this.sort,
       pa: this.page,
+      s: this.sort,
+      un: this.union,
     };
   }
 }

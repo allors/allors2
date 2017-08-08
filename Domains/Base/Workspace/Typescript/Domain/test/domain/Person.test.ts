@@ -1,8 +1,6 @@
-import { workspace, Session, Person } from "../../src/allors/domain";
+import { Person, Session, workspace } from "../../src/allors/domain";
 
-import * as chai from "chai";
-
-const expect = chai.expect;
+import { assert } from "chai";
 
 describe("Person",
     () => {
@@ -21,31 +19,31 @@ describe("Person",
                 });
 
                 it("should be N/A when nothing set", () => {
-                    expect(person.displayName()).to.equal("N/A");
+                    assert.equal(person.displayName, "N/A");
                 });
 
                 it("should be john@doe.com when username is john@doe.com", () => {
                     person.UserName = "john@doe.com";
-                    expect(person.displayName()).to.equal("john@doe.com");
+                    assert.equal(person.displayName, "john@doe.com");
                 });
 
                 it("should be Doe when lastName is Doe", () => {
                     person.LastName = "Doe";
-                    expect(person.displayName()).to.equal("Doe");
+                    assert.equal(person.displayName, "Doe");
                 });
 
                 it("should be John with firstName John", () => {
                     person.FirstName = "John";
-                    expect(person.displayName()).to.equal("John");
+                    assert.equal(person.displayName, "John");
                 });
 
                 it("should be John Doe (even twice) with firstName John and lastName Doe", () => {
                     person.FirstName = "John";
                     person.LastName = "Doe";
-                    expect(person.displayName()).to.equal("John Doe");
-                    expect(person.displayName()).to.equal("John Doe");
+                    assert.equal(person.displayName, "John Doe");
+                    assert.equal(person.displayName, "John Doe");
                 });
-            }
+            },
         );
 
         describe("hello",
@@ -60,7 +58,7 @@ describe("Person",
                     person.LastName = "Doe";
                     person.FirstName = "John";
 
-                    expect(person.hello()).to.equal("Hello John Doe");
+                    assert.equal(person.hello(), "Hello John Doe");
                 });
         });
 });

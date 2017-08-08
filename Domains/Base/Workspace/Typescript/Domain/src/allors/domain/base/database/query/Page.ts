@@ -1,13 +1,13 @@
 ﻿export class Page {
 
-  skip: number;
-  take: number;
+  public skip: number;
+  public take: number;
 
   constructor(fields?: Partial<Page>) {
     Object.assign(this, fields);
   }
 
-  toJSON(): any {
+  public toJSON(): any {
     return {
       s: this.skip,
       t: this.take,

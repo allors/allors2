@@ -1,7 +1,7 @@
-﻿import { IWorkspace } from './Workspace';
-import { WorkspaceObject } from './WorkspaceObject';
-import { ISessionObject, INewSessionObject } from './SessionObject';
-import { PushRequest, PushRequestObject, PushRequestNewObject, PushResponse, PushResponseNewObject, SyncResponse, ResponseType } from '../database';
+﻿import { PushRequest, PushRequestNewObject, PushRequestObject, PushResponse, PushResponseNewObject, ResponseType, SyncResponse } from "../database";
+import { INewSessionObject, ISessionObject } from "./SessionObject";
+import { IWorkspace } from "./Workspace";
+import { WorkspaceObject } from "./WorkspaceObject";
 
 export interface ISession {
   hasChanges: boolean;
@@ -20,16 +20,16 @@ export interface ISession {
 export class Session implements ISession {
   private static idCounter: number = 0;
 
+  public hasChanges: boolean;
+
   private sessionObjectById: { [id: string]: ISessionObject; } = {};
   private newSessionObjectById: { [id: string]: INewSessionObject; } = {};
-
-  hasChanges: boolean;
 
   constructor(private workspace: IWorkspace) {
     this.hasChanges = false;
   }
 
-  get(id: string): ISessionObject {
+  public get(id: string): ISessionObject {
     if (!id) {
       return undefined;
     }
@@ -54,7 +54,7 @@ export class Session implements ISession {
     return sessionObject;
   }
 
-  create(objectTypeName: string): ISessionObject {
+  public create(objectTypeName: string): ISessionObject {
     const constructor: any = this.workspace.constructorByName[objectTypeName];
     const newSessionObject: INewSessionObject = new constructor();
     newSessionObject.session = this;
@@ -68,7 +68,7 @@ export class Session implements ISession {
     return newSessionObject;
   }
 
-  reset(): void {
+  public reset(): void {
     if (this.newSessionObjectById) {
       Object
         .keys(this.newSessionObjectById)
@@ -84,7 +84,7 @@ export class Session implements ISession {
     this.hasChanges = false;
   }
 
-  pushRequest(): PushRequest {
+  public pushRequest(): PushRequest {
     const data: PushRequest = new PushRequest();
     data.newObjects = [];
     data.objects = [];
@@ -116,7 +116,7 @@ export class Session implements ISession {
     return data;
   }
 
-  pushResponse(pushResponse: PushResponse): void {
+  public pushResponse(pushResponse: PushResponse): void {
     if (pushResponse.newObjects) {
       Object
         .keys(pushResponse.newObjects)
@@ -128,18 +128,18 @@ export class Session implements ISession {
           const newSessionObject: INewSessionObject = this.newSessionObjectById[newId];
 
           const syncResponse: SyncResponse = {
-            responseType: ResponseType.Sync,
             hasErrors: false,
-            userSecurityHash: '#', // This should trigger a load on next check
             objects: [
               {
                 i: id,
-                v: '',
-                t: newSessionObject.objectType.name,
-                roles: [],
                 methods: [],
+                roles: [],
+                t: newSessionObject.objectType.name,
+                v: "",
               },
             ],
+            responseType: ResponseType.Sync,
+            userSecurityHash: "#", // This should trigger a load on next check
           };
 
           delete (this.newSessionObjectById[newId]);
@@ -154,7 +154,7 @@ export class Session implements ISession {
     }
 
     if (Object.getOwnPropertyNames(this.newSessionObjectById).length !== 0) {
-      throw new Error('Not all new objects received ids');
+      throw new Error("Not all new objects received ids");
     }
   }
 }

@@ -1,5 +1,5 @@
-﻿import { ResponseType } from './ResponseType';
-import { DerivationError } from './DerivationError';
+﻿import { DerivationError } from "./DerivationError";
+import { ResponseType } from "./ResponseType";
 
 export interface Response {
     responseType: ResponseType;

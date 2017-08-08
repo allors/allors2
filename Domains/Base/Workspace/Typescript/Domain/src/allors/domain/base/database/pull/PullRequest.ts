@@ -1,18 +1,18 @@
-﻿import { Query, Fetch } from '..';
+﻿import { Fetch, Query } from "..";
 
 export class PullRequest {
-    query: Query[];
+    public query: Query[];
 
-    fetch: Fetch[];
+    public fetch: Fetch[];
 
     constructor(fields?: Partial<PullRequest>) {
        Object.assign(this, fields);
     }
 
-    toJSON() {
+    public toJSON() {
       return {
-        q: this.query,
         f: this.fetch,
+        q: this.query,
       };
     }
 }

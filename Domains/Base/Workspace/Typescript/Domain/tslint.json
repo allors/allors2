@@ -5,9 +5,8 @@
     ],
     "jsRules": {},
     "rules": {
-        "interface-name": [
-            false
-        ]
+        "interface-name": [false],
+        "max-line-length": [false]
     },
     "rulesDirectory": []
 }

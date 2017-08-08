@@ -1,3 +1,3 @@
 ﻿export class SyncRequest {
-    objects: string[];
+    public objects: string[];
 }

@@ -1,78 +1,79 @@
-﻿import { SyncResponse } from "../src/allors/domain/base/data/responses/SyncResponse";
-import { ResponseType } from "../src/allors/domain/base/data/responses/ResponseType";
+﻿import { SyncResponse } from "../src/allors/domain";
+import { ResponseType } from "../src/allors/domain";
 
 export let syncResponse: SyncResponse = {
-    responseType: ResponseType.Sync,
-    userSecurityHash: "#",
+    hasErrors: false,
     objects: [
         {
             i: "1",
-            v: "1001",
-            t: "Person",
             roles: [
                 ["FirstName", "rw", "Koen"],
                 ["LastName", "rw", "Van Exem"],
                 ["BirthDate", "rw", "1973-03-27T18:00:00Z"],
-                ["IsStudent", "rw", true]
-            ]
+                ["IsStudent", "rw", true],
+            ],
+            t: "Person",
+            v: "1001",
         },
         {
             i: "2",
-            v: "1002",
-            t: "Person",
             roles: [
                 ["FirstName", "rw", "Patrick"],
                 ["LastName", "rw", "De Boeck"],
-                ["IsStudent", "rw", false]
-            ]
+                ["IsStudent", "rw", false],
+            ],
+            t: "Person",
+            v: "1002",
         },
         {
             i: "3",
-            v: "1003",
-            t: "Person",
             roles: [
                 ["FirstName", "rw", "Martien"],
                 ["MiddleName", "rw", "van"],
                 ["LastName", "rw", "Knippenberg"],
-            ]
+            ],
+            t: "Person",
+            v: "1003",
         },
         {
             i: "101",
-            v: "1101",
-            t: "Organisation",
+            methods: [
+                ["JustDoIt", "x"],
+            ],
             roles: [
                 ["Name", "rw", "Acme"],
                 ["Owner", "rw", "1"],
-                ["Employees", "rw", ["1", "2", "3"]]
+                ["Employees", "rw", ["1", "2", "3"]],
             ],
-            methods: [
-                ["JustDoIt", "x"]
-            ]
+            t: "Organisation",
+            v: "1101",
         },
         {
             i: "102",
-            v: "1102",
-            t: "Organisation",
+            methods: [
+                ["JustDoIt", ""],
+            ],
             roles: [
                 ["Name", "rw", "Ocme"],
                 ["Owner", "rw", "2"],
-                ["Employees", "rw", ["1"]]
+                ["Employees", "rw", ["1"]],
             ],
-            methods: [
-                ["JustDoIt", ""]
-            ]
+            t: "Organisation",
+            v: "1102",
         },
         {
             i: "103",
-            v: "1103",
-            t: "Organisation",
+            methods: [
+                ["JustDoIt", ""],
+            ],
             roles: [
                 ["Name", "rw", "icme"],
-                ["Owner", "rw", "3"]
+                ["Owner", "rw", "3"],
             ],
-            methods: [
-                ["JustDoIt", ""]
-            ]
-        }
-    ]
+            t: "Organisation",
+            v: "1103",
+        },
+    ],
+    responseType: ResponseType.Sync,
+    userSecurityHash: "#",
 };
