@@ -7,7 +7,8 @@
   "scripts": {
     "pretest": "tsc",
     "test": "mocha",
-    "cover": "istanbul cover ./node_modules/mocha/bin/_mocha"
+    "cover": "istanbul cover ./node_modules/mocha/bin/_mocha",
+    "teamcity": "tsc && mocha --reporter mocha-teamcity-reporter"
   },
   "devDependencies": {
     "@types/chai": "latest",
