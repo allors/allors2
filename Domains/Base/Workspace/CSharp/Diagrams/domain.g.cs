@@ -111,6 +111,17 @@ namespace Allors.Domain
 				}
 				public interface Language 
 				{
+								global::System.String IsoCode {set;}
+
+
+								global::System.String Name {set;}
+
+
+								global::System.String NativeName {set;}
+
+
+								LocalisedText LocalisedNames {set;}
+
 				}
 				public interface Locale 
 				{
