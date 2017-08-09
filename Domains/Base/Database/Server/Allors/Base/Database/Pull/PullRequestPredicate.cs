@@ -1,6 +1,4 @@
-﻿using Allors.Adapters.Memory;
-
-namespace Allors.Server
+﻿namespace Allors.Server
 {
     using System;
     using System.Linq;
