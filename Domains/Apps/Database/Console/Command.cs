@@ -28,10 +28,11 @@
         protected string DataPath => this.Configuration["dataPath"];
 
         public abstract void Execute();
-        
-        protected void SetIdentity(string identity)
+
+        protected void SetIdentity(ISession session, string identity)
         {
-            ClaimsPrincipal.ClaimsPrincipalSelector = () => new GenericPrincipal(new GenericIdentity(identity, "Forms"), new string[0]);
+            var users = new Users(session);
+            users.CurrentUser = users.GetUser(identity) ?? Singleton.Instance(session).Guest;
         }
 
         protected IDatabase CreateDatabase(IsolationLevel isolationLevel = IsolationLevel.Snapshot)

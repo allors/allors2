@@ -32,8 +32,6 @@ namespace Allors.Console
 
             Console.WriteLine("Are you sure, all current data will be destroyed? (Y/N)\n");
 
-            this.SetIdentity("Administrator");
-
             var confirmationKey = Console.ReadKey(true).KeyChar.ToString();
             if (confirmationKey.ToLower().Equals("y"))
             {
@@ -47,7 +45,15 @@ namespace Allors.Console
                     var directoryInfo = dataPath != null ? new DirectoryInfo(dataPath) : null;
                     new Setup(session, directoryInfo).Apply();
 
+                    session.Derive();
+                    session.Commit();
+
+                    this.SetIdentity(session, "Administrator");
+
                     new Allors.Upgrade(session, directoryInfo).Execute();
+
+                    session.Derive();
+                    session.Commit();
 
                     // new Initial(session, directoryInfo).Execute();
                     new Demo(session, directoryInfo).Execute();

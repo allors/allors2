@@ -188,7 +188,7 @@ namespace Allors
                 .WithEventPurpose(new CommunicationEventPurposes(this.Session).Meeting)
                 .WithParticipant(contact1)
                 .WithParticipant(contact2)
-                .WithParticipant(new People(this.Session).FindBy(M.Person.UserName, "administrator1"))
+                .WithOwner(new People(this.Session).FindBy(M.Person.UserName, "administrator1"))
                 .WithActualStart(DateTime.UtcNow)
                 .Build();
 

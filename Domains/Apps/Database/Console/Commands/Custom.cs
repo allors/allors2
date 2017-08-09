@@ -7,7 +7,7 @@
             var database = this.CreateDatabase();
             using (var session = database.CreateSession())
             {
-                this.SetIdentity("Administrator");
+                this.SetIdentity(session, "Administrator");
 
 
                 session.Derive();
