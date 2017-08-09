@@ -5,10 +5,10 @@
       "name": "Debug",
       "type": "chrome",
       "request": "launch",
-      "url": "http://localhost:4200/#",
+      "url": "http://localhost:4200/",
       "webRoot": "${workspaceRoot}"
     },
-    {
+     {
       "name": "Debug tests",
       "type": "chrome",
       "request": "launch",
@@ -21,7 +21,9 @@
       "request": "launch",
       "program": "${workspaceRoot}/node_modules/protractor/bin/protractor",
       "protocol": "inspector",
-      "args": ["${workspaceRoot}/protractor.conf.js"]
+      "args": [
+        "${workspaceRoot}/protractor.conf.js"
+      ]
     }
   ]
 }
