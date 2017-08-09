@@ -8,7 +8,7 @@
     "pretest": "tsc",
     "test": "mocha",
     "cover": "istanbul cover ./node_modules/mocha/bin/_mocha",
-    "teamcity": "tsc && mocha --reporter mocha-teamcity-reporter"
+    "teamcity": "./node_modules/.bin/tsc && mocha --reporter mocha-teamcity-reporter"
   },
   "devDependencies": {
     "@types/chai": "latest",
@@ -17,6 +17,7 @@
     "chai": "latest",
     "istanbul": "latest",
     "mocha": "latest",
-    "mocha-teamcity-reporter": "^1.1.1"
+    "mocha-teamcity-reporter": "^1.1.1",
+    "typescript": "^2.4.2"
   }
 }
