@@ -233,12 +233,20 @@ namespace Allors.Domain
 
 						global::System.DateTime? ActualStart {set;}
 
+						global::System.Boolean? SendNotification {set;}
+
+						global::System.Boolean? SendReminder {set;}
+
+						global::System.DateTime? RemindAt {set;}
+
 		}
 		public interface ContactMechanism  : Auditable, Deletable 
 		{
 						global::System.String Description {set;}
 
 						ContactMechanism FollowTo {set;}
+
+						ContactMechanismType ContactMechanismType {set;}
 
 		}
 		public interface Container  : AccessControlledObject 
@@ -671,7 +679,7 @@ namespace Allors.Domain
 						global::System.String Description {set;}
 
 		}
-		public interface Party  : Localised, Auditable, UniquelyIdentifiable 
+		public interface Party  : Localised, Auditable, UniquelyIdentifiable, Commentable 
 		{
 						PostalAddress GeneralCorrespondence {set;}
 
@@ -1166,6 +1174,28 @@ namespace Allors.Domain
 		}
 		public interface WorkEffort  : Transitional, UniquelyIdentifiable, Deletable, Auditable 
 		{
+						global::System.String Name {set;}
+
+						global::System.String Description {set;}
+
+						WorkEffortObjectState CurrentObjectState {set;}
+
+						Priority Priority {set;}
+
+						WorkEffortPurpose WorkEffortPurposes {set;}
+
+						global::System.DateTime? ActualCompletion {set;}
+
+						global::System.DateTime? ScheduledStart {set;}
+
+						global::System.DateTime? ScheduledCompletion {set;}
+
+						global::System.Decimal? ActualHours {set;}
+
+						global::System.Decimal? EstimatedHours {set;}
+
+						WorkEffortStatus WorkEffortStatuses {set;}
+
 						WorkEffortStatus CurrentWorkEffortStatus {set;}
 
 						WorkEffort Precendencies {set;}
@@ -1180,39 +1210,17 @@ namespace Allors.Domain
 
 						WorkEffort Children {set;}
 
-						global::System.DateTime? ActualCompletion {set;}
-
 						OrderItem OrderItemFulfillment {set;}
-
-						WorkEffortStatus WorkEffortStatuses {set;}
 
 						WorkEffortType WorkEffortType {set;}
 
 						InventoryItem InventoryItemsProduced {set;}
-
-						WorkEffortPurpose WorkEffortPurposes {set;}
-
-						Priority Priority {set;}
-
-						global::System.String Name {set;}
 
 						Requirement RequirementFulfillments {set;}
 
 						global::System.String SpecialTerms {set;}
 
 						WorkEffort Concurrencies {set;}
-
-						global::System.DateTime? ScheduledStart {set;}
-
-						global::System.Decimal? ActualHours {set;}
-
-						global::System.String Description {set;}
-
-						WorkEffortObjectState CurrentObjectState {set;}
-
-						global::System.DateTime? ScheduledCompletion {set;}
-
-						global::System.Decimal? EstimatedHours {set;}
 
 		}
 		public interface Counter  : UniquelyIdentifiable 
@@ -1470,6 +1478,8 @@ namespace Allors.Domain
 						global::System.String SocialSecurityNumber {set;}
 
 						global::System.DateTime? DeceasedDate {set;}
+
+						global::System.String Function {set;}
 
 		}
 		public interface TaskAssignment  : AccessControlledObject, Deletable 
@@ -1814,6 +1824,9 @@ namespace Allors.Domain
 		public interface ContactMechanismPurpose  : Enumeration 
 		{
 		}
+		public interface ContactMechanismType  : Enumeration 
+		{
+		}
 		public interface CostCenter  : AccessControlledObject, UniquelyIdentifiable 
 		{
 						global::System.String Description {set;}
@@ -1960,6 +1973,9 @@ namespace Allors.Domain
 
 						global::System.DateTime StartDateTime {set;}
 
+		}
+		public interface CustomOrganisationClassification  : OrganisationClassification 
+		{
 		}
 		public interface DebitCreditConstant  : Enumeration 
 		{
@@ -2923,7 +2939,7 @@ namespace Allors.Domain
 
 						global::System.String TaxNumber {set;}
 
-						IndustryClassification IndustryClassification {set;}
+						IndustryClassification IndustryClassifications {set;}
 
 						OrganisationClassification OrganisationClassifications {set;}
 
@@ -4976,6 +4992,12 @@ namespace Allors.Domain
 		}
 		public interface WorkTask  : WorkEffort 
 		{
+						global::System.Boolean? SendNotification {set;}
+
+						global::System.Boolean? SendReminder {set;}
+
+						global::System.DateTime? RemindAt {set;}
+
 		}
 		public interface TaxDocument  : Document 
 		{

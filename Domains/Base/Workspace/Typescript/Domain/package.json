@@ -1,7 +1,7 @@
 {
-  "name": "meta",
+  "name": "domain",
   "version": "2.0.0",
-  "description": "Allors Core Workspace Meta",
+  "description": "Allors Base Workspace Domain",
   "repository": "https://github.com/Allors/allors2",
   "license": "LGPL-3.0",
   "scripts": {

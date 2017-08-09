@@ -27,6 +27,9 @@
                     { "../Base/Database/Templates/domain.cs.stg", "DataBase/Domain/Generated" },
                     { "../Base/Database/Templates/uml.cs.stg", "DataBase/Diagrams" },
 
+                    { "../Base/Workspace/Typescript/Templates/meta.ts.stg", "Workspace/Typescript/Domain/src/allors/meta/generated" },
+                    { "../Base/Workspace/Typescript/Templates/domain.ts.stg", "Workspace/Typescript/Domain/src/allors/domain/generated" },
+
                     { "../Base/Workspace/Typescript/Templates/meta.ts.stg", "Workspace/Typescript/Angular/src/allors/meta/generated" },
                     { "../Base/Workspace/Typescript/Templates/domain.ts.stg", "Workspace/Typescript/Angular/src/allors/domain/generated" },
             };
