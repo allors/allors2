@@ -1,4 +1,6 @@
-﻿namespace Allors.Server
+﻿using Allors.Adapters.Memory;
+
+namespace Allors.Server
 {
     using System;
     using System.Linq;
@@ -110,15 +112,22 @@
         {
             var roleType = this.GetRoleType(metaPopulation);
             var value = this.GetUnitRole(roleType, this.V);
-            var objectId = this.O;
 
+            long? objectIdNullable = null;
+            long objectId = 0;
+            if(long.TryParse(this.O, out objectId))
+            {
+                objectIdNullable = objectId;
+            }
+
+            
             var predicate = new Equals
                                 {
                                     AssociationType = this.AT != null ? (AssociationType)metaPopulation.Find(new Guid(this.AT)) : null,
                                     RoleType = roleType,
                                     Value = value,
-                                    ObjectId = long.Parse(objectId)
-                                };
+                                    ObjectId = objectIdNullable
+            };
 
             return predicate;
         }
