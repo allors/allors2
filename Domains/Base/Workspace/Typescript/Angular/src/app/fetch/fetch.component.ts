@@ -4,7 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Title } from '@angular/platform-browser';
 
 import { PullRequest, Fetch, Path, Query, Equals, Like, TreeNode, Sort, Page } from '../../allors/domain';
-import { Scope } from '../../allors/angular';
+import { Scope, Loaded } from '../../allors/angular';
 import { AllorsService } from '../allors.service';
 
 import { Organisation, Person } from '../../allors/domain';
@@ -70,9 +70,9 @@ export class FetchComponent implements OnInit, OnDestroy {
       .load('Pull', new PullRequest({
         fetch: fetch,
       }))
-      .subscribe(() => {
-        this.organisation = this.scope.objects.organisation as Organisation;
-        this.organisations = this.scope.collections.organisations as Organisation[];
+      .subscribe((loaded: Loaded) => {
+        this.organisation = loaded.objects.organisation as Organisation;
+        this.organisations = loaded.collections.organisations as Organisation[];
       },
       (error) => {
         alert(error);

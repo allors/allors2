@@ -1,27 +1,27 @@
-﻿import { WorkspaceObject } from '../../workspace';
+﻿import { WorkspaceObject } from "../../workspace";
 
-import { Path } from './Path';
-import { TreeNode } from './TreeNode';
+import { Path } from "./Path";
+import { TreeNode } from "./TreeNode";
 
 export class Fetch {
-    name: string;
+    public name: string;
 
-    id: string;
+    public id: string;
 
-    path: Path;
+    public path: Path;
 
-    include: TreeNode[];
+    public include: TreeNode[];
 
     constructor(fields?: Partial<Fetch>) {
        Object.assign(this, fields);
     }
 
-    toJSON(): any {
+    public toJSON(): any {
       return {
-        name: this.name,
         id: this.id,
-        path: this.path,
         include: this.include,
+        name: this.name,
+        path: this.path,
       };
     }
 }

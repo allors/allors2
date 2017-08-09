@@ -1,11 +1,6 @@
-﻿import { ErrorResponse } from '../ErrorResponse';
-import { DerivationError } from '../DerivationError';
+﻿import { DerivationError } from "../DerivationError";
+import { Response } from "../Response";
 
-export interface InvokeResponse extends ErrorResponse {
-    hasErrors: boolean;
-    errorMessage?: string;
-    versionErrors?: string[];
-    accessErrors?: string[];
-    missingErrors?: string[];
-    derivationErrors?: DerivationError[];
+// tslint:disable-next-line:no-empty-interface
+export interface InvokeResponse extends Response {
 }

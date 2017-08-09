@@ -3,7 +3,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 
 import { PullRequest, Query, Equals, Like, TreeNode, Sort, Page } from '../../allors/domain';
-import { Scope } from '../../allors/angular';
+import { Scope, Loaded } from '../../allors/angular';
 import { AllorsService } from '../allors.service';
 
 import { Organisation, Person } from '../../allors/domain';
@@ -67,9 +67,9 @@ export class QueryComponent implements OnInit, OnDestroy {
       .load('Pull', new PullRequest({
         query: [query],
       }))
-      .subscribe(() => {
-        this.organisations = this.scope.collections.organisations as Organisation[];
-        this.organisationCount = this.scope.values.organisations_count;
+      .subscribe((loaded: Loaded) => {
+        this.organisations = loaded.collections.organisations as Organisation[];
+        this.organisationCount = loaded.values.organisations_count;
       },
       (error) => {
         alert(error);

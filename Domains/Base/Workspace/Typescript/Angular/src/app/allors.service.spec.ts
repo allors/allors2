@@ -2,7 +2,7 @@
 import { HttpModule, Http, Response, ResponseOptions, XHRBackend } from '@angular/http';
 import { MockBackend } from '@angular/http/testing';
 
-import { Scope } from '../allors/angular';
+import { Scope, Loaded } from '../allors/angular';
 import { Organisation } from '../allors/domain';
 import { AllorsService } from './allors.service';
 
@@ -37,9 +37,10 @@ describe('VideoService', () => {
 
         const scope = new Scope(allorsService.database, allorsService.workspace);
 
-        scope.load('Organisations')
-          .subscribe(() => {
-            const organisations = scope.collections.organisations as Organisation[];
+        scope
+          .load('Organisations')
+          .subscribe((loaded: Loaded) => {
+            const organisations = loaded.collections.organisations as Organisation[];
             expect(organisations.length).toBe(1);
           }, (error) => {
             fail(error);

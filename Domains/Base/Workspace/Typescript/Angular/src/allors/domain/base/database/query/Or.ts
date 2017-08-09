@@ -1,16 +1,17 @@
-﻿import { ObjectType } from '../../../../meta';
-import { Predicate } from './Predicate';
+﻿import { ObjectType } from "../../../../meta";
+import { Predicate } from "./Predicate";
 
 export class Or implements Predicate {
-  predicates: Predicate[];
+  public predicates: Predicate[];
 
   constructor(fields?: Partial<Or>) {
     Object.assign(this, fields);
-  }
+    this.predicates = this.predicates ? this.predicates : [];
+   }
 
-  toJSON(): any {
+  public toJSON(): any {
     return {
-      _T: 'Or',
+      _T: "Or",
       ps: this.predicates,
     };
   }

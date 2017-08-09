@@ -1,21 +1,21 @@
-﻿import { ObjectType, AssociationType, RoleType } from '../../../../meta';
-import { Predicate } from './Predicate';
+﻿import { AssociationType, ObjectType, RoleType } from "../../../../meta";
+import { Predicate } from "./Predicate";
 
 export class Instanceof implements Predicate {
-  associationType: AssociationType;
-  roleType: RoleType;
-  objectType: ObjectType;
+  public associationType: AssociationType;
+  public roleType: RoleType;
+  public objectType: ObjectType;
 
   constructor(fields?: Partial<Instanceof>) {
     Object.assign(this, fields);
   }
 
-  toJSON(): any {
+  public toJSON(): any {
     return {
-      _T: 'Instanceof',
+      _T: "Instanceof",
       at: this.associationType ? this.associationType.id : undefined,
-      rt: this.roleType.id ? this.roleType.id : undefined,
       ot: this.objectType.id,
+      rt: this.roleType.id ? this.roleType.id : undefined,
     };
   }
 }

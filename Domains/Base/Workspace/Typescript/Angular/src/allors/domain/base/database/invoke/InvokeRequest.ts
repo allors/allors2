@@ -1,5 +1,5 @@
 ﻿export class InvokeRequest {
-    i: string;
-    v: string;
-    m: string;
+    public i: string;
+    public v: string;
+    public m: string;
 }
