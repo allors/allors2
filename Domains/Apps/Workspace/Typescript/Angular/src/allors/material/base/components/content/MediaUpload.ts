@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input , ChangeDetectorRef } from '@angular/core';
 import { ISession, ISessionObject, Media } from '../../../../../allors/domain';
 import { MetaDomain, RoleType } from '../../../../../allors/meta';
 

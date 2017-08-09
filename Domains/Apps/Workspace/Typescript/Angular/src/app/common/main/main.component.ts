@@ -1,31 +1,26 @@
-import { Component } from '@angular/core';
+import { Component, AfterViewInit, ChangeDetectorRef } from '@angular/core';
 import { Router } from '@angular/router';
+import { TdMediaService } from '@covalent/core';
+import { MenuService, MenuItem } from '../../../allors/angular/index';
 
 @Component({
-  selector: 'qs-main',
   templateUrl: './main.component.html',
-  styleUrls: ['./main.component.scss'],
 })
-export class MainComponent {
+export class MainComponent implements AfterViewInit {
 
-  routes: Object[] = [{
-      title: 'Dashboard',
-      route: '/',
-      icon: 'dashboard',
-    }, {
-      title: 'Relations',
-      route: '/relations',
-      icon: 'people',
-    }, {
-      title: 'Catalogues',
-      route: '/catalogues',
-      icon: 'dashboard',
-    },
+  modules: MenuItem[] = [];
+
+  usermenu: any[] = [
+    { icon: 'tune', route: '.', title: 'Account settings', },
+    { icon: 'exit_to_app', route: '.', title: 'Sign out', },
   ];
 
-  constructor(private _router: Router) {}
+  constructor(public media: TdMediaService, private changeDetectorRef: ChangeDetectorRef, public menu: MenuService) {
+    this.modules = this.menu.modules;
+  }
 
-  logout(): void {
-    this._router.navigate(['/login']);
+  ngAfterViewInit(): void {
+    this.media.broadcast();
+    this.changeDetectorRef.detectChanges();
   }
 }

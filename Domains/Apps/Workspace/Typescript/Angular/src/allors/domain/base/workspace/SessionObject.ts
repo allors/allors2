@@ -1,8 +1,8 @@
-﻿import { ISession } from './Session';
-import { IWorkspaceObject } from './WorkspaceObject';
-import { PushRequestObject, PushRequestNewObject, PushRequestRole } from '../database';
+﻿import { PushRequestNewObject, PushRequestObject, PushRequestRole } from "../database";
+import { ISession } from "./Session";
+import { IWorkspaceObject } from "./WorkspaceObject";
 
-import { ObjectType } from '../../../meta';
+import { ObjectType } from "../../../meta";
 
 export interface ISessionObject {
     id: string;
@@ -36,11 +36,11 @@ export interface INewSessionObject extends ISessionObject {
 
 export class SessionObject implements INewSessionObject {
 
-    session: ISession;
-    workspaceObject: IWorkspaceObject;
-    objectType: ObjectType;
+    public session: ISession;
+    public workspaceObject: IWorkspaceObject;
+    public objectType: ObjectType;
 
-    newId: string;
+    public newId: string;
 
     private changedRoleByRoleTypeName: { [id: string]: any; };
     private roleByRoleTypeName: { [id: string]: any; } = {};
@@ -65,7 +65,7 @@ export class SessionObject implements INewSessionObject {
         return this.workspaceObject ? this.workspaceObject.version : undefined;
     }
 
-    canRead(roleTypeName: string): boolean {
+    public canRead(roleTypeName: string): boolean {
         if (this.newId) {
             return true;
         } else if (this.workspaceObject) {
@@ -75,7 +75,7 @@ export class SessionObject implements INewSessionObject {
         return undefined;
     }
 
-    canWrite(roleTypeName: string): boolean {
+    public canWrite(roleTypeName: string): boolean {
         if (this.newId) {
             return true;
         } else if (this.workspaceObject) {
@@ -85,7 +85,7 @@ export class SessionObject implements INewSessionObject {
         return undefined;
     }
 
-    canExecute(methodName: string): boolean {
+    public canExecute(methodName: string): boolean {
         if (this.newId) {
             return true;
         } else if (this.workspaceObject) {
@@ -95,7 +95,7 @@ export class SessionObject implements INewSessionObject {
         return undefined;
     }
 
-    get(roleTypeName: string): any {
+    public get(roleTypeName: string): any {
         if (!this.roleByRoleTypeName) {
             return undefined;
         }
@@ -108,7 +108,7 @@ export class SessionObject implements INewSessionObject {
                     value = this.workspaceObject.roles[roleTypeName];
                     if (value === undefined) {
                         value = null;
-                    };
+                    }
                 } else {
                     try {
                         if (roleType.isOne) {
@@ -116,18 +116,18 @@ export class SessionObject implements INewSessionObject {
                             value = role ? this.session.get(role) : null;
                         } else {
                             const roles: string[] = this.workspaceObject.roles[roleTypeName];
-                            value = roles ? roles.map(role => {
+                            value = roles ? roles.map((role) => {
                                 return this.session.get(role);
                             }) : [];
                         }
                     } catch (e) {
-                        let stringValue = 'N/A';
+                        let stringValue = "N/A";
                         try {
                             stringValue = this.toString();
                         } catch (e2) {
-                        };
+                            throw new Error(`Could not get role ${roleTypeName} from [objectType: ${this.objectType.name}, id: ${this.id}]`);
+                        }
 
-                        // tslint:disable-next-line:max-line-length
                         throw new Error(`Could not get role ${roleTypeName} from [objectType: ${this.objectType.name}, id: ${this.id}, value: '${stringValue}']`);
                     }
                 }
@@ -145,7 +145,7 @@ export class SessionObject implements INewSessionObject {
         return value;
     }
 
-    set(roleTypeName: string, value: any) {
+    public set(roleTypeName: string, value: any) {
         this.assertExists();
 
         if (this.changedRoleByRoleTypeName === undefined) {
@@ -169,7 +169,7 @@ export class SessionObject implements INewSessionObject {
         this.session.hasChanges = true;
     }
 
-    add(roleTypeName: string, value: any) {
+    public add(roleTypeName: string, value: any) {
         this.assertExists();
 
         const roles = this.get(roleTypeName);
@@ -182,7 +182,7 @@ export class SessionObject implements INewSessionObject {
         this.session.hasChanges = true;
     }
 
-    remove(roleTypeName: string, value: any) {
+    public remove(roleTypeName: string, value: any) {
         this.assertExists();
 
         const roles = this.get(roleTypeName);
@@ -196,7 +196,7 @@ export class SessionObject implements INewSessionObject {
         this.session.hasChanges = true;
     }
 
-    save(): PushRequestObject {
+    public save(): PushRequestObject {
         if (this.changedRoleByRoleTypeName !== undefined) {
             const data = new PushRequestObject();
             data.i = this.id;
@@ -208,7 +208,7 @@ export class SessionObject implements INewSessionObject {
         return undefined;
     }
 
-    saveNew(): PushRequestNewObject {
+    public saveNew(): PushRequestNewObject {
         this.assertExists();
 
         const data = new PushRequestNewObject();
@@ -222,7 +222,7 @@ export class SessionObject implements INewSessionObject {
         return data;
     }
 
-    reset() {
+    public reset() {
         if (this.newId) {
             delete this.newId;
             delete this.session;
@@ -238,7 +238,7 @@ export class SessionObject implements INewSessionObject {
 
     private assertExists() {
         if (!this.roleByRoleTypeName) {
-            throw new Error('Object doesn\'t exist anymore.');
+            throw new Error("Object doesn't exist anymore.");
         }
     }
 
@@ -252,7 +252,7 @@ export class SessionObject implements INewSessionObject {
                     const role = this.changedRoleByRoleTypeName[roleTypeName];
                     const roleType = this.objectType.roleTypeByName[roleTypeName];
 
-                    const saveRole = new PushRequestRole;
+                    const saveRole = new PushRequestRole();
                     saveRole.t = roleType.name;
 
                     if (roleType.objectType.isUnit) {
@@ -261,16 +261,16 @@ export class SessionObject implements INewSessionObject {
                         if (roleType.isOne) {
                             saveRole.s = role ? role.id || role.newId : null;
                         } else {
-                            const roleIds = role.map(item => (<SessionObject>item).id || (<SessionObject>item).newId);
+                            const roleIds = role.map((item) => (item as SessionObject).id || (item as SessionObject).newId);
                             if (this.newId) {
                                 saveRole.a = roleIds;
                             } else {
-                                const originalRoleIds = <string[]>this.workspaceObject.roles[roleTypeName];
+                                const originalRoleIds = this.workspaceObject.roles[roleTypeName] as string[];
                                 if (!originalRoleIds) {
                                     saveRole.a = roleIds;
                                 } else {
-                                    saveRole.a = roleIds.filter(v => originalRoleIds.indexOf(v) < 0);
-                                    saveRole.r = originalRoleIds.filter(v => roleIds.indexOf(v) < 0);
+                                    saveRole.a = roleIds.filter((v) => originalRoleIds.indexOf(v) < 0);
+                                    saveRole.r = originalRoleIds.filter((v) => roleIds.indexOf(v) < 0);
                                 }
                             }
                         }

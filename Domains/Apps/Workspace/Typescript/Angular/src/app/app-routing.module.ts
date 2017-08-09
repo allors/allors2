@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { NgModule, ChangeDetectorRef } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
 import { AuthenticationService } from '../allors/angular';
@@ -7,10 +7,14 @@ import { MainComponent } from './common/main/main.component';
 import { DashboardComponent } from './common/dashboard/dashboard.component';
 
 import * as relations from '../allors/material/apps/relations';
+import * as workefforts from '../allors/material/apps/workefforts';
 import * as catalogues from '../allors/material/apps/catalogues';
+import * as orders from '../allors/material/apps/orders';
 
 import { RELATIONS_ROUTING } from '../allors/material/apps/relations';
+import { WORKEFFORTS_ROUTING } from '../allors/material/apps/workefforts';
 import { CATALOGUES_ROUTING } from '../allors/material/apps/catalogues';
+import { ORDERS_ROUTING } from '../allors/material/apps/orders';
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -19,85 +23,84 @@ const routes: Routes = [
     path: '', component: MainComponent,
     children: [
       {
-        path: '', component: DashboardComponent,
+        path: '', component: DashboardComponent, data: { type: 'module', title: 'Home', icon: 'home' },
       },
       {
-        path: 'relations', component: relations.RelationComponent,
+        path: 'relations', component: relations.OverviewComponent, data: { type: 'module', title: 'Relations', icon: 'dashboard' },
         children: [
-          {
-            path: '', component: relations.RelationDashboardComponent,
-          }, {
-            path: 'people',
-            children: [
-              { path: '', component: relations.PeopleComponent },
-              { path: 'add', component: relations.PersonFormComponent },
-              { path: ':id/edit', component: relations.PersonFormComponent },
-              { path: ':id/overview', component: relations.PersonOverviewComponent },
-              { path: ':id/web/:partyContactMechanismId/edit', component: relations.WebAddressEditComponent },
-              { path: ':id/addWeb', component: relations.WebAddressAddComponent },
-              { path: ':id/email/:partyContactMechanismId/edit', component: relations.EmailAddressEditComponent },
-              { path: ':id/addEmail', component: relations.EmailAddressAddComponent },
-              { path: ':id/telecom/:partyContactMechanismId/edit', component: relations.TelecommunicationsNumberEditComponent },
-              { path: ':id/addTelecom', component: relations.TelecommunicationsNumberAddComponent },
-              { path: ':id/postal/:partyContactMechanismId/edit', component: relations.PostalAddressEditComponent },
-              { path: ':id/addPostal', component: relations.PostalAddressAddComponent },
-            ],
-          },
-          {
-            path: 'organisations',
-            children: [
-              { path: '', component: relations.OrganisationsComponent },
-              { path: 'add', component: relations.OrganisationFormComponent },
-              { path: ':id/edit', component: relations.OrganisationFormComponent },
-              { path: ':id/overview', component: relations.OrganisationOverviewComponent },
-              { path: ':id/addContact', component: relations.OrganisationAddContactComponent },
-              { path: ':id/contact/:contactRelationshipId/edit', component: relations.OrganisationEditContactComponent },
-              { path: ':id/web/:partyContactMechanismId/edit', component: relations.WebAddressEditComponent },
-              { path: ':id/addWeb', component: relations.WebAddressAddComponent },
-              { path: ':id/email/:partyContactMechanismId/edit', component: relations.EmailAddressEditComponent },
-              { path: ':id/addEmail', component: relations.EmailAddressAddComponent },
-              { path: ':id/telecom/:partyContactMechanismId/edit', component: relations.TelecommunicationsNumberEditComponent },
-              { path: ':id/addTelecom', component: relations.TelecommunicationsNumberAddComponent },
-              { path: ':id/postal/:partyContactMechanismId/edit', component: relations.PostalAddressEditComponent },
-              { path: ':id/addPostal', component: relations.PostalAddressAddComponent },
-            ],
-          },
+          { path: '', component: relations.RelationsOverviewComponent },
+          { path: 'communicationevents', component: relations.CommunicationEventsOverviewComponent, data: { type: 'page', title: 'Communications', icon: 'share' } },
+          { path: 'organisations', component: relations.OrganisationsOverviewComponent, data: { type: 'page', title: 'Organisations', icon: 'business' } },
+          { path: 'organisation/:id', component: relations.OrganisationOverviewComponent },
+          { path: 'people', component: relations.PeopleOverviewComponent, data: { type: 'page', title: 'People', icon: 'people' } },
+          { path: 'person/:id', component: relations.PersonOverviewComponent },
+          { path: 'party/:id/communicationevent/:roleId', component: relations.PartyCommunicationEventOverviewComponent },
         ],
       },
       {
-        path: 'catalogues', component: catalogues.CatalogueComponent,
+        path: 'organisation',
         children: [
-          {
-            path: '', component: catalogues.CatalogueDashboardComponent,
-          }, {
-            path: 'catalogues',
-            children: [
-              { path: '', component: catalogues.CataloguesComponent },
-              { path: 'add', component: catalogues.CatalogueFormComponent },
-              { path: ':id/edit', component: catalogues.CatalogueFormComponent },
-            ],
-          }, {
-            path: 'categories',
-            children: [
-              { path: '', component: catalogues.CategoriesComponent },
-              { path: 'add', component: catalogues.CategoryFormComponent },
-              { path: ':id/edit', component: catalogues.CategoryFormComponent },
-            ],
-          }, {
-            path: 'goods',
-            children: [
-              { path: '', component: catalogues.GoodsComponent },
-              { path: 'add', component: catalogues.GoodFormComponent },
-              { path: ':id/edit', component: catalogues.GoodFormComponent },
-            ],
-          }, {
-            path: 'productTypes',
-            children: [
-              { path: '', component: catalogues.ProductTypesComponent },
-              { path: 'add', component: catalogues.ProductTypeFormComponent },
-              { path: ':id/edit', component: catalogues.ProductTypeFormComponent },
-            ],
-          },
+          { path: '', component: relations.OrganisationEditComponent },
+          { path: ':id', component: relations.OrganisationEditComponent },
+          { path: ':id/contact', component: relations.OrganisationContactrelationshipAddComponent },
+          { path: ':id/contact/:roleId', component: relations.OrganisationContactrelationshipEditComponent },
+        ],
+      },
+      {
+        path: 'person',
+        children: [
+          { path: '', component: relations.PersonEditComponent },
+          { path: ':id', component: relations.PersonEditComponent },
+        ],
+      },
+      {
+        path: 'communicationevent',
+        children: [
+          { path: ':id/worktask', component: relations.PartyCommunicationEventAddWorkTaskComponent },
+          { path: ':id/worktask/:roleId', component: relations.PartyCommunicationEventAddWorkTaskComponent },
+        ],
+      },
+      {
+        path: 'party',
+        children: [
+          { path: ':id/partycontactmechanism/emailaddress', component: relations.PartyContactMechanismAddEmailAddressComponent },
+          { path: ':id/partycontactmechanism/emailaddress/:roleId', component: relations.PartyContactMechanismEditEmailAddressComponent },
+          { path: ':id/partycontactmechanism/postaladdress', component: relations.PartyContactMechanismAddPostalAddressComponent },
+          { path: ':id/partycontactmechanism/postaladdress/:roleId', component: relations.PartyContactMechanismEditPostalAddressComponent },
+          { path: ':id/partycontactmechanism/telecommunicationsnumber', component: relations.PartyContactMechanismAddTelecommunicationsNumberComponent },
+          { path: ':id/partycontactmechanism/telecommunicationsnumber/:roleId', component: relations.PartyContactMechanismEditTelecommunicationsNumberComponent },
+          { path: ':id/partycontactmechanism/webaddress', component: relations.PartyContactMechanismAddWebAddressComponent },
+          { path: ':id/partycontactmechanism/webaddres/:roleId', component: relations.PartyContactMechanismEditWebAddressComponent },
+
+          { path: ':id/communicationevent/emailcommunication/:roleId', component: relations.PartyCommunicationEventEditEmailCommunicationComponent },
+          { path: ':id/communicationevent/emailcommunication', component: relations.PartyCommunicationEventEditEmailCommunicationComponent },
+          { path: ':id/communicationevent/facetofacecommunication/:roleId', component: relations.PartyCommunicationEventEditFaceToFaceCommunicationComponent },
+          { path: ':id/communicationevent/facetofacecommunication', component: relations.PartyCommunicationEventEditFaceToFaceCommunicationComponent },
+          { path: ':id/communicationevent/lettercorrespondence/:roleId', component: relations.PartyCommunicationEventEditLetterCorrespondenceComponent },
+          { path: ':id/communicationevent/lettercorrespondence', component: relations.PartyCommunicationEventEditLetterCorrespondenceComponent },
+          { path: ':id/communicationevent/phonecommunication/:roleId', component: relations.PartyCommunicationEventEditPhoneCommunicationComponent },
+          { path: ':id/communicationevent/phonecommunication', component: relations.PartyCommunicationEventEditPhoneCommunicationComponent },
+        ],
+      },
+      {
+        path: 'workefforts', component: workefforts.OverviewComponent, data: { type: 'module', title: 'Work Efforts', icon: 'work' },
+        children: [
+          { path: '', component: workefforts.WorkEffortsOverviewComponent },
+          { path: 'worktasks', component: workefforts.WorkTasksOverviewComponent, data: { type: 'page', title: 'Tasks', icon: 'timer' } },
+          { path: 'worktask/:id', component: workefforts.WorkTaskOverviewComponent },
+        ],
+      },
+      {
+        path: 'worktask',
+        children: [
+          { path: '', component: workefforts.WorkTaskEditComponent },
+          { path: ':id', component: workefforts.WorkTaskEditComponent },
+        ],
+      },
+      {
+        path: 'export',
+        children: [
+          { path: 'people', component: relations.ExportPeopleComponent },
         ],
       },
     ],
@@ -114,6 +117,11 @@ const routes: Routes = [
 })
 export class AppRoutingModule { }
 export const routedComponents: any[] = [
-  MainComponent, LoginComponent, DashboardComponent,
-  RELATIONS_ROUTING, CATALOGUES_ROUTING,
+  LoginComponent,
+  MainComponent,
+  DashboardComponent,
+  RELATIONS_ROUTING,
+  WORKEFFORTS_ROUTING,
+  ORDERS_ROUTING,
+  CATALOGUES_ROUTING,
 ];

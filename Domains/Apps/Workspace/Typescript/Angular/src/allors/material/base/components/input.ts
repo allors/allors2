@@ -1,4 +1,5 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, ChangeDetectorRef, ViewChildren, QueryList, AfterViewInit } from '@angular/core';
+import { NgModel, NgForm } from '@angular/forms';
 import { ISessionObject } from '../../../../allors/domain';
 import { MetaDomain, RoleType } from '../../../../allors/meta';
 
@@ -8,15 +9,21 @@ import { Field } from '../../../angular';
   selector: 'a-md-input',
   template: `
 <md-input-container fxLayout="column" fxLayoutAlign="top stretch">
-  <input fxFlex mdInput [type]="textType" [(ngModel)]="model" [name]="name" [placeholder]="label" [disabled]="!canWrite" [required]="required">
-  <md-hint fxFlex *ngIf="hintText" style="white-space: nowrap">
-     {{hintText}}
-  </md-hint>
+  <input fxFlex mdInput [type]="textType" [(ngModel)]="model" [name]="name" [placeholder]="label" [required]="required" [disabled]="disabled" [readonly]="readonly">
+  <md-hint *ngIf="hint">{{hint}}</md-hint>
 </md-input-container>
 `,
 })
-export class InputComponent extends Field {
+export class InputComponent extends Field implements AfterViewInit {
+  @ViewChildren(NgModel) controls: QueryList<NgModel>;
 
-  @Input('hint')
-  hintText: string;
+  constructor(private parentForm: NgForm) {
+    super();
+  }
+
+  ngAfterViewInit(): void {
+    this.controls.forEach((control: NgModel) => {
+      this.parentForm.addControl(control);
+    });
+  }
 }

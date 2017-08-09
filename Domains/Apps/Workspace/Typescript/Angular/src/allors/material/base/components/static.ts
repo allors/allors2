@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input , ChangeDetectorRef } from '@angular/core';
 import { ISessionObject } from '../../../../allors/domain';
 import { MetaDomain, RoleType } from '../../../../allors/meta';
 
@@ -7,7 +7,7 @@ import { Field } from '../../../angular';
 @Component({
   selector: 'a-md-static',
   template: `
-<md-input-container fxLayout="row">
+<md-input-container fxLayout="column" fxLayoutAlign="top stretch">
   <input fxFlex mdInput type="type" [ngModel]="static" [name]="name" [placeholder]="label" readonly>
 </md-input-container>
 `,

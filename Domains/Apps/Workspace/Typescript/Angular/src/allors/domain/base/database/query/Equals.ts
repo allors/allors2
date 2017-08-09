@@ -13,16 +13,19 @@ export class Equals implements Predicate {
   toJSON(): any {
     let value: any;
     if (this.roleType.objectType.isUnit) {
-      value = this.value;
+      return {
+        _T: 'Equals',
+        at: this.associationType ? this.associationType.id : undefined,
+        rt: this.roleType.id ? this.roleType.id : undefined,
+        v: this.value,
+      };
     } else {
-      value = this.value ? this.value.id : undefined;
+      return {
+        _T: 'Equals',
+        at: this.associationType ? this.associationType.id : undefined,
+        rt: this.roleType.id ? this.roleType.id : undefined,
+        o: this.value ? this.value.id : undefined,
+      };
     }
-
-    return {
-      _T: 'Equals',
-      at: this.associationType ? this.associationType.id : undefined,
-      rt: this.roleType.id ? this.roleType.id : undefined,
-      v: value,
-    };
   }
 }

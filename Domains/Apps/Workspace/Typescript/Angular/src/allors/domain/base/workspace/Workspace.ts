@@ -1,7 +1,7 @@
-﻿import { WorkspaceObject } from './WorkspaceObject';
-import { SessionObject } from './SessionObject';
-import { PullResponse, SyncRequest, SyncResponse } from '../database';
-import { ObjectType, Population as MetaPopulation } from '../../../meta';
+﻿import { ObjectType, Population as MetaPopulation } from "../../../meta";
+import { PullResponse, SyncRequest, SyncResponse } from "../database";
+import { SessionObject } from "./SessionObject";
+import { WorkspaceObject } from "./WorkspaceObject";
 
 export interface IWorkspace {
     metaPopulation: MetaPopulation;
@@ -18,13 +18,13 @@ export class Workspace implements IWorkspace {
     constructor(public metaPopulation: MetaPopulation, public constructorByName: { [name: string]: typeof SessionObject }) {
     }
 
-    diff(response: PullResponse): SyncRequest {
+    public diff(response: PullResponse): SyncRequest {
         const requireLoadIds = new SyncRequest();
 
         if (response.objects) {
             const userSecurityHash = response.userSecurityHash;
 
-            const requireLoadIdsWithVersion = response.objects.filter(idAndVersion => {
+            const requireLoadIdsWithVersion = response.objects.filter((idAndVersion) => {
                 const [id, version] = idAndVersion;
                 const workspaceObject = this.workspaceObjectById[id];
 
@@ -34,7 +34,7 @@ export class Workspace implements IWorkspace {
                     (workspaceObject.userSecurityHash !== userSecurityHash);
             });
 
-            requireLoadIds.objects = requireLoadIdsWithVersion.map(idWithVersion => {
+            requireLoadIds.objects = requireLoadIdsWithVersion.map((idWithVersion) => {
                 return idWithVersion[0];
             });
         }
@@ -42,7 +42,7 @@ export class Workspace implements IWorkspace {
         return requireLoadIds;
     }
 
-    sync(syncResponse: SyncResponse): void {
+    public sync(syncResponse: SyncResponse): void {
         if (syncResponse.objects) {
             Object
                 .keys(syncResponse.objects)
@@ -54,7 +54,7 @@ export class Workspace implements IWorkspace {
         }
     }
 
-    get(id: string): WorkspaceObject {
+    public get(id: string): WorkspaceObject {
         const workspaceObject = this.workspaceObjectById[id];
         if (workspaceObject === undefined) {
             throw new Error(`Object with id ${id} is not present.`);

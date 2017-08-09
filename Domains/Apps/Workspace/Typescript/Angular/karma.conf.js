@@ -11,6 +11,7 @@ module.exports = function (config) {
       require('karma-jasmine-html-reporter'),
       require('karma-coverage-istanbul-reporter'),
       require('karma-firefox-launcher'),
+      require('karma-teamcity-reporter'),
       require('@angular/cli/plugins/karma')
     ],
     customLaunchers: {

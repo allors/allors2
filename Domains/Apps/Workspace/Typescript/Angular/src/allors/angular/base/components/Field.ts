@@ -1,4 +1,5 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, ChangeDetectorRef } from '@angular/core';
+import { FormGroup } from '@angular/forms';
 import { ISessionObject } from '../../../../allors/domain';
 import { MetaDomain, RoleType } from '../../../../allors/meta';
 
@@ -9,11 +10,20 @@ export abstract class Field {
   @Input()
   roleType: RoleType;
 
+  @Input('disabled')
+  assignedDisabled: boolean;
+
   @Input('required')
   assignedRequired: boolean;
 
   @Input('label')
   assignedLabel: string;
+
+  @Input()
+  readonly: boolean;
+
+  @Input()
+  hint: string;
 
   get ExistObject(): boolean {
     return !!this.object;
@@ -63,9 +73,13 @@ export abstract class Field {
     return this.assignedRequired ? this.assignedRequired : this.roleType.isRequired;
   }
 
+  get disabled(): boolean {
+    return !this.canWrite || this.assignedDisabled;
+  }
+
   protected humanize(input: string): string {
     return input ? input.replace(/([a-z\d])([A-Z])/g, '$1 $2')
-                        .replace(/([A-Z]+)([A-Z][a-z\d]+)/g, '$1 $2')
-                        : undefined;
+      .replace(/([A-Z]+)([A-Z][a-z\d]+)/g, '$1 $2')
+      : undefined;
   }
 }

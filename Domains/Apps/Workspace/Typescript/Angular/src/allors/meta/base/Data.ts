@@ -51,5 +51,3 @@ export interface MethodType {
 export interface ConcreteMethodType {
     id: string;
 }
-
-

@@ -1,24 +1,28 @@
-import { Data, Interface, Class } from './Data';
-import { MetaObject } from './MetaObject';
-import { ObjectType, Kind } from './ObjectType';
-import { RoleType, ExclusiveRoleType, ConcreteRoleType } from './RoleType';
-import { AssociationType } from './AssociationType';
-import { MethodType, ExclusiveMethodType, ConcreteMethodType } from './MethodType';
+import { AssociationType } from "./AssociationType";
+import { ConcreteMethodType } from "./ConcreteMethodType";
+import { ConcreteRoleType } from "./ConcreteRoleType";
+import { Class, Data, Interface } from "./Data";
+import { ExclusiveMethodType } from "./ExclusiveMethodType";
+import { ExclusiveRoleType } from "./ExclusiveRoleType";
+import { MetaObject } from "./MetaObject";
+import { MethodType } from "./MethodType";
+import { Kind, ObjectType } from "./ObjectType";
+import { RoleType } from "./RoleType";
 
 export class Population {
-  readonly domains: string[] = [];
+  public readonly domains: string[] = [];
 
-  readonly objectTypeByName: { [name: string]: ObjectType; } = {};
+  public readonly objectTypeByName: { [name: string]: ObjectType; } = {};
 
-  readonly metaObjectById: { [id: string]: MetaObject; } = {};
+  public readonly metaObjectById: { [id: string]: MetaObject; } = {};
 
-  createMetaDomain(): any {
+  public createMetaDomain(): any {
     const metaDomain = {};
     Object.keys(this.objectTypeByName)
       .forEach((objectTypeName) => {
         const objectType = this.objectTypeByName[objectTypeName];
         const metaObjectType = {
-          ObjectType: objectType
+          ObjectType: objectType,
         };
         metaDomain[objectTypeName] = metaObjectType;
 
@@ -36,28 +40,28 @@ export class Population {
     return metaDomain;
   }
 
-  baseInit(this: Population, data: Data) {
+  public baseInit(this: Population, data: Data) {
 
     // Domains
-    data.domains.forEach(dataDomain => {
+    data.domains.forEach((dataDomain) => {
       if (this.domains.indexOf(dataDomain) > 1) {
         this.domains.push(dataDomain);
       }
     });
 
     const idByTypeName = {
-      'Binary': 'c28e515bcae84d6b95bf062aec8042fc',
-      'Boolean': 'b5ee6cea4E2b498ea5dd24671d896477',
-      'DateTime': 'c4c0934361d3418cade2fe6fd588f128',
-      'Decimal': 'da866d8e2c4041a8ae5b5f6dae0b89c8',
-      'Float': 'ffcabd07f35f4083bef6f6c47970ca5d',
-      'Integer': 'ccd6f13426de4103bff9a37ec3e997a3',
-      'String': 'ad7f5ddcbedb4aaa97acd6693a009ba9',
-      'Unique': '6dc0a1a888a44614adb492dd3d017c0e',
+      Binary: "c28e515bcae84d6b95bf062aec8042fc",
+      Boolean: "b5ee6cea4E2b498ea5dd24671d896477",
+      DateTime: "c4c0934361d3418cade2fe6fd588f128",
+      Decimal: "da866d8e2c4041a8ae5b5f6dae0b89c8",
+      Float: "ffcabd07f35f4083bef6f6c47970ca5d",
+      Integer: "ccd6f13426de4103bff9a37ec3e997a3",
+      String: "ad7f5ddcbedb4aaa97acd6693a009ba9",
+      Unique: "6dc0a1a888a44614adb492dd3d017c0e",
     };
 
     // Units
-    ['Binary', 'Boolean', 'DateTime', 'Decimal', 'Float', 'Integer', 'String', 'Unique']
+    ["Binary", "Boolean", "DateTime", "Decimal", "Float", "Integer", "String", "Unique"]
       .forEach((name) => {
         const metaUnit = new ObjectType();
         metaUnit.id = idByTypeName[name];
@@ -68,7 +72,7 @@ export class Population {
       });
 
     // Interfaces
-    data.interfaces.forEach(dataInterface => {
+    data.interfaces.forEach((dataInterface) => {
       const metaInterface = new ObjectType();
       metaInterface.id = dataInterface.id;
       metaInterface.name = dataInterface.name;
@@ -78,7 +82,7 @@ export class Population {
     });
 
     // Classes
-    data.classes.forEach(dataClass => {
+    data.classes.forEach((dataClass) => {
       const metaClass = new ObjectType();
       metaClass.id = dataClass.id;
       metaClass.name = dataClass.name;
@@ -92,13 +96,13 @@ export class Population {
     dataObjectTypes.forEach((dataObjectType: Interface | Class) => {
       const metaObjectType = this.objectTypeByName[dataObjectType.name];
 
-      dataObjectType.interfaces.forEach(dataInterface => {
+      dataObjectType.interfaces.forEach((dataInterface) => {
         const metaInterface = this.objectTypeByName[dataInterface];
         metaObjectType.interfaceByName[metaInterface.name] = metaInterface;
       });
 
       if (dataObjectType.exclusiveRoleTypes) {
-        dataObjectType.exclusiveRoleTypes.forEach(dataRoleType => {
+        dataObjectType.exclusiveRoleTypes.forEach((dataRoleType) => {
           const objectType = this.objectTypeByName[dataRoleType.objectType];
           const metaRoleType = new ExclusiveRoleType();
           metaRoleType.id = dataRoleType.id;
@@ -112,7 +116,7 @@ export class Population {
       }
 
       if (dataObjectType.associationTypes) {
-        dataObjectType.associationTypes.forEach(dataAssociationType => {
+        dataObjectType.associationTypes.forEach((dataAssociationType) => {
           const metaAssociationType = new AssociationType();
           metaAssociationType.id = dataAssociationType.id;
           metaAssociationType.name = dataAssociationType.name;

@@ -1,4 +1,4 @@
-import { NgModule, } from '@angular/core';
+import { NgModule } from '@angular/core';
 import { HttpModule } from '@angular/http';
 import { CommonModule, } from '@angular/common';
 import { FormsModule, ReactiveFormsModule, } from '@angular/forms';
@@ -7,14 +7,14 @@ import {
   CovalentDataTableModule, CovalentMediaModule, CovalentLoadingModule,
   CovalentNotificationsModule, CovalentLayoutModule, CovalentMenuModule,
   CovalentPagingModule, CovalentSearchModule, CovalentStepsModule,
-  CovalentCommonModule, CovalentDialogsModule, CovalentFileModule,
+  CovalentCommonModule, CovalentDialogsModule, CovalentFileModule, CovalentChipsModule,
 } from '@covalent/core';
 import {
-  MdButtonModule, MdCardModule, MdDatepickerModule, MdIconModule,
-  MdListModule, MdMenuModule, MdTooltipModule,
+  MdButtonModule, MdCardModule, MdNativeDateModule, MdDatepickerModule, MdIconModule,
+  MdListModule, MdMenuModule, MdTooltipModule, MdAutocompleteModule,
   MdSlideToggleModule, MdInputModule, MdCheckboxModule,
   MdToolbarModule, MdSnackBarModule, MdSidenavModule,
-  MdTabsModule, MdSelectModule, MdRadioModule,
+  MdTabsModule, MdSelectModule, MdRadioModule, MdSliderModule,
 } from '@angular/material';
 import { NgxChartsModule, } from '@swimlane/ngx-charts';
 
@@ -23,22 +23,22 @@ const FLEX_LAYOUT_MODULES: any[] = [
 ];
 
 const ANGULAR_MODULES: any[] = [
-  HttpModule, FormsModule, ReactiveFormsModule,
+  HttpModule, FormsModule, ReactiveFormsModule, MdNativeDateModule,
 ];
 
 const MATERIAL_MODULES: any[] = [
-  MdButtonModule, MdCardModule, MdDatepickerModule, MdIconModule,
+  MdButtonModule, MdCardModule, MdDatepickerModule, MdIconModule, MdAutocompleteModule,
   MdListModule, MdMenuModule, MdTooltipModule,
   MdSlideToggleModule, MdInputModule, MdCheckboxModule,
   MdToolbarModule, MdSnackBarModule, MdSidenavModule,
-  MdTabsModule, MdSelectModule, MdRadioModule,
+  MdTabsModule, MdSelectModule, MdRadioModule, MdSliderModule,
 ];
 
 const COVALENT_MODULES: any[] = [
   CovalentDataTableModule, CovalentMediaModule, CovalentLoadingModule,
   CovalentNotificationsModule, CovalentLayoutModule, CovalentMenuModule,
   CovalentPagingModule, CovalentSearchModule, CovalentStepsModule,
-  CovalentCommonModule, CovalentDialogsModule, CovalentFileModule,
+  CovalentCommonModule, CovalentDialogsModule, CovalentFileModule, CovalentChipsModule,
 ];
 
 const CHART_MODULES: any[] = [

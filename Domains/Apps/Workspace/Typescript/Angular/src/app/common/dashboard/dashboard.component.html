@@ -1,18 +1,14 @@
-<td-layout-nav logo="assets:covalent">
-  <div td-toolbar-content layout="row" layout-align="center center" flex>
-    <span>Apps</span>
-    <span flex></span>
-    <a md-icon-button mdTooltip="Docs" href="http://www.allors.com/" target="_blank"><md-icon>chrome_reader_mode</md-icon></a>
-  </div>
-  <div layout-gt-sm="row" tdMediaToggle="gt-xs" [mediaClasses]="['push-sm']">
-    <div flex-gt-sm="60">
-    </div>
-  </div>
-  <td-layout-footer>
-    <div layout="row" layout-align="start center">
-      <span class="md-caption">Copyright &copy; 2017 Allors. All rights reserved</span>
-      <span flex></span>
-      <md-icon class="md-icon-ux" svgIcon="assets:teradata-ux"></md-icon>
-    </div>
-  </td-layout-footer>
-</td-layout-nav>
+<td-layout-card-over cardWidth="75">
+  <md-card-title>Main Dashboard</md-card-title>
+  <md-card-subtitle>application wide dashboard</md-card-subtitle>
+  <md-divider></md-divider>
+  <md-card-content>
+    <md-list>
+      <h3 md-subheader>Overview</h3>
+    </md-list>
+  </md-card-content>
+  <md-divider></md-divider>
+  <md-card-actions>
+    <button md-button color="accent" class="text-upper">Refresh</button>
+  </md-card-actions>
+</td-layout-card-over>

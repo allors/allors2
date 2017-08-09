@@ -1,4 +1,4 @@
-import { Injectable, Inject } from '@angular/core';
+import { Injectable, Inject , ChangeDetectorRef } from '@angular/core';
 import { Headers, Http, Response, RequestOptions } from '@angular/http';
 
 import { Router, CanActivate } from '@angular/router';
