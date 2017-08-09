@@ -14,7 +14,9 @@
     "build": "ng build",
     "test": "ng test",
     "lint": "ng lint",
-    "e2e": "ng e2e"
+    "e2e": "ng e2e",
+    "teamcity": "ng test --watch=false --browsers=PhantomJS --reporters=teamcity",
+    "teamcity-e2e": "ng e2e --config ./protractor.conf.teamcity.js"
   },
   "private": true,
   "dependencies": {
@@ -40,6 +42,7 @@
     "@types/node": "~6.0.60",
     "codelyzer": "~3.0.1",
     "jasmine-core": "~2.6.2",
+    "jasmine-reporters": "^2.2.1",
     "jasmine-spec-reporter": "~4.1.0",
     "karma": "~1.7.0",
     "karma-chrome-launcher": "~2.1.1",
@@ -47,10 +50,13 @@
     "karma-coverage-istanbul-reporter": "^1.2.1",
     "karma-jasmine": "~1.1.0",
     "karma-jasmine-html-reporter": "^0.2.2",
+    "karma-phantomjs-launcher": "^1.0.4",
+    "karma-teamcity-reporter": "^1.0.0",
+    "phantomjs-prebuilt": "^2.1.14",
     "protractor": "~5.1.2",
+    "sync-files": "^1.0.3",
     "ts-node": "~3.0.4",
     "tslint": "~5.3.2",
-    "typescript": "~2.3.3",
-    "sync-files": "^1.0.3"
+    "typescript": "~2.3.3"
   }
 }
