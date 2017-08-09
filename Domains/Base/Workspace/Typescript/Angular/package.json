@@ -15,7 +15,7 @@
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "teamcity": "ng test --watch=false --browsers=PhantomJS --reporters=teamcity",
+    "teamcity": "ng test --watch=false --reporters=teamcity",
     "teamcity-e2e": "ng e2e --config ./protractor.conf.teamcity.js"
   },
   "private": true,
@@ -50,7 +50,6 @@
     "karma-coverage-istanbul-reporter": "^1.2.1",
     "karma-jasmine": "~1.1.0",
     "karma-jasmine-html-reporter": "^0.2.2",
-    "karma-phantomjs-launcher": "^1.0.4",
     "karma-teamcity-reporter": "^1.0.0",
     "phantomjs-prebuilt": "^2.1.14",
     "protractor": "~5.1.2",
