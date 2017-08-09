@@ -10,7 +10,8 @@
     "postinstall": "npm run sync",
     "pretest": "tsc",
     "test": "mocha",
-    "cover": "istanbul cover ./node_modules/mocha/bin/_mocha"
+    "cover": "istanbul cover ./node_modules/mocha/bin/_mocha",
+    "teamcity": "./node_modules/.bin/tsc && mocha --reporter mocha-teamcity-reporter"
   },
   "devDependencies": {
     "@types/chai": "latest",
@@ -19,6 +20,8 @@
     "chai": "latest",
     "istanbul": "latest",
     "mocha": "latest",
-    "sync-files": "latest"
+    "mocha-teamcity-reporter": "latest",
+    "sync-files": "latest",
+    "typescript": "latest"
   }
 }

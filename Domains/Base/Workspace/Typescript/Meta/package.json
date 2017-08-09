@@ -17,7 +17,7 @@
     "chai": "latest",
     "istanbul": "latest",
     "mocha": "latest",
-    "mocha-teamcity-reporter": "^1.1.1",
-    "typescript": "^2.4.2"
+    "mocha-teamcity-reporter": "latest",
+    "typescript": "latest"
   }
 }
