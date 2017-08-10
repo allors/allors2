@@ -25,7 +25,7 @@ export class StaticComponent extends Field {
           return this.model[this.display];
         } else {
           const roles: any[] = this.model;
-          if (roles) {
+          if (roles && roles.length > 0) {
             return roles
               .map((v: any) => v[this.display])
               .reduce((acc: string, cur: string) => acc + ', ' + cur);
