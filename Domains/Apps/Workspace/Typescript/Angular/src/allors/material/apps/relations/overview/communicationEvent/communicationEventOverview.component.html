@@ -18,7 +18,7 @@
 
         <div class="pad">
           <a-md-static [object]="communicationEvent" [roleType]="m.CommunicationEvent.CurrentObjectState" display="Name" label="Status"></a-md-static>
-          <a-md-static [object]="communicationEvent" [roleType]="m.CommunicationEvent.EventPurposes" display="Name" label="Purposes"></a-md-static>
+          <a-md-static *ngIf="communicationEvent.EventPurposes" [object]="communicationEvent" [roleType]="m.CommunicationEvent.EventPurposes" display="Name" label="Purposes"></a-md-static>
           <a-md-static [object]="communicationEvent" [roleType]="m.EmailCommunication.IncomingMail"></a-md-static>
           <a-md-static [object]="communicationEvent" [roleType]="m.EmailCommunication.Originator" display="displayName" label="From"></a-md-static>
           <a-md-static [object]="communicationEvent" [roleType]="m.EmailCommunication.Addressees" display="displayName" label="To"></a-md-static>
@@ -49,7 +49,7 @@
 
         <div class="pad">
           <a-md-static [object]="communicationEvent" [roleType]="m.CommunicationEvent.CurrentObjectState" display="Name" label="Status"></a-md-static>
-          <a-md-static [object]="communicationEvent" [roleType]="m.CommunicationEvent.EventPurposes" display="Name" label="Purposes"></a-md-static>
+          <a-md-static *ngIf="communicationEvent.EventPurposes" [object]="communicationEvent" [roleType]="m.CommunicationEvent.EventPurposes" display="Name" label="Purposes"></a-md-static>
           <a-md-static [object]="communicationEvent" [roleType]="m.LetterCorrespondence.Originators" display="displayName" label="Sender"></a-md-static>
           <a-md-static [object]="communicationEvent" [roleType]="m.LetterCorrespondence.Receivers" display="displayName" label="Receiver"></a-md-static>
           <a-md-static [object]="communicationEvent" [roleType]="m.LetterCorrespondence.ContactMechanisms" display="displayName" label="Postal Address"></a-md-static>
@@ -82,7 +82,7 @@
         <div class="pad">
           <a-md-static [object]="communicationEvent" [roleType]="m.CommunicationEvent.CurrentObjectState" display="Name" label="Status"></a-md-static>
           <a-md-static [object]="communicationEvent" [roleType]="m.CommunicationEvent.EventPurposes" display="Name" label="Purposes"></a-md-static>
-          <a-md-static *ngIf="communicationEvent.Participants" [object]="communicationEvent" [roleType]="m.FaceToFaceCommunication.Participants" display="PartyName"></a-md-static>
+          <a-md-static [object]="communicationEvent" [roleType]="m.FaceToFaceCommunication.Participants" display="PartyName"></a-md-static>
           <a-md-static [object]="communicationEvent" [roleType]="m.FaceToFaceCommunication.Location"></a-md-static>
           <a-md-static [object]="communicationEvent" [roleType]="m.FaceToFaceCommunication.Subject"></a-md-static>
           <a-md-static [object]="communicationEvent" [roleType]="m.FaceToFaceCommunication.Note"></a-md-static>
@@ -111,14 +111,14 @@
 
         <div class="pad">
           <a-md-static [object]="communicationEvent" [roleType]="m.CommunicationEvent.CurrentObjectState" display="Name" label="Status"></a-md-static>
-          <a-md-static [object]="communicationEvent" [roleType]="m.CommunicationEvent.EventPurposes" display="Name" label="Purposes"></a-md-static>
+          <a-md-static *ngIf="communicationEvent.EventPurposes" [object]="communicationEvent" [roleType]="m.CommunicationEvent.EventPurposes" display="Name" label="Purposes"></a-md-static>
           <a-md-static [object]="communicationEvent" [roleType]="m.PhoneCommunication.Subject"></a-md-static>
           <a-md-static [object]="communicationEvent" [roleType]="m.PhoneCommunication.Note"></a-md-static>
           <a-md-static [object]="communicationEvent" [roleType]="m.PhoneCommunication.IncomingCall"></a-md-static>
           <a-md-static [object]="communicationEvent" [roleType]="m.PhoneCommunication.LeftVoiceMail"></a-md-static>
           <a-md-static [object]="communicationEvent" [roleType]="m.PhoneCommunication.Callers" display="PartyName"></a-md-static>
           <a-md-static [object]="communicationEvent" [roleType]="m.PhoneCommunication.Receivers" display="PartyName"></a-md-static>
-          <a-md-static *ngIf="!communicationEvent.IncomingCall" [object]="communicationEvent" [roleType]="m.PhoneCommunication.ContactMechanisms"
+          <a-md-static *ngIf="!communicationEvent.IncomingCall && communicationEvent.ContactMechanisms" [object]="communicationEvent" [roleType]="m.PhoneCommunication.ContactMechanisms"
             display="displayName" label="Phone number"></a-md-static>
           <a-md-static [object]="communicationEvent" [roleType]="m.CommunicationEvent.ScheduledStart"></a-md-static>
           <a-md-static [object]="communicationEvent" [roleType]="m.CommunicationEvent.ScheduledEnd"></a-md-static>
