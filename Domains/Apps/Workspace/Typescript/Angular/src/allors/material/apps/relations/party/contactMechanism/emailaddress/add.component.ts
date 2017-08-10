@@ -84,6 +84,7 @@ export class PartyContactMechanismAddEmailAddressComponent implements OnInit, Af
 
         this.partyContactMechanism = this.scope.session.create('PartyContactMechanism') as PartyContactMechanism;
         this.partyContactMechanism.ContactMechanism = this.contactMechanism;
+        this.partyContactMechanism.UseAsDefault = true;
 
         this.party.AddPartyContactMechanism(this.partyContactMechanism);
 

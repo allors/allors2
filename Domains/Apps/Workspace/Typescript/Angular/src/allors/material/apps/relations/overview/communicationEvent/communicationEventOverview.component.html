@@ -82,7 +82,7 @@
         <div class="pad">
           <a-md-static [object]="communicationEvent" [roleType]="m.CommunicationEvent.CurrentObjectState" display="Name" label="Status"></a-md-static>
           <a-md-static [object]="communicationEvent" [roleType]="m.CommunicationEvent.EventPurposes" display="Name" label="Purposes"></a-md-static>
-          <a-md-static [object]="communicationEvent" [roleType]="m.FaceToFaceCommunication.Participants" display="PartyName"></a-md-static>
+          <a-md-static *ngIf="communicationEvent.Participants" [object]="communicationEvent" [roleType]="m.FaceToFaceCommunication.Participants" display="PartyName"></a-md-static>
           <a-md-static [object]="communicationEvent" [roleType]="m.FaceToFaceCommunication.Location"></a-md-static>
           <a-md-static [object]="communicationEvent" [roleType]="m.FaceToFaceCommunication.Subject"></a-md-static>
           <a-md-static [object]="communicationEvent" [roleType]="m.FaceToFaceCommunication.Note"></a-md-static>

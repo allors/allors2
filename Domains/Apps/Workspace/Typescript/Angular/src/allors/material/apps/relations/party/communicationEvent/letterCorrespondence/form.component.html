@@ -51,10 +51,14 @@
         <a-md-slide-toggle [object]="communicationEvent" [roleType]="m.LetterCorrespondence.IncomingLetter"></a-md-slide-toggle>
         <a-md-slide-toggle [object]="communicationEvent" [roleType]="m.CommunicationEvent.SendNotification"></a-md-slide-toggle>
         <a-md-slide-toggle [object]="communicationEvent" [roleType]="m.CommunicationEvent.SendReminder"></a-md-slide-toggle>
-        <a-md-datepicker [object]="communicationEvent" [roleType]="m.CommunicationEvent.ScheduledStart"></a-md-datepicker>
-        <a-md-datepicker [object]="communicationEvent" [roleType]="m.CommunicationEvent.ScheduledEnd"></a-md-datepicker>
-        <a-md-datepicker [object]="communicationEvent" [roleType]="m.CommunicationEvent.ActualStart"></a-md-datepicker>
-        <a-md-datepicker [object]="communicationEvent" [roleType]="m.CommunicationEvent.ActualEnd"></a-md-datepicker>
+      <div fxLayout="column" fxLayout.gt-sm="row" fxLayoutGap.gt-sm="2rem" class="pad-bottom">
+        <a-md-datepicker [object]="communicationEvent" [roleType]="m.CommunicationEvent.ScheduledStart" [useTime]="true"></a-md-datepicker>
+        <a-md-datepicker [object]="communicationEvent" [roleType]="m.CommunicationEvent.ScheduledEnd" [useTime]="true"></a-md-datepicker>
+      </div>
+      <div fxLayout="column" fxLayout.gt-sm="row" fxLayoutGap.gt-sm="2rem" class="pad-bottom">
+        <a-md-datepicker [object]="communicationEvent" [roleType]="m.CommunicationEvent.ActualStart" [useTime]="true"></a-md-datepicker>
+        <a-md-datepicker [object]="communicationEvent" [roleType]="m.CommunicationEvent.ActualEnd" [useTime]="true"></a-md-datepicker>
+      </div>
       </div>
 
     </div>

@@ -91,11 +91,12 @@ export class PartyContactMechanismAddTelecommunicationsNumberComponent implement
 
         if (!this.contactMechanism) {
           this.contactMechanism = this.scope.session.create('TelecommunicationsNumber') as TelecommunicationsNumber;
-          // this.contactMechanism.ContactMechanismType = phone;
+          this.contactMechanism.ContactMechanismType = phone;
         }
 
         this.partyContactMechanism = this.scope.session.create('PartyContactMechanism') as PartyContactMechanism;
         this.partyContactMechanism.ContactMechanism = this.contactMechanism;
+        this.partyContactMechanism.UseAsDefault = true;
 
         this.party.AddPartyContactMechanism(this.partyContactMechanism);
       },

@@ -47,10 +47,10 @@ namespace Allors.Domain
             this.AddInvolvedParty(this.Originator);
             this.AddInvolvedParty(this.Receiver);
 
-            if (this.ExistOwner && !this.InvolvedParties.Contains(this.Owner))
-            {
-                this.AddInvolvedParty(this.Owner);
-            }
+            //if (this.ExistOwner && !this.InvolvedParties.Contains(this.Owner))
+            //{
+            //    this.AddInvolvedParty(this.Owner);
+            //}
 
             if (this.ExistPartyRelationshipWhereCommunicationEvent)
             {
