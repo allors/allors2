@@ -6,7 +6,7 @@ import { TdDialogService, TdMediaService } from '@covalent/core';
 
 import { MetaDomain } from '../../../../../meta';
 import { PullRequest, Fetch, Path, Query, Equals, Like, TreeNode, Sort, Page } from '../../../../../domain';
-import { CommunicationEvent, ContactMechanism, Locale, Organisation, OrganisationContactRelationship, PartyContactMechanism, Person, } from '../../../../../domain';
+import { CommunicationEvent, ContactMechanism, TelecommunicationsNumber, Locale, Organisation, OrganisationContactRelationship, PartyContactMechanism, Person, } from '../../../../../domain';
 import { AllorsService, ErrorService, Scope, Loaded, Saved, Invoked } from '../../../../../angular';
 
 @Component({
@@ -413,6 +413,13 @@ export class OrganisationOverviewComponent implements OnInit, AfterViewInit, OnD
 
   refresh(): void {
     this.refresh$.next(new Date());
+  }
+
+  isPhone(contactMechanism: ContactMechanism): boolean {
+    if (contactMechanism instanceof TelecommunicationsNumber) {
+      const phoneCommunication: TelecommunicationsNumber = contactMechanism as TelecommunicationsNumber;
+      return phoneCommunication.ContactMechanismType && phoneCommunication.ContactMechanismType.Name === "Phone";
+    }
   }
 
   checkType(obj: any): string {

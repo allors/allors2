@@ -135,9 +135,7 @@
                     md-line class="md-caption">
                     {{ partyContactMechanism.ContactMechanism?.ElectronicAddressString}}
                   </p>
-                  <p *ngIf="this.checkType(partyContactMechanism.ContactMechanism) === 'TelecommunicationsNumber' &&
-                    partyContactMechanism.UseAsDefault  && partyContactMechanism.ContactMechanism.ContactMechanismType.Name === 'Phone'"
-                    md-line class="md-caption">
+                  <p *ngIf="this.isPhone(partyContactMechanism.ContactMechanism)" md-line class="md-caption">
                     {{ partyContactMechanism.ContactMechanism?.CountryCode}} {{ partyContactMechanism.ContactMechanism?.AreaCode}} {{ partyContactMechanism.ContactMechanism?.ContactNumber}}
                   </p>
                   <p *ngIf="this.checkType(partyContactMechanism.ContactMechanism) === 'PostalAddress'  && partyContactMechanism.UseAsDefault"
@@ -261,6 +259,6 @@
         <button md-button [routerLink]="['/party/' + organisation.id + '/partycontactmechanism/telecommunicationsnumber']">+ Telecom</button>
       </md-card-actions>
     </md-card>
-  </div>
 
+  </div>
 </div>
