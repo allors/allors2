@@ -23,7 +23,7 @@
           <a-md-static [object]="request" [roleType]="m.Request.RequestNumber"></a-md-static>
         </div>
         <div layout="row">
-          <a [routerLink]="['/relations/organisations/' + request.Originator.id + '/overview']">
+          <a [routerLink]="['/relations/organisations/' + request.Originator.id ]">
             <a-md-static [object]="request" [roleType]="m.Request.Originator"  display="displayName" label="From"></a-md-static>
               </a>
         </div>
@@ -53,7 +53,7 @@
 
       <md-divider></md-divider>
       <md-card-actions>
-        <button md-button [routerLink]="[ '../edit']">Edit</button>
+        <button md-button [routerLink]="['/request/' + request.id ]">Edit</button>
       </md-card-actions>
     </md-card>
   </div>

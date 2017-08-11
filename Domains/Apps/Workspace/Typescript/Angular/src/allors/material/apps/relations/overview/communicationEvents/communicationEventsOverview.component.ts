@@ -271,6 +271,6 @@ export class CommunicationEventsOverviewComponent implements AfterViewInit, OnDe
   }
 
   onView(person: Person): void {
-    this.router.navigate(['/relations/people/' + person.id + '/overview']);
+    this.router.navigate(["/relations/person/" + person.id]);
   }
 }

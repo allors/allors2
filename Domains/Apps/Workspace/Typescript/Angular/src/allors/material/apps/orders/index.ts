@@ -1,20 +1,35 @@
-// Routing
-import { LayoutComponent } from './layout.component';
+// Overview
+import { OverviewComponent } from "./overview.component";
 
-import { OrderDashboardComponent } from './dashboard/order-dashboard.component';
-import { RequestOverviewComponent } from './requests/request/request-overview.component';
-import { RequestsComponent } from './requests/requests.component';
-import { RequestFormComponent } from './requests/request/request.component';
+import { OrdersOverviewComponent } from "./overview/orders/ordersOverview.component";
+import { RequestOverviewComponent } from "./overview/request/requestOverview.component";
+import { RequestsOverviewComponent } from "./overview/requests/requestsOverview.component";
+
+// Request
+import { RequestEditComponent } from "./request/edit.component";
 
 export const ORDERS: any[] = [
 ];
 
 export const ORDERS_ROUTING: any[] = [
-  LayoutComponent,
-  OrderDashboardComponent, RequestOverviewComponent, RequestFormComponent, RequestsComponent,
+  // Overview
+  OverviewComponent,
+
+  OrdersOverviewComponent,
+  RequestsOverviewComponent,
+  RequestOverviewComponent,
+
+  // Request
+  RequestEditComponent,
 ];
 
 export {
-  LayoutComponent,
-  OrderDashboardComponent, RequestFormComponent, RequestOverviewComponent, RequestsComponent,
+  // Overview
+  OverviewComponent,
+  OrdersOverviewComponent,
+  RequestsOverviewComponent,
+  RequestOverviewComponent,
+
+  // Party
+  RequestEditComponent,
 };

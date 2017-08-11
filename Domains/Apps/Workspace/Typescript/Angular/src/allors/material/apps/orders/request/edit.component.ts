@@ -1,39 +1,39 @@
-import { Observable, BehaviorSubject, Subject, Subscription } from 'rxjs/Rx';
-import { Component, OnInit, AfterViewInit, OnDestroy , ChangeDetectorRef } from '@angular/core';
-import { Validators } from '@angular/forms';
-import { ActivatedRoute, Router, UrlSegment } from '@angular/router';
-import { MdSnackBar, MdSnackBarConfig } from '@angular/material';
-import { TdMediaService, TdDialogService } from '@covalent/core';
+import { AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit } from "@angular/core";
+import { Validators } from "@angular/forms";
+import { MdSnackBar, MdSnackBarConfig } from "@angular/material";
+import { ActivatedRoute, Router, UrlSegment } from "@angular/router";
+import { TdDialogService, TdMediaService } from "@covalent/core";
+import { BehaviorSubject, Observable, Subject, Subscription } from "rxjs/Rx";
 
-import { MetaDomain } from '../../../../../meta';
-import { PullRequest, PushResponse, Contains, Fetch, Path, Query, Equals, Like, TreeNode, Sort, Page } from '../../../../../domain';
+import { AllorsService, ErrorService, Filter, Invoked, Loaded, Saved, Scope } from "../../../../angular";
+import { Contains, Equals, Fetch, Like, Page, Path, PullRequest, PushResponse, Query, Sort, TreeNode } from "../../../../domain";
 import {
-  Currency, Organisation, Party, Person, PartyContactMechanism, ContactMechanism,
-  OrganisationRole, PersonRole, RequestForQuote,
-} from '../../../../../domain';
-import { AllorsService, ErrorService, Scope, Loaded, Saved, Filter, Invoked } from '../../../../../angular';
+  ContactMechanism, Currency, Organisation, OrganisationRole, Party, PartyContactMechanism,
+  Person, PersonRole, RequestForQuote,
+} from "../../../../domain";
+import { MetaDomain } from "../../../../meta";
 
 @Component({
-  templateUrl: './request.component.html',
+  templateUrl: "./edit.component.html",
 })
-export class RequestFormComponent implements OnInit, AfterViewInit, OnDestroy {
+export class RequestEditComponent implements OnInit, AfterViewInit, OnDestroy {
+
+  public m: MetaDomain;
+
+  public title: string;
+  public request: RequestForQuote;
+  public people: Person[];
+  public organisations: Organisation[];
+  public currencies: Currency[];
+  public contactMechanisms: ContactMechanism[];
+
+  public peopleFilter: Filter;
+  public organisationsFilter: Filter;
+  public currenciesFilter: Filter;
 
   private refresh$: BehaviorSubject<Date>;
   private subscription: Subscription;
   private scope: Scope;
-
-  m: MetaDomain;
-
-  title: string;
-  request: RequestForQuote;
-  people: Person[];
-  organisations: Organisation[];
-  currencies: Currency[];
-  contactMechanisms: ContactMechanism[];
-
-  peopleFilter: Filter;
-  organisationsFilter: Filter;
-  currenciesFilter: Filter;
 
   get showOrganisations(): boolean {
     return !this.request.Originator || this.request.Originator instanceof (Organisation);
@@ -60,7 +60,7 @@ export class RequestFormComponent implements OnInit, AfterViewInit, OnDestroy {
     this.currenciesFilter = new Filter(this.scope, this.m.Currency, [this.m.Currency.Name]);
   }
 
-  ngOnInit(): void {
+  public ngOnInit(): void {
     const route$: Observable<UrlSegment[]> = this.route.url;
 
     const combined$: Observable<[UrlSegment[], Date]> = Observable.combineLatest(route$, this.refresh$);
@@ -68,15 +68,17 @@ export class RequestFormComponent implements OnInit, AfterViewInit, OnDestroy {
     this.subscription = combined$
       .switchMap(([urlSegments, date]: [UrlSegment[], Date]) => {
 
-        const id: string = this.route.snapshot.paramMap.get('id');
+        const id: string = this.route.snapshot.paramMap.get("id");
         const m: MetaDomain = this.m;
 
         const fetch: Fetch[] = [
           new Fetch({
-            name: 'requestForQuote',
-            id: id,
+            name: "requestForQuote",
+            id,
             include: [
               new TreeNode({ roleType: m.Request.Originator }),
+              new TreeNode({ roleType: m.Request.FullfillContactMechanism }),
+              new TreeNode({ roleType: m.Request.CurrentObjectState }),
             ],
           }),
         ];
@@ -84,17 +86,17 @@ export class RequestFormComponent implements OnInit, AfterViewInit, OnDestroy {
         const rolesQuery: Query[] = [
           new Query(
             {
-              name: 'organisationRoles',
+              name: "organisationRoles",
               objectType: m.OrganisationRole,
             }),
           new Query(
             {
-              name: 'personRoles',
+              name: "personRoles",
               objectType: m.PersonRole,
             }),
           new Query(
             {
-              name: 'currencies',
+              name: "currencies",
               objectType: this.m.Currency,
             }),
         ];
@@ -102,44 +104,44 @@ export class RequestFormComponent implements OnInit, AfterViewInit, OnDestroy {
         this.scope.session.reset();
 
         return this.scope
-          .load('Pull', new PullRequest({ query: rolesQuery }))
+          .load("Pull", new PullRequest({ query: rolesQuery }))
           .switchMap((loaded: Loaded) => {
             this.currencies = loaded.collections.currencies as Currency[];
 
             const organisationRoles: OrganisationRole[] = loaded.collections.organisationRoles as OrganisationRole[];
-            const oCustomerRole: OrganisationRole = organisationRoles.find((v: OrganisationRole) => v.Name === 'Customer');
+            const oCustomerRole: OrganisationRole = organisationRoles.find((v: OrganisationRole) => v.Name === "Customer");
 
             const personRoles: OrganisationRole[] = loaded.collections.organisationRoles as OrganisationRole[];
-            const pCustomerRole: OrganisationRole = organisationRoles.find((v: OrganisationRole) => v.Name === 'Customer');
+            const pCustomerRole: OrganisationRole = organisationRoles.find((v: OrganisationRole) => v.Name === "Customer");
 
             const query: Query[] = [
               new Query(
                 {
-                  name: 'organisations',
+                  name: "organisations",
                   predicate: new Contains({ roleType: m.Organisation.OrganisationRoles, object: oCustomerRole }),
                   objectType: this.m.Organisation,
                 }),
               new Query(
                 {
-                  name: 'persons',
+                  name: "persons",
                   predicate: new Contains({ roleType: m.Person.PersonRoles, object: pCustomerRole }),
                   objectType: this.m.Person,
                 }),
             ];
 
-            return this.scope.load('Pull', new PullRequest({ fetch: fetch, query: query }));
+            return this.scope.load("Pull", new PullRequest({ fetch, query }));
           });
       })
       .subscribe((loaded: Loaded) => {
 
         this.request = loaded.objects.requestForQuote as RequestForQuote;
         if (!this.request) {
-          this.request = this.scope.session.create('RequestForQuote') as RequestForQuote;
+          this.request = this.scope.session.create("RequestForQuote") as RequestForQuote;
         }
 
         this.organisations = loaded.collections.organisations as Organisation[];
         this.people = loaded.collections.parties as Person[];
-        this.title = 'Request from: ' + this.request.Originator.PartyName;
+        this.title = "Request from: " + this.request.Originator.PartyName;
       },
       (error: Error) => {
         this.errorService.message(error);
@@ -148,12 +150,12 @@ export class RequestFormComponent implements OnInit, AfterViewInit, OnDestroy {
     );
   }
 
-  submit(): void {
+  public submit(): void {
     const submitFn: () => void = () => {
       this.scope.invoke(this.request.Submit)
         .subscribe((invoked: Invoked) => {
           this.refresh();
-          this.snackBar.open('Successfully submitted.', 'close', { duration: 5000 });
+          this.snackBar.open("Successfully submitted.", "close", { duration: 5000 });
         },
         (error: Error) => {
           this.errorService.dialog(error);
@@ -162,7 +164,7 @@ export class RequestFormComponent implements OnInit, AfterViewInit, OnDestroy {
 
     if (this.scope.session.hasChanges) {
       this.dialogService
-        .openConfirm({ message: 'Save changes?' })
+        .openConfirm({ message: "Save changes?" })
         .afterClosed().subscribe((confirm: boolean) => {
           if (confirm) {
             this.scope
@@ -183,12 +185,12 @@ export class RequestFormComponent implements OnInit, AfterViewInit, OnDestroy {
     }
   }
 
-  complete(): void {
+  public complete(): void {
     const completeFn: () => void = () => {
       this.scope.invoke(this.request.Complete)
         .subscribe((invoked: Invoked) => {
           this.refresh();
-          this.snackBar.open('Successfully completed.', 'close', { duration: 5000 });
+          this.snackBar.open("Successfully completed.", "close", { duration: 5000 });
         },
         (error: Error) => {
           this.errorService.dialog(error);
@@ -197,7 +199,7 @@ export class RequestFormComponent implements OnInit, AfterViewInit, OnDestroy {
 
     if (this.scope.session.hasChanges) {
       this.dialogService
-        .openConfirm({ message: 'Save changes?' })
+        .openConfirm({ message: "Save changes?" })
         .afterClosed().subscribe((confirm: boolean) => {
           if (confirm) {
             this.scope
@@ -218,12 +220,12 @@ export class RequestFormComponent implements OnInit, AfterViewInit, OnDestroy {
     }
   }
 
-  cancel(): void {
+  public cancel(): void {
     const cancelFn: () => void = () => {
       this.scope.invoke(this.request.Cancel)
         .subscribe((invoked: Invoked) => {
           this.refresh();
-          this.snackBar.open('Successfully cancelled.', 'close', { duration: 5000 });
+          this.snackBar.open("Successfully cancelled.", "close", { duration: 5000 });
         },
         (error: Error) => {
           this.errorService.dialog(error);
@@ -232,7 +234,7 @@ export class RequestFormComponent implements OnInit, AfterViewInit, OnDestroy {
 
     if (this.scope.session.hasChanges) {
       this.dialogService
-        .openConfirm({ message: 'Save changes?' })
+        .openConfirm({ message: "Save changes?" })
         .afterClosed().subscribe((confirm: boolean) => {
           if (confirm) {
             this.scope
@@ -253,12 +255,12 @@ export class RequestFormComponent implements OnInit, AfterViewInit, OnDestroy {
     }
   }
 
-  hold(): void {
+  public hold(): void {
     const holdFn: () => void = () => {
       this.scope.invoke(this.request.Hold)
         .subscribe((invoked: Invoked) => {
           this.refresh();
-          this.snackBar.open('Successfully held.', 'close', { duration: 5000 });
+          this.snackBar.open("Successfully held.", "close", { duration: 5000 });
         },
         (error: Error) => {
           this.errorService.dialog(error);
@@ -267,7 +269,7 @@ export class RequestFormComponent implements OnInit, AfterViewInit, OnDestroy {
 
     if (this.scope.session.hasChanges) {
       this.dialogService
-        .openConfirm({ message: 'Save changes?' })
+        .openConfirm({ message: "Save changes?" })
         .afterClosed().subscribe((confirm: boolean) => {
           if (confirm) {
             this.scope
@@ -288,12 +290,12 @@ export class RequestFormComponent implements OnInit, AfterViewInit, OnDestroy {
     }
   }
 
-  reject(): void {
+  public reject(): void {
     const rejectFn: () => void = () => {
       this.scope.invoke(this.request.Reject)
         .subscribe((invoked: Invoked) => {
           this.refresh();
-          this.snackBar.open('Successfully rejected.', 'close', { duration: 5000 });
+          this.snackBar.open("Successfully rejected.", "close", { duration: 5000 });
         },
         (error: Error) => {
           this.errorService.dialog(error);
@@ -302,7 +304,7 @@ export class RequestFormComponent implements OnInit, AfterViewInit, OnDestroy {
 
     if (this.scope.session.hasChanges) {
       this.dialogService
-        .openConfirm({ message: 'Save changes?' })
+        .openConfirm({ message: "Save changes?" })
         .afterClosed().subscribe((confirm: boolean) => {
           if (confirm) {
             this.scope
@@ -323,34 +325,34 @@ export class RequestFormComponent implements OnInit, AfterViewInit, OnDestroy {
     }
   }
 
-  ngAfterViewInit(): void {
+  public ngAfterViewInit(): void {
     this.media.broadcast();
     this.changeDetectorRef.detectChanges();
   }
 
-  ngOnDestroy(): void {
+  public ngOnDestroy(): void {
     if (this.subscription) {
       this.subscription.unsubscribe();
     }
   }
 
-  save(): void {
+  public save(): void {
 
     this.scope
       .save()
       .subscribe((saved: Saved) => {
-        this.router.navigate(['/orders/requests/' + this.request.id + '/overview']);
+        this.router.navigate(["/orders/request/" + this.request.id]);
       },
       (error: Error) => {
         this.errorService.dialog(error);
       });
   }
 
-  originatorSelected(party: Party): void {
+  public originatorSelected(party: Party): void {
 
     const fetch: Fetch[] = [
       new Fetch({
-        name: 'partyContactMechanisms',
+        name: "partyContactMechanisms",
         id: party.id,
         path: new Path({ step: this.m.Party.CurrentPartyContactMechanisms }),
         include: [
@@ -370,7 +372,7 @@ export class RequestFormComponent implements OnInit, AfterViewInit, OnDestroy {
     ];
 
     this.scope
-      .load('Pull', new PullRequest({ fetch: fetch }))
+      .load("Pull", new PullRequest({ fetch }))
       .subscribe((loaded: Loaded) => {
 
         const partyContactMechanisms: PartyContactMechanism[] = loaded.collections.partyContactMechanisms as PartyContactMechanism[];
@@ -383,11 +385,11 @@ export class RequestFormComponent implements OnInit, AfterViewInit, OnDestroy {
     );
   }
 
-  refresh(): void {
+  public refresh(): void {
     this.refresh$.next(new Date());
   }
 
-  goBack(): void {
+  public goBack(): void {
     window.history.back();
   }
 }

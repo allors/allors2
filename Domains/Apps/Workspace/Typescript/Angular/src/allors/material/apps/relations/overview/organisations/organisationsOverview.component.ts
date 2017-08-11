@@ -288,6 +288,6 @@ export class OrganisationsOverviewComponent implements AfterViewInit, OnDestroy 
   }
 
   onView(organisation: Organisation): void {
-    this.router.navigate(['/relations/organisations/' + organisation.id + '/overview']);
+    this.router.navigate(["/relations/organisation/" + organisation.id]);
   }
 }

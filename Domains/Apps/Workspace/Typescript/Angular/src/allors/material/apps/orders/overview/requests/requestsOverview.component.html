@@ -54,7 +54,7 @@
           <md-icon>more_vert</md-icon>
           </button>
           <md-menu x-position="before" #menu="mdMenu">
-          <a [routerLink]="[request.id + '/overview']" md-menu-item>Details</a>
+          <a [routerLink]="['/orders/request/' + request.id ]" md-menu-item>Details</a>
           <!-- <button md-menu-item (click)="delete(organisation)">Delete</button> -->
           </md-menu>
           </span>
@@ -72,6 +72,6 @@
   </md-card-content>
 </md-card>
 
-<a md-fab color="accent" class="mat-fab-bottom-right fixed" [routerLink]="['add']">
+<a md-fab color="accent" class="mat-fab-bottom-right fixed" [routerLink]="['/request']">
   <md-icon>add</md-icon>
 </a>

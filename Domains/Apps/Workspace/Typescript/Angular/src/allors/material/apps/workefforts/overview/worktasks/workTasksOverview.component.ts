@@ -1,16 +1,16 @@
-import { Observable, BehaviorSubject, Subject, Subscription } from 'rxjs/Rx';
-import { Component, OnInit, AfterViewInit, OnDestroy, ViewChild, ChangeDetectorRef } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
-import { Title } from '@angular/platform-browser';
-import { MdSnackBar, MdSnackBarConfig } from '@angular/material';
+import { AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild } from "@angular/core";
+import { FormBuilder, FormGroup, Validators } from "@angular/forms";
+import { MdSnackBar, MdSnackBarConfig } from "@angular/material";
+import { Title } from "@angular/platform-browser";
+import { Router } from "@angular/router";
+import { BehaviorSubject, Observable, Subject, Subscription } from "rxjs/Rx";
 
-import { TdLoadingService, TdDialogService, TdMediaService } from '@covalent/core';
+import { TdDialogService, TdLoadingService, TdMediaService } from "@covalent/core";
 
-import { PullRequest, Query, Predicate, And, Or, Not, Equals, Like, Contains, ContainedIn, TreeNode, Sort, Page } from '../../../../../domain';
-import { MetaDomain } from '../../../../../meta/index';
-import { Person, Priority, Singleton, WorkEffortAssignment, WorkEffortObjectState, WorkTask } from '../../../../../domain';
-import { AllorsService, ErrorService, Scope, Loaded, Saved, Invoked } from '../../../../../angular';
+import { AllorsService, ErrorService, Invoked, Loaded, Saved, Scope } from "../../../../../angular";
+import { And, ContainedIn, Contains, Equals, Like, Not, Or, Page, Predicate, PullRequest, Query, Sort, TreeNode } from "../../../../../domain";
+import { Person, Priority, Singleton, WorkEffortAssignment, WorkEffortObjectState, WorkTask } from "../../../../../domain";
+import { MetaDomain } from "../../../../../meta/index";
 
 interface SearchData {
   name: string;
@@ -21,7 +21,7 @@ interface SearchData {
 }
 
 @Component({
-  templateUrl: './workTasksOverview.component.html',
+  templateUrl: "./workTasksOverview.component.html",
 })
 export class WorkTasksOverviewComponent implements AfterViewInit, OnDestroy {
 
@@ -32,7 +32,7 @@ export class WorkTasksOverviewComponent implements AfterViewInit, OnDestroy {
   private page$: BehaviorSubject<number>;
   total: number;
 
-  title: string = 'Work Tasks';
+  title: string = "Work Tasks";
 
   searchForm: FormGroup;
 
@@ -67,11 +67,11 @@ export class WorkTasksOverviewComponent implements AfterViewInit, OnDestroy {
     this.refresh$ = new BehaviorSubject<Date>(undefined);
 
     this.searchForm = this.formBuilder.group({
-      name: [''],
-      description: [''],
-      state: [''],
-      priority: [''],
-      assignee: [''],
+      name: [""],
+      description: [""],
+      state: [""],
+      priority: [""],
+      assignee: [""],
     });
 
     this.page$ = new BehaviorSubject<number>(50);
@@ -96,17 +96,17 @@ export class WorkTasksOverviewComponent implements AfterViewInit, OnDestroy {
         const objectStatesQuery: Query[] = [
           new Query(
             {
-              name: 'workEffortObjectStates',
+              name: "workEffortObjectStates",
               objectType: m.WorkEffortObjectState,
             }),
           new Query(
             {
-              name: 'priorities',
+              name: "priorities",
               objectType: m.Priority,
             }),
           new Query(
             {
-              name: 'singletons',
+              name: "singletons",
               objectType: m.Singleton,
               include: [
                 new TreeNode({
@@ -120,7 +120,7 @@ export class WorkTasksOverviewComponent implements AfterViewInit, OnDestroy {
         ];
 
         return this.scope
-          .load('Pull', new PullRequest({ query: objectStatesQuery }))
+          .load("Pull", new PullRequest({ query: objectStatesQuery }))
           .switchMap((loaded: Loaded) => {
             this.workEffortObjectStates = loaded.collections.workEffortObjectStates as WorkEffortObjectState[];
             this.workEffortObjectState = this.workEffortObjectStates.find((v: WorkEffortObjectState) => v.Name === data.state);
@@ -136,12 +136,12 @@ export class WorkTasksOverviewComponent implements AfterViewInit, OnDestroy {
             const predicates: Predicate[] = predicate.predicates;
 
             if (data.name) {
-              const like: string = '%' + data.name + '%';
+              const like: string = "%" + data.name + "%";
               predicates.push(new Like({ roleType: m.WorkTask.Name, value: like }));
             }
 
             if (data.description) {
-              const like: string = '%' + data.description + '%';
+              const like: string = "%" + data.description + "%";
               predicates.push(new Like({ roleType: m.WorkTask.Description, value: like }));
             }
 
@@ -155,9 +155,9 @@ export class WorkTasksOverviewComponent implements AfterViewInit, OnDestroy {
 
             const workTasksquery: Query = new Query(
               {
-                name: 'worktasks',
+                name: "worktasks",
                 objectType: m.WorkTask,
-                predicate: predicate,
+                predicate,
               });
 
             const assignmentPredicate: And = new And();
@@ -171,10 +171,10 @@ export class WorkTasksOverviewComponent implements AfterViewInit, OnDestroy {
             const assignmentsQuery: Query[] = [
               new Query(
                 {
-                  name: 'workEffortAssignments',
+                  name: "workEffortAssignments",
                   objectType: m.WorkEffortAssignment,
                   predicate: assignmentPredicate,
-                  page: new Page({ skip: 0, take: take }),
+                  page: new Page({ skip: 0, take }),
                   include: [
                     new TreeNode({ roleType: m.WorkEffortAssignment.Professional }),
                     new TreeNode({
@@ -189,7 +189,7 @@ export class WorkTasksOverviewComponent implements AfterViewInit, OnDestroy {
             ];
 
             return this.scope
-              .load('Pull', new PullRequest({ query: assignmentsQuery }));
+              .load("Pull", new PullRequest({ query: assignmentsQuery }));
           });
       })
       .subscribe((loaded: Loaded) => {
@@ -210,7 +210,7 @@ export class WorkTasksOverviewComponent implements AfterViewInit, OnDestroy {
   }
 
   goBack(): void {
-    this.router.navigate(['/']);
+    this.router.navigate(["/"]);
   }
 
   ngAfterViewInit(): void {
@@ -230,13 +230,13 @@ export class WorkTasksOverviewComponent implements AfterViewInit, OnDestroy {
 
   delete(worktask: WorkTask): void {
     this.dialogService
-      .openConfirm({ message: 'Are you sure you want to delete this work task?' })
+      .openConfirm({ message: "Are you sure you want to delete this work task?" })
       .afterClosed()
       .subscribe((confirm: boolean) => {
         if (confirm) {
           this.scope.invoke(worktask.Delete)
             .subscribe((invoked: Invoked) => {
-              this.snackBar.open('Successfully deleted.', 'close', { duration: 5000 });
+              this.snackBar.open("Successfully deleted.", "close", { duration: 5000 });
               this.refresh();
             },
             (error: Error) => {
@@ -247,6 +247,6 @@ export class WorkTasksOverviewComponent implements AfterViewInit, OnDestroy {
   }
 
   onView(person: Person): void {
-    this.router.navigate(['/relations/people/' + person.id + '/overview']);
+    this.router.navigate(["/relations/person/" + person.id ]);
   }
 }

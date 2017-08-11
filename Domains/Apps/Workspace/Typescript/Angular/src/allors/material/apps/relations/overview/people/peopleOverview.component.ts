@@ -159,6 +159,6 @@ export class PeopleOverviewComponent implements AfterViewInit, OnDestroy {
   }
 
   onView(person: Person): void {
-    this.router.navigate(['/relations/people/' + person.id + '/overview']);
+    this.router.navigate(["/relations/peson/" + person.id]);
   }
 }

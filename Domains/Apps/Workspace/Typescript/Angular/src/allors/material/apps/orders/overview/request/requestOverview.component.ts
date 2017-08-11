@@ -1,25 +1,25 @@
-import { Observable, Subject, Subscription } from 'rxjs/Rx';
-import { Component, OnInit, AfterViewInit, OnDestroy , ChangeDetectorRef } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { MdSnackBar, MdSnackBarConfig } from '@angular/material';
-import { TdDialogService, TdMediaService } from '@covalent/core';
+import { AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit } from "@angular/core";
+import { MdSnackBar, MdSnackBarConfig } from "@angular/material";
+import { ActivatedRoute } from "@angular/router";
+import { TdDialogService, TdMediaService } from "@covalent/core";
+import { Observable, Subject, Subscription } from "rxjs/Rx";
 
-import { MetaDomain } from '../../../../../meta';
-import { PullRequest, Fetch, Path, Query, Equals, Like, TreeNode, Sort, Page } from '../../../../../domain';
-import { Request } from '../../../../../domain';
-import { AllorsService, ErrorService, Scope, Loaded, Saved } from '../../../../../angular';
+import { AllorsService, ErrorService, Loaded, Saved, Scope } from "../../../../../angular";
+import { Equals, Fetch, Like, Page, Path, PullRequest, Query, Sort, TreeNode } from "../../../../../domain";
+import { Request } from "../../../../../domain";
+import { MetaDomain } from "../../../../../meta";
 
 @Component({
-  templateUrl: './request-overview.component.html',
+  templateUrl: "./requestOverview.component.html",
 })
 export class RequestOverviewComponent implements OnInit, AfterViewInit, OnDestroy {
 
+  public m: MetaDomain;
+  public title: string = "Requests Overview";
+  public request: Request;
+
   private subscription: Subscription;
   private scope: Scope;
-  m: MetaDomain;
-
-  title: string = 'Requests Overview';
-  request: Request;
 
   constructor(
     private allors: AllorsService,
@@ -32,18 +32,18 @@ export class RequestOverviewComponent implements OnInit, AfterViewInit, OnDestro
     this.m = this.allors.meta;
   }
 
-  ngOnInit(): void {
+  public ngOnInit(): void {
 
     this.subscription = this.route.url
       .switchMap((url: any) => {
 
-        const id: string = this.route.snapshot.paramMap.get('id');
+        const id: string = this.route.snapshot.paramMap.get("id");
         const m: MetaDomain = this.m;
 
         const fetch: Fetch[] = [
           new Fetch({
-            name: 'request',
-            id: id,
+            name: "request",
+            id,
             include: [
               new TreeNode({ roleType: m.Request.Originator }),
               new TreeNode({ roleType: m.Request.CurrentObjectState }),
@@ -54,7 +54,7 @@ export class RequestOverviewComponent implements OnInit, AfterViewInit, OnDestro
                 nodes: [
                   new TreeNode({ roleType: m.RequestStatus.RequestObjectState }),
                 ],
-               }),
+              }),
               new TreeNode({
                 roleType: m.Request.FullfillContactMechanism,
                 nodes: [
@@ -65,7 +65,7 @@ export class RequestOverviewComponent implements OnInit, AfterViewInit, OnDestro
                     ],
                   }),
                 ],
-               }),
+              }),
             ],
           }),
         ];
@@ -73,7 +73,7 @@ export class RequestOverviewComponent implements OnInit, AfterViewInit, OnDestro
         this.scope.session.reset();
 
         return this.scope
-          .load('Pull', new PullRequest({ fetch: fetch  }));
+          .load("Pull", new PullRequest({ fetch }));
       })
       .subscribe((loaded: Loaded) => {
         this.request = loaded.objects.request as Request;
@@ -85,22 +85,22 @@ export class RequestOverviewComponent implements OnInit, AfterViewInit, OnDestro
     );
   }
 
-  ngAfterViewInit(): void {
+  public ngAfterViewInit(): void {
     this.media.broadcast();
     this.changeDetectorRef.detectChanges();
   }
 
-  ngOnDestroy(): void {
+  public ngOnDestroy(): void {
     if (this.subscription) {
       this.subscription.unsubscribe();
     }
   }
 
-  goBack(): void {
+  public goBack(): void {
     window.history.back();
   }
 
-  checkType(obj: any): string {
+  public checkType(obj: any): string {
     return obj.objectType.name;
   }
 }
