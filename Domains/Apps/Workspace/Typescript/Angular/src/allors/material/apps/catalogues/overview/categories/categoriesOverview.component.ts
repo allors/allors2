@@ -1,25 +1,25 @@
-import { Observable, BehaviorSubject, Subject, Subscription } from 'rxjs/Rx';
-import { Component, OnInit, AfterViewInit, OnDestroy, ViewChild , ChangeDetectorRef } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
-import { Title } from '@angular/platform-browser';
-import { MdSnackBar, MdSnackBarConfig } from '@angular/material';
+import { AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild } from "@angular/core";
+import { FormBuilder, FormGroup, Validators } from "@angular/forms";
+import { MdSnackBar, MdSnackBarConfig } from "@angular/material";
+import { Title } from "@angular/platform-browser";
+import { Router } from "@angular/router";
+import { BehaviorSubject, Observable, Subject, Subscription } from "rxjs/Rx";
 
-import { TdLoadingService, TdDialogService, TdMediaService } from '@covalent/core';
+import { TdDialogService, TdLoadingService, TdMediaService } from "@covalent/core";
 
-import { MetaDomain } from '../../../../meta/index';
-import { PullRequest, Query, Predicate, And, Or, Not, Equals, Like, Contains, ContainedIn, TreeNode, Sort, Page } from '../../../../domain';
-import { ProductCategory } from '../../../../domain';
-import { AllorsService, ErrorService, Scope, Loaded, Saved, Invoked } from '../../../../angular';
+import { AllorsService, ErrorService, Invoked, Loaded, Saved, Scope } from "../../../../../angular";
+import { And, ContainedIn, Contains, Equals, Like, Not, Or, Page, Predicate, PullRequest, Query, Sort, TreeNode } from "../../../../../domain";
+import { ProductCategory } from "../../../../../domain";
+import { MetaDomain } from "../../../../../meta/index";
 
 interface SearchData {
   name: string;
 }
 
 @Component({
-  templateUrl: './categories.component.html',
+  templateUrl: "./categoriesOverview.component.html",
 })
-export class CategoriesComponent implements AfterViewInit, OnDestroy {
+export class CategoriesOverviewComponent implements AfterViewInit, OnDestroy {
 
   private refresh$: BehaviorSubject<Date>;
   private page$: BehaviorSubject<number>;
@@ -27,7 +27,7 @@ export class CategoriesComponent implements AfterViewInit, OnDestroy {
   private subscription: Subscription;
   private scope: Scope;
 
-  title: string = 'Categories';
+  title: string = "Categories";
   total: number;
   searchForm: FormGroup;
   data: ProductCategory[];
@@ -42,13 +42,13 @@ export class CategoriesComponent implements AfterViewInit, OnDestroy {
     private dialogService: TdDialogService,
     public media: TdMediaService, private changeDetectorRef: ChangeDetectorRef) {
 
-    this.titleService.setTitle('Categories');
+    this.titleService.setTitle("Categories");
 
     this.scope = new Scope(allors.database, allors.workspace);
     this.refresh$ = new BehaviorSubject<Date>(undefined);
 
     this.searchForm = this.formBuilder.group({
-      name: [''],
+      name: [""],
     });
 
     this.page$ = new BehaviorSubject<number>(50);
@@ -74,15 +74,15 @@ export class CategoriesComponent implements AfterViewInit, OnDestroy {
         const predicates: Predicate[] = predicate.predicates;
 
         if (data.name) {
-          const like: string = data.name.replace('*', '%') + '%';
+          const like: string = data.name.replace("*", "%") + "%";
           predicates.push(new Like({ roleType: m.ProductCategory.Name, value: like }));
         }
 
         const query: Query[] = [new Query(
           {
-            name: 'categories',
+            name: "categories",
             objectType: m.ProductCategory,
-            predicate: predicate,
+            predicate,
             page: new Page({ skip: 0, take: take }),
             include: [
               new TreeNode({ roleType: m.ProductCategory.CategoryImage }),
@@ -91,7 +91,7 @@ export class CategoriesComponent implements AfterViewInit, OnDestroy {
             ],
           })];
 
-        return this.scope.load('Pull', new PullRequest({ query: query }));
+        return this.scope.load("Pull", new PullRequest({ query }));
 
       })
       .subscribe((loaded: Loaded) => {
@@ -109,7 +109,7 @@ export class CategoriesComponent implements AfterViewInit, OnDestroy {
   }
 
   goBack(): void {
-    this.router.navigate(['/']);
+    window.history.back();
   }
 
   ngAfterViewInit(): void {
@@ -125,7 +125,7 @@ export class CategoriesComponent implements AfterViewInit, OnDestroy {
 
   delete(category: ProductCategory): void {
     this.dialogService
-      .openConfirm({ message: 'Are you sure you want to delete this category?' })
+      .openConfirm({ message: "Are you sure you want to delete this category?" })
       .afterClosed().subscribe((confirm: boolean) => {
         if (confirm) {
           // TODO: Logical, physical or workflow delete
@@ -134,6 +134,6 @@ export class CategoriesComponent implements AfterViewInit, OnDestroy {
   }
 
   onView(category: ProductCategory): void {
-    this.router.navigate(['/catalogues/categories/' + category.id + '/edit']);
+    this.router.navigate(["/category/" + category.id]);
   }
 }

@@ -1,25 +1,25 @@
-import { Observable, BehaviorSubject, Subject, Subscription } from 'rxjs/Rx';
-import { Component, OnInit, AfterViewInit, OnDestroy, ViewChild , ChangeDetectorRef } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
-import { Title } from '@angular/platform-browser';
-import { MdSnackBar, MdSnackBarConfig } from '@angular/material';
+import { AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild } from "@angular/core";
+import { FormBuilder, FormGroup, Validators } from "@angular/forms";
+import { MdSnackBar, MdSnackBarConfig } from "@angular/material";
+import { Title } from "@angular/platform-browser";
+import { Router } from "@angular/router";
+import { BehaviorSubject, Observable, Subject, Subscription } from "rxjs/Rx";
 
-import { TdLoadingService, TdDialogService, TdMediaService } from '@covalent/core';
+import { TdDialogService, TdLoadingService, TdMediaService } from "@covalent/core";
 
-import { MetaDomain } from '../../../../meta/index';
-import { PullRequest, Query, Predicate, And, Or, Not, Equals, Like, Contains, ContainedIn, TreeNode, Sort, Page } from '../../../../domain';
-import { ProductType } from '../../../../domain';
-import { AllorsService, ErrorService, Scope, Loaded, Saved, Invoked } from '../../../../angular';
+import { AllorsService, ErrorService, Invoked, Loaded, Saved, Scope } from "../../../../../angular";
+import { And, ContainedIn, Contains, Equals, Like, Not, Or, Page, Predicate, PullRequest, Query, Sort, TreeNode } from "../../../../../domain";
+import { ProductCharacteristic } from "../../../../../domain";
+import { MetaDomain } from "../../../../../meta/index";
 
 interface SearchData {
   name: string;
 }
 
 @Component({
-  templateUrl: './productTypes.component.html',
+  templateUrl: "./productCharacteristicsOverview.component.html",
 })
-export class ProductTypesComponent implements AfterViewInit, OnDestroy {
+export class ProductCharacteristicsOverviewComponent implements AfterViewInit, OnDestroy {
 
   private refresh$: BehaviorSubject<Date>;
   private page$: BehaviorSubject<number>;
@@ -27,12 +27,11 @@ export class ProductTypesComponent implements AfterViewInit, OnDestroy {
   private subscription: Subscription;
   private scope: Scope;
 
-  title: string = 'Products';
+  title: string = "Product Characteristics";
   total: number;
   searchForm: FormGroup;
-  data: ProductType[];
-  filtered: ProductType[];
-
+  data: ProductCharacteristic[];
+  filtered: ProductCharacteristic[];
   constructor(
     private allors: AllorsService,
     private errorService: ErrorService,
@@ -47,7 +46,7 @@ export class ProductTypesComponent implements AfterViewInit, OnDestroy {
     this.refresh$ = new BehaviorSubject<Date>(undefined);
 
     this.searchForm = this.formBuilder.group({
-      name: [''],
+      name: [""],
     });
 
     this.page$ = new BehaviorSubject<number>(50);
@@ -73,27 +72,27 @@ export class ProductTypesComponent implements AfterViewInit, OnDestroy {
         const predicates: Predicate[] = predicate.predicates;
 
         if (data.name) {
-          const like: string = data.name.replace('*', '%') + '%';
-          predicates.push(new Like({ roleType: m.ProductType.Name, value: like }));
+          const like: string = data.name.replace("*", "%") + "%";
+          predicates.push(new Like({ roleType: m.ProductCharacteristic.Name, value: like }));
         }
 
         const query: Query[] = [new Query(
           {
-            name: 'productTypes',
-            objectType: m.ProductType,
-            predicate: predicate,
+            name: "productCharacteristics",
+            objectType: m.ProductCharacteristic,
+            predicate,
             page: new Page({ skip: 0, take: take }),
             include: [
-              new TreeNode({ roleType: m.ProductType.ProductCharacteristics }),
+              new TreeNode({ roleType: m.ProductCharacteristic.LocalisedNames }),
             ],
           })];
 
-        return this.scope.load('Pull', new PullRequest({ query: query }));
+        return this.scope.load("Pull", new PullRequest({ query }));
 
       })
       .subscribe((loaded: Loaded) => {
-        this.data = loaded.collections.productTypes as ProductType[];
-        this.total = loaded.values.productTypes_total;
+        this.data = loaded.collections.productCharacteristics as ProductCharacteristic[];
+        this.total = loaded.values.productCharacteristics_total;
       },
       (error: any) => {
         this.errorService.message(error);
@@ -106,11 +105,11 @@ export class ProductTypesComponent implements AfterViewInit, OnDestroy {
   }
 
   goBack(): void {
-    this.router.navigate(['/']);
+    window.history.back();
   }
 
   ngAfterViewInit(): void {
-    this.titleService.setTitle('ProductTypes');
+    this.titleService.setTitle("Product Characteristics");
     this.media.broadcast();
     this.changeDetectorRef.detectChanges();
   }
@@ -121,9 +120,9 @@ export class ProductTypesComponent implements AfterViewInit, OnDestroy {
     }
   }
 
-  delete(productType: ProductType): void {
+  delete(productCharacteristic: ProductCharacteristic): void {
     this.dialogService
-      .openConfirm({ message: 'Are you sure you want to delete this product type?' })
+      .openConfirm({ message: "Are you sure you want to delete this characteristic?" })
       .afterClosed().subscribe((confirm: boolean) => {
         if (confirm) {
           // TODO: Logical, physical or workflow delete
@@ -131,7 +130,7 @@ export class ProductTypesComponent implements AfterViewInit, OnDestroy {
       });
   }
 
-  onView(productType: ProductType): void {
-    this.router.navigate(['/catalogues/productTypes/' + productType.id + '/edit']);
+  onView(productCharacteristic: ProductCharacteristic): void {
+    this.router.navigate(["/productCharacteristic/" + productCharacteristic.id]);
   }
 }

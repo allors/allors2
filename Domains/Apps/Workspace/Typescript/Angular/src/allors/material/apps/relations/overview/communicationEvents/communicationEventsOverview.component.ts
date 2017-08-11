@@ -179,7 +179,7 @@ export class CommunicationEventsOverviewComponent implements AfterViewInit, OnDe
   }
 
   goBack(): void {
-    this.router.navigate(['/']);
+    window.history.back();
   }
 
   ngAfterViewInit(): void {

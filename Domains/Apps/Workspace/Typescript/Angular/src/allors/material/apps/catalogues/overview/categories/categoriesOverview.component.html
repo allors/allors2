@@ -9,6 +9,7 @@
   </div>
 </md-toolbar>
 
+
 <md-card>
   <div class="pad-top-xs pad-left pad-right">
     <form novalidate [formGroup]="searchForm">
@@ -20,28 +21,33 @@
   </div>
 
   <md-divider></md-divider>
-    <ng-template tdLoading="data">
-      <md-list class="will-load">
-        <div class="md-padding" *ngIf="data && data.length === 0" layout="row" layout-align="center center">
-          <h3>No characteristics to display.</h3>
-        </div>
-        <ng-template let-characteristic let-last="last" ngFor [ngForOf]="data">
-          <md-list-item>
+  <ng-template tdLoading="data">
+    <md-list class="will-load">
+      <div class="md-padding" *ngIf="data && data.length === 0" layout="row" layout-align="center center">
+        <h3>No categories to display.</h3>
+      </div>
+      <ng-template let-category let-last="last" ngFor [ngForOf]="data">
+        <md-list-item>
 
-            <h3 md-line> {{characteristic.Name}}</h3>
+          <md-icon *ngIf="!category.CategoryImage" md-list-avatar>photo_camera</md-icon>
+          <img *ngIf="category.CategoryImage" md-list-avatar src="http://localhost:5000/Media/Download/{{category.CategoryImage.UniqueId}}?revision={{category.CategoryImage.Revision}}"
+          />
 
-            <span>
+          <h3 md-line> {{category.Name}}</h3>
+          <p md-line> {{category.Description}} </p>
+
+          <span>
                 <button md-icon-button [md-menu-trigger-for]="menu">
                 <md-icon>more_vert</md-icon>
                 </button>
                 <md-menu x-position="before" #menu="mdMenu">
-                <a [routerLink]="[characteristic.id + '/edit']" md-menu-item>Edit</a>
-                <button md-menu-item (click)="delete(characteristic)">Delete</button>
+                <a [routerLink]="[category.id + '/edit']" md-menu-item>Edit</a>
+                <button md-menu-item (click)="delete(category)">Delete</button>
                 </md-menu>
               </span>
 
-          </md-list-item>
-          <md-divider *ngIf="!last" md-inset></md-divider>
+        </md-list-item>
+        <md-divider *ngIf="!last" md-inset></md-divider>
       </ng-template>
     </md-list>
   </ng-template>
@@ -53,6 +59,6 @@
   </md-card-content>
 </md-card>
 
-<a md-fab color="accent" class="mat-fab-bottom-right fixed" [routerLink]="['add']">
+<a md-fab color="accent" class="mat-fab-bottom-right fixed" [routerLink]="['/category']">
   <md-icon>add</md-icon>
 </a>

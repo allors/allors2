@@ -1,48 +1,53 @@
 // Routing
-import { LayoutComponent } from './layout.component';
+import { OverviewComponent } from "./overview/overview.component";
 
-import { CatalogueDashboardComponent } from './dashboard/catalogue-dashboard.component';
-import { CatalogueFormComponent } from './catalogues/catalogue/catalogue.component';
-import { CataloguesComponent } from './catalogues/catalogues.component';
-import { CategoryFormComponent } from './categories/category/category.component';
-import { CategoriesComponent } from './categories/categories.component';
-import { GoodFormComponent } from './goods/good/good.component';
-import { GoodsComponent } from './goods/goods.component';
-import { ProductTypeFormComponent } from './producttypes/producttype/producttype.component';
-import { ProductTypesComponent } from './producttypes/producttypes.component';
-import { ProductCharacteristicFormComponent } from './productCharacteristics/productcharacteristic/productcharacteristic.component';
-import { ProductCharacteristicsComponent } from './productcharacteristics/productcharacteristics.component';
+import { CataloguesOverviewComponent } from "./overview/catalogues/cataloguesOverview.component";
+import { CategoriesOverviewComponent } from "./overview/categories/categoriesOverview.component";
+import { DashboardComponent } from "./overview/dashboard/dashboard.component";
+import { GoodsOverviewComponent } from "./overview/goods/goodsOverview.component";
+import { ProductCharacteristicsOverviewComponent } from "./overview/productcharacteristics/productcharacteristicsOverview.component";
+import { ProductTypesOverviewComponent } from "./overview/productTypes/productTypesOverview.component";
+
+import { CatalogueEditComponent } from "./catalogue/edit.component";
+import { CategoryEditComponent } from "./category/edit.component";
+import { GoodEditComponent } from "./good/edit.component";
+import { ProductCharacteristicEditComponent } from "./productcharacteristic/edit.component";
+import { ProductTypeEditComponent } from "./producttype/edit.component";
 
 export const CATALOGUES: any[] = [
 ];
 
 export const CATALOGUES_ROUTING: any[] = [
-  LayoutComponent,
-  CatalogueDashboardComponent,
-  CatalogueFormComponent,
-  CataloguesComponent,
-  CategoryFormComponent,
-  CategoriesComponent,
-  GoodFormComponent,
-  GoodsComponent,
-  ProductCharacteristicFormComponent,
-  ProductCharacteristicsComponent,
-  ProductTypeFormComponent,
-  ProductTypesComponent,
+  OverviewComponent,
+  DashboardComponent,
+
+  CataloguesOverviewComponent,
+  CategoriesOverviewComponent,
+  GoodsOverviewComponent,
+  ProductCharacteristicsOverviewComponent,
+  ProductTypesOverviewComponent,
+
+  CatalogueEditComponent,
+  CategoryEditComponent,
+  GoodEditComponent,
+  ProductCharacteristicEditComponent,
+  ProductTypeEditComponent,
 ];
 
 export {
   // Routing
-  LayoutComponent,
-  CatalogueDashboardComponent,
-  CatalogueFormComponent,
-  CataloguesComponent,
-  CategoryFormComponent,
-  CategoriesComponent,
-  GoodFormComponent,
-  GoodsComponent,
-  ProductCharacteristicFormComponent,
-  ProductCharacteristicsComponent,
-  ProductTypeFormComponent,
-  ProductTypesComponent,
+  OverviewComponent,
+  DashboardComponent,
+
+  CataloguesOverviewComponent,
+  CategoriesOverviewComponent,
+  GoodsOverviewComponent,
+  ProductCharacteristicsOverviewComponent,
+  ProductTypesOverviewComponent,
+
+  CatalogueEditComponent,
+  ProductTypeEditComponent,
+  CategoryEditComponent,
+  GoodEditComponent,
+  ProductCharacteristicEditComponent,
 };

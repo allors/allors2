@@ -1,58 +1,55 @@
 import { AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
-import { MdSnackBar } from "@angular/material";
+import { MdSnackBar, MdSnackBarConfig } from "@angular/material";
 import { Title } from "@angular/platform-browser";
 import { Router } from "@angular/router";
-import { BehaviorSubject, Observable, Subscription } from "rxjs/Rx";
+import { BehaviorSubject, Observable, Subject, Subscription } from "rxjs/Rx";
 
 import { TdDialogService, TdLoadingService, TdMediaService } from "@covalent/core";
 
-import { AllorsService, ErrorService, Loaded, Saved, Scope } from "../../../../../angular";
+import { AllorsService, ErrorService, Invoked, Loaded, Saved, Scope } from "../../../../../angular";
 import { And, ContainedIn, Contains, Equals, Like, Not, Or, Page, Predicate, PullRequest, Query, Sort, TreeNode } from "../../../../../domain";
-import { Request } from "../../../../../domain";
-import { MetaDomain } from "../../../../../meta";
+import { Good } from "../../../../../domain";
+import { MetaDomain } from "../../../../../meta/index";
 
 interface SearchData {
-  requestNumber: string;
-  company: string;
-  description: string;
+  name: string;
 }
 
 @Component({
-  templateUrl: "./requestsOverview.component.html",
+  templateUrl: "./goodsOverview.component.html",
 })
-export class RequestsOverviewComponent implements AfterViewInit, OnDestroy {
+export class GoodsOverviewComponent implements AfterViewInit, OnDestroy {
 
   private refresh$: BehaviorSubject<Date>;
+  private page$: BehaviorSubject<number>;
+
   private subscription: Subscription;
   private scope: Scope;
 
-  private page$: BehaviorSubject<number>;
+  title: string = "Products";
   total: number;
-
   searchForm: FormGroup;
-
-  title: string = "Requests";
-  data: Request[];
-  filtered: Request[];
+  data: Good[];
+  filtered: Good[];
 
   constructor(
     private allors: AllorsService,
     private errorService: ErrorService,
     private formBuilder: FormBuilder,
     private titleService: Title,
+    private snackBar: MdSnackBar,
     private router: Router,
-    public dialogService: TdDialogService,
-    public media: TdMediaService,
-    private changeDetectorRef: ChangeDetectorRef) {
+    private dialogService: TdDialogService,
+    public media: TdMediaService, private changeDetectorRef: ChangeDetectorRef) {
+
+    this.titleService.setTitle("Products");
 
     this.scope = new Scope(allors.database, allors.workspace);
     this.refresh$ = new BehaviorSubject<Date>(undefined);
 
     this.searchForm = this.formBuilder.group({
-      requestNumber: [""],
-      company: [""],
-      description: [""],
+      name: [""],
     });
 
     this.page$ = new BehaviorSubject<number>(50);
@@ -77,46 +74,31 @@ export class RequestsOverviewComponent implements AfterViewInit, OnDestroy {
         const predicate: And = new And();
         const predicates: Predicate[] = predicate.predicates;
 
-        if (data.requestNumber) {
-          const like: string = "%" + data.requestNumber + "%";
-          predicates.push(new Like({ roleType: m.Request.RequestNumber, value: like }));
-        }
-
-        if (data.company) {
-          const partyQuery: Query = new Query({
-            objectType: m.Party, predicate: new Like({
-              roleType: m.Party.PartyName, value: data.company.replace("*", "%") + "%",
-            }),
-          });
-
-          const containedIn: ContainedIn = new ContainedIn({ roleType: m.Request.Originator, query: partyQuery });
-          predicates.push(containedIn);
-        }
-
-        if (data.description) {
-          const like: string = data.description.replace("*", "%") + "%";
-          predicates.push(new Like({ roleType: m.Request.Description, value: like }));
+        if (data.name) {
+          const like: string = data.name.replace("*", "%") + "%";
+          predicates.push(new Like({ roleType: m.Good.Name, value: like }));
         }
 
         const query: Query[] = [new Query(
           {
-            name: "requests",
-            objectType: m.Request,
+            name: "goods",
+            objectType: m.Good,
             predicate,
             page: new Page({ skip: 0, take: take }),
             include: [
-              new TreeNode({ roleType: m.Request.Originator }),
-              new TreeNode({ roleType: m.Request.CurrentObjectState }),
+              new TreeNode({ roleType: m.Good.PrimaryPhoto }),
+              new TreeNode({ roleType: m.Good.LocalisedNames }),
+              new TreeNode({ roleType: m.Good.LocalisedDescriptions }),
+              new TreeNode({ roleType: m.Good.PrimaryProductCategory }),
             ],
-            sort: [new Sort({ roleType: m.Request.RequestNumber, direction: "Desc" })],
           })];
 
         return this.scope.load("Pull", new PullRequest({ query }));
 
       })
       .subscribe((loaded: Loaded) => {
-        this.data = loaded.collections.requests as Request[];
-        this.total = loaded.values.requests_total;
+        this.data = loaded.collections.goods as Good[];
+        this.total = loaded.values.goods_total;
       },
       (error: any) => {
         this.errorService.message(error);
@@ -128,12 +110,21 @@ export class RequestsOverviewComponent implements AfterViewInit, OnDestroy {
     this.page$.next(this.data.length + 50);
   }
 
+  delete(good: Good): void {
+    this.dialogService
+      .openConfirm({ message: "Are you sure you want to delete this product?" })
+      .afterClosed().subscribe((confirm: boolean) => {
+        if (confirm) {
+          // TODO: Logical, physical or workflow delete
+        }
+      });
+  }
+
   goBack(): void {
     window.history.back();
   }
 
   ngAfterViewInit(): void {
-    this.titleService.setTitle("Requests");
     this.media.broadcast();
     this.changeDetectorRef.detectChanges();
   }
@@ -144,7 +135,7 @@ export class RequestsOverviewComponent implements AfterViewInit, OnDestroy {
     }
   }
 
-  onView(request: Request): void {
-    this.router.navigate(["/orders/requests/" + request.id + "/edit"]);
+  onView(good: Good): void {
+    this.router.navigate(["/good/" + good.id]);
   }
 }

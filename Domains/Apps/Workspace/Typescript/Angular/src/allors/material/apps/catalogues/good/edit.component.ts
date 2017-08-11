@@ -1,19 +1,19 @@
-import { Observable, Subject, Subscription } from 'rxjs/Rx';
-import { Component, OnInit, AfterViewInit, OnDestroy , ChangeDetectorRef } from '@angular/core';
-import { Validators } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
-import { MdSnackBar, MdSnackBarConfig, MdNativeDateModule } from '@angular/material';
-import { TdMediaService } from '@covalent/core';
+import { AfterViewInit, ChangeDetectorRef, Component, OnDestroy , OnInit } from "@angular/core";
+import { Validators } from "@angular/forms";
+import { MdNativeDateModule, MdSnackBar, MdSnackBarConfig } from "@angular/material";
+import { ActivatedRoute } from "@angular/router";
+import { TdMediaService } from "@covalent/core";
+import { Observable, Subject, Subscription } from "rxjs/Rx";
 
-import { MetaDomain } from '../../../../../meta/index';
-import { PullRequest, PushResponse, Contains, Fetch, Path, Query, Equals, Like, TreeNode, Sort, Page } from '../../../../../domain';
-import { Good, Organisation, OrganisationRole, ProductCharacteristicValue, ProductCharacteristic, ProductCategory, ProductType, Locale, LocalisedText, Singleton } from '../../../../../domain';
-import { AllorsService, ErrorService, Scope, Loaded, Saved, Filter } from '../../../../../angular';
+import { AllorsService, ErrorService, Filter, Loaded, Saved, Scope } from "../../../../angular";
+import { Contains, Equals, Fetch, Like, Page, Path, PullRequest, PushResponse, Query, Sort, TreeNode } from "../../../../domain";
+import { Good, Locale, LocalisedText, Organisation, OrganisationRole, ProductCategory, ProductCharacteristic, ProductCharacteristicValue, ProductType, Singleton } from "../../../../domain";
+import { MetaDomain } from "../../../../meta/index";
 
 @Component({
-  templateUrl: './good.component.html',
+  templateUrl: "./edit.component.html",
 })
-export class GoodFormComponent implements OnInit, AfterViewInit, OnDestroy {
+export class GoodEditComponent implements OnInit, AfterViewInit, OnDestroy {
 
   private subscription: Subscription;
   private scope: Scope;
@@ -53,13 +53,13 @@ export class GoodFormComponent implements OnInit, AfterViewInit, OnDestroy {
     this.subscription = this.route.url
       .switchMap((url: any) => {
 
-        const id: string = this.route.snapshot.paramMap.get('id');
+        const id: string = this.route.snapshot.paramMap.get("id");
         const m: MetaDomain = this.m;
 
         const fetch: Fetch[] = [
           new Fetch({
-            name: 'good',
-            id: id,
+            name: "good",
+            id,
             include: [
               new TreeNode({ roleType: m.Good.PrimaryPhoto }),
               new TreeNode({ roleType: m.Product.LocalisedNames }),
@@ -89,7 +89,7 @@ export class GoodFormComponent implements OnInit, AfterViewInit, OnDestroy {
         const query: Query[] = [
           new Query(
             {
-              name: 'singletons',
+              name: "singletons",
               objectType: this.m.Singleton,
               include: [
                 new TreeNode({
@@ -103,17 +103,17 @@ export class GoodFormComponent implements OnInit, AfterViewInit, OnDestroy {
             }),
           new Query(
             {
-              name: 'organisationRoles',
+              name: "organisationRoles",
               objectType: this.m.OrganisationRole,
             }),
           new Query(
             {
-              name: 'categories',
+              name: "categories",
               objectType: this.m.ProductCategory,
             }),
           new Query(
             {
-              name: 'productTypes',
+              name: "productTypes",
               objectType: this.m.ProductType,
             }),
         ];
@@ -121,12 +121,12 @@ export class GoodFormComponent implements OnInit, AfterViewInit, OnDestroy {
         this.scope.session.reset();
 
         return this.scope
-          .load('Pull', new PullRequest({ fetch: fetch, query: query }))
+          .load("Pull", new PullRequest({ fetch, query }))
           .switchMap((loaded: Loaded) => {
 
             this.good = loaded.objects.good as Good;
             if (!this.good) {
-              this.good = this.scope.session.create('Good') as Good;
+              this.good = this.scope.session.create("Good") as Good;
             }
 
             this.title = this.good.Name;
@@ -140,16 +140,16 @@ export class GoodFormComponent implements OnInit, AfterViewInit, OnDestroy {
             this.setProductCharacteristicValues();
 
             const organisationRoles: OrganisationRole[] = loaded.collections.organisationRoles as OrganisationRole[];
-            const customerRole: OrganisationRole = organisationRoles.find((v: OrganisationRole) => v.Name === 'Manufacturer');
+            const customerRole: OrganisationRole = organisationRoles.find((v: OrganisationRole) => v.Name === "Manufacturer");
 
             const manufacturersQuery: Query[] = [new Query(
               {
-                name: 'manufacturers',
+                name: "manufacturers",
                 objectType: m.Organisation,
                 predicate: new Contains({ roleType: m.Organisation.OrganisationRoles, object: customerRole }),
               })];
 
-            return this.scope.load('Pull', new PullRequest({ query: manufacturersQuery }));
+            return this.scope.load("Pull", new PullRequest({ query: manufacturersQuery }));
           });
       })
       .subscribe((loaded: Loaded) => {

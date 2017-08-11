@@ -1,19 +1,19 @@
-import { Observable, Subject, Subscription } from 'rxjs/Rx';
-import { Component, OnInit, AfterViewInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
-import { Validators } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
-import { MdSnackBar, MdSnackBarConfig } from '@angular/material';
-import { TdMediaService } from '@covalent/core';
+import { AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit } from "@angular/core";
+import { Validators } from "@angular/forms";
+import { MdSnackBar, MdSnackBarConfig } from "@angular/material";
+import { ActivatedRoute } from "@angular/router";
+import { TdMediaService } from "@covalent/core";
+import { Observable, Subject, Subscription } from "rxjs/Rx";
 
-import { MetaDomain } from '../../../../../meta';
-import { PullRequest, PushResponse, Fetch, Path, Query, Equals, Like, TreeNode, Sort, Page } from '../../../../../domain';
-import { Catalogue, ProductCategory, Locale, Singleton } from '../../../../../domain';
-import { AllorsService, ErrorService, Scope, Loaded, Saved } from '../../../../../angular';
+import { AllorsService, ErrorService, Loaded, Saved, Scope } from "../../../../angular";
+import { Equals, Fetch, Like, Page, Path, PullRequest, PushResponse, Query, Sort, TreeNode } from "../../../../domain";
+import { Catalogue, Locale, ProductCategory, Singleton } from "../../../../domain";
+import { MetaDomain } from "../../../../meta";
 
 @Component({
-  templateUrl: './catalogue.component.html',
+  templateUrl: "./edit.component.html",
 })
-export class CatalogueFormComponent implements OnInit, AfterViewInit, OnDestroy {
+export class CatalogueEditComponent implements OnInit, AfterViewInit, OnDestroy {
 
   private subscription: Subscription;
   private scope: Scope;
@@ -44,13 +44,13 @@ export class CatalogueFormComponent implements OnInit, AfterViewInit, OnDestroy 
     this.subscription = this.route.url
       .switchMap((url: any) => {
 
-        const id: string = this.route.snapshot.paramMap.get('id');
+        const id: string = this.route.snapshot.paramMap.get("id");
         const m: MetaDomain = this.m;
 
         const fetch: Fetch[] = [
           new Fetch({
-            name: 'catalogue',
-            id: id,
+            name: "catalogue",
+            id,
             include: [
               new TreeNode({ roleType: m.Catalogue.LocalisedNames }),
               new TreeNode({ roleType: m.Catalogue.LocalisedDescriptions }),
@@ -61,7 +61,7 @@ export class CatalogueFormComponent implements OnInit, AfterViewInit, OnDestroy 
         const query: Query[] = [
           new Query(
             {
-              name: 'singletons',
+              name: "singletons",
               objectType: this.m.Singleton,
               include: [
                 new TreeNode({ roleType: m.Singleton.Locales }),
@@ -69,7 +69,7 @@ export class CatalogueFormComponent implements OnInit, AfterViewInit, OnDestroy 
             }),
           new Query(
             {
-              name: 'categories',
+              name: "categories",
               objectType: this.m.ProductCategory,
             }),
         ];
@@ -77,13 +77,13 @@ export class CatalogueFormComponent implements OnInit, AfterViewInit, OnDestroy 
         this.scope.session.reset();
 
         return this.scope
-          .load('Pull', new PullRequest({ fetch: fetch, query: query }));
+          .load("Pull", new PullRequest({ fetch, query }));
       })
       .subscribe((loaded: Loaded) => {
 
         this.catalogue = loaded.objects.catalogue as Catalogue;
         if (!this.catalogue) {
-          this.catalogue = this.scope.session.create('Catalogue') as Catalogue;
+          this.catalogue = this.scope.session.create("Catalogue") as Catalogue;
         }
 
         this.title = this.catalogue.Name;

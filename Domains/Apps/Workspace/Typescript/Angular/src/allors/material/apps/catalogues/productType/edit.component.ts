@@ -1,25 +1,22 @@
-import { Observable, Subject, Subscription } from 'rxjs/Rx';
-import { Component, OnInit, AfterViewInit, OnDestroy , ChangeDetectorRef } from '@angular/core';
-import { Validators } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
-import { MdSnackBar, MdSnackBarConfig } from '@angular/material';
-import { TdMediaService } from '@covalent/core';
+import { AfterViewInit, ChangeDetectorRef, Component, OnDestroy , OnInit } from "@angular/core";
+import { Validators } from "@angular/forms";
+import { MdSnackBar, MdSnackBarConfig } from "@angular/material";
+import { ActivatedRoute } from "@angular/router";
+import { TdMediaService } from "@covalent/core";
+import { Observable, Subject, Subscription } from "rxjs/Rx";
 
-import { MetaDomain } from '../../../../../meta';
-import { PullRequest, PushResponse, Fetch, Path, Query, Equals, Like, TreeNode, Sort, Page } from '../../../../../domain';
-import { ProductType, ProductCharacteristic } from '../../../../../domain';
-import { AllorsService, ErrorService, Scope, Loaded, Saved } from '../../../../../angular';
+import { AllorsService, ErrorService, Loaded, Saved, Scope } from "../../../../angular";
+import { Equals, Fetch, Like, Page, Path, PullRequest, PushResponse, Query, Sort, TreeNode } from "../../../../domain";
+import { ProductCharacteristic, ProductType } from "../../../../domain";
+import { MetaDomain } from "../../../../meta";
 
 @Component({
-  templateUrl: './productType.component.html',
+  templateUrl: "./edit.component.html",
 })
-export class ProductTypeFormComponent implements OnInit, AfterViewInit, OnDestroy {
+export class ProductTypeEditComponent implements OnInit, AfterViewInit, OnDestroy {
 
   private subscription: Subscription;
   private scope: Scope;
-
-  
-  
 
   m: MetaDomain;
 
@@ -41,13 +38,13 @@ export class ProductTypeFormComponent implements OnInit, AfterViewInit, OnDestro
     this.subscription = this.route.url
       .switchMap((url: any) => {
 
-        const id: string = this.route.snapshot.paramMap.get('id');
+        const id: string = this.route.snapshot.paramMap.get("id");
         const m: MetaDomain = this.m;
 
         const fetch: Fetch[] = [
           new Fetch({
-            name: 'productType',
-            id: id,
+            name: "productType",
+            id,
             include: [
               new TreeNode({ roleType: m.ProductType.ProductCharacteristics }),
             ],
@@ -57,7 +54,7 @@ export class ProductTypeFormComponent implements OnInit, AfterViewInit, OnDestro
         const query: Query[] = [
           new Query(
             {
-              name: 'characteristics',
+              name: "characteristics",
               objectType: this.m.ProductCharacteristic,
             }),
         ];
@@ -65,13 +62,13 @@ export class ProductTypeFormComponent implements OnInit, AfterViewInit, OnDestro
         this.scope.session.reset();
 
         return this.scope
-          .load('Pull', new PullRequest({ fetch: fetch, query: query }));
+          .load("Pull", new PullRequest({ fetch, query }));
       })
       .subscribe((loaded: Loaded) => {
 
         this.productType = loaded.objects.productType as ProductType;
         if (!this.productType) {
-          this.productType = this.scope.session.create('ProductType') as ProductType;
+          this.productType = this.scope.session.create("ProductType") as ProductType;
         }
 
         this.characteristics = loaded.collections.characteristics as ProductCharacteristic[];

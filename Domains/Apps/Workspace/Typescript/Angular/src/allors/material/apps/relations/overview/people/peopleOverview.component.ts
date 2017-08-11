@@ -122,7 +122,7 @@ export class PeopleOverviewComponent implements AfterViewInit, OnDestroy {
   }
 
   goBack(): void {
-    this.router.navigate(['/']);
+    window.history.back();
   }
 
   ngAfterViewInit(): void {

@@ -1,19 +1,19 @@
-import { Observable, Subject, Subscription } from 'rxjs/Rx';
-import { Component, OnInit, AfterViewInit, OnDestroy , ChangeDetectorRef } from '@angular/core';
-import { Validators } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
-import { MdSnackBar, MdSnackBarConfig } from '@angular/material';
-import { TdMediaService } from '@covalent/core';
+import { AfterViewInit, ChangeDetectorRef, Component, OnDestroy , OnInit } from "@angular/core";
+import { Validators } from "@angular/forms";
+import { MdSnackBar, MdSnackBarConfig } from "@angular/material";
+import { ActivatedRoute } from "@angular/router";
+import { TdMediaService } from "@covalent/core";
+import { Observable, Subject, Subscription } from "rxjs/Rx";
 
-import { MetaDomain } from '../../../../../meta/index';
-import { PullRequest, PushResponse, Fetch, Path, Query, Equals, Like, TreeNode, Sort, Page } from '../../../../../domain';
-import { ProductCategory, Locale, Singleton } from '../../../../../domain';
-import { AllorsService, ErrorService, Scope, Loaded, Saved } from '../../../../../angular';
+import { AllorsService, ErrorService, Loaded, Saved, Scope } from "../../../../angular";
+import { Equals, Fetch, Like, Page, Path, PullRequest, PushResponse, Query, Sort, TreeNode } from "../../../../domain";
+import { Locale, ProductCategory, Singleton } from "../../../../domain";
+import { MetaDomain } from "../../../../meta/index";
 
 @Component({
-  templateUrl: './category.component.html',
+  templateUrl: "./edit.component.html",
 })
-export class CategoryFormComponent implements OnInit, AfterViewInit, OnDestroy {
+export class CategoryEditComponent implements OnInit, AfterViewInit, OnDestroy {
 
   private subscription: Subscription;
   private scope: Scope;
@@ -39,13 +39,13 @@ export class CategoryFormComponent implements OnInit, AfterViewInit, OnDestroy {
     this.subscription = this.route.url
       .switchMap((url: any) => {
 
-        const id: string = this.route.snapshot.paramMap.get('id');
+        const id: string = this.route.snapshot.paramMap.get("id");
         const m: MetaDomain = this.m;
 
         const fetch: Fetch[] = [
           new Fetch({
-            name: 'category',
-            id: id,
+            name: "category",
+            id,
             include: [
               new TreeNode({
                 roleType: m.ProductCategory.LocalisedNames,
@@ -62,7 +62,7 @@ export class CategoryFormComponent implements OnInit, AfterViewInit, OnDestroy {
         const query: Query[] = [
           new Query(
             {
-              name: 'singletons',
+              name: "singletons",
               objectType: this.m.Singleton,
               include: [
                 new TreeNode({ roleType: m.Singleton.Locales }),
@@ -70,19 +70,19 @@ export class CategoryFormComponent implements OnInit, AfterViewInit, OnDestroy {
             }),
           new Query(
             {
-              name: 'categories',
+              name: "categories",
               objectType: this.m.ProductCategory,
             }),
         ];
 
         return this.scope
-          .load('Pull', new PullRequest({ fetch: fetch, query: query }));
+          .load("Pull", new PullRequest({ fetch, query }));
       })
       .subscribe((loaded: Loaded) => {
 
         this.category = loaded.objects.category as ProductCategory;
         if (!this.category) {
-          this.category = this.scope.session.create('ProductCategory') as ProductCategory;
+          this.category = this.scope.session.create("ProductCategory") as ProductCategory;
         }
 
         this.singleton = loaded.collections.singletons[0] as Singleton;
