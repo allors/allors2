@@ -18,9 +18,8 @@ namespace Allors.Repository
         #endregion
         [Multiplicity(Multiplicity.OneToMany)]
         [Indexed]
-
+        [Workspace]
         InventoryItemVariance[] InventoryItemVariances { get; set; }
-
 
         #region Allors
         [Id("374e9e57-e878-40ac-9021-d830dbf1efdc")]
@@ -28,10 +27,9 @@ namespace Allors.Repository
         [RoleId("99a9dadc-ac9e-4662-91d0-41804e70101f")]
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
+        [Workspace]
         [Indexed]
-
         Part Part { get; set; }
-
 
         #region Allors
         [Id("39ee9493-b628-4cc6-a31c-239f306e8497")]
@@ -40,9 +38,8 @@ namespace Allors.Repository
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
-
+        [Workspace]
         Container Container { get; set; }
-
 
         #region Allors
         [Id("57bd3950-8477-44c3-9c16-dd894d774c51")]
@@ -52,9 +49,8 @@ namespace Allors.Repository
         [Derived]
         [Required]
         [Size(256)]
-
+        [Workspace]
         string Name { get; set; }
-
 
         #region Allors
         [Id("5f8fa5ee-a638-4222-9865-518e220e7299")]
@@ -63,9 +59,8 @@ namespace Allors.Repository
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
-
+        [Workspace]
         Lot Lot { get; set; }
-
 
         #region Allors
         [Id("64887d2f-3017-4804-afb4-5e46eec23491")]
@@ -75,9 +70,8 @@ namespace Allors.Repository
         [Derived]
         [Required]
         [Size(256)]
-
+        [Workspace]
         string Sku { get; set; }
-
 
         #region Allors
         [Id("6efb2763-ce7e-4b43-afc1-e4e37af814f0")]
@@ -87,9 +81,8 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.ManyToOne)]
         [Derived]
         [Indexed]
-
+        [Workspace]
         UnitOfMeasure UnitOfMeasure { get; set; }
-
 
         #region Allors
         [Id("ab7b1a91-4756-4806-a5d3-ed8b392c6fe7")]
@@ -99,9 +92,7 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.ManyToMany)]
         [Derived]
         [Indexed]
-
         ProductCategory[] DerivedProductCategories { get; set; }
-
 
         #region Allors
         [Id("b4d944f5-7376-4096-a34a-4571f537c5fc")]
@@ -110,9 +101,8 @@ namespace Allors.Repository
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
-
+        [Workspace]
         Good Good { get; set; }
-
 
         #region Allors
         [Id("f99da732-7c31-4c67-a610-2147a2f29e44")]
@@ -122,7 +112,7 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
         [Required]
-
+        [Workspace]
         Facility Facility { get; set; }
 
     }

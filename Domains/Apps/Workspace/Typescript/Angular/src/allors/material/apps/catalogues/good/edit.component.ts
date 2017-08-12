@@ -1,4 +1,4 @@
-import { AfterViewInit, ChangeDetectorRef, Component, OnDestroy , OnInit } from "@angular/core";
+import { AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit } from "@angular/core";
 import { Validators } from "@angular/forms";
 import { MdNativeDateModule, MdSnackBar, MdSnackBarConfig } from "@angular/material";
 import { ActivatedRoute } from "@angular/router";
@@ -7,7 +7,7 @@ import { Observable, Subject, Subscription } from "rxjs/Rx";
 
 import { AllorsService, ErrorService, Filter, Loaded, Saved, Scope } from "../../../../angular";
 import { Contains, Equals, Fetch, Like, Page, Path, PullRequest, PushResponse, Query, Sort, TreeNode } from "../../../../domain";
-import { Good, Locale, LocalisedText, Organisation, OrganisationRole, ProductCategory, ProductCharacteristic, ProductCharacteristicValue, ProductType, Singleton } from "../../../../domain";
+import { Good, InventoryItemVariance, Locale, LocalisedText, NonSerializedInventoryItem, Organisation, OrganisationRole, ProductCategory, ProductCharacteristic, ProductCharacteristicValue, ProductType, Singleton, VarianceReason } from "../../../../domain";
 import { MetaDomain } from "../../../../meta/index";
 
 @Component({
@@ -30,6 +30,8 @@ export class GoodEditComponent implements OnInit, AfterViewInit, OnDestroy {
   productTypes: ProductType[];
   productCharacteristicValues: ProductCharacteristicValue[];
   manufacturers: Organisation[];
+  varianceReasons: VarianceReason[];
+  inventoryItem: NonSerializedInventoryItem;
   actualQuantityOnHand: number;
 
   manufacturersFilter: Filter;
@@ -116,6 +118,11 @@ export class GoodEditComponent implements OnInit, AfterViewInit, OnDestroy {
               name: "productTypes",
               objectType: this.m.ProductType,
             }),
+          new Query(
+            {
+              name: "varianceReasons",
+              objectType: this.m.VarianceReason,
+            }),
         ];
 
         this.scope.session.reset();
@@ -133,6 +140,7 @@ export class GoodEditComponent implements OnInit, AfterViewInit, OnDestroy {
             this.actualQuantityOnHand = this.good.QuantityOnHand;
             this.categories = loaded.collections.categories as ProductCategory[];
             this.productTypes = loaded.collections.productTypes as ProductType[];
+            this.varianceReasons = loaded.collections.varianceReasons as VarianceReason[];
             this.singleton = loaded.collections.singletons[0] as Singleton;
             this.locales = this.singleton.Locales;
             this.selectedLocaleName = this.singleton.DefaultLocale.Name;
@@ -140,20 +148,30 @@ export class GoodEditComponent implements OnInit, AfterViewInit, OnDestroy {
             this.setProductCharacteristicValues();
 
             const organisationRoles: OrganisationRole[] = loaded.collections.organisationRoles as OrganisationRole[];
-            const customerRole: OrganisationRole = organisationRoles.find((v: OrganisationRole) => v.Name === "Manufacturer");
+            const manufacturerRole: OrganisationRole = organisationRoles.find((v: OrganisationRole) => v.Name === "Manufacturer");
 
-            const manufacturersQuery: Query[] = [new Query(
-              {
-                name: "manufacturers",
-                objectType: m.Organisation,
-                predicate: new Contains({ roleType: m.Organisation.OrganisationRoles, object: customerRole }),
-              })];
+            const manufacturersQuery: Query[] = [
+              new Query(
+                {
+                  name: "manufacturers",
+                  objectType: m.Organisation,
+                  predicate: new Contains({ roleType: m.Organisation.OrganisationRoles, object: manufacturerRole }),
+                }),
+              new Query(
+                {
+                  include: [new TreeNode({ roleType: m.NonSerializedInventoryItem.InventoryItemVariances })],
+                  name: "inventoryItems",
+                  objectType: m.NonSerializedInventoryItem,
+                  predicate: new Equals({ roleType: m.NonSerializedInventoryItem.Good, value: this.good }),
+                }),
+            ];
 
             return this.scope.load("Pull", new PullRequest({ query: manufacturersQuery }));
           });
       })
       .subscribe((loaded: Loaded) => {
         this.manufacturers = loaded.collections.manufacturers as Organisation[];
+        this.inventoryItem = loaded.collections.inventoryItems[0] as NonSerializedInventoryItem;
       },
       (error: any) => {
         this.errorService.message(error);
@@ -174,6 +192,15 @@ export class GoodEditComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   save(): void {
+    if (this.actualQuantityOnHand !== this.good.QuantityOnHand) {
+      const reason = this.varianceReasons.find((v: VarianceReason) => v.Name === "Unknown");
+
+      const inventoryItemVariance = this.scope.session.create("InventoryItemVariance") as InventoryItemVariance;
+      inventoryItemVariance.Quantity = this.actualQuantityOnHand - this.good.QuantityOnHand;
+      inventoryItemVariance.Reason = reason;
+
+      this.inventoryItem.AddInventoryItemVariance(inventoryItemVariance);
+    }
 
     this.scope
       .save()

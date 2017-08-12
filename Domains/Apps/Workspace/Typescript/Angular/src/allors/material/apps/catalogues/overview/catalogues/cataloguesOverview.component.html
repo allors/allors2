@@ -30,18 +30,17 @@
         <md-list-item>
 
           <md-icon *ngIf="!catalogue.CatalogueImage" md-list-avatar>photo_camera</md-icon>
-          <img *ngIf="catalogue.CatalogueImage" md-list-avatar src="http://localhost:5000/Media/Download/{{catalogue.CatalogueImage.UniqueId}}?revision={{catalogue.CatalogueImage.Revision}}"
-          />
+          <img *ngIf="catalogue.CatalogueImage" md-list-avatar src="http://localhost:5000/Media/Download/{{catalogue.CatalogueImage.UniqueId}}?revision={{catalogue.CatalogueImage.Revision}}"/>
 
-          <h3 md-line> {{catalogue.Name}}</h3>
-          <p md-line> {{catalogue.Description}} </p>
+            <h3 md-line> {{catalogue.Name}}</h3>
+            <p md-line> {{catalogue.Description}} </p>
 
           <span>
                 <button md-icon-button [md-menu-trigger-for]="menu">
                 <md-icon>more_vert</md-icon>
                 </button>
                 <md-menu x-position="before" #menu="mdMenu">
-                <a [routerLink]="[catalogue.id + '/edit']" md-menu-item>Edit</a>
+                <a [routerLink]="'/catalogue/' +[catalogue.id]" md-menu-item>Edit</a>
                 <button md-menu-item (click)="delete(catalogue)">Delete</button>
                 </md-menu>
               </span>

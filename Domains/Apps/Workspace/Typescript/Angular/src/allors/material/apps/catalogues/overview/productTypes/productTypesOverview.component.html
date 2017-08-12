@@ -36,7 +36,7 @@
                 <md-icon>more_vert</md-icon>
                 </button>
                 <md-menu x-position="before" #menu="mdMenu">
-                <a [routerLink]="[productType.id + '/edit']" md-menu-item>Edit</a>
+                <a [routerLink]="['/productType/' + productType.id]" md-menu-item>Edit</a>
                 <button md-menu-item (click)="delete(productType)">Delete</button>
                 </md-menu>
               </span>
