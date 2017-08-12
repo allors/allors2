@@ -68,6 +68,7 @@ namespace Allors.Domain
             if (this.ExistGood)
             {
                 this.Good.DeriveAvailableToPromise();
+                this.Good.DeriveQuantityOnHand();
             }
 
             this.PreviousQuantityOnHand = this.QuantityOnHand;

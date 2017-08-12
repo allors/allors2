@@ -35,14 +35,11 @@ namespace Allors.Domain
             var derivation = method.Derivation;
 
             // TODO:
-            if (derivation.ChangeSet.Associations.Contains(this.Id))
+            if (this.ExistInventoryItemsWhereGood)
             {
-                if (this.ExistInventoryItemsWhereGood)
+                foreach (InventoryItem inventoryItem in this.InventoryItemsWhereGood)
                 {
-                    foreach (InventoryItem inventoryItem in this.InventoryItemsWhereGood)
-                    {
-                        derivation.AddDependency(inventoryItem, this);
-                    }
+                    derivation.AddDependency(inventoryItem, this);
                 }
             }
         }
@@ -192,7 +189,7 @@ namespace Allors.Domain
                 }
             }
             else
-            { 
+            {
                 var productCharacteristics = new HashSet<ProductCharacteristic>(this.ProductType.ProductCharacteristics);
                 var locales = new HashSet<Locale>(Singleton.Instance(this.strategy.Session).Locales);
 
