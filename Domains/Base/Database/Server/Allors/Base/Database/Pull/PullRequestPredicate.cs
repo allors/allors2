@@ -6,6 +6,8 @@
     using Allors.Domain.Query;
     using Allors.Meta;
 
+    using Predicate = Allors.Domain.Query.Predicate;
+
     public class PullRequestPredicate
     {
         public string _T { get; set; }
@@ -118,7 +120,6 @@
                 objectIdNullable = objectId;
             }
 
-            
             var predicate = new Equals
                                 {
                                     AssociationType = this.AT != null ? (AssociationType)metaPopulation.Find(new Guid(this.AT)) : null,
