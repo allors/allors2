@@ -1,28 +1,9 @@
-<md-toolbar>
-  <div layout="row" layout-align="start center" flex>
-    <button md-icon-button tdLayoutManageListOpen [hideWhenOpened]="true" style="display: none">
-          <md-icon>arrow_back</md-icon>
-        </button>
-    <span>{{title}}</span>
-    <span flex></span>
-    <button md-icon-button><md-icon>settings</md-icon></button>
-  </div>
-</md-toolbar>
-
-<md-card>
+<td-layout-card-over [cardTitle]="title" [cardSubtitle]="subTitle">
   <form #form="ngForm" *ngIf="productCharacteristic" (submit)="save()">
 
-    <md-card-title>Product Characteristic Form</md-card-title>
-
-    <md-divider></md-divider>
-    <md-card-content class="push-bottom-none">
-
-      <div>
-        <a-md-localised-text [object]="productCharacteristic" [roleType]="m.ProductCharacteristic.LocalisedNames" [locales]="locales"
+    <div class="pad">        <a-md-localised-text [object]="productCharacteristic" [roleType]="m.ProductCharacteristic.LocalisedNames" [locales]="locales"
           label="Name"></a-md-localised-text>
       </div>
-
-    </md-card-content>
 
     <md-divider></md-divider>
     <md-card-actions>
@@ -31,4 +12,4 @@
     </md-card-actions>
 
   </form>
-</md-card>
+</td-layout-card-over>

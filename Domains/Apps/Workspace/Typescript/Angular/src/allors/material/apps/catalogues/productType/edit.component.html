@@ -1,7 +1,7 @@
 <td-layout-card-over [cardTitle]="title" [cardSubtitle]="subTitle">
-  <form #form="ngForm" *ngIf="catalogue" (submit)="save()">
+  <form #form="ngForm" *ngIf="productType" (submit)="save()">
 
-    <div>
+    <div class="pad">
       <a-md-input [object]="productType" [roleType]="m.ProductType.Name"></a-md-input>
       <a-md-select [object]="productType" [roleType]="m.ProductType.ProductCharacteristics" [options]="characteristics" display="Name"></a-md-select>
     </div>

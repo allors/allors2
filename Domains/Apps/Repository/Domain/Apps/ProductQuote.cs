@@ -67,6 +67,7 @@ namespace Allors.Repository
         #region Allors
         [Id("8D92571B-AABE-45EC-A2BB-93219B3E8C12")]
         #endregion
+        [Workspace]
         public void Order() { }
 
         #region inherited methods

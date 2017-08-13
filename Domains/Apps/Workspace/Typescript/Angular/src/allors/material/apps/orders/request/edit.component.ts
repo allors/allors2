@@ -185,41 +185,6 @@ export class RequestEditComponent implements OnInit, AfterViewInit, OnDestroy {
     }
   }
 
-  public complete(): void {
-    const completeFn: () => void = () => {
-      this.scope.invoke(this.request.Complete)
-        .subscribe((invoked: Invoked) => {
-          this.refresh();
-          this.snackBar.open("Successfully completed.", "close", { duration: 5000 });
-        },
-        (error: Error) => {
-          this.errorService.dialog(error);
-        });
-    };
-
-    if (this.scope.session.hasChanges) {
-      this.dialogService
-        .openConfirm({ message: "Save changes?" })
-        .afterClosed().subscribe((confirm: boolean) => {
-          if (confirm) {
-            this.scope
-              .save()
-              .subscribe((saved: Saved) => {
-                this.scope.session.reset();
-                completeFn();
-              },
-              (error: Error) => {
-                this.errorService.dialog(error);
-              });
-          } else {
-            completeFn();
-          }
-        });
-    } else {
-      completeFn();
-    }
-  }
-
   public cancel(): void {
     const cancelFn: () => void = () => {
       this.scope.invoke(this.request.Cancel)

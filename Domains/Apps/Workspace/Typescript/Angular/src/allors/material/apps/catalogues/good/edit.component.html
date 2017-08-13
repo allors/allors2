@@ -11,12 +11,12 @@
       <md-divider></md-divider>
 
       <div>
-        <a-md-media-upload [object]="good" [roleType]="m.Good.PrimaryPhoto" accept="image/*"></a-md-media-upload>
+         <a-md-media-upload [object]="good" [roleType]="m.Good.PrimaryPhoto" accept="image/*"></a-md-media-upload>
         <a-md-localised-text [object]="good" [roleType]="m.Good.LocalisedNames" [locales]="locales" label="Name"></a-md-localised-text>
         <a-md-localised-text [object]="good" [roleType]="m.Good.LocalisedDescriptions" [locales]="locales" label="Description"></a-md-localised-text>
         <a-md-localised-text [object]="good" [roleType]="m.Good.LocalisedComments" [locales]="locales" label="Comment"></a-md-localised-text>
         <a-md-textarea [object]="good" [roleType]="m.Good.InternalComment"></a-md-textarea>
-        <a-md-autocomplete [object]="good" [roleType]="m.Good.ProductType" [options]="productTypes" display="Name"></a-md-autocomplete>
+        <a-md-select [object]="good" [roleType]="m.Good.ProductType" [options]="productTypes" display="Name"></a-md-select>
         <a-md-select [object]="good" [roleType]="m.Good.ProductCategories" [options]="categories" display="Name"></a-md-select>
         <a-md-autocomplete [object]="good" [roleType]="m.Good.PrimaryProductCategory" [options]="categories" display="Name"></a-md-autocomplete>
         <a-md-autocomplete [object]="good" [roleType]="m.Good.ManufacturedBy" [filter]="manufacturersFilter.create()" display="Name"></a-md-autocomplete>
@@ -28,8 +28,8 @@
         <a-md-static [object]="good" [roleType]="m.Good.AvailableToPromise"></a-md-static>
         <a-md-datepicker [object]="good" [roleType]="m.Good.SalesDiscontinuationDate"></a-md-datepicker>
 
-        <a-md-input *ngFor="let productCharacteristicValue of productCharacteristicValues" [object]="productCharacteristicValue"
-          [roleType]="m.ProductCharacteristicValue.Value" [label]="localisedName(productCharacteristicValue.ProductCharacteristic)"></a-md-input>
+        <a-md-textarea *ngFor="let productCharacteristicValue of productCharacteristicValues" [object]="productCharacteristicValue"
+          [roleType]="m.ProductCharacteristicValue.Value" [label]="localisedName(productCharacteristicValue.ProductCharacteristic)"></a-md-textarea>
       </div>
     </div>
 

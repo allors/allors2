@@ -1,12 +1,12 @@
-import { Component, Input, AfterViewInit, ChangeDetectorRef, ViewChildren, QueryList } from '@angular/core';
-import { NgModel, NgForm } from '@angular/forms';
-import { ISessionObject } from '../../../../allors/domain';
-import { MetaDomain, RoleType } from '../../../../allors/meta';
+import { AfterViewInit, ChangeDetectorRef, Component, Input, Optional, QueryList, ViewChildren } from "@angular/core";
+import { NgForm, NgModel } from "@angular/forms";
+import { ISessionObject } from "../../../../allors/domain";
+import { MetaDomain, RoleType } from "../../../../allors/meta";
 
-import { Field } from '../../../angular';
+import { Field } from "../../../angular";
 
 @Component({
-  selector: 'a-md-select',
+  selector: "a-md-select",
   template: `
 <div class="mat-input-wrapper">
   <div class="mat-input-flex">
@@ -28,20 +28,22 @@ import { Field } from '../../../angular';
 })
 export class SelectComponent extends Field implements AfterViewInit {
   @Input()
-  display: string = 'display';
+  public display: string = "display";
 
   @Input()
-  options: ISessionObject[];
+  public options: ISessionObject[];
 
-  @ViewChildren(NgModel) controls: QueryList<NgModel>;
+  @ViewChildren(NgModel) private controls: QueryList<NgModel>;
 
-  constructor(private parentForm: NgForm) {
+  constructor( @Optional() private parentForm: NgForm) {
     super();
   }
 
-  ngAfterViewInit(): void {
-    this.controls.forEach((control: NgModel) => {
-      this.parentForm.addControl(control);
-    });
+  public ngAfterViewInit(): void {
+    if (!!this.parentForm) {
+      this.controls.forEach((control: NgModel) => {
+        this.parentForm.addControl(control);
+      });
+    }
   }
 }

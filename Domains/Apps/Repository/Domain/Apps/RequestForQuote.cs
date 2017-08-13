@@ -64,6 +64,7 @@ namespace Allors.Repository
         #region Allors
         [Id("A57F9C84-A17D-4F5E-91EE-C0AD38EF6985")]
         #endregion
+        [Workspace]
         public void CreateQuote() { }
 
         #region inherited methods

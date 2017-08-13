@@ -2,11 +2,11 @@ import { AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit } from "
 import { MdSnackBar, MdSnackBarConfig } from "@angular/material";
 import { ActivatedRoute } from "@angular/router";
 import { TdDialogService, TdMediaService } from "@covalent/core";
-import { Observable, Subject, Subscription } from "rxjs/Rx";
+import { BehaviorSubject, Observable, Subject, Subscription } from "rxjs/Rx";
 
-import { AllorsService, ErrorService, Loaded, Saved, Scope } from "../../../../../angular";
+import { AllorsService, ErrorService, Invoked, Loaded, Saved, Scope } from "../../../../../angular";
 import { Equals, Fetch, Like, Page, Path, PullRequest, Query, Sort, TreeNode } from "../../../../../domain";
-import { Request } from "../../../../../domain";
+import { Product, Request, RequestItem } from "../../../../../domain";
 import { MetaDomain } from "../../../../../meta";
 
 @Component({
@@ -17,19 +17,39 @@ export class RequestOverviewComponent implements OnInit, AfterViewInit, OnDestro
   public m: MetaDomain;
   public title: string = "Requests Overview";
   public request: Request;
+  public requestItems: RequestItem[] = [];
+  public products: Product[]= [];
 
   private subscription: Subscription;
   private scope: Scope;
+  private refresh$: BehaviorSubject<Date>;
 
   constructor(
     private allors: AllorsService,
     private errorService: ErrorService,
     private route: ActivatedRoute,
     public dialogService: TdDialogService,
+    private snackBar: MdSnackBar,
     public media: TdMediaService, private changeDetectorRef: ChangeDetectorRef) {
 
     this.scope = new Scope(allors.database, allors.workspace);
     this.m = this.allors.meta;
+  }
+
+  public refresh(): void {
+    this.refresh$.next(new Date());
+  }
+
+  public save(): void {
+
+    this.scope
+      .save()
+      .subscribe((saved: Saved) => {
+        this.snackBar.open("items saved", "close", { duration: 1000 });
+      },
+      (error: Error) => {
+        this.errorService.dialog(error);
+      });
   }
 
   public ngOnInit(): void {
@@ -45,6 +65,12 @@ export class RequestOverviewComponent implements OnInit, AfterViewInit, OnDestro
             name: "request",
             id,
             include: [
+              new TreeNode({
+                roleType: m.Request.RequestItems,
+                nodes: [
+                  new TreeNode({ roleType: m.RequestItem.Product }),
+                ],
+              }),
               new TreeNode({ roleType: m.Request.Originator }),
               new TreeNode({ roleType: m.Request.CurrentObjectState }),
               new TreeNode({ roleType: m.Request.CreatedBy }),
@@ -70,13 +96,25 @@ export class RequestOverviewComponent implements OnInit, AfterViewInit, OnDestro
           }),
         ];
 
+        const query: Query[] = [
+          new Query(
+            {
+              name: "products",
+              objectType: m.Product,
+            }),
+        ];
+
         this.scope.session.reset();
 
         return this.scope
-          .load("Pull", new PullRequest({ fetch }));
+          .load("Pull", new PullRequest({ fetch, query }));
       })
       .subscribe((loaded: Loaded) => {
+        this.products = loaded.collections.products as Product[];
         this.request = loaded.objects.request as Request;
+        if (this.request) {
+          this.requestItems = this.request.RequestItems;
+        }
       },
       (error: any) => {
         this.errorService.message(error);
@@ -102,5 +140,15 @@ export class RequestOverviewComponent implements OnInit, AfterViewInit, OnDestro
 
   public checkType(obj: any): string {
     return obj.objectType.name;
+  }
+
+  public deleteRequestItem(requestItem: RequestItem): void {
+    this.request.RemoveRequestItem(requestItem);
+  }
+
+  public addRequestItem(): void {
+    const requestItem = this.scope.session.create("RequestItem") as RequestItem;
+    requestItem.Quantity = 1;
+    this.request.AddRequestItem(requestItem);
   }
 }

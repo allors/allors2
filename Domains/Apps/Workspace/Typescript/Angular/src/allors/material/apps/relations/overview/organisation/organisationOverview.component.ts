@@ -10,7 +10,7 @@ import { CommunicationEvent, ContactMechanism, TelecommunicationsNumber, Locale,
 import { AllorsService, ErrorService, Scope, Loaded, Saved, Invoked } from '../../../../../angular';
 
 @Component({
-  templateUrl: './organisationOverview.component.html',
+  templateUrl: "./organisationOverview.component.html",
 })
 export class OrganisationOverviewComponent implements OnInit, AfterViewInit, OnDestroy {
 
