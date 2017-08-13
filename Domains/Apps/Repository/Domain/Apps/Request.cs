@@ -144,12 +144,6 @@ namespace Allors.Repository
         void Cancel();
 
         #region Allors
-        [Id("01CA10DA-C0EE-4435-8E23-F2CC8C98AE59")]
-        #endregion
-        [Workspace]
-        void Complete();
-
-        #region Allors
         [Id("2510F8F6-52E1-4024-A0B1-623DFB62395A")]
         #endregion
         [Workspace]
@@ -166,6 +160,5 @@ namespace Allors.Repository
         #endregion
         [Workspace]
         void Hold();
-
     }
 }

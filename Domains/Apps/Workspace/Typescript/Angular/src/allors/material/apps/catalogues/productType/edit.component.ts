@@ -18,6 +18,9 @@ export class ProductTypeEditComponent implements OnInit, AfterViewInit, OnDestro
   private subscription: Subscription;
   private scope: Scope;
 
+  title: string = "Edit Product Type";
+  subTitle: string;
+
   m: MetaDomain;
 
   productType: ProductType;

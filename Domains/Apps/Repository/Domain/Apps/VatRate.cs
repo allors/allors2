@@ -42,6 +42,7 @@ namespace Allors.Repository
         [Required]
         [Precision(19)]
         [Scale(2)]
+        [Workspace]
         public decimal Rate { get; set; }
         #region Allors
         [Id("46cf5d68-cceb-4b49-933c-875e9614eb8b")]

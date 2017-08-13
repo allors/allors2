@@ -61,6 +61,10 @@ namespace Allors.Repository
 
         #endregion
 
+        #region Allors
+        [Id("A57F9C84-A17D-4F5E-91EE-C0AD38EF6985")]
+        #endregion
+        public void CreateQuote() { }
 
         #region inherited methods
 
@@ -75,8 +79,6 @@ namespace Allors.Repository
         public void OnPostDerive(){}
 
         public void Cancel() { }
-
-        public void Complete() { }
 
         public void Reject() { }
 

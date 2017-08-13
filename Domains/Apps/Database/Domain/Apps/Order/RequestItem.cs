@@ -13,6 +13,9 @@
 // For more information visit http://www.allors.com/legal
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
+
+using System;
+
 namespace Allors.Domain
 {
     using Meta;
@@ -21,12 +24,31 @@ namespace Allors.Domain
     {
         ObjectState Transitional.CurrentObjectState => this.CurrentObjectState;
 
+        public void AppsOnBuild(ObjectOnBuild method)
+        {
+            if (!this.ExistCurrentObjectState)
+            {
+                this.CurrentObjectState = new RequestItemObjectStates(this.Strategy.Session).Draft;
+            }
+        }
         public void AppsOnDerive(ObjectOnDerive method)
         {
             var derivation = method.Derivation;
 
             derivation.Validation.AssertAtLeastOne(this, M.RequestItem.Product, M.RequestItem.ProductFeature, M.RequestItem.Description, M.RequestItem.NeededSkill, M.RequestItem.Deliverable);
             derivation.Validation.AssertExistsAtMostOne(this, M.RequestItem.Product, M.RequestItem.ProductFeature, M.RequestItem.Description, M.RequestItem.NeededSkill, M.RequestItem.Deliverable);
+
+            this.DeriveCurrentObjectState(derivation);
+        }
+
+        private void DeriveCurrentObjectState(IDerivation derivation)
+        {
+            if (this.ExistCurrentObjectState && !this.CurrentObjectState.Equals(this.LastObjectState))
+            {
+                var currentStatus = new RequestItemStatusBuilder(this.Strategy.Session).WithRequestItemObjectState(this.CurrentObjectState).Build();
+                this.AddRequestItemStatus(currentStatus);
+                this.CurrentRequestItemStatus = currentStatus;
+            }
         }
     }
 }

@@ -60,6 +60,10 @@ namespace Allors.Repository
         public ObjectState LastObjectState { get; set; }
         #endregion
 
+        #region Allors
+        [Id("30472626-909D-4B7E-A153-B2754D6398E3")]
+        #endregion
+        public void CreateProposal() { }
 
         #region inherited methods
 
@@ -75,8 +79,6 @@ namespace Allors.Repository
         public void OnPostDerive(){}
 
         public void Cancel() {}
-
-        public void Complete() { }
 
         public void Reject() { }
 

@@ -1,35 +1,17 @@
-<md-toolbar>
-  <div layout="row" layout-align="start center" flex>
-    <button md-icon-button tdLayoutManageListOpen [hideWhenOpened]="true" style="display: none">
-          <md-icon>arrow_back</md-icon>
-        </button>
-    <span>{{title}}</span>
-    <span flex></span>
-    <button md-icon-button><md-icon>settings</md-icon></button>
-  </div>
-</md-toolbar>
+<td-layout-card-over [cardTitle]="title" [cardSubtitle]="subTitle">
+  <form #form="ngForm" *ngIf="catalogue" (submit)="save()">
 
-<md-card>
-  <form #form="ngForm" *ngIf="productType" (submit)="save()">
-
-    <md-card-title>Product Type Form</md-card-title>
+    <div>
+      <a-md-input [object]="productType" [roleType]="m.ProductType.Name"></a-md-input>
+      <a-md-select [object]="productType" [roleType]="m.ProductType.ProductCharacteristics" [options]="characteristics" display="Name"></a-md-select>
+    </div>
 
     <md-divider></md-divider>
-    <md-card-content class="push-bottom-none">
 
-      <div>
-        <a-md-input [object]="productType" [roleType]="m.ProductType.Name"></a-md-input>
-        <a-md-select [object]="productType" [roleType]="m.ProductType.ProductCharacteristics" [options]="characteristics" display="Name"
-         ></a-md-select>
-      </div>
-
-    </md-card-content>
-
-    <md-divider></md-divider>
     <md-card-actions>
       <button md-button color="primary" type="submit" [disabled]="!form.form.valid">SAVE</button>
       <button md-button (click)="goBack()" type="button">CANCEL</button>
     </md-card-actions>
 
   </form>
-</md-card>
+</td-layout-card-over>

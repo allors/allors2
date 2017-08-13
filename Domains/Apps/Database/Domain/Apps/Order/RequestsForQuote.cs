@@ -32,23 +32,23 @@ namespace Allors.Domain
             base.AppsSecure(config);
 
             var cancelled = new RequestObjectStates(this.Session).Cancelled;
-            var completed = new RequestObjectStates(this.Session).Completed;
+            var completed = new RequestObjectStates(this.Session).Quoted;
             var draft = new RequestObjectStates(this.Session).Draft;
             var pendingCustomer = new RequestObjectStates(this.Session).PendingCustomer;
             var rejected = new RequestObjectStates(this.Session).Rejected;
             var submitted = new RequestObjectStates(this.Session).Submitted;
 
             var cancel = this.Meta.Cancel;
-            var complete = this.Meta.Complete;
             var hold = this.Meta.Hold;
             var submit = this.Meta.Submit;
             var reject = this.Meta.Reject;
+            var createQuote = this.Meta.CreateQuote;
 
-            config.Deny(this.ObjectType, submitted, submit);
-            config.Deny(this.ObjectType, draft, hold, complete);
-            config.Deny(this.ObjectType, pendingCustomer, complete, hold);
-            config.Deny(this.ObjectType, rejected, reject, cancel, complete, submit);
-            config.Deny(this.ObjectType, cancelled, reject, cancel, complete, submit);
+            config.Deny(this.ObjectType, submitted, submit, createQuote);
+            config.Deny(this.ObjectType, draft, hold, createQuote);
+            config.Deny(this.ObjectType, pendingCustomer, hold, createQuote);
+            config.Deny(this.ObjectType, rejected, reject, cancel, submit, hold, createQuote);
+            config.Deny(this.ObjectType, cancelled, reject, cancel, submit, hold, createQuote);
 
             config.Deny(this.ObjectType, cancelled, Operations.Write);
             config.Deny(this.ObjectType, rejected, Operations.Write);

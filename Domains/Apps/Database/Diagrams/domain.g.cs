@@ -1018,6 +1018,8 @@ namespace Allors.Domain
 		}
 		public interface Quote  : Transitional, Printable, Auditable 
 		{
+						global::System.DateTime? RequiredResponseDate {set;}
+
 						global::System.DateTime? ValidFromDate {set;}
 
 						QuoteTerm QuoteTerms {set;}
@@ -1038,9 +1040,13 @@ namespace Allors.Domain
 
 						global::System.String QuoteNumber {set;}
 
-						QuoteStatus QuotesStatuses {set;}
+						QuoteStatus QuoteStatuses {set;}
 
 						QuoteObjectState CurrentObjectState {set;}
+
+						QuoteStatus CurrentQuoteStatus {set;}
+
+						Request Request {set;}
 
 		}
 		public interface Request  : Commentable, Auditable, Printable, Transitional 
@@ -3995,6 +4001,8 @@ namespace Allors.Domain
 
 						global::System.DateTime? EstimatedDeliveryDate {set;}
 
+						global::System.DateTime? RequiredByDate {set;}
+
 						UnitOfMeasure UnitOfMeasure {set;}
 
 						ProductFeature ProductFeature {set;}
@@ -4066,6 +4074,8 @@ namespace Allors.Domain
 						global::System.String Description {set;}
 
 						global::System.Int32? Quantity {set;}
+
+						UnitOfMeasure UnitOfMeasure {set;}
 
 						Requirement Requirements {set;}
 
@@ -4427,6 +4437,8 @@ namespace Allors.Domain
 						global::System.Decimal InitialMarkupPercentage {set;}
 
 						InternalOrganisation TakenByInternalOrganisation {set;}
+
+						ProductQuote Quote {set;}
 
 		}
 		public interface SalesOrderItem  : OrderItem 

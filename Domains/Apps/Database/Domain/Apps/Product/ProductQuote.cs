@@ -13,6 +13,9 @@
 // For more information visit http://www.allors.com/legal
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
+
+using System.Linq;
+
 namespace Allors.Domain
 {
     using System;
@@ -21,27 +24,34 @@ namespace Allors.Domain
     {
         ObjectState Transitional.CurrentObjectState => this.CurrentObjectState;
 
-        public void AppsOnBuild(ObjectOnBuild method)
+        private SalesOrder OrderThis()
         {
-            if (!this.ExistCurrentObjectState)
+            var salesOrder = new SalesOrderBuilder(this.Strategy.Session)
+                .WithQuote(this)
+                .WithBillToCustomer(this.Receiver)
+                .Build();
+
+            var quoteItems = this.QuoteItems.Where(i => i.CurrentObjectState.Equals(new QuoteItemObjectStates(this.Strategy.Session).Submitted)).ToArray();
+
+            foreach (QuoteItem quoteItem in quoteItems)
             {
-                this.CurrentObjectState = new QuoteObjectStates(this.Strategy.Session).Created;
+                salesOrder.AddSalesOrderItem(
+                    new SalesOrderItemBuilder(this.Strategy.Session)
+                        .WithProduct(quoteItem.Product)
+                        .WithProductFeature(quoteItem.ProductFeature)
+                        .WithQuantityOrdered(quoteItem.Quantity)
+                        .Build()
+                );
             }
 
-            if (!this.ExistIssueDate)
-            {
-                this.IssueDate = DateTime.UtcNow;
-            }
-            
-            if (!this.ExistIssuer)
-            {
-                this.Issuer = Singleton.Instance(this.Strategy.Session).DefaultInternalOrganisation;
-            }
-
-            if (!this.ExistQuoteNumber)
-            {
-                this.QuoteNumber = Singleton.Instance(this.Strategy.Session).DefaultInternalOrganisation.DeriveNextQuoteNumber();
-            }
+            return salesOrder;
         }
+
+        public void AppsOrder(ProductQuoteOrder Method)
+        {
+            this.CurrentObjectState = new QuoteObjectStates(this.Strategy.Session).Ordered;
+            this.OrderThis();
+        }
+
     }
 }

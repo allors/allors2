@@ -6,9 +6,14 @@ namespace Allors.Repository
     #region Allors
     [Id("c2214ff4-d592-4f0d-9215-e431b23dc9c2")]
     #endregion
+    [Plural("ProductQuotes")]
+
     public partial class ProductQuote : Quote 
     {
         #region inherited properties
+
+        public DateTime RequiredResponseDate { get; set; }
+
         public DateTime ValidFromDate { get; set; }
 
         public QuoteTerm[] QuoteTerms { get; set; }
@@ -29,9 +34,13 @@ namespace Allors.Repository
 
         public string QuoteNumber { get; set; }
 
-        public QuoteStatus[] QuotesStatuses { get; set; }
+        public QuoteStatus[] QuoteStatuses { get; set; }
 
         public QuoteObjectState CurrentObjectState { get; set; }
+
+        public QuoteStatus CurrentQuoteStatus { get; set; }
+
+        public Request Request { get; set; }
 
         public Permission[] DeniedPermissions { get; set; }
 
@@ -55,8 +64,12 @@ namespace Allors.Repository
 
         #endregion
 
-        #region inherited methods
+        #region Allors
+        [Id("8D92571B-AABE-45EC-A2BB-93219B3E8C12")]
+        #endregion
+        public void Order() { }
 
+        #region inherited methods
 
         public void OnBuild(){}
 
@@ -68,6 +81,9 @@ namespace Allors.Repository
 
         public void OnPostDerive(){}
 
+        public void Approve() { }
+
+        public void Reject() { }
 
         #endregion
     }

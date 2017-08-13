@@ -9,6 +9,15 @@ namespace Allors.Repository
 	public partial interface Quote : Transitional, Printable, Auditable, AccessControlledObject
     {
         #region Allors
+        [Id("D566DD5B-BF58-45A6-A68F-FD7D2652FB4D")]
+        [AssociationId("8F0A31C1-1B2A-4531-84BA-7636F4D0B9DF")]
+        [RoleId("00EF6AB3-E075-45F5-A839-96576E3546AB")]
+        [Indexed]
+        #endregion
+        [Multiplicity(Multiplicity.OneToOne)]
+        DateTime RequiredResponseDate { get; set; }
+        
+        #region Allors
         [Id("033df6dd-fdf7-44e4-84ca-5c7e100cb3f5")]
         [AssociationId("4b19f443-0d27-447d-8186-e5361a094460")]
         [RoleId("fa17ef86-c074-414e-b223-b62522d68280")]
@@ -110,7 +119,7 @@ namespace Allors.Repository
         [Derived]
         [Indexed]
         [Workspace]
-        QuoteStatus[] QuotesStatuses { get; set; }
+        QuoteStatus[] QuoteStatuses { get; set; }
 
         #region Allors
         [Id("399E26DD-81C6-4238-A8AE-0C70F36E57B4")]
@@ -124,5 +133,37 @@ namespace Allors.Repository
         [Workspace]
         QuoteObjectState CurrentObjectState { get; set; }
 
+        #region Allors
+        [Id("1A1E04D6-AFD9-41CA-AF0A-CFDCB645D28A")]
+        [AssociationId("7A775728-0DF9-4713-9505-DABC9A587B93")]
+        [RoleId("148C16F6-0279-4840-AEED-2D325E67FBC8")]
+        [Indexed]
+        #endregion
+        [Multiplicity(Multiplicity.OneToOne)]
+        [Derived]
+        [Workspace]
+        QuoteStatus CurrentQuoteStatus { get; set; }
+
+        #region Allors
+        [Id("94DE208B-5FF9-45F5-BD35-5BB7D7B33FB7")]
+        [AssociationId("10F24038-D3E1-40DC-9D4F-27E738BE7F3D")]
+        [RoleId("3D269537-523B-489A-A7DA-008DC8585F60")]
+        [Indexed]
+        #endregion
+        [Multiplicity(Multiplicity.OneToOne)]
+        [Workspace]
+        Request Request { get; set; }
+
+        #region Allors
+        [Id("519F70DC-0C4C-43E7-8929-378D8871CD84")]
+        #endregion
+        [Workspace]
+        void Approve();
+
+        #region Allors
+        [Id("39694549-7173-4904-8AE0-DA7390F595A5")]
+        #endregion
+        [Workspace]
+        void Reject();
     }
 }

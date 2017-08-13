@@ -10,6 +10,9 @@ namespace Allors.Repository
     public partial class StatementOfWork : Quote 
     {
         #region inherited properties
+
+        public DateTime RequiredResponseDate { get; set; }
+
         public DateTime ValidFromDate { get; set; }
 
         public QuoteTerm[] QuoteTerms { get; set; }
@@ -30,9 +33,13 @@ namespace Allors.Repository
 
         public string QuoteNumber { get; set; }
 
-        public QuoteStatus[] QuotesStatuses { get; set; }
+        public QuoteStatus[] QuoteStatuses { get; set; }
 
         public QuoteObjectState CurrentObjectState { get; set; }
+
+        public QuoteStatus CurrentQuoteStatus { get; set; }
+
+        public Request Request { get; set; }
 
         public Permission[] DeniedPermissions { get; set; }
 
@@ -69,6 +76,9 @@ namespace Allors.Repository
 
         public void OnPostDerive(){}
 
+        public void Approve() { }
+
+        public void Reject() { }
 
         #endregion
     }

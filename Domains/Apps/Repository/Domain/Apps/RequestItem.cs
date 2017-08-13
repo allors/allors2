@@ -40,6 +40,16 @@ namespace Allors.Repository
         public int Quantity { get; set; }
 
         #region Allors
+        [Id("B48D0207-26CD-4A63-922F-69EC62704200")]
+        [AssociationId("0ED387D1-A458-428B-A422-4CAC0D140841")]
+        [RoleId("A4B9AD09-CB3D-460D-B0F2-232C0E124170")]
+        [Indexed]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Workspace]
+        public UnitOfMeasure UnitOfMeasure { get; set; }
+
+        #region Allors
         [Id("6544faeb-a4cf-447c-a696-b6561c45086e")]
         [AssociationId("3d03cbae-7618-458e-b705-94112c8f66db")]
         [RoleId("0204dc28-cec2-4d6b-b525-c7e4c65f958b")]

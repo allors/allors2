@@ -31,7 +31,7 @@ namespace Allors.Repository
         [AssociationId("3757E6C2-789B-4711-A366-F018212A2109")]
         [RoleId("0BC3A4E1-C3EB-4312-A699-D28EB778EA05")]
         #endregion
-        [Multiplicity(Multiplicity.ManyToOne)]
+        [Multiplicity(Multiplicity.OneToOne)]
         [Size(-1)]
         [Workspace]
         public string Value { get; set; }

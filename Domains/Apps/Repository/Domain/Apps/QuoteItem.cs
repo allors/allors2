@@ -61,6 +61,15 @@ namespace Allors.Repository
         public DateTime EstimatedDeliveryDate { get; set; }
 
         #region Allors
+        [Id("D071BBFA-8960-4F02-8F55-702112A0F608")]
+        [AssociationId("F4EA603F-AE0D-425A-AFA9-1162D9BB46CB")]
+        [RoleId("EAA89947-2651-470E-8172-581B30929E12")]
+        [Indexed]
+        #endregion
+        [Multiplicity(Multiplicity.OneToOne)]
+        public DateTime RequiredByDate { get; set; }
+
+        #region Allors
         [Id("28c0e280-16ce-48fc-8bc4-734e1ea0cd36")]
         [AssociationId("49bd248e-a34f-43ce-b2fd-9db0d5b01db4")]
         [RoleId("6eb4000d-559d-42b2-b02b-452370fa15b4")]

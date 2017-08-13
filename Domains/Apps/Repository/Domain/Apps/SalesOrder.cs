@@ -451,6 +451,15 @@ namespace Allors.Repository
         [Required]
         public InternalOrganisation TakenByInternalOrganisation { get; set; }
 
+        #region Allors
+        [Id("7788542E-5095-4D18-8F52-0732CBB599EA")]
+        [AssociationId("159960F5-A8BE-455B-A402-9D3730C9D335")]
+        [RoleId("4344C29C-ACA6-47FC-9B68-85488A755903")]
+        [Indexed]
+        #endregion
+        [Multiplicity(Multiplicity.OneToOne)]
+        [Workspace]
+        public ProductQuote Quote{ get; set; }
 
         #region inherited methods
 

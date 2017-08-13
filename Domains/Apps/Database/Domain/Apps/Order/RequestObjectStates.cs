@@ -22,7 +22,7 @@ namespace Allors.Domain
         private static readonly Guid DraftId = new Guid("2F054949-E30C-4954-9A3C-191559DE8315");
         private static readonly Guid SubmittedId = new Guid("DB03407D-BCB1-433A-B4E9-26CEA9A71BFD");
         private static readonly Guid CancelledId = new Guid("6B839C79-689D-412C-9C27-B553CF350662");
-        private static readonly Guid CompletedId = new Guid("79A9BAF5-D16F-4FA7-A2A0-CA20BF79833F");
+        private static readonly Guid QuotedId = new Guid("79A9BAF5-D16F-4FA7-A2A0-CA20BF79833F");
         private static readonly Guid PendingCustomerId = new Guid("671FDA2F-5AA6-4EA5-B5D6-C914F0911690");
         private static readonly Guid RejectedId = new Guid("26B1E962-9799-4C53-AE36-20E8490F757A");
 
@@ -34,7 +34,7 @@ namespace Allors.Domain
 
         public RequestObjectState Cancelled => this.StateCache.Get(CancelledId);
 
-        public RequestObjectState Completed => this.StateCache.Get(CompletedId);
+        public RequestObjectState Quoted => this.StateCache.Get(QuotedId);
 
         public RequestObjectState PendingCustomer => this.StateCache.Get(PendingCustomerId);
 
@@ -65,8 +65,8 @@ namespace Allors.Domain
                 .Build();
 
             new RequestObjectStateBuilder(this.Session)
-                .WithUniqueId(CompletedId)
-                .WithName("Completed")
+                .WithUniqueId(QuotedId)
+                .WithName("Quoted")
                 .Build();
 
             new RequestObjectStateBuilder(this.Session)

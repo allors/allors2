@@ -63,8 +63,6 @@ namespace Allors.Repository
 
         #region inherited methods
         public void Cancel() { }
-        
-        public void Complete() { }
 
         public void Reject() { }
 

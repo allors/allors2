@@ -15,6 +15,7 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 using System;
+using System.Linq;
 
 namespace Allors.Domain
 {
@@ -22,55 +23,39 @@ namespace Allors.Domain
     {
         ObjectState Transitional.CurrentObjectState => this.CurrentObjectState;
 
-        public void AppsOnBuild(ObjectOnBuild method)
+        private ProductQuote QuoteThis()
         {
-            if (!this.ExistCurrentObjectState)
+            var productQuote = new ProductQuoteBuilder(this.Strategy.Session)
+                .WithRequest(this)
+                .WithDescription(this.Description)
+                .WithReceiver(this.Originator)
+                .WithIssuer(Singleton.Instance(this.Strategy.Session).DefaultInternalOrganisation)
+                .WithRequiredResponseDate(this.RequiredResponseDate)
+                .Build();
+
+            var sourceItems = this.RequestItems.Where(i => i.CurrentObjectState.Equals(new RequestItemObjectStates(this.Strategy.Session).Submitted)).ToArray();
+
+            foreach (RequestItem requestItem in sourceItems)
             {
-                this.CurrentObjectState = new RequestObjectStates(this.Strategy.Session).Draft;
+                productQuote.AddQuoteItem(
+                    new QuoteItemBuilder(this.Strategy.Session)
+                    .WithProduct(requestItem.Product)
+                    .WithProductFeature(requestItem.ProductFeature)
+                    .WithQuantity(requestItem.Quantity)
+                    .WithUnitOfMeasure(requestItem.UnitOfMeasure)
+                    .WithRequestItem(requestItem)
+                    .WithRequiredByDate(requestItem.RequiredByDate)
+                    .Build()
+                    );
             }
 
-            if (!this.ExistRequestDate)
-            {
-                this.RequestDate = DateTime.UtcNow;
-            }
+            return productQuote;
         }
 
-        public void AppsOnDerive(ObjectOnDerive method)
+        public void AppsCreateQuote(RequestForQuoteCreateQuote Method)
         {
-            var derivation = method.Derivation;
-
-            if (!this.ExistRequestNumber)
-            {
-                this.RequestNumber = Singleton.Instance(this.Strategy.Session).DefaultInternalOrganisation.DeriveNextRequestNumber();
-            }
-
-            this.DeriveCurrentObjectState(derivation);
+            this.CurrentObjectState = new RequestObjectStates(this.Strategy.Session).Quoted;
+            this.QuoteThis();
         }
-
-        private void DeriveCurrentObjectState(IDerivation derivation)
-        {
-            if (this.ExistCurrentObjectState && !this.CurrentObjectState.Equals(this.LastObjectState))
-            {
-                var currentStatus = new RequestStatusBuilder(this.Strategy.Session).WithRequestObjectState(this.CurrentObjectState).Build();
-                this.AddRequestStatus(currentStatus);
-                this.CurrentRequestStatus = currentStatus;
-            }
-        }
-
-        public void AppsCancel(RequestCancel method)
-        {
-            this.CurrentObjectState = new RequestObjectStates(this.Strategy.Session).Cancelled;
-        }
-
-        public void AppsReject(RequestReject method)
-        {
-            this.CurrentObjectState = new RequestObjectStates(this.Strategy.Session).Rejected;
-        }
-
-        public void AppsSubmit(RequestSubmit method)
-        {
-            this.CurrentObjectState = new RequestObjectStates(this.Strategy.Session).Submitted;
-        }
-
     }
 }
