@@ -22,10 +22,15 @@ namespace Allors.Repository
         public DateTime ValidThroughDate { get; set; }
 
         public string Description { get; set; }
+        public string InternalComment { get; set; }
 
         public Party Receiver { get; set; }
 
+        public ContactMechanism FullfillContactMechanism { get; set; }
+
         public decimal Amount { get; set; }
+
+        public Currency Currency { get; set; }
 
         public DateTime IssueDate { get; set; }
 
@@ -61,6 +66,8 @@ namespace Allors.Repository
         public Guid UniqueId { get; set; }
 
         public string PrintContent { get; set; }
+
+        public string Comment { get; set; }
         #endregion
 
         #region inherited methods

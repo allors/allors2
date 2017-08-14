@@ -6,7 +6,7 @@ namespace Allors.Repository
     #region Allors
     [Id("066bf242-2710-4a68-8ff6-ce4d7d88a04a")]
     #endregion
-	public partial interface Quote : Transitional, Printable, Auditable, AccessControlledObject
+	public partial interface Quote : Transitional, Printable, Auditable, Commentable, AccessControlledObject
     {
         #region Allors
         [Id("D566DD5B-BF58-45A6-A68F-FD7D2652FB4D")]
@@ -15,6 +15,7 @@ namespace Allors.Repository
         [Indexed]
         #endregion
         [Multiplicity(Multiplicity.OneToOne)]
+        [Workspace]
         DateTime RequiredResponseDate { get; set; }
         
         #region Allors
@@ -64,6 +65,14 @@ namespace Allors.Repository
         string Description { get; set; }
 
         #region Allors
+        [Id("D4F9A392-76B2-4054-95C8-0937634CA4E9")]
+        [AssociationId("DCDFE849-2301-47F5-B7BE-4057F7382A4F")]
+        [RoleId("ACA0317C-ECC3-49B4-A5CB-04CF7998020F")]
+        #endregion
+        [Workspace]
+        string InternalComment { get; set; }
+
+        #region Allors
         [Id("9119c598-cd98-43da-bfdf-1e6573112c9e")]
         [AssociationId("d48cd46d-889b-4e2d-a6d6-ee26f30fb3e5")]
         [RoleId("56f5d5ee-1ab5-48f2-a413-7b80dd2c283e")]
@@ -74,6 +83,16 @@ namespace Allors.Repository
         Party Receiver { get; set; }
 
         #region Allors
+        [Id("A1C248DF-7F2A-4622-9052-9106C67B1D71")]
+        [AssociationId("ED908492-D8C8-40E8-853D-6F9602B1D646")]
+        [RoleId("69D3F384-64C8-4D6C-AEA7-CCDA7CB51DCF")]
+        [Indexed]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Workspace]
+        ContactMechanism FullfillContactMechanism { get; set; }
+
+        #region Allors
         [Id("b5bcf357-ef14-424d-ad8d-01a8e3ff478c")]
         [AssociationId("b9338369-9081-4fa7-91c2-140a46ea7d27")]
         [RoleId("984b073d-0213-4539-8d3c-a35a81a71bd5")]
@@ -82,6 +101,16 @@ namespace Allors.Repository
         [Scale(2)]
         [Workspace]
         decimal Amount { get; set; }
+
+        #region Allors
+        [Id("BA16DE57-19A1-40BC-AF3C-99690EB5ECAB")]
+        [AssociationId("B1D552EE-4967-4651-95C9-C9A9A846DE35")]
+        [RoleId("E6732FB3-5BD9-4AB1-B5B9-394D643A47E0")]
+        [Indexed]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Workspace]
+        Currency Currency { get; set; }
 
         #region Allors
         [Id("d7dc81e8-76e7-4c68-9843-a2aaf8293510")]

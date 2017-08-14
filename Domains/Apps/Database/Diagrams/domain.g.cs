@@ -1016,7 +1016,7 @@ namespace Allors.Domain
 						VatRate VatRate {set;}
 
 		}
-		public interface Quote  : Transitional, Printable, Auditable 
+		public interface Quote  : Transitional, Printable, Auditable, Commentable 
 		{
 						global::System.DateTime? RequiredResponseDate {set;}
 
@@ -1030,9 +1030,15 @@ namespace Allors.Domain
 
 						global::System.String Description {set;}
 
+						global::System.String InternalComment {set;}
+
 						Party Receiver {set;}
 
+						ContactMechanism FullfillContactMechanism {set;}
+
 						global::System.Decimal? Amount {set;}
+
+						Currency Currency {set;}
 
 						global::System.DateTime? IssueDate {set;}
 

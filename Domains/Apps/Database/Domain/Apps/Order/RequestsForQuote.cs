@@ -32,7 +32,7 @@ namespace Allors.Domain
             base.AppsSecure(config);
 
             var cancelled = new RequestObjectStates(this.Session).Cancelled;
-            var completed = new RequestObjectStates(this.Session).Quoted;
+            var quoted = new RequestObjectStates(this.Session).Quoted;
             var draft = new RequestObjectStates(this.Session).Draft;
             var pendingCustomer = new RequestObjectStates(this.Session).PendingCustomer;
             var rejected = new RequestObjectStates(this.Session).Rejected;
@@ -44,7 +44,8 @@ namespace Allors.Domain
             var reject = this.Meta.Reject;
             var createQuote = this.Meta.CreateQuote;
 
-            config.Deny(this.ObjectType, submitted, submit, createQuote);
+            config.Deny(this.ObjectType, quoted, createQuote);
+            config.Deny(this.ObjectType, submitted, submit);
             config.Deny(this.ObjectType, draft, hold, createQuote);
             config.Deny(this.ObjectType, pendingCustomer, hold, createQuote);
             config.Deny(this.ObjectType, rejected, reject, cancel, submit, hold, createQuote);
@@ -52,7 +53,7 @@ namespace Allors.Domain
 
             config.Deny(this.ObjectType, cancelled, Operations.Write);
             config.Deny(this.ObjectType, rejected, Operations.Write);
-            config.Deny(this.ObjectType, completed, Operations.Write);
+            config.Deny(this.ObjectType, quoted, Operations.Write);
         }
     }
 }

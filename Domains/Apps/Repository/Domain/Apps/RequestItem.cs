@@ -169,16 +169,19 @@ namespace Allors.Repository
         #region Allors
         [Id("67541211-256A-4CC8-BCAB-EEA2CCAEBE5F")]
         #endregion
+        [Workspace]
         public void Cancel() { }
 
         #region Allors
         [Id("C3342A3D-A82C-4AD7-815C-921E7A19B5E3")]
         #endregion
+        [Workspace]
         public void Submit() { }
 
         #region Allors
         [Id("{7B95A518-9656-4E18-B10B-CB3C59F2229A}")]
         #endregion
+        [Workspace]
         public void Hold() { }
     }
 }

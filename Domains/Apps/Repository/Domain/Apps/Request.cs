@@ -132,9 +132,9 @@ namespace Allors.Repository
         [AssociationId("A9D6D0BA-8DDA-4C9E-BCC7-61A6B5FE4231")]
         [RoleId("56F9E691-52C3-4E8F-84E0-38AA7B53CA4C")]
         [Indexed]
-        [Workspace]
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
+        [Workspace]
         ContactMechanism FullfillContactMechanism { get; set; }
 
         #region Allors
