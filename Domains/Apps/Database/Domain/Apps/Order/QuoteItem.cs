@@ -21,12 +21,32 @@ namespace Allors.Domain
     {
         ObjectState Transitional.CurrentObjectState => this.CurrentObjectState;
 
+
+        public void AppsOnBuild(ObjectOnBuild method)
+        {
+            if (!this.ExistCurrentObjectState)
+            {
+                this.CurrentObjectState = new QuoteItemObjectStates(this.Strategy.Session).Submitted;
+            }
+        }
         public void AppsOnDerive(ObjectOnDerive method)
         {
-            var derivation = method.Derivation;   
+            var derivation = method.Derivation;
 
             derivation.Validation.AssertAtLeastOne(this, M.QuoteItem.Product, M.QuoteItem.ProductFeature, M.QuoteItem.Deliverable);
             derivation.Validation.AssertExistsAtMostOne(this, M.QuoteItem.Product, M.QuoteItem.ProductFeature, M.QuoteItem.Deliverable);
+
+            this.DeriveCurrentObjectState(derivation);
+        }
+
+        private void DeriveCurrentObjectState(IDerivation derivation)
+        {
+            if (this.ExistCurrentObjectState && !this.CurrentObjectState.Equals(this.LastObjectState))
+            {
+                var currentStatus = new QuoteItemStatusBuilder(this.Strategy.Session).WithQuoteItemObjectState(this.CurrentObjectState).Build();
+                this.AddQuoteItemStatus(currentStatus);
+                this.CurrentQuoteItemStatus = currentStatus;
+            }
         }
     }
 }

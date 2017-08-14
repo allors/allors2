@@ -28,7 +28,7 @@ namespace Allors.Domain
         {
             if (!this.ExistCurrentObjectState)
             {
-                this.CurrentObjectState = new RequestItemObjectStates(this.Strategy.Session).Draft;
+                this.CurrentObjectState = new RequestItemObjectStates(this.Strategy.Session).Submitted;
             }
         }
         public void AppsOnDerive(ObjectOnDerive method)
