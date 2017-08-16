@@ -28,6 +28,16 @@ namespace Allors.Domain
         {
             this.UnconfirmedNotifications = this.Notifications.Where(notification => !notification.Confirmed).ToArray();
             this.ConfirmedNotifications = this.Notifications.Where(notification => notification.Confirmed).ToArray();
+
+            if (!this.ExistSecurityTokens)
+            {
+                if (this.ExistUserWhereNotificationList)
+                {
+                    var singleton = Singleton.Instance(this.strategy.Session);
+
+                    this.SecurityTokens = new[] { this.UserWhereNotificationList.OwnerSecurityToken, singleton.DefaultSecurityToken };
+                }
+            }
         }
     }
 }
