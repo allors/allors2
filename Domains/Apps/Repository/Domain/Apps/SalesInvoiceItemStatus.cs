@@ -22,8 +22,9 @@ namespace Allors.Repository
         [RoleId("054b768e-78ae-44e9-939f-765fe5c4ccf4")]
         #endregion
         [Required]
-
+        [Workspace]
         public DateTime StartDateTime { get; set; }
+
         #region Allors
         [Id("ea2f0286-38d6-42ad-825a-a692e51cd209")]
         [AssociationId("0b1f32c0-e8de-4d3e-9de8-e172c1477ada")]
@@ -32,9 +33,8 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
         [Required]
-
+        [Workspace]
         public SalesInvoiceItemObjectState SalesInvoiceItemObjectState { get; set; }
-
 
         #region inherited methods
 
@@ -50,6 +50,5 @@ namespace Allors.Repository
         public void OnPostDerive(){}
 
         #endregion
-
     }
 }

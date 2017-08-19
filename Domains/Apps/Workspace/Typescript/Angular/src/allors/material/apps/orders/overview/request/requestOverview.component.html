@@ -54,6 +54,7 @@
       <md-divider></md-divider>
       <md-card-actions>
         <button md-button [routerLink]="['/request/' + request.id ]">Edit</button>
+        <button *ngIf="request.CanExecuteCreateQuote" md-button (click)="createQuote()">Create Quote</button>
       </md-card-actions>
     </md-card>
 
@@ -61,23 +62,22 @@
       <md-card-title>Items in Request</md-card-title>
       <md-divider></md-divider>
       <md-card-content>
-        <ng-template tdLoading="requestItems">
+        <ng-template tdLoading="request.RequestItems">
           <md-list class="will-load">
-            <div class="md-padding" *ngIf="requestItems.length === 0" layout="row" layout-align="center center">
+            <div class="md-padding" *ngIf="request.RequestItems.length === 0" layout="row" layout-align="center center">
               <h3>No Items to display.</h3>
             </div>
 
-            <ng-template let-requestItem let-last="last" ngFor [ngForOf]="requestItems">
+            <ng-template let-requestItem let-last="last" ngFor [ngForOf]="request.RequestItems">
               <md-list-item>
-                  <a-md-select flex [object]="requestItem" [roleType]="m.RequestItem.Product" [options]="products" display="Name"></a-md-select>
-                  <a-md-input flex [object]="requestItem" [roleType]="m.RequestItem.Quantity"></a-md-input>
-                  <span>
+                <a-md-static [object]="requestItem" [roleType]="m.RequestItem.Product"  display="Name"></a-md-static>
+                <a-md-static [object]="requestItem" [roleType]="m.RequestItem.Quantity"></a-md-static>
+                <span>
                   <button md-icon-button [md-menu-trigger-for]="menu">
                     <md-icon>more_vert</md-icon>
                   </button>
                   <md-menu x-position="before" #menu="mdMenu">
                       <a [routerLink]="['/request/' + request.id + '/requestItem/' + requestItem.id ]" md-menu-item>Edit</a>
-                      <button md-menu-item (click)="deleteRequestItem(requestItem)">Delete</button>
                   </md-menu>
               </span>
               </md-list-item>
@@ -88,8 +88,7 @@
       </md-card-content>
       <md-divider></md-divider>
       <md-card-actions>
-          <button md-button (click)="addRequestItem()">Add new</button>
-          <button md-button color="primary" type="button" (click)="save()" [disabled]="!request.hasChanges">SAVE</button>
+        <button md-button [routerLink]="['/request/' + request.id +'/requestItem']">+ Add</button>
       </md-card-actions>
     </md-card>
   </div>
@@ -106,10 +105,10 @@
             <ng-template let-status let-last="last" ngFor [ngForOf]="request.RequestStatuses">
               <md-list-item>
                 <p md-line class="md-caption">{{ status.RequestObjectState.Name }} </p>
-                <p md-line hide-gt-md class="md-caption"> Start DateTime: {{ status.StartDateTime }} </p>
+                <p md-line hide-gt-md class="md-caption"> Start: {{ status.StartDateTime | date}} </p>
 
                 <span hide-xs hide-sm hide-md flex-gt-xs="60" flex-xs="40" layout-gt-xs="row">
-                  <div class="md-caption tc-grey-500" flex-gt-xs="50"> Start DateTime: {{ status.StartDateTime }}</div>
+                  <div class="md-caption tc-grey-500" flex-gt-xs="50"> Start: {{ status.StartDateTime | date }}</div>
                   </span>
 
               </md-list-item>

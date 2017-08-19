@@ -2,7 +2,7 @@ namespace Allors.Repository
 {
     using System;
 
-    using Allors.Repository.Attributes;
+    using Attributes;
 
     #region Allors
     [Id("7d3a207b-dbdd-48c4-9a92-8b12e4e77874")]
@@ -24,15 +24,16 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
         [Required]
-
+        [Workspace]
         public SalesInvoiceObjectState SalesInvoiceObjectState { get; set; }
+
         #region Allors
         [Id("74c60d54-b75f-4baa-b1d6-5a33e8ab3944")]
         [AssociationId("ea6bf951-414e-48e6-a579-a2ce8627f635")]
         [RoleId("22405cc3-c402-4236-9517-bdb381d3285f")]
         #endregion
         [Required]
-
+        [Workspace]
         public DateTime StartDateTime { get; set; }
 
 
@@ -50,6 +51,5 @@ namespace Allors.Repository
         public void OnPostDerive(){}
 
         #endregion
-
     }
 }

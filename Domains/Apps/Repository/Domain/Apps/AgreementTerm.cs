@@ -13,6 +13,7 @@ namespace Allors.Repository
         [RoleId("7eb5e9b4-834f-4774-ac40-11bd455a6ea8")]
         #endregion
         [Size(-1)]
+        [Workspace]
         string TermValue { get; set; }
 
         #region Allors
@@ -22,6 +23,7 @@ namespace Allors.Repository
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
+        [Workspace]
         TermType TermType { get; set; }
 
         #region Allors
@@ -30,6 +32,7 @@ namespace Allors.Repository
         [RoleId("9b734740-dc58-428e-8031-de5341e5aae7")]
         #endregion
         [Size(256)]
+        [Workspace]
         string Description { get; set; }
     }
 }

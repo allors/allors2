@@ -2,7 +2,7 @@ namespace Allors.Repository
 {
     using System;
 
-    using Allors.Repository.Attributes;
+    using Attributes;
 
     #region Allors
     [Id("6e380347-21e3-4a00-819f-ed11e6882d03")]
@@ -23,7 +23,9 @@ namespace Allors.Repository
         #endregion
         [Precision(19)]
         [Scale(2)]
+        [Workspace]
         public decimal BaseAmount { get; set; }
+
         #region Allors
         [Id("d3300a5d-8e35-4106-9df9-d1bb25bb0352")]
         [AssociationId("14cc26ba-1c75-42dd-8a72-1f20f8692cb7")]
@@ -31,8 +33,9 @@ namespace Allors.Repository
         #endregion
         [Multiplicity(Multiplicity.ManyToMany)]
         [Indexed]
-
+        [Workspace]
         public VatRate[] VatRates { get; set; }
+
         #region Allors
         [Id("d7f6ed3a-cd81-418c-81c9-2bba827fe956")]
         [AssociationId("644237c5-167a-49f8-887f-5d10a725fd80")]
@@ -40,8 +43,8 @@ namespace Allors.Repository
         #endregion
         [Precision(19)]
         [Scale(2)]
+        [Workspace]
         public decimal VatAmount { get; set; }
-
 
         #region inherited methods
 
@@ -57,6 +60,5 @@ namespace Allors.Repository
         public void OnPostDerive(){}
 
         #endregion
-
     }
 }

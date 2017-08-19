@@ -36,6 +36,11 @@ namespace Allors.Domain
             derivation.Validation.AssertAtLeastOne(this, M.QuoteItem.Product, M.QuoteItem.ProductFeature, M.QuoteItem.Deliverable);
             derivation.Validation.AssertExistsAtMostOne(this, M.QuoteItem.Product, M.QuoteItem.ProductFeature, M.QuoteItem.Deliverable);
 
+            if (this.ExistRequestItem)
+            {
+                this.RequiredByDate = this.RequestItem.RequiredByDate;
+            }
+
             this.DeriveCurrentObjectState(derivation);
         }
 

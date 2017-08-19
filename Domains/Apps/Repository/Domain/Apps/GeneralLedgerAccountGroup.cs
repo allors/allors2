@@ -2,7 +2,7 @@ namespace Allors.Repository
 {
     using System;
 
-    using Allors.Repository.Attributes;
+    using Attributes;
 
     #region Allors
     [Id("4a600c96-b813-46fc-8674-06bd3f85eae4")]
@@ -23,8 +23,9 @@ namespace Allors.Repository
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
-
+        [Workspace]
         public GeneralLedgerAccountGroup Parent { get; set; }
+
         #region Allors
         [Id("a48c3601-3d4c-43af-9502-d6beda764118")]
         [AssociationId("04b08f63-a2ac-43c2-889d-dbc8ebe86483")]
@@ -32,9 +33,8 @@ namespace Allors.Repository
         #endregion
         [Required]
         [Size(256)]
-
+        [Workspace]
         public string Description { get; set; }
-
 
         #region inherited methods
 
@@ -50,6 +50,5 @@ namespace Allors.Repository
         public void OnPostDerive(){}
 
         #endregion
-
     }
 }

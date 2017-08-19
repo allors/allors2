@@ -2,7 +2,7 @@ namespace Allors.Repository
 {
     using System;
 
-    using Allors.Repository.Attributes;
+    using Attributes;
 
     #region Allors
     [Id("59f3100c-da48-4b4c-a302-1a75e37216a6")]
@@ -27,8 +27,9 @@ namespace Allors.Repository
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
-
+        [Workspace]
         public Product Product { get; set; }
+
         #region Allors
         [Id("9337f791-56aa-4086-b661-2043cf02c662")]
         [AssociationId("59fb9b8f-4d0a-4f97-b4d6-b3a5708de269")]
@@ -36,8 +37,9 @@ namespace Allors.Repository
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
-
+        [Workspace]
         public OrganisationGlAccount Parent { get; set; }
+
         #region Allors
         [Id("9af20c76-200c-4aed-8154-99fd88907a15")]
         [AssociationId("7d9f9cad-0685-4b7d-b12d-770f046465f3")]
@@ -45,8 +47,9 @@ namespace Allors.Repository
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
-
+        [Workspace]
         public Party Party { get; set; }
+
         #region Allors
         [Id("a1608d47-9fa7-4dc4-9736-c59f28221842")]
         [AssociationId("61d6a380-171a-41c2-bda9-6cd8638ba442")]
@@ -54,8 +57,9 @@ namespace Allors.Repository
         #endregion
         [Derived]
         [Required]
-
+        [Workspace]
         public bool HasBankStatementTransactions { get; set; }
+
         #region Allors
         [Id("c0de2fbb-9e70-4094-8279-fb46734e920e")]
         [AssociationId("92c29de0-8454-4ae1-8bf9-ed4c5ec0d313")]
@@ -63,8 +67,9 @@ namespace Allors.Repository
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
-
+        [Workspace]
         public ProductCategory ProductCategory { get; set; }
+
         #region Allors
         [Id("d5332edf-3cc4-4f26-b0d1-da7ce1182dbc")]
         [AssociationId("1fb5ddfd-930a-4c81-8e9e-ac9d94840864")]
@@ -73,8 +78,9 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
         [Required]
-
+        [Workspace]
         public InternalOrganisation InternalOrganisation { get; set; }
+
         #region Allors
         [Id("f1d3e642-2844-4c5a-a053-4dcfce461902")]
         [AssociationId("b0706892-9a04-4e5a-8caa-bd015f3d81f9")]
@@ -83,9 +89,8 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
         [Required]
-
+        [Workspace]
         public GeneralLedgerAccount GeneralLedgerAccount { get; set; }
-
 
         #region inherited methods
 
@@ -102,6 +107,5 @@ namespace Allors.Repository
 
 
         #endregion
-
     }
 }

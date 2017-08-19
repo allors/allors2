@@ -44,7 +44,6 @@ namespace Allors.Domain
                     .WithQuantity(requestItem.Quantity)
                     .WithUnitOfMeasure(requestItem.UnitOfMeasure)
                     .WithRequestItem(requestItem)
-                    .WithRequiredByDate(requestItem.RequiredByDate)
                     .Build()
                     );
             }

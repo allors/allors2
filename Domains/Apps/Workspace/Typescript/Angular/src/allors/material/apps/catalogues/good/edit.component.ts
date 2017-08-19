@@ -22,6 +22,7 @@ export class GoodEditComponent implements OnInit, AfterViewInit, OnDestroy {
   public good: Good;
 
   public title: string;
+  public subTitle: string;
   public singleton: Singleton;
   public facility: Facility;
   public locales: Locale[];

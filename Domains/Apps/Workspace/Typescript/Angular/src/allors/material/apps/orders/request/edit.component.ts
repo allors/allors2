@@ -21,6 +21,7 @@ export class RequestEditComponent implements OnInit, AfterViewInit, OnDestroy {
   public m: MetaDomain;
 
   public title: string;
+  public subTitle: string;
   public request: RequestForQuote;
   public people: Person[];
   public organisations: Organisation[];
@@ -73,13 +74,13 @@ export class RequestEditComponent implements OnInit, AfterViewInit, OnDestroy {
 
         const fetch: Fetch[] = [
           new Fetch({
-            name: "requestForQuote",
             id,
             include: [
               new TreeNode({ roleType: m.Request.Originator }),
               new TreeNode({ roleType: m.Request.FullfillContactMechanism }),
               new TreeNode({ roleType: m.Request.CurrentObjectState }),
             ],
+            name: "requestForQuote",
           }),
         ];
 
@@ -118,14 +119,14 @@ export class RequestEditComponent implements OnInit, AfterViewInit, OnDestroy {
               new Query(
                 {
                   name: "organisations",
-                  predicate: new Contains({ roleType: m.Organisation.OrganisationRoles, object: oCustomerRole }),
                   objectType: this.m.Organisation,
+                  predicate: new Contains({ roleType: m.Organisation.OrganisationRoles, object: oCustomerRole }),
                 }),
               new Query(
                 {
                   name: "persons",
-                  predicate: new Contains({ roleType: m.Person.PersonRoles, object: pCustomerRole }),
                   objectType: this.m.Person,
+                  predicate: new Contains({ roleType: m.Person.PersonRoles, object: pCustomerRole }),
                 }),
             ];
 
@@ -317,22 +318,22 @@ export class RequestEditComponent implements OnInit, AfterViewInit, OnDestroy {
 
     const fetch: Fetch[] = [
       new Fetch({
-        name: "partyContactMechanisms",
         id: party.id,
-        path: new Path({ step: this.m.Party.CurrentPartyContactMechanisms }),
         include: [
           new TreeNode({
-            roleType: this.m.PartyContactMechanism.ContactMechanism,
             nodes: [
               new TreeNode({
-                roleType: this.m.PostalAddress.PostalBoundary,
                 nodes: [
                   new TreeNode({ roleType: this.m.PostalBoundary.Country }),
                 ],
+                roleType: this.m.PostalAddress.PostalBoundary,
               }),
             ],
+            roleType: this.m.PartyContactMechanism.ContactMechanism,
           }),
         ],
+        name: "partyContactMechanisms",
+        path: new Path({ step: this.m.Party.CurrentPartyContactMechanisms }),
       }),
     ];
 

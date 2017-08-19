@@ -67,6 +67,8 @@ namespace Allors.Repository
         [Indexed]
         #endregion
         [Multiplicity(Multiplicity.OneToOne)]
+        [Derived]
+        [Workspace]
         public DateTime RequiredByDate { get; set; }
 
         #region Allors
@@ -180,6 +182,18 @@ namespace Allors.Repository
         [Required]
         [Workspace]
         public QuoteItemObjectState CurrentObjectState { get; set; }
+
+        #region Allors
+        [Id("57B07865-B4CA-4443-8877-0DDAC1EA106B")]
+        #endregion
+        [Workspace]
+        public void Cancel() { }
+
+        #region Allors
+        [Id("C6494A74-92B0-4C9F-9931-8D5C97647DCA")]
+        #endregion
+        [Workspace]
+        public void Submit() { }
 
         #region inherited methods
 

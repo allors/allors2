@@ -2,15 +2,13 @@ namespace Allors.Repository
 {
     using System;
 
-    using Allors.Repository.Attributes;
+    using Attributes;
 
     #region Allors
     [Id("d79f734d-4434-4710-a7ea-7d6306f3064f")]
     #endregion
 	public partial interface InvoiceItem : AccessControlledObject, Transitional, Priceable 
     {
-
-
         #region Allors
         [Id("067674d0-6d9b-4a7e-b0c6-62c24f3a4815")]
         [AssociationId("72cdddb8-711d-491c-9965-cef190a10913")]
@@ -18,9 +16,8 @@ namespace Allors.Repository
         #endregion
         [Multiplicity(Multiplicity.OneToMany)]
         [Indexed]
-
+        [Workspace]
         AgreementTerm[] InvoiceTerms { get; set; }
-
 
         #region Allors
         [Id("1f92aed8-8a8f-4eb6-8102-83a6395788d6")]
@@ -31,8 +28,8 @@ namespace Allors.Repository
         [Required]
         [Precision(19)]
         [Scale(2)]
+        [Workspace]
         decimal TotalInvoiceAdjustment { get; set; }
-
 
         #region Allors
         [Id("33caab05-ec61-4cf9-b903-b5d5a8d7eef9")]
@@ -41,9 +38,8 @@ namespace Allors.Repository
         #endregion
         [Multiplicity(Multiplicity.OneToMany)]
         [Indexed]
-
+        [Workspace]
         InvoiceVatRateItem[] InvoiceVatRateItems { get; set; }
-
 
         #region Allors
         [Id("475d7a79-27a1-4d5a-90c1-3896fa2e892e")]
@@ -52,9 +48,8 @@ namespace Allors.Repository
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
-
+        [Workspace]
         InvoiceItem AdjustmentFor { get; set; }
-
 
         #region Allors
         [Id("6df95cf4-115f-4f43-aaea-52313c47d824")]
@@ -63,9 +58,7 @@ namespace Allors.Repository
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
-
         SerializedInventoryItem SerializedInventoryItem { get; set; }
-
 
         #region Allors
         [Id("7eed800d-c2b5-4837-a288-150803578b27")]
@@ -73,9 +66,8 @@ namespace Allors.Repository
         [RoleId("f3b11549-8cf9-4ade-8465-111536b00171")]
         #endregion
         [Size(-1)]
-
+        [Workspace]
         string Message { get; set; }
-
 
         #region Allors
         [Id("8696b970-07e7-4d04-aec5-d42bcd47ce72")]
@@ -86,8 +78,8 @@ namespace Allors.Repository
         [Required]
         [Precision(19)]
         [Scale(2)]
+        [Workspace]
         decimal TotalInvoiceAdjustmentCustomerCurrency { get; set; }
-
 
         #region Allors
         [Id("8fd19791-85ed-44c9-8580-a6768578ca3a")]
@@ -98,8 +90,8 @@ namespace Allors.Repository
         [Required]
         [Precision(19)]
         [Scale(2)]
+        [Workspace]
         decimal AmountPaid { get; set; }
-
 
         #region Allors
         [Id("ba90acfe-0d55-4854-a046-35279f872e0b")]
@@ -109,8 +101,8 @@ namespace Allors.Repository
         [Required]
         [Precision(19)]
         [Scale(2)]
+        [Workspace]
         decimal Quantity { get; set; }
-
 
         #region Allors
         [Id("fb202916-1a87-439e-b2d8-b3f3ed4f681a")]
@@ -118,8 +110,7 @@ namespace Allors.Repository
         [RoleId("50ab8ac2-daca-4e66-861d-4134fcaa0e98")]
         #endregion
         [Size(256)]
-
+        [Workspace]
         string Description { get; set; }
-
     }
 }

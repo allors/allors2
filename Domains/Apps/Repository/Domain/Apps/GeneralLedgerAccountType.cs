@@ -2,7 +2,7 @@ namespace Allors.Repository
 {
     using System;
 
-    using Allors.Repository.Attributes;
+    using Attributes;
 
     #region Allors
     [Id("ce5c78ee-f892-4ced-9b21-51d84c77127f")]
@@ -23,9 +23,8 @@ namespace Allors.Repository
         #endregion
         [Required]
         [Size(256)]
-
+        [Workspace]
         public string Description { get; set; }
-
 
         #region inherited methods
 
@@ -41,6 +40,5 @@ namespace Allors.Repository
         public void OnPostDerive(){}
 
         #endregion
-
     }
 }

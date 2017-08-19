@@ -16,6 +16,7 @@ namespace Allors.Repository
         [AssociationId("5ccd492c-cf29-468b-b99d-126a9573e573")]
         [RoleId("7388d1a3-f24a-4c41-b57c-938160b3d1a6")]
         #endregion
+        [Workspace]
         [Precision(19)]
         [Scale(2)]
         decimal Amount { get; set; }
@@ -26,6 +27,7 @@ namespace Allors.Repository
         [AssociationId("51d96df2-1e92-4ea2-8ec7-e918d5781ae7")]
         [RoleId("933a70e0-0fa0-42cd-a4d5-b3eb10b57802")]
         #endregion
+        [Workspace]
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
 
@@ -37,6 +39,7 @@ namespace Allors.Repository
         [AssociationId("ebc960bf-dd8c-4854-afec-185b260315e9")]
         [RoleId("9d2f66e2-0bbd-46ab-b65b-43e6b38383b9")]
         #endregion
+        [Workspace]
         [Precision(19)]
         [Scale(2)]
         decimal Percentage { get; set; }

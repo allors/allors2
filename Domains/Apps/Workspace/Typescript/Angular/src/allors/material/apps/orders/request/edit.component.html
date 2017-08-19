@@ -3,7 +3,7 @@
 
     <div class="pad">
       <div *ngIf="request.CurrentObjectState">
-        <a-md-static [object]="request" [roleType]="m.CommunicationEvent.CurrentObjectState" display="Name" label="Status"></a-md-static>
+        <a-md-static [object]="request" [roleType]="m.Request.CurrentObjectState" display="Name" label="Status"></a-md-static>
         <button *ngIf="request.CanExecuteSubmit" md-button type="button" (click)="submit()">Submit</button>
         <button *ngIf="request.CanExecuteCancel" md-button type="button" (click)="cancel()">Cancel</button>
         <button *ngIf="request.CanExecuteHold" md-button type="button" (click)="hold()">Pending Customer</button>

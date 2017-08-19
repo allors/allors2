@@ -104,6 +104,7 @@ namespace Allors.Repository
         [RoleId("7cf7c405-f20c-4416-84f5-a4ff05412162")]
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
+        [Workspace]
         [Indexed]
         public ContactMechanism TakenByContactMechanism { get; set; }
 
@@ -199,6 +200,7 @@ namespace Allors.Repository
         [AssociationId("aed47f4f-411d-49ee-9327-5543761d16b5")]
         [RoleId("2b2ee710-ba86-4c7b-ba0e-443e229bec23")]
         #endregion
+        [Workspace]
         [Derived]
         [Required]
         [Precision(19)]
@@ -241,6 +243,7 @@ namespace Allors.Repository
         [RoleId("6281e7d9-d7b8-4611-83f4-e1bdb44cc5f9")]
         #endregion
         [Multiplicity(Multiplicity.ManyToMany)]
+        [Workspace]
         [Derived]
         [Indexed]
         public Person[] SalesReps { get; set; }
@@ -250,6 +253,7 @@ namespace Allors.Repository
         [AssociationId("6d3492d0-dda6-41a0-a7e4-32bbccb237f5")]
         [RoleId("4ab44f50-c591-47ec-b6ce-130b5e8791f8")]
         #endregion
+        [Workspace]
         [Derived]
         [Required]
         [Precision(19)]
@@ -312,6 +316,7 @@ namespace Allors.Repository
         [AssociationId("a6333d69-b7e9-4694-8c97-63742a532c28")]
         [RoleId("90d4d0ec-7a65-417b-9b63-05e0fa73070a")]
         #endregion
+        [Workspace]
         [Derived]
         [Required]
         [Precision(19)]
@@ -324,6 +329,7 @@ namespace Allors.Repository
         [RoleId("d99b70e4-1ad2-46a3-b362-26880a843ff8")]
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
+        [Workspace]
         [Indexed]
         public ContactMechanism BillFromContactMechanism { get; set; }
 
@@ -374,6 +380,7 @@ namespace Allors.Repository
         [RoleId("f7da8b79-e2cd-492d-a721-88d3c8fc530c")]
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
+        [Workspace]
         [Indexed]
         public SalesChannel SalesChannel { get; set; }
 
@@ -435,6 +442,7 @@ namespace Allors.Repository
         [AssociationId("ae9335e4-4d72-40fc-b028-dcfd7ea67cfa")]
         [RoleId("d70334f4-c9f6-4804-a887-2969d75c8644")]
         #endregion
+        [Workspace]
         [Derived]
         [Required]
         [Precision(19)]

@@ -2,7 +2,7 @@ namespace Allors.Repository
 {
     using System;
 
-    using Allors.Repository.Attributes;
+    using Attributes;
 
     #region Allors
     [Id("11214660-3c3a-42e9-8f12-f475d823da64")]
@@ -21,18 +21,20 @@ namespace Allors.Repository
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
-
+        [Workspace]
         public CostCenterCategory Parent { get; set; }
         #region Allors
         [Id("45b0b049-e047-4490-9dde-c48fb1e7bfc3")]
         [AssociationId("130462ef-9d1d-48d9-b0f5-40c82ccea0a2")]
         [RoleId("1fd21431-34f6-4f5c-ad54-abecb5e717e1")]
         #endregion
+
         [Multiplicity(Multiplicity.ManyToMany)]
         [Derived]
         [Indexed]
-
+        [Workspace]
         public CostCenterCategory[] Ancestors { get; set; }
+
         #region Allors
         [Id("b20dc3d5-5067-4697-becf-0e8d44f117c7")]
         [AssociationId("d88647c8-b367-48e0-aef9-2af923a17b6f")]
@@ -41,8 +43,9 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.ManyToMany)]
         [Derived]
         [Indexed]
-
+        [Workspace]
         public CostCenterCategory[] Children { get; set; }
+
         #region Allors
         [Id("fcb56761-342b-4d62-ba5b-27e0a0f405dd")]
         [AssociationId("4804ef05-ddb6-4f15-940a-cd663a7bef55")]
@@ -50,9 +53,8 @@ namespace Allors.Repository
         #endregion
         [Required]
         [Size(256)]
-
+        [Workspace]
         public string Description { get; set; }
-
 
         #region inherited methods
 
@@ -68,6 +70,5 @@ namespace Allors.Repository
         public void OnPostDerive(){}
 
         #endregion
-
     }
 }

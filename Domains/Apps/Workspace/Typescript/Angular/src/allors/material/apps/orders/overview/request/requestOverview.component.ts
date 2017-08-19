@@ -6,7 +6,7 @@ import { BehaviorSubject, Observable, Subject, Subscription } from "rxjs/Rx";
 
 import { AllorsService, ErrorService, Invoked, Loaded, Saved, Scope } from "../../../../../angular";
 import { Equals, Fetch, Like, Page, Path, PullRequest, Query, Sort, TreeNode } from "../../../../../domain";
-import { Product, Request, RequestItem } from "../../../../../domain";
+import { Product, RequestForQuote, RequestItem } from "../../../../../domain";
 import { MetaDomain } from "../../../../../meta";
 
 @Component({
@@ -16,9 +16,8 @@ export class RequestOverviewComponent implements OnInit, AfterViewInit, OnDestro
 
   public m: MetaDomain;
   public title: string = "Requests Overview";
-  public request: Request;
-  public requestItems: RequestItem[] = [];
-  public products: Product[]= [];
+  public request: RequestForQuote;
+  public products: Product[] = [];
 
   private subscription: Subscription;
   private scope: Scope;
@@ -40,18 +39,6 @@ export class RequestOverviewComponent implements OnInit, AfterViewInit, OnDestro
     this.refresh$.next(new Date());
   }
 
-  public save(): void {
-
-    this.scope
-      .save()
-      .subscribe((saved: Saved) => {
-        this.snackBar.open("items saved", "close", { duration: 1000 });
-      },
-      (error: Error) => {
-        this.errorService.dialog(error);
-      });
-  }
-
   public ngOnInit(): void {
 
     this.subscription = this.route.url
@@ -62,37 +49,38 @@ export class RequestOverviewComponent implements OnInit, AfterViewInit, OnDestro
 
         const fetch: Fetch[] = [
           new Fetch({
-            name: "request",
             id,
             include: [
               new TreeNode({
-                roleType: m.Request.RequestItems,
                 nodes: [
                   new TreeNode({ roleType: m.RequestItem.Product }),
                 ],
+                roleType: m.Request.RequestItems,
               }),
+              new TreeNode({ roleType: m.Request.RequestItems }),
               new TreeNode({ roleType: m.Request.Originator }),
               new TreeNode({ roleType: m.Request.CurrentObjectState }),
               new TreeNode({ roleType: m.Request.CreatedBy }),
               new TreeNode({ roleType: m.Request.LastModifiedBy }),
               new TreeNode({
-                roleType: m.Request.RequestStatuses,
                 nodes: [
                   new TreeNode({ roleType: m.RequestStatus.RequestObjectState }),
                 ],
+                roleType: m.Request.RequestStatuses,
               }),
               new TreeNode({
-                roleType: m.Request.FullfillContactMechanism,
                 nodes: [
                   new TreeNode({
-                    roleType: m.PostalAddress.PostalBoundary,
                     nodes: [
                       new TreeNode({ roleType: m.PostalBoundary.Country }),
                     ],
+                    roleType: m.PostalAddress.PostalBoundary,
                   }),
                 ],
+                roleType: m.Request.FullfillContactMechanism,
               }),
             ],
+            name: "request",
           }),
         ];
 
@@ -111,10 +99,7 @@ export class RequestOverviewComponent implements OnInit, AfterViewInit, OnDestro
       })
       .subscribe((loaded: Loaded) => {
         this.products = loaded.collections.products as Product[];
-        this.request = loaded.objects.request as Request;
-        if (this.request) {
-          this.requestItems = this.request.RequestItems;
-        }
+        this.request = loaded.objects.request as RequestForQuote;
       },
       (error: any) => {
         this.errorService.message(error);
@@ -142,13 +127,15 @@ export class RequestOverviewComponent implements OnInit, AfterViewInit, OnDestro
     return obj.objectType.name;
   }
 
-  public deleteRequestItem(requestItem: RequestItem): void {
-    this.request.RemoveRequestItem(requestItem);
-  }
+  public createQuote(): void {
 
-  public addRequestItem(): void {
-    const requestItem = this.scope.session.create("RequestItem") as RequestItem;
-    requestItem.Quantity = 1;
-    this.request.AddRequestItem(requestItem);
+    this.scope.invoke(this.request.CreateQuote)
+      .subscribe((invoked: Invoked) => {
+        this.goBack();
+        this.snackBar.open("Quote successfully created.", "close", { duration: 5000 });
+      },
+      (error: Error) => {
+        this.errorService.dialog(error);
+      });
   }
 }

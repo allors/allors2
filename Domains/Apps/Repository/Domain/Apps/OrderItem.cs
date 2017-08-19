@@ -34,6 +34,7 @@ namespace Allors.Repository
         [AssociationId("5abe5891-40b6-4b87-a587-e6a2c7658c64")]
         [RoleId("c6d6c5dd-9239-45ae-970c-3716443bed29")]
         #endregion
+        [Workspace]
         [Required]
         [Precision(19)]
         [Scale(2)]
@@ -44,6 +45,7 @@ namespace Allors.Repository
         [AssociationId("f8b1946c-f4d3-4c9b-89c3-371b8ce1e329")]
         [RoleId("29fa13ea-307f-49ed-86ad-ff8321911013")]
         #endregion
+        [Workspace]
         [Size(256)]
         string Description { get; set; }
         
@@ -52,6 +54,7 @@ namespace Allors.Repository
         [AssociationId("93ffaaa6-7401-4b7f-a297-081a98bee032")]
         [RoleId("233fd990-758e-4f1d-87bd-ae3de8d9486b")]
         #endregion
+        [Workspace]
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
         PurchaseOrder CorrespondingPurchaseOrder { get; set; }
@@ -61,6 +64,7 @@ namespace Allors.Repository
         [AssociationId("3166f432-b675-474a-9a1f-7e558cc1dc58")]
         [RoleId("a2a2b2e8-0477-4b79-8602-7ca37fb17372")]
         #endregion
+        [Workspace]
         [Derived]
         [Required]
         [Precision(19)]
@@ -72,6 +76,7 @@ namespace Allors.Repository
         [AssociationId("dcdcdd88-63b5-4680-80a7-e915abe1cc98")]
         [RoleId("8b0d5be1-a4ed-49de-8913-bdafc5da57ae")]
         #endregion
+        [Workspace]
         [Derived]
         [Required]
         [Precision(19)]
@@ -84,6 +89,7 @@ namespace Allors.Repository
         [RoleId("34e4011b-c124-4d53-ab30-26734e8ba04c")]
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
+        [Workspace]
         [Indexed]
         QuoteItem QuoteItem { get; set; }
         
@@ -92,6 +98,7 @@ namespace Allors.Repository
         [AssociationId("b6f17e6b-f61a-4155-8e4c-79ebec1a01d4")]
         [RoleId("9ec4f475-ecb7-4d57-a642-043b0a703094")]
         #endregion
+        [Workspace]
         DateTime AssignedDeliveryDate { get; set; }
         
         #region Allors
@@ -100,6 +107,7 @@ namespace Allors.Repository
         [RoleId("279735e0-974a-46b3-b460-2bd528895f5a")]
         #endregion
         [Derived]
+        [Workspace]
         DateTime DeliveryDate { get; set; }
         
         #region Allors
@@ -108,6 +116,7 @@ namespace Allors.Repository
         [RoleId("4aefa88c-6ce9-441e-a8a7-e65b2271c3b9")]
         #endregion
         [Multiplicity(Multiplicity.OneToMany)]
+        [Workspace]
         [Indexed]
         OrderTerm[] OrderTerms { get; set; }
         
@@ -116,6 +125,7 @@ namespace Allors.Repository
         [AssociationId("d7f29cb6-bae1-41ce-bc67-c37c38f0ba73")]
         [RoleId("49a61617-586a-4b7b-bcc0-e2cf1f4cdee4")]
         #endregion
+        [Workspace]
         [Size(-1)]
         string ShippingInstruction { get; set; }
         
@@ -125,6 +135,7 @@ namespace Allors.Repository
         [RoleId("6a038221-f3ec-4fd0-a235-7f6205404113")]
         #endregion
         [Multiplicity(Multiplicity.ManyToMany)]
+        [Workspace]
         [Indexed]
         OrderItem[] Associations { get; set; }
         
@@ -133,37 +144,44 @@ namespace Allors.Repository
         [AssociationId("d1458a15-e035-4b07-a6b8-5a9af704a4ac")]
         [RoleId("34e046c2-881c-43e7-8c67-c14c595ac074")]
         #endregion
+        [Workspace]
         [Size(-1)]
         string Message { get; set; }
 
         #region Allors
         [Id("5368A2C3-9ADF-46A3-9AC0-9C4A03DEAF9A")]
         #endregion
+        [Workspace]
         void Cancel();
 
         #region Allors
         [Id("29D93AE6-FD73-408F-A8F0-CD05D96CF102")]
         #endregion
+        [Workspace]
         void Reject();
 
         #region Allors
         [Id("9C496948-13BA-41C6-B8CB-60323AF3B3E9")]
         #endregion
+        [Workspace]
         void Confirm();
 
         #region Allors
         [Id("DA334EDA-0CD3-4AB4-89C5-41C69D596C7C")]
         #endregion
+        [Workspace]
         void Approve();
 
         #region Allors
         [Id("77ACDB9B-9A55-44C6-AAC4-99ACE0924EDB")]
         #endregion
+        [Workspace]
         void Finish();
 
         #region Allors
         [Id("CBA21197-F595-4526-8DB3-43382CCD08E4")]
         #endregion
+        [Workspace]
         void Delete();
     }
 }
