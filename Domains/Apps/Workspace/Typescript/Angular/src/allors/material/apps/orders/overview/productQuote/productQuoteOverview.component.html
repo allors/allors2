@@ -1,0 +1,123 @@
+<md-toolbar>
+  <div layout="row" layout-align="start center" flex>
+    <button md-icon-button tdLayoutManageListOpen [hideWhenOpened]="true" style="display: none">
+          <md-icon>arrow_back</md-icon>
+        </button>
+    <span>{{title}}</span>
+    <span flex></span>
+    <button md-icon-button><md-icon>settings</md-icon></button>
+  </div>
+</md-toolbar>
+
+<div body *ngIf="quote" layout-gt-md="row">
+  <div flex-gt-xs="50">
+    <md-card tdMediaToggle="gt-xs" [mediaClasses]="['push']">
+      <md-card-title>Product Quote</md-card-title>
+      <md-divider></md-divider>
+      <md-card-content>
+
+         <div layout="row">
+          <a-md-static [object]="quote" [roleType]="m.Quote.CurrentObjectState" display="Name" label="Status"></a-md-static>
+        </div>
+        <div layout="row">
+          <a-md-static [object]="quote" [roleType]="m.Quote.QuoteNumber"></a-md-static>
+        </div>
+         <div layout="row">
+          <a [routerLink]="['/relations/organisations/' + quote.Receiver.id ]">
+            <a-md-static [object]="quote" [roleType]="m.Quote.Receiver"  display="displayName" label="To"></a-md-static>
+              </a>
+        </div>
+        <div *ngIf="quote.FullfillContactMechanism" layout="row">
+          <a-md-static [object]="quote" [roleType]="m.Quote.FullfillContactMechanism" display="displayName" label="Reply to"></a-md-static>
+        </div>
+        <div *ngIf="quote.Comment" layout="row">
+          <a-md-textarea [object]="quote" [roleType]="m.Quote.Comment" disabled="true"></a-md-textarea>
+        </div>
+        <div *ngIf="quote.InternalComment" layout="row">
+          <a-md-textarea [object]="quote" [roleType]="m.Quote.InternalComment" disabled="true"></a-md-textarea>
+        </div>
+        <div *ngIf="quote.IssueDate" layout="row">
+          <a-md-static [object]="quote" [roleType]="m.Quote.IssueDate"></a-md-static>
+        </div>
+        <div *ngIf="quote.RequiredResponseDate" layout="row">
+          <a-md-static [object]="quote" [roleType]="m.Quote.RequiredResponseDate"></a-md-static>
+        </div>
+        <div layout="row">
+          <p class="md-caption tc-grey-500"> created: {{ quote.CreationDate | date}} by {{ quote.CreatedBy.displayName}}</p>
+        </div>
+        <div layout="row">
+          <p class="md-caption tc-grey-500"> last modified: {{ quote.LastModifiedDate | date}} by {{ quote.LastModifiedBy.displayName}}</p>
+        </div>
+
+      </md-card-content>
+
+      <md-divider></md-divider>
+      <md-card-actions>
+        <button md-button [routerLink]="['/quote/' + quote.id]">Edit</button>
+      </md-card-actions>
+    </md-card>
+
+    <!-- <md-card tdMediaToggle="gt-xs" [mediaClasses]="['push']">
+      <md-card-title>Items in Request</md-card-title>
+      <md-divider></md-divider>
+      <md-card-content>
+        <ng-template tdLoading="requestItems">
+          <md-list class="will-load">
+            <div class="md-padding" *ngIf="quoteItems.length === 0" layout="row" layout-align="center center">
+              <h3>No Items to display.</h3>
+            </div>
+
+            <ng-template let-quoteItem let-last="last" ngFor [ngForOf]="quoteItems">
+              <md-list-item>
+                  <a-md-select flex [object]="quoteItem" [roleType]="m.QuoteItem.Product" [options]="goods" display="Name"></a-md-select>
+                  <a-md-input flex [object]="quoteItem" [roleType]="m.QuoteItem.Quantity"></a-md-input>
+                  <span>
+                  <button md-icon-button [md-menu-trigger-for]="menu">
+                    <md-icon>more_vert</md-icon>
+                  </button>
+                  <md-menu x-position="before" #menu="mdMenu">
+                      <a [routerLink]="['/quote/' + quote.id + '/quoteItem/' + quoteItem.id ]" md-menu-item>Edit</a>
+                      <button md-menu-item (click)="deleteQuoteItem(quoteItem)">Delete</button>
+                  </md-menu>
+              </span>
+              </md-list-item>
+              <md-divider *ngIf="!last" md-inset></md-divider>
+            </ng-template>
+          </md-list>
+        </ng-template>
+      </md-card-content>
+      <md-divider></md-divider>
+      <md-card-actions>
+          <button md-button (click)="addQuoteItem()">Add new</button>
+          <button md-button color="primary" type="button" (click)="save()" [disabled]="!quote.hasChanges">SAVE</button>
+      </md-card-actions>
+    </md-card> -->
+  </div>
+
+  <div flex-gt-xs="50">
+    <md-card tdMediaToggle="gt-xs" [mediaClasses]="['push']">
+      <md-card-title>Status History</md-card-title>
+      <md-divider></md-divider>
+      <md-card-content>
+
+        <ng-template tdLoading="quote.QuoteStatuses">
+          <md-list class="will-load">
+
+            <ng-template let-status let-last="last" ngFor [ngForOf]="quote.QuoteStatuses">
+              <md-list-item>
+                <p md-line class="md-caption">{{ status.QuoteObjectState.Name }} </p>
+                <p md-line hide-gt-md class="md-caption"> Start: {{ status.StartDateTime | date}} </p>
+
+                <span hide-xs hide-sm hide-md flex-gt-xs="60" flex-xs="40" layout-gt-xs="row">
+                  <div class="md-caption tc-grey-500" flex-gt-xs="50"> Start: {{ status.StartDateTime | date }}</div>
+                  </span>
+
+              </md-list-item>
+            </ng-template>
+          </md-list>
+        </ng-template>
+      </md-card-content>
+
+    </md-card>
+  </div>
+</div>

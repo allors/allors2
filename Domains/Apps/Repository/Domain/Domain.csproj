@@ -223,6 +223,7 @@
     <Compile Include="Apps\City.cs" />
     <Compile Include="Apps\CityBound.cs" />
     <Compile Include="Apps\ClientAgreement.cs" />
+    <Compile Include="Apps\CatScope.cs" />
     <Compile Include="Apps\Colour.cs" />
     <Compile Include="Apps\Commentable.cs" />
     <Compile Include="Apps\CommunicationAttachment.cs" />

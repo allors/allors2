@@ -131,6 +131,16 @@ namespace Allors.Repository
         [Workspace]
         public ProductCategory[] Ancestors { get; set; }
 
+        #region Allors
+        [Id("7B219D9E-0234-4F34-884D-D092573F6172")]
+        [AssociationId("54730CB3-015E-4363-8937-37966B8293BD")]
+        [RoleId("C15FF1FD-5FDD-42F4-8CE6-3BF240E1F4DC")]
+        [Indexed]
+        #endregion
+        [Workspace]
+        [Required]
+        [Multiplicity(Multiplicity.ManyToOne)]
+        public CatScope CatScope { get; set; }
 
         #region inherited methods
 

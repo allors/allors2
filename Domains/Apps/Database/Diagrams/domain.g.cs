@@ -1814,6 +1814,9 @@ namespace Allors.Domain
 		public interface ClientAgreement  : Agreement 
 		{
 		}
+		public interface CatScope  : Enumeration 
+		{
+		}
 		public interface Colour  : Enumeration, ProductFeature 
 		{
 		}
@@ -3613,6 +3616,8 @@ namespace Allors.Domain
 
 						ProductCategory ProductCategories {set;}
 
+						CatScope CatScope {set;}
+
 		}
 		public interface ProductCategory  : AccessControlledObject, UniquelyIdentifiable 
 		{
@@ -3637,6 +3642,8 @@ namespace Allors.Domain
 						Media CategoryImage {set;}
 
 						ProductCategory Ancestors {set;}
+
+						CatScope CatScope {set;}
 
 		}
 		public interface ProductCategoryRevenue  : Deletable, AccessControlledObject 
