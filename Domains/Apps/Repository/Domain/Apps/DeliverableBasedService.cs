@@ -39,8 +39,6 @@ namespace Allors.Repository
 
         public ProductFeature[] OptionalFeatures { get; set; }
 
-        public Party ManufacturedBy { get; set; }
-
         public Product[] Variants { get; set; }
 
         public string Name { get; set; }

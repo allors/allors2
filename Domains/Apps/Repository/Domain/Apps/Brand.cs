@@ -7,7 +7,7 @@ namespace Allors.Repository
     #region Allors
     [Id("0a7ac589-946b-4d49-b7e0-7e0b9bc90111")]
     #endregion
-    public partial class Brand : AccessControlledObject 
+    public partial class Brand : AccessControlledObject
     {
         #region inherited properties
         public Permission[] DeniedPermissions { get; set; }
@@ -23,8 +23,9 @@ namespace Allors.Repository
         #endregion
         [Required]
         [Size(256)]
-
+        [Workspace]
         public string Name { get; set; }
+
         #region Allors
         [Id("25729ffa-4f97-464a-9b34-fe1661e0d932")]
         [AssociationId("ae59e80c-289d-487f-996c-c83615d8750d")]
@@ -32,22 +33,31 @@ namespace Allors.Repository
         #endregion
         [Multiplicity(Multiplicity.ManyToMany)]
         [Indexed]
-
+        [Workspace]
         public ProductCategory[] ProductCategories { get; set; }
 
+        #region Allors
+        [Id("B798449E-BE3D-4FC0-9D50-0BF3EA243B3A")]
+        [AssociationId("C501BE5A-E7ED-49AC-8220-743422ED1C1C")]
+        [RoleId("732FB702-5078-4D82-86C7-F526A9198774")]
+        [Indexed]
+        #endregion
+        [Workspace]
+        [Multiplicity(Multiplicity.OneToMany)]
+        public Model[] Models { get; set; }
 
         #region inherited methods
 
 
-        public void OnBuild(){}
+        public void OnBuild() { }
 
-        public void OnPostBuild(){}
+        public void OnPostBuild() { }
 
-        public void OnPreDerive(){}
+        public void OnPreDerive() { }
 
-        public void OnDerive(){}
+        public void OnDerive() { }
 
-        public void OnPostDerive(){}
+        public void OnPostDerive() { }
 
         #endregion
 

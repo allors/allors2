@@ -145,16 +145,6 @@ namespace Allors.Repository
         ProductFeature[] OptionalFeatures { get; set; }
 
         #region Allors
-        [Id("5f727bd9-9c3e-421e-93eb-646c4fdf73d3")]
-        [AssociationId("210976bb-e440-44ee-b2b5-39bcee04965b")]
-        [RoleId("3165a365-a0db-4ce6-b194-7636cc9c015a")]
-        #endregion
-        [Multiplicity(Multiplicity.ManyToOne)]
-        [Indexed]
-        [Workspace]
-        Party ManufacturedBy { get; set; }
-
-        #region Allors
         [Id("60bd113a-d6b9-4de9-bbff-2b5094ec4803")]
         [AssociationId("b5198a54-72bc-4972-aded-b8eaf0f304a0")]
         [RoleId("1c2134b2-d7ce-469a-a6e4-7e2cc741e07c")]
