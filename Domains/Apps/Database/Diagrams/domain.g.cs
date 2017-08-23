@@ -969,8 +969,6 @@ namespace Allors.Domain
 
 						ProductFeature OptionalFeatures {set;}
 
-						Party ManufacturedBy {set;}
-
 						Product Variants {set;}
 
 						global::System.String Name {set;}
@@ -1698,6 +1696,8 @@ namespace Allors.Domain
 						global::System.String Name {set;}
 
 						ProductCategory ProductCategories {set;}
+
+						Model Models {set;}
 
 		}
 		public interface BudgetItem  : AccessControlledObject 
@@ -2441,7 +2441,11 @@ namespace Allors.Domain
 
 						global::System.String ArticleNumber {set;}
 
+						Party ManufacturedBy {set;}
+
 						global::System.String ManufacturerId {set;}
+
+						Party SuppliedBy {set;}
 
 						Product ProductSubstitutions {set;}
 

@@ -23,6 +23,14 @@ namespace Allors.Domain
 
     public partial class Catalogue
     {
+        public void AppsOnBuild(ObjectOnBuild method)
+        {
+            if (!this.ExistCatScope)
+            {
+                this.CatScope = new CatScopes(this.strategy.Session).Public;
+            }
+        }
+
         public void AppsOnDerive(ObjectOnDerive method)
         {
             var derivation = method.Derivation;

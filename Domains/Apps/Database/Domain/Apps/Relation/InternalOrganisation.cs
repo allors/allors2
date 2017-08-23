@@ -130,11 +130,6 @@ namespace Allors.Domain
                 this.SubAccountCounter = new CounterBuilder(this.strategy.Session).WithUniqueId(Guid.NewGuid()).WithValue(0).Build();
             }
 
-            if (!this.ExistArticleNumberCounter)
-            {
-                this.ArticleNumberCounter = new CounterBuilder(this.strategy.Session).WithUniqueId(Guid.NewGuid()).WithValue(0).Build();
-            }
-
             if (!this.ExistDoAccounting)
             {
                 this.DoAccounting = false;
