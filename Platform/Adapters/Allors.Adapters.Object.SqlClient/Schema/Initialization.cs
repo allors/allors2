@@ -73,16 +73,13 @@ namespace Allors.Adapters.Object.SqlClient
                 try
                 {
                     var cmdText = @"
+IF ((SELECT SNAPSHOT_ISOLATION_STATE FROM SYS.DATABASES WHERE NAME = '" + connection.Database + @"') = 0)
 alter Database " + connection.Database + @"
 set allow_snapshot_isolation on";
                     using (var command = new SqlCommand(cmdText, connection))
                     {
                         command.ExecuteNonQuery();
                     }
-                }
-                catch
-                {
-                    // Azure dbo can not alter database
                 }
                 finally
                 {
