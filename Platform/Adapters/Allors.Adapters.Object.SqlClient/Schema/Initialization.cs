@@ -80,6 +80,10 @@ set allow_snapshot_isolation on";
                         command.ExecuteNonQuery();
                     }
                 }
+                catch
+                {
+                    // Azure dbo can not alter database
+                }
                 finally
                 {
                     connection.Close();
