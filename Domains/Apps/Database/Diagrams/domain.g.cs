@@ -398,6 +398,8 @@ namespace Allors.Domain
 		}
 		public interface InventoryItemVersioned  : Object 
 		{
+						ProductCharacteristicValue ProductCharacteristicValues {set;}
+
 						InventoryItemVariance InventoryItemVariances {set;}
 
 						Part Part {set;}
@@ -415,6 +417,8 @@ namespace Allors.Domain
 						ProductCategory DerivedProductCategories {set;}
 
 						Good Good {set;}
+
+						ProductType ProductType {set;}
 
 						Facility Facility {set;}
 
@@ -437,6 +441,28 @@ namespace Allors.Domain
 		public interface SerialisedInventoryItemVersioned  : InventoryItemVersioned 
 		{
 						global::System.String SerialNumber {set;}
+
+						Ownership Ownership {set;}
+
+						global::System.String Owner {set;}
+
+						global::System.Int32? AcquisitionYear {set;}
+
+						global::System.Int32? ManufacturingYear {set;}
+
+						global::System.Decimal? ReplacementValue {set;}
+
+						global::System.Int32? LifeTime {set;}
+
+						global::System.Int32? DepreciationYears {set;}
+
+						global::System.Decimal? PurchasePrice {set;}
+
+						global::System.Decimal? ExpectedSalesPrice {set;}
+
+						global::System.Decimal? RefurbishCost {set;}
+
+						global::System.Decimal? TransportCost {set;}
 
 						SerialisedInventoryItemObjectState CurrentObjectState {set;}
 
@@ -966,8 +992,6 @@ namespace Allors.Domain
 		}
 		public interface Product  : UniquelyIdentifiable, AccessControlledObject 
 		{
-						ProductCharacteristicValue ProductCharacteristicValues {set;}
-
 						ProductCategory PrimaryProductCategory {set;}
 
 						global::System.DateTime? SupportDiscontinuationDate {set;}
@@ -1716,7 +1740,7 @@ namespace Allors.Domain
 		public interface Bin  : Container 
 		{
 		}
-		public interface Brand  : AccessControlledObject 
+		public interface Brand  : ProductFeature 
 		{
 						global::System.String Name {set;}
 
@@ -2448,8 +2472,6 @@ namespace Allors.Domain
 		}
 		public interface Good  : Product, Deletable 
 		{
-						ProductType ProductType {set;}
-
 						global::System.Decimal QuantityOnHand {set;}
 
 						global::System.Decimal AvailableToPromise {set;}
@@ -2649,6 +2671,9 @@ namespace Allors.Domain
 		{
 						global::System.DateTime? TimeStamp {set;}
 
+		}
+		public interface Ownership  : Enumeration 
+		{
 		}
 		public interface SerialisedInventoryItemVersion  : SerialisedInventoryItemVersioned 
 		{
