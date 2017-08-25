@@ -11,6 +11,7 @@ namespace Allors.Repository
     {
         #region inherited properties
 
+        public ProductCharacteristicValue[] ProductCharacteristicValues { get; set; }
         public InventoryItemVariance[] InventoryItemVariances { get; set; }
         public Part Part { get; set; }
         public Container Container { get; set; }
@@ -20,6 +21,7 @@ namespace Allors.Repository
         public UnitOfMeasure UnitOfMeasure { get; set; }
         public ProductCategory[] DerivedProductCategories { get; set; }
         public Good Good { get; set; }
+        public ProductType ProductType { get; set; }
         public Facility Facility { get; set; }
         public decimal QuantityCommittedOut { get; set; }
         public decimal QuantityOnHand { get; set; }

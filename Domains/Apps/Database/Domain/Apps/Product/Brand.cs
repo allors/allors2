@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------------------------------------------
-// <copyright file="ProductType.cs" company="Allors bvba">
+// <copyright file="Brand.cs" company="Allors bvba">
 //   Copyright 2002-2012 Allors bvba.
 // Dual Licensed under
 //   a) the General Public Licence v3 (GPL)
@@ -15,19 +15,17 @@
 // --------------------------------------------------------------------------------------------------------------------
 namespace Allors.Domain
 {
-    public partial class ProductType
-    {
-        public void AppsOnPreDerive(ObjectOnPreDerive method)
-        {
-            var derivation = method.Derivation;
 
-            if (derivation.HasChangedRole(this, this.Meta.ProductCharacteristics))
-            {
-                foreach (InventoryItemVersioned item in this.InventoryItemVersionedsWhereProductType)
-                {
-                    derivation.AddDependency(item, this);
-                }
-            }
+    public partial class Brand
+    {
+        public void AddToBasePrice(BasePrice basePrice)
+        {
+            this.AddBasePrice(basePrice);
+        }
+
+        public void RemoveFromBasePrices(BasePrice basePrice)
+        {
+            this.RemoveBasePrice(basePrice);
         }
     }
 }

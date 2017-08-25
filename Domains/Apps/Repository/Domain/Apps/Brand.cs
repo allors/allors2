@@ -7,11 +7,17 @@ namespace Allors.Repository
     #region Allors
     [Id("0a7ac589-946b-4d49-b7e0-7e0b9bc90111")]
     #endregion
-    public partial class Brand : AccessControlledObject
+    public partial class Brand : ProductFeature, AccessControlledObject
     {
         #region inherited properties
+        public Guid UniqueId { get; set; }
+        public EstimatedProductCost[] EstimatedProductCosts { get; set; }
+        public PriceComponent[] BasePrices { get; set; }
+        public string Description { get; set; }
+        public ProductFeature[] DependentFeatures { get; set; }
+        public ProductFeature[] IncompatibleFeatures { get; set; }
+        public VatRate VatRate { get; set; }
         public Permission[] DeniedPermissions { get; set; }
-
         public SecurityToken[] SecurityTokens { get; set; }
 
         #endregion
@@ -60,6 +66,5 @@ namespace Allors.Repository
         public void OnPostDerive() { }
 
         #endregion
-
     }
 }

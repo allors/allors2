@@ -77,7 +77,6 @@ namespace Allors.Domain
             this.DeriveQuantityOnHand();
             this.DeriveAvailableToPromise();
             this.DeriveThumbnail();
-            this.Sync();
         }
 
         public void DeriveVirtualProductPriceComponent()
@@ -176,59 +175,6 @@ namespace Allors.Domain
             else
             {
                 this.RemoveThumbnail();
-            }
-        }
-
-        private void Sync()
-        {
-            if (!this.ExistProductType)
-            {
-                foreach (ProductCharacteristicValue productCharacteristicValue in this.ProductCharacteristicValues)
-                {
-                    productCharacteristicValue.Delete();
-                }
-            }
-            else
-            {
-                var productCharacteristics = new HashSet<ProductCharacteristic>(this.ProductType.ProductCharacteristics);
-                var locales = new HashSet<Locale>(Singleton.Instance(this.strategy.Session).Locales);
-
-                var currentProductCharacteristicValueByLocaleByProductCharacteristic = this.ProductCharacteristicValues
-                    .GroupBy(v => v.ProductCharacteristic)
-                    .ToDictionary(g => g.Key, g => g.GroupBy(v => v.Locale).ToDictionary(h => h.Key, h => h.First()));
-
-                foreach (ProductCharacteristicValue productCharacteristicValue in this.ProductCharacteristicValues)
-                {
-                    // Delete obsolete ProductCharacteristic
-                    if (!productCharacteristics.Contains(productCharacteristicValue.ProductCharacteristic) ||
-                        !locales.Contains(productCharacteristicValue.Locale))
-                    {
-                        productCharacteristicValue.Delete();
-                    }
-                }
-
-                foreach (var productCharacteristic in productCharacteristics)
-                {
-                    foreach (var locale in locales)
-                    {
-                        ProductCharacteristicValue productCharacteristicValue = null;
-                        Dictionary<Locale, ProductCharacteristicValue> currentProductCharacteristicValueByLocale;
-                        if (currentProductCharacteristicValueByLocaleByProductCharacteristic.TryGetValue(productCharacteristic, out currentProductCharacteristicValueByLocale))
-                        {
-                            currentProductCharacteristicValueByLocale.TryGetValue(locale, out productCharacteristicValue);
-                        }
-
-                        if (productCharacteristicValue == null)
-                        {
-                            productCharacteristicValue = new ProductCharacteristicValueBuilder(this.strategy.Session)
-                                .WithProductCharacteristic(productCharacteristic)
-                                .WithLocale(locale)
-                                .Build();
-
-                            this.AddProductCharacteristicValue(productCharacteristicValue);
-                        }
-                    }
-                }
             }
         }
     }

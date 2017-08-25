@@ -11,8 +11,6 @@ namespace Allors.Repository
     {
         #region inherited properties
 
-        public ProductCharacteristicValue[] ProductCharacteristicValues { get; set; }
-
         public ProductCategory PrimaryProductCategory { get; set; }
 
         public DateTime SupportDiscontinuationDate { get; set; }
@@ -72,16 +70,6 @@ namespace Allors.Repository
         public SecurityToken[] SecurityTokens { get; set; }
 
         #endregion
-
-        #region Allors
-        [Id("B316EB62-A654-4429-9699-403B23DB5284")]
-        [AssociationId("F3A6EA79-9E12-405A-8195-90FC3973BD65")]
-        [RoleId("BA8E7FFA-8557-4452-B97B-1A5E2BFA83D0")]
-        #endregion
-        [Multiplicity(Multiplicity.ManyToOne)]
-        [Indexed]
-        [Workspace]
-        public ProductType ProductType { get; set; }
 
         #region Allors
         [Id("30C81CF6-6295-44C4-ACDD-2A408DA3DC6D")]

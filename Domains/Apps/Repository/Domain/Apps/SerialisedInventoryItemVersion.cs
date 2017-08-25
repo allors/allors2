@@ -12,6 +12,18 @@ namespace Allors.Repository
         #region inherited properties
 
         public string SerialNumber { get; set; }
+        public Ownership Ownership { get; set; }
+        public string Owner { get; set; }
+        public int AcquisitionYear { get; set; }
+        public int ManufacturingYear { get; set; }
+        public decimal ReplacementValue { get; set; }
+        public int LifeTime { get; set; }
+        public int DepreciationYears { get; set; }
+        public decimal PurchasePrice { get; set; }
+        public decimal ExpectedSalesPrice { get; set; }
+        public decimal RefurbishCost { get; set; }
+        public decimal TransportCost { get; set; }
+        public ProductCharacteristicValue[] ProductCharacteristicValues { get; set; }
         public InventoryItemVariance[] InventoryItemVariances { get; set; }
         public Part Part { get; set; }
         public Container Container { get; set; }
@@ -21,6 +33,7 @@ namespace Allors.Repository
         public UnitOfMeasure UnitOfMeasure { get; set; }
         public ProductCategory[] DerivedProductCategories { get; set; }
         public Good Good { get; set; }
+        public ProductType ProductType { get; set; }
         public Facility Facility { get; set; }
         public SerialisedInventoryItemObjectState CurrentObjectState { get; set; }
 

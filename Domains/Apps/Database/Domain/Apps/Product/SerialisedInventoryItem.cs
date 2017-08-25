@@ -61,8 +61,8 @@ namespace Allors.Domain
         {
             var derivation = method.Derivation;
 
-            derivation.Validation.AssertAtLeastOne(this, M.SerialisedInventoryItemVersioned.Good, M.SerialisedInventoryItemVersioned.Part);
-            derivation.Validation.AssertExistsAtMostOne(this, M.SerialisedInventoryItemVersioned.Good, M.SerialisedInventoryItemVersioned.Part);
+            derivation.Validation.AssertAtLeastOne(this, M.InventoryItemVersioned.Good, M.InventoryItemVersioned.Part);
+            derivation.Validation.AssertExistsAtMostOne(this, M.InventoryItemVersioned.Good, M.InventoryItemVersioned.Part);
 
             this.AppsOnDeriveProductCategories(derivation);
         }
@@ -82,6 +82,18 @@ namespace Allors.Domain
                 !object.Equals(this.DerivedProductCategories, this.CurrentVersion.DerivedProductCategories) ||
                 !object.Equals(this.Good, this.CurrentVersion.Good) ||
                 !object.Equals(this.Facility, this.CurrentVersion.Facility) ||
+                !object.Equals(this.Ownership, this.CurrentVersion.Ownership) ||
+                !object.Equals(this.Owner, this.CurrentVersion.Owner) ||
+                !object.Equals(this.AcquisitionYear, this.CurrentVersion.AcquisitionYear) ||
+                !object.Equals(this.ManufacturingYear, this.CurrentVersion.ManufacturingYear) ||
+                !object.Equals(this.ReplacementValue, this.CurrentVersion.ReplacementValue) ||
+                !object.Equals(this.LifeTime, this.CurrentVersion.LifeTime) ||
+                !object.Equals(this.DepreciationYears, this.CurrentVersion.DepreciationYears) ||
+                !object.Equals(this.PurchasePrice, this.CurrentVersion.PurchasePrice) ||
+                !object.Equals(this.ExpectedSalesPrice, this.CurrentVersion.ExpectedSalesPrice) ||
+                !object.Equals(this.RefurbishCost, this.CurrentVersion.RefurbishCost) ||
+                !object.Equals(this.TransportCost, this.CurrentVersion.TransportCost) ||
+
                 !object.Equals(this.CurrentObjectState, this.CurrentVersion.CurrentObjectState);
 
             if (!this.ExistCurrentVersion || isNewVersion)

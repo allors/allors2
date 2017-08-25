@@ -37,6 +37,17 @@ namespace Allors.Domain
                 this.DerivedProductCategories = serialisedInventoryItem.DerivedProductCategories;
                 this.Good = serialisedInventoryItem.Good;
                 this.Facility = serialisedInventoryItem.Facility;
+                this.Ownership = serialisedInventoryItem.Ownership;
+                this.Owner = serialisedInventoryItem.Owner;
+                this.AcquisitionYear = serialisedInventoryItem.AcquisitionYear;
+                this.ManufacturingYear = serialisedInventoryItem.ManufacturingYear;
+                this.ReplacementValue = serialisedInventoryItem.ReplacementValue;
+                this.LifeTime = serialisedInventoryItem.LifeTime;
+                this.DepreciationYears = serialisedInventoryItem.DepreciationYears;
+                this.PurchasePrice = serialisedInventoryItem.PurchasePrice;
+                this.ExpectedSalesPrice = serialisedInventoryItem.ExpectedSalesPrice;
+                this.RefurbishCost = serialisedInventoryItem.RefurbishCost;
+                this.TransportCost = serialisedInventoryItem.TransportCost;
                 this.CurrentObjectState = serialisedInventoryItem.CurrentObjectState;
             }
 
