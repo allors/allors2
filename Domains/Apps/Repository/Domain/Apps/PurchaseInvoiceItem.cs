@@ -18,7 +18,7 @@ namespace Allors.Repository
 
         public InvoiceItem AdjustmentFor { get; set; }
 
-        public SerializedInventoryItem SerializedInventoryItem { get; set; }
+        public SerialisedInventoryItem SerializedInventoryItem { get; set; }
 
         public string Message { get; set; }
 

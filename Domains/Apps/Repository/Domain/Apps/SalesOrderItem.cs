@@ -197,7 +197,7 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.ManyToOne)]
         [Derived]
         [Indexed]
-        public NonSerializedInventoryItem PreviousReservedFromInventoryItem { get; set; }
+        public NonSerialisedInventoryItem PreviousReservedFromInventoryItem { get; set; }
         
         #region Allors
         [Id("40111efb-f609-4726-85c1-a9dd7160df72")]
@@ -419,7 +419,7 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
         [Workspace]
-        public NonSerializedInventoryItem ReservedFromInventoryItem { get; set; }
+        public NonSerialisedInventoryItem ReservedFromInventoryItem { get; set; }
         
         #region Allors
         [Id("e8980105-2c4d-41de-bd67-802a8c0720f1")]

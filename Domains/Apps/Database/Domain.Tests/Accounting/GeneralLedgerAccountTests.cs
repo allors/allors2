@@ -212,7 +212,7 @@ namespace Allors.Domain
                 .WithLocalisedName(new LocalisedTextBuilder(this.DatabaseSession).WithText("good").WithLocale(Singleton.Instance(this.DatabaseSession).DefaultLocale).Build())
                 .WithSku("10101")
                 .WithVatRate(new VatRateBuilder(this.DatabaseSession).WithRate(21).Build())
-                .WithInventoryItemKind(new InventoryItemKinds(this.DatabaseSession).NonSerialized)
+                .WithInventoryItemKind(new InventoryItemKinds(this.DatabaseSession).NonSerialised)
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.DatabaseSession).Piece)
                 .Build();
 

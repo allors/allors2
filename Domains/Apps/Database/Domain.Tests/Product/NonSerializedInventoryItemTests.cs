@@ -1,5 +1,5 @@
 //------------------------------------------------------------------------------------------------- 
-// <copyright file="NonSerializedInventoryItemTests.cs" company="Allors bvba">
+// <copyright file="NonSerialisedInventoryItemTests.cs" company="Allors bvba">
 // Copyright 2002-2009 Allors bvba.
 // 
 // Dual Licensed under
@@ -26,25 +26,25 @@ namespace Allors.Domain
     using Xunit;
 
     
-    public class NonSerializedInventoryItemTests : DomainTest
+    public class NonSerialisedInventoryItemTests : DomainTest
     {
         [Fact]
         public void GivenInventoryItem_WhenBuild_ThenLastObjectStateEqualsCurrencObjectState()
         {
-            var item = new NonSerializedInventoryItemBuilder(this.DatabaseSession)
+            var item = new NonSerialisedInventoryItemBuilder(this.DatabaseSession)
                 .WithPart(new FinishedGoodBuilder(this.DatabaseSession).WithName("part").WithManufacturerId("10101").Build())
                 .Build();
 
             this.DatabaseSession.Derive();
 
-            Assert.Equal(new NonSerializedInventoryItemObjectStates(this.DatabaseSession).Good, item.CurrentObjectState);
+            Assert.Equal(new NonSerialisedInventoryItemObjectStates(this.DatabaseSession).Good, item.CurrentObjectState);
             Assert.Equal(item.LastObjectState, item.CurrentObjectState);
         }
 
         [Fact]
         public void GivenInventoryItem_WhenBuild_ThenPreviousObjectStateIsNull()
         {
-            var item = new NonSerializedInventoryItemBuilder(this.DatabaseSession)
+            var item = new NonSerialisedInventoryItemBuilder(this.DatabaseSession)
                 .WithPart(new FinishedGoodBuilder(this.DatabaseSession).WithName("part").WithManufacturerId("10101").Build())
                 .Build();
 
@@ -60,14 +60,14 @@ namespace Allors.Domain
                 .WithLocalisedName(new LocalisedTextBuilder(this.DatabaseSession).WithText("good").WithLocale(Singleton.Instance(this.DatabaseSession).DefaultLocale).Build())
                 .WithSku("10101")
                 .WithVatRate(new VatRateBuilder(this.DatabaseSession).WithRate(21).Build())
-                .WithInventoryItemKind(new InventoryItemKinds(this.DatabaseSession).NonSerialized)
+                .WithInventoryItemKind(new InventoryItemKinds(this.DatabaseSession).NonSerialised)
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.DatabaseSession).Piece)
                 .Build();
 
             this.DatabaseSession.Derive();
             this.DatabaseSession.Commit();
 
-            var builder = new NonSerializedInventoryItemBuilder(this.DatabaseSession);
+            var builder = new NonSerialisedInventoryItemBuilder(this.DatabaseSession);
             var item = builder.Build();
 
             Assert.True(this.DatabaseSession.Derive(false).HasErrors);
@@ -92,7 +92,7 @@ namespace Allors.Domain
         [Fact]
         public void GivenInventoryItem_WhenBuild_ThenPostBuildRelationsMustExist()
         {
-            var item = new NonSerializedInventoryItemBuilder(this.DatabaseSession)
+            var item = new NonSerialisedInventoryItemBuilder(this.DatabaseSession)
                 .WithPart(new FinishedGoodBuilder(this.DatabaseSession).WithName("part").WithManufacturerId("10101").Build())
                 .Build();
 
@@ -100,14 +100,14 @@ namespace Allors.Domain
             Assert.NotNull(item.QuantityCommittedOut);
             Assert.NotNull(item.QuantityExpectedIn);
             Assert.NotNull(item.QuantityOnHand);
-            Assert.Equal(new NonSerializedInventoryItemObjectStates(this.DatabaseSession).Good, item.CurrentObjectState);
+            Assert.Equal(new NonSerialisedInventoryItemObjectStates(this.DatabaseSession).Good, item.CurrentObjectState);
             Assert.Equal(new Warehouses(this.DatabaseSession).FindBy(M.Warehouse.Name, "facility"), item.Facility);
         }
 
         [Fact]
         public void GivenInventoryItemForPart_WhenDerived_ThenSkuIsEmpty()
         {
-            var item = new NonSerializedInventoryItemBuilder(this.DatabaseSession)
+            var item = new NonSerialisedInventoryItemBuilder(this.DatabaseSession)
                 .WithPart(new FinishedGoodBuilder(this.DatabaseSession).WithName("part").WithManufacturerId("10101").Build())
                 .Build();
 
@@ -127,12 +127,12 @@ namespace Allors.Domain
              .WithSku("10101")
              .WithVatRate(vatRate21)
                 .WithLocalisedName(new LocalisedTextBuilder(this.DatabaseSession).WithText("good1").WithLocale(Singleton.Instance(this.DatabaseSession).DefaultLocale).Build())
-             .WithInventoryItemKind(new InventoryItemKinds(this.DatabaseSession).NonSerialized)
+             .WithInventoryItemKind(new InventoryItemKinds(this.DatabaseSession).NonSerialised)
              .WithUnitOfMeasure(new UnitsOfMeasure(this.DatabaseSession).Piece)
              .WithPrimaryProductCategory(category)
              .Build();
 
-            var item = new NonSerializedInventoryItemBuilder(this.DatabaseSession)
+            var item = new NonSerialisedInventoryItemBuilder(this.DatabaseSession)
                 .WithGood(good)
                 .Build();
 
@@ -145,7 +145,7 @@ namespace Allors.Domain
         public void GivenInventoryItemForPart_WhenDerived_ThenNameIsPartName()
         {
             var part = new FinishedGoodBuilder(this.DatabaseSession).WithName("part").WithManufacturerId("10101").Build();
-            var item = new NonSerializedInventoryItemBuilder(this.DatabaseSession)
+            var item = new NonSerialisedInventoryItemBuilder(this.DatabaseSession)
                 .WithPart(part)
                 .Build();
 
@@ -168,12 +168,12 @@ namespace Allors.Domain
              .WithSku("10101")
              .WithVatRate(vatRate21)
                 .WithLocalisedName(new LocalisedTextBuilder(this.DatabaseSession).WithText("good1").WithLocale(Singleton.Instance(this.DatabaseSession).DefaultLocale).Build())
-             .WithInventoryItemKind(new InventoryItemKinds(this.DatabaseSession).NonSerialized)
+             .WithInventoryItemKind(new InventoryItemKinds(this.DatabaseSession).NonSerialised)
              .WithUnitOfMeasure(new UnitsOfMeasure(this.DatabaseSession).Piece)
              .WithPrimaryProductCategory(category)
              .Build();
 
-            var item = new NonSerializedInventoryItemBuilder(this.DatabaseSession)
+            var item = new NonSerialisedInventoryItemBuilder(this.DatabaseSession)
                 .WithGood(good)
                 .Build();
 
@@ -187,7 +187,7 @@ namespace Allors.Domain
         {
             var uom = new UnitsOfMeasure(this.DatabaseSession).Centimeter;
             var part = new FinishedGoodBuilder(this.DatabaseSession).WithName("part").WithManufacturerId("10101").WithUnitOfMeasure(uom).Build();
-            var item = new NonSerializedInventoryItemBuilder(this.DatabaseSession)
+            var item = new NonSerialisedInventoryItemBuilder(this.DatabaseSession)
                 .WithPart(part)
                 .Build();
 
@@ -210,12 +210,12 @@ namespace Allors.Domain
              .WithSku("10101")
              .WithVatRate(vatRate21)
                 .WithLocalisedName(new LocalisedTextBuilder(this.DatabaseSession).WithText("good1").WithLocale(Singleton.Instance(this.DatabaseSession).DefaultLocale).Build())
-             .WithInventoryItemKind(new InventoryItemKinds(this.DatabaseSession).NonSerialized)
+             .WithInventoryItemKind(new InventoryItemKinds(this.DatabaseSession).NonSerialised)
              .WithUnitOfMeasure(uom)
              .WithPrimaryProductCategory(category)
              .Build();
             
-            var item = new NonSerializedInventoryItemBuilder(this.DatabaseSession)
+            var item = new NonSerialisedInventoryItemBuilder(this.DatabaseSession)
                 .WithGood(good)
                 .Build();
 
@@ -237,12 +237,12 @@ namespace Allors.Domain
              .WithSku("10101")
              .WithVatRate(vatRate21)
                 .WithLocalisedName(new LocalisedTextBuilder(this.DatabaseSession).WithText("good1").WithLocale(Singleton.Instance(this.DatabaseSession).DefaultLocale).Build())
-             .WithInventoryItemKind(new InventoryItemKinds(this.DatabaseSession).NonSerialized)
+             .WithInventoryItemKind(new InventoryItemKinds(this.DatabaseSession).NonSerialised)
              .WithUnitOfMeasure(new UnitsOfMeasure(this.DatabaseSession).Piece)
              .WithPrimaryProductCategory(category)
              .Build();
 
-            var inventoryItem = new NonSerializedInventoryItemBuilder(this.DatabaseSession).WithGood(good).Build();
+            var inventoryItem = new NonSerialisedInventoryItemBuilder(this.DatabaseSession).WithGood(good).Build();
             inventoryItem.AddInventoryItemVariance(new InventoryItemVarianceBuilder(this.DatabaseSession).WithQuantity(5).WithReason(new VarianceReasons(this.DatabaseSession).Unknown).Build());
 
             this.DatabaseSession.Derive();
@@ -395,12 +395,12 @@ namespace Allors.Domain
              .WithSku("10101")
              .WithVatRate(vatRate21)
                 .WithLocalisedName(new LocalisedTextBuilder(this.DatabaseSession).WithText("good1").WithLocale(Singleton.Instance(this.DatabaseSession).DefaultLocale).Build())
-             .WithInventoryItemKind(new InventoryItemKinds(this.DatabaseSession).NonSerialized)
+             .WithInventoryItemKind(new InventoryItemKinds(this.DatabaseSession).NonSerialised)
              .WithUnitOfMeasure(new UnitsOfMeasure(this.DatabaseSession).Piece)
              .WithPrimaryProductCategory(category)
              .Build();
 
-            var inventoryItem = new NonSerializedInventoryItemBuilder(this.DatabaseSession).WithGood(good).Build();
+            var inventoryItem = new NonSerialisedInventoryItemBuilder(this.DatabaseSession).WithGood(good).Build();
             inventoryItem.AddInventoryItemVariance(new InventoryItemVarianceBuilder(this.DatabaseSession).WithQuantity(5).WithReason(new VarianceReasons(this.DatabaseSession).Ruined).Build());
 
             this.DatabaseSession.Derive();
@@ -453,7 +453,7 @@ namespace Allors.Domain
         }
         
         //[Fact]
-        //public void ReportNonSerializedInventory()
+        //public void ReportNonSerialisedInventory()
         //{
         //    var supplier = new OrganisationBuilder(this.DatabaseSession).WithName("supplier").Build();
         //    var internalOrganisation = new InternalOrganisations(this.DatabaseSession).FindBy(M.InternalOrganisation.Name, "internalOrganisation");
@@ -466,7 +466,7 @@ namespace Allors.Domain
 
         //    var rawMaterial = new RawMaterialBuilder(this.DatabaseSession)
         //        .WithName("raw material")
-        //        .WithInventoryItemKind(new InventoryItemKinds(this.DatabaseSession).NonSerialized)
+        //        .WithInventoryItemKind(new InventoryItemKinds(this.DatabaseSession).NonSerialised)
         //        .WithUnitOfMeasure(new UnitsOfMeasure(this.DatabaseSession).Piece)
         //        .Build();
 
@@ -479,7 +479,7 @@ namespace Allors.Domain
         //        .WithName("Good")
         //        .WithSku("10101")
         //        .WithVatRate(new VatRateBuilder(this.DatabaseSession).WithRate(21).Build())
-        //        .WithInventoryItemKind(new InventoryItemKinds(this.DatabaseSession).NonSerialized)
+        //        .WithInventoryItemKind(new InventoryItemKinds(this.DatabaseSession).NonSerialised)
         //        .WithUnitOfMeasure(new UnitsOfMeasure(this.DatabaseSession).Piece)
         //        .WithProductCategory(level3)
         //        .WithProductCategory(category)
@@ -492,20 +492,20 @@ namespace Allors.Domain
         //        .WithUnitOfMeasure(new UnitsOfMeasure(this.DatabaseSession).Piece)
         //        .Build();
 
-        //    var goodItem = new NonSerializedInventoryItemBuilder(this.DatabaseSession)
+        //    var goodItem = new NonSerialisedInventoryItemBuilder(this.DatabaseSession)
         //        .WithGood(good)
         //        .WithAvailableToPromise(120)
         //        .WithQuantityOnHand(120)
         //        .Build();
 
-        //    var damagedItem = new NonSerializedInventoryItemBuilder(this.DatabaseSession)
+        //    var damagedItem = new NonSerialisedInventoryItemBuilder(this.DatabaseSession)
         //        .WithGood(good)
         //        .WithAvailableToPromise(120)
         //        .WithQuantityOnHand(120)
-        //        .WithCurrentObjectState(new NonSerializedInventoryItemObjectStates(this.DatabaseSession).SlightlyDamaged)
+        //        .WithCurrentObjectState(new NonSerialisedInventoryItemObjectStates(this.DatabaseSession).SlightlyDamaged)
         //        .Build();
 
-        //    var partItem = (NonSerializedInventoryItem)rawMaterial.InventoryItemsWherePart[0];
+        //    var partItem = (NonSerialisedInventoryItem)rawMaterial.InventoryItemVersionedsWherePart[0];
 
         //    new SupplierOfferingBuilder(this.DatabaseSession)
         //        .WithProduct(good)
@@ -526,7 +526,7 @@ namespace Allors.Domain
             //Assert.Contains(damagedItem, extent);
             //Assert.Contains(partItem, extent);
 
-            //valueByParameter[parameters[1]] = new NonSerializedInventoryItemObjectStates(this.DatabaseSession).SlightlyDamaged;
+            //valueByParameter[parameters[1]] = new NonSerialisedInventoryItemObjectStates(this.DatabaseSession).SlightlyDamaged;
 
             //extent = preparedExtent.Execute(valueByParameter);
 

@@ -35,9 +35,9 @@ namespace Allors.Domain
             var derivation = method.Derivation;
 
             // TODO:
-            if (this.ExistInventoryItemsWhereGood)
+            if (this.ExistInventoryItemVersionedsWhereGood)
             {
-                foreach (InventoryItem inventoryItem in this.InventoryItemsWhereGood)
+                foreach (InventoryItem inventoryItem in this.InventoryItemVersionedsWhereGood)
                 {
                     derivation.AddDependency(inventoryItem, this);
                 }
@@ -136,12 +136,12 @@ namespace Allors.Domain
         {
             this.QuantityOnHand = 0;
 
-            foreach (InventoryItem inventoryItem in this.InventoryItemsWhereGood)
+            foreach (InventoryItem inventoryItem in this.InventoryItemVersionedsWhereGood)
             {
-                if (inventoryItem is NonSerializedInventoryItem)
+                if (inventoryItem is NonSerialisedInventoryItem)
                 {
-                    var nonSerialized = (NonSerializedInventoryItem)inventoryItem;
-                    this.QuantityOnHand += nonSerialized.QuantityOnHand;
+                    var nonSerialised = (NonSerialisedInventoryItem)inventoryItem;
+                    this.QuantityOnHand += nonSerialised.QuantityOnHand;
                 }
             }
         }
@@ -150,12 +150,12 @@ namespace Allors.Domain
         {
             this.AvailableToPromise = 0;
 
-            foreach (InventoryItem inventoryItem in this.InventoryItemsWhereGood)
+            foreach (InventoryItem inventoryItem in this.InventoryItemVersionedsWhereGood)
             {
-                if (inventoryItem is NonSerializedInventoryItem)
+                if (inventoryItem is NonSerialisedInventoryItem)
                 {
-                    var nonSerialized = (NonSerializedInventoryItem)inventoryItem;
-                    this.AvailableToPromise += nonSerialized.AvailableToPromise;
+                    var nonSerialised = (NonSerialisedInventoryItem)inventoryItem;
+                    this.AvailableToPromise += nonSerialised.AvailableToPromise;
                 }
             }
         }

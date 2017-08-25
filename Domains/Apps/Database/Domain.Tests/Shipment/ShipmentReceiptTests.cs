@@ -49,11 +49,11 @@ namespace Allors.Domain
                 .WithLocalisedName(new LocalisedTextBuilder(this.DatabaseSession).WithText("good").WithLocale(Singleton.Instance(this.DatabaseSession).DefaultLocale).Build())
                 .WithSku("10101")
                 .WithVatRate(new VatRateBuilder(this.DatabaseSession).WithRate(21).Build())
-                .WithInventoryItemKind(new InventoryItemKinds(this.DatabaseSession).NonSerialized)
+                .WithInventoryItemKind(new InventoryItemKinds(this.DatabaseSession).NonSerialised)
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.DatabaseSession).Piece)
                 .Build();
 
-            var inventoryItem = new NonSerializedInventoryItemBuilder(this.DatabaseSession).WithGood(good).Build();
+            var inventoryItem = new NonSerialisedInventoryItemBuilder(this.DatabaseSession).WithGood(good).Build();
             inventoryItem.AddInventoryItemVariance(new InventoryItemVarianceBuilder(this.DatabaseSession).WithQuantity(100).WithReason(new VarianceReasons(this.DatabaseSession).Order).Build());
             this.DatabaseSession.Derive();
             this.DatabaseSession.Commit();
@@ -124,7 +124,7 @@ namespace Allors.Domain
             this.DatabaseSession.Commit();
 
             Assert.Equal(new Warehouses(this.DatabaseSession).FindBy(M.Warehouse.Name, "facility"), receipt.InventoryItem.Facility);
-            Assert.Equal(part.InventoryItemsWherePart[0], receipt.InventoryItem);
+            Assert.Equal(part.InventoryItemVersionedsWherePart[0], receipt.InventoryItem);
 
             this.DatabaseSession.Rollback();
         }
@@ -140,7 +140,7 @@ namespace Allors.Domain
                 .WithLocalisedName(new LocalisedTextBuilder(this.DatabaseSession).WithText("good").WithLocale(Singleton.Instance(this.DatabaseSession).DefaultLocale).Build())
                 .WithSku("10101")
                 .WithVatRate(new VatRateBuilder(this.DatabaseSession).WithRate(21).Build())
-                .WithInventoryItemKind(new InventoryItemKinds(this.DatabaseSession).NonSerialized)
+                .WithInventoryItemKind(new InventoryItemKinds(this.DatabaseSession).NonSerialised)
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.DatabaseSession).Piece)
                 .Build();
 
@@ -170,7 +170,7 @@ namespace Allors.Domain
             shipment.AppsComplete();
 
             Assert.Equal(new Warehouses(this.DatabaseSession).FindBy(M.Warehouse.Name, "facility"), receipt.InventoryItem.Facility);
-            Assert.Equal(good.InventoryItemsWhereGood[0], receipt.InventoryItem);
+            Assert.Equal(good.InventoryItemVersionedsWhereGood[0], receipt.InventoryItem);
 
             this.DatabaseSession.Rollback();
         }
@@ -194,11 +194,11 @@ namespace Allors.Domain
                 .WithLocalisedName(new LocalisedTextBuilder(this.DatabaseSession).WithText("good").WithLocale(Singleton.Instance(this.DatabaseSession).DefaultLocale).Build())
                 .WithSku("10101")
                 .WithVatRate(new VatRateBuilder(this.DatabaseSession).WithRate(21).Build())
-                .WithInventoryItemKind(new InventoryItemKinds(this.DatabaseSession).NonSerialized)
+                .WithInventoryItemKind(new InventoryItemKinds(this.DatabaseSession).NonSerialised)
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.DatabaseSession).Piece)
                 .Build();
 
-            var inventoryItem = new NonSerializedInventoryItemBuilder(this.DatabaseSession).WithGood(good).Build();
+            var inventoryItem = new NonSerialisedInventoryItemBuilder(this.DatabaseSession).WithGood(good).Build();
             inventoryItem.AddInventoryItemVariance(new InventoryItemVarianceBuilder(this.DatabaseSession).WithQuantity(20).WithReason(new VarianceReasons(this.DatabaseSession).Unknown).Build());
 
             this.DatabaseSession.Derive();
@@ -220,7 +220,7 @@ namespace Allors.Domain
             this.DatabaseSession.Derive();
             this.DatabaseSession.Commit();
 
-            var sessionInventoryItem = (NonSerializedInventoryItem)this.DatabaseSession.Instantiate(inventoryItem);
+            var sessionInventoryItem = (NonSerialisedInventoryItem)this.DatabaseSession.Instantiate(inventoryItem);
             var sessionSalesItem = (SalesOrderItem)this.DatabaseSession.Instantiate(salesItem);
 
             var supplier = new OrganisationBuilder(this.DatabaseSession).WithName("supplier").WithOrganisationRole(new OrganisationRoles(this.DatabaseSession).Supplier).Build();
@@ -276,7 +276,7 @@ namespace Allors.Domain
                 .WithLocalisedName(new LocalisedTextBuilder(this.DatabaseSession).WithText("good").WithLocale(Singleton.Instance(this.DatabaseSession).DefaultLocale).Build())
                 .WithSku("10101")
                 .WithVatRate(new VatRateBuilder(this.DatabaseSession).WithRate(21).Build())
-                .WithInventoryItemKind(new InventoryItemKinds(this.DatabaseSession).NonSerialized)
+                .WithInventoryItemKind(new InventoryItemKinds(this.DatabaseSession).NonSerialised)
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.DatabaseSession).Piece)
                 .Build();
 

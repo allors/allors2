@@ -395,6 +395,9 @@ namespace Allors.Domain
 		}
 		public interface InventoryItem  : Transitional, UniquelyIdentifiable 
 		{
+		}
+		public interface InventoryItemVersioned  : Object 
+		{
 						InventoryItemVariance InventoryItemVariances {set;}
 
 						Part Part {set;}
@@ -414,6 +417,28 @@ namespace Allors.Domain
 						Good Good {set;}
 
 						Facility Facility {set;}
+
+		}
+		public interface NonSerialisedInventoryItemVersioned  : InventoryItemVersioned 
+		{
+						global::System.Decimal QuantityCommittedOut {set;}
+
+						global::System.Decimal QuantityOnHand {set;}
+
+						global::System.Decimal PreviousQuantityOnHand {set;}
+
+						global::System.Decimal AvailableToPromise {set;}
+
+						global::System.Decimal QuantityExpectedIn {set;}
+
+						NonSerialisedInventoryItemObjectState CurrentObjectState {set;}
+
+		}
+		public interface SerialisedInventoryItemVersioned  : InventoryItemVersioned 
+		{
+						global::System.String SerialNumber {set;}
+
+						SerialisedInventoryItemObjectState CurrentObjectState {set;}
 
 		}
 		public interface InventoryItemConfiguration  : Commentable, AccessControlledObject 
@@ -500,7 +525,7 @@ namespace Allors.Domain
 
 						InvoiceItem AdjustmentFor {set;}
 
-						SerializedInventoryItem SerializedInventoryItem {set;}
+						SerialisedInventoryItem SerializedInventoryItem {set;}
 
 						global::System.String Message {set;}
 
@@ -2034,7 +2059,7 @@ namespace Allors.Domain
 
 						DeploymentUsage DeploymentUsage {set;}
 
-						SerializedInventoryItem SerializedInventoryItem {set;}
+						SerialisedInventoryItem SerializedInventoryItem {set;}
 
 		}
 		public interface Deposit  : FinancialAccountTransaction 
@@ -2620,6 +2645,16 @@ namespace Allors.Domain
 		public interface InternalRequirement  : Requirement 
 		{
 		}
+		public interface NonSerialisedInventoryItemVersion  : NonSerialisedInventoryItemVersioned 
+		{
+						global::System.DateTime? TimeStamp {set;}
+
+		}
+		public interface SerialisedInventoryItemVersion  : SerialisedInventoryItemVersioned 
+		{
+						global::System.DateTime? TimeStamp {set;}
+
+		}
 		public interface InventoryItemKind  : Enumeration 
 		{
 		}
@@ -2827,34 +2862,17 @@ namespace Allors.Domain
 						global::System.Boolean? Announcement {set;}
 
 		}
-		public interface NonSerializedInventoryItem  : InventoryItem 
+		public interface NonSerialisedInventoryItem  : InventoryItem, NonSerialisedInventoryItemVersioned 
 		{
-						NonSerializedInventoryItemObjectState CurrentObjectState {set;}
+						NonSerialisedInventoryItemVersion AllVersions {set;}
 
-						global::System.Decimal QuantityCommittedOut {set;}
+						NonSerialisedInventoryItemVersion CurrentVersion {set;}
 
-						NonSerializedInventoryItemStatus NonSerializedInventoryItemStatuses {set;}
-
-						NonSerializedInventoryItemStatus CurrentInventoryItemStatus {set;}
-
-						global::System.Decimal QuantityOnHand {set;}
-
-						global::System.Decimal PreviousQuantityOnHand {set;}
-
-						global::System.Decimal AvailableToPromise {set;}
-
-						global::System.Decimal QuantityExpectedIn {set;}
+						NonSerialisedInventoryItemVersion PreviousVersion {set;}
 
 		}
-		public interface NonSerializedInventoryItemObjectState  : ObjectState 
+		public interface NonSerialisedInventoryItemObjectState  : ObjectState 
 		{
-		}
-		public interface NonSerializedInventoryItemStatus  : AccessControlledObject 
-		{
-						global::System.DateTime StartDateTime {set;}
-
-						NonSerializedInventoryItemObjectState NonSerializedInventoryItemObjectState {set;}
-
 		}
 		public interface Note  : ExternalAccountingTransaction 
 		{
@@ -3466,7 +3484,7 @@ namespace Allors.Domain
 		{
 						global::System.Decimal RequestedQuantity {set;}
 
-						InventoryItem InventoryItem {set;}
+						InventoryItemVersioned InventoryItem {set;}
 
 						global::System.Decimal? ActualQuantity {set;}
 
@@ -4476,7 +4494,7 @@ namespace Allors.Domain
 
 						SalesOrderItemStatus CurrentShipmentStatus {set;}
 
-						NonSerializedInventoryItem PreviousReservedFromInventoryItem {set;}
+						NonSerialisedInventoryItem PreviousReservedFromInventoryItem {set;}
 
 						global::System.Decimal? QuantityShipNow {set;}
 
@@ -4516,7 +4534,7 @@ namespace Allors.Domain
 
 						global::System.Decimal InitialMarkupPercentage {set;}
 
-						NonSerializedInventoryItem ReservedFromInventoryItem {set;}
+						NonSerialisedInventoryItem ReservedFromInventoryItem {set;}
 
 						Product Product {set;}
 
@@ -4694,26 +4712,17 @@ namespace Allors.Domain
 		public interface Salutation  : Enumeration 
 		{
 		}
-		public interface SerializedInventoryItem  : InventoryItem 
+		public interface SerialisedInventoryItem  : InventoryItem, SerialisedInventoryItemVersioned 
 		{
-						SerializedInventoryItemStatus InventoryItemStatuses {set;}
+						SerialisedInventoryItemVersion AllVersions {set;}
 
-						global::System.String SerialNumber {set;}
+						SerialisedInventoryItemVersion CurrentVersion {set;}
 
-						SerializedInventoryItemObjectState CurrentObjectState {set;}
-
-						SerializedInventoryItemStatus CurrentInventoryItemStatus {set;}
+						SerialisedInventoryItemVersion PreviousVersion {set;}
 
 		}
-		public interface SerializedInventoryItemObjectState  : ObjectState 
+		public interface SerialisedInventoryItemObjectState  : ObjectState 
 		{
-		}
-		public interface SerializedInventoryItemStatus  : AccessControlledObject 
-		{
-						global::System.DateTime StartDateTime {set;}
-
-						SerializedInventoryItemObjectState SerializedInventoryItemObjectState {set;}
-
 		}
 		public interface ServiceConfiguration  : InventoryItemConfiguration 
 		{
@@ -4786,7 +4795,7 @@ namespace Allors.Domain
 		{
 						global::System.String ItemDescription {set;}
 
-						NonSerializedInventoryItem InventoryItem {set;}
+						NonSerialisedInventoryItem InventoryItem {set;}
 
 						global::System.String RejectionReason {set;}
 

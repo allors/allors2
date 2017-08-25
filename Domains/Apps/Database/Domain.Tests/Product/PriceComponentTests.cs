@@ -35,7 +35,7 @@ namespace Allors.Domain
                 .WithLocalisedName(new LocalisedTextBuilder(this.DatabaseSession).WithText("Gizmo").WithLocale(Singleton.Instance(this.DatabaseSession).DefaultLocale).Build())
                 .WithSku("10101")
                 .WithVatRate(vatRate21)
-                .WithInventoryItemKind(new InventoryItemKinds(this.DatabaseSession).NonSerialized)
+                .WithInventoryItemKind(new InventoryItemKinds(this.DatabaseSession).NonSerialised)
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.DatabaseSession).Piece)
                 .Build();
 
@@ -99,7 +99,7 @@ namespace Allors.Domain
             var virtualGood = new GoodBuilder(this.DatabaseSession)
                 .WithLocalisedName(new LocalisedTextBuilder(this.DatabaseSession).WithText("virtual gizmo").WithLocale(Singleton.Instance(this.DatabaseSession).DefaultLocale).Build())
                 .WithVatRate(vatRate21)
-                .WithInventoryItemKind(new InventoryItemKinds(this.DatabaseSession).NonSerialized)
+                .WithInventoryItemKind(new InventoryItemKinds(this.DatabaseSession).NonSerialised)
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.DatabaseSession).Piece)
                 .Build();
 
@@ -107,7 +107,7 @@ namespace Allors.Domain
                 .WithLocalisedName(new LocalisedTextBuilder(this.DatabaseSession).WithText("real gizmo").WithLocale(Singleton.Instance(this.DatabaseSession).DefaultLocale).Build())
                 .WithSku("10101")
                 .WithVatRate(vatRate21)
-                .WithInventoryItemKind(new InventoryItemKinds(this.DatabaseSession).NonSerialized)
+                .WithInventoryItemKind(new InventoryItemKinds(this.DatabaseSession).NonSerialised)
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.DatabaseSession).Piece)
                 .Build();
 
@@ -138,7 +138,7 @@ namespace Allors.Domain
                 .WithLocalisedName(new LocalisedTextBuilder(this.DatabaseSession).WithText("real gizmo").WithLocale(Singleton.Instance(this.DatabaseSession).DefaultLocale).Build())
                 .WithSku("10101")
                 .WithVatRate(vatRate21)
-                .WithInventoryItemKind(new InventoryItemKinds(this.DatabaseSession).NonSerialized)
+                .WithInventoryItemKind(new InventoryItemKinds(this.DatabaseSession).NonSerialised)
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.DatabaseSession).Piece)
                 .Build();
 
@@ -160,7 +160,7 @@ namespace Allors.Domain
                 .WithLocalisedName(new LocalisedTextBuilder(this.DatabaseSession).WithText("gizmo").WithLocale(Singleton.Instance(this.DatabaseSession).DefaultLocale).Build())
                 .WithSku("10101")
                 .WithVatRate(vatRate21)
-                .WithInventoryItemKind(new InventoryItemKinds(this.DatabaseSession).NonSerialized)
+                .WithInventoryItemKind(new InventoryItemKinds(this.DatabaseSession).NonSerialised)
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.DatabaseSession).Piece)
                 .Build();
 
@@ -279,7 +279,7 @@ namespace Allors.Domain
                 .WithLocalisedName(new LocalisedTextBuilder(this.DatabaseSession).WithText("gizmo").WithLocale(Singleton.Instance(this.DatabaseSession).DefaultLocale).Build())
                 .WithSku("10101")
                 .WithVatRate(vatRate21)
-                .WithInventoryItemKind(new InventoryItemKinds(this.DatabaseSession).NonSerialized)
+                .WithInventoryItemKind(new InventoryItemKinds(this.DatabaseSession).NonSerialised)
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.DatabaseSession).Piece)
                 .Build();
 

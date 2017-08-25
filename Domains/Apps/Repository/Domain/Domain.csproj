@@ -344,6 +344,11 @@
     <Compile Include="Apps\InternalOrganisationRevenueHistory.cs" />
     <Compile Include="Apps\InternalRequirement.cs" />
     <Compile Include="Apps\InventoryItem.cs" />
+    <Compile Include="Apps\NonSerialisedInventoryItemVersion.cs" />
+    <Compile Include="Apps\InventoryItemVersioned.cs" />
+    <Compile Include="Apps\SerialisedInventoryItemVersion.cs" />
+    <Compile Include="Apps\NonSerialisedInventoryItemVersioned.cs" />
+    <Compile Include="Apps\SerialisedInventoryItemVersioned.cs" />
     <Compile Include="Apps\InventoryItemConfiguration.cs" />
     <Compile Include="Apps\InventoryItemKind.cs" />
     <Compile Include="Apps\InventoryItemVariance.cs" />
@@ -377,9 +382,8 @@
     <Compile Include="Apps\Model.cs" />
     <Compile Include="Apps\NeededSkill.cs" />
     <Compile Include="Apps\NewsItem.cs" />
-    <Compile Include="Apps\NonSerializedInventoryItem.cs" />
-    <Compile Include="Apps\NonSerializedInventoryItemObjectState.cs" />
-    <Compile Include="Apps\NonSerializedInventoryItemStatus.cs" />
+    <Compile Include="Apps\NonSerialisedInventoryItem.cs" />
+    <Compile Include="Apps\NonSerialisedInventoryItemObjectState.cs" />
     <Compile Include="Apps\Note.cs" />
     <Compile Include="Apps\Obligation.cs" />
     <Compile Include="Apps\Office.cs" />
@@ -598,9 +602,8 @@
     <Compile Include="Apps\SalesRepRevenueHistory.cs" />
     <Compile Include="Apps\SalesTerritory.cs" />
     <Compile Include="Apps\Salutation.cs" />
-    <Compile Include="Apps\SerializedInventoryItem.cs" />
-    <Compile Include="Apps\SerializedInventoryItemObjectState.cs" />
-    <Compile Include="Apps\SerializedInventoryItemStatus.cs" />
+    <Compile Include="Apps\SerialisedInventoryItem.cs" />
+    <Compile Include="Apps\SerialisedInventoryItemObjectState.cs" />
     <Compile Include="Apps\Service.cs" />
     <Compile Include="Apps\ServiceConfiguration.cs" />
     <Compile Include="Apps\ServiceEntry.cs" />

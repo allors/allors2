@@ -40,19 +40,19 @@ namespace Allors.Domain
             var supplier = this.Supplier as Organisation;
             if (supplier != null && good != null)
             {
-                if (good.ExistInventoryItemKind && good.InventoryItemKind.Equals(new InventoryItemKinds(this.Strategy.Session).NonSerialized))
+                if (good.ExistInventoryItemKind && good.InventoryItemKind.Equals(new InventoryItemKinds(this.Strategy.Session).NonSerialised))
                 {
                     foreach (SupplierRelationship supplierRelationship in supplier.SupplierRelationshipsWhereSupplier)
                     {
                         foreach (Facility facility in supplierRelationship.InternalOrganisation.FacilitiesWhereOwner)
                         {
-                            var inventoryItems = good.InventoryItemsWhereGood;
-                            inventoryItems.Filter.AddEquals(M.InventoryItem.Facility, facility);
+                            var inventoryItems = good.InventoryItemVersionedsWhereGood;
+                            inventoryItems.Filter.AddEquals(M.InventoryItemVersioned.Facility, facility);
                             var inventoryItem = inventoryItems.First;
 
                             if (inventoryItem == null)
                             {
-                                new NonSerializedInventoryItemBuilder(this.Strategy.Session).WithFacility(facility).WithGood(good).Build();
+                                new NonSerialisedInventoryItemBuilder(this.Strategy.Session).WithFacility(facility).WithGood(good).Build();
                             }
                         }
                     }
@@ -61,19 +61,19 @@ namespace Allors.Domain
                 {
                     if (good.ExistFinishedGood &&
                         good.FinishedGood.ExistInventoryItemKind && 
-                        good.FinishedGood.InventoryItemKind.Equals(new InventoryItemKinds(this.Strategy.Session).NonSerialized))
+                        good.FinishedGood.InventoryItemKind.Equals(new InventoryItemKinds(this.Strategy.Session).NonSerialised))
                     {
                         foreach (SupplierRelationship supplierRelationship in supplier.SupplierRelationshipsWhereSupplier)
                         {
                             foreach (Facility facility in supplierRelationship.InternalOrganisation.FacilitiesWhereOwner)
                             {
-                                var inventoryItems = good.FinishedGood.InventoryItemsWherePart;
-                                inventoryItems.Filter.AddEquals(M.InventoryItem.Facility, facility);
+                                var inventoryItems = good.FinishedGood.InventoryItemVersionedsWherePart;
+                                inventoryItems.Filter.AddEquals(M.InventoryItemVersioned.Facility, facility);
                                 var inventoryItem = inventoryItems.First;
 
                                 if (inventoryItem == null)
                                 {
-                                    new NonSerializedInventoryItemBuilder(this.Strategy.Session).WithFacility(facility).WithPart(good.FinishedGood).Build();
+                                    new NonSerialisedInventoryItemBuilder(this.Strategy.Session).WithFacility(facility).WithPart(good.FinishedGood).Build();
                                 }
                             }
                         }

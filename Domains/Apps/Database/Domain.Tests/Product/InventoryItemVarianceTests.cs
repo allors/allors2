@@ -1,5 +1,5 @@
 //------------------------------------------------------------------------------------------------- 
-// <copyright file="NonSerializedInventoryItemTests.cs" company="Allors bvba">
+// <copyright file="NonSerialisedInventoryItemTests.cs" company="Allors bvba">
 // Copyright 2002-2009 Allors bvba.
 // 
 // Dual Licensed under
@@ -37,11 +37,11 @@ namespace Allors.Domain
                     .WithLocale(Singleton.Instance(this.DatabaseSession).DefaultLocale).Build())
                 .WithSku("10101")
                 .WithVatRate(new VatRateBuilder(this.DatabaseSession).WithRate(21).Build())
-                .WithInventoryItemKind(new InventoryItemKinds(this.DatabaseSession).NonSerialized)
+                .WithInventoryItemKind(new InventoryItemKinds(this.DatabaseSession).NonSerialised)
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.DatabaseSession).Piece)
                 .Build();
 
-            var inventoryItem = new NonSerializedInventoryItemBuilder(this.DatabaseSession)
+            var inventoryItem = new NonSerialisedInventoryItemBuilder(this.DatabaseSession)
                 .WithGood(good)
                 .Build();
 

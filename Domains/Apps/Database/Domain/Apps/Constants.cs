@@ -57,7 +57,7 @@ namespace Allors
         public const string SALESTYPE = "Sales type";
 
         public const string REPORTINTERNALORGANISATIONREVENUE = "InternalOrganisation revenue";
-        public const string REPORTNONSERIALIZEDINVENTORY = "NonSerialized Inventory";
+        public const string REPORTNONSERIALIZEDINVENTORY = "NonSerialised Inventory";
         public const string REPORTSTOREREVENUE = "Store revenue";
         public const string REPORTPARTYPACKAGEREVENUE = "Party/Package revenue";
         public const string REPORTPARTYPRODUCTREVENUE = "Party/Product revenue";

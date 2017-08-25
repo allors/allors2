@@ -15,9 +15,9 @@
 // --------------------------------------------------------------------------------------------------------------------
 namespace Allors.Domain
 {
-    public static partial class InventoryItemExtensions
+    public static partial class InventoryItemVersionedExtensions
     {
-        public static void AppsOnDeriveProductCategories(this InventoryItem @this, IDerivation derivation)
+        public static void AppsOnDeriveProductCategories(this InventoryItemVersioned @this, IDerivation derivation)
         {
             @this.RemoveDerivedProductCategories();
 
@@ -31,7 +31,7 @@ namespace Allors.Domain
             }
         }
 
-        private static void AddParentCategories(this InventoryItem @this, ProductCategory productCategory)
+        private static void AddParentCategories(this InventoryItemVersioned @this, ProductCategory productCategory)
         {
             if (productCategory.ExistParents)
             {

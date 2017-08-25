@@ -179,7 +179,7 @@ namespace Allors.Domain
                .WithVatRate(this.vatRate21)
                 .WithLocalisedName(new LocalisedTextBuilder(this.DatabaseSession).WithText("variant good").WithLocale(Singleton.Instance(this.DatabaseSession).DefaultLocale).Build())
                .WithUnitOfMeasure(new UnitsOfMeasure(this.DatabaseSession).Piece)
-               .WithInventoryItemKind(new InventoryItemKinds(this.DatabaseSession).NonSerialized)
+               .WithInventoryItemKind(new InventoryItemKinds(this.DatabaseSession).NonSerialised)
                .Build();
 
             this.variantGood2 = new GoodBuilder(this.DatabaseSession)
@@ -187,7 +187,7 @@ namespace Allors.Domain
                 .WithVatRate(this.vatRate21)
                 .WithLocalisedName(new LocalisedTextBuilder(this.DatabaseSession).WithText("variant good2").WithLocale(Singleton.Instance(this.DatabaseSession).DefaultLocale).Build())
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.DatabaseSession).Piece)
-                .WithInventoryItemKind(new InventoryItemKinds(this.DatabaseSession).NonSerialized)
+                .WithInventoryItemKind(new InventoryItemKinds(this.DatabaseSession).NonSerialised)
                 .Build();
 
             this.virtualGood = new GoodBuilder(this.DatabaseSession)
@@ -197,7 +197,7 @@ namespace Allors.Domain
                 .WithVariant(this.variantGood)
                 .WithVariant(this.variantGood2)
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.DatabaseSession).Piece)
-                .WithInventoryItemKind(new InventoryItemKinds(this.DatabaseSession).NonSerialized)
+                .WithInventoryItemKind(new InventoryItemKinds(this.DatabaseSession).NonSerialised)
                 .Build();
 
             this.goodPurchasePrice = new ProductPurchasePriceBuilder(this.DatabaseSession)
@@ -669,7 +669,7 @@ namespace Allors.Domain
                 .WithSku("10102")
                 .WithVatRate(this.vatRate21)
                 .WithLocalisedName(new LocalisedTextBuilder(this.DatabaseSession).WithText("good2").WithLocale(Singleton.Instance(this.DatabaseSession).DefaultLocale).Build())
-                .WithInventoryItemKind(new InventoryItemKinds(this.DatabaseSession).NonSerialized)
+                .WithInventoryItemKind(new InventoryItemKinds(this.DatabaseSession).NonSerialised)
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.DatabaseSession).Piece)
                 .Build();
 
@@ -749,7 +749,7 @@ namespace Allors.Domain
             Assert.Equal(0, item.ReservedFromInventoryItem.QuantityOnHand);
 
             var previous = item.ReservedFromInventoryItem;
-            var current = new NonSerializedInventoryItemBuilder(this.DatabaseSession).WithFacility(secondWarehouse).WithPart(this.part).Build();
+            var current = new NonSerialisedInventoryItemBuilder(this.DatabaseSession).WithFacility(secondWarehouse).WithPart(this.part).Build();
 
             item.ReservedFromInventoryItem = current;
 
@@ -768,7 +768,7 @@ namespace Allors.Domain
         }
 
         [Fact]
-        public void GivenConfirmedOrderItemForGood_WhenOrderItemIsCancelled_ThenNonSerializedInventoryQuantitiesAreReleased()
+        public void GivenConfirmedOrderItemForGood_WhenOrderItemIsCancelled_ThenNonSerialisedInventoryQuantitiesAreReleased()
         {
             this.InstantiateObjects(this.DatabaseSession);
 
@@ -802,7 +802,7 @@ namespace Allors.Domain
         }
 
         [Fact]
-        public void GivenConfirmedOrderItemForGood_WhenOrderItemIsRejected_ThenNonSerializedInventoryQuantitiesAreReleased()
+        public void GivenConfirmedOrderItemForGood_WhenOrderItemIsRejected_ThenNonSerialisedInventoryQuantitiesAreReleased()
         {
             this.InstantiateObjects(this.DatabaseSession);
 
@@ -915,7 +915,7 @@ namespace Allors.Domain
 
             this.SetIdentity("admin");
 
-            var inventoryItem = (NonSerializedInventoryItem)this.part.InventoryItemsWherePart[0];
+            var inventoryItem = (NonSerialisedInventoryItem)this.part.InventoryItemVersionedsWherePart[0];
             inventoryItem.AddInventoryItemVariance(new InventoryItemVarianceBuilder(this.DatabaseSession).WithQuantity(1).WithReason(new VarianceReasons(this.DatabaseSession).Unknown).Build());
 
             this.DatabaseSession.Derive();
@@ -1046,7 +1046,7 @@ namespace Allors.Domain
 
             this.SetIdentity("admin");
 
-            var inventoryItem = (NonSerializedInventoryItem)this.part.InventoryItemsWherePart[0];
+            var inventoryItem = (NonSerialisedInventoryItem)this.part.InventoryItemVersionedsWherePart[0];
             inventoryItem.AddInventoryItemVariance(new InventoryItemVarianceBuilder(this.DatabaseSession).WithQuantity(110).WithReason(new VarianceReasons(this.DatabaseSession).Unknown).Build());
 
             this.DatabaseSession.Derive();
@@ -1141,7 +1141,7 @@ namespace Allors.Domain
 
             this.SetIdentity("admin");
 
-            var inventoryItem = (NonSerializedInventoryItem)this.part.InventoryItemsWherePart[0];
+            var inventoryItem = (NonSerialisedInventoryItem)this.part.InventoryItemVersionedsWherePart[0];
             inventoryItem.AddInventoryItemVariance(new InventoryItemVarianceBuilder(this.DatabaseSession).WithQuantity(1).WithReason(new VarianceReasons(this.DatabaseSession).Unknown).Build());
 
             this.DatabaseSession.Derive();
@@ -1192,7 +1192,7 @@ namespace Allors.Domain
         {
             this.InstantiateObjects(this.DatabaseSession);
 
-            var inventoryItem = (NonSerializedInventoryItem)this.DatabaseSession.Instantiate(this.good.FinishedGood.InventoryItemsWherePart[0]);
+            var inventoryItem = (NonSerialisedInventoryItem)this.DatabaseSession.Instantiate(this.good.FinishedGood.InventoryItemVersionedsWherePart[0]);
             inventoryItem.AddInventoryItemVariance(new InventoryItemVarianceBuilder(this.DatabaseSession).WithQuantity(110).WithReason(new VarianceReasons(this.DatabaseSession).Unknown).Build());
 
             this.DatabaseSession.Derive();
@@ -1228,7 +1228,7 @@ namespace Allors.Domain
         {
             this.InstantiateObjects(this.DatabaseSession);
 
-            var inventoryItem = (NonSerializedInventoryItem)this.DatabaseSession.Instantiate(this.good.FinishedGood.InventoryItemsWherePart[0]);
+            var inventoryItem = (NonSerialisedInventoryItem)this.DatabaseSession.Instantiate(this.good.FinishedGood.InventoryItemVersionedsWherePart[0]);
             inventoryItem.AddInventoryItemVariance(new InventoryItemVarianceBuilder(this.DatabaseSession).WithQuantity(110).WithReason(new VarianceReasons(this.DatabaseSession).Unknown).Build());
 
             this.DatabaseSession.Derive();
@@ -1297,7 +1297,7 @@ namespace Allors.Domain
         {
             this.InstantiateObjects(this.DatabaseSession);
 
-            var inventoryItem = (NonSerializedInventoryItem)this.DatabaseSession.Instantiate(this.good.FinishedGood.InventoryItemsWherePart[0]);
+            var inventoryItem = (NonSerialisedInventoryItem)this.DatabaseSession.Instantiate(this.good.FinishedGood.InventoryItemVersionedsWherePart[0]);
             inventoryItem.AddInventoryItemVariance(new InventoryItemVarianceBuilder(this.DatabaseSession).WithQuantity(110).WithReason(new VarianceReasons(this.DatabaseSession).Unknown).Build());
 
             this.DatabaseSession.Derive();
@@ -1335,7 +1335,7 @@ namespace Allors.Domain
         {
             this.InstantiateObjects(this.DatabaseSession);
 
-            var inventoryItem = (NonSerializedInventoryItem)this.DatabaseSession.Instantiate(this.good.FinishedGood.InventoryItemsWherePart[0]);
+            var inventoryItem = (NonSerialisedInventoryItem)this.DatabaseSession.Instantiate(this.good.FinishedGood.InventoryItemVersionedsWherePart[0]);
             inventoryItem.AddInventoryItemVariance(new InventoryItemVarianceBuilder(this.DatabaseSession).WithQuantity(110).WithReason(new VarianceReasons(this.DatabaseSession).Unknown).Build());
 
             this.DatabaseSession.Derive();
@@ -1386,7 +1386,7 @@ namespace Allors.Domain
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.DatabaseSession).Piece)
                 .Build();
 
-            var good1InventoryItem = new NonSerializedInventoryItemBuilder(this.DatabaseSession).WithPart(testPart).Build();
+            var good1InventoryItem = new NonSerialisedInventoryItemBuilder(this.DatabaseSession).WithPart(testPart).Build();
             good1InventoryItem.AddInventoryItemVariance(new InventoryItemVarianceBuilder(this.DatabaseSession).WithQuantity(110).WithReason(new VarianceReasons(this.DatabaseSession).Unknown).Build());
 
             var item = new SalesOrderItemBuilder(this.DatabaseSession)
@@ -1589,7 +1589,7 @@ namespace Allors.Domain
         {
             this.InstantiateObjects(this.DatabaseSession);
 
-            var inventoryItem = (NonSerializedInventoryItem)this.part.InventoryItemsWherePart.First;
+            var inventoryItem = (NonSerialisedInventoryItem)this.part.InventoryItemVersionedsWherePart.First;
             inventoryItem.AddInventoryItemVariance(new InventoryItemVarianceBuilder(this.DatabaseSession).WithQuantity(10).WithReason(new VarianceReasons(this.DatabaseSession).Unknown).Build());
 
             this.DatabaseSession.Derive();
@@ -1627,7 +1627,7 @@ namespace Allors.Domain
         {
             this.InstantiateObjects(this.DatabaseSession);
 
-            var inventoryItem = (NonSerializedInventoryItem)this.part.InventoryItemsWherePart.First;
+            var inventoryItem = (NonSerialisedInventoryItem)this.part.InventoryItemVersionedsWherePart.First;
             inventoryItem.AddInventoryItemVariance(new InventoryItemVarianceBuilder(this.DatabaseSession).WithQuantity(10).WithReason(new VarianceReasons(this.DatabaseSession).Unknown).Build());
 
             this.DatabaseSession.Derive();
@@ -1676,7 +1676,7 @@ namespace Allors.Domain
         [Fact]
         public void GivenOrderItemWithPendingShipmentAndPendingPickList_WhenOrderItemIsCancelled_ThenPickListQuantityAndShipmentQuantityAreDecreased()
         {
-            var inventoryItem = (NonSerializedInventoryItem)this.part.InventoryItemsWherePart.First;
+            var inventoryItem = (NonSerialisedInventoryItem)this.part.InventoryItemVersionedsWherePart.First;
             inventoryItem.AddInventoryItemVariance(new InventoryItemVarianceBuilder(this.DatabaseSession).WithQuantity(10).WithReason(new VarianceReasons(this.DatabaseSession).Unknown).Build());
 
             this.DatabaseSession.Derive();
@@ -1685,11 +1685,11 @@ namespace Allors.Domain
                 .WithSku("10101")
                 .WithVatRate(new VatRateBuilder(this.DatabaseSession).WithRate(0).Build())
                 .WithLocalisedName(new LocalisedTextBuilder(this.DatabaseSession).WithText("good1").WithLocale(Singleton.Instance(this.DatabaseSession).DefaultLocale).Build())
-                .WithInventoryItemKind(new InventoryItemKinds(this.DatabaseSession).NonSerialized)
+                .WithInventoryItemKind(new InventoryItemKinds(this.DatabaseSession).NonSerialised)
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.DatabaseSession).Piece)
                 .Build();
 
-            var good2inventoryItem = new NonSerializedInventoryItemBuilder(this.DatabaseSession).WithGood(good2).Build();
+            var good2inventoryItem = new NonSerialisedInventoryItemBuilder(this.DatabaseSession).WithGood(good2).Build();
             good2inventoryItem.AddInventoryItemVariance(new InventoryItemVarianceBuilder(this.DatabaseSession).WithQuantity(10).WithReason(new VarianceReasons(this.DatabaseSession).Unknown).Build());
 
             this.DatabaseSession.Derive();
@@ -1761,7 +1761,7 @@ namespace Allors.Domain
         {
             this.InstantiateObjects(this.DatabaseSession);
 
-            var inventoryItem = (NonSerializedInventoryItem)this.part.InventoryItemsWherePart.First;
+            var inventoryItem = (NonSerialisedInventoryItem)this.part.InventoryItemVersionedsWherePart.First;
             inventoryItem.AddInventoryItemVariance(new InventoryItemVarianceBuilder(this.DatabaseSession).WithQuantity(10).WithReason(new VarianceReasons(this.DatabaseSession).Unknown).Build());
 
             this.DatabaseSession.Derive();
@@ -1806,7 +1806,7 @@ namespace Allors.Domain
         {
             this.InstantiateObjects(this.DatabaseSession);
 
-            var inventoryItem = (NonSerializedInventoryItem)this.part.InventoryItemsWherePart.First;
+            var inventoryItem = (NonSerialisedInventoryItem)this.part.InventoryItemVersionedsWherePart.First;
             inventoryItem.AddInventoryItemVariance(new InventoryItemVarianceBuilder(this.DatabaseSession).WithQuantity(10).WithReason(new VarianceReasons(this.DatabaseSession).Unknown).Build());
 
             this.DatabaseSession.Derive();
@@ -1859,7 +1859,7 @@ namespace Allors.Domain
         {
             this.InstantiateObjects(this.DatabaseSession);
 
-            var inventoryItem = (NonSerializedInventoryItem)this.part.InventoryItemsWherePart.First;
+            var inventoryItem = (NonSerialisedInventoryItem)this.part.InventoryItemVersionedsWherePart.First;
             inventoryItem.AddInventoryItemVariance(new InventoryItemVarianceBuilder(this.DatabaseSession).WithQuantity(3).WithReason(new VarianceReasons(this.DatabaseSession).Unknown).Build());
 
             this.DatabaseSession.Derive();
@@ -1904,7 +1904,7 @@ namespace Allors.Domain
         {
             this.InstantiateObjects(this.DatabaseSession);
 
-            var inventoryItem = (NonSerializedInventoryItem)this.part.InventoryItemsWherePart.First;
+            var inventoryItem = (NonSerialisedInventoryItem)this.part.InventoryItemVersionedsWherePart.First;
             inventoryItem.AddInventoryItemVariance(new InventoryItemVarianceBuilder(this.DatabaseSession).WithQuantity(10).WithReason(new VarianceReasons(this.DatabaseSession).Unknown).Build());
 
             this.DatabaseSession.Derive();

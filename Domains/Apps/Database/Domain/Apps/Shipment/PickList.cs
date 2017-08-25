@@ -73,7 +73,7 @@ namespace Allors.Domain
                 {
                     derivation.AddDependency(this, pickListItem);
 
-                    var inventoryItem = pickListItem.InventoryItem as NonSerializedInventoryItem;
+                    var inventoryItem = pickListItem.InventoryItem as NonSerialisedInventoryItem;
                     if (inventoryItem != null)
                     {
                         derivation.AddDependency(this, inventoryItem);

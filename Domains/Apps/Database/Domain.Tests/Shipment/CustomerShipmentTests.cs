@@ -313,11 +313,11 @@ namespace Allors.Domain
                 .WithSku("10101")
                 .WithVatRate(vatRate21)
                 .WithLocalisedName(new LocalisedTextBuilder(this.DatabaseSession).WithText("good1").WithLocale(Singleton.Instance(this.DatabaseSession).DefaultLocale).Build())
-                .WithInventoryItemKind(new InventoryItemKinds(this.DatabaseSession).NonSerialized)
+                .WithInventoryItemKind(new InventoryItemKinds(this.DatabaseSession).NonSerialised)
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.DatabaseSession).Piece)
                 .Build();
 
-            var inventoryItem = new NonSerializedInventoryItemBuilder(this.DatabaseSession).WithGood(good1).Build();
+            var inventoryItem = new NonSerialisedInventoryItemBuilder(this.DatabaseSession).WithGood(good1).Build();
             inventoryItem.AddInventoryItemVariance(new InventoryItemVarianceBuilder(this.DatabaseSession).WithQuantity(100).WithReason(new VarianceReasons(this.DatabaseSession).Ruined).Build());
 
             var mechelen = new CityBuilder(this.DatabaseSession).WithName("Mechelen").Build();
@@ -405,7 +405,7 @@ namespace Allors.Domain
                 .WithVatRate(vatRate21)
                 .WithLocalisedName(new LocalisedTextBuilder(this.DatabaseSession).WithText("good1").WithLocale(Singleton.Instance(this.DatabaseSession).DefaultLocale).Build())
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.DatabaseSession).Piece)
-                .WithInventoryItemKind(new InventoryItemKinds(this.DatabaseSession).NonSerialized)
+                .WithInventoryItemKind(new InventoryItemKinds(this.DatabaseSession).NonSerialised)
                 .Build();
 
             var good2 = new GoodBuilder(this.DatabaseSession)
@@ -413,13 +413,13 @@ namespace Allors.Domain
                 .WithVatRate(vatRate21)
                 .WithLocalisedName(new LocalisedTextBuilder(this.DatabaseSession).WithText("good2").WithLocale(Singleton.Instance(this.DatabaseSession).DefaultLocale).Build())
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.DatabaseSession).Piece)
-                .WithInventoryItemKind(new InventoryItemKinds(this.DatabaseSession).NonSerialized)
+                .WithInventoryItemKind(new InventoryItemKinds(this.DatabaseSession).NonSerialised)
                 .Build();
 
-            var good1InventoryItem = new NonSerializedInventoryItemBuilder(this.DatabaseSession).WithGood(good1).Build();
+            var good1InventoryItem = new NonSerialisedInventoryItemBuilder(this.DatabaseSession).WithGood(good1).Build();
             good1InventoryItem.AddInventoryItemVariance(new InventoryItemVarianceBuilder(this.DatabaseSession).WithQuantity(100).WithReason(new VarianceReasons(this.DatabaseSession).Ruined).Build());
 
-            var good2InventoryItem = new NonSerializedInventoryItemBuilder(this.DatabaseSession).WithGood(good2).Build();
+            var good2InventoryItem = new NonSerialisedInventoryItemBuilder(this.DatabaseSession).WithGood(good2).Build();
             good2InventoryItem.AddInventoryItemVariance(new InventoryItemVarianceBuilder(this.DatabaseSession).WithQuantity(100).WithReason(new VarianceReasons(this.DatabaseSession).Ruined).Build());
 
             this.DatabaseSession.Derive();
@@ -527,23 +527,23 @@ namespace Allors.Domain
             var good1 = new GoodBuilder(this.DatabaseSession)
                 .WithSku("10101")
                 .WithLocalisedName(new LocalisedTextBuilder(this.DatabaseSession).WithText("good1").WithLocale(Singleton.Instance(this.DatabaseSession).DefaultLocale).Build())
-                .WithInventoryItemKind(new InventoryItemKinds(this.DatabaseSession).NonSerialized)
+                .WithInventoryItemKind(new InventoryItemKinds(this.DatabaseSession).NonSerialised)
                 .WithVatRate(vatRate21)
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.DatabaseSession).Piece)
                 .Build();
 
-            var good1InventoryItem = new NonSerializedInventoryItemBuilder(this.DatabaseSession).WithGood(good1).Build();
+            var good1InventoryItem = new NonSerialisedInventoryItemBuilder(this.DatabaseSession).WithGood(good1).Build();
             good1InventoryItem.AddInventoryItemVariance(new InventoryItemVarianceBuilder(this.DatabaseSession).WithQuantity(100).WithReason(new VarianceReasons(this.DatabaseSession).Ruined).Build());
 
             var good2 = new GoodBuilder(this.DatabaseSession)
                 .WithSku("10202")
                 .WithLocalisedName(new LocalisedTextBuilder(this.DatabaseSession).WithText("good2").WithLocale(Singleton.Instance(this.DatabaseSession).DefaultLocale).Build())
-                .WithInventoryItemKind(new InventoryItemKinds(this.DatabaseSession).NonSerialized)
+                .WithInventoryItemKind(new InventoryItemKinds(this.DatabaseSession).NonSerialised)
                 .WithVatRate(vatRate21)
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.DatabaseSession).Piece)
                 .Build();
 
-            var good2InventoryItem = new NonSerializedInventoryItemBuilder(this.DatabaseSession).WithGood(good2).Build();
+            var good2InventoryItem = new NonSerialisedInventoryItemBuilder(this.DatabaseSession).WithGood(good2).Build();
             good2InventoryItem.AddInventoryItemVariance(new InventoryItemVarianceBuilder(this.DatabaseSession).WithQuantity(100).WithReason(new VarianceReasons(this.DatabaseSession).Theft).Build());
 
             var mechelen = new CityBuilder(this.DatabaseSession).WithName("Mechelen").Build();
@@ -600,12 +600,12 @@ namespace Allors.Domain
             var good1 = new GoodBuilder(this.DatabaseSession)
                 .WithSku("10101")
                 .WithLocalisedName(new LocalisedTextBuilder(this.DatabaseSession).WithText("good1").WithLocale(Singleton.Instance(this.DatabaseSession).DefaultLocale).Build())
-                .WithInventoryItemKind(new InventoryItemKinds(this.DatabaseSession).NonSerialized)
+                .WithInventoryItemKind(new InventoryItemKinds(this.DatabaseSession).NonSerialised)
                 .WithVatRate(vatRate21)
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.DatabaseSession).Piece)
                 .Build();
 
-            var inventoryItem = new NonSerializedInventoryItemBuilder(this.DatabaseSession).WithGood(good1).Build();
+            var inventoryItem = new NonSerialisedInventoryItemBuilder(this.DatabaseSession).WithGood(good1).Build();
             inventoryItem.AddInventoryItemVariance(new InventoryItemVarianceBuilder(this.DatabaseSession).WithQuantity(100).WithReason(new VarianceReasons(this.DatabaseSession).Ruined).Build());
 
             var mechelen = new CityBuilder(this.DatabaseSession).WithName("Mechelen").Build();
@@ -652,12 +652,12 @@ namespace Allors.Domain
             var good1 = new GoodBuilder(this.DatabaseSession)
                 .WithSku("10101")
                 .WithLocalisedName(new LocalisedTextBuilder(this.DatabaseSession).WithText("good1").WithLocale(Singleton.Instance(this.DatabaseSession).DefaultLocale).Build())
-                .WithInventoryItemKind(new InventoryItemKinds(this.DatabaseSession).NonSerialized)
+                .WithInventoryItemKind(new InventoryItemKinds(this.DatabaseSession).NonSerialised)
                 .WithVatRate(vatRate21)
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.DatabaseSession).Piece)
                 .Build();
 
-            var inventoryItem = new NonSerializedInventoryItemBuilder(this.DatabaseSession).WithGood(good1).Build();
+            var inventoryItem = new NonSerialisedInventoryItemBuilder(this.DatabaseSession).WithGood(good1).Build();
             inventoryItem.AddInventoryItemVariance(new InventoryItemVarianceBuilder(this.DatabaseSession).WithQuantity(100).WithReason(new VarianceReasons(this.DatabaseSession).Ruined).Build());
 
             var mechelen = new CityBuilder(this.DatabaseSession).WithName("Mechelen").Build();
@@ -711,12 +711,12 @@ namespace Allors.Domain
             var good1 = new GoodBuilder(this.DatabaseSession)
                 .WithSku("10101")
                 .WithLocalisedName(new LocalisedTextBuilder(this.DatabaseSession).WithText("good1").WithLocale(Singleton.Instance(this.DatabaseSession).DefaultLocale).Build())
-                .WithInventoryItemKind(new InventoryItemKinds(this.DatabaseSession).NonSerialized)
+                .WithInventoryItemKind(new InventoryItemKinds(this.DatabaseSession).NonSerialised)
                 .WithVatRate(vatRate21)
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.DatabaseSession).Piece)
                 .Build();
 
-            var inventoryItem = new NonSerializedInventoryItemBuilder(this.DatabaseSession).WithGood(good1).Build();
+            var inventoryItem = new NonSerialisedInventoryItemBuilder(this.DatabaseSession).WithGood(good1).Build();
             inventoryItem.AddInventoryItemVariance(new InventoryItemVarianceBuilder(this.DatabaseSession).WithQuantity(100).WithReason(new VarianceReasons(this.DatabaseSession).Ruined).Build());
 
             this.DatabaseSession.Derive();
@@ -771,11 +771,11 @@ namespace Allors.Domain
                 .WithSku("10101")
                 .WithLocalisedName(new LocalisedTextBuilder(this.DatabaseSession).WithText("good1").WithLocale(Singleton.Instance(this.DatabaseSession).DefaultLocale).Build())
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.DatabaseSession).Piece)
-                .WithInventoryItemKind(new InventoryItemKinds(this.DatabaseSession).NonSerialized)
+                .WithInventoryItemKind(new InventoryItemKinds(this.DatabaseSession).NonSerialised)
                 .WithVatRate(vatRate21)
                 .Build();
 
-            var inventoryItem = new NonSerializedInventoryItemBuilder(this.DatabaseSession).WithGood(good1).Build();
+            var inventoryItem = new NonSerialisedInventoryItemBuilder(this.DatabaseSession).WithGood(good1).Build();
             inventoryItem.AddInventoryItemVariance(new InventoryItemVarianceBuilder(this.DatabaseSession).WithQuantity(100).WithReason(new VarianceReasons(this.DatabaseSession).Ruined).Build());
 
             var mechelen = new CityBuilder(this.DatabaseSession).WithName("Mechelen").Build();
@@ -848,10 +848,10 @@ namespace Allors.Domain
                 .WithSku("10101")
                 .WithLocalisedName(new LocalisedTextBuilder(this.DatabaseSession).WithText("good1").WithLocale(Singleton.Instance(this.DatabaseSession).DefaultLocale).Build())
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.DatabaseSession).Piece)
-                .WithInventoryItemKind(new InventoryItemKinds(this.DatabaseSession).NonSerialized)
+                .WithInventoryItemKind(new InventoryItemKinds(this.DatabaseSession).NonSerialised)
                 .WithVatRate(vatRate21).Build();
 
-            var inventoryItem = new NonSerializedInventoryItemBuilder(this.DatabaseSession).WithGood(good1).Build();
+            var inventoryItem = new NonSerialisedInventoryItemBuilder(this.DatabaseSession).WithGood(good1).Build();
             inventoryItem.AddInventoryItemVariance(new InventoryItemVarianceBuilder(this.DatabaseSession).WithQuantity(100).WithReason(new VarianceReasons(this.DatabaseSession).Ruined).Build());
 
             var mechelen = new CityBuilder(this.DatabaseSession).WithName("Mechelen").Build();
@@ -905,10 +905,10 @@ namespace Allors.Domain
                 .WithSku("10101")
                 .WithLocalisedName(new LocalisedTextBuilder(this.DatabaseSession).WithText("good1").WithLocale(Singleton.Instance(this.DatabaseSession).DefaultLocale).Build())
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.DatabaseSession).Piece)
-                .WithInventoryItemKind(new InventoryItemKinds(this.DatabaseSession).NonSerialized)
+                .WithInventoryItemKind(new InventoryItemKinds(this.DatabaseSession).NonSerialised)
                 .WithVatRate(vatRate21).Build();
 
-            var inventoryItem = new NonSerializedInventoryItemBuilder(this.DatabaseSession).WithGood(good1).Build();
+            var inventoryItem = new NonSerialisedInventoryItemBuilder(this.DatabaseSession).WithGood(good1).Build();
             inventoryItem.AddInventoryItemVariance(new InventoryItemVarianceBuilder(this.DatabaseSession).WithQuantity(100).WithReason(new VarianceReasons(this.DatabaseSession).Ruined).Build());
 
             var mechelen = new CityBuilder(this.DatabaseSession).WithName("Mechelen").Build();
@@ -973,10 +973,10 @@ namespace Allors.Domain
                 .WithSku("10101")
                 .WithLocalisedName(new LocalisedTextBuilder(this.DatabaseSession).WithText("good1").WithLocale(Singleton.Instance(this.DatabaseSession).DefaultLocale).Build())
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.DatabaseSession).Piece)
-                .WithInventoryItemKind(new InventoryItemKinds(this.DatabaseSession).NonSerialized)
+                .WithInventoryItemKind(new InventoryItemKinds(this.DatabaseSession).NonSerialised)
                 .WithVatRate(vatRate21).Build();
 
-            var inventoryItem = new NonSerializedInventoryItemBuilder(this.DatabaseSession).WithGood(good1).Build();
+            var inventoryItem = new NonSerialisedInventoryItemBuilder(this.DatabaseSession).WithGood(good1).Build();
             inventoryItem.AddInventoryItemVariance(new InventoryItemVarianceBuilder(this.DatabaseSession).WithQuantity(100).WithReason(new VarianceReasons(this.DatabaseSession).Ruined).Build());
 
             var mechelen = new CityBuilder(this.DatabaseSession).WithName("Mechelen").Build();
@@ -1050,12 +1050,12 @@ namespace Allors.Domain
             var good1 = new GoodBuilder(this.DatabaseSession)
                 .WithSku("10101")
                 .WithLocalisedName(new LocalisedTextBuilder(this.DatabaseSession).WithText("good1").WithLocale(Singleton.Instance(this.DatabaseSession).DefaultLocale).Build())
-                .WithInventoryItemKind(new InventoryItemKinds(this.DatabaseSession).NonSerialized)
+                .WithInventoryItemKind(new InventoryItemKinds(this.DatabaseSession).NonSerialised)
                 .WithVatRate(vatRate21)
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.DatabaseSession).Piece)
                 .Build();
 
-            var inventoryItem = new NonSerializedInventoryItemBuilder(this.DatabaseSession).WithGood(good1).Build();
+            var inventoryItem = new NonSerialisedInventoryItemBuilder(this.DatabaseSession).WithGood(good1).Build();
             inventoryItem.AddInventoryItemVariance(new InventoryItemVarianceBuilder(this.DatabaseSession).WithQuantity(100).WithReason(new VarianceReasons(this.DatabaseSession).Ruined).Build());
 
             var mechelen = new CityBuilder(this.DatabaseSession).WithName("Mechelen").Build();
@@ -1184,11 +1184,11 @@ namespace Allors.Domain
                 .WithSku("10101")
                 .WithVatRate(vatRate21)
                 .WithLocalisedName(new LocalisedTextBuilder(this.DatabaseSession).WithText("good1").WithLocale(Singleton.Instance(this.DatabaseSession).DefaultLocale).Build())
-                .WithInventoryItemKind(new InventoryItemKinds(this.DatabaseSession).NonSerialized)
+                .WithInventoryItemKind(new InventoryItemKinds(this.DatabaseSession).NonSerialised)
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.DatabaseSession).Piece)
                 .Build();
 
-            var inventoryItem = new NonSerializedInventoryItemBuilder(this.DatabaseSession).WithGood(good1).Build();
+            var inventoryItem = new NonSerialisedInventoryItemBuilder(this.DatabaseSession).WithGood(good1).Build();
             inventoryItem.AddInventoryItemVariance(new InventoryItemVarianceBuilder(this.DatabaseSession).WithQuantity(100).WithReason(new VarianceReasons(this.DatabaseSession).Ruined).Build());
 
             var mechelen = new CityBuilder(this.DatabaseSession).WithName("Mechelen").Build();
@@ -1265,10 +1265,10 @@ namespace Allors.Domain
                 .WithSku("10101")
                 .WithLocalisedName(new LocalisedTextBuilder(this.DatabaseSession).WithText("good1").WithLocale(Singleton.Instance(this.DatabaseSession).DefaultLocale).Build())
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.DatabaseSession).Piece)
-                .WithInventoryItemKind(new InventoryItemKinds(this.DatabaseSession).NonSerialized)
+                .WithInventoryItemKind(new InventoryItemKinds(this.DatabaseSession).NonSerialised)
                 .WithVatRate(vatRate21).Build();
 
-            var inventoryItem = new NonSerializedInventoryItemBuilder(this.DatabaseSession).WithGood(good1).Build();
+            var inventoryItem = new NonSerialisedInventoryItemBuilder(this.DatabaseSession).WithGood(good1).Build();
             inventoryItem.AddInventoryItemVariance(new InventoryItemVarianceBuilder(this.DatabaseSession).WithQuantity(100).WithReason(new VarianceReasons(this.DatabaseSession).Ruined).Build());
 
             var mechelen = new CityBuilder(this.DatabaseSession).WithName("Mechelen").Build();
@@ -1345,11 +1345,11 @@ namespace Allors.Domain
                 .WithSku("10101")
                 .WithVatRate(vatRate21)
                 .WithLocalisedName(new LocalisedTextBuilder(this.DatabaseSession).WithText("good1").WithLocale(Singleton.Instance(this.DatabaseSession).DefaultLocale).Build())
-                .WithInventoryItemKind(new InventoryItemKinds(this.DatabaseSession).NonSerialized)
+                .WithInventoryItemKind(new InventoryItemKinds(this.DatabaseSession).NonSerialised)
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.DatabaseSession).Piece)
                 .Build();
 
-            var inventoryItem = new NonSerializedInventoryItemBuilder(this.DatabaseSession).WithGood(good1).Build();
+            var inventoryItem = new NonSerialisedInventoryItemBuilder(this.DatabaseSession).WithGood(good1).Build();
             inventoryItem.AddInventoryItemVariance(new InventoryItemVarianceBuilder(this.DatabaseSession).WithQuantity(100).WithReason(new VarianceReasons(this.DatabaseSession).Ruined).Build());
 
             this.DatabaseSession.Derive();
@@ -1424,10 +1424,10 @@ namespace Allors.Domain
                 .WithSku("10101")
                 .WithLocalisedName(new LocalisedTextBuilder(this.DatabaseSession).WithText("good1").WithLocale(Singleton.Instance(this.DatabaseSession).DefaultLocale).Build())
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.DatabaseSession).Piece)
-                .WithInventoryItemKind(new InventoryItemKinds(this.DatabaseSession).NonSerialized)
+                .WithInventoryItemKind(new InventoryItemKinds(this.DatabaseSession).NonSerialised)
                 .WithVatRate(vatRate21).Build();
 
-            var inventoryItem = new NonSerializedInventoryItemBuilder(this.DatabaseSession).WithGood(good1).Build();
+            var inventoryItem = new NonSerialisedInventoryItemBuilder(this.DatabaseSession).WithGood(good1).Build();
             inventoryItem.AddInventoryItemVariance(new InventoryItemVarianceBuilder(this.DatabaseSession).WithQuantity(100).WithReason(new VarianceReasons(this.DatabaseSession).Ruined).Build());
 
             var mechelen = new CityBuilder(this.DatabaseSession).WithName("Mechelen").Build();
@@ -1520,12 +1520,12 @@ namespace Allors.Domain
             var good1 = new GoodBuilder(this.DatabaseSession)
                 .WithSku("10101")
                 .WithLocalisedName(new LocalisedTextBuilder(this.DatabaseSession).WithText("good1").WithLocale(Singleton.Instance(this.DatabaseSession).DefaultLocale).Build())
-                .WithInventoryItemKind(new InventoryItemKinds(this.DatabaseSession).NonSerialized)
+                .WithInventoryItemKind(new InventoryItemKinds(this.DatabaseSession).NonSerialised)
                 .WithVatRate(vatRate21)
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.DatabaseSession).Piece)
                 .Build();
 
-            var inventoryItem = new NonSerializedInventoryItemBuilder(this.DatabaseSession).WithGood(good1).Build();
+            var inventoryItem = new NonSerialisedInventoryItemBuilder(this.DatabaseSession).WithGood(good1).Build();
             inventoryItem.AddInventoryItemVariance(new InventoryItemVarianceBuilder(this.DatabaseSession).WithQuantity(100).WithReason(new VarianceReasons(this.DatabaseSession).Ruined).Build());
 
             var mechelenAddress = new PostalAddressBuilder(this.DatabaseSession).WithGeographicBoundary(mechelen).WithAddress1("Haverwerf 15").Build();

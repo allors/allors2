@@ -72,19 +72,19 @@ namespace Allors.Domain
                         {
                             if (!this.ExistInventoryItem || !this.InventoryItem.Part.Equals(good.FinishedGood))
                             {
-                                var inventoryItems = good.FinishedGood.InventoryItemsWherePart;
-                                inventoryItems.Filter.AddEquals(M.InventoryItem.Facility, order.ShipToBuyer.DefaultFacility);
-                                this.InventoryItem = inventoryItems.First as NonSerializedInventoryItem;
+                                var inventoryItems = good.FinishedGood.InventoryItemVersionedsWherePart;
+                                inventoryItems.Filter.AddEquals(M.InventoryItemVersioned.Facility, order.ShipToBuyer.DefaultFacility);
+                                this.InventoryItem = inventoryItems.First as NonSerialisedInventoryItem;
                             }
                         }
                         else
                         {
                             if (!this.ExistInventoryItem || !this.InventoryItem.Good.Equals(good))
                             {
-                                var inventoryItems = good.InventoryItemsWhereGood;
-                                inventoryItems.Filter.AddEquals(M.InventoryItem.Facility, order.ShipToBuyer.DefaultFacility);
-                                this.InventoryItem = inventoryItems.First as NonSerializedInventoryItem ??
-                                                     new NonSerializedInventoryItemBuilder(this.Strategy.Session).WithGood(good).Build();
+                                var inventoryItems = good.InventoryItemVersionedsWhereGood;
+                                inventoryItems.Filter.AddEquals(M.InventoryItemVersioned.Facility, order.ShipToBuyer.DefaultFacility);
+                                this.InventoryItem = inventoryItems.First as NonSerialisedInventoryItem ??
+                                                     new NonSerialisedInventoryItemBuilder(this.Strategy.Session).WithGood(good).Build();
                             }
                         }
                     }
@@ -94,9 +94,9 @@ namespace Allors.Domain
                 {
                     if (!this.ExistInventoryItem || !this.InventoryItem.Part.Equals(purchaseOrderItem.Part))
                     {
-                        var inventoryItems = purchaseOrderItem.Part.InventoryItemsWherePart;
-                        inventoryItems.Filter.AddEquals(M.InventoryItem.Facility, order.ShipToBuyer.DefaultFacility);
-                        this.InventoryItem = inventoryItems.First as NonSerializedInventoryItem;
+                        var inventoryItems = purchaseOrderItem.Part.InventoryItemVersionedsWherePart;
+                        inventoryItems.Filter.AddEquals(M.InventoryItemVersioned.Facility, order.ShipToBuyer.DefaultFacility);
+                        this.InventoryItem = inventoryItems.First as NonSerialisedInventoryItem;
                     }
                 }
             }

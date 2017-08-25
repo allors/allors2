@@ -38,7 +38,7 @@ namespace Allors.Domain
                 .WithLocalisedName(new LocalisedTextBuilder(this.DatabaseSession).WithText("good").WithLocale(Singleton.Instance(this.DatabaseSession).DefaultLocale).Build())
                 .WithSku("10101")
                 .WithVatRate(new VatRateBuilder(this.DatabaseSession).WithRate(21).Build())
-                .WithInventoryItemKind(new InventoryItemKinds(this.DatabaseSession).NonSerialized)
+                .WithInventoryItemKind(new InventoryItemKinds(this.DatabaseSession).NonSerialised)
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.DatabaseSession).Piece)
                 .Build();
 
@@ -98,7 +98,7 @@ namespace Allors.Domain
         }
 
         [Fact]
-        public void GivenNewGood_WhenDeriving_ThenNonSerializedInventryItemIsCreatedForEveryFacility()
+        public void GivenNewGood_WhenDeriving_ThenNonSerialisedInventryItemIsCreatedForEveryFacility()
         {
             var supplier = new OrganisationBuilder(this.DatabaseSession).WithName("supplier").WithOrganisationRole(new OrganisationRoles(this.DatabaseSession).Supplier).Build();
             var internalOrganisation = new InternalOrganisations(this.DatabaseSession).FindBy(M.InternalOrganisation.Name, "internalOrganisation");
@@ -121,7 +121,7 @@ namespace Allors.Domain
                 .WithLocalisedName(new LocalisedTextBuilder(this.DatabaseSession).WithText("good").WithLocale(Singleton.Instance(this.DatabaseSession).DefaultLocale).Build())
                 .WithSku("10101")
                 .WithVatRate(new VatRateBuilder(this.DatabaseSession).WithRate(21).Build())
-                .WithInventoryItemKind(new InventoryItemKinds(this.DatabaseSession).NonSerialized)
+                .WithInventoryItemKind(new InventoryItemKinds(this.DatabaseSession).NonSerialised)
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.DatabaseSession).Piece)
                 .Build();
 
@@ -134,13 +134,13 @@ namespace Allors.Domain
 
             this.DatabaseSession.Derive(); 
 
-            Assert.Equal(2, good.InventoryItemsWhereGood.Count);
-            Assert.Equal(1, internalOrganisation.DefaultFacility.InventoryItemsWhereFacility.Count);
-            Assert.Equal(1, secondFacility.InventoryItemsWhereFacility.Count);
+            Assert.Equal(2, good.InventoryItemVersionedsWhereGood.Count);
+            Assert.Equal(1, internalOrganisation.DefaultFacility.InventoryItemVersionedsWhereFacility.Count);
+            Assert.Equal(1, secondFacility.InventoryItemVersionedsWhereFacility.Count);
         }
 
         [Fact]
-        public void GivenNewGoodCoredOnFinishedGood_WhenDeriving_ThenNonSerializedInventryItemIsCreatedForEveryFinishedGoodAndFacility()
+        public void GivenNewGoodCoredOnFinishedGood_WhenDeriving_ThenNonSerialisedInventryItemIsCreatedForEveryFinishedGoodAndFacility()
         {
             var supplier = new OrganisationBuilder(this.DatabaseSession).WithName("supplier").WithOrganisationRole(new OrganisationRoles(this.DatabaseSession).Supplier).Build();
             var internalOrganisation = new InternalOrganisations(this.DatabaseSession).FindBy(M.InternalOrganisation.Name, "internalOrganisation");
@@ -180,9 +180,9 @@ namespace Allors.Domain
 
             this.DatabaseSession.Derive(); 
 
-            Assert.Equal(2, good.FinishedGood.InventoryItemsWherePart.Count);
-            Assert.Equal(1, internalOrganisation.DefaultFacility.InventoryItemsWhereFacility.Count);
-            Assert.Equal(1, secondFacility.InventoryItemsWhereFacility.Count);
+            Assert.Equal(2, good.FinishedGood.InventoryItemVersionedsWherePart.Count);
+            Assert.Equal(1, internalOrganisation.DefaultFacility.InventoryItemVersionedsWhereFacility.Count);
+            Assert.Equal(1, secondFacility.InventoryItemVersionedsWhereFacility.Count);
         }
     }
 }

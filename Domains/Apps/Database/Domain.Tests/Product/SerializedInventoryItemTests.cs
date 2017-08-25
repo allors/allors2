@@ -1,5 +1,5 @@
 //------------------------------------------------------------------------------------------------- 
-// <copyright file="SerializedInventoryItemTests.cs" company="Allors bvba">
+// <copyright file="SerialisedInventoryItemTests.cs" company="Allors bvba">
 // Copyright 2002-2009 Allors bvba.
 // 
 // Dual Licensed under
@@ -25,7 +25,7 @@ namespace Allors.Domain
     using Xunit;
 
     
-    public class SerializedInventoryItemTests : DomainTest
+    public class SerialisedInventoryItemTests : DomainTest
     {
         [Fact]
         public void GivenInventoryItem_WhenDeriving_ThenRequiredRelationsMustExist()
@@ -33,7 +33,7 @@ namespace Allors.Domain
             var part = new FinishedGoodBuilder(this.DatabaseSession).WithName("part").WithManufacturerId("10101").WithSku("sku").Build();
             this.DatabaseSession.Commit();
 
-            var builder = new SerializedInventoryItemBuilder(this.DatabaseSession);
+            var builder = new SerialisedInventoryItemBuilder(this.DatabaseSession);
             builder.Build();
 
             Assert.True(this.DatabaseSession.Derive(false).HasErrors);
@@ -65,11 +65,11 @@ namespace Allors.Domain
         [Fact]
         public void GivenInventoryItem_WhenBuild_ThenPostBuildRelationsMustExist()
         {
-            var item = new SerializedInventoryItemBuilder(this.DatabaseSession)
+            var item = new SerialisedInventoryItemBuilder(this.DatabaseSession)
                 .WithPart(new FinishedGoodBuilder(this.DatabaseSession).WithName("part").WithManufacturerId("10101").Build())
                 .Build();
 
-            Assert.Equal(new SerializedInventoryItemObjectStates(this.DatabaseSession).Good, item.CurrentObjectState);
+            Assert.Equal(new SerialisedInventoryItemObjectStates(this.DatabaseSession).Good, item.CurrentObjectState);
             Assert.Equal(new Warehouses(this.DatabaseSession).FindBy(M.Warehouse.Name, "facility"), item.Facility);
         }
     }

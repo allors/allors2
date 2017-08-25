@@ -283,18 +283,18 @@ namespace Allors.Domain
                     {
                         if (!this.ExistReservedFromInventoryItem || !this.ReservedFromInventoryItem.Part.Equals(good.FinishedGood))
                         {
-                            var inventoryItems = good.FinishedGood.InventoryItemsWherePart;
-                            inventoryItems.Filter.AddEquals(M.InventoryItem.Facility, this.SalesOrderWhereSalesOrderItem.TakenByInternalOrganisation.DefaultFacility);
-                            this.ReservedFromInventoryItem = inventoryItems.First as NonSerializedInventoryItem;
+                            var inventoryItems = good.FinishedGood.InventoryItemVersionedsWherePart;
+                            inventoryItems.Filter.AddEquals(M.InventoryItemVersioned.Facility, this.SalesOrderWhereSalesOrderItem.TakenByInternalOrganisation.DefaultFacility);
+                            this.ReservedFromInventoryItem = inventoryItems.First as NonSerialisedInventoryItem;
                         }
                     }
                     else
                     {
                         if (!this.ExistReservedFromInventoryItem || !this.ReservedFromInventoryItem.Good.Equals(good))
                         {
-                            var inventoryItems = good.InventoryItemsWhereGood;
-                            inventoryItems.Filter.AddEquals(M.InventoryItem.Facility, this.SalesOrderWhereSalesOrderItem.TakenByInternalOrganisation.DefaultFacility);
-                            this.ReservedFromInventoryItem = inventoryItems.First as NonSerializedInventoryItem;
+                            var inventoryItems = good.InventoryItemVersionedsWhereGood;
+                            inventoryItems.Filter.AddEquals(M.InventoryItemVersioned.Facility, this.SalesOrderWhereSalesOrderItem.TakenByInternalOrganisation.DefaultFacility);
+                            this.ReservedFromInventoryItem = inventoryItems.First as NonSerialisedInventoryItem;
                         }
                     }
                 }

@@ -21,7 +21,7 @@ namespace Allors.Domain
         {
             if (!this.ExistInventoryItemKind)
             {
-                this.InventoryItemKind = new InventoryItemKinds(this.Strategy.Session).NonSerialized;
+                this.InventoryItemKind = new InventoryItemKinds(this.Strategy.Session).NonSerialised;
             }
 
             if (!this.ExistOwnedByParty)
@@ -37,9 +37,9 @@ namespace Allors.Domain
             // TODO:
             if (derivation.ChangeSet.Associations.Contains(this.Id))
             {
-                if (this.ExistInventoryItemsWherePart)
+                if (this.ExistInventoryItemVersionedsWherePart)
                 {
-                    foreach (InventoryItem inventoryItem in this.InventoryItemsWherePart)
+                    foreach (InventoryItem inventoryItem in this.InventoryItemVersionedsWherePart)
                     {
                         derivation.AddDependency(inventoryItem, this);
                     }
@@ -56,11 +56,11 @@ namespace Allors.Domain
 
         public void AppsOnDeriveInventoryItem(IDerivation derivation)
         {
-            if (this.ExistInventoryItemKind && this.InventoryItemKind.Equals(new InventoryItemKinds(this.Strategy.Session).NonSerialized))
+            if (this.ExistInventoryItemKind && this.InventoryItemKind.Equals(new InventoryItemKinds(this.Strategy.Session).NonSerialised))
             {
-                if (!this.ExistInventoryItemsWherePart)
+                if (!this.ExistInventoryItemVersionedsWherePart)
                 {
-                    new NonSerializedInventoryItemBuilder(this.Strategy.Session)
+                    new NonSerialisedInventoryItemBuilder(this.Strategy.Session)
                         .WithFacility(this.OwnedByParty.DefaultFacility)
                         .WithPart(this)
                         .Build();

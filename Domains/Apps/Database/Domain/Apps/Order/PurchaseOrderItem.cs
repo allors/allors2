@@ -301,24 +301,24 @@ namespace Allors.Domain
 
         public void AppsOnDeriveQuantities(IDerivation derivation)
         {
-            NonSerializedInventoryItem inventoryItem = null;
+            NonSerialisedInventoryItem inventoryItem = null;
 
             if (this.ExistProduct)
             {
                 var good = this.Product as Good;
                 if (good != null)
                 {
-                    var inventoryItems = good.InventoryItemsWhereGood;
-                    inventoryItems.Filter.AddEquals(M.InventoryItem.Facility, this.PurchaseOrderWherePurchaseOrderItem.Facility);
-                    inventoryItem = inventoryItems.First as NonSerializedInventoryItem;
+                    var inventoryItems = good.InventoryItemVersionedsWhereGood;
+                    inventoryItems.Filter.AddEquals(M.InventoryItemVersioned.Facility, this.PurchaseOrderWherePurchaseOrderItem.Facility);
+                    inventoryItem = inventoryItems.First as NonSerialisedInventoryItem;
                 }
             }
 
             if (this.ExistPart)
             {
-                var inventoryItems = this.Part.InventoryItemsWherePart;
-                inventoryItems.Filter.AddEquals(M.InventoryItem.Facility, this.PurchaseOrderWherePurchaseOrderItem.Facility);
-                inventoryItem = inventoryItems.First as NonSerializedInventoryItem;
+                var inventoryItems = this.Part.InventoryItemVersionedsWherePart;
+                inventoryItems.Filter.AddEquals(M.InventoryItemVersioned.Facility, this.PurchaseOrderWherePurchaseOrderItem.Facility);
+                inventoryItem = inventoryItems.First as NonSerialisedInventoryItem;
             }
 
             if (this.CurrentObjectState.Equals(new PurchaseOrderItemObjectStates(this.Strategy.Session).InProcess))

@@ -49,13 +49,13 @@ namespace Allors.Domain
                 .WithLocalisedName(new LocalisedTextBuilder(this.DatabaseSession).WithText("good").WithLocale(Singleton.Instance(this.DatabaseSession).DefaultLocale).Build())
                 .WithSku("10101")
                 .WithVatRate(vatRate21)
-                .WithInventoryItemKind(new InventoryItemKinds(this.DatabaseSession).NonSerialized)
+                .WithInventoryItemKind(new InventoryItemKinds(this.DatabaseSession).NonSerialised)
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.DatabaseSession).Piece)
                 .WithProductCategory(level3)
                 .WithProductCategory(category)
                 .Build();
 
-            var goodInventory = new NonSerializedInventoryItemBuilder(this.DatabaseSession)
+            var goodInventory = new NonSerialisedInventoryItemBuilder(this.DatabaseSession)
                 .WithGood(good)
                 .Build();
 

@@ -19,14 +19,14 @@ namespace Allors.Domain
 
     public partial class InventoryItemKinds
     {
-        private static readonly Guid SerializedId = new Guid("2596E2DD-3F5D-4588-A4A2-167D6FBE3FAE");
-        private static readonly Guid NonSerializedId = new Guid("EAA6C331-0DD9-4bb1-8245-12A673304468");
+        private static readonly Guid SerialisedId = new Guid("2596E2DD-3F5D-4588-A4A2-167D6FBE3FAE");
+        private static readonly Guid NonSerialisedId = new Guid("EAA6C331-0DD9-4bb1-8245-12A673304468");
 
         private UniquelyIdentifiableCache<InventoryItemKind> cache;
 
-        public InventoryItemKind Serialized => this.Cache.Get(SerializedId);
+        public InventoryItemKind Serialised => this.Cache.Get(SerialisedId);
 
-        public InventoryItemKind NonSerialized => this.Cache.Get(NonSerializedId);
+        public InventoryItemKind NonSerialised => this.Cache.Get(NonSerialisedId);
 
         private UniquelyIdentifiableCache<InventoryItemKind> Cache => this.cache ?? (this.cache = new UniquelyIdentifiableCache<InventoryItemKind>(this.Session));
 
@@ -38,17 +38,17 @@ namespace Allors.Domain
             var dutchLocale = new Locales(this.Session).DutchNetherlands;
 
             new InventoryItemKindBuilder(this.Session)
-                .WithName("Serialized")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Serialized").WithLocale(englishLocale).Build())
+                .WithName("Serialised")
+                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Serialised").WithLocale(englishLocale).Build())
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Op serienummer").WithLocale(dutchLocale).Build())
-                .WithUniqueId(SerializedId)
+                .WithUniqueId(SerialisedId)
                 .Build();
             
             new InventoryItemKindBuilder(this.Session)
                 .WithName("Non serialized")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Non serialized").WithLocale(englishLocale).Build())
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Zonder serienummer").WithLocale(dutchLocale).Build())
-                .WithUniqueId(NonSerializedId)
+                .WithUniqueId(NonSerialisedId)
                 .Build();
         }
     }

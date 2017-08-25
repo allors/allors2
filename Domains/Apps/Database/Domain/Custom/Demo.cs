@@ -229,7 +229,7 @@ namespace Allors
                 .WithLocalisedDescription(new LocalisedTextBuilder(this.Session).WithText("perfect blue with nice curves").WithLocale(Singleton.Instance(this.Session).DefaultLocale).Build())
                 .WithSku("10101")
                 .WithVatRate(new VatRateBuilder(this.Session).WithRate(21).Build())
-                .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialized)
+                .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
                 .WithPrimaryProductCategory(productCategory3)
                 .Build();
         }
