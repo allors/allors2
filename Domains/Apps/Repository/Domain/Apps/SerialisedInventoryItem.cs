@@ -49,6 +49,7 @@ namespace Allors.Repository
         [RoleId("9d19f214-3ed9-4e2d-a924-2d513ca01934")]
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
+        [Workspace]
         [Derived]
         [Indexed]
         [Required]
