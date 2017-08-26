@@ -69,6 +69,7 @@ namespace Allors.Domain
 
         public void AppsOnPostDerive(ObjectOnPostDerive method)
         {
+
             var isNewVersion =
                 !this.ExistCurrentVersion ||
                 !object.Equals(this.SerialNumber, this.CurrentVersion.SerialNumber) ||
