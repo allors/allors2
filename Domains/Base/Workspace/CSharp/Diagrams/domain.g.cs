@@ -31,13 +31,16 @@ namespace Allors.Domain
 				}
 				public interface User : Localised 
 				{
-								global::System.Boolean? UserEmailConfirmed {set;}
-
-
 								global::System.String UserName {set;}
 
 
+								global::System.String NormalizedUserName {set;}
+
+
 								global::System.String UserEmail {set;}
+
+
+								global::System.Boolean? UserEmailConfirmed {set;}
 
 
 								TaskList TaskList {set;}

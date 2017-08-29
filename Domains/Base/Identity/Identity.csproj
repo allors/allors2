@@ -1,0 +1,30 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.0</TargetFramework>
+    <UserSecretsId>aspnet-Identity-6876B9D4-22CB-488D-BA00-9D69611A1063</UserSecretsId>
+  </PropertyGroup>
+
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.0" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.0.0" PrivateAssets="All" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <DotNetCliToolReference Include="Microsoft.EntityFrameworkCore.Tools.DotNet" Version="2.0.0" />
+    <DotNetCliToolReference Include="Microsoft.Extensions.SecretManager.Tools" Version="2.0.0" />
+    <DotNetCliToolReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Tools" Version="2.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Platform\Adapters\Allors.Adapters.Memory\Allors.Adapters.Memory.csproj" />
+    <ProjectReference Include="..\..\..\Platform\Adapters\Allors.Adapters.Object.SqlClient\Allors.Adapters.Object.SqlClient.csproj" />
+    <ProjectReference Include="..\..\..\Platform\Framework\Allors\Allors.csproj" />
+    <ProjectReference Include="..\Database\Domain\Domain.csproj" />
+    <ProjectReference Include="..\Database\Meta\Meta.csproj" />
+    <ProjectReference Include="..\Database\Resources\Resources.csproj" />
+    <ProjectReference Include="..\Database\Services\Services.csproj" />
+  </ItemGroup>
+
+</Project>

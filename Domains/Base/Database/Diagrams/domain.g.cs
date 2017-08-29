@@ -55,13 +55,15 @@ namespace Allors.Domain
 		}
 		public interface User  : SecurityTokenOwner, AccessControlledObject, Localised 
 		{
-						global::System.Boolean? UserEmailConfirmed {set;}
-
 						global::System.String UserName {set;}
+
+						global::System.String NormalizedUserName {set;}
+
+						global::System.String UserPasswordHash {set;}
 
 						global::System.String UserEmail {set;}
 
-						global::System.String UserPasswordHash {set;}
+						global::System.Boolean? UserEmailConfirmed {set;}
 
 						TaskList TaskList {set;}
 

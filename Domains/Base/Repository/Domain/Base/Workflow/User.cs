@@ -29,14 +29,6 @@ namespace Allors.Repository
     public partial interface User : SecurityTokenOwner, AccessControlledObject, Localised 
     {
         #region Allors
-        [Id("0b3b650b-fcd4-4475-b5c4-e2ee4f39b0be")]
-        [AssociationId("c89a8e3f-6f76-41ac-b4dc-839f9080d917")]
-        [RoleId("1b1409b8-add7-494c-a895-002fc969ac7b")]
-        #endregion
-        [Workspace]
-        bool UserEmailConfirmed { get; set; }
-
-        #region Allors
         [Id("5e8ab257-1a1c-4448-aacc-71dbaaba525b")]
         [AssociationId("eca7ef36-8928-4116-bfce-1896a685fe8c")]
         [RoleId("3b7d40a0-18ea-4018-b797-6417723e1890")]
@@ -44,6 +36,23 @@ namespace Allors.Repository
         #endregion
         [Workspace]
         string UserName { get; set; }
+
+        #region Allors
+        [Id("7397B596-D8FA-4E3C-8E0E-EA24790FE2E4")]
+        [AssociationId("19CAD82C-6538-4C46-AA3F-75C082CC8204")]
+        [RoleId("FAF89920-880F-4600-BAF1-A27A5268444A")]
+        [Size(256)]
+        #endregion
+        [Workspace]
+        string NormalizedUserName { get; set; }
+
+        #region Allors
+        [Id("ea0c7596-c0b8-4984-bc25-cb4b4857954e")]
+        [AssociationId("8537ddb5-8ce2-4f35-a16f-207f2519ba9c")]
+        [RoleId("75ee3ec2-02bb-4666-a6f0-bac84c844dfa")]
+        [Size(256)]
+        #endregion
+        string UserPasswordHash { get; set; }
 
         #region Allors
         [Id("c1ae3652-5854-4b68-9890-a954067767fc")]
@@ -55,13 +64,13 @@ namespace Allors.Repository
         string UserEmail { get; set; }
 
         #region Allors
-        [Id("ea0c7596-c0b8-4984-bc25-cb4b4857954e")]
-        [AssociationId("8537ddb5-8ce2-4f35-a16f-207f2519ba9c")]
-        [RoleId("75ee3ec2-02bb-4666-a6f0-bac84c844dfa")]
-        [Size(256)]
+        [Id("0b3b650b-fcd4-4475-b5c4-e2ee4f39b0be")]
+        [AssociationId("c89a8e3f-6f76-41ac-b4dc-839f9080d917")]
+        [RoleId("1b1409b8-add7-494c-a895-002fc969ac7b")]
         #endregion
-        string UserPasswordHash { get; set; }
-
+        [Workspace]
+        bool UserEmailConfirmed { get; set; }
+        
         #region Allors
         [Id("b4c09bec-168f-4f05-8ec6-919d1a24ae96")]
         [AssociationId("3d05bc18-c205-424a-ab26-fec24eafbd78")]
