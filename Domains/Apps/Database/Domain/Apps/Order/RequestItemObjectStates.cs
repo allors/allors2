@@ -42,7 +42,7 @@ namespace Allors.Domain
 
             new RequestItemObjectStateBuilder(this.Session)
                 .WithUniqueId(DraftId)
-                .WithName("Draft")
+                .WithName("Anonymous")
                 .Build();
 
             new RequestItemObjectStateBuilder(this.Session)

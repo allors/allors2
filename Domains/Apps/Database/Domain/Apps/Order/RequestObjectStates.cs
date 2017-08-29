@@ -19,7 +19,7 @@ namespace Allors.Domain
 
     public partial class RequestObjectStates
     {
-        private static readonly Guid DraftId = new Guid("2F054949-E30C-4954-9A3C-191559DE8315");
+        private static readonly Guid AnonymousId = new Guid("2F054949-E30C-4954-9A3C-191559DE8315");
         private static readonly Guid SubmittedId = new Guid("DB03407D-BCB1-433A-B4E9-26CEA9A71BFD");
         private static readonly Guid CancelledId = new Guid("6B839C79-689D-412C-9C27-B553CF350662");
         private static readonly Guid QuotedId = new Guid("79A9BAF5-D16F-4FA7-A2A0-CA20BF79833F");
@@ -28,7 +28,7 @@ namespace Allors.Domain
 
         private UniquelyIdentifiableCache<RequestObjectState> stateCache;
 
-        public RequestObjectState Draft => this.StateCache.Get(DraftId);
+        public RequestObjectState Anonymous => this.StateCache.Get(AnonymousId);
 
         public RequestObjectState Submitted => this.StateCache.Get(SubmittedId);
 
@@ -50,8 +50,8 @@ namespace Allors.Domain
             var dutchLocale = new Locales(this.Session).DutchNetherlands;
 
             new RequestObjectStateBuilder(this.Session)
-                .WithUniqueId(DraftId)
-                .WithName("Draft")
+                .WithUniqueId(AnonymousId)
+                .WithName("Anonymous")
                 .Build();
 
             new RequestObjectStateBuilder(this.Session)

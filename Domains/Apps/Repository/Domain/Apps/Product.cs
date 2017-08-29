@@ -151,7 +151,7 @@ namespace Allors.Repository
         #endregion
         [Size(256)]
         [Workspace]
-        [Derived()]
+        [Derived]
         string Name { get; set; }
 
         #region Allors

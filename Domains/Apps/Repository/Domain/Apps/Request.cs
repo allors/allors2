@@ -138,6 +138,30 @@ namespace Allors.Repository
         ContactMechanism FullfillContactMechanism { get; set; }
 
         #region Allors
+        [Id("00066124-DEC8-47DA-B00D-28A3D4BC949D")]
+        [AssociationId("5BF00DC5-320E-4FBC-8AC2-9E4B2F9B084C")]
+        [RoleId("7E6010F8-5644-4A27-8512-F10B0FCB125B")]
+        #endregion
+        [Workspace]
+        string EmailAddress { get; set; }
+
+        #region Allors
+        [Id("04D35F19-31F1-4AA5-A2FB-C02B2D3CBC08")]
+        [AssociationId("8DD50E5C-4737-4A5A-8627-831FA0DEFDB0")]
+        [RoleId("ABA43478-4CD3-4C3C-AB65-A97DE902DC3F")]
+        #endregion
+        [Workspace]
+        string TelephoneNumber { get; set; }
+
+        #region Allors
+        [Id("C38275E1-AC46-46C9-9E27-B08D6BA30BE3")]
+        [AssociationId("98519B8D-663B-48DE-A608-0BD76C842276")]
+        [RoleId("019EE89A-A427-4A45-AAF6-E403B44A3AFA")]
+        #endregion
+        [Workspace]
+        string TelephoneCountryCode { get; set; }
+        
+        #region Allors
         [Id("1C897312-5897-4F04-98DC-899179B58680")]
         #endregion
         [Workspace]

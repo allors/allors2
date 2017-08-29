@@ -36,6 +36,9 @@ namespace Allors.Repository
         public RequestStatus CurrentRequestStatus { get; set; }
 
         public ContactMechanism FullfillContactMechanism { get; set; }
+        public string EmailAddress { get; set; }
+        public string TelephoneNumber { get; set; }
+        public string TelephoneCountryCode { get; set; }
 
         public Permission[] DeniedPermissions { get; set; }
 

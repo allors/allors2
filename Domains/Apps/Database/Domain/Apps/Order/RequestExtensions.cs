@@ -24,11 +24,6 @@ namespace Allors.Domain
 
         public static void AppsOnBuild(this Request @this, ObjectOnBuild method)
         {
-            if (!@this.ExistCurrentObjectState)
-            {
-                @this.CurrentObjectState = new RequestObjectStates(@this.Strategy.Session).Draft;
-            }
-
             if (!@this.ExistRequestDate)
             {
                 @this.RequestDate = DateTime.UtcNow;
@@ -47,6 +42,27 @@ namespace Allors.Domain
 
         public static void DeriveCurrentObjectState(this Request @this)
         {
+            if (!@this.ExistCurrentObjectState && !@this.ExistOriginator)
+            {
+                @this.CurrentObjectState = new RequestObjectStates(@this.Strategy.Session).Anonymous;
+            }
+
+            if (!@this.ExistCurrentObjectState && @this.ExistOriginator)
+            {
+                @this.CurrentObjectState = new RequestObjectStates(@this.Strategy.Session).Submitted;
+            }
+
+            if (@this.ExistOriginator && Equals(@this.CurrentObjectState, new RequestObjectStates(@this.Strategy.Session).Anonymous))
+            {
+                var currentStatus = new RequestStatusBuilder(@this.Strategy.Session)
+                    .WithRequestObjectState(new RequestObjectStates(@this.Strategy.Session).Submitted)
+                    .WithStartDateTime(DateTime.UtcNow)
+                    .Build();
+                @this.AddRequestStatus(currentStatus);
+                @this.CurrentRequestStatus = currentStatus;
+                @this.CurrentObjectState = currentStatus.RequestObjectState;
+            }
+
             if (@this.ExistCurrentObjectState && !@this.CurrentObjectState.Equals(@this.LastObjectState))
             {
                 var currentStatus = new RequestStatusBuilder(@this.Strategy.Session)
@@ -55,6 +71,7 @@ namespace Allors.Domain
                     .Build();
                 @this.AddRequestStatus(currentStatus);
                 @this.CurrentRequestStatus = currentStatus;
+                @this.CurrentObjectState = currentStatus.RequestObjectState;
             }
         }
 

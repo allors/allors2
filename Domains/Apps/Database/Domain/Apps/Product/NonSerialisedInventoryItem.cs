@@ -37,12 +37,28 @@ namespace Allors.Domain
             }
         }
 
+        public void AppsOnPreDerive(ObjectOnPreDerive method)
+        {
+            var derivation = method.Derivation;
+            derivation.AddDependency(this, this.Good);
+        }
+
         public void AppsOnDerive(ObjectOnDerive method)
         {
             var derivation = method.Derivation;
 
             derivation.Validation.AssertAtLeastOne(this, M.NonSerialisedInventoryItem.Good, M.NonSerialisedInventoryItem.Part);
             derivation.Validation.AssertExistsAtMostOne(this, M.NonSerialisedInventoryItem.Good, M.NonSerialisedInventoryItem.Part);
+
+            if (!this.ExistName && this.ExistGood && this.Good.ExistName)
+            {
+                this.Name = this.Good.Name;
+            }
+
+            if (!this.ExistName && this.ExistPart && this.Part.ExistName)
+            {
+                this.Name = this.Part.Name;
+            }
 
             this.AppsOnDeriveQuantityOnHand(derivation);
             this.AppsOnDeriveQuantityCommittedOut(derivation);

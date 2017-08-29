@@ -61,7 +61,7 @@
                             }
                             else
                             {
-                                response.AddCollection(fetch.Name, ((Extent)result).ToArray(), include);
+                                response.AddCollection(fetch.Name, ((Extent)result)?.ToArray(), include);
                             }
                         }
                         else
