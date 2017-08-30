@@ -1,6 +1,9 @@
 ﻿namespace Allors.Server
 {
     using System;
+
+    using Microsoft.AspNetCore.Authentication.JwtBearer;
+    using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
 
     public class DatabaseController : Controller
@@ -13,6 +16,7 @@
         }
 
         [HttpPost]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public IActionResult Sync([FromBody]SyncRequest syncRequest)
         {
             try
@@ -28,6 +32,7 @@
         }
 
         [HttpPost]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public IActionResult Push([FromBody]PushRequest pushRequest)
         {
             try
@@ -43,6 +48,7 @@
         }
 
         [HttpPost]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public IActionResult Invoke([FromBody]InvokeRequest invokeRequest)
         {
             try

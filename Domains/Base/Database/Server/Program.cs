@@ -1,41 +1,20 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="Program.cs" company="Allors bvba">
-//   Copyright 2002-2017 Allors bvba.
-//
-// Dual Licensed under
-//   a) the General Public Licence v3 (GPL)
-//   b) the Allors License
-//
-// The GPL License is included in the file gpl.txt.
-// The Allors License is an addendum to your contract.
-//
-// Allors Applications is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU General Public License for more details.
-//
-// For more information visit http://www.allors.com/legal
-// </copyright>
-// --------------------------------------------------------------------------------------------------------------------
-
-namespace Allors.Server
+﻿namespace Allors.Server
 {
-    using System.IO;
+    using Identity;
 
+    using Microsoft.AspNetCore;
     using Microsoft.AspNetCore.Hosting;
 
     public class Program
     {
         public static void Main(string[] args)
         {
-            var host = new WebHostBuilder()
-                .UseKestrel()
-                .UseContentRoot(Directory.GetCurrentDirectory())
-                .UseIISIntegration()
+            BuildWebHost(args).Run();
+        }
+
+        public static IWebHost BuildWebHost(string[] args) =>
+            WebHost.CreateDefaultBuilder(args)
                 .UseStartup<Startup>()
                 .Build();
-
-            host.Run();
-        }
     }
 }

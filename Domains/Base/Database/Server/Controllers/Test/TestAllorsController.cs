@@ -1,4 +1,4 @@
-﻿namespace Allors.Server.Controllers
+namespace Allors.Server.Controllers
 {
     using System;
 

@@ -1,17 +1,17 @@
 ﻿namespace Allors.Server
 {
     using System;
+
     using Allors.Domain;
+
+    using ISession = Allors.ISession;
 
     public class AllorsContext : IAllorsContext, IDisposable
     {
         public AllorsContext(IDatabase database, Microsoft.AspNetCore.Http.IHttpContextAccessor httpContextAccessor)
         {
             this.Session = database.CreateSession();
-
-            var httpContext = httpContextAccessor.HttpContext;
-            var userName = httpContext.User.Identity.Name;
-
+            var userName = httpContextAccessor.HttpContext.User.Identity.Name;
             var users = new Users(this.Session);
             this.User = users.GetUser(userName) ?? Singleton.Instance(this.Session)?.Guest;
             users.CurrentUser = this.User;
