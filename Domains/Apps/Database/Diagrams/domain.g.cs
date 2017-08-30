@@ -68,13 +68,15 @@ namespace Allors.Domain
 		}
 		public interface User  : SecurityTokenOwner, AccessControlledObject, Localised 
 		{
-						global::System.Boolean? UserEmailConfirmed {set;}
-
 						global::System.String UserName {set;}
+
+						global::System.String NormalizedUserName {set;}
+
+						global::System.String UserPasswordHash {set;}
 
 						global::System.String UserEmail {set;}
 
-						global::System.String UserPasswordHash {set;}
+						global::System.Boolean? UserEmailConfirmed {set;}
 
 						TaskList TaskList {set;}
 
@@ -1129,6 +1131,12 @@ namespace Allors.Domain
 						RequestStatus CurrentRequestStatus {set;}
 
 						ContactMechanism FullfillContactMechanism {set;}
+
+						global::System.String EmailAddress {set;}
+
+						global::System.String TelephoneNumber {set;}
+
+						global::System.String TelephoneCountryCode {set;}
 
 		}
 		public interface Requirement  : Transitional, UniquelyIdentifiable 
@@ -2501,6 +2509,8 @@ namespace Allors.Domain
 						Media PrimaryPhoto {set;}
 
 						Media Photos {set;}
+
+						global::System.String Keywords {set;}
 
 		}
 		public interface GoodOrderItem  : EngagementItem 

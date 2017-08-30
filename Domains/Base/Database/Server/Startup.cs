@@ -13,6 +13,7 @@
     using Identity.Services;
 
     using Microsoft.AspNetCore.Builder;
+    using Microsoft.AspNetCore.Diagnostics;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Identity;
@@ -21,6 +22,8 @@
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.IdentityModel.Tokens;
+
+    using Newtonsoft.Json;
 
     public class Startup
     {
@@ -123,9 +126,33 @@
             app.UseStaticFiles();
 
             app.UseAuthentication();
-
-            app.UseCors("AllowAll");
             
+            app.UseCors("AllowAll");
+
+            app.UseExceptionHandler(appBuilder =>
+                {
+                    appBuilder.Use(async (context, next) =>
+                        {
+                            var error = context.Features[typeof(IExceptionHandlerFeature)] as IExceptionHandlerFeature;
+                            var message = error?.Error.GetType().ToString();
+
+                            if (error?.Error is SecurityTokenExpiredException)
+                            {
+                                context.Response.StatusCode = 401;
+                                context.Response.ContentType = "application/json";
+
+                                await context.Response.WriteAsync(JsonConvert.SerializeObject(message));
+                            }
+                            else if (error?.Error != null)
+                            {
+                                context.Response.StatusCode = 500;
+                                context.Response.ContentType = "application/json";
+                                await context.Response.WriteAsync(JsonConvert.SerializeObject(message));
+                            }
+                            else await next();
+                        });
+                });
+
             app.UseMvc(routes =>
             {
                 routes.MapRoute(

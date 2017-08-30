@@ -1,7 +1,5 @@
 ﻿namespace Allors.Server
 {
-    using Identity;
-
     using Microsoft.AspNetCore;
     using Microsoft.AspNetCore.Hosting;
 
