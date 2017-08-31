@@ -7,8 +7,6 @@
     using System.Threading.Tasks;
 
     using Identity.Models;
-    using Identity.Services;
-
     using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.Extensions.Configuration;
@@ -20,7 +18,6 @@
         public AuthenticationController(
             UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager,
-            IEmailSender emailSender,
             ILogger<AuthenticationController> logger,
             IConfiguration config)
         {
