@@ -26,6 +26,14 @@ namespace Allors.Domain
 
     public static partial class UserExtensions
     {
+        public static void BaseOnPostBuild(this User @this, ObjectOnPostBuild method)
+        {
+            if (!@this.ExistNormalizedUserName)
+            {
+                @this.NormalizedUserName = @this.UserName?.ToUpperInvariant();
+            }
+        }
+        
         public static void SetPassword(this User @this, string clearTextPassword)
         {
             var serviceLocator = @this.GetServiceLocator();
