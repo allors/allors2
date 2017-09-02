@@ -63,7 +63,7 @@ namespace Allors.Domain
 
             new SerialisedInventoryItemObjectStateBuilder(this.Session)
                 .WithUniqueId(GoodId)
-                .WithName("Good")
+                .WithName("In good order")
                 .Build();
 
             new SerialisedInventoryItemObjectStateBuilder(this.Session)

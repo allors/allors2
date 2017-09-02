@@ -45,8 +45,8 @@ namespace Allors.Domain
                 .Build();
             
             new InventoryItemKindBuilder(this.Session)
-                .WithName("Non serialized")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Non serialized").WithLocale(englishLocale).Build())
+                .WithName("Non serialised")
+                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Non serialised").WithLocale(englishLocale).Build())
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Zonder serienummer").WithLocale(dutchLocale).Build())
                 .WithUniqueId(NonSerialisedId)
                 .Build();

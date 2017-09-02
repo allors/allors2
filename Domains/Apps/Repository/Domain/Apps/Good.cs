@@ -113,6 +113,7 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
         [Workspace]
+        [Required()]
         public InventoryItemKind InventoryItemKind { get; set; }
 
         #region Allors
@@ -225,9 +226,9 @@ namespace Allors.Repository
         [Id("19449147-C4FB-4FB9-94AB-32B200DD519A")]
         [AssociationId("B6DA1EA1-8A1E-42D3-91AE-EA13C74BFC9A")]
         [RoleId("FB868E3C-D846-4FD8-B5B9-651EF7471C22")]
+        #endregion
         [Workspace]
         [Size(-1)]
-        #endregion
         public string Keywords { get; set; }
 
 
