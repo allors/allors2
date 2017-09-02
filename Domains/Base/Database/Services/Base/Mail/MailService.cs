@@ -29,6 +29,7 @@ namespace Allors.Services.Base
     public class MailService : IMailService
     {
         public string DefaultSender { get; set; }
+        public string DefaultSenderName { get; set; }
 
         public void Send(EmailMessage emailMesssage)
         {
@@ -39,7 +40,9 @@ namespace Allors.Services.Base
                                       };
 
             var sender = emailMesssage.Sender?.UserEmail ?? this.DefaultSender;
-            message.From.Add(new MimeKit.MailboxAddress(sender));
+            var senderName = emailMesssage.Sender?.UserName ?? this.DefaultSenderName;
+
+            message.From.Add(new MimeKit.MailboxAddress(senderName, sender));
 
             foreach (User recipient in emailMesssage.Recipients)
             {
