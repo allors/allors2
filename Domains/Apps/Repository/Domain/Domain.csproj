@@ -347,6 +347,7 @@
     <Compile Include="Apps\NonSerialisedInventoryItemVersion.cs" />
     <Compile Include="Apps\InventoryItemVersioned.cs" />
     <Compile Include="Apps\Ownership.cs" />
+    <Compile Include="Apps\ProcessFlow.cs" />
     <Compile Include="Apps\SerialisedInventoryItemVersion.cs" />
     <Compile Include="Apps\NonSerialisedInventoryItemVersioned.cs" />
     <Compile Include="Apps\SerialisedInventoryItemVersioned.cs" />

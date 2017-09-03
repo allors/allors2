@@ -2685,6 +2685,9 @@ namespace Allors.Domain
 		public interface Ownership  : Enumeration 
 		{
 		}
+		public interface ProcessFlow  : Enumeration 
+		{
+		}
 		public interface SerialisedInventoryItemVersion  : SerialisedInventoryItemVersioned 
 		{
 						global::System.DateTime? TimeStamp {set;}
@@ -4966,6 +4969,8 @@ namespace Allors.Domain
 						Counter OutgoingShipmentCounter {set;}
 
 						global::System.String SalesOrderNumberPrefix {set;}
+
+						ProcessFlow ProcessFlow {set;}
 
 		}
 		public interface StoreRevenue  : AccessControlledObject, Deletable 
