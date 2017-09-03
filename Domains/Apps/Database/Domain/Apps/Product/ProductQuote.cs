@@ -35,13 +35,18 @@ namespace Allors.Domain
 
             foreach (QuoteItem quoteItem in quoteItems)
             {
-                salesOrder.AddSalesOrderItem(
-                    new SalesOrderItemBuilder(this.Strategy.Session)
-                        .WithProduct(quoteItem.Product)
-                        .WithProductFeature(quoteItem.ProductFeature)
-                        .WithQuantityOrdered(quoteItem.Quantity)
-                        .Build()
-                );
+                var salesOrderItem = new SalesOrderItemBuilder(this.Strategy.Session)
+                    .WithProduct(quoteItem.Product)
+                    .WithProductFeature(quoteItem.ProductFeature)
+                    .WithQuantityOrdered(quoteItem.Quantity)
+                    .Build();
+
+                if (quoteItem.UnitPrice > 0)
+                {
+                    salesOrderItem.ActualUnitPrice = quoteItem.UnitPrice;
+                }
+
+                salesOrder.AddSalesOrderItem(salesOrderItem);
             }
 
             return salesOrder;

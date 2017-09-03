@@ -88,7 +88,7 @@ namespace Allors.Repository
         public void Submit() { }
 
         public void Hold() { }
-
+        public void AddNewRequestItem() { }
 
         #endregion
     }

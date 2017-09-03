@@ -184,5 +184,13 @@ namespace Allors.Repository
         #endregion
         [Workspace]
         void Hold();
+
+        #region Allors
+
+        [Id("96F7CC66-A06D-4AF0-B163-038FFD83AED7")]
+
+        #endregion
+        [Workspace]
+        void AddNewRequestItem();
     }
 }

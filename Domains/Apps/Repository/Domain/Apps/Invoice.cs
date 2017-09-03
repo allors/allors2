@@ -350,5 +350,11 @@ namespace Allors.Repository
         [Scale(2)]
         [Workspace]
         decimal TotalFee { get; set; }
+
+        #region Allors
+        [Id("3D2F6151-C1EC-42B4-AE81-10949F187FE5")]
+        #endregion
+        [Workspace]
+        void AddNewInvoiceItem();
     }
 }

@@ -28,6 +28,11 @@ namespace Allors.Domain
             {
                 this.SoldBy = Singleton.Instance(this.Strategy.Session).DefaultInternalOrganisation;
             }
+
+            if (!this.ExistArticleNumber)
+            {
+                this.ArticleNumber = Singleton.Instance(this.Strategy.Session).DefaultInternalOrganisation.DeriveNextArticleNumber();
+            }
         }
 
         public void AppsOnPreDerive(ObjectOnPreDerive method)

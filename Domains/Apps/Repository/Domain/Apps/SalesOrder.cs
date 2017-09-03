@@ -498,11 +498,7 @@ namespace Allors.Repository
         public void Complete(){}
 
         public void Finish(){}
-
-
-
-
-
+        public void AddNewOrderItem() { }
 
         #endregion
 

@@ -225,6 +225,15 @@ namespace Allors.Repository
         [Workspace]
         public string SalesOrderNumberPrefix { get; set; }
 
+        #region Allors
+        [Id("85279191-9836-444B-A5CB-742A488D0467")]
+        [AssociationId("E8884F9B-6D08-4092-9C0C-D98EFCA9D438")]
+        [RoleId("0299E2AD-F239-41E7-9546-2FB014D98A96")]
+        [Indexed]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Required]
+        public ProcessFlow ProcessFlow { get; set; }
 
         #region inherited methods
 

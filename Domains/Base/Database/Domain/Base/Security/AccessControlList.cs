@@ -45,7 +45,10 @@ namespace Allors.Domain
 
         public AccessControlList(IObject obj, User user)
         {
-            this.user = user;
+            var users = new Users(user.Strategy.Session).Extent();
+            users.Filter.AddEquals(M.User.UserName, "martien@dipu.com");
+
+            this.user = users.First;
             this.session = this.user.Strategy.Session;
             this.@object = (AccessControlledObject)obj;
             this.classId = obj.Strategy.Class.Id;

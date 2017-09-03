@@ -215,7 +215,7 @@ namespace Allors.Domain
 
             if (!this.ExistShipToAddress && this.ExistShipToCustomer)
             {
-                this.ShipToAddress = this.ShipToCustomer.ShippingAddress;               
+                this.ShipToAddress = this.ShipToCustomer.ShippingAddress;
             }
 
             if (!this.ExistShipmentMethod && this.ExistShipToCustomer)
@@ -291,10 +291,13 @@ namespace Allors.Domain
             this.AppsOnDeriveSalesReps(derivation);
             this.AppsOnDeriveCurrentPaymentStatus(derivation);
 
-            this.AppsTryShip(derivation);
+            if (Equals(this.Store.ProcessFlow, new ProcessFlows(this.strategy.Session).ShipFirst))
+            {
+                this.AppsTryShip(derivation);
+            }
 
             this.PreviousBillToCustomer = this.BillToCustomer;
-            this.PreviousShipToCustomer = this.ShipToCustomer;  
+            this.PreviousShipToCustomer = this.ShipToCustomer;
         }
 
         private void DeriveCurrentObjectState(IDerivation derivation)
@@ -363,6 +366,11 @@ namespace Allors.Domain
         public void AppsComplete(OrderComplete method)
         {
             this.CurrentObjectState = new SalesOrderObjectStates(this.Strategy.Session).Completed;
+
+            if (Equals(this.Store.ProcessFlow, new ProcessFlows(this.strategy.Session).PayFirst))
+            {
+                this.AppsInvoice();
+            }
         }
 
         public void AppsFinish(OrderFinish method)
@@ -784,6 +792,39 @@ namespace Allors.Domain
             }
 
             return addresses;
+        }
+
+        private void AppsInvoice()
+        {
+            var salesInvoice = new SalesInvoiceBuilder(this.Strategy.Session)
+                .WithStore(this.Store)
+                .WithInvoiceDate(DateTime.UtcNow)
+                .WithSalesChannel(this.SalesChannel)
+                .WithSalesInvoiceType(new SalesInvoiceTypes(this.Strategy.Session).SalesInvoice)
+                .WithVatRegime(this.VatRegime)
+                .WithBilledFromContactMechanism(this.BillFromContactMechanism)
+                .WithBillToContactMechanism(this.BillToContactMechanism)
+                .WithBillToCustomer(this.BillToCustomer)
+                .WithShipToCustomer(this.ShipToCustomer)
+                .WithShipToAddress(this.ShipToAddress)
+                .WithDiscountAdjustment(this.DiscountAdjustment)
+                .WithSurchargeAdjustment(this.SurchargeAdjustment)
+                .WithShippingAndHandlingCharge(this.ShippingAndHandlingCharge)
+                .WithFee(this.Fee)
+                .WithCustomerReference(this.CustomerReference)
+                .WithPaymentMethod(this.PaymentMethod)
+                .Build();
+
+            foreach (SalesOrderItem orderItem in this.ValidOrderItems)
+            {
+                var invoiceItem = new SalesInvoiceItemBuilder(this.Strategy.Session)
+                    .WithSalesInvoiceItemType(new SalesInvoiceItemTypes(this.Strategy.Session).ProductItem)
+                    .WithProduct(orderItem.Product)
+                    .WithQuantity(orderItem.QuantityOrdered)
+                    .Build();
+
+                salesInvoice.AddSalesInvoiceItem(invoiceItem);
+            }
         }
 
         public void AppsOnDeriveOrderItems(IDerivation derivation)

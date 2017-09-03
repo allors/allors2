@@ -419,12 +419,7 @@ namespace Allors.Repository
         public void OnDerive(){}
 
         public void OnPostDerive(){}
-
-
-
-
-
-
+        public void AddNewInvoiceItem() { }
 
         #endregion
     }

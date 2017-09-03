@@ -127,6 +127,7 @@ namespace Allors.Repository
         [RoleId("795117b2-8b5a-4562-9acc-d77d2f93256a")]
         #endregion
         [Multiplicity(Multiplicity.OneToMany)]
+        [Workspace]
         [Derived]
         [Indexed]
         OrderItem[] ValidOrderItems { get; set; }
@@ -395,5 +396,11 @@ namespace Allors.Repository
         #endregion
         [Workspace]
         void Finish();
+
+        #region Allors
+        [Id("779BBAD3-46BA-4E99-9F72-45A03764FAD7")]
+        #endregion
+        [Workspace]
+        void AddNewOrderItem();
     }
 }
