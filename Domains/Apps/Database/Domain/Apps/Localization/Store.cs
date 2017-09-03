@@ -88,6 +88,11 @@ namespace Allors.Domain
             {
                 this.OutgoingShipmentCounter = new CounterBuilder(this.strategy.Session).WithUniqueId(Guid.NewGuid()).WithValue(0).Build();
             }
+
+            if (!this.ExistProcessFlow)
+            {
+                this.ProcessFlow = new ProcessFlows(this.strategy.Session).ShipFirst;
+            }
         }
 
         public void AppsOnDerive(ObjectOnDerive method)
