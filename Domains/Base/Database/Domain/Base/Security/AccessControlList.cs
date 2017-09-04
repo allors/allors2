@@ -45,10 +45,7 @@ namespace Allors.Domain
 
         public AccessControlList(IObject obj, User user)
         {
-            var users = new Users(user.Strategy.Session).Extent();
-            users.Filter.AddEquals(M.User.UserName, "martien@dipu.com");
-
-            this.user = users.First;
+            this.user = user;
             this.session = this.user.Strategy.Session;
             this.@object = (AccessControlledObject)obj;
             this.classId = obj.Strategy.Class.Id;
@@ -72,7 +69,7 @@ namespace Allors.Domain
         {
             return this.IsPermitted(methodType, Operations.Execute);
         }
-        
+
         public bool IsPermitted(OperandType operandType, Operations operation)
         {
             return this.IsPermitted(operandType.Id, operation);
@@ -106,7 +103,7 @@ namespace Allors.Domain
             }
 
             return false;
-         }
+        }
 
         private void LazyLoad()
         {
@@ -118,12 +115,12 @@ namespace Allors.Domain
                 if (securityTokens.Length == 0)
                 {
                     var singleton = Singleton.Instance(this.session);
-                    securityTokens = this.@object.Strategy.IsNewInSession ? 
-                        new[] { singleton.InitialSecurityToken ?? singleton.DefaultSecurityToken } : 
+                    securityTokens = this.@object.Strategy.IsNewInSession ?
+                        new[] { singleton.InitialSecurityToken ?? singleton.DefaultSecurityToken } :
                         new[] { singleton.DefaultSecurityToken };
                 }
 
-                var caches = securityTokens.SelectMany(v => v.AccessControls).Select(v=>v.Cache).Where(v => v.EffectiveUserIds.Contains(this.user.Id));
+                var caches = securityTokens.SelectMany(v => v.AccessControls).Select(v => v.Cache).Where(v => v.EffectiveUserIds.Contains(this.user.Id));
                 foreach (var cache in caches)
                 {
                     var operationsByOperandTypeIdByClassId = cache.OperationsByOperandTypeIdByClassId;

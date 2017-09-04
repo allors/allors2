@@ -1,6 +1,4 @@
-﻿using Microsoft.Extensions.Configuration.UserSecrets;
-
-namespace Allors.Server.Controllers
+﻿namespace Allors.Server.Controllers
 {
     using System;
     using System.Linq;
