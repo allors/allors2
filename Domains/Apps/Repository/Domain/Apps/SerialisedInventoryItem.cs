@@ -28,6 +28,7 @@ namespace Allors.Repository
         public decimal ExpectedSalesPrice { get; set; }
         public decimal RefurbishCost { get; set; }
         public decimal TransportCost { get; set; }
+        public SerialisedInventoryItemObjectState CurrentObjectState { get; set; }
         public ProductCharacteristicValue[] ProductCharacteristicValues { get; set; }
         public InventoryItemVariance[] InventoryItemVariances { get; set; }
         public Part Part { get; set; }
@@ -42,18 +43,6 @@ namespace Allors.Repository
         public Facility Facility { get; set; }
 
         #endregion
-
-        #region Allors
-        [Id("e0fe2033-85a9-428d-9918-f543fbcf3ed7")]
-        [AssociationId("49e8ccb2-8a3f-4846-8067-9f68d005e44f")]
-        [RoleId("9d19f214-3ed9-4e2d-a924-2d513ca01934")]
-        #endregion
-        [Multiplicity(Multiplicity.ManyToOne)]
-        [Workspace]
-        [Derived]
-        [Indexed]
-        [Required]
-        public SerialisedInventoryItemObjectState CurrentObjectState { get; set; }
 
         #region Allors
         [Id("14266ECC-B4FF-4365-9087-0F67946246D2")]

@@ -33,19 +33,9 @@ namespace Allors.Repository
         public decimal PreviousQuantityOnHand { get; set; }
         public decimal AvailableToPromise { get; set; }
         public decimal QuantityExpectedIn { get; set; }
-        #endregion
-
-        #region Allors
-        [Id("0958b237-ba88-48d3-b662-90328801b197")]
-        [AssociationId("72957576-5146-4578-8526-8b7a50025526")]
-        [RoleId("ebd546cd-7341-496d-86ca-27a1b8fc253e")]
-        #endregion
-        [Multiplicity(Multiplicity.ManyToOne)]
-        [Derived]
-        [Indexed]
-        [Required]
-        [Workspace]
         public NonSerialisedInventoryItemObjectState CurrentObjectState { get; set; }
+
+        #endregion
 
         #region Allors
         [Id("53B35269-EF6C-45EE-BE20-FCDC732CE06E")]
