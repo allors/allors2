@@ -17,6 +17,7 @@
 
         [HttpPost]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        [AllowAnonymous]
         public IActionResult Sync([FromBody]SyncRequest syncRequest)
         {
             try
@@ -33,6 +34,7 @@
 
         [HttpPost]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        [AllowAnonymous]
         public IActionResult Push([FromBody]PushRequest pushRequest)
         {
             try
@@ -49,6 +51,7 @@
 
         [HttpPost]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        [AllowAnonymous]
         public IActionResult Invoke([FromBody]InvokeRequest invokeRequest)
         {
             try
