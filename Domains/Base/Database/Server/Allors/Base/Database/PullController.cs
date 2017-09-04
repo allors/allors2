@@ -6,6 +6,8 @@
     using Allors.Domain;
     using Allors.Meta;
 
+    using Microsoft.AspNetCore.Authentication.JwtBearer;
+    using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
 
     public class PullController : Controller
@@ -18,6 +20,7 @@
         }
 
         [HttpPost]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public IActionResult Pull([FromBody] PullRequest req)
         {
             try
