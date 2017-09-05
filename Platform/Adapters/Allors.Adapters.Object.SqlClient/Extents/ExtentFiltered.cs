@@ -126,7 +126,14 @@ namespace Allors.Adapters.Object.SqlClient
         {
             if (this.Strategy != null)
             {
-                return this.Strategy.ExtentGetCompositeAssociations(this.AssociationType);
+                if (this.AssociationType != null)
+                {
+                    return this.Strategy.ExtentGetCompositeAssociations(this.AssociationType);
+                }
+                else
+                {
+                    return this.Strategy.Roles.GetCompositesRole(this.RoleType).ToList();
+                }
             }
 
             this.session.Flush();
