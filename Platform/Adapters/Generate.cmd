@@ -32,7 +32,7 @@ msbuild Repository.sln /target:Clean /verbosity:minimal
 dotnet msbuild Adapters.sln /target:Clean /verbosity:minimal
 dotnet msbuild Adapters.sln /target:Generate:Rebuild /p:Configuration="Debug" /verbosity:minimal || SET /A errno^|=%ERROR_BUILD_META% && GOTO :END
 
-dotnet Generate\bin\Debug\netcoreapp1.1\Generate.dll || SET /A errno^|=%ERROR_BUILD_META% && GOTO :END
+dotnet Generate\bin\Debug\netcoreapp2.0\Generate.dll || SET /A errno^|=%ERROR_BUILD_META% && GOTO :END
 
 :END
 IF "%interactive%"=="1" PAUSE
