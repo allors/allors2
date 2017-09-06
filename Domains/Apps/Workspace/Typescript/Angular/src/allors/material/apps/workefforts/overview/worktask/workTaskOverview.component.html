@@ -16,10 +16,8 @@
       <md-divider></md-divider>
       <md-card-content>
 
-        <div *ngIf="organisation" layout="row">
-          <a [routerLink]="['/relations/organisation/' + organisation.id ]">
-           <a-md-static [object]="organisation" [roleType]="m.Organisation.Name" label="Organisation"></a-md-static>
-           </a>
+        <div *ngIf="organisation" layout="row" [routerLink]="['/relations/organisation/' + organisation.id ]">
+          <a-md-static [object]="organisation" [roleType]="m.Organisation.Name" label="Organisation"></a-md-static>
         </div>
 
         <div layout="row">

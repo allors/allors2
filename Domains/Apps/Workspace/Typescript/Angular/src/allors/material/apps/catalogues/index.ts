@@ -11,8 +11,10 @@ import { ProductTypesOverviewComponent } from "./overview/productTypes/productTy
 import { CatalogueEditComponent } from "./catalogue/edit.component";
 import { CategoryEditComponent } from "./category/edit.component";
 import { GoodEditComponent } from "./good/edit.component";
+import { NonSerialisedGoodAddComponent } from "./nonSerialisedGood/add.component";
 import { ProductCharacteristicEditComponent } from "./productcharacteristic/edit.component";
 import { ProductTypeEditComponent } from "./producttype/edit.component";
+import { SerialisedGoodAddComponent } from "./serialisedGood/add.component";
 
 export const CATALOGUES: any[] = [
 ];
@@ -30,8 +32,10 @@ export const CATALOGUES_ROUTING: any[] = [
   CatalogueEditComponent,
   CategoryEditComponent,
   GoodEditComponent,
+  NonSerialisedGoodAddComponent,
   ProductCharacteristicEditComponent,
   ProductTypeEditComponent,
+  SerialisedGoodAddComponent,
 ];
 
 export {
@@ -49,5 +53,7 @@ export {
   ProductTypeEditComponent,
   CategoryEditComponent,
   GoodEditComponent,
+  NonSerialisedGoodAddComponent,
   ProductCharacteristicEditComponent,
+  SerialisedGoodAddComponent,
 };

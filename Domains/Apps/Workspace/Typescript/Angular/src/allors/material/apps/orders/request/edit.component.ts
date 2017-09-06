@@ -72,18 +72,6 @@ export class RequestEditComponent implements OnInit, AfterViewInit, OnDestroy {
         const id: string = this.route.snapshot.paramMap.get("id");
         const m: MetaDomain = this.m;
 
-        const fetch: Fetch[] = [
-          new Fetch({
-            id,
-            include: [
-              new TreeNode({ roleType: m.Request.Originator }),
-              new TreeNode({ roleType: m.Request.FullfillContactMechanism }),
-              new TreeNode({ roleType: m.Request.CurrentObjectState }),
-            ],
-            name: "requestForQuote",
-          }),
-        ];
-
         const rolesQuery: Query[] = [
           new Query(
             {
@@ -115,6 +103,28 @@ export class RequestEditComponent implements OnInit, AfterViewInit, OnDestroy {
             const personRoles: OrganisationRole[] = loaded.collections.organisationRoles as OrganisationRole[];
             const pCustomerRole: OrganisationRole = organisationRoles.find((v: OrganisationRole) => v.Name === "Customer");
 
+            const fetch: Fetch[] = [
+              new Fetch({
+                id,
+                include: [
+                  new TreeNode({ roleType: m.Request.Currency }),
+                  new TreeNode({ roleType: m.Request.Originator }),
+                  new TreeNode({ roleType: m.Request.CurrentObjectState }),
+                  new TreeNode({
+                    nodes: [
+                      new TreeNode({
+                        nodes: [
+                          new TreeNode({ roleType: m.PostalBoundary.Country }),
+                        ],
+                        roleType: m.PostalAddress.PostalBoundary,
+                      }),
+                    ],
+                    roleType: m.Request.FullfillContactMechanism,
+                  })],
+                name: "requestForQuote",
+              }),
+            ];
+
             const query: Query[] = [
               new Query(
                 {
@@ -139,6 +149,8 @@ export class RequestEditComponent implements OnInit, AfterViewInit, OnDestroy {
         if (!this.request) {
           this.request = this.scope.session.create("RequestForQuote") as RequestForQuote;
         }
+
+        this.originatorSelected(this.request.Originator);
 
         this.organisations = loaded.collections.organisations as Organisation[];
         this.people = loaded.collections.parties as Person[];

@@ -79,6 +79,7 @@ export class ProductQuoteEditComponent implements OnInit, AfterViewInit, OnDestr
               new TreeNode({ roleType: m.ProductQuote.Receiver }),
               new TreeNode({ roleType: m.ProductQuote.FullfillContactMechanism }),
               new TreeNode({ roleType: m.ProductQuote.CurrentObjectState }),
+              new TreeNode({ roleType: m.ProductQuote.Request }),
             ],
             name: "productQuote",
           }),
@@ -272,7 +273,7 @@ export class ProductQuoteEditComponent implements OnInit, AfterViewInit, OnDestr
     this.scope
       .save()
       .subscribe((saved: Saved) => {
-        this.router.navigate(["/orders/quote/" + this.quote.id]);
+        this.router.navigate(["/orders/productQuote/" + this.quote.id]);
       },
       (error: Error) => {
         this.errorService.dialog(error);

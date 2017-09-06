@@ -22,19 +22,27 @@
         <div layout="row">
           <a-md-static [object]="request" [roleType]="m.Request.RequestNumber"></a-md-static>
         </div>
-        <div layout="row">
-          <a [routerLink]="['/relations/organisations/' + request.Originator.id ]">
-            <a-md-static [object]="request" [roleType]="m.Request.Originator"  display="displayName" label="From"></a-md-static>
-              </a>
+        <div *ngIf="quote" layout="row" class="link" [routerLink]="['/orders/productQuote/' + quote.id ]">
+          <a-md-static [object]="quote" [roleType]="m.Quote.QuoteNumber"></a-md-static>
+        </div>
+        <div *ngIf="request.Originator" layout="row" class="link" [routerLink]="['/relations/organisation/' + request.Originator.id ]">
+          <a-md-static [object]="request" [roleType]="m.Request.Originator" display="displayName" label="From"></a-md-static>
         </div>
         <div *ngIf="request.FullfillContactMechanism" layout="row">
           <a-md-static [object]="request" [roleType]="m.Request.FullfillContactMechanism" display="displayName" label="Reply to"></a-md-static>
         </div>
+        <div *ngIf="request.EmailAddress" layout="row">
+          <a-md-static [object]="request" [roleType]="m.Request.EmailAddress" display="displayName"></a-md-static>
+        </div>
+        <div *ngIf="request.TelephoneNumber" layout="row">
+          <a-md-static [object]="request" [roleType]="m.Request.TelephoneCountryCode"></a-md-static>
+          <a-md-static [object]="request" [roleType]="m.Request.TelephoneNumber"></a-md-static>
+        </div>
         <div *ngIf="request.Comment" layout="row">
-          <a-md-textarea [object]="request" [roleType]="m.Request.Comment" disabled="true"></a-md-textarea>
+          <a-md-textarea [object]="request" [roleType]="m.Request.Comment"></a-md-textarea>
         </div>
         <div *ngIf="request.InternalComment" layout="row">
-          <a-md-textarea [object]="request" [roleType]="m.Request.InternalComment" disabled="true"></a-md-textarea>
+          <a-md-textarea [object]="request" [roleType]="m.Request.InternalComment"></a-md-textarea>
         </div>
         <div *ngIf="request.RequestDate" layout="row">
           <a-md-static [object]="request" [roleType]="m.Request.RequestDate"></a-md-static>
@@ -54,12 +62,12 @@
       <md-divider></md-divider>
       <md-card-actions>
         <button md-button [routerLink]="['/request/' + request.id ]">Edit</button>
-        <button *ngIf="request.CanExecuteCreateQuote" md-button (click)="createQuote()">Create Quote</button>
+        <button *ngIf="request.CanExecuteCreateQuote && request.RequestItems.length > 0" md-button (click)="createQuote()">Create Quote</button>
       </md-card-actions>
     </md-card>
 
     <md-card tdMediaToggle="gt-xs" [mediaClasses]="['push']">
-      <md-card-title>Items in Request</md-card-title>
+      <md-card-title>Request Items</md-card-title>
       <md-divider></md-divider>
       <md-card-content>
         <ng-template tdLoading="request.RequestItems">
@@ -70,14 +78,18 @@
 
             <ng-template let-requestItem let-last="last" ngFor [ngForOf]="request.RequestItems">
               <md-list-item>
-                <a-md-static [object]="requestItem" [roleType]="m.RequestItem.Product"  display="Name"></a-md-static>
-                <a-md-static [object]="requestItem" [roleType]="m.RequestItem.Quantity"></a-md-static>
+                <div layout="row" class="link" [routerLink]="['/request/' + request.id + '/item/' + requestItem.id ]">
+                  <a-md-static [object]="requestItem" [roleType]="m.RequestItem.Product" display="Name"></a-md-static>
+                </div>
+                <div layout="row">
+                  <a-md-static [object]="requestItem" [roleType]="m.RequestItem.Quantity"></a-md-static>
+                </div>
                 <span>
                   <button md-icon-button [md-menu-trigger-for]="menu">
                     <md-icon>more_vert</md-icon>
                   </button>
                   <md-menu x-position="before" #menu="mdMenu">
-                      <a [routerLink]="['/request/' + request.id + '/requestItem/' + requestItem.id ]" md-menu-item>Edit</a>
+                      <a [routerLink]="['/request/' + request.id + '/item/' + requestItem.id ]" md-menu-item>Edit</a>
                   </md-menu>
               </span>
               </md-list-item>
@@ -88,7 +100,7 @@
       </md-card-content>
       <md-divider></md-divider>
       <md-card-actions>
-        <button md-button [routerLink]="['/request/' + request.id +'/requestItem']">+ Add</button>
+        <button *ngIf="request.CanExecuteAddNewRequestItem" md-button [routerLink]="['/request/' + request.id +'/item']">+ Add</button>
       </md-card-actions>
     </md-card>
   </div>

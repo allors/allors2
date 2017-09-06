@@ -28,24 +28,22 @@
       </div>
       <ng-template let-category let-last="last" ngFor [ngForOf]="data">
         <md-list-item>
+          <md-icon *ngIf="!category.CategoryImage" md-list-avatar>photo_camera</md-icon>
+          <img *ngIf="category.CategoryImage" md-list-avatar src="http://localhost:5000/Media/Download/{{category.CategoryImage.UniqueId}}?revision={{category.CategoryImage.Revision}}"
+          />
 
-            <md-icon *ngIf="!category.CategoryImage" md-list-avatar>photo_camera</md-icon>
-            <img *ngIf="category.CategoryImage" md-list-avatar src="http://localhost:5000/Media/Download/{{category.CategoryImage.UniqueId}}?revision={{category.CategoryImage.Revision}}"
-            />
-
-            <h3 md-line> {{category.Name}}</h3>
-            <p md-line> {{category.Description}} </p>
+          <h3 md-line [routerLink]="'/category/' + [category.id]"> {{category.Name}}</h3>
+          <p md-line> {{category.Description}} </p>
 
           <span>
-                <button md-icon-button [md-menu-trigger-for]="menu">
-                <md-icon>more_vert</md-icon>
-                </button>
-                <md-menu x-position="before" #menu="mdMenu">
-                <a [routerLink]="'/category/' + [category.id]" md-menu-item>Edit</a>
-                <button md-menu-item (click)="delete(category)">Delete</button>
-                </md-menu>
-              </span>
-
+            <button md-icon-button [md-menu-trigger-for]="menu">
+            <md-icon>more_vert</md-icon>
+            </button>
+            <md-menu x-position="before" #menu="mdMenu">
+            <a [routerLink]="'/category/' + [category.id]" md-menu-item>Edit</a>
+            <button md-menu-item (click)="delete(category)">Delete</button>
+            </md-menu>
+          </span>
         </md-list-item>
         <md-divider *ngIf="!last" md-inset></md-divider>
       </ng-template>

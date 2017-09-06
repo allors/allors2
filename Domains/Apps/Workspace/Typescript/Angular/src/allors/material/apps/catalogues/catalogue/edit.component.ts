@@ -7,7 +7,7 @@ import { Observable, Subject, Subscription } from "rxjs/Rx";
 
 import { AllorsService, ErrorService, Loaded, Saved, Scope } from "../../../../angular";
 import { Equals, Fetch, Like, Page, Path, PullRequest, PushResponse, Query, Sort, TreeNode } from "../../../../domain";
-import { Catalogue, Locale, ProductCategory, Singleton } from "../../../../domain";
+import { Catalogue, CatScope, Locale, ProductCategory, Singleton } from "../../../../domain";
 import { MetaDomain } from "../../../../meta";
 
 @Component({
@@ -15,19 +15,19 @@ import { MetaDomain } from "../../../../meta";
 })
 export class CatalogueEditComponent implements OnInit, AfterViewInit, OnDestroy {
 
+  public m: MetaDomain;
+
+  public catalogue: Catalogue;
+  public title: string;
+  public subTitle: string;
+
+  public singleton: Singleton;
+  public locales: Locale[];
+  public categories: ProductCategory[];
+  public catScopes: CatScope[];
+
   private subscription: Subscription;
   private scope: Scope;
-
-  m: MetaDomain;
-
-  catalogue: Catalogue;
-
-  title: string;
-  subTitle: string;
-
-  singleton: Singleton;
-  locales: Locale[];
-  categories: ProductCategory[];
 
   constructor(
     private allorsService: AllorsService,
@@ -40,7 +40,7 @@ export class CatalogueEditComponent implements OnInit, AfterViewInit, OnDestroy 
     this.m = this.allorsService.meta;
   }
 
-  ngOnInit(): void {
+  public ngOnInit(): void {
     this.subscription = this.route.url
       .switchMap((url: any) => {
 
@@ -49,28 +49,33 @@ export class CatalogueEditComponent implements OnInit, AfterViewInit, OnDestroy 
 
         const fetch: Fetch[] = [
           new Fetch({
-            name: "catalogue",
             id,
             include: [
               new TreeNode({ roleType: m.Catalogue.LocalisedNames }),
               new TreeNode({ roleType: m.Catalogue.LocalisedDescriptions }),
             ],
+            name: "catalogue",
           }),
         ];
 
         const query: Query[] = [
           new Query(
             {
-              name: "singletons",
-              objectType: this.m.Singleton,
               include: [
                 new TreeNode({ roleType: m.Singleton.Locales }),
               ],
+              name: "singletons",
+              objectType: this.m.Singleton,
             }),
           new Query(
             {
               name: "categories",
               objectType: this.m.ProductCategory,
+            }),
+          new Query(
+            {
+              name: "catScopes",
+              objectType: this.m.CatScope,
             }),
         ];
 
@@ -90,6 +95,7 @@ export class CatalogueEditComponent implements OnInit, AfterViewInit, OnDestroy 
 
         this.singleton = loaded.collections.singletons[0] as Singleton;
         this.categories = loaded.collections.categories as ProductCategory[];
+        this.catScopes = loaded.collections.catScopes as CatScope[];
         this.locales = this.singleton.Locales;
       },
       (error: Error) => {
@@ -99,18 +105,18 @@ export class CatalogueEditComponent implements OnInit, AfterViewInit, OnDestroy 
     );
   }
 
-  ngAfterViewInit(): void {
+  public ngAfterViewInit(): void {
     this.media.broadcast();
     this.changeDetectorRef.detectChanges();
   }
 
-  ngOnDestroy(): void {
+  public ngOnDestroy(): void {
     if (this.subscription) {
       this.subscription.unsubscribe();
     }
   }
 
-  save(): void {
+  public save(): void {
 
     this.scope
       .save()
@@ -122,7 +128,7 @@ export class CatalogueEditComponent implements OnInit, AfterViewInit, OnDestroy 
       });
   }
 
-  goBack(): void {
+  public goBack(): void {
     window.history.back();
   }
 }

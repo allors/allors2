@@ -37,8 +37,8 @@
       <ng-template let-quote let-last="last" ngFor [ngForOf]="data">
         <md-list-item>
 
-          <h3 md-line> {{quote.Receiver.displayName}}</h3>
-          <h4 md-line> {{quote.QuoteNumber }}: {{quote.Description}} ({{quote.CurrentObjectState.Name}})</h4>
+          <h3 md-line [routerLink]="['/orders/productQuote/' + quote.id ]"> {{quote.Receiver.displayName}}</h3>
+          <h4 md-line [routerLink]="['/orders/productQuote/' + quote.id ]"> {{quote.QuoteNumber }}: {{quote.Description}} ({{quote.CurrentObjectState.Name}})</h4>
           <p md-line hide-gt-md class="md-caption"> last modified: {{ quote.LastModifiedDate | timeAgo }} </p>
 
           <span flex></span>
@@ -53,7 +53,7 @@
           <md-icon>more_vert</md-icon>
           </button>
           <md-menu x-position="before" #menu="mdMenu">
-          <a [routerLink]="['/orders/quote/' + quote.id ]" md-menu-item>Details</a>
+          <a [routerLink]="['/orders/productQuote/' + quote.id ]" md-menu-item>Details</a>
           <!-- <button md-menu-item (click)="delete(organisation)">Delete</button> -->
           </md-menu>
           </span>
@@ -71,6 +71,6 @@
   </md-card-content>
 </md-card>
 
-<a md-fab color="accent" class="mat-fab-bottom-right fixed" [routerLink]="['/quote']">
+<a md-fab color="accent" class="mat-fab-bottom-right fixed" [routerLink]="['/productQuote']">
   <md-icon>add</md-icon>
 </a>

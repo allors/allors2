@@ -23,18 +23,18 @@ interface SearchData {
 })
 export class RequestsOverviewComponent implements AfterViewInit, OnDestroy {
 
+  public total: number;
+
+  public searchForm: FormGroup;
+
+  public title: string = "Requests";
+  public data: Request[];
+  public filtered: Request[];
+
   private refresh$: BehaviorSubject<Date>;
+  private page$: BehaviorSubject<number>;
   private subscription: Subscription;
   private scope: Scope;
-
-  private page$: BehaviorSubject<number>;
-  total: number;
-
-  searchForm: FormGroup;
-
-  title: string = "Requests";
-  data: Request[];
-  filtered: Request[];
 
   constructor(
     private allors: AllorsService,
@@ -50,9 +50,9 @@ export class RequestsOverviewComponent implements AfterViewInit, OnDestroy {
     this.refresh$ = new BehaviorSubject<Date>(undefined);
 
     this.searchForm = this.formBuilder.group({
-      requestNumber: [""],
       company: [""],
       description: [""],
+      requestNumber: [""],
     });
 
     this.page$ = new BehaviorSubject<number>(50);
@@ -100,14 +100,14 @@ export class RequestsOverviewComponent implements AfterViewInit, OnDestroy {
 
         const query: Query[] = [new Query(
           {
-            name: "requests",
-            objectType: m.Request,
-            predicate,
-            page: new Page({ skip: 0, take: take }),
             include: [
               new TreeNode({ roleType: m.Request.Originator }),
               new TreeNode({ roleType: m.Request.CurrentObjectState }),
             ],
+            name: "requests",
+            objectType: m.Request,
+            page: new Page({ skip: 0, take }),
+            predicate,
             sort: [new Sort({ roleType: m.Request.RequestNumber, direction: "Desc" })],
           })];
 
@@ -124,27 +124,27 @@ export class RequestsOverviewComponent implements AfterViewInit, OnDestroy {
       });
   }
 
-  more(): void {
+  public more(): void {
     this.page$.next(this.data.length + 50);
   }
 
-  goBack(): void {
+  public goBack(): void {
     window.history.back();
   }
 
-  ngAfterViewInit(): void {
+  public ngAfterViewInit(): void {
     this.titleService.setTitle("Requests");
     this.media.broadcast();
     this.changeDetectorRef.detectChanges();
   }
 
-  ngOnDestroy(): void {
+  public ngOnDestroy(): void {
     if (this.subscription) {
       this.subscription.unsubscribe();
     }
   }
 
-  onView(request: Request): void {
+  public onView(request: Request): void {
     this.router.navigate(["/orders/requests/" + request.id + "/edit"]);
   }
 }

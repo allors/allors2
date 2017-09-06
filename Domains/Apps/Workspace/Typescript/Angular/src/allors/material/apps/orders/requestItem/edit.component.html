@@ -9,7 +9,7 @@
         <button *ngIf="requestItem.CanExecuteHold" md-button type="button" (click)="hold()">Pending Customer</button>
       </div>
 
-      <a-md-select [object]="requestItem" [roleType]="m.RequestItem.Product" [options]="goods" display="Name"></a-md-select>
+      <a-md-autocomplete [object]="requestItem" [roleType]="m.RequestItem.Product" [options]="goods" display="Name"></a-md-autocomplete>
       <a-md-input [object]="requestItem" [roleType]="m.RequestItem.Quantity"></a-md-input>
       <a-md-input [object]="requestItem" [roleType]="m.RequestItem.MaximumAllowedPrice"></a-md-input>
       <a-md-datepicker [object]="requestItem" [roleType]="m.RequestItem.RequiredByDate"></a-md-datepicker>

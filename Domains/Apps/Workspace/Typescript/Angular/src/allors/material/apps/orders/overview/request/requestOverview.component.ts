@@ -1,12 +1,13 @@
 import { AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit } from "@angular/core";
 import { MdSnackBar, MdSnackBarConfig } from "@angular/material";
 import { ActivatedRoute } from "@angular/router";
+import { Router } from "@angular/router";
 import { TdDialogService, TdMediaService } from "@covalent/core";
 import { BehaviorSubject, Observable, Subject, Subscription } from "rxjs/Rx";
 
 import { AllorsService, ErrorService, Invoked, Loaded, Saved, Scope } from "../../../../../angular";
 import { Equals, Fetch, Like, Page, Path, PullRequest, Query, Sort, TreeNode } from "../../../../../domain";
-import { Product, RequestForQuote, RequestItem } from "../../../../../domain";
+import { Product, ProductQuote, RequestForQuote, RequestItem } from "../../../../../domain";
 import { MetaDomain } from "../../../../../meta";
 
 @Component({
@@ -17,6 +18,7 @@ export class RequestOverviewComponent implements OnInit, AfterViewInit, OnDestro
   public m: MetaDomain;
   public title: string = "Requests Overview";
   public request: RequestForQuote;
+  public quote: ProductQuote;
   public products: Product[] = [];
 
   private subscription: Subscription;
@@ -27,6 +29,7 @@ export class RequestOverviewComponent implements OnInit, AfterViewInit, OnDestro
     private allors: AllorsService,
     private errorService: ErrorService,
     private route: ActivatedRoute,
+    private router: Router,
     public dialogService: TdDialogService,
     private snackBar: MdSnackBar,
     public media: TdMediaService, private changeDetectorRef: ChangeDetectorRef) {
@@ -60,6 +63,7 @@ export class RequestOverviewComponent implements OnInit, AfterViewInit, OnDestro
               new TreeNode({ roleType: m.Request.RequestItems }),
               new TreeNode({ roleType: m.Request.Originator }),
               new TreeNode({ roleType: m.Request.CurrentObjectState }),
+              new TreeNode({ roleType: m.Request.Currency }),
               new TreeNode({ roleType: m.Request.CreatedBy }),
               new TreeNode({ roleType: m.Request.LastModifiedBy }),
               new TreeNode({
@@ -84,6 +88,16 @@ export class RequestOverviewComponent implements OnInit, AfterViewInit, OnDestro
           }),
         ];
 
+        const quoteFetch: Fetch = new Fetch({
+          id,
+          name: "quote",
+          path: new Path({ step: m.RequestForQuote.QuoteWhereRequest }),
+        });
+
+        if (id != null) {
+          fetch.push(quoteFetch);
+        }
+
         const query: Query[] = [
           new Query(
             {
@@ -100,6 +114,7 @@ export class RequestOverviewComponent implements OnInit, AfterViewInit, OnDestro
       .subscribe((loaded: Loaded) => {
         this.products = loaded.collections.products as Product[];
         this.request = loaded.objects.request as RequestForQuote;
+        this.quote = loaded.objects.quote as ProductQuote;
       },
       (error: any) => {
         this.errorService.message(error);
@@ -123,19 +138,34 @@ export class RequestOverviewComponent implements OnInit, AfterViewInit, OnDestro
     window.history.back();
   }
 
-  public checkType(obj: any): string {
-    return obj.objectType.name;
-  }
-
   public createQuote(): void {
 
     this.scope.invoke(this.request.CreateQuote)
       .subscribe((invoked: Invoked) => {
-        this.goBack();
         this.snackBar.open("Quote successfully created.", "close", { duration: 5000 });
+        this.gotoQuote();
       },
       (error: Error) => {
         this.errorService.dialog(error);
+      });
+  }
+
+  public gotoQuote(): void {
+
+    const fetch: Fetch[] = [new Fetch({
+      id: this.request.id,
+      name: "quote",
+      path: new Path({ step: this.m.RequestForQuote.QuoteWhereRequest }),
+    })];
+
+    this.scope.load("Pull", new PullRequest({ fetch }))
+      .subscribe((loaded: Loaded) => {
+        const quote = loaded.objects.quote as ProductQuote;
+        this.router.navigate(["/orders/productQuote/" + quote.id]);
+      },
+      (error: any) => {
+        this.errorService.message(error);
+        this.goBack();
       });
   }
 }

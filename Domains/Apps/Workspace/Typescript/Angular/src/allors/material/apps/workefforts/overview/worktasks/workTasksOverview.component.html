@@ -26,7 +26,7 @@
         <md-option>None</md-option>
         <md-option *ngFor="let priority of priorities" [value]="priority.Name">{{ priority.Name }}</md-option>
       </md-select>
-       <md-select formControlName="assignee" name="assignee" [(ngModel)]="selectedAssignee" placeholder="Assignee">
+      <md-select formControlName="assignee" name="assignee" [(ngModel)]="selectedAssignee" placeholder="Assignee">
         <md-option>None</md-option>
         <md-option *ngFor="let assignee of assignees" [value]="assignee.displayName">{{ assignee.displayName }}</md-option>
       </md-select>
@@ -44,19 +44,19 @@
         </div>
         <ng-template let-workEffortAssignment let-last="last" ngFor [ngForOf]="data">
           <md-list-item>
-            <div md-line class="md-caption pointer" [routerLink]="['/worktask/' + workEffortAssignment.Assignment.id ]">
+            <span class="mat-list-text pointer" [routerLink]="['/worktask/' + workEffortAssignment.Assignment.id]">
               {{ workEffortAssignment.Assignment.Name }}, {{ workEffortAssignment.Assignment.CurrentObjectState.Name }}
-            </div>
 
-            <div md-line class="md-caption pointer" [routerLink]="['/relations/person/' + workEffortAssignment.Professional.id]">Assigned to: {{ workEffortAssignment.Professional.displayName }} </div>
-            <p md-line class="md-caption">{{ workEffortAssignment.Assignment.Description }} </p>
-            <p *ngIf="workEffortAssignment.Assignment.Priority" md-line class="md-caption">Priority {{ workEffortAssignment.Assignment.Priority.Name }} </p>
+              <div md-line class="md-caption pointer" [routerLink]="['/relations/person/' + workEffortAssignment.Professional.id]">Assigned to: {{ workEffortAssignment.Professional.displayName }} </div>
+              <p md-line class="md-caption">{{ workEffortAssignment.Assignment.Description }} </p>
+              <p *ngIf="workEffortAssignment.Assignment.Priority" md-line class="md-caption">Priority {{ workEffortAssignment.Assignment.Priority.Name }} </p>
 
-            <span hide-xs hide-sm hide-md flex-gt-xs="60" flex-xs="40" layout-gt-xs="row">
-              <div class="md-caption tc-grey-500" flex-gt-xs="50"> Sched. Start: {{ workEffortAssignment.Assignment.ScheduledStart | date}} </div>
-              <div class="md-caption tc-grey-500" flex-gt-xs="50"> Sched. Compl.: {{ workEffortAssignment.Assignment.ScheduledCompletion | date }} </div>
-              <div class="md-caption tc-grey-500" flex-gt-xs="50"> Act. Start: {{ workEffortAssignment.Assignment.ActualStart | date}} </div>
-              <div class="md-caption tc-grey-500" flex-gt-xs="50"> Act. Compl.: {{ workEffortAssignment.Assignment.ActualCompletion | date }} </div>
+              <span hide-xs hide-sm hide-md flex-gt-xs="60" flex-xs="40" layout-gt-xs="row">
+                <div class="md-caption tc-grey-500" flex-gt-xs="50"> Sched. Start: {{ workEffortAssignment.Assignment.ScheduledStart | date}} </div>
+                <div class="md-caption tc-grey-500" flex-gt-xs="50"> Sched. Compl.: {{ workEffortAssignment.Assignment.ScheduledCompletion | date }} </div>
+                <div class="md-caption tc-grey-500" flex-gt-xs="50"> Act. Start: {{ workEffortAssignment.Assignment.ActualStart | date}} </div>
+                <div class="md-caption tc-grey-500" flex-gt-xs="50"> Act. Compl.: {{ workEffortAssignment.Assignment.ActualCompletion | date }} </div>
+              </span>
             </span>
 
             <span>
@@ -67,7 +67,7 @@
                 <a [routerLink]="['/worktask/' + workEffortAssignment.Assignment.id]" md-menu-item>Edit</a>
                 <button  md-menu-item (click)="delete(workEffortAssignment.Assignment)" [disabled]="!workEffortAssignment.Assignment.CanExecuteDelete">Delete</button>
               </md-menu>
-          </span>
+            </span>
 
           </md-list-item>
           <md-divider *ngIf="!last" md-inset></md-divider>

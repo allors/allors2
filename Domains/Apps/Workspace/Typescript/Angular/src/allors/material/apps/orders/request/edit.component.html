@@ -14,7 +14,10 @@
         display="Name" (onSelect)="originatorSelected($event)" label="Requesting organisation"></a-md-autocomplete>
       <a-md-autocomplete *ngIf="showPeople" [object]="request" [roleType]="m.Request.Originator" [filter]="peopleFilter.create()"
         display="displayName" (onSelect)="originatorSelected($event)" label="Requesting person"></a-md-autocomplete>
-      <a-md-select [object]="request" [roleType]="m.Request.FullfillContactMechanism" [options]="contactMechanisms" display="displayName"></a-md-select>
+      <a-md-select [object]="request" [roleType]="m.Request.FullfillContactMechanism" [options]="contactMechanisms" display="displayName" label="Reply to"></a-md-select>
+      <a-md-static *ngIf="request.EmailAddress" [object]="request" [roleType]="m.Request.EmailAddress" ></a-md-static>
+      <a-md-static *ngIf="request.TelephoneCountryCode" [object]="request" [roleType]="m.Request.TelephoneCountryCode" ></a-md-static>
+      <a-md-static *ngIf="request.TelephoneNumber" [object]="request" [roleType]="m.Request.TelephoneNumber" ></a-md-static>
       <a-md-datepicker [object]="request" [roleType]="m.Request.RequestDate"></a-md-datepicker>
       <a-md-datepicker [object]="request" [roleType]="m.Request.RequiredResponseDate"></a-md-datepicker>
       <a-md-input [object]="request" [roleType]="m.Request.Description"></a-md-input>

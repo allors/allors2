@@ -37,9 +37,9 @@
       <ng-template let-request let-last="last" ngFor [ngForOf]="data">
         <md-list-item>
 
-          <h3 md-line> {{request.Originator.displayName}}</h3>
-          <h4 md-line> {{request.RequestNumber }}: {{request.Description}} ({{request.CurrentObjectState.Name}})</h4>
-          <p md-line> Response required date: {{request.RequiredResponseDate}} </p>
+          <h3 *ngIf="request.Originator" md-line [routerLink]="['/orders/request/' + request.id ]" > {{request.Originator.displayName}}</h3>
+          <h4 md-line [routerLink]="['/orders/request/' + request.id ]" > {{request.RequestNumber }}: {{request.Description}} ({{request.CurrentObjectState.Name}})</h4>
+          <p md-line> Response required date: {{request.RequiredResponseDate | date}} </p>
           <p md-line hide-gt-md class="md-caption"> last modified: {{ request.LastModifiedDate | timeAgo }} </p>
 
           <span flex></span>
@@ -47,18 +47,17 @@
           <span hide-xs hide-sm hide-md flex-gt-xs="60" flex-xs="40" layout-gt-xs="row">
                 <div class="md-caption tc-grey-500" flex-gt-xs="50"> {{ request.CreationDate | date }} </div>
                 <div class="md-caption tc-grey-500" flex-gt-xs="50"> {{ request.LastModifiedDate | timeAgo }} </div>
-              </span>
-
-          <span>
-          <button md-icon-button [md-menu-trigger-for]="menu">
-          <md-icon>more_vert</md-icon>
-          </button>
-          <md-menu x-position="before" #menu="mdMenu">
-          <a [routerLink]="['/orders/request/' + request.id ]" md-menu-item>Details</a>
-          <!-- <button md-menu-item (click)="delete(organisation)">Delete</button> -->
-          </md-menu>
           </span>
 
+          <span>
+            <button md-icon-button [md-menu-trigger-for]="menu">
+            <md-icon>more_vert</md-icon>
+            </button>
+            <md-menu x-position="before" #menu="mdMenu">
+            <a [routerLink]="['/orders/request/' + request.id ]" md-menu-item>Details</a>
+            <!-- <button md-menu-item (click)="delete(organisation)">Delete</button> -->
+            </md-menu>
+          </span>
         </md-list-item>
         <md-divider *ngIf="!last" md-inset></md-divider>
       </ng-template>

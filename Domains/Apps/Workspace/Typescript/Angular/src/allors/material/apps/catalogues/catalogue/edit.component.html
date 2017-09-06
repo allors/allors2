@@ -3,6 +3,7 @@
 
     <div class="pad">
       <a-md-media-upload [object]="catalogue" [roleType]="m.Catalogue.CatalogueImage" accept="image/*"></a-md-media-upload>
+      <a-md-select [object]="catalogue" [roleType]="m.Catalogue.CatScope" [options]="catScopes" display="Name" label="Scope"></a-md-select>
       <a-md-localised-text [object]="catalogue" [roleType]="m.Catalogue.LocalisedNames" [locales]="locales" label="Name"></a-md-localised-text>
       <a-md-localised-text [object]="catalogue" [roleType]="m.Catalogue.LocalisedDescriptions" [locales]="locales" label="Description"></a-md-localised-text>
       <a-md-select [object]="catalogue" [roleType]="m.Catalogue.ProductCategories" [options]="categories" display="Name"></a-md-select>

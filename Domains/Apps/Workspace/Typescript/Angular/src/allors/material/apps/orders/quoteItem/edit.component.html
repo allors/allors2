@@ -3,12 +3,12 @@
 
     <div class="pad">
       <div *ngIf="quoteItem.CurrentObjectState">
-        <a-md-static [object]="quote" [roleType]="m.QuoteItem.CurrentObjectState" display="Name" label="Status"></a-md-static>
+        <a-md-static [object]="quoteItem" [roleType]="m.QuoteItem.CurrentObjectState" display="Name" label="Status"></a-md-static>
         <button *ngIf="quoteItem.CanExecuteSubmit" md-button type="button" (click)="submit()">Submit</button>
         <button *ngIf="quoteItem.CanExecuteCancel" md-button type="button" (click)="cancel()">Cancel</button>
       </div>
 
-      <a-md-static [object]="quoteItem" [roleType]="m.QuoteItem.RequestItem"></a-md-static>
+      <!-- <a-md-static *ngIf="quoteItem.RequestItem" [object]="quoteItem" [roleType]="m.QuoteItem.RequestItem" [display]=""></a-md-static> -->
       <a-md-select [object]="quoteItem" [roleType]="m.QuoteItem.Product" [options]="goods" display="Name"></a-md-select>
       <a-md-input [object]="quoteItem" [roleType]="m.QuoteItem.Quantity"></a-md-input>
       <a-md-input [object]="quoteItem" [roleType]="m.QuoteItem.UnitPrice"></a-md-input>

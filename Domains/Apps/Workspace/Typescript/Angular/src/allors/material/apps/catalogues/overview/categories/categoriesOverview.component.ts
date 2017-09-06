@@ -21,17 +21,17 @@ interface SearchData {
 })
 export class CategoriesOverviewComponent implements AfterViewInit, OnDestroy {
 
+  public title: string = "Categories";
+  public total: number;
+  public searchForm: FormGroup;
+  public data: ProductCategory[];
+  public filtered: ProductCategory[];
   private refresh$: BehaviorSubject<Date>;
   private page$: BehaviorSubject<number>;
 
   private subscription: Subscription;
   private scope: Scope;
 
-  title: string = "Categories";
-  total: number;
-  searchForm: FormGroup;
-  data: ProductCategory[];
-  filtered: ProductCategory[];
   constructor(
     private allors: AllorsService,
     private errorService: ErrorService,
@@ -80,15 +80,15 @@ export class CategoriesOverviewComponent implements AfterViewInit, OnDestroy {
 
         const query: Query[] = [new Query(
           {
-            name: "categories",
-            objectType: m.ProductCategory,
-            predicate,
-            page: new Page({ skip: 0, take: take }),
             include: [
               new TreeNode({ roleType: m.ProductCategory.CategoryImage }),
               new TreeNode({ roleType: m.ProductCategory.LocalisedNames }),
               new TreeNode({ roleType: m.ProductCategory.LocalisedDescriptions }),
             ],
+            name: "categories",
+            objectType: m.ProductCategory,
+            page: new Page({ skip: 0, take }),
+            predicate,
           })];
 
         return this.scope.load("Pull", new PullRequest({ query }));
@@ -104,26 +104,26 @@ export class CategoriesOverviewComponent implements AfterViewInit, OnDestroy {
       });
   }
 
-  more(): void {
+  public more(): void {
     this.page$.next(this.data.length + 50);
   }
 
-  goBack(): void {
+  public goBack(): void {
     window.history.back();
   }
 
-  ngAfterViewInit(): void {
+  public ngAfterViewInit(): void {
     this.media.broadcast();
     this.changeDetectorRef.detectChanges();
   }
 
-  ngOnDestroy(): void {
+  public ngOnDestroy(): void {
     if (this.subscription) {
       this.subscription.unsubscribe();
     }
   }
 
-  delete(category: ProductCategory): void {
+  public delete(category: ProductCategory): void {
     this.dialogService
       .openConfirm({ message: "Are you sure you want to delete this category?" })
       .afterClosed().subscribe((confirm: boolean) => {
@@ -133,7 +133,7 @@ export class CategoriesOverviewComponent implements AfterViewInit, OnDestroy {
       });
   }
 
-  onView(category: ProductCategory): void {
+  public onView(category: ProductCategory): void {
     this.router.navigate(["/category/" + category.id]);
   }
 }

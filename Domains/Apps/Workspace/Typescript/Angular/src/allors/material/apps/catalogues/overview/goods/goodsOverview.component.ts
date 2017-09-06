@@ -9,11 +9,23 @@ import { TdDialogService, TdLoadingService, TdMediaService } from "@covalent/cor
 
 import { AllorsService, ErrorService, Invoked, Loaded, Saved, Scope } from "../../../../../angular";
 import { And, ContainedIn, Contains, Equals, Like, Not, Or, Page, Predicate, PullRequest, Query, Sort, TreeNode } from "../../../../../domain";
-import { Good } from "../../../../../domain";
+import { Brand, Good, InventoryItem, InventoryItemKind, Model, Organisation, Ownership, ProductCategory, ProductType, SerialisedInventoryItemObjectState } from "../../../../../domain";
 import { MetaDomain } from "../../../../../meta/index";
 
 interface SearchData {
   name: string;
+  articleNumber: string;
+  productCategory: string;
+  productType: string;
+  brand: string;
+  model: string;
+  status: string;
+  ownership: string;
+  inventoryKind: string;
+  supplier: string;
+  manufacturer: string;
+  owner: string;
+  keyword: string;
 }
 
 @Component({
@@ -21,17 +33,53 @@ interface SearchData {
 })
 export class GoodsOverviewComponent implements AfterViewInit, OnDestroy {
 
+  public title: string = "Products";
+  public total: number;
+  public searchForm: FormGroup;
+  public data: Good[];
+  public filtered: Good[];
+
+  public productCategories: ProductCategory[];
+  public selectedProductCategory: ProductCategory;
+  public productCategory: ProductCategory;
+
+  public productTypes: ProductType[];
+  public selectedProductType: ProductType;
+  public productType: ProductType;
+
+  public brands: Brand[];
+  public selectedBrand: Brand;
+  public brand: Brand;
+
+  public models: Model[];
+  public selectedModel: Model;
+  public model: Model;
+
+  public objectStates: SerialisedInventoryItemObjectState[];
+  public selectedObjectState: Model;
+  public objectState: Model;
+
+  public ownerships: Ownership[];
+  public selectedOwnership: Ownership;
+  public ownership: Ownership;
+
+  public inventoryItemKinds: InventoryItemKind[];
+  public selectedInventoryItemKind: InventoryItemKind;
+  public inventoryItemKind: InventoryItemKind;
+
+  public suppliers: Organisation[];
+  public selectedSupplier: Organisation;
+  public supplier: Organisation;
+
+  public manufacturers: Organisation[];
+  public selectedManufacturer: Organisation;
+  public manufacturer: Organisation;
+
   private refresh$: BehaviorSubject<Date>;
   private page$: BehaviorSubject<number>;
 
   private subscription: Subscription;
   private scope: Scope;
-
-  title: string = "Products";
-  total: number;
-  searchForm: FormGroup;
-  data: Good[];
-  filtered: Good[];
 
   constructor(
     private allors: AllorsService,
@@ -49,7 +97,18 @@ export class GoodsOverviewComponent implements AfterViewInit, OnDestroy {
     this.refresh$ = new BehaviorSubject<Date>(undefined);
 
     this.searchForm = this.formBuilder.group({
+      articleNumber: [""],
+      brand: [""],
+      inventoryKind: [""],
+      keyword: [""],
+      manufacturer: [""],
+      model: [""],
       name: [""],
+      owner: [""],
+      ownerStatus: [""],
+      productCategory: [""],
+      productType: [""],
+      supplier: [""],
     });
 
     this.page$ = new BehaviorSubject<number>(50);
@@ -71,29 +130,58 @@ export class GoodsOverviewComponent implements AfterViewInit, OnDestroy {
       .switchMap(([data, take]: [SearchData, number]) => {
         const m: MetaDomain = this.allors.meta;
 
-        const predicate: And = new And();
-        const predicates: Predicate[] = predicate.predicates;
+        const goodsPredicate: And = new And();
+        const goodsPredicates: Predicate[] = goodsPredicate.predicates;
 
         if (data.name) {
           const like: string = data.name.replace("*", "%") + "%";
-          predicates.push(new Like({ roleType: m.Good.Name, value: like }));
+          goodsPredicates.push(new Like({ roleType: m.Good.Name, value: like }));
         }
 
-        const query: Query[] = [new Query(
+        if (data.articleNumber) {
+          const like: string = data.articleNumber.replace("*", "%") + "%";
+          goodsPredicates.push(new Like({ roleType: m.Good.ArticleNumber, value: like }));
+        }
+
+        if (data.keyword) {
+          const like: string = data.keyword.replace("*", "%") + "%";
+          goodsPredicates.push(new Like({ roleType: m.Good.Keywords, value: like }));
+        }
+
+        if (data.owner) {
+          const inventoryPredicate: And = new And();
+          const inventoryPredicates: Predicate[] = inventoryPredicate.predicates;
+
+          if (data.owner) {
+            const like: string = data.owner.replace("*", "%") + "%";
+            inventoryPredicates.push(new Like({ roleType: m.SerialisedInventoryItem.Owner, value: like }));
+          }
+
+          const inventoryQuery: Query = new Query({
+            name: "inventoryItems",
+            objectType: m.SerialisedInventoryItem,
+            predicate: inventoryPredicate,
+          });
+
+          const containedIn: ContainedIn = new ContainedIn({ associationType: m.Good.InventoryItemVersionedsWhereGood, query: inventoryQuery });
+          goodsPredicates.push(containedIn);
+        }
+
+        const goodsQuery: Query[] = [new Query(
           {
-            name: "goods",
-            objectType: m.Good,
-            predicate,
-            page: new Page({ skip: 0, take: take }),
             include: [
               new TreeNode({ roleType: m.Good.PrimaryPhoto }),
               new TreeNode({ roleType: m.Good.LocalisedNames }),
               new TreeNode({ roleType: m.Good.LocalisedDescriptions }),
               new TreeNode({ roleType: m.Good.PrimaryProductCategory }),
             ],
+            name: "goods",
+            objectType: m.Good,
+            page: new Page({ skip: 0, take }),
+            predicate: goodsPredicate,
           })];
 
-        return this.scope.load("Pull", new PullRequest({ query }));
+        return this.scope.load("Pull", new PullRequest({ query: goodsQuery }));
 
       })
       .subscribe((loaded: Loaded) => {
@@ -106,11 +194,11 @@ export class GoodsOverviewComponent implements AfterViewInit, OnDestroy {
       });
   }
 
-  more(): void {
+  public more(): void {
     this.page$.next(this.data.length + 50);
   }
 
-  delete(good: Good): void {
+  public delete(good: Good): void {
     this.dialogService
       .openConfirm({ message: "Are you sure you want to delete this product?" })
       .afterClosed().subscribe((confirm: boolean) => {
@@ -120,22 +208,22 @@ export class GoodsOverviewComponent implements AfterViewInit, OnDestroy {
       });
   }
 
-  goBack(): void {
+  public goBack(): void {
     window.history.back();
   }
 
-  ngAfterViewInit(): void {
+  public ngAfterViewInit(): void {
     this.media.broadcast();
     this.changeDetectorRef.detectChanges();
   }
 
-  ngOnDestroy(): void {
+  public ngOnDestroy(): void {
     if (this.subscription) {
       this.subscription.unsubscribe();
     }
   }
 
-  onView(good: Good): void {
+  public onView(good: Good): void {
     this.router.navigate(["/good/" + good.id]);
   }
 }

@@ -7,20 +7,20 @@ import {
 } from "../../domain";
 
 export class Database {
-  options: RequestOptions;
+  public options: RequestOptions;
 
   constructor(private http: Http,
               public url: string,
               private postProcessRequestOptions: (requestOptions: RequestOptions) => RequestOptions = (v: RequestOptions) => v) {
     const headers: any = new Headers(
       {
-        "Content-Type": "application/json",
         "Accept": "application/json",
+        "Content-Type": "application/json",
       });
     this.options = new RequestOptions({ headers });
   }
 
-  pull(name: string, params?: any): Observable<PullResponse> {
+  public pull(name: string, params?: any): Observable<PullResponse> {
     const serviceName: string = this.fullyQualifiedUrl(name + "/Pull");
 
     return this.http
@@ -32,7 +32,7 @@ export class Database {
       });
   }
 
-  sync(syncRequest: SyncRequest): Observable<SyncResponse> {
+  public sync(syncRequest: SyncRequest): Observable<SyncResponse> {
 
     const serviceName: string = this.fullyQualifiedUrl("Database/Sync");
     return this.http
@@ -44,7 +44,7 @@ export class Database {
       });
   }
 
-  push(pushRequest: PushRequest): Observable<PushResponse> {
+  public push(pushRequest: PushRequest): Observable<PushResponse> {
 
     const serviceName: string = this.fullyQualifiedUrl("Database/Push");
     return this.http
@@ -61,9 +61,9 @@ export class Database {
       });
   }
 
-  invoke(method: Method): Observable<InvokeResponse>;
-  invoke(service: string, args?: any): Observable<InvokeResponse>;
-  invoke(methodOrService: Method | string, args?: any): Observable<InvokeResponse> {
+  public invoke(method: Method): Observable<InvokeResponse>;
+  public invoke(service: string, args?: any): Observable<InvokeResponse>;
+  public invoke(methodOrService: Method | string, args?: any): Observable<InvokeResponse> {
 
     if (methodOrService instanceof Method) {
       return this.invokeMethod(methodOrService);
@@ -75,8 +75,8 @@ export class Database {
   private invokeMethod(method: Method): Observable<InvokeResponse> {
     const invokeRequest: InvokeRequest = {
       i: method.object.id,
-      v: method.object.version,
       m: method.name,
+      v: method.object.version,
     };
 
     const serviceName: string = this.fullyQualifiedUrl("Database/Invoke");

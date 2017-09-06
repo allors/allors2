@@ -8,8 +8,10 @@ import { Observable, Subject, Subscription } from "rxjs/Rx";
 import { AllorsService, ErrorService, Filter, Loaded, Saved, Scope } from "../../../../angular";
 import { Contains, Equals, Fetch, Like, Page, Path, PullRequest, PushResponse, Query, Sort, TreeNode } from "../../../../domain";
 import {
-  Facility, Good, InventoryItemKind, InventoryItemVariance, Locale, LocalisedText, NonSerializedInventoryItem, Organisation, OrganisationRole,
-  ProductCategory, ProductCharacteristic, ProductCharacteristicValue, ProductType, Singleton, VarianceReason, VatRate
+  Brand, Facility, Good, InventoryItemKind, InventoryItemVariance, InventoryItemVersioned, Locale, LocalisedText, Model, NonSerialisedInventoryItem,
+  NonSerialisedInventoryItemObjectState, Organisation, OrganisationRole, Ownership,
+  ProductCategory, ProductCharacteristic, ProductCharacteristicValue, ProductFeature, ProductType,
+  SerialisedInventoryItem, SerialisedInventoryItemObjectState, SerialisedInventoryItemVersion, Singleton, VarianceReason, VatRate,
 } from "../../../../domain";
 import { MetaDomain } from "../../../../meta/index";
 
@@ -31,13 +33,27 @@ export class GoodEditComponent implements OnInit, AfterViewInit, OnDestroy {
   public productTypes: ProductType[];
   public productCharacteristicValues: ProductCharacteristicValue[];
   public manufacturers: Organisation[];
+  public suppliers: Organisation[];
+  public brands: Brand[];
+  public selectedBrand: Brand;
+  public models: Model[];
+  public selectedModel: Model;
   public varianceReasons: VarianceReason[];
   public inventoryItemKinds: InventoryItemKind[];
-  public inventoryItem: NonSerializedInventoryItem;
+  public inventoryItems: InventoryItemVersioned[];
+  public inventoryItem: InventoryItemVersioned;
+  public nonSerialisedInventoryItems: NonSerialisedInventoryItem[];
+  public nonSerialisedinventoryItem: NonSerialisedInventoryItem;
+  public serialisedInventoryItems: SerialisedInventoryItem[];
+  public serialisedInventoryItem: SerialisedInventoryItem;
+  public serialisedInventoryItemObjectStates: SerialisedInventoryItemObjectState[];
+  public nonSerialisedInventoryItemObjectStates: NonSerialisedInventoryItemObjectState[];
   public vatRates: VatRate[];
+  public ownerships: Ownership[];
   public actualQuantityOnHand: number;
 
   public manufacturersFilter: Filter;
+  public suppliersFilter: Filter;
 
   private subscription: Subscription;
   private scope: Scope;
@@ -51,10 +67,7 @@ export class GoodEditComponent implements OnInit, AfterViewInit, OnDestroy {
     this.scope = new Scope(allors.database, allors.workspace);
     this.m = this.allors.meta;
     this.manufacturersFilter = new Filter(this.scope, this.m.Organisation, [this.m.Organisation.Name]);
-  }
-
-  get locale(): Locale {
-    return this.locales.find((v: Locale) => v.Name === this.selectedLocaleName);
+    this.suppliersFilter = new Filter(this.scope, this.m.Organisation, [this.m.Organisation.Name]);
   }
 
   public ngOnInit(): void {
@@ -69,30 +82,46 @@ export class GoodEditComponent implements OnInit, AfterViewInit, OnDestroy {
             id,
             include: [
               new TreeNode({ roleType: m.Good.PrimaryPhoto }),
-              new TreeNode({ roleType: m.Product.LocalisedNames }),
-              new TreeNode({ roleType: m.Product.LocalisedDescriptions }),
-              new TreeNode({ roleType: m.Product.LocalisedComments }),
-              new TreeNode({ roleType: m.Product.ProductCategories }),
+              new TreeNode({ roleType: m.Good.LocalisedNames }),
+              new TreeNode({ roleType: m.Good.LocalisedDescriptions }),
+              new TreeNode({ roleType: m.Good.LocalisedComments }),
+              new TreeNode({ roleType: m.Good.ProductCategories }),
+              new TreeNode({ roleType: m.Good.InventoryItemKind }),
+              new TreeNode({ roleType: m.Good.SuppliedBy }),
               new TreeNode({ roleType: m.Good.ManufacturedBy }),
-              new TreeNode({
-                nodes: [
-                  new TreeNode({
-                    nodes: [new TreeNode({ roleType: m.ProductCharacteristic.LocalisedNames })],
-                    roleType: m.ProductType.ProductCharacteristics,
-                  }),
-                ],
-                roleType: m.Good.ProductType,
-              }),
-              new TreeNode({
-                nodes: [
-                  new TreeNode({ roleType: m.ProductCharacteristicValue.ProductCharacteristic }),
-                ],
-                roleType: m.Product.ProductCharacteristicValues,
-              }),
+              new TreeNode({ roleType: m.Good.StandardFeatures }),
             ],
             name: "good",
           }),
         ];
+
+        const inventoryItemFetch: Fetch = new Fetch({
+          id,
+          include: [
+            new TreeNode({ roleType: m.SerialisedInventoryItemVersioned.Ownership }),
+            new TreeNode({
+              nodes: [
+                new TreeNode({
+                  nodes: [new TreeNode({ roleType: m.ProductCharacteristic.LocalisedNames })],
+                  roleType: m.ProductType.ProductCharacteristics,
+                }),
+              ],
+              roleType: m.InventoryItemVersioned.ProductType,
+            }),
+            new TreeNode({
+              nodes: [
+                new TreeNode({ roleType: m.ProductCharacteristicValue.ProductCharacteristic }),
+              ],
+              roleType: m.InventoryItemVersioned.ProductCharacteristicValues,
+            }),
+          ],
+          name: "inventoryItems",
+          path: new Path({ step: this.m.Good.InventoryItemVersionedsWhereGood }),
+        });
+
+        if (id != null) {
+          fetch.push(inventoryItemFetch);
+        }
 
         const query: Query[] = [
           new Query(
@@ -143,6 +172,27 @@ export class GoodEditComponent implements OnInit, AfterViewInit, OnDestroy {
               name: "inventoryItemKinds",
               objectType: this.m.InventoryItemKind,
             }),
+          new Query(
+            {
+              name: "brands",
+              objectType: this.m.Brand,
+              sort: [new Sort({ roleType: m.Brand.Name, direction: "Asc" })],
+            }),
+          new Query(
+            {
+              name: "serialisedInventoryItemObjectStates",
+              objectType: this.m.SerialisedInventoryItemObjectState,
+            }),
+            new Query(
+              {
+                name: "nonSerialisedInventoryItemObjectStates",
+                objectType: this.m.NonSerialisedInventoryItemObjectState,
+              }),
+            new Query(
+            {
+              name: "ownerships",
+              objectType: this.m.Ownership,
+            }),
         ];
 
         this.scope.session.reset();
@@ -156,62 +206,66 @@ export class GoodEditComponent implements OnInit, AfterViewInit, OnDestroy {
             this.varianceReasons = loaded.collections.varianceReasons as VarianceReason[];
             this.vatRates = loaded.collections.vatRates as VatRate[];
             this.inventoryItemKinds = loaded.collections.inventoryItemKinds as InventoryItemKind[];
+            this.brands = loaded.collections.brands as Brand[];
+            this.serialisedInventoryItemObjectStates = loaded.collections.serialisedInventoryItemObjectStates as SerialisedInventoryItemObjectState[];
+            this.nonSerialisedInventoryItemObjectStates = loaded.collections.nonSerialisedInventoryItemObjectStates as NonSerialisedInventoryItemObjectState[];
+            this.ownerships = loaded.collections.ownerships as Ownership[];
             this.singleton = loaded.collections.singletons[0] as Singleton;
             this.facility = this.singleton.DefaultInternalOrganisation.DefaultFacility;
             this.locales = this.singleton.Locales;
             this.selectedLocaleName = this.singleton.DefaultLocale.Name;
-
             this.good = loaded.objects.good as Good;
+            this.inventoryItems = loaded.collections.inventoryItems as InventoryItemVersioned[];
+            this.inventoryItem = this.inventoryItems[0];
 
-            if (!this.good) {
-              const vatRateZero = this.vatRates.find((v: VatRate) => v.Rate === 0);
-              const inventoryItemKindNonSerialized = this.inventoryItemKinds.find((v: InventoryItemKind) => v.Name === "Non serialized");
+            this.good.StandardFeatures.forEach((feature: ProductFeature) => {
+              if (feature instanceof (Brand)) {
+                this.selectedBrand = feature;
+                this.brandSelected(this.selectedBrand);
+              }
+              if (feature instanceof (Model)) {
+                this.selectedModel = feature;
+              }
+            });
 
-              this.good = this.scope.session.create("Good") as Good;
-              this.good.InventoryItemKind = inventoryItemKindNonSerialized;
-              this.good.VatRate = vatRateZero;
-              this.good.Sku = "";
+            this.setProductCharacteristicValues();
 
-              this.inventoryItem = this.scope.session.create("NonSerializedInventoryItem") as NonSerializedInventoryItem;
-              this.inventoryItem.Good = this.good;
-              this.inventoryItem.Facility = this.facility;
+            if (this.SerialisedGood) {
+              this.serialisedInventoryItems = loaded.collections.inventoryItems as SerialisedInventoryItem[];
+              this.serialisedInventoryItem = this.serialisedInventoryItems[0];
+            } else {
+              this.nonSerialisedInventoryItems = loaded.collections.inventoryItems as NonSerialisedInventoryItem[];
+              this.nonSerialisedinventoryItem = this.nonSerialisedInventoryItems[0];
             }
 
             this.title = this.good.Name;
             this.actualQuantityOnHand = this.good.QuantityOnHand;
 
-            this.setProductCharacteristicValues();
-
             const organisationRoles: OrganisationRole[] = loaded.collections.organisationRoles as OrganisationRole[];
             const manufacturerRole: OrganisationRole = organisationRoles.find((v: OrganisationRole) => v.Name === "Manufacturer");
+            const supplierRole: OrganisationRole = organisationRoles.find((v: OrganisationRole) => v.Name === "Supplier");
 
-            const manufacturersQuery: Query[] = [
+            const Query2: Query[] = [
               new Query(
                 {
                   name: "manufacturers",
                   objectType: m.Organisation,
                   predicate: new Contains({ roleType: m.Organisation.OrganisationRoles, object: manufacturerRole }),
                 }),
+              new Query(
+                {
+                  name: "suppliers",
+                  objectType: m.Organisation,
+                  predicate: new Contains({ roleType: m.Organisation.OrganisationRoles, object: supplierRole }),
+                }),
             ];
 
-            if (!this.good) {
-              const inventoryQuery: Query = new Query(
-                {
-                  include: [new TreeNode({ roleType: m.NonSerializedInventoryItem.InventoryItemVariances })],
-                  name: "inventoryItems",
-                  objectType: m.NonSerializedInventoryItem,
-                  predicate: new Equals({ roleType: m.NonSerializedInventoryItem.Good, value: this.good }),
-                });
-
-              manufacturersQuery.push(inventoryQuery);
-            }
-
-            return this.scope.load("Pull", new PullRequest({ query: manufacturersQuery }));
+            return this.scope.load("Pull", new PullRequest({ query: Query2 }));
           });
       })
       .subscribe((loaded: Loaded) => {
         this.manufacturers = loaded.collections.manufacturers as Organisation[];
-        this.inventoryItem = loaded.collections.inventoryItems[0] as NonSerializedInventoryItem;
+        this.suppliers = loaded.collections.suppliers as Organisation[];
       },
       (error: any) => {
         this.errorService.message(error);
@@ -232,14 +286,27 @@ export class GoodEditComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   public save(): void {
-    if (this.actualQuantityOnHand !== this.good.QuantityOnHand) {
+
+    this.good.StandardFeatures.forEach((feature: ProductFeature) => {
+      this.good.RemoveStandardFeature(feature);
+    });
+
+    if (this.selectedBrand != null) {
+      this.good.AddStandardFeature(this.selectedBrand);
+    }
+
+    if (this.selectedModel != null) {
+      this.good.AddStandardFeature(this.selectedModel);
+    }
+
+    if (!this.SerialisedGood && this.actualQuantityOnHand !== this.good.QuantityOnHand) {
       const reason = this.varianceReasons.find((v: VarianceReason) => v.Name === "Unknown");
 
       const inventoryItemVariance = this.scope.session.create("InventoryItemVariance") as InventoryItemVariance;
       inventoryItemVariance.Quantity = this.actualQuantityOnHand - this.good.QuantityOnHand;
       inventoryItemVariance.Reason = reason;
 
-      this.inventoryItem.AddInventoryItemVariance(inventoryItemVariance);
+      this.nonSerialisedinventoryItem.AddInventoryItemVariance(inventoryItemVariance);
     }
 
     this.scope
@@ -266,6 +333,39 @@ export class GoodEditComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   public setProductCharacteristicValues(): void {
-    this.productCharacteristicValues = this.good.ProductCharacteristicValues.filter((v: ProductCharacteristicValue) => v.Locale === this.locale);
+    this.productCharacteristicValues = this.inventoryItem.ProductCharacteristicValues.filter((v: ProductCharacteristicValue) => v.Locale === this.locale);
+  }
+
+  get locale(): Locale {
+    return this.locales.find((v: Locale) => v.Name === this.selectedLocaleName);
+  }
+
+  get SerialisedGood(): boolean {
+    return this.good.InventoryItemKind === this.inventoryItemKinds.find((v: InventoryItemKind) => v.UniqueId.toUpperCase() === "2596E2DD-3F5D-4588-A4A2-167D6FBE3FAE");
+  }
+
+  public brandSelected(brand: Brand): void {
+
+    const fetch: Fetch[] = [
+      new Fetch(
+        {
+          id: brand.id,
+          include: [new TreeNode({ roleType: this.m.Brand.Models })],
+          name: "selectedbrand",
+        }),
+    ];
+
+    this.scope
+      .load("Pull", new PullRequest({ fetch }))
+      .subscribe((loaded: Loaded) => {
+
+        const selectedbrand = loaded.objects.selectedbrand as Brand;
+        this.models = selectedbrand.Models;
+      },
+      (error: Error) => {
+        this.errorService.message(error);
+        this.goBack();
+      },
+    );
   }
 }

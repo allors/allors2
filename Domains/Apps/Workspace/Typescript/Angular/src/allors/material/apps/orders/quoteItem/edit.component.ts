@@ -60,7 +60,10 @@ export class QuoteItemEditComponent implements OnInit, AfterViewInit, OnDestroy 
           }),
           new Fetch({
             id: itemId,
-            include: [ new TreeNode({ roleType: m.QuoteItem.CurrentObjectState })],
+            include: [
+              new TreeNode({ roleType: m.QuoteItem.CurrentObjectState }),
+              new TreeNode({ roleType: m.QuoteItem.RequestItem }),
+            ],
             name: "quoteItem",
           }),
         ];
@@ -80,13 +83,13 @@ export class QuoteItemEditComponent implements OnInit, AfterViewInit, OnDestroy 
       })
       .subscribe((loaded: Loaded) => {
 
-        this.quote = loaded.objects.requestForQuote as ProductQuote;
-        this.quoteItem = loaded.objects.requestItem as QuoteItem;
+        this.quote = loaded.objects.productQuote as ProductQuote;
+        this.quoteItem = loaded.objects.quoteItem as QuoteItem;
         this.goods = loaded.collections.goods as Good[];
 
         if (!this.quoteItem) {
-          this.title = "Add Request Item";
-          this.quoteItem = this.scope.session.create("RequestItem") as QuoteItem;
+          this.title = "Add Quote Item";
+          this.quoteItem = this.scope.session.create("QuoteItem") as QuoteItem;
           this.quote.AddQuoteItem(this.quoteItem);
         }
       },
@@ -183,7 +186,7 @@ export class QuoteItemEditComponent implements OnInit, AfterViewInit, OnDestroy 
     this.scope
       .save()
       .subscribe((saved: Saved) => {
-        this.router.navigate(["/orders/productquote/" + this.quote.id]);
+        this.router.navigate(["/orders/productQuote/" + this.quote.id]);
       },
       (error: Error) => {
         this.errorService.dialog(error);

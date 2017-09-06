@@ -21,15 +21,15 @@
   </div>
 
   <md-divider></md-divider>
-    <ng-template tdLoading="data">
-      <md-list class="will-load">
-        <div class="md-padding" *ngIf="data && data.length === 0" layout="row" layout-align="center center">
-          <h3>No product types to display.</h3>
-        </div>
-        <ng-template let-productType let-last="last" ngFor [ngForOf]="data">
+  <ng-template tdLoading="data">
+    <md-list class="will-load">
+      <div class="md-padding" *ngIf="data && data.length === 0" layout="row" layout-align="center center">
+        <h3>No product types to display.</h3>
+      </div>
+      <ng-template let-productType let-last="last" ngFor [ngForOf]="data">
           <md-list-item>
 
-            <h3 md-line> {{productType.Name}}</h3>
+            <h3 md-line [routerLink]="['/productType/' + productType.id]"> {{productType.Name}}</h3>
 
             <span>
                 <button md-icon-button [md-menu-trigger-for]="menu">

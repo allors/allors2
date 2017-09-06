@@ -6,7 +6,7 @@ import { BehaviorSubject, Observable, Subject, Subscription } from "rxjs/Rx";
 
 import { AllorsService, ErrorService, Invoked, Loaded, Saved, Scope } from "../../../../../angular";
 import { Equals, Fetch, Like, Page, Path, PullRequest, Query, Sort, TreeNode } from "../../../../../domain";
-import { Good, ProductQuote, QuoteItem } from "../../../../../domain";
+import { Good, ProductQuote, QuoteItem, SalesOrder, SerialisedInventoryItemVersioned } from "../../../../../domain";
 import { MetaDomain } from "../../../../../meta";
 
 @Component({
@@ -18,7 +18,8 @@ export class ProductQuoteOverviewComponent implements OnInit, AfterViewInit, OnD
   public title: string = "Quote Overview";
   public quote: ProductQuote;
   public quoteItems: QuoteItem[] = [];
-  public goods: Good[]= [];
+  public goods: Good[] = [];
+  public salesOrder: SalesOrder;
 
   private subscription: Subscription;
   private scope: Scope;
@@ -74,6 +75,7 @@ export class ProductQuoteOverviewComponent implements OnInit, AfterViewInit, OnD
               new TreeNode({ roleType: m.Quote.CurrentObjectState }),
               new TreeNode({ roleType: m.Quote.CreatedBy }),
               new TreeNode({ roleType: m.Quote.LastModifiedBy }),
+              new TreeNode({ roleType: m.Quote.Request }),
               new TreeNode({
                 nodes: [
                   new TreeNode({ roleType: m.QuoteStatus.QuoteObjectState }),
@@ -96,6 +98,16 @@ export class ProductQuoteOverviewComponent implements OnInit, AfterViewInit, OnD
           }),
         ];
 
+        const salesOrderFetch: Fetch = new Fetch({
+          id,
+          name: "salesOrder",
+          path: new Path({ step: m.ProductQuote.SalesOrderWhereQuote }),
+        });
+
+        if (id != null) {
+          fetch.push(salesOrderFetch);
+        }
+
         const query: Query[] = [
           new Query(
             {
@@ -112,6 +124,8 @@ export class ProductQuoteOverviewComponent implements OnInit, AfterViewInit, OnD
       .subscribe((loaded: Loaded) => {
         this.goods = loaded.collections.goods as Good[];
         this.quote = loaded.objects.quote as ProductQuote;
+        this.salesOrder = loaded.objects.salesOrder as SalesOrder;
+
         if (this.quote) {
           this.quoteItems = this.quote.QuoteItems;
         }
@@ -138,17 +152,18 @@ export class ProductQuoteOverviewComponent implements OnInit, AfterViewInit, OnD
     window.history.back();
   }
 
-  public checkType(obj: any): string {
-    return obj.objectType.name;
-  }
-
   public deleteQuoteItem(quoteItem: QuoteItem): void {
     this.quote.RemoveQuoteItem(quoteItem);
   }
 
-  public addQuoteItem(): void {
-    const quoteItem = this.scope.session.create("QuoteItem") as QuoteItem;
-    quoteItem.Quantity = 1;
-    this.quote.AddQuoteItem(quoteItem);
+  public Order(): void {
+    this.scope.invoke(this.quote.Order)
+      .subscribe((invoked: Invoked) => {
+        this.goBack();
+        this.snackBar.open("Order successfully created.", "close", { duration: 5000 });
+      },
+      (error: Error) => {
+        this.errorService.dialog(error);
+      });
   }
 }

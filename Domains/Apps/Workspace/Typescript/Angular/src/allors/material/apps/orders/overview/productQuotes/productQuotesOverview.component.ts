@@ -28,13 +28,13 @@ export class ProductQuotesOverviewComponent implements AfterViewInit, OnDestroy 
   public title: string = "Quotes";
   public data: ProductQuote[];
   public filtered: ProductQuote[];
+  public total: number;
 
   private refresh$: BehaviorSubject<Date>;
   private subscription: Subscription;
   private scope: Scope;
 
   private page$: BehaviorSubject<number>;
-  private total: number;
 
   constructor(
     private allors: AllorsService,
@@ -141,7 +141,7 @@ export class ProductQuotesOverviewComponent implements AfterViewInit, OnDestroy 
   }
 
   public onView(quote: ProductQuote): void {
-    this.router.navigate(["/orders/quotes/" + quote.id]);
+    this.router.navigate(["/orders/productQuotes/" + quote.id]);
   }
 
   private more(): void {

@@ -5,6 +5,7 @@
 
       <div>
         <a-md-media-upload [object]="category" [roleType]="m.ProductCategory.CategoryImage" accept="image/*"></a-md-media-upload>
+        <a-md-select [object]="category" [roleType]="m.ProductCategory.CatScope" [options]="catScopes" display="Name" label="Scope"></a-md-select>
         <a-md-localised-text [object]="category" [roleType]="m.ProductCategory.LocalisedNames" [locales]="locales" label="Name"></a-md-localised-text>
         <a-md-localised-text [object]="category" [roleType]="m.ProductCategory.LocalisedDescriptions" [locales]="locales" label="Description"></a-md-localised-text>
         <a-md-select [object]="category" [roleType]="m.ProductCategory.Parents" [options]="categories" display="Name"></a-md-select>

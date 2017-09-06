@@ -1,4 +1,4 @@
-import { AfterViewInit, ChangeDetectorRef, Component, OnDestroy , OnInit } from "@angular/core";
+import { AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit } from "@angular/core";
 import { Validators } from "@angular/forms";
 import { MdSnackBar, MdSnackBarConfig } from "@angular/material";
 import { ActivatedRoute } from "@angular/router";
@@ -7,7 +7,7 @@ import { Observable, Subject, Subscription } from "rxjs/Rx";
 
 import { AllorsService, ErrorService, Loaded, Saved, Scope } from "../../../../angular";
 import { Equals, Fetch, Like, Page, Path, PullRequest, PushResponse, Query, Sort, TreeNode } from "../../../../domain";
-import { Locale, ProductCategory, Singleton } from "../../../../domain";
+import { CatScope, Locale, ProductCategory, Singleton } from "../../../../domain";
 import { MetaDomain } from "../../../../meta/index";
 
 @Component({
@@ -15,16 +15,19 @@ import { MetaDomain } from "../../../../meta/index";
 })
 export class CategoryEditComponent implements OnInit, AfterViewInit, OnDestroy {
 
+  public m: MetaDomain;
+
+  public category: ProductCategory;
+  public title: string;
+  public subTitle: string;
+
+  public singleton: Singleton;
+  public locales: Locale[];
+  public categories: ProductCategory[];
+  public catScopes: CatScope[];
+
   private subscription: Subscription;
   private scope: Scope;
-
-  m: MetaDomain;
-
-  category: ProductCategory;
-
-  singleton: Singleton;
-  locales: Locale[];
-  categories: ProductCategory[];
 
   constructor(
     private allors: AllorsService,
@@ -35,7 +38,7 @@ export class CategoryEditComponent implements OnInit, AfterViewInit, OnDestroy {
     this.m = this.allors.meta;
   }
 
-  ngOnInit(): void {
+  public ngOnInit(): void {
     this.subscription = this.route.url
       .switchMap((url: any) => {
 
@@ -44,34 +47,39 @@ export class CategoryEditComponent implements OnInit, AfterViewInit, OnDestroy {
 
         const fetch: Fetch[] = [
           new Fetch({
-            name: "category",
             id,
             include: [
               new TreeNode({
-                roleType: m.ProductCategory.LocalisedNames,
                 nodes: [new TreeNode({ roleType: m.LocalisedText.Locale })],
+                roleType: m.ProductCategory.LocalisedNames,
               }),
               new TreeNode({
-                roleType: m.ProductCategory.LocalisedDescriptions,
                 nodes: [new TreeNode({ roleType: m.LocalisedText.Locale })],
+                roleType: m.ProductCategory.LocalisedDescriptions,
               }),
             ],
+            name: "category",
           }),
         ];
 
         const query: Query[] = [
           new Query(
             {
-              name: "singletons",
-              objectType: this.m.Singleton,
               include: [
                 new TreeNode({ roleType: m.Singleton.Locales }),
               ],
+              name: "singletons",
+              objectType: this.m.Singleton,
             }),
           new Query(
             {
               name: "categories",
               objectType: this.m.ProductCategory,
+            }),
+          new Query(
+            {
+              name: "catScopes",
+              objectType: this.m.CatScope,
             }),
         ];
 
@@ -87,6 +95,7 @@ export class CategoryEditComponent implements OnInit, AfterViewInit, OnDestroy {
 
         this.singleton = loaded.collections.singletons[0] as Singleton;
         this.categories = loaded.collections.categories as ProductCategory[];
+        this.catScopes = loaded.collections.catScopes as CatScope[];
         this.locales = this.singleton.Locales;
       },
       (error: any) => {
@@ -96,18 +105,18 @@ export class CategoryEditComponent implements OnInit, AfterViewInit, OnDestroy {
     );
   }
 
-  ngAfterViewInit(): void {
+  public ngAfterViewInit(): void {
     this.media.broadcast();
     this.changeDetectorRef.detectChanges();
   }
 
-  ngOnDestroy(): void {
+  public ngOnDestroy(): void {
     if (this.subscription) {
       this.subscription.unsubscribe();
     }
   }
 
-  save(): void {
+  public save(): void {
 
     this.scope
       .save()
@@ -119,7 +128,7 @@ export class CategoryEditComponent implements OnInit, AfterViewInit, OnDestroy {
       });
   }
 
-  goBack(): void {
+  public goBack(): void {
     window.history.back();
   }
 }

@@ -6,9 +6,9 @@
         <a-md-static [object]="quote" [roleType]="m.Quote.CurrentObjectState" display="Name" label="Status"></a-md-static>
         <button *ngIf="quote.CanExecuteApprove" md-button type="button" (click)="approve()">Approve</button>
         <button *ngIf="quote.CanExecuteReject" md-button type="button" (click)="reject()">Reject</button>
-        <button *ngIf="quote.CanExecuteOrder" md-button type="button" (click)="order()">Create Order</button>
       </div>
 
+      <a-md-static *ngIf="quote.Request" [object]="quote" [roleType]="m.ProductQuote.Request"></a-md-static>
       <a-md-autocomplete *ngIf="showOrganisations" [object]="quote" [roleType]="m.ProductQuote.Receiver" [filter]="organisationsFilter.create()"
         display="Name" (onSelect)="receiverSelected($event)" label="Receiving organisation"></a-md-autocomplete>
       <a-md-autocomplete *ngIf="showPeople" [object]="quote" [roleType]="m.ProductQuote.Receiver" [filter]="peopleFilter.create()"

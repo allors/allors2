@@ -1,16 +1,16 @@
-import { Observable, BehaviorSubject, Subscription } from 'rxjs/Rx';
-import { Component, OnInit, AfterViewInit, OnDestroy, ViewChild, ChangeDetectorRef } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
-import { Title } from '@angular/platform-browser';
-import { MdSnackBar, MdSnackBarConfig } from '@angular/material';
+import { AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild } from "@angular/core";
+import { FormBuilder, FormGroup, Validators } from "@angular/forms";
+import { MdSnackBar, MdSnackBarConfig } from "@angular/material";
+import { Title } from "@angular/platform-browser";
+import { Router } from "@angular/router";
+import { BehaviorSubject, Observable, Subscription } from "rxjs/Rx";
 
-import { TdLoadingService, TdDialogService, TdMediaService } from '@covalent/core';
+import { TdDialogService, TdLoadingService, TdMediaService } from "@covalent/core";
 
-import { MetaDomain } from '../../../../../meta/index';
-import { PullRequest, Query, Predicate, And, Or, Not, Equals, Like, Contains, ContainedIn, TreeNode, Sort, Page } from '../../../../../domain';
-import { Country, CustomOrganisationClassification, Organisation, OrganisationRole, PostalAddress, PostalBoundary } from '../../../../../domain';
-import { AllorsService, ErrorService, Scope, Loaded, Saved, Invoked } from '../../../../../angular';
+import { AllorsService, ErrorService, Invoked, Loaded, Saved, Scope } from "../../../../../angular";
+import { And, ContainedIn, Contains, Equals, Like, Not, Or, Page, Predicate, PullRequest, Query, Sort, TreeNode } from "../../../../../domain";
+import { Country, CustomOrganisationClassification, Organisation, OrganisationRole, PostalAddress, PostalBoundary } from "../../../../../domain";
+import { MetaDomain } from "../../../../../meta/index";
 
 interface SearchData {
   name: string;
@@ -22,35 +22,32 @@ interface SearchData {
 }
 
 @Component({
-  templateUrl: './organisationsOverview.component.html',
+  templateUrl: "./organisationsOverview.component.html",
 })
 export class OrganisationsOverviewComponent implements AfterViewInit, OnDestroy {
+
+  public title: string = "Organisations";
+  public total: number;
+  public searchForm: FormGroup;
+  public data: Organisation[];
+
+  public countries: Country[];
+  public selectedCountry: Country;
+  public country: Country;
+
+  public roles: OrganisationRole[];
+  public selectedRole: OrganisationRole;
+  public role: OrganisationRole;
+
+  public classifications: CustomOrganisationClassification[];
+  public selectedClassification: CustomOrganisationClassification;
+  public classification: CustomOrganisationClassification;
 
   private refresh$: BehaviorSubject<Date>;
   private subscription: Subscription;
   private scope: Scope;
 
   private page$: BehaviorSubject<number>;
-
-  title: string = 'Organisations';
-
-  total: number;
-
-  searchForm: FormGroup;
-
-  data: Organisation[];
-
-  countries: Country[];
-  selectedCountry: Country;
-  country: Country;
-
-  roles: OrganisationRole[];
-  selectedRole: OrganisationRole;
-  role: OrganisationRole;
-
-  classifications: CustomOrganisationClassification[];
-  selectedClassification: CustomOrganisationClassification;
-  classification: CustomOrganisationClassification;
 
   constructor(
     private allors: AllorsService,
@@ -66,12 +63,12 @@ export class OrganisationsOverviewComponent implements AfterViewInit, OnDestroy 
     this.refresh$ = new BehaviorSubject<Date>(undefined);
 
     this.searchForm = this.formBuilder.group({
-      name: [''],
-      country: [''],
-      role: [''],
-      classification: [''],
-      contactFirstName: [''],
-      contactLastName: [''],
+      name: [""],
+      country: [""],
+      role: [""],
+      classification: [""],
+      contactFirstName: [""],
+      contactLastName: [""],
     });
 
     this.page$ = new BehaviorSubject<number>(50);
@@ -96,24 +93,24 @@ export class OrganisationsOverviewComponent implements AfterViewInit, OnDestroy 
         const organisationRolesQuery: Query[] = [
           new Query(
             {
-              name: 'organisationRoles',
+              name: "organisationRoles",
               objectType: m.OrganisationRole,
             }),
           new Query(
             {
-              name: 'classifications',
+              name: "classifications",
               objectType: m.CustomOrganisationClassification,
             }),
           new Query(
             {
-              name: 'countries',
+              name: "countries",
               objectType: m.Country,
               sort: [new Sort({ roleType: m.Country.Name })],
             }),
         ];
 
         return this.scope
-          .load('Pull', new PullRequest({ query: organisationRolesQuery }))
+          .load("Pull", new PullRequest({ query: organisationRolesQuery }))
           .switchMap((loaded: Loaded) => {
             this.roles = loaded.collections.organisationRoles as OrganisationRole[];
             this.role = this.roles.find((v: OrganisationRole) => v.Name === data.role);
@@ -128,18 +125,18 @@ export class OrganisationsOverviewComponent implements AfterViewInit, OnDestroy 
             const contactPredicates: Predicate[] = contactPredicate.predicates;
 
             if (data.contactFirstName) {
-              const like: string = '%' + data.contactFirstName + '%';
+              const like: string = "%" + data.contactFirstName + "%";
               contactPredicates.push(new Like({ roleType: m.Person.FirstName, value: like }));
             }
 
             if (data.contactLastName) {
-              const like: string = '%' + data.contactLastName + '%';
+              const like: string = "%" + data.contactLastName + "%";
               contactPredicates.push(new Like({ roleType: m.Person.LastName, value: like }));
             }
 
             const contactQuery: Query = new Query(
               {
-                name: 'contacts',
+                name: "contacts",
                 objectType: m.Person,
                 predicate: contactPredicate,
               });
@@ -150,7 +147,7 @@ export class OrganisationsOverviewComponent implements AfterViewInit, OnDestroy 
 
             const organisationContactRelationshipQuery: Query = new Query(
               {
-                name: 'organisationContactRelationships',
+                name: "organisationContactRelationships",
                 objectType: m.OrganisationContactRelationship,
                 predicate: organisationContactRelationshipPredicate,
               });
@@ -164,7 +161,7 @@ export class OrganisationsOverviewComponent implements AfterViewInit, OnDestroy 
 
             const postalBoundaryQuery: Query = new Query(
               {
-                name: 'postalBoundaries',
+                name: "postalBoundaries",
                 objectType: m.PostalBoundary,
                 predicate: postalBoundaryPredicate,
               });
@@ -175,7 +172,7 @@ export class OrganisationsOverviewComponent implements AfterViewInit, OnDestroy 
 
             const postalAddressQuery: Query = new Query(
               {
-                name: 'postalAddresses',
+                name: "postalAddresses",
                 objectType: m.PostalAddress,
                 predicate: postalAddressPredicate,
               });
@@ -200,15 +197,15 @@ export class OrganisationsOverviewComponent implements AfterViewInit, OnDestroy 
             }
 
             if (data.name) {
-              const like: string = data.name.replace('*', '%') + '%';
+              const like: string = data.name.replace("*", "%") + "%";
               predicates.push(new Like({ roleType: m.Organisation.Name, value: like }));
             }
 
             const query: Query[] = [new Query(
               {
-                name: 'organisations',
+                name: "organisations",
                 objectType: m.Organisation,
-                predicate: predicate,
+                predicate,
                 page: new Page({ skip: 0, take: take }),
                 include: [
                   new TreeNode({ roleType: m.Organisation.OrganisationClassifications }),
@@ -229,7 +226,7 @@ export class OrganisationsOverviewComponent implements AfterViewInit, OnDestroy 
               })];
 
             return this.scope
-              .load('Pull', new PullRequest({ query: query }));
+              .load("Pull", new PullRequest({ query }));
           });
       })
       .subscribe((loaded: Loaded) => {
@@ -254,7 +251,7 @@ export class OrganisationsOverviewComponent implements AfterViewInit, OnDestroy 
   }
 
   ngAfterViewInit(): void {
-    this.titleService.setTitle('Organisations');
+    this.titleService.setTitle("Organisations");
     this.media.broadcast();
     this.changeDetectorRef.detectChanges();
   }
@@ -271,13 +268,13 @@ export class OrganisationsOverviewComponent implements AfterViewInit, OnDestroy 
 
   delete(organisation: Organisation): void {
     this.dialogService
-      .openConfirm({ message: 'Are you sure you want to delete this person?' })
+      .openConfirm({ message: "Are you sure you want to delete this person?" })
       .afterClosed()
       .subscribe((confirm: boolean) => {
         if (confirm) {
           this.scope.invoke(organisation.Delete)
             .subscribe((invoked: Invoked) => {
-              this.snackBar.open('Successfully deleted.', 'close', { duration: 5000 });
+              this.snackBar.open("Successfully deleted.", "close", { duration: 5000 });
               this.refresh();
             },
             (error: Error) => {
