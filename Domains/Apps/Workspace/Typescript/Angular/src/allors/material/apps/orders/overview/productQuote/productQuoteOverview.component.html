@@ -34,11 +34,17 @@
         <div *ngIf="quote.FullfillContactMechanism" layout="row">
           <a-md-static [object]="quote" [roleType]="m.Quote.FullfillContactMechanism" display="displayName" label="Reply to"></a-md-static>
         </div>
+        <div *ngIf="request.Comment" layout="row">
+          <a-md-static [object]="request" [roleType]="m.Request.Comment" label="Request Comment"></a-md-static>
+        </div>
         <div *ngIf="quote.Comment" layout="row">
-          <a-md-textarea [object]="quote" [roleType]="m.Quote.Comment"></a-md-textarea>
+          <a-md-textarea [object]="quote" [roleType]="m.Quote.Comment" label="Quote Comment"></a-md-textarea>
+        </div>
+        <div *ngIf="request.InternalComment" layout="row">
+          <a-md-static [object]="request" [roleType]="m.Request.InternalComment" label="Request Internal Comment"></a-md-static>
         </div>
         <div *ngIf="quote.InternalComment" layout="row">
-          <a-md-textarea [object]="quote" [roleType]="m.Quote.InternalComment"></a-md-textarea>
+          <a-md-textarea [object]="quote" [roleType]="m.Quote.InternalComment" label="Quote Internal Comment"></a-md-textarea>
         </div>
         <div *ngIf="quote.IssueDate" layout="row">
           <a-md-static [object]="quote" [roleType]="m.Quote.IssueDate"></a-md-static>
@@ -57,7 +63,7 @@
 
       <md-divider></md-divider>
       <md-card-actions>
-        <button md-button [routerLink]="['/productQuote/' + quote.id]">Edit</button>
+        <button *ngIf="quote.CanExecuteAddNewQuoteItem" md-button [routerLink]="['/productQuote/' + quote.id]">Edit</button>
         <button *ngIf="quote.CanExecuteOrder" md-button (click)="Order()">Create Sales Order</button>
       </md-card-actions>
     </md-card>

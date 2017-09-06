@@ -9,8 +9,6 @@ namespace Allors.Repository
     #endregion
 	public partial interface Commentable : Object 
     {
-
-
         #region Allors
         [Id("d800f9a2-fadd-45f1-8731-4dac177c6b1b")]
         [AssociationId("d3aadbc5-e488-4346-ac34-9e14cb8d2350")]
@@ -19,6 +17,5 @@ namespace Allors.Repository
         [Size(-1)]
         [Workspace]
         string Comment { get; set; }
-
     }
 }

@@ -10,6 +10,15 @@ namespace Allors.Repository
     public partial interface Order : AccessControlledObject, Printable, UniquelyIdentifiable, Transitional, Commentable, Localised, Auditable
     {
         #region Allors
+        [Id("962215D2-4461-4BD3-9A98-F1A085B2343F")]
+        [AssociationId("18EC98EE-5D4A-4EF4-9CD1-D6351BE0FD63")]
+        [RoleId("4C5B1B31-EC17-4E95-B18A-5A8429105CA1")]
+        #endregion
+        [Workspace]
+        [Size(-1)]
+        string InternalComment { get; set; }
+
+        #region Allors
         [Id("2DD5B3C2-1C24-4AFA-A5E0-930BB943E93E")]
         [AssociationId("3DC26CC0-1B4F-48B6-B3E9-5EBA97DDBB8A")]
         [RoleId("DDD72ADC-23B3-446E-B6AF-F495A64979F5")]

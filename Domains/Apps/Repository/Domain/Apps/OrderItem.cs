@@ -10,6 +10,15 @@ namespace Allors.Repository
     public partial interface OrderItem : AccessControlledObject, Commentable, Transitional, Priceable 
     {
         #region Allors
+        [Id("7D6B04D2-062C-45B8-96AB-DC41A3DECAF8")]
+        [AssociationId("4ED896CE-3278-49B2-A3A7-A25AAB4FB072")]
+        [RoleId("0A0AE42C-2676-4BA3-BA86-9357E1388C02")]
+        #endregion
+        [Workspace]
+        [Size(-1)]
+        string InternalComment { get; set; }
+
+        #region Allors
         [Id("30493d04-3298-4888-8ee4-b8995d9cd5a1")]
         [AssociationId("0ab1707d-be04-49c2-a6b1-b6a17eb0a195")]
         [RoleId("95bd36e9-a956-46d2-b2b5-7d7d0f73c411")]

@@ -21,6 +21,15 @@ namespace Allors.Repository
         public ObjectState LastObjectState { get; set; }
 
         #endregion
+        
+        #region Allors
+        [Id("1A82EB63-123E-4055-BA4C-8DAA62648565")]
+        [AssociationId("DB3E0711-6A15-4D96-9D49-36E6C8C19567")]
+        [RoleId("55F3B5F5-D36B-4414-875D-2A458CABA931")]
+        #endregion
+        [Workspace]
+        [Size(-1)]
+        public string InternalComment { get; set; }
 
         #region Allors
         [Id("542f3de9-e808-443b-b6e6-baf2db1ec2b1")]

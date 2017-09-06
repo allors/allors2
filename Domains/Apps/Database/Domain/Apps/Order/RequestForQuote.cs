@@ -31,6 +31,10 @@ namespace Allors.Domain
                 .WithReceiver(this.Originator)
                 .WithIssuer(Singleton.Instance(this.Strategy.Session).DefaultInternalOrganisation)
                 .WithRequiredResponseDate(this.RequiredResponseDate)
+                .WithCurrency(this.Currency)
+                .WithFullfillContactMechanism(this.FullfillContactMechanism)
+                .WithComment(this.Comment)
+                .WithInternalComment(this.InternalComment)
                 .Build();
 
             var sourceItems = this.RequestItems.Where(i => i.CurrentObjectState.Equals(new RequestItemObjectStates(this.Strategy.Session).Submitted)).ToArray();
@@ -44,6 +48,8 @@ namespace Allors.Domain
                     .WithQuantity(requestItem.Quantity)
                     .WithUnitOfMeasure(requestItem.UnitOfMeasure)
                     .WithRequestItem(requestItem)
+                    .WithComment(requestItem.Comment)
+                    .WithInternalComment(requestItem.InternalComment)
                     .Build()
                     );
             }

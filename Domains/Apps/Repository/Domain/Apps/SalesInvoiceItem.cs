@@ -10,6 +10,8 @@ namespace Allors.Repository
     public partial class SalesInvoiceItem : InvoiceItem 
     {
         #region inherited properties
+
+        public string InternalComment { get; set; }
         public AgreementTerm[] InvoiceTerms { get; set; }
 
         public decimal TotalInvoiceAdjustment { get; set; }

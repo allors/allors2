@@ -29,6 +29,8 @@ namespace Allors.Domain
             var salesOrder = new SalesOrderBuilder(this.Strategy.Session)
                 .WithQuote(this)
                 .WithBillToCustomer(this.Receiver)
+                .WithComment(this.Comment)
+                .WithInternalComment(this.InternalComment)
                 .Build();
 
             var quoteItems = this.QuoteItems.Where(i => i.CurrentObjectState.Equals(new QuoteItemObjectStates(this.Strategy.Session).Submitted)).ToArray();
@@ -39,6 +41,8 @@ namespace Allors.Domain
                     .WithProduct(quoteItem.Product)
                     .WithProductFeature(quoteItem.ProductFeature)
                     .WithQuantityOrdered(quoteItem.Quantity)
+                    .WithComment(quoteItem.Comment)
+                    .WithInternalComment(quoteItem.InternalComment)
                     .Build();
 
                 if (quoteItem.UnitPrice > 0)

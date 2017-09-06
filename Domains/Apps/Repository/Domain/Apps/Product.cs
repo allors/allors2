@@ -7,8 +7,17 @@ namespace Allors.Repository
     #region Allors
     [Id("56b79619-d04a-4924-96e8-e3e7be9faa09")]
     #endregion
-    public partial interface Product : UniquelyIdentifiable, AccessControlledObject 
+    public partial interface Product : Commentable, UniquelyIdentifiable, AccessControlledObject 
     {
+        #region Allors
+        [Id("D88189C8-735E-4A5A-B46F-AEFF4F1F0501")]
+        [AssociationId("93F47711-09D1-45FE-9FCD-20C0AF122484")]
+        [RoleId("97F9DCEE-ED7F-458A-BE81-D14579FD11C1")]
+        #endregion
+        [Workspace]
+        [Size(-1)]
+        string InternalComment { get; set; }
+
         #region Allors
         [Id("039a9481-940b-4953-a1b5-6c56f35a238b")]
         [AssociationId("ee6d841a-78f4-47c7-be8a-d4bd7ed81609")]
@@ -65,16 +74,6 @@ namespace Allors.Repository
         [Indexed]
         [Workspace]
         LocalisedText[] LocalisedComments { get; set; }
-
-        #region Allors
-        [Id("39CB3BE2-2E0D-4124-8241-866860C2BDC0")]
-        [AssociationId("1A2D792C-1453-458A-80EE-5EDE6FA5663C")]
-        [RoleId("1D6A2E2B-EE3D-4F9E-9F08-905D2F6E09B9")]
-        #endregion
-        [Multiplicity(Multiplicity.OneToOne)]
-        [Size(-1)]
-        [Workspace]
-        string InternalComment { get; set; }
 
         #region Allors
         [Id("0cbb9d37-20cf-4e0c-9099-07f1fcb88590")]

@@ -9,7 +9,7 @@ import { AllorsService, ErrorService, Filter, Invoked, Loaded, Saved, Scope } fr
 import { Contains, Equals, Fetch, Like, Page, Path, PullRequest, PushResponse, Query, Sort, TreeNode } from "../../../../domain";
 import {
   ContactMechanism, Currency, Organisation, OrganisationRole, Party, PartyContactMechanism,
-  Person, PersonRole, ProductQuote,
+  Person, PersonRole, ProductQuote, RequestForQuote,
 } from "../../../../domain";
 import { MetaDomain } from "../../../../meta";
 
@@ -23,6 +23,7 @@ export class ProductQuoteEditComponent implements OnInit, AfterViewInit, OnDestr
   public title: string;
   public subTitle: string;
   public quote: ProductQuote;
+  public request: RequestForQuote;
   public people: Person[];
   public organisations: Organisation[];
   public currencies: Currency[];
@@ -72,19 +73,6 @@ export class ProductQuoteEditComponent implements OnInit, AfterViewInit, OnDestr
         const id: string = this.route.snapshot.paramMap.get("id");
         const m: MetaDomain = this.m;
 
-        const fetch: Fetch[] = [
-          new Fetch({
-            id,
-            include: [
-              new TreeNode({ roleType: m.ProductQuote.Receiver }),
-              new TreeNode({ roleType: m.ProductQuote.FullfillContactMechanism }),
-              new TreeNode({ roleType: m.ProductQuote.CurrentObjectState }),
-              new TreeNode({ roleType: m.ProductQuote.Request }),
-            ],
-            name: "productQuote",
-          }),
-        ];
-
         const rolesQuery: Query[] = [
           new Query(
             {
@@ -131,15 +119,36 @@ export class ProductQuoteEditComponent implements OnInit, AfterViewInit, OnDestr
                 }),
             ];
 
+            const fetch: Fetch[] = [
+              new Fetch({
+                id,
+                include: [
+                  new TreeNode({ roleType: m.ProductQuote.Receiver }),
+                  new TreeNode({ roleType: m.ProductQuote.FullfillContactMechanism }),
+                  new TreeNode({ roleType: m.ProductQuote.CurrentObjectState }),
+                  new TreeNode({ roleType: m.ProductQuote.Request }),
+                ],
+                name: "productQuote",
+              }),
+              new Fetch({
+                id,
+                name: "request",
+                path: new Path({ step: m.ProductQuote.Request }),
+              }),
+            ];
+
             return this.scope.load("Pull", new PullRequest({ fetch, query }));
           });
       })
       .subscribe((loaded: Loaded) => {
-
         this.quote = loaded.objects.productQuote as ProductQuote;
+        this.request = loaded.objects.request as RequestForQuote;
+
         if (!this.quote) {
           this.quote = this.scope.session.create("ProductQuote") as ProductQuote;
         }
+
+        this.receiverSelected(this.quote.Receiver);
 
         this.organisations = loaded.collections.organisations as Organisation[];
         this.people = loaded.collections.parties as Person[];

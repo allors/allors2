@@ -6,7 +6,7 @@ import { BehaviorSubject, Observable, Subject, Subscription } from "rxjs/Rx";
 
 import { AllorsService, ErrorService, Invoked, Loaded, Saved, Scope } from "../../../../../angular";
 import { Equals, Fetch, Like, Page, Path, PullRequest, Query, Sort, TreeNode } from "../../../../../domain";
-import { Good, ProductQuote, QuoteItem, SalesOrder, SerialisedInventoryItemVersioned } from "../../../../../domain";
+import { Good, ProductQuote, QuoteItem, RequestForQuote, SalesOrder, SerialisedInventoryItemVersioned } from "../../../../../domain";
 import { MetaDomain } from "../../../../../meta";
 
 @Component({
@@ -16,6 +16,7 @@ export class ProductQuoteOverviewComponent implements OnInit, AfterViewInit, OnD
 
   public m: MetaDomain;
   public title: string = "Quote Overview";
+  public request: RequestForQuote;
   public quote: ProductQuote;
   public quoteItems: QuoteItem[] = [];
   public goods: Good[] = [];
@@ -96,6 +97,11 @@ export class ProductQuoteOverviewComponent implements OnInit, AfterViewInit, OnD
             ],
             name: "quote",
           }),
+          new Fetch({
+            id,
+            name: "request",
+            path: new Path({ step: m.ProductQuote.Request }),
+          }),
         ];
 
         const salesOrderFetch: Fetch = new Fetch({
@@ -123,6 +129,7 @@ export class ProductQuoteOverviewComponent implements OnInit, AfterViewInit, OnD
       })
       .subscribe((loaded: Loaded) => {
         this.goods = loaded.collections.goods as Good[];
+        this.request = loaded.objects.request as RequestForQuote;
         this.quote = loaded.objects.quote as ProductQuote;
         this.salesOrder = loaded.objects.salesOrder as SalesOrder;
 

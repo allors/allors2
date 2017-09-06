@@ -28,6 +28,38 @@
         <input fxFlex mdInput placeholder="Owner" formControlName="owner">
         <md-icon mdSuffix>search</md-icon>
       </md-input-container>
+      <md-select formControlName="ownership" name="ownership" [(ngModel)]="selectedOwnership" placeholder="Ownership">
+        <md-option>None</md-option>
+        <md-option *ngFor="let ownership of ownerships" [value]="ownership.Name">{{ ownership.Name }}</md-option>
+      </md-select>
+      <md-select formControlName="brand" name="brand" [(ngModel)]="selectedBrand" placeholder="Brand">
+        <md-option>None</md-option>
+        <md-option *ngFor="let brand of brands" [value]="brand.Name">{{ brand.Name }}</md-option>
+      </md-select>
+      <md-select formControlName="model" name="model" [(ngModel)]="selectedModel" placeholder="Model">
+        <md-option>None</md-option>
+        <md-option *ngFor="let model of models" [value]="model.Name">{{ model.Name }}</md-option>
+      </md-select>
+      <md-select formControlName="productCategory" name="productCategory" [(ngModel)]="selectedProductCategory" placeholder="Category">
+        <md-option>None</md-option>
+        <md-option *ngFor="let productCategory of productCategories" [value]="productCategory.Name">{{ productCategory.Name }}</md-option>
+      </md-select>
+      <md-select formControlName="productType" name="productType" [(ngModel)]="selectedProductType" placeholder="Product Type">
+        <md-option>None</md-option>
+        <md-option *ngFor="let productType of productTypes" [value]="productType.Name">{{ productType.Name }}</md-option>
+      </md-select>
+      <md-select formControlName="inventoryItemKind" name="inventoryItemKind" [(ngModel)]="selectedInventoryItemKind" placeholder="Inventory Kind">
+        <md-option>None</md-option>
+        <md-option *ngFor="let inventoryItemKind of inventoryItemKinds" [value]="inventoryItemKind.Name">{{ inventoryItemKind.Name }}</md-option>
+      </md-select>
+      <md-select formControlName="manufacturer" name="manufacturer" [(ngModel)]="selectedManufacturer" placeholder="Manufacturer">
+        <md-option>None</md-option>
+        <md-option *ngFor="let manufacturer of manufacturers" [value]="manufacturer.Name">{{ manufacturer.Name }}</md-option>
+      </md-select>
+      <md-select formControlName="supplier" name="supplier" [(ngModel)]="selectedSupplier" placeholder="Supplier">
+        <md-option>None</md-option>
+        <md-option *ngFor="let supplier of suppliers" [value]="supplier.Name">{{ supplier.Name }}</md-option>
+      </md-select>
     </form>
   </div>
 
@@ -74,10 +106,10 @@
 
 <span flex>
   <a md-fab color="accent" class="mat-fab-bottom-right fixed" [routerLink]="['/serialisedGood']">
-    <md-icon>add</md-icon>S
+    <md-icon>add</md-icon>
   </a>
-
+<!--
   <a md-fab color="accent" class="mat-fab-bottom-right fixed" [routerLink]="['/nonSerialisedGood']">
     <md-icon>add</md-icon>N
-  </a>
+  </a> -->
 </span>

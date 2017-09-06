@@ -10,6 +10,8 @@ namespace Allors.Repository
     public partial class PurchaseOrderItem : OrderItem 
     {
         #region inherited properties
+
+        public string InternalComment { get; set; }
         public BudgetItem BudgetItem { get; set; }
 
         public decimal PreviousQuantity { get; set; }

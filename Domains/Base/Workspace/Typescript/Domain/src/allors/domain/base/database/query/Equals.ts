@@ -16,14 +16,14 @@ export class Equals implements Predicate {
       return {
         _T: 'Equals',
         at: this.associationType ? this.associationType.id : undefined,
-        rt: this.roleType.id ? this.roleType.id : undefined,
+        rt: this.roleType ? this.roleType.id : undefined,
         v: this.value,
       };
     } else {
       return {
         _T: 'Equals',
         at: this.associationType ? this.associationType.id : undefined,
-        rt: this.roleType.id ? this.roleType.id : undefined,
+        rt: this.roleType ? this.roleType.id : undefined,
         o: this.value ? this.value.id : undefined,
       };
     }

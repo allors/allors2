@@ -10,6 +10,15 @@ namespace Allors.Repository
 	public partial interface Request : AccessControlledObject, Commentable, Auditable, Printable, Transitional
     {
         #region Allors
+        [Id("918022F4-D2D6-4596-AF42-2009E981AE73")]
+        [AssociationId("7D3B9DC8-3C7B-44BF-A6E2-47C41E5E75B9")]
+        [RoleId("40A85126-6FBF-4111-9C64-AE9DE0A45837")]
+        #endregion
+        [Workspace]
+        [Size(-1)]
+        string InternalComment { get; set; }
+
+        #region Allors
         [Id("1bb3a4b8-224a-47ab-b05b-c0c8a87ec09c")]
         [AssociationId("57109e48-b116-4ea5-b636-73816c0dda68")]
         [RoleId("d63a2e09-95e1-4c90-83a1-a5366a3d5ca3")]
@@ -74,14 +83,6 @@ namespace Allors.Repository
         [Indexed]
         [Workspace]
         Party Originator  { get; set; }
-
-        #region Allors
-        [Id("20028FAE-94FF-47F8-9944-EA558CBDC93B")]
-        [AssociationId("D152DF4A-3A5B-48DA-AE5E-BBDE1706EEDF")]
-        [RoleId("80216604-A123-4F1B-BDCF-F77AE5D31DFF")]
-        #endregion
-        [Workspace]
-        string InternalComment { get; set; }
 
         #region Allors
         [Id("BBCF2C40-E793-4FA4-B4E1-612E20971408")]

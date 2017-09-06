@@ -9,7 +9,11 @@ namespace Allors.Repository
     #endregion
     public partial class SalesOrder : Order 
     {
+        private Order _orderImplementation;
+
         #region inherited properties
+
+        public string InternalComment { get; set; }
         public Currency CustomerCurrency { get; set; }
 
         public decimal TotalBasePriceCustomerCurrency { get; set; }

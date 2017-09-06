@@ -11,6 +11,8 @@ namespace Allors.Repository
     public partial class RequestForInformation : Request 
     {
         #region inherited properties
+
+        public string InternalComment { get; set; }
         public string Description { get; set; }
 
         public DateTime RequestDate { get; set; }
@@ -24,8 +26,6 @@ namespace Allors.Repository
         public RespondingParty[] RespondingParties { get; set; }
 
         public Party Originator { get; set; }
-
-        public string InternalComment { get; set; }
 
         public Currency Currency { get; set; }
 

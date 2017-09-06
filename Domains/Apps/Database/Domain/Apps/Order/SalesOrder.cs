@@ -813,6 +813,8 @@ namespace Allors.Domain
                 .WithFee(this.Fee)
                 .WithCustomerReference(this.CustomerReference)
                 .WithPaymentMethod(this.PaymentMethod)
+                .WithComment(this.Comment)
+                .WithInternalComment(this.InternalComment)
                 .Build();
 
             foreach (SalesOrderItem orderItem in this.ValidOrderItems)
@@ -821,6 +823,8 @@ namespace Allors.Domain
                     .WithSalesInvoiceItemType(new SalesInvoiceItemTypes(this.Strategy.Session).ProductItem)
                     .WithProduct(orderItem.Product)
                     .WithQuantity(orderItem.QuantityOrdered)
+                    .WithComment(orderItem.Comment)
+                    .WithInternalComment(orderItem.InternalComment)
                     .Build();
 
                 salesInvoice.AddSalesInvoiceItem(invoiceItem);

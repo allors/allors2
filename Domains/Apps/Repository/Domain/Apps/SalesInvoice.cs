@@ -10,6 +10,8 @@ namespace Allors.Repository
     public partial class SalesInvoice : Invoice 
     {
         #region inherited properties
+
+        public string InternalComment { get; set; }
         public decimal TotalShippingAndHandlingCustomerCurrency { get; set; }
 
         public Currency CustomerCurrency { get; set; }

@@ -9,6 +9,15 @@ namespace Allors.Repository
 	public partial interface Quote : Transitional, Printable, Auditable, Commentable, AccessControlledObject
     {
         #region Allors
+        [Id("3B913CC6-C627-4F16-ACF5-98EC97CE5FDA")]
+        [AssociationId("7CD50B18-3C4A-4A81-B6AA-9CE8BC43C0DA")]
+        [RoleId("3A53DEDC-0877-44FA-89E3-1212EAB4FF36")]
+        #endregion
+        [Workspace]
+        [Size(-1)]
+        string InternalComment { get; set; }
+
+        #region Allors
         [Id("D566DD5B-BF58-45A6-A68F-FD7D2652FB4D")]
         [AssociationId("8F0A31C1-1B2A-4531-84BA-7636F4D0B9DF")]
         [RoleId("00EF6AB3-E075-45F5-A839-96576E3546AB")]
@@ -63,14 +72,6 @@ namespace Allors.Repository
         [Size(-1)]
         [Workspace]
         string Description { get; set; }
-
-        #region Allors
-        [Id("D4F9A392-76B2-4054-95C8-0937634CA4E9")]
-        [AssociationId("DCDFE849-2301-47F5-B7BE-4057F7382A4F")]
-        [RoleId("ACA0317C-ECC3-49B4-A5CB-04CF7998020F")]
-        #endregion
-        [Workspace]
-        string InternalComment { get; set; }
 
         #region Allors
         [Id("9119c598-cd98-43da-bfdf-1e6573112c9e")]

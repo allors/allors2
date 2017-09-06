@@ -61,7 +61,7 @@
 
       <md-divider></md-divider>
       <md-card-actions>
-        <button md-button [routerLink]="['/request/' + request.id ]">Edit</button>
+        <button *ngIf="request.CanExecuteAddNewRequestItem" md-button [routerLink]="['/request/' + request.id ]">Edit</button>
         <button *ngIf="request.CanExecuteCreateQuote && request.RequestItems.length > 0" md-button (click)="createQuote()">Create Quote</button>
       </md-card-actions>
     </md-card>

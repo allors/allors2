@@ -10,6 +10,7 @@ namespace Allors.Repository
     {
         #region inherited properties
 
+        public string InternalComment { get; set; }
         public DateTime RequiredResponseDate { get; set; }
 
         public DateTime ValidFromDate { get; set; }
@@ -21,7 +22,6 @@ namespace Allors.Repository
         public DateTime ValidThroughDate { get; set; }
 
         public string Description { get; set; }
-        public string InternalComment { get; set; }
 
         public Party Receiver { get; set; }
 

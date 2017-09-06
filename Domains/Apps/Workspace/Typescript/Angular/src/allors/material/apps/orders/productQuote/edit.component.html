@@ -8,7 +8,7 @@
         <button *ngIf="quote.CanExecuteReject" md-button type="button" (click)="reject()">Reject</button>
       </div>
 
-      <a-md-static *ngIf="quote.Request" [object]="quote" [roleType]="m.ProductQuote.Request"></a-md-static>
+      <a-md-static *ngIf="quote.Request" [object]="quote" [roleType]="m.ProductQuote.Request" display="RequestNumber"></a-md-static>
       <a-md-autocomplete *ngIf="showOrganisations" [object]="quote" [roleType]="m.ProductQuote.Receiver" [filter]="organisationsFilter.create()"
         display="Name" (onSelect)="receiverSelected($event)" label="Receiving organisation"></a-md-autocomplete>
       <a-md-autocomplete *ngIf="showPeople" [object]="quote" [roleType]="m.ProductQuote.Receiver" [filter]="peopleFilter.create()"
@@ -18,8 +18,10 @@
       <a-md-datepicker [object]="quote" [roleType]="m.ProductQuote.RequiredResponseDate"></a-md-datepicker>
       <a-md-input [object]="quote" [roleType]="m.ProductQuote.Description"></a-md-input>
       <a-md-autocomplete [object]="quote" [roleType]="m.ProductQuote.Currency" [filter]="currenciesFilter.create()" display="Name"></a-md-autocomplete>
-      <a-md-textarea [object]="quote" [roleType]="m.ProductQuote.Comment"></a-md-textarea>
-      <a-md-textarea [object]="quote" [roleType]="m.ProductQuote.InternalComment"></a-md-textarea>
+      <a-md-static *ngIf="request.Comment" [object]="request" [roleType]="m.Request.Comment" label="Request Comment"></a-md-static>
+      <a-md-textarea [object]="quote" [roleType]="m.ProductQuote.Comment" label="Quote Comment"></a-md-textarea>
+      <a-md-static *ngIf="request.InternalComment" [object]="request" [roleType]="m.Request.InternalComment" label="Request Internal Comment"></a-md-static>
+      <a-md-textarea [object]="quote" [roleType]="m.ProductQuote.InternalComment" label="Quote Internal Comment"></a-md-textarea>
     </div>
 
     <md-divider></md-divider>

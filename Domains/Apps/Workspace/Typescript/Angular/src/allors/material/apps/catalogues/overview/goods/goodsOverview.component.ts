@@ -9,7 +9,7 @@ import { TdDialogService, TdLoadingService, TdMediaService } from "@covalent/cor
 
 import { AllorsService, ErrorService, Invoked, Loaded, Saved, Scope } from "../../../../../angular";
 import { And, ContainedIn, Contains, Equals, Like, Not, Or, Page, Predicate, PullRequest, Query, Sort, TreeNode } from "../../../../../domain";
-import { Brand, Good, InventoryItem, InventoryItemKind, Model, Organisation, Ownership, ProductCategory, ProductType, SerialisedInventoryItemObjectState } from "../../../../../domain";
+import { Brand, Good, InventoryItem, InventoryItemKind, Model, Organisation, OrganisationRole, Ownership, ProductCategory, ProductType, SerialisedInventoryItemObjectState } from "../../../../../domain";
 import { MetaDomain } from "../../../../../meta/index";
 
 interface SearchData {
@@ -21,7 +21,7 @@ interface SearchData {
   model: string;
   status: string;
   ownership: string;
-  inventoryKind: string;
+  inventoryItemKind: string;
   supplier: string;
   manufacturer: string;
   owner: string;
@@ -99,13 +99,13 @@ export class GoodsOverviewComponent implements AfterViewInit, OnDestroy {
     this.searchForm = this.formBuilder.group({
       articleNumber: [""],
       brand: [""],
-      inventoryKind: [""],
+      inventoryItemKind: [""],
       keyword: [""],
       manufacturer: [""],
       model: [""],
       name: [""],
       owner: [""],
-      ownerStatus: [""],
+      ownership: [""],
       productCategory: [""],
       productType: [""],
       supplier: [""],
@@ -126,63 +126,204 @@ export class GoodsOverviewComponent implements AfterViewInit, OnDestroy {
         ];
       }, [] as [SearchData, number]);
 
+    const m: MetaDomain = this.allors.meta;
+
     this.subscription = combined$
       .switchMap(([data, take]: [SearchData, number]) => {
-        const m: MetaDomain = this.allors.meta;
 
-        const goodsPredicate: And = new And();
-        const goodsPredicates: Predicate[] = goodsPredicate.predicates;
+        const rolesQuery: Query[] = [
+          new Query(
+            {
+              name: "organisationRoles",
+              objectType: m.OrganisationRole,
+            }),
+        ];
 
-        if (data.name) {
-          const like: string = data.name.replace("*", "%") + "%";
-          goodsPredicates.push(new Like({ roleType: m.Good.Name, value: like }));
-        }
+        return this.scope
+          .load("Pull", new PullRequest({ query: rolesQuery }))
+          .switchMap((rolesLoaded: Loaded) => {
+            const organisationRoles: OrganisationRole[] = rolesLoaded.collections.organisationRoles as OrganisationRole[];
+            const manufacturerRole: OrganisationRole = organisationRoles.find((v: OrganisationRole) => v.Name === "Manufacturer");
+            const supplierRole: OrganisationRole = organisationRoles.find((v: OrganisationRole) => v.Name === "Supplier");
 
-        if (data.articleNumber) {
-          const like: string = data.articleNumber.replace("*", "%") + "%";
-          goodsPredicates.push(new Like({ roleType: m.Good.ArticleNumber, value: like }));
-        }
+            const searchQuery: Query[] = [
+              new Query(
+                {
+                  name: "brands",
+                  objectType: m.Brand,
+                }),
+              new Query(
+                {
+                  name: "models",
+                  objectType: m.Model,
+                }),
+              new Query(
+                {
+                  name: "inventoryItemKinds",
+                  objectType: m.InventoryItemKind,
+                }),
+              new Query(
+                {
+                  name: "categories",
+                  objectType: m.ProductCategory,
+                }),
+              new Query(
+                {
+                  name: "productTypes",
+                  objectType: m.ProductType,
+                }),
+              new Query(
+                {
+                  name: "organisations",
+                  objectType: m.ProductType,
+                }),
+              new Query(
+                {
+                  name: "ownerships",
+                  objectType: m.Ownership,
+                }),
+              new Query(
+                {
+                  name: "manufacturers",
+                  objectType: m.Organisation,
+                  predicate: new Contains({ roleType: m.Organisation.OrganisationRoles, object: manufacturerRole }),
+                  sort: [new Sort ({ roleType: m.Organisation.Name, direction: "Asc" })],
+                }),
+                new Query(
+                  {
+                    name: "suppliers",
+                    objectType: m.Organisation,
+                    predicate: new Contains({ roleType: m.Organisation.OrganisationRoles, object: supplierRole }),
+                    sort: [new Sort ({ roleType: m.Organisation.Name, direction: "Asc" })],
+                  }),
+              ];
 
-        if (data.keyword) {
-          const like: string = data.keyword.replace("*", "%") + "%";
-          goodsPredicates.push(new Like({ roleType: m.Good.Keywords, value: like }));
-        }
+            return this.scope
+              .load("Pull", new PullRequest({ query: searchQuery }))
+              .switchMap((loaded: Loaded) => {
 
-        if (data.owner) {
-          const inventoryPredicate: And = new And();
-          const inventoryPredicates: Predicate[] = inventoryPredicate.predicates;
+                this.brands = loaded.collections.brands as Brand[];
+                this.brand = this.brands.find((v: Brand) => v.Name === data.brand);
 
-          if (data.owner) {
-            const like: string = data.owner.replace("*", "%") + "%";
-            inventoryPredicates.push(new Like({ roleType: m.SerialisedInventoryItem.Owner, value: like }));
-          }
+                this.models = loaded.collections.models as Model[];
+                this.model = this.models.find((v: Model) => v.Name === data.model);
 
-          const inventoryQuery: Query = new Query({
-            name: "inventoryItems",
-            objectType: m.SerialisedInventoryItem,
-            predicate: inventoryPredicate,
+                this.inventoryItemKinds = loaded.collections.inventoryItemKinds as InventoryItemKind[];
+                this.inventoryItemKind = this.inventoryItemKinds.find((v: InventoryItemKind) => v.Name === data.inventoryItemKind);
+
+                this.productCategories = loaded.collections.categories as ProductCategory[];
+                this.productCategory = this.productCategories.find((v: ProductCategory) => v.Name === data.productCategory);
+
+                this.productTypes = loaded.collections.productTypes as ProductType[];
+                this.productType = this.productTypes.find((v: ProductType) => v.Name === data.productType);
+
+                this.ownerships = loaded.collections.ownerships as Ownership[];
+                this.ownership = this.ownerships.find((v: Ownership) => v.Name === data.ownership);
+
+                this.manufacturers = loaded.collections.manufacturers as Organisation[];
+                this.manufacturer = this.manufacturers.find((v: Organisation) => v.Name === data.manufacturer);
+
+                this.suppliers = loaded.collections.suppliers as Organisation[];
+                this.supplier = this.suppliers.find((v: Organisation) => v.Name === data.supplier);
+
+                const goodsPredicate: And = new And();
+                const goodsPredicates: Predicate[] = goodsPredicate.predicates;
+
+                if (data.name) {
+                  const like: string = data.name.replace("*", "%") + "%";
+                  goodsPredicates.push(new Like({ roleType: m.Good.Name, value: like }));
+                }
+
+                if (data.articleNumber) {
+                  const like: string = data.articleNumber.replace("*", "%") + "%";
+                  goodsPredicates.push(new Like({ roleType: m.Good.ArticleNumber, value: like }));
+                }
+
+                if (data.keyword) {
+                  const like: string = data.keyword.replace("*", "%") + "%";
+                  goodsPredicates.push(new Like({ roleType: m.Good.Keywords, value: like }));
+                }
+
+                if (data.brand) {
+                  goodsPredicates.push(new Contains({ roleType: m.Good.StandardFeatures, object: this.brand }));
+                }
+
+                if (data.model) {
+                  goodsPredicates.push(new Contains({ roleType: m.Good.StandardFeatures, object: this.model }));
+                }
+
+                if (data.productCategory) {
+                  goodsPredicates.push(new Contains({ roleType: m.Good.ProductCategories, object: this.productCategory }));
+                }
+
+                if (data.inventoryItemKind) {
+                  goodsPredicates.push(new Equals({ roleType: m.Good.InventoryItemKind, value: this.inventoryItemKind }));
+                }
+
+                if (data.manufacturer) {
+                  goodsPredicates.push(new Equals({ roleType: m.Good.ManufacturedBy, value: this.manufacturer }));
+                }
+
+                if (data.supplier) {
+                  goodsPredicates.push(new Equals({ roleType: m.Good.SuppliedBy, value: this.supplier }));
+                }
+
+                if (data.owner || data.ownership) {
+                  const inventoryPredicate: And = new And();
+                  const inventoryPredicates: Predicate[] = inventoryPredicate.predicates;
+
+                  if (data.owner) {
+                    const like: string = data.owner.replace("*", "%") + "%";
+                    inventoryPredicates.push(new Like({ roleType: m.SerialisedInventoryItem.Owner, value: like }));
+                  }
+
+                  if (data.ownership) {
+                    inventoryPredicates.push(new Equals({ roleType: m.SerialisedInventoryItem.Ownership, value: this.ownership }));
+                  }
+
+                  const serialisedInventoryQuery: Query = new Query({
+                    objectType: m.SerialisedInventoryItem,
+                    predicate: inventoryPredicate,
+                  });
+
+                  const containedIn: ContainedIn = new ContainedIn({ associationType: m.Good.InventoryItemVersionedsWhereGood, query: serialisedInventoryQuery });
+                  goodsPredicates.push(containedIn);
+                }
+
+                if (data.productType) {
+                  const inventoryPredicate: And = new And();
+                  const inventoryPredicates: Predicate[] = inventoryPredicate.predicates;
+
+                  if (data.productType) {
+                    inventoryPredicates.push(new Equals({ roleType: m.InventoryItemVersioned.ProductType, value: this.productType }));
+                  }
+
+                  const inventoryQuery: Query = new Query({
+                    objectType: m.InventoryItemVersioned,
+                    predicate: inventoryPredicate,
+                  });
+
+                  const containedIn: ContainedIn = new ContainedIn({ associationType: m.Good.InventoryItemVersionedsWhereGood, query: inventoryQuery });
+                  goodsPredicates.push(containedIn);
+                }
+
+                const goodsQuery: Query[] = [new Query(
+                  {
+                    include: [
+                      new TreeNode({ roleType: m.Good.PrimaryPhoto }),
+                      new TreeNode({ roleType: m.Good.LocalisedNames }),
+                      new TreeNode({ roleType: m.Good.LocalisedDescriptions }),
+                      new TreeNode({ roleType: m.Good.PrimaryProductCategory }),
+                    ],
+                    name: "goods",
+                    objectType: m.Good,
+                    page: new Page({ skip: 0, take }),
+                    predicate: goodsPredicate,
+                  })];
+
+                return this.scope.load("Pull", new PullRequest({ query: goodsQuery }));
+              });
           });
-
-          const containedIn: ContainedIn = new ContainedIn({ associationType: m.Good.InventoryItemVersionedsWhereGood, query: inventoryQuery });
-          goodsPredicates.push(containedIn);
-        }
-
-        const goodsQuery: Query[] = [new Query(
-          {
-            include: [
-              new TreeNode({ roleType: m.Good.PrimaryPhoto }),
-              new TreeNode({ roleType: m.Good.LocalisedNames }),
-              new TreeNode({ roleType: m.Good.LocalisedDescriptions }),
-              new TreeNode({ roleType: m.Good.PrimaryProductCategory }),
-            ],
-            name: "goods",
-            objectType: m.Good,
-            page: new Page({ skip: 0, take }),
-            predicate: goodsPredicate,
-          })];
-
-        return this.scope.load("Pull", new PullRequest({ query: goodsQuery }));
-
       })
       .subscribe((loaded: Loaded) => {
         this.data = loaded.collections.goods as Good[];

@@ -10,6 +10,15 @@ namespace Allors.Repository
 	public partial interface Invoice : AccessControlledObject, Localised, Transitional, Commentable, Printable, Auditable, UniquelyIdentifiable 
     {
         #region Allors
+        [Id("8EBB1372-CA22-4639-85FC-D1C14AB0F500")]
+        [AssociationId("D594FF30-C48F-4E93-9158-EF5906251CD3")]
+        [RoleId("C67F31B3-A9D2-44EA-8795-7A76D5DC7F30")]
+        #endregion
+        [Workspace]
+        [Size(-1)]
+        string InternalComment { get; set; }
+
+        #region Allors
         [Id("19019399-963f-4075-8754-16e1e5a4c496")]
         [AssociationId("43580c50-7831-48c7-afdf-5c4e23bcec93")]
         [RoleId("371d3a45-0283-4c8d-850f-acc9c2395464")]

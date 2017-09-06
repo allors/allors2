@@ -11,6 +11,7 @@ namespace Allors.Repository
     {
         #region inherited properties
 
+        public string InternalComment { get; set; }
         public ProductCategory PrimaryProductCategory { get; set; }
 
         public DateTime SupportDiscontinuationDate { get; set; }
@@ -22,8 +23,6 @@ namespace Allors.Repository
         public LocalisedText[] LocalisedDescriptions { get; set; }
 
         public LocalisedText[] LocalisedComments { get; set; }
-
-        public string InternalComment { get; set; }
 
         public string Description { get; set; }
 
@@ -252,5 +251,6 @@ namespace Allors.Repository
         public void Delete(){}
         #endregion
 
+        public string Comment { get; set; }
     }
 }
