@@ -92,7 +92,7 @@
 
                     return IdentityResult.Success;
                 }
-                catch(Exception e)
+                catch (Exception e)
                 {
                     return IdentityResult.Failed(new IdentityError { Description = $"Could not create user {identityUser.UserName}." });
                 }
@@ -161,12 +161,13 @@
                 if (user != null)
                 {
                     var identityUser = new ApplicationUser
-                                            {
-                                                UserName = user.UserName,
-                                                PasswordHash = user.UserPasswordHash,
-                                                Email = user.UserEmail,
-                                                EmailConfirmed = user.UserEmailConfirmed ?? false
-                                            };
+                    {
+                        Id = user.Id.ToString(),
+                        UserName = user.UserName,
+                        PasswordHash = user.UserPasswordHash,
+                        Email = user.UserEmail,
+                        EmailConfirmed = user.UserEmailConfirmed ?? false
+                    };
 
                     return (TUser)identityUser;
                 }
@@ -185,12 +186,13 @@
                 if (user != null)
                 {
                     var identityUser = new ApplicationUser
-                                           {
-                                               UserName = user.UserName,
-                                               PasswordHash = user.UserPasswordHash,
-                                               Email = user.UserEmail,
-                                               EmailConfirmed = user.UserEmailConfirmed ?? false
-                                           };
+                    {
+                        Id = user.Id.ToString(),
+                        UserName = user.UserName,
+                        PasswordHash = user.UserPasswordHash,
+                        Email = user.UserEmail,
+                        EmailConfirmed = user.UserEmailConfirmed ?? false
+                    };
 
                     return (TUser)identityUser;
                 }
