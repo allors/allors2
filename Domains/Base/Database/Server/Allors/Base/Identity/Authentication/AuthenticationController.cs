@@ -69,6 +69,7 @@
                             new
                                 {
                                     Authenticated = true,
+                                    UserId = user.Id,
                                     Token = new JwtSecurityTokenHandler().WriteToken(token)
                                 });
                     }
