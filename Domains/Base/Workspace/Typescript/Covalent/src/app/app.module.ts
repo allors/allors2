@@ -1,6 +1,7 @@
 import { NgModule, Type } from '@angular/core';
 import { BrowserModule, Title } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import {FlexLayoutModule} from '@angular/flex-layout';
 
 import { ErrorService } from '../allors/angular';
 import { DefaultErrorService } from '../allors/covalent';
@@ -31,6 +32,7 @@ import { RELATIONS } from '../allors/covalent/custom/relations';
     AppRoutingModule,
     BrowserModule,
     BrowserAnimationsModule,
+    FlexLayoutModule,
     SharedModule,
   ],
   providers: [

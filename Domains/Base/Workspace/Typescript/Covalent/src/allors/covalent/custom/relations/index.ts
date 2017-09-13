@@ -1,5 +1,4 @@
 import { RelationsComponent } from './relations.component';
-
 import { OrganisationsComponent } from './organisations/organisations.component';
 import { OrganisationComponent } from './organisations/organisation/organisation.component';
 import { OrganisationOverviewComponent } from './organisations/organisation/organisation-overview.component';

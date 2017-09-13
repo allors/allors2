@@ -1,18 +1,18 @@
-﻿import { RoleType } from '../../../../meta';
+﻿import { RoleType } from "../../../../meta";
 
 export class Sort {
 
-    roleType: RoleType;
-    direction?: 'Asc' | 'Desc' = 'Asc';
+    public roleType: RoleType;
+    public direction?: 'Asc' | 'Desc' = 'Asc';
 
     constructor(fields?: Partial<Sort>) {
        Object.assign(this, fields);
     }
 
-    toJSON(): any {
+    public toJSON(): any {
       return {
-        rt: this.roleType.id,
         d: this.direction,
+        rt: this.roleType.id,
       };
     }
 }

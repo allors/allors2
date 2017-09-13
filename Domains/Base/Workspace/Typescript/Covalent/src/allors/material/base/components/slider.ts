@@ -1,11 +1,11 @@
-import { Component, Input } from '@angular/core';
-import { ISessionObject } from '../../../../allors/domain';
-import { MetaDomain, RoleType } from '../../../../allors/meta';
+import { ChangeDetectorRef, Component , Input } from "@angular/core";
+import { ISessionObject } from "../../../../allors/domain";
+import { MetaDomain, RoleType } from "../../../../allors/meta";
 
-import { Field } from '../../../angular';
+import { Field } from "../../../angular";
 
 @Component({
-  selector: 'a-md-slider',
+  selector: "a-md-slider",
   template: `
 <md-input-container fxLayout="column" fxLayoutAlign="top stretch">
   <md-slider fxFlex [(ngModel)]="model" [name]="name" [invert]="invert" [min]="min" [max]="max" [step]="step" [thumbLabel]="thumbLabel" [tickInterval]="tickInterval" [vertical]="vertical" [color]="color" [required]="required" [disabled]="disabled"></md-slider>
@@ -18,26 +18,26 @@ import { Field } from '../../../angular';
 export class SliderComponent extends Field {
 
   @Input()
-  invert: boolean;
+  public invert: boolean;
 
   @Input()
-  max: number;
+  public max: number;
 
   @Input()
-  min: number;
+  public min: number;
 
   @Input()
-  step: number;
+  public step: number;
 
   @Input()
-  thumbLabel: boolean;
+  public thumbLabel: boolean;
 
   @Input()
-  tickInterval: 'auto' | number;
+  public tickInterval: "auto" | number;
 
   @Input()
-  vertical: boolean;
+  public vertical: boolean;
 
   @Input()
-  color: 'primary' | 'accent' | 'warn' = 'accent';
+  public color: "primary" | "accent" | "warn" = "accent";
 }

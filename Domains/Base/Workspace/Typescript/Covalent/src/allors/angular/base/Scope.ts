@@ -1,25 +1,25 @@
-﻿import { Observable } from 'rxjs/Rx';
+﻿import { Observable } from "rxjs/Rx";
 
 import {
-  Workspace, ISession, Session, ISessionObject, Method,
-  SyncRequest, PullResponse, SyncResponse, PushRequest, PushRequestObject,
-  PushResponse, InvokeResponse,
-} from '../../domain';
+  InvokeResponse, ISession, ISessionObject, Method, PullResponse,
+  PushRequest, PushRequestObject, PushResponse, Session, SyncRequest,
+  SyncResponse, Workspace,
+} from "../../domain";
 
-import { Database } from './Database';
+import { Database } from "./Database";
 
-import { Loaded } from './responses/Loaded';
-import { Saved } from './responses/Saved';
-import { Invoked } from './responses/Invoked';
+import { Invoked } from "./responses/Invoked";
+import { Loaded } from "./responses/Loaded";
+import { Saved } from "./responses/Saved";
 
 export class Scope {
-  session: ISession;
+  public session: ISession;
 
   constructor(public database: Database, public workspace: Workspace) {
     this.session = new Session(this.workspace);
   }
 
-  load(service: string, params?: any): Observable<Loaded> {
+  public load(service: string, params?: any): Observable<Loaded> {
 
     return this.database
       .pull(service, params)
@@ -41,7 +41,7 @@ export class Scope {
       });
   }
 
-  save(): Observable<Saved> {
+  public save(): Observable<Saved> {
 
     const pushRequest: PushRequest = this.session.pushRequest();
     return this.database
@@ -67,9 +67,9 @@ export class Scope {
       });
   }
 
-  invoke(method: Method): Observable<Invoked>;
-  invoke(service: string, args?: any): Observable<Invoked>;
-  invoke(methodOrService: Method | string, args?: any): Observable<Invoked> {
+  public invoke(method: Method): Observable<Invoked>;
+  public invoke(service: string, args?: any): Observable<Invoked>;
+  public invoke(methodOrService: Method | string, args?: any): Observable<Invoked> {
 
     return this.database
       .invoke(methodOrService as any, args)

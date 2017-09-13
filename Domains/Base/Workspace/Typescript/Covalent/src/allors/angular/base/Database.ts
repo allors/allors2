@@ -1,27 +1,27 @@
-﻿import { Observable, Observer } from 'rxjs/Rx';
-import { Http, Response, Headers, RequestOptions } from '@angular/http';
-import { Method } from '../../domain';
+﻿import { Headers, Http, RequestOptions, Response } from "@angular/http";
+import { Observable, Observer } from "rxjs/Rx";
+import { Method } from "../../domain";
 import {
-  ResponseType, PushRequest, SyncRequest, InvokeRequest,
-  PullResponse, SyncResponse, PushResponse, InvokeResponse, ResponseError,
-} from '../../domain';
+  InvokeRequest, InvokeResponse, PullResponse, PushRequest,
+  PushResponse, ResponseError, ResponseType, SyncRequest, SyncResponse,
+} from "../../domain";
 
 export class Database {
-  options: RequestOptions;
+  public options: RequestOptions;
 
   constructor(private http: Http,
-    public url: string,
-    private postProcessRequestOptions: (requestOptions: RequestOptions) => RequestOptions = (v: RequestOptions) => v) {
+              public url: string,
+              private postProcessRequestOptions: (requestOptions: RequestOptions) => RequestOptions = (v: RequestOptions) => v) {
     const headers: any = new Headers(
       {
-        'Content-Type': 'application/json',
-        'Accept': 'application/json',
+        "Accept": "application/json",
+        "Content-Type": "application/json",
       });
-    this.options = new RequestOptions({ headers: headers });
+    this.options = new RequestOptions({ headers });
   }
 
-  pull(name: string, params?: any): Observable<PullResponse> {
-    const serviceName: string = this.fullyQualifiedUrl(name + '/Pull');
+  public pull(name: string, params?: any): Observable<PullResponse> {
+    const serviceName: string = this.fullyQualifiedUrl(name + "/Pull");
 
     return this.http
       .post(serviceName, params, this.postProcessRequestOptions(this.options))
@@ -32,9 +32,9 @@ export class Database {
       });
   }
 
-  sync(syncRequest: SyncRequest): Observable<SyncResponse> {
+  public sync(syncRequest: SyncRequest): Observable<SyncResponse> {
 
-    const serviceName: string = this.fullyQualifiedUrl('Database/Sync');
+    const serviceName: string = this.fullyQualifiedUrl("Database/Sync");
     return this.http
       .post(serviceName, syncRequest, this.postProcessRequestOptions(this.options))
       .map((response: Response) => {
@@ -44,9 +44,9 @@ export class Database {
       });
   }
 
-  push(pushRequest: PushRequest): Observable<PushResponse> {
+  public push(pushRequest: PushRequest): Observable<PushResponse> {
 
-    const serviceName: string = this.fullyQualifiedUrl('Database/Push');
+    const serviceName: string = this.fullyQualifiedUrl("Database/Push");
     return this.http
       .post(serviceName, pushRequest, this.postProcessRequestOptions(this.options))
       .map((response: Response) => {
@@ -61,9 +61,9 @@ export class Database {
       });
   }
 
-  invoke(method: Method): Observable<InvokeResponse>;
-  invoke(service: string, args?: any): Observable<InvokeResponse>;
-  invoke(methodOrService: Method | string, args?: any): Observable<InvokeResponse> {
+  public invoke(method: Method): Observable<InvokeResponse>;
+  public invoke(service: string, args?: any): Observable<InvokeResponse>;
+  public invoke(methodOrService: Method | string, args?: any): Observable<InvokeResponse> {
 
     if (methodOrService instanceof Method) {
       return this.invokeMethod(methodOrService);
@@ -75,11 +75,11 @@ export class Database {
   private invokeMethod(method: Method): Observable<InvokeResponse> {
     const invokeRequest: InvokeRequest = {
       i: method.object.id,
-      v: method.object.version,
       m: method.name,
+      v: method.object.version,
     };
 
-    const serviceName: string = this.fullyQualifiedUrl('Database/Invoke');
+    const serviceName: string = this.fullyQualifiedUrl("Database/Invoke");
     return this.http.post(serviceName, invokeRequest, this.postProcessRequestOptions(this.options))
       .map((response: Response) => {
         const invokeResponse: InvokeResponse = response.json() as InvokeResponse;
@@ -94,7 +94,7 @@ export class Database {
   }
 
   private invokeService(methodOrService: string, args?: any): Observable<InvokeResponse> {
-    const service: string = this.fullyQualifiedUrl(methodOrService + '/Pull');
+    const service: string = this.fullyQualifiedUrl(methodOrService + "/Pull");
     return this.http.post(service, args, this.options)
       .map((response: Response) => {
         const invokeResponse: InvokeResponse = response.json();

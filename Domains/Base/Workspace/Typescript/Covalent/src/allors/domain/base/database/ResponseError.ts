@@ -1,4 +1,4 @@
-﻿import { Response } from './Response';
+﻿import { Response } from "./Response";
 
 export class ResponseError extends Error {
     constructor(public response: Response) {

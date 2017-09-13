@@ -1,17 +1,17 @@
-﻿import { ObjectType } from '../../../../meta';
-import { Predicate } from './Predicate';
+﻿import { ObjectType } from "../../../../meta";
+import { Predicate } from "./Predicate";
 
 export class And implements Predicate {
-  predicates: Predicate[];
+  public predicates: Predicate[];
 
   constructor(fields?: Partial<And>) {
     Object.assign(this, fields);
     this.predicates = this.predicates ? this.predicates : [];
   }
 
-  toJSON(): any {
+  public toJSON(): any {
     return {
-      _T: 'And',
+      _T: "And",
       ps: this.predicates,
     };
   }

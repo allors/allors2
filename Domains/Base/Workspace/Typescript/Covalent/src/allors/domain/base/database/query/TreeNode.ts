@@ -1,18 +1,18 @@
-﻿import { RoleType } from '../../../../meta';
+﻿import { RoleType } from "../../../../meta";
 
 export class TreeNode {
 
-    roleType: RoleType;
-    nodes: TreeNode[];
+    public roleType: RoleType;
+    public nodes: TreeNode[];
 
     constructor(fields?: Partial<TreeNode>) {
        Object.assign(this, fields);
     }
 
-    toJSON(): any {
+    public toJSON(): any {
       return {
-        rt: this.roleType.id,
         n: this.nodes,
+        rt: this.roleType.id,
       };
     }
 }

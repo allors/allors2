@@ -1,20 +1,20 @@
-import { Component, Input } from '@angular/core';
-import { ISessionObject } from '../../../../allors/domain';
-import { MetaDomain, RoleType } from '../../../../allors/meta';
+import { ChangeDetectorRef, Component , Input } from "@angular/core";
+import { ISessionObject } from "../../../../allors/domain";
+import { MetaDomain, RoleType } from "../../../../allors/meta";
 
-import { Field } from '../../../angular';
+import { Field } from "../../../angular";
 
 @Component({
-  selector: 'a-md-static',
+  selector: "a-md-static",
   template: `
-<md-input-container fxLayout="row">
+<md-input-container fxLayout="column" fxLayoutAlign="top stretch">
   <input fxFlex mdInput type="type" [ngModel]="static" [name]="name" [placeholder]="label" readonly>
 </md-input-container>
 `,
 })
 export class StaticComponent extends Field {
   @Input()
-  display: string;
+  public display: string;
 
   get static(): string {
     if (this.ExistObject) {
@@ -25,10 +25,10 @@ export class StaticComponent extends Field {
           return this.model[this.display];
         } else {
           const roles: any[] = this.model;
-          if (roles) {
+          if (roles && roles.length > 0) {
             return roles
               .map((v: any) => v[this.display])
-              .reduce((acc: string, cur: string) => acc + ', ' + cur);
+              .reduce((acc: string, cur: string) => acc + ", " + cur);
           }
         }
       }
