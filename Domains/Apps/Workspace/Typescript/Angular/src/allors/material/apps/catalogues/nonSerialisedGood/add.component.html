@@ -1,0 +1,96 @@
+<td-layout-card-over [cardTitle]="title" [cardSubtitle]="subTitle">
+
+  <form #form="ngForm" *ngIf="good" (submit)="save()">
+    <div class="pad">
+
+      <div *ngIf="good.PrimaryPhoto" layout-gt-xs="row">
+        <md-card>
+          <md-card-title-group>
+            <md-card-subtitle>{{ good.PrimaryPhoto.FileName}}</md-card-subtitle>
+            <img src="http://localhost:5000/Media/Download/{{good.PrimaryPhoto.UniqueId}}?revision={{good.PrimaryPhoto.Revision}}" widht="90"
+              height="60" />
+          </md-card-title-group>
+        </md-card>
+
+        <md-divider></md-divider>
+      </div>
+
+      <md-tab-group>
+
+        <md-tab label="General">
+          <a-md-select [object]="inventoryItem" [roleType]="m.NonSerialisedInventoryItem.CurrentObjectState"
+            [options]="inventoryItemObjectStates" display="Name" label="Status"></a-md-select>
+          <a-md-localised-text [object]="good" [roleType]="m.Good.LocalisedNames" [locales]="locales" label="Name"></a-md-localised-text>
+          <a-md-localised-text [object]="good" [roleType]="m.Good.LocalisedDescriptions" [locales]="locales" label="Description"></a-md-localised-text>
+          <a-md-select [object]="inventoryItem" [roleType]="m.NonSerialisedInventoryItem.ProductType" [options]="productTypes"
+            display="Name"></a-md-select>
+          <a-md-select [object]="good" [roleType]="m.Good.ProductCategories" [options]="categories" display="Name"></a-md-select>
+          <a-md-autocomplete [object]="good" [roleType]="m.Good.PrimaryProductCategory" [options]="categories" display="Name"></a-md-autocomplete>
+
+          <md-input-container fxLayout="column" fxLayoutAlign="top stretch">
+            <input fxFlex mdInput name="actualQuantityOnHand" [(ngModel)]="actualQuantityOnHand" placeholder="Actual Quantity in stock">
+          </md-input-container>
+
+          <div class="mat-input-wrapper">
+            <div class="mat-input-flex">
+              <div class="mat-input-infix">
+                <md-select fxFlex [(ngModel)]="selectedBrand" name="brandName" placeholder="Brand" multiple="false" (ngModelChange)="brandSelected($event)">
+                  <md-option>None</md-option>
+                  <md-option *ngFor="let brand of brands" [value]="brand"> {{ brand.Name }} </md-option>
+                </md-select>
+              </div>
+            </div>
+          </div>
+
+          <div class="mat-input-wrapper">
+            <div class="mat-input-flex">
+              <div class="mat-input-infix">
+                <md-select fxFlex [(ngModel)]="selectedModel" name="modelName" placeholder="Model" multiple="false">
+                  <md-option>None</md-option>
+                  <md-option *ngFor="let model of models" [value]="model"> {{ model.Name }} </md-option>
+                </md-select>
+              </div>
+            </div>
+          </div>
+
+          <a-md-autocomplete [object]="good" [roleType]="m.Good.SuppliedBy" [filter]="suppliersFilter.create()" display="Name"></a-md-autocomplete>
+          <a-md-autocomplete [object]="good" [roleType]="m.Good.ManufacturedBy" [filter]="manufacturersFilter.create()" display="Name"></a-md-autocomplete>
+          <a-md-datepicker [object]="good" [roleType]="m.Good.SalesDiscontinuationDate"></a-md-datepicker>
+        </md-tab>
+
+        <md-tab label="Characteristics">
+
+          <md-radio-group name="rg" [(ngModel)]="selectedLocaleName">
+            <md-radio-button *ngFor="let locale of locales" [value]="locale.Name">
+              {{locale.Language.Name}}
+            </md-radio-button>
+          </md-radio-group>
+
+          <md-divider></md-divider>
+
+          <a-md-textarea *ngFor="let productCharacteristicValue of productCharacteristicValues" [object]="productCharacteristicValue"
+            [roleType]="m.ProductCharacteristicValue.Value" [label]="localisedName(productCharacteristicValue.ProductCharacteristic)"></a-md-textarea>
+        </md-tab>
+
+        <md-tab label="Comments">
+          <a-md-localised-text [object]="good" [roleType]="m.Good.LocalisedComments" [locales]="locales" label="Comment"></a-md-localised-text>
+          <a-md-textarea [object]="good" [roleType]="m.Good.InternalComment"></a-md-textarea>
+          <a-md-textarea [object]="good" [roleType]="m.Good.Keywords"></a-md-textarea>
+        </md-tab>
+
+        <md-tab label="Images">
+          <a-md-media-upload [object]="good" [roleType]="m.Good.PrimaryPhoto" accept="image/*"></a-md-media-upload>
+        </md-tab>
+
+      </md-tab-group>
+    </div>
+
+    <md-divider></md-divider>
+
+    <md-card-actions>
+      <button md-button color="primary" type="submit" [disabled]="!form.form.valid">SAVE</button>
+      <button md-button (click)="goBack()" type="button">CANCEL</button>
+    </md-card-actions>
+
+  </form>
+</td-layout-card-over>

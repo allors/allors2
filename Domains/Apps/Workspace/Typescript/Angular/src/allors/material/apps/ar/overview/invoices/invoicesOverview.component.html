@@ -1,0 +1,77 @@
+<md-toolbar>
+  <div layout="row" layout-align="start center" flex>
+    <button md-icon-button tdLayoutManageListOpen [hideWhenOpened]="true" style="display: none">
+          <md-icon>arrow_back</md-icon>
+        </button>
+    <span>{{title}}</span>
+    <span flex></span>
+    <button md-icon-button><md-icon>settings</md-icon></button>
+  </div>
+</md-toolbar>
+
+<md-card>
+  <div class="pad-top-xs pad-left pad-right">
+    <form novalidate [formGroup]="searchForm">
+      <md-input-container>
+        <input fxFlex mdInput placeholder="Organisation" formControlName="company">
+        <md-icon mdSuffix>search</md-icon>
+      </md-input-container>
+      <md-input-container>
+        <input fxFlex mdInput placeholder="Number" formControlName="invoiceNumber">
+        <md-icon mdSuffix>search</md-icon>
+      </md-input-container>
+      <md-input-container>
+        <input fxFlex mdInput placeholder="Customer Reference" formControlName="reference">
+        <md-icon mdSuffix>search</md-icon>
+      </md-input-container>
+    </form>
+  </div>
+
+  <md-divider></md-divider>
+
+  <ng-template tdLoading="organisations">
+    <md-list class="will-load">
+      <div class="md-padding" *ngIf="data && data.length === 0" layout="row" layout-align="center center">
+        <h3>No sales invoices to display.</h3>
+      </div>
+      <ng-template let-invoice let-last="last" ngFor [ngForOf]="data">
+        <div class="pointer" [routerLink]="['/ar/invoice/' + invoice.id ]">
+          <md-list-item>
+
+            <h3 md-line> {{invoice.BillToCustomer.displayName}}</h3>
+            <h4 md-line> {{invoice.InvoiceNumber }}: {{invoice.CustomerReference}} ({{invoice.CurrentObjectState.Name}})</h4>
+            <p md-line hide-gt-md class="md-caption"> last modified: {{ invoice.LastModifiedDate | timeAgo }} </p>
+
+            <span flex></span>
+
+            <span hide-xs hide-sm hide-md flex-gt-xs="60" flex-xs="40" layout-gt-xs="row">
+                <div class="md-caption tc-grey-500" flex-gt-xs="50"> {{ invoice.CreationDate | date }} </div>
+                <div class="md-caption tc-grey-500" flex-gt-xs="50"> {{ invoice.LastModifiedDate | timeAgo }} </div>
+              </span>
+
+            <span>
+          <button md-icon-button [md-menu-trigger-for]="menu">
+          <md-icon>more_vert</md-icon>
+          </button>
+          <md-menu x-position="before" #menu="mdMenu">
+          <a [routerLink]="['/ar/invoice/' + invoice.id ]" md-menu-item>Details</a>
+          </md-menu>
+          </span>
+
+          </md-list-item>
+          <md-divider *ngIf="!last" md-inset></md-divider>
+        </div>
+      </ng-template>
+    </md-list>
+  </ng-template>
+</md-card>
+
+<md-card body tdMediaToggle="gt-xs" [mediaClasses]="['push']" *ngIf="this.data && this.data.length !== total">
+  <md-card-content>
+    <button md-button (click)="more()">More</button> {{this.data?.length}}/{{total}}
+  </md-card-content>
+</md-card>
+
+<a md-fab color="accent" class="mat-fab-bottom-right fixed" [routerLink]="['/invoice']">
+  <md-icon>add</md-icon>
+</a>

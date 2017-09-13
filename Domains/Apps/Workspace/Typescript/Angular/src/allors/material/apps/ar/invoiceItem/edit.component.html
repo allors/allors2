@@ -1,0 +1,27 @@
+<td-layout-card-over [cardTitle]="title" [cardSubtitle]="subTitle">
+  <form #form="ngForm" *ngIf="invoiceItem" (submit)="save()">
+
+    <div class="pad">
+      <div *ngIf="invoiceItem.CurrentObjectState">
+        <a-md-static [object]="invoiceItem" [roleType]="m.SalesInvoiceItem.CurrentObjectState" display="Name" label="Status"></a-md-static>
+        <!-- <button *ngIf="orderItem.CanExecuteSubmit" md-button type="button" (click)="submit()">Submit</button>
+        <button *ngIf="orderItem.CanExecuteCancel" md-button type="button" (click)="cancel()">Cancel</button> -->
+      </div>
+
+      <!-- <a-md-static *ngIf="quoteItem.RequestItem" [object]="quoteItem" [roleType]="m.QuoteItem.RequestItem" [display]=""></a-md-static> -->
+      <a-md-select [object]="invoiceItem" [roleType]="m.SalesInvoiceItem.Product" [options]="goods" display="Name"></a-md-select>
+      <a-md-input [object]="invoiceItem" [roleType]="m.SalesInvoiceItem.Quantity"></a-md-input>
+      <a-md-static *ngIf="orderItem.Comment" [object]="orderItem" [roleType]="m.SalesOrderItem.Comment"></a-md-static>
+      <a-md-textarea [object]="invoiceItem" [roleType]="m.SalesInvoiceItem.Comment"></a-md-textarea>
+      <a-md-static *ngIf="orderItem.InternalComment" [object]="orderItem" [roleType]="m.SalesOrderItem.InternalComment"></a-md-static>
+      <a-md-textarea [object]="invoiceItem" [roleType]="m.SalesInvoiceItem.InternalComment"></a-md-textarea>
+    </div>
+
+    <md-divider></md-divider>
+
+    <md-card-actions>
+      <button md-button color="primary" type="submit" [disabled]="!form.form.valid">SAVE</button>
+      <button md-button (click)="goBack()" type="button">CANCEL</button>
+    </md-card-actions>
+  </form>
+</td-layout-card-over>
