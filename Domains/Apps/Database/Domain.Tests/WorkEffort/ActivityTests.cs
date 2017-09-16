@@ -43,7 +43,7 @@ namespace Allors.Domain
 
             Assert.False(this.DatabaseSession.Derive(false).HasErrors);
 
-            Assert.Equal(activity.CurrentWorkEffortStatus.WorkEffortObjectState, new WorkEffortObjectStates(this.DatabaseSession).NeedsAction);
+            Assert.Equal(activity.CurrentStateVersion.CurrentObjectState, new WorkEffortObjectStates(this.DatabaseSession).NeedsAction);
             Assert.Equal(activity.CurrentObjectState, new WorkEffortObjectStates(this.DatabaseSession).NeedsAction);
             Assert.Equal(activity.CurrentObjectState, activity.LastObjectState);
         }

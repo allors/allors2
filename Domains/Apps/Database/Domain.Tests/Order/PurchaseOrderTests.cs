@@ -382,9 +382,9 @@ namespace Allors.Domain
 
             this.DatabaseSession.Derive();
 
-            Assert.Equal(new PurchaseOrderItemObjectStates(this.DatabaseSession).Received, item1.CurrentShipmentStatus.PurchaseOrderItemObjectState);
-            Assert.Equal(new PurchaseOrderObjectStates(this.DatabaseSession).PartiallyReceived, order.CurrentShipmentStatus.PurchaseOrderObjectState);
-            Assert.Equal(new PurchaseOrderObjectStates(this.DatabaseSession).InProcess, order.CurrentOrderStatus.PurchaseOrderObjectState);
+            Assert.Equal(new PurchaseOrderItemObjectStates(this.DatabaseSession).Received, item1.CurrentShipmentStateVersion.CurrentObjectState);
+            Assert.Equal(new PurchaseOrderObjectStates(this.DatabaseSession).PartiallyReceived, order.CurrentShipmentStateVersion.CurrentObjectState);
+            Assert.Equal(new PurchaseOrderObjectStates(this.DatabaseSession).InProcess, order.CurrentStateVersion.CurrentObjectState);
 
             var shipment2 = new PurchaseShipmentBuilder(this.DatabaseSession).WithShipmentMethod(new ShipmentMethods(this.DatabaseSession).Ground).WithShipFromParty(supplier).Build();
             shipmentItem = new ShipmentItemBuilder(this.DatabaseSession).WithPart(part).Build();
@@ -400,9 +400,9 @@ namespace Allors.Domain
 
             this.DatabaseSession.Derive();
 
-            Assert.Equal(new PurchaseOrderItemObjectStates(this.DatabaseSession).Received, item2.CurrentShipmentStatus.PurchaseOrderItemObjectState);
-            Assert.Equal(new PurchaseOrderObjectStates(this.DatabaseSession).PartiallyReceived, order.CurrentShipmentStatus.PurchaseOrderObjectState);
-            Assert.Equal(new PurchaseOrderObjectStates(this.DatabaseSession).InProcess, order.CurrentOrderStatus.PurchaseOrderObjectState);
+            Assert.Equal(new PurchaseOrderItemObjectStates(this.DatabaseSession).Received, item2.CurrentShipmentStateVersion.CurrentObjectState);
+            Assert.Equal(new PurchaseOrderObjectStates(this.DatabaseSession).PartiallyReceived, order.CurrentShipmentStateVersion.CurrentObjectState);
+            Assert.Equal(new PurchaseOrderObjectStates(this.DatabaseSession).InProcess, order.CurrentStateVersion.CurrentObjectState);
 
             var shipment3 = new PurchaseShipmentBuilder(this.DatabaseSession).WithShipmentMethod(new ShipmentMethods(this.DatabaseSession).Ground).WithShipFromParty(supplier).Build();
             shipmentItem = new ShipmentItemBuilder(this.DatabaseSession).WithPart(part).Build();
@@ -418,9 +418,9 @@ namespace Allors.Domain
 
             this.DatabaseSession.Derive();
 
-            Assert.Equal(new PurchaseOrderItemObjectStates(this.DatabaseSession).Received, item3.CurrentShipmentStatus.PurchaseOrderItemObjectState);
-            Assert.Equal(new PurchaseOrderObjectStates(this.DatabaseSession).Received, order.CurrentShipmentStatus.PurchaseOrderObjectState);
-            Assert.Equal(new PurchaseOrderObjectStates(this.DatabaseSession).Completed, order.CurrentOrderStatus.PurchaseOrderObjectState);
+            Assert.Equal(new PurchaseOrderItemObjectStates(this.DatabaseSession).Received, item3.CurrentShipmentStateVersion.CurrentObjectState);
+            Assert.Equal(new PurchaseOrderObjectStates(this.DatabaseSession).Received, order.CurrentShipmentStateVersion.CurrentObjectState);
+            Assert.Equal(new PurchaseOrderObjectStates(this.DatabaseSession).Completed, order.CurrentStateVersion.CurrentObjectState);
         }
     }
 }

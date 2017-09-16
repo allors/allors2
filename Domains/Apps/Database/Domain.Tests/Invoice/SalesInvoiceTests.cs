@@ -125,8 +125,8 @@ namespace Allors.Domain
 
             this.DatabaseSession.Derive();
 
-            Assert.Equal(1, invoice.InvoiceStatuses.Count);
-            Assert.Equal(new SalesInvoiceObjectStates(this.DatabaseSession).ReadyForPosting, invoice.CurrentInvoiceStatus.SalesInvoiceObjectState);
+            Assert.Equal(1, invoice.AllStateVersions.Count);
+            Assert.Equal(new SalesInvoiceObjectStates(this.DatabaseSession).ReadyForPosting, invoice.CurrentStateVersion.CurrentObjectState);
 
             this.DatabaseSession.Derive();
 
@@ -137,8 +137,8 @@ namespace Allors.Domain
 
             this.DatabaseSession.Derive();
 
-            Assert.Equal(2, invoice.InvoiceStatuses.Count);
-            Assert.Equal(new SalesInvoiceObjectStates(this.DatabaseSession).Paid, invoice.CurrentInvoiceStatus.SalesInvoiceObjectState);
+            Assert.Equal(2, invoice.AllStateVersions.Count);
+            Assert.Equal(new SalesInvoiceObjectStates(this.DatabaseSession).Paid, invoice.CurrentStateVersion.CurrentObjectState);
         }
 
         [Fact]
@@ -181,7 +181,7 @@ namespace Allors.Domain
 
             Assert.False(this.DatabaseSession.Derive(false).HasErrors);
 
-            Assert.Equal(invoice.CurrentInvoiceStatus.SalesInvoiceObjectState, new SalesInvoiceObjectStates(this.DatabaseSession).ReadyForPosting);
+            Assert.Equal(invoice.CurrentStateVersion.CurrentObjectState, new SalesInvoiceObjectStates(this.DatabaseSession).ReadyForPosting);
             Assert.Equal(invoice.CurrentObjectState, new SalesInvoiceObjectStates(this.DatabaseSession).ReadyForPosting);
             Assert.Equal(invoice.CurrentObjectState, invoice.LastObjectState);
 

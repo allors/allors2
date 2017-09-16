@@ -134,9 +134,9 @@ namespace Allors.Domain
 
             this.DatabaseSession.Derive(); 
 
-            Assert.Equal(2, good.InventoryItemVersionedsWhereGood.Count);
-            Assert.Equal(1, internalOrganisation.DefaultFacility.InventoryItemVersionedsWhereFacility.Count);
-            Assert.Equal(1, secondFacility.InventoryItemVersionedsWhereFacility.Count);
+            Assert.Equal(2, good.IInventoryItemsWhereGood.Count);
+            Assert.Equal(1, internalOrganisation.DefaultFacility.IInventoryItemsWhereFacility.Count);
+            Assert.Equal(1, secondFacility.IInventoryItemsWhereFacility.Count);
         }
 
         [Fact]
@@ -180,9 +180,9 @@ namespace Allors.Domain
 
             this.DatabaseSession.Derive(); 
 
-            Assert.Equal(2, good.FinishedGood.InventoryItemVersionedsWherePart.Count);
-            Assert.Equal(1, internalOrganisation.DefaultFacility.InventoryItemVersionedsWhereFacility.Count);
-            Assert.Equal(1, secondFacility.InventoryItemVersionedsWhereFacility.Count);
+            Assert.Equal(2, good.FinishedGood.IInventoryItemsWherePart.Count);
+            Assert.Equal(1, internalOrganisation.DefaultFacility.IInventoryItemsWhereFacility.Count);
+            Assert.Equal(1, secondFacility.IInventoryItemsWhereFacility.Count);
         }
     }
 }

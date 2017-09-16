@@ -54,15 +54,15 @@ namespace Allors.Domain
 
             this.DatabaseSession.Derive();
 
-            Assert.Equal(1, workEffort.WorkEffortStatuses.Count);
-            Assert.Equal(new WorkEffortObjectStates(this.DatabaseSession).NeedsAction, workEffort.CurrentWorkEffortStatus.WorkEffortObjectState);
+            Assert.Equal(1, workEffort.AllStateVersions.Count);
+            Assert.Equal(new WorkEffortObjectStates(this.DatabaseSession).NeedsAction, workEffort.CurrentStateVersion.CurrentObjectState);
 
             workEffort.Finish();
 
             this.DatabaseSession.Derive();
 
-            Assert.Equal(2, workEffort.WorkEffortStatuses.Count);
-            Assert.Equal(new WorkEffortObjectStates(this.DatabaseSession).Completed, workEffort.CurrentWorkEffortStatus.WorkEffortObjectState);
+            Assert.Equal(2, workEffort.AllStateVersions.Count);
+            Assert.Equal(new WorkEffortObjectStates(this.DatabaseSession).Completed, workEffort.CurrentStateVersion.CurrentObjectState);
         }
     }
 }
