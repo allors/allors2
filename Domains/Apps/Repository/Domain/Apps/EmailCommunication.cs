@@ -6,7 +6,7 @@ namespace Allors.Repository
     #region Allors
     [Id("9426c214-c85d-491b-a5a6-9f573c3341a0")]
     #endregion
-    public partial class EmailCommunication : CommunicationEvent 
+    public partial class EmailCommunication : CommunicationEvent, IEmailCommunication
     {
         #region inherited properties
 
@@ -19,8 +19,6 @@ namespace Allors.Repository
         public Party[] ToParties { get; set; }
 
         public ContactMechanism[] ContactMechanisms { get; set; }
-
-        public CommunicationEventStatus[] CommunicationEventStatuses { get; set; }
 
         public Party[] InvolvedParties { get; set; }
 
@@ -52,8 +50,6 @@ namespace Allors.Repository
 
         public Person Owner { get; set; }
 
-        public CommunicationEventStatus CurrentCommunicationEventStatus { get; set; }
-
         public string Note { get; set; }
 
         public DateTime ActualStart { get; set; }
@@ -81,68 +77,64 @@ namespace Allors.Repository
 
         public DateTime LastModifiedDate { get; set; }
 
-        #endregion
-
-        #region Allors
-        [Id("25b8aa5e-e7c5-4689-b1ed-d9a0ba47b8eb")]
-        [AssociationId("11649936-a5fa-488e-8d17-e80619c4d634")]
-        [RoleId("6219fd3b-4f38-4f8f-8a5a-783f908ef55a")]
-        [Indexed]
-        #endregion
-        [Multiplicity(Multiplicity.ManyToOne)]
-        [Required]
-        [Workspace]
         public EmailAddress Originator { get; set; }
-
-        #region Allors
-        [Id("4026fcf7-3fc2-494b-9c4a-3e19eed74134")]
-        [AssociationId("f2febf7f-7917-4499-8546-cae1e53d6791")]
-        [RoleId("50439b5a-2251-469c-8512-f9dc65b0d9f6")]
-        [Indexed]
-        #endregion
-        [Multiplicity(Multiplicity.ManyToMany)]
-        [Required]
-        [Workspace]
         public EmailAddress[] Addressees { get; set; }
-
-        #region Allors
-        [Id("4f696f91-e185-4d3d-bf40-40e6c2b02eb4")]
-        [AssociationId("a19fe8f6-a3b9-4d59-b2e6-cfc19cc01a58")]
-        [RoleId("661f4ae9-684b-4b56-9ec6-7bf9fbfea4ab")]
-        #endregion
-        [Multiplicity(Multiplicity.ManyToMany)]
-        [Indexed]
-        [Workspace]
         public EmailAddress[] CarbonCopies { get; set; }
-
-        #region Allors
-        [Id("dd7506bb-4daa-4da7-8f20-3f607c944959")]
-        [AssociationId("42fb79f1-c891-41bf-be4b-a2717bd94e69")]
-        [RoleId("6d75e51a-7994-43bb-9e99-cd0a88d9d8f2")]
-        #endregion
-        [Multiplicity(Multiplicity.ManyToMany)]
-        [Indexed]
-        [Workspace]
         public EmailAddress[] BlindCopies { get; set; }
-
-        #region Allors
-        [Id("e12818ad-4ffd-4d91-8142-4ac9bfcbc146")]
-        [AssociationId("a44a8d84-2510-45fd-add1-646f84be072d")]
-        [RoleId("ae354426-6273-4b09-aabf-3f6d25f86e56")]
-        #endregion
-        [Multiplicity(Multiplicity.ManyToOne)]
-        [Indexed]
-        [Workspace]
         public EmailTemplate EmailTemplate { get; set; }
+        public bool IncomingMail { get; set; }
+
+        #endregion
 
         #region Allors
-        [Id("3F61CB07-4E36-4AA3-AE0D-ABAC9D95DB49")]
-        [AssociationId("8E130A0F-A905-4420-A661-D40BD14C8100")]
-        [RoleId("B6702349-D126-4244-A0EF-214F8043A52E")]
+        [Id("B3BC815E-17E9-4722-A421-42E211421693")]
+        [AssociationId("ADB26602-A342-490E-A503-33F7B3EE33D2")]
+        [RoleId("1414865A-3240-404A-AE19-3D42884DEAB5")]
+        [Indexed]
+        #endregion
+        [Multiplicity(Multiplicity.OneToOne)]
+        [Workspace]
+        public EmailCommunicationVersion CurrentVersion { get; set; }
+
+        #region Allors
+        [Id("D13C6C76-50FB-4F58-A675-0EDEFC06F5B8")]
+        [AssociationId("F42D1A6F-7CCB-4526-BB91-7028F62C4FE0")]
+        [RoleId("6DDD89EB-EF59-4141-AB9F-29F9F412225A")]
+        [Indexed]
         #endregion
         [Workspace]
-        [Required]
-        public bool IncomingMail { get; set; }
+        [Multiplicity(Multiplicity.OneToOne)]
+        public EmailCommunicationVersion PreviousVersion { get; set; }
+
+        #region Allors
+        [Id("44420D9F-80FC-4432-85C3-1641A5493765")]
+        [AssociationId("62386C79-D5A7-4DE8-B04F-2A4B64237FDB")]
+        [RoleId("DAFCBD9B-5A82-4EAA-8197-B187D1B6C507")]
+        [Indexed]
+        #endregion
+        [Workspace]
+        [Multiplicity(Multiplicity.OneToMany)]
+        public EmailCommunicationVersion[] AllVersions { get; set; }
+
+        #region Allors
+        [Id("75E2DCFA-4AC2-4609-BE48-37DEA5D59034")]
+        [AssociationId("4E2380C8-D94E-49BA-B67A-805346EC92DD")]
+        [RoleId("A6F1A50C-09D7-419E-9CF0-F6D7F946B052")]
+        [Indexed]
+        #endregion
+        [Workspace]
+        [Multiplicity(Multiplicity.OneToOne)]
+        public EmailCommunicationVersion CurrentStateVersion { get; set; }
+
+        #region Allors
+        [Id("30A7022D-8320-4417-99EF-C99A6A029EBD")]
+        [AssociationId("3B76B7DB-E4FF-49DC-848D-233BFA639E35")]
+        [RoleId("2C2DEC99-B389-4F40-AF26-428DD5AC6AA7")]
+        [Indexed]
+        #endregion
+        [Workspace]
+        [Multiplicity(Multiplicity.OneToMany)]
+        public EmailCommunicationVersion[] AllStateVersions { get; set; }
 
         #region inherited methods
 
@@ -171,6 +163,5 @@ namespace Allors.Repository
 
 
         #endregion
-
     }
 }

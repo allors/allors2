@@ -41,16 +41,6 @@ namespace Allors.Domain
             }
         }
 
-        public static void AppsOnDerive(this WorkEffort @this, ObjectOnDerive method)
-        {
-            if (@this.ExistCurrentObjectState && !@this.CurrentObjectState.Equals(@this.LastObjectState))
-            {
-                var currentStatus = new WorkEffortStatusBuilder(@this.Strategy.Session).WithWorkEffortObjectState(@this.CurrentObjectState).Build();
-                @this.AddWorkEffortStatus(currentStatus);
-                @this.CurrentWorkEffortStatus = currentStatus;
-            }
-        }
-
         public static void AppsConfirm(this WorkEffort @this, WorkEffortConfirm method)
         {
             @this.CurrentObjectState = new WorkEffortObjectStates(@this.Strategy.Session).Confirmed;

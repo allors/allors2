@@ -143,11 +143,11 @@ namespace Allors.Domain
         private static SalesRepRevenue CreateSalesRepRevenue(ISession session, SalesInvoiceItem item)
         {
             return new SalesRepRevenueBuilder(session)
-                        .WithInternalOrganisation(item.SalesInvoiceWhereSalesInvoiceItem.BilledFromInternalOrganisation)
+                        .WithInternalOrganisation(item.ISalesInvoiceWhereSalesInvoiceItem.BilledFromInternalOrganisation)
                         .WithSalesRep(item.SalesRep)
-                        .WithYear(item.SalesInvoiceWhereSalesInvoiceItem.InvoiceDate.Year)
-                        .WithMonth(item.SalesInvoiceWhereSalesInvoiceItem.InvoiceDate.Month)
-                        .WithCurrency(item.SalesInvoiceWhereSalesInvoiceItem.BilledFromInternalOrganisation.PreferredCurrency)
+                        .WithYear(item.ISalesInvoiceWhereSalesInvoiceItem.InvoiceDate.Year)
+                        .WithMonth(item.ISalesInvoiceWhereSalesInvoiceItem.InvoiceDate.Month)
+                        .WithCurrency(item.ISalesInvoiceWhereSalesInvoiceItem.BilledFromInternalOrganisation.PreferredCurrency)
                         .WithRevenue(0M)
                         .Build();
         }

@@ -20,7 +20,7 @@ namespace Allors.Repository
         [Indexed]
         [Required]
 
-        InventoryItem InventoryItem { get; set; }
+        IInventoryItem InventoryItem { get; set; }
 
 
         #region Allors
@@ -42,7 +42,7 @@ namespace Allors.Repository
         [Indexed]
         [Required]
 
-        InventoryItem ComponentInventoryItem { get; set; }
+        IInventoryItem ComponentInventoryItem { get; set; }
 
     }
 }

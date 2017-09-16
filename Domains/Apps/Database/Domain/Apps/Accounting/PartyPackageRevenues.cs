@@ -131,14 +131,14 @@ namespace Allors.Domain
             PartyPackageRevenue partyPackageRevenue;
 
             Dictionary<Party, Dictionary<Package, Dictionary<DateTime, PartyPackageRevenue>>> partyPackageRevenuesByPeriodByPackageByParty;
-            if (!partyPackageRevenuesByPeriodByPackageByPartyByInternalOrganisation.TryGetValue(salesInvoiceItem.SalesInvoiceWhereSalesInvoiceItem.BilledFromInternalOrganisation, out partyPackageRevenuesByPeriodByPackageByParty))
+            if (!partyPackageRevenuesByPeriodByPackageByPartyByInternalOrganisation.TryGetValue(salesInvoiceItem.ISalesInvoiceWhereSalesInvoiceItem.BilledFromInternalOrganisation, out partyPackageRevenuesByPeriodByPackageByParty))
             {
-                partyPackageRevenue = CreatePartyPackageRevenue(session, salesInvoiceItem.SalesInvoiceWhereSalesInvoiceItem, package);
+                partyPackageRevenue = CreatePartyPackageRevenue(session, salesInvoiceItem.ISalesInvoiceWhereSalesInvoiceItem, package);
 
                 partyPackageRevenuesByPeriodByPackageByParty = new Dictionary<Party, Dictionary<Package, Dictionary<DateTime, PartyPackageRevenue>>>
                         {
                             {
-                                salesInvoiceItem.SalesInvoiceWhereSalesInvoiceItem.BillToCustomer,
+                                salesInvoiceItem.ISalesInvoiceWhereSalesInvoiceItem.BillToCustomer,
                                 new Dictionary<Package, Dictionary<DateTime, PartyPackageRevenue>>
                                     {
                                         {
@@ -149,13 +149,13 @@ namespace Allors.Domain
                                 }
                         };
 
-                partyPackageRevenuesByPeriodByPackageByPartyByInternalOrganisation[salesInvoiceItem.SalesInvoiceWhereSalesInvoiceItem.BilledFromInternalOrganisation] = partyPackageRevenuesByPeriodByPackageByParty;
+                partyPackageRevenuesByPeriodByPackageByPartyByInternalOrganisation[salesInvoiceItem.ISalesInvoiceWhereSalesInvoiceItem.BilledFromInternalOrganisation] = partyPackageRevenuesByPeriodByPackageByParty;
             }
 
             Dictionary<Package, Dictionary<DateTime, PartyPackageRevenue>> partyPackageRevenuesByPeriodByPackage;
-            if (!partyPackageRevenuesByPeriodByPackageByParty.TryGetValue(salesInvoiceItem.SalesInvoiceWhereSalesInvoiceItem.BillToCustomer, out partyPackageRevenuesByPeriodByPackage))
+            if (!partyPackageRevenuesByPeriodByPackageByParty.TryGetValue(salesInvoiceItem.ISalesInvoiceWhereSalesInvoiceItem.BillToCustomer, out partyPackageRevenuesByPeriodByPackage))
             {
-                partyPackageRevenue = CreatePartyPackageRevenue(session, salesInvoiceItem.SalesInvoiceWhereSalesInvoiceItem, package);
+                partyPackageRevenue = CreatePartyPackageRevenue(session, salesInvoiceItem.ISalesInvoiceWhereSalesInvoiceItem, package);
 
                 partyPackageRevenuesByPeriodByPackage = new Dictionary<Package, Dictionary<DateTime, PartyPackageRevenue>>
                         {
@@ -165,13 +165,13 @@ namespace Allors.Domain
                             }
                         };
 
-                partyPackageRevenuesByPeriodByPackageByParty[salesInvoiceItem.SalesInvoiceWhereSalesInvoiceItem.BillToCustomer] = partyPackageRevenuesByPeriodByPackage;
+                partyPackageRevenuesByPeriodByPackageByParty[salesInvoiceItem.ISalesInvoiceWhereSalesInvoiceItem.BillToCustomer] = partyPackageRevenuesByPeriodByPackage;
             }
 
             Dictionary<DateTime, PartyPackageRevenue> partyPackageRevenuesByPeriod;
             if (!partyPackageRevenuesByPeriodByPackage.TryGetValue(package, out partyPackageRevenuesByPeriod))
             {
-                partyPackageRevenue = CreatePartyPackageRevenue(session, salesInvoiceItem.SalesInvoiceWhereSalesInvoiceItem, package);
+                partyPackageRevenue = CreatePartyPackageRevenue(session, salesInvoiceItem.ISalesInvoiceWhereSalesInvoiceItem, package);
 
                 partyPackageRevenuesByPeriod = new Dictionary<DateTime, PartyPackageRevenue> { { date, partyPackageRevenue } };
 
@@ -180,7 +180,7 @@ namespace Allors.Domain
 
             if (!partyPackageRevenuesByPeriod.TryGetValue(date, out partyPackageRevenue))
             {
-                partyPackageRevenue = CreatePartyPackageRevenue(session, salesInvoiceItem.SalesInvoiceWhereSalesInvoiceItem, package);
+                partyPackageRevenue = CreatePartyPackageRevenue(session, salesInvoiceItem.ISalesInvoiceWhereSalesInvoiceItem, package);
                 partyPackageRevenuesByPeriod.Add(date, partyPackageRevenue);
             }
 
@@ -188,7 +188,7 @@ namespace Allors.Domain
             partyPackageRevenue.Revenue += salesInvoiceItem.TotalExVat;
         }
 
-        private static PartyPackageRevenue CreatePartyPackageRevenue(ISession session, SalesInvoice invoice, Package package)
+        private static PartyPackageRevenue CreatePartyPackageRevenue(ISession session, ISalesInvoice invoice, Package package)
         {
             return new PartyPackageRevenueBuilder(session)
                         .WithInternalOrganisation(invoice.BilledFromInternalOrganisation)

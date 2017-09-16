@@ -49,7 +49,7 @@ namespace Allors.Domain
                 {
                     foreach (OrderShipment orderShipment in shipmentItem.OrderShipmentsWhereShipmentItem)
                     {
-                        if (orderShipment.SalesOrderItem.SalesOrderWhereSalesOrderItem.CurrentObjectState.Equals(new SalesOrderObjectStates(this.Strategy.Session).OnHold))
+                        if (orderShipment.SalesOrderItem.ISalesOrderWhereSalesOrderItem.CurrentObjectState.Equals(new SalesOrderObjectStates(this.Strategy.Session).OnHold))
                         {
                             return false;
                         }
@@ -205,14 +205,14 @@ namespace Allors.Domain
         }
         public void AppsOnDeriveInvoices(IDerivation derivation)
         {
-            var invoiceByOrder = new Dictionary<SalesOrder, SalesInvoice>();
+            var invoiceByOrder = new Dictionary<ISalesOrder, SalesInvoice>();
             var costsInvoiced = false;
 
             foreach (ShipmentItem shipmentItem in this.ShipmentItems)
             {
                 foreach (OrderShipment orderShipment in shipmentItem.OrderShipmentsWhereShipmentItem)
                 {
-                    var salesOrder = orderShipment.SalesOrderItem.SalesOrderWhereSalesOrderItem;
+                    var salesOrder = orderShipment.SalesOrderItem.ISalesOrderWhereSalesOrderItem;
 
                     SalesInvoice salesInvoice;
                     if (!invoiceByOrder.TryGetValue(salesOrder, out salesInvoice))
@@ -468,8 +468,9 @@ namespace Allors.Domain
             {
                 foreach (OrderShipment orderShipment in shipmentItem.OrderShipmentsWhereShipmentItem)
                 {
+                    var order = (SalesOrder)orderShipment.SalesOrderItem.ISalesOrderWhereSalesOrderItem;
                     orderShipment.SalesOrderItem.AppsOnDeriveOnShipped(derivation, orderShipment.Quantity);
-                    salesOrders.Add(orderShipment.SalesOrderItem.SalesOrderWhereSalesOrderItem);
+                    salesOrders.Add(order);
                 }
             }
         }

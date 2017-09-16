@@ -31,9 +31,9 @@ namespace Allors.Domain
 
             var toDate = DateTimeFactory.CreateDate(year, month, 01).AddMonths(1).AddMilliseconds(-1);
 
-            var invoices = this.Party.SalesInvoicesWhereBillToCustomer;
-            invoices.Filter.AddEquals(M.SalesInvoice.BilledFromInternalOrganisation, this.InternalOrganisation);
-            invoices.Filter.AddNot().AddEquals(M.SalesInvoice.CurrentObjectState, new SalesInvoiceObjectStates(this.Strategy.Session).WrittenOff);
+            var invoices = this.Party.ISalesInvoicesWhereBillToCustomer;
+            invoices.Filter.AddEquals(M.ISalesInvoice.BilledFromInternalOrganisation, this.InternalOrganisation);
+            invoices.Filter.AddNot().AddEquals(M.ISalesInvoice.CurrentObjectState, new SalesInvoiceObjectStates(this.Strategy.Session).WrittenOff);
             invoices.Filter.AddBetween(M.Invoice.InvoiceDate, DateTimeFactory.CreateDate(year, month, 01), toDate);
 
             foreach (SalesInvoice salesInvoice in invoices)

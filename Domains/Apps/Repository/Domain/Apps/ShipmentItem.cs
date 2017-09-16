@@ -78,7 +78,7 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.ManyToMany)]
         [Indexed]
 
-        public InventoryItem[] InventoryItems { get; set; }
+        public IInventoryItem[] InventoryItems { get; set; }
         #region Allors
         [Id("b9bfaea8-e5f0-4b0e-955f-df28ed63e8e3")]
         [AssociationId("7da8c058-92b7-4fd7-9eaf-7b7fb94f62cf")]
@@ -96,7 +96,7 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.OneToMany)]
         [Indexed]
 
-        public InvoiceItem[] InvoiceItems { get; set; }
+        public IInvoiceItem[] InvoiceItems { get; set; }
         #region Allors
         [Id("f5c0279e-5ce4-4f09-bb93-ecaeb4825bcf")]
         [AssociationId("59b2bb80-3e60-4958-a3d8-9b5f7242d95c")]

@@ -67,8 +67,8 @@ namespace Allors.Domain
         {
             var derivation = method.Derivation;
 
-            derivation.Validation.AssertAtLeastOne(this, M.InventoryItemVersioned.Good, M.InventoryItemVersioned.Part);
-            derivation.Validation.AssertExistsAtMostOne(this, M.InventoryItemVersioned.Good, M.InventoryItemVersioned.Part);
+            derivation.Validation.AssertAtLeastOne(this, M.IInventoryItem.Good, M.IInventoryItem.Part);
+            derivation.Validation.AssertExistsAtMostOne(this, M.IInventoryItem.Good, M.IInventoryItem.Part);
 
             if (!this.ExistName && this.ExistGood && this.Good.ExistName)
             {
@@ -110,14 +110,24 @@ namespace Allors.Domain
                 !object.Equals(this.ExpectedSalesPrice, this.CurrentVersion.ExpectedSalesPrice) ||
                 !object.Equals(this.RefurbishCost, this.CurrentVersion.RefurbishCost) ||
                 !object.Equals(this.TransportCost, this.CurrentVersion.TransportCost) ||
-
                 !object.Equals(this.CurrentObjectState, this.CurrentVersion.CurrentObjectState);
 
-            if (!this.ExistCurrentVersion || isNewVersion)
+            var isNewStateVersion =
+                !this.ExistCurrentVersion ||
+                !object.Equals(this.CurrentObjectState, this.CurrentVersion.CurrentObjectState);
+
+
+            if (isNewVersion)
             {
                 this.PreviousVersion = this.CurrentVersion;
                 this.CurrentVersion = new SerialisedInventoryItemVersionBuilder(this.Strategy.Session).WithSerialisedInventoryItem(this).Build();
                 this.AddAllVersion(this.CurrentVersion);
+            }
+
+            if (isNewStateVersion)
+            {
+                this.CurrentStateVersion = CurrentVersion;
+                this.AddAllStateVersion(this.CurrentStateVersion);
             }
         }
     }

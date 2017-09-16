@@ -39,7 +39,7 @@ namespace Allors.Domain
             return partyRevenue;
         }
 
-        public static PartyRevenue AppsFindOrCreateAsDependable(ISession session, SalesInvoice invoice)
+        public static PartyRevenue AppsFindOrCreateAsDependable(ISession session, ISalesInvoice invoice)
         {
             var partyRevenues = invoice.BilledFromInternalOrganisation.PartyRevenuesWhereParty;
             partyRevenues.Filter.AddEquals(M.PartyRevenue.Year, invoice.InvoiceDate.Year);

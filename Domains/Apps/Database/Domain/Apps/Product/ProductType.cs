@@ -23,7 +23,7 @@ namespace Allors.Domain
 
             if (derivation.HasChangedRole(this, this.Meta.ProductCharacteristics))
             {
-                foreach (InventoryItemVersioned item in this.InventoryItemVersionedsWhereProductType)
+                foreach (IInventoryItem item in this.IInventoryItemsWhereProductType)
                 {
                     derivation.AddDependency(item, this);
                 }

@@ -27,7 +27,7 @@ namespace Allors.Domain
         {
             var derivation = method.Derivation;
 
-            var invoice = this.PurchaseInvoiceWherePurchaseInvoiceItem;
+            var invoice = this.IPurchaseInvoiceWherePurchaseInvoiceItem;
             if (invoice != null)
             {
                 // TODO:
@@ -35,6 +35,20 @@ namespace Allors.Domain
                 {
                     derivation.AddDependency(invoice, this);
                 }
+            }
+        }
+
+        public void AppsOnPostDerive(ObjectOnPostDerive method)
+        {
+            var isNewVersion =
+                !this.ExistCurrentVersion ||
+                !object.Equals(this.InternalComment, this.CurrentVersion.InternalComment);
+
+            if (!this.ExistCurrentVersion || isNewVersion)
+            {
+                this.PreviousVersion = this.CurrentVersion;
+                this.CurrentVersion = new PurchaseInvoiceItemVersionBuilder(this.Strategy.Session).WithPurchaseInvoiceItem(this).Build();
+                this.AddAllVersion(this.CurrentVersion);
             }
         }
 
@@ -106,9 +120,9 @@ namespace Allors.Domain
         private SurchargeAdjustment GetSurchargeAdjustment()
         {
             var surchargeAdjustment = this.ExistSurchargeAdjustment ? this.SurchargeAdjustment : null;
-            if (surchargeAdjustment == null && this.ExistPurchaseInvoiceWherePurchaseInvoiceItem)
+            if (surchargeAdjustment == null && this.ExistIPurchaseInvoiceWherePurchaseInvoiceItem)
             {
-                surchargeAdjustment = this.PurchaseInvoiceWherePurchaseInvoiceItem.ExistSurchargeAdjustment ? this.PurchaseInvoiceWherePurchaseInvoiceItem.SurchargeAdjustment : null;
+                surchargeAdjustment = this.IPurchaseInvoiceWherePurchaseInvoiceItem.ExistSurchargeAdjustment ? this.IPurchaseInvoiceWherePurchaseInvoiceItem.SurchargeAdjustment : null;
             }
 
             return surchargeAdjustment;
@@ -117,9 +131,9 @@ namespace Allors.Domain
         private DiscountAdjustment GetDiscountAdjustment()
         {
             var discountAdjustment = this.ExistDiscountAdjustment ? this.DiscountAdjustment : null;
-            if (discountAdjustment == null && this.ExistPurchaseInvoiceWherePurchaseInvoiceItem)
+            if (discountAdjustment == null && this.ExistIPurchaseInvoiceWherePurchaseInvoiceItem)
             {
-                discountAdjustment = this.PurchaseInvoiceWherePurchaseInvoiceItem.ExistDiscountAdjustment ? this.PurchaseInvoiceWherePurchaseInvoiceItem.DiscountAdjustment : null;
+                discountAdjustment = this.IPurchaseInvoiceWherePurchaseInvoiceItem.ExistDiscountAdjustment ? this.IPurchaseInvoiceWherePurchaseInvoiceItem.DiscountAdjustment : null;
             }
 
             return discountAdjustment;

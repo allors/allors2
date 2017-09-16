@@ -183,7 +183,7 @@ namespace Allors.Domain
                     partyContactMechanism.ContactMechanism.Delete();
                 }
 
-                foreach (CommunicationEvent communicationEvent in this.CommunicationEventsWhereInvolvedParty)
+                foreach (CommunicationEvent communicationEvent in this.ICommunicationEventsWhereInvolvedParty)
                 {
                     if (communicationEvent.GetType().Name == typeof(WebSiteCommunication).Name)
                     {

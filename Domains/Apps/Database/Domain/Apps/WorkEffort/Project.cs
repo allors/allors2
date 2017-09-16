@@ -18,5 +18,29 @@ namespace Allors.Domain
     public partial class Project
     {
         ObjectState Transitional.CurrentObjectState => this.CurrentObjectState;
+
+        public void AppsOnPostDerive(ObjectOnPostDerive method)
+        {
+            var isNewVersion =
+                !this.ExistCurrentVersion ||
+                !object.Equals(this.ActualCompletion, this.CurrentVersion.ActualCompletion);
+
+            var isNewStateVersion =
+                !this.ExistCurrentVersion ||
+                !object.Equals(this.CurrentObjectState, this.CurrentVersion.CurrentObjectState);
+
+            if (isNewVersion)
+            {
+                this.PreviousVersion = this.CurrentVersion;
+                this.CurrentVersion = new ProjectVersionBuilder(this.Strategy.Session).WithProject(this).Build();
+                this.AddAllVersion(this.CurrentVersion);
+            }
+
+            if (isNewStateVersion)
+            {
+                this.CurrentStateVersion = CurrentVersion;
+                this.AddAllStateVersion(this.CurrentStateVersion);
+            }
+        }
     }
 }

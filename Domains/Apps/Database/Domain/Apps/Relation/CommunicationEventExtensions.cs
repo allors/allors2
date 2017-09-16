@@ -62,37 +62,18 @@ namespace Allors.Domain
                 if (!@this.ExistActualStart || (@this.ExistActualStart && @this.ActualStart > DateTime.UtcNow))
                 {
                     @this.CurrentObjectState = new CommunicationEventObjectStates(@this.Strategy.Session).Scheduled;
-                    @this.CurrentCommunicationEventStatus = new CommunicationEventStatusBuilder(@this.Strategy.Session)
-                        .WithCommunicationEventObjectState(@this.CurrentObjectState)
-                        .WithStartDateTime(@this.ActualStart)
-                        .Build();
                 }
 
                 if (@this.ExistActualStart && @this.ActualStart <= DateTime.UtcNow &&
                     (@this.ExistActualEnd && @this.ActualEnd > DateTime.UtcNow || !@this.ExistActualEnd))
                 {
                     @this.CurrentObjectState = new CommunicationEventObjectStates(@this.Strategy.Session).InProgress;
-                    @this.CurrentCommunicationEventStatus = new CommunicationEventStatusBuilder(@this.Strategy.Session)
-                        .WithCommunicationEventObjectState(@this.CurrentObjectState)
-                        .WithStartDateTime(@this.ActualStart)
-                        .Build();
                 }
 
                 if (@this.ExistActualEnd && @this.ActualEnd <= DateTime.UtcNow)
                 {
                     @this.CurrentObjectState = new CommunicationEventObjectStates(@this.Strategy.Session).Completed;
-                    @this.CurrentCommunicationEventStatus = new CommunicationEventStatusBuilder(@this.Strategy.Session)
-                        .WithCommunicationEventObjectState(@this.CurrentObjectState)
-                        .WithStartDateTime(@this.ActualEnd)
-                        .Build();
                 }
-            }
-
-            if (@this.ExistCurrentObjectState && !@this.CurrentObjectState.Equals(@this.LastObjectState))
-            {
-                var currentStatus = new CommunicationEventStatusBuilder(@this.Strategy.Session).WithCommunicationEventObjectState(@this.CurrentObjectState).Build();
-                @this.AddCommunicationEventStatus(currentStatus);
-                @this.CurrentCommunicationEventStatus = currentStatus;
             }
 
             if (!@this.ExistInitialScheduledStart && @this.ExistScheduledStart)
@@ -110,11 +91,6 @@ namespace Allors.Domain
 
         public static void AppsDelete(this CommunicationEvent @this, DeletableDelete method)
         {
-            foreach (CommunicationEventStatus communicationEventStatus in @this.CommunicationEventStatuses)
-            {
-                communicationEventStatus.Delete();
-            }
-
             @this.RemoveWorkEfforts();
         }
 

@@ -19,6 +19,8 @@ namespace Allors.Domain
 
     public partial class NonSerialisedInventoryItemVersion
     {
+        ObjectState Transitional.CurrentObjectState => this.CurrentObjectState;
+
         public void AppsOnBuild(ObjectOnBuild method)
         {
             var builder = (NonSerialisedInventoryItemVersionBuilder) method.Builder;
@@ -39,7 +41,6 @@ namespace Allors.Domain
                 this.QuantityCommittedOut = nonSerialisedInventoryItem.QuantityCommittedOut;
                 this.QuantityOnHand = nonSerialisedInventoryItem.QuantityOnHand;
                 this.AvailableToPromise = nonSerialisedInventoryItem.AvailableToPromise;
-                this.QuantityExpectedIn = nonSerialisedInventoryItem.QuantityExpectedIn;
                 this.CurrentObjectState = nonSerialisedInventoryItem.CurrentObjectState;
             }
 

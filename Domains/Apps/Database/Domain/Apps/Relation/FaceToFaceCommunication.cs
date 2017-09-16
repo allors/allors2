@@ -55,6 +55,27 @@ namespace Allors.Domain
 
         public void AppsOnPostDerive(ObjectOnPostDerive method)
         {
+            var isNewVersion =
+                !this.ExistCurrentVersion ||
+                !object.Equals(this.ActualStart, this.CurrentVersion.ActualStart);
+
+            var isNewStateVersion =
+                !this.ExistCurrentVersion ||
+                !object.Equals(this.CurrentObjectState, this.CurrentVersion.CurrentObjectState);
+
+            if (isNewVersion)
+            {
+                this.PreviousVersion = this.CurrentVersion;
+                this.CurrentVersion = new FaceToFaceCommunicationVersionBuilder(this.Strategy.Session).WithFaceToFaceCommunication(this).Build();
+                this.AddAllVersion(this.CurrentVersion);
+            }
+
+            if (isNewStateVersion)
+            {
+                this.CurrentStateVersion = CurrentVersion;
+                this.AddAllStateVersion(this.CurrentStateVersion);
+            }
+
             this.RemoveSecurityTokens();
             this.AddSecurityToken(Singleton.Instance(this.Strategy.Session).DefaultSecurityToken);
 

@@ -7,10 +7,14 @@ namespace Allors.Repository
     #region Allors
     [Id("C9004999-C582-4AF1-8EDC-CBF3D13284D4")]
     #endregion
-    public partial class SerialisedInventoryItemVersion : SerialisedInventoryItemVersioned
+    public partial class SerialisedInventoryItemVersion : ISerialisedInventoryItem
     {
         #region inherited properties
 
+        public Permission[] DeniedPermissions { get; set; }
+        public SecurityToken[] SecurityTokens { get; set; }
+        public ObjectState PreviousObjectState { get; set; }
+        public ObjectState LastObjectState { get; set; }
         public string SerialNumber { get; set; }
         public Ownership Ownership { get; set; }
         public string Owner { get; set; }
@@ -40,10 +44,11 @@ namespace Allors.Repository
         #endregion
 
         #region Allors
-        [Id("605A66C9-628A-416C-84DA-87699D4564CA")]
-        [AssociationId("386C0C30-24AC-40D4-AFFF-D1B769D298A0")]
-        [RoleId("6BCD0F6E-ABC5-4837-A5B8-D967F3C01908")]
+        [Id("BAA3A811-6A2E-4DAC-AD06-7D244A394A58")]
+        [AssociationId("48DE7487-E0B3-47EC-B7EF-24C2444CC9DB")]
+        [RoleId("C3F402BC-9BA9-4AA5-BBA8-6B60A947B6EB")]
         #endregion
+        [Workspace]
         public DateTime TimeStamp { get; set; }
 
         #region inherited methods

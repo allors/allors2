@@ -23,7 +23,7 @@ namespace Allors.Domain
     {
         public static SalesRepPartyProductCategoryRevenue AppsFindOrCreateAsDependable(ISession session, SalesInvoiceItem salesInvoiceItem)
         {
-            var salesInvoice = salesInvoiceItem.SalesInvoiceWhereSalesInvoiceItem;
+            var salesInvoice = salesInvoiceItem.ISalesInvoiceWhereSalesInvoiceItem;
 
             var salesRepPartyProductCategoryRevenues = salesInvoiceItem.SalesRep.SalesRepPartyProductCategoryRevenuesWhereSalesRep;
             salesRepPartyProductCategoryRevenues.Filter.AddEquals(M.SalesRepPartyProductCategoryRevenue.InternalOrganisation, salesInvoice.BilledFromInternalOrganisation);
@@ -171,7 +171,7 @@ namespace Allors.Domain
 
             Dictionary<Party, Dictionary<Party, Dictionary<ProductCategory, Dictionary<DateTime, SalesRepPartyProductCategoryRevenue>>>> salesRepPartyProductCategoryRevenuesByPeriodByProductCategoryByPartyBySalesRep;
 
-            if (!salesRepPartyProductCategoryRevenuesByPeriodByProductCategoryByPartyBySalesRepByInternalOrganisation.TryGetValue(salesInvoiceItem.SalesInvoiceWhereSalesInvoiceItem.BilledFromInternalOrganisation, out salesRepPartyProductCategoryRevenuesByPeriodByProductCategoryByPartyBySalesRep))
+            if (!salesRepPartyProductCategoryRevenuesByPeriodByProductCategoryByPartyBySalesRepByInternalOrganisation.TryGetValue(salesInvoiceItem.ISalesInvoiceWhereSalesInvoiceItem.BilledFromInternalOrganisation, out salesRepPartyProductCategoryRevenuesByPeriodByProductCategoryByPartyBySalesRep))
             {
                 salesRepPartyProductCategoryRevenue = CreateSalesRepPartyProductCategoryRevenue(session, salesInvoiceItem, productCategory);
 
@@ -182,7 +182,7 @@ namespace Allors.Domain
                                 new Dictionary<Party, Dictionary<ProductCategory, Dictionary<DateTime, SalesRepPartyProductCategoryRevenue>>>
                                     {
                                         {
-                                            salesInvoiceItem.SalesInvoiceWhereSalesInvoiceItem.BillToCustomer,
+                                            salesInvoiceItem.ISalesInvoiceWhereSalesInvoiceItem.BillToCustomer,
                                             new Dictionary<ProductCategory, Dictionary<DateTime, SalesRepPartyProductCategoryRevenue>>
                                                 {
                                                     {
@@ -198,7 +198,7 @@ namespace Allors.Domain
                                 }
                         };
 
-                salesRepPartyProductCategoryRevenuesByPeriodByProductCategoryByPartyBySalesRepByInternalOrganisation[salesInvoiceItem.SalesInvoiceWhereSalesInvoiceItem.BilledFromInternalOrganisation] = salesRepPartyProductCategoryRevenuesByPeriodByProductCategoryByPartyBySalesRep;
+                salesRepPartyProductCategoryRevenuesByPeriodByProductCategoryByPartyBySalesRepByInternalOrganisation[salesInvoiceItem.ISalesInvoiceWhereSalesInvoiceItem.BilledFromInternalOrganisation] = salesRepPartyProductCategoryRevenuesByPeriodByProductCategoryByPartyBySalesRep;
             }
 
             Dictionary<Party, Dictionary<ProductCategory, Dictionary<DateTime, SalesRepPartyProductCategoryRevenue>>> salesRepPartyProductCategoryRevenuesByPeriodByProductCategoryByParty;
@@ -209,7 +209,7 @@ namespace Allors.Domain
                 salesRepPartyProductCategoryRevenuesByPeriodByProductCategoryByParty = new Dictionary<Party, Dictionary<ProductCategory, Dictionary<DateTime, SalesRepPartyProductCategoryRevenue>>>
                         {
                             {
-                                salesInvoiceItem.SalesInvoiceWhereSalesInvoiceItem.BillToCustomer,
+                                salesInvoiceItem.ISalesInvoiceWhereSalesInvoiceItem.BillToCustomer,
                                 new Dictionary<ProductCategory, Dictionary<DateTime, SalesRepPartyProductCategoryRevenue>>
                                     {
                                         {
@@ -227,7 +227,7 @@ namespace Allors.Domain
             }
 
             Dictionary<ProductCategory, Dictionary<DateTime, SalesRepPartyProductCategoryRevenue>> salesRepPartyProductCategoryRevenuesByPeriodByProductCategory;
-            if (!salesRepPartyProductCategoryRevenuesByPeriodByProductCategoryByParty.TryGetValue(salesInvoiceItem.SalesInvoiceWhereSalesInvoiceItem.BillToCustomer, out salesRepPartyProductCategoryRevenuesByPeriodByProductCategory))
+            if (!salesRepPartyProductCategoryRevenuesByPeriodByProductCategoryByParty.TryGetValue(salesInvoiceItem.ISalesInvoiceWhereSalesInvoiceItem.BillToCustomer, out salesRepPartyProductCategoryRevenuesByPeriodByProductCategory))
             {
                 salesRepPartyProductCategoryRevenue = CreateSalesRepPartyProductCategoryRevenue(session, salesInvoiceItem, productCategory);
 
@@ -273,13 +273,13 @@ namespace Allors.Domain
         private static SalesRepPartyProductCategoryRevenue CreateSalesRepPartyProductCategoryRevenue(ISession session, SalesInvoiceItem item, ProductCategory productCategory)
         {
             return new SalesRepPartyProductCategoryRevenueBuilder(session)
-                        .WithInternalOrganisation(item.SalesInvoiceWhereSalesInvoiceItem.BilledFromInternalOrganisation)
-                        .WithParty(item.SalesInvoiceWhereSalesInvoiceItem.BillToCustomer)
+                        .WithInternalOrganisation(item.ISalesInvoiceWhereSalesInvoiceItem.BilledFromInternalOrganisation)
+                        .WithParty(item.ISalesInvoiceWhereSalesInvoiceItem.BillToCustomer)
                         .WithSalesRep(item.SalesRep)
                         .WithProductCategory(productCategory)
-                        .WithYear(item.SalesInvoiceWhereSalesInvoiceItem.InvoiceDate.Year)
-                        .WithMonth(item.SalesInvoiceWhereSalesInvoiceItem.InvoiceDate.Month)
-                        .WithCurrency(item.SalesInvoiceWhereSalesInvoiceItem.BilledFromInternalOrganisation.PreferredCurrency)
+                        .WithYear(item.ISalesInvoiceWhereSalesInvoiceItem.InvoiceDate.Year)
+                        .WithMonth(item.ISalesInvoiceWhereSalesInvoiceItem.InvoiceDate.Month)
+                        .WithCurrency(item.ISalesInvoiceWhereSalesInvoiceItem.BilledFromInternalOrganisation.PreferredCurrency)
                         .WithRevenue(0M)
                         .Build();
         }

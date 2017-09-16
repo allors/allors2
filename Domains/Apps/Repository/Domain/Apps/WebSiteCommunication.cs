@@ -6,7 +6,7 @@ namespace Allors.Repository
     #region Allors
     [Id("ecf2996a-7f8b-45d5-afac-56c88c62136a")]
     #endregion
-    public partial class WebSiteCommunication : CommunicationEvent 
+    public partial class WebSiteCommunication : CommunicationEvent, IWebSiteCommunication 
     {
         #region inherited properties
 
@@ -19,8 +19,6 @@ namespace Allors.Repository
         public Party[] ToParties { get; set; }
 
         public ContactMechanism[] ContactMechanisms { get; set; }
-
-        public CommunicationEventStatus[] CommunicationEventStatuses { get; set; }
 
         public Party[] InvolvedParties { get; set; }
 
@@ -52,8 +50,6 @@ namespace Allors.Repository
 
         public Person Owner { get; set; }
 
-        public CommunicationEventStatus CurrentCommunicationEventStatus { get; set; }
-
         public string Note { get; set; }
 
         public DateTime ActualStart { get; set; }
@@ -81,28 +77,60 @@ namespace Allors.Repository
 
         public DateTime LastModifiedDate { get; set; }
 
-        #endregion
-
-        #region Allors
-        [Id("18faf993-316a-4990-8ffd-8bda40f61164")]
-        [AssociationId("b6c8df26-71f6-49a8-86d0-f38b9717fdc4")]
-        [RoleId("96f92902-be8e-41f8-893a-afe4e93ef6d5")]
-        #endregion
-        [Multiplicity(Multiplicity.ManyToOne)]
-        [Indexed]
-        [Workspace]
         public Party Originator { get; set; }
-
-        #region Allors
-        [Id("39077571-13b2-4cc4-be85-517dbc11703e")]
-        [AssociationId("be25f23d-6c17-4940-abe6-b6936244bcea")]
-        [RoleId("f956749a-b0b3-45a4-a4b8-b0bf913d24c2")]
-        #endregion
-        [Multiplicity(Multiplicity.ManyToOne)]
-        [Indexed]
-        [Workspace]
         public Party Receiver { get; set; }
 
+        #endregion
+
+        #region Allors
+        [Id("B75445E9-5742-4463-B0B2-8A140F22A0B3")]
+        [AssociationId("013CFA6C-2A85-497E-86FC-EF6F774F25CA")]
+        [RoleId("BAA86925-BB14-41A2-AC97-7A5A6F97CAD0")]
+        [Indexed]
+        #endregion
+        [Multiplicity(Multiplicity.OneToOne)]
+        [Workspace]
+        public WebSiteCommunicationVersion CurrentVersion { get; set; }
+
+        #region Allors
+        [Id("9AC388B3-E4A0-4E40-A598-A07E37EF9AF2")]
+        [AssociationId("D0E2EC86-D999-4B00-9CB7-76A8FE584DC8")]
+        [RoleId("002DDE7A-B2C5-4A90-80B2-33096B2C52E2")]
+        [Indexed]
+        #endregion
+        [Multiplicity(Multiplicity.OneToOne)]
+        [Workspace]
+        public WebSiteCommunicationVersion PreviousVersion { get; set; }
+
+        #region Allors
+        [Id("F790CEE1-05BB-44DF-9869-3F497DFF267D")]
+        [AssociationId("39B69443-95CD-46B7-BEFF-3082E31018C3")]
+        [RoleId("01A4FA37-B67E-422B-96C9-A4DE0541F241")]
+        [Indexed]
+        #endregion
+        [Multiplicity(Multiplicity.OneToMany)]
+        [Workspace]
+        public WebSiteCommunicationVersion[] AllVersions { get; set; }
+
+        #region Allors
+        [Id("E0FDB8D4-E6A7-450E-8E39-CC310F6DCD25")]
+        [AssociationId("7CD76B5E-0EFE-446D-BB5C-214248FE0174")]
+        [RoleId("76ADC3A6-F1F5-4A2F-80F1-BEF7DC8204D8")]
+        [Indexed]
+        #endregion
+        [Multiplicity(Multiplicity.OneToOne)]
+        [Workspace]
+        public WebSiteCommunicationVersion CurrentStateVersion { get; set; }
+
+        #region Allors
+        [Id("04319056-BA62-40E9-80E9-2DF272E37FD6")]
+        [AssociationId("0F48D1D2-8856-4678-9CCA-CA8BB7A84024")]
+        [RoleId("84BB3445-0AF9-43DF-B1F0-7C7F52D2209C")]
+        [Indexed]
+        #endregion
+        [Multiplicity(Multiplicity.OneToMany)]
+        [Workspace]
+        public WebSiteCommunicationVersion[] AllStateVersions { get; set; }
 
         #region inherited methods
 
@@ -131,6 +159,5 @@ namespace Allors.Repository
 
 
         #endregion
-
     }
 }

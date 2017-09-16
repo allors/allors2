@@ -93,15 +93,32 @@ namespace Allors.Domain
                 }
             }
 
-            if (this.ExistCurrentObjectState && !this.CurrentObjectState.Equals(this.LastObjectState))
-            {
-                var currentStatus = new PurchaseInvoiceStatusBuilder(this.Strategy.Session).WithPurchaseInvoiceObjectState(this.CurrentObjectState).Build();
-                this.AddInvoiceStatus(currentStatus);
-                this.CurrentInvoiceStatus = currentStatus;
-            }
-
             this.AppsOnDeriveInvoiceItems(derivation);
             this.AppsOnDeriveInvoiceTotals();
+        }
+
+        public void AppsOnPostDerive(ObjectOnPostDerive method)
+        {
+            var isNewVersion =
+                !this.ExistCurrentVersion ||
+                !object.Equals(this.InternalComment, this.CurrentVersion.InternalComment);
+
+            var isNewStateVersion =
+                !this.ExistCurrentVersion ||
+                !object.Equals(this.CurrentObjectState, this.CurrentVersion.CurrentObjectState);
+
+            if (isNewVersion)
+            {
+                this.PreviousVersion = this.CurrentVersion;
+                this.CurrentVersion = new PurchaseInvoiceVersionBuilder(this.Strategy.Session).WithPurchaseInvoice(this).Build();
+                this.AddAllVersion(this.CurrentVersion);
+            }
+
+            if (isNewStateVersion)
+            {
+                this.CurrentStateVersion = CurrentVersion;
+                this.AddAllStateVersion(this.CurrentStateVersion);
+            }
         }
 
         public void AppsOnDeriveInvoiceTotals()

@@ -34,7 +34,7 @@ namespace Allors.Repository
         [Indexed]
         [Required]
 
-        public InventoryItemVersioned InventoryItem { get; set; }
+        public IInventoryItem InventoryItem { get; set; }
         #region Allors
         [Id("f32d100b-a6e8-4cb2-98b4-c06264789c76")]
         [AssociationId("3b75e3a8-7580-4f07-bf75-ae7541a00609")]

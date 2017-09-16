@@ -42,15 +42,15 @@ namespace Allors.Domain
                     }
                 }
 
-                if (this.ExistOrderWhereSurchargeAdjustment)
+                if (this.ExistIOrderWhereSurchargeAdjustment)
                 {
-                    var salesOrder = (SalesOrder)this.OrderWhereSurchargeAdjustment;
+                    var salesOrder = (SalesOrder)this.IOrderWhereSurchargeAdjustment;
                     derivation.AddDependency(this, salesOrder);
                 }
 
-                if (this.ExistInvoiceWhereSurchargeAdjustment)
+                if (this.ExistIInvoiceWhereSurchargeAdjustment)
                 {
-                    var salesInvoice = (SalesInvoice)this.InvoiceWhereSurchargeAdjustment;
+                    var salesInvoice = (SalesInvoice)this.IInvoiceWhereSurchargeAdjustment;
                     derivation.AddDependency(this, salesInvoice);
                 }
             }

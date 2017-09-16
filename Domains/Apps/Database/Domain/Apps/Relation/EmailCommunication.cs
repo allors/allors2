@@ -32,6 +32,30 @@ namespace Allors.Domain
             this.AppsOnDeriveInvolvedParties();
         }
 
+        public void AppsOnPostDerive(ObjectOnPostDerive method)
+        {
+            var isNewVersion =
+                !this.ExistCurrentVersion ||
+                !object.Equals(this.ActualStart, this.CurrentVersion.ActualStart);
+
+            var isNewStateVersion =
+                !this.ExistCurrentVersion ||
+                !object.Equals(this.CurrentObjectState, this.CurrentVersion.CurrentObjectState);
+
+            if (isNewVersion)
+            {
+                this.PreviousVersion = this.CurrentVersion;
+                this.CurrentVersion = new EmailCommunicationVersionBuilder(this.Strategy.Session).WithEmailCommunication(this).Build();
+                this.AddAllVersion(this.CurrentVersion);
+            }
+
+            if (isNewStateVersion)
+            {
+                this.CurrentStateVersion = CurrentVersion;
+                this.AddAllStateVersion(this.CurrentStateVersion);
+            }
+        }
+
         public void AppsOnDeriveFromParties()
         {
             this.RemoveFromParties();

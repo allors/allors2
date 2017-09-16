@@ -258,7 +258,7 @@ namespace Allors.Domain
             {
                 if (!this.TakenByInternalOrganisation.Equals(this.BillToCustomer.InternalOrganisationWhereCustomer))
                 {
-                    derivation.Validation.AddError(this, M.SalesOrder.BillToCustomer, ErrorMessages.PartyIsNotACustomer);
+                    derivation.Validation.AddError(this, M.ISalesOrder.BillToCustomer, ErrorMessages.PartyIsNotACustomer);
                 }
             }
 
@@ -266,7 +266,7 @@ namespace Allors.Domain
             {
                 if (!this.TakenByInternalOrganisation.Equals(this.ShipToCustomer.InternalOrganisationWhereCustomer))
                 {
-                    derivation.Validation.AddError(this, M.SalesOrder.ShipToCustomer, ErrorMessages.PartyIsNotACustomer);
+                    derivation.Validation.AddError(this, M.ISalesOrder.ShipToCustomer, ErrorMessages.PartyIsNotACustomer);
                 }
             }
 
@@ -284,7 +284,6 @@ namespace Allors.Domain
 
             this.AppsOnDeriveCurrentShipmentStatus(derivation);
             this.AppsOnDeriveCurrentOrderStatus(derivation);
-            this.DeriveCurrentObjectState(derivation);
             this.AppsOnDeriveLocale(derivation);
             this.AppsOnDeriveOrderTotals(derivation);
             this.AppsOnDeriveCustomers(derivation);
@@ -300,13 +299,27 @@ namespace Allors.Domain
             this.PreviousShipToCustomer = this.ShipToCustomer;
         }
 
-        private void DeriveCurrentObjectState(IDerivation derivation)
+        public void AppsOnPostDerive(ObjectOnPostDerive method)
         {
-            if (this.ExistCurrentObjectState && !this.CurrentObjectState.Equals(this.LastObjectState))
+            var isNewVersion =
+                !this.ExistCurrentVersion ||
+                !object.Equals(this.InternalComment, this.CurrentVersion.InternalComment);
+
+            var isNewStateVersion =
+                !this.ExistCurrentVersion ||
+                !object.Equals(this.CurrentObjectState, this.CurrentVersion.CurrentObjectState);
+
+            if (isNewVersion)
             {
-                var currentStatus = new SalesOrderStatusBuilder(this.Strategy.Session).WithSalesOrderObjectState(this.CurrentObjectState).Build();
-                this.AddOrderStatus(currentStatus);
-                this.CurrentOrderStatus = currentStatus;
+                this.PreviousVersion = this.CurrentVersion;
+                this.CurrentVersion = new SalesOrderVersionBuilder(this.Strategy.Session).WithSalesOrder(this).Build();
+                this.AddAllVersion(this.CurrentVersion);
+            }
+
+            if (isNewStateVersion)
+            {
+                this.CurrentStateVersion = CurrentVersion;
+                this.AddAllStateVersion(this.CurrentStateVersion);
             }
         }
 
@@ -386,14 +399,14 @@ namespace Allors.Domain
 
             foreach (SalesOrderItem orderItem in this.ValidOrderItems)
             {
-                if (orderItem.ExistCurrentPaymentStatus)
+                if (orderItem.ExistCurrentPaymentStateVersion)
                 {
-                    if (orderItem.CurrentPaymentStatus.SalesOrderItemObjectState.Equals(new SalesOrderItemObjectStates(this.Strategy.Session).PartiallyPaid))
+                    if (orderItem.CurrentPaymentStateVersion.CurrentObjectState.Equals(new SalesOrderItemObjectStates(this.Strategy.Session).PartiallyPaid))
                     {
                         itemsPartiallyPaid = true;
                     }
 
-                    if (orderItem.CurrentPaymentStatus.SalesOrderItemObjectState.Equals(new SalesOrderItemObjectStates(this.Strategy.Session).Paid))
+                    if (orderItem.CurrentPaymentStateVersion.CurrentObjectState.Equals(new SalesOrderItemObjectStates(this.Strategy.Session).Paid))
                     {
                         itemsPaid = true;
                     }
@@ -405,15 +418,25 @@ namespace Allors.Domain
             }
 
             if (itemsPaid && !itemsUnpaid && !itemsPartiallyPaid &&
-                (!this.ExistCurrentPaymentStatus || !this.CurrentPaymentStatus.SalesOrderObjectState.Equals(new SalesOrderObjectStates(this.Strategy.Session).Paid)))
+                (!this.ExistCurrentPaymentStateVersion || !this.CurrentPaymentStateVersion.CurrentObjectState.Equals(new SalesOrderObjectStates(this.Strategy.Session).Paid)))
             {
-                this.CurrentPaymentStatus = new SalesOrderStatusBuilder(this.Strategy.Session).WithSalesOrderObjectState(new SalesOrderObjectStates(this.Strategy.Session).Paid).Build();
+                var newVersion = new SalesOrderVersionBuilder(this.Strategy.Session)
+                    .WithCurrentObjectState(new SalesOrderObjectStates(this.Strategy.Session).Paid)
+                    .WithSalesOrder(this)
+                    .Build();
+                this.CurrentPaymentStateVersion = newVersion;
+                this.AddAllPaymentStateVersion(newVersion);
             }
 
             if ((itemsPartiallyPaid || (itemsPaid && itemsUnpaid)) &&
-                (!this.ExistCurrentPaymentStatus || !this.CurrentPaymentStatus.SalesOrderObjectState.Equals(new SalesOrderObjectStates(this.Strategy.Session).PartiallyPaid)))
+                (!this.ExistCurrentPaymentStateVersion || !this.CurrentPaymentStateVersion.CurrentObjectState.Equals(new SalesOrderObjectStates(this.Strategy.Session).PartiallyPaid)))
             {
-                this.CurrentPaymentStatus = new SalesOrderStatusBuilder(this.Strategy.Session).WithSalesOrderObjectState(new SalesOrderObjectStates(this.Strategy.Session).PartiallyPaid).Build();
+                var newVersion = new SalesOrderVersionBuilder(this.Strategy.Session)
+                    .WithCurrentObjectState(new SalesOrderObjectStates(this.Strategy.Session).PartiallyPaid)
+                    .WithSalesOrder(this)
+                    .Build();
+                this.CurrentPaymentStateVersion = newVersion;
+                this.AddAllPaymentStateVersion(newVersion);
             }
 
             this.AppsOnDeriveCurrentOrderStatus(derivation);
@@ -427,14 +450,14 @@ namespace Allors.Domain
 
             foreach (SalesOrderItem orderItem in this.ValidOrderItems)
             {
-                if (orderItem.ExistCurrentShipmentStatus)
+                if (orderItem.ExistCurrentShipmentStateVersion)
                 {
-                    if (orderItem.CurrentShipmentStatus.SalesOrderItemObjectState.Equals(new SalesOrderItemObjectStates(this.Strategy.Session).PartiallyShipped))
+                    if (orderItem.CurrentShipmentStateVersion.CurrentObjectState.Equals(new SalesOrderItemObjectStates(this.Strategy.Session).PartiallyShipped))
                     {
                         itemsPartiallyShipped = true;
                     }
 
-                    if (orderItem.CurrentShipmentStatus.SalesOrderItemObjectState.Equals(new SalesOrderItemObjectStates(this.Strategy.Session).Shipped))
+                    if (orderItem.CurrentShipmentStateVersion.CurrentObjectState.Equals(new SalesOrderItemObjectStates(this.Strategy.Session).Shipped))
                     {
                         itemsShipped = true;
                     }
@@ -446,15 +469,25 @@ namespace Allors.Domain
             }
 
             if (itemsShipped && !itemsNotShipped && !itemsPartiallyShipped &&
-                (!this.ExistCurrentShipmentStatus || !this.CurrentShipmentStatus.SalesOrderObjectState.Equals(new SalesOrderObjectStates(this.Strategy.Session).Shipped)))
+                (!this.ExistCurrentShipmentStateVersion || !this.CurrentShipmentStateVersion.CurrentObjectState.Equals(new SalesOrderObjectStates(this.Strategy.Session).Shipped)))
             {
-                this.CurrentShipmentStatus = new SalesOrderStatusBuilder(this.Strategy.Session).WithSalesOrderObjectState(new SalesOrderObjectStates(this.Strategy.Session).Shipped).Build();
+                var newVersion = new SalesOrderVersionBuilder(this.Strategy.Session)
+                    .WithCurrentObjectState(new SalesOrderObjectStates(this.Strategy.Session).Shipped)
+                    .WithSalesOrder(this)
+                    .Build();
+                this.CurrentShipmentStateVersion = newVersion;
+                this.AddAllShipmentStateVersion(newVersion);
             }
 
             if ((itemsPartiallyShipped || (itemsShipped && itemsNotShipped)) &&
-                (!this.ExistCurrentShipmentStatus || !this.CurrentShipmentStatus.SalesOrderObjectState.Equals(new SalesOrderObjectStates(this.Strategy.Session).PartiallyShipped)))
+                (!this.ExistCurrentShipmentStateVersion || !this.CurrentShipmentStateVersion.CurrentObjectState.Equals(new SalesOrderObjectStates(this.Strategy.Session).PartiallyShipped)))
             {
-                this.CurrentShipmentStatus = new SalesOrderStatusBuilder(this.Strategy.Session).WithSalesOrderObjectState(new SalesOrderObjectStates(this.Strategy.Session).PartiallyShipped).Build();
+                var newVersion = new SalesOrderVersionBuilder(this.Strategy.Session)
+                    .WithCurrentObjectState(new SalesOrderObjectStates(this.Strategy.Session).PartiallyShipped)
+                    .WithSalesOrder(this)
+                    .Build();
+                this.CurrentShipmentStateVersion = newVersion;
+                this.AddAllShipmentStateVersion(newVersion);
             }
 
             this.AppsOnDeriveCurrentOrderStatus(derivation);
@@ -462,12 +495,12 @@ namespace Allors.Domain
 
         public void AppsOnDeriveCurrentOrderStatus(IDerivation derivation)
         {
-            if (this.ExistCurrentShipmentStatus && this.CurrentShipmentStatus.SalesOrderObjectState.Equals(new SalesOrderObjectStates(this.Strategy.Session).Shipped))
+            if (this.ExistCurrentShipmentStateVersion && this.CurrentShipmentStateVersion.CurrentObjectState.Equals(new SalesOrderObjectStates(this.Strategy.Session).Shipped))
             {
                 this.Complete();
             }
 
-            if (this.ExistCurrentPaymentStatus && this.CurrentPaymentStatus.SalesOrderObjectState.Equals(new SalesOrderObjectStates(this.Strategy.Session).Paid))
+            if (this.ExistCurrentPaymentStateVersion && this.CurrentPaymentStateVersion.CurrentObjectState.Equals(new SalesOrderObjectStates(this.Strategy.Session).Paid))
             {
                 this.Finish();
             }
@@ -503,7 +536,7 @@ namespace Allors.Domain
 
                 foreach (SalesOrderItem item in this.ValidOrderItems)
                 {
-                    if (!item.ExistSalesOrderItemWhereOrderedWithFeature)
+                    if (!item.ExistISalesOrderItemWhereOrderedWithFeature)
                     {
                         this.TotalBasePrice += item.TotalBasePrice;
                         this.TotalDiscount += item.TotalDiscount;

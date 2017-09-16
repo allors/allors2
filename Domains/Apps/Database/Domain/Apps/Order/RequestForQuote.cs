@@ -23,6 +23,35 @@ namespace Allors.Domain
     {
         ObjectState Transitional.CurrentObjectState => this.CurrentObjectState;
 
+        public void AppsOnDerive(ObjectOnDerive method)
+        {
+            var derivation = method.Derivation;
+        }
+
+        public void AppsOnPostDerive(ObjectOnPostDerive method)
+        {
+            var isNewVersion =
+                !this.ExistCurrentVersion ||
+                !object.Equals(this.InternalComment, this.CurrentVersion.InternalComment);
+
+            var isNewStateVersion =
+                !this.ExistCurrentVersion ||
+                !object.Equals(this.CurrentObjectState, this.CurrentVersion.CurrentObjectState);
+
+            if (isNewVersion)
+            {
+                this.PreviousVersion = this.CurrentVersion;
+                this.CurrentVersion = new RequestForQuoteVersionBuilder(this.Strategy.Session).WithRequestForQuote(this).Build();
+                this.AddAllVersion(this.CurrentVersion);
+            }
+
+            if (isNewStateVersion)
+            {
+                this.CurrentStateVersion = CurrentVersion;
+                this.AddAllStateVersion(this.CurrentStateVersion);
+            }
+        }
+
         private ProductQuote QuoteThis()
         {
             var productQuote = new ProductQuoteBuilder(this.Strategy.Session)

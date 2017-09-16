@@ -40,17 +40,29 @@ namespace Allors.Domain
             {
                 this.RequiredByDate = this.RequestItem.RequiredByDate;
             }
-
-            this.DeriveCurrentObjectState(derivation);
         }
 
-        private void DeriveCurrentObjectState(IDerivation derivation)
+        public void AppsOnPostDerive(ObjectOnPostDerive method)
         {
-            if (this.ExistCurrentObjectState && !this.CurrentObjectState.Equals(this.LastObjectState))
+            var isNewVersion =
+                !this.ExistCurrentVersion ||
+                !object.Equals(this.InternalComment, this.CurrentVersion.InternalComment);
+
+            var isNewStateVersion =
+                !this.ExistCurrentVersion ||
+                !object.Equals(this.CurrentObjectState, this.CurrentVersion.CurrentObjectState);
+
+            if (isNewVersion)
             {
-                var currentStatus = new QuoteItemStatusBuilder(this.Strategy.Session).WithQuoteItemObjectState(this.CurrentObjectState).Build();
-                this.AddQuoteItemStatus(currentStatus);
-                this.CurrentQuoteItemStatus = currentStatus;
+                this.PreviousVersion = this.CurrentVersion;
+                this.CurrentVersion = new QuoteItemVersionBuilder(this.Strategy.Session).WithQuoteItem(this).Build();
+                this.AddAllVersion(this.CurrentVersion);
+            }
+
+            if (isNewStateVersion)
+            {
+                this.CurrentStateVersion = CurrentVersion;
+                this.AddAllStateVersion(this.CurrentStateVersion);
             }
         }
     }

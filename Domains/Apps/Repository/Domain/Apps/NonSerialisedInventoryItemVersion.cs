@@ -7,10 +7,14 @@ namespace Allors.Repository
     #region Allors
     [Id("BDCCB8B3-F8A1-4905-BFF9-92144A9C36EE")]
     #endregion
-    public partial class NonSerialisedInventoryItemVersion : NonSerialisedInventoryItemVersioned
+    public partial class NonSerialisedInventoryItemVersion : INonSerialisedInventoryItem
     {
         #region inherited properties
 
+        public Permission[] DeniedPermissions { get; set; }
+        public SecurityToken[] SecurityTokens { get; set; }
+        public ObjectState PreviousObjectState { get; set; }
+        public ObjectState LastObjectState { get; set; }
         public ProductCharacteristicValue[] ProductCharacteristicValues { get; set; }
         public InventoryItemVariance[] InventoryItemVariances { get; set; }
         public Part Part { get; set; }
@@ -37,6 +41,7 @@ namespace Allors.Repository
         [AssociationId("80D6D3E7-86DB-4EF4-9EC4-E67F9D616A9F")]
         [RoleId("49761B86-4C69-4015-BB35-558F3719FD74")]
         #endregion
+        [Workspace]
         public DateTime TimeStamp { get; set; }
 
         #region inherited methods

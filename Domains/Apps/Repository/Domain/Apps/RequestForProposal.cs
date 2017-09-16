@@ -2,94 +2,118 @@ namespace Allors.Repository
 {
     using System;
 
-    using Allors.Repository.Attributes;
+    using Attributes;
 
     #region Allors
     [Id("0112ddd0-14de-43e2-97d3-981766dd957e")]
     #endregion
     [Plural("RequestsForProposal")]
-    public partial class RequestForProposal : Request 
+    public partial class RequestForProposal : Request, IRequestForProposal 
     {
         #region inherited properties
-
         public string InternalComment { get; set; }
         public string Description { get; set; }
-
         public DateTime RequestDate { get; set; }
-
         public DateTime RequiredResponseDate { get; set; }
-
         public RequestItem[] RequestItems { get; set; }
-
         public string RequestNumber { get; set; }
-
         public RespondingParty[] RespondingParties { get; set; }
-
         public Party Originator { get; set; }
-
         public Currency Currency { get; set; }
-
-        public RequestStatus[] RequestStatuses { get; set; }
-
         public RequestObjectState CurrentObjectState { get; set; }
-
-        public RequestStatus CurrentRequestStatus { get; set; }
-
         public ContactMechanism FullfillContactMechanism { get; set; }
         public string EmailAddress { get; set; }
         public string TelephoneNumber { get; set; }
         public string TelephoneCountryCode { get; set; }
-
         public Permission[] DeniedPermissions { get; set; }
-
         public SecurityToken[] SecurityTokens { get; set; }
-
         public string Comment { get; set; }
-
         public User CreatedBy { get; set; }
-
         public User LastModifiedBy { get; set; }
-
         public DateTime CreationDate { get; set; }
-
         public DateTime LastModifiedDate { get; set; }
-
         public Guid UniqueId { get; set; }
-
         public string PrintContent { get; set; }
-
         public ObjectState PreviousObjectState { get; set; }
-
         public ObjectState LastObjectState { get; set; }
         #endregion
 
         #region Allors
-        [Id("30472626-909D-4B7E-A153-B2754D6398E3")]
+        [Id("0CDCEB30-489D-4CC7-8C27-B51BCBC3B631")]
+        [AssociationId("2706C873-5D24-4B86-826E-9FDAD9605D70")]
+        [RoleId("2847C8F5-2EA6-4D80-9518-C264C8E7AB8B")]
+        [Indexed]
         #endregion
-        public void CreateProposal() { }
+        [Multiplicity(Multiplicity.OneToOne)]
+        [Workspace]
+        public RequestForProposalVersion CurrentVersion { get; set; }
+
+        #region Allors
+        [Id("0F68A59F-34B9-444E-A167-364FA6CF5F30")]
+        [AssociationId("829A011E-3E76-495D-9D4D-3204153391AF")]
+        [RoleId("2DDAC460-2CDD-49FC-941A-1768AD0FA15F")]
+        [Indexed]
+        #endregion
+        [Multiplicity(Multiplicity.OneToOne)]
+        [Workspace]
+        public RequestForProposalVersion PreviousVersion { get; set; }
+
+        #region Allors
+        [Id("2043D481-BB86-4F2E-AE34-506E9F12227F")]
+        [AssociationId("00C38CFD-1A6F-474D-8B2E-6087B2FAA1C3")]
+        [RoleId("C80A0D2E-A695-4FF2-BACF-D95DA9BC0B91")]
+        [Indexed]
+        #endregion
+        [Multiplicity(Multiplicity.OneToMany)]
+        [Workspace]
+        public RequestForProposalVersion[] AllVersions { get; set; }
+        
+        #region Allors
+        [Id("1FDA439D-09AF-4C9E-9792-1E1A5C4EA808")]
+        [AssociationId("1A1ED150-2B42-48E2-AAB1-5462092BC16B")]
+        [RoleId("D8E0A03B-589A-4BB8-9728-7FD6F59FBC46")]
+        [Indexed]
+        #endregion
+        [Multiplicity(Multiplicity.OneToOne)]
+        [Workspace]
+        public RequestForProposalVersion CurrentStateVersion { get; set; }
+
+        #region Allors
+        [Id("4EB513B3-4A79-40DE-9AC7-A79035A545C8")]
+        [AssociationId("3C95D056-6C32-4EDF-9EBA-DCA7F06F7CA5")]
+        [RoleId("C076734A-B350-4CBA-9009-F087B1C08678")]
+        [Indexed]
+        #endregion
+        [Multiplicity(Multiplicity.OneToMany)]
+        [Workspace]
+        public RequestForProposalVersion[] AllStateVersions { get; set; }
 
         #region inherited methods
-
-
-        public void OnBuild(){}
-
-        public void OnPostBuild(){}
-
-        public void OnPreDerive(){}
-
-        public void OnDerive(){}
-
-        public void OnPostDerive(){}
-
-        public void Cancel() {}
+        public void Cancel() { }
 
         public void Reject() { }
 
         public void Submit() { }
 
         public void Hold() { }
+
         public void AddNewRequestItem() { }
 
+        public void OnBuild() { }
+
+        public void OnPostBuild() { }
+
+        public void OnPreDerive() { }
+
+        public void OnDerive() { }
+
+        public void OnPostDerive() { }
+
         #endregion
+
+        #region Allors
+        [Id("30472626-909D-4B7E-A153-B2754D6398E3")]
+        #endregion
+        public void CreateProposal() { }
     }
 }

@@ -5,7 +5,7 @@ namespace Allors.Repository
     using Allors.Repository.Attributes;
 
     #region Allors
-    [Id("9dd17a3f-0e3c-4d87-b840-2f23a96dd165")]
+    [Id("41D19E80-8ABB-4515-AA44-3E0AF1146AE7")]
     #endregion
     public partial class NonSerialisedInventoryItemObjectState : ObjectState 
     {

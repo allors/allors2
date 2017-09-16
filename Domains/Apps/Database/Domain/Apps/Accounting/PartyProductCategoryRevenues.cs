@@ -159,14 +159,14 @@ namespace Allors.Domain
             PartyProductCategoryRevenue partyProductCategoryRevenue;
 
             Dictionary<Party, Dictionary<ProductCategory, Dictionary<DateTime, PartyProductCategoryRevenue>>> partyProductCategoryRevenuesByPeriodByProductCategoryByParty;
-            if (!partyProductCategoryRevenuesByPeriodByProductCategoryByPartyByInternalOrganisation.TryGetValue(salesInvoiceItem.SalesInvoiceWhereSalesInvoiceItem.BilledFromInternalOrganisation, out partyProductCategoryRevenuesByPeriodByProductCategoryByParty))
+            if (!partyProductCategoryRevenuesByPeriodByProductCategoryByPartyByInternalOrganisation.TryGetValue(salesInvoiceItem.ISalesInvoiceWhereSalesInvoiceItem.BilledFromInternalOrganisation, out partyProductCategoryRevenuesByPeriodByProductCategoryByParty))
             {
-                partyProductCategoryRevenue = CreatePartyProductCategoryRevenue(session, salesInvoiceItem.SalesInvoiceWhereSalesInvoiceItem, productCategory);
+                partyProductCategoryRevenue = CreatePartyProductCategoryRevenue(session, salesInvoiceItem.ISalesInvoiceWhereSalesInvoiceItem, productCategory);
 
                 partyProductCategoryRevenuesByPeriodByProductCategoryByParty = new Dictionary<Party, Dictionary<ProductCategory, Dictionary<DateTime, PartyProductCategoryRevenue>>>
                         {
                             {
-                                salesInvoiceItem.SalesInvoiceWhereSalesInvoiceItem.BillToCustomer,
+                                salesInvoiceItem.ISalesInvoiceWhereSalesInvoiceItem.BillToCustomer,
                                 new Dictionary<ProductCategory, Dictionary<DateTime, PartyProductCategoryRevenue>>
                                     {
                                         {
@@ -177,13 +177,13 @@ namespace Allors.Domain
                                 }
                         };
 
-                partyProductCategoryRevenuesByPeriodByProductCategoryByPartyByInternalOrganisation[salesInvoiceItem.SalesInvoiceWhereSalesInvoiceItem.BilledFromInternalOrganisation] = partyProductCategoryRevenuesByPeriodByProductCategoryByParty;
+                partyProductCategoryRevenuesByPeriodByProductCategoryByPartyByInternalOrganisation[salesInvoiceItem.ISalesInvoiceWhereSalesInvoiceItem.BilledFromInternalOrganisation] = partyProductCategoryRevenuesByPeriodByProductCategoryByParty;
             }
 
             Dictionary<ProductCategory, Dictionary<DateTime, PartyProductCategoryRevenue>> partyProductCategoryRevenuesByPeriodByProductCategory;
-            if (!partyProductCategoryRevenuesByPeriodByProductCategoryByParty.TryGetValue(salesInvoiceItem.SalesInvoiceWhereSalesInvoiceItem.BillToCustomer, out partyProductCategoryRevenuesByPeriodByProductCategory))
+            if (!partyProductCategoryRevenuesByPeriodByProductCategoryByParty.TryGetValue(salesInvoiceItem.ISalesInvoiceWhereSalesInvoiceItem.BillToCustomer, out partyProductCategoryRevenuesByPeriodByProductCategory))
             {
-                partyProductCategoryRevenue = CreatePartyProductCategoryRevenue(session, salesInvoiceItem.SalesInvoiceWhereSalesInvoiceItem, productCategory);
+                partyProductCategoryRevenue = CreatePartyProductCategoryRevenue(session, salesInvoiceItem.ISalesInvoiceWhereSalesInvoiceItem, productCategory);
 
                 partyProductCategoryRevenuesByPeriodByProductCategory = new Dictionary<ProductCategory, Dictionary<DateTime, PartyProductCategoryRevenue>>
                         {
@@ -193,13 +193,13 @@ namespace Allors.Domain
                             }
                         };
 
-                partyProductCategoryRevenuesByPeriodByProductCategoryByParty[salesInvoiceItem.SalesInvoiceWhereSalesInvoiceItem.BillToCustomer] = partyProductCategoryRevenuesByPeriodByProductCategory;
+                partyProductCategoryRevenuesByPeriodByProductCategoryByParty[salesInvoiceItem.ISalesInvoiceWhereSalesInvoiceItem.BillToCustomer] = partyProductCategoryRevenuesByPeriodByProductCategory;
             }
 
             Dictionary<DateTime, PartyProductCategoryRevenue> partyProductCategoryRevenuesByPeriod;
             if (!partyProductCategoryRevenuesByPeriodByProductCategory.TryGetValue(productCategory, out partyProductCategoryRevenuesByPeriod))
             {
-                partyProductCategoryRevenue = CreatePartyProductCategoryRevenue(session, salesInvoiceItem.SalesInvoiceWhereSalesInvoiceItem, productCategory);
+                partyProductCategoryRevenue = CreatePartyProductCategoryRevenue(session, salesInvoiceItem.ISalesInvoiceWhereSalesInvoiceItem, productCategory);
 
                 partyProductCategoryRevenuesByPeriod = new Dictionary<DateTime, PartyProductCategoryRevenue> { { date, partyProductCategoryRevenue } };
 
@@ -208,7 +208,7 @@ namespace Allors.Domain
 
             if (!partyProductCategoryRevenuesByPeriod.TryGetValue(date, out partyProductCategoryRevenue))
             {
-                partyProductCategoryRevenue = CreatePartyProductCategoryRevenue(session, salesInvoiceItem.SalesInvoiceWhereSalesInvoiceItem, productCategory);
+                partyProductCategoryRevenue = CreatePartyProductCategoryRevenue(session, salesInvoiceItem.ISalesInvoiceWhereSalesInvoiceItem, productCategory);
                 partyProductCategoryRevenuesByPeriod.Add(date, partyProductCategoryRevenue);
             }
 
@@ -222,7 +222,7 @@ namespace Allors.Domain
             }
         }
 
-        private static PartyProductCategoryRevenue CreatePartyProductCategoryRevenue(ISession session, SalesInvoice invoice, ProductCategory category)
+        private static PartyProductCategoryRevenue CreatePartyProductCategoryRevenue(ISession session, ISalesInvoice invoice, ProductCategory category)
         {
             return new PartyProductCategoryRevenueBuilder(session)
                         .WithInternalOrganisation(invoice.BilledFromInternalOrganisation)

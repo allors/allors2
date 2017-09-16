@@ -65,31 +65,6 @@ namespace Allors.Domain
             {
                 derivation.Validation.AddError(this, M.PaymentApplication.AmountApplied, ErrorMessages.PaymentApplicationNotLargerThanInvoiceItemAmount);
             }
-
-            var salesInvoice = this.Invoice as SalesInvoice;
-            var purchaseInvoice = this.Invoice as PurchaseInvoice;
-            var salesInvoiceItem = this.InvoiceItem as SalesInvoiceItem;
-            var purchaseInvoiceItem  = this.InvoiceItem as PurchaseInvoiceItem;
-
-            // if (salesInvoice != null)
-            // {
-            // salesInvoice.OnDerive(x => x.WithDerivation(derivation));
-            // }
-
-            // if (purchaseInvoice != null)
-            // {
-            // purchaseInvoice.OnDerive(x => x.WithDerivation(derivation));
-            // }
-
-            // if (salesInvoiceItem != null)
-            // {
-            // salesInvoiceItem.SalesInvoiceWhereSalesInvoiceItem.OnDerive(x => x.WithDerivation(derivation));
-            // }
-
-            // if (purchaseInvoiceItem != null)
-            // {
-            // purchaseInvoiceItem.PurchaseInvoiceItemType.OnDerive(x => x.WithDerivation(derivation));
-            // }
         }
     }
 }

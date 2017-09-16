@@ -37,17 +37,29 @@ namespace Allors.Domain
 
             derivation.Validation.AssertAtLeastOne(this, M.RequestItem.Product, M.RequestItem.ProductFeature, M.RequestItem.Description, M.RequestItem.NeededSkill, M.RequestItem.Deliverable);
             derivation.Validation.AssertExistsAtMostOne(this, M.RequestItem.Product, M.RequestItem.ProductFeature, M.RequestItem.Description, M.RequestItem.NeededSkill, M.RequestItem.Deliverable);
-
-            this.DeriveCurrentObjectState(derivation);
         }
 
-        private void DeriveCurrentObjectState(IDerivation derivation)
+        public void AppsOnPostDerive(ObjectOnPostDerive method)
         {
-            if (this.ExistCurrentObjectState && !this.CurrentObjectState.Equals(this.LastObjectState))
+            var isNewVersion =
+                !this.ExistCurrentVersion ||
+                !object.Equals(this.InternalComment, this.CurrentVersion.InternalComment);
+
+            var isNewStateVersion =
+                !this.ExistCurrentVersion ||
+                !object.Equals(this.CurrentObjectState, this.CurrentVersion.CurrentObjectState);
+
+            if (isNewVersion)
             {
-                var currentStatus = new RequestItemStatusBuilder(this.Strategy.Session).WithRequestItemObjectState(this.CurrentObjectState).Build();
-                this.AddRequestItemStatus(currentStatus);
-                this.CurrentRequestItemStatus = currentStatus;
+                this.PreviousVersion = this.CurrentVersion;
+                this.CurrentVersion = new RequestItemVersionBuilder(this.Strategy.Session).WithRequestItem(this).Build();
+                this.AddAllVersion(this.CurrentVersion);
+            }
+
+            if (isNewStateVersion)
+            {
+                this.CurrentStateVersion = CurrentVersion;
+                this.AddAllStateVersion(this.CurrentStateVersion);
             }
         }
     }

@@ -51,21 +51,6 @@ namespace Allors.Domain
             {
                 @this.QuoteNumber = Singleton.Instance(@this.Strategy.Session).DefaultInternalOrganisation.DeriveNextQuoteNumber();
             }
-
-            @this.DeriveCurrentObjectState();
-        }
-
-        public static void DeriveCurrentObjectState(this Quote @this)
-        {
-            if (@this.ExistCurrentObjectState && !@this.CurrentObjectState.Equals(@this.LastObjectState))
-            {
-                var currentStatus = new QuoteStatusBuilder(@this.Strategy.Session)
-                    .WithQuoteObjectState(@this.CurrentObjectState)
-                    .WithStartDateTime(DateTime.UtcNow)
-                    .Build();
-                @this.AddQuoteStatus(currentStatus);
-                @this.CurrentQuoteStatus = currentStatus;
-            }
         }
 
         public static void AppsApprove(this Quote @this, QuoteApprove method)

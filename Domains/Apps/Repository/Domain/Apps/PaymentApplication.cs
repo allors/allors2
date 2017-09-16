@@ -33,7 +33,7 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
 
-        public InvoiceItem InvoiceItem { get; set; }
+        public IInvoiceItem InvoiceItem { get; set; }
         #region Allors
         [Id("d2a02ce6-569d-41ae-b54d-4a2347b84835")]
         [AssociationId("6a5043e4-be26-42fb-80c5-f60ac6af0284")]

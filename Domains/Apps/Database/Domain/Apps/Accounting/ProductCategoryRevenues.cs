@@ -138,9 +138,9 @@ namespace Allors.Domain
             ProductCategoryRevenue productCategoryRevenue;
 
             Dictionary<ProductCategory, Dictionary<DateTime, ProductCategoryRevenue>> productCategoryRevenuesByPeriodByProductCategory;
-            if (!productCategoryRevenuesByPeriodByProductCategoryByInternalOrganisation.TryGetValue(salesInvoiceItem.SalesInvoiceWhereSalesInvoiceItem.BilledFromInternalOrganisation, out productCategoryRevenuesByPeriodByProductCategory))
+            if (!productCategoryRevenuesByPeriodByProductCategoryByInternalOrganisation.TryGetValue(salesInvoiceItem.ISalesInvoiceWhereSalesInvoiceItem.BilledFromInternalOrganisation, out productCategoryRevenuesByPeriodByProductCategory))
             {
-                productCategoryRevenue = CreateProductCategoryRevenue(session, salesInvoiceItem.SalesInvoiceWhereSalesInvoiceItem, productCategory);
+                productCategoryRevenue = CreateProductCategoryRevenue(session, salesInvoiceItem.ISalesInvoiceWhereSalesInvoiceItem, productCategory);
 
                 productCategoryRevenuesByPeriodByProductCategory = new Dictionary<ProductCategory, Dictionary<DateTime, ProductCategoryRevenue>>
                         {
@@ -153,13 +153,13 @@ namespace Allors.Domain
                             }
                         };
 
-                productCategoryRevenuesByPeriodByProductCategoryByInternalOrganisation[salesInvoiceItem.SalesInvoiceWhereSalesInvoiceItem.BilledFromInternalOrganisation] = productCategoryRevenuesByPeriodByProductCategory;
+                productCategoryRevenuesByPeriodByProductCategoryByInternalOrganisation[salesInvoiceItem.ISalesInvoiceWhereSalesInvoiceItem.BilledFromInternalOrganisation] = productCategoryRevenuesByPeriodByProductCategory;
             }
 
             Dictionary<DateTime, ProductCategoryRevenue> productCategoryRevenuesByPeriod;
             if (!productCategoryRevenuesByPeriodByProductCategory.TryGetValue(productCategory, out productCategoryRevenuesByPeriod))
             {
-                productCategoryRevenue = CreateProductCategoryRevenue(session, salesInvoiceItem.SalesInvoiceWhereSalesInvoiceItem, productCategory);
+                productCategoryRevenue = CreateProductCategoryRevenue(session, salesInvoiceItem.ISalesInvoiceWhereSalesInvoiceItem, productCategory);
 
                 productCategoryRevenuesByPeriod = new Dictionary<DateTime, ProductCategoryRevenue> { { date, productCategoryRevenue } };
 
@@ -168,7 +168,7 @@ namespace Allors.Domain
 
             if (!productCategoryRevenuesByPeriod.TryGetValue(date, out productCategoryRevenue))
             {
-                productCategoryRevenue = CreateProductCategoryRevenue(session, salesInvoiceItem.SalesInvoiceWhereSalesInvoiceItem, productCategory);
+                productCategoryRevenue = CreateProductCategoryRevenue(session, salesInvoiceItem.ISalesInvoiceWhereSalesInvoiceItem, productCategory);
                 productCategoryRevenuesByPeriod.Add(date, productCategoryRevenue);
             }
 
@@ -181,7 +181,7 @@ namespace Allors.Domain
             }
         }
 
-        private static ProductCategoryRevenue CreateProductCategoryRevenue(ISession session, SalesInvoice invoice, ProductCategory productCategory)
+        private static ProductCategoryRevenue CreateProductCategoryRevenue(ISession session, ISalesInvoice invoice, ProductCategory productCategory)
         {
             return new ProductCategoryRevenueBuilder(session)
                         .WithInternalOrganisation(invoice.BilledFromInternalOrganisation)

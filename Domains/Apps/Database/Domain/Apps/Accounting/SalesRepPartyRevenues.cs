@@ -46,17 +46,17 @@ namespace Allors.Domain
         public static SalesRepPartyRevenue AppsFindOrCreateAsDependable(ISession session, SalesInvoiceItem salesInvoiceItem)
         {
             var salesRepPartyRevenues = salesInvoiceItem.SalesRep.SalesRepPartyRevenuesWhereSalesRep;
-            salesRepPartyRevenues.Filter.AddEquals(M.SalesRepPartyRevenue.InternalOrganisation, salesInvoiceItem.SalesInvoiceWhereSalesInvoiceItem.BilledFromInternalOrganisation);
-            salesRepPartyRevenues.Filter.AddEquals(M.SalesRepPartyRevenue.Party, salesInvoiceItem.SalesInvoiceWhereSalesInvoiceItem.BillToCustomer);
-            salesRepPartyRevenues.Filter.AddEquals(M.SalesRepPartyRevenue.Year, salesInvoiceItem.SalesInvoiceWhereSalesInvoiceItem.InvoiceDate.Year);
-            salesRepPartyRevenues.Filter.AddEquals(M.SalesRepPartyRevenue.Month, salesInvoiceItem.SalesInvoiceWhereSalesInvoiceItem.InvoiceDate.Month);
+            salesRepPartyRevenues.Filter.AddEquals(M.SalesRepPartyRevenue.InternalOrganisation, salesInvoiceItem.ISalesInvoiceWhereSalesInvoiceItem.BilledFromInternalOrganisation);
+            salesRepPartyRevenues.Filter.AddEquals(M.SalesRepPartyRevenue.Party, salesInvoiceItem.ISalesInvoiceWhereSalesInvoiceItem.BillToCustomer);
+            salesRepPartyRevenues.Filter.AddEquals(M.SalesRepPartyRevenue.Year, salesInvoiceItem.ISalesInvoiceWhereSalesInvoiceItem.InvoiceDate.Year);
+            salesRepPartyRevenues.Filter.AddEquals(M.SalesRepPartyRevenue.Month, salesInvoiceItem.ISalesInvoiceWhereSalesInvoiceItem.InvoiceDate.Month);
             var salesRepPartyRevenue = salesRepPartyRevenues.First ?? new SalesRepPartyRevenueBuilder(session)
-                                                                            .WithInternalOrganisation(salesInvoiceItem.SalesInvoiceWhereSalesInvoiceItem.BilledFromInternalOrganisation)
-                                                                            .WithParty(salesInvoiceItem.SalesInvoiceWhereSalesInvoiceItem.BillToCustomer)
+                                                                            .WithInternalOrganisation(salesInvoiceItem.ISalesInvoiceWhereSalesInvoiceItem.BilledFromInternalOrganisation)
+                                                                            .WithParty(salesInvoiceItem.ISalesInvoiceWhereSalesInvoiceItem.BillToCustomer)
                                                                             .WithSalesRep(salesInvoiceItem.SalesRep)
-                                                                            .WithYear(salesInvoiceItem.SalesInvoiceWhereSalesInvoiceItem.InvoiceDate.Year)
-                                                                            .WithMonth(salesInvoiceItem.SalesInvoiceWhereSalesInvoiceItem.InvoiceDate.Month)
-                                                                            .WithCurrency(salesInvoiceItem.SalesInvoiceWhereSalesInvoiceItem.BilledFromInternalOrganisation.PreferredCurrency)
+                                                                            .WithYear(salesInvoiceItem.ISalesInvoiceWhereSalesInvoiceItem.InvoiceDate.Year)
+                                                                            .WithMonth(salesInvoiceItem.ISalesInvoiceWhereSalesInvoiceItem.InvoiceDate.Month)
+                                                                            .WithCurrency(salesInvoiceItem.ISalesInvoiceWhereSalesInvoiceItem.BilledFromInternalOrganisation.PreferredCurrency)
                                                                             .WithRevenue(0M)
                                                                             .Build();
 
@@ -199,12 +199,12 @@ namespace Allors.Domain
         private static SalesRepPartyRevenue CreateSalesRepPartyRevenue(ISession session, SalesInvoiceItem item)
         {
             return new SalesRepPartyRevenueBuilder(session)
-                        .WithInternalOrganisation(item.SalesInvoiceWhereSalesInvoiceItem.BilledFromInternalOrganisation)
+                        .WithInternalOrganisation(item.ISalesInvoiceWhereSalesInvoiceItem.BilledFromInternalOrganisation)
                         .WithSalesRep(item.SalesRep)
-                        .WithParty(item.SalesInvoiceWhereSalesInvoiceItem.BillToCustomer)
-                        .WithYear(item.SalesInvoiceWhereSalesInvoiceItem.InvoiceDate.Year)
-                        .WithMonth(item.SalesInvoiceWhereSalesInvoiceItem.InvoiceDate.Month)
-                        .WithCurrency(item.SalesInvoiceWhereSalesInvoiceItem.BilledFromInternalOrganisation.PreferredCurrency)
+                        .WithParty(item.ISalesInvoiceWhereSalesInvoiceItem.BillToCustomer)
+                        .WithYear(item.ISalesInvoiceWhereSalesInvoiceItem.InvoiceDate.Year)
+                        .WithMonth(item.ISalesInvoiceWhereSalesInvoiceItem.InvoiceDate.Month)
+                        .WithCurrency(item.ISalesInvoiceWhereSalesInvoiceItem.BilledFromInternalOrganisation.PreferredCurrency)
                         .WithRevenue(0M)
                         .Build();
         }

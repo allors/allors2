@@ -27,7 +27,7 @@ namespace Allors.Domain
 
             public Product Product;
 
-            public SalesOrder SalesOrder = null;
+            public ISalesOrder SalesOrder = null;
 
             public decimal QuantityOrdered = 0;
 
@@ -39,7 +39,7 @@ namespace Allors.Domain
 
             public Dictionary<ProductCategory, PartyProductCategoryRevenueHistory> PartyProductCategoryRevenueHistoryByProductCategory;
 
-            public SalesInvoice SalesInvoice = null;
+            public ISalesInvoice SalesInvoice = null;
         }
 
         public static bool AppsIsEligible(IsEligibleParams isEligibleParams)

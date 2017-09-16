@@ -39,7 +39,7 @@ namespace Allors.Repository
         [Indexed]
         [Required]
 
-        public InvoiceItem InvoiceItem { get; set; }
+        public IInvoiceItem InvoiceItem { get; set; }
 
 
         #region inherited methods

@@ -21,7 +21,6 @@ namespace Allors.Domain
 
     public static partial class RequestExtensions
     {
-
         public static void AppsOnBuild(this Request @this, ObjectOnBuild method)
         {
             if (!@this.ExistRequestDate)
@@ -37,10 +36,10 @@ namespace Allors.Domain
                 @this.RequestNumber = Singleton.Instance(@this.Strategy.Session).DefaultInternalOrganisation.DeriveNextRequestNumber();
             }
 
-            @this.DeriveCurrentObjectState();
+            @this.DeriveInitialObjectState();
         }
 
-        public static void DeriveCurrentObjectState(this Request @this)
+        public static void DeriveInitialObjectState(this Request @this)
         {
             if (!@this.ExistCurrentObjectState && !@this.ExistOriginator)
             {
@@ -50,28 +49,6 @@ namespace Allors.Domain
             if (!@this.ExistCurrentObjectState && @this.ExistOriginator)
             {
                 @this.CurrentObjectState = new RequestObjectStates(@this.Strategy.Session).Submitted;
-            }
-
-            if (@this.ExistOriginator && Equals(@this.CurrentObjectState, new RequestObjectStates(@this.Strategy.Session).Anonymous))
-            {
-                var currentStatus = new RequestStatusBuilder(@this.Strategy.Session)
-                    .WithRequestObjectState(new RequestObjectStates(@this.Strategy.Session).Submitted)
-                    .WithStartDateTime(DateTime.UtcNow)
-                    .Build();
-                @this.AddRequestStatus(currentStatus);
-                @this.CurrentRequestStatus = currentStatus;
-                @this.CurrentObjectState = currentStatus.RequestObjectState;
-            }
-
-            if (@this.ExistCurrentObjectState && !@this.CurrentObjectState.Equals(@this.LastObjectState))
-            {
-                var currentStatus = new RequestStatusBuilder(@this.Strategy.Session)
-                    .WithRequestObjectState(@this.CurrentObjectState)
-                    .WithStartDateTime(DateTime.UtcNow)
-                    .Build();
-                @this.AddRequestStatus(currentStatus);
-                @this.CurrentRequestStatus = currentStatus;
-                @this.CurrentObjectState = currentStatus.RequestObjectState;
             }
         }
 
