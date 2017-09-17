@@ -48,6 +48,7 @@ namespace Allors.Domain
         {
             var finishedGood = new FinishedGoodBuilder(this.DatabaseSession)
                 .WithName("FinishedGood")
+                .WithInventoryItemKind(new InventoryItemKinds(this.DatabaseSession).NonSerialised)
                 .Build();
 
             Assert.Equal(new InventoryItemKinds(this.DatabaseSession).NonSerialised, finishedGood.InventoryItemKind);
@@ -59,6 +60,7 @@ namespace Allors.Domain
         {
             var finishedGood = new FinishedGoodBuilder(this.DatabaseSession)
                 .WithName("FinishedGood")
+                .WithInventoryItemKind(new InventoryItemKinds(this.DatabaseSession).NonSerialised)
                 .Build();
 
             this.DatabaseSession.Derive();

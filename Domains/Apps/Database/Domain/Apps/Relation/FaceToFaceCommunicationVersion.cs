@@ -26,6 +26,9 @@ namespace Allors.Domain
 
             if (faceToFaceCommunication != null)
             {
+                this.ToParties = faceToFaceCommunication.ToParties;
+                this.FromParties = faceToFaceCommunication.FromParties;
+                this.InvolvedParties = faceToFaceCommunication.InvolvedParties;
                 this.ScheduledStart = faceToFaceCommunication.ScheduledStart;
                 this.ContactMechanisms = faceToFaceCommunication.ContactMechanisms;
                 this.InitialScheduledStart = faceToFaceCommunication.InitialScheduledStart;

@@ -175,6 +175,28 @@ namespace Allors.Domain
 
             var isNewStateVersion =
                 !this.ExistCurrentVersion ||
+                !object.Equals(this.InternalComment, this.CurrentVersion.InternalComment) ||
+                !object.Equals(this.CustomerReference, this.CurrentVersion.CustomerReference) ||
+                !object.Equals(this.Fee, this.CurrentVersion.Fee) ||
+                !object.Equals(this.OrderTerms, this.CurrentVersion.OrderTerms) ||
+                !object.Equals(this.Message, this.CurrentVersion.Message) ||
+                !object.Equals(this.DiscountAdjustment, this.CurrentVersion.DiscountAdjustment) ||
+                !object.Equals(this.OrderKind, this.CurrentVersion.OrderKind) ||
+                !object.Equals(this.VatRegime, this.CurrentVersion.VatRegime) ||
+                !object.Equals(this.ShippingAndHandlingCharge, this.CurrentVersion.ShippingAndHandlingCharge) ||
+                !object.Equals(this.OrderDate, this.CurrentVersion.OrderDate) ||
+                !object.Equals(this.DeliveryDate, this.CurrentVersion.DeliveryDate) ||
+                !object.Equals(this.SurchargeAdjustment, this.CurrentVersion.SurchargeAdjustment) ||
+                !object.Equals(this.PurchaseOrderItems, this.CurrentVersion.PurchaseOrderItems) ||
+                !object.Equals(this.TakenViaSupplier, this.CurrentVersion.TakenViaSupplier) ||
+                !object.Equals(this.TakenViaContactMechanism, this.CurrentVersion.TakenViaContactMechanism) ||
+                !object.Equals(this.BillToContactMechanism, this.CurrentVersion.BillToContactMechanism) ||
+                !object.Equals(this.ShipToAddress, this.CurrentVersion.ShipToAddress) ||
+                !object.Equals(this.BillToContactMechanism, this.CurrentVersion.BillToContactMechanism) ||
+                !object.Equals(this.ShipToBuyer, this.CurrentVersion.ShipToBuyer) ||
+                !object.Equals(this.Facility, this.CurrentVersion.Facility) ||
+                !object.Equals(this.ShipToAddress, this.CurrentVersion.ShipToAddress) ||
+                !object.Equals(this.BillToPurchaser, this.CurrentVersion.BillToPurchaser) ||
                 !object.Equals(this.CurrentObjectState, this.CurrentVersion.CurrentObjectState);
 
             if (isNewVersion)

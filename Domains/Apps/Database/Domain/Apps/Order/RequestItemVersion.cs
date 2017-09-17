@@ -30,7 +30,6 @@ namespace Allors.Domain
                 this.UnitOfMeasure = requestItem.UnitOfMeasure;
                 this.Requirements = requestItem.Requirements;
                 this.Deliverable = requestItem.Deliverable;
-                this.UnitOfMeasure = requestItem.UnitOfMeasure;
                 this.ProductFeature = requestItem.ProductFeature;
                 this.NeededSkill = requestItem.NeededSkill;
                 this.Product = requestItem.Product;

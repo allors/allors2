@@ -26,6 +26,9 @@ namespace Allors.Domain
 
             if (letterCorrespondence != null)
             {
+                this.ToParties = letterCorrespondence.ToParties;
+                this.FromParties = letterCorrespondence.FromParties;
+                this.InvolvedParties = letterCorrespondence.InvolvedParties;
                 this.ScheduledStart = letterCorrespondence.ScheduledStart;
                 this.ContactMechanisms = letterCorrespondence.ContactMechanisms;
                 this.InitialScheduledStart = letterCorrespondence.InitialScheduledStart;

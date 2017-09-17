@@ -95,7 +95,7 @@ namespace Allors.Domain
         public void GivenGood_WhenDeriving_ThenRequiredRelationsMustExist()
         {
             var vatRate21 = new VatRateBuilder(this.DatabaseSession).WithRate(21).Build();
-            var finishedGood = new FinishedGoodBuilder(this.DatabaseSession).WithName("finishedGood").Build();
+            var finishedGood = new FinishedGoodBuilder(this.DatabaseSession).WithName("finishedGood").WithInventoryItemKind(new InventoryItemKinds(this.DatabaseSession).NonSerialised).Build();
             var localdesc = new LocalisedTextBuilder(this.DatabaseSession).WithText("good").WithLocale(Singleton.Instance(this.DatabaseSession).DefaultLocale).Build();
             
                 this.DatabaseSession.Derive();

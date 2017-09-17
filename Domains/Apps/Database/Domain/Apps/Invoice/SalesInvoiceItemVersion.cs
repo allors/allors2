@@ -28,21 +28,57 @@ namespace Allors.Domain
 
             if (salesInvoiceItem != null)
             {
+                this.TotalDiscountAsPercentage = salesInvoiceItem.TotalDiscountAsPercentage;
+                this.DiscountAdjustment = salesInvoiceItem.DiscountAdjustment;
+                this.UnitVat = salesInvoiceItem.UnitVat;
+                this.TotalVatCustomerCurrency = salesInvoiceItem.TotalVatCustomerCurrency;
+                this.VatRegime = salesInvoiceItem.VatRegime;
+                this.TotalVat = salesInvoiceItem.TotalVat;
+                this.UnitSurcharge = salesInvoiceItem.UnitSurcharge;
+                this.UnitDiscount = salesInvoiceItem.UnitDiscount;
+                this.TotalExVatCustomerCurrency = salesInvoiceItem.TotalExVatCustomerCurrency;
+                this.DerivedVatRate = salesInvoiceItem.DerivedVatRate;
+                this.ActualUnitPrice = salesInvoiceItem.ActualUnitPrice;
+                this.TotalIncVatCustomerCurrency = salesInvoiceItem.TotalIncVatCustomerCurrency;
+                this.UnitBasePrice = salesInvoiceItem.UnitBasePrice;
+                this.CalculatedUnitPrice = salesInvoiceItem.CalculatedUnitPrice;
+                this.TotalSurchargeCustomerCurrency = salesInvoiceItem.TotalSurchargeCustomerCurrency;
+                this.TotalIncVat = salesInvoiceItem.TotalIncVat;
+                this.TotalSurchargeAsPercentage = salesInvoiceItem.TotalSurchargeAsPercentage;
+                this.TotalDiscountCustomerCurrency = salesInvoiceItem.TotalDiscountCustomerCurrency;
+                this.TotalDiscount = salesInvoiceItem.TotalDiscount;
+                this.TotalSurcharge = salesInvoiceItem.TotalSurcharge;
+                this.ActualUnitPrice = salesInvoiceItem.ActualUnitPrice;
+                this.AssignedVatRegime = salesInvoiceItem.AssignedVatRegime;
+                this.TotalBasePrice = salesInvoiceItem.TotalBasePrice;
+                this.TotalExVat = salesInvoiceItem.TotalExVat;
+                this.TotalBasePriceCustomerCurrency = salesInvoiceItem.TotalBasePriceCustomerCurrency;
+                this.CurrentPriceComponents = salesInvoiceItem.CurrentPriceComponents;
+                this.SurchargeAdjustment = salesInvoiceItem.SurchargeAdjustment;
                 this.InternalComment = salesInvoiceItem.InternalComment;
                 this.InvoiceTerms = salesInvoiceItem.InvoiceTerms;
+                this.TotalInvoiceAdjustment = salesInvoiceItem.TotalInvoiceAdjustment;
                 this.InvoiceVatRateItems = salesInvoiceItem.InvoiceVatRateItems;
                 this.AdjustmentFor = salesInvoiceItem.AdjustmentFor;
                 this.SerializedInventoryItem = salesInvoiceItem.SerializedInventoryItem;
                 this.Message = salesInvoiceItem.Message;
+                this.TotalInvoiceAdjustmentCustomerCurrency = salesInvoiceItem.TotalInvoiceAdjustmentCustomerCurrency;
                 this.Quantity = salesInvoiceItem.Quantity;
                 this.Description = salesInvoiceItem.Description;
                 this.ProductFeature = salesInvoiceItem.ProductFeature;
                 this.RequiredProfitMargin = salesInvoiceItem.RequiredProfitMargin;
+                this.InitialMarkupPercentage = salesInvoiceItem.InitialMarkupPercentage;
+                this.MaintainedMarkupPercentage = salesInvoiceItem.MaintainedMarkupPercentage;
                 this.Product = salesInvoiceItem.Product;
+                this.UnitPurchasePrice = salesInvoiceItem.UnitPurchasePrice;
+                this.SalesOrderItem = salesInvoiceItem.SalesOrderItem;
                 this.SalesInvoiceItemType = salesInvoiceItem.SalesInvoiceItemType;
                 this.SalesRep = salesInvoiceItem.SalesRep;
+                this.InitialProfitMargin = salesInvoiceItem.InitialProfitMargin;
+                this.MaintainedProfitMargin = salesInvoiceItem.MaintainedProfitMargin;
                 this.TimeEntries = salesInvoiceItem.TimeEntries;
                 this.RequiredMarkupPercentage = salesInvoiceItem.RequiredMarkupPercentage;
+                this.CurrentObjectState = salesInvoiceItem.CurrentObjectState;
             }
 
             if (!this.ExistTimeStamp)

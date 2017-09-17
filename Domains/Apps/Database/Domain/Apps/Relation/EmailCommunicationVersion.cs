@@ -26,6 +26,9 @@ namespace Allors.Domain
 
             if (emailCommunication != null)
             {
+                this.ToParties = emailCommunication.ToParties;
+                this.FromParties = emailCommunication.FromParties;
+                this.InvolvedParties = emailCommunication.InvolvedParties;
                 this.ScheduledStart = emailCommunication.ScheduledStart;
                 this.ContactMechanisms = emailCommunication.ContactMechanisms;
                 this.InitialScheduledStart = emailCommunication.InitialScheduledStart;

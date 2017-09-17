@@ -29,6 +29,7 @@ namespace Allors.Domain
                 this.Deliverable = quoteItem.Deliverable;
                 this.Product = quoteItem.Product;
                 this.EstimatedDeliveryDate = quoteItem.EstimatedDeliveryDate;
+                this.RequiredByDate = quoteItem.RequiredByDate;
                 this.UnitOfMeasure = quoteItem.UnitOfMeasure;
                 this.ProductFeature = quoteItem.ProductFeature;
                 this.UnitPrice = quoteItem.UnitPrice;

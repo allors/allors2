@@ -98,7 +98,7 @@ namespace Allors.Domain
                                                             .WithUseAsDefault(true)
                                                             .Build());
 
-            this.part = new FinishedGoodBuilder(this.DatabaseSession).WithName("part").Build();
+            this.part = new FinishedGoodBuilder(this.DatabaseSession).WithName("part").WithInventoryItemKind(new InventoryItemKinds(this.DatabaseSession).NonSerialised).Build();
 
             this.ancestorProductCategory = new ProductCategoryBuilder(this.DatabaseSession)
                 .WithLocalisedName(new LocalisedTextBuilder(this.DatabaseSession).WithText("ancestor").WithLocale(Singleton.Instance(this.DatabaseSession).DefaultLocale).Build())
@@ -122,6 +122,7 @@ namespace Allors.Domain
                 .WithProductCategory(this.productCategory)
                 .WithFinishedGood(this.part)
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.DatabaseSession).Piece)
+                .WithInventoryItemKind(new InventoryItemKinds(this.DatabaseSession).NonSerialised)
                 .Build();
 
             new SupplierRelationshipBuilder(this.DatabaseSession)
@@ -1377,13 +1378,14 @@ namespace Allors.Domain
             
             var manual = new OrderKindBuilder(this.DatabaseSession).WithDescription("manual").WithScheduleManually(true).Build();
 
-            var testPart = new FinishedGoodBuilder(this.DatabaseSession).WithName("part1").Build();
+            var testPart = new FinishedGoodBuilder(this.DatabaseSession).WithName("part1").WithInventoryItemKind(new InventoryItemKinds(this.DatabaseSession).NonSerialised).Build();
             var testgood = new GoodBuilder(this.DatabaseSession)
                 .WithSku("10101")
                 .WithVatRate(this.vatRate21)
                 .WithLocalisedName(new LocalisedTextBuilder(this.DatabaseSession).WithText("good1").WithLocale(Singleton.Instance(this.DatabaseSession).DefaultLocale).Build())
                 .WithFinishedGood(testPart)
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.DatabaseSession).Piece)
+                .WithInventoryItemKind(new InventoryItemKinds(this.DatabaseSession).NonSerialised)
                 .Build();
 
             var good1InventoryItem = new NonSerialisedInventoryItemBuilder(this.DatabaseSession).WithPart(testPart).Build();

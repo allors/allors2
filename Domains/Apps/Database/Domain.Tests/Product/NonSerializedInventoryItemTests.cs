@@ -32,7 +32,8 @@ namespace Allors.Domain
         public void GivenInventoryItem_WhenBuild_ThenLastObjectStateEqualsCurrencObjectState()
         {
             var item = new NonSerialisedInventoryItemBuilder(this.DatabaseSession)
-                .WithPart(new FinishedGoodBuilder(this.DatabaseSession).WithName("part").WithManufacturerId("10101").Build())
+                .WithPart(new FinishedGoodBuilder(this.DatabaseSession).WithName("part")
+                            .WithManufacturerId("10101").WithInventoryItemKind(new InventoryItemKinds(this.DatabaseSession).NonSerialised).Build())
                 .Build();
 
             this.DatabaseSession.Derive();
@@ -45,7 +46,8 @@ namespace Allors.Domain
         public void GivenInventoryItem_WhenBuild_ThenPreviousObjectStateIsNull()
         {
             var item = new NonSerialisedInventoryItemBuilder(this.DatabaseSession)
-                .WithPart(new FinishedGoodBuilder(this.DatabaseSession).WithName("part").WithManufacturerId("10101").Build())
+                .WithPart(new FinishedGoodBuilder(this.DatabaseSession)
+                            .WithName("part").WithManufacturerId("10101").WithInventoryItemKind(new InventoryItemKinds(this.DatabaseSession).NonSerialised).Build())
                 .Build();
 
             this.DatabaseSession.Derive();
@@ -74,7 +76,7 @@ namespace Allors.Domain
 
             this.DatabaseSession.Rollback();
 
-            builder.WithPart(new FinishedGoodBuilder(this.DatabaseSession).WithName("part").WithManufacturerId("10101").Build());
+            builder.WithPart(new FinishedGoodBuilder(this.DatabaseSession).WithName("part").WithManufacturerId("10101").WithInventoryItemKind(new InventoryItemKinds(this.DatabaseSession).NonSerialised).Build());
             item = builder.Build();
 
             Assert.False(this.DatabaseSession.Derive(false).HasErrors);
@@ -93,7 +95,8 @@ namespace Allors.Domain
         public void GivenInventoryItem_WhenBuild_ThenPostBuildRelationsMustExist()
         {
             var item = new NonSerialisedInventoryItemBuilder(this.DatabaseSession)
-                .WithPart(new FinishedGoodBuilder(this.DatabaseSession).WithName("part").WithManufacturerId("10101").Build())
+                .WithPart(new FinishedGoodBuilder(this.DatabaseSession)
+                            .WithName("part").WithManufacturerId("10101").WithInventoryItemKind(new InventoryItemKinds(this.DatabaseSession).NonSerialised).Build())
                 .Build();
 
             Assert.NotNull(item.AvailableToPromise);
@@ -108,7 +111,8 @@ namespace Allors.Domain
         public void GivenInventoryItemForPart_WhenDerived_ThenSkuIsEmpty()
         {
             var item = new NonSerialisedInventoryItemBuilder(this.DatabaseSession)
-                .WithPart(new FinishedGoodBuilder(this.DatabaseSession).WithName("part").WithManufacturerId("10101").Build())
+                .WithPart(new FinishedGoodBuilder(this.DatabaseSession)
+                            .WithName("part").WithManufacturerId("10101").WithInventoryItemKind(new InventoryItemKinds(this.DatabaseSession).NonSerialised).Build())
                 .Build();
 
             Assert.False(item.ExistSku);
@@ -144,7 +148,7 @@ namespace Allors.Domain
         [Fact]
         public void GivenInventoryItemForPart_WhenDerived_ThenNameIsPartName()
         {
-            var part = new FinishedGoodBuilder(this.DatabaseSession).WithName("part").WithManufacturerId("10101").Build();
+            var part = new FinishedGoodBuilder(this.DatabaseSession).WithName("part").WithManufacturerId("10101").WithInventoryItemKind(new InventoryItemKinds(this.DatabaseSession).NonSerialised).Build();
             var item = new NonSerialisedInventoryItemBuilder(this.DatabaseSession)
                 .WithPart(part)
                 .Build();
@@ -186,7 +190,13 @@ namespace Allors.Domain
         public void GivenInventoryItemForPart_WhenDerived_ThenUnitOfMeasureIsPartUnitOfMeasure()
         {
             var uom = new UnitsOfMeasure(this.DatabaseSession).Centimeter;
-            var part = new FinishedGoodBuilder(this.DatabaseSession).WithName("part").WithManufacturerId("10101").WithUnitOfMeasure(uom).Build();
+            var part = new FinishedGoodBuilder(this.DatabaseSession)
+                .WithName("part")
+                .WithManufacturerId("10101")
+                .WithInventoryItemKind(new InventoryItemKinds(this.DatabaseSession).NonSerialised)
+                .WithUnitOfMeasure(uom)
+                .Build();
+
             var item = new NonSerialisedInventoryItemBuilder(this.DatabaseSession)
                 .WithPart(part)
                 .Build();

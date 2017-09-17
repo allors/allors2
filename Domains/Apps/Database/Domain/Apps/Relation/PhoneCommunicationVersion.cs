@@ -26,6 +26,9 @@ namespace Allors.Domain
 
             if (phoneCommunication != null)
             {
+                this.ToParties = phoneCommunication.ToParties;
+                this.FromParties = phoneCommunication.FromParties;
+                this.InvolvedParties = phoneCommunication.InvolvedParties;
                 this.ScheduledStart = phoneCommunication.ScheduledStart;
                 this.ContactMechanisms = phoneCommunication.ContactMechanisms;
                 this.InitialScheduledStart = phoneCommunication.InitialScheduledStart;

@@ -30,7 +30,12 @@ namespace Allors.Domain
         [Fact]
         public void GivenInventoryItem_WhenDeriving_ThenRequiredRelationsMustExist()
         {
-            var part = new FinishedGoodBuilder(this.DatabaseSession).WithName("part").WithManufacturerId("10101").WithSku("sku").Build();
+            var part = new FinishedGoodBuilder(this.DatabaseSession).WithName("part")
+                .WithManufacturerId("10101")
+                .WithInventoryItemKind(new InventoryItemKinds(this.DatabaseSession).NonSerialised)
+                .WithSku("sku")
+                .Build();
+
             this.DatabaseSession.Commit();
 
             var builder = new SerialisedInventoryItemBuilder(this.DatabaseSession);
@@ -66,7 +71,8 @@ namespace Allors.Domain
         public void GivenInventoryItem_WhenBuild_ThenPostBuildRelationsMustExist()
         {
             var item = new SerialisedInventoryItemBuilder(this.DatabaseSession)
-                .WithPart(new FinishedGoodBuilder(this.DatabaseSession).WithName("part").WithManufacturerId("10101").Build())
+                .WithPart(new FinishedGoodBuilder(this.DatabaseSession)
+                            .WithName("part").WithManufacturerId("10101").WithInventoryItemKind(new InventoryItemKinds(this.DatabaseSession).NonSerialised).Build())
                 .Build();
 
             Assert.Equal(new SerialisedInventoryItemObjectStates(this.DatabaseSession).Good, item.CurrentObjectState);

@@ -57,6 +57,7 @@ namespace Allors.Domain
             this.finishedGood = new FinishedGoodBuilder(this.DatabaseSession)
                 .WithManufacturerId("10101")
                 .WithName("finished good")
+                .WithInventoryItemKind(new InventoryItemKinds(this.DatabaseSession).NonSerialised)
                 .Build();
 
             var supplierOffering = new SupplierOfferingBuilder(this.DatabaseSession)
@@ -130,7 +131,7 @@ namespace Allors.Domain
 
             Assert.False(this.DatabaseSession.Derive(false).HasErrors);
 
-            builder.WithProduct(new GoodBuilder(this.DatabaseSession).Build());
+            builder.WithProduct(new GoodBuilder(this.DatabaseSession).WithInventoryItemKind(new InventoryItemKinds(this.DatabaseSession).NonSerialised).Build());
             var orderItem = builder.Build();
             order.AddPurchaseOrderItem(orderItem);
 

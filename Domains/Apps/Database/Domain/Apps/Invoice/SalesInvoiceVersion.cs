@@ -30,18 +30,35 @@ namespace Allors.Domain
             {
                 this.InternalComment = salesInvoice.InternalComment;
                 this.TotalShippingAndHandlingCustomerCurrency = salesInvoice.TotalShippingAndHandlingCustomerCurrency;
+                this.CustomerCurrency = salesInvoice.CustomerCurrency;
                 this.Description = salesInvoice.Description;
                 this.ShippingAndHandlingCharge = salesInvoice.ShippingAndHandlingCharge;
+                this.TotalFeeCustomerCurrency = this.TotalFeeCustomerCurrency;
                 this.Fee = salesInvoice.Fee;
+                this.TotalExVatCustomerCurrency = salesInvoice.TotalExVatCustomerCurrency;
                 this.CustomerReference = salesInvoice.CustomerReference;
                 this.DiscountAdjustment = salesInvoice.DiscountAdjustment;
+                this.AmountPaid = salesInvoice.AmountPaid;
+                this.TotalDiscount = salesInvoice.TotalDiscount;
                 this.BillingAccount = salesInvoice.BillingAccount;
+                this.TotalIncVat = salesInvoice.TotalIncVat;
+                this.TotalSurcharge = salesInvoice.TotalSurcharge;
+                this.TotalBasePrice = salesInvoice.TotalBasePrice;
+                this.TotalVatCustomerCurrency = salesInvoice.TotalVatCustomerCurrency;
                 this.InvoiceDate = salesInvoice.InvoiceDate;
+                this.EntryDate = salesInvoice.EntryDate;
+                this.TotalIncVatCustomerCurrency = salesInvoice.TotalIncVatCustomerCurrency;
+                this.TotalShippingAndHandling = salesInvoice.TotalShippingAndHandling;
+                this.TotalBasePriceCustomerCurrency = salesInvoice.TotalBasePriceCustomerCurrency;
                 this.SurchargeAdjustment = salesInvoice.SurchargeAdjustment;
+                this.TotalExVat = salesInvoice.TotalExVat;
                 this.InvoiceTerms = salesInvoice.InvoiceTerms;
                 this.InvoiceNumber = salesInvoice.InvoiceNumber;
                 this.Message = salesInvoice.Message;
                 this.VatRegime = salesInvoice.VatRegime;
+                this.TotalDiscountCustomerCurrency = salesInvoice.TotalDiscountCustomerCurrency;
+                this.TotalVat = salesInvoice.TotalVat;
+                this.TotalFee = salesInvoice.TotalFee;
                 this.TotalListPrice = salesInvoice.TotalListPrice;
                 this.BilledFromInternalOrganisation = salesInvoice.BilledFromInternalOrganisation;
                 this.BillToContactMechanism = salesInvoice.BillToContactMechanism;
@@ -56,6 +73,7 @@ namespace Allors.Domain
                 this.Customers = salesInvoice.Customers;
                 this.ShipToAddress = salesInvoice.ShipToAddress;
                 this.Store = salesInvoice.Store;
+                this.CurrentObjectState = salesInvoice.CurrentObjectState;
             }
 
             if (!this.ExistTimeStamp)

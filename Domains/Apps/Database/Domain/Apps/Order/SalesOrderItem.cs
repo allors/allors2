@@ -158,7 +158,34 @@ namespace Allors.Domain
         {
             var isNewVersion =
                 !this.ExistCurrentVersion ||
-                !object.Equals(this.InternalComment, this.CurrentVersion.InternalComment);
+                !object.Equals(this.DiscountAdjustment, this.CurrentVersion.DiscountAdjustment) ||
+                !object.Equals(this.ActualUnitPrice, this.CurrentVersion.ActualUnitPrice) ||
+                !object.Equals(this.AssignedVatRegime, this.CurrentVersion.AssignedVatRegime) ||
+                !object.Equals(this.CurrentPriceComponents, this.CurrentVersion.CurrentPriceComponents) ||
+                !object.Equals(this.SurchargeAdjustment, this.CurrentVersion.SurchargeAdjustment) ||
+                !object.Equals(this.InternalComment, this.CurrentVersion.InternalComment) ||
+                !object.Equals(this.BudgetItem, this.CurrentVersion.BudgetItem) ||
+                !object.Equals(this.QuantityOrdered, this.CurrentVersion.QuantityOrdered) ||
+                !object.Equals(this.Description, this.CurrentVersion.Description) ||
+                !object.Equals(this.CorrespondingPurchaseOrder, this.CurrentVersion.CorrespondingPurchaseOrder) ||
+                !object.Equals(this.QuoteItem, this.CurrentVersion.QuoteItem) ||
+                !object.Equals(this.AssignedDeliveryDate, this.CurrentVersion.AssignedDeliveryDate) ||
+                !object.Equals(this.OrderTerms, this.CurrentVersion.OrderTerms) ||
+                !object.Equals(this.ShippingInstruction, this.CurrentVersion.ShippingInstruction) ||
+                !object.Equals(this.Associations, this.CurrentVersion.Associations) ||
+                !object.Equals(this.Message, this.CurrentVersion.Message) ||
+                !object.Equals(this.OrderedWithFeatures, this.CurrentVersion.OrderedWithFeatures) ||
+                !object.Equals(this.RequiredProfitMargin, this.CurrentVersion.RequiredProfitMargin) ||
+                !object.Equals(this.QuantityShipNow, this.CurrentVersion.QuantityShipNow) ||
+                !object.Equals(this.RequiredMarkupPercentage, this.CurrentVersion.RequiredMarkupPercentage) ||
+                !object.Equals(this.AssignedShipToAddress, this.CurrentVersion.AssignedShipToAddress) ||
+                !object.Equals(this.QuantityReturned, this.CurrentVersion.QuantityReturned) ||
+                !object.Equals(this.SalesRep, this.CurrentVersion.SalesRep) ||
+                !object.Equals(this.AssignedShipToParty, this.CurrentVersion.AssignedShipToParty) ||
+                !object.Equals(this.ReservedFromInventoryItem, this.CurrentVersion.ReservedFromInventoryItem) ||
+                !object.Equals(this.Product, this.CurrentVersion.Product) ||
+                !object.Equals(this.ProductFeature, this.CurrentVersion.ProductFeature) ||
+                !object.Equals(this.CurrentObjectState, this.CurrentVersion.CurrentObjectState);
 
             var isNewStateVersion =
                 !this.ExistCurrentVersion ||

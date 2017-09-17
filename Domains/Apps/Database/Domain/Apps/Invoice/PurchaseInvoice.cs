@@ -101,7 +101,24 @@ namespace Allors.Domain
         {
             var isNewVersion =
                 !this.ExistCurrentVersion ||
-                !object.Equals(this.InternalComment, this.CurrentVersion.InternalComment);
+                !object.Equals(this.InternalComment, this.CurrentVersion.InternalComment) ||
+                !object.Equals(this.TotalShippingAndHandlingCustomerCurrency, this.CurrentVersion.TotalShippingAndHandlingCustomerCurrency) ||
+                !object.Equals(this.Description, this.CurrentVersion.Description) ||
+                !object.Equals(this.ShippingAndHandlingCharge, this.CurrentVersion.ShippingAndHandlingCharge) ||
+                !object.Equals(this.Fee, this.CurrentVersion.Fee) ||
+                !object.Equals(this.CustomerReference, this.CurrentVersion.CustomerReference) ||
+                !object.Equals(this.DiscountAdjustment, this.CurrentVersion.DiscountAdjustment) ||
+                !object.Equals(this.BillingAccount, this.CurrentVersion.BillingAccount) ||
+                !object.Equals(this.InvoiceDate, this.CurrentVersion.InvoiceDate) ||
+                !object.Equals(this.SurchargeAdjustment, this.CurrentVersion.SurchargeAdjustment) ||
+                !object.Equals(this.InvoiceTerms, this.CurrentVersion.InvoiceTerms) ||
+                !object.Equals(this.InvoiceNumber, this.CurrentVersion.InvoiceNumber) ||
+                !object.Equals(this.Message, this.CurrentVersion.Message) ||
+                !object.Equals(this.VatRegime, this.CurrentVersion.VatRegime) ||
+                !object.Equals(this.PurchaseInvoiceItems, this.CurrentVersion.PurchaseInvoiceItems) ||
+                !object.Equals(this.BilledToInternalOrganisation, this.CurrentVersion.BilledToInternalOrganisation) ||
+                !object.Equals(this.BilledFromParty, this.CurrentVersion.BilledFromParty) ||
+                !object.Equals(this.PurchaseInvoiceType, this.CurrentVersion.PurchaseInvoiceType);
 
             var isNewStateVersion =
                 !this.ExistCurrentVersion ||

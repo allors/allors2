@@ -28,16 +28,46 @@ namespace Allors.Domain
 
             if (purchaseInvoiceItem != null)
             {
+                this.TotalDiscountAsPercentage = purchaseInvoiceItem.TotalDiscountAsPercentage;
+                this.DiscountAdjustment = purchaseInvoiceItem.DiscountAdjustment;
+                this.UnitVat = purchaseInvoiceItem.UnitVat;
+                this.TotalVatCustomerCurrency = purchaseInvoiceItem.TotalVatCustomerCurrency;
+                this.VatRegime = purchaseInvoiceItem.VatRegime;
+                this.TotalVat = purchaseInvoiceItem.TotalVat;
+                this.UnitSurcharge = purchaseInvoiceItem.UnitSurcharge;
+                this.UnitDiscount = purchaseInvoiceItem.UnitDiscount;
+                this.TotalExVatCustomerCurrency = purchaseInvoiceItem.TotalExVatCustomerCurrency;
+                this.DerivedVatRate = purchaseInvoiceItem.DerivedVatRate;
+                this.ActualUnitPrice = purchaseInvoiceItem.ActualUnitPrice;
+                this.TotalIncVatCustomerCurrency = purchaseInvoiceItem.TotalIncVatCustomerCurrency;
+                this.UnitBasePrice = purchaseInvoiceItem.UnitBasePrice;
+                this.CalculatedUnitPrice = purchaseInvoiceItem.CalculatedUnitPrice;
+                this.TotalSurchargeCustomerCurrency = purchaseInvoiceItem.TotalSurchargeCustomerCurrency;
+                this.TotalIncVat = purchaseInvoiceItem.TotalIncVat;
+                this.TotalSurchargeAsPercentage = purchaseInvoiceItem.TotalSurchargeAsPercentage;
+                this.TotalDiscountCustomerCurrency = purchaseInvoiceItem.TotalDiscountCustomerCurrency;
+                this.TotalDiscount = purchaseInvoiceItem.TotalDiscount;
+                this.TotalSurcharge = purchaseInvoiceItem.TotalSurcharge;
+                this.ActualUnitPrice = purchaseInvoiceItem.ActualUnitPrice;
+                this.AssignedVatRegime = purchaseInvoiceItem.AssignedVatRegime;
+                this.TotalBasePrice = purchaseInvoiceItem.TotalBasePrice;
+                this.TotalExVat = purchaseInvoiceItem.TotalExVat;
+                this.TotalBasePriceCustomerCurrency = purchaseInvoiceItem.TotalBasePriceCustomerCurrency;
+                this.CurrentPriceComponents = purchaseInvoiceItem.CurrentPriceComponents;
+                this.SurchargeAdjustment = purchaseInvoiceItem.SurchargeAdjustment;
                 this.InternalComment = purchaseInvoiceItem.InternalComment;
                 this.InvoiceTerms = purchaseInvoiceItem.InvoiceTerms;
+                this.TotalInvoiceAdjustment = purchaseInvoiceItem.TotalInvoiceAdjustment;
                 this.InvoiceVatRateItems = purchaseInvoiceItem.InvoiceVatRateItems;
                 this.AdjustmentFor = purchaseInvoiceItem.AdjustmentFor;
                 this.SerializedInventoryItem = purchaseInvoiceItem.SerializedInventoryItem;
                 this.Message = purchaseInvoiceItem.Message;
+                this.TotalInvoiceAdjustmentCustomerCurrency = purchaseInvoiceItem.TotalInvoiceAdjustmentCustomerCurrency;
                 this.Quantity = purchaseInvoiceItem.Quantity;
                 this.Description = purchaseInvoiceItem.Description;
                 this.PurchaseInvoiceItemType = purchaseInvoiceItem.PurchaseInvoiceItemType;
                 this.Part = purchaseInvoiceItem.Part;
+                this.CurrentObjectState = purchaseInvoiceItem.CurrentObjectState;
             }
 
             if (!this.ExistTimeStamp)

@@ -27,6 +27,21 @@ namespace Allors.Domain
 
             var isNewStateVersion =
                 !this.ExistCurrentVersion ||
+                !object.Equals(this.InternalComment, this.CurrentVersion.InternalComment) ||
+                !object.Equals(this.RequiredResponseDate, this.CurrentVersion.RequiredResponseDate) ||
+                !object.Equals(this.ValidFromDate, this.CurrentVersion.ValidFromDate) ||
+                !object.Equals(this.QuoteTerms, this.CurrentVersion.QuoteTerms) ||
+                !object.Equals(this.Issuer, this.CurrentVersion.Issuer) ||
+                !object.Equals(this.ValidThroughDate, this.CurrentVersion.ValidThroughDate) ||
+                !object.Equals(this.Description, this.CurrentVersion.Description) ||
+                !object.Equals(this.Receiver, this.CurrentVersion.Receiver) ||
+                !object.Equals(this.FullfillContactMechanism, this.CurrentVersion.FullfillContactMechanism) ||
+                !object.Equals(this.Amount, this.CurrentVersion.Amount) ||
+                !object.Equals(this.Currency, this.CurrentVersion.Currency) ||
+                !object.Equals(this.IssueDate, this.CurrentVersion.IssueDate) ||
+                !object.Equals(this.QuoteItems, this.CurrentVersion.QuoteItems) ||
+                !object.Equals(this.QuoteNumber, this.CurrentVersion.QuoteNumber) ||
+                !object.Equals(this.Request, this.CurrentVersion.Request) ||
                 !object.Equals(this.CurrentObjectState, this.CurrentVersion.CurrentObjectState);
 
             if (isNewVersion)

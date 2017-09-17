@@ -46,7 +46,20 @@ namespace Allors.Domain
         {
             var isNewVersion =
                 !this.ExistCurrentVersion ||
-                !object.Equals(this.InternalComment, this.CurrentVersion.InternalComment);
+                !object.Equals(this.InternalComment, this.CurrentVersion.InternalComment) ||
+                !object.Equals(this.Authorizer, this.CurrentVersion.Authorizer) ||
+                !object.Equals(this.Deliverable, this.CurrentVersion.Deliverable) ||
+                !object.Equals(this.Product, this.CurrentVersion.Product) ||
+                !object.Equals(this.EstimatedDeliveryDate, this.CurrentVersion.EstimatedDeliveryDate) ||
+                !object.Equals(this.UnitOfMeasure, this.CurrentVersion.UnitOfMeasure) ||
+                !object.Equals(this.ProductFeature, this.CurrentVersion.ProductFeature) ||
+                !object.Equals(this.UnitPrice, this.CurrentVersion.UnitPrice) ||
+                !object.Equals(this.Skill, this.CurrentVersion.Skill) ||
+                !object.Equals(this.WorkEffort, this.CurrentVersion.WorkEffort) ||
+                !object.Equals(this.QuoteTerms, this.CurrentVersion.QuoteTerms) ||
+                !object.Equals(this.Quantity, this.CurrentVersion.Quantity) ||
+                !object.Equals(this.RequestItem, this.CurrentVersion.RequestItem) ||
+                !object.Equals(this.CurrentObjectState, this.CurrentVersion.CurrentObjectState);
 
             var isNewStateVersion =
                 !this.ExistCurrentVersion ||

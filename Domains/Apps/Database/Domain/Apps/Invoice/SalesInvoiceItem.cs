@@ -112,7 +112,29 @@ namespace Allors.Domain
         {
             var isNewVersion =
                 !this.ExistCurrentVersion ||
-                !object.Equals(this.InternalComment, this.CurrentVersion.InternalComment);
+                !object.Equals(this.DiscountAdjustment, this.CurrentVersion.DiscountAdjustment) ||
+                !object.Equals(this.ActualUnitPrice, this.CurrentVersion.ActualUnitPrice) ||
+                !object.Equals(this.Description, this.CurrentVersion.Description) ||
+                !object.Equals(this.AssignedVatRegime, this.CurrentVersion.AssignedVatRegime) ||
+                !object.Equals(this.CurrentPriceComponents, this.CurrentVersion.CurrentPriceComponents) ||
+                !object.Equals(this.SurchargeAdjustment, this.CurrentVersion.SurchargeAdjustment) ||
+                !object.Equals(this.DiscountAdjustment, this.CurrentVersion.DiscountAdjustment) ||
+                !object.Equals(this.InternalComment, this.CurrentVersion.InternalComment) ||
+                !object.Equals(this.InvoiceTerms, this.CurrentVersion.InvoiceTerms) ||
+                !object.Equals(this.InvoiceVatRateItems, this.CurrentVersion.InvoiceVatRateItems) ||
+                !object.Equals(this.AdjustmentFor, this.CurrentVersion.AdjustmentFor) ||
+                !object.Equals(this.SerializedInventoryItem, this.CurrentVersion.SerializedInventoryItem) ||
+                !object.Equals(this.Message, this.CurrentVersion.Message) ||
+                !object.Equals(this.Quantity, this.CurrentVersion.Quantity) ||
+                !object.Equals(this.Description, this.CurrentVersion.Description) ||
+                !object.Equals(this.ProductFeature, this.CurrentVersion.ProductFeature) ||
+                !object.Equals(this.RequiredProfitMargin, this.CurrentVersion.RequiredProfitMargin) ||
+                !object.Equals(this.Product, this.CurrentVersion.Product) ||
+                !object.Equals(this.SalesInvoiceItemType, this.CurrentVersion.SalesInvoiceItemType) ||
+                !object.Equals(this.SalesRep, this.CurrentVersion.SalesRep) ||
+                !object.Equals(this.TimeEntries, this.CurrentVersion.TimeEntries) ||
+                !object.Equals(this.RequiredMarkupPercentage, this.CurrentVersion.RequiredMarkupPercentage) ||
+                !object.Equals(this.CurrentObjectState, this.CurrentVersion.CurrentObjectState);
 
             var isNewStateVersion =
                 !this.ExistCurrentVersion ||

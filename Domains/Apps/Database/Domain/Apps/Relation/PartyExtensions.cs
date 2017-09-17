@@ -303,7 +303,7 @@ namespace Allors.Domain
         public static void AppsOnDeriveOpenOrderAmount(this Party party)
         {
             party.OpenOrderAmount = 0;
-            foreach (SalesOrder salesOrder in party.ISalesOrdersWhereBillToCustomer)
+            foreach (ISalesOrder salesOrder in party.ISalesOrdersWhereBillToCustomer)
             {
                 if (!salesOrder.CurrentObjectState.Equals(new SalesOrderObjectStates(party.Strategy.Session).Finished) &&
                     !salesOrder.CurrentObjectState.Equals(new SalesOrderObjectStates(party.Strategy.Session).Cancelled))

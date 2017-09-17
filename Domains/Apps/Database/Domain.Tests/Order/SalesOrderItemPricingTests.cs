@@ -94,7 +94,7 @@ namespace Allors.Domain
             new CustomerRelationshipBuilder(this.DatabaseSession).WithFromDate(DateTime.UtcNow).WithCustomer(billToCustomer).WithInternalOrganisation(internalOrganisation).Build();
             new CustomerRelationshipBuilder(this.DatabaseSession).WithFromDate(DateTime.UtcNow).WithCustomer(shipToCustomer).WithInternalOrganisation(internalOrganisation).Build();
 
-            this.part = new FinishedGoodBuilder(this.DatabaseSession).WithName("part").Build();
+            this.part = new FinishedGoodBuilder(this.DatabaseSession).WithName("part").WithInventoryItemKind(new InventoryItemKinds(this.DatabaseSession).NonSerialised).Build();
 
             this.ancestorProductCategory = new ProductCategoryBuilder(this.DatabaseSession)
                 .WithLocalisedName(new LocalisedTextBuilder(this.DatabaseSession).WithText("ancestor").WithLocale(Singleton.Instance(this.DatabaseSession).DefaultLocale).Build())
@@ -118,6 +118,7 @@ namespace Allors.Domain
                 .WithProductCategory(this.productCategory)
                 .WithFinishedGood(this.part)
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.DatabaseSession).Piece)
+                .WithInventoryItemKind(new InventoryItemKinds(this.DatabaseSession).NonSerialised)
                 .Build();
 
             this.partyRevenueHistory = new PartyRevenueHistoryBuilder(this.DatabaseSession)

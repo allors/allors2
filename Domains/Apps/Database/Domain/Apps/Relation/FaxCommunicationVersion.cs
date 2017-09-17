@@ -26,6 +26,9 @@ namespace Allors.Domain
 
             if (faxCommunication != null)
             {
+                this.ToParties = faxCommunication.ToParties;
+                this.FromParties = faxCommunication.FromParties;
+                this.InvolvedParties = faxCommunication.InvolvedParties;
                 this.ScheduledStart = faxCommunication.ScheduledStart;
                 this.ContactMechanisms = faxCommunication.ContactMechanisms;
                 this.InitialScheduledStart = faxCommunication.InitialScheduledStart;

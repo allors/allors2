@@ -303,7 +303,36 @@ namespace Allors.Domain
         {
             var isNewVersion =
                 !this.ExistCurrentVersion ||
-                !object.Equals(this.InternalComment, this.CurrentVersion.InternalComment);
+                !object.Equals(this.InternalComment, this.CurrentVersion.InternalComment) ||
+                !object.Equals(this.CustomerReference, this.CurrentVersion.CustomerReference) ||
+                !object.Equals(this.Fee, this.CurrentVersion.Fee) ||
+                !object.Equals(this.OrderTerms, this.CurrentVersion.OrderTerms) ||
+                !object.Equals(this.Message, this.CurrentVersion.Message) ||
+                !object.Equals(this.DiscountAdjustment, this.CurrentVersion.DiscountAdjustment) ||
+                !object.Equals(this.OrderKind, this.CurrentVersion.OrderKind) ||
+                !object.Equals(this.VatRegime, this.CurrentVersion.VatRegime) ||
+                !object.Equals(this.ShippingAndHandlingCharge, this.CurrentVersion.ShippingAndHandlingCharge) ||
+                !object.Equals(this.OrderDate, this.CurrentVersion.OrderDate) ||
+                !object.Equals(this.DeliveryDate, this.CurrentVersion.DeliveryDate) ||
+                !object.Equals(this.SurchargeAdjustment, this.CurrentVersion.SurchargeAdjustment) ||
+                !object.Equals(this.TakenByContactMechanism, this.CurrentVersion.TakenByContactMechanism) ||
+                !object.Equals(this.ShipToCustomer, this.CurrentVersion.ShipToCustomer) ||
+                !object.Equals(this.BillToCustomer, this.CurrentVersion.BillToCustomer) ||
+                !object.Equals(this.ShipmentMethod, this.CurrentVersion.ShipmentMethod) ||
+                !object.Equals(this.ShipToAddress, this.CurrentVersion.ShipToAddress) ||
+                !object.Equals(this.BillToContactMechanism, this.CurrentVersion.BillToContactMechanism) ||
+                !object.Equals(this.SalesReps, this.CurrentVersion.SalesReps) ||
+                !object.Equals(this.PartiallyShip, this.CurrentVersion.PartiallyShip) ||
+                !object.Equals(this.Store, this.CurrentVersion.Store) ||
+                !object.Equals(this.BillFromContactMechanism, this.CurrentVersion.BillFromContactMechanism) ||
+                !object.Equals(this.PaymentMethod, this.CurrentVersion.PaymentMethod) ||
+                !object.Equals(this.PlacingContactMechanism, this.CurrentVersion.PlacingContactMechanism) ||
+                !object.Equals(this.SalesChannel, this.CurrentVersion.SalesChannel) ||
+                !object.Equals(this.PlacingCustomer, this.CurrentVersion.PlacingCustomer) ||
+                !object.Equals(this.SalesOrderItems, this.CurrentVersion.SalesOrderItems) ||
+                !object.Equals(this.TakenByInternalOrganisation, this.CurrentVersion.TakenByInternalOrganisation) ||
+                !object.Equals(this.Quote, this.CurrentVersion.Quote) ||
+                !object.Equals(this.CurrentObjectState, this.CurrentVersion.CurrentObjectState);
 
             var isNewStateVersion =
                 !this.ExistCurrentVersion ||

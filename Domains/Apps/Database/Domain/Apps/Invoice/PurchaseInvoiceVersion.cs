@@ -30,22 +30,40 @@ namespace Allors.Domain
             {
                 this.InternalComment = purchaseInvoice.InternalComment;
                 this.TotalShippingAndHandlingCustomerCurrency = purchaseInvoice.TotalShippingAndHandlingCustomerCurrency;
+                this.CustomerCurrency = purchaseInvoice.CustomerCurrency;
                 this.Description = purchaseInvoice.Description;
                 this.ShippingAndHandlingCharge = purchaseInvoice.ShippingAndHandlingCharge;
+                this.TotalFeeCustomerCurrency = this.TotalFeeCustomerCurrency;
                 this.Fee = purchaseInvoice.Fee;
+                this.TotalExVatCustomerCurrency = purchaseInvoice.TotalExVatCustomerCurrency;
                 this.CustomerReference = purchaseInvoice.CustomerReference;
                 this.DiscountAdjustment = purchaseInvoice.DiscountAdjustment;
+                this.AmountPaid = purchaseInvoice.AmountPaid;
+                this.TotalDiscount = purchaseInvoice.TotalDiscount;
                 this.BillingAccount = purchaseInvoice.BillingAccount;
+                this.TotalIncVat = purchaseInvoice.TotalIncVat;
+                this.TotalSurcharge = purchaseInvoice.TotalSurcharge;
+                this.TotalBasePrice = purchaseInvoice.TotalBasePrice;
+                this.TotalVatCustomerCurrency = purchaseInvoice.TotalVatCustomerCurrency;
                 this.InvoiceDate = purchaseInvoice.InvoiceDate;
+                this.EntryDate = purchaseInvoice.EntryDate;
+                this.TotalIncVatCustomerCurrency = purchaseInvoice.TotalIncVatCustomerCurrency;
+                this.TotalShippingAndHandling = purchaseInvoice.TotalShippingAndHandling;
+                this.TotalBasePriceCustomerCurrency = purchaseInvoice.TotalBasePriceCustomerCurrency;
                 this.SurchargeAdjustment = purchaseInvoice.SurchargeAdjustment;
+                this.TotalExVat = purchaseInvoice.TotalExVat;
                 this.InvoiceTerms = purchaseInvoice.InvoiceTerms;
                 this.InvoiceNumber = purchaseInvoice.InvoiceNumber;
                 this.Message = purchaseInvoice.Message;
                 this.VatRegime = purchaseInvoice.VatRegime;
+                this.TotalDiscountCustomerCurrency = purchaseInvoice.TotalDiscountCustomerCurrency;
+                this.TotalVat = purchaseInvoice.TotalVat;
+                this.TotalFee = purchaseInvoice.TotalFee;
                 this.PurchaseInvoiceItems = purchaseInvoice.PurchaseInvoiceItems;
                 this.BilledToInternalOrganisation = purchaseInvoice.BilledToInternalOrganisation;
                 this.BilledFromParty = purchaseInvoice.BilledFromParty;
                 this.PurchaseInvoiceType = purchaseInvoice.PurchaseInvoiceType;
+                this.CurrentObjectState = purchaseInvoice.CurrentObjectState;
             }
 
             if (!this.ExistTimeStamp)

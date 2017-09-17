@@ -128,6 +128,25 @@ namespace Allors.Domain
 
             var isNewStateVersion =
                 !this.ExistCurrentVersion ||
+                !object.Equals(this.DiscountAdjustment, this.CurrentVersion.DiscountAdjustment) ||
+                !object.Equals(this.ActualUnitPrice, this.CurrentVersion.ActualUnitPrice) ||
+                !object.Equals(this.AssignedVatRegime, this.CurrentVersion.AssignedVatRegime) ||
+                !object.Equals(this.CurrentPriceComponents, this.CurrentVersion.CurrentPriceComponents) ||
+                !object.Equals(this.SurchargeAdjustment, this.CurrentVersion.SurchargeAdjustment) ||
+                !object.Equals(this.InternalComment, this.CurrentVersion.InternalComment) ||
+                !object.Equals(this.BudgetItem, this.CurrentVersion.BudgetItem) ||
+                !object.Equals(this.QuantityOrdered, this.CurrentVersion.QuantityOrdered) ||
+                !object.Equals(this.Description, this.CurrentVersion.Description) ||
+                !object.Equals(this.CorrespondingPurchaseOrder, this.CurrentVersion.CorrespondingPurchaseOrder) ||
+                !object.Equals(this.QuoteItem, this.CurrentVersion.QuoteItem) ||
+                !object.Equals(this.AssignedDeliveryDate, this.CurrentVersion.AssignedDeliveryDate) ||
+                !object.Equals(this.OrderTerms, this.CurrentVersion.OrderTerms) ||
+                !object.Equals(this.ShippingInstruction, this.CurrentVersion.ShippingInstruction) ||
+                !object.Equals(this.Associations, this.CurrentVersion.Associations) ||
+                !object.Equals(this.Message, this.CurrentVersion.Message) ||
+                !object.Equals(this.QuantityReceived, this.CurrentVersion.QuantityReceived) ||
+                !object.Equals(this.Product, this.CurrentVersion.Product) ||
+                !object.Equals(this.Part, this.CurrentVersion.Part) ||
                 !object.Equals(this.CurrentObjectState, this.CurrentVersion.CurrentObjectState);
 
             if (isNewVersion)

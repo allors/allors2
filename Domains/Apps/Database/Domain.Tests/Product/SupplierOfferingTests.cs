@@ -32,7 +32,7 @@ namespace Allors.Domain
         public void GivenSupplierOffering_WhenDeriving_ThenRequiredRelationsMustExist()
         {
             var supplier = new OrganisationBuilder(this.DatabaseSession).WithName("organisation").WithOrganisationRole(new OrganisationRoles(this.DatabaseSession).Customer).Build();
-            var part = new FinishedGoodBuilder(this.DatabaseSession).WithName("finishedGood").Build();
+            var part = new FinishedGoodBuilder(this.DatabaseSession).WithName("finishedGood").WithInventoryItemKind(new InventoryItemKinds(this.DatabaseSession).NonSerialised).Build();
 
             var good = new GoodBuilder(this.DatabaseSession)
                 .WithLocalisedName(new LocalisedTextBuilder(this.DatabaseSession).WithText("good").WithLocale(Singleton.Instance(this.DatabaseSession).DefaultLocale).Build())
@@ -154,6 +154,7 @@ namespace Allors.Domain
 
             var finishedGood = new FinishedGoodBuilder(this.DatabaseSession)
                 .WithName("part")
+                .WithInventoryItemKind(new InventoryItemKinds(this.DatabaseSession).NonSerialised)
                 .Build();
 
             var purchasePrice = new ProductPurchasePriceBuilder(this.DatabaseSession)

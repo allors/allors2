@@ -26,6 +26,9 @@ namespace Allors.Domain
 
             if (webSiteCommunication != null)
             {
+                this.ToParties = webSiteCommunication.ToParties;
+                this.FromParties = webSiteCommunication.FromParties;
+                this.InvolvedParties = webSiteCommunication.InvolvedParties;
                 this.ScheduledStart = webSiteCommunication.ScheduledStart;
                 this.ContactMechanisms = webSiteCommunication.ContactMechanisms;
                 this.InitialScheduledStart = webSiteCommunication.InitialScheduledStart;
