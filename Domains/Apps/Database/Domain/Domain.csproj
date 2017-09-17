@@ -9,13 +9,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Remove="Apps\Accounting\SalesChannelRevenue.cs" />
-    <Compile Remove="Apps\Accounting\SalesChannelRevenueHistories.cs" />
-    <Compile Remove="Apps\Accounting\SalesChannelRevenueHistory.cs" />
-    <Compile Remove="Apps\Accounting\SalesChannelRevenues.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\..\..\..\Platform\Framework\Allors\Allors.csproj" />
     <ProjectReference Include="..\Meta\Meta.csproj" />
     <ProjectReference Include="..\Resources\Resources.csproj" />
