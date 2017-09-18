@@ -6,9 +6,10 @@ namespace Allors.Repository
     #region Allors
     [Id("8FDEA682-A902-4364-A354-1F77FBBE4D11")]
     #endregion
-    public partial class ActivityVersion : IActivity 
+    public partial class ActivityVersion : WorkEffortVersion
     {
         #region inherited properties
+        public DateTime TimeStamp { get; set; }
 
         public Permission[] DeniedPermissions { get; set; }
         public SecurityToken[] SecurityTokens { get; set; }
@@ -40,15 +41,7 @@ namespace Allors.Repository
         public string SpecialTerms { get; set; }
         public WorkEffort[] Concurrencies { get; set; }
        #endregion
-
-        #region Allors
-        [Id("E6825AD2-34E9-40BD-95E0-436A5AA8E6F7")]
-        [AssociationId("6942A552-F971-4AA0-8C28-17A31C89EB29")]
-        [RoleId("2BA0939C-F51F-4C5C-83E8-8E3A0A345A78")]
-        #endregion
-        [Workspace]
-        public DateTime TimeStamp { get; set; }
-
+        
         #region inherited methods
 
         public void OnBuild() { }

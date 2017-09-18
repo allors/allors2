@@ -4,12 +4,11 @@ namespace Allors.Repository
     using Attributes;
 
     #region Allors
-    [Id("75A7D08C-0B1C-4CEB-B5C7-7F94EEA38431")]
+    [Id("")]
     #endregion
-    public partial class SalesOrderItemVersion : ISalesOrderItem
+    public partial class SalesOrderItemVersion : OrderItemVersion
     {
         #region inherited properties
-
         public string InternalComment { get; set; }
         public BudgetItem BudgetItem { get; set; }
         public decimal PreviousQuantity { get; set; }
@@ -25,33 +24,6 @@ namespace Allors.Repository
         public string ShippingInstruction { get; set; }
         public OrderItem[] Associations { get; set; }
         public string Message { get; set; }
-        public decimal InitialProfitMargin { get; set; }
-        public decimal QuantityShortFalled { get; set; }
-        public OrderItem[] OrderedWithFeatures { get; set; }
-        public decimal MaintainedProfitMargin { get; set; }
-        public decimal RequiredProfitMargin { get; set; }
-        public NonSerialisedInventoryItem PreviousReservedFromInventoryItem { get; set; }
-        public decimal QuantityShipNow { get; set; }
-        public decimal RequiredMarkupPercentage { get; set; }
-        public decimal QuantityShipped { get; set; }
-        public PostalAddress ShipToAddress { get; set; }
-        public decimal QuantityPicked { get; set; }
-        public Product PreviousProduct { get; set; }
-        public SalesOrderItemObjectState CurrentObjectState { get; set; }
-        public decimal UnitPurchasePrice { get; set; }
-        public Party ShipToParty { get; set; }
-        public PostalAddress AssignedShipToAddress { get; set; }
-        public decimal QuantityReturned { get; set; }
-        public decimal QuantityReserved { get; set; }
-        public Person SalesRep { get; set; }
-        public Party AssignedShipToParty { get; set; }
-        public decimal QuantityPendingShipment { get; set; }
-        public decimal MaintainedMarkupPercentage { get; set; }
-        public decimal InitialMarkupPercentage { get; set; }
-        public NonSerialisedInventoryItem ReservedFromInventoryItem { get; set; }
-        public Product Product { get; set; }
-        public ProductFeature ProductFeature { get; set; }
-        public decimal QuantityRequestsShipping { get; set; }
         public Permission[] DeniedPermissions { get; set; }
         public SecurityToken[] SecurityTokens { get; set; }
         public string Comment { get; set; }
@@ -83,16 +55,307 @@ namespace Allors.Repository
         public decimal TotalBasePriceCustomerCurrency { get; set; }
         public PriceComponent[] CurrentPriceComponents { get; set; }
         public SurchargeAdjustment SurchargeAdjustment { get; set; }
+
+        public DateTime TimeStamp { get; set; }
         #endregion
 
         #region Allors
-        [Id("2BF19BD8-65C0-4458-A760-79155071DB0E")]
-        [AssociationId("F7155754-2275-4F49-94E3-14A0142AB753")]
-        [RoleId("FF19D579-0A68-420D-8E9B-3819CCA9390D")]
+        [Id("")]
+        [AssociationId("")]
+        [RoleId("")]
         #endregion
         [Workspace]
-        public DateTime TimeStamp { get; set; }
+        [Derived]
+        [Required]
+        [Precision(19)]
+        [Scale(2)]
+        decimal InitialProfitMargin { get; set; }
 
+        #region Allors
+        [Id("")]
+        [AssociationId("")]
+        [RoleId("")]
+        #endregion
+        [Workspace]
+        [Derived]
+        [Required]
+        [Precision(19)]
+        [Scale(2)]
+        decimal QuantityShortFalled { get; set; }
+
+        #region Allors
+        [Id("")]
+        [AssociationId("")]
+        [RoleId("")]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToMany)]
+        [Indexed]
+        [Workspace]
+        OrderItem[] OrderedWithFeatures { get; set; }
+
+        #region Allors
+        [Id("")]
+        [AssociationId("")]
+        [RoleId("")]
+        #endregion
+        [Workspace]
+        [Derived]
+        [Required]
+        [Precision(19)]
+        [Scale(2)]
+        decimal MaintainedProfitMargin { get; set; }
+
+        #region Allors
+        [Id("")]
+        [AssociationId("")]
+        [RoleId("")]
+        #endregion
+        [Workspace]
+        [Precision(19)]
+        [Scale(2)]
+        decimal RequiredProfitMargin { get; set; }
+
+        #region Allors
+        [Id("")]
+        [AssociationId("")]
+        [RoleId("")]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Derived]
+        [Indexed]
+        NonSerialisedInventoryItem PreviousReservedFromInventoryItem { get; set; }
+
+        #region Allors
+        [Id("")]
+        [AssociationId("")]
+        [RoleId("")]
+        #endregion
+        [Precision(19)]
+        [Scale(2)]
+        [Workspace]
+        decimal QuantityShipNow { get; set; }
+
+        #region Allors
+        [Id("")]
+        [AssociationId("")]
+        [RoleId("")]
+        #endregion
+        [Workspace]
+        [Precision(19)]
+        [Scale(2)]
+        decimal RequiredMarkupPercentage { get; set; }
+
+        #region Allors
+        [Id("")]
+        [AssociationId("")]
+        [RoleId("")]
+        #endregion
+        [Derived]
+        [Required]
+        [Precision(19)]
+        [Scale(2)]
+        [Workspace]
+        decimal QuantityShipped { get; set; }
+
+        #region Allors
+        [Id("")]
+        [AssociationId("")]
+        [RoleId("")]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Derived]
+        [Indexed]
+        [Workspace]
+        PostalAddress ShipToAddress { get; set; }
+
+        #region Allors
+        [Id("")]
+        [AssociationId("")]
+        [RoleId("")]
+        #endregion
+        [Derived]
+        [Required]
+        [Precision(19)]
+        [Scale(2)]
+        [Workspace]
+        decimal QuantityPicked { get; set; }
+
+        #region Allors
+        [Id("")]
+        [AssociationId("")]
+        [RoleId("")]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Derived]
+        [Indexed]
+        Product PreviousProduct { get; set; }
+
+        #region Allors
+        [Id("")]
+        [AssociationId("")]
+        [RoleId("")]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Indexed]
+        [Required]
+        [Workspace]
+        SalesOrderItemObjectState CurrentObjectState { get; set; }
+
+        #region Allors
+        [Id("")]
+        [AssociationId("")]
+        [RoleId("")]
+        #endregion
+        [Derived]
+        [Required]
+        [Precision(19)]
+        [Scale(2)]
+        [Workspace]
+        decimal UnitPurchasePrice { get; set; }
+
+        #region Allors
+        [Id("")]
+        [AssociationId("")]
+        [RoleId("")]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Derived]
+        [Indexed]
+        [Workspace]
+        Party ShipToParty { get; set; }
+
+        #region Allors
+        [Id("")]
+        [AssociationId("")]
+        [RoleId("")]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Indexed]
+        [Workspace]
+        PostalAddress AssignedShipToAddress { get; set; }
+
+        #region Allors
+        [Id("")]
+        [AssociationId("")]
+        [RoleId("")]
+        #endregion
+        [Required]
+        [Precision(19)]
+        [Scale(2)]
+        [Workspace]
+        decimal QuantityReturned { get; set; }
+
+        #region Allors
+        [Id("")]
+        [AssociationId("")]
+        [RoleId("")]
+        #endregion
+        [Derived]
+        [Required]
+        [Precision(19)]
+        [Scale(2)]
+        [Workspace]
+        decimal QuantityReserved { get; set; }
+
+        #region Allors
+        [Id("")]
+        [AssociationId("")]
+        [RoleId("")]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Workspace]
+        [Derived]
+        [Indexed]
+        Person SalesRep { get; set; }
+
+        #region Allors
+        [Id("")]
+        [AssociationId("")]
+        [RoleId("")]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Indexed]
+        [Workspace]
+        Party AssignedShipToParty { get; set; }
+
+        #region Allors
+        [Id("")]
+        [AssociationId("")]
+        [RoleId("")]
+        #endregion
+        [Derived]
+        [Required]
+        [Precision(19)]
+        [Scale(2)]
+        [Workspace]
+        decimal QuantityPendingShipment { get; set; }
+
+        #region Allors
+        [Id("")]
+        [AssociationId("")]
+        [RoleId("")]
+        #endregion
+        [Workspace]
+        [Derived]
+        [Required]
+        [Precision(19)]
+        [Scale(2)]
+        decimal MaintainedMarkupPercentage { get; set; }
+
+        #region Allors
+        [Id("")]
+        [AssociationId("")]
+        [RoleId("")]
+        #endregion
+        [Workspace]
+        [Derived]
+        [Required]
+        [Precision(19)]
+        [Scale(2)]
+        decimal InitialMarkupPercentage { get; set; }
+
+        #region Allors
+        [Id("")]
+        [AssociationId("")]
+        [RoleId("")]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Indexed]
+        [Workspace]
+        NonSerialisedInventoryItem ReservedFromInventoryItem { get; set; }
+
+        #region Allors
+        [Id("")]
+        [AssociationId("")]
+        [RoleId("")]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Indexed]
+        [Workspace]
+        Product Product { get; set; }
+
+        #region Allors
+        [Id("")]
+        [AssociationId("")]
+        [RoleId("")]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Indexed]
+        [Workspace]
+        ProductFeature ProductFeature { get; set; }
+
+        #region Allors
+        [Id("")]
+        [AssociationId("")]
+        [RoleId("")]
+        #endregion
+        [Derived]
+        [Required]
+        [Precision(19)]
+        [Scale(2)]
+        [Workspace]
+        decimal QuantityRequestsShipping { get; set; }
+        
         #region inherited methods
 
         public void OnBuild() { }

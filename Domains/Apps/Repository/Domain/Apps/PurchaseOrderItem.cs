@@ -7,7 +7,7 @@ namespace Allors.Repository
     #region Allors
     [Id("ab648bd0-6e31-4ab0-a9ee-cf4a6f02033d")]
     #endregion
-    public partial class PurchaseOrderItem : OrderItem, IPurchaseOrderItem 
+    public partial class PurchaseOrderItem : OrderItem 
     {
         #region inherited properties
         public string InternalComment { get; set; }
@@ -62,7 +62,8 @@ namespace Allors.Repository
         public Part Part { get; set; }
 
         #endregion
-        
+
+        #region Versioning
         #region Allors
         [Id("93C91DE0-2083-410F-A373-90C2C4AE999D")]
         [AssociationId("4C796167-3E33-4451-AC9A-AB6A9B986770")]
@@ -152,7 +153,8 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.OneToMany)]
         [Workspace]
         public PurchaseOrderItemVersion[] AllShipmentStateVersions { get; set; }
-
+        #endregion
+        
         #region inherited methods
 
 

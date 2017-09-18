@@ -4,9 +4,9 @@ namespace Allors.Repository
     using Attributes;
 
     #region Allors
-    [Id("D48A4723-638B-4682-98F5-93FA876CAEE0")]
+    [Id("")]
     #endregion
-    public partial class PurchaseOrderVersion : IPurchaseOrder
+    public partial class PurchaseOrderVersion : OrderVersion
     {
         #region inherited properties
 
@@ -47,25 +47,105 @@ namespace Allors.Repository
         public decimal TotalBasePrice { get; set; }
         public decimal TotalFee { get; set; }
         public SurchargeAdjustment SurchargeAdjustment { get; set; }
-        public PurchaseOrderItem[] PurchaseOrderItems { get; set; }
-        public Party PreviousTakenViaSupplier { get; set; }
-        public Party TakenViaSupplier { get; set; }
-        public PurchaseOrderObjectState CurrentObjectState { get; set; }
-        public ContactMechanism TakenViaContactMechanism { get; set; }
-        public ContactMechanism BillToContactMechanism { get; set; }
-        public InternalOrganisation ShipToBuyer { get; set; }
-        public Facility Facility { get; set; }
-        public PostalAddress ShipToAddress { get; set; }
-        public InternalOrganisation BillToPurchaser { get; set; }
+
+        public DateTime TimeStamp { get; set; }
         #endregion
 
         #region Allors
-        [Id("4690DD5A-868C-4E68-84B1-0F65854BB39B")]
-        [AssociationId("6EF16BF2-9313-40ED-939C-E66097EA97F5")]
-        [RoleId("7BC43DEF-38C1-4D9B-A0E0-25DAB6BC02A3")]
+        [Id("")]
+        [AssociationId("")]
+        [RoleId("")]
         #endregion
-        [Workspace]
-        public DateTime TimeStamp { get; set; }
+        [Multiplicity(Multiplicity.ManyToMany)]
+        [Indexed]
+        PurchaseOrderItem[] PurchaseOrderItems { get; set; }
+
+        #region Allors
+        [Id("")]
+        [AssociationId("")]
+        [RoleId("")]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Derived]
+        [Indexed]
+        Party PreviousTakenViaSupplier { get; set; }
+
+        #region Allors
+        [Id("")]
+        [AssociationId("")]
+        [RoleId("")]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Indexed]
+        [Required]
+        Party TakenViaSupplier { get; set; }
+
+        #region Allors
+        [Id("")]
+        [AssociationId("")]
+        [RoleId("")]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Indexed]
+        [Required]
+        PurchaseOrderObjectState CurrentObjectState { get; set; }
+
+        #region Allors
+        [Id("")]
+        [AssociationId("")]
+        [RoleId("")]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Indexed]
+        ContactMechanism TakenViaContactMechanism { get; set; }
+
+        #region Allors
+        [Id("")]
+        [AssociationId("")]
+        [RoleId("")]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Indexed]
+        [Required]
+        ContactMechanism BillToContactMechanism { get; set; }
+
+        #region Allors
+        [Id("")]
+        [AssociationId("")]
+        [RoleId("")]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Indexed]
+        [Required]
+        InternalOrganisation ShipToBuyer { get; set; }
+
+        #region Allors
+        [Id("")]
+        [AssociationId("")]
+        [RoleId("")]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Indexed]
+        Facility Facility { get; set; }
+
+        #region Allors
+        [Id("")]
+        [AssociationId("")]
+        [RoleId("")]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Indexed]
+        PostalAddress ShipToAddress { get; set; }
+
+        #region Allors
+        [Id("")]
+        [AssociationId("")]
+        [RoleId("")]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Indexed]
+        [Required]
+        InternalOrganisation BillToPurchaser { get; set; }
 
         #region inherited methods
 

@@ -7,7 +7,7 @@ namespace Allors.Repository
     #region Allors
     [Id("d1d8f99e-430d-4104-a2db-777a0f6292e3")]
     #endregion
-    public partial class Research : WorkEffort, IResearch 
+    public partial class Research : WorkEffort
     {
         #region inherited properties
 

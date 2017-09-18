@@ -6,7 +6,7 @@ namespace Allors.Repository
     #region Allors
     [Id("DDCC2C2B-6742-465B-9ECA-CCED43280AD5")]
     #endregion
-    public partial class ProjectVersion : IProject 
+    public partial class ProjectVersion : WorkEffortVersion
     {
         #region inherited properties
 
@@ -39,15 +39,9 @@ namespace Allors.Repository
         public Requirement[] RequirementFulfillments { get; set; }
         public string SpecialTerms { get; set; }
         public WorkEffort[] Concurrencies { get; set; }
-       #endregion
 
-        #region Allors
-        [Id("721AEBBC-0927-42BF-B509-14B847529E54")]
-        [AssociationId("A4E11EC6-1D72-4F6C-A2C0-CE198328AA50")]
-        [RoleId("80BE77D6-158E-4201-A475-F261D09B6D52")]
-        #endregion
-        [Workspace]
         public DateTime TimeStamp { get; set; }
+        #endregion
 
         #region inherited methods
 
@@ -61,5 +55,5 @@ namespace Allors.Repository
 
         public void OnPostDerive() { }
         #endregion
-   }
+    }
 }

@@ -6,7 +6,7 @@ namespace Allors.Repository
     #region Allors
     [Id("A3475107-2603-40A9-BC2A-D6A2C2BF6AC4")]
     #endregion
-    public partial class ProductionRunVersion : IProductionRun
+    public partial class ProductionRunVersion : WorkEffortVersion
     {
         #region inherited properties
 
@@ -43,16 +43,10 @@ namespace Allors.Repository
         public int QuantityProduced { get; set; }
         public int QuantityRejected { get; set; }
         public int QuantityToProduce { get; set; }
-
-        #endregion
-
-        #region Allors
-        [Id("A60AFE68-52A0-44C2-AE85-7ABBDE5E2D5F")]
-        [AssociationId("003C5452-4B88-4E00-B2BC-5ACFC432B905")]
-        [RoleId("0772A745-F649-4109-A312-F4170B52E59F")]
-        #endregion
-        [Workspace]
+        
         public DateTime TimeStamp { get; set; }
+
+        #endregion
 
         #region inherited methods
 

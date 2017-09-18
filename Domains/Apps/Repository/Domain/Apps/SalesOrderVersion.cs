@@ -4,9 +4,9 @@ namespace Allors.Repository
     using Attributes;
 
     #region Allors
-    [Id("20B9BA2A-5ACD-4466-8CE8-3FC1F69C50FD")]
+    [Id("")]
     #endregion
-    public partial class SalesOrderVersion : ISalesOrder
+    public partial class SalesOrderVersion : OrderVersion
     {
         #region inherited properties
 
@@ -46,45 +46,314 @@ namespace Allors.Repository
         public decimal TotalBasePrice { get; set; }
         public decimal TotalFee { get; set; }
         public SurchargeAdjustment SurchargeAdjustment { get; set; }
-        public ContactMechanism TakenByContactMechanism { get; set; }
-        public Party ShipToCustomer { get; set; }
-        public Party BillToCustomer { get; set; }
-        public decimal TotalPurchasePrice { get; set; }
-        public ShipmentMethod ShipmentMethod { get; set; }
-        public decimal TotalListPriceCustomerCurrency { get; set; }
-        public decimal MaintainedProfitMargin { get; set; }
-        public PostalAddress ShipToAddress { get; set; }
-        public Party PreviousShipToCustomer { get; set; }
-        public ContactMechanism BillToContactMechanism { get; set; }
-        public Person[] SalesReps { get; set; }
-        public decimal InitialProfitMargin { get; set; }
-        public decimal TotalListPrice { get; set; }
-        public bool PartiallyShip { get; set; }
-        public Party[] Customers { get; set; }
-        public Store Store { get; set; }
-        public decimal MaintainedMarkupPercentage { get; set; }
-        public ContactMechanism BillFromContactMechanism { get; set; }
-        public PaymentMethod PaymentMethod { get; set; }
-        public ContactMechanism PlacingContactMechanism { get; set; }
-        public Party PreviousBillToCustomer { get; set; }
-        public SalesChannel SalesChannel { get; set; }
-        public Party PlacingCustomer { get; set; }
-        public SalesInvoice ProformaInvoice { get; set; }
-        public SalesOrderItem[] SalesOrderItems { get; set; }
-        public SalesOrderObjectState CurrentObjectState { get; set; }
-        public decimal InitialMarkupPercentage { get; set; }
-        public InternalOrganisation TakenByInternalOrganisation { get; set; }
-        public ProductQuote Quote { get; set; }
+
+        public DateTime TimeStamp { get; set; }
         #endregion
 
         #region Allors
-        [Id("155FB4ED-6456-4D40-84BA-B61369965423")]
-        [AssociationId("DAF49B7B-96E6-4AE7-AD5F-2189994B4F7F")]
-        [RoleId("B53C3CC0-9F77-4A79-95C3-2D149630E6AA")]
+        [Id("")]
+        [AssociationId("")]
+        [RoleId("")]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Workspace]
+        [Indexed]
+        ContactMechanism TakenByContactMechanism { get; set; }
+
+        #region Allors
+        [Id("")]
+        [AssociationId("")]
+        [RoleId("")]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Indexed]
+        [Workspace]
+        Party ShipToCustomer { get; set; }
+
+        #region Allors
+        [Id("")]
+        [AssociationId("")]
+        [RoleId("")]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Workspace]
+        [Indexed]
+        Party BillToCustomer { get; set; }
+
+        #region Allors
+        [Id("")]
+        [AssociationId("")]
+        [RoleId("")]
+        #endregion
+        [Derived]
+        [Required]
+        [Precision(19)]
+        [Scale(2)]
+        [Workspace]
+        decimal TotalPurchasePrice { get; set; }
+
+        #region Allors
+        [Id("")]
+        [AssociationId("")]
+        [RoleId("")]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Indexed]
+        [Workspace]
+        ShipmentMethod ShipmentMethod { get; set; }
+
+        #region Allors
+        [Id("")]
+        [AssociationId("")]
+        [RoleId("")]
+        #endregion
+        [Derived]
+        [Required]
+        [Precision(19)]
+        [Scale(2)]
+        [Workspace]
+        decimal TotalListPriceCustomerCurrency { get; set; }
+
+        #region Allors
+        [Id("")]
+        [AssociationId("")]
+        [RoleId("")]
         #endregion
         [Workspace]
-        public DateTime TimeStamp { get; set; }
+        [Derived]
+        [Required]
+        [Precision(19)]
+        [Scale(2)]
+        decimal MaintainedProfitMargin { get; set; }
 
+        #region Allors
+        [Id("")]
+        [AssociationId("")]
+        [RoleId("")]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Indexed]
+        [Workspace]
+        PostalAddress ShipToAddress { get; set; }
+
+        #region Allors
+        [Id("")]
+        [AssociationId("")]
+        [RoleId("")]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Derived]
+        [Indexed]
+        Party PreviousShipToCustomer { get; set; }
+
+        #region Allors
+        [Id("")]
+        [AssociationId("")]
+        [RoleId("")]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Indexed]
+        [Workspace]
+        ContactMechanism BillToContactMechanism { get; set; }
+
+        #region Allors
+        [Id("")]
+        [AssociationId("")]
+        [RoleId("")]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToMany)]
+        [Workspace]
+        [Derived]
+        [Indexed]
+        Person[] SalesReps { get; set; }
+
+        #region Allors
+        [Id("")]
+        [AssociationId("")]
+        [RoleId("")]
+        #endregion
+        [Workspace]
+        [Derived]
+        [Required]
+        [Precision(19)]
+        [Scale(2)]
+        decimal InitialProfitMargin { get; set; }
+
+        #region Allors
+        [Id("")]
+        [AssociationId("")]
+        [RoleId("")]
+        #endregion
+        [Derived]
+        [Required]
+        [Precision(19)]
+        [Scale(2)]
+        [Workspace]
+        decimal TotalListPrice { get; set; }
+
+        #region Allors
+        [Id("")]
+        [AssociationId("")]
+        [RoleId("")]
+        #endregion
+        [Required]
+        bool PartiallyShip { get; set; }
+
+        #region Allors
+        [Id("")]
+        [AssociationId("")]
+        [RoleId("")]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToMany)]
+        [Derived]
+        [Indexed]
+        Party[] Customers { get; set; }
+
+        #region Allors
+        [Id("")]
+        [AssociationId("")]
+        [RoleId("")]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Indexed]
+        [Required]
+        Store Store { get; set; }
+
+        #region Allors
+        [Id("")]
+        [AssociationId("")]
+        [RoleId("")]
+        #endregion
+        [Workspace]
+        [Derived]
+        [Required]
+        [Precision(19)]
+        [Scale(2)]
+        decimal MaintainedMarkupPercentage { get; set; }
+
+        #region Allors
+        [Id("")]
+        [AssociationId("")]
+        [RoleId("")]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Workspace]
+        [Indexed]
+        ContactMechanism BillFromContactMechanism { get; set; }
+
+        #region Allors
+        [Id("")]
+        [AssociationId("")]
+        [RoleId("")]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Indexed]
+        [Workspace]
+        PaymentMethod PaymentMethod { get; set; }
+
+        #region Allors
+        [Id("")]
+        [AssociationId("")]
+        [RoleId("")]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Indexed]
+        [Workspace]
+        ContactMechanism PlacingContactMechanism { get; set; }
+
+        #region Allors
+        [Id("")]
+        [AssociationId("")]
+        [RoleId("")]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Derived]
+        [Indexed]
+        Party PreviousBillToCustomer { get; set; }
+
+        #region Allors
+        [Id("")]
+        [AssociationId("")]
+        [RoleId("")]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Workspace]
+        [Indexed]
+        SalesChannel SalesChannel { get; set; }
+
+        #region Allors
+        [Id("")]
+        [AssociationId("")]
+        [RoleId("")]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Indexed]
+        [Workspace]
+        Party PlacingCustomer { get; set; }
+
+        #region Allors
+        [Id("")]
+        [AssociationId("")]
+        [RoleId("")]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Derived]
+        [Indexed]
+        SalesInvoice ProformaInvoice { get; set; }
+
+        #region Allors
+        [Id("")]
+        [AssociationId("")]
+        [RoleId("")]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToMany)]
+        [Indexed]
+        [Workspace]
+        SalesOrderItem[] SalesOrderItems { get; set; }
+
+        #region Allors
+        [Id("")]
+        [AssociationId("")]
+        [RoleId("")]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Indexed]
+        [Required]
+        [Workspace]
+        SalesOrderObjectState CurrentObjectState { get; set; }
+
+        #region Allors
+        [Id("")]
+        [AssociationId("")]
+        [RoleId("")]
+        #endregion
+        [Workspace]
+        [Derived]
+        [Required]
+        [Precision(19)]
+        [Scale(2)]
+        decimal InitialMarkupPercentage { get; set; }
+
+        #region Allors
+        [Id("")]
+        [AssociationId("")]
+        [RoleId("")]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Indexed]
+        [Required]
+        InternalOrganisation TakenByInternalOrganisation { get; set; }
+
+        #region Allors
+        [Id("")]
+        [AssociationId("")]
+        [RoleId("")]
+        [Indexed]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Workspace]
+        ProductQuote Quote { get; set; }
+        
         #region inherited methods
 
         public void OnBuild() { }
@@ -97,6 +366,5 @@ namespace Allors.Repository
 
         public void OnPostDerive() { }
         #endregion
-
     }
 }

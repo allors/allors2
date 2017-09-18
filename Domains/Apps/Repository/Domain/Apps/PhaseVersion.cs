@@ -6,7 +6,7 @@ namespace Allors.Repository
     #region Allors
     [Id("CCBF3B04-12A5-420C-B227-3CF819684DB4")]
     #endregion
-    public partial class PhaseVersion : IPhase 
+    public partial class PhaseVersion : WorkEffortVersion
     {
         #region inherited properties
 
@@ -39,15 +39,9 @@ namespace Allors.Repository
         public Requirement[] RequirementFulfillments { get; set; }
         public string SpecialTerms { get; set; }
         public WorkEffort[] Concurrencies { get; set; }
-       #endregion
-
-        #region Allors
-        [Id("E277D472-0106-433C-B1FB-F39B46ABD776")]
-        [AssociationId("43BF5A9D-FCC6-4DBA-91DF-2B0C77F16F9B")]
-        [RoleId("3EE9E896-68C3-48BB-8666-FAAC008EFA6A")]
-        #endregion
-        [Workspace]
+        
         public DateTime TimeStamp { get; set; }
+        #endregion
 
         #region inherited methods
 
@@ -61,5 +55,5 @@ namespace Allors.Repository
 
         public void OnPostDerive() { }
         #endregion
-   }
+    }
 }

@@ -4,9 +4,9 @@ namespace Allors.Repository
     using Attributes;
 
     #region Allors
-    [Id("65287AFA-CDD1-433A-9532-315215C30818")]
+    [Id("")]
     #endregion
-    public partial class PurchaseOrderItemVersion : IPurchaseOrderItem
+    public partial class PurchaseOrderItemVersion : OrderItemVersion
     {
         #region inherited properties
 
@@ -25,10 +25,6 @@ namespace Allors.Repository
         public string ShippingInstruction { get; set; }
         public OrderItem[] Associations { get; set; }
         public string Message { get; set; }
-        public PurchaseOrderItemObjectState CurrentObjectState { get; set; }
-        public decimal QuantityReceived { get; set; }
-        public Product Product { get; set; }
-        public Part Part { get; set; }
 
         public Permission[] DeniedPermissions { get; set; }
         public SecurityToken[] SecurityTokens { get; set; }
@@ -61,15 +57,49 @@ namespace Allors.Repository
         public decimal TotalBasePriceCustomerCurrency { get; set; }
         public PriceComponent[] CurrentPriceComponents { get; set; }
         public SurchargeAdjustment SurchargeAdjustment { get; set; }
+
+        public DateTime TimeStamp { get; set; }
+
         #endregion
 
         #region Allors
-        [Id("61972355-8EA4-4B22-87DF-AA1BE835AE7E")]
-        [AssociationId("9E47279C-2C9A-4EEE-AC9F-570DC715FE88")]
-        [RoleId("294A17C5-C545-4F74-B4A5-DF3AB44E7447")]
+        [Id("")]
+        [AssociationId("")]
+        [RoleId("")]
         #endregion
-        [Workspace]
-        public DateTime TimeStamp { get; set; }
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Indexed]
+        [Required]
+        PurchaseOrderItemObjectState CurrentObjectState { get; set; }
+
+        #region Allors
+        [Id("")]
+        [AssociationId("")]
+        [RoleId("")]
+        #endregion
+        [Derived]
+        [Required]
+        [Precision(19)]
+        [Scale(2)]
+        decimal QuantityReceived { get; set; }
+
+        #region Allors
+        [Id("")]
+        [AssociationId("")]
+        [RoleId("")]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Indexed]
+        Product Product { get; set; }
+
+        #region Allors
+        [Id("")]
+        [AssociationId("")]
+        [RoleId("")]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Indexed]
+        Part Part { get; set; }
 
         #region inherited methods
 
