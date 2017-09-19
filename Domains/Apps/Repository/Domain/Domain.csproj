@@ -370,6 +370,7 @@
     <Compile Include="Apps\InvoiceVatRateItem.cs" />
     <Compile Include="Apps\ItemIssuance.cs" />
     <Compile Include="Apps\ItemVarianceAccountingTransaction.cs" />
+    <Compile Include="Apps\IUnitOfMeasure.cs" />
     <Compile Include="Apps\Journal.cs" />
     <Compile Include="Apps\JournalEntry.cs" />
     <Compile Include="Apps\JournalEntryDetail.cs" />

@@ -17,8 +17,6 @@ namespace Allors.Domain
 {
     public partial class PurchaseOrderVersion
     {
-        ObjectState Transitional.CurrentObjectState => this.CurrentObjectState;
-
         public void AppsOnBuild(ObjectOnBuild method)
         {
             var builder = (PurchaseOrderVersionBuilder) method.Builder;

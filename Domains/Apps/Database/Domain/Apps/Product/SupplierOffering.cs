@@ -46,8 +46,8 @@ namespace Allors.Domain
                     {
                         foreach (Facility facility in supplierRelationship.InternalOrganisation.FacilitiesWhereOwner)
                         {
-                            var inventoryItems = good.IInventoryItemsWhereGood;
-                            inventoryItems.Filter.AddEquals(M.IInventoryItem.Facility, facility);
+                            var inventoryItems = good.InventoryItemsWhereGood;
+                            inventoryItems.Filter.AddEquals(M.InventoryItem.Facility, facility);
                             var inventoryItem = inventoryItems.First;
 
                             if (inventoryItem == null)
@@ -67,8 +67,8 @@ namespace Allors.Domain
                         {
                             foreach (Facility facility in supplierRelationship.InternalOrganisation.FacilitiesWhereOwner)
                             {
-                                var inventoryItems = good.FinishedGood.IInventoryItemsWherePart;
-                                inventoryItems.Filter.AddEquals(M.IInventoryItem.Facility, facility);
+                                var inventoryItems = good.FinishedGood.InventoryItemsWherePart;
+                                inventoryItems.Filter.AddEquals(M.InventoryItem.Facility, facility);
                                 var inventoryItem = inventoryItems.First;
 
                                 if (inventoryItem == null)

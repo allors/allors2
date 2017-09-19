@@ -17,8 +17,6 @@ namespace Allors.Domain
 {
     public partial class ResearchVersion
     {
-        ObjectState Transitional.CurrentObjectState => this.CurrentObjectState;
-
         public void AppsOnBuild(ObjectOnBuild method)
         {
             var builder = (ResearchVersionBuilder) method.Builder;

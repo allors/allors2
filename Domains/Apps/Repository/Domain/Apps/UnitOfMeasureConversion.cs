@@ -5,7 +5,7 @@ namespace Allors.Repository
     using Allors.Repository.Attributes;
 
     #region Allors
-    [Id("4AF5DEB9-1466-4691-ADD0-D39E3D65B720")]
+    [Id("2e216901-eab9-42e3-9e49-7fe8e88291d3")]
     #endregion
     public partial class UnitOfMeasureConversion : AccessControlledObject 
     {
@@ -17,26 +17,26 @@ namespace Allors.Repository
         #endregion
 
         #region Allors
-        [Id("56E9366E-1474-4F72-A026-047683323049")]
-        [AssociationId("4B1F272D-E44C-4556-AD27-FC1831CCB62A")]
-        [RoleId("E0DA0143-FB75-46EC-9CC5-697A4EC6A770")]
+        [Id("3ae94702-ee60-4057-a649-f655ff4e2865")]
+        [AssociationId("1ab7d188-af19-4742-a0e6-11043b666bd4")]
+        [RoleId("5372ec1c-9b57-4ed5-b665-cdad8a13d933")]
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
         [Required]
 
-        public UnitOfMeasure ToUnitOfMeasure { get; set; }
+        public IUnitOfMeasure ToUnitOfMeasure { get; set; }
         #region Allors
-        [Id("9738B75D-C8D8-42E4-882F-4C77D6A2C4EE")]
-        [AssociationId("22FD56C7-185A-40A3-BA06-2E8D3C3F7AED")]
-        [RoleId("E663BADF-3BCE-499C-9C3B-3A642A00180A")]
+        [Id("5d7ed801-4a2e-4abc-a32d-d869210132af")]
+        [AssociationId("a3467a5f-8c7d-453a-9a33-18d742f20d06")]
+        [RoleId("4b8a465d-9334-427f-b799-d08b7c84200a")]
         #endregion
 
         public DateTime StartDate { get; set; }
         #region Allors
-        [Id("0659D900-2266-4911-9DCB-8527A5880A26")]
-        [AssociationId("14E6E4DA-7870-4A58-AD47-DE20C834FE32")]
-        [RoleId("A1BAADAA-05E0-465D-9347-68A9E787985C")]
+        [Id("835118da-148a-4c42-ab07-75b213a8e1f7")]
+        [AssociationId("f9f78e34-6fe1-4863-b831-cabe46cbc764")]
+        [RoleId("c06dd0a5-dabe-46fa-97f7-62f6f4b47983")]
         #endregion
         [Required]
         [Precision(19)]

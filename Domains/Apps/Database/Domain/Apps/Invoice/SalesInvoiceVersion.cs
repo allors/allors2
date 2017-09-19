@@ -19,8 +19,6 @@ namespace Allors.Domain
 
     public partial class SalesInvoiceVersion
     {
-        ObjectState Transitional.CurrentObjectState => this.CurrentObjectState;
-
         public void AppsOnBuild(ObjectOnBuild method)
         {
             var builder = (SalesInvoiceVersionBuilder) method.Builder;

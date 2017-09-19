@@ -140,11 +140,11 @@ namespace Allors.Domain
         private static ProductRevenue CreateProductRevenue(ISession session, SalesInvoiceItem item)
         {
             return new ProductRevenueBuilder(session)
-                        .WithInternalOrganisation(item.ISalesInvoiceWhereSalesInvoiceItem.BilledFromInternalOrganisation)
+                        .WithInternalOrganisation(item.SalesInvoiceWhereSalesInvoiceItem.BilledFromInternalOrganisation)
                         .WithProduct(item.Product)
-                        .WithYear(item.ISalesInvoiceWhereSalesInvoiceItem.InvoiceDate.Year)
-                        .WithMonth(item.ISalesInvoiceWhereSalesInvoiceItem.InvoiceDate.Month)
-                        .WithCurrency(item.ISalesInvoiceWhereSalesInvoiceItem.BilledFromInternalOrganisation.PreferredCurrency)
+                        .WithYear(item.SalesInvoiceWhereSalesInvoiceItem.InvoiceDate.Year)
+                        .WithMonth(item.SalesInvoiceWhereSalesInvoiceItem.InvoiceDate.Month)
+                        .WithCurrency(item.SalesInvoiceWhereSalesInvoiceItem.BilledFromInternalOrganisation.PreferredCurrency)
                         .WithRevenue(0M)
                         .Build();
         }

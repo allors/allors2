@@ -17,8 +17,6 @@ namespace Allors.Domain
 {
     public partial class PhoneCommunicationVersion
     {
-        ObjectState Transitional.CurrentObjectState => this.CurrentObjectState;
-
         public void AppsOnBuild(ObjectOnBuild method)
         {
             var builder = (PhoneCommunicationVersionBuilder) method.Builder;

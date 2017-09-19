@@ -20,6 +20,14 @@ namespace Allors.Domain
 						global::System.Guid UniqueId {set;}
 
 		}
+		public interface Version  : AccessControlledObject 
+		{
+						global::System.DateTime? TimeStamp {set;}
+
+		}
+		public interface Versioned  : Object 
+		{
+		}
 		public interface Localised  : Object 
 		{
 						Locale Locale {set;}
@@ -185,8 +193,111 @@ namespace Allors.Domain
 		public interface CommunicationAttachment  : AccessControlledObject 
 		{
 		}
-		public interface CommunicationEvent  : Deletable, Commentable, UniquelyIdentifiable, Auditable, ICommunicationEvent 
+		public interface CommunicationEventVersion  : Version 
 		{
+						SecurityToken OwnerSecurityToken {set;}
+
+						AccessControl OwnerAccessControl {set;}
+
+						global::System.DateTime? ScheduledStart {set;}
+
+						Party ToParties {set;}
+
+						ContactMechanism ContactMechanisms {set;}
+
+						Party InvolvedParties {set;}
+
+						global::System.DateTime? InitialScheduledStart {set;}
+
+						CommunicationEventObjectState CurrentObjectState {set;}
+
+						CommunicationEventPurpose EventPurposes {set;}
+
+						global::System.DateTime? ScheduledEnd {set;}
+
+						global::System.DateTime? ActualEnd {set;}
+
+						WorkEffort WorkEfforts {set;}
+
+						global::System.String Description {set;}
+
+						global::System.DateTime? InitialScheduledEnd {set;}
+
+						Party FromParties {set;}
+
+						global::System.String Subject {set;}
+
+						Media Documents {set;}
+
+						Case Case {set;}
+
+						Priority Priority {set;}
+
+						Person Owner {set;}
+
+						global::System.String Note {set;}
+
+						global::System.DateTime? ActualStart {set;}
+
+						global::System.Boolean? SendNotification {set;}
+
+						global::System.Boolean? SendReminder {set;}
+
+						global::System.DateTime? RemindAt {set;}
+
+		}
+		public interface CommunicationEvent  : Deletable, Commentable, UniquelyIdentifiable, Auditable, Transitional 
+		{
+						SecurityToken OwnerSecurityToken {set;}
+
+						AccessControl OwnerAccessControl {set;}
+
+						global::System.DateTime? ScheduledStart {set;}
+
+						Party ToParties {set;}
+
+						ContactMechanism ContactMechanisms {set;}
+
+						Party InvolvedParties {set;}
+
+						global::System.DateTime? InitialScheduledStart {set;}
+
+						CommunicationEventObjectState CurrentObjectState {set;}
+
+						CommunicationEventPurpose EventPurposes {set;}
+
+						global::System.DateTime? ScheduledEnd {set;}
+
+						global::System.DateTime? ActualEnd {set;}
+
+						WorkEffort WorkEfforts {set;}
+
+						global::System.String Description {set;}
+
+						global::System.DateTime? InitialScheduledEnd {set;}
+
+						Party FromParties {set;}
+
+						global::System.String Subject {set;}
+
+						Media Documents {set;}
+
+						Case Case {set;}
+
+						Priority Priority {set;}
+
+						Person Owner {set;}
+
+						global::System.String Note {set;}
+
+						global::System.DateTime? ActualStart {set;}
+
+						global::System.Boolean? SendNotification {set;}
+
+						global::System.Boolean? SendReminder {set;}
+
+						global::System.DateTime? RemindAt {set;}
+
 		}
 		public interface ContactMechanism  : Auditable, Deletable 
 		{
@@ -336,94 +447,12 @@ namespace Allors.Domain
 						global::System.Decimal Longitude {set;}
 
 		}
-		public interface IActivity  : IWorkEffort 
+		public interface InternalAccountingTransaction  : AccountingTransaction 
 		{
-		}
-		public interface ICommunicationEvent  : Transitional 
-		{
-						SecurityToken OwnerSecurityToken {set;}
-
-						AccessControl OwnerAccessControl {set;}
-
-						global::System.DateTime? ScheduledStart {set;}
-
-						Party ToParties {set;}
-
-						ContactMechanism ContactMechanisms {set;}
-
-						Party InvolvedParties {set;}
-
-						global::System.DateTime? InitialScheduledStart {set;}
-
-						CommunicationEventObjectState CurrentObjectState {set;}
-
-						CommunicationEventPurpose EventPurposes {set;}
-
-						global::System.DateTime? ScheduledEnd {set;}
-
-						global::System.DateTime? ActualEnd {set;}
-
-						WorkEffort WorkEfforts {set;}
-
-						global::System.String Description {set;}
-
-						global::System.DateTime? InitialScheduledEnd {set;}
-
-						Party FromParties {set;}
-
-						global::System.String Subject {set;}
-
-						Media Documents {set;}
-
-						Case Case {set;}
-
-						Priority Priority {set;}
-
-						Person Owner {set;}
-
-						global::System.String Note {set;}
-
-						global::System.DateTime? ActualStart {set;}
-
-						global::System.Boolean? SendNotification {set;}
-
-						global::System.Boolean? SendReminder {set;}
-
-						global::System.DateTime? RemindAt {set;}
+						InternalOrganisation InternalOrganisation {set;}
 
 		}
-		public interface IEmailCommunication  : ICommunicationEvent 
-		{
-						EmailAddress Originator {set;}
-
-						EmailAddress Addressees {set;}
-
-						EmailAddress CarbonCopies {set;}
-
-						EmailAddress BlindCopies {set;}
-
-						EmailTemplate EmailTemplate {set;}
-
-						global::System.Boolean IncomingMail {set;}
-
-		}
-		public interface IFaceToFaceCommunication  : ICommunicationEvent 
-		{
-						Party Participants {set;}
-
-						global::System.String Location {set;}
-
-		}
-		public interface IFaxCommunication  : ICommunicationEvent 
-		{
-						Party Originator {set;}
-
-						Party Receiver {set;}
-
-						TelecommunicationsNumber OutgoingFaxNumber {set;}
-
-		}
-		public interface IInventoryItem  : Transitional 
+		public interface InventoryItemVersion  : Version 
 		{
 						ProductCharacteristicValue ProductCharacteristicValues {set;}
 
@@ -450,7 +479,68 @@ namespace Allors.Domain
 						Facility Facility {set;}
 
 		}
-		public interface IInvoice  : Transitional 
+		public interface InventoryItem  : UniquelyIdentifiable, Transitional 
+		{
+						ProductCharacteristicValue ProductCharacteristicValues {set;}
+
+						InventoryItemVariance InventoryItemVariances {set;}
+
+						Part Part {set;}
+
+						Container Container {set;}
+
+						global::System.String Name {set;}
+
+						Lot Lot {set;}
+
+						global::System.String Sku {set;}
+
+						UnitOfMeasure UnitOfMeasure {set;}
+
+						ProductCategory DerivedProductCategories {set;}
+
+						Good Good {set;}
+
+						ProductType ProductType {set;}
+
+						Facility Facility {set;}
+
+		}
+		public interface InventoryItemConfiguration  : Commentable, AccessControlledObject 
+		{
+						InventoryItem InventoryItem {set;}
+
+						global::System.Int32 Quantity {set;}
+
+						InventoryItem ComponentInventoryItem {set;}
+
+		}
+		public interface InvoiceItemVersion  : PriceableVersion 
+		{
+						global::System.String InternalComment {set;}
+
+						AgreementTerm InvoiceTerms {set;}
+
+						global::System.Decimal TotalInvoiceAdjustment {set;}
+
+						InvoiceVatRateItem InvoiceVatRateItems {set;}
+
+						InvoiceItem AdjustmentFor {set;}
+
+						SerialisedInventoryItem SerializedInventoryItem {set;}
+
+						global::System.String Message {set;}
+
+						global::System.Decimal TotalInvoiceAdjustmentCustomerCurrency {set;}
+
+						global::System.Decimal AmountPaid {set;}
+
+						global::System.Decimal Quantity {set;}
+
+						global::System.String Description {set;}
+
+		}
+		public interface InvoiceVersion  : Version 
 		{
 						global::System.String InternalComment {set;}
 
@@ -517,7 +607,74 @@ namespace Allors.Domain
 						global::System.Decimal TotalFee {set;}
 
 		}
-		public interface IInvoiceItem  : Priceable 
+		public interface Invoice  : Localised, Commentable, Printable, Auditable, Transitional 
+		{
+						global::System.String InternalComment {set;}
+
+						global::System.Decimal TotalShippingAndHandlingCustomerCurrency {set;}
+
+						Currency CustomerCurrency {set;}
+
+						global::System.String Description {set;}
+
+						ShippingAndHandlingCharge ShippingAndHandlingCharge {set;}
+
+						global::System.Decimal TotalFeeCustomerCurrency {set;}
+
+						Fee Fee {set;}
+
+						global::System.Decimal TotalExVatCustomerCurrency {set;}
+
+						global::System.String CustomerReference {set;}
+
+						DiscountAdjustment DiscountAdjustment {set;}
+
+						global::System.Decimal AmountPaid {set;}
+
+						global::System.Decimal TotalDiscount {set;}
+
+						BillingAccount BillingAccount {set;}
+
+						global::System.Decimal TotalIncVat {set;}
+
+						global::System.Decimal TotalSurcharge {set;}
+
+						global::System.Decimal TotalBasePrice {set;}
+
+						global::System.Decimal TotalVatCustomerCurrency {set;}
+
+						global::System.DateTime InvoiceDate {set;}
+
+						global::System.DateTime EntryDate {set;}
+
+						global::System.Decimal TotalIncVatCustomerCurrency {set;}
+
+						global::System.Decimal TotalShippingAndHandling {set;}
+
+						global::System.Decimal TotalBasePriceCustomerCurrency {set;}
+
+						SurchargeAdjustment SurchargeAdjustment {set;}
+
+						global::System.Decimal TotalExVat {set;}
+
+						InvoiceTerm InvoiceTerms {set;}
+
+						global::System.Decimal TotalSurchargeCustomerCurrency {set;}
+
+						global::System.String InvoiceNumber {set;}
+
+						global::System.String Message {set;}
+
+						VatRegime VatRegime {set;}
+
+						global::System.Decimal TotalDiscountCustomerCurrency {set;}
+
+						global::System.Decimal TotalVat {set;}
+
+						global::System.Decimal TotalFee {set;}
+
+		}
+		public interface InvoiceItem  : Priceable 
 		{
 						global::System.String InternalComment {set;}
 
@@ -527,7 +684,7 @@ namespace Allors.Domain
 
 						InvoiceVatRateItem InvoiceVatRateItems {set;}
 
-						IInvoiceItem AdjustmentFor {set;}
+						InvoiceItem AdjustmentFor {set;}
 
 						SerialisedInventoryItem SerializedInventoryItem {set;}
 
@@ -542,59 +699,49 @@ namespace Allors.Domain
 						global::System.String Description {set;}
 
 		}
-		public interface ILetterCorrespondence  : ICommunicationEvent 
+		public interface IUnitOfMeasure  : AccessControlledObject, UniquelyIdentifiable 
 		{
-						PostalAddress PostalAddresses {set;}
+						global::System.String Description {set;}
 
-						Party Originators {set;}
+						UnitOfMeasureConversion UnitOfMeasureConversions {set;}
 
-						Party Receivers {set;}
-
-						global::System.Boolean IncomingLetter {set;}
+						global::System.String Abbreviation {set;}
 
 		}
-		public interface IMaintenance  : IWorkEffort 
+		public interface OrderItemVersion  : PriceableVersion 
 		{
-		}
-		public interface INonSerialisedInventoryItem  : IInventoryItem 
-		{
-						global::System.Decimal QuantityCommittedOut {set;}
+						global::System.String InternalComment {set;}
 
-						global::System.Decimal QuantityOnHand {set;}
+						BudgetItem BudgetItem {set;}
 
-						global::System.Decimal PreviousQuantityOnHand {set;}
+						global::System.Decimal PreviousQuantity {set;}
 
-						global::System.Decimal AvailableToPromise {set;}
+						global::System.Decimal QuantityOrdered {set;}
 
-						global::System.Decimal QuantityExpectedIn {set;}
+						global::System.String Description {set;}
 
-						NonSerialisedInventoryItemObjectState CurrentObjectState {set;}
+						PurchaseOrder CorrespondingPurchaseOrder {set;}
 
-		}
-		public interface InternalAccountingTransaction  : AccountingTransaction 
-		{
-						InternalOrganisation InternalOrganisation {set;}
+						global::System.Decimal TotalOrderAdjustmentCustomerCurrency {set;}
 
-		}
-		public interface InventoryItem  : UniquelyIdentifiable, IInventoryItem 
-		{
-		}
-		public interface InventoryItemConfiguration  : Commentable, AccessControlledObject 
-		{
-						IInventoryItem InventoryItem {set;}
+						global::System.Decimal TotalOrderAdjustment {set;}
 
-						global::System.Int32 Quantity {set;}
+						QuoteItem QuoteItem {set;}
 
-						IInventoryItem ComponentInventoryItem {set;}
+						global::System.DateTime? AssignedDeliveryDate {set;}
+
+						global::System.DateTime? DeliveryDate {set;}
+
+						OrderTerm OrderTerms {set;}
+
+						global::System.String ShippingInstruction {set;}
+
+						OrderItem Associations {set;}
+
+						global::System.String Message {set;}
 
 		}
-		public interface Invoice  : IInvoice, Localised, Commentable, Printable, Auditable 
-		{
-		}
-		public interface InvoiceItem  : IInvoiceItem 
-		{
-		}
-		public interface IOrder  : Transitional 
+		public interface OrderVersion  : Version 
 		{
 						global::System.String InternalComment {set;}
 
@@ -661,131 +808,62 @@ namespace Allors.Domain
 						SurchargeAdjustment SurchargeAdjustment {set;}
 
 		}
-		public interface IOrderItem  : Priceable 
+		public interface PriceableVersion  : Version 
 		{
-						global::System.String InternalComment {set;}
+						global::System.Decimal? TotalDiscountAsPercentage {set;}
 
-						BudgetItem BudgetItem {set;}
+						DiscountAdjustment DiscountAdjustment {set;}
 
-						global::System.Decimal PreviousQuantity {set;}
+						global::System.Decimal UnitVat {set;}
 
-						global::System.Decimal QuantityOrdered {set;}
+						global::System.Decimal TotalVatCustomerCurrency {set;}
 
-						global::System.String Description {set;}
+						VatRegime VatRegime {set;}
 
-						PurchaseOrder CorrespondingPurchaseOrder {set;}
+						global::System.Decimal TotalVat {set;}
 
-						global::System.Decimal TotalOrderAdjustmentCustomerCurrency {set;}
+						global::System.Decimal UnitSurcharge {set;}
 
-						global::System.Decimal TotalOrderAdjustment {set;}
+						global::System.Decimal UnitDiscount {set;}
 
-						QuoteItem QuoteItem {set;}
+						global::System.Decimal TotalExVatCustomerCurrency {set;}
 
-						global::System.DateTime? AssignedDeliveryDate {set;}
+						VatRate DerivedVatRate {set;}
 
-						global::System.DateTime? DeliveryDate {set;}
+						global::System.Decimal? ActualUnitPrice {set;}
 
-						OrderTerm OrderTerms {set;}
+						global::System.Decimal TotalIncVatCustomerCurrency {set;}
 
-						global::System.String ShippingInstruction {set;}
+						global::System.Decimal UnitBasePrice {set;}
 
-						OrderItem Associations {set;}
+						global::System.Decimal CalculatedUnitPrice {set;}
 
-						global::System.String Message {set;}
+						global::System.Decimal TotalSurchargeCustomerCurrency {set;}
+
+						global::System.Decimal TotalIncVat {set;}
+
+						global::System.Decimal? TotalSurchargeAsPercentage {set;}
+
+						global::System.Decimal TotalDiscountCustomerCurrency {set;}
+
+						global::System.Decimal TotalDiscount {set;}
+
+						global::System.Decimal TotalSurcharge {set;}
+
+						VatRegime AssignedVatRegime {set;}
+
+						global::System.Decimal TotalBasePrice {set;}
+
+						global::System.Decimal TotalExVat {set;}
+
+						global::System.Decimal TotalBasePriceCustomerCurrency {set;}
+
+						PriceComponent CurrentPriceComponents {set;}
+
+						SurchargeAdjustment SurchargeAdjustment {set;}
 
 		}
-		public interface IPhase  : IWorkEffort 
-		{
-		}
-		public interface IPhoneCommunication  : ICommunicationEvent 
-		{
-						global::System.Boolean? LeftVoiceMail {set;}
-
-						global::System.Boolean IncomingCall {set;}
-
-						Party Receivers {set;}
-
-						Party Callers {set;}
-
-		}
-		public interface IProductionRun  : IWorkEffort 
-		{
-						global::System.Int32? QuantityProduced {set;}
-
-						global::System.Int32? QuantityRejected {set;}
-
-						global::System.Int32? QuantityToProduce {set;}
-
-		}
-		public interface IProductQuote  : IQuote 
-		{
-		}
-		public interface IProgram  : IWorkEffort 
-		{
-		}
-		public interface IProject  : IWorkEffort 
-		{
-		}
-		public interface IProposal  : IQuote 
-		{
-		}
-		public interface IPurchaseInvoice  : IInvoice 
-		{
-						PurchaseInvoiceItem PurchaseInvoiceItems {set;}
-
-						InternalOrganisation BilledToInternalOrganisation {set;}
-
-						PurchaseInvoiceObjectState CurrentObjectState {set;}
-
-						Party BilledFromParty {set;}
-
-						PurchaseInvoiceType PurchaseInvoiceType {set;}
-
-		}
-		public interface IPurchaseInvoiceItem  : IInvoiceItem 
-		{
-						PurchaseInvoiceItemType PurchaseInvoiceItemType {set;}
-
-						Part Part {set;}
-
-						PurchaseInvoiceItemObjectState CurrentObjectState {set;}
-
-		}
-		public interface IPurchaseOrder  : IOrder 
-		{
-						PurchaseOrderItem PurchaseOrderItems {set;}
-
-						Party PreviousTakenViaSupplier {set;}
-
-						Party TakenViaSupplier {set;}
-
-						PurchaseOrderObjectState CurrentObjectState {set;}
-
-						ContactMechanism TakenViaContactMechanism {set;}
-
-						ContactMechanism BillToContactMechanism {set;}
-
-						InternalOrganisation ShipToBuyer {set;}
-
-						Facility Facility {set;}
-
-						PostalAddress ShipToAddress {set;}
-
-						InternalOrganisation BillToPurchaser {set;}
-
-		}
-		public interface IPurchaseOrderItem  : IOrderItem 
-		{
-						PurchaseOrderItemObjectState CurrentObjectState {set;}
-
-						global::System.Decimal QuantityReceived {set;}
-
-						Product Product {set;}
-
-						Part Part {set;}
-
-		}
-		public interface IQuote  : Transitional 
+		public interface QuoteVersion  : Version 
 		{
 						global::System.String InternalComment {set;}
 
@@ -820,40 +898,7 @@ namespace Allors.Domain
 						Request Request {set;}
 
 		}
-		public interface IQuoteItem  : Object 
-		{
-						global::System.String InternalComment {set;}
-
-						Party Authorizer {set;}
-
-						Deliverable Deliverable {set;}
-
-						Product Product {set;}
-
-						global::System.DateTime? EstimatedDeliveryDate {set;}
-
-						global::System.DateTime? RequiredByDate {set;}
-
-						UnitOfMeasure UnitOfMeasure {set;}
-
-						ProductFeature ProductFeature {set;}
-
-						global::System.Decimal? UnitPrice {set;}
-
-						Skill Skill {set;}
-
-						WorkEffort WorkEffort {set;}
-
-						QuoteTerm QuoteTerms {set;}
-
-						global::System.Int32? Quantity {set;}
-
-						RequestItem RequestItem {set;}
-
-						QuoteItemObjectState CurrentObjectState {set;}
-
-		}
-		public interface IRequest  : Transitional 
+		public interface RequestVersion  : Version 
 		{
 						RequestObjectState CurrentObjectState {set;}
 
@@ -884,360 +929,72 @@ namespace Allors.Domain
 						global::System.String TelephoneCountryCode {set;}
 
 		}
-		public interface IRequestForInformation  : IRequest 
-		{
-		}
-		public interface IRequestForProposal  : IRequest 
-		{
-		}
-		public interface IRequestForQuote  : IRequest 
-		{
-		}
-		public interface IRequestItem  : Object 
+		public interface Order  : Printable, Commentable, Localised, Auditable, Transitional 
 		{
 						global::System.String InternalComment {set;}
 
-						global::System.String Description {set;}
+						Currency CustomerCurrency {set;}
 
-						global::System.Int32? Quantity {set;}
+						global::System.Decimal TotalBasePriceCustomerCurrency {set;}
 
-						UnitOfMeasure UnitOfMeasure {set;}
+						global::System.Decimal TotalIncVatCustomerCurrency {set;}
 
-						Requirement Requirements {set;}
+						global::System.Decimal TotalDiscountCustomerCurrency {set;}
 
-						Deliverable Deliverable {set;}
+						global::System.String CustomerReference {set;}
 
-						ProductFeature ProductFeature {set;}
+						Fee Fee {set;}
 
-						NeededSkill NeededSkill {set;}
+						global::System.Decimal TotalExVat {set;}
 
-						Product Product {set;}
+						OrderTerm OrderTerms {set;}
 
-						global::System.Decimal? MaximumAllowedPrice {set;}
+						global::System.Decimal TotalVat {set;}
 
-						global::System.DateTime? RequiredByDate {set;}
+						global::System.Decimal TotalSurcharge {set;}
 
-						RequestItemObjectState CurrentObjectState {set;}
+						OrderItem ValidOrderItems {set;}
 
-		}
-		public interface IResearch  : IWorkEffort 
-		{
-		}
-		public interface ISalesInvoice  : IInvoice 
-		{
-						SalesInvoiceObjectState CurrentObjectState {set;}
+						global::System.String OrderNumber {set;}
 
-						global::System.Decimal? TotalListPrice {set;}
+						global::System.Decimal TotalVatCustomerCurrency {set;}
 
-						InternalOrganisation BilledFromInternalOrganisation {set;}
+						global::System.Decimal TotalDiscount {set;}
 
-						ContactMechanism BillToContactMechanism {set;}
+						global::System.String Message {set;}
 
-						Party PreviousBillToCustomer {set;}
+						global::System.Decimal TotalShippingAndHandlingCustomerCurrency {set;}
 
-						SalesInvoiceType SalesInvoiceType {set;}
+						global::System.DateTime EntryDate {set;}
 
-						global::System.Decimal InitialProfitMargin {set;}
+						DiscountAdjustment DiscountAdjustment {set;}
 
-						PaymentMethod PaymentMethod {set;}
+						OrderKind OrderKind {set;}
 
-						SalesOrder SalesOrder {set;}
+						global::System.Decimal TotalIncVat {set;}
 
-						global::System.Decimal InitialMarkupPercentage {set;}
+						global::System.Decimal TotalSurchargeCustomerCurrency {set;}
 
-						global::System.Decimal MaintainedMarkupPercentage {set;}
+						VatRegime VatRegime {set;}
 
-						Person SalesReps {set;}
+						global::System.Decimal TotalFeeCustomerCurrency {set;}
 
-						Shipment Shipment {set;}
+						global::System.Decimal TotalShippingAndHandling {set;}
 
-						global::System.Decimal MaintainedProfitMargin {set;}
+						ShippingAndHandlingCharge ShippingAndHandlingCharge {set;}
 
-						Party PreviousShipToCustomer {set;}
+						global::System.DateTime OrderDate {set;}
 
-						Party BillToCustomer {set;}
+						global::System.Decimal TotalExVatCustomerCurrency {set;}
 
-						SalesInvoiceItem SalesInvoiceItems {set;}
+						global::System.DateTime? DeliveryDate {set;}
 
-						global::System.Decimal TotalListPriceCustomerCurrency {set;}
+						global::System.Decimal TotalBasePrice {set;}
 
-						Party ShipToCustomer {set;}
+						global::System.Decimal TotalFee {set;}
 
-						ContactMechanism BilledFromContactMechanism {set;}
+						SurchargeAdjustment SurchargeAdjustment {set;}
 
-						global::System.Decimal? TotalPurchasePrice {set;}
-
-						SalesChannel SalesChannel {set;}
-
-						Party Customers {set;}
-
-						PostalAddress ShipToAddress {set;}
-
-						Store Store {set;}
-
-		}
-		public interface ISalesInvoiceItem  : IInvoiceItem 
-		{
-						ProductFeature ProductFeature {set;}
-
-						SalesInvoiceItemObjectState CurrentObjectState {set;}
-
-						global::System.Decimal? RequiredProfitMargin {set;}
-
-						global::System.Decimal InitialMarkupPercentage {set;}
-
-						global::System.Decimal MaintainedMarkupPercentage {set;}
-
-						Product Product {set;}
-
-						global::System.Decimal UnitPurchasePrice {set;}
-
-						SalesOrderItem SalesOrderItem {set;}
-
-						SalesInvoiceItemType SalesInvoiceItemType {set;}
-
-						Person SalesRep {set;}
-
-						global::System.Decimal InitialProfitMargin {set;}
-
-						global::System.Decimal MaintainedProfitMargin {set;}
-
-						TimeEntry TimeEntries {set;}
-
-						global::System.Decimal? RequiredMarkupPercentage {set;}
-
-		}
-		public interface ISalesOrder  : IOrder 
-		{
-						ContactMechanism TakenByContactMechanism {set;}
-
-						Party ShipToCustomer {set;}
-
-						Party BillToCustomer {set;}
-
-						global::System.Decimal TotalPurchasePrice {set;}
-
-						ShipmentMethod ShipmentMethod {set;}
-
-						global::System.Decimal TotalListPriceCustomerCurrency {set;}
-
-						global::System.Decimal MaintainedProfitMargin {set;}
-
-						PostalAddress ShipToAddress {set;}
-
-						Party PreviousShipToCustomer {set;}
-
-						ContactMechanism BillToContactMechanism {set;}
-
-						Person SalesReps {set;}
-
-						global::System.Decimal InitialProfitMargin {set;}
-
-						global::System.Decimal TotalListPrice {set;}
-
-						global::System.Boolean PartiallyShip {set;}
-
-						Party Customers {set;}
-
-						Store Store {set;}
-
-						global::System.Decimal MaintainedMarkupPercentage {set;}
-
-						ContactMechanism BillFromContactMechanism {set;}
-
-						PaymentMethod PaymentMethod {set;}
-
-						ContactMechanism PlacingContactMechanism {set;}
-
-						Party PreviousBillToCustomer {set;}
-
-						SalesChannel SalesChannel {set;}
-
-						Party PlacingCustomer {set;}
-
-						SalesInvoice ProformaInvoice {set;}
-
-						SalesOrderItem SalesOrderItems {set;}
-
-						SalesOrderObjectState CurrentObjectState {set;}
-
-						global::System.Decimal InitialMarkupPercentage {set;}
-
-						InternalOrganisation TakenByInternalOrganisation {set;}
-
-						ProductQuote Quote {set;}
-
-		}
-		public interface ISalesOrderItem  : IOrderItem 
-		{
-						global::System.Decimal InitialProfitMargin {set;}
-
-						global::System.Decimal QuantityShortFalled {set;}
-
-						OrderItem OrderedWithFeatures {set;}
-
-						global::System.Decimal MaintainedProfitMargin {set;}
-
-						global::System.Decimal? RequiredProfitMargin {set;}
-
-						NonSerialisedInventoryItem PreviousReservedFromInventoryItem {set;}
-
-						global::System.Decimal? QuantityShipNow {set;}
-
-						global::System.Decimal? RequiredMarkupPercentage {set;}
-
-						global::System.Decimal QuantityShipped {set;}
-
-						PostalAddress ShipToAddress {set;}
-
-						global::System.Decimal QuantityPicked {set;}
-
-						Product PreviousProduct {set;}
-
-						SalesOrderItemObjectState CurrentObjectState {set;}
-
-						global::System.Decimal UnitPurchasePrice {set;}
-
-						Party ShipToParty {set;}
-
-						PostalAddress AssignedShipToAddress {set;}
-
-						global::System.Decimal QuantityReturned {set;}
-
-						global::System.Decimal QuantityReserved {set;}
-
-						Person SalesRep {set;}
-
-						Party AssignedShipToParty {set;}
-
-						global::System.Decimal QuantityPendingShipment {set;}
-
-						global::System.Decimal MaintainedMarkupPercentage {set;}
-
-						global::System.Decimal InitialMarkupPercentage {set;}
-
-						NonSerialisedInventoryItem ReservedFromInventoryItem {set;}
-
-						Product Product {set;}
-
-						ProductFeature ProductFeature {set;}
-
-						global::System.Decimal QuantityRequestsShipping {set;}
-
-		}
-		public interface ISerialisedInventoryItem  : IInventoryItem 
-		{
-						global::System.String SerialNumber {set;}
-
-						Ownership Ownership {set;}
-
-						global::System.String Owner {set;}
-
-						global::System.Int32? AcquisitionYear {set;}
-
-						global::System.Int32? ManufacturingYear {set;}
-
-						global::System.Decimal? ReplacementValue {set;}
-
-						global::System.Int32? LifeTime {set;}
-
-						global::System.Int32? DepreciationYears {set;}
-
-						global::System.Decimal? PurchasePrice {set;}
-
-						global::System.Decimal? ExpectedSalesPrice {set;}
-
-						global::System.Decimal? RefurbishCost {set;}
-
-						global::System.Decimal? TransportCost {set;}
-
-						SerialisedInventoryItemObjectState CurrentObjectState {set;}
-
-		}
-		public interface IStatementOfWork  : IQuote 
-		{
-		}
-		public interface IUnitOfMeasure  : AccessControlledObject, UniquelyIdentifiable 
-		{
-						global::System.String Description {set;}
-
-						UnitOfMeasureConversion UnitOfMeasureConversions {set;}
-
-						global::System.String Abbreviation {set;}
-
-		}
-		public interface IWebSiteCommunication  : ICommunicationEvent 
-		{
-						Party Originator {set;}
-
-						Party Receiver {set;}
-
-		}
-		public interface IWorkEffort  : Transitional 
-		{
-						SecurityToken OwnerSecurityToken {set;}
-
-						AccessControl OwnerAccessControl {set;}
-
-						global::System.String Name {set;}
-
-						global::System.String Description {set;}
-
-						WorkEffortObjectState CurrentObjectState {set;}
-
-						Priority Priority {set;}
-
-						WorkEffortPurpose WorkEffortPurposes {set;}
-
-						global::System.DateTime? ActualCompletion {set;}
-
-						global::System.DateTime? ScheduledStart {set;}
-
-						global::System.DateTime? ScheduledCompletion {set;}
-
-						global::System.Decimal? ActualHours {set;}
-
-						global::System.Decimal? EstimatedHours {set;}
-
-						WorkEffort Precendencies {set;}
-
-						Facility Facility {set;}
-
-						Deliverable DeliverablesProduced {set;}
-
-						global::System.DateTime? ActualStart {set;}
-
-						WorkEffortInventoryAssignment InventoryItemsNeeded {set;}
-
-						WorkEffort Children {set;}
-
-						OrderItem OrderItemFulfillment {set;}
-
-						WorkEffortType WorkEffortType {set;}
-
-						IInventoryItem InventoryItemsProduced {set;}
-
-						Requirement RequirementFulfillments {set;}
-
-						global::System.String SpecialTerms {set;}
-
-						WorkEffort Concurrencies {set;}
-
-		}
-		public interface IWorkFlow  : IWorkEffort 
-		{
-		}
-		public interface IWorkTask  : IWorkEffort 
-		{
-						global::System.Boolean? SendNotification {set;}
-
-						global::System.Boolean? SendReminder {set;}
-
-						global::System.DateTime? RemindAt {set;}
-
-		}
-		public interface Order  : IOrder, Printable, Commentable, Localised, Auditable 
-		{
 		}
 		public interface OrderAdjustment  : AccessControlledObject 
 		{
@@ -1248,8 +1005,38 @@ namespace Allors.Domain
 						global::System.Decimal? Percentage {set;}
 
 		}
-		public interface OrderItem  : IOrderItem 
+		public interface OrderItem  : Priceable 
 		{
+						global::System.String InternalComment {set;}
+
+						BudgetItem BudgetItem {set;}
+
+						global::System.Decimal PreviousQuantity {set;}
+
+						global::System.Decimal QuantityOrdered {set;}
+
+						global::System.String Description {set;}
+
+						PurchaseOrder CorrespondingPurchaseOrder {set;}
+
+						global::System.Decimal TotalOrderAdjustmentCustomerCurrency {set;}
+
+						global::System.Decimal TotalOrderAdjustment {set;}
+
+						QuoteItem QuoteItem {set;}
+
+						global::System.DateTime? AssignedDeliveryDate {set;}
+
+						global::System.DateTime? DeliveryDate {set;}
+
+						OrderTerm OrderTerms {set;}
+
+						global::System.String ShippingInstruction {set;}
+
+						OrderItem Associations {set;}
+
+						global::System.String Message {set;}
+
 		}
 		public interface OrganisationClassification  : PartyClassification 
 		{
@@ -1636,11 +1423,71 @@ namespace Allors.Domain
 						VatRate VatRate {set;}
 
 		}
-		public interface Quote  : IQuote, Printable, Auditable, Commentable 
+		public interface Quote  : Transitional, Printable, Auditable, Commentable 
 		{
+						global::System.String InternalComment {set;}
+
+						global::System.DateTime? RequiredResponseDate {set;}
+
+						global::System.DateTime? ValidFromDate {set;}
+
+						QuoteTerm QuoteTerms {set;}
+
+						Party Issuer {set;}
+
+						global::System.DateTime? ValidThroughDate {set;}
+
+						global::System.String Description {set;}
+
+						Party Receiver {set;}
+
+						ContactMechanism FullfillContactMechanism {set;}
+
+						global::System.Decimal? Amount {set;}
+
+						Currency Currency {set;}
+
+						global::System.DateTime? IssueDate {set;}
+
+						QuoteItem QuoteItems {set;}
+
+						global::System.String QuoteNumber {set;}
+
+						QuoteObjectState CurrentObjectState {set;}
+
+						Request Request {set;}
+
 		}
-		public interface Request  : IRequest, Commentable, Auditable, Printable 
+		public interface Request  : Transitional, Commentable, Auditable, Printable 
 		{
+						RequestObjectState CurrentObjectState {set;}
+
+						global::System.String InternalComment {set;}
+
+						global::System.String Description {set;}
+
+						global::System.DateTime RequestDate {set;}
+
+						global::System.DateTime? RequiredResponseDate {set;}
+
+						RequestItem RequestItems {set;}
+
+						global::System.String RequestNumber {set;}
+
+						RespondingParty RespondingParties {set;}
+
+						Party Originator {set;}
+
+						Currency Currency {set;}
+
+						ContactMechanism FullfillContactMechanism {set;}
+
+						global::System.String EmailAddress {set;}
+
+						global::System.String TelephoneNumber {set;}
+
+						global::System.String TelephoneCountryCode {set;}
+
 		}
 		public interface Requirement  : Transitional, UniquelyIdentifiable 
 		{
@@ -1742,8 +1589,107 @@ namespace Allors.Domain
 						global::System.DateTime? EstimatedArrivalDate {set;}
 
 		}
-		public interface WorkEffort  : IWorkEffort, UniquelyIdentifiable, Deletable, Auditable 
+		public interface WorkEffortVersion  : Version 
 		{
+						SecurityToken OwnerSecurityToken {set;}
+
+						AccessControl OwnerAccessControl {set;}
+
+						global::System.String Name {set;}
+
+						global::System.String Description {set;}
+
+						WorkEffortObjectState CurrentObjectState {set;}
+
+						Priority Priority {set;}
+
+						WorkEffortPurpose WorkEffortPurposes {set;}
+
+						global::System.DateTime? ActualCompletion {set;}
+
+						global::System.DateTime? ScheduledStart {set;}
+
+						global::System.DateTime? ScheduledCompletion {set;}
+
+						global::System.Decimal? ActualHours {set;}
+
+						global::System.Decimal? EstimatedHours {set;}
+
+						WorkEffort Precendencies {set;}
+
+						Facility Facility {set;}
+
+						Deliverable DeliverablesProduced {set;}
+
+						global::System.DateTime? ActualStart {set;}
+
+						WorkEffortInventoryAssignment InventoryItemsNeeded {set;}
+
+						WorkEffort Children {set;}
+
+						OrderItem OrderItemFulfillment {set;}
+
+						WorkEffortType WorkEffortType {set;}
+
+						InventoryItem InventoryItemsProduced {set;}
+
+						Requirement RequirementFulfillments {set;}
+
+						global::System.String SpecialTerms {set;}
+
+						WorkEffort Concurrencies {set;}
+
+		}
+		public interface WorkEffort  : Transitional, UniquelyIdentifiable, Deletable, Auditable, Versioned 
+		{
+						SecurityToken OwnerSecurityToken {set;}
+
+						AccessControl OwnerAccessControl {set;}
+
+						global::System.String Name {set;}
+
+						global::System.String Description {set;}
+
+						WorkEffortObjectState CurrentObjectState {set;}
+
+						Priority Priority {set;}
+
+						WorkEffortPurpose WorkEffortPurposes {set;}
+
+						global::System.DateTime? ActualCompletion {set;}
+
+						global::System.DateTime? ScheduledStart {set;}
+
+						global::System.DateTime? ScheduledCompletion {set;}
+
+						global::System.Decimal? ActualHours {set;}
+
+						global::System.Decimal? EstimatedHours {set;}
+
+						WorkEffort Precendencies {set;}
+
+						Facility Facility {set;}
+
+						Deliverable DeliverablesProduced {set;}
+
+						global::System.DateTime? ActualStart {set;}
+
+						WorkEffortInventoryAssignment InventoryItemsNeeded {set;}
+
+						WorkEffort Children {set;}
+
+						OrderItem OrderItemFulfillment {set;}
+
+						WorkEffortType WorkEffortType {set;}
+
+						InventoryItem InventoryItemsProduced {set;}
+
+						Requirement RequirementFulfillments {set;}
+
+						global::System.String SpecialTerms {set;}
+
+						WorkEffort Concurrencies {set;}
+
 		}
 		public interface Counter  : UniquelyIdentifiable 
 		{
@@ -2066,7 +2012,7 @@ namespace Allors.Domain
 		public interface AccountingTransactionType  : Enumeration 
 		{
 		}
-		public interface Activity  : WorkEffort, IActivity 
+		public interface Activity  : WorkEffort 
 		{
 						ActivityVersion CurrentVersion {set;}
 
@@ -2086,10 +2032,8 @@ namespace Allors.Domain
 						UnitOfMeasure UnitOfMeasure {set;}
 
 		}
-		public interface ActivityVersion  : IActivity 
+		public interface ActivityVersion  : WorkEffortVersion 
 		{
-						global::System.DateTime? TimeStamp {set;}
-
 		}
 		public interface Addendum  : AccessControlledObject 
 		{
@@ -2655,8 +2599,20 @@ namespace Allors.Domain
 		public interface EmailAddress  : ElectronicAddress 
 		{
 		}
-		public interface EmailCommunication  : CommunicationEvent, IEmailCommunication 
+		public interface EmailCommunication  : CommunicationEvent 
 		{
+						EmailAddress Originator {set;}
+
+						EmailAddress Addressees {set;}
+
+						EmailAddress CarbonCopies {set;}
+
+						EmailAddress BlindCopies {set;}
+
+						EmailTemplate EmailTemplate {set;}
+
+						global::System.Boolean IncomingMail {set;}
+
 						EmailCommunicationVersion CurrentVersion {set;}
 
 						EmailCommunicationVersion PreviousVersion {set;}
@@ -2668,9 +2624,19 @@ namespace Allors.Domain
 						EmailCommunicationVersion AllStateVersions {set;}
 
 		}
-		public interface EmailCommunicationVersion  : IEmailCommunication 
+		public interface EmailCommunicationVersion  : CommunicationEventVersion 
 		{
-						global::System.DateTime? TimeStamp {set;}
+						EmailAddress Originator {set;}
+
+						EmailAddress Addressees {set;}
+
+						EmailAddress CarbonCopies {set;}
+
+						EmailAddress BlindCopies {set;}
+
+						EmailTemplate EmailTemplate {set;}
+
+						global::System.Boolean IncomingMail {set;}
 
 		}
 		public interface EmailTemplate  : AccessControlledObject 
@@ -2869,8 +2835,12 @@ namespace Allors.Domain
 		public interface ExportDocument  : Document 
 		{
 		}
-		public interface FaceToFaceCommunication  : CommunicationEvent, IFaceToFaceCommunication 
+		public interface FaceToFaceCommunication  : CommunicationEvent 
 		{
+						Party Participants {set;}
+
+						global::System.String Location {set;}
+
 						FaceToFaceCommunicationVersion CurrentVersion {set;}
 
 						FaceToFaceCommunicationVersion PreviousVersion {set;}
@@ -2882,13 +2852,21 @@ namespace Allors.Domain
 						FaceToFaceCommunicationVersion AllStateVersions {set;}
 
 		}
-		public interface FaceToFaceCommunicationVersion  : IFaceToFaceCommunication 
+		public interface FaceToFaceCommunicationVersion  : CommunicationEventVersion 
 		{
-						global::System.DateTime? TimeStamp {set;}
+						Party Participants {set;}
+
+						global::System.String Location {set;}
 
 		}
-		public interface FaxCommunication  : CommunicationEvent, IFaxCommunication 
+		public interface FaxCommunication  : CommunicationEvent 
 		{
+						Party Originator {set;}
+
+						Party Receiver {set;}
+
+						TelecommunicationsNumber OutgoingFaxNumber {set;}
+
 						FaxCommunicationVersion CurrentVersion {set;}
 
 						FaxCommunicationVersion PreviousVersion {set;}
@@ -2900,9 +2878,13 @@ namespace Allors.Domain
 						FaxCommunicationVersion AllStateVersions {set;}
 
 		}
-		public interface FaxCommunicationVersion  : IFaxCommunication 
+		public interface FaxCommunicationVersion  : CommunicationEventVersion 
 		{
-						global::System.DateTime? TimeStamp {set;}
+						Party Originator {set;}
+
+						Party Receiver {set;}
+
+						TelecommunicationsNumber OutgoingFaxNumber {set;}
 
 		}
 		public interface Fee  : OrderAdjustment 
@@ -3227,7 +3209,7 @@ namespace Allors.Domain
 		{
 						global::System.DateTime? IssuanceDateTime {set;}
 
-						IInventoryItem InventoryItem {set;}
+						InventoryItem InventoryItem {set;}
 
 						global::System.Decimal Quantity {set;}
 
@@ -3306,8 +3288,16 @@ namespace Allors.Domain
 		public interface LegalTerm  : AgreementTerm 
 		{
 		}
-		public interface LetterCorrespondence  : CommunicationEvent, ILetterCorrespondence 
+		public interface LetterCorrespondence  : CommunicationEvent 
 		{
+						PostalAddress PostalAddresses {set;}
+
+						Party Originators {set;}
+
+						Party Receivers {set;}
+
+						global::System.Boolean IncomingLetter {set;}
+
 						LetterCorrespondenceVersion CurrentVersion {set;}
 
 						LetterCorrespondenceVersion PreviousVersion {set;}
@@ -3319,9 +3309,15 @@ namespace Allors.Domain
 						LetterCorrespondenceVersion AllStateVersions {set;}
 
 		}
-		public interface LetterCorrespondenceVersion  : ILetterCorrespondence 
+		public interface LetterCorrespondenceVersion  : CommunicationEventVersion 
 		{
-						global::System.DateTime? TimeStamp {set;}
+						PostalAddress PostalAddresses {set;}
+
+						Party Originators {set;}
+
+						Party Receivers {set;}
+
+						global::System.Boolean IncomingLetter {set;}
 
 		}
 		public interface Lot  : AccessControlledObject 
@@ -3333,7 +3329,7 @@ namespace Allors.Domain
 						global::System.String LotNumber {set;}
 
 		}
-		public interface Maintenance  : WorkEffort, IMaintenance 
+		public interface Maintenance  : WorkEffort 
 		{
 						MaintenanceVersion CurrentVersion {set;}
 
@@ -3346,10 +3342,8 @@ namespace Allors.Domain
 						MaintenanceVersion AllStateVersions {set;}
 
 		}
-		public interface MaintenanceVersion  : IMaintenance 
+		public interface MaintenanceVersion  : WorkEffortVersion 
 		{
-						global::System.DateTime? TimeStamp {set;}
-
 		}
 		public interface Manifest  : Document 
 		{
@@ -3418,8 +3412,20 @@ namespace Allors.Domain
 						global::System.Boolean? Announcement {set;}
 
 		}
-		public interface NonSerialisedInventoryItem  : InventoryItem, INonSerialisedInventoryItem 
+		public interface NonSerialisedInventoryItem  : InventoryItem 
 		{
+						global::System.Decimal QuantityCommittedOut {set;}
+
+						global::System.Decimal QuantityOnHand {set;}
+
+						global::System.Decimal PreviousQuantityOnHand {set;}
+
+						global::System.Decimal AvailableToPromise {set;}
+
+						global::System.Decimal QuantityExpectedIn {set;}
+
+						NonSerialisedInventoryItemObjectState CurrentObjectState {set;}
+
 						NonSerialisedInventoryItemVersion AllVersions {set;}
 
 						NonSerialisedInventoryItemVersion CurrentVersion {set;}
@@ -3434,9 +3440,19 @@ namespace Allors.Domain
 		public interface NonSerialisedInventoryItemObjectState  : ObjectState 
 		{
 		}
-		public interface NonSerialisedInventoryItemVersion  : INonSerialisedInventoryItem 
+		public interface NonSerialisedInventoryItemVersion  : InventoryItemVersion 
 		{
-						global::System.DateTime? TimeStamp {set;}
+						global::System.Decimal QuantityCommittedOut {set;}
+
+						global::System.Decimal QuantityOnHand {set;}
+
+						global::System.Decimal PreviousQuantityOnHand {set;}
+
+						global::System.Decimal AvailableToPromise {set;}
+
+						global::System.Decimal QuantityExpectedIn {set;}
+
+						NonSerialisedInventoryItemObjectState CurrentObjectState {set;}
 
 		}
 		public interface NonSerializedInventoryItemObjectState  : ObjectState 
@@ -3452,117 +3468,401 @@ namespace Allors.Domain
 		public interface Ownership  : Enumeration 
 		{
 		}
-		public interface PhaseVersion  : IPhase 
+		public interface PhaseVersion  : WorkEffortVersion 
 		{
-						global::System.DateTime? TimeStamp {set;}
-
 		}
-		public interface PhoneCommunicationVersion  : IPhoneCommunication 
+		public interface PhoneCommunicationVersion  : CommunicationEventVersion 
 		{
-						global::System.DateTime? TimeStamp {set;}
+						global::System.Boolean? LeftVoiceMail {set;}
+
+						global::System.Boolean IncomingCall {set;}
+
+						Party Receivers {set;}
+
+						Party Callers {set;}
 
 		}
 		public interface ProcessFlow  : Enumeration 
 		{
 		}
-		public interface ProductionRunVersion  : IProductionRun 
+		public interface ProductionRunVersion  : WorkEffortVersion 
 		{
-						global::System.DateTime? TimeStamp {set;}
+						global::System.Int32? QuantityProduced {set;}
+
+						global::System.Int32? QuantityRejected {set;}
+
+						global::System.Int32? QuantityToProduce {set;}
 
 		}
-		public interface ProductQuoteVersion  : IProductQuote 
+		public interface ProductQuoteVersion  : QuoteVersion 
 		{
-						global::System.DateTime? TimeStamp {set;}
+		}
+		public interface ProgramVersion  : WorkEffortVersion 
+		{
+		}
+		public interface ProjectVersion  : WorkEffortVersion 
+		{
+		}
+		public interface ProposalVersion  : QuoteVersion 
+		{
+		}
+		public interface PurchaseInvoiceItemVersion  : InvoiceItemVersion 
+		{
+						PurchaseInvoiceItemType PurchaseInvoiceItemType {set;}
+
+						Part Part {set;}
+
+						PurchaseInvoiceItemObjectState CurrentObjectState {set;}
 
 		}
-		public interface ProgramVersion  : IProgram 
+		public interface PurchaseInvoiceVersion  : InvoiceVersion 
 		{
-						global::System.DateTime? TimeStamp {set;}
+						PurchaseInvoiceItem PurchaseInvoiceItems {set;}
+
+						InternalOrganisation BilledToInternalOrganisation {set;}
+
+						PurchaseInvoiceObjectState CurrentObjectState {set;}
+
+						Party BilledFromParty {set;}
+
+						PurchaseInvoiceType PurchaseInvoiceType {set;}
 
 		}
-		public interface ProjectVersion  : IProject 
+		public interface PurchaseOrderItemVersion  : OrderItemVersion 
 		{
-						global::System.DateTime? TimeStamp {set;}
+						PurchaseOrderItemObjectState CurrentObjectState {set;}
+
+						global::System.Decimal QuantityReceived {set;}
+
+						Product Product {set;}
+
+						Part Part {set;}
 
 		}
-		public interface ProposalVersion  : IProposal 
+		public interface PurchaseOrderVersion  : OrderVersion 
 		{
-						global::System.DateTime? TimeStamp {set;}
+						PurchaseOrderItem PurchaseOrderItems {set;}
+
+						Party PreviousTakenViaSupplier {set;}
+
+						Party TakenViaSupplier {set;}
+
+						PurchaseOrderObjectState CurrentObjectState {set;}
+
+						ContactMechanism TakenViaContactMechanism {set;}
+
+						ContactMechanism BillToContactMechanism {set;}
+
+						InternalOrganisation ShipToBuyer {set;}
+
+						Facility Facility {set;}
+
+						PostalAddress ShipToAddress {set;}
+
+						InternalOrganisation BillToPurchaser {set;}
 
 		}
-		public interface PurchaseInvoiceItemVersion  : IPurchaseInvoiceItem 
+		public interface QuoteItemVersion  : Version 
 		{
-						global::System.DateTime? TimeStamp {set;}
+						global::System.String InternalComment {set;}
+
+						Party Authorizer {set;}
+
+						Deliverable Deliverable {set;}
+
+						Product Product {set;}
+
+						global::System.DateTime? EstimatedDeliveryDate {set;}
+
+						global::System.DateTime? RequiredByDate {set;}
+
+						UnitOfMeasure UnitOfMeasure {set;}
+
+						ProductFeature ProductFeature {set;}
+
+						global::System.Decimal? UnitPrice {set;}
+
+						Skill Skill {set;}
+
+						WorkEffort WorkEffort {set;}
+
+						QuoteTerm QuoteTerms {set;}
+
+						global::System.Int32? Quantity {set;}
+
+						RequestItem RequestItem {set;}
+
+						QuoteItemObjectState CurrentObjectState {set;}
 
 		}
-		public interface PurchaseInvoiceVersion  : IPurchaseInvoice 
+		public interface RequestForInformationVersion  : RequestVersion 
 		{
-						global::System.DateTime? TimeStamp {set;}
+		}
+		public interface RequestForProposalVersion  : RequestVersion 
+		{
+		}
+		public interface RequestForQuoteVersion  : RequestVersion 
+		{
+		}
+		public interface RequestItemVersion  : Version 
+		{
+						global::System.String InternalComment {set;}
+
+						global::System.String Description {set;}
+
+						global::System.Int32? Quantity {set;}
+
+						UnitOfMeasure UnitOfMeasure {set;}
+
+						Requirement Requirements {set;}
+
+						Deliverable Deliverable {set;}
+
+						ProductFeature ProductFeature {set;}
+
+						NeededSkill NeededSkill {set;}
+
+						Product Product {set;}
+
+						global::System.Decimal? MaximumAllowedPrice {set;}
+
+						global::System.DateTime? RequiredByDate {set;}
+
+						RequestItemObjectState CurrentObjectState {set;}
 
 		}
-		public interface PurchaseOrderItemVersion  : IPurchaseOrderItem 
+		public interface ResearchVersion  : WorkEffortVersion 
 		{
-						global::System.DateTime? TimeStamp {set;}
+		}
+		public interface SalesInvoiceItemVersion  : InvoiceItemVersion 
+		{
+						ProductFeature ProductFeature {set;}
+
+						SalesInvoiceItemObjectState CurrentObjectState {set;}
+
+						global::System.Decimal? RequiredProfitMargin {set;}
+
+						global::System.Decimal InitialMarkupPercentage {set;}
+
+						global::System.Decimal MaintainedMarkupPercentage {set;}
+
+						Product Product {set;}
+
+						global::System.Decimal UnitPurchasePrice {set;}
+
+						SalesOrderItem SalesOrderItem {set;}
+
+						SalesInvoiceItemType SalesInvoiceItemType {set;}
+
+						Person SalesRep {set;}
+
+						global::System.Decimal InitialProfitMargin {set;}
+
+						global::System.Decimal MaintainedProfitMargin {set;}
+
+						TimeEntry TimeEntries {set;}
+
+						global::System.Decimal? RequiredMarkupPercentage {set;}
 
 		}
-		public interface PurchaseOrderVersion  : IPurchaseOrder 
+		public interface SalesInvoiceVersion  : InvoiceVersion 
 		{
-						global::System.DateTime? TimeStamp {set;}
+						SalesInvoiceObjectState CurrentObjectState {set;}
+
+						global::System.Decimal? TotalListPrice {set;}
+
+						InternalOrganisation BilledFromInternalOrganisation {set;}
+
+						ContactMechanism BillToContactMechanism {set;}
+
+						Party PreviousBillToCustomer {set;}
+
+						SalesInvoiceType SalesInvoiceType {set;}
+
+						global::System.Decimal InitialProfitMargin {set;}
+
+						PaymentMethod PaymentMethod {set;}
+
+						SalesOrder SalesOrder {set;}
+
+						global::System.Decimal InitialMarkupPercentage {set;}
+
+						global::System.Decimal MaintainedMarkupPercentage {set;}
+
+						Person SalesReps {set;}
+
+						Shipment Shipment {set;}
+
+						global::System.Decimal MaintainedProfitMargin {set;}
+
+						Party PreviousShipToCustomer {set;}
+
+						Party BillToCustomer {set;}
+
+						SalesInvoiceItem SalesInvoiceItems {set;}
+
+						global::System.Decimal TotalListPriceCustomerCurrency {set;}
+
+						Party ShipToCustomer {set;}
+
+						ContactMechanism BilledFromContactMechanism {set;}
+
+						global::System.Decimal? TotalPurchasePrice {set;}
+
+						SalesChannel SalesChannel {set;}
+
+						Party Customers {set;}
+
+						PostalAddress ShipToAddress {set;}
+
+						Store Store {set;}
 
 		}
-		public interface QuoteItemVersion  : IQuoteItem 
+		public interface SalesOrderItemVersion  : OrderItemVersion 
 		{
-						global::System.DateTime? TimeStamp {set;}
+						global::System.Decimal InitialProfitMargin {set;}
+
+						global::System.Decimal QuantityShortFalled {set;}
+
+						OrderItem OrderedWithFeatures {set;}
+
+						global::System.Decimal MaintainedProfitMargin {set;}
+
+						global::System.Decimal? RequiredProfitMargin {set;}
+
+						NonSerialisedInventoryItem PreviousReservedFromInventoryItem {set;}
+
+						global::System.Decimal? QuantityShipNow {set;}
+
+						global::System.Decimal? RequiredMarkupPercentage {set;}
+
+						global::System.Decimal QuantityShipped {set;}
+
+						PostalAddress ShipToAddress {set;}
+
+						global::System.Decimal QuantityPicked {set;}
+
+						Product PreviousProduct {set;}
+
+						SalesOrderItemObjectState CurrentObjectState {set;}
+
+						global::System.Decimal UnitPurchasePrice {set;}
+
+						Party ShipToParty {set;}
+
+						PostalAddress AssignedShipToAddress {set;}
+
+						global::System.Decimal QuantityReturned {set;}
+
+						global::System.Decimal QuantityReserved {set;}
+
+						Person SalesRep {set;}
+
+						Party AssignedShipToParty {set;}
+
+						global::System.Decimal QuantityPendingShipment {set;}
+
+						global::System.Decimal MaintainedMarkupPercentage {set;}
+
+						global::System.Decimal InitialMarkupPercentage {set;}
+
+						NonSerialisedInventoryItem ReservedFromInventoryItem {set;}
+
+						Product Product {set;}
+
+						ProductFeature ProductFeature {set;}
+
+						global::System.Decimal QuantityRequestsShipping {set;}
 
 		}
-		public interface RequestForInformationVersion  : IRequestForInformation 
+		public interface SalesOrderVersion  : OrderVersion 
 		{
-						global::System.DateTime? TimeStamp {set;}
+						ContactMechanism TakenByContactMechanism {set;}
+
+						Party ShipToCustomer {set;}
+
+						Party BillToCustomer {set;}
+
+						global::System.Decimal TotalPurchasePrice {set;}
+
+						ShipmentMethod ShipmentMethod {set;}
+
+						global::System.Decimal TotalListPriceCustomerCurrency {set;}
+
+						global::System.Decimal MaintainedProfitMargin {set;}
+
+						PostalAddress ShipToAddress {set;}
+
+						Party PreviousShipToCustomer {set;}
+
+						ContactMechanism BillToContactMechanism {set;}
+
+						Person SalesReps {set;}
+
+						global::System.Decimal InitialProfitMargin {set;}
+
+						global::System.Decimal TotalListPrice {set;}
+
+						global::System.Boolean PartiallyShip {set;}
+
+						Party Customers {set;}
+
+						Store Store {set;}
+
+						global::System.Decimal MaintainedMarkupPercentage {set;}
+
+						ContactMechanism BillFromContactMechanism {set;}
+
+						PaymentMethod PaymentMethod {set;}
+
+						ContactMechanism PlacingContactMechanism {set;}
+
+						Party PreviousBillToCustomer {set;}
+
+						SalesChannel SalesChannel {set;}
+
+						Party PlacingCustomer {set;}
+
+						SalesInvoice ProformaInvoice {set;}
+
+						SalesOrderItem SalesOrderItems {set;}
+
+						SalesOrderObjectState CurrentObjectState {set;}
+
+						global::System.Decimal InitialMarkupPercentage {set;}
+
+						InternalOrganisation TakenByInternalOrganisation {set;}
+
+						ProductQuote Quote {set;}
 
 		}
-		public interface RequestForProposalVersion  : IRequestForProposal 
+		public interface SerialisedInventoryItemVersion  : InventoryItemVersion 
 		{
-						global::System.DateTime? TimeStamp {set;}
+						global::System.String SerialNumber {set;}
 
-		}
-		public interface RequestForQuoteVersion  : IRequestForQuote 
-		{
-						global::System.DateTime? TimeStamp {set;}
+						Ownership Ownership {set;}
 
-		}
-		public interface RequestItemVersion  : IRequestItem 
-		{
-						global::System.DateTime? TimeStamp {set;}
+						global::System.String Owner {set;}
 
-		}
-		public interface ResearchVersion  : IResearch 
-		{
-						global::System.DateTime? TimeStamp {set;}
+						global::System.Int32? AcquisitionYear {set;}
 
-		}
-		public interface SalesInvoiceItemVersion  : ISalesInvoiceItem 
-		{
-						global::System.DateTime? TimeStamp {set;}
+						global::System.Int32? ManufacturingYear {set;}
 
-		}
-		public interface SalesInvoiceVersion  : ISalesInvoice 
-		{
-						global::System.DateTime? TimeStamp {set;}
+						global::System.Decimal? ReplacementValue {set;}
 
-		}
-		public interface SalesOrderItemVersion  : ISalesOrderItem 
-		{
-						global::System.DateTime? TimeStamp {set;}
+						global::System.Int32? LifeTime {set;}
 
-		}
-		public interface SalesOrderVersion  : ISalesOrder 
-		{
-						global::System.DateTime? TimeStamp {set;}
+						global::System.Int32? DepreciationYears {set;}
 
-		}
-		public interface SerialisedInventoryItemVersion  : ISerialisedInventoryItem 
-		{
-						global::System.DateTime? TimeStamp {set;}
+						global::System.Decimal? PurchasePrice {set;}
+
+						global::System.Decimal? ExpectedSalesPrice {set;}
+
+						global::System.Decimal? RefurbishCost {set;}
+
+						global::System.Decimal? TransportCost {set;}
+
+						SerialisedInventoryItemObjectState CurrentObjectState {set;}
 
 		}
 		public interface Note  : ExternalAccountingTransaction 
@@ -4055,7 +4355,7 @@ namespace Allors.Domain
 		{
 						global::System.Decimal AmountApplied {set;}
 
-						IInvoiceItem InvoiceItem {set;}
+						InvoiceItem InvoiceItem {set;}
 
 						Invoice Invoice {set;}
 
@@ -4136,7 +4436,7 @@ namespace Allors.Domain
 						Training Training {set;}
 
 		}
-		public interface Phase  : WorkEffort, IPhase 
+		public interface Phase  : WorkEffort 
 		{
 						PhaseVersion CurrentVersion {set;}
 
@@ -4149,8 +4449,16 @@ namespace Allors.Domain
 						PhaseVersion AllStateVersions {set;}
 
 		}
-		public interface PhoneCommunication  : CommunicationEvent, IPhoneCommunication 
+		public interface PhoneCommunication  : CommunicationEvent 
 		{
+						global::System.Boolean? LeftVoiceMail {set;}
+
+						global::System.Boolean IncomingCall {set;}
+
+						Party Receivers {set;}
+
+						Party Callers {set;}
+
 						PhoneCommunicationVersion CurrentVersion {set;}
 
 						PhoneCommunicationVersion PreviousVersion {set;}
@@ -4187,7 +4495,7 @@ namespace Allors.Domain
 		{
 						global::System.Decimal RequestedQuantity {set;}
 
-						IInventoryItem InventoryItem {set;}
+						InventoryItem InventoryItem {set;}
 
 						global::System.Decimal? ActualQuantity {set;}
 
@@ -4420,8 +4728,14 @@ namespace Allors.Domain
 						ProductFeature UsedToDefine {set;}
 
 		}
-		public interface ProductionRun  : WorkEffort, IProductionRun 
+		public interface ProductionRun  : WorkEffort 
 		{
+						global::System.Int32? QuantityProduced {set;}
+
+						global::System.Int32? QuantityRejected {set;}
+
+						global::System.Int32? QuantityToProduce {set;}
+
 						ProductionRunVersion CurrentVersion {set;}
 
 						ProductionRunVersion PreviousVersion {set;}
@@ -4448,7 +4762,7 @@ namespace Allors.Domain
 		public interface ProductQuality  : ProductFeature, Enumeration 
 		{
 		}
-		public interface ProductQuote  : Quote, IProductQuote 
+		public interface ProductQuote  : Quote 
 		{
 						ProductQuoteVersion CurrentVersion {set;}
 
@@ -4520,7 +4834,7 @@ namespace Allors.Domain
 						Organisation ProfessionalServicesProvider {set;}
 
 		}
-		public interface Program  : WorkEffort, IProgram 
+		public interface Program  : WorkEffort 
 		{
 						ProgramVersion CurrentVersion {set;}
 
@@ -4533,7 +4847,7 @@ namespace Allors.Domain
 						ProgramVersion AllStateVersions {set;}
 
 		}
-		public interface Project  : WorkEffort, IProject 
+		public interface Project  : WorkEffort 
 		{
 						ProjectVersion CurrentVersion {set;}
 
@@ -4554,7 +4868,7 @@ namespace Allors.Domain
 		public interface Property  : FixedAsset 
 		{
 		}
-		public interface Proposal  : Quote, IProposal 
+		public interface Proposal  : Quote 
 		{
 						ProposalVersion CurrentVersion {set;}
 
@@ -4575,8 +4889,18 @@ namespace Allors.Domain
 		public interface PurchaseAgreement  : Agreement 
 		{
 		}
-		public interface PurchaseInvoice  : Invoice, IPurchaseInvoice 
+		public interface PurchaseInvoice  : Invoice 
 		{
+						PurchaseInvoiceItem PurchaseInvoiceItems {set;}
+
+						InternalOrganisation BilledToInternalOrganisation {set;}
+
+						PurchaseInvoiceObjectState CurrentObjectState {set;}
+
+						Party BilledFromParty {set;}
+
+						PurchaseInvoiceType PurchaseInvoiceType {set;}
+
 						PurchaseInvoiceVersion CurrentVersion {set;}
 
 						PurchaseInvoiceVersion PreviousVersion {set;}
@@ -4588,8 +4912,14 @@ namespace Allors.Domain
 						PurchaseInvoiceVersion AllStateVersions {set;}
 
 		}
-		public interface PurchaseInvoiceItem  : InvoiceItem, IPurchaseInvoiceItem 
+		public interface PurchaseInvoiceItem  : InvoiceItem 
 		{
+						PurchaseInvoiceItemType PurchaseInvoiceItemType {set;}
+
+						Part Part {set;}
+
+						PurchaseInvoiceItemObjectState CurrentObjectState {set;}
+
 						PurchaseInvoiceItemVersion CurrentVersion {set;}
 
 						PurchaseInvoiceItemVersion PreviousVersion {set;}
@@ -4627,8 +4957,28 @@ namespace Allors.Domain
 		public interface PurchaseInvoiceType  : Enumeration 
 		{
 		}
-		public interface PurchaseOrder  : Order, IPurchaseOrder 
+		public interface PurchaseOrder  : Order 
 		{
+						PurchaseOrderItem PurchaseOrderItems {set;}
+
+						Party PreviousTakenViaSupplier {set;}
+
+						Party TakenViaSupplier {set;}
+
+						PurchaseOrderObjectState CurrentObjectState {set;}
+
+						ContactMechanism TakenViaContactMechanism {set;}
+
+						ContactMechanism BillToContactMechanism {set;}
+
+						InternalOrganisation ShipToBuyer {set;}
+
+						Facility Facility {set;}
+
+						PostalAddress ShipToAddress {set;}
+
+						InternalOrganisation BillToPurchaser {set;}
+
 						PurchaseOrderVersion CurrentVersion {set;}
 
 						PurchaseOrderVersion PreviousVersion {set;}
@@ -4648,8 +4998,16 @@ namespace Allors.Domain
 						PurchaseOrderVersion AllShipmentStateVersions {set;}
 
 		}
-		public interface PurchaseOrderItem  : OrderItem, IPurchaseOrderItem 
+		public interface PurchaseOrderItem  : OrderItem 
 		{
+						PurchaseOrderItemObjectState CurrentObjectState {set;}
+
+						global::System.Decimal QuantityReceived {set;}
+
+						Product Product {set;}
+
+						Part Part {set;}
+
 						PurchaseOrderItemVersion CurrentVersion {set;}
 
 						PurchaseOrderItemVersion PreviousVersion {set;}
@@ -4734,8 +5092,38 @@ namespace Allors.Domain
 		public interface Qualification  : Enumeration 
 		{
 		}
-		public interface QuoteItem  : IQuoteItem, Commentable, Transitional 
+		public interface QuoteItem  : Commentable, Transitional 
 		{
+						global::System.String InternalComment {set;}
+
+						Party Authorizer {set;}
+
+						Deliverable Deliverable {set;}
+
+						Product Product {set;}
+
+						global::System.DateTime? EstimatedDeliveryDate {set;}
+
+						global::System.DateTime? RequiredByDate {set;}
+
+						UnitOfMeasure UnitOfMeasure {set;}
+
+						ProductFeature ProductFeature {set;}
+
+						global::System.Decimal? UnitPrice {set;}
+
+						Skill Skill {set;}
+
+						WorkEffort WorkEffort {set;}
+
+						QuoteTerm QuoteTerms {set;}
+
+						global::System.Int32? Quantity {set;}
+
+						RequestItem RequestItem {set;}
+
+						QuoteItemObjectState CurrentObjectState {set;}
+
 						QuoteItemVersion CurrentVersion {set;}
 
 						QuoteItemVersion PreviousVersion {set;}
@@ -4781,7 +5169,7 @@ namespace Allors.Domain
 						global::System.String Name {set;}
 
 		}
-		public interface RequestForInformation  : Request, IRequestForInformation 
+		public interface RequestForInformation  : Request 
 		{
 						RequestForInformationVersion CurrentVersion {set;}
 
@@ -4794,7 +5182,7 @@ namespace Allors.Domain
 						RequestForInformationVersion AllStateVersions {set;}
 
 		}
-		public interface RequestForProposal  : Request, IRequestForProposal 
+		public interface RequestForProposal  : Request 
 		{
 						RequestForProposalVersion CurrentVersion {set;}
 
@@ -4807,7 +5195,7 @@ namespace Allors.Domain
 						RequestForProposalVersion AllStateVersions {set;}
 
 		}
-		public interface RequestForQuote  : Request, IRequestForQuote 
+		public interface RequestForQuote  : Request 
 		{
 						RequestForQuoteVersion CurrentVersion {set;}
 
@@ -4820,8 +5208,32 @@ namespace Allors.Domain
 						RequestForQuoteVersion AllStateVersions {set;}
 
 		}
-		public interface RequestItem  : IRequestItem, Commentable, Transitional 
+		public interface RequestItem  : Commentable, Transitional 
 		{
+						global::System.String InternalComment {set;}
+
+						global::System.String Description {set;}
+
+						global::System.Int32? Quantity {set;}
+
+						UnitOfMeasure UnitOfMeasure {set;}
+
+						Requirement Requirements {set;}
+
+						Deliverable Deliverable {set;}
+
+						ProductFeature ProductFeature {set;}
+
+						NeededSkill NeededSkill {set;}
+
+						Product Product {set;}
+
+						global::System.Decimal? MaximumAllowedPrice {set;}
+
+						global::System.DateTime? RequiredByDate {set;}
+
+						RequestItemObjectState CurrentObjectState {set;}
+
 						RequestItemVersion CurrentVersion {set;}
 
 						RequestItemVersion PreviousVersion {set;}
@@ -4881,7 +5293,7 @@ namespace Allors.Domain
 						global::System.DateTime StartDateTime {set;}
 
 		}
-		public interface Research  : WorkEffort, IResearch 
+		public interface Research  : WorkEffort 
 		{
 						ResearchVersion CurrentVersion {set;}
 
@@ -4995,8 +5407,58 @@ namespace Allors.Domain
 						InternalOrganisation InternalOrganisation {set;}
 
 		}
-		public interface SalesInvoice  : Invoice, ISalesInvoice 
+		public interface SalesInvoice  : Invoice 
 		{
+						SalesInvoiceObjectState CurrentObjectState {set;}
+
+						global::System.Decimal? TotalListPrice {set;}
+
+						InternalOrganisation BilledFromInternalOrganisation {set;}
+
+						ContactMechanism BillToContactMechanism {set;}
+
+						Party PreviousBillToCustomer {set;}
+
+						SalesInvoiceType SalesInvoiceType {set;}
+
+						global::System.Decimal InitialProfitMargin {set;}
+
+						PaymentMethod PaymentMethod {set;}
+
+						SalesOrder SalesOrder {set;}
+
+						global::System.Decimal InitialMarkupPercentage {set;}
+
+						global::System.Decimal MaintainedMarkupPercentage {set;}
+
+						Person SalesReps {set;}
+
+						Shipment Shipment {set;}
+
+						global::System.Decimal MaintainedProfitMargin {set;}
+
+						Party PreviousShipToCustomer {set;}
+
+						Party BillToCustomer {set;}
+
+						SalesInvoiceItem SalesInvoiceItems {set;}
+
+						global::System.Decimal TotalListPriceCustomerCurrency {set;}
+
+						Party ShipToCustomer {set;}
+
+						ContactMechanism BilledFromContactMechanism {set;}
+
+						global::System.Decimal? TotalPurchasePrice {set;}
+
+						SalesChannel SalesChannel {set;}
+
+						Party Customers {set;}
+
+						PostalAddress ShipToAddress {set;}
+
+						Store Store {set;}
+
 						SalesInvoiceVersion CurrentVersion {set;}
 
 						SalesInvoiceVersion PreviousVersion {set;}
@@ -5008,8 +5470,36 @@ namespace Allors.Domain
 						SalesInvoiceVersion AllStateVersions {set;}
 
 		}
-		public interface SalesInvoiceItem  : InvoiceItem, ISalesInvoiceItem 
+		public interface SalesInvoiceItem  : InvoiceItem 
 		{
+						ProductFeature ProductFeature {set;}
+
+						SalesInvoiceItemObjectState CurrentObjectState {set;}
+
+						global::System.Decimal? RequiredProfitMargin {set;}
+
+						global::System.Decimal InitialMarkupPercentage {set;}
+
+						global::System.Decimal MaintainedMarkupPercentage {set;}
+
+						Product Product {set;}
+
+						global::System.Decimal UnitPurchasePrice {set;}
+
+						SalesOrderItem SalesOrderItem {set;}
+
+						SalesInvoiceItemType SalesInvoiceItemType {set;}
+
+						Person SalesRep {set;}
+
+						global::System.Decimal InitialProfitMargin {set;}
+
+						global::System.Decimal MaintainedProfitMargin {set;}
+
+						TimeEntry TimeEntries {set;}
+
+						global::System.Decimal? RequiredMarkupPercentage {set;}
+
 						SalesInvoiceItemVersion CurrentVersion {set;}
 
 						SalesInvoiceItemVersion PreviousVersion {set;}
@@ -5047,8 +5537,66 @@ namespace Allors.Domain
 		public interface SalesInvoiceType  : Enumeration 
 		{
 		}
-		public interface SalesOrder  : Order, ISalesOrder 
+		public interface SalesOrder  : Order 
 		{
+						ContactMechanism TakenByContactMechanism {set;}
+
+						Party ShipToCustomer {set;}
+
+						Party BillToCustomer {set;}
+
+						global::System.Decimal TotalPurchasePrice {set;}
+
+						ShipmentMethod ShipmentMethod {set;}
+
+						global::System.Decimal TotalListPriceCustomerCurrency {set;}
+
+						global::System.Decimal MaintainedProfitMargin {set;}
+
+						PostalAddress ShipToAddress {set;}
+
+						Party PreviousShipToCustomer {set;}
+
+						ContactMechanism BillToContactMechanism {set;}
+
+						Person SalesReps {set;}
+
+						global::System.Decimal InitialProfitMargin {set;}
+
+						global::System.Decimal TotalListPrice {set;}
+
+						global::System.Boolean PartiallyShip {set;}
+
+						Party Customers {set;}
+
+						Store Store {set;}
+
+						global::System.Decimal MaintainedMarkupPercentage {set;}
+
+						ContactMechanism BillFromContactMechanism {set;}
+
+						PaymentMethod PaymentMethod {set;}
+
+						ContactMechanism PlacingContactMechanism {set;}
+
+						Party PreviousBillToCustomer {set;}
+
+						SalesChannel SalesChannel {set;}
+
+						Party PlacingCustomer {set;}
+
+						SalesInvoice ProformaInvoice {set;}
+
+						SalesOrderItem SalesOrderItems {set;}
+
+						SalesOrderObjectState CurrentObjectState {set;}
+
+						global::System.Decimal InitialMarkupPercentage {set;}
+
+						InternalOrganisation TakenByInternalOrganisation {set;}
+
+						ProductQuote Quote {set;}
+
 						SalesOrderVersion CurrentVersion {set;}
 
 						SalesOrderVersion PreviousVersion {set;}
@@ -5068,8 +5616,62 @@ namespace Allors.Domain
 						SalesOrderVersion AllShipmentStateVersions {set;}
 
 		}
-		public interface SalesOrderItem  : OrderItem, ISalesOrderItem 
+		public interface SalesOrderItem  : OrderItem 
 		{
+						global::System.Decimal InitialProfitMargin {set;}
+
+						global::System.Decimal QuantityShortFalled {set;}
+
+						OrderItem OrderedWithFeatures {set;}
+
+						global::System.Decimal MaintainedProfitMargin {set;}
+
+						global::System.Decimal? RequiredProfitMargin {set;}
+
+						NonSerialisedInventoryItem PreviousReservedFromInventoryItem {set;}
+
+						global::System.Decimal? QuantityShipNow {set;}
+
+						global::System.Decimal? RequiredMarkupPercentage {set;}
+
+						global::System.Decimal QuantityShipped {set;}
+
+						PostalAddress ShipToAddress {set;}
+
+						global::System.Decimal QuantityPicked {set;}
+
+						Product PreviousProduct {set;}
+
+						SalesOrderItemObjectState CurrentObjectState {set;}
+
+						global::System.Decimal UnitPurchasePrice {set;}
+
+						Party ShipToParty {set;}
+
+						PostalAddress AssignedShipToAddress {set;}
+
+						global::System.Decimal QuantityReturned {set;}
+
+						global::System.Decimal QuantityReserved {set;}
+
+						Person SalesRep {set;}
+
+						Party AssignedShipToParty {set;}
+
+						global::System.Decimal QuantityPendingShipment {set;}
+
+						global::System.Decimal MaintainedMarkupPercentage {set;}
+
+						global::System.Decimal InitialMarkupPercentage {set;}
+
+						NonSerialisedInventoryItem ReservedFromInventoryItem {set;}
+
+						Product Product {set;}
+
+						ProductFeature ProductFeature {set;}
+
+						global::System.Decimal QuantityRequestsShipping {set;}
+
 						SalesOrderItemVersion CurrentVersion {set;}
 
 						SalesOrderItemVersion PreviousVersion {set;}
@@ -5256,8 +5858,34 @@ namespace Allors.Domain
 		public interface Salutation  : Enumeration 
 		{
 		}
-		public interface SerialisedInventoryItem  : InventoryItem, ISerialisedInventoryItem 
+		public interface SerialisedInventoryItem  : InventoryItem 
 		{
+						global::System.String SerialNumber {set;}
+
+						Ownership Ownership {set;}
+
+						global::System.String Owner {set;}
+
+						global::System.Int32? AcquisitionYear {set;}
+
+						global::System.Int32? ManufacturingYear {set;}
+
+						global::System.Decimal? ReplacementValue {set;}
+
+						global::System.Int32? LifeTime {set;}
+
+						global::System.Int32? DepreciationYears {set;}
+
+						global::System.Decimal? PurchasePrice {set;}
+
+						global::System.Decimal? ExpectedSalesPrice {set;}
+
+						global::System.Decimal? RefurbishCost {set;}
+
+						global::System.Decimal? TransportCost {set;}
+
+						SerialisedInventoryItemObjectState CurrentObjectState {set;}
+
 						SerialisedInventoryItemVersion AllVersions {set;}
 
 						SerialisedInventoryItemVersion CurrentVersion {set;}
@@ -5289,7 +5917,7 @@ namespace Allors.Domain
 		{
 						ServiceEntry ServiceEntry {set;}
 
-						IInvoiceItem InvoiceItem {set;}
+						InvoiceItem InvoiceItem {set;}
 
 		}
 		public interface ServiceEntryHeader  : Period, AccessControlledObject 
@@ -5326,11 +5954,11 @@ namespace Allors.Domain
 
 						ShipmentItem InResponseToShipmentItems {set;}
 
-						IInventoryItem InventoryItems {set;}
+						InventoryItem InventoryItems {set;}
 
 						ProductFeature ProductFeatures {set;}
 
-						IInvoiceItem InvoiceItems {set;}
+						InvoiceItem InvoiceItems {set;}
 
 						Good Good {set;}
 
@@ -5443,7 +6071,7 @@ namespace Allors.Domain
 						global::System.String Name {set;}
 
 		}
-		public interface StatementOfWork  : Quote, IStatementOfWork 
+		public interface StatementOfWork  : Quote 
 		{
 						StatementOfWorkVersion CurrentVersion {set;}
 
@@ -5456,10 +6084,8 @@ namespace Allors.Domain
 						StatementOfWorkVersion AllStateVersions {set;}
 
 		}
-		public interface StatementOfWorkVersion  : IStatementOfWork 
+		public interface StatementOfWorkVersion  : QuoteVersion 
 		{
-						global::System.DateTime? TimeStamp {set;}
-
 		}
 		public interface Store  : UniquelyIdentifiable, AccessControlledObject 
 		{
@@ -5603,18 +6229,24 @@ namespace Allors.Domain
 						global::System.Decimal? Percentage {set;}
 
 		}
-		public interface WebSiteCommunicationVersion  : IWebSiteCommunication 
+		public interface WebSiteCommunicationVersion  : CommunicationEventVersion 
 		{
-						global::System.DateTime? TimeStamp {set;}
+						Party Originator {set;}
+
+						Party Receiver {set;}
 
 		}
-		public interface WorkFlowVersion  : IWorkFlow 
+		public interface WorkFlowVersion  : WorkEffortVersion 
 		{
-						global::System.DateTime? TimeStamp {set;}
-
 		}
-		public interface WorkTask  : WorkEffort, IWorkTask 
+		public interface WorkTask  : WorkEffort 
 		{
+						global::System.Boolean? SendNotification {set;}
+
+						global::System.Boolean? SendReminder {set;}
+
+						global::System.DateTime? RemindAt {set;}
+
 						WorkTaskVersion CurrentVersion {set;}
 
 						WorkTaskVersion PreviousVersion {set;}
@@ -5820,8 +6452,12 @@ namespace Allors.Domain
 		public interface WebAddress  : ElectronicAddress 
 		{
 		}
-		public interface WebSiteCommunication  : CommunicationEvent, IWebSiteCommunication 
+		public interface WebSiteCommunication  : CommunicationEvent 
 		{
+						Party Originator {set;}
+
+						Party Receiver {set;}
+
 						WebSiteCommunicationVersion CurrentVersion {set;}
 
 						WebSiteCommunicationVersion PreviousVersion {set;}
@@ -5858,7 +6494,7 @@ namespace Allors.Domain
 
 						global::System.Decimal? Percentage {set;}
 
-						IInvoiceItem InvoiceItem {set;}
+						InvoiceItem InvoiceItem {set;}
 
 		}
 		public interface WorkEffortFixedAssetAssignment  : Commentable, AccessControlledObject, Period 
@@ -5896,7 +6532,7 @@ namespace Allors.Domain
 		{
 						WorkEffort Assignment {set;}
 
-						IInventoryItem InventoryItem {set;}
+						InventoryItem InventoryItem {set;}
 
 						global::System.Int32? Quantity {set;}
 
@@ -5973,7 +6609,7 @@ namespace Allors.Domain
 		public interface WorkEffortTypeKind  : Enumeration 
 		{
 		}
-		public interface WorkFlow  : WorkEffort, IWorkFlow 
+		public interface WorkFlow  : WorkEffort 
 		{
 						WorkFlowVersion CurrentVersion {set;}
 
@@ -5995,9 +6631,13 @@ namespace Allors.Domain
 						Product Product {set;}
 
 		}
-		public interface WorkTaskVersion  : IWorkTask 
+		public interface WorkTaskVersion  : WorkEffortVersion 
 		{
-						global::System.DateTime? TimeStamp {set;}
+						global::System.Boolean? SendNotification {set;}
+
+						global::System.Boolean? SendReminder {set;}
+
+						global::System.DateTime? RemindAt {set;}
 
 		}
 }

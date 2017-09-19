@@ -17,8 +17,6 @@ namespace Allors.Domain
 {
     public partial class ActivityVersion
     {
-        ObjectState Transitional.CurrentObjectState => this.CurrentObjectState;
-
         public void AppsOnBuild(ObjectOnBuild method)
         {
             var builder = (ActivityVersionBuilder) method.Builder;

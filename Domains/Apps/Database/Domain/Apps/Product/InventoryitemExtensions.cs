@@ -19,9 +19,9 @@ using System.Linq;
 
 namespace Allors.Domain
 {
-    public static partial class IInventoryItemExtensions
+    public static partial class InventoryItemExtensions
     {
-        public static void AppsOnDeriveProductCategories(this IInventoryItem @this, IDerivation derivation)
+        public static void AppsOnDeriveProductCategories(this InventoryItem @this, IDerivation derivation)
         {
             @this.RemoveDerivedProductCategories();
 
@@ -35,7 +35,7 @@ namespace Allors.Domain
             }
         }
 
-        private static void AddParentCategories(this IInventoryItem @this, ProductCategory productCategory)
+        private static void AddParentCategories(this InventoryItem @this, ProductCategory productCategory)
         {
             if (productCategory.ExistParents)
             {
@@ -47,7 +47,7 @@ namespace Allors.Domain
             }
         }
 
-        private static void AppsOnDerive(this IInventoryItem @this, ObjectOnDerive method)
+        private static void AppsOnDerive(this InventoryItem @this, ObjectOnDerive method)
         {
             if (!@this.ExistProductType)
             {

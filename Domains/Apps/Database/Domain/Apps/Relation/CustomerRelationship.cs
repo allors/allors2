@@ -187,7 +187,7 @@ namespace Allors.Domain
 
             if (this.ExistCustomer)
             {
-                foreach (SalesInvoice salesInvoice in this.Customer.ISalesInvoicesWhereBillToCustomer)
+                foreach (SalesInvoice salesInvoice in this.Customer.SalesInvoicesWhereBillToCustomer)
                 {
                     if (salesInvoice.BilledFromInternalOrganisation.Equals(this.InternalOrganisation)
                         && !salesInvoice.CurrentObjectState.Equals(new SalesInvoiceObjectStates(this.Strategy.Session).Paid))
@@ -220,7 +220,7 @@ namespace Allors.Domain
 
             if (this.ExistCustomer)
             {
-                foreach (SalesInvoice salesInvoice in this.Customer.ISalesInvoicesWhereBillToCustomer)
+                foreach (SalesInvoice salesInvoice in this.Customer.SalesInvoicesWhereBillToCustomer)
                 {
                     if (salesInvoice.BilledFromInternalOrganisation.Equals(this.InternalOrganisation)
                         && !salesInvoice.CurrentObjectState.Equals(new SalesInvoiceObjectStates(this.Strategy.Session).Paid))

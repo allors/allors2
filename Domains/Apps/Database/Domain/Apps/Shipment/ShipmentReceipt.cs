@@ -61,7 +61,7 @@ namespace Allors.Domain
             if (this.ExistShipmentItem && this.ShipmentItem.ExistOrderShipmentsWhereShipmentItem)
             {
                 var purchaseOrderItem = this.ShipmentItem.OrderShipmentsWhereShipmentItem[0].PurchaseOrderItem;
-                var order = purchaseOrderItem.IPurchaseOrderWherePurchaseOrderItem;
+                var order = purchaseOrderItem.PurchaseOrderWherePurchaseOrderItem;
 
                 if (purchaseOrderItem.ExistProduct)
                 {
@@ -72,8 +72,8 @@ namespace Allors.Domain
                         {
                             if (!this.ExistInventoryItem || !this.InventoryItem.Part.Equals(good.FinishedGood))
                             {
-                                var inventoryItems = good.FinishedGood.IInventoryItemsWherePart;
-                                inventoryItems.Filter.AddEquals(M.IInventoryItem.Facility, order.ShipToBuyer.DefaultFacility);
+                                var inventoryItems = good.FinishedGood.InventoryItemsWherePart;
+                                inventoryItems.Filter.AddEquals(M.InventoryItem.Facility, order.ShipToBuyer.DefaultFacility);
                                 this.InventoryItem = inventoryItems.First as NonSerialisedInventoryItem;
                             }
                         }
@@ -81,8 +81,8 @@ namespace Allors.Domain
                         {
                             if (!this.ExistInventoryItem || !this.InventoryItem.Good.Equals(good))
                             {
-                                var inventoryItems = good.IInventoryItemsWhereGood;
-                                inventoryItems.Filter.AddEquals(M.IInventoryItem.Facility, order.ShipToBuyer.DefaultFacility);
+                                var inventoryItems = good.InventoryItemsWhereGood;
+                                inventoryItems.Filter.AddEquals(M.InventoryItem.Facility, order.ShipToBuyer.DefaultFacility);
                                 this.InventoryItem = inventoryItems.First as NonSerialisedInventoryItem ??
                                                      new NonSerialisedInventoryItemBuilder(this.Strategy.Session).WithGood(good).Build();
                             }
@@ -94,8 +94,8 @@ namespace Allors.Domain
                 {
                     if (!this.ExistInventoryItem || !this.InventoryItem.Part.Equals(purchaseOrderItem.Part))
                     {
-                        var inventoryItems = purchaseOrderItem.Part.IInventoryItemsWherePart;
-                        inventoryItems.Filter.AddEquals(M.IInventoryItem.Facility, order.ShipToBuyer.DefaultFacility);
+                        var inventoryItems = purchaseOrderItem.Part.InventoryItemsWherePart;
+                        inventoryItems.Filter.AddEquals(M.InventoryItem.Facility, order.ShipToBuyer.DefaultFacility);
                         this.InventoryItem = inventoryItems.First as NonSerialisedInventoryItem;
                     }
                 }

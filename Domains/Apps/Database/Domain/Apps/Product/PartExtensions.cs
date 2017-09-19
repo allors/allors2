@@ -33,9 +33,9 @@ namespace Allors.Domain
 
             if (derivation.ChangeSet.Associations.Contains(@this.Id))
             {
-                if (@this.ExistIInventoryItemsWherePart)
+                if (@this.ExistInventoryItemsWherePart)
                 {
-                    foreach (InventoryItem inventoryItem in @this.IInventoryItemsWherePart)
+                    foreach (InventoryItem inventoryItem in @this.InventoryItemsWherePart)
                     {
                         derivation.AddDependency(inventoryItem, @this);
                     }
@@ -54,7 +54,7 @@ namespace Allors.Domain
         {
             if (@this.ExistInventoryItemKind && @this.InventoryItemKind.Equals(new InventoryItemKinds(@this.Strategy.Session).NonSerialised))
             {
-                if (!@this.ExistIInventoryItemsWherePart)
+                if (!@this.ExistInventoryItemsWherePart)
                 {
                     new NonSerialisedInventoryItemBuilder(@this.Strategy.Session)
                         .WithFacility(@this.OwnedByParty.DefaultFacility)

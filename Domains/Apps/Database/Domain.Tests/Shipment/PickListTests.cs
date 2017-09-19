@@ -161,12 +161,12 @@ namespace Allors.Domain
 
             this.DatabaseSession.Derive();
 
-            var good1Inventory = (NonSerialisedInventoryItem)good1.IInventoryItemsWhereGood[0];
+            var good1Inventory = (NonSerialisedInventoryItem)good1.InventoryItemsWhereGood[0];
             good1Inventory.AddInventoryItemVariance(new InventoryItemVarianceBuilder(this.DatabaseSession).WithQuantity(100).WithReason(new VarianceReasons(this.DatabaseSession).Unknown).Build());
 
             this.DatabaseSession.Derive();
 
-            var good2Inventory = (NonSerialisedInventoryItem)good2.IInventoryItemsWhereGood[0];
+            var good2Inventory = (NonSerialisedInventoryItem)good2.InventoryItemsWhereGood[0];
             good2Inventory.AddInventoryItemVariance(new InventoryItemVarianceBuilder(this.DatabaseSession).WithQuantity(100).WithReason(new VarianceReasons(this.DatabaseSession).Unknown).Build());
 
             this.DatabaseSession.Derive();
@@ -214,7 +214,7 @@ namespace Allors.Domain
 
             var shipment = (CustomerShipment)mechelenAddress.ShipmentsWhereShipToAddress[0];
 
-            var pickList = good1.IInventoryItemsWhereGood[0].PickListItemsWhereInventoryItem[0].PickListWherePickListItem;
+            var pickList = good1.InventoryItemsWhereGood[0].PickListItemsWhereInventoryItem[0].PickListWherePickListItem;
             pickList.Picker = new People(this.DatabaseSession).FindBy(M.Person.LastName, "orderProcessor");
 
             //// item5: only 4 out of 5 are actually picked
@@ -318,12 +318,12 @@ namespace Allors.Domain
 
             this.DatabaseSession.Derive();
 
-            var good1Inventory = (NonSerialisedInventoryItem)good1.IInventoryItemsWhereGood[0];
+            var good1Inventory = (NonSerialisedInventoryItem)good1.InventoryItemsWhereGood[0];
             good1Inventory.AddInventoryItemVariance(new InventoryItemVarianceBuilder(this.DatabaseSession).WithQuantity(100).WithReason(new VarianceReasons(this.DatabaseSession).Unknown).Build());
 
             this.DatabaseSession.Derive();
 
-            var good2Inventory = (NonSerialisedInventoryItem)good2.IInventoryItemsWhereGood[0];
+            var good2Inventory = (NonSerialisedInventoryItem)good2.InventoryItemsWhereGood[0];
             good2Inventory.AddInventoryItemVariance(new InventoryItemVarianceBuilder(this.DatabaseSession).WithQuantity(100).WithReason(new VarianceReasons(this.DatabaseSession).Unknown).Build());
 
             this.DatabaseSession.Derive();
@@ -346,7 +346,7 @@ namespace Allors.Domain
 
             this.DatabaseSession.Derive();
 
-            var pickList = good1.IInventoryItemsWhereGood[0].PickListItemsWhereInventoryItem[0].PickListWherePickListItem;
+            var pickList = good1.InventoryItemsWhereGood[0].PickListItemsWhereInventoryItem[0].PickListWherePickListItem;
             pickList.Picker = new People(this.DatabaseSession).FindBy(M.Person.LastName, "orderProcessor");
 
             //// item3: only 4 out of 5 are actually picked
@@ -446,12 +446,12 @@ namespace Allors.Domain
 
             this.DatabaseSession.Derive();
 
-            var good1Inventory = (NonSerialisedInventoryItem)good1.IInventoryItemsWhereGood[0];
+            var good1Inventory = (NonSerialisedInventoryItem)good1.InventoryItemsWhereGood[0];
             good1Inventory.AddInventoryItemVariance(new InventoryItemVarianceBuilder(this.DatabaseSession).WithQuantity(100).WithReason(new VarianceReasons(this.DatabaseSession).Ruined).Build());
 
             this.DatabaseSession.Derive();
 
-            var good2Inventory = (NonSerialisedInventoryItem)good2.IInventoryItemsWhereGood[0];
+            var good2Inventory = (NonSerialisedInventoryItem)good2.InventoryItemsWhereGood[0];
             good2Inventory.AddInventoryItemVariance(new InventoryItemVarianceBuilder(this.DatabaseSession).WithQuantity(100).WithReason(new VarianceReasons(this.DatabaseSession).Ruined).Build());
 
             this.DatabaseSession.Derive();
@@ -474,7 +474,7 @@ namespace Allors.Domain
 
             this.DatabaseSession.Derive();
 
-            var pickList = good1.IInventoryItemsWhereGood[0].PickListItemsWhereInventoryItem[0].PickListWherePickListItem;
+            var pickList = good1.InventoryItemsWhereGood[0].PickListItemsWhereInventoryItem[0].PickListWherePickListItem;
 
             Assert.Equal(2, pickList.PickListItems.Count);
 
@@ -557,12 +557,12 @@ namespace Allors.Domain
 
             this.DatabaseSession.Derive();
 
-            var good1Inventory = (NonSerialisedInventoryItem)good1.IInventoryItemsWhereGood[0];
+            var good1Inventory = (NonSerialisedInventoryItem)good1.InventoryItemsWhereGood[0];
             good1Inventory.AddInventoryItemVariance(new InventoryItemVarianceBuilder(this.DatabaseSession).WithQuantity(100).WithReason(new VarianceReasons(this.DatabaseSession).Ruined).Build());
 
             this.DatabaseSession.Derive();
 
-            var good2Inventory = (NonSerialisedInventoryItem)good2.IInventoryItemsWhereGood[0];
+            var good2Inventory = (NonSerialisedInventoryItem)good2.InventoryItemsWhereGood[0];
             good2Inventory.AddInventoryItemVariance(new InventoryItemVarianceBuilder(this.DatabaseSession).WithQuantity(100).WithReason(new VarianceReasons(this.DatabaseSession).Ruined).Build());
 
             this.DatabaseSession.Derive();
@@ -601,7 +601,7 @@ namespace Allors.Domain
 
             this.DatabaseSession.Derive();
 
-            var pickList = good1.IInventoryItemsWhereGood[0].PickListItemsWhereInventoryItem[0].PickListWherePickListItem;
+            var pickList = good1.InventoryItemsWhereGood[0].PickListItemsWhereInventoryItem[0].PickListWherePickListItem;
             pickList.Picker = new People(this.DatabaseSession).FindBy(M.Person.LastName, "orderProcessor");
 
             pickList.SetPicked();

@@ -35,9 +35,9 @@ namespace Allors.Domain
             var derivation = method.Derivation;
 
             // TODO:
-            if (this.ExistIInventoryItemsWhereGood)
+            if (this.ExistInventoryItemsWhereGood)
             {
-                foreach (IInventoryItem inventoryItem in this.IInventoryItemsWhereGood)
+                foreach (InventoryItem inventoryItem in this.InventoryItemsWhereGood)
                 {
                     derivation.AddDependency(inventoryItem, this);
                 }
@@ -135,7 +135,7 @@ namespace Allors.Domain
         {
             this.QuantityOnHand = 0;
 
-            foreach (IInventoryItem inventoryItem in this.IInventoryItemsWhereGood)
+            foreach (InventoryItem inventoryItem in this.InventoryItemsWhereGood)
             {
                 if (inventoryItem is NonSerialisedInventoryItem)
                 {
@@ -149,7 +149,7 @@ namespace Allors.Domain
         {
             this.AvailableToPromise = 0;
 
-            foreach (IInventoryItem inventoryItem in this.IInventoryItemsWhereGood)
+            foreach (InventoryItem inventoryItem in this.InventoryItemsWhereGood)
             {
                 if (inventoryItem is NonSerialisedInventoryItem)
                 {

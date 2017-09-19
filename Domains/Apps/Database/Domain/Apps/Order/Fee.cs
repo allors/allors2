@@ -26,15 +26,15 @@ namespace Allors.Domain
             // TODO:
             if (derivation.ChangeSet.Associations.Contains(this.Id))
             {
-                if (this.ExistIOrderWhereFee)
+                if (this.ExistOrderWhereFee)
                 {
-                    var salesOrder = (SalesOrder)this.IOrderWhereFee;
+                    var salesOrder = (SalesOrder)this.OrderWhereFee;
                     derivation.AddDependency(this, salesOrder);
                 }
 
-                if (this.ExistIInvoiceWhereFee)
+                if (this.ExistInvoiceWhereFee)
                 {
-                    var salesInvoice = (SalesInvoice)this.IInvoiceWhereFee;
+                    var salesInvoice = (SalesInvoice)this.InvoiceWhereFee;
                     derivation.AddDependency(this, salesInvoice);
                 }
             }

@@ -24,7 +24,7 @@ namespace Allors.Domain
         public static List<SalesOrder> AppsGetPreOrders(this Party party)
         {
             var preOrders = new List<SalesOrder>();
-            foreach (SalesOrder salesOrder in party.ISalesOrdersWhereBillToCustomer)
+            foreach (SalesOrder salesOrder in party.SalesOrdersWhereBillToCustomer)
             {
                 if (salesOrder.CurrentObjectState.Equals(new SalesOrderObjectStates(party.Strategy.Session).Provisional))
                 {
@@ -303,7 +303,7 @@ namespace Allors.Domain
         public static void AppsOnDeriveOpenOrderAmount(this Party party)
         {
             party.OpenOrderAmount = 0;
-            foreach (ISalesOrder salesOrder in party.ISalesOrdersWhereBillToCustomer)
+            foreach (SalesOrder salesOrder in party.SalesOrdersWhereBillToCustomer)
             {
                 if (!salesOrder.CurrentObjectState.Equals(new SalesOrderObjectStates(party.Strategy.Session).Finished) &&
                     !salesOrder.CurrentObjectState.Equals(new SalesOrderObjectStates(party.Strategy.Session).Cancelled))

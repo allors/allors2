@@ -78,7 +78,7 @@ namespace Allors.Domain
             var revenues = new HashSet<long>();
 
             var salesInvoices = session.Extent<SalesInvoice>();
-            salesInvoices.Filter.AddExists(M.ISalesInvoice.SalesChannel);
+            salesInvoices.Filter.AddExists(M.SalesInvoice.SalesChannel);
 
             var year = 0;
             foreach (SalesInvoice salesInvoice in salesInvoices)

@@ -39,11 +39,11 @@ namespace Allors.Domain
 
                 if (offerings != null)
                 {
-                    offerings.Filter.AddEquals(M.SupplierOffering.Supplier, this.IPurchaseOrderWherePurchaseOrderItem.TakenViaSupplier);
+                    offerings.Filter.AddEquals(M.SupplierOffering.Supplier, this.PurchaseOrderWherePurchaseOrderItem.TakenViaSupplier);
                     foreach (SupplierOffering offering in offerings)
                     {
-                        if (offering.FromDate <= this.IPurchaseOrderWherePurchaseOrderItem.OrderDate &&
-                            (!offering.ExistThroughDate || offering.ThroughDate >= this.IPurchaseOrderWherePurchaseOrderItem.OrderDate))
+                        if (offering.FromDate <= this.PurchaseOrderWherePurchaseOrderItem.OrderDate &&
+                            (!offering.ExistThroughDate || offering.ThroughDate >= this.PurchaseOrderWherePurchaseOrderItem.OrderDate))
                         {
                             return offering.ReferenceNumber;
                         }
@@ -99,9 +99,9 @@ namespace Allors.Domain
             // TODO:
             if (derivation.ChangeSet.Associations.Contains(this.Id))
             {
-                if (this.ExistIPurchaseOrderWherePurchaseOrderItem)
+                if (this.ExistPurchaseOrderWherePurchaseOrderItem)
                 {
-                    derivation.AddDependency(this.IPurchaseOrderWherePurchaseOrderItem, this);
+                    derivation.AddDependency(this.PurchaseOrderWherePurchaseOrderItem, this);
                 }
             }
         }
@@ -165,9 +165,9 @@ namespace Allors.Domain
 
         public void AppsDeriveVatRegime(IDerivation derivation)
         {
-            if (this.ExistIPurchaseOrderWherePurchaseOrderItem)
+            if (this.ExistPurchaseOrderWherePurchaseOrderItem)
             {
-                this.VatRegime = this.ExistAssignedVatRegime ? this.AssignedVatRegime : this.IPurchaseOrderWherePurchaseOrderItem.VatRegime;
+                this.VatRegime = this.ExistAssignedVatRegime ? this.AssignedVatRegime : this.PurchaseOrderWherePurchaseOrderItem.VatRegime;
 
                 this.AppsDeriveVatRate(derivation);
             }
@@ -188,23 +188,23 @@ namespace Allors.Domain
 
         public void AppsOnDeriveIsValidOrderItem(IDerivation derivation)
         {
-            if (this.ExistIPurchaseOrderWherePurchaseOrderItem)
+            if (this.ExistPurchaseOrderWherePurchaseOrderItem)
             {
-                this.IPurchaseOrderWherePurchaseOrderItem.RemoveValidOrderItem(this);
+                this.PurchaseOrderWherePurchaseOrderItem.RemoveValidOrderItem(this);
 
                 if (!this.CurrentObjectState.Equals(new PurchaseOrderItemObjectStates(this.Strategy.Session).Cancelled)
                     && !this.CurrentObjectState.Equals(new PurchaseOrderItemObjectStates(this.Strategy.Session).Rejected))
                 {
-                    this.IPurchaseOrderWherePurchaseOrderItem.AddValidOrderItem(this);
+                    this.PurchaseOrderWherePurchaseOrderItem.AddValidOrderItem(this);
                 }
             }
         }
 
         public void AppsOnDeriveCurrentObjectState(IDerivation derivation)
         {
-            if (this.ExistIOrderWhereValidOrderItem)
+            if (this.ExistOrderWhereValidOrderItem)
             {
-                var order = this.IPurchaseOrderWherePurchaseOrderItem;
+                var order = this.PurchaseOrderWherePurchaseOrderItem;
 
                 if (order.CurrentObjectState.Equals(new PurchaseOrderObjectStates(this.Strategy.Session).Cancelled))
                 {
@@ -265,9 +265,9 @@ namespace Allors.Domain
             {
                 this.DeliveryDate = this.AssignedDeliveryDate.Value;
             }
-            else if (this.IPurchaseOrderWherePurchaseOrderItem.DeliveryDate.HasValue)
+            else if (this.PurchaseOrderWherePurchaseOrderItem.DeliveryDate.HasValue)
             {
-                this.DeliveryDate = this.IPurchaseOrderWherePurchaseOrderItem.DeliveryDate.Value;
+                this.DeliveryDate = this.PurchaseOrderWherePurchaseOrderItem.DeliveryDate.Value;
             }            
         }
 
@@ -284,7 +284,7 @@ namespace Allors.Domain
             }
             else
             {
-                var order = this.IPurchaseOrderWherePurchaseOrderItem;
+                var order = this.PurchaseOrderWherePurchaseOrderItem;
                 var productPurchasePrice = new SupplierOfferings(this.Strategy.Session).PurchasePrice(order.TakenViaSupplier, order.OrderDate, this.Product, this.Part);
                 this.UnitBasePrice = productPurchasePrice != null ? productPurchasePrice.Price : 0M;
             }
@@ -333,9 +333,9 @@ namespace Allors.Domain
 
             this.AppsOnDeriveCurrentOrderStatus(derivation);
 
-            if (this.ExistIPurchaseOrderWherePurchaseOrderItem)
+            if (this.ExistPurchaseOrderWherePurchaseOrderItem)
             {
-                var purchaseOrder = (PurchaseOrder)this.IPurchaseOrderWherePurchaseOrderItem;
+                var purchaseOrder = (PurchaseOrder)this.PurchaseOrderWherePurchaseOrderItem;
                 purchaseOrder.AppsOnDeriveCurrentShipmentStatus(derivation);
             }
         }
@@ -349,16 +349,16 @@ namespace Allors.Domain
                 var good = this.Product as Good;
                 if (good != null)
                 {
-                    var inventoryItems = good.IInventoryItemsWhereGood;
-                    inventoryItems.Filter.AddEquals(M.IInventoryItem.Facility, this.IPurchaseOrderWherePurchaseOrderItem.Facility);
+                    var inventoryItems = good.InventoryItemsWhereGood;
+                    inventoryItems.Filter.AddEquals(M.InventoryItem.Facility, this.PurchaseOrderWherePurchaseOrderItem.Facility);
                     inventoryItem = inventoryItems.First as NonSerialisedInventoryItem;
                 }
             }
 
             if (this.ExistPart)
             {
-                var inventoryItems = this.Part.IInventoryItemsWherePart;
-                inventoryItems.Filter.AddEquals(M.IInventoryItem.Facility, this.IPurchaseOrderWherePurchaseOrderItem.Facility);
+                var inventoryItems = this.Part.InventoryItemsWherePart;
+                inventoryItems.Filter.AddEquals(M.InventoryItem.Facility, this.PurchaseOrderWherePurchaseOrderItem.Facility);
                 inventoryItem = inventoryItems.First as NonSerialisedInventoryItem;
             }
 

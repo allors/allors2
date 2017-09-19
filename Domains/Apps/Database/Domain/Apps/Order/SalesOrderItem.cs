@@ -18,7 +18,7 @@ namespace Allors.Domain
         {
             get
             {
-                if (this.ExistAssignedShipToParty && !this.ISalesOrderWhereSalesOrderItem.ShipToCustomer.Equals(this.AssignedShipToParty))
+                if (this.ExistAssignedShipToParty && !this.SalesOrderWhereSalesOrderItem.ShipToCustomer.Equals(this.AssignedShipToParty))
                 {
                     return this.AssignedShipToParty;
                 }
@@ -31,7 +31,7 @@ namespace Allors.Domain
         {
             get
             {
-                if (this.ExistAssignedShipToAddress && !this.ISalesOrderWhereSalesOrderItem.ShipToAddress.Equals(this.AssignedShipToAddress))
+                if (this.ExistAssignedShipToAddress && !this.SalesOrderWhereSalesOrderItem.ShipToAddress.Equals(this.AssignedShipToAddress))
                 {
                     return this.AssignedShipToAddress;
                 }
@@ -90,9 +90,9 @@ namespace Allors.Domain
         {
             var derivation = method.Derivation;
 
-            if (this.ExistISalesOrderWhereSalesOrderItem)
+            if (this.ExistSalesOrderWhereSalesOrderItem)
             {
-                derivation.AddDependency(this.ISalesOrderWhereSalesOrderItem, this);
+                derivation.AddDependency(this.SalesOrderWhereSalesOrderItem, this);
             }
         }
 
@@ -114,7 +114,7 @@ namespace Allors.Domain
                 this.PreviousProduct = this.Product;
             }
 
-            if (this.ExistISalesOrderItemWhereOrderedWithFeature && !this.ExistProductFeature)
+            if (this.ExistSalesOrderItemWhereOrderedWithFeature && !this.ExistProductFeature)
             {
                 derivation.Validation.AssertExists(this, M.SalesOrderItem.ProductFeature);
             }
@@ -148,7 +148,7 @@ namespace Allors.Domain
                     this.ReservedFromInventoryItem.OnDerive(x => x.WithDerivation(derivation));
                 }
 
-                this.ISalesOrderWhereSalesOrderItem.OnDerive(x => x.WithDerivation(derivation));
+                this.SalesOrderWhereSalesOrderItem.OnDerive(x => x.WithDerivation(derivation));
             }
 
             this.AppsOnDeriveCurrentObjectState(derivation);
@@ -207,22 +207,22 @@ namespace Allors.Domain
 
         public void AppsOnDeriveIsValidOrderItem(IDerivation derivation)
         {
-            if (this.ExistISalesOrderWhereSalesOrderItem)
+            if (this.ExistSalesOrderWhereSalesOrderItem)
             {
-                this.ISalesOrderWhereSalesOrderItem.RemoveValidOrderItem(this);
+                this.SalesOrderWhereSalesOrderItem.RemoveValidOrderItem(this);
 
                 if (this.IsValid)
                 {
-                    this.ISalesOrderWhereSalesOrderItem.AddValidOrderItem(this);
+                    this.SalesOrderWhereSalesOrderItem.AddValidOrderItem(this);
                 }
             }
         }
 
         public void AppsOnDeriveCurrentObjectState(IDerivation derivation)
         {
-            if (this.ExistIOrderWhereValidOrderItem)
+            if (this.ExistOrderWhereValidOrderItem)
             {
-                var order = this.ISalesOrderWhereSalesOrderItem;
+                var order = this.SalesOrderWhereSalesOrderItem;
 
                 if (order.CurrentObjectState.Equals(new SalesOrderObjectStates(this.Strategy.Session).InProcess))
                 {
@@ -301,18 +301,18 @@ namespace Allors.Domain
             {
                 this.DeliveryDate = this.AssignedDeliveryDate.Value;
             }
-            else if (this.ExistISalesOrderWhereSalesOrderItem && this.ISalesOrderWhereSalesOrderItem.ExistDeliveryDate)
+            else if (this.ExistSalesOrderWhereSalesOrderItem && this.SalesOrderWhereSalesOrderItem.ExistDeliveryDate)
             {
-                this.DeliveryDate = this.ISalesOrderWhereSalesOrderItem.DeliveryDate;
+                this.DeliveryDate = this.SalesOrderWhereSalesOrderItem.DeliveryDate;
             }
         }
 
         public void AppsOnDeriveShipTo(IDerivation derivation)
         {
-            if (this.ExistISalesOrderWhereSalesOrderItem)
+            if (this.ExistSalesOrderWhereSalesOrderItem)
             {
-                this.ShipToAddress = this.ExistAssignedShipToAddress ? this.AssignedShipToAddress : this.ISalesOrderWhereSalesOrderItem.ShipToAddress;
-                this.ShipToParty = this.ExistAssignedShipToParty ? this.AssignedShipToParty : this.ISalesOrderWhereSalesOrderItem.ShipToCustomer;
+                this.ShipToAddress = this.ExistAssignedShipToAddress ? this.AssignedShipToAddress : this.SalesOrderWhereSalesOrderItem.ShipToAddress;
+                this.ShipToParty = this.ExistAssignedShipToParty ? this.AssignedShipToParty : this.SalesOrderWhereSalesOrderItem.ShipToCustomer;
             }
         }
 
@@ -327,8 +327,8 @@ namespace Allors.Domain
                     {
                         if (!this.ExistReservedFromInventoryItem || !this.ReservedFromInventoryItem.Part.Equals(good.FinishedGood))
                         {
-                            var inventoryItems = good.FinishedGood.IInventoryItemsWherePart;
-                            inventoryItems.Filter.AddEquals(M.IInventoryItem.Facility, this.ISalesOrderWhereSalesOrderItem.TakenByInternalOrganisation.DefaultFacility);
+                            var inventoryItems = good.FinishedGood.InventoryItemsWherePart;
+                            inventoryItems.Filter.AddEquals(M.InventoryItem.Facility, this.SalesOrderWhereSalesOrderItem.TakenByInternalOrganisation.DefaultFacility);
                             this.ReservedFromInventoryItem = inventoryItems.First as NonSerialisedInventoryItem;
                         }
                     }
@@ -336,8 +336,8 @@ namespace Allors.Domain
                     {
                         if (!this.ExistReservedFromInventoryItem || !this.ReservedFromInventoryItem.Good.Equals(good))
                         {
-                            var inventoryItems = good.IInventoryItemsWhereGood;
-                            inventoryItems.Filter.AddEquals(M.IInventoryItem.Facility, this.ISalesOrderWhereSalesOrderItem.TakenByInternalOrganisation.DefaultFacility);
+                            var inventoryItems = good.InventoryItemsWhereGood;
+                            inventoryItems.Filter.AddEquals(M.InventoryItem.Facility, this.SalesOrderWhereSalesOrderItem.TakenByInternalOrganisation.DefaultFacility);
                             this.ReservedFromInventoryItem = inventoryItems.First as NonSerialisedInventoryItem;
                         }
                     }
@@ -347,7 +347,7 @@ namespace Allors.Domain
 
         public void AppsOnDeriveQuantities(IDerivation derivation)
         {
-            var order = (SalesOrder)this.ISalesOrderWhereSalesOrderItem;
+            var order = (SalesOrder)this.SalesOrderWhereSalesOrderItem;
             if (order.ScheduledManually)
             {
                 this.AppsOnDeriveQuantitiesmanualShipment(derivation);
@@ -529,7 +529,7 @@ namespace Allors.Domain
 
         private void DecreasePendingShipmentQuantity(IDerivation derivation, decimal diff)
         {
-            var pendingShipment = this.ShipToParty.AppsGetPendingCustomerShipmentForStore(this.ShipToAddress, this.ISalesOrderWhereSalesOrderItem.Store, this.ISalesOrderWhereSalesOrderItem.ShipmentMethod);
+            var pendingShipment = this.ShipToParty.AppsGetPendingCustomerShipmentForStore(this.ShipToAddress, this.SalesOrderWhereSalesOrderItem.Store, this.SalesOrderWhereSalesOrderItem.ShipmentMethod);
 
             if (pendingShipment != null)
             {
@@ -617,8 +617,8 @@ namespace Allors.Domain
                 var prices = this.Product.SupplierOfferingsWhereProduct.First.ProductPurchasePrices;
                 foreach (ProductPurchasePrice purchasePrice in prices)
                 {
-                    if (purchasePrice.FromDate <= this.ISalesOrderWhereSalesOrderItem.OrderDate &&
-                        (!purchasePrice.ExistThroughDate || purchasePrice.ThroughDate >= this.ISalesOrderWhereSalesOrderItem.OrderDate))
+                    if (purchasePrice.FromDate <= this.SalesOrderWhereSalesOrderItem.OrderDate &&
+                        (!purchasePrice.ExistThroughDate || purchasePrice.ThroughDate >= this.SalesOrderWhereSalesOrderItem.OrderDate))
                     {
                         productPurchasePrice = purchasePrice;
                     }
@@ -672,9 +672,9 @@ namespace Allors.Domain
             decimal discountAdjustmentAmount = 0;
             decimal surchargeAdjustmentAmount = 0;
 
-            var internalOrganisation = this.ExistISalesOrderWhereSalesOrderItem ? this.ISalesOrderWhereSalesOrderItem.TakenByInternalOrganisation : Singleton.Instance(this.strategy.Session).DefaultInternalOrganisation;
-            var customer = this.ISalesOrderWhereSalesOrderItem.BillToCustomer;
-            var salesOrder = this.ISalesOrderWhereSalesOrderItem;
+            var internalOrganisation = this.ExistSalesOrderWhereSalesOrderItem ? this.SalesOrderWhereSalesOrderItem.TakenByInternalOrganisation : Singleton.Instance(this.strategy.Session).DefaultInternalOrganisation;
+            var customer = this.SalesOrderWhereSalesOrderItem.BillToCustomer;
+            var salesOrder = this.SalesOrderWhereSalesOrderItem;
 
             var priceComponents = this.GetPriceComponents(internalOrganisation);
 
@@ -850,7 +850,7 @@ namespace Allors.Domain
                 this.TotalIncVat += featureItem.TotalIncVat;
             }
 
-            var toCurrency = this.ISalesOrderWhereSalesOrderItem.CustomerCurrency;
+            var toCurrency = this.SalesOrderWhereSalesOrderItem.CustomerCurrency;
             var fromCurrency = internalOrganisation.PreferredCurrency;
 
             if (fromCurrency.Equals(toCurrency))
@@ -885,8 +885,8 @@ namespace Allors.Domain
                 foreach (PriceComponent priceComponent in extent)
                 {
                     if (priceComponent.ExistProduct && priceComponent.Product.Equals(this.Product) && !priceComponent.ExistProductFeature &&
-                        priceComponent.FromDate <= this.ISalesOrderWhereSalesOrderItem.OrderDate &&
-                        (!priceComponent.ExistThroughDate || priceComponent.ThroughDate >= this.ISalesOrderWhereSalesOrderItem.OrderDate))
+                        priceComponent.FromDate <= this.SalesOrderWhereSalesOrderItem.OrderDate &&
+                        (!priceComponent.ExistThroughDate || priceComponent.ThroughDate >= this.SalesOrderWhereSalesOrderItem.OrderDate))
                     {
                         priceComponents.Add(priceComponent);
                     }
@@ -898,8 +898,8 @@ namespace Allors.Domain
                     foreach (PriceComponent priceComponent in extent)
                     {
                         if (priceComponent.ExistProduct && priceComponent.Product.Equals(this.Product.ProductWhereVariant) && !priceComponent.ExistProductFeature &&
-                            priceComponent.FromDate <= this.ISalesOrderWhereSalesOrderItem.OrderDate &&
-                            (!priceComponent.ExistThroughDate || priceComponent.ThroughDate >= this.ISalesOrderWhereSalesOrderItem.OrderDate))
+                            priceComponent.FromDate <= this.SalesOrderWhereSalesOrderItem.OrderDate &&
+                            (!priceComponent.ExistThroughDate || priceComponent.ThroughDate >= this.SalesOrderWhereSalesOrderItem.OrderDate))
                         {
                             priceComponents.Add(priceComponent);
                         }
@@ -907,29 +907,29 @@ namespace Allors.Domain
                 }
             }
 
-            if (this.ExistProductFeature && !this.ExistISalesOrderItemWhereOrderedWithFeature)
+            if (this.ExistProductFeature && !this.ExistSalesOrderItemWhereOrderedWithFeature)
             {
                 foreach (PriceComponent priceComponent in extent)
                 {
                     if (priceComponent.ExistProductFeature && priceComponent.ProductFeature.Equals(this.ProductFeature) && !priceComponent.ExistProduct &&
-                        priceComponent.FromDate <= this.ISalesOrderWhereSalesOrderItem.OrderDate &&
-                        (!priceComponent.ExistThroughDate || priceComponent.ThroughDate >= this.ISalesOrderWhereSalesOrderItem.OrderDate))
+                        priceComponent.FromDate <= this.SalesOrderWhereSalesOrderItem.OrderDate &&
+                        (!priceComponent.ExistThroughDate || priceComponent.ThroughDate >= this.SalesOrderWhereSalesOrderItem.OrderDate))
                     {
                         priceComponents.Add(priceComponent);
                     }
                 }
             }
 
-            if (this.ExistProductFeature && this.ExistISalesOrderItemWhereOrderedWithFeature)
+            if (this.ExistProductFeature && this.ExistSalesOrderItemWhereOrderedWithFeature)
             {
                 extent = internalOrganisation.PriceComponentsWhereSpecifiedFor;
                 var found = false;
                 foreach (PriceComponent priceComponent in extent)
                 {
-                    if (priceComponent.ExistProduct && priceComponent.Product.Equals(this.ISalesOrderItemWhereOrderedWithFeature.Product) &&
+                    if (priceComponent.ExistProduct && priceComponent.Product.Equals(this.SalesOrderItemWhereOrderedWithFeature.Product) &&
                         priceComponent.ExistProductFeature && priceComponent.ProductFeature.Equals(this.ProductFeature) &&
-                        priceComponent.FromDate <= this.ISalesOrderWhereSalesOrderItem.OrderDate &&
-                        (!priceComponent.ExistThroughDate || priceComponent.ThroughDate >= this.ISalesOrderWhereSalesOrderItem.OrderDate))
+                        priceComponent.FromDate <= this.SalesOrderWhereSalesOrderItem.OrderDate &&
+                        (!priceComponent.ExistThroughDate || priceComponent.ThroughDate >= this.SalesOrderWhereSalesOrderItem.OrderDate))
                     {
                         found = true;
                         priceComponents.Add(priceComponent);
@@ -941,8 +941,8 @@ namespace Allors.Domain
                     foreach (PriceComponent priceComponent in extent)
                     {
                         if (priceComponent.ExistProductFeature && priceComponent.ProductFeature.Equals(this.ProductFeature) &&
-                            priceComponent.FromDate <= this.ISalesOrderWhereSalesOrderItem.OrderDate &&
-                            (!priceComponent.ExistThroughDate || priceComponent.ThroughDate >= this.ISalesOrderWhereSalesOrderItem.OrderDate))
+                            priceComponent.FromDate <= this.SalesOrderWhereSalesOrderItem.OrderDate &&
+                            (!priceComponent.ExistThroughDate || priceComponent.ThroughDate >= this.SalesOrderWhereSalesOrderItem.OrderDate))
                         {
                             priceComponents.Add(priceComponent);
                         }
@@ -955,8 +955,8 @@ namespace Allors.Domain
             foreach (PriceComponent priceComponent in extent)
             {
                 if (!priceComponent.ExistProduct && !priceComponent.ExistProductFeature &&
-                    priceComponent.FromDate <= this.ISalesOrderWhereSalesOrderItem.OrderDate &&
-                    (!priceComponent.ExistThroughDate || priceComponent.ThroughDate >= this.ISalesOrderWhereSalesOrderItem.OrderDate))
+                    priceComponent.FromDate <= this.SalesOrderWhereSalesOrderItem.OrderDate &&
+                    (!priceComponent.ExistThroughDate || priceComponent.ThroughDate >= this.SalesOrderWhereSalesOrderItem.OrderDate))
                 {
                     priceComponents.Add(priceComponent);
                 }
@@ -1012,7 +1012,7 @@ namespace Allors.Domain
         
         public void AppsShipNow(IDerivation derivation)
         {
-            var order = (SalesOrder)this.ISalesOrderWhereSalesOrderItem;
+            var order = (SalesOrder)this.SalesOrderWhereSalesOrderItem;
             if (order.ScheduledManually)
             {
                 var quantity = this.QuantityShipNow ?? 0;
@@ -1065,20 +1065,20 @@ namespace Allors.Domain
             {
                 if (this.ExistProduct)
                 {
-                    this.SalesRep = SalesRepRelationships.SalesRep(customer, this.Product.PrimaryProductCategory, this.ISalesOrderWhereSalesOrderItem.OrderDate);
+                    this.SalesRep = SalesRepRelationships.SalesRep(customer, this.Product.PrimaryProductCategory, this.SalesOrderWhereSalesOrderItem.OrderDate);
                 }
                 else
                 {
-                    this.SalesRep = SalesRepRelationships.SalesRep(customer, null, this.ISalesOrderWhereSalesOrderItem.OrderDate);
+                    this.SalesRep = SalesRepRelationships.SalesRep(customer, null, this.SalesOrderWhereSalesOrderItem.OrderDate);
                 }
             }
         }
 
         public void AppsOnDeriveVatRegime(IDerivation derivation)
         {
-            if (this.ExistISalesOrderWhereSalesOrderItem)
+            if (this.ExistSalesOrderWhereSalesOrderItem)
             {
-                this.VatRegime = this.ExistAssignedVatRegime ? this.AssignedVatRegime : this.ISalesOrderWhereSalesOrderItem.VatRegime;
+                this.VatRegime = this.ExistAssignedVatRegime ? this.AssignedVatRegime : this.SalesOrderWhereSalesOrderItem.VatRegime;
 
                 this.AppsOnDeriveVatRate(derivation);
             }
@@ -1105,12 +1105,12 @@ namespace Allors.Domain
                 foreach (SalesInvoiceItem invoiceItem in orderShipment.ShipmentItem.InvoiceItems)
                 {
                     state = null;
-                    if (invoiceItem.ISalesInvoiceWhereSalesInvoiceItem.CurrentObjectState.Equals(new SalesInvoiceObjectStates(this.Strategy.Session).Paid))
+                    if (invoiceItem.SalesInvoiceWhereSalesInvoiceItem.CurrentObjectState.Equals(new SalesInvoiceObjectStates(this.Strategy.Session).Paid))
                     {
                         state = new SalesOrderItemObjectStates(this.Strategy.Session).Paid;
                     }
 
-                    if (invoiceItem.ISalesInvoiceWhereSalesInvoiceItem.CurrentObjectState.Equals(new SalesInvoiceObjectStates(this.Strategy.Session).PartiallyPaid))
+                    if (invoiceItem.SalesInvoiceWhereSalesInvoiceItem.CurrentObjectState.Equals(new SalesInvoiceObjectStates(this.Strategy.Session).PartiallyPaid))
                     {
                         state = new SalesOrderItemObjectStates(this.Strategy.Session).PartiallyPaid;
                     }

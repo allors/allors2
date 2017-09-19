@@ -19,8 +19,6 @@ namespace Allors.Domain
 
     public partial class SerialisedInventoryItemVersion
     {
-        ObjectState Transitional.CurrentObjectState => this.CurrentObjectState;
-
         public void AppsOnBuild(ObjectOnBuild method)
         {
             var builder = (SerialisedInventoryItemVersionBuilder) method.Builder;

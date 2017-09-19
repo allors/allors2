@@ -515,7 +515,7 @@ namespace Allors.Domain
         //        .WithCurrentObjectState(new NonSerialisedInventoryItemObjectStates(this.DatabaseSession).SlightlyDamaged)
         //        .Build();
 
-        //    var partItem = (NonSerialisedInventoryItem)rawMaterial.IInventoryItemsWherePart[0];
+        //    var partItem = (NonSerialisedInventoryItem)rawMaterial.InventoryItemsWherePart[0];
 
         //    new SupplierOfferingBuilder(this.DatabaseSession)
         //        .WithProduct(good)

@@ -166,9 +166,9 @@ namespace Allors.Domain
                 }
             }
 
-            foreach (SalesOrderItem salesOrderItem in this.ISalesOrderItemsWhereReservedFromInventoryItem)
+            foreach (SalesOrderItem salesOrderItem in this.SalesOrderItemsWhereReservedFromInventoryItem)
             {
-                var order = (SalesOrder)salesOrderItem.ISalesOrderWhereSalesOrderItem;
+                var order = (SalesOrder)salesOrderItem.SalesOrderWhereSalesOrderItem;
                 if (salesOrderItem.CurrentObjectState.Equals(new SalesOrderItemObjectStates(this.Strategy.Session).InProcess) && !order.ScheduledManually)
                 {
                     this.QuantityCommittedOut += salesOrderItem.QuantityOrdered;
@@ -182,7 +182,7 @@ namespace Allors.Domain
 
             if (this.ExistGood)
             {
-                foreach (PurchaseOrderItem purchaseOrderItem in this.Good.IPurchaseOrderItemsWhereProduct)
+                foreach (PurchaseOrderItem purchaseOrderItem in this.Good.PurchaseOrderItemsWhereProduct)
                 {
                     if (purchaseOrderItem.CurrentObjectState.Equals(new PurchaseOrderItemObjectStates(this.Strategy.Session).InProcess))
                     {
@@ -194,7 +194,7 @@ namespace Allors.Domain
 
             if (this.ExistPart)
             {
-                foreach (PurchaseOrderItem purchaseOrderItem in this.Part.IPurchaseOrderItemsWherePart)
+                foreach (PurchaseOrderItem purchaseOrderItem in this.Part.PurchaseOrderItemsWherePart)
                 {
                     if (purchaseOrderItem.CurrentObjectState.Equals(new PurchaseOrderItemObjectStates(this.Strategy.Session).InProcess))
                     {
@@ -218,12 +218,12 @@ namespace Allors.Domain
         public void AppsReplenishSalesOrders(IDerivation derivation)
         {
             Extent<SalesOrderItem> salesOrderItems = this.Strategy.Session.Extent<SalesOrderItem>();
-            salesOrderItems.Filter.AddEquals(M.ISalesOrderItem.CurrentObjectState, new SalesOrderItemObjectStates(this.Strategy.Session).InProcess);
+            salesOrderItems.Filter.AddEquals(M.SalesOrderItem.CurrentObjectState, new SalesOrderItemObjectStates(this.Strategy.Session).InProcess);
             salesOrderItems.AddSort(M.OrderItem.DeliveryDate, SortDirection.Ascending);
 
             if (this.ExistGood)
             {
-                salesOrderItems.Filter.AddEquals(M.ISalesOrderItem.PreviousProduct, this.Good);                
+                salesOrderItems.Filter.AddEquals(M.SalesOrderItem.PreviousProduct, this.Good);                
             }
 
             salesOrderItems = this.Strategy.Session.Instantiate(salesOrderItems);
@@ -247,7 +247,7 @@ namespace Allors.Domain
                     extra -= diff;
 
                     salesOrderItem.AppsOnDeriveAddToShipping(derivation, diff);
-                    salesOrderItem.ISalesOrderWhereSalesOrderItem.OnDerive(x => x.WithDerivation(derivation));
+                    salesOrderItem.SalesOrderWhereSalesOrderItem.OnDerive(x => x.WithDerivation(derivation));
                 }
             }
         }
@@ -255,7 +255,7 @@ namespace Allors.Domain
         public void AppsDepleteSalesOrders(IDerivation derivation)
         {
             Extent<SalesOrderItem> salesOrderItems = this.Strategy.Session.Extent<SalesOrderItem>();
-            salesOrderItems.Filter.AddEquals(M.ISalesOrderItem.CurrentObjectState, new SalesOrderItemObjectStates(this.Strategy.Session).InProcess);
+            salesOrderItems.Filter.AddEquals(M.SalesOrderItem.CurrentObjectState, new SalesOrderItemObjectStates(this.Strategy.Session).InProcess);
             salesOrderItems.Filter.AddExists(M.OrderItem.DeliveryDate);
             salesOrderItems.AddSort(M.OrderItem.DeliveryDate, SortDirection.Descending);
 
@@ -280,7 +280,7 @@ namespace Allors.Domain
                     subtract -= diff;
 
                     salesOrderItem.AppsOnDeriveSubtractFromShipping(derivation, diff);
-                    salesOrderItem.ISalesOrderWhereSalesOrderItem.OnDerive(x => x.WithDerivation(derivation));
+                    salesOrderItem.SalesOrderWhereSalesOrderItem.OnDerive(x => x.WithDerivation(derivation));
                 }
             }
         }

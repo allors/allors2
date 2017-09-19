@@ -17,8 +17,6 @@ namespace Allors.Domain
 {
     public partial class WorkTaskVersion
     {
-        ObjectState Transitional.CurrentObjectState => this.CurrentObjectState;
-
         public void AppsOnBuild(ObjectOnBuild method)
         {
             var builder = (WorkTaskVersionBuilder) method.Builder;

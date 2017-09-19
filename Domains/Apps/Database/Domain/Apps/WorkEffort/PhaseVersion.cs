@@ -17,8 +17,6 @@ namespace Allors.Domain
 {
     public partial class PhaseVersion
     {
-        ObjectState Transitional.CurrentObjectState => this.CurrentObjectState;
-
         public void AppsOnBuild(ObjectOnBuild method)
         {
             var builder = (PhaseVersionBuilder) method.Builder;

@@ -258,7 +258,7 @@ namespace Allors.Domain
             {
                 if (!this.TakenByInternalOrganisation.Equals(this.BillToCustomer.InternalOrganisationWhereCustomer))
                 {
-                    derivation.Validation.AddError(this, M.ISalesOrder.BillToCustomer, ErrorMessages.PartyIsNotACustomer);
+                    derivation.Validation.AddError(this, M.SalesOrder.BillToCustomer, ErrorMessages.PartyIsNotACustomer);
                 }
             }
 
@@ -266,7 +266,7 @@ namespace Allors.Domain
             {
                 if (!this.TakenByInternalOrganisation.Equals(this.ShipToCustomer.InternalOrganisationWhereCustomer))
                 {
-                    derivation.Validation.AddError(this, M.ISalesOrder.ShipToCustomer, ErrorMessages.PartyIsNotACustomer);
+                    derivation.Validation.AddError(this, M.SalesOrder.ShipToCustomer, ErrorMessages.PartyIsNotACustomer);
                 }
             }
 
@@ -565,7 +565,7 @@ namespace Allors.Domain
 
                 foreach (SalesOrderItem item in this.ValidOrderItems)
                 {
-                    if (!item.ExistISalesOrderItemWhereOrderedWithFeature)
+                    if (!item.ExistSalesOrderItemWhereOrderedWithFeature)
                     {
                         this.TotalBasePrice += item.TotalBasePrice;
                         this.TotalDiscount += item.TotalDiscount;

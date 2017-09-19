@@ -1249,7 +1249,7 @@ namespace Allors.Domain
             this.DatabaseSession.Derive();
 
             var salesInvoiceitem = (SalesInvoiceItem)shipment.ShipmentItems[0].InvoiceItems[0];
-            var invoice = salesInvoiceitem.ISalesInvoiceWhereSalesInvoiceItem;
+            var invoice = salesInvoiceitem.SalesInvoiceWhereSalesInvoiceItem;
 
             Assert.NotNull(invoice);
         }
@@ -1579,7 +1579,7 @@ namespace Allors.Domain
 
             this.DatabaseSession.Derive();
 
-            var invoice = customer.ISalesInvoicesWhereBillToCustomer.First;
+            var invoice = customer.SalesInvoicesWhereBillToCustomer.First;
             Assert.Equal(15M, invoice.ShippingAndHandlingCharge.Amount);
         }
     }

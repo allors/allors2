@@ -17,8 +17,6 @@ namespace Allors.Domain
 {
     public partial class MaintenanceVersion
     {
-        ObjectState Transitional.CurrentObjectState => this.CurrentObjectState;
-
         public void AppsOnBuild(ObjectOnBuild method)
         {
             var builder = (MaintenanceVersionBuilder) method.Builder;

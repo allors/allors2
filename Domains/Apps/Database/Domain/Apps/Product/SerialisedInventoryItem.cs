@@ -67,8 +67,8 @@ namespace Allors.Domain
         {
             var derivation = method.Derivation;
 
-            derivation.Validation.AssertAtLeastOne(this, M.IInventoryItem.Good, M.IInventoryItem.Part);
-            derivation.Validation.AssertExistsAtMostOne(this, M.IInventoryItem.Good, M.IInventoryItem.Part);
+            derivation.Validation.AssertAtLeastOne(this, M.InventoryItem.Good, M.InventoryItem.Part);
+            derivation.Validation.AssertExistsAtMostOne(this, M.InventoryItem.Good, M.InventoryItem.Part);
 
             if (!this.ExistName && this.ExistGood && this.Good.ExistName)
             {

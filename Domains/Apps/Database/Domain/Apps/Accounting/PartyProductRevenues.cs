@@ -22,7 +22,7 @@ namespace Allors.Domain
 
     public partial class PartyProductRevenues
     {
-        public static PartyProductRevenue AppsFindOrCreateAsDependable(ISession session, Product product, ISalesInvoice invoice)
+        public static PartyProductRevenue AppsFindOrCreateAsDependable(ISession session, Product product, SalesInvoice invoice)
         {
             var partyProductRevenues = invoice.BillToCustomer.PartyProductRevenuesWhereParty;
             partyProductRevenues.Filter.AddEquals(M.PartyProductRevenue.InternalOrganisation, invoice.BilledFromInternalOrganisation);
@@ -176,11 +176,11 @@ namespace Allors.Domain
         private static PartyProductRevenue CreatePartyProductRevenue(ISession session, SalesInvoiceItem item)
         {
             return new PartyProductRevenueBuilder(session)
-                        .WithInternalOrganisation(item.ISalesInvoiceWhereSalesInvoiceItem.BilledFromInternalOrganisation)
-                        .WithParty(item.ISalesInvoiceWhereSalesInvoiceItem.BillToCustomer)
-                        .WithYear(item.ISalesInvoiceWhereSalesInvoiceItem.InvoiceDate.Year)
-                        .WithMonth(item.ISalesInvoiceWhereSalesInvoiceItem.InvoiceDate.Month)
-                        .WithCurrency(item.ISalesInvoiceWhereSalesInvoiceItem.BilledFromInternalOrganisation.PreferredCurrency)
+                        .WithInternalOrganisation(item.SalesInvoiceWhereSalesInvoiceItem.BilledFromInternalOrganisation)
+                        .WithParty(item.SalesInvoiceWhereSalesInvoiceItem.BillToCustomer)
+                        .WithYear(item.SalesInvoiceWhereSalesInvoiceItem.InvoiceDate.Year)
+                        .WithMonth(item.SalesInvoiceWhereSalesInvoiceItem.InvoiceDate.Month)
+                        .WithCurrency(item.SalesInvoiceWhereSalesInvoiceItem.BilledFromInternalOrganisation.PreferredCurrency)
                         .WithProduct(item.Product)
                         .WithRevenue(0M)
                         .WithQuantity(0M)

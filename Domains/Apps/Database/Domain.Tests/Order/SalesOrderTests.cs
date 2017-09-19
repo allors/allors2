@@ -266,7 +266,7 @@ namespace Allors.Domain
             this.DatabaseSession.Derive();
 
             var salesInvoiceitem = (SalesInvoiceItem)shipment.ShipmentItems[0].InvoiceItems[0];
-            var invoice1 = (SalesInvoice)salesInvoiceitem.ISalesInvoiceWhereSalesInvoiceItem;
+            var invoice1 = (SalesInvoice)salesInvoiceitem.SalesInvoiceWhereSalesInvoiceItem;
             invoice1.Send();
 
             new ReceiptBuilder(this.DatabaseSession)
@@ -318,7 +318,7 @@ namespace Allors.Domain
             this.DatabaseSession.Derive();
 
             salesInvoiceitem = (SalesInvoiceItem)shipment.ShipmentItems[0].InvoiceItems[0];
-            var invoice2 = (SalesInvoice)salesInvoiceitem.ISalesInvoiceWhereSalesInvoiceItem;
+            var invoice2 = (SalesInvoice)salesInvoiceitem.SalesInvoiceWhereSalesInvoiceItem;
             invoice2.Send();
 
             new ReceiptBuilder(this.DatabaseSession)
@@ -369,7 +369,7 @@ namespace Allors.Domain
             this.DatabaseSession.Derive();
 
             salesInvoiceitem = (SalesInvoiceItem)shipment.ShipmentItems[0].InvoiceItems[0];
-            var invoice3 = salesInvoiceitem.ISalesInvoiceWhereSalesInvoiceItem;
+            var invoice3 = salesInvoiceitem.SalesInvoiceWhereSalesInvoiceItem;
 
             new ReceiptBuilder(this.DatabaseSession)
                 .WithAmount(75)
@@ -2683,7 +2683,7 @@ namespace Allors.Domain
 
             this.DatabaseSession.Derive();
 
-            var partInventory = (NonSerialisedInventoryItem)part.IInventoryItemsWherePart[0];
+            var partInventory = (NonSerialisedInventoryItem)part.InventoryItemsWherePart[0];
             partInventory.AddInventoryItemVariance(new InventoryItemVarianceBuilder(this.DatabaseSession).WithQuantity(100).WithReason(new VarianceReasons(this.DatabaseSession).Unknown).Build());
 
             this.DatabaseSession.Derive();

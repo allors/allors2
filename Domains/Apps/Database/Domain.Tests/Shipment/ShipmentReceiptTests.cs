@@ -124,7 +124,7 @@ namespace Allors.Domain
             this.DatabaseSession.Commit();
 
             Assert.Equal(new Warehouses(this.DatabaseSession).FindBy(M.Warehouse.Name, "facility"), receipt.InventoryItem.Facility);
-            Assert.Equal(part.IInventoryItemsWherePart[0], receipt.InventoryItem);
+            Assert.Equal(part.InventoryItemsWherePart[0], receipt.InventoryItem);
 
             this.DatabaseSession.Rollback();
         }
@@ -170,7 +170,7 @@ namespace Allors.Domain
             shipment.AppsComplete();
 
             Assert.Equal(new Warehouses(this.DatabaseSession).FindBy(M.Warehouse.Name, "facility"), receipt.InventoryItem.Facility);
-            Assert.Equal(good.IInventoryItemsWhereGood[0], receipt.InventoryItem);
+            Assert.Equal(good.InventoryItemsWhereGood[0], receipt.InventoryItem);
 
             this.DatabaseSession.Rollback();
         }

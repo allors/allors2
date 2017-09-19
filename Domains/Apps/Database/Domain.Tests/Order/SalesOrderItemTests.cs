@@ -916,7 +916,7 @@ namespace Allors.Domain
 
             this.SetIdentity("admin");
 
-            var inventoryItem = (NonSerialisedInventoryItem)this.part.IInventoryItemsWherePart[0];
+            var inventoryItem = (NonSerialisedInventoryItem)this.part.InventoryItemsWherePart[0];
             inventoryItem.AddInventoryItemVariance(new InventoryItemVarianceBuilder(this.DatabaseSession).WithQuantity(1).WithReason(new VarianceReasons(this.DatabaseSession).Unknown).Build());
 
             this.DatabaseSession.Derive();
@@ -1047,7 +1047,7 @@ namespace Allors.Domain
 
             this.SetIdentity("admin");
 
-            var inventoryItem = (NonSerialisedInventoryItem)this.part.IInventoryItemsWherePart[0];
+            var inventoryItem = (NonSerialisedInventoryItem)this.part.InventoryItemsWherePart[0];
             inventoryItem.AddInventoryItemVariance(new InventoryItemVarianceBuilder(this.DatabaseSession).WithQuantity(110).WithReason(new VarianceReasons(this.DatabaseSession).Unknown).Build());
 
             this.DatabaseSession.Derive();
@@ -1142,7 +1142,7 @@ namespace Allors.Domain
 
             this.SetIdentity("admin");
 
-            var inventoryItem = (NonSerialisedInventoryItem)this.part.IInventoryItemsWherePart[0];
+            var inventoryItem = (NonSerialisedInventoryItem)this.part.InventoryItemsWherePart[0];
             inventoryItem.AddInventoryItemVariance(new InventoryItemVarianceBuilder(this.DatabaseSession).WithQuantity(1).WithReason(new VarianceReasons(this.DatabaseSession).Unknown).Build());
 
             this.DatabaseSession.Derive();
@@ -1193,7 +1193,7 @@ namespace Allors.Domain
         {
             this.InstantiateObjects(this.DatabaseSession);
 
-            var inventoryItem = (NonSerialisedInventoryItem)this.DatabaseSession.Instantiate(this.good.FinishedGood.IInventoryItemsWherePart[0]);
+            var inventoryItem = (NonSerialisedInventoryItem)this.DatabaseSession.Instantiate(this.good.FinishedGood.InventoryItemsWherePart[0]);
             inventoryItem.AddInventoryItemVariance(new InventoryItemVarianceBuilder(this.DatabaseSession).WithQuantity(110).WithReason(new VarianceReasons(this.DatabaseSession).Unknown).Build());
 
             this.DatabaseSession.Derive();
@@ -1229,7 +1229,7 @@ namespace Allors.Domain
         {
             this.InstantiateObjects(this.DatabaseSession);
 
-            var inventoryItem = (NonSerialisedInventoryItem)this.DatabaseSession.Instantiate(this.good.FinishedGood.IInventoryItemsWherePart[0]);
+            var inventoryItem = (NonSerialisedInventoryItem)this.DatabaseSession.Instantiate(this.good.FinishedGood.InventoryItemsWherePart[0]);
             inventoryItem.AddInventoryItemVariance(new InventoryItemVarianceBuilder(this.DatabaseSession).WithQuantity(110).WithReason(new VarianceReasons(this.DatabaseSession).Unknown).Build());
 
             this.DatabaseSession.Derive();
@@ -1298,7 +1298,7 @@ namespace Allors.Domain
         {
             this.InstantiateObjects(this.DatabaseSession);
 
-            var inventoryItem = (NonSerialisedInventoryItem)this.DatabaseSession.Instantiate(this.good.FinishedGood.IInventoryItemsWherePart[0]);
+            var inventoryItem = (NonSerialisedInventoryItem)this.DatabaseSession.Instantiate(this.good.FinishedGood.InventoryItemsWherePart[0]);
             inventoryItem.AddInventoryItemVariance(new InventoryItemVarianceBuilder(this.DatabaseSession).WithQuantity(110).WithReason(new VarianceReasons(this.DatabaseSession).Unknown).Build());
 
             this.DatabaseSession.Derive();
@@ -1336,7 +1336,7 @@ namespace Allors.Domain
         {
             this.InstantiateObjects(this.DatabaseSession);
 
-            var inventoryItem = (NonSerialisedInventoryItem)this.DatabaseSession.Instantiate(this.good.FinishedGood.IInventoryItemsWherePart[0]);
+            var inventoryItem = (NonSerialisedInventoryItem)this.DatabaseSession.Instantiate(this.good.FinishedGood.InventoryItemsWherePart[0]);
             inventoryItem.AddInventoryItemVariance(new InventoryItemVarianceBuilder(this.DatabaseSession).WithQuantity(110).WithReason(new VarianceReasons(this.DatabaseSession).Unknown).Build());
 
             this.DatabaseSession.Derive();
@@ -1591,7 +1591,7 @@ namespace Allors.Domain
         {
             this.InstantiateObjects(this.DatabaseSession);
 
-            var inventoryItem = (NonSerialisedInventoryItem)this.part.IInventoryItemsWherePart.First;
+            var inventoryItem = (NonSerialisedInventoryItem)this.part.InventoryItemsWherePart.First;
             inventoryItem.AddInventoryItemVariance(new InventoryItemVarianceBuilder(this.DatabaseSession).WithQuantity(10).WithReason(new VarianceReasons(this.DatabaseSession).Unknown).Build());
 
             this.DatabaseSession.Derive();
@@ -1629,7 +1629,7 @@ namespace Allors.Domain
         {
             this.InstantiateObjects(this.DatabaseSession);
 
-            var inventoryItem = (NonSerialisedInventoryItem)this.part.IInventoryItemsWherePart.First;
+            var inventoryItem = (NonSerialisedInventoryItem)this.part.InventoryItemsWherePart.First;
             inventoryItem.AddInventoryItemVariance(new InventoryItemVarianceBuilder(this.DatabaseSession).WithQuantity(10).WithReason(new VarianceReasons(this.DatabaseSession).Unknown).Build());
 
             this.DatabaseSession.Derive();
@@ -1678,7 +1678,7 @@ namespace Allors.Domain
         [Fact]
         public void GivenOrderItemWithPendingShipmentAndPendingPickList_WhenOrderItemIsCancelled_ThenPickListQuantityAndShipmentQuantityAreDecreased()
         {
-            var inventoryItem = (NonSerialisedInventoryItem)this.part.IInventoryItemsWherePart.First;
+            var inventoryItem = (NonSerialisedInventoryItem)this.part.InventoryItemsWherePart.First;
             inventoryItem.AddInventoryItemVariance(new InventoryItemVarianceBuilder(this.DatabaseSession).WithQuantity(10).WithReason(new VarianceReasons(this.DatabaseSession).Unknown).Build());
 
             this.DatabaseSession.Derive();
@@ -1763,7 +1763,7 @@ namespace Allors.Domain
         {
             this.InstantiateObjects(this.DatabaseSession);
 
-            var inventoryItem = (NonSerialisedInventoryItem)this.part.IInventoryItemsWherePart.First;
+            var inventoryItem = (NonSerialisedInventoryItem)this.part.InventoryItemsWherePart.First;
             inventoryItem.AddInventoryItemVariance(new InventoryItemVarianceBuilder(this.DatabaseSession).WithQuantity(10).WithReason(new VarianceReasons(this.DatabaseSession).Unknown).Build());
 
             this.DatabaseSession.Derive();
@@ -1808,7 +1808,7 @@ namespace Allors.Domain
         {
             this.InstantiateObjects(this.DatabaseSession);
 
-            var inventoryItem = (NonSerialisedInventoryItem)this.part.IInventoryItemsWherePart.First;
+            var inventoryItem = (NonSerialisedInventoryItem)this.part.InventoryItemsWherePart.First;
             inventoryItem.AddInventoryItemVariance(new InventoryItemVarianceBuilder(this.DatabaseSession).WithQuantity(10).WithReason(new VarianceReasons(this.DatabaseSession).Unknown).Build());
 
             this.DatabaseSession.Derive();
@@ -1861,7 +1861,7 @@ namespace Allors.Domain
         {
             this.InstantiateObjects(this.DatabaseSession);
 
-            var inventoryItem = (NonSerialisedInventoryItem)this.part.IInventoryItemsWherePart.First;
+            var inventoryItem = (NonSerialisedInventoryItem)this.part.InventoryItemsWherePart.First;
             inventoryItem.AddInventoryItemVariance(new InventoryItemVarianceBuilder(this.DatabaseSession).WithQuantity(3).WithReason(new VarianceReasons(this.DatabaseSession).Unknown).Build());
 
             this.DatabaseSession.Derive();
@@ -1906,7 +1906,7 @@ namespace Allors.Domain
         {
             this.InstantiateObjects(this.DatabaseSession);
 
-            var inventoryItem = (NonSerialisedInventoryItem)this.part.IInventoryItemsWherePart.First;
+            var inventoryItem = (NonSerialisedInventoryItem)this.part.InventoryItemsWherePart.First;
             inventoryItem.AddInventoryItemVariance(new InventoryItemVarianceBuilder(this.DatabaseSession).WithQuantity(10).WithReason(new VarianceReasons(this.DatabaseSession).Unknown).Build());
 
             this.DatabaseSession.Derive();
