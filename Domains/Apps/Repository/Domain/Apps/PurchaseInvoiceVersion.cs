@@ -11,8 +11,6 @@ namespace Allors.Repository
         #region inherited properties
         public Permission[] DeniedPermissions { get; set; }
         public SecurityToken[] SecurityTokens { get; set; }
-        public ObjectState PreviousObjectState { get; set; }
-        public ObjectState LastObjectState { get; set; }
         public string InternalComment { get; set; }
         public decimal TotalShippingAndHandlingCustomerCurrency { get; set; }
         public Currency CustomerCurrency { get; set; }
@@ -45,7 +43,6 @@ namespace Allors.Repository
         public decimal TotalDiscountCustomerCurrency { get; set; }
         public decimal TotalVat { get; set; }
         public decimal TotalFee { get; set; }
-
         public DateTime TimeStamp { get; set; }
         #endregion
 

@@ -12,8 +12,6 @@ namespace Allors.Repository
 
         public Permission[] DeniedPermissions { get; set; }
         public SecurityToken[] SecurityTokens { get; set; }
-        public ObjectState PreviousObjectState { get; set; }
-        public ObjectState LastObjectState { get; set; }
         public string InternalComment { get; set; }
         public DateTime RequiredResponseDate { get; set; }
         public DateTime ValidFromDate { get; set; }
@@ -30,7 +28,6 @@ namespace Allors.Repository
         public string QuoteNumber { get; set; }
         public QuoteObjectState CurrentObjectState { get; set; }
         public Request Request { get; set; }
-
         public DateTime TimeStamp { get; set; }
         #endregion
 

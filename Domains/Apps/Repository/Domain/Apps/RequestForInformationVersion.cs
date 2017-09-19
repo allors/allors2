@@ -26,12 +26,8 @@ namespace Allors.Repository
         public string TelephoneCountryCode { get; set; }
         public Permission[] DeniedPermissions { get; set; }
         public SecurityToken[] SecurityTokens { get; set; }
-        public ObjectState PreviousObjectState { get; set; }
-        public ObjectState LastObjectState { get; set; }
-
         public DateTime TimeStamp { get; set; }
         #endregion
-
 
         #region inherited methods
 

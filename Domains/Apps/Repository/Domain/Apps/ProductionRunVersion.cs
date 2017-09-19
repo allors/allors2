@@ -4,7 +4,7 @@ namespace Allors.Repository
     using Attributes;
 
     #region Allors
-    [Id("A3475107-2603-40A9-BC2A-D6A2C2BF6AC4")]
+    [Id("")]
     #endregion
     public partial class ProductionRunVersion : WorkEffortVersion
     {
@@ -12,9 +12,6 @@ namespace Allors.Repository
 
         public Permission[] DeniedPermissions { get; set; }
         public SecurityToken[] SecurityTokens { get; set; }
-        public ObjectState PreviousObjectState { get; set; }
-        public ObjectState LastObjectState { get; set; }
-
         public SecurityToken OwnerSecurityToken { get; set; }
         public AccessControl OwnerAccessControl { get; set; }
         public string Name { get; set; }
@@ -39,14 +36,29 @@ namespace Allors.Repository
         public Requirement[] RequirementFulfillments { get; set; }
         public string SpecialTerms { get; set; }
         public WorkEffort[] Concurrencies { get; set; }
-
-        public int QuantityProduced { get; set; }
-        public int QuantityRejected { get; set; }
-        public int QuantityToProduce { get; set; }
-        
         public DateTime TimeStamp { get; set; }
-
         #endregion
+
+        #region Allors
+        [Id("")]
+        [AssociationId("")]
+        [RoleId("")]
+        #endregion
+        int QuantityProduced { get; set; }
+
+        #region Allors
+        [Id("")]
+        [AssociationId("")]
+        [RoleId("")]
+        #endregion
+        int QuantityRejected { get; set; }
+
+        #region Allors
+        [Id("")]
+        [AssociationId("")]
+        [RoleId("")]
+        #endregion
+        int QuantityToProduce { get; set; }
 
         #region inherited methods
 

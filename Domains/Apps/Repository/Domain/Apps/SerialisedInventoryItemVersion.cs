@@ -7,14 +7,12 @@ namespace Allors.Repository
     #region Allors
     [Id("")]
     #endregion
-    public partial class SerialisedInventoryItemVersion : Version
+    public partial class SerialisedInventoryItemVersion : InventoryItemVersion
     {
         #region inherited properties
 
         public Permission[] DeniedPermissions { get; set; }
         public SecurityToken[] SecurityTokens { get; set; }
-        public ObjectState PreviousObjectState { get; set; }
-        public ObjectState LastObjectState { get; set; }
         public ProductCharacteristicValue[] ProductCharacteristicValues { get; set; }
         public InventoryItemVariance[] InventoryItemVariances { get; set; }
         public Part Part { get; set; }

@@ -28,35 +28,6 @@ namespace Allors.Repository
 
         public Permission[] DeniedPermissions { get; set; }
         public SecurityToken[] SecurityTokens { get; set; }
-        public string Comment { get; set; }
-        public ObjectState PreviousObjectState { get; set; }
-        public ObjectState LastObjectState { get; set; }
-        public decimal TotalDiscountAsPercentage { get; set; }
-        public DiscountAdjustment DiscountAdjustment { get; set; }
-        public decimal UnitVat { get; set; }
-        public decimal TotalVatCustomerCurrency { get; set; }
-        public VatRegime VatRegime { get; set; }
-        public decimal TotalVat { get; set; }
-        public decimal UnitSurcharge { get; set; }
-        public decimal UnitDiscount { get; set; }
-        public decimal TotalExVatCustomerCurrency { get; set; }
-        public VatRate DerivedVatRate { get; set; }
-        public decimal ActualUnitPrice { get; set; }
-        public decimal TotalIncVatCustomerCurrency { get; set; }
-        public decimal UnitBasePrice { get; set; }
-        public decimal CalculatedUnitPrice { get; set; }
-        public decimal TotalSurchargeCustomerCurrency { get; set; }
-        public decimal TotalIncVat { get; set; }
-        public decimal TotalSurchargeAsPercentage { get; set; }
-        public decimal TotalDiscountCustomerCurrency { get; set; }
-        public decimal TotalDiscount { get; set; }
-        public decimal TotalSurcharge { get; set; }
-        public VatRegime AssignedVatRegime { get; set; }
-        public decimal TotalBasePrice { get; set; }
-        public decimal TotalExVat { get; set; }
-        public decimal TotalBasePriceCustomerCurrency { get; set; }
-        public PriceComponent[] CurrentPriceComponents { get; set; }
-        public SurchargeAdjustment SurchargeAdjustment { get; set; }
 
         public DateTime TimeStamp { get; set; }
 

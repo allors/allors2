@@ -12,8 +12,6 @@ namespace Allors.Repository
         #region inherited properties
         public Permission[] DeniedPermissions { get; set; }
         public SecurityToken[] SecurityTokens { get; set; }
-        public ObjectState PreviousObjectState { get; set; }
-        public ObjectState LastObjectState { get; set; }
         public ProductCharacteristicValue[] ProductCharacteristicValues { get; set; }
         public InventoryItemVariance[] InventoryItemVariances { get; set; }
         public Part Part { get; set; }

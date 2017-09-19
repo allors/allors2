@@ -9,7 +9,6 @@ namespace Allors.Repository
     public partial class RequestForQuoteVersion : RequestVersion
     {
         #region inherited properties
-
         public string InternalComment { get; set; }
         public string Description { get; set; }
         public DateTime RequestDate { get; set; }
@@ -26,9 +25,6 @@ namespace Allors.Repository
         public string TelephoneCountryCode { get; set; }
         public Permission[] DeniedPermissions { get; set; }
         public SecurityToken[] SecurityTokens { get; set; }
-        public ObjectState PreviousObjectState { get; set; }
-        public ObjectState LastObjectState { get; set; }
-
         public DateTime TimeStamp { get; set; }
         #endregion
 

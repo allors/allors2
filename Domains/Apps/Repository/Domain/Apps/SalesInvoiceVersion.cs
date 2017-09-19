@@ -11,8 +11,6 @@ namespace Allors.Repository
         #region inherited properties
         public Permission[] DeniedPermissions { get; set; }
         public SecurityToken[] SecurityTokens { get; set; }
-        public ObjectState PreviousObjectState { get; set; }
-        public ObjectState LastObjectState { get; set; }
         public string InternalComment { get; set; }
         public decimal TotalShippingAndHandlingCustomerCurrency { get; set; }
         public Currency CustomerCurrency { get; set; }
