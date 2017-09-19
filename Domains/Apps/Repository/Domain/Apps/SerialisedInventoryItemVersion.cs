@@ -5,7 +5,7 @@ namespace Allors.Repository
     using Attributes;
 
     #region Allors
-    [Id("")]
+    [Id("F9111BDF-A0B6-40CB-B33A-0A856B357327")]
     #endregion
     public partial class SerialisedInventoryItemVersion : InventoryItemVersion
     {
@@ -30,116 +30,115 @@ namespace Allors.Repository
         #endregion
 
         #region Allors
-        [Id("")]
-        [AssociationId("")]
-        [RoleId("")]
+        [Id("6DD0FA27-1140-4F51-A642-35D8C1126684")]
+        [AssociationId("DD8AD770-CCFF-4102-9830-CD6297299936")]
+        [RoleId("53709128-15A0-4242-B887-5CA76C409F4D")]
         #endregion
         [Required]
         [Size(256)]
         [Workspace]
-        string SerialNumber { get; set; }
+        public string SerialNumber { get; set; }
 
         #region Allors
-        [Id("")]
-        [AssociationId("")]
-        [RoleId("")]
+        [Id("E9C7EDF0-C3CC-46E7-BD05-E9E39AF9641C")]
+        [AssociationId("800DD89D-54F8-4587-B00D-9B3665925A4E")]
+        [RoleId("D077E627-E1D8-4BC7-B452-BB9945B2F33B")]
         [Indexed]
         #endregion
         [Workspace]
         [Multiplicity(Multiplicity.ManyToOne)]
-        Ownership Ownership { get; set; }
+        public Ownership Ownership { get; set; }
 
         #region Allors
-        [Id("")]
-        [AssociationId("")]
-        [RoleId("")]
+        [Id("B79196C4-8D14-44FD-B94D-58E70E2CFB93")]
+        [AssociationId("978534A7-C4C8-42F9-9B05-1F035DD92FED")]
+        [RoleId("4868463C-24AE-4BA1-BC3D-9AF1291F9DE4")]
         #endregion
         [Workspace]
-        string Owner { get; set; }
+        public string Owner { get; set; }
 
         #region Allors
-        [Id("")]
-        [AssociationId("")]
-        [RoleId("")]
+        [Id("839FE92E-18D5-4A05-BBAC-04C1D39E69AA")]
+        [AssociationId("5B3C8DC5-2DA3-426E-B73F-88EC120E8234")]
+        [RoleId("78F597ED-4990-4BE9-ADBB-2AA8960C7485")]
         #endregion
         [Workspace]
-        int AcquisitionYear { get; set; }
+        public int AcquisitionYear { get; set; }
 
         #region Allors
-        [Id("")]
-        [AssociationId("")]
-        [RoleId("")]
+        [Id("DBA294BA-0291-4F93-8C6F-1FA31ACE667A")]
+        [AssociationId("2C51AD2B-1CA9-4081-966B-27222FE3F16C")]
+        [RoleId("ED8C89F4-8551-4EA9-A02A-37EC8D97B3F7")]
         #endregion
         [Workspace]
-        int ManufacturingYear { get; set; }
+        public int ManufacturingYear { get; set; }
 
         #region Allors
-        [Id("")]
-        [AssociationId("")]
-        [RoleId("")]
+        [Id("19950E96-99F4-468C-88DD-835ED418AD03")]
+        [AssociationId("CCD79283-9FA2-4A4F-8B1A-C5487028E415")]
+        [RoleId("4C42C74C-4403-4035-8C5C-157D34986FF7")]
         #endregion
         [Workspace]
-        decimal ReplacementValue { get; set; }
+        public decimal ReplacementValue { get; set; }
 
         #region Allors
-        [Id("")]
-        [AssociationId("")]
-        [RoleId("")]
+        [Id("744286AA-CCA9-45AD-BCE8-E9970F23C526")]
+        [AssociationId("1CE3391A-DD2D-4A5E-A39E-D440A035E0BD")]
+        [RoleId("46AE9828-8D90-423C-BFD1-C020BE8BC8DB")]
         #endregion
         [Workspace]
-        int LifeTime { get; set; }
+        public int LifeTime { get; set; }
 
         #region Allors
-        [Id("")]
-        [AssociationId("")]
-        [RoleId("")]
+        [Id("34A7281B-DD96-4C01-B771-47C22C23A12E")]
+        [AssociationId("677978EE-380B-4790-A13F-C115980FC6DF")]
+        [RoleId("7BBC34AE-E821-43C9-A78E-C725B67412FD")]
         #endregion
         [Workspace]
-        int DepreciationYears { get; set; }
+        public int DepreciationYears { get; set; }
 
         #region Allors
-        [Id("")]
-        [AssociationId("")]
-        [RoleId("")]
+        [Id("C8AFC3D8-6AE0-4400-80BC-3D8C729555C5")]
+        [AssociationId("179A11D0-1E8C-415C-9B56-67DBFF784239")]
+        [RoleId("5B236B92-90B1-46CD-9A30-B0D3865BA096")]
         #endregion
         [Workspace]
-        decimal PurchasePrice { get; set; }
+        public decimal PurchasePrice { get; set; }
 
         #region Allors
-        [Id("")]
-        [AssociationId("")]
-        [RoleId("")]
+        [Id("81B4FA27-1D6E-4C7C-B0C2-23F363BAD482")]
+        [AssociationId("4A913F3C-6DD0-417B-8123-95ABF1D8DD6E")]
+        [RoleId("B27B5DB4-CC50-490A-9161-D50DD435840F")]
         #endregion
         [Workspace]
-        decimal ExpectedSalesPrice { get; set; }
+        public decimal ExpectedSalesPrice { get; set; }
 
         #region Allors
-        [Id("")]
-        [AssociationId("")]
-        [RoleId("")]
+        [Id("B7E62F3F-F83C-48E0-AAF4-3947DFDCE6E8")]
+        [AssociationId("28CA9CE9-F69B-4F42-93B4-F4B78270254E")]
+        [RoleId("D72C0D23-CBD6-49EF-9044-2C196026481F")]
         #endregion
         [Workspace]
-        decimal RefurbishCost { get; set; }
+        public decimal RefurbishCost { get; set; }
 
         #region Allors
-        [Id("")]
-        [AssociationId("")]
-        [RoleId("")]
+        [Id("B38936D9-5EE6-422F-A4F7-14DC33A12832")]
+        [AssociationId("DD60FDAA-7B59-4C79-8D0F-375336212C58")]
+        [RoleId("6E9FC065-EC6A-4F56-8FDA-8563A36E0D55")]
         #endregion
         [Workspace]
-        decimal TransportCost { get; set; }
+        public decimal TransportCost { get; set; }
 
         #region Allors
-        [Id("")]
-        [AssociationId("")]
-        [RoleId("")]
+        [Id("7F30A827-CBFA-4716-B0BD-08641CB66B1B")]
+        [AssociationId("854A82D0-4CB3-42A2-8C0D-7DFE999BEE7F")]
+        [RoleId("3860102B-4D92-40B8-9CEB-634D5212AFCF")]
         [Indexed]
         #endregion
         [Workspace]
         [Multiplicity(Multiplicity.ManyToOne)]
-        SerialisedInventoryItemObjectState CurrentObjectState { get; set; }
-
-
+        public SerialisedInventoryItemObjectState CurrentObjectState { get; set; }
+        
         #region inherited methods
 
         public void OnBuild() { }

@@ -4,7 +4,7 @@ namespace Allors.Repository
     using Attributes;
 
     #region Allors
-    [Id("")]
+    [Id("B64D00D7-03C7-4D7A-B0A2-0825234C2070")]
     #endregion
     public partial class FaxCommunicationVersion : CommunicationEventVersion
     {
@@ -40,36 +40,36 @@ namespace Allors.Repository
         #endregion
 
         #region Allors
-        [Id("")]
-        [AssociationId("")]
-        [RoleId("")]
+        [Id("6E0B9344-5FF7-4B12-8974-92397AFF2543")]
+        [AssociationId("593B4954-AEE5-41B4-B541-BDB3C361D39F")]
+        [RoleId("7368D5AC-BEBA-4E97-97AE-25F039F754FC")]
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
         [Required]
         [Workspace]
-        Party Originator { get; set; }
+        public Party Originator { get; set; }
 
         #region Allors
-        [Id("")]
-        [AssociationId("")]
-        [RoleId("")]
+        [Id("00F53390-FD2C-42E9-B495-64FA56339617")]
+        [AssociationId("793B25BF-F734-45D5-A724-A23103BF3E15")]
+        [RoleId("FBCBF494-83AA-467C-A8CD-AB76E0F08223")]
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
         [Required]
         [Workspace]
-        Party Receiver { get; set; }
+        public Party Receiver { get; set; }
 
         #region Allors
-        [Id("")]
-        [AssociationId("")]
-        [RoleId("")]
+        [Id("23DDDD16-BD4F-4CAD-9B45-1B34D17A4D97")]
+        [AssociationId("181FF5B8-DFA5-4EC1-87BB-B2AEAD195273")]
+        [RoleId("9A130A18-09E4-484A-8687-77AF1684C607")]
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
         [Workspace]
-        TelecommunicationsNumber OutgoingFaxNumber { get; set; }
+        public TelecommunicationsNumber OutgoingFaxNumber { get; set; }
 
         #region inherited methods
 

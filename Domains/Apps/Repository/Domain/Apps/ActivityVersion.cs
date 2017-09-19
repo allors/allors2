@@ -4,7 +4,7 @@ namespace Allors.Repository
     using Attributes;
 
     #region Allors
-    [Id("8FDEA682-A902-4364-A354-1F77FBBE4D11")]
+    [Id("B6617870-9DD8-4FE4-810B-08CAC162F909")]
     #endregion
     public partial class ActivityVersion : WorkEffortVersion
     {

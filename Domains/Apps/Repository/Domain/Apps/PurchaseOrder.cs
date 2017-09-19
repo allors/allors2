@@ -64,7 +64,7 @@ namespace Allors.Repository
         #endregion
         [Multiplicity(Multiplicity.OneToMany)]
         [Indexed]
-        PurchaseOrderItem[] PurchaseOrderItems { get; set; }
+        public PurchaseOrderItem[] PurchaseOrderItems { get; set; }
 
         #region Allors
         [Id("1638a432-3a4f-4cca-906e-660b9164838b")]
@@ -74,7 +74,7 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.ManyToOne)]
         [Derived]
         [Indexed]
-        Party PreviousTakenViaSupplier { get; set; }
+        public Party PreviousTakenViaSupplier { get; set; }
 
         #region Allors
         [Id("36607a9e-d411-4726-a63c-7622b928bfe8")]
@@ -84,7 +84,7 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
         [Required]
-        Party TakenViaSupplier { get; set; }
+        public Party TakenViaSupplier { get; set; }
 
         #region Allors
         [Id("3b1f04bd-c9ad-4fca-981c-2ca243fdc292")]
@@ -94,7 +94,7 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
         [Required]
-        PurchaseOrderObjectState CurrentObjectState { get; set; }
+        public PurchaseOrderObjectState CurrentObjectState { get; set; }
 
         #region Allors
         [Id("4830cfc5-0375-4996-8cd8-27e36c102b65")]
@@ -103,7 +103,7 @@ namespace Allors.Repository
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
-        ContactMechanism TakenViaContactMechanism { get; set; }
+        public ContactMechanism TakenViaContactMechanism { get; set; }
 
         #region Allors
         [Id("7eceb1b6-1395-4655-a558-6d72ad4b380e")]
@@ -113,7 +113,7 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
         [Required]
-        ContactMechanism BillToContactMechanism { get; set; }
+        public ContactMechanism BillToContactMechanism { get; set; }
 
         #region Allors
         [Id("b390a733-e322-4ada-9ead-75a8c9976337")]
@@ -123,7 +123,7 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
         [Required]
-        InternalOrganisation ShipToBuyer { get; set; }
+        public InternalOrganisation ShipToBuyer { get; set; }
 
         #region Allors
         [Id("ccf88515-6441-4d0f-a2e7-8f5ed7c0533e")]
@@ -132,7 +132,7 @@ namespace Allors.Repository
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
-        Facility Facility { get; set; }
+        public Facility Facility { get; set; }
 
         #region Allors
         [Id("d74bd1fd-f243-4b5d-8061-1eafe7c25beb")]
@@ -141,7 +141,7 @@ namespace Allors.Repository
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
-        PostalAddress ShipToAddress { get; set; }
+        public PostalAddress ShipToAddress { get; set; }
 
         #region Allors
         [Id("f05e0ba5-4321-4d88-8f2c-8994de5b44b7")]
@@ -151,9 +151,8 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
         [Required]
-        InternalOrganisation BillToPurchaser { get; set; }
-
-
+        public InternalOrganisation BillToPurchaser { get; set; }
+        
         #region Versioning
         #region Allors
         [Id("25006AFF-3E2E-44D5-9F42-38A34868EA87")]

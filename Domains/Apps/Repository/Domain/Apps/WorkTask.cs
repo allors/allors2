@@ -55,7 +55,7 @@ namespace Allors.Repository
         #endregion
         [Multiplicity(Multiplicity.OneToOne)]
         [Workspace]
-        bool SendNotification { get; set; }
+        public bool SendNotification { get; set; }
 
         #region Allors
         [Id("55229180-203E-4743-B41B-DA4B4FC1B079")]
@@ -65,7 +65,7 @@ namespace Allors.Repository
         #endregion
         [Multiplicity(Multiplicity.OneToOne)]
         [Workspace]
-        bool SendReminder { get; set; }
+        public bool SendReminder { get; set; }
 
         #region Allors
         [Id("413541ED-963E-4036-9347-047456F211E6")]
@@ -75,7 +75,7 @@ namespace Allors.Repository
         #endregion
         [Multiplicity(Multiplicity.OneToOne)]
         [Workspace]
-        DateTime RemindAt { get; set; }
+        public DateTime RemindAt { get; set; }
 
         #region Versioning
         #region Allors

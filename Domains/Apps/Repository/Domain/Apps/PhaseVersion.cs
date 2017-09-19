@@ -4,7 +4,7 @@ namespace Allors.Repository
     using Attributes;
 
     #region Allors
-    [Id("CCBF3B04-12A5-420C-B227-3CF819684DB4")]
+    [Id("DF338E22-2662-4FE7-9283-934D53BDDD9A")]
     #endregion
     public partial class PhaseVersion : WorkEffortVersion
     {

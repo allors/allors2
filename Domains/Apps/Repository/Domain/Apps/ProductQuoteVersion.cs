@@ -4,7 +4,7 @@ namespace Allors.Repository
     using Attributes;
 
     #region Allors
-    [Id("")]
+    [Id("BA171BD2-7757-4D4B-AEF7-3E9670F2CF38")]
     #endregion
     public partial class ProductQuoteVersion : QuoteVersion
     {

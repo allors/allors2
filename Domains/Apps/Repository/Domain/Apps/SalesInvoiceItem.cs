@@ -62,7 +62,7 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
         [Workspace]
-        ProductFeature ProductFeature { get; set; }
+        public ProductFeature ProductFeature { get; set; }
 
         #region Allors
         [Id("0a93f639-a456-4318-a8fa-8d3c2a107379")]
@@ -73,7 +73,7 @@ namespace Allors.Repository
         [Indexed]
         [Required]
         [Workspace]
-        SalesInvoiceItemObjectState CurrentObjectState { get; set; }
+        public SalesInvoiceItemObjectState CurrentObjectState { get; set; }
 
         #region Allors
         [Id("103d42a5-fdee-4689-af19-2ea4c8060de3")]
@@ -83,7 +83,7 @@ namespace Allors.Repository
         [Precision(19)]
         [Scale(2)]
         [Workspace]
-        decimal RequiredProfitMargin { get; set; }
+        public decimal RequiredProfitMargin { get; set; }
 
         #region Allors
         [Id("1a18b2f1-a31e-4ec3-8981-5f65af2ff907")]
@@ -95,7 +95,7 @@ namespace Allors.Repository
         [Precision(19)]
         [Scale(2)]
         [Workspace]
-        decimal InitialMarkupPercentage { get; set; }
+        public decimal InitialMarkupPercentage { get; set; }
 
         #region Allors
         [Id("2f6e0b52-d37c-4caf-91d0-862666195247")]
@@ -107,7 +107,7 @@ namespace Allors.Repository
         [Precision(19)]
         [Scale(2)]
         [Workspace]
-        decimal MaintainedMarkupPercentage { get; set; }
+        public decimal MaintainedMarkupPercentage { get; set; }
 
         #region Allors
         [Id("4daa5c18-85c6-49c0-8f23-8e419e44471c")]
@@ -117,7 +117,7 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
         [Workspace]
-        Product Product { get; set; }
+        public Product Product { get; set; }
 
         #region Allors
         [Id("4f9e110d-fca8-4956-9d2f-178843eb9b9f")]
@@ -129,7 +129,7 @@ namespace Allors.Repository
         [Precision(19)]
         [Scale(2)]
         [Workspace]
-        decimal UnitPurchasePrice { get; set; }
+        public decimal UnitPurchasePrice { get; set; }
 
         #region Allors
         [Id("5bdae88b-856d-4746-8645-9bded2a4a3bd")]
@@ -140,7 +140,7 @@ namespace Allors.Repository
         [Derived]
         [Indexed]
         [Workspace]
-        SalesOrderItem SalesOrderItem { get; set; }
+        public SalesOrderItem SalesOrderItem { get; set; }
 
         #region Allors
         [Id("6dd4e8ee-48ed-400d-a129-99a3a651586a")]
@@ -151,7 +151,7 @@ namespace Allors.Repository
         [Indexed]
         [Required]
         [Workspace]
-        SalesInvoiceItemType SalesInvoiceItemType { get; set; }
+        public SalesInvoiceItemType SalesInvoiceItemType { get; set; }
 
         #region Allors
         [Id("90866201-03a1-44b2-9318-5048639b58c8")]
@@ -161,7 +161,7 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
         [Workspace]
-        Person SalesRep { get; set; }
+        public Person SalesRep { get; set; }
 
         #region Allors
         [Id("a04f506f-7ac9-4ab9-8f3f-1aba1ae76a67")]
@@ -173,7 +173,7 @@ namespace Allors.Repository
         [Precision(19)]
         [Scale(2)]
         [Workspace]
-        decimal InitialProfitMargin { get; set; }
+        public decimal InitialProfitMargin { get; set; }
 
         #region Allors
         [Id("ba9acc7e-635d-4387-98eb-67ea26e9e2db")]
@@ -185,7 +185,7 @@ namespace Allors.Repository
         [Precision(19)]
         [Scale(2)]
         [Workspace]
-        decimal MaintainedProfitMargin { get; set; }
+        public decimal MaintainedProfitMargin { get; set; }
 
         #region Allors
         [Id("bd485f1f-6937-4270-8695-6f9a50e671c3")]
@@ -194,7 +194,7 @@ namespace Allors.Repository
         #endregion
         [Multiplicity(Multiplicity.ManyToMany)]
         [Indexed]
-        TimeEntry[] TimeEntries { get; set; }
+        public TimeEntry[] TimeEntries { get; set; }
 
         #region Allors
         [Id("bfd8c2d5-57f9-4650-97ae-2f2b1819b3a9")]
@@ -204,7 +204,7 @@ namespace Allors.Repository
         [Precision(19)]
         [Scale(2)]
         [Workspace]
-        decimal RequiredMarkupPercentage { get; set; }
+        public decimal RequiredMarkupPercentage { get; set; }
 
         #region Versioning
         #region Allors

@@ -4,7 +4,7 @@ namespace Allors.Repository
     using Attributes;
 
     #region Allors
-    [Id("")]
+    [Id("C23DBDD0-8933-4582-8995-8767EFDA82D5")]
     #endregion
     public partial class PurchaseInvoiceVersion : InvoiceVersion
     {
@@ -47,54 +47,54 @@ namespace Allors.Repository
         #endregion
 
         #region Allors
-        [Id("")]
-        [AssociationId("")]
-        [RoleId("")]
+        [Id("65E39E93-6445-459A-99E8-0ED388B85B4B")]
+        [AssociationId("AC00032A-8EE6-4B18-B387-44A02AD8F1A0")]
+        [RoleId("7DAB2DA2-EFE4-4B91-B425-07FB2A59B216")]
         #endregion
         [Multiplicity(Multiplicity.ManyToMany)]
         [Indexed]
-        PurchaseInvoiceItem[] PurchaseInvoiceItems { get; set; }
+        public PurchaseInvoiceItem[] PurchaseInvoiceItems { get; set; }
 
         #region Allors
-        [Id("")]
-        [AssociationId("")]
-        [RoleId("")]
+        [Id("E9577C44-448F-4BBA-AF8F-B6D6BE385694")]
+        [AssociationId("F9AA76DA-AFA5-4802-80C8-B9F1AF23E522")]
+        [RoleId("EB43D44D-188C-4E4E-A96A-E83FB811727A")]
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
         [Required]
-        InternalOrganisation BilledToInternalOrganisation { get; set; }
+        public InternalOrganisation BilledToInternalOrganisation { get; set; }
 
         #region Allors
-        [Id("")]
-        [AssociationId("")]
-        [RoleId("")]
+        [Id("7751055A-3C59-4723-B7DF-42C377624BE0")]
+        [AssociationId("5FB242DC-FB8B-4347-A0F2-65BCC0BBC056")]
+        [RoleId("DAF79CD7-EAD0-4091-8545-24ADEEC919AF")]
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
         [Derived]
         [Indexed]
         [Required]
-        PurchaseInvoiceObjectState CurrentObjectState { get; set; }
+        public PurchaseInvoiceObjectState CurrentObjectState { get; set; }
 
         #region Allors
-        [Id("")]
-        [AssociationId("")]
-        [RoleId("")]
+        [Id("277D12EB-729E-419A-A9EB-35F30DFFBA15")]
+        [AssociationId("0B791CFD-9124-44AF-BC2B-D26A79FFF3F1")]
+        [RoleId("2827C4E6-E649-48EA-86CD-C7B7689EB7A7")]
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
         [Required]
-        Party BilledFromParty { get; set; }
+        public Party BilledFromParty { get; set; }
 
         #region Allors
-        [Id("")]
-        [AssociationId("")]
-        [RoleId("")]
+        [Id("4A072DD0-0886-4CFF-9DC4-D213854160E7")]
+        [AssociationId("741297D3-BB5D-4789-986C-509B7D95A6EC")]
+        [RoleId("CD477E7F-C66A-477E-BC30-EEC813CC0211")]
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
         [Required]
-        PurchaseInvoiceType PurchaseInvoiceType { get; set; }
+        public PurchaseInvoiceType PurchaseInvoiceType { get; set; }
         
         #region inherited methods
 

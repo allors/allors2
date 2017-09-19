@@ -4,7 +4,7 @@ namespace Allors.Repository
     using Attributes;
 
     #region Allors
-    [Id("")]
+    [Id("C36F15B1-B7BC-4DC2-B3B4-6106B319CB98")]
     #endregion
     public partial class ProductionRunVersion : WorkEffortVersion
     {
@@ -40,25 +40,25 @@ namespace Allors.Repository
         #endregion
 
         #region Allors
-        [Id("")]
-        [AssociationId("")]
-        [RoleId("")]
+        [Id("4257749A-7767-412B-B742-8B3E88F39D62")]
+        [AssociationId("2FB96520-CD81-4567-93BC-A280A6991601")]
+        [RoleId("BC8FDC94-5BCF-43C4-9AD1-347B9ADCFB2F")]
         #endregion
-        int QuantityProduced { get; set; }
+        public int QuantityProduced { get; set; }
 
         #region Allors
-        [Id("")]
-        [AssociationId("")]
-        [RoleId("")]
+        [Id("744354A8-D467-46BC-9F44-A78484EB3162")]
+        [AssociationId("6CFB0C3C-4E61-44A0-8AF1-EFB83C06F478")]
+        [RoleId("129A660E-B879-4ADD-A628-D5BA2966406E")]
         #endregion
-        int QuantityRejected { get; set; }
+        public int QuantityRejected { get; set; }
 
         #region Allors
-        [Id("")]
-        [AssociationId("")]
-        [RoleId("")]
+        [Id("EB3B310F-20B1-4FAC-87EC-D546899849E3")]
+        [AssociationId("4536DA40-898D-4C22-855A-4C3D4FA9A290")]
+        [RoleId("FBE1C888-A46F-4156-85B4-1CE3AB089E75")]
         #endregion
-        int QuantityToProduce { get; set; }
+        public int QuantityToProduce { get; set; }
 
         #region inherited methods
 

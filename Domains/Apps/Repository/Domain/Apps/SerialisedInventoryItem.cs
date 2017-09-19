@@ -39,7 +39,7 @@ namespace Allors.Repository
         [Required]
         [Size(256)]
         [Workspace]
-        string SerialNumber { get; set; }
+        public string SerialNumber { get; set; }
 
         #region Allors
         [Id("D9D4FF13-6D54-4F35-9A81-902E0BB86545")]
@@ -49,7 +49,7 @@ namespace Allors.Repository
         #endregion
         [Workspace]
         [Multiplicity(Multiplicity.ManyToOne)]
-        Ownership Ownership { get; set; }
+        public Ownership Ownership { get; set; }
 
         #region Allors
         [Id("753F1209-A92C-4BEA-85FE-7B7C42C5C8A3")]
@@ -57,7 +57,7 @@ namespace Allors.Repository
         [RoleId("5A330D37-3CDE-4F80-BA51-92A77F4FDDFA")]
         #endregion
         [Workspace]
-        string Owner { get; set; }
+        public string Owner { get; set; }
 
         #region Allors
         [Id("E511EE11-FA2E-4F84-8010-EE1453C609F3")]
@@ -65,7 +65,7 @@ namespace Allors.Repository
         [RoleId("DAA8C492-9675-4192-8651-4B9BD05C9B70")]
         #endregion
         [Workspace]
-        int AcquisitionYear { get; set; }
+        public int AcquisitionYear { get; set; }
 
         #region Allors
         [Id("CCDD8203-F635-4821-876D-A83A925C145D")]
@@ -73,7 +73,7 @@ namespace Allors.Repository
         [RoleId("223C23A1-5514-47A3-BAFF-5F88D3DC5B59")]
         #endregion
         [Workspace]
-        int ManufacturingYear { get; set; }
+        public int ManufacturingYear { get; set; }
 
         #region Allors
         [Id("DDECD426-40C7-4D17-A225-2C46B47F0C89")]
@@ -81,7 +81,7 @@ namespace Allors.Repository
         [RoleId("3570A014-1A46-4C61-8D7F-14D07BF1F5AA")]
         #endregion
         [Workspace]
-        decimal ReplacementValue { get; set; }
+        public decimal ReplacementValue { get; set; }
 
         #region Allors
         [Id("E25F1487-6F08-4DC5-9838-BAE4FF990ADA")]
@@ -89,7 +89,7 @@ namespace Allors.Repository
         [RoleId("F386A2DB-5DBE-4BD6-921B-024A9C80105C")]
         #endregion
         [Workspace]
-        int LifeTime { get; set; }
+        public int LifeTime { get; set; }
 
         #region Allors
         [Id("D96B2474-B8AE-40F4-9D86-4CA09E2B6965")]
@@ -97,7 +97,7 @@ namespace Allors.Repository
         [RoleId("19E428F3-9C68-4C59-BD19-68EA17688F04")]
         #endregion
         [Workspace]
-        int DepreciationYears { get; set; }
+        public int DepreciationYears { get; set; }
 
         #region Allors
         [Id("ECE5838C-6E0B-4889-91DA-4F9277760E9D")]
@@ -105,7 +105,7 @@ namespace Allors.Repository
         [RoleId("4519FC49-C403-4FE2-B85F-BB7F01B6B907")]
         #endregion
         [Workspace]
-        decimal PurchasePrice { get; set; }
+        public decimal PurchasePrice { get; set; }
 
         #region Allors
         [Id("53E31ACE-5F48-4CBF-9D35-003534E1A1F1")]
@@ -113,7 +113,7 @@ namespace Allors.Repository
         [RoleId("B30E951F-29E7-4013-BDAA-E3DAF7AE2FE3")]
         #endregion
         [Workspace]
-        decimal ExpectedSalesPrice { get; set; }
+        public decimal ExpectedSalesPrice { get; set; }
 
         #region Allors
         [Id("6EBA501E-5EB8-4B9C-B0E7-2658562D8F44")]
@@ -121,7 +121,7 @@ namespace Allors.Repository
         [RoleId("D0AD48FF-6D74-4D07-9F92-08A9AB1FB3B7")]
         #endregion
         [Workspace]
-        decimal RefurbishCost { get; set; }
+        public decimal RefurbishCost { get; set; }
 
         #region Allors
         [Id("901E5D13-4B43-4FE4-9A79-8EFED2CAFE74")]
@@ -129,7 +129,7 @@ namespace Allors.Repository
         [RoleId("D1B62377-F8F5-4713-BBC4-AF47C2A89AF1")]
         #endregion
         [Workspace]
-        decimal TransportCost { get; set; }
+        public decimal TransportCost { get; set; }
 
         #region Allors
         [Id("887163E8-720C-4CFD-83DC-7B70A2B155E3")]
@@ -139,7 +139,7 @@ namespace Allors.Repository
         #endregion
         [Workspace]
         [Multiplicity(Multiplicity.ManyToOne)]
-        SerialisedInventoryItemObjectState CurrentObjectState { get; set; }
+        public SerialisedInventoryItemObjectState CurrentObjectState { get; set; }
 
         #region Versioning
         #region Allors

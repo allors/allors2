@@ -4,7 +4,7 @@ namespace Allors.Repository
     using Attributes;
 
     #region Allors
-    [Id("19572C2B-885C-46FF-8BF9-E3C88C18F0C8")]
+    [Id("89D15DB1-7848-4CE5-A295-A961C7180F4C")]
     #endregion
     public partial class MaintenanceVersion : WorkEffortVersion
     {

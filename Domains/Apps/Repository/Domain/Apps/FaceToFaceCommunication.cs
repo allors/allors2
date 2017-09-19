@@ -86,7 +86,7 @@ namespace Allors.Repository
         [Indexed]
         [Required]
         [Workspace]
-        Party[] Participants { get; set; }
+        public Party[] Participants { get; set; }
 
         #region Allors
         [Id("95ae979f-d549-4ea1-87f0-46aa55e4b14a")]
@@ -95,7 +95,7 @@ namespace Allors.Repository
         #endregion
         [Size(256)]
         [Workspace]
-        string Location { get; set; }
+        public string Location { get; set; }
         
         #region Versioning
         #region Allors

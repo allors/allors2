@@ -7,7 +7,7 @@ namespace Allors.Repository
     #region Allors
     [Id("7dde949a-6f54-4ece-92b3-d269f50ef9d9")]
     #endregion
-    public partial interface Order : AccessControlledObject, Printable, UniquelyIdentifiable, Commentable, Localised, Auditable
+    public partial interface Order : AccessControlledObject, Printable, UniquelyIdentifiable, Commentable, Localised, Auditable, Transitional
     {
         #region Allors
         [Id("962215D2-4461-4BD3-9A98-F1A085B2343F")]

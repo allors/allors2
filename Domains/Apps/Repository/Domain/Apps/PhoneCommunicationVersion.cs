@@ -4,7 +4,7 @@ namespace Allors.Repository
     using Attributes;
 
     #region Allors
-    [Id("")]
+    [Id("00022659-5830-4A1F-A463-C135D5B65992")]
     #endregion
     public partial class PhoneCommunicationVersion : CommunicationEventVersion 
     {
@@ -40,43 +40,43 @@ namespace Allors.Repository
         #endregion
 
         #region Allors
-        [Id("")]
-        [AssociationId("")]
-        [RoleId("")]
+        [Id("D691FA00-ADDF-41DF-8586-4FEDE646DDF7")]
+        [AssociationId("FF10126C-6B7B-4799-A7B7-AACB7FCABD8A")]
+        [RoleId("E56889A9-DC2B-4833-9807-F6C73759FC8A")]
         #endregion
         [Workspace]
-        bool LeftVoiceMail { get; set; }
+        public bool LeftVoiceMail { get; set; }
 
         #region Allors
-        [Id("")]
-        [AssociationId("")]
-        [RoleId("")]
+        [Id("F42FD1E6-ADBA-4734-9AAA-F3176F91E45F")]
+        [AssociationId("08FA136F-2527-40AC-86E5-49FBBBC141C5")]
+        [RoleId("E475C664-D369-4A0E-993F-0185A13E5470")]
         #endregion
         [Required]
         [Workspace]
-        bool IncomingCall { get; set; }
+        public bool IncomingCall { get; set; }
 
         #region Allors
-        [Id("")]
-        [AssociationId("")]
-        [RoleId("")]
+        [Id("F6BBFADC-A5F9-4F23-B39E-3A43949B667D")]
+        [AssociationId("41AB4F17-F952-4E71-8EF2-878BF6522B18")]
+        [RoleId("CD7C8284-9221-4A82-AE22-B99F21060E2B")]
         #endregion
         [Multiplicity(Multiplicity.ManyToMany)]
         [Indexed]
         [Required]
         [Workspace]
-        Party[] Receivers { get; set; }
+        public Party[] Receivers { get; set; }
 
         #region Allors
-        [Id("")]
-        [AssociationId("")]
-        [RoleId("")]
+        [Id("87995CE4-A46A-4DC9-8A6D-603E9B84A131")]
+        [AssociationId("7F8A34C4-86AE-4A9F-93A0-92DD5B41A8CF")]
+        [RoleId("EBDD2F26-1AE3-44B5-9647-80AFCFBACD39")]
         #endregion
         [Multiplicity(Multiplicity.ManyToMany)]
         [Indexed]
         [Required]
         [Workspace]
-        Party[] Callers { get; set; }
+        public Party[] Callers { get; set; }
 
         #region inherited methods
 

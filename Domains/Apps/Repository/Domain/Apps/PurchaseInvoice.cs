@@ -63,7 +63,7 @@ namespace Allors.Repository
         #endregion
         [Multiplicity(Multiplicity.OneToMany)]
         [Indexed]
-        PurchaseInvoiceItem[] PurchaseInvoiceItems { get; set; }
+        public PurchaseInvoiceItem[] PurchaseInvoiceItems { get; set; }
 
         #region Allors
         [Id("86859b7b-e627-43fe-ba75-711d4c104807")]
@@ -73,7 +73,7 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
         [Required]
-        InternalOrganisation BilledToInternalOrganisation { get; set; }
+        public InternalOrganisation BilledToInternalOrganisation { get; set; }
 
         #region Allors
         [Id("bc059d0f-e9bd-41e8-82ff-9615a01ec24a")]
@@ -84,7 +84,7 @@ namespace Allors.Repository
         [Derived]
         [Indexed]
         [Required]
-        PurchaseInvoiceObjectState CurrentObjectState { get; set; }
+        public PurchaseInvoiceObjectState CurrentObjectState { get; set; }
 
         #region Allors
         [Id("d4bbc5ed-08a4-4d89-ad53-7705ae71d029")]
@@ -94,7 +94,7 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
         [Required]
-        Party BilledFromParty { get; set; }
+        public Party BilledFromParty { get; set; }
 
         #region Allors
         [Id("e444b5e7-0128-49fc-86cb-a6fe39c280ae")]
@@ -104,7 +104,7 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
         [Required]
-        PurchaseInvoiceType PurchaseInvoiceType { get; set; }
+        public PurchaseInvoiceType PurchaseInvoiceType { get; set; }
         
         #region Versioning
         #region Allors

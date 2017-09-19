@@ -4,7 +4,7 @@ namespace Allors.Repository
     using Attributes;
 
     #region Allors
-    [Id("")]
+    [Id("EC1A374B-E1D8-4808-A767-8E7910117C08")]
     #endregion
     public partial class ProposalVersion : QuoteVersion
     {

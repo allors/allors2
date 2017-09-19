@@ -25,32 +25,59 @@ namespace Allors.Repository
         public ObjectState PreviousObjectState { get; set; }
         public ObjectState LastObjectState { get; set; }
         public string Comment { get; set; }
+
         public decimal TotalDiscountAsPercentage { get; set; }
+
         public DiscountAdjustment DiscountAdjustment { get; set; }
+
         public decimal UnitVat { get; set; }
+
         public decimal TotalVatCustomerCurrency { get; set; }
+
         public VatRegime VatRegime { get; set; }
+
         public decimal TotalVat { get; set; }
+
         public decimal UnitSurcharge { get; set; }
+
         public decimal UnitDiscount { get; set; }
+
         public decimal TotalExVatCustomerCurrency { get; set; }
+
         public VatRate DerivedVatRate { get; set; }
+
         public decimal ActualUnitPrice { get; set; }
+
         public decimal TotalIncVatCustomerCurrency { get; set; }
+
         public decimal UnitBasePrice { get; set; }
+
         public decimal CalculatedUnitPrice { get; set; }
+
         public decimal TotalSurchargeCustomerCurrency { get; set; }
+
         public decimal TotalIncVat { get; set; }
+
         public decimal TotalSurchargeAsPercentage { get; set; }
+
         public decimal TotalDiscountCustomerCurrency { get; set; }
+
         public decimal TotalDiscount { get; set; }
+
         public decimal TotalSurcharge { get; set; }
+
         public VatRegime AssignedVatRegime { get; set; }
+
         public decimal TotalBasePrice { get; set; }
+
         public decimal TotalExVat { get; set; }
+
         public decimal TotalBasePriceCustomerCurrency { get; set; }
+
         public PriceComponent[] CurrentPriceComponents { get; set; }
+
         public SurchargeAdjustment SurchargeAdjustment { get; set; }
+
         #endregion
 
         #region Allors
@@ -61,7 +88,7 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
         [Required]
-        PurchaseInvoiceItemType PurchaseInvoiceItemType { get; set; }
+        public PurchaseInvoiceItemType PurchaseInvoiceItemType { get; set; }
 
         #region Allors
         [Id("65eebcc4-d5ef-4933-8640-973b67c65127")]
@@ -71,7 +98,7 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
         [Required]
-        Part Part { get; set; }
+        public Part Part { get; set; }
 
         #region Allors
         [Id("dbe5c72f-63e0-47a5-a5f5-f8a3ff83fd57")]
@@ -81,7 +108,7 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.ManyToOne)]
         [Derived]
         [Indexed]
-        PurchaseInvoiceItemObjectState CurrentObjectState { get; set; }
+        public PurchaseInvoiceItemObjectState CurrentObjectState { get; set; }
 
         #region Versioning
         #region Allors

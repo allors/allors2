@@ -87,7 +87,7 @@ namespace Allors.Repository
         [Indexed]
         [Required]
         [Workspace]
-        Party Originator { get; set; }
+        public Party Originator { get; set; }
 
         #region Allors
         [Id("79ec572e-b4a2-4a33-90c3-65c9f9e4012c")]
@@ -98,7 +98,7 @@ namespace Allors.Repository
         [Indexed]
         [Required]
         [Workspace]
-        Party Receiver { get; set; }
+        public Party Receiver { get; set; }
 
         #region Allors
         [Id("8797fd5b-0d89-420f-b656-aff35b50e75c")]
@@ -108,7 +108,7 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
         [Workspace]
-        TelecommunicationsNumber OutgoingFaxNumber { get; set; }
+        public TelecommunicationsNumber OutgoingFaxNumber { get; set; }
 
         #region Versioning
         #region Allors

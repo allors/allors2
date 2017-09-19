@@ -85,7 +85,7 @@ namespace Allors.Repository
         [RoleId("209e3d12-b5cf-49c9-a39c-15f14690ec69")]
         #endregion
         [Workspace]
-        bool LeftVoiceMail { get; set; }
+        public bool LeftVoiceMail { get; set; }
 
         #region Allors
         [Id("53df1269-a6f0-49a4-bd2f-af4aff75565a")]
@@ -94,7 +94,7 @@ namespace Allors.Repository
         #endregion
         [Required]
         [Workspace]
-        bool IncomingCall { get; set; }
+        public bool IncomingCall { get; set; }
 
         #region Allors
         [Id("5e3c675b-b329-47a4-9d53-b0e95837a23b")]
@@ -105,7 +105,7 @@ namespace Allors.Repository
         [Indexed]
         [Required]
         [Workspace]
-        Party[] Receivers { get; set; }
+        public Party[] Receivers { get; set; }
 
         #region Allors
         [Id("7a37ab85-222a-4d13-b832-b222faefcf39")]
@@ -116,7 +116,7 @@ namespace Allors.Repository
         [Indexed]
         [Required]
         [Workspace]
-        Party[] Callers { get; set; }
+        public Party[] Callers { get; set; }
         
         #region Versioning
         #region Allors

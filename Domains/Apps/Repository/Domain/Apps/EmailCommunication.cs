@@ -88,7 +88,7 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.ManyToOne)]
         [Required]
         [Workspace]
-        EmailAddress Originator { get; set; }
+        public EmailAddress Originator { get; set; }
 
         #region Allors
         [Id("4026fcf7-3fc2-494b-9c4a-3e19eed74134")]
@@ -99,7 +99,7 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.ManyToMany)]
         [Required]
         [Workspace]
-        EmailAddress[] Addressees { get; set; }
+        public EmailAddress[] Addressees { get; set; }
 
         #region Allors
         [Id("4f696f91-e185-4d3d-bf40-40e6c2b02eb4")]
@@ -109,7 +109,7 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.ManyToMany)]
         [Indexed]
         [Workspace]
-        EmailAddress[] CarbonCopies { get; set; }
+        public EmailAddress[] CarbonCopies { get; set; }
 
         #region Allors
         [Id("dd7506bb-4daa-4da7-8f20-3f607c944959")]
@@ -119,7 +119,7 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.ManyToMany)]
         [Indexed]
         [Workspace]
-        EmailAddress[] BlindCopies { get; set; }
+        public EmailAddress[] BlindCopies { get; set; }
 
         #region Allors
         [Id("e12818ad-4ffd-4d91-8142-4ac9bfcbc146")]
@@ -129,7 +129,7 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
         [Workspace]
-        EmailTemplate EmailTemplate { get; set; }
+        public EmailTemplate EmailTemplate { get; set; }
 
         #region Allors
         [Id("3F61CB07-4E36-4AA3-AE0D-ABAC9D95DB49")]
@@ -138,7 +138,7 @@ namespace Allors.Repository
         #endregion
         [Workspace]
         [Required]
-        bool IncomingMail { get; set; }
+        public bool IncomingMail { get; set; }
 
         #region Versioning
         #region Allors

@@ -87,7 +87,7 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
         [Workspace]
-        Party Originator { get; set; }
+        public Party Originator { get; set; }
 
         #region Allors
         [Id("39077571-13b2-4cc4-be85-517dbc11703e")]
@@ -97,7 +97,7 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
         [Workspace]
-        Party Receiver { get; set; }
+        public Party Receiver { get; set; }
         
         #region Versioning
         #region Allors

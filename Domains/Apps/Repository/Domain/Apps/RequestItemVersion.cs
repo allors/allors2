@@ -4,7 +4,7 @@ namespace Allors.Repository
     using Attributes;
 
     #region Allors
-    [Id("D02C3738-1095-4B86-A1FB-C56A841A8082")]
+    [Id("CBEEED83-1411-4081-8605-8D2F4628BB52")]
     #endregion
     public partial class RequestItemVersion : Version
     {
@@ -17,35 +17,35 @@ namespace Allors.Repository
         #endregion
 
         #region Allors
-        [Id("1A82EB63-123E-4055-BA4C-8DAA62648565")]
-        [AssociationId("DB3E0711-6A15-4D96-9D49-36E6C8C19567")]
-        [RoleId("55F3B5F5-D36B-4414-875D-2A458CABA931")]
+        [Id("AFC66E59-4E01-4322-ADB8-3458AF745608")]
+        [AssociationId("D468BA46-F8B9-4F97-BB97-5486C865A8C4")]
+        [RoleId("18900D9B-08E7-43B9-8186-21275458AF00")]
         #endregion
         [Workspace]
         [Size(-1)]
         public string InternalComment { get; set; }
 
         #region Allors
-        [Id("542f3de9-e808-443b-b6e6-baf2db1ec2b1")]
-        [AssociationId("30b2b652-b7a8-42ec-bd10-dd606a1be951")]
-        [RoleId("c176a9ff-7656-4c22-bf00-e19cdcd16566")]
+        [Id("8DB3CC20-5583-4842-BA46-F644C5BB8D53")]
+        [AssociationId("2585AE87-F606-483F-81A6-DBC213AD3F53")]
+        [RoleId("EBE771E8-9C8E-4496-9EEA-39ADAC2F0C5F")]
         #endregion
         [Size(256)]
         [Workspace]
         public string Description { get; set; }
 
         #region Allors
-        [Id("5c0f0069-b7f9-47f1-8346-c30f14afbc0c")]
-        [AssociationId("0f924664-8b58-45f4-b6f3-d8201610de8f")]
-        [RoleId("3560f38b-1945-4eb1-9b9a-c3e84d267647")]
+        [Id("6D0ACDF5-5BF9-4930-8FC3-4C39A87DE7A2")]
+        [AssociationId("DDC8B1E0-BDAD-4A62-8F24-E67905FE395B")]
+        [RoleId("F5C59D20-406C-49D9-B5B5-17E943490C1B")]
         #endregion
         [Workspace]
         public int Quantity { get; set; }
 
         #region Allors
-        [Id("B48D0207-26CD-4A63-922F-69EC62704200")]
-        [AssociationId("0ED387D1-A458-428B-A422-4CAC0D140841")]
-        [RoleId("A4B9AD09-CB3D-460D-B0F2-232C0E124170")]
+        [Id("8A087F8A-6E70-45F2-9E4D-65465D0B8939")]
+        [AssociationId("9EA95341-32B5-48DF-9FD7-EEBD35AE6A04")]
+        [RoleId("4FFF49FE-D8A6-484A-B6DA-000510708550")]
         [Indexed]
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
@@ -53,9 +53,9 @@ namespace Allors.Repository
         public UnitOfMeasure UnitOfMeasure { get; set; }
 
         #region Allors
-        [Id("6544faeb-a4cf-447c-a696-b6561c45086e")]
-        [AssociationId("3d03cbae-7618-458e-b705-94112c8f66db")]
-        [RoleId("0204dc28-cec2-4d6b-b525-c7e4c65f958b")]
+        [Id("D6CF8624-A47B-44D8-BDA2-208EBFF7D55A")]
+        [AssociationId("C50F4FFF-8543-45C5-853B-C4F42977495B")]
+        [RoleId("F6384A0A-DDC7-40D7-B104-F2114A2CA77B")]
         #endregion
         [Multiplicity(Multiplicity.ManyToMany)]
         [Indexed]
@@ -63,9 +63,9 @@ namespace Allors.Repository
         public Requirement[] Requirements { get; set; }
 
         #region Allors
-        [Id("a5d1bef9-3086-4c32-9a6d-ce33c4f09539")]
-        [AssociationId("1d3eedcb-dc13-46ad-ac43-e6979995e00b")]
-        [RoleId("474a6350-abba-4c53-ba26-0320c60aa8a8")]
+        [Id("7285DB03-008F-45BF-9449-A596B22494B0")]
+        [AssociationId("7FE42015-EEA7-4D0F-AF9D-1E425DDE6A9F")]
+        [RoleId("60A33115-9ED6-4E37-8560-CEC6FDEA02F5")]
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
@@ -73,9 +73,9 @@ namespace Allors.Repository
         public Deliverable Deliverable { get; set; }
 
         #region Allors
-        [Id("bf40cb6b-e561-4df1-9ac4-e5a72933c7db")]
-        [AssociationId("2eddcab2-e293-4699-8392-c198018a8ce4")]
-        [RoleId("90b8c610-e703-4109-92c7-bad2f5e1501b")]
+        [Id("DD74F2CE-9738-41D8-B683-94BFCC30B604")]
+        [AssociationId("3301047F-D908-4DDE-B6F7-3192FB0CF4D2")]
+        [RoleId("1624F499-5C13-4215-8E01-033FC115302D")]
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
@@ -83,9 +83,9 @@ namespace Allors.Repository
         public ProductFeature ProductFeature { get; set; }
 
         #region Allors
-        [Id("d02d15ae-2938-4753-95f1-686ea8b02f47")]
-        [AssociationId("0abe5f12-ae64-4a8e-b5cc-175d7d2ea1d7")]
-        [RoleId("91d62ba3-943e-4aa5-b4fc-6a1f62fcd63f")]
+        [Id("6CA576BB-FD8A-43E2-B504-23BE0237072B")]
+        [AssociationId("794FA083-D74E-4743-9EC8-12ECB07FB7AA")]
+        [RoleId("37088352-599A-49D5-87A8-73341BE1533D")]
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
@@ -93,9 +93,9 @@ namespace Allors.Repository
         public NeededSkill NeededSkill { get; set; }
 
         #region Allors
-        [Id("f03c07b5-44f2-4e61-ad23-7c373851dafc")]
-        [AssociationId("d4cce9f6-ebe0-4b72-86f6-d41c8cdf072e")]
-        [RoleId("bd7d900b-d5c6-46dc-8843-e4041429858b")]
+        [Id("C8D8AB3A-42F9-40C2-951A-F806EC16A3E9")]
+        [AssociationId("AA4CF59D-4292-4D17-8390-4F48FEC0C65E")]
+        [RoleId("4B5A29E8-982F-4E65-B831-383D861FB8CD")]
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
@@ -103,9 +103,9 @@ namespace Allors.Repository
         public Product Product { get; set; }
 
         #region Allors
-        [Id("fa33c3e6-53c4-428a-bd9c-feba1dd9ed45")]
-        [AssociationId("1aa99128-9989-4933-8204-9acefc7b040d")]
-        [RoleId("99251c00-d729-4363-8ce8-403ace61725e")]
+        [Id("275F5E14-8DB8-4705-A202-631920EAC5FE")]
+        [AssociationId("DDB2E44D-01F9-4FAB-9AF1-B0DD4518385C")]
+        [RoleId("8104E068-4E89-4EF1-9E53-89CAE349F303")]
         #endregion
         [Precision(19)]
         [Scale(2)]
@@ -113,17 +113,17 @@ namespace Allors.Repository
         public decimal MaximumAllowedPrice { get; set; }
 
         #region Allors
-        [Id("ff41a43c-997d-4158-984e-e669eb935148")]
-        [AssociationId("b46ffa62-adcb-4928-bdb0-79d0eef9e676")]
-        [RoleId("7c4353a9-efd5-437e-8789-fae92a0be1ed")]
+        [Id("66ED32DE-B1E6-40FF-9D3B-14FE7CEF7755")]
+        [AssociationId("3BF26CE0-50A0-47B4-94F3-A10C650A0FE4")]
+        [RoleId("C02ADD29-CAE7-4934-8302-8380A410FBD5")]
         #endregion
         [Workspace]
         public DateTime RequiredByDate { get; set; }
 
         #region Allors
-        [Id("DF6D8AA3-21C6-4FDF-A2F2-F50C2F7AA447")]
-        [AssociationId("63AEABDE-A66E-44E2-8090-532297DD4F41")]
-        [RoleId("8441F20E-887C-4852-B8A1-7BAC2A69E197")]
+        [Id("4768BB1B-5113-42D2-B301-6AEA705922BB")]
+        [AssociationId("3C1D2843-93E1-49D5-A75A-2DC5B91CB0A9")]
+        [RoleId("8559F7B0-7A9C-41F2-8DAB-F09BFE56F489")]
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
         [Derived]

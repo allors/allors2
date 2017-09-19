@@ -4,7 +4,7 @@ namespace Allors.Repository
     using Attributes;
 
     #region Allors
-    [Id("5716EEEF-0ED3-43F1-92B5-8C6B7DCF6498")]
+    [Id("CB28933F-4308-43FD-B347-F6773EEC16B5")]
     #endregion
     public partial class RequestForInformationVersion : RequestVersion
     {

@@ -4,7 +4,7 @@ namespace Allors.Repository
     using Attributes;
 
     #region Allors
-    [Id("")]
+    [Id("12DB12F5-88CC-46D2-A664-28797C143D92")]
     #endregion
     public partial class FaceToFaceCommunicationVersion : CommunicationEventVersion
     {
@@ -41,24 +41,24 @@ namespace Allors.Repository
         #endregion
 
         #region Allors
-        [Id("")]
-        [AssociationId("")]
-        [RoleId("")]
+        [Id("5E7F5ACC-9486-403C-8541-EE28D402BB3F")]
+        [AssociationId("8202F898-EFD5-4CEA-82F2-6C64479A34E2")]
+        [RoleId("0D30F956-401B-4144-9266-8B2A9087C69A")]
         #endregion
         [Multiplicity(Multiplicity.ManyToMany)]
         [Indexed]
         [Required]
         [Workspace]
-        Party[] Participants { get; set; }
+        public Party[] Participants { get; set; }
 
         #region Allors
-        [Id("")]
-        [AssociationId("")]
-        [RoleId("")]
+        [Id("2B614B23-A909-423F-A80F-7D13F062E3F7")]
+        [AssociationId("FB51535D-D322-4BA1-A3B2-C65989447898")]
+        [RoleId("28C9E924-2B87-4E72-B74E-62BC717D6611")]
         #endregion
         [Size(256)]
         [Workspace]
-        string Location { get; set; }
+        public string Location { get; set; }
 
         #region inherited methods
 

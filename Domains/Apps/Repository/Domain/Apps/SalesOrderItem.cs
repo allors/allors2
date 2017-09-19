@@ -69,7 +69,7 @@ namespace Allors.Repository
         [Required]
         [Precision(19)]
         [Scale(2)]
-        decimal InitialProfitMargin { get; set; }
+        public decimal InitialProfitMargin { get; set; }
 
         #region Allors
         [Id("1e1ed439-ae25-4446-83e6-295d8627a7b5")]
@@ -81,7 +81,7 @@ namespace Allors.Repository
         [Required]
         [Precision(19)]
         [Scale(2)]
-        decimal QuantityShortFalled { get; set; }
+        public decimal QuantityShortFalled { get; set; }
 
         #region Allors
         [Id("1ea02a2c-280a-4a48-9ffb-1517789c56f1")]
@@ -91,7 +91,7 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.OneToMany)]
         [Indexed]
         [Workspace]
-        OrderItem[] OrderedWithFeatures { get; set; }
+        public OrderItem[] OrderedWithFeatures { get; set; }
 
         #region Allors
         [Id("1edd9008-537a-43ba-b4a1-56d3c3211c36")]
@@ -103,7 +103,7 @@ namespace Allors.Repository
         [Required]
         [Precision(19)]
         [Scale(2)]
-        decimal MaintainedProfitMargin { get; set; }
+        public decimal MaintainedProfitMargin { get; set; }
 
         #region Allors
         [Id("2bd8163c-b2cd-49bc-922a-b8c859c24031")]
@@ -113,7 +113,7 @@ namespace Allors.Repository
         [Workspace]
         [Precision(19)]
         [Scale(2)]
-        decimal RequiredProfitMargin { get; set; }
+        public decimal RequiredProfitMargin { get; set; }
 
         #region Allors
         [Id("3e798309-d5d5-4860-87ec-ba3766e96c9e")]
@@ -123,7 +123,7 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.ManyToOne)]
         [Derived]
         [Indexed]
-        NonSerialisedInventoryItem PreviousReservedFromInventoryItem { get; set; }
+        public NonSerialisedInventoryItem PreviousReservedFromInventoryItem { get; set; }
 
         #region Allors
         [Id("40111efb-f609-4726-85c1-a9dd7160df72")]
@@ -133,7 +133,7 @@ namespace Allors.Repository
         [Precision(19)]
         [Scale(2)]
         [Workspace]
-        decimal QuantityShipNow { get; set; }
+        public decimal QuantityShipNow { get; set; }
 
         #region Allors
         [Id("48e40504-bb22-4b11-949d-569b3a556416")]
@@ -143,7 +143,7 @@ namespace Allors.Repository
         [Workspace]
         [Precision(19)]
         [Scale(2)]
-        decimal RequiredMarkupPercentage { get; set; }
+        public decimal RequiredMarkupPercentage { get; set; }
 
         #region Allors
         [Id("545eb094-63d8-4d25-a069-7c3e91f26eb7")]
@@ -155,7 +155,7 @@ namespace Allors.Repository
         [Precision(19)]
         [Scale(2)]
         [Workspace]
-        decimal QuantityShipped { get; set; }
+        public decimal QuantityShipped { get; set; }
 
         #region Allors
         [Id("5cc50f26-361b-46d7-a8e6-a9f53f7d2722")]
@@ -166,7 +166,7 @@ namespace Allors.Repository
         [Derived]
         [Indexed]
         [Workspace]
-        PostalAddress ShipToAddress { get; set; }
+        public PostalAddress ShipToAddress { get; set; }
 
         #region Allors
         [Id("64edd3e6-0b78-4b34-8a11-aa9c0a1b1f35")]
@@ -178,7 +178,7 @@ namespace Allors.Repository
         [Precision(19)]
         [Scale(2)]
         [Workspace]
-        decimal QuantityPicked { get; set; }
+        public decimal QuantityPicked { get; set; }
 
         #region Allors
         [Id("6826e05e-eb9a-4dc4-a653-0230dec934a9")]
@@ -188,7 +188,7 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.ManyToOne)]
         [Derived]
         [Indexed]
-        Product PreviousProduct { get; set; }
+        public Product PreviousProduct { get; set; }
 
         #region Allors
         [Id("710e0b05-01d1-4592-b652-f0fada3dfa45")]
@@ -199,7 +199,7 @@ namespace Allors.Repository
         [Indexed]
         [Required]
         [Workspace]
-        SalesOrderItemObjectState CurrentObjectState { get; set; }
+        public SalesOrderItemObjectState CurrentObjectState { get; set; }
 
         #region Allors
         [Id("75a13fdc-90b2-4550-9b2f-fc0a9387d569")]
@@ -211,7 +211,7 @@ namespace Allors.Repository
         [Precision(19)]
         [Scale(2)]
         [Workspace]
-        decimal UnitPurchasePrice { get; set; }
+        public decimal UnitPurchasePrice { get; set; }
 
         #region Allors
         [Id("7a8255f5-4283-4803-9f96-60a9adc2743b")]
@@ -222,7 +222,7 @@ namespace Allors.Repository
         [Derived]
         [Indexed]
         [Workspace]
-        Party ShipToParty { get; set; }
+        public Party ShipToParty { get; set; }
 
         #region Allors
         [Id("7ae1b939-b387-4e6e-9da2-bc0364e04f7b")]
@@ -232,7 +232,7 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
         [Workspace]
-        PostalAddress AssignedShipToAddress { get; set; }
+        public PostalAddress AssignedShipToAddress { get; set; }
 
         #region Allors
         [Id("8145fbd3-a30f-44a0-9520-6b72ac20a82d")]
@@ -243,7 +243,7 @@ namespace Allors.Repository
         [Precision(19)]
         [Scale(2)]
         [Workspace]
-        decimal QuantityReturned { get; set; }
+        public decimal QuantityReturned { get; set; }
 
         #region Allors
         [Id("85d11891-5ffe-488f-9f23-5b2c7bc1c480")]
@@ -255,7 +255,7 @@ namespace Allors.Repository
         [Precision(19)]
         [Scale(2)]
         [Workspace]
-        decimal QuantityReserved { get; set; }
+        public decimal QuantityReserved { get; set; }
 
         #region Allors
         [Id("911abda0-2eb0-477e-80be-e9e7d358205e")]
@@ -266,7 +266,7 @@ namespace Allors.Repository
         [Workspace]
         [Derived]
         [Indexed]
-        Person SalesRep { get; set; }
+        public Person SalesRep { get; set; }
 
         #region Allors
         [Id("b2d2645e-0d3f-473e-b277-6f890b9b911e")]
@@ -276,7 +276,7 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
         [Workspace]
-        Party AssignedShipToParty { get; set; }
+        public Party AssignedShipToParty { get; set; }
 
         #region Allors
         [Id("b2f7dabb-8b87-41bc-8903-166d77bba1c5")]
@@ -288,7 +288,7 @@ namespace Allors.Repository
         [Precision(19)]
         [Scale(2)]
         [Workspace]
-        decimal QuantityPendingShipment { get; set; }
+        public decimal QuantityPendingShipment { get; set; }
 
         #region Allors
         [Id("b8d116ca-dbab-4119-84ca-c0e196d9c018")]
@@ -300,7 +300,7 @@ namespace Allors.Repository
         [Required]
         [Precision(19)]
         [Scale(2)]
-        decimal MaintainedMarkupPercentage { get; set; }
+        public decimal MaintainedMarkupPercentage { get; set; }
 
         #region Allors
         [Id("d5639e07-37b8-46db-9e35-fa98301d31dd")]
@@ -312,7 +312,7 @@ namespace Allors.Repository
         [Required]
         [Precision(19)]
         [Scale(2)]
-        decimal InitialMarkupPercentage { get; set; }
+        public decimal InitialMarkupPercentage { get; set; }
 
         #region Allors
         [Id("d7c25b48-d82f-4250-b09d-1e935eab665b")]
@@ -322,7 +322,7 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
         [Workspace]
-        NonSerialisedInventoryItem ReservedFromInventoryItem { get; set; }
+        public NonSerialisedInventoryItem ReservedFromInventoryItem { get; set; }
 
         #region Allors
         [Id("e8980105-2c4d-41de-bd67-802a8c0720f1")]
@@ -332,7 +332,7 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
         [Workspace]
-        Product Product { get; set; }
+        public Product Product { get; set; }
 
         #region Allors
         [Id("ed586b2f-c687-4d97-9416-52f7156b7b11")]
@@ -342,7 +342,7 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
         [Workspace]
-        ProductFeature ProductFeature { get; set; }
+        public ProductFeature ProductFeature { get; set; }
 
         #region Allors
         [Id("f148e660-1e09-4e76-97fb-de62a7ee7482")]
@@ -354,7 +354,7 @@ namespace Allors.Repository
         [Precision(19)]
         [Scale(2)]
         [Workspace]
-        decimal QuantityRequestsShipping { get; set; }
+        public decimal QuantityRequestsShipping { get; set; }
 
         #region Versioning
         #region Allors
@@ -484,6 +484,5 @@ namespace Allors.Repository
         #endregion
         [Workspace]
         public void Continue() { }
-
     }
 }

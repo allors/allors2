@@ -403,6 +403,7 @@
     <Compile Include="Apps\Ownership.cs" />
     <Compile Include="Apps\PhaseVersion.cs" />
     <Compile Include="Apps\PhoneCommunicationVersion.cs" />
+    <Compile Include="Apps\PriceableVersion.cs" />
     <Compile Include="Apps\ProcessFlow.cs" />
     <Compile Include="Apps\ProductionRunVersion.cs" />
     <Compile Include="Apps\ProductQuoteVersion.cs" />

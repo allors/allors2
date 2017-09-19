@@ -4,7 +4,7 @@ namespace Allors.Repository
     using Attributes;
 
     #region Allors
-    [Id("")]
+    [Id("B1F9AAA7-188E-4C03-9AC1-EA4373DAA21A")]
     #endregion
     public partial class WebSiteCommunicationVersion : CommunicationEventVersion 
     {
@@ -41,24 +41,24 @@ namespace Allors.Repository
         #endregion
 
         #region Allors
-        [Id("")]
-        [AssociationId("")]
-        [RoleId("")]
+        [Id("59451355-2635-47AA-8B0F-06F7F21D9451")]
+        [AssociationId("DA3173B2-BCA3-4A91-9D98-8093800F4189")]
+        [RoleId("D615BB76-F50F-4E0B-91A6-8959C7E55647")]
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
         [Workspace]
-        Party Originator { get; set; }
+        public Party Originator { get; set; }
 
         #region Allors
-        [Id("")]
-        [AssociationId("")]
-        [RoleId("")]
+        [Id("6CCEE4B3-38BB-43DA-B076-1609DC4DD009")]
+        [AssociationId("DED77D19-757A-489F-AF3D-E0724A574F87")]
+        [RoleId("3CF32BA0-B876-4F9A-9531-462AED54FCA7")]
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
         [Workspace]
-        Party Receiver { get; set; }
+        public Party Receiver { get; set; }
 
         #region inherited methods
 

@@ -4,7 +4,7 @@ namespace Allors.Repository
     using Attributes;
 
     #region Allors
-    [Id("")]
+    [Id("A298A2F8-4D4A-4CBA-B929-75DC5AA9E3D4")]
     #endregion
     public partial class LetterCorrespondenceVersion : CommunicationEventVersion
     {
@@ -42,45 +42,45 @@ namespace Allors.Repository
         #endregion
 
         #region Allors
-        [Id("")]
-        [AssociationId("")]
-        [RoleId("")]
+        [Id("14536536-13D9-4340-9F2E-6ECA15D337F2")]
+        [AssociationId("E728A709-525D-49A2-BDBE-36FA4E281118")]
+        [RoleId("F4043DF9-FACB-4C37-97EB-753409FBA012")]
         #endregion
         [Multiplicity(Multiplicity.ManyToMany)]
         [Indexed]
         [Workspace]
-        PostalAddress[] PostalAddresses { get; set; }
+        public PostalAddress[] PostalAddresses { get; set; }
 
         #region Allors
-        [Id("")]
-        [AssociationId("")]
-        [RoleId("")]
-        #endregion
-        [Multiplicity(Multiplicity.ManyToMany)]
-        [Indexed]
-        [Required]
-        [Workspace]
-        Party[] Originators { get; set; }
-
-        #region Allors
-        [Id("")]
-        [AssociationId("")]
-        [RoleId("")]
+        [Id("AD7AE076-7849-43ED-857B-DA3DA959CD8D")]
+        [AssociationId("35A98C84-9AD8-4E47-A906-4254C092AD1F")]
+        [RoleId("1683B25F-4988-408A-8B9D-1B98ACED0891")]
         #endregion
         [Multiplicity(Multiplicity.ManyToMany)]
         [Indexed]
         [Required]
         [Workspace]
-        Party[] Receivers { get; set; }
+        public Party[] Originators { get; set; }
 
         #region Allors
-        [Id("")]
-        [AssociationId("")]
-        [RoleId("")]
+        [Id("98B54F39-032C-476A-910C-AE48D7F1ACC5")]
+        [AssociationId("BB8F93C5-683E-4315-A442-6245519A7D70")]
+        [RoleId("2035BEF1-4F44-4E14-9267-7ECD228C4B2A")]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToMany)]
+        [Indexed]
+        [Required]
+        [Workspace]
+        public Party[] Receivers { get; set; }
+
+        #region Allors
+        [Id("7488ECF0-D220-4CDF-86E4-EF768BA17B7F")]
+        [AssociationId("3E69607E-1EEB-415D-8491-D60191D141C2")]
+        [RoleId("A80748A2-B93B-45C4-BBF3-4BE618F90C34")]
         #endregion
         [Required]
         [Workspace]
-        bool IncomingLetter { get; set; }
+        public bool IncomingLetter { get; set; }
 
         #region inherited methods
 
