@@ -25,6 +25,7 @@ namespace Allors.Repository
         [Precision(19)]
         [Scale(2)]
         public decimal RequestedQuantity { get; set; }
+
         #region Allors
         [Id("8a8ad2c2-e301-40be-8c7e-3c8291c3bbe9")]
         [AssociationId("1b28c7b7-f770-4e49-acbf-ade8e67ba939")]
@@ -33,8 +34,8 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
         [Required]
-
-        public IInventoryItem InventoryItem { get; set; }
+        public InventoryItem InventoryItem { get; set; }
+        
         #region Allors
         [Id("f32d100b-a6e8-4cb2-98b4-c06264789c76")]
         [AssociationId("3b75e3a8-7580-4f07-bf75-ae7541a00609")]
@@ -43,8 +44,7 @@ namespace Allors.Repository
         [Precision(19)]
         [Scale(2)]
         public decimal ActualQuantity { get; set; }
-
-
+        
         #region inherited methods
 
 
@@ -62,6 +62,5 @@ namespace Allors.Repository
 
         public void Delete(){}
         #endregion
-
     }
 }

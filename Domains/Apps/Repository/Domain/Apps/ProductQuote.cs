@@ -7,8 +7,7 @@ namespace Allors.Repository
     [Id("c2214ff4-d592-4f0d-9215-e431b23dc9c2")]
     #endregion
     [Plural("ProductQuotes")]
-
-    public partial class ProductQuote : Quote, IProductQuote 
+    public partial class ProductQuote : Quote 
     {
         #region inherited properties
         public string InternalComment { get; set; }
@@ -41,6 +40,7 @@ namespace Allors.Repository
 
         #endregion
 
+        #region Versioning
         #region Allors
         [Id("A3400F09-19A8-494A-B50A-4081B9E5D174")]
         [AssociationId("C9CEB7B2-53A7-4074-BFCF-C0068ACE28DE")]
@@ -90,6 +90,7 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.OneToMany)]
         [Workspace]
         public ProductQuoteVersion[] AllStateVersions { get; set; }
+        #endregion
 
         #region inherited methods
 

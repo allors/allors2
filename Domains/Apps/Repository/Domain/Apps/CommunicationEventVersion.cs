@@ -1,13 +1,12 @@
-﻿namespace Allors.Repository
+namespace Allors.Repository
 {
     using System;
-
-    using Allors.Repository.Attributes;
-
-    #region
+    using Attributes;
+    
+    #region Allors
     [Id("")]
     #endregion
-    public partial interface WorkEffortVersion : Version
+    public partial interface CommunicationEventVersion : Version
     {
         #region Allors
         [Id("")]
@@ -24,10 +23,10 @@
         [Id("")]
         [AssociationId("")]
         [RoleId("")]
-        [Indexed]
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
         [Required]
+        [Indexed]
         [Derived]
         AccessControl OwnerAccessControl { get; set; }
 
@@ -36,66 +35,6 @@
         [AssociationId("")]
         [RoleId("")]
         #endregion
-        [Size(256)]
-        [Required]
-        [Workspace]
-        string Name { get; set; }
-
-        #region Allors
-        [Id("")]
-        [AssociationId("")]
-        [RoleId("")]
-        #endregion
-        [Size(4096)]
-        [Workspace]
-        string Description { get; set; }
-
-        #region Allors
-        [Id("")]
-        [AssociationId("")]
-        [RoleId("")]
-        [Indexed]
-        #endregion
-        [Multiplicity(Multiplicity.ManyToOne)]
-        [Required]
-        [Workspace]
-        WorkEffortObjectState CurrentObjectState { get; set; }
-
-        #region Allors
-        [Id("")]
-        [AssociationId("")]
-        [RoleId("")]
-        [Indexed]
-        #endregion
-        [Multiplicity(Multiplicity.ManyToOne)]
-        [Workspace]
-        Priority Priority { get; set; }
-
-        #region Allors
-        [Id("")]
-        [AssociationId("")]
-        [RoleId("")]
-        [Indexed]
-        #endregion
-        [Multiplicity(Multiplicity.ManyToMany)]
-        [Workspace]
-        WorkEffortPurpose[] WorkEffortPurposes { get; set; }
-
-        #region Allors
-        [Id("")]
-        [AssociationId("")]
-        [RoleId("")]
-        #endregion
-        [Indexed]
-        [Workspace]
-        DateTime ActualCompletion { get; set; }
-
-        #region Allors
-        [Id("")]
-        [AssociationId("")]
-        [RoleId("")]
-        #endregion
-        [Indexed]
         [Workspace]
         DateTime ScheduledStart { get; set; }
 
@@ -104,29 +43,11 @@
         [AssociationId("")]
         [RoleId("")]
         #endregion
+        [Multiplicity(Multiplicity.ManyToMany)]
+        [Derived]
         [Indexed]
         [Workspace]
-        DateTime ScheduledCompletion { get; set; }
-
-        #region Allors
-        [Id("")]
-        [AssociationId("")]
-        [RoleId("")]
-        #endregion
-        [Precision(19)]
-        [Scale(2)]
-        [Workspace]
-        decimal ActualHours { get; set; }
-
-        #region Allors
-        [Id("")]
-        [AssociationId("")]
-        [RoleId("")]
-        #endregion
-        [Precision(19)]
-        [Scale(2)]
-        [Workspace]
-        decimal EstimatedHours { get; set; }
+        Party[] ToParties { get; set; }
 
         #region Allors
         [Id("")]
@@ -136,7 +57,26 @@
         [Multiplicity(Multiplicity.ManyToMany)]
         [Indexed]
         [Workspace]
-        WorkEffort[] Precendencies { get; set; }
+        ContactMechanism[] ContactMechanisms { get; set; }
+
+        #region Allors
+        [Id("")]
+        [AssociationId("")]
+        [RoleId("")]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToMany)]
+        [Derived]
+        [Indexed]
+        [Workspace]
+        Party[] InvolvedParties { get; set; }
+
+        #region Allors
+        [Id("")]
+        [AssociationId("")]
+        [RoleId("")]
+        #endregion
+        [Workspace]
+        DateTime InitialScheduledStart { get; set; }
 
         #region Allors
         [Id("")]
@@ -144,9 +84,11 @@
         [RoleId("")]
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
+        [Derived]
         [Indexed]
+        [Required]
         [Workspace]
-        Facility Facility { get; set; }
+        CommunicationEventObjectState CurrentObjectState { get; set; }
 
         #region Allors
         [Id("")]
@@ -156,16 +98,23 @@
         [Multiplicity(Multiplicity.ManyToMany)]
         [Indexed]
         [Workspace]
-        Deliverable[] DeliverablesProduced { get; set; }
+        CommunicationEventPurpose[] EventPurposes { get; set; }
 
         #region Allors
         [Id("")]
         [AssociationId("")]
         [RoleId("")]
         #endregion
-        [Indexed]
         [Workspace]
-        DateTime ActualStart { get; set; }
+        DateTime ScheduledEnd { get; set; }
+
+        #region Allors
+        [Id("")]
+        [AssociationId("")]
+        [RoleId("")]
+        #endregion
+        [Workspace]
+        DateTime ActualEnd { get; set; }
 
         #region Allors
         [Id("")]
@@ -175,56 +124,7 @@
         [Multiplicity(Multiplicity.ManyToMany)]
         [Indexed]
         [Workspace]
-        WorkEffortInventoryAssignment[] InventoryItemsNeeded { get; set; }
-
-        #region Allors
-        [Id("")]
-        [AssociationId("")]
-        [RoleId("")]
-        #endregion
-        [Multiplicity(Multiplicity.ManyToMany)]
-        [Indexed]
-        [Workspace]
-        WorkEffort[] Children { get; set; }
-
-        #region Allors
-        [Id("")]
-        [AssociationId("")]
-        [RoleId("")]
-        #endregion
-        [Multiplicity(Multiplicity.ManyToOne)]
-        [Indexed]
-        OrderItem OrderItemFulfillment { get; set; }
-
-        #region Allors
-        [Id("")]
-        [AssociationId("")]
-        [RoleId("")]
-        #endregion
-        [Multiplicity(Multiplicity.ManyToOne)]
-        [Indexed]
-        [Workspace]
-        WorkEffortType WorkEffortType { get; set; }
-
-        #region Allors
-        [Id("")]
-        [AssociationId("")]
-        [RoleId("")]
-        #endregion
-        [Multiplicity(Multiplicity.ManyToMany)]
-        [Indexed]
-        [Workspace]
-        InventoryItem[] InventoryItemsProduced { get; set; }
-
-        #region Allors
-        [Id("")]
-        [AssociationId("")]
-        [RoleId("")]
-        #endregion
-        [Multiplicity(Multiplicity.ManyToMany)]
-        [Indexed]
-        [Workspace]
-        Requirement[] RequirementFulfillments { get; set; }
+        WorkEffort[] WorkEfforts { get; set; }
 
         #region Allors
         [Id("")]
@@ -233,7 +133,36 @@
         #endregion
         [Size(-1)]
         [Workspace]
-        string SpecialTerms { get; set; }
+        string Description { get; set; }
+
+        #region Allors
+        [Id("")]
+        [AssociationId("")]
+        [RoleId("")]
+        #endregion
+        [Workspace]
+        DateTime InitialScheduledEnd { get; set; }
+
+        #region Allors
+        [Id("")]
+        [AssociationId("")]
+        [RoleId("")]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToMany)]
+        [Derived]
+        [Indexed]
+        [Workspace]
+        Party[] FromParties { get; set; }
+
+        #region Allors
+        [Id("")]
+        [AssociationId("")]
+        [RoleId("")]
+        #endregion
+        [Required]
+        [Size(-1)]
+        [Workspace]
+        string Subject { get; set; }
 
         #region Allors
         [Id("")]
@@ -243,6 +172,83 @@
         [Multiplicity(Multiplicity.ManyToMany)]
         [Indexed]
         [Workspace]
-        WorkEffort[] Concurrencies { get; set; }
+        Media[] Documents { get; set; }
+
+        #region Allors
+        [Id("")]
+        [AssociationId("")]
+        [RoleId("")]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Indexed]
+        [Workspace]
+        Case Case { get; set; }
+
+        #region Allors
+        [Id("")]
+        [AssociationId("")]
+        [RoleId("")]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Indexed]
+        [Workspace]
+        Priority Priority { get; set; }
+
+        #region Allors
+        [Id("")]
+        [AssociationId("")]
+        [RoleId("")]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Indexed]
+        [Workspace]
+        Person Owner { get; set; }
+
+        #region Allors
+        [Id("")]
+        [AssociationId("")]
+        [RoleId("")]
+        #endregion
+        [Size(-1)]
+        [Workspace]
+        string Note { get; set; }
+
+        #region Allors
+        [Id("")]
+        [AssociationId("")]
+        [RoleId("")]
+        #endregion
+        [Workspace]
+        DateTime ActualStart { get; set; }
+
+        #region Allors
+        [Id("")]
+        [AssociationId("")]
+        [RoleId("")]
+        [Indexed]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Workspace]
+        bool SendNotification { get; set; }
+
+        #region Allors
+        [Id("")]
+        [AssociationId("")]
+        [RoleId("")]
+        [Indexed]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Workspace]
+        bool SendReminder { get; set; }
+
+        #region Allors
+        [Id("")]
+        [AssociationId("")]
+        [RoleId("")]
+        [Indexed]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Workspace]
+        DateTime RemindAt { get; set; }
     }
 }

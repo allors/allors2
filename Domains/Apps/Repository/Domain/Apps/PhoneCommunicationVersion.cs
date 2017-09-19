@@ -4,9 +4,9 @@ namespace Allors.Repository
     using Attributes;
 
     #region Allors
-    [Id("BFEADA01-5679-4C63-9FB8-FE897CAEC9DD")]
+    [Id("")]
     #endregion
-    public partial class PhoneCommunicationVersion : IPhoneCommunication 
+    public partial class PhoneCommunicationVersion : CommunicationEventVersion 
     {
         #region inherited properties
         public Permission[] DeniedPermissions { get; set; }
@@ -39,19 +39,48 @@ namespace Allors.Repository
         public bool SendNotification { get; set; }
         public bool SendReminder { get; set; }
         public DateTime RemindAt { get; set; }
-        public bool LeftVoiceMail { get; set; }
-        public bool IncomingCall { get; set; }
-        public Party[] Receivers { get; set; }
-        public Party[] Callers { get; set; }
+
+        public DateTime TimeStamp { get; set; }
         #endregion
 
         #region Allors
-        [Id("08BD4203-B7CC-4B77-9AF2-8C65F9A08000")]
-        [AssociationId("FD135CA1-A716-4193-B2C9-0EFE11B916F1")]
-        [RoleId("8A7E6C19-24F3-4A14-9AC1-1BCA1162C1EB")]
+        [Id("")]
+        [AssociationId("")]
+        [RoleId("")]
         #endregion
         [Workspace]
-        public DateTime TimeStamp { get; set; }
+        bool LeftVoiceMail { get; set; }
+
+        #region Allors
+        [Id("")]
+        [AssociationId("")]
+        [RoleId("")]
+        #endregion
+        [Required]
+        [Workspace]
+        bool IncomingCall { get; set; }
+
+        #region Allors
+        [Id("")]
+        [AssociationId("")]
+        [RoleId("")]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToMany)]
+        [Indexed]
+        [Required]
+        [Workspace]
+        Party[] Receivers { get; set; }
+
+        #region Allors
+        [Id("")]
+        [AssociationId("")]
+        [RoleId("")]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToMany)]
+        [Indexed]
+        [Required]
+        [Workspace]
+        Party[] Callers { get; set; }
 
         #region inherited methods
 
@@ -65,5 +94,5 @@ namespace Allors.Repository
 
         public void OnPostDerive() { }
         #endregion
-   }
+    }
 }

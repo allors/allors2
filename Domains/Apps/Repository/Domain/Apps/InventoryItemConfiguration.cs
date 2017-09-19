@@ -1,16 +1,12 @@
 namespace Allors.Repository
 {
-    using System;
-
     using Allors.Repository.Attributes;
 
     #region Allors
     [Id("f135770b-7228-4e4b-b7ea-9307b6317fd2")]
     #endregion
-	public partial interface InventoryItemConfiguration : Commentable, AccessControlledObject 
+    public partial interface InventoryItemConfiguration : Commentable, AccessControlledObject 
     {
-
-
         #region Allors
         [Id("92a85a6b-4f65-4ba4-bd5e-bf44d5a9ca56")]
         [AssociationId("e7e7fef5-a973-42b7-8c96-5ede712a353c")]
@@ -19,9 +15,7 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
         [Required]
-
-        IInventoryItem InventoryItem { get; set; }
-
+        InventoryItem InventoryItem { get; set; }
 
         #region Allors
         [Id("f041b297-e2bb-4ada-ab89-08ec9bcd6513")]
@@ -29,9 +23,7 @@ namespace Allors.Repository
         [RoleId("0454d8e0-ab31-4907-85b1-41103091a08f")]
         #endregion
         [Required]
-
         int Quantity { get; set; }
-
 
         #region Allors
         [Id("f1d4ceeb-f859-4996-babc-dc55837489e0")]
@@ -41,8 +33,6 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
         [Required]
-
-        IInventoryItem ComponentInventoryItem { get; set; }
-
+        InventoryItem ComponentInventoryItem { get; set; }
     }
 }

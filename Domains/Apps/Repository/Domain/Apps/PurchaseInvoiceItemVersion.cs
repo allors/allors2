@@ -4,12 +4,11 @@ namespace Allors.Repository
     using Attributes;
 
     #region Allors
-    [Id("7B507475-0B8F-457B-AFD5-44B2E97894F3")]
+    [Id("")]
     #endregion
-    public partial class PurchaseInvoiceItemVersion : IPurchaseInvoiceItem
+    public partial class PurchaseInvoiceItemVersion : InvoiceItemVersion
     {
         #region inherited properties
-
         public Permission[] DeniedPermissions { get; set; }
         public SecurityToken[] SecurityTokens { get; set; }
         public string Comment { get; set; }
@@ -45,25 +44,46 @@ namespace Allors.Repository
         public AgreementTerm[] InvoiceTerms { get; set; }
         public decimal TotalInvoiceAdjustment { get; set; }
         public InvoiceVatRateItem[] InvoiceVatRateItems { get; set; }
-        public IInvoiceItem AdjustmentFor { get; set; }
+        public InvoiceItem AdjustmentFor { get; set; }
         public SerialisedInventoryItem SerializedInventoryItem { get; set; }
         public string Message { get; set; }
         public decimal TotalInvoiceAdjustmentCustomerCurrency { get; set; }
         public decimal AmountPaid { get; set; }
         public decimal Quantity { get; set; }
         public string Description { get; set; }
-        public PurchaseInvoiceItemType PurchaseInvoiceItemType { get; set; }
-        public Part Part { get; set; }
-        public PurchaseInvoiceItemObjectState CurrentObjectState { get; set; }
-       #endregion
+
+        public DateTime TimeStamp { get; set; }
+        #endregion
 
         #region Allors
-        [Id("B9851A16-0FE7-4230-AF4E-4AC0D8F0FFFB")]
-        [AssociationId("15959723-AAB1-4F5F-BF16-81C60BF13BD0")]
-        [RoleId("7BC3295E-7B01-44D1-A1CC-99409A44A7A5")]
+        [Id("")]
+        [AssociationId("")]
+        [RoleId("")]
         #endregion
-        [Workspace]
-        public DateTime TimeStamp { get; set; }
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Indexed]
+        [Required]
+        PurchaseInvoiceItemType PurchaseInvoiceItemType { get; set; }
+
+        #region Allors
+        [Id("")]
+        [AssociationId("")]
+        [RoleId("")]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Indexed]
+        [Required]
+        Part Part { get; set; }
+
+        #region Allors
+        [Id("")]
+        [AssociationId("")]
+        [RoleId("")]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Derived]
+        [Indexed]
+        PurchaseInvoiceItemObjectState CurrentObjectState { get; set; }
 
         #region inherited methods
 

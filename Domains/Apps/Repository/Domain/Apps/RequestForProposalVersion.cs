@@ -6,7 +6,7 @@ namespace Allors.Repository
     #region Allors
     [Id("6E0ADC71-1246-446E-B3E3-E03F590BEDA6")]
     #endregion
-    public partial class RequestForProposalVersion : IRequestForProposal
+    public partial class RequestForProposalVersion : RequestVersion
     {
         #region inherited properties
         public string InternalComment { get; set; }
@@ -27,15 +27,9 @@ namespace Allors.Repository
         public SecurityToken[] SecurityTokens { get; set; }
         public ObjectState PreviousObjectState { get; set; }
         public ObjectState LastObjectState { get; set; }
-       #endregion
 
-        #region Allors
-        [Id("BF21E9CC-5CEA-4733-9D9B-E16D50A275B1")]
-        [AssociationId("82D76B81-3E83-4E18-9B6F-6ABCF311698E")]
-        [RoleId("F80811D6-2E20-4740-950C-A4B78A5F3256")]
-        #endregion
-        [Workspace]
         public DateTime TimeStamp { get; set; }
+        #endregion
 
         #region inherited methods
 

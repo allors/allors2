@@ -5,12 +5,11 @@ namespace Allors.Repository
     using Attributes;
 
     #region Allors
-    [Id("BDCCB8B3-F8A1-4905-BFF9-92144A9C36EE")]
+    [Id("")]
     #endregion
-    public partial class NonSerialisedInventoryItemVersion : INonSerialisedInventoryItem
+    public partial class NonSerialisedInventoryItemVersion : InventoryItemVersion
     {
         #region inherited properties
-
         public Permission[] DeniedPermissions { get; set; }
         public SecurityToken[] SecurityTokens { get; set; }
         public ObjectState PreviousObjectState { get; set; }
@@ -27,22 +26,78 @@ namespace Allors.Repository
         public Good Good { get; set; }
         public ProductType ProductType { get; set; }
         public Facility Facility { get; set; }
-        public decimal QuantityCommittedOut { get; set; }
-        public decimal QuantityOnHand { get; set; }
-        public decimal PreviousQuantityOnHand { get; set; }
-        public decimal AvailableToPromise { get; set; }
-        public decimal QuantityExpectedIn { get; set; }
-        public NonSerialisedInventoryItemObjectState CurrentObjectState { get; set; }
 
+        public DateTime TimeStamp { get; set; }
         #endregion
 
         #region Allors
-        [Id("905B1A1A-920E-42D8-BCBB-F379331C19E2")]
-        [AssociationId("80D6D3E7-86DB-4EF4-9EC4-E67F9D616A9F")]
-        [RoleId("49761B86-4C69-4015-BB35-558F3719FD74")]
+        [Id("")]
+        [AssociationId("")]
+        [RoleId("")]
+        #endregion
+        [Derived]
+        [Required]
+        [Precision(19)]
+        [Scale(2)]
+        [Workspace]
+        public decimal QuantityCommittedOut { get; set; }
+
+        #region Allors
+        [Id("")]
+        [AssociationId("")]
+        [RoleId("")]
+        #endregion
+        [Derived]
+        [Required]
+        [Precision(19)]
+        [Scale(2)]
+        [Workspace]
+        public decimal QuantityOnHand { get; set; }
+
+        #region Allors
+        [Id("")]
+        [AssociationId("")]
+        [RoleId("")]
+        #endregion
+        [Derived]
+        [Required]
+        [Precision(19)]
+        [Scale(2)]
+        [Workspace]
+        public decimal PreviousQuantityOnHand { get; set; }
+
+        #region Allors
+        [Id("")]
+        [AssociationId("")]
+        [RoleId("")]
+        #endregion
+        [Required]
+        [Precision(19)]
+        [Scale(2)]
+        [Workspace]
+        public decimal AvailableToPromise { get; set; }
+
+        #region Allors
+        [Id("")]
+        [AssociationId("")]
+        [RoleId("")]
+        #endregion
+        [Derived]
+        [Required]
+        [Precision(19)]
+        [Scale(2)]
+        [Workspace]
+        public decimal QuantityExpectedIn { get; set; }
+
+        #region Allors
+        [Id("")]
+        [AssociationId("")]
+        [RoleId("")]
+        [Indexed]
         #endregion
         [Workspace]
-        public DateTime TimeStamp { get; set; }
+        [Multiplicity(Multiplicity.ManyToOne)]
+        public NonSerialisedInventoryItemObjectState CurrentObjectState { get; set; }
 
         #region inherited methods
 

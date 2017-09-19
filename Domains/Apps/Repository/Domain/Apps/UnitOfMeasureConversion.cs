@@ -25,7 +25,7 @@ namespace Allors.Repository
         [Indexed]
         [Required]
 
-        public IUnitOfMeasure ToUnitOfMeasure { get; set; }
+        public UnitOfMeasure ToUnitOfMeasure { get; set; }
         #region Allors
         [Id("5d7ed801-4a2e-4abc-a32d-d869210132af")]
         [AssociationId("a3467a5f-8c7d-453a-9a33-18d742f20d06")]

@@ -7,7 +7,7 @@ namespace Allors.Repository
     [Id("5459f555-cf6a-49c1-8015-b43cad74da17")]
     #endregion
     [Plural("StatementsOfWork")]
-    public partial class StatementOfWork : Quote, IStatementOfWork 
+    public partial class StatementOfWork : Quote
     {
         #region inherited properties
         public string InternalComment { get; set; }
@@ -40,6 +40,7 @@ namespace Allors.Repository
 
         #endregion
 
+        #region Versioning
         #region Allors
         [Id("9AEF9F40-E043-4FEE-AFE4-49E991114286")]
         [AssociationId("B32718B2-3EFB-4942-A33E-CFB7CF5DB2FA")]
@@ -89,6 +90,7 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.OneToMany)]
         [Workspace]
         public StatementOfWorkVersion[] AllStateVersions { get; set; }
+        #endregion
 
         #region inherited methods
 

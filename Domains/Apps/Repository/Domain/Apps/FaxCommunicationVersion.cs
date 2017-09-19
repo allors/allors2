@@ -4,9 +4,9 @@ namespace Allors.Repository
     using Attributes;
 
     #region Allors
-    [Id("AD4AD970-E9C9-4084-BF0D-B2C131BA55CC")]
+    [Id("")]
     #endregion
-    public partial class FaxCommunicationVersion : IFaxCommunication 
+    public partial class FaxCommunicationVersion : CommunicationEventVersion
     {
         #region inherited properties
         public Permission[] DeniedPermissions { get; set; }
@@ -39,18 +39,41 @@ namespace Allors.Repository
         public bool SendNotification { get; set; }
         public bool SendReminder { get; set; }
         public DateTime RemindAt { get; set; }
-        public Party Originator { get; set; }
-        public Party Receiver { get; set; }
-        public TelecommunicationsNumber OutgoingFaxNumber { get; set; }
+
+        public DateTime TimeStamp { get; set; }
         #endregion
 
         #region Allors
-        [Id("64C43E23-A6E1-4C03-BA12-9B08A52558E0")]
-        [AssociationId("5DBA7590-EDD3-46C0-A714-6DF95C5354DA")]
-        [RoleId("198F50B9-EEA7-4AB5-9CE0-96BAFEEEBF64")]
+        [Id("")]
+        [AssociationId("")]
+        [RoleId("")]
         #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Indexed]
+        [Required]
         [Workspace]
-        public DateTime TimeStamp { get; set; }
+        Party Originator { get; set; }
+
+        #region Allors
+        [Id("")]
+        [AssociationId("")]
+        [RoleId("")]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Indexed]
+        [Required]
+        [Workspace]
+        Party Receiver { get; set; }
+
+        #region Allors
+        [Id("")]
+        [AssociationId("")]
+        [RoleId("")]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Indexed]
+        [Workspace]
+        TelecommunicationsNumber OutgoingFaxNumber { get; set; }
 
         #region inherited methods
 

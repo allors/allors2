@@ -4,9 +4,9 @@ namespace Allors.Repository
     using Attributes;
 
     #region Allors
-    [Id("1666332A-A550-4AE5-B8EB-88E3786676D1")]
+    [Id("")]
     #endregion
-    public partial class EmailCommunicationVersion : IEmailCommunication
+    public partial class EmailCommunicationVersion : CommunicationEventVersion
     {
         #region inherited properties
         public Permission[] DeniedPermissions { get; set; }
@@ -39,21 +39,70 @@ namespace Allors.Repository
         public bool SendNotification { get; set; }
         public bool SendReminder { get; set; }
         public DateTime RemindAt { get; set; }
-        public EmailAddress Originator { get; set; }
-        public EmailAddress[] Addressees { get; set; }
-        public EmailAddress[] CarbonCopies { get; set; }
-        public EmailAddress[] BlindCopies { get; set; }
-        public EmailTemplate EmailTemplate { get; set; }
-        public bool IncomingMail { get; set; }
+
+        public DateTime TimeStamp { get; set; }
         #endregion
 
         #region Allors
-        [Id("605A66C9-628A-416C-84DA-87699D4564CA")]
-        [AssociationId("386C0C30-24AC-40D4-AFFF-D1B769D298A0")]
-        [RoleId("6BCD0F6E-ABC5-4837-A5B8-D967F3C01908")]
+        [Id("")]
+        [AssociationId("")]
+        [RoleId("")]
+        [Indexed]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Required]
+        [Workspace]
+        EmailAddress Originator { get; set; }
+
+        #region Allors
+        [Id("")]
+        [AssociationId("")]
+        [RoleId("")]
+        [Indexed]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToMany)]
+        [Required]
+        [Workspace]
+        EmailAddress[] Addressees { get; set; }
+
+        #region Allors
+        [Id("")]
+        [AssociationId("")]
+        [RoleId("")]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToMany)]
+        [Indexed]
+        [Workspace]
+        EmailAddress[] CarbonCopies { get; set; }
+
+        #region Allors
+        [Id("")]
+        [AssociationId("")]
+        [RoleId("")]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToMany)]
+        [Indexed]
+        [Workspace]
+        EmailAddress[] BlindCopies { get; set; }
+
+        #region Allors
+        [Id("")]
+        [AssociationId("")]
+        [RoleId("")]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Indexed]
+        [Workspace]
+        EmailTemplate EmailTemplate { get; set; }
+
+        #region Allors
+        [Id("")]
+        [AssociationId("")]
+        [RoleId("")]
         #endregion
         [Workspace]
-        public DateTime TimeStamp { get; set; }
+        [Required]
+        bool IncomingMail { get; set; }
 
         #region inherited methods
 

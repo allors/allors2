@@ -6,7 +6,7 @@ namespace Allors.Repository
     #region Allors
     [Id("068BDB19-B74C-43FC-8D6F-3F03E6F73DEC")]
     #endregion
-    public partial class RequestForQuoteVersion : IRequestForQuote
+    public partial class RequestForQuoteVersion : RequestVersion
     {
         #region inherited properties
 
@@ -29,15 +29,8 @@ namespace Allors.Repository
         public ObjectState PreviousObjectState { get; set; }
         public ObjectState LastObjectState { get; set; }
 
-        #endregion
-
-        #region Allors
-        [Id("EC77B142-9A48-40DE-B5DE-E46B67C1CA40")]
-        [AssociationId("C7F14C79-5114-4E33-B648-EE75AB7E31EE")]
-        [RoleId("28B9D3E2-CB77-42F3-8918-BB671AC59B53")]
-        #endregion
-        [Workspace]
         public DateTime TimeStamp { get; set; }
+        #endregion
 
         #region inherited methods
 

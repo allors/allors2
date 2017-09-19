@@ -57,7 +57,7 @@ namespace Allors.Repository
 
         public WorkEffortType WorkEffortType { get; set; }
 
-        public IInventoryItem[] InventoryItemsProduced { get; set; }
+        public InventoryItem[] InventoryItemsProduced { get; set; }
 
         public Requirement[] RequirementFulfillments { get; set; }
 

@@ -25,6 +25,7 @@ namespace Allors.Repository
         [Precision(19)]
         [Scale(2)]
         public decimal Quantity { get; set; }
+        
         #region Allors
         [Id("158f104b-fa5c-425e-8b55-ee4e866820ec")]
         [AssociationId("77f01592-48e6-486f-9217-7c9cfc477267")]
@@ -32,16 +33,16 @@ namespace Allors.Repository
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
-
         public Part Part { get; set; }
+        
         #region Allors
         [Id("19c691ae-f849-451e-ac7e-ea84f4a9b51a")]
         [AssociationId("9a57f102-0b43-4f10-af75-c808c718c8b7")]
         [RoleId("b18cc4e1-0be7-48d7-9e92-efc1e3a3edca")]
         #endregion
         [Size(256)]
-
         public string ContentsDescription { get; set; }
+        
         #region Allors
         [Id("6b3ab563-a19b-4d92-be3a-ddf3046d5b18")]
         [AssociationId("d41aeb48-bd41-40b2-bbc4-f4dd096a6c5f")]
@@ -49,8 +50,8 @@ namespace Allors.Repository
         #endregion
         [Multiplicity(Multiplicity.OneToMany)]
         [Indexed]
-
         public Document[] Documents { get; set; }
+        
         #region Allors
         [Id("92cca1c2-4c7e-49a0-ba4b-88693b87c379")]
         [AssociationId("d7dca1d7-e678-4b52-9c25-d93f353ca25d")]
@@ -61,6 +62,7 @@ namespace Allors.Repository
         [Precision(19)]
         [Scale(2)]
         public decimal QuantityShipped { get; set; }
+        
         #region Allors
         [Id("b5d35e87-f741-4600-9838-4419b127681d")]
         [AssociationId("797743d0-c0e9-4a75-9180-4e05eb55423f")]
@@ -68,8 +70,8 @@ namespace Allors.Repository
         #endregion
         [Multiplicity(Multiplicity.OneToMany)]
         [Indexed]
-
         public ShipmentItem[] InResponseToShipmentItems { get; set; }
+        
         #region Allors
         [Id("b8ca6fae-0866-4806-9ffd-64d5d2b978f9")]
         [AssociationId("2a9e81f6-6009-4706-a0d0-cd180cb825e6")]
@@ -77,8 +79,8 @@ namespace Allors.Repository
         #endregion
         [Multiplicity(Multiplicity.ManyToMany)]
         [Indexed]
-
-        public IInventoryItem[] InventoryItems { get; set; }
+        public InventoryItem[] InventoryItems { get; set; }
+        
         #region Allors
         [Id("b9bfaea8-e5f0-4b0e-955f-df28ed63e8e3")]
         [AssociationId("7da8c058-92b7-4fd7-9eaf-7b7fb94f62cf")]
@@ -86,8 +88,8 @@ namespace Allors.Repository
         #endregion
         [Multiplicity(Multiplicity.ManyToMany)]
         [Indexed]
-
         public ProductFeature[] ProductFeatures { get; set; }
+
         #region Allors
         [Id("bdd8041b-b1d1-4902-980a-f085c0af166d")]
         [AssociationId("150fd46f-8768-4210-a559-740386e7c03d")]
@@ -95,8 +97,8 @@ namespace Allors.Repository
         #endregion
         [Multiplicity(Multiplicity.OneToMany)]
         [Indexed]
+        public InvoiceItem[] InvoiceItems { get; set; }
 
-        public IInvoiceItem[] InvoiceItems { get; set; }
         #region Allors
         [Id("f5c0279e-5ce4-4f09-bb93-ecaeb4825bcf")]
         [AssociationId("59b2bb80-3e60-4958-a3d8-9b5f7242d95c")]
@@ -104,9 +106,7 @@ namespace Allors.Repository
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
-
         public Good Good { get; set; }
-
 
         #region inherited methods
 
@@ -125,6 +125,5 @@ namespace Allors.Repository
         public void Delete(){}
 
         #endregion
-
     }
 }

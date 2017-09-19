@@ -4,9 +4,9 @@ namespace Allors.Repository
     using Attributes;
 
     #region Allors
-    [Id("70038098-6B25-41CF-A405-3F9B0E1988C6")]
+    [Id("")]
     #endregion
-    public partial class FaceToFaceCommunicationVersion : IFaceToFaceCommunication
+    public partial class FaceToFaceCommunicationVersion : CommunicationEventVersion
     {
         #region inherited properties
         public Permission[] DeniedPermissions { get; set; }
@@ -39,18 +39,29 @@ namespace Allors.Repository
         public bool SendNotification { get; set; }
         public bool SendReminder { get; set; }
         public DateTime RemindAt { get; set; }
-        public Party[] Participants { get; set; }
-        public string Location { get; set; }
 
+        public DateTime TimeStamp { get; set; }
         #endregion
 
         #region Allors
-        [Id("3594BE9E-5758-498C-BA7F-63778D7CD922")]
-        [AssociationId("FD44100A-9255-4B0E-9A05-5F3E9B7CA066")]
-        [RoleId("9A34D1B7-21C3-446F-A2BE-6DB49A0A0537")]
+        [Id("")]
+        [AssociationId("")]
+        [RoleId("")]
         #endregion
+        [Multiplicity(Multiplicity.ManyToMany)]
+        [Indexed]
+        [Required]
         [Workspace]
-        public DateTime TimeStamp { get; set; }
+        Party[] Participants { get; set; }
+
+        #region Allors
+        [Id("")]
+        [AssociationId("")]
+        [RoleId("")]
+        #endregion
+        [Size(256)]
+        [Workspace]
+        string Location { get; set; }
 
         #region inherited methods
 
@@ -64,5 +75,5 @@ namespace Allors.Repository
 
         public void OnPostDerive() { }
         #endregion
-   }
+    }
 }

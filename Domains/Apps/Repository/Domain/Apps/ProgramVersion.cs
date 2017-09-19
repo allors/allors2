@@ -35,7 +35,7 @@ namespace Allors.Repository
         public WorkEffort[] Children { get; set; }
         public OrderItem OrderItemFulfillment { get; set; }
         public WorkEffortType WorkEffortType { get; set; }
-        public IInventoryItem[] InventoryItemsProduced { get; set; }
+        public InventoryItem[] InventoryItemsProduced { get; set; }
         public Requirement[] RequirementFulfillments { get; set; }
         public string SpecialTerms { get; set; }
         public WorkEffort[] Concurrencies { get; set; }

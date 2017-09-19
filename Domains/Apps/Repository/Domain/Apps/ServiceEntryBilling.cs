@@ -1,7 +1,5 @@
 namespace Allors.Repository
 {
-    using System;
-
     using Allors.Repository.Attributes;
 
     #region Allors
@@ -20,8 +18,8 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
         [Required]
-
         public ServiceEntry ServiceEntry { get; set; }
+        
         #region Allors
         [Id("a8c707fb-98c1-43b1-99a3-9464cb25ea5f")]
         [AssociationId("284bf54c-8305-4892-ad00-f4975e155522")]
@@ -30,10 +28,8 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
         [Required]
-
-        public IInvoiceItem InvoiceItem { get; set; }
-
-
+        public InvoiceItem InvoiceItem { get; set; }
+        
         #region inherited methods
 
 
@@ -47,6 +43,5 @@ namespace Allors.Repository
 
         public void OnPostDerive(){}
         #endregion
-
     }
 }

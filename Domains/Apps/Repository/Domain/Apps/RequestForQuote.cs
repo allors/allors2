@@ -8,7 +8,7 @@ namespace Allors.Repository
     [Id("874dfe70-2e50-4861-b26d-dc55bc8fa0d0")]
     #endregion
     [Plural("RequestsForQuote")]
-    public partial class RequestForQuote : Request, IRequestForQuote 
+    public partial class RequestForQuote : Request 
     {
         #region inherited properties
         public string InternalComment { get; set; }
@@ -38,6 +38,7 @@ namespace Allors.Repository
         public ObjectState LastObjectState { get; set; }
         #endregion
 
+        #region Versioning
         #region Allors
         [Id("4C48ECD7-C684-4103-89B2-F5CFC0675124")]
         [AssociationId("200351D5-D66F-423E-8DDE-61FBA6F4D950")]
@@ -87,7 +88,8 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.OneToMany)]
         [Workspace]
         public RequestForQuoteVersion[] AllStateVersions { get; set; }
-        
+        #endregion
+
         #region inherited methods
         public void Cancel() { }
 

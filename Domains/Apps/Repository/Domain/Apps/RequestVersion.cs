@@ -5,9 +5,9 @@ namespace Allors.Repository
     using Attributes;
 
     #region Allors
-    [Id("01BEB957-F125-4166-8E46-6084E66A2185")]
+    [Id("321a6047-2233-4bec-a1b1-9b965c0099e5")]
     #endregion
-	public partial interface IRequest : Transitional
+    public partial interface RequestVersion : Version
     {
         #region Allors
         [Id("D75426C3-2B47-4CF0-82FB-E70CBE2053CA")]
@@ -92,7 +92,7 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
         [Workspace]
-        Party Originator  { get; set; }
+        Party Originator { get; set; }
 
         #region Allors
         [Id("BBCF2C40-E793-4FA4-B4E1-612E20971408")]
@@ -137,5 +137,5 @@ namespace Allors.Repository
         #endregion
         [Workspace]
         string TelephoneCountryCode { get; set; }
-     }
+    }
 }

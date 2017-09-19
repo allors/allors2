@@ -1,7 +1,5 @@
 namespace Allors.Repository
 {
-    using System;
-
     using Allors.Repository.Attributes;
 
     #region Allors
@@ -20,8 +18,8 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
         [Required]
-
         public WorkEffort WorkEffort { get; set; }
+
         #region Allors
         [Id("91d38ce9-bf06-4272-bdd8-13401084223d")]
         [AssociationId("d0189269-2f90-46c5-a1ff-48bad8712b34")]
@@ -30,6 +28,7 @@ namespace Allors.Repository
         [Precision(19)]
         [Scale(2)]
         public decimal Percentage { get; set; }
+
         #region Allors
         [Id("c6ed6a42-6889-4ad9-b76a-22bd45e02e75")]
         [AssociationId("99eb5187-9c6b-48bf-a587-81a5d1603cb1")]
@@ -38,10 +37,8 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
         [Required]
-
-        public IInvoiceItem InvoiceItem { get; set; }
-
-
+        public InvoiceItem InvoiceItem { get; set; }
+        
         #region inherited methods
 
 
@@ -55,6 +52,5 @@ namespace Allors.Repository
 
         public void OnPostDerive(){}
         #endregion
-
     }
 }

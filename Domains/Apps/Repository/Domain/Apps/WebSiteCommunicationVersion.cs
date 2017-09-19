@@ -4,9 +4,9 @@ namespace Allors.Repository
     using Attributes;
 
     #region Allors
-    [Id("4A1E0BDA-E1EA-416F-BFC5-9407487F2509")]
+    [Id("")]
     #endregion
-    public partial class WebSiteCommunicationVersion : IWebSiteCommunication 
+    public partial class WebSiteCommunicationVersion : CommunicationEventVersion 
     {
         #region inherited properties
         public Permission[] DeniedPermissions { get; set; }
@@ -39,17 +39,29 @@ namespace Allors.Repository
         public bool SendNotification { get; set; }
         public bool SendReminder { get; set; }
         public DateTime RemindAt { get; set; }
-        public Party Originator { get; set; }
-        public Party Receiver { get; set; }
+
+        public DateTime TimeStamp { get; set; }
         #endregion
 
         #region Allors
-        [Id("D32394E5-0C55-4942-97E4-FB23E781CA1A")]
-        [AssociationId("F9028616-C1F8-484A-A7B0-F55D1E563CAD")]
-        [RoleId("C9600B8A-F7DA-424B-9EA3-D9B7CDF853B3")]
+        [Id("")]
+        [AssociationId("")]
+        [RoleId("")]
         #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Indexed]
         [Workspace]
-        public DateTime TimeStamp { get; set; }
+        Party Originator { get; set; }
+
+        #region Allors
+        [Id("")]
+        [AssociationId("")]
+        [RoleId("")]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Indexed]
+        [Workspace]
+        Party Receiver { get; set; }
 
         #region inherited methods
 

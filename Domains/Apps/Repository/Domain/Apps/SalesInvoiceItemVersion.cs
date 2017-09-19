@@ -4,9 +4,9 @@ namespace Allors.Repository
     using Attributes;
 
     #region Allors
-    [Id("45958296-1517-45F1-957D-618C9CFB50D9")]
+    [Id("")]
     #endregion
-    public partial class SalesInvoiceItemVersion : ISalesInvoiceItem
+    public partial class SalesInvoiceItemVersion : InvoiceItemVersion
     {
         #region inherited properties
 
@@ -45,36 +45,168 @@ namespace Allors.Repository
         public AgreementTerm[] InvoiceTerms { get; set; }
         public decimal TotalInvoiceAdjustment { get; set; }
         public InvoiceVatRateItem[] InvoiceVatRateItems { get; set; }
-        public IInvoiceItem AdjustmentFor { get; set; }
+        public InvoiceItem AdjustmentFor { get; set; }
         public SerialisedInventoryItem SerializedInventoryItem { get; set; }
         public string Message { get; set; }
         public decimal TotalInvoiceAdjustmentCustomerCurrency { get; set; }
         public decimal AmountPaid { get; set; }
         public decimal Quantity { get; set; }
         public string Description { get; set; }
-        public ProductFeature ProductFeature { get; set; }
-        public SalesInvoiceItemObjectState CurrentObjectState { get; set; }
-        public decimal RequiredProfitMargin { get; set; }
-        public decimal InitialMarkupPercentage { get; set; }
-        public decimal MaintainedMarkupPercentage { get; set; }
-        public Product Product { get; set; }
-        public decimal UnitPurchasePrice { get; set; }
-        public SalesOrderItem SalesOrderItem { get; set; }
-        public SalesInvoiceItemType SalesInvoiceItemType { get; set; }
-        public Person SalesRep { get; set; }
-        public decimal InitialProfitMargin { get; set; }
-        public decimal MaintainedProfitMargin { get; set; }
-        public TimeEntry[] TimeEntries { get; set; }
-        public decimal RequiredMarkupPercentage { get; set; }
+
+        public DateTime TimeStamp { get; set; }
         #endregion
 
         #region Allors
-        [Id("4BD0B49F-4EA9-40DD-9361-EE57F28BEB1C")]
-        [AssociationId("7711AB6C-427B-4314-8D11-35909B833BF0")]
-        [RoleId("35E1F223-4A26-4D2B-A799-8F206AA46A0F")]
+        [Id("")]
+        [AssociationId("")]
+        [RoleId("")]
         #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Indexed]
         [Workspace]
-        public DateTime TimeStamp { get; set; }
+        ProductFeature ProductFeature { get; set; }
+
+        #region Allors
+        [Id("")]
+        [AssociationId("")]
+        [RoleId("")]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Indexed]
+        [Required]
+        [Workspace]
+        SalesInvoiceItemObjectState CurrentObjectState { get; set; }
+
+        #region Allors
+        [Id("")]
+        [AssociationId("")]
+        [RoleId("")]
+        #endregion
+        [Precision(19)]
+        [Scale(2)]
+        [Workspace]
+        decimal RequiredProfitMargin { get; set; }
+
+        #region Allors
+        [Id("")]
+        [AssociationId("")]
+        [RoleId("")]
+        #endregion
+        [Derived]
+        [Required]
+        [Precision(19)]
+        [Scale(2)]
+        [Workspace]
+        decimal InitialMarkupPercentage { get; set; }
+
+        #region Allors
+        [Id("")]
+        [AssociationId("")]
+        [RoleId("")]
+        #endregion
+        [Derived]
+        [Required]
+        [Precision(19)]
+        [Scale(2)]
+        [Workspace]
+        decimal MaintainedMarkupPercentage { get; set; }
+
+        #region Allors
+        [Id("")]
+        [AssociationId("")]
+        [RoleId("")]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Indexed]
+        [Workspace]
+        Product Product { get; set; }
+
+        #region Allors
+        [Id("")]
+        [AssociationId("")]
+        [RoleId("")]
+        #endregion
+        [Derived]
+        [Required]
+        [Precision(19)]
+        [Scale(2)]
+        [Workspace]
+        decimal UnitPurchasePrice { get; set; }
+
+        #region Allors
+        [Id("")]
+        [AssociationId("")]
+        [RoleId("")]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Derived]
+        [Indexed]
+        [Workspace]
+        SalesOrderItem SalesOrderItem { get; set; }
+
+        #region Allors
+        [Id("")]
+        [AssociationId("")]
+        [RoleId("")]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Indexed]
+        [Required]
+        [Workspace]
+        SalesInvoiceItemType SalesInvoiceItemType { get; set; }
+
+        #region Allors
+        [Id("")]
+        [AssociationId("")]
+        [RoleId("")]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Indexed]
+        [Workspace]
+        Person SalesRep { get; set; }
+
+        #region Allors
+        [Id("")]
+        [AssociationId("")]
+        [RoleId("")]
+        #endregion
+        [Derived]
+        [Required]
+        [Precision(19)]
+        [Scale(2)]
+        [Workspace]
+        decimal InitialProfitMargin { get; set; }
+
+        #region Allors
+        [Id("")]
+        [AssociationId("")]
+        [RoleId("")]
+        #endregion
+        [Derived]
+        [Required]
+        [Precision(19)]
+        [Scale(2)]
+        [Workspace]
+        decimal MaintainedProfitMargin { get; set; }
+
+        #region Allors
+        [Id("")]
+        [AssociationId("")]
+        [RoleId("")]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToMany)]
+        [Indexed]
+        TimeEntry[] TimeEntries { get; set; }
+
+        #region Allors
+        [Id("")]
+        [AssociationId("")]
+        [RoleId("")]
+        #endregion
+        [Precision(19)]
+        [Scale(2)]
+        [Workspace]
+        decimal RequiredMarkupPercentage { get; set; }
 
         #region inherited methods
 
@@ -88,6 +220,5 @@ namespace Allors.Repository
 
         public void OnPostDerive() { }
         #endregion
-
     }
 }

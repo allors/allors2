@@ -4,12 +4,11 @@ namespace Allors.Repository
     using Attributes;
 
     #region Allors
-    [Id("10A0EDF9-7504-486F-BC2C-F09391165FAD")]
+    [Id("")]
     #endregion
-    public partial class PurchaseInvoiceVersion : IPurchaseInvoice
+    public partial class PurchaseInvoiceVersion : InvoiceVersion
     {
         #region inherited properties
-
         public Permission[] DeniedPermissions { get; set; }
         public SecurityToken[] SecurityTokens { get; set; }
         public ObjectState PreviousObjectState { get; set; }
@@ -46,21 +45,60 @@ namespace Allors.Repository
         public decimal TotalDiscountCustomerCurrency { get; set; }
         public decimal TotalVat { get; set; }
         public decimal TotalFee { get; set; }
-        public PurchaseInvoiceItem[] PurchaseInvoiceItems { get; set; }
-        public InternalOrganisation BilledToInternalOrganisation { get; set; }
-        public PurchaseInvoiceObjectState CurrentObjectState { get; set; }
-        public Party BilledFromParty { get; set; }
-        public PurchaseInvoiceType PurchaseInvoiceType { get; set; }
+
+        public DateTime TimeStamp { get; set; }
         #endregion
 
         #region Allors
-        [Id("2B40EC3E-3771-4365-A1D7-062C3173F18A")]
-        [AssociationId("1599AE34-EF36-489C-8F6D-88F96B895E9A")]
-        [RoleId("40027571-19AA-40F5-AD4F-7C4CA1A98C4F")]
+        [Id("")]
+        [AssociationId("")]
+        [RoleId("")]
         #endregion
-        [Workspace]
-        public DateTime TimeStamp { get; set; }
+        [Multiplicity(Multiplicity.ManyToMany)]
+        [Indexed]
+        PurchaseInvoiceItem[] PurchaseInvoiceItems { get; set; }
 
+        #region Allors
+        [Id("")]
+        [AssociationId("")]
+        [RoleId("")]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Indexed]
+        [Required]
+        InternalOrganisation BilledToInternalOrganisation { get; set; }
+
+        #region Allors
+        [Id("")]
+        [AssociationId("")]
+        [RoleId("")]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Derived]
+        [Indexed]
+        [Required]
+        PurchaseInvoiceObjectState CurrentObjectState { get; set; }
+
+        #region Allors
+        [Id("")]
+        [AssociationId("")]
+        [RoleId("")]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Indexed]
+        [Required]
+        Party BilledFromParty { get; set; }
+
+        #region Allors
+        [Id("")]
+        [AssociationId("")]
+        [RoleId("")]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Indexed]
+        [Required]
+        PurchaseInvoiceType PurchaseInvoiceType { get; set; }
+        
         #region inherited methods
 
         public void OnBuild() { }
@@ -73,6 +111,5 @@ namespace Allors.Repository
 
         public void OnPostDerive() { }
         #endregion
-
     }
 }

@@ -4,9 +4,9 @@ namespace Allors.Repository
     using Attributes;
 
     #region Allors
-    [Id("4B81B2A6-8291-49AB-BAE7-371DBBB61205")]
+    [Id("")]
     #endregion
-    public partial class ProductQuoteVersion : IProductQuote
+    public partial class ProductQuoteVersion : QuoteVersion
     {
         #region inherited properties
 
@@ -30,15 +30,9 @@ namespace Allors.Repository
         public string QuoteNumber { get; set; }
         public QuoteObjectState CurrentObjectState { get; set; }
         public Request Request { get; set; }
-       #endregion
 
-        #region Allors
-        [Id("26B81F41-2E66-454C-A025-1443FCE5BBDD")]
-        [AssociationId("38BEC41B-B3AC-4770-A5E5-8BCA89C1F732")]
-        [RoleId("1E23805D-E4CC-434D-AA8D-547A84C2B1BF")]
-        #endregion
-        [Workspace]
         public DateTime TimeStamp { get; set; }
+        #endregion
 
         #region inherited methods
 

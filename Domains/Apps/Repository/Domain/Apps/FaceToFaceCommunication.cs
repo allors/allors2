@@ -6,10 +6,9 @@ namespace Allors.Repository
     #region Allors
     [Id("d0f9fc0d-a3c5-46cc-ab00-4c724995fc14")]
     #endregion
-    public partial class FaceToFaceCommunication : CommunicationEvent, IFaceToFaceCommunication
+    public partial class FaceToFaceCommunication : CommunicationEvent
     {
         #region inherited properties
-
         public SecurityToken OwnerSecurityToken { get; set; }
 
         public AccessControl OwnerAccessControl { get; set; }
@@ -76,11 +75,29 @@ namespace Allors.Repository
 
         public DateTime LastModifiedDate { get; set; }
 
-        public Party[] Participants { get; set; }
-        public string Location { get; set; }
-
         #endregion
 
+        #region Allors
+        [Id("52b8614b-799e-4aea-a012-ea8dbc23f8dd")]
+        [AssociationId("ac424847-d426-4614-99a2-37c70841c454")]
+        [RoleId("bcf4a8df-8b57-4b3c-a6e5-f9b56c71a13b")]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToMany)]
+        [Indexed]
+        [Required]
+        [Workspace]
+        Party[] Participants { get; set; }
+
+        #region Allors
+        [Id("95ae979f-d549-4ea1-87f0-46aa55e4b14a")]
+        [AssociationId("d34e4203-0bd2-4fe4-a2ef-9f9f52b49cf9")]
+        [RoleId("9f67b296-953d-4e04-b94d-6ffece87ceef")]
+        #endregion
+        [Size(256)]
+        [Workspace]
+        string Location { get; set; }
+        
+        #region Versioning
         #region Allors
         [Id("4339C173-EEAA-4B11-8E54-D96C98B2AF01")]
         [AssociationId("41DDA0ED-160D-41B7-A347-CD167A957555")]
@@ -130,6 +147,7 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.OneToMany)]
         [Workspace]
         public FaceToFaceCommunicationVersion[] AllStateVersions { get; set; }
+        #endregion
 
         #region inherited methods
 

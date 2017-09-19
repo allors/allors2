@@ -4,9 +4,9 @@ namespace Allors.Repository
     using Attributes;
 
     #region Allors
-    [Id("9A5F97F0-8E2B-4F4F-A31E-C3599F5EAE1D")]
+    [Id("")]
     #endregion
-    public partial class LetterCorrespondenceVersion : ILetterCorrespondence 
+    public partial class LetterCorrespondenceVersion : CommunicationEventVersion
     {
         #region inherited properties
         public Permission[] DeniedPermissions { get; set; }
@@ -39,19 +39,51 @@ namespace Allors.Repository
         public bool SendNotification { get; set; }
         public bool SendReminder { get; set; }
         public DateTime RemindAt { get; set; }
-        public PostalAddress[] PostalAddresses { get; set; }
-        public Party[] Originators { get; set; }
-        public Party[] Receivers { get; set; }
-        public bool IncomingLetter { get; set; }
+
+        public DateTime TimeStamp { get; set; }
+
         #endregion
 
         #region Allors
-        [Id("BC3015EC-0D29-467A-BA47-E6D434DB87B5")]
-        [AssociationId("4E6C1599-6C00-44DA-9542-CF2B38E75873")]
-        [RoleId("BFBE5779-5053-4522-ACB9-D164623D14EF")]
+        [Id("")]
+        [AssociationId("")]
+        [RoleId("")]
         #endregion
+        [Multiplicity(Multiplicity.ManyToMany)]
+        [Indexed]
         [Workspace]
-        public DateTime TimeStamp { get; set; }
+        PostalAddress[] PostalAddresses { get; set; }
+
+        #region Allors
+        [Id("")]
+        [AssociationId("")]
+        [RoleId("")]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToMany)]
+        [Indexed]
+        [Required]
+        [Workspace]
+        Party[] Originators { get; set; }
+
+        #region Allors
+        [Id("")]
+        [AssociationId("")]
+        [RoleId("")]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToMany)]
+        [Indexed]
+        [Required]
+        [Workspace]
+        Party[] Receivers { get; set; }
+
+        #region Allors
+        [Id("")]
+        [AssociationId("")]
+        [RoleId("")]
+        #endregion
+        [Required]
+        [Workspace]
+        bool IncomingLetter { get; set; }
 
         #region inherited methods
 
@@ -65,6 +97,5 @@ namespace Allors.Repository
 
         public void OnPostDerive() { }
         #endregion
-
     }
 }

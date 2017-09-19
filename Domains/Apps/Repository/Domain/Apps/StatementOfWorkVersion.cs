@@ -4,12 +4,11 @@ namespace Allors.Repository
     using Attributes;
 
     #region Allors
-    [Id("A589C96A-9F62-4807-839E-4B3CA4236345")]
+    [Id("")]
     #endregion
-    public partial class StatementOfWorkVersion : IStatementOfWork
+    public partial class StatementOfWorkVersion : QuoteVersion
     {
         #region inherited properties
-
         public Permission[] DeniedPermissions { get; set; }
         public SecurityToken[] SecurityTokens { get; set; }
         public ObjectState PreviousObjectState { get; set; }
@@ -30,15 +29,9 @@ namespace Allors.Repository
         public string QuoteNumber { get; set; }
         public QuoteObjectState CurrentObjectState { get; set; }
         public Request Request { get; set; }
-       #endregion
 
-        #region Allors
-        [Id("A27FF40C-110B-4CA0-86D7-E12D5C8A71A2")]
-        [AssociationId("55D92E61-ACF2-43F7-9847-7CCF238C76C7")]
-        [RoleId("6A3C9ACF-8D98-4B3B-AF0D-AD619889808C")]
-        #endregion
-        [Workspace]
         public DateTime TimeStamp { get; set; }
+        #endregion
 
         #region inherited methods
 

@@ -1,13 +1,11 @@
 namespace Allors.Repository
 {
-    using System;
-
     using Attributes;
 
     #region Allors
     [Id("1ee19062-e36d-4836-b0e6-928a3957bd57")]
     #endregion
-    public partial class PurchaseInvoiceItem : InvoiceItem, IPurchaseInvoiceItem 
+    public partial class PurchaseInvoiceItem : InvoiceItem
     {
         #region inherited properties
 
@@ -15,7 +13,7 @@ namespace Allors.Repository
         public AgreementTerm[] InvoiceTerms { get; set; }
         public decimal TotalInvoiceAdjustment { get; set; }
         public InvoiceVatRateItem[] InvoiceVatRateItems { get; set; }
-        public IInvoiceItem AdjustmentFor { get; set; }
+        public InvoiceItem AdjustmentFor { get; set; }
         public SerialisedInventoryItem SerializedInventoryItem { get; set; }
         public string Message { get; set; }
         public decimal TotalInvoiceAdjustmentCustomerCurrency { get; set; }
@@ -53,11 +51,39 @@ namespace Allors.Repository
         public decimal TotalBasePriceCustomerCurrency { get; set; }
         public PriceComponent[] CurrentPriceComponents { get; set; }
         public SurchargeAdjustment SurchargeAdjustment { get; set; }
-        public PurchaseInvoiceItemType PurchaseInvoiceItemType { get; set; }
-        public Part Part { get; set; }
-        public PurchaseInvoiceItemObjectState CurrentObjectState { get; set; }
         #endregion
 
+        #region Allors
+        [Id("56e47122-faaa-4211-806c-1c19695fe434")]
+        [AssociationId("826db2b1-3048-4237-8e83-0c472a166d49")]
+        [RoleId("893de8bc-93eb-4864-89ba-efdb66b32fd5")]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Indexed]
+        [Required]
+        PurchaseInvoiceItemType PurchaseInvoiceItemType { get; set; }
+
+        #region Allors
+        [Id("65eebcc4-d5ef-4933-8640-973b67c65127")]
+        [AssociationId("40703e06-25f8-425d-aa95-3c73fafbfa81")]
+        [RoleId("05f86785-08d8-4282-9734-6230e807181b")]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Indexed]
+        [Required]
+        Part Part { get; set; }
+
+        #region Allors
+        [Id("dbe5c72f-63e0-47a5-a5f5-f8a3ff83fd57")]
+        [AssociationId("f8082d94-30fa-4a58-8bb0-bc5bb4f045ef")]
+        [RoleId("69360188-077f-49f0-ba88-abb1f546d72c")]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Derived]
+        [Indexed]
+        PurchaseInvoiceItemObjectState CurrentObjectState { get; set; }
+
+        #region Versioning
         #region Allors
         [Id("F41279D9-A0F9-44EB-857D-3C76D9CBE634")]
         [AssociationId("46FD1730-7AED-4B5F-8858-279FFE7F30CC")]
@@ -107,6 +133,7 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.OneToMany)]
         [Workspace]
         public PurchaseInvoiceItemVersion[] AllStateVersions { get; set; }
+        #endregion
 
         #region inherited methods
 

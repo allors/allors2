@@ -214,7 +214,7 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.ManyToMany)]
         [Indexed]
         [Workspace]
-        IInventoryItem[] InventoryItemsProduced { get; set; }
+        InventoryItem[] InventoryItemsProduced { get; set; }
 
         #region Allors
         [Id("a60c8797-320d-471f-9755-d3ef20a4feac")]

@@ -1,7 +1,5 @@
 namespace Allors.Repository
 {
-    using System;
-
     using Allors.Repository.Attributes;
 
     #region Allors
@@ -24,8 +22,8 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
         [Required]
-
         public WorkEffort Assignment { get; set; }
+        
         #region Allors
         [Id("5fcdb553-4b8f-419b-9f12-b9cefa68d39f")]
         [AssociationId("dba27480-4d2f-4e69-af01-4e9afba2cc98")]
@@ -34,17 +32,15 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
         [Required]
-
-        public IInventoryItem InventoryItem { get; set; }
+        public InventoryItem InventoryItem { get; set; }
+        
         #region Allors
         [Id("70121570-c02d-4977-80e4-23e14cbc3fc9")]
         [AssociationId("b4224775-005c-4078-a5b6-2b8a60bc143a")]
         [RoleId("c82f1c25-9c42-4d38-8fae-f8790e2333ef")]
         #endregion
-
         public int Quantity { get; set; }
-
-
+        
         #region inherited methods
 
 
@@ -59,6 +55,5 @@ namespace Allors.Repository
         public void OnPostDerive(){}
 
         #endregion
-
     }
 }

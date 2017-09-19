@@ -10,11 +10,11 @@ namespace Allors.Repository
     public partial class ManufacturingConfiguration : InventoryItemConfiguration 
     {
         #region inherited properties
-        public IInventoryItem InventoryItem { get; set; }
+        public InventoryItem InventoryItem { get; set; }
 
         public int Quantity { get; set; }
 
-        public IInventoryItem ComponentInventoryItem { get; set; }
+        public InventoryItem ComponentInventoryItem { get; set; }
 
         public string Comment { get; set; }
 
@@ -23,8 +23,7 @@ namespace Allors.Repository
         public SecurityToken[] SecurityTokens { get; set; }
 
         #endregion
-
-
+        
         #region inherited methods
 
 
@@ -41,6 +40,5 @@ namespace Allors.Repository
 
 
         #endregion
-
     }
 }

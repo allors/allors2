@@ -5,9 +5,9 @@ namespace Allors.Repository
     using Attributes;
 
     #region Allors
-    [Id("C9004999-C582-4AF1-8EDC-CBF3D13284D4")]
+    [Id("")]
     #endregion
-    public partial class SerialisedInventoryItemVersion : ISerialisedInventoryItem
+    public partial class SerialisedInventoryItemVersion : Version
     {
         #region inherited properties
 
@@ -15,18 +15,6 @@ namespace Allors.Repository
         public SecurityToken[] SecurityTokens { get; set; }
         public ObjectState PreviousObjectState { get; set; }
         public ObjectState LastObjectState { get; set; }
-        public string SerialNumber { get; set; }
-        public Ownership Ownership { get; set; }
-        public string Owner { get; set; }
-        public int AcquisitionYear { get; set; }
-        public int ManufacturingYear { get; set; }
-        public decimal ReplacementValue { get; set; }
-        public int LifeTime { get; set; }
-        public int DepreciationYears { get; set; }
-        public decimal PurchasePrice { get; set; }
-        public decimal ExpectedSalesPrice { get; set; }
-        public decimal RefurbishCost { get; set; }
-        public decimal TransportCost { get; set; }
         public ProductCharacteristicValue[] ProductCharacteristicValues { get; set; }
         public InventoryItemVariance[] InventoryItemVariances { get; set; }
         public Part Part { get; set; }
@@ -39,17 +27,120 @@ namespace Allors.Repository
         public Good Good { get; set; }
         public ProductType ProductType { get; set; }
         public Facility Facility { get; set; }
-        public SerialisedInventoryItemObjectState CurrentObjectState { get; set; }
 
+        public DateTime TimeStamp { get; set; }
         #endregion
 
         #region Allors
-        [Id("BAA3A811-6A2E-4DAC-AD06-7D244A394A58")]
-        [AssociationId("48DE7487-E0B3-47EC-B7EF-24C2444CC9DB")]
-        [RoleId("C3F402BC-9BA9-4AA5-BBA8-6B60A947B6EB")]
+        [Id("")]
+        [AssociationId("")]
+        [RoleId("")]
+        #endregion
+        [Required]
+        [Size(256)]
+        [Workspace]
+        string SerialNumber { get; set; }
+
+        #region Allors
+        [Id("")]
+        [AssociationId("")]
+        [RoleId("")]
+        [Indexed]
         #endregion
         [Workspace]
-        public DateTime TimeStamp { get; set; }
+        [Multiplicity(Multiplicity.ManyToOne)]
+        Ownership Ownership { get; set; }
+
+        #region Allors
+        [Id("")]
+        [AssociationId("")]
+        [RoleId("")]
+        #endregion
+        [Workspace]
+        string Owner { get; set; }
+
+        #region Allors
+        [Id("")]
+        [AssociationId("")]
+        [RoleId("")]
+        #endregion
+        [Workspace]
+        int AcquisitionYear { get; set; }
+
+        #region Allors
+        [Id("")]
+        [AssociationId("")]
+        [RoleId("")]
+        #endregion
+        [Workspace]
+        int ManufacturingYear { get; set; }
+
+        #region Allors
+        [Id("")]
+        [AssociationId("")]
+        [RoleId("")]
+        #endregion
+        [Workspace]
+        decimal ReplacementValue { get; set; }
+
+        #region Allors
+        [Id("")]
+        [AssociationId("")]
+        [RoleId("")]
+        #endregion
+        [Workspace]
+        int LifeTime { get; set; }
+
+        #region Allors
+        [Id("")]
+        [AssociationId("")]
+        [RoleId("")]
+        #endregion
+        [Workspace]
+        int DepreciationYears { get; set; }
+
+        #region Allors
+        [Id("")]
+        [AssociationId("")]
+        [RoleId("")]
+        #endregion
+        [Workspace]
+        decimal PurchasePrice { get; set; }
+
+        #region Allors
+        [Id("")]
+        [AssociationId("")]
+        [RoleId("")]
+        #endregion
+        [Workspace]
+        decimal ExpectedSalesPrice { get; set; }
+
+        #region Allors
+        [Id("")]
+        [AssociationId("")]
+        [RoleId("")]
+        #endregion
+        [Workspace]
+        decimal RefurbishCost { get; set; }
+
+        #region Allors
+        [Id("")]
+        [AssociationId("")]
+        [RoleId("")]
+        #endregion
+        [Workspace]
+        decimal TransportCost { get; set; }
+
+        #region Allors
+        [Id("")]
+        [AssociationId("")]
+        [RoleId("")]
+        [Indexed]
+        #endregion
+        [Workspace]
+        [Multiplicity(Multiplicity.ManyToOne)]
+        SerialisedInventoryItemObjectState CurrentObjectState { get; set; }
+
 
         #region inherited methods
 
