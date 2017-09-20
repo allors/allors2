@@ -30,6 +30,7 @@ namespace Allors.Domain
     {
         public static void BaseOnPostDerive(this Versioned @this, ObjectOnPostDerive method)
         {
+            // TODO: move parts to Meta
             var derivation = method.Derivation;
             var versionedClass = (Class)@this.Strategy.Class;
             var metaPopulation = versionedClass.MetaPopulation;
@@ -38,20 +39,39 @@ namespace Allors.Domain
             var currentVersionRole = versionedClass.RoleTypes.First(v => v.Name.Equals("CurrentVersion"));
             var currentVersion = @this.Strategy.GetCompositeRole(currentVersionRole.RelationType);
 
+            var excludedInterfaces = new[] { "Version", "AccessControlledObject" };
+
             var isNewVersion = currentVersion == null;
             if (!isNewVersion)
             {
-                foreach (var versionRoleType in versionClass.RoleTypes.Where(v=> !v.AssociationType.ObjectType.Name.Equals("AccessControlledObject")))
+                foreach (var versionRoleType in versionClass.RoleTypes.Where(v => !excludedInterfaces.Contains(v.AssociationType.ObjectType.Name)))
                 {
-                    var versionedRoleType = versionedClass.RoleTypes.First(v => v.Name.Equals(versionRoleType.Name));
-
-                    var versionedRole = @this.Strategy.GetRole(versionedRoleType.RelationType);
-                    var versionRole = currentVersion.Strategy.GetRole(versionRoleType.RelationType);
-
-                    if (!object.Equals(versionedRole, versionRole))
+                    var versionedRoleType = versionedClass.RoleTypes.FirstOrDefault(v => v.Name.Equals(versionRoleType.Name));
+                    if (versionedRoleType == null)
                     {
-                        isNewVersion = true;
-                        break;
+                        throw new Exception("Could not find versioned role " + versionRoleType.Name);
+                    }
+
+                    if (versionRoleType.IsMany)
+                    {
+                        var versionedRole = @this.Strategy.GetCompositeRoles(versionedRoleType.RelationType);
+                        var versionRole = currentVersion.Strategy.GetCompositeRoles(versionRoleType.RelationType);
+                        if (versionedRole.Count != versionRole.Count || 
+                            !versionedRole.ToArray().OrderBy(s => s).SequenceEqual(versionRole.ToArray().OrderBy(t => t)))
+                        {
+                            isNewVersion = true;
+                            break;
+                        }
+                    }
+                    else
+                    {
+                        var versionedRole = @this.Strategy.GetRole(versionedRoleType.RelationType);
+                        var versionRole = currentVersion.Strategy.GetRole(versionRoleType.RelationType);
+                        if (!object.Equals(versionedRole, versionRole))
+                        {
+                            isNewVersion = true;
+                            break;
+                        }
                     }
                 }
             }
@@ -59,9 +79,10 @@ namespace Allors.Domain
             if (isNewVersion)
             {
                 var session = @this.Strategy.Session;
-                var newVersion = (IObject)Allors.ObjectBuilder.Build(session, versionClass);
+                var newVersion = (Version)Allors.ObjectBuilder.Build(session, versionClass);
+                newVersion.DerivationId = derivation.Id;
+                newVersion.DerivationTimeStamp = derivation.TimeStamp;
 
-                var excludedInterfaces = new[] { "Version", "AccessControlledObject" };
                 foreach (var versionRoleType in versionClass.RoleTypes.Where(v => !excludedInterfaces.Contains(v.AssociationType.ObjectType.Name)))
                 {
                     var versionedRoleType = versionedClass.RoleTypes.FirstOrDefault(v => v.Name.Equals(versionRoleType.Name));

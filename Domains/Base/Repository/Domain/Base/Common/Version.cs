@@ -34,7 +34,7 @@ namespace Allors.Repository
         [AssociationId("4C4BD3D4-6642-48AA-8C29-46C02DCDC749")]
         [RoleId("FD06C364-1033-423C-B297-DC6EDF15F4FD")]
         #endregion
-        Guid VersionId { get; set; }
+        Guid DerivationId { get; set; }
 
         #region Allors
         [Id("ADF611C3-047A-4BAE-95E3-776022D5CE7B")]
@@ -42,6 +42,6 @@ namespace Allors.Repository
         [RoleId("B38C700C-7AD9-4962-9F53-35B8AEF22E09")]
         #endregion
         [Workspace]
-        DateTime VersionTimeStamp { get; set; }
+        DateTime DerivationTimeStamp { get; set; }
     }
 }

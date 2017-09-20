@@ -10,9 +10,9 @@ namespace Allors.Repository
     {
         #region inherited properties
 
-        public Guid VersionId { get; set; }
+        public Guid DerivationId { get; set; }
 
-        public DateTime VersionTimeStamp { get; set; }
+        public DateTime DerivationTimeStamp { get; set; }
 
         public Permission[] DeniedPermissions { get; set; }
         public SecurityToken[] SecurityTokens { get; set; }

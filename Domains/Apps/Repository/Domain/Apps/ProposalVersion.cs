@@ -28,9 +28,9 @@ namespace Allors.Repository
         public QuoteObjectState CurrentObjectState { get; set; }
         public Request Request { get; set; }
 
-        public Guid VersionId { get; set; }
+        public Guid DerivationId { get; set; }
 
-        public DateTime VersionTimeStamp { get; set; }
+        public DateTime DerivationTimeStamp { get; set; }
         #endregion
 
         #region inherited methods

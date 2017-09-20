@@ -37,9 +37,9 @@ namespace Allors.Repository
         public string SpecialTerms { get; set; }
         public WorkEffort[] Concurrencies { get; set; }
 
-        public Guid VersionId { get; set; }
+        public Guid DerivationId { get; set; }
 
-        public DateTime VersionTimeStamp { get; set; }
+        public DateTime DerivationTimeStamp { get; set; }
 
         #endregion
 

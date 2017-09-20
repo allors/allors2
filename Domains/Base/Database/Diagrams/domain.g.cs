@@ -5,9 +5,9 @@ namespace Allors.Domain
 		}
 		public interface Version  : AccessControlledObject 
 		{
-						global::System.Guid? VersionId {set;}
+						global::System.Guid? DerivationId {set;}
 
-						global::System.DateTime? VersionTimeStamp {set;}
+						global::System.DateTime? DerivationTimeStamp {set;}
 
 		}
 		public interface Versioned  : Object 

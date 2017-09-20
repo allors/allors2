@@ -20,6 +20,7 @@
 
 namespace Allors.Domain
 {
+    using System;
     using System.Collections.Generic;
 
     using Allors;
@@ -27,6 +28,10 @@ namespace Allors.Domain
 
     public interface IDerivation
     {
+        Guid Id { get; }
+
+        DateTime TimeStamp { get; }
+
         ISession Session { get; }
 
         IValidation Validation { get; }

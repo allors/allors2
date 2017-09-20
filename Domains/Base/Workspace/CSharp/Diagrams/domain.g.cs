@@ -2,7 +2,7 @@ namespace Allors.Domain
 {
 				public interface Version 
 				{
-								global::System.DateTime? VersionTimeStamp {set;}
+								global::System.DateTime? DerivationTimeStamp {set;}
 
 				}
 				public interface Deletable 

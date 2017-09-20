@@ -47,7 +47,7 @@ namespace Tests
         }
 
         [Fact]
-        public void InitialUnitRole()
+        public void VersionedUnitRole()
         {
             var order = new OrderBuilder(this.Session)
                 .WithAmount(10m)
@@ -64,6 +64,27 @@ namespace Tests
             Assert.Equal(10m, version.Amount);
             Assert.False(version.ExistCurrentObjectState);
             Assert.False(version.ExistOrderLines);
+
+        }
+
+        [Fact]
+        public void NonVersionedUnitRole()
+        {
+            var order = new OrderBuilder(this.Session)
+                .WithAmount(10m)
+                .Build();
+
+            this.Session.Derive();
+
+            var currentVersion = order.CurrentVersion;
+
+            order.NonVersionedAmount = 20m;
+
+            this.Session.Derive();
+
+            Assert.True(order.ExistAllVersions);
+            Assert.Equal(1, order.AllVersions.Count);
+            Assert.Equal(currentVersion, order.CurrentVersion);
         }
 
         [Fact]

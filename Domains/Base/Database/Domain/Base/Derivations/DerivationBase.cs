@@ -42,6 +42,9 @@ namespace Allors.Domain
 
         protected DerivationBase(ISession session)
         {
+            this.Id = Guid.NewGuid();
+            this.TimeStamp = session.Now();
+
             this.Session = session;
 
             this.markedAsModified = new HashSet<long>();
@@ -63,6 +66,10 @@ namespace Allors.Domain
         {
             this.markedAsModified.UnionWith(markedAsModified.Where(v => v != null).Select(v => v.Id));
         }
+
+        public Guid Id { get; }
+
+        public DateTime TimeStamp { get; }
 
         public ISession Session { get; }
 
