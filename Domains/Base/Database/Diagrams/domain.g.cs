@@ -3,6 +3,16 @@ namespace Allors.Domain
 		public interface Object 
 		{
 		}
+		public interface Version  : AccessControlledObject 
+		{
+						global::System.Guid? VersionId {set;}
+
+						global::System.DateTime? VersionTimeStamp {set;}
+
+		}
+		public interface Versioned  : Object 
+		{
+		}
 		public interface AccessControlledObject  : Object 
 		{
 						Permission DeniedPermissions {set;}
@@ -753,15 +763,50 @@ namespace Allors.Domain
 						Two Two {set;}
 
 		}
-		public interface Order  : Transitional 
+		public interface Order  : Transitional, Versioned 
 		{
 						OrderObjectState CurrentObjectState {set;}
 
-						global::System.Int32? Amount {set;}
+						OrderLine OrderLines {set;}
+
+						global::System.Decimal? Amount {set;}
+
+						OrderObjectState NonVersionedCurrentObjectState {set;}
+
+						OrderLine NonVersionedOrderLines {set;}
+
+						global::System.Decimal? NonVersionedAmount {set;}
+
+						OrderVersion CurrentVersion {set;}
+
+						OrderVersion AllVersions {set;}
+
+		}
+		public interface OrderLine  : AccessControlledObject, Versioned 
+		{
+						global::System.Decimal? Amount {set;}
+
+						OrderLineVersion CurrentVersion {set;}
+
+						OrderLineVersion AllVersions {set;}
+
+		}
+		public interface OrderLineVersion  : Version 
+		{
+						global::System.Decimal? Amount {set;}
 
 		}
 		public interface OrderObjectState  : ObjectState 
 		{
+		}
+		public interface OrderVersion  : Version 
+		{
+						OrderObjectState CurrentObjectState {set;}
+
+						OrderLine OrderLines {set;}
+
+						global::System.Decimal? Amount {set;}
+
 		}
 		public interface Organisation  : Deletable, UniquelyIdentifiable, AccessControlledObject 
 		{

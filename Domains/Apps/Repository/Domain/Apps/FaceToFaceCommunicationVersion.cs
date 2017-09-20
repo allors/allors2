@@ -37,7 +37,9 @@ namespace Allors.Repository
         public bool SendReminder { get; set; }
         public DateTime RemindAt { get; set; }
 
-        public DateTime TimeStamp { get; set; }
+        public Guid VersionId { get; set; }
+
+        public DateTime VersionTimeStamp { get; set; }
         #endregion
 
         #region Allors

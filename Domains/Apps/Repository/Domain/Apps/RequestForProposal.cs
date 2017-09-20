@@ -50,16 +50,6 @@ namespace Allors.Repository
         public RequestForProposalVersion CurrentVersion { get; set; }
 
         #region Allors
-        [Id("0F68A59F-34B9-444E-A167-364FA6CF5F30")]
-        [AssociationId("829A011E-3E76-495D-9D4D-3204153391AF")]
-        [RoleId("2DDAC460-2CDD-49FC-941A-1768AD0FA15F")]
-        [Indexed]
-        #endregion
-        [Multiplicity(Multiplicity.OneToOne)]
-        [Workspace]
-        public RequestForProposalVersion PreviousVersion { get; set; }
-
-        #region Allors
         [Id("2043D481-BB86-4F2E-AE34-506E9F12227F")]
         [AssociationId("00C38CFD-1A6F-474D-8B2E-6087B2FAA1C3")]
         [RoleId("C80A0D2E-A695-4FF2-BACF-D95DA9BC0B91")]
@@ -68,26 +58,6 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.OneToMany)]
         [Workspace]
         public RequestForProposalVersion[] AllVersions { get; set; }
-        
-        #region Allors
-        [Id("1FDA439D-09AF-4C9E-9792-1E1A5C4EA808")]
-        [AssociationId("1A1ED150-2B42-48E2-AAB1-5462092BC16B")]
-        [RoleId("D8E0A03B-589A-4BB8-9728-7FD6F59FBC46")]
-        [Indexed]
-        #endregion
-        [Multiplicity(Multiplicity.OneToOne)]
-        [Workspace]
-        public RequestForProposalVersion CurrentStateVersion { get; set; }
-
-        #region Allors
-        [Id("4EB513B3-4A79-40DE-9AC7-A79035A545C8")]
-        [AssociationId("3C95D056-6C32-4EDF-9EBA-DCA7F06F7CA5")]
-        [RoleId("C076734A-B350-4CBA-9009-F087B1C08678")]
-        [Indexed]
-        #endregion
-        [Multiplicity(Multiplicity.OneToMany)]
-        [Workspace]
-        public RequestForProposalVersion[] AllStateVersions { get; set; }
         #endregion
 
         #region inherited methods

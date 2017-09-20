@@ -152,16 +152,6 @@ namespace Allors.Repository
         public EmailCommunicationVersion CurrentVersion { get; set; }
 
         #region Allors
-        [Id("D13C6C76-50FB-4F58-A675-0EDEFC06F5B8")]
-        [AssociationId("F42D1A6F-7CCB-4526-BB91-7028F62C4FE0")]
-        [RoleId("6DDD89EB-EF59-4141-AB9F-29F9F412225A")]
-        [Indexed]
-        #endregion
-        [Workspace]
-        [Multiplicity(Multiplicity.OneToOne)]
-        public EmailCommunicationVersion PreviousVersion { get; set; }
-
-        #region Allors
         [Id("44420D9F-80FC-4432-85C3-1641A5493765")]
         [AssociationId("62386C79-D5A7-4DE8-B04F-2A4B64237FDB")]
         [RoleId("DAFCBD9B-5A82-4EAA-8197-B187D1B6C507")]
@@ -170,26 +160,6 @@ namespace Allors.Repository
         [Workspace]
         [Multiplicity(Multiplicity.OneToMany)]
         public EmailCommunicationVersion[] AllVersions { get; set; }
-
-        #region Allors
-        [Id("75E2DCFA-4AC2-4609-BE48-37DEA5D59034")]
-        [AssociationId("4E2380C8-D94E-49BA-B67A-805346EC92DD")]
-        [RoleId("A6F1A50C-09D7-419E-9CF0-F6D7F946B052")]
-        [Indexed]
-        #endregion
-        [Workspace]
-        [Multiplicity(Multiplicity.OneToOne)]
-        public EmailCommunicationVersion CurrentStateVersion { get; set; }
-
-        #region Allors
-        [Id("30A7022D-8320-4417-99EF-C99A6A029EBD")]
-        [AssociationId("3B76B7DB-E4FF-49DC-848D-233BFA639E35")]
-        [RoleId("2C2DEC99-B389-4F40-AF26-428DD5AC6AA7")]
-        [Indexed]
-        #endregion
-        [Workspace]
-        [Multiplicity(Multiplicity.OneToMany)]
-        public EmailCommunicationVersion[] AllStateVersions { get; set; }
         #endregion
 
         #region inherited methods

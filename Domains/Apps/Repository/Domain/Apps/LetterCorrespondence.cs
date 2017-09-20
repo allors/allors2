@@ -132,16 +132,6 @@ namespace Allors.Repository
         public LetterCorrespondenceVersion CurrentVersion { get; set; }
 
         #region Allors
-        [Id("E9EB1E16-BC1F-4677-9B67-2CDE3035D010")]
-        [AssociationId("1EBC915D-C786-412C-A3C4-3D00F62CD620")]
-        [RoleId("906C0103-86E3-45D4-9A9D-DB9C726D3B3D")]
-        [Indexed]
-        #endregion
-        [Multiplicity(Multiplicity.OneToOne)]
-        [Workspace]
-        public LetterCorrespondenceVersion PreviousVersion { get; set; }
-
-        #region Allors
         [Id("1BD17B22-88CB-4F44-8B27-8EB8BCD9C963")]
         [AssociationId("FD6F1CE4-D23F-4B99-9CF8-71C3A7D50599")]
         [RoleId("3ED25C01-401F-42D4-ABAA-C24EA95E0BAA")]
@@ -150,26 +140,6 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.OneToMany)]
         [Workspace]
         public LetterCorrespondenceVersion[] AllVersions { get; set; }
-
-        #region Allors
-        [Id("4F31F156-39D9-4F6B-A8E7-CBA53F89CC58")]
-        [AssociationId("D7EA86BC-ACBB-442E-8A47-23BB7301B9BA")]
-        [RoleId("50847AC8-5968-4C53-8B58-1F37B9803361")]
-        [Indexed]
-        #endregion
-        [Multiplicity(Multiplicity.OneToOne)]
-        [Workspace]
-        public LetterCorrespondenceVersion CurrentStateVersion { get; set; }
-
-        #region Allors
-        [Id("6066BF91-C495-408C-BA2E-A05984C1F648")]
-        [AssociationId("3F46EAC2-7EE3-4AE0-83A8-2ED60E814C4F")]
-        [RoleId("EEF160C6-66B0-40C3-A343-0F8A58ECE260")]
-        [Indexed]
-        #endregion
-        [Multiplicity(Multiplicity.OneToMany)]
-        [Workspace]
-        public LetterCorrespondenceVersion[] AllStateVersions { get; set; }
         #endregion
 
         #region inherited methods

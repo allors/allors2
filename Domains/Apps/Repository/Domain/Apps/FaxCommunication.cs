@@ -122,16 +122,6 @@ namespace Allors.Repository
         public FaxCommunicationVersion CurrentVersion { get; set; }
 
         #region Allors
-        [Id("9B80D9EB-DBE6-4E65-9DDF-B7C546572146")]
-        [AssociationId("A145B201-D4B1-4763-A9A1-A249A38E6B1D")]
-        [RoleId("1961EC21-F53F-4296-B950-A6A987E2F25A")]
-        [Indexed]
-        #endregion
-        [Multiplicity(Multiplicity.OneToOne)]
-        [Workspace]
-        public FaxCommunicationVersion PreviousVersion { get; set; }
-
-        #region Allors
         [Id("E4B068A0-15ED-422A-AE2F-EAA6BC975618")]
         [AssociationId("91FC34B8-3628-4EA7-9D0D-D79267570A7F")]
         [RoleId("404A7C4B-BA4D-4DEE-ABDB-D98C45D1B74A")]
@@ -140,26 +130,6 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.OneToMany)]
         [Workspace]
         public FaxCommunicationVersion[] AllVersions { get; set; }
-
-        #region Allors
-        [Id("D0299189-FE47-49AD-B244-32DD04C32305")]
-        [AssociationId("204C4CC4-2CE4-482D-9F42-D58B9E4999BD")]
-        [RoleId("44DB4ACA-C917-4EB5-A8D1-9DDEE35545C7")]
-        [Indexed]
-        #endregion
-        [Multiplicity(Multiplicity.OneToOne)]
-        [Workspace]
-        public FaxCommunicationVersion CurrentStateVersion { get; set; }
-
-        #region Allors
-        [Id("43307B17-C559-485F-9EC8-51DB20B38B27")]
-        [AssociationId("3F30A7EC-3F99-40DF-BE72-83EA303D5A72")]
-        [RoleId("6C0E4FD2-AF96-4887-B0C1-E055522E4586")]
-        [Indexed]
-        #endregion
-        [Multiplicity(Multiplicity.OneToMany)]
-        [Workspace]
-        public FaxCommunicationVersion[] AllStateVersions { get; set; }
         #endregion
 
         #region inherited methods

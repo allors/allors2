@@ -9,7 +9,10 @@ namespace Allors.Repository
     public partial class ActivityVersion : WorkEffortVersion
     {
         #region inherited properties
-        public DateTime TimeStamp { get; set; }
+
+        public Guid VersionId { get; set; }
+
+        public DateTime VersionTimeStamp { get; set; }
 
         public Permission[] DeniedPermissions { get; set; }
         public SecurityToken[] SecurityTokens { get; set; }

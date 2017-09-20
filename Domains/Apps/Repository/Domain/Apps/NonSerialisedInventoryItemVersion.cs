@@ -25,7 +25,9 @@ namespace Allors.Repository
         public ProductType ProductType { get; set; }
         public Facility Facility { get; set; }
 
-        public DateTime TimeStamp { get; set; }
+        public Guid VersionId { get; set; }
+
+        public DateTime VersionTimeStamp { get; set; }
         #endregion
 
         #region Allors

@@ -1,5 +1,10 @@
 namespace Allors.Domain
 {
+				public interface Version 
+				{
+								global::System.DateTime? VersionTimeStamp {set;}
+
+				}
 				public interface Deletable 
 				{
 				}
@@ -276,7 +281,29 @@ namespace Allors.Domain
 				public interface Gender : Enumeration 
 				{
 				}
+				public interface Order 
+				{
+								OrderVersion CurrentVersion {set;}
+
+
+								OrderVersion AllVersions {set;}
+
+				}
+				public interface OrderLine 
+				{
+								OrderLineVersion CurrentVersion {set;}
+
+
+								OrderLineVersion AllVersions {set;}
+
+				}
+				public interface OrderLineVersion : Version 
+				{
+				}
 				public interface OrderObjectState : ObjectState 
+				{
+				}
+				public interface OrderVersion : Version 
 				{
 				}
 				public interface Organisation : Deletable, UniquelyIdentifiable 

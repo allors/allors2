@@ -130,16 +130,6 @@ namespace Allors.Repository
         public PhoneCommunicationVersion CurrentVersion { get; set; }
 
         #region Allors
-        [Id("39FF962B-AF4C-4403-82E3-0AFEB71DB821")]
-        [AssociationId("24905D7A-8F29-4C91-AC56-126C250AF102")]
-        [RoleId("A447494C-0CDC-4402-8EED-E8A9CA753554")]
-        [Indexed]
-        #endregion
-        [Multiplicity(Multiplicity.OneToOne)]
-        [Workspace]
-        public PhoneCommunicationVersion PreviousVersion { get; set; }
-
-        #region Allors
         [Id("03ED4C6F-8EA4-4D3C-A91E-BCD191A997C9")]
         [AssociationId("A0B07210-891E-4532-A7F3-7AE15E54A77D")]
         [RoleId("35C1CA8F-3EE3-4F2E-B983-68C11DE9A5B6")]
@@ -148,26 +138,6 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.OneToMany)]
         [Workspace]
         public PhoneCommunicationVersion[] AllVersions { get; set; }
-
-        #region Allors
-        [Id("075CF2FC-803A-40C8-A9BD-A2F1847E61BA")]
-        [AssociationId("AA861E75-042D-45D2-B32C-C21C4D238660")]
-        [RoleId("D9ECE8D6-5976-4095-A356-84848CE80860")]
-        [Indexed]
-        #endregion
-        [Multiplicity(Multiplicity.OneToOne)]
-        [Workspace]
-        public PhoneCommunicationVersion CurrentStateVersion { get; set; }
-
-        #region Allors
-        [Id("157DE928-5645-4E13-A41D-921A85E5FBC1")]
-        [AssociationId("4414C050-BABF-4061-854F-C9C119F1E0DA")]
-        [RoleId("F13950A3-FCA8-410F-A6FB-AFEFDDEA7A4F")]
-        [Indexed]
-        #endregion
-        [Multiplicity(Multiplicity.OneToMany)]
-        [Workspace]
-        public PhoneCommunicationVersion[] AllStateVersions { get; set; }
         #endregion
 
         #region inherited methods

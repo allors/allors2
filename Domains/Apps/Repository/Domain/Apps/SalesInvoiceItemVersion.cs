@@ -23,7 +23,10 @@ namespace Allors.Repository
         public decimal AmountPaid { get; set; }
         public decimal Quantity { get; set; }
         public string Description { get; set; }
-        public DateTime TimeStamp { get; set; }
+
+        public Guid VersionId { get; set; }
+
+        public DateTime VersionTimeStamp { get; set; }
 
         public decimal TotalDiscountAsPercentage { get; set; }
 

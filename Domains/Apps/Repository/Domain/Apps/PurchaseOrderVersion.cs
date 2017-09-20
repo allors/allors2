@@ -45,7 +45,9 @@ namespace Allors.Repository
         public decimal TotalFee { get; set; }
         public SurchargeAdjustment SurchargeAdjustment { get; set; }
 
-        public DateTime TimeStamp { get; set; }
+        public Guid VersionId { get; set; }
+
+        public DateTime VersionTimeStamp { get; set; }
         #endregion
 
         #region Allors

@@ -36,7 +36,10 @@ namespace Allors.Repository
         public Requirement[] RequirementFulfillments { get; set; }
         public string SpecialTerms { get; set; }
         public WorkEffort[] Concurrencies { get; set; }
-        public DateTime TimeStamp { get; set; }
+
+        public Guid VersionId { get; set; }
+
+        public DateTime VersionTimeStamp { get; set; }
         #endregion
 
         #region Allors

@@ -23,20 +23,10 @@ namespace Allors.Domain
 {
     public partial class Order
     {
-        ObjectState Transitional.CurrentObjectState
-        {
-            get
-            {
-                return this.CurrentObjectState;
-            }
-        }
+        ObjectState Transitional.CurrentObjectState => this.CurrentObjectState;
 
         public void CustomOnDerive(ObjectOnDerive method)
         {
-            if (0 == this.Amount)
-            {
-                this.CurrentObjectState = new OrderObjectStates(this.Strategy.Session).Cancelled;
-            }
         }
     }
 }

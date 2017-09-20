@@ -26,7 +26,10 @@ namespace Allors.Repository
         public string Message { get; set; }
         public Permission[] DeniedPermissions { get; set; }
         public SecurityToken[] SecurityTokens { get; set; }
-        public DateTime TimeStamp { get; set; }
+
+        public Guid VersionId { get; set; }
+
+        public DateTime VersionTimeStamp { get; set; }
 
         public decimal TotalDiscountAsPercentage { get; set; }
 

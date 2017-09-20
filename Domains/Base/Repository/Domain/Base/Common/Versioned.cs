@@ -1,5 +1,5 @@
 //------------------------------------------------------------------------------------------------- 
-// <copyright file="Counter.cs" company="Allors bvba">
+// <copyright file="Versioned.cs" company="Allors bvba">
 // Copyright 2002-2016 Allors bvba.
 // 
 // Dual Licensed under

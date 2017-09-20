@@ -218,16 +218,6 @@ namespace Allors.Repository
         public SalesInvoiceItemVersion CurrentVersion { get; set; }
 
         #region Allors
-        [Id("BDDB0313-E741-4AC4-82C3-D0CB98653EA6")]
-        [AssociationId("85452B29-63DB-4C48-9FEB-9458752D2A8A")]
-        [RoleId("DF134157-AAD4-4101-A050-60E9C1928FD1")]
-        [Indexed]
-        #endregion
-        [Multiplicity(Multiplicity.OneToOne)]
-        [Workspace]
-        public SalesInvoiceItemVersion PreviousVersion { get; set; }
-
-        #region Allors
         [Id("3409316D-FD54-408C-BC1C-9468CCE4B72E")]
         [AssociationId("DC9E9D4F-27AC-4022-ACB4-F4916BF010BF")]
         [RoleId("C646543C-2FF4-4DA5-99D6-EACAE7A28FDA")]
@@ -236,26 +226,6 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.OneToMany)]
         [Workspace]
         public SalesInvoiceItemVersion[] AllVersions { get; set; }
-
-        #region Allors
-        [Id("E7D84E59-2992-4F25-8C68-866DC933536A")]
-        [AssociationId("81554067-8A7A-403A-8127-F73FF0847C8C")]
-        [RoleId("FDB32E72-ABEA-470C-B5BD-9646C8154B1B")]
-        [Indexed]
-        #endregion
-        [Multiplicity(Multiplicity.OneToOne)]
-        [Workspace]
-        public SalesInvoiceItemVersion CurrentStateVersion { get; set; }
-
-        #region Allors
-        [Id("95F7B58B-D57C-4E22-9947-A1B62F60103C")]
-        [AssociationId("4DD00467-7AD2-4C7E-AD19-B10A5D4B5468")]
-        [RoleId("B1F4CEAF-2CBF-4466-98A1-06A46B9506E2")]
-        [Indexed]
-        #endregion
-        [Multiplicity(Multiplicity.OneToMany)]
-        [Workspace]
-        public SalesInvoiceItemVersion[] AllStateVersions { get; set; }
         #endregion
 
         #region inherited methods

@@ -43,7 +43,10 @@ namespace Allors.Repository
         public decimal TotalDiscountCustomerCurrency { get; set; }
         public decimal TotalVat { get; set; }
         public decimal TotalFee { get; set; }
-        public DateTime TimeStamp { get; set; }
+
+        public Guid VersionId { get; set; }
+
+        public DateTime VersionTimeStamp { get; set; }
         #endregion
 
         #region Allors

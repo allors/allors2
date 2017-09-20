@@ -61,7 +61,9 @@ namespace Allors.Repository
 
         public WorkEffort[] Concurrencies { get; set; }
 
-        public DateTime TimeStamp { get; set; }
+        public Guid VersionId { get; set; }
+
+        public DateTime VersionTimeStamp { get; set; }
         #endregion
 
         #region Allors

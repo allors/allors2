@@ -65,6 +65,8 @@
     <Compile Include="Base\Attributes\RequiredAttribute.cs" />
     <Compile Include="Base\Attributes\UniqueAttribute.cs" />
     <Compile Include="Base\Common\Object.cs" />
+    <Compile Include="Base\Common\Version.cs" />
+    <Compile Include="Base\Common\Versioned.cs" />
     <Compile Include="Base\Localisation\LocalisedText.cs" />
     <Compile Include="Base\Security\AccessControl.cs" />
     <Compile Include="Base\Security\AccessControlledObject.cs" />
@@ -120,7 +122,10 @@
     <Compile Include="Custom\MailboxAddress.cs" />
     <Compile Include="Custom\One.cs" />
     <Compile Include="Custom\Order.cs" />
+    <Compile Include="Custom\OrderLine.cs" />
+    <Compile Include="Custom\OrderLineVersion.cs" />
     <Compile Include="Custom\OrderObjectState.cs" />
+    <Compile Include="Custom\OrderVersion.cs" />
     <Compile Include="Custom\Organisation.cs" />
     <Compile Include="Custom\Person.cs" />
     <Compile Include="Custom\Place.cs" />

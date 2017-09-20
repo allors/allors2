@@ -28,7 +28,10 @@ namespace Allors.Repository
         public string QuoteNumber { get; set; }
         public QuoteObjectState CurrentObjectState { get; set; }
         public Request Request { get; set; }
-        public DateTime TimeStamp { get; set; }
+
+        public Guid VersionId { get; set; }
+
+        public DateTime VersionTimeStamp { get; set; }
         #endregion
 
         #region inherited methods
