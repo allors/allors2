@@ -6,7 +6,7 @@ namespace Allors.Repository
     #region Allors
     [Id("ecf2996a-7f8b-45d5-afac-56c88c62136a")]
     #endregion
-    public partial class WebSiteCommunication : CommunicationEvent 
+    public partial class WebSiteCommunication : CommunicationEvent, Versioned
     {
         #region inherited properties
 

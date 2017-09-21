@@ -91,15 +91,13 @@ namespace Allors.Domain
 
             this.DatabaseSession.Derive();
 
-            Assert.Equal(1, communication.AllStateVersions.Count);
-            Assert.Equal(new CommunicationEventObjectStates(this.DatabaseSession).InProgress, communication.CurrentStateVersion.CurrentObjectState);
+            Assert.Equal(new CommunicationEventObjectStates(this.DatabaseSession).InProgress, communication.CurrentObjectState);
 
             communication.Close();
             
             this.DatabaseSession.Derive();
 
-            Assert.Equal(2, communication.AllStateVersions.Count);
-            Assert.Equal(new CommunicationEventObjectStates(this.DatabaseSession).Completed, communication.CurrentStateVersion.CurrentObjectState);
+            Assert.Equal(new CommunicationEventObjectStates(this.DatabaseSession).Completed, communication.CurrentObjectState);
         }
     }
 }

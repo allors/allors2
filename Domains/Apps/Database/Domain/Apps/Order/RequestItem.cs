@@ -38,40 +38,5 @@ namespace Allors.Domain
             derivation.Validation.AssertAtLeastOne(this, M.RequestItem.Product, M.RequestItem.ProductFeature, M.RequestItem.Description, M.RequestItem.NeededSkill, M.RequestItem.Deliverable);
             derivation.Validation.AssertExistsAtMostOne(this, M.RequestItem.Product, M.RequestItem.ProductFeature, M.RequestItem.Description, M.RequestItem.NeededSkill, M.RequestItem.Deliverable);
         }
-
-        public void AppsOnPostDerive(ObjectOnPostDerive method)
-        {
-            var isNewVersion =
-                !this.ExistCurrentVersion ||
-                !object.Equals(this.InternalComment, this.CurrentVersion.InternalComment) ||
-                !object.Equals(this.Description, this.CurrentVersion.Description) ||
-                !object.Equals(this.Quantity, this.CurrentVersion.Quantity) ||
-                !object.Equals(this.UnitOfMeasure, this.CurrentVersion.UnitOfMeasure) ||
-                !object.Equals(this.Requirements, this.CurrentVersion.Requirements) ||
-                !object.Equals(this.Deliverable, this.CurrentVersion.Deliverable) ||
-                !object.Equals(this.ProductFeature, this.CurrentVersion.ProductFeature) ||
-                !object.Equals(this.NeededSkill, this.CurrentVersion.NeededSkill) ||
-                !object.Equals(this.Product, this.CurrentVersion.Product) ||
-                !object.Equals(this.MaximumAllowedPrice, this.CurrentVersion.MaximumAllowedPrice) ||
-                !object.Equals(this.RequiredByDate, this.CurrentVersion.RequiredByDate) ||
-                !object.Equals(this.CurrentObjectState, this.CurrentVersion.CurrentObjectState);
-
-            var isNewStateVersion =
-                !this.ExistCurrentVersion ||
-                !object.Equals(this.CurrentObjectState, this.CurrentVersion.CurrentObjectState);
-
-            if (isNewVersion)
-            {
-                this.PreviousVersion = this.CurrentVersion;
-                this.CurrentVersion = new RequestItemVersionBuilder(this.Strategy.Session).WithRequestItem(this).Build();
-                this.AddAllVersion(this.CurrentVersion);
-            }
-
-            if (isNewStateVersion)
-            {
-                this.CurrentStateVersion = CurrentVersion;
-                this.AddAllStateVersion(this.CurrentStateVersion);
-            }
-        }
     }
 }

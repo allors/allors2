@@ -90,44 +90,6 @@ namespace Allors.Domain
             this.PreviousQuantityOnHand = this.QuantityOnHand;
         }
 
-        public void AppsOnPostDerive(ObjectOnPostDerive method)
-        {
-            var isNewVersion =
-                !this.ExistCurrentVersion ||
-                !object.Equals(this.InventoryItemVariances, this.CurrentVersion.InventoryItemVariances) ||
-                !object.Equals(this.Part, this.CurrentVersion.Part) ||
-                !object.Equals(this.Container, this.CurrentVersion.Container) ||
-                !object.Equals(this.Name, this.CurrentVersion.Name) ||
-                !object.Equals(this.Lot, this.CurrentVersion.Lot) ||
-                !object.Equals(this.Sku, this.CurrentVersion.Sku) ||
-                !object.Equals(this.UnitOfMeasure, this.CurrentVersion.UnitOfMeasure) ||
-                !object.Equals(this.DerivedProductCategories, this.CurrentVersion.DerivedProductCategories) ||
-                !object.Equals(this.Good, this.CurrentVersion.Good) ||
-                !object.Equals(this.Facility, this.CurrentVersion.Facility) ||
-                !object.Equals(this.QuantityCommittedOut, this.CurrentVersion.QuantityCommittedOut) ||
-                !object.Equals(this.QuantityOnHand, this.CurrentVersion.QuantityOnHand) ||
-                !object.Equals(this.AvailableToPromise, this.CurrentVersion.AvailableToPromise) ||
-                !object.Equals(this.QuantityExpectedIn, this.CurrentVersion.QuantityExpectedIn) ||
-                !object.Equals(this.CurrentObjectState, this.CurrentVersion.CurrentObjectState);
-
-            var isNewStateVersion =
-                !this.ExistCurrentVersion ||
-                !object.Equals(this.CurrentObjectState, this.CurrentVersion.CurrentObjectState);
-
-            if (isNewVersion)
-            {
-                this.PreviousVersion = this.CurrentVersion;
-                this.CurrentVersion = new NonSerialisedInventoryItemVersionBuilder(this.Strategy.Session).WithNonSerialisedInventoryItem(this).Build();
-                this.AddAllVersion(this.CurrentVersion);
-            }
-
-            if (isNewStateVersion)
-            {
-                this.CurrentStateVersion = CurrentVersion;
-                this.AddAllStateVersion(this.CurrentStateVersion);
-            }
-        }
-
         public void AppsOnDeriveQuantityOnHand(IDerivation derivation)
         {
             this.QuantityOnHand = 0M;

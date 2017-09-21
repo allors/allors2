@@ -7,7 +7,7 @@ namespace Allors.Repository
     #region Allors
     [Id("062bd939-9902-4747-a631-99ea10002156")]
     #endregion
-    public partial class PurchaseOrder : Order 
+    public partial class PurchaseOrder : Order, Versioned
     {
         #region inherited properties
 
@@ -200,11 +200,6 @@ namespace Allors.Repository
         public void Confirm(){}
 
         public void Cancel(){}
-
-        public void Complete(){}
-
-        public void Finish(){}
-        public void AddNewOrderItem() { }
 
         #endregion
     }

@@ -158,17 +158,9 @@ namespace Allors.Domain
             this.DatabaseSession.Derive();
 
             Assert.Equal(new SalesOrderObjectStates(this.DatabaseSession).Completed, order.CurrentObjectState);
-            Assert.Equal(new SalesOrderObjectStates(this.DatabaseSession).Shipped, order.CurrentShipmentStateVersion.CurrentObjectState);
-            Assert.False(order.ExistCurrentPaymentStateVersion);
             Assert.Equal(new SalesOrderItemObjectStates(this.DatabaseSession).Completed, item1.CurrentObjectState);
-            Assert.False(item1.ExistCurrentPaymentStateVersion);
-            Assert.Equal(new SalesOrderItemObjectStates(this.DatabaseSession).Shipped, item1.CurrentShipmentStateVersion.CurrentObjectState);
             Assert.Equal(new SalesOrderItemObjectStates(this.DatabaseSession).Completed, item2.CurrentObjectState);
-            Assert.False(item2.ExistCurrentPaymentStateVersion);
-            Assert.Equal(new SalesOrderItemObjectStates(this.DatabaseSession).Shipped, item2.CurrentShipmentStateVersion.CurrentObjectState);
             Assert.Equal(new SalesOrderItemObjectStates(this.DatabaseSession).Completed, item3.CurrentObjectState);
-            Assert.False(item3.ExistCurrentPaymentStateVersion);
-            Assert.Equal(new SalesOrderItemObjectStates(this.DatabaseSession).Shipped, item3.CurrentShipmentStateVersion.CurrentObjectState);
         }
         [Fact]
         public void GivenSalesOrderShippedInMultipleParts_WhenPaymentsAreReceived_ThenObjectStateCorrespondingSalesOrderIsUpdated()
@@ -278,17 +270,9 @@ namespace Allors.Domain
             this.DatabaseSession.Derive();
 
             Assert.Equal(new SalesOrderObjectStates(this.DatabaseSession).InProcess, order.CurrentObjectState);
-            Assert.Equal(new SalesOrderObjectStates(this.DatabaseSession).PartiallyShipped, order.CurrentShipmentStateVersion.CurrentObjectState);
-            Assert.Equal(new SalesOrderObjectStates(this.DatabaseSession).PartiallyPaid, order.CurrentPaymentStateVersion.CurrentObjectState);
             Assert.Equal(new SalesOrderItemObjectStates(this.DatabaseSession).Finished, item1.CurrentObjectState);
-            Assert.Equal(new SalesOrderItemObjectStates(this.DatabaseSession).Paid, item1.CurrentPaymentStateVersion.CurrentObjectState);
-            Assert.Equal(new SalesOrderItemObjectStates(this.DatabaseSession).Shipped, item1.CurrentShipmentStateVersion.CurrentObjectState);
             Assert.Equal(new SalesOrderItemObjectStates(this.DatabaseSession).InProcess, item2.CurrentObjectState);
-            Assert.False(item2.ExistCurrentPaymentStateVersion);
-            Assert.False(item2.ExistCurrentShipmentStateVersion);
             Assert.Equal(new SalesOrderItemObjectStates(this.DatabaseSession).InProcess, item3.CurrentObjectState);
-            Assert.False(item3.ExistCurrentPaymentStateVersion);
-            Assert.False(item3.ExistCurrentShipmentStateVersion);
 
             good1Inventory.AddInventoryItemVariance(new InventoryItemVarianceBuilder(this.DatabaseSession).WithQuantity(100).WithReason(new VarianceReasons(this.DatabaseSession).Unknown).Build());
 
@@ -329,17 +313,9 @@ namespace Allors.Domain
             this.DatabaseSession.Derive();
 
             Assert.Equal(new SalesOrderObjectStates(this.DatabaseSession).InProcess, order.CurrentObjectState);
-            Assert.Equal(new SalesOrderObjectStates(this.DatabaseSession).PartiallyShipped, order.CurrentShipmentStateVersion.CurrentObjectState);
-            Assert.Equal(new SalesOrderObjectStates(this.DatabaseSession).PartiallyPaid, order.CurrentPaymentStateVersion.CurrentObjectState);
             Assert.Equal(new SalesOrderItemObjectStates(this.DatabaseSession).Finished, item1.CurrentObjectState);
-            Assert.Equal(new SalesOrderItemObjectStates(this.DatabaseSession).Paid, item1.CurrentPaymentStateVersion.CurrentObjectState);
-            Assert.Equal(new SalesOrderItemObjectStates(this.DatabaseSession).Shipped, item1.CurrentShipmentStateVersion.CurrentObjectState);
             Assert.Equal(new SalesOrderItemObjectStates(this.DatabaseSession).Finished, item2.CurrentObjectState);
-            Assert.Equal(new SalesOrderItemObjectStates(this.DatabaseSession).Paid, item2.CurrentPaymentStateVersion.CurrentObjectState);
-            Assert.Equal(new SalesOrderItemObjectStates(this.DatabaseSession).Shipped, item2.CurrentShipmentStateVersion.CurrentObjectState);
             Assert.Equal(new SalesOrderItemObjectStates(this.DatabaseSession).InProcess, item3.CurrentObjectState);
-            Assert.False(item3.ExistCurrentPaymentStateVersion);
-            Assert.False(item3.ExistCurrentShipmentStateVersion);
 
             good2Inventory.AddInventoryItemVariance(new InventoryItemVarianceBuilder(this.DatabaseSession).WithQuantity(100).WithReason(new VarianceReasons(this.DatabaseSession).Unknown).Build());
 
@@ -379,17 +355,9 @@ namespace Allors.Domain
             this.DatabaseSession.Derive();
 
             Assert.Equal(new SalesOrderObjectStates(this.DatabaseSession).Finished, order.CurrentObjectState);
-            Assert.Equal(new SalesOrderObjectStates(this.DatabaseSession).Shipped, order.CurrentShipmentStateVersion.CurrentObjectState);
-            Assert.Equal(new SalesOrderObjectStates(this.DatabaseSession).Paid, order.CurrentPaymentStateVersion.CurrentObjectState);
             Assert.Equal(new SalesOrderItemObjectStates(this.DatabaseSession).Finished, item1.CurrentObjectState);
-            Assert.Equal(new SalesOrderItemObjectStates(this.DatabaseSession).Paid, item1.CurrentPaymentStateVersion.CurrentObjectState);
-            Assert.Equal(new SalesOrderItemObjectStates(this.DatabaseSession).Shipped, item1.CurrentShipmentStateVersion.CurrentObjectState);
             Assert.Equal(new SalesOrderItemObjectStates(this.DatabaseSession).Finished, item2.CurrentObjectState);
-            Assert.Equal(new SalesOrderItemObjectStates(this.DatabaseSession).Paid, item2.CurrentPaymentStateVersion.CurrentObjectState);
-            Assert.Equal(new SalesOrderItemObjectStates(this.DatabaseSession).Shipped, item2.CurrentShipmentStateVersion.CurrentObjectState);
             Assert.Equal(new SalesOrderItemObjectStates(this.DatabaseSession).Finished, item3.CurrentObjectState);
-            Assert.Equal(new SalesOrderItemObjectStates(this.DatabaseSession).Paid, item3.CurrentPaymentStateVersion.CurrentObjectState);
-            Assert.Equal(new SalesOrderItemObjectStates(this.DatabaseSession).Shipped, item3.CurrentShipmentStateVersion.CurrentObjectState);
         }
 
         [Fact]
@@ -1504,15 +1472,13 @@ namespace Allors.Domain
 
             this.DatabaseSession.Derive();
 
-            Assert.Equal(1, order.AllStateVersions.Count);
-            Assert.Equal(new SalesOrderObjectStates(this.DatabaseSession).Provisional, order.CurrentStateVersion.CurrentObjectState);
+            Assert.Equal(new SalesOrderObjectStates(this.DatabaseSession).Provisional, order.CurrentObjectState);
 
             order.Confirm();
 
             this.DatabaseSession.Derive();
 
-            Assert.Equal(2, order.AllStateVersions.Count);
-            Assert.Equal(new SalesOrderObjectStates(this.DatabaseSession).InProcess, order.CurrentStateVersion.CurrentObjectState);
+            Assert.Equal(new SalesOrderObjectStates(this.DatabaseSession).InProcess, order.CurrentObjectState);
         }
 
         [Fact]
@@ -2010,7 +1976,7 @@ namespace Allors.Domain
 
             this.DatabaseSession.Derive();
 
-            order.Finish();
+            order.CurrentObjectState = new SalesOrderObjectStates(this.DatabaseSession).Finished;
 
             this.DatabaseSession.Derive();
 

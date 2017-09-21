@@ -6,7 +6,7 @@ namespace Allors.Repository
     #region Allors
     [Id("d0f9fc0d-a3c5-46cc-ab00-4c724995fc14")]
     #endregion
-    public partial class FaceToFaceCommunication : CommunicationEvent
+    public partial class FaceToFaceCommunication : CommunicationEvent, Versioned
     {
         #region inherited properties
         public SecurityToken OwnerSecurityToken { get; set; }

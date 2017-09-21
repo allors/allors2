@@ -7,7 +7,7 @@ namespace Allors.Repository
     #region Allors
     [Id("01fc58a0-89b8-4dc0-97f9-5f628b9c9577")]
     #endregion
-    public partial class QuoteItem : Commentable, AccessControlledObject, Transitional
+    public partial class QuoteItem : Commentable, AccessControlledObject, Transitional, Versioned
     {
         #region inherited properties
         public string Comment { get; set; }

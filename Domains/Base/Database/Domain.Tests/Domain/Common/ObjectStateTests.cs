@@ -62,7 +62,7 @@ namespace Tests
             Assert.Equal(order.LastObjectState, confirmed);
             Assert.Equal(order.PreviousObjectState, initial);
 
-            order.Amount = 0;
+            order.Amount = -1;
 
             this.Session.Derive(true);
 

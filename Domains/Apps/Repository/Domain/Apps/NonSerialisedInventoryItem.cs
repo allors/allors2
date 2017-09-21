@@ -7,7 +7,7 @@ namespace Allors.Repository
     #region Allors
     [Id("5b294591-e20a-4bad-940a-27ae7b2f8770")]
     #endregion
-    public partial class NonSerialisedInventoryItem : InventoryItem
+    public partial class NonSerialisedInventoryItem : InventoryItem, Versioned
     {
         #region inherited properties
 

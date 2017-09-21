@@ -393,23 +393,5 @@ namespace Allors.Repository
         #endregion
         [Workspace]
         void Cancel();
-
-        #region Allors
-        [Id("AC3821E2-ED69-4DD5-AF02-FA0E15EEC95D")]
-        #endregion
-        [Workspace]
-        void Complete();
-
-        #region Allors
-        [Id("9BD8039C-BDBF-41E5-8AB2-ADF5E139F9C0")]
-        #endregion
-        [Workspace]
-        void Finish();
-
-        #region Allors
-        [Id("779BBAD3-46BA-4E99-9F72-45A03764FAD7")]
-        #endregion
-        [Workspace]
-        void AddNewOrderItem();
     }
 }

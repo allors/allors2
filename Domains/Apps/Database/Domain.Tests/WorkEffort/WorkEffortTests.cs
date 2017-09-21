@@ -46,23 +46,5 @@ namespace Allors.Domain
 
             Assert.Null(workEffort.PreviousObjectState);
         }
-
-        [Fact]
-        public void GivenCustomerShipment_WhenConfirmed_ThenCurrentShipmentStatusMustBeDerived()
-        {
-            var workEffort = new ActivityBuilder(this.DatabaseSession).WithName("Activity").Build();
-
-            this.DatabaseSession.Derive();
-
-            Assert.Equal(1, workEffort.AllStateVersions.Count);
-            Assert.Equal(new WorkEffortObjectStates(this.DatabaseSession).NeedsAction, workEffort.CurrentStateVersion.CurrentObjectState);
-
-            workEffort.Finish();
-
-            this.DatabaseSession.Derive();
-
-            Assert.Equal(2, workEffort.AllStateVersions.Count);
-            Assert.Equal(new WorkEffortObjectStates(this.DatabaseSession).Completed, workEffort.CurrentStateVersion.CurrentObjectState);
-        }
     }
 }

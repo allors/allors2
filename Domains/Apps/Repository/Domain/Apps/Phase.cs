@@ -7,7 +7,7 @@ namespace Allors.Repository
     #region Allors
     [Id("90a8fa64-c9c7-4a7a-a543-d500668619eb")]
     #endregion
-    public partial class Phase : WorkEffort
+    public partial class Phase : WorkEffort, Versioned
     {
         #region inherited properties
 

@@ -158,59 +158,11 @@ namespace Allors.Domain
             }
 
             this.AppsOnDeriveOrderItems(derivation);
-
-            this.AppsOnDeriveCurrentShipmentStatus(derivation);
-            this.AppsOnDeriveCurrentPaymentStatus(derivation);
+            this.AppsOnDeriveCurrentOrderStatus(derivation);
             this.AppsOnDeriveLocale(derivation);
             this.AppsOnDeriveOrderTotals(derivation);
 
             this.PreviousTakenViaSupplier = this.TakenViaSupplier;
-        }
-
-        public void AppsOnPostDerive(ObjectOnPostDerive method)
-        {
-            var isNewVersion =
-                !this.ExistCurrentVersion ||
-                !object.Equals(this.InternalComment, this.CurrentVersion.InternalComment);
-
-            var isNewStateVersion =
-                !this.ExistCurrentVersion ||
-                !object.Equals(this.InternalComment, this.CurrentVersion.InternalComment) ||
-                !object.Equals(this.CustomerReference, this.CurrentVersion.CustomerReference) ||
-                !object.Equals(this.Fee, this.CurrentVersion.Fee) ||
-                !object.Equals(this.OrderTerms, this.CurrentVersion.OrderTerms) ||
-                !object.Equals(this.Message, this.CurrentVersion.Message) ||
-                !object.Equals(this.DiscountAdjustment, this.CurrentVersion.DiscountAdjustment) ||
-                !object.Equals(this.OrderKind, this.CurrentVersion.OrderKind) ||
-                !object.Equals(this.VatRegime, this.CurrentVersion.VatRegime) ||
-                !object.Equals(this.ShippingAndHandlingCharge, this.CurrentVersion.ShippingAndHandlingCharge) ||
-                !object.Equals(this.OrderDate, this.CurrentVersion.OrderDate) ||
-                !object.Equals(this.DeliveryDate, this.CurrentVersion.DeliveryDate) ||
-                !object.Equals(this.SurchargeAdjustment, this.CurrentVersion.SurchargeAdjustment) ||
-                !object.Equals(this.PurchaseOrderItems, this.CurrentVersion.PurchaseOrderItems) ||
-                !object.Equals(this.TakenViaSupplier, this.CurrentVersion.TakenViaSupplier) ||
-                !object.Equals(this.TakenViaContactMechanism, this.CurrentVersion.TakenViaContactMechanism) ||
-                !object.Equals(this.BillToContactMechanism, this.CurrentVersion.BillToContactMechanism) ||
-                !object.Equals(this.ShipToAddress, this.CurrentVersion.ShipToAddress) ||
-                !object.Equals(this.BillToContactMechanism, this.CurrentVersion.BillToContactMechanism) ||
-                !object.Equals(this.ShipToBuyer, this.CurrentVersion.ShipToBuyer) ||
-                !object.Equals(this.Facility, this.CurrentVersion.Facility) ||
-                !object.Equals(this.ShipToAddress, this.CurrentVersion.ShipToAddress) ||
-                !object.Equals(this.BillToPurchaser, this.CurrentVersion.BillToPurchaser) ||
-                !object.Equals(this.CurrentObjectState, this.CurrentVersion.CurrentObjectState);
-
-            if (isNewVersion)
-            {
-                this.PreviousVersion = this.CurrentVersion;
-                this.CurrentVersion = new PurchaseOrderVersionBuilder(this.Strategy.Session).WithPurchaseOrder(this).Build();
-                this.AddAllVersion(this.CurrentVersion);
-            }
-
-            if (isNewStateVersion)
-            {
-                this.CurrentStateVersion = CurrentVersion;
-                this.AddAllStateVersion(this.CurrentStateVersion);
-            }
         }
 
         public void AppsCancel(OrderCancel method)
@@ -242,128 +194,19 @@ namespace Allors.Domain
         {
             this.CurrentObjectState = new PurchaseOrderObjectStates(this.Strategy.Session).InProcess;
         }
-
-        public void AppsComplete(OrderComplete method)
-        {
-            this.CurrentObjectState = new PurchaseOrderObjectStates(this.Strategy.Session).Completed;
-        }
-
-        public void AppsFinish(OrderFinish method)
-        {
-            this.CurrentObjectState = new PurchaseOrderObjectStates(this.Strategy.Session).Finished;
-        }
-
-        public void AppsOnDeriveCurrentPaymentStatus(IDerivation derivation)
-        {
-            var itemsPaid = false;
-            var itemsPartiallyPaid = false;
-            var itemsUnpaid = false;
-            foreach (PurchaseOrderItem orderItem in this.ValidOrderItems)
-            {
-                if (orderItem.ExistCurrentPaymentStateVersion)
-                {
-                    if (orderItem.CurrentPaymentStateVersion.CurrentObjectState.Equals(new PurchaseOrderItemObjectStates(this.Strategy.Session).PartiallyPaid))
-                    {
-                        itemsPartiallyPaid = true;
-                    }
-
-                    if (orderItem.CurrentPaymentStateVersion.CurrentObjectState.Equals(new PurchaseOrderItemObjectStates(this.Strategy.Session).Paid))
-                    {
-                        itemsPaid = true;
-                    }
-                }
-                else
-                {
-                    itemsUnpaid = true;
-                }
-            }
-
-            if (itemsPaid && !itemsUnpaid && !itemsPartiallyPaid &&
-                (!this.ExistCurrentPaymentStateVersion || !this.CurrentPaymentStateVersion.CurrentObjectState.Equals(new PurchaseOrderObjectStates(this.Strategy.Session).Paid)))
-            {
-                var newVersion = new PurchaseOrderVersionBuilder(this.Strategy.Session)
-                    .WithCurrentObjectState(new PurchaseOrderObjectStates(this.Strategy.Session).Paid)
-                    .WithPurchaseOrder(this)
-                    .Build();
-                this.CurrentPaymentStateVersion = newVersion;
-                this.AddAllPaymentStateVersion(newVersion);
-            }
-
-            if ((itemsPartiallyPaid || (itemsPaid && itemsUnpaid)) &&
-                (!this.ExistCurrentPaymentStateVersion || !this.CurrentPaymentStateVersion.CurrentObjectState.Equals(new PurchaseOrderObjectStates(this.Strategy.Session).PartiallyPaid)))
-            {
-                var newVersion = new PurchaseOrderVersionBuilder(this.Strategy.Session)
-                    .WithCurrentObjectState(new PurchaseOrderObjectStates(this.Strategy.Session).PartiallyPaid)
-                    .WithPurchaseOrder(this)
-                    .Build();
-                this.CurrentPaymentStateVersion = newVersion;
-                this.AddAllPaymentStateVersion(newVersion);
-            }
-
-            this.AppsOnDeriveCurrentOrderStatus(derivation);
-        }
-
-        public void AppsOnDeriveCurrentShipmentStatus(IDerivation derivation)
-        {
-            var itemsShipped = false;
-            var itemsPartiallyShipped = false;
-            var itemsNotShipped = false;
-            foreach (PurchaseOrderItem orderItem in this.ValidOrderItems)
-            {
-                if (orderItem.ExistCurrentShipmentStateVersion)
-                {
-                    if (orderItem.CurrentShipmentStateVersion.CurrentObjectState.Equals(new PurchaseOrderItemObjectStates(this.Strategy.Session).PartiallyReceived))
-                    {
-                        itemsPartiallyShipped = true;
-                    }
-
-                    if (orderItem.CurrentShipmentStateVersion.CurrentObjectState.Equals(new PurchaseOrderItemObjectStates(this.Strategy.Session).Received))
-                    {
-                        itemsShipped = true;
-                    }
-                }
-                else
-                {
-                    itemsNotShipped = true;
-                }
-            }
-
-            if (itemsShipped && !itemsNotShipped && !itemsPartiallyShipped &&
-                (!this.ExistCurrentShipmentStateVersion || !this.CurrentShipmentStateVersion.CurrentObjectState.Equals(new PurchaseOrderObjectStates(this.Strategy.Session).Received)))
-            {
-                var newVersion = new PurchaseOrderVersionBuilder(this.Strategy.Session)
-                    .WithCurrentObjectState(new PurchaseOrderObjectStates(this.Strategy.Session).Received)
-                    .WithPurchaseOrder(this)
-                    .Build();
-                this.CurrentShipmentStateVersion = newVersion;
-                this.AddAllShipmentStateVersion(newVersion);
-            }
-
-            if ((itemsPartiallyShipped || (itemsShipped && itemsNotShipped)) &&
-                (!this.ExistCurrentShipmentStateVersion || !this.CurrentShipmentStateVersion.CurrentObjectState.Equals(new PurchaseOrderObjectStates(this.Strategy.Session).PartiallyReceived)))
-            {
-                var newVersion = new PurchaseOrderVersionBuilder(this.Strategy.Session)
-                    .WithCurrentObjectState(new PurchaseOrderObjectStates(this.Strategy.Session).PartiallyReceived)
-                    .WithPurchaseOrder(this)
-                    .Build();
-                this.CurrentShipmentStateVersion = newVersion;
-                this.AddAllShipmentStateVersion(newVersion);
-            }
-
-            this.AppsOnDeriveCurrentOrderStatus(derivation);
-        }
-
+        
         public void AppsOnDeriveCurrentOrderStatus(IDerivation derivation)
         {
-            if (this.ExistCurrentShipmentStateVersion && this.CurrentShipmentStateVersion.CurrentObjectState.Equals(new PurchaseOrderObjectStates(this.Strategy.Session).Received))
-            {
-                this.Complete();
-            }
+            // TODO: State Transitions
+            //if (this.ExistCurrentShipmentStateVersion && this.CurrentShipmentStateVersion.CurrentObjectState.Equals(new PurchaseOrderObjectStates(this.Strategy.Session).Received))
+            //{
+            //    this.Complete();
+            //}
 
-            if (this.ExistCurrentPaymentStateVersion && this.CurrentPaymentStateVersion.CurrentObjectState.Equals(new PurchaseOrderObjectStates(this.Strategy.Session).Paid))
-            {
-                this.Finish();
-            }
+            //if (this.ExistCurrentPaymentStateVersion && this.CurrentPaymentStateVersion.CurrentObjectState.Equals(new PurchaseOrderObjectStates(this.Strategy.Session).Paid))
+            //{
+            //    this.Finish();
+            //}
         }
 
         public void AppsOnDeriveLocale(IDerivation derivation)

@@ -7,7 +7,7 @@ namespace Allors.Repository
     #region Allors
     [Id("553a5280-a768-4ba1-8b5d-304d7c4bb7f1")]
     #endregion
-    public partial interface WorkEffort : Transitional, UniquelyIdentifiable, Deletable, Auditable, Versioned
+    public partial interface WorkEffort : Transitional, UniquelyIdentifiable, Deletable, Auditable
     {
         #region Allors
         [Id("7CDA479C-E7D8-4EE2-8005-7CF73CC88819")]

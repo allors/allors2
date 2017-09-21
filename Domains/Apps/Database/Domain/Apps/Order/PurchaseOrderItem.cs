@@ -15,6 +15,8 @@
 // --------------------------------------------------------------------------------------------------------------------
 namespace Allors.Domain
 {
+    using System.Linq;
+
     using Meta;
 
     public partial class PurchaseOrderItem
@@ -79,11 +81,6 @@ namespace Allors.Domain
             this.CurrentObjectState = new PurchaseOrderItemObjectStates(this.Strategy.Session).Completed;
         }
 
-        public void AppsFinish(OrderItemFinish method)
-        {
-            this.CurrentObjectState = new PurchaseOrderItemObjectStates(this.Strategy.Session).Finished;
-        }
-
         public void AppsOnBuild(ObjectOnBuild method)
         {
             if (!this.ExistCurrentObjectState)
@@ -119,50 +116,7 @@ namespace Allors.Domain
 
             this.AppsOnDeriveCurrentObjectState(derivation);
         }
-
-        public void AppsOnPostDerive(ObjectOnPostDerive method)
-        {
-            var isNewVersion =
-                !this.ExistCurrentVersion ||
-                !object.Equals(this.InternalComment, this.CurrentVersion.InternalComment);
-
-            var isNewStateVersion =
-                !this.ExistCurrentVersion ||
-                !object.Equals(this.DiscountAdjustment, this.CurrentVersion.DiscountAdjustment) ||
-                !object.Equals(this.ActualUnitPrice, this.CurrentVersion.ActualUnitPrice) ||
-                !object.Equals(this.AssignedVatRegime, this.CurrentVersion.AssignedVatRegime) ||
-                !object.Equals(this.CurrentPriceComponents, this.CurrentVersion.CurrentPriceComponents) ||
-                !object.Equals(this.SurchargeAdjustment, this.CurrentVersion.SurchargeAdjustment) ||
-                !object.Equals(this.InternalComment, this.CurrentVersion.InternalComment) ||
-                !object.Equals(this.BudgetItem, this.CurrentVersion.BudgetItem) ||
-                !object.Equals(this.QuantityOrdered, this.CurrentVersion.QuantityOrdered) ||
-                !object.Equals(this.Description, this.CurrentVersion.Description) ||
-                !object.Equals(this.CorrespondingPurchaseOrder, this.CurrentVersion.CorrespondingPurchaseOrder) ||
-                !object.Equals(this.QuoteItem, this.CurrentVersion.QuoteItem) ||
-                !object.Equals(this.AssignedDeliveryDate, this.CurrentVersion.AssignedDeliveryDate) ||
-                !object.Equals(this.OrderTerms, this.CurrentVersion.OrderTerms) ||
-                !object.Equals(this.ShippingInstruction, this.CurrentVersion.ShippingInstruction) ||
-                !object.Equals(this.Associations, this.CurrentVersion.Associations) ||
-                !object.Equals(this.Message, this.CurrentVersion.Message) ||
-                !object.Equals(this.QuantityReceived, this.CurrentVersion.QuantityReceived) ||
-                !object.Equals(this.Product, this.CurrentVersion.Product) ||
-                !object.Equals(this.Part, this.CurrentVersion.Part) ||
-                !object.Equals(this.CurrentObjectState, this.CurrentVersion.CurrentObjectState);
-
-            if (isNewVersion)
-            {
-                this.PreviousVersion = this.CurrentVersion;
-                this.CurrentVersion = new PurchaseOrderItemVersionBuilder(this.Strategy.Session).WithPurchaseOrderItem(this).Build();
-                this.AddAllVersion(this.CurrentVersion);
-            }
-
-            if (isNewStateVersion)
-            {
-                this.CurrentStateVersion = CurrentVersion;
-                this.AddAllStateVersion(this.CurrentStateVersion);
-            }
-        }
-
+        
         public void AppsDeriveVatRegime(IDerivation derivation)
         {
             if (this.ExistPurchaseOrderWherePurchaseOrderItem)
@@ -223,11 +177,6 @@ namespace Allors.Domain
                 {
                     this.Complete();
                 }
-
-                if (order.CurrentObjectState.Equals(new PurchaseOrderObjectStates(this.Strategy.Session).Finished))
-                {
-                    this.Finish();
-                }
             }
 
             if (this.CurrentObjectState.Equals(new PurchaseOrderItemObjectStates(this.Strategy.Session).InProcess))
@@ -241,21 +190,6 @@ namespace Allors.Domain
                 this.CurrentObjectState.Equals(new PurchaseOrderItemObjectStates(this.Strategy.Session).Rejected))
             {
                 this.AppsOnDeriveQuantities(derivation);
-            }
-        }
-
-        public void AppsOnDeriveCurrentOrderStatus(IDerivation derivation)
-        {
-            if (this.ExistCurrentShipmentStateVersion && this.CurrentShipmentStateVersion.CurrentObjectState.Equals(new PurchaseOrderItemObjectStates(this.Strategy.Session).PartiallyReceived))
-            {
-                this.CurrentObjectState = new PurchaseOrderItemObjectStates(this.Strategy.Session).PartiallyReceived;
-                this.AppsOnDeriveCurrentObjectState(derivation);
-            }
-
-            if (this.ExistCurrentShipmentStateVersion && this.CurrentShipmentStateVersion.CurrentObjectState.Equals(new PurchaseOrderItemObjectStates(this.Strategy.Session).Received))
-            {
-                this.CurrentObjectState = new PurchaseOrderItemObjectStates(this.Strategy.Session).Completed;
-                this.AppsOnDeriveCurrentObjectState(derivation);
             }
         }
 
@@ -313,30 +247,18 @@ namespace Allors.Domain
             {
                 if (quantityReceived < this.QuantityOrdered)
                 {
-                    var newVersion = new PurchaseOrderItemVersionBuilder(this.Strategy.Session)
-                        .WithCurrentObjectState(new PurchaseOrderItemObjectStates(this.Strategy.Session).PartiallyReceived)
-                        .WithPurchaseOrderItem(this)
-                        .Build();
-                    this.CurrentShipmentStateVersion = newVersion;
-                    this.AddAllShipmentStateVersion(newVersion);
+                   this.CurrentObjectState = new PurchaseOrderItemObjectStates(this.strategy.Session).PartiallyReceived;
                 }
                 else
                 {
-                    var newVersion = new PurchaseOrderItemVersionBuilder(this.Strategy.Session)
-                        .WithCurrentObjectState(new PurchaseOrderItemObjectStates(this.Strategy.Session).Received)
-                        .WithPurchaseOrderItem(this)
-                        .Build();
-                    this.CurrentShipmentStateVersion = newVersion;
-                    this.AddAllShipmentStateVersion(newVersion);
+                    this.CurrentObjectState = new PurchaseOrderItemObjectStates(this.strategy.Session).Completed;
                 }
             }
-
-            this.AppsOnDeriveCurrentOrderStatus(derivation);
 
             if (this.ExistPurchaseOrderWherePurchaseOrderItem)
             {
                 var purchaseOrder = (PurchaseOrder)this.PurchaseOrderWherePurchaseOrderItem;
-                purchaseOrder.AppsOnDeriveCurrentShipmentStatus(derivation);
+                purchaseOrder.AppsOnDeriveCurrentOrderStatus(derivation);
             }
         }
 

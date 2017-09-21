@@ -1118,7 +1118,7 @@ namespace Allors.Domain
 
             this.DatabaseSession.Derive();
 
-            this.order.Finish();
+            this.order.CurrentObjectState = new SalesOrderObjectStates(this.DatabaseSession).Finished;
 
             this.DatabaseSession.Derive();
 

@@ -7,7 +7,7 @@ namespace Allors.Repository
     #region Allors
     [Id("6173fc23-115f-4356-a0ce-867872c151ac")]
     #endregion
-    public partial class SalesInvoice : Invoice 
+    public partial class SalesInvoice : Invoice, Versioned
     {
         #region inherited properties
         public string InternalComment { get; set; }
@@ -358,7 +358,6 @@ namespace Allors.Repository
         public void OnDerive(){}
 
         public void OnPostDerive(){}
-        public void AddNewInvoiceItem() { }
 
         #endregion
 

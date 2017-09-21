@@ -21,8 +21,8 @@
 namespace Allors.Domain
 {
     using System;
-    using System.Collections.Concurrent;
     using System.Linq;
+    using System.Text.RegularExpressions;
 
     using Allors.Meta;
 
@@ -35,16 +35,15 @@ namespace Allors.Domain
             var versionedClass = (Class)@this.Strategy.Class;
             var metaPopulation = versionedClass.MetaPopulation;
             var versionClass = metaPopulation.FindByName(versionedClass.Name + "Version");
+            var versionTypeRegex = new Regex(".+Version");
 
             var currentVersionRole = versionedClass.RoleTypes.First(v => v.Name.Equals("CurrentVersion"));
             var currentVersion = @this.Strategy.GetCompositeRole(currentVersionRole.RelationType);
 
-            var excludedInterfaces = new[] { "Version", "AccessControlledObject" };
-
             var isNewVersion = currentVersion == null;
             if (!isNewVersion)
             {
-                foreach (var versionRoleType in versionClass.RoleTypes.Where(v => !excludedInterfaces.Contains(v.AssociationType.ObjectType.Name)))
+                foreach (var versionRoleType in versionClass.RoleTypes.Where(v => versionTypeRegex.IsMatch(v.AssociationType.ObjectType.Name)))
                 {
                     var versionedRoleType = versionedClass.RoleTypes.FirstOrDefault(v => v.Name.Equals(versionRoleType.Name));
                     if (versionedRoleType == null)
@@ -82,8 +81,8 @@ namespace Allors.Domain
                 var newVersion = (Version)Allors.ObjectBuilder.Build(session, versionClass);
                 newVersion.DerivationId = derivation.Id;
                 newVersion.DerivationTimeStamp = derivation.TimeStamp;
-
-                foreach (var versionRoleType in versionClass.RoleTypes.Where(v => !excludedInterfaces.Contains(v.AssociationType.ObjectType.Name)))
+                
+                foreach (var versionRoleType in versionClass.RoleTypes.Where(v => versionTypeRegex.IsMatch(v.AssociationType.ObjectType.Name)))
                 {
                     var versionedRoleType = versionedClass.RoleTypes.FirstOrDefault(v => v.Name.Equals(versionRoleType.Name));
                     if (versionedRoleType == null)

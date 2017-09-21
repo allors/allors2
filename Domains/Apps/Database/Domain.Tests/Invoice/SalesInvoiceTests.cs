@@ -89,59 +89,6 @@ namespace Allors.Domain
         }
 
         [Fact]
-        public void GivenSalesInvoice_WhenPaid_ThenCurrentInvoiceStatusMustBeDerived()
-        {
-            var customer = new OrganisationBuilder(this.DatabaseSession).WithName("customer").WithOrganisationRole(new OrganisationRoles(this.DatabaseSession).Customer).Build();
-            var contactMechanism = new PostalAddressBuilder(this.DatabaseSession)
-                .WithAddress1("Haverwerf 15")
-                .WithPostalBoundary(new PostalBoundaryBuilder(this.DatabaseSession)
-                                        .WithLocality("Mechelen")
-                                        .WithCountry(new Countries(this.DatabaseSession).FindBy(M.Country.IsoCode, "BE"))
-                                        .Build())
-
-                .Build();
-
-            var good = new GoodBuilder(this.DatabaseSession)
-                .WithSku("10101")
-                .WithVatRate(new VatRateBuilder(this.DatabaseSession).WithRate(0).Build())
-                .WithLocalisedName(new LocalisedTextBuilder(this.DatabaseSession).WithText("good").WithLocale(Singleton.Instance(this.DatabaseSession).DefaultLocale).Build())
-                .WithInventoryItemKind(new InventoryItemKinds(this.DatabaseSession).NonSerialised)
-                .WithUnitOfMeasure(new UnitsOfMeasure(this.DatabaseSession).Piece)
-                .Build();
-
-            new CustomerRelationshipBuilder(this.DatabaseSession).WithFromDate(DateTime.UtcNow).WithCustomer(customer).WithInternalOrganisation(Singleton.Instance(this.DatabaseSession).DefaultInternalOrganisation).Build();
-
-            this.DatabaseSession.Derive();
-            this.DatabaseSession.Commit();
-
-            var invoice = new SalesInvoiceBuilder(this.DatabaseSession)
-                .WithInvoiceNumber("1")
-                .WithBillToCustomer(customer)
-                .WithBillToContactMechanism(contactMechanism)
-                .WithSalesInvoiceType(new SalesInvoiceTypes(this.DatabaseSession).SalesInvoice)
-                .WithBilledFromInternalOrganisation(new InternalOrganisations(this.DatabaseSession).FindBy(M.InternalOrganisation.Name, "internalOrganisation"))
-                .WithSalesInvoiceItem(new SalesInvoiceItemBuilder(this.DatabaseSession).WithProduct(good).WithQuantity(1).WithActualUnitPrice(100M).WithSalesInvoiceItemType(new SalesInvoiceItemTypes(this.DatabaseSession).ProductItem).Build())
-                .Build();
-
-            this.DatabaseSession.Derive();
-
-            Assert.Equal(1, invoice.AllStateVersions.Count);
-            Assert.Equal(new SalesInvoiceObjectStates(this.DatabaseSession).ReadyForPosting, invoice.CurrentStateVersion.CurrentObjectState);
-
-            this.DatabaseSession.Derive();
-
-            new ReceiptBuilder(this.DatabaseSession)
-                .WithAmount(100)
-                .WithPaymentApplication(new PaymentApplicationBuilder(this.DatabaseSession).WithInvoiceItem(invoice.SalesInvoiceItems[0]).WithAmountApplied(100).Build())
-                .Build();
-
-            this.DatabaseSession.Derive();
-
-            Assert.Equal(2, invoice.AllStateVersions.Count);
-            Assert.Equal(new SalesInvoiceObjectStates(this.DatabaseSession).Paid, invoice.CurrentStateVersion.CurrentObjectState);
-        }
-
-        [Fact]
         public void GivenSalesInvoice_WhenDeriving_ThenRequiredRelationsMustExist()
         {
             var customer = new OrganisationBuilder(this.DatabaseSession).WithName("customer").Build();
@@ -181,7 +128,6 @@ namespace Allors.Domain
 
             Assert.False(this.DatabaseSession.Derive(false).HasErrors);
 
-            Assert.Equal(invoice.CurrentStateVersion.CurrentObjectState, new SalesInvoiceObjectStates(this.DatabaseSession).ReadyForPosting);
             Assert.Equal(invoice.CurrentObjectState, new SalesInvoiceObjectStates(this.DatabaseSession).ReadyForPosting);
             Assert.Equal(invoice.CurrentObjectState, invoice.LastObjectState);
 

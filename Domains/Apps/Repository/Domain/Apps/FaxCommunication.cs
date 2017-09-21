@@ -6,7 +6,7 @@ namespace Allors.Repository
     #region Allors
     [Id("1e67320b-9680-4477-bf1b-70ccd24ab758")]
     #endregion
-    public partial class FaxCommunication : CommunicationEvent 
+    public partial class FaxCommunication : CommunicationEvent, Versioned
     {
         #region inherited properties
 

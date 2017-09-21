@@ -22,7 +22,9 @@ namespace Allors.Domain
 		}
 		public interface Version  : AccessControlledObject 
 		{
-						global::System.DateTime? TimeStamp {set;}
+						global::System.Guid? DerivationId {set;}
+
+						global::System.DateTime? DerivationTimeStamp {set;}
 
 		}
 		public interface Versioned  : Object 
@@ -1640,7 +1642,7 @@ namespace Allors.Domain
 						WorkEffort Concurrencies {set;}
 
 		}
-		public interface WorkEffort  : Transitional, UniquelyIdentifiable, Deletable, Auditable, Versioned 
+		public interface WorkEffort  : Transitional, UniquelyIdentifiable, Deletable, Auditable 
 		{
 						SecurityToken OwnerSecurityToken {set;}
 
@@ -2012,17 +2014,11 @@ namespace Allors.Domain
 		public interface AccountingTransactionType  : Enumeration 
 		{
 		}
-		public interface Activity  : WorkEffort 
+		public interface Activity  : WorkEffort, Versioned 
 		{
 						ActivityVersion CurrentVersion {set;}
 
-						ActivityVersion PreviousVersion {set;}
-
 						ActivityVersion AllVersions {set;}
-
-						ActivityVersion CurrentStateVersion {set;}
-
-						ActivityVersion AllStateVersions {set;}
 
 		}
 		public interface ActivityUsage  : DeploymentUsage 
@@ -2599,7 +2595,7 @@ namespace Allors.Domain
 		public interface EmailAddress  : ElectronicAddress 
 		{
 		}
-		public interface EmailCommunication  : CommunicationEvent 
+		public interface EmailCommunication  : CommunicationEvent, Versioned 
 		{
 						EmailAddress Originator {set;}
 
@@ -2615,13 +2611,7 @@ namespace Allors.Domain
 
 						EmailCommunicationVersion CurrentVersion {set;}
 
-						EmailCommunicationVersion PreviousVersion {set;}
-
 						EmailCommunicationVersion AllVersions {set;}
-
-						EmailCommunicationVersion CurrentStateVersion {set;}
-
-						EmailCommunicationVersion AllStateVersions {set;}
 
 		}
 		public interface EmailCommunicationVersion  : CommunicationEventVersion 
@@ -2835,7 +2825,7 @@ namespace Allors.Domain
 		public interface ExportDocument  : Document 
 		{
 		}
-		public interface FaceToFaceCommunication  : CommunicationEvent 
+		public interface FaceToFaceCommunication  : CommunicationEvent, Versioned 
 		{
 						Party Participants {set;}
 
@@ -2843,13 +2833,7 @@ namespace Allors.Domain
 
 						FaceToFaceCommunicationVersion CurrentVersion {set;}
 
-						FaceToFaceCommunicationVersion PreviousVersion {set;}
-
 						FaceToFaceCommunicationVersion AllVersions {set;}
-
-						FaceToFaceCommunicationVersion CurrentStateVersion {set;}
-
-						FaceToFaceCommunicationVersion AllStateVersions {set;}
 
 		}
 		public interface FaceToFaceCommunicationVersion  : CommunicationEventVersion 
@@ -2859,7 +2843,7 @@ namespace Allors.Domain
 						global::System.String Location {set;}
 
 		}
-		public interface FaxCommunication  : CommunicationEvent 
+		public interface FaxCommunication  : CommunicationEvent, Versioned 
 		{
 						Party Originator {set;}
 
@@ -2869,13 +2853,7 @@ namespace Allors.Domain
 
 						FaxCommunicationVersion CurrentVersion {set;}
 
-						FaxCommunicationVersion PreviousVersion {set;}
-
 						FaxCommunicationVersion AllVersions {set;}
-
-						FaxCommunicationVersion CurrentStateVersion {set;}
-
-						FaxCommunicationVersion AllStateVersions {set;}
 
 		}
 		public interface FaxCommunicationVersion  : CommunicationEventVersion 
@@ -3288,7 +3266,7 @@ namespace Allors.Domain
 		public interface LegalTerm  : AgreementTerm 
 		{
 		}
-		public interface LetterCorrespondence  : CommunicationEvent 
+		public interface LetterCorrespondence  : CommunicationEvent, Versioned 
 		{
 						PostalAddress PostalAddresses {set;}
 
@@ -3300,13 +3278,7 @@ namespace Allors.Domain
 
 						LetterCorrespondenceVersion CurrentVersion {set;}
 
-						LetterCorrespondenceVersion PreviousVersion {set;}
-
 						LetterCorrespondenceVersion AllVersions {set;}
-
-						LetterCorrespondenceVersion CurrentStateVersion {set;}
-
-						LetterCorrespondenceVersion AllStateVersions {set;}
 
 		}
 		public interface LetterCorrespondenceVersion  : CommunicationEventVersion 
@@ -3329,17 +3301,11 @@ namespace Allors.Domain
 						global::System.String LotNumber {set;}
 
 		}
-		public interface Maintenance  : WorkEffort 
+		public interface Maintenance  : WorkEffort, Versioned 
 		{
 						MaintenanceVersion CurrentVersion {set;}
 
-						MaintenanceVersion PreviousVersion {set;}
-
 						MaintenanceVersion AllVersions {set;}
-
-						MaintenanceVersion CurrentStateVersion {set;}
-
-						MaintenanceVersion AllStateVersions {set;}
 
 		}
 		public interface MaintenanceVersion  : WorkEffortVersion 
@@ -3412,7 +3378,7 @@ namespace Allors.Domain
 						global::System.Boolean? Announcement {set;}
 
 		}
-		public interface NonSerialisedInventoryItem  : InventoryItem 
+		public interface NonSerialisedInventoryItem  : InventoryItem, Versioned 
 		{
 						global::System.Decimal QuantityCommittedOut {set;}
 
@@ -3426,15 +3392,9 @@ namespace Allors.Domain
 
 						NonSerialisedInventoryItemObjectState CurrentObjectState {set;}
 
-						NonSerialisedInventoryItemVersion AllVersions {set;}
-
 						NonSerialisedInventoryItemVersion CurrentVersion {set;}
 
-						NonSerialisedInventoryItemVersion PreviousVersion {set;}
-
-						NonSerialisedInventoryItemVersion CurrentStateVersion {set;}
-
-						NonSerialisedInventoryItemVersion AllStateVersions {set;}
+						NonSerialisedInventoryItemVersion AllVersions {set;}
 
 		}
 		public interface NonSerialisedInventoryItemObjectState  : ObjectState 
@@ -4436,20 +4396,14 @@ namespace Allors.Domain
 						Training Training {set;}
 
 		}
-		public interface Phase  : WorkEffort 
+		public interface Phase  : WorkEffort, Versioned 
 		{
 						PhaseVersion CurrentVersion {set;}
 
-						PhaseVersion PreviousVersion {set;}
-
 						PhaseVersion AllVersions {set;}
 
-						PhaseVersion CurrentStateVersion {set;}
-
-						PhaseVersion AllStateVersions {set;}
-
 		}
-		public interface PhoneCommunication  : CommunicationEvent 
+		public interface PhoneCommunication  : CommunicationEvent, Versioned 
 		{
 						global::System.Boolean? LeftVoiceMail {set;}
 
@@ -4461,13 +4415,7 @@ namespace Allors.Domain
 
 						PhoneCommunicationVersion CurrentVersion {set;}
 
-						PhoneCommunicationVersion PreviousVersion {set;}
-
 						PhoneCommunicationVersion AllVersions {set;}
-
-						PhoneCommunicationVersion CurrentStateVersion {set;}
-
-						PhoneCommunicationVersion AllStateVersions {set;}
 
 		}
 		public interface PickList  : Printable, Transitional 
@@ -4728,7 +4676,7 @@ namespace Allors.Domain
 						ProductFeature UsedToDefine {set;}
 
 		}
-		public interface ProductionRun  : WorkEffort 
+		public interface ProductionRun  : WorkEffort, Versioned 
 		{
 						global::System.Int32? QuantityProduced {set;}
 
@@ -4738,13 +4686,7 @@ namespace Allors.Domain
 
 						ProductionRunVersion CurrentVersion {set;}
 
-						ProductionRunVersion PreviousVersion {set;}
-
 						ProductionRunVersion AllVersions {set;}
-
-						ProductionRunVersion CurrentStateVersion {set;}
-
-						ProductionRunVersion AllStateVersions {set;}
 
 		}
 		public interface ProductModel  : Document 
@@ -4762,17 +4704,11 @@ namespace Allors.Domain
 		public interface ProductQuality  : ProductFeature, Enumeration 
 		{
 		}
-		public interface ProductQuote  : Quote 
+		public interface ProductQuote  : Quote, Versioned 
 		{
 						ProductQuoteVersion CurrentVersion {set;}
 
-						ProductQuoteVersion PreviousVersion {set;}
-
 						ProductQuoteVersion AllVersions {set;}
-
-						ProductQuoteVersion CurrentStateVersion {set;}
-
-						ProductQuoteVersion AllStateVersions {set;}
 
 		}
 		public interface ProductRequirement  : Requirement 
@@ -4834,30 +4770,18 @@ namespace Allors.Domain
 						Organisation ProfessionalServicesProvider {set;}
 
 		}
-		public interface Program  : WorkEffort 
+		public interface Program  : WorkEffort, Versioned 
 		{
 						ProgramVersion CurrentVersion {set;}
 
-						ProgramVersion PreviousVersion {set;}
-
 						ProgramVersion AllVersions {set;}
 
-						ProgramVersion CurrentStateVersion {set;}
-
-						ProgramVersion AllStateVersions {set;}
-
 		}
-		public interface Project  : WorkEffort 
+		public interface Project  : WorkEffort, Versioned 
 		{
 						ProjectVersion CurrentVersion {set;}
 
-						ProjectVersion PreviousVersion {set;}
-
 						ProjectVersion AllVersions {set;}
-
-						ProjectVersion CurrentStateVersion {set;}
-
-						ProjectVersion AllStateVersions {set;}
 
 		}
 		public interface ProjectRequirement  : Requirement 
@@ -4868,17 +4792,11 @@ namespace Allors.Domain
 		public interface Property  : FixedAsset 
 		{
 		}
-		public interface Proposal  : Quote 
+		public interface Proposal  : Quote, Versioned 
 		{
 						ProposalVersion CurrentVersion {set;}
 
-						ProposalVersion PreviousVersion {set;}
-
 						ProposalVersion AllVersions {set;}
-
-						ProposalVersion CurrentStateVersion {set;}
-
-						ProposalVersion AllStateVersions {set;}
 
 		}
 		public interface Province  : CityBound, GeographicBoundary, CountryBound 
@@ -4889,7 +4807,7 @@ namespace Allors.Domain
 		public interface PurchaseAgreement  : Agreement 
 		{
 		}
-		public interface PurchaseInvoice  : Invoice 
+		public interface PurchaseInvoice  : Invoice, Versioned 
 		{
 						PurchaseInvoiceItem PurchaseInvoiceItems {set;}
 
@@ -4903,16 +4821,10 @@ namespace Allors.Domain
 
 						PurchaseInvoiceVersion CurrentVersion {set;}
 
-						PurchaseInvoiceVersion PreviousVersion {set;}
-
 						PurchaseInvoiceVersion AllVersions {set;}
 
-						PurchaseInvoiceVersion CurrentStateVersion {set;}
-
-						PurchaseInvoiceVersion AllStateVersions {set;}
-
 		}
-		public interface PurchaseInvoiceItem  : InvoiceItem 
+		public interface PurchaseInvoiceItem  : InvoiceItem, Versioned 
 		{
 						PurchaseInvoiceItemType PurchaseInvoiceItemType {set;}
 
@@ -4922,13 +4834,7 @@ namespace Allors.Domain
 
 						PurchaseInvoiceItemVersion CurrentVersion {set;}
 
-						PurchaseInvoiceItemVersion PreviousVersion {set;}
-
 						PurchaseInvoiceItemVersion AllVersions {set;}
-
-						PurchaseInvoiceItemVersion CurrentStateVersion {set;}
-
-						PurchaseInvoiceItemVersion AllStateVersions {set;}
 
 		}
 		public interface PurchaseInvoiceItemObjectState  : ObjectState 
@@ -4957,7 +4863,7 @@ namespace Allors.Domain
 		public interface PurchaseInvoiceType  : Enumeration 
 		{
 		}
-		public interface PurchaseOrder  : Order 
+		public interface PurchaseOrder  : Order, Versioned 
 		{
 						PurchaseOrderItem PurchaseOrderItems {set;}
 
@@ -4981,24 +4887,10 @@ namespace Allors.Domain
 
 						PurchaseOrderVersion CurrentVersion {set;}
 
-						PurchaseOrderVersion PreviousVersion {set;}
-
 						PurchaseOrderVersion AllVersions {set;}
 
-						PurchaseOrderVersion CurrentStateVersion {set;}
-
-						PurchaseOrderVersion AllStateVersions {set;}
-
-						PurchaseOrderVersion CurrentPaymentStateVersion {set;}
-
-						PurchaseOrderVersion AllPaymentStateVersions {set;}
-
-						PurchaseOrderVersion CurrentShipmentStateVersion {set;}
-
-						PurchaseOrderVersion AllShipmentStateVersions {set;}
-
 		}
-		public interface PurchaseOrderItem  : OrderItem 
+		public interface PurchaseOrderItem  : OrderItem, Versioned 
 		{
 						PurchaseOrderItemObjectState CurrentObjectState {set;}
 
@@ -5010,21 +4902,7 @@ namespace Allors.Domain
 
 						PurchaseOrderItemVersion CurrentVersion {set;}
 
-						PurchaseOrderItemVersion PreviousVersion {set;}
-
 						PurchaseOrderItemVersion AllVersions {set;}
-
-						PurchaseOrderItemVersion CurrentStateVersion {set;}
-
-						PurchaseOrderItemVersion AllStateVersions {set;}
-
-						PurchaseOrderItemVersion CurrentPaymentStateVersion {set;}
-
-						PurchaseOrderItemVersion AllPaymentStateVersions {set;}
-
-						PurchaseOrderItemVersion CurrentShipmentStateVersion {set;}
-
-						PurchaseOrderItemVersion AllShipmentStateVersions {set;}
 
 		}
 		public interface PurchaseOrderItemObjectState  : ObjectState 
@@ -5092,7 +4970,7 @@ namespace Allors.Domain
 		public interface Qualification  : Enumeration 
 		{
 		}
-		public interface QuoteItem  : Commentable, Transitional 
+		public interface QuoteItem  : Commentable, Transitional, Versioned 
 		{
 						global::System.String InternalComment {set;}
 
@@ -5126,13 +5004,7 @@ namespace Allors.Domain
 
 						QuoteItemVersion CurrentVersion {set;}
 
-						QuoteItemVersion PreviousVersion {set;}
-
 						QuoteItemVersion AllVersions {set;}
-
-						QuoteItemVersion CurrentStateVersion {set;}
-
-						QuoteItemVersion AllStateVersions {set;}
 
 		}
 		public interface QuoteTerm  : AccessControlledObject 
@@ -5169,46 +5041,28 @@ namespace Allors.Domain
 						global::System.String Name {set;}
 
 		}
-		public interface RequestForInformation  : Request 
+		public interface RequestForInformation  : Request, Versioned 
 		{
 						RequestForInformationVersion CurrentVersion {set;}
 
-						RequestForInformationVersion PreviousVersion {set;}
-
 						RequestForInformationVersion AllVersions {set;}
 
-						RequestForInformationVersion CurrentStateVersion {set;}
-
-						RequestForInformationVersion AllStateVersions {set;}
-
 		}
-		public interface RequestForProposal  : Request 
+		public interface RequestForProposal  : Request, Versioned 
 		{
 						RequestForProposalVersion CurrentVersion {set;}
 
-						RequestForProposalVersion PreviousVersion {set;}
-
 						RequestForProposalVersion AllVersions {set;}
 
-						RequestForProposalVersion CurrentStateVersion {set;}
-
-						RequestForProposalVersion AllStateVersions {set;}
-
 		}
-		public interface RequestForQuote  : Request 
+		public interface RequestForQuote  : Request, Versioned 
 		{
 						RequestForQuoteVersion CurrentVersion {set;}
 
-						RequestForQuoteVersion PreviousVersion {set;}
-
 						RequestForQuoteVersion AllVersions {set;}
 
-						RequestForQuoteVersion CurrentStateVersion {set;}
-
-						RequestForQuoteVersion AllStateVersions {set;}
-
 		}
-		public interface RequestItem  : Commentable, Transitional 
+		public interface RequestItem  : Commentable, Transitional, Versioned 
 		{
 						global::System.String InternalComment {set;}
 
@@ -5236,13 +5090,7 @@ namespace Allors.Domain
 
 						RequestItemVersion CurrentVersion {set;}
 
-						RequestItemVersion PreviousVersion {set;}
-
 						RequestItemVersion AllVersions {set;}
-
-						RequestItemVersion CurrentStateVersion {set;}
-
-						RequestItemVersion AllStateVersions {set;}
 
 		}
 		public interface QuoteObjectState  : ObjectState 
@@ -5293,17 +5141,11 @@ namespace Allors.Domain
 						global::System.DateTime StartDateTime {set;}
 
 		}
-		public interface Research  : WorkEffort 
+		public interface Research  : WorkEffort, Versioned 
 		{
 						ResearchVersion CurrentVersion {set;}
 
-						ResearchVersion PreviousVersion {set;}
-
 						ResearchVersion AllVersions {set;}
-
-						ResearchVersion CurrentStateVersion {set;}
-
-						ResearchVersion AllStateVersions {set;}
 
 		}
 		public interface ResourceRequirement  : Requirement 
@@ -5407,7 +5249,7 @@ namespace Allors.Domain
 						InternalOrganisation InternalOrganisation {set;}
 
 		}
-		public interface SalesInvoice  : Invoice 
+		public interface SalesInvoice  : Invoice, Versioned 
 		{
 						SalesInvoiceObjectState CurrentObjectState {set;}
 
@@ -5461,16 +5303,10 @@ namespace Allors.Domain
 
 						SalesInvoiceVersion CurrentVersion {set;}
 
-						SalesInvoiceVersion PreviousVersion {set;}
-
 						SalesInvoiceVersion AllVersions {set;}
 
-						SalesInvoiceVersion CurrentStateVersion {set;}
-
-						SalesInvoiceVersion AllStateVersions {set;}
-
 		}
-		public interface SalesInvoiceItem  : InvoiceItem 
+		public interface SalesInvoiceItem  : InvoiceItem, Versioned 
 		{
 						ProductFeature ProductFeature {set;}
 
@@ -5502,13 +5338,7 @@ namespace Allors.Domain
 
 						SalesInvoiceItemVersion CurrentVersion {set;}
 
-						SalesInvoiceItemVersion PreviousVersion {set;}
-
 						SalesInvoiceItemVersion AllVersions {set;}
-
-						SalesInvoiceItemVersion CurrentStateVersion {set;}
-
-						SalesInvoiceItemVersion AllStateVersions {set;}
 
 		}
 		public interface SalesInvoiceItemObjectState  : ObjectState 
@@ -5537,7 +5367,7 @@ namespace Allors.Domain
 		public interface SalesInvoiceType  : Enumeration 
 		{
 		}
-		public interface SalesOrder  : Order 
+		public interface SalesOrder  : Order, Versioned 
 		{
 						ContactMechanism TakenByContactMechanism {set;}
 
@@ -5599,24 +5429,10 @@ namespace Allors.Domain
 
 						SalesOrderVersion CurrentVersion {set;}
 
-						SalesOrderVersion PreviousVersion {set;}
-
 						SalesOrderVersion AllVersions {set;}
 
-						SalesOrderVersion CurrentStateVersion {set;}
-
-						SalesOrderVersion AllStateVersions {set;}
-
-						SalesOrderVersion CurrentPaymentStateVersion {set;}
-
-						SalesOrderVersion AllPaymentStateVersions {set;}
-
-						SalesOrderVersion CurrentShipmentStateVersion {set;}
-
-						SalesOrderVersion AllShipmentStateVersions {set;}
-
 		}
-		public interface SalesOrderItem  : OrderItem 
+		public interface SalesOrderItem  : OrderItem, Versioned 
 		{
 						global::System.Decimal InitialProfitMargin {set;}
 
@@ -5674,21 +5490,7 @@ namespace Allors.Domain
 
 						SalesOrderItemVersion CurrentVersion {set;}
 
-						SalesOrderItemVersion PreviousVersion {set;}
-
 						SalesOrderItemVersion AllVersions {set;}
-
-						SalesOrderItemVersion CurrentStateVersion {set;}
-
-						SalesOrderItemVersion AllStateVersions {set;}
-
-						SalesOrderItemVersion CurrentPaymentStateVersion {set;}
-
-						SalesOrderItemVersion AllPaymentStateVersions {set;}
-
-						SalesOrderItemVersion CurrentShipmentStateVersion {set;}
-
-						SalesOrderItemVersion AllShipmentStateVersions {set;}
 
 		}
 		public interface RequestItemObjectState  : ObjectState 
@@ -5858,7 +5660,7 @@ namespace Allors.Domain
 		public interface Salutation  : Enumeration 
 		{
 		}
-		public interface SerialisedInventoryItem  : InventoryItem 
+		public interface SerialisedInventoryItem  : InventoryItem, Versioned 
 		{
 						global::System.String SerialNumber {set;}
 
@@ -5886,15 +5688,9 @@ namespace Allors.Domain
 
 						SerialisedInventoryItemObjectState CurrentObjectState {set;}
 
-						SerialisedInventoryItemVersion AllVersions {set;}
-
 						SerialisedInventoryItemVersion CurrentVersion {set;}
 
-						SerialisedInventoryItemVersion PreviousVersion {set;}
-
-						SerialisedInventoryItemVersion CurrentStateVersion {set;}
-
-						SerialisedInventoryItemVersion AllStateVersions {set;}
+						SerialisedInventoryItemVersion AllVersions {set;}
 
 		}
 		public interface SerialisedInventoryItemObjectState  : ObjectState 
@@ -6071,17 +5867,11 @@ namespace Allors.Domain
 						global::System.String Name {set;}
 
 		}
-		public interface StatementOfWork  : Quote 
+		public interface StatementOfWork  : Quote, Versioned 
 		{
 						StatementOfWorkVersion CurrentVersion {set;}
 
-						StatementOfWorkVersion PreviousVersion {set;}
-
 						StatementOfWorkVersion AllVersions {set;}
-
-						StatementOfWorkVersion CurrentStateVersion {set;}
-
-						StatementOfWorkVersion AllStateVersions {set;}
 
 		}
 		public interface StatementOfWorkVersion  : QuoteVersion 
@@ -6239,7 +6029,7 @@ namespace Allors.Domain
 		public interface WorkFlowVersion  : WorkEffortVersion 
 		{
 		}
-		public interface WorkTask  : WorkEffort 
+		public interface WorkTask  : WorkEffort, Versioned 
 		{
 						global::System.Boolean? SendNotification {set;}
 
@@ -6249,13 +6039,7 @@ namespace Allors.Domain
 
 						WorkTaskVersion CurrentVersion {set;}
 
-						WorkTaskVersion PreviousVersion {set;}
-
 						WorkTaskVersion AllVersions {set;}
-
-						WorkTaskVersion CurrentStateVersion {set;}
-
-						WorkTaskVersion AllStateVersions {set;}
 
 		}
 		public interface TaxDocument  : Document 
@@ -6452,7 +6236,7 @@ namespace Allors.Domain
 		public interface WebAddress  : ElectronicAddress 
 		{
 		}
-		public interface WebSiteCommunication  : CommunicationEvent 
+		public interface WebSiteCommunication  : CommunicationEvent, Versioned 
 		{
 						Party Originator {set;}
 
@@ -6460,13 +6244,7 @@ namespace Allors.Domain
 
 						WebSiteCommunicationVersion CurrentVersion {set;}
 
-						WebSiteCommunicationVersion PreviousVersion {set;}
-
 						WebSiteCommunicationVersion AllVersions {set;}
-
-						WebSiteCommunicationVersion CurrentStateVersion {set;}
-
-						WebSiteCommunicationVersion AllStateVersions {set;}
 
 		}
 		public interface Withdrawal  : FinancialAccountTransaction 
@@ -6609,17 +6387,11 @@ namespace Allors.Domain
 		public interface WorkEffortTypeKind  : Enumeration 
 		{
 		}
-		public interface WorkFlow  : WorkEffort 
+		public interface WorkFlow  : WorkEffort, Versioned 
 		{
 						WorkFlowVersion CurrentVersion {set;}
 
-						WorkFlowVersion PreviousVersion {set;}
-
 						WorkFlowVersion AllVersions {set;}
-
-						WorkFlowVersion CurrentStateVersion {set;}
-
-						WorkFlowVersion AllStateVersions {set;}
 
 		}
 		public interface WorkRequirement  : Requirement 

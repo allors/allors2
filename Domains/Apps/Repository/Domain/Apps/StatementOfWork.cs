@@ -7,7 +7,7 @@ namespace Allors.Repository
     [Id("5459f555-cf6a-49c1-8015-b43cad74da17")]
     #endregion
     [Plural("StatementsOfWork")]
-    public partial class StatementOfWork : Quote
+    public partial class StatementOfWork : Quote, Versioned
     {
         #region inherited properties
         public string InternalComment { get; set; }

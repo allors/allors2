@@ -59,7 +59,6 @@ namespace Allors.Domain
 
             Assert.False(this.DatabaseSession.Derive(false).HasErrors);
 
-            Assert.Equal(communication.CurrentStateVersion.CurrentObjectState, new CommunicationEventObjectStates(this.DatabaseSession).Scheduled);
             Assert.Equal(communication.CurrentObjectState, new CommunicationEventObjectStates(this.DatabaseSession).Scheduled);
             Assert.Equal(communication.CurrentObjectState, communication.LastObjectState);
         }
@@ -76,7 +75,6 @@ namespace Allors.Domain
 
             Assert.False(this.DatabaseSession.Derive(false).HasErrors);
 
-            Assert.Equal(communication.CurrentStateVersion.CurrentObjectState, new CommunicationEventObjectStates(this.DatabaseSession).Scheduled);
             Assert.Equal(communication.CurrentObjectState, new CommunicationEventObjectStates(this.DatabaseSession).Scheduled);
             Assert.Equal(communication.CurrentObjectState, communication.LastObjectState);
         }

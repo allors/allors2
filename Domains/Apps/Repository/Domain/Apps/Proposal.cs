@@ -6,7 +6,7 @@ namespace Allors.Repository
     #region Allors
     [Id("360cf15d-c360-4d68-b693-7d1544388169")]
     #endregion
-    public partial class Proposal : Quote 
+    public partial class Proposal : Quote, Versioned
     {
         #region inherited properties
         public string InternalComment { get; set; }

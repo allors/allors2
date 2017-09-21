@@ -156,8 +156,7 @@ namespace Allors.Repository
         [Workspace]
         [Size(-1)]
         string Message { get; set; }
-
-
+        
         #region Allors
         [Id("5368A2C3-9ADF-46A3-9AC0-9C4A03DEAF9A")]
         #endregion
@@ -181,12 +180,6 @@ namespace Allors.Repository
         #endregion
         [Workspace]
         void Approve();
-
-        #region Allors
-        [Id("77ACDB9B-9A55-44C6-AAC4-99ACE0924EDB")]
-        #endregion
-        [Workspace]
-        void Finish();
 
         #region Allors
         [Id("CBA21197-F595-4526-8DB3-43382CCD08E4")]

@@ -82,53 +82,5 @@ namespace Allors.Domain
 
             this.AppsOnDeriveProductCategories(derivation);
         }
-
-        public void AppsOnPostDerive(ObjectOnPostDerive method)
-        {
-
-            var isNewVersion =
-                !this.ExistCurrentVersion ||
-                !object.Equals(this.SerialNumber, this.CurrentVersion.SerialNumber) ||
-                !object.Equals(this.InventoryItemVariances, this.CurrentVersion.InventoryItemVariances) ||
-                !object.Equals(this.Part, this.CurrentVersion.Part) ||
-                !object.Equals(this.Container, this.CurrentVersion.Container) ||
-                !object.Equals(this.Name, this.CurrentVersion.Name) ||
-                !object.Equals(this.Lot, this.CurrentVersion.Lot) ||
-                !object.Equals(this.Sku, this.CurrentVersion.Sku) ||
-                !object.Equals(this.UnitOfMeasure, this.CurrentVersion.UnitOfMeasure) ||
-                !object.Equals(this.DerivedProductCategories, this.CurrentVersion.DerivedProductCategories) ||
-                !object.Equals(this.Good, this.CurrentVersion.Good) ||
-                !object.Equals(this.Facility, this.CurrentVersion.Facility) ||
-                !object.Equals(this.Ownership, this.CurrentVersion.Ownership) ||
-                !object.Equals(this.Owner, this.CurrentVersion.Owner) ||
-                !object.Equals(this.AcquisitionYear, this.CurrentVersion.AcquisitionYear) ||
-                !object.Equals(this.ManufacturingYear, this.CurrentVersion.ManufacturingYear) ||
-                !object.Equals(this.ReplacementValue, this.CurrentVersion.ReplacementValue) ||
-                !object.Equals(this.LifeTime, this.CurrentVersion.LifeTime) ||
-                !object.Equals(this.DepreciationYears, this.CurrentVersion.DepreciationYears) ||
-                !object.Equals(this.PurchasePrice, this.CurrentVersion.PurchasePrice) ||
-                !object.Equals(this.ExpectedSalesPrice, this.CurrentVersion.ExpectedSalesPrice) ||
-                !object.Equals(this.RefurbishCost, this.CurrentVersion.RefurbishCost) ||
-                !object.Equals(this.TransportCost, this.CurrentVersion.TransportCost) ||
-                !object.Equals(this.CurrentObjectState, this.CurrentVersion.CurrentObjectState);
-
-            var isNewStateVersion =
-                !this.ExistCurrentVersion ||
-                !object.Equals(this.CurrentObjectState, this.CurrentVersion.CurrentObjectState);
-
-
-            if (isNewVersion)
-            {
-                this.PreviousVersion = this.CurrentVersion;
-                this.CurrentVersion = new SerialisedInventoryItemVersionBuilder(this.Strategy.Session).WithSerialisedInventoryItem(this).Build();
-                this.AddAllVersion(this.CurrentVersion);
-            }
-
-            if (isNewStateVersion)
-            {
-                this.CurrentStateVersion = CurrentVersion;
-                this.AddAllStateVersion(this.CurrentStateVersion);
-            }
-        }
     }
 }

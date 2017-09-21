@@ -6,7 +6,7 @@ namespace Allors.Repository
     #region Allors
     [Id("fcdf4f00-d6f4-493f-a430-89789a3cdef6")]
     #endregion
-    public partial class PhoneCommunication : CommunicationEvent 
+    public partial class PhoneCommunication : CommunicationEvent, Versioned
     {
         #region inherited properties
 

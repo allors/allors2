@@ -52,58 +52,5 @@ namespace Allors.Domain
                 }
             }
         }
-
-        public void AppsOnPostDerive(ObjectOnPostDerive method)
-        {
-            var isNewVersion =
-                !this.ExistCurrentVersion ||
-                !object.Equals(this.ActualStart, this.CurrentVersion.ActualStart);
-
-            var isNewStateVersion =
-                !this.ExistCurrentVersion ||
-                !object.Equals(this.ScheduledStart, this.CurrentVersion.ScheduledStart) ||
-                !object.Equals(this.ContactMechanisms, this.CurrentVersion.ContactMechanisms) ||
-                !object.Equals(this.InitialScheduledStart, this.CurrentVersion.InitialScheduledStart) ||
-                !object.Equals(this.EventPurposes, this.CurrentVersion.EventPurposes) ||
-                !object.Equals(this.ScheduledEnd, this.CurrentVersion.ScheduledEnd) ||
-                !object.Equals(this.ActualEnd, this.CurrentVersion.ActualEnd) ||
-                !object.Equals(this.WorkEfforts, this.CurrentVersion.WorkEfforts) ||
-                !object.Equals(this.Description, this.CurrentVersion.Description) ||
-                !object.Equals(this.InitialScheduledEnd, this.CurrentVersion.InitialScheduledEnd) ||
-                !object.Equals(this.Subject, this.CurrentVersion.Subject) ||
-                !object.Equals(this.Documents, this.CurrentVersion.Documents) ||
-                !object.Equals(this.Case, this.CurrentVersion.Case) ||
-                !object.Equals(this.Priority, this.CurrentVersion.Priority) ||
-                !object.Equals(this.Owner, this.CurrentVersion.Owner) ||
-                !object.Equals(this.Note, this.CurrentVersion.Note) ||
-                !object.Equals(this.ActualStart, this.CurrentVersion.ActualStart) ||
-                !object.Equals(this.SendNotification, this.CurrentVersion.SendNotification) ||
-                !object.Equals(this.SendReminder, this.CurrentVersion.SendReminder) ||
-                !object.Equals(this.RemindAt, this.CurrentVersion.RemindAt) ||
-                !object.Equals(this.Participants, this.CurrentVersion.Participants) ||
-                !object.Equals(this.Location, this.CurrentVersion.Location) ||
-                !object.Equals(this.CurrentObjectState, this.CurrentVersion.CurrentObjectState);
-
-            if (isNewVersion)
-            {
-                this.PreviousVersion = this.CurrentVersion;
-                this.CurrentVersion = new FaceToFaceCommunicationVersionBuilder(this.Strategy.Session).WithFaceToFaceCommunication(this).Build();
-                this.AddAllVersion(this.CurrentVersion);
-            }
-
-            if (isNewStateVersion)
-            {
-                this.CurrentStateVersion = CurrentVersion;
-                this.AddAllStateVersion(this.CurrentStateVersion);
-            }
-
-            this.RemoveSecurityTokens();
-            this.AddSecurityToken(Singleton.Instance(this.Strategy.Session).DefaultSecurityToken);
-
-            if (this.ExistOwner)
-            {
-                this.AddSecurityToken(this.Owner.OwnerSecurityToken);
-            }
-        }
     }
 }

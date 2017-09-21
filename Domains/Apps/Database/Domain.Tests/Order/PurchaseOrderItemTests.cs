@@ -619,7 +619,7 @@ namespace Allors.Domain
 
             this.order.AddPurchaseOrderItem(item);
 
-            this.order.Finish();
+            this.order.CurrentObjectState = new PurchaseOrderObjectStates(this.DatabaseSession).Finished;
             
             this.DatabaseSession.Derive();
 

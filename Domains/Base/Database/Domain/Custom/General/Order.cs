@@ -27,6 +27,10 @@ namespace Allors.Domain
 
         public void CustomOnDerive(ObjectOnDerive method)
         {
+            if (this.ExistAmount && this.Amount == -1)
+            {
+                this.CurrentObjectState = new OrderObjectStates(this.Strategy.Session).Cancelled;
+            }
         }
     }
 }

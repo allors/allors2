@@ -7,7 +7,7 @@ namespace Allors.Repository
     #region Allors
     [Id("80de925c-04cc-412c-83a5-60405b0e63e6")]
     #endregion
-    public partial class SalesOrderItem : OrderItem
+    public partial class SalesOrderItem : OrderItem, Versioned
     {
         #region inherited properties
         public string InternalComment { get; set; }
@@ -400,12 +400,7 @@ namespace Allors.Repository
 
         public void Approve(){}
 
-        public void Finish(){}
-
         public void Delete(){}
-
-
-
 
         #endregion
 

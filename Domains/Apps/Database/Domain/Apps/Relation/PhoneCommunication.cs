@@ -29,53 +29,6 @@ namespace Allors.Domain
             this.AppsOnDeriveInvolvedParties();
         }
 
-        public void AppsOnPostDerive(ObjectOnPostDerive method)
-        {
-            var isNewVersion =
-                !this.ExistCurrentVersion ||
-                !object.Equals(this.ActualStart, this.CurrentVersion.ActualStart);
-
-            var isNewStateVersion =
-                !this.ExistCurrentVersion ||
-                !object.Equals(this.ScheduledStart, this.CurrentVersion.ScheduledStart) ||
-                !object.Equals(this.ContactMechanisms, this.CurrentVersion.ContactMechanisms) ||
-                !object.Equals(this.InitialScheduledStart, this.CurrentVersion.InitialScheduledStart) ||
-                !object.Equals(this.EventPurposes, this.CurrentVersion.EventPurposes) ||
-                !object.Equals(this.ScheduledEnd, this.CurrentVersion.ScheduledEnd) ||
-                !object.Equals(this.ActualEnd, this.CurrentVersion.ActualEnd) ||
-                !object.Equals(this.WorkEfforts, this.CurrentVersion.WorkEfforts) ||
-                !object.Equals(this.Description, this.CurrentVersion.Description) ||
-                !object.Equals(this.InitialScheduledEnd, this.CurrentVersion.InitialScheduledEnd) ||
-                !object.Equals(this.Subject, this.CurrentVersion.Subject) ||
-                !object.Equals(this.Documents, this.CurrentVersion.Documents) ||
-                !object.Equals(this.Case, this.CurrentVersion.Case) ||
-                !object.Equals(this.Priority, this.CurrentVersion.Priority) ||
-                !object.Equals(this.Owner, this.CurrentVersion.Owner) ||
-                !object.Equals(this.Note, this.CurrentVersion.Note) ||
-                !object.Equals(this.ActualStart, this.CurrentVersion.ActualStart) ||
-                !object.Equals(this.SendNotification, this.CurrentVersion.SendNotification) ||
-                !object.Equals(this.SendReminder, this.CurrentVersion.SendReminder) ||
-                !object.Equals(this.RemindAt, this.CurrentVersion.RemindAt) ||
-                !object.Equals(this.LeftVoiceMail, this.CurrentVersion.LeftVoiceMail) ||
-                !object.Equals(this.IncomingCall, this.CurrentVersion.IncomingCall) ||
-                !object.Equals(this.Receivers, this.CurrentVersion.Receivers) ||
-                !object.Equals(this.Callers, this.CurrentVersion.Callers) ||
-                !object.Equals(this.CurrentObjectState, this.CurrentVersion.CurrentObjectState);
-
-            if (isNewVersion)
-            {
-                this.PreviousVersion = this.CurrentVersion;
-                this.CurrentVersion = new PhoneCommunicationVersionBuilder(this.Strategy.Session).WithPhoneCommunication(this).Build();
-                this.AddAllVersion(this.CurrentVersion);
-            }
-
-            if (isNewStateVersion)
-            {
-                this.CurrentStateVersion = CurrentVersion;
-                this.AddAllStateVersion(this.CurrentStateVersion);
-            }
-        }
-
         public void AppsOnDeriveFromParties()
         {
             this.RemoveFromParties();

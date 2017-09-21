@@ -8,7 +8,7 @@ namespace Allors.Repository
     [Id("874dfe70-2e50-4861-b26d-dc55bc8fa0d0")]
     #endregion
     [Plural("RequestsForQuote")]
-    public partial class RequestForQuote : Request 
+    public partial class RequestForQuote : Request, Versioned
     {
         #region inherited properties
         public string InternalComment { get; set; }

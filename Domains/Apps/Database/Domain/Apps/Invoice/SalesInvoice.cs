@@ -298,57 +298,6 @@ namespace Allors.Domain
             this.AppsOnDeriveRevenues(derivation);
         }
 
-        public void AppsOnPostDerive(ObjectOnPostDerive method)
-        {
-            var isNewVersion =
-                !this.ExistCurrentVersion ;
-
-            var isNewStateVersion =
-                !this.ExistCurrentVersion ||
-                !object.Equals(this.InternalComment, this.CurrentVersion.InternalComment) ||
-                !object.Equals(this.TotalShippingAndHandlingCustomerCurrency, this.CurrentVersion.TotalShippingAndHandlingCustomerCurrency) ||
-                !object.Equals(this.Description, this.CurrentVersion.Description) ||
-                !object.Equals(this.ShippingAndHandlingCharge, this.CurrentVersion.ShippingAndHandlingCharge) ||
-                !object.Equals(this.Fee, this.CurrentVersion.Fee) ||
-                !object.Equals(this.CustomerReference, this.CurrentVersion.CustomerReference) ||
-                !object.Equals(this.DiscountAdjustment, this.CurrentVersion.DiscountAdjustment) ||
-                !object.Equals(this.BillingAccount, this.CurrentVersion.BillingAccount) ||
-                !object.Equals(this.InvoiceDate, this.CurrentVersion.InvoiceDate) ||
-                !object.Equals(this.SurchargeAdjustment, this.CurrentVersion.SurchargeAdjustment) ||
-                !object.Equals(this.InvoiceTerms, this.CurrentVersion.InvoiceTerms) ||
-                !object.Equals(this.InvoiceNumber, this.CurrentVersion.InvoiceNumber) ||
-                !object.Equals(this.Message, this.CurrentVersion.Message) ||
-                !object.Equals(this.VatRegime, this.CurrentVersion.VatRegime) ||
-                !object.Equals(this.TotalListPrice, this.CurrentVersion.TotalListPrice) ||
-                !object.Equals(this.BilledFromInternalOrganisation, this.CurrentVersion.BilledFromInternalOrganisation) ||
-                !object.Equals(this.BillToContactMechanism, this.CurrentVersion.BillToContactMechanism) ||
-                !object.Equals(this.SalesInvoiceType, this.CurrentVersion.SalesInvoiceType) ||
-                !object.Equals(this.PaymentMethod, this.CurrentVersion.PaymentMethod) ||
-                !object.Equals(this.BillToCustomer, this.CurrentVersion.BillToCustomer) ||
-                !object.Equals(this.SalesInvoiceItems, this.CurrentVersion.SalesInvoiceItems) ||
-                !object.Equals(this.ShipToCustomer, this.CurrentVersion.ShipToCustomer) ||
-                !object.Equals(this.BilledFromContactMechanism, this.CurrentVersion.BilledFromContactMechanism) ||
-                !object.Equals(this.TotalPurchasePrice, this.CurrentVersion.TotalPurchasePrice) ||
-                !object.Equals(this.SalesChannel, this.CurrentVersion.SalesChannel) ||
-                !object.Equals(this.Customers, this.CurrentVersion.Customers) ||
-                !object.Equals(this.ShipToAddress, this.CurrentVersion.ShipToAddress) ||
-                !object.Equals(this.Store, this.CurrentVersion.Store) ||
-                !object.Equals(this.CurrentObjectState, this.CurrentVersion.CurrentObjectState);
-
-            if (isNewVersion)
-            {
-                this.PreviousVersion = this.CurrentVersion;
-                this.CurrentVersion = new SalesInvoiceVersionBuilder(this.Strategy.Session).WithSalesInvoice(this).Build();
-                this.AddAllVersion(this.CurrentVersion);
-            }
-
-            if (isNewStateVersion)
-            {
-                this.CurrentStateVersion = CurrentVersion;
-                this.AddAllStateVersion(this.CurrentStateVersion);
-            }
-        }
-
         private void DeriveCurrentPaymentStatus(IDerivation derivation)
         {
             var itemsPaid = false;
