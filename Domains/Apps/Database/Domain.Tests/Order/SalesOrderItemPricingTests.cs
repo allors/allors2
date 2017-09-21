@@ -118,7 +118,6 @@ namespace Allors.Domain
                 .WithProductCategory(this.productCategory)
                 .WithFinishedGood(this.part)
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.DatabaseSession).Piece)
-                .WithInventoryItemKind(new InventoryItemKinds(this.DatabaseSession).NonSerialised)
                 .Build();
 
             this.partyRevenueHistory = new PartyRevenueHistoryBuilder(this.DatabaseSession)
