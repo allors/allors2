@@ -13,6 +13,7 @@ namespace Allors.Repository
 
         public SecurityToken OwnerSecurityToken { get; set; }
         public AccessControl OwnerAccessControl { get; set; }
+        public Person Owner { get; set; }
         public ObjectState PreviousObjectState { get; set; }
         public ObjectState LastObjectState { get; set; }
         public string Name { get; set; }

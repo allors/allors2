@@ -27,6 +27,11 @@ namespace Allors.Domain
             this.AppsOnDeriveFromParties();
             this.AppsOnDeriveToParties();
             this.AppsOnDeriveInvolvedParties();
+
+            if (this.Callers.Count == 0 || this.Receivers.Count == 0)
+            {
+                this.Delete();
+            }
         }
 
         public void AppsOnDeriveFromParties()
@@ -71,10 +76,10 @@ namespace Allors.Domain
                 this.AddInvolvedParty(party);
             }
 
-            //if (this.ExistOwner && !this.InvolvedParties.Contains(this.Owner))
-            //{
-            //    this.AddInvolvedParty(this.Owner);
-            //}
+            if (this.ExistOwner && !this.InvolvedParties.Contains(this.Owner))
+            {
+                this.AddInvolvedParty(this.Owner);
+            }
         }
     }
 }

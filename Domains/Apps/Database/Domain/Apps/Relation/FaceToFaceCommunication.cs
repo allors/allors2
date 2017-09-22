@@ -27,7 +27,7 @@ namespace Allors.Domain
 
             if (this.Participants.Count <= 1)
             {
-                derivation.Validation.AddError(this, this.Meta.Participants, "minimum 2 participants");
+                this.Delete();
             }
 
             this.FromParties = this.Participants;
@@ -39,10 +39,10 @@ namespace Allors.Domain
         {
             this.InvolvedParties = this.Participants;
 
-            //if (this.ExistOwner && !this.InvolvedParties.Contains(this.Owner))
-            //{
-            //    this.AddInvolvedParty(this.Owner);
-            //}
+            if (this.ExistOwner && !this.InvolvedParties.Contains(this.Owner))
+            {
+                this.AddInvolvedParty(this.Owner);
+            }
 
             if (this.ExistPartyRelationshipWhereCommunicationEvent)
             {

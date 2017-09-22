@@ -103,7 +103,6 @@ namespace Allors.Repository
         #endregion
         [Multiplicity(Multiplicity.ManyToMany)]
         [Indexed]
-        [Required]
         [Workspace]
         public Party[] Receivers { get; set; }
 
@@ -114,7 +113,6 @@ namespace Allors.Repository
         #endregion
         [Multiplicity(Multiplicity.ManyToMany)]
         [Indexed]
-        [Required]
         [Workspace]
         public Party[] Callers { get; set; }
         

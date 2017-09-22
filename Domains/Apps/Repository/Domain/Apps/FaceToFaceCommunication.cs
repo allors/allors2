@@ -84,7 +84,6 @@ namespace Allors.Repository
         #endregion
         [Multiplicity(Multiplicity.ManyToMany)]
         [Indexed]
-        [Required]
         [Workspace]
         public Party[] Participants { get; set; }
 

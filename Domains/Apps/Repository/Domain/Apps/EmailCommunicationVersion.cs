@@ -49,7 +49,6 @@ namespace Allors.Repository
         [Indexed]
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
-        [Required]
         [Workspace]
         public EmailAddress Originator { get; set; }
 

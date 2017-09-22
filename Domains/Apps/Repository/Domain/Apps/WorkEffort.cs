@@ -32,6 +32,16 @@ namespace Allors.Repository
         AccessControl OwnerAccessControl { get; set; }
 
         #region Allors
+        [Id("3C1D7BA5-A031-4890-85C8-0119EF754F5D")]
+        [AssociationId("C582BA86-6D49-4EB5-B1A1-A3A69FA3E07F")]
+        [RoleId("23694E48-CB38-4AB5-8FE2-47FF7B206306")]
+        [Indexed]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Workspace]
+        Person Owner { get; set; }
+
+        #region Allors
         [Id("97a874e9-10ef-43fb-80d2-10e0974bb3a1")]
         [AssociationId("29df5d80-5baf-436c-b4ae-48f2f0dad2fd")]
         [RoleId("bf8f5058-dd2c-439d-bf7c-879ab69a2ca1")]

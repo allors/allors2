@@ -1648,6 +1648,8 @@ namespace Allors.Domain
 
 						AccessControl OwnerAccessControl {set;}
 
+						Person Owner {set;}
+
 						global::System.String Name {set;}
 
 						global::System.String Description {set;}

@@ -33,6 +33,18 @@ namespace Allors.Domain
             }
         }
 
+        public static void AppsOnDerive(this WorkEffort @this, ObjectOnDerive method)
+        {
+            var derivation = method.Derivation;
+
+            if (!@this.ExistOwner)
+            {
+                @this.Owner = (Person)new Users(@this.Strategy.Session).CurrentUser;
+            }
+
+            @this.DeriveOwnerSecurity();
+        }
+
         public static void AppsOnBuild(this WorkEffort @this, ObjectOnBuild method)
         {
             if (!@this.ExistCurrentObjectState)
@@ -59,6 +71,25 @@ namespace Allors.Domain
         public static void AppsReopen(this WorkEffort @this, WorkEffortReopen reopen)
         {
             @this.CurrentObjectState = new WorkEffortObjectStates(@this.Strategy.Session).NeedsAction;
+        }
+
+        private static void DeriveOwnerSecurity(this WorkEffort @this)
+        {
+            if (!@this.ExistOwnerAccessControl)
+            {
+                var ownerRole = new Roles(@this.Strategy.Session).Owner;
+                @this.OwnerAccessControl = new AccessControlBuilder(@this.Strategy.Session)
+                    .WithRole(ownerRole)
+                    .WithSubject(@this.Owner)
+                    .Build();
+            }
+
+            if (!@this.ExistOwnerSecurityToken)
+            {
+                @this.OwnerSecurityToken = new SecurityTokenBuilder(@this.Strategy.Session)
+                    .WithAccessControl(@this.OwnerAccessControl)
+                    .Build();
+            }
         }
     }
 }
