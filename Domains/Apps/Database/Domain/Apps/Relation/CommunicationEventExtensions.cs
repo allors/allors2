@@ -89,6 +89,12 @@ namespace Allors.Domain
             @this.DeriveOwnerSecurity();
         }
 
+        public static void AppsOnPostDerive(this CommunicationEvent @this, ObjectOnPostDerive method)
+        {
+            @this.AddSecurityToken(Singleton.Instance(@this.Strategy.Session).DefaultSecurityToken);
+            @this.AddSecurityToken(@this.Owner?.OwnerSecurityToken);
+        }
+
         public static void AppsDelete(this CommunicationEvent @this, DeletableDelete method)
         {
             @this.RemoveWorkEfforts();

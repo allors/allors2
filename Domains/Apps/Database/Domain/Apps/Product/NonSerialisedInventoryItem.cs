@@ -109,7 +109,8 @@ namespace Allors.Domain
 
             foreach (ShipmentReceipt shipmentReceipt in this.ShipmentReceiptsWhereInventoryItem)
             {
-                 if (shipmentReceipt.ShipmentItem.ShipmentWhereShipmentItem.CurrentObjectState.Equals(new PurchaseShipmentObjectStates(this.Strategy.Session).Completed))
+                if (shipmentReceipt.ExistShipmentItem &&
+                    shipmentReceipt.ShipmentItem.ShipmentWhereShipmentItem.CurrentObjectState.Equals(new PurchaseShipmentObjectStates(this.Strategy.Session).Completed))
                 {
                     this.QuantityOnHand += shipmentReceipt.QuantityAccepted;
                 }

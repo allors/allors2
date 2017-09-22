@@ -42,6 +42,9 @@ namespace Allors.Domain
                 .WithLocale(new Locales(this.DatabaseSession).EnglishGreatBritain)
                 .WithOrganisationRole(new OrganisationRoles(this.DatabaseSession).Supplier)
                 .Build();
+
+            this.DatabaseSession.Derive();
+
             this.internalOrganisation = new InternalOrganisations(this.DatabaseSession).FindBy(M.InternalOrganisation.Name, "internalOrganisation");
 
             new OrganisationContactRelationshipBuilder(this.DatabaseSession)
@@ -53,7 +56,7 @@ namespace Allors.Domain
             this.supplierRelationship = new SupplierRelationshipBuilder(this.DatabaseSession)
                 .WithSupplier(this.supplier)
                 .WithInternalOrganisation(this.internalOrganisation)
-                .WithFromDate(DateTime.UtcNow)
+                .WithFromDate(DateTime.UtcNow.AddDays(-1))
                 .Build();
 
             this.DatabaseSession.Derive();

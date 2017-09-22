@@ -91,7 +91,7 @@ namespace Allors.Domain
         [Fact]
         public void GivenSalesInvoice_WhenDeriving_ThenRequiredRelationsMustExist()
         {
-            var customer = new OrganisationBuilder(this.DatabaseSession).WithName("customer").Build();
+            var customer = new OrganisationBuilder(this.DatabaseSession).WithName("customer").WithOrganisationRole(new OrganisationRoles(this.DatabaseSession).Customer).Build();
             var mechelen = new CityBuilder(this.DatabaseSession).WithName("Mechelen").Build();
             ContactMechanism billToContactMechanism = new PostalAddressBuilder(this.DatabaseSession).WithGeographicBoundary(mechelen).WithAddress1("Haverwerf 15").Build();
 

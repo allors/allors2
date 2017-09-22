@@ -43,18 +43,6 @@ namespace Allors.Domain
             this.DatabaseSession.Rollback();
 
             builder.WithSubject("Phonecall");
-            builder.Build();
-
-            Assert.True(this.DatabaseSession.Derive(false).HasErrors);
-            this.DatabaseSession.Rollback();
-
-            builder.WithReceiver(receiver);
-            builder.Build();
-
-            Assert.True(this.DatabaseSession.Derive(false).HasErrors);
-            this.DatabaseSession.Rollback();
-
-            builder.WithCaller(caller);
             var communication = builder.Build();
 
             Assert.False(this.DatabaseSession.Derive(false).HasErrors);
