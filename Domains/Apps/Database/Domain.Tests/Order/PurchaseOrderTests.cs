@@ -29,15 +29,14 @@ namespace Allors.Domain
     using Meta;
     using Xunit;
 
-    
     public class PurchaseOrderTests : DomainTest
     {
         [Fact]
         public void GivenPurchaseOrderBuilder_WhenBuild_ThenPostBuildRelationsMustExist()
         {
             var supplier = new OrganisationBuilder(this.DatabaseSession).WithName("supplier").WithOrganisationRole(new OrganisationRoles(this.DatabaseSession).Supplier).Build();
-            var internalOrganisation = new InternalOrganisations(this.DatabaseSession).FindBy(M.InternalOrganisation.Name, "internalOrganisation");
-            new SupplierRelationshipBuilder(this.DatabaseSession).WithSupplier(supplier).WithInternalOrganisation(internalOrganisation).Build();
+            var internalOrganisation = InternalOrganisation.Instance(this.DatabaseSession);
+            internalOrganisation.AddSupplier(supplier);
 
             var order = new PurchaseOrderBuilder(this.DatabaseSession).WithTakenViaSupplier(supplier).Build();
 
@@ -45,9 +44,6 @@ namespace Allors.Domain
             Assert.Equal(DateTime.UtcNow.Date, order.OrderDate.Date);
             Assert.Equal(DateTime.UtcNow.Date, order.EntryDate.Date);
             Assert.Equal(order.PreviousTakenViaSupplier, order.TakenViaSupplier);
-            Assert.Equal(internalOrganisation, order.ShipToBuyer);
-            Assert.Equal(internalOrganisation, order.BillToPurchaser);
-            Assert.Equal(order.ShipToBuyer.PreferredCurrency, order.CustomerCurrency);
             Assert.True(order.ExistUniqueId);
         }
 
@@ -55,8 +51,8 @@ namespace Allors.Domain
         public void GivenOrder_WhenDeriving_ThenRequiredRelationsMustExist()
         {
             var supplier = new OrganisationBuilder(this.DatabaseSession).WithName("customer2").WithOrganisationRole(new OrganisationRoles(this.DatabaseSession).Customer).Build();
-            var internalOrganisation = new InternalOrganisations(this.DatabaseSession).FindBy(M.InternalOrganisation.Name, "internalOrganisation");
-            new SupplierRelationshipBuilder(this.DatabaseSession).WithSupplier(supplier).WithInternalOrganisation(internalOrganisation).Build();
+            var internalOrganisation = InternalOrganisation.Instance(this.DatabaseSession);
+            internalOrganisation.AddSupplier(supplier);
 
             var mechelen = new CityBuilder(this.DatabaseSession).WithName("Mechelen").Build();
             ContactMechanism takenViaContactMechanism = new PostalAddressBuilder(this.DatabaseSession).WithGeographicBoundary(mechelen).WithAddress1("Haverwerf 15").Build();
@@ -92,17 +88,16 @@ namespace Allors.Domain
         public void GivenPurchaseOrder_WhenDeriving_ThenTakenViaSupplierMustBeInSupplierRelationship()
         {
             var supplier = new OrganisationBuilder(this.DatabaseSession).WithName("customer2").WithOrganisationRole(new OrganisationRoles(this.DatabaseSession).Customer).Build();
-            var internalOrganisation = new InternalOrganisations(this.DatabaseSession).FindBy(M.InternalOrganisation.Name, "internalOrganisation");
+            var internalOrganisation = InternalOrganisation.Instance(this.DatabaseSession);
 
             new PurchaseOrderBuilder(this.DatabaseSession)
                 .WithTakenViaSupplier(supplier)
-                .WithBillToPurchaser(internalOrganisation)
                 .Build();
 
             var expectedError = ErrorMessages.PartyIsNotASupplier;
             Assert.Equal(expectedError, this.DatabaseSession.Derive(false).Errors[0].Message);
 
-            new SupplierRelationshipBuilder(this.DatabaseSession).WithSupplier(supplier).WithInternalOrganisation(internalOrganisation).Build();
+            internalOrganisation.AddSupplier(supplier);
 
             Assert.False(this.DatabaseSession.Derive(false).HasErrors);
         }
@@ -113,8 +108,8 @@ namespace Allors.Domain
             var englischLocale = new Locales(this.DatabaseSession).EnglishGreatBritain;
 
             var supplier = new OrganisationBuilder(this.DatabaseSession).WithName("customer2").WithOrganisationRole(new OrganisationRoles(this.DatabaseSession).Customer).Build();
-            var internalOrganisation = new InternalOrganisations(this.DatabaseSession).FindBy(M.InternalOrganisation.Name, "internalOrganisation");
-            new SupplierRelationshipBuilder(this.DatabaseSession).WithSupplier(supplier).WithInternalOrganisation(internalOrganisation).Build();
+            var internalOrganisation = InternalOrganisation.Instance(this.DatabaseSession);
+            internalOrganisation.AddSupplier(supplier);
 
             var mechelen = new CityBuilder(this.DatabaseSession).WithName("Mechelen").Build();
             ContactMechanism takenViaContactMechanism = new PostalAddressBuilder(this.DatabaseSession).WithGeographicBoundary(mechelen).WithAddress1("Haverwerf 15").Build();
@@ -127,7 +122,6 @@ namespace Allors.Domain
 
             var order = new PurchaseOrderBuilder(this.DatabaseSession)
                 .WithTakenViaSupplier(supplier)
-                .WithShipToBuyer(internalOrganisation)
                 .Build();
 
             this.DatabaseSession.Derive();
@@ -142,10 +136,10 @@ namespace Allors.Domain
 
             var supplier = new OrganisationBuilder(this.DatabaseSession).WithName("customer2").WithOrganisationRole(new OrganisationRoles(this.DatabaseSession).Customer).Build();
 
-            var order1 = new PurchaseOrderBuilder(this.DatabaseSession).WithTakenViaSupplier(supplier).WithBillToPurchaser(internalOrganisation).Build();
+            var order1 = new PurchaseOrderBuilder(this.DatabaseSession).WithTakenViaSupplier(supplier).Build();
             Assert.Equal("1", order1.OrderNumber);
 
-            var order2 = new PurchaseOrderBuilder(this.DatabaseSession).WithTakenViaSupplier(supplier).WithBillToPurchaser(internalOrganisation).Build();
+            var order2 = new PurchaseOrderBuilder(this.DatabaseSession).WithTakenViaSupplier(supplier).Build();
             Assert.Equal("2", order2.OrderNumber);
         }
 
@@ -158,14 +152,12 @@ namespace Allors.Domain
 
             var order1 = new PurchaseOrderBuilder(this.DatabaseSession)
                 .WithTakenViaSupplier(supplier)
-                .WithBillToPurchaser(internalOrganisation)
                 .Build();
 
             Assert.Equal("the format is 1", order1.OrderNumber);
 
             var order2 = new PurchaseOrderBuilder(this.DatabaseSession)
                 .WithTakenViaSupplier(supplier)
-                .WithBillToPurchaser(internalOrganisation)
                 .Build();
 
             Assert.Equal("the format is 2", order2.OrderNumber);
@@ -177,12 +169,11 @@ namespace Allors.Domain
             this.SetIdentity("orderProcessor");
 
             var supplier = new OrganisationBuilder(this.DatabaseSession).WithName("customer2").WithOrganisationRole(new OrganisationRoles(this.DatabaseSession).Customer).Build();
-            var internalOrganisation = new InternalOrganisations(this.DatabaseSession).FindBy(M.InternalOrganisation.Name, "internalOrganisation");
-            new SupplierRelationshipBuilder(this.DatabaseSession).WithSupplier(supplier).WithInternalOrganisation(internalOrganisation).Build();
+            var internalOrganisation = InternalOrganisation.Instance(this.DatabaseSession);
+            internalOrganisation.AddSupplier(supplier);
 
             var order = new PurchaseOrderBuilder(this.DatabaseSession)
                 .WithTakenViaSupplier(supplier)
-                .WithBillToPurchaser(internalOrganisation)
                 .Build();
 
             order.Confirm();
@@ -207,12 +198,11 @@ namespace Allors.Domain
             this.SetIdentity("orderProcessor");
 
             var supplier = new OrganisationBuilder(this.DatabaseSession).WithName("customer2").WithOrganisationRole(new OrganisationRoles(this.DatabaseSession).Customer).Build();
-            var internalOrganisation = new InternalOrganisations(this.DatabaseSession).FindBy(M.InternalOrganisation.Name, "internalOrganisation");
-            new SupplierRelationshipBuilder(this.DatabaseSession).WithSupplier(supplier).WithInternalOrganisation(internalOrganisation).Build();
+            var internalOrganisation = InternalOrganisation.Instance(this.DatabaseSession);
+            internalOrganisation.AddSupplier(supplier);
 
             var order = new PurchaseOrderBuilder(this.DatabaseSession)
                 .WithTakenViaSupplier(supplier)
-                .WithBillToPurchaser(internalOrganisation)
                 .Build();
 
             order.Confirm();
@@ -235,12 +225,11 @@ namespace Allors.Domain
             this.SetIdentity("orderProcessor");
 
             var supplier = new OrganisationBuilder(this.DatabaseSession).WithName("customer2").WithOrganisationRole(new OrganisationRoles(this.DatabaseSession).Customer).Build();
-            var internalOrganisation = new InternalOrganisations(this.DatabaseSession).FindBy(M.InternalOrganisation.Name, "internalOrganisation");
-            new SupplierRelationshipBuilder(this.DatabaseSession).WithSupplier(supplier).WithInternalOrganisation(internalOrganisation).Build();
+            var internalOrganisation = InternalOrganisation.Instance(this.DatabaseSession);
+            internalOrganisation.AddSupplier(supplier);
 
             var order = new PurchaseOrderBuilder(this.DatabaseSession)
                 .WithTakenViaSupplier(supplier)
-                .WithBillToPurchaser(internalOrganisation)
                 .Build();
 
             order.Confirm();
@@ -265,8 +254,8 @@ namespace Allors.Domain
         public void GivenPurchaseOrder_WhenConfirming_ThenAllValidItemsAreInConfirmedState()
         {
             var supplier = new OrganisationBuilder(this.DatabaseSession).WithName("customer2").WithOrganisationRole(new OrganisationRoles(this.DatabaseSession).Customer).Build();
-            var internalOrganisation = new InternalOrganisations(this.DatabaseSession).FindBy(M.InternalOrganisation.Name, "internalOrganisation");
-            new SupplierRelationshipBuilder(this.DatabaseSession).WithSupplier(supplier).WithInternalOrganisation(internalOrganisation).Build();
+            var internalOrganisation = InternalOrganisation.Instance(this.DatabaseSession);
+            internalOrganisation.AddSupplier(supplier);
 
             var part = new RawMaterialBuilder(this.DatabaseSession).WithName("RawMaterial").Build();
 
@@ -308,8 +297,8 @@ namespace Allors.Domain
         public void GivenPurchaseOrder_WhenOrdering_ThenAllValidItemsAreInInProcessState()
         {
             var supplier = new OrganisationBuilder(this.DatabaseSession).WithName("customer2").WithOrganisationRole(new OrganisationRoles(this.DatabaseSession).Customer).Build();
-            var internalOrganisation = new InternalOrganisations(this.DatabaseSession).FindBy(M.InternalOrganisation.Name, "internalOrganisation");
-            new SupplierRelationshipBuilder(this.DatabaseSession).WithSupplier(supplier).WithInternalOrganisation(internalOrganisation).Build();
+            var internalOrganisation = InternalOrganisation.Instance(this.DatabaseSession);
+            internalOrganisation.AddSupplier(supplier);
 
             var part = new RawMaterialBuilder(this.DatabaseSession).WithName("RawMaterial").Build();
 

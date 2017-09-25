@@ -25,7 +25,6 @@ namespace Allors.Domain
         public static PartyRevenue AppsFindOrCreateAsDependable(ISession session, PartyProductRevenue dependant)
         {
             var partyRevenues = dependant.Party.PartyRevenuesWhereParty;
-            partyRevenues.Filter.AddEquals(M.PartyRevenue.InternalOrganisation, dependant.InternalOrganisation);
             partyRevenues.Filter.AddEquals(M.PartyRevenue.Year, dependant.Year);
             partyRevenues.Filter.AddEquals(M.PartyRevenue.Month, dependant.Month);
             var partyRevenue = partyRevenues.First ?? new PartyRevenueBuilder(session)
@@ -39,7 +38,7 @@ namespace Allors.Domain
 
         public static PartyRevenue AppsFindOrCreateAsDependable(ISession session, SalesInvoice invoice)
         {
-            var partyRevenues = invoice.BilledFromInternalOrganisation.PartyRevenuesWhereParty;
+            var partyRevenues = new PartyRevenues(session).Extent();
             partyRevenues.Filter.AddEquals(M.PartyRevenue.Year, invoice.InvoiceDate.Year);
             partyRevenues.Filter.AddEquals(M.PartyRevenue.Month, invoice.InvoiceDate.Month);
             var partyRevenue = partyRevenues.First ?? new PartyRevenueBuilder(session)
@@ -53,7 +52,7 @@ namespace Allors.Domain
 
         public static void AppsOnDeriveRevenues(ISession session)
         {
-            var partyRevenuesByPeriodByPartyByInternalOrganisation = new Dictionary<InternalOrganisation, Dictionary<Party, Dictionary<DateTime, PartyRevenue>>>();
+            var partyRevenuesByPeriodByParty = new Dictionary<Party, Dictionary<DateTime, PartyRevenue>>();
 
             var partyRevenues = session.Extent<PartyRevenue>();
 
@@ -61,13 +60,6 @@ namespace Allors.Domain
             {
                 partyRevenue.Revenue = 0;
                 var date = DateTimeFactory.CreateDate(partyRevenue.Year, partyRevenue.Month, 01);
-
-                Dictionary<Party, Dictionary<DateTime, PartyRevenue>> partyRevenuesByPeriodByParty;
-                if (!partyRevenuesByPeriodByPartyByInternalOrganisation.TryGetValue(partyRevenue.InternalOrganisation, out partyRevenuesByPeriodByParty))
-                {
-                    partyRevenuesByPeriodByParty = new Dictionary<Party, Dictionary<DateTime, PartyRevenue>>();
-                    partyRevenuesByPeriodByPartyByInternalOrganisation[partyRevenue.InternalOrganisation] = partyRevenuesByPeriodByParty;
-                }
 
                 Dictionary<DateTime, PartyRevenue> partyRevenuesByPeriod;
                 if (!partyRevenuesByPeriodByParty.TryGetValue(partyRevenue.Party, out partyRevenuesByPeriod))
@@ -100,20 +92,6 @@ namespace Allors.Domain
                 foreach (SalesInvoiceItem salesInvoiceItem in salesInvoice.SalesInvoiceItems)
                 {
                     PartyRevenue partyRevenue;
-
-                    Dictionary<Party, Dictionary<DateTime, PartyRevenue>> partyRevenuesByPeriodByParty;
-                    if (!partyRevenuesByPeriodByPartyByInternalOrganisation.TryGetValue(salesInvoice.BilledFromInternalOrganisation, out partyRevenuesByPeriodByParty))
-                    {
-                        partyRevenue = CreatePartyRevenue(session, salesInvoice);
-
-                        partyRevenuesByPeriodByParty = new Dictionary<Party, Dictionary<DateTime, PartyRevenue>>
-                            {
-                                { salesInvoice.BillToCustomer, new Dictionary<DateTime, PartyRevenue> { { date, partyRevenue } } }
-                            };
-
-                        partyRevenuesByPeriodByPartyByInternalOrganisation[salesInvoice.BilledFromInternalOrganisation] = partyRevenuesByPeriodByParty;
-                    }
-
                     Dictionary<DateTime, PartyRevenue> partyRevenuesByPeriod;
                     if (!partyRevenuesByPeriodByParty.TryGetValue(salesInvoice.BillToCustomer, out partyRevenuesByPeriod))
                     {

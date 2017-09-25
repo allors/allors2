@@ -15,8 +15,6 @@
 // --------------------------------------------------------------------------------------------------------------------
 namespace Allors.Domain
 {
-    using System;
-
     using Allors.Meta;
 
     public partial class InternalOrganisationRevenue
@@ -32,17 +30,6 @@ namespace Allors.Domain
             foreach (StoreRevenue storeRevenue in storeRevenues)
             {
                 this.Revenue += storeRevenue.Revenue;
-            }
-
-            var months = ((DateTime.UtcNow.Year - this.Year) * 12) + DateTime.UtcNow.Month - this.Month;
-            if (months <= 12)
-            {
-                var histories = this.strategy.Session.Extent<InternalOrganisationRevenueHistory>();
-                var history = histories.First ?? new InternalOrganisationRevenueHistoryBuilder(this.Strategy.Session)
-                                  .WithCurrency(this.Currency)
-                                  .Build();
-
-                history.AppsOnDeriveMovingAverage();
             }
         }
     }

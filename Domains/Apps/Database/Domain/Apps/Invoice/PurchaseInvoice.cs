@@ -32,9 +32,9 @@ namespace Allors.Domain
                 this.CurrentObjectState = new PurchaseInvoiceObjectStates(this.Strategy.Session).InProcess;
             }
 
-            if (!this.ExistInvoiceNumber && this.ExistBilledToInternalOrganisation)
+            if (!this.ExistInvoiceNumber)
             {
-                this.InvoiceNumber = this.BilledToInternalOrganisation.DeriveNextPurchaseInvoiceNumber();
+                this.InvoiceNumber = InternalOrganisation.Instance(this.strategy.Session).DeriveNextPurchaseInvoiceNumber();
             }
 
             if (!this.ExistInvoiceDate)
@@ -51,14 +51,12 @@ namespace Allors.Domain
         public void AppsOnPreDerive(ObjectOnPreDerive method)
         {
             var derivation = method.Derivation;
+            var internalOrganisation = InternalOrganisation.Instance(this.strategy.Session);
 
             // TODO:
-            if (derivation.ChangeSet.Associations.Contains(this.Id))
+            if (derivation.HasChangedRoles(this))
             {
-                if (this.ExistBilledToInternalOrganisation)
-                {
-                    derivation.AddDependency(this, this.BilledToInternalOrganisation);
-                }
+                derivation.AddDependency(this, internalOrganisation);
             }
 
             if (this.ExistBilledFromParty)
@@ -66,15 +64,10 @@ namespace Allors.Domain
                 var supplier = this.BilledFromParty as Organisation;
                 if (supplier != null)
                 {
-                    var supplierRelationships = supplier.SupplierRelationshipsWhereSupplier;
-                    supplierRelationships.Filter.AddEquals(M.SupplierRelationship.InternalOrganisation, this.BilledToInternalOrganisation);
-
-                    foreach (SupplierRelationship supplierRelationship in supplierRelationships)
+                    // TODO: Isn't this too broad?
+                    foreach (Party supplierRelationship in internalOrganisation.Suppliers)
                     {
-                        if (supplierRelationship.FromDate <= DateTime.UtcNow && (!supplierRelationship.ExistThroughDate || supplierRelationship.ThroughDate >= DateTime.UtcNow))
-                        {
-                            derivation.AddDependency(this, supplierRelationship);
-                        }
+                        derivation.AddDependency(this, supplierRelationship);
                     }
                 }
             }
@@ -83,16 +76,6 @@ namespace Allors.Domain
         public void AppsOnDerive(ObjectOnDerive method)
         {
             var derivation = method.Derivation;
-
-            Organisation supplier = this.BilledFromParty as Organisation;
-            if (supplier != null && this.ExistBilledToInternalOrganisation)
-            {
-                if (!this.BilledToInternalOrganisation.Equals(supplier.InternalOrganisationWhereSupplier))
-                {
-                    derivation.Validation.AddError(this, this.Meta.BilledFromParty, ErrorMessages.PartyIsNotASupplier);
-                }
-            }
-
             this.AppsOnDeriveInvoiceItems(derivation);
             this.AppsOnDeriveInvoiceTotals();
         }

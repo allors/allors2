@@ -26,8 +26,6 @@ namespace Allors.Repository
 
         public RevenueQuantityBreak RevenueQuantityBreak { get; set; }
 
-        public Party SpecifiedFor { get; set; }
-
         public ProductFeature ProductFeature { get; set; }
 
         public AgreementPricingProgram AgreementPricingProgram { get; set; }

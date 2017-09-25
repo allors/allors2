@@ -41,18 +41,6 @@ namespace Allors.Domain
             {
                 this.Revenue += salesRepPartyRevenue.Revenue;
             }
-
-            var months = ((DateTime.UtcNow.Year - this.Year) * 12) + DateTime.UtcNow.Month - this.Month;
-            if (months <= 12)
-            {
-                var histories = this.SalesRep.SalesRepRevenueHistoriesWhereSalesRep;
-                var history = histories.First ?? new SalesRepRevenueHistoryBuilder(this.Strategy.Session)
-                                                     .WithCurrency(this.Currency)
-                                                     .WithSalesRep(this.SalesRep)
-                                                     .Build();
-
-                history.AppsOnDeriveRevenue();
-            }
         }
     }
 }

@@ -27,7 +27,6 @@ namespace Allors.Domain
             if (invoice.ExistSalesChannel)
             {
                 var salesChannelRevenues = invoice.SalesChannel.SalesChannelRevenuesWhereSalesChannel;
-                salesChannelRevenues.Filter.AddEquals(M.SalesChannelRevenue.InternalOrganisation, invoice.BilledFromInternalOrganisation);
                 salesChannelRevenues.Filter.AddEquals(M.SalesChannelRevenue.Year, invoice.InvoiceDate.Year);
                 salesChannelRevenues.Filter.AddEquals(M.SalesChannelRevenue.Month, invoice.InvoiceDate.Month);
                 salesChannelRevenue = salesChannelRevenues.First ?? new SalesChannelRevenueBuilder(session)
@@ -43,7 +42,7 @@ namespace Allors.Domain
 
         public static void AppsOnDeriveRevenues(ISession session)
         {
-            var salesChannelRevenuesByPeriodBySalesChannelByInternalOrganisation = new Dictionary<InternalOrganisation, Dictionary<SalesChannel, Dictionary<DateTime, SalesChannelRevenue>>>();
+            var salesChannelRevenuesByPeriodBySalesChannel = new Dictionary<SalesChannel, Dictionary<DateTime, SalesChannelRevenue>>();
 
             var salesChannelRevenues = session.Extent<SalesChannelRevenue>();
 
@@ -51,14 +50,6 @@ namespace Allors.Domain
             {
                 salesChannelRevenue.Revenue = 0;
                 var date = DateTimeFactory.CreateDate(salesChannelRevenue.Year, salesChannelRevenue.Month, 01);
-
-                Dictionary<SalesChannel, Dictionary<DateTime, SalesChannelRevenue>> salesChannelRevenuesByPeriodBySalesChannel;
-                if (!salesChannelRevenuesByPeriodBySalesChannelByInternalOrganisation.TryGetValue(salesChannelRevenue.InternalOrganisation, out salesChannelRevenuesByPeriodBySalesChannel))
-                {
-                    salesChannelRevenuesByPeriodBySalesChannel = new Dictionary<SalesChannel, Dictionary<DateTime, SalesChannelRevenue>>();
-                    salesChannelRevenuesByPeriodBySalesChannelByInternalOrganisation[salesChannelRevenue.InternalOrganisation] = salesChannelRevenuesByPeriodBySalesChannel;
-                }
-
                 Dictionary<DateTime, SalesChannelRevenue> salesChannelRevenuesByPeriod;
                 if (!salesChannelRevenuesByPeriodBySalesChannel.TryGetValue(salesChannelRevenue.SalesChannel, out salesChannelRevenuesByPeriod))
                 {
@@ -92,19 +83,6 @@ namespace Allors.Domain
                 foreach (SalesInvoiceItem salesInvoiceItem in salesInvoice.SalesInvoiceItems)
                 {
                     SalesChannelRevenue salesChannelRevenue;
-
-                    Dictionary<SalesChannel, Dictionary<DateTime, SalesChannelRevenue>> salesChannelRevenuesByPeriodBySalesChannel;
-                    if (!salesChannelRevenuesByPeriodBySalesChannelByInternalOrganisation.TryGetValue(salesInvoice.BilledFromInternalOrganisation, out salesChannelRevenuesByPeriodBySalesChannel))
-                    {
-                        salesChannelRevenue = CreateSalesChannelRevenue(session, salesInvoice);
-
-                        salesChannelRevenuesByPeriodBySalesChannel = new Dictionary<SalesChannel, Dictionary<DateTime, SalesChannelRevenue>>
-                        {
-                            { salesInvoice.SalesChannel, new Dictionary<DateTime, SalesChannelRevenue> { { date, salesChannelRevenue } } }
-                        };
-
-                        salesChannelRevenuesByPeriodBySalesChannelByInternalOrganisation[salesInvoice.BilledFromInternalOrganisation] = salesChannelRevenuesByPeriodBySalesChannel;
-                    }
 
                     Dictionary<DateTime, SalesChannelRevenue> salesChannelRevenuesByPeriod;
                     if (!salesChannelRevenuesByPeriodBySalesChannel.TryGetValue(salesInvoice.SalesChannel, out salesChannelRevenuesByPeriod))

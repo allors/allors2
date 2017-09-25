@@ -42,29 +42,13 @@ namespace Allors.Domain
         }
 
         [Fact]
-        public void GivenPerson_WhenEmployed_ThenCurrentEmploymentIsDerived()
-        {
-            var salesRep = new PersonBuilder(this.DatabaseSession).WithLastName("salesRep").WithPersonRole(new PersonRoles(this.DatabaseSession).Employee).Build();
-
-            var employment = new EmploymentBuilder(this.DatabaseSession)
-                .WithEmployee(salesRep)
-                .WithEmployer(new InternalOrganisations(this.DatabaseSession).FindBy(M.InternalOrganisation.Name, "internalOrganisation"))
-                .WithFromDate(DateTime.UtcNow)
-                .Build();
-
-            this.DatabaseSession.Derive();
-
-            Assert.Equal(employment, salesRep.CurrentEmployment);
-        }
-
-        [Fact]
         public void GivenLoggedUserIsAdministrator_WhenAccessingInternalOrganisation_ThenLoggedInUserIsGrantedAccess()
         {
             var existingAdministrator = new People(this.DatabaseSession).FindBy(M.Person.UserName, Users.AdministratorUserName);
             var secondAdministrator = new PersonBuilder(this.DatabaseSession).WithLastName("second admin").WithPersonRole(new PersonRoles(this.DatabaseSession).Employee).Build();
             Assert.False(secondAdministrator.IsAdministrator);
 
-            var internalOrganisation = new InternalOrganisations(this.DatabaseSession).FindBy(M.InternalOrganisation.Name, "internalOrganisation");
+            var internalOrganisation = InternalOrganisation.Instance(this.DatabaseSession);
 
             this.DatabaseSession.Derive();
 
@@ -93,11 +77,7 @@ namespace Allors.Domain
             var contact = new PersonBuilder(this.DatabaseSession).WithLastName("organisationContact").WithPersonRole(new PersonRoles(this.DatabaseSession).Contact).Build();
             var organisation = new OrganisationBuilder(this.DatabaseSession).WithName("organisation").WithOrganisationRole(new OrganisationRoles(this.DatabaseSession).Customer).Build();
 
-            new CustomerRelationshipBuilder(this.DatabaseSession)
-                .WithInternalOrganisation(new InternalOrganisations(this.DatabaseSession).FindBy(M.InternalOrganisation.Name, "internalOrganisation"))
-                .WithCustomer(organisation)
-                .WithFromDate(DateTimeFactory.CreateDate(2010, 01, 01))
-                .Build();
+            InternalOrganisation.Instance(this.DatabaseSession).AddCustomer(organisation);
 
             new OrganisationContactRelationshipBuilder(this.DatabaseSession)
                 .WithContact(contact)
@@ -117,11 +97,7 @@ namespace Allors.Domain
             var contact = new PersonBuilder(this.DatabaseSession).WithLastName("organisationContact").WithPersonRole(new PersonRoles(this.DatabaseSession).Contact).Build();
             var organisation = new OrganisationBuilder(this.DatabaseSession).WithName("organisation").WithOrganisationRole(new OrganisationRoles(this.DatabaseSession).Customer).Build();
 
-            new CustomerRelationshipBuilder(this.DatabaseSession)
-                .WithInternalOrganisation(new InternalOrganisations(this.DatabaseSession).FindBy(M.InternalOrganisation.Name, "internalOrganisation"))
-                .WithCustomer(organisation)
-                .WithFromDate(DateTimeFactory.CreateDate(2010, 01, 01))
-                .Build();
+            InternalOrganisation.Instance(this.DatabaseSession).AddCustomer(organisation);
 
             new OrganisationContactRelationshipBuilder(this.DatabaseSession)
                 .WithContact(contact)

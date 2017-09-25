@@ -35,7 +35,7 @@ namespace Allors.Domain
                 .WithDescription("description")
                 .Build();
 
-            var internalOrganisation = Singleton.Instance(this.DatabaseSession).DefaultInternalOrganisation;             
+            var internalOrganisation = InternalOrganisation.Instance(this.DatabaseSession);             
             
             internalOrganisation.RemovePaymentMethods();
             internalOrganisation.AddPaymentMethod(cash);
@@ -57,13 +57,9 @@ namespace Allors.Domain
                 .WithOrganisationRole(new OrganisationRoles(this.DatabaseSession).Supplier)
                 .Build();
 
-            var internalOrganisation = new InternalOrganisations(this.DatabaseSession).FindBy(M.InternalOrganisation.Name, "internalOrganisation");
-
-            var supplierRelationship = new SupplierRelationshipBuilder(this.DatabaseSession)
-                .WithSupplier(supplier)
-                .WithInternalOrganisation(internalOrganisation)
-                .WithFromDate(DateTime.UtcNow)
-                .Build();
+            var internalOrganisation = InternalOrganisation.Instance(this.DatabaseSession);
+            
+            internalOrganisation.AddSupplier(supplier);
 
             var generalLedgerAccount = new GeneralLedgerAccountBuilder(this.DatabaseSession)
                 .WithAccountNumber("0001")
@@ -82,7 +78,7 @@ namespace Allors.Domain
             var cash = new CashBuilder(this.DatabaseSession)
                 .WithDescription("description")
                 .WithGeneralLedgerAccount(internalOrganisationGlAccount)
-                .WithCreditor(supplierRelationship)
+                .WithCreditor(supplier)
                 .Build();
 
             internalOrganisation.RemovePaymentMethods();
@@ -109,7 +105,7 @@ namespace Allors.Domain
                 .WithOrganisationRole(new OrganisationRoles(this.DatabaseSession).Supplier)
                 .Build();
 
-            var internalOrganisation = new InternalOrganisations(this.DatabaseSession).FindBy(M.InternalOrganisation.Name, "internalOrganisation");
+            var internalOrganisation = InternalOrganisation.Instance(this.DatabaseSession);
 
             var generalLedgerAccount = new GeneralLedgerAccountBuilder(this.DatabaseSession)
                 .WithAccountNumber("0001")
@@ -127,7 +123,7 @@ namespace Allors.Domain
 
             var cash = new CashBuilder(this.DatabaseSession)
                 .WithDescription("description")
-                .WithCreditor(supplierRelationship)
+                .WithCreditor(supplier)
                 .Build();
 
             internalOrganisation.RemovePaymentMethods();

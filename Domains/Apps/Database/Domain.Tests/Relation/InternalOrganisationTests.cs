@@ -88,7 +88,6 @@ namespace Allors.Domain
 
             var internalOrganisation = new InternalOrganisationBuilder(this.DatabaseSession)
                 .WithName("Internal")
-                .WithLocale(new Locales(this.DatabaseSession).EnglishGreatBritain)
                 .WithPreferredCurrency(this.euro)
                 .WithEmployeeRole(new Roles(this.DatabaseSession).Administrator)
                 .WithDefaultPaymentMethod(this.ownBankAccount)
@@ -107,7 +106,6 @@ namespace Allors.Domain
 
             var internalOrganisation = new InternalOrganisationBuilder(this.DatabaseSession)
                 .WithName("Internal")
-                .WithLocale(new Locales(this.DatabaseSession).EnglishGreatBritain)
                 .WithPreferredCurrency(this.euro)
                 .WithEmployeeRole(new Roles(this.DatabaseSession).Administrator)
                 .WithDefaultPaymentMethod(this.ownBankAccount)
@@ -126,7 +124,6 @@ namespace Allors.Domain
 
             var internalOrganisation = new InternalOrganisationBuilder(this.DatabaseSession)
                 .WithName("Internal")
-                .WithLocale(new Locales(this.DatabaseSession).EnglishGreatBritain)
                 .WithPreferredCurrency(this.euro)
                 .WithEmployeeRole(new Roles(this.DatabaseSession).Administrator)
                 .WithDefaultPaymentMethod(this.ownBankAccount)
@@ -145,7 +142,6 @@ namespace Allors.Domain
 
             var internalOrganisation = new InternalOrganisationBuilder(this.DatabaseSession)
                 .WithName("Internal")
-                .WithLocale(new Locales(this.DatabaseSession).EnglishGreatBritain)
                 .WithPreferredCurrency(this.euro)
                 .WithEmployeeRole(new Roles(this.DatabaseSession).Administrator)
                 .WithDefaultPaymentMethod(this.ownBankAccount)
@@ -158,51 +154,12 @@ namespace Allors.Domain
         }
 
         [Fact]
-        public void GivenInternalOrganisation_WhenBuildWithout_ThenLocaleIsEqualDefaultInternalOrganisationLocale()
-        {
-            this.InstantiateObjects(this.DatabaseSession);
-
-            var internalOrganisation = new InternalOrganisationBuilder(this.DatabaseSession)
-                .WithName("Internal")
-                .WithLocale(new Locales(this.DatabaseSession).EnglishGreatBritain)
-                .WithPreferredCurrency(this.euro)
-                .WithEmployeeRole(new Roles(this.DatabaseSession).Administrator)
-                .WithDefaultPaymentMethod(this.ownBankAccount)
-                .WithPartyContactMechanism(this.billingAddress)
-                .Build();
-
-            this.DatabaseSession.Derive();
-
-            Assert.Equal(Singleton.Instance(this.DatabaseSession).DefaultInternalOrganisation.Locale, internalOrganisation.Locale);
-        }
-
-        [Fact]
-        public void GivenInternalOrganisation_WhenBuildWithout_ThenPreferredCurrencyIsEqualInternalOrganisationPreferredCurrency()
-        {
-            this.InstantiateObjects(this.DatabaseSession);
-
-            var internalOrganisation = new InternalOrganisationBuilder(this.DatabaseSession)
-                .WithName("Internal")
-                .WithLocale(new Locales(this.DatabaseSession).EnglishGreatBritain)
-                .WithPreferredCurrency(this.euro)
-                .WithEmployeeRole(new Roles(this.DatabaseSession).Administrator)
-                .WithDefaultPaymentMethod(this.ownBankAccount)
-                .WithPartyContactMechanism(this.billingAddress)
-                .Build();
-
-            this.DatabaseSession.Derive();
-
-            Assert.Equal(Singleton.Instance(this.DatabaseSession).DefaultInternalOrganisation.PreferredCurrency, internalOrganisation.PreferredCurrency);
-        }
-
-        [Fact]
         public void GivenInternalOrganisation_WhenPreferredCurrencyIsChanged_ThenValidationErrorIsTrhown()
         {
             this.InstantiateObjects(this.DatabaseSession);
 
             var organisation = new InternalOrganisationBuilder(this.DatabaseSession)
                 .WithName("Internal")
-                .WithLocale(new Locales(this.DatabaseSession).EnglishGreatBritain)
                 .WithPreferredCurrency(this.euro)
                 .WithDefaultPaymentMethod(this.ownBankAccount)
                 .WithPartyContactMechanism(this.billingAddress)
@@ -227,7 +184,6 @@ namespace Allors.Domain
 
             var organisation = new InternalOrganisationBuilder(this.DatabaseSession)
                 .WithName("Internal")
-                .WithLocale(new Locales(this.DatabaseSession).EnglishGreatBritain)
                 .WithPreferredCurrency(this.euro)
                 .WithPartyContactMechanism(this.billingAddress)
                 .Build();
@@ -275,7 +231,6 @@ namespace Allors.Domain
 
             var organisation = new InternalOrganisationBuilder(this.DatabaseSession)
                 .WithName("Internal")
-                .WithLocale(new Locales(this.DatabaseSession).EnglishGreatBritain)
                 .WithPreferredCurrency(this.euro)
                 .WithFiscalYearStartMonth(05)
                 .WithFiscalYearStartDay(15)
@@ -331,7 +286,6 @@ namespace Allors.Domain
 
             var organisation = new InternalOrganisationBuilder(this.DatabaseSession)
                 .WithName("Internal")
-                .WithLocale(new Locales(this.DatabaseSession).EnglishGreatBritain)
                 .WithPreferredCurrency(this.euro)
                 .WithFiscalYearStartMonth(05)
                 .WithFiscalYearStartDay(15)
@@ -354,7 +308,6 @@ namespace Allors.Domain
 
             var organisation = new InternalOrganisationBuilder(this.DatabaseSession)
                 .WithName("Internal")
-                .WithLocale(new Locales(this.DatabaseSession).EnglishGreatBritain)
                 .WithPreferredCurrency(this.euro)
                 .WithDefaultPaymentMethod(this.ownBankAccount)
                 .WithPartyContactMechanism(this.billingAddress)
@@ -373,7 +326,6 @@ namespace Allors.Domain
 
             var organisation = new InternalOrganisationBuilder(this.DatabaseSession)
                 .WithName("Internal")
-                .WithLocale(new Locales(this.DatabaseSession).EnglishGreatBritain)
                 .WithPreferredCurrency(this.euro)
                 .WithPaymentMethod(this.ownBankAccount)
                 .WithPartyContactMechanism(this.billingAddress)
@@ -391,7 +343,6 @@ namespace Allors.Domain
 
             var organisation = new InternalOrganisationBuilder(this.DatabaseSession)
                 .WithName("Internal")
-                .WithLocale(new Locales(this.DatabaseSession).EnglishGreatBritain)
                 .WithPreferredCurrency(this.euro)
                 .WithPaymentMethod(this.ownBankAccount)
                 .WithPartyContactMechanism(this.billingAddress)

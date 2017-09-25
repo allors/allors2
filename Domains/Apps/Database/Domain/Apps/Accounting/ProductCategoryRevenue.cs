@@ -45,16 +45,6 @@ namespace Allors.Domain
                 ProductCategoryRevenues.AppsFindOrCreateAsDependable(this.Strategy.Session, this);
             }
 
-            var months = ((DateTime.UtcNow.Year - this.Year) * 12) + DateTime.UtcNow.Month - this.Month;
-            if (months <= 12)
-            {
-                var histories = this.ProductCategory.ProductCategoryRevenueHistoriesWhereProductCategory;
-                var history = histories.First ?? new ProductCategoryRevenueHistoryBuilder(this.Strategy.Session)
-                                                     .WithCurrency(this.Currency)
-                                                     .WithProductCategory(this.ProductCategory)
-                                                     .Build();
-            }
-
             foreach (ProductCategory parentCategory in this.ProductCategory.Parents)
             {
                 var productCategoryRevenues = parentCategory.ProductCategoryRevenuesWhereProductCategory;

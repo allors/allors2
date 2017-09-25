@@ -30,15 +30,16 @@ namespace Allors.Domain
             var withCarrier = false;
             var carrierValid = false;
 
-            if (shippingAndHandlingComponent.ExistSpecifiedFor)
-            {
-                withSpecifiedFor = true;
+            // TODO: ???
+            //if (shippingAndHandlingComponent.ExistSpecifiedFor)
+            //{
+            //    withSpecifiedFor = true;
 
-                if (customerShipment.ShipFromParty.Equals(shippingAndHandlingComponent.SpecifiedFor))
-                {
-                    specifiedForValid = true;
-                }
-            }
+            //    if (customerShipment.ShipFromParty.Equals(shippingAndHandlingComponent.SpecifiedFor))
+            //    {
+            //        specifiedForValid = true;
+            //    }
+            //}
 
             if (shippingAndHandlingComponent.ExistGeographicBoundary)
             {

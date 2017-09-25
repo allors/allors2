@@ -117,14 +117,20 @@ namespace Allors.Domain
 
         public static void AppsOnBuild(this Party party, ObjectOnBuild method)
         {
+            var session = party.Strategy.Session;
             if (!party.ExistLocale)
             {
-                party.Locale = InternalOrganisation.Instance(party.Strategy.Session).PreferredLocale;
+                party.Locale = InternalOrganisation.Instance(session).PreferredLocale;
             }
 
             if (!party.ExistPreferredCurrency)
             {
-                party.PreferredCurrency = InternalOrganisation.Instance(party.Strategy.Session).PreferredCurrency;
+                party.PreferredCurrency = InternalOrganisation.Instance(session).PreferredCurrency;
+            }
+            
+            if (!party.ExistSubAccountNumber)
+            {
+                party.SubAccountNumber = InternalOrganisation.Instance(session).DeriveNextSubAccountNumber();
             }
         }
 
@@ -253,6 +259,7 @@ namespace Allors.Domain
 
             @this.AppsOnDeriveCurrentSalesReps(derivation);
             @this.AppsOnDeriveOpenOrderAmount();
+            @this.AppsOnDeriveAmountDue(derivation);
             @this.AppsOnDeriveRevenue();
         }
 
@@ -279,6 +286,35 @@ namespace Allors.Domain
                     !salesOrder.CurrentObjectState.Equals(new SalesOrderObjectStates(party.Strategy.Session).Cancelled))
                 {
                     party.OpenOrderAmount += salesOrder.TotalIncVat;
+                }
+            }
+        }
+
+        public static void AppsOnDeriveAmountDue(this Party @this, IDerivation derivation)
+        {
+            @this.AmountDue = 0;
+
+            foreach (SalesInvoice salesInvoice in @this.SalesInvoicesWhereBillToCustomer)
+            {
+                if (!salesInvoice.CurrentObjectState.Equals(new SalesInvoiceObjectStates(@this.Strategy.Session).Paid))
+                {
+                    if (salesInvoice.AmountPaid > 0)
+                    {
+                        @this.AmountDue += salesInvoice.TotalIncVat - salesInvoice.AmountPaid;
+                    }
+                    else
+                    {
+                        foreach (SalesInvoiceItem invoiceItem in salesInvoice.InvoiceItems)
+                        {
+                            if (!invoiceItem.CurrentObjectState.Equals(new SalesInvoiceItemObjectStates(@this.Strategy.Session).Paid))
+                            {
+                                if (invoiceItem.ExistTotalIncVat)
+                                {
+                                    @this.AmountDue += invoiceItem.TotalIncVat - invoiceItem.AmountPaid;
+                                }
+                            }
+                        }
+                    }
                 }
             }
         }

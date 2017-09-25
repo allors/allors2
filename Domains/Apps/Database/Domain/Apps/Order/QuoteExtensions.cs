@@ -13,12 +13,9 @@
 // For more information visit http://www.allors.com/legal
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
-using System.Runtime.CompilerServices;
 
 namespace Allors.Domain
 {
-    using System;
-
     public static partial class QuoteExtensions
     {
 
@@ -29,14 +26,9 @@ namespace Allors.Domain
                 @this.CurrentObjectState = new QuoteObjectStates(@this.Strategy.Session).Created;
             }
 
-            if (!@this.ExistIssuer)
-            {
-                @this.Issuer = Singleton.Instance(@this.Strategy.Session).DefaultInternalOrganisation;
-            }
-
             if (!@this.ExistQuoteNumber)
             {
-                @this.QuoteNumber = Singleton.Instance(@this.Strategy.Session).DefaultInternalOrganisation.DeriveNextQuoteNumber();
+                @this.QuoteNumber = InternalOrganisation.Instance(@this.Strategy.Session).DeriveNextQuoteNumber();
             }
         }
 

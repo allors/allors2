@@ -7,7 +7,7 @@ namespace Allors.Repository
     #region Allors
     [Id("9c6f4ad8-5a4e-4b6e-96b7-876f7aabcffb")]
     #endregion
-	public partial interface Shipment : Printable, Transitional, UniquelyIdentifiable, AccessControlledObject 
+    public partial interface Shipment : Printable, Transitional, UniquelyIdentifiable, AccessControlledObject 
     {
         #region Allors
         [Id("05221b28-9c80-4d3b-933f-12a8a17bc261")]
@@ -17,9 +17,7 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.ManyToOne)]
         [Required]
         [Indexed]
-
         ShipmentMethod ShipmentMethod { get; set; }
-
 
         #region Allors
         [Id("05b0841b-d546-4fd6-9305-492b0ce20f8a")]
@@ -28,9 +26,7 @@ namespace Allors.Repository
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
-
         ContactMechanism BillToContactMechanism { get; set; }
-
 
         #region Allors
         [Id("165b529f-df1c-45b6-bbed-d19ffcb375f2")]
@@ -39,9 +35,7 @@ namespace Allors.Repository
         #endregion
         [Multiplicity(Multiplicity.OneToMany)]
         [Indexed]
-
         ShipmentPackage[] ShipmentPackages { get; set; }
-
 
         #region Allors
         [Id("17234c66-6b61-4ac9-a23b-4388e19f4888")]
@@ -50,9 +44,7 @@ namespace Allors.Repository
         #endregion
         [Required]
         [Size(256)]
-
         string ShipmentNumber { get; set; }
-
 
         #region Allors
         [Id("18808545-f941-4c5a-8809-0f1fb0cca2d8")]
@@ -61,9 +53,7 @@ namespace Allors.Repository
         #endregion
         [Multiplicity(Multiplicity.OneToMany)]
         [Indexed]
-
         Document[] Documents { get; set; }
-
 
         #region Allors
         [Id("50f36218-ae61-4d67-af4d-d05cc8b2266d")]
@@ -72,9 +62,7 @@ namespace Allors.Repository
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
-
         Party BillToParty { get; set; }
-
 
         #region Allors
         [Id("5891b368-89cd-4a0e-aaef-439f442909c8")]
@@ -84,9 +72,7 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
         [Required]
-
         Party ShipToParty { get; set; }
-
 
         #region Allors
         [Id("6a568bea-6718-414a-b822-d8304502be7b")]
@@ -95,7 +81,6 @@ namespace Allors.Repository
         #endregion
         [Multiplicity(Multiplicity.OneToMany)]
         [Indexed]
-
         ShipmentItem[] ShipmentItems { get; set; }
 
         #region Allors
@@ -105,9 +90,7 @@ namespace Allors.Repository
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
-
         ContactMechanism ReceiverContactMechanism { get; set; }
-
 
         #region Allors
         [Id("7e1325e0-a072-46da-adb5-b997dde9980a")]
@@ -117,9 +100,7 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.ManyToOne)]
         [Required]
         [Indexed]
-
         PostalAddress ShipToAddress { get; set; }
-
 
         #region Allors
         [Id("894ecdf3-1322-4513-bf94-63882c5c29bf")]
@@ -130,24 +111,19 @@ namespace Allors.Repository
         [Scale(2)]
         decimal EstimatedShipCost { get; set; }
 
-
         #region Allors
         [Id("97788e21-ec31-4fb2-9ef7-0b7b5a7367a1")]
         [AssociationId("227f8e47-58af-44be-bcaf-0da60e2c13d4")]
         [RoleId("338e2be0-6eb5-42ad-b51c-83dd9b7f0194")]
         #endregion
-
         DateTime EstimatedShipDate { get; set; }
-
 
         #region Allors
         [Id("a74391e5-bd03-4247-93b8-e7081d939823")]
         [AssociationId("41060c75-fb34-4391-96f3-d0d267344ba3")]
         [RoleId("eb3f084c-9d59-4fff-9fc3-186d7b9a19b3")]
         #endregion
-
         DateTime LatestCancelDate { get; set; }
-
 
         #region Allors
         [Id("b37c7c90-0287-4f12-b000-025e2505499c")]
@@ -156,9 +132,7 @@ namespace Allors.Repository
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
-
         Carrier Carrier { get; set; }
-
 
         #region Allors
         [Id("b5dabbcc-508a-4998-a21a-6b86d7193688")]
@@ -167,18 +141,14 @@ namespace Allors.Repository
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
-
         ContactMechanism InquireAboutContactMechanism { get; set; }
-
 
         #region Allors
         [Id("b69c6812-bdc4-4a06-a782-fa8ff4a71aca")]
         [AssociationId("988cafce-2323-4c0d-b1cd-026045764ba4")]
         [RoleId("cd02effa-d176-4f6e-8407-ec12d23b9f2a")]
         #endregion
-
         DateTime EstimatedReadyDate { get; set; }
-
 
         #region Allors
         [Id("c8b0eff8-4dff-449c-9d44-a7235cd24928")]
@@ -187,9 +157,7 @@ namespace Allors.Repository
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
-
         PostalAddress ShipFromAddress { get; set; }
-
 
         #region Allors
         [Id("ea57219b-217e-444d-9741-c1c4e7aee9f7")]
@@ -199,9 +167,7 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.ManyToOne)]
         [Derived]
         [Indexed]
-
         ContactMechanism BillFromContactMechanism { get; set; }
-
 
         #region Allors
         [Id("ee49c6ca-bb03-40d3-97f1-004cc5a31132")]
@@ -209,9 +175,7 @@ namespace Allors.Repository
         [RoleId("39a0ed41-436e-44bd-afc7-5d848397433b")]
         #endregion
         [Size(-1)]
-
         string HandlingInstruction { get; set; }
-
 
         #region Allors
         [Id("f1059139-6664-43d5-801f-79a4cc4288a6")]
@@ -220,9 +184,7 @@ namespace Allors.Repository
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
-
         Store Store { get; set; }
-
 
         #region Allors
         [Id("f1e92d31-db63-419c-8ed7-49f5db66c63d")]
@@ -232,9 +194,7 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
         [Required]
-
         Party ShipFromParty { get; set; }
-
 
         #region Allors
         [Id("f403ab39-cc81-4e09-8794-a45db9ef178f")]
@@ -243,17 +203,13 @@ namespace Allors.Repository
         #endregion
         [Multiplicity(Multiplicity.OneToMany)]
         [Indexed]
-
         ShipmentRouteSegment[] ShipmentRouteSegments { get; set; }
-
 
         #region Allors
         [Id("fdac3beb-edf8-4d1b-80d4-21b643ef43ce")]
         [AssociationId("63d8adfc-6afb-499f-bd27-2f1d3f78bee6")]
         [RoleId("8f56ce24-500e-4db9-abce-c7a301c38fe6")]
         #endregion
-
         DateTime EstimatedArrivalDate { get; set; }
-
     }
 }

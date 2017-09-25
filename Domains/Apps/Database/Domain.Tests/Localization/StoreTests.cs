@@ -73,7 +73,7 @@ namespace Allors.Domain
         [Fact]
         public void GivenStore_WhenBuild_ThenPostBuildRelationsMustExist()
         {
-            var internalOrganisation = new InternalOrganisations(this.DatabaseSession).FindBy(M.InternalOrganisation.Name, "internalOrganisation");
+            var internalOrganisation = InternalOrganisation.Instance(this.DatabaseSession);
 
             var store = new StoreBuilder(this.DatabaseSession)
                 .WithName("Organisation store")
@@ -86,7 +86,6 @@ namespace Allors.Domain
             Assert.Equal(0, store.CreditLimit);
             Assert.Equal(0, store.PaymentGracePeriod);
             Assert.Equal(0, store.ShipmentThreshold);
-            Assert.Equal(internalOrganisation, store.Owner);
             Assert.Equal(internalOrganisation.DefaultPaymentMethod, store.DefaultPaymentMethod);
             Assert.Equal(1, store.PaymentMethods.Count);
             Assert.Equal(new Warehouses(this.DatabaseSession).FindBy(M.Warehouse.Name, "facility"), store.DefaultFacility);
@@ -95,7 +94,6 @@ namespace Allors.Domain
         [Fact]
         public void GivenStore_WhenDefaultPaymentMethodIsSet_ThenPaymentMethodIsAddedToCollectionPaymentMethods()
         {
-            Singleton.Instance(this.DatabaseSession).RemoveDefaultInternalOrganisation();
             this.DatabaseSession.Commit();
 
             var netherlands = new Countries(this.DatabaseSession).CountryByIsoCode["NL"];
@@ -124,7 +122,6 @@ namespace Allors.Domain
         [Fact]
         public void GivenStoreWithoutDefaultPaymentMethod_WhenSinglePaymentMethodIsAdded_ThenDefaultPaymentMethodIsSet()
         {
-            Singleton.Instance(this.DatabaseSession).RemoveDefaultInternalOrganisation();
             this.DatabaseSession.Commit();
 
             var netherlands = new Countries(this.DatabaseSession).CountryByIsoCode["NL"];

@@ -24,7 +24,6 @@ namespace Allors.Domain
         public static PackageRevenue AppsFindOrCreateAsDependable(ISession session, PartyPackageRevenue dependant)
         {
             var packageRevenues = dependant.Package.PackageRevenuesWherePackage;
-            packageRevenues.Filter.AddEquals(M.PackageRevenue.InternalOrganisation, dependant.InternalOrganisation);
             packageRevenues.Filter.AddEquals(M.PackageRevenue.Year, dependant.Year);
             packageRevenues.Filter.AddEquals(M.PackageRevenue.Month, dependant.Month);
             var packageRevenue = packageRevenues.First ?? new PackageRevenueBuilder(session)
@@ -39,21 +38,13 @@ namespace Allors.Domain
 
         public static void AppsOnDeriveRevenues(ISession session)
         {
-            var packageRevenuesByPeriodByPackageByInternalOrganisation = new Dictionary<InternalOrganisation, Dictionary<Package, Dictionary<DateTime, PackageRevenue>>>();
-
             var packageRevenues = session.Extent<PackageRevenue>();
 
+            var packageRevenuesByPeriodByPackage = new Dictionary<Package, Dictionary<DateTime, PackageRevenue>>();
             foreach (PackageRevenue packageRevenue in packageRevenues)
             {
                 packageRevenue.Revenue = 0;
                 var date = DateTimeFactory.CreateDate(packageRevenue.Year, packageRevenue.Month, 01);
-
-                Dictionary<Package, Dictionary<DateTime, PackageRevenue>> packageRevenuesByPeriodByPackage;
-                if (!packageRevenuesByPeriodByPackageByInternalOrganisation.TryGetValue(packageRevenue.InternalOrganisation, out packageRevenuesByPeriodByPackage))
-                {
-                    packageRevenuesByPeriodByPackage = new Dictionary<Package, Dictionary<DateTime, PackageRevenue>>();
-                    packageRevenuesByPeriodByPackageByInternalOrganisation[packageRevenue.InternalOrganisation] = packageRevenuesByPeriodByPackage;
-                }
 
                 Dictionary<DateTime, PackageRevenue> packageRevenuesByPeriod;
                 if (!packageRevenuesByPeriodByPackage.TryGetValue(packageRevenue.Package, out packageRevenuesByPeriod))
@@ -87,7 +78,7 @@ namespace Allors.Domain
                 {
                     if (salesInvoiceItem.ExistProduct && salesInvoiceItem.Product.ExistPrimaryProductCategory && salesInvoiceItem.Product.PrimaryProductCategory.ExistPackage)
                     {
-                        CreatePackageRevenue(session, packageRevenuesByPeriodByPackageByInternalOrganisation, date, revenues, salesInvoiceItem, salesInvoiceItem.Product.PrimaryProductCategory.Package);
+                        CreatePackageRevenue(session, packageRevenuesByPeriodByPackage, date, revenues, salesInvoiceItem, salesInvoiceItem.Product.PrimaryProductCategory.Package);
                     }
                 }
             }
@@ -103,33 +94,13 @@ namespace Allors.Domain
 
         private static void CreatePackageRevenue(
             ISession session,
-            Dictionary<InternalOrganisation, Dictionary<Package, Dictionary<DateTime, PackageRevenue>>> packageRevenuesByPeriodByPackageByInternalOrganisation,
+            Dictionary<Package, Dictionary<DateTime, PackageRevenue>> packageRevenuesByPeriodByPackage,
             DateTime date,
             HashSet<long> revenues,
             SalesInvoiceItem salesInvoiceItem,
             Package package)
         {
             PackageRevenue packageRevenue;
-
-            Dictionary<Package, Dictionary<DateTime, PackageRevenue>> packageRevenuesByPeriodByPackage;
-            if (!packageRevenuesByPeriodByPackageByInternalOrganisation.TryGetValue(salesInvoiceItem.SalesInvoiceWhereSalesInvoiceItem.BilledFromInternalOrganisation, out packageRevenuesByPeriodByPackage))
-            {
-                packageRevenue = CreatePackageRevenue(session, salesInvoiceItem.SalesInvoiceWhereSalesInvoiceItem, package);
-
-                packageRevenuesByPeriodByPackage = new Dictionary<Package, Dictionary<DateTime, PackageRevenue>>
-                        {
-                            {
-                                package,
-                                new Dictionary<DateTime, PackageRevenue>
-                                    {
-                                        { date, packageRevenue }
-                                    }
-                            }
-                        };
-
-                packageRevenuesByPeriodByPackageByInternalOrganisation[salesInvoiceItem.SalesInvoiceWhereSalesInvoiceItem.BilledFromInternalOrganisation] = packageRevenuesByPeriodByPackage;
-            }
-
             Dictionary<DateTime, PackageRevenue> packageRevenuesByPeriod;
             if (!packageRevenuesByPeriodByPackage.TryGetValue(package, out packageRevenuesByPeriod))
             {

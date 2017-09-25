@@ -30,10 +30,7 @@ namespace Allors.Domain
 
             if (!this.ExistFacility)
             {
-                if (Singleton.Instance(this.Strategy.Session).InternalOrganisation != null)
-                {
-                    this.Facility = Singleton.Instance(this.Strategy.Session).InternalOrganisation.DefaultFacility;
-                }
+                this.Facility = InternalOrganisation.Instance(this).DefaultFacility;
             }
 
             if (!this.ExistSku && this.ExistGood && this.Good.ExistSku)

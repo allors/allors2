@@ -38,20 +38,19 @@ namespace Allors.Domain
 
         public void AppsOnDeriveContactMembership(IDerivation derivation)
         {
+            var internalOrganisation = InternalOrganisation.Instance(this);
+
             if (this.ExistContact && this.ExistOrganisation && this.Organisation.ExistContactsUserGroup)
             {
                 this.Organisation.ContactsUserGroup.RemoveMember(this.Contact);
                 if (this.FromDate <= DateTime.UtcNow && (!this.ExistThroughDate || this.ThroughDate >= DateTime.UtcNow))
                 {
-                    if (this.Organisation.AppsIsActiveCustomer(this.FromDate) ||
-                        this.Organisation.AppsIsActiveSupplier(this.FromDate) ||
+                    if (internalOrganisation.Customers.Contains(this.Organisation) ||
+                        internalOrganisation.Suppliers.Contains(this.Organisation) ||
                         this.Organisation.AppsIsActiveProfessionalServicesProvider(this.FromDate) ||
                         this.Organisation.AppsIsActiveSubContractor(this.FromDate))
                     {
-                        if (!this.Organisation.ContactsUserGroup.Members.Contains(this.Contact))
-                        {
-                            this.Organisation.ContactsUserGroup.AddMember(this.Contact);
-                        }
+                        this.Organisation.ContactsUserGroup.AddMember(this.Contact);
                     }
                 }
             }

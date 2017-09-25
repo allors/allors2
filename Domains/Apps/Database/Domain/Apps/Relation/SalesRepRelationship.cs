@@ -16,7 +16,6 @@
 namespace Allors.Domain
 {
     using System;
-    using Meta;
 
     public partial class SalesRepRelationship
     {
@@ -30,7 +29,7 @@ namespace Allors.Domain
                 this.SalesRepresentative.OnDerive(x => x.WithDerivation(derivation));
             }
 
-            this.Parties = new[] { this.Customer, this.InternalOrganisation };
+            this.Parties = new[] { this.Customer };
     
             if (!this.ExistCustomer | !this.ExistSalesRepresentative)
             {
@@ -45,17 +44,14 @@ namespace Allors.Domain
 
             foreach (SalesRepCommission salesRepCommission in this.SalesRepresentative.SalesRepCommissionsWhereSalesRep)
             {
-                if (salesRepCommission.InternalOrganisation.Equals(this.InternalOrganisation))
+                if (salesRepCommission.Year == DateTime.UtcNow.Year)
                 {
-                    if (salesRepCommission.Year == DateTime.UtcNow.Year)
-                    {
-                        this.YTDCommission += salesRepCommission.Year;
-                    }
+                    this.YTDCommission += salesRepCommission.Year;
+                }
 
-                    if (salesRepCommission.Year == DateTime.UtcNow.AddYears(-1).Year)
-                    {
-                        this.LastYearsCommission += salesRepCommission.Year;
-                    }
+                if (salesRepCommission.Year == DateTime.UtcNow.AddYears(-1).Year)
+                {
+                    this.LastYearsCommission += salesRepCommission.Year;
                 }
             }
         }

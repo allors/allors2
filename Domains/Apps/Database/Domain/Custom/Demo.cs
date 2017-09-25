@@ -79,7 +79,6 @@ namespace Allors
                 .WithDefaultPaymentMethod(new OwnBankAccountBuilder(Session).WithBankAccount(bankaccount).WithDescription("Hoofdbank").Build())
                 .WithRequestNumberPrefix("requestno: ")
                 .WithQuoteNumberPrefix("quoteno: ")
-                .WithLocale(new Locales(this.Session).FindBy(M.Locale.Name, "nl-BE"))
                 .WithPreferredCurrency(euro)
                 .WithInvoiceSequence(new InvoiceSequences(this.Session).EnforcedSequence)
                 .WithFiscalYearStartMonth(01)
@@ -98,8 +97,6 @@ namespace Allors
                 var image = new MediaBuilder(this.Session).WithFileName(fileName).WithInData(content).Build();
                 allors.LogoImage = image;
             }
-
-            Singleton.Instance(this.Session).DefaultInternalOrganisation = allors;
 
             var offices = new OfficeBuilder(this.Session).WithName("Headquarters").WithDescription("Allors HQ").Build();
             allors.DefaultFacility = offices;

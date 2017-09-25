@@ -14,12 +14,9 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-using Allors.Meta;
-
 namespace Allors.Domain
 {
     using System;
-    using System.Collections.Generic;
     using System.Text;
 
     public partial class Person
@@ -35,9 +32,7 @@ namespace Allors.Domain
             this.AppsOnDeriveInactiveContacts(derivation);
             this.AppsOnDeriveCurrentOrganisationContactRelationships(derivation);
             this.AppsOnDeriveInactiveOrganisationContactRelationships(derivation);
-            this.AppsOnDeriveCurrentEmployment(derivation);
             this.AppsOnDeriveCurrentPartyContactMechanisms(derivation);
-            this.AppsOnDeriveCurrentPartyRelationships(derivation);
             this.AppsOnDeriveInactivePartyContactMechanisms(derivation);
             this.AppsOnDeriveCommission();
 
@@ -88,20 +83,6 @@ namespace Allors.Domain
                     (relationship.ExistThroughDate && relationship.ThroughDate < DateTime.UtcNow))
                 {
                     this.AddInactiveOrganisationContactRelationship(relationship);
-                }
-            }
-        }
-
-        public void AppsOnDeriveCurrentEmployment(IDerivation derivation)
-        {
-            this.RemoveCurrentEmployment();
-
-            foreach (Employment employment in this.EmploymentsWhereEmployee)
-            {
-                if (employment.FromDate <= DateTime.UtcNow &&
-                    (!employment.ExistThroughDate || employment.ThroughDate >= DateTime.UtcNow))
-                {
-                    this.CurrentEmployment = employment;
                 }
             }
         }

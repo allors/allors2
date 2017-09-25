@@ -51,12 +51,14 @@ namespace Allors.Domain
 
         public void AppsOnDeriveInventoryItem(IDerivation derivation)
         {
+            var internalOrganisation = InternalOrganisation.Instance(this);
+
             if (this.ExistInventoryItemKind && this.InventoryItemKind.Equals(new InventoryItemKinds(this.Strategy.Session).NonSerialised))
             {
                 if (!this.ExistInventoryItemsWherePart)
                 {
                     new NonSerialisedInventoryItemBuilder(this.Strategy.Session)
-                        .WithFacility(this.OwnedByParty.DefaultFacility)
+                        .WithFacility(internalOrganisation.DefaultFacility)
                         .WithPart(this)
                         .Build();
                 }

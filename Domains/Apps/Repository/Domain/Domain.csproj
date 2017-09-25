@@ -351,7 +351,6 @@
     <Compile Include="Apps\InternalAccountingTransaction.cs" />
     <Compile Include="Apps\InternalOrganisation.cs" />
     <Compile Include="Apps\InternalOrganisationRevenue.cs" />
-    <Compile Include="Apps\InternalOrganisationRevenueHistory.cs" />
     <Compile Include="Apps\InternalRequirement.cs" />
     <Compile Include="Apps\InventoryItemVersion.cs" />
     <Compile Include="Apps\InventoryItem.cs" />
@@ -459,7 +458,6 @@
     <Compile Include="Apps\Package.cs" />
     <Compile Include="Apps\PackageQuantityBreak.cs" />
     <Compile Include="Apps\PackageRevenue.cs" />
-    <Compile Include="Apps\PackageRevenueHistory.cs" />
     <Compile Include="Apps\PackagingContent.cs" />
     <Compile Include="Apps\PackagingSlip.cs" />
     <Compile Include="Apps\Part.cs" />
@@ -476,13 +474,9 @@
     <Compile Include="Apps\PartyContactMechanism.cs" />
     <Compile Include="Apps\PartyFixedAssetAssignment.cs" />
     <Compile Include="Apps\PartyPackageRevenue.cs" />
-    <Compile Include="Apps\PartyPackageRevenueHistory.cs" />
     <Compile Include="Apps\PartyProductCategoryRevenue.cs" />
-    <Compile Include="Apps\PartyProductCategoryRevenueHistory.cs" />
     <Compile Include="Apps\PartyProductRevenue.cs" />
-    <Compile Include="Apps\PartyProductRevenueHistory.cs" />
     <Compile Include="Apps\PartyRevenue.cs" />
-    <Compile Include="Apps\PartyRevenueHistory.cs" />
     <Compile Include="Apps\PartySkill.cs" />
     <Compile Include="Apps\Passport.cs" />
     <Compile Include="Apps\PayCheck.cs" />
@@ -530,7 +524,6 @@
     <Compile Include="Apps\ProductAssociation.cs" />
     <Compile Include="Apps\ProductCategory.cs" />
     <Compile Include="Apps\ProductCategoryRevenue.cs" />
-    <Compile Include="Apps\ProductCategoryRevenueHistory.cs" />
     <Compile Include="Apps\ProductCharacteristic.cs" />
     <Compile Include="Apps\ProductCharacteristicValue.cs" />
     <Compile Include="Apps\ProductConfiguration.cs" />
@@ -545,7 +538,6 @@
     <Compile Include="Apps\ProductQuote.cs" />
     <Compile Include="Apps\ProductRequirement.cs" />
     <Compile Include="Apps\ProductRevenue.cs" />
-    <Compile Include="Apps\ProductRevenueHistory.cs" />
     <Compile Include="Apps\ProductType.cs" />
     <Compile Include="Apps\ProfessionalAssignment.cs" />
     <Compile Include="Apps\ProfessionalPlacement.cs" />
@@ -615,7 +607,6 @@
     <Compile Include="Apps\SalesAgreement.cs" />
     <Compile Include="Apps\SalesChannel.cs" />
     <Compile Include="Apps\SalesChannelRevenue.cs" />
-    <Compile Include="Apps\SalesChannelRevenueHistory.cs" />
     <Compile Include="Apps\SalesInvoice.cs" />
     <Compile Include="Apps\SalesInvoiceItem.cs" />
     <Compile Include="Apps\SalesInvoiceItemObjectState.cs" />
@@ -640,7 +631,6 @@
     <Compile Include="Apps\SalesRepProductCategoryRevenue.cs" />
     <Compile Include="Apps\SalesRepRelationship.cs" />
     <Compile Include="Apps\SalesRepRevenue.cs" />
-    <Compile Include="Apps\SalesRepRevenueHistory.cs" />
     <Compile Include="Apps\SalesTerritory.cs" />
     <Compile Include="Apps\Salutation.cs" />
     <Compile Include="Apps\SerialisedInventoryItem.cs" />
@@ -676,7 +666,6 @@
     <Compile Include="Apps\StatementOfWorkVersion.cs" />
     <Compile Include="Apps\Store.cs" />
     <Compile Include="Apps\StoreRevenue.cs" />
-    <Compile Include="Apps\StoreRevenueHistory.cs" />
     <Compile Include="Apps\StringTemplate.cs" />
     <Compile Include="Apps\SubAgreement.cs" />
     <Compile Include="Apps\SubAssembly.cs" />

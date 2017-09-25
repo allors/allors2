@@ -27,14 +27,6 @@ namespace Allors.Domain
             @this.RemoveBasePrice(basePrice);
         }
 
-        public static void AppsOnBuild(this Service @this, ObjectOnBuild method)
-        {
-            if (!@this.ExistSoldBy)
-            {
-                @this.SoldBy = Singleton.Instance(@this.Strategy.Session).DefaultInternalOrganisation;
-            }
-        }
-
         public static void AppsOnDerive(this Service @this, ObjectOnDerive method)
         {
             if (@this.ProductCategories.Count == 1 && !@this.ExistPrimaryProductCategory)

@@ -52,7 +52,6 @@ namespace Allors.Domain
                 .Build();
 
             Assert.Equal(new InventoryItemKinds(this.DatabaseSession).NonSerialised, finishedGood.InventoryItemKind);
-            Assert.Equal(new InternalOrganisations(this.DatabaseSession).FindBy(M.InternalOrganisation.Name, "internalOrganisation"), finishedGood.OwnedByParty);
         }
 
         [Fact]
@@ -93,7 +92,6 @@ namespace Allors.Domain
                 .Build();
 
             Assert.Equal(new InventoryItemKinds(this.DatabaseSession).NonSerialised, rawMaterial.InventoryItemKind);
-            Assert.Equal(new InternalOrganisations(this.DatabaseSession).FindBy(M.InternalOrganisation.Name, "internalOrganisation"), rawMaterial.OwnedByParty);
         }
 
         [Fact]
@@ -133,7 +131,6 @@ namespace Allors.Domain
                 .Build();
 
             Assert.Equal(new InventoryItemKinds(this.DatabaseSession).NonSerialised, subAssembly.InventoryItemKind);
-            Assert.Equal(new InternalOrganisations(this.DatabaseSession).FindBy(M.InternalOrganisation.Name, "internalOrganisation"), subAssembly.OwnedByParty);
         }
 
         [Fact]

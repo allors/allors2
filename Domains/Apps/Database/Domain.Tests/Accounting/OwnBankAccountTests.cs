@@ -104,11 +104,12 @@ namespace Allors.Domain
         [Fact]
         public void GivenOwnBankAccountForInternalOrganisationThatDoesAccounting_WhenDeriving_ThenCreditorIsRequired()
         {
-            Singleton.Instance(this.DatabaseSession).DefaultInternalOrganisation.DoAccounting = false;
+            var internalOrganisation = InternalOrganisation.Instance(this.DatabaseSession);
+            internalOrganisation.DoAccounting = false;
 
             Assert.False(this.DatabaseSession.Derive(false).HasErrors);
 
-            Singleton.Instance(this.DatabaseSession).DefaultInternalOrganisation.DoAccounting = true;
+            internalOrganisation.DoAccounting = true;
 
             Assert.True(this.DatabaseSession.Derive(false).HasErrors);
         }
@@ -122,13 +123,9 @@ namespace Allors.Domain
                 .WithOrganisationRole(new OrganisationRoles(this.DatabaseSession).Supplier)
                 .Build();
 
-            var internalOrganisation = new InternalOrganisations(this.DatabaseSession).FindBy(M.InternalOrganisation.Name, "internalOrganisation");
+            var internalOrganisation = InternalOrganisation.Instance(this.DatabaseSession);
 
-            var supplierRelationship = new SupplierRelationshipBuilder(this.DatabaseSession)
-                .WithSupplier(supplier)
-                .WithInternalOrganisation(internalOrganisation)
-                .WithFromDate(DateTime.UtcNow)
-                .Build();
+            internalOrganisation.AddSupplier(supplier);
 
             var generalLedgerAccount = new GeneralLedgerAccountBuilder(this.DatabaseSession)
                 .WithAccountNumber("0001")
@@ -137,7 +134,6 @@ namespace Allors.Domain
                 .Build();
 
             var internalOrganisationGlAccount = new OrganisationGlAccountBuilder(this.DatabaseSession)
-                .WithInternalOrganisation(internalOrganisation)
                 .WithGeneralLedgerAccount(generalLedgerAccount)
                 .Build();
 
@@ -153,7 +149,7 @@ namespace Allors.Domain
                 .WithDescription("own account")
                 .WithBankAccount(bankAccount)
                 .WithGeneralLedgerAccount(internalOrganisationGlAccount)
-                .WithCreditor(supplierRelationship)
+                .WithCreditor(supplier)
                 .Build();
 
             this.DatabaseSession.Commit();
@@ -182,13 +178,9 @@ namespace Allors.Domain
                 .WithOrganisationRole(new OrganisationRoles(this.DatabaseSession).Supplier)
                 .Build();
 
-            var internalOrganisation = new InternalOrganisations(this.DatabaseSession).FindBy(M.InternalOrganisation.Name, "internalOrganisation");
+            var internalOrganisation = InternalOrganisation.Instance(this.DatabaseSession);
 
-            var supplierRelationship = new SupplierRelationshipBuilder(this.DatabaseSession)
-                .WithSupplier(supplier)
-                .WithInternalOrganisation(internalOrganisation)
-                .WithFromDate(DateTime.UtcNow)
-                .Build();
+            internalOrganisation.AddSupplier(supplier);
 
             var generalLedgerAccount = new GeneralLedgerAccountBuilder(this.DatabaseSession)
                 .WithAccountNumber("0001")
@@ -197,7 +189,6 @@ namespace Allors.Domain
                 .Build();
 
             var internalOrganisationGlAccount = new OrganisationGlAccountBuilder(this.DatabaseSession)
-                .WithInternalOrganisation(internalOrganisation)
                 .WithGeneralLedgerAccount(generalLedgerAccount)
                 .Build();
 
@@ -212,7 +203,7 @@ namespace Allors.Domain
             var paymentMethod = new OwnBankAccountBuilder(this.DatabaseSession)
                 .WithDescription("own account")
                 .WithBankAccount(bankAccount)
-                .WithCreditor(supplierRelationship)
+                .WithCreditor(supplier)
                 .Build();
 
             this.DatabaseSession.Commit();

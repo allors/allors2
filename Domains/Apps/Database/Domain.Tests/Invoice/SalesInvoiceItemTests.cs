@@ -54,7 +54,7 @@ namespace Allors.Domain
 
             this.supplier = new OrganisationBuilder(this.DatabaseSession).WithName("supplier").WithLocale(new Locales(this.DatabaseSession).EnglishGreatBritain).WithOrganisationRole(new OrganisationRoles(this.DatabaseSession).Supplier).Build();
 
-            this.internalOrganisation = new InternalOrganisations(this.DatabaseSession).FindBy(M.InternalOrganisation.Name, "internalOrganisation");
+            this.internalOrganisation = InternalOrganisation.Instance(this.DatabaseSession);
 
             this.vatRate21 = new VatRateBuilder(this.DatabaseSession).WithRate(21).Build();
 
@@ -67,8 +67,8 @@ namespace Allors.Domain
 
             this.shipToCustomer = new OrganisationBuilder(this.DatabaseSession).WithName("shipToCustomer").WithPreferredCurrency(euro).WithOrganisationRole(new OrganisationRoles(this.DatabaseSession).Customer).Build();
 
-            new CustomerRelationshipBuilder(this.DatabaseSession).WithFromDate(DateTime.UtcNow).WithCustomer(this.billToCustomer).WithInternalOrganisation(this.internalOrganisation).Build();
-            new CustomerRelationshipBuilder(this.DatabaseSession).WithFromDate(DateTime.UtcNow).WithCustomer(this.shipToCustomer).WithInternalOrganisation(this.internalOrganisation).Build();
+            this.internalOrganisation.AddCustomer(this.billToCustomer);
+            this.internalOrganisation.AddCustomer(this.shipToCustomer);
 
             this.DatabaseSession.Derive();
 
@@ -112,7 +112,6 @@ namespace Allors.Domain
                 .Build();
 
             this.currentBasePriceGeoBoundary = new BasePriceBuilder(this.DatabaseSession)
-                .WithSpecifiedFor(this.internalOrganisation)
                 .WithDescription("current BasePriceGeoBoundary")
                 .WithGeographicBoundary(this.mechelen)
                 .WithProduct(this.good)
@@ -122,7 +121,6 @@ namespace Allors.Domain
 
             // previous basePrice for good
             new BasePriceBuilder(this.DatabaseSession).WithDescription("previous good")
-                .WithSpecifiedFor(this.internalOrganisation)
                 .WithProduct(this.good)
                 .WithPrice(8)
                 .WithFromDate(DateTime.UtcNow.AddYears(-1))
@@ -130,7 +128,6 @@ namespace Allors.Domain
                 .Build();
 
             this.currentGood1BasePrice = new BasePriceBuilder(this.DatabaseSession)
-                .WithSpecifiedFor(this.internalOrganisation)
                 .WithDescription("current good")
                 .WithProduct(this.good)
                 .WithPrice(10)
@@ -140,7 +137,6 @@ namespace Allors.Domain
 
             // future basePrice for good
             new BasePriceBuilder(this.DatabaseSession).WithDescription("future good")
-                .WithSpecifiedFor(this.internalOrganisation)
                 .WithProduct(this.good)
                 .WithPrice(11)
                 .WithFromDate(DateTime.UtcNow.AddYears(1))
@@ -148,7 +144,6 @@ namespace Allors.Domain
 
             // previous basePrice for feature1
             new BasePriceBuilder(this.DatabaseSession).WithDescription("previous feature1")
-                .WithSpecifiedFor(this.internalOrganisation)
                 .WithProductFeature(this.feature1)
                 .WithPrice(0.5M)
                 .WithFromDate(DateTime.UtcNow.AddYears(-1))
@@ -157,14 +152,12 @@ namespace Allors.Domain
 
             // future basePrice for feature1
             new BasePriceBuilder(this.DatabaseSession).WithDescription("future feature1")
-                .WithSpecifiedFor(this.internalOrganisation)
                 .WithProductFeature(this.feature1)
                 .WithPrice(2.5M)
                 .WithFromDate(DateTime.UtcNow.AddYears(1))
                 .Build();
 
             this.currentFeature1BasePrice = new BasePriceBuilder(this.DatabaseSession)
-                .WithSpecifiedFor(this.internalOrganisation)
                 .WithDescription("current feature1")
                 .WithProductFeature(this.feature1)
                 .WithPrice(2)
@@ -174,7 +167,6 @@ namespace Allors.Domain
 
             // previous basePrice for feature2
             new BasePriceBuilder(this.DatabaseSession).WithDescription("previous feature2")
-                .WithSpecifiedFor(this.internalOrganisation)
                 .WithProductFeature(this.feature2)
                 .WithPrice(2)
                 .WithFromDate(DateTime.UtcNow.AddYears(-1))
@@ -183,7 +175,6 @@ namespace Allors.Domain
 
             // future basePrice for feature2
             new BasePriceBuilder(this.DatabaseSession)
-                .WithSpecifiedFor(this.internalOrganisation)
                 .WithDescription("future feature2")
                 .WithProductFeature(this.feature2)
                 .WithPrice(4)
@@ -191,7 +182,6 @@ namespace Allors.Domain
                 .Build();
 
             new BasePriceBuilder(this.DatabaseSession)
-                .WithSpecifiedFor(this.internalOrganisation)
                 .WithDescription("current feature2")
                 .WithProductFeature(this.feature2)
                 .WithPrice(3)
@@ -201,7 +191,6 @@ namespace Allors.Domain
 
             // previous basePrice for good with feature1
             new BasePriceBuilder(this.DatabaseSession).WithDescription("previous good/feature1")
-                .WithSpecifiedFor(this.internalOrganisation)
                 .WithProduct(this.good)
                 .WithProductFeature(this.feature1)
                 .WithPrice(4)
@@ -211,7 +200,6 @@ namespace Allors.Domain
 
             // future basePrice for good with feature1
             new BasePriceBuilder(this.DatabaseSession)
-                .WithSpecifiedFor(this.internalOrganisation)
                 .WithDescription("future good/feature1")
                 .WithProduct(this.good)
                 .WithProductFeature(this.feature1)
@@ -220,7 +208,6 @@ namespace Allors.Domain
                 .Build();
 
             this.currentGood1Feature1BasePrice = new BasePriceBuilder(this.DatabaseSession)
-                .WithSpecifiedFor(this.internalOrganisation)
                 .WithDescription("current good/feature1")
                 .WithProduct(this.good)
                 .WithProductFeature(this.feature1)
@@ -235,7 +222,6 @@ namespace Allors.Domain
                 .WithBillToCustomer(this.billToCustomer)
                 .WithShipToAddress(this.shipToContactMechanismKiev)
                 .WithShipToCustomer(this.shipToCustomer)
-                .WithBilledFromInternalOrganisation(this.internalOrganisation)
                 .Build();
 
             this.DatabaseSession.Derive();
@@ -304,7 +290,6 @@ namespace Allors.Domain
             var productItem = new SalesInvoiceItemTypes(this.DatabaseSession).ProductItem;
 
             var salesInvoice = new SalesInvoiceBuilder(this.DatabaseSession)
-                .WithBilledFromInternalOrganisation(this.internalOrganisation)
                 .WithBillToCustomer(this.billToCustomer)
                 .WithBillToContactMechanism(this.billToContactMechanismMechelen)
                 .WithVatRegime(new VatRegimes(this.DatabaseSession).Export)
@@ -326,7 +311,6 @@ namespace Allors.Domain
             var vatRate0 = new VatRates(this.DatabaseSession).FindBy(M.VatRate.Rate, 0);
 
             var salesInvoice = new SalesInvoiceBuilder(this.DatabaseSession)
-                .WithBilledFromInternalOrganisation(this.internalOrganisation)
                 .WithBillToCustomer(this.billToCustomer)
                 .WithBillToContactMechanism(this.billToContactMechanismMechelen)
                 .WithVatRegime(new VatRegimes(this.DatabaseSession).Export)
@@ -516,7 +500,6 @@ namespace Allors.Domain
             Assert.Equal(this.currentBasePriceGeoBoundary.Price, item1.CalculatedUnitPrice);
 
             var invoice2 = new SalesInvoiceBuilder(this.DatabaseSession)
-                .WithBilledFromInternalOrganisation(this.internalOrganisation)
                 .WithBillToCustomer(this.billToCustomer)
                 .WithBillToContactMechanism(this.billToContactMechanismMechelen)
                 .Build();
@@ -535,7 +518,6 @@ namespace Allors.Domain
             const decimal quantity = 3;
             const decimal amount = 1;
             new DiscountComponentBuilder(this.DatabaseSession)
-                .WithSpecifiedFor(this.internalOrganisation)
                 .WithDescription("discount good for geo boundary")
                 .WithGeographicBoundary(this.kiev)
                 .WithPrice(amount)
@@ -571,7 +553,6 @@ namespace Allors.Domain
             const decimal quantity = 3;
             const decimal amount = 1;
             new DiscountComponentBuilder(this.DatabaseSession)
-                .WithSpecifiedFor(this.internalOrganisation)
                 .WithDescription("discount good for geo boundary")
                 .WithGeographicBoundary(this.kiev)
                 .WithProduct(this.good)
@@ -609,7 +590,6 @@ namespace Allors.Domain
             const decimal percentage = 5;
 
             new DiscountComponentBuilder(this.DatabaseSession)
-                .WithSpecifiedFor(this.internalOrganisation)
                 .WithDescription("discount good for geo boundary")
                 .WithGeographicBoundary(this.kiev)
                 .WithProduct(this.good)
@@ -649,7 +629,6 @@ namespace Allors.Domain
             const decimal amount = 1;
 
             new SurchargeComponentBuilder(this.DatabaseSession)
-                .WithSpecifiedFor(this.internalOrganisation)
                 .WithDescription("surcharge good for geo boundary")
                 .WithGeographicBoundary(this.kiev)
                 .WithProduct(this.good)
@@ -687,7 +666,6 @@ namespace Allors.Domain
             const decimal percentage = 5;
 
             new SurchargeComponentBuilder(this.DatabaseSession)
-                .WithSpecifiedFor(this.internalOrganisation)
                 .WithDescription("surcharge good for geo boundary")
                 .WithGeographicBoundary(this.kiev)
                 .WithProduct(this.good)
@@ -728,7 +706,6 @@ namespace Allors.Domain
 
             var classification = new IndustryClassificationBuilder(this.DatabaseSession).WithName("gold customer").Build();
             new DiscountComponentBuilder(this.DatabaseSession)
-                .WithSpecifiedFor(this.internalOrganisation)
                 .WithDescription("discount good for party classification")
                 .WithPartyClassification(classification)
                 .WithProduct(this.good)
@@ -771,7 +748,6 @@ namespace Allors.Domain
 
             var classification = new IndustryClassificationBuilder(this.DatabaseSession).WithName("gold customer").Build();
             new DiscountComponentBuilder(this.DatabaseSession)
-                .WithSpecifiedFor(this.internalOrganisation)
                 .WithDescription("discount good for party classification")
                 .WithPartyClassification(classification)
                 .WithProduct(this.good)
@@ -816,7 +792,6 @@ namespace Allors.Domain
 
             var classification = new IndustryClassificationBuilder(this.DatabaseSession).WithName("gold customer").Build();
             new SurchargeComponentBuilder(this.DatabaseSession)
-                .WithSpecifiedFor(this.internalOrganisation)
                 .WithDescription("discount good for party classification")
                 .WithPartyClassification(classification)
                 .WithProduct(this.good)
@@ -859,7 +834,6 @@ namespace Allors.Domain
 
             var classification = new IndustryClassificationBuilder(this.DatabaseSession).WithName("gold customer").Build();
             new SurchargeComponentBuilder(this.DatabaseSession)
-                .WithSpecifiedFor(this.internalOrganisation)
                 .WithDescription("discount good for party classification")
                 .WithPartyClassification(classification)
                 .WithProduct(this.good)
@@ -907,7 +881,6 @@ namespace Allors.Domain
                 .Build();
 
             new DiscountComponentBuilder(this.DatabaseSession)
-                .WithSpecifiedFor(this.internalOrganisation)
                 .WithDescription("discount good for product category")
                 .WithProductCategory(category)
                 .WithProduct(this.good)
@@ -953,7 +926,6 @@ namespace Allors.Domain
                 .Build();
 
             new DiscountComponentBuilder(this.DatabaseSession)
-                .WithSpecifiedFor(this.internalOrganisation)
                 .WithDescription("discount good for product category")
                 .WithProductCategory(category)
                 .WithProduct(this.good)
@@ -1001,7 +973,6 @@ namespace Allors.Domain
                 .Build();
 
             new SurchargeComponentBuilder(this.DatabaseSession)
-                .WithSpecifiedFor(this.internalOrganisation)
                 .WithDescription("discount good for product category")
                 .WithProductCategory(category)
                 .WithProduct(this.good)
@@ -1047,7 +1018,6 @@ namespace Allors.Domain
                 .Build();
 
             new SurchargeComponentBuilder(this.DatabaseSession)
-                .WithSpecifiedFor(this.internalOrganisation)
                 .WithDescription("discount good for product category")
                 .WithProductCategory(category)
                 .WithProduct(this.good)
@@ -1097,7 +1067,6 @@ namespace Allors.Domain
             var break2 = new OrderQuantityBreakBuilder(this.DatabaseSession).WithFromAmount(100).Build();
 
             new DiscountComponentBuilder(this.DatabaseSession)
-                .WithSpecifiedFor(this.internalOrganisation)
                 .WithDescription("discount good for quantity break 1")
                 .WithOrderQuantityBreak(break1)
                 .WithProduct(this.good)
@@ -1107,7 +1076,6 @@ namespace Allors.Domain
                 .Build();
 
             new DiscountComponentBuilder(this.DatabaseSession)
-                .WithSpecifiedFor(this.internalOrganisation)
                 .WithDescription("discount good for quantity break 2")
                 .WithOrderQuantityBreak(break2)
                 .WithProduct(this.good)
@@ -1216,7 +1184,6 @@ namespace Allors.Domain
             var break2 = new OrderQuantityBreakBuilder(this.DatabaseSession).WithFromAmount(100).Build();
 
             new DiscountComponentBuilder(this.DatabaseSession)
-                .WithSpecifiedFor(this.internalOrganisation)
                 .WithDescription("discount good for quantity break 1")
                 .WithOrderQuantityBreak(break1)
                 .WithProduct(this.good)
@@ -1226,7 +1193,6 @@ namespace Allors.Domain
                 .Build();
 
             new DiscountComponentBuilder(this.DatabaseSession)
-                .WithSpecifiedFor(this.internalOrganisation)
                 .WithDescription("discount good for quantity break 2")
                 .WithOrderQuantityBreak(break2)
                 .WithProduct(this.good)
@@ -1339,7 +1305,6 @@ namespace Allors.Domain
             var break2 = new OrderQuantityBreakBuilder(this.DatabaseSession).WithFromAmount(100).Build();
 
             new SurchargeComponentBuilder(this.DatabaseSession)
-                .WithSpecifiedFor(this.internalOrganisation)
                 .WithDescription("surcharge good for quantity break 1")
                 .WithOrderQuantityBreak(break1)
                 .WithProduct(this.good)
@@ -1349,7 +1314,6 @@ namespace Allors.Domain
                 .Build();
 
             new SurchargeComponentBuilder(this.DatabaseSession)
-                .WithSpecifiedFor(this.internalOrganisation)
                 .WithDescription("surcharge good for quantity break 2")
                 .WithOrderQuantityBreak(break2)
                 .WithProduct(this.good)
@@ -1458,7 +1422,6 @@ namespace Allors.Domain
             var break2 = new OrderQuantityBreakBuilder(this.DatabaseSession).WithFromAmount(100).Build();
 
             new SurchargeComponentBuilder(this.DatabaseSession)
-                .WithSpecifiedFor(this.internalOrganisation)
                 .WithDescription("surcharge good for quantity break 1")
                 .WithOrderQuantityBreak(break1)
                 .WithProduct(this.good)
@@ -1468,7 +1431,6 @@ namespace Allors.Domain
                 .Build();
 
             new SurchargeComponentBuilder(this.DatabaseSession)
-                .WithSpecifiedFor(this.internalOrganisation)
                 .WithDescription("surcharge good for quantity break 2")
                 .WithOrderQuantityBreak(break2)
                 .WithProduct(this.good)
@@ -1581,7 +1543,6 @@ namespace Allors.Domain
             var value2 = new OrderValueBuilder(this.DatabaseSession).WithFromAmount(100).Build();
 
             new DiscountComponentBuilder(this.DatabaseSession)
-                .WithSpecifiedFor(this.internalOrganisation)
                 .WithDescription("discount good for order value 1")
                 .WithOrderValue(value1)
                 .WithProduct(this.good)
@@ -1591,7 +1552,6 @@ namespace Allors.Domain
                 .Build();
 
             new DiscountComponentBuilder(this.DatabaseSession)
-                .WithSpecifiedFor(this.internalOrganisation)
                 .WithDescription("discount good for order value 1")
                 .WithOrderValue(value2)
                 .WithProduct(this.good)
@@ -1700,7 +1660,6 @@ namespace Allors.Domain
             var value2 = new OrderValueBuilder(this.DatabaseSession).WithFromAmount(100).Build();
 
             new DiscountComponentBuilder(this.DatabaseSession)
-                .WithSpecifiedFor(this.internalOrganisation)
                 .WithDescription("discount good for order value 1")
                 .WithOrderValue(value1)
                 .WithProduct(this.good)
@@ -1710,7 +1669,6 @@ namespace Allors.Domain
                 .Build();
 
             new DiscountComponentBuilder(this.DatabaseSession)
-                .WithSpecifiedFor(this.internalOrganisation)
                 .WithDescription("discount good for order value 1")
                 .WithOrderValue(value2)
                 .WithProduct(this.good)
@@ -1823,7 +1781,6 @@ namespace Allors.Domain
             var value2 = new OrderValueBuilder(this.DatabaseSession).WithFromAmount(100).Build();
 
             new SurchargeComponentBuilder(this.DatabaseSession)
-                .WithSpecifiedFor(this.internalOrganisation)
                 .WithDescription("surcharge good for order value 1")
                 .WithOrderValue(value1)
                 .WithProduct(this.good)
@@ -1833,7 +1790,6 @@ namespace Allors.Domain
                 .Build();
 
             new SurchargeComponentBuilder(this.DatabaseSession)
-                .WithSpecifiedFor(this.internalOrganisation)
                 .WithDescription("surcharge good for order value 1")
                 .WithOrderValue(value2)
                 .WithProduct(this.good)
@@ -1942,7 +1898,6 @@ namespace Allors.Domain
             var value2 = new OrderValueBuilder(this.DatabaseSession).WithFromAmount(100).Build();
 
             new SurchargeComponentBuilder(this.DatabaseSession)
-            .WithSpecifiedFor(this.internalOrganisation)
             .WithDescription("surcharge good for order value 1")
             .WithOrderValue(value1)
             .WithProduct(this.good)
@@ -1952,7 +1907,6 @@ namespace Allors.Domain
             .Build();
 
             new SurchargeComponentBuilder(this.DatabaseSession)
-            .WithSpecifiedFor(this.internalOrganisation)
             .WithDescription("surcharge good for order value 1")
             .WithOrderValue(value2)
             .WithProduct(this.good)
@@ -2029,7 +1983,6 @@ namespace Allors.Domain
             const decimal amount = 1;
 
             new DiscountComponentBuilder(this.DatabaseSession)
-                .WithSpecifiedFor(this.internalOrganisation)
                 .WithDescription("discount good for sales type")
                 .WithSalesChannel(new SalesChannels(this.DatabaseSession).EmailChannel)
                 .WithProduct(this.good)
@@ -2072,7 +2025,6 @@ namespace Allors.Domain
             var discountAdjustment = new DiscountAdjustmentBuilder(this.DatabaseSession).WithPercentage(adjustmentPerc).Build();
 
             new DiscountComponentBuilder(this.DatabaseSession)
-                .WithSpecifiedFor(this.internalOrganisation)
                 .WithDescription("discount good for sales type")
                 .WithSalesChannel(new SalesChannels(this.DatabaseSession).EmailChannel)
                 .WithProduct(this.good)
@@ -2124,7 +2076,6 @@ namespace Allors.Domain
             const decimal amount = 1;
 
             new SurchargeComponentBuilder(this.DatabaseSession)
-                .WithSpecifiedFor(this.internalOrganisation)
                 .WithDescription("discount good for sales type")
                 .WithSalesChannel(new SalesChannels(this.DatabaseSession).EmailChannel)
                 .WithProduct(this.good)
@@ -2164,7 +2115,6 @@ namespace Allors.Domain
             const decimal percentage = 5;
 
             new SurchargeComponentBuilder(this.DatabaseSession)
-                .WithSpecifiedFor(this.internalOrganisation)
                 .WithDescription("discount good for sales type")
                 .WithSalesChannel(new SalesChannels(this.DatabaseSession).EmailChannel)
                 .WithProduct(this.good)
@@ -2209,7 +2159,6 @@ namespace Allors.Domain
             var surchargeAdjustment = new SurchargeAdjustmentBuilder(this.DatabaseSession).WithPercentage(adjustmentPerc).Build();
 
             new SurchargeComponentBuilder(this.DatabaseSession)
-                .WithSpecifiedFor(this.internalOrganisation)
                 .WithDescription("discount good for sales type")
                 .WithSalesChannel(new SalesChannels(this.DatabaseSession).EmailChannel)
                 .WithProduct(this.good)
@@ -2280,7 +2229,6 @@ namespace Allors.Domain
 
             var newInvoice = new SalesInvoiceBuilder(this.DatabaseSession)
                 .WithBillToCustomer(this.billToCustomer)
-                .WithBilledFromInternalOrganisation(this.internalOrganisation)
                 .WithBillToContactMechanism(this.billToContactMechanismMechelen)
                 .Build();
 

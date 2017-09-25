@@ -24,7 +24,7 @@ namespace Allors.Domain
         {
             var derivation = method.Derivation;
 
-            this.PartyProductName = string.Concat(this.Party.Name, "/", this.Product.Name);
+            this.PartyProductName = string.Concat(this.Party.PartyName, "/", this.Product.Name);
 
             this.AppsOnDeriveRevenue(derivation);
         }
@@ -51,23 +51,7 @@ namespace Allors.Domain
                     }
                 }
             }
-
-            var months = ((DateTime.UtcNow.Year - this.Year) * 12) + DateTime.UtcNow.Month - this.Month;
-            if (months <= 12)
-            {
-                var histories = this.Party.PartyProductRevenueHistoriesWhereParty;
-                histories.Filter.AddEquals(M.PartyProductRevenueHistory.Product, this.Product);
-                var history = histories.First ?? new PartyProductRevenueHistoryBuilder(this.Strategy.Session)
-                                                     .WithCurrency(this.Currency)
-                                                     .WithParty(this.Party)
-                                                     .WithProduct(this.Product)
-                                                     .WithRevenue(0)
-                                                     .WithQuantity(0)
-                                                     .Build();
-
-                history.AppsOnDeriveHistory();
-            }
-
+            
             if (this.ExistParty)
             {
                 var partyRevenue = PartyRevenues.AppsFindOrCreateAsDependable(this.Strategy.Session, this);

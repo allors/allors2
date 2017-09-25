@@ -24,6 +24,11 @@ namespace Allors.Domain
     {
         private const string SessionKey = nameof(InternalOrganisation) + ".Key";
 
+        public static InternalOrganisation Instance(IObject @object)
+        {
+            return Instance(@object.Strategy.Session);
+        }
+
         public static InternalOrganisation Instance(ISession session)
         {
             var instance = (InternalOrganisation)session[SessionKey] ?? session.Extent<InternalOrganisation>().First;
@@ -274,6 +279,11 @@ namespace Allors.Domain
             if (!this.ExistDefaultPaymentMethod && this.PaymentMethods.Count == 1)
             {
                 this.DefaultPaymentMethod = this.PaymentMethods.First;
+            }
+
+            foreach (User employee in this.Employees)
+            {
+                new UserGroups(this.Strategy.Session).Creators.AddMember(employee);
             }
         }
 

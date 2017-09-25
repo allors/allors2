@@ -42,16 +42,6 @@ namespace Allors.Domain
                 this.Revenue += partyProductRevenue.Revenue;
             }
 
-            var months = ((DateTime.UtcNow.Year - this.Year) * 12) + DateTime.UtcNow.Month - this.Month;
-            if (months <= 12)
-            {
-                var histories = this.Product.ProductRevenueHistoriesWhereProduct;
-                var history = histories.First ?? new ProductRevenueHistoryBuilder(this.Strategy.Session)
-                                                     .WithCurrency(this.Currency)
-                                                     .WithProduct(this.Product)
-                                                     .Build();
-            }
-
             foreach (ProductCategory productCategory in this.Product.ProductCategories)
             {
                 productCategory.OnDerive(x => x.WithDerivation(derivation));

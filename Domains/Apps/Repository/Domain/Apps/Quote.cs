@@ -46,17 +46,6 @@ namespace Allors.Repository
         QuoteTerm[] QuoteTerms { get; set; }
 
         #region Allors
-        [Id("20880670-0496-4d24-8c97-69b83867c09e")]
-        [AssociationId("c2bfd7fd-7956-4c28-960e-539f8159e46a")]
-        [RoleId("3242cf4f-589c-457b-9ecd-59110041ab34")]
-        #endregion
-        [Multiplicity(Multiplicity.ManyToOne)]
-        [Indexed]
-        [Workspace]
-        [Required]
-        Party Issuer { get; set; }
-
-        #region Allors
         [Id("2140e106-2ef3-427a-be94-458c2b8e154d")]
         [AssociationId("9d81ada4-a4f3-44bb-9098-bc1a3e61de19")]
         [RoleId("60581583-2536-4b09-acae-f0f877169dae")]

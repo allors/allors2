@@ -57,7 +57,7 @@ namespace Allors.Domain
             {
                 if (!this.ExistCurrency)
                 {
-                    this.Currency = this.SpecifiedFor.PreferredCurrency;
+                    this.Currency = InternalOrganisation.Instance(this).PreferredCurrency;
                 }
 
                 derivation.Validation.AssertExists(this, M.BasePrice.Currency);

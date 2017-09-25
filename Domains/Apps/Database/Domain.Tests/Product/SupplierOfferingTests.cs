@@ -101,14 +101,10 @@ namespace Allors.Domain
         public void GivenNewGood_WhenDeriving_ThenNonSerialisedInventryItemIsCreatedForEveryFacility()
         {
             var supplier = new OrganisationBuilder(this.DatabaseSession).WithName("supplier").WithOrganisationRole(new OrganisationRoles(this.DatabaseSession).Supplier).Build();
-            var internalOrganisation = new InternalOrganisations(this.DatabaseSession).FindBy(M.InternalOrganisation.Name, "internalOrganisation");
-            var secondFacility = new WarehouseBuilder(this.DatabaseSession).WithName("second facility").WithOwner(internalOrganisation).Build();
+            var internalOrganisation = InternalOrganisation.Instance(this.DatabaseSession);
+            var secondFacility = new WarehouseBuilder(this.DatabaseSession).WithName("second facility").Build();
 
-            new SupplierRelationshipBuilder(this.DatabaseSession)
-                .WithInternalOrganisation(internalOrganisation)
-                .WithSupplier(supplier)
-                .WithFromDate(DateTime.UtcNow)
-                .Build();
+            internalOrganisation.AddSupplier(supplier);
 
             var purchasePrice = new ProductPurchasePriceBuilder(this.DatabaseSession)
                 .WithFromDate(DateTime.UtcNow)
@@ -143,14 +139,10 @@ namespace Allors.Domain
         public void GivenNewGoodCoredOnFinishedGood_WhenDeriving_ThenNonSerialisedInventryItemIsCreatedForEveryFinishedGoodAndFacility()
         {
             var supplier = new OrganisationBuilder(this.DatabaseSession).WithName("supplier").WithOrganisationRole(new OrganisationRoles(this.DatabaseSession).Supplier).Build();
-            var internalOrganisation = new InternalOrganisations(this.DatabaseSession).FindBy(M.InternalOrganisation.Name, "internalOrganisation");
-            var secondFacility = new WarehouseBuilder(this.DatabaseSession).WithName("second facility").WithOwner(internalOrganisation).Build();
+            var internalOrganisation = InternalOrganisation.Instance(this.DatabaseSession);
+            var secondFacility = new WarehouseBuilder(this.DatabaseSession).WithName("second facility").Build();
 
-            new SupplierRelationshipBuilder(this.DatabaseSession)
-                .WithInternalOrganisation(internalOrganisation)
-                .WithSupplier(supplier)
-                .WithFromDate(DateTime.UtcNow)
-                .Build();
+            internalOrganisation.AddSupplier(supplier);
 
             var finishedGood = new FinishedGoodBuilder(this.DatabaseSession)
                 .WithName("part")

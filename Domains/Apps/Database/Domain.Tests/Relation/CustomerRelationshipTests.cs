@@ -34,11 +34,11 @@ namespace Allors.Domain
         {
             var customer = new PersonBuilder(this.DatabaseSession).WithLastName("customer").WithPersonRole(new PersonRoles(this.DatabaseSession).Customer).Build();
 
-            var customerRelationship = new CustomerRelationshipBuilder(this.DatabaseSession).WithFromDate(DateTime.UtcNow).WithCustomer(customer).Build();
+            InternalOrganisation.Instance(this.DatabaseSession).AddCustomer(customer);
 
             this.DatabaseSession.Derive();
 
-            Assert.Equal(0, customerRelationship.AmountDue);
+            Assert.Equal(0, customer.AmountDue);
         }
 
         [Fact]
@@ -46,109 +46,41 @@ namespace Allors.Domain
         {
             var customer = new PersonBuilder(this.DatabaseSession).WithLastName("customer").WithPersonRole(new PersonRoles(this.DatabaseSession).Customer).Build();
 
-            var customerRelationship = new CustomerRelationshipBuilder(this.DatabaseSession).WithFromDate(DateTime.UtcNow).WithCustomer(customer).Build();
+            InternalOrganisation.Instance(this.DatabaseSession).AddCustomer(customer);
 
             this.DatabaseSession.Derive();
 
-            Assert.Equal(0, customerRelationship.AmountOverDue);
-        }
-
-        [Fact]
-        public void GivenActiveCustomerRelationship_WhenDeriving_ThenCustomerHasCurrentPartyRelationships()
-        {
-            var customer = new PersonBuilder(this.DatabaseSession).WithLastName("customer").WithPersonRole(new PersonRoles(this.DatabaseSession).Customer).Build();
-            var internalOrganisation = Singleton.Instance(this.DatabaseSession).DefaultInternalOrganisation;
-
-            var partyRelationship = new CustomerRelationshipBuilder(this.DatabaseSession)
-                .WithCustomer(customer)
-                .WithInternalOrganisation(internalOrganisation)
-                .Build();
-
-            this.DatabaseSession.Derive();
-
-            Assert.Equal(1, customer.CurrentPartyRelationships.Count);
-            Assert.Contains(partyRelationship, customer.CurrentPartyRelationships);
-        }
-
-        [Fact]
-        public void GivenActiveCustomerRelationship_WhenDeriving_ThenInternalOrganisationCustomersContainsCustomer()
-        {
-            var customer = new PersonBuilder(this.DatabaseSession).WithLastName("customer").WithPersonRole(new PersonRoles(this.DatabaseSession).Customer).Build();
-            var internalOrganisation = Singleton.Instance(this.DatabaseSession).DefaultInternalOrganisation;
-
-            new CustomerRelationshipBuilder(this.DatabaseSession)
-                .WithCustomer(customer)
-                .WithInternalOrganisation(internalOrganisation)
-                .Build();
-
-            this.DatabaseSession.Derive();
-
-            Assert.Contains(customer, internalOrganisation.Customers);
-        }
-
-        [Fact]
-        public void GivenCustomerRelationshipToCome_WhenDeriving_ThenInternalOrganisationCustomersDosNotContainCustomer()
-        {
-            var customer = new PersonBuilder(this.DatabaseSession).WithLastName("customer").WithPersonRole(new PersonRoles(this.DatabaseSession).Customer).Build();
-            var internalOrganisation = Singleton.Instance(this.DatabaseSession).DefaultInternalOrganisation;
-
-            new CustomerRelationshipBuilder(this.DatabaseSession)
-                .WithCustomer(customer)
-                .WithInternalOrganisation(internalOrganisation)
-                .WithFromDate(DateTime.UtcNow.AddDays(1))
-                .Build();
-
-            this.DatabaseSession.Derive();
-
-            Assert.False(internalOrganisation.Customers.Contains(customer));
-        }
-
-        [Fact]
-        public void GivenCustomerRelationshipThatHasEnded_WhenDeriving_ThenInternalOrganisationCustomersDosNotContainCustomer()
-        {
-            var customer = new PersonBuilder(this.DatabaseSession).WithLastName("customer").WithPersonRole(new PersonRoles(this.DatabaseSession).Customer).Build();
-            var internalOrganisation = Singleton.Instance(this.DatabaseSession).DefaultInternalOrganisation;
-
-            new CustomerRelationshipBuilder(this.DatabaseSession)
-                .WithCustomer(customer)
-                .WithInternalOrganisation(internalOrganisation)
-                .WithFromDate(DateTime.UtcNow.AddDays(-10))
-                .WithThroughDate(DateTime.UtcNow.AddDays(-1))
-                .Build();
-
-            this.DatabaseSession.Derive();
-
-            Assert.False(internalOrganisation.Customers.Contains(customer));
+            Assert.Equal(0, customer.AmountOverDue);
         }
 
         [Fact]
         public void GivenCustomerRelationshipBuilder_WhenBuild_ThenSubAccountNumerIsValidElevenTestNumber()
         {
-            var internalOrganisation = Singleton.Instance(this.DatabaseSession).DefaultInternalOrganisation;
+            var internalOrganisation = InternalOrganisation.Instance(this.DatabaseSession);
             internalOrganisation.SubAccountCounter.Value = 1000;
 
             this.DatabaseSession.Commit();
 
             var customer1 = new PersonBuilder(this.DatabaseSession).WithLastName("customer1").WithPersonRole(new PersonRoles(this.DatabaseSession).Customer).Build();
-            var customerRelationship1 = new CustomerRelationshipBuilder(this.DatabaseSession).WithFromDate(DateTime.UtcNow).WithCustomer(customer1).Build();
+            InternalOrganisation.Instance(this.DatabaseSession).AddCustomer(customer1);
 
             this.DatabaseSession.Derive();
 
-            Assert.Equal(1007, customerRelationship1.SubAccountNumber);
+            Assert.Equal(1007, customer1.SubAccountNumber);
 
             var customer2 = new PersonBuilder(this.DatabaseSession).WithLastName("customer2").WithPersonRole(new PersonRoles(this.DatabaseSession).Customer).Build();
-            var customerRelationship2 = new CustomerRelationshipBuilder(this.DatabaseSession).WithFromDate(DateTime.UtcNow).WithCustomer(customer2).Build();
+            InternalOrganisation.Instance(this.DatabaseSession).AddCustomer(customer2);
 
             this.DatabaseSession.Derive();
 
-            Assert.Equal(1015, customerRelationship2.SubAccountNumber);
+            Assert.Equal(1015, customer2.SubAccountNumber);
 
             var customer3 = new PersonBuilder(this.DatabaseSession).WithLastName("customer3").WithPersonRole(new PersonRoles(this.DatabaseSession).Customer).Build();
-            var customerRelationship3 = new CustomerRelationshipBuilder(this.DatabaseSession).WithFromDate(DateTime.UtcNow).WithCustomer(customer3).Build();
+            InternalOrganisation.Instance(this.DatabaseSession).AddCustomer(customer3);
 
             this.DatabaseSession.Derive();
 
-            Assert.Equal(1023, customerRelationship3.SubAccountNumber);
+            Assert.Equal(1023, customer3.SubAccountNumber);
         }
 
         [Fact]
@@ -177,20 +109,15 @@ namespace Allors.Domain
 
             var internalOrganisation2 = new InternalOrganisationBuilder(this.DatabaseSession)
                 .WithName("internalOrganisation2")
-                .WithLocale(new Locales(this.DatabaseSession).EnglishGreatBritain)
                 .WithEmployeeRole(new Roles(this.DatabaseSession).Administrator)
                 .WithPartyContactMechanism(billingAddress)
                 .WithDefaultPaymentMethod(ownBankAccount)
                 .WithPreferredCurrency(euro)
                 .Build();
 
-            var customerRelationship2 = new CustomerRelationshipBuilder(this.DatabaseSession)
-                .WithCustomer(customer2)
-                .WithInternalOrganisation(internalOrganisation2)
-                .WithFromDate(DateTime.UtcNow)
-                .Build();
-
-            customerRelationship2.SubAccountNumber = 19;
+            InternalOrganisation.Instance(this.DatabaseSession).AddCustomer(customer2);
+            
+            customer2.SubAccountNumber = 19;
 
             Assert.False(this.DatabaseSession.Derive(false).HasErrors);
         }
@@ -200,7 +127,7 @@ namespace Allors.Domain
         {
             var mechelen = new CityBuilder(this.DatabaseSession).WithName("Mechelen").Build();
             var customer = new PersonBuilder(this.DatabaseSession).WithLastName("customer").WithPersonRole(new PersonRoles(this.DatabaseSession).Customer).Build();
-            var customerRelationship = new CustomerRelationshipBuilder(this.DatabaseSession).WithFromDate(DateTime.UtcNow).WithCustomer(customer).Build();
+            InternalOrganisation.Instance(this.DatabaseSession).AddCustomer(customer);
             var billToContactMechanism = new PostalAddressBuilder(this.DatabaseSession).WithGeographicBoundary(mechelen).WithAddress1("Mechelen").Build();
 
             var good = new GoodBuilder(this.DatabaseSession)
@@ -231,7 +158,7 @@ namespace Allors.Domain
 
             this.DatabaseSession.Derive();
 
-            Assert.Equal(300M, customerRelationship.AmountDue);
+            Assert.Equal(300M, customer.AmountDue);
 
             new ReceiptBuilder(this.DatabaseSession)
                 .WithAmount(50)
@@ -240,7 +167,7 @@ namespace Allors.Domain
 
             this.DatabaseSession.Derive();
 
-            Assert.Equal(250, customerRelationship.AmountDue);
+            Assert.Equal(250, customer.AmountDue);
 
             new ReceiptBuilder(this.DatabaseSession)
                 .WithAmount(200)
@@ -249,7 +176,7 @@ namespace Allors.Domain
 
             this.DatabaseSession.Derive();
 
-            Assert.Equal(50, customerRelationship.AmountDue);
+            Assert.Equal(50, customer.AmountDue);
 
             new ReceiptBuilder(this.DatabaseSession)
                 .WithAmount(50)
@@ -258,7 +185,7 @@ namespace Allors.Domain
 
             this.DatabaseSession.Derive();
 
-            Assert.Equal(0, customerRelationship.AmountDue);
+            Assert.Equal(0, customer.AmountDue);
         }
 
         [Fact]
@@ -266,7 +193,7 @@ namespace Allors.Domain
         {
             var mechelen = new CityBuilder(this.DatabaseSession).WithName("Mechelen").Build();
             var customer = new PersonBuilder(this.DatabaseSession).WithLastName("customer").WithPersonRole(new PersonRoles(this.DatabaseSession).Customer).Build();
-            var customerRelationship = new CustomerRelationshipBuilder(this.DatabaseSession).WithFromDate(DateTime.UtcNow).WithCustomer(customer).Build();
+            InternalOrganisation.Instance(this.DatabaseSession).AddCustomer(customer);
             var billToContactMechanism = new PostalAddressBuilder(this.DatabaseSession).WithGeographicBoundary(mechelen).WithAddress1("Mechelen").Build();
 
             var good = new GoodBuilder(this.DatabaseSession)
@@ -299,7 +226,7 @@ namespace Allors.Domain
 
             this.DatabaseSession.Derive();
 
-            Assert.Equal(100M, customerRelationship.AmountOverDue);
+            Assert.Equal(100M, customer.AmountOverDue);
 
             new ReceiptBuilder(this.DatabaseSession)
                 .WithAmount(20)
@@ -308,30 +235,13 @@ namespace Allors.Domain
 
             this.DatabaseSession.Derive();
 
-            Assert.Equal(80, customerRelationship.AmountOverDue);
+            Assert.Equal(80, customer.AmountOverDue);
 
             invoice2.InvoiceDate = DateTime.UtcNow.AddDays(-10);
 
             this.DatabaseSession.Derive();
 
-            Assert.Equal(280, customerRelationship.AmountOverDue);
-        }
-
-        [Fact]
-        public void GivenCustomerRelationship_WhenDeriving_ThenSameSubAccountNumberIsAllowedAtInternalOrganisation()
-        {
-            var customer = new PersonBuilder(this.DatabaseSession).WithLastName("customer").WithPersonRole(new PersonRoles(this.DatabaseSession).Customer).Build();
-
-            var customerRelationship = new CustomerRelationshipBuilder(this.DatabaseSession)
-                .WithCustomer(customer)
-                .WithInternalOrganisation(Singleton.Instance(this.DatabaseSession).DefaultInternalOrganisation)
-                .Build();
-
-            this.DatabaseSession.Derive();
-
-            customerRelationship.SubAccountNumber = customerRelationship.InternalOrganisation.CustomerRelationshipsWhereInternalOrganisation.First.SubAccountNumber;
-
-            Assert.True(this.DatabaseSession.Derive(false).HasErrors);
+            Assert.Equal(280, customer.AmountOverDue);
         }
     }
 }

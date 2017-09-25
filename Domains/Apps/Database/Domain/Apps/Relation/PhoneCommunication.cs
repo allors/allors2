@@ -41,7 +41,7 @@ namespace Allors.Domain
 
             if (this.IncomingCall)
             {
-                foreach (Party party in this.PartyRelationshipWhereCommunicationEvent.Parties)
+                foreach (Party party in this.PartiesWhereCommunicationEvent)
                 {
                     this.AddFromParty(party);
                 }
@@ -53,9 +53,9 @@ namespace Allors.Domain
             this.RemoveToParties();
             this.ToParties = (Extent)this.Receivers;
 
-            if (this.ExistPartyRelationshipWhereCommunicationEvent && !this.IncomingCall)
+            if (this.ExistPartiesWhereCommunicationEvent && !this.IncomingCall)
             {
-                foreach (Party party in this.PartyRelationshipWhereCommunicationEvent.Parties)
+                foreach (Party party in this.PartiesWhereCommunicationEvent)
                 {
                     this.AddToParty(party);
                 }

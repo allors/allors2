@@ -79,8 +79,8 @@ namespace Allors.Repository
         [Derived]
         [Indexed]
         [Required]
-
         public PurchaseShipmentObjectState CurrentObjectState { get; set; }
+
         #region Allors
         [Id("40277d59-6ab8-40b0-acee-c95ba759e2c8")]
         [AssociationId("d7feb989-dd2d-4619-b079-8a059129f8ed")]
@@ -89,8 +89,8 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
         [Required]
-
         public Facility Facility { get; set; }
+        
         #region Allors
         [Id("8be328c9-0688-469b-901d-c9c290b30e88")]
         [AssociationId("df4fe9a9-3043-44a6-a4da-96465e63ba07")]
@@ -99,8 +99,8 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.OneToMany)]
         [Derived]
         [Indexed]
-
         public PurchaseShipmentStatus[] ShipmentStatuses { get; set; }
+        
         #region Allors
         [Id("944c8d81-db22-469b-beb3-d31c045b5af0")]
         [AssociationId("e070f627-4b02-4f43-998b-5b4d8ccbfe80")]
@@ -109,8 +109,8 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.OneToOne)]
         [Derived]
         [Indexed]
-
         public PurchaseShipmentStatus CurrentShipmentStatus { get; set; }
+        
         #region Allors
         [Id("ef34543c-6194-4f27-87d7-a54285bc0a15")]
         [AssociationId("33b1069f-7be2-4f41-b502-8689256706d9")]
@@ -118,10 +118,8 @@ namespace Allors.Repository
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
-
         public PurchaseOrder PurchaseOrder { get; set; }
-
-
+        
         #region inherited methods
 
 
@@ -140,6 +138,5 @@ namespace Allors.Repository
 
 
         #endregion
-
     }
 }

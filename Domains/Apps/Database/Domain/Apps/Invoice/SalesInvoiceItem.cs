@@ -212,7 +212,7 @@ namespace Allors.Domain
             decimal discountAdjustmentAmount = 0;
             decimal surchargeAdjustmentAmount = 0;
 
-            var internalOrganisation = this.SalesInvoiceWhereSalesInvoiceItem.BilledFromInternalOrganisation;
+            var internalOrganisation = InternalOrganisation.Instance(this.strategy.Session);
             var customer = this.SalesInvoiceWhereSalesInvoiceItem.BillToCustomer;
             var salesInvoice = this.SalesInvoiceWhereSalesInvoiceItem;
 
@@ -261,13 +261,6 @@ namespace Allors.Domain
 
             if (!this.ExistActualUnitPrice)
             {
-                var partyRevenueHistories = customer.PartyRevenueHistoriesWhereParty;
-                var partyRevenueHistory = partyRevenueHistories.First;
-
-                var partyProductCategoryRevenueHistoryByProductCategory = PartyProductCategoryRevenueHistories.PartyProductCategoryRevenueHistoryByProductCategory(internalOrganisation, customer);
-
-                var partyPackageRevenuesHistories = customer.PartyPackageRevenueHistoriesWhereParty;
-
                 var priceComponents = this.GetPriceComponents(internalOrganisation);
 
                 var revenueBreakDiscount = 0M;
@@ -285,9 +278,6 @@ namespace Allors.Domain
                             SalesInvoice = salesInvoice,
                             QuantityOrdered = quantityInvoiced,
                             ValueOrdered = totalBasePrice,
-                            PartyPackageRevenueHistoryList = partyPackageRevenuesHistories,
-                            PartyRevenueHistory = partyRevenueHistory,
-                            PartyProductCategoryRevenueHistoryByProductCategory = partyProductCategoryRevenueHistoryByProductCategory
                         }))
                         {
                             this.AddCurrentPriceComponent(priceComponent);
@@ -395,7 +385,7 @@ namespace Allors.Domain
 
             if (priceComponents.Count == 0)
             {
-                var extent = internalOrganisation.PriceComponentsWhereSpecifiedFor;
+                var extent = new PriceComponents(this.strategy.Session).Extent();
                 if (this.ExistProduct)
                 {
                     foreach (PriceComponent priceComponent in extent)
@@ -410,7 +400,7 @@ namespace Allors.Domain
 
                     if (priceComponents.Count == 0 && this.Product.ExistProductWhereVariant)
                     {
-                        extent = internalOrganisation.PriceComponentsWhereSpecifiedFor;
+                        extent = new PriceComponents(this.strategy.Session).Extent();
                         foreach (PriceComponent priceComponent in extent)
                         {
                             if (priceComponent.ExistProduct && priceComponent.Product.Equals(this.Product.ProductWhereVariant) && !priceComponent.ExistProductFeature &&
@@ -437,7 +427,7 @@ namespace Allors.Domain
                 }
 
                 // Discounts and surcharges can be specified without product or product feature, these need te be added to collection of pricecomponents
-                extent = internalOrganisation.PriceComponentsWhereSpecifiedFor;
+                extent = new PriceComponents(this.strategy.Session).Extent();
                 foreach (PriceComponent priceComponent in extent)
                 {
                     if (!priceComponent.ExistProduct && !priceComponent.ExistProductFeature &&

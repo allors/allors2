@@ -38,13 +38,6 @@ namespace Allors.Domain
 
             this.DatabaseSession.Rollback();
 
-            builder.WithInternalOrganisation(new InternalOrganisations(this.DatabaseSession).FindBy(M.InternalOrganisation.Name, "internalOrganisation"));
-            builder.Build();
-
-            Assert.True(this.DatabaseSession.Derive(false).HasErrors);
-
-            this.DatabaseSession.Rollback();
-
             builder.WithGeneralLedgerAccount(new GeneralLedgerAccountBuilder(this.DatabaseSession)
                                                 .WithAccountNumber("0001")
                                                 .WithName("GeneralLedgerAccount")
@@ -61,7 +54,7 @@ namespace Allors.Domain
         [Fact]
         public void GivenOrganisationGlAccount_WhenBuild_ThenHasBankStatementTransactionsIsAlwaysFalse()
         {
-            var internalOrganisation = new InternalOrganisations(this.DatabaseSession).FindBy(M.InternalOrganisation.Name, "internalOrganisation");
+            var internalOrganisation = InternalOrganisation.Instance(this.DatabaseSession);
 
             var generalLedgerAccount = new GeneralLedgerAccountBuilder(this.DatabaseSession)
                 .WithAccountNumber("0001")
@@ -73,7 +66,6 @@ namespace Allors.Domain
                 .Build();
 
             var organisationGlAccount = new OrganisationGlAccountBuilder(this.DatabaseSession)
-                .WithInternalOrganisation(internalOrganisation)
                 .WithGeneralLedgerAccount(generalLedgerAccount)
                 .Build();
 
@@ -85,7 +77,7 @@ namespace Allors.Domain
         [Fact]
         public void GivenOrganisationGlAccount_WhenNotReferenced_ThenAccountIsNeutral()
         {
-            var internalOrganisation = new InternalOrganisations(this.DatabaseSession).FindBy(M.InternalOrganisation.Name, "internalOrganisation");
+            var internalOrganisation = InternalOrganisation.Instance(this.DatabaseSession);
 
             var generalLedgerAccount = new GeneralLedgerAccountBuilder(this.DatabaseSession)
                 .WithAccountNumber("0001")
@@ -97,7 +89,6 @@ namespace Allors.Domain
                 .Build();
 
             var organisationGlAccount = new OrganisationGlAccountBuilder(this.DatabaseSession)
-                .WithInternalOrganisation(internalOrganisation)
                 .WithGeneralLedgerAccount(generalLedgerAccount)
                 .Build();
 

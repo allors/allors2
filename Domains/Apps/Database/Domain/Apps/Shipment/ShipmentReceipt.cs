@@ -61,7 +61,7 @@ namespace Allors.Domain
             if (this.ExistShipmentItem && this.ShipmentItem.ExistOrderShipmentsWhereShipmentItem)
             {
                 var purchaseOrderItem = this.ShipmentItem.OrderShipmentsWhereShipmentItem[0].PurchaseOrderItem;
-                var order = purchaseOrderItem.PurchaseOrderWherePurchaseOrderItem;
+                var defaultFacility = InternalOrganisation.Instance(this).DefaultFacility;
 
                 if (purchaseOrderItem.ExistProduct)
                 {
@@ -73,7 +73,7 @@ namespace Allors.Domain
                             if (!this.ExistInventoryItem || !this.InventoryItem.Part.Equals(good.FinishedGood))
                             {
                                 var inventoryItems = good.FinishedGood.InventoryItemsWherePart;
-                                inventoryItems.Filter.AddEquals(M.InventoryItem.Facility, order.ShipToBuyer.DefaultFacility);
+                                inventoryItems.Filter.AddEquals(M.InventoryItem.Facility, defaultFacility);
                                 this.InventoryItem = inventoryItems.First as NonSerialisedInventoryItem;
                             }
                         }
@@ -82,7 +82,7 @@ namespace Allors.Domain
                             if (!this.ExistInventoryItem || !this.InventoryItem.Good.Equals(good))
                             {
                                 var inventoryItems = good.InventoryItemsWhereGood;
-                                inventoryItems.Filter.AddEquals(M.InventoryItem.Facility, order.ShipToBuyer.DefaultFacility);
+                                inventoryItems.Filter.AddEquals(M.InventoryItem.Facility, defaultFacility);
                                 this.InventoryItem = inventoryItems.First as NonSerialisedInventoryItem ??
                                                      new NonSerialisedInventoryItemBuilder(this.Strategy.Session).WithGood(good).Build();
                             }
@@ -95,7 +95,7 @@ namespace Allors.Domain
                     if (!this.ExistInventoryItem || !this.InventoryItem.Part.Equals(purchaseOrderItem.Part))
                     {
                         var inventoryItems = purchaseOrderItem.Part.InventoryItemsWherePart;
-                        inventoryItems.Filter.AddEquals(M.InventoryItem.Facility, order.ShipToBuyer.DefaultFacility);
+                        inventoryItems.Filter.AddEquals(M.InventoryItem.Facility, defaultFacility);
                         this.InventoryItem = inventoryItems.First as NonSerialisedInventoryItem;
                     }
                 }

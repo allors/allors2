@@ -24,7 +24,6 @@ namespace Allors.Domain
         public static SalesRepPartyRevenue AppsFindOrCreateAsDependable(ISession session, SalesRepPartyProductCategoryRevenue dependant)
         {
             var salesRepPartyRevenues = dependant.SalesRep.SalesRepPartyRevenuesWhereSalesRep;
-            salesRepPartyRevenues.Filter.AddEquals(M.SalesRepPartyRevenue.InternalOrganisation, dependant.InternalOrganisation);
             salesRepPartyRevenues.Filter.AddEquals(M.SalesRepPartyRevenue.Party, dependant.Party);
             salesRepPartyRevenues.Filter.AddEquals(M.SalesRepPartyRevenue.Year, dependant.Year);
             salesRepPartyRevenues.Filter.AddEquals(M.SalesRepPartyRevenue.Month, dependant.Month);
@@ -44,7 +43,6 @@ namespace Allors.Domain
         public static SalesRepPartyRevenue AppsFindOrCreateAsDependable(ISession session, SalesInvoiceItem salesInvoiceItem)
         {
             var salesRepPartyRevenues = salesInvoiceItem.SalesRep.SalesRepPartyRevenuesWhereSalesRep;
-            salesRepPartyRevenues.Filter.AddEquals(M.SalesRepPartyRevenue.InternalOrganisation, salesInvoiceItem.SalesInvoiceWhereSalesInvoiceItem.BilledFromInternalOrganisation);
             salesRepPartyRevenues.Filter.AddEquals(M.SalesRepPartyRevenue.Party, salesInvoiceItem.SalesInvoiceWhereSalesInvoiceItem.BillToCustomer);
             salesRepPartyRevenues.Filter.AddEquals(M.SalesRepPartyRevenue.Year, salesInvoiceItem.SalesInvoiceWhereSalesInvoiceItem.InvoiceDate.Year);
             salesRepPartyRevenues.Filter.AddEquals(M.SalesRepPartyRevenue.Month, salesInvoiceItem.SalesInvoiceWhereSalesInvoiceItem.InvoiceDate.Month);
@@ -63,8 +61,7 @@ namespace Allors.Domain
 
         public static void AppsOnDeriveRevenues(ISession session)
         {
-            var salesRepPartyRevenuesByPeriodByPartyBySalesRepByInternalOrganisation =
-                new Dictionary<InternalOrganisation, Dictionary<Party, Dictionary<Party, Dictionary<DateTime, SalesRepPartyRevenue>>>>();
+            var salesRepPartyRevenuesByPeriodByPartyBySalesRep = new Dictionary<Party, Dictionary<Party, Dictionary<DateTime, SalesRepPartyRevenue>>>();
 
             var salesRepPartyRevenues = session.Extent<SalesRepPartyRevenue>();
 
@@ -72,14 +69,6 @@ namespace Allors.Domain
             {
                 salesRepPartyRevenue.Revenue = 0;
                 var date = DateTimeFactory.CreateDate(salesRepPartyRevenue.Year, salesRepPartyRevenue.Month, 01);
-
-                Dictionary<Party, Dictionary<Party, Dictionary<DateTime, SalesRepPartyRevenue>>> salesRepPartyRevenuesByPeriodByPartyBySalesRep;
-                if (!salesRepPartyRevenuesByPeriodByPartyBySalesRepByInternalOrganisation.TryGetValue(salesRepPartyRevenue.InternalOrganisation, out salesRepPartyRevenuesByPeriodByPartyBySalesRep))
-                {
-                    salesRepPartyRevenuesByPeriodByPartyBySalesRep = new Dictionary<Party, Dictionary<Party, Dictionary<DateTime, SalesRepPartyRevenue>>>();
-                    salesRepPartyRevenuesByPeriodByPartyBySalesRepByInternalOrganisation[salesRepPartyRevenue.InternalOrganisation] = salesRepPartyRevenuesByPeriodByPartyBySalesRep;
-                }
-
                 Dictionary<Party, Dictionary<DateTime, SalesRepPartyRevenue>> salesRepPartyRevenuesByPeriodByParty;
                 if (!salesRepPartyRevenuesByPeriodByPartyBySalesRep.TryGetValue(salesRepPartyRevenue.Party, out salesRepPartyRevenuesByPeriodByParty))
                 {
@@ -120,31 +109,6 @@ namespace Allors.Domain
                     if (salesInvoiceItem.ExistSalesRep && salesInvoiceItem.ExistProduct && salesInvoiceItem.Product.ExistPrimaryProductCategory)
                     {
                         SalesRepPartyRevenue salesRepPartyRevenue;
-
-                        Dictionary<Party, Dictionary<Party, Dictionary<DateTime, SalesRepPartyRevenue>>> salesRepPartyRevenuesByPeriodByPartyBySalesRep;
-                        if (!salesRepPartyRevenuesByPeriodByPartyBySalesRepByInternalOrganisation.TryGetValue(salesInvoice.BilledFromInternalOrganisation, out salesRepPartyRevenuesByPeriodByPartyBySalesRep))
-                        {
-                            salesRepPartyRevenue = CreateSalesRepPartyRevenue(session, salesInvoiceItem);
-
-                            salesRepPartyRevenuesByPeriodByPartyBySalesRep = new Dictionary<Party, Dictionary<Party, Dictionary<DateTime, SalesRepPartyRevenue>>>
-                                {
-                                    {
-                                        salesInvoiceItem.SalesRep,
-                                        new Dictionary<Party, Dictionary<DateTime, SalesRepPartyRevenue>>
-                                        {
-                                            { 
-                                                salesInvoice.BillToCustomer, new Dictionary<DateTime, SalesRepPartyRevenue>
-                                                  {
-                                                      { date, salesRepPartyRevenue }
-                                                  }
-                                            }
-                                        }
-                                    }
-                                };
-
-                            salesRepPartyRevenuesByPeriodByPartyBySalesRepByInternalOrganisation[salesInvoice.BilledFromInternalOrganisation] = salesRepPartyRevenuesByPeriodByPartyBySalesRep;
-                        }
-
                         Dictionary<Party, Dictionary<DateTime, SalesRepPartyRevenue>> salesRepPartyRevenuesByPeriodByParty;
                         if (!salesRepPartyRevenuesByPeriodByPartyBySalesRep.TryGetValue(salesInvoiceItem.SalesRep, out salesRepPartyRevenuesByPeriodByParty))
                         {

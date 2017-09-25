@@ -24,7 +24,6 @@ namespace Allors.Domain
         public static ProductRevenue AppsFindOrCreateAsDependable(ISession session, PartyProductRevenue dependant)
         {
             var productRevenues = dependant.Product.ProductRevenuesWhereProduct;
-            productRevenues.Filter.AddEquals(M.ProductRevenue.InternalOrganisation, dependant.InternalOrganisation);
             productRevenues.Filter.AddEquals(M.ProductRevenue.Year, dependant.Year);
             productRevenues.Filter.AddEquals(M.ProductRevenue.Month, dependant.Month);
             var productRevenue = productRevenues.First ?? new ProductRevenueBuilder(session)
@@ -38,7 +37,7 @@ namespace Allors.Domain
 
         public static void AppsOnDeriveRevenues(ISession session)
         {
-            var productRevenuesByPeriodByProductByInternalOrganisation = new Dictionary<InternalOrganisation, Dictionary<Product, Dictionary<DateTime, ProductRevenue>>>();
+            var productRevenuesByPeriodByProduct = new Dictionary<Product, Dictionary<DateTime, ProductRevenue>>();
 
             var productRevenues = session.Extent<ProductRevenue>();
 
@@ -46,14 +45,6 @@ namespace Allors.Domain
             {
                 productRevenue.Revenue = 0;
                 var date = DateTimeFactory.CreateDate(productRevenue.Year, productRevenue.Month, 01);
-
-                Dictionary<Product, Dictionary<DateTime, ProductRevenue>> productRevenuesByPeriodByProduct;
-                if (!productRevenuesByPeriodByProductByInternalOrganisation.TryGetValue(productRevenue.InternalOrganisation, out productRevenuesByPeriodByProduct))
-                {
-                    productRevenuesByPeriodByProduct = new Dictionary<Product, Dictionary<DateTime, ProductRevenue>>();
-                    productRevenuesByPeriodByProductByInternalOrganisation[productRevenue.InternalOrganisation] = productRevenuesByPeriodByProduct;
-                }
-
                 Dictionary<DateTime, ProductRevenue> productRevenuesByPeriod;
                 if (!productRevenuesByPeriodByProduct.TryGetValue(productRevenue.Product, out productRevenuesByPeriod))
                 {
@@ -87,19 +78,6 @@ namespace Allors.Domain
                     if (salesInvoiceItem.ExistProduct && salesInvoiceItem.Product.ExistPrimaryProductCategory)
                     {
                         ProductRevenue productRevenue;
-
-                        Dictionary<Product, Dictionary<DateTime, ProductRevenue>> productRevenuesByPeriodByProduct;
-                        if (!productRevenuesByPeriodByProductByInternalOrganisation.TryGetValue(salesInvoice.BilledFromInternalOrganisation, out productRevenuesByPeriodByProduct))
-                        {
-                            productRevenue = CreateProductRevenue(session, salesInvoiceItem);
-
-                            productRevenuesByPeriodByProduct = new Dictionary<Product, Dictionary<DateTime, ProductRevenue>>
-                            {
-                                { salesInvoiceItem.Product, new Dictionary<DateTime, ProductRevenue> { { date, productRevenue } } }
-                            };
-
-                            productRevenuesByPeriodByProductByInternalOrganisation[salesInvoice.BilledFromInternalOrganisation] = productRevenuesByPeriodByProduct;
-                        }
 
                         Dictionary<DateTime, ProductRevenue> productRevenuesByPeriod;
                         if (!productRevenuesByPeriodByProduct.TryGetValue(salesInvoiceItem.Product, out productRevenuesByPeriod))

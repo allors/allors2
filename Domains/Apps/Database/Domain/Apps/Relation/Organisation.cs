@@ -18,6 +18,8 @@ using System.Collections.Generic;
 namespace Allors.Domain
 {
     using System;
+    using System.Linq;
+
     using Meta;
 
     public partial class Organisation
@@ -31,7 +33,17 @@ namespace Allors.Domain
                 this.Locale = Singleton.Instance(this.Strategy.Session).DefaultLocale;
             }
         }
-        
+
+        public void AppsOnPreDerive(ObjectOnPreDerive method)
+        {
+            var derivation = method.Derivation;
+
+            foreach (OrganisationContactRelationship contactRelationship in this.OrganisationContactRelationshipsWhereOrganisation)
+            {
+                derivation.AddDependency(contactRelationship, this);
+            }
+        }
+
         public void AppsOnDerive(ObjectOnDerive method)
         {
             var derivation = method.Derivation;
@@ -43,7 +55,6 @@ namespace Allors.Domain
             this.AppsOnDeriveCurrentOrganisationContactRelationships(derivation);
             this.AppsOnDeriveInactiveOrganisationContactRelationships(derivation);
             this.AppsOnDeriveCurrentPartyContactMechanisms(derivation);
-            this.AppsOnDeriveCurrentPartyRelationships(derivation);
             this.AppsOnDeriveInactivePartyContactMechanisms(derivation);
             this.AppsOnDeriverContactUserGroup(derivation);
 
@@ -178,6 +189,8 @@ namespace Allors.Domain
                 var customerContactGroupName = $"Customer contacts at {this.Name} ({this.UniqueId})";
                 this.ContactsUserGroup = new UserGroupBuilder(this.strategy.Session).WithName(customerContactGroupName).Build();
             }
+
+            this.ContactsUserGroup.Members = this.CurrentContacts.ToArray();
         }
 
         public void AppsDelete(DeletableDelete method)

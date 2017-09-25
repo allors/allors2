@@ -24,7 +24,6 @@ namespace Allors.Domain
         public static SalesRepRevenue AppsFindOrCreateAsDependable(ISession session, SalesRepPartyRevenue dependant)
         {
             var salesRepRevenues = dependant.SalesRep.SalesRepRevenuesWhereSalesRep;
-            salesRepRevenues.Filter.AddEquals(M.SalesRepRevenue.InternalOrganisation, dependant.InternalOrganisation);
             salesRepRevenues.Filter.AddEquals(M.SalesRepRevenue.Year, dependant.Year);
             salesRepRevenues.Filter.AddEquals(M.SalesRepRevenue.Month, dependant.Month);
             var salesRepRevenue = salesRepRevenues.First ?? new SalesRepRevenueBuilder(session)
@@ -41,7 +40,7 @@ namespace Allors.Domain
 
         public static void AppsOnDeriveRevenues(ISession session)
         {
-            var salesRepRevenuesByPeriodBySalesRepByInternalOrganisation = new Dictionary<InternalOrganisation, Dictionary<Party, Dictionary<DateTime, SalesRepRevenue>>>();
+            var salesRepRevenuesByPeriodBySalesRep = new Dictionary<Party, Dictionary<DateTime, SalesRepRevenue>>();
 
             var salesRepRevenues = session.Extent<SalesRepRevenue>();
 
@@ -49,14 +48,6 @@ namespace Allors.Domain
             {
                 salesRepRevenue.Revenue = 0;
                 var date = DateTimeFactory.CreateDate(salesRepRevenue.Year, salesRepRevenue.Month, 01);
-
-                Dictionary<Party, Dictionary<DateTime, SalesRepRevenue>> salesRepRevenuesByPeriodBySalesRep;
-                if (!salesRepRevenuesByPeriodBySalesRepByInternalOrganisation.TryGetValue(salesRepRevenue.InternalOrganisation, out salesRepRevenuesByPeriodBySalesRep))
-                {
-                    salesRepRevenuesByPeriodBySalesRep = new Dictionary<Party, Dictionary<DateTime, SalesRepRevenue>>();
-                    salesRepRevenuesByPeriodBySalesRepByInternalOrganisation[salesRepRevenue.InternalOrganisation] = salesRepRevenuesByPeriodBySalesRep;
-                }
-
                 Dictionary<DateTime, SalesRepRevenue> salesRepRevenuesByPeriod;
                 if (!salesRepRevenuesByPeriodBySalesRep.TryGetValue(salesRepRevenue.SalesRep, out salesRepRevenuesByPeriod))
                 {
@@ -90,19 +81,6 @@ namespace Allors.Domain
                     if (salesInvoiceItem.ExistSalesRep)
                     {
                         SalesRepRevenue salesRepRevenue;
-
-                        Dictionary<Party, Dictionary<DateTime, SalesRepRevenue>> salesRepRevenuesByPeriodBySalesRep;
-                        if (!salesRepRevenuesByPeriodBySalesRepByInternalOrganisation.TryGetValue(salesInvoice.BilledFromInternalOrganisation, out salesRepRevenuesByPeriodBySalesRep))
-                        {
-                            salesRepRevenue = CreateSalesRepRevenue(session, salesInvoiceItem);
-
-                            salesRepRevenuesByPeriodBySalesRep = new Dictionary<Party, Dictionary<DateTime, SalesRepRevenue>>
-                            {
-                                { salesInvoiceItem.SalesRep, new Dictionary<DateTime, SalesRepRevenue> { { date, salesRepRevenue } } }
-                            };
-
-                            salesRepRevenuesByPeriodBySalesRepByInternalOrganisation[salesInvoice.BilledFromInternalOrganisation] = salesRepRevenuesByPeriodBySalesRep;
-                        }
 
                         Dictionary<DateTime, SalesRepRevenue> salesRepRevenuesByPeriod;
                         if (!salesRepRevenuesByPeriodBySalesRep.TryGetValue(salesInvoiceItem.SalesRep, out salesRepRevenuesByPeriod))

@@ -79,23 +79,24 @@ namespace Allors.Domain
                 derivation.AddDependency(this, this.TakenViaSupplier);
             }
 
-            if (this.ExistTakenViaSupplier)
-            {
-                var supplier = this.TakenViaSupplier as Organisation;
-                if (supplier != null)
-                {
-                    var supplierRelationships = supplier.SupplierRelationshipsWhereSupplier;
-                    supplierRelationships.Filter.AddEquals(M.SupplierRelationship.InternalOrganisation, this.ShipToBuyer);
+            // TODO: ???
+            //if (this.ExistTakenViaSupplier)
+            //{
+            //    var supplier = this.TakenViaSupplier as Organisation;
+            //    if (supplier != null)
+            //    {
+            //        var supplierRelationships = supplier.SupplierRelationshipsWhereSupplier;
+            //        supplierRelationships.Filter.AddEquals(M.SupplierRelationship.InternalOrganisation, this.ShipToBuyer);
 
-                    foreach (SupplierRelationship supplierRelationship in supplierRelationships)
-                    {
-                        if (supplierRelationship.FromDate <= DateTime.UtcNow && (!supplierRelationship.ExistThroughDate || supplierRelationship.ThroughDate >= DateTime.UtcNow))
-                        {
-                            derivation.AddDependency(this, supplierRelationship);
-                        }
-                    }
-                }
-            }
+            //        foreach (SupplierRelationship supplierRelationship in supplierRelationships)
+            //        {
+            //            if (supplierRelationship.FromDate <= DateTime.UtcNow && (!supplierRelationship.ExistThroughDate || supplierRelationship.ThroughDate >= DateTime.UtcNow))
+            //            {
+            //                derivation.AddDependency(this, supplierRelationship);
+            //            }
+            //        }
+            //    }
+            //}
 
             foreach (PurchaseOrderItem orderItem in this.OrderItems)
             {
@@ -107,24 +108,25 @@ namespace Allors.Domain
         {
             var derivation = method.Derivation;
 
-            Organisation supplier = this.TakenViaSupplier as Organisation;
-            if (supplier != null && this.ExistShipToBuyer)
-            {
-                if (!this.ShipToBuyer.Equals(supplier.InternalOrganisationWhereSupplier))
-                {
-                    derivation.Validation.AddError(this, M.PurchaseOrder.TakenViaSupplier, ErrorMessages.PartyIsNotASupplier);
-                }
-            }
+            // TODO: ???
+            //Organisation supplier = this.TakenViaSupplier as Organisation;
+            //if (supplier != null && this.ExistShipToBuyer)
+            //{
+            //    if (!this.ShipToBuyer.Equals(supplier.InternalOrganisationWhereSupplier))
+            //    {
+            //        derivation.Validation.AddError(this, M.PurchaseOrder.TakenViaSupplier, ErrorMessages.PartyIsNotASupplier);
+            //    }
+            //}
 
-            if (!this.ExistShipToAddress && this.ExistShipToBuyer)
-            {
-                this.ShipToAddress = this.ShipToBuyer.ShippingAddress;
-            }
+            //if (!this.ExistShipToAddress && this.ExistShipToBuyer)
+            //{
+            //    this.ShipToAddress = this.ShipToBuyer.ShippingAddress;
+            //}
 
-            if (!this.ExistBillToContactMechanism && this.ExistBillToPurchaser)
-            {
-                this.BillToContactMechanism = this.BillToPurchaser.BillingAddress;
-            }
+            //if (!this.ExistBillToContactMechanism && this.ExistBillToPurchaser)
+            //{
+            //    this.BillToContactMechanism = this.BillToPurchaser.BillingAddress;
+            //}
 
             if (!this.ExistTakenViaContactMechanism && this.ExistTakenViaSupplier)
             {
@@ -185,9 +187,10 @@ namespace Allors.Domain
 
         public void AppsOnDeriveLocale(IDerivation derivation)
         {
-            this.Locale = this.ExistShipToBuyer && this.ShipToBuyer.ExistLocale
-                              ? this.ShipToBuyer.Locale
-                              : Singleton.Instance(this.Strategy.Session).DefaultLocale;
+            // TODO: ???
+            //this.Locale = this.ExistShipToBuyer && this.ShipToBuyer.ExistLocale
+            //                  ? this.ShipToBuyer.Locale
+            //                  : Singleton.Instance(this.Strategy.Session).DefaultLocale;
         }
 
         public void AppsOnDeriveOrderTotals(IDerivation derivation)

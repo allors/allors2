@@ -94,7 +94,6 @@ namespace Allors.Domain
 
             var organisation = new InternalOrganisationBuilder(this.DatabaseSession)
                 .WithName("Internal")
-                .WithLocale(new Locales(this.DatabaseSession).EnglishGreatBritain)
                 .WithPreferredCurrency(euro)
                 .WithDefaultPaymentMethod(ownBankAccount)
                 .Build();
@@ -130,7 +129,6 @@ namespace Allors.Domain
 
             var organisation = new InternalOrganisationBuilder(this.DatabaseSession)
                 .WithName("Internal")
-                .WithLocale(new Locales(this.DatabaseSession).EnglishGreatBritain)
                 .WithPreferredCurrency(euro)
                 .WithDefaultPaymentMethod(ownBankAccount)
                 .Build();
@@ -183,7 +181,6 @@ namespace Allors.Domain
 
             var organisation = new InternalOrganisationBuilder(this.DatabaseSession)
                 .WithName("Internal")
-                .WithLocale(new Locales(this.DatabaseSession).EnglishGreatBritain)
                 .WithPreferredCurrency(euro)
                 .WithDefaultPaymentMethod(ownBankAccount)
                 .Build();
@@ -249,7 +246,6 @@ namespace Allors.Domain
 
             var organisation = new InternalOrganisationBuilder(this.DatabaseSession)
                 .WithName("Internal")
-                .WithLocale(new Locales(this.DatabaseSession).EnglishGreatBritain)
                 .WithPreferredCurrency(euro)
                 .WithDefaultPaymentMethod(ownBankAccount)
                 .Build();

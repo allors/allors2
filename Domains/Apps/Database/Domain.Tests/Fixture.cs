@@ -71,7 +71,6 @@ namespace Allors
                         new ContactMechanismPurposes(session).ShippingAddress).WithUseAsDefault(true).Build();
 
                 var internalOrganisation = new InternalOrganisationBuilder(session)
-                    .WithLocale(new Locales(session).EnglishGreatBritain)
                     .WithName("internalOrganisation")
                     .WithPreferredCurrency(euro)
                     .WithIncomingShipmentNumberPrefix("incoming shipmentno: ")
@@ -83,15 +82,12 @@ namespace Allors
                     .WithDefaultPaymentMethod(ownBankAccount)
                     .Build();
 
-                Singleton.Instance(session).DefaultInternalOrganisation = internalOrganisation;
-
-                var facility = new WarehouseBuilder(session).WithName("facility").WithOwner(internalOrganisation).Build();
+                var facility = new WarehouseBuilder(session).WithName("facility").Build();
                 internalOrganisation.DefaultFacility = facility;
 
                 new StoreBuilder(session)
                     .WithName("store")
                     .WithDefaultFacility(facility)
-                    .WithOwner(internalOrganisation)
                     .WithOutgoingShipmentNumberPrefix("shipmentno: ")
                     .WithSalesInvoiceNumberPrefix("invoiceno: ")
                     .WithSalesOrderNumberPrefix("orderno: ")
@@ -107,21 +103,17 @@ namespace Allors
                 var salesrep = new PersonBuilder(session).WithLastName("salesRep").WithUserName("salesRep").WithPersonRole(new PersonRoles(session).Contact).Build();
                 var orderProcessor = new PersonBuilder(session).WithLastName("orderProcessor").WithUserName("orderProcessor").WithPersonRole(new PersonRoles(session).Employee).Build();
 
-                new CustomerRelationshipBuilder(session).WithCustomer(customer).WithInternalOrganisation(internalOrganisation).WithFromDate(DateTime.UtcNow).Build();
+                internalOrganisation.AddCustomer(customer);
+                internalOrganisation.AddSupplier(supplier);
 
-                new SupplierRelationshipBuilder(session).WithSupplier(supplier).WithInternalOrganisation(internalOrganisation).WithFromDate(DateTime.UtcNow).Build();
-
-                new EmploymentBuilder(session).WithFromDate(DateTime.UtcNow).WithEmployee(purchaser).WithEmployer(internalOrganisation).Build();
-
-                new EmploymentBuilder(session).WithFromDate(DateTime.UtcNow).WithEmployee(salesrep).WithEmployer(internalOrganisation).Build();
-
-                new EmploymentBuilder(session).WithFromDate(DateTime.UtcNow).WithEmployee(orderProcessor).WithEmployer(internalOrganisation).Build();
+                internalOrganisation.AddEmployee(purchaser);
+                internalOrganisation.AddEmployee(salesrep);
+                internalOrganisation.AddEmployee(orderProcessor);
 
                 new SalesRepRelationshipBuilder(session).WithFromDate(DateTime.UtcNow).WithCustomer(customer).WithSalesRepresentative(salesrep).Build();
 
                 session.Derive();
                 session.Commit();
-
             }
         }
     }

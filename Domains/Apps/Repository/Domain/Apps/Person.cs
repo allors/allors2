@@ -6,6 +6,9 @@ namespace Allors.Repository
     public partial class Person : Party, Deletable 
     {
         #region inherited properties
+
+        public string PartyName { get; set; }
+
         public PostalAddress GeneralCorrespondence { get; set; }
 
         public decimal YTDRevenue { get; set; }

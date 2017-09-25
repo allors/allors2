@@ -25,7 +25,7 @@ namespace Allors.Domain
         {
             if (!@this.ExistRequestNumber)
             {
-                @this.RequestNumber = Singleton.Instance(@this.Strategy.Session).DefaultInternalOrganisation.DeriveNextRequestNumber();
+                @this.RequestNumber = InternalOrganisation.Instance(@this.Strategy.Session).DeriveNextRequestNumber();
             }
 
             @this.DeriveInitialObjectState();

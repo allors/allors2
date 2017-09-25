@@ -19,13 +19,11 @@ namespace Allors.Domain
     using System.Collections.Generic;
     using Meta;
     
-
     public partial class PartyProductRevenues
     {
         public static PartyProductRevenue AppsFindOrCreateAsDependable(ISession session, Product product, SalesInvoice invoice)
         {
             var partyProductRevenues = invoice.BillToCustomer.PartyProductRevenuesWhereParty;
-            partyProductRevenues.Filter.AddEquals(M.PartyProductRevenue.InternalOrganisation, invoice.BilledFromInternalOrganisation);
             partyProductRevenues.Filter.AddEquals(M.PartyProductRevenue.Year, invoice.InvoiceDate.Year);
             partyProductRevenues.Filter.AddEquals(M.PartyProductRevenue.Month, invoice.InvoiceDate.Month);
             partyProductRevenues.Filter.AddEquals(M.PartyProductRevenue.Product, product);
@@ -46,8 +44,7 @@ namespace Allors.Domain
 
         public static void AppsOnDeriveRevenues(ISession session)
         {
-            var partyProductRevenuesByPeriodByProductByPartyByInternalOrganisation =
-                new Dictionary<InternalOrganisation, Dictionary<Party, Dictionary<Product, Dictionary<DateTime, PartyProductRevenue>>>>();
+            var partyProductRevenuesByPeriodByProductByParty = new Dictionary<Party, Dictionary<Product, Dictionary<DateTime, PartyProductRevenue>>>();
 
             var partyProductRevenues = session.Extent<PartyProductRevenue>();
 
@@ -56,13 +53,6 @@ namespace Allors.Domain
                 partyProductRevenue.Revenue = 0;
                 partyProductRevenue.Quantity = 0;
                 var date = DateTimeFactory.CreateDate(partyProductRevenue.Year, partyProductRevenue.Month, 01);
-
-                Dictionary<Party, Dictionary<Product, Dictionary<DateTime, PartyProductRevenue>>> partyProductRevenuesByPeriodByProductByParty;
-                if (!partyProductRevenuesByPeriodByProductByPartyByInternalOrganisation.TryGetValue(partyProductRevenue.InternalOrganisation, out partyProductRevenuesByPeriodByProductByParty))
-                {
-                    partyProductRevenuesByPeriodByProductByParty = new Dictionary<Party, Dictionary<Product, Dictionary<DateTime, PartyProductRevenue>>>();
-                    partyProductRevenuesByPeriodByProductByPartyByInternalOrganisation[partyProductRevenue.InternalOrganisation] = partyProductRevenuesByPeriodByProductByParty;
-                }
 
                 Dictionary<Product, Dictionary<DateTime, PartyProductRevenue>> partyProductRevenuesByPeriodByproduct;
                 if (!partyProductRevenuesByPeriodByProductByParty.TryGetValue(partyProductRevenue.Party, out partyProductRevenuesByPeriodByproduct))
@@ -104,24 +94,6 @@ namespace Allors.Domain
                     if (salesInvoiceItem.ExistProduct)
                     {
                         PartyProductRevenue partyProductRevenue;
-
-                        Dictionary<Party, Dictionary<Product, Dictionary<DateTime, PartyProductRevenue>>> partyProductRevenuesByPeriodByProductByParty;
-                        if (!partyProductRevenuesByPeriodByProductByPartyByInternalOrganisation.TryGetValue(salesInvoice.BilledFromInternalOrganisation, out partyProductRevenuesByPeriodByProductByParty))
-                        {
-                            partyProductRevenue = CreatePartyProductRevenue(session, salesInvoiceItem);
-
-                            partyProductRevenuesByPeriodByProductByParty = new Dictionary<Party, Dictionary<Product, Dictionary<DateTime, PartyProductRevenue>>>
-                                {
-                                    { salesInvoice.BillToCustomer, new Dictionary<Product, Dictionary<DateTime, PartyProductRevenue>>
-                                          {
-                                              { salesInvoiceItem.Product, new Dictionary<DateTime, PartyProductRevenue> { { date, partyProductRevenue } } }
-                                          }
-                                    }
-                                };
-
-                            partyProductRevenuesByPeriodByProductByPartyByInternalOrganisation[salesInvoice.BilledFromInternalOrganisation] = partyProductRevenuesByPeriodByProductByParty;
-                        }
-
                         Dictionary<Product, Dictionary<DateTime, PartyProductRevenue>> partyProductRevenuesByPeriodByProduct;
                         if (!partyProductRevenuesByPeriodByProductByParty.TryGetValue(salesInvoice.BillToCustomer, out partyProductRevenuesByPeriodByProduct))
                         {

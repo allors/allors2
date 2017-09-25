@@ -43,257 +43,146 @@ namespace Allors.Domain
 
         public void AppsOnDeriveRevenues(IDerivation derivation)
         {
-            PartyPackageRevenues.AppsOnDeriveRevenues(this.Strategy.Session);
-            this.Strategy.Session.Commit();
+            var session = this.Strategy.Session;
 
-            PartyProductCategoryRevenues.AppsOnDeriveRevenues(this.Strategy.Session);
-            this.Strategy.Session.Commit();
+            PartyPackageRevenues.AppsOnDeriveRevenues(session);
+            session.Commit();
 
-            PartyProductRevenues.AppsOnDeriveRevenues(this.Strategy.Session);
-            this.Strategy.Session.Commit();
+            PartyProductCategoryRevenues.AppsOnDeriveRevenues(session);
+            session.Commit();
 
-            PartyRevenues.AppsOnDeriveRevenues(this.Strategy.Session);
-            this.Strategy.Session.Commit();
+            PartyProductRevenues.AppsOnDeriveRevenues(session);
+            session.Commit();
 
-            foreach (PartyPackageRevenue revenue in this.Strategy.Session.Extent<PartyPackageRevenue>())
+            PartyRevenues.AppsOnDeriveRevenues(session);
+            session.Commit();
+
+            foreach (PartyPackageRevenue revenue in session.Extent<PartyPackageRevenue>())
             {
                 revenue.OnDerive(x => x.WithDerivation(derivation));
             }
 
-            this.Strategy.Session.Commit();
+            session.Commit();
 
-            foreach (PartyProductCategoryRevenue revenue in this.Strategy.Session.Extent<PartyProductCategoryRevenue>())
+            foreach (PartyProductCategoryRevenue revenue in session.Extent<PartyProductCategoryRevenue>())
             {
                 revenue.OnDerive(x => x.WithDerivation(derivation));
             }
 
-            this.Strategy.Session.Commit();
+            session.Commit();
 
-            foreach (PartyProductRevenue revenue in this.Strategy.Session.Extent<PartyProductRevenue>())
+            foreach (PartyProductRevenue revenue in session.Extent<PartyProductRevenue>())
             {
                 revenue.OnDerive(x => x.WithDerivation(derivation));
             }
 
-            this.Strategy.Session.Commit();
+            session.Commit();
 
-            foreach (PartyRevenue revenue in this.Strategy.Session.Extent<PartyRevenue>())
+            foreach (PartyRevenue revenue in session.Extent<PartyRevenue>())
             {
                 revenue.OnDerive(x => x.WithDerivation(derivation));
             }
 
-            this.Strategy.Session.Commit();
+            session.Commit();
 
-            CustomerRelationships.AppsOnDeriveRevenues(this.Strategy.Session);
-            this.Strategy.Session.Commit();
+            Parties.AppsOnDeriveRevenues(session);
+            session.Commit();
 
-            Parties.AppsOnDeriveRevenues(this.Strategy.Session);
-            this.Strategy.Session.Commit();
+            InternalOrganisationRevenues.AppsOnDeriveRevenues(session);
+            session.Commit();
+            PackageRevenues.AppsOnDeriveRevenues(session);
+            session.Commit();
+            ProductCategoryRevenues.AppsOnDeriveRevenues(session);
+            session.Commit();
+            ProductRevenues.AppsOnDeriveRevenues(session);
+            session.Commit();
+            SalesRepPartyProductCategoryRevenues.AppsOnDeriveRevenues(session);
+            session.Commit();
+            SalesRepPartyRevenues.AppsOnDeriveRevenues(session);
+            session.Commit();
+            SalesRepProductCategoryRevenues.AppsOnDeriveRevenues(session);
+            session.Commit();
+            SalesRepRevenues.AppsOnDeriveRevenues(session);
+            session.Commit();
+            StoreRevenues.AppsOnDeriveRevenues(session);
+            session.Commit();
+            SalesChannelRevenues.AppsOnDeriveRevenues(session);
+            session.Commit();
 
-            InternalOrganisationRevenues.AppsOnDeriveRevenues(this.Strategy.Session);
-            this.Strategy.Session.Commit();
-            PackageRevenues.AppsOnDeriveRevenues(this.Strategy.Session);
-            this.Strategy.Session.Commit();
-            ProductCategoryRevenues.AppsOnDeriveRevenues(this.Strategy.Session);
-            this.Strategy.Session.Commit();
-            ProductRevenues.AppsOnDeriveRevenues(this.Strategy.Session);
-            this.Strategy.Session.Commit();
-            SalesRepPartyProductCategoryRevenues.AppsOnDeriveRevenues(this.Strategy.Session);
-            this.Strategy.Session.Commit();
-            SalesRepPartyRevenues.AppsOnDeriveRevenues(this.Strategy.Session);
-            this.Strategy.Session.Commit();
-            SalesRepProductCategoryRevenues.AppsOnDeriveRevenues(this.Strategy.Session);
-            this.Strategy.Session.Commit();
-            SalesRepRevenues.AppsOnDeriveRevenues(this.Strategy.Session);
-            this.Strategy.Session.Commit();
-            StoreRevenues.AppsOnDeriveRevenues(this.Strategy.Session);
-            this.Strategy.Session.Commit();
-            SalesChannelRevenues.AppsOnDeriveRevenues(this.Strategy.Session);
-            this.Strategy.Session.Commit();
-
-            foreach (InternalOrganisationRevenue revenue in this.Strategy.Session.Extent<InternalOrganisationRevenue>())
+            foreach (InternalOrganisationRevenue revenue in session.Extent<InternalOrganisationRevenue>())
             {
                 revenue.OnDerive(x => x.WithDerivation(derivation));
             }
 
-            this.Strategy.Session.Commit();
+            session.Commit();
 
-            foreach (PackageRevenue revenue in this.Strategy.Session.Extent<PackageRevenue>())
+            foreach (PackageRevenue revenue in session.Extent<PackageRevenue>())
             {
                 revenue.OnDerive(x => x.WithDerivation(derivation));
             }
 
-            this.Strategy.Session.Commit();
+            session.Commit();
 
-            foreach (ProductCategoryRevenue revenue in this.Strategy.Session.Extent<ProductCategoryRevenue>())
+            foreach (ProductCategoryRevenue revenue in session.Extent<ProductCategoryRevenue>())
             {
                 revenue.OnDerive(x => x.WithDerivation(derivation));
             }
 
-            this.Strategy.Session.Commit();
+            session.Commit();
 
-            foreach (ProductRevenue revenue in this.Strategy.Session.Extent<ProductRevenue>())
+            foreach (ProductRevenue revenue in session.Extent<ProductRevenue>())
             {
                 revenue.OnDerive(x => x.WithDerivation(derivation));
             }
 
-            this.Strategy.Session.Commit();
+            session.Commit();
 
-            foreach (SalesRepPartyProductCategoryRevenue revenue in this.Strategy.Session.Extent<SalesRepPartyProductCategoryRevenue>())
+            foreach (SalesRepPartyProductCategoryRevenue revenue in session.Extent<SalesRepPartyProductCategoryRevenue>())
             {
                 revenue.OnDerive(x => x.WithDerivation(derivation));
             }
 
-            this.Strategy.Session.Commit();
+            session.Commit();
 
-            foreach (SalesRepPartyRevenue revenue in this.Strategy.Session.Extent<SalesRepPartyRevenue>())
+            foreach (SalesRepPartyRevenue revenue in session.Extent<SalesRepPartyRevenue>())
             {
                 revenue.OnDerive(x => x.WithDerivation(derivation));
             }
 
-            this.Strategy.Session.Commit();
+            session.Commit();
 
-            foreach (SalesRepProductCategoryRevenue revenue in this.Strategy.Session.Extent<SalesRepProductCategoryRevenue>())
+            foreach (SalesRepProductCategoryRevenue revenue in session.Extent<SalesRepProductCategoryRevenue>())
             {
                 revenue.OnDerive(x => x.WithDerivation(derivation));
             }
 
-            this.Strategy.Session.Commit();
+            session.Commit();
 
-            foreach (SalesRepRevenue revenue in this.Strategy.Session.Extent<SalesRepRevenue>())
+            foreach (SalesRepRevenue revenue in session.Extent<SalesRepRevenue>())
             {
                 revenue.OnDerive(x => x.WithDerivation(derivation));
             }
 
-            this.Strategy.Session.Commit();
+            session.Commit();
 
-            foreach (StoreRevenue revenue in this.Strategy.Session.Extent<StoreRevenue>())
+            foreach (StoreRevenue revenue in session.Extent<StoreRevenue>())
             {
                 revenue.OnDerive(x => x.WithDerivation(derivation));
             }
 
-            this.Strategy.Session.Commit();
+            session.Commit();
 
-            foreach (SalesChannelRevenue revenue in this.Strategy.Session.Extent<SalesChannelRevenue>())
+            foreach (SalesChannelRevenue revenue in session.Extent<SalesChannelRevenue>())
             {
                 revenue.OnDerive(x => x.WithDerivation(derivation));
             }
 
-            this.Strategy.Session.Commit();
+            session.Commit();
 
-            SalesRepRelationships.DeriveCommissions(this.Strategy.Session);
-            this.Strategy.Session.Commit();
-            People.AppsOnDeriveCommissions(this.Strategy.Session);
-            this.Strategy.Session.Commit();
-
-            this.AppsOnDeriveHistories(derivation);
-        }
-
-        public void AppsOnDeriveHistories(IDerivation derivation)
-        {
-            PartyPackageRevenueHistories.AppsOnDeriveHistory(this.Strategy.Session);
-            this.Strategy.Session.Commit();
-
-            PartyProductCategoryRevenueHistories.AppsOnDeriveHistory(this.Strategy.Session);
-            this.Strategy.Session.Commit();
-
-            PartyProductRevenueHistories.AppsOnDeriveHistory(this.Strategy.Session);
-            this.Strategy.Session.Commit();
-
-            PartyRevenueHistories.AppsOnDeriveHistory(this.Strategy.Session);
-            this.Strategy.Session.Commit();
-
-            var revenues = this.Strategy.Session.Extent<PartyPackageRevenueHistory>();
-            foreach (PartyPackageRevenueHistory revenue in revenues)
-            {
-                revenue.OnDerive(x => x.WithDerivation(derivation));
-            }
-
-            this.Strategy.Session.Commit();
-
-            foreach (PartyProductCategoryRevenueHistory revenue in this.Strategy.Session.Extent<PartyProductCategoryRevenueHistory>())
-            {
-                revenue.OnDerive(x => x.WithDerivation(derivation));
-            }
-
-            this.Strategy.Session.Commit();
-
-            foreach (PartyProductRevenueHistory revenue in this.Strategy.Session.Extent<PartyProductRevenueHistory>())
-            {
-                revenue.OnDerive(x => x.WithDerivation(derivation));
-            }
-
-            this.Strategy.Session.Commit();
-
-            foreach (PartyRevenueHistory revenue in this.Strategy.Session.Extent<PartyRevenueHistory>())
-            {
-                revenue.OnDerive(x => x.WithDerivation(derivation));
-            }
-
-            this.Strategy.Session.Commit();
-
-            InternalOrganisationRevenueHistories.AppsOnDeriveHistory(this.Strategy.Session);
-            this.Strategy.Session.Commit();
-            PackageRevenueHistories.AppsOnDeriveHistory(this.Strategy.Session);
-            this.Strategy.Session.Commit();
-            ProductCategoryRevenueHistories.AppsOnDeriveHistory(this.Strategy.Session);
-            this.Strategy.Session.Commit();
-            ProductRevenueHistories.AppsOnDeriveHistory(this.Strategy.Session);
-            this.Strategy.Session.Commit();
-            SalesChannelRevenueHistories.AppsOnDeriveHistory(this.Strategy.Session);
-            this.Strategy.Session.Commit();
-            SalesRepRevenueHistories.AppsOnDeriveHistory(this.Strategy.Session);
-            this.Strategy.Session.Commit();
-            StoreRevenueHistories.AppsOnDeriveHistory(this.Strategy.Session);
-            this.Strategy.Session.Commit();
-
-            foreach (InternalOrganisationRevenueHistory revenueHistory in this.Strategy.Session.Extent<InternalOrganisationRevenueHistory>())
-            {
-                revenueHistory.OnDerive(x => x.WithDerivation(derivation));
-            }
-
-            this.Strategy.Session.Commit();
-
-            foreach (PackageRevenueHistory revenueHistory in this.Strategy.Session.Extent<PackageRevenueHistory>())
-            {
-                revenueHistory.OnDerive(x => x.WithDerivation(derivation));
-            }
-
-            this.Strategy.Session.Commit();
-
-            foreach (ProductCategoryRevenueHistory revenueHistory in this.Strategy.Session.Extent<ProductCategoryRevenueHistory>())
-            {
-                revenueHistory.OnDerive(x => x.WithDerivation(derivation));
-            }
-
-            this.Strategy.Session.Commit();
-
-            foreach (ProductRevenueHistory revenueHistory in this.Strategy.Session.Extent<ProductRevenueHistory>())
-            {
-                revenueHistory.OnDerive(x => x.WithDerivation(derivation));
-            }
-
-            this.Strategy.Session.Commit();
-
-            foreach (SalesChannelRevenueHistory revenueHistory in this.Strategy.Session.Extent<SalesChannelRevenueHistory>())
-            {
-                revenueHistory.OnDerive(x => x.WithDerivation(derivation));
-            }
-
-            this.Strategy.Session.Commit();
-
-            foreach (SalesRepRevenueHistory revenueHistory in this.Strategy.Session.Extent<SalesRepRevenueHistory>())
-            {
-                revenueHistory.OnDerive(x => x.WithDerivation(derivation));
-            }
-
-            this.Strategy.Session.Commit();
-
-            foreach (StoreRevenueHistory revenueHistory in this.Strategy.Session.Extent<StoreRevenueHistory>())
-            {
-                revenueHistory.OnDerive(x => x.WithDerivation(derivation));
-            }
-
-            this.Strategy.Session.Commit();
+            SalesRepRelationships.DeriveCommissions(session);
+            session.Commit();
+            People.AppsOnDeriveCommissions(session);
+            session.Commit();
         }
     }
 }

@@ -45,7 +45,6 @@ namespace Allors.Domain
 
             this.DatabaseSession.Rollback();
 
-            builder.WithOwner(new InternalOrganisations(this.DatabaseSession).Extent().First);
             facility = builder.Build();
 
             Assert.False(this.DatabaseSession.Derive(false).HasErrors);

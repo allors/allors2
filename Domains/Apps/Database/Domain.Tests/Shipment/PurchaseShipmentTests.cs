@@ -21,23 +21,20 @@
 
 namespace Allors.Domain
 {
-    using Meta;
     using Xunit;
 
-    
     public class PurchaseShipmentTests : DomainTest
     {
         [Fact]
         public void GivenPurchaseShipmentBuilder_WhenBuild_ThenPostBuildRelationsMustExist()
         {
             var supplier = new OrganisationBuilder(this.DatabaseSession).WithName("supplier").WithOrganisationRole(new OrganisationRoles(this.DatabaseSession).Supplier).Build();
-            var internalOrganisation = new InternalOrganisations(this.DatabaseSession).FindBy(M.InternalOrganisation.Name, "internalOrganisation");
+            var internalOrganisation = InternalOrganisation.Instance(this.DatabaseSession);
             var shipment = new PurchaseShipmentBuilder(this.DatabaseSession).WithShipmentMethod(new ShipmentMethods(this.DatabaseSession).Ground).WithShipFromParty(supplier).Build();
 
             this.DatabaseSession.Derive();
 
             Assert.Equal(new PurchaseShipmentObjectStates(this.DatabaseSession).Created, shipment.CurrentObjectState);
-            Assert.Equal(internalOrganisation, shipment.ShipToParty);
             Assert.Equal(internalOrganisation.ShippingAddress, shipment.ShipToAddress);
             Assert.Equal(shipment.ShipToParty, shipment.ShipToParty);
         }
@@ -74,11 +71,11 @@ namespace Allors.Domain
         {
             var internalOrganisation = new InternalOrganisationBuilder(this.DatabaseSession).Build();
 
-            var shipment1 = new PurchaseShipmentBuilder(this.DatabaseSession).WithShipToParty(internalOrganisation).Build();
+            var shipment1 = new PurchaseShipmentBuilder(this.DatabaseSession).Build();
 
             Assert.Equal("1", shipment1.ShipmentNumber);
 
-            var shipment2 = new PurchaseShipmentBuilder(this.DatabaseSession).WithShipToParty(internalOrganisation).Build();
+            var shipment2 = new PurchaseShipmentBuilder(this.DatabaseSession).Build();
 
             Assert.Equal("2", shipment2.ShipmentNumber);
         }
@@ -89,11 +86,11 @@ namespace Allors.Domain
             var internalOrganisation = new InternalOrganisationBuilder(this.DatabaseSession).Build();
             internalOrganisation.IncomingShipmentNumberPrefix = "the format is ";
 
-            var shipment1 = new PurchaseShipmentBuilder(this.DatabaseSession).WithShipToParty(internalOrganisation).Build();
+            var shipment1 = new PurchaseShipmentBuilder(this.DatabaseSession).Build();
 
             Assert.Equal("the format is 1", shipment1.ShipmentNumber);
 
-            var shipment2 = new PurchaseShipmentBuilder(this.DatabaseSession).WithShipToParty(internalOrganisation).Build();
+            var shipment2 = new PurchaseShipmentBuilder(this.DatabaseSession).Build();
 
             Assert.Equal("the format is 2", shipment2.ShipmentNumber);
         }
@@ -102,7 +99,7 @@ namespace Allors.Domain
         public void GivenPurchaseShipmentWithShipToAddress_WhenDeriving_ThenDerivedShipToAddressMustExist()
         {
             var supplier = new OrganisationBuilder(this.DatabaseSession).WithName("supplier").WithOrganisationRole(new OrganisationRoles(this.DatabaseSession).Supplier).Build();
-            var internalOrganisation = new InternalOrganisations(this.DatabaseSession).FindBy(M.InternalOrganisation.Name, "internalOrganisation");
+            var internalOrganisation = InternalOrganisation.Instance(this.DatabaseSession);
             PostalAddress postalAddress = null;
             foreach (PartyContactMechanism partyContactMechanism in internalOrganisation.PartyContactMechanisms)
             {
@@ -123,7 +120,7 @@ namespace Allors.Domain
         public void GivenPurchaseShipmentWithShipToCustomerWithshippingAddress_WhenDeriving_ThenDerivedShipToCustomerAndDerivedShipToAddressMustExist()
         {
             var supplier = new OrganisationBuilder(this.DatabaseSession).WithName("supplier").WithOrganisationRole(new OrganisationRoles(this.DatabaseSession).Supplier).Build();
-            var internalOrganisation = new InternalOrganisations(this.DatabaseSession).FindBy(M.InternalOrganisation.Name, "internalOrganisation");
+            var internalOrganisation = InternalOrganisation.Instance(this.DatabaseSession);
             var mechelen = new CityBuilder(this.DatabaseSession).WithName("Mechelen").Build();
             var shipToAddress = new PostalAddressBuilder(this.DatabaseSession).WithAddress1("Haverwerf 15").WithGeographicBoundary(mechelen).Build();
 

@@ -44,18 +44,6 @@ namespace Allors.Domain
                 this.Revenue += salesInvoice.TotalExVat;
             }
 
-            var months = ((DateTime.UtcNow.Year - this.Year) * 12) + DateTime.UtcNow.Month - this.Month;
-            if (months <= 12)
-            {
-                var histories = this.Store.StoreRevenueHistoriesWhereStore;
-                var history = histories.First ?? new StoreRevenueHistoryBuilder(this.Strategy.Session)
-                                                     .WithCurrency(this.Currency)
-                                                     .WithStore(this.Store)
-                                                     .Build();
-
-                history.AppsOnDeriveRevenue();
-            }
-
             var internalOrganisationRevenue = InternalOrganisationRevenues.AppsFindOrCreateAsDependable(this.Strategy.Session, this);
             internalOrganisationRevenue.OnDerive(x => x.WithDerivation(derivation));
         }

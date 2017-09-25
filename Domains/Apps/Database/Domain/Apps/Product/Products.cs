@@ -38,7 +38,7 @@ namespace Allors.Domain
             }
 
             var party = salesOrder != null ? salesOrder.ShipToCustomer : salesInvoice != null ? salesInvoice.BillToCustomer : null;
-            var internalOrganisation = salesOrder != null ? salesOrder.TakenByInternalOrganisation : salesInvoice != null ? salesInvoice.BilledFromInternalOrganisation : null;
+            var internalOrganisation = InternalOrganisation.Instance(salesOrder.Strategy.Session);
 
             foreach (BasePrice priceComponent in baseprices)
             {
@@ -65,13 +65,6 @@ namespace Allors.Domain
                 }
             }
 
-            var partyRevenueHistories = party.PartyRevenueHistoriesWhereParty;
-            var partyRevenueHistory = partyRevenueHistories.First;
-
-            var partyProductCategoryRevenueHistoryByProductCategory = PartyProductCategoryRevenueHistories.PartyProductCategoryRevenueHistoryByProductCategory(internalOrganisation, party);
-
-            var partyPackageRevenuesHistories = party.PartyPackageRevenueHistoriesWhereParty;
-
             var priceComponents = GetPriceComponents(internalOrganisation, product, date);
 
             var revenueBreakDiscount = 0M;
@@ -88,9 +81,6 @@ namespace Allors.Domain
                                                                Product = product,
                                                                SalesOrder = salesOrder,
                                                                SalesInvoice = salesInvoice,
-                                                               PartyPackageRevenueHistoryList = partyPackageRevenuesHistories,
-                                                               PartyRevenueHistory = partyRevenueHistory,
-                                                               PartyProductCategoryRevenueHistoryByProductCategory = partyProductCategoryRevenueHistoryByProductCategory,
                                                            }))
                     {
                         if (priceComponent.Strategy.Class.Equals(M.DiscountComponent.ObjectType))
@@ -179,9 +169,11 @@ namespace Allors.Domain
 
         private static List<PriceComponent> GetPriceComponents(InternalOrganisation internalOrganisation, Product product, DateTime date)
         {
+            // TODO: Code duplication ?
             var priceComponents = new List<PriceComponent>();
 
-            var extent = internalOrganisation.PriceComponentsWhereSpecifiedFor;
+            var session = internalOrganisation.Strategy.Session;
+            var extent = new PriceComponents(session).Extent();
 
             foreach (PriceComponent priceComponent in extent)
             {
@@ -194,7 +186,7 @@ namespace Allors.Domain
 
             if (priceComponents.Count == 0 && product.ExistProductWhereVariant)
             {
-                extent = internalOrganisation.PriceComponentsWhereSpecifiedFor;
+                extent = new PriceComponents(session).Extent();
                 foreach (PriceComponent priceComponent in extent)
                 {
                     if (priceComponent.ExistProduct && priceComponent.Product.Equals(product.ProductWhereVariant) && !priceComponent.ExistProductFeature &&
@@ -206,7 +198,7 @@ namespace Allors.Domain
             }
 
             // Discounts and surcharges can be specified without product or product feature, these need te be added to collection of pricecomponents
-            extent = internalOrganisation.PriceComponentsWhereSpecifiedFor;
+            extent = new PriceComponents(session).Extent();
             foreach (PriceComponent priceComponent in extent)
             {
                 if (!priceComponent.ExistProduct && !priceComponent.ExistProductFeature &&

@@ -22,10 +22,8 @@
 namespace Allors.Domain
 {
     using System;
-    using Meta;
     using Xunit;
 
-    
     public class OwnCreditCardTests : DomainTest
     {
         [Fact]
@@ -89,7 +87,7 @@ namespace Allors.Domain
                 .WithCreditCard(creditCard)
                 .Build();
 
-            var internalOrganisation = Singleton.Instance(this.DatabaseSession).DefaultInternalOrganisation;             
+            var internalOrganisation = InternalOrganisation.Instance(this.DatabaseSession);             
             
             internalOrganisation.RemovePaymentMethods();
             internalOrganisation.AddPaymentMethod(paymentMethod);
@@ -117,7 +115,7 @@ namespace Allors.Domain
                 .WithCreditCard(creditCard)
                 .Build();
 
-            var internalOrganisation = Singleton.Instance(this.DatabaseSession).DefaultInternalOrganisation;
+            var internalOrganisation = InternalOrganisation.Instance(this.DatabaseSession);
             internalOrganisation.AddPaymentMethod(paymentMethod);
 
             this.DatabaseSession.Derive();
@@ -139,13 +137,9 @@ namespace Allors.Domain
                 .WithOrganisationRole(new OrganisationRoles(this.DatabaseSession).Supplier)
                 .Build();
 
-            var internalOrganisation = new InternalOrganisations(this.DatabaseSession).FindBy(M.InternalOrganisation.Name, "internalOrganisation");
+            var internalOrganisation = InternalOrganisation.Instance(this.DatabaseSession);
 
-            var supplierRelationship = new SupplierRelationshipBuilder(this.DatabaseSession)
-                .WithSupplier(supplier)
-                .WithInternalOrganisation(internalOrganisation)
-                .WithFromDate(DateTime.UtcNow)
-                .Build();
+            internalOrganisation.AddSupplier(supplier);
 
             var generalLedgerAccount = new GeneralLedgerAccountBuilder(this.DatabaseSession)
                 .WithAccountNumber("0001")
@@ -154,7 +148,6 @@ namespace Allors.Domain
                 .Build();
 
             var internalOrganisationGlAccount = new OrganisationGlAccountBuilder(this.DatabaseSession)
-                .WithInternalOrganisation(internalOrganisation)
                 .WithGeneralLedgerAccount(generalLedgerAccount)
                 .Build();
 
@@ -171,7 +164,7 @@ namespace Allors.Domain
             var paymentMethod = new OwnCreditCardBuilder(this.DatabaseSession)
                 .WithCreditCard(creditCard)
                 .WithGeneralLedgerAccount(internalOrganisationGlAccount)
-                .WithCreditor(supplierRelationship)
+                .WithCreditor(supplier)
                 .Build();
 
             this.DatabaseSession.Commit();
@@ -200,13 +193,9 @@ namespace Allors.Domain
                 .WithOrganisationRole(new OrganisationRoles(this.DatabaseSession).Supplier)
                 .Build();
 
-            var internalOrganisation = new InternalOrganisations(this.DatabaseSession).FindBy(M.InternalOrganisation.Name, "internalOrganisation");
+            var internalOrganisation = InternalOrganisation.Instance(this.DatabaseSession);
 
-            var supplierRelationship = new SupplierRelationshipBuilder(this.DatabaseSession)
-                .WithSupplier(supplier)
-                .WithInternalOrganisation(internalOrganisation)
-                .WithFromDate(DateTime.UtcNow)
-                .Build();
+            internalOrganisation.AddSupplier(supplier);
 
             var generalLedgerAccount = new GeneralLedgerAccountBuilder(this.DatabaseSession)
                 .WithAccountNumber("0001")
@@ -215,7 +204,6 @@ namespace Allors.Domain
                 .Build();
 
             var internalOrganisationGlAccount = new OrganisationGlAccountBuilder(this.DatabaseSession)
-                .WithInternalOrganisation(internalOrganisation)
                 .WithGeneralLedgerAccount(generalLedgerAccount)
                 .Build();
 
@@ -231,7 +219,7 @@ namespace Allors.Domain
 
             var paymentMethod = new OwnCreditCardBuilder(this.DatabaseSession)
                 .WithCreditCard(creditCard)
-                .WithCreditor(supplierRelationship)
+                .WithCreditor(supplier)
                 .Build();
 
             this.DatabaseSession.Commit();

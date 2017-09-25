@@ -19,20 +19,18 @@
 // <summary>Defines the MediaTests type.</summary>
 //-------------------------------------------------------------------------------------------------
 
-using System;
-
 namespace Allors.Domain
 {
-    using Meta;
+    using System;
+
     using Xunit;
 
-    
     public class JournalTests : DomainTest
     {
         [Fact]
         public void GivenJournal_WhenDeriving_ThenDescriptionMustExist()
         {
-            var internalOrganisation = new InternalOrganisations(this.DatabaseSession).FindBy(M.InternalOrganisation.Name, "internalOrganisation");
+            var internalOrganisation = InternalOrganisation.Instance(this.DatabaseSession);
 
             var glAccount = new GeneralLedgerAccountBuilder(this.DatabaseSession)
                 .WithAccountNumber("0001")
@@ -45,7 +43,6 @@ namespace Allors.Domain
 
             var internalOrganisationGlAccount = new OrganisationGlAccountBuilder(this.DatabaseSession)
                 .WithFromDate(DateTime.UtcNow)
-                .WithInternalOrganisation(internalOrganisation)
                 .WithGeneralLedgerAccount(glAccount)
                 .Build();
 
@@ -69,7 +66,7 @@ namespace Allors.Domain
         [Fact]
         public void GivenJournal_WhenDeriving_ThenInternalOrganisationMustExist()
         {
-            var internalOrganisation = new InternalOrganisations(this.DatabaseSession).FindBy(M.InternalOrganisation.Name, "internalOrganisation");
+            var internalOrganisation = InternalOrganisation.Instance(this.DatabaseSession);
             var glAccount = new GeneralLedgerAccountBuilder(this.DatabaseSession)
                 .WithAccountNumber("0001")
                 .WithName("GeneralLedgerAccount")
@@ -81,7 +78,6 @@ namespace Allors.Domain
 
             var internalOrganisationGlAccount = new OrganisationGlAccountBuilder(this.DatabaseSession)
                 .WithFromDate(DateTime.UtcNow)
-                .WithInternalOrganisation(internalOrganisation)
                 .WithGeneralLedgerAccount(glAccount)
                 .Build();
 
@@ -99,7 +95,7 @@ namespace Allors.Domain
         [Fact]
         public void GivenJournal_WhenDeriving_ThenJournalTypeMustExist()
         {
-            var internalOrganisation = new InternalOrganisations(this.DatabaseSession).FindBy(M.InternalOrganisation.Name, "internalOrganisation");
+            var internalOrganisation = InternalOrganisation.Instance(this.DatabaseSession);
             var glAccount = new GeneralLedgerAccountBuilder(this.DatabaseSession)
                 .WithAccountNumber("0001")
                 .WithName("GeneralLedgerAccount")
@@ -111,7 +107,6 @@ namespace Allors.Domain
 
             var internalOrganisationGlAccount = new OrganisationGlAccountBuilder(this.DatabaseSession)
                 .WithFromDate(DateTime.UtcNow)
-                .WithInternalOrganisation(internalOrganisation)
                 .WithGeneralLedgerAccount(glAccount)
                 .Build();
 
@@ -135,7 +130,7 @@ namespace Allors.Domain
         [Fact]
         public void GivenJournal_WhenDeriving_ThenContraAccountMustExist()
         {
-            var internalOrganisation = new InternalOrganisations(this.DatabaseSession).FindBy(M.InternalOrganisation.Name, "internalOrganisation");
+            var internalOrganisation = InternalOrganisation.Instance(this.DatabaseSession);
 
             var builder = new JournalBuilder(this.DatabaseSession);
             builder.WithDescription("description");
@@ -157,7 +152,6 @@ namespace Allors.Domain
 
             var internalOrganisationGlAccount = new OrganisationGlAccountBuilder(this.DatabaseSession)
                 .WithFromDate(DateTime.UtcNow)
-                .WithInternalOrganisation(internalOrganisation)
                 .WithGeneralLedgerAccount(glAccount)
                 .Build();
 
@@ -170,7 +164,7 @@ namespace Allors.Domain
         [Fact]
         public void GivenJournal_WhenBuildWithout_ThenBlockUnpaidTransactionsIsFalse()
         {
-            var internalOrganisation = new InternalOrganisations(this.DatabaseSession).FindBy(M.InternalOrganisation.Name, "internalOrganisation");
+            var internalOrganisation = InternalOrganisation.Instance(this.DatabaseSession);
 
             var generalLedgerAccount = new GeneralLedgerAccountBuilder(this.DatabaseSession)
                 .WithAccountNumber("0001")
@@ -179,12 +173,10 @@ namespace Allors.Domain
                 .Build();
 
             var internalOrganisationGlAccount = new OrganisationGlAccountBuilder(this.DatabaseSession)
-                .WithInternalOrganisation(internalOrganisation)
                 .WithGeneralLedgerAccount(generalLedgerAccount)
                 .Build();
 
             var journal = new JournalBuilder(this.DatabaseSession)
-                .WithInternalOrganisation(internalOrganisation)
                 .WithJournalType(new JournalTypes(this.DatabaseSession).Bank)
                 .WithContraAccount(internalOrganisationGlAccount)
                 .WithDescription("journal")
@@ -198,7 +190,7 @@ namespace Allors.Domain
         [Fact]
         public void GivenJournal_WhenBuildWithout_ThenCloseWhenInBalanceIsFalse()
         {
-            var internalOrganisation = new InternalOrganisations(this.DatabaseSession).FindBy(M.InternalOrganisation.Name, "internalOrganisation");
+            var internalOrganisation = InternalOrganisation.Instance(this.DatabaseSession);
 
             var generalLedgerAccount = new GeneralLedgerAccountBuilder(this.DatabaseSession)
                 .WithAccountNumber("0001")
@@ -207,12 +199,10 @@ namespace Allors.Domain
                 .Build();
 
             var internalOrganisationGlAccount = new OrganisationGlAccountBuilder(this.DatabaseSession)
-                .WithInternalOrganisation(internalOrganisation)
                 .WithGeneralLedgerAccount(generalLedgerAccount)
                 .Build();
 
             var journal = new JournalBuilder(this.DatabaseSession)
-                .WithInternalOrganisation(internalOrganisation)
                 .WithJournalType(new JournalTypes(this.DatabaseSession).Bank)
                 .WithContraAccount(internalOrganisationGlAccount)
                 .WithDescription("journal")
@@ -226,7 +216,7 @@ namespace Allors.Domain
         [Fact]
         public void GivenJournal_WhenBuildWithout_ThenUseAsDefaultIsFalse()
         {
-            var internalOrganisation = new InternalOrganisations(this.DatabaseSession).FindBy(M.InternalOrganisation.Name, "internalOrganisation");
+            var internalOrganisation = InternalOrganisation.Instance(this.DatabaseSession);
 
             var generalLedgerAccount = new GeneralLedgerAccountBuilder(this.DatabaseSession)
                 .WithAccountNumber("0001")
@@ -235,12 +225,10 @@ namespace Allors.Domain
                 .Build();
 
             var internalOrganisationGlAccount = new OrganisationGlAccountBuilder(this.DatabaseSession)
-                .WithInternalOrganisation(internalOrganisation)
                 .WithGeneralLedgerAccount(generalLedgerAccount)
                 .Build();
 
             var journal = new JournalBuilder(this.DatabaseSession)
-                .WithInternalOrganisation(internalOrganisation)
                 .WithJournalType(new JournalTypes(this.DatabaseSession).Bank)
                 .WithContraAccount(internalOrganisationGlAccount)
                 .WithDescription("journal")
@@ -254,7 +242,7 @@ namespace Allors.Domain
         [Fact]
         public void GivenJournal_WhenDeriving_ThenContraAccountCanBeChangedWhenNotUsedYet()
         {
-            var internalOrganisation = new InternalOrganisations(this.DatabaseSession).FindBy(M.InternalOrganisation.Name, "internalOrganisation");
+            var internalOrganisation = InternalOrganisation.Instance(this.DatabaseSession);
 
             var generalLedgerAccount1 = new GeneralLedgerAccountBuilder(this.DatabaseSession)
                 .WithAccountNumber("0001")
@@ -267,7 +255,6 @@ namespace Allors.Domain
 
             var internalOrganisationGlAccount1 = new OrganisationGlAccountBuilder(this.DatabaseSession)
                 .WithFromDate(DateTime.UtcNow)
-                .WithInternalOrganisation(internalOrganisation)
                 .WithGeneralLedgerAccount(generalLedgerAccount1)
                 .Build();
 
@@ -282,7 +269,6 @@ namespace Allors.Domain
 
             var internalOrganisationGlAccount2 = new OrganisationGlAccountBuilder(this.DatabaseSession)
                 .WithFromDate(DateTime.UtcNow)
-                .WithInternalOrganisation(internalOrganisation)
                 .WithGeneralLedgerAccount(generalLedgerAccount2)
                 .Build();
 
@@ -306,7 +292,7 @@ namespace Allors.Domain
         [Fact]
         public void GivenJournal_WhenDeriving_ThenContraAccountCanNotBeChangedWhenJournalEntriesArePresent()
         {
-            var internalOrganisation = new InternalOrganisations(this.DatabaseSession).FindBy(M.InternalOrganisation.Name, "internalOrganisation");
+            var internalOrganisation = InternalOrganisation.Instance(this.DatabaseSession);
 
             var generalLedgerAccount1 = new GeneralLedgerAccountBuilder(this.DatabaseSession)
                 .WithAccountNumber("0001")
@@ -319,7 +305,6 @@ namespace Allors.Domain
 
             var internalOrganisationGlAccount1 = new OrganisationGlAccountBuilder(this.DatabaseSession)
                 .WithFromDate(DateTime.UtcNow)
-                .WithInternalOrganisation(internalOrganisation)
                 .WithGeneralLedgerAccount(generalLedgerAccount1)
                 .Build();
 
@@ -334,7 +319,6 @@ namespace Allors.Domain
 
             var internalOrganisationGlAccount2 = new OrganisationGlAccountBuilder(this.DatabaseSession)
                 .WithFromDate(DateTime.UtcNow)
-                .WithInternalOrganisation(internalOrganisation)
                 .WithGeneralLedgerAccount(generalLedgerAccount2)
                 .Build();
 
@@ -364,7 +348,7 @@ namespace Allors.Domain
         [Fact]
         public void GivenJournal_WhenDeriving_ThenJournalTypeCanBeChangedWhenJournalIsNotUsedYet()
         {
-            var internalOrganisation = new InternalOrganisations(this.DatabaseSession).FindBy(M.InternalOrganisation.Name, "internalOrganisation");
+            var internalOrganisation = InternalOrganisation.Instance(this.DatabaseSession);
 
             var generalLedgerAccount1 = new GeneralLedgerAccountBuilder(this.DatabaseSession)
                 .WithAccountNumber("0001")
@@ -377,7 +361,6 @@ namespace Allors.Domain
 
             var internalOrganisationGlAccount = new OrganisationGlAccountBuilder(this.DatabaseSession)
                 .WithFromDate(DateTime.UtcNow)
-                .WithInternalOrganisation(internalOrganisation)
                 .WithGeneralLedgerAccount(generalLedgerAccount1)
                 .Build();
 
@@ -401,7 +384,7 @@ namespace Allors.Domain
         [Fact]
         public void GivenJournal_WhenDeriving_ThenJournalTypeCanNotBeChangedWhenJournalEntriesArePresent()
         {
-            var internalOrganisation = new InternalOrganisations(this.DatabaseSession).FindBy(M.InternalOrganisation.Name, "internalOrganisation");
+            var internalOrganisation = InternalOrganisation.Instance(this.DatabaseSession);
 
             var generalLedgerAccount1 = new GeneralLedgerAccountBuilder(this.DatabaseSession)
                 .WithAccountNumber("0001")
@@ -414,7 +397,6 @@ namespace Allors.Domain
 
             var internalOrganisationGlAccount = new OrganisationGlAccountBuilder(this.DatabaseSession)
                 .WithFromDate(DateTime.UtcNow)
-                .WithInternalOrganisation(internalOrganisation)
                 .WithGeneralLedgerAccount(generalLedgerAccount1)
                 .Build();
 

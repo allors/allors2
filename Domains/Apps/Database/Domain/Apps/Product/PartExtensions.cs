@@ -20,11 +20,6 @@ namespace Allors.Domain
         public static void AppsOnBuild(this Part @this, ObjectOnBuild method)
         {
             @this.InventoryItemKind = new InventoryItemKinds(@this.Strategy.Session).NonSerialised;
-
-            if (!@this.ExistOwnedByParty)
-            {
-                @this.OwnedByParty = Singleton.Instance(@this.Strategy.Session).DefaultInternalOrganisation;
-            }
         }
 
         public static void AppsOnPreDerive(this Part @this, ObjectOnPreDerive method)
@@ -57,7 +52,6 @@ namespace Allors.Domain
                 if (!@this.ExistInventoryItemsWherePart)
                 {
                     new NonSerialisedInventoryItemBuilder(@this.Strategy.Session)
-                        .WithFacility(@this.OwnedByParty.DefaultFacility)
                         .WithPart(@this)
                         .Build();
                 }

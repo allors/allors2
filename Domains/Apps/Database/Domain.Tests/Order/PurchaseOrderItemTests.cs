@@ -48,11 +48,11 @@ namespace Allors.Domain
                 .WithContactPurpose(new ContactMechanismPurposes(this.DatabaseSession).BillingAddress)
                 .Build();
 
-            var internalOrganisation = new InternalOrganisations(this.DatabaseSession).FindBy(M.InternalOrganisation.Name, "internalOrganisation");
+            var internalOrganisation = InternalOrganisation.Instance(this.DatabaseSession);
             this.supplier = new OrganisationBuilder(this.DatabaseSession).WithName("supplier").WithOrganisationRole(new OrganisationRoles(this.DatabaseSession).Supplier).Build();
             this.supplier.AddPartyContactMechanism(supplierContactMechanism);
 
-            new SupplierRelationshipBuilder(this.DatabaseSession).WithSupplier(supplier).WithInternalOrganisation(internalOrganisation).Build();
+            internalOrganisation.AddSupplier(this.supplier);
 
             this.finishedGood = new FinishedGoodBuilder(this.DatabaseSession)
                 .WithManufacturerId("10101")

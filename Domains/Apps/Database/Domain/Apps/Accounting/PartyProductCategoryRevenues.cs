@@ -23,8 +23,7 @@ namespace Allors.Domain
     {
         public static void AppsOnDeriveRevenues(ISession session)
         {
-            var partyProductCategoryRevenuesByPeriodByProductCategoryByPartyByInternalOrganisation =
-                new Dictionary<InternalOrganisation, Dictionary<Party, Dictionary<ProductCategory, Dictionary<DateTime, PartyProductCategoryRevenue>>>>();
+            var partyProductCategoryRevenuesByPeriodByProductCategoryByParty = new Dictionary<Party, Dictionary<ProductCategory, Dictionary<DateTime, PartyProductCategoryRevenue>>>();
 
             var partyProductCategoryRevenues = session.Extent<PartyProductCategoryRevenue>();
 
@@ -33,13 +32,6 @@ namespace Allors.Domain
                 partyProductCategoryRevenue.Revenue = 0;
                 partyProductCategoryRevenue.Quantity = 0;
                 var date = DateTimeFactory.CreateDate(partyProductCategoryRevenue.Year, partyProductCategoryRevenue.Month, 01);
-
-                Dictionary<Party, Dictionary<ProductCategory, Dictionary<DateTime, PartyProductCategoryRevenue>>> partyProductCategoryRevenuesByPeriodByProductCategoryByParty;
-                if (!partyProductCategoryRevenuesByPeriodByProductCategoryByPartyByInternalOrganisation.TryGetValue(partyProductCategoryRevenue.InternalOrganisation, out partyProductCategoryRevenuesByPeriodByProductCategoryByParty))
-                {
-                    partyProductCategoryRevenuesByPeriodByProductCategoryByParty = new Dictionary<Party, Dictionary<ProductCategory, Dictionary<DateTime, PartyProductCategoryRevenue>>>();
-                    partyProductCategoryRevenuesByPeriodByProductCategoryByPartyByInternalOrganisation[partyProductCategoryRevenue.InternalOrganisation] = partyProductCategoryRevenuesByPeriodByProductCategoryByParty;
-                }
 
                 Dictionary<ProductCategory, Dictionary<DateTime, PartyProductCategoryRevenue>> partyProductCategoryRevenuesByPeriodByproductCategory;
                 if (!partyProductCategoryRevenuesByPeriodByProductCategoryByParty.TryGetValue(partyProductCategoryRevenue.Party, out partyProductCategoryRevenuesByPeriodByproductCategory))
@@ -82,7 +74,7 @@ namespace Allors.Domain
                     {
                         foreach (ProductCategory productCategory in salesInvoiceItem.Product.ProductCategories)
                         {
-                            CreateProductCategoryRevenue(session, partyProductCategoryRevenuesByPeriodByProductCategoryByPartyByInternalOrganisation, date, revenues, salesInvoiceItem, productCategory);
+                            CreateProductCategoryRevenue(session, partyProductCategoryRevenuesByPeriodByProductCategoryByParty, date, revenues, salesInvoiceItem, productCategory);
                         }
                     }
                 }
@@ -102,7 +94,6 @@ namespace Allors.Domain
             foreach (ProductCategory productCategory in dependant.Product.ProductCategories)
             {
                 var partyProductCategoryRevenues = dependant.Party.PartyProductCategoryRevenuesWhereParty;
-                partyProductCategoryRevenues.Filter.AddEquals(M.PartyProductCategoryRevenue.InternalOrganisation, dependant.InternalOrganisation);
                 partyProductCategoryRevenues.Filter.AddEquals(M.PartyProductCategoryRevenue.Year, dependant.Year);
                 partyProductCategoryRevenues.Filter.AddEquals(M.PartyProductCategoryRevenue.Month, dependant.Month);
                 partyProductCategoryRevenues.Filter.AddEquals(M.PartyProductCategoryRevenue.ProductCategory, productCategory);
@@ -125,7 +116,6 @@ namespace Allors.Domain
             foreach (ProductCategory parentCategory in dependant.ProductCategory.Parents)
             {
                 var partyProductCategoryRevenues = dependant.Party.PartyProductCategoryRevenuesWhereParty;
-                partyProductCategoryRevenues.Filter.AddEquals(M.PartyProductCategoryRevenue.InternalOrganisation, dependant.InternalOrganisation);
                 partyProductCategoryRevenues.Filter.AddEquals(M.PartyProductCategoryRevenue.Year, dependant.Year);
                 partyProductCategoryRevenues.Filter.AddEquals(M.PartyProductCategoryRevenue.Month, dependant.Month);
                 partyProductCategoryRevenues.Filter.AddEquals(M.PartyProductCategoryRevenue.ProductCategory, parentCategory);
@@ -146,36 +136,13 @@ namespace Allors.Domain
 
         private static void CreateProductCategoryRevenue(
             ISession session,
-            Dictionary<InternalOrganisation, Dictionary<Party, Dictionary<ProductCategory, Dictionary<DateTime, PartyProductCategoryRevenue>>>> partyProductCategoryRevenuesByPeriodByProductCategoryByPartyByInternalOrganisation,
+            Dictionary<Party, Dictionary<ProductCategory, Dictionary<DateTime, PartyProductCategoryRevenue>>> partyProductCategoryRevenuesByPeriodByProductCategoryByParty,
             DateTime date,
             HashSet<long> revenues,
             SalesInvoiceItem salesInvoiceItem,
             ProductCategory productCategory)
         {
             PartyProductCategoryRevenue partyProductCategoryRevenue;
-
-            Dictionary<Party, Dictionary<ProductCategory, Dictionary<DateTime, PartyProductCategoryRevenue>>> partyProductCategoryRevenuesByPeriodByProductCategoryByParty;
-            if (!partyProductCategoryRevenuesByPeriodByProductCategoryByPartyByInternalOrganisation.TryGetValue(salesInvoiceItem.SalesInvoiceWhereSalesInvoiceItem.BilledFromInternalOrganisation, out partyProductCategoryRevenuesByPeriodByProductCategoryByParty))
-            {
-                partyProductCategoryRevenue = CreatePartyProductCategoryRevenue(session, salesInvoiceItem.SalesInvoiceWhereSalesInvoiceItem, productCategory);
-
-                partyProductCategoryRevenuesByPeriodByProductCategoryByParty = new Dictionary<Party, Dictionary<ProductCategory, Dictionary<DateTime, PartyProductCategoryRevenue>>>
-                        {
-                            {
-                                salesInvoiceItem.SalesInvoiceWhereSalesInvoiceItem.BillToCustomer,
-                                new Dictionary<ProductCategory, Dictionary<DateTime, PartyProductCategoryRevenue>>
-                                    {
-                                        {
-                                            productCategory,
-                                            new Dictionary<DateTime, PartyProductCategoryRevenue> { { date, partyProductCategoryRevenue } }
-                                        }
-                                    }
-                                }
-                        };
-
-                partyProductCategoryRevenuesByPeriodByProductCategoryByPartyByInternalOrganisation[salesInvoiceItem.SalesInvoiceWhereSalesInvoiceItem.BilledFromInternalOrganisation] = partyProductCategoryRevenuesByPeriodByProductCategoryByParty;
-            }
-
             Dictionary<ProductCategory, Dictionary<DateTime, PartyProductCategoryRevenue>> partyProductCategoryRevenuesByPeriodByProductCategory;
             if (!partyProductCategoryRevenuesByPeriodByProductCategoryByParty.TryGetValue(salesInvoiceItem.SalesInvoiceWhereSalesInvoiceItem.BillToCustomer, out partyProductCategoryRevenuesByPeriodByProductCategory))
             {
@@ -214,7 +181,7 @@ namespace Allors.Domain
 
             foreach (ProductCategory parent in productCategory.Parents)
             {
-                CreateProductCategoryRevenue(session, partyProductCategoryRevenuesByPeriodByProductCategoryByPartyByInternalOrganisation, date, revenues, salesInvoiceItem, parent);
+                CreateProductCategoryRevenue(session, partyProductCategoryRevenuesByPeriodByProductCategoryByParty, date, revenues, salesInvoiceItem, parent);
             }
         }
 

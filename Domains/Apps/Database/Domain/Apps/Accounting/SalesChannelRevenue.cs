@@ -43,16 +43,6 @@ namespace Allors.Domain
             {
                 this.Revenue += salesInvoice.TotalExVat;
             }
-
-            var months = ((DateTime.UtcNow.Year - this.Year) * 12) + DateTime.UtcNow.Month - this.Month;
-            if (months <= 12)
-            {
-                var histories = this.SalesChannel.SalesChannelRevenueHistoriesWhereSalesChannel;
-                var history = histories.First ?? new SalesChannelRevenueHistoryBuilder(this.Strategy.Session)
-                                                     .WithCurrency(this.Currency)
-                                                     .WithSalesChannel(this.SalesChannel)
-                                                     .Build();
-            }
         }
     }
 }

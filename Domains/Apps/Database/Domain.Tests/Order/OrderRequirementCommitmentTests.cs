@@ -32,15 +32,8 @@ namespace Allors.Domain
             var shipToCustomer = new OrganisationBuilder(this.DatabaseSession).WithName("shipToCustomer").WithOrganisationRole(new OrganisationRoles(this.DatabaseSession).Customer).Build();
             var billToCustomer = new OrganisationBuilder(this.DatabaseSession).WithName("billToCustomer").WithOrganisationRole(new OrganisationRoles(this.DatabaseSession).Customer).Build();
 
-            new CustomerRelationshipBuilder(this.DatabaseSession)
-                .WithCustomer(billToCustomer)
-                .WithInternalOrganisation(Singleton.Instance(this.DatabaseSession).DefaultInternalOrganisation)
-                .Build();
-
-            new CustomerRelationshipBuilder(this.DatabaseSession)
-                .WithCustomer(shipToCustomer)
-                .WithInternalOrganisation(Singleton.Instance(this.DatabaseSession).DefaultInternalOrganisation)
-                .Build();
+            InternalOrganisation.Instance(this.DatabaseSession).AddCustomer(billToCustomer);
+            InternalOrganisation.Instance(this.DatabaseSession).AddCustomer(shipToCustomer);
 
             var vatRate21 = new VatRateBuilder(this.DatabaseSession).WithRate(21).Build();
             var good = new GoodBuilder(this.DatabaseSession)

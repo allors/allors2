@@ -25,12 +25,6 @@ namespace Allors.Domain
         public void DeriveRevenues(IDerivation derivation)
         {
             this.AppsOnDeriveRevenues(derivation);
-            this.DeriveHistories(derivation);
-        }
-
-        public void DeriveHistories(IDerivation derivation)
-        {
-            this.AppsOnDeriveHistories(derivation);
         }
     }
 }

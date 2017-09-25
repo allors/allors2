@@ -45,13 +45,6 @@ namespace Allors.Domain
 
             this.DatabaseSession.Rollback();
 
-            builder.WithBilledToInternalOrganisation(new InternalOrganisations(this.DatabaseSession).FindBy(M.InternalOrganisation.Name, "internalOrganisation"));
-            builder.Build();
-
-            Assert.True(this.DatabaseSession.Derive(false).HasErrors);
-
-            this.DatabaseSession.Rollback();
-
             builder.WithBilledFromParty(new Organisations(this.DatabaseSession).FindBy(M.Organisation.Name, "supplier"));
             builder.Build();
 
@@ -67,13 +60,12 @@ namespace Allors.Domain
                 .WithInvoiceNumber("1")
                 .WithPurchaseInvoiceType(new PurchaseInvoiceTypes(this.DatabaseSession).PurchaseInvoice)
                 .WithBilledFromParty(supplier2)
-                .WithBilledToInternalOrganisation(new InternalOrganisations(this.DatabaseSession).FindBy(M.InternalOrganisation.Name, "internalOrganisation"))
                 .Build();
 
             Assert.Equal(ErrorMessages.PartyIsNotASupplier, this.DatabaseSession.Derive(false).Errors[0].Message);
 
-            new SupplierRelationshipBuilder(this.DatabaseSession).WithSupplier(supplier2).WithInternalOrganisation(invoice.BilledToInternalOrganisation).Build();
-
+            InternalOrganisation.Instance(this.DatabaseSession).AddSupplier(supplier2);
+           
             Assert.False(this.DatabaseSession.Derive(false).HasErrors);
         }
 
@@ -92,21 +84,18 @@ namespace Allors.Domain
 
             var internalOrganisation = new InternalOrganisationBuilder(this.DatabaseSession)
                 .WithName("org")
-                .WithLocale(new Locales(this.DatabaseSession).EnglishGreatBritain)
                 .WithDefaultPaymentMethod(ownBankAccount)
                 .WithPreferredCurrency(euro)
                 .Build();
 
             var invoice1 = new PurchaseInvoiceBuilder(this.DatabaseSession)
                 .WithPurchaseInvoiceType(new PurchaseInvoiceTypes(this.DatabaseSession).PurchaseInvoice)
-                .WithBilledToInternalOrganisation(internalOrganisation)
                 .Build();
 
             Assert.Equal("1", invoice1.InvoiceNumber);
 
             var invoice2 = new PurchaseInvoiceBuilder(this.DatabaseSession)
                 .WithPurchaseInvoiceType(new PurchaseInvoiceTypes(this.DatabaseSession).PurchaseInvoice)
-                .WithBilledToInternalOrganisation(internalOrganisation)
                 .Build();
 
             Assert.Equal("2", invoice2.InvoiceNumber);

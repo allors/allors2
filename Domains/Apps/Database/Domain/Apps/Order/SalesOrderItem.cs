@@ -257,6 +257,8 @@ namespace Allors.Domain
 
         public void AppsOnDeriveReservedFromInventoryItem(IDerivation derivation)
         {
+            var internalOrganisation = InternalOrganisation.Instance(this.strategy.Session);
+
             if (this.ExistProduct)
             {
                 var good = this.Product as Good;
@@ -267,7 +269,7 @@ namespace Allors.Domain
                         if (!this.ExistReservedFromInventoryItem || !this.ReservedFromInventoryItem.Part.Equals(good.FinishedGood))
                         {
                             var inventoryItems = good.FinishedGood.InventoryItemsWherePart;
-                            inventoryItems.Filter.AddEquals(M.InventoryItem.Facility, this.SalesOrderWhereSalesOrderItem.TakenByInternalOrganisation.DefaultFacility);
+                            inventoryItems.Filter.AddEquals(M.InventoryItem.Facility, internalOrganisation.DefaultFacility);
                             this.ReservedFromInventoryItem = inventoryItems.First as NonSerialisedInventoryItem;
                         }
                     }
@@ -276,7 +278,7 @@ namespace Allors.Domain
                         if (!this.ExistReservedFromInventoryItem || !this.ReservedFromInventoryItem.Good.Equals(good))
                         {
                             var inventoryItems = good.InventoryItemsWhereGood;
-                            inventoryItems.Filter.AddEquals(M.InventoryItem.Facility, this.SalesOrderWhereSalesOrderItem.TakenByInternalOrganisation.DefaultFacility);
+                            inventoryItems.Filter.AddEquals(M.InventoryItem.Facility, internalOrganisation.DefaultFacility);
                             this.ReservedFromInventoryItem = inventoryItems.First as NonSerialisedInventoryItem;
                         }
                     }
@@ -579,25 +581,11 @@ namespace Allors.Domain
             decimal discountAdjustmentAmount = 0;
             decimal surchargeAdjustmentAmount = 0;
 
-            var internalOrganisation = this.ExistSalesOrderWhereSalesOrderItem ? this.SalesOrderWhereSalesOrderItem.TakenByInternalOrganisation : Singleton.Instance(this.strategy.Session).DefaultInternalOrganisation;
+            var internalOrganisation = InternalOrganisation.Instance(this);
             var customer = this.SalesOrderWhereSalesOrderItem.BillToCustomer;
             var salesOrder = this.SalesOrderWhereSalesOrderItem;
 
             var priceComponents = this.GetPriceComponents(internalOrganisation);
-
-            PartyRevenueHistory partyRevenueHistory = null;
-            Dictionary<ProductCategory, PartyProductCategoryRevenueHistory> partyProductCategoryRevenueHistoryByProductCategory = null;
-            Extent<PartyPackageRevenueHistory> partyPackageRevenuesHistories = null;
-
-            if (customer != null)
-            {
-                var partyRevenueHistories = customer.PartyRevenueHistoriesWhereParty;
-                partyRevenueHistory = partyRevenueHistories.First;
-
-                partyProductCategoryRevenueHistoryByProductCategory = PartyProductCategoryRevenueHistories.PartyProductCategoryRevenueHistoryByProductCategory(internalOrganisation, customer);
-
-                partyPackageRevenuesHistories = customer.PartyPackageRevenueHistoriesWhereParty;
-            }
 
             foreach (var priceComponent in priceComponents)
             {
@@ -611,9 +599,6 @@ namespace Allors.Domain
                         SalesOrder = salesOrder,
                         QuantityOrdered = quantityOrdered,
                         ValueOrdered = totalBasePrice,
-                        PartyPackageRevenueHistoryList = partyPackageRevenuesHistories,
-                        PartyProductCategoryRevenueHistoryByProductCategory = partyProductCategoryRevenueHistoryByProductCategory,
-                        PartyRevenueHistory = partyRevenueHistory
                     }))
                     {
                         if (priceComponent.ExistPrice)
@@ -665,9 +650,6 @@ namespace Allors.Domain
                             SalesOrder = salesOrder,
                             QuantityOrdered = quantityOrdered,
                             ValueOrdered = totalBasePrice,
-                            PartyPackageRevenueHistoryList = partyPackageRevenuesHistories,
-                            PartyProductCategoryRevenueHistoryByProductCategory = partyProductCategoryRevenueHistoryByProductCategory,
-                            PartyRevenueHistory = partyRevenueHistory
                         }))
                         {
                             this.AddCurrentPriceComponent(priceComponent);
@@ -784,7 +766,7 @@ namespace Allors.Domain
         {
             var priceComponents = new List<PriceComponent>();
 
-            var extent = internalOrganisation.PriceComponentsWhereSpecifiedFor;
+            var extent = new PriceComponents(this.strategy.Session).Extent();
             if (this.ExistProduct)
             {
                 foreach (PriceComponent priceComponent in extent)
@@ -799,7 +781,7 @@ namespace Allors.Domain
 
                 if (priceComponents.Count == 0 && this.Product.ExistProductWhereVariant)
                 {
-                    extent = internalOrganisation.PriceComponentsWhereSpecifiedFor;
+                    extent = new PriceComponents(this.strategy.Session).Extent();
                     foreach (PriceComponent priceComponent in extent)
                     {
                         if (priceComponent.ExistProduct && priceComponent.Product.Equals(this.Product.ProductWhereVariant) && !priceComponent.ExistProductFeature &&
@@ -827,7 +809,7 @@ namespace Allors.Domain
 
             if (this.ExistProductFeature && this.ExistSalesOrderItemWhereOrderedWithFeature)
             {
-                extent = internalOrganisation.PriceComponentsWhereSpecifiedFor;
+                extent = new PriceComponents(this.strategy.Session).Extent();
                 var found = false;
                 foreach (PriceComponent priceComponent in extent)
                 {
@@ -856,7 +838,7 @@ namespace Allors.Domain
             }
 
             // Discounts and surcharges can be specified without product or product feature, these need te be added to collection of pricecomponents
-            extent = internalOrganisation.PriceComponentsWhereSpecifiedFor;
+            extent = new PriceComponents(this.strategy.Session).Extent();
             foreach (PriceComponent priceComponent in extent)
             {
                 if (!priceComponent.ExistProduct && !priceComponent.ExistProductFeature &&

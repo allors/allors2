@@ -10,6 +10,8 @@ namespace Allors.Repository
     {
         #region inherited properties
 
+        public string PartyName { get; set; }
+
         public PostalAddress GeneralCorrespondence { get; set; }
 
         public decimal YTDRevenue { get; set; }

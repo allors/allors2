@@ -10,6 +10,13 @@ namespace Allors.Repository
     public partial interface Party : Localised, Auditable, UniquelyIdentifiable, Commentable
     {
         #region Allors
+        [Id("BB29E79A-5B37-4CE7-B366-32F67FFD1FA3")]
+        [AssociationId("B7DD5FEE-A50F-48FF-B477-E8A635BE0676")]
+        [RoleId("5B1C2D30-8FDC-454E-B7E9-E21AD11A2662")]
+        #endregion
+        string PartyName { get; set; }
+
+        #region Allors
         [Id("008618c4-6252-4643-a0a8-e736f9288946")]
         [AssociationId("5282ba00-8bbc-4086-994d-7e68ce9224b6")]
         [RoleId("ca45e298-96eb-4166-9450-c65344fb9979")]

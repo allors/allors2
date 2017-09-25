@@ -39,19 +39,6 @@ namespace Allors.Domain
             {
                 this.Revenue += salesInvoice.TotalExVat;
             }
-
-            var months = ((DateTime.UtcNow.Year - this.Year) * 12) + DateTime.UtcNow.Month - this.Month;
-            if (months <= 12)
-            {
-                var histories = this.Party.PartyRevenueHistoriesWhereParty;
-                var history = histories.First ?? new PartyRevenueHistoryBuilder(this.Strategy.Session)
-                                                        .WithCurrency(this.Currency)
-                                                        .WithParty(this.Party)
-                                                        .WithRevenue(0)
-                                                        .Build();
-
-                history.AppsOnDeriveHistory();
-            }
         }
 
         public void AppsOnPreDerive(ObjectOnPreDerive method)

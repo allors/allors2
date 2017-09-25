@@ -43,10 +43,6 @@ namespace Allors.Domain
         private InternalOrganisation internalOrganisation;
         private Organisation shipToCustomer;
         private Organisation billToCustomer;
-        private PartyRevenueHistory partyRevenueHistory;
-        private PartyProductCategoryRevenueHistory productCategoryRevenueHistory;
-        private PartyProductCategoryRevenueHistory ancestorProductCategoryRevenueHistory;
-        private PartyProductCategoryRevenueHistory parentProductCategoryRevenueHistory;
         private Organisation supplier;
         private City kiev;
         private PostalAddress shipToContactMechanismMechelen;
@@ -61,13 +57,12 @@ namespace Allors.Domain
         private SupplierOffering virtualgoodSupplierOffering;
         private SalesOrder order;
         private VatRate vatRate21;
-
         
         public SalesOrderItemTests()
         {
             var euro = new Currencies(this.DatabaseSession).FindBy(M.Currency.IsoCode, "EUR");
 
-            this.internalOrganisation = new InternalOrganisations(this.DatabaseSession).FindBy(M.InternalOrganisation.Name, "internalOrganisation");
+            this.internalOrganisation = InternalOrganisation.Instance(this.DatabaseSession);
             this.internalOrganisation.PreferredCurrency = euro;
 
             this.supplier = new OrganisationBuilder(this.DatabaseSession).WithName("supplier").WithOrganisationRole(new OrganisationRoles(this.DatabaseSession).Supplier).Build();
@@ -124,55 +119,44 @@ namespace Allors.Domain
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.DatabaseSession).Piece)
                 .Build();
 
-            new SupplierRelationshipBuilder(this.DatabaseSession)
-                .WithInternalOrganisation(this.internalOrganisation)
-                .WithSupplier(this.supplier)
-                .WithFromDate(DateTime.UtcNow)
-                .Build();
+            this.internalOrganisation.AddSupplier(this.supplier);
 
-            new CustomerRelationshipBuilder(this.DatabaseSession)
-                .WithCustomer(this.billToCustomer)
-                .WithInternalOrganisation(Singleton.Instance(this.DatabaseSession).DefaultInternalOrganisation)
-                .Build();
+            this.internalOrganisation.AddCustomer(this.billToCustomer);
+            this.internalOrganisation.AddCustomer(this.shipToCustomer);
 
-            new CustomerRelationshipBuilder(this.DatabaseSession)
-                .WithCustomer(this.shipToCustomer)
-                .WithInternalOrganisation(Singleton.Instance(this.DatabaseSession).DefaultInternalOrganisation)
-                .Build();
+            //this.partyRevenueHistory = new PartyRevenueHistoryBuilder(this.DatabaseSession)
+            //    .WithCurrency(euro)
+            //    .WithInternalOrganisation(this.internalOrganisation)
+            //    .WithParty(this.billToCustomer)
+            //    .WithRevenue(100M)
+            //    .Build();
 
-            this.partyRevenueHistory = new PartyRevenueHistoryBuilder(this.DatabaseSession)
-                .WithCurrency(euro)
-                .WithInternalOrganisation(this.internalOrganisation)
-                .WithParty(this.billToCustomer)
-                .WithRevenue(100M)
-                .Build();
+            //this.productCategoryRevenueHistory = new PartyProductCategoryRevenueHistoryBuilder(this.DatabaseSession)
+            //    .WithCurrency(euro)
+            //    .WithInternalOrganisation(this.internalOrganisation)
+            //    .WithParty(this.billToCustomer)
+            //    .WithProductCategory(this.productCategory)
+            //    .WithRevenue(100M)
+            //    .WithQuantity(10)
+            //    .Build();
 
-            this.productCategoryRevenueHistory = new PartyProductCategoryRevenueHistoryBuilder(this.DatabaseSession)
-                .WithCurrency(euro)
-                .WithInternalOrganisation(this.internalOrganisation)
-                .WithParty(this.billToCustomer)
-                .WithProductCategory(this.productCategory)
-                .WithRevenue(100M)
-                .WithQuantity(10)
-                .Build();
+            //this.parentProductCategoryRevenueHistory = new PartyProductCategoryRevenueHistoryBuilder(this.DatabaseSession)
+            //    .WithCurrency(euro)
+            //    .WithInternalOrganisation(this.internalOrganisation)
+            //    .WithParty(this.billToCustomer)
+            //    .WithProductCategory(this.parentProductCategory)
+            //    .WithRevenue(100M)
+            //    .WithQuantity(10)
+            //    .Build();
 
-            this.parentProductCategoryRevenueHistory = new PartyProductCategoryRevenueHistoryBuilder(this.DatabaseSession)
-                .WithCurrency(euro)
-                .WithInternalOrganisation(this.internalOrganisation)
-                .WithParty(this.billToCustomer)
-                .WithProductCategory(this.parentProductCategory)
-                .WithRevenue(100M)
-                .WithQuantity(10)
-                .Build();
-
-            this.ancestorProductCategoryRevenueHistory = new PartyProductCategoryRevenueHistoryBuilder(this.DatabaseSession)
-                .WithCurrency(euro)
-                .WithInternalOrganisation(this.internalOrganisation)
-                .WithParty(this.billToCustomer)
-                .WithProductCategory(this.ancestorProductCategory)
-                .WithRevenue(100M)
-                .WithQuantity(10)
-                .Build();
+            //this.ancestorProductCategoryRevenueHistory = new PartyProductCategoryRevenueHistoryBuilder(this.DatabaseSession)
+            //    .WithCurrency(euro)
+            //    .WithInternalOrganisation(this.internalOrganisation)
+            //    .WithParty(this.billToCustomer)
+            //    .WithProductCategory(this.ancestorProductCategory)
+            //    .WithRevenue(100M)
+            //    .WithQuantity(10)
+            //    .Build();
 
             this.variantGood = new GoodBuilder(this.DatabaseSession)
                .WithSku("v10101")
@@ -246,7 +230,6 @@ namespace Allors.Domain
                 .Build();
 
             this.currentBasePriceGeoBoundary = new BasePriceBuilder(this.DatabaseSession)
-                .WithSpecifiedFor(this.internalOrganisation)
                 .WithDescription("current BasePriceGeoBoundary ")
                 .WithGeographicBoundary(mechelen)
                 .WithProduct(this.good)
@@ -256,7 +239,6 @@ namespace Allors.Domain
 
             // previous basePrice for good
             new BasePriceBuilder(this.DatabaseSession).WithDescription("previous good")
-                .WithSpecifiedFor(this.internalOrganisation)
                 .WithProduct(this.good)
                 .WithPrice(8)
                 .WithFromDate(DateTime.UtcNow.AddYears(-1))
@@ -265,14 +247,12 @@ namespace Allors.Domain
 
             // future basePrice for good
             new BasePriceBuilder(this.DatabaseSession).WithDescription("future good")
-                .WithSpecifiedFor(this.internalOrganisation)
                 .WithProduct(this.good)
                 .WithPrice(11)
                 .WithFromDate(DateTime.UtcNow.AddYears(1))
                 .Build();
 
             this.currentGoodBasePrice = new BasePriceBuilder(this.DatabaseSession)
-                .WithSpecifiedFor(this.internalOrganisation)
                 .WithDescription("current good")
                 .WithProduct(this.good)
                 .WithPrice(10)
@@ -282,7 +262,6 @@ namespace Allors.Domain
 
             // previous basePrice for feature1
             new BasePriceBuilder(this.DatabaseSession).WithDescription("previous feature1")
-                .WithSpecifiedFor(this.internalOrganisation)
                 .WithProductFeature(this.feature1)
                 .WithPrice(0.5M)
                 .WithFromDate(DateTime.UtcNow.AddYears(-1))
@@ -291,14 +270,12 @@ namespace Allors.Domain
 
             // future basePrice for feature1
             new BasePriceBuilder(this.DatabaseSession).WithDescription("future feature1")
-                .WithSpecifiedFor(this.internalOrganisation)
                 .WithProductFeature(this.feature1)
                 .WithPrice(2.5M)
                 .WithFromDate(DateTime.UtcNow.AddYears(1))
                 .Build();
 
             new BasePriceBuilder(this.DatabaseSession)
-                .WithSpecifiedFor(this.internalOrganisation)
                 .WithDescription("current feature1")
                 .WithProductFeature(this.feature1)
                 .WithPrice(2)
@@ -308,7 +285,6 @@ namespace Allors.Domain
 
             // previous basePrice for feature2
             new BasePriceBuilder(this.DatabaseSession).WithDescription("previous feature2")
-                .WithSpecifiedFor(this.internalOrganisation)
                 .WithProductFeature(this.feature2)
                 .WithPrice(2)
                 .WithFromDate(DateTime.UtcNow.AddYears(-1))
@@ -317,7 +293,6 @@ namespace Allors.Domain
 
             // future basePrice for feature2
             new BasePriceBuilder(this.DatabaseSession)
-                .WithSpecifiedFor(this.internalOrganisation)
                 .WithDescription("future feature2")
                 .WithProductFeature(this.feature2)
                 .WithPrice(4)
@@ -325,7 +300,6 @@ namespace Allors.Domain
                 .Build();
 
             this.currentFeature2BasePrice = new BasePriceBuilder(this.DatabaseSession)
-                .WithSpecifiedFor(this.internalOrganisation)
                 .WithDescription("current feature2")
                 .WithProductFeature(this.feature2)
                 .WithPrice(3)
@@ -335,7 +309,6 @@ namespace Allors.Domain
 
             // previous basePrice for good with feature1
             new BasePriceBuilder(this.DatabaseSession).WithDescription("previous good/feature1")
-                .WithSpecifiedFor(this.internalOrganisation)
                 .WithProduct(this.good)
                 .WithProductFeature(this.feature1)
                 .WithPrice(4)
@@ -345,7 +318,6 @@ namespace Allors.Domain
 
             // future basePrice for good with feature1
             new BasePriceBuilder(this.DatabaseSession)
-                .WithSpecifiedFor(this.internalOrganisation)
                 .WithDescription("future good/feature1")
                 .WithProduct(this.good)
                 .WithProductFeature(this.feature1)
@@ -354,7 +326,6 @@ namespace Allors.Domain
                 .Build();
 
             this.currentGood1Feature1BasePrice = new BasePriceBuilder(this.DatabaseSession)
-                .WithSpecifiedFor(this.internalOrganisation)
                 .WithDescription("current good/feature1")
                 .WithProduct(this.good)
                 .WithProductFeature(this.feature1)
@@ -364,7 +335,6 @@ namespace Allors.Domain
                 .Build();
 
             new BasePriceBuilder(this.DatabaseSession)
-                .WithSpecifiedFor(this.internalOrganisation)
                 .WithDescription("current variant good2")
                 .WithProduct(this.variantGood2)
                 .WithPrice(11)
@@ -377,7 +347,6 @@ namespace Allors.Domain
             this.order = new SalesOrderBuilder(this.DatabaseSession)
                 .WithShipToCustomer(this.shipToCustomer)
                 .WithBillToCustomer(this.billToCustomer)
-                .WithTakenByInternalOrganisation(this.internalOrganisation)
                 .Build();
 
             this.DatabaseSession.Derive();
@@ -390,7 +359,6 @@ namespace Allors.Domain
             this.InstantiateObjects(this.DatabaseSession);
 
             var salesOrder = new SalesOrderBuilder(this.DatabaseSession)
-                .WithTakenByInternalOrganisation(this.internalOrganisation)
                 .WithShipToCustomer(this.shipToCustomer)
                 .WithBillToCustomer(this.billToCustomer)
                 .WithVatRegime(new VatRegimes(this.DatabaseSession).Export)
@@ -413,7 +381,6 @@ namespace Allors.Domain
             this.InstantiateObjects(this.DatabaseSession);
 
             var salesOrder = new SalesOrderBuilder(this.DatabaseSession)
-                .WithTakenByInternalOrganisation(this.internalOrganisation)
                 .WithShipToCustomer(this.shipToCustomer)
                 .WithBillToCustomer(this.billToCustomer)
                 .WithShipToAddress(this.shipToContactMechanismMechelen)
@@ -436,7 +403,6 @@ namespace Allors.Domain
             var expected = new VatRegimes(this.DatabaseSession).Export.VatRate;
 
             var salesOrder = new SalesOrderBuilder(this.DatabaseSession)
-                .WithTakenByInternalOrganisation(this.internalOrganisation)
                 .WithBillToCustomer(this.billToCustomer)
                 .WithShipToAddress(this.shipToContactMechanismMechelen)
                 .WithVatRegime(new VatRegimes(this.DatabaseSession).Export)
@@ -459,7 +425,6 @@ namespace Allors.Domain
             var expected = this.good.VatRate;
 
             var salesOrder = new SalesOrderBuilder(this.DatabaseSession)
-                .WithTakenByInternalOrganisation(this.internalOrganisation)
                 .WithBillToCustomer(this.billToCustomer)
                 .WithShipToAddress(this.shipToContactMechanismMechelen)
                 .Build();
@@ -479,7 +444,6 @@ namespace Allors.Domain
             this.InstantiateObjects(this.DatabaseSession);
 
             var salesOrder = new SalesOrderBuilder(this.DatabaseSession)
-                .WithTakenByInternalOrganisation(this.internalOrganisation)
                 .WithShipToCustomer(this.billToCustomer)
                 .WithBillToCustomer(this.billToCustomer)
                 .WithShipToAddress(this.shipToContactMechanismMechelen)
@@ -505,7 +469,6 @@ namespace Allors.Domain
             this.InstantiateObjects(this.DatabaseSession);
 
             var salesOrder = new SalesOrderBuilder(this.DatabaseSession)
-                .WithTakenByInternalOrganisation(this.internalOrganisation)
                 .WithShipToCustomer(this.billToCustomer)
                 .WithBillToCustomer(this.billToCustomer)
                 .WithShipToAddress(this.shipToContactMechanismMechelen)
@@ -570,7 +533,6 @@ namespace Allors.Domain
             this.InstantiateObjects(this.DatabaseSession);
 
             var salesOrder = new SalesOrderBuilder(this.DatabaseSession)
-                .WithTakenByInternalOrganisation(this.internalOrganisation)
                 .WithShipToAddress(this.shipToContactMechanismMechelen)
                 .WithBillToCustomer(this.billToCustomer)
                 .Build();
@@ -621,7 +583,6 @@ namespace Allors.Domain
             this.InstantiateObjects(this.DatabaseSession);
 
             var salesOrder = new SalesOrderBuilder(this.DatabaseSession)
-                .WithTakenByInternalOrganisation(this.internalOrganisation)
                 .WithShipToAddress(this.shipToContactMechanismMechelen)
                 .WithBillToCustomer(this.billToCustomer)
                 .Build();
@@ -640,7 +601,6 @@ namespace Allors.Domain
             this.InstantiateObjects(this.DatabaseSession);
 
             var salesOrder = new SalesOrderBuilder(this.DatabaseSession)
-                .WithTakenByInternalOrganisation(this.internalOrganisation)
                 .WithShipToCustomer(this.shipToCustomer)
                 .WithBillToCustomer(this.billToCustomer)
                 .Build();
@@ -673,11 +633,7 @@ namespace Allors.Domain
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.DatabaseSession).Piece)
                 .Build();
 
-            new SupplierRelationshipBuilder(this.DatabaseSession)
-                .WithInternalOrganisation(new InternalOrganisations(this.DatabaseSession).FindBy(M.InternalOrganisation.Name, "internalOrganisation"))
-                .WithSupplier(this.supplier)
-                .WithFromDate(DateTime.UtcNow)
-                .Build();
+            this.internalOrganisation.AddSupplier(this.supplier);
 
             new SupplierOfferingBuilder(this.DatabaseSession)
                 .WithProduct(good2)
@@ -719,7 +675,6 @@ namespace Allors.Domain
 
             var secondWarehouse = new WarehouseBuilder(this.DatabaseSession)
                 .WithName("affiliate warehouse")
-                .WithOwner(this.internalOrganisation)
                 .Build();
 
             var item = new SalesOrderItemBuilder(this.DatabaseSession)
@@ -1871,7 +1826,6 @@ namespace Allors.Domain
                 .WithShipToCustomer(this.shipToCustomer)
                 .WithBillToCustomer(this.billToCustomer)
                 .WithShipToAddress(this.shipToContactMechanismMechelen)
-                .WithTakenByInternalOrganisation(this.internalOrganisation)
                 .WithOrderKind(manual)
                 .Build();
 
@@ -1915,7 +1869,6 @@ namespace Allors.Domain
             var order1 = new SalesOrderBuilder(this.DatabaseSession)
                 .WithShipToCustomer(this.shipToCustomer)
                 .WithBillToCustomer(this.billToCustomer)
-                .WithTakenByInternalOrganisation(this.internalOrganisation)
                 .WithShipToAddress(this.shipToContactMechanismMechelen)
                 .WithOrderKind(manual)
                 .Build();

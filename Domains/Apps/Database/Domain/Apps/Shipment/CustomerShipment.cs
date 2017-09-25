@@ -107,7 +107,7 @@ namespace Allors.Domain
 
             if (!this.ExistBillFromContactMechanism)
             {
-                this.BillFromContactMechanism = this.BillFromInternalOrganisation.BillingAddress;
+                this.BillFromContactMechanism = InternalOrganisation.Instance(this).BillingAddress;
             }
 
             if (!this.ExistStore)
@@ -178,9 +178,9 @@ namespace Allors.Domain
                 this.ShipFromAddress = this.ShipFromParty.ShippingAddress;
             }
 
-            if (!this.ExistBillFromContactMechanism && this.ExistBillFromInternalOrganisation)
+            if (!this.ExistBillFromContactMechanism)
             {
-                this.BillFromContactMechanism = this.BillFromInternalOrganisation.BillingAddress;
+                this.BillFromContactMechanism = InternalOrganisation.Instance(this).BillingAddress;
             }
 
             this.CreatePickList(derivation);
@@ -210,7 +210,6 @@ namespace Allors.Domain
                             .WithSalesInvoiceType(new SalesInvoiceTypes(this.Strategy.Session).SalesInvoice)
                             .WithVatRegime(salesOrder.VatRegime)
                             .WithBilledFromContactMechanism(this.BillFromContactMechanism)
-                            .WithBilledFromInternalOrganisation(this.BillFromInternalOrganisation)
                             .WithBillToContactMechanism(this.BillToContactMechanism)
                             .WithBillToCustomer(this.BillToParty)
                             .WithShipToCustomer(this.ShipToParty)

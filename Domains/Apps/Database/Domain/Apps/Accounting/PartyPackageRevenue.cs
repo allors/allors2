@@ -42,22 +42,7 @@ namespace Allors.Domain
                     this.Revenue += productCategoryRevenue.Revenue;
                 }
             }
-
-            var months = ((DateTime.UtcNow.Year - this.Year) * 12) + DateTime.UtcNow.Month - this.Month;
-            if (months <= 12)
-            {
-                var histories = this.Party.PartyPackageRevenueHistoriesWhereParty;
-                histories.Filter.AddEquals(M.PartyPackageRevenueHistory.Package, this.Package);
-                var history = histories.First ?? new PartyPackageRevenueHistoryBuilder(this.Strategy.Session)
-                                                     .WithCurrency(this.Currency)
-                                                     .WithParty(this.Party)
-                                                     .WithPackage(this.Package)
-                                                     .WithRevenue(0)
-                                                     .Build();
-
-                history.AppsOnDeriveHistory();
-            }
-
+            
             if (this.ExistPackage)
             {
                 var packageRevenue = PackageRevenues.AppsFindOrCreateAsDependable(this.Strategy.Session, this);

@@ -24,7 +24,6 @@ namespace Allors.Domain
     using Meta;
     using Xunit;
 
-    
     public class InternalOrganisationRevenuesTests : DomainTest
     {
         [Fact]
@@ -80,11 +79,11 @@ namespace Allors.Domain
                 .WithPrimaryProductCategory(cat2)
                 .Build();
 
-            var internalOrganisation = new InternalOrganisations(this.DatabaseSession).FindBy(M.InternalOrganisation.Name, "internalOrganisation");
+            var internalOrganisation = InternalOrganisation.Instance(this.DatabaseSession);
             internalOrganisation.PreferredCurrency = euro;
 
-            new CustomerRelationshipBuilder(this.DatabaseSession).WithFromDate(DateTime.UtcNow).WithCustomer(customer1).WithInternalOrganisation(internalOrganisation).Build();
-            new CustomerRelationshipBuilder(this.DatabaseSession).WithFromDate(DateTime.UtcNow).WithCustomer(customer2).WithInternalOrganisation(internalOrganisation).Build();
+            internalOrganisation.AddCustomer(customer1);
+            internalOrganisation.AddCustomer(customer2);
 
             this.DatabaseSession.Derive();
 
@@ -109,7 +108,7 @@ namespace Allors.Domain
 
             Singleton.Instance(this.DatabaseSession).DeriveRevenues(new NonLogging.Derivation(this.DatabaseSession));
 
-            var internalOrganisationRevenue = internalOrganisation.InternalOrganisationRevenuesWhereInternalOrganisation[0];
+            var internalOrganisationRevenue = new InternalOrganisationRevenues(this.DatabaseSession).Extent()[0];
             Assert.Equal(140, internalOrganisationRevenue.Revenue);
 
             var invoice2 = new SalesInvoiceBuilder(this.DatabaseSession)
