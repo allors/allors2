@@ -2,7 +2,7 @@ namespace Allors.Repository
 {
     using System;
 
-    using Allors.Repository.Attributes;
+    using Attributes;
 
     #region Allors
     [Id("bb5e8196-f821-4fb8-98cb-f19416d1427c")]
@@ -24,15 +24,7 @@ namespace Allors.Repository
         [Precision(19)]
         [Scale(2)]
         public decimal Commission { get; set; }
-        #region Allors
-        [Id("af3ad6bb-70a1-4682-945c-4cad1407ecf2")]
-        [AssociationId("cf6d2b69-9646-46d2-a7a1-d02f8b8ec954")]
-        [RoleId("6361ff04-7d8e-45f3-b3a5-efe1f6c983be")]
-        #endregion
-        [Multiplicity(Multiplicity.ManyToOne)]
-        [Indexed]
 
-        public InternalOrganisation InternalOrganisation { get; set; }
         #region Allors
         [Id("d1afca2c-802a-4e66-8c76-42a2e6a1e0a6")]
         [AssociationId("5215dffe-8b1d-43d2-8f88-c16d3e328456")]

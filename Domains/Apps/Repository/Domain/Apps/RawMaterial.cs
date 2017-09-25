@@ -2,7 +2,7 @@ namespace Allors.Repository
 {
     using System;
 
-    using Allors.Repository.Attributes;
+    using Attributes;
 
     #region Allors
     [Id("9a484067-2003-42f1-b4c4-877e519bb8be")]
@@ -10,7 +10,6 @@ namespace Allors.Repository
     public partial class RawMaterial : Part 
     {
         #region inherited properties
-        public InternalOrganisation OwnedByParty { get; set; }
 
         public string Name { get; set; }
 

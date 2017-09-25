@@ -23,7 +23,7 @@ namespace Allors.Repository
 {
     using System;
 
-    using Allors.Repository.Attributes;
+    using Attributes;
 
     public partial class Country : GeographicBoundary, CityBound 
     {

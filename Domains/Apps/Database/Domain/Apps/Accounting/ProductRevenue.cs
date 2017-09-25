@@ -34,7 +34,6 @@ namespace Allors.Domain
             this.Revenue = 0;
 
             var partyProductRevenues = this.Product.PartyProductRevenuesWhereProduct;
-            partyProductRevenues.Filter.AddEquals(M.PartyProductRevenue.InternalOrganisation, this.InternalOrganisation);
             partyProductRevenues.Filter.AddEquals(M.PartyProductRevenue.Year, this.Year);
             partyProductRevenues.Filter.AddEquals(M.PartyProductRevenue.Month, this.Month);
 
@@ -47,10 +46,8 @@ namespace Allors.Domain
             if (months <= 12)
             {
                 var histories = this.Product.ProductRevenueHistoriesWhereProduct;
-                histories.Filter.AddEquals(M.ProductRevenueHistory.InternalOrganisation, this.InternalOrganisation);
                 var history = histories.First ?? new ProductRevenueHistoryBuilder(this.Strategy.Session)
                                                      .WithCurrency(this.Currency)
-                                                     .WithInternalOrganisation(this.InternalOrganisation)
                                                      .WithProduct(this.Product)
                                                      .Build();
             }

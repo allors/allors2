@@ -29,24 +29,11 @@ namespace Allors.Domain
                 @this.CurrentObjectState = new QuoteObjectStates(@this.Strategy.Session).Created;
             }
 
-            if (!@this.ExistIssueDate)
-            {
-                @this.IssueDate = DateTime.UtcNow;
-            }
-
             if (!@this.ExistIssuer)
             {
                 @this.Issuer = Singleton.Instance(@this.Strategy.Session).DefaultInternalOrganisation;
             }
 
-            if (!@this.ExistQuoteNumber)
-            {
-                @this.QuoteNumber = Singleton.Instance(@this.Strategy.Session).DefaultInternalOrganisation.DeriveNextQuoteNumber();
-            }
-        }
-
-        public static void AppsOnDerive(this Quote @this, ObjectOnDerive method)
-        {
             if (!@this.ExistQuoteNumber)
             {
                 @this.QuoteNumber = Singleton.Instance(@this.Strategy.Session).DefaultInternalOrganisation.DeriveNextQuoteNumber();

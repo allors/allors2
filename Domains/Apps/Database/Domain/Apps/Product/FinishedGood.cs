@@ -23,11 +23,6 @@ namespace Allors.Domain
             {
                 this.InventoryItemKind = new InventoryItemKinds(this.Strategy.Session).NonSerialised;
             }
-
-            if (!this.ExistOwnedByParty)
-            {
-                this.OwnedByParty = Singleton.Instance(this.Strategy.Session).DefaultInternalOrganisation;
-            }
         }
 
         public void AppsOnPreDerive(ObjectOnPreDerive method)

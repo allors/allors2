@@ -30,9 +30,9 @@ namespace Allors.Domain
 
             if (!this.ExistFacility)
             {
-                if (Singleton.Instance(this.Strategy.Session).DefaultInternalOrganisation != null)
+                if (Singleton.Instance(this.Strategy.Session).InternalOrganisation != null)
                 {
-                    this.Facility = Singleton.Instance(this.Strategy.Session).DefaultInternalOrganisation.DefaultFacility;
+                    this.Facility = Singleton.Instance(this.Strategy.Session).InternalOrganisation.DefaultFacility;
                 }
             }
         }

@@ -592,13 +592,11 @@ namespace Allors.Domain
             if (customer != null)
             {
                 var partyRevenueHistories = customer.PartyRevenueHistoriesWhereParty;
-                partyRevenueHistories.Filter.AddEquals(M.PartyRevenueHistory.InternalOrganisation, internalOrganisation);
                 partyRevenueHistory = partyRevenueHistories.First;
 
                 partyProductCategoryRevenueHistoryByProductCategory = PartyProductCategoryRevenueHistories.PartyProductCategoryRevenueHistoryByProductCategory(internalOrganisation, customer);
 
                 partyPackageRevenuesHistories = customer.PartyPackageRevenueHistoriesWhereParty;
-                partyPackageRevenuesHistories.Filter.AddEquals(M.PartyPackageRevenueHistory.InternalOrganisation, internalOrganisation);
             }
 
             foreach (var priceComponent in priceComponents)

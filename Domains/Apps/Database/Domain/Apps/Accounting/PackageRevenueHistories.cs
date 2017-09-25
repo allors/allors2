@@ -24,8 +24,6 @@ namespace Allors.Domain
         {
             var derivation = new NonLogging.Derivation(session);
 
-            var packageRevenuesByPeriodByPackageByInternalOrganisation = new Dictionary<InternalOrganisation, Dictionary<Package, Dictionary<DateTime, PackageRevenue>>>();
-
             var packageRevenues = session.Extent<PackageRevenue>();
 
             foreach (PackageRevenue packageRevenue in packageRevenues)
@@ -35,12 +33,7 @@ namespace Allors.Domain
                 {
                     var date = DateTimeFactory.CreateDate(packageRevenue.Year, packageRevenue.Month, 01);
 
-                    Dictionary<Package, Dictionary<DateTime, PackageRevenue>> packageRevenuesByPeriodByPackage;
-                    if (!packageRevenuesByPeriodByPackageByInternalOrganisation.TryGetValue(packageRevenue.InternalOrganisation, out packageRevenuesByPeriodByPackage))
-                    {
-                        packageRevenuesByPeriodByPackage = new Dictionary<Package, Dictionary<DateTime, PackageRevenue>>();
-                        packageRevenuesByPeriodByPackageByInternalOrganisation[packageRevenue.InternalOrganisation] = packageRevenuesByPeriodByPackage;
-                    }
+                    Dictionary<Package, Dictionary<DateTime, PackageRevenue>> packageRevenuesByPeriodByPackage = new Dictionary<Package, Dictionary<DateTime, PackageRevenue>>();
 
                     Dictionary<DateTime, PackageRevenue> packageRevenuesByPeriod;
                     if (!packageRevenuesByPeriodByPackage.TryGetValue(packageRevenue.Package, out packageRevenuesByPeriod))
@@ -65,54 +58,45 @@ namespace Allors.Domain
             {
                 packageRevenueHistory.Revenue = 0;
 
-                Dictionary<Package, PackageRevenueHistory> packageRevenueHistoriesByPackage;
-                if (!packageRevenueHistoriesByPackageByInternalOrganisation.TryGetValue(packageRevenueHistory.InternalOrganisation, out packageRevenueHistoriesByPackage))
-                {
-                    packageRevenueHistoriesByPackage = new Dictionary<Package, PackageRevenueHistory>();
-                    packageRevenueHistoriesByPackageByInternalOrganisation[packageRevenueHistory.InternalOrganisation] = packageRevenueHistoriesByPackage;
-                }
+                Dictionary<Package, PackageRevenueHistory> packageRevenueHistoriesByPackage = new Dictionary<Package, PackageRevenueHistory>();
 
-                PackageRevenueHistory revenueHistory;
-                if (!packageRevenueHistoriesByPackage.TryGetValue(packageRevenueHistory.Package, out revenueHistory))
+                if (!packageRevenueHistoriesByPackage.ContainsKey()(packageRevenueHistory.Package))
                 {
                     packageRevenueHistoriesByPackage.Add(packageRevenueHistory.Package, packageRevenueHistory);
                 }
             }
 
-            foreach (var keyValuePair in packageRevenuesByPeriodByPackageByInternalOrganisation)
+            Dictionary<Package, PackageRevenueHistory> packageRevenueHistoriesByPackage;
+            if (!packageRevenueHistoriesByPackageByInternalOrganisation.TryGetValue(keyValuePair.Key, out packageRevenueHistoriesByPackage))
             {
-                Dictionary<Package, PackageRevenueHistory> packageRevenueHistoriesByPackage;
-                if (!packageRevenueHistoriesByPackageByInternalOrganisation.TryGetValue(keyValuePair.Key, out packageRevenueHistoriesByPackage))
-                {
-                    packageRevenueHistoriesByPackage = new Dictionary<Package, PackageRevenueHistory>();
-                    packageRevenueHistoriesByPackageByInternalOrganisation[keyValuePair.Key] = packageRevenueHistoriesByPackage;
-                }
+                packageRevenueHistoriesByPackage = new Dictionary<Package, PackageRevenueHistory>();
+                packageRevenueHistoriesByPackageByInternalOrganisation[keyValuePair.Key] = packageRevenueHistoriesByPackage;
+            }
 
-                foreach (var valuePair in keyValuePair.Value)
-                {
-                    PackageRevenueHistory packageRevenueHistory;
+            foreach (var valuePair in keyValuePair.Value)
+            {
+                PackageRevenueHistory packageRevenueHistory;
 
-                    if (!packageRevenueHistoriesByPackage.TryGetValue(valuePair.Key, out packageRevenueHistory))
+                if (!packageRevenueHistoriesByPackage.TryGetValue(valuePair.Key, out packageRevenueHistory))
+                {
+                    PackageRevenue partyRevenue = null;
+                    foreach (var packageRevenuesByPeriod in valuePair.Value)
                     {
-                        PackageRevenue partyRevenue = null;
-                        foreach (var packageRevenuesByPeriod in valuePair.Value)
-                        {
-                            partyRevenue = packageRevenuesByPeriod.Value;
-                            break;
-                        }
-
-                        packageRevenueHistory = CreatePackageRevenueHistory(session, partyRevenue);
-                        packageRevenueHistoriesByPackage.Add(packageRevenueHistory.Package, packageRevenueHistory);
+                        partyRevenue = packageRevenuesByPeriod.Value;
+                        break;
                     }
 
-                    foreach (var partyRevenueByPeriod in valuePair.Value)
-                    {
-                        var partyRevenue = partyRevenueByPeriod.Value;
-                        packageRevenueHistory.Revenue += partyRevenue.Revenue;
-                    }
-
-                    packageRevenueHistory.OnDerive(x => x.WithDerivation(derivation));
+                    packageRevenueHistory = CreatePackageRevenueHistory(session, partyRevenue);
+                    packageRevenueHistoriesByPackage.Add(packageRevenueHistory.Package, packageRevenueHistory);
                 }
+
+                foreach (var partyRevenueByPeriod in valuePair.Value)
+                {
+                    var partyRevenue = partyRevenueByPeriod.Value;
+                    packageRevenueHistory.Revenue += partyRevenue.Revenue;
+                }
+
+                packageRevenueHistory.OnDerive(x => x.WithDerivation(derivation));
             }
         }
 
@@ -120,7 +104,6 @@ namespace Allors.Domain
         {
             return new PackageRevenueHistoryBuilder(session)
                         .WithCurrency(packageRevenue.Currency)
-                        .WithInternalOrganisation(packageRevenue.InternalOrganisation)
                         .WithPackage(packageRevenue.Package)
                         .WithRevenue(0)
                         .Build();

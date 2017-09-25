@@ -28,12 +28,10 @@ namespace Allors.Domain
             productRevenues.Filter.AddEquals(M.ProductRevenue.Year, dependant.Year);
             productRevenues.Filter.AddEquals(M.ProductRevenue.Month, dependant.Month);
             var productRevenue = productRevenues.First ?? new ProductRevenueBuilder(session)
-                                                                .WithInternalOrganisation(dependant.InternalOrganisation)
                                                                 .WithProduct(dependant.Product)
                                                                 .WithYear(dependant.Year)
                                                                 .WithMonth(dependant.Month)
                                                                 .WithCurrency(dependant.Currency)
-                                                                .WithRevenue(0M)
                                                                 .Build();
             return productRevenue;
         }
@@ -140,12 +138,10 @@ namespace Allors.Domain
         private static ProductRevenue CreateProductRevenue(ISession session, SalesInvoiceItem item)
         {
             return new ProductRevenueBuilder(session)
-                        .WithInternalOrganisation(item.SalesInvoiceWhereSalesInvoiceItem.BilledFromInternalOrganisation)
                         .WithProduct(item.Product)
                         .WithYear(item.SalesInvoiceWhereSalesInvoiceItem.InvoiceDate.Year)
                         .WithMonth(item.SalesInvoiceWhereSalesInvoiceItem.InvoiceDate.Month)
-                        .WithCurrency(item.SalesInvoiceWhereSalesInvoiceItem.BilledFromInternalOrganisation.PreferredCurrency)
-                        .WithRevenue(0M)
+                        .WithCurrency(InternalOrganisation.Instance(session).PreferredCurrency)
                         .Build();
         }
     }

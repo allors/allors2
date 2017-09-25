@@ -21,7 +21,6 @@ namespace Allors.Domain
     {
         ObjectState Transitional.CurrentObjectState => this.CurrentObjectState;
 
-
         public void AppsOnBuild(ObjectOnBuild method)
         {
             if (!this.ExistCurrentObjectState)
@@ -29,6 +28,7 @@ namespace Allors.Domain
                 this.CurrentObjectState = new QuoteItemObjectStates(this.Strategy.Session).Submitted;
             }
         }
+
         public void AppsOnDerive(ObjectOnDerive method)
         {
             var derivation = method.Derivation;

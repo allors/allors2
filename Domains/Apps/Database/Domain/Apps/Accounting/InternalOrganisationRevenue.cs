@@ -23,16 +23,9 @@ namespace Allors.Domain
     {
         public void AppsOnDerive(ObjectOnDerive method)
         {
-            this.PartyName = this.InternalOrganisation.Name;
-
-            this.AppsOnDeriveRevenue();
-        }
-
-        private void AppsOnDeriveRevenue()
-        {
             this.Revenue = 0;
 
-            var storeRevenues = this.InternalOrganisation.StoreRevenuesWhereInternalOrganisation;
+            var storeRevenues = this.strategy.Session.Extent<Store>();
             storeRevenues.Filter.AddEquals(M.StoreRevenue.Year, this.Year);
             storeRevenues.Filter.AddEquals(M.StoreRevenue.Month, this.Month);
 
@@ -44,11 +37,10 @@ namespace Allors.Domain
             var months = ((DateTime.UtcNow.Year - this.Year) * 12) + DateTime.UtcNow.Month - this.Month;
             if (months <= 12)
             {
-                var histories = this.InternalOrganisation.InternalOrganisationRevenueHistoriesWhereInternalOrganisation;
+                var histories = this.strategy.Session.Extent<InternalOrganisationRevenueHistory>();
                 var history = histories.First ?? new InternalOrganisationRevenueHistoryBuilder(this.Strategy.Session)
-                                                     .WithCurrency(this.Currency)
-                                                     .WithInternalOrganisation(this.InternalOrganisation)
-                                                     .Build();
+                                  .WithCurrency(this.Currency)
+                                  .Build();
 
                 history.AppsOnDeriveMovingAverage();
             }

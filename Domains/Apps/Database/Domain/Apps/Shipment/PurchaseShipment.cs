@@ -29,11 +29,6 @@ namespace Allors.Domain
                 this.CurrentObjectState = new PurchaseShipmentObjectStates(this.Strategy.Session).Created;
             }
 
-            if (!this.ExistShipToParty)
-            {
-                this.ShipToParty = Singleton.Instance(this.Strategy.Session).DefaultInternalOrganisation;
-            }
-
             if (!this.ExistFacility && this.ExistShipToParty)
             {
                 var toParty = this.ShipToParty as InternalOrganisation;

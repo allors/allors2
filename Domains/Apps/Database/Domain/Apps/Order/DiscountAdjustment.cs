@@ -23,8 +23,7 @@ namespace Allors.Domain
         {
             var derivation = method.Derivation;
 
-            // TODO:
-            if (derivation.ChangeSet.Associations.Contains(this.Id))
+            if (derivation.HasChangedRoles(this))
             {
                 if (this.ExistPriceableWhereDiscountAdjustment)
                 {
@@ -53,15 +52,39 @@ namespace Allors.Domain
                     var salesInvoice = (SalesInvoice)this.InvoiceWhereDiscountAdjustment;
                     derivation.AddDependency(this, salesInvoice);
                 }
-            }        
+            }
         }
 
         public void AppsOnDerive(ObjectOnDerive method)
         {
             var derivation = method.Derivation;
 
-            derivation.Validation.AssertAtLeastOne(this, M.DiscountAdjustment.Amount, M.DiscountAdjustment.Percentage);
-            derivation.Validation.AssertExistsAtMostOne(this, M.DiscountAdjustment.Amount, M.DiscountAdjustment.Percentage);
+            if (!this.ExistCurrentVersion)
+            {
+                derivation.Validation.AssertAtLeastOne(
+                    this,
+                    M.DiscountAdjustment.Amount,
+                    M.DiscountAdjustment.Percentage);
+                derivation.Validation.AssertExistsAtMostOne(
+                    this,
+                    M.DiscountAdjustment.Amount,
+                    M.DiscountAdjustment.Percentage);
+            }
+            else
+            {
+                if (this.ExistAmount && this.ExistPercentage)
+                {
+                    var version = CurrentVersion;
+                    if (version.ExistAmount)
+                    {
+                        this.RemoveAmount();
+                    }
+                    else
+                    {
+                        this.RemovePercentage();
+                    }
+                }
+            }
         }
     }
 }

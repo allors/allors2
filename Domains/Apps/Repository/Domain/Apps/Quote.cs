@@ -53,6 +53,7 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
         [Workspace]
+        [Required]
         Party Issuer { get; set; }
 
         #region Allors
@@ -119,6 +120,7 @@ namespace Allors.Repository
         [RoleId("219cb27f-20b5-48b3-9d89-4b119798b092")]
         #endregion
         [Workspace]
+        [Required]
         DateTime IssueDate { get; set; }
 
         #region Allors

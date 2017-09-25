@@ -33,14 +33,12 @@ namespace Allors.Domain
             salesRepPartyProductCategoryRevenues.Filter.AddEquals(M.SalesRepPartyProductCategoryRevenue.ProductCategory, salesInvoiceItem.Product.PrimaryProductCategory);
             var salesRepPartyProductCategoryRevenue = salesRepPartyProductCategoryRevenues.First
                                                       ?? new SalesRepPartyProductCategoryRevenueBuilder(session)
-                                                                .WithInternalOrganisation(salesInvoice.BilledFromInternalOrganisation)
                                                                 .WithParty(salesInvoice.BillToCustomer)
                                                                 .WithSalesRep(salesInvoiceItem.SalesRep)
                                                                 .WithProductCategory(salesInvoiceItem.Product.PrimaryProductCategory)
                                                                 .WithYear(salesInvoice.InvoiceDate.Year)
                                                                 .WithMonth(salesInvoice.InvoiceDate.Month)
-                                                                .WithCurrency(salesInvoice.BilledFromInternalOrganisation.PreferredCurrency)
-                                                                .WithRevenue(0M)
+                                                                .WithCurrency(InternalOrganisation.Instance(session).PreferredCurrency)
                                                                 .Build();
 
             SalesRepProductCategoryRevenues.AppsFindOrCreateAsDependable(session, salesRepPartyProductCategoryRevenue);
@@ -61,14 +59,12 @@ namespace Allors.Domain
                 salesRepPartyProductCategoryRevenues.Filter.AddEquals(M.SalesRepPartyProductCategoryRevenue.ProductCategory, parentCategory);
                 var salesRepPartyProductCategoryRevenue = salesRepPartyProductCategoryRevenues.First
                                                           ?? new SalesRepPartyProductCategoryRevenueBuilder(session)
-                                                                    .WithInternalOrganisation(dependant.InternalOrganisation)
                                                                     .WithParty(dependant.Party)
                                                                     .WithSalesRep(dependant.SalesRep)
                                                                     .WithProductCategory(parentCategory)
                                                                     .WithYear(dependant.Year)
                                                                     .WithMonth(dependant.Month)
                                                                     .WithCurrency(dependant.Currency)
-                                                                    .WithRevenue(0M)
                                                                     .Build();
 
                 SalesRepProductCategoryRevenues.AppsFindOrCreateAsDependable(session, salesRepPartyProductCategoryRevenue);
@@ -273,14 +269,12 @@ namespace Allors.Domain
         private static SalesRepPartyProductCategoryRevenue CreateSalesRepPartyProductCategoryRevenue(ISession session, SalesInvoiceItem item, ProductCategory productCategory)
         {
             return new SalesRepPartyProductCategoryRevenueBuilder(session)
-                        .WithInternalOrganisation(item.SalesInvoiceWhereSalesInvoiceItem.BilledFromInternalOrganisation)
                         .WithParty(item.SalesInvoiceWhereSalesInvoiceItem.BillToCustomer)
                         .WithSalesRep(item.SalesRep)
                         .WithProductCategory(productCategory)
                         .WithYear(item.SalesInvoiceWhereSalesInvoiceItem.InvoiceDate.Year)
                         .WithMonth(item.SalesInvoiceWhereSalesInvoiceItem.InvoiceDate.Month)
-                        .WithCurrency(item.SalesInvoiceWhereSalesInvoiceItem.BilledFromInternalOrganisation.PreferredCurrency)
-                        .WithRevenue(0M)
+                        .WithCurrency(InternalOrganisation.Instance(session).PreferredCurrency)
                         .Build();
         }
     }

@@ -25,19 +25,6 @@ namespace Allors.Domain
     {
         ObjectState Transitional.CurrentObjectState => this.CurrentObjectState;
 
-        public PaymentMethod GetPaymentMethod
-        {
-            get
-            {
-                if (this.ExistBillToCustomer && this.BillToCustomer.ExistDefaultPaymentMethod)
-                {
-                    return this.BillToCustomer.DefaultPaymentMethod;
-                }
-
-                return this.Store.DefaultPaymentMethod;
-            }
-        }
-
         public int? PaymentNetDays
         {
             get
@@ -80,19 +67,12 @@ namespace Allors.Domain
         {
             get
             {
-                if (this.ExistInvoiceDate) 
+                if (this.ExistInvoiceDate)
                 {
-                    if (this.ExistBilledFromInternalOrganisation && this.ExistBillToCustomer && this.BillToCustomer.ExistCustomerRelationshipsWhereCustomer)
+                    if (this.ExistBillToCustomer && this.BillToCustomer.PaymentNetDays() != null)
                     {
-                        var customerRelationships = this.BillToCustomer.CustomerRelationshipsWhereCustomer;
-                        customerRelationships.Filter.AddEquals(M.CustomerRelationship.InternalOrganisation, this.BilledFromInternalOrganisation);
-                        var customerRelationship = customerRelationships.First;
-
-                        if (customerRelationship != null && customerRelationship.PaymentNetDays != null)
-                        {
-                            var paymentNetDays = customerRelationship.PaymentNetDays.Value;
-                            return this.InvoiceDate.AddDays(paymentNetDays);
-                        }
+                        var paymentNetDays = this.BillToCustomer.PaymentNetDays().Value;
+                        return this.InvoiceDate.AddDays(paymentNetDays);
                     }
 
                     if (this.ExistStore && this.Store.ExistPaymentNetDays)
@@ -152,17 +132,9 @@ namespace Allors.Domain
                 this.PreviousBillToCustomer = this.BillToCustomer;
             }
 
-            if (!this.ExistBilledFromInternalOrganisation)
+            if (!this.ExistStore)
             {
-                this.BilledFromInternalOrganisation = Singleton.Instance(this.Strategy.Session).DefaultInternalOrganisation;
-            }
-
-            if (!this.ExistStore && this.ExistBilledFromInternalOrganisation)
-            {
-                if (this.BilledFromInternalOrganisation.StoresWhereOwner.Count == 1)
-                {
-                    this.Store = this.BilledFromInternalOrganisation.StoresWhereOwner.First;
-                }
+                this.Store = this.strategy.Session.Extent<Store>().First;
             }
 
             if (!this.ExistInvoiceNumber && this.ExistStore)
@@ -184,10 +156,9 @@ namespace Allors.Domain
                 }
                 else
                 {
-                    if (this.ExistBilledFromInternalOrganisation)
-                    {
-                        this.CustomerCurrency = this.BilledFromInternalOrganisation.ExistPreferredCurrency ? this.BilledFromInternalOrganisation.PreferredCurrency : this.BilledFromInternalOrganisation.Locale.Country.Currency;
-                    }
+                    this.CustomerCurrency = InternalOrganisation.Instance(this.strategy.Session).ExistPreferredCurrency ?
+                                                InternalOrganisation.Instance(this.strategy.Session).PreferredCurrency :
+                                                InternalOrganisation.Instance(this.strategy.Session).PreferredLocale.Country.Currency;
                 }
             }
         }
@@ -195,34 +166,6 @@ namespace Allors.Domain
         public void AppsOnPreDerive(ObjectOnPreDerive method)
         {
             var derivation = method.Derivation;
-
-            if (this.ExistBillToCustomer)
-            {
-                var customerRelationships = this.BillToCustomer.CustomerRelationshipsWhereCustomer;
-                customerRelationships.Filter.AddEquals(M.CustomerRelationship.InternalOrganisation, this.BilledFromInternalOrganisation);
-
-                foreach (CustomerRelationship customerRelationship in customerRelationships)
-                {
-                    if (customerRelationship.FromDate <= DateTime.UtcNow && (!customerRelationship.ExistThroughDate || customerRelationship.ThroughDate >= DateTime.UtcNow))
-                    {
-                        derivation.AddDependency(this, customerRelationship);
-                    }
-                }
-            }
-
-            if (this.ExistShipToCustomer)
-            {
-                var customerRelationships = this.ShipToCustomer.CustomerRelationshipsWhereCustomer;
-                customerRelationships.Filter.AddEquals(M.CustomerRelationship.InternalOrganisation, this.BilledFromInternalOrganisation);
-
-                foreach (CustomerRelationship customerRelationship in customerRelationships)
-                {
-                    if (customerRelationship.FromDate <= DateTime.UtcNow && (!customerRelationship.ExistThroughDate || customerRelationship.ThroughDate >= DateTime.UtcNow))
-                    {
-                        derivation.AddDependency(this, customerRelationship);
-                    }
-                }
-            }
 
             foreach (SalesInvoiceItem invoiceItem in this.InvoiceItems)
             {
@@ -244,9 +187,9 @@ namespace Allors.Domain
                 this.BillToContactMechanism = this.BillToCustomer.BillingAddress;
             }
 
-            if (!this.ExistBilledFromContactMechanism && this.ExistBilledFromInternalOrganisation)
+            if (!this.ExistBilledFromContactMechanism)
             {
-                this.BilledFromContactMechanism = this.BilledFromInternalOrganisation.BillingAddress;
+                this.BilledFromContactMechanism = InternalOrganisation.Instance(this.strategy.Session).BillingAddress;
             }
 
             if (!this.ExistShipToAddress && this.ExistShipToCustomer)
@@ -264,29 +207,14 @@ namespace Allors.Domain
             this.AppsOnDeriveSalesReps(derivation);
             this.AppsOnDeriveAmountPaid(derivation);
 
-            if (this.ExistBillToCustomer && this.BillToCustomer.ExistCustomerRelationshipsWhereCustomer)
+            if (this.ExistBillToCustomer && !this.BillToCustomer.IsCustomer())
             {
-                var customerRelationships = this.BillToCustomer.CustomerRelationshipsWhereCustomer;
-                customerRelationships.Filter.AddEquals(M.CustomerRelationship.InternalOrganisation, this.BilledFromInternalOrganisation);
-                var customerRelationship = customerRelationships.First;
-
-                customerRelationship?.OnDerive(x => x.WithDerivation(derivation));
+                derivation.Validation.AddError(this, M.SalesInvoice.BillToCustomer, ErrorMessages.PartyIsNotACustomer);
             }
 
-            if (this.ExistBillToCustomer && this.ExistBilledFromInternalOrganisation)
+            if (this.ExistShipToCustomer && !this.ShipToCustomer.IsCustomer())
             {
-                if (!this.BilledFromInternalOrganisation.Equals(this.BillToCustomer.InternalOrganisationWhereCustomer))
-                {
-                    derivation.Validation.AddError(this, M.SalesInvoice.BillToCustomer, ErrorMessages.PartyIsNotACustomer);
-                }
-            }
-
-            if (this.ExistShipToCustomer && this.ExistBilledFromInternalOrganisation)
-            {
-                if (!this.BilledFromInternalOrganisation.Equals(this.ShipToCustomer.InternalOrganisationWhereCustomer))
-                {
-                    derivation.Validation.AddError(this, M.SalesInvoice.ShipToCustomer, ErrorMessages.PartyIsNotACustomer);
-                }
+                derivation.Validation.AddError(this, M.SalesInvoice.ShipToCustomer, ErrorMessages.PartyIsNotACustomer);
             }
 
             this.DeriveCurrentPaymentStatus(derivation);
@@ -379,7 +307,8 @@ namespace Allors.Domain
             }
             else
             {
-                this.Locale = this.ExistBilledFromInternalOrganisation ? this.BilledFromInternalOrganisation.Locale : Singleton.Instance(this.Strategy.Session).DefaultLocale;
+                this.Locale = InternalOrganisation.Instance(this.strategy.Session).ExistPreferredLocale ?
+                                  InternalOrganisation.Instance(this.strategy.Session).PreferredLocale : Singleton.Instance(this.Strategy.Session).DefaultLocale;
             }
         }
 
@@ -504,7 +433,7 @@ namespace Allors.Domain
         {
             if (this.ExistShippingAndHandlingCharge)
             {
-                decimal shipping = this.ShippingAndHandlingCharge.Percentage.HasValue ? 
+                decimal shipping = this.ShippingAndHandlingCharge.Percentage.HasValue ?
                     Math.Round((this.TotalExVat * this.ShippingAndHandlingCharge.Percentage.Value) / 100, 2) : this.ShippingAndHandlingCharge.Amount.HasValue ? this.ShippingAndHandlingCharge.Amount.Value : 0;
 
                 this.TotalShippingAndHandling += shipping;
@@ -672,7 +601,7 @@ namespace Allors.Domain
                 }
 
                 var storeRevenue = StoreRevenues.AppsFindOrCreateAsDependable(this.Strategy.Session, this);
-                storeRevenue.OnDerive(x=>x.WithDerivation(derivation));
+                storeRevenue.OnDerive(x => x.WithDerivation(derivation));
 
                 if (this.ExistSalesChannel)
                 {

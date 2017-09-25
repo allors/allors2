@@ -18,45 +18,34 @@ namespace Allors.Domain
     using System;
     using System.Collections.Generic;
     using Meta;
-    
+
     public partial class InternalOrganisationRevenues
     {
         public static InternalOrganisationRevenue AppsFindOrCreateAsDependable(ISession session, StoreRevenue dependant)
         {
-            var internalOrganisationRevenues = dependant.InternalOrganisation.InternalOrganisationRevenuesWhereInternalOrganisation;
+            var internalOrganisationRevenues = session.Extent<InternalOrganisationRevenue>();
             internalOrganisationRevenues.Filter.AddEquals(M.InternalOrganisationRevenue.Year, dependant.Year);
             internalOrganisationRevenues.Filter.AddEquals(M.InternalOrganisationRevenue.Month, dependant.Month);
             var internalOrganisationRevenue = internalOrganisationRevenues.First
                                               ?? new InternalOrganisationRevenueBuilder(session)
-                                                        .WithInternalOrganisation(dependant.InternalOrganisation)
                                                         .WithYear(dependant.Year)
                                                         .WithMonth(dependant.Month)
                                                         .WithCurrency(dependant.Currency)
-                                                        .WithRevenue(0M)
                                                         .Build();
             return internalOrganisationRevenue;
         }
 
         public static void AppsOnDeriveRevenues(ISession session)
         {
-            var internalOrganisationRevenuesByPeriodByInternalOrganisation = new Dictionary<InternalOrganisation, Dictionary<DateTime, InternalOrganisationRevenue>>();
-
             var internalOrganisationRevenues = session.Extent<InternalOrganisationRevenue>();
+            Dictionary<DateTime, InternalOrganisationRevenue> internalOrganisationRevenuesByPeriod = new Dictionary<DateTime, InternalOrganisationRevenue>();
 
             foreach (InternalOrganisationRevenue internalOrganisationRevenue in internalOrganisationRevenues)
             {
                 internalOrganisationRevenue.Revenue = 0;
                 var date = DateTimeFactory.CreateDate(internalOrganisationRevenue.Year, internalOrganisationRevenue.Month, 01);
 
-                Dictionary<DateTime, InternalOrganisationRevenue> internalOrganisationRevenuesByPeriod;
-                if (!internalOrganisationRevenuesByPeriodByInternalOrganisation.TryGetValue(internalOrganisationRevenue.InternalOrganisation, out internalOrganisationRevenuesByPeriod))
-                {
-                    internalOrganisationRevenuesByPeriod = new Dictionary<DateTime, InternalOrganisationRevenue>();
-                    internalOrganisationRevenuesByPeriodByInternalOrganisation[internalOrganisationRevenue.InternalOrganisation] = internalOrganisationRevenuesByPeriod;
-                }
-
-                InternalOrganisationRevenue revenue;
-                if (!internalOrganisationRevenuesByPeriod.TryGetValue(date, out revenue))
+                if (!internalOrganisationRevenuesByPeriod.ContainsKey(date))
                 {
                     internalOrganisationRevenuesByPeriod.Add(date, internalOrganisationRevenue);
                 }
@@ -78,29 +67,16 @@ namespace Allors.Domain
 
                 foreach (SalesInvoiceItem salesInvoiceItem in salesInvoice.SalesInvoiceItems)
                 {
-                    if (salesInvoice.ExistBilledFromInternalOrganisation)
+                    InternalOrganisationRevenue internalOrganisationRevenue;
+
+                    if (!internalOrganisationRevenuesByPeriod.TryGetValue(date, out internalOrganisationRevenue))
                     {
-                        InternalOrganisationRevenue internalOrganisationRevenue;
-
-                        Dictionary<DateTime, InternalOrganisationRevenue> internalOrganisationRevenuesByPeriod;
-                        if (!internalOrganisationRevenuesByPeriodByInternalOrganisation.TryGetValue(salesInvoice.BilledFromInternalOrganisation, out internalOrganisationRevenuesByPeriod))
-                        {
-                            internalOrganisationRevenue = CreateInternalOrganisationRevenue(session, salesInvoice);
-
-                            internalOrganisationRevenuesByPeriod = new Dictionary<DateTime, InternalOrganisationRevenue> { { date, internalOrganisationRevenue } };
-
-                            internalOrganisationRevenuesByPeriodByInternalOrganisation[salesInvoice.BilledFromInternalOrganisation] = internalOrganisationRevenuesByPeriod;
-                        }
-
-                        if (!internalOrganisationRevenuesByPeriod.TryGetValue(date, out internalOrganisationRevenue))
-                        {
-                            internalOrganisationRevenue = CreateInternalOrganisationRevenue(session, salesInvoice);
-                            internalOrganisationRevenuesByPeriod[date] = internalOrganisationRevenue;
-                        }
-
-                        revenues.Add(internalOrganisationRevenue.Id);
-                        internalOrganisationRevenue.Revenue += salesInvoiceItem.TotalExVat;
+                        internalOrganisationRevenue = CreateInternalOrganisationRevenue(session, salesInvoice);
+                        internalOrganisationRevenuesByPeriod[date] = internalOrganisationRevenue;
                     }
+
+                    revenues.Add(internalOrganisationRevenue.Id);
+                    internalOrganisationRevenue.Revenue += salesInvoiceItem.TotalExVat;
                 }
             }
 
@@ -112,15 +88,13 @@ namespace Allors.Domain
                 }
             }
         }
-        
+
         private static InternalOrganisationRevenue CreateInternalOrganisationRevenue(ISession session, SalesInvoice invoice)
         {
             return new InternalOrganisationRevenueBuilder(session)
-                        .WithInternalOrganisation(invoice.BilledFromInternalOrganisation)
                         .WithYear(invoice.InvoiceDate.Year)
                         .WithMonth(invoice.InvoiceDate.Month)
-                        .WithCurrency(invoice.BilledFromInternalOrganisation.PreferredCurrency)
-                        .WithRevenue(0M)
+                        .WithCurrency(InternalOrganisation.Instance(session).PreferredCurrency)
                         .Build();
         }
     }

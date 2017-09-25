@@ -24,19 +24,6 @@ namespace Allors.Domain
     {
         ObjectState Transitional.CurrentObjectState => this.CurrentObjectState;
 
-        public PaymentMethod GetPaymentMethod
-        {
-            get
-            {
-                if (this.ExistBillToCustomer && this.BillToCustomer.ExistDefaultPaymentMethod)
-                {
-                    return this.BillToCustomer.DefaultPaymentMethod;
-                }
-
-                return this.Store.DefaultPaymentMethod;
-            }
-        }
-
         public OrderItem[] OrderItems => this.SalesOrderItems;
 
         public bool ScheduledManually
@@ -52,28 +39,6 @@ namespace Allors.Domain
             }
         }
 
-        public void SetActualDiscountAmount(decimal amount)
-        {
-            if (!this.ExistDiscountAdjustment)
-            {
-                this.DiscountAdjustment = new DiscountAdjustmentBuilder(this.Strategy.Session).Build();
-            }
-
-            this.DiscountAdjustment.Amount = amount;
-            this.DiscountAdjustment.RemovePercentage();
-        }
-
-        public void SetActualDiscountPercentage(decimal percentage)
-        {
-            if (!this.ExistDiscountAdjustment)
-            {
-                this.DiscountAdjustment = new DiscountAdjustmentBuilder(this.Strategy.Session).Build();
-            }
-
-            this.DiscountAdjustment.Percentage = percentage;
-            this.DiscountAdjustment.RemoveAmount();
-        }
-
         public void AppsOnBuild(ObjectOnBuild method)
         {
             if (!this.ExistCurrentObjectState)
@@ -86,27 +51,9 @@ namespace Allors.Domain
                 this.PartiallyShip = true;
             }
 
-            if (!this.ExistOrderDate)
+            if (!this.ExistStore)
             {
-                this.OrderDate = DateTime.UtcNow;
-            }
-
-            if (!this.ExistEntryDate)
-            {
-                this.EntryDate = DateTime.UtcNow;
-            }
-
-            if (!this.ExistTakenByInternalOrganisation)
-            {
-                this.TakenByInternalOrganisation = Singleton.Instance(this.Strategy.Session).DefaultInternalOrganisation;
-            }
-
-            if (!this.ExistStore && this.ExistTakenByInternalOrganisation)
-            {
-                if (this.TakenByInternalOrganisation.StoresWhereOwner.Count == 1)
-                {
-                    this.Store = this.TakenByInternalOrganisation.StoresWhereOwner.First;
-                }
+                this.Store = this.strategy.Session.Extent<Store>().First;
             }
 
             if (!this.ExistVatRegime && this.ExistBillToCustomer)
@@ -160,32 +107,10 @@ namespace Allors.Domain
         {
             var derivation = method.Derivation;
 
-            if (this.ExistBillToCustomer)
+            if (derivation.HasChangedRoles(this))
             {
-                var customerRelationships = this.BillToCustomer.CustomerRelationshipsWhereCustomer;
-                customerRelationships.Filter.AddEquals(M.CustomerRelationship.InternalOrganisation, this.TakenByInternalOrganisation);
-
-                foreach (CustomerRelationship customerRelationship in customerRelationships)
-                {
-                    if (customerRelationship.FromDate <= DateTime.UtcNow && (!customerRelationship.ExistThroughDate || customerRelationship.ThroughDate >= DateTime.UtcNow))
-                    {
-                        derivation.AddDependency(customerRelationship, this);
-                    }
-                }
-            }
-
-            if (this.ExistShipToCustomer)
-            {
-                var customerRelationships = this.ShipToCustomer.CustomerRelationshipsWhereCustomer;
-                customerRelationships.Filter.AddEquals(M.CustomerRelationship.InternalOrganisation, this.TakenByInternalOrganisation);
-
-                foreach (CustomerRelationship customerRelationship in customerRelationships)
-                {
-                    if (customerRelationship.FromDate <= DateTime.UtcNow && (!customerRelationship.ExistThroughDate || customerRelationship.ThroughDate >= DateTime.UtcNow))
-                    {
-                        derivation.AddDependency(customerRelationship, this);
-                    }
-                }
+                derivation.AddDependency(this.BillToCustomer, this);
+                derivation.AddDependency(this.ShipToCustomer, this);
             }
 
             foreach (var orderItem in this.OrderItems)
@@ -228,14 +153,14 @@ namespace Allors.Domain
                 this.BillToContactMechanism = this.BillToCustomer.BillingAddress;
             }
 
-            if (!this.ExistBillFromContactMechanism && this.ExistTakenByInternalOrganisation)
+            if (!this.ExistBillFromContactMechanism)
             {
-                this.BillFromContactMechanism = this.TakenByInternalOrganisation.BillingAddress;
+                this.BillFromContactMechanism = InternalOrganisation.Instance(this.strategy.Session).BillingAddress;
             }
 
-            if (!this.ExistTakenByContactMechanism && this.ExistTakenByInternalOrganisation)
+            if (!this.ExistTakenByContactMechanism)
             {
-                this.TakenByContactMechanism = this.TakenByInternalOrganisation.OrderAddress;
+                this.TakenByContactMechanism = InternalOrganisation.Instance(this.strategy.Session).OrderAddress;
             }
 
             if (!this.ExistCustomerCurrency)
@@ -247,24 +172,23 @@ namespace Allors.Domain
                 }
                 else
                 {
-                    if (this.ExistTakenByInternalOrganisation)
-                    {
-                        this.CustomerCurrency = this.TakenByInternalOrganisation.ExistPreferredCurrency ? this.TakenByInternalOrganisation.PreferredCurrency : this.TakenByInternalOrganisation.Locale.Country.Currency;
-                    }
+                    this.CustomerCurrency = InternalOrganisation.Instance(this.strategy.Session).ExistPreferredCurrency ? 
+                        InternalOrganisation.Instance(this.strategy.Session).PreferredCurrency : 
+                        InternalOrganisation.Instance(this.strategy.Session).PreferredLocale.Country.Currency;
                 }
             }
 
-            if (this.ExistBillToCustomer && this.ExistTakenByInternalOrganisation)
+            if (this.ExistBillToCustomer)
             {
-                if (!this.TakenByInternalOrganisation.Equals(this.BillToCustomer.InternalOrganisationWhereCustomer))
+                if (!this.BillToCustomer.IsCustomer())
                 {
                     derivation.Validation.AddError(this, M.SalesOrder.BillToCustomer, ErrorMessages.PartyIsNotACustomer);
                 }
             }
 
-            if (this.ExistShipToCustomer && this.ExistTakenByInternalOrganisation)
+            if (this.ExistShipToCustomer)
             {
-                if (!this.TakenByInternalOrganisation.Equals(this.ShipToCustomer.InternalOrganisationWhereCustomer))
+                if (!this.ShipToCustomer.IsCustomer())
                 {
                     derivation.Validation.AddError(this, M.SalesOrder.ShipToCustomer, ErrorMessages.PartyIsNotACustomer);
                 }
@@ -308,19 +232,9 @@ namespace Allors.Domain
         {
             var orderThreshold = this.Store.OrderThreshold;
 
-            var customerRelationships = this.BillToCustomer.CustomerRelationshipsWhereCustomer;
-            customerRelationships.Filter.AddEquals(M.CustomerRelationship.InternalOrganisation, this.TakenByInternalOrganisation);
 
-            decimal amountOverDue = 0;
-            decimal creditLimit = 0;
-            foreach (CustomerRelationship customerRelationship in customerRelationships)
-            {
-                if (customerRelationship.FromDate <= DateTime.UtcNow && (!customerRelationship.ExistThroughDate || customerRelationship.ThroughDate >= DateTime.UtcNow))
-                {
-                    creditLimit = customerRelationship.CreditLimit ?? (this.Store.ExistCreditLimit ? this.Store.CreditLimit : 0);
-                    amountOverDue = customerRelationship.AmountOverDue;
-                }
-            }
+            decimal amountOverDue = this.BillToCustomer.AmountOverDue;
+            decimal creditLimit = this.BillToCustomer.CreditLimit ?? (this.Store.ExistCreditLimit ? this.Store.CreditLimit : 0);
 
             if (amountOverDue > creditLimit || this.TotalExVat < orderThreshold)
             {
@@ -530,7 +444,9 @@ namespace Allors.Domain
             }
             else
             {
-                this.Locale = this.ExistTakenByInternalOrganisation ? this.TakenByInternalOrganisation.Locale : Singleton.Instance(this.Strategy.Session).DefaultLocale;
+                this.Locale = InternalOrganisation.Instance(this.Strategy.Session).ExistPreferredLocale ?
+                                  InternalOrganisation.Instance(this.Strategy.Session).PreferredLocale : 
+                                  Singleton.Instance(this.Strategy.Session).DefaultLocale;
             }
         }
 
@@ -594,9 +510,7 @@ namespace Allors.Domain
             if (pendingShipment == null)
             {
                 pendingShipment = new CustomerShipmentBuilder(this.Strategy.Session)
-                    .WithBillFromInternalOrganisation(this.TakenByInternalOrganisation)
-                    .WithShipFromParty(this.TakenByInternalOrganisation)
-                    .WithShipFromAddress(this.TakenByInternalOrganisation.ShippingAddress)
+                    .WithShipFromAddress(InternalOrganisation.Instance(this.strategy.Session).ShippingAddress)
                     .WithBillToParty(this.BillToCustomer)
                     .WithBillToContactMechanism(this.BillToContactMechanism)
                     .WithShipToAddress(address.Key)

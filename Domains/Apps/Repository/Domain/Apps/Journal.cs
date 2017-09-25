@@ -2,7 +2,7 @@ namespace Allors.Repository
 {
     using System;
 
-    using Allors.Repository.Attributes;
+    using Attributes;
 
     #region Allors
     [Id("d3446420-6d2a-4d18-a6eb-0405da9f7cc5")]
@@ -70,16 +70,7 @@ namespace Allors.Repository
         [Required]
 
         public OrganisationGlAccount ContraAccount { get; set; }
-        #region Allors
-        [Id("76e76063-ddce-4a8a-98fb-884cd6179c45")]
-        [AssociationId("1395e70f-cd1c-457e-bfd8-c7f31a32c8f4")]
-        [RoleId("b6416161-0b77-4a30-b00e-59a0eaaa1e87")]
-        #endregion
-        [Multiplicity(Multiplicity.ManyToOne)]
-        [Indexed]
-        [Required]
 
-        public InternalOrganisation InternalOrganisation { get; set; }
         #region Allors
         [Id("774f30df-26b4-41d5-9ecb-d1fd62244e1f")]
         [AssociationId("9a4078bb-350b-4fbb-8fc2-16e86928d32e")]

@@ -36,7 +36,6 @@ namespace Allors.Domain
             var toDate = DateTimeFactory.CreateDate(this.Year, this.Month, 01).AddMonths(1);
 
             var invoices = this.SalesChannel.SalesInvoicesWhereSalesChannel;
-            invoices.Filter.AddEquals(M.SalesInvoice.BilledFromInternalOrganisation, this.InternalOrganisation);
             invoices.Filter.AddNot().AddEquals(M.SalesInvoice.CurrentObjectState, new SalesInvoiceObjectStates(this.Strategy.Session).WrittenOff);
             invoices.Filter.AddBetween(M.Invoice.InvoiceDate, DateTimeFactory.CreateDate(this.Year, this.Month, 01), toDate);
 
@@ -49,10 +48,8 @@ namespace Allors.Domain
             if (months <= 12)
             {
                 var histories = this.SalesChannel.SalesChannelRevenueHistoriesWhereSalesChannel;
-                histories.Filter.AddEquals(M.SalesChannelRevenueHistory.InternalOrganisation, this.InternalOrganisation);
                 var history = histories.First ?? new SalesChannelRevenueHistoryBuilder(this.Strategy.Session)
                                                      .WithCurrency(this.Currency)
-                                                     .WithInternalOrganisation(this.InternalOrganisation)
                                                      .WithSalesChannel(this.SalesChannel)
                                                      .Build();
             }

@@ -117,7 +117,6 @@ namespace Allors.Domain
         {
             return new PartyRevenueHistoryBuilder(session)
                         .WithCurrency(partyRevenue.Currency)
-                        .WithInternalOrganisation(partyRevenue.InternalOrganisation)
                         .WithParty(partyRevenue.Party)
                         .WithRevenue(0)
                         .Build();

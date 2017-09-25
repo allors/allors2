@@ -26,7 +26,7 @@ namespace Allors.Domain
         public string DeriveNextInvoiceNumber(int year)
         {
             int salesInvoiceNumber;
-            if (this.Owner.InvoiceSequence.Equals(new InvoiceSequences(this.Strategy.Session).EnforcedSequence))
+            if (InternalOrganisation.Instance(this.strategy.Session).InvoiceSequence.Equals(new InvoiceSequences(this.Strategy.Session).EnforcedSequence))
             {
                 salesInvoiceNumber = this.SalesInvoiceCounter.NextValue();
             }
@@ -99,16 +99,6 @@ namespace Allors.Domain
         {
             var derivation = method.Derivation;
 
-            if (!this.ExistOwner)
-            {
-                this.Owner = Singleton.Instance(this.Strategy.Session).DefaultInternalOrganisation;
-
-                if (this.ExistOwner && this.Owner.ExistDefaultFacility)
-                {
-                    this.DefaultFacility = this.Owner.DefaultFacility;
-                }
-            }
-
             if (this.ExistDefaultPaymentMethod && !this.PaymentMethods.Contains(this.DefaultPaymentMethod))
             {
                 this.AddPaymentMethod(this.DefaultPaymentMethod);
@@ -119,24 +109,13 @@ namespace Allors.Domain
                 this.DefaultPaymentMethod = this.PaymentMethods.First;
             }
 
-            if (this.ExistOwner)
+            if (!this.ExistDefaultPaymentMethod && InternalOrganisation.Instance(this.strategy.Session).ExistDefaultPaymentMethod)
             {
-                if (!this.ExistDefaultPaymentMethod && this.Owner.ExistDefaultPaymentMethod)
-                {
-                    this.DefaultPaymentMethod = this.Owner.DefaultPaymentMethod;
+                this.DefaultPaymentMethod = InternalOrganisation.Instance(this.strategy.Session).DefaultPaymentMethod;
 
-                    if (!this.ExistPaymentMethods || !this.PaymentMethods.Contains(this.DefaultPaymentMethod))
-                    {
-                        this.AddPaymentMethod(this.DefaultPaymentMethod);
-                    }
-                }
-            }
-
-            foreach (PaymentMethod paymentMethod in this.PaymentMethods)
-            {
-                if (this.ExistOwner && !this.Owner.PaymentMethods.Contains(paymentMethod))
+                if (!this.ExistPaymentMethods || !this.PaymentMethods.Contains(this.DefaultPaymentMethod))
                 {
-                    derivation.Validation.AddError(this, M.Store.PaymentMethods, ErrorMessages.PaymentApplicationNotLargerThanInvoiceItemAmount);
+                    this.AddPaymentMethod(this.DefaultPaymentMethod);
                 }
             }
 

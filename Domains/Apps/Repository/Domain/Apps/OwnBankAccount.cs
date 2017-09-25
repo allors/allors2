@@ -2,7 +2,7 @@ namespace Allors.Repository
 {
     using System;
 
-    using Allors.Repository.Attributes;
+    using Attributes;
 
     #region Allors
     [Id("ca008b8d-584e-4aa5-a759-895b634defc5")]
@@ -24,7 +24,7 @@ namespace Allors.Repository
 
         public OrganisationGlAccount GeneralLedgerAccount { get; set; }
 
-        public SupplierRelationship Creditor { get; set; }
+        public Party Creditor { get; set; }
 
         public bool IsActive { get; set; }
 

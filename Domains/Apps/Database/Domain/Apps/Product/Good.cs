@@ -22,13 +22,6 @@ namespace Allors.Domain
 
     public partial class Good
     {
-        public void AppsOnBuild(ObjectOnBuild method)
-        {
-            if (!this.ExistSoldBy)
-            {
-                this.SoldBy = Singleton.Instance(this.Strategy.Session).DefaultInternalOrganisation;
-            }
-        }
 
         public void AppsOnPreDerive(ObjectOnPreDerive method)
         {

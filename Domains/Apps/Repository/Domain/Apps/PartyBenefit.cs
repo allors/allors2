@@ -2,7 +2,7 @@ namespace Allors.Repository
 {
     using System;
 
-    using Allors.Repository.Attributes;
+    using Attributes;
 
     #region Allors
     [Id("d520cf1a-8d3a-4380-8b88-85cd63a5ad05")]
@@ -59,17 +59,6 @@ namespace Allors.Repository
         [Precision(19)]
         [Scale(2)]
         public decimal ActualAvailableTime { get; set; }
-        #region Allors
-        [Id("f377fde6-39b4-47e1-a3c0-e574f416f6ad")]
-        [AssociationId("8a5b1e5f-e945-43ac-a1ae-72c1c0457a73")]
-        [RoleId("c4d10070-cbf6-4ebf-a9f1-a53a8d6d41b4")]
-        #endregion
-        [Multiplicity(Multiplicity.ManyToOne)]
-        [Indexed]
-        [Required]
-
-        public Employment Employment { get; set; }
-
 
         #region inherited methods
 
@@ -85,6 +74,5 @@ namespace Allors.Repository
         public void OnPostDerive(){}
 
         #endregion
-
     }
 }

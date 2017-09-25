@@ -2,12 +2,12 @@ namespace Allors.Repository
 {
     using System;
 
-    using Allors.Repository.Attributes;
+    using Attributes;
 
     #region Allors
     [Id("6c28f40a-1826-4110-83c8-7eaefc797f1a")]
     #endregion
-    public partial class SalesRepRelationship : AccessControlledObject, Commentable, Period, PartyRelationship 
+    public partial class SalesRepRelationship : Commentable, PartyRelationship 
     {
         #region inherited properties
         public Permission[] DeniedPermissions { get; set; }
@@ -19,16 +19,6 @@ namespace Allors.Repository
         public DateTime FromDate { get; set; }
 
         public DateTime ThroughDate { get; set; }
-
-        public PartyRelationshipStatus PartyRelationshipStatus { get; set; }
-
-        public Agreement[] RelationshipAgreements { get; set; }
-
-        public Priority PartyRelationshipPriority { get; set; }
-
-        public decimal SimpleMovingAverage { get; set; }
-
-        public CommunicationEvent[] CommunicationEvents { get; set; }
 
         public Party[] Parties { get; set; }
 
@@ -68,16 +58,6 @@ namespace Allors.Repository
         public ProductCategory[] ProductCategories { get; set; }
 
         #region Allors
-        [Id("7dc11a0c-72af-4296-94a4-068edae0021a")]
-        [AssociationId("8f82d5f9-8f9e-4f57-bb39-4bab9f9813a3")]
-        [RoleId("fac65a32-5fcb-4304-9f7d-3ae36da914ff")]
-        #endregion
-        [Multiplicity(Multiplicity.ManyToOne)]
-        [Indexed]
-        [Required]
-        public InternalOrganisation InternalOrganisation { get; set; }
-
-        #region Allors
         [Id("98dab364-0db6-438f-ac12-9b0238e81afd")]
         [AssociationId("eb32c549-bb3e-4789-abdb-9073905077bb")]
         [RoleId("f213a48e-d351-41c4-91df-48edd0043017")]
@@ -90,14 +70,14 @@ namespace Allors.Repository
         public decimal YTDCommission { get; set; }
 
         #region Allors
-        [Id("b770e679-2da6-45e7-b8e0-2ee39ab67f1e")]
-        [AssociationId("95817787-34eb-42f5-82a0-d28bfa93cd88")]
-        [RoleId("b86c35e3-b512-4d5e-9f08-29fe8d5a7b43")]
+        [Id("FEC2ABA6-BF9C-4310-BD07-8A40B9EDD646")]
+        [AssociationId("333BAF78-24CF-4ABE-82AF-03E8B428ED77")]
+        [RoleId("B734240F-6939-4CFC-9ED4-DB2072859C65")]
+        [Indexed]
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
-        [Indexed]
-        [Required]
         [Workspace]
+        [Required]
         public Party Customer { get; set; }
 
         #region inherited methods
@@ -120,6 +100,5 @@ namespace Allors.Repository
 
         public void Delete(){}
         #endregion
-
     }
 }

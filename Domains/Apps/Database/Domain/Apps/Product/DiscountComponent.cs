@@ -19,13 +19,6 @@ namespace Allors.Domain
 
     public partial class DiscountComponent
     {
-        public void AppsOnBuild(ObjectOnBuild method)
-        {
-            if (!this.ExistSpecifiedFor)
-            {
-                this.SpecifiedFor = Singleton.Instance(this.Strategy.Session).DefaultInternalOrganisation;
-            }
-        }
 
         public void AppsOnDerive(ObjectOnDerive method)
         {

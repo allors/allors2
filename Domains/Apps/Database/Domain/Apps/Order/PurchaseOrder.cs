@@ -40,19 +40,9 @@ namespace Allors.Domain
                 this.PreviousTakenViaSupplier = this.TakenViaSupplier;
             }
 
-            if (!this.ExistBillToPurchaser)
+            if (!this.ExistOrderNumber)
             {
-                this.BillToPurchaser = Singleton.Instance(this.Strategy.Session).DefaultInternalOrganisation;
-            }
-
-            if (!this.ExistShipToBuyer)
-            {
-                this.ShipToBuyer = Singleton.Instance(this.Strategy.Session).DefaultInternalOrganisation;
-            }
-
-            if (!this.ExistOrderNumber && this.ExistBillToPurchaser)
-            {
-                this.OrderNumber = this.BillToPurchaser.DeriveNextPurchaseOrderNumber();
+                this.OrderNumber = InternalOrganisation.Instance(this.strategy.Session).DeriveNextPurchaseOrderNumber();
             }
 
             if (!this.ExistOrderDate)
@@ -67,18 +57,14 @@ namespace Allors.Domain
 
             if (!this.ExistCustomerCurrency)
             {
-                if (this.ExistShipToBuyer)
-                {
-                    this.CustomerCurrency = this.ShipToBuyer.ExistPreferredCurrency ? this.ShipToBuyer.PreferredCurrency : this.ShipToBuyer.Locale.Country.Currency;
-                }
+                this.CustomerCurrency = InternalOrganisation.Instance(this.strategy.Session).ExistPreferredCurrency ?
+                                            InternalOrganisation.Instance(this.strategy.Session).PreferredCurrency :
+                                            InternalOrganisation.Instance(this.strategy.Session).PreferredLocale.Country.Currency;
             }
 
             if (!this.ExistFacility)
             {
-                if (Singleton.Instance(this.Strategy.Session).DefaultInternalOrganisation != null)
-                {
-                    this.Facility = Singleton.Instance(this.Strategy.Session).DefaultInternalOrganisation.DefaultFacility;
-                }
+                this.Facility = InternalOrganisation.Instance(this.strategy.Session).DefaultFacility;
             }
         }
 
@@ -86,23 +72,11 @@ namespace Allors.Domain
         {
             var derivation = method.Derivation;
 
-            // TODO:
-            if (derivation.ChangeSet.Associations.Contains(this.Id))
+            if (derivation.HasChangedRoles(this))
             {
-                if (this.ExistBillToPurchaser)
-                {
-                    derivation.AddDependency(this, this.BillToPurchaser);
-                }
-
-                if (this.ExistShipToBuyer)
-                {
-                    derivation.AddDependency(this, this.ShipToBuyer);
-                }
-
-                if (this.ExistTakenViaSupplier)
-                {
-                    derivation.AddDependency(this, this.TakenViaSupplier);
-                }
+                derivation.AddDependency(this, InternalOrganisation.Instance(this.strategy.Session));
+                derivation.AddDependency(this, InternalOrganisation.Instance(this.strategy.Session));
+                derivation.AddDependency(this, this.TakenViaSupplier);
             }
 
             if (this.ExistTakenViaSupplier)
@@ -194,7 +168,7 @@ namespace Allors.Domain
         {
             this.CurrentObjectState = new PurchaseOrderObjectStates(this.Strategy.Session).InProcess;
         }
-        
+
         public void AppsOnDeriveCurrentOrderStatus(IDerivation derivation)
         {
             // TODO: State Transitions

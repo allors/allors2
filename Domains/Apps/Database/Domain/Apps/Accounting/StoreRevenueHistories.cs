@@ -121,7 +121,6 @@ namespace Allors.Domain
         {
             return new StoreRevenueHistoryBuilder(session)
                         .WithCurrency(storeRevenue.Currency)
-                        .WithInternalOrganisation(storeRevenue.InternalOrganisation)
                         .WithStore(storeRevenue.Store)
                         .WithRevenue(0)
                         .Build();

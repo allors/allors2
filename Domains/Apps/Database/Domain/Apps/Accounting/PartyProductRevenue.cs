@@ -24,7 +24,7 @@ namespace Allors.Domain
         {
             var derivation = method.Derivation;
 
-            this.PartyProductName = string.Concat(this.Party.PartyName, "/", this.Product.Name);
+            this.PartyProductName = string.Concat(this.Party.Name, "/", this.Product.Name);
 
             this.AppsOnDeriveRevenue(derivation);
         }
@@ -37,7 +37,6 @@ namespace Allors.Domain
             var toDate = DateTimeFactory.CreateDate(this.Year, this.Month, 01).AddMonths(1);
 
             var invoices = this.Party.SalesInvoicesWhereBillToCustomer;
-            invoices.Filter.AddEquals(M.SalesInvoice.BilledFromInternalOrganisation, this.InternalOrganisation);
             invoices.Filter.AddNot().AddEquals(M.SalesInvoice.CurrentObjectState, new SalesInvoiceObjectStates(this.Strategy.Session).WrittenOff);
             invoices.Filter.AddBetween(M.Invoice.InvoiceDate, DateTimeFactory.CreateDate(this.Year, this.Month, 01), toDate);
 
@@ -57,11 +56,9 @@ namespace Allors.Domain
             if (months <= 12)
             {
                 var histories = this.Party.PartyProductRevenueHistoriesWhereParty;
-                histories.Filter.AddEquals(M.PartyProductRevenueHistory.InternalOrganisation, this.InternalOrganisation);
                 histories.Filter.AddEquals(M.PartyProductRevenueHistory.Product, this.Product);
                 var history = histories.First ?? new PartyProductRevenueHistoryBuilder(this.Strategy.Session)
                                                      .WithCurrency(this.Currency)
-                                                     .WithInternalOrganisation(this.InternalOrganisation)
                                                      .WithParty(this.Party)
                                                      .WithProduct(this.Product)
                                                      .WithRevenue(0)
@@ -85,19 +82,16 @@ namespace Allors.Domain
                 foreach (ProductCategory productCategory in this.Product.ProductCategories)
                 {
                     var partyProductCategoryRevenues = this.Party.PartyProductCategoryRevenuesWhereParty;
-                    partyProductCategoryRevenues.Filter.AddEquals(M.PartyProductCategoryRevenue.InternalOrganisation, this.InternalOrganisation);
                     partyProductCategoryRevenues.Filter.AddEquals(M.PartyProductCategoryRevenue.Year, this.Year);
                     partyProductCategoryRevenues.Filter.AddEquals(M.PartyProductCategoryRevenue.Month, this.Month);
                     partyProductCategoryRevenues.Filter.AddEquals(M.PartyProductCategoryRevenue.ProductCategory, productCategory);
                     var partyProductCategoryRevenue = partyProductCategoryRevenues.First
                                                       ?? new PartyProductCategoryRevenueBuilder(this.Strategy.Session)
-                                                                .WithInternalOrganisation(this.InternalOrganisation)
                                                                 .WithParty(this.Party)
                                                                 .WithProductCategory(productCategory)
                                                                 .WithYear(this.Year)
                                                                 .WithMonth(this.Month)
                                                                 .WithCurrency(this.Currency)
-                                                                .WithRevenue(0M)
                                                                 .Build();
                     partyProductCategoryRevenue.OnDerive(x => x.WithDerivation(derivation));
                 }

@@ -54,11 +54,7 @@ namespace Allors.Domain
 
             if (!this.ExistStore)
             {
-                var internalOrganisation = Singleton.Instance(this.Strategy.Session).DefaultInternalOrganisation;
-                if (internalOrganisation.StoresWhereOwner.Count == 1)
-                {
-                    this.Store = internalOrganisation.StoresWhereOwner.First;
-                }
+                this.Store = this.strategy.Session.Extent<Store>().First;
             }
         }
 

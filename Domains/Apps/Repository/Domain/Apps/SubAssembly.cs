@@ -2,7 +2,7 @@ namespace Allors.Repository
 {
     using System;
 
-    using Allors.Repository.Attributes;
+    using Attributes;
 
     #region Allors
     [Id("b1a10fe4-2d84-452b-b0cb-e96e55014856")]
@@ -10,7 +10,6 @@ namespace Allors.Repository
     public partial class SubAssembly : Part 
     {
         #region inherited properties
-        public InternalOrganisation OwnedByParty { get; set; }
 
         public string Name { get; set; }
 

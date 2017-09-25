@@ -2,7 +2,7 @@ namespace Allors.Repository
 {
     using System;
 
-    using Allors.Repository.Attributes;
+    using Attributes;
 
     #region Allors
     [Id("ef5fb351-2f0f-454a-b7b2-104af42b2c72")]
@@ -43,17 +43,6 @@ namespace Allors.Repository
         [Indexed]
 
         public Deduction[] Deductions { get; set; }
-        #region Allors
-        [Id("5db6f5b5-e24e-44fd-bc41-4e0466e97906")]
-        [AssociationId("53d7d8c9-7028-4ec8-82af-6373e21e3532")]
-        [RoleId("c2e4cf65-7a57-4dcd-ab49-c6cbc6b9d9fb")]
-        #endregion
-        [Multiplicity(Multiplicity.ManyToOne)]
-        [Indexed]
-        [Required]
-
-        public Employment Employment { get; set; }
-
 
         #region inherited methods
 

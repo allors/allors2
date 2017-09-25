@@ -22,6 +22,16 @@ namespace Allors.Domain
 
     public partial class InternalOrganisation
     {
+        private const string SessionKey = nameof(InternalOrganisation) + ".Key";
+
+        public static InternalOrganisation Instance(ISession session)
+        {
+            var instance = (InternalOrganisation)session[SessionKey] ?? session.Extent<InternalOrganisation>().First;
+
+            session[SessionKey] = instance;
+            return instance;
+        }
+
         // TODO: Cascading delete
 
         // public override void RemovePaymentMethod(PaymentMethod value)
@@ -33,35 +43,6 @@ namespace Allors.Domain
 
         // base.RemovePaymentMethod(value);
         // }
-        public void AppsOnDeriveCurrentContacts(IDerivation derivation)
-        {
-            this.RemoveCurrentContacts();
-        }
-
-        public void AppsOnDeriveInactiveContacts(IDerivation derivation)
-        {
-            this.RemoveInactiveContacts();
-        }
-
-        public void AppsOnDeriveCurrentOrganisationContactRelationships(IDerivation derivation)
-        {
-            this.RemoveCurrentPartyContactMechanisms();
-        }
-
-        public void AppsOnDeriveInactiveOrganisationContactRelationships(IDerivation derivation)
-        {
-            this.RemoveInactivePartyContactMechanisms();
-        }
-
-        public void AppsOnDeriveCurrentPartyContactMechanisms(IDerivation derivation)
-        {
-            this.RemoveCurrentPartyContactMechanisms();
-        }
-
-        public void AppsOnDeriveInactivePartyContactMechanisms(IDerivation derivation)
-        {
-            this.RemoveInactivePartyContactMechanisms();
-        }
 
         public int DeriveNextSubAccountNumber()
         {
@@ -80,6 +61,7 @@ namespace Allors.Domain
             var quoteNumber = this.QuoteCounter.NextValue();
             return string.Concat(this.QuoteNumberPrefix, quoteNumber);
         }
+
         public string DeriveNextRequestNumber()
         {
             var requestNumber = this.RequestCounter.NextValue();
@@ -165,8 +147,6 @@ namespace Allors.Domain
         {
             var derivation = method.Derivation;
 
-            this.PartyName = this.Name;
-
             if (this.ExistPreviousCurrency)
             {
                 derivation.Validation.AssertAreEqual(this, M.InternalOrganisation.PreferredCurrency, M.InternalOrganisation.PreviousCurrency);
@@ -192,6 +172,7 @@ namespace Allors.Domain
             this.SalesOffice = null;
             this.ShippingAddress = null;
             this.ShippingInquiriesFax = null;
+            this.ShippingInquiriesPhone = null;
             this.ShippingAddress = null;
 
             foreach (PartyContactMechanism partyContactMechanism in this.PartyContactMechanisms)

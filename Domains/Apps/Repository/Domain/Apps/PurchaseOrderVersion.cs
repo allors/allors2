@@ -109,16 +109,6 @@ namespace Allors.Repository
         public ContactMechanism BillToContactMechanism { get; set; }
 
         #region Allors
-        [Id("7ADEE9FA-45A9-47FC-9903-D66A773CD489")]
-        [AssociationId("AB1F3EFA-62FE-4179-BD68-539E985A1DA3")]
-        [RoleId("6EFBECA5-5445-4C88-9B39-6A808130EDDB")]
-        #endregion
-        [Multiplicity(Multiplicity.ManyToOne)]
-        [Indexed]
-        [Required]
-        public InternalOrganisation ShipToBuyer { get; set; }
-
-        #region Allors
         [Id("69DDEF12-B6AA-4040-991D-CF1D20A0D5EC")]
         [AssociationId("10D5F3CB-64ED-4010-92FD-13539CAD3F78")]
         [RoleId("D2C6D6DB-F38B-49E4-9AC5-187CD41D3863")]

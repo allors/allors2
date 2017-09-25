@@ -21,14 +21,6 @@ namespace Allors.Domain
 
     public static partial class RequestExtensions
     {
-        public static void AppsOnBuild(this Request @this, ObjectOnBuild method)
-        {
-            if (!@this.ExistRequestDate)
-            {
-                @this.RequestDate = DateTime.UtcNow;
-            }
-        }
-
         public static void AppsOnDerive(this Request @this, ObjectOnDerive method)
         {
             if (!@this.ExistRequestNumber)

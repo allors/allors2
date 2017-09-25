@@ -2,7 +2,7 @@ namespace Allors.Repository
 {
     using System;
 
-    using Allors.Repository.Attributes;
+    using Attributes;
 
     #region Allors
     [Id("6cf7d076-5c39-48b5-a27e-5e7752afee2d")]
@@ -32,14 +32,6 @@ namespace Allors.Repository
         #endregion
         [Size(256)]
 
-        public string PartyName { get; set; }
-        #region Allors
-        [Id("3b750587-6361-4359-8fb3-d4119a91340d")]
-        [AssociationId("93a555e3-6f22-470b-92d6-e84134564621")]
-        [RoleId("2e60687a-c01b-4055-8310-44e2aeea2118")]
-        #endregion
-        [Required]
-
         public int Month { get; set; }
         #region Allors
         [Id("ca4a5658-e964-4ae5-b5b6-c4e0747d9001")]
@@ -50,15 +42,7 @@ namespace Allors.Repository
         [Indexed]
 
         public Party Party { get; set; }
-        #region Allors
-        [Id("d3a7f72d-e112-4da4-971f-69016bedf814")]
-        [AssociationId("aa0ac3ab-3db4-4f5f-bd6a-8d50190bad8f")]
-        [RoleId("fcd1e476-6420-4e78-8da6-18c8a6e5f103")]
-        #endregion
-        [Multiplicity(Multiplicity.ManyToOne)]
-        [Indexed]
 
-        public InternalOrganisation InternalOrganisation { get; set; }
         #region Allors
         [Id("da71126e-5599-4c2e-9046-cf238501c61e")]
         [AssociationId("9da4cbdf-3010-40fc-bd80-e9d89c412cd9")]

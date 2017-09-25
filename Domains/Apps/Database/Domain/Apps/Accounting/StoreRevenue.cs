@@ -48,10 +48,8 @@ namespace Allors.Domain
             if (months <= 12)
             {
                 var histories = this.Store.StoreRevenueHistoriesWhereStore;
-                histories.Filter.AddEquals(M.StoreRevenueHistory.InternalOrganisation, this.InternalOrganisation);
                 var history = histories.First ?? new StoreRevenueHistoryBuilder(this.Strategy.Session)
                                                      .WithCurrency(this.Currency)
-                                                     .WithInternalOrganisation(this.InternalOrganisation)
                                                      .WithStore(this.Store)
                                                      .Build();
 

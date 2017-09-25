@@ -71,17 +71,6 @@ namespace Allors.Repository
         public ProductCategory ProductCategory { get; set; }
 
         #region Allors
-        [Id("d5332edf-3cc4-4f26-b0d1-da7ce1182dbc")]
-        [AssociationId("1fb5ddfd-930a-4c81-8e9e-ac9d94840864")]
-        [RoleId("30c0c848-5361-4bd3-9c0a-8b9aeaccdadc")]
-        #endregion
-        [Multiplicity(Multiplicity.ManyToOne)]
-        [Indexed]
-        [Required]
-        [Workspace]
-        public InternalOrganisation InternalOrganisation { get; set; }
-
-        #region Allors
         [Id("f1d3e642-2844-4c5a-a053-4dcfce461902")]
         [AssociationId("b0706892-9a04-4e5a-8caa-bd015f3d81f9")]
         [RoleId("6cb69b76-2852-43eb-bff6-a10bc44503a3")]

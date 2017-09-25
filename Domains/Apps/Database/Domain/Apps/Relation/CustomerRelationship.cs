@@ -20,32 +20,6 @@ namespace Allors.Domain
 
     public partial class CustomerRelationship
     {
-        public int? PaymentNetDays
-        {
-            get
-            {
-                int? customerPaymentNetDays = null;
-                foreach (Agreement agreement in this.RelationshipAgreements)
-                {
-                    foreach (AgreementTerm term in agreement.AgreementTerms)
-                    {
-                        if (term.TermType.Equals(new TermTypes(this.Strategy.Session).PaymentNetDays))
-                        {
-                            int netDays;
-                            if (int.TryParse(term.TermValue, out netDays))
-                            {
-                                customerPaymentNetDays = netDays;
-                            }
-
-                            return customerPaymentNetDays;
-                        }
-                    }
-                }
-
-                return null;
-            }
-        }
-
         public void AppsOnDeriveRevenue(IDerivation derivation)
         {
             if (this.ExistCustomer)
@@ -73,10 +47,6 @@ namespace Allors.Domain
 
         public void AppsOnBuild(ObjectOnBuild method)
         {
-            if (!this.ExistInternalOrganisation)
-            {
-                this.InternalOrganisation = Singleton.Instance(this.Strategy.Session).DefaultInternalOrganisation;
-            }
 
             if (!this.ExistSubAccountNumber)
             {
@@ -91,48 +61,14 @@ namespace Allors.Domain
             if (this.ExistCustomer)
             {
                 derivation.AddDependency(this.Customer, this);
-            
-                var customer = this.Customer as Organisation;
-                if (customer != null)
+
+                if (this.Customer is Organisation customer)
                 {
                     foreach (OrganisationContactRelationship contactRelationship in customer.OrganisationContactRelationshipsWhereOrganisation)
                     {
                         derivation.AddDependency(contactRelationship, this);
                     }
                 }
-            }
-        }
-
-        public void AppsOnDerive(ObjectOnDerive method)
-        {
-            var derivation = method.Derivation;
-
-            var customerRelationships = this.InternalOrganisation.CustomerRelationshipsWhereInternalOrganisation;
-            customerRelationships.Filter.AddEquals(M.CustomerRelationship.SubAccountNumber, this.SubAccountNumber);
-            if (customerRelationships.Count == 1)
-            {
-                if (!customerRelationships[0].Equals(this))
-                {
-                    derivation.Validation.AddError(new DerivationErrorUnique(derivation.Validation, this, M.CustomerRelationship.SubAccountNumber));
-                }
-            }
-            else if (customerRelationships.Count > 1)
-            {
-                derivation.Validation.AddError(new DerivationErrorUnique(derivation.Validation, this, M.CustomerRelationship.SubAccountNumber));
-            }
-
-            this.AppsOnDeriveInternalOrganisationCustomer(derivation);
-            this.AppsOnDeriveMembership(derivation);
-
-            this.AppsOnDeriveAmountDue(derivation);
-            this.AppsOnDeriveAmountOverDue(derivation);
-            this.AppsOnDeriveRevenue(derivation);
-
-            this.Parties = new[] { this.Customer, this.InternalOrganisation };
-
-            if (!this.ExistCustomer || !this.ExistInternalOrganisation)
-            {
-                this.Delete();
             }
         }
 

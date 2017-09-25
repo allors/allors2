@@ -2,7 +2,7 @@ namespace Allors.Repository
 {
     using System;
 
-    using Allors.Repository.Attributes;
+    using Attributes;
 
     #region Allors
     [Id("71e50a16-fc60-4177-aed0-e89c7f10f465")]
@@ -19,8 +19,6 @@ namespace Allors.Repository
         public ContactMechanism[] FacilityContactMechanisms { get; set; }
 
         public string Name { get; set; }
-
-        public InternalOrganisation Owner { get; set; }
 
         public Permission[] DeniedPermissions { get; set; }
 

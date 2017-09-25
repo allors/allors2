@@ -21,11 +21,6 @@ namespace Allors.Domain
     {
         public void AppsOnBuild(ObjectOnBuild method)
         {
-            if (!this.ExistInternalOrganisation)
-            {
-                this.InternalOrganisation = Singleton.Instance(this.Strategy.Session).DefaultInternalOrganisation;
-            }
-
             if (!this.ExistBlockUnpaidTransactions)
             {
                 this.BlockUnpaidTransactions = false;

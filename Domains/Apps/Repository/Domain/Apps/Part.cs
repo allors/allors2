@@ -2,26 +2,13 @@ namespace Allors.Repository
 {
     using System;
 
-    using Allors.Repository.Attributes;
+    using Attributes;
 
     #region Allors
     [Id("75916246-b1b5-48ef-9578-d65980fd2623")]
     #endregion
 	public partial interface Part : AccessControlledObject, UniquelyIdentifiable 
     {
-
-
-        #region Allors
-        [Id("424cdae9-af7b-4b6f-9e9e-54ac6104873d")]
-        [AssociationId("54857740-7d0b-4c7d-b71a-9b93719643c5")]
-        [RoleId("501dcfd1-143a-46a6-9c04-9ce141702a27")]
-        #endregion
-        [Multiplicity(Multiplicity.ManyToOne)]
-        [Indexed]
-        [Required]
-
-        InternalOrganisation OwnedByParty { get; set; }
-
 
         #region Allors
         [Id("5239147e-0829-4250-bdbc-8115e9c19206")]

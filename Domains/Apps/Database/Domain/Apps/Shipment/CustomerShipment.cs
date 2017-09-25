@@ -105,28 +105,14 @@ namespace Allors.Domain
                 this.WithoutCharges = false;
             }
 
-            if (!this.ExistShipFromParty)
-            {
-                this.ShipFromParty = Singleton.Instance(this.Strategy.Session).DefaultInternalOrganisation;
-            }
-
-            if (!this.ExistBillFromInternalOrganisation)
-            {
-                this.BillFromInternalOrganisation = Singleton.Instance(this.Strategy.Session).DefaultInternalOrganisation;
-            }
-
             if (!this.ExistBillFromContactMechanism)
             {
                 this.BillFromContactMechanism = this.BillFromInternalOrganisation.BillingAddress;
             }
 
-            if (!this.ExistStore && this.ExistShipFromParty)
+            if (!this.ExistStore)
             {
-                var organisation = this.ShipFromParty as InternalOrganisation;
-                if (organisation != null && organisation.StoresWhereOwner.Count == 1)
-                {
-                    this.Store = organisation.StoresWhereOwner.First;
-                }
+                this.Store = this.strategy.Session.Extent<Store>().First;
             }
 
             if (!this.ExistEstimatedShipDate)

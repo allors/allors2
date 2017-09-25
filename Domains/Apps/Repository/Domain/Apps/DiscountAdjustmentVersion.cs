@@ -2,25 +2,24 @@ namespace Allors.Repository
 {
     using System;
 
-    using Allors.Repository.Attributes;
+    using Attributes;
 
     #region Allors
-    [Id("97e31ffb-b478-4599-a145-54880d4ffbe1")]
+    [Id("458F158D-F613-44FC-849A-5438302FA7EB")]
     #endregion
-    public partial class PartyRelationshipStatus : Enumeration 
+    public partial class DiscountAdjustmentVersion : OrderAdjustmentVersion
     {
         #region inherited properties
-        public LocalisedText[] LocalisedNames { get; set; }
-
-        public string Name { get; set; }
-
-        public bool IsActive { get; set; }
-
         public Permission[] DeniedPermissions { get; set; }
 
         public SecurityToken[] SecurityTokens { get; set; }
 
-        public Guid UniqueId { get; set; }
+        public Guid DerivationId { get; set; }
+        public DateTime DerivationTimeStamp { get; set; }
+
+        public decimal Amount { get; set; }
+        public VatRate VatRate { get; set; }
+        public decimal Percentage { get; set; }
 
         #endregion
 
@@ -38,7 +37,7 @@ namespace Allors.Repository
 
         public void OnPostDerive(){}
 
-        #endregion
 
+        #endregion
     }
 }

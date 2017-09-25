@@ -2,7 +2,7 @@ namespace Allors.Repository
 {
     using System;
 
-    using Allors.Repository.Attributes;
+    using Attributes;
 
     #region Allors
     [Id("208a5af6-8dd8-4a48-acb2-2ecb89e8d322")]
@@ -20,16 +20,6 @@ namespace Allors.Repository
 
         #endregion
 
-        #region Allors
-        [Id("2f14e234-c808-4059-bb29-48e6d9493b7b")]
-        [AssociationId("e44919c4-eac2-4be0-a244-b2cacdf1c4c4")]
-        [RoleId("0441ebf6-3607-44e7-98ca-831e146cf9d7")]
-        #endregion
-        [Multiplicity(Multiplicity.ManyToOne)]
-        [Indexed]
-        [Required]
-
-        public Employment Employment { get; set; }
         #region Allors
         [Id("6d26369b-eea2-4712-a7d1-56884a3cc715")]
         [AssociationId("6e23ddf7-9766-4f56-bd4f-587bb6f00e00")]

@@ -59,16 +59,6 @@ namespace Allors.Repository
         public PurchaseInvoiceItem[] PurchaseInvoiceItems { get; set; }
 
         #region Allors
-        [Id("E9577C44-448F-4BBA-AF8F-B6D6BE385694")]
-        [AssociationId("F9AA76DA-AFA5-4802-80C8-B9F1AF23E522")]
-        [RoleId("EB43D44D-188C-4E4E-A96A-E83FB811727A")]
-        #endregion
-        [Multiplicity(Multiplicity.ManyToOne)]
-        [Indexed]
-        [Required]
-        public InternalOrganisation BilledToInternalOrganisation { get; set; }
-
-        #region Allors
         [Id("7751055A-3C59-4723-B7DF-42C377624BE0")]
         [AssociationId("5FB242DC-FB8B-4347-A0F2-65BCC0BBC056")]
         [RoleId("DAF79CD7-EAD0-4091-8545-24ADEEC919AF")]

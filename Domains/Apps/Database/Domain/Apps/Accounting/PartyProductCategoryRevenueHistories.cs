@@ -145,7 +145,6 @@ namespace Allors.Domain
             var partyProductCategoryRevenueHistoryByProductCategory = new Dictionary<ProductCategory, PartyProductCategoryRevenueHistory>();
 
             var partyProductCategoryRevenueHistories = party.PartyProductCategoryRevenueHistoriesWhereParty;
-            partyProductCategoryRevenueHistories.Filter.AddEquals(M.PartyProductCategoryRevenueHistory.InternalOrganisation, internalOrganisation);
 
             foreach (PartyProductCategoryRevenueHistory partyProductCategoryRevenueHistory in partyProductCategoryRevenueHistories)
             {
@@ -159,7 +158,6 @@ namespace Allors.Domain
         {
             return new PartyProductCategoryRevenueHistoryBuilder(session)
                         .WithCurrency(partyProductCategoryRevenue.Currency)
-                        .WithInternalOrganisation(partyProductCategoryRevenue.InternalOrganisation)
                         .WithParty(partyProductCategoryRevenue.Party)
                         .WithProductCategory(partyProductCategoryRevenue.ProductCategory)
                         .WithRevenue(0)

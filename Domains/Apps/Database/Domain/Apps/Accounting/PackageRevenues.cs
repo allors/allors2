@@ -28,12 +28,10 @@ namespace Allors.Domain
             packageRevenues.Filter.AddEquals(M.PackageRevenue.Year, dependant.Year);
             packageRevenues.Filter.AddEquals(M.PackageRevenue.Month, dependant.Month);
             var packageRevenue = packageRevenues.First ?? new PackageRevenueBuilder(session)
-                                                                .WithInternalOrganisation(dependant.InternalOrganisation)
                                                                 .WithPackage(dependant.Package)
                                                                 .WithYear(dependant.Year)
                                                                 .WithMonth(dependant.Month)
                                                                 .WithCurrency(dependant.Currency)
-                                                                .WithRevenue(0M)
                                                                 .Build();
 
             return packageRevenue;
@@ -155,13 +153,11 @@ namespace Allors.Domain
         private static PackageRevenue CreatePackageRevenue(ISession session, SalesInvoice invoice, Package package)
         {
             return new PackageRevenueBuilder(session)
-                        .WithInternalOrganisation(invoice.BilledFromInternalOrganisation)
                         .WithPackage(package)
                         .WithPackageName(package.Name)
                         .WithYear(invoice.InvoiceDate.Year)
                         .WithMonth(invoice.InvoiceDate.Month)
-                        .WithCurrency(invoice.BilledFromInternalOrganisation.PreferredCurrency)
-                        .WithRevenue(0M)
+                        .WithCurrency(InternalOrganisation.Instance(session).PreferredCurrency)
                         .Build();
         }
     }

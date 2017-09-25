@@ -21,35 +21,11 @@ namespace Allors.Domain
 
     public partial class Employment
     {
-        public void AppsOnPreDerive(ObjectOnPreDerive method)
-        {
-            var derivation = method.Derivation;
-
-            if (this.ExistEmployer)
-            {
-                derivation.AddDependency(this.Employer, this);
-            }
-
-            if (this.ExistEmployee)
-            {
-                derivation.AddDependency(this.Employee, this);
-            }
-        }
 
         public void AppsOnDerive(ObjectOnDerive method)
         {
             var derivation = method.Derivation;
 
-            if (this.ExistEmployee && this.ExistEmployer)
-            {
-                var employments = this.Employee.EmploymentsWhereEmployee;
-                employments.Filter.AddNot().AddExists(M.Period.ThroughDate);
-
-                if (employments.Count > 1)
-                {
-                    derivation.Validation.AddError(this, M.Employment.FromDate, ErrorMessages.ActiveDeploymentRegistered, this.Employer.Name);
-                }
-            }
 
             if (this.ExistEmployee && this.Employee.ExistSalesRepRelationshipsWhereSalesRepresentative)
             {
@@ -62,13 +38,6 @@ namespace Allors.Domain
             if (this.ExistEmployee && this.ExistEmployer)
             {
                 this.AppsOnDeriveEmployment(derivation);
-            }
-
-            this.Parties = new Party[] { this.Employer, this.Employee};
-
-            if (!this.ExistEmployer | !this.ExistEmployee)
-            {
-                this.Delete();
             }
         }
 

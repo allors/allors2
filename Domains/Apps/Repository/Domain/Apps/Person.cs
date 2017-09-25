@@ -66,8 +66,6 @@ namespace Allors.Repository
 
         public TelecommunicationsNumber BillingInquiriesPhone { get; set; }
 
-        public string PartyName { get; set; }
-
         public ContactMechanism OrderAddress { get; set; }
 
         public ElectronicAddress InternetAddress { get; set; }
@@ -86,8 +84,6 @@ namespace Allors.Repository
 
         public PaymentMethod DefaultPaymentMethod { get; set; }
 
-        public PartyRelationship[] CurrentPartyRelationships { get; set; }
-
         public PartyContactMechanism[] CurrentPartyContactMechanisms { get; set; }
 
         public TelecommunicationsNumber GeneralPhoneNumber { get; set; }
@@ -95,6 +91,16 @@ namespace Allors.Repository
         public Currency PreferredCurrency { get; set; }
 
         public VatRegime VatRegime { get; set; }
+        public decimal SimpleMovingAverage { get; set; }
+        public decimal AmountOverDue { get; set; }
+        public DunningType DunningType { get; set; }
+        public decimal AmountDue { get; set; }
+        public DateTime LastReminderDate { get; set; }
+        public decimal CreditLimit { get; set; }
+        public int SubAccountNumber { get; set; }
+        public DateTime BlockedForDunning { get; set; }
+        public Agreement[] Agreements { get; set; }
+        public CommunicationEvent[] CommunicationEvents { get; set; }
 
         public User CreatedBy { get; set; }
 
@@ -160,17 +166,6 @@ namespace Allors.Repository
         [Workspace]
         [Indexed]
         public Citizenship Citizenship { get; set; }
-
-        #region Allors
-        [Id("5df11d30-c6e7-4778-890c-c24b162bd20a")]
-        [AssociationId("da7d2f05-d84e-48c2-b2a8-b33c43f1345c")]
-        [RoleId("8db737e3-c93e-42b0-b5ac-0a7b64309b51")]
-        #endregion
-        [Multiplicity(Multiplicity.ManyToOne)]
-        [Derived]
-        [Indexed]
-        [Workspace]
-        public Employment CurrentEmployment { get; set; }
 
         #region Allors
         [Id("5f5d8dd2-33e6-4924-bae7-b6710a789ac9")]
@@ -332,6 +327,37 @@ namespace Allors.Repository
         [Size(256)]
         [Workspace]
         public string Function { get; set; }
+
+        #region Allors
+        [Id("ba6d2658-9c07-4254-a664-21df0e2fcb6a")]
+        [AssociationId("f512d8bd-5ea3-461c-9310-6ab93696763d")]
+        [RoleId("3c2fae70-49b5-407f-823c-db9b9052fb1e")]
+        #endregion
+        [Multiplicity(Multiplicity.OneToMany)]
+        [Indexed]
+        [Workspace]
+        public PayrollPreference[] PayrollPreferences { get; set; }
+
+        #region Allors
+        [Id("c8fd6c79-f909-414e-b9e3-5e911e2e2080")]
+        [AssociationId("da451dab-03db-4bc5-8641-93ec74570f4f")]
+        [RoleId("0bef74ad-3eb2-494e-846e-6ca3bbfb057b")]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Indexed]
+        [Workspace]
+        public EmploymentTerminationReason EmploymentTerminationReason { get; set; }
+
+        #region Allors
+        [Id("e79807d4-dcf8-47e2-b510-e8535f1ec436")]
+        [AssociationId("6b4896d8-8bf6-4908-acb9-dc2438263fb7")]
+        [RoleId("96ff4ce3-5e0b-408e-9641-edf2e06dc508")]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Indexed]
+        [Workspace]
+        public EmploymentTermination EmploymentTermination { get; set; }
+
 
         #region inherited methods
         public void Delete(){}

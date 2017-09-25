@@ -72,7 +72,6 @@ namespace Allors.Domain
                 .Build();
 
             var internalOrganisationGlAccount = new OrganisationGlAccountBuilder(this.DatabaseSession)
-                .WithInternalOrganisation(internalOrganisation)
                 .WithGeneralLedgerAccount(generalLedgerAccount)
                 .Build();
 
@@ -112,12 +111,6 @@ namespace Allors.Domain
 
             var internalOrganisation = new InternalOrganisations(this.DatabaseSession).FindBy(M.InternalOrganisation.Name, "internalOrganisation");
 
-            var supplierRelationship = new SupplierRelationshipBuilder(this.DatabaseSession)
-                .WithSupplier(supplier)
-                .WithInternalOrganisation(internalOrganisation)
-                .WithFromDate(DateTime.UtcNow)
-                .Build();
-
             var generalLedgerAccount = new GeneralLedgerAccountBuilder(this.DatabaseSession)
                 .WithAccountNumber("0001")
                 .WithName("GeneralLedgerAccount")
@@ -125,7 +118,6 @@ namespace Allors.Domain
                 .Build();
 
             var internalOrganisationGlAccount = new OrganisationGlAccountBuilder(this.DatabaseSession)
-                .WithInternalOrganisation(internalOrganisation)
                 .WithGeneralLedgerAccount(generalLedgerAccount)
                 .Build();
 

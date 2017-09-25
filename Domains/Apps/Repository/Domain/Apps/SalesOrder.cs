@@ -341,16 +341,6 @@ namespace Allors.Repository
         public decimal InitialMarkupPercentage { get; set; }
 
         #region Allors
-        [Id("ff972b6c-ab12-4596-a1bc-18f93127ac31")]
-        [AssociationId("556771a7-0f67-4061-8c88-c8401bf0b1c1")]
-        [RoleId("6d7ee57e-35b3-4a19-ad1f-4a1850c41568")]
-        #endregion
-        [Multiplicity(Multiplicity.ManyToOne)]
-        [Indexed]
-        [Required]
-        public InternalOrganisation TakenByInternalOrganisation { get; set; }
-
-        #region Allors
         [Id("7788542E-5095-4D18-8F52-0732CBB599EA")]
         [AssociationId("159960F5-A8BE-455B-A402-9D3730C9D335")]
         [RoleId("4344C29C-ACA6-47FC-9B68-85488A755903")]

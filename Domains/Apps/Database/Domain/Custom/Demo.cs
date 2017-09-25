@@ -101,12 +101,11 @@ namespace Allors
 
             Singleton.Instance(this.Session).DefaultInternalOrganisation = allors;
 
-            var offices = new OfficeBuilder(this.Session).WithName("Headquarters").WithDescription("Allors HQ").WithOwner(allors).Build();
+            var offices = new OfficeBuilder(this.Session).WithName("Headquarters").WithDescription("Allors HQ").Build();
             allors.DefaultFacility = offices;
             
             new StoreBuilder(this.Session)
                 .WithName("Allors store")
-                .WithOwner(Singleton.Instance(this.Session).DefaultInternalOrganisation)
                 .WithOutgoingShipmentNumberPrefix("shipmentno: ")
                 .WithSalesInvoiceNumberPrefix("invoiceno: ")
                 .WithSalesOrderNumberPrefix("orderno: ")

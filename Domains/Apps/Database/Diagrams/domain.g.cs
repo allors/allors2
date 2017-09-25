@@ -400,8 +400,6 @@ namespace Allors.Domain
 
 						global::System.String Name {set;}
 
-						InternalOrganisation Owner {set;}
-
 		}
 		public interface FinancialAccount  : AccessControlledObject 
 		{
@@ -710,6 +708,15 @@ namespace Allors.Domain
 						global::System.String Abbreviation {set;}
 
 		}
+		public interface OrderAdjustmentVersion  : Version 
+		{
+						global::System.Decimal? Amount {set;}
+
+						VatRate VatRate {set;}
+
+						global::System.Decimal? Percentage {set;}
+
+		}
 		public interface OrderItemVersion  : PriceableVersion 
 		{
 						global::System.String InternalComment {set;}
@@ -808,6 +815,11 @@ namespace Allors.Domain
 						global::System.Decimal TotalFee {set;}
 
 						SurchargeAdjustment SurchargeAdjustment {set;}
+
+		}
+		public interface PartyRelationship  : Period, AccessControlledObject, Deletable 
+		{
+						Party Parties {set;}
 
 		}
 		public interface PriceableVersion  : Version 
@@ -1045,8 +1057,6 @@ namespace Allors.Domain
 		}
 		public interface Part  : AccessControlledObject, UniquelyIdentifiable 
 		{
-						InternalOrganisation OwnedByParty {set;}
-
 						global::System.String Name {set;}
 
 						PartSpecification PartSpecifications {set;}
@@ -1154,8 +1164,6 @@ namespace Allors.Domain
 
 						TelecommunicationsNumber BillingInquiriesPhone {set;}
 
-						global::System.String PartyName {set;}
-
 						ContactMechanism OrderAddress {set;}
 
 						ElectronicAddress InternetAddress {set;}
@@ -1174,8 +1182,6 @@ namespace Allors.Domain
 
 						PaymentMethod DefaultPaymentMethod {set;}
 
-						PartyRelationship CurrentPartyRelationships {set;}
-
 						PartyContactMechanism CurrentPartyContactMechanisms {set;}
 
 						TelecommunicationsNumber GeneralPhoneNumber {set;}
@@ -1184,25 +1190,30 @@ namespace Allors.Domain
 
 						VatRegime VatRegime {set;}
 
+						global::System.Decimal? SimpleMovingAverage {set;}
+
+						global::System.Decimal AmountOverDue {set;}
+
+						DunningType DunningType {set;}
+
+						global::System.Decimal AmountDue {set;}
+
+						global::System.DateTime? LastReminderDate {set;}
+
+						global::System.Decimal? CreditLimit {set;}
+
+						global::System.Int32 SubAccountNumber {set;}
+
+						global::System.DateTime? BlockedForDunning {set;}
+
+						Agreement Agreements {set;}
+
+						CommunicationEvent CommunicationEvents {set;}
+
 		}
 		public interface PartyClassification  : AccessControlledObject 
 		{
 						global::System.String Name {set;}
-
-		}
-		public interface PartyRelationship  : Period, Commentable, AccessControlledObject, Deletable 
-		{
-						PartyRelationshipStatus PartyRelationshipStatus {set;}
-
-						Agreement RelationshipAgreements {set;}
-
-						Priority PartyRelationshipPriority {set;}
-
-						global::System.Decimal? SimpleMovingAverage {set;}
-
-						CommunicationEvent CommunicationEvents {set;}
-
-						Party Parties {set;}
 
 		}
 		public interface Payment  : AccessControlledObject, Commentable, UniquelyIdentifiable 
@@ -1238,7 +1249,7 @@ namespace Allors.Domain
 
 						OrganisationGlAccount GeneralLedgerAccount {set;}
 
-						SupplierRelationship Creditor {set;}
+						Party Creditor {set;}
 
 						global::System.Boolean IsActive {set;}
 
@@ -1404,8 +1415,6 @@ namespace Allors.Domain
 
 						ProductCategory ProductCategories {set;}
 
-						InternalOrganisation SoldBy {set;}
-
 		}
 		public interface ProductAssociation  : Commentable, AccessControlledObject, Period 
 		{
@@ -1449,7 +1458,7 @@ namespace Allors.Domain
 
 						Currency Currency {set;}
 
-						global::System.DateTime? IssueDate {set;}
+						global::System.DateTime IssueDate {set;}
 
 						QuoteItem QuoteItems {set;}
 
@@ -1557,8 +1566,6 @@ namespace Allors.Domain
 						Party ShipToParty {set;}
 
 						ShipmentItem ShipmentItems {set;}
-
-						InternalOrganisation BillFromInternalOrganisation {set;}
 
 						ContactMechanism ReceiverContactMechanism {set;}
 
@@ -1725,8 +1732,6 @@ namespace Allors.Domain
 						Currency DefaultCurrency {set;}
 
 						Media NoImageAvailableImage {set;}
-
-						InternalOrganisation DefaultInternalOrganisation {set;}
 
 		}
 		public interface Media  : UniquelyIdentifiable, AccessControlledObject, Deletable 
@@ -1917,8 +1922,6 @@ namespace Allors.Domain
 
 						Citizenship Citizenship {set;}
 
-						Employment CurrentEmployment {set;}
-
 						global::System.Decimal? LastYearsCommission {set;}
 
 						global::System.String GivenName {set;}
@@ -1952,6 +1955,12 @@ namespace Allors.Domain
 						global::System.DateTime? DeceasedDate {set;}
 
 						global::System.String Function {set;}
+
+						PayrollPreference PayrollPreferences {set;}
+
+						EmploymentTerminationReason EmploymentTerminationReason {set;}
+
+						EmploymentTermination EmploymentTermination {set;}
 
 		}
 		public interface TaskAssignment  : AccessControlledObject, Deletable 
@@ -2399,31 +2408,6 @@ namespace Allors.Domain
 						global::System.Decimal? AgreedUponPrice {set;}
 
 		}
-		public interface CustomerRelationship  : PartyRelationship 
-		{
-						global::System.Boolean? BlockedForDunning {set;}
-
-						InternalOrganisation InternalOrganisation {set;}
-
-						global::System.Decimal AmountOverDue {set;}
-
-						Party Customer {set;}
-
-						DunningType DunningType {set;}
-
-						global::System.Decimal AmountDue {set;}
-
-						global::System.Decimal YTDRevenue {set;}
-
-						global::System.DateTime? LastReminderDate {set;}
-
-						global::System.Decimal? CreditLimit {set;}
-
-						global::System.Int32 SubAccountNumber {set;}
-
-						global::System.Decimal LastYearsRevenue {set;}
-
-		}
 		public interface CustomerRequirement  : Requirement 
 		{
 		}
@@ -2564,8 +2548,15 @@ namespace Allors.Domain
 						Disbursement Disbursement {set;}
 
 		}
-		public interface DiscountAdjustment  : OrderAdjustment 
+		public interface DiscountAdjustmentVersion  : OrderAdjustmentVersion 
 		{
+		}
+		public interface DiscountAdjustment  : OrderAdjustment, Versioned 
+		{
+						DiscountAdjustmentVersion CurrentVersion {set;}
+
+						DiscountAdjustmentVersion AllVersions {set;}
+
 		}
 		public interface DiscountComponent  : PriceComponent 
 		{
@@ -2640,19 +2631,6 @@ namespace Allors.Domain
 						global::System.String SubjectTemplate {set;}
 
 		}
-		public interface Employment  : PartyRelationship 
-		{
-						InternalOrganisation Employer {set;}
-
-						Person Employee {set;}
-
-						PayrollPreference PayrollPreferences {set;}
-
-						EmploymentTerminationReason EmploymentTerminationReason {set;}
-
-						EmploymentTermination EmploymentTermination {set;}
-
-		}
 		public interface EmploymentAgreement  : Agreement 
 		{
 		}
@@ -2696,8 +2674,6 @@ namespace Allors.Domain
 						Party BillToParty {set;}
 
 						Party PlacingParty {set;}
-
-						InternalOrganisation TakenViaInternalOrganisation {set;}
 
 						global::System.DateTime? StartDate {set;}
 
@@ -3006,7 +2982,7 @@ namespace Allors.Domain
 		public interface IndustryClassification  : OrganisationClassification 
 		{
 		}
-		public interface InternalOrganisation  : Party 
+		public interface InternalOrganisation  : UniquelyIdentifiable, Auditable 
 		{
 						global::System.String PurchaseOrderNumberPrefix {set;}
 
@@ -3108,18 +3084,57 @@ namespace Allors.Domain
 
 						global::System.String RequestNumberPrefix {set;}
 
-		}
-		public interface InternalOrganisationAccountingPreference  : AccessControlledObject 
-		{
-						GeneralLedgerAccount GeneralLedgerAccount {set;}
+						Person CurrentSalesReps {set;}
 
-						InventoryItemKind InventoryItemKind {set;}
+						PartyContactMechanism PartyContactMechanisms {set;}
 
-						PaymentMethod PaymentMethod {set;}
+						BankAccount BankAccounts {set;}
 
-						Receipt Receipt {set;}
+						PaymentMethod DefaultPaymentMethod {set;}
 
-						InternalOrganisation InternalOrganisation {set;}
+						Currency PreferredCurrency {set;}
+
+						VatRegime VatRegime {set;}
+
+						Locale PreferredLocale {set;}
+
+						Person SalesReps {set;}
+
+						GeneralLedgerAccount GlAccount {set;}
+
+						ContactMechanism BillingAddress {set;}
+
+						ContactMechanism OrderAddress {set;}
+
+						PostalAddress ShippingAddress {set;}
+
+						ContactMechanism BillingInquiriesFax {set;}
+
+						ContactMechanism BillingInquiriesPhone {set;}
+
+						ContactMechanism CellPhoneNumber {set;}
+
+						ContactMechanism GeneralFaxNumber {set;}
+
+						ContactMechanism GeneralPhoneNumber {set;}
+
+						ContactMechanism HeadQuarter {set;}
+
+						ContactMechanism HomeAddress {set;}
+
+						ContactMechanism InternetAddress {set;}
+
+						ContactMechanism OrderInquiriesFax {set;}
+
+						ContactMechanism OrderInquiriesPhone {set;}
+
+						ContactMechanism PersonalEmailAddress {set;}
+
+						ContactMechanism SalesOffice {set;}
+
+						ContactMechanism ShippingInquiriesFax {set;}
+
+						ContactMechanism ShippingInquiriesPhone {set;}
 
 		}
 		public interface InternalOrganisationRevenue  : AccessControlledObject, Deletable 
@@ -3132,20 +3147,14 @@ namespace Allors.Domain
 
 						Currency Currency {set;}
 
-						global::System.String PartyName {set;}
-
-						InternalOrganisation InternalOrganisation {set;}
-
 		}
 		public interface InternalOrganisationRevenueHistory  : AccessControlledObject 
 		{
-						InternalOrganisation InternalOrganisation {set;}
-
 						global::System.Decimal? AllorsDecimal {set;}
 
 						Currency Currency {set;}
 
-						global::System.Decimal? Revenue {set;}
+						global::System.Decimal Revenue {set;}
 
 		}
 		public interface InternalRequirement  : Requirement 
@@ -3214,8 +3223,6 @@ namespace Allors.Domain
 						global::System.Boolean BlockUnpaidTransactions {set;}
 
 						OrganisationGlAccount ContraAccount {set;}
-
-						InternalOrganisation InternalOrganisation {set;}
 
 						JournalType PreviousJournalType {set;}
 
@@ -3481,8 +3488,6 @@ namespace Allors.Domain
 		{
 						PurchaseInvoiceItem PurchaseInvoiceItems {set;}
 
-						InternalOrganisation BilledToInternalOrganisation {set;}
-
 						PurchaseInvoiceObjectState CurrentObjectState {set;}
 
 						Party BilledFromParty {set;}
@@ -3514,8 +3519,6 @@ namespace Allors.Domain
 						ContactMechanism TakenViaContactMechanism {set;}
 
 						ContactMechanism BillToContactMechanism {set;}
-
-						InternalOrganisation ShipToBuyer {set;}
 
 						Facility Facility {set;}
 
@@ -3632,8 +3635,6 @@ namespace Allors.Domain
 						SalesInvoiceObjectState CurrentObjectState {set;}
 
 						global::System.Decimal? TotalListPrice {set;}
-
-						InternalOrganisation BilledFromInternalOrganisation {set;}
 
 						ContactMechanism BillToContactMechanism {set;}
 
@@ -3792,8 +3793,6 @@ namespace Allors.Domain
 						SalesOrderObjectState CurrentObjectState {set;}
 
 						global::System.Decimal InitialMarkupPercentage {set;}
-
-						InternalOrganisation TakenByInternalOrganisation {set;}
 
 						ProductQuote Quote {set;}
 
@@ -3960,8 +3959,6 @@ namespace Allors.Domain
 
 						ProductCategory ProductCategory {set;}
 
-						InternalOrganisation InternalOrganisation {set;}
-
 						GeneralLedgerAccount GeneralLedgerAccount {set;}
 
 		}
@@ -4025,16 +4022,12 @@ namespace Allors.Domain
 
 						global::System.String PackageName {set;}
 
-						InternalOrganisation InternalOrganisation {set;}
-
 						Package Package {set;}
 
 		}
 		public interface PackageRevenueHistory  : AccessControlledObject 
 		{
-						InternalOrganisation InternalOrganisation {set;}
-
-						global::System.Decimal? Revenue {set;}
+						global::System.Decimal Revenue {set;}
 
 						Package Package {set;}
 
@@ -4106,8 +4099,6 @@ namespace Allors.Domain
 
 						global::System.Decimal? ActualAvailableTime {set;}
 
-						Employment Employment {set;}
-
 		}
 		public interface PartyContactMechanism  : Commentable, Auditable, Period, Deletable 
 		{
@@ -4147,20 +4138,16 @@ namespace Allors.Domain
 
 						Currency Currency {set;}
 
-						InternalOrganisation InternalOrganisation {set;}
-
 		}
 		public interface PartyPackageRevenueHistory  : AccessControlledObject 
 		{
 						Package Package {set;}
 
-						InternalOrganisation InternalOrganisation {set;}
-
 						Currency Currency {set;}
 
 						Party Party {set;}
 
-						global::System.Decimal? Revenue {set;}
+						global::System.Decimal Revenue {set;}
 
 		}
 		public interface PartyProductCategoryRevenue  : AccessControlledObject, Deletable 
@@ -4177,8 +4164,6 @@ namespace Allors.Domain
 
 						global::System.String PartyProductCategoryName {set;}
 
-						InternalOrganisation InternalOrganisation {set;}
-
 						ProductCategory ProductCategory {set;}
 
 						global::System.Decimal Quantity {set;}
@@ -4193,8 +4178,6 @@ namespace Allors.Domain
 						global::System.Decimal Quantity {set;}
 
 						global::System.Decimal Revenue {set;}
-
-						InternalOrganisation InternalOrganisation {set;}
 
 						Currency Currency {set;}
 
@@ -4215,14 +4198,12 @@ namespace Allors.Domain
 
 						Party Party {set;}
 
-						InternalOrganisation InternalOrganisation {set;}
-
 						Product Product {set;}
 
 		}
 		public interface PartyProductRevenueHistory  : AccessControlledObject 
 		{
-						global::System.Decimal? Revenue {set;}
+						global::System.Decimal Revenue {set;}
 
 						Party Party {set;}
 
@@ -4230,25 +4211,16 @@ namespace Allors.Domain
 
 						global::System.Decimal? Quantity {set;}
 
-						InternalOrganisation InternalOrganisation {set;}
-
 						Currency Currency {set;}
 
-		}
-		public interface PartyRelationshipStatus  : Enumeration 
-		{
 		}
 		public interface PartyRevenue  : AccessControlledObject, Deletable 
 		{
 						Currency Currency {set;}
 
-						global::System.String PartyName {set;}
-
-						global::System.Int32 Month {set;}
+						global::System.Int32? Month {set;}
 
 						Party Party {set;}
-
-						InternalOrganisation InternalOrganisation {set;}
 
 						global::System.Int32 Year {set;}
 
@@ -4262,8 +4234,6 @@ namespace Allors.Domain
 						global::System.Decimal Revenue {set;}
 
 						Party Party {set;}
-
-						InternalOrganisation InternalOrganisation {set;}
 
 		}
 		public interface PartySkill  : AccessControlledObject 
@@ -4292,8 +4262,6 @@ namespace Allors.Domain
 		{
 						Deduction Deductions {set;}
 
-						Employment Employment {set;}
-
 		}
 		public interface PayGrade  : AccessControlledObject, Commentable 
 		{
@@ -4304,8 +4272,6 @@ namespace Allors.Domain
 		}
 		public interface PayHistory  : AccessControlledObject, Period 
 		{
-						Employment Employment {set;}
-
 						TimeFrequency TimeFrequency {set;}
 
 						SalaryStep SalaryStep {set;}
@@ -4616,8 +4582,6 @@ namespace Allors.Domain
 
 						global::System.Int32 Month {set;}
 
-						InternalOrganisation InternalOrganisation {set;}
-
 						ProductCategory ProductCategory {set;}
 
 						global::System.Decimal Revenue {set;}
@@ -4631,9 +4595,7 @@ namespace Allors.Domain
 		{
 						Currency Currency {set;}
 
-						global::System.Decimal? Revenue {set;}
-
-						InternalOrganisation InternalOrganisation {set;}
+						global::System.Decimal Revenue {set;}
 
 						ProductCategory ProductCategory {set;}
 
@@ -4734,14 +4696,10 @@ namespace Allors.Domain
 
 						global::System.Int32 Month {set;}
 
-						InternalOrganisation InternalOrganisation {set;}
-
 		}
 		public interface ProductRevenueHistory  : AccessControlledObject 
 		{
-						InternalOrganisation InternalOrganisation {set;}
-
-						global::System.Decimal? Revenue {set;}
+						global::System.Decimal Revenue {set;}
 
 						Currency Currency {set;}
 
@@ -4813,8 +4771,6 @@ namespace Allors.Domain
 		{
 						PurchaseInvoiceItem PurchaseInvoiceItems {set;}
 
-						InternalOrganisation BilledToInternalOrganisation {set;}
-
 						PurchaseInvoiceObjectState CurrentObjectState {set;}
 
 						Party BilledFromParty {set;}
@@ -4879,13 +4835,9 @@ namespace Allors.Domain
 
 						ContactMechanism BillToContactMechanism {set;}
 
-						InternalOrganisation ShipToBuyer {set;}
-
 						Facility Facility {set;}
 
 						PostalAddress ShipToAddress {set;}
-
-						InternalOrganisation BillToPurchaser {set;}
 
 						PurchaseOrderVersion CurrentVersion {set;}
 
@@ -5237,8 +5189,6 @@ namespace Allors.Domain
 
 						global::System.Decimal Revenue {set;}
 
-						InternalOrganisation InternalOrganisation {set;}
-
 		}
 		public interface SalesChannelRevenueHistory  : AccessControlledObject 
 		{
@@ -5246,9 +5196,7 @@ namespace Allors.Domain
 
 						Currency Currency {set;}
 
-						global::System.Decimal? Revenue {set;}
-
-						InternalOrganisation InternalOrganisation {set;}
+						global::System.Decimal Revenue {set;}
 
 		}
 		public interface SalesInvoice  : Invoice, Versioned 
@@ -5256,8 +5204,6 @@ namespace Allors.Domain
 						SalesInvoiceObjectState CurrentObjectState {set;}
 
 						global::System.Decimal? TotalListPrice {set;}
-
-						InternalOrganisation BilledFromInternalOrganisation {set;}
 
 						ContactMechanism BillToContactMechanism {set;}
 
@@ -5425,8 +5371,6 @@ namespace Allors.Domain
 
 						global::System.Decimal InitialMarkupPercentage {set;}
 
-						InternalOrganisation TakenByInternalOrganisation {set;}
-
 						ProductQuote Quote {set;}
 
 						SalesOrderVersion CurrentVersion {set;}
@@ -5539,8 +5483,6 @@ namespace Allors.Domain
 		{
 						global::System.Decimal? Commission {set;}
 
-						InternalOrganisation InternalOrganisation {set;}
-
 						global::System.String SalesRepName {set;}
 
 						global::System.Int32? Month {set;}
@@ -5568,8 +5510,6 @@ namespace Allors.Domain
 
 						Currency Currency {set;}
 
-						InternalOrganisation InternalOrganisation {set;}
-
 						global::System.String SalesRepName {set;}
 
 		}
@@ -5582,8 +5522,6 @@ namespace Allors.Domain
 						Person SalesRep {set;}
 
 						global::System.String SalesRepName {set;}
-
-						InternalOrganisation InternalOrganisation {set;}
 
 						Party Party {set;}
 
@@ -5598,8 +5536,6 @@ namespace Allors.Domain
 
 						global::System.String SalesRepName {set;}
 
-						InternalOrganisation InternalOrganisation {set;}
-
 						ProductCategory ProductCategory {set;}
 
 						Currency Currency {set;}
@@ -5611,15 +5547,13 @@ namespace Allors.Domain
 						Person SalesRep {set;}
 
 		}
-		public interface SalesRepRelationship  : PartyRelationship 
+		public interface SalesRepRelationship  : Commentable, PartyRelationship 
 		{
 						Person SalesRepresentative {set;}
 
 						global::System.Decimal LastYearsCommission {set;}
 
 						ProductCategory ProductCategories {set;}
-
-						InternalOrganisation InternalOrganisation {set;}
 
 						global::System.Decimal YTDCommission {set;}
 
@@ -5631,8 +5565,6 @@ namespace Allors.Domain
 						global::System.Decimal Revenue {set;}
 
 						Currency Currency {set;}
-
-						InternalOrganisation InternalOrganisation {set;}
 
 						global::System.Int32 Month {set;}
 
@@ -5649,9 +5581,7 @@ namespace Allors.Domain
 
 						Person SalesRep {set;}
 
-						InternalOrganisation InternalOrganisation {set;}
-
-						global::System.Decimal? Revenue {set;}
+						global::System.Decimal Revenue {set;}
 
 		}
 		public interface SalesTerritory  : GeographicBoundaryComposite 
@@ -5841,8 +5771,6 @@ namespace Allors.Domain
 
 						Currency Currency {set;}
 
-						InternalOrganisation SpecifiedFor {set;}
-
 						GeographicBoundary GeographicBoundary {set;}
 
 		}
@@ -5913,8 +5841,6 @@ namespace Allors.Domain
 
 						PaymentMethod DefaultPaymentMethod {set;}
 
-						InternalOrganisation Owner {set;}
-
 						FiscalYearInvoiceNumber FiscalYearInvoiceNumbers {set;}
 
 						PaymentMethod PaymentMethods {set;}
@@ -5928,8 +5854,6 @@ namespace Allors.Domain
 		}
 		public interface StoreRevenue  : AccessControlledObject, Deletable 
 		{
-						InternalOrganisation InternalOrganisation {set;}
-
 						global::System.Int32 Month {set;}
 
 						Currency Currency {set;}
@@ -5945,13 +5869,11 @@ namespace Allors.Domain
 		}
 		public interface StoreRevenueHistory  : AccessControlledObject 
 		{
-						InternalOrganisation InternalOrganisation {set;}
-
 						Currency Currency {set;}
 
 						Store Store {set;}
 
-						global::System.Decimal? Revenue {set;}
+						global::System.Decimal Revenue {set;}
 
 		}
 		public interface StringTemplate  : UniquelyIdentifiable, Localised 
@@ -5996,21 +5918,6 @@ namespace Allors.Domain
 						global::System.String ReferenceNumber {set;}
 
 						Part Part {set;}
-
-		}
-		public interface SupplierRelationship  : PartyRelationship 
-		{
-						Organisation Supplier {set;}
-
-						global::System.Int32 SubAccountNumber {set;}
-
-						global::System.DateTime? LastReminderDate {set;}
-
-						DunningType DunningType {set;}
-
-						InternalOrganisation InternalOrganisation {set;}
-
-						global::System.DateTime? BlockedForDunning {set;}
 
 		}
 		public interface SurchargeAdjustment  : OrderAdjustment 

@@ -29,12 +29,10 @@ namespace Allors.Domain
             partyRevenues.Filter.AddEquals(M.PartyRevenue.Year, dependant.Year);
             partyRevenues.Filter.AddEquals(M.PartyRevenue.Month, dependant.Month);
             var partyRevenue = partyRevenues.First ?? new PartyRevenueBuilder(session)
-                                                            .WithInternalOrganisation(dependant.InternalOrganisation)
                                                             .WithParty(dependant.Party)
                                                             .WithYear(dependant.Year)
                                                             .WithMonth(dependant.Month)
                                                             .WithCurrency(dependant.Currency)
-                                                            .WithRevenue(0M)
                                                             .Build();
             return partyRevenue;
         }
@@ -45,12 +43,9 @@ namespace Allors.Domain
             partyRevenues.Filter.AddEquals(M.PartyRevenue.Year, invoice.InvoiceDate.Year);
             partyRevenues.Filter.AddEquals(M.PartyRevenue.Month, invoice.InvoiceDate.Month);
             var partyRevenue = partyRevenues.First ?? new PartyRevenueBuilder(session)
-                                                            .WithInternalOrganisation(invoice.BilledFromInternalOrganisation)
-                                                            .WithParty(invoice.BilledFromInternalOrganisation)
                                                             .WithYear(invoice.InvoiceDate.Year)
                                                             .WithMonth(invoice.InvoiceDate.Month)
-                                                            .WithCurrency(invoice.BilledFromInternalOrganisation.PreferredCurrency)
-                                                            .WithRevenue(0M)
+                                                            .WithCurrency(InternalOrganisation.Instance(session).PreferredCurrency)
                                                             .Build();
 
             return partyRevenue;
@@ -155,12 +150,10 @@ namespace Allors.Domain
         private static PartyRevenue CreatePartyRevenue(ISession session, SalesInvoice invoice)
         {
             return new PartyRevenueBuilder(session)
-                        .WithInternalOrganisation(invoice.BilledFromInternalOrganisation)
                         .WithParty(invoice.BillToCustomer)
                         .WithYear(invoice.InvoiceDate.Year)
                         .WithMonth(invoice.InvoiceDate.Month)
-                        .WithCurrency(invoice.BilledFromInternalOrganisation.PreferredCurrency)
-                        .WithRevenue(0M)
+                        .WithCurrency(InternalOrganisation.Instance(session).PreferredCurrency)
                         .Build();
         }
     }

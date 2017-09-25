@@ -17,15 +17,12 @@ namespace Allors.Domain
 {
     using System;
     using System.Collections.Generic;
-    using System.Security.Cryptography.X509Certificates;
 
     public partial class InternalOrganisationRevenueHistories
     {
         public static void AppsOnDeriveHistory(ISession session)
         {
             var derivation = new NonLogging.Derivation(session);
-
-            var internalOrganisationRevenuesByPeriodByInternalOrganisation = new Dictionary<InternalOrganisation, Dictionary<DateTime, InternalOrganisationRevenue>>();
 
             var internalOrganisationRevenues = session.Extent<InternalOrganisationRevenue>();
 
@@ -36,12 +33,7 @@ namespace Allors.Domain
                 {
                     var date = DateTimeFactory.CreateDate(internalOrganisationRevenue.Year, internalOrganisationRevenue.Month, 01);
 
-                    Dictionary<DateTime, InternalOrganisationRevenue> internalOrganisationRevenuesByPeriod;
-                    if (!internalOrganisationRevenuesByPeriodByInternalOrganisation.TryGetValue(internalOrganisationRevenue.InternalOrganisation, out internalOrganisationRevenuesByPeriod))
-                    {
-                        internalOrganisationRevenuesByPeriod = new Dictionary<DateTime, InternalOrganisationRevenue>();
-                        internalOrganisationRevenuesByPeriodByInternalOrganisation[internalOrganisationRevenue.InternalOrganisation] = internalOrganisationRevenuesByPeriod;
-                    }
+                    Dictionary<DateTime, InternalOrganisationRevenue> internalOrganisationRevenuesByPeriod = new Dictionary<DateTime, InternalOrganisationRevenue>();
 
                     InternalOrganisationRevenue revenue;
                     if (!internalOrganisationRevenuesByPeriod.TryGetValue(date, out revenue))
@@ -51,54 +43,22 @@ namespace Allors.Domain
                 }
             }
 
-            var internalOrganisationRevenueHistoriesByInternalOrganisation = new Dictionary<InternalOrganisation, InternalOrganisationRevenueHistory>();
-
-            var internalOrganisationRevenueHistories = session.Extent<InternalOrganisationRevenueHistory>();
-
-            foreach (InternalOrganisationRevenueHistory internalOrganisationRevenueHistory in internalOrganisationRevenueHistories)
+            var internalOrganisationRevenueHistory = session.Extent<InternalOrganisationRevenueHistory>().First;
+            if (internalOrganisationRevenueHistory == null)
+            {
+                internalOrganisationRevenueHistory = new InternalOrganisationRevenueHistoryBuilder(session).Build();
+            }
+            else
             {
                 internalOrganisationRevenueHistory.Revenue = 0;
-
-                InternalOrganisationRevenueHistory revenueHistory;
-                if (!internalOrganisationRevenueHistoriesByInternalOrganisation.TryGetValue(internalOrganisationRevenueHistory.InternalOrganisation, out revenueHistory))
-                {
-                    internalOrganisationRevenueHistoriesByInternalOrganisation.Add(internalOrganisationRevenueHistory.InternalOrganisation, internalOrganisationRevenueHistory);
-                }
             }
 
-            foreach (var keyValuePair in internalOrganisationRevenuesByPeriodByInternalOrganisation)
+            foreach (InternalOrganisationRevenue internalOrganisationRevenue in internalOrganisationRevenues)
             {
-                InternalOrganisationRevenueHistory internalOrganisationRevenueHistory;
-                if (!internalOrganisationRevenueHistoriesByInternalOrganisation.TryGetValue(keyValuePair.Key, out internalOrganisationRevenueHistory))
-                {
-                    InternalOrganisationRevenue internalOrganisationRevenue = null;
-                    foreach (var revenuesByPeriod in keyValuePair.Value)
-                    {
-                        internalOrganisationRevenue = revenuesByPeriod.Value;
-                        break;
-                    }
-
-                    internalOrganisationRevenueHistory = CreateInternalOrganisationRevenueHistory(session, internalOrganisationRevenue);
-                    internalOrganisationRevenueHistoriesByInternalOrganisation.Add(internalOrganisationRevenueHistory.InternalOrganisation, internalOrganisationRevenueHistory);
-                }
-
-                foreach (var revenueByPeriod in keyValuePair.Value)
-                {
-                    var internalOrganisationRevenue = revenueByPeriod.Value;
-                    internalOrganisationRevenueHistory.Revenue += internalOrganisationRevenue.Revenue;
-                }
-
-                internalOrganisationRevenueHistory.OnDerive(x => x.WithDerivation(derivation));
+                internalOrganisationRevenueHistory.Revenue += internalOrganisationRevenue.Revenue;
             }
-        }
 
-        private static InternalOrganisationRevenueHistory CreateInternalOrganisationRevenueHistory(ISession session, InternalOrganisationRevenue internalOrganisationRevenue)
-        {
-            return new InternalOrganisationRevenueHistoryBuilder(session)
-                        .WithCurrency(internalOrganisationRevenue.Currency)
-                        .WithInternalOrganisation(internalOrganisationRevenue.InternalOrganisation)
-                        .WithRevenue(0)
-                        .Build();
+            internalOrganisationRevenueHistory.OnDerive(x => x.WithDerivation(derivation));
         }
     }
 }

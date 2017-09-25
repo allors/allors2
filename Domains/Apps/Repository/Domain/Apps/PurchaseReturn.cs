@@ -2,7 +2,7 @@ namespace Allors.Repository
 {
     using System;
 
-    using Allors.Repository.Attributes;
+    using Attributes;
 
     #region Allors
     [Id("a0cf565a-2dcf-4513-9110-8c34468d993f")]
@@ -25,8 +25,6 @@ namespace Allors.Repository
         public Party ShipToParty { get; set; }
 
         public ShipmentItem[] ShipmentItems { get; set; }
-
-        public InternalOrganisation BillFromInternalOrganisation { get; set; }
 
         public ContactMechanism ReceiverContactMechanism { get; set; }
 

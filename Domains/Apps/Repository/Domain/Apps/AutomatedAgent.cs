@@ -65,8 +65,6 @@ namespace Allors.Repository
 
         public TelecommunicationsNumber BillingInquiriesPhone { get; set; }
 
-        public string PartyName { get; set; }
-
         public ContactMechanism OrderAddress { get; set; }
 
         public ElectronicAddress InternetAddress { get; set; }
@@ -85,8 +83,6 @@ namespace Allors.Repository
 
         public PaymentMethod DefaultPaymentMethod { get; set; }
 
-        public PartyRelationship[] CurrentPartyRelationships { get; set; }
-
         public PartyContactMechanism[] CurrentPartyContactMechanisms { get; set; }
 
         public TelecommunicationsNumber GeneralPhoneNumber { get; set; }
@@ -94,6 +90,16 @@ namespace Allors.Repository
         public Currency PreferredCurrency { get; set; }
 
         public VatRegime VatRegime { get; set; }
+        public decimal SimpleMovingAverage { get; set; }
+        public decimal AmountOverDue { get; set; }
+        public DunningType DunningType { get; set; }
+        public decimal AmountDue { get; set; }
+        public DateTime LastReminderDate { get; set; }
+        public decimal CreditLimit { get; set; }
+        public int SubAccountNumber { get; set; }
+        public DateTime BlockedForDunning { get; set; }
+        public Agreement[] Agreements { get; set; }
+        public CommunicationEvent[] CommunicationEvents { get; set; }
 
         public Guid UniqueId { get; set; }
 

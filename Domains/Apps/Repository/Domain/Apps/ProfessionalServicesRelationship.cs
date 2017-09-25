@@ -2,36 +2,19 @@ namespace Allors.Repository
 {
     using System;
 
-    using Allors.Repository.Attributes;
+    using Attributes;
 
     #region Allors
     [Id("a6f772e6-8f2c-4180-bbf9-2e5ab0f0efc8")]
     #endregion
-    public partial class ProfessionalServicesRelationship : PartyRelationship 
+    public partial class ProfessionalServicesRelationship: PartyRelationship
     {
         #region inherited properties
-        public PartyRelationshipStatus PartyRelationshipStatus { get; set; }
-
-        public Agreement[] RelationshipAgreements { get; set; }
-
-        public Priority PartyRelationshipPriority { get; set; }
-
-        public decimal SimpleMovingAverage { get; set; }
-
-        public CommunicationEvent[] CommunicationEvents { get; set; }
-
-        public Party[] Parties { get; set; }
-
         public DateTime FromDate { get; set; }
-
         public DateTime ThroughDate { get; set; }
-
-        public string Comment { get; set; }
-
         public Permission[] DeniedPermissions { get; set; }
-
         public SecurityToken[] SecurityTokens { get; set; }
-
+        public Party[] Parties { get; set; }
         #endregion
 
         #region Allors
@@ -76,6 +59,5 @@ namespace Allors.Repository
 
         public void Delete(){}
         #endregion
-
     }
 }

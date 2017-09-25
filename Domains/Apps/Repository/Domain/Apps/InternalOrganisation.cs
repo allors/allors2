@@ -6,101 +6,9 @@ namespace Allors.Repository
     #region Allors
     [Id("c81441c8-9ac9-440e-a926-c96230b2701f")]
     #endregion
-    public partial class InternalOrganisation : Party 
+    public partial class InternalOrganisation: AccessControlledObject, UniquelyIdentifiable, Auditable
     {
         #region inherited properties
-
-        public PostalAddress GeneralCorrespondence { get; set; }
-
-        public decimal YTDRevenue { get; set; }
-
-        public decimal LastYearsRevenue { get; set; }
-
-        public TelecommunicationsNumber BillingInquiriesFax { get; set; }
-
-        public Qualification[] Qualifications { get; set; }
-
-        public ContactMechanism HomeAddress { get; set; }
-
-        public OrganisationContactRelationship[] InactiveOrganisationContactRelationships { get; set; }
-
-        public ContactMechanism SalesOffice { get; set; }
-
-        public Person[] InactiveContacts { get; set; }
-
-        public PartyContactMechanism[] InactivePartyContactMechanisms { get; set; }
-
-        public TelecommunicationsNumber OrderInquiriesFax { get; set; }
-
-        public Person[] CurrentSalesReps { get; set; }
-
-        public PartyContactMechanism[] PartyContactMechanisms { get; set; }
-
-        public TelecommunicationsNumber ShippingInquiriesFax { get; set; }
-
-        public TelecommunicationsNumber ShippingInquiriesPhone { get; set; }
-
-        public BillingAccount[] BillingAccounts { get; set; }
-
-        public TelecommunicationsNumber OrderInquiriesPhone { get; set; }
-
-        public PartySkill[] PartySkills { get; set; }
-
-        public PartyClassification[] PartyClassifications { get; set; }
-
-        public bool ExcludeFromDunning { get; set; }
-
-        public BankAccount[] BankAccounts { get; set; }
-
-        public Person[] CurrentContacts { get; set; }
-
-        public ContactMechanism BillingAddress { get; set; }
-
-        public ElectronicAddress GeneralEmail { get; set; }
-
-        public ShipmentMethod DefaultShipmentMethod { get; set; }
-
-        public Resume[] Resumes { get; set; }
-
-        public ContactMechanism HeadQuarter { get; set; }
-
-        public ElectronicAddress PersonalEmailAddress { get; set; }
-
-        public TelecommunicationsNumber CellPhoneNumber { get; set; }
-
-        public TelecommunicationsNumber BillingInquiriesPhone { get; set; }
-
-        public string PartyName { get; set; }
-
-        public ContactMechanism OrderAddress { get; set; }
-
-        public ElectronicAddress InternetAddress { get; set; }
-
-        public Media[] Contents { get; set; }
-
-        public CreditCard[] CreditCards { get; set; }
-
-        public PostalAddress ShippingAddress { get; set; }
-
-        public OrganisationContactRelationship[] CurrentOrganisationContactRelationships { get; set; }
-
-        public decimal OpenOrderAmount { get; set; }
-
-        public TelecommunicationsNumber GeneralFaxNumber { get; set; }
-
-        public PaymentMethod DefaultPaymentMethod { get; set; }
-
-        public PartyRelationship[] CurrentPartyRelationships { get; set; }
-
-        public PartyContactMechanism[] CurrentPartyContactMechanisms { get; set; }
-
-        public TelecommunicationsNumber GeneralPhoneNumber { get; set; }
-
-        public Currency PreferredCurrency { get; set; }
-
-        public VatRegime VatRegime { get; set; }
-
-        public Locale Locale { get; set; }
 
         public Permission[] DeniedPermissions { get; set; }
 
@@ -615,7 +523,249 @@ namespace Allors.Repository
         [Workspace]
         public string RequestNumberPrefix { get; set; }
 
-        public string Comment { get; set; }
+        #region Allors
+        [Id("271F9F21-7C92-488F-8334-3A656FAC680E")]
+        [AssociationId("A998530A-228C-4BB5-8A59-9AC019AD57D4")]
+        [RoleId("B917056D-E97F-4DD2-8CD4-F5816A58BB59")]
+        [Indexed]
+        #endregion
+        [Multiplicity(Multiplicity.OneToMany)]
+        [Workspace]
+        public Person[] CurrentSalesReps { get; set; }
+
+        #region Allors
+        [Id("033F506F-8004-4931-926B-1DB70556216D")]
+        [AssociationId("B40B34F7-CCBB-43E8-9F33-18BF34A6705D")]
+        [RoleId("6A06220D-A811-4E02-82E1-F019A5347E4D")]
+        [Indexed]
+        #endregion
+        [Multiplicity(Multiplicity.OneToMany)]
+        [Workspace]
+        public PartyContactMechanism[] PartyContactMechanisms { get; set; }
+
+        #region Allors
+        [Id("53DA7C1E-FF77-461E-825A-02B491FF9B34")]
+        [AssociationId("708F6E6A-977E-4FFD-B949-B64AE7A0D1CE")]
+        [RoleId("DD093680-BF81-4D92-93CD-4358A61430A3")]
+        [Indexed]
+        #endregion
+        [Multiplicity(Multiplicity.OneToMany)]
+        [Workspace]
+        public BankAccount[] BankAccounts { get; set; }
+
+        #region Allors
+        [Id("B2280EDA-17F4-4F91-831B-6BA4295E81BF")]
+        [AssociationId("483D505C-1A3E-453D-946D-1B1D9B5B801E")]
+        [RoleId("E5B558F3-E038-4871-8EFF-72899BF326C2")]
+        [Indexed]
+        #endregion
+        [Multiplicity(Multiplicity.OneToOne)]
+        [Workspace]
+        public PaymentMethod DefaultPaymentMethod { get; set; }
+
+        #region Allors
+        [Id("A51655DA-0D05-48B7-8AE8-AE698F28AB42")]
+        [AssociationId("4BA616A8-8AF4-4EDC-BCBB-C07B3CBC2625")]
+        [RoleId("1A4A39B5-2350-42E8-A955-C71C7F4C27D6")]
+        [Indexed]
+        #endregion
+        [Multiplicity(Multiplicity.OneToOne)]
+        [Workspace]
+        public Currency PreferredCurrency { get; set; }
+
+        #region Allors
+        [Id("A963075C-8323-4F80-8BA3-287F13EE5682")]
+        [AssociationId("298E8343-1783-4A2B-B1F1-81040A9FAEC2")]
+        [RoleId("38F86651-28D0-42CE-BB80-9C195B034146")]
+        [Indexed]
+        #endregion
+        [Multiplicity(Multiplicity.OneToOne)]
+        [Workspace]
+        public VatRegime VatRegime { get; set; }
+
+        #region Allors
+        [Id("E10207CB-585C-42E2-A6C4-3EEAA6DDC021")]
+        [AssociationId("DAC34802-6680-48B8-96A1-2FFE2DBB90DC")]
+        [RoleId("DFF551E8-3BA4-480A-9F1D-053F41D1224D")]
+        [Indexed]
+        #endregion
+        [Multiplicity(Multiplicity.OneToOne)]
+        public Locale PreferredLocale { get; set; }
+
+        #region Allors
+        [Id("7E926007-DED3-4B53-B9C5-4B4D25EC9AF7")]
+        [AssociationId("56A50C32-AB99-40A1-9393-99CBFBD61B6E")]
+        [RoleId("18E2BEB9-343B-4C82-9D39-DB013749DB1F")]
+        [Indexed]
+        #endregion
+        [Multiplicity(Multiplicity.OneToMany)]
+        [Workspace]
+        public Person[] SalesReps { get; set; }
+
+        #region Allors
+        [Id("0ac44c21-6a2c-4162-9d77-fe1b16b60b73")]
+        [AssociationId("4d61b711-7aab-4162-bb31-74db09f666fe")]
+        [RoleId("0da9c561-a6fc-4fea-aee3-5c24a2b08aea")]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Indexed]
+        public GeneralLedgerAccount GlAccount { get; set; }
+
+        #region Allors
+        [Id("AAD85445-9900-40DB-ADA5-88BB3C9A8FDB")]
+        [AssociationId("A36ED0CB-BDAD-4277-B63F-282DA0FA7B23")]
+        [RoleId("E5DDB898-C95A-4BDC-944F-35B364531D3B")]
+        [Indexed]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Workspace]
+        public ContactMechanism BillingAddress { get; set; }
+
+        #region Allors
+        [Id("404F25DA-7919-44BF-A7AA-AF3029A965B3")]
+        [AssociationId("35304A2B-6D16-46AD-8F5F-30768D704720")]
+        [RoleId("C4F943DD-668F-48A0-AF74-94812718A02C")]
+        [Indexed]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Workspace]
+        public ContactMechanism OrderAddress { get; set; }
+
+        #region Allors
+        [Id("60ED370B-58FF-4AF4-804C-AAFEC472E696")]
+        [AssociationId("00848EEB-AE9F-4F59-AD62-51B3C5CBA184")]
+        [RoleId("0E154A04-9B20-4CDF-8EDC-19FACA4B48C1")]
+        [Indexed]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Workspace]
+        public PostalAddress ShippingAddress { get; set; }
+
+        #region Allors
+        [Id("5080E99D-C84E-4DD9-90D4-964148A94087")]
+        [AssociationId("9A4578CE-5F50-4033-9564-A743E9169F68")]
+        [RoleId("2068F7A9-8102-49E9-BD89-F68F49B3F690")]
+        [Indexed]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        public ContactMechanism BillingInquiriesFax { get; set; }
+
+        #region Allors
+        [Id("FDBE8828-224B-46DD-AB8D-731A96F80F56")]
+        [AssociationId("3D3BABA7-AAD3-499D-93F3-BFB61661D6D8")]
+        [RoleId("534249ED-2469-41D3-859F-8536631F7647")]
+        [Indexed]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        public ContactMechanism BillingInquiriesPhone { get; set; }
+
+        #region Allors
+        [Id("C37854EB-DD2E-4FF6-9E31-F122EF88463F")]
+        [AssociationId("79F5325E-D6BC-47F5-BF69-B691889C1BFD")]
+        [RoleId("4E150C7E-3AB4-45DE-AD87-93837F02DE27")]
+        [Indexed]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        public ContactMechanism CellPhoneNumber { get; set; }
+
+        #region Allors
+        [Id("0ED4C5A7-5278-4EA5-832D-58FF5493473D")]
+        [AssociationId("900C4C3D-2320-4135-8F1D-57C428AD14F3")]
+        [RoleId("FE3ED29E-D222-4FB8-9CA0-0F6FEB159955")]
+        [Indexed]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        public ContactMechanism GeneralFaxNumber { get; set; }
+
+        #region Allors
+        [Id("7C6DB738-64D0-4863-A8EF-1044E1D34F00")]
+        [AssociationId("A06E1B6B-99B6-4A8B-AE1E-0BEBD80A0696")]
+        [RoleId("F5BAA47C-0706-4087-A9B8-2977C797FB4A")]
+        [Indexed]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        public ContactMechanism GeneralPhoneNumber { get; set; }
+
+        #region Allors
+        [Id("98F473EE-C461-4092-8501-FE81541C520D")]
+        [AssociationId("2E5E9015-E4B1-449D-A020-D2D193CE847B")]
+        [RoleId("9611CDD3-3240-4C91-B6CC-C4CDCB45A978")]
+        [Indexed]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        public ContactMechanism HeadQuarter { get; set; }
+
+        #region Allors
+        [Id("99C1A36C-D1FD-4E6A-BE9D-7B6D8330098A")]
+        [AssociationId("FDD0CB4D-2C51-459F-B732-82444FE471E0")]
+        [RoleId("2D5479D8-07C9-401B-A375-B673550B5746")]
+        [Indexed]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        public ContactMechanism HomeAddress { get; set; }
+
+        #region Allors
+        [Id("11EACBD7-08CB-4F1F-8BD8-534BB895C122")]
+        [AssociationId("405331CB-6B84-40F8-858A-434D298A6AD7")]
+        [RoleId("4C0AF33A-2138-41EE-B598-89F86291381A")]
+        [Indexed]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        public ContactMechanism InternetAddress { get; set; }
+
+        #region Allors
+        [Id("AE070C65-2A6D-4354-A07B-BED331F30963")]
+        [AssociationId("2B613BF6-D3D6-4CD6-925D-7C4BA288BFC1")]
+        [RoleId("2E74F2E1-6D5A-4F6B-AABD-DFFC3CA714D6")]
+        [Indexed]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        public ContactMechanism OrderInquiriesFax { get; set; }
+
+        #region Allors
+        [Id("141D0137-5EE8-46CE-ADDC-AE68F2529AE4")]
+        [AssociationId("3347100B-EC76-4A55-95D7-0B03DC957661")]
+        [RoleId("1556ADB1-F70E-494D-9BD4-95ACADB7CE9B")]
+        [Indexed]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        public ContactMechanism OrderInquiriesPhone { get; set; }
+
+        #region Allors
+        [Id("AF63708E-039D-4869-90E0-D125D99E3C6A")]
+        [AssociationId("A21A0D1F-F54F-440C-BB37-D12DDF05B0C8")]
+        [RoleId("1B55526C-B260-4BD7-8B1C-54C31A61059E")]
+        [Indexed]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        public ContactMechanism PersonalEmailAddress { get; set; }
+
+        #region Allors
+        [Id("6B950FD7-28FA-4EC6-B8C8-50CA7C903E30")]
+        [AssociationId("E1CB63CE-EDB6-4F91-A8AE-353C063F410D")]
+        [RoleId("9D8A0755-552E-4095-AE22-34581451BB7A")]
+        [Indexed]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        public ContactMechanism SalesOffice { get; set; }
+
+        #region Allors
+        [Id("05C17892-1B62-4541-B9F1-848E87BFE05B")]
+        [AssociationId("C6202255-FE24-4DDB-8B8B-97E1F9D1D43E")]
+        [RoleId("273E96C4-079F-4CB1-8C4D-7C55E206A9A8")]
+        [Indexed]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        public ContactMechanism ShippingInquiriesFax { get; set; }
+
+        #region Allors
+        [Id("74802F61-F8A4-43A1-A854-0B2AE9B3AD96")]
+        [AssociationId("55BB135B-2880-4F8B-AF32-C88A26F552AE")]
+        [RoleId("79D36B1F-950F-4364-9600-BB7A80488DAD")]
+        [Indexed]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        public ContactMechanism ShippingInquiriesPhone { get; set; }
 
         #region inherited methods
 

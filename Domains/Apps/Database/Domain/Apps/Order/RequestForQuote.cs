@@ -23,18 +23,12 @@ namespace Allors.Domain
     {
         ObjectState Transitional.CurrentObjectState => this.CurrentObjectState;
 
-        public void AppsOnDerive(ObjectOnDerive method)
-        {
-            var derivation = method.Derivation;
-        }
-
         private ProductQuote QuoteThis()
         {
             var productQuote = new ProductQuoteBuilder(this.Strategy.Session)
                 .WithRequest(this)
                 .WithDescription(this.Description)
                 .WithReceiver(this.Originator)
-                .WithIssuer(Singleton.Instance(this.Strategy.Session).DefaultInternalOrganisation)
                 .WithRequiredResponseDate(this.RequiredResponseDate)
                 .WithCurrency(this.Currency)
                 .WithFullfillContactMechanism(this.FullfillContactMechanism)

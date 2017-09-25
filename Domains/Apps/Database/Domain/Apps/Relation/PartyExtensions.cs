@@ -21,40 +21,44 @@ namespace Allors.Domain
 
     public static class PartyExtensions
     {
-        public static List<SalesOrder> AppsGetPreOrders(this Party party)
+        public static int? PaymentNetDays(this Party party)
         {
-            var preOrders = new List<SalesOrder>();
-            foreach (SalesOrder salesOrder in party.SalesOrdersWhereBillToCustomer)
+            int? customerPaymentNetDays = null;
+            foreach (Agreement agreement in party.Agreements)
             {
-                if (salesOrder.CurrentObjectState.Equals(new SalesOrderObjectStates(party.Strategy.Session).Provisional))
+                foreach (AgreementTerm term in agreement.AgreementTerms)
                 {
-                    preOrders.Add(salesOrder);
+                    if (term.TermType.Equals(new TermTypes(party.Strategy.Session).PaymentNetDays))
+                    {
+                        if (int.TryParse(term.TermValue, out var netDays))
+                        {
+                            customerPaymentNetDays = netDays;
+                        }
+
+                        return customerPaymentNetDays;
+                    }
                 }
-            }
-
-            return preOrders;
-        }
-
-        public static Person AppsFindCurrentContactByName(this Party party, string name)
-        {
-            var personsFound = new List<Person>();
-            name = name.ToLower();
-            foreach (Person person in party.CurrentContacts)
-            {
-                if ((person.ExistPartyName && person.PartyName.ToLower() == name) ||
-                    (person.ExistLastName && person.LastName.ToLower() == name) ||
-                    (person.ExistFirstName && person.FirstName.ToLower() == name))
-                {
-                    personsFound.Add(person);
-                }
-            }
-
-            if (personsFound.Count == 1)
-            {
-                return personsFound[0];
             }
 
             return null;
+        }
+
+        public static bool IsCustomer(this Party party)
+        {
+            var organisation = party as Organisation;
+            var person = party as Person;
+
+            if (organisation != null)
+            {
+                return organisation.OrganisationRoles.Contains(new OrganisationRoles(party.Strategy.Session).Customer);
+            }
+
+            if (person != null)
+            {
+                return person.PersonRoles.Contains(new PersonRoles(party.Strategy.Session).Customer);
+            }
+
+            return false;
         }
 
         public static IEnumerable<CustomerShipment> AppsGetPendingCustomerShipments(this Party party)
@@ -91,44 +95,10 @@ namespace Allors.Domain
                     shipment.CurrentObjectState.Equals(new CustomerShipmentObjectStates(party.Strategy.Session).Packed))
                 {
                     return shipment;
-                }                
+                }
             }
 
             return null;
-        }
-
-        public static bool AppsIsActiveCustomer(this Party party, DateTime? date)
-        {
-            if (date == DateTime.MinValue)
-            {
-                return false;
-            }
-
-            var customerRelationships = party.CustomerRelationshipsWhereCustomer;
-            foreach (CustomerRelationship relationship in customerRelationships)
-            {
-                if (relationship.FromDate.Date <= date &&
-                    (!relationship.ExistThroughDate || relationship.ThroughDate >= date))
-                {
-                    return true;
-                }
-            }
-
-            return false;
-        }
-
-        public static void AppsOnDeriveCurrentPartyRelationships(this Party party, IDerivation derivation)
-        {
-            party.RemoveCurrentPartyRelationships();
-
-            foreach (PartyRelationship partyRelationship in party.PartyRelationshipsWhereParty)
-            {
-                if (partyRelationship.FromDate <= DateTime.UtcNow &&
-                    (!partyRelationship.ExistThroughDate || partyRelationship.ThroughDate >= DateTime.UtcNow))
-                {
-                    party.AddCurrentPartyRelationship(partyRelationship);
-                }
-            }
         }
 
         public static void AppsOnDeriveCurrentPartyContactMechanisms(this Party party, IDerivation derivation)
@@ -147,14 +117,14 @@ namespace Allors.Domain
 
         public static void AppsOnBuild(this Party party, ObjectOnBuild method)
         {
-            if (!party.ExistLocale && Singleton.Instance(party.Strategy.Session).ExistDefaultInternalOrganisation)
+            if (!party.ExistLocale)
             {
-                party.Locale = Singleton.Instance(party.Strategy.Session).DefaultInternalOrganisation.Locale;
+                party.Locale = InternalOrganisation.Instance(party.Strategy.Session).PreferredLocale;
             }
 
-            if (!party.ExistPreferredCurrency && Singleton.Instance(party.Strategy.Session).ExistDefaultInternalOrganisation)
+            if (!party.ExistPreferredCurrency)
             {
-                party.PreferredCurrency = Singleton.Instance(party.Strategy.Session).DefaultInternalOrganisation.PreferredCurrency;
+                party.PreferredCurrency = InternalOrganisation.Instance(party.Strategy.Session).PreferredCurrency;
             }
         }
 

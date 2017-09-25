@@ -78,16 +78,6 @@ namespace Allors.Repository
         public decimal TotalListPrice { get; set; }
 
         #region Allors
-        [Id("21ee2eb5-f20b-41cc-80d2-f533a53a2a2b")]
-        [AssociationId("d52491dd-3da8-44dc-bf55-0b15553b3b1a")]
-        [RoleId("1fadb364-9e2a-4008-a36f-69a3233a9430")]
-        #endregion
-        [Multiplicity(Multiplicity.ManyToOne)]
-        [Indexed]
-        [Required]
-        public InternalOrganisation BilledFromInternalOrganisation { get; set; }
-
-        #region Allors
         [Id("27faaa2c-d4db-4cab-aa04-8ec4997d73d2")]
         [AssociationId("2e9fab52-2029-4ee3-8eba-ffd9764bcf67")]
         [RoleId("9dd23ce4-d760-45af-94e4-c2ac94b0aea3")]

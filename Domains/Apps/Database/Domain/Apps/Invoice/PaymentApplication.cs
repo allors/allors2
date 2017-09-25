@@ -24,10 +24,9 @@ namespace Allors.Domain
         {
             var derivation = method.Derivation;
 
-            // TODO:
-            if (derivation.ChangeSet.Associations.Contains(this.Id))
+            if (derivation.HasChangedRoles(this))
             {
-                var receipt = this.PaymentWherePaymentApplication as Receipt;
+                var receipt = this.PaymentWherePaymentApplication;
                 if (receipt != null)
                 {
                     derivation.AddDependency(receipt, this);

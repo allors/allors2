@@ -2,7 +2,7 @@ namespace Allors.Repository
 {
     using System;
 
-    using Allors.Repository.Attributes;
+    using Attributes;
 
     #region Allors
     [Id("749e2a92-b397-4d36-b965-6073d45a4135")]
@@ -34,15 +34,7 @@ namespace Allors.Repository
         [Indexed]
 
         public Currency Currency { get; set; }
-        #region Allors
-        [Id("730e4a76-6af4-441e-8d82-1f3e5807d5a5")]
-        [AssociationId("6ad611d9-a2a1-46cc-9ac2-28832723f063")]
-        [RoleId("5a92ec5a-4128-46ba-9a75-112592f2662d")]
-        #endregion
-        [Multiplicity(Multiplicity.ManyToOne)]
-        [Indexed]
 
-        public InternalOrganisation InternalOrganisation { get; set; }
         #region Allors
         [Id("89ff9736-f2d1-4609-ac99-b60f5b37f406")]
         [AssociationId("86e77422-4347-4e97-99ba-1c3b7cf57220")]

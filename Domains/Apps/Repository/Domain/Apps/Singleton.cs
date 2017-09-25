@@ -1,6 +1,6 @@
 namespace Allors.Repository
 {
-    using Allors.Repository.Attributes;
+    using Attributes;
 
     public partial class Singleton 
     {
@@ -45,16 +45,6 @@ namespace Allors.Repository
         [Indexed]
         [Workspace]
         public Media NoImageAvailableImage { get; set; }
-        
-        #region Allors
-        [Id("f154f01e-e8bb-49c0-be80-ef6c6c195ff3")]
-        [AssociationId("2c42c9e4-72e3-4673-8653-aaf586ebb06a")]
-        [RoleId("979d1e59-7a9f-462a-9927-efb8ad2cada5")]
-        #endregion
-        [Multiplicity(Multiplicity.ManyToOne)]
-        [Indexed]
-        [Workspace]
-        public InternalOrganisation DefaultInternalOrganisation { get; set; }
         
         #region inherited methods
 

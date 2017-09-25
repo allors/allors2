@@ -30,14 +30,11 @@ namespace Allors.Domain
             partyProductRevenues.Filter.AddEquals(M.PartyProductRevenue.Month, invoice.InvoiceDate.Month);
             partyProductRevenues.Filter.AddEquals(M.PartyProductRevenue.Product, product);
             var partyProductRevenue = partyProductRevenues.First ?? new PartyProductRevenueBuilder(session)
-                                                                        .WithInternalOrganisation(invoice.BilledFromInternalOrganisation)
                                                                         .WithParty(invoice.BillToCustomer)
                                                                         .WithProduct(product)
                                                                         .WithYear(invoice.InvoiceDate.Year)
                                                                         .WithMonth(invoice.InvoiceDate.Month)
-                                                                        .WithCurrency(invoice.BilledFromInternalOrganisation.PreferredCurrency)
-                                                                        .WithRevenue(0M)
-                                                                        .WithQuantity(0M)
+                                                                        .WithCurrency(InternalOrganisation.Instance(session).PreferredCurrency)
                                                                         .Build();
 
             PartyRevenues.AppsFindOrCreateAsDependable(session, partyProductRevenue);
@@ -176,14 +173,11 @@ namespace Allors.Domain
         private static PartyProductRevenue CreatePartyProductRevenue(ISession session, SalesInvoiceItem item)
         {
             return new PartyProductRevenueBuilder(session)
-                        .WithInternalOrganisation(item.SalesInvoiceWhereSalesInvoiceItem.BilledFromInternalOrganisation)
                         .WithParty(item.SalesInvoiceWhereSalesInvoiceItem.BillToCustomer)
                         .WithYear(item.SalesInvoiceWhereSalesInvoiceItem.InvoiceDate.Year)
                         .WithMonth(item.SalesInvoiceWhereSalesInvoiceItem.InvoiceDate.Month)
-                        .WithCurrency(item.SalesInvoiceWhereSalesInvoiceItem.BilledFromInternalOrganisation.PreferredCurrency)
+                        .WithCurrency(InternalOrganisation.Instance(session).PreferredCurrency)
                         .WithProduct(item.Product)
-                        .WithRevenue(0M)
-                        .WithQuantity(0M)
                         .Build();
         }
     }

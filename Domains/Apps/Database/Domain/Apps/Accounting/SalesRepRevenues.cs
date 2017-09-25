@@ -28,12 +28,10 @@ namespace Allors.Domain
             salesRepRevenues.Filter.AddEquals(M.SalesRepRevenue.Year, dependant.Year);
             salesRepRevenues.Filter.AddEquals(M.SalesRepRevenue.Month, dependant.Month);
             var salesRepRevenue = salesRepRevenues.First ?? new SalesRepRevenueBuilder(session)
-                                                                .WithInternalOrganisation(dependant.InternalOrganisation)
                                                                 .WithSalesRep(dependant.SalesRep)
                                                                 .WithYear(dependant.Year)
                                                                 .WithMonth(dependant.Month)
                                                                 .WithCurrency(dependant.Currency)
-                                                                .WithRevenue(0M)
                                                                 .Build();
 
             SalesRepCommissions.AppsFindOrCreateAsDependable(session, salesRepRevenue);
@@ -143,12 +141,10 @@ namespace Allors.Domain
         private static SalesRepRevenue CreateSalesRepRevenue(ISession session, SalesInvoiceItem item)
         {
             return new SalesRepRevenueBuilder(session)
-                        .WithInternalOrganisation(item.SalesInvoiceWhereSalesInvoiceItem.BilledFromInternalOrganisation)
                         .WithSalesRep(item.SalesRep)
                         .WithYear(item.SalesInvoiceWhereSalesInvoiceItem.InvoiceDate.Year)
                         .WithMonth(item.SalesInvoiceWhereSalesInvoiceItem.InvoiceDate.Month)
-                        .WithCurrency(item.SalesInvoiceWhereSalesInvoiceItem.BilledFromInternalOrganisation.PreferredCurrency)
-                        .WithRevenue(0M)
+                        .WithCurrency(InternalOrganisation.Instance(session).PreferredCurrency)
                         .Build();
         }
     }

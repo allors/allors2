@@ -24,16 +24,13 @@ namespace Allors.Domain
         public static StoreRevenue AppsFindOrCreateAsDependable(ISession session, SalesInvoice invoice)
         {
             var storeRevenues = invoice.Store.StoreRevenuesWhereStore;
-            storeRevenues.Filter.AddEquals(M.StoreRevenue.InternalOrganisation, invoice.BilledFromInternalOrganisation);
             storeRevenues.Filter.AddEquals(M.StoreRevenue.Year, invoice.InvoiceDate.Year);
             storeRevenues.Filter.AddEquals(M.StoreRevenue.Month, invoice.InvoiceDate.Month);
             var storeRevenue = storeRevenues.First ?? new StoreRevenueBuilder(session)
-                                                            .WithInternalOrganisation(invoice.BilledFromInternalOrganisation)
                                                             .WithStore((Store)session.Instantiate(invoice.Store))
                                                             .WithYear(invoice.InvoiceDate.Year)
                                                             .WithMonth(invoice.InvoiceDate.Month)
-                                                            .WithCurrency(invoice.BilledFromInternalOrganisation.PreferredCurrency)
-                                                            .WithRevenue(0M)
+                                                            .WithCurrency(InternalOrganisation.Instance(session).PreferredCurrency)
                                                             .Build();
 
             InternalOrganisationRevenues.AppsFindOrCreateAsDependable(session, storeRevenue);
@@ -43,31 +40,21 @@ namespace Allors.Domain
 
         public static void AppsOnDeriveRevenues(ISession session)
         {
-            var storeRevenuesByPeriodByStoreByInternalOrganisation = new Dictionary<InternalOrganisation, Dictionary<Store, Dictionary<DateTime, StoreRevenue>>>();
-
             var storeRevenues = session.Extent<StoreRevenue>();
+            Dictionary<Store, Dictionary<DateTime, StoreRevenue>> storeRevenuesByPeriodByStore = new Dictionary<Store, Dictionary<DateTime, StoreRevenue>>();
 
             foreach (StoreRevenue storeRevenue in storeRevenues)
             {
                 storeRevenue.Revenue = 0;
                 var date = DateTimeFactory.CreateDate(storeRevenue.Year, storeRevenue.Month, 01);
 
-                Dictionary<Store, Dictionary<DateTime, StoreRevenue>> storeRevenuesByPeriodByStore;
-                if (!storeRevenuesByPeriodByStoreByInternalOrganisation.TryGetValue(storeRevenue.InternalOrganisation, out storeRevenuesByPeriodByStore))
-                {
-                    storeRevenuesByPeriodByStore = new Dictionary<Store, Dictionary<DateTime, StoreRevenue>>();
-                    storeRevenuesByPeriodByStoreByInternalOrganisation[storeRevenue.InternalOrganisation] = storeRevenuesByPeriodByStore;
-                }
-
-                Dictionary<DateTime, StoreRevenue> storeRevenuesByPeriod;
-                if (!storeRevenuesByPeriodByStore.TryGetValue(storeRevenue.Store, out storeRevenuesByPeriod))
+                if (!storeRevenuesByPeriodByStore.TryGetValue(storeRevenue.Store, out var storeRevenuesByPeriod))
                 {
                     storeRevenuesByPeriod = new Dictionary<DateTime, StoreRevenue>();
                     storeRevenuesByPeriodByStore[storeRevenue.Store] = storeRevenuesByPeriod;
                 }
 
-                StoreRevenue revenue;
-                if (!storeRevenuesByPeriod.TryGetValue(date, out revenue))
+                if (!storeRevenuesByPeriod.ContainsKey(date))
                 {
                     storeRevenuesByPeriod.Add(date, storeRevenue);
                 }
@@ -91,21 +78,7 @@ namespace Allors.Domain
                 {
                     StoreRevenue storeRevenue;
 
-                    Dictionary<Store, Dictionary<DateTime, StoreRevenue>> storeRevenuesByPeriodByStore;
-                    if (!storeRevenuesByPeriodByStoreByInternalOrganisation.TryGetValue(salesInvoice.BilledFromInternalOrganisation, out storeRevenuesByPeriodByStore))
-                    {
-                        storeRevenue = CreateStoreRevenue(session, salesInvoice);
-
-                        storeRevenuesByPeriodByStore = new Dictionary<Store, Dictionary<DateTime, StoreRevenue>>
-                        {
-                            { salesInvoice.Store, new Dictionary<DateTime, StoreRevenue> { { date, storeRevenue } } }
-                        };
-
-                        storeRevenuesByPeriodByStoreByInternalOrganisation[salesInvoice.BilledFromInternalOrganisation] = storeRevenuesByPeriodByStore;
-                    }
-
-                    Dictionary<DateTime, StoreRevenue> storeRevenuesByPeriod;
-                    if (!storeRevenuesByPeriodByStore.TryGetValue(salesInvoice.Store, out storeRevenuesByPeriod))
+                    if (!storeRevenuesByPeriodByStore.TryGetValue(salesInvoice.Store, out var storeRevenuesByPeriod))
                     {
                         storeRevenue = CreateStoreRevenue(session, salesInvoice);
 
@@ -140,12 +113,10 @@ namespace Allors.Domain
         private static StoreRevenue CreateStoreRevenue(ISession session, SalesInvoice invoice)
         {
             return new StoreRevenueBuilder(session)
-                        .WithInternalOrganisation(invoice.BilledFromInternalOrganisation)
                         .WithStore(invoice.Store)
                         .WithYear(invoice.InvoiceDate.Year)
                         .WithMonth(invoice.InvoiceDate.Month)
-                        .WithCurrency(invoice.BilledFromInternalOrganisation.PreferredCurrency)
-                        .WithRevenue(0M)
+                        .WithCurrency(InternalOrganisation.Instance(session).PreferredCurrency)
                         .Build();
         }
     }

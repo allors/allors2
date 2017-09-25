@@ -29,13 +29,11 @@ namespace Allors.Domain
             salesRepPartyRevenues.Filter.AddEquals(M.SalesRepPartyRevenue.Year, dependant.Year);
             salesRepPartyRevenues.Filter.AddEquals(M.SalesRepPartyRevenue.Month, dependant.Month);
             var salesRepPartyRevenue = salesRepPartyRevenues.First ?? new SalesRepPartyRevenueBuilder(session)
-                                                                            .WithInternalOrganisation(dependant.InternalOrganisation)
                                                                             .WithParty(dependant.Party)
                                                                             .WithSalesRep(dependant.SalesRep)
                                                                             .WithYear(dependant.Year)
                                                                             .WithMonth(dependant.Month)
                                                                             .WithCurrency(dependant.Currency)
-                                                                            .WithRevenue(0M)
                                                                             .Build();
 
             SalesRepRevenues.AppsFindOrCreateAsDependable(session, salesRepPartyRevenue);
@@ -51,13 +49,11 @@ namespace Allors.Domain
             salesRepPartyRevenues.Filter.AddEquals(M.SalesRepPartyRevenue.Year, salesInvoiceItem.SalesInvoiceWhereSalesInvoiceItem.InvoiceDate.Year);
             salesRepPartyRevenues.Filter.AddEquals(M.SalesRepPartyRevenue.Month, salesInvoiceItem.SalesInvoiceWhereSalesInvoiceItem.InvoiceDate.Month);
             var salesRepPartyRevenue = salesRepPartyRevenues.First ?? new SalesRepPartyRevenueBuilder(session)
-                                                                            .WithInternalOrganisation(salesInvoiceItem.SalesInvoiceWhereSalesInvoiceItem.BilledFromInternalOrganisation)
                                                                             .WithParty(salesInvoiceItem.SalesInvoiceWhereSalesInvoiceItem.BillToCustomer)
                                                                             .WithSalesRep(salesInvoiceItem.SalesRep)
                                                                             .WithYear(salesInvoiceItem.SalesInvoiceWhereSalesInvoiceItem.InvoiceDate.Year)
                                                                             .WithMonth(salesInvoiceItem.SalesInvoiceWhereSalesInvoiceItem.InvoiceDate.Month)
-                                                                            .WithCurrency(salesInvoiceItem.SalesInvoiceWhereSalesInvoiceItem.BilledFromInternalOrganisation.PreferredCurrency)
-                                                                            .WithRevenue(0M)
+                                                                            .WithCurrency(InternalOrganisation.Instance(session).PreferredCurrency)
                                                                             .Build();
 
             SalesRepRevenues.AppsFindOrCreateAsDependable(session, salesRepPartyRevenue);
@@ -199,13 +195,11 @@ namespace Allors.Domain
         private static SalesRepPartyRevenue CreateSalesRepPartyRevenue(ISession session, SalesInvoiceItem item)
         {
             return new SalesRepPartyRevenueBuilder(session)
-                        .WithInternalOrganisation(item.SalesInvoiceWhereSalesInvoiceItem.BilledFromInternalOrganisation)
                         .WithSalesRep(item.SalesRep)
                         .WithParty(item.SalesInvoiceWhereSalesInvoiceItem.BillToCustomer)
                         .WithYear(item.SalesInvoiceWhereSalesInvoiceItem.InvoiceDate.Year)
                         .WithMonth(item.SalesInvoiceWhereSalesInvoiceItem.InvoiceDate.Month)
-                        .WithCurrency(item.SalesInvoiceWhereSalesInvoiceItem.BilledFromInternalOrganisation.PreferredCurrency)
-                        .WithRevenue(0M)
+                        .WithCurrency(InternalOrganisation.Instance(session).PreferredCurrency)
                         .Build();
         }
     }

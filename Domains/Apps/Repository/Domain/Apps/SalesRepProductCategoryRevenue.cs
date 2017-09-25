@@ -2,7 +2,7 @@ namespace Allors.Repository
 {
     using System;
 
-    using Allors.Repository.Attributes;
+    using Attributes;
 
     #region Allors
     [Id("fd411b2a-0121-4f1f-b1db-86c187e8a089")]
@@ -32,15 +32,7 @@ namespace Allors.Repository
         [Size(256)]
 
         public string SalesRepName { get; set; }
-        #region Allors
-        [Id("6ee43a8c-8f42-491d-a0ab-3ea5d4352dc8")]
-        [AssociationId("9a6c58ab-5119-47f6-974d-fa01fbb3d320")]
-        [RoleId("4d85870c-75ec-4153-894a-30a6cb253060")]
-        #endregion
-        [Multiplicity(Multiplicity.ManyToOne)]
-        [Indexed]
 
-        public InternalOrganisation InternalOrganisation { get; set; }
         #region Allors
         [Id("7f39eefb-9210-4796-9b91-dc4d5e0b4ea1")]
         [AssociationId("f35dfa6d-eca3-49b9-8b83-cd152b9be673")]

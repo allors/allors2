@@ -335,17 +335,6 @@ namespace Allors.Repository
         TelecommunicationsNumber BillingInquiriesPhone { get; set; }
 
         #region Allors
-        [Id("9d361ab3-c93a-41e0-bbca-0cde08bcff37")]
-        [AssociationId("4e3e530b-456a-405e-8b22-8691647d1258")]
-        [RoleId("4d210b02-9045-4be4-a49d-c728b9b0d2ed")]
-        #endregion
-        [Derived]
-        [Required]
-        [Size(256)]
-        [Workspace]
-        string PartyName { get; set; }
-
-        #region Allors
         [Id("a7720655-a6c1-4f54-a093-b77da985ac5f")]
         [AssociationId("4f9183c0-bac1-4738-97e3-15c2906759e8")]
         [RoleId("d1e7a633-f097-4030-b3c3-9167c022fe05")]
@@ -443,17 +432,6 @@ namespace Allors.Repository
         PaymentMethod DefaultPaymentMethod { get; set; }
 
         #region Allors
-        [Id("A0E0CC97-79E4-4992-BA7F-74FA091DF581")]
-        [AssociationId("AC3106FE-675B-43B4-ABC8-87EF9051A37E")]
-        [RoleId("DD29D621-F628-4169-86CF-56E9207A6B91")]
-        #endregion
-        [Multiplicity(Multiplicity.OneToMany)]
-        [Derived]
-        [Indexed]
-        [Workspace]
-        PartyRelationship[] CurrentPartyRelationships { get; set; }
-
-        #region Allors
         [Id("e16b9c8f-cb53-4d58-aa13-ac92d5de1465")]
         [AssociationId("5476eeb1-246c-43e0-9939-2263dfead9a5")]
         [RoleId("3c3c6c4a-3b7b-4b3f-a843-fa5c334f33fb")]
@@ -494,5 +472,100 @@ namespace Allors.Repository
         [Indexed]
         [Workspace]
         VatRegime VatRegime { get; set; }
+
+        #region Allors
+        [Id("B66127AF-F490-4BF0-B8F5-6EBA878B1314")]
+        [AssociationId("BBCAA840-593F-4155-8643-2E2FBA3E0035")]
+        [RoleId("DF84CED1-8A60-43BF-A1A0-4C971F81C0B6")]
+        #endregion
+        [Precision(19)]
+        [Scale(2)]
+        decimal SimpleMovingAverage { get; set; }
+
+        #region Allors
+        [Id("42e3b2c4-376d-4e8b-bb49-2af031881ed0")]
+        [AssociationId("bcdd31e8-8101-4b6b-8f13-a4397c43adfa")]
+        [RoleId("a9ddfe04-e5fd-4b22-9a9a-702dc0533731")]
+        #endregion
+        [Required]
+        [Precision(19)]
+        [Scale(2)]
+        [Workspace]
+        decimal AmountOverDue { get; set; }
+
+        #region Allors
+        [Id("76b46019-c145-403d-9f99-cd8e1001c968")]
+        [AssociationId("6702ba13-81eb-4d23-b341-8fb84cf7e60f")]
+        [RoleId("079e6188-73d0-4161-8327-607554a42613")]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Indexed]
+        [Workspace]
+        DunningType DunningType { get; set; }
+
+        #region Allors
+        [Id("894f4ff2-9c41-4201-ad36-ac10dafd65dd")]
+        [AssociationId("c8a336f0-4fae-4ce6-a900-283066052ffd")]
+        [RoleId("11fa6c6e-c528-452c-adca-75f474d2f95b")]
+        #endregion
+        [Derived]
+        [Required]
+        [Precision(19)]
+        [Scale(2)]
+        [Workspace]
+        decimal AmountDue { get; set; }
+
+        #region Allors
+        [Id("af50ade8-5964-4963-819d-c87689c6434e")]
+        [AssociationId("a06dda1c-d91d-4e27-b293-05cb53de65ec")]
+        [RoleId("7f6da6ca-b069-47f6-983c-6e33d65ffd0e")]
+        #endregion
+        [Workspace]
+        DateTime LastReminderDate { get; set; }
+
+        #region Allors
+        [Id("dd59ed76-b6da-49a3-8c3e-1edf4d1d0900")]
+        [AssociationId("e2afe553-7bbd-4f81-97e8-7279defb49ca")]
+        [RoleId("b5e30743-6adc-4bf0-b547-72b17b79879c")]
+        #endregion
+        [Precision(19)]
+        [Scale(2)]
+        [Workspace]
+        decimal CreditLimit { get; set; }
+
+        #region Allors
+        [Id("e3a06a1c-998a-4871-8f0e-2f166eac6c7b")]
+        [AssociationId("08dfdeb5-1a62-42d6-b8f3-16025960b09f")]
+        [RoleId("9400c681-2a68-4842-89fd-3c9ccb3f2a96")]
+        #endregion
+        [Required]
+        [Workspace]
+        int SubAccountNumber { get; set; }
+
+        #region Allors
+        [Id("ee871786-8840-404d-9b41-932a9f59be13")]
+        [AssociationId("5b98959d-5589-4958-a86f-4c9b465c1632")]
+        [RoleId("056ca61a-1ab4-4e53-8d5f-328ada5f3b11")]
+        #endregion
+        [Workspace]
+        DateTime BlockedForDunning { get; set; }
+
+        #region Allors
+        [Id("DEC610BF-5051-44EA-B4F9-1D912DCD19D5")]
+        [AssociationId("4F0A52D4-886A-4348-B0BC-50461BBABDD9")]
+        [RoleId("F74DD0DF-CC88-4FA5-90CC-968CC82CA65B")]
+        [Indexed]
+        #endregion
+        [Multiplicity(Multiplicity.OneToMany)]
+        Agreement[] Agreements { get; set; }
+
+        #region Allors
+        [Id("BA00C20D-E4A0-4678-A3D4-C24344213DEC")]
+        [AssociationId("B6C0F82C-CE97-4F72-9C3D-7CF220C4F9D5")]
+        [RoleId("CA30D198-DBD5-47CD-AB1F-72149A20097D")]
+        [Indexed]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToMany)]
+        CommunicationEvent[] CommunicationEvents { get; set; }
     }
 }

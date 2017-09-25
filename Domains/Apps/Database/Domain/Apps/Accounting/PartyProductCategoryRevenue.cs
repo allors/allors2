@@ -35,7 +35,6 @@ namespace Allors.Domain
             this.Quantity = 0;
 
             var partyProductRevenues = this.Party.PartyProductRevenuesWhereParty;
-            partyProductRevenues.Filter.AddEquals(M.PartyProductRevenue.InternalOrganisation, this.InternalOrganisation);
             partyProductRevenues.Filter.AddEquals(M.PartyProductRevenue.Year, this.Year);
             partyProductRevenues.Filter.AddEquals(M.PartyProductRevenue.Month, this.Month);
 
@@ -61,19 +60,16 @@ namespace Allors.Domain
                 foreach (ProductCategory parentCategory in this.ProductCategory.Parents)
                 {
                     var partyProductCategoryRevenues = this.Party.PartyProductCategoryRevenuesWhereParty;
-                    partyProductCategoryRevenues.Filter.AddEquals(M.PartyProductCategoryRevenue.InternalOrganisation, this.InternalOrganisation);
                     partyProductCategoryRevenues.Filter.AddEquals(M.PartyProductCategoryRevenue.Year, this.Year);
                     partyProductCategoryRevenues.Filter.AddEquals(M.PartyProductCategoryRevenue.Month, this.Month);
                     partyProductCategoryRevenues.Filter.AddEquals(M.PartyProductCategoryRevenue.ProductCategory, parentCategory);
                     var partyProductCategoryRevenue = partyProductCategoryRevenues.First
                                                       ?? new PartyProductCategoryRevenueBuilder(this.Strategy.Session)
-                                                                .WithInternalOrganisation(this.InternalOrganisation)
                                                                 .WithParty(this.Party)
                                                                 .WithProductCategory(parentCategory)
                                                                 .WithYear(this.Year)
                                                                 .WithMonth(this.Month)
                                                                 .WithCurrency(this.Currency)
-                                                                .WithRevenue(0M)
                                                                 .Build();
 
                     partyProductCategoryRevenue.OnDerive(x => x.WithDerivation(derivation));
@@ -84,7 +80,6 @@ namespace Allors.Domain
             if (months <= 12)
             {
                 var histories = this.Party.PartyProductCategoryRevenueHistoriesWhereParty;
-                histories.Filter.AddEquals(M.PartyProductCategoryRevenueHistory.InternalOrganisation, this.InternalOrganisation);
                 histories.Filter.AddEquals(M.PartyProductCategoryRevenueHistory.ProductCategory, this.ProductCategory);
                 var history = histories.First
                               ??

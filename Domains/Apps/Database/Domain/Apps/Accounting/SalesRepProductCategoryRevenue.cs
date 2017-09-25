@@ -33,7 +33,6 @@ namespace Allors.Domain
             this.Revenue = 0;
 
             var salesRepPartyProductCategoryRevenues = this.ProductCategory.SalesRepPartyProductCategoryRevenuesWhereProductCategory;
-            salesRepPartyProductCategoryRevenues.Filter.AddEquals(M.SalesRepPartyProductCategoryRevenue.InternalOrganisation, this.InternalOrganisation);
             salesRepPartyProductCategoryRevenues.Filter.AddEquals(M.SalesRepPartyProductCategoryRevenue.SalesRep, this.SalesRep);
             salesRepPartyProductCategoryRevenues.Filter.AddEquals(M.SalesRepPartyProductCategoryRevenue.Year, this.Year);
             salesRepPartyProductCategoryRevenues.Filter.AddEquals(M.SalesRepPartyProductCategoryRevenue.Month, this.Month);

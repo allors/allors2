@@ -257,7 +257,6 @@
     <Compile Include="Apps\CreditLine.cs" />
     <Compile Include="Apps\Currency.cs" />
     <Compile Include="Apps\CustomEngagementItem.cs" />
-    <Compile Include="Apps\CustomerRelationship.cs" />
     <Compile Include="Apps\CustomerRequirement.cs" />
     <Compile Include="Apps\CustomerReturn.cs" />
     <Compile Include="Apps\CustomerReturnObjectState.cs" />
@@ -283,6 +282,7 @@
     <Compile Include="Apps\Dimension.cs" />
     <Compile Include="Apps\Disbursement.cs" />
     <Compile Include="Apps\DisbursementAccountingTransaction.cs" />
+    <Compile Include="Apps\DiscountAdjustmentVersion.cs" />
     <Compile Include="Apps\DiscountAdjustment.cs" />
     <Compile Include="Apps\DiscountComponent.cs" />
     <Compile Include="Apps\Document.cs" />
@@ -295,7 +295,6 @@
     <Compile Include="Apps\EmailCommunication.cs" />
     <Compile Include="Apps\EmailCommunicationVersion.cs" />
     <Compile Include="Apps\EmailTemplate.cs" />
-    <Compile Include="Apps\Employment.cs" />
     <Compile Include="Apps\EmploymentAgreement.cs" />
     <Compile Include="Apps\EmploymentApplication.cs" />
     <Compile Include="Apps\EmploymentApplicationSource.cs" />
@@ -351,7 +350,6 @@
     <Compile Include="Apps\IndustryClassification.cs" />
     <Compile Include="Apps\InternalAccountingTransaction.cs" />
     <Compile Include="Apps\InternalOrganisation.cs" />
-    <Compile Include="Apps\InternalOrganisationAccountingPreference.cs" />
     <Compile Include="Apps\InternalOrganisationRevenue.cs" />
     <Compile Include="Apps\InternalOrganisationRevenueHistory.cs" />
     <Compile Include="Apps\InternalRequirement.cs" />
@@ -399,9 +397,11 @@
     <Compile Include="Apps\NonSerialisedInventoryItemVersion.cs" />
     <Compile Include="Apps\NonSerializedInventoryItemObjectState.cs" />
     <Compile Include="Apps\NonSerializedInventoryItemStatus.cs" />
+    <Compile Include="Apps\OrderAdjustmentVersion.cs" />
     <Compile Include="Apps\OrderItemVersion.cs" />
     <Compile Include="Apps\OrderVersion.cs" />
     <Compile Include="Apps\Ownership.cs" />
+    <Compile Include="Apps\PartyRelationship.cs" />
     <Compile Include="Apps\PhaseVersion.cs" />
     <Compile Include="Apps\PhoneCommunicationVersion.cs" />
     <Compile Include="Apps\PriceableVersion.cs" />
@@ -481,8 +481,6 @@
     <Compile Include="Apps\PartyProductCategoryRevenueHistory.cs" />
     <Compile Include="Apps\PartyProductRevenue.cs" />
     <Compile Include="Apps\PartyProductRevenueHistory.cs" />
-    <Compile Include="Apps\PartyRelationship.cs" />
-    <Compile Include="Apps\PartyRelationshipStatus.cs" />
     <Compile Include="Apps\PartyRevenue.cs" />
     <Compile Include="Apps\PartyRevenueHistory.cs" />
     <Compile Include="Apps\PartySkill.cs" />
@@ -685,7 +683,6 @@
     <Compile Include="Apps\SubContractorAgreement.cs" />
     <Compile Include="Apps\SubContractorRelationship.cs" />
     <Compile Include="Apps\SupplierOffering.cs" />
-    <Compile Include="Apps\SupplierRelationship.cs" />
     <Compile Include="Apps\SurchargeAdjustment.cs" />
     <Compile Include="Apps\SurchargeComponent.cs" />
     <Compile Include="Apps\WebSiteCommunicationVersion.cs" />

@@ -66,13 +66,11 @@ namespace Allors.Domain
             }
 
             var partyRevenueHistories = party.PartyRevenueHistoriesWhereParty;
-            partyRevenueHistories.Filter.AddEquals(M.PartyRevenueHistory.InternalOrganisation, internalOrganisation);
             var partyRevenueHistory = partyRevenueHistories.First;
 
             var partyProductCategoryRevenueHistoryByProductCategory = PartyProductCategoryRevenueHistories.PartyProductCategoryRevenueHistoryByProductCategory(internalOrganisation, party);
 
             var partyPackageRevenuesHistories = party.PartyPackageRevenueHistoriesWhereParty;
-            partyPackageRevenuesHistories.Filter.AddEquals(M.PartyPackageRevenueHistory.InternalOrganisation, internalOrganisation);
 
             var priceComponents = GetPriceComponents(internalOrganisation, product, date);
 

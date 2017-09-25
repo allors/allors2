@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26430.12
+VisualStudioVersion = 15.0.26730.16
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Domain", "Database\Domain\Domain.csproj", "{B4EDDCC1-BA69-4415-BFC8-78098AEFF221}"
 EndProject
@@ -187,5 +187,8 @@ Global
 		{042CC251-F4A0-4D5E-AFB7-F9FCE61AA8C7} = {345BB1B5-7309-458C-9C44-2EC59814E439}
 		{A562417B-AB4B-4534-A7D7-C4CF19457AA0} = {345BB1B5-7309-458C-9C44-2EC59814E439}
 		{66702AD7-6717-466C-8770-F95B8F2369E6} = {345BB1B5-7309-458C-9C44-2EC59814E439}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {2C86B821-92D5-4C18-B915-BA8A008553C2}
 	EndGlobalSection
 EndGlobal

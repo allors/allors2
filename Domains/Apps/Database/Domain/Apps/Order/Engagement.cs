@@ -17,13 +17,6 @@ namespace Allors.Domain
 {
     public partial class Engagement
     {
-        public void AppsOnBuild(ObjectOnBuild method)
-        {
-            if (!this.ExistTakenViaInternalOrganisation)
-            {
-                this.TakenViaInternalOrganisation = Singleton.Instance(this.Strategy.Session).DefaultInternalOrganisation;
-            }
-        }
 
         public void AppsOnDerive(ObjectOnDerive method)
         {

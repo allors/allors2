@@ -2,7 +2,7 @@ namespace Allors.Repository
 {
     using System;
 
-    using Allors.Repository.Attributes;
+    using Attributes;
 
     #region Allors
     [Id("da504b46-2fd0-4500-ae23-61fa73151077")]
@@ -59,8 +59,6 @@ namespace Allors.Repository
         public PriceComponent[] BasePrices { get; set; }
 
         public ProductCategory[] ProductCategories { get; set; }
-
-        public InternalOrganisation SoldBy { get; set; }
 
         public Guid UniqueId { get; set; }
 

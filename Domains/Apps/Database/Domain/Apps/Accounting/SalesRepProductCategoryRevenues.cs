@@ -31,13 +31,11 @@ namespace Allors.Domain
             salesRepProductCategoryRevenues.Filter.AddEquals(M.SalesRepProductCategoryRevenue.Month, dependant.Month);
             var salesRepProductCategoryRevenue = salesRepProductCategoryRevenues.First
                                                  ?? new SalesRepProductCategoryRevenueBuilder(session)
-                                                                .WithInternalOrganisation(dependant.InternalOrganisation)
                                                                 .WithProductCategory(dependant.ProductCategory)
                                                                 .WithSalesRep(dependant.SalesRep)
                                                                 .WithYear(dependant.Year)
                                                                 .WithMonth(dependant.Month)
                                                                 .WithCurrency(dependant.Currency)
-                                                                .WithRevenue(0M)
                                                                 .Build();
             return salesRepProductCategoryRevenue;
         }
@@ -53,13 +51,11 @@ namespace Allors.Domain
                 salesRepProductCategoryRevenues.Filter.AddEquals(M.SalesRepProductCategoryRevenue.Month, dependant.Month);
                 var salesRepProductCategoryRevenue = salesRepProductCategoryRevenues.First
                                                         ?? new SalesRepProductCategoryRevenueBuilder(session)
-                                                                .WithInternalOrganisation(dependant.InternalOrganisation)
                                                                 .WithSalesRep(dependant.SalesRep)
                                                                 .WithProductCategory(parentCategory)
                                                                 .WithYear(dependant.Year)
                                                                 .WithMonth(dependant.Month)
                                                                 .WithCurrency(dependant.Currency)
-                                                                .WithRevenue(0M)
                                                                 .Build();
 
                 AppsFindOrCreateAsDependable(session, salesRepProductCategoryRevenue);
@@ -222,13 +218,11 @@ namespace Allors.Domain
         private static SalesRepProductCategoryRevenue CreateSalesRepProductCategoryRevenue(ISession session, SalesInvoiceItem item, ProductCategory productCategory)
         {
             return new SalesRepProductCategoryRevenueBuilder(session)
-                        .WithInternalOrganisation(item.SalesInvoiceWhereSalesInvoiceItem.BilledFromInternalOrganisation)
                         .WithSalesRep(item.SalesRep)
                         .WithProductCategory(productCategory)
                         .WithYear(item.SalesInvoiceWhereSalesInvoiceItem.InvoiceDate.Year)
                         .WithMonth(item.SalesInvoiceWhereSalesInvoiceItem.InvoiceDate.Month)
-                        .WithCurrency(item.SalesInvoiceWhereSalesInvoiceItem.BilledFromInternalOrganisation.PreferredCurrency)
-                        .WithRevenue(0M)
+                        .WithCurrency(InternalOrganisation.Instance(session).PreferredCurrency)
                         .Build();
         }
     }

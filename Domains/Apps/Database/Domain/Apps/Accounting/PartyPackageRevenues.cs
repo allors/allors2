@@ -32,13 +32,11 @@ namespace Allors.Domain
                 partyPackageRevenues.Filter.AddEquals(M.PartyPackageRevenue.Package, dependant.ProductCategory.Package);
                 var partyPackageRevenue = partyPackageRevenues.First
                                                 ?? new PartyPackageRevenueBuilder(session)
-                                                        .WithInternalOrganisation(dependant.InternalOrganisation)
                                                         .WithParty(dependant.Party)
                                                         .WithPackage(dependant.ProductCategory.Package)
                                                         .WithYear(dependant.Year)
                                                         .WithMonth(dependant.Month)
                                                         .WithCurrency(dependant.Currency)
-                                                        .WithRevenue(0M)
                                                         .Build();
 
                 PackageRevenues.AppsFindOrCreateAsDependable(session, partyPackageRevenue);
@@ -191,13 +189,11 @@ namespace Allors.Domain
         private static PartyPackageRevenue CreatePartyPackageRevenue(ISession session, SalesInvoice invoice, Package package)
         {
             return new PartyPackageRevenueBuilder(session)
-                        .WithInternalOrganisation(invoice.BilledFromInternalOrganisation)
                         .WithParty(invoice.BillToCustomer)
                         .WithYear(invoice.InvoiceDate.Year)
                         .WithMonth(invoice.InvoiceDate.Month)
-                        .WithCurrency(invoice.BilledFromInternalOrganisation.PreferredCurrency)
+                        .WithCurrency(InternalOrganisation.Instance(session).PreferredCurrency)
                         .WithPackage(package)
-                        .WithRevenue(0M)
                         .Build();
         }
     }

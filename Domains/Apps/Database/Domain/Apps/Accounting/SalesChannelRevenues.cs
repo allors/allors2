@@ -31,12 +31,10 @@ namespace Allors.Domain
                 salesChannelRevenues.Filter.AddEquals(M.SalesChannelRevenue.Year, invoice.InvoiceDate.Year);
                 salesChannelRevenues.Filter.AddEquals(M.SalesChannelRevenue.Month, invoice.InvoiceDate.Month);
                 salesChannelRevenue = salesChannelRevenues.First ?? new SalesChannelRevenueBuilder(session)
-                                                                            .WithInternalOrganisation(invoice.BilledFromInternalOrganisation)
                                                                             .WithSalesChannel((SalesChannel)session.Instantiate(invoice.SalesChannel))
                                                                             .WithYear(invoice.InvoiceDate.Year)
                                                                             .WithMonth(invoice.InvoiceDate.Month)
-                                                                            .WithCurrency(invoice.BilledFromInternalOrganisation.PreferredCurrency)
-                                                                            .WithRevenue(0M)
+                                                                            .WithCurrency(InternalOrganisation.Instance(session).PreferredCurrency)
                                                                             .Build();
             }
 
@@ -144,12 +142,10 @@ namespace Allors.Domain
         private static SalesChannelRevenue CreateSalesChannelRevenue(ISession session, SalesInvoice invoice)
         {
             return new SalesChannelRevenueBuilder(session)
-                        .WithInternalOrganisation(invoice.BilledFromInternalOrganisation)
                         .WithSalesChannel(invoice.SalesChannel)
                         .WithYear(invoice.InvoiceDate.Year)
                         .WithMonth(invoice.InvoiceDate.Month)
-                        .WithCurrency(invoice.BilledFromInternalOrganisation.PreferredCurrency)
-                        .WithRevenue(0M)
+                        .WithCurrency(InternalOrganisation.Instance(session).PreferredCurrency)
                         .Build();
         }
     }

@@ -28,8 +28,7 @@ namespace Allors.Domain
 
             if (salesRepCommission == null)
             {
-                salesRepCommission = new SalesRepCommissionBuilder(session)
-                    .WithInternalOrganisation(dependant.InternalOrganisation)
+                new SalesRepCommissionBuilder(session)
                     .WithSalesRep(dependant.SalesRep)
                     .WithYear(dependant.Year)
                     .WithMonth(dependant.Month)

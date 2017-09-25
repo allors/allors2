@@ -2,15 +2,13 @@ namespace Allors.Repository
 {
     using System;
 
-    using Allors.Repository.Attributes;
+    using Attributes;
 
     #region Allors
     [Id("9c6f4ad8-5a4e-4b6e-96b7-876f7aabcffb")]
     #endregion
 	public partial interface Shipment : Printable, Transitional, UniquelyIdentifiable, AccessControlledObject 
     {
-
-
         #region Allors
         [Id("05221b28-9c80-4d3b-933f-12a8a17bc261")]
         [AssociationId("c59ef057-da9a-433f-90d3-5ff657aa1e48")]
@@ -99,18 +97,6 @@ namespace Allors.Repository
         [Indexed]
 
         ShipmentItem[] ShipmentItems { get; set; }
-
-
-        #region Allors
-        [Id("6b90885f-9421-442a-b517-b85c6fe3c60d")]
-        [AssociationId("b4df53d0-3970-45bf-bcfb-251dc18ebb46")]
-        [RoleId("215a7b54-93d9-455c-9979-759b116677cd")]
-        #endregion
-        [Multiplicity(Multiplicity.ManyToOne)]
-        [Indexed]
-
-        InternalOrganisation BillFromInternalOrganisation { get; set; }
-
 
         #region Allors
         [Id("78e7e7a5-2d8c-4184-b917-10095dc033b1")]

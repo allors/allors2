@@ -2,7 +2,7 @@ namespace Allors.Repository
 {
     using System;
 
-    using Allors.Repository.Attributes;
+    using Attributes;
 
     #region Allors
     [Id("6c8503ec-3796-4861-af47-b1aa4e911292")]
@@ -32,15 +32,7 @@ namespace Allors.Repository
         [Required]
 
         public int Month { get; set; }
-        #region Allors
-        [Id("558ed9e0-81a0-4e6c-abd3-4e27e665deee")]
-        [AssociationId("e1e94fa4-ac8f-44c2-9982-a05ad1eb3f8e")]
-        [RoleId("125f6b43-2204-43cb-819b-4b2b940630cc")]
-        #endregion
-        [Multiplicity(Multiplicity.ManyToOne)]
-        [Indexed]
 
-        public InternalOrganisation InternalOrganisation { get; set; }
         #region Allors
         [Id("6127124a-c07d-49b7-8ecd-fb42d50c4c69")]
         [AssociationId("6e095e71-bcdf-4b94-8880-b6a888eec2bf")]

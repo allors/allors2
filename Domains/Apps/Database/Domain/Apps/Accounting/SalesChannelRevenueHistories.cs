@@ -120,7 +120,6 @@ namespace Allors.Domain
         {
             return new SalesChannelRevenueHistoryBuilder(session)
                         .WithCurrency(salesChannelRevenue.Currency)
-                        .WithInternalOrganisation(salesChannelRevenue.InternalOrganisation)
                         .WithSalesChannel(salesChannelRevenue.SalesChannel)
                         .WithRevenue(0)
                         .Build();
