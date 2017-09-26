@@ -40,7 +40,7 @@ namespace Allors.Domain
         private FinishedGood part;
         private Colour feature1;
         private Colour feature2;
-        private InternalOrganisation internalOrganisation;
+        private Singleton internalOrganisation;
         private Organisation shipToCustomer;
         private Organisation billToCustomer;
         private Organisation supplier;
@@ -62,7 +62,7 @@ namespace Allors.Domain
         {
             var euro = new Currencies(this.DatabaseSession).FindBy(M.Currency.IsoCode, "EUR");
 
-            this.internalOrganisation = InternalOrganisation.Instance(this.DatabaseSession);
+            this.internalOrganisation = Singleton.Instance(this.DatabaseSession);
             this.internalOrganisation.PreferredCurrency = euro;
 
             this.supplier = new OrganisationBuilder(this.DatabaseSession).WithName("supplier").WithOrganisationRole(new OrganisationRoles(this.DatabaseSession).Supplier).Build();
@@ -119,21 +119,21 @@ namespace Allors.Domain
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.DatabaseSession).Piece)
                 .Build();
 
-            this.internalOrganisation.AddSupplier(this.supplier);
+            
 
-            this.internalOrganisation.AddCustomer(this.billToCustomer);
-            this.internalOrganisation.AddCustomer(this.shipToCustomer);
+            
+            
 
             //this.partyRevenueHistory = new PartyRevenueHistoryBuilder(this.DatabaseSession)
             //    .WithCurrency(euro)
-            //    .WithInternalOrganisation(this.internalOrganisation)
+            //    .WithSingleton(this.internalOrganisation)
             //    .WithParty(this.billToCustomer)
             //    .WithRevenue(100M)
             //    .Build();
 
             //this.productCategoryRevenueHistory = new PartyProductCategoryRevenueHistoryBuilder(this.DatabaseSession)
             //    .WithCurrency(euro)
-            //    .WithInternalOrganisation(this.internalOrganisation)
+            //    .WithSingleton(this.internalOrganisation)
             //    .WithParty(this.billToCustomer)
             //    .WithProductCategory(this.productCategory)
             //    .WithRevenue(100M)
@@ -142,7 +142,7 @@ namespace Allors.Domain
 
             //this.parentProductCategoryRevenueHistory = new PartyProductCategoryRevenueHistoryBuilder(this.DatabaseSession)
             //    .WithCurrency(euro)
-            //    .WithInternalOrganisation(this.internalOrganisation)
+            //    .WithSingleton(this.internalOrganisation)
             //    .WithParty(this.billToCustomer)
             //    .WithProductCategory(this.parentProductCategory)
             //    .WithRevenue(100M)
@@ -151,7 +151,7 @@ namespace Allors.Domain
 
             //this.ancestorProductCategoryRevenueHistory = new PartyProductCategoryRevenueHistoryBuilder(this.DatabaseSession)
             //    .WithCurrency(euro)
-            //    .WithInternalOrganisation(this.internalOrganisation)
+            //    .WithSingleton(this.internalOrganisation)
             //    .WithParty(this.billToCustomer)
             //    .WithProductCategory(this.ancestorProductCategory)
             //    .WithRevenue(100M)
@@ -633,7 +633,7 @@ namespace Allors.Domain
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.DatabaseSession).Piece)
                 .Build();
 
-            this.internalOrganisation.AddSupplier(this.supplier);
+            
 
             new SupplierOfferingBuilder(this.DatabaseSession)
                 .WithProduct(good2)
@@ -1919,7 +1919,7 @@ namespace Allors.Domain
             this.good = (Good)session.Instantiate(this.good);
             this.feature1 = (Colour)session.Instantiate(this.feature1);
             this.feature2 = (Colour)session.Instantiate(this.feature2);
-            this.internalOrganisation = (InternalOrganisation)session.Instantiate(this.internalOrganisation);
+            this.internalOrganisation = (Singleton)session.Instantiate(this.internalOrganisation);
             this.shipToCustomer = (Organisation)session.Instantiate(this.shipToCustomer);
             this.billToCustomer = (Organisation)session.Instantiate(this.billToCustomer);
             this.supplier = (Organisation)session.Instantiate(this.supplier);

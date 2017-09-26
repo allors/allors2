@@ -42,23 +42,23 @@ namespace Allors.Domain
         }
 
         [Fact]
-        public void GivenLoggedUserIsAdministrator_WhenAccessingInternalOrganisation_ThenLoggedInUserIsGrantedAccess()
+        public void GivenLoggedUserIsAdministrator_WhenAccessingSingleton_ThenLoggedInUserIsGrantedAccess()
         {
             var existingAdministrator = new People(this.DatabaseSession).FindBy(M.Person.UserName, Users.AdministratorUserName);
             var secondAdministrator = new PersonBuilder(this.DatabaseSession).WithLastName("second admin").WithPersonRole(new PersonRoles(this.DatabaseSession).Employee).Build();
             Assert.False(secondAdministrator.IsAdministrator);
 
-            var internalOrganisation = InternalOrganisation.Instance(this.DatabaseSession);
+            var internalOrganisation = Singleton.Instance(this.DatabaseSession);
 
             this.DatabaseSession.Derive();
 
             this.SetIdentity(Users.AdministratorUserName);
 
             var acl = new AccessControlList(internalOrganisation, existingAdministrator);
-            Assert.True(acl.CanWrite(M.InternalOrganisation.Name));
+            Assert.True(acl.CanWrite(M.Singleton.Name));
             
             acl = new AccessControlList(internalOrganisation, secondAdministrator);
-            Assert.False(acl.CanRead(M.InternalOrganisation.Name));
+            Assert.False(acl.CanRead(M.Singleton.Name));
 
             var administrators = new UserGroups(this.DatabaseSession).Administrators;
             administrators.AddMember(secondAdministrator);
@@ -68,7 +68,7 @@ namespace Allors.Domain
             Assert.True(secondAdministrator.IsAdministrator);
 
             acl = new AccessControlList(internalOrganisation, secondAdministrator);
-            Assert.True(acl.CanWrite(M.InternalOrganisation.Name));
+            Assert.True(acl.CanWrite(M.Singleton.Name));
         }
 
         [Fact]
@@ -77,7 +77,7 @@ namespace Allors.Domain
             var contact = new PersonBuilder(this.DatabaseSession).WithLastName("organisationContact").WithPersonRole(new PersonRoles(this.DatabaseSession).Contact).Build();
             var organisation = new OrganisationBuilder(this.DatabaseSession).WithName("organisation").WithOrganisationRole(new OrganisationRoles(this.DatabaseSession).Customer).Build();
 
-            InternalOrganisation.Instance(this.DatabaseSession).AddCustomer(organisation);
+            
 
             new OrganisationContactRelationshipBuilder(this.DatabaseSession)
                 .WithContact(contact)
@@ -97,7 +97,7 @@ namespace Allors.Domain
             var contact = new PersonBuilder(this.DatabaseSession).WithLastName("organisationContact").WithPersonRole(new PersonRoles(this.DatabaseSession).Contact).Build();
             var organisation = new OrganisationBuilder(this.DatabaseSession).WithName("organisation").WithOrganisationRole(new OrganisationRoles(this.DatabaseSession).Customer).Build();
 
-            InternalOrganisation.Instance(this.DatabaseSession).AddCustomer(organisation);
+            
 
             new OrganisationContactRelationshipBuilder(this.DatabaseSession)
                 .WithContact(contact)

@@ -63,9 +63,7 @@ namespace Allors.Domain
                 .Build();
 
             Assert.Equal(ErrorMessages.PartyIsNotASupplier, this.DatabaseSession.Derive(false).Errors[0].Message);
-
-            InternalOrganisation.Instance(this.DatabaseSession).AddSupplier(supplier2);
-           
+          
             Assert.False(this.DatabaseSession.Derive(false).HasErrors);
         }
 
@@ -82,7 +80,7 @@ namespace Allors.Domain
                 .WithBankAccount(new BankAccountBuilder(this.DatabaseSession).WithBank(bank).WithCurrency(euro).WithIban("BE23 3300 6167 6391").WithNameOnAccount("Koen").Build())
                 .Build();
 
-            var internalOrganisation = new InternalOrganisationBuilder(this.DatabaseSession)
+            var internalOrganisation = new SingletonBuilder(this.DatabaseSession)
                 .WithName("org")
                 .WithDefaultPaymentMethod(ownBankAccount)
                 .WithPreferredCurrency(euro)

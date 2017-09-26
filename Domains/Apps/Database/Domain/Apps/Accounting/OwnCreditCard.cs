@@ -32,8 +32,8 @@ namespace Allors.Domain
         {
             var derivation = method.Derivation;
 
-            if (this.ExistInternalOrganisationWherePaymentMethod && this.InternalOrganisationWherePaymentMethod.DoAccounting)
-            { 
+            if (this.ExistSingletonWhereActivePaymentMethod && this.SingletonWhereActivePaymentMethod.DoAccounting)
+            {
                 derivation.Validation.AssertExists(this, M.OwnCreditCard.Creditor);
                 derivation.Validation.AssertAtLeastOne(this, M.Cash.GeneralLedgerAccount, M.Cash.Journal);
             }

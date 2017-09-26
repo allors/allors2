@@ -29,7 +29,7 @@ namespace Allors.Domain
     {
         private Person contact;
         private Organisation supplier;
-        private InternalOrganisation internalOrganisation;
+        private Singleton internalOrganisation;
         
         public SupplierRelationshipTests()
         {
@@ -42,7 +42,7 @@ namespace Allors.Domain
 
             this.DatabaseSession.Derive();
 
-            this.internalOrganisation = InternalOrganisation.Instance(this.DatabaseSession);
+            this.internalOrganisation = Singleton.Instance(this.DatabaseSession);
 
             new OrganisationContactRelationshipBuilder(this.DatabaseSession)
                 .WithOrganisation(this.supplier)
@@ -50,7 +50,7 @@ namespace Allors.Domain
                 .WithFromDate(DateTime.UtcNow)
                 .Build();
 
-            this.internalOrganisation.AddSupplier(this.supplier);
+            
 
             this.DatabaseSession.Derive();
             this.DatabaseSession.Commit();
@@ -91,17 +91,11 @@ namespace Allors.Domain
             Assert.False(this.supplier.ContactsUserGroup.Members.Contains(contact2));
         }
 
-        [Fact]
-        public void GivenActiveSupplierRelationship_WhenDeriving_ThenInternalOrganisationSuppliersContainsSupplier()
-        {
-            Assert.Contains(this.supplier, this.internalOrganisation.Suppliers);
-        }
-
         private void InstantiateObjects(ISession session)
         {
             this.contact = (Person)session.Instantiate(this.contact);
             this.supplier = (Organisation)session.Instantiate(this.supplier);
-            this.internalOrganisation = (InternalOrganisation)session.Instantiate(this.internalOrganisation);
+            this.internalOrganisation = (Singleton)session.Instantiate(this.internalOrganisation);
         }
     }
 }

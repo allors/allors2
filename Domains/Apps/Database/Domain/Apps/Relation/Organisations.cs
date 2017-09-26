@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------------------------------------------
-// <copyright file="InternalOrganisations.cs" company="Allors bvba">
+// <copyright file="Organisations.cs" company="Allors bvba">
 //   Copyright 2002-2012 Allors bvba.
 // Dual Licensed under
 //   a) the General Public Licence v3 (GPL)
@@ -13,16 +13,31 @@
 // For more information visit http://www.allors.com/legal
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
+
 namespace Allors.Domain
 {
     using Meta;
 
-    public partial class InternalOrganisations
+    public partial class Organisations
     {
-        protected override void AppsPrepare(Setup setup)
+        public Extent<Organisation> Suppliers
         {
-            setup.AddDependency(this.Meta.ObjectType, M.Role); 
-            setup.AddDependency(this.Meta.ObjectType, M.InvoiceSequence);
+            get
+            {
+                var suppliers = new Organisations(this.Session).Extent();
+                suppliers.Filter.AddContains(M.Organisation.OrganisationRoles, new OrganisationRoles(this.Session).Supplier);
+                return suppliers;
+            }
+        }
+
+        public Extent<Organisation> Customers
+        {
+            get
+            {
+                var customers = new Organisations(this.Session).Extent();
+                customers.Filter.AddContains(M.Organisation.OrganisationRoles, new OrganisationRoles(this.Session).Customer);
+                return customers;
+            }
         }
     }
 }

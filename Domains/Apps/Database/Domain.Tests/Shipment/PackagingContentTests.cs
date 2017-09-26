@@ -40,8 +40,8 @@ namespace Allors.Domain
                 .Build();
 
             var customer = new PersonBuilder(this.DatabaseSession).WithLastName("customer").WithPartyContactMechanism(shipToMechelen).WithPersonRole(new PersonRoles(this.DatabaseSession).Customer).Build();
-            var internalOrganisation = InternalOrganisation.Instance(this.DatabaseSession);
-            internalOrganisation.AddCustomer(customer);
+            var internalOrganisation = Singleton.Instance(this.DatabaseSession);
+            
 
             var vatRate21 = new VatRateBuilder(this.DatabaseSession).WithRate(21).Build();
 
@@ -112,8 +112,8 @@ namespace Allors.Domain
                 .Build();
 
             var customer = new PersonBuilder(this.DatabaseSession).WithLastName("customer").WithPartyContactMechanism(shipToMechelen).WithPersonRole(new PersonRoles(this.DatabaseSession).Customer).Build();
-            var internalOrganisation = InternalOrganisation.Instance(this.DatabaseSession);
-            internalOrganisation.AddCustomer(customer);
+            var internalOrganisation = Singleton.Instance(this.DatabaseSession);
+            
 
             var vatRate21 = new VatRateBuilder(this.DatabaseSession).WithRate(21).Build();
             var good1 = new GoodBuilder(this.DatabaseSession)

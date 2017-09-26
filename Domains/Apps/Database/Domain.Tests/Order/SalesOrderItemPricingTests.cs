@@ -38,7 +38,7 @@ namespace Allors.Domain
         private FinishedGood part;
         private Colour feature1;
         private Colour feature2;
-        private InternalOrganisation internalOrganisation;
+        private Singleton internalOrganisation;
         private Organisation shipToCustomer;
         private Organisation billToCustomer;
         private Organisation supplier;
@@ -61,7 +61,7 @@ namespace Allors.Domain
         {
             var euro = new Currencies(this.DatabaseSession).FindBy(M.Currency.IsoCode, "EUR");
 
-            this.internalOrganisation = InternalOrganisation.Instance(this.DatabaseSession);
+            this.internalOrganisation = Singleton.Instance(this.DatabaseSession);
             this.internalOrganisation.PreferredCurrency = euro;
 
             this.supplier = new OrganisationBuilder(this.DatabaseSession).WithName("supplier").WithOrganisationRole(new OrganisationRoles(this.DatabaseSession).Supplier).Build();
@@ -1787,21 +1787,21 @@ namespace Allors.Domain
                 .Build();
 
             //new PartyPackageRevenueHistoryBuilder(this.DatabaseSession)
-            //    .WithInternalOrganisation(this.internalOrganisation)
+            //    .WithSingleton(this.internalOrganisation)
             //    .WithParty(this.billToCustomer)
             //    .WithPackage(package1)
             //    .WithRevenue(100M)
             //    .Build();
 
             //var package2RevenueHistory = new PartyPackageRevenueHistoryBuilder(this.DatabaseSession)
-            //    .WithInternalOrganisation(this.internalOrganisation)
+            //    .WithSingleton(this.internalOrganisation)
             //    .WithParty(this.billToCustomer)
             //    .WithPackage(package2)
             //    .WithRevenue(100M)
             //    .Build();
 
             //var package3RevenueHistory = new PartyPackageRevenueHistoryBuilder(this.DatabaseSession)
-            //    .WithInternalOrganisation(this.internalOrganisation)
+            //    .WithSingleton(this.internalOrganisation)
             //    .WithParty(this.billToCustomer)
             //    .WithPackage(package3)
             //    .WithRevenue(100M)
@@ -1871,21 +1871,21 @@ namespace Allors.Domain
                 .Build();
 
             //new PartyPackageRevenueHistoryBuilder(this.DatabaseSession)
-            //    .WithInternalOrganisation(this.internalOrganisation)
+            //    .WithSingleton(this.internalOrganisation)
             //    .WithParty(this.billToCustomer)
             //    .WithPackage(new PackageBuilder(this.DatabaseSession).WithName("package1").Build())
             //    .WithRevenue(100M)
             //    .Build();
 
             //var package2RevenueHistory = new PartyPackageRevenueHistoryBuilder(this.DatabaseSession)
-            //    .WithInternalOrganisation(this.internalOrganisation)
+            //    .WithSingleton(this.internalOrganisation)
             //    .WithParty(this.billToCustomer)
             //    .WithPackage(new PackageBuilder(this.DatabaseSession).WithName("package2").Build())
             //    .WithRevenue(100M)
             //    .Build();
 
             //var package3RevenueHistory = new PartyPackageRevenueHistoryBuilder(this.DatabaseSession)
-            //    .WithInternalOrganisation(this.internalOrganisation)
+            //    .WithSingleton(this.internalOrganisation)
             //    .WithParty(this.billToCustomer)
             //    .WithPackage(new PackageBuilder(this.DatabaseSession).WithName("package3").Build())
             //    .WithRevenue(100M)
@@ -1969,21 +1969,21 @@ namespace Allors.Domain
                 .Build();
 
             //new PartyPackageRevenueHistoryBuilder(this.DatabaseSession)
-            //    .WithInternalOrganisation(this.internalOrganisation)
+            //    .WithSingleton(this.internalOrganisation)
             //    .WithParty(this.billToCustomer)
             //    .WithPackage(new PackageBuilder(this.DatabaseSession).WithName("package1").Build())
             //    .WithRevenue(100M)
             //    .Build();
 
             //var package2RevenueHistory = new PartyPackageRevenueHistoryBuilder(this.DatabaseSession)
-            //    .WithInternalOrganisation(this.internalOrganisation)
+            //    .WithSingleton(this.internalOrganisation)
             //    .WithParty(this.billToCustomer)
             //    .WithPackage(new PackageBuilder(this.DatabaseSession).WithName("package2").Build())
             //    .WithRevenue(100M)
             //    .Build();
 
             //var package3RevenueHistory = new PartyPackageRevenueHistoryBuilder(this.DatabaseSession)
-            //    .WithInternalOrganisation(this.internalOrganisation)
+            //    .WithSingleton(this.internalOrganisation)
             //    .WithParty(this.billToCustomer)
             //    .WithPackage(new PackageBuilder(this.DatabaseSession).WithName("package3").Build())
             //    .WithRevenue(100M)
@@ -4336,7 +4336,7 @@ namespace Allors.Domain
             this.good = (Good)session.Instantiate(this.good);
             this.feature1 = (Colour)session.Instantiate(this.feature1);
             this.feature2 = (Colour)session.Instantiate(this.feature2);
-            this.internalOrganisation = (InternalOrganisation)session.Instantiate(this.internalOrganisation);
+            this.internalOrganisation = (Singleton)session.Instantiate(this.internalOrganisation);
             this.shipToCustomer = (Organisation)session.Instantiate(this.shipToCustomer);
             this.billToCustomer = (Organisation)session.Instantiate(this.billToCustomer);
             this.supplier = (Organisation)session.Instantiate(this.supplier);

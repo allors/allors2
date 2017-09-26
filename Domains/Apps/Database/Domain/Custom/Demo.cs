@@ -59,8 +59,11 @@ namespace Allors
                 .WithUseAsDefault(true)
                 .Build();
 
-            var ing = new BankBuilder(this.Session).WithName("ING België")
-                .WithBic("BBRUBEBB").WithCountry(belgium).Build();
+            var ing = new BankBuilder(this.Session)
+                .WithName("ING België")
+                .WithBic("BBRUBEBB")
+                .WithCountry(belgium)
+                .Build();
 
             var bankaccount = new BankAccountBuilder(this.Session)
                 .WithBank(ing)
@@ -69,22 +72,21 @@ namespace Allors
                 .WithCurrency(euro)
                 .Build();
 
-            var allors = new InternalOrganisationBuilder(this.Session)
-                .WithTaxNumber("BE 0476967014")
-                .WithName("Allors")
-                .WithPartyContactMechanism(billing)
-                .WithPartyContactMechanism(generalPhoneNumber)
-                .WithPartyContactMechanism(generalEmail)
-                .WithBankAccount(bankaccount)
-                .WithDefaultPaymentMethod(new OwnBankAccountBuilder(Session).WithBankAccount(bankaccount).WithDescription("Hoofdbank").Build())
-                .WithRequestNumberPrefix("requestno: ")
-                .WithQuoteNumberPrefix("quoteno: ")
-                .WithPreferredCurrency(euro)
-                .WithInvoiceSequence(new InvoiceSequences(this.Session).EnforcedSequence)
-                .WithFiscalYearStartMonth(01)
-                .WithFiscalYearStartDay(01)
-                .WithDoAccounting(false)
-                .Build();
+            var singleton = Singleton.Instance(this.Session);
+            singleton.TaxNumber = "BE 0476967014";
+            singleton.Name = "Allors";
+            singleton.AddPartyContactMechanism(billing);
+            singleton.AddPartyContactMechanism(generalPhoneNumber);
+            singleton.AddPartyContactMechanism(generalEmail);
+            singleton.AddBankAccount(bankaccount);
+            singleton.DefaultPaymentMethod = new OwnBankAccountBuilder(Session).WithBankAccount(bankaccount).WithDescription("Hoofdbank").Build();
+            singleton.RequestNumberPrefix = "requestno: ";
+            singleton.QuoteNumberPrefix = "quoteno: ";
+            singleton.PreferredCurrency = euro;
+            singleton.InvoiceSequence = new InvoiceSequences(this.Session).EnforcedSequence;
+            singleton.FiscalYearStartMonth = 01;
+            singleton.FiscalYearStartDay = 01;
+            singleton.DoAccounting = false;
 
             var logo = this.DataPath + @"\admin\images\logo.png";
 
@@ -95,11 +97,11 @@ namespace Allors
                 var fileName = System.IO.Path.GetFileNameWithoutExtension(fileInfo.FullName).ToLowerInvariant();
                 var content = File.ReadAllBytes(fileInfo.FullName);
                 var image = new MediaBuilder(this.Session).WithFileName(fileName).WithInData(content).Build();
-                allors.LogoImage = image;
+                singleton.LogoImage = image;
             }
 
             var offices = new OfficeBuilder(this.Session).WithName("Headquarters").WithDescription("Allors HQ").Build();
-            allors.DefaultFacility = offices;
+            singleton.DefaultFacility = offices;
             
             new StoreBuilder(this.Session)
                 .WithName("Allors store")

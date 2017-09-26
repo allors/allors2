@@ -34,7 +34,7 @@ namespace Allors.Domain
 
             if (!this.ExistInvoiceNumber)
             {
-                this.InvoiceNumber = InternalOrganisation.Instance(this.strategy.Session).DeriveNextPurchaseInvoiceNumber();
+                this.InvoiceNumber = Singleton.Instance(this).DeriveNextPurchaseInvoiceNumber();
             }
 
             if (!this.ExistInvoiceDate)
@@ -51,7 +51,7 @@ namespace Allors.Domain
         public void AppsOnPreDerive(ObjectOnPreDerive method)
         {
             var derivation = method.Derivation;
-            var internalOrganisation = InternalOrganisation.Instance(this.strategy.Session);
+            var internalOrganisation = Singleton.Instance(this);
 
             // TODO:
             if (derivation.HasChangedRoles(this))
@@ -65,7 +65,7 @@ namespace Allors.Domain
                 if (supplier != null)
                 {
                     // TODO: Isn't this too broad?
-                    foreach (Party supplierRelationship in internalOrganisation.Suppliers)
+                    foreach (Organisation supplierRelationship in new Organisations(this.strategy.Session).Suppliers)
                     {
                         derivation.AddDependency(this, supplierRelationship);
                     }

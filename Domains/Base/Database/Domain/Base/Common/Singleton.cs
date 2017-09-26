@@ -26,6 +26,11 @@ namespace Allors.Domain
     {
         private const string SessionKey = nameof(Singleton) + ".Key";
 
+        public static Singleton Instance(IObject @object)
+        {
+            return Instance(@object.Strategy.Session);
+        }
+
         public static Singleton Instance(ISession session)
         {
             var instance = (Singleton)session[SessionKey] ?? session.Extent<Singleton>().First;

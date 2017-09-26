@@ -80,11 +80,8 @@ namespace Allors.Domain
                 .WithPrimaryProductCategory(cat2)
                 .Build();
 
-            var internalOrganisation = InternalOrganisation.Instance(this.DatabaseSession);
+            var internalOrganisation = Singleton.Instance(this.DatabaseSession);
             internalOrganisation.PreferredCurrency = euro;
-
-            internalOrganisation.AddCustomer(customer1);
-            internalOrganisation.AddCustomer(customer2);
 
             this.DatabaseSession.Derive();
 

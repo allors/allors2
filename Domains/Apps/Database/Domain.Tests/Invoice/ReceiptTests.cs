@@ -25,22 +25,19 @@ namespace Allors.Domain
     using Meta;
     using Xunit;
 
-    
     public class ReceiptTests : DomainTest
     {
+        private Singleton Singleton;
         private Good good;
-        private InternalOrganisation internalOrganisation;
         private Organisation billToCustomer;
         
         public ReceiptTests()
         {
             var euro = new Currencies(this.DatabaseSession).FindBy(M.Currency.IsoCode, "EUR");
 
-            this.internalOrganisation = InternalOrganisation.Instance(this.DatabaseSession);
+            this.Singleton = Singleton.Instance(this.DatabaseSession);
             this.billToCustomer = new OrganisationBuilder(this.DatabaseSession).WithName("billToCustomer").WithPreferredCurrency(euro).WithOrganisationRole(new OrganisationRoles(this.DatabaseSession).Customer).Build();
             var supplier = new OrganisationBuilder(this.DatabaseSession).WithName("supplier").WithLocale(new Locales(this.DatabaseSession).EnglishGreatBritain).WithOrganisationRole(new OrganisationRoles(this.DatabaseSession).Supplier).Build();
-
-            this.internalOrganisation.AddCustomer(this.billToCustomer);
 
             this.good = new GoodBuilder(this.DatabaseSession)
                 .WithSku("10101")
@@ -143,9 +140,10 @@ namespace Allors.Domain
 
             var billToContactMechanism = new EmailAddressBuilder(this.DatabaseSession).WithElectronicAddressString("info@allors.com").Build();
 
-            var customer = new PersonBuilder(this.DatabaseSession).WithLastName("customer").WithPersonRole(new PersonRoles(this.DatabaseSession).Customer).Build();
-
-            InternalOrganisation.Instance(this.DatabaseSession).AddCustomer(customer);
+            var customer = new PersonBuilder(this.DatabaseSession)
+                .WithLastName("customer")
+                .WithPersonRole(new PersonRoles(this.DatabaseSession).Customer)
+                .Build();
 
             var invoice = new SalesInvoiceBuilder(this.DatabaseSession)
                 .WithBillToCustomer(customer)
@@ -183,7 +181,7 @@ namespace Allors.Domain
         private void InstantiateObjects(ISession session)
         {
             this.good = (Good)session.Instantiate(this.good);
-            this.internalOrganisation = (InternalOrganisation)session.Instantiate(this.internalOrganisation);
+            this.Singleton = (Singleton)session.Instantiate(this.Singleton);
             this.billToCustomer = (Organisation)session.Instantiate(this.billToCustomer);
         }
     }

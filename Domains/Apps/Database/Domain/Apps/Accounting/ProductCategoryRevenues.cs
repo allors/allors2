@@ -154,7 +154,7 @@ namespace Allors.Domain
                         .WithProductCategoryName(productCategory.Description)
                         .WithYear(invoice.InvoiceDate.Year)
                         .WithMonth(invoice.InvoiceDate.Month)
-                        .WithCurrency(InternalOrganisation.Instance(session).PreferredCurrency)
+                        .WithCurrency(Singleton.Instance(session).PreferredCurrency)
                         .Build();
         }
     }

@@ -31,7 +31,7 @@ namespace Allors.Domain
         private Good good;
         private Colour feature1;
         private Colour feature2;
-        private InternalOrganisation internalOrganisation;
+        private Singleton internalOrganisation;
         private Organisation billToCustomer;
         private Organisation shipToCustomer;
         private Organisation supplier;
@@ -54,7 +54,7 @@ namespace Allors.Domain
 
             this.supplier = new OrganisationBuilder(this.DatabaseSession).WithName("supplier").WithLocale(new Locales(this.DatabaseSession).EnglishGreatBritain).WithOrganisationRole(new OrganisationRoles(this.DatabaseSession).Supplier).Build();
 
-            this.internalOrganisation = InternalOrganisation.Instance(this.DatabaseSession);
+            this.internalOrganisation = Singleton.Instance(this.DatabaseSession);
 
             this.vatRate21 = new VatRateBuilder(this.DatabaseSession).WithRate(21).Build();
 
@@ -66,9 +66,6 @@ namespace Allors.Domain
             this.billToCustomer = new OrganisationBuilder(this.DatabaseSession).WithName("billToCustomer").WithPreferredCurrency(euro).WithOrganisationRole(new OrganisationRoles(this.DatabaseSession).Customer).Build();
 
             this.shipToCustomer = new OrganisationBuilder(this.DatabaseSession).WithName("shipToCustomer").WithPreferredCurrency(euro).WithOrganisationRole(new OrganisationRoles(this.DatabaseSession).Customer).Build();
-
-            this.internalOrganisation.AddCustomer(this.billToCustomer);
-            this.internalOrganisation.AddCustomer(this.shipToCustomer);
 
             this.DatabaseSession.Derive();
 
@@ -2465,7 +2462,7 @@ namespace Allors.Domain
             this.good = (Good)session.Instantiate(this.good);
             this.feature1 = (Colour)session.Instantiate(this.feature1);
             this.feature2 = (Colour)session.Instantiate(this.feature2);
-            this.internalOrganisation = (InternalOrganisation)session.Instantiate(this.internalOrganisation);
+            this.internalOrganisation = (Singleton)session.Instantiate(this.internalOrganisation);
             this.billToCustomer = (Organisation)session.Instantiate(this.billToCustomer);
             this.shipToCustomer = (Organisation)session.Instantiate(this.shipToCustomer);
             this.supplier = (Organisation)session.Instantiate(this.supplier);

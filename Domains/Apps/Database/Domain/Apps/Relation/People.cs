@@ -17,12 +17,25 @@ using System;
 
 namespace Allors.Domain
 {
+    using System.Collections.Generic;
+
     using Meta;
 
     public partial class People
     {
         public static readonly Guid AdministratorId = new Guid("FF791BA1-6E02-4F64-83A3-E6BEE1208C11");
         public static readonly Guid GuestId = new Guid("1261CB56-67F2-4725-AF7D-604A117ABBEC");
+
+        public Extent<Person> Employees
+        {
+            get
+            {
+                var employees = new People(this.Session).Extent();
+                var employeeRole = new PersonRoles(this.Session).Employee;
+                employees.Filter.AddContains(M.Person.PersonRoles, employeeRole);
+                return employees;
+            }
+        }
 
         public static void AppsOnDeriveCommissions(ISession session)
         {

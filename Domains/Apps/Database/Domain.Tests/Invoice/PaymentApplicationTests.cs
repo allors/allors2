@@ -25,7 +25,6 @@ namespace Allors.Domain
     using Meta;
     using Xunit;
 
-    
     public class PaymentApplicationTests : DomainTest
     {
         [Fact]
@@ -34,7 +33,6 @@ namespace Allors.Domain
             var billToContactMechanism = new EmailAddressBuilder(this.DatabaseSession).WithElectronicAddressString("info@allors.com").Build();
 
             var customer = new PersonBuilder(this.DatabaseSession).WithLastName("customer").WithPersonRole(new PersonRoles(this.DatabaseSession).Customer).Build();
-            InternalOrganisation.Instance(this.DatabaseSession).AddCustomer(customer);
 
             new SalesInvoiceBuilder(this.DatabaseSession)
                 .WithBillToCustomer(customer)
@@ -78,7 +76,6 @@ namespace Allors.Domain
                 .Build();
 
             var customer = new PersonBuilder(this.DatabaseSession).WithLastName("customer").WithPersonRole(new PersonRoles(this.DatabaseSession).Customer).Build();
-            InternalOrganisation.Instance(this.DatabaseSession).AddCustomer(customer);
 
             var invoice = new SalesInvoiceBuilder(this.DatabaseSession)
                 .WithBillToCustomer(customer)

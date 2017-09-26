@@ -156,9 +156,9 @@ namespace Allors.Domain
                 }
                 else
                 {
-                    this.CustomerCurrency = InternalOrganisation.Instance(this.strategy.Session).ExistPreferredCurrency ?
-                                                InternalOrganisation.Instance(this.strategy.Session).PreferredCurrency :
-                                                InternalOrganisation.Instance(this.strategy.Session).PreferredLocale.Country.Currency;
+                    this.CustomerCurrency = Singleton.Instance(this).ExistPreferredCurrency ?
+                                                Singleton.Instance(this).PreferredCurrency :
+                                                Singleton.Instance(this).PreferredLocale.Country.Currency;
                 }
             }
         }
@@ -189,7 +189,7 @@ namespace Allors.Domain
 
             if (!this.ExistBilledFromContactMechanism)
             {
-                this.BilledFromContactMechanism = InternalOrganisation.Instance(this.strategy.Session).BillingAddress;
+                this.BilledFromContactMechanism = Singleton.Instance(this).BillingAddress;
             }
 
             if (!this.ExistShipToAddress && this.ExistShipToCustomer)
@@ -307,8 +307,8 @@ namespace Allors.Domain
             }
             else
             {
-                this.Locale = InternalOrganisation.Instance(this.strategy.Session).ExistPreferredLocale ?
-                                  InternalOrganisation.Instance(this.strategy.Session).PreferredLocale : Singleton.Instance(this.Strategy.Session).DefaultLocale;
+                this.Locale = Singleton.Instance(this).ExistPreferredLocale ?
+                                  Singleton.Instance(this).PreferredLocale : Singleton.Instance(this.Strategy.Session).DefaultLocale;
             }
         }
 

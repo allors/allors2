@@ -212,7 +212,7 @@ namespace Allors.Domain
             decimal discountAdjustmentAmount = 0;
             decimal surchargeAdjustmentAmount = 0;
 
-            var internalOrganisation = InternalOrganisation.Instance(this.strategy.Session);
+            var internalOrganisation = Singleton.Instance(this);
             var customer = this.SalesInvoiceWhereSalesInvoiceItem.BillToCustomer;
             var salesInvoice = this.SalesInvoiceWhereSalesInvoiceItem;
 
@@ -261,7 +261,7 @@ namespace Allors.Domain
 
             if (!this.ExistActualUnitPrice)
             {
-                var priceComponents = this.GetPriceComponents(internalOrganisation);
+                var priceComponents = this.GetPriceComponents();
 
                 var revenueBreakDiscount = 0M;
                 var revenueBreakSurcharge = 0M;
@@ -379,7 +379,7 @@ namespace Allors.Domain
             this.AppsOnDeriveMarkupAndProfitMargin(derivation);
         }
 
-        private IEnumerable<PriceComponent> GetPriceComponents(InternalOrganisation internalOrganisation)
+        private IEnumerable<PriceComponent> GetPriceComponents()
         {
             var priceComponents = new List<PriceComponent>();
 

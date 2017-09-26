@@ -34,7 +34,7 @@ namespace Allors.Domain
         {
             var customer = new PersonBuilder(this.DatabaseSession).WithLastName("customer").WithPersonRole(new PersonRoles(this.DatabaseSession).Customer).Build();
 
-            InternalOrganisation.Instance(this.DatabaseSession).AddCustomer(customer);
+            
 
             this.DatabaseSession.Derive();
 
@@ -46,7 +46,7 @@ namespace Allors.Domain
         {
             var customer = new PersonBuilder(this.DatabaseSession).WithLastName("customer").WithPersonRole(new PersonRoles(this.DatabaseSession).Customer).Build();
 
-            InternalOrganisation.Instance(this.DatabaseSession).AddCustomer(customer);
+            
 
             this.DatabaseSession.Derive();
 
@@ -56,27 +56,24 @@ namespace Allors.Domain
         [Fact]
         public void GivenCustomerRelationshipBuilder_WhenBuild_ThenSubAccountNumerIsValidElevenTestNumber()
         {
-            var internalOrganisation = InternalOrganisation.Instance(this.DatabaseSession);
+            var internalOrganisation = Singleton.Instance(this.DatabaseSession);
             internalOrganisation.SubAccountCounter.Value = 1000;
 
             this.DatabaseSession.Commit();
 
             var customer1 = new PersonBuilder(this.DatabaseSession).WithLastName("customer1").WithPersonRole(new PersonRoles(this.DatabaseSession).Customer).Build();
-            InternalOrganisation.Instance(this.DatabaseSession).AddCustomer(customer1);
 
             this.DatabaseSession.Derive();
 
             Assert.Equal(1007, customer1.SubAccountNumber);
 
             var customer2 = new PersonBuilder(this.DatabaseSession).WithLastName("customer2").WithPersonRole(new PersonRoles(this.DatabaseSession).Customer).Build();
-            InternalOrganisation.Instance(this.DatabaseSession).AddCustomer(customer2);
 
             this.DatabaseSession.Derive();
 
             Assert.Equal(1015, customer2.SubAccountNumber);
 
             var customer3 = new PersonBuilder(this.DatabaseSession).WithLastName("customer3").WithPersonRole(new PersonRoles(this.DatabaseSession).Customer).Build();
-            InternalOrganisation.Instance(this.DatabaseSession).AddCustomer(customer3);
 
             this.DatabaseSession.Derive();
 
@@ -84,7 +81,7 @@ namespace Allors.Domain
         }
 
         [Fact]
-        public void GivenCustomerRelationship_WhenDeriving_ThenSubAccountNumberMustBeUniqueWithinInternalOrganisation()
+        public void GivenCustomerRelationship_WhenDeriving_ThenSubAccountNumberMustBeUniqueWithinSingleton()
         {
             var customer2 = new OrganisationBuilder(this.DatabaseSession).WithName("customer").WithOrganisationRole(new OrganisationRoles(this.DatabaseSession).Customer).Build();
 
@@ -107,16 +104,13 @@ namespace Allors.Domain
                 .WithUseAsDefault(true)
                 .Build();
 
-            var internalOrganisation2 = new InternalOrganisationBuilder(this.DatabaseSession)
+            var internalOrganisation2 = new SingletonBuilder(this.DatabaseSession)
                 .WithName("internalOrganisation2")
-                .WithEmployeeRole(new Roles(this.DatabaseSession).Administrator)
                 .WithPartyContactMechanism(billingAddress)
                 .WithDefaultPaymentMethod(ownBankAccount)
                 .WithPreferredCurrency(euro)
                 .Build();
-
-            InternalOrganisation.Instance(this.DatabaseSession).AddCustomer(customer2);
-            
+           
             customer2.SubAccountNumber = 19;
 
             Assert.False(this.DatabaseSession.Derive(false).HasErrors);
@@ -127,7 +121,7 @@ namespace Allors.Domain
         {
             var mechelen = new CityBuilder(this.DatabaseSession).WithName("Mechelen").Build();
             var customer = new PersonBuilder(this.DatabaseSession).WithLastName("customer").WithPersonRole(new PersonRoles(this.DatabaseSession).Customer).Build();
-            InternalOrganisation.Instance(this.DatabaseSession).AddCustomer(customer);
+            
             var billToContactMechanism = new PostalAddressBuilder(this.DatabaseSession).WithGeographicBoundary(mechelen).WithAddress1("Mechelen").Build();
 
             var good = new GoodBuilder(this.DatabaseSession)
@@ -193,7 +187,7 @@ namespace Allors.Domain
         {
             var mechelen = new CityBuilder(this.DatabaseSession).WithName("Mechelen").Build();
             var customer = new PersonBuilder(this.DatabaseSession).WithLastName("customer").WithPersonRole(new PersonRoles(this.DatabaseSession).Customer).Build();
-            InternalOrganisation.Instance(this.DatabaseSession).AddCustomer(customer);
+            
             var billToContactMechanism = new PostalAddressBuilder(this.DatabaseSession).WithGeographicBoundary(mechelen).WithAddress1("Mechelen").Build();
 
             var good = new GoodBuilder(this.DatabaseSession)

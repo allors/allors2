@@ -162,7 +162,7 @@ namespace Allors.Domain
                         .WithParty(invoice.BillToCustomer)
                         .WithYear(invoice.InvoiceDate.Year)
                         .WithMonth(invoice.InvoiceDate.Month)
-                        .WithCurrency(InternalOrganisation.Instance(session).PreferredCurrency)
+                        .WithCurrency(Singleton.Instance(session).PreferredCurrency)
                         .WithPackage(package)
                         .Build();
         }

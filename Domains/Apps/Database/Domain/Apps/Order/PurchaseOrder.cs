@@ -42,7 +42,7 @@ namespace Allors.Domain
 
             if (!this.ExistOrderNumber)
             {
-                this.OrderNumber = InternalOrganisation.Instance(this.strategy.Session).DeriveNextPurchaseOrderNumber();
+                this.OrderNumber = Singleton.Instance(this).DeriveNextPurchaseOrderNumber();
             }
 
             if (!this.ExistOrderDate)
@@ -57,14 +57,14 @@ namespace Allors.Domain
 
             if (!this.ExistCustomerCurrency)
             {
-                this.CustomerCurrency = InternalOrganisation.Instance(this.strategy.Session).ExistPreferredCurrency ?
-                                            InternalOrganisation.Instance(this.strategy.Session).PreferredCurrency :
-                                            InternalOrganisation.Instance(this.strategy.Session).PreferredLocale.Country.Currency;
+                this.CustomerCurrency = Singleton.Instance(this).ExistPreferredCurrency ?
+                                            Singleton.Instance(this).PreferredCurrency :
+                                            Singleton.Instance(this).PreferredLocale.Country.Currency;
             }
 
             if (!this.ExistFacility)
             {
-                this.Facility = InternalOrganisation.Instance(this.strategy.Session).DefaultFacility;
+                this.Facility = Singleton.Instance(this).DefaultFacility;
             }
         }
 
@@ -74,8 +74,8 @@ namespace Allors.Domain
 
             if (derivation.HasChangedRoles(this))
             {
-                derivation.AddDependency(this, InternalOrganisation.Instance(this.strategy.Session));
-                derivation.AddDependency(this, InternalOrganisation.Instance(this.strategy.Session));
+                derivation.AddDependency(this, Singleton.Instance(this));
+                derivation.AddDependency(this, Singleton.Instance(this));
                 derivation.AddDependency(this, this.TakenViaSupplier);
             }
 

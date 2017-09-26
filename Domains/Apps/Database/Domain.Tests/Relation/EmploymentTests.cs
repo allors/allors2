@@ -26,14 +26,12 @@ namespace Allors.Domain
     public class EmploymentTests : DomainTest
     {
         private Person employee;
-        private InternalOrganisation internalOrganisation;
+        private Singleton internalOrganisation;
 
         public EmploymentTests()
         {
             this.employee = new PersonBuilder(this.DatabaseSession).WithLastName("slave").WithPersonRole(new PersonRoles(this.DatabaseSession).Employee).Build();
-            this.internalOrganisation = InternalOrganisation.Instance(this.DatabaseSession);
-
-            this.internalOrganisation.AddEmployee(this.employee);
+            this.internalOrganisation = Singleton.Instance(this.DatabaseSession);
 
             this.DatabaseSession.Derive();
             this.DatabaseSession.Commit();

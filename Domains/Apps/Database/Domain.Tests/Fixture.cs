@@ -70,7 +70,8 @@ namespace Allors
                     new PartyContactMechanismBuilder(session).WithContactMechanism(postalAddress).WithContactPurpose(
                         new ContactMechanismPurposes(session).ShippingAddress).WithUseAsDefault(true).Build();
 
-                var internalOrganisation = new InternalOrganisationBuilder(session)
+
+                var internalOrganisation = new SingletonBuilder(session)
                     .WithName("internalOrganisation")
                     .WithPreferredCurrency(euro)
                     .WithIncomingShipmentNumberPrefix("incoming shipmentno: ")
@@ -78,12 +79,13 @@ namespace Allors
                     .WithPurchaseOrderNumberPrefix("purchase orderno: ")
                     .WithPartyContactMechanism(billingAddress)
                     .WithPartyContactMechanism(shippingAddress)
-                    .WithEmployeeRole(new Roles(session).Administrator)
                     .WithDefaultPaymentMethod(ownBankAccount)
                     .Build();
 
                 var facility = new WarehouseBuilder(session).WithName("facility").Build();
                 internalOrganisation.DefaultFacility = facility;
+
+                var paymentMethod = new PaymentMethods(session).Extent().First;
 
                 new StoreBuilder(session)
                     .WithName("store")
@@ -95,6 +97,7 @@ namespace Allors
                     .WithDefaultCarrier(new Carriers(session).Fedex)
                     .WithCreditLimit(500)
                     .WithPaymentGracePeriod(10)
+                    .WithDefaultPaymentMethod(paymentMethod)
                     .Build();
 
                 var customer = new OrganisationBuilder(session).WithName("customer").WithOrganisationRole(new OrganisationRoles(session).Customer).WithLocale(singleton.DefaultLocale).Build();
@@ -102,13 +105,6 @@ namespace Allors
                 var purchaser = new PersonBuilder(session).WithLastName("purchaser").WithUserName("purchaser").WithPersonRole(new PersonRoles(session).Contact).Build();
                 var salesrep = new PersonBuilder(session).WithLastName("salesRep").WithUserName("salesRep").WithPersonRole(new PersonRoles(session).Contact).Build();
                 var orderProcessor = new PersonBuilder(session).WithLastName("orderProcessor").WithUserName("orderProcessor").WithPersonRole(new PersonRoles(session).Employee).Build();
-
-                internalOrganisation.AddCustomer(customer);
-                internalOrganisation.AddSupplier(supplier);
-
-                internalOrganisation.AddEmployee(purchaser);
-                internalOrganisation.AddEmployee(salesrep);
-                internalOrganisation.AddEmployee(orderProcessor);
 
                 new SalesRepRelationshipBuilder(session).WithFromDate(DateTime.UtcNow).WithCustomer(customer).WithSalesRepresentative(salesrep).Build();
 

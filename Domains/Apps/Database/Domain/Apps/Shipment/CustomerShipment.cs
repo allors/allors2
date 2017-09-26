@@ -107,7 +107,7 @@ namespace Allors.Domain
 
             if (!this.ExistBillFromContactMechanism)
             {
-                this.BillFromContactMechanism = InternalOrganisation.Instance(this).BillingAddress;
+                this.BillFromContactMechanism = Singleton.Instance(this).BillingAddress;
             }
 
             if (!this.ExistStore)
@@ -180,7 +180,7 @@ namespace Allors.Domain
 
             if (!this.ExistBillFromContactMechanism)
             {
-                this.BillFromContactMechanism = InternalOrganisation.Instance(this).BillingAddress;
+                this.BillFromContactMechanism = Singleton.Instance(this).BillingAddress;
             }
 
             this.CreatePickList(derivation);

@@ -267,9 +267,9 @@ namespace Allors.Domain
 
             var customer = new PersonBuilder(this.DatabaseSession).WithLastName("customer").WithPartyContactMechanism(shipToMechelen).WithPersonRole(new PersonRoles(this.DatabaseSession).Customer).Build();
 
-            var internalOrganisation = InternalOrganisation.Instance(this.DatabaseSession);
+            var internalOrganisation = Singleton.Instance(this.DatabaseSession);
 
-            internalOrganisation.AddCustomer(customer);
+            
 
             this.DatabaseSession.Derive();
             this.DatabaseSession.Commit();
@@ -425,9 +425,9 @@ namespace Allors.Domain
 
             var customer = new PersonBuilder(this.DatabaseSession).WithLastName("customer").WithPartyContactMechanism(shipToMechelen).WithPersonRole(new PersonRoles(this.DatabaseSession).Customer).Build();
 
-            var internalOrganisation = InternalOrganisation.Instance(this.DatabaseSession);
+            var internalOrganisation = Singleton.Instance(this.DatabaseSession);
 
-            internalOrganisation.AddCustomer(customer);
+            
 
             this.DatabaseSession.Derive();
 
@@ -466,10 +466,10 @@ namespace Allors.Domain
         //public void ReportNonSerialisedInventory()
         //{
         //    var supplier = new OrganisationBuilder(this.DatabaseSession).WithName("supplier").Build();
-        //    var internalOrganisation = InternalOrganisation.Instance(this.DatabaseSession);
+        //    var internalOrganisation = Singleton.Instance(this.DatabaseSession);
 
         //    new SupplierRelationshipBuilder(this.DatabaseSession)
-        //        .WithInternalOrganisation(internalOrganisation)
+        //        .WithSingleton(internalOrganisation)
         //        .WithSupplier(supplier)
         //        .WithFromDate(DateTime.UtcNow)
         //        .Build();

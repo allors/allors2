@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------------------------------------------
-// <copyright file="InternalOrganisationTests.cs" company="Allors bvba">
+// <copyright file="SingletonTests.cs" company="Allors bvba">
 //   Copyright 2002-2009 Allors bvba.
 // 
 // Dual Licensed under
@@ -28,13 +28,13 @@ namespace Allors.Domain
     using Xunit;
 
     
-    public class InternalOrganisationTests : DomainTest
+    public class SingletonTests : DomainTest
     {
         private OwnBankAccount ownBankAccount;
         private Currency euro;
         private PartyContactMechanism billingAddress;
         
-        public InternalOrganisationTests()
+        public SingletonTests()
         {
             var belgium = new Countries(this.DatabaseSession).CountryByIsoCode["BE"];
             this.euro = belgium.Currency;
@@ -57,18 +57,11 @@ namespace Allors.Domain
         }
 
         [Fact]
-        public void GivenInternalOrganisation_WhenDeriving_ThenRequiredRelationsMustExist()
+        public void GivenSingleton_WhenDeriving_ThenRequiredRelationsMustExist()
         {
             this.InstantiateObjects(this.DatabaseSession);
 
-            var builder = new InternalOrganisationBuilder(this.DatabaseSession);
-            builder.Build();
-
-            Assert.True(this.DatabaseSession.Derive(false).HasErrors);
-
-            this.DatabaseSession.Rollback();
-
-            builder.WithPaymentMethod(this.ownBankAccount);
+            var builder = new SingletonBuilder(this.DatabaseSession);
             builder.Build();
 
             Assert.True(this.DatabaseSession.Derive(false).HasErrors);
@@ -82,14 +75,13 @@ namespace Allors.Domain
         }
 
         [Fact]
-        public void GivenInternalOrganisation_WhenBuildWithout_ThenDoAccountingIsFalse()
+        public void GivenSingleton_WhenBuildWithout_ThenDoAccountingIsFalse()
         {
             this.InstantiateObjects(this.DatabaseSession);
 
-            var internalOrganisation = new InternalOrganisationBuilder(this.DatabaseSession)
+            var internalOrganisation = new SingletonBuilder(this.DatabaseSession)
                 .WithName("Internal")
                 .WithPreferredCurrency(this.euro)
-                .WithEmployeeRole(new Roles(this.DatabaseSession).Administrator)
                 .WithDefaultPaymentMethod(this.ownBankAccount)
                 .WithPartyContactMechanism(this.billingAddress)
                 .Build();
@@ -100,14 +92,13 @@ namespace Allors.Domain
         }
 
         [Fact]
-        public void GivenInternalOrganisation_WhenBuildWithout_ThenFiscalYearStartMonthIsJanuary()
+        public void GivenSingleton_WhenBuildWithout_ThenFiscalYearStartMonthIsJanuary()
         {
             this.InstantiateObjects(this.DatabaseSession);
 
-            var internalOrganisation = new InternalOrganisationBuilder(this.DatabaseSession)
+            var internalOrganisation = new SingletonBuilder(this.DatabaseSession)
                 .WithName("Internal")
                 .WithPreferredCurrency(this.euro)
-                .WithEmployeeRole(new Roles(this.DatabaseSession).Administrator)
                 .WithDefaultPaymentMethod(this.ownBankAccount)
                 .WithPartyContactMechanism(this.billingAddress)
                 .Build();
@@ -118,14 +109,13 @@ namespace Allors.Domain
         }
 
         [Fact]
-        public void GivenInternalOrganisation_WhenBuildWithout_ThenFiscalYearStartDayIsFirstDayOfMonth()
+        public void GivenSingleton_WhenBuildWithout_ThenFiscalYearStartDayIsFirstDayOfMonth()
         {
             this.InstantiateObjects(this.DatabaseSession);
 
-            var internalOrganisation = new InternalOrganisationBuilder(this.DatabaseSession)
+            var internalOrganisation = new SingletonBuilder(this.DatabaseSession)
                 .WithName("Internal")
                 .WithPreferredCurrency(this.euro)
-                .WithEmployeeRole(new Roles(this.DatabaseSession).Administrator)
                 .WithDefaultPaymentMethod(this.ownBankAccount)
                 .WithPartyContactMechanism(this.billingAddress)
                 .Build();
@@ -136,14 +126,13 @@ namespace Allors.Domain
         }
 
         [Fact]
-        public void GivenInternalOrganisation_WhenBuildWithout_ThenInvoiceSequenceIsEqualRestartOnFiscalYear()
+        public void GivenSingleton_WhenBuildWithout_ThenInvoiceSequenceIsEqualRestartOnFiscalYear()
         {
             this.InstantiateObjects(this.DatabaseSession);
 
-            var internalOrganisation = new InternalOrganisationBuilder(this.DatabaseSession)
+            var internalOrganisation = new SingletonBuilder(this.DatabaseSession)
                 .WithName("Internal")
                 .WithPreferredCurrency(this.euro)
-                .WithEmployeeRole(new Roles(this.DatabaseSession).Administrator)
                 .WithDefaultPaymentMethod(this.ownBankAccount)
                 .WithPartyContactMechanism(this.billingAddress)
                 .Build();
@@ -154,11 +143,11 @@ namespace Allors.Domain
         }
 
         [Fact]
-        public void GivenInternalOrganisation_WhenPreferredCurrencyIsChanged_ThenValidationErrorIsTrhown()
+        public void GivenSingleton_WhenPreferredCurrencyIsChanged_ThenValidationErrorIsTrhown()
         {
             this.InstantiateObjects(this.DatabaseSession);
 
-            var organisation = new InternalOrganisationBuilder(this.DatabaseSession)
+            var organisation = new SingletonBuilder(this.DatabaseSession)
                 .WithName("Internal")
                 .WithPreferredCurrency(this.euro)
                 .WithDefaultPaymentMethod(this.ownBankAccount)
@@ -166,7 +155,6 @@ namespace Allors.Domain
                 .Build();
 
             this.DatabaseSession.Derive();
-            Assert.NotNull(organisation.PreviousCurrency);
                
             organisation.PreferredCurrency = new Currencies(this.DatabaseSession).FindBy(M.Currency.IsoCode, "GBP");
 
@@ -178,11 +166,11 @@ namespace Allors.Domain
         }
 
         [Fact]
-        public void GivenInternalOrganisationWithDefaultFiscalYearStartMonthAndNotExistActualAccountingPeriod_WhenStartingNewFiscalYear_ThenAccountingPeriodsAreCreated()
+        public void GivenSingletonWithDefaultFiscalYearStartMonthAndNotExistActualAccountingPeriod_WhenStartingNewFiscalYear_ThenAccountingPeriodsAreCreated()
         {
             this.InstantiateObjects(this.DatabaseSession);
 
-            var organisation = new InternalOrganisationBuilder(this.DatabaseSession)
+            var organisation = new SingletonBuilder(this.DatabaseSession)
                 .WithName("Internal")
                 .WithPreferredCurrency(this.euro)
                 .WithPartyContactMechanism(this.billingAddress)
@@ -225,11 +213,11 @@ namespace Allors.Domain
         }
 
         [Fact]
-        public void GivenInternalOrganisationWithCustomFiscalYearStartMonthAndNotExistActualAccountingPeriod_WhenStartingNewFiscalYear_ThenAccountingPeriodsAreCreated()
+        public void GivenSingletonWithCustomFiscalYearStartMonthAndNotExistActualAccountingPeriod_WhenStartingNewFiscalYear_ThenAccountingPeriodsAreCreated()
         {
             this.InstantiateObjects(this.DatabaseSession);
 
-            var organisation = new InternalOrganisationBuilder(this.DatabaseSession)
+            var organisation = new SingletonBuilder(this.DatabaseSession)
                 .WithName("Internal")
                 .WithPreferredCurrency(this.euro)
                 .WithFiscalYearStartMonth(05)
@@ -273,18 +261,14 @@ namespace Allors.Domain
             Assert.False(year.ExistParent);
 
             Assert.True(organisation.ExistActualAccountingPeriod);
-            Assert.Contains(organisation.ActualAccountingPeriod, organisation.AccountingPeriods);
-            Assert.Contains(trimester, organisation.AccountingPeriods);
-            Assert.Contains(semester, organisation.AccountingPeriods);
-            Assert.Contains(year, organisation.AccountingPeriods);
         }
 
         [Fact]
-        public void GivenInternalOrganisationWithActiveActualAccountingPeriod_WhenStartingNewFiscalYear_ThenNothingHappens()
+        public void GivenSingletonWithActiveActualAccountingPeriod_WhenStartingNewFiscalYear_ThenNothingHappens()
         {
             this.InstantiateObjects(this.DatabaseSession);
 
-            var organisation = new InternalOrganisationBuilder(this.DatabaseSession)
+            var organisation = new SingletonBuilder(this.DatabaseSession)
                 .WithName("Internal")
                 .WithPreferredCurrency(this.euro)
                 .WithFiscalYearStartMonth(05)
@@ -302,32 +286,13 @@ namespace Allors.Domain
         }
 
         [Fact]
-        public void GivenInternalOrganisation_WhenDefaultPaymentMethodIsSet_ThenPaymentMethodIsAddedToCollectionPaymentMethods()
+        public void GivenSingletonWithoutDefaultPaymentMethod_WhenSinglePaymentMethodIsAdded_ThenDefaultPaymentMethodIsSet()
         {
             this.InstantiateObjects(this.DatabaseSession);
 
-            var organisation = new InternalOrganisationBuilder(this.DatabaseSession)
+            var organisation = new SingletonBuilder(this.DatabaseSession)
                 .WithName("Internal")
                 .WithPreferredCurrency(this.euro)
-                .WithDefaultPaymentMethod(this.ownBankAccount)
-                .WithPartyContactMechanism(this.billingAddress)
-                .Build();
-
-            this.DatabaseSession.Derive();
-
-            Assert.Equal(1, organisation.PaymentMethods.Count);
-            Assert.Equal(ownBankAccount, organisation.PaymentMethods.First);
-        }
-
-        [Fact]
-        public void GivenInternalOrganisationWithoutDefaultPaymentMethod_WhenSinglePaymentMethodIsAdded_ThenDefaultPaymentMethodIsSet()
-        {
-            this.InstantiateObjects(this.DatabaseSession);
-
-            var organisation = new InternalOrganisationBuilder(this.DatabaseSession)
-                .WithName("Internal")
-                .WithPreferredCurrency(this.euro)
-                .WithPaymentMethod(this.ownBankAccount)
                 .WithPartyContactMechanism(this.billingAddress)
                 .Build();
 
@@ -336,27 +301,6 @@ namespace Allors.Domain
             Assert.Equal(ownBankAccount, organisation.DefaultPaymentMethod);
         }
 
-        [Fact]
-        public void GivenInternalOrganisationWithSinglePaymentMethod_WhenPaymentMethodIsRemoved_ThenDefaultPaymentMethodIsAdded()
-        {
-            this.InstantiateObjects(this.DatabaseSession);
-
-            var organisation = new InternalOrganisationBuilder(this.DatabaseSession)
-                .WithName("Internal")
-                .WithPreferredCurrency(this.euro)
-                .WithPaymentMethod(this.ownBankAccount)
-                .WithPartyContactMechanism(this.billingAddress)
-                .Build();
-
-            this.DatabaseSession.Derive();
-
-            organisation.RemovePaymentMethod(ownBankAccount);
-
-            this.DatabaseSession.Derive();
-
-            Assert.True(organisation.ExistDefaultPaymentMethod);
-            Assert.Equal(1, organisation.PaymentMethods.Count);
-        }
         
         private void InstantiateObjects(ISession session)
         {

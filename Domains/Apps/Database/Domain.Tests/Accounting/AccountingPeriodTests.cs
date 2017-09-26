@@ -92,7 +92,7 @@ namespace Allors.Domain
                 .WithBankAccount(new BankAccountBuilder(this.DatabaseSession).WithBank(bank).WithCurrency(euro).WithIban("BE23 3300 6167 6391").WithNameOnAccount("Koen").Build())
                 .Build();
 
-            var organisation = new InternalOrganisationBuilder(this.DatabaseSession)
+            var organisation = new SingletonBuilder(this.DatabaseSession)
                 .WithName("Internal")
                 .WithPreferredCurrency(euro)
                 .WithDefaultPaymentMethod(ownBankAccount)
@@ -111,7 +111,6 @@ namespace Allors.Domain
             Assert.Equal(organisation.ActualAccountingPeriod.FromDate.AddMonths(1).Date, nextMonth.FromDate);
             Assert.Equal(organisation.ActualAccountingPeriod.FromDate.AddMonths(2).AddSeconds(-1).Date, nextMonth.ThroughDate);
             Assert.True(nextMonth.ExistParent);
-            Assert.Contains(nextMonth, organisation.AccountingPeriods);
         }
 
         [Fact]
@@ -127,7 +126,7 @@ namespace Allors.Domain
                 .WithBankAccount(new BankAccountBuilder(this.DatabaseSession).WithBank(bank).WithCurrency(euro).WithIban("BE23 3300 6167 6391").WithNameOnAccount("Koen").Build())
                 .Build();
 
-            var organisation = new InternalOrganisationBuilder(this.DatabaseSession)
+            var organisation = new SingletonBuilder(this.DatabaseSession)
                 .WithName("Internal")
                 .WithPreferredCurrency(euro)
                 .WithDefaultPaymentMethod(ownBankAccount)
@@ -154,7 +153,6 @@ namespace Allors.Domain
             Assert.Equal(organisation.ActualAccountingPeriod.FromDate.AddMonths(3).Date, fourthMonth.FromDate);
             Assert.Equal(organisation.ActualAccountingPeriod.FromDate.AddMonths(4).AddSeconds(-1).Date, fourthMonth.ThroughDate);
             Assert.True(fourthMonth.ExistParent);
-            Assert.Contains(fourthMonth, organisation.AccountingPeriods);
 
             var secondQuarter = fourthMonth.Parent;
 
@@ -163,7 +161,6 @@ namespace Allors.Domain
             Assert.Equal(organisation.ActualAccountingPeriod.Parent.FromDate.AddMonths(3).Date, secondQuarter.FromDate);
             Assert.Equal(organisation.ActualAccountingPeriod.Parent.FromDate.AddMonths(6).AddSeconds(-1).Date, secondQuarter.ThroughDate);
             Assert.Equal(organisation.ActualAccountingPeriod.Parent.Parent, secondQuarter.Parent);
-            Assert.Contains(secondQuarter, organisation.AccountingPeriods);
         }
 
         [Fact]
@@ -179,7 +176,7 @@ namespace Allors.Domain
                 .WithBankAccount(new BankAccountBuilder(this.DatabaseSession).WithBank(bank).WithCurrency(euro).WithIban("BE23 3300 6167 6391").WithNameOnAccount("Koen").Build())
                 .Build();
 
-            var organisation = new InternalOrganisationBuilder(this.DatabaseSession)
+            var organisation = new SingletonBuilder(this.DatabaseSession)
                 .WithName("Internal")
                 .WithPreferredCurrency(euro)
                 .WithDefaultPaymentMethod(ownBankAccount)
@@ -219,7 +216,6 @@ namespace Allors.Domain
             Assert.Equal(new TimeFrequencies(this.DatabaseSession).Trimester, thirdQuarter.TimeFrequency);
             Assert.Equal(organisation.ActualAccountingPeriod.Parent.FromDate.AddMonths(6).Date, thirdQuarter.FromDate);
             Assert.Equal(organisation.ActualAccountingPeriod.Parent.FromDate.AddMonths(9).AddSeconds(-1).Date, thirdQuarter.ThroughDate);
-            Assert.Contains(thirdQuarter, organisation.AccountingPeriods);
 
             var secondSemester = thirdQuarter.Parent;
 
@@ -228,7 +224,6 @@ namespace Allors.Domain
             Assert.Equal(organisation.ActualAccountingPeriod.Parent.Parent.FromDate.AddMonths(6).Date, secondSemester.FromDate);
             Assert.Equal(organisation.ActualAccountingPeriod.Parent.Parent.FromDate.AddMonths(12).AddSeconds(-1).Date, secondSemester.ThroughDate);
             Assert.Equal(organisation.ActualAccountingPeriod.Parent.Parent.Parent, secondSemester.Parent);
-            Assert.Contains(secondSemester, organisation.AccountingPeriods);
         }
 
         [Fact]
@@ -244,7 +239,7 @@ namespace Allors.Domain
                 .WithBankAccount(new BankAccountBuilder(this.DatabaseSession).WithBank(bank).WithCurrency(euro).WithIban("BE23 3300 6167 6391").WithNameOnAccount("Koen").Build())
                 .Build();
 
-            var organisation = new InternalOrganisationBuilder(this.DatabaseSession)
+            var organisation = new SingletonBuilder(this.DatabaseSession)
                 .WithName("Internal")
                 .WithPreferredCurrency(euro)
                 .WithDefaultPaymentMethod(ownBankAccount)
@@ -273,7 +268,6 @@ namespace Allors.Domain
             Assert.Equal(organisation.ActualAccountingPeriod.FromDate.AddMonths(11).Date, period13.FromDate);
             Assert.Equal(organisation.ActualAccountingPeriod.FromDate.AddMonths(12).AddSeconds(-1).Date, period13.ThroughDate);
             Assert.True(period13.ExistParent);
-            Assert.Contains(period13, organisation.AccountingPeriods);
 
             var fourthQuarter = period13.Parent;
 
@@ -281,7 +275,6 @@ namespace Allors.Domain
             Assert.Equal(new TimeFrequencies(this.DatabaseSession).Trimester, fourthQuarter.TimeFrequency);
             Assert.Equal(organisation.ActualAccountingPeriod.Parent.FromDate.AddMonths(9).Date, fourthQuarter.FromDate);
             Assert.Equal(organisation.ActualAccountingPeriod.Parent.FromDate.AddMonths(12).AddSeconds(-1).Date, fourthQuarter.ThroughDate);
-            Assert.Contains(fourthQuarter, organisation.AccountingPeriods);
         }
     }
 }

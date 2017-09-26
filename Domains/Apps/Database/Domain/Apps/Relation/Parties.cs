@@ -15,8 +15,6 @@
 // --------------------------------------------------------------------------------------------------------------------
 namespace Allors.Domain
 {
-    
-
     public partial class Parties
     {
         public static void AppsOnDeriveRevenues(ISession session)

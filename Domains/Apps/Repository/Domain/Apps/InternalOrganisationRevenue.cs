@@ -1,7 +1,5 @@
 namespace Allors.Repository
 {
-    using System;
-
     using Attributes;
 
     #region Allors
@@ -22,8 +20,8 @@ namespace Allors.Repository
         [RoleId("2f8002ef-0f3b-46af-a930-cd426a2ee1a8")]
         #endregion
         [Required]
-
         public int Month { get; set; }
+        
         #region Allors
         [Id("284b35b3-583b-4843-8f65-0abafc493eb7")]
         [AssociationId("d5e828bc-e39d-44d7-9e82-ab9471fd5d75")]
@@ -31,8 +29,8 @@ namespace Allors.Repository
         #endregion
         [Indexed]
         [Required]
-
         public int Year { get; set; }
+        
         #region Allors
         [Id("5a982cc9-01c5-41f1-83ba-97747299205b")]
         [AssociationId("c0f705d6-4ad1-4e19-ae3c-3b12b4f2a6ec")]
@@ -42,6 +40,7 @@ namespace Allors.Repository
         [Precision(19)]
         [Scale(2)]
         public decimal Revenue { get; set; }
+
         #region Allors
         [Id("8e250efc-f571-4567-a747-cefe30118ddc")]
         [AssociationId("48e4e136-0006-4c83-8616-246fb432346e")]
@@ -49,7 +48,6 @@ namespace Allors.Repository
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
-
         public Currency Currency { get; set; }
 
         #region inherited methods

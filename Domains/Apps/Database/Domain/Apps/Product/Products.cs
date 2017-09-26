@@ -38,7 +38,6 @@ namespace Allors.Domain
             }
 
             var party = salesOrder != null ? salesOrder.ShipToCustomer : salesInvoice != null ? salesInvoice.BillToCustomer : null;
-            var internalOrganisation = InternalOrganisation.Instance(salesOrder.Strategy.Session);
 
             foreach (BasePrice priceComponent in baseprices)
             {
@@ -58,14 +57,14 @@ namespace Allors.Domain
                         {
                             if (productBasePrice == 0 || priceComponent.Price < productBasePrice)
                             {
-                                productBasePrice = priceComponent.Price?? 0;
+                                productBasePrice = priceComponent.Price ?? 0;
                             }
                         }
                     }
                 }
             }
 
-            var priceComponents = GetPriceComponents(internalOrganisation, product, date);
+            var priceComponents = GetPriceComponents(product, date);
 
             var revenueBreakDiscount = 0M;
             var revenueBreakSurcharge = 0M;
@@ -167,12 +166,12 @@ namespace Allors.Domain
             return productBasePrice - productDiscount + productSurcharge;
         }
 
-        private static List<PriceComponent> GetPriceComponents(InternalOrganisation internalOrganisation, Product product, DateTime date)
+        private static List<PriceComponent> GetPriceComponents(Product product, DateTime date)
         {
             // TODO: Code duplication ?
             var priceComponents = new List<PriceComponent>();
 
-            var session = internalOrganisation.Strategy.Session;
+            var session = product.Strategy.Session;
             var extent = new PriceComponents(session).Extent();
 
             foreach (PriceComponent priceComponent in extent)

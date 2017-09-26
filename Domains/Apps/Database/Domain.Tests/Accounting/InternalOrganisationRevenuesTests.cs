@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------------------------------------------
-// <copyright file="InternalOrganisationRevenuesTests.cs" company="Allors bvba">
+// <copyright file="SingletonRevenuesTests.cs" company="Allors bvba">
 //   Copyright 2002-2009 Allors bvba.
 // 
 // Dual Licensed under
@@ -24,7 +24,7 @@ namespace Allors.Domain
     using Meta;
     using Xunit;
 
-    public class InternalOrganisationRevenuesTests : DomainTest
+    public class SingletonRevenuesTests : DomainTest
     {
         [Fact]
         public void DeriveRevenues()
@@ -79,11 +79,8 @@ namespace Allors.Domain
                 .WithPrimaryProductCategory(cat2)
                 .Build();
 
-            var internalOrganisation = InternalOrganisation.Instance(this.DatabaseSession);
+            var internalOrganisation = Singleton.Instance(this.DatabaseSession);
             internalOrganisation.PreferredCurrency = euro;
-
-            internalOrganisation.AddCustomer(customer1);
-            internalOrganisation.AddCustomer(customer2);
 
             this.DatabaseSession.Derive();
 

@@ -29,23 +29,14 @@ namespace Allors.Domain
                 this.CurrentObjectState = new PurchaseShipmentObjectStates(this.Strategy.Session).Created;
             }
 
-            if (!this.ExistFacility && this.ExistShipToParty)
+            if (!this.ExistFacility)
             {
-                var toParty = this.ShipToParty as InternalOrganisation;
-                if (toParty != null)
-                {
-                    this.Facility = toParty.DefaultFacility;
-                }
+                this.Facility = Singleton.Instance(this).DefaultFacility;
             }
 
             if (!this.ExistShipmentNumber && this.ExistShipToParty)
             {
-                var internalOrganisation = this.ShipToParty as InternalOrganisation;
-
-                if (internalOrganisation != null)
-                {
-                    this.ShipmentNumber = internalOrganisation.DeriveNextShipmentNumber();
-                }
+                this.ShipmentNumber = Singleton.Instance(this).DeriveNextShipmentNumber();
             }
 
             if (!this.ExistEstimatedArrivalDate)

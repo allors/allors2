@@ -29,7 +29,7 @@ namespace Allors.Domain
         public void GivenPurchaseShipmentBuilder_WhenBuild_ThenPostBuildRelationsMustExist()
         {
             var supplier = new OrganisationBuilder(this.DatabaseSession).WithName("supplier").WithOrganisationRole(new OrganisationRoles(this.DatabaseSession).Supplier).Build();
-            var internalOrganisation = InternalOrganisation.Instance(this.DatabaseSession);
+            var internalOrganisation = Singleton.Instance(this.DatabaseSession);
             var shipment = new PurchaseShipmentBuilder(this.DatabaseSession).WithShipmentMethod(new ShipmentMethods(this.DatabaseSession).Ground).WithShipFromParty(supplier).Build();
 
             this.DatabaseSession.Derive();
@@ -69,7 +69,7 @@ namespace Allors.Domain
         [Fact]
         public void GivenPurchaseShipment_WhenGettingShipmentNumberWithoutFormat_ThenShipmentNumberShouldBeReturned()
         {
-            var internalOrganisation = new InternalOrganisationBuilder(this.DatabaseSession).Build();
+            var internalOrganisation = new SingletonBuilder(this.DatabaseSession).Build();
 
             var shipment1 = new PurchaseShipmentBuilder(this.DatabaseSession).Build();
 
@@ -83,7 +83,7 @@ namespace Allors.Domain
         [Fact]
         public void GivenPurchaseShipment_WhenGettingShipmentNumberWithFormat_ThenFormattedShipmentNumberShouldBeReturned()
         {
-            var internalOrganisation = new InternalOrganisationBuilder(this.DatabaseSession).Build();
+            var internalOrganisation = new SingletonBuilder(this.DatabaseSession).Build();
             internalOrganisation.IncomingShipmentNumberPrefix = "the format is ";
 
             var shipment1 = new PurchaseShipmentBuilder(this.DatabaseSession).Build();
@@ -99,7 +99,7 @@ namespace Allors.Domain
         public void GivenPurchaseShipmentWithShipToAddress_WhenDeriving_ThenDerivedShipToAddressMustExist()
         {
             var supplier = new OrganisationBuilder(this.DatabaseSession).WithName("supplier").WithOrganisationRole(new OrganisationRoles(this.DatabaseSession).Supplier).Build();
-            var internalOrganisation = InternalOrganisation.Instance(this.DatabaseSession);
+            var internalOrganisation = Singleton.Instance(this.DatabaseSession);
             PostalAddress postalAddress = null;
             foreach (PartyContactMechanism partyContactMechanism in internalOrganisation.PartyContactMechanisms)
             {
@@ -120,7 +120,7 @@ namespace Allors.Domain
         public void GivenPurchaseShipmentWithShipToCustomerWithshippingAddress_WhenDeriving_ThenDerivedShipToCustomerAndDerivedShipToAddressMustExist()
         {
             var supplier = new OrganisationBuilder(this.DatabaseSession).WithName("supplier").WithOrganisationRole(new OrganisationRoles(this.DatabaseSession).Supplier).Build();
-            var internalOrganisation = InternalOrganisation.Instance(this.DatabaseSession);
+            var internalOrganisation = Singleton.Instance(this.DatabaseSession);
             var mechelen = new CityBuilder(this.DatabaseSession).WithName("Mechelen").Build();
             var shipToAddress = new PostalAddressBuilder(this.DatabaseSession).WithAddress1("Haverwerf 15").WithGeographicBoundary(mechelen).Build();
 

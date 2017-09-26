@@ -257,7 +257,7 @@ namespace Allors.Domain
 
         public void AppsOnDeriveReservedFromInventoryItem(IDerivation derivation)
         {
-            var internalOrganisation = InternalOrganisation.Instance(this.strategy.Session);
+            var internalOrganisation = Singleton.Instance(this);
 
             if (this.ExistProduct)
             {
@@ -581,11 +581,11 @@ namespace Allors.Domain
             decimal discountAdjustmentAmount = 0;
             decimal surchargeAdjustmentAmount = 0;
 
-            var internalOrganisation = InternalOrganisation.Instance(this);
+            var internalOrganisation = Singleton.Instance(this);
             var customer = this.SalesOrderWhereSalesOrderItem.BillToCustomer;
             var salesOrder = this.SalesOrderWhereSalesOrderItem;
 
-            var priceComponents = this.GetPriceComponents(internalOrganisation);
+            var priceComponents = this.GetPriceComponents();
 
             foreach (var priceComponent in priceComponents)
             {
@@ -762,7 +762,7 @@ namespace Allors.Domain
             this.AppsOnDeriveMarkupAndProfitMargin(derivation);
         }
 
-        private List<PriceComponent> GetPriceComponents(InternalOrganisation internalOrganisation)
+        private List<PriceComponent> GetPriceComponents()
         {
             var priceComponents = new List<PriceComponent>();
 

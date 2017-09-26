@@ -24,7 +24,6 @@ namespace Allors.Domain
     using System;
     using Xunit;
 
-    
     public class FaceToFaceCommunicationTests : DomainTest
     {
         [Fact]

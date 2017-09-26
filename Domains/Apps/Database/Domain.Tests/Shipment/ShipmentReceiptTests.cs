@@ -41,8 +41,8 @@ namespace Allors.Domain
         public void GivenShipmentReceiptWhenValidatingThenRequiredRelationsMustExist()
         {
             var supplier = new OrganisationBuilder(this.DatabaseSession).WithName("supplier").WithOrganisationRole(new OrganisationRoles(this.DatabaseSession).Supplier).Build();
-            var internalOrganisation = InternalOrganisation.Instance(this.DatabaseSession);
-            internalOrganisation.AddSupplier(supplier);
+            var internalOrganisation = Singleton.Instance(this.DatabaseSession);
+            
 
             var good = new GoodBuilder(this.DatabaseSession)
                 .WithLocalisedName(new LocalisedTextBuilder(this.DatabaseSession).WithText("good").WithLocale(Singleton.Instance(this.DatabaseSession).DefaultLocale).Build())
@@ -85,8 +85,8 @@ namespace Allors.Domain
         public void GivenShipmentReceiptForPartWithoutSelectedInventoryItemWhenDerivingThenInventoryItemIsFromDefaultFacility()
         {
             var supplier = new OrganisationBuilder(this.DatabaseSession).WithName("supplier").WithOrganisationRole(new OrganisationRoles(this.DatabaseSession).Supplier).Build();
-            var internalOrganisation = InternalOrganisation.Instance(this.DatabaseSession);
-            internalOrganisation.AddSupplier(supplier);
+            var internalOrganisation = Singleton.Instance(this.DatabaseSession);
+            
 
             var part = new RawMaterialBuilder(this.DatabaseSession)
                 .WithName("RawMaterial")
@@ -132,8 +132,8 @@ namespace Allors.Domain
         public void GivenShipmentReceiptForGoodWithoutSelectedInventoryItemWhenDerivingThenInventoryItemIsFromDefaultFacility()
         {
             var supplier = new OrganisationBuilder(this.DatabaseSession).WithName("supplier").WithOrganisationRole(new OrganisationRoles(this.DatabaseSession).Supplier).Build();
-            var internalOrganisation = InternalOrganisation.Instance(this.DatabaseSession);
-            internalOrganisation.AddSupplier(supplier);
+            var internalOrganisation = Singleton.Instance(this.DatabaseSession);
+            
 
             var good = new GoodBuilder(this.DatabaseSession)
                 .WithLocalisedName(new LocalisedTextBuilder(this.DatabaseSession).WithText("good").WithLocale(Singleton.Instance(this.DatabaseSession).DefaultLocale).Build())
@@ -186,8 +186,8 @@ namespace Allors.Domain
                 .Build();
 
             var customer = new PersonBuilder(this.DatabaseSession).WithLastName("customer").WithPartyContactMechanism(shipToMechelen).WithPersonRole(new PersonRoles(this.DatabaseSession).Customer).Build();
-            var internalOrganisation = InternalOrganisation.Instance(this.DatabaseSession);
-            internalOrganisation.AddCustomer(customer);
+            var internalOrganisation = Singleton.Instance(this.DatabaseSession);
+            
 
             var good = new GoodBuilder(this.DatabaseSession)
                 .WithLocalisedName(new LocalisedTextBuilder(this.DatabaseSession).WithText("good").WithLocale(Singleton.Instance(this.DatabaseSession).DefaultLocale).Build())
@@ -223,7 +223,7 @@ namespace Allors.Domain
             var sessionSalesItem = (SalesOrderItem)this.DatabaseSession.Instantiate(salesItem);
 
             var supplier = new OrganisationBuilder(this.DatabaseSession).WithName("supplier").WithOrganisationRole(new OrganisationRoles(this.DatabaseSession).Supplier).Build();
-            internalOrganisation.AddSupplier(supplier);
+            
 
             Assert.Equal(20, sessionSalesItem.QuantityPendingShipment);
             Assert.Equal(30, sessionSalesItem.QuantityReserved);
@@ -268,8 +268,8 @@ namespace Allors.Domain
         public void GivenShipmentReceiptWhenDerivingThenOrderItemQuantityReceivedIsUpdated()
         {
             var supplier = new OrganisationBuilder(this.DatabaseSession).WithName("supplier").WithOrganisationRole(new OrganisationRoles(this.DatabaseSession).Supplier).Build();
-            var internalOrganisation = InternalOrganisation.Instance(this.DatabaseSession);
-            internalOrganisation.AddSupplier(supplier);
+            var internalOrganisation = Singleton.Instance(this.DatabaseSession);
+            
 
             var good = new GoodBuilder(this.DatabaseSession)
                 .WithLocalisedName(new LocalisedTextBuilder(this.DatabaseSession).WithText("good").WithLocale(Singleton.Instance(this.DatabaseSession).DefaultLocale).Build())

@@ -2,7 +2,8 @@ namespace Allors.Repository
 {
     using System;
     using Attributes;
-
+    
+    //TODO: Rename to ContactMechanism
     #region Allors
     [Id("ca633037-ba1e-4304-9f2c-3353c287474b")]
     #endregion

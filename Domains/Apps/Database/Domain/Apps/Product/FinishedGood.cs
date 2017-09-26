@@ -51,7 +51,7 @@ namespace Allors.Domain
 
         public void AppsOnDeriveInventoryItem(IDerivation derivation)
         {
-            var internalOrganisation = InternalOrganisation.Instance(this);
+            var internalOrganisation = Singleton.Instance(this);
 
             if (this.ExistInventoryItemKind && this.InventoryItemKind.Equals(new InventoryItemKinds(this.Strategy.Session).NonSerialised))
             {

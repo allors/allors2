@@ -50,7 +50,7 @@ namespace Allors.Domain
 
         private AccountingPeriod AppsAddNextMonth()
         {
-            var allPeriods = this.InternalOrganisationWhereAccountingPeriod.AccountingPeriods;
+            var allPeriods = new AccountingPeriods(this.strategy.Session).Extent();
             allPeriods.Filter.AddEquals(this.Meta.TimeFrequency, new TimeFrequencies(this.Strategy.Session).Month);
             allPeriods.AddSort(this.Meta.FromDate.RoleType, SortDirection.Descending);
 
@@ -81,7 +81,6 @@ namespace Allors.Domain
                 newMonth.Parent = mostRecentMonth.Parent;
             }
 
-            this.InternalOrganisationWhereAccountingPeriod.AddAccountingPeriod(newMonth);
             return newMonth;
         }
 
@@ -103,7 +102,6 @@ namespace Allors.Domain
                 newQuarter.Parent = previousPeriod.Parent;
             }
 
-            this.InternalOrganisationWhereAccountingPeriod.AddAccountingPeriod(newQuarter);
             return newQuarter;
         }
 
@@ -117,7 +115,6 @@ namespace Allors.Domain
                 .WithParent(previousPeriod.Parent)
                 .Build();
 
-            this.InternalOrganisationWhereAccountingPeriod.AddAccountingPeriod(newSemester);
             return newSemester;
         }
     }

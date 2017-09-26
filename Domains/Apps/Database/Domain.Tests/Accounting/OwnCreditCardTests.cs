@@ -73,7 +73,7 @@ namespace Allors.Domain
         }
 
         [Fact]
-        public void GivenOwnCreditCardForInternalOrganisationThatDoesAccounting_WhenDeriving_ThenCreditorIsRequired()
+        public void GivenOwnCreditCardForSingletonThatDoesAccounting_WhenDeriving_ThenCreditorIsRequired()
         {
             var creditCard = new CreditCardBuilder(this.DatabaseSession)
                 .WithCardNumber("4012888888881881")
@@ -87,10 +87,8 @@ namespace Allors.Domain
                 .WithCreditCard(creditCard)
                 .Build();
 
-            var internalOrganisation = InternalOrganisation.Instance(this.DatabaseSession);             
+            var internalOrganisation = Singleton.Instance(this.DatabaseSession);             
             
-            internalOrganisation.RemovePaymentMethods();
-            internalOrganisation.AddPaymentMethod(paymentMethod);
             internalOrganisation.DoAccounting = false;
 
             Assert.False(this.DatabaseSession.Derive(false).HasErrors);
@@ -101,7 +99,7 @@ namespace Allors.Domain
         }
 
         [Fact]
-        public void GivenOwnCreditCardForInternalOrganisationThatDoesAccounting_WhenDeriving_ThenExpiredCardIsBlocked()
+        public void GivenOwnCreditCardForSingletonThatDoesAccounting_WhenDeriving_ThenExpiredCardIsBlocked()
         {
             var creditCard = new CreditCardBuilder(this.DatabaseSession)
                 .WithCardNumber("4012888888881881")
@@ -114,9 +112,6 @@ namespace Allors.Domain
             var paymentMethod = new OwnCreditCardBuilder(this.DatabaseSession)
                 .WithCreditCard(creditCard)
                 .Build();
-
-            var internalOrganisation = InternalOrganisation.Instance(this.DatabaseSession);
-            internalOrganisation.AddPaymentMethod(paymentMethod);
 
             this.DatabaseSession.Derive();
             Assert.True(paymentMethod.IsActive);
@@ -137,9 +132,7 @@ namespace Allors.Domain
                 .WithOrganisationRole(new OrganisationRoles(this.DatabaseSession).Supplier)
                 .Build();
 
-            var internalOrganisation = InternalOrganisation.Instance(this.DatabaseSession);
-
-            internalOrganisation.AddSupplier(supplier);
+            var internalOrganisation = Singleton.Instance(this.DatabaseSession);
 
             var generalLedgerAccount = new GeneralLedgerAccountBuilder(this.DatabaseSession)
                 .WithAccountNumber("0001")
@@ -169,8 +162,6 @@ namespace Allors.Domain
 
             this.DatabaseSession.Commit();
 
-            internalOrganisation.RemovePaymentMethods();
-            internalOrganisation.AddPaymentMethod(paymentMethod);
             internalOrganisation.DoAccounting = true;
 
             Assert.False(this.DatabaseSession.Derive(false).HasErrors);
@@ -185,7 +176,7 @@ namespace Allors.Domain
         }
 
         [Fact]
-        public void GivenOwnCreditCardForInternalOrganisationThatDoesAccounting_WhenDeriving_ThenEitherGeneralLedgerAccountOrJournalMustExist()
+        public void GivenOwnCreditCardForSingletonThatDoesAccounting_WhenDeriving_ThenEitherGeneralLedgerAccountOrJournalMustExist()
         {
             var supplier = new OrganisationBuilder(this.DatabaseSession)
                 .WithName("supplier")
@@ -193,9 +184,9 @@ namespace Allors.Domain
                 .WithOrganisationRole(new OrganisationRoles(this.DatabaseSession).Supplier)
                 .Build();
 
-            var internalOrganisation = InternalOrganisation.Instance(this.DatabaseSession);
+            var internalOrganisation = Singleton.Instance(this.DatabaseSession);
 
-            internalOrganisation.AddSupplier(supplier);
+            
 
             var generalLedgerAccount = new GeneralLedgerAccountBuilder(this.DatabaseSession)
                 .WithAccountNumber("0001")
@@ -224,8 +215,6 @@ namespace Allors.Domain
 
             this.DatabaseSession.Commit();
 
-            internalOrganisation.RemovePaymentMethods();
-            internalOrganisation.AddPaymentMethod(paymentMethod);
             internalOrganisation.DoAccounting = true;
 
             Assert.True(this.DatabaseSession.Derive(false).HasErrors);

@@ -126,16 +126,6 @@ namespace Allors.Repository
         [Indexed]
         public PostalAddress ShipToAddress { get; set; }
 
-        #region Allors
-        [Id("F8249CD0-6ABE-4D43-826C-6747706BB953")]
-        [AssociationId("B1AD9EC5-F6EE-4B16-8128-9D493748BB19")]
-        [RoleId("DD2565ED-70B1-4B57-809F-D978E1355CB6")]
-        #endregion
-        [Multiplicity(Multiplicity.ManyToOne)]
-        [Indexed]
-        [Required]
-        public InternalOrganisation BillToPurchaser { get; set; }
-
         #region inherited methods
 
         public void OnBuild() { }
