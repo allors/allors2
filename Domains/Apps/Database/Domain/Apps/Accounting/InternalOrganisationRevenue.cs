@@ -23,7 +23,7 @@ namespace Allors.Domain
         {
             this.Revenue = 0;
 
-            var storeRevenues = this.strategy.Session.Extent<Store>();
+            var storeRevenues = this.strategy.Session.Extent<StoreRevenue>();
             storeRevenues.Filter.AddEquals(M.StoreRevenue.Year, this.Year);
             storeRevenues.Filter.AddEquals(M.StoreRevenue.Month, this.Month);
 

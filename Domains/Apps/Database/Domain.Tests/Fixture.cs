@@ -70,20 +70,17 @@ namespace Allors
                     new PartyContactMechanismBuilder(session).WithContactMechanism(postalAddress).WithContactPurpose(
                         new ContactMechanismPurposes(session).ShippingAddress).WithUseAsDefault(true).Build();
 
-
-                var internalOrganisation = new SingletonBuilder(session)
-                    .WithName("internalOrganisation")
-                    .WithPreferredCurrency(euro)
-                    .WithIncomingShipmentNumberPrefix("incoming shipmentno: ")
-                    .WithPurchaseInvoiceNumberPrefix("incoming invoiceno: ")
-                    .WithPurchaseOrderNumberPrefix("purchase orderno: ")
-                    .WithPartyContactMechanism(billingAddress)
-                    .WithPartyContactMechanism(shippingAddress)
-                    .WithDefaultPaymentMethod(ownBankAccount)
-                    .Build();
+                singleton.Name = "internalOrganisation";
+                singleton.PreferredCurrency = euro;
+                singleton.IncomingShipmentNumberPrefix = "incoming shipmentno: ";
+                singleton.PurchaseInvoiceNumberPrefix = "incoming invoiceno: ";
+                singleton.PurchaseOrderNumberPrefix = "purchase orderno: ";
+                singleton.AddPartyContactMechanism(billingAddress);
+                singleton.AddPartyContactMechanism(shippingAddress);
+                singleton.DefaultPaymentMethod = ownBankAccount;
 
                 var facility = new WarehouseBuilder(session).WithName("facility").Build();
-                internalOrganisation.DefaultFacility = facility;
+                singleton.DefaultFacility = facility;
 
                 var paymentMethod = new PaymentMethods(session).Extent().First;
 

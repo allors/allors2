@@ -126,16 +126,18 @@ namespace Allors.Domain
         }
 
         [Fact]
-        public void GivenSalesInvoice_WhenDeriving_ThenBillToCustomerMustBeSingletonCustomer()
+        public void GivenSalesInvoice_WhenDeriving_ThenBillToCustomer()
         {
-            var customer = new OrganisationBuilder(this.DatabaseSession).WithName("customer").WithOrganisationRole(new OrganisationRoles(this.DatabaseSession).Customer).Build();
+            var customer = new OrganisationBuilder(this.DatabaseSession)
+                .WithName("customer")
+                .WithOrganisationRole(new OrganisationRoles(this.DatabaseSession).Customer)
+                .Build();
             var contactMechanism = new PostalAddressBuilder(this.DatabaseSession)
                 .WithAddress1("Haverwerf 15")
                 .WithPostalBoundary(new PostalBoundaryBuilder(this.DatabaseSession)
                                         .WithLocality("Mechelen")
                                         .WithCountry(new Countries(this.DatabaseSession).FindBy(M.Country.IsoCode, "BE"))
                                         .Build())
-
                 .Build();
 
             new SalesInvoiceBuilder(this.DatabaseSession)
