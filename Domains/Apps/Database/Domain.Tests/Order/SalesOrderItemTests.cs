@@ -181,7 +181,6 @@ namespace Allors.Domain
                 .WithVariant(this.variantGood)
                 .WithVariant(this.variantGood2)
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.DatabaseSession).Piece)
-                .WithInventoryItemKind(new InventoryItemKinds(this.DatabaseSession).NonSerialised)
                 .Build();
 
             this.goodPurchasePrice = new ProductPurchasePriceBuilder(this.DatabaseSession)
@@ -1339,7 +1338,6 @@ namespace Allors.Domain
                 .WithLocalisedName(new LocalisedTextBuilder(this.DatabaseSession).WithText("good1").WithLocale(Singleton.Instance(this.DatabaseSession).DefaultLocale).Build())
                 .WithFinishedGood(testPart)
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.DatabaseSession).Piece)
-                .WithInventoryItemKind(new InventoryItemKinds(this.DatabaseSession).NonSerialised)
                 .Build();
 
             var good1InventoryItem = new NonSerialisedInventoryItemBuilder(this.DatabaseSession).WithPart(testPart).Build();

@@ -46,6 +46,16 @@ namespace Allors.Domain
                 this.CurrentObjectState = new SalesOrderObjectStates(this.Strategy.Session).Provisional;
             }
 
+            if (!this.ExistOrderDate)
+            {
+                this.OrderDate = DateTime.UtcNow;
+            }
+
+            if (!this.ExistEntryDate)
+            {
+                this.EntryDate = DateTime.UtcNow;
+            }
+
             if (!this.ExistPartiallyShip)
             {
                 this.PartiallyShip = true;

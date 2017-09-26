@@ -42,7 +42,7 @@ namespace Allors.Domain
             var derivation = method.Derivation;
             var defaultLocale = Singleton.Instance(this.strategy.Session).DefaultLocale;
 
-            derivation.Validation.AssertAtLeastOne(this, M.Good.FinishedGood, M.Good.InventoryItemKind);
+            //derivation.Validation.AssertAtLeastOne(this, M.Good.FinishedGood, M.Good.InventoryItemKind);
             derivation.Validation.AssertExistsAtMostOne(this, M.Good.FinishedGood, M.Good.InventoryItemKind);
 
             if (this.LocalisedNames.Any(x => x.Locale.Equals(defaultLocale)))

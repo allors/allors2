@@ -193,7 +193,6 @@ namespace Allors.Repository
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
-        [Required]
         Party ShipFromParty { get; set; }
 
         #region Allors

@@ -135,7 +135,6 @@ namespace Allors.Domain
                 .WithVariant(this.variantGood)
                 .WithVariant(this.variantGood2)
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.DatabaseSession).Piece)
-                .WithInventoryItemKind(new InventoryItemKinds(this.DatabaseSession).NonSerialised)
                 .Build();
 
             this.goodPurchasePrice = new ProductPurchasePriceBuilder(this.DatabaseSession)
@@ -310,6 +309,9 @@ namespace Allors.Domain
                 .WithShipToCustomer(this.shipToCustomer)
                 .WithBillToCustomer(this.billToCustomer)
                 .Build();
+
+            this.DatabaseSession.Derive();
+            this.DatabaseSession.Commit();
 
             this.order.Confirm();
 
