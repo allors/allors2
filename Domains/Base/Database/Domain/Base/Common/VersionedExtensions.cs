@@ -45,43 +45,34 @@ namespace Allors.Domain
             {
                 foreach (var versionRoleType in versionClass.RoleTypes.Where(v => versionTypeRegex.IsMatch(v.AssociationType.ObjectType.Name)))
                 {
-                    try
+                    var versionedRoleType = versionedClass.RoleTypes.FirstOrDefault(v => v.Name.Equals(versionRoleType.Name));
+                    if (versionedRoleType == null)
                     {
-                        var versionedRoleType =
-                            versionedClass.RoleTypes.FirstOrDefault(v => v.Name.Equals(versionRoleType.Name));
-                        if (versionedRoleType == null)
-                        {
-                            throw new Exception("Could not find versioned role " + versionRoleType.Name);
-                        }
+                        throw new Exception("Could not find versioned role " + versionRoleType.Name);
+                    }
 
-                        if (versionRoleType.IsMany)
+                    if (versionRoleType.IsMany)
+                    {
+                        var versionedRole = @this.Strategy.GetCompositeRoles(versionedRoleType.RelationType);
+                        var versionRole = currentVersion.Strategy.GetCompositeRoles(versionRoleType.RelationType);
+                        if (!(versionedRole.Count == 0 && versionRole.Count == 0) ||
+                            versionedRole.Count != versionRole.Count ||
+                            !versionedRole.ToArray().OrderBy(s => s)
+                                .SequenceEqual(versionRole.ToArray().OrderBy(t => t)))
                         {
-                            var versionedRole = @this.Strategy.GetCompositeRoles(versionedRoleType.RelationType);
-                            var versionRole = currentVersion.Strategy.GetCompositeRoles(versionRoleType.RelationType);
-                            if (versionedRole.Count != versionRole.Count ||
-                                versionedRole.Count == 0 ||
-                                versionRole.Count == 0 ||
-                                !versionedRole.ToArray().OrderBy(s => s)
-                                    .SequenceEqual(versionRole.ToArray().OrderBy(t => t)))
-                            {
-                                isNewVersion = true;
-                                break;
-                            }
-                        }
-                        else
-                        {
-                            var versionedRole = @this.Strategy.GetRole(versionedRoleType.RelationType);
-                            var versionRole = currentVersion.Strategy.GetRole(versionRoleType.RelationType);
-                            if (!object.Equals(versionedRole, versionRole))
-                            {
-                                isNewVersion = true;
-                                break;
-                            }
+                            isNewVersion = true;
+                            break;
                         }
                     }
-                    catch (Exception e)
+                    else
                     {
-                        Console.WriteLine(e.Message);
+                        var versionedRole = @this.Strategy.GetRole(versionedRoleType.RelationType);
+                        var versionRole = currentVersion.Strategy.GetRole(versionRoleType.RelationType);
+                        if (!object.Equals(versionedRole, versionRole))
+                        {
+                            isNewVersion = true;
+                            break;
+                        }
                     }
                 }
             }

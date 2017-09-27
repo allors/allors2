@@ -25,9 +25,9 @@
         [Id("88BE9AFA-122A-469B-BD47-388ECC835EAB")]
         [AssociationId("D8E59DF6-DC0C-4CAE-B0F2-402B2D927C5F")]
         [RoleId("8CD4939F-285F-4983-9C31-2AEB2B89D732")]
-        [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
         #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
         public OrderObjectState CurrentObjectState { get; set; }
 
         #region Allors
@@ -36,7 +36,7 @@
         [RoleId("CAC9EEFE-8E17-4D9A-BF50-298B610D514C")]
         [Indexed]
         #endregion
-        [Multiplicity(Multiplicity.OneToMany)]
+        [Multiplicity(Multiplicity.ManyToMany)]
         public OrderLine[] OrderLines { get; set; }
 
         #region Allors

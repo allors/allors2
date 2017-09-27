@@ -64,7 +64,6 @@ namespace Tests
             Assert.Equal(10m, version.Amount);
             Assert.False(version.ExistCurrentObjectState);
             Assert.False(version.ExistOrderLines);
-
         }
 
         [Fact]
