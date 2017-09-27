@@ -31,7 +31,6 @@ namespace Tests
 
     using Xunit;
 
-    
     public class DerivationGraphTest : DomainTest
     {
         [Fact]

@@ -82,7 +82,72 @@ namespace Allors.Repository
         [Scale(2)]
         [Workspace]
         public decimal AllorsDecimal { get; set; }
-        
+
+
+        #region Allors
+        [Id("6E05C521-B90A-459E-931A-940B4D769C6A")]
+        [AssociationId("A3EBF97C-B23A-46C5-AA34-AC81F97089A4")]
+        [RoleId("EF528E3E-065C-4762-AB4A-637B285A89EB")]
+        #endregion
+        [Required]
+        public byte[] RequiredBinary { get; set; }
+
+        #region Allors
+        [Id("0A17B766-9A60-4061-8FCB-AADFC6C13FAF")]
+        [AssociationId("07516E8D-E5D2-4975-82B2-94BD419F061D")]
+        [RoleId("6E4AA664-3F19-46C1-BA3E-C220E62A9800")]
+        #endregion
+        [Required]
+        public DateTime RequiredDateTime { get; set; }
+
+        #region Allors
+        [Id("22BEF3E8-1178-4717-9BD1-D6F34569B63C")]
+        [AssociationId("B6698E9B-E371-4906-97F5-C44E18155FDA")]
+        [RoleId("520E7D24-AEFB-4FE9-BE12-69823E2F1C37")]
+        #endregion
+        [Required]
+        public bool RequiredBoolean { get; set; }
+
+        #region Allors
+        [Id("FAC655F6-6D89-4CE5-B8E9-388F35294DD0")]
+        [AssociationId("EA8C33BC-450F-4DB3-A76C-CEC9AEF751CB")]
+        [RoleId("4D837324-8433-491E-9E0C-85959EE087F7")]
+        #endregion
+        [Required]
+        public double RequiredDouble { get; set; }
+
+        #region Allors
+        [Id("3257637E-CE68-49B8-879C-E428810DD316")]
+        [AssociationId("9AD8FC7A-8645-4D61-AC8B-27B048BB920F")]
+        [RoleId("5FA9588F-D201-4A85-9A8F-708095D96F1A")]
+        #endregion
+        [Required]
+        public int RequiredInteger { get; set; }
+
+        #region Allors
+        [Id("38405B1B-8469-47D9-BDDF-66B753F52A52")]
+        [AssociationId("52463620-5352-4577-97B9-07A662FB0D10")]
+        [RoleId("34A1060C-BC52-4051-ACB5-BFF3A55C8300")]
+        #endregion
+        [Required]
+        public string RequiredString { get; set; }
+
+        #region Allors
+        [Id("336175A6-29FE-4A6A-A21E-5F3B97BFF99D")]
+        [AssociationId("D9E3E7DE-07DB-4243-9311-4220DB6E767B")]
+        [RoleId("59D7AE57-E7D9-4921-97F5-A1BD02A7E632")]
+        #endregion
+        [Required]
+        public Guid RequiredUnique { get; set; }
+
+        #region Allors
+        [Id("A5905304-6BB6-4B15-85F7-8C4225D6E6B9")]
+        [AssociationId("DC6E60C0-B3D2-43C2-A6BF-222D1652D6D5")]
+        [RoleId("B87C5F55-5F37-4709-9214-571A2E4C2BC2")]
+        #endregion
+        [Required]
+        public decimal RequiredDecimal { get; set; }
+
         #region inherited methods
         public void OnBuild(){}
 

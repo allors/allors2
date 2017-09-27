@@ -55,6 +55,9 @@ namespace Allors
                             case UnitTags.Unique:
                                 @this.Strategy.SetUnitRole(relationType, Guid.NewGuid());
                                 break;
+                            case UnitTags.DateTime:
+                                @this.Strategy.SetUnitRole(relationType, @this.Strategy.Session.Now());
+                                break;
                         }
                     }
                 }

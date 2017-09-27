@@ -25,10 +25,8 @@ namespace Tests
 {
     using Allors;
     using Allors.Domain;
-    using Allors.Meta;
 
     using Xunit;
-
     
     public class DerivationTest : DomainTest
     {
@@ -87,9 +85,7 @@ namespace Tests
             Assert.Equal(11, dependee.Subcounter);
             Assert.Equal(11, subdependee.Subcounter);
         }
-
-
-
+        
         [Fact]
         public void Deleted()
         {

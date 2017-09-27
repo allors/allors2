@@ -920,6 +920,22 @@ namespace Allors.Domain
 
 						global::System.Decimal? AllorsDecimal {set;}
 
+						global::System.Byte[] RequiredBinary {set;}
+
+						global::System.DateTime RequiredDateTime {set;}
+
+						global::System.Boolean RequiredBoolean {set;}
+
+						global::System.Double RequiredDouble {set;}
+
+						global::System.Int32 RequiredInteger {set;}
+
+						global::System.String RequiredString {set;}
+
+						global::System.Guid RequiredUnique {set;}
+
+						global::System.Decimal RequiredDecimal {set;}
+
 		}
 		public interface ValidationC1  : ValidationI12 
 		{

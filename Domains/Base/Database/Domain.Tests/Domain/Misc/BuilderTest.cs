@@ -23,7 +23,6 @@ namespace Tests
     using global::Allors.Domain;
 
     using Xunit;
-
     
     public class BuilderTest : DomainTest
     {
