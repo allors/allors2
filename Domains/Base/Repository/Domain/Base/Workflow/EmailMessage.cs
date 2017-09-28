@@ -79,6 +79,15 @@ namespace Allors.Repository
         public User[] Recipients { get; set; }
 
         #region Allors
+        [Id("CD9C9D1E-3393-46B4-AD61-7AC03019EE08")]
+        [AssociationId("EC809FF4-98BB-4DFA-9D18-1D321A2BC871")]
+        [RoleId("6846A2B4-DFC4-436E-81E2-C504DD020546")]
+        #endregion
+        [Indexed]
+        [Size(256)]
+        public string RecipientEmailAddress { get; set; }
+
+        #region Allors
         [Id("5666ebec-8205-4e5f-b0df-cacfa1af99ce")]
         [AssociationId("1adc0465-9b6b-4050-9b0a-e7fe441ccbd5")]
         [RoleId("f19705f3-5323-4360-8602-acee1be80c50")]
