@@ -35,10 +35,8 @@ namespace Allors.Domain
         [Fact]
         public void GivenSalesOrderBuilder_WhenBuild_ThenPostBuildRelationsMustExist()
         {
-            var customer = new PersonBuilder(this.DatabaseSession).WithFirstName("Koen").WithPersonRole(new PersonRoles(this.DatabaseSession).Employee).Build();
+            var customer = new PersonBuilder(this.DatabaseSession).WithFirstName("Koen").WithPersonRole(new PersonRoles(this.DatabaseSession).Customer).Build();
             var internalOrganisation = Singleton.Instance(this.DatabaseSession);
-
-            
 
             var mechelen = new CityBuilder(this.DatabaseSession).WithName("Mechelen").Build();
 
@@ -82,9 +80,6 @@ namespace Allors.Domain
                 .Build();
 
             var customer = new PersonBuilder(this.DatabaseSession).WithLastName("customer").WithPartyContactMechanism(shipToMechelen).WithPartyContactMechanism(billToMechelen).WithPersonRole(new PersonRoles(this.DatabaseSession).Customer).Build();
-            var internalOrganisation = Singleton.Instance(this.DatabaseSession);
-
-            
 
             var vatRate21 = new VatRateBuilder(this.DatabaseSession).WithRate(21).Build();
 
@@ -1018,8 +1013,6 @@ namespace Allors.Domain
             var customer = new PersonBuilder(this.DatabaseSession).WithLastName("customer").WithPartyContactMechanism(shipToMechelen).WithPersonRole(new PersonRoles(this.DatabaseSession).Customer).Build();
             customer.CreditLimit = 100M;
 
-            
-
             this.DatabaseSession.Derive();
             this.DatabaseSession.Commit();
 
@@ -1385,52 +1378,6 @@ namespace Allors.Domain
             this.DatabaseSession.Derive();
 
             Assert.Null(order.PreviousObjectState);
-        }
-
-        [Fact]
-        public void GivenSalesOrder_WhenDeriving_ThenBillToCustomerMustBeSingletonCustomer()
-        {
-            var customer = new PersonBuilder(this.DatabaseSession).WithFirstName("Koen").WithPersonRole(new PersonRoles(this.DatabaseSession).Customer).Build();
-            var internalOrganisation = Singleton.Instance(this.DatabaseSession);
-
-            var mechelen = new CityBuilder(this.DatabaseSession).WithName("Mechelen").Build();
-
-            new SalesOrderBuilder(this.DatabaseSession)
-                .WithBillToCustomer(customer)
-                .WithShipToCustomer(customer)
-                .WithShipToAddress(new PostalAddressBuilder(this.DatabaseSession).WithGeographicBoundary(mechelen).WithAddress1("Haverwerf 15").Build())
-                .Build();
-
-            var expectedError = ErrorMessages.PartyIsNotACustomer;
-            Assert.Equal(expectedError, this.DatabaseSession.Derive(false).Errors[0].Message);
-
-            
-
-            Assert.False(this.DatabaseSession.Derive(false).HasErrors);
-        }
-
-        [Fact]
-        public void GivenSalesOrder_WhenDeriving_ThenShipToCustomerMustBeSingletonCustomer()
-        {
-            var mechelen = new CityBuilder(this.DatabaseSession).WithName("Mechelen").Build();
-            var billToCustomer = new OrganisationBuilder(this.DatabaseSession).WithName("billToCustomer").WithOrganisationRole(new OrganisationRoles(this.DatabaseSession).Customer).Build();
-            var shipToCustomer = new OrganisationBuilder(this.DatabaseSession).WithName("shipToCustomer").WithOrganisationRole(new OrganisationRoles(this.DatabaseSession).Customer).Build();
-            var internalOrganisation = Singleton.Instance(this.DatabaseSession);
-
-            new SalesOrderBuilder(this.DatabaseSession)
-                .WithBillToCustomer(billToCustomer)
-                .WithShipToCustomer(shipToCustomer)
-                .WithShipToAddress(new PostalAddressBuilder(this.DatabaseSession).WithGeographicBoundary(mechelen).WithAddress1("Haverwerf 15").Build())
-                .Build();
-
-            
-
-            var expectedError = ErrorMessages.PartyIsNotACustomer;
-            Assert.Equal(expectedError, this.DatabaseSession.Derive(false).Errors[0].Message);
-
-            
-
-            Assert.False(this.DatabaseSession.Derive(false).HasErrors);
         }
 
         [Fact]

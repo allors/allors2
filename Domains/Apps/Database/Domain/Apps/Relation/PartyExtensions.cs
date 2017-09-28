@@ -127,7 +127,7 @@ namespace Allors.Domain
             {
                 party.PreferredCurrency = Singleton.Instance(session).PreferredCurrency;
             }
-            
+
             if (!party.ExistSubAccountNumber)
             {
                 party.SubAccountNumber = Singleton.Instance(session).DeriveNextSubAccountNumber();
@@ -260,6 +260,7 @@ namespace Allors.Domain
             @this.AppsOnDeriveCurrentSalesReps(derivation);
             @this.AppsOnDeriveOpenOrderAmount();
             @this.AppsOnDeriveAmountDue(derivation);
+            @this.AppsOnDeriveAmountOverDue(derivation);
             @this.AppsOnDeriveRevenue();
         }
 
@@ -313,6 +314,29 @@ namespace Allors.Domain
                                     @this.AmountDue += invoiceItem.TotalIncVat - invoiceItem.AmountPaid;
                                 }
                             }
+                        }
+                    }
+                }
+            }
+        }
+
+        public static void AppsOnDeriveAmountOverDue(this Party @this, IDerivation derivation)
+        {
+            @this.AmountOverDue = 0;
+
+            foreach (SalesInvoice salesInvoice in @this.SalesInvoicesWhereBillToCustomer)
+            {
+                if (!salesInvoice.CurrentObjectState.Equals(new SalesInvoiceObjectStates(@this.Strategy.Session).Paid))
+                {
+                    var gracePeriod = salesInvoice.Store.PaymentGracePeriod;
+
+                    if (salesInvoice.DueDate.HasValue)
+                    {
+                        var dueDate = salesInvoice.DueDate.Value.AddDays(gracePeriod);
+
+                        if (DateTime.UtcNow > dueDate)
+                        {
+                            @this.AmountOverDue += salesInvoice.TotalIncVat - salesInvoice.AmountPaid;
                         }
                     }
                 }

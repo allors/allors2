@@ -278,7 +278,7 @@ namespace Allors.Domain
 
         public void AppsOnDeriveCurrentOrderStatus(IDerivation derivation)
         {
-            //TODO: State transitions
+            //TODO 
             //if (this.ExistCurrentShipmentStateVersion && this.CurrentShipmentStateVersion.CurrentObjectState.Equals(new SalesOrderObjectStates(this.Strategy.Session).Shipped))
             //{
             //    this.Complete();
