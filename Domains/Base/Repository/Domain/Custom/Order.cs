@@ -97,6 +97,7 @@ namespace Allors.Repository
         [Id("4E56EDF6-F45F-4CEC-8BDA-28536490503A")]
         [AssociationId("B7B0F3EC-E2C7-4650-BCC3-788D3EBBC240")]
         [RoleId("E21C6C3D-A30B-48FC-BC9F-7B817F1B29D0")]
+        #endregion
         [Indexed]
         [Multiplicity(Multiplicity.ManyToOne)]
         [Derived]
@@ -110,7 +111,6 @@ namespace Allors.Repository
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
         public PaymentState PaymentState { get; set; }
-        #endregion
         #endregion
         #endregion
 

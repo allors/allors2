@@ -35,6 +35,7 @@ namespace Allors.Repository
         [Indexed]
         #endregion
         [Multiplicity(Multiplicity.ManyToMany)]
+        [Derived]
         ObjectState[] PreviousObjectStates { get; set; }
 
         #region Allors
@@ -44,6 +45,7 @@ namespace Allors.Repository
         [Indexed]
         #endregion
         [Multiplicity(Multiplicity.ManyToMany)]
+        [Derived]
         ObjectState[] LastObjectStates { get; set; }
         
         #region Allors

@@ -524,6 +524,8 @@ namespace Allors.Domain
 
 						User Recipients {set;}
 
+						global::System.String RecipientEmailAddress {set;}
+
 						global::System.String Subject {set;}
 
 						global::System.String Body {set;}
