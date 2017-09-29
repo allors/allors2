@@ -87,6 +87,9 @@ namespace Allors.Domain
                 .WithOrganisationRole(new OrganisationRoles(this.DatabaseSession).Customer)
                 .Build();
 
+            new CustomerRelationshipBuilder(this.DatabaseSession).WithFromDate(DateTime.UtcNow).WithCustomer(billToCustomer).Build();
+            new CustomerRelationshipBuilder(this.DatabaseSession).WithFromDate(DateTime.UtcNow).WithCustomer(shipToCustomer).Build();
+
             this.part = new FinishedGoodBuilder(this.DatabaseSession).WithName("part").WithInventoryItemKind(new InventoryItemKinds(this.DatabaseSession).NonSerialised).Build();
 
             this.ancestorProductCategory = new ProductCategoryBuilder(this.DatabaseSession)

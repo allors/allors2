@@ -257,6 +257,7 @@
     <Compile Include="Apps\CreditLine.cs" />
     <Compile Include="Apps\Currency.cs" />
     <Compile Include="Apps\CustomEngagementItem.cs" />
+    <Compile Include="Apps\CustomerRelationship.cs" />
     <Compile Include="Apps\CustomerRequirement.cs" />
     <Compile Include="Apps\CustomerReturn.cs" />
     <Compile Include="Apps\CustomerReturnObjectState.cs" />

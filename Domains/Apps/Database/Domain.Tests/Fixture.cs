@@ -106,6 +106,8 @@ namespace Allors
                 var salesrep = new PersonBuilder(session).WithLastName("salesRep").WithUserName("salesRep").WithPersonRole(new PersonRoles(session).Contact).Build();
                 var orderProcessor = new PersonBuilder(session).WithLastName("orderProcessor").WithUserName("orderProcessor").WithPersonRole(new PersonRoles(session).Employee).Build();
 
+                new CustomerRelationshipBuilder(session).WithCustomer(customer).WithFromDate(DateTime.UtcNow).Build();
+
                 new SalesRepRelationshipBuilder(session).WithFromDate(DateTime.UtcNow).WithCustomer(customer).WithSalesRepresentative(salesrep).Build();
 
                 session.Derive();

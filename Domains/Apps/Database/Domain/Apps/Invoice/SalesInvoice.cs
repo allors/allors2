@@ -167,6 +167,32 @@ namespace Allors.Domain
         {
             var derivation = method.Derivation;
 
+            if (this.ExistBillToCustomer)
+            {
+                var customerRelationships = this.BillToCustomer.CustomerRelationshipsWhereCustomer;
+
+                foreach (CustomerRelationship customerRelationship in customerRelationships)
+                {
+                    if (customerRelationship.FromDate <= DateTime.UtcNow && (!customerRelationship.ExistThroughDate || customerRelationship.ThroughDate >= DateTime.UtcNow))
+                    {
+                        derivation.AddDependency(this, customerRelationship);
+                    }
+                }
+            }
+
+            if (this.ExistShipToCustomer)
+            {
+                var customerRelationships = this.ShipToCustomer.CustomerRelationshipsWhereCustomer;
+
+                foreach (CustomerRelationship customerRelationship in customerRelationships)
+                {
+                    if (customerRelationship.FromDate <= DateTime.UtcNow && (!customerRelationship.ExistThroughDate || customerRelationship.ThroughDate >= DateTime.UtcNow))
+                    {
+                        derivation.AddDependency(this, customerRelationship);
+                    }
+                }
+            }
+
             foreach (SalesInvoiceItem invoiceItem in this.InvoiceItems)
             {
                 derivation.AddDependency(this, invoiceItem);
@@ -207,12 +233,12 @@ namespace Allors.Domain
             this.AppsOnDeriveSalesReps(derivation);
             this.AppsOnDeriveAmountPaid(derivation);
 
-            if (this.ExistBillToCustomer && !this.BillToCustomer.IsCustomer())
+            if (this.ExistBillToCustomer && !this.BillToCustomer.AppsIsActiveCustomer(this.InvoiceDate))
             {
                 derivation.Validation.AddError(this, M.SalesInvoice.BillToCustomer, ErrorMessages.PartyIsNotACustomer);
             }
 
-            if (this.ExistShipToCustomer && !this.ShipToCustomer.IsCustomer())
+            if (this.ExistShipToCustomer && !this.ShipToCustomer.AppsIsActiveCustomer(this.InvoiceDate))
             {
                 derivation.Validation.AddError(this, M.SalesInvoice.ShipToCustomer, ErrorMessages.PartyIsNotACustomer);
             }

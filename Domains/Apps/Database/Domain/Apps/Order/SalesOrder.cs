@@ -188,7 +188,7 @@ namespace Allors.Domain
 
             if (this.ExistBillToCustomer)
             {
-                if (!this.BillToCustomer.IsCustomer())
+                if (!this.BillToCustomer.AppsIsActiveCustomer(this.OrderDate))
                 {
                     derivation.Validation.AddError(this, M.SalesOrder.BillToCustomer, ErrorMessages.PartyIsNotACustomer);
                 }
@@ -196,7 +196,7 @@ namespace Allors.Domain
 
             if (this.ExistShipToCustomer)
             {
-                if (!this.ShipToCustomer.IsCustomer())
+                if (!this.ShipToCustomer.AppsIsActiveCustomer(this.OrderDate))
                 {
                     derivation.Validation.AddError(this, M.SalesOrder.ShipToCustomer, ErrorMessages.PartyIsNotACustomer);
                 }

@@ -461,6 +461,26 @@ namespace Allors.Repository
         public Person[] CurrentSalesReps { get; set; }
 
         #region Allors
+        [Id("224518F0-2014-4BF4-B10A-406821A0FD39")]
+        [AssociationId("36FDEA56-5918-4F68-895C-65449FE4C579")]
+        [RoleId("8DC69D34-FB39-4979-8EEA-CBF09C0996F0")]
+        [Indexed]
+        #endregion
+        [Multiplicity(Multiplicity.OneToMany)]
+        [Workspace]
+        public Party[] CurrentCustomers { get; set; }
+
+        #region Allors
+        [Id("D4B532F9-12F0-4B51-AF8E-0E2160A2488E")]
+        [AssociationId("CF65C981-5A4D-4FD5-947F-C82EF07C4634")]
+        [RoleId("86D03D25-89C9-48D6-90B9-962B566741C3")]
+        [Indexed]
+        #endregion
+        [Multiplicity(Multiplicity.OneToMany)]
+        [Workspace]
+        public Organisation[] CurrentSuppliers { get; set; }
+
+        #region Allors
         [Id("033F506F-8004-4931-926B-1DB70556216D")]
         [AssociationId("B40B34F7-CCBB-43E8-9F33-18BF34A6705D")]
         [RoleId("6A06220D-A811-4E02-82E1-F019A5347E4D")]

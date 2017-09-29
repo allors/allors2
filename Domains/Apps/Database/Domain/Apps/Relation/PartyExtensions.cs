@@ -43,19 +43,21 @@ namespace Allors.Domain
             return null;
         }
 
-        public static bool IsCustomer(this Party party)
+        public static bool AppsIsActiveCustomer(this Party party, DateTime? date)
         {
-            var organisation = party as Organisation;
-            var person = party as Person;
-
-            if (organisation != null)
+            if (date == DateTime.MinValue)
             {
-                return organisation.OrganisationRoles.Contains(new OrganisationRoles(party.Strategy.Session).Customer);
+                return false;
             }
 
-            if (person != null)
+            var customerRelationships = party.CustomerRelationshipsWhereCustomer;
+            foreach (CustomerRelationship relationship in customerRelationships)
             {
-                return person.PersonRoles.Contains(new PersonRoles(party.Strategy.Session).Customer);
+                if (relationship.FromDate.Date <= date &&
+                    (!relationship.ExistThroughDate || relationship.ThroughDate >= date))
+                {
+                    return true;
+                }
             }
 
             return false;

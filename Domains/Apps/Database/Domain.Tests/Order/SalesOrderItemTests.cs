@@ -119,10 +119,9 @@ namespace Allors.Domain
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.DatabaseSession).Piece)
                 .Build();
 
-            
+            new CustomerRelationshipBuilder(this.DatabaseSession).WithCustomer(this.billToCustomer).Build();
 
-            
-            
+            new CustomerRelationshipBuilder(this.DatabaseSession).WithCustomer(this.shipToCustomer).Build();
 
             //this.partyRevenueHistory = new PartyRevenueHistoryBuilder(this.DatabaseSession)
             //    .WithCurrency(euro)

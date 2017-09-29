@@ -87,7 +87,8 @@ namespace Allors.Domain
         public void GivenPartyWithOpenOrders_WhenDeriving_ThenOpenOrderAmountIsUpdated()
         {
             var organisation = new OrganisationBuilder(this.DatabaseSession).WithName("customer").WithOrganisationRole(new OrganisationRoles(this.DatabaseSession).Customer).Build();
-            
+
+            new CustomerRelationshipBuilder(this.DatabaseSession).WithCustomer(organisation).Build();
 
             var mechelen = new CityBuilder(this.DatabaseSession).WithName("Mechelen").Build();
 
@@ -143,7 +144,9 @@ namespace Allors.Domain
             var productItem = new SalesInvoiceItemTypes(this.DatabaseSession).ProductItem;
             var contactMechanism = new ContactMechanisms(this.DatabaseSession).Extent().First;
 
-            
+
+
+            new CustomerRelationshipBuilder(this.DatabaseSession).WithCustomer(customer).Build();
 
             var good = new GoodBuilder(this.DatabaseSession)
                 .WithSku("10101")

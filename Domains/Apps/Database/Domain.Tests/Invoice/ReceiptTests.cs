@@ -39,6 +39,8 @@ namespace Allors.Domain
             this.billToCustomer = new OrganisationBuilder(this.DatabaseSession).WithName("billToCustomer").WithPreferredCurrency(euro).WithOrganisationRole(new OrganisationRoles(this.DatabaseSession).Customer).Build();
             var supplier = new OrganisationBuilder(this.DatabaseSession).WithName("supplier").WithLocale(new Locales(this.DatabaseSession).EnglishGreatBritain).WithOrganisationRole(new OrganisationRoles(this.DatabaseSession).Supplier).Build();
 
+            new CustomerRelationshipBuilder(this.DatabaseSession).WithFromDate(DateTime.UtcNow).WithCustomer(this.billToCustomer).Build();
+
             this.good = new GoodBuilder(this.DatabaseSession)
                 .WithSku("10101")
                 .WithVatRate(new VatRateBuilder(this.DatabaseSession).WithRate(21).Build())
@@ -143,6 +145,10 @@ namespace Allors.Domain
             var customer = new PersonBuilder(this.DatabaseSession)
                 .WithLastName("customer")
                 .WithPersonRole(new PersonRoles(this.DatabaseSession).Customer)
+                .Build();
+
+            new CustomerRelationshipBuilder(this.DatabaseSession)
+                .WithCustomer(customer)
                 .Build();
 
             var invoice = new SalesInvoiceBuilder(this.DatabaseSession)

@@ -269,7 +269,8 @@ namespace Allors.Domain
 
             var internalOrganisation = Singleton.Instance(this.DatabaseSession).InternalOrganisation;
 
-            
+
+            new CustomerRelationshipBuilder(this.DatabaseSession).WithFromDate(DateTime.UtcNow).WithCustomer(customer).Build();
 
             this.DatabaseSession.Derive();
             this.DatabaseSession.Commit();
@@ -427,7 +428,9 @@ namespace Allors.Domain
 
             var internalOrganisation = Singleton.Instance(this.DatabaseSession).InternalOrganisation;
 
-            
+
+            new CustomerRelationshipBuilder(this.DatabaseSession).WithFromDate(DateTime.UtcNow).WithCustomer(customer).Build();
+
 
             this.DatabaseSession.Derive();
 
