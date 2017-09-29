@@ -31,12 +31,12 @@ namespace Allors.Domain
 
             if (!this.ExistFacility)
             {
-                this.Facility = Singleton.Instance(this).DefaultFacility;
+                this.Facility = Singleton.Instance(this).InternalOrganisation.DefaultFacility;
             }
 
             if (!this.ExistShipmentNumber && this.ExistShipToParty)
             {
-                this.ShipmentNumber = Singleton.Instance(this).DeriveNextShipmentNumber();
+                this.ShipmentNumber = Singleton.Instance(this).InternalOrganisation.DeriveNextShipmentNumber();
             }
 
             if (!this.ExistEstimatedArrivalDate)

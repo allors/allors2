@@ -61,7 +61,7 @@ namespace Allors.Domain
         {
             this.InstantiateObjects(this.DatabaseSession);
 
-            var builder = new SingletonBuilder(this.DatabaseSession);
+            var builder = new InternalOrganisationBuilder(this.DatabaseSession);
             builder.Build();
 
             Assert.True(this.DatabaseSession.Derive(false).HasErrors);
@@ -79,9 +79,8 @@ namespace Allors.Domain
         {
             this.InstantiateObjects(this.DatabaseSession);
 
-            var internalOrganisation = new SingletonBuilder(this.DatabaseSession)
+            var internalOrganisation = new InternalOrganisationBuilder(this.DatabaseSession)
                 .WithName("Internal")
-                .WithPreferredCurrency(this.euro)
                 .WithDefaultPaymentMethod(this.ownBankAccount)
                 .WithPartyContactMechanism(this.billingAddress)
                 .Build();
@@ -96,9 +95,8 @@ namespace Allors.Domain
         {
             this.InstantiateObjects(this.DatabaseSession);
 
-            var internalOrganisation = new SingletonBuilder(this.DatabaseSession)
+            var internalOrganisation = new InternalOrganisationBuilder(this.DatabaseSession)
                 .WithName("Internal")
-                .WithPreferredCurrency(this.euro)
                 .WithDefaultPaymentMethod(this.ownBankAccount)
                 .WithPartyContactMechanism(this.billingAddress)
                 .Build();
@@ -113,9 +111,8 @@ namespace Allors.Domain
         {
             this.InstantiateObjects(this.DatabaseSession);
 
-            var internalOrganisation = new SingletonBuilder(this.DatabaseSession)
+            var internalOrganisation = new InternalOrganisationBuilder(this.DatabaseSession)
                 .WithName("Internal")
-                .WithPreferredCurrency(this.euro)
                 .WithDefaultPaymentMethod(this.ownBankAccount)
                 .WithPartyContactMechanism(this.billingAddress)
                 .Build();
@@ -130,9 +127,8 @@ namespace Allors.Domain
         {
             this.InstantiateObjects(this.DatabaseSession);
 
-            var internalOrganisation = new SingletonBuilder(this.DatabaseSession)
+            var internalOrganisation = new InternalOrganisationBuilder(this.DatabaseSession)
                 .WithName("Internal")
-                .WithPreferredCurrency(this.euro)
                 .WithDefaultPaymentMethod(this.ownBankAccount)
                 .WithPartyContactMechanism(this.billingAddress)
                 .Build();
@@ -146,21 +142,12 @@ namespace Allors.Domain
         public void GivenSingleton_WhenPreferredCurrencyIsChanged_ThenValidationErrorIsTrhown()
         {
             this.InstantiateObjects(this.DatabaseSession);
-
-            var organisation = new SingletonBuilder(this.DatabaseSession)
-                .WithName("Internal")
-                .WithPreferredCurrency(this.euro)
-                .WithDefaultPaymentMethod(this.ownBankAccount)
-                .WithPartyContactMechanism(this.billingAddress)
-                .Build();
-
-            this.DatabaseSession.Derive();
                
-            organisation.PreferredCurrency = new Currencies(this.DatabaseSession).FindBy(M.Currency.IsoCode, "GBP");
+            Singleton.Instance(this.DatabaseSession).PreferredCurrency = new Currencies(this.DatabaseSession).FindBy(M.Currency.IsoCode, "GBP");
 
             Assert.True(this.DatabaseSession.Derive(false).HasErrors);
 
-            organisation.PreferredCurrency = new Currencies(this.DatabaseSession).FindBy(M.Currency.IsoCode, "EUR");
+            Singleton.Instance(this.DatabaseSession).PreferredCurrency = new Currencies(this.DatabaseSession).FindBy(M.Currency.IsoCode, "EUR");
 
             Assert.False(this.DatabaseSession.Derive(false).HasErrors);
         }
@@ -170,9 +157,8 @@ namespace Allors.Domain
         {
             this.InstantiateObjects(this.DatabaseSession);
 
-            var organisation = new SingletonBuilder(this.DatabaseSession)
+            var organisation = new InternalOrganisationBuilder(this.DatabaseSession)
                 .WithName("Internal")
-                .WithPreferredCurrency(this.euro)
                 .WithPartyContactMechanism(this.billingAddress)
                 .Build();
 
@@ -217,9 +203,8 @@ namespace Allors.Domain
         {
             this.InstantiateObjects(this.DatabaseSession);
 
-            var organisation = new SingletonBuilder(this.DatabaseSession)
+            var organisation = new InternalOrganisationBuilder(this.DatabaseSession)
                 .WithName("Internal")
-                .WithPreferredCurrency(this.euro)
                 .WithFiscalYearStartMonth(05)
                 .WithFiscalYearStartDay(15)
                 .WithPartyContactMechanism(this.billingAddress)
@@ -268,9 +253,8 @@ namespace Allors.Domain
         {
             this.InstantiateObjects(this.DatabaseSession);
 
-            var organisation = new SingletonBuilder(this.DatabaseSession)
+            var organisation = new InternalOrganisationBuilder(this.DatabaseSession)
                 .WithName("Internal")
-                .WithPreferredCurrency(this.euro)
                 .WithFiscalYearStartMonth(05)
                 .WithFiscalYearStartDay(15)
                 .WithPartyContactMechanism(this.billingAddress)
@@ -290,9 +274,8 @@ namespace Allors.Domain
         {
             this.InstantiateObjects(this.DatabaseSession);
 
-            var organisation = new SingletonBuilder(this.DatabaseSession)
+            var organisation = new InternalOrganisationBuilder(this.DatabaseSession)
                 .WithName("Internal")
-                .WithPreferredCurrency(this.euro)
                 .WithPartyContactMechanism(this.billingAddress)
                 .Build();
 

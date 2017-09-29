@@ -27,7 +27,7 @@ namespace Allors.Domain
 
             if (!this.ExistTakenViaContactMechanism)
             {
-                this.TakenViaContactMechanism = Singleton.Instance(this).OrderAddress;
+                this.TakenViaContactMechanism = Singleton.Instance(this).InternalOrganisation.OrderAddress;
             }
 
             if (!this.ExistPlacingContactMechanism && this.ExistPlacingParty)

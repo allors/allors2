@@ -80,10 +80,9 @@ namespace Allors.Domain
                 .WithBankAccount(new BankAccountBuilder(this.DatabaseSession).WithBank(bank).WithCurrency(euro).WithIban("BE23 3300 6167 6391").WithNameOnAccount("Koen").Build())
                 .Build();
 
-            var internalOrganisation = new SingletonBuilder(this.DatabaseSession)
+            var internalOrganisation = new InternalOrganisationBuilder(this.DatabaseSession)
                 .WithName("org")
                 .WithDefaultPaymentMethod(ownBankAccount)
-                .WithPreferredCurrency(euro)
                 .Build();
 
             var invoice1 = new PurchaseInvoiceBuilder(this.DatabaseSession)

@@ -120,17 +120,17 @@ namespace Allors.Domain
             var session = party.Strategy.Session;
             if (!party.ExistLocale)
             {
-                party.Locale = Singleton.Instance(session).PreferredLocale;
+                party.Locale = Singleton.Instance(session).DefaultLocale;
             }
 
             if (!party.ExistPreferredCurrency)
             {
-                party.PreferredCurrency = Singleton.Instance(session).PreferredCurrency;
+                party.PreferredCurrency= Singleton.Instance(session).PreferredCurrency;
             }
 
             if (!party.ExistSubAccountNumber)
             {
-                party.SubAccountNumber = Singleton.Instance(session).DeriveNextSubAccountNumber();
+                party.SubAccountNumber = Singleton.Instance(session).InternalOrganisation.DeriveNextSubAccountNumber();
             }
         }
 

@@ -54,7 +54,7 @@ namespace Allors.Domain
         [Fact]
         public void GivenOrganisationGlAccount_WhenBuild_ThenHasBankStatementTransactionsIsAlwaysFalse()
         {
-            var internalOrganisation = Singleton.Instance(this.DatabaseSession);
+            var internalOrganisation = Singleton.Instance(this.DatabaseSession).InternalOrganisation;
 
             var generalLedgerAccount = new GeneralLedgerAccountBuilder(this.DatabaseSession)
                 .WithAccountNumber("0001")
@@ -77,7 +77,7 @@ namespace Allors.Domain
         [Fact]
         public void GivenOrganisationGlAccount_WhenNotReferenced_ThenAccountIsNeutral()
         {
-            var internalOrganisation = Singleton.Instance(this.DatabaseSession);
+            var internalOrganisation = Singleton.Instance(this.DatabaseSession).InternalOrganisation;
 
             var generalLedgerAccount = new GeneralLedgerAccountBuilder(this.DatabaseSession)
                 .WithAccountNumber("0001")

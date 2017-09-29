@@ -48,7 +48,7 @@ namespace Allors.Domain
                 .WithContactPurpose(new ContactMechanismPurposes(this.DatabaseSession).BillingAddress)
                 .Build();
 
-            var internalOrganisation = Singleton.Instance(this.DatabaseSession);
+            var internalOrganisation = Singleton.Instance(this.DatabaseSession).InternalOrganisation;
             this.supplier = new OrganisationBuilder(this.DatabaseSession).WithName("supplier").WithOrganisationRole(new OrganisationRoles(this.DatabaseSession).Supplier).Build();
             this.supplier.AddPartyContactMechanism(supplierContactMechanism);
 

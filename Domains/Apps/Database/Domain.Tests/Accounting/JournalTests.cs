@@ -30,7 +30,7 @@ namespace Allors.Domain
         [Fact]
         public void GivenJournal_WhenDeriving_ThenDescriptionMustExist()
         {
-            var internalOrganisation = Singleton.Instance(this.DatabaseSession);
+            var internalOrganisation = Singleton.Instance(this.DatabaseSession).InternalOrganisation;
 
             var glAccount = new GeneralLedgerAccountBuilder(this.DatabaseSession)
                 .WithAccountNumber("0001")
@@ -66,7 +66,7 @@ namespace Allors.Domain
         [Fact]
         public void GivenJournal_WhenDeriving_ThenSingletonMustExist()
         {
-            var internalOrganisation = Singleton.Instance(this.DatabaseSession);
+            var internalOrganisation = Singleton.Instance(this.DatabaseSession).InternalOrganisation;
             var glAccount = new GeneralLedgerAccountBuilder(this.DatabaseSession)
                 .WithAccountNumber("0001")
                 .WithName("GeneralLedgerAccount")
@@ -95,7 +95,7 @@ namespace Allors.Domain
         [Fact]
         public void GivenJournal_WhenDeriving_ThenJournalTypeMustExist()
         {
-            var internalOrganisation = Singleton.Instance(this.DatabaseSession);
+            var internalOrganisation = Singleton.Instance(this.DatabaseSession).InternalOrganisation;
             var glAccount = new GeneralLedgerAccountBuilder(this.DatabaseSession)
                 .WithAccountNumber("0001")
                 .WithName("GeneralLedgerAccount")
@@ -130,7 +130,7 @@ namespace Allors.Domain
         [Fact]
         public void GivenJournal_WhenDeriving_ThenContraAccountMustExist()
         {
-            var internalOrganisation = Singleton.Instance(this.DatabaseSession);
+            var internalOrganisation = Singleton.Instance(this.DatabaseSession).InternalOrganisation;
 
             var builder = new JournalBuilder(this.DatabaseSession);
             builder.WithDescription("description");
@@ -164,7 +164,7 @@ namespace Allors.Domain
         [Fact]
         public void GivenJournal_WhenBuildWithout_ThenBlockUnpaidTransactionsIsFalse()
         {
-            var internalOrganisation = Singleton.Instance(this.DatabaseSession);
+            var internalOrganisation = Singleton.Instance(this.DatabaseSession).InternalOrganisation;
 
             var generalLedgerAccount = new GeneralLedgerAccountBuilder(this.DatabaseSession)
                 .WithAccountNumber("0001")
@@ -190,7 +190,7 @@ namespace Allors.Domain
         [Fact]
         public void GivenJournal_WhenBuildWithout_ThenCloseWhenInBalanceIsFalse()
         {
-            var internalOrganisation = Singleton.Instance(this.DatabaseSession);
+            var internalOrganisation = Singleton.Instance(this.DatabaseSession).InternalOrganisation;
 
             var generalLedgerAccount = new GeneralLedgerAccountBuilder(this.DatabaseSession)
                 .WithAccountNumber("0001")
@@ -216,7 +216,7 @@ namespace Allors.Domain
         [Fact]
         public void GivenJournal_WhenBuildWithout_ThenUseAsDefaultIsFalse()
         {
-            var internalOrganisation = Singleton.Instance(this.DatabaseSession);
+            var internalOrganisation = Singleton.Instance(this.DatabaseSession).InternalOrganisation;
 
             var generalLedgerAccount = new GeneralLedgerAccountBuilder(this.DatabaseSession)
                 .WithAccountNumber("0001")
@@ -242,7 +242,7 @@ namespace Allors.Domain
         [Fact]
         public void GivenJournal_WhenDeriving_ThenContraAccountCanBeChangedWhenNotUsedYet()
         {
-            var internalOrganisation = Singleton.Instance(this.DatabaseSession);
+            var internalOrganisation = Singleton.Instance(this.DatabaseSession).InternalOrganisation;
 
             var generalLedgerAccount1 = new GeneralLedgerAccountBuilder(this.DatabaseSession)
                 .WithAccountNumber("0001")
@@ -292,7 +292,7 @@ namespace Allors.Domain
         [Fact]
         public void GivenJournal_WhenDeriving_ThenContraAccountCanNotBeChangedWhenJournalEntriesArePresent()
         {
-            var internalOrganisation = Singleton.Instance(this.DatabaseSession);
+            var internalOrganisation = Singleton.Instance(this.DatabaseSession).InternalOrganisation;
 
             var generalLedgerAccount1 = new GeneralLedgerAccountBuilder(this.DatabaseSession)
                 .WithAccountNumber("0001")
@@ -348,7 +348,7 @@ namespace Allors.Domain
         [Fact]
         public void GivenJournal_WhenDeriving_ThenJournalTypeCanBeChangedWhenJournalIsNotUsedYet()
         {
-            var internalOrganisation = Singleton.Instance(this.DatabaseSession);
+            var internalOrganisation = Singleton.Instance(this.DatabaseSession).InternalOrganisation;
 
             var generalLedgerAccount1 = new GeneralLedgerAccountBuilder(this.DatabaseSession)
                 .WithAccountNumber("0001")
@@ -384,7 +384,7 @@ namespace Allors.Domain
         [Fact]
         public void GivenJournal_WhenDeriving_ThenJournalTypeCanNotBeChangedWhenJournalEntriesArePresent()
         {
-            var internalOrganisation = Singleton.Instance(this.DatabaseSession);
+            var internalOrganisation = Singleton.Instance(this.DatabaseSession).InternalOrganisation;
 
             var generalLedgerAccount1 = new GeneralLedgerAccountBuilder(this.DatabaseSession)
                 .WithAccountNumber("0001")

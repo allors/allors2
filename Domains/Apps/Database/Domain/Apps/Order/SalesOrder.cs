@@ -165,12 +165,12 @@ namespace Allors.Domain
 
             if (!this.ExistBillFromContactMechanism)
             {
-                this.BillFromContactMechanism = Singleton.Instance(this).BillingAddress;
+                this.BillFromContactMechanism = Singleton.Instance(this).InternalOrganisation.BillingAddress;
             }
 
             if (!this.ExistTakenByContactMechanism)
             {
-                this.TakenByContactMechanism = Singleton.Instance(this).OrderAddress;
+                this.TakenByContactMechanism = Singleton.Instance(this).InternalOrganisation.OrderAddress;
             }
 
             if (!this.ExistCustomerCurrency)
@@ -182,9 +182,7 @@ namespace Allors.Domain
                 }
                 else
                 {
-                    this.CustomerCurrency = Singleton.Instance(this).ExistPreferredCurrency ? 
-                        Singleton.Instance(this).PreferredCurrency : 
-                        Singleton.Instance(this).PreferredLocale.Country.Currency;
+                    this.CustomerCurrency = Singleton.Instance(this).PreferredCurrency;
                 }
             }
 
@@ -454,8 +452,7 @@ namespace Allors.Domain
             }
             else
             {
-                var singleton = Singleton.Instance(this);
-                this.Locale = singleton.PreferredLocale ?? singleton.DefaultLocale;
+                this.Locale = Singleton.Instance(this.strategy.Session).DefaultLocale;
             }
         }
 
@@ -519,7 +516,7 @@ namespace Allors.Domain
             if (pendingShipment == null)
             {
                 pendingShipment = new CustomerShipmentBuilder(this.Strategy.Session)
-                    .WithShipFromAddress(Singleton.Instance(this).ShippingAddress)
+                    .WithShipFromAddress(Singleton.Instance(this).InternalOrganisation.ShippingAddress)
                     .WithBillToParty(this.BillToCustomer)
                     .WithBillToContactMechanism(this.BillToContactMechanism)
                     .WithShipToAddress(address.Key)

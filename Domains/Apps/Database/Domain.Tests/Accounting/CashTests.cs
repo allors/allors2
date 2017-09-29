@@ -31,11 +31,11 @@ namespace Allors.Domain
         [Fact]
         public void GivenCashPaymentMethodForSingletonThatDoesAccounting_WhenDeriving_ThenCreditorIsRequired()
         {
-            var cash = new CashBuilder(this.DatabaseSession)
+            new CashBuilder(this.DatabaseSession)
                 .WithDescription("description")
                 .Build();
 
-            var internalOrganisation = Singleton.Instance(this.DatabaseSession);             
+            var internalOrganisation = Singleton.Instance(this.DatabaseSession).InternalOrganisation;             
             
             internalOrganisation.DoAccounting = false;
 
@@ -55,9 +55,7 @@ namespace Allors.Domain
                 .WithOrganisationRole(new OrganisationRoles(this.DatabaseSession).Supplier)
                 .Build();
 
-            var internalOrganisation = Singleton.Instance(this.DatabaseSession);
-            
-            
+            var internalOrganisation = Singleton.Instance(this.DatabaseSession).InternalOrganisation;
 
             var generalLedgerAccount = new GeneralLedgerAccountBuilder(this.DatabaseSession)
                 .WithAccountNumber("0001")
@@ -101,7 +99,7 @@ namespace Allors.Domain
                 .WithOrganisationRole(new OrganisationRoles(this.DatabaseSession).Supplier)
                 .Build();
 
-            var internalOrganisation = Singleton.Instance(this.DatabaseSession);
+            var internalOrganisation = Singleton.Instance(this.DatabaseSession).InternalOrganisation;
 
             var generalLedgerAccount = new GeneralLedgerAccountBuilder(this.DatabaseSession)
                 .WithAccountNumber("0001")

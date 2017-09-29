@@ -34,7 +34,7 @@ namespace Allors.Domain
 
             if (!this.ExistInvoiceNumber)
             {
-                this.InvoiceNumber = Singleton.Instance(this).DeriveNextPurchaseInvoiceNumber();
+                this.InvoiceNumber = Singleton.Instance(this).InternalOrganisation.DeriveNextPurchaseInvoiceNumber();
             }
 
             if (!this.ExistInvoiceDate)

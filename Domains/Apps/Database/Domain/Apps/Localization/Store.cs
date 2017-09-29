@@ -26,7 +26,7 @@ namespace Allors.Domain
         public string DeriveNextInvoiceNumber(int year)
         {
             int salesInvoiceNumber;
-            if (Singleton.Instance(this).InvoiceSequence.Equals(new InvoiceSequences(this.Strategy.Session).EnforcedSequence))
+            if (Singleton.Instance(this).InternalOrganisation.InvoiceSequence.Equals(new InvoiceSequences(this.Strategy.Session).EnforcedSequence))
             {
                 salesInvoiceNumber = this.SalesInvoiceCounter.NextValue();
             }
@@ -109,9 +109,9 @@ namespace Allors.Domain
                 this.DefaultPaymentMethod = this.PaymentMethods.First;
             }
 
-            if (!this.ExistDefaultPaymentMethod && Singleton.Instance(this).ExistDefaultPaymentMethod)
+            if (!this.ExistDefaultPaymentMethod && Singleton.Instance(this).InternalOrganisation.ExistDefaultPaymentMethod)
             {
-                this.DefaultPaymentMethod = Singleton.Instance(this).DefaultPaymentMethod;
+                this.DefaultPaymentMethod = Singleton.Instance(this).InternalOrganisation.DefaultPaymentMethod;
 
                 if (!this.ExistPaymentMethods || !this.PaymentMethods.Contains(this.DefaultPaymentMethod))
                 {

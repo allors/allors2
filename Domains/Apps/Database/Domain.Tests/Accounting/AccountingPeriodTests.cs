@@ -92,9 +92,8 @@ namespace Allors.Domain
                 .WithBankAccount(new BankAccountBuilder(this.DatabaseSession).WithBank(bank).WithCurrency(euro).WithIban("BE23 3300 6167 6391").WithNameOnAccount("Koen").Build())
                 .Build();
 
-            var organisation = new SingletonBuilder(this.DatabaseSession)
+            var organisation = new InternalOrganisationBuilder(this.DatabaseSession)
                 .WithName("Internal")
-                .WithPreferredCurrency(euro)
                 .WithDefaultPaymentMethod(ownBankAccount)
                 .Build();
 
@@ -126,9 +125,8 @@ namespace Allors.Domain
                 .WithBankAccount(new BankAccountBuilder(this.DatabaseSession).WithBank(bank).WithCurrency(euro).WithIban("BE23 3300 6167 6391").WithNameOnAccount("Koen").Build())
                 .Build();
 
-            var organisation = new SingletonBuilder(this.DatabaseSession)
+            var organisation = new InternalOrganisationBuilder(this.DatabaseSession)
                 .WithName("Internal")
-                .WithPreferredCurrency(euro)
                 .WithDefaultPaymentMethod(ownBankAccount)
                 .Build();
 
@@ -176,9 +174,8 @@ namespace Allors.Domain
                 .WithBankAccount(new BankAccountBuilder(this.DatabaseSession).WithBank(bank).WithCurrency(euro).WithIban("BE23 3300 6167 6391").WithNameOnAccount("Koen").Build())
                 .Build();
 
-            var organisation = new SingletonBuilder(this.DatabaseSession)
+            var organisation = new InternalOrganisationBuilder(this.DatabaseSession)
                 .WithName("Internal")
-                .WithPreferredCurrency(euro)
                 .WithDefaultPaymentMethod(ownBankAccount)
                 .Build();
 
@@ -239,9 +236,8 @@ namespace Allors.Domain
                 .WithBankAccount(new BankAccountBuilder(this.DatabaseSession).WithBank(bank).WithCurrency(euro).WithIban("BE23 3300 6167 6391").WithNameOnAccount("Koen").Build())
                 .Build();
 
-            var organisation = new SingletonBuilder(this.DatabaseSession)
+            var organisation = new InternalOrganisationBuilder(this.DatabaseSession)
                 .WithName("Internal")
-                .WithPreferredCurrency(euro)
                 .WithDefaultPaymentMethod(ownBankAccount)
                 .Build();
 

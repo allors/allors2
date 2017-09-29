@@ -349,6 +349,7 @@
     <Compile Include="Apps\Incentive.cs" />
     <Compile Include="Apps\IndustryClassification.cs" />
     <Compile Include="Apps\InternalAccountingTransaction.cs" />
+    <Compile Include="Apps\InternalOrganisation.cs" />
     <Compile Include="Apps\InternalOrganisationRevenue.cs" />
     <Compile Include="Apps\InternalRequirement.cs" />
     <Compile Include="Apps\InventoryItemVersion.cs" />

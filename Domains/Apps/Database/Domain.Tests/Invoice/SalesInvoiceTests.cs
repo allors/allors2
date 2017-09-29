@@ -362,7 +362,7 @@ namespace Allors.Domain
                 .WithUseAsDefault(true)
                 .Build();
 
-            var internalOrganisation = Singleton.Instance(this.DatabaseSession);
+            var internalOrganisation = Singleton.Instance(this.DatabaseSession).InternalOrganisation;
             internalOrganisation.RemovePartyContactMechanisms();
             internalOrganisation.AddPartyContactMechanism(home);
 
@@ -457,8 +457,6 @@ namespace Allors.Domain
         {
             var euro = new Currencies(this.DatabaseSession).FindBy(M.Currency.IsoCode, "EUR");
 
-            var internalOrganisation = Singleton.Instance(this.DatabaseSession);
-            internalOrganisation.PreferredCurrency = euro;
             var customer = new OrganisationBuilder(this.DatabaseSession).WithName("customer").WithOrganisationRole(new OrganisationRoles(this.DatabaseSession).Customer).Build();
             var contactMechanism = new PostalAddressBuilder(this.DatabaseSession)
                 .WithAddress1("Haverwerf 15")
@@ -909,9 +907,6 @@ namespace Allors.Domain
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.DatabaseSession).Piece)
                 .Build();
 
-            var internalOrganisation = Singleton.Instance(this.DatabaseSession);
-            internalOrganisation.PreferredCurrency = euro;
-
             var invoice = new SalesInvoiceBuilder(this.DatabaseSession)
                 .WithInvoiceNumber("1")
                 .WithBillToCustomer(new OrganisationBuilder(this.DatabaseSession).WithName("customer").WithOrganisationRole(new OrganisationRoles(this.DatabaseSession).Customer).Build())
@@ -957,9 +952,6 @@ namespace Allors.Domain
                 .WithInventoryItemKind(new InventoryItemKinds(this.DatabaseSession).NonSerialised)
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.DatabaseSession).Piece)
                 .Build();
-
-            var internalOrganisation = Singleton.Instance(this.DatabaseSession);
-            internalOrganisation.PreferredCurrency = euro;
 
             var invoice = new SalesInvoiceBuilder(this.DatabaseSession)
                 .WithInvoiceNumber("1")
@@ -1007,9 +999,6 @@ namespace Allors.Domain
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.DatabaseSession).Piece)
                 .Build();
 
-            var internalOrganisation = Singleton.Instance(this.DatabaseSession);
-            internalOrganisation.PreferredCurrency = euro;
-
             var invoice = new SalesInvoiceBuilder(this.DatabaseSession)
                 .WithInvoiceNumber("1")
                 .WithBillToCustomer(new OrganisationBuilder(this.DatabaseSession).WithName("customer").WithOrganisationRole(new OrganisationRoles(this.DatabaseSession).Customer).Build())
@@ -1055,9 +1044,6 @@ namespace Allors.Domain
                 .WithInventoryItemKind(new InventoryItemKinds(this.DatabaseSession).NonSerialised)
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.DatabaseSession).Piece)
                 .Build();
-
-            var internalOrganisation = Singleton.Instance(this.DatabaseSession);
-            internalOrganisation.PreferredCurrency = euro;
 
             var invoice = new SalesInvoiceBuilder(this.DatabaseSession)
                 .WithInvoiceNumber("1")
@@ -1474,9 +1460,6 @@ namespace Allors.Domain
                 .WithPrimaryProductCategory(cat2)
                 .Build();
 
-            var internalOrganisation = Singleton.Instance(this.DatabaseSession);
-            internalOrganisation.PreferredCurrency = euro;
-
             var invoice1 = new SalesInvoiceBuilder(this.DatabaseSession)
                 .WithInvoiceDate(DateTime.UtcNow)
                 .WithInvoiceNumber("1")
@@ -1744,8 +1727,7 @@ namespace Allors.Domain
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.DatabaseSession).Piece)
                 .Build();
 
-            var internalOrganisation = Singleton.Instance(this.DatabaseSession);
-            internalOrganisation.PreferredCurrency = euro;
+            var internalOrganisation = Singleton.Instance(this.DatabaseSession).InternalOrganisation;
 
             var customer = new OrganisationBuilder(this.DatabaseSession).WithName("customer").WithOrganisationRole(new OrganisationRoles(this.DatabaseSession).Customer).Build();
 

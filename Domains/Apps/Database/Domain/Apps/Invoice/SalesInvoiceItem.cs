@@ -355,7 +355,7 @@ namespace Allors.Domain
             this.TotalIncVat = this.TotalExVat + this.TotalVat;
 
             var toCurrency = this.SalesInvoiceWhereSalesInvoiceItem.CustomerCurrency;
-            var fromCurrency = internalOrganisation.PreferredCurrency;
+            var fromCurrency = Singleton.Instance(this.strategy.Session).PreferredCurrency;
 
             if (fromCurrency.Equals(toCurrency))
             {

@@ -80,9 +80,6 @@ namespace Allors.Domain
                 .WithPrimaryProductCategory(cat2)
                 .Build();
 
-            var internalOrganisation = Singleton.Instance(this.DatabaseSession);
-            internalOrganisation.PreferredCurrency = euro;
-
             this.DatabaseSession.Derive();
 
             var invoice1 = new SalesInvoiceBuilder(this.DatabaseSession)

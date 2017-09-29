@@ -42,7 +42,7 @@ namespace Allors.Domain
 
             if (!this.ExistOrderNumber)
             {
-                this.OrderNumber = Singleton.Instance(this).DeriveNextPurchaseOrderNumber();
+                this.OrderNumber = Singleton.Instance(this).InternalOrganisation.DeriveNextPurchaseOrderNumber();
             }
 
             if (!this.ExistOrderDate)
@@ -57,14 +57,12 @@ namespace Allors.Domain
 
             if (!this.ExistCustomerCurrency)
             {
-                this.CustomerCurrency = Singleton.Instance(this).ExistPreferredCurrency ?
-                                            Singleton.Instance(this).PreferredCurrency :
-                                            Singleton.Instance(this).PreferredLocale.Country.Currency;
+                this.CustomerCurrency = Singleton.Instance(this).PreferredCurrency;
             }
 
             if (!this.ExistFacility)
             {
-                this.Facility = Singleton.Instance(this).DefaultFacility;
+                this.Facility = Singleton.Instance(this).InternalOrganisation.DefaultFacility;
             }
         }
 

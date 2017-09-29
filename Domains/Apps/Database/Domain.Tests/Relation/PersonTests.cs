@@ -48,17 +48,17 @@ namespace Allors.Domain
             var secondAdministrator = new PersonBuilder(this.DatabaseSession).WithLastName("second admin").WithPersonRole(new PersonRoles(this.DatabaseSession).Employee).Build();
             Assert.False(secondAdministrator.IsAdministrator);
 
-            var internalOrganisation = Singleton.Instance(this.DatabaseSession);
+            var internalOrganisation = Singleton.Instance(this.DatabaseSession).InternalOrganisation;
 
             this.DatabaseSession.Derive();
 
             this.SetIdentity(Users.AdministratorUserName);
 
             var acl = new AccessControlList(internalOrganisation, existingAdministrator);
-            Assert.True(acl.CanWrite(M.Singleton.Name));
+            Assert.True(acl.CanWrite(M.InternalOrganisation.Name));
             
             acl = new AccessControlList(internalOrganisation, secondAdministrator);
-            Assert.False(acl.CanRead(M.Singleton.Name));
+            Assert.False(acl.CanRead(M.InternalOrganisation.Name));
 
             var administrators = new UserGroups(this.DatabaseSession).Administrators;
             administrators.AddMember(secondAdministrator);
@@ -68,7 +68,7 @@ namespace Allors.Domain
             Assert.True(secondAdministrator.IsAdministrator);
 
             acl = new AccessControlList(internalOrganisation, secondAdministrator);
-            Assert.True(acl.CanWrite(M.Singleton.Name));
+            Assert.True(acl.CanWrite(M.InternalOrganisation.Name));
         }
 
         [Fact]

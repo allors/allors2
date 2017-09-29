@@ -83,11 +83,11 @@ namespace Allors.Domain
                 .WithCreditCardCompany(new CreditCardCompanyBuilder(this.DatabaseSession).WithName("Visa").Build())
                 .Build();
 
-            var paymentMethod = new OwnCreditCardBuilder(this.DatabaseSession)
+            new OwnCreditCardBuilder(this.DatabaseSession)
                 .WithCreditCard(creditCard)
                 .Build();
 
-            var internalOrganisation = Singleton.Instance(this.DatabaseSession);             
+            var internalOrganisation = Singleton.Instance(this.DatabaseSession).InternalOrganisation;             
             
             internalOrganisation.DoAccounting = false;
 
@@ -132,7 +132,7 @@ namespace Allors.Domain
                 .WithOrganisationRole(new OrganisationRoles(this.DatabaseSession).Supplier)
                 .Build();
 
-            var internalOrganisation = Singleton.Instance(this.DatabaseSession);
+            var internalOrganisation = Singleton.Instance(this.DatabaseSession).InternalOrganisation;
 
             var generalLedgerAccount = new GeneralLedgerAccountBuilder(this.DatabaseSession)
                 .WithAccountNumber("0001")
@@ -184,7 +184,7 @@ namespace Allors.Domain
                 .WithOrganisationRole(new OrganisationRoles(this.DatabaseSession).Supplier)
                 .Build();
 
-            var internalOrganisation = Singleton.Instance(this.DatabaseSession);
+            var internalOrganisation = Singleton.Instance(this.DatabaseSession).InternalOrganisation;
 
             
 

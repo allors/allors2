@@ -73,7 +73,7 @@ namespace Allors.Domain
         [Fact]
         public void GivenStore_WhenBuild_ThenPostBuildRelationsMustExist()
         {
-            var internalOrganisation = Singleton.Instance(this.DatabaseSession);
+            var internalOrganisation = Singleton.Instance(this.DatabaseSession).InternalOrganisation;
 
             var store = new StoreBuilder(this.DatabaseSession)
                 .WithName("Organisation store")

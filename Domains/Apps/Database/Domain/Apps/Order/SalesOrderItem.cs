@@ -257,7 +257,7 @@ namespace Allors.Domain
 
         public void AppsOnDeriveReservedFromInventoryItem(IDerivation derivation)
         {
-            var internalOrganisation = Singleton.Instance(this);
+            var internalOrganisation = Singleton.Instance(this).InternalOrganisation;
 
             if (this.ExistProduct)
             {

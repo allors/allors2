@@ -56,7 +56,7 @@ namespace Allors.Domain
         [Fact]
         public void GivenCustomerRelationshipBuilder_WhenBuild_ThenSubAccountNumerIsValidElevenTestNumber()
         {
-            var internalOrganisation = Singleton.Instance(this.DatabaseSession);
+            var internalOrganisation = Singleton.Instance(this.DatabaseSession).InternalOrganisation;
             internalOrganisation.SubAccountCounter.Value = 1000;
 
             this.DatabaseSession.Commit();
@@ -104,11 +104,10 @@ namespace Allors.Domain
                 .WithUseAsDefault(true)
                 .Build();
 
-            var internalOrganisation2 = new SingletonBuilder(this.DatabaseSession)
+            var internalOrganisation2 = new InternalOrganisationBuilder(this.DatabaseSession)
                 .WithName("internalOrganisation2")
                 .WithPartyContactMechanism(billingAddress)
                 .WithDefaultPaymentMethod(ownBankAccount)
-                .WithPreferredCurrency(euro)
                 .Build();
            
             customer2.SubAccountNumber = 19;
