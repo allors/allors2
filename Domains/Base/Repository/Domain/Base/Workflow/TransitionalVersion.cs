@@ -1,5 +1,5 @@
 //------------------------------------------------------------------------------------------------- 
-// <copyright file="Transitional.cs" company="Allors bvba">
+// <copyright file="TransitionalVersion.cs" company="Allors bvba">
 // Copyright 2002-2016 Allors bvba.
 // 
 // Dual Licensed under
@@ -24,38 +24,37 @@ namespace Allors.Repository
     using Attributes;
 
     #region Allors
-    [Id("ab2179ad-9eac-4b61-8d84-81cd777c4926")]
+    [Id("A13C9057-8786-40CA-8421-476E55787D73")]
     #endregion
-    public partial interface Transitional : AccessControlledObject 
+    public partial interface TransitionalVersion : AccessControlledObject 
     {
         #region Allors
-        [Id("D9D86241-5FC7-4EDB-9FAA-FF5CA291F16C")]
-        [AssociationId("C6D64EB2-4921-4AD9-9DC3-12BDCB8E7D97")]
-        [RoleId("292A7D78-3DA8-401C-A4D1-513F61114615")]
-        [Indexed]
+        [Id("96685F17-ABE3-459C-BF9F-8C5F05788C04")]
+        [AssociationId("40D11625-EF9F-4358-9FC0-5C29248E41DA")]
+        [RoleId("3893BB57-1EA6-4DEE-8248-483269CA30DA")]
         #endregion
         [Multiplicity(Multiplicity.ManyToMany)]
-        [Derived]
+        [Synced]
         ObjectState[] PreviousObjectStates { get; set; }
 
         #region Allors
-        [Id("2BC8AFDF-92BE-4088-9E35-C1C942CFE74B")]
-        [AssociationId("549BC4A5-42B5-46D8-B487-9D1255BC1B8E")]
-        [RoleId("CA573AAD-72CC-4315-971D-43526D1A964B")]
+        [Id("39C43EB4-AA16-4CF8-93A0-60066CB746E8")]
+        [AssociationId("AEB8A1DC-D214-429E-9A78-6FD60B419BE0")]
+        [RoleId("DAC764A7-417C-4E24-985C-63171F7DC347")]
         [Indexed]
         #endregion
         [Multiplicity(Multiplicity.ManyToMany)]
-        [Derived]
+        [Synced]
         ObjectState[] LastObjectStates { get; set; }
-        
+
         #region Allors
-        [Id("52962C45-8A3E-4136-A968-C333CBE12685")]
-        [AssociationId("B49A45EE-302E-4893-BEAD-88764D0774FF")]
-        [RoleId("08BBEF2B-47A4-48B0-86E2-522F3B584426")]
+        [Id("F2472C1F-8D2A-4400-B372-34C2B03207B6")]
+        [AssociationId("08C19B44-2015-4BCA-B0E2-AB8CA626485F")]
+        [RoleId("6C37AE50-8727-4391-A0E8-3596D5E2070F")]
         [Indexed]
         #endregion
         [Multiplicity(Multiplicity.ManyToMany)]
-        [Derived]
+        [Synced]
         ObjectState[] ObjectStates { get; set; }
     }
 }

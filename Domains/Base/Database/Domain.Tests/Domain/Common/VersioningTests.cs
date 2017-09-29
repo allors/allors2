@@ -62,7 +62,7 @@ namespace Tests
             var version = order.CurrentVersion;
 
             Assert.Equal(10m, version.Amount);
-            Assert.False(version.ExistCurrentObjectState);
+            Assert.False(version.ExistOrderState);
             Assert.False(version.ExistOrderLines);
         }
 
@@ -89,10 +89,10 @@ namespace Tests
         [Fact]
         public void InitialCompositeRole()
         {
-            var initialObjectState = new OrderObjectStates(this.Session).Initial;
+            var initialObjectState = new OrderStates(this.Session).Initial;
 
             var order = new OrderBuilder(this.Session)
-                .WithCurrentObjectState(initialObjectState)
+                .WithOrderState(initialObjectState)
                 .Build();
 
             this.Session.Derive();
@@ -104,7 +104,7 @@ namespace Tests
             var version = order.CurrentVersion;
 
             Assert.False(version.ExistAmount);
-            Assert.Equal(initialObjectState, version.CurrentObjectState);
+            Assert.Equal(initialObjectState, version.OrderState);
             Assert.False(version.ExistOrderLines);
         }
 
@@ -126,7 +126,7 @@ namespace Tests
             var version = order.CurrentVersion;
 
             Assert.False(version.ExistAmount);
-            Assert.False(version.ExistCurrentObjectState);
+            Assert.False(version.ExistOrderState);
             Assert.Equal(1, version.OrderLines.Count);
             Assert.Equal(orderLine, version.OrderLines[0]);
         }

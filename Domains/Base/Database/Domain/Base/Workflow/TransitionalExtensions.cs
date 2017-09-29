@@ -20,18 +20,42 @@
 
 namespace Allors.Domain
 {
+    using System.Linq;
+
     public static partial class TransitionalExtensions
     {
         public static void BaseOnPostDerive(this Transitional @this, ObjectOnPostDerive method)
         {
-            if (@this.CurrentObjectState != null && !@this.CurrentObjectState.Equals(@this.LastObjectState))
+            // Update PreviousObjectState and LastObjectState
+            foreach (var transitionalConfiguration in @this.TransitionalConfigurations)
             {
-                @this.PreviousObjectState = @this.LastObjectState;
+                var objectState = @this.Strategy.GetCompositeRole(transitionalConfiguration.ObjectState);
+                var lastObjectState = @this.Strategy.GetCompositeRole(transitionalConfiguration.LastObjectState);
+
+                if (objectState != null && !objectState.Equals(lastObjectState))
+                {
+                    @this.Strategy.SetCompositeRole(transitionalConfiguration.PreviousObjectState, lastObjectState);
+                }
+
+                @this.Strategy.SetCompositeRole(transitionalConfiguration.LastObjectState, objectState);
             }
 
-            @this.LastObjectState = @this.CurrentObjectState;
+            // Rollup ObjectStates, PreviousObjectState and LastObjectStates
+            @this.RemoveObjectStates();
+            @this.RemoveLastObjectStates();
+            @this.RemovePreviousObjectStates();
+            foreach (var transitionalConfiguration in @this.TransitionalConfigurations)
+            {
+                var objectState = (ObjectState)@this.Strategy.GetCompositeRole(transitionalConfiguration.ObjectState);
+                var lastObjectState = (ObjectState)@this.Strategy.GetCompositeRole(transitionalConfiguration.LastObjectState);
+                var previousObjectState = (ObjectState)@this.Strategy.GetCompositeRole(transitionalConfiguration.PreviousObjectState);
+                @this.AddObjectState(objectState);
+                @this.AddLastObjectState(lastObjectState);
+                @this.AddPreviousObjectState(previousObjectState);
+            }
 
-            @this.DeniedPermissions = @this.CurrentObjectState?.DeniedPermissions;
+            // Update security
+            @this.DeniedPermissions = @this.ObjectStates.SelectMany(v => v.DeniedPermissions).ToArray();
         }
     }
 }

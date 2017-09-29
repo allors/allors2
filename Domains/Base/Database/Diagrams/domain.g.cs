@@ -51,11 +51,22 @@ namespace Allors.Domain
 						AccessControl OwnerAccessControl {set;}
 
 		}
+		public interface TransitionalVersion  : AccessControlledObject 
+		{
+						ObjectState PreviousObjectStates {set;}
+
+						ObjectState LastObjectStates {set;}
+
+						ObjectState ObjectStates {set;}
+
+		}
 		public interface Transitional  : AccessControlledObject 
 		{
-						ObjectState PreviousObjectState {set;}
+						ObjectState PreviousObjectStates {set;}
 
-						ObjectState LastObjectState {set;}
+						ObjectState LastObjectStates {set;}
+
+						ObjectState ObjectStates {set;}
 
 		}
 		public interface UniquelyIdentifiable  : Object 
@@ -513,6 +524,8 @@ namespace Allors.Domain
 
 						User Recipients {set;}
 
+						global::System.String RecipientEmailAddress {set;}
+
 						global::System.String Subject {set;}
 
 						global::System.String Body {set;}
@@ -765,13 +778,29 @@ namespace Allors.Domain
 		}
 		public interface Order  : Transitional, Versioned 
 		{
-						OrderObjectState CurrentObjectState {set;}
+						OrderState PreviousOrderState {set;}
+
+						OrderState LastOrderState {set;}
+
+						OrderState OrderState {set;}
+
+						ShipmentState PreviousShipmentState {set;}
+
+						ShipmentState LastShipmentState {set;}
+
+						ShipmentState ShipmentState {set;}
+
+						PaymentState PreviousPaymentState {set;}
+
+						PaymentState LastPaymentState {set;}
+
+						PaymentState PaymentState {set;}
 
 						OrderLine OrderLines {set;}
 
 						global::System.Decimal? Amount {set;}
 
-						OrderObjectState NonVersionedCurrentObjectState {set;}
+						OrderState NonVersionedCurrentObjectState {set;}
 
 						OrderLine NonVersionedOrderLines {set;}
 
@@ -796,12 +825,18 @@ namespace Allors.Domain
 						global::System.Decimal? Amount {set;}
 
 		}
-		public interface OrderObjectState  : ObjectState 
+		public interface PaymentState  : ObjectState 
+		{
+		}
+		public interface ShipmentState  : ObjectState 
+		{
+		}
+		public interface OrderState  : ObjectState 
 		{
 		}
 		public interface OrderVersion  : Version 
 		{
-						OrderObjectState CurrentObjectState {set;}
+						OrderState OrderState {set;}
 
 						OrderLine OrderLines {set;}
 

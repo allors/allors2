@@ -43,17 +43,17 @@ namespace Allors.Services.Base
             var sender = emailMesssage.Sender?.UserEmail ?? this.DefaultSender;
             var senderName = emailMesssage.Sender?.UserName ?? this.DefaultSenderName;
 
-            message.From.Add(new MailboxAddress(senderName, sender));
+            message.From.Add(new MimeKit.MailboxAddress(senderName, sender));
 
 
             if (emailMesssage.ExistRecipientEmailAddress)
             {
-                message.To.Add(new MailboxAddress(emailMesssage.RecipientEmailAddress));
+                message.To.Add(new MimeKit.MailboxAddress(emailMesssage.RecipientEmailAddress));
             }
 
             foreach (User recipient in emailMesssage.Recipients)
             {
-                message.To.Add(new MailboxAddress(recipient.UserEmail));
+                message.To.Add(new MimeKit.MailboxAddress(recipient.UserEmail));
             }
             
             using (var client = new SmtpClient())
