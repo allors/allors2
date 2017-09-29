@@ -300,7 +300,13 @@ namespace Allors.Domain
 				public interface OrderLineVersion : Version 
 				{
 				}
-				public interface OrderObjectState : ObjectState 
+				public interface PaymentState : ObjectState 
+				{
+				}
+				public interface ShipmentState : ObjectState 
+				{
+				}
+				public interface OrderState : ObjectState 
 				{
 				}
 				public interface OrderVersion : Version 

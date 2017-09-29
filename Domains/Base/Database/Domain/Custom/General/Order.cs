@@ -21,15 +21,24 @@
 
 namespace Allors.Domain
 {
+    using Allors.Meta;
+
     public partial class Order
     {
-        ObjectState Transitional.CurrentObjectState => this.CurrentObjectState;
+        public static readonly TransitionalConfiguration[] StaticTransitionalConfigurations =
+            {
+                new TransitionalConfiguration(M.Order.OrderState),
+                new TransitionalConfiguration(M.Order.ShipmentState),
+                new TransitionalConfiguration(M.Order.PaymentState),
+            };
+
+        public TransitionalConfiguration[] TransitionalConfigurations => StaticTransitionalConfigurations;
 
         public void CustomOnDerive(ObjectOnDerive method)
         {
             if (this.ExistAmount && this.Amount == -1)
             {
-                this.CurrentObjectState = new OrderObjectStates(this.Strategy.Session).Cancelled;
+                this.OrderState = new OrderStates(this.Strategy.Session).Cancelled;
             }
         }
     }

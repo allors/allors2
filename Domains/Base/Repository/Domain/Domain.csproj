@@ -90,6 +90,7 @@
     <Compile Include="Base\Security\SecurityToken.cs" />
     <Compile Include="Base\Security\SecurityTokenOwner.cs" />
     <Compile Include="Base\Common\Singleton.cs" />
+    <Compile Include="Base\Workflow\TransitionalVersion.cs" />
     <Compile Include="Base\Workflow\Transitional.cs" />
     <Compile Include="Base\Common\UniquelyIdentifiable.cs" />
     <Compile Include="Base\Workflow\User.cs" />
@@ -124,7 +125,9 @@
     <Compile Include="Custom\Order.cs" />
     <Compile Include="Custom\OrderLine.cs" />
     <Compile Include="Custom\OrderLineVersion.cs" />
-    <Compile Include="Custom\OrderObjectState.cs" />
+    <Compile Include="Custom\PaymentState.cs" />
+    <Compile Include="Custom\ShipmentState.cs" />
+    <Compile Include="Custom\OrderState.cs" />
     <Compile Include="Custom\OrderVersion.cs" />
     <Compile Include="Custom\Organisation.cs" />
     <Compile Include="Custom\Person.cs" />

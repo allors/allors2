@@ -28,7 +28,7 @@
         [Indexed]
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
-        public OrderObjectState CurrentObjectState { get; set; }
+        public OrderState OrderState { get; set; }
 
         #region Allors
         [Id("F144557C-B63C-49F7-B713-F2493BCA1E55")]

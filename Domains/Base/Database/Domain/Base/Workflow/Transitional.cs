@@ -22,9 +22,6 @@ namespace Allors.Domain
 {
     public partial interface Transitional
     {
-        ObjectState CurrentObjectState
-        {
-            get;
-        }
+        TransitionalConfiguration[] TransitionalConfigurations { get; }
     }
 }

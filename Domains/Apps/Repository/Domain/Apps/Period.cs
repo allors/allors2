@@ -9,8 +9,6 @@ namespace Allors.Repository
     #endregion
 	public partial interface Period : Object 
     {
-
-
         #region Allors
         [Id("5aeb31c7-03d4-4314-bbb2-fca5704b1eab")]
         [AssociationId("8cf0bd14-753d-4f34-99b3-7a6b0d90c3d4")]
