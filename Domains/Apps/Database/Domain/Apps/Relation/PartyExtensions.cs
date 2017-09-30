@@ -120,19 +120,24 @@ namespace Allors.Domain
         public static void AppsOnBuild(this Party party, ObjectOnBuild method)
         {
             var session = party.Strategy.Session;
-            if (!party.ExistLocale)
-            {
-                party.Locale = Singleton.Instance(session).DefaultLocale;
-            }
 
-            if (!party.ExistPreferredCurrency)
+            if (Singleton.Instance(session).ExistInternalOrganisation)
             {
-                party.PreferredCurrency= Singleton.Instance(session).PreferredCurrency;
-            }
+                if (!party.ExistLocale)
+                {
+                    party.Locale = Singleton.Instance(session).DefaultLocale;
+                }
 
-            if (!party.ExistSubAccountNumber)
-            {
-                party.SubAccountNumber = Singleton.Instance(session).InternalOrganisation.DeriveNextSubAccountNumber();
+                if (!party.ExistPreferredCurrency)
+                {
+                    party.PreferredCurrency = Singleton.Instance(session).PreferredCurrency;
+                }
+
+                if (!party.ExistSubAccountNumber)
+                {
+                    party.SubAccountNumber =
+                        Singleton.Instance(session).InternalOrganisation.DeriveNextSubAccountNumber();
+                }
             }
         }
 

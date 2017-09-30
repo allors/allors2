@@ -43,7 +43,7 @@ namespace Allors.Domain
             }
         }
 
-        public void AppsOnDerive(ObjectOnPreDerive method)
+        public void AppsOnDerive(ObjectOnDerive method)
         {
             var derivation = method.Derivation;
 
