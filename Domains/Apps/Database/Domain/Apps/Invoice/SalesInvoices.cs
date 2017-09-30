@@ -26,18 +26,18 @@ namespace Allors.Domain
         {
             base.AppsPrepare(setup);
 
-            setup.AddDependency(this.ObjectType, M.SalesInvoiceObjectState);
+            setup.AddDependency(this.ObjectType, M.SalesInvoiceState);
         }
 
         protected override void AppsSecure(Security config)
         {
             base.AppsSecure(config);
 
-            var sent = new SalesInvoiceObjectStates(this.Session).Sent;
-            var paid = new SalesInvoiceObjectStates(this.Session).Paid;
-            var partiallyPaid = new SalesInvoiceObjectStates(this.Session).PartiallyPaid;
-            var writtenOff = new SalesInvoiceObjectStates(this.Session).WrittenOff;
-            var cancelled = new SalesInvoiceObjectStates(this.Session).Cancelled;
+            var sent = new SalesInvoiceStates(this.Session).Sent;
+            var paid = new SalesInvoiceStates(this.Session).Paid;
+            var partiallyPaid = new SalesInvoiceStates(this.Session).PartiallyPaid;
+            var writtenOff = new SalesInvoiceStates(this.Session).WrittenOff;
+            var cancelled = new SalesInvoiceStates(this.Session).Cancelled;
 
             var sendId = this.Meta.Send;
             var cancelInvoiceId = this.Meta.CancelInvoice;

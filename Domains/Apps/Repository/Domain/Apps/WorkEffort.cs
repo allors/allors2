@@ -9,6 +9,40 @@ namespace Allors.Repository
     #endregion
     public partial interface WorkEffort : Transitional, UniquelyIdentifiable, Deletable, Auditable
     {
+        #region ObjectStates
+        #region WorkEffortState
+        #region Allors
+        [Id("4240C679-19EA-41B9-A82D-D156DE6B4007")]
+        [AssociationId("131CCEE8-3062-4B9F-B671-03C1425DC97F")]
+        [RoleId("FBF69E37-1A71-406E-BF4D-F36BF1145FAD")]
+        [Indexed]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Derived]
+        WorkEffortState PreviousWorkEffortState { get; set; }
+
+        #region Allors
+        [Id("0144D0DC-B981-4FD2-B6D1-1629F6957A5D")]
+        [AssociationId("5F41D7B1-D2F8-4131-BA01-9EA7DA5556B4")]
+        [RoleId("ED98EC81-14AF-496E-B0CB-8DE2082FE985")]
+        [Indexed]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Derived]
+        WorkEffortState LastWorkEffortState { get; set; }
+
+        #region Allors
+        [Id("22325B2E-AD74-4B12-9F5B-856858B002DD")]
+        [AssociationId("530B6F04-6AD3-43D5-9E5A-BA28F58BA1D1")]
+        [RoleId("D4713F5C-60D2-4285-99DC-6F3B6654EAA9")]
+        [Indexed]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Workspace]
+        WorkEffortState WorkEffortState { get; set; }
+        #endregion
+        #endregion
+
         #region Allors
         [Id("7CDA479C-E7D8-4EE2-8005-7CF73CC88819")]
         [AssociationId("E7633664-4A2C-4D68-9D26-9096FBD41171")]
@@ -59,17 +93,6 @@ namespace Allors.Repository
         [Size(4096)]
         [Workspace]
         string Description { get; set; }
-
-        #region Allors
-        [Id("d71aaad8-20ba-4e7f-a4f8-da43e372e202")]
-        [AssociationId("a1a70f42-fba3-451c-8241-a854a4dba7e2")]
-        [RoleId("e6d3f9cb-5465-44e2-92bf-0844c6dfe806")]
-        [Indexed]
-        #endregion
-        [Multiplicity(Multiplicity.ManyToOne)]
-        [Required]
-        [Workspace]
-        WorkEffortObjectState CurrentObjectState { get; set; }
 
         #region Allors
         [Id("858e42df-d775-4eec-b029-343e8b094311")]
@@ -254,7 +277,6 @@ namespace Allors.Repository
         [Indexed]
         [Workspace]
         WorkEffort[] Concurrencies { get; set; }
-        
 
         #region Allors
         [Id("B95571A0-84DF-4648-80FD-C4FE9067991F")]

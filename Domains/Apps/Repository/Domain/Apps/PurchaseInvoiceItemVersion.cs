@@ -82,6 +82,16 @@ namespace Allors.Repository
         #endregion
 
         #region Allors
+        [Id("F9AA8529-25F3-4374-9394-7B1A4868490A")]
+        [AssociationId("186771F2-0662-46C2-B7DB-0D80439A3AF4")]
+        [RoleId("60032850-5640-4B02-AE10-F063EF38CA4F")]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Derived]
+        [Indexed]
+        public PurchaseInvoiceItemState PurchaseInvoiceItemState { get; set; }
+
+        #region Allors
         [Id("C534F912-F733-46A8-B54B-A4001DBB76FE")]
         [AssociationId("23068D37-8FE7-4D3D-A296-08EAB0F9A846")]
         [RoleId("A8F636FA-FDEA-484F-BC6C-10B784355660")]
@@ -100,16 +110,6 @@ namespace Allors.Repository
         [Indexed]
         [Required]
         public Part Part { get; set; }
-
-        #region Allors
-        [Id("F9AA8529-25F3-4374-9394-7B1A4868490A")]
-        [AssociationId("186771F2-0662-46C2-B7DB-0D80439A3AF4")]
-        [RoleId("60032850-5640-4B02-AE10-F063EF38CA4F")]
-        #endregion
-        [Multiplicity(Multiplicity.ManyToOne)]
-        [Derived]
-        [Indexed]
-        public PurchaseInvoiceItemObjectState CurrentObjectState { get; set; }
 
         #region inherited methods
 

@@ -2053,7 +2053,7 @@ namespace Allors.Domain
 
             var item = new SalesOrderItemBuilder(this.DatabaseSession).Build();
 
-            Assert.Equal(new SalesOrderItemObjectStates(this.DatabaseSession).Created, item.CurrentObjectState);
+            Assert.Equal(new SalesOrderItemStates(this.DatabaseSession).Created, item.SalesOrderItemState);
         }
 
         [Fact]

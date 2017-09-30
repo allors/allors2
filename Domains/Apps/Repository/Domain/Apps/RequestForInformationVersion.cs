@@ -10,6 +10,8 @@ namespace Allors.Repository
     {
         #region inherited properties
 
+        public RequestState RequestState { get; set; }
+
         public string InternalComment { get; set; }
         public string Description { get; set; }
         public DateTime RequestDate { get; set; }
@@ -19,7 +21,6 @@ namespace Allors.Repository
         public RespondingParty[] RespondingParties { get; set; }
         public Party Originator { get; set; }
         public Currency Currency { get; set; }
-        public RequestObjectState CurrentObjectState { get; set; }
         public ContactMechanism FullfillContactMechanism { get; set; }
         public string EmailAddress { get; set; }
         public string TelephoneNumber { get; set; }

@@ -57,22 +57,22 @@ namespace Allors.Domain
                 derivation.Validation.AddError(@this, M.CommunicationEvent.ActualEnd, ErrorMessages.EndDateBeforeStartDate);
             }
 
-            if (!@this.ExistCurrentObjectState)
+            if (!@this.ExistCommunicationEventState)
             {
                 if (!@this.ExistActualStart || (@this.ExistActualStart && @this.ActualStart > DateTime.UtcNow))
                 {
-                    @this.CurrentObjectState = new CommunicationEventObjectStates(@this.Strategy.Session).Scheduled;
+                    @this.CommunicationEventState = new CommunicationEventStates(@this.Strategy.Session).Scheduled;
                 }
 
                 if (@this.ExistActualStart && @this.ActualStart <= DateTime.UtcNow &&
                     (@this.ExistActualEnd && @this.ActualEnd > DateTime.UtcNow || !@this.ExistActualEnd))
                 {
-                    @this.CurrentObjectState = new CommunicationEventObjectStates(@this.Strategy.Session).InProgress;
+                    @this.CommunicationEventState = new CommunicationEventStates(@this.Strategy.Session).InProgress;
                 }
 
                 if (@this.ExistActualEnd && @this.ActualEnd <= DateTime.UtcNow)
                 {
-                    @this.CurrentObjectState = new CommunicationEventObjectStates(@this.Strategy.Session).Completed;
+                    @this.CommunicationEventState = new CommunicationEventStates(@this.Strategy.Session).Completed;
                 }
             }
 
@@ -102,17 +102,17 @@ namespace Allors.Domain
 
         public static void AppsClose(this CommunicationEvent @this, CommunicationEventClose method)
         {
-            @this.CurrentObjectState = new CommunicationEventObjectStates(@this.Strategy.Session).Completed;
+            @this.CommunicationEventState = new CommunicationEventStates(@this.Strategy.Session).Completed;
         }
 
         public static void AppsReopen(this CommunicationEvent @this, CommunicationEventReopen method)
         {
-            @this.CurrentObjectState = new CommunicationEventObjectStates(@this.Strategy.Session).Scheduled;
+            @this.CommunicationEventState = new CommunicationEventStates(@this.Strategy.Session).Scheduled;
         }
 
         public static void AppsCancel(this CommunicationEvent @this, CommunicationEventCancel method)
         {
-            @this.CurrentObjectState = new CommunicationEventObjectStates(@this.Strategy.Session).Cancelled;
+            @this.CommunicationEventState = new CommunicationEventStates(@this.Strategy.Session).Cancelled;
         }
 
         private static void DeriveOwnerSecurity(this CommunicationEvent @this)

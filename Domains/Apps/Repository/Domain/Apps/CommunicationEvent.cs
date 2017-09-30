@@ -3,12 +3,45 @@ namespace Allors.Repository
     using System;
     using Attributes;
 
-
     #region Allors
     [Id("b05371ff-0c9e-4ee3-b31d-e2edeed8649e")]
     #endregion
     public partial interface CommunicationEvent : Deletable, Commentable, UniquelyIdentifiable, Auditable, Transitional
     {
+        #region ObjectStates
+        #region EmailCommunicationState
+        #region Allors
+        [Id("CEB2FD49-5104-454F-BA3A-5B711B36CF84")]
+        [AssociationId("12B37A90-9607-4927-89F7-3DC11A4B76AF")]
+        [RoleId("E9522D21-3E20-46E3-813B-7B3B06FE7BC1")]
+        [Indexed]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Derived]
+        CommunicationEventState PreviousCommunicationState { get; set; }
+
+        #region Allors
+        [Id("F26D8789-D8D8-47C0-A4A2-30A3B2F648F5")]
+        [AssociationId("80D58CEF-B47A-45D7-A2FA-40D7B229CC74")]
+        [RoleId("E2E5046A-AE71-40B8-8C2B-3B56E0B73894")]
+        [Indexed]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Derived]
+        CommunicationEventState LastCommunicationState { get; set; }
+
+        #region Allors
+        [Id("80D2E559-CBF6-4C2F-8F89-43921EEF437C")]
+        [AssociationId("B0DD2282-59C6-4AF2-8D45-68E3DFA045BC")]
+        [RoleId("88955819-9BB6-471C-8FCA-DFF536EF2CE7")]
+        [Indexed]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Workspace]
+        CommunicationEventState CommunicationEventState { get; set; }
+        #endregion
+        #endregion
+
         #region Allors
         [Id("7535B38A-A9EE-4990-B80B-10B83E29999D")]
         [AssociationId("16F9459A-D6D8-45D5-9CDF-98F03F8719E4")]
@@ -78,18 +111,6 @@ namespace Allors.Repository
         #endregion
         [Workspace]
         DateTime InitialScheduledStart { get; set; }
-
-        #region Allors
-        [Id("3657016d-01c5-43db-bd03-5203c1aef14d")]
-        [AssociationId("4c2863c0-dc44-42e6-a330-a5c82a37151d")]
-        [RoleId("69227618-628c-4a54-8ad9-bc20d087413d")]
-        #endregion
-        [Multiplicity(Multiplicity.ManyToOne)]
-        [Derived]
-        [Indexed]
-        [Required]
-        [Workspace]
-        CommunicationEventObjectState CurrentObjectState { get; set; }
 
         #region Allors
         [Id("3a5658bd-b1b9-47e3-b542-ea9de348a44e")]

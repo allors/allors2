@@ -24,16 +24,16 @@ namespace Allors.Domain
         {
             base.AppsPrepare(setup);
 
-            setup.AddDependency(this.ObjectType, M.SalesInvoiceItemObjectState);
+            setup.AddDependency(this.ObjectType, M.SalesInvoiceItemState);
         }
 
         protected override void AppsSecure(Security config)
         {
             base.AppsSecure(config);
 
-            ObjectState paid = new SalesInvoiceItemObjectStates(this.Session).Paid;
-            ObjectState writtenOff = new SalesInvoiceItemObjectStates(this.Session).WrittenOff;
-            ObjectState cancelled = new SalesInvoiceItemObjectStates(this.Session).Cancelled;
+            ObjectState paid = new SalesInvoiceItemStates(this.Session).Paid;
+            ObjectState writtenOff = new SalesInvoiceItemStates(this.Session).WrittenOff;
+            ObjectState cancelled = new SalesInvoiceItemStates(this.Session).Cancelled;
 
             config.Deny(this.ObjectType, paid, Operations.Write, Operations.Execute);
             config.Deny(this.ObjectType, writtenOff, Operations.Write, Operations.Execute);

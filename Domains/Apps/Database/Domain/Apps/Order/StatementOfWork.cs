@@ -15,8 +15,15 @@
 // --------------------------------------------------------------------------------------------------------------------
 namespace Allors.Domain
 {
+    using Allors.Meta;
+
     public partial class StatementOfWork
     {
-        ObjectState Transitional.CurrentObjectState => this.CurrentObjectState;
+        public static readonly TransitionalConfiguration[] StaticTransitionalConfigurations =
+            {
+                new TransitionalConfiguration(M.StatementOfWork.QuoteState),
+            };
+
+        public TransitionalConfiguration[] TransitionalConfigurations => StaticTransitionalConfigurations;
     }
 }

@@ -17,9 +17,16 @@ namespace Allors.Domain
 {
     using System.Text;
 
+    using Allors.Meta;
+
     public partial class AccountingPeriod
     {
-        ObjectState Transitional.CurrentObjectState => this.CurrentObjectState;
+        public static readonly TransitionalConfiguration[] StaticTransitionalConfigurations =
+            {
+                new TransitionalConfiguration(M.AccountingPeriod.BudgetState),
+            };
+
+        public TransitionalConfiguration[] TransitionalConfigurations => StaticTransitionalConfigurations;
 
         public void AppsOnBuild(ObjectOnBuild method)
         {

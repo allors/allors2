@@ -17,7 +17,7 @@ namespace Allors.Repository
         #endregion
         [Multiplicity(Multiplicity.OneToOne)]
         [Workspace]
-        RequestObjectState CurrentObjectState { get; set; }
+        RequestState RequestState { get; set; }
 
         #region Allors
         [Id("80F4AD18-6905-4916-AAF6-4016948F1451")]

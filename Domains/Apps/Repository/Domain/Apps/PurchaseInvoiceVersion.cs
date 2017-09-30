@@ -11,6 +11,17 @@ namespace Allors.Repository
         #region inherited properties
         public Permission[] DeniedPermissions { get; set; }
         public SecurityToken[] SecurityTokens { get; set; }
+
+        public string Comment { get; set; }
+
+        public User CreatedBy { get; set; }
+
+        public User LastModifiedBy { get; set; }
+
+        public DateTime CreationDate { get; set; }
+
+        public DateTime LastModifiedDate { get; set; }
+
         public string InternalComment { get; set; }
         public decimal TotalShippingAndHandlingCustomerCurrency { get; set; }
         public Currency CustomerCurrency { get; set; }
@@ -50,15 +61,6 @@ namespace Allors.Repository
         #endregion
 
         #region Allors
-        [Id("65E39E93-6445-459A-99E8-0ED388B85B4B")]
-        [AssociationId("AC00032A-8EE6-4B18-B387-44A02AD8F1A0")]
-        [RoleId("7DAB2DA2-EFE4-4B91-B425-07FB2A59B216")]
-        #endregion
-        [Multiplicity(Multiplicity.ManyToMany)]
-        [Indexed]
-        public PurchaseInvoiceItem[] PurchaseInvoiceItems { get; set; }
-
-        #region Allors
         [Id("7751055A-3C59-4723-B7DF-42C377624BE0")]
         [AssociationId("5FB242DC-FB8B-4347-A0F2-65BCC0BBC056")]
         [RoleId("DAF79CD7-EAD0-4091-8545-24ADEEC919AF")]
@@ -67,7 +69,16 @@ namespace Allors.Repository
         [Derived]
         [Indexed]
         [Required]
-        public PurchaseInvoiceObjectState CurrentObjectState { get; set; }
+        public PurchaseInvoiceState PurchaseInvoiceState { get; set; }
+
+        #region Allors
+        [Id("65E39E93-6445-459A-99E8-0ED388B85B4B")]
+        [AssociationId("AC00032A-8EE6-4B18-B387-44A02AD8F1A0")]
+        [RoleId("7DAB2DA2-EFE4-4B91-B425-07FB2A59B216")]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToMany)]
+        [Indexed]
+        public PurchaseInvoiceItem[] PurchaseInvoiceItems { get; set; }
 
         #region Allors
         [Id("277D12EB-729E-419A-A9EB-35F30DFFBA15")]

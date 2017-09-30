@@ -23,21 +23,21 @@ namespace Allors.Domain
         {
             base.AppsPrepare(setup);
 
-            setup.AddDependency(this.ObjectType, M.PurchaseOrderObjectState);
+            setup.AddDependency(this.ObjectType, M.PurchaseOrderState);
         }
 
         protected override void AppsSecure(Security config)
         {
             base.AppsSecure(config);
 
-            var created = new PurchaseOrderObjectStates(this.Session).Provisional;
-            var onHold = new PurchaseOrderObjectStates(this.Session).OnHold;
-            var requestsApproval = new PurchaseOrderObjectStates(this.Session).RequestsApproval;
-            var inProcess = new PurchaseOrderObjectStates(this.Session).InProcess;
-            var cancelled = new PurchaseOrderObjectStates(this.Session).Cancelled;
-            var rejected = new PurchaseOrderObjectStates(this.Session).Rejected;
-            var completed = new PurchaseOrderObjectStates(this.Session).Completed;
-            var finished = new PurchaseOrderObjectStates(this.Session).Finished;
+            var created = new PurchaseOrderStates(this.Session).Provisional;
+            var onHold = new PurchaseOrderStates(this.Session).OnHold;
+            var requestsApproval = new PurchaseOrderStates(this.Session).RequestsApproval;
+            var inProcess = new PurchaseOrderStates(this.Session).InProcess;
+            var cancelled = new PurchaseOrderStates(this.Session).Cancelled;
+            var rejected = new PurchaseOrderStates(this.Session).Rejected;
+            var completed = new PurchaseOrderStates(this.Session).Completed;
+            var finished = new PurchaseOrderStates(this.Session).Finished;
 
             var approve = this.Meta.Approve;
             var reject = this.Meta.Reject;

@@ -10,11 +10,71 @@ namespace Allors.Repository
     public partial class QuoteItem : Commentable, AccessControlledObject, Transitional, Versioned
     {
         #region inherited properties
+
+        public ObjectState[] PreviousObjectStates { get; set; }
+
+        public ObjectState[] LastObjectStates { get; set; }
+
+        public ObjectState[] ObjectStates { get; set; }
         public string Comment { get; set; }
         public Permission[] DeniedPermissions { get; set; }
         public SecurityToken[] SecurityTokens { get; set; }
-        public ObjectState PreviousObjectState { get; set; }
-        public ObjectState LastObjectState { get; set; }
+        #endregion
+
+        #region ObjectStates
+        #region QuoteItemState
+        #region Allors
+        [Id("72B768E0-1F06-4409-A3A0-9F2AE622CB0E")]
+        [AssociationId("65CE6D55-2BC0-46AF-861A-C44743EB099F")]
+        [RoleId("CF72E1F4-C856-406C-8642-61181B628857")]
+        [Indexed]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Derived]
+        public QuoteItemState PreviousQuoteItemState { get; set; }
+
+        #region Allors
+        [Id("9BA3DB20-4F1C-472F-958F-D1D506ECB019")]
+        [AssociationId("21CF4617-6175-40EE-A1BE-5BCFA2D296E2")]
+        [RoleId("6CEC1FDD-ED7E-4458-A08D-A4866A7B01F7")]
+        [Indexed]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Derived]
+        public QuoteItemState LastQuoteItemState { get; set; }
+
+        #region Allors
+        [Id("D4272795-F320-4DAA-9009-E1150197F890")]
+        [AssociationId("8A555F65-2C11-4E7D-B329-DC76433DA3B2")]
+        [RoleId("0601C352-3CFF-4D9E-A872-A2A78C4EB635")]
+        [Indexed]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Workspace]
+        public QuoteItemState QuoteItemState { get; set; }
+        #endregion
+        #endregion
+
+        #region Versioning
+        #region Allors
+        [Id("AD9C5BEA-6D7D-4417-8859-18D7D46DF8CC")]
+        [AssociationId("4C91B89F-9207-4521-86EE-015A17DDB4B2")]
+        [RoleId("0D558E2F-7D52-4AB8-99F6-484591B48EF0")]
+        [Indexed]
+        #endregion
+        [Multiplicity(Multiplicity.OneToOne)]
+        [Workspace]
+        public QuoteItemVersion CurrentVersion { get; set; }
+
+        #region Allors
+        [Id("DA5C696C-3496-49F4-B380-3D78851AC064")]
+        [AssociationId("7FD9D35F-2F12-4E72-95F3-F6C56FAF495C")]
+        [RoleId("1F87E6FA-379A-47EA-9FA9-71AFD7BF762B")]
+        [Indexed]
+        #endregion
+        [Multiplicity(Multiplicity.OneToMany)]
+        [Workspace]
+        public QuoteItemVersion[] AllVersions { get; set; }
         #endregion
 
         #region Allors
@@ -152,40 +212,6 @@ namespace Allors.Repository
         [Indexed]
         [Workspace]
         public RequestItem RequestItem { get; set; }
-
-        #region Allors
-        [Id("C423E1F0-758C-404D-BAF1-6C1B40C6BDA5")]
-        [AssociationId("6FBA1706-21A6-479E-8AC7-7AD21534CABF")]
-        [RoleId("BB3841D3-E7AF-4C98-9305-0706BAAD5DCE")]
-        #endregion
-        [Multiplicity(Multiplicity.ManyToOne)]
-        [Derived]
-        [Indexed]
-        [Required]
-        [Workspace]
-        public QuoteItemObjectState CurrentObjectState { get; set; }
-
-        #region Versioning
-        #region Allors
-        [Id("AD9C5BEA-6D7D-4417-8859-18D7D46DF8CC")]
-        [AssociationId("4C91B89F-9207-4521-86EE-015A17DDB4B2")]
-        [RoleId("0D558E2F-7D52-4AB8-99F6-484591B48EF0")]
-        [Indexed]
-        #endregion
-        [Multiplicity(Multiplicity.OneToOne)]
-        [Workspace]
-        public QuoteItemVersion CurrentVersion { get; set; }
-
-        #region Allors
-        [Id("DA5C696C-3496-49F4-B380-3D78851AC064")]
-        [AssociationId("7FD9D35F-2F12-4E72-95F3-F6C56FAF495C")]
-        [RoleId("1F87E6FA-379A-47EA-9FA9-71AFD7BF762B")]
-        [Indexed]
-        #endregion
-        [Multiplicity(Multiplicity.OneToMany)]
-        [Workspace]
-        public QuoteItemVersion[] AllVersions { get; set; }
-        #endregion
 
         #region inherited methods
 

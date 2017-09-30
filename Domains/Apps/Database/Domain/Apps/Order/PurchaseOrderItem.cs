@@ -21,7 +21,12 @@ namespace Allors.Domain
 
     public partial class PurchaseOrderItem
     {
-        ObjectState Transitional.CurrentObjectState => this.CurrentObjectState;
+        public static readonly TransitionalConfiguration[] StaticTransitionalConfigurations =
+            {
+                new TransitionalConfiguration(M.PurchaseOrderItem.PurchaseOrderItemState),
+            };
+
+        public TransitionalConfiguration[] TransitionalConfigurations => StaticTransitionalConfigurations;
 
         public string SupplierReference
         {
@@ -58,34 +63,34 @@ namespace Allors.Domain
 
         public void AppsConfirm(OrderItemConfirm method)
         {
-            this.CurrentObjectState = new PurchaseOrderItemObjectStates(this.Strategy.Session).InProcess;
+            this.PurchaseOrderItemState = new PurchaseOrderItemStates(this.Strategy.Session).InProcess;
         }
 
         public void AppsApprove(OrderItemApprove method)
         {
-            this.CurrentObjectState = new PurchaseOrderItemObjectStates(this.Strategy.Session).InProcess;
+            this.PurchaseOrderItemState = new PurchaseOrderItemStates(this.Strategy.Session).InProcess;
         }
 
         public void AppsCancel(OrderItemCancel method)
         {
-            this.CurrentObjectState = new PurchaseOrderItemObjectStates(this.Strategy.Session).Cancelled;
+            this.PurchaseOrderItemState = new PurchaseOrderItemStates(this.Strategy.Session).Cancelled;
         }
 
         public void AppsReject(OrderItemReject method)
         {
-            this.CurrentObjectState = new PurchaseOrderItemObjectStates(this.Strategy.Session).Rejected;
+            this.PurchaseOrderItemState = new PurchaseOrderItemStates(this.Strategy.Session).Rejected;
         }
 
         public void AppsComplete(PurchaseOrderItemComplete method)
         {
-            this.CurrentObjectState = new PurchaseOrderItemObjectStates(this.Strategy.Session).Completed;
+            this.PurchaseOrderItemState = new PurchaseOrderItemStates(this.Strategy.Session).Completed;
         }
 
         public void AppsOnBuild(ObjectOnBuild method)
         {
-            if (!this.ExistCurrentObjectState)
+            if (!this.ExistPurchaseOrderItemState)
             {
-                this.CurrentObjectState = new PurchaseOrderItemObjectStates(this.Strategy.Session).Created;
+                this.PurchaseOrderItemState = new PurchaseOrderItemStates(this.Strategy.Session).Created;
             }
         }
 
@@ -146,8 +151,8 @@ namespace Allors.Domain
             {
                 this.PurchaseOrderWherePurchaseOrderItem.RemoveValidOrderItem(this);
 
-                if (!this.CurrentObjectState.Equals(new PurchaseOrderItemObjectStates(this.Strategy.Session).Cancelled)
-                    && !this.CurrentObjectState.Equals(new PurchaseOrderItemObjectStates(this.Strategy.Session).Rejected))
+                if (!this.PurchaseOrderItemState.Equals(new PurchaseOrderItemStates(this.Strategy.Session).Cancelled)
+                    && !this.PurchaseOrderItemState.Equals(new PurchaseOrderItemStates(this.Strategy.Session).Rejected))
                 {
                     this.PurchaseOrderWherePurchaseOrderItem.AddValidOrderItem(this);
                 }
@@ -160,34 +165,34 @@ namespace Allors.Domain
             {
                 var order = this.PurchaseOrderWherePurchaseOrderItem;
 
-                if (order.CurrentObjectState.Equals(new PurchaseOrderObjectStates(this.Strategy.Session).Cancelled))
+                if (order.PurchaseOrderState.Equals(new PurchaseOrderStates(this.Strategy.Session).Cancelled))
                 {
                     this.Cancel();
                 }
 
-                if (order.CurrentObjectState.Equals(new PurchaseOrderObjectStates(this.Strategy.Session).InProcess))
+                if (order.PurchaseOrderState.Equals(new PurchaseOrderStates(this.Strategy.Session).InProcess))
                 {
-                    if (this.CurrentObjectState.Equals(new PurchaseOrderItemObjectStates(this.Strategy.Session).Created))
+                    if (this.PurchaseOrderItemState.Equals(new PurchaseOrderItemStates(this.Strategy.Session).Created))
                     {
                         this.Confirm();
                     }
                 }
 
-                if (order.CurrentObjectState.Equals(new PurchaseOrderObjectStates(this.Strategy.Session).Completed))
+                if (order.PurchaseOrderState.Equals(new PurchaseOrderStates(this.Strategy.Session).Completed))
                 {
                     this.Complete();
                 }
             }
 
-            if (this.CurrentObjectState.Equals(new PurchaseOrderItemObjectStates(this.Strategy.Session).InProcess))
+            if (this.PurchaseOrderItemState.Equals(new PurchaseOrderItemStates(this.Strategy.Session).InProcess))
             {
                 this.AppsOnDeriveQuantities(derivation);
 
                 this.PreviousQuantity = this.QuantityOrdered;
             }
 
-            if (this.CurrentObjectState.Equals(new PurchaseOrderItemObjectStates(this.Strategy.Session).Cancelled) ||
-                this.CurrentObjectState.Equals(new PurchaseOrderItemObjectStates(this.Strategy.Session).Rejected))
+            if (this.PurchaseOrderItemState.Equals(new PurchaseOrderItemStates(this.Strategy.Session).Cancelled) ||
+                this.PurchaseOrderItemState.Equals(new PurchaseOrderItemStates(this.Strategy.Session).Rejected))
             {
                 this.AppsOnDeriveQuantities(derivation);
             }
@@ -247,11 +252,11 @@ namespace Allors.Domain
             {
                 if (quantityReceived < this.QuantityOrdered)
                 {
-                   this.CurrentObjectState = new PurchaseOrderItemObjectStates(this.strategy.Session).PartiallyReceived;
+                   this.PurchaseOrderItemState = new PurchaseOrderItemStates(this.strategy.Session).PartiallyReceived;
                 }
                 else
                 {
-                    this.CurrentObjectState = new PurchaseOrderItemObjectStates(this.strategy.Session).Completed;
+                    this.PurchaseOrderItemState = new PurchaseOrderItemStates(this.strategy.Session).Completed;
                 }
             }
 
@@ -284,7 +289,7 @@ namespace Allors.Domain
                 inventoryItem = inventoryItems.First as NonSerialisedInventoryItem;
             }
 
-            if (this.CurrentObjectState.Equals(new PurchaseOrderItemObjectStates(this.Strategy.Session).InProcess))
+            if (this.PurchaseOrderItemState.Equals(new PurchaseOrderItemStates(this.Strategy.Session).InProcess))
             {
                 if (!this.ExistPreviousQuantity || !this.QuantityOrdered.Equals(this.PreviousQuantity))
                 {
@@ -295,8 +300,8 @@ namespace Allors.Domain
                 }
             }
 
-            if (this.CurrentObjectState.Equals(new PurchaseOrderItemObjectStates(this.Strategy.Session).Cancelled) ||
-                this.CurrentObjectState.Equals(new PurchaseOrderItemObjectStates(this.Strategy.Session).Rejected))
+            if (this.PurchaseOrderItemState.Equals(new PurchaseOrderItemStates(this.Strategy.Session).Cancelled) ||
+                this.PurchaseOrderItemState.Equals(new PurchaseOrderItemStates(this.Strategy.Session).Rejected))
             {
                 if (inventoryItem != null)
                 {

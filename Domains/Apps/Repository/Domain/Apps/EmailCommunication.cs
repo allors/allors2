@@ -24,8 +24,6 @@ namespace Allors.Repository
 
         public DateTime InitialScheduledStart { get; set; }
 
-        public CommunicationEventObjectState CurrentObjectState { get; set; }
-
         public CommunicationEventPurpose[] EventPurposes { get; set; }
 
         public DateTime ScheduledEnd { get; set; }
@@ -57,10 +55,6 @@ namespace Allors.Repository
         public bool SendReminder { get; set; }
         public DateTime RemindAt { get; set; }
 
-        public ObjectState PreviousObjectState { get; set; }
-
-        public ObjectState LastObjectState { get; set; }
-
         public Permission[] DeniedPermissions { get; set; }
 
         public SecurityToken[] SecurityTokens { get; set; }
@@ -77,6 +71,40 @@ namespace Allors.Repository
 
         public DateTime LastModifiedDate { get; set; }
 
+        public ObjectState[] PreviousObjectStates { get; set; }
+
+        public ObjectState[] LastObjectStates { get; set; }
+
+        public ObjectState[] ObjectStates { get; set; }
+
+        public CommunicationEventState PreviousCommunicationState { get; set; }
+
+        public CommunicationEventState LastCommunicationState { get; set; }
+
+        public CommunicationEventState CommunicationEventState { get; set; }
+
+        #endregion
+
+        #region Versioning
+        #region Allors
+        [Id("B3BC815E-17E9-4722-A421-42E211421693")]
+        [AssociationId("ADB26602-A342-490E-A503-33F7B3EE33D2")]
+        [RoleId("1414865A-3240-404A-AE19-3D42884DEAB5")]
+        [Indexed]
+        #endregion
+        [Multiplicity(Multiplicity.OneToOne)]
+        [Workspace]
+        public EmailCommunicationVersion CurrentVersion { get; set; }
+
+        #region Allors
+        [Id("44420D9F-80FC-4432-85C3-1641A5493765")]
+        [AssociationId("62386C79-D5A7-4DE8-B04F-2A4B64237FDB")]
+        [RoleId("DAFCBD9B-5A82-4EAA-8197-B187D1B6C507")]
+        [Indexed]
+        #endregion
+        [Workspace]
+        [Multiplicity(Multiplicity.OneToMany)]
+        public EmailCommunicationVersion[] AllVersions { get; set; }
         #endregion
 
         #region Allors
@@ -138,28 +166,6 @@ namespace Allors.Repository
         [Workspace]
         [Required]
         public bool IncomingMail { get; set; }
-
-        #region Versioning
-        #region Allors
-        [Id("B3BC815E-17E9-4722-A421-42E211421693")]
-        [AssociationId("ADB26602-A342-490E-A503-33F7B3EE33D2")]
-        [RoleId("1414865A-3240-404A-AE19-3D42884DEAB5")]
-        [Indexed]
-        #endregion
-        [Multiplicity(Multiplicity.OneToOne)]
-        [Workspace]
-        public EmailCommunicationVersion CurrentVersion { get; set; }
-
-        #region Allors
-        [Id("44420D9F-80FC-4432-85C3-1641A5493765")]
-        [AssociationId("62386C79-D5A7-4DE8-B04F-2A4B64237FDB")]
-        [RoleId("DAFCBD9B-5A82-4EAA-8197-B187D1B6C507")]
-        [Indexed]
-        #endregion
-        [Workspace]
-        [Multiplicity(Multiplicity.OneToMany)]
-        public EmailCommunicationVersion[] AllVersions { get; set; }
-        #endregion
 
         #region inherited methods
 

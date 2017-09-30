@@ -10,6 +10,15 @@ namespace Allors.Repository
     public partial interface WorkEffortVersion : Version
     {
         #region Allors
+        [Id("D2282505-6967-412B-8D92-53D10A8BE7BE")]
+        [AssociationId("C6EA0D53-C552-4B8F-9F90-B8FB838C4F39")]
+        [RoleId("D6626950-A396-41D5-9FA4-EF906DD8DD8D")]
+        [Indexed]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        WorkEffortState WorkEffortState { get; set; }
+
+        #region Allors
         [Id("B21C5325-79BF-4B8F-B504-F7AD673E0E47")]
         [AssociationId("CF0DFA8A-D07E-423E-97DC-979F3C1B1C33")]
         [RoleId("FC38FBF5-E93D-4B26-9065-0B70DAADB61A")]
@@ -49,17 +58,6 @@ namespace Allors.Repository
         [Size(4096)]
         [Workspace]
         string Description { get; set; }
-
-        #region Allors
-        [Id("11E1A285-C63E-4014-BD4E-8D0A91A957A2")]
-        [AssociationId("FB17A1DB-B3B5-45AF-8C7E-018DE47CA474")]
-        [RoleId("9B1B6897-884D-4F82-86C7-DEF1339ABA4F")]
-        [Indexed]
-        #endregion
-        [Multiplicity(Multiplicity.ManyToOne)]
-        [Required]
-        [Workspace]
-        WorkEffortObjectState CurrentObjectState { get; set; }
 
         #region Allors
         [Id("4C4240A5-528B-497F-8846-AA7C99942C82")]

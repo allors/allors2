@@ -33,35 +33,35 @@ namespace Allors.Domain
 
         public static void DeriveInitialObjectState(this Request @this)
         {
-            if (!@this.ExistCurrentObjectState && !@this.ExistOriginator)
+            if (!@this.ExistRequestState && !@this.ExistOriginator)
             {
-                @this.CurrentObjectState = new RequestObjectStates(@this.Strategy.Session).Anonymous;
+                @this.RequestState = new RequestStates(@this.Strategy.Session).Anonymous;
             }
 
-            if (!@this.ExistCurrentObjectState && @this.ExistOriginator)
+            if (!@this.ExistRequestState && @this.ExistOriginator)
             {
-                @this.CurrentObjectState = new RequestObjectStates(@this.Strategy.Session).Submitted;
+                @this.RequestState = new RequestStates(@this.Strategy.Session).Submitted;
             }
         }
 
         public static void AppsCancel(this Request @this, RequestCancel method)
         {
-            @this.CurrentObjectState = new RequestObjectStates(@this.Strategy.Session).Cancelled;
+            @this.RequestState = new RequestStates(@this.Strategy.Session).Cancelled;
         }
 
         public static void AppsReject(this Request @this, RequestReject method)
         {
-            @this.CurrentObjectState = new RequestObjectStates(@this.Strategy.Session).Rejected;
+            @this.RequestState = new RequestStates(@this.Strategy.Session).Rejected;
         }
 
         public static void AppsSubmit(this Request @this, RequestSubmit method)
         {
-            @this.CurrentObjectState = new RequestObjectStates(@this.Strategy.Session).Submitted;
+            @this.RequestState = new RequestStates(@this.Strategy.Session).Submitted;
         }
 
         public static void AppsHold(this Request @this, RequestHold method)
         {
-            @this.CurrentObjectState = new RequestObjectStates(@this.Strategy.Session).PendingCustomer;
+            @this.RequestState = new RequestStates(@this.Strategy.Session).PendingCustomer;
         }
     }
 }

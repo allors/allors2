@@ -22,7 +22,7 @@ namespace Allors.Domain
             base.AppsSecure(config);
 
             var write = Operations.Write;
-            var closed = new BudgetObjectStates(this.Session).Closed;
+            var closed = new BudgetStates(this.Session).Closed;
 
             config.Deny(this.ObjectType, closed, write);
         }

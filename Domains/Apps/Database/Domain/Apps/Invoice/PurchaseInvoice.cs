@@ -21,15 +21,20 @@ namespace Allors.Domain
 
     public partial class PurchaseInvoice
     {
-        ObjectState Transitional.CurrentObjectState => this.CurrentObjectState;
+        public static readonly TransitionalConfiguration[] StaticTransitionalConfigurations =
+            {
+                new TransitionalConfiguration(M.PurchaseInvoice.PurchaseInvoiceState),
+            };
+
+        public TransitionalConfiguration[] TransitionalConfigurations => StaticTransitionalConfigurations;
 
         public InvoiceItem[] InvoiceItems => this.PurchaseInvoiceItems;
 
         public void AppsOnBuild(ObjectOnBuild method)
         {
-            if (!this.ExistCurrentObjectState)
+            if (!this.ExistPurchaseInvoiceState)
             {
-                this.CurrentObjectState = new PurchaseInvoiceObjectStates(this.Strategy.Session).InProcess;
+                this.PurchaseInvoiceState = new PurchaseInvoiceStates(this.Strategy.Session).InProcess;
             }
 
             if (!this.ExistInvoiceNumber)
@@ -105,17 +110,17 @@ namespace Allors.Domain
 
         public void AppsSearchDataApprove(IDerivation derivation)
         {
-            this.CurrentObjectState = new PurchaseInvoiceObjectStates(this.Strategy.Session).Approved;
+            this.PurchaseInvoiceState = new PurchaseInvoiceStates(this.Strategy.Session).Approved;
         }
 
         public void AppsReady(IDerivation derivation)
         {
-            this.CurrentObjectState = new PurchaseInvoiceObjectStates(this.Strategy.Session).ReadyForPosting;
+            this.PurchaseInvoiceState = new PurchaseInvoiceStates(this.Strategy.Session).ReadyForPosting;
         }
 
         public void AppsCancel(IDerivation derivation)
         {
-            this.CurrentObjectState = new PurchaseInvoiceObjectStates(this.Strategy.Session).Cancelled;
+            this.PurchaseInvoiceState = new PurchaseInvoiceStates(this.Strategy.Session).Cancelled;
         }
 
         public void AppsOnDeriveInvoiceItems(IDerivation derivation)

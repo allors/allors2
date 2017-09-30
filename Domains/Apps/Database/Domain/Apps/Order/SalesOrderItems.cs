@@ -24,21 +24,21 @@ namespace Allors.Domain
         {
             base.AppsPrepare(setup);
 
-            setup.AddDependency(this.ObjectType, M.SalesOrderItemObjectState);
+            setup.AddDependency(this.ObjectType, M.SalesOrderItemState);
         }
 
         protected override void AppsSecure(Security config)
         {
             base.AppsSecure(config);
 
-            var created = new SalesOrderItemObjectStates(this.Session).Created;
-            var partiallyShipped = new SalesOrderItemObjectStates(this.Session).PartiallyShipped;
-            var shipped = new SalesOrderItemObjectStates(this.Session).Shipped;
-            var inProcess = new SalesOrderItemObjectStates(this.Session).InProcess;
-            var cancelled = new SalesOrderItemObjectStates(this.Session).Cancelled;
-            var rejected = new SalesOrderItemObjectStates(this.Session).Rejected;
-            var completed = new SalesOrderItemObjectStates(this.Session).Completed;
-            var finished = new SalesOrderItemObjectStates(this.Session).Finished;
+            var created = new SalesOrderItemStates(this.Session).Created;
+            var partiallyShipped = new SalesOrderItemStates(this.Session).PartiallyShipped;
+            var shipped = new SalesOrderItemStates(this.Session).Shipped;
+            var inProcess = new SalesOrderItemStates(this.Session).InProcess;
+            var cancelled = new SalesOrderItemStates(this.Session).Cancelled;
+            var rejected = new SalesOrderItemStates(this.Session).Rejected;
+            var completed = new SalesOrderItemStates(this.Session).Completed;
+            var finished = new SalesOrderItemStates(this.Session).Finished;
 
             var product = this.Meta.Product;
             config.Deny(this.ObjectType, shipped, product);

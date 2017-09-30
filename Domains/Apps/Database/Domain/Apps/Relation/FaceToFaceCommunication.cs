@@ -19,7 +19,12 @@ namespace Allors.Domain
     
     public partial class FaceToFaceCommunication
     {
-        ObjectState Transitional.CurrentObjectState => this.CurrentObjectState;
+        public static readonly TransitionalConfiguration[] StaticTransitionalConfigurations =
+            {
+                new TransitionalConfiguration(M.FaceToFaceCommunication.CommunicationEventState),
+            };
+
+        public TransitionalConfiguration[] TransitionalConfigurations => StaticTransitionalConfigurations;
 
         public void AppsOnDerive(ObjectOnDerive method)
         {

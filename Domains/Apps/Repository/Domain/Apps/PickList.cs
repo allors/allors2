@@ -7,9 +7,15 @@ namespace Allors.Repository
     #region Allors
     [Id("27b6630a-35d0-4352-9223-b5b6c8d7496b")]
     #endregion
-    public partial class PickList : AccessControlledObject, Printable, Transitional, UniquelyIdentifiable 
+    public partial class PickList : Printable, Transitional, Versioned
     {
         #region inherited properties
+
+        public ObjectState[] PreviousObjectStates { get; set; }
+
+        public ObjectState[] LastObjectStates { get; set; }
+
+        public ObjectState[] ObjectStates { get; set; }
         public Permission[] DeniedPermissions { get; set; }
 
         public SecurityToken[] SecurityTokens { get; set; }
@@ -18,10 +24,62 @@ namespace Allors.Repository
 
         public Guid UniqueId { get; set; }
 
-        public ObjectState PreviousObjectState { get; set; }
+        #endregion
 
-        public ObjectState LastObjectState { get; set; }
+        #region ObjectStates
+        #region PickListState
+        #region Allors
+        [Id("87B1275D-A60B-46B7-8510-CA42EBAAEF97")]
+        [AssociationId("76F149C9-7E8D-4A79-9D9D-25E8637A605F")]
+        [RoleId("9047B405-4015-4DA3-A164-04316471B1C8")]
+        [Indexed]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Derived]
+        public PickListState PreviousPickListState { get; set; }
 
+        #region Allors
+        [Id("86EEF807-1C0B-4053-82EF-D90CD379A6D8")]
+        [AssociationId("26F8DC28-38E4-43DA-8003-E1E64EAF9FB4")]
+        [RoleId("211588E8-3618-4A36-964E-D3638BEB4B69")]
+        [Indexed]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Derived]
+        public PickListState LastPickListState { get; set; }
+
+        #region Allors
+        [Id("FDFC9DF1-D4A6-4F4F-BA5E-4D523DA7D00A")]
+        [AssociationId("D0B14193-7C4E-4B98-BE1E-3C2677E693F8")]
+        [RoleId("9659F469-250E-4531-AE54-11FB008ED957")]
+        [Indexed]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Workspace]
+        public PickListState PickListState { get; set; }
+        #endregion
+        #endregion
+
+        #region Versioning
+        #region Allors
+        [Id("7BF3DC9C-258D-4744-8EAC-8DBD3702C178")]
+        [AssociationId("DE640A48-A9B0-4DBB-8C9A-7122B66B15FD")]
+        [RoleId("DA6E6B5F-D945-4B62-91C9-8E67F604BBB3")]
+        [Indexed]
+        #endregion
+        [Multiplicity(Multiplicity.OneToOne)]
+        [Workspace]
+        public PickListVersion CurrentVersion { get; set; }
+
+        #region Allors
+        [Id("2C188CDB-CCE2-43D3-B1A3-D2F33716B02C")]
+        [AssociationId("373A7FEF-6669-4B89-95F0-6BCC9C5E6EAC")]
+        [RoleId("9958F7AF-0E25-4E4E-83AC-B673C9224E04")]
+        [Indexed]
+        #endregion
+        [Multiplicity(Multiplicity.OneToMany)]
+        [Workspace]
+        public PickListVersion[] AllVersions { get; set; }
         #endregion
 
         #region Allors
@@ -31,6 +89,7 @@ namespace Allors.Repository
         #endregion
         [Multiplicity(Multiplicity.OneToOne)]
         [Indexed]
+        [Workspace]
         public CustomerShipment CustomerShipmentCorrection { get; set; }
         
         #region Allors
@@ -39,6 +98,7 @@ namespace Allors.Repository
         [RoleId("920c6a7e-b8b8-4155-9209-4c8ed24a023a")]
         #endregion
         [Required]
+        [Workspace]
         public DateTime CreationDate { get; set; }
         
         #region Allors
@@ -48,28 +108,8 @@ namespace Allors.Repository
         #endregion
         [Multiplicity(Multiplicity.OneToMany)]
         [Indexed]
+        [Workspace]
         public PickListItem[] PickListItems { get; set; }
-        
-        #region Allors
-        [Id("4231c38e-e54c-480d-9e0f-2fe8bd101da1")]
-        [AssociationId("b4d28461-6b82-4843-90ee-a5c3c0cddfc0")]
-        [RoleId("11fa5c06-67ce-44e0-b205-e60be00e9922")]
-        #endregion
-        [Multiplicity(Multiplicity.ManyToOne)]
-        [Derived]
-        [Indexed]
-        [Required]
-        public PickListObjectState CurrentObjectState { get; set; }
-        
-        #region Allors
-        [Id("62239709-cd1f-4582-99f7-8f18e875e241")]
-        [AssociationId("61ae7eeb-259c-44bb-9de7-aff577a66669")]
-        [RoleId("fe4d009e-1ea4-43d2-b4ce-96a1d9af5cf7")]
-        #endregion
-        [Multiplicity(Multiplicity.OneToOne)]
-        [Derived]
-        [Indexed]
-        public PickListStatus CurrentPickListStatus { get; set; }
         
         #region Allors
         [Id("6572f862-31b2-4be9-b7dc-7fff5d21f620")]
@@ -78,17 +118,8 @@ namespace Allors.Repository
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
+        [Workspace]
         public Person Picker { get; set; }
-        
-        #region Allors
-        [Id("7b5e6ef5-e5c0-4e7c-8955-b6c18f136fee")]
-        [AssociationId("ede5efc3-a840-44b5-8389-611c05ae4df2")]
-        [RoleId("ec323cf6-acad-4e8b-bb73-0323e9aee277")]
-        #endregion
-        [Multiplicity(Multiplicity.OneToMany)]
-        [Derived]
-        [Indexed]
-        public PickListStatus[] PickListStatuses { get; set; }
         
         #region Allors
         [Id("ae75482e-2c41-46d4-ab73-f3aac368fd50")]
@@ -97,6 +128,7 @@ namespace Allors.Repository
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
+        [Workspace]
         public Party ShipToParty { get; set; }
         
         #region Allors
@@ -106,6 +138,7 @@ namespace Allors.Repository
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
+        [Workspace]
         public Store Store { get; set; }
         
         #region Allors

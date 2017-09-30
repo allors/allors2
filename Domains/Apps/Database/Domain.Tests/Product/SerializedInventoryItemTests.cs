@@ -75,7 +75,7 @@ namespace Allors.Domain
                             .WithName("part").WithManufacturerId("10101").WithInventoryItemKind(new InventoryItemKinds(this.DatabaseSession).NonSerialised).Build())
                 .Build();
 
-            Assert.Equal(new SerialisedInventoryItemObjectStates(this.DatabaseSession).Good, item.CurrentObjectState);
+            Assert.Equal(new SerialisedInventoryItemStates(this.DatabaseSession).Good, item.SerialisedInventoryItemState);
             Assert.Equal(new Warehouses(this.DatabaseSession).FindBy(M.Warehouse.Name, "facility"), item.Facility);
         }
     }

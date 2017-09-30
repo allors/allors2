@@ -24,7 +24,7 @@ namespace Allors.Domain
         {
             base.AppsPrepare(setup);
 
-            setup.AddDependency(this.ObjectType, M.PurchaseShipmentObjectState);
+            setup.AddDependency(this.ObjectType, M.PurchaseShipmentState);
         }
     }
 }

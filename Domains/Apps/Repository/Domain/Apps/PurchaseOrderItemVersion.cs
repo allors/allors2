@@ -96,7 +96,7 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
         [Required]
-        public PurchaseOrderItemObjectState CurrentObjectState { get; set; }
+        public PurchaseOrderItemState PurchaseOrderItemState { get; set; }
 
         #region Allors
         [Id("CD44EDAB-1CCE-4F2B-A92E-13BC74339EFE")]

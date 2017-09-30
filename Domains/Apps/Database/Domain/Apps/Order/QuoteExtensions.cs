@@ -21,9 +21,9 @@ namespace Allors.Domain
 
         public static void AppsOnBuild(this Quote @this, ObjectOnBuild method)
         {
-            if (!@this.ExistCurrentObjectState)
+            if (!@this.ExistQuoteState)
             {
-                @this.CurrentObjectState = new QuoteObjectStates(@this.Strategy.Session).Created;
+                @this.QuoteState = new QuoteStates(@this.Strategy.Session).Created;
             }
 
             if (!@this.ExistQuoteNumber)
@@ -34,12 +34,12 @@ namespace Allors.Domain
 
         public static void AppsApprove(this Quote @this, QuoteApprove method)
         {
-            @this.CurrentObjectState = new QuoteObjectStates(@this.Strategy.Session).Approved;
+            @this.QuoteState = new QuoteStates(@this.Strategy.Session).Approved;
         }
 
         public static void AppsReject(this Quote @this, QuoteReject method)
         {
-            @this.CurrentObjectState = new QuoteObjectStates(@this.Strategy.Session).Rejected;
+            @this.QuoteState = new QuoteStates(@this.Strategy.Session).Rejected;
         }
     }
 }

@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------------------------------------------
-// <copyright file="PartSpecificationObjectStates.cs" company="Allors bvba">
+// <copyright file="PartSpecificationStates.cs" company="Allors bvba">
 //   Copyright 2002-2012 Allors bvba.
 // Dual Licensed under
 //   a) the General Public Licence v3 (GPL)
@@ -17,7 +17,7 @@ namespace Allors.Domain
 {
     using System;
 
-    public partial class PartSpecificationObjectStates
+    public partial class PartSpecificationStates
     {
         private static readonly Guid CreatedId = new Guid("89D6029D-2F90-43c7-989A-CF9EF7FE5DCE");
         private static readonly Guid DesignedId = new Guid("0B9F3E57-D3DE-43c7-AD71-0558D8CDF114");
@@ -27,19 +27,19 @@ namespace Allors.Domain
 
         public const string ApproveIdString = "7E08EA40-5A3B-4a18-A675-97212BA896DE";
 
-        private UniquelyIdentifiableCache<PartSpecificationObjectState> stateCache;
+        private UniquelyIdentifiableCache<PartSpecificationState> stateCache;
 
-        public PartSpecificationObjectState Created => this.StateCache.Get(CreatedId);
+        public PartSpecificationState Created => this.StateCache.Get(CreatedId);
 
-        public PartSpecificationObjectState Designed => this.StateCache.Get(DesignedId);
+        public PartSpecificationState Designed => this.StateCache.Get(DesignedId);
 
-        public PartSpecificationObjectState Tested => this.StateCache.Get(TestedId);
+        public PartSpecificationState Tested => this.StateCache.Get(TestedId);
 
-        public PartSpecificationObjectState Approved => this.StateCache.Get(ApprovedId);
+        public PartSpecificationState Approved => this.StateCache.Get(ApprovedId);
 
-        public PartSpecificationObjectState RequirementSpecified => this.StateCache.Get(RequirementSpecifiedId);
+        public PartSpecificationState RequirementSpecified => this.StateCache.Get(RequirementSpecifiedId);
 
-        private UniquelyIdentifiableCache<PartSpecificationObjectState> StateCache => this.stateCache ?? (this.stateCache = new UniquelyIdentifiableCache<PartSpecificationObjectState>(this.Session));
+        private UniquelyIdentifiableCache<PartSpecificationState> StateCache => this.stateCache ?? (this.stateCache = new UniquelyIdentifiableCache<PartSpecificationState>(this.Session));
 
         protected override void AppsSetup(Setup setup)
         {
@@ -48,27 +48,27 @@ namespace Allors.Domain
             var englishtLocale = new Locales(this.Session).EnglishGreatBritain;
             var dutchLocale = new Locales(this.Session).DutchNetherlands;
 
-            new PartSpecificationObjectStateBuilder(this.Session)
+            new PartSpecificationStateBuilder(this.Session)
                 .WithUniqueId(CreatedId)
                 .WithName("Created")
                 .Build();
 
-            new PartSpecificationObjectStateBuilder(this.Session)
+            new PartSpecificationStateBuilder(this.Session)
                 .WithUniqueId(DesignedId)
                 .WithName("Designed")
                 .Build();
 
-            new PartSpecificationObjectStateBuilder(this.Session)
+            new PartSpecificationStateBuilder(this.Session)
                 .WithUniqueId(TestedId)
                 .WithName("Tested")
                 .Build();
 
-            new PartSpecificationObjectStateBuilder(this.Session)
+            new PartSpecificationStateBuilder(this.Session)
                 .WithUniqueId(ApprovedId)
                 .WithName("Approved")
                 .Build();
 
-            new PartSpecificationObjectStateBuilder(this.Session)
+            new PartSpecificationStateBuilder(this.Session)
                 .WithUniqueId(RequirementSpecifiedId)
                 .WithName("Requirement Specified")
                 .Build();

@@ -10,6 +10,13 @@ namespace Allors.Repository
     public partial class SalesInvoiceItem : InvoiceItem, Versioned
     {
         #region inherited properties
+
+        public ObjectState[] PreviousObjectStates { get; set; }
+
+        public ObjectState[] LastObjectStates { get; set; }
+
+        public ObjectState[] ObjectStates { get; set; }
+
         public string InternalComment { get; set; }
         public AgreementTerm[] InvoiceTerms { get; set; }
         public decimal TotalInvoiceAdjustment { get; set; }
@@ -23,8 +30,6 @@ namespace Allors.Repository
         public string Description { get; set; }
         public Permission[] DeniedPermissions { get; set; }
         public SecurityToken[] SecurityTokens { get; set; }
-        public ObjectState PreviousObjectState { get; set; }
-        public ObjectState LastObjectState { get; set; }
         public string Comment { get; set; }
         public decimal TotalDiscountAsPercentage { get; set; }
         public DiscountAdjustment DiscountAdjustment { get; set; }
@@ -54,6 +59,62 @@ namespace Allors.Repository
         public SurchargeAdjustment SurchargeAdjustment { get; set; }
         #endregion
 
+        #region ObjectStates
+        #region SalesInvoiceItemState
+        #region Allors
+        [Id("6033F4A9-9ABA-457C-9A44-218415E01B79")]
+        [AssociationId("A71CB471-C8CB-42F1-A1AF-E32F71BEC61F")]
+        [RoleId("D6C62ED7-07B7-44FC-A774-1BD6B54554D9")]
+        [Indexed]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Derived]
+        public SalesInvoiceItemState PreviousSalesInvoiceItemState { get; set; }
+
+        #region Allors
+        [Id("7623707D-C0F7-47D8-9B39-E34A55FC087B")]
+        [AssociationId("E80895A6-EAAE-46B3-8823-3B2CD4DA8324")]
+        [RoleId("48627D83-BEEB-42B1-B299-BE11451AF90C")]
+        [Indexed]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Derived]
+        public SalesInvoiceItemState LastSalesInvoiceItemState { get; set; }
+
+        #region Allors
+        [Id("AC0B80C8-84C6-4A2D-8CE1-B94994537998")]
+        [AssociationId("81BF99E7-5831-42BE-B7D8-64FB11D3C626")]
+        [RoleId("06151951-E93B-44B6-8152-84FBAB29057C")]
+        [Indexed]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Workspace]
+        public SalesInvoiceItemState SalesInvoiceItemState { get; set; }
+        #endregion
+        #endregion
+
+        #region Versioning
+        #region Allors
+        [Id("61008480-5266-42B1-BD09-477C514F5FC5")]
+        [AssociationId("EC5E9E80-DFED-4EFB-9923-CC066FA6975A")]
+        [RoleId("8FCEDD24-9BF7-4CC9-8387-C661BEE650C5")]
+        [Indexed]
+        #endregion
+        [Multiplicity(Multiplicity.OneToOne)]
+        [Workspace]
+        public SalesInvoiceItemVersion CurrentVersion { get; set; }
+
+        #region Allors
+        [Id("3409316D-FD54-408C-BC1C-9468CCE4B72E")]
+        [AssociationId("DC9E9D4F-27AC-4022-ACB4-F4916BF010BF")]
+        [RoleId("C646543C-2FF4-4DA5-99D6-EACAE7A28FDA")]
+        [Indexed]
+        #endregion
+        [Multiplicity(Multiplicity.OneToMany)]
+        [Workspace]
+        public SalesInvoiceItemVersion[] AllVersions { get; set; }
+        #endregion
+
         #region Allors
         [Id("0854aece-6ca1-4b8d-99a9-6d424de8dfd4")]
         [AssociationId("cebb5430-809a-4d46-bc7b-563ee72f0848")]
@@ -63,17 +124,6 @@ namespace Allors.Repository
         [Indexed]
         [Workspace]
         public ProductFeature ProductFeature { get; set; }
-
-        #region Allors
-        [Id("0a93f639-a456-4318-a8fa-8d3c2a107379")]
-        [AssociationId("f9476899-7bd7-472a-ae64-0a7f4610cb87")]
-        [RoleId("56ce0901-621f-407f-81be-9921ad6d19be")]
-        #endregion
-        [Multiplicity(Multiplicity.ManyToOne)]
-        [Indexed]
-        [Required]
-        [Workspace]
-        public SalesInvoiceItemObjectState CurrentObjectState { get; set; }
 
         #region Allors
         [Id("103d42a5-fdee-4689-af19-2ea4c8060de3")]
@@ -205,28 +255,6 @@ namespace Allors.Repository
         [Scale(2)]
         [Workspace]
         public decimal RequiredMarkupPercentage { get; set; }
-
-        #region Versioning
-        #region Allors
-        [Id("61008480-5266-42B1-BD09-477C514F5FC5")]
-        [AssociationId("EC5E9E80-DFED-4EFB-9923-CC066FA6975A")]
-        [RoleId("8FCEDD24-9BF7-4CC9-8387-C661BEE650C5")]
-        [Indexed]
-        #endregion
-        [Multiplicity(Multiplicity.OneToOne)]
-        [Workspace]
-        public SalesInvoiceItemVersion CurrentVersion { get; set; }
-
-        #region Allors
-        [Id("3409316D-FD54-408C-BC1C-9468CCE4B72E")]
-        [AssociationId("DC9E9D4F-27AC-4022-ACB4-F4916BF010BF")]
-        [RoleId("C646543C-2FF4-4DA5-99D6-EACAE7A28FDA")]
-        [Indexed]
-        #endregion
-        [Multiplicity(Multiplicity.OneToMany)]
-        [Workspace]
-        public SalesInvoiceItemVersion[] AllVersions { get; set; }
-        #endregion
 
         #region inherited methods
 

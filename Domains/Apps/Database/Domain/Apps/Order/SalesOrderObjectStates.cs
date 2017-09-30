@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------------------------------------------
-// <copyright file="SalesOrderObjectStates.cs" company="Allors bvba">
+// <copyright file="SalesOrderStates.cs" company="Allors bvba">
 //   Copyright 2002-2012 Allors bvba.
 // Dual Licensed under
 //   a) the General Public Licence v3 (GPL)
@@ -17,7 +17,7 @@ namespace Allors.Domain
 {
     using System;
 
-    public partial class SalesOrderObjectStates
+    public partial class SalesOrderStates
     {
         private static readonly Guid ProvisionalId = new Guid("29ABC67D-4BE1-4af3-B993-64E9E36C3E6B");
         private static readonly Guid RequestsApprovalId = new Guid("6B6F6E25-4DA1-455d-9C9F-21F2D4316D66");
@@ -32,33 +32,33 @@ namespace Allors.Domain
         private static readonly Guid InProcessId = new Guid("DDBB678E-9A66-4842-87FD-4E628CFF0A75");
         private static readonly Guid FinishedId = new Guid("DFE75006-81FD-424a-AF58-2528A657155D");
 
-        private UniquelyIdentifiableCache<SalesOrderObjectState> stateCache;
+        private UniquelyIdentifiableCache<SalesOrderState> stateCache;
 
-        public SalesOrderObjectState Provisional => this.StateCache.Get(ProvisionalId);
+        public SalesOrderState Provisional => this.StateCache.Get(ProvisionalId);
 
-        public SalesOrderObjectState RequestsApproval => this.StateCache.Get(RequestsApprovalId);
+        public SalesOrderState RequestsApproval => this.StateCache.Get(RequestsApprovalId);
 
-        public SalesOrderObjectState Cancelled => this.StateCache.Get(CancelledId);
+        public SalesOrderState Cancelled => this.StateCache.Get(CancelledId);
 
-        public SalesOrderObjectState Completed => this.StateCache.Get(CompletedId);
+        public SalesOrderState Completed => this.StateCache.Get(CompletedId);
 
-        public SalesOrderObjectState PartiallyShipped => this.StateCache.Get(PartiallyShippedId);
+        public SalesOrderState PartiallyShipped => this.StateCache.Get(PartiallyShippedId);
 
-        public SalesOrderObjectState Shipped => this.StateCache.Get(ShippedId);
+        public SalesOrderState Shipped => this.StateCache.Get(ShippedId);
 
-        public SalesOrderObjectState Paid => this.StateCache.Get(PaidId);
+        public SalesOrderState Paid => this.StateCache.Get(PaidId);
 
-        public SalesOrderObjectState PartiallyPaid => this.StateCache.Get(PartiallyPaidId);
+        public SalesOrderState PartiallyPaid => this.StateCache.Get(PartiallyPaidId);
 
-        public SalesOrderObjectState Rejected => this.StateCache.Get(RejectedId);
+        public SalesOrderState Rejected => this.StateCache.Get(RejectedId);
 
-        public SalesOrderObjectState Finished => this.StateCache.Get(FinishedId);
+        public SalesOrderState Finished => this.StateCache.Get(FinishedId);
 
-        public SalesOrderObjectState OnHold => this.StateCache.Get(OnHoldId);
+        public SalesOrderState OnHold => this.StateCache.Get(OnHoldId);
 
-        public SalesOrderObjectState InProcess => this.StateCache.Get(InProcessId);
+        public SalesOrderState InProcess => this.StateCache.Get(InProcessId);
 
-        private UniquelyIdentifiableCache<SalesOrderObjectState> StateCache => this.stateCache ?? (this.stateCache = new UniquelyIdentifiableCache<SalesOrderObjectState>(this.Session));
+        private UniquelyIdentifiableCache<SalesOrderState> StateCache => this.stateCache ?? (this.stateCache = new UniquelyIdentifiableCache<SalesOrderState>(this.Session));
 
         protected override void AppsSetup(Setup setup)
         {
@@ -67,62 +67,62 @@ namespace Allors.Domain
             var englishLocale = new Locales(this.Session).EnglishGreatBritain;
             var dutchLocale = new Locales(this.Session).DutchNetherlands;
 
-            new SalesOrderObjectStateBuilder(this.Session)
+            new SalesOrderStateBuilder(this.Session)
                 .WithUniqueId(ProvisionalId)
                 .WithName("Created")
                 .Build();
 
-            new SalesOrderObjectStateBuilder(this.Session)
+            new SalesOrderStateBuilder(this.Session)
                 .WithUniqueId(RequestsApprovalId)
                 .WithName("Requests Approval")
                 .Build();
 
-            new SalesOrderObjectStateBuilder(this.Session)
+            new SalesOrderStateBuilder(this.Session)
                 .WithUniqueId(CancelledId)
                 .WithName("Cancelled")
                 .Build();
 
-            new SalesOrderObjectStateBuilder(this.Session)
+            new SalesOrderStateBuilder(this.Session)
                 .WithUniqueId(PartiallyShippedId)
                 .WithName("Partially Shipped")
                 .Build();
 
-            new SalesOrderObjectStateBuilder(this.Session)
+            new SalesOrderStateBuilder(this.Session)
                 .WithUniqueId(ShippedId)
                 .WithName("Shipped")
                 .Build();
 
-            new SalesOrderObjectStateBuilder(this.Session)
+            new SalesOrderStateBuilder(this.Session)
                 .WithUniqueId(CompletedId)
                 .WithName("Completed")
                 .Build();
 
-            new SalesOrderObjectStateBuilder(this.Session)
+            new SalesOrderStateBuilder(this.Session)
                 .WithUniqueId(PaidId)
                 .WithName("Paid")
                 .Build();
 
-            new SalesOrderObjectStateBuilder(this.Session)
+            new SalesOrderStateBuilder(this.Session)
                 .WithUniqueId(PartiallyPaidId)
                 .WithName("Partially Paid")
                 .Build();
 
-            new SalesOrderObjectStateBuilder(this.Session)
+            new SalesOrderStateBuilder(this.Session)
                 .WithUniqueId(RejectedId)
                 .WithName("Rejected")
                 .Build();
 
-            new SalesOrderObjectStateBuilder(this.Session)
+            new SalesOrderStateBuilder(this.Session)
                 .WithUniqueId(OnHoldId)
                 .WithName("On Hold")
                 .Build();
 
-            new SalesOrderObjectStateBuilder(this.Session)
+            new SalesOrderStateBuilder(this.Session)
                 .WithUniqueId(InProcessId)
                 .WithName("In Process")
                 .Build();
 
-            new SalesOrderObjectStateBuilder(this.Session)
+            new SalesOrderStateBuilder(this.Session)
                 .WithUniqueId(FinishedId)
                 .WithName("Finished")
                 .Build();

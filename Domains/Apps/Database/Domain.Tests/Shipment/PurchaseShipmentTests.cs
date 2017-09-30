@@ -34,7 +34,7 @@ namespace Allors.Domain
 
             this.DatabaseSession.Derive();
 
-            Assert.Equal(new PurchaseShipmentObjectStates(this.DatabaseSession).Created, shipment.CurrentObjectState);
+            Assert.Equal(new PurchaseShipmentStates(this.DatabaseSession).Created, shipment.PurchaseShipmentState);
             Assert.Equal(internalOrganisation.ShippingAddress, shipment.ShipToAddress);
             Assert.Equal(shipment.ShipToParty, shipment.ShipToParty);
         }

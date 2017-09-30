@@ -39,7 +39,6 @@ namespace Allors.Repository
 
         #endregion
 
-
         #region inherited methods
 
 
@@ -56,6 +55,5 @@ namespace Allors.Repository
 
 
         #endregion
-
     }
 }

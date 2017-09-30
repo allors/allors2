@@ -23,15 +23,15 @@ namespace Allors.Domain
         {
             base.AppsPrepare(setup);
 
-            setup.AddDependency(this.ObjectType, M.BudgetObjectState);
+            setup.AddDependency(this.ObjectType, M.BudgetState);
         }
 
         protected override void AppsSecure(Security config)
         {
             base.AppsSecure(config);
 
-            var closed = new BudgetObjectStates(this.Session).Closed;
-            var opened = new BudgetObjectStates(this.Session).Opened;
+            var closed = new BudgetStates(this.Session).Closed;
+            var opened = new BudgetStates(this.Session).Opened;
 
             config.Deny(this.ObjectType, closed, Operations.Write);
 

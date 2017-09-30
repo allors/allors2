@@ -11,6 +11,12 @@ namespace Allors.Repository
     {
         #region inherited properties
 
+        public ObjectState[] PreviousObjectStates { get; set; }
+
+        public ObjectState[] LastObjectStates { get; set; }
+
+        public ObjectState[] ObjectStates { get; set; }
+
         public string InternalComment { get; set; }
         public Currency CustomerCurrency { get; set; }
         public decimal TotalBasePriceCustomerCurrency { get; set; }
@@ -47,14 +53,68 @@ namespace Allors.Repository
         public SecurityToken[] SecurityTokens { get; set; }
         public Guid UniqueId { get; set; }
         public string PrintContent { get; set; }
-        public ObjectState PreviousObjectState { get; set; }
-        public ObjectState LastObjectState { get; set; }
         public string Comment { get; set; }
         public Locale Locale { get; set; }
         public User CreatedBy { get; set; }
         public User LastModifiedBy { get; set; }
         public DateTime CreationDate { get; set; }
         public DateTime LastModifiedDate { get; set; }
+        #endregion
+
+        #region ObjectStates
+        #region PurchaseOrderState
+        #region Allors
+        [Id("6E96C786-EC92-4A1A-BE23-51D3DA29048F")]
+        [AssociationId("B8049D62-0C4D-4549-A4C3-39EF1205045A")]
+        [RoleId("FA2D8980-AEAE-413C-B0C7-27A71237AB76")]
+        [Indexed]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Derived]
+        public PurchaseOrderState PreviousPurchaseOrderState { get; set; }
+
+        #region Allors
+        [Id("249741FA-C0AB-4259-B647-32144DEEEA33")]
+        [AssociationId("E520A31E-597B-41E9-B1CA-CFDB5BE7E502")]
+        [RoleId("01CC2EFE-2124-416A-9017-D138C4558D3E")]
+        [Indexed]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Derived]
+        public PurchaseOrderState LastPurchaseOrderState { get; set; }
+
+        #region Allors
+        [Id("C57CDFF9-C921-49D0-9781-A1B4D03F4C85")]
+        [AssociationId("78AE70C5-640E-49B3-BCC4-326E40692E88")]
+        [RoleId("3EDCECF4-7E41-443A-A95A-1A029B6BC78C")]
+        [Indexed]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Workspace]
+        public PurchaseOrderState PurchaseOrderState { get; set; }
+        #endregion
+        #endregion
+
+        #region Versioning
+        #region Allors
+        [Id("25006AFF-3E2E-44D5-9F42-38A34868EA87")]
+        [AssociationId("5FE211C2-FB70-417F-8067-A96459CD99EC")]
+        [RoleId("F08FB76C-9697-4DB3-BA9A-ED79E76CFCE5")]
+        [Indexed]
+        #endregion
+        [Multiplicity(Multiplicity.OneToOne)]
+        [Workspace]
+        public PurchaseOrderVersion CurrentVersion { get; set; }
+
+        #region Allors
+        [Id("101C600D-775C-44A1-B065-F464D68CF14A")]
+        [AssociationId("EDFD1E31-9DC8-499F-B8DD-63BE0C7AA85D")]
+        [RoleId("BBB7F2E6-C39B-4C7E-9556-FFA22A4C5EFC")]
+        [Indexed]
+        #endregion
+        [Multiplicity(Multiplicity.OneToMany)]
+        [Workspace]
+        public PurchaseOrderVersion[] AllVersions { get; set; }
         #endregion
 
         #region Allors
@@ -85,16 +145,6 @@ namespace Allors.Repository
         [Indexed]
         [Required]
         public Party TakenViaSupplier { get; set; }
-
-        #region Allors
-        [Id("3b1f04bd-c9ad-4fca-981c-2ca243fdc292")]
-        [AssociationId("e50e5e9b-f312-4520-81d1-1dbd7f856d0f")]
-        [RoleId("64e08e15-4d4d-465b-9d9e-c9e7c971a56d")]
-        #endregion
-        [Multiplicity(Multiplicity.ManyToOne)]
-        [Indexed]
-        [Required]
-        public PurchaseOrderObjectState CurrentObjectState { get; set; }
 
         #region Allors
         [Id("4830cfc5-0375-4996-8cd8-27e36c102b65")]
@@ -131,29 +181,7 @@ namespace Allors.Repository
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
-        public PostalAddress ShipToAddress { get; set; }
-        
-        #region Versioning
-        #region Allors
-        [Id("25006AFF-3E2E-44D5-9F42-38A34868EA87")]
-        [AssociationId("5FE211C2-FB70-417F-8067-A96459CD99EC")]
-        [RoleId("F08FB76C-9697-4DB3-BA9A-ED79E76CFCE5")]
-        [Indexed]
-        #endregion
-        [Multiplicity(Multiplicity.OneToOne)]
-        [Workspace]
-        public PurchaseOrderVersion CurrentVersion { get; set; }
-
-        #region Allors
-        [Id("101C600D-775C-44A1-B065-F464D68CF14A")]
-        [AssociationId("EDFD1E31-9DC8-499F-B8DD-63BE0C7AA85D")]
-        [RoleId("BBB7F2E6-C39B-4C7E-9556-FFA22A4C5EFC")]
-        [Indexed]
-        #endregion
-        [Multiplicity(Multiplicity.OneToMany)]
-        [Workspace]
-        public PurchaseOrderVersion[] AllVersions { get; set; }
-        #endregion
+        public PostalAddress ShipToAddress { get; set; }        
 
         #region inherited methods
 

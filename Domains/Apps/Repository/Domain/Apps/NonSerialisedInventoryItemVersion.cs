@@ -15,7 +15,6 @@ namespace Allors.Repository
         public ProductCharacteristicValue[] ProductCharacteristicValues { get; set; }
         public InventoryItemVariance[] InventoryItemVariances { get; set; }
         public Part Part { get; set; }
-        public Container Container { get; set; }
         public string Name { get; set; }
         public Lot Lot { get; set; }
         public string Sku { get; set; }
@@ -29,6 +28,16 @@ namespace Allors.Repository
 
         public DateTime DerivationTimeStamp { get; set; }
         #endregion
+
+        #region Allors
+        [Id("B3800237-4D03-4228-955D-7E573CEE47FA")]
+        [AssociationId("5B906A1D-B127-4064-A944-401AFC9F86D7")]
+        [RoleId("29FD8D29-6C87-4141-BE92-10723C0C49AE")]
+        [Indexed]
+        #endregion
+        [Workspace]
+        [Multiplicity(Multiplicity.ManyToOne)]
+        public NonSerialisedInventoryItemState NonSerialisedInventoryItemState { get; set; }
 
         #region Allors
         [Id("E4CE5244-A60F-401B-836D-2D9EB5B9CDCA")]
@@ -88,16 +97,6 @@ namespace Allors.Repository
         [Scale(2)]
         [Workspace]
         public decimal QuantityExpectedIn { get; set; }
-
-        #region Allors
-        [Id("B3800237-4D03-4228-955D-7E573CEE47FA")]
-        [AssociationId("5B906A1D-B127-4064-A944-401AFC9F86D7")]
-        [RoleId("29FD8D29-6C87-4141-BE92-10723C0C49AE")]
-        [Indexed]
-        #endregion
-        [Workspace]
-        [Multiplicity(Multiplicity.ManyToOne)]
-        public NonSerialisedInventoryItemObjectState CurrentObjectState { get; set; }
 
         #region inherited methods
 

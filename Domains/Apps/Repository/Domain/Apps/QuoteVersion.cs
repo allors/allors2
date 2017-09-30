@@ -10,6 +10,17 @@ namespace Allors.Repository
     public partial interface QuoteVersion : Version
     {
         #region Allors
+        [Id("EC36228F-7688-4C5F-9BF1-A05EE82E1B64")]
+        [AssociationId("8E713F6C-CB78-4EA1-A66F-B150755EF6D8")]
+        [RoleId("49D8150B-6B41-47D3-BF56-CE68811824FD")]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Indexed]
+        [Required]
+        [Workspace]
+        QuoteState QuoteState { get; set; }
+
+        #region Allors
         [Id("26E0C5B6-05F4-4D18-9B2F-FAB56E057C76")]
         [AssociationId("E81EEC72-3D26-4348-A47D-8C78C038F09A")]
         [RoleId("DFAF1C08-F2C6-4758-99FA-C590581C322B")]
@@ -140,17 +151,6 @@ namespace Allors.Repository
         [Size(256)]
         [Workspace]
         string QuoteNumber { get; set; }
-
-        #region Allors
-        [Id("EC36228F-7688-4C5F-9BF1-A05EE82E1B64")]
-        [AssociationId("8E713F6C-CB78-4EA1-A66F-B150755EF6D8")]
-        [RoleId("49D8150B-6B41-47D3-BF56-CE68811824FD")]
-        #endregion
-        [Multiplicity(Multiplicity.ManyToOne)]
-        [Indexed]
-        [Required]
-        [Workspace]
-        QuoteObjectState CurrentObjectState { get; set; }
 
         #region Allors
         [Id("92C78C7A-3844-4277-AD94-8A67D8E6C267")]

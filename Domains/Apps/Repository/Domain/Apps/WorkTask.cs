@@ -16,7 +16,6 @@ namespace Allors.Repository
         public Person Owner { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
-        public WorkEffortObjectState CurrentObjectState { get; set; }
         public Priority Priority { get; set; }
         public WorkEffortPurpose[] WorkEffortPurposes { get; set; }
         public DateTime ActualCompletion { get; set; }
@@ -36,10 +35,21 @@ namespace Allors.Repository
         public Requirement[] RequirementFulfillments { get; set; }
         public string SpecialTerms { get; set; }
         public WorkEffort[] Concurrencies { get; set; }
+
+        public WorkEffortState PreviousWorkEffortState { get; set; }
+
+        public WorkEffortState LastWorkEffortState { get; set; }
+
+        public WorkEffortState WorkEffortState { get; set; }
+
+        public ObjectState[] PreviousObjectStates { get; set; }
+
+        public ObjectState[] LastObjectStates { get; set; }
+
+        public ObjectState[] ObjectStates { get; set; }
+
         public Permission[] DeniedPermissions { get; set; }
         public SecurityToken[] SecurityTokens { get; set; }
-        public ObjectState PreviousObjectState { get; set; }
-        public ObjectState LastObjectState { get; set; }
         public Guid UniqueId { get; set; }
         public User CreatedBy { get; set; }
         public User LastModifiedBy { get; set; }

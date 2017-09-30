@@ -9,6 +9,12 @@ namespace Allors.Repository
     {
         #region inherited properties
 
+        public ObjectState[] PreviousObjectStates { get; set; }
+
+        public ObjectState[] LastObjectStates { get; set; }
+
+        public ObjectState[] ObjectStates { get; set; }
+
         public string InternalComment { get; set; }
         public AgreementTerm[] InvoiceTerms { get; set; }
         public decimal TotalInvoiceAdjustment { get; set; }
@@ -22,8 +28,6 @@ namespace Allors.Repository
         public string Description { get; set; }
         public Permission[] DeniedPermissions { get; set; }
         public SecurityToken[] SecurityTokens { get; set; }
-        public ObjectState PreviousObjectState { get; set; }
-        public ObjectState LastObjectState { get; set; }
         public string Comment { get; set; }
 
         public decimal TotalDiscountAsPercentage { get; set; }
@@ -80,35 +84,39 @@ namespace Allors.Repository
 
         #endregion
 
+        #region ObjectStates
+        #region PurchaseInvoiceItemState
         #region Allors
-        [Id("56e47122-faaa-4211-806c-1c19695fe434")]
-        [AssociationId("826db2b1-3048-4237-8e83-0c472a166d49")]
-        [RoleId("893de8bc-93eb-4864-89ba-efdb66b32fd5")]
-        #endregion
-        [Multiplicity(Multiplicity.ManyToOne)]
+        [Id("7DDF09F9-1F6F-4863-9A6D-83172DDB20FE")]
+        [AssociationId("2F16E176-27CE-4F12-8FDF-71F941E2788D")]
+        [RoleId("3F37D76B-C8C9-4FB8-9C85-FA2352AF453C")]
         [Indexed]
-        [Required]
-        public PurchaseInvoiceItemType PurchaseInvoiceItemType { get; set; }
-
-        #region Allors
-        [Id("65eebcc4-d5ef-4933-8640-973b67c65127")]
-        [AssociationId("40703e06-25f8-425d-aa95-3c73fafbfa81")]
-        [RoleId("05f86785-08d8-4282-9734-6230e807181b")]
-        #endregion
-        [Multiplicity(Multiplicity.ManyToOne)]
-        [Indexed]
-        [Required]
-        public Part Part { get; set; }
-
-        #region Allors
-        [Id("dbe5c72f-63e0-47a5-a5f5-f8a3ff83fd57")]
-        [AssociationId("f8082d94-30fa-4a58-8bb0-bc5bb4f045ef")]
-        [RoleId("69360188-077f-49f0-ba88-abb1f546d72c")]
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
         [Derived]
+        public PurchaseInvoiceItemState PreviousPurchaseInvoiceItemState { get; set; }
+
+        #region Allors
+        [Id("4422FA5F-8DE7-4329-B0C0-5938CBB559A8")]
+        [AssociationId("5685E503-AAD5-4202-8268-ABDAA485FEB9")]
+        [RoleId("ABABF851-D89D-4C36-BC6A-82FCEB779F4C")]
         [Indexed]
-        public PurchaseInvoiceItemObjectState CurrentObjectState { get; set; }
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Derived]
+        public PurchaseInvoiceItemState LastPurchaseInvoiceItemState { get; set; }
+
+        #region Allors
+        [Id("C0467550-8CB5-4A65-BCBF-7A51D048529C")]
+        [AssociationId("C70919C3-1317-4DC9-AC1C-A86DF3C5AC15")]
+        [RoleId("194C2E3C-EE49-4F83-82A5-6BE9626FF67E")]
+        [Indexed]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Workspace]
+        public PurchaseInvoiceItemState PurchaseInvoiceItemState { get; set; }
+        #endregion
+        #endregion
 
         #region Versioning
         #region Allors
@@ -131,6 +139,26 @@ namespace Allors.Repository
         [Workspace]
         public PurchaseInvoiceItemVersion[] AllVersions { get; set; }
         #endregion
+
+        #region Allors
+        [Id("56e47122-faaa-4211-806c-1c19695fe434")]
+        [AssociationId("826db2b1-3048-4237-8e83-0c472a166d49")]
+        [RoleId("893de8bc-93eb-4864-89ba-efdb66b32fd5")]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Indexed]
+        [Required]
+        public PurchaseInvoiceItemType PurchaseInvoiceItemType { get; set; }
+
+        #region Allors
+        [Id("65eebcc4-d5ef-4933-8640-973b67c65127")]
+        [AssociationId("40703e06-25f8-425d-aa95-3c73fafbfa81")]
+        [RoleId("05f86785-08d8-4282-9734-6230e807181b")]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Indexed]
+        [Required]
+        public Part Part { get; set; }
 
         #region inherited methods
 

@@ -22,13 +22,18 @@ namespace Allors.Domain
 
     public partial class RequestItem
     {
-        ObjectState Transitional.CurrentObjectState => this.CurrentObjectState;
+        public static readonly TransitionalConfiguration[] StaticTransitionalConfigurations =
+            {
+                new TransitionalConfiguration(M.RequestItem.RequestItemState),
+            };
+
+        public TransitionalConfiguration[] TransitionalConfigurations => StaticTransitionalConfigurations;
 
         public void AppsOnBuild(ObjectOnBuild method)
         {
-            if (!this.ExistCurrentObjectState)
+            if (!this.ExistRequestItemState)
             {
-                this.CurrentObjectState = new RequestItemObjectStates(this.Strategy.Session).Submitted;
+                this.RequestItemState = new RequestItemStates(this.Strategy.Session).Submitted;
             }
         }
         public void AppsOnDerive(ObjectOnDerive method)

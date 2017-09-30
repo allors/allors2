@@ -18,9 +18,16 @@ using System;
 
 namespace Allors.Domain
 {
+    using Allors.Meta;
+
     public partial class RequestForProposal
     {
-        ObjectState Transitional.CurrentObjectState => this.CurrentObjectState;
+        public static readonly TransitionalConfiguration[] StaticTransitionalConfigurations =
+            {
+                new TransitionalConfiguration(M.RequestForProposal.RequestState),
+            };
+
+        public TransitionalConfiguration[] TransitionalConfigurations => StaticTransitionalConfigurations;
 
         public void AppsOnDerive(ObjectOnDerive method)
         {

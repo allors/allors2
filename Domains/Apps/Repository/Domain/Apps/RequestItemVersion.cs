@@ -19,6 +19,18 @@ namespace Allors.Repository
         #endregion
 
         #region Allors
+        [Id("4768BB1B-5113-42D2-B301-6AEA705922BB")]
+        [AssociationId("3C1D2843-93E1-49D5-A75A-2DC5B91CB0A9")]
+        [RoleId("8559F7B0-7A9C-41F2-8DAB-F09BFE56F489")]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Derived]
+        [Indexed]
+        [Required]
+        [Workspace]
+        public RequestItemState RequestItemState { get; set; }
+
+        #region Allors
         [Id("AFC66E59-4E01-4322-ADB8-3458AF745608")]
         [AssociationId("D468BA46-F8B9-4F97-BB97-5486C865A8C4")]
         [RoleId("18900D9B-08E7-43B9-8186-21275458AF00")]
@@ -121,18 +133,6 @@ namespace Allors.Repository
         #endregion
         [Workspace]
         public DateTime RequiredByDate { get; set; }
-
-        #region Allors
-        [Id("4768BB1B-5113-42D2-B301-6AEA705922BB")]
-        [AssociationId("3C1D2843-93E1-49D5-A75A-2DC5B91CB0A9")]
-        [RoleId("8559F7B0-7A9C-41F2-8DAB-F09BFE56F489")]
-        #endregion
-        [Multiplicity(Multiplicity.ManyToOne)]
-        [Derived]
-        [Indexed]
-        [Required]
-        [Workspace]
-        public RequestItemObjectState CurrentObjectState { get; set; }
 
         #region inherited methods
 

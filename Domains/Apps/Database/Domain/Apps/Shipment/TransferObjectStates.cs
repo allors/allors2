@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------------------------------------------
-// <copyright file="TransferObjectStates.cs" company="Allors bvba">
+// <copyright file="TransferStates.cs" company="Allors bvba">
 //   Copyright 2002-2012 Allors bvba.
 // Dual Licensed under
 //   a) the General Public Licence v3 (GPL)
@@ -17,14 +17,14 @@ namespace Allors.Domain
 {
     using System;
 
-    public partial class TransferObjectStates
+    public partial class TransferStates
     {
         public static readonly Guid CreatedId = new Guid("ADAD2959-5472-4aed-977B-C04FBC67FAD8");
 
-        private UniquelyIdentifiableCache<TransferObjectState> stateCache;
+        private UniquelyIdentifiableCache<TransferState> stateCache;
 
-        public TransferObjectState Created => this.StateCache.Get(CreatedId);
+        public TransferState Created => this.StateCache.Get(CreatedId);
 
-        private UniquelyIdentifiableCache<TransferObjectState> StateCache => this.stateCache ?? (this.stateCache = new UniquelyIdentifiableCache<TransferObjectState>(this.Session));
+        private UniquelyIdentifiableCache<TransferState> StateCache => this.stateCache ?? (this.stateCache = new UniquelyIdentifiableCache<TransferState>(this.Session));
     }
 }

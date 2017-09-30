@@ -38,8 +38,7 @@ namespace Allors.Domain
 
             this.DatabaseSession.Derive();
 
-            Assert.Equal(new PickListObjectStates(this.DatabaseSession).Created, pickList.CurrentObjectState);
-            Assert.Equal(pickList.CurrentPickListStatus.StartDateTime.Date, pickList.CreationDate.Date);
+            Assert.Equal(new PickListStates(this.DatabaseSession).Created, pickList.PickListState);
         }
 
         [Fact]
@@ -228,8 +227,6 @@ namespace Allors.Domain
             this.DatabaseSession.Derive();
 
             //// all orderitems have same physical finished good, so there is only one picklist item.
-            Assert.Equal(new CustomerShipmentObjectStates(this.DatabaseSession).Picked, shipment.CurrentShipmentStatus.CustomerShipmentObjectState);
-            Assert.Equal(new PickListObjectStates(this.DatabaseSession).Picked, pickList.CurrentPickListStatus.PickListObjectState);
             Assert.Equal(1, item1.QuantityPicked);
             Assert.Equal(0, item1.QuantityReserved);
             Assert.Equal(0, item1.QuantityRequestsShipping);
@@ -598,8 +595,8 @@ namespace Allors.Domain
 
             Assert.Equal(1, customer.ShipmentsWhereBillToParty.Count);
 
-            var customerShipment = customer.ShipmentsWhereBillToParty.First;
-            Assert.Equal(new CustomerShipmentObjectStates(this.DatabaseSession).Picked, customerShipment.CurrentObjectState);
+            var customerShipment = (CustomerShipment)customer.ShipmentsWhereBillToParty.First;
+            Assert.Equal(new CustomerShipmentStates(this.DatabaseSession).Picked, customerShipment.CustomerShipmentState);
         }
     }
 }

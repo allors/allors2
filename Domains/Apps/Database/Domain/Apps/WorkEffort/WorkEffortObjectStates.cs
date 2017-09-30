@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------------------------------------------
-// <copyright file="WorkEffortObjectStates.cs" company="Allors bvba">
+// <copyright file="WorkEffortStates.cs" company="Allors bvba">
 //   Copyright 2002-2012 Allors bvba.
 // Dual Licensed under
 //   a) the General Public Licence v3 (GPL)
@@ -17,7 +17,7 @@ namespace Allors.Domain
 {
     using System;
 
-    public partial class WorkEffortObjectStates
+    public partial class WorkEffortStates
     {
         private static readonly Guid NeedsActionId = new Guid("0D2618A7-A3B7-40f5-88C4-30DADE4D5164");
         private static readonly Guid ConfirmedId = new Guid("61E5FCB6-7814-4FED-8CE7-28C26EB88EE6");
@@ -31,31 +31,31 @@ namespace Allors.Domain
         private static readonly Guid AcceptedId = new Guid("09148AB2-28B4-4A84-B403-17884149156C");
         private static readonly Guid TentativeId = new Guid("A2FAAC53-49EC-45F4-84F3-10C9558A366E");
 
-        private UniquelyIdentifiableCache<WorkEffortObjectState> stateCache;
+        private UniquelyIdentifiableCache<WorkEffortState> stateCache;
 
-        public WorkEffortObjectState NeedsAction => this.StateCache.Get(NeedsActionId);
+        public WorkEffortState NeedsAction => this.StateCache.Get(NeedsActionId);
 
-        public WorkEffortObjectState Confirmed => this.StateCache.Get(ConfirmedId);
+        public WorkEffortState Confirmed => this.StateCache.Get(ConfirmedId);
 
-        public WorkEffortObjectState InProgress => this.StateCache.Get(DeclinedId);
+        public WorkEffortState InProgress => this.StateCache.Get(DeclinedId);
 
-        public WorkEffortObjectState Completed => this.StateCache.Get(CompletedId);
+        public WorkEffortState Completed => this.StateCache.Get(CompletedId);
 
-        public WorkEffortObjectState Cancelled => this.StateCache.Get(CancelledId);
+        public WorkEffortState Cancelled => this.StateCache.Get(CancelledId);
 
-        public WorkEffortObjectState Delagated => this.StateCache.Get(DelegatedId);
+        public WorkEffortState Delagated => this.StateCache.Get(DelegatedId);
 
-        public WorkEffortObjectState InPlanning => this.StateCache.Get(InPlanningId);
+        public WorkEffortState InPlanning => this.StateCache.Get(InPlanningId);
 
-        public WorkEffortObjectState Planned => this.StateCache.Get(PlannedId);
+        public WorkEffortState Planned => this.StateCache.Get(PlannedId);
 
-        public WorkEffortObjectState Sent => this.StateCache.Get(SentId);
+        public WorkEffortState Sent => this.StateCache.Get(SentId);
 
-        public WorkEffortObjectState Accepted => this.StateCache.Get(AcceptedId);
+        public WorkEffortState Accepted => this.StateCache.Get(AcceptedId);
 
-        public WorkEffortObjectState Tentative => this.StateCache.Get(TentativeId);
+        public WorkEffortState Tentative => this.StateCache.Get(TentativeId);
 
-        private UniquelyIdentifiableCache<WorkEffortObjectState> StateCache => this.stateCache ?? (this.stateCache = new UniquelyIdentifiableCache<WorkEffortObjectState>(this.Session));
+        private UniquelyIdentifiableCache<WorkEffortState> StateCache => this.stateCache ?? (this.stateCache = new UniquelyIdentifiableCache<WorkEffortState>(this.Session));
 
         protected override void AppsSetup(Setup setup)
         {
@@ -64,57 +64,57 @@ namespace Allors.Domain
             var englishLocale = new Locales(this.Session).EnglishGreatBritain;
             var dutchLocale = new Locales(this.Session).DutchNetherlands;
 
-            new WorkEffortObjectStateBuilder(this.Session)
+            new WorkEffortStateBuilder(this.Session)
                 .WithUniqueId(NeedsActionId)
                 .WithName("NeedsAction")
                 .Build();
 
-            new WorkEffortObjectStateBuilder(this.Session)
+            new WorkEffortStateBuilder(this.Session)
                 .WithUniqueId(ConfirmedId)
                 .WithName("Confirmed")
                 .Build();
 
-            new WorkEffortObjectStateBuilder(this.Session)
+            new WorkEffortStateBuilder(this.Session)
                 .WithUniqueId(DeclinedId)
                 .WithName("Declined")
                 .Build();
 
-            new WorkEffortObjectStateBuilder(this.Session)
+            new WorkEffortStateBuilder(this.Session)
                 .WithUniqueId(CompletedId)
                 .WithName("Completed")
                 .Build();
 
-            new WorkEffortObjectStateBuilder(this.Session)
+            new WorkEffortStateBuilder(this.Session)
                 .WithUniqueId(CancelledId)
                 .WithName("Cancelled")
                 .Build();
 
-            new WorkEffortObjectStateBuilder(this.Session)
+            new WorkEffortStateBuilder(this.Session)
                 .WithUniqueId(DelegatedId)
                 .WithName("Delegated")
                 .Build();
 
-            new WorkEffortObjectStateBuilder(this.Session)
+            new WorkEffortStateBuilder(this.Session)
                 .WithUniqueId(InPlanningId)
                 .WithName("In planning")
                 .Build();
 
-            new WorkEffortObjectStateBuilder(this.Session)
+            new WorkEffortStateBuilder(this.Session)
                 .WithUniqueId(PlannedId)
                 .WithName("Planned")
                 .Build();
 
-            new WorkEffortObjectStateBuilder(this.Session)
+            new WorkEffortStateBuilder(this.Session)
                 .WithUniqueId(SentId)
                 .WithName("Sent")
                 .Build();
 
-            new WorkEffortObjectStateBuilder(this.Session)
+            new WorkEffortStateBuilder(this.Session)
                 .WithUniqueId(AcceptedId)
                 .WithName("Accepted")
                 .Build();
 
-            new WorkEffortObjectStateBuilder(this.Session)
+            new WorkEffortStateBuilder(this.Session)
                 .WithUniqueId(TentativeId)
                 .WithName("Tentative")
                 .Build();

@@ -25,7 +25,7 @@ namespace Allors.Repository
         public DateTime IssueDate { get; set; }
         public QuoteItem[] QuoteItems { get; set; }
         public string QuoteNumber { get; set; }
-        public QuoteObjectState CurrentObjectState { get; set; }
+        public QuoteState QuoteState { get; set; }
         public Request Request { get; set; }
 
         public Guid DerivationId { get; set; }

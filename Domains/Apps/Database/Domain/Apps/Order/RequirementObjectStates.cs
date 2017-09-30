@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------------------------------------------
-// <copyright file="RequirementObjectStates.cs" company="Allors bvba">
+// <copyright file="RequirementStates.cs" company="Allors bvba">
 //   Copyright 2002-2012 Allors bvba.
 // Dual Licensed under
 //   a) the General Public Licence v3 (GPL)
@@ -17,7 +17,7 @@ namespace Allors.Domain
 {
     using System;
 
-    public partial class RequirementObjectStates
+    public partial class RequirementStates
     {
         private static readonly Guid ActiveId = new Guid("FD324E47-69A2-4a7e-B953-E4749C67A2B0");
         private static readonly Guid InactiveId = new Guid("8B3422D1-67DD-4de7-A153-6ACF7B07F551");
@@ -27,23 +27,23 @@ namespace Allors.Domain
         private static readonly Guid PendingApprovalFromClientId = new Guid("A6216522-44DA-404d-92A3-61160F814A15");
         private static readonly Guid FullfilledByOtherEnterpriseId = new Guid("10E9F384-541D-4fb3-ABDC-539EC291EFC6");
 
-        private UniquelyIdentifiableCache<RequirementObjectState> stateCache;
+        private UniquelyIdentifiableCache<RequirementState> stateCache;
 
-        public RequirementObjectState Active => this.StateCache.Get(ActiveId);
+        public RequirementState Active => this.StateCache.Get(ActiveId);
 
-        public RequirementObjectState Inactive => this.StateCache.Get(InactiveId);
+        public RequirementState Inactive => this.StateCache.Get(InactiveId);
 
-        public RequirementObjectState OnHold => this.StateCache.Get(OnHoldId);
+        public RequirementState OnHold => this.StateCache.Get(OnHoldId);
 
-        public RequirementObjectState Cancelled => this.StateCache.Get(CancelledId);
+        public RequirementState Cancelled => this.StateCache.Get(CancelledId);
 
-        public RequirementObjectState Closed => this.StateCache.Get(ClosedId);
+        public RequirementState Closed => this.StateCache.Get(ClosedId);
 
-        public RequirementObjectState PendingApprovalFromClient => this.StateCache.Get(PendingApprovalFromClientId);
+        public RequirementState PendingApprovalFromClient => this.StateCache.Get(PendingApprovalFromClientId);
 
-        public RequirementObjectState FullfilledByOtherEnterprise => this.StateCache.Get(FullfilledByOtherEnterpriseId);
+        public RequirementState FullfilledByOtherEnterprise => this.StateCache.Get(FullfilledByOtherEnterpriseId);
 
-        private UniquelyIdentifiableCache<RequirementObjectState> StateCache => this.stateCache ?? (this.stateCache = new UniquelyIdentifiableCache<RequirementObjectState>(this.Session));
+        private UniquelyIdentifiableCache<RequirementState> StateCache => this.stateCache ?? (this.stateCache = new UniquelyIdentifiableCache<RequirementState>(this.Session));
 
         protected override void AppsSetup(Setup setup)
         {
@@ -52,37 +52,37 @@ namespace Allors.Domain
             var englishLocale = new Locales(this.Session).EnglishGreatBritain;
             var dutchLocale = new Locales(this.Session).DutchNetherlands;
             
-            new RequirementObjectStateBuilder(this.Session)
+            new RequirementStateBuilder(this.Session)
                 .WithUniqueId(ActiveId)
                 .WithName("Active")
                 .Build();
 
-            new RequirementObjectStateBuilder(this.Session)
+            new RequirementStateBuilder(this.Session)
                 .WithUniqueId(InactiveId)
                 .WithName("Inactive")
                 .Build();
 
-            new RequirementObjectStateBuilder(this.Session)
+            new RequirementStateBuilder(this.Session)
                 .WithUniqueId(OnHoldId)
                 .WithName("On Hold")
                 .Build();
 
-            new RequirementObjectStateBuilder(this.Session)
+            new RequirementStateBuilder(this.Session)
                 .WithUniqueId(CancelledId)
                 .WithName("Cancelled")
                 .Build();
 
-            new RequirementObjectStateBuilder(this.Session)
+            new RequirementStateBuilder(this.Session)
                 .WithUniqueId(ClosedId)
                 .WithName("Closed")
                 .Build();
 
-            new RequirementObjectStateBuilder(this.Session)
+            new RequirementStateBuilder(this.Session)
                 .WithUniqueId(PendingApprovalFromClientId)
                 .WithName("Pending Approval From Client")
                 .Build();
 
-            new RequirementObjectStateBuilder(this.Session)
+            new RequirementStateBuilder(this.Session)
                 .WithUniqueId(FullfilledByOtherEnterpriseId)
                 .WithName("Fullfilled By Other Enterprise")
                 .Build();

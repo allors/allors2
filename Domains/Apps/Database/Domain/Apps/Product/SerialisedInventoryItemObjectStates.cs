@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------------------------------------------
-// <copyright file="SerialisedInventoryItemObjectStates.cs" company="Allors bvba">
+// <copyright file="SerialisedInventoryItemStates.cs" company="Allors bvba">
 //   Copyright 2002-2012 Allors bvba.
 // Dual Licensed under
 //   a) the General Public Licence v3 (GPL)
@@ -17,7 +17,7 @@ namespace Allors.Domain
 {
     using System;
 
-    public partial class SerialisedInventoryItemObjectStates
+    public partial class SerialisedInventoryItemStates
     {
         private static readonly Guid GoodId = new Guid("CD80FC9B-BF25-4587-8D52-57E491E74104");
         private static readonly Guid BeingReparedId = new Guid("4584A95F-60BA-478c-8E09-E6AFC88CF683");
@@ -30,29 +30,29 @@ namespace Allors.Domain
         private static readonly Guid OutOfRentId = new Guid("8422F80C-6923-4395-B998-23E5CBC9868A");
         private static readonly Guid AssignedId = new Guid("3AD2DEC0-65AB-4E31-BDE0-3227727D9329");
 
-        private UniquelyIdentifiableCache<SerialisedInventoryItemObjectState> stateCache;
+        private UniquelyIdentifiableCache<SerialisedInventoryItemState> stateCache;
 
-        public SerialisedInventoryItemObjectState Good => this.StateCache.Get(GoodId);
+        public SerialisedInventoryItemState Good => this.StateCache.Get(GoodId);
 
-        public SerialisedInventoryItemObjectState BeingRepared => this.StateCache.Get(BeingReparedId);
+        public SerialisedInventoryItemState BeingRepared => this.StateCache.Get(BeingReparedId);
 
-        public SerialisedInventoryItemObjectState SlightlyDamaged => this.StateCache.Get(SlightlyDamagedId);
+        public SerialisedInventoryItemState SlightlyDamaged => this.StateCache.Get(SlightlyDamagedId);
 
-        public SerialisedInventoryItemObjectState Defective => this.StateCache.Get(DefectiveId);
+        public SerialisedInventoryItemState Defective => this.StateCache.Get(DefectiveId);
 
-        public SerialisedInventoryItemObjectState Scrap => this.StateCache.Get(ScrapId);
+        public SerialisedInventoryItemState Scrap => this.StateCache.Get(ScrapId);
 
-        public SerialisedInventoryItemObjectState ForSale => this.StateCache.Get(ForSaleId);
+        public SerialisedInventoryItemState ForSale => this.StateCache.Get(ForSaleId);
 
-        public SerialisedInventoryItemObjectState Sold => this.StateCache.Get(SoldId);
+        public SerialisedInventoryItemState Sold => this.StateCache.Get(SoldId);
 
-        public SerialisedInventoryItemObjectState InRent => this.StateCache.Get(InRentId);
+        public SerialisedInventoryItemState InRent => this.StateCache.Get(InRentId);
 
-        public SerialisedInventoryItemObjectState OutOfRent => this.StateCache.Get(OutOfRentId);
+        public SerialisedInventoryItemState OutOfRent => this.StateCache.Get(OutOfRentId);
 
-        public SerialisedInventoryItemObjectState Assigned => this.StateCache.Get(AssignedId);
+        public SerialisedInventoryItemState Assigned => this.StateCache.Get(AssignedId);
 
-        private UniquelyIdentifiableCache<SerialisedInventoryItemObjectState> StateCache => this.stateCache ?? (this.stateCache = new UniquelyIdentifiableCache<SerialisedInventoryItemObjectState>(this.Session));
+        private UniquelyIdentifiableCache<SerialisedInventoryItemState> StateCache => this.stateCache ?? (this.stateCache = new UniquelyIdentifiableCache<SerialisedInventoryItemState>(this.Session));
 
         protected override void AppsSetup(Setup setup)
         {
@@ -61,52 +61,52 @@ namespace Allors.Domain
             var englishLocale = new Locales(this.Session).EnglishGreatBritain;
             var dutchLocale = new Locales(this.Session).DutchNetherlands;
 
-            new SerialisedInventoryItemObjectStateBuilder(this.Session)
+            new SerialisedInventoryItemStateBuilder(this.Session)
                 .WithUniqueId(GoodId)
                 .WithName("In good order")
                 .Build();
 
-            new SerialisedInventoryItemObjectStateBuilder(this.Session)
+            new SerialisedInventoryItemStateBuilder(this.Session)
                 .WithUniqueId(BeingReparedId)
                 .WithName("Being Repared")
                 .Build();
 
-            new SerialisedInventoryItemObjectStateBuilder(this.Session)
+            new SerialisedInventoryItemStateBuilder(this.Session)
                 .WithUniqueId(SlightlyDamagedId)
                 .WithName("Slightly Damaged")
                 .Build();
 
-            new SerialisedInventoryItemObjectStateBuilder(this.Session)
+            new SerialisedInventoryItemStateBuilder(this.Session)
                 .WithUniqueId(DefectiveId)
                 .WithName("Defective")
                 .Build();
 
-            new SerialisedInventoryItemObjectStateBuilder(this.Session)
+            new SerialisedInventoryItemStateBuilder(this.Session)
                 .WithUniqueId(ScrapId)
                 .WithName("Scrap")
                 .Build();
 
-            new SerialisedInventoryItemObjectStateBuilder(this.Session)
+            new SerialisedInventoryItemStateBuilder(this.Session)
                 .WithUniqueId(ForSaleId)
                 .WithName("ForSale")
                 .Build();
 
-            new SerialisedInventoryItemObjectStateBuilder(this.Session)
+            new SerialisedInventoryItemStateBuilder(this.Session)
                 .WithUniqueId(SoldId)
                 .WithName("Sold")
                 .Build();
 
-            new SerialisedInventoryItemObjectStateBuilder(this.Session)
+            new SerialisedInventoryItemStateBuilder(this.Session)
                 .WithUniqueId(InRentId)
                 .WithName("InRent")
                 .Build();
 
-            new SerialisedInventoryItemObjectStateBuilder(this.Session)
+            new SerialisedInventoryItemStateBuilder(this.Session)
                 .WithUniqueId(OutOfRentId)
                 .WithName("OutOfRent")
                 .Build();
 
-            new SerialisedInventoryItemObjectStateBuilder(this.Session)
+            new SerialisedInventoryItemStateBuilder(this.Session)
                 .WithUniqueId(AssignedId)
                 .WithName("Assigned")
                 .Build();

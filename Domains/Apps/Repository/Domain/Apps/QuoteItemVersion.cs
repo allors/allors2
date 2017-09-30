@@ -19,6 +19,18 @@ namespace Allors.Repository
         #endregion
 
         #region Allors
+        [Id("EB4A6E73-333A-4BBD-BE8A-C7DCCFCC7A8A")]
+        [AssociationId("DA96FB4C-B16E-465C-8152-08C1C8BFD996")]
+        [RoleId("2C42C31F-FBC8-4686-80FB-8341AEC1D3CD")]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Derived]
+        [Indexed]
+        [Required]
+        [Workspace]
+        public QuoteItemState QuoteItemState { get; set; }
+
+        #region Allors
         [Id("5A4AFCB5-B067-424D-95D7-B8B77AB9D125")]
         [AssociationId("9FA8C5B7-B6F2-46DE-BA30-3C95C1EDFFE3")]
         [RoleId("821D236D-6E52-43CA-AE36-ECC82AB3CF31")]
@@ -153,18 +165,6 @@ namespace Allors.Repository
         [Indexed]
         [Workspace]
         public RequestItem RequestItem { get; set; }
-
-        #region Allors
-        [Id("EB4A6E73-333A-4BBD-BE8A-C7DCCFCC7A8A")]
-        [AssociationId("DA96FB4C-B16E-465C-8152-08C1C8BFD996")]
-        [RoleId("2C42C31F-FBC8-4686-80FB-8341AEC1D3CD")]
-        #endregion
-        [Multiplicity(Multiplicity.ManyToOne)]
-        [Derived]
-        [Indexed]
-        [Required]
-        [Workspace]
-        public QuoteItemObjectState CurrentObjectState { get; set; }
         
         #region inherited methods
 

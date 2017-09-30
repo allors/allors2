@@ -9,6 +9,17 @@ namespace Allors.Repository
     public partial class WebSiteCommunication : CommunicationEvent, Versioned
     {
         #region inherited properties
+        public CommunicationEventState PreviousCommunicationState { get; set; }
+
+        public CommunicationEventState LastCommunicationState { get; set; }
+
+        public CommunicationEventState CommunicationEventState { get; set; }
+
+        public ObjectState[] PreviousObjectStates { get; set; }
+
+        public ObjectState[] LastObjectStates { get; set; }
+
+        public ObjectState[] ObjectStates { get; set; }
 
         public SecurityToken OwnerSecurityToken { get; set; }
 
@@ -24,7 +35,6 @@ namespace Allors.Repository
 
         public DateTime InitialScheduledStart { get; set; }
 
-        public CommunicationEventObjectState CurrentObjectState { get; set; }
 
         public CommunicationEventPurpose[] EventPurposes { get; set; }
 
@@ -57,9 +67,6 @@ namespace Allors.Repository
         public bool SendReminder { get; set; }
         public DateTime RemindAt { get; set; }
 
-        public ObjectState PreviousObjectState { get; set; }
-
-        public ObjectState LastObjectState { get; set; }
 
         public Permission[] DeniedPermissions { get; set; }
 

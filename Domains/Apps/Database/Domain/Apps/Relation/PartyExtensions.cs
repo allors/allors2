@@ -70,10 +70,10 @@ namespace Allors.Domain
             var pending = new List<CustomerShipment>();
             foreach (CustomerShipment shipment in shipments)
             {
-                if (shipment.CurrentObjectState.Equals(new CustomerShipmentObjectStates(party.Strategy.Session).Created) ||
-                    shipment.CurrentObjectState.Equals(new CustomerShipmentObjectStates(party.Strategy.Session).Picked) ||
-                    shipment.CurrentObjectState.Equals(new CustomerShipmentObjectStates(party.Strategy.Session).OnHold) ||
-                    shipment.CurrentObjectState.Equals(new CustomerShipmentObjectStates(party.Strategy.Session).Packed))
+                if (shipment.CustomerShipmentState.Equals(new CustomerShipmentStates(party.Strategy.Session).Created) ||
+                    shipment.CustomerShipmentState.Equals(new CustomerShipmentStates(party.Strategy.Session).Picked) ||
+                    shipment.CustomerShipmentState.Equals(new CustomerShipmentStates(party.Strategy.Session).OnHold) ||
+                    shipment.CustomerShipmentState.Equals(new CustomerShipmentStates(party.Strategy.Session).Packed))
                 {
                     pending.Add(shipment);
                 }
@@ -91,10 +91,10 @@ namespace Allors.Domain
 
             foreach (CustomerShipment shipment in shipments)
             {
-                if (shipment.CurrentObjectState.Equals(new CustomerShipmentObjectStates(party.Strategy.Session).Created) ||
-                    shipment.CurrentObjectState.Equals(new CustomerShipmentObjectStates(party.Strategy.Session).Picked) ||
-                    shipment.CurrentObjectState.Equals(new CustomerShipmentObjectStates(party.Strategy.Session).OnHold) ||
-                    shipment.CurrentObjectState.Equals(new CustomerShipmentObjectStates(party.Strategy.Session).Packed))
+                if (shipment.CustomerShipmentState.Equals(new CustomerShipmentStates(party.Strategy.Session).Created) ||
+                    shipment.CustomerShipmentState.Equals(new CustomerShipmentStates(party.Strategy.Session).Picked) ||
+                    shipment.CustomerShipmentState.Equals(new CustomerShipmentStates(party.Strategy.Session).OnHold) ||
+                    shipment.CustomerShipmentState.Equals(new CustomerShipmentStates(party.Strategy.Session).Packed))
                 {
                     return shipment;
                 }
@@ -285,8 +285,8 @@ namespace Allors.Domain
             party.OpenOrderAmount = 0;
             foreach (SalesOrder salesOrder in party.SalesOrdersWhereBillToCustomer)
             {
-                if (!salesOrder.CurrentObjectState.Equals(new SalesOrderObjectStates(party.Strategy.Session).Finished) &&
-                    !salesOrder.CurrentObjectState.Equals(new SalesOrderObjectStates(party.Strategy.Session).Cancelled))
+                if (!salesOrder.SalesOrderState.Equals(new SalesOrderStates(party.Strategy.Session).Finished) &&
+                    !salesOrder.SalesOrderState.Equals(new SalesOrderStates(party.Strategy.Session).Cancelled))
                 {
                     party.OpenOrderAmount += salesOrder.TotalIncVat;
                 }
@@ -299,7 +299,7 @@ namespace Allors.Domain
 
             foreach (SalesInvoice salesInvoice in @this.SalesInvoicesWhereBillToCustomer)
             {
-                if (!salesInvoice.CurrentObjectState.Equals(new SalesInvoiceObjectStates(@this.Strategy.Session).Paid))
+                if (!salesInvoice.SalesInvoiceState.Equals(new SalesInvoiceStates(@this.Strategy.Session).Paid))
                 {
                     if (salesInvoice.AmountPaid > 0)
                     {
@@ -309,7 +309,7 @@ namespace Allors.Domain
                     {
                         foreach (SalesInvoiceItem invoiceItem in salesInvoice.InvoiceItems)
                         {
-                            if (!invoiceItem.CurrentObjectState.Equals(new SalesInvoiceItemObjectStates(@this.Strategy.Session).Paid))
+                            if (!invoiceItem.SalesInvoiceItemState.Equals(new SalesInvoiceItemStates(@this.Strategy.Session).Paid))
                             {
                                 if (invoiceItem.ExistTotalIncVat)
                                 {
@@ -328,7 +328,7 @@ namespace Allors.Domain
 
             foreach (SalesInvoice salesInvoice in @this.SalesInvoicesWhereBillToCustomer)
             {
-                if (!salesInvoice.CurrentObjectState.Equals(new SalesInvoiceObjectStates(@this.Strategy.Session).Paid))
+                if (!salesInvoice.SalesInvoiceState.Equals(new SalesInvoiceStates(@this.Strategy.Session).Paid))
                 {
                     var gracePeriod = salesInvoice.Store.PaymentGracePeriod;
 

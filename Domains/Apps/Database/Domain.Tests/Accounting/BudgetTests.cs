@@ -39,8 +39,8 @@ namespace Allors.Domain
 
             this.DatabaseSession.Derive();
 
-            Assert.Equal(new BudgetObjectStates(this.DatabaseSession).Opened, budget.CurrentObjectState);
-            Assert.Equal(budget.LastObjectState, budget.CurrentObjectState);
+            Assert.Equal(new BudgetStates(this.DatabaseSession).Opened, budget.BudgetState);
+            Assert.Equal(budget.LastBudgetState, budget.BudgetState);
         }
 
         [Fact]
@@ -54,29 +54,7 @@ namespace Allors.Domain
 
             this.DatabaseSession.Derive();
 
-            Assert.Null(budget.PreviousObjectState);
-        }
-
-        [Fact]
-        public void GivenOperatingBudget_WhenConfirmed_ThenCurrentBudgetStatusMustBeDerived()
-        {
-            var budget = new OperatingBudgetBuilder(this.DatabaseSession)
-                .WithDescription("Budget")
-                .WithFromDate(DateTime.UtcNow)
-                .WithThroughDate(DateTime.UtcNow.AddYears(1))
-                .Build();
-
-            this.DatabaseSession.Derive();
-
-            Assert.Equal(1, budget.BudgetStatuses.Count);
-            Assert.Equal(new BudgetObjectStates(this.DatabaseSession).Opened, budget.CurrentBudgetStatus.BudgetObjectState);
-
-            budget.Close();
-
-            this.DatabaseSession.Derive();
-
-            Assert.Equal(2, budget.BudgetStatuses.Count);
-            Assert.Equal(new BudgetObjectStates(this.DatabaseSession).Closed, budget.CurrentBudgetStatus.BudgetObjectState);
+            Assert.Null(budget.PreviousBudgetState);
         }
 
         [Fact]
@@ -100,10 +78,6 @@ namespace Allors.Domain
             budget = builder.Build();
 
             Assert.False(this.DatabaseSession.Derive(false).HasErrors);
-
-            Assert.Equal(budget.CurrentBudgetStatus.BudgetObjectState, new BudgetObjectStates(this.DatabaseSession).Opened);
-            Assert.Equal(budget.CurrentObjectState, new BudgetObjectStates(this.DatabaseSession).Opened);
-            Assert.Equal(budget.CurrentObjectState, budget.LastObjectState);
         }
     }
 }

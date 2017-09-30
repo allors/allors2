@@ -13,6 +13,8 @@ namespace Allors.Repository
 
         public SecurityToken[] SecurityTokens { get; set; }
 
+        public WorkEffortState WorkEffortState { get; set; }
+
         public SecurityToken OwnerSecurityToken { get; set; }
 
         public AccessControl OwnerAccessControl { get; set; }
@@ -20,8 +22,6 @@ namespace Allors.Repository
         public string Name { get; set; }
 
         public string Description { get; set; }
-
-        public WorkEffortObjectState CurrentObjectState { get; set; }
 
         public Priority Priority { get; set; }
 

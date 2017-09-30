@@ -3,7 +3,7 @@ namespace Allors.Repository
     using System;
     using Attributes;
 
-    public partial class Person : Party, Deletable 
+    public partial class Person : Party, Deletable, Versioned 
     {
         #region inherited properties
 
@@ -115,6 +115,28 @@ namespace Allors.Repository
 
         public string Comment { get; set; }
 
+        #endregion
+
+        #region Versioning
+        #region Allors
+        [Id("F97D0E2B-C361-42BD-AB01-C99E8EDBAB02")]
+        [AssociationId("5647343B-CE74-4330-8F1B-C44452570598")]
+        [RoleId("73059957-CF4A-4837-AE96-6B1EE67279B8")]
+        [Indexed]
+        #endregion
+        [Multiplicity(Multiplicity.OneToOne)]
+        [Workspace]
+        public PersonVersion CurrentVersion { get; set; }
+
+        #region Allors
+        [Id("B43008FF-7AEB-4599-BB9D-E112E9C80AD9")]
+        [AssociationId("7D02ABA4-8832-4126-BA36-F872120D75E5")]
+        [RoleId("956170ED-F0E1-44B2-AC7C-B95A8A1FD6BD")]
+        [Indexed]
+        #endregion
+        [Multiplicity(Multiplicity.OneToMany)]
+        [Workspace]
+        public PersonVersion[] AllVersions { get; set; }
         #endregion
 
         #region Allors
@@ -330,37 +352,6 @@ namespace Allors.Repository
         [Size(256)]
         [Workspace]
         public string Function { get; set; }
-
-        #region Allors
-        [Id("ba6d2658-9c07-4254-a664-21df0e2fcb6a")]
-        [AssociationId("f512d8bd-5ea3-461c-9310-6ab93696763d")]
-        [RoleId("3c2fae70-49b5-407f-823c-db9b9052fb1e")]
-        #endregion
-        [Multiplicity(Multiplicity.OneToMany)]
-        [Indexed]
-        [Workspace]
-        public PayrollPreference[] PayrollPreferences { get; set; }
-
-        #region Allors
-        [Id("c8fd6c79-f909-414e-b9e3-5e911e2e2080")]
-        [AssociationId("da451dab-03db-4bc5-8641-93ec74570f4f")]
-        [RoleId("0bef74ad-3eb2-494e-846e-6ca3bbfb057b")]
-        #endregion
-        [Multiplicity(Multiplicity.ManyToOne)]
-        [Indexed]
-        [Workspace]
-        public EmploymentTerminationReason EmploymentTerminationReason { get; set; }
-
-        #region Allors
-        [Id("e79807d4-dcf8-47e2-b510-e8535f1ec436")]
-        [AssociationId("6b4896d8-8bf6-4908-acb9-dc2438263fb7")]
-        [RoleId("96ff4ce3-5e0b-408e-9641-edf2e06dc508")]
-        #endregion
-        [Multiplicity(Multiplicity.ManyToOne)]
-        [Indexed]
-        [Workspace]
-        public EmploymentTermination EmploymentTermination { get; set; }
-
 
         #region inherited methods
         public void Delete(){}

@@ -16,9 +16,16 @@
 
 namespace Allors.Domain
 {
+    using Allors.Meta;
+
     public partial class EmailCommunication
     {
-        ObjectState Transitional.CurrentObjectState => this.CurrentObjectState;
+        public static readonly TransitionalConfiguration[] StaticTransitionalConfigurations =
+            {
+                new TransitionalConfiguration(M.EmailCommunication.CommunicationEventState),
+            };
+
+        public TransitionalConfiguration[] TransitionalConfigurations => StaticTransitionalConfigurations;
 
         public void AppsOnDerive(ObjectOnDerive method)
         {

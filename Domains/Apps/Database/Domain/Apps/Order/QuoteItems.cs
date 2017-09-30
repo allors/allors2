@@ -24,9 +24,9 @@ namespace Allors.Domain
         {
             base.AppsSecure(config);
 
-            var draft = new QuoteItemObjectStates(this.Session).Draft;
-            var cancelled = new QuoteItemObjectStates(this.Session).Cancelled;
-            var submitted = new QuoteItemObjectStates(this.Session).Submitted;
+            var draft = new QuoteItemStates(this.Session).Draft;
+            var cancelled = new QuoteItemStates(this.Session).Cancelled;
+            var submitted = new QuoteItemStates(this.Session).Submitted;
 
             var cancel = this.Meta.Cancel;
             var submit = this.Meta.Submit;

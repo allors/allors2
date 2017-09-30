@@ -19,30 +19,20 @@ namespace Allors.Domain
     {
         public static void AppsOnBuild(this Budget @this, ObjectOnBuild method)
         {
-            if (!@this.ExistCurrentObjectState)
+            if (!@this.ExistBudgetState)
             {
-                @this.CurrentObjectState = new BudgetObjectStates(@this.Strategy.Session).Opened;
-            }
-        }
-
-        public static void AppsOnDerive(this Budget @this, ObjectOnDerive method)
-        {
-            if (@this.ExistCurrentObjectState && !@this.CurrentObjectState.Equals(@this.LastObjectState))
-            {
-                var currentStatus = new BudgetStatusBuilder(@this.Strategy.Session).WithBudgetObjectState(@this.CurrentObjectState).Build();
-                @this.AddBudgetStatus(currentStatus);
-                @this.CurrentBudgetStatus = currentStatus;
+                @this.BudgetState = new BudgetStates(@this.Strategy.Session).Opened;
             }
         }
 
         public static void AppsClose(this Budget @this, BudgetClose method)
         {
-            @this.CurrentObjectState = new BudgetObjectStates(@this.Strategy.Session).Closed;
+            @this.BudgetState = new BudgetStates(@this.Strategy.Session).Closed;
         }
 
         public static void AppsReopen(this Budget @this, BudgetReopen method)
         {
-            @this.CurrentObjectState = new BudgetObjectStates(@this.Strategy.Session).Opened;
+            @this.BudgetState = new BudgetStates(@this.Strategy.Session).Opened;
         }
     }
 }

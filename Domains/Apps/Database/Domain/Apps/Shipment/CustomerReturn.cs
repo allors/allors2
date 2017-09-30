@@ -15,15 +15,22 @@
 // --------------------------------------------------------------------------------------------------------------------
 namespace Allors.Domain
 {
+    using Allors.Meta;
+
     public partial class CustomerReturn
     {
-        ObjectState Transitional.CurrentObjectState => this.CurrentObjectState;
+        public static readonly TransitionalConfiguration[] StaticTransitionalConfigurations =
+            {
+                new TransitionalConfiguration(M.CustomerReturn.CustomerReturnState),
+            };
+
+        public TransitionalConfiguration[] TransitionalConfigurations => StaticTransitionalConfigurations;
 
         public void AppsOnBuild(ObjectOnBuild method)
         {
-            if (!this.ExistCurrentObjectState)
+            if (!this.ExistCustomerReturnState)
             {
-                this.CurrentObjectState = new CustomerReturnObjectStates(this.Strategy.Session).Received;
+                this.CustomerReturnState = new CustomerReturnStates(this.Strategy.Session).Received;
             }
         }
 
@@ -40,18 +47,6 @@ namespace Allors.Domain
             if (!this.ExistShipFromAddress && this.ExistShipFromParty)
             {
                 this.ShipFromAddress = this.ShipFromParty.ShippingAddress;
-            }
-
-            this.AppsOnDeriveCurrentObjectState(derivation);
-        }
-
-        public void AppsOnDeriveCurrentObjectState(IDerivation derivation)
-        {
-            if (this.ExistCurrentObjectState && !this.CurrentObjectState.Equals(this.LastObjectState))
-            {
-                var currentStatus = new CustomerReturnStatusBuilder(this.Strategy.Session).WithCustomerReturnObjectState(this.CurrentObjectState).Build();
-                this.AddShipmentStatus(currentStatus);
-                this.CurrentShipmentStatus = currentStatus;
             }
         }
     }

@@ -23,21 +23,21 @@ namespace Allors.Domain
         {
             base.AppsPrepare(setup);
 
-            setup.AddDependency(this.ObjectType, M.PurchaseOrderItemObjectState);
+            setup.AddDependency(this.ObjectType, M.PurchaseOrderItemState);
         }
 
         protected override void AppsSecure(Security config)
         {
             base.AppsSecure(config);
 
-            var created = new PurchaseOrderItemObjectStates(this.Session).Created;
-            var inProcess = new PurchaseOrderItemObjectStates(this.Session).InProcess;
-            var partiallyReceived = new PurchaseOrderItemObjectStates(this.Session).PartiallyReceived;
-            var received = new PurchaseOrderItemObjectStates(this.Session).Received;
-            var cancelled = new PurchaseOrderItemObjectStates(this.Session).Cancelled;
-            var rejected = new PurchaseOrderItemObjectStates(this.Session).Rejected;
-            var completed = new PurchaseOrderItemObjectStates(this.Session).Completed;
-            var finished = new PurchaseOrderItemObjectStates(this.Session).Finished;
+            var created = new PurchaseOrderItemStates(this.Session).Created;
+            var inProcess = new PurchaseOrderItemStates(this.Session).InProcess;
+            var partiallyReceived = new PurchaseOrderItemStates(this.Session).PartiallyReceived;
+            var received = new PurchaseOrderItemStates(this.Session).Received;
+            var cancelled = new PurchaseOrderItemStates(this.Session).Cancelled;
+            var rejected = new PurchaseOrderItemStates(this.Session).Rejected;
+            var completed = new PurchaseOrderItemStates(this.Session).Completed;
+            var finished = new PurchaseOrderItemStates(this.Session).Finished;
 
             var product = this.Meta.Product;
             var part = this.Meta.Part;

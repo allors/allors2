@@ -7,13 +7,9 @@ namespace Allors.Repository
     #region Allors
     [Id("11d75a7a-2e86-4430-a6af-2916440c9ecb")]
     #endregion
-    public partial class JournalEntry : Transitional, AccessControlledObject 
+    public partial class JournalEntry : AccessControlledObject 
     {
         #region inherited properties
-        public ObjectState PreviousObjectState { get; set; }
-
-        public ObjectState LastObjectState { get; set; }
-
         public Permission[] DeniedPermissions { get; set; }
 
         public SecurityToken[] SecurityTokens { get; set; }
@@ -26,7 +22,6 @@ namespace Allors.Repository
         [RoleId("0dda1ff5-1420-454b-ad8d-be6e5ee68b91")]
         #endregion
         [Size(256)]
-
         public string Description { get; set; }
         #region Allors
         [Id("1452d159-857a-4fff-b1d6-6d27772e54bc")]
@@ -59,7 +54,6 @@ namespace Allors.Repository
 
         public JournalEntryDetail[] JournalEntryDetails { get; set; }
 
-
         #region inherited methods
 
 
@@ -75,6 +69,5 @@ namespace Allors.Repository
 
 
         #endregion
-
     }
 }

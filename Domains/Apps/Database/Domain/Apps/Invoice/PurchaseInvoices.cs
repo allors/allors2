@@ -23,18 +23,18 @@ namespace Allors.Domain
         {
             base.AppsPrepare(setup);
 
-            setup.AddDependency(this.ObjectType, M.PurchaseInvoiceObjectState);
+            setup.AddDependency(this.ObjectType, M.PurchaseInvoiceState);
         }
 
         protected override void AppsSecure(Security config)
         {
             base.AppsSecure(config);
 
-            var approved = new PurchaseInvoiceObjectStates(this.Session).Approved;
-            var received = new PurchaseInvoiceObjectStates(this.Session).Received;
-            var readyForPosting = new PurchaseInvoiceObjectStates(this.Session).ReadyForPosting;
-            var paid = new PurchaseInvoiceObjectStates(this.Session).Paid;
-            var cancelled = new PurchaseInvoiceObjectStates(this.Session).Cancelled;
+            var approved = new PurchaseInvoiceStates(this.Session).Approved;
+            var received = new PurchaseInvoiceStates(this.Session).Received;
+            var readyForPosting = new PurchaseInvoiceStates(this.Session).ReadyForPosting;
+            var paid = new PurchaseInvoiceStates(this.Session).Paid;
+            var cancelled = new PurchaseInvoiceStates(this.Session).Cancelled;
 
             var ready = this.Meta.Ready;
             var approve = this.Meta.Approve;

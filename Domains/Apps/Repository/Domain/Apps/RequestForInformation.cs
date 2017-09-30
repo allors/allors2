@@ -11,6 +11,19 @@ namespace Allors.Repository
     public partial class RequestForInformation : Request, Versioned
     {
         #region inherited properties
+
+        public ObjectState[] PreviousObjectStates { get; set; }
+
+        public ObjectState[] LastObjectStates { get; set; }
+
+        public ObjectState[] ObjectStates { get; set; }
+
+        public RequestState PreviousRequestState { get; set; }
+
+        public RequestState LastRequestState { get; set; }
+
+        public RequestState RequestState { get; set; }
+
         public string InternalComment { get; set; }
         public string Description { get; set; }
         public DateTime RequestDate { get; set; }
@@ -20,7 +33,6 @@ namespace Allors.Repository
         public RespondingParty[] RespondingParties { get; set; }
         public Party Originator { get; set; }
         public Currency Currency { get; set; }
-        public RequestObjectState CurrentObjectState { get; set; }
         public ContactMechanism FullfillContactMechanism { get; set; }
         public string EmailAddress { get; set; }
         public string TelephoneNumber { get; set; }
@@ -34,8 +46,6 @@ namespace Allors.Repository
         public DateTime LastModifiedDate { get; set; }
         public Guid UniqueId { get; set; }
         public string PrintContent { get; set; }
-        public ObjectState PreviousObjectState { get; set; }
-        public ObjectState LastObjectState { get; set; }
         #endregion
 
         #region Versioning

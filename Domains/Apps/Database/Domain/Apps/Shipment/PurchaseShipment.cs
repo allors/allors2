@@ -18,15 +18,22 @@ namespace Allors.Domain
     using System;
     using System.Collections.Generic;
 
+    using Allors.Meta;
+
     public partial class PurchaseShipment
     {
-        ObjectState Transitional.CurrentObjectState => this.CurrentObjectState;
+        public static readonly TransitionalConfiguration[] StaticTransitionalConfigurations =
+            {
+                new TransitionalConfiguration(M.PurchaseShipment.PurchaseShipmentState),
+            };
+
+        public TransitionalConfiguration[] TransitionalConfigurations => StaticTransitionalConfigurations;
 
         public void AppsOnBuild(ObjectOnBuild method)
         {
-            if (!this.ExistCurrentObjectState)
+            if (!this.ExistPurchaseShipmentState)
             {
-                this.CurrentObjectState = new PurchaseShipmentObjectStates(this.Strategy.Session).Created;
+                this.PurchaseShipmentState = new PurchaseShipmentStates(this.Strategy.Session).Created;
             }
 
             if (!this.ExistFacility)
@@ -76,15 +83,13 @@ namespace Allors.Domain
                 this.ShipFromAddress = this.ShipFromParty.ShippingAddress;
             }
 
-            if (this.ExistCurrentObjectState && 
-                this.CurrentObjectState.Equals(new PurchaseShipmentObjectStates(this.strategy.Session).Completed) &&
-                !this.CurrentObjectState.Equals(this.LastObjectState))
+            if (this.ExistPurchaseShipmentState && 
+                this.PurchaseShipmentState.Equals(new PurchaseShipmentStates(this.strategy.Session).Completed) &&
+                !this.PurchaseShipmentState.Equals(this.LastPurchaseShipmentState))
             {
 
                 this.AppsOnDeriveOrderItemQuantityReceived(derivation);
             }
-
-            this.AppsOnDeriveCurrentObjectState(derivation);
 
             foreach (ShipmentItem shipmentItem in this.ShipmentItems)
             {
@@ -92,19 +97,9 @@ namespace Allors.Domain
             }
         }
 
-        public void AppsOnDeriveCurrentObjectState(IDerivation derivation)
-        {
-            if (this.ExistCurrentObjectState && !this.CurrentObjectState.Equals(this.LastObjectState))
-            {
-                var currentStatus = new PurchaseShipmentStatusBuilder(this.Strategy.Session).WithPurchaseShipmentObjectState(this.CurrentObjectState).Build();
-                this.AddShipmentStatus(currentStatus);
-                this.CurrentShipmentStatus = currentStatus;
-            }
-        }
-
         public void AppsComplete()
         {
-            this.CurrentObjectState = new PurchaseShipmentObjectStates(this.Strategy.Session).Completed;
+            this.PurchaseShipmentState = new PurchaseShipmentStates(this.Strategy.Session).Completed;
         }
 
         public void AppsOnDeriveOrderItemQuantityReceived(IDerivation derivation)

@@ -8,7 +8,6 @@
     #endregion
     public partial interface Auditable : AccessControlledObject
     {
-
         #region Allors
         [Id("4BD26F4D-E85B-415A-B956-3FCBE15D4F58")]
         [AssociationId("F70A0D62-8D3F-4EAE-8FBD-E450468300E5")]
@@ -36,7 +35,6 @@
         #endregion
         [Workspace]
         DateTime CreationDate { get; set; }
-
 
         #region Allors
         [Id("94EB2712-25E1-415B-9657-2DFD460B7969")]

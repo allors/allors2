@@ -40,7 +40,7 @@ namespace Allors.Domain
 
             var order = new PurchaseOrderBuilder(this.DatabaseSession).WithTakenViaSupplier(supplier).Build();
 
-            Assert.Equal(new PurchaseOrderObjectStates(this.DatabaseSession).Provisional, order.CurrentObjectState);
+            Assert.Equal(new PurchaseOrderStates(this.DatabaseSession).Provisional, order.PurchaseOrderState);
             Assert.Equal(DateTime.UtcNow.Date, order.OrderDate.Date);
             Assert.Equal(DateTime.UtcNow.Date, order.EntryDate.Date);
             Assert.Equal(order.PreviousTakenViaSupplier, order.TakenViaSupplier);
@@ -184,7 +184,7 @@ namespace Allors.Domain
 
             this.DatabaseSession.Derive();
 
-            Assert.Equal(new PurchaseOrderObjectStates(this.DatabaseSession).RequestsApproval, order.CurrentObjectState);
+            Assert.Equal(new PurchaseOrderStates(this.DatabaseSession).RequestsApproval, order.PurchaseOrderState);
             var acl = new AccessControlList(order, new Users(this.DatabaseSession).CurrentUser);
             Assert.False(acl.CanExecute(M.PurchaseOrder.Confirm));
             Assert.False(acl.CanExecute(M.PurchaseOrder.Reject));
@@ -209,7 +209,7 @@ namespace Allors.Domain
 
             this.DatabaseSession.Derive();
 
-            Assert.Equal(new PurchaseOrderObjectStates(this.DatabaseSession).InProcess, order.CurrentObjectState);
+            Assert.Equal(new PurchaseOrderStates(this.DatabaseSession).InProcess, order.PurchaseOrderState);
             var acl = new AccessControlList(order, new Users(this.DatabaseSession).CurrentUser);
             Assert.True(acl.CanExecute(M.PurchaseOrder.Cancel));
             Assert.True(acl.CanExecute(M.PurchaseOrder.Hold));
@@ -240,7 +240,7 @@ namespace Allors.Domain
 
             this.DatabaseSession.Derive();
 
-            Assert.Equal(new PurchaseOrderObjectStates(this.DatabaseSession).OnHold, order.CurrentObjectState);
+            Assert.Equal(new PurchaseOrderStates(this.DatabaseSession).OnHold, order.PurchaseOrderState);
             var acl = new AccessControlList(order, new Users(this.DatabaseSession).CurrentUser);
             Assert.True(acl.CanExecute(M.PurchaseOrder.Cancel));
             Assert.True(acl.CanExecute(M.PurchaseOrder.Continue));
@@ -287,10 +287,10 @@ namespace Allors.Domain
             Assert.Contains(item1, order.ValidOrderItems);
             Assert.Contains(item2, order.ValidOrderItems);
             Assert.Contains(item3, order.ValidOrderItems);
-            Assert.Equal(new PurchaseOrderItemObjectStates(this.DatabaseSession).InProcess, item1.CurrentObjectState);
-            Assert.Equal(new PurchaseOrderItemObjectStates(this.DatabaseSession).InProcess, item2.CurrentObjectState);
-            Assert.Equal(new PurchaseOrderItemObjectStates(this.DatabaseSession).InProcess, item3.CurrentObjectState);
-            Assert.Equal(new PurchaseOrderItemObjectStates(this.DatabaseSession).Cancelled, item4.CurrentObjectState);
+            Assert.Equal(new PurchaseOrderItemStates(this.DatabaseSession).InProcess, item1.PurchaseOrderItemState);
+            Assert.Equal(new PurchaseOrderItemStates(this.DatabaseSession).InProcess, item2.PurchaseOrderItemState);
+            Assert.Equal(new PurchaseOrderItemStates(this.DatabaseSession).InProcess, item3.PurchaseOrderItemState);
+            Assert.Equal(new PurchaseOrderItemStates(this.DatabaseSession).Cancelled, item4.PurchaseOrderItemState);
         }
 
         [Fact]
@@ -324,9 +324,9 @@ namespace Allors.Domain
             Assert.Contains(item1, order.ValidOrderItems);
             Assert.Contains(item2, order.ValidOrderItems);
             Assert.Contains(item3, order.ValidOrderItems);
-            Assert.Equal(new PurchaseOrderItemObjectStates(this.DatabaseSession).InProcess, item1.CurrentObjectState);
-            Assert.Equal(new PurchaseOrderItemObjectStates(this.DatabaseSession).InProcess, item2.CurrentObjectState);
-            Assert.Equal(new PurchaseOrderItemObjectStates(this.DatabaseSession).InProcess, item3.CurrentObjectState);
+            Assert.Equal(new PurchaseOrderItemStates(this.DatabaseSession).InProcess, item1.PurchaseOrderItemState);
+            Assert.Equal(new PurchaseOrderItemStates(this.DatabaseSession).InProcess, item2.PurchaseOrderItemState);
+            Assert.Equal(new PurchaseOrderItemStates(this.DatabaseSession).InProcess, item3.PurchaseOrderItemState);
         }
     }
 }

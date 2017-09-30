@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------------------------------------------
-// <copyright file="PurchaseInvoiceObjectStates.cs" company="Allors bvba">
+// <copyright file="PurchaseInvoiceStates.cs" company="Allors bvba">
 //   Copyright 2002-2012 Allors bvba.
 // Dual Licensed under
 //   a) the General Public Licence v3 (GPL)
@@ -17,7 +17,7 @@ namespace Allors.Domain
 {
     using System;
 
-    public partial class PurchaseInvoiceObjectStates
+    public partial class PurchaseInvoiceStates
     {
         private static readonly Guid InProcessId = new Guid("C6501188-7145-4abd-85FC-BEF746C74E9E");
         private static readonly Guid ApprovedId = new Guid("5961E348-FCA0-4670-89B4-216F57C48519");
@@ -26,21 +26,21 @@ namespace Allors.Domain
         private static readonly Guid ReadyForPostingId = new Guid("C6939E28-AEF9-4db9-B4C2-B6445BA6D881");
         private static readonly Guid CancelledId = new Guid("60650051-F1F1-4dd6-90C8-5E744093D2EE");
 
-        private UniquelyIdentifiableCache<PurchaseInvoiceObjectState> stateCache;
+        private UniquelyIdentifiableCache<PurchaseInvoiceState> stateCache;
 
-        public PurchaseInvoiceObjectState InProcess => this.StateCache.Get(InProcessId);
+        public PurchaseInvoiceState InProcess => this.StateCache.Get(InProcessId);
 
-        public PurchaseInvoiceObjectState Approved => this.StateCache.Get(ApprovedId);
+        public PurchaseInvoiceState Approved => this.StateCache.Get(ApprovedId);
 
-        public PurchaseInvoiceObjectState ReadyForPosting => this.StateCache.Get(ReadyForPostingId);
+        public PurchaseInvoiceState ReadyForPosting => this.StateCache.Get(ReadyForPostingId);
 
-        public PurchaseInvoiceObjectState Received => this.StateCache.Get(ReceivedId);
+        public PurchaseInvoiceState Received => this.StateCache.Get(ReceivedId);
 
-        public PurchaseInvoiceObjectState Paid => this.StateCache.Get(PaidId);
+        public PurchaseInvoiceState Paid => this.StateCache.Get(PaidId);
 
-        public PurchaseInvoiceObjectState Cancelled => this.StateCache.Get(CancelledId);
+        public PurchaseInvoiceState Cancelled => this.StateCache.Get(CancelledId);
 
-        private UniquelyIdentifiableCache<PurchaseInvoiceObjectState> StateCache => this.stateCache ?? (this.stateCache = new UniquelyIdentifiableCache<PurchaseInvoiceObjectState>(this.Session));
+        private UniquelyIdentifiableCache<PurchaseInvoiceState> StateCache => this.stateCache ?? (this.stateCache = new UniquelyIdentifiableCache<PurchaseInvoiceState>(this.Session));
 
         protected override void AppsSetup(Setup setup)
         {
@@ -49,32 +49,32 @@ namespace Allors.Domain
             var englishLocale = new Locales(this.Session).EnglishGreatBritain;
             var dutchLocale = new Locales(this.Session).DutchNetherlands;
 
-            new PurchaseInvoiceObjectStateBuilder(this.Session)
+            new PurchaseInvoiceStateBuilder(this.Session)
                 .WithUniqueId(InProcessId)
                 .WithName("In Process")
                 .Build();
 
-            new PurchaseInvoiceObjectStateBuilder(this.Session)
+            new PurchaseInvoiceStateBuilder(this.Session)
                 .WithUniqueId(ApprovedId)
                 .WithName("Approved")
                 .Build();
 
-            new PurchaseInvoiceObjectStateBuilder(this.Session)
+            new PurchaseInvoiceStateBuilder(this.Session)
                 .WithUniqueId(ReceivedId)
                 .WithName("Received")
                 .Build();
 
-            new PurchaseInvoiceObjectStateBuilder(this.Session)
+            new PurchaseInvoiceStateBuilder(this.Session)
                 .WithUniqueId(ReadyForPostingId)
                 .WithName("Ready For Posting")
                 .Build();
 
-            new PurchaseInvoiceObjectStateBuilder(this.Session)
+            new PurchaseInvoiceStateBuilder(this.Session)
                 .WithUniqueId(PaidId)
                 .WithName("Paid")
                 .Build();
 
-            new PurchaseInvoiceObjectStateBuilder(this.Session)
+            new PurchaseInvoiceStateBuilder(this.Session)
                 .WithUniqueId(CancelledId)
                 .WithName("Cancelled")
                 .Build();

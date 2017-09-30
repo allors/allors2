@@ -23,15 +23,15 @@ namespace Allors.Domain
         {
             base.AppsPrepare(setup);
 
-            setup.AddDependency(this.ObjectType, M.PurchaseInvoiceItemObjectState);
+            setup.AddDependency(this.ObjectType, M.PurchaseInvoiceItemState);
         }
 
         protected override void AppsSecure(Security config)
         {
             base.AppsSecure(config);
 
-            var paid = new PurchaseInvoiceItemObjectStates(this.Session).Paid;
-            var cancelled = new PurchaseInvoiceItemObjectStates(this.Session).Cancelled;
+            var paid = new PurchaseInvoiceItemStates(this.Session).Paid;
+            var cancelled = new PurchaseInvoiceItemStates(this.Session).Cancelled;
 
             config.Deny(this.ObjectType, paid, Operations.Write, Operations.Execute);
             config.Deny(this.ObjectType, cancelled, Operations.Write, Operations.Execute);

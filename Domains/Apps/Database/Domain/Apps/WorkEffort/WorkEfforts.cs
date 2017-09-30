@@ -23,9 +23,9 @@ namespace Allors.Domain
         {
             base.AppsSecure(config);
 
-            var openedState = new WorkEffortObjectStates(this.Session).NeedsAction;
-            var cancelledState = new WorkEffortObjectStates(this.Session).Cancelled;
-            var finishedState = new WorkEffortObjectStates(this.Session).Completed;
+            var openedState = new WorkEffortStates(this.Session).NeedsAction;
+            var cancelledState = new WorkEffortStates(this.Session).Cancelled;
+            var finishedState = new WorkEffortStates(this.Session).Completed;
 
             config.Deny(this.ObjectType, openedState, M.WorkEffort.Reopen);
 

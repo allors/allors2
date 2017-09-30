@@ -24,21 +24,21 @@ namespace Allors.Domain
         {
             base.AppsPrepare(setup);
 
-            setup.AddDependency(this.ObjectType, M.SalesOrderObjectState);
+            setup.AddDependency(this.ObjectType, M.SalesOrderState);
         }
 
         protected override void AppsSecure(Security config)
         {
             base.AppsSecure(config);
 
-            var provisional = new SalesOrderObjectStates(this.Session).Provisional;
-            var onHold = new SalesOrderObjectStates(this.Session).OnHold;
-            var requestsApproval = new SalesOrderObjectStates(this.Session).RequestsApproval;
-            var inProcess = new SalesOrderObjectStates(this.Session).InProcess;
-            var cancelled = new SalesOrderObjectStates(this.Session).Cancelled;
-            var rejected = new SalesOrderObjectStates(this.Session).Rejected;
-            var completed = new SalesOrderObjectStates(this.Session).Completed;
-            var finished = new SalesOrderObjectStates(this.Session).Finished;
+            var provisional = new SalesOrderStates(this.Session).Provisional;
+            var onHold = new SalesOrderStates(this.Session).OnHold;
+            var requestsApproval = new SalesOrderStates(this.Session).RequestsApproval;
+            var inProcess = new SalesOrderStates(this.Session).InProcess;
+            var cancelled = new SalesOrderStates(this.Session).Cancelled;
+            var rejected = new SalesOrderStates(this.Session).Rejected;
+            var completed = new SalesOrderStates(this.Session).Completed;
+            var finished = new SalesOrderStates(this.Session).Finished;
 
             var reject = this.Meta.Reject;
             var cancel = this.Meta.Cancel;

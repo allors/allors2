@@ -19,13 +19,18 @@ namespace Allors.Domain
 
     public partial class QuoteItem
     {
-        ObjectState Transitional.CurrentObjectState => this.CurrentObjectState;
+        public static readonly TransitionalConfiguration[] StaticTransitionalConfigurations =
+            {
+                new TransitionalConfiguration(M.QuoteItem.QuoteItemState),
+            };
+
+        public TransitionalConfiguration[] TransitionalConfigurations => StaticTransitionalConfigurations;
 
         public void AppsOnBuild(ObjectOnBuild method)
         {
-            if (!this.ExistCurrentObjectState)
+            if (!this.ExistQuoteItemState)
             {
-                this.CurrentObjectState = new QuoteItemObjectStates(this.Strategy.Session).Submitted;
+                this.QuoteItemState = new QuoteItemStates(this.Strategy.Session).Submitted;
             }
         }
 

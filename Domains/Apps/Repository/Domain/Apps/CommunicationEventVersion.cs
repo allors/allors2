@@ -9,6 +9,63 @@ namespace Allors.Repository
     public partial interface CommunicationEventVersion : Version
     {
         #region Allors
+        [Id("2B30E8D7-CF09-448C-9339-D90C5111CF6E")]
+        [AssociationId("99FE354D-24CB-4594-B450-69352438625C")]
+        [RoleId("8852E08C-1F0B-41C6-9557-6E33A0827F90")]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Derived]
+        [Indexed]
+        [Required]
+        [Workspace]
+        CommunicationEventState CommunicationEventState { get; set; }
+
+        #region Allors
+        [Id("A4FD08D4-8665-4740-A3D0-04A7DF1B019E")]
+        [AssociationId("493FA7C5-7D13-4407-8676-1A24A54451A9")]
+        [RoleId("1C5D1C7D-A1F2-420E-9D64-BBAC4105CC0C")]
+        #endregion
+        [Size(-1)]
+        [Workspace]
+        string Comment { get; set; }
+
+        #region Allors
+        [Id("660C7D51-2EF0-416A-8136-767469DBD9A1")]
+        [AssociationId("C9834736-1F0F-467D-A0FA-CA0AA8D31350")]
+        [RoleId("FC832A87-719A-48C1-B4AA-82E7508F8B59")]
+        [Indexed]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Workspace]
+        User CreatedBy { get; set; }
+
+        #region Allors
+        [Id("7E772D4D-85E7-4BD9-83C2-2FBA978CB867")]
+        [AssociationId("C91F1B00-976C-4EAA-AF61-6DBD2B112ABB")]
+        [RoleId("359F2FAD-17FC-420B-8D4D-18C88CFD8C2D")]
+        [Indexed]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Workspace]
+        User LastModifiedBy { get; set; }
+
+        #region Allors
+        [Id("763B74F2-5CBA-4868-A405-CAE9283175AE")]
+        [AssociationId("3A73A933-5A4F-4801-8BCC-7A1A8A70C240")]
+        [RoleId("766AD051-4F5E-484A-8FB0-D5AA79168965")]
+        #endregion
+        [Workspace]
+        DateTime CreationDate { get; set; }
+
+        #region Allors
+        [Id("07F06A16-BB1E-48D8-919B-4DFF31A1F4FD")]
+        [AssociationId("A95AD68F-E9CC-4FAD-92EB-157D875376DC")]
+        [RoleId("8342CEB8-03BF-4557-8294-E64BA205F92B")]
+        #endregion
+        [Workspace]
+        DateTime LastModifiedDate { get; set; }
+
+        #region Allors
         [Id("9BB7DC70-AA96-4936-B20E-E3CB56E15126")]
         [AssociationId("0FF04FF1-51A6-44A2-867F-C423C0769AE9")]
         [RoleId("5015C868-E1B6-47F3-886D-B6DF3A609310")]
@@ -77,18 +134,6 @@ namespace Allors.Repository
         #endregion
         [Workspace]
         DateTime InitialScheduledStart { get; set; }
-
-        #region Allors
-        [Id("2B30E8D7-CF09-448C-9339-D90C5111CF6E")]
-        [AssociationId("99FE354D-24CB-4594-B450-69352438625C")]
-        [RoleId("8852E08C-1F0B-41C6-9557-6E33A0827F90")]
-        #endregion
-        [Multiplicity(Multiplicity.ManyToOne)]
-        [Derived]
-        [Indexed]
-        [Required]
-        [Workspace]
-        CommunicationEventObjectState CurrentObjectState { get; set; }
 
         #region Allors
         [Id("8FFCBA83-FEE3-42C8-9102-F2F0380A411A")]

@@ -15,15 +15,22 @@
 // --------------------------------------------------------------------------------------------------------------------
 namespace Allors.Domain
 {
+    using Allors.Meta;
+
     public partial class PurchaseReturn
     {
-        ObjectState Transitional.CurrentObjectState => this.CurrentObjectState;
+        public static readonly TransitionalConfiguration[] StaticTransitionalConfigurations =
+            {
+                new TransitionalConfiguration(M.PurchaseReturn.PurchaseReturnState),
+            };
+
+        public TransitionalConfiguration[] TransitionalConfigurations => StaticTransitionalConfigurations;
 
         public void AppsOnBuild(ObjectOnBuild method)
         {
-            if (!this.ExistCurrentObjectState)
+            if (!this.ExistPurchaseReturnState)
             {
-                this.CurrentObjectState = new PurchaseReturnObjectStates(this.Strategy.Session).Created;
+                this.PurchaseReturnState = new PurchaseReturnStates(this.Strategy.Session).Created;
             }
         }
 
@@ -39,18 +46,6 @@ namespace Allors.Domain
             if (!this.ExistShipFromAddress && this.ExistShipFromParty)
             {
                 this.ShipFromAddress = this.ShipFromParty.ShippingAddress;
-            }
-
-            this.AppsOnDeriveCurrentObjectState(derivation);
-        }
-
-        public void AppsOnDeriveCurrentObjectState(IDerivation derivation)
-        {
-            if (this.ExistCurrentObjectState && !this.CurrentObjectState.Equals(this.LastObjectState))
-            {
-                var currentStatus = new PurchaseReturnStatusBuilder(this.Strategy.Session).WithPurchaseReturnObjectState(this.CurrentObjectState).Build();
-                this.AddShipmentStatus(currentStatus);
-                this.CurrentShipmentStatus = currentStatus;
             }
         }
     }

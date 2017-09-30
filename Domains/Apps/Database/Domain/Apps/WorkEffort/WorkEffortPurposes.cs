@@ -22,8 +22,11 @@ namespace Allors.Domain
         private static readonly Guid MeetingId = new Guid("59C5AC07-9F1C-4641-90C3-B8126F19E7FF");
         private static readonly Guid PhonecallId = new Guid("622A4722-DC89-4FF2-8A6E-CB1491F2A377");
         private static readonly Guid EmailId = new Guid("931A8772-C42B-447F-AFEF-92D0F922C5E5");
-        private static readonly Guid ProjectId = new Guid("A3DA2C62-53D7-481D-84D8-3437022A76D0");
         private static readonly Guid SupportId = new Guid("5FA66105-DA9F-415B-8E26-2D0AECF5510B");
+        private static readonly Guid MaintenanceId = new Guid("A3DA2C62-53D7-481D-84D8-3437022A76D0");
+        private static readonly Guid ProductionRunId = new Guid("D6DD8620-7A43-46BD-AE20-F5652A14727C");
+        private static readonly Guid WorkFlowId = new Guid("553D67FC-9853-46B3-B87C-9CD1A7CB01A5");
+        private static readonly Guid ResearchId = new Guid("6888DBF5-BFFC-4942-A16D-8BB680863261");
 
         private UniquelyIdentifiableCache<WorkEffortPurpose> cache;
 
@@ -33,9 +36,15 @@ namespace Allors.Domain
 
         public WorkEffortPurpose Email => this.Cache.Get(EmailId);
 
-        public WorkEffortPurpose Project => this.Cache.Get(ProjectId);
-
         public WorkEffortPurpose Support => this.Cache.Get(SupportId);
+
+        public WorkEffortPurpose Maintenance => this.Cache.Get(MaintenanceId);
+
+        public WorkEffortPurpose ProductionRun => this.Cache.Get(ProductionRunId);
+
+        public WorkEffortPurpose WorkFlow => this.Cache.Get(WorkFlowId);
+
+        public WorkEffortPurpose Research => this.Cache.Get(ResearchId);
 
         private UniquelyIdentifiableCache<WorkEffortPurpose> Cache => this.cache ?? (this.cache = new UniquelyIdentifiableCache<WorkEffortPurpose>(this.Session));
 
@@ -68,17 +77,38 @@ namespace Allors.Domain
                 .Build();
 
             new WorkEffortPurposeBuilder(this.Session)
-                .WithName("Project")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Project").WithLocale(englishLocale).Build())
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Project").WithLocale(dutchLocale).Build())
-                .WithUniqueId(ProjectId)
-                .Build();
-
-            new WorkEffortPurposeBuilder(this.Session)
                 .WithName("Support")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Support").WithLocale(englishLocale).Build())
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Support").WithLocale(dutchLocale).Build())
                 .WithUniqueId(SupportId)
+                .Build();
+
+            new WorkEffortPurposeBuilder(this.Session)
+                .WithName("Project")
+                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Maintenance").WithLocale(englishLocale).Build())
+                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Onderhoud").WithLocale(dutchLocale).Build())
+                .WithUniqueId(MaintenanceId)
+                .Build();
+
+            new WorkEffortPurposeBuilder(this.Session)
+                .WithName("Project")
+                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Production run").WithLocale(englishLocale).Build())
+                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Productie run").WithLocale(dutchLocale).Build())
+                .WithUniqueId(ProductionRunId)
+                .Build();
+
+            new WorkEffortPurposeBuilder(this.Session)
+                .WithName("Project")
+                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Workflow").WithLocale(englishLocale).Build())
+                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Workflow").WithLocale(dutchLocale).Build())
+                .WithUniqueId(WorkFlowId)
+                .Build();
+
+            new WorkEffortPurposeBuilder(this.Session)
+                .WithName("Project")
+                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Research").WithLocale(englishLocale).Build())
+                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Onderzoek").WithLocale(dutchLocale).Build())
+                .WithUniqueId(ResearchId)
                 .Build();
         }
     }

@@ -10,6 +10,52 @@ namespace Allors.Repository
     public partial interface InvoiceVersion : Version
     {
         #region Allors
+        [Id("3C21D07A-3723-4D0C-BCDF-2A699DB6794F")]
+        [AssociationId("2DF9BA58-5405-4205-8368-4C4F26437A22")]
+        [RoleId("42E7DA43-55F7-44F4-9FED-82EA966BBADB")]
+        [Indexed]
+        #endregion
+        [Size(-1)]
+        [Workspace]
+        string Comment { get; set; }
+
+        #region Allors
+        [Id("85356434-312C-4147-8D32-D27BE1B103B6")]
+        [AssociationId("0C448664-2CAC-4899-9F19-BA88AEE229E7")]
+        [RoleId("39F59849-515F-45F4-8668-237D8907E513")]
+        [Indexed]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Workspace]
+        User CreatedBy { get; set; }
+
+        #region Allors
+        [Id("61B6F5CB-ABB0-47F9-85A4-6F22ADD9868F")]
+        [AssociationId("2986D2FD-3DD2-476D-8281-304EB911D97E")]
+        [RoleId("A3F32A6C-E4AB-49B4-95A2-81222A845A9B")]
+        [Indexed]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Workspace]
+        User LastModifiedBy { get; set; }
+
+        #region Allors
+        [Id("1E73052D-5404-4D10-B353-493906CED780")]
+        [AssociationId("0704502C-5A65-4E44-9743-3879DD25207E")]
+        [RoleId("3B4F3C0D-B711-4BB7-8C79-BA99388645B9")]
+        #endregion
+        [Workspace]
+        DateTime CreationDate { get; set; }
+
+        #region Allors
+        [Id("93C86CD1-0329-4303-8EC4-DAAB6BF451C1")]
+        [AssociationId("FADD905C-1682-4307-8DD0-9B231279A37C")]
+        [RoleId("CCBD503A-9424-4571-A266-D8F54DDADC67")]
+        #endregion
+        [Workspace]
+        DateTime LastModifiedDate { get; set; }
+
+        #region Allors
         [Id("3A694B6A-A891-418C-9A7C-3709978B7761")]
         [AssociationId("C1422EA3-1FD4-4082-9768-CBBD955062C5")]
         [RoleId("6C9A4674-0ACC-4279-B23F-7F20AFA50391")]

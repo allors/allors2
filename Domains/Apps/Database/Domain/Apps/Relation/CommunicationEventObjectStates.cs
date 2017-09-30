@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------------------------------------------
-// <copyright file="CommunicationEventObjectStates.cs" company="Allors bvba">
+// <copyright file="CommunicationEventStates.cs" company="Allors bvba">
 //   Copyright 2002-2012 Allors bvba.
 // Dual Licensed under
 //   a) the General Public Licence v3 (GPL)
@@ -17,24 +17,24 @@ namespace Allors.Domain
 {
     using System;
 
-    public partial class CommunicationEventObjectStates
+    public partial class CommunicationEventStates
     {
         private static readonly Guid ScheduledId = new Guid("199131EB-18FD-4b8a-9FEC-23789C169FF5");
         private static readonly Guid CompletedId = new Guid("35612611-62C5-4de5-B138-9C8D874D8916");
         private static readonly Guid CancelledId = new Guid("F236E865-E2CA-43d7-8F17-56C3DC54C191");
         private static readonly Guid InProgressId = new Guid("D1232CEB-1530-451e-BAED-DB1356BC1EB2");
 
-        private UniquelyIdentifiableCache<CommunicationEventObjectState> cache;
+        private UniquelyIdentifiableCache<CommunicationEventState> cache;
 
-        public CommunicationEventObjectState Scheduled => this.Cache.Get(ScheduledId);
+        public CommunicationEventState Scheduled => this.Cache.Get(ScheduledId);
 
-        public CommunicationEventObjectState InProgress => this.Cache.Get(InProgressId);
+        public CommunicationEventState InProgress => this.Cache.Get(InProgressId);
 
-        public CommunicationEventObjectState Completed => this.Cache.Get(CompletedId);
+        public CommunicationEventState Completed => this.Cache.Get(CompletedId);
 
-        public CommunicationEventObjectState Cancelled => this.Cache.Get(CancelledId);
+        public CommunicationEventState Cancelled => this.Cache.Get(CancelledId);
 
-        private UniquelyIdentifiableCache<CommunicationEventObjectState> Cache => this.cache ?? (this.cache = new UniquelyIdentifiableCache<CommunicationEventObjectState>(this.Session));
+        private UniquelyIdentifiableCache<CommunicationEventState> Cache => this.cache ?? (this.cache = new UniquelyIdentifiableCache<CommunicationEventState>(this.Session));
 
         protected override void AppsSetup(Setup setup)
         {
@@ -43,22 +43,22 @@ namespace Allors.Domain
             var englishLocale = new Locales(this.Session).EnglishGreatBritain;
             var durchLocale = new Locales(this.Session).DutchNetherlands;
 
-            new CommunicationEventObjectStateBuilder(this.Session)
+            new CommunicationEventStateBuilder(this.Session)
                 .WithName("Scheduled")
                 .WithUniqueId(ScheduledId)
                 .Build();
 
-            new CommunicationEventObjectStateBuilder(this.Session)
+            new CommunicationEventStateBuilder(this.Session)
                 .WithName("In Progress")
                 .WithUniqueId(InProgressId)
                 .Build();
 
-            new CommunicationEventObjectStateBuilder(this.Session)
+            new CommunicationEventStateBuilder(this.Session)
                 .WithName("Completed")
                 .WithUniqueId(CompletedId)
                 .Build();
 
-            new CommunicationEventObjectStateBuilder(this.Session)
+            new CommunicationEventStateBuilder(this.Session)
                 .WithName("Cancelled")
                 .WithUniqueId(CancelledId)
                 .Build();

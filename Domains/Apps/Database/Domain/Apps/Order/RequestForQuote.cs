@@ -19,9 +19,16 @@ using System.Linq;
 
 namespace Allors.Domain
 {
+    using Allors.Meta;
+
     public partial class RequestForQuote
     {
-        ObjectState Transitional.CurrentObjectState => this.CurrentObjectState;
+        public static readonly TransitionalConfiguration[] StaticTransitionalConfigurations =
+            {
+                new TransitionalConfiguration(M.RequestForQuote.RequestState),
+            };
+
+        public TransitionalConfiguration[] TransitionalConfigurations => StaticTransitionalConfigurations;
 
         private ProductQuote QuoteThis()
         {
@@ -36,7 +43,7 @@ namespace Allors.Domain
                 .WithInternalComment(this.InternalComment)
                 .Build();
 
-            var sourceItems = this.RequestItems.Where(i => i.CurrentObjectState.Equals(new RequestItemObjectStates(this.Strategy.Session).Submitted)).ToArray();
+            var sourceItems = this.RequestItems.Where(i => i.RequestItemState.Equals(new RequestItemStates(this.Strategy.Session).Submitted)).ToArray();
 
             foreach (RequestItem requestItem in sourceItems)
             {
@@ -48,9 +55,7 @@ namespace Allors.Domain
                     .WithUnitOfMeasure(requestItem.UnitOfMeasure)
                     .WithRequestItem(requestItem)
                     .WithComment(requestItem.Comment)
-                    .WithInternalComment(requestItem.InternalComment)
-                    .Build()
-                    );
+                    .WithInternalComment(requestItem.InternalComment).Build());
             }
 
             return productQuote;
@@ -58,7 +63,7 @@ namespace Allors.Domain
 
         public void AppsCreateQuote(RequestForQuoteCreateQuote Method)
         {
-            this.CurrentObjectState = new RequestObjectStates(this.Strategy.Session).Quoted;
+            this.RequestState = new RequestStates(this.Strategy.Session).Quoted;
             this.QuoteThis();
         }
     }

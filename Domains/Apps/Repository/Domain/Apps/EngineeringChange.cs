@@ -10,9 +10,11 @@ namespace Allors.Repository
     public partial class EngineeringChange : Transitional, AccessControlledObject 
     {
         #region inherited properties
-        public ObjectState PreviousObjectState { get; set; }
+        public ObjectState[] PreviousObjectStates { get; set; }
 
-        public ObjectState LastObjectState { get; set; }
+        public ObjectState[] LastObjectStates { get; set; }
+
+        public ObjectState[] ObjectStates { get; set; }
 
         public Permission[] DeniedPermissions { get; set; }
 
@@ -113,7 +115,6 @@ namespace Allors.Repository
 
         public EngineeringChangeStatus CurrentEngineeringChangeStatus { get; set; }
 
-
         #region inherited methods
 
 
@@ -129,6 +130,5 @@ namespace Allors.Repository
 
 
         #endregion
-
     }
 }

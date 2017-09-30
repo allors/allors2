@@ -55,8 +55,8 @@ namespace Allors.Domain
 
             this.DatabaseSession.Derive();
 
-            Assert.Equal(new SalesInvoiceObjectStates(this.DatabaseSession).ReadyForPosting, invoice.CurrentObjectState);
-            Assert.Equal(invoice.LastObjectState, invoice.CurrentObjectState);
+            Assert.Equal(new SalesInvoiceStates(this.DatabaseSession).ReadyForPosting, invoice.SalesInvoiceState);
+            Assert.Equal(invoice.LastSalesInvoiceState, invoice.SalesInvoiceState);
         }
 
         [Fact]
@@ -83,7 +83,7 @@ namespace Allors.Domain
 
             this.DatabaseSession.Derive();
 
-            Assert.Null(invoice.PreviousObjectState);
+            Assert.Null(invoice.PreviousSalesInvoiceState);
         }
 
         [Fact]
@@ -123,8 +123,8 @@ namespace Allors.Domain
 
             Assert.False(this.DatabaseSession.Derive(false).HasErrors);
 
-            Assert.Equal(invoice.CurrentObjectState, new SalesInvoiceObjectStates(this.DatabaseSession).ReadyForPosting);
-            Assert.Equal(invoice.CurrentObjectState, invoice.LastObjectState);
+            Assert.Equal(invoice.SalesInvoiceState, new SalesInvoiceStates(this.DatabaseSession).ReadyForPosting);
+            Assert.Equal(invoice.SalesInvoiceState, invoice.LastSalesInvoiceState);
 
             builder.Build();
 
@@ -926,7 +926,7 @@ namespace Allors.Domain
             this.DatabaseSession.Derive();
 
             var acl = new AccessControlList(invoice, new Users(this.DatabaseSession).CurrentUser);
-            Assert.Equal(new SalesInvoiceObjectStates(this.DatabaseSession).Cancelled, invoice.CurrentObjectState);
+            Assert.Equal(new SalesInvoiceStates(this.DatabaseSession).Cancelled, invoice.SalesInvoiceState);
             Assert.False(acl.CanExecute(M.SalesInvoice.Send));
             Assert.False(acl.CanExecute(M.SalesInvoice.WriteOff));
             Assert.False(acl.CanExecute(M.SalesInvoice.CancelInvoice));
@@ -1344,7 +1344,7 @@ namespace Allors.Domain
 
             this.DatabaseSession.Derive();
 
-            Assert.Equal(new SalesInvoiceObjectStates(this.DatabaseSession).PartiallyPaid, invoice.CurrentObjectState);
+            Assert.Equal(new SalesInvoiceStates(this.DatabaseSession).PartiallyPaid, invoice.SalesInvoiceState);
         }
 
         [Fact]
@@ -1389,7 +1389,7 @@ namespace Allors.Domain
 
             this.DatabaseSession.Derive();
 
-            Assert.Equal(new SalesInvoiceObjectStates(this.DatabaseSession).Paid, invoice.CurrentObjectState);
+            Assert.Equal(new SalesInvoiceStates(this.DatabaseSession).Paid, invoice.SalesInvoiceState);
         }
 
         [Fact]
@@ -1431,9 +1431,9 @@ namespace Allors.Domain
 
             this.DatabaseSession.Derive();
 
-            Assert.Equal(new SalesInvoiceObjectStates(this.DatabaseSession).Cancelled, invoice.CurrentObjectState);
-            Assert.Equal(new SalesInvoiceItemObjectStates(this.DatabaseSession).Cancelled, invoice.SalesInvoiceItems[0].CurrentObjectState);
-            Assert.Equal(new SalesInvoiceItemObjectStates(this.DatabaseSession).Cancelled, invoice.SalesInvoiceItems[1].CurrentObjectState);
+            Assert.Equal(new SalesInvoiceStates(this.DatabaseSession).Cancelled, invoice.SalesInvoiceState);
+            Assert.Equal(new SalesInvoiceItemStates(this.DatabaseSession).Cancelled, invoice.SalesInvoiceItems[0].SalesInvoiceItemState);
+            Assert.Equal(new SalesInvoiceItemStates(this.DatabaseSession).Cancelled, invoice.SalesInvoiceItems[1].SalesInvoiceItemState);
         }
 
         [Fact]
@@ -1473,9 +1473,9 @@ namespace Allors.Domain
 
             this.DatabaseSession.Derive();
 
-            Assert.Equal(new SalesInvoiceObjectStates(this.DatabaseSession).WrittenOff, invoice.CurrentObjectState);
-            Assert.Equal(new SalesInvoiceItemObjectStates(this.DatabaseSession).WrittenOff, invoice.SalesInvoiceItems[0].CurrentObjectState);
-            Assert.Equal(new SalesInvoiceItemObjectStates(this.DatabaseSession).WrittenOff, invoice.SalesInvoiceItems[1].CurrentObjectState);
+            Assert.Equal(new SalesInvoiceStates(this.DatabaseSession).WrittenOff, invoice.SalesInvoiceState);
+            Assert.Equal(new SalesInvoiceItemStates(this.DatabaseSession).WrittenOff, invoice.SalesInvoiceItems[0].SalesInvoiceItemState);
+            Assert.Equal(new SalesInvoiceItemStates(this.DatabaseSession).WrittenOff, invoice.SalesInvoiceItems[1].SalesInvoiceItemState);
         }
 
         [Fact]

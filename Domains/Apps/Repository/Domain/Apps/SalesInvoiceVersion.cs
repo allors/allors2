@@ -11,6 +11,17 @@ namespace Allors.Repository
         #region inherited properties
         public Permission[] DeniedPermissions { get; set; }
         public SecurityToken[] SecurityTokens { get; set; }
+
+        public string Comment { get; set; }
+
+        public User CreatedBy { get; set; }
+
+        public User LastModifiedBy { get; set; }
+
+        public DateTime CreationDate { get; set; }
+
+        public DateTime LastModifiedDate { get; set; }
+
         public string InternalComment { get; set; }
         public decimal TotalShippingAndHandlingCustomerCurrency { get; set; }
         public Currency CustomerCurrency { get; set; }
@@ -58,7 +69,7 @@ namespace Allors.Repository
         [Indexed]
         [Required]
         [Workspace]
-        public SalesInvoiceObjectState CurrentObjectState { get; set; }
+        public SalesInvoiceState SalesInvoiceState { get; set; }
 
         #region Allors
         [Id("A1521081-CF30-4558-A73E-2E71287E9826")]

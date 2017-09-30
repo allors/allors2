@@ -49,7 +49,7 @@ namespace Allors.Domain
 
             this.DatabaseSession.Derive();
 
-            Assert.Equal(new SalesOrderObjectStates(this.DatabaseSession).Provisional, order.CurrentObjectState);
+            Assert.Equal(new SalesOrderStates(this.DatabaseSession).Provisional, order.SalesOrderState);
             Assert.True(order.PartiallyShip);
             Assert.Equal(DateTime.UtcNow.Date, order.OrderDate.Date);
             Assert.Equal(DateTime.UtcNow.Date, order.EntryDate.Date);
@@ -151,10 +151,10 @@ namespace Allors.Domain
 
             this.DatabaseSession.Derive();
 
-            Assert.Equal(new SalesOrderObjectStates(this.DatabaseSession).Completed, order.CurrentObjectState);
-            Assert.Equal(new SalesOrderItemObjectStates(this.DatabaseSession).Completed, item1.CurrentObjectState);
-            Assert.Equal(new SalesOrderItemObjectStates(this.DatabaseSession).Completed, item2.CurrentObjectState);
-            Assert.Equal(new SalesOrderItemObjectStates(this.DatabaseSession).Completed, item3.CurrentObjectState);
+            Assert.Equal(new SalesOrderStates(this.DatabaseSession).Completed, order.SalesOrderState);
+            Assert.Equal(new SalesOrderItemStates(this.DatabaseSession).Completed, item1.SalesOrderItemState);
+            Assert.Equal(new SalesOrderItemStates(this.DatabaseSession).Completed, item2.SalesOrderItemState);
+            Assert.Equal(new SalesOrderItemStates(this.DatabaseSession).Completed, item3.SalesOrderItemState);
         }
         [Fact]
         public void GivenSalesOrderShippedInMultipleParts_WhenPaymentsAreReceived_ThenObjectStateCorrespondingSalesOrderIsUpdated()
@@ -265,10 +265,10 @@ namespace Allors.Domain
 
             this.DatabaseSession.Derive();
 
-            Assert.Equal(new SalesOrderObjectStates(this.DatabaseSession).InProcess, order.CurrentObjectState);
-            Assert.Equal(new SalesOrderItemObjectStates(this.DatabaseSession).Finished, item1.CurrentObjectState);
-            Assert.Equal(new SalesOrderItemObjectStates(this.DatabaseSession).InProcess, item2.CurrentObjectState);
-            Assert.Equal(new SalesOrderItemObjectStates(this.DatabaseSession).InProcess, item3.CurrentObjectState);
+            Assert.Equal(new SalesOrderStates(this.DatabaseSession).InProcess, order.SalesOrderState);
+            Assert.Equal(new SalesOrderItemStates(this.DatabaseSession).Finished, item1.SalesOrderItemState);
+            Assert.Equal(new SalesOrderItemStates(this.DatabaseSession).InProcess, item2.SalesOrderItemState);
+            Assert.Equal(new SalesOrderItemStates(this.DatabaseSession).InProcess, item3.SalesOrderItemState);
 
             good1Inventory.AddInventoryItemVariance(new InventoryItemVarianceBuilder(this.DatabaseSession).WithQuantity(100).WithReason(new VarianceReasons(this.DatabaseSession).Unknown).Build());
 
@@ -308,10 +308,10 @@ namespace Allors.Domain
 
             this.DatabaseSession.Derive();
 
-            Assert.Equal(new SalesOrderObjectStates(this.DatabaseSession).InProcess, order.CurrentObjectState);
-            Assert.Equal(new SalesOrderItemObjectStates(this.DatabaseSession).Finished, item1.CurrentObjectState);
-            Assert.Equal(new SalesOrderItemObjectStates(this.DatabaseSession).Finished, item2.CurrentObjectState);
-            Assert.Equal(new SalesOrderItemObjectStates(this.DatabaseSession).InProcess, item3.CurrentObjectState);
+            Assert.Equal(new SalesOrderStates(this.DatabaseSession).InProcess, order.SalesOrderState);
+            Assert.Equal(new SalesOrderItemStates(this.DatabaseSession).Finished, item1.SalesOrderItemState);
+            Assert.Equal(new SalesOrderItemStates(this.DatabaseSession).Finished, item2.SalesOrderItemState);
+            Assert.Equal(new SalesOrderItemStates(this.DatabaseSession).InProcess, item3.SalesOrderItemState);
 
             good2Inventory.AddInventoryItemVariance(new InventoryItemVarianceBuilder(this.DatabaseSession).WithQuantity(100).WithReason(new VarianceReasons(this.DatabaseSession).Unknown).Build());
 
@@ -350,10 +350,10 @@ namespace Allors.Domain
 
             this.DatabaseSession.Derive();
 
-            Assert.Equal(new SalesOrderObjectStates(this.DatabaseSession).Finished, order.CurrentObjectState);
-            Assert.Equal(new SalesOrderItemObjectStates(this.DatabaseSession).Finished, item1.CurrentObjectState);
-            Assert.Equal(new SalesOrderItemObjectStates(this.DatabaseSession).Finished, item2.CurrentObjectState);
-            Assert.Equal(new SalesOrderItemObjectStates(this.DatabaseSession).Finished, item3.CurrentObjectState);
+            Assert.Equal(new SalesOrderStates(this.DatabaseSession).Finished, order.SalesOrderState);
+            Assert.Equal(new SalesOrderItemStates(this.DatabaseSession).Finished, item1.SalesOrderItemState);
+            Assert.Equal(new SalesOrderItemStates(this.DatabaseSession).Finished, item2.SalesOrderItemState);
+            Assert.Equal(new SalesOrderItemStates(this.DatabaseSession).Finished, item3.SalesOrderItemState);
         }
 
         [Fact]
@@ -526,7 +526,7 @@ namespace Allors.Domain
             var negativePickList = order.ShipToCustomer.PickListsWhereShipToParty[1];
             Assert.Equal(-10, negativePickList.PickListItems[0].RequestedQuantity);
 
-            Assert.Equal(new CustomerShipmentObjectStates(this.DatabaseSession).Cancelled, shipment.CurrentObjectState);
+            Assert.Equal(new CustomerShipmentStates(this.DatabaseSession).Cancelled, shipment.CustomerShipmentState);
         }
 
         [Fact]
@@ -618,16 +618,16 @@ namespace Allors.Domain
 
             this.DatabaseSession.Derive();
 
-            Assert.Equal(new CustomerShipmentObjectStates(this.DatabaseSession).Created, shipment.CurrentObjectState);
-            Assert.Equal(new PickListObjectStates(this.DatabaseSession).Created, pickList.CurrentObjectState);
+            Assert.Equal(new CustomerShipmentStates(this.DatabaseSession).Created, shipment.CustomerShipmentState);
+            Assert.Equal(new PickListStates(this.DatabaseSession).Created, pickList.PickListState);
             Assert.Equal(20, pickList.PickListItems[0].RequestedQuantity);
 
             order2.Cancel();
 
             this.DatabaseSession.Derive();
 
-            Assert.Equal(new CustomerShipmentObjectStates(this.DatabaseSession).Cancelled, shipment.CurrentObjectState);
-            Assert.Equal(new PickListObjectStates(this.DatabaseSession).Cancelled, pickList.CurrentObjectState);
+            Assert.Equal(new CustomerShipmentStates(this.DatabaseSession).Cancelled, shipment.CustomerShipmentState);
+            Assert.Equal(new PickListStates(this.DatabaseSession).Cancelled, pickList.PickListState);
         }
 
         [Fact]
@@ -689,7 +689,7 @@ namespace Allors.Domain
 
             this.DatabaseSession.Derive();
 
-            Assert.Equal(new SalesOrderObjectStates(this.DatabaseSession).OnHold, order.CurrentObjectState);
+            Assert.Equal(new SalesOrderStates(this.DatabaseSession).OnHold, order.SalesOrderState);
             Assert.Equal(0, item.QuantityPendingShipment);
             Assert.Equal(10, item.QuantityShortFalled);
 
@@ -697,7 +697,7 @@ namespace Allors.Domain
 
             this.DatabaseSession.Derive();
 
-            Assert.Equal(new SalesOrderObjectStates(this.DatabaseSession).OnHold, order.CurrentObjectState);
+            Assert.Equal(new SalesOrderStates(this.DatabaseSession).OnHold, order.SalesOrderState);
             Assert.Equal(0, item.QuantityPendingShipment);
             Assert.Equal(10, item.QuantityRequestsShipping);
             Assert.Equal(0, item.QuantityShortFalled);
@@ -762,7 +762,7 @@ namespace Allors.Domain
 
             this.DatabaseSession.Derive();
 
-            Assert.Equal(new SalesOrderObjectStates(this.DatabaseSession).OnHold, order.CurrentObjectState);
+            Assert.Equal(new SalesOrderStates(this.DatabaseSession).OnHold, order.SalesOrderState);
             Assert.Equal(0, item.QuantityPendingShipment);
             Assert.Equal(10, item.QuantityShortFalled);
 
@@ -770,7 +770,7 @@ namespace Allors.Domain
 
             this.DatabaseSession.Derive();
 
-            Assert.Equal(new SalesOrderObjectStates(this.DatabaseSession).OnHold, order.CurrentObjectState);
+            Assert.Equal(new SalesOrderStates(this.DatabaseSession).OnHold, order.SalesOrderState);
             Assert.Equal(0, item.QuantityPendingShipment);
             Assert.Equal(10, item.QuantityRequestsShipping);
             Assert.Equal(0, item.QuantityShortFalled);
@@ -779,7 +779,7 @@ namespace Allors.Domain
 
             this.DatabaseSession.Derive();
 
-            Assert.Equal(new SalesOrderObjectStates(this.DatabaseSession).InProcess, order.CurrentObjectState);
+            Assert.Equal(new SalesOrderStates(this.DatabaseSession).InProcess, order.SalesOrderState);
             Assert.Equal(10, item.QuantityPendingShipment);
             Assert.Equal(0, item.QuantityRequestsShipping);
             Assert.Equal(0, item.QuantityShortFalled);
@@ -984,7 +984,7 @@ namespace Allors.Domain
 
             this.DatabaseSession.Derive();
 
-            Assert.Equal(new SalesOrderObjectStates(this.DatabaseSession).RequestsApproval, order.CurrentObjectState);
+            Assert.Equal(new SalesOrderStates(this.DatabaseSession).RequestsApproval, order.SalesOrderState);
             Assert.Equal(0, item.QuantityReserved);
             Assert.Equal(0, item.QuantityPendingShipment);
             Assert.Equal(0, item.QuantityRequestsShipping);
@@ -994,7 +994,7 @@ namespace Allors.Domain
 
             this.DatabaseSession.Derive();
 
-            Assert.Equal(new SalesOrderObjectStates(this.DatabaseSession).InProcess, order.CurrentObjectState);
+            Assert.Equal(new SalesOrderStates(this.DatabaseSession).InProcess, order.SalesOrderState);
             Assert.Equal(10, item.QuantityReserved);
             Assert.Equal(10, item.QuantityPendingShipment);
             Assert.Equal(0, item.QuantityRequestsShipping);
@@ -1075,7 +1075,7 @@ namespace Allors.Domain
 
             this.DatabaseSession.Derive();
 
-            Assert.Equal(new SalesOrderObjectStates(this.DatabaseSession).RequestsApproval, order.CurrentObjectState);
+            Assert.Equal(new SalesOrderStates(this.DatabaseSession).RequestsApproval, order.SalesOrderState);
             Assert.Equal(0, item.QuantityReserved);
             Assert.Equal(0, item.QuantityPendingShipment);
             Assert.Equal(0, item.QuantityRequestsShipping);
@@ -1085,7 +1085,7 @@ namespace Allors.Domain
 
             this.DatabaseSession.Derive();
 
-            Assert.Equal(new SalesOrderObjectStates(this.DatabaseSession).InProcess, order.CurrentObjectState);
+            Assert.Equal(new SalesOrderStates(this.DatabaseSession).InProcess, order.SalesOrderState);
             Assert.Equal(10, item.QuantityReserved);
             Assert.Equal(10, item.QuantityPendingShipment);
             Assert.Equal(0, item.QuantityRequestsShipping);
@@ -1149,7 +1149,7 @@ namespace Allors.Domain
 
             this.DatabaseSession.Derive();
 
-            Assert.Equal(new SalesOrderObjectStates(this.DatabaseSession).RequestsApproval, order.CurrentObjectState);
+            Assert.Equal(new SalesOrderStates(this.DatabaseSession).RequestsApproval, order.SalesOrderState);
         }
 
         [Fact]
@@ -1210,7 +1210,7 @@ namespace Allors.Domain
 
             this.DatabaseSession.Derive();
 
-            Assert.Equal(new SalesOrderObjectStates(this.DatabaseSession).InProcess, order.CurrentObjectState);
+            Assert.Equal(new SalesOrderStates(this.DatabaseSession).InProcess, order.SalesOrderState);
             Assert.Equal(0, item.QuantityReserved);
             Assert.Equal(0, item.QuantityPendingShipment);
             Assert.Equal(0, item.QuantityRequestsShipping);
@@ -1389,8 +1389,8 @@ namespace Allors.Domain
 
             this.DatabaseSession.Derive();
 
-            Assert.Equal(new SalesOrderObjectStates(this.DatabaseSession).Provisional, order.CurrentObjectState);
-            Assert.Equal(order.LastObjectState, order.CurrentObjectState);
+            Assert.Equal(new SalesOrderStates(this.DatabaseSession).Provisional, order.SalesOrderState);
+            Assert.Equal(order.LastSalesOrderState, order.SalesOrderState);
         }
 
         [Fact]
@@ -1415,7 +1415,7 @@ namespace Allors.Domain
 
             this.DatabaseSession.Derive();
 
-            Assert.Null(order.PreviousObjectState);
+            Assert.Null(order.PreviousSalesOrderState);
         }
 
         [Fact]
@@ -1440,13 +1440,13 @@ namespace Allors.Domain
 
             this.DatabaseSession.Derive();
 
-            Assert.Equal(new SalesOrderObjectStates(this.DatabaseSession).Provisional, order.CurrentObjectState);
+            Assert.Equal(new SalesOrderStates(this.DatabaseSession).Provisional, order.SalesOrderState);
 
             order.Confirm();
 
             this.DatabaseSession.Derive();
 
-            Assert.Equal(new SalesOrderObjectStates(this.DatabaseSession).InProcess, order.CurrentObjectState);
+            Assert.Equal(new SalesOrderStates(this.DatabaseSession).InProcess, order.SalesOrderState);
         }
 
         [Fact]
@@ -1814,7 +1814,7 @@ namespace Allors.Domain
             this.DatabaseSession.Derive();
             this.DatabaseSession.Commit();
 
-            Assert.Equal(new SalesOrderObjectStates(this.DatabaseSession).Provisional, order.CurrentObjectState);
+            Assert.Equal(new SalesOrderStates(this.DatabaseSession).Provisional, order.SalesOrderState);
             var acl = new AccessControlList(order, new Users(this.DatabaseSession).CurrentUser);
             Assert.True(acl.CanExecute(M.SalesOrder.Confirm));
             Assert.True(acl.CanExecute(M.SalesOrder.Cancel));
@@ -1890,7 +1890,7 @@ namespace Allors.Domain
 
             this.DatabaseSession.Derive();
 
-            Assert.Equal(new SalesOrderObjectStates(this.DatabaseSession).Cancelled, order.CurrentObjectState);
+            Assert.Equal(new SalesOrderStates(this.DatabaseSession).Cancelled, order.SalesOrderState);
             var acl = new AccessControlList(order, new Users(this.DatabaseSession).CurrentUser);
             Assert.False(acl.CanExecute(M.SalesOrder.Confirm));
             Assert.False(acl.CanExecute(M.SalesOrder.Cancel));
@@ -1928,7 +1928,7 @@ namespace Allors.Domain
 
             this.DatabaseSession.Derive();
 
-            Assert.Equal(new SalesOrderObjectStates(this.DatabaseSession).Rejected, order.CurrentObjectState);
+            Assert.Equal(new SalesOrderStates(this.DatabaseSession).Rejected, order.SalesOrderState);
             var acl = new AccessControlList(order, new Users(this.DatabaseSession).CurrentUser);
             Assert.False(acl.CanExecute(M.SalesOrder.Confirm));
             Assert.False(acl.CanExecute(M.SalesOrder.Cancel));
@@ -1966,11 +1966,11 @@ namespace Allors.Domain
 
             this.DatabaseSession.Derive();
 
-            order.CurrentObjectState = new SalesOrderObjectStates(this.DatabaseSession).Finished;
+            order.SalesOrderState = new SalesOrderStates(this.DatabaseSession).Finished;
 
             this.DatabaseSession.Derive();
 
-            Assert.Equal(new SalesOrderObjectStates(this.DatabaseSession).Finished, order.CurrentObjectState);
+            Assert.Equal(new SalesOrderStates(this.DatabaseSession).Finished, order.SalesOrderState);
             var acl = new AccessControlList(order, new Users(this.DatabaseSession).CurrentUser);
             Assert.False(acl.CanExecute(M.SalesOrder.Confirm));
             Assert.False(acl.CanExecute(M.SalesOrder.Cancel));
@@ -2013,7 +2013,7 @@ namespace Allors.Domain
             this.DatabaseSession.Derive();
             this.DatabaseSession.Commit();
 
-            Assert.Equal(new SalesOrderObjectStates(this.DatabaseSession).OnHold, order.CurrentObjectState);
+            Assert.Equal(new SalesOrderStates(this.DatabaseSession).OnHold, order.SalesOrderState);
             var acl = new AccessControlList(order, new Users(this.DatabaseSession).CurrentUser);
             Assert.True(acl.CanExecute(M.SalesOrder.Cancel));
             Assert.True(acl.CanExecute(M.SalesOrder.Continue));
@@ -2550,10 +2550,10 @@ namespace Allors.Domain
             Assert.Contains(item1, order.ValidOrderItems);
             Assert.Contains(item2, order.ValidOrderItems);
             Assert.Contains(item3, order.ValidOrderItems);
-            Assert.Equal(new SalesOrderItemObjectStates(this.DatabaseSession).InProcess, item1.CurrentObjectState);
-            Assert.Equal(new SalesOrderItemObjectStates(this.DatabaseSession).InProcess, item2.CurrentObjectState);
-            Assert.Equal(new SalesOrderItemObjectStates(this.DatabaseSession).InProcess, item3.CurrentObjectState);
-            Assert.Equal(new SalesOrderItemObjectStates(this.DatabaseSession).Cancelled, item4.CurrentObjectState);
+            Assert.Equal(new SalesOrderItemStates(this.DatabaseSession).InProcess, item1.SalesOrderItemState);
+            Assert.Equal(new SalesOrderItemStates(this.DatabaseSession).InProcess, item2.SalesOrderItemState);
+            Assert.Equal(new SalesOrderItemStates(this.DatabaseSession).InProcess, item3.SalesOrderItemState);
+            Assert.Equal(new SalesOrderItemStates(this.DatabaseSession).Cancelled, item4.SalesOrderItemState);
         }
 
         [Fact]

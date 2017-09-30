@@ -23,16 +23,16 @@ namespace Allors.Domain
         {
             base.AppsPrepare(setup);
 
-            setup.AddDependency(this.ObjectType, M.RequirementObjectState);
+            setup.AddDependency(this.ObjectType, M.RequirementState);
         }
 
         protected override void AppsSecure(Security config)
         {
             base.AppsSecure(config);
 
-            var openedState = new WorkEffortObjectStates(this.Session).NeedsAction;
-            var cancelledState = new WorkEffortObjectStates(this.Session).Cancelled;
-            var finishedState = new WorkEffortObjectStates(this.Session).Completed;
+            var openedState = new WorkEffortStates(this.Session).NeedsAction;
+            var cancelledState = new WorkEffortStates(this.Session).Cancelled;
+            var finishedState = new WorkEffortStates(this.Session).Completed;
 
             config.Deny(this.ObjectType, openedState, M.WorkEffort.Reopen);
 

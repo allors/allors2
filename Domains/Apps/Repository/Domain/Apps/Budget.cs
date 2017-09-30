@@ -7,6 +7,40 @@ namespace Allors.Repository
     #endregion
     public partial interface Budget : Period, Commentable, UniquelyIdentifiable, Transitional
     {
+        #region ObjectStates
+        #region BudgetState
+        #region Allors
+        [Id("2DD77672-178C-4561-804F-DB95A24D4DB4")]
+        [AssociationId("A72A8A7B-9EF4-4BC7-AA56-D5CFBB952A63")]
+        [RoleId("F2F42BBB-BCA0-4B29-83E9-D531FF70B332")]
+        [Indexed]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Derived]
+        BudgetState PreviousBudgetState { get; set; }
+
+        #region Allors
+        [Id("7F959434-3302-4F06-B008-D80C356AD271")]
+        [AssociationId("F7B72F3A-5EFC-44A3-AC31-00CDCD55F2C7")]
+        [RoleId("A8C0278A-5965-4BF8-A62F-1A528C3A98C5")]
+        [Indexed]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Derived]
+        BudgetState LastBudgetState { get; set; }
+
+        #region Allors
+        [Id("C9030E23-C2E0-4C2C-8484-6FB8F5C1BFE1")]
+        [AssociationId("89FBED90-A741-4F17-ADF5-B7DC807D8D37")]
+        [RoleId("F10B5459-9FDD-4596-906F-2B558E38021A")]
+        [Indexed]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Workspace]
+        BudgetState BudgetState { get; set; }
+        #endregion
+        #endregion
+
         #region Allors
         [Id("1848add9-ab90-4191-b7f1-eb392be3ec4e")]
         [AssociationId("8232c215-e592-4ec7-8c44-391c917b7e89")]
@@ -26,33 +60,12 @@ namespace Allors.Repository
         BudgetRevision[] BudgetRevisions { get; set; }
         
         #region Allors
-        [Id("2163a044-c967-4137-b1d0-dfd3fac80869")]
-        [AssociationId("3ec284eb-944c-4ff0-8e24-9be0ceeda22a")]
-        [RoleId("f02d72a7-2547-44dc-bb8b-42e58afe186d")]
-        #endregion
-        [Multiplicity(Multiplicity.OneToMany)]
-        [Derived]
-        [Indexed]
-        BudgetStatus[] BudgetStatuses { get; set; }
-        
-        #region Allors
         [Id("494d04ef-aafc-4482-a5c2-4ec9fa93d158")]
         [AssociationId("eda25f81-bba9-4e23-9074-4e22338ace23")]
         [RoleId("d2a2990a-2966-4302-8c18-0884915f9d33")]
         #endregion
         [Size(256)]
         string BudgetNumber { get; set; }
-        
-        #region Allors
-        [Id("59cbc253-e17d-4405-bea8-09ad420bf8bc")]
-        [AssociationId("6f6d9d35-daf5-4a79-85ce-d662cd7ec2d4")]
-        [RoleId("a6ec675f-c28a-470e-9923-e623e0ca9c58")]
-        #endregion
-        [Multiplicity(Multiplicity.ManyToOne)]
-        [Derived]
-        [Indexed]
-        BudgetObjectState CurrentObjectState { get; set; }
-
 
         #region Allors
         [Id("834432b1-65b2-4499-a83d-71f0db6e177b")]
@@ -63,18 +76,6 @@ namespace Allors.Repository
         [Indexed]
         BudgetReview[] BudgetReviews { get; set; }
 
-
-        #region Allors
-        [Id("d4d205b5-6f23-41f5-93fc-08d4d9ad0727")]
-        [AssociationId("181fd812-5a57-44d5-92c7-70755df1c9e3")]
-        [RoleId("516885f8-6aee-4e63-bd38-3134ed753e28")]
-        #endregion
-        [Multiplicity(Multiplicity.OneToOne)]
-        [Derived]
-        [Indexed]
-        BudgetStatus CurrentBudgetStatus { get; set; }
-
-
         #region Allors
         [Id("f6078f5b-036f-45de-ab4f-fb26b6939d11")]
         [AssociationId("ba8edec9-a429-482d-bfbd-4f7fd419eaf7")]
@@ -83,7 +84,7 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.OneToMany)]
         [Indexed]
         BudgetItem[] BudgetItems { get; set; }
-        
+
         #region Allors
         [Id("A6ED3503-571A-4800-B1BE-379CE197584F")]
         #endregion

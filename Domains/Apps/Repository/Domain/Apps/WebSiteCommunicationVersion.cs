@@ -11,6 +11,9 @@ namespace Allors.Repository
         #region inherited properties
         public Permission[] DeniedPermissions { get; set; }
         public SecurityToken[] SecurityTokens { get; set; }
+
+        public DateTime LastModifiedDate { get; set; }
+
         public SecurityToken OwnerSecurityToken { get; set; }
         public AccessControl OwnerAccessControl { get; set; }
         public DateTime ScheduledStart { get; set; }
@@ -18,7 +21,16 @@ namespace Allors.Repository
         public ContactMechanism[] ContactMechanisms { get; set; }
         public Party[] InvolvedParties { get; set; }
         public DateTime InitialScheduledStart { get; set; }
-        public CommunicationEventObjectState CurrentObjectState { get; set; }
+        public CommunicationEventState CommunicationEventState { get; set; }
+
+        public string Comment { get; set; }
+
+        public User CreatedBy { get; set; }
+
+        public User LastModifiedBy { get; set; }
+
+        public DateTime CreationDate { get; set; }
+
         public CommunicationEventPurpose[] EventPurposes { get; set; }
         public DateTime ScheduledEnd { get; set; }
         public DateTime ActualEnd { get; set; }

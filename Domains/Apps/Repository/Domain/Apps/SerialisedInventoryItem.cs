@@ -11,15 +11,18 @@ namespace Allors.Repository
     {
         #region inherited properties
 
+        public ObjectState[] PreviousObjectStates { get; set; }
+
+        public ObjectState[] LastObjectStates { get; set; }
+
+        public ObjectState[] ObjectStates { get; set; }
+
         public Permission[] DeniedPermissions { get; set; }
         public SecurityToken[] SecurityTokens { get; set; }
-        public ObjectState PreviousObjectState { get; set; }
-        public ObjectState LastObjectState { get; set; }
         public Guid UniqueId { get; set; }
         public ProductCharacteristicValue[] ProductCharacteristicValues { get; set; }
         public InventoryItemVariance[] InventoryItemVariances { get; set; }
         public Part Part { get; set; }
-        public Container Container { get; set; }
         public string Name { get; set; }
         public Lot Lot { get; set; }
         public string Sku { get; set; }
@@ -29,6 +32,62 @@ namespace Allors.Repository
         public ProductType ProductType { get; set; }
         public Facility Facility { get; set; }
 
+        #endregion
+
+        #region ObjectStates
+        #region SerialisedInventoryItemState
+        #region Allors
+        [Id("CCB71B4F-1A3F-4D08-B3E4-380FB2D513FF")]
+        [AssociationId("D35F6D66-DAA2-4044-B4E9-FBCFBC7D2CD9")]
+        [RoleId("35C5FABD-1F83-4D6C-8268-F027CC9F7B51")]
+        [Indexed]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Derived]
+        public SerialisedInventoryItemState PreviousSerialisedInventoryItemState { get; set; }
+
+        #region Allors
+        [Id("72A268C1-4A32-48C1-BB2D-837AC1DF361E")]
+        [AssociationId("0ED35F86-9400-4F89-8F9D-A8D6A7408A78")]
+        [RoleId("DF809B37-E9DA-463C-B532-02E44BC0394F")]
+        [Indexed]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Derived]
+        public SerialisedInventoryItemState LastSerialisedInventoryItemState { get; set; }
+
+        #region Allors
+        [Id("7E757767-61AC-49E9-97CF-DE929C015D5B")]
+        [AssociationId("60B25B4C-B160-498C-A3CF-EBB057EACACC")]
+        [RoleId("87B18D10-A205-40E7-8403-733791AF3FD9")]
+        [Indexed]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Workspace]
+        public SerialisedInventoryItemState SerialisedInventoryItemState { get; set; }
+        #endregion
+        #endregion
+
+        #region Versioning
+        #region Allors
+        [Id("235F117A-3288-4729-8348-92BCEBCDB3B6")]
+        [AssociationId("63D481C8-C311-4789-9145-A0AA9F8648FD")]
+        [RoleId("F5D5D294-C53E-4174-BE73-687400481205")]
+        [Indexed]
+        #endregion
+        [Multiplicity(Multiplicity.OneToOne)]
+        [Workspace]
+        public SerialisedInventoryItemVersion CurrentVersion { get; set; }
+
+        #region Allors
+        [Id("14266ECC-B4FF-4365-9087-0F67946246D2")]
+        [AssociationId("3B2D539D-3886-4614-B4D5-170F5A4D77DD")]
+        [RoleId("FCDED27A-83F2-4D97-A74A-49ED05F5C212")]
+        [Indexed]
+        #endregion
+        [Multiplicity(Multiplicity.OneToMany)]
+        [Workspace]
+        public SerialisedInventoryItemVersion[] AllVersions { get; set; }
         #endregion
 
         #region Allors
@@ -131,38 +190,6 @@ namespace Allors.Repository
         [Workspace]
         public decimal TransportCost { get; set; }
 
-        #region Allors
-        [Id("887163E8-720C-4CFD-83DC-7B70A2B155E3")]
-        [AssociationId("08923E88-696D-490F-82BC-C775156023FD")]
-        [RoleId("CE39E19B-1BE5-487A-A728-BBE7BFFD9901")]
-        [Indexed]
-        #endregion
-        [Workspace]
-        [Multiplicity(Multiplicity.ManyToOne)]
-        public SerialisedInventoryItemObjectState CurrentObjectState { get; set; }
-
-        #region Versioning
-        #region Allors
-        [Id("235F117A-3288-4729-8348-92BCEBCDB3B6")]
-        [AssociationId("63D481C8-C311-4789-9145-A0AA9F8648FD")]
-        [RoleId("F5D5D294-C53E-4174-BE73-687400481205")]
-        [Indexed]
-        #endregion
-        [Multiplicity(Multiplicity.OneToOne)]
-        [Workspace]
-        public SerialisedInventoryItemVersion CurrentVersion { get; set; }
-
-        #region Allors
-        [Id("14266ECC-B4FF-4365-9087-0F67946246D2")]
-        [AssociationId("3B2D539D-3886-4614-B4D5-170F5A4D77DD")]
-        [RoleId("FCDED27A-83F2-4D97-A74A-49ED05F5C212")]
-        [Indexed]
-        #endregion
-        [Multiplicity(Multiplicity.OneToMany)]
-        [Workspace]
-        public SerialisedInventoryItemVersion[] AllVersions { get; set; }
-        #endregion
-
         #region inherited methods
 
 
@@ -180,5 +207,5 @@ namespace Allors.Repository
 
 
         #endregion
-   }
+    }
 }

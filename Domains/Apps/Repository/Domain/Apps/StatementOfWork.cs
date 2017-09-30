@@ -10,6 +10,19 @@ namespace Allors.Repository
     public partial class StatementOfWork : Quote, Versioned
     {
         #region inherited properties
+
+        public ObjectState[] PreviousObjectStates { get; set; }
+
+        public ObjectState[] LastObjectStates { get; set; }
+
+        public ObjectState[] ObjectStates { get; set; }
+
+        public QuoteState PreviousQuoteState { get; set; }
+
+        public QuoteState LastQuoteState { get; set; }
+
+        public QuoteState QuoteState { get; set; }
+
         public string InternalComment { get; set; }
         public DateTime RequiredResponseDate { get; set; }
         public DateTime ValidFromDate { get; set; }
@@ -23,12 +36,9 @@ namespace Allors.Repository
         public DateTime IssueDate { get; set; }
         public QuoteItem[] QuoteItems { get; set; }
         public string QuoteNumber { get; set; }
-        public QuoteObjectState CurrentObjectState { get; set; }
         public Request Request { get; set; }
         public Permission[] DeniedPermissions { get; set; }
         public SecurityToken[] SecurityTokens { get; set; }
-        public ObjectState PreviousObjectState { get; set; }
-        public ObjectState LastObjectState { get; set; }
         public Guid UniqueId { get; set; }
         public string PrintContent { get; set; }
         public User CreatedBy { get; set; }

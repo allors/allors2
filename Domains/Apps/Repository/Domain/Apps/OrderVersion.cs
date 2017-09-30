@@ -10,6 +10,52 @@ namespace Allors.Repository
     public partial interface OrderVersion : Version
     {
         #region Allors
+        [Id("C1A57736-7027-4944-BF06-7CB5E513CCBE")]
+        [AssociationId("89D7C360-0FBE-4ECF-B23F-5A507675E228")]
+        [RoleId("E89E5DF1-923C-4F6C-9CFD-1920512DF445")]
+        [Indexed]
+        #endregion
+        [Size(-1)]
+        [Workspace]
+        string Comment { get; set; }
+
+        #region Allors
+        [Id("CECB258A-5B25-4AB5-9F27-924CB9CD8080")]
+        [AssociationId("C4A0106D-05F1-4663-AC6F-9D47E6F8C01C")]
+        [RoleId("3976F31A-8981-44C9-82FD-2845ECFB3E3A")]
+        [Indexed]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Workspace]
+        User CreatedBy { get; set; }
+
+        #region Allors
+        [Id("C559F387-0520-4410-80A6-58FADC3A3F0F")]
+        [AssociationId("516E4840-FC89-462A-8FB0-317C9BC8D43D")]
+        [RoleId("E6DD62E0-9107-4BA4-A669-C5750AEB77A4")]
+        [Indexed]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Workspace]
+        User LastModifiedBy { get; set; }
+
+        #region Allors
+        [Id("95FAE69F-0298-425A-AB74-7D553056624A")]
+        [AssociationId("161AB23A-9B8A-4CDE-A6DC-F139F5E85D08")]
+        [RoleId("0BD0FE07-F983-474C-9A60-B6D048513854")]
+        #endregion
+        [Workspace]
+        DateTime CreationDate { get; set; }
+
+        #region Allors
+        [Id("16365C4A-C5F8-4004-9384-77E4E42E6151")]
+        [AssociationId("7123418D-C368-4E8B-BE8A-609FDB08DE6C")]
+        [RoleId("9393293D-05EC-4104-A7BC-B6DD9B54EEE3")]
+        #endregion
+        [Workspace]
+        DateTime LastModifiedDate { get; set; }
+
+        #region Allors
         [Id("812FD6D2-13B6-42A8-AE84-355E6DE25D86")]
         [AssociationId("06F8AFDB-626C-46E7-97EE-947243F0EBFB")]
         [RoleId("FC7B972C-C44A-47CD-87C7-B867EC79075F")]

@@ -86,6 +86,17 @@ namespace Allors.Repository
         #endregion
 
         #region Allors
+        [Id("E9D53F26-6B36-4278-A3CE-CA9730458109")]
+        [AssociationId("F114BF9A-B2D6-42B6-8EF5-0EDEE5D10BFE")]
+        [RoleId("15DFF22E-5A71-417A-AA6E-1023E807E757")]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Indexed]
+        [Required]
+        [Workspace]
+        public SalesOrderItemState SalesOrderItemState { get; set; }
+
+        #region Allors
         [Id("70D8D5BA-D759-414B-BE25-1E05C1E7F72E")]
         [AssociationId("0D6114BA-93B6-4329-8538-BD63126A25C7")]
         [RoleId("ED87ABCC-B4CB-4466-9128-0867B6D745BA")]
@@ -215,17 +226,6 @@ namespace Allors.Repository
         [Derived]
         [Indexed]
         public Product PreviousProduct { get; set; }
-
-        #region Allors
-        [Id("E9D53F26-6B36-4278-A3CE-CA9730458109")]
-        [AssociationId("F114BF9A-B2D6-42B6-8EF5-0EDEE5D10BFE")]
-        [RoleId("15DFF22E-5A71-417A-AA6E-1023E807E757")]
-        #endregion
-        [Multiplicity(Multiplicity.ManyToOne)]
-        [Indexed]
-        [Required]
-        [Workspace]
-        public SalesOrderItemObjectState CurrentObjectState { get; set; }
 
         #region Allors
         [Id("B9311153-8945-4F8B-8807-CB70FC216FF9")]

@@ -22,17 +22,22 @@ namespace Allors.Domain
 
     public partial class PurchaseOrder
     {
-        ObjectState Transitional.CurrentObjectState => this.CurrentObjectState;
+        public static readonly TransitionalConfiguration[] StaticTransitionalConfigurations =
+            {
+                new TransitionalConfiguration(M.PurchaseOrder.PurchaseOrderState),
+            };
 
-        public bool IsProvisional => this.CurrentObjectState.Equals(new PurchaseOrderObjectStates(this.Strategy.Session).Provisional);
+        public TransitionalConfiguration[] TransitionalConfigurations => StaticTransitionalConfigurations;
+
+        public bool IsProvisional => this.PurchaseOrderState.Equals(new PurchaseOrderStates(this.Strategy.Session).Provisional);
 
         public OrderItem[] OrderItems => this.PurchaseOrderItems;
 
         public void AppsOnBuild(ObjectOnBuild method)
         {
-            if (!this.ExistCurrentObjectState)
+            if (!this.ExistPurchaseOrderState)
             {
-                this.CurrentObjectState = new PurchaseOrderObjectStates(this.Strategy.Session).Provisional;
+                this.PurchaseOrderState = new PurchaseOrderStates(this.Strategy.Session).Provisional;
             }
 
             if (this.ExistTakenViaSupplier)
@@ -141,43 +146,43 @@ namespace Allors.Domain
 
         public void AppsCancel(OrderCancel method)
         {
-            this.CurrentObjectState = new PurchaseOrderObjectStates(this.Strategy.Session).Cancelled;
+            this.PurchaseOrderState = new PurchaseOrderStates(this.Strategy.Session).Cancelled;
         }
 
         public void AppsConfirm(OrderConfirm method)
         {
-            this.CurrentObjectState = new PurchaseOrderObjectStates(this.Strategy.Session).InProcess;
+            this.PurchaseOrderState = new PurchaseOrderStates(this.Strategy.Session).InProcess;
         }
 
         public void AppsReject(OrderReject method)
         {
-            this.CurrentObjectState = new PurchaseOrderObjectStates(this.Strategy.Session).Rejected;
+            this.PurchaseOrderState = new PurchaseOrderStates(this.Strategy.Session).Rejected;
         }
 
         public void AppsHold(OrderHold method)
         {
-            this.CurrentObjectState = new PurchaseOrderObjectStates(this.Strategy.Session).OnHold;
+            this.PurchaseOrderState = new PurchaseOrderStates(this.Strategy.Session).OnHold;
         }
 
         public void AppsApprove(OrderApprove method)
         {
-            this.CurrentObjectState = new PurchaseOrderObjectStates(this.Strategy.Session).RequestsApproval;
+            this.PurchaseOrderState = new PurchaseOrderStates(this.Strategy.Session).RequestsApproval;
         }
 
         public void AppsContinue(OrderContinue method)
         {
-            this.CurrentObjectState = new PurchaseOrderObjectStates(this.Strategy.Session).InProcess;
+            this.PurchaseOrderState = new PurchaseOrderStates(this.Strategy.Session).InProcess;
         }
 
         public void AppsOnDeriveCurrentOrderStatus(IDerivation derivation)
         {
             // TODO: State Transitions
-            //if (this.ExistCurrentShipmentStateVersion && this.CurrentShipmentStateVersion.CurrentObjectState.Equals(new PurchaseOrderObjectStates(this.Strategy.Session).Received))
+            //if (this.ExistCurrentShipmentStateVersion && this.CurrentShipmentStateVersion.CurrentObjectState.Equals(new PurchaseOrderStates(this.Strategy.Session).Received))
             //{
             //    this.Complete();
             //}
 
-            //if (this.ExistCurrentPaymentStateVersion && this.CurrentPaymentStateVersion.CurrentObjectState.Equals(new PurchaseOrderObjectStates(this.Strategy.Session).Paid))
+            //if (this.ExistCurrentPaymentStateVersion && this.CurrentPaymentStateVersion.CurrentObjectState.Equals(new PurchaseOrderStates(this.Strategy.Session).Paid))
             //{
             //    this.Finish();
             //}

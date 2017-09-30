@@ -24,19 +24,19 @@ namespace Allors.Domain
         {
             base.AppsPrepare(setup);
 
-            setup.AddDependency(this.ObjectType, M.RequestObjectState);
+            setup.AddDependency(this.ObjectType, M.RequestState);
         }
 
         protected override void AppsSecure(Security config)
         {
             base.AppsSecure(config);
 
-            var anonymous = new RequestObjectStates(this.Session).Anonymous;
-            var cancelled = new RequestObjectStates(this.Session).Cancelled;
-            var quoted = new RequestObjectStates(this.Session).Quoted;
-            var pendingCustomer = new RequestObjectStates(this.Session).PendingCustomer;
-            var rejected = new RequestObjectStates(this.Session).Rejected;
-            var submitted = new RequestObjectStates(this.Session).Submitted;
+            var anonymous = new RequestStates(this.Session).Anonymous;
+            var cancelled = new RequestStates(this.Session).Cancelled;
+            var quoted = new RequestStates(this.Session).Quoted;
+            var pendingCustomer = new RequestStates(this.Session).PendingCustomer;
+            var rejected = new RequestStates(this.Session).Rejected;
+            var submitted = new RequestStates(this.Session).Submitted;
 
             var cancel = this.Meta.Cancel;
             var hold = this.Meta.Hold;

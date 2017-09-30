@@ -24,17 +24,17 @@ namespace Allors.Domain
         {
             base.AppsPrepare(setup);
 
-            setup.AddDependency(this.ObjectType, M.QuoteObjectState);
+            setup.AddDependency(this.ObjectType, M.QuoteState);
         }
 
         protected override void AppsSecure(Security config)
         {
             base.AppsSecure(config);
 
-            var created = new QuoteObjectStates(this.Session).Created;
-            var approved = new QuoteObjectStates(this.Session).Approved;
-            var ordered = new QuoteObjectStates(this.Session).Ordered;
-            var rejected = new QuoteObjectStates(this.Session).Rejected;
+            var created = new QuoteStates(this.Session).Created;
+            var approved = new QuoteStates(this.Session).Approved;
+            var ordered = new QuoteStates(this.Session).Ordered;
+            var rejected = new QuoteStates(this.Session).Rejected;
 
             var approve = this.Meta.Approve;
             var reject = this.Meta.Reject;

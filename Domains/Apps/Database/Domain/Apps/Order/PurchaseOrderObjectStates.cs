@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------------------------------------------
-// <copyright file="PurchaseOrderObjectStates.cs" company="Allors bvba">
+// <copyright file="PurchaseOrderStates.cs" company="Allors bvba">
 //   Copyright 2002-2012 Allors bvba.
 // Dual Licensed under
 //   a) the General Public Licence v3 (GPL)
@@ -17,7 +17,7 @@ namespace Allors.Domain
 {
     using System;
 
-    public partial class PurchaseOrderObjectStates
+    public partial class PurchaseOrderStates
     {
         private static readonly Guid ProvisionalId = new Guid("69946F6D-718E-463d-AB36-BF4E3B970210");
         private static readonly Guid RequestsApprovalId = new Guid("DA8A94F3-FC5C-4e92-B466-0F47047B2E97");
@@ -32,33 +32,33 @@ namespace Allors.Domain
         private static readonly Guid InProcessId = new Guid("7752F5C5-B19B-4339-A937-0BAD768142A8");
         private static readonly Guid FinishedId = new Guid("A62C1773-C42C-456c-92F3-5FC67382D9A3");
 
-        private UniquelyIdentifiableCache<PurchaseOrderObjectState> stateCache;
+        private UniquelyIdentifiableCache<PurchaseOrderState> stateCache;
 
-        public PurchaseOrderObjectState Provisional => this.StateCache.Get(ProvisionalId);
+        public PurchaseOrderState Provisional => this.StateCache.Get(ProvisionalId);
 
-        public PurchaseOrderObjectState RequestsApproval => this.StateCache.Get(RequestsApprovalId);
+        public PurchaseOrderState RequestsApproval => this.StateCache.Get(RequestsApprovalId);
 
-        public PurchaseOrderObjectState Cancelled => this.StateCache.Get(CancelledId);
+        public PurchaseOrderState Cancelled => this.StateCache.Get(CancelledId);
 
-        public PurchaseOrderObjectState Completed => this.StateCache.Get(CompletedId);
+        public PurchaseOrderState Completed => this.StateCache.Get(CompletedId);
 
-        public PurchaseOrderObjectState Paid => this.StateCache.Get(PaidId);
+        public PurchaseOrderState Paid => this.StateCache.Get(PaidId);
 
-        public PurchaseOrderObjectState PartiallyPaid => this.StateCache.Get(PartiallyPaidId);
+        public PurchaseOrderState PartiallyPaid => this.StateCache.Get(PartiallyPaidId);
 
-        public PurchaseOrderObjectState PartiallyReceived => this.StateCache.Get(PartiallyReceivedId);
+        public PurchaseOrderState PartiallyReceived => this.StateCache.Get(PartiallyReceivedId);
 
-        public PurchaseOrderObjectState Received => this.StateCache.Get(ReceivedId);
+        public PurchaseOrderState Received => this.StateCache.Get(ReceivedId);
 
-        public PurchaseOrderObjectState Rejected => this.StateCache.Get(RejectedId);
+        public PurchaseOrderState Rejected => this.StateCache.Get(RejectedId);
 
-        public PurchaseOrderObjectState Finished => this.StateCache.Get(FinishedId);
+        public PurchaseOrderState Finished => this.StateCache.Get(FinishedId);
 
-        public PurchaseOrderObjectState OnHold => this.StateCache.Get(OnHoldId);
+        public PurchaseOrderState OnHold => this.StateCache.Get(OnHoldId);
 
-        public PurchaseOrderObjectState InProcess => this.StateCache.Get(InProcessId);
+        public PurchaseOrderState InProcess => this.StateCache.Get(InProcessId);
 
-        private UniquelyIdentifiableCache<PurchaseOrderObjectState> StateCache => this.stateCache ?? (this.stateCache = new UniquelyIdentifiableCache<PurchaseOrderObjectState>(this.Session));
+        private UniquelyIdentifiableCache<PurchaseOrderState> StateCache => this.stateCache ?? (this.stateCache = new UniquelyIdentifiableCache<PurchaseOrderState>(this.Session));
 
         protected override void AppsSetup(Setup setup)
         {
@@ -67,62 +67,62 @@ namespace Allors.Domain
             var englishLocale = new Locales(this.Session).EnglishGreatBritain;
             var dutchLocale = new Locales(this.Session).DutchNetherlands;
 
-            new PurchaseOrderObjectStateBuilder(this.Session)
+            new PurchaseOrderStateBuilder(this.Session)
                 .WithUniqueId(ProvisionalId)
                 .WithName("Created")
                 .Build();
 
-            new PurchaseOrderObjectStateBuilder(this.Session)
+            new PurchaseOrderStateBuilder(this.Session)
                 .WithUniqueId(RequestsApprovalId)
                 .WithName("Requests Approval")
                 .Build();
 
-            new PurchaseOrderObjectStateBuilder(this.Session)
+            new PurchaseOrderStateBuilder(this.Session)
                 .WithUniqueId(CancelledId)
                 .WithName("Cancelled")
                 .Build();
 
-            new PurchaseOrderObjectStateBuilder(this.Session)
+            new PurchaseOrderStateBuilder(this.Session)
                 .WithUniqueId(CompletedId)
                 .WithName("Completed")
                 .Build();
 
-            new PurchaseOrderObjectStateBuilder(this.Session)
+            new PurchaseOrderStateBuilder(this.Session)
                 .WithUniqueId(PaidId)
                 .WithName("Paid")
                 .Build();
 
-            new PurchaseOrderObjectStateBuilder(this.Session)
+            new PurchaseOrderStateBuilder(this.Session)
                 .WithUniqueId(PartiallyReceivedId)
                 .WithName("Partially Received")
                 .Build();
 
-            new PurchaseOrderObjectStateBuilder(this.Session)
+            new PurchaseOrderStateBuilder(this.Session)
                 .WithUniqueId(ReceivedId)
                 .WithName("Received")
                 .Build();
 
-            new PurchaseOrderObjectStateBuilder(this.Session)
+            new PurchaseOrderStateBuilder(this.Session)
                 .WithUniqueId(PartiallyPaidId)
                 .WithName("Partially Paid")
                 .Build();
 
-            new PurchaseOrderObjectStateBuilder(this.Session)
+            new PurchaseOrderStateBuilder(this.Session)
                 .WithUniqueId(RejectedId)
                 .WithName("Rejected")
                 .Build();
 
-            new PurchaseOrderObjectStateBuilder(this.Session)
+            new PurchaseOrderStateBuilder(this.Session)
                 .WithUniqueId(OnHoldId)
                 .WithName("On Hold")
                 .Build();
 
-            new PurchaseOrderObjectStateBuilder(this.Session)
+            new PurchaseOrderStateBuilder(this.Session)
                 .WithUniqueId(InProcessId)
                 .WithName("In Process")
                 .Build();
 
-            new PurchaseOrderObjectStateBuilder(this.Session)
+            new PurchaseOrderStateBuilder(this.Session)
                 .WithUniqueId(FinishedId)
                 .WithName("Finished")
                 .Build();

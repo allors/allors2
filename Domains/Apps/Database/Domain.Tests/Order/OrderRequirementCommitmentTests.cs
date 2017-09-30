@@ -61,7 +61,7 @@ namespace Allors.Domain
             var goodOrderItem = new SalesOrderItemBuilder(this.DatabaseSession).WithProduct(good).WithQuantityOrdered(1).Build();
             salesOrder.AddSalesOrderItem(goodOrderItem);
 
-            var customerRequirement = new CustomerRequirementBuilder(this.DatabaseSession).WithDescription("100 gizmo's").Build();
+            var customerRequirement = new RequirementBuilder(this.DatabaseSession).WithDescription("100 gizmo's").Build();
 
             this.DatabaseSession.Derive();
             this.DatabaseSession.Commit();

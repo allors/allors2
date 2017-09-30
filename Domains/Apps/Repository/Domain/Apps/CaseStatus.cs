@@ -33,7 +33,7 @@ namespace Allors.Repository
         [Indexed]
         [Required]
 
-        public CaseObjectState CaseObjectState { get; set; }
+        public CaseState CaseState { get; set; }
 
 
         #region inherited methods

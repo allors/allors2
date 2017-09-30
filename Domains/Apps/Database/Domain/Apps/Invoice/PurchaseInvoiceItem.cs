@@ -17,9 +17,16 @@ namespace Allors.Domain
 {
     using System;
 
+    using Allors.Meta;
+
     public partial class PurchaseInvoiceItem
     {
-        ObjectState Transitional.CurrentObjectState => this.CurrentObjectState;
+        public static readonly TransitionalConfiguration[] StaticTransitionalConfigurations =
+            {
+                new TransitionalConfiguration(M.PurchaseInvoiceItem.PurchaseInvoiceItemState),
+            };
+
+        public TransitionalConfiguration[] TransitionalConfigurations => StaticTransitionalConfigurations;
 
         public decimal PriceAdjustment => this.TotalSurcharge - this.TotalDiscount;
 

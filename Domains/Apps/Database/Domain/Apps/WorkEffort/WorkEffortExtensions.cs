@@ -47,30 +47,30 @@ namespace Allors.Domain
 
         public static void AppsOnBuild(this WorkEffort @this, ObjectOnBuild method)
         {
-            if (!@this.ExistCurrentObjectState)
+            if (!@this.ExistWorkEffortState)
             {
-                @this.CurrentObjectState = new WorkEffortObjectStates(@this.Strategy.Session).NeedsAction;
+                @this.WorkEffortState = new WorkEffortStates(@this.Strategy.Session).NeedsAction;
             }
         }
 
         public static void AppsConfirm(this WorkEffort @this, WorkEffortConfirm method)
         {
-            @this.CurrentObjectState = new WorkEffortObjectStates(@this.Strategy.Session).Confirmed;
+            @this.WorkEffortState = new WorkEffortStates(@this.Strategy.Session).Confirmed;
         }
 
         public static void AppsFinish(this WorkEffort @this, WorkEffortFinish method)
         {
-            @this.CurrentObjectState = new WorkEffortObjectStates(@this.Strategy.Session).Completed;
+            @this.WorkEffortState = new WorkEffortStates(@this.Strategy.Session).Completed;
         }
 
         public static void AppsCancel(this WorkEffort @this, WorkEffortCancel cancel)
         {
-            @this.CurrentObjectState = new WorkEffortObjectStates(@this.Strategy.Session).Cancelled;
+            @this.WorkEffortState = new WorkEffortStates(@this.Strategy.Session).Cancelled;
         }
 
         public static void AppsReopen(this WorkEffort @this, WorkEffortReopen reopen)
         {
-            @this.CurrentObjectState = new WorkEffortObjectStates(@this.Strategy.Session).NeedsAction;
+            @this.WorkEffortState = new WorkEffortStates(@this.Strategy.Session).NeedsAction;
         }
 
         private static void DeriveOwnerSecurity(this WorkEffort @this)

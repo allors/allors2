@@ -21,13 +21,18 @@ namespace Allors.Domain
 
     public partial class CustomerShipment
     {
-        ObjectState Transitional.CurrentObjectState => this.CurrentObjectState;
+        public static readonly TransitionalConfiguration[] StaticTransitionalConfigurations =
+            {
+                new TransitionalConfiguration(M.CustomerShipment.CustomerShipmentState),
+            };
+
+        public TransitionalConfiguration[] TransitionalConfigurations => StaticTransitionalConfigurations;
 
         public bool CanShip
         {
             get
             {
-                if (!this.CurrentObjectState.Equals(new CustomerShipmentObjectStates(this.Strategy.Session).Packed))
+                if (!this.CustomerShipmentState.Equals(new CustomerShipmentStates(this.Strategy.Session).Packed))
                 {
                     return false;
                 }
@@ -39,7 +44,7 @@ namespace Allors.Domain
 
                 var picklists = this.ShipToParty.PickListsWhereShipToParty;
                 picklists.Filter.AddEquals(M.PickList.Store, this.Store);
-                picklists.Filter.AddNot().AddEquals(M.PickList.CurrentObjectState, new PickListObjectStates(this.Strategy.Session).Picked);
+                picklists.Filter.AddNot().AddEquals(M.PickList.PickListState, new PickListStates(this.Strategy.Session).Picked);
                 if (picklists.First != null)
                 {
                     return false;
@@ -49,7 +54,7 @@ namespace Allors.Domain
                 {
                     foreach (OrderShipment orderShipment in shipmentItem.OrderShipmentsWhereShipmentItem)
                     {
-                        if (orderShipment.SalesOrderItem.SalesOrderWhereSalesOrderItem.CurrentObjectState.Equals(new SalesOrderObjectStates(this.Strategy.Session).OnHold))
+                        if (orderShipment.SalesOrderItem.SalesOrderWhereSalesOrderItem.SalesOrderState.Equals(new SalesOrderStates(this.Strategy.Session).OnHold))
                         {
                             return false;
                         }
@@ -85,9 +90,9 @@ namespace Allors.Domain
 
         public void AppsOnBuild(ObjectOnBuild method)
         {
-            if (!this.ExistCurrentObjectState)
+            if (!this.ExistCustomerShipmentState)
             {
-                this.CurrentObjectState = new CustomerShipmentObjectStates(this.Strategy.Session).Created;
+                this.CustomerShipmentState = new CustomerShipmentStates(this.Strategy.Session).Created;
             }
 
             if (!this.ExistReleasedManually)
@@ -255,7 +260,7 @@ namespace Allors.Domain
 
         public void AppsCancel(CustomerShipmentCancel method)
         {
-            this.CurrentObjectState = new CustomerShipmentObjectStates(this.Strategy.Session).Cancelled;
+            this.CustomerShipmentState = new CustomerShipmentStates(this.Strategy.Session).Cancelled;
         }
 
         public void AppsHold(CustomerShipmentHold method)
@@ -276,7 +281,7 @@ namespace Allors.Domain
                 }
             }
 
-            this.CurrentObjectState = new CustomerShipmentObjectStates(this.Strategy.Session).OnHold;
+            this.CustomerShipmentState = new CustomerShipmentStates(this.Strategy.Session).OnHold;
         }
 
         public void AppsContinue(CustomerShipmentContinue method)
@@ -287,11 +292,11 @@ namespace Allors.Domain
 
         public void AppsProcessOnContinue(CustomerShipmentProcessOnContinue method)
         {
-            this.CurrentObjectState = new CustomerShipmentObjectStates(this.Strategy.Session).Created;
+            this.CustomerShipmentState = new CustomerShipmentStates(this.Strategy.Session).Created;
 
             foreach (PickList pickList in this.ShipToParty.PickListsWhereShipToParty)
             {
-                if (this.Store.Equals(pickList.Store) && pickList.CurrentObjectState.Equals(new PickListObjectStates(this.Strategy.Session).OnHold))
+                if (this.Store.Equals(pickList.Store) && pickList.PickListState.Equals(new PickListStates(this.Strategy.Session).OnHold))
                 {
                     pickList.Continue();
                 }
@@ -300,19 +305,19 @@ namespace Allors.Domain
 
         public void AppsSetPicked(CustomerShipmentSetPicked method)
         {
-            this.CurrentObjectState = new CustomerShipmentObjectStates(this.Strategy.Session).Picked;
+            this.CustomerShipmentState = new CustomerShipmentStates(this.Strategy.Session).Picked;
         }
 
         public void AppsSetPacked(CustomerShipmentSetPacked method)
         {
-            this.CurrentObjectState = new CustomerShipmentObjectStates(this.Strategy.Session).Packed;
+            this.CustomerShipmentState = new CustomerShipmentStates(this.Strategy.Session).Packed;
         }
 
         public void AppsShip(CustomerShipmentShip method)
         {
             if (this.CanShip)
             {
-                this.CurrentObjectState = new CustomerShipmentObjectStates(this.Strategy.Session).Shipped;
+                this.CustomerShipmentState = new CustomerShipmentStates(this.Strategy.Session).Shipped;
                 this.EstimatedShipDate = DateTime.UtcNow.Date;
             }
         }
@@ -564,7 +569,7 @@ namespace Allors.Domain
             {
                 ////cancel shipment if nothing left to ship
                 if (this.ExistShipmentItems && this.PendingPickList == null
-                    && !this.CurrentObjectState.Equals(new CustomerShipmentObjectStates(this.Strategy.Session).Cancelled))
+                    && !this.CustomerShipmentState.Equals(new CustomerShipmentStates(this.Strategy.Session).Cancelled))
                 {
                     var canCancel = true;
                     foreach (ShipmentItem shipmentItem in this.ShipmentItems)
@@ -582,8 +587,8 @@ namespace Allors.Domain
                     }
                 }
 
-                if ((this.CurrentObjectState.Equals(new CustomerShipmentObjectStates(this.Strategy.Session).Created) || 
-                    this.CurrentObjectState.Equals(new CustomerShipmentObjectStates(this.Strategy.Session).Packed)) &&
+                if ((this.CustomerShipmentState.Equals(new CustomerShipmentStates(this.Strategy.Session).Created) || 
+                    this.CustomerShipmentState.Equals(new CustomerShipmentStates(this.Strategy.Session).Packed)) &&
                     this.ShipToParty.ExistPickListsWhereShipToParty)
                 {
                     var isPicked = true;
@@ -591,7 +596,7 @@ namespace Allors.Domain
                     {
                         if (this.Store.Equals(pickList.Store) && 
                             !pickList.IsNegativePickList &&
-                            !pickList.CurrentObjectState.Equals(new PickListObjectStates(this.Strategy.Session).Picked))
+                            !pickList.PickListState.Equals(new PickListStates(this.Strategy.Session).Picked))
                         {
                             isPicked = false;
                         }
@@ -603,8 +608,8 @@ namespace Allors.Domain
                     }
                 }
 
-                if (this.CurrentObjectState.Equals(new CustomerShipmentObjectStates(this.Strategy.Session).Picked)
-                    || this.CurrentObjectState.Equals(new CustomerShipmentObjectStates(this.Strategy.Session).Packed))
+                if (this.CustomerShipmentState.Equals(new CustomerShipmentStates(this.Strategy.Session).Picked)
+                    || this.CustomerShipmentState.Equals(new CustomerShipmentStates(this.Strategy.Session).Packed))
                 {
                     var totalShippingQuantity = 0M;
                     var totalPackagedQuantity = 0M;
@@ -623,9 +628,9 @@ namespace Allors.Domain
                     }
                 }
 
-                if (this.CurrentObjectState.Equals(new CustomerShipmentObjectStates(this.Strategy.Session).Created)
-                    || this.CurrentObjectState.Equals(new CustomerShipmentObjectStates(this.Strategy.Session).Picked)
-                    || this.CurrentObjectState.Equals(new CustomerShipmentObjectStates(this.Strategy.Session).Packed))
+                if (this.CustomerShipmentState.Equals(new CustomerShipmentStates(this.Strategy.Session).Created)
+                    || this.CustomerShipmentState.Equals(new CustomerShipmentStates(this.Strategy.Session).Picked)
+                    || this.CustomerShipmentState.Equals(new CustomerShipmentStates(this.Strategy.Session).Packed))
                 {
                     if (this.ShipmentValue < this.Store.ShipmentThreshold && !this.ReleasedManually)
                     {                      
@@ -633,7 +638,7 @@ namespace Allors.Domain
                     }
                 }
 
-                if (this.CurrentObjectState.Equals(new CustomerShipmentObjectStates(this.Strategy.Session).OnHold) && 
+                if (this.CustomerShipmentState.Equals(new CustomerShipmentStates(this.Strategy.Session).OnHold) && 
                     !this.HeldManually &&
                     ((this.ShipmentValue >= this.Store.ShipmentThreshold) || this.ReleasedManually))
                 {
@@ -644,13 +649,9 @@ namespace Allors.Domain
 
         public void AppsOnDeriveCurrentObjectState(IDerivation derivation)
         {
-            if (this.ExistCurrentObjectState && !this.CurrentObjectState.Equals(this.LastObjectState))
+            if (this.ExistCustomerShipmentState && !this.CustomerShipmentState.Equals(this.LastCustomerShipmentState))
             {
-                var currentStatus = new CustomerShipmentStatusBuilder(this.Strategy.Session).WithCustomerShipmentObjectState(this.CurrentObjectState).Build();
-                this.AddShipmentStatus(currentStatus);
-                this.CurrentShipmentStatus = currentStatus;
-
-                if (this.CurrentObjectState.Equals(new CustomerShipmentObjectStates(this.Strategy.Session).Shipped))
+                if (this.CustomerShipmentState.Equals(new CustomerShipmentStates(this.Strategy.Session).Shipped))
                 {
                     this.AppsOnDeriveInvoices(derivation);
                     this.AppsOnDeriveOrderItemQuantityShipped(derivation);

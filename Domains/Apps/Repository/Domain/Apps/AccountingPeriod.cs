@@ -7,24 +7,9 @@ namespace Allors.Repository
     #region Allors
     [Id("6b56e13b-d075-40f1-8e33-a9a4c6cadb96")]
     #endregion
-    public partial class AccountingPeriod : Budget 
+    public partial class AccountingPeriod : Budget, Versioned 
     {
         #region inherited properties
-        public string Description { get; set; }
-
-        public BudgetRevision[] BudgetRevisions { get; set; }
-
-        public BudgetStatus[] BudgetStatuses { get; set; }
-
-        public string BudgetNumber { get; set; }
-
-        public BudgetObjectState CurrentObjectState { get; set; }
-
-        public BudgetReview[] BudgetReviews { get; set; }
-
-        public BudgetStatus CurrentBudgetStatus { get; set; }
-
-        public BudgetItem[] BudgetItems { get; set; }
 
         public DateTime FromDate { get; set; }
 
@@ -34,13 +19,31 @@ namespace Allors.Repository
 
         public Guid UniqueId { get; set; }
 
-        public ObjectState PreviousObjectState { get; set; }
-
-        public ObjectState LastObjectState { get; set; }
-
         public Permission[] DeniedPermissions { get; set; }
 
         public SecurityToken[] SecurityTokens { get; set; }
+
+        public ObjectState[] PreviousObjectStates { get; set; }
+
+        public ObjectState[] LastObjectStates { get; set; }
+
+        public ObjectState[] ObjectStates { get; set; }
+
+        public string Description { get; set; }
+
+        public BudgetRevision[] BudgetRevisions { get; set; }
+
+        public string BudgetNumber { get; set; }
+
+        public BudgetReview[] BudgetReviews { get; set; }
+
+        public BudgetItem[] BudgetItems { get; set; }
+
+        public BudgetState PreviousBudgetState { get; set; }
+
+        public BudgetState LastBudgetState { get; set; }
+
+        public BudgetState BudgetState { get; set; }
 
         #endregion
 
@@ -78,7 +81,29 @@ namespace Allors.Repository
         [Indexed]
         [Required]
         public TimeFrequency TimeFrequency { get; set; }
-        
+
+        #region Versioning
+        #region Allors
+        [Id("553520A4-2FC7-43C5-A98A-9118E33BA455")]
+        [AssociationId("80A757E1-B622-4846-B6C7-4DC976DBBE5F")]
+        [RoleId("59993FA4-56D2-46CD-95FE-79779142B023")]
+        [Indexed]
+        #endregion
+        [Multiplicity(Multiplicity.OneToOne)]
+        [Workspace]
+        public SalesOrderVersion CurrentVersion { get; set; }
+
+        #region Allors
+        [Id("B6F890C3-69E3-4438-A4A8-012CD9FD9A2D")]
+        [AssociationId("06AF74AA-3C9A-4E7C-BEE5-BD166BFF6BD9")]
+        [RoleId("FE985CED-AB41-49E9-9937-92AB270BC42F")]
+        [Indexed]
+        #endregion
+        [Multiplicity(Multiplicity.OneToMany)]
+        [Workspace]
+        public SalesOrderVersion[] AllVersions { get; set; }
+        #endregion
+
         #region inherited methods
 
 
@@ -92,14 +117,9 @@ namespace Allors.Repository
 
         public void OnPostDerive(){}
 
-
         public void Close(){}
 
         public void Reopen(){}
-
-
-
-
 
         #endregion
     }

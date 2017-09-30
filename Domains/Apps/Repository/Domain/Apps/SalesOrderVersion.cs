@@ -12,6 +12,17 @@ namespace Allors.Repository
 
         public Permission[] DeniedPermissions { get; set; }
         public SecurityToken[] SecurityTokens { get; set; }
+
+        public string Comment { get; set; }
+
+        public User CreatedBy { get; set; }
+
+        public User LastModifiedBy { get; set; }
+
+        public DateTime CreationDate { get; set; }
+
+        public DateTime LastModifiedDate { get; set; }
+
         public string InternalComment { get; set; }
         public Currency CustomerCurrency { get; set; }
         public decimal TotalBasePriceCustomerCurrency { get; set; }
@@ -49,6 +60,17 @@ namespace Allors.Repository
 
         public DateTime DerivationTimeStamp { get; set; }
         #endregion
+
+        #region Allors
+        [Id("E665DCB6-6E92-43BA-8E16-EF893F938292")]
+        [AssociationId("07907501-28BC-419A-9EC7-94FE8FAC9C15")]
+        [RoleId("B31F3564-C8C7-4481-AACF-FE6B2BB21829")]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Indexed]
+        [Required]
+        [Workspace]
+        public SalesOrderState SalesOrderState { get; set; }
 
         #region Allors
         [Id("86036639-7EF0-4BC0-A290-FCB6CED11429")]
@@ -310,17 +332,6 @@ namespace Allors.Repository
         [Indexed]
         [Workspace]
         public SalesOrderItem[] SalesOrderItems { get; set; }
-
-        #region Allors
-        [Id("E665DCB6-6E92-43BA-8E16-EF893F938292")]
-        [AssociationId("07907501-28BC-419A-9EC7-94FE8FAC9C15")]
-        [RoleId("B31F3564-C8C7-4481-AACF-FE6B2BB21829")]
-        #endregion
-        [Multiplicity(Multiplicity.ManyToOne)]
-        [Indexed]
-        [Required]
-        [Workspace]
-        public SalesOrderObjectState CurrentObjectState { get; set; }
 
         #region Allors
         [Id("8344BD0A-1537-4B19-BBD7-F4448B6E987D")]

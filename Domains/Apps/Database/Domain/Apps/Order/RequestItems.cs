@@ -24,9 +24,9 @@ namespace Allors.Domain
         {
             base.AppsSecure(config);
 
-            var draft = new RequestItemObjectStates(this.Session).Draft;
-            var cancelled = new RequestItemObjectStates(this.Session).Cancelled;
-            var submitted = new RequestItemObjectStates(this.Session).Submitted;
+            var draft = new RequestItemStates(this.Session).Draft;
+            var cancelled = new RequestItemStates(this.Session).Cancelled;
+            var submitted = new RequestItemStates(this.Session).Submitted;
 
             var cancel = this.Meta.Cancel;
             var hold = this.Meta.Hold;

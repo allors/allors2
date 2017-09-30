@@ -19,17 +19,23 @@ namespace Allors.Domain
 
     public partial class WorkEffortTypeKinds
     {
-        private static readonly Guid ProductionRunId = new Guid("61480275-3EB4-45b1-9E2D-533ABB3A6C64");
-        private static readonly Guid ProcessId = new Guid("4DFB282D-19A0-491b-B01D-16569E20B4F4");
-        private static readonly Guid ProcessStepId = new Guid("6A73AE6F-1C74-4ad0-8784-CBEAEF3B62D5");
+        private static readonly Guid ProgramId = new Guid("61480275-3EB4-45b1-9E2D-533ABB3A6C64");
+        private static readonly Guid ProjectId = new Guid("4DFB282D-19A0-491b-B01D-16569E20B4F4");
+        private static readonly Guid PhaseId = new Guid("6A73AE6F-1C74-4ad0-8784-CBEAEF3B62D5");
+        private static readonly Guid ActivityId = new Guid("92E613F6-A12D-4BE1-9350-3F4C0DBA2EA1");
+        private static readonly Guid WorkTaskId = new Guid("13472733-E7E9-47AC-A977-A8571BED05EC");
 
         private UniquelyIdentifiableCache<WorkEffortTypeKind> cache;
 
-        public WorkEffortTypeKind ProductionRun => this.Cache.Get(ProductionRunId);
+        public WorkEffortTypeKind Program => this.Cache.Get(ProgramId);
 
-        public WorkEffortTypeKind Process => this.Cache.Get(ProcessId);
+        public WorkEffortTypeKind Project => this.Cache.Get(ProjectId);
 
-        public WorkEffortTypeKind ProcessStep => this.Cache.Get(ProcessStepId);
+        public WorkEffortTypeKind Phase => this.Cache.Get(PhaseId);
+
+        public WorkEffortTypeKind Activity => this.Cache.Get(ActivityId);
+
+        public WorkEffortTypeKind WorkTask => this.Cache.Get(WorkTaskId);
 
         private UniquelyIdentifiableCache<WorkEffortTypeKind> Cache => this.cache ?? (this.cache = new UniquelyIdentifiableCache<WorkEffortTypeKind>(this.Session));
 
@@ -42,23 +48,37 @@ namespace Allors.Domain
 
             new WorkEffortTypeKindBuilder(this.Session)
                 .WithName("Production Run")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Production Run").WithLocale(englishLocale).Build())
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Productie run").WithLocale(dutchLocale).Build())
-                .WithUniqueId(ProductionRunId)
+                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Program").WithLocale(englishLocale).Build())
+                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Programma").WithLocale(dutchLocale).Build())
+                .WithUniqueId(ProgramId)
                 .Build();
             
             new WorkEffortTypeKindBuilder(this.Session)
                 .WithName("Process")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Process").WithLocale(englishLocale).Build())
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Verwerking").WithLocale(dutchLocale).Build())
-                .WithUniqueId(ProcessId)
+                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Project").WithLocale(englishLocale).Build())
+                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Project").WithLocale(dutchLocale).Build())
+                .WithUniqueId(ProjectId)
                 .Build();
             
             new WorkEffortTypeKindBuilder(this.Session)
                 .WithName("Process Step")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Process Step").WithLocale(englishLocale).Build())
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Proces stap").WithLocale(dutchLocale).Build())
-                .WithUniqueId(ProcessStepId)
+                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Phase").WithLocale(englishLocale).Build())
+                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Fase").WithLocale(dutchLocale).Build())
+                .WithUniqueId(PhaseId)
+                .Build();
+
+            new WorkEffortTypeKindBuilder(this.Session)
+                .WithName("Process Step")
+                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Activity").WithLocale(englishLocale).Build())
+                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Activiteit").WithLocale(dutchLocale).Build())
+                .WithUniqueId(ActivityId)
+                .Build();
+
+            new WorkEffortTypeKindBuilder(this.Session)
+                .WithName("Process Step")
+                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Task").WithLocale(englishLocale).Build())
+                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Taak").WithLocale(dutchLocale).Build())
+                .WithUniqueId(WorkTaskId)
                 .Build();
         }
     }

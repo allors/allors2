@@ -23,16 +23,16 @@ namespace Allors.Domain
         {
             base.AppsPrepare(setup);
 
-            setup.AddDependency(this.ObjectType, M.CommunicationEventObjectState);
+            setup.AddDependency(this.ObjectType, M.CommunicationEventState);
         }
 
         protected override void AppsSecure(Security config)
         {
             base.AppsSecure(config);
 
-            ObjectState scheduled = new CommunicationEventObjectStates(this.Session).Scheduled;
-            ObjectState cancelled = new CommunicationEventObjectStates(this.Session).Cancelled;
-            ObjectState closed = new CommunicationEventObjectStates(this.Session).Completed;
+            ObjectState scheduled = new CommunicationEventStates(this.Session).Scheduled;
+            ObjectState cancelled = new CommunicationEventStates(this.Session).Cancelled;
+            ObjectState closed = new CommunicationEventStates(this.Session).Completed;
 
             var reopenId = M.CommunicationEvent.Reopen;
             var closeId = M.CommunicationEvent.Close;

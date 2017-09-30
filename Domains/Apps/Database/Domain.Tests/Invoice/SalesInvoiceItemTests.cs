@@ -276,8 +276,8 @@ namespace Allors.Domain
 
             this.DatabaseSession.Derive();
 
-            Assert.Equal(new SalesInvoiceItemObjectStates(this.DatabaseSession).ReadyForPosting, item.CurrentObjectState);
-            Assert.Equal(item.CurrentObjectState, item.LastObjectState);
+            Assert.Equal(new SalesInvoiceItemStates(this.DatabaseSession).ReadyForPosting, item.SalesInvoiceItemState);
+            Assert.Equal(item.SalesInvoiceItemState, item.LastSalesInvoiceItemState);
             Assert.Equal(0, item.AmountPaid);
             Assert.Equal(0, item.Quantity);
         }
@@ -2431,7 +2431,7 @@ namespace Allors.Domain
 
             this.DatabaseSession.Derive();
 
-            Assert.Equal(new SalesInvoiceItemObjectStates(this.DatabaseSession).PartiallyPaid, item1.CurrentObjectState);
+            Assert.Equal(new SalesInvoiceItemStates(this.DatabaseSession).PartiallyPaid, item1.SalesInvoiceItemState);
         }
 
         [Fact]
@@ -2457,7 +2457,7 @@ namespace Allors.Domain
 
             this.DatabaseSession.Derive();
 
-            Assert.Equal(new SalesInvoiceItemObjectStates(this.DatabaseSession).Paid, item1.CurrentObjectState);
+            Assert.Equal(new SalesInvoiceItemStates(this.DatabaseSession).Paid, item1.SalesInvoiceItemState);
         }
 
         private void InstantiateObjects(ISession session)

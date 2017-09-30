@@ -26,7 +26,7 @@ namespace Allors.Domain
             {
                 var pickLists = new PickLists(this.Session).Extent();
                 pickLists.Filter.AddNot().AddExists(M.PickList.Picker);
-                pickLists.Filter.AddEquals(M.PickList.CurrentObjectState, new PickListObjectStates(this.Session).Created);
+                pickLists.Filter.AddEquals(M.PickList.PickListState, new PickListStates(this.Session).Created);
 
                 return pickLists;
             }
@@ -36,17 +36,17 @@ namespace Allors.Domain
         {
             base.AppsPrepare(setup);
 
-            setup.AddDependency(this.ObjectType, M.PickListObjectState);
+            setup.AddDependency(this.ObjectType, M.PickListState);
         }
 
         protected override void AppsSecure(Security config)
         {
             base.AppsSecure(config);
 
-            var created = new PickListObjectStates(this.Session).Created;
-            var onHold = new PickListObjectStates(this.Session).OnHold;
-            var picked = new PickListObjectStates(this.Session).Picked;
-            var cancelled = new PickListObjectStates(this.Session).Cancelled;
+            var created = new PickListStates(this.Session).Created;
+            var onHold = new PickListStates(this.Session).OnHold;
+            var picked = new PickListStates(this.Session).Picked;
+            var cancelled = new PickListStates(this.Session).Cancelled;
 
             config.Deny(this.ObjectType, created, this.Meta.Continue);
             config.Deny(this.ObjectType, onHold, this.Meta.Hold);

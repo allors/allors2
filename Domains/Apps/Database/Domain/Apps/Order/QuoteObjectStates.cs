@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------------------------------------------
-// <copyright file="ProductQuoteObjectStates.cs" company="Allors bvba">
+// <copyright file="ProductQuoteStates.cs" company="Allors bvba">
 //   Copyright 2002-2012 Allors bvba.
 // Dual Licensed under
 //   a) the General Public Licence v3 (GPL)
@@ -17,24 +17,24 @@ namespace Allors.Domain
 {
     using System;
 
-    public partial class QuoteObjectStates
+    public partial class QuoteStates
     {
         private static readonly Guid CreatedId = new Guid("B1565CD4-D01A-4623-BF19-8C816DF96AA6");
         private static readonly Guid ApprovedId = new Guid("675D6899-1EBB-4FDB-9DC9-B8AEF0A135D2");
         private static readonly Guid OrderedId = new Guid("FE9A6F81-9935-466F-9F71-A537AF046019");
         private static readonly Guid RejectedId = new Guid("C897C8E8-2C01-438B-B4C9-B71AD8CCB7C4");
 
-        private UniquelyIdentifiableCache<QuoteObjectState> stateCache;
+        private UniquelyIdentifiableCache<QuoteState> stateCache;
 
-        public QuoteObjectState Created => this.StateCache.Get(CreatedId);
+        public QuoteState Created => this.StateCache.Get(CreatedId);
 
-        public QuoteObjectState Approved => this.StateCache.Get(ApprovedId);
+        public QuoteState Approved => this.StateCache.Get(ApprovedId);
 
-        public QuoteObjectState Ordered => this.StateCache.Get(OrderedId);
+        public QuoteState Ordered => this.StateCache.Get(OrderedId);
 
-        public QuoteObjectState Rejected => this.StateCache.Get(RejectedId);
+        public QuoteState Rejected => this.StateCache.Get(RejectedId);
 
-        private UniquelyIdentifiableCache<QuoteObjectState> StateCache => this.stateCache ?? (this.stateCache = new UniquelyIdentifiableCache<QuoteObjectState>(this.Session));
+        private UniquelyIdentifiableCache<QuoteState> StateCache => this.stateCache ?? (this.stateCache = new UniquelyIdentifiableCache<QuoteState>(this.Session));
 
         protected override void AppsSetup(Setup setup)
         {
@@ -43,22 +43,22 @@ namespace Allors.Domain
             var englishLocale = new Locales(this.Session).EnglishGreatBritain;
             var dutchLocale = new Locales(this.Session).DutchNetherlands;
 
-            new QuoteObjectStateBuilder(this.Session)
+            new QuoteStateBuilder(this.Session)
                 .WithUniqueId(CreatedId)
                 .WithName("Created")
                 .Build();
 
-            new QuoteObjectStateBuilder(this.Session)
+            new QuoteStateBuilder(this.Session)
                 .WithUniqueId(ApprovedId)
                 .WithName("Approved")
                 .Build();
 
-            new QuoteObjectStateBuilder(this.Session)
+            new QuoteStateBuilder(this.Session)
                 .WithUniqueId(OrderedId)
                 .WithName("Ordered")
                 .Build();
 
-            new QuoteObjectStateBuilder(this.Session)
+            new QuoteStateBuilder(this.Session)
                 .WithUniqueId(RejectedId)
                 .WithName("Rejected")
                 .Build();

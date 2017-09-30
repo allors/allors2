@@ -38,8 +38,8 @@ namespace Allors.Domain
 
             Assert.False(this.DatabaseSession.Derive(false).HasErrors);
 
-            Assert.Equal(communication.CurrentObjectState, new CommunicationEventObjectStates(this.DatabaseSession).Scheduled);
-            Assert.Equal(communication.CurrentObjectState, communication.LastObjectState);
+            Assert.Equal(communication.CommunicationEventState, new CommunicationEventStates(this.DatabaseSession).Scheduled);
+            Assert.Equal(communication.CommunicationEventState, communication.LastCommunicationState);
         }
 
         [Fact]

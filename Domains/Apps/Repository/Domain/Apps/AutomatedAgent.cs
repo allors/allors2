@@ -1,9 +1,23 @@
 namespace Allors.Repository
 {
     using System;
-    public partial class AutomatedAgent : Party 
+
+    using Allors.Repository.Attributes;
+
+    public partial class AutomatedAgent : Party, Versioned 
     {
         #region inherited properties
+        public User CreatedBy { get; set; }
+
+        public User LastModifiedBy { get; set; }
+
+        public DateTime CreationDate { get; set; }
+
+        public DateTime LastModifiedDate { get; set; }
+
+        public Guid UniqueId { get; set; }
+
+        public string Comment { get; set; }
 
         public string PartyName { get; set; }
 
@@ -92,29 +106,49 @@ namespace Allors.Repository
         public Currency PreferredCurrency { get; set; }
 
         public VatRegime VatRegime { get; set; }
+
         public decimal SimpleMovingAverage { get; set; }
+
         public decimal AmountOverDue { get; set; }
+
         public DunningType DunningType { get; set; }
+
         public decimal AmountDue { get; set; }
+
         public DateTime LastReminderDate { get; set; }
+
         public decimal CreditLimit { get; set; }
+
         public int SubAccountNumber { get; set; }
+
         public DateTime BlockedForDunning { get; set; }
+
         public Agreement[] Agreements { get; set; }
+
         public CommunicationEvent[] CommunicationEvents { get; set; }
 
-        public Guid UniqueId { get; set; }
+        #endregion
 
-        public User CreatedBy { get; set; }
+        #region Versioning
+        #region Allors
+        [Id("BBFC2FBA-9E39-4BC7-A7BA-C9D6657AA69D")]
+        [AssociationId("91B0D0D8-11A5-45C6-9AEE-EE07B7690492")]
+        [RoleId("6B62A91C-56E9-48C5-B500-913F76DBDDAE")]
+        [Indexed]
+        #endregion
+        [Multiplicity(Multiplicity.OneToOne)]
+        [Workspace]
+        public AutomatedAgentVersion CurrentVersion { get; set; }
 
-        public User LastModifiedBy { get; set; }
-
-        public DateTime CreationDate { get; set; }
-
-        public DateTime LastModifiedDate { get; set; }
-
-        public string Comment { get; set; }
-
+        #region Allors
+        [Id("80E56218-00C1-4F81-B130-E9CD28C0B4F0")]
+        [AssociationId("D112E8EC-5627-4B6B-8AFD-BBFBE4162AD1")]
+        [RoleId("1DE06B67-4BD0-4B2C-9C72-D251DBBF9A0A")]
+        [Indexed]
+        #endregion
+        [Multiplicity(Multiplicity.OneToMany)]
+        [Workspace]
+        public AutomatedAgentVersion[] AllVersions { get; set; }
         #endregion
 
         #region inherited methods

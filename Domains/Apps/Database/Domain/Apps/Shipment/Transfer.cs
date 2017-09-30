@@ -15,15 +15,22 @@
 // --------------------------------------------------------------------------------------------------------------------
 namespace Allors.Domain
 {
+    using Allors.Meta;
+
     public partial class Transfer
     {
-        ObjectState Transitional.CurrentObjectState => this.CurrentObjectState;
+        public static readonly TransitionalConfiguration[] StaticTransitionalConfigurations =
+            {
+                new TransitionalConfiguration(M.Transfer.TransferState),
+            };
+
+        public TransitionalConfiguration[] TransitionalConfigurations => StaticTransitionalConfigurations;
 
         public void AppsOnBuild(ObjectOnBuild method)
         {
-            if (!this.ExistCurrentObjectState)
+            if (!this.ExistTransferState)
             {
-                this.CurrentObjectState = new TransferObjectStates(this.Strategy.Session).Created;
+                this.TransferState = new TransferStates(this.Strategy.Session).Created;
             }
         }
 
@@ -39,18 +46,6 @@ namespace Allors.Domain
             if (!this.ExistShipFromAddress && this.ExistShipFromParty)
             {
                 this.ShipFromAddress = this.ShipFromParty.ShippingAddress;
-            }
-
-            this.AppsOnDeriveCurrentObjectState(derivation);
-        }
-
-        public void AppsOnDeriveCurrentObjectState(IDerivation derivation)
-        {
-            if (this.ExistCurrentObjectState && !this.CurrentObjectState.Equals(this.LastObjectState))
-            {
-                var currentStatus = new TransferStatusBuilder(this.Strategy.Session).WithTransferObjectState(this.CurrentObjectState).Build();
-                this.AddShipmentStatus(currentStatus);
-                this.CurrentShipmentStatus = currentStatus;
             }
         }
     }

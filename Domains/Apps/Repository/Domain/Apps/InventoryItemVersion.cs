@@ -38,16 +38,6 @@ namespace Allors.Repository
         Part Part { get; set; }
 
         #region Allors
-        [Id("48F3D374-177A-4FF5-B493-293B4032A22C")]
-        [AssociationId("732C2F07-C507-4215-9250-E1E1840477BD")]
-        [RoleId("0D3F20E2-04F3-4811-8DE2-C0D064BED5FF")]
-        [Indexed]
-        #endregion
-        [Multiplicity(Multiplicity.ManyToOne)]
-        [Workspace]
-        Container Container { get; set; }
-
-        #region Allors
         [Id("86010471-E2F6-4F60-AD2D-0665644CE1F6")]
         [AssociationId("D82E39DF-FBDB-42BA-9A73-F5B0363A6746")]
         [RoleId("200E8E63-43F4-4AFA-9005-C92B343069B2")]

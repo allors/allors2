@@ -6,8 +6,42 @@ namespace Allors.Repository
     #region Allors
     [Id("066bf242-2710-4a68-8ff6-ce4d7d88a04a")]
     #endregion
-    public partial interface Quote : Transitional, Printable, Auditable, Commentable, AccessControlledObject
+    public partial interface Quote : Transitional, Printable, Auditable, Commentable
     {
+        #region ObjectStates
+        #region QuoteState
+        #region Allors
+        [Id("B1792FCE-33EF-4A03-BCB7-92E839A55B2C")]
+        [AssociationId("2FCD7B16-863B-4A41-9C2C-B7E45E74799A")]
+        [RoleId("3E5206B4-40F2-4939-BA95-2D8D089CFDF5")]
+        [Indexed]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Derived]
+        QuoteState PreviousQuoteState { get; set; }
+
+        #region Allors
+        [Id("C1B9AD76-9773-4A52-AADB-ED3E7222C89B")]
+        [AssociationId("9945B2C0-06CC-4410-8861-05A54DDB8728")]
+        [RoleId("9BEA275E-F1A0-4023-877E-EF67A150C3DF")]
+        [Indexed]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Derived]
+        QuoteState LastQuoteState { get; set; }
+
+        #region Allors
+        [Id("2A4AADE6-B3F0-436B-BA9E-5D0ECB958077")]
+        [AssociationId("62A27DA3-372A-4296-B7C6-0BD482A7CB31")]
+        [RoleId("84F136C7-B146-4D20-A4D2-797740E60291")]
+        [Indexed]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Workspace]
+        QuoteState QuoteState { get; set; }
+        #endregion
+        #endregion
+
         #region Allors
         [Id("3B913CC6-C627-4F16-ACF5-98EC97CE5FDA")]
         [AssociationId("7CD50B18-3C4A-4A81-B6AA-9CE8BC43C0DA")]
@@ -130,17 +164,6 @@ namespace Allors.Repository
         [Size(256)]
         [Workspace]
         string QuoteNumber { get; set; }
-
-        #region Allors
-        [Id("399E26DD-81C6-4238-A8AE-0C70F36E57B4")]
-        [AssociationId("2DD366A5-34B9-47D0-9035-0B18A8AD69C1")]
-        [RoleId("F77E8B5A-9E12-4C81-BB79-E3570241B513")]
-        #endregion
-        [Multiplicity(Multiplicity.ManyToOne)]
-        [Indexed]
-        [Required]
-        [Workspace]
-        QuoteObjectState CurrentObjectState { get; set; }
 
         #region Allors
         [Id("94DE208B-5FF9-45F5-BD35-5BB7D7B33FB7")]

@@ -15,15 +15,22 @@
 // --------------------------------------------------------------------------------------------------------------------
 namespace Allors.Domain
 {
+    using Allors.Meta;
+
     public partial class DropShipment
     {
-        ObjectState Transitional.CurrentObjectState => this.CurrentObjectState;
+        public static readonly TransitionalConfiguration[] StaticTransitionalConfigurations =
+            {
+                new TransitionalConfiguration(M.DropShipment.DropShipmentState),
+            };
+
+        public TransitionalConfiguration[] TransitionalConfigurations => StaticTransitionalConfigurations;
 
         public void AppsOnBuild(ObjectOnBuild method)
         {
-            if (!this.ExistCurrentObjectState)
+            if (!this.ExistDropShipmentState)
             {
-                this.CurrentObjectState = new DropShipmentObjectStates(this.Strategy.Session).Created;
+                this.DropShipmentState = new DropShipmentStates(this.Strategy.Session).Created;
             }
         }
 
@@ -39,20 +46,6 @@ namespace Allors.Domain
             if (!this.ExistShipFromAddress && this.ExistShipFromParty)
             {
                 this.ShipFromAddress = this.ShipFromParty.ShippingAddress;
-            }
-
-            this.AppsOnDeriveCurrentObjectState(derivation);
-        }
-
-        public void AppsOnDeriveCurrentObjectState(IDerivation derivation)
-        {
-            
-
-            if (this.ExistCurrentObjectState && !this.CurrentObjectState.Equals(this.LastObjectState))
-            {
-                var currentStatus = new DropShipmentStatusBuilder(this.Strategy.Session).WithDropShipmentObjectState(this.CurrentObjectState).Build();
-                this.AddShipmentStatus(currentStatus);
-                this.CurrentShipmentStatus = currentStatus;
             }
         }
     }

@@ -15,49 +15,41 @@
 // --------------------------------------------------------------------------------------------------------------------
 namespace Allors.Domain
 {
+    using Allors.Meta;
+
     public partial class Case
     {
-        ObjectState Transitional.CurrentObjectState => this.CurrentObjectState;
+        public static readonly TransitionalConfiguration[] StaticTransitionalConfigurations =
+            {
+                new TransitionalConfiguration(M.Case.CaseState),
+            };
+
+        public TransitionalConfiguration[] TransitionalConfigurations => StaticTransitionalConfigurations;
 
         public void AppsOnBuild(ObjectOnBuild method)
         {
-            if (!this.ExistCurrentObjectState)
+            if (!this.ExistCaseState)
             {
-                this.CurrentObjectState = new CaseObjectStates(this.Strategy.Session).Opened;
-            }
-        }
-
-        public void AppsOnDerive(ObjectOnDerive method)
-        {
-            this.DeriveCurrentObjectState();
-        }
-        
-        private void DeriveCurrentObjectState()
-        {
-            if (this.ExistCurrentObjectState && !this.CurrentObjectState.Equals(this.LastObjectState))
-            {
-                var currentStatus = new CaseStatusBuilder(this.Strategy.Session).WithCaseObjectState(this.CurrentObjectState).Build();
-                this.AddCaseStatus(currentStatus);
-                this.CurrentCaseStatus = currentStatus;
+                this.CaseState = new CaseStates(this.Strategy.Session).Opened;
             }
         }
 
         public void AppsClose()
         {
-            var closed = new CaseObjectStates(this.Strategy.Session).Closed;
-            this.CurrentObjectState = closed;
+            var closed = new CaseStates(this.Strategy.Session).Closed;
+            this.CaseState = closed;
         }
 
         public void AppsComplete()
         {
-            var completed = new CaseObjectStates(this.Strategy.Session).Completed;
-            this.CurrentObjectState = completed;
+            var completed = new CaseStates(this.Strategy.Session).Completed;
+            this.CaseState = completed;
         }
 
         public void AppsReopen()
         {
-            var opened = new CaseObjectStates(this.Strategy.Session).Opened;
-            this.CurrentObjectState = opened;
+            var opened = new CaseStates(this.Strategy.Session).Opened;
+            this.CaseState = opened;
         }
     }
 }

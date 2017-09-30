@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------------------------------------------
-// <copyright file="PurchaseReturnObjectStates.cs" company="Allors bvba">
+// <copyright file="PurchaseReturnStates.cs" company="Allors bvba">
 //   Copyright 2002-2012 Allors bvba.
 // Dual Licensed under
 //   a) the General Public Licence v3 (GPL)
@@ -17,18 +17,18 @@ namespace Allors.Domain
 {
     using System;
 
-    public partial class PurchaseReturnObjectStates
+    public partial class PurchaseReturnStates
     {
         private static readonly Guid CreatedId = new Guid("58DF6842-CC62-41e2-9B49-794B856C558A");
         private static readonly Guid CancelledId = new Guid("36950F2C-1340-4da7-9342-D2185818E04D");
 
-        private UniquelyIdentifiableCache<PurchaseReturnObjectState> stateCache;
+        private UniquelyIdentifiableCache<PurchaseReturnState> stateCache;
 
-        public PurchaseReturnObjectState Created => this.StateCache.Get(CreatedId);
+        public PurchaseReturnState Created => this.StateCache.Get(CreatedId);
 
-        public PurchaseReturnObjectState Cancelled => this.StateCache.Get(CancelledId);
+        public PurchaseReturnState Cancelled => this.StateCache.Get(CancelledId);
 
-        private UniquelyIdentifiableCache<PurchaseReturnObjectState> StateCache => this.stateCache ?? (this.stateCache = new UniquelyIdentifiableCache<PurchaseReturnObjectState>(this.Session));
+        private UniquelyIdentifiableCache<PurchaseReturnState> StateCache => this.stateCache ?? (this.stateCache = new UniquelyIdentifiableCache<PurchaseReturnState>(this.Session));
 
         protected override void AppsSetup(Setup setup)
         {
@@ -37,12 +37,12 @@ namespace Allors.Domain
             var engllishLocale = new Locales(this.Session).EnglishGreatBritain;
             var dutchLocale = new Locales(this.Session).DutchNetherlands;
 
-            new PurchaseReturnObjectStateBuilder(this.Session)
+            new PurchaseReturnStateBuilder(this.Session)
                 .WithUniqueId(CreatedId)
                 .WithName("Created")
                 .Build();
 
-            new PurchaseReturnObjectStateBuilder(this.Session)
+            new PurchaseReturnStateBuilder(this.Session)
                 .WithUniqueId(CancelledId)
                 .WithName("Cancelled")
                 .Build();

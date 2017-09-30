@@ -9,15 +9,39 @@ namespace Allors.Repository
     #endregion
     public partial interface Request : Transitional, AccessControlledObject, Commentable, Auditable, Printable
     {
+        #region ObjectStates
+        #region RequestState
         #region Allors
-        [Id("D75426C3-2B47-4CF0-82FB-E70CBE2053CA")]
-        [AssociationId("7E016046-C569-411B-BE08-056018C7D61B")]
-        [RoleId("0E4935D1-D25E-4E2A-874D-4DDDBB271B86")]
+        [Id("6F9BFBFD-2A58-470A-894C-17754EC725A7")]
+        [AssociationId("A930611A-348F-49E8-9B0F-98778FB5B0C6")]
+        [RoleId("BD4B8F6D-B8DC-4C83-930F-41C1F588711C")]
         [Indexed]
         #endregion
-        [Multiplicity(Multiplicity.OneToOne)]
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Derived]
+        RequestState PreviousRequestState { get; set; }
+
+        #region Allors
+        [Id("5EC7CC5D-2652-4389-832A-999007764316")]
+        [AssociationId("3BA5DBA2-DE18-4C7D-B086-8A7737954C7C")]
+        [RoleId("8CB62679-79FA-44B2-9251-9E0B4F712B12")]
+        [Indexed]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Derived]
+        RequestState LastRequestState { get; set; }
+
+        #region Allors
+        [Id("758AF277-DB45-4E3A-9055-3507BB52DF46")]
+        [AssociationId("3A1AF364-E0B3-4D50-ABBB-B84BB07DE3C7")]
+        [RoleId("C411C405-5EBB-4EC2-A2BE-7C83DD4B8B2C")]
+        [Indexed]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
         [Workspace]
-        RequestObjectState CurrentObjectState { get; set; }
+        RequestState RequestState { get; set; }
+        #endregion
+        #endregion
 
         #region Allors
         [Id("918022F4-D2D6-4596-AF42-2009E981AE73")]

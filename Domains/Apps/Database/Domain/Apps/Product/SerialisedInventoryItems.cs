@@ -23,7 +23,7 @@ namespace Allors.Domain
         {
             base.AppsPrepare(setup);
 
-            setup.AddDependency(this.ObjectType, M.SerialisedInventoryItemObjectState);
+            setup.AddDependency(this.ObjectType, M.SerialisedInventoryItemState);
         }
     }
 }

@@ -19,13 +19,18 @@ namespace Allors.Domain
 
     public partial class SerialisedInventoryItem
     {
-        ObjectState Transitional.CurrentObjectState => this.CurrentObjectState;
+        public static readonly TransitionalConfiguration[] StaticTransitionalConfigurations =
+            {
+                new TransitionalConfiguration(M.SerialisedInventoryItem.SerialisedInventoryItemState),
+            };
+
+        public TransitionalConfiguration[] TransitionalConfigurations => StaticTransitionalConfigurations;
 
         public void AppsOnBuild(ObjectOnBuild method)
         {
-            if (!this.ExistCurrentObjectState)
+            if (!this.ExistSerialisedInventoryItemState)
             {
-                this.CurrentObjectState = new SerialisedInventoryItemObjectStates(this.Strategy.Session).Good;
+                this.SerialisedInventoryItemState = new SerialisedInventoryItemStates(this.Strategy.Session).Good;
             }
 
             if (!this.ExistFacility)

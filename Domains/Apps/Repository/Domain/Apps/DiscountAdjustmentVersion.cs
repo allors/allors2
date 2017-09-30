@@ -23,7 +23,6 @@ namespace Allors.Repository
 
         #endregion
 
-
         #region inherited methods
 
 

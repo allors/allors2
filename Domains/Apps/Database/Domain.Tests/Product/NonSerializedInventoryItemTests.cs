@@ -38,8 +38,8 @@ namespace Allors.Domain
 
             this.DatabaseSession.Derive();
 
-            Assert.Equal(new NonSerialisedInventoryItemObjectStates(this.DatabaseSession).Good, item.CurrentObjectState);
-            Assert.Equal(item.LastObjectState, item.CurrentObjectState);
+            Assert.Equal(new NonSerialisedInventoryItemStates(this.DatabaseSession).Good, item.NonSerialisedInventoryItemState);
+            Assert.Equal(item.LastNonSerialisedInventoryItemState, item.NonSerialisedInventoryItemState);
         }
 
         [Fact]
@@ -52,7 +52,7 @@ namespace Allors.Domain
 
             this.DatabaseSession.Derive();
 
-            Assert.Null(item.PreviousObjectState);
+            Assert.Null(item.PreviousNonSerialisedInventoryItemState);
         }
 
         [Fact]
@@ -103,7 +103,7 @@ namespace Allors.Domain
             Assert.NotNull(item.QuantityCommittedOut);
             Assert.NotNull(item.QuantityExpectedIn);
             Assert.NotNull(item.QuantityOnHand);
-            Assert.Equal(new NonSerialisedInventoryItemObjectStates(this.DatabaseSession).Good, item.CurrentObjectState);
+            Assert.Equal(new NonSerialisedInventoryItemStates(this.DatabaseSession).Good, item.NonSerialisedInventoryItemState);
             Assert.Equal(new Warehouses(this.DatabaseSession).FindBy(M.Warehouse.Name, "facility"), item.Facility);
         }
 
@@ -515,7 +515,7 @@ namespace Allors.Domain
         //        .WithGood(good)
         //        .WithAvailableToPromise(120)
         //        .WithQuantityOnHand(120)
-        //        .WithCurrentObjectState(new NonSerialisedInventoryItemObjectStates(this.DatabaseSession).SlightlyDamaged)
+        //        .WithCurrentObjectState(new NonSerialisedInventoryItemStates(this.DatabaseSession).SlightlyDamaged)
         //        .Build();
 
         //    var partItem = (NonSerialisedInventoryItem)rawMaterial.InventoryItemsWherePart[0];
@@ -539,7 +539,7 @@ namespace Allors.Domain
             //Assert.Contains(damagedItem, extent);
             //Assert.Contains(partItem, extent);
 
-            //valueByParameter[parameters[1]] = new NonSerialisedInventoryItemObjectStates(this.DatabaseSession).SlightlyDamaged;
+            //valueByParameter[parameters[1]] = new NonSerialisedInventoryItemStates(this.DatabaseSession).SlightlyDamaged;
 
             //extent = preparedExtent.Execute(valueByParameter);
 

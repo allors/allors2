@@ -22,7 +22,12 @@ namespace Allors.Domain
 
     public partial class SalesOrder
     {
-        ObjectState Transitional.CurrentObjectState => this.CurrentObjectState;
+        public static readonly TransitionalConfiguration[] StaticTransitionalConfigurations =
+            {
+                new TransitionalConfiguration(M.SalesOrder.SalesOrderState),
+            };
+
+        public TransitionalConfiguration[] TransitionalConfigurations => StaticTransitionalConfigurations;
 
         public OrderItem[] OrderItems => this.SalesOrderItems;
 
@@ -41,9 +46,9 @@ namespace Allors.Domain
 
         public void AppsOnBuild(ObjectOnBuild method)
         {
-            if (!this.ExistCurrentObjectState)
+            if (!this.ExistSalesOrderState)
             {
-                this.CurrentObjectState = new SalesOrderObjectStates(this.Strategy.Session).Provisional;
+                this.SalesOrderState = new SalesOrderStates(this.Strategy.Session).Provisional;
             }
 
             if (!this.ExistOrderDate)
@@ -233,7 +238,7 @@ namespace Allors.Domain
 
         public void AppsCancel(OrderCancel method)
         {
-            this.CurrentObjectState = new SalesOrderObjectStates(this.Strategy.Session).Cancelled;
+            this.SalesOrderState = new SalesOrderStates(this.Strategy.Session).Cancelled;
         }
 
         public void AppsConfirm(OrderConfirm method)
@@ -246,43 +251,43 @@ namespace Allors.Domain
 
             if (amountOverDue > creditLimit || this.TotalExVat < orderThreshold)
             {
-                this.CurrentObjectState = new SalesOrderObjectStates(this.Strategy.Session).RequestsApproval;
+                this.SalesOrderState = new SalesOrderStates(this.Strategy.Session).RequestsApproval;
             }
             else
             {
-                this.CurrentObjectState = new SalesOrderObjectStates(this.Strategy.Session).InProcess;
+                this.SalesOrderState = new SalesOrderStates(this.Strategy.Session).InProcess;
             }
         }
 
         public void AppsReject(OrderReject method)
         {
-            this.CurrentObjectState = new SalesOrderObjectStates(this.Strategy.Session).Rejected;
+            this.SalesOrderState = new SalesOrderStates(this.Strategy.Session).Rejected;
         }
 
         public void AppsHold(OrderHold method)
         {
-            this.CurrentObjectState = new SalesOrderObjectStates(this.Strategy.Session).OnHold;
+            this.SalesOrderState = new SalesOrderStates(this.Strategy.Session).OnHold;
         }
 
         public void AppsApprove(OrderApprove method)
         {
-            this.CurrentObjectState = new SalesOrderObjectStates(this.Strategy.Session).InProcess;
+            this.SalesOrderState = new SalesOrderStates(this.Strategy.Session).InProcess;
         }
 
         public void AppsContinue(OrderContinue method)
         {
-            this.CurrentObjectState = new SalesOrderObjectStates(this.Strategy.Session).InProcess;
+            this.SalesOrderState = new SalesOrderStates(this.Strategy.Session).InProcess;
         }
 
         public void AppsOnDeriveCurrentOrderStatus(IDerivation derivation)
         {
             //TODO 
-            //if (this.ExistCurrentShipmentStateVersion && this.CurrentShipmentStateVersion.CurrentObjectState.Equals(new SalesOrderObjectStates(this.Strategy.Session).Shipped))
+            //if (this.ExistCurrentShipmentStateVersion && this.CurrentShipmentStateVersion.CurrentObjectState.Equals(new SalesOrderStates(this.Strategy.Session).Shipped))
             //{
             //    this.Complete();
             //}
 
-            //if (this.ExistCurrentPaymentStateVersion && this.CurrentPaymentStateVersion.CurrentObjectState.Equals(new SalesOrderObjectStates(this.Strategy.Session).Paid))
+            //if (this.ExistCurrentPaymentStateVersion && this.CurrentPaymentStateVersion.CurrentObjectState.Equals(new SalesOrderStates(this.Strategy.Session).Paid))
             //{
             //    this.Finish();
             //}
@@ -467,7 +472,7 @@ namespace Allors.Domain
 
         public void AppsTryShip(IDerivation derivation)
         {
-            if (this.CurrentObjectState.Equals(new SalesOrderObjectStates(this.Strategy.Session).InProcess))
+            if (this.SalesOrderState.Equals(new SalesOrderStates(this.Strategy.Session).InProcess))
             {
                 var somethingToShip = false;
                 var allItemsAvailable = true;
@@ -486,7 +491,7 @@ namespace Allors.Domain
                     }
                 }
 
-                if (this.CurrentObjectState.Equals(new SalesOrderObjectStates(this.Strategy.Session).InProcess) &&
+                if (this.SalesOrderState.Equals(new SalesOrderStates(this.Strategy.Session).InProcess) &&
                     ((!this.PartiallyShip && allItemsAvailable) || somethingToShip))
                 {
                     this.AppsShip(derivation);

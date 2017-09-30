@@ -23,7 +23,7 @@ namespace Allors.Domain
         {
             base.AppsPrepare(setup);
 
-            setup.AddDependency(this.ObjectType, M.DropShipmentObjectState);
+            setup.AddDependency(this.ObjectType, M.DropShipmentState);
         }
     }
 }

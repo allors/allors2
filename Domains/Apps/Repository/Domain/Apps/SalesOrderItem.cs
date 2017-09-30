@@ -10,6 +10,12 @@ namespace Allors.Repository
     public partial class SalesOrderItem : OrderItem, Versioned
     {
         #region inherited properties
+        public ObjectState[] PreviousObjectStates { get; set; }
+
+        public ObjectState[] LastObjectStates { get; set; }
+
+        public ObjectState[] ObjectStates { get; set; }
+
         public string InternalComment { get; set; }
         public BudgetItem BudgetItem { get; set; }
         public decimal PreviousQuantity { get; set; }
@@ -28,8 +34,6 @@ namespace Allors.Repository
         public Permission[] DeniedPermissions { get; set; }
         public SecurityToken[] SecurityTokens { get; set; }
         public string Comment { get; set; }
-        public ObjectState PreviousObjectState { get; set; }
-        public ObjectState LastObjectState { get; set; }
         public decimal TotalDiscountAsPercentage { get; set; }
         public DiscountAdjustment DiscountAdjustment { get; set; }
         public decimal UnitVat { get; set; }
@@ -57,6 +61,62 @@ namespace Allors.Repository
         public PriceComponent[] CurrentPriceComponents { get; set; }
         public SurchargeAdjustment SurchargeAdjustment { get; set; }
 
+        #endregion
+
+        #region ObjectStates
+        #region SalesOrderItemState
+        #region Allors
+        [Id("552F50AC-5ACD-4F8F-A6CD-68E0C3426F3B")]
+        [AssociationId("3A01771D-E007-4D5B-B9D6-8426BF7FA9FA")]
+        [RoleId("FF4AAFCC-26A2-4ADB-9FFC-AA96A76F5F55")]
+        [Indexed]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Derived]
+        public SalesOrderItemState PreviousSalesOrderItemState { get; set; }
+
+        #region Allors
+        [Id("FEBA7CC1-E449-4542-8159-71840DDE093B")]
+        [AssociationId("BAF4EDA9-82B0-4591-8546-746CA111AF35")]
+        [RoleId("5FD567A2-0220-471B-8726-6457AD93DB6D")]
+        [Indexed]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Derived]
+        public SalesOrderItemState LastSalesOrderItemState { get; set; }
+
+        #region Allors
+        [Id("0A44ABC2-41C2-444C-A20D-D2B5E387A611")]
+        [AssociationId("0CD34735-D410-4B5C-A3CE-3F58FCBE59B0")]
+        [RoleId("2B4DDB7B-6B88-4781-8D04-8BBD530E1B23")]
+        [Indexed]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Workspace]
+        public SalesOrderItemState SalesOrderItemState { get; set; }
+        #endregion
+        #endregion
+
+        #region Versioning
+        #region Allors
+        [Id("6672E7FD-B5B7-41D6-8AFF-799045EBFC26")]
+        [AssociationId("F70356B6-2437-4579-BA36-C92C12F77FDA")]
+        [RoleId("EF171C82-7A4B-4F58-801F-78C778B35F92")]
+        [Indexed]
+        #endregion
+        [Multiplicity(Multiplicity.OneToOne)]
+        [Workspace]
+        public SalesOrderItemVersion CurrentVersion { get; set; }
+
+        #region Allors
+        [Id("97271467-852D-44E9-8D6E-6C5CC8EAABF0")]
+        [AssociationId("4C380563-E4F0-4B9B-A7EC-5C332E6E9D43")]
+        [RoleId("80FE4F88-FFC0-4795-BCBF-F7E5A9ED0258")]
+        [Indexed]
+        #endregion
+        [Multiplicity(Multiplicity.OneToMany)]
+        [Workspace]
+        public SalesOrderItemVersion[] AllVersions { get; set; }
         #endregion
 
         #region Allors
@@ -189,17 +249,6 @@ namespace Allors.Repository
         [Derived]
         [Indexed]
         public Product PreviousProduct { get; set; }
-
-        #region Allors
-        [Id("710e0b05-01d1-4592-b652-f0fada3dfa45")]
-        [AssociationId("9ab86597-c31b-46d7-b546-89ebfd1411cd")]
-        [RoleId("9533bbb6-359f-49a3-959b-98fcdd5cc2a7")]
-        #endregion
-        [Multiplicity(Multiplicity.ManyToOne)]
-        [Indexed]
-        [Required]
-        [Workspace]
-        public SalesOrderItemObjectState CurrentObjectState { get; set; }
 
         #region Allors
         [Id("75a13fdc-90b2-4550-9b2f-fc0a9387d569")]
@@ -355,28 +404,6 @@ namespace Allors.Repository
         [Scale(2)]
         [Workspace]
         public decimal QuantityRequestsShipping { get; set; }
-
-        #region Versioning
-        #region Allors
-        [Id("6672E7FD-B5B7-41D6-8AFF-799045EBFC26")]
-        [AssociationId("F70356B6-2437-4579-BA36-C92C12F77FDA")]
-        [RoleId("EF171C82-7A4B-4F58-801F-78C778B35F92")]
-        [Indexed]
-        #endregion
-        [Multiplicity(Multiplicity.OneToOne)]
-        [Workspace]
-        public SalesOrderItemVersion CurrentVersion { get; set; }
-
-        #region Allors
-        [Id("97271467-852D-44E9-8D6E-6C5CC8EAABF0")]
-        [AssociationId("4C380563-E4F0-4B9B-A7EC-5C332E6E9D43")]
-        [RoleId("80FE4F88-FFC0-4795-BCBF-F7E5A9ED0258")]
-        [Indexed]
-        #endregion
-        [Multiplicity(Multiplicity.OneToMany)]
-        [Workspace]
-        public SalesOrderItemVersion[] AllVersions { get; set; }
-        #endregion
 
         #region inherited methods
 

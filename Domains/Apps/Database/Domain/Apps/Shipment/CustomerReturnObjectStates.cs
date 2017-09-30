@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------------------------------------------
-// <copyright file="CustomerReturnObjectStates.cs" company="Allors bvba">
+// <copyright file="CustomerReturnStates.cs" company="Allors bvba">
 //   Copyright 2002-2012 Allors bvba.
 // Dual Licensed under
 //   a) the General Public Licence v3 (GPL)
@@ -17,14 +17,14 @@ namespace Allors.Domain
 {
     using System;
 
-    public partial class CustomerReturnObjectStates
+    public partial class CustomerReturnStates
     {
         public static readonly Guid ReceivedId = new Guid("32790FE5-69E3-46b1-BD23-D0A59D3B3794");
 
-        private UniquelyIdentifiableCache<CustomerReturnObjectState> stateCache;
+        private UniquelyIdentifiableCache<CustomerReturnState> stateCache;
 
-        public CustomerReturnObjectState Received => this.StateCache.Get(ReceivedId);
+        public CustomerReturnState Received => this.StateCache.Get(ReceivedId);
 
-        private UniquelyIdentifiableCache<CustomerReturnObjectState> StateCache => this.stateCache ?? (this.stateCache = new UniquelyIdentifiableCache<CustomerReturnObjectState>(this.Session));
+        private UniquelyIdentifiableCache<CustomerReturnState> StateCache => this.stateCache ?? (this.stateCache = new UniquelyIdentifiableCache<CustomerReturnState>(this.Session));
     }
 }

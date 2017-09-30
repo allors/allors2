@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------------------------------------------
-// <copyright file="SalesInvoiceItemObjectStates.cs" company="Allors bvba">
+// <copyright file="SalesInvoiceItemStates.cs" company="Allors bvba">
 //   Copyright 2002-2012 Allors bvba.
 // Dual Licensed under
 //   a) the General Public Licence v3 (GPL)
@@ -17,7 +17,7 @@ namespace Allors.Domain
 {
     using System;
 
-    public partial class SalesInvoiceItemObjectStates
+    public partial class SalesInvoiceItemStates
     {
         private static readonly Guid SentId = new Guid("9DC3A779-8734-4c19-BFF5-0DE9F29A584B");
         private static readonly Guid PaidId = new Guid("875AD2E4-BF44-46f4-9CD6-5F5C5BD43ADC");
@@ -26,21 +26,21 @@ namespace Allors.Domain
         private static readonly Guid WrittenOffId = new Guid("F4408FD5-CCA3-44ea-BC00-4FFECC5D1EB9");
         private static readonly Guid CancelledId = new Guid("D521BBFA-1E18-453c-862F-28EBC0DA10C1");
 
-        private UniquelyIdentifiableCache<SalesInvoiceItemObjectState> stateCache;
+        private UniquelyIdentifiableCache<SalesInvoiceItemState> stateCache;
 
-        public SalesInvoiceItemObjectState PartiallyPaid => this.StateCache.Get(PartiallyPaidId);
+        public SalesInvoiceItemState PartiallyPaid => this.StateCache.Get(PartiallyPaidId);
 
-        public SalesInvoiceItemObjectState Sent => this.StateCache.Get(SentId);
+        public SalesInvoiceItemState Sent => this.StateCache.Get(SentId);
 
-        public SalesInvoiceItemObjectState Paid => this.StateCache.Get(PaidId);
+        public SalesInvoiceItemState Paid => this.StateCache.Get(PaidId);
 
-        public SalesInvoiceItemObjectState ReadyForPosting => this.StateCache.Get(ReadyForPostingId);
+        public SalesInvoiceItemState ReadyForPosting => this.StateCache.Get(ReadyForPostingId);
 
-        public SalesInvoiceItemObjectState WrittenOff => this.StateCache.Get(WrittenOffId);
+        public SalesInvoiceItemState WrittenOff => this.StateCache.Get(WrittenOffId);
 
-        public SalesInvoiceItemObjectState Cancelled => this.StateCache.Get(CancelledId);
+        public SalesInvoiceItemState Cancelled => this.StateCache.Get(CancelledId);
 
-        private UniquelyIdentifiableCache<SalesInvoiceItemObjectState> StateCache => this.stateCache ?? (this.stateCache = new UniquelyIdentifiableCache<SalesInvoiceItemObjectState>(this.Session));
+        private UniquelyIdentifiableCache<SalesInvoiceItemState> StateCache => this.stateCache ?? (this.stateCache = new UniquelyIdentifiableCache<SalesInvoiceItemState>(this.Session));
 
         protected override void AppsSetup(Setup setup)
         {
@@ -49,32 +49,32 @@ namespace Allors.Domain
             var englishLocale = new Locales(this.Session).EnglishGreatBritain;
             var dutchLocale = new Locales(this.Session).DutchNetherlands;
 
-            new SalesInvoiceItemObjectStateBuilder(this.Session)
+            new SalesInvoiceItemStateBuilder(this.Session)
                 .WithUniqueId(PartiallyPaidId)
                 .WithName("Partially Paid")
                 .Build();
 
-            new SalesInvoiceItemObjectStateBuilder(this.Session)
+            new SalesInvoiceItemStateBuilder(this.Session)
                 .WithUniqueId(SentId)
                 .WithName("Sent")
                 .Build();
 
-            new SalesInvoiceItemObjectStateBuilder(this.Session)
+            new SalesInvoiceItemStateBuilder(this.Session)
                 .WithUniqueId(PaidId)
                 .WithName("Paid")
                 .Build();
 
-            new SalesInvoiceItemObjectStateBuilder(this.Session)
+            new SalesInvoiceItemStateBuilder(this.Session)
                 .WithUniqueId(ReadyForPostingId)
                 .WithName("Ready For Posting")
                 .Build();
 
-            new SalesInvoiceItemObjectStateBuilder(this.Session)
+            new SalesInvoiceItemStateBuilder(this.Session)
                 .WithUniqueId(WrittenOffId)
                 .WithName("Written Off")
                 .Build();
 
-            new SalesInvoiceItemObjectStateBuilder(this.Session)
+            new SalesInvoiceItemStateBuilder(this.Session)
                 .WithUniqueId(CancelledId)
                 .WithName("Cancelled")
                 .Build();

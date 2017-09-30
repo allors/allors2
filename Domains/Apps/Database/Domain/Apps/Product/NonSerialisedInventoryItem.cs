@@ -19,18 +19,23 @@ namespace Allors.Domain
 
     public partial class NonSerialisedInventoryItem
     {
-        ObjectState Transitional.CurrentObjectState => this.CurrentObjectState;
+        public static readonly TransitionalConfiguration[] StaticTransitionalConfigurations =
+            {
+                new TransitionalConfiguration(M.NonSerialisedInventoryItem.NonSerialisedInventoryItemState),
+            };
+
+        public TransitionalConfiguration[] TransitionalConfigurations => StaticTransitionalConfigurations;
 
         public void AppsOnBuild(ObjectOnBuild method)
         {
-            if (!this.ExistCurrentObjectState)
+            if (!this.ExistNonSerialisedInventoryItemState)
             {
-                this.CurrentObjectState = new NonSerialisedInventoryItemObjectStates(this.Strategy.Session).Good;
+                this.NonSerialisedInventoryItemState = new NonSerialisedInventoryItemStates(this.Strategy.Session).Good;
             }
 
             if (!this.ExistFacility)
             {
-               this.Facility = Singleton.Instance(this).InternalOrganisation.DefaultFacility;
+                this.Facility = Singleton.Instance(this).InternalOrganisation.DefaultFacility;
             }
         }
 
@@ -98,7 +103,7 @@ namespace Allors.Domain
 
             foreach (PickListItem pickListItem in this.PickListItemsWhereInventoryItem)
             {
-                if (pickListItem.ActualQuantity.HasValue && pickListItem.PickListWherePickListItem.CurrentObjectState.Equals(new PickListObjectStates(this.Strategy.Session).Picked))
+                if (pickListItem.ActualQuantity.HasValue && pickListItem.PickListWherePickListItem.PickListState.Equals(new PickListStates(this.Strategy.Session).Picked))
                 {
                     this.QuantityOnHand -= pickListItem.ActualQuantity.Value;
                 }
@@ -106,10 +111,13 @@ namespace Allors.Domain
 
             foreach (ShipmentReceipt shipmentReceipt in this.ShipmentReceiptsWhereInventoryItem)
             {
-                if (shipmentReceipt.ExistShipmentItem &&
-                    shipmentReceipt.ShipmentItem.ShipmentWhereShipmentItem.CurrentObjectState.Equals(new PurchaseShipmentObjectStates(this.Strategy.Session).Completed))
+                if (shipmentReceipt.ExistShipmentItem)
                 {
-                    this.QuantityOnHand += shipmentReceipt.QuantityAccepted;
+                    var purchaseShipment = (PurchaseShipment)shipmentReceipt.ShipmentItem.ShipmentWhereShipmentItem;
+                    if (purchaseShipment.PurchaseShipmentState.Equals(new PurchaseShipmentStates(this.Strategy.Session).Completed))
+                    {
+                        this.QuantityOnHand += shipmentReceipt.QuantityAccepted;
+                    }
                 }
             }
         }
@@ -120,7 +128,7 @@ namespace Allors.Domain
 
             foreach (PickListItem pickListItem in this.PickListItemsWhereInventoryItem)
             {
-                if (pickListItem.ActualQuantity.HasValue && pickListItem.PickListWherePickListItem.CurrentObjectState.Equals(new PickListObjectStates(this.Strategy.Session).Picked))
+                if (pickListItem.ActualQuantity.HasValue && pickListItem.PickListWherePickListItem.PickListState.Equals(new PickListStates(this.Strategy.Session).Picked))
                 {
                     this.QuantityCommittedOut -= pickListItem.ActualQuantity.Value;
                 }
@@ -129,7 +137,7 @@ namespace Allors.Domain
             foreach (SalesOrderItem salesOrderItem in this.SalesOrderItemsWhereReservedFromInventoryItem)
             {
                 var order = (SalesOrder)salesOrderItem.SalesOrderWhereSalesOrderItem;
-                if (salesOrderItem.CurrentObjectState.Equals(new SalesOrderItemObjectStates(this.Strategy.Session).InProcess) && !order.ScheduledManually)
+                if (salesOrderItem.SalesOrderItemState.Equals(new SalesOrderItemStates(this.Strategy.Session).InProcess) && !order.ScheduledManually)
                 {
                     this.QuantityCommittedOut += salesOrderItem.QuantityOrdered;
                 }
@@ -144,7 +152,7 @@ namespace Allors.Domain
             {
                 foreach (PurchaseOrderItem purchaseOrderItem in this.Good.PurchaseOrderItemsWhereProduct)
                 {
-                    if (purchaseOrderItem.CurrentObjectState.Equals(new PurchaseOrderItemObjectStates(this.Strategy.Session).InProcess))
+                    if (purchaseOrderItem.PurchaseOrderItemState.Equals(new PurchaseOrderItemStates(this.Strategy.Session).InProcess))
                     {
                         this.QuantityExpectedIn += purchaseOrderItem.QuantityOrdered;
                         this.QuantityExpectedIn -= purchaseOrderItem.QuantityReceived;
@@ -156,7 +164,7 @@ namespace Allors.Domain
             {
                 foreach (PurchaseOrderItem purchaseOrderItem in this.Part.PurchaseOrderItemsWherePart)
                 {
-                    if (purchaseOrderItem.CurrentObjectState.Equals(new PurchaseOrderItemObjectStates(this.Strategy.Session).InProcess))
+                    if (purchaseOrderItem.PurchaseOrderItemState.Equals(new PurchaseOrderItemStates(this.Strategy.Session).InProcess))
                     {
                         this.QuantityExpectedIn += purchaseOrderItem.QuantityOrdered;
                         this.QuantityExpectedIn -= purchaseOrderItem.QuantityReceived;
@@ -178,12 +186,12 @@ namespace Allors.Domain
         public void AppsReplenishSalesOrders(IDerivation derivation)
         {
             Extent<SalesOrderItem> salesOrderItems = this.Strategy.Session.Extent<SalesOrderItem>();
-            salesOrderItems.Filter.AddEquals(M.SalesOrderItem.CurrentObjectState, new SalesOrderItemObjectStates(this.Strategy.Session).InProcess);
+            salesOrderItems.Filter.AddEquals(M.SalesOrderItem.SalesOrderItemState, new SalesOrderItemStates(this.Strategy.Session).InProcess);
             salesOrderItems.AddSort(M.OrderItem.DeliveryDate, SortDirection.Ascending);
 
             if (this.ExistGood)
             {
-                salesOrderItems.Filter.AddEquals(M.SalesOrderItem.PreviousProduct, this.Good);                
+                salesOrderItems.Filter.AddEquals(M.SalesOrderItem.PreviousProduct, this.Good);
             }
 
             salesOrderItems = this.Strategy.Session.Instantiate(salesOrderItems);
@@ -215,7 +223,7 @@ namespace Allors.Domain
         public void AppsDepleteSalesOrders(IDerivation derivation)
         {
             Extent<SalesOrderItem> salesOrderItems = this.Strategy.Session.Extent<SalesOrderItem>();
-            salesOrderItems.Filter.AddEquals(M.SalesOrderItem.CurrentObjectState, new SalesOrderItemObjectStates(this.Strategy.Session).InProcess);
+            salesOrderItems.Filter.AddEquals(M.SalesOrderItem.SalesOrderItemState, new SalesOrderItemStates(this.Strategy.Session).InProcess);
             salesOrderItems.Filter.AddExists(M.OrderItem.DeliveryDate);
             salesOrderItems.AddSort(M.OrderItem.DeliveryDate, SortDirection.Descending);
 
