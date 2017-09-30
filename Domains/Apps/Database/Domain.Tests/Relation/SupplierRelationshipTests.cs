@@ -103,15 +103,9 @@ namespace Allors.Domain
                 .WithBankAccount(new BankAccountBuilder(this.DatabaseSession).WithBank(bank).WithCurrency(euro).WithIban("BE23 3300 6167 6391").WithNameOnAccount("Koen").Build())
                 .Build();
 
-            var billingAddress = new PartyContactMechanismBuilder(this.DatabaseSession)
-                .WithContactMechanism(new WebAddressBuilder(this.DatabaseSession).WithElectronicAddressString("billfrom").Build())
-                .WithContactPurpose(new ContactMechanismPurposes(this.DatabaseSession).BillingAddress)
-                .WithUseAsDefault(true)
-                .Build();
-
             var internalOrganisation2 = new InternalOrganisationBuilder(this.DatabaseSession)
                 .WithName("internalOrganisation2")
-                .WithPartyContactMechanism(billingAddress)
+                .WithBillingAddress(new WebAddressBuilder(this.DatabaseSession).WithElectronicAddressString("billfrom").Build())
                 .WithDefaultPaymentMethod(ownBankAccount)
                 .Build();
 

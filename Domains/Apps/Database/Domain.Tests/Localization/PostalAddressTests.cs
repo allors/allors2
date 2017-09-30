@@ -84,7 +84,7 @@ namespace Allors.Domain
         public void GivenPostalBoundary_WhenDeriving_ThenRequiredRelationsMustExist()
         {
             var country = new Countries(this.DatabaseSession).CountryByIsoCode["BE"];
-            var postalBoundary = new PostalBoundaryBuilder(this.DatabaseSession).WithLocality("Mechelen").WithCountry(country).Build();
+            var postalBoundary = new PostalBoundaryBuilder(this.DatabaseSession).WithCity("Mechelen").WithCountry(country).Build();
             this.DatabaseSession.Derive();
             this.DatabaseSession.Commit();
 
@@ -119,7 +119,7 @@ namespace Allors.Domain
         public void GivenPostalBoundary_WhenDeriving_ThenCountryIsDerived()
         {
             var country = new Countries(this.DatabaseSession).FindBy(M.Country.IsoCode, "BE");
-            var postalBoundary = new PostalBoundaryBuilder(this.DatabaseSession).WithLocality("locality").WithCountry(country).Build();
+            var postalBoundary = new PostalBoundaryBuilder(this.DatabaseSession).WithCity("locality").WithCountry(country).Build();
 
             var address = new PostalAddressBuilder(this.DatabaseSession)
                 .WithAddress1("Haverwerf 15")

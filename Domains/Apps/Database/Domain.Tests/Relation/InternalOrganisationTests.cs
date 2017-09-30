@@ -32,7 +32,7 @@ namespace Allors.Domain
     {
         private OwnBankAccount ownBankAccount;
         private Currency euro;
-        private PartyContactMechanism billingAddress;
+        private WebAddress billingAddress;
         
         public SingletonTests()
         {
@@ -46,11 +46,7 @@ namespace Allors.Domain
                 .WithBankAccount(new BankAccountBuilder(this.DatabaseSession).WithBank(bank).WithCurrency(euro).WithIban("BE23 3300 6167 6391").WithNameOnAccount("Koen").Build())
                 .Build();
 
-            this.billingAddress = new PartyContactMechanismBuilder(this.DatabaseSession)
-                .WithContactMechanism(new WebAddressBuilder(this.DatabaseSession).WithElectronicAddressString("billfrom").Build())
-                .WithContactPurpose(new ContactMechanismPurposes(this.DatabaseSession).BillingAddress)
-                .WithUseAsDefault(true)
-                .Build();
+            this.billingAddress = new WebAddressBuilder(this.DatabaseSession).WithElectronicAddressString("billfrom").Build();
 
             this.DatabaseSession.Derive();
             this.DatabaseSession.Commit();
@@ -82,7 +78,7 @@ namespace Allors.Domain
             var internalOrganisation = new InternalOrganisationBuilder(this.DatabaseSession)
                 .WithName("Internal")
                 .WithDefaultPaymentMethod(this.ownBankAccount)
-                .WithPartyContactMechanism(this.billingAddress)
+                .WithBillingAddress(this.billingAddress)
                 .Build();
 
             this.DatabaseSession.Derive();
@@ -98,7 +94,7 @@ namespace Allors.Domain
             var internalOrganisation = new InternalOrganisationBuilder(this.DatabaseSession)
                 .WithName("Internal")
                 .WithDefaultPaymentMethod(this.ownBankAccount)
-                .WithPartyContactMechanism(this.billingAddress)
+                .WithBillingAddress(this.billingAddress)
                 .Build();
 
             this.DatabaseSession.Derive();
@@ -114,7 +110,7 @@ namespace Allors.Domain
             var internalOrganisation = new InternalOrganisationBuilder(this.DatabaseSession)
                 .WithName("Internal")
                 .WithDefaultPaymentMethod(this.ownBankAccount)
-                .WithPartyContactMechanism(this.billingAddress)
+                .WithBillingAddress(this.billingAddress)
                 .Build();
 
             this.DatabaseSession.Derive();
@@ -130,7 +126,7 @@ namespace Allors.Domain
             var internalOrganisation = new InternalOrganisationBuilder(this.DatabaseSession)
                 .WithName("Internal")
                 .WithDefaultPaymentMethod(this.ownBankAccount)
-                .WithPartyContactMechanism(this.billingAddress)
+                .WithBillingAddress(this.billingAddress)
                 .Build();
 
             this.DatabaseSession.Derive();
@@ -159,7 +155,7 @@ namespace Allors.Domain
 
             var organisation = new InternalOrganisationBuilder(this.DatabaseSession)
                 .WithName("Internal")
-                .WithPartyContactMechanism(this.billingAddress)
+                .WithBillingAddress(this.billingAddress)
                 .Build();
 
             organisation.AppsStartNewFiscalYear();
@@ -207,7 +203,7 @@ namespace Allors.Domain
                 .WithName("Internal")
                 .WithFiscalYearStartMonth(05)
                 .WithFiscalYearStartDay(15)
-                .WithPartyContactMechanism(this.billingAddress)
+                .WithBillingAddress(this.billingAddress)
                 .Build();
 
             organisation.AppsStartNewFiscalYear();
@@ -257,7 +253,7 @@ namespace Allors.Domain
                 .WithName("Internal")
                 .WithFiscalYearStartMonth(05)
                 .WithFiscalYearStartDay(15)
-                .WithPartyContactMechanism(this.billingAddress)
+                .WithBillingAddress(this.billingAddress)
                 .Build();
 
             organisation.AppsStartNewFiscalYear();
@@ -276,7 +272,7 @@ namespace Allors.Domain
 
             var organisation = new InternalOrganisationBuilder(this.DatabaseSession)
                 .WithName("Internal")
-                .WithPartyContactMechanism(this.billingAddress)
+                .WithBillingAddress(this.billingAddress)
                 .Build();
 
             this.DatabaseSession.Derive();
@@ -289,7 +285,7 @@ namespace Allors.Domain
         {
             this.ownBankAccount = (OwnBankAccount)session.Instantiate(this.ownBankAccount);
             this.euro = (Currency)session.Instantiate(this.euro);
-            this.billingAddress = (PartyContactMechanism)session.Instantiate(this.billingAddress);
+            this.billingAddress = (WebAddress)session.Instantiate(this.billingAddress);
         }
     }
 }

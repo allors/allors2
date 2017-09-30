@@ -88,7 +88,7 @@ namespace Allors.Domain
             Assert.Equal(0, store.ShipmentThreshold);
             Assert.Equal(internalOrganisation.DefaultPaymentMethod, store.DefaultPaymentMethod);
             Assert.Equal(1, store.PaymentMethods.Count);
-            Assert.Equal(new Warehouses(this.DatabaseSession).FindBy(M.Warehouse.Name, "facility"), store.DefaultFacility);
+            Assert.Equal(new Facilities(this.DatabaseSession).FindBy(M.Facility.FacilityType, new FacilityTypes(this.DatabaseSession).Warehouse), store.DefaultFacility);
         }
 
         [Fact]

@@ -31,7 +31,7 @@ namespace Allors.Domain
         [Fact]
         public void GivenFacility_WhenDeriving_ThenRequiredRelationsMustExist()
         {
-            var builder = new WarehouseBuilder(this.DatabaseSession);
+            var builder = new FacilityBuilder(this.DatabaseSession);
             var facility = builder.Build();
 
             Assert.True(this.DatabaseSession.Derive(false).HasErrors);

@@ -9,8 +9,6 @@ namespace Allors.Repository
     #endregion
 	public partial interface GeoLocatable : AccessControlledObject, UniquelyIdentifiable 
     {
-
-
         #region Allors
         [Id("b0aba482-63eb-4482-a232-3863f089f4d9")]
         [AssociationId("340069b9-a00b-420d-8f8d-52e627729db3")]
@@ -20,8 +18,8 @@ namespace Allors.Repository
         [Required]
         [Precision(8)]
         [Scale(6)]
+        [Workspace]
         decimal Latitude { get; set; }
-
 
         #region Allors
         [Id("c51b6be6-5678-4664-b2c9-874cc46deb2e")]
@@ -32,7 +30,7 @@ namespace Allors.Repository
         [Required]
         [Precision(9)]
         [Scale(6)]
+        [Workspace]
         decimal Longitude { get; set; }
-
     }
 }

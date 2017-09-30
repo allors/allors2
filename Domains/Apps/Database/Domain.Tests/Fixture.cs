@@ -59,30 +59,22 @@ namespace Allors
                     .WithDescription("Main bank account")
                     .Build();
 
-                var postalBoundary = new PostalBoundaryBuilder(session).WithLocality("Mechelen").WithCountry(belgium).Build();
+                var postalBoundary = new PostalBoundaryBuilder(session).WithCity("Mechelen").WithCountry(belgium).Build();
                 var postalAddress = new PostalAddressBuilder(session).WithAddress1("Kleine Nieuwedijkstraat 2").WithPostalBoundary(postalBoundary).Build();
-
-                var billingAddress =
-                    new PartyContactMechanismBuilder(session).WithContactMechanism(postalAddress).WithContactPurpose(
-                        new ContactMechanismPurposes(session).BillingAddress).WithUseAsDefault(true).Build();
-
-                var shippingAddress =
-                    new PartyContactMechanismBuilder(session).WithContactMechanism(postalAddress).WithContactPurpose(
-                        new ContactMechanismPurposes(session).ShippingAddress).WithUseAsDefault(true).Build();
 
                 var internalOrganisation = new InternalOrganisationBuilder(session)
                     .WithName("internalOrganisation")
                     .WithIncomingShipmentNumberPrefix("incoming shipmentno: ")
                     .WithPurchaseInvoiceNumberPrefix("incoming invoiceno: ")
                     .WithPurchaseOrderNumberPrefix("purchase orderno: ")
-                    .WithPartyContactMechanism(billingAddress)
-                    .WithPartyContactMechanism(shippingAddress)
+                    .WithBillingAddress(postalAddress)
+                    .WithShippingAddress(postalAddress)
                     .WithDefaultPaymentMethod(ownBankAccount)
                     .Build();
 
                 Singleton.Instance(session).InternalOrganisation = internalOrganisation;
 
-                var facility = new WarehouseBuilder(session).WithName("facility").Build();
+                var facility = new FacilityBuilder(session).WithFacilityType(new FacilityTypes(session).Warehouse).WithName("facility").Build();
                 internalOrganisation.DefaultFacility = facility;
 
                 var paymentMethod = new PaymentMethods(session).Extent().First;

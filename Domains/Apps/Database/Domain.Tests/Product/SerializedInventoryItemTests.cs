@@ -76,7 +76,7 @@ namespace Allors.Domain
                 .Build();
 
             Assert.Equal(new SerialisedInventoryItemStates(this.DatabaseSession).Good, item.SerialisedInventoryItemState);
-            Assert.Equal(new Warehouses(this.DatabaseSession).FindBy(M.Warehouse.Name, "facility"), item.Facility);
+            Assert.Equal(new Facilities(this.DatabaseSession).FindBy(M.Facility.FacilityType, new FacilityTypes(this.DatabaseSession).Warehouse), item.Facility);
         }
     }
 }

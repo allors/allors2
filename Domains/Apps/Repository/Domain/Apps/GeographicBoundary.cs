@@ -9,8 +9,6 @@ namespace Allors.Repository
     #endregion
 	public partial interface GeographicBoundary : GeoLocatable, AccessControlledObject 
     {
-
-
         #region Allors
         [Id("28e43fe9-cdf1-4671-af95-ead40ecbef15")]
         [AssociationId("97f83f4c-d7ea-4928-b0a2-7e001a66b7d2")]
@@ -19,6 +17,5 @@ namespace Allors.Repository
         [Size(10)]
 
         string Abbreviation { get; set; }
-
     }
 }

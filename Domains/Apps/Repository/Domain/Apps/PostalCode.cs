@@ -36,7 +36,6 @@ namespace Allors.Repository
 
         public string Code { get; set; }
 
-
         #region inherited methods
 
 
@@ -55,6 +54,5 @@ namespace Allors.Repository
 
 
         #endregion
-
     }
 }

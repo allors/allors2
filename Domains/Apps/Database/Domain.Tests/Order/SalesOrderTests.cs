@@ -1540,7 +1540,7 @@ namespace Allors.Domain
             var mechelen = new CityBuilder(this.DatabaseSession).WithName("Mechelen").Build();
 
             var store = new StoreBuilder(this.DatabaseSession).WithName("store")
-                .WithDefaultFacility(new Warehouses(this.DatabaseSession).FindBy(M.Warehouse.Name, "facility"))
+                .WithDefaultFacility(new Facilities(this.DatabaseSession).FindBy(M.Facility.FacilityType, new FacilityTypes(this.DatabaseSession).Warehouse))
                 .WithDefaultShipmentMethod(new ShipmentMethods(this.DatabaseSession).Ground)
                 .WithDefaultCarrier(new Carriers(this.DatabaseSession).Fedex)
                 .Build();
@@ -1586,7 +1586,7 @@ namespace Allors.Domain
             var mechelen = new CityBuilder(this.DatabaseSession).WithName("Mechelen").Build();
 
             var store = new StoreBuilder(this.DatabaseSession).WithName("store")
-                .WithDefaultFacility(new Warehouses(this.DatabaseSession).FindBy(M.Warehouse.Name, "facility"))
+                .WithDefaultFacility(new Facilities(this.DatabaseSession).FindBy(M.Facility.FacilityType, new FacilityTypes(this.DatabaseSession).Warehouse))
                 .WithSalesOrderNumberPrefix("the format is ")
                 .WithDefaultShipmentMethod(new ShipmentMethods(this.DatabaseSession).Ground)
                 .WithDefaultCarrier(new Carriers(this.DatabaseSession).Fedex)
@@ -1680,13 +1680,7 @@ namespace Allors.Domain
             var mechelen = new CityBuilder(this.DatabaseSession).WithName("Mechelen").Build();
             var orderContact = new EmailAddressBuilder(this.DatabaseSession).WithElectronicAddressString("orders@acme.com").Build();
 
-            var orderContactMechanism = new PartyContactMechanismBuilder(this.DatabaseSession)
-                .WithContactMechanism(orderContact)
-                .WithContactPurpose(new ContactMechanismPurposes(this.DatabaseSession).OrderAddress)
-                .WithUseAsDefault(true)
-                .Build();
-
-            internalOrganisation.AddPartyContactMechanism(orderContactMechanism);
+            internalOrganisation.OrderAddress = orderContact;
 
             this.DatabaseSession.Derive();
 
@@ -1713,13 +1707,7 @@ namespace Allors.Domain
             var mechelen = new CityBuilder(this.DatabaseSession).WithName("Mechelen").Build();
             var billingContact = new EmailAddressBuilder(this.DatabaseSession).WithElectronicAddressString("orders@acme.com").Build();
 
-            var billingContactMechanism = new PartyContactMechanismBuilder(this.DatabaseSession)
-                .WithContactMechanism(billingContact)
-                .WithContactPurpose(new ContactMechanismPurposes(this.DatabaseSession).BillingAddress)
-                .WithUseAsDefault(true)
-                .Build();
-
-            internalOrganisation.AddPartyContactMechanism(billingContactMechanism);
+            internalOrganisation.BillingAddress = billingContact;
 
             this.DatabaseSession.Derive();
 

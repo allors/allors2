@@ -65,7 +65,7 @@ namespace Allors.Domain
             this.DatabaseSession.Derive();
             
             Assert.Equal(1, finishedGood.InventoryItemsWherePart.Count);
-            Assert.Equal(new Warehouses(this.DatabaseSession).FindBy(M.Warehouse.Name, "facility"), finishedGood.InventoryItemsWherePart.First.Facility);
+            Assert.Equal(new Facilities(this.DatabaseSession).FindBy(M.Facility.FacilityType, new FacilityTypes(this.DatabaseSession).Warehouse), finishedGood.InventoryItemsWherePart.First.Facility);
         }
 
         [Fact]
@@ -104,7 +104,7 @@ namespace Allors.Domain
             this.DatabaseSession.Derive();
 
             Assert.Equal(1, rawMaterial.InventoryItemsWherePart.Count);
-            Assert.Equal(new Warehouses(this.DatabaseSession).FindBy(M.Warehouse.Name, "facility"), rawMaterial.InventoryItemsWherePart.First.Facility);
+            Assert.Equal(new Facilities(this.DatabaseSession).FindBy(M.Facility.FacilityType, new FacilityTypes(this.DatabaseSession).Warehouse), rawMaterial.InventoryItemsWherePart.First.Facility);
         }
 
         [Fact]
@@ -143,7 +143,7 @@ namespace Allors.Domain
             this.DatabaseSession.Derive();
 
             Assert.Equal(1, subAssembly.InventoryItemsWherePart.Count);
-            Assert.Equal(new Warehouses(this.DatabaseSession).FindBy(M.Warehouse.Name, "facility"), subAssembly.InventoryItemsWherePart.First.Facility);
+            Assert.Equal(new Facilities(this.DatabaseSession).FindBy(M.Facility.FacilityType, new FacilityTypes(this.DatabaseSession).Warehouse), subAssembly.InventoryItemsWherePart.First.Facility);
         }
     }
 }

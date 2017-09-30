@@ -138,15 +138,9 @@ namespace Allors.Domain
             var mechelen = new CityBuilder(this.DatabaseSession).WithName("Mechelen").Build();
             var address1 = new PostalAddressBuilder(this.DatabaseSession).WithGeographicBoundary(mechelen).WithAddress1("Haverwerf 15").Build();
 
-            var billingAddress = new PartyContactMechanismBuilder(this.DatabaseSession)
-                .WithContactMechanism(address1)
-                .WithContactPurpose(new ContactMechanismPurposes(this.DatabaseSession).BillingAddress)
-                .WithUseAsDefault(true)
-                .Build();
-
             var internalOrganisation2 = new InternalOrganisationBuilder(this.DatabaseSession)
                 .WithName("internalOrganisation2")
-                .WithPartyContactMechanism(billingAddress)
+                .WithBillingAddress(address1)
                 .WithDefaultPaymentMethod(ownBankAccount)
                 .Build();
 

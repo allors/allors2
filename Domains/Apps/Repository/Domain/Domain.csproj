@@ -215,7 +215,6 @@
     <Compile Include="Apps\BudgetRevision.cs" />
     <Compile Include="Apps\BudgetRevisionImpact.cs" />
     <Compile Include="Apps\BudgetVersion.cs" />
-    <Compile Include="Apps\Building.cs" />
     <Compile Include="Apps\CapitalBudget.cs" />
     <Compile Include="Apps\CapitalBudgetVersion.cs" />
     <Compile Include="Apps\Capitalization.cs" />
@@ -330,7 +329,7 @@
     <Compile Include="Apps\FinishedGood.cs" />
     <Compile Include="Apps\FiscalYearInvoiceNumber.cs" />
     <Compile Include="Apps\FixedAsset.cs" />
-    <Compile Include="Apps\Floor.cs" />
+    <Compile Include="Apps\FacilityType.cs" />
     <Compile Include="Apps\GenderType.cs" />
     <Compile Include="Apps\GeneralLedgerAccount.cs" />
     <Compile Include="Apps\GeneralLedgerAccountGroup.cs" />
@@ -428,7 +427,6 @@
     <Compile Include="Apps\SerialisedInventoryItemVersion.cs" />
     <Compile Include="Apps\Note.cs" />
     <Compile Include="Apps\Obligation.cs" />
-    <Compile Include="Apps\Office.cs" />
     <Compile Include="Apps\OneTimeCharge.cs" />
     <Compile Include="Apps\OperatingBudget.cs" />
     <Compile Include="Apps\Order.cs" />
@@ -498,7 +496,6 @@
     <Compile Include="Apps\PickList.cs" />
     <Compile Include="Apps\PickListItem.cs" />
     <Compile Include="Apps\PickListState.cs" />
-    <Compile Include="Apps\Plant.cs" />
     <Compile Include="Apps\Position.cs" />
     <Compile Include="Apps\PositionFulfillment.cs" />
     <Compile Include="Apps\PositionReportingStructure.cs" />
@@ -680,7 +677,6 @@
     <Compile Include="Apps\VatTariff.cs" />
     <Compile Include="Apps\Vehicle.cs" />
     <Compile Include="Apps\VolumeUsage.cs" />
-    <Compile Include="Apps\Warehouse.cs" />
     <Compile Include="Apps\WebAddress.cs" />
     <Compile Include="Apps\WebSiteCommunication.cs" />
     <Compile Include="Apps\Withdrawal.cs" />

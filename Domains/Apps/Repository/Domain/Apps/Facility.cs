@@ -8,9 +8,31 @@ namespace Allors.Repository
     [Id("cdd79e23-a132-48b0-b88f-a03bd029f49d")]
     #endregion
     [Plural("Facilities")]
-    public partial interface Facility : AccessControlledObject, GeoLocatable 
+    public partial class Facility : AccessControlledObject, GeoLocatable 
     {
+        #region inherited properties
+        public Permission[] DeniedPermissions { get; set; }
 
+        public SecurityToken[] SecurityTokens { get; set; }
+
+        public Guid UniqueId { get; set; }
+
+        public decimal Latitude { get; set; }
+
+        public decimal Longitude { get; set; }
+
+        #endregion
+
+        #region Allors
+        [Id("0E81E9A0-8E7C-4FC9-930A-10D3E67EA17A")]
+        [AssociationId("E507D69E-B592-40B0-AF45-3422A4E0A340")]
+        [RoleId("9BA88152-C48D-49A6-BFFA-84CD2AE79DB2")]
+        [Indexed]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Required]
+        [Workspace]
+        public FacilityType FacilityType { get; set; }
 
         #region Allors
         [Id("1a7f255a-3e94-41df-b71d-10ab36f38ffb")]
@@ -19,9 +41,7 @@ namespace Allors.Repository
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
-
-        Facility MadeUpOf { get; set; }
-
+        public Facility MadeUpOf { get; set; }
 
         #region Allors
         [Id("1daad895-cf57-4110-a4e0-117e0212c3e4")]
@@ -30,8 +50,7 @@ namespace Allors.Repository
         #endregion
         [Precision(19)]
         [Scale(2)]
-        decimal SquareFootage { get; set; }
-
+        public decimal SquareFootage { get; set; }
 
         #region Allors
         [Id("2df0999d-97cb-4c76-9f3e-076376e60e38")]
@@ -39,9 +58,7 @@ namespace Allors.Repository
         [RoleId("5dd1abff-5a4c-4d30-8c69-1bcc83e5460e")]
         #endregion
         [Size(256)]
-
-        string Description { get; set; }
-
+        public string Description { get; set; }
 
         #region Allors
         [Id("4b55ee38-64e9-4c11-a204-36e2f460c5f8")]
@@ -50,9 +67,7 @@ namespace Allors.Repository
         #endregion
         [Multiplicity(Multiplicity.ManyToMany)]
         [Indexed]
-
-        ContactMechanism[] FacilityContactMechanisms { get; set; }
-
+        public ContactMechanism[] FacilityContactMechanisms { get; set; }
 
         #region Allors
         [Id("b8f50794-848b-42be-9114-5eea579f5f71")]
@@ -61,7 +76,20 @@ namespace Allors.Repository
         #endregion
         [Required]
         [Size(256)]
+        public string Name { get; set; }
 
-        string Name { get; set; }
+        #region inherited methods
+
+        public void OnBuild() { }
+
+        public void OnPostBuild() { }
+
+        public void OnPreDerive() { }
+
+        public void OnDerive() { }
+
+        public void OnPostDerive() { }
+
+        #endregion
     }
 }

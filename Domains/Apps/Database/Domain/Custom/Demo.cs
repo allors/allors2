@@ -29,7 +29,7 @@ namespace Allors
 
             var postalAddress = new PostalAddressBuilder(this.Session)
                 .WithAddress1("Kleine Nieuwedijkstraat 4")
-                .WithPostalBoundary(new PostalBoundaryBuilder(this.Session).WithLocality("Mechelen").WithPostalCode("2800").WithCountry(belgium).Build())
+                .WithPostalBoundary(new PostalBoundaryBuilder(this.Session).WithCity("Mechelen").WithPostalCode("2800").WithCountry(belgium).Build())
                 .Build();
 
             var phone = new TelecommunicationsNumberBuilder(this.Session)
@@ -39,24 +39,6 @@ namespace Allors
 
             var email = new EmailAddressBuilder(this.Session)
                 .WithElectronicAddressString("info@allors.com")
-                .Build();
-
-            var billing = new PartyContactMechanismBuilder(this.Session)
-                .WithContactMechanism(postalAddress)
-                .WithContactPurpose(new ContactMechanismPurposes(this.Session).BillingAddress)
-                .WithUseAsDefault(true)
-                .Build();
-
-            var generalPhoneNumber = new PartyContactMechanismBuilder(this.Session)
-                .WithContactMechanism(phone)
-                .WithContactPurpose(new ContactMechanismPurposes(this.Session).GeneralPhoneNumber)
-                .WithUseAsDefault(true)
-                .Build();
-
-            var generalEmail = new PartyContactMechanismBuilder(this.Session)
-                .WithContactMechanism(email)
-                .WithContactPurpose(new ContactMechanismPurposes(this.Session).GeneralEmail)
-                .WithUseAsDefault(true)
                 .Build();
 
             var ing = new BankBuilder(this.Session)
@@ -75,9 +57,9 @@ namespace Allors
             var allors = new InternalOrganisationBuilder(this.Session)
                 .WithTaxNumber("BE 0476967014")
                 .WithName("Allors")
-                .WithPartyContactMechanism(billing)
-                .WithPartyContactMechanism(generalPhoneNumber)
-                .WithPartyContactMechanism(generalEmail)
+                .WithBillingAddress(postalAddress)
+                .WithGeneralPhoneNumber(phone)
+                .WithGeneralEmailAddress(email)
                 .WithBankAccount(bankaccount)
                 .WithDefaultPaymentMethod(new OwnBankAccountBuilder(Session).WithBankAccount(bankaccount).WithDescription("Hoofdbank").Build())
                 .WithRequestNumberPrefix("requestno: ")
@@ -100,8 +82,13 @@ namespace Allors
                 allors.LogoImage = image;
             }
 
-            var offices = new OfficeBuilder(this.Session).WithName("Headquarters").WithDescription("Allors HQ").Build();
-            allors.DefaultFacility = offices;
+            var facility = new FacilityBuilder(this.Session)
+                .WithName("Headquarters")
+                .WithDescription("Allors HQ")
+                .WithFacilityType(new FacilityTypes(this.Session).Warehouse)
+                .Build();
+
+            allors.DefaultFacility = facility;
             
             new StoreBuilder(this.Session)
                 .WithName("Allors store")
@@ -114,7 +101,7 @@ namespace Allors
 
             var acmePostalAddress = new PostalAddressBuilder(this.Session)
                 .WithAddress1("Acme address 1")
-                .WithPostalBoundary(new PostalBoundaryBuilder(this.Session).WithLocality("Acme city").WithPostalCode("1111").WithCountry(usa).Build())
+                .WithPostalBoundary(new PostalBoundaryBuilder(this.Session).WithCity("Acme city").WithPostalCode("1111").WithCountry(usa).Build())
                 .Build();
 
             var acmeBillingAddress = new PartyContactMechanismBuilder(this.Session)

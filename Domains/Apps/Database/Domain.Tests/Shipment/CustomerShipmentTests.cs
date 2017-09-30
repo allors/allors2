@@ -71,14 +71,9 @@ namespace Allors.Domain
             var customer = new PersonBuilder(this.DatabaseSession).WithLastName("customer").WithPersonRole(new PersonRoles(this.DatabaseSession).Customer).Build();
             var mechelen = new CityBuilder(this.DatabaseSession).WithName("Mechelen").Build();
             var shipFromAddress = new PostalAddressBuilder(this.DatabaseSession).WithGeographicBoundary(mechelen).WithAddress1("Haverwerf 15").Build();
-            var partyContactMechanism = new PartyContactMechanismBuilder(this.DatabaseSession)
-                .WithContactMechanism(shipFromAddress)
-                .WithContactPurpose(new ContactMechanismPurposes(this.DatabaseSession).ShippingAddress)
-                .WithUseAsDefault(true)
-                .Build();
 
             var internalOrganisation = Singleton.Instance(this.DatabaseSession).InternalOrganisation;
-            internalOrganisation.AddPartyContactMechanism(partyContactMechanism);
+            internalOrganisation.ShippingAddress = shipFromAddress;
 
             this.DatabaseSession.Derive();
             this.DatabaseSession.Commit();
@@ -139,7 +134,7 @@ namespace Allors.Domain
             var mechelen = new CityBuilder(this.DatabaseSession).WithName("Mechelen").Build();
 
             var store = new StoreBuilder(this.DatabaseSession).WithName("store")
-                .WithDefaultFacility(new Warehouses(this.DatabaseSession).FindBy(M.Warehouse.Name, "facility"))
+                .WithDefaultFacility(new Facilities(this.DatabaseSession).FindBy(M.Facility.FacilityType, new FacilityTypes(this.DatabaseSession).Warehouse))
                 .WithDefaultShipmentMethod(new ShipmentMethods(this.DatabaseSession).Ground)
                 .WithDefaultCarrier(new Carriers(this.DatabaseSession).Fedex)
                 .Build();
@@ -170,7 +165,7 @@ namespace Allors.Domain
             var mechelen = new CityBuilder(this.DatabaseSession).WithName("Mechelen").Build();
 
             var store = new StoreBuilder(this.DatabaseSession).WithName("store")
-                .WithDefaultFacility(new Warehouses(this.DatabaseSession).FindBy(M.Warehouse.Name, "facility"))
+                .WithDefaultFacility(new Facilities(this.DatabaseSession).FindBy(M.Facility.FacilityType, new FacilityTypes(this.DatabaseSession).Warehouse))
                 .WithOutgoingShipmentNumberPrefix("the format is ")
                 .WithDefaultShipmentMethod(new ShipmentMethods(this.DatabaseSession).Ground)
                 .WithDefaultCarrier(new Carriers(this.DatabaseSession).Fedex)
@@ -1111,18 +1106,12 @@ namespace Allors.Domain
             var customer = new PersonBuilder(this.DatabaseSession).WithLastName("customer").WithPersonRole(new PersonRoles(this.DatabaseSession).Customer).Build();
             var address1 = new PostalAddressBuilder(this.DatabaseSession).WithGeographicBoundary(mechelen).WithAddress1("Haverwerf 15").Build();
 
-            var billingAddress = new PartyContactMechanismBuilder(this.DatabaseSession)
-                .WithContactMechanism(address1)
-                .WithContactPurpose(new ContactMechanismPurposes(this.DatabaseSession).BillingAddress)
-                .WithUseAsDefault(true)
-                .Build();
-
             var internalOrganisation = new InternalOrganisationBuilder(this.DatabaseSession)
                 .WithName("internalOrganisation")
                 .WithDefaultPaymentMethod(ownBankAccount)
                 .Build();
 
-            internalOrganisation.AddPartyContactMechanism(billingAddress);
+            internalOrganisation.BillingAddress = address1;
 
             this.DatabaseSession.Derive();
 

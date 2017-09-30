@@ -104,7 +104,7 @@ namespace Allors.Domain
             Assert.NotNull(item.QuantityExpectedIn);
             Assert.NotNull(item.QuantityOnHand);
             Assert.Equal(new NonSerialisedInventoryItemStates(this.DatabaseSession).Good, item.NonSerialisedInventoryItemState);
-            Assert.Equal(new Warehouses(this.DatabaseSession).FindBy(M.Warehouse.Name, "facility"), item.Facility);
+            Assert.Equal(new Facilities(this.DatabaseSession).FindBy(M.Facility.FacilityType, new FacilityTypes(this.DatabaseSession).Warehouse), item.Facility);
         }
 
         [Fact]

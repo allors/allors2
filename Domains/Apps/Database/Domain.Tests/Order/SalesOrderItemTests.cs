@@ -670,8 +670,8 @@ namespace Allors.Domain
 
             this.DatabaseSession.Derive();
 
-            Assert.Equal(new Warehouses(this.DatabaseSession).FindBy(M.Warehouse.Name, "facility"), item1.ReservedFromInventoryItem.Facility);
-            Assert.Equal(new Warehouses(this.DatabaseSession).FindBy(M.Warehouse.Name, "facility"), item2.ReservedFromInventoryItem.Facility);
+            Assert.Equal(new Facilities(this.DatabaseSession).FindBy(M.Facility.FacilityType, new FacilityTypes(this.DatabaseSession).Warehouse), item1.ReservedFromInventoryItem.Facility);
+            Assert.Equal(new Facilities(this.DatabaseSession).FindBy(M.Facility.FacilityType, new FacilityTypes(this.DatabaseSession).Warehouse), item2.ReservedFromInventoryItem.Facility);
         }
 
         [Fact]
@@ -679,7 +679,7 @@ namespace Allors.Domain
         {
             this.InstantiateObjects(this.DatabaseSession);
 
-            var secondWarehouse = new WarehouseBuilder(this.DatabaseSession)
+            var secondWarehouse = new FacilityBuilder(this.DatabaseSession)
                 .WithName("affiliate warehouse")
                 .Build();
 

@@ -5,33 +5,24 @@ namespace Allors.Repository
     using Attributes;
 
     #region Allors
-    [Id("2ba5e05c-f1ab-4143-ae7e-4db7389ff34e")]
+    [Id("65B821F6-FE91-4411-9716-20C1D9D86E91")]
     #endregion
-    public partial class Building : Facility 
+    public partial class FacilityType : Enumeration 
     {
         #region inherited properties
-        public Facility MadeUpOf { get; set; }
-
-        public decimal SquareFootage { get; set; }
-
-        public string Description { get; set; }
-
-        public ContactMechanism[] FacilityContactMechanisms { get; set; }
+        public LocalisedText[] LocalisedNames { get; set; }
 
         public string Name { get; set; }
+
+        public bool IsActive { get; set; }
 
         public Permission[] DeniedPermissions { get; set; }
 
         public SecurityToken[] SecurityTokens { get; set; }
 
-        public decimal Latitude { get; set; }
-
-        public decimal Longitude { get; set; }
-
         public Guid UniqueId { get; set; }
 
         #endregion
-
 
         #region inherited methods
 
@@ -46,10 +37,6 @@ namespace Allors.Repository
 
         public void OnPostDerive(){}
 
-
-
-
         #endregion
-
     }
 }

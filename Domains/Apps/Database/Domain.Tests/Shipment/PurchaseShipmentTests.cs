@@ -96,27 +96,6 @@ namespace Allors.Domain
         }
 
         [Fact]
-        public void GivenPurchaseShipmentWithShipToAddress_WhenDeriving_ThenDerivedShipToAddressMustExist()
-        {
-            var supplier = new OrganisationBuilder(this.DatabaseSession).WithName("supplier").WithOrganisationRole(new OrganisationRoles(this.DatabaseSession).Supplier).Build();
-            var internalOrganisation = Singleton.Instance(this.DatabaseSession).InternalOrganisation;
-            PostalAddress postalAddress = null;
-            foreach (PartyContactMechanism partyContactMechanism in internalOrganisation.PartyContactMechanisms)
-            {
-                if (partyContactMechanism.ContactPurposes.Contains(new ContactMechanismPurposes(this.DatabaseSession).ShippingAddress))
-                {
-                    postalAddress = partyContactMechanism.ContactMechanism as PostalAddress;
-                }
-            }
-
-            var shipment = new PurchaseShipmentBuilder(this.DatabaseSession).WithShipmentMethod(new ShipmentMethods(this.DatabaseSession).Ground).WithShipFromParty(supplier).Build();
-            
-            this.DatabaseSession.Derive();
-
-            Assert.Equal(postalAddress, shipment.ShipToAddress);
-        }
-
-        [Fact]
         public void GivenPurchaseShipmentWithShipToCustomerWithshippingAddress_WhenDeriving_ThenDerivedShipToCustomerAndDerivedShipToAddressMustExist()
         {
             var supplier = new OrganisationBuilder(this.DatabaseSession).WithName("supplier").WithOrganisationRole(new OrganisationRoles(this.DatabaseSession).Supplier).Build();
@@ -130,7 +109,7 @@ namespace Allors.Domain
                 .WithUseAsDefault(true)
                 .Build();
 
-            internalOrganisation.AddPartyContactMechanism(shippingAddress);
+            internalOrganisation.ShippingAddress = shipToAddress;
             
             this.DatabaseSession.Derive();
 
