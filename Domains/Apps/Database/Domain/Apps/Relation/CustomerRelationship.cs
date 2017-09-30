@@ -41,6 +41,16 @@ namespace Allors.Domain
                             customerOrganisation.ContactsUserGroup.AddMember(currentContact);
                         }
                     }
+
+                    if (this.FromDate <= DateTime.UtcNow && (!this.ExistThroughDate || this.ThroughDate >= DateTime.UtcNow))
+                    {
+                        Singleton.Instance(this.strategy.Session).InternalOrganisation.AddActiveCustomer(this.Customer);
+                    }
+
+                    if (this.FromDate > DateTime.UtcNow || (this.ExistThroughDate && this.ThroughDate < DateTime.UtcNow))
+                    {
+                        Singleton.Instance(this.strategy.Session).InternalOrganisation.RemoveActiveCustomer(this.Customer);
+                    }
                 }
             }
         }

@@ -24,11 +24,9 @@
 namespace Allors.Domain
 {
     using System;
-    using System.Security.Principal;
-    using System.Threading;
+
     using Meta;
     using Xunit;
-
     
     public class PersonTests : DomainTest
     {
@@ -39,6 +37,21 @@ namespace Allors.Domain
             builder.Build();
                 
             Assert.False(this.DatabaseSession.Derive(false).HasErrors);
+        }
+
+        [Fact]
+        public void GivenPerson_WhenEmployed_ThenIsEmployeeEqualsTrue()
+        {
+            var salesRep = new PersonBuilder(this.DatabaseSession).WithLastName("salesRep").WithPersonRole(new PersonRoles(this.DatabaseSession).Employee).Build();
+
+            var employment = new EmploymentBuilder(this.DatabaseSession)
+                .WithEmployee(salesRep)
+                .WithFromDate(DateTime.UtcNow)
+                .Build();
+
+            this.DatabaseSession.Derive();
+
+            Assert.True(salesRep.IsActiveEmployee(DateTime.UtcNow));
         }
 
         [Fact]

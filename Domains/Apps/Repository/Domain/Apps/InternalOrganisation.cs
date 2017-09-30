@@ -695,6 +695,39 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.ManyToOne)]
         public ContactMechanism ShippingInquiriesPhone { get; set; }
 
+        #region Allors
+        [Id("9a2ab89e-c3bc-4b6b-a82d-417dc21c8f9e")]
+        [AssociationId("fcc6e653-3787-44a0-8a3a-35e80e232a02")]
+        [RoleId("31549cf9-6418-4d19-96b0-5813cc964491")]
+        #endregion
+        [Multiplicity(Multiplicity.OneToMany)]
+        [Derived]
+        [Indexed]
+        [Workspace]
+        public Party[] ActiveCustomers { get; set; }
+
+        #region Allors
+        [Id("cd40057a-5211-4289-a4ef-c30aa4049957")]
+        [AssociationId("5dd54980-fa14-434c-80fc-64dec203fd8b")]
+        [RoleId("ca87441c-6ce7-4041-bdd4-ca83f3b19289")]
+        #endregion
+        [Multiplicity(Multiplicity.OneToMany)]
+        [Workspace]
+        [Derived]
+        [Indexed]
+        public Person[] ActiveEmployees { get; set; }
+
+        #region Allors
+        [Id("e09976e8-dc99-4539-9b0b-0bbe98cc5404")]
+        [AssociationId("0d828c12-82bd-4b37-96c8-68997a7c2f48")]
+        [RoleId("3d362cd1-d49c-422f-9722-7276a6ee07c4")]
+        #endregion
+        [Multiplicity(Multiplicity.OneToMany)]
+        [Workspace]
+        [Derived]
+        [Indexed]
+        public Party[] ActiveSuppliers { get; set; }
+
         #region inherited methods
 
 

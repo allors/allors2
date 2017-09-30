@@ -23,6 +23,25 @@ namespace Allors.Domain
     {
         private bool IsDeletable => !this.ExistCurrentOrganisationContactRelationships;
 
+        public bool IsActiveEmployee(DateTime? date)
+        {
+            if (date == DateTime.MinValue)
+            {
+                return false;
+            }
+
+            foreach (Employment relationship in this.EmploymentsWhereEmployee)
+            {
+                if (relationship.FromDate.Date <= date &&
+                    (!relationship.ExistThroughDate || relationship.ThroughDate >= date))
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
         public void AppsOnDerive(ObjectOnDerive method)
         {
             var derivation = method.Derivation;
