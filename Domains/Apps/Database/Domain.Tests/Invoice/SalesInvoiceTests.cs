@@ -38,7 +38,7 @@ namespace Allors.Domain
             var contactMechanism = new PostalAddressBuilder(this.DatabaseSession)
                 .WithAddress1("Haverwerf 15")
                 .WithPostalBoundary(new PostalBoundaryBuilder(this.DatabaseSession)
-                                        .WithCity("Mechelen")
+                                        .WithLocality("Mechelen")
                                         .WithCountry(new Countries(this.DatabaseSession).FindBy(M.Country.IsoCode, "BE"))
                                         .Build())
 
@@ -66,7 +66,7 @@ namespace Allors.Domain
             var contactMechanism = new PostalAddressBuilder(this.DatabaseSession)
                 .WithAddress1("Haverwerf 15")
                 .WithPostalBoundary(new PostalBoundaryBuilder(this.DatabaseSession)
-                                        .WithCity("Mechelen")
+                                        .WithLocality("Mechelen")
                                         .WithCountry(new Countries(this.DatabaseSession).FindBy(M.Country.IsoCode, "BE"))
                                         .Build())
 
@@ -141,7 +141,7 @@ namespace Allors.Domain
             var contactMechanism = new PostalAddressBuilder(this.DatabaseSession)
                 .WithAddress1("Haverwerf 15")
                 .WithPostalBoundary(new PostalBoundaryBuilder(this.DatabaseSession)
-                                        .WithCity("Mechelen")
+                                        .WithLocality("Mechelen")
                                         .WithCountry(new Countries(this.DatabaseSession).FindBy(M.Country.IsoCode, "BE"))
                                         .Build())
                 .Build();
@@ -169,7 +169,7 @@ namespace Allors.Domain
             var contactMechanism = new PostalAddressBuilder(this.DatabaseSession)
                 .WithAddress1("Haverwerf 15")
                 .WithPostalBoundary(new PostalBoundaryBuilder(this.DatabaseSession)
-                                        .WithCity("Mechelen")
+                                        .WithLocality("Mechelen")
                                         .WithCountry(new Countries(this.DatabaseSession).FindBy(M.Country.IsoCode, "BE"))
                                         .Build())
 
@@ -204,7 +204,7 @@ namespace Allors.Domain
             var contactMechanism = new PostalAddressBuilder(this.DatabaseSession)
                 .WithAddress1("Haverwerf 15")
                 .WithPostalBoundary(new PostalBoundaryBuilder(this.DatabaseSession)
-                                        .WithCity("Mechelen")
+                                        .WithLocality("Mechelen")
                                         .WithCountry(new Countries(this.DatabaseSession).FindBy(M.Country.IsoCode, "BE"))
                                         .Build())
 
@@ -244,7 +244,7 @@ namespace Allors.Domain
             var contactMechanism = new PostalAddressBuilder(this.DatabaseSession)
                 .WithAddress1("Haverwerf 15")
                 .WithPostalBoundary(new PostalBoundaryBuilder(this.DatabaseSession)
-                                        .WithCity("Mechelen")
+                                        .WithLocality("Mechelen")
                                         .WithCountry(new Countries(this.DatabaseSession).FindBy(M.Country.IsoCode, "BE"))
                                         .Build())
 
@@ -289,7 +289,7 @@ namespace Allors.Domain
             var contactMechanism = new PostalAddressBuilder(this.DatabaseSession)
                 .WithAddress1("Haverwerf 15")
                 .WithPostalBoundary(new PostalBoundaryBuilder(this.DatabaseSession)
-                                        .WithCity("Mechelen")
+                                        .WithLocality("Mechelen")
                                         .WithCountry(new Countries(this.DatabaseSession).FindBy(M.Country.IsoCode, "BE"))
                                         .Build())
 
@@ -315,7 +315,7 @@ namespace Allors.Domain
             var contactMechanism = new PostalAddressBuilder(this.DatabaseSession)
                 .WithAddress1("Haverwerf 15")
                 .WithPostalBoundary(new PostalBoundaryBuilder(this.DatabaseSession)
-                                        .WithCity("Mechelen")
+                                        .WithLocality("Mechelen")
                                         .WithCountry(new Countries(this.DatabaseSession).FindBy(M.Country.IsoCode, "BE"))
                                         .Build())
 
@@ -363,7 +363,7 @@ namespace Allors.Domain
             var contactMechanism = new PostalAddressBuilder(this.DatabaseSession)
                 .WithAddress1("Haverwerf 15")
                 .WithPostalBoundary(new PostalBoundaryBuilder(this.DatabaseSession)
-                                        .WithCity("Mechelen")
+                                        .WithLocality("Mechelen")
                                         .WithCountry(new Countries(this.DatabaseSession).FindBy(M.Country.IsoCode, "BE"))
                                         .Build())
 
@@ -372,7 +372,7 @@ namespace Allors.Domain
             var homeAddress = new PostalAddressBuilder(this.DatabaseSession)
                 .WithAddress1("Sint-Lambertuslaan 78")
                 .WithPostalBoundary(new PostalBoundaryBuilder(this.DatabaseSession)
-                                        .WithCity("Muizen")
+                                        .WithLocality("Muizen")
                                         .WithCountry(new Countries(this.DatabaseSession).FindBy(M.Country.IsoCode, "BE"))
                                         .Build())
 
@@ -484,7 +484,7 @@ namespace Allors.Domain
             var contactMechanism = new PostalAddressBuilder(this.DatabaseSession)
                 .WithAddress1("Haverwerf 15")
                 .WithPostalBoundary(new PostalBoundaryBuilder(this.DatabaseSession)
-                                        .WithCity("Mechelen")
+                                        .WithLocality("Mechelen")
                                         .WithCountry(new Countries(this.DatabaseSession).FindBy(M.Country.IsoCode, "BE"))
                                         .Build())
 
@@ -512,7 +512,7 @@ namespace Allors.Domain
             var contactMechanism = new PostalAddressBuilder(this.DatabaseSession)
                 .WithAddress1("Haverwerf 15")
                 .WithPostalBoundary(new PostalBoundaryBuilder(this.DatabaseSession)
-                                        .WithCity("Mechelen")
+                                        .WithLocality("Mechelen")
                                         .WithCountry(new Countries(this.DatabaseSession).FindBy(M.Country.IsoCode, "BE"))
                                         .Build())
 
@@ -570,7 +570,7 @@ namespace Allors.Domain
             var contactMechanism = new PostalAddressBuilder(this.DatabaseSession)
                 .WithAddress1("Haverwerf 15")
                 .WithPostalBoundary(new PostalBoundaryBuilder(this.DatabaseSession)
-                                        .WithCity("Mechelen")
+                                        .WithLocality("Mechelen")
                                         .WithCountry(new Countries(this.DatabaseSession).FindBy(M.Country.IsoCode, "BE"))
                                         .Build())
 
@@ -630,7 +630,7 @@ namespace Allors.Domain
             var contactMechanism = new PostalAddressBuilder(this.DatabaseSession)
                 .WithAddress1("Haverwerf 15")
                 .WithPostalBoundary(new PostalBoundaryBuilder(this.DatabaseSession)
-                                        .WithCity("Mechelen")
+                                        .WithLocality("Mechelen")
                                         .WithCountry(new Countries(this.DatabaseSession).FindBy(M.Country.IsoCode, "BE"))
                                         .Build())
 
@@ -670,7 +670,7 @@ namespace Allors.Domain
             var contactMechanism = new PostalAddressBuilder(this.DatabaseSession)
                 .WithAddress1("Haverwerf 15")
                 .WithPostalBoundary(new PostalBoundaryBuilder(this.DatabaseSession)
-                                        .WithCity("Mechelen")
+                                        .WithLocality("Mechelen")
                                         .WithCountry(new Countries(this.DatabaseSession).FindBy(M.Country.IsoCode, "BE"))
                                         .Build())
 
@@ -737,7 +737,7 @@ namespace Allors.Domain
             var contactMechanism = new PostalAddressBuilder(this.DatabaseSession)
                 .WithAddress1("Haverwerf 15")
                 .WithPostalBoundary(new PostalBoundaryBuilder(this.DatabaseSession)
-                                        .WithCity("Mechelen")
+                                        .WithLocality("Mechelen")
                                         .WithCountry(new Countries(this.DatabaseSession).FindBy(M.Country.IsoCode, "BE"))
                                         .Build())
 
@@ -792,7 +792,7 @@ namespace Allors.Domain
             var contactMechanism = new PostalAddressBuilder(this.DatabaseSession)
                 .WithAddress1("Haverwerf 15")
                 .WithPostalBoundary(new PostalBoundaryBuilder(this.DatabaseSession)
-                                        .WithCity("Mechelen")
+                                        .WithLocality("Mechelen")
                                         .WithCountry(new Countries(this.DatabaseSession).FindBy(M.Country.IsoCode, "BE"))
                                         .Build())
 
@@ -848,7 +848,7 @@ namespace Allors.Domain
             var contactMechanism = new PostalAddressBuilder(this.DatabaseSession)
                 .WithAddress1("Haverwerf 15")
                 .WithPostalBoundary(new PostalBoundaryBuilder(this.DatabaseSession)
-                                        .WithCity("Mechelen")
+                                        .WithLocality("Mechelen")
                                         .WithCountry(new Countries(this.DatabaseSession).FindBy(M.Country.IsoCode, "BE"))
                                         .Build())
 
@@ -890,7 +890,7 @@ namespace Allors.Domain
             var contactMechanism = new PostalAddressBuilder(this.DatabaseSession)
                 .WithAddress1("Haverwerf 15")
                 .WithPostalBoundary(new PostalBoundaryBuilder(this.DatabaseSession)
-                                        .WithCity("Mechelen")
+                                        .WithLocality("Mechelen")
                                         .WithCountry(new Countries(this.DatabaseSession).FindBy(M.Country.IsoCode, "BE"))
                                         .Build())
 
@@ -934,7 +934,7 @@ namespace Allors.Domain
             var contactMechanism = new PostalAddressBuilder(this.DatabaseSession)
                 .WithAddress1("Haverwerf 15")
                 .WithPostalBoundary(new PostalBoundaryBuilder(this.DatabaseSession)
-                                        .WithCity("Mechelen")
+                                        .WithLocality("Mechelen")
                                         .WithCountry(new Countries(this.DatabaseSession).FindBy(M.Country.IsoCode, "BE"))
                                         .Build())
 
@@ -982,7 +982,7 @@ namespace Allors.Domain
             var contactMechanism = new PostalAddressBuilder(this.DatabaseSession)
                 .WithAddress1("Haverwerf 15")
                 .WithPostalBoundary(new PostalBoundaryBuilder(this.DatabaseSession)
-                                        .WithCity("Mechelen")
+                                        .WithLocality("Mechelen")
                                         .WithCountry(new Countries(this.DatabaseSession).FindBy(M.Country.IsoCode, "BE"))
                                         .Build())
 
@@ -1030,7 +1030,7 @@ namespace Allors.Domain
             var contactMechanism = new PostalAddressBuilder(this.DatabaseSession)
                 .WithAddress1("Haverwerf 15")
                 .WithPostalBoundary(new PostalBoundaryBuilder(this.DatabaseSession)
-                                        .WithCity("Mechelen")
+                                        .WithLocality("Mechelen")
                                         .WithCountry(new Countries(this.DatabaseSession).FindBy(M.Country.IsoCode, "BE"))
                                         .Build())
 
@@ -1078,7 +1078,7 @@ namespace Allors.Domain
             var contactMechanism = new PostalAddressBuilder(this.DatabaseSession)
                 .WithAddress1("Haverwerf 15")
                 .WithPostalBoundary(new PostalBoundaryBuilder(this.DatabaseSession)
-                                        .WithCity("Mechelen")
+                                        .WithLocality("Mechelen")
                                         .WithCountry(new Countries(this.DatabaseSession).FindBy(M.Country.IsoCode, "BE"))
                                         .Build())
 
@@ -1124,7 +1124,7 @@ namespace Allors.Domain
             var contactMechanism = new PostalAddressBuilder(this.DatabaseSession)
                 .WithAddress1("Haverwerf 15")
                 .WithPostalBoundary(new PostalBoundaryBuilder(this.DatabaseSession)
-                                        .WithCity("Mechelen")
+                                        .WithLocality("Mechelen")
                                         .WithCountry(new Countries(this.DatabaseSession).FindBy(M.Country.IsoCode, "BE"))
                                         .Build())
 
@@ -1152,7 +1152,7 @@ namespace Allors.Domain
             var contactMechanism = new PostalAddressBuilder(this.DatabaseSession)
                 .WithAddress1("Haverwerf 15")
                 .WithPostalBoundary(new PostalBoundaryBuilder(this.DatabaseSession)
-                                        .WithCity("Mechelen")
+                                        .WithLocality("Mechelen")
                                         .WithCountry(new Countries(this.DatabaseSession).FindBy(M.Country.IsoCode, "BE"))
                                         .Build())
 
@@ -1193,7 +1193,7 @@ namespace Allors.Domain
             var contactMechanism = new PostalAddressBuilder(this.DatabaseSession)
                 .WithAddress1("Haverwerf 15")
                 .WithPostalBoundary(new PostalBoundaryBuilder(this.DatabaseSession)
-                                        .WithCity("Mechelen")
+                                        .WithLocality("Mechelen")
                                         .WithCountry(new Countries(this.DatabaseSession).FindBy(M.Country.IsoCode, "BE"))
                                         .Build())
 
@@ -1302,7 +1302,7 @@ namespace Allors.Domain
             var contactMechanism = new PostalAddressBuilder(this.DatabaseSession)
                 .WithAddress1("Haverwerf 15")
                 .WithPostalBoundary(new PostalBoundaryBuilder(this.DatabaseSession)
-                                        .WithCity("Mechelen")
+                                        .WithLocality("Mechelen")
                                         .WithCountry(new Countries(this.DatabaseSession).FindBy(M.Country.IsoCode, "BE"))
                                         .Build())
 
@@ -1347,7 +1347,7 @@ namespace Allors.Domain
             var contactMechanism = new PostalAddressBuilder(this.DatabaseSession)
                 .WithAddress1("Haverwerf 15")
                 .WithPostalBoundary(new PostalBoundaryBuilder(this.DatabaseSession)
-                                        .WithCity("Mechelen")
+                                        .WithLocality("Mechelen")
                                         .WithCountry(new Countries(this.DatabaseSession).FindBy(M.Country.IsoCode, "BE"))
                                         .Build())
 
@@ -1392,7 +1392,7 @@ namespace Allors.Domain
             var contactMechanism = new PostalAddressBuilder(this.DatabaseSession)
                 .WithAddress1("Haverwerf 15")
                 .WithPostalBoundary(new PostalBoundaryBuilder(this.DatabaseSession)
-                                        .WithCity("Mechelen")
+                                        .WithLocality("Mechelen")
                                         .WithCountry(new Countries(this.DatabaseSession).FindBy(M.Country.IsoCode, "BE"))
                                         .Build())
 
@@ -1436,7 +1436,7 @@ namespace Allors.Domain
             var contactMechanism = new PostalAddressBuilder(this.DatabaseSession)
                 .WithAddress1("Haverwerf 15")
                 .WithPostalBoundary(new PostalBoundaryBuilder(this.DatabaseSession)
-                                        .WithCity("Mechelen")
+                                        .WithLocality("Mechelen")
                                         .WithCountry(new Countries(this.DatabaseSession).FindBy(M.Country.IsoCode, "BE"))
                                         .Build())
 
@@ -1781,7 +1781,7 @@ namespace Allors.Domain
             var contactMechanism = new PostalAddressBuilder(this.DatabaseSession)
                 .WithAddress1("Haverwerf 15")
                 .WithPostalBoundary(new PostalBoundaryBuilder(this.DatabaseSession)
-                                        .WithCity("Mechelen")
+                                        .WithLocality("Mechelen")
                                         .WithCountry(new Countries(this.DatabaseSession).FindBy(M.Country.IsoCode, "BE"))
                                         .Build())
 

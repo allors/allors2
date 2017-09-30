@@ -33,7 +33,7 @@ namespace Allors.Repository
         [Required]
         [Size(256)]
         [Workspace]
-        public string City { get; set; }
+        public string Locality { get; set; }
 
         #region Allors
         [Id("c0e1c31b-5506-48c0-b46f-239f89eca08f")]

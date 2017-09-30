@@ -29,7 +29,7 @@ namespace Allors
 
             var postalAddress = new PostalAddressBuilder(this.Session)
                 .WithAddress1("Kleine Nieuwedijkstraat 4")
-                .WithPostalBoundary(new PostalBoundaryBuilder(this.Session).WithCity("Mechelen").WithPostalCode("2800").WithCountry(belgium).Build())
+                .WithPostalBoundary(new PostalBoundaryBuilder(this.Session).WithLocality("Mechelen").WithPostalCode("2800").WithCountry(belgium).Build())
                 .Build();
 
             var phone = new TelecommunicationsNumberBuilder(this.Session)
@@ -101,7 +101,7 @@ namespace Allors
 
             var acmePostalAddress = new PostalAddressBuilder(this.Session)
                 .WithAddress1("Acme address 1")
-                .WithPostalBoundary(new PostalBoundaryBuilder(this.Session).WithCity("Acme city").WithPostalCode("1111").WithCountry(usa).Build())
+                .WithPostalBoundary(new PostalBoundaryBuilder(this.Session).WithLocality("Acme city").WithPostalCode("1111").WithCountry(usa).Build())
                 .Build();
 
             var acmeBillingAddress = new PartyContactMechanismBuilder(this.Session)
