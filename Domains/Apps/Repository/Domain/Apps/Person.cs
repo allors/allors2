@@ -145,7 +145,6 @@ namespace Allors.Repository
         [RoleId("BB05DFCA-3EC2-4971-B84B-C26F23B9EBC6")]
         #endregion
         [Multiplicity(Multiplicity.ManyToMany)]
-        [Required]
         [Indexed]
         [Workspace]
         public PersonRole[] PersonRoles { get; set; }
