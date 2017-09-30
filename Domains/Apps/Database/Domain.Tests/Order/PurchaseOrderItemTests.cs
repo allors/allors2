@@ -52,6 +52,8 @@ namespace Allors.Domain
             this.supplier = new OrganisationBuilder(this.DatabaseSession).WithName("supplier").WithOrganisationRole(new OrganisationRoles(this.DatabaseSession).Supplier).Build();
             this.supplier.AddPartyContactMechanism(supplierContactMechanism);
 
+            new SupplierRelationshipBuilder(this.DatabaseSession).WithSupplier(supplier).Build();
+
             this.finishedGood = new FinishedGoodBuilder(this.DatabaseSession)
                 .WithManufacturerId("10101")
                 .WithName("finished good")

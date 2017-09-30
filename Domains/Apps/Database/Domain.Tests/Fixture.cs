@@ -108,6 +108,8 @@ namespace Allors
 
                 new CustomerRelationshipBuilder(session).WithCustomer(customer).WithFromDate(DateTime.UtcNow).Build();
 
+                new SupplierRelationshipBuilder(session).WithSupplier(supplier).WithFromDate(DateTime.UtcNow).Build();
+
                 new EmploymentBuilder(session).WithFromDate(DateTime.UtcNow).WithEmployee(purchaser).Build();
 
                 new EmploymentBuilder(session).WithFromDate(DateTime.UtcNow).WithEmployee(salesrep).Build();

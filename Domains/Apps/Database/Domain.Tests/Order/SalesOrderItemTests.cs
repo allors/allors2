@@ -119,6 +119,11 @@ namespace Allors.Domain
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.DatabaseSession).Piece)
                 .Build();
 
+            new SupplierRelationshipBuilder(this.DatabaseSession)
+                .WithSupplier(this.supplier)
+                .WithFromDate(DateTime.UtcNow)
+                .Build();
+
             new CustomerRelationshipBuilder(this.DatabaseSession).WithCustomer(this.billToCustomer).Build();
 
             new CustomerRelationshipBuilder(this.DatabaseSession).WithCustomer(this.shipToCustomer).Build();
@@ -631,7 +636,10 @@ namespace Allors.Domain
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.DatabaseSession).Piece)
                 .Build();
 
-            
+            new SupplierRelationshipBuilder(this.DatabaseSession)
+                .WithSupplier(this.supplier)
+                .WithFromDate(DateTime.UtcNow)
+                .Build();
 
             new SupplierOfferingBuilder(this.DatabaseSession)
                 .WithProduct(good2)

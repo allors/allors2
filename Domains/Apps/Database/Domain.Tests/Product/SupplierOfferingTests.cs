@@ -104,7 +104,10 @@ namespace Allors.Domain
             var internalOrganisation = Singleton.Instance(this.DatabaseSession).InternalOrganisation;
             var secondFacility = new WarehouseBuilder(this.DatabaseSession).WithName("second facility").Build();
 
-            
+            new SupplierRelationshipBuilder(this.DatabaseSession)
+                .WithSupplier(supplier)
+                .WithFromDate(DateTime.UtcNow)
+                .Build();
 
             var purchasePrice = new ProductPurchasePriceBuilder(this.DatabaseSession)
                 .WithFromDate(DateTime.UtcNow)
@@ -142,7 +145,10 @@ namespace Allors.Domain
             var internalOrganisation = Singleton.Instance(this.DatabaseSession).InternalOrganisation;
             var secondFacility = new WarehouseBuilder(this.DatabaseSession).WithName("second facility").Build();
 
-            
+            new SupplierRelationshipBuilder(this.DatabaseSession)
+                .WithSupplier(supplier)
+                .WithFromDate(DateTime.UtcNow)
+                .Build();
 
             var finishedGood = new FinishedGoodBuilder(this.DatabaseSession)
                 .WithName("part")

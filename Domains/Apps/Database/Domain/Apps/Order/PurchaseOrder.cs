@@ -82,25 +82,6 @@ namespace Allors.Domain
                 derivation.AddDependency(this, this.TakenViaSupplier);
             }
 
-            // TODO: ???
-            //if (this.ExistTakenViaSupplier)
-            //{
-            //    var supplier = this.TakenViaSupplier as Organisation;
-            //    if (supplier != null)
-            //    {
-            //        var supplierRelationships = supplier.SupplierRelationshipsWhereSupplier;
-            //        supplierRelationships.Filter.AddEquals(M.SupplierRelationship.InternalOrganisation, this.ShipToBuyer);
-
-            //        foreach (SupplierRelationship supplierRelationship in supplierRelationships)
-            //        {
-            //            if (supplierRelationship.FromDate <= DateTime.UtcNow && (!supplierRelationship.ExistThroughDate || supplierRelationship.ThroughDate >= DateTime.UtcNow))
-            //            {
-            //                derivation.AddDependency(this, supplierRelationship);
-            //            }
-            //        }
-            //    }
-            //}
-
             foreach (PurchaseOrderItem orderItem in this.OrderItems)
             {
                 derivation.AddDependency(this, orderItem);
@@ -111,25 +92,25 @@ namespace Allors.Domain
         {
             var derivation = method.Derivation;
 
-            // TODO: ???
-            //Organisation supplier = this.TakenViaSupplier as Organisation;
-            //if (supplier != null && this.ExistShipToBuyer)
-            //{
-            //    if (!this.ShipToBuyer.Equals(supplier.InternalOrganisationWhereSupplier))
-            //    {
-            //        derivation.Validation.AddError(this, M.PurchaseOrder.TakenViaSupplier, ErrorMessages.PartyIsNotASupplier);
-            //    }
-            //}
 
-            //if (!this.ExistShipToAddress && this.ExistShipToBuyer)
-            //{
-            //    this.ShipToAddress = this.ShipToBuyer.ShippingAddress;
-            //}
+            Organisation supplier = this.TakenViaSupplier as Organisation;
+            if (supplier != null)
+            {
+                if (!Singleton.Instance(this.strategy.Session).InternalOrganisation.ActiveSuppliers.Contains(supplier))
+                {
+                    derivation.Validation.AddError(this, this.Meta.TakenViaSupplier, ErrorMessages.PartyIsNotASupplier);
+                }
+            }
 
-            //if (!this.ExistBillToContactMechanism && this.ExistBillToPurchaser)
-            //{
-            //    this.BillToContactMechanism = this.BillToPurchaser.BillingAddress;
-            //}
+            if (!this.ExistShipToAddress)
+            {
+                this.ShipToAddress = Singleton.Instance(this.strategy.Session).InternalOrganisation.ShippingAddress;
+            }
+
+            if (!this.ExistBillToContactMechanism)
+            {
+                this.BillToContactMechanism = Singleton.Instance(this.strategy.Session).InternalOrganisation.BillingAddress;
+            }
 
             if (!this.ExistTakenViaContactMechanism && this.ExistTakenViaSupplier)
             {

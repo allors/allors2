@@ -37,8 +37,7 @@ namespace Allors.Domain
                 good = this.Product as Good;
             }
 
-            var supplier = this.Supplier as Organisation;
-            if (supplier != null && good != null)
+            if (this.Supplier is Organisation supplier && good != null)
             {
                 if (good.ExistInventoryItemKind && good.InventoryItemKind.Equals(new InventoryItemKinds(this.Strategy.Session).NonSerialised))
                 {

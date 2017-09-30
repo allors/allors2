@@ -81,6 +81,16 @@ namespace Allors.Domain
         public void AppsOnDerive(ObjectOnDerive method)
         {
             var derivation = method.Derivation;
+
+            Organisation supplier = this.BilledFromParty as Organisation;
+            if (supplier != null)
+            {
+                if (!Singleton.Instance(this.strategy.Session).InternalOrganisation.ActiveSuppliers.Contains(supplier))
+                {
+                    derivation.Validation.AddError(this, this.Meta.BilledFromParty, ErrorMessages.PartyIsNotASupplier);
+                }
+            }
+
             this.AppsOnDeriveInvoiceItems(derivation);
             this.AppsOnDeriveInvoiceTotals();
         }

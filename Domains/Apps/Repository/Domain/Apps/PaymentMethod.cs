@@ -9,8 +9,6 @@ namespace Allors.Repository
     #endregion
 	public partial interface PaymentMethod : AccessControlledObject, UniquelyIdentifiable 
     {
-
-
         #region Allors
         [Id("0b16fdbc-c535-45a5-8be9-7b1d2c12337a")]
         [AssociationId("0d9ba18d-46fa-4a98-aa6a-37261f2f11a8")]

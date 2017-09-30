@@ -57,6 +57,11 @@ namespace Allors.Domain
 
             var internalOrganisation = Singleton.Instance(this.DatabaseSession).InternalOrganisation;
 
+            var supplierRelationship = new SupplierRelationshipBuilder(this.DatabaseSession)
+                .WithSupplier(supplier)
+                .WithFromDate(DateTime.UtcNow)
+                .Build();
+
             var generalLedgerAccount = new GeneralLedgerAccountBuilder(this.DatabaseSession)
                 .WithAccountNumber("0001")
                 .WithName("GeneralLedgerAccount")
@@ -100,6 +105,11 @@ namespace Allors.Domain
                 .Build();
 
             var internalOrganisation = Singleton.Instance(this.DatabaseSession).InternalOrganisation;
+
+            var supplierRelationship = new SupplierRelationshipBuilder(this.DatabaseSession)
+                .WithSupplier(supplier)
+                .WithFromDate(DateTime.UtcNow)
+                .Build();
 
             var generalLedgerAccount = new GeneralLedgerAccountBuilder(this.DatabaseSession)
                 .WithAccountNumber("0001")

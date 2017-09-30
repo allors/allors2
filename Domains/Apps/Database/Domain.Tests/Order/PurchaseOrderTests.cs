@@ -36,7 +36,7 @@ namespace Allors.Domain
         {
             var supplier = new OrganisationBuilder(this.DatabaseSession).WithName("supplier").WithOrganisationRole(new OrganisationRoles(this.DatabaseSession).Supplier).Build();
             var internalOrganisation = Singleton.Instance(this.DatabaseSession).InternalOrganisation;
-            
+            new SupplierRelationshipBuilder(this.DatabaseSession).WithSupplier(supplier).Build();
 
             var order = new PurchaseOrderBuilder(this.DatabaseSession).WithTakenViaSupplier(supplier).Build();
 
@@ -52,7 +52,7 @@ namespace Allors.Domain
         {
             var supplier = new OrganisationBuilder(this.DatabaseSession).WithName("customer2").WithOrganisationRole(new OrganisationRoles(this.DatabaseSession).Customer).Build();
             var internalOrganisation = Singleton.Instance(this.DatabaseSession).InternalOrganisation;
-            
+            new SupplierRelationshipBuilder(this.DatabaseSession).WithSupplier(supplier).Build();
 
             var mechelen = new CityBuilder(this.DatabaseSession).WithName("Mechelen").Build();
             ContactMechanism takenViaContactMechanism = new PostalAddressBuilder(this.DatabaseSession).WithGeographicBoundary(mechelen).WithAddress1("Haverwerf 15").Build();
@@ -97,7 +97,7 @@ namespace Allors.Domain
             var expectedError = ErrorMessages.PartyIsNotASupplier;
             Assert.Equal(expectedError, this.DatabaseSession.Derive(false).Errors[0].Message);
 
-            
+            new SupplierRelationshipBuilder(this.DatabaseSession).WithSupplier(supplier).Build();
 
             Assert.False(this.DatabaseSession.Derive(false).HasErrors);
         }
@@ -109,7 +109,7 @@ namespace Allors.Domain
 
             var supplier = new OrganisationBuilder(this.DatabaseSession).WithName("customer2").WithOrganisationRole(new OrganisationRoles(this.DatabaseSession).Customer).Build();
             var internalOrganisation = Singleton.Instance(this.DatabaseSession).InternalOrganisation;
-            
+            new SupplierRelationshipBuilder(this.DatabaseSession).WithSupplier(supplier).Build();
 
             var mechelen = new CityBuilder(this.DatabaseSession).WithName("Mechelen").Build();
             ContactMechanism takenViaContactMechanism = new PostalAddressBuilder(this.DatabaseSession).WithGeographicBoundary(mechelen).WithAddress1("Haverwerf 15").Build();
@@ -170,7 +170,7 @@ namespace Allors.Domain
 
             var supplier = new OrganisationBuilder(this.DatabaseSession).WithName("customer2").WithOrganisationRole(new OrganisationRoles(this.DatabaseSession).Customer).Build();
             var internalOrganisation = Singleton.Instance(this.DatabaseSession).InternalOrganisation;
-            
+            new SupplierRelationshipBuilder(this.DatabaseSession).WithSupplier(supplier).Build();
 
             var order = new PurchaseOrderBuilder(this.DatabaseSession)
                 .WithTakenViaSupplier(supplier)
@@ -199,7 +199,7 @@ namespace Allors.Domain
 
             var supplier = new OrganisationBuilder(this.DatabaseSession).WithName("customer2").WithOrganisationRole(new OrganisationRoles(this.DatabaseSession).Customer).Build();
             var internalOrganisation = Singleton.Instance(this.DatabaseSession).InternalOrganisation;
-            
+            new SupplierRelationshipBuilder(this.DatabaseSession).WithSupplier(supplier).Build();
 
             var order = new PurchaseOrderBuilder(this.DatabaseSession)
                 .WithTakenViaSupplier(supplier)
@@ -226,7 +226,7 @@ namespace Allors.Domain
 
             var supplier = new OrganisationBuilder(this.DatabaseSession).WithName("customer2").WithOrganisationRole(new OrganisationRoles(this.DatabaseSession).Customer).Build();
             var internalOrganisation = Singleton.Instance(this.DatabaseSession).InternalOrganisation;
-            
+            new SupplierRelationshipBuilder(this.DatabaseSession).WithSupplier(supplier).Build();
 
             var order = new PurchaseOrderBuilder(this.DatabaseSession)
                 .WithTakenViaSupplier(supplier)
@@ -255,7 +255,7 @@ namespace Allors.Domain
         {
             var supplier = new OrganisationBuilder(this.DatabaseSession).WithName("customer2").WithOrganisationRole(new OrganisationRoles(this.DatabaseSession).Customer).Build();
             var internalOrganisation = Singleton.Instance(this.DatabaseSession).InternalOrganisation;
-            
+            new SupplierRelationshipBuilder(this.DatabaseSession).WithSupplier(supplier).Build();
 
             var part = new RawMaterialBuilder(this.DatabaseSession).WithName("RawMaterial").Build();
 
@@ -298,7 +298,7 @@ namespace Allors.Domain
         {
             var supplier = new OrganisationBuilder(this.DatabaseSession).WithName("customer2").WithOrganisationRole(new OrganisationRoles(this.DatabaseSession).Customer).Build();
             var internalOrganisation = Singleton.Instance(this.DatabaseSession).InternalOrganisation;
-            
+            new SupplierRelationshipBuilder(this.DatabaseSession).WithSupplier(supplier).Build();
 
             var part = new RawMaterialBuilder(this.DatabaseSession).WithName("RawMaterial").Build();
 

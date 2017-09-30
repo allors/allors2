@@ -63,7 +63,9 @@ namespace Allors.Domain
                 .Build();
 
             Assert.Equal(ErrorMessages.PartyIsNotASupplier, this.DatabaseSession.Derive(false).Errors[0].Message);
-          
+
+            new SupplierRelationshipBuilder(this.DatabaseSession).WithSupplier(supplier2).Build();
+
             Assert.False(this.DatabaseSession.Derive(false).HasErrors);
         }
 

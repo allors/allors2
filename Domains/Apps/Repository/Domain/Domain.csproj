@@ -643,6 +643,7 @@
     <Compile Include="Apps\SubContractorAgreement.cs" />
     <Compile Include="Apps\SubContractorRelationship.cs" />
     <Compile Include="Apps\SupplierOffering.cs" />
+    <Compile Include="Apps\SupplierRelationship.cs" />
     <Compile Include="Apps\SurchargeAdjustment.cs" />
     <Compile Include="Apps\SurchargeComponent.cs" />
     <Compile Include="Apps\RequirementType.cs" />

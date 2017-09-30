@@ -42,7 +42,7 @@ namespace Allors.Domain
         {
             var supplier = new OrganisationBuilder(this.DatabaseSession).WithName("supplier").WithOrganisationRole(new OrganisationRoles(this.DatabaseSession).Supplier).Build();
             var internalOrganisation = Singleton.Instance(this.DatabaseSession).InternalOrganisation;
-            
+            new SupplierRelationshipBuilder(this.DatabaseSession).WithSupplier(supplier).Build();
 
             var good = new GoodBuilder(this.DatabaseSession)
                 .WithLocalisedName(new LocalisedTextBuilder(this.DatabaseSession).WithText("good").WithLocale(Singleton.Instance(this.DatabaseSession).DefaultLocale).Build())
@@ -86,7 +86,8 @@ namespace Allors.Domain
         {
             var supplier = new OrganisationBuilder(this.DatabaseSession).WithName("supplier").WithOrganisationRole(new OrganisationRoles(this.DatabaseSession).Supplier).Build();
             var internalOrganisation = Singleton.Instance(this.DatabaseSession).InternalOrganisation;
-            
+            new SupplierRelationshipBuilder(this.DatabaseSession).WithSupplier(supplier).Build();
+
 
             var part = new RawMaterialBuilder(this.DatabaseSession)
                 .WithName("RawMaterial")
@@ -133,7 +134,8 @@ namespace Allors.Domain
         {
             var supplier = new OrganisationBuilder(this.DatabaseSession).WithName("supplier").WithOrganisationRole(new OrganisationRoles(this.DatabaseSession).Supplier).Build();
             var internalOrganisation = Singleton.Instance(this.DatabaseSession).InternalOrganisation;
-            
+            new SupplierRelationshipBuilder(this.DatabaseSession).WithSupplier(supplier).Build();
+
 
             var good = new GoodBuilder(this.DatabaseSession)
                 .WithLocalisedName(new LocalisedTextBuilder(this.DatabaseSession).WithText("good").WithLocale(Singleton.Instance(this.DatabaseSession).DefaultLocale).Build())
@@ -224,7 +226,8 @@ namespace Allors.Domain
             var sessionSalesItem = (SalesOrderItem)this.DatabaseSession.Instantiate(salesItem);
 
             var supplier = new OrganisationBuilder(this.DatabaseSession).WithName("supplier").WithOrganisationRole(new OrganisationRoles(this.DatabaseSession).Supplier).Build();
-            
+            new SupplierRelationshipBuilder(this.DatabaseSession).WithSupplier(supplier).Build();
+
 
             Assert.Equal(20, sessionSalesItem.QuantityPendingShipment);
             Assert.Equal(30, sessionSalesItem.QuantityReserved);
@@ -270,7 +273,8 @@ namespace Allors.Domain
         {
             var supplier = new OrganisationBuilder(this.DatabaseSession).WithName("supplier").WithOrganisationRole(new OrganisationRoles(this.DatabaseSession).Supplier).Build();
             var internalOrganisation = Singleton.Instance(this.DatabaseSession).InternalOrganisation;
-            
+            new SupplierRelationshipBuilder(this.DatabaseSession).WithSupplier(supplier).Build();
+
 
             var good = new GoodBuilder(this.DatabaseSession)
                 .WithLocalisedName(new LocalisedTextBuilder(this.DatabaseSession).WithText("good").WithLocale(Singleton.Instance(this.DatabaseSession).DefaultLocale).Build())

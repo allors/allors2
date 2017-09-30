@@ -110,6 +110,26 @@ namespace Allors.Domain
             return false;
         }
 
+        public bool AppsIsActiveSupplier(DateTime? date)
+        {
+            if (date == DateTime.MinValue)
+            {
+                return false;
+            }
+
+            var supplierRelationships = this.SupplierRelationshipsWhereSupplier;
+            foreach (SupplierRelationship relationship in supplierRelationships)
+            {
+                if (relationship.FromDate <= date &&
+                    (!relationship.ExistThroughDate || relationship.ThroughDate >= date))
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
         public void AppsOnDeriveCurrentContacts(IDerivation derivation)
         {
             this.RemoveCurrentContacts();

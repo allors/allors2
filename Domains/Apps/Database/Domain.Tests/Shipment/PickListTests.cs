@@ -107,7 +107,10 @@ namespace Allors.Domain
 
             new CustomerRelationshipBuilder(this.DatabaseSession).WithFromDate(DateTime.UtcNow).WithCustomer(customer).Build();
 
-
+            new SupplierRelationshipBuilder(this.DatabaseSession)
+                .WithSupplier(supplier)
+                .WithFromDate(DateTime.UtcNow)
+                .Build();
 
             var vatRate21 = new VatRateBuilder(this.DatabaseSession).WithRate(21).Build();
 
@@ -259,7 +262,10 @@ namespace Allors.Domain
 
             new CustomerRelationshipBuilder(this.DatabaseSession).WithFromDate(DateTime.UtcNow).WithCustomer(customer).Build();
 
-
+            new SupplierRelationshipBuilder(this.DatabaseSession)
+                .WithSupplier(supplier)
+                .WithFromDate(DateTime.UtcNow)
+                .Build();
 
             var vatRate21 = new VatRateBuilder(this.DatabaseSession).WithRate(21).Build();
 
@@ -384,7 +390,10 @@ namespace Allors.Domain
 
             new CustomerRelationshipBuilder(this.DatabaseSession).WithFromDate(DateTime.UtcNow).WithCustomer(customer).Build();
 
-
+            new SupplierRelationshipBuilder(this.DatabaseSession)
+                .WithSupplier(supplier)
+                .WithFromDate(DateTime.UtcNow)
+                .Build();
 
             var vatRate21 = new VatRateBuilder(this.DatabaseSession).WithRate(21).Build();
 
@@ -491,8 +500,10 @@ namespace Allors.Domain
             var internalOrganisation = Singleton.Instance(this.DatabaseSession).InternalOrganisation;
             new CustomerRelationshipBuilder(this.DatabaseSession).WithFromDate(DateTime.UtcNow).WithCustomer(customer).Build();
 
-
-
+            new SupplierRelationshipBuilder(this.DatabaseSession)
+                .WithSupplier(supplier)
+                .WithFromDate(DateTime.UtcNow)
+                .Build();
 
             var vatRate21 = new VatRateBuilder(this.DatabaseSession).WithRate(21).Build();
 
