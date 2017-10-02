@@ -677,6 +677,15 @@ namespace Allors.Repository
         public ContactMechanism ShippingInquiriesPhone { get; set; }
 
         #region Allors
+        [Id("AAC7E463-A9A4-4A3F-99C1-F97ADDB5B088")]
+        [AssociationId("2CA0C36D-5954-4676-A39F-8862D7430221")]
+        [RoleId("022256B2-B924-4687-873D-69B7FD3F32D0")]
+        [Indexed]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        public PostalAddress GeneralCorrespondence { get; set; }
+
+        #region Allors
         [Id("9a2ab89e-c3bc-4b6b-a82d-417dc21c8f9e")]
         [AssociationId("fcc6e653-3787-44a0-8a3a-35e80e232a02")]
         [RoleId("31549cf9-6418-4d19-96b0-5813cc964491")]
