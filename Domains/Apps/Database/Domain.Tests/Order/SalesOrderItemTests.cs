@@ -681,6 +681,7 @@ namespace Allors.Domain
 
             var secondWarehouse = new FacilityBuilder(this.DatabaseSession)
                 .WithName("affiliate warehouse")
+                .WithFacilityType(new FacilityTypes(this.DatabaseSession).Warehouse)
                 .Build();
 
             var item = new SalesOrderItemBuilder(this.DatabaseSession)
