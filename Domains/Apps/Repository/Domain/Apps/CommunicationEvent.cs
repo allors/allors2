@@ -18,7 +18,7 @@ namespace Allors.Repository
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
         [Derived]
-        CommunicationEventState PreviousCommunicationState { get; set; }
+        CommunicationEventState PreviousCommunicationEventState { get; set; }
 
         #region Allors
         [Id("F26D8789-D8D8-47C0-A4A2-30A3B2F648F5")]
@@ -28,7 +28,7 @@ namespace Allors.Repository
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
         [Derived]
-        CommunicationEventState LastCommunicationState { get; set; }
+        CommunicationEventState LastCommunicationEventState { get; set; }
 
         #region Allors
         [Id("80D2E559-CBF6-4C2F-8F89-43921EEF437C")]

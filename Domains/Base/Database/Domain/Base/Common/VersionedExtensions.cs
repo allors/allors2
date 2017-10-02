@@ -89,7 +89,7 @@ namespace Allors.Domain
                     var versionedRoleType = versionedClass.RoleTypes.FirstOrDefault(v => v.Name.Equals(versionRoleType.Name));
                     if (versionedRoleType == null)
                     {
-                        throw new Exception("Could not find versioned role " + versionRoleType.Name);
+                        throw new Exception("Could not find versioned role " + versionRoleType.Name + " on type " + versionedClass.Name);
                     }
 
                     var versionedRole = @this.Strategy.GetRole(versionedRoleType.RelationType);

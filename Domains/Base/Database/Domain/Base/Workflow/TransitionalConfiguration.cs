@@ -29,20 +29,13 @@ namespace Allors.Domain
     {
         public TransitionalConfiguration(RoleType roleType)
         {
-            try
-            {
-                var objectType = roleType.AssociationType.ObjectType;
-                var previousObjectState = objectType.RoleTypes.First(v => v.Name.Equals("Previous" + roleType.Name));
-                var lastObjectState = objectType.RoleTypes.First(v => v.Name.Equals("Last" + roleType.Name));
+            var objectType = roleType.AssociationType.ObjectType;
+            var previousObjectState = objectType.RoleTypes.FirstOrDefault(v => v.Name.Equals("Previous" + roleType.Name));
+            var lastObjectState = objectType.RoleTypes.FirstOrDefault(v => v.Name.Equals("Last" + roleType.Name));
 
-                this.ObjectState = roleType.RelationType;
-                this.PreviousObjectState = previousObjectState.RelationType;
-                this.LastObjectState = lastObjectState.RelationType;
-            }
-            catch
-            {
-                throw new Exception("Could not create TransitionalConfiguration for " + roleType.FullName);
-            }
+            this.ObjectState = roleType.RelationType;
+            this.PreviousObjectState = previousObjectState?.RelationType ?? throw new Exception("Previous ObjectState is not defined for " + roleType.Name + " in type " + roleType.AssociationType.ObjectType.Name);
+            this.LastObjectState = lastObjectState?.RelationType ?? throw new Exception("Last ObjectState is not defined for " + roleType.Name + " in type " + roleType.AssociationType.ObjectType.Name);
         }
 
         public RelationType ObjectState { get; set; }

@@ -45,7 +45,7 @@ namespace Allors.Domain
             Assert.False(this.DatabaseSession.Derive(false).HasErrors);
 
             Assert.Equal(communication.CommunicationEventState, new CommunicationEventStates(this.DatabaseSession).Scheduled);
-            Assert.Equal(communication.CommunicationEventState, communication.LastCommunicationState);
+            Assert.Equal(communication.CommunicationEventState, communication.LastCommunicationEventState);
         }
 
         [Fact]

@@ -16,7 +16,6 @@ namespace Allors.Repository
         public DateTime RequiredResponseDate { get; set; }
         public DateTime ValidFromDate { get; set; }
         public QuoteTerm[] QuoteTerms { get; set; }
-        public Party Issuer { get; set; }
         public DateTime ValidThroughDate { get; set; }
         public string Description { get; set; }
         public Party Receiver { get; set; }

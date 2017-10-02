@@ -19,13 +19,10 @@
 // <summary>Defines the MediaTests type.</summary>
 //-------------------------------------------------------------------------------------------------
 
-using System;
-
 namespace Allors.Domain
 {
     using Xunit;
 
-    
     public class EngagementRateTests : DomainTest
     {
         [Fact]
@@ -38,13 +35,6 @@ namespace Allors.Domain
 
             this.DatabaseSession.Rollback();
 
-            builder.WithRatingType(new RatingTypes(this.DatabaseSession).Poor);
-            builder.Build();
-            
-            Assert.True(this.DatabaseSession.Derive(false).HasErrors);
-
-            this.DatabaseSession.Rollback();
-
             builder.WithBillingRate(10M);
             builder.Build();
 
@@ -52,9 +42,9 @@ namespace Allors.Domain
 
             this.DatabaseSession.Rollback();
 
-            builder.WithFromDate(DateTime.UtcNow);
+            builder.WithRatingType(new RatingTypes(this.DatabaseSession).Poor);
             builder.Build();
-
+            
             Assert.False(this.DatabaseSession.Derive(false).HasErrors);
         }
     }

@@ -40,7 +40,7 @@ namespace Allors.Domain
 
             foreach (OrganisationContactRelationship contactRelationship in this.OrganisationContactRelationshipsWhereOrganisation)
             {
-                derivation.AddDependency(contactRelationship, this);
+                derivation.AddDependency(this, contactRelationship);
             }
         }
 

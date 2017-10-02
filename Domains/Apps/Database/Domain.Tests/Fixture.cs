@@ -36,14 +36,15 @@ namespace Allors
             {
                 new Setup(session, null).Apply();
 
+                var singleton = Singleton.Instance(session);
+
                 var administrator = new People(session).FindBy(M.Person.UserName, Users.AdministratorUserName);
                 new UserGroups(session).Administrators.AddMember(administrator);
 
+                singleton.Guest = new PersonBuilder(session).WithUserName("guest").WithLastName("guest").WithPersonRole(new PersonRoles(session).Contact).Build();
+
                 session.Derive();
                 session.Commit();
-
-                var singleton = Singleton.Instance(session);
-                singleton.Guest = new PersonBuilder(session).WithUserName("guest").WithLastName("guest").WithPersonRole(new PersonRoles(session).Contact).Build();
 
                 var belgium = new Countries(session).CountryByIsoCode["BE"];
                 var euro = belgium.Currency;
@@ -72,10 +73,13 @@ namespace Allors
                     .WithDefaultPaymentMethod(ownBankAccount)
                     .Build();
 
-                Singleton.Instance(session).InternalOrganisation = internalOrganisation;
+                singleton.PreferredCurrency = new Currencies(session).CurrencyByCode["EUR"];
+
+                singleton.InternalOrganisation = internalOrganisation;
 
                 var facility = new FacilityBuilder(session).WithFacilityType(new FacilityTypes(session).Warehouse).WithName("facility").Build();
                 internalOrganisation.DefaultFacility = facility;
+                
 
                 var paymentMethod = new PaymentMethods(session).Extent().First;
 

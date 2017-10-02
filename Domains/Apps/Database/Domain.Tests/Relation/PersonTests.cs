@@ -90,10 +90,10 @@ namespace Allors.Domain
             var contact = new PersonBuilder(this.DatabaseSession).WithLastName("organisationContact").WithPersonRole(new PersonRoles(this.DatabaseSession).Contact).Build();
             var organisation = new OrganisationBuilder(this.DatabaseSession).WithName("organisation").WithOrganisationRole(new OrganisationRoles(this.DatabaseSession).Customer).Build();
 
-            new CustomerRelationshipBuilder(this.DatabaseSession)
-                .WithCustomer(organisation)
-                .WithFromDate(DateTimeFactory.CreateDate(2010, 01, 01))
-                .Build();
+            //new CustomerRelationshipBuilder(this.DatabaseSession)
+            //    .WithCustomer(organisation)
+            //    .WithFromDate(DateTimeFactory.CreateDate(2010, 01, 01))
+            //    .Build();
 
             new OrganisationContactRelationshipBuilder(this.DatabaseSession)
                 .WithContact(contact)

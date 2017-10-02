@@ -57,7 +57,7 @@ namespace Allors.Repository
         #endregion
         [Multiplicity(Multiplicity.OneToOne)]
         [Workspace]
-        public SalesOrderVersion CurrentVersion { get; set; }
+        public OperatingBudgetVersion CurrentVersion { get; set; }
 
         #region Allors
         [Id("A68F205C-3ED1-49A7-877C-D64761567233")]
@@ -67,7 +67,7 @@ namespace Allors.Repository
         #endregion
         [Multiplicity(Multiplicity.OneToMany)]
         [Workspace]
-        public SalesOrderVersion[] AllVersions { get; set; }
+        public OperatingBudgetVersion[] AllVersions { get; set; }
         #endregion
 
         #region inherited methods

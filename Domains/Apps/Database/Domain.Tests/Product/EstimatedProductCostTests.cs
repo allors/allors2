@@ -48,13 +48,6 @@ namespace Allors.Domain
             builder.WithCurrency(new Currencies(this.DatabaseSession).FindBy(M.Currency.IsoCode, "EUR"));
             laborCost = builder.Build();
 
-            Assert.True(this.DatabaseSession.Derive(false).HasErrors);
-
-            this.DatabaseSession.Rollback();
-
-            builder.WithFromDate(DateTime.UtcNow);
-            laborCost = builder.Build();
-
             Assert.False(this.DatabaseSession.Derive(false).HasErrors);
         }
 
@@ -78,13 +71,6 @@ namespace Allors.Domain
             builder.WithCurrency(new Currencies(this.DatabaseSession).FindBy(M.Currency.IsoCode, "EUR"));
             materialCost = builder.Build();
 
-            Assert.True(this.DatabaseSession.Derive(false).HasErrors);
-
-            this.DatabaseSession.Rollback();
-
-            builder.WithFromDate(DateTime.UtcNow);
-            materialCost = builder.Build();
-
             Assert.False(this.DatabaseSession.Derive(false).HasErrors);
         }
 
@@ -106,13 +92,6 @@ namespace Allors.Domain
             this.DatabaseSession.Rollback();
 
             builder.WithCurrency(new Currencies(this.DatabaseSession).FindBy(M.Currency.IsoCode, "EUR"));
-            otherCost = builder.Build();
-
-            Assert.True(this.DatabaseSession.Derive(false).HasErrors);
-
-            this.DatabaseSession.Rollback();
-
-            builder.WithFromDate(DateTime.UtcNow);
             otherCost = builder.Build();
 
             Assert.False(this.DatabaseSession.Derive(false).HasErrors);

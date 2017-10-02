@@ -70,13 +70,6 @@ namespace Allors.Domain
             builder.WithDescription("Budget");
             budget = builder.Build();
 
-            Assert.True(this.DatabaseSession.Derive(false).HasErrors);
-
-            this.DatabaseSession.Rollback();
-
-            builder.WithFromDate(DateTime.UtcNow);
-            budget = builder.Build();
-
             Assert.False(this.DatabaseSession.Derive(false).HasErrors);
         }
     }

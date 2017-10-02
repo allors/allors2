@@ -26,7 +26,6 @@ namespace Allors.Domain
     using System;
     using Xunit;
 
-    
     public class CustomerRelationshipTests : DomainTest
     {
         [Fact]

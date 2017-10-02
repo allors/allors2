@@ -25,7 +25,6 @@ namespace Allors.Domain
 {
     using Xunit;
 
-    
     public class FacilityTests : DomainTest
     {
         [Fact]
@@ -45,8 +44,9 @@ namespace Allors.Domain
 
             this.DatabaseSession.Rollback();
 
+            builder.WithFacilityType(new FacilityTypes(this.DatabaseSession).Warehouse);
             facility = builder.Build();
-
+            
             Assert.False(this.DatabaseSession.Derive(false).HasErrors);
         }
     }

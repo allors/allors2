@@ -9,9 +9,9 @@ namespace Allors.Repository
     public partial class LetterCorrespondence : CommunicationEvent, Versioned
     {
         #region inherited properties
-        public CommunicationEventState PreviousCommunicationState { get; set; }
+        public CommunicationEventState PreviousCommunicationEventState { get; set; }
 
-        public CommunicationEventState LastCommunicationState { get; set; }
+        public CommunicationEventState LastCommunicationEventState { get; set; }
 
         public CommunicationEventState CommunicationEventState { get; set; }
 
