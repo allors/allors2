@@ -22,11 +22,9 @@
 namespace Allors.Domain
 {
     using System;
-    using System.Security.Principal;
-    using System.Threading;
+
     using Meta;
     using Xunit;
-
     
     public class SalesOrderItemTests : DomainTest
     {
@@ -918,7 +916,7 @@ namespace Allors.Domain
 
             this.DatabaseSession.Derive();
 
-            Assert.Equal(new SalesOrderItemStates(this.DatabaseSession).PartiallyShipped, item.SalesOrderItemState);
+            Assert.Equal(new SalesOrderItemShipmentStates(this.DatabaseSession).PartiallyShipped, item.SalesOrderItemShipmentState);
             var acl = new AccessControlList(item, new Users(this.DatabaseSession).CurrentUser);
             Assert.False(acl.CanExecute(M.SalesOrderItem.Cancel));
             Assert.False(acl.CanExecute(M.SalesOrderItem.Reject));
@@ -1144,7 +1142,7 @@ namespace Allors.Domain
 
             this.DatabaseSession.Derive();
 
-            Assert.Equal(new SalesOrderItemStates(this.DatabaseSession).PartiallyShipped, item.SalesOrderItemState);
+            Assert.Equal(new SalesOrderItemShipmentStates(this.DatabaseSession).PartiallyShipped, item.SalesOrderItemShipmentState);
             var acl = new AccessControlList(item, new Users(this.DatabaseSession).CurrentUser);
             Assert.False(acl.CanWrite(M.SalesOrderItem.Product));
         }

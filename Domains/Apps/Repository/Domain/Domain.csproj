@@ -422,7 +422,11 @@
     <Compile Include="Apps\RequirementVersion.cs" />
     <Compile Include="Apps\SalesInvoiceItemVersion.cs" />
     <Compile Include="Apps\SalesInvoiceVersion.cs" />
+    <Compile Include="Apps\SalesOrderItemShipmentState.cs" />
+    <Compile Include="Apps\SalesOrderItemPaymentState.cs" />
     <Compile Include="Apps\SalesOrderItemVersion.cs" />
+    <Compile Include="Apps\SalesOrderPaymentState.cs" />
+    <Compile Include="Apps\SalesOrderShipmentState.cs" />
     <Compile Include="Apps\SalesOrderVersion.cs" />
     <Compile Include="Apps\SerialisedInventoryItemVersion.cs" />
     <Compile Include="Apps\Note.cs" />

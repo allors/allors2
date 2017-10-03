@@ -515,7 +515,7 @@ namespace Allors.Domain
                 {
                     foreach (OrderShipment orderShipment in invoiceItem.ShipmentItemWhereInvoiceItem.OrderShipmentsWhereShipmentItem)
                     {
-                        orderShipment.SalesOrderItem.AppsOnDeriveCurrentPaymentStatus(derivation);
+                        orderShipment.SalesOrderItem.AppsOnDerivePaymentState(derivation);
                         orderShipment.SalesOrderItem.SalesOrderWhereSalesOrderItem.OnDerive(x => x.WithDerivation(derivation));
                     }
                 }

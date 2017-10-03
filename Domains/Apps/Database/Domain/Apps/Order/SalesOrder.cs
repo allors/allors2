@@ -219,13 +219,13 @@ namespace Allors.Domain
 
             this.AppsOnDeriveOrderItems(derivation);
 
-            this.AppsOnDeriveCurrentOrderStatus(derivation);
-            this.AppsOnDeriveCurrentOrderStatus(derivation);
+            this.AppsOnDeriveOrderShipmentState(derivation);
+            this.AppsOnDeriveOrderState(derivation);
             this.AppsOnDeriveLocale(derivation);
             this.AppsOnDeriveOrderTotals(derivation);
             this.AppsOnDeriveCustomers(derivation);
             this.AppsOnDeriveSalesReps(derivation);
-            this.AppsOnDeriveCurrentOrderStatus(derivation);
+            this.AppsOnDeriveOrderPaymentState(derivation);
 
             if (Equals(this.Store.ProcessFlow, new ProcessFlows(this.strategy.Session).ShipFirst))
             {
@@ -279,18 +279,100 @@ namespace Allors.Domain
             this.SalesOrderState = new SalesOrderStates(this.Strategy.Session).InProcess;
         }
 
-        public void AppsOnDeriveCurrentOrderStatus(IDerivation derivation)
+        public void AppsOnDeriveOrderPaymentState(IDerivation derivation)
         {
-            //TODO 
-            //if (this.ExistCurrentShipmentStateVersion && this.CurrentShipmentStateVersion.CurrentObjectState.Equals(new SalesOrderStates(this.Strategy.Session).Shipped))
-            //{
-            //    this.Complete();
-            //}
+            var itemsPaid = false;
+            var itemsPartiallyPaid = false;
+            var itemsUnpaid = false;
 
-            //if (this.ExistCurrentPaymentStateVersion && this.CurrentPaymentStateVersion.CurrentObjectState.Equals(new SalesOrderStates(this.Strategy.Session).Paid))
-            //{
-            //    this.Finish();
-            //}
+            foreach (SalesOrderItem orderItem in this.ValidOrderItems)
+            {
+                if (orderItem.ExistSalesOrderItemPaymentState)
+                {
+                    if (orderItem.SalesOrderItemPaymentState.Equals(new SalesOrderItemPaymentStates(this.Strategy.Session).PartiallyPaid))
+                    {
+                        itemsPartiallyPaid = true;
+                    }
+
+                    if (orderItem.SalesOrderItemPaymentState.Equals(new SalesOrderItemPaymentStates(this.Strategy.Session).Paid))
+                    {
+                        itemsPaid = true;
+                    }
+                }
+                else
+                {
+                    itemsUnpaid = true;
+                }
+            }
+
+            if (itemsPaid && !itemsUnpaid && !itemsPartiallyPaid &&
+                (!this.ExistSalesOrderPaymentState || !this.SalesOrderPaymentState.Equals(new SalesOrderPaymentStates(this.Strategy.Session).Paid)))
+            {
+                this.SalesOrderPaymentState = new SalesOrderPaymentStates(this.Strategy.Session).Paid;
+            }
+
+            if ((itemsPartiallyPaid || (itemsPaid && itemsUnpaid)) &&
+                (!this.ExistSalesOrderPaymentState || !this.SalesOrderPaymentState.Equals(new SalesOrderPaymentStates(this.Strategy.Session).PartiallyPaid)))
+            {
+                this.SalesOrderPaymentState = new SalesOrderPaymentStates(this.Strategy.Session).PartiallyPaid;
+            }
+
+            this.AppsOnDeriveOrderState(derivation);
+        }
+
+        public void AppsOnDeriveOrderShipmentState(IDerivation derivation)
+        {
+            var itemsShipped = false;
+            var itemsPartiallyShipped = false;
+            var itemsNotShipped = false;
+
+            foreach (SalesOrderItem orderItem in this.ValidOrderItems)
+            {
+                if (orderItem.ExistSalesOrderItemShipmentState)
+                {
+                    if (orderItem.SalesOrderItemShipmentState.Equals(new SalesOrderItemShipmentStates(this.Strategy.Session).PartiallyShipped))
+                    {
+                        itemsPartiallyShipped = true;
+                    }
+
+                    if (orderItem.SalesOrderItemShipmentState.Equals(new SalesOrderItemShipmentStates(this.Strategy.Session).Shipped))
+                    {
+                        itemsShipped = true;
+                    }
+                }
+                else
+                {
+                    itemsNotShipped = true;
+                }
+            }
+
+            if (itemsShipped && !itemsNotShipped && !itemsPartiallyShipped &&
+                (!this.ExistSalesOrderShipmentState || !this.SalesOrderShipmentState.Equals(new SalesOrderShipmentStates(this.Strategy.Session).Shipped)))
+            {
+                this.SalesOrderShipmentState = new SalesOrderShipmentStates(this.Strategy.Session).Shipped;
+            }
+
+            if ((itemsPartiallyShipped || (itemsShipped && itemsNotShipped)) &&
+                (!this.ExistSalesOrderShipmentState || !this.SalesOrderShipmentState.Equals(new SalesOrderShipmentStates(this.Strategy.Session).PartiallyShipped)))
+            {
+                this.SalesOrderShipmentState = new SalesOrderShipmentStates(this.Strategy.Session).PartiallyShipped;
+            }
+
+            this.AppsOnDeriveOrderState(derivation);
+        }
+
+
+        public void AppsOnDeriveOrderState(IDerivation derivation)
+        {
+            if (this.ExistSalesOrderShipmentState && this.SalesOrderShipmentState.Equals(new SalesOrderShipmentStates(this.Strategy.Session).Shipped))
+            {
+                this.Complete();
+            }
+
+            if (this.ExistSalesOrderPaymentState && this.SalesOrderPaymentState.Equals(new SalesOrderPaymentStates(this.Strategy.Session).Paid))
+            {
+                this.SalesOrderState = new SalesOrderStates(this.strategy.Session).Finished;
+            }
         }
 
         public void AppsOnDeriveSalesReps(IDerivation derivation)
@@ -667,9 +749,9 @@ namespace Allors.Domain
                 salesOrderItem.AppsCalculatePurchasePrice(derivation);
                 salesOrderItem.AppsCalculateUnitPrice(derivation);
                 salesOrderItem.AppsOnDerivePrices(derivation, 0, 0);
-                salesOrderItem.AppsOnDeriveCurrentOrderStatus(derivation);
+                salesOrderItem.AppsOnDeriveShipmentState(derivation);
                 salesOrderItem.AppsOnDeriveVatRegime(derivation);
-                salesOrderItem.AppsOnDeriveCurrentPaymentStatus(derivation);
+                salesOrderItem.AppsOnDerivePaymentState(derivation);
 
                 // for the second time, because unitbaseprice might not be set
                 salesOrderItem.AppsOnDeriveIsValidOrderItem(derivation);

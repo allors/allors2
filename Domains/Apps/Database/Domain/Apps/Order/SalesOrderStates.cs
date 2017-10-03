@@ -22,11 +22,7 @@ namespace Allors.Domain
         private static readonly Guid ProvisionalId = new Guid("29ABC67D-4BE1-4af3-B993-64E9E36C3E6B");
         private static readonly Guid RequestsApprovalId = new Guid("6B6F6E25-4DA1-455d-9C9F-21F2D4316D66");
         private static readonly Guid CancelledId = new Guid("8AE3813D-7866-4e1c-AB70-EE695154F8F7");
-        private static readonly Guid PartiallyShippedId = new Guid("40B4EFB9-42A4-43d9-BCE9-39E55FD9D507");
-        private static readonly Guid ShippedId = new Guid("CBDBFF96-B5DA-4be3-9B8D-EA785D08C85C");
         private static readonly Guid CompletedId = new Guid("81F80082-040C-405a-8C01-778868D57C75");
-        private static readonly Guid PaidId = new Guid("0C84C6F6-3204-4f7f-9BFA-FA4CBA643177");
-        private static readonly Guid PartiallyPaidId = new Guid("F9E8E105-F84E-4550-A725-25CE6E96614E");
         private static readonly Guid RejectedId = new Guid("AE2AB1DC-0E5E-4061-924C-025AB84769C0");
         private static readonly Guid OnHoldId = new Guid("F625FB7E-893E-4f68-AB7B-2BC29A644E5B");
         private static readonly Guid InProcessId = new Guid("DDBB678E-9A66-4842-87FD-4E628CFF0A75");
@@ -41,14 +37,6 @@ namespace Allors.Domain
         public SalesOrderState Cancelled => this.StateCache.Get(CancelledId);
 
         public SalesOrderState Completed => this.StateCache.Get(CompletedId);
-
-        public SalesOrderState PartiallyShipped => this.StateCache.Get(PartiallyShippedId);
-
-        public SalesOrderState Shipped => this.StateCache.Get(ShippedId);
-
-        public SalesOrderState Paid => this.StateCache.Get(PaidId);
-
-        public SalesOrderState PartiallyPaid => this.StateCache.Get(PartiallyPaidId);
 
         public SalesOrderState Rejected => this.StateCache.Get(RejectedId);
 
@@ -83,28 +71,8 @@ namespace Allors.Domain
                 .Build();
 
             new SalesOrderStateBuilder(this.Session)
-                .WithUniqueId(PartiallyShippedId)
-                .WithName("Partially Shipped")
-                .Build();
-
-            new SalesOrderStateBuilder(this.Session)
-                .WithUniqueId(ShippedId)
-                .WithName("Shipped")
-                .Build();
-
-            new SalesOrderStateBuilder(this.Session)
                 .WithUniqueId(CompletedId)
                 .WithName("Completed")
-                .Build();
-
-            new SalesOrderStateBuilder(this.Session)
-                .WithUniqueId(PaidId)
-                .WithName("Paid")
-                .Build();
-
-            new SalesOrderStateBuilder(this.Session)
-                .WithUniqueId(PartiallyPaidId)
-                .WithName("Partially Paid")
                 .Build();
 
             new SalesOrderStateBuilder(this.Session)

@@ -32,8 +32,8 @@ namespace Allors.Domain
             base.AppsSecure(config);
 
             var created = new SalesOrderItemStates(this.Session).Created;
-            var partiallyShipped = new SalesOrderItemStates(this.Session).PartiallyShipped;
-            var shipped = new SalesOrderItemStates(this.Session).Shipped;
+            var partiallyShipped = new SalesOrderItemShipmentStates(this.Session).PartiallyShipped;
+            var shipped = new SalesOrderItemShipmentStates(this.Session).Shipped;
             var inProcess = new SalesOrderItemStates(this.Session).InProcess;
             var cancelled = new SalesOrderItemStates(this.Session).Cancelled;
             var rejected = new SalesOrderItemStates(this.Session).Rejected;

@@ -95,6 +95,70 @@ namespace Allors.Repository
         [Workspace]
         public SalesOrderItemState SalesOrderItemState { get; set; }
         #endregion
+
+        #region SalesOrderItemPaymentState
+        #region Allors
+        [Id("C4C0E26C-C324-4391-B660-9DE9545C41DF")]
+        [AssociationId("B3570EAB-9F6D-43FC-A172-30F9012D5BD3")]
+        [RoleId("5EF86E54-5FD8-44F5-B91C-BE10A03867D3")]
+        [Indexed]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Derived]
+        public SalesOrderItemPaymentState PreviousSalesOrderItemPaymentState { get; set; }
+
+        #region Allors
+        [Id("5B59E71C-C568-4433-A398-0EAD573FAF92")]
+        [AssociationId("4C0185B0-624B-41CB-A072-7847C3F92FD8")]
+        [RoleId("159907BE-6D0F-436B-843E-0C5C20D39621")]
+        [Indexed]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Derived]
+        public SalesOrderItemPaymentState LastSalesOrderItemPaymentState { get; set; }
+
+        #region Allors
+        [Id("4DB38F8C-0903-4E05-9B4F-28EF7C3D9C01")]
+        [AssociationId("5E11EFB6-A6C3-4F76-A507-D939D50F59F2")]
+        [RoleId("101FF303-80CB-4DF6-BF23-B6FBC7B99BB1")]
+        [Indexed]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Workspace]
+        public SalesOrderItemPaymentState SalesOrderItemPaymentState { get; set; }
+        #endregion
+
+        #region SalesOrderItemShipmentState
+        #region Allors
+        [Id("16139169-9E1C-4B3A-9635-660CA07F3190")]
+        [AssociationId("437E24B6-4EA8-46DF-90CE-25B70F27E9FE")]
+        [RoleId("DD01B461-220A-4AA1-AE8A-240B568BEF97")]
+        [Indexed]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Derived]
+        public SalesOrderItemShipmentState PreviousSalesOrderItemShipmentState { get; set; }
+
+        #region Allors
+        [Id("5F81EA61-A2C2-4E88-99C1-FE7DE0EBAB43")]
+        [AssociationId("69C7EF09-49FD-40AC-93CF-AB7EB36B3C32")]
+        [RoleId("60CB1A99-F414-4B2C-B737-392CF3662FCB")]
+        [Indexed]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Derived]
+        public SalesOrderItemShipmentState LastSalesOrderItemShipmentState { get; set; }
+
+        #region Allors
+        [Id("6F794926-3A3F-4701-ACA6-3D622BADAED6")]
+        [AssociationId("12B40C80-F9D5-4134-B8C4-63A9CBFF86D6")]
+        [RoleId("38913CF7-1102-43A5-AC6A-E9F523F27A6E")]
+        [Indexed]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Workspace]
+        public SalesOrderItemShipmentState SalesOrderItemShipmentState { get; set; }
+        #endregion
         #endregion
 
         #region Versioning
