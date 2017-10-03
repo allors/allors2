@@ -194,7 +194,7 @@ namespace Allors.Domain
 
                     if (partyContactMechanism.ContactPurposes.Contains(new ContactMechanismPurposes(@this.Strategy.Session).GeneralEmail))
                     {
-                        @this.GeneralEmail = partyContactMechanism.ContactMechanism as ElectronicAddress;
+                        @this.GeneralEmail = partyContactMechanism.ContactMechanism as EmailAddress;
                     }
 
                     if (partyContactMechanism.ContactPurposes.Contains(new ContactMechanismPurposes(@this.Strategy.Session).GeneralFaxNumber))
@@ -239,7 +239,7 @@ namespace Allors.Domain
 
                     if (partyContactMechanism.ContactPurposes.Contains(new ContactMechanismPurposes(@this.Strategy.Session).PersonalEmailAddress))
                     {
-                        @this.PersonalEmailAddress = partyContactMechanism.ContactMechanism as ElectronicAddress;
+                        @this.PersonalEmailAddress = partyContactMechanism.ContactMechanism as EmailAddress;
                     }
 
                     if (partyContactMechanism.ContactPurposes.Contains(new ContactMechanismPurposes(@this.Strategy.Session).SalesOffice))

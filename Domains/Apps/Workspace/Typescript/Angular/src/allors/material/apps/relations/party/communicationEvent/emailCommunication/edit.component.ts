@@ -31,7 +31,6 @@ export class PartyCommunicationEventEditEmailCommunicationComponent implements O
   public employees: Person[];
   public party: Party;
   public purposes: CommunicationEventPurpose[];
-  public partyRelationships: PartyRelationship[];
   public emailAddresses: ContactMechanism[] = [];
   public emailTemplate: EmailTemplate;
 
@@ -70,14 +69,6 @@ export class PartyCommunicationEventEditEmailCommunicationComponent implements O
           new Fetch({
             name: "party",
             id,
-          }),
-          new Fetch({
-            id,
-            include: [
-              new TreeNode({ roleType: m.PartyRelationship.CommunicationEvents }),
-            ],
-            name: "partyRelationships",
-            path: new Path({ step: m.Party.PartyRelationshipsWhereParty }),
           }),
           new Fetch({
             id: roleId,
@@ -130,19 +121,18 @@ export class PartyCommunicationEventEditEmailCommunicationComponent implements O
 
         this.scope.session.reset();
 
-        this.partyRelationships = loaded.collections.partyRelationships as PartyRelationship[];
         this.communicationEvent = loaded.objects.communicationEvent as EmailCommunication;
 
         if (!this.communicationEvent) {
           this.communicationEvent = this.scope.session.create("EmailCommunication") as EmailCommunication;
           this.emailTemplate = this.scope.session.create("EmailTemplate") as EmailTemplate;
           this.communicationEvent.EmailTemplate = this.emailTemplate;
-          this.partyRelationships.forEach((v: PartyRelationship) => v.AddCommunicationEvent(this.communicationEvent));
+          this.communicationEvent.Originator = this.party.GeneralEmail;
         }
 
         this.party = loaded.objects.party as Party;
         this.singleton = loaded.collections.singletons[0] as Singleton;
-        this.employees = this.singleton.InternalOrganisation.Employees;
+        this.employees = this.singleton.InternalOrganisation.ActiveEmployees;
         this.purposes = loaded.collections.purposes as CommunicationEventPurpose[];
 
         for (const employee of this.employees) {

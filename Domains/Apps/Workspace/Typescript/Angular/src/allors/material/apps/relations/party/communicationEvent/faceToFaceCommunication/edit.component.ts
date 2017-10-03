@@ -27,9 +27,8 @@ export class PartyCommunicationEventEditFaceToFaceCommunicationComponent impleme
 
   public communicationEvent: FaceToFaceCommunication;
   public parties: Party[];
-  public  party: Party;
+  public party: Party;
   public purposes: CommunicationEventPurpose[];
-  public partyRelationships: PartyRelationship[];
   public singleton: Singleton;
   public employees: Person[];
   public contacts: Party[] = [];
@@ -83,14 +82,6 @@ export class PartyCommunicationEventEditFaceToFaceCommunicationComponent impleme
             name: "party",
           }),
           new Fetch({
-            id,
-            include: [
-              new TreeNode({ roleType: m.PartyRelationship.CommunicationEvents }),
-            ],
-            name: "partyRelationships",
-            path: new Path({ step: m.Party.CurrentPartyRelationships }),
-          }),
-          new Fetch({
             id: roleId,
             include: [
               new TreeNode({ roleType: m.CommunicationEvent.FromParties }),
@@ -132,12 +123,11 @@ export class PartyCommunicationEventEditFaceToFaceCommunicationComponent impleme
 
         this.scope.session.reset();
 
-        this.partyRelationships = loaded.collections.partyRelationships as PartyRelationship[];
         this.communicationEvent = loaded.objects.communicationEvent as FaceToFaceCommunication;
 
         if (!this.communicationEvent) {
           this.communicationEvent = this.scope.session.create("FaceToFaceCommunication") as FaceToFaceCommunication;
-          this.partyRelationships.forEach((v: PartyRelationship) => v.AddCommunicationEvent(this.communicationEvent));
+          this.communicationEvent.AddParticipant(this.party);
         }
 
         this.party = loaded.objects.party as Party;

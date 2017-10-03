@@ -55,7 +55,7 @@ namespace Allors.Repository
 
         public ContactMechanism BillingAddress { get; set; }
 
-        public ElectronicAddress GeneralEmail { get; set; }
+        public EmailAddress GeneralEmail { get; set; }
 
         public ShipmentMethod DefaultShipmentMethod { get; set; }
 
@@ -63,7 +63,7 @@ namespace Allors.Repository
 
         public ContactMechanism HeadQuarter { get; set; }
 
-        public ElectronicAddress PersonalEmailAddress { get; set; }
+        public EmailAddress PersonalEmailAddress { get; set; }
 
         public TelecommunicationsNumber CellPhoneNumber { get; set; }
 

@@ -33,7 +33,6 @@ export class PartyCommunicationEventEditLetterCorrespondenceComponent implements
   public contacts: Party[] = [];
   public party: Party;
   public purposes: CommunicationEventPurpose[];
-  public partyRelationships: PartyRelationship[];
   public postalAddresses: ContactMechanism[] = [];
 
   private refresh$: BehaviorSubject<Date>;
@@ -93,14 +92,6 @@ export class PartyCommunicationEventEditLetterCorrespondenceComponent implements
               }),
             ],
             name: "party",
-          }),
-          new Fetch({
-            id,
-            include: [
-              new TreeNode({ roleType: m.PartyRelationship.CommunicationEvents }),
-            ],
-            name: "partyRelationships",
-            path: new Path({ step: m.Party.CurrentPartyRelationships }),
           }),
           new Fetch({
             id: roleId,
@@ -173,12 +164,11 @@ export class PartyCommunicationEventEditLetterCorrespondenceComponent implements
 
         this.scope.session.reset();
 
-        this.partyRelationships = loaded.collections.partyRelationships as PartyRelationship[];
         this.communicationEvent = loaded.objects.communicationEvent as LetterCorrespondence;
 
         if (!this.communicationEvent) {
           this.communicationEvent = this.scope.session.create("LetterCorrespondence") as LetterCorrespondence;
-          this.partyRelationships.forEach((v: PartyRelationship) => v.AddCommunicationEvent(this.communicationEvent));
+          this.communicationEvent.AddOriginator(this.party);
         }
 
         this.party = loaded.objects.party as Party;
