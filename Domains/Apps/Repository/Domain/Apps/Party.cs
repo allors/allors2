@@ -275,7 +275,7 @@ namespace Allors.Repository
         [Derived]
         [Indexed]
         [Workspace]
-        ElectronicAddress GeneralEmail { get; set; }
+        EmailAddress GeneralEmail { get; set; }
 
         #region Allors
         [Id("79a5c25a-91e9-4a80-8649-c8abe86e47dd")]
@@ -318,7 +318,7 @@ namespace Allors.Repository
         [Derived]
         [Indexed]
         [Workspace]
-        ElectronicAddress PersonalEmailAddress { get; set; }
+        EmailAddress PersonalEmailAddress { get; set; }
 
         #region Allors
         [Id("92c99262-30ed-4265-975b-07140c46af6e")]

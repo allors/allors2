@@ -33,7 +33,6 @@ export class PartyCommunicationEventEditPhoneCommunicationComponent implements O
   public contacts: Party[] = [];
   public party: Party;
   public purposes: CommunicationEventPurpose[];
-  public partyRelationships: PartyRelationship[];
   public phonenumbers: ContactMechanism[] = [];
 
   private refresh$: BehaviorSubject<Date>;
@@ -85,14 +84,6 @@ export class PartyCommunicationEventEditPhoneCommunicationComponent implements O
             name: "party",
           }),
           new Fetch({
-            id,
-            include: [
-              new TreeNode({ roleType: m.PartyRelationship.CommunicationEvents }),
-            ],
-            name: "partyRelationships",
-            path: new Path({ step: m.Party.CurrentPartyRelationships }),
-          }),
-          new Fetch({
             id: roleId,
             include: [
               new TreeNode({ roleType: m.CommunicationEvent.FromParties }),
@@ -134,12 +125,11 @@ export class PartyCommunicationEventEditPhoneCommunicationComponent implements O
 
         this.scope.session.reset();
 
-        this.partyRelationships = loaded.collections.partyRelationships as PartyRelationship[];
         this.communicationEvent = loaded.objects.communicationEvent as PhoneCommunication;
 
         if (!this.communicationEvent) {
           this.communicationEvent = this.scope.session.create("PhoneCommunication") as PhoneCommunication;
-          this.partyRelationships.forEach((v: PartyRelationship) => v.AddCommunicationEvent(this.communicationEvent));
+          this.communicationEvent.AddCaller(this.party);
         }
 
         this.party = loaded.objects.party as Party;
