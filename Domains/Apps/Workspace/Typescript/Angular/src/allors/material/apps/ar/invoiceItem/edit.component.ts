@@ -62,7 +62,7 @@ export class InvoiceItemEditComponent implements OnInit, AfterViewInit, OnDestro
           new Fetch({
             id: itemId,
             include: [
-              new TreeNode({ roleType: m.SalesInvoiceItem.CurrentObjectState }),
+              new TreeNode({ roleType: m.SalesInvoiceItem.SalesInvoiceItemState }),
               new TreeNode({ roleType: m.SalesInvoiceItem.SalesOrderItem }),
             ],
             name: "invoiceItem",

@@ -9,7 +9,7 @@
   </div>
 </md-toolbar>
 
-<md-card *ngIf="workEffortObjectStates">
+<md-card *ngIf="workEffortStates">
   <div class="pad-top-xs pad-left pad-right">
     <form novalidate [formGroup]="searchForm">
       <md-input-container>
@@ -18,9 +18,9 @@
       <md-input-container>
         <input fxFlex mdInput placeholder="Description" formControlName="description">
       </md-input-container>
-      <md-select formControlName="state" name="state" [(ngModel)]="selectedWorkEffortObjectState" placeholder="State">
+      <md-select formControlName="state" name="state" [(ngModel)]="selectedWorkEffortState" placeholder="State">
         <md-option>None</md-option>
-        <md-option *ngFor="let objectState of workEffortObjectStates" [value]="objectState.Name">{{ objectState.Name }}</md-option>
+        <md-option *ngFor="let objectState of workEffortStates" [value]="objectState.Name">{{ objectState.Name }}</md-option>
       </md-select>
       <md-select formControlName="priority" name="priority" [(ngModel)]="selectedPriority" placeholder="Priority">
         <md-option>None</md-option>

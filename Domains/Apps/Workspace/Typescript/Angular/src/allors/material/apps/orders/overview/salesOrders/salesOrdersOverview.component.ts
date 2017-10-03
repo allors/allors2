@@ -51,8 +51,8 @@ export class SalesOrdersOverviewComponent implements AfterViewInit, OnDestroy {
 
     this.searchForm = this.formBuilder.group({
       company: [""],
-      reference: [""],
       orderNumber: [""],
+      reference: [""],
     });
 
     this.page$ = new BehaviorSubject<number>(50);
@@ -102,7 +102,7 @@ export class SalesOrdersOverviewComponent implements AfterViewInit, OnDestroy {
           {
             include: [
               new TreeNode({ roleType: m.SalesOrder.ShipToCustomer }),
-              new TreeNode({ roleType: m.SalesOrder.CurrentObjectState }),
+              new TreeNode({ roleType: m.SalesOrder.SalesOrderState }),
             ],
             name: "orders",
             objectType: m.SalesOrder,

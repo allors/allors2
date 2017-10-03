@@ -73,16 +73,10 @@ export class SalesOrderOverviewComponent implements OnInit, AfterViewInit, OnDes
                 roleType: m.SalesOrder.SalesOrderItems,
               }),
               new TreeNode({ roleType: m.SalesOrder.ShipToCustomer }),
-              new TreeNode({ roleType: m.SalesOrder.CurrentObjectState }),
+              new TreeNode({ roleType: m.SalesOrder.SalesOrderState }),
               new TreeNode({ roleType: m.SalesOrder.CreatedBy }),
               new TreeNode({ roleType: m.SalesOrder.LastModifiedBy }),
               new TreeNode({ roleType: m.SalesOrder.Quote }),
-              new TreeNode({
-                nodes: [
-                  new TreeNode({ roleType: m.SalesOrderStatus.SalesOrderObjectState }),
-                ],
-                roleType: m.SalesOrder.OrderStatuses,
-              }),
               new TreeNode({
                 nodes: [
                   new TreeNode({

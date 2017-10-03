@@ -72,16 +72,10 @@ export class InvoiceOverviewComponent implements OnInit, AfterViewInit, OnDestro
                 roleType: m.SalesInvoice.SalesInvoiceItems,
               }),
               new TreeNode({ roleType: m.SalesInvoice.BillToCustomer }),
-              new TreeNode({ roleType: m.SalesInvoice.CurrentObjectState }),
+              new TreeNode({ roleType: m.SalesInvoice.SalesInvoiceState }),
               new TreeNode({ roleType: m.SalesInvoice.CreatedBy }),
               new TreeNode({ roleType: m.SalesInvoice.LastModifiedBy }),
               new TreeNode({ roleType: m.SalesInvoice.SalesOrder }),
-              new TreeNode({
-                nodes: [
-                  new TreeNode({ roleType: m.SalesInvoiceStatus.SalesInvoiceObjectState }),
-                ],
-                roleType: m.SalesInvoice.InvoiceStatuses,
-              }),
               new TreeNode({
                 nodes: [
                   new TreeNode({

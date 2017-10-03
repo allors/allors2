@@ -165,6 +165,7 @@ namespace Allors.Repository
         #region Allors
         [Id("B30EDA48-5E99-44AE-B3A9-D053BCFA4895")]
         #endregion
+        [Workspace]
         void Cancel();
 
         #region Allors

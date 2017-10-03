@@ -125,7 +125,7 @@ export class ProductQuoteEditComponent implements OnInit, AfterViewInit, OnDestr
                 include: [
                   new TreeNode({ roleType: m.ProductQuote.Receiver }),
                   new TreeNode({ roleType: m.ProductQuote.FullfillContactMechanism }),
-                  new TreeNode({ roleType: m.ProductQuote.CurrentObjectState }),
+                  new TreeNode({ roleType: m.ProductQuote.QuoteState }),
                   new TreeNode({ roleType: m.ProductQuote.Request }),
                 ],
                 name: "productQuote",

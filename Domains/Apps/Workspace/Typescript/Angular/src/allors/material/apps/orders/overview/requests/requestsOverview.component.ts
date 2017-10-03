@@ -102,7 +102,7 @@ export class RequestsOverviewComponent implements AfterViewInit, OnDestroy {
           {
             include: [
               new TreeNode({ roleType: m.Request.Originator }),
-              new TreeNode({ roleType: m.Request.CurrentObjectState }),
+              new TreeNode({ roleType: m.Request.RequestState }),
             ],
             name: "requests",
             objectType: m.Request,

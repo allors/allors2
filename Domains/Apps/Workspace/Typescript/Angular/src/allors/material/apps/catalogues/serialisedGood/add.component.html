@@ -19,7 +19,7 @@
 
         <md-tab label="General">
           <a-md-select [object]="inventoryItem" [roleType]="m.SerialisedInventoryItem.CurrentObjectState"
-            [options]="serialisedInventoryItemObjectStates" display="Name" label="Status"></a-md-select>
+            [options]="serialisedInventoryItemStates" display="Name" label="Status"></a-md-select>
           <a-md-input [object]="inventoryItem" [roleType]="m.SerialisedInventoryItemVersioned.SerialNumber"></a-md-input>
           <a-md-localised-text [object]="good" [roleType]="m.Good.LocalisedNames" [locales]="locales" label="Name"></a-md-localised-text>
           <a-md-localised-text [object]="good" [roleType]="m.Good.LocalisedDescriptions" [locales]="locales" label="Description"></a-md-localised-text>

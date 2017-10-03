@@ -8,10 +8,10 @@ import { Observable, Subject, Subscription } from "rxjs/Rx";
 import { AllorsService, ErrorService, Filter, Loaded, Saved, Scope } from "../../../../angular";
 import { Contains, Equals, Fetch, Like, Page, Path, PullRequest, PushResponse, Query, Sort, TreeNode } from "../../../../domain";
 import {
-  Brand, Facility, Good, InventoryItemKind, InventoryItemVariance, InventoryItemVersioned, Locale, LocalisedText, Model, NonSerialisedInventoryItem,
-  NonSerialisedInventoryItemObjectState, Organisation, OrganisationRole, Ownership,
+  Brand, Facility, Good, InventoryItem, InventoryItemKind, InventoryItemVariance, Locale, LocalisedText, Model, NonSerialisedInventoryItem,
+  NonSerialisedInventoryItemState, Organisation, OrganisationRole, Ownership,
   ProductCategory, ProductCharacteristic, ProductCharacteristicValue, ProductFeature, ProductType,
-  SerialisedInventoryItem, SerialisedInventoryItemObjectState, SerialisedInventoryItemVersion, Singleton, VarianceReason, VatRate,
+  SerialisedInventoryItem, SerialisedInventoryItemState, Singleton, VarianceReason, VatRate,
 } from "../../../../domain";
 import { MetaDomain } from "../../../../meta/index";
 
@@ -40,14 +40,14 @@ export class GoodEditComponent implements OnInit, AfterViewInit, OnDestroy {
   public selectedModel: Model;
   public varianceReasons: VarianceReason[];
   public inventoryItemKinds: InventoryItemKind[];
-  public inventoryItems: InventoryItemVersioned[];
-  public inventoryItem: InventoryItemVersioned;
+  public inventoryItems: InventoryItem[];
+  public inventoryItem: InventoryItem;
   public nonSerialisedInventoryItems: NonSerialisedInventoryItem[];
   public nonSerialisedinventoryItem: NonSerialisedInventoryItem;
   public serialisedInventoryItems: SerialisedInventoryItem[];
   public serialisedInventoryItem: SerialisedInventoryItem;
-  public serialisedInventoryItemObjectStates: SerialisedInventoryItemObjectState[];
-  public nonSerialisedInventoryItemObjectStates: NonSerialisedInventoryItemObjectState[];
+  public serialisedInventoryItemStates: SerialisedInventoryItemState[];
+  public nonSerialisedInventoryItemStates: NonSerialisedInventoryItemState[];
   public vatRates: VatRate[];
   public ownerships: Ownership[];
   public actualQuantityOnHand: number;
@@ -98,7 +98,7 @@ export class GoodEditComponent implements OnInit, AfterViewInit, OnDestroy {
         const inventoryItemFetch: Fetch = new Fetch({
           id,
           include: [
-            new TreeNode({ roleType: m.SerialisedInventoryItemVersioned.Ownership }),
+            new TreeNode({ roleType: m.SerialisedInventoryItem.Ownership }),
             new TreeNode({
               nodes: [
                 new TreeNode({
@@ -106,17 +106,17 @@ export class GoodEditComponent implements OnInit, AfterViewInit, OnDestroy {
                   roleType: m.ProductType.ProductCharacteristics,
                 }),
               ],
-              roleType: m.InventoryItemVersioned.ProductType,
+              roleType: m.InventoryItem.ProductType,
             }),
             new TreeNode({
               nodes: [
                 new TreeNode({ roleType: m.ProductCharacteristicValue.ProductCharacteristic }),
               ],
-              roleType: m.InventoryItemVersioned.ProductCharacteristicValues,
+              roleType: m.InventoryItem.ProductCharacteristicValues,
             }),
           ],
           name: "inventoryItems",
-          path: new Path({ step: this.m.Good.InventoryItemVersionedsWhereGood }),
+          path: new Path({ step: this.m.Good.InventoryItemsWhereGood }),
         });
 
         if (id != null) {
@@ -136,7 +136,7 @@ export class GoodEditComponent implements OnInit, AfterViewInit, OnDestroy {
                 }),
                 new TreeNode({
                   nodes: [new TreeNode({ roleType: m.InternalOrganisation.DefaultFacility })],
-                  roleType: m.Singleton.DefaultInternalOrganisation,
+                  roleType: m.Singleton.InternalOrganisation,
                 }),
               ],
               name: "singletons",
@@ -180,13 +180,13 @@ export class GoodEditComponent implements OnInit, AfterViewInit, OnDestroy {
             }),
           new Query(
             {
-              name: "serialisedInventoryItemObjectStates",
-              objectType: this.m.SerialisedInventoryItemObjectState,
+              name: "serialisedInventoryItemStates",
+              objectType: this.m.SerialisedInventoryItemState,
             }),
             new Query(
               {
-                name: "nonSerialisedInventoryItemObjectStates",
-                objectType: this.m.NonSerialisedInventoryItemObjectState,
+                name: "nonSerialisedInventoryItemStates",
+                objectType: this.m.NonSerialisedInventoryItemState,
               }),
             new Query(
             {
@@ -207,15 +207,15 @@ export class GoodEditComponent implements OnInit, AfterViewInit, OnDestroy {
             this.vatRates = loaded.collections.vatRates as VatRate[];
             this.inventoryItemKinds = loaded.collections.inventoryItemKinds as InventoryItemKind[];
             this.brands = loaded.collections.brands as Brand[];
-            this.serialisedInventoryItemObjectStates = loaded.collections.serialisedInventoryItemObjectStates as SerialisedInventoryItemObjectState[];
-            this.nonSerialisedInventoryItemObjectStates = loaded.collections.nonSerialisedInventoryItemObjectStates as NonSerialisedInventoryItemObjectState[];
+            this.serialisedInventoryItemStates = loaded.collections.serialisedInventoryItemStates as SerialisedInventoryItemState[];
+            this.nonSerialisedInventoryItemStates = loaded.collections.nonSerialisedInventoryItemStates as NonSerialisedInventoryItemState[];
             this.ownerships = loaded.collections.ownerships as Ownership[];
             this.singleton = loaded.collections.singletons[0] as Singleton;
-            this.facility = this.singleton.DefaultInternalOrganisation.DefaultFacility;
+            this.facility = this.singleton.InternalOrganisation.DefaultFacility;
             this.locales = this.singleton.Locales;
             this.selectedLocaleName = this.singleton.DefaultLocale.Name;
             this.good = loaded.objects.good as Good;
-            this.inventoryItems = loaded.collections.inventoryItems as InventoryItemVersioned[];
+            this.inventoryItems = loaded.collections.inventoryItems as InventoryItem[];
             this.inventoryItem = this.inventoryItems[0];
 
             this.good.StandardFeatures.forEach((feature: ProductFeature) => {

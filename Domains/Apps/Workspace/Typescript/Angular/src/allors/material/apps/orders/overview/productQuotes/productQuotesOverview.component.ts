@@ -102,7 +102,7 @@ export class ProductQuotesOverviewComponent implements AfterViewInit, OnDestroy 
           {
             include: [
               new TreeNode({ roleType: m.ProductQuote.Receiver }),
-              new TreeNode({ roleType: m.ProductQuote.CurrentObjectState }),
+              new TreeNode({ roleType: m.ProductQuote.QuoteState }),
             ],
             name: "quotes",
             objectType: m.ProductQuote,

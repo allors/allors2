@@ -1,38 +1,38 @@
-import { Observable, BehaviorSubject, Subject, Subscription } from 'rxjs/Rx';
-import { Component, OnInit, AfterViewInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
-import { Validators } from '@angular/forms';
-import { ActivatedRoute, Router, UrlSegment } from '@angular/router';
-import { MdSnackBar, MdSnackBarConfig } from '@angular/material';
-import { TdMediaService, TdDialogService } from '@covalent/core';
+import { AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit } from "@angular/core";
+import { Validators } from "@angular/forms";
+import { MdSnackBar, MdSnackBarConfig } from "@angular/material";
+import { ActivatedRoute, Router, UrlSegment } from "@angular/router";
+import { TdDialogService, TdMediaService } from "@covalent/core";
+import { BehaviorSubject, Observable, Subject, Subscription } from "rxjs/Rx";
 
-import { MetaDomain } from '../../../../../../meta/index';
-import { PullRequest, PushResponse, Predicate, And, Or, Not, Equals, Like, Contains, Fetch, Path, Query, TreeNode, Sort, Page } from '../../../../../../domain';
-import { CommunicationEvent, Person, Priority, Singleton, WorkEffortAssignment, WorkTask, WorkEffortObjectState, WorkEffortPurpose } from '../../../../../../domain';
-import { AllorsService, ErrorService, Scope, Loaded, Saved, Invoked } from '../../../../../../angular';
+import { AllorsService, ErrorService, Invoked, Loaded, Saved, Scope } from "../../../../../../angular";
+import { And, Contains, Equals, Fetch, Like, Not, Or, Page, Path, Predicate, PullRequest, PushResponse, Query, Sort, TreeNode } from "../../../../../../domain";
+import { CommunicationEvent, Person, Priority, Singleton, WorkEffortAssignment, WorkEffortPurpose, WorkEffortState, WorkTask } from "../../../../../../domain";
+import { MetaDomain } from "../../../../../../meta/index";
 
 @Component({
-  templateUrl: './form.component.html',
+  templateUrl: "./form.component.html",
 })
 export class PartyCommunicationEventAddWorkTaskComponent implements OnInit, AfterViewInit, OnDestroy {
+
+  public title: string = "Work Task";
+  public subTitle: string;
+
+  public m: MetaDomain;
+
+  public workTask: WorkTask;
+
+  public workEffortStates: WorkEffortState[];
+  public priorities: Priority[];
+  public workEffortPurposes: WorkEffortPurpose[];
+  public singleton: Singleton;
+  public employees: Person[];
+  public workEffortAssignments: WorkEffortAssignment[];
+  public assignees: Person[] = [];
 
   private refresh$: BehaviorSubject<Date>;
   private subscription: Subscription;
   private scope: Scope;
-
-  title: string = 'Work Task';
-  subTitle: string;
-
-  m: MetaDomain;
-
-  workTask: WorkTask;
-
-  workEffortObjectStates: WorkEffortObjectState[];
-  priorities: Priority[];
-  workEffortPurposes: WorkEffortPurpose[];
-  singleton: Singleton;
-  employees: Person[];
-  workEffortAssignments: WorkEffortAssignment[];
-  assignees: Person[] = [];
 
   constructor(
     private allors: AllorsService,
@@ -48,84 +48,84 @@ export class PartyCommunicationEventAddWorkTaskComponent implements OnInit, Afte
     this.m = this.allors.meta;
   }
 
-  ngOnInit(): void {
+  public ngOnInit(): void {
     this.subscription = this.route.url
       .switchMap((url: any) => {
 
-        const id: string = this.route.snapshot.paramMap.get('id');
-        const roleId: string = this.route.snapshot.paramMap.get('roleId');
+        const id: string = this.route.snapshot.paramMap.get("id");
+        const roleId: string = this.route.snapshot.paramMap.get("roleId");
 
         const m: MetaDomain = this.allors.meta;
 
         const fetch: Fetch[] = [
           new Fetch({
-            name: 'communicationEvent',
-            id: id,
-            include: [new TreeNode({ roleType: this.m.CommunicationEvent.CurrentObjectState })],
+            id,
+            include: [new TreeNode({ roleType: this.m.CommunicationEvent.CommunicationEventState })],
+            name: "communicationEvent",
           }),
           new Fetch({
-            name: 'worktask',
             id: roleId,
+            name: "worktask",
           }),
         ];
 
         const query: Query[] = [
           new Query(
             {
-              name: 'workEffortObjectStates',
-              objectType: this.m.WorkEffortObjectState,
+              name: "workEffortStates",
+              objectType: this.m.WorkEffortState,
             }),
           new Query(
             {
-              name: 'priorities',
+              name: "priorities",
               objectType: this.m.Priority,
             }),
           new Query(
             {
-              name: 'workEffortPurposes',
+              name: "workEffortPurposes",
               objectType: this.m.WorkEffortPurpose,
             }),
           new Query(
             {
-              name: 'workEffortAssingments',
+              name: "workEffortAssingments",
               objectType: this.m.WorkEffortAssignment,
             }),
           new Query(
             {
-              name: 'singletons',
-              objectType: this.m.Singleton,
               include: [
                 new TreeNode({
-                  roleType: m.Singleton.DefaultInternalOrganisation,
                   nodes: [
-                    new TreeNode({ roleType: m.InternalOrganisation.Employees }),
+                    new TreeNode({ roleType: m.InternalOrganisation.ActiveEmployees }),
                   ],
+                  roleType: m.Singleton.InternalOrganisation,
                 }),
               ],
+              name: "singletons",
+              objectType: this.m.Singleton,
             }),
         ];
 
         return this.scope
-          .load('Pull', new PullRequest({ fetch: fetch, query: query }));
+          .load("Pull", new PullRequest({ fetch, query }));
       })
       .subscribe((loaded: Loaded) => {
         this.scope.session.reset();
 
-        this.subTitle = 'edit work task';
+        this.subTitle = "edit work task";
         this.workTask = loaded.objects.worktask as WorkTask;
-        let communicationEvent: CommunicationEvent = loaded.objects.communicationEvent as CommunicationEvent;
+        const communicationEvent: CommunicationEvent = loaded.objects.communicationEvent as CommunicationEvent;
 
         if (!this.workTask) {
-          this.subTitle = 'add a new work task';
-          this.workTask = this.scope.session.create('WorkTask') as WorkTask;
+          this.subTitle = "add a new work task";
+          this.workTask = this.scope.session.create("WorkTask") as WorkTask;
           communicationEvent.AddWorkEffort(this.workTask);
         }
 
-        this.workEffortObjectStates = loaded.collections.workEffortObjectStates as WorkEffortObjectState[];
+        this.workEffortStates = loaded.collections.workEffortStates as WorkEffortState[];
         this.priorities = loaded.collections.priorities as Priority[];
         this.workEffortPurposes = loaded.collections.workEffortPurposes as WorkEffortPurpose[];
         this.singleton = loaded.collections.singletons[0] as Singleton;
-        this.employees = this.singleton.DefaultInternalOrganisation.Employees;
+        this.employees = this.singleton.InternalOrganisation.ActiveEmployees;
       },
       (error: any) => {
         this.errorService.message(error);
@@ -134,20 +134,20 @@ export class PartyCommunicationEventAddWorkTaskComponent implements OnInit, Afte
     );
   }
 
-  ngAfterViewInit(): void {
+  public ngAfterViewInit(): void {
     this.media.broadcast();
     this.changeDetectorRef.detectChanges();
   }
 
-  ngOnDestroy(): void {
+  public ngOnDestroy(): void {
     if (this.subscription) {
       this.subscription.unsubscribe();
     }
   }
 
-  save(): void {
+  public save(): void {
     this.assignees.forEach((assignee: Person) => {
-      let workEffortAssignment: WorkEffortAssignment = this.scope.session.create('WorkEffortAssignment') as WorkEffortAssignment;
+      const workEffortAssignment: WorkEffortAssignment = this.scope.session.create("WorkEffortAssignment") as WorkEffortAssignment;
       workEffortAssignment.Assignment = this.workTask;
       workEffortAssignment.Professional = assignee;
     });
@@ -162,11 +162,11 @@ export class PartyCommunicationEventAddWorkTaskComponent implements OnInit, Afte
       });
   }
 
-  refresh(): void {
+  public refresh(): void {
     this.refresh$.next(new Date());
   }
 
-  goBack(): void {
+  public  goBack(): void {
     window.history.back();
   }
 }

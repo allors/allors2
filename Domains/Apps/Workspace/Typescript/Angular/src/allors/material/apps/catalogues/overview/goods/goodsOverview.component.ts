@@ -9,7 +9,7 @@ import { TdDialogService, TdLoadingService, TdMediaService } from "@covalent/cor
 
 import { AllorsService, ErrorService, Invoked, Loaded, Saved, Scope } from "../../../../../angular";
 import { And, ContainedIn, Contains, Equals, Like, Not, Or, Page, Predicate, PullRequest, Query, Sort, TreeNode } from "../../../../../domain";
-import { Brand, Good, InventoryItem, InventoryItemKind, Model, Organisation, OrganisationRole, Ownership, ProductCategory, ProductType, SerialisedInventoryItemObjectState } from "../../../../../domain";
+import { Brand, Good, InventoryItem, InventoryItemKind, Model, Organisation, OrganisationRole, Ownership, ProductCategory, ProductType, SerialisedInventoryItemState } from "../../../../../domain";
 import { MetaDomain } from "../../../../../meta/index";
 
 interface SearchData {
@@ -55,7 +55,7 @@ export class GoodsOverviewComponent implements AfterViewInit, OnDestroy {
   public selectedModel: Model;
   public model: Model;
 
-  public objectStates: SerialisedInventoryItemObjectState[];
+  public objectStates: SerialisedInventoryItemState[];
   public selectedObjectState: Model;
   public objectState: Model;
 
@@ -286,7 +286,7 @@ export class GoodsOverviewComponent implements AfterViewInit, OnDestroy {
                     predicate: inventoryPredicate,
                   });
 
-                  const containedIn: ContainedIn = new ContainedIn({ associationType: m.Good.InventoryItemVersionedsWhereGood, query: serialisedInventoryQuery });
+                  const containedIn: ContainedIn = new ContainedIn({ associationType: m.Good.InventoryItemsWhereGood, query: serialisedInventoryQuery });
                   goodsPredicates.push(containedIn);
                 }
 
@@ -295,15 +295,15 @@ export class GoodsOverviewComponent implements AfterViewInit, OnDestroy {
                   const inventoryPredicates: Predicate[] = inventoryPredicate.predicates;
 
                   if (data.productType) {
-                    inventoryPredicates.push(new Equals({ roleType: m.InventoryItemVersioned.ProductType, value: this.productType }));
+                    inventoryPredicates.push(new Equals({ roleType: m.InventoryItem.ProductType, value: this.productType }));
                   }
 
                   const inventoryQuery: Query = new Query({
-                    objectType: m.InventoryItemVersioned,
+                    objectType: m.InventoryItem,
                     predicate: inventoryPredicate,
                   });
 
-                  const containedIn: ContainedIn = new ContainedIn({ associationType: m.Good.InventoryItemVersionedsWhereGood, query: inventoryQuery });
+                  const containedIn: ContainedIn = new ContainedIn({ associationType: m.Good.InventoryItemsWhereGood, query: inventoryQuery });
                   goodsPredicates.push(containedIn);
                 }
 

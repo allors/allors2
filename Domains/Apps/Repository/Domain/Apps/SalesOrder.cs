@@ -425,7 +425,11 @@ namespace Allors.Repository
         public void Confirm(){}
 
         public void Cancel(){}
-        
+
+        public void Complete()
+        {
+        }
+
         #endregion
     }
 }

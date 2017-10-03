@@ -6,7 +6,7 @@ import { BehaviorSubject, Observable, Subject, Subscription } from "rxjs/Rx";
 
 import { AllorsService, ErrorService, Invoked, Loaded, Saved, Scope } from "../../../../../angular";
 import { Equals, Fetch, Like, Page, Path, PullRequest, Query, Sort, TreeNode } from "../../../../../domain";
-import { Good, ProductQuote, QuoteItem, RequestForQuote, SalesOrder, SerialisedInventoryItemVersioned } from "../../../../../domain";
+import { Good, ProductQuote, QuoteItem, RequestForQuote, SalesOrder, SerialisedInventoryItem } from "../../../../../domain";
 import { MetaDomain } from "../../../../../meta";
 
 @Component({
@@ -73,16 +73,10 @@ export class ProductQuoteOverviewComponent implements OnInit, AfterViewInit, OnD
                 roleType: m.Quote.QuoteItems,
               }),
               new TreeNode({ roleType: m.Quote.Receiver }),
-              new TreeNode({ roleType: m.Quote.CurrentObjectState }),
+              new TreeNode({ roleType: m.Quote.QuoteState }),
               new TreeNode({ roleType: m.Quote.CreatedBy }),
               new TreeNode({ roleType: m.Quote.LastModifiedBy }),
               new TreeNode({ roleType: m.Quote.Request }),
-              new TreeNode({
-                nodes: [
-                  new TreeNode({ roleType: m.QuoteStatus.QuoteObjectState }),
-                ],
-                roleType: m.Quote.QuoteStatuses,
-              }),
               new TreeNode({
                 nodes: [
                   new TreeNode({

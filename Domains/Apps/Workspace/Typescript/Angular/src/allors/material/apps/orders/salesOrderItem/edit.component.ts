@@ -62,7 +62,7 @@ export class SalesOrderItemEditComponent implements OnInit, AfterViewInit, OnDes
           new Fetch({
             id: itemId,
             include: [
-              new TreeNode({ roleType: m.SalesOrderItem.CurrentObjectState }),
+              new TreeNode({ roleType: m.SalesOrderItem.SalesOrderItemState }),
               new TreeNode({ roleType: m.SalesOrderItem.QuoteItem }),
             ],
             name: "orderItem",

@@ -20,9 +20,9 @@
         <md-tab label="General">
           <a-md-static [object]="good" [roleType]="m.Good.InventoryItemKind" display="Name"></a-md-static>
           <a-md-select *ngIf="SerialisedGood" [object]="serialisedInventoryItem" [roleType]="m.SerialisedInventoryItem.CurrentObjectState"
-            [options]="serialisedInventoryItemObjectStates" display="Name" label="Status"></a-md-select>
+            [options]="serialisedInventoryItemStates" display="Name" label="Status"></a-md-select>
           <a-md-select *ngIf="!SerialisedGood" [object]="nonSerialisedInventoryItem" [roleType]="m.NonSerialisedInventoryItem.CurrentObjectState"
-            [options]="nonSerialisedInventoryItemObjectStates" display="Name" label="Status"></a-md-select>
+            [options]="nonSerialisedInventoryItemStates" display="Name" label="Status"></a-md-select>
           <a-md-static [object]="good" [roleType]="m.Good.ArticleNumber"></a-md-static>
           <a-md-input *ngIf="SerialisedGood" [object]="serialisedInventoryItem" [roleType]="m.SerialisedInventoryItemVersioned.SerialNumber"></a-md-input>
           <a-md-localised-text [object]="good" [roleType]="m.Good.LocalisedNames" [locales]="locales" label="Name"></a-md-localised-text>

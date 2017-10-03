@@ -102,7 +102,7 @@ export class InvoicesOverviewComponent implements AfterViewInit, OnDestroy {
           {
             include: [
               new TreeNode({ roleType: m.SalesInvoice.BillToCustomer }),
-              new TreeNode({ roleType: m.SalesInvoice.CurrentObjectState }),
+              new TreeNode({ roleType: m.SalesInvoice.SalesInvoiceState }),
             ],
             name: "invoices",
             objectType: m.SalesInvoice,

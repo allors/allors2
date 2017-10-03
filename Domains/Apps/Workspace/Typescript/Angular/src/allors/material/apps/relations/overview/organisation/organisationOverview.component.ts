@@ -1,38 +1,39 @@
-import { Observable, BehaviorSubject, Subscription } from 'rxjs/Rx';
-import { Component, OnInit, AfterViewInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
-import { ActivatedRoute, UrlSegment } from '@angular/router';
-import { MdSnackBar, MdSnackBarConfig } from '@angular/material';
-import { TdDialogService, TdMediaService } from '@covalent/core';
+import { AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit } from "@angular/core";
+import { MdSnackBar, MdSnackBarConfig } from "@angular/material";
+import { ActivatedRoute, UrlSegment } from "@angular/router";
+import { TdDialogService, TdMediaService } from "@covalent/core";
+import { BehaviorSubject, Observable, Subscription } from "rxjs/Rx";
 
-import { MetaDomain } from '../../../../../meta';
-import { PullRequest, Fetch, Path, Query, Equals, Like, TreeNode, Sort, Page } from '../../../../../domain';
-import { CommunicationEvent, ContactMechanism, TelecommunicationsNumber, Locale, Organisation, OrganisationContactRelationship, PartyContactMechanism, Person, } from '../../../../../domain';
-import { AllorsService, ErrorService, Scope, Loaded, Saved, Invoked } from '../../../../../angular';
+import { AllorsService, ErrorService, Invoked, Loaded, Saved, Scope } from "../../../../../angular";
+import { Equals, Fetch, Like, Page, Path, PullRequest, Query, Sort, TreeNode } from "../../../../../domain";
+import { CommunicationEvent, ContactMechanism, Locale, Organisation, OrganisationContactRelationship, PartyContactMechanism, Person, TelecommunicationsNumber } from "../../../../../domain";
+import { MetaDomain } from "../../../../../meta";
 
 @Component({
   templateUrl: "./organisationOverview.component.html",
 })
 export class OrganisationOverviewComponent implements OnInit, AfterViewInit, OnDestroy {
 
+  public m: MetaDomain;
+
+  public title: string = "Organisation overview";
+  public organisation: Organisation;
+  public communicationEvents: CommunicationEvent[];
+
+  public contactsCollection: string = "Current";
+  public currentContactRelationships: OrganisationContactRelationship[] = [];
+  public inactiveContactRelationships: OrganisationContactRelationship[] = [];
+  public allContactRelationships: OrganisationContactRelationship[] = [];
+
+  public contactMechanismsCollection: string = "Current";
+  public currentContactMechanisms: PartyContactMechanism[] = [];
+  public inactiveContactMechanisms: PartyContactMechanism[] = [];
+  public allContactMechanisms: PartyContactMechanism[] = [];
+
   private refresh$: BehaviorSubject<Date>;
   private subscription: Subscription;
 
   private scope: Scope;
-  m: MetaDomain;
-
-  title: string = 'Organisation overview';
-  organisation: Organisation;
-  communicationEvents: CommunicationEvent[];
-
-  contactsCollection: string = 'Current';
-  currentContactRelationships: OrganisationContactRelationship[] = [];
-  inactiveContactRelationships: OrganisationContactRelationship[] = [];
-  allContactRelationships: OrganisationContactRelationship[] = [];
-
-  contactMechanismsCollection: string = 'Current';
-  currentContactMechanisms: PartyContactMechanism[] = [];
-  inactiveContactMechanisms: PartyContactMechanism[] = [];
-  allContactMechanisms: PartyContactMechanism[] = [];
 
   constructor(
     private allors: AllorsService,
@@ -50,11 +51,11 @@ export class OrganisationOverviewComponent implements OnInit, AfterViewInit, OnD
   get contactRelationships(): any {
 
     switch (this.contactsCollection) {
-      case 'Current':
+      case "Current":
         return this.currentContactRelationships;
-      case 'Inactive':
+      case "Inactive":
         return this.inactiveContactRelationships;
-      case 'All':
+      case "All":
       default:
         return this.allContactRelationships;
     }
@@ -63,17 +64,17 @@ export class OrganisationOverviewComponent implements OnInit, AfterViewInit, OnD
   get contactMechanisms(): any {
 
     switch (this.contactMechanismsCollection) {
-      case 'Current':
+      case "Current":
         return this.currentContactMechanisms;
-      case 'Inactive':
+      case "Inactive":
         return this.inactiveContactMechanisms;
-      case 'All':
+      case "All":
       default:
         return this.allContactMechanisms;
     }
   }
 
-  ngOnInit(): void {
+  public ngOnInit(): void {
 
     const route$: Observable<UrlSegment[]> = this.route.url;
 
@@ -82,49 +83,48 @@ export class OrganisationOverviewComponent implements OnInit, AfterViewInit, OnD
     this.subscription = combined$
       .switchMap(([urlSegments, date]: [UrlSegment[], Date]) => {
 
-        const id: string = this.route.snapshot.paramMap.get('id');
+        const id: string = this.route.snapshot.paramMap.get("id");
         const m: MetaDomain = this.m;
 
         const organisationContactRelationshipTreeNodes: TreeNode[] = [
           new TreeNode({ roleType: m.OrganisationContactRelationship.ContactKinds }),
           new TreeNode({
-            roleType: m.OrganisationContactRelationship.Contact,
             nodes: [
               new TreeNode({
-                roleType: m.Person.PartyContactMechanisms,
                 nodes: [
                   new TreeNode({
-                    roleType: m.PartyContactMechanism.ContactMechanism,
                     nodes: [
                       new TreeNode({ roleType: m.ContactMechanism.ContactMechanismType }),
                     ],
+                    roleType: m.PartyContactMechanism.ContactMechanism,
                   }),
                 ],
+                roleType: m.Person.PartyContactMechanisms,
               }),
             ],
+            roleType: m.OrganisationContactRelationship.Contact,
           }),
         ];
 
         const partyContactMechanismTreeNodes: TreeNode[] = [
           new TreeNode({ roleType: m.PartyContactMechanism.ContactPurposes }),
           new TreeNode({
-            roleType: m.PartyContactMechanism.ContactMechanism,
             nodes: [
               new TreeNode({ roleType: m.ContactMechanism.ContactMechanismType }),
               new TreeNode({
-                roleType: m.PostalAddress.PostalBoundary,
                 nodes: [
                   new TreeNode({ roleType: m.PostalBoundary.Country }),
                 ],
+                roleType: m.PostalAddress.PostalBoundary,
               }),
             ],
+            roleType: m.PartyContactMechanism.ContactMechanism,
           }),
         ];
 
         const fetch: Fetch[] = [
           new Fetch({
-            name: 'organisation',
-            id: id,
+            id,
             include: [
               new TreeNode({ roleType: m.Party.Locale }),
               new TreeNode({ roleType: m.Organisation.IndustryClassifications }),
@@ -132,94 +132,95 @@ export class OrganisationOverviewComponent implements OnInit, AfterViewInit, OnD
               new TreeNode({ roleType: m.Organisation.OrganisationClassifications }),
               new TreeNode({ roleType: m.Organisation.LastModifiedBy }),
               new TreeNode({
-                roleType: m.Party.CurrentContacts,
                 nodes: [
                   new TreeNode({
-                    roleType: m.Person.PartyContactMechanisms,
                     nodes: partyContactMechanismTreeNodes,
+                    roleType: m.Person.PartyContactMechanisms,
                   }),
                 ],
+                roleType: m.Party.CurrentContacts,
               }),
               new TreeNode({
+                nodes: organisationContactRelationshipTreeNodes,
                 roleType: m.Party.CurrentOrganisationContactRelationships,
-                nodes: organisationContactRelationshipTreeNodes,
               }),
               new TreeNode({
+                nodes: organisationContactRelationshipTreeNodes,
                 roleType: m.Party.InactiveOrganisationContactRelationships,
-                nodes: organisationContactRelationshipTreeNodes,
               }),
               new TreeNode({
+                nodes: partyContactMechanismTreeNodes,
                 roleType: m.Party.PartyContactMechanisms,
-                nodes: partyContactMechanismTreeNodes,
               }),
               new TreeNode({
+                nodes: partyContactMechanismTreeNodes,
                 roleType: m.Party.CurrentPartyContactMechanisms,
-                nodes: partyContactMechanismTreeNodes,
               }),
               new TreeNode({
+                nodes: partyContactMechanismTreeNodes,
                 roleType: m.Party.InactivePartyContactMechanisms,
-                nodes: partyContactMechanismTreeNodes,
               }),
               new TreeNode({
-                roleType: m.Organisation.GeneralCorrespondence,
                 nodes: [
                   new TreeNode({
-                    roleType: m.PostalAddress.PostalBoundary,
                     nodes: [
                       new TreeNode({ roleType: m.PostalBoundary.Country }),
                     ],
+                    roleType: m.PostalAddress.PostalBoundary,
                   }),
                 ],
+                roleType: m.Organisation.GeneralCorrespondence,
               }),
             ],
+            name: "organisation",
           }),
           new Fetch({
-            name: 'communicationEvents',
-            id: id,
-            path: new Path({ step: m.Party.CommunicationEventsWhereInvolvedParty }),
+            id,
             include: [
-              new TreeNode({ roleType: m.CommunicationEvent.CurrentObjectState }),
+              new TreeNode({ roleType: m.CommunicationEvent.CommunicationEventState }),
               new TreeNode({ roleType: m.CommunicationEvent.FromParties }),
               new TreeNode({ roleType: m.CommunicationEvent.ToParties }),
             ],
+            name: "communicationEvents",
+            path: new Path({ step: m.Party.CommunicationEventsWhereInvolvedParty }),
           }),
         ];
 
         const query: Query[] = [
           new Query(
             {
-              name: 'countries',
+              name: "countries",
               objectType: m.Country,
             }),
           new Query(
             {
-              name: 'genders',
+              name: "genders",
               objectType: m.GenderType,
             }),
           new Query(
             {
-              name: 'salutations',
+              name: "salutations",
               objectType: m.Salutation,
             }),
           new Query(
             {
-              name: 'organisationContactKinds',
+              name: "organisationContactKinds",
               objectType: m.OrganisationContactKind,
             }),
           new Query(
             {
-              name: 'contactMechanismPurposes',
+              name: "contactMechanismPurposes",
               objectType: m.ContactMechanismPurpose,
             }),
           new Query(
             {
-              name: 'internalOrganisation',
+              name: "internalOrganisation",
               objectType: m.InternalOrganisation,
             }),
         ];
 
         return this.scope
-          .load('Pull', new PullRequest({ fetch: fetch, query: query }));
+          .load("Pull", new PullRequest({ fetch, query }));
       })
       .subscribe((loaded: Loaded) => {
         this.scope.session.reset();
@@ -242,18 +243,18 @@ export class OrganisationOverviewComponent implements OnInit, AfterViewInit, OnD
     );
   }
 
-  ngAfterViewInit(): void {
+  public ngAfterViewInit(): void {
     this.media.broadcast();
     this.changeDetectorRef.detectChanges();
   }
 
-  ngOnDestroy(): void {
+  public ngOnDestroy(): void {
     if (this.subscription) {
       this.subscription.unsubscribe();
     }
   }
 
-  removeContact(organisationContactRelationship: OrganisationContactRelationship): void {
+  public removeContact(organisationContactRelationship: OrganisationContactRelationship): void {
     organisationContactRelationship.ThroughDate = new Date();
     this.scope
       .save()
@@ -266,7 +267,7 @@ export class OrganisationOverviewComponent implements OnInit, AfterViewInit, OnD
       });
   }
 
-  activateContact(organisationContactRelationship: OrganisationContactRelationship): void {
+  public activateContact(organisationContactRelationship: OrganisationContactRelationship): void {
     organisationContactRelationship.ThroughDate = undefined;
     this.scope
       .save()
@@ -279,14 +280,14 @@ export class OrganisationOverviewComponent implements OnInit, AfterViewInit, OnD
       });
   }
 
-  deleteContact(person: Person): void {
+  public deleteContact(person: Person): void {
     this.dialogService
-      .openConfirm({ message: 'Are you sure you want to delete this?' })
+      .openConfirm({ message: "Are you sure you want to delete this?" })
       .afterClosed().subscribe((confirm: boolean) => {
         if (confirm) {
           this.scope.invoke(person.Delete)
             .subscribe((invoked: Invoked) => {
-              this.snackBar.open('Successfully deleted.', 'close', { duration: 5000 });
+              this.snackBar.open("Successfully deleted.", "close", { duration: 5000 });
               this.refresh();
             },
             (error: Error) => {
@@ -296,7 +297,7 @@ export class OrganisationOverviewComponent implements OnInit, AfterViewInit, OnD
       });
   }
 
-  removeContactMechanism(partyContactMechanism: PartyContactMechanism): void {
+  public removeContactMechanism(partyContactMechanism: PartyContactMechanism): void {
     partyContactMechanism.ThroughDate = new Date();
     this.scope
       .save()
@@ -309,7 +310,7 @@ export class OrganisationOverviewComponent implements OnInit, AfterViewInit, OnD
       });
   }
 
-  activateContactMechanism(partyContactMechanism: PartyContactMechanism): void {
+  public activateContactMechanism(partyContactMechanism: PartyContactMechanism): void {
     partyContactMechanism.ThroughDate = undefined;
     this.scope
       .save()
@@ -322,14 +323,14 @@ export class OrganisationOverviewComponent implements OnInit, AfterViewInit, OnD
       });
   }
 
-  deleteContactMechanism(contactMechanism: ContactMechanism): void {
+  public deleteContactMechanism(contactMechanism: ContactMechanism): void {
     this.dialogService
-      .openConfirm({ message: 'Are you sure you want to delete this?' })
+      .openConfirm({ message: "Are you sure you want to delete this?" })
       .afterClosed().subscribe((confirm: boolean) => {
         if (confirm) {
           this.scope.invoke(contactMechanism.Delete)
             .subscribe((invoked: Invoked) => {
-              this.snackBar.open('Successfully deleted.', 'close', { duration: 5000 });
+              this.snackBar.open("Successfully deleted.", "close", { duration: 5000 });
               this.refresh();
             },
             (error: Error) => {
@@ -339,14 +340,14 @@ export class OrganisationOverviewComponent implements OnInit, AfterViewInit, OnD
       });
   }
 
-  cancelCommunication(communicationEvent: CommunicationEvent): void {
+  public cancelCommunication(communicationEvent: CommunicationEvent): void {
     this.dialogService
-      .openConfirm({ message: 'Are you sure you want to cancel this?' })
+      .openConfirm({ message: "Are you sure you want to cancel this?" })
       .afterClosed().subscribe((confirm: boolean) => {
         if (confirm) {
           this.scope.invoke(communicationEvent.Cancel)
             .subscribe((invoked: Invoked) => {
-              this.snackBar.open('Successfully cancelled.', 'close', { duration: 5000 });
+              this.snackBar.open("Successfully cancelled.", "close", { duration: 5000 });
               this.refresh();
             },
             (error: Error) => {
@@ -356,14 +357,14 @@ export class OrganisationOverviewComponent implements OnInit, AfterViewInit, OnD
       });
   }
 
-  closeCommunication(communicationEvent: CommunicationEvent): void {
+  public closeCommunication(communicationEvent: CommunicationEvent): void {
     this.dialogService
-      .openConfirm({ message: 'Are you sure you want to close this?' })
+      .openConfirm({ message: "Are you sure you want to close this?" })
       .afterClosed().subscribe((confirm: boolean) => {
         if (confirm) {
           this.scope.invoke(communicationEvent.Close)
             .subscribe((invoked: Invoked) => {
-              this.snackBar.open('Successfully closed.', 'close', { duration: 5000 });
+              this.snackBar.open("Successfully closed.", "close", { duration: 5000 });
               this.refresh();
             },
             (error: Error) => {
@@ -373,14 +374,14 @@ export class OrganisationOverviewComponent implements OnInit, AfterViewInit, OnD
       });
   }
 
-  reopenCommunication(communicationEvent: CommunicationEvent): void {
+  public reopenCommunication(communicationEvent: CommunicationEvent): void {
     this.dialogService
-      .openConfirm({ message: 'Are you sure you want to reopen this?' })
+      .openConfirm({ message: "Are you sure you want to reopen this?" })
       .afterClosed().subscribe((confirm: boolean) => {
         if (confirm) {
           this.scope.invoke(communicationEvent.Reopen)
             .subscribe((invoked: Invoked) => {
-              this.snackBar.open('Successfully reopened.', 'close', { duration: 5000 });
+              this.snackBar.open("Successfully reopened.", "close", { duration: 5000 });
               this.refresh();
             },
             (error: Error) => {
@@ -390,14 +391,14 @@ export class OrganisationOverviewComponent implements OnInit, AfterViewInit, OnD
       });
   }
 
-  deleteCommunication(communicationEvent: CommunicationEvent): void {
+  public deleteCommunication(communicationEvent: CommunicationEvent): void {
     this.dialogService
-      .openConfirm({ message: 'Are you sure you want to delete this?' })
+      .openConfirm({ message: "Are you sure you want to delete this?" })
       .afterClosed().subscribe((confirm: boolean) => {
         if (confirm) {
           this.scope.invoke(communicationEvent.Delete)
             .subscribe((invoked: Invoked) => {
-              this.snackBar.open('Successfully deleted.', 'close', { duration: 5000 });
+              this.snackBar.open("Successfully deleted.", "close", { duration: 5000 });
               this.refresh();
             },
             (error: Error) => {
@@ -407,22 +408,22 @@ export class OrganisationOverviewComponent implements OnInit, AfterViewInit, OnD
       });
   }
 
-  goBack(): void {
+  public goBack(): void {
     window.history.back();
   }
 
-  refresh(): void {
+  public refresh(): void {
     this.refresh$.next(new Date());
   }
 
-  isPhone(contactMechanism: ContactMechanism): boolean {
+  public isPhone(contactMechanism: ContactMechanism): boolean {
     if (contactMechanism instanceof TelecommunicationsNumber) {
       const phoneCommunication: TelecommunicationsNumber = contactMechanism as TelecommunicationsNumber;
       return phoneCommunication.ContactMechanismType && phoneCommunication.ContactMechanismType.Name === "Phone";
     }
   }
 
-  checkType(obj: any): string {
+  public checkType(obj: any): string {
     return obj.objectType.name;
   }
 }

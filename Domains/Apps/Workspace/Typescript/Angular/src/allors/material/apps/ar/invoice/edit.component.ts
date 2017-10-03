@@ -7,10 +7,7 @@ import { BehaviorSubject, Observable, Subject, Subscription } from "rxjs/Rx";
 
 import { AllorsService, ErrorService, Filter, Invoked, Loaded, Saved, Scope } from "../../../../angular";
 import { Contains, Equals, Fetch, Like, Page, Path, PullRequest, PushResponse, Query, Sort, TreeNode } from "../../../../domain";
-import {
-  ContactMechanism, Currency, Organisation, OrganisationRole, Party, PartyContactMechanism,
-  Person, PersonRole, SalesInvoice, SalesOrder,
-} from "../../../../domain";
+import { ContactMechanism, Currency, Organisation, OrganisationRole, Party, PartyContactMechanism, Person, PersonRole, SalesInvoice, SalesOrder } from "../../../../domain";
 import { MetaDomain } from "../../../../meta";
 
 @Component({
@@ -125,7 +122,7 @@ export class InvoiceEditComponent implements OnInit, AfterViewInit, OnDestroy {
                 include: [
                   new TreeNode({ roleType: m.SalesInvoice.BillToCustomer }),
                   new TreeNode({ roleType: m.SalesInvoice.BillToContactMechanism }),
-                  new TreeNode({ roleType: m.SalesInvoice.CurrentObjectState }),
+                  new TreeNode({ roleType: m.SalesInvoice.SalesInvoiceState }),
                   new TreeNode({ roleType: m.SalesInvoice.SalesOrder }),
                 ],
                 name: "salesInvoice",

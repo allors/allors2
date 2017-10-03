@@ -9,15 +9,15 @@
   </div>
 </md-toolbar>
 
-<md-card *ngIf="communicationEventObjectStates">
+<md-card *ngIf="communicationEventStates">
   <div class="pad-top-xs pad-left pad-right">
     <form novalidate [formGroup]="searchForm">
       <md-input-container>
         <input fxFlex mdInput placeholder="Subject" formControlName="subject">
       </md-input-container>
-      <md-select formControlName="state" name="state" [(ngModel)]="selectedCommunicationEventObjectState" placeholder="State">
+      <md-select formControlName="state" name="state" [(ngModel)]="selectedCommunicationEventState" placeholder="State">
         <md-option>None</md-option>
-        <md-option *ngFor="let objectState of communicationEventObjectStates" [value]="objectState.Name">{{ objectState.Name }}</md-option>
+        <md-option *ngFor="let objectState of communicationEventStates" [value]="objectState.Name">{{ objectState.Name }}</md-option>
       </md-select>
       <md-select formControlName="purpose" name="purpose" [(ngModel)]="selectedPurpose" placeholder="Purpose">
         <md-option>None</md-option>

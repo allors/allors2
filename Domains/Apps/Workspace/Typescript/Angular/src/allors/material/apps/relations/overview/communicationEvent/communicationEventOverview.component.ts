@@ -1,29 +1,29 @@
-import { Observable, BehaviorSubject, Subject, Subscription } from 'rxjs/Rx';
-import { Component, OnInit, AfterViewInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
-import { ActivatedRoute, UrlSegment } from '@angular/router';
-import { MdSnackBar, MdSnackBarConfig } from '@angular/material';
-import { TdMediaService, TdDialogService } from '@covalent/core';
+import { AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit } from "@angular/core";
+import { MdSnackBar, MdSnackBarConfig } from "@angular/material";
+import { ActivatedRoute, UrlSegment } from "@angular/router";
+import { TdDialogService, TdMediaService } from "@covalent/core";
+import { BehaviorSubject, Observable, Subject, Subscription } from "rxjs/Rx";
 
-import { MetaDomain } from '../../../../../meta';
-import { PullRequest, Fetch, Path, Query, Equals, Like, TreeNode, Sort, Page } from '../../../../../domain';
-import { CommunicationEvent, EmailCommunication, FaceToFaceCommunication, LetterCorrespondence, Party, PhoneCommunication, WorkTask } from '../../../../../domain';
-import { AllorsService, ErrorService, Scope, Loaded, Saved, Invoked } from '../../../../../angular';
+import { AllorsService, ErrorService, Invoked, Loaded, Saved, Scope } from "../../../../../angular";
+import { Equals, Fetch, Like, Page, Path, PullRequest, Query, Sort, TreeNode } from "../../../../../domain";
+import { CommunicationEvent, EmailCommunication, FaceToFaceCommunication, LetterCorrespondence, Party, PhoneCommunication, WorkTask } from "../../../../../domain";
+import { MetaDomain } from "../../../../../meta";
 
 @Component({
-  templateUrl: './communicationEventOverview.component.html',
+  templateUrl: "./communicationEventOverview.component.html",
 })
 export class PartyCommunicationEventOverviewComponent implements OnInit, AfterViewInit, OnDestroy {
+
+  public title: string = "Communication Event overview";
+  public m: MetaDomain;
+
+  public communicationEventPrefetch: CommunicationEvent;
+  public communicationEvent: CommunicationEvent;
+  public  party: Party;
 
   private refresh$: BehaviorSubject<Date>;
   private subscription: Subscription;
   private scope: Scope;
-  m: MetaDomain;
-
-  communicationEventPrefetch: CommunicationEvent;
-  communicationEvent: CommunicationEvent;
-  party: Party;
-
-  title: string = 'Communication Event overview';
 
   get isEmail(): boolean {
     return this.communicationEventPrefetch instanceof (EmailCommunication);
@@ -55,7 +55,7 @@ export class PartyCommunicationEventOverviewComponent implements OnInit, AfterVi
     this.refresh$ = new BehaviorSubject<Date>(undefined);
   }
 
-  ngOnInit(): void {
+  public ngOnInit(): void {
 
     const route$: Observable<UrlSegment[]> = this.route.url;
 
@@ -64,24 +64,24 @@ export class PartyCommunicationEventOverviewComponent implements OnInit, AfterVi
     this.subscription = combined$
       .switchMap((url: any) => {
 
-        const id: string = this.route.snapshot.paramMap.get('id');
-        const roleId: string = this.route.snapshot.paramMap.get('roleId');
+        const id: string = this.route.snapshot.paramMap.get("id");
+        const roleId: string = this.route.snapshot.paramMap.get("roleId");
 
         const m: MetaDomain = this.m;
 
         const fetch: Fetch[] = [
           new Fetch({
-            name: 'communicationEventPrefetch',
             id: roleId,
+            name: "communicationEventPrefetch",
           }),
           new Fetch({
-            name: 'party',
-            id: id,
+            name: "party",
+            id,
           }),
         ];
 
         return this.scope
-          .load('Pull', new PullRequest({ fetch: fetch }))
+          .load("Pull", new PullRequest({ fetch }))
           .switchMap((loaded: Loaded) => {
             this.scope.session.reset();
 
@@ -90,110 +90,110 @@ export class PartyCommunicationEventOverviewComponent implements OnInit, AfterVi
 
             const fetchEmail: Fetch[] = [
               new Fetch({
-                name: 'communicationEvent',
                 id: roleId,
                 include: [
                   new TreeNode({ roleType: m.EmailCommunication.Originator }),
                   new TreeNode({ roleType: m.EmailCommunication.Addressees }),
                   new TreeNode({ roleType: m.EmailCommunication.EmailTemplate }),
                   new TreeNode({ roleType: m.CommunicationEvent.EventPurposes }),
-                  new TreeNode({ roleType: m.CommunicationEvent.CurrentObjectState }),
+                  new TreeNode({ roleType: m.CommunicationEvent.CommunicationEventState }),
                   new TreeNode({
-                    roleType: m.CommunicationEvent.WorkEfforts,
                     nodes: [
-                      new TreeNode({ roleType: m.WorkEffort.CurrentObjectState }),
+                      new TreeNode({ roleType: m.WorkEffort.WorkEffortState }),
                       new TreeNode({ roleType: m.WorkEffort.Priority }),
                     ],
+                    roleType: m.CommunicationEvent.WorkEfforts,
                   }),
                 ],
+                name: "communicationEvent",
               }),
             ];
 
             const fetchLetter: Fetch[] = [
               new Fetch({
-                name: 'communicationEvent',
                 id: roleId,
                 include: [
                   new TreeNode({ roleType: m.LetterCorrespondence.Originators }),
                   new TreeNode({ roleType: m.LetterCorrespondence.Receivers }),
                   new TreeNode({ roleType: m.CommunicationEvent.EventPurposes }),
-                  new TreeNode({ roleType: m.CommunicationEvent.CurrentObjectState }),
+                  new TreeNode({ roleType: m.CommunicationEvent.CommunicationEventState }),
                   new TreeNode({
-                    roleType: m.CommunicationEvent.WorkEfforts,
                     nodes: [
-                      new TreeNode({ roleType: m.WorkEffort.CurrentObjectState }),
+                      new TreeNode({ roleType: m.WorkEffort.WorkEffortState }),
                       new TreeNode({ roleType: m.WorkEffort.Priority }),
                     ],
+                    roleType: m.CommunicationEvent.WorkEfforts,
                   }),
                   new TreeNode({
-                    roleType: m.LetterCorrespondence.PostalAddresses,
                     nodes: [
                       new TreeNode({
-                        roleType: m.PostalAddress.PostalBoundary,
                         nodes: [
                           new TreeNode({ roleType: m.PostalBoundary.Country }),
                         ],
+                        roleType: m.PostalAddress.PostalBoundary,
                       }),
                     ],
+                    roleType: m.LetterCorrespondence.PostalAddresses,
                   }),
                 ],
+                name: "communicationEvent",
               }),
             ];
 
             const fetchMeeting: Fetch[] = [
               new Fetch({
-                name: 'communicationEvent',
                 id: roleId,
                 include: [
                   new TreeNode({ roleType: m.CommunicationEvent.FromParties }),
                   new TreeNode({ roleType: m.CommunicationEvent.ToParties }),
                   new TreeNode({ roleType: m.CommunicationEvent.EventPurposes }),
-                  new TreeNode({ roleType: m.CommunicationEvent.CurrentObjectState }),
+                  new TreeNode({ roleType: m.CommunicationEvent.CommunicationEventState }),
                   new TreeNode({
-                    roleType: m.CommunicationEvent.WorkEfforts,
                     nodes: [
-                      new TreeNode({ roleType: m.WorkEffort.CurrentObjectState }),
+                      new TreeNode({ roleType: m.WorkEffort.WorkEffortState }),
                       new TreeNode({ roleType: m.WorkEffort.Priority }),
                     ],
+                    roleType: m.CommunicationEvent.WorkEfforts,
                   }),
                 ],
+                name: "communicationEvent",
               }),
             ];
 
             const fetchPhone: Fetch[] = [
               new Fetch({
-                name: 'communicationEvent',
                 id: roleId,
                 include: [
                   new TreeNode({ roleType: m.CommunicationEvent.FromParties }),
                   new TreeNode({ roleType: m.CommunicationEvent.ToParties }),
                   new TreeNode({ roleType: m.CommunicationEvent.EventPurposes }),
-                  new TreeNode({ roleType: m.CommunicationEvent.CurrentObjectState }),
+                  new TreeNode({ roleType: m.CommunicationEvent.CommunicationEventState }),
                   new TreeNode({
-                    roleType: m.CommunicationEvent.WorkEfforts,
                     nodes: [
-                      new TreeNode({ roleType: m.WorkEffort.CurrentObjectState }),
+                      new TreeNode({ roleType: m.WorkEffort.WorkEffortState }),
                       new TreeNode({ roleType: m.WorkEffort.Priority }),
                     ],
+                    roleType: m.CommunicationEvent.WorkEfforts,
                   }),
                 ],
+                name: "communicationEvent",
               }),
             ];
 
             if (this.isEmail) {
-              return this.scope.load('Pull', new PullRequest({ fetch: fetchEmail }));
+              return this.scope.load("Pull", new PullRequest({ fetch: fetchEmail }));
             }
 
             if (this.isMeeting) {
-              return this.scope.load('Pull', new PullRequest({ fetch: fetchMeeting }));
+              return this.scope.load("Pull", new PullRequest({ fetch: fetchMeeting }));
             }
 
             if (this.isLetter) {
-              return this.scope.load('Pull', new PullRequest({ fetch: fetchLetter }));
+              return this.scope.load("Pull", new PullRequest({ fetch: fetchLetter }));
             }
 
             if (this.isPhone) {
-              return this.scope.load('Pull', new PullRequest({ fetch: fetchPhone }));
+              return this.scope.load("Pull", new PullRequest({ fetch: fetchPhone }));
             }
           });
       })
@@ -207,15 +207,15 @@ export class PartyCommunicationEventOverviewComponent implements OnInit, AfterVi
     );
   }
 
-  deleteWorkEffort(worktask: WorkTask): void {
+  public deleteWorkEffort(worktask: WorkTask): void {
     this.dialogService
-      .openConfirm({ message: 'Are you sure you want to delete this work task?' })
+      .openConfirm({ message: "Are you sure you want to delete this work task?" })
       .afterClosed()
       .subscribe((confirm: boolean) => {
         if (confirm) {
           this.scope.invoke(worktask.Delete)
             .subscribe((invoked: Invoked) => {
-              this.snackBar.open('Successfully deleted.', 'close', { duration: 5000 });
+              this.snackBar.open("Successfully deleted.", "close", { duration: 5000 });
               this.refresh();
             },
             (error: Error) => {
@@ -225,22 +225,22 @@ export class PartyCommunicationEventOverviewComponent implements OnInit, AfterVi
       });
   }
 
-  ngAfterViewInit(): void {
+  public ngAfterViewInit(): void {
     this.media.broadcast();
     this.changeDetectorRef.detectChanges();
   }
 
-  ngOnDestroy(): void {
+  public ngOnDestroy(): void {
     if (this.subscription) {
       this.subscription.unsubscribe();
     }
   }
 
-  refresh(): void {
+  public refresh(): void {
     this.refresh$.next(new Date());
   }
 
-  goBack(): void {
+  public goBack(): void {
     window.history.back();
   }
 }

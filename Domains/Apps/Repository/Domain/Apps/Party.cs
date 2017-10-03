@@ -14,6 +14,7 @@ namespace Allors.Repository
         [AssociationId("B7DD5FEE-A50F-48FF-B477-E8A635BE0676")]
         [RoleId("5B1C2D30-8FDC-454E-B7E9-E21AD11A2662")]
         #endregion
+        [Workspace]
         string PartyName { get; set; }
 
         #region Allors

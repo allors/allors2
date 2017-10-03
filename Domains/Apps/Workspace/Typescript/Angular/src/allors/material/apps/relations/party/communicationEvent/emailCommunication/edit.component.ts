@@ -1,43 +1,43 @@
-import { Observable, BehaviorSubject, Subscription } from 'rxjs/Rx';
-import { Component, OnInit, AfterViewInit, OnDestroy , ChangeDetectorRef } from '@angular/core';
-import { Validators } from '@angular/forms';
-import { ActivatedRoute, UrlSegment } from '@angular/router';
-import { MdSnackBar, MdSnackBarConfig } from '@angular/material';
-import { TdMediaService, TdDialogService } from '@covalent/core';
+import { AfterViewInit, ChangeDetectorRef, Component, OnDestroy , OnInit } from "@angular/core";
+import { Validators } from "@angular/forms";
+import { MdSnackBar, MdSnackBarConfig } from "@angular/material";
+import { ActivatedRoute, UrlSegment } from "@angular/router";
+import { TdDialogService, TdMediaService } from "@covalent/core";
+import { BehaviorSubject, Observable, Subscription } from "rxjs/Rx";
 
-import { MetaDomain } from '../../../../../../meta/index';
-import { PullRequest, PushResponse, Fetch, Path, Query, Equals, Like, TreeNode, Sort, Page } from '../../../../../../domain';
+import { AllorsService, ErrorService, Filter, Invoked, Loaded, Saved, Scope } from "../../../../../../angular";
+import { Equals, Fetch, Like, Page, Path, PullRequest, PushResponse, Query, Sort, TreeNode } from "../../../../../../domain";
 import {
-  Person, Party, PartyRelationship, CommunicationEvent, CommunicationEventPurpose, EmailAddress, EmailTemplate,
-  PersonRole, Locale, Enumeration, EmailCommunication, Singleton, ContactMechanism, PartyContactMechanism, OrganisationContactRelationship, Organisation,
-} from '../../../../../../domain';
-import { AllorsService, ErrorService, Scope, Loaded, Saved, Invoked, Filter } from '../../../../../../angular';
+  CommunicationEvent, CommunicationEventPurpose, ContactMechanism, EmailAddress, EmailCommunication, EmailTemplate, Enumeration,
+  Locale, Organisation, OrganisationContactRelationship, Party, PartyContactMechanism, PartyRelationship, Person, PersonRole, Singleton,
+} from "../../../../../../domain";
+import { MetaDomain } from "../../../../../../meta/index";
 
 @Component({
-  templateUrl: './form.component.html',
+  templateUrl: "./form.component.html",
 })
 export class PartyCommunicationEventEditEmailCommunicationComponent implements OnInit, AfterViewInit, OnDestroy {
+
+  public title: string = "Email Communication";
+  public subTitle: string;
+
+  public addOriginator: boolean = false;
+  public addAddressee: boolean = false;
+
+  public m: MetaDomain;
+
+  public singleton: Singleton;
+  public communicationEvent: EmailCommunication;
+  public employees: Person[];
+  public party: Party;
+  public purposes: CommunicationEventPurpose[];
+  public partyRelationships: PartyRelationship[];
+  public emailAddresses: ContactMechanism[] = [];
+  public emailTemplate: EmailTemplate;
 
   private refresh$: BehaviorSubject<Date>;
   private subscription: Subscription;
   private scope: Scope;
-
-  title: string = 'Email Communication';
-  subTitle: string;
-
-  addOriginator: boolean = false;
-  addAddressee: boolean = false;
-
-  m: MetaDomain;
-
-  singleton: Singleton;
-  communicationEvent: EmailCommunication;
-  employees: Person[];
-  party: Party;
-  purposes: CommunicationEventPurpose[];
-  partyRelationships: PartyRelationship[];
-  emailAddresses: ContactMechanism[] = [];
-  emailTemplate: EmailTemplate;
 
   constructor(
     private allors: AllorsService,
@@ -53,7 +53,7 @@ export class PartyCommunicationEventEditEmailCommunicationComponent implements O
     this.refresh$ = new BehaviorSubject<Date>(undefined);
   }
 
-  ngOnInit(): void {
+  public ngOnInit(): void {
     const route$: Observable<UrlSegment[]> = this.route.url;
 
     const combined$: Observable<[UrlSegment[], Date]> = Observable.combineLatest(route$, this.refresh$);
@@ -61,70 +61,70 @@ export class PartyCommunicationEventEditEmailCommunicationComponent implements O
     this.subscription = combined$
       .switchMap(([urlSegments, date]: [UrlSegment[], Date]) => {
 
-        const id: string = this.route.snapshot.paramMap.get('id');
-        const roleId: string = this.route.snapshot.paramMap.get('roleId');
+        const id: string = this.route.snapshot.paramMap.get("id");
+        const roleId: string = this.route.snapshot.paramMap.get("roleId");
 
         const m: MetaDomain = this.allors.meta;
 
         const fetch: Fetch[] = [
           new Fetch({
-            name: 'party',
-            id: id,
+            name: "party",
+            id,
           }),
           new Fetch({
-            name: 'partyRelationships',
-            id: id,
-            path: new Path({ step: m.Party.CurrentPartyRelationships }),
+            id,
             include: [
               new TreeNode({ roleType: m.PartyRelationship.CommunicationEvents }),
             ],
+            name: "partyRelationships",
+            path: new Path({ step: m.Party.PartyRelationshipsWhereParty }),
           }),
           new Fetch({
-            name: 'communicationEvent',
             id: roleId,
             include: [
               new TreeNode({ roleType: m.EmailCommunication.Originator }),
               new TreeNode({ roleType: m.EmailCommunication.Addressees }),
               new TreeNode({ roleType: m.EmailCommunication.EmailTemplate }),
               new TreeNode({ roleType: m.CommunicationEvent.EventPurposes }),
-              new TreeNode({ roleType: m.CommunicationEvent.CurrentObjectState }),
+              new TreeNode({ roleType: m.CommunicationEvent.CommunicationEventState }),
             ],
+            name: "communicationEvent",
           }),
         ];
 
         const query: Query[] = [
           new Query(
             {
-              name: 'singletons',
-              objectType: this.m.Singleton,
               include: [
                 new TreeNode({
-                  roleType: m.Singleton.DefaultInternalOrganisation,
                   nodes: [
                     new TreeNode({
-                      roleType: m.InternalOrganisation.Employees,
                       nodes: [
                         new TreeNode({
-                          roleType: m.Party.CurrentPartyContactMechanisms,
                           nodes: [
                             new TreeNode({ roleType: m.PartyContactMechanism.ContactMechanism }),
                           ],
+                          roleType: m.Party.CurrentPartyContactMechanisms,
                         }),
                       ],
+                      roleType: m.InternalOrganisation.ActiveEmployees,
                     }),
                   ],
+                  roleType: m.Singleton.InternalOrganisation,
                 }),
               ],
+              name: "singletons",
+              objectType: this.m.Singleton,
             }),
           new Query(
             {
-              name: 'purposes',
+              name: "purposes",
               objectType: this.m.CommunicationEventPurpose,
             }),
         ];
 
         return this.scope
-          .load('Pull', new PullRequest({ fetch: fetch, query: query }));
+          .load("Pull", new PullRequest({ fetch, query }));
       })
       .subscribe((loaded: Loaded) => {
 
@@ -134,28 +134,28 @@ export class PartyCommunicationEventEditEmailCommunicationComponent implements O
         this.communicationEvent = loaded.objects.communicationEvent as EmailCommunication;
 
         if (!this.communicationEvent) {
-          this.communicationEvent = this.scope.session.create('EmailCommunication') as EmailCommunication;
-          this.emailTemplate = this.scope.session.create('EmailTemplate') as EmailTemplate;
+          this.communicationEvent = this.scope.session.create("EmailCommunication") as EmailCommunication;
+          this.emailTemplate = this.scope.session.create("EmailTemplate") as EmailTemplate;
           this.communicationEvent.EmailTemplate = this.emailTemplate;
           this.partyRelationships.forEach((v: PartyRelationship) => v.AddCommunicationEvent(this.communicationEvent));
         }
 
         this.party = loaded.objects.party as Party;
         this.singleton = loaded.collections.singletons[0] as Singleton;
-        this.employees = this.singleton.DefaultInternalOrganisation.Employees;
+        this.employees = this.singleton.InternalOrganisation.Employees;
         this.purposes = loaded.collections.purposes as CommunicationEventPurpose[];
 
-        for (let employee of this.employees) {
-          let employeeContactMechanisms: ContactMechanism[] = employee.CurrentPartyContactMechanisms.map((v: PartyContactMechanism) => v.ContactMechanism);
-          for (let contactMechanism of employeeContactMechanisms) {
+        for (const employee of this.employees) {
+          const employeeContactMechanisms: ContactMechanism[] = employee.CurrentPartyContactMechanisms.map((v: PartyContactMechanism) => v.ContactMechanism);
+          for (const contactMechanism of employeeContactMechanisms) {
             if (contactMechanism instanceof (EmailAddress)) {
               this.emailAddresses.push(contactMechanism);
             }
           }
         }
 
-        let contactMechanisms: ContactMechanism[] = this.party.CurrentPartyContactMechanisms.map((v: PartyContactMechanism) => v.ContactMechanism);
-        for (let contactMechanism of contactMechanisms) {
+        const contactMechanisms: ContactMechanism[] = this.party.CurrentPartyContactMechanisms.map((v: PartyContactMechanism) => v.ContactMechanism);
+        for (const contactMechanism of contactMechanisms) {
           if (contactMechanism instanceof (EmailAddress)) {
             this.emailAddresses.push(contactMechanism);
           }
@@ -168,30 +168,30 @@ export class PartyCommunicationEventEditEmailCommunicationComponent implements O
     );
   }
 
-  ngAfterViewInit(): void {
+  public ngAfterViewInit(): void {
     this.media.broadcast();
     this.changeDetectorRef.detectChanges();
   }
 
-  ngOnDestroy(): void {
+  public ngOnDestroy(): void {
     if (this.subscription) {
       this.subscription.unsubscribe();
     }
   }
 
-  originatorCancelled(): void {
+  public originatorCancelled(): void {
     this.addOriginator = false;
   }
 
-  addresseeCancelled(): void {
+  public addresseeCancelled(): void {
     this.addAddressee = false;
   }
 
-  originatorAdded(id: string): void {
+  public originatorAdded(id: string): void {
     this.addOriginator = false;
 
     const emailAddress: EmailAddress = this.scope.session.get(id) as EmailAddress;
-    const partyContactMechanism: PartyContactMechanism = this.scope.session.create('PartyContactMechanism') as PartyContactMechanism;
+    const partyContactMechanism: PartyContactMechanism = this.scope.session.create("PartyContactMechanism") as PartyContactMechanism;
     partyContactMechanism.ContactMechanism = emailAddress;
     this.party.AddPartyContactMechanism(partyContactMechanism);
 
@@ -199,11 +199,11 @@ export class PartyCommunicationEventEditEmailCommunicationComponent implements O
     this.communicationEvent.Originator = emailAddress;
   }
 
-  addresseeAdded(id: string): void {
+  public addresseeAdded(id: string): void {
     this.addAddressee = false;
 
     const emailAddress: EmailAddress = this.scope.session.get(id) as EmailAddress;
-    const partyContactMechanism: PartyContactMechanism = this.scope.session.create('PartyContactMechanism') as PartyContactMechanism;
+    const partyContactMechanism: PartyContactMechanism = this.scope.session.create("PartyContactMechanism") as PartyContactMechanism;
     partyContactMechanism.ContactMechanism = emailAddress;
     this.party.AddPartyContactMechanism(partyContactMechanism);
 
@@ -211,12 +211,12 @@ export class PartyCommunicationEventEditEmailCommunicationComponent implements O
     this.communicationEvent.AddAddressee(emailAddress);
   }
 
-  cancel(): void {
+  public cancel(): void {
     const cancelFn: () => void = () => {
       this.scope.invoke(this.communicationEvent.Cancel)
         .subscribe((invoked: Invoked) => {
           this.refresh();
-          this.snackBar.open('Successfully cancelled.', 'close', { duration: 5000 });
+          this.snackBar.open("Successfully cancelled.", "close", { duration: 5000 });
         },
         (error: Error) => {
           this.errorService.dialog(error);
@@ -225,7 +225,7 @@ export class PartyCommunicationEventEditEmailCommunicationComponent implements O
 
     if (this.scope.session.hasChanges) {
       this.dialogService
-        .openConfirm({ message: 'Save changes?' })
+        .openConfirm({ message: "Save changes?" })
         .afterClosed().subscribe((confirm: boolean) => {
           if (confirm) {
             this.scope
@@ -246,12 +246,12 @@ export class PartyCommunicationEventEditEmailCommunicationComponent implements O
     }
   }
 
-  close(): void {
+  public close(): void {
     const cancelFn: () => void = () => {
       this.scope.invoke(this.communicationEvent.Close)
         .subscribe((invoked: Invoked) => {
           this.refresh();
-          this.snackBar.open('Successfully closed.', 'close', { duration: 5000 });
+          this.snackBar.open("Successfully closed.", "close", { duration: 5000 });
         },
         (error: Error) => {
           this.errorService.dialog(error);
@@ -260,7 +260,7 @@ export class PartyCommunicationEventEditEmailCommunicationComponent implements O
 
     if (this.scope.session.hasChanges) {
       this.dialogService
-        .openConfirm({ message: 'Save changes?' })
+        .openConfirm({ message: "Save changes?" })
         .afterClosed().subscribe((confirm: boolean) => {
           if (confirm) {
             this.scope
@@ -281,12 +281,12 @@ export class PartyCommunicationEventEditEmailCommunicationComponent implements O
     }
   }
 
-  reopen(): void {
+  public reopen(): void {
     const cancelFn: () => void = () => {
       this.scope.invoke(this.communicationEvent.Reopen)
         .subscribe((invoked: Invoked) => {
           this.refresh();
-          this.snackBar.open('Successfully reopened.', 'close', { duration: 5000 });
+          this.snackBar.open("Successfully reopened.", "close", { duration: 5000 });
         },
         (error: Error) => {
           this.errorService.dialog(error);
@@ -295,7 +295,7 @@ export class PartyCommunicationEventEditEmailCommunicationComponent implements O
 
     if (this.scope.session.hasChanges) {
       this.dialogService
-        .openConfirm({ message: 'Save changes?' })
+        .openConfirm({ message: "Save changes?" })
         .afterClosed().subscribe((confirm: boolean) => {
           if (confirm) {
             this.scope
@@ -316,7 +316,7 @@ export class PartyCommunicationEventEditEmailCommunicationComponent implements O
     }
   }
 
-  save(): void {
+  public save(): void {
 
     this.scope
       .save()
@@ -328,11 +328,11 @@ export class PartyCommunicationEventEditEmailCommunicationComponent implements O
       });
   }
 
-  refresh(): void {
+  public refresh(): void {
     this.refresh$.next(new Date());
   }
 
-  goBack(): void {
+  public goBack(): void {
     window.history.back();
   }
 }

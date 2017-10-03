@@ -60,7 +60,7 @@ export class RequestItemEditComponent implements OnInit, AfterViewInit, OnDestro
           }),
           new Fetch({
             id: itemId,
-            include: [ new TreeNode({ roleType: m.RequestItem.CurrentObjectState })],
+            include: [ new TreeNode({ roleType: m.RequestItem.RequestItemState })],
             name: "requestItem",
           }),
         ];

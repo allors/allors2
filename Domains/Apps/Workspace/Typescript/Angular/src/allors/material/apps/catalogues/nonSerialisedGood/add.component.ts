@@ -8,7 +8,7 @@ import { Observable, Subject, Subscription } from "rxjs/Rx";
 import { AllorsService, ErrorService, Filter, Loaded, Saved, Scope } from "../../../../angular";
 import { Contains, Equals, Fetch, Like, Page, Path, PullRequest, PushResponse, Query, Sort, TreeNode } from "../../../../domain";
 import {
-  Brand, Facility, Good, InventoryItemKind, InventoryItemVariance, Locale, LocalisedText, Model, NonSerialisedInventoryItem, NonSerialisedInventoryItemObjectState,
+  Brand, Facility, Good, InventoryItemKind, InventoryItemVariance, Locale, LocalisedText, Model, NonSerialisedInventoryItem, NonSerialisedInventoryItemState,
   NonSerialisedInventoryItemVersion, Organisation, OrganisationRole, ProductCategory, ProductCharacteristic,
   ProductCharacteristicValue, ProductFeature, ProductType, Singleton, VarianceReason, VatRate,
 } from "../../../../domain";
@@ -40,7 +40,7 @@ export class NonSerialisedGoodAddComponent implements OnInit, AfterViewInit, OnD
   public varianceReasons: VarianceReason[];
   public inventoryItemKinds: InventoryItemKind[];
   public inventoryItem: NonSerialisedInventoryItem;
-  public inventoryItemObjectStates: NonSerialisedInventoryItemObjectState[];
+  public inventoryItemObjectStates: NonSerialisedInventoryItemState[];
   public vatRates: VatRate[];
   public actualQuantityOnHand: number;
 
@@ -100,7 +100,7 @@ export class NonSerialisedGoodAddComponent implements OnInit, AfterViewInit, OnD
                 }),
                 new TreeNode({
                   nodes: [new TreeNode({ roleType: m.InternalOrganisation.DefaultFacility })],
-                  roleType: m.Singleton.DefaultInternalOrganisation,
+                  roleType: m.Singleton.InternalOrganisation,
                 }),
               ],
               name: "singletons",
@@ -144,8 +144,8 @@ export class NonSerialisedGoodAddComponent implements OnInit, AfterViewInit, OnD
             }),
           new Query(
             {
-              name: "nonSerialisedInventoryItemObjectStates",
-              objectType: this.m.NonSerialisedInventoryItemObjectState,
+              name: "nonSerialisedInventoryItemStates",
+              objectType: this.m.NonSerialisedInventoryItemState,
             }),
         ];
 
@@ -161,9 +161,9 @@ export class NonSerialisedGoodAddComponent implements OnInit, AfterViewInit, OnD
             this.vatRates = loaded.collections.vatRates as VatRate[];
             this.brands = loaded.collections.brands as Brand[];
             this.inventoryItemKinds = loaded.collections.inventoryItemKinds as InventoryItemKind[];
-            this.inventoryItemObjectStates = loaded.collections.nonSerialisedInventoryItemObjectStates as NonSerialisedInventoryItemObjectState[];
+            this.inventoryItemObjectStates = loaded.collections.nonSerialisedInventoryItemStates as NonSerialisedInventoryItemState[];
             this.singleton = loaded.collections.singletons[0] as Singleton;
-            this.facility = this.singleton.DefaultInternalOrganisation.DefaultFacility;
+            this.facility = this.singleton.InternalOrganisation.DefaultFacility;
             this.locales = this.singleton.Locales;
             this.selectedLocaleName = this.singleton.DefaultLocale.Name;
 

@@ -10,7 +10,7 @@ import { Contains, Equals, Fetch, Like, Page, Path, PullRequest, PushResponse, Q
 import {
   Brand, Facility, Good, InventoryItemKind, Locale, LocalisedText, Model, Organisation, OrganisationRole, Ownership,
   ProductCategory, ProductCharacteristic, ProductCharacteristicValue, ProductFeature, ProductType,
-  SerialisedInventoryItem, SerialisedInventoryItemObjectState, SerialisedInventoryItemVersion, Singleton, VatRate,
+  SerialisedInventoryItem, SerialisedInventoryItemState, SerialisedInventoryItemVersion, Singleton, VatRate,
 } from "../../../../domain";
 import { MetaDomain } from "../../../../meta/index";
 
@@ -39,7 +39,7 @@ export class SerialisedGoodAddComponent implements OnInit, AfterViewInit, OnDest
   public selectedModel: Model;
   public inventoryItemKinds: InventoryItemKind[];
   public inventoryItem: SerialisedInventoryItem;
-  public serialisedInventoryItemObjectStates: SerialisedInventoryItemObjectState[];
+  public serialisedInventoryItemStates: SerialisedInventoryItemState[];
   public vatRates: VatRate[];
   public ownerships: Ownership[];
 
@@ -99,7 +99,7 @@ export class SerialisedGoodAddComponent implements OnInit, AfterViewInit, OnDest
                 }),
                 new TreeNode({
                   nodes: [new TreeNode({ roleType: m.InternalOrganisation.DefaultFacility })],
-                  roleType: m.Singleton.DefaultInternalOrganisation,
+                  roleType: m.Singleton.InternalOrganisation,
                 }),
               ],
               name: "singletons",
@@ -143,8 +143,8 @@ export class SerialisedGoodAddComponent implements OnInit, AfterViewInit, OnDest
             }),
           new Query(
             {
-              name: "serialisedInventoryItemObjectStates",
-              objectType: this.m.SerialisedInventoryItemObjectState,
+              name: "serialisedInventoryItemStates",
+              objectType: this.m.SerialisedInventoryItemState,
             }),
         ];
 
@@ -160,9 +160,9 @@ export class SerialisedGoodAddComponent implements OnInit, AfterViewInit, OnDest
             this.brands = loaded.collections.brands as Brand[];
             this.ownerships = loaded.collections.ownerships as Ownership[];
             this.inventoryItemKinds = loaded.collections.inventoryItemKinds as InventoryItemKind[];
-            this.serialisedInventoryItemObjectStates = loaded.collections.serialisedInventoryItemObjectStates as SerialisedInventoryItemObjectState[];
+            this.serialisedInventoryItemStates = loaded.collections.serialisedInventoryItemStates as SerialisedInventoryItemState[];
             this.singleton = loaded.collections.singletons[0] as Singleton;
-            this.facility = this.singleton.DefaultInternalOrganisation.DefaultFacility;
+            this.facility = this.singleton.InternalOrganisation.DefaultFacility;
             this.locales = this.singleton.Locales;
             this.selectedLocaleName = this.singleton.DefaultLocale.Name;
 

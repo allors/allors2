@@ -68,7 +68,7 @@ export class QuoteItemEditComponent implements OnInit, AfterViewInit, OnDestroy 
           new Fetch({
             id: itemId,
             include: [
-              new TreeNode({ roleType: m.QuoteItem.CurrentObjectState }),
+              new TreeNode({ roleType: m.QuoteItem.QuoteItemState }),
               new TreeNode({ roleType: m.QuoteItem.RequestItem }),
             ],
             name: "quoteItem",
@@ -108,7 +108,7 @@ export class QuoteItemEditComponent implements OnInit, AfterViewInit, OnDestroy 
               new Fetch({
                 id: this.quoteItem.Product.id,
                 name: "inventoryItem",
-                path: new Path({ step: m.Good.InventoryItemVersionedsWhereGood }),
+                path: new Path({ step: m.Good.InventoryItemsWhereGood }),
               }),
             ];
 

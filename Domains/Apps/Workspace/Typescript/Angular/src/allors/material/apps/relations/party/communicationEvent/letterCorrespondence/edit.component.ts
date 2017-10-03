@@ -1,44 +1,44 @@
-import { Observable, BehaviorSubject, Subscription } from 'rxjs/Rx';
-import { Component, OnInit, AfterViewInit, OnDestroy , ChangeDetectorRef } from '@angular/core';
-import { Validators } from '@angular/forms';
-import { ActivatedRoute, UrlSegment } from '@angular/router';
-import { MdSnackBar, MdSnackBarConfig } from '@angular/material';
-import { TdMediaService, TdDialogService } from '@covalent/core';
+import { AfterViewInit, ChangeDetectorRef, Component, OnDestroy , OnInit } from "@angular/core";
+import { Validators } from "@angular/forms";
+import { MdSnackBar, MdSnackBarConfig } from "@angular/material";
+import { ActivatedRoute, UrlSegment } from "@angular/router";
+import { TdDialogService, TdMediaService } from "@covalent/core";
+import { BehaviorSubject, Observable, Subscription } from "rxjs/Rx";
 
-import { MetaDomain } from '../../../../../../meta/index';
-import { PullRequest, PushResponse, Fetch, Path, Query, Equals, Like, TreeNode, Sort, Page } from '../../../../../../domain';
+import { AllorsService, ErrorService, Filter, Invoked, Loaded, Saved, Scope } from "../../../../../../angular";
+import { Equals, Fetch, Like, Page, Path, PullRequest, PushResponse, Query, Sort, TreeNode } from "../../../../../../domain";
 import {
   CommunicationEvent, CommunicationEventPurpose, ContactMechanism, Enumeration, LetterCorrespondence, Locale, Organisation, OrganisationContactRelationship,
-  Person, Party, PartyRelationship, PersonRole, PostalAddress, PartyContactMechanism, Singleton,
-} from '../../../../../../domain';
-import { AllorsService, ErrorService, Scope, Loaded, Saved, Invoked, Filter } from '../../../../../../angular';
+  Party, PartyContactMechanism, PartyRelationship, Person, PersonRole, PostalAddress, Singleton,
+} from "../../../../../../domain";
+import { MetaDomain } from "../../../../../../meta/index";
 
 @Component({
-  templateUrl: './form.component.html',
+  templateUrl: "./form.component.html",
 })
 export class PartyCommunicationEventEditLetterCorrespondenceComponent implements OnInit, AfterViewInit, OnDestroy {
+
+  public title: string = "Letter Correspondence";
+  public subTitle: string;
+
+  public addSender: boolean = false;
+  public addReceiver: boolean = false;
+  public addAddress: boolean = false;
+
+  public m: MetaDomain;
+
+  public singleton: Singleton;
+  public communicationEvent: LetterCorrespondence;
+  public employees: Person[];
+  public contacts: Party[] = [];
+  public party: Party;
+  public purposes: CommunicationEventPurpose[];
+  public partyRelationships: PartyRelationship[];
+  public postalAddresses: ContactMechanism[] = [];
 
   private refresh$: BehaviorSubject<Date>;
   private subscription: Subscription;
   private scope: Scope;
-
-  title: string = 'Letter Correspondence';
-  subTitle: string;
-
-  addSender: boolean = false;
-  addReceiver: boolean = false;
-  addAddress: boolean = false;
-
-  m: MetaDomain;
-
-  singleton: Singleton;
-  communicationEvent: LetterCorrespondence;
-  employees: Person[];
-  contacts: Party[] = [];
-  party: Party;
-  purposes: CommunicationEventPurpose[];
-  partyRelationships: PartyRelationship[];
-  postalAddresses: ContactMechanism[] = [];
 
   constructor(
     private allors: AllorsService,
@@ -57,7 +57,7 @@ export class PartyCommunicationEventEditLetterCorrespondenceComponent implements
     return this.party instanceof (Organisation);
   }
 
-  ngOnInit(): void {
+  public ngOnInit(): void {
     const route$: Observable<UrlSegment[]> = this.route.url;
 
     const combined$: Observable<[UrlSegment[], Date]> = Observable.combineLatest(route$, this.refresh$);
@@ -65,110 +65,109 @@ export class PartyCommunicationEventEditLetterCorrespondenceComponent implements
     this.subscription = combined$
       .switchMap(([urlSegments, date]: [UrlSegment[], Date]) => {
 
-        const id: string = this.route.snapshot.paramMap.get('id');
-        const roleId: string = this.route.snapshot.paramMap.get('roleId');
+        const id: string = this.route.snapshot.paramMap.get("id");
+        const roleId: string = this.route.snapshot.paramMap.get("roleId");
 
         const m: MetaDomain = this.allors.meta;
 
         const fetch: Fetch[] = [
           new Fetch({
-            name: 'party',
-            id: id,
+            id,
             include: [
               new TreeNode({ roleType: m.Party.CurrentContacts }),
               new TreeNode({
-                roleType: m.Party.CurrentPartyContactMechanisms,
                 nodes: [
                   new TreeNode({
-                    roleType: m.PartyContactMechanism.ContactMechanism,
                     nodes: [
                       new TreeNode({
-                        roleType: m.PostalAddress.PostalBoundary,
                         nodes: [
                           new TreeNode({ roleType: m.PostalBoundary.Country }),
                         ],
+                        roleType: m.PostalAddress.PostalBoundary,
                       }),
                     ],
+                    roleType: m.PartyContactMechanism.ContactMechanism,
                   }),
                 ],
+                roleType: m.Party.CurrentPartyContactMechanisms,
               }),
             ],
-
+            name: "party",
           }),
           new Fetch({
-            name: 'partyRelationships',
-            id: id,
-            path: new Path({ step: m.Party.CurrentPartyRelationships }),
+            id,
             include: [
               new TreeNode({ roleType: m.PartyRelationship.CommunicationEvents }),
             ],
+            name: "partyRelationships",
+            path: new Path({ step: m.Party.CurrentPartyRelationships }),
           }),
           new Fetch({
-            name: 'communicationEvent',
             id: roleId,
             include: [
               new TreeNode({ roleType: m.LetterCorrespondence.Originators }),
               new TreeNode({ roleType: m.LetterCorrespondence.Receivers }),
               new TreeNode({ roleType: m.CommunicationEvent.EventPurposes }),
-              new TreeNode({ roleType: m.CommunicationEvent.CurrentObjectState }),
+              new TreeNode({ roleType: m.CommunicationEvent.CommunicationEventState }),
               new TreeNode({
-                roleType: m.LetterCorrespondence.PostalAddresses,
                 nodes: [
                   new TreeNode({
-                    roleType: m.PostalAddress.PostalBoundary,
                     nodes: [
                       new TreeNode({ roleType: m.PostalBoundary.Country }),
                     ],
+                    roleType: m.PostalAddress.PostalBoundary,
                   }),
                 ],
+                roleType: m.LetterCorrespondence.PostalAddresses,
               }),
             ],
+            name: "communicationEvent",
           }),
         ];
 
         const query: Query[] = [
           new Query(
             {
-              name: 'singletons',
-              objectType: this.m.Singleton,
               include: [
                 new TreeNode({
-                  roleType: m.Singleton.DefaultInternalOrganisation,
                   nodes: [
                     new TreeNode({
-                      roleType: m.InternalOrganisation.Employees,
                       nodes: [
                         new TreeNode({
-                          roleType: m.Party.CurrentPartyContactMechanisms,
                           nodes: [
                             new TreeNode({
-                              roleType: m.PartyContactMechanism.ContactMechanism,
                               nodes: [
                                 new TreeNode({
-                                  roleType: m.PostalAddress.PostalBoundary,
                                   nodes: [
                                     new TreeNode({ roleType: m.PostalBoundary.Country }),
                                   ],
+                                  roleType: m.PostalAddress.PostalBoundary,
                                 }),
                               ],
+                              roleType: m.PartyContactMechanism.ContactMechanism,
                             }),
                           ],
+                          roleType: m.Party.CurrentPartyContactMechanisms,
                         }),
                       ],
+                      roleType: m.InternalOrganisation.ActiveEmployees,
                     }),
                   ],
+                  roleType: m.Singleton.InternalOrganisation,
                 }),
               ],
+              name: "singletons",
+              objectType: this.m.Singleton,
             }),
           new Query(
             {
-              name: 'purposes',
+              name: "purposes",
               objectType: this.m.CommunicationEventPurpose,
             }),
         ];
 
         return this.scope
-          .load('Pull', new PullRequest({ fetch: fetch, query: query }));
+          .load("Pull", new PullRequest({ fetch, query }));
       })
       .subscribe((loaded: Loaded) => {
 
@@ -178,26 +177,26 @@ export class PartyCommunicationEventEditLetterCorrespondenceComponent implements
         this.communicationEvent = loaded.objects.communicationEvent as LetterCorrespondence;
 
         if (!this.communicationEvent) {
-          this.communicationEvent = this.scope.session.create('LetterCorrespondence') as LetterCorrespondence;
+          this.communicationEvent = this.scope.session.create("LetterCorrespondence") as LetterCorrespondence;
           this.partyRelationships.forEach((v: PartyRelationship) => v.AddCommunicationEvent(this.communicationEvent));
         }
 
         this.party = loaded.objects.party as Party;
         this.singleton = loaded.collections.singletons[0] as Singleton;
-        this.employees = this.singleton.DefaultInternalOrganisation.Employees;
+        this.employees = this.singleton.InternalOrganisation.ActiveEmployees;
         this.purposes = loaded.collections.purposes as CommunicationEventPurpose[];
 
-        for (let employee of this.employees) {
-          let employeeContactMechanisms: ContactMechanism[] = employee.CurrentPartyContactMechanisms.map((v: PartyContactMechanism) => v.ContactMechanism);
-          for (let contactMechanism of employeeContactMechanisms) {
+        for (const employee of this.employees) {
+          const employeeContactMechanisms: ContactMechanism[] = employee.CurrentPartyContactMechanisms.map((v: PartyContactMechanism) => v.ContactMechanism);
+          for (const contactMechanism of employeeContactMechanisms) {
             if (contactMechanism instanceof (PostalAddress)) {
               this.postalAddresses.push(contactMechanism);
             }
           }
         }
 
-        let contactMechanisms: ContactMechanism[] = this.party.CurrentPartyContactMechanisms.map((v: PartyContactMechanism) => v.ContactMechanism);
-        for (let contactMechanism of contactMechanisms) {
+        const contactMechanisms: ContactMechanism[] = this.party.CurrentPartyContactMechanisms.map((v: PartyContactMechanism) => v.ContactMechanism);
+        for (const contactMechanism of contactMechanisms) {
           if (contactMechanism instanceof (PostalAddress)) {
             this.postalAddresses.push(contactMechanism);
           }
@@ -219,56 +218,56 @@ export class PartyCommunicationEventEditLetterCorrespondenceComponent implements
     );
   }
 
-  ngAfterViewInit(): void {
+  public ngAfterViewInit(): void {
     this.media.broadcast();
     this.changeDetectorRef.detectChanges();
   }
 
-  ngOnDestroy(): void {
+  public ngOnDestroy(): void {
     if (this.subscription) {
       this.subscription.unsubscribe();
     }
   }
 
-  senderCancelled(): void {
+  public senderCancelled(): void {
     this.addSender = false;
   }
 
-  receiverCancelled(): void {
+  public receiverCancelled(): void {
     this.addReceiver = false;
   }
 
-  addressCancelled(): void {
+  public addressCancelled(): void {
     this.addAddress = false;
   }
 
-  senderAdded(id: string): void {
+  public senderAdded(id: string): void {
     this.addSender = false;
 
     const sender: Person = this.scope.session.get(id) as Person;
-    const relationShip: OrganisationContactRelationship = this.scope.session.create('OrganisationContactRelationship') as OrganisationContactRelationship;
+    const relationShip: OrganisationContactRelationship = this.scope.session.create("OrganisationContactRelationship") as OrganisationContactRelationship;
     relationShip.Contact = sender;
     relationShip.Organisation = this.party as Organisation;
 
     this.communicationEvent.AddOriginator(sender);
   }
 
-  receiverAdded(id: string): void {
+  public receiverAdded(id: string): void {
     this.addReceiver = false;
 
     const receiver: Person = this.scope.session.get(id) as Person;
-    const relationShip: OrganisationContactRelationship = this.scope.session.create('OrganisationContactRelationship') as OrganisationContactRelationship;
+    const relationShip: OrganisationContactRelationship = this.scope.session.create("OrganisationContactRelationship") as OrganisationContactRelationship;
     relationShip.Contact = receiver;
     relationShip.Organisation = this.party as Organisation;
 
     this.communicationEvent.AddReceiver(receiver);
   }
 
-  addressAdded(id: string): void {
+  public addressAdded(id: string): void {
     this.addAddress = false;
 
     const postalAddress: PostalAddress = this.scope.session.get(id) as PostalAddress;
-    const partyContactMechanism: PartyContactMechanism = this.scope.session.create('PartyContactMechanism') as PartyContactMechanism;
+    const partyContactMechanism: PartyContactMechanism = this.scope.session.create("PartyContactMechanism") as PartyContactMechanism;
     partyContactMechanism.ContactMechanism = postalAddress;
     this.party.AddPartyContactMechanism(partyContactMechanism);
 
@@ -276,12 +275,12 @@ export class PartyCommunicationEventEditLetterCorrespondenceComponent implements
     this.communicationEvent.AddPostalAddress(postalAddress);
   }
 
-  cancel(): void {
+  public cancel(): void {
     const cancelFn: () => void = () => {
       this.scope.invoke(this.communicationEvent.Cancel)
         .subscribe((invoked: Invoked) => {
           this.refresh();
-          this.snackBar.open('Successfully cancelled.', 'close', { duration: 5000 });
+          this.snackBar.open("Successfully cancelled.", "close", { duration: 5000 });
         },
         (error: Error) => {
           this.errorService.dialog(error);
@@ -290,7 +289,7 @@ export class PartyCommunicationEventEditLetterCorrespondenceComponent implements
 
     if (this.scope.session.hasChanges) {
       this.dialogService
-        .openConfirm({ message: 'Save changes?' })
+        .openConfirm({ message: "Save changes?" })
         .afterClosed().subscribe((confirm: boolean) => {
           if (confirm) {
             this.scope
@@ -311,12 +310,12 @@ export class PartyCommunicationEventEditLetterCorrespondenceComponent implements
     }
   }
 
-  close(): void {
+  public close(): void {
     const cancelFn: () => void = () => {
       this.scope.invoke(this.communicationEvent.Close)
         .subscribe((invoked: Invoked) => {
           this.refresh();
-          this.snackBar.open('Successfully closed.', 'close', { duration: 5000 });
+          this.snackBar.open("Successfully closed.", "close", { duration: 5000 });
         },
         (error: Error) => {
           this.errorService.dialog(error);
@@ -325,7 +324,7 @@ export class PartyCommunicationEventEditLetterCorrespondenceComponent implements
 
     if (this.scope.session.hasChanges) {
       this.dialogService
-        .openConfirm({ message: 'Save changes?' })
+        .openConfirm({ message: "Save changes?" })
         .afterClosed().subscribe((confirm: boolean) => {
           if (confirm) {
             this.scope
@@ -346,12 +345,12 @@ export class PartyCommunicationEventEditLetterCorrespondenceComponent implements
     }
   }
 
-  reopen(): void {
+  public reopen(): void {
     const cancelFn: () => void = () => {
       this.scope.invoke(this.communicationEvent.Reopen)
         .subscribe((invoked: Invoked) => {
           this.refresh();
-          this.snackBar.open('Successfully reopened.', 'close', { duration: 5000 });
+          this.snackBar.open("Successfully reopened.", "close", { duration: 5000 });
         },
         (error: Error) => {
           this.errorService.dialog(error);
@@ -360,7 +359,7 @@ export class PartyCommunicationEventEditLetterCorrespondenceComponent implements
 
     if (this.scope.session.hasChanges) {
       this.dialogService
-        .openConfirm({ message: 'Save changes?' })
+        .openConfirm({ message: "Save changes?" })
         .afterClosed().subscribe((confirm: boolean) => {
           if (confirm) {
             this.scope
@@ -381,7 +380,7 @@ export class PartyCommunicationEventEditLetterCorrespondenceComponent implements
     }
   }
 
-  save(): void {
+  public save(): void {
 
     this.scope
       .save()
@@ -393,11 +392,11 @@ export class PartyCommunicationEventEditLetterCorrespondenceComponent implements
       });
   }
 
-  refresh(): void {
+  public refresh(): void {
     this.refresh$.next(new Date());
   }
 
-  goBack(): void {
+  public goBack(): void {
     window.history.back();
   }
 }

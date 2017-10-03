@@ -1,35 +1,36 @@
-import { Observable, BehaviorSubject, Subject, Subscription } from 'rxjs/Rx';
-import { Component, OnInit, AfterViewInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
-import { ActivatedRoute, UrlSegment } from '@angular/router';
-import { MdSnackBar, MdSnackBarConfig } from '@angular/material';
-import { TdMediaService, TdDialogService } from '@covalent/core';
+import { AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit } from "@angular/core";
+import { MdSnackBar, MdSnackBarConfig } from "@angular/material";
+import { ActivatedRoute, UrlSegment } from "@angular/router";
+import { TdDialogService, TdMediaService } from "@covalent/core";
+import { BehaviorSubject, Observable, Subject, Subscription } from "rxjs/Rx";
 
-import { MetaDomain } from '../../../../../meta';
-import { PullRequest, Fetch, Path, Query, Equals, Like, TreeNode, Sort, Page } from '../../../../../domain';
-import { CommunicationEvent, ContactMechanism, Locale, Organisation, OrganisationContactRelationship, PartyContactMechanism, Person, WorkEffort, WorkEffortAssignment } from '../../../../../domain';
-import { AllorsService, ErrorService, Scope, Loaded, Saved, Invoked } from '../../../../../angular';
+import { AllorsService, ErrorService, Invoked, Loaded, Saved, Scope } from "../../../../../angular";
+import { Equals, Fetch, Like, Page, Path, PullRequest, Query, Sort, TreeNode } from "../../../../../domain";
+import { CommunicationEvent, ContactMechanism, Locale, Organisation, OrganisationContactRelationship, PartyContactMechanism, Person, WorkEffort, WorkEffortAssignment } from "../../../../../domain";
+import { MetaDomain } from "../../../../../meta";
 
 @Component({
-  templateUrl: './personOverview.component.html',
+  templateUrl: "./personOverview.component.html",
 })
 export class PersonOverviewComponent implements OnInit, AfterViewInit, OnDestroy {
+
+  public m: MetaDomain;
+
+  public communicationEvents: CommunicationEvent[];
+  public workEffortAssignments: WorkEffortAssignment[];
+
+  public title: string = "Person overview";
+  public person: Person;
+  public organisation: Organisation;
+
+  public contactMechanismsCollection: string = "Current";
+  public currentContactMechanisms: PartyContactMechanism[] = [];
+  public inactiveContactMechanisms: PartyContactMechanism[] = [];
+  public allContactMechanisms: PartyContactMechanism[] = [];
 
   private refresh$: BehaviorSubject<Date>;
   private subscription: Subscription;
   private scope: Scope;
-  m: MetaDomain;
-
-  communicationEvents: CommunicationEvent[];
-  workEffortAssignments: WorkEffortAssignment[];
-
-  title: string = 'Person overview';
-  person: Person;
-  organisation: Organisation;
-
-  contactMechanismsCollection: string = 'Current';
-  currentContactMechanisms: PartyContactMechanism[] = [];
-  inactiveContactMechanisms: PartyContactMechanism[] = [];
-  allContactMechanisms: PartyContactMechanism[] = [];
 
   constructor(
     private allors: AllorsService,
@@ -48,17 +49,17 @@ export class PersonOverviewComponent implements OnInit, AfterViewInit, OnDestroy
   get contactMechanisms(): any {
 
     switch (this.contactMechanismsCollection) {
-      case 'Current':
+      case "Current":
         return this.currentContactMechanisms;
-      case 'Inactive':
+      case "Inactive":
         return this.inactiveContactMechanisms;
-      case 'All':
+      case "All":
       default:
         return this.allContactMechanisms;
     }
   }
 
-  ngOnInit(): void {
+  public ngOnInit(): void {
 
     const route$: Observable<UrlSegment[]> = this.route.url;
 
@@ -67,158 +68,158 @@ export class PersonOverviewComponent implements OnInit, AfterViewInit, OnDestroy
     this.subscription = combined$
       .switchMap((url: any) => {
 
-        const id: string = this.route.snapshot.paramMap.get('id');
+        const id: string = this.route.snapshot.paramMap.get("id");
         const m: MetaDomain = this.m;
 
         const fetch: Fetch[] = [
           new Fetch({
-            name: 'person',
-            id: id,
+            id,
             include: [
               new TreeNode({ roleType: m.Party.Locale }),
               new TreeNode({ roleType: m.Person.PersonRoles }),
               new TreeNode({ roleType: m.Person.LastModifiedBy }),
               new TreeNode({
-                roleType: m.Party.PartyContactMechanisms,
                 nodes: [
                   new TreeNode({ roleType: m.PartyContactMechanism.ContactPurposes }),
                   new TreeNode({ roleType: m.PartyContactMechanism.ContactMechanism }),
                 ],
-              }),
-              new TreeNode({
                 roleType: m.Party.PartyContactMechanisms,
+              }),
+              new TreeNode({
                 nodes: [
                   new TreeNode({ roleType: m.PartyContactMechanism.ContactPurposes }),
                   new TreeNode({
-                    roleType: m.PartyContactMechanism.ContactMechanism,
                     nodes: [
                       new TreeNode({
-                        roleType: m.PostalAddress.PostalBoundary,
                         nodes: [
                           new TreeNode({ roleType: m.PostalBoundary.Country }),
                         ],
+                        roleType: m.PostalAddress.PostalBoundary,
                       }),
                     ],
+                    roleType: m.PartyContactMechanism.ContactMechanism,
                   }),
                 ],
+                roleType: m.Party.PartyContactMechanisms,
               }),
               new TreeNode({
+                nodes: [
+                  new TreeNode({ roleType: m.PartyContactMechanism.ContactPurposes }),
+                  new TreeNode({
+                    nodes: [
+                      new TreeNode({
+                        nodes: [
+                          new TreeNode({ roleType: m.PostalBoundary.Country }),
+                        ],
+                        roleType: m.PostalAddress.PostalBoundary,
+                      }),
+                    ],
+                    roleType: m.PartyContactMechanism.ContactMechanism,
+                  }),
+                ],
                 roleType: m.Party.CurrentPartyContactMechanisms,
+              }),
+              new TreeNode({
                 nodes: [
                   new TreeNode({ roleType: m.PartyContactMechanism.ContactPurposes }),
                   new TreeNode({
-                    roleType: m.PartyContactMechanism.ContactMechanism,
                     nodes: [
                       new TreeNode({
-                        roleType: m.PostalAddress.PostalBoundary,
                         nodes: [
                           new TreeNode({ roleType: m.PostalBoundary.Country }),
                         ],
+                        roleType: m.PostalAddress.PostalBoundary,
                       }),
                     ],
+                    roleType: m.PartyContactMechanism.ContactMechanism,
                   }),
                 ],
-              }),
-              new TreeNode({
                 roleType: m.Party.InactivePartyContactMechanisms,
-                nodes: [
-                  new TreeNode({ roleType: m.PartyContactMechanism.ContactPurposes }),
-                  new TreeNode({
-                    roleType: m.PartyContactMechanism.ContactMechanism,
-                    nodes: [
-                      new TreeNode({
-                        roleType: m.PostalAddress.PostalBoundary,
-                        nodes: [
-                          new TreeNode({ roleType: m.PostalBoundary.Country }),
-                        ],
-                      }),
-                    ],
-                  }),
-                ],
               }),
               new TreeNode({
-                roleType: m.Person.GeneralCorrespondence,
                 nodes: [
                   new TreeNode({
-                    roleType: m.PostalAddress.PostalBoundary,
                     nodes: [
                       new TreeNode({ roleType: m.PostalBoundary.Country }),
                     ],
+                    roleType: m.PostalAddress.PostalBoundary,
                   }),
                 ],
+                roleType: m.Person.GeneralCorrespondence,
               }),
             ],
+            name: "person",
           }),
           new Fetch({
-            name: 'communicationEvents',
-            id: id,
-            path: new Path({ step: m.Party.CommunicationEventsWhereInvolvedParty }),
+            id,
             include: [
-              new TreeNode({ roleType: m.CommunicationEvent.CurrentObjectState }),
+              new TreeNode({ roleType: m.CommunicationEvent.CommunicationEventState }),
               new TreeNode({ roleType: m.CommunicationEvent.FromParties }),
               new TreeNode({ roleType: m.CommunicationEvent.ToParties }),
               new TreeNode({ roleType: m.CommunicationEvent.InvolvedParties }),
             ],
+            name: "communicationEvents",
+            path: new Path({ step: m.Party.CommunicationEventsWhereInvolvedParty }),
           }),
           new Fetch({
-            name: 'workEffortAssignments',
-            id: id,
-            path: new Path({ step: m.Person.WorkEffortAssignmentsWhereProfessional }),
+            id,
             include: [
               new TreeNode({
-                roleType: m.WorkEffortAssignment.Assignment,
                 nodes: [
-                  new TreeNode({ roleType: m.WorkEffort.CurrentObjectState }),
+                  new TreeNode({ roleType: m.WorkEffort.WorkEffortState }),
                   new TreeNode({ roleType: m.WorkEffort.Priority }),
                 ],
+                roleType: m.WorkEffortAssignment.Assignment,
               }),
             ],
+            name: "workEffortAssignments",
+            path: new Path({ step: m.Person.WorkEffortAssignmentsWhereProfessional }),
           }),
           new Fetch({
-            name: 'organisationContactRelationships',
-            id: id,
-            path: new Path({ step: m.Person.OrganisationContactRelationshipsWhereContact }),
+            id,
             include: [
               new TreeNode({ roleType: m.OrganisationContactRelationship.Organisation }),
             ],
+            name: "organisationContactRelationships",
+            path: new Path({ step: m.Person.OrganisationContactRelationshipsWhereContact }),
           }),
         ];
 
         const query: Query[] = [
           new Query(
             {
-              name: 'countries',
+              name: "countries",
               objectType: m.Country,
             }),
           new Query(
             {
-              name: 'genders',
+              name: "genders",
               objectType: m.GenderType,
             }),
           new Query(
             {
-              name: 'salutations',
+              name: "salutations",
               objectType: m.Salutation,
             }),
           new Query(
             {
-              name: 'organisationContactKinds',
+              name: "organisationContactKinds",
               objectType: m.OrganisationContactKind,
             }),
           new Query(
             {
-              name: 'contactMechanismPurposes',
+              name: "contactMechanismPurposes",
               objectType: m.ContactMechanismPurpose,
             }),
           new Query(
             {
-              name: 'internalOrganisation',
+              name: "internalOrganisation",
               objectType: m.InternalOrganisation,
             }),
         ];
 
         return this.scope
-          .load('Pull', new PullRequest({ fetch: fetch, query: query }));
+          .load("Pull", new PullRequest({ fetch, query }));
       })
       .subscribe((loaded: Loaded) => {
         this.scope.session.reset();
@@ -240,7 +241,7 @@ export class PersonOverviewComponent implements OnInit, AfterViewInit, OnDestroy
     );
   }
 
-  removeContactMechanism(partyContactMechanism: PartyContactMechanism): void {
+  public removeContactMechanism(partyContactMechanism: PartyContactMechanism): void {
     partyContactMechanism.ThroughDate = new Date();
     this.scope
       .save()
@@ -253,7 +254,7 @@ export class PersonOverviewComponent implements OnInit, AfterViewInit, OnDestroy
       });
   }
 
-  activateContactMechanism(partyContactMechanism: PartyContactMechanism): void {
+  public activateContactMechanism(partyContactMechanism: PartyContactMechanism): void {
     partyContactMechanism.ThroughDate = undefined;
     this.scope
       .save()
@@ -266,14 +267,14 @@ export class PersonOverviewComponent implements OnInit, AfterViewInit, OnDestroy
       });
   }
 
-  deleteContactMechanism(contactMechanism: ContactMechanism): void {
+  public deleteContactMechanism(contactMechanism: ContactMechanism): void {
     this.dialogService
-      .openConfirm({ message: 'Are you sure you want to delete this?' })
+      .openConfirm({ message: "Are you sure you want to delete this?" })
       .afterClosed().subscribe((confirm: boolean) => {
         if (confirm) {
           this.scope.invoke(contactMechanism.Delete)
             .subscribe((invoked: Invoked) => {
-              this.snackBar.open('Successfully deleted.', 'close', { duration: 5000 });
+              this.snackBar.open("Successfully deleted.", "close", { duration: 5000 });
               this.refresh();
             },
             (error: Error) => {
@@ -283,14 +284,14 @@ export class PersonOverviewComponent implements OnInit, AfterViewInit, OnDestroy
       });
   }
 
-  cancelCommunication(communicationEvent: CommunicationEvent): void {
+  public cancelCommunication(communicationEvent: CommunicationEvent): void {
     this.dialogService
-      .openConfirm({ message: 'Are you sure you want to cancel this?' })
+      .openConfirm({ message: "Are you sure you want to cancel this?" })
       .afterClosed().subscribe((confirm: boolean) => {
         if (confirm) {
           this.scope.invoke(communicationEvent.Cancel)
             .subscribe((invoked: Invoked) => {
-              this.snackBar.open('Successfully cancelled.', 'close', { duration: 5000 });
+              this.snackBar.open("Successfully cancelled.", "close", { duration: 5000 });
               this.refresh();
             },
             (error: Error) => {
@@ -300,14 +301,14 @@ export class PersonOverviewComponent implements OnInit, AfterViewInit, OnDestroy
       });
   }
 
-  closeCommunication(communicationEvent: CommunicationEvent): void {
+  public closeCommunication(communicationEvent: CommunicationEvent): void {
     this.dialogService
-      .openConfirm({ message: 'Are you sure you want to close this?' })
+      .openConfirm({ message: "Are you sure you want to close this?" })
       .afterClosed().subscribe((confirm: boolean) => {
         if (confirm) {
           this.scope.invoke(communicationEvent.Close)
             .subscribe((invoked: Invoked) => {
-              this.snackBar.open('Successfully closed.', 'close', { duration: 5000 });
+              this.snackBar.open("Successfully closed.", "close", { duration: 5000 });
               this.refresh();
             },
             (error: Error) => {
@@ -317,14 +318,14 @@ export class PersonOverviewComponent implements OnInit, AfterViewInit, OnDestroy
       });
   }
 
-  reopenCommunication(communicationEvent: CommunicationEvent): void {
+  public reopenCommunication(communicationEvent: CommunicationEvent): void {
     this.dialogService
-      .openConfirm({ message: 'Are you sure you want to reopen this?' })
+      .openConfirm({ message: "Are you sure you want to reopen this?" })
       .afterClosed().subscribe((confirm: boolean) => {
         if (confirm) {
           this.scope.invoke(communicationEvent.Reopen)
             .subscribe((invoked: Invoked) => {
-              this.snackBar.open('Successfully reopened.', 'close', { duration: 5000 });
+              this.snackBar.open("Successfully reopened.", "close", { duration: 5000 });
               this.refresh();
             },
             (error: Error) => {
@@ -334,14 +335,14 @@ export class PersonOverviewComponent implements OnInit, AfterViewInit, OnDestroy
       });
   }
 
-  deleteCommunication(communicationEvent: CommunicationEvent): void {
+  public deleteCommunication(communicationEvent: CommunicationEvent): void {
     this.dialogService
-      .openConfirm({ message: 'Are you sure you want to delete this?' })
+      .openConfirm({ message: "Are you sure you want to delete this?" })
       .afterClosed().subscribe((confirm: boolean) => {
         if (confirm) {
           this.scope.invoke(communicationEvent.Delete)
             .subscribe((invoked: Invoked) => {
-              this.snackBar.open('Successfully deleted.', 'close', { duration: 5000 });
+              this.snackBar.open("Successfully deleted.", "close", { duration: 5000 });
               this.refresh();
             },
             (error: Error) => {
@@ -351,15 +352,15 @@ export class PersonOverviewComponent implements OnInit, AfterViewInit, OnDestroy
       });
   }
 
-  delete(workEffort: WorkEffort): void {
+  public delete(workEffort: WorkEffort): void {
     this.dialogService
-      .openConfirm({ message: 'Are you sure you want to delete this work effort?' })
+      .openConfirm({ message: "Are you sure you want to delete this work effort?" })
       .afterClosed()
       .subscribe((confirm: boolean) => {
         if (confirm) {
           this.scope.invoke(workEffort.Delete)
             .subscribe((invoked: Invoked) => {
-              this.snackBar.open('Successfully deleted.', 'close', { duration: 5000 });
+              this.snackBar.open("Successfully deleted.", "close", { duration: 5000 });
               this.refresh();
             },
             (error: Error) => {
@@ -369,26 +370,26 @@ export class PersonOverviewComponent implements OnInit, AfterViewInit, OnDestroy
       });
   }
 
-  ngAfterViewInit(): void {
+  public ngAfterViewInit(): void {
     this.media.broadcast();
     this.changeDetectorRef.detectChanges();
   }
 
-  ngOnDestroy(): void {
+  public ngOnDestroy(): void {
     if (this.subscription) {
       this.subscription.unsubscribe();
     }
   }
 
-  refresh(): void {
+  public refresh(): void {
     this.refresh$.next(new Date());
   }
 
-  goBack(): void {
+  public goBack(): void {
     window.history.back();
   }
 
-  checkType(obj: any): string {
+  public checkType(obj: any): string {
     return obj.objectType.name;
   }
 }
