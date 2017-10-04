@@ -99,6 +99,11 @@ namespace Allors.Domain
         {
             var derivation = method.Derivation;
 
+            if (!this.ExistDefaultFacility)
+            {
+                this.DefaultFacility = Singleton.Instance(this.Strategy.Session).InternalOrganisation.DefaultFacility;
+            }
+
             if (this.ExistDefaultPaymentMethod && !this.PaymentMethods.Contains(this.DefaultPaymentMethod))
             {
                 this.AddPaymentMethod(this.DefaultPaymentMethod);

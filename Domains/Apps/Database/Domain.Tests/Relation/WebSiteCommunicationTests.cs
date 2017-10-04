@@ -29,9 +29,9 @@ namespace Allors.Domain
         [Fact]
         public void GivenWebSiteCommunication_WhenDeriving_ThenRequiredRelationsMustExist()
         {
-            var owner = new PersonBuilder(this.DatabaseSession).WithLastName("owner").WithPersonRole(new PersonRoles(this.DatabaseSession).Employee).Build();
+            var person = new PersonBuilder(this.DatabaseSession).WithLastName("person").WithPersonRole(new PersonRoles(this.DatabaseSession).Employee).Build();
 
-            var builder = new WebSiteCommunicationBuilder(this.DatabaseSession).WithOwner(owner);
+            var builder = new WebSiteCommunicationBuilder(this.DatabaseSession).WithOriginator(person).WithReceiver(person);
             var communication = builder.Build();
 
             Assert.True(this.DatabaseSession.Derive(false).HasErrors);

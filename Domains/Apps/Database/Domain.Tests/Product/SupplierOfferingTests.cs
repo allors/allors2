@@ -75,13 +75,6 @@ namespace Allors.Domain
             builder.WithSupplier(supplier);
             builder.Build();
 
-            Assert.True(this.DatabaseSession.Derive(false).HasErrors);
-
-            this.DatabaseSession.Rollback();
-
-            builder.WithFromDate(DateTime.UtcNow);
-            builder.Build();
-
             Assert.False(this.DatabaseSession.Derive(false).HasErrors);
 
             builder.WithPart(part);

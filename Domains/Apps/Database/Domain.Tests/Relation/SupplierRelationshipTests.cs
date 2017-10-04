@@ -32,7 +32,7 @@ namespace Allors.Domain
         private Organisation supplier;
         private InternalOrganisation internalOrganisation;
         private SupplierRelationship supplierRelationship;
-
+        private OrganisationContactRelationship organisationContactRelationship;
 
         public SupplierRelationshipTests()
         {
@@ -44,7 +44,7 @@ namespace Allors.Domain
                 .Build();
             this.internalOrganisation = new InternalOrganisations(this.DatabaseSession).FindBy(M.InternalOrganisation.Name, "internalOrganisation");
 
-            new OrganisationContactRelationshipBuilder(this.DatabaseSession)
+            this.organisationContactRelationship = new OrganisationContactRelationshipBuilder(this.DatabaseSession)
                 .WithOrganisation(this.supplier)
                 .WithContact(this.contact)
                 .WithFromDate(DateTime.UtcNow)
@@ -125,10 +125,9 @@ namespace Allors.Domain
             this.InstantiateObjects(this.DatabaseSession);
 
             var builder = new SupplierRelationshipBuilder(this.DatabaseSession);
-            var supplier = builder.Build();
+            builder.Build();
 
-            this.DatabaseSession.Derive();
-            Assert.True(supplier.Strategy.IsDeleted);
+            Assert.True(this.DatabaseSession.Derive(false).HasErrors);
 
             this.DatabaseSession.Rollback();
 
@@ -155,23 +154,23 @@ namespace Allors.Domain
             Assert.Equal(1, this.supplierRelationship.Supplier.ContactsUserGroup.Members.Count);
             Assert.True(this.supplierRelationship.Supplier.ContactsUserGroup.Members.Contains(this.contact));
 
-            this.supplierRelationship.FromDate = DateTime.UtcNow.AddDays(+1);
-            this.supplierRelationship.RemoveThroughDate();
+            this.organisationContactRelationship.FromDate = DateTime.UtcNow.AddDays(+1);
+            this.organisationContactRelationship.RemoveThroughDate();
 
             this.DatabaseSession.Derive();
 
             Assert.Equal(0, this.supplierRelationship.Supplier.ContactsUserGroup.Members.Count);
 
-            this.supplierRelationship.FromDate = DateTime.UtcNow.AddSeconds(-1);
-            this.supplierRelationship.RemoveThroughDate();
+            this.organisationContactRelationship.FromDate = DateTime.UtcNow.AddSeconds(-1);
+            this.organisationContactRelationship.RemoveThroughDate();
 
             this.DatabaseSession.Derive();
 
             Assert.Equal(1, this.supplierRelationship.Supplier.ContactsUserGroup.Members.Count);
             Assert.True(this.supplierRelationship.Supplier.ContactsUserGroup.Members.Contains(this.contact));
 
-            this.supplierRelationship.FromDate = DateTime.UtcNow.AddDays(-2);
-            this.supplierRelationship.ThroughDate = DateTime.UtcNow.AddDays(-1);
+            this.organisationContactRelationship.FromDate = DateTime.UtcNow.AddDays(-2);
+            this.organisationContactRelationship.ThroughDate = DateTime.UtcNow.AddDays(-1);
 
             this.DatabaseSession.Derive();
 
@@ -236,6 +235,7 @@ namespace Allors.Domain
             this.supplier = (Organisation)session.Instantiate(this.supplier);
             this.internalOrganisation = (InternalOrganisation)session.Instantiate(this.internalOrganisation);
             this.supplierRelationship = (SupplierRelationship)session.Instantiate(this.supplierRelationship);
+            this.organisationContactRelationship = (OrganisationContactRelationship)session.Instantiate(this.organisationContactRelationship);
         }
     }
 }

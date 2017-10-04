@@ -125,7 +125,7 @@ namespace Allors.Domain
         public void AppsOnDerive(ObjectOnDerive method)
         {
             var derivation = method.Derivation;
-
+            var count = this.strategy.Session.Extent<PaymentMethod>().ToArray();
             if (!this.ExistDefaultPaymentMethod && this.strategy.Session.Extent<PaymentMethod>().Count == 1)
             {
                 this.DefaultPaymentMethod = this.strategy.Session.Extent<PaymentMethod>().First;

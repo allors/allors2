@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------------------------------------------
-// <copyright file="SingletonTests.cs" company="Allors bvba">
+// <copyright file="InternalOrganisationTests.cs" company="Allors bvba">
 //   Copyright 2002-2009 Allors bvba.
 // 
 // Dual Licensed under
@@ -28,23 +28,14 @@ namespace Allors.Domain
     using Xunit;
 
     
-    public class SingletonTests : DomainTest
+    public class InternalOrganisationTests : DomainTest
     {
         private OwnBankAccount ownBankAccount;
-        private Currency euro;
         private WebAddress billingAddress;
         
-        public SingletonTests()
+        public InternalOrganisationTests()
         {
-            var belgium = new Countries(this.DatabaseSession).CountryByIsoCode["BE"];
-            this.euro = belgium.Currency;
-
-            var bank = new BankBuilder(this.DatabaseSession).WithCountry(belgium).WithName("ING België").WithBic("BBRUBEBB").Build();
-
-            this.ownBankAccount = new OwnBankAccountBuilder(this.DatabaseSession)
-                .WithDescription("BE23 3300 6167 6391")
-                .WithBankAccount(new BankAccountBuilder(this.DatabaseSession).WithBank(bank).WithCurrency(euro).WithIban("BE23 3300 6167 6391").WithNameOnAccount("Koen").Build())
-                .Build();
+            this.ownBankAccount = this.DatabaseSession.Extent<OwnBankAccount>().First;
 
             this.billingAddress = new WebAddressBuilder(this.DatabaseSession).WithElectronicAddressString("billfrom").Build();
 
@@ -53,7 +44,7 @@ namespace Allors.Domain
         }
 
         [Fact]
-        public void GivenSingleton_WhenDeriving_ThenRequiredRelationsMustExist()
+        public void GivenInternalOrganisation_WhenDeriving_ThenRequiredRelationsMustExist()
         {
             this.InstantiateObjects(this.DatabaseSession);
 
@@ -71,7 +62,7 @@ namespace Allors.Domain
         }
 
         [Fact]
-        public void GivenSingleton_WhenBuildWithout_ThenDoAccountingIsFalse()
+        public void GivenInternalOrganisation_WhenBuildWithout_ThenDoAccountingIsFalse()
         {
             this.InstantiateObjects(this.DatabaseSession);
 
@@ -87,7 +78,7 @@ namespace Allors.Domain
         }
 
         [Fact]
-        public void GivenSingleton_WhenBuildWithout_ThenFiscalYearStartMonthIsJanuary()
+        public void GivenInternalOrganisation_WhenBuildWithout_ThenFiscalYearStartMonthIsJanuary()
         {
             this.InstantiateObjects(this.DatabaseSession);
 
@@ -103,7 +94,7 @@ namespace Allors.Domain
         }
 
         [Fact]
-        public void GivenSingleton_WhenBuildWithout_ThenFiscalYearStartDayIsFirstDayOfMonth()
+        public void GivenInternalOrganisation_WhenBuildWithout_ThenFiscalYearStartDayIsFirstDayOfMonth()
         {
             this.InstantiateObjects(this.DatabaseSession);
 
@@ -119,7 +110,7 @@ namespace Allors.Domain
         }
 
         [Fact]
-        public void GivenSingleton_WhenBuildWithout_ThenInvoiceSequenceIsEqualRestartOnFiscalYear()
+        public void GivenInternalOrganisation_WhenBuildWithout_ThenInvoiceSequenceIsEqualRestartOnFiscalYear()
         {
             this.InstantiateObjects(this.DatabaseSession);
 
@@ -135,7 +126,7 @@ namespace Allors.Domain
         }
 
         [Fact]
-        public void GivenSingleton_WhenPreferredCurrencyIsChanged_ThenValidationErrorIsTrhown()
+        public void GivenInternalOrganisation_WhenPreferredCurrencyIsChanged_ThenValidationErrorIsTrhown()
         {
             this.InstantiateObjects(this.DatabaseSession);
                
@@ -149,7 +140,7 @@ namespace Allors.Domain
         }
 
         [Fact]
-        public void GivenSingletonWithDefaultFiscalYearStartMonthAndNotExistActualAccountingPeriod_WhenStartingNewFiscalYear_ThenAccountingPeriodsAreCreated()
+        public void GivenInternalOrganisationWithDefaultFiscalYearStartMonthAndNotExistActualAccountingPeriod_WhenStartingNewFiscalYear_ThenAccountingPeriodsAreCreated()
         {
             this.InstantiateObjects(this.DatabaseSession);
 
@@ -195,7 +186,7 @@ namespace Allors.Domain
         }
 
         [Fact]
-        public void GivenSingletonWithCustomFiscalYearStartMonthAndNotExistActualAccountingPeriod_WhenStartingNewFiscalYear_ThenAccountingPeriodsAreCreated()
+        public void GivenInternalOrganisationWithCustomFiscalYearStartMonthAndNotExistActualAccountingPeriod_WhenStartingNewFiscalYear_ThenAccountingPeriodsAreCreated()
         {
             this.InstantiateObjects(this.DatabaseSession);
 
@@ -245,7 +236,7 @@ namespace Allors.Domain
         }
 
         [Fact]
-        public void GivenSingletonWithActiveActualAccountingPeriod_WhenStartingNewFiscalYear_ThenNothingHappens()
+        public void GivenInternalOrganisationWithActiveActualAccountingPeriod_WhenStartingNewFiscalYear_ThenNothingHappens()
         {
             this.InstantiateObjects(this.DatabaseSession);
 
@@ -266,25 +257,19 @@ namespace Allors.Domain
         }
 
         [Fact]
-        public void GivenSingletonWithoutDefaultPaymentMethod_WhenSinglePaymentMethodIsAdded_ThenDefaultPaymentMethodIsSet()
+        public void GivenInternalOrganisationWithoutDefaultPaymentMethod_WhenSinglePaymentMethodIsAdded_ThenDefaultPaymentMethodIsSet()
         {
-            this.InstantiateObjects(this.DatabaseSession);
-
-            var organisation = new InternalOrganisationBuilder(this.DatabaseSession)
-                .WithName("Internal")
-                .WithBillingAddress(this.billingAddress)
-                .Build();
-
+            var internalOrganisation = this.DatabaseSession.Extent<InternalOrganisation>().First;
+            internalOrganisation.RemoveDefaultPaymentMethod();
+            
             this.DatabaseSession.Derive();
 
-            Assert.Equal(ownBankAccount, organisation.DefaultPaymentMethod);
+            Assert.True(internalOrganisation.ExistDefaultPaymentMethod);
         }
-
         
         private void InstantiateObjects(ISession session)
         {
             this.ownBankAccount = (OwnBankAccount)session.Instantiate(this.ownBankAccount);
-            this.euro = (Currency)session.Instantiate(this.euro);
             this.billingAddress = (WebAddress)session.Instantiate(this.billingAddress);
         }
     }

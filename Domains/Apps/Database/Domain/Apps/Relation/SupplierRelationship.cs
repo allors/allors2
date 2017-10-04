@@ -54,7 +54,7 @@ namespace Allors.Domain
 
                 if (this.FromDate > DateTime.UtcNow || (this.ExistThroughDate && this.ThroughDate < DateTime.UtcNow))
                 {
-                    Singleton.Instance(this.strategy.Session).InternalOrganisation.RemoveActiveCustomer(this.Supplier);
+                    Singleton.Instance(this.strategy.Session).InternalOrganisation.RemoveActiveSupplier(this.Supplier);
                 }
             }
         }
