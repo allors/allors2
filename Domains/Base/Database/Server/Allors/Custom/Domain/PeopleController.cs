@@ -5,6 +5,8 @@
     using Allors.Domain;
     using Allors.Server;
 
+    using Microsoft.AspNetCore.Authentication.JwtBearer;
+    using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
 
     public class PeopleController : Controller
@@ -17,6 +19,7 @@
         }
 
         [HttpPost]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<IActionResult> Pull()
         {
             var response = new PullResponseBuilder(this.allors.User);

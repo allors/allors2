@@ -1,0 +1,34 @@
+{
+  "name": "domain",
+  "version": "2.0.0",
+  "description": "Allors Base Workspace Domain",
+  "repository": "https://github.com/Allors/allors2",
+  "license": "LGPL-3.0",
+  "scripts": {
+    "sync": "npm run sync-meta && npm run sync-domain",
+    "sync-meta": "sync-files ../Meta/src/allors/meta/base src/allors/meta/base",
+    "sync-domain": "sync-files ../Domain/src/allors/domain/base src/allors/domain/base",
+    "syncback": "npm run syncback-meta && npm run syncback-domain",
+    "syncback-meta": "sync-files src/allors/meta/base ../Meta/src/allors/meta/base",
+    "syncback-domain": "sync-files src/allors/domain/base ../Domain/src/allors/domain/base",
+    "postinstall": "npm run sync",
+    "pretest": "tsc",
+    "test": "mocha",
+    "cover": "istanbul cover ./node_modules/mocha/bin/_mocha",
+    "teamcity": "./node_modules/.bin/tsc && mocha --reporter mocha-teamcity-reporter"
+  },
+  "dependencies": {
+    "axios": "^0.16.2"
+  },
+  "devDependencies": {
+    "@types/chai": "latest",
+    "@types/mocha": "latest",
+    "@types/node": "latest",
+    "chai": "latest",
+    "istanbul": "latest",
+    "mocha": "latest",
+    "mocha-teamcity-reporter": "latest",
+    "sync-files": "latest",
+    "typescript": "latest"
+  }
+}

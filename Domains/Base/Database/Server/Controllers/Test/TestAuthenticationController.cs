@@ -42,11 +42,11 @@
                 if (user != null)
                 {
                     var claims = new[]
-                                        {
-                                            new Claim(ClaimTypes.Name, user.UserName), // Required for User.Identity.Name
-                                            new Claim(JwtRegisteredClaimNames.Sub, user.UserName),
-                                            new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-                                        };
+                                     {
+                                         new Claim(ClaimTypes.Name, user.UserName), // Required for User.Identity.Name
+                                         new Claim(JwtRegisteredClaimNames.Sub, user.UserName),
+                                         new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+                                     };
 
                     var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(this.Configuration["Tokens:Key"]));
                     var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
@@ -58,13 +58,8 @@
                         expires: DateTime.Now.AddDays(30),
                         signingCredentials: credentials);
 
-
-                    return this.Ok(
-                        new
-                            {
-                                Authenticated = true,
-                                Token = new JwtSecurityTokenHandler().WriteToken(token)
-                        });
+                    var result = new { Authenticated = true, Token = new JwtSecurityTokenHandler().WriteToken(token) };
+                    return this.Ok(result);
                 }
             }
 

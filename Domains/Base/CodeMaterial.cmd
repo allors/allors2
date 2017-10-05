@@ -3,5 +3,4 @@
 cd workspace\typescript\material
 code .
 
-pause
 

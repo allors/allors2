@@ -3,5 +3,4 @@
 cd workspace\typescript\covalent
 code .
 
-pause
 

@@ -2,6 +2,3 @@
 
 cd workspace\typescript\angular
 code .
-
-pause
-
