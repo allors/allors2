@@ -144,9 +144,7 @@ namespace Allors.Domain
             var productItem = new SalesInvoiceItemTypes(this.DatabaseSession).ProductItem;
             var contactMechanism = new ContactMechanisms(this.DatabaseSession).Extent().First;
 
-
-
-            new CustomerRelationshipBuilder(this.DatabaseSession).WithCustomer(customer).Build();
+            new CustomerRelationshipBuilder(this.DatabaseSession).WithCustomer(customer).WithFromDate(DateTime.Now.AddYears(-2)).Build();
 
             var good = new GoodBuilder(this.DatabaseSession)
                 .WithSku("10101")

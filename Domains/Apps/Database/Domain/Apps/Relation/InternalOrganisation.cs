@@ -122,6 +122,16 @@ namespace Allors.Domain
             }
         }
 
+        public void AppsOnPreDerive(ObjectOnPreDerive method)
+        {
+            var derivation = method.Derivation;
+
+            if (derivation.HasChangedRole(this, this.Meta.DoAccounting))
+            {
+                derivation.AddDependency(this.DefaultPaymentMethod, this);
+            }
+        }
+
         public void AppsOnDerive(ObjectOnDerive method)
         {
             var derivation = method.Derivation;

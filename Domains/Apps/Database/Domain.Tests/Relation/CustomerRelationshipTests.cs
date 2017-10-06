@@ -225,7 +225,7 @@ namespace Allors.Domain
         {
             var mechelen = new CityBuilder(this.DatabaseSession).WithName("Mechelen").Build();
             var customer = new PersonBuilder(this.DatabaseSession).WithLastName("customer").WithPersonRole(new PersonRoles(this.DatabaseSession).Customer).Build();
-            var customerRelationship = new CustomerRelationshipBuilder(this.DatabaseSession).WithFromDate(DateTime.UtcNow).WithCustomer(customer).Build();
+            new CustomerRelationshipBuilder(this.DatabaseSession).WithFromDate(DateTime.UtcNow.AddDays(-31)).WithCustomer(customer).Build();
 
             var billToContactMechanism = new PostalAddressBuilder(this.DatabaseSession).WithGeographicBoundary(mechelen).WithAddress1("Mechelen").Build();
 

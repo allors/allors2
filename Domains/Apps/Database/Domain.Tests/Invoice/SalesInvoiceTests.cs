@@ -1776,7 +1776,6 @@ namespace Allors.Domain
         [Fact]
         public void GivenSalesInvoice_WhenWrittenOff_ThenRevenueIsUpdated()
         {
-            var euro = new Currencies(this.DatabaseSession).FindBy(M.Currency.IsoCode, "EUR");
             var vatRate21 = new VatRateBuilder(this.DatabaseSession).WithRate(21).Build();
             var contactMechanism = new PostalAddressBuilder(this.DatabaseSession)
                 .WithAddress1("Haverwerf 15")
@@ -1795,9 +1794,8 @@ namespace Allors.Domain
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.DatabaseSession).Piece)
                 .Build();
 
-            var internalOrganisation = Singleton.Instance(this.DatabaseSession).InternalOrganisation;
-
             var customer = new OrganisationBuilder(this.DatabaseSession).WithName("customer").WithOrganisationRole(new OrganisationRoles(this.DatabaseSession).Customer).Build();
+            new CustomerRelationshipBuilder(this.DatabaseSession).WithFromDate(DateTimeFactory.CreateDate(2009, 01, 01)).WithCustomer(customer).Build();
 
             var invoice1 = new SalesInvoiceBuilder(this.DatabaseSession)
                 .WithInvoiceDate(DateTimeFactory.CreateDate(2010, 01, 01))
@@ -1807,8 +1805,6 @@ namespace Allors.Domain
                 .WithSalesChannel(new SalesChannels(this.DatabaseSession).WebChannel)
                 .WithSalesInvoiceType(new SalesInvoiceTypes(this.DatabaseSession).SalesInvoice)
                 .Build();
-
-            new CustomerRelationshipBuilder(this.DatabaseSession).WithFromDate(DateTime.UtcNow).WithCustomer(customer).Build();
 
             var item1 = new SalesInvoiceItemBuilder(this.DatabaseSession).WithProduct(good).WithQuantity(3).WithActualUnitPrice(15).WithSalesInvoiceItemType(new SalesInvoiceItemTypes(this.DatabaseSession).ProductItem).Build();
             invoice1.AddSalesInvoiceItem(item1);

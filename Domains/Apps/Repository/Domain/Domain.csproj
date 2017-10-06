@@ -219,9 +219,9 @@
     <Compile Include="Apps\CapitalBudgetVersion.cs" />
     <Compile Include="Apps\Capitalization.cs" />
     <Compile Include="Apps\Carrier.cs" />
+    <Compile Include="Apps\CaseVersion.cs" />
     <Compile Include="Apps\Case.cs" />
     <Compile Include="Apps\CaseState.cs" />
-    <Compile Include="Apps\CaseStatus.cs" />
     <Compile Include="Apps\Cash.cs" />
     <Compile Include="Apps\Catalogue.cs" />
     <Compile Include="Apps\CatScope.cs" />

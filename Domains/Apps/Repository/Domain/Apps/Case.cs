@@ -7,7 +7,7 @@ namespace Allors.Repository
     #region Allors
     [Id("a0705b81-2eef-4c51-9454-a31bcedc20a3")]
     #endregion
-    public partial class Case : AccessControlledObject, Transitional, UniquelyIdentifiable 
+    public partial class Case : Transitional, UniquelyIdentifiable, Versioned
     {
         #region inherited properties
         public Permission[] DeniedPermissions { get; set; }
@@ -59,25 +59,27 @@ namespace Allors.Repository
         #endregion
         #endregion
 
+        #region Versioning
         #region Allors
-        [Id("2286f83b-7992-4aa0-80fe-ad19e3c8c572")]
-        [AssociationId("484381bd-6dbc-4a78-bc59-c21422b942b2")]
-        [RoleId("c9951d63-5b1a-4053-9756-16b46a336288")]
+        [Id("FDEF4590-CE75-4E71-AB15-4142CDD44C42")]
+        [AssociationId("5FDBCBA7-1692-444E-B3C3-C71ADDBE8DFE")]
+        [RoleId("0875295C-145B-4DE9-BC87-BF6AA24F0DEB")]
+        [Indexed]
         #endregion
         [Multiplicity(Multiplicity.OneToOne)]
-        [Derived]
-        [Indexed]
-        public CaseStatus CurrentCaseStatus { get; set; }
+        [Workspace]
+        public CaseVersion CurrentVersion { get; set; }
 
         #region Allors
-        [Id("51bfbe94-46a5-411f-ac10-8623bfc4472c")]
-        [AssociationId("b8b5d65b-14c9-4ab0-89b9-4124d60cfeb7")]
-        [RoleId("b49c43fd-798c-4608-a055-af04d97aa72d")]
+        [Id("3DDE0045-7D6F-49AF-9B92-7BE3FE6EA05C")]
+        [AssociationId("4D5588DF-EA6D-4302-8BC7-247CE1D420C8")]
+        [RoleId("CC28344D-3E3C-4210-B2D9-919F51BBD1DD")]
+        [Indexed]
         #endregion
         [Multiplicity(Multiplicity.OneToMany)]
-        [Derived]
-        [Indexed]
-        public CaseStatus[] CaseStatuses { get; set; }
+        [Workspace]
+        public CaseVersion[] AllVersions { get; set; }
+        #endregion
 
         #region Allors
         [Id("65e310b5-1358-450c-aec2-985dcc724cdd")]

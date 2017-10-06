@@ -54,15 +54,15 @@ namespace Allors.Domain
 
             this.DatabaseSession.Derive();
 
-            Assert.Equal(1, complaint.CaseStatuses.Count);
-            Assert.Equal(new CaseStates(this.DatabaseSession).Opened, complaint.CurrentCaseStatus.CaseState);
+            Assert.Equal(1, complaint.AllVersions.Count);
+            Assert.Equal(new CaseStates(this.DatabaseSession).Opened, complaint.CaseState);
 
             complaint.AppsClose();
 
             this.DatabaseSession.Derive();
 
-            Assert.Equal(2, complaint.CaseStatuses.Count);
-            Assert.Equal(new CaseStates(this.DatabaseSession).Closed, complaint.CurrentCaseStatus.CaseState);
+            Assert.Equal(2, complaint.AllVersions.Count);
+            Assert.Equal(new CaseStates(this.DatabaseSession).Closed, complaint.CaseState);
         }
     }
 }

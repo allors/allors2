@@ -29,13 +29,10 @@ namespace Allors.Domain
     public class CashTests : DomainTest
     {
         [Fact]
-        public void GivenCashPaymentMethodForSingletonThatDoesAccounting_WhenDeriving_ThenCreditorIsRequired()
+        public void GivenCashPaymentMethodForInternalOrganisationThatDoesAccounting_WhenDeriving_ThenCreditorIsRequired()
         {
-            new CashBuilder(this.DatabaseSession)
-                .WithDescription("description")
-                .Build();
-
-            var internalOrganisation = Singleton.Instance(this.DatabaseSession).InternalOrganisation;             
+            var internalOrganisation = Singleton.Instance(this.DatabaseSession).InternalOrganisation;
+            internalOrganisation.DefaultPaymentMethod.RemoveCreditor();
             
             internalOrganisation.DoAccounting = false;
 

@@ -72,32 +72,17 @@ namespace Allors.Domain
         [Fact]
         public void GivenPurchaseInvoice_WhenGettingInvoiceNumberWithoutFormat_ThenInvoiceNumberShouldBeReturned()
         {
-            var belgium = new Countries(this.DatabaseSession).CountryByIsoCode["BE"];
-            var euro = belgium.Currency;
-
-            var bank = new BankBuilder(this.DatabaseSession).WithCountry(belgium).WithName("ING België").WithBic("BBRUBEBB").Build();
-
-            var ownBankAccount = new OwnBankAccountBuilder(this.DatabaseSession)
-                .WithDescription("BE23 3300 6167 6391")
-                .WithBankAccount(new BankAccountBuilder(this.DatabaseSession).WithBank(bank).WithCurrency(euro).WithIban("BE23 3300 6167 6391").WithNameOnAccount("Koen").Build())
-                .Build();
-
-            var internalOrganisation = new InternalOrganisationBuilder(this.DatabaseSession)
-                .WithName("org")
-                .WithDefaultPaymentMethod(ownBankAccount)
-                .Build();
-
             var invoice1 = new PurchaseInvoiceBuilder(this.DatabaseSession)
                 .WithPurchaseInvoiceType(new PurchaseInvoiceTypes(this.DatabaseSession).PurchaseInvoice)
                 .Build();
 
-            Assert.Equal("1", invoice1.InvoiceNumber);
+            Assert.Equal("incoming invoiceno: 1", invoice1.InvoiceNumber);
 
             var invoice2 = new PurchaseInvoiceBuilder(this.DatabaseSession)
                 .WithPurchaseInvoiceType(new PurchaseInvoiceTypes(this.DatabaseSession).PurchaseInvoice)
                 .Build();
 
-            Assert.Equal("2", invoice2.InvoiceNumber);
+            Assert.Equal("incoming invoiceno: 2", invoice2.InvoiceNumber);
         }
     }
 }

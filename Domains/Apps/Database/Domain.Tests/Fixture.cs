@@ -63,15 +63,14 @@ namespace Allors
                 var postalBoundary = new PostalBoundaryBuilder(session).WithLocality("Mechelen").WithCountry(belgium).Build();
                 var postalAddress = new PostalAddressBuilder(session).WithAddress1("Kleine Nieuwedijkstraat 2").WithPostalBoundary(postalBoundary).Build();
 
-                var internalOrganisation = new InternalOrganisationBuilder(session)
-                    .WithName("internalOrganisation")
-                    .WithIncomingShipmentNumberPrefix("incoming shipmentno: ")
-                    .WithPurchaseInvoiceNumberPrefix("incoming invoiceno: ")
-                    .WithPurchaseOrderNumberPrefix("purchase orderno: ")
-                    .WithBillingAddress(postalAddress)
-                    .WithShippingAddress(postalAddress)
-                    .WithDefaultPaymentMethod(ownBankAccount)
-                    .Build();
+                var internalOrganisation = Singleton.Instance(session).InternalOrganisation;
+                internalOrganisation.Name = "internalOrganisation";
+                internalOrganisation.IncomingShipmentNumberPrefix = "incoming shipmentno: ";
+                internalOrganisation.PurchaseInvoiceNumberPrefix = "incoming invoiceno: ";
+                internalOrganisation.PurchaseOrderNumberPrefix = "purchase orderno: ";
+                internalOrganisation.BillingAddress = postalAddress;
+                internalOrganisation.ShippingAddress = postalAddress;
+                internalOrganisation.DefaultPaymentMethod = ownBankAccount;
 
                 singleton.PreferredCurrency = new Currencies(session).CurrencyByCode["EUR"];
 

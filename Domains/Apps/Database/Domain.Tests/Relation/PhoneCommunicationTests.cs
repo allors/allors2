@@ -31,12 +31,13 @@ namespace Allors.Domain
         {
             var receiver = new PersonBuilder(this.DatabaseSession).WithLastName("receiver").WithPersonRole(new PersonRoles(this.DatabaseSession).Customer).Build();
             var caller = new PersonBuilder(this.DatabaseSession).WithLastName("caller").WithPersonRole(new PersonRoles(this.DatabaseSession).Customer).Build();
-            var owner = new PersonBuilder(this.DatabaseSession).WithLastName("owner").WithPersonRole(new PersonRoles(this.DatabaseSession).Employee).Build();
 
             this.DatabaseSession.Derive();
             this.DatabaseSession.Commit();
 
             var builder = new PhoneCommunicationBuilder(this.DatabaseSession);
+            builder.WithReceiver(receiver);
+            builder.WithCaller(caller);
             builder.Build();
 
             Assert.True(this.DatabaseSession.Derive(false).HasErrors);

@@ -108,7 +108,6 @@ namespace Allors.Domain
             var englischLocale = new Locales(this.DatabaseSession).EnglishGreatBritain;
 
             var supplier = new OrganisationBuilder(this.DatabaseSession).WithName("customer2").WithOrganisationRole(new OrganisationRoles(this.DatabaseSession).Customer).Build();
-            var internalOrganisation = Singleton.Instance(this.DatabaseSession).InternalOrganisation;
             new SupplierRelationshipBuilder(this.DatabaseSession).WithSupplier(supplier).Build();
 
             var mechelen = new CityBuilder(this.DatabaseSession).WithName("Mechelen").Build();
@@ -126,13 +125,14 @@ namespace Allors.Domain
 
             this.DatabaseSession.Derive();
 
-            Assert.Equal(englischLocale, order.Locale);
+            Assert.Equal(Singleton.Instance(this.DatabaseSession).DefaultLocale, order.Locale);
         }
 
         [Fact]
         public void GivenPurchaseOrder_WhenGettingOrderNumberWithoutFormat_ThenOrderNumberShouldBeReturned()
         {
-            var internalOrganisation = new InternalOrganisationBuilder(this.DatabaseSession).Build();
+            var internalOrganisation = Singleton.Instance(this.DatabaseSession).InternalOrganisation;
+            internalOrganisation.RemovePurchaseOrderNumberPrefix();
 
             var supplier = new OrganisationBuilder(this.DatabaseSession).WithName("customer2").WithOrganisationRole(new OrganisationRoles(this.DatabaseSession).Customer).Build();
 
@@ -147,7 +147,7 @@ namespace Allors.Domain
         public void GivenPurchaseOrder_WhenGettingOrderNumberWithFormat_ThenFormattedOrderNumberShouldBeReturned()
         {
             var supplier = new OrganisationBuilder(this.DatabaseSession).WithName("customer2").WithOrganisationRole(new OrganisationRoles(this.DatabaseSession).Customer).Build();
-            var internalOrganisation = new InternalOrganisationBuilder(this.DatabaseSession).Build();
+            var internalOrganisation = Singleton.Instance(this.DatabaseSession).InternalOrganisation;
             internalOrganisation.PurchaseOrderNumberPrefix = "the format is ";
 
             var order1 = new PurchaseOrderBuilder(this.DatabaseSession)

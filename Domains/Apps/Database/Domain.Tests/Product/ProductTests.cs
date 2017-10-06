@@ -125,7 +125,7 @@ namespace Allors.Domain
             builder.WithVatRate(vatRate21);
             good = builder.Build();
 
-            Assert.True(this.DatabaseSession.Derive(false).HasErrors);
+            Assert.False(this.DatabaseSession.Derive(false).HasErrors);
 
             this.DatabaseSession.Rollback();
 
