@@ -20,6 +20,13 @@ namespace Allors.Domain
 
     public partial class Organisations
     {
+        protected override void AppsPrepare(Setup setup)
+        {
+            setup.AddDependency(this.Meta.ObjectType, M.Role);
+            setup.AddDependency(this.Meta.ObjectType, M.OrganisationRole);
+            setup.AddDependency(this.Meta.ObjectType, M.InternalOrganisation);
+        }
+
         public Extent<Organisation> Suppliers
         {
             get

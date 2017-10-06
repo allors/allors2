@@ -21,8 +21,17 @@ namespace Allors.Domain
     {
         protected override void AppsPrepare(Setup setup)
         {
-            setup.AddDependency(this.Meta.ObjectType, M.Role); 
+            setup.AddDependency(this.Meta.ObjectType, M.Role);
             setup.AddDependency(this.Meta.ObjectType, M.InvoiceSequence);
+            setup.AddDependency(this.Meta.ObjectType, M.Singleton);
+        }
+
+        protected override void BaseSetup(Setup config)
+        {
+            var internalOrganisation = new InternalOrganisationBuilder(this.Session)
+                .WithName("internalOrganisation")
+                .Build();
+            Singleton.Instance(this.Session).InternalOrganisation = internalOrganisation;
         }
     }
 }
