@@ -62,6 +62,16 @@ namespace Allors.Domain
                 this.Name = this.Part.Name;
             }
 
+            if (!this.ExistSku && this.ExistGood && this.Good.ExistSku)
+            {
+                this.Sku = this.Good.Sku;
+            }
+
+            if (!this.ExistSku && this.ExistPart && this.Part.ExistSku)
+            {
+                this.Sku = this.Part.Sku;
+            }
+
             this.AppsOnDeriveQuantityOnHand(derivation);
             this.AppsOnDeriveQuantityCommittedOut(derivation);
             this.AppsOnDeriveQuantityExpectedIn(derivation);

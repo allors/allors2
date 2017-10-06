@@ -37,26 +37,6 @@ namespace Allors.Domain
             {
                 this.Facility = Singleton.Instance(this).InternalOrganisation.DefaultFacility;
             }
-
-            if (!this.ExistSku && this.ExistGood && this.Good.ExistSku)
-            {
-                this.Sku = this.Good.Sku;
-            }
-
-            if (!this.ExistSku && this.ExistPart && this.Part.ExistSku)
-            {
-                this.Sku = this.Part.Sku;
-            }
-
-            if (!this.ExistName && this.ExistGood && this.Good.ExistName)
-            {
-                this.Name = this.Good.Name;
-            }
-
-            if (!this.ExistName && this.ExistPart && this.Part.ExistName)
-            {
-                this.Name = this.Part.Name;
-            }
         }
 
         public void AppsOnPreDerive(ObjectOnPreDerive method)
@@ -71,6 +51,16 @@ namespace Allors.Domain
 
             derivation.Validation.AssertAtLeastOne(this, M.InventoryItem.Good, M.InventoryItem.Part);
             derivation.Validation.AssertExistsAtMostOne(this, M.InventoryItem.Good, M.InventoryItem.Part);
+
+            if (!this.ExistSku && this.ExistGood && this.Good.ExistSku)
+            {
+                this.Sku = this.Good.Sku;
+            }
+
+            if (!this.ExistSku && this.ExistPart && this.Part.ExistSku)
+            {
+                this.Sku = this.Part.Sku;
+            }
 
             if (!this.ExistName && this.ExistGood && this.Good.ExistName)
             {

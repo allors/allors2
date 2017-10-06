@@ -10,6 +10,8 @@ namespace Allors.Repository
     public partial class NonSerialisedInventoryItem : InventoryItem, Versioned
     {
         #region inherited properties
+
+        public string ExternalPrimaryKey { get; set; }
         public ObjectState[] PreviousObjectStates { get; set; }
 
         public ObjectState[] LastObjectStates { get; set; }

@@ -265,6 +265,7 @@ namespace Allors.Domain
             }
 
             @this.AppsOnDeriveCurrentSalesReps(derivation);
+            @this.AppsOnDeriveActiveCustomer(derivation);
             @this.AppsOnDeriveOpenOrderAmount();
             @this.AppsOnDeriveAmountDue(derivation);
             @this.AppsOnDeriveAmountOverDue(derivation);
@@ -282,6 +283,19 @@ namespace Allors.Domain
                 {
                     party.AddCurrentSalesRep(salesRepRelationship.SalesRepresentative);
                 }
+            }
+        }
+
+        public static void AppsOnDeriveActiveCustomer(this Party party, IDerivation derivation)
+        {
+            var internalOrganisation = Singleton.Instance(party.Strategy.Session).InternalOrganisation;
+            if (party.AppsIsActiveCustomer(DateTime.UtcNow))
+            {
+                internalOrganisation.AddActiveCustomer(party);
+            }
+            else
+            {
+                internalOrganisation.RemoveActiveCustomer(party);
             }
         }
 

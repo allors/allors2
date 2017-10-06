@@ -19,6 +19,23 @@ namespace Allors.Domain
 
     public partial class CustomerRelationship
     {
+        public void AppsOnPreDerive(ObjectOnPreDerive method)
+        {
+            var derivation = method.Derivation;
+
+            if (this.ExistCustomer)
+            {
+                derivation.AddDependency(this.Customer, this);
+
+                if (this.Customer is Organisation customer)
+                {
+                    foreach (OrganisationContactRelationship contactRelationship in customer.OrganisationContactRelationshipsWhereOrganisation)
+                    {
+                        derivation.AddDependency(contactRelationship, this);
+                    }
+                }
+            }
+        }
 
         public void AppsOnDerive(ObjectOnDerive method)
         {
