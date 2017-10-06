@@ -1,7 +1,7 @@
 ﻿import axios from "axios";
 import { AxiosInstance, AxiosRequestConfig } from "axios";
-import * as http from "http";
-import * as https from "http";
+// import * as http from "http";
+// import * as https from "http";
 import { AuthenticationResponse } from "./AuthenticationResponse";
 import { Http } from "./Http";
 import { HttpResponse } from "./HttpResponse";
@@ -13,8 +13,8 @@ export class AxiosHttp implements Http {
     constructor(baseURL: string) {
         this.axiosInstance = axios.create({
             baseURL,
-            httpAgent: new http.Agent({ keepAlive: true }),
-            httpsAgent: new https.Agent({ keepAlive: true }),
+            // httpAgent: new http.Agent({ keepAlive: true }),
+            // httpsAgent: new https.Agent({ keepAlive: true }),
             maxContentLength: 50 * 1000 * 1000,
             maxRedirects: 10,
             timeout: 60000,
