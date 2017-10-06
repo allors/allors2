@@ -11,8 +11,6 @@ namespace Allors.Repository
     {
         #region inherited properties
 
-        public string ExternalPrimaryKey { get; set; }
-
         public ObjectState[] PreviousObjectStates { get; set; }
 
         public ObjectState[] LastObjectStates { get; set; }
