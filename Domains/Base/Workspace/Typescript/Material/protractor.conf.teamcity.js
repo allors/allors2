@@ -2,6 +2,7 @@
 // https://github.com/angular/protractor/blob/master/lib/config.ts
 
 const { SpecReporter } = require('jasmine-spec-reporter');
+var TeamCityReporter = require('jasmine-reporters').TeamCityReporter;
 
 exports.config = {
   allScriptsTimeout: 11000,
@@ -16,14 +17,14 @@ exports.config = {
   framework: 'jasmine',
   jasmineNodeOpts: {
     showColors: true,
-    defaultTimeoutInterval: 30 * 60 * 1000, // 30 minutes
-    print: function() {}
+    defaultTimeoutInterval: 30000,
+    print: function () { }
   },
   onPrepare() {
     require('ts-node').register({
       project: 'e2e/tsconfig.e2e.json'
     });
-    jasmine.getEnv().addReporter(new SpecReporter({ spec: { displayStacktrace: true } }));
+    jasmine.getEnv().addReporter(new TeamCityReporter());
   },
   SELENIUM_PROMISE_MANAGER: false
 };

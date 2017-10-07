@@ -1,20 +1,20 @@
 <div>
-  <md-toolbar color="primary">
+  <mat-toolbar color="primary">
     <div fxFlex>
       <span>Angular Material</span>
     </div>
 
     <div>
-      <button md-icon-button [md-menu-trigger-for]="menu">
-        <md-icon>more_vert</md-icon>
+      <button mat-icon-button [matMenuTriggerFor]="menu">
+        <mat-icon>more_vert</mat-icon>
       </button>
     </div>
-  </md-toolbar>
+  </mat-toolbar>
 
-  <md-menu x-position="before" #menu="mdMenu">
-    <button md-menu-item routerLink="/">Dashboard</button>
-    <button md-menu-item routerLink="/form">Form</button>
-  </md-menu>
+  <mat-menu x-position="before" #menu="matMenu">
+    <button mat-menu-item routerLink="/">Dashboard</button>
+    <button mat-menu-item routerLink="/form">Form</button>
+  </mat-menu>
 
   <router-outlet></router-outlet>
 

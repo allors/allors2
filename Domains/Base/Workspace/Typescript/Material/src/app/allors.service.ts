@@ -1,19 +1,19 @@
-import { Injectable, Inject } from '@angular/core';
-import { Http, Response } from '@angular/http';
+import { Inject, Injectable } from "@angular/core";
+import { Http, Response } from "@angular/http";
 
-import { MetaDomain } from '../allors/meta/generated/meta.g';
-import { Workspace } from '../allors/domain/base/Workspace';
-import { workspace } from '../allors/domain';
+import { workspace } from "../allors/domain";
+import { Workspace } from "../allors/domain/base/Workspace";
+import { MetaDomain } from "../allors/meta/generated/meta.g";
 
-import { Database } from '../allors/angular';
-import { ENVIRONMENT, Environment, AuthenticationService } from '../allors/angular';
+import { Database } from "../allors/angular";
+import { AuthenticationService, ENVIRONMENT, Environment } from "../allors/angular";
 
 @Injectable()
 export class AllorsService {
 
-    workspace: Workspace;
-    database: Database;
-    meta: MetaDomain;
+    public workspace: Workspace;
+    public database: Database;
+    public meta: MetaDomain;
 
     constructor(
         public http: Http,
@@ -25,7 +25,7 @@ export class AllorsService {
       this.meta = workspace.metaPopulation.createMetaDomain();
     }
 
-    onError(error) {
+    public onError(error) {
         alert(error);
     }
 }

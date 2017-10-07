@@ -1,7 +1,7 @@
-import { Environment } from '../allors/angular';
+import { Environment } from "../allors/angular";
 
 export const environment: Environment = {
+  authenticationUrl: "Authentication/SignIn",
   production: true,
-  url: 'https://base.allors.com/',
-  authenticationUrl: 'Authentication/SignIn'
+  url: "https://base.allors.com/",
 };

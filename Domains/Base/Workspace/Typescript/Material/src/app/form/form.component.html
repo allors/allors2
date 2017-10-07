@@ -1,15 +1,15 @@
-<md-card>
-  <md-card-title>Person Form</md-card-title>
-  <md-card-content>
+<mat-card>
+  <mat-card-title>Person Form</mat-card-title>
+  <mat-card-content>
     <form #form="ngForm" ng-if="organisation" (submit)="save()">
 
-      <a-md-input [object]="organisation" [roleType]="m.Organisation.Name"></a-md-input>
+      <a-mat-input [object]="organisation" [roleType]="m.Organisation.Name"></a-mat-input>
 
       <div>
-        <button md-raised-button>Submit</button>
+        <button mat-raised-button>Submit</button>
       </div>
 
     </form>
-  </md-card-content>
+  </mat-card-content>
 
-</md-card>
+</mat-card>
