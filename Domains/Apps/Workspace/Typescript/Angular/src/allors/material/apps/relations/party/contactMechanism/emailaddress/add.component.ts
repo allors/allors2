@@ -1,25 +1,25 @@
-import { Observable, Subject, Subscription } from 'rxjs/Rx';
-import { Component, OnInit, AfterViewInit, OnDestroy , ChangeDetectorRef } from '@angular/core';
-import { Validators } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
-import { MdSnackBar, MdSnackBarConfig } from '@angular/material';
-import { TdMediaService } from '@covalent/core';
+import { AfterViewInit, ChangeDetectorRef, Component, OnDestroy , OnInit } from "@angular/core";
+import { Validators } from "@angular/forms";
+import { MatSnackBar, MatSnackBarConfig } from "@angular/material";
+import { ActivatedRoute } from "@angular/router";
+import { TdMediaService } from "@covalent/core";
+import { Observable, Subject, Subscription } from "rxjs/Rx";
 
-import { MetaDomain } from '../../../../../../meta/index';
-import { PullRequest, PushResponse, Fetch, Path, Query, Equals, Like, TreeNode, Sort, Page } from '../../../../../../domain';
-import { Party, PartyContactMechanism, EmailAddress, Enumeration } from '../../../../../../domain';
-import { AllorsService, ErrorService, Scope, Loaded, Saved } from '../../../../../../angular';
+import { AllorsService, ErrorService, Loaded, Saved, Scope } from "../../../../../../angular";
+import { Equals, Fetch, Like, Page, Path, PullRequest, PushResponse, Query, Sort, TreeNode } from "../../../../../../domain";
+import { EmailAddress, Enumeration, Party, PartyContactMechanism } from "../../../../../../domain";
+import { MetaDomain } from "../../../../../../meta/index";
 
 @Component({
-  templateUrl: './form.component.html',
+  templateUrl: "./form.component.html",
 })
 export class PartyContactMechanismAddEmailAddressComponent implements OnInit, AfterViewInit, OnDestroy {
 
   private subscription: Subscription;
   private scope: Scope;
 
-  title: string = 'Email Address';
-  subTitle: string = 'add email address';
+  title: string = "Email Address";
+  subTitle: string = "add email address";
 
   m: MetaDomain;
 
@@ -42,13 +42,13 @@ export class PartyContactMechanismAddEmailAddressComponent implements OnInit, Af
     this.subscription = this.route.url
       .switchMap((url: any) => {
 
-        const id: string = this.route.snapshot.paramMap.get('id');
+        const id: string = this.route.snapshot.paramMap.get("id");
         const m: MetaDomain = this.m;
 
         const fetch: Fetch[] = [
           new Fetch({
-            name: 'party',
-            id: id,
+            name: "party",
+            id,
             include: [
               new TreeNode({
                 roleType: m.Party.PartyContactMechanisms,
@@ -64,7 +64,7 @@ export class PartyContactMechanismAddEmailAddressComponent implements OnInit, Af
         const query: Query[] = [
           new Query(
             {
-              name: 'contactMechanismPurposes',
+              name: "contactMechanismPurposes",
               objectType: this.m.ContactMechanismPurpose,
             }),
         ];
@@ -72,17 +72,17 @@ export class PartyContactMechanismAddEmailAddressComponent implements OnInit, Af
         this.scope.session.reset();
 
         return this.scope
-          .load('Pull', new PullRequest({ fetch: fetch, query: query }));
+          .load("Pull", new PullRequest({ fetch, query }));
       })
       .subscribe((loaded: Loaded) => {
 
         this.party = loaded.objects.party as Party;
 
         if (!this.contactMechanism) {
-          this.contactMechanism = this.scope.session.create('EmailAddress') as EmailAddress;
+          this.contactMechanism = this.scope.session.create("EmailAddress") as EmailAddress;
         }
 
-        this.partyContactMechanism = this.scope.session.create('PartyContactMechanism') as PartyContactMechanism;
+        this.partyContactMechanism = this.scope.session.create("PartyContactMechanism") as PartyContactMechanism;
         this.partyContactMechanism.ContactMechanism = this.contactMechanism;
         this.partyContactMechanism.UseAsDefault = true;
 

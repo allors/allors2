@@ -2,31 +2,31 @@
 
   <div class="pad-top-xs pad-left pad-right">
     <form novalidate [formGroup]="searchForm">
-      <md-input-container>
-        <input fxFlex mdInput placeholder="First Name" formControlName="firstName">
-        <md-icon mdSuffix>search</md-icon>
-      </md-input-container>
-      <md-input-container>
-        <input fxFlex mdInput placeholder="Last Name" formControlName="lastName">
-        <md-icon mdSuffix>search</md-icon>
-      </md-input-container>
+      <mat-input-container>
+        <input fxFlex matInput placeholder="First Name" formControlName="firstName">
+        <mat-icon matSuffix>search</mat-icon>
+      </mat-input-container>
+      <mat-input-container>
+        <input fxFlex matInput placeholder="Last Name" formControlName="lastName">
+        <mat-icon matSuffix>search</mat-icon>
+      </mat-input-container>
     </form>
   </div>
 
-  <md-divider></md-divider>
+  <mat-divider></mat-divider>
 
-  <md-card-content style="min-height: 60vh">
+  <mat-card-content style="min-height: 60vh">
     <ng-template tdLoading="csv">
-      <md-list class="will-load" fxLayout="column">
+      <mat-list class="will-load" fxLayout="column">
 
         <textarea #clipSource style="min-height: 60vh" [ngModel]="csv"></textarea>
 
-        <a md-icon-button mdTooltip="Copy to clipboard" (click)="clipSource.select(); copy()">
-          <md-icon>content_copy</md-icon>
+        <a mat-icon-button matTooltip="Copy to clipboard" (click)="clipSource.select(); copy()">
+          <mat-icon>content_copy</mat-icon>
         </a>
 
-      </md-list>
+      </mat-list>
     </ng-template>
-  </md-card-content>
+  </mat-card-content>
 
 </td-layout-card-over>

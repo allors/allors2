@@ -4,21 +4,21 @@
     <div class="pad">
 
       <div>
-        <a-md-media-upload [object]="category" [roleType]="m.ProductCategory.CategoryImage" accept="image/*"></a-md-media-upload>
-        <a-md-select [object]="category" [roleType]="m.ProductCategory.CatScope" [options]="catScopes" display="Name" label="Scope"></a-md-select>
-        <a-md-localised-text [object]="category" [roleType]="m.ProductCategory.LocalisedNames" [locales]="locales" label="Name"></a-md-localised-text>
-        <a-md-localised-text [object]="category" [roleType]="m.ProductCategory.LocalisedDescriptions" [locales]="locales" label="Description"></a-md-localised-text>
-        <a-md-select [object]="category" [roleType]="m.ProductCategory.Parents" [options]="categories" display="Name"></a-md-select>
+        <a-mat-media-upload [object]="category" [roleType]="m.ProductCategory.CategoryImage" accept="image/*"></a-mat-media-upload>
+        <a-mat-select [object]="category" [roleType]="m.ProductCategory.CatScope" [options]="catScopes" display="Name" label="Scope"></a-mat-select>
+        <a-mat-localised-text [object]="category" [roleType]="m.ProductCategory.LocalisedNames" [locales]="locales" label="Name"></a-mat-localised-text>
+        <a-mat-localised-text [object]="category" [roleType]="m.ProductCategory.LocalisedDescriptions" [locales]="locales" label="Description"></a-mat-localised-text>
+        <a-mat-select [object]="category" [roleType]="m.ProductCategory.Parents" [options]="categories" display="Name"></a-mat-select>
       </div>
 
     </div>
 
-    <md-divider></md-divider>
+    <mat-divider></mat-divider>
 
-    <md-card-actions>
-      <button md-button color="primary" type="submit" [disabled]="!form.form.valid">SAVE</button>
-      <button md-button (click)="goBack()" type="button">CANCEL</button>
-    </md-card-actions>
+    <mat-card-actions>
+      <button mat-button color="primary" type="submit" [disabled]="!form.form.valid">SAVE</button>
+      <button mat-button (click)="goBack()" type="button">CANCEL</button>
+    </mat-card-actions>
 
   </form>
 </td-layout-card-over>

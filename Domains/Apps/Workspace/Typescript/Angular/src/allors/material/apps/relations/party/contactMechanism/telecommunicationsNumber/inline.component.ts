@@ -2,7 +2,7 @@ import { Observable, Subject, Subscription } from 'rxjs/Rx';
 import { Component, OnInit, AfterViewInit, OnDestroy, EventEmitter, Output , ChangeDetectorRef } from '@angular/core';
 import { Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { MdSnackBar, MdSnackBarConfig } from '@angular/material';
+import { MatSnackBar, MatSnackBarConfig } from '@angular/material';
 import { TdMediaService } from '@covalent/core';
 
 import { MetaDomain } from '../../../../../../meta/index';
@@ -14,12 +14,12 @@ import { AllorsService, ErrorService, Scope, Loaded, Saved } from '../../../../.
   selector: 'party-contactmechanism-telecommunicationsnumber',
   template:
   `
-  <a-md-input  [object]="telecommunicationsNumber" [roleType]="m.TelecommunicationsNumber.CountryCode"></a-md-input>
-  <a-md-input  [object]="telecommunicationsNumber" [roleType]="m.TelecommunicationsNumber.AreaCode"></a-md-input>
-  <a-md-input  [object]="telecommunicationsNumber" [roleType]="m.TelecommunicationsNumber.ContactNumber"></a-md-input>
+  <a-mat-input  [object]="telecommunicationsNumber" [roleType]="m.TelecommunicationsNumber.CountryCode"></a-mat-input>
+  <a-mat-input  [object]="telecommunicationsNumber" [roleType]="m.TelecommunicationsNumber.AreaCode"></a-mat-input>
+  <a-mat-input  [object]="telecommunicationsNumber" [roleType]="m.TelecommunicationsNumber.ContactNumber"></a-mat-input>
 
-  <button md-button color="primary" type="button" (click)="save()">Save</button>
-  <button md-button color="secondary" type="button"(click)="cancel()">Cancel</button>
+  <button mat-button color="primary" type="button" (click)="save()">Save</button>
+  <button mat-button color="secondary" type="button"(click)="cancel()">Cancel</button>
 `,
 })
 export class PartyContactMechanismInlineTelecommunicationsNumberComponent implements OnInit {

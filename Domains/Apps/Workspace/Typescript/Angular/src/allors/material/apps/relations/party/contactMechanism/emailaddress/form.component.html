@@ -2,17 +2,17 @@
   <form #form="ngForm" *ngIf="contactMechanism" (submit)="save()">
 
     <div class="pad">
-      <a-md-select [object]="partyContactMechanism" [roleType]="m.PartyContactMechanism.ContactPurposes" [options]="contactMechanismPurposes" display="Name" label="Contact purposes"></a-md-select>
-      <a-md-input [object]="contactMechanism" [roleType]="m.EmailAddress.ElectronicAddressString" label="Email address"></a-md-input>
-      <a-md-slide-toggle [object]="partyContactMechanism" [roleType]="m.PartyContactMechanism.UseAsDefault" label="Use as default"></a-md-slide-toggle>
+      <a-mat-select [object]="partyContactMechanism" [roleType]="m.PartyContactMechanism.ContactPurposes" [options]="contactMechanismPurposes" display="Name" label="Contact purposes"></a-mat-select>
+      <a-mat-input [object]="contactMechanism" [roleType]="m.EmailAddress.ElectronicAddressString" label="Email address"></a-mat-input>
+      <a-mat-slide-toggle [object]="partyContactMechanism" [roleType]="m.PartyContactMechanism.UseAsDefault" label="Use as default"></a-mat-slide-toggle>
     </div>
 
-    <md-divider></md-divider>
+    <mat-divider></mat-divider>
 
-    <md-card-actions>
-      <button md-button color="primary" type="submit" [disabled]="!form.form.valid">SAVE</button>
-      <button md-button (click)="goBack()" type="button">CANCEL</button>
-    </md-card-actions>
+    <mat-card-actions>
+      <button mat-button color="primary" type="submit" [disabled]="!form.form.valid">SAVE</button>
+      <button mat-button (click)="goBack()" type="button">CANCEL</button>
+    </mat-card-actions>
 
   </form>
 </td-layout-card-over>

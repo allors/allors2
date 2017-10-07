@@ -1,11 +1,11 @@
 import { Component, Input, Injectable, Inject, ChangeDetectorRef } from '@angular/core';
 import { Http, RequestOptions } from '@angular/http';
-import { MdDialogRef } from '@angular/material';
+import { MatDialogRef } from '@angular/material';
 import { TdDialogService, TdAlertDialogComponent } from '@covalent/core';
 
 import { workspace, Response, ResponseError, DerivationError } from '../../../domain';
 
-export function errorDialog(dialogService: TdDialogService, error: Error): MdDialogRef<TdAlertDialogComponent> {
+export function errorDialog(dialogService: TdDialogService, error: Error): MatDialogRef<TdAlertDialogComponent> {
     let title: string = '';
     let message: string = '';
 

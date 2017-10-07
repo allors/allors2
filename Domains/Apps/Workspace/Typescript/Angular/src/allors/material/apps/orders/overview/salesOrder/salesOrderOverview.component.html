@@ -1,130 +1,130 @@
-<md-toolbar>
+<mat-toolbar>
   <div layout="row" layout-align="start center" flex>
-    <button md-icon-button tdLayoutManageListOpen [hideWhenOpened]="true" style="display: none">
-          <md-icon>arrow_back</md-icon>
+    <button mat-icon-button tdLayoutManageListOpen [hideWhenOpened]="true" style="display: none">
+          <mat-icon>arrow_back</mat-icon>
         </button>
     <span>{{title}}</span>
     <span flex></span>
-    <button md-icon-button><md-icon>settings</md-icon></button>
+    <button mat-icon-button><mat-icon>settings</mat-icon></button>
   </div>
-</md-toolbar>
+</mat-toolbar>
 
 <div body *ngIf="order" layout-gt-md="row">
   <div flex-gt-xs="50">
-    <md-card tdMediaToggle="gt-xs" [mediaClasses]="['push']">
-      <md-card-title>Sales Order</md-card-title>
-      <md-divider></md-divider>
-      <md-card-content>
+    <mat-card tdMediaToggle="gt-xs" [mediaClasses]="['push']">
+      <mat-card-title>Sales Order</mat-card-title>
+      <mat-divider></mat-divider>
+      <mat-card-content>
 
         <div layout="row">
-          <a-md-static [object]="order" [roleType]="m.SalesOrder.CurrentObjectState" display="Name" label="Status"></a-md-static>
+          <a-mat-static [object]="order" [roleType]="m.SalesOrder.CurrentObjectState" display="Name" label="Status"></a-mat-static>
         </div>
         <div layout="row">
-          <a-md-static [object]="order" [roleType]="m.SalesOrder.OrderNumber"></a-md-static>
+          <a-mat-static [object]="order" [roleType]="m.SalesOrder.OrderNumber"></a-mat-static>
         </div>
         <div *ngIf="order.Quote" layout="row" class="link" [routerLink]="['/orders/productQuote/' + order.Quote.id ]">
-          <a-md-static [object]="order" [roleType]="m.SalesOrder.Quote" display="QuoteNumber"></a-md-static>
+          <a-mat-static [object]="order" [roleType]="m.SalesOrder.Quote" display="QuoteNumber"></a-mat-static>
         </div>
         <div *ngIf="salesInvoice" layout="row" class="link" [routerLink]="['/ar/invoice/' + salesInvoice.id ]">
-          <a-md-static [object]="salesInvoice" [roleType]="m.SalesInvoice.InvoiceNumber"></a-md-static>
+          <a-mat-static [object]="salesInvoice" [roleType]="m.SalesInvoice.InvoiceNumber"></a-mat-static>
         </div>
         <div layout="row" class="link" [routerLink]="['/relations/organisation/' + order.ShipToCustomer.id ]">
-          <a-md-static [object]="order" [roleType]="m.SalesOrder.ShipToCustomer" display="displayName" label="Customer"></a-md-static>
+          <a-mat-static [object]="order" [roleType]="m.SalesOrder.ShipToCustomer" display="displayName" label="Customer"></a-mat-static>
         </div>
         <div *ngIf="order.ShipToAddress" layout="row">
-          <a-md-static [object]="order" [roleType]="m.SalesOrder.ShipToAddress" display="displayName" label="Ship to"></a-md-static>
+          <a-mat-static [object]="order" [roleType]="m.SalesOrder.ShipToAddress" display="displayName" label="Ship to"></a-mat-static>
         </div>
         <div *ngIf="quote.Comment" layout="row">
-          <a-md-static [object]="quote" [roleType]="m.Quote.Comment" label="Quote Comment"></a-md-static>
+          <a-mat-static [object]="quote" [roleType]="m.Quote.Comment" label="Quote Comment"></a-mat-static>
         </div>
         <div *ngIf="order.Comment" layout="row">
-          <a-md-textarea [object]="order" [roleType]="m.SalesOrder.Comment" label="Order Comment"></a-md-textarea>
+          <a-mat-textarea [object]="order" [roleType]="m.SalesOrder.Comment" label="Order Comment"></a-mat-textarea>
         </div>
         <div *ngIf="quote.InternalComment" layout="row">
-          <a-md-static [object]="quote" [roleType]="m.Quote.InternalComment" label="Quote Internal Comment"></a-md-static>
+          <a-mat-static [object]="quote" [roleType]="m.Quote.InternalComment" label="Quote Internal Comment"></a-mat-static>
         </div>
         <div *ngIf="order.InternalComment" layout="row">
-          <a-md-textarea [object]="order" [roleType]="m.SalesOrder.InternalComment" label="Order Internal Comment"></a-md-textarea>
+          <a-mat-textarea [object]="order" [roleType]="m.SalesOrder.InternalComment" label="Order Internal Comment"></a-mat-textarea>
         </div>
         <div layout="row">
-          <p class="md-caption tc-grey-500"> created: {{ order.CreationDate | date}} by {{ order.CreatedBy.displayName}}</p>
+          <p class="mat-caption tc-grey-500"> created: {{ order.CreationDate | date}} by {{ order.CreatedBy.displayName}}</p>
         </div>
         <div layout="row">
-          <p class="md-caption tc-grey-500"> last modified: {{ order.LastModifiedDate | date}} by {{ order.LastModifiedBy.displayName}}</p>
+          <p class="mat-caption tc-grey-500"> last modified: {{ order.LastModifiedDate | date}} by {{ order.LastModifiedBy.displayName}}</p>
         </div>
 
-      </md-card-content>
+      </mat-card-content>
 
-      <md-divider></md-divider>
-      <md-card-actions>
-        <button *ngIf="order.CanExecuteAddNewOrderItem" md-button [routerLink]="['/salesOrder/' + order.id]">Edit</button>
-        <button *ngIf="order.CanExecuteComplete && order.ValidOrderItems.length > 0" md-button (click)="createInvoice()">Create Invoice</button>
-      </md-card-actions>
-    </md-card>
+      <mat-divider></mat-divider>
+      <mat-card-actions>
+        <button *ngIf="order.CanExecuteAddNewOrderItem" mat-button [routerLink]="['/salesOrder/' + order.id]">Edit</button>
+        <button *ngIf="order.CanExecuteComplete && order.ValidOrderItems.length > 0" mat-button (click)="createInvoice()">Create Invoice</button>
+      </mat-card-actions>
+    </mat-card>
 
-    <md-card tdMediaToggle="gt-xs" [mediaClasses]="['push']">
-      <md-card-title>Order Items</md-card-title>
-      <md-divider></md-divider>
-      <md-card-content>
+    <mat-card tdMediaToggle="gt-xs" [mediaClasses]="['push']">
+      <mat-card-title>Order Items</mat-card-title>
+      <mat-divider></mat-divider>
+      <mat-card-content>
         <ng-template tdLoading="order.SalesOrderItems">
-          <md-list class="will-load">
-            <div class="md-padding" *ngIf="order.SalesOrderItems.length === 0" layout="row" layout-align="center center">
+          <mat-list class="will-load">
+            <div class="mat-padding" *ngIf="order.SalesOrderItems.length === 0" layout="row" layout-align="center center">
               <h3>No Items to display.</h3>
             </div>
 
             <ng-template let-orderItem let-last="last" ngFor [ngForOf]="order.SalesOrderItems">
-              <md-list-item>
+              <mat-list-item>
                 <div layout="row" class="link" [routerLink]="['/salesOrder/' + order.id + '/item/' + orderItem.id ]">
-                  <a-md-static [object]="orderItem" [roleType]="m.SalesOrderItem.Product" display="Name"></a-md-static>
+                  <a-mat-static [object]="orderItem" [roleType]="m.SalesOrderItem.Product" display="Name"></a-mat-static>
                 </div>
                 <div layout="row">
-                  <a-md-static [object]="orderItem" [roleType]="m.SalesOrderItem.QuantityOrdered"></a-md-static>
+                  <a-mat-static [object]="orderItem" [roleType]="m.SalesOrderItem.QuantityOrdered"></a-mat-static>
                 </div>
                 <span>
-                  <button md-icon-button [md-menu-trigger-for]="menu">
-                    <md-icon>more_vert</md-icon>
+                  <button mat-icon-button [mat-menu-trigger-for]="menu">
+                    <mat-icon>more_vert</mat-icon>
                   </button>
-                  <md-menu x-position="before" #menu="mdMenu">
-                      <a [routerLink]="['/salesOrder/' + order.id + '/item/' + orderItem.id ]" md-menu-item>Edit</a>
-                  </md-menu>
+                  <mat-menu x-position="before" #menu="matMenu">
+                      <a [routerLink]="['/salesOrder/' + order.id + '/item/' + orderItem.id ]" mat-menu-item>Edit</a>
+                  </mat-menu>
               </span>
-              </md-list-item>
-              <md-divider *ngIf="!last" md-inset></md-divider>
+              </mat-list-item>
+              <mat-divider *ngIf="!last" mat-inset></mat-divider>
             </ng-template>
-          </md-list>
+          </mat-list>
         </ng-template>
-      </md-card-content>
-      <md-divider></md-divider>
-      <md-card-actions>
-        <button *ngIf="order.CanExecuteAddNewOrderItem" md-button [routerLink]="['/salesOrder/' + order.id +'/item']">+ Add</button>
-      </md-card-actions>
-    </md-card>
+      </mat-card-content>
+      <mat-divider></mat-divider>
+      <mat-card-actions>
+        <button *ngIf="order.CanExecuteAddNewOrderItem" mat-button [routerLink]="['/salesOrder/' + order.id +'/item']">+ Add</button>
+      </mat-card-actions>
+    </mat-card>
   </div>
 
   <div flex-gt-xs="50">
-    <md-card tdMediaToggle="gt-xs" [mediaClasses]="['push']">
-      <md-card-title>Status History</md-card-title>
-      <md-divider></md-divider>
-      <md-card-content>
+    <mat-card tdMediaToggle="gt-xs" [mediaClasses]="['push']">
+      <mat-card-title>Status History</mat-card-title>
+      <mat-divider></mat-divider>
+      <mat-card-content>
 
         <ng-template tdLoading="order.OrderStatuses">
-          <md-list class="will-load">
+          <mat-list class="will-load">
 
             <ng-template let-status let-last="last" ngFor [ngForOf]="order.OrderStatuses">
-              <md-list-item>
-                <p md-line class="md-caption">{{ status.SalesOrderObjectState.Name }} </p>
-                <p md-line hide-gt-md class="md-caption"> Start: {{ status.StartDateTime | date}} </p>
+              <mat-list-item>
+                <p mat-line class="mat-caption">{{ status.SalesOrderObjectState.Name }} </p>
+                <p mat-line hide-gt-md class="mat-caption"> Start: {{ status.StartDateTime | date}} </p>
 
                 <span hide-xs hide-sm hide-md flex-gt-xs="60" flex-xs="40" layout-gt-xs="row">
-                  <div class="md-caption tc-grey-500" flex-gt-xs="50"> Start: {{ status.StartDateTime | date }}</div>
+                  <div class="mat-caption tc-grey-500" flex-gt-xs="50"> Start: {{ status.StartDateTime | date }}</div>
                   </span>
 
-              </md-list-item>
+              </mat-list-item>
             </ng-template>
-          </md-list>
+          </mat-list>
         </ng-template>
-      </md-card-content>
+      </mat-card-content>
 
-    </md-card>
+    </mat-card>
   </div>
 </div>

@@ -7,18 +7,18 @@ import { Observable } from 'rxjs';
 import { Field } from '../../../angular';
 
 @Component({
-  selector: 'a-md-autocomplete',
+  selector: 'a-mat-autocomplete',
   template: `
-<md-input-container fxLayout="column" fxLayoutAlign="top stretch">
-  <input type="text" mdInput (focusout)="focusout($event)" [formControl]="searchControl" [mdAutocomplete]="usersComp" [placeholder]="label" [required]="required" [disabled]="disabled" [readonly]="readonly">
-  <md-hint *ngIf="hint">{{hint}}</md-hint>
-</md-input-container>
+<mat-input-container fxLayout="column" fxLayoutAlign="top stretch">
+  <input type="text" matInput (focusout)="focusout($event)" [formControl]="searchControl" [matAutocomplete]="usersComp" [placeholder]="label" [required]="required" [disabled]="disabled" [readonly]="readonly">
+  <mat-hint *ngIf="hint">{{hint}}</mat-hint>
+</mat-input-container>
 
-<md-autocomplete #usersComp="mdAutocomplete" [displayWith]="displayFn()">
-  <md-option *ngFor="let option of filteredOptions | async" [value]="option" (onSelectionChange)="selected(option)">
+<mat-autocomplete #usersComp="matAutocomplete" [displayWith]="displayFn()">
+  <mat-option *ngFor="let option of filteredOptions | async" [value]="option" (onSelectionChange)="selected(option)">
   {{option[this.display]}}
-  </md-option>
-</md-autocomplete>
+  </mat-option>
+</mat-autocomplete>
 `,
 })
 export class AutocompleteComponent extends Field implements OnInit {

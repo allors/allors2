@@ -1,6 +1,6 @@
 import { AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
-import { MdSnackBar, MdSnackBarConfig } from "@angular/material";
+import { MatSnackBar, MatSnackBarConfig } from "@angular/material";
 import { Title } from "@angular/platform-browser";
 import { Router } from "@angular/router";
 import { BehaviorSubject, Observable, Subject, Subscription } from "rxjs/Rx";
@@ -38,7 +38,7 @@ export class CataloguesOverviewComponent implements AfterViewInit, OnDestroy {
     private errorService: ErrorService,
     private formBuilder: FormBuilder,
     private titleService: Title,
-    private snackBar: MdSnackBar,
+    private snackBar: MatSnackBar,
     private router: Router,
     private dialogService: TdDialogService,
     public media: TdMediaService,

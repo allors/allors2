@@ -1,13 +1,13 @@
-import { Component, Input, Output, OnInit, OnDestroy, EventEmitter, ChangeDetectorRef, ViewChildren, QueryList, AfterViewInit } from '@angular/core';
-import { NgModel, NgForm } from '@angular/forms';
-import { ISessionObject } from '../../../../allors/domain';
-import { MetaDomain, RoleType } from '../../../../allors/meta';
-import { Observable, Subscription, Subject } from 'rxjs';
+import { AfterViewInit, ChangeDetectorRef, Component, EventEmitter, Input, OnDestroy, OnInit, Output, QueryList, ViewChildren } from "@angular/core";
+import { NgForm, NgModel } from "@angular/forms";
+import { Observable, Subject, Subscription } from "rxjs";
+import { ISessionObject } from "../../../../allors/domain";
+import { MetaDomain, RoleType } from "../../../../allors/meta";
 
-import { Field } from '../../../angular';
+import { Field } from "../../../angular";
 
 @Component({
-  selector: 'a-td-chips',
+  selector: "a-td-chips",
   template: `
 <td-chips [name]="name"
           [items]="filteredOptions"
@@ -29,42 +29,43 @@ import { Field } from '../../../angular';
       {{option[this.display]}}
     </div>
   </ng-template>
-  <md-hint *ngIf="hint">{{hint}}</md-hint>
+  <mat-hint *ngIf="hint">{{hint}}</mat-hint>
 </td-chips>
 `,
 })
 export class ChipsComponent extends Field implements OnInit, AfterViewInit, OnDestroy {
 
   @Input()
-  display: string = 'display';
+  public display: string = "display";
 
   @Input()
-  debounceTime: number = 400;
+  public debounceTime: number = 400;
 
   @Input()
-  options: ISessionObject[];
+  public options: ISessionObject[];
 
   @Input()
-  filter: ((search: string) => Observable<ISessionObject[]>);
+  public filter: ((search: string) => Observable<ISessionObject[]>);
 
   @Output()
-  onAdd: EventEmitter<ISessionObject> = new EventEmitter();
+  public onAdd: EventEmitter<ISessionObject> = new EventEmitter();
 
   @Output()
-  onRemove: EventEmitter<ISessionObject> = new EventEmitter();
+  public onRemove: EventEmitter<ISessionObject> = new EventEmitter();
 
-  filteredOptions: ISessionObject[];
+  public filteredOptions: ISessionObject[];
 
-  subject: Subject<string>;
-  subscription: Subscription;
+  public subject: Subject<string>;
+  public subscription: Subscription;
 
-  @ViewChildren(NgModel) controls: QueryList<NgModel>;
+  @ViewChildren(NgModel)
+  private controls: QueryList<NgModel>;
 
   constructor(private parentForm: NgForm) {
     super();
   }
 
-  ngOnInit(): void {
+  public ngOnInit(): void {
     this.subject = new Subject<string>();
 
     if (this.filter) {
@@ -100,27 +101,27 @@ export class ChipsComponent extends Field implements OnInit, AfterViewInit, OnDe
     }
   }
 
-  ngAfterViewInit(): void {
+  public ngAfterViewInit(): void {
     this.controls.forEach((control: NgModel) => {
       this.parentForm.addControl(control);
     });
   }
 
-  ngOnDestroy(): void {
+  public ngOnDestroy(): void {
     if (this.subscription) {
       this.subscription.unsubscribe();
     }
   }
 
-  add(object: ISessionObject): void {
+  public add(object: ISessionObject): void {
     this.onAdd.emit(object);
   }
 
-  remove(object: ISessionObject): void {
+  public remove(object: ISessionObject): void {
     this.onRemove.emit(object);
   }
 
-  inputChange(search: string): void {
+  public inputChange(search: string): void {
     this.subject.next(search);
   }
 }

@@ -2,7 +2,7 @@ import { Observable, Subject, Subscription } from 'rxjs/Rx';
 import { Component, OnInit, AfterViewInit, OnDestroy, EventEmitter, Output , ChangeDetectorRef } from '@angular/core';
 import { Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { MdSnackBar, MdSnackBarConfig } from '@angular/material';
+import { MatSnackBar, MatSnackBarConfig } from '@angular/material';
 import { TdMediaService } from '@covalent/core';
 
 import { MetaDomain } from '../../../../../../meta/index';
@@ -14,15 +14,15 @@ import { AllorsService, ErrorService, Scope, Loaded, Saved } from '../../../../.
   selector: 'party-contactmechanism-postaladdress',
   template:
   `
-  <a-md-input  [object]="postalAddress" [roleType]="m.PostalAddress.Address1" label="Address line 1"></a-md-input>
-  <a-md-input  [object]="postalAddress" [roleType]="m.PostalAddress.Address2" label="Address line 2"></a-md-input>
-  <a-md-input  [object]="postalAddress" [roleType]="m.PostalAddress.Address3" label="Address line 3"></a-md-input>
-  <a-md-input  [object]="postalAddress.PostalBoundary" [roleType]="m.PostalBoundary?.Locality" label="City"></a-md-input>
-  <a-md-input  [object]="postalAddress.PostalBoundary" [roleType]="m.PostalBoundary?.PostalCode" label="Postal code"></a-md-input>
-  <a-md-select  [object]="postalAddress.PostalBoundary" [roleType]="m.PostalBoundary?.Country" [options]="countries" display="Name"></a-md-select>
+  <a-mat-input  [object]="postalAddress" [roleType]="m.PostalAddress.Address1" label="Address line 1"></a-mat-input>
+  <a-mat-input  [object]="postalAddress" [roleType]="m.PostalAddress.Address2" label="Address line 2"></a-mat-input>
+  <a-mat-input  [object]="postalAddress" [roleType]="m.PostalAddress.Address3" label="Address line 3"></a-mat-input>
+  <a-mat-input  [object]="postalAddress.PostalBoundary" [roleType]="m.PostalBoundary?.Locality" label="City"></a-mat-input>
+  <a-mat-input  [object]="postalAddress.PostalBoundary" [roleType]="m.PostalBoundary?.PostalCode" label="Postal code"></a-mat-input>
+  <a-mat-select  [object]="postalAddress.PostalBoundary" [roleType]="m.PostalBoundary?.Country" [options]="countries" display="Name"></a-mat-select>
 
-  <button md-button color="primary" type="button" (click)="save()">Save</button>
-  <button md-button color="secondary" type="button"(click)="cancel()">Cancel</button>
+  <button mat-button color="primary" type="button" (click)="save()">Save</button>
+  <button mat-button color="secondary" type="button"(click)="cancel()">Cancel</button>
 `,
 })
 export class PartyContactMechanismInlinePostalAddressComponent implements OnInit {

@@ -4,40 +4,40 @@
     <div class="pad">
 
       <div *ngIf="good.PrimaryPhoto" layout-gt-xs="row">
-        <md-card>
-          <md-card-title-group>
-            <md-card-subtitle>{{ good.PrimaryPhoto.FileName}}</md-card-subtitle>
+        <mat-card>
+          <mat-card-title-group>
+            <mat-card-subtitle>{{ good.PrimaryPhoto.FileName}}</mat-card-subtitle>
             <img src="http://localhost:5000/Media/Download/{{good.PrimaryPhoto.UniqueId}}?revision={{good.PrimaryPhoto.Revision}}" widht="90"
               height="60" />
-          </md-card-title-group>
-        </md-card>
+          </mat-card-title-group>
+        </mat-card>
 
-        <md-divider></md-divider>
+        <mat-divider></mat-divider>
       </div>
 
-      <md-tab-group>
+      <mat-tab-group>
 
-        <md-tab label="General">
-          <a-md-select [object]="inventoryItem" [roleType]="m.NonSerialisedInventoryItem.CurrentObjectState"
-            [options]="inventoryItemObjectStates" display="Name" label="Status"></a-md-select>
-          <a-md-localised-text [object]="good" [roleType]="m.Good.LocalisedNames" [locales]="locales" label="Name"></a-md-localised-text>
-          <a-md-localised-text [object]="good" [roleType]="m.Good.LocalisedDescriptions" [locales]="locales" label="Description"></a-md-localised-text>
-          <a-md-select [object]="inventoryItem" [roleType]="m.NonSerialisedInventoryItem.ProductType" [options]="productTypes"
-            display="Name"></a-md-select>
-          <a-md-select [object]="good" [roleType]="m.Good.ProductCategories" [options]="categories" display="Name"></a-md-select>
-          <a-md-autocomplete [object]="good" [roleType]="m.Good.PrimaryProductCategory" [options]="categories" display="Name"></a-md-autocomplete>
+        <mat-tab label="General">
+          <a-mat-select [object]="inventoryItem" [roleType]="m.NonSerialisedInventoryItem.CurrentObjectState"
+            [options]="inventoryItemObjectStates" display="Name" label="Status"></a-mat-select>
+          <a-mat-localised-text [object]="good" [roleType]="m.Good.LocalisedNames" [locales]="locales" label="Name"></a-mat-localised-text>
+          <a-mat-localised-text [object]="good" [roleType]="m.Good.LocalisedDescriptions" [locales]="locales" label="Description"></a-mat-localised-text>
+          <a-mat-select [object]="inventoryItem" [roleType]="m.NonSerialisedInventoryItem.ProductType" [options]="productTypes"
+            display="Name"></a-mat-select>
+          <a-mat-select [object]="good" [roleType]="m.Good.ProductCategories" [options]="categories" display="Name"></a-mat-select>
+          <a-mat-autocomplete [object]="good" [roleType]="m.Good.PrimaryProductCategory" [options]="categories" display="Name"></a-mat-autocomplete>
 
-          <md-input-container fxLayout="column" fxLayoutAlign="top stretch">
-            <input fxFlex mdInput name="actualQuantityOnHand" [(ngModel)]="actualQuantityOnHand" placeholder="Actual Quantity in stock">
-          </md-input-container>
+          <mat-input-container fxLayout="column" fxLayoutAlign="top stretch">
+            <input fxFlex matInput name="actualQuantityOnHand" [(ngModel)]="actualQuantityOnHand" placeholder="Actual Quantity in stock">
+          </mat-input-container>
 
           <div class="mat-input-wrapper">
             <div class="mat-input-flex">
               <div class="mat-input-infix">
-                <md-select fxFlex [(ngModel)]="selectedBrand" name="brandName" placeholder="Brand" multiple="false" (ngModelChange)="brandSelected($event)">
-                  <md-option>None</md-option>
-                  <md-option *ngFor="let brand of brands" [value]="brand"> {{ brand.Name }} </md-option>
-                </md-select>
+                <mat-select fxFlex [(ngModel)]="selectedBrand" name="brandName" placeholder="Brand" multiple="false" (ngModelChange)="brandSelected($event)">
+                  <mat-option>None</mat-option>
+                  <mat-option *ngFor="let brand of brands" [value]="brand"> {{ brand.Name }} </mat-option>
+                </mat-select>
               </div>
             </div>
           </div>
@@ -45,52 +45,52 @@
           <div class="mat-input-wrapper">
             <div class="mat-input-flex">
               <div class="mat-input-infix">
-                <md-select fxFlex [(ngModel)]="selectedModel" name="modelName" placeholder="Model" multiple="false">
-                  <md-option>None</md-option>
-                  <md-option *ngFor="let model of models" [value]="model"> {{ model.Name }} </md-option>
-                </md-select>
+                <mat-select fxFlex [(ngModel)]="selectedModel" name="modelName" placeholder="Model" multiple="false">
+                  <mat-option>None</mat-option>
+                  <mat-option *ngFor="let model of models" [value]="model"> {{ model.Name }} </mat-option>
+                </mat-select>
               </div>
             </div>
           </div>
 
-          <a-md-autocomplete [object]="good" [roleType]="m.Good.SuppliedBy" [filter]="suppliersFilter.create()" display="Name"></a-md-autocomplete>
-          <a-md-autocomplete [object]="good" [roleType]="m.Good.ManufacturedBy" [filter]="manufacturersFilter.create()" display="Name"></a-md-autocomplete>
-          <a-md-datepicker [object]="good" [roleType]="m.Good.SalesDiscontinuationDate"></a-md-datepicker>
-        </md-tab>
+          <a-mat-autocomplete [object]="good" [roleType]="m.Good.SuppliedBy" [filter]="suppliersFilter.create()" display="Name"></a-mat-autocomplete>
+          <a-mat-autocomplete [object]="good" [roleType]="m.Good.ManufacturedBy" [filter]="manufacturersFilter.create()" display="Name"></a-mat-autocomplete>
+          <a-mat-datepicker [object]="good" [roleType]="m.Good.SalesDiscontinuationDate"></a-mat-datepicker>
+        </mat-tab>
 
-        <md-tab label="Characteristics">
+        <mat-tab label="Characteristics">
 
-          <md-radio-group name="rg" [(ngModel)]="selectedLocaleName">
-            <md-radio-button *ngFor="let locale of locales" [value]="locale.Name">
+          <mat-radio-group name="rg" [(ngModel)]="selectedLocaleName">
+            <mat-radio-button *ngFor="let locale of locales" [value]="locale.Name">
               {{locale.Language.Name}}
-            </md-radio-button>
-          </md-radio-group>
+            </mat-radio-button>
+          </mat-radio-group>
 
-          <md-divider></md-divider>
+          <mat-divider></mat-divider>
 
-          <a-md-textarea *ngFor="let productCharacteristicValue of productCharacteristicValues" [object]="productCharacteristicValue"
-            [roleType]="m.ProductCharacteristicValue.Value" [label]="localisedName(productCharacteristicValue.ProductCharacteristic)"></a-md-textarea>
-        </md-tab>
+          <a-mat-textarea *ngFor="let productCharacteristicValue of productCharacteristicValues" [object]="productCharacteristicValue"
+            [roleType]="m.ProductCharacteristicValue.Value" [label]="localisedName(productCharacteristicValue.ProductCharacteristic)"></a-mat-textarea>
+        </mat-tab>
 
-        <md-tab label="Comments">
-          <a-md-localised-text [object]="good" [roleType]="m.Good.LocalisedComments" [locales]="locales" label="Comment"></a-md-localised-text>
-          <a-md-textarea [object]="good" [roleType]="m.Good.InternalComment"></a-md-textarea>
-          <a-md-textarea [object]="good" [roleType]="m.Good.Keywords"></a-md-textarea>
-        </md-tab>
+        <mat-tab label="Comments">
+          <a-mat-localised-text [object]="good" [roleType]="m.Good.LocalisedComments" [locales]="locales" label="Comment"></a-mat-localised-text>
+          <a-mat-textarea [object]="good" [roleType]="m.Good.InternalComment"></a-mat-textarea>
+          <a-mat-textarea [object]="good" [roleType]="m.Good.Keywords"></a-mat-textarea>
+        </mat-tab>
 
-        <md-tab label="Images">
-          <a-md-media-upload [object]="good" [roleType]="m.Good.PrimaryPhoto" accept="image/*"></a-md-media-upload>
-        </md-tab>
+        <mat-tab label="Images">
+          <a-mat-media-upload [object]="good" [roleType]="m.Good.PrimaryPhoto" accept="image/*"></a-mat-media-upload>
+        </mat-tab>
 
-      </md-tab-group>
+      </mat-tab-group>
     </div>
 
-    <md-divider></md-divider>
+    <mat-divider></mat-divider>
 
-    <md-card-actions>
-      <button md-button color="primary" type="submit" [disabled]="!form.form.valid">SAVE</button>
-      <button md-button (click)="goBack()" type="button">CANCEL</button>
-    </md-card-actions>
+    <mat-card-actions>
+      <button mat-button color="primary" type="submit" [disabled]="!form.form.valid">SAVE</button>
+      <button mat-button (click)="goBack()" type="button">CANCEL</button>
+    </mat-card-actions>
 
   </form>
 </td-layout-card-over>

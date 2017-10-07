@@ -3,34 +3,34 @@
 
     <div class="pad">
       <div *ngIf="order.CurrentObjectState">
-        <a-md-static [object]="order" [roleType]="m.SalesOrder.CurrentObjectState" display="Name" label="Status"></a-md-static>
-        <button *ngIf="order.CanExecuteCancel" md-button type="button" (click)="cancel()">Cancel</button>
-        <button *ngIf="order.CanExecuteApprove" md-button type="button" (click)="approve()">Approve</button>
-        <button *ngIf="order.CanExecuteReject" md-button type="button" (click)="reject()">Reject</button>
-        <button *ngIf="order.CanExecuteHold" md-button type="button" (click)="hold()">Hold</button>
-        <button *ngIf="order.CanExecuteContinue" md-button type="button" (click)="continue()">Continue</button>
-        <button *ngIf="order.CanExecuteConfirm" md-button type="button" (click)="confirm()">Confirm</button>
+        <a-mat-static [object]="order" [roleType]="m.SalesOrder.CurrentObjectState" display="Name" label="Status"></a-mat-static>
+        <button *ngIf="order.CanExecuteCancel" mat-button type="button" (click)="cancel()">Cancel</button>
+        <button *ngIf="order.CanExecuteApprove" mat-button type="button" (click)="approve()">Approve</button>
+        <button *ngIf="order.CanExecuteReject" mat-button type="button" (click)="reject()">Reject</button>
+        <button *ngIf="order.CanExecuteHold" mat-button type="button" (click)="hold()">Hold</button>
+        <button *ngIf="order.CanExecuteContinue" mat-button type="button" (click)="continue()">Continue</button>
+        <button *ngIf="order.CanExecuteConfirm" mat-button type="button" (click)="confirm()">Confirm</button>
       </div>
 
-      <a-md-static *ngIf="order.Quote" [object]="order" [roleType]="m.SalesOrder.Quote"></a-md-static>
-      <a-md-autocomplete *ngIf="showOrganisations" [object]="order" [roleType]="m.SalesOrder.ShipToCustomer" [filter]="organisationsFilter.create()"
-        display="Name" (onSelect)="receiverSelected($event)" label="Ship to organisation"></a-md-autocomplete>
-      <a-md-autocomplete *ngIf="showPeople" [object]="order" [roleType]="m.SalesOrder.ShipToCustomer" [filter]="peopleFilter.create()"
-        display="displayName" (onSelect)="receiverSelected($event)" label="Ship to person "></a-md-autocomplete>
-      <a-md-select [object]="order" [roleType]="m.SalesOrder.ShipToAddress" [options]="contactMechanisms" display="displayName"></a-md-select>
-      <a-md-select [object]="order" [roleType]="m.SalesOrder.BillToContactMechanism" [options]="contactMechanisms" display="displayName"></a-md-select>
-      <a-md-static *ngIf="quote" [object]="quote" [roleType]="m.Quote.Comment" label="Quote Comment"></a-md-static>
-      <a-md-textarea [object]="order" [roleType]="m.SalesOrder.Comment" label="Order Comment"></a-md-textarea>
-      <a-md-static *ngIf="quote" [object]="quote" [roleType]="m.Quote.InternalComment" label="Quote Internal Comment"></a-md-static>
-      <a-md-textarea [object]="order" [roleType]="m.SalesOrder.InternalComment" label="Order Internal Comment"></a-md-textarea>
+      <a-mat-static *ngIf="order.Quote" [object]="order" [roleType]="m.SalesOrder.Quote"></a-mat-static>
+      <a-mat-autocomplete *ngIf="showOrganisations" [object]="order" [roleType]="m.SalesOrder.ShipToCustomer" [filter]="organisationsFilter.create()"
+        display="Name" (onSelect)="receiverSelected($event)" label="Ship to organisation"></a-mat-autocomplete>
+      <a-mat-autocomplete *ngIf="showPeople" [object]="order" [roleType]="m.SalesOrder.ShipToCustomer" [filter]="peopleFilter.create()"
+        display="displayName" (onSelect)="receiverSelected($event)" label="Ship to person "></a-mat-autocomplete>
+      <a-mat-select [object]="order" [roleType]="m.SalesOrder.ShipToAddress" [options]="contactMechanisms" display="displayName"></a-mat-select>
+      <a-mat-select [object]="order" [roleType]="m.SalesOrder.BillToContactMechanism" [options]="contactMechanisms" display="displayName"></a-mat-select>
+      <a-mat-static *ngIf="quote" [object]="quote" [roleType]="m.Quote.Comment" label="Quote Comment"></a-mat-static>
+      <a-mat-textarea [object]="order" [roleType]="m.SalesOrder.Comment" label="Order Comment"></a-mat-textarea>
+      <a-mat-static *ngIf="quote" [object]="quote" [roleType]="m.Quote.InternalComment" label="Quote Internal Comment"></a-mat-static>
+      <a-mat-textarea [object]="order" [roleType]="m.SalesOrder.InternalComment" label="Order Internal Comment"></a-mat-textarea>
     </div>
 
-    <md-divider></md-divider>
+    <mat-divider></mat-divider>
 
-    <md-card-actions>
-      <button md-button color="primary" type="submit" [disabled]="!form.form.valid">SAVE</button>
-      <button md-button (click)="goBack()" type="button">CANCEL</button>
-    </md-card-actions>
+    <mat-card-actions>
+      <button mat-button color="primary" type="submit" [disabled]="!form.form.valid">SAVE</button>
+      <button mat-button (click)="goBack()" type="button">CANCEL</button>
+    </mat-card-actions>
 
   </form>
 </td-layout-card-over>

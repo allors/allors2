@@ -10,14 +10,14 @@ export class RadioGroupOption {
 }
 
 @Component({
-  selector: "a-md-radio-group",
+  selector: "a-mat-radio-group",
   template: `
-<md-input-container fxLayout="row">
-  <md-radio-group fxFlex [(ngModel)]="model" [name]="name" [required]="required" [disabled]="disabled">
-    <md-radio-button *ngFor="let option of options" [value]="optionValue(option)">{{optionLabel(option)}}</md-radio-button>
-  </md-radio-group>
-  <md-hint *ngIf="hint">{{hint}}</md-hint>
-</md-input-container>
+<mat-input-container fxLayout="row">
+  <mat-radio-group fxFlex [(ngModel)]="model" [name]="name" [required]="required" [disabled]="disabled">
+    <mat-radio-button *ngFor="let option of options" [value]="optionValue(option)">{{optionLabel(option)}}</mat-radio-button>
+  </mat-radio-group>
+  <mat-hint *ngIf="hint">{{hint}}</mat-hint>
+</mat-input-container>
 `,
 })
 export class RadioGroupComponent extends Field {

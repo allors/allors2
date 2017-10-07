@@ -1,6 +1,6 @@
 import { AfterViewInit, ChangeDetectorRef, Component, OnDestroy , OnInit } from "@angular/core";
 import { Validators } from "@angular/forms";
-import { MdSnackBar, MdSnackBarConfig } from "@angular/material";
+import { MatSnackBar, MatSnackBarConfig } from "@angular/material";
 import { ActivatedRoute, UrlSegment } from "@angular/router";
 import { TdDialogService, TdMediaService } from "@covalent/core";
 import { BehaviorSubject, Observable, Subject, Subscription } from "rxjs/Rx";
@@ -40,7 +40,7 @@ export class PartyCommunicationEventEditFaceToFaceCommunicationComponent impleme
   constructor(
     private allors: AllorsService,
     private errorService: ErrorService,
-    private snackBar: MdSnackBar,
+    private snackBar: MatSnackBar,
     private route: ActivatedRoute,
     private dialogService: TdDialogService,
     public media: TdMediaService, private changeDetectorRef: ChangeDetectorRef) {

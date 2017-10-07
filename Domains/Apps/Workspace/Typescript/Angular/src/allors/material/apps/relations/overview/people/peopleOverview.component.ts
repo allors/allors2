@@ -1,16 +1,16 @@
-import { Observable, BehaviorSubject, Subject, Subscription } from 'rxjs/Rx';
-import { Component, OnInit, AfterViewInit, OnDestroy, ViewChild, ChangeDetectorRef } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
-import { Title } from '@angular/platform-browser';
-import { MdSnackBar, MdSnackBarConfig } from '@angular/material';
+import { AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild } from "@angular/core";
+import { FormBuilder, FormGroup, Validators } from "@angular/forms";
+import { MatSnackBar, MatSnackBarConfig } from "@angular/material";
+import { Title } from "@angular/platform-browser";
+import { Router } from "@angular/router";
+import { BehaviorSubject, Observable, Subject, Subscription } from "rxjs/Rx";
 
-import { TdLoadingService, TdDialogService, TdMediaService } from '@covalent/core';
+import { TdDialogService, TdLoadingService, TdMediaService } from "@covalent/core";
 
-import { PullRequest, Query, Predicate, And, Or, Not, Equals, Like, Contains, ContainedIn, TreeNode, Sort, Page } from '../../../../../domain';
-import { MetaDomain } from '../../../../../meta/index';
-import { Person, OrganisationContactRelationship } from '../../../../../domain';
-import { AllorsService, ErrorService, Scope, Loaded, Saved, Invoked } from '../../../../../angular';
+import { AllorsService, ErrorService, Invoked, Loaded, Saved, Scope } from "../../../../../angular";
+import { And, ContainedIn, Contains, Equals, Like, Not, Or, Page, Predicate, PullRequest, Query, Sort, TreeNode } from "../../../../../domain";
+import { OrganisationContactRelationship, Person } from "../../../../../domain";
+import { MetaDomain } from "../../../../../meta/index";
 
 interface SearchData {
   firstName: string;
@@ -18,32 +18,30 @@ interface SearchData {
 }
 
 @Component({
-  templateUrl: './peopleOverview.component.html',
+  templateUrl: "./peopleOverview.component.html",
 })
 export class PeopleOverviewComponent implements AfterViewInit, OnDestroy {
+
+  public total: number;
+  public title: string = "People";
+  public searchForm: FormGroup;
+  public data: Person[];
 
   private refresh$: BehaviorSubject<Date>;
   private subscription: Subscription;
   private scope: Scope;
 
   private page$: BehaviorSubject<number>;
-  total: number;
-
-  title: string = 'People';
-
-  searchForm: FormGroup;
-
-  data: Person[];
 
   constructor(
     private allors: AllorsService,
     private errorService: ErrorService,
     private formBuilder: FormBuilder,
     private titleService: Title,
-    private snackBar: MdSnackBar,
+    private snackBar: MatSnackBar,
     private router: Router,
     private dialogService: TdDialogService,
-    private snackBarService: MdSnackBar,
+    private snackBarService: MatSnackBar,
     public media: TdMediaService,
     private changeDetectorRef: ChangeDetectorRef) {
 
@@ -52,8 +50,8 @@ export class PeopleOverviewComponent implements AfterViewInit, OnDestroy {
     this.refresh$ = new BehaviorSubject<Date>(undefined);
 
     this.searchForm = this.formBuilder.group({
-      firstName: [''],
-      lastName: [''],
+      firstName: [""],
+      lastName: [""],
     });
 
     this.page$ = new BehaviorSubject<number>(50);
@@ -79,21 +77,21 @@ export class PeopleOverviewComponent implements AfterViewInit, OnDestroy {
         const predicates: Predicate[] = predicate.predicates;
 
         if (data.firstName) {
-          const like: string = '%' + data.firstName + '%';
+          const like: string = "%" + data.firstName + "%";
           predicates.push(new Like({ roleType: m.Person.FirstName, value: like }));
         }
 
         if (data.lastName) {
-          const like: string = data.lastName.replace('*', '%') + '%';
+          const like: string = data.lastName.replace("*", "%") + "%";
           predicates.push(new Like({ roleType: m.Person.LastName, value: like }));
         }
 
         const query: Query[] = [new Query(
           {
-            name: 'people',
+            name: "people",
             objectType: m.Person,
-            predicate: predicate,
-            page: new Page({ skip: 0, take: take }),
+            predicate,
+            page: new Page({ skip: 0, take }),
             include: [
               new TreeNode({ roleType: m.Person.Picture }),
               new TreeNode({ roleType: m.Person.GeneralPhoneNumber }),
@@ -101,7 +99,7 @@ export class PeopleOverviewComponent implements AfterViewInit, OnDestroy {
             sort: [new Sort({ roleType: m.Person.FirstName })],
           })];
 
-        return this.scope.load('Pull', new PullRequest({ query: query }));
+        return this.scope.load("Pull", new PullRequest({ query }));
 
       })
       .subscribe((loaded: Loaded) => {
@@ -142,13 +140,13 @@ export class PeopleOverviewComponent implements AfterViewInit, OnDestroy {
 
   delete(person: Person): void {
     this.dialogService
-      .openConfirm({ message: 'Are you sure you want to delete this person?' })
+      .openConfirm({ message: "Are you sure you want to delete this person?" })
       .afterClosed()
       .subscribe((confirm: boolean) => {
         if (confirm) {
           this.scope.invoke(person.Delete)
             .subscribe((invoked: Invoked) => {
-              this.snackBar.open('Successfully deleted.', 'close', { duration: 5000 });
+              this.snackBar.open("Successfully deleted.", "close", { duration: 5000 });
               this.refresh();
             },
             (error: Error) => {

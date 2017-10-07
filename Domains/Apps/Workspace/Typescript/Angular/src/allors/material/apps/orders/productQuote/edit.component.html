@@ -3,33 +3,33 @@
 
     <div class="pad">
       <div *ngIf="quote.CurrentObjectState">
-        <a-md-static [object]="quote" [roleType]="m.Quote.CurrentObjectState" display="Name" label="Status"></a-md-static>
-        <button *ngIf="quote.CanExecuteApprove" md-button type="button" (click)="approve()">Approve</button>
-        <button *ngIf="quote.CanExecuteReject" md-button type="button" (click)="reject()">Reject</button>
+        <a-mat-static [object]="quote" [roleType]="m.Quote.CurrentObjectState" display="Name" label="Status"></a-mat-static>
+        <button *ngIf="quote.CanExecuteApprove" mat-button type="button" (click)="approve()">Approve</button>
+        <button *ngIf="quote.CanExecuteReject" mat-button type="button" (click)="reject()">Reject</button>
       </div>
 
-      <a-md-static *ngIf="quote.Request" [object]="quote" [roleType]="m.ProductQuote.Request" display="RequestNumber"></a-md-static>
-      <a-md-autocomplete *ngIf="showOrganisations" [object]="quote" [roleType]="m.ProductQuote.Receiver" [filter]="organisationsFilter.create()"
-        display="Name" (onSelect)="receiverSelected($event)" label="Receiving organisation"></a-md-autocomplete>
-      <a-md-autocomplete *ngIf="showPeople" [object]="quote" [roleType]="m.ProductQuote.Receiver" [filter]="peopleFilter.create()"
-        display="displayName" (onSelect)="receiverSelected($event)" label="Receiving person"></a-md-autocomplete>
-      <a-md-select [object]="quote" [roleType]="m.ProductQuote.FullfillContactMechanism" [options]="contactMechanisms" display="displayName"></a-md-select>
-      <a-md-datepicker [object]="quote" [roleType]="m.ProductQuote.IssueDate"></a-md-datepicker>
-      <a-md-datepicker [object]="quote" [roleType]="m.ProductQuote.RequiredResponseDate"></a-md-datepicker>
-      <a-md-input [object]="quote" [roleType]="m.ProductQuote.Description"></a-md-input>
-      <a-md-autocomplete [object]="quote" [roleType]="m.ProductQuote.Currency" [filter]="currenciesFilter.create()" display="Name"></a-md-autocomplete>
-      <a-md-static *ngIf="request.Comment" [object]="request" [roleType]="m.Request.Comment" label="Request Comment"></a-md-static>
-      <a-md-textarea [object]="quote" [roleType]="m.ProductQuote.Comment" label="Quote Comment"></a-md-textarea>
-      <a-md-static *ngIf="request.InternalComment" [object]="request" [roleType]="m.Request.InternalComment" label="Request Internal Comment"></a-md-static>
-      <a-md-textarea [object]="quote" [roleType]="m.ProductQuote.InternalComment" label="Quote Internal Comment"></a-md-textarea>
+      <a-mat-static *ngIf="quote.Request" [object]="quote" [roleType]="m.ProductQuote.Request" display="RequestNumber"></a-mat-static>
+      <a-mat-autocomplete *ngIf="showOrganisations" [object]="quote" [roleType]="m.ProductQuote.Receiver" [filter]="organisationsFilter.create()"
+        display="Name" (onSelect)="receiverSelected($event)" label="Receiving organisation"></a-mat-autocomplete>
+      <a-mat-autocomplete *ngIf="showPeople" [object]="quote" [roleType]="m.ProductQuote.Receiver" [filter]="peopleFilter.create()"
+        display="displayName" (onSelect)="receiverSelected($event)" label="Receiving person"></a-mat-autocomplete>
+      <a-mat-select [object]="quote" [roleType]="m.ProductQuote.FullfillContactMechanism" [options]="contactMechanisms" display="displayName"></a-mat-select>
+      <a-mat-datepicker [object]="quote" [roleType]="m.ProductQuote.IssueDate"></a-mat-datepicker>
+      <a-mat-datepicker [object]="quote" [roleType]="m.ProductQuote.RequiredResponseDate"></a-mat-datepicker>
+      <a-mat-input [object]="quote" [roleType]="m.ProductQuote.Description"></a-mat-input>
+      <a-mat-autocomplete [object]="quote" [roleType]="m.ProductQuote.Currency" [filter]="currenciesFilter.create()" display="Name"></a-mat-autocomplete>
+      <a-mat-static *ngIf="request.Comment" [object]="request" [roleType]="m.Request.Comment" label="Request Comment"></a-mat-static>
+      <a-mat-textarea [object]="quote" [roleType]="m.ProductQuote.Comment" label="Quote Comment"></a-mat-textarea>
+      <a-mat-static *ngIf="request.InternalComment" [object]="request" [roleType]="m.Request.InternalComment" label="Request Internal Comment"></a-mat-static>
+      <a-mat-textarea [object]="quote" [roleType]="m.ProductQuote.InternalComment" label="Quote Internal Comment"></a-mat-textarea>
     </div>
 
-    <md-divider></md-divider>
+    <mat-divider></mat-divider>
 
-    <md-card-actions>
-      <button md-button color="primary" type="submit" [disabled]="!form.form.valid">SAVE</button>
-      <button md-button (click)="goBack()" type="button">CANCEL</button>
-    </md-card-actions>
+    <mat-card-actions>
+      <button mat-button color="primary" type="submit" [disabled]="!form.form.valid">SAVE</button>
+      <button mat-button (click)="goBack()" type="button">CANCEL</button>
+    </mat-card-actions>
 
   </form>
 </td-layout-card-over>

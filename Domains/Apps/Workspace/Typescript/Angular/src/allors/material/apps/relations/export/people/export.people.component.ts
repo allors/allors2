@@ -3,7 +3,7 @@ import { Component, OnInit, AfterViewInit, OnDestroy, ViewChild, ChangeDetectorR
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Title } from '@angular/platform-browser';
-import { MdSnackBar, MdSnackBarConfig } from '@angular/material';
+import { MatSnackBar, MatSnackBarConfig } from '@angular/material';
 
 import { TdLoadingService, TdDialogService, TdMediaService } from '@covalent/core';
 
@@ -44,10 +44,10 @@ export class ExportPeopleComponent implements AfterViewInit, OnDestroy {
     private errorService: ErrorService,
     private formBuilder: FormBuilder,
     private titleService: Title,
-    private snackBar: MdSnackBar,
+    private snackBar: MatSnackBar,
     private router: Router,
     private dialogService: TdDialogService,
-    private snackBarService: MdSnackBar,
+    private snackBarService: MatSnackBar,
     public media: TdMediaService,
     private changeDetectorRef: ChangeDetectorRef) {
 

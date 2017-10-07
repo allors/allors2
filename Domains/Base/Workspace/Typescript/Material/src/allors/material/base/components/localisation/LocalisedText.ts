@@ -41,13 +41,13 @@ class LocalisedTextModel {
 }
 
 @Component({
-  selector: 'a-md-localised-text',
+  selector: 'a-mat-localised-text',
   template: `
 <div>
   <div *ngFor="let model of models">
-    <md-input-container fxLayout="row">
-      <input mdInput [(ngModel)]="model.text" [name]="model.name" [placeholder]="model.label">
-    </md-input-container>
+    <mat-input-container fxLayout="row">
+      <input matInput [(ngModel)]="model.text" [name]="model.name" [placeholder]="model.label">
+    </mat-input-container>
   </div>
 </div>
 `,

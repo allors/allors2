@@ -1,5 +1,5 @@
 import { AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit } from "@angular/core";
-import { MdSnackBar, MdSnackBarConfig } from "@angular/material";
+import { MatSnackBar, MatSnackBarConfig } from "@angular/material";
 import { ActivatedRoute } from "@angular/router";
 import { Router } from "@angular/router";
 import { TdDialogService, TdMediaService } from "@covalent/core";
@@ -31,7 +31,7 @@ export class RequestOverviewComponent implements OnInit, AfterViewInit, OnDestro
     private route: ActivatedRoute,
     private router: Router,
     public dialogService: TdDialogService,
-    private snackBar: MdSnackBar,
+    private snackBar: MatSnackBar,
     public media: TdMediaService, private changeDetectorRef: ChangeDetectorRef) {
 
     this.scope = new Scope(allors.database, allors.workspace);

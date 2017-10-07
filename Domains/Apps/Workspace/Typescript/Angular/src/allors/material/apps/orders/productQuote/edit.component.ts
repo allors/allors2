@@ -1,6 +1,6 @@
 import { AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit } from "@angular/core";
 import { Validators } from "@angular/forms";
-import { MdSnackBar, MdSnackBarConfig } from "@angular/material";
+import { MatSnackBar, MatSnackBarConfig } from "@angular/material";
 import { ActivatedRoute, Router, UrlSegment } from "@angular/router";
 import { TdDialogService, TdMediaService } from "@covalent/core";
 import { BehaviorSubject, Observable, Subject, Subscription } from "rxjs/Rx";
@@ -49,7 +49,7 @@ export class ProductQuoteEditComponent implements OnInit, AfterViewInit, OnDestr
     private errorService: ErrorService,
     private router: Router,
     private route: ActivatedRoute,
-    private snackBar: MdSnackBar,
+    private snackBar: MatSnackBar,
     private dialogService: TdDialogService,
     public media: TdMediaService, private changeDetectorRef: ChangeDetectorRef) {
 

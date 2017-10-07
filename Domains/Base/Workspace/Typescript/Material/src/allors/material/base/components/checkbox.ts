@@ -5,13 +5,13 @@ import { MetaDomain, RoleType } from '../../../../allors/meta';
 import { Field } from '../../../angular';
 
 @Component({
-  selector: 'a-md-checkbox',
+  selector: 'a-mat-checkbox',
   template: `
 <div fxLayout="row">
-  <md-checkbox fxFlex [(ngModel)]="model" [name]="name" [required]="required" [disabled]="disabled">
+  <mat-checkbox fxFlex [(ngModel)]="model" [name]="name" [required]="required" [disabled]="disabled">
   {{label}}
-  </md-checkbox>
-  <md-hint *ngIf="hint">{{hint}}</md-hint>
+  </mat-checkbox>
+  <mat-hint *ngIf="hint">{{hint}}</mat-hint>
 </div>
 `,
 })

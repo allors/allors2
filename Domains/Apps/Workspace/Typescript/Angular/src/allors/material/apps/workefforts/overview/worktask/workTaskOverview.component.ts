@@ -1,5 +1,5 @@
 import { AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit } from "@angular/core";
-import { MdSnackBar, MdSnackBarConfig } from "@angular/material";
+import { MatSnackBar, MatSnackBarConfig } from "@angular/material";
 import { ActivatedRoute, UrlSegment } from "@angular/router";
 import { TdDialogService, TdMediaService } from "@covalent/core";
 import { BehaviorSubject, Observable, Subject, Subscription } from "rxjs/Rx";
@@ -36,7 +36,7 @@ export class WorkTaskOverviewComponent implements OnInit, AfterViewInit, OnDestr
     private errorService: ErrorService,
     private route: ActivatedRoute,
     private dialogService: TdDialogService,
-    private snackBar: MdSnackBar,
+    private snackBar: MatSnackBar,
 
     public media: TdMediaService, private changeDetectorRef: ChangeDetectorRef) {
 

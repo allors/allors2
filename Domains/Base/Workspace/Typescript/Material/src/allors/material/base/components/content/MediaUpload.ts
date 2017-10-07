@@ -5,19 +5,19 @@ import { MetaDomain, RoleType } from '../../../../../allors/meta';
 import { Field } from '../../../../angular';
 
 @Component({
-  selector: 'a-md-media-upload',
+  selector: 'a-mat-media-upload',
   template: `
 <div fxLayout="row">
-  <md-input-container tdFileDrop (fileDrop)="dropEvent($event)" flex>
-      <input mdInput [placeholder]="label" [value]="fileName" [disabled]="!this.ExistObject"/>
-  </md-input-container>
+  <mat-input-container tdFileDrop (fileDrop)="dropEvent($event)" flex>
+      <input matInput [placeholder]="label" [value]="fileName" [disabled]="!this.ExistObject"/>
+  </mat-input-container>
 
-  <button md-icon-button *ngIf="media" (click)="delete()" (keyup.enter)="delete()">
-    <md-icon>cancel</md-icon>
+  <button mat-icon-button *ngIf="media" (click)="delete()" (keyup.enter)="delete()">
+    <mat-icon>cancel</mat-icon>
   </button>
 
   <td-file-input #fileInput [(ngModel)]="file" color="primary" (select)="selectEvent($event)" accept="accept" [disabled]="!canWrite" [required]="required">
-    <md-icon>attach_file</md-icon><span>Choose a file ...</span>
+    <mat-icon>attach_file</mat-icon><span>Choose a file ...</span>
   </td-file-input>
 </div>
 `,

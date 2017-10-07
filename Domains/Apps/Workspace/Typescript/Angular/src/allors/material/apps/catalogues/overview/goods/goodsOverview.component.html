@@ -1,115 +1,115 @@
-<md-toolbar>
+<mat-toolbar>
   <div layout="row" layout-align="start center" flex>
-    <button md-icon-button tdLayoutManageListOpen [hideWhenOpened]="true" style="display: none">
-          <md-icon>arrow_back</md-icon>
+    <button mat-icon-button tdLayoutManageListOpen [hideWhenOpened]="true" style="display: none">
+          <mat-icon>arrow_back</mat-icon>
         </button>
     <span>{{title}}</span>
     <span flex></span>
-    <button md-icon-button><md-icon>settings</md-icon></button>
+    <button mat-icon-button><mat-icon>settings</mat-icon></button>
   </div>
-</md-toolbar>
+</mat-toolbar>
 
-<md-card>
+<mat-card>
   <div class="pad-top-xs pad-left pad-right">
     <form novalidate [formGroup]="searchForm">
-      <md-input-container>
-        <input fxFlex mdInput placeholder="Name" formControlName="name">
-        <md-icon mdSuffix>search</md-icon>
-      </md-input-container>
-      <md-input-container>
-        <input fxFlex mdInput placeholder="ArticleNr" formControlName="articleNumber">
-        <md-icon mdSuffix>search</md-icon>
-      </md-input-container>
-      <md-input-container>
-        <input fxFlex mdInput placeholder="Keyword" formControlName="keyword">
-        <md-icon mdSuffix>search</md-icon>
-      </md-input-container>
-      <md-input-container>
-        <input fxFlex mdInput placeholder="Owner" formControlName="owner">
-        <md-icon mdSuffix>search</md-icon>
-      </md-input-container>
-      <md-select formControlName="ownership" name="ownership" [(ngModel)]="selectedOwnership" placeholder="Ownership">
-        <md-option>None</md-option>
-        <md-option *ngFor="let ownership of ownerships" [value]="ownership.Name">{{ ownership.Name }}</md-option>
-      </md-select>
-      <md-select formControlName="brand" name="brand" [(ngModel)]="selectedBrand" placeholder="Brand">
-        <md-option>None</md-option>
-        <md-option *ngFor="let brand of brands" [value]="brand.Name">{{ brand.Name }}</md-option>
-      </md-select>
-      <md-select formControlName="model" name="model" [(ngModel)]="selectedModel" placeholder="Model">
-        <md-option>None</md-option>
-        <md-option *ngFor="let model of models" [value]="model.Name">{{ model.Name }}</md-option>
-      </md-select>
-      <md-select formControlName="productCategory" name="productCategory" [(ngModel)]="selectedProductCategory" placeholder="Category">
-        <md-option>None</md-option>
-        <md-option *ngFor="let productCategory of productCategories" [value]="productCategory.Name">{{ productCategory.Name }}</md-option>
-      </md-select>
-      <md-select formControlName="productType" name="productType" [(ngModel)]="selectedProductType" placeholder="Product Type">
-        <md-option>None</md-option>
-        <md-option *ngFor="let productType of productTypes" [value]="productType.Name">{{ productType.Name }}</md-option>
-      </md-select>
-      <md-select formControlName="inventoryItemKind" name="inventoryItemKind" [(ngModel)]="selectedInventoryItemKind" placeholder="Inventory Kind">
-        <md-option>None</md-option>
-        <md-option *ngFor="let inventoryItemKind of inventoryItemKinds" [value]="inventoryItemKind.Name">{{ inventoryItemKind.Name }}</md-option>
-      </md-select>
-      <md-select formControlName="manufacturer" name="manufacturer" [(ngModel)]="selectedManufacturer" placeholder="Manufacturer">
-        <md-option>None</md-option>
-        <md-option *ngFor="let manufacturer of manufacturers" [value]="manufacturer.Name">{{ manufacturer.Name }}</md-option>
-      </md-select>
-      <md-select formControlName="supplier" name="supplier" [(ngModel)]="selectedSupplier" placeholder="Supplier">
-        <md-option>None</md-option>
-        <md-option *ngFor="let supplier of suppliers" [value]="supplier.Name">{{ supplier.Name }}</md-option>
-      </md-select>
+      <mat-input-container>
+        <input fxFlex matInput placeholder="Name" formControlName="name">
+        <mat-icon matSuffix>search</mat-icon>
+      </mat-input-container>
+      <mat-input-container>
+        <input fxFlex matInput placeholder="ArticleNr" formControlName="articleNumber">
+        <mat-icon matSuffix>search</mat-icon>
+      </mat-input-container>
+      <mat-input-container>
+        <input fxFlex matInput placeholder="Keyword" formControlName="keyword">
+        <mat-icon matSuffix>search</mat-icon>
+      </mat-input-container>
+      <mat-input-container>
+        <input fxFlex matInput placeholder="Owner" formControlName="owner">
+        <mat-icon matSuffix>search</mat-icon>
+      </mat-input-container>
+      <mat-select formControlName="ownership" name="ownership" [(ngModel)]="selectedOwnership" placeholder="Ownership">
+        <mat-option>None</mat-option>
+        <mat-option *ngFor="let ownership of ownerships" [value]="ownership.Name">{{ ownership.Name }}</mat-option>
+      </mat-select>
+      <mat-select formControlName="brand" name="brand" [(ngModel)]="selectedBrand" placeholder="Brand">
+        <mat-option>None</mat-option>
+        <mat-option *ngFor="let brand of brands" [value]="brand.Name">{{ brand.Name }}</mat-option>
+      </mat-select>
+      <mat-select formControlName="model" name="model" [(ngModel)]="selectedModel" placeholder="Model">
+        <mat-option>None</mat-option>
+        <mat-option *ngFor="let model of models" [value]="model.Name">{{ model.Name }}</mat-option>
+      </mat-select>
+      <mat-select formControlName="productCategory" name="productCategory" [(ngModel)]="selectedProductCategory" placeholder="Category">
+        <mat-option>None</mat-option>
+        <mat-option *ngFor="let productCategory of productCategories" [value]="productCategory.Name">{{ productCategory.Name }}</mat-option>
+      </mat-select>
+      <mat-select formControlName="productType" name="productType" [(ngModel)]="selectedProductType" placeholder="Product Type">
+        <mat-option>None</mat-option>
+        <mat-option *ngFor="let productType of productTypes" [value]="productType.Name">{{ productType.Name }}</mat-option>
+      </mat-select>
+      <mat-select formControlName="inventoryItemKind" name="inventoryItemKind" [(ngModel)]="selectedInventoryItemKind" placeholder="Inventory Kind">
+        <mat-option>None</mat-option>
+        <mat-option *ngFor="let inventoryItemKind of inventoryItemKinds" [value]="inventoryItemKind.Name">{{ inventoryItemKind.Name }}</mat-option>
+      </mat-select>
+      <mat-select formControlName="manufacturer" name="manufacturer" [(ngModel)]="selectedManufacturer" placeholder="Manufacturer">
+        <mat-option>None</mat-option>
+        <mat-option *ngFor="let manufacturer of manufacturers" [value]="manufacturer.Name">{{ manufacturer.Name }}</mat-option>
+      </mat-select>
+      <mat-select formControlName="supplier" name="supplier" [(ngModel)]="selectedSupplier" placeholder="Supplier">
+        <mat-option>None</mat-option>
+        <mat-option *ngFor="let supplier of suppliers" [value]="supplier.Name">{{ supplier.Name }}</mat-option>
+      </mat-select>
     </form>
   </div>
 
-  <md-divider></md-divider>
+  <mat-divider></mat-divider>
 
   <ng-template tdLoading="data">
-    <md-list class="will-load">
-      <div class="md-padding" *ngIf="data && data.length === 0" layout="row" layout-align="center center">
+    <mat-list class="will-load">
+      <div class="mat-padding" *ngIf="data && data.length === 0" layout="row" layout-align="center center">
         <h3>No products to display.</h3>
       </div>
       <ng-template let-good let-last="last" ngFor [ngForOf]="data">
-        <md-list-item>
+        <mat-list-item>
 
-          <md-icon *ngIf="!good.PrimaryPhoto" md-list-avatar>photo_camera</md-icon>
+          <mat-icon *ngIf="!good.PrimaryPhoto" mat-list-avatar>photo_camera</mat-icon>
           <img *ngIf="good.PrimaryPhoto" src="http://localhost:5000/Media/Download/{{good.PrimaryPhoto.UniqueId}}?revision={{good.PrimaryPhoto.Revision}}"
             widht="90" height="60" />
 
-          <h3 md-line [routerLink]="'/good/' + [good.id]"> {{good.Name}}</h3>
-          <p md-line class="md-caption">{{ good.Description }} </p>
-          <p md-line class="md-caption">Primary category: {{ good.PrimaryProductCategory?.Name }} </p>
+          <h3 mat-line [routerLink]="'/good/' + [good.id]"> {{good.Name}}</h3>
+          <p mat-line class="mat-caption">{{ good.Description }} </p>
+          <p mat-line class="mat-caption">Primary category: {{ good.PrimaryProductCategory?.Name }} </p>
 
           <span>
-                <button md-icon-button [md-menu-trigger-for]="menu">
-                <md-icon>more_vert</md-icon>
+                <button mat-icon-button [mat-menu-trigger-for]="menu">
+                <mat-icon>more_vert</mat-icon>
                 </button>
-                <md-menu x-position="before" #menu="mdMenu">
-                <a [routerLink]="'/good/' + [good.id]" md-menu-item>Edit</a>
-                <button md-menu-item (click)="delete(good)">Delete</button>
-                </md-menu>
+                <mat-menu x-position="before" #menu="matMenu">
+                <a [routerLink]="'/good/' + [good.id]" mat-menu-item>Edit</a>
+                <button mat-menu-item (click)="delete(good)">Delete</button>
+                </mat-menu>
               </span>
 
-        </md-list-item>
-        <md-divider *ngIf="!last" md-inset></md-divider>
+        </mat-list-item>
+        <mat-divider *ngIf="!last" mat-inset></mat-divider>
       </ng-template>
-    </md-list>
+    </mat-list>
   </ng-template>
-</md-card>
+</mat-card>
 
-<md-card body tdMediaToggle="gt-xs" [mediaClasses]="['push']" *ngIf="this.data && this.data.length !== total">
-  <md-card-content>
-    <button md-button (click)="more()">More</button> {{this.data?.length}}/{{total}}
-  </md-card-content>
-</md-card>
+<mat-card body tdMediaToggle="gt-xs" [mediaClasses]="['push']" *ngIf="this.data && this.data.length !== total">
+  <mat-card-content>
+    <button mat-button (click)="more()">More</button> {{this.data?.length}}/{{total}}
+  </mat-card-content>
+</mat-card>
 
 <span flex>
-  <a md-fab color="accent" class="mat-fab-bottom-right fixed" [routerLink]="['/serialisedGood']">
-    <md-icon>add</md-icon>
+  <a mat-fab color="accent" class="mat-fab-bottom-right fixed" [routerLink]="['/serialisedGood']">
+    <mat-icon>add</mat-icon>
   </a>
 <!--
-  <a md-fab color="accent" class="mat-fab-bottom-right fixed" [routerLink]="['/nonSerialisedGood']">
-    <md-icon>add</md-icon>N
+  <a mat-fab color="accent" class="mat-fab-bottom-right fixed" [routerLink]="['/nonSerialisedGood']">
+    <mat-icon>add</mat-icon>N
   </a> -->
 </span>

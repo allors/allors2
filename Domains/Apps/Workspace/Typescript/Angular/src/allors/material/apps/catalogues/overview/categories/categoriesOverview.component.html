@@ -1,62 +1,62 @@
-<md-toolbar>
+<mat-toolbar>
   <div layout="row" layout-align="start center" flex>
-    <button md-icon-button tdLayoutManageListOpen [hideWhenOpened]="true" style="display: none">
-          <md-icon>arrow_back</md-icon>
+    <button mat-icon-button tdLayoutManageListOpen [hideWhenOpened]="true" style="display: none">
+          <mat-icon>arrow_back</mat-icon>
         </button>
     <span>{{title}}</span>
     <span flex></span>
-    <button md-icon-button><md-icon>settings</md-icon></button>
+    <button mat-icon-button><mat-icon>settings</mat-icon></button>
   </div>
-</md-toolbar>
+</mat-toolbar>
 
 
-<md-card>
+<mat-card>
   <div class="pad-top-xs pad-left pad-right">
     <form novalidate [formGroup]="searchForm">
-      <md-input-container>
-        <input fxFlex mdInput placeholder="Name" formControlName="name">
-        <md-icon mdSuffix>search</md-icon>
-      </md-input-container>
+      <mat-input-container>
+        <input fxFlex matInput placeholder="Name" formControlName="name">
+        <mat-icon matSuffix>search</mat-icon>
+      </mat-input-container>
     </form>
   </div>
 
-  <md-divider></md-divider>
+  <mat-divider></mat-divider>
   <ng-template tdLoading="data">
-    <md-list class="will-load">
-      <div class="md-padding" *ngIf="data && data.length === 0" layout="row" layout-align="center center">
+    <mat-list class="will-load">
+      <div class="mat-padding" *ngIf="data && data.length === 0" layout="row" layout-align="center center">
         <h3>No categories to display.</h3>
       </div>
       <ng-template let-category let-last="last" ngFor [ngForOf]="data">
-        <md-list-item>
-          <md-icon *ngIf="!category.CategoryImage" md-list-avatar>photo_camera</md-icon>
-          <img *ngIf="category.CategoryImage" md-list-avatar src="http://localhost:5000/Media/Download/{{category.CategoryImage.UniqueId}}?revision={{category.CategoryImage.Revision}}"
+        <mat-list-item>
+          <mat-icon *ngIf="!category.CategoryImage" mat-list-avatar>photo_camera</mat-icon>
+          <img *ngIf="category.CategoryImage" mat-list-avatar src="http://localhost:5000/Media/Download/{{category.CategoryImage.UniqueId}}?revision={{category.CategoryImage.Revision}}"
           />
 
-          <h3 md-line [routerLink]="'/category/' + [category.id]"> {{category.Name}}</h3>
-          <p md-line> {{category.Description}} </p>
+          <h3 mat-line [routerLink]="'/category/' + [category.id]"> {{category.Name}}</h3>
+          <p mat-line> {{category.Description}} </p>
 
           <span>
-            <button md-icon-button [md-menu-trigger-for]="menu">
-            <md-icon>more_vert</md-icon>
+            <button mat-icon-button [mat-menu-trigger-for]="menu">
+            <mat-icon>more_vert</mat-icon>
             </button>
-            <md-menu x-position="before" #menu="mdMenu">
-            <a [routerLink]="'/category/' + [category.id]" md-menu-item>Edit</a>
-            <button md-menu-item (click)="delete(category)">Delete</button>
-            </md-menu>
+            <mat-menu x-position="before" #menu="matMenu">
+            <a [routerLink]="'/category/' + [category.id]" mat-menu-item>Edit</a>
+            <button mat-menu-item (click)="delete(category)">Delete</button>
+            </mat-menu>
           </span>
-        </md-list-item>
-        <md-divider *ngIf="!last" md-inset></md-divider>
+        </mat-list-item>
+        <mat-divider *ngIf="!last" mat-inset></mat-divider>
       </ng-template>
-    </md-list>
+    </mat-list>
   </ng-template>
-</md-card>
+</mat-card>
 
-<md-card body tdMediaToggle="gt-xs" [mediaClasses]="['push']" *ngIf="this.data && this.data.length !== total">
-  <md-card-content>
-    <button md-button (click)="more()">More</button> {{this.data?.length}}/{{total}}
-  </md-card-content>
-</md-card>
+<mat-card body tdMediaToggle="gt-xs" [mediaClasses]="['push']" *ngIf="this.data && this.data.length !== total">
+  <mat-card-content>
+    <button mat-button (click)="more()">More</button> {{this.data?.length}}/{{total}}
+  </mat-card-content>
+</mat-card>
 
-<a md-fab color="accent" class="mat-fab-bottom-right fixed" [routerLink]="['/category']">
-  <md-icon>add</md-icon>
+<a mat-fab color="accent" class="mat-fab-bottom-right fixed" [routerLink]="['/category']">
+  <mat-icon>add</mat-icon>
 </a>

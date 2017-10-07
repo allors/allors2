@@ -3,30 +3,30 @@
 
     <div class="pad">
       <div *ngIf="invoice.CurrentObjectState">
-        <a-md-static [object]="invoice" [roleType]="m.SalesOrder.CurrentObjectState" display="Name" label="Status"></a-md-static>
-        <button *ngIf="invoice.CanExecuteSend" md-button type="button" (click)="send()">Send</button>
-        <button *ngIf="invoice.CanExecuteSend" md-button type="button" (click)="cancel()">Cancel</button>
-        <button *ngIf="invoice.CanExecuteWriteOff" md-button type="button" (click)="writeOff()">Write off</button>
+        <a-mat-static [object]="invoice" [roleType]="m.SalesOrder.CurrentObjectState" display="Name" label="Status"></a-mat-static>
+        <button *ngIf="invoice.CanExecuteSend" mat-button type="button" (click)="send()">Send</button>
+        <button *ngIf="invoice.CanExecuteSend" mat-button type="button" (click)="cancel()">Cancel</button>
+        <button *ngIf="invoice.CanExecuteWriteOff" mat-button type="button" (click)="writeOff()">Write off</button>
       </div>
 
-      <a-md-static *ngIf="invoice.SalesOrder" [object]="invoice" [roleType]="m.SalesInvoice.SalesOrder"></a-md-static>
-      <a-md-autocomplete *ngIf="showOrganisations" [object]="invoice" [roleType]="m.SalesInvoice.BillToCustomer" [filter]="organisationsFilter.create()"
-        display="Name" (onSelect)="receiverSelected($event)" label="Bill to organisation"></a-md-autocomplete>
-      <a-md-autocomplete *ngIf="showPeople" [object]="invoice" [roleType]="m.SalesInvoice.BillToCustomer" [filter]="peopleFilter.create()"
-        display="displayName" (onSelect)="receiverSelected($event)" label="Bill to person"></a-md-autocomplete>
-      <a-md-select [object]="invoice" [roleType]="m.SalesInvoice.BillToContactMechanism" [options]="contactMechanisms" display="displayName"></a-md-select>
-      <a-md-static *ngIf="order.Comment" [object]="order" [roleType]="m.SalesOrder.Comment"></a-md-static>
-      <a-md-textarea [object]="invoice" [roleType]="m.SalesInvoice.Comment"></a-md-textarea>
-      <a-md-static *ngIf="order.InternalComment" [object]="order" [roleType]="m.SalesOrder.InternalComment"></a-md-static>
-      <a-md-textarea [object]="invoice" [roleType]="m.SalesInvoice.InternalComment"></a-md-textarea>
+      <a-mat-static *ngIf="invoice.SalesOrder" [object]="invoice" [roleType]="m.SalesInvoice.SalesOrder"></a-mat-static>
+      <a-mat-autocomplete *ngIf="showOrganisations" [object]="invoice" [roleType]="m.SalesInvoice.BillToCustomer" [filter]="organisationsFilter.create()"
+        display="Name" (onSelect)="receiverSelected($event)" label="Bill to organisation"></a-mat-autocomplete>
+      <a-mat-autocomplete *ngIf="showPeople" [object]="invoice" [roleType]="m.SalesInvoice.BillToCustomer" [filter]="peopleFilter.create()"
+        display="displayName" (onSelect)="receiverSelected($event)" label="Bill to person"></a-mat-autocomplete>
+      <a-mat-select [object]="invoice" [roleType]="m.SalesInvoice.BillToContactMechanism" [options]="contactMechanisms" display="displayName"></a-mat-select>
+      <a-mat-static *ngIf="order.Comment" [object]="order" [roleType]="m.SalesOrder.Comment"></a-mat-static>
+      <a-mat-textarea [object]="invoice" [roleType]="m.SalesInvoice.Comment"></a-mat-textarea>
+      <a-mat-static *ngIf="order.InternalComment" [object]="order" [roleType]="m.SalesOrder.InternalComment"></a-mat-static>
+      <a-mat-textarea [object]="invoice" [roleType]="m.SalesInvoice.InternalComment"></a-mat-textarea>
     </div>
 
-    <md-divider></md-divider>
+    <mat-divider></mat-divider>
 
-    <md-card-actions>
-      <button md-button color="primary" type="submit" [disabled]="!form.form.valid">SAVE</button>
-      <button md-button (click)="goBack()" type="button">CANCEL</button>
-    </md-card-actions>
+    <mat-card-actions>
+      <button mat-button color="primary" type="submit" [disabled]="!form.form.valid">SAVE</button>
+      <button mat-button (click)="goBack()" type="button">CANCEL</button>
+    </mat-card-actions>
 
   </form>
 </td-layout-card-over>

@@ -3,29 +3,29 @@
 
     <div class="pad">
       <div *ngIf="quoteItem.CurrentObjectState">
-        <a-md-static [object]="quoteItem" [roleType]="m.QuoteItem.CurrentObjectState" display="Name" label="Status"></a-md-static>
-        <button *ngIf="quoteItem.CanExecuteSubmit" md-button type="button" (click)="submit()">Submit</button>
-        <button *ngIf="quoteItem.CanExecuteCancel" md-button type="button" (click)="cancel()">Cancel</button>
+        <a-mat-static [object]="quoteItem" [roleType]="m.QuoteItem.CurrentObjectState" display="Name" label="Status"></a-mat-static>
+        <button *ngIf="quoteItem.CanExecuteSubmit" mat-button type="button" (click)="submit()">Submit</button>
+        <button *ngIf="quoteItem.CanExecuteCancel" mat-button type="button" (click)="cancel()">Cancel</button>
       </div>
 
-      <a-md-autocomplete [object]="quoteItem" [roleType]="m.QuoteItem.Product" [options]="goods" display="Name"></a-md-autocomplete>
-      <a-md-input [object]="quoteItem" [roleType]="m.QuoteItem.Quantity"></a-md-input>
-      <a-md-input [object]="quoteItem" [roleType]="m.QuoteItem.UnitPrice"></a-md-input>
-      <a-md-static *ngIf="requestItem" [object]="requestItem" [roleType]="m.RequestItem.MaximumAllowedPrice"></a-md-static>
-      <a-md-static *ngIf="inventoryItem" [object]="inventoryItem" [roleType]="m.SerialisedInventoryItemVersioned.ExpectedSalesPrice"></a-md-static>
-      <a-md-datepicker [object]="quoteItem" [roleType]="m.QuoteItem.RequiredByDate" disabled="true"></a-md-datepicker>
-      <a-md-datepicker [object]="quoteItem" [roleType]="m.QuoteItem.EstimatedDeliveryDate"></a-md-datepicker>
-      <a-md-static *ngIf="requestItem.Comment" [object]="requestItem" [roleType]="m.RequestItem.Comment"></a-md-static>
-      <a-md-textarea [object]="quoteItem" [roleType]="m.QuoteItem.Comment"></a-md-textarea>
-      <a-md-static *ngIf="requestItem.InternalComment" [object]="requestItem" [roleType]="m.RequestItem.InternalComment"></a-md-static>
-      <a-md-textarea [object]="quoteItem" [roleType]="m.QuoteItem.InternalComment"></a-md-textarea>
+      <a-mat-autocomplete [object]="quoteItem" [roleType]="m.QuoteItem.Product" [options]="goods" display="Name"></a-mat-autocomplete>
+      <a-mat-input [object]="quoteItem" [roleType]="m.QuoteItem.Quantity"></a-mat-input>
+      <a-mat-input [object]="quoteItem" [roleType]="m.QuoteItem.UnitPrice"></a-mat-input>
+      <a-mat-static *ngIf="requestItem" [object]="requestItem" [roleType]="m.RequestItem.MaximumAllowedPrice"></a-mat-static>
+      <a-mat-static *ngIf="inventoryItem" [object]="inventoryItem" [roleType]="m.SerialisedInventoryItemVersioned.ExpectedSalesPrice"></a-mat-static>
+      <a-mat-datepicker [object]="quoteItem" [roleType]="m.QuoteItem.RequiredByDate" disabled="true"></a-mat-datepicker>
+      <a-mat-datepicker [object]="quoteItem" [roleType]="m.QuoteItem.EstimatedDeliveryDate"></a-mat-datepicker>
+      <a-mat-static *ngIf="requestItem.Comment" [object]="requestItem" [roleType]="m.RequestItem.Comment"></a-mat-static>
+      <a-mat-textarea [object]="quoteItem" [roleType]="m.QuoteItem.Comment"></a-mat-textarea>
+      <a-mat-static *ngIf="requestItem.InternalComment" [object]="requestItem" [roleType]="m.RequestItem.InternalComment"></a-mat-static>
+      <a-mat-textarea [object]="quoteItem" [roleType]="m.QuoteItem.InternalComment"></a-mat-textarea>
     </div>
 
-    <md-divider></md-divider>
+    <mat-divider></mat-divider>
 
-    <md-card-actions>
-      <button md-button color="primary" type="submit" [disabled]="!form.form.valid">SAVE</button>
-      <button md-button (click)="goBack()" type="button">CANCEL</button>
-    </md-card-actions>
+    <mat-card-actions>
+      <button mat-button color="primary" type="submit" [disabled]="!form.form.valid">SAVE</button>
+      <button mat-button (click)="goBack()" type="button">CANCEL</button>
+    </mat-card-actions>
   </form>
 </td-layout-card-over>

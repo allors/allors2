@@ -3,26 +3,26 @@
 
     <div class="pad">
       <div *ngIf="requestItem.CurrentObjectState">
-        <a-md-static [object]="request" [roleType]="m.RequestItem.CurrentObjectState" display="Name" label="Status"></a-md-static>
-         <button *ngIf="requestItem.CanExecuteSubmit" md-button type="button" (click)="submit()">Submit</button>
-        <button *ngIf="requestItem.CanExecuteCancel" md-button type="button" (click)="cancel()">Cancel</button>
-        <button *ngIf="requestItem.CanExecuteHold" md-button type="button" (click)="hold()">Pending Customer</button>
+        <a-mat-static [object]="request" [roleType]="m.RequestItem.CurrentObjectState" display="Name" label="Status"></a-mat-static>
+         <button *ngIf="requestItem.CanExecuteSubmit" mat-button type="button" (click)="submit()">Submit</button>
+        <button *ngIf="requestItem.CanExecuteCancel" mat-button type="button" (click)="cancel()">Cancel</button>
+        <button *ngIf="requestItem.CanExecuteHold" mat-button type="button" (click)="hold()">Pending Customer</button>
       </div>
 
-      <a-md-autocomplete [object]="requestItem" [roleType]="m.RequestItem.Product" [options]="goods" display="Name"></a-md-autocomplete>
-      <a-md-input [object]="requestItem" [roleType]="m.RequestItem.Quantity"></a-md-input>
-      <a-md-input [object]="requestItem" [roleType]="m.RequestItem.MaximumAllowedPrice"></a-md-input>
-      <a-md-datepicker [object]="requestItem" [roleType]="m.RequestItem.RequiredByDate"></a-md-datepicker>
-      <a-md-textarea [object]="requestItem" [roleType]="m.RequestItem.Comment"></a-md-textarea>
-      <a-md-textarea [object]="requestItem" [roleType]="m.RequestItem.InternalComment"></a-md-textarea>
+      <a-mat-autocomplete [object]="requestItem" [roleType]="m.RequestItem.Product" [options]="goods" display="Name"></a-mat-autocomplete>
+      <a-mat-input [object]="requestItem" [roleType]="m.RequestItem.Quantity"></a-mat-input>
+      <a-mat-input [object]="requestItem" [roleType]="m.RequestItem.MaximumAllowedPrice"></a-mat-input>
+      <a-mat-datepicker [object]="requestItem" [roleType]="m.RequestItem.RequiredByDate"></a-mat-datepicker>
+      <a-mat-textarea [object]="requestItem" [roleType]="m.RequestItem.Comment"></a-mat-textarea>
+      <a-mat-textarea [object]="requestItem" [roleType]="m.RequestItem.InternalComment"></a-mat-textarea>
     </div>
 
-    <md-divider></md-divider>
+    <mat-divider></mat-divider>
 
-    <md-card-actions>
-      <button md-button color="primary" type="submit" [disabled]="!form.form.valid">SAVE</button>
-      <button md-button (click)="goBack()" type="button">CANCEL</button>
-    </md-card-actions>
+    <mat-card-actions>
+      <button mat-button color="primary" type="submit" [disabled]="!form.form.valid">SAVE</button>
+      <button mat-button (click)="goBack()" type="button">CANCEL</button>
+    </mat-card-actions>
 
   </form>
 </td-layout-card-over>

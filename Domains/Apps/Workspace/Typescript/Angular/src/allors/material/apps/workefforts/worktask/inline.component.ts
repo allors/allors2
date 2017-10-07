@@ -2,7 +2,7 @@ import { Observable, Subject, Subscription } from 'rxjs/Rx';
 import { Component, OnInit, AfterViewInit, OnDestroy, EventEmitter, Output , ChangeDetectorRef } from '@angular/core';
 import { Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { MdSnackBar, MdSnackBarConfig } from '@angular/material';
+import { MatSnackBar, MatSnackBarConfig } from '@angular/material';
 import { TdMediaService } from '@covalent/core';
 
 import { MetaDomain } from '../../../../meta/index';
@@ -14,16 +14,16 @@ import { AllorsService, ErrorService,  Scope, Loaded, Saved } from '../../../../
   selector: 'worktask-inline',
   template:
 `
-  <a-md-select  [object]="person" [roleType]="m.Person.PersonRoles" [options]="roles" display="Name"></a-md-select>
-  <a-md-input [object]="person" [roleType]="m.Person.FirstName" ></a-md-input>
-  <a-md-input [object]="person" [roleType]="m.Person.MiddleName" ></a-md-input>
-  <a-md-input [object]="person" [roleType]="m.Person.LastName" ></a-md-input>
-  <a-md-select [object]="person" [roleType]="m.Person.Gender" [options]="genders" display="Name" ></a-md-select>
-  <a-md-select [object]="person" [roleType]="m.Person.Salutation" [options]="salutations" display="Name"></a-md-select>
-  <a-md-select [object]="person" [roleType]="m.Person.Locale" [options]="locales" display="Name"></a-md-select>
+  <a-mat-select  [object]="person" [roleType]="m.Person.PersonRoles" [options]="roles" display="Name"></a-mat-select>
+  <a-mat-input [object]="person" [roleType]="m.Person.FirstName" ></a-mat-input>
+  <a-mat-input [object]="person" [roleType]="m.Person.MiddleName" ></a-mat-input>
+  <a-mat-input [object]="person" [roleType]="m.Person.LastName" ></a-mat-input>
+  <a-mat-select [object]="person" [roleType]="m.Person.Gender" [options]="genders" display="Name" ></a-mat-select>
+  <a-mat-select [object]="person" [roleType]="m.Person.Salutation" [options]="salutations" display="Name"></a-mat-select>
+  <a-mat-select [object]="person" [roleType]="m.Person.Locale" [options]="locales" display="Name"></a-mat-select>
 
-  <button md-button color="primary" type="button" (click)="save()">Save</button>
-  <button md-button color="secondary" type="button"(click)="cancel()">Cancel</button>
+  <button mat-button color="primary" type="button" (click)="save()">Save</button>
+  <button mat-button color="secondary" type="button"(click)="cancel()">Cancel</button>
 `,
 })
 export class WorkTaskInlineComponent implements OnInit {
