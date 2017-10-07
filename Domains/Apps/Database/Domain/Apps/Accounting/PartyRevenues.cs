@@ -42,6 +42,7 @@ namespace Allors.Domain
             partyRevenues.Filter.AddEquals(M.PartyRevenue.Year, invoice.InvoiceDate.Year);
             partyRevenues.Filter.AddEquals(M.PartyRevenue.Month, invoice.InvoiceDate.Month);
             var partyRevenue = partyRevenues.First ?? new PartyRevenueBuilder(session)
+                                                            .WithParty(invoice.BillToCustomer)
                                                             .WithYear(invoice.InvoiceDate.Year)
                                                             .WithMonth(invoice.InvoiceDate.Month)
                                                             .WithCurrency(Singleton.Instance(session).PreferredCurrency)

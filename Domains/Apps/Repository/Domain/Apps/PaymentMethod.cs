@@ -85,17 +85,6 @@ namespace Allors.Repository
 
 
         #region Allors
-        [Id("a937fc55-d737-444b-93b0-525994e09f6a")]
-        [AssociationId("c33d3bc7-13ff-4d83-be7b-e9fbd7c21d55")]
-        [RoleId("2b00353d-bc87-4aa1-b260-3650f93320ff")]
-        #endregion
-        [Multiplicity(Multiplicity.ManyToOne)]
-        [Indexed]
-
-        Party Creditor { get; set; }
-
-
-        #region Allors
         [Id("c32243ac-8810-478b-b0f4-11a1fe4773bd")]
         [AssociationId("433b6034-88a1-4355-81cd-dbd92ef6f7da")]
         [RoleId("238a0b8f-882a-47ea-96cc-ff19126974c1")]

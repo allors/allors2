@@ -436,6 +436,8 @@ namespace Allors.Domain
                 .WithOrderItem(item)
                 .Build();
 
+            this.DatabaseSession.Derive();
+
             shipment.AppsComplete();
 
             this.DatabaseSession.Derive();
@@ -578,6 +580,8 @@ namespace Allors.Domain
                 .WithOrderItem(item)
                 .Build();
 
+            this.DatabaseSession.Derive();
+
             shipment.AppsComplete();
             
             this.DatabaseSession.Derive();
@@ -619,7 +623,9 @@ namespace Allors.Domain
 
             this.order.AddPurchaseOrderItem(item);
 
-            this.order.PurchaseOrderState= new PurchaseOrderStates(this.DatabaseSession).Finished;
+            this.DatabaseSession.Derive();
+
+            this.order.PurchaseOrderState = new PurchaseOrderStates(this.DatabaseSession).Finished;
             
             this.DatabaseSession.Derive();
 
@@ -673,6 +679,8 @@ namespace Allors.Domain
                 .WithShipmentItem(shipmentItem)
                 .WithOrderItem(item)
                 .Build();
+
+            this.DatabaseSession.Derive();
 
             shipment.AppsComplete();
             

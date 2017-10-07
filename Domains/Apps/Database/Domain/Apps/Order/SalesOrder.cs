@@ -122,11 +122,8 @@ namespace Allors.Domain
         {
             var derivation = method.Derivation;
 
-            if (derivation.HasChangedRoles(this))
-            {
-                derivation.AddDependency(this.BillToCustomer, this);
-                derivation.AddDependency(this.ShipToCustomer, this);
-            }
+            derivation.AddDependency(this.BillToCustomer, this);
+            derivation.AddDependency(this.ShipToCustomer, this);
 
             foreach (var orderItem in this.OrderItems)
             {
@@ -277,6 +274,16 @@ namespace Allors.Domain
         public void AppsContinue(OrderContinue method)
         {
             this.SalesOrderState = new SalesOrderStates(this.Strategy.Session).InProcess;
+        }
+
+        public void AppsComplete(OrderComplete method)
+        {
+            this.SalesOrderState = new SalesOrderStates(this.Strategy.Session).Completed;
+
+            if (Equals(this.Store.ProcessFlow, new ProcessFlows(this.strategy.Session).PayFirst))
+            {
+                this.AppsInvoice();
+            }
         }
 
         public void AppsOnDeriveOrderPaymentState(IDerivation derivation)

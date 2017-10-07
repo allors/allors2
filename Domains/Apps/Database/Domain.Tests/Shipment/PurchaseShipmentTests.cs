@@ -69,7 +69,8 @@ namespace Allors.Domain
         [Fact]
         public void GivenPurchaseShipment_WhenGettingShipmentNumberWithoutFormat_ThenShipmentNumberShouldBeReturned()
         {
-            var internalOrganisation = new InternalOrganisationBuilder(this.DatabaseSession).Build();
+            var internalOrganisation = Singleton.Instance(this.DatabaseSession).InternalOrganisation;
+            internalOrganisation.RemoveIncomingShipmentNumberPrefix();
 
             var shipment1 = new PurchaseShipmentBuilder(this.DatabaseSession).Build();
 
@@ -83,16 +84,13 @@ namespace Allors.Domain
         [Fact]
         public void GivenPurchaseShipment_WhenGettingShipmentNumberWithFormat_ThenFormattedShipmentNumberShouldBeReturned()
         {
-            var internalOrganisation = new InternalOrganisationBuilder(this.DatabaseSession).Build();
-            internalOrganisation.IncomingShipmentNumberPrefix = "the format is ";
-
             var shipment1 = new PurchaseShipmentBuilder(this.DatabaseSession).Build();
 
-            Assert.Equal("the format is 1", shipment1.ShipmentNumber);
+            Assert.Equal("incoming shipmentno: 1", shipment1.ShipmentNumber);
 
             var shipment2 = new PurchaseShipmentBuilder(this.DatabaseSession).Build();
 
-            Assert.Equal("the format is 2", shipment2.ShipmentNumber);
+            Assert.Equal("incoming shipmentno: 2", shipment2.ShipmentNumber);
         }
 
         [Fact]

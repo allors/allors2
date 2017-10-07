@@ -182,6 +182,11 @@ namespace Allors.Domain
                 {
                     this.Complete();
                 }
+
+                if (order.PurchaseOrderState.Equals(new PurchaseOrderStates(this.Strategy.Session).Finished))
+                {
+                    this.PurchaseOrderItemState = new PurchaseOrderItemStates(this.Strategy.Session).Finished;
+                }
             }
 
             if (this.PurchaseOrderItemState.Equals(new PurchaseOrderItemStates(this.Strategy.Session).InProcess))
@@ -263,7 +268,7 @@ namespace Allors.Domain
             if (this.ExistPurchaseOrderWherePurchaseOrderItem)
             {
                 var purchaseOrder = (PurchaseOrder)this.PurchaseOrderWherePurchaseOrderItem;
-                purchaseOrder.AppsOnDeriveCurrentOrderStatus(derivation);
+                purchaseOrder.AppsOnDerivePurchaseOrderState(derivation);
             }
         }
 

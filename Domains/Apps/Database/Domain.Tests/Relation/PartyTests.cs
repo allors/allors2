@@ -115,6 +115,8 @@ namespace Allors.Domain
                 .Build();
             salesOrder1.AddSalesOrderItem(orderItem1);
 
+            this.DatabaseSession.Derive();
+
             var salesOrder2 = new SalesOrderBuilder(this.DatabaseSession).WithBillToCustomer(organisation).WithShipToAddress(postalAddress).WithComment("salesorder2").Build();
             var orderItem2 = new SalesOrderItemBuilder(this.DatabaseSession)
                 .WithProduct(good)
@@ -122,6 +124,8 @@ namespace Allors.Domain
                 .WithActualUnitPrice(10)
                 .Build();
             salesOrder2.AddSalesOrderItem(orderItem2);
+
+            this.DatabaseSession.Derive();
 
             var salesOrder3 = new SalesOrderBuilder(this.DatabaseSession).WithBillToCustomer(organisation).WithShipToAddress(postalAddress).WithComment("salesorder3").Build();
             var orderItem3 = new SalesOrderItemBuilder(this.DatabaseSession)

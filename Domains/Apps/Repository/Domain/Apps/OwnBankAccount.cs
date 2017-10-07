@@ -24,8 +24,6 @@ namespace Allors.Repository
 
         public OrganisationGlAccount GeneralLedgerAccount { get; set; }
 
-        public Party Creditor { get; set; }
-
         public bool IsActive { get; set; }
 
         public Permission[] DeniedPermissions { get; set; }

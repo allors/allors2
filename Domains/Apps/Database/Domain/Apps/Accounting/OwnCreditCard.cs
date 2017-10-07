@@ -34,7 +34,6 @@ namespace Allors.Domain
 
             if (Singleton.Instance(this.strategy.Session).InternalOrganisation.DoAccounting)
             {
-                derivation.Validation.AssertExists(this, M.OwnCreditCard.Creditor);
                 derivation.Validation.AssertAtLeastOne(this, M.Cash.GeneralLedgerAccount, M.Cash.Journal);
             }
 

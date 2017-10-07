@@ -21,44 +21,14 @@
 
 namespace Allors.Domain
 {
-    using System;
-    using Meta;
     using Xunit;
 
     
     public class CashTests : DomainTest
     {
         [Fact]
-        public void GivenCashPaymentMethodForInternalOrganisationThatDoesAccounting_WhenDeriving_ThenCreditorIsRequired()
+        public void GivenCashPaymentMethod_WhenDeriving_ThenGeneralLedgerAccountAndJournalAtMostOne()
         {
-            var internalOrganisation = Singleton.Instance(this.DatabaseSession).InternalOrganisation;
-            internalOrganisation.DefaultPaymentMethod.RemoveCreditor();
-            
-            internalOrganisation.DoAccounting = false;
-
-            Assert.False(this.DatabaseSession.Derive(false).HasErrors);
-
-            internalOrganisation.DoAccounting = true;
-
-            Assert.True(this.DatabaseSession.Derive(false).HasErrors);
-        }
-
-        [Fact]
-        public void GivenCashPaymentMethod_WhenDeriving_ThenGeneralLedgerAccountAndJournalCannotExistBoth()
-        {
-            var supplier = new OrganisationBuilder(this.DatabaseSession)
-                .WithName("supplier")
-                .WithLocale(new Locales(this.DatabaseSession).EnglishGreatBritain)
-                .WithOrganisationRole(new OrganisationRoles(this.DatabaseSession).Supplier)
-                .Build();
-
-            var internalOrganisation = Singleton.Instance(this.DatabaseSession).InternalOrganisation;
-
-            var supplierRelationship = new SupplierRelationshipBuilder(this.DatabaseSession)
-                .WithSupplier(supplier)
-                .WithFromDate(DateTime.UtcNow)
-                .Build();
-
             var generalLedgerAccount = new GeneralLedgerAccountBuilder(this.DatabaseSession)
                 .WithAccountNumber("0001")
                 .WithName("GeneralLedgerAccount")
@@ -76,10 +46,11 @@ namespace Allors.Domain
             var cash = new CashBuilder(this.DatabaseSession)
                 .WithDescription("description")
                 .WithGeneralLedgerAccount(internalOrganisationGlAccount)
-                .WithCreditor(supplier)
                 .Build();
 
+            var internalOrganisation = Singleton.Instance(this.DatabaseSession).InternalOrganisation;
             internalOrganisation.DoAccounting = true;
+            internalOrganisation.DefaultPaymentMethod = cash;
 
             Assert.False(this.DatabaseSession.Derive(false).HasErrors);
 
@@ -95,18 +66,7 @@ namespace Allors.Domain
         [Fact]
         public void GivenCashPaymentMethodForSingletonThatDoesAccounting_WhenDeriving_ThenEitherGeneralLedgerAccountOrJournalMustExist()
         {
-            var supplier = new OrganisationBuilder(this.DatabaseSession)
-                .WithName("supplier")
-                .WithLocale(new Locales(this.DatabaseSession).EnglishGreatBritain)
-                .WithOrganisationRole(new OrganisationRoles(this.DatabaseSession).Supplier)
-                .Build();
-
             var internalOrganisation = Singleton.Instance(this.DatabaseSession).InternalOrganisation;
-
-            var supplierRelationship = new SupplierRelationshipBuilder(this.DatabaseSession)
-                .WithSupplier(supplier)
-                .WithFromDate(DateTime.UtcNow)
-                .Build();
 
             var generalLedgerAccount = new GeneralLedgerAccountBuilder(this.DatabaseSession)
                 .WithAccountNumber("0001")
@@ -124,7 +84,6 @@ namespace Allors.Domain
 
             var cash = new CashBuilder(this.DatabaseSession)
                 .WithDescription("description")
-                .WithCreditor(supplier)
                 .Build();
 
             internalOrganisation.DoAccounting = true;

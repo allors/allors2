@@ -935,18 +935,10 @@ namespace Allors.Domain
                 .Build();
 
             var customer = new PersonBuilder(this.DatabaseSession).WithLastName("customer").WithPartyContactMechanism(shipToMechelen).WithPersonRole(new PersonRoles(this.DatabaseSession).Customer).Build();
-            var internalOrganisation = Singleton.Instance(this.DatabaseSession).InternalOrganisation;
-
-
-
-            new CustomerRelationshipBuilder(this.DatabaseSession).WithFromDate(DateTime.UtcNow).WithCustomer(customer).Build();
-
             new CustomerRelationshipBuilder(this.DatabaseSession)
                 .WithCustomer(customer)
-                
+                .WithFromDate(DateTime.UtcNow.AddYears(-2))
                 .Build();
-
-
 
             this.DatabaseSession.Derive();
             this.DatabaseSession.Commit();
@@ -1037,6 +1029,7 @@ namespace Allors.Domain
 
             new CustomerRelationshipBuilder(this.DatabaseSession)
                 .WithCustomer(customer)
+                .WithFromDate(DateTime.UtcNow.AddYears(-2))
                 .Build();
 
             this.DatabaseSession.Derive();
@@ -1397,12 +1390,7 @@ namespace Allors.Domain
         public void GivenSalesOrder_WhenBuild_ThenPreviousObjectStateIsNull()
         {
             var customer = new PersonBuilder(this.DatabaseSession).WithFirstName("Koen").WithPersonRole(new PersonRoles(this.DatabaseSession).Customer).Build();
-            var internalOrganisation = Singleton.Instance(this.DatabaseSession).InternalOrganisation;
-
-
             new CustomerRelationshipBuilder(this.DatabaseSession).WithFromDate(DateTime.UtcNow).WithCustomer(customer).Build();
-
-
             var mechelen = new CityBuilder(this.DatabaseSession).WithName("Mechelen").Build();
 
             this.DatabaseSession.Derive();
@@ -1422,11 +1410,7 @@ namespace Allors.Domain
         public void GivenSalesOrder_WhenConfirmed_ThenCurrentOrderStatusMustBeDerived()
         {
             var customer = new PersonBuilder(this.DatabaseSession).WithFirstName("Koen").WithPersonRole(new PersonRoles(this.DatabaseSession).Customer).Build();
-            var internalOrganisation = Singleton.Instance(this.DatabaseSession).InternalOrganisation;
-
-
             new CustomerRelationshipBuilder(this.DatabaseSession).WithFromDate(DateTime.UtcNow).WithCustomer(customer).Build();
-
 
             var mechelen = new CityBuilder(this.DatabaseSession).WithName("Mechelen").Build();
 
@@ -1757,13 +1741,9 @@ namespace Allors.Domain
         [Fact]
         public void GivenSalesOrder_WhenDeriving_ThenLocaleMustExist()
         {
-            var englischLocale = new Locales(this.DatabaseSession).EnglishGreatBritain;
-
             var mechelen = new CityBuilder(this.DatabaseSession).WithName("Mechelen").Build();
             var shipToContactMechanism = new PostalAddressBuilder(this.DatabaseSession).WithGeographicBoundary(mechelen).WithAddress1("Haverwerf 15").Build();
             var customer = new PersonBuilder(this.DatabaseSession).WithFirstName("Koen").WithPersonRole(new PersonRoles(this.DatabaseSession).Customer).Build();
-            var internalOrganisation = Singleton.Instance(this.DatabaseSession).InternalOrganisation;
-
 
             new CustomerRelationshipBuilder(this.DatabaseSession).WithFromDate(DateTime.UtcNow).WithCustomer(customer).Build();
 
@@ -1774,7 +1754,7 @@ namespace Allors.Domain
 
             this.DatabaseSession.Derive();
 
-            Assert.Equal(englischLocale, order.Locale);
+            Assert.Equal(Singleton.Instance(this.DatabaseSession).DefaultLocale, order.Locale);
         }
 
         [Fact]
@@ -1816,11 +1796,7 @@ namespace Allors.Domain
         public void GivenSalesOrder_WhenObjectStateIsInProcess_ThenCheckTransitions()
         {
             var customer = new PersonBuilder(this.DatabaseSession).WithFirstName("Koen").WithUserName("customer").WithPersonRole(new PersonRoles(this.DatabaseSession).Customer).Build();
-            var internalOrganisation = Singleton.Instance(this.DatabaseSession).InternalOrganisation;
-
-
             new CustomerRelationshipBuilder(this.DatabaseSession).WithFromDate(DateTime.UtcNow).WithCustomer(customer).Build();
-
 
             var mechelen = new CityBuilder(this.DatabaseSession).WithName("Mechelen").Build();
 
@@ -1854,10 +1830,6 @@ namespace Allors.Domain
         public void GivenSalesOrder_WhenObjectStateIsCancelled_ThenCheckTransitions()
         {
             var customer = new PersonBuilder(this.DatabaseSession).WithFirstName("Koen").WithUserName("customer").WithPersonRole(new PersonRoles(this.DatabaseSession).Customer).Build();
-            var internalOrganisation = Singleton.Instance(this.DatabaseSession).InternalOrganisation;
-
-
-
             new CustomerRelationshipBuilder(this.DatabaseSession).WithFromDate(DateTime.UtcNow).WithCustomer(customer).Build();
 
             var mechelen = new CityBuilder(this.DatabaseSession).WithName("Mechelen").Build();

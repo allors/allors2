@@ -31,7 +31,6 @@ namespace Allors.Domain
 
             if (Singleton.Instance(this.strategy.Session).InternalOrganisation.DoAccounting)
             {
-                derivation.Validation.AssertExists(this, this.Meta.Creditor);
                 derivation.Validation.AssertAtLeastOne(this, this.Meta.GeneralLedgerAccount, this.Meta.Journal);
             }
 

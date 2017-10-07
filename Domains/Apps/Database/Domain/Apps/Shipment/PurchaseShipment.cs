@@ -41,7 +41,7 @@ namespace Allors.Domain
                 this.Facility = Singleton.Instance(this).InternalOrganisation.DefaultFacility;
             }
 
-            if (!this.ExistShipmentNumber && this.ExistShipToParty)
+            if (!this.ExistShipmentNumber)
             {
                 this.ShipmentNumber = Singleton.Instance(this).InternalOrganisation.DeriveNextShipmentNumber();
             }
@@ -73,9 +73,11 @@ namespace Allors.Domain
         {
             var derivation = method.Derivation;
 
-            if (!this.ExistShipToAddress && this.ExistShipToParty)
+            derivation.Validation.AssertExists(this, this.Meta.ShipFromParty);
+
+            if (!this.ExistShipToAddress)
             {
-                this.ShipToAddress = this.ShipToParty.ShippingAddress;
+                this.ShipToAddress = Singleton.Instance(this).InternalOrganisation.ShippingAddress;
             }
 
             if (!this.ExistShipFromAddress && this.ExistShipFromParty)

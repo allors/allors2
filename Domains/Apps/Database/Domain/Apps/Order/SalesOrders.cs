@@ -41,22 +41,20 @@ namespace Allors.Domain
             var finished = new SalesOrderStates(this.Session).Finished;
 
             var reject = this.Meta.Reject;
+            var complete = this.Meta.Complete;
             var cancel = this.Meta.Cancel;
             var approve = this.Meta.Approve;
             var hold = this.Meta.Hold;
             var @continue = this.Meta.Continue;
             var confirm = this.Meta.Confirm;
 
-            // TODO:
-
-            //config.Deny(this.ObjectType, provisional, reject, approve, hold, @continue, finish);
-            //config.Deny(this.ObjectType, requestsApproval, confirm, hold, @continue, finish);
-            //config.Deny(this.ObjectType, inProcess, confirm, reject, approve, @continue, finish);
-            //config.Deny(this.ObjectType, onHold, confirm, reject, approve, hold, finish, addNewOrderItem);
-            //config.Deny(this.ObjectType, rejected, reject, finish, addNewOrderItem);
-            //config.Deny(this.ObjectType, cancelled, cancel, finish, addNewOrderItem);
-            //config.Deny(this.ObjectType, completed, complete, finish, addNewOrderItem);
-            //config.Deny(this.ObjectType, finished, finish, addNewOrderItem);
+            config.Deny(this.ObjectType, provisional, reject, approve, hold, @continue);
+            config.Deny(this.ObjectType, requestsApproval, confirm, hold, @continue);
+            config.Deny(this.ObjectType, inProcess, confirm, reject, approve, @continue);
+            config.Deny(this.ObjectType, onHold, confirm, reject, approve, hold);
+            config.Deny(this.ObjectType, rejected, reject);
+            config.Deny(this.ObjectType, cancelled, cancel);
+            config.Deny(this.ObjectType, completed, complete);
 
             config.Deny(this.ObjectType, cancelled, Operations.Execute, Operations.Write);
             config.Deny(this.ObjectType, rejected, Operations.Execute, Operations.Write);

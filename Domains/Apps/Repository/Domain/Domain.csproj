@@ -409,6 +409,8 @@
     <Compile Include="Apps\PurchaseInvoiceItemVersion.cs" />
     <Compile Include="Apps\PurchaseInvoiceVersion.cs" />
     <Compile Include="Apps\PurchaseOrderItemVersion.cs" />
+    <Compile Include="Apps\PurchaseOrderPaymentState.cs" />
+    <Compile Include="Apps\PurchaseOrderShipmentState.cs" />
     <Compile Include="Apps\PurchaseOrderVersion.cs" />
     <Compile Include="Apps\PurchaseReturnVersion.cs" />
     <Compile Include="Apps\PurchaseShipmentVersion.cs" />

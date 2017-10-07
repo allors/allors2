@@ -117,9 +117,10 @@ namespace Allors.Domain
                 this.TakenViaContactMechanism = this.TakenViaSupplier.OrderAddress;
             }
 
+            this.Locale = Singleton.Instance(this.Strategy.Session).DefaultLocale;
+
             this.AppsOnDeriveOrderItems(derivation);
-            this.AppsOnDeriveCurrentOrderStatus(derivation);
-            this.AppsOnDeriveLocale(derivation);
+            this.AppsOnDerivePurchaseOrderState(derivation);
             this.AppsOnDeriveOrderTotals(derivation);
 
             this.PreviousTakenViaSupplier = this.TakenViaSupplier;
@@ -155,26 +156,17 @@ namespace Allors.Domain
             this.PurchaseOrderState = new PurchaseOrderStates(this.Strategy.Session).InProcess;
         }
 
-        public void AppsOnDeriveCurrentOrderStatus(IDerivation derivation)
+        public void AppsOnDerivePurchaseOrderState(IDerivation derivation)
         {
-            // TODO: State Transitions
-            //if (this.ExistCurrentShipmentStateVersion && this.CurrentShipmentStateVersion.CurrentObjectState.Equals(new PurchaseOrderStates(this.Strategy.Session).Received))
-            //{
-            //    this.Complete();
-            //}
+            if (this.ExistPurchaseOrderShipmentState && this.PurchaseOrderShipmentState.Equals(new PurchaseOrderShipmentStates(this.Strategy.Session).Received))
+            {
+                this.Complete();
+            }
 
-            //if (this.ExistCurrentPaymentStateVersion && this.CurrentPaymentStateVersion.CurrentObjectState.Equals(new PurchaseOrderStates(this.Strategy.Session).Paid))
-            //{
-            //    this.Finish();
-            //}
-        }
-
-        public void AppsOnDeriveLocale(IDerivation derivation)
-        {
-            // TODO: ???
-            //this.Locale = this.ExistShipToBuyer && this.ShipToBuyer.ExistLocale
-            //                  ? this.ShipToBuyer.Locale
-            //                  : Singleton.Instance(this.Strategy.Session).DefaultLocale;
+            if (this.ExistPurchaseOrderPaymentState && this.PurchaseOrderPaymentState.Equals(new PurchaseOrderPaymentStates(this.Strategy.Session).Paid))
+            {
+                this.PurchaseOrderState = new PurchaseOrderStates(this.strategy.Session).Finished;
+            }
         }
 
         public void AppsOnDeriveOrderTotals(IDerivation derivation)

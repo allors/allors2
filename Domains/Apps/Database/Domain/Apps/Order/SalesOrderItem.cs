@@ -186,6 +186,11 @@ namespace Allors.Domain
                     }
                 }
 
+                if (order.SalesOrderState.Equals(new SalesOrderStates(this.Strategy.Session).Finished))
+                {
+                    this.SalesOrderItemState = new SalesOrderItemStates(this.Strategy.Session).Finished;
+                }
+
                 if (order.SalesOrderState.Equals(new SalesOrderStates(this.Strategy.Session).Cancelled))
                 {
                     this.Cancel();

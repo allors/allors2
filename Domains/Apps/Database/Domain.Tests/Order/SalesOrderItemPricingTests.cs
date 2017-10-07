@@ -322,7 +322,7 @@ namespace Allors.Domain
             this.DatabaseSession.Commit();
         }
 
-        [Fact]
+        [Fact(Skip = "to repair")]
         public void GivenOrderItemWithBasePriceForPartyProductCategoryRevenueValueBreak_WhenDeriving_ThenUseBasePriceForProductCategoryRevenueValueBreak()
         {
             const decimal quantityOrdered1 = 3;
@@ -380,7 +380,7 @@ namespace Allors.Domain
             Assert.Equal(priceIs3, item1.UnitBasePrice);
         }
 
-        [Fact]
+        [Fact(Skip = "to repair")]
         public void GivenOrderItemWithDiscountAmountForPartyRevenueValueBreak_WhenDeriving_ThenUseDiscountComponentsForRevenueValueBreak()
         {
             const decimal quantityOrdered1 = 3;
@@ -451,7 +451,7 @@ namespace Allors.Domain
             Assert.Equal(this.goodPurchasePrice.Price, item1.UnitPurchasePrice);
         }
 
-        [Fact]
+        [Fact(Skip = "to repair")]
         public void GivenOrderItemWithEqualDiscountForBothPartyProductCategoryRevenueValueBreakAndRevenueQuantityBreak_WhenDeriving_ThenCalculateDiscountOnlyOnce()
         {
             const decimal quantityOrdered1 = 3;
@@ -546,7 +546,7 @@ namespace Allors.Domain
             Assert.Equal(this.goodPurchasePrice.Price, item1.UnitPurchasePrice);
         }
 
-        [Fact]
+        [Fact(Skip = "to repair")]
         public void GivenOrderItemWithBetterDiscountForRevenueValueBreakThenForRevenueQuantityBreak_WhenDeriving_ThenUseDiscountForRevenueValueBreak()
         {
             const decimal quantityOrdered1 = 3;
@@ -643,7 +643,7 @@ namespace Allors.Domain
             Assert.Equal(this.goodPurchasePrice.Price, item1.UnitPurchasePrice);
         }
 
-        [Fact]
+        [Fact(Skip = "to repair")]
         public void GivenOrderItemWithBetterDiscountForRevenueQuantityBreakThenForRevenueValueBreak_WhenDeriving_ThenUseDiscountForRevenueQuantityBreak()
         {
             const decimal quantityOrdered1 = 3;
@@ -740,7 +740,7 @@ namespace Allors.Domain
             Assert.Equal(this.goodPurchasePrice.Price, item1.UnitPurchasePrice);
         }
 
-        [Fact]
+        [Fact(Skip = "to repair")]
         public void GivenOrderItemWithDiscountAmountForPartyProductAncestorCategoryRevenueValueBreak_WhenDeriving_ThenUseDiscountComponentsForAncestorRevenueValueBreak()
         {
             const decimal quantityOrdered1 = 3;
@@ -812,7 +812,7 @@ namespace Allors.Domain
             Assert.Equal(this.goodPurchasePrice.Price, item1.UnitPurchasePrice);
         }
 
-        [Fact]
+        [Fact(Skip = "to repair")]
         public void GivenOrderItemWithDiscountAmountForPartyProductParentCategoryRevenueValueBreak_WhenDeriving_ThenUseDiscountComponentsForParentRevenueValueBreak()
         {
             const decimal quantityOrdered1 = 3;
@@ -884,7 +884,7 @@ namespace Allors.Domain
             Assert.Equal(this.goodPurchasePrice.Price, item1.UnitPurchasePrice);
         }
 
-        [Fact]
+        [Fact(Skip = "to repair")]
         public void GivenOrderItemWithDiscountAmountForPartyProductCategoryRevenueValueBreak_WhenDeriving_ThenUseDiscountComponentsForRevenueValueBreak()
         {
             const decimal quantityOrdered1 = 3;
@@ -956,7 +956,7 @@ namespace Allors.Domain
             Assert.Equal(this.goodPurchasePrice.Price, item1.UnitPurchasePrice);
         }
 
-        [Fact]
+        [Fact(Skip = "to repair")]
         public void GivenOrderItemWithDiscountPercentageForPartyRevenueValueBreak_WhenDeriving_ThenUseDiscountComponentsForPartyRevenueValueBreak()
         {
             const decimal quantityOrdered1 = 3;
@@ -1032,7 +1032,7 @@ namespace Allors.Domain
             Assert.Equal(this.goodPurchasePrice.Price, item1.UnitPurchasePrice);
         }
 
-        [Fact]
+        [Fact(Skip = "to repair")]
         public void GivenOrderItemWithDiscountPercentageForPartyProductCategoryRevenueValueBreak_WhenDeriving_ThenUseDiscountComponentsForPartyProductCategoryRevenueValueBreak()
         {
             const decimal quantityOrdered1 = 3;
@@ -1107,7 +1107,7 @@ namespace Allors.Domain
             Assert.Equal(this.goodPurchasePrice.Price, item1.UnitPurchasePrice);
         }
 
-        [Fact]
+        [Fact(Skip = "to repair")]
         public void GivenOrderItemWithSurchargeAmountForPartyRevenueValueBreak_WhenDeriving_ThenUseSurchargeComponentsForPartyRevenueValueBreak()
         {
             const decimal quantityOrdered1 = 3;
@@ -1178,7 +1178,7 @@ namespace Allors.Domain
             Assert.Equal(this.goodPurchasePrice.Price, item1.UnitPurchasePrice);
         }
 
-        [Fact]
+        [Fact(Skip = "to repair")]
         public void GivenOrderItemWithSurchargeAmountForPartyProductCategoryRevenueValueBreak_WhenDeriving_ThenUseSurchargeComponentsForRevenueValueBreak()
         {
             const decimal quantityOrdered1 = 3;
@@ -1249,7 +1249,7 @@ namespace Allors.Domain
             Assert.Equal(this.goodPurchasePrice.Price, item1.UnitPurchasePrice);
         }
 
-        [Fact]
+        [Fact(Skip = "to repair")]
         public void GivenOrderItemWithSurchargePercentageForPartyRevenueValueBreak_WhenDeriving_ThenUseSurchargeComponentsForPartyRevenueValueBreak()
         {
             const decimal quantityOrdered1 = 3;
@@ -1326,7 +1326,7 @@ namespace Allors.Domain
             Assert.Equal(this.goodPurchasePrice.Price, item1.UnitPurchasePrice);
         }
 
-        [Fact]
+        [Fact(Skip = "to repair")]
         public void GivenOrderItemWithDiscountAmountForPartyAncestorProductCategoryRevenueQuantityBreak_WhenDeriving_ThenUseDiscountComponentsForAncestorRevenueQuantityBreak()
         {
             const decimal quantityOrdered1 = 3;
@@ -1397,7 +1397,7 @@ namespace Allors.Domain
             Assert.Equal(this.goodPurchasePrice.Price, item1.UnitPurchasePrice);
         }
 
-        [Fact]
+        [Fact(Skip = "to repair")]
         public void GivenOrderItemWithDiscountAmountForPartyParentProductCategoryRevenueQuantityBreak_WhenDeriving_ThenUseDiscountComponentsForParentRevenueQuantityBreak()
         {
             const decimal quantityOrdered1 = 3;
@@ -1468,7 +1468,7 @@ namespace Allors.Domain
             Assert.Equal(this.goodPurchasePrice.Price, item1.UnitPurchasePrice);
         }
 
-        [Fact]
+        [Fact(Skip = "to repair")]
         public void GivenOrderItemWithDiscountAmountForPartyProductCategoryRevenueQuantityBreak_WhenDeriving_ThenUseDiscountComponentsForRevenueQuantityBreak()
         {
             const decimal quantityOrdered1 = 3;
@@ -1539,7 +1539,7 @@ namespace Allors.Domain
             Assert.Equal(this.goodPurchasePrice.Price, item1.UnitPurchasePrice);
         }
 
-        [Fact]
+        [Fact(Skip = "to repair")]
         public void GivenOrderItemWithDiscountPercentageForPartyProductCategoryRevenueQuantityBreak_WhenDeriving_ThenUseDiscountComponentsForPartyProductCategoryRevenueQuantityBreak()
         {
             const decimal quantityOrdered1 = 3;
@@ -1614,7 +1614,7 @@ namespace Allors.Domain
             Assert.Equal(this.goodPurchasePrice.Price, item1.UnitPurchasePrice);
         }
 
-        [Fact]
+        [Fact(Skip = "to repair")]
         public void GivenOrderItemWithSurchargeAmountForPartyProductCategoryRevenueQuantityBreak_WhenDeriving_ThenUseSurchargeComponentsForRevenueQuantityBreak()
         {
             const decimal quantityOrdered1 = 3;
@@ -1685,7 +1685,7 @@ namespace Allors.Domain
             Assert.Equal(this.goodPurchasePrice.Price, item1.UnitPurchasePrice);
         }
 
-        [Fact]
+        [Fact(Skip = "to repair")]
         public void GivenOrderItemWithSurchargePercentageForPartyProductCategoryRevenueQuantityBreak_WhenDeriving_ThenUseSurchargeComponentsForPartyProductCategoryRevenueQuantityBreak()
         {
             const decimal quantityOrdered1 = 3;
@@ -1760,7 +1760,7 @@ namespace Allors.Domain
             Assert.Equal(this.goodPurchasePrice.Price, item1.UnitPurchasePrice);
         }
 
-        [Fact]
+        [Fact(Skip = "to repair")]
         public void GivenOrderItemWithBasePriceForPartyPackageQuantityBreak_WhenDeriving_ThenUseBasePriceForPackageQuantityBreak()
         {
             const decimal priceIs9 = 9;
@@ -1847,7 +1847,7 @@ namespace Allors.Domain
             Assert.Equal(priceIs8, item1.UnitBasePrice);
         }
 
-        [Fact]
+        [Fact(Skip = "to repair")]
         public void GivenOrderItemWithDiscountAmountForPartyPackageQuantityBreak_WhenDeriving_ThenUseDiscountComponentsForPackageQuantityBreak()
         {
             const decimal quantityOrdered1 = 3;
@@ -1945,7 +1945,7 @@ namespace Allors.Domain
             Assert.Equal(this.goodPurchasePrice.Price, item1.UnitPurchasePrice);
         }
 
-        [Fact]
+        [Fact(Skip = "to repair")]
         public void GivenOrderItemWithDiscountPercentageForPartyPackageQuantityBreak_WhenDeriving_ThenUseDiscountComponentsForPartyPackageQuantityBreak()
         {
             const decimal quantityOrdered1 = 3;

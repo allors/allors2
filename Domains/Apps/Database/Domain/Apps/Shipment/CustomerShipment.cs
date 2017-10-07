@@ -168,19 +168,16 @@ namespace Allors.Domain
         {
             var derivation = method.Derivation;
 
+            derivation.Validation.AssertExists(this, this.Meta.ShipToParty);
+
             if (!this.ExistShipToAddress && this.ExistShipToParty)
             {
                 this.ShipToAddress = this.ShipToParty.ShippingAddress;
             }
 
-            if (!this.ExistShipFromAddress && this.ExistShipFromParty)
+            if (!this.ExistShipFromAddress)
             {
-                this.ShipFromAddress = this.ShipFromParty.ShippingAddress;
-            }
-
-            if (!this.ExistShipFromAddress && this.ExistShipFromParty)
-            {
-                this.ShipFromAddress = this.ShipFromParty.ShippingAddress;
+                this.ShipFromAddress = Singleton.Instance(this.strategy.Session).InternalOrganisation.ShippingAddress;
             }
 
             if (!this.ExistBillFromContactMechanism)
@@ -194,6 +191,7 @@ namespace Allors.Domain
 
             this.AppsOnDeriveCurrentObjectState(derivation);
         }
+
         public void AppsOnDeriveInvoices(IDerivation derivation)
         {
             var invoiceByOrder = new Dictionary<SalesOrder, SalesInvoice>();

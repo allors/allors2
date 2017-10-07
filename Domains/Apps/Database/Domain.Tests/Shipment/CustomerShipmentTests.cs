@@ -69,11 +69,6 @@ namespace Allors.Domain
         public void GivenCustomerShipmentBuilder_WhenBuild_ThenPostBuildRelationsMustExist()
         {
             var customer = new PersonBuilder(this.DatabaseSession).WithLastName("customer").WithPersonRole(new PersonRoles(this.DatabaseSession).Customer).Build();
-            var mechelen = new CityBuilder(this.DatabaseSession).WithName("Mechelen").Build();
-            var shipFromAddress = new PostalAddressBuilder(this.DatabaseSession).WithGeographicBoundary(mechelen).WithAddress1("Haverwerf 15").Build();
-
-            var internalOrganisation = Singleton.Instance(this.DatabaseSession).InternalOrganisation;
-            internalOrganisation.ShippingAddress = shipFromAddress;
 
             this.DatabaseSession.Derive();
             this.DatabaseSession.Commit();
@@ -87,7 +82,7 @@ namespace Allors.Domain
             this.DatabaseSession.Derive();
 
             Assert.Equal(new CustomerShipmentStates(this.DatabaseSession).Created, shipment.CustomerShipmentState);
-            Assert.Equal(shipFromAddress, shipment.ShipFromAddress);
+            Assert.Equal(Singleton.Instance(this.DatabaseSession).InternalOrganisation.ShippingAddress, shipment.ShipFromAddress);
             Assert.Equal(shipment.ShipFromParty, shipment.ShipFromParty);
             Assert.Equal(new Stores(this.DatabaseSession).FindBy(M.Store.Name, "store"), shipment.Store);
         }
@@ -488,6 +483,9 @@ namespace Allors.Domain
         [Fact]
         public void GivenCustomerShipment_WhenDeriving_ThenTotalShipmentValueIsCalculated()
         {
+            var store = this.DatabaseSession.Extent<Store>().First;
+            store.ShipmentThreshold = 100;
+
             var vatRate21 = new VatRateBuilder(this.DatabaseSession).WithRate(21).Build();
             var good1 = new GoodBuilder(this.DatabaseSession)
                 .WithSku("10101")
@@ -560,6 +558,9 @@ namespace Allors.Domain
         [Fact]
         public void GivenShipmentThreshold_WhenNewCustomerShipmentIsBelowThreshold_ThenShipmentAndPicklistAreSetOnHold()
         {
+            var store = this.DatabaseSession.Extent<Store>().First;
+            store.ShipmentThreshold = 100;
+
             var vatRate21 = new VatRateBuilder(this.DatabaseSession).WithRate(21).Build();
             var good1 = new GoodBuilder(this.DatabaseSession)
                 .WithSku("10101")
@@ -611,6 +612,9 @@ namespace Allors.Domain
         [Fact]
         public void GivenCustomerShipment_WhenShipmentValueFallsBelowThreshold_ThenShipmentAndPendigPicklistAreSetOnHold()
         {
+            var store = this.DatabaseSession.Extent<Store>().First;
+            store.ShipmentThreshold = 100;
+
             var vatRate21 = new VatRateBuilder(this.DatabaseSession).WithRate(21).Build();
             var good1 = new GoodBuilder(this.DatabaseSession)
                 .WithSku("10101")
@@ -669,6 +673,9 @@ namespace Allors.Domain
         [Fact]
         public void GivenCustomerShipmentOnHold_WhenShipmentValueRisesAboveThreshold_ThenShipmentAndPendigPicklistAreReleased()
         {
+            var store = this.DatabaseSession.Extent<Store>().First;
+            store.ShipmentThreshold = 100;
+
             var vatRate21 = new VatRateBuilder(this.DatabaseSession).WithRate(21).Build();
             var good1 = new GoodBuilder(this.DatabaseSession)
                 .WithSku("10101")
@@ -804,8 +811,11 @@ namespace Allors.Domain
         }
 
         [Fact]
-        public void GivenCustomerShipmentOnHoldWithPendingPickList_WhenShipmentIsReleased_ThenShipmentObjecStateIsSetToCreated()
+        public void GivenCustomerShipmentOnHold_WhenShipmentIsReleased_ThenShipmentObjecStateIsSetToCreated()
         {
+            var store = this.DatabaseSession.Extent<Store>().First;
+            store.ShipmentThreshold = 100;
+
             var vatRate21 = new VatRateBuilder(this.DatabaseSession).WithRate(21).Build();
             var good1 = new GoodBuilder(this.DatabaseSession)
                 .WithSku("10101")
@@ -826,9 +836,7 @@ namespace Allors.Domain
                 .Build();
 
             var customer = new PersonBuilder(this.DatabaseSession).WithLastName("customer").WithPartyContactMechanism(shipToMechelen).WithPersonRole(new PersonRoles(this.DatabaseSession).Customer).Build();
-            var internalOrganisation = Singleton.Instance(this.DatabaseSession).InternalOrganisation;
             new CustomerRelationshipBuilder(this.DatabaseSession).WithFromDate(DateTime.UtcNow).WithCustomer(customer).Build();
-
 
             this.DatabaseSession.Derive();
 
@@ -862,6 +870,9 @@ namespace Allors.Domain
         [Fact]
         public void GivenCustomerShipmentOnHoldWithPickedPickList_WhenShipmentIsReleased_ThenShipmentObjecStateIsSetToPicked()
         {
+            var store = this.DatabaseSession.Extent<Store>().First;
+            store.ShipmentThreshold = 100;
+
             var vatRate21 = new VatRateBuilder(this.DatabaseSession).WithRate(21).Build();
             var good1 = new GoodBuilder(this.DatabaseSession)
                 .WithSku("10101")
@@ -929,6 +940,9 @@ namespace Allors.Domain
         [Fact]
         public void GivenCustomerShipmentOnHoldWithAllItemsPacked_WhenShipmentIsReleased_ThenShipmentObjecStateIsSetToPacked()
         {
+            var store = this.DatabaseSession.Extent<Store>().First;
+            store.ShipmentThreshold = 100;
+
             var vatRate21 = new VatRateBuilder(this.DatabaseSession).WithRate(21).Build();
             var good1 = new GoodBuilder(this.DatabaseSession)
                 .WithSku("10101")
@@ -1092,30 +1106,11 @@ namespace Allors.Domain
         [Fact]
         public void GivenCustomerShipment_WhenDeriving_ThenBillFromContactMechanismMustExist()
         {
-            var belgium = new Countries(this.DatabaseSession).CountryByIsoCode["BE"];
-            var euro = belgium.Currency;
-
-            var bank = new BankBuilder(this.DatabaseSession).WithCountry(belgium).WithName("ING België").WithBic("BBRUBEBB").Build();
-
-            var ownBankAccount = new OwnBankAccountBuilder(this.DatabaseSession)
-                .WithDescription("own account")
-                .WithBankAccount(new BankAccountBuilder(this.DatabaseSession).WithBank(bank).WithCurrency(euro).WithIban("BE23 3300 6167 6391").WithNameOnAccount("Koen").Build())
-                .Build();
-
-            var mechelen = new CityBuilder(this.DatabaseSession).WithName("Mechelen").Build();
             var customer = new PersonBuilder(this.DatabaseSession).WithLastName("customer").WithPersonRole(new PersonRoles(this.DatabaseSession).Customer).Build();
-            var address1 = new PostalAddressBuilder(this.DatabaseSession).WithGeographicBoundary(mechelen).WithAddress1("Haverwerf 15").Build();
-
-            var internalOrganisation = new InternalOrganisationBuilder(this.DatabaseSession)
-                .WithName("internalOrganisation")
-                .WithDefaultPaymentMethod(ownBankAccount)
-                .Build();
-
-            internalOrganisation.BillingAddress = address1;
 
             this.DatabaseSession.Derive();
 
-            var shipment1 = new CustomerShipmentBuilder(this.DatabaseSession)
+            var shipment = new CustomerShipmentBuilder(this.DatabaseSession)
                 .WithShipToParty(customer)
                 .WithShipToAddress(new PostalAddresses(this.DatabaseSession).Extent().First)
                 .WithShipmentMethod(new ShipmentMethods(this.DatabaseSession).Boat)
@@ -1123,7 +1118,7 @@ namespace Allors.Domain
 
             this.DatabaseSession.Derive();
 
-            Assert.Equal(address1, shipment1.BillFromContactMechanism);
+            Assert.Equal(Singleton.Instance(this.DatabaseSession).InternalOrganisation.BillingAddress, shipment.BillFromContactMechanism);
         }
 
         [Fact]

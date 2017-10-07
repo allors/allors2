@@ -105,8 +105,6 @@ namespace Allors.Domain
         [Fact]
         public void GivenOrder_WhenDeriving_ThenLocaleMustExist()
         {
-            var englischLocale = new Locales(this.DatabaseSession).EnglishGreatBritain;
-
             var supplier = new OrganisationBuilder(this.DatabaseSession).WithName("customer2").WithOrganisationRole(new OrganisationRoles(this.DatabaseSession).Customer).Build();
             new SupplierRelationshipBuilder(this.DatabaseSession).WithSupplier(supplier).Build();
 

@@ -505,9 +505,6 @@ namespace Allors.Domain
         [Fact]
         public void GivenSalesInvoice_WhenDeriving_ThenLocaleMustExist()
         {
-            var englischLocale = new Locales(this.DatabaseSession).EnglishGreatBritain;
-            var dutchLocale = new Locales(this.DatabaseSession).DutchNetherlands;
-
             var customer = new OrganisationBuilder(this.DatabaseSession).WithName("customer").WithOrganisationRole(new OrganisationRoles(this.DatabaseSession).Customer).Build();
             var contactMechanism = new PostalAddressBuilder(this.DatabaseSession)
                 .WithAddress1("Haverwerf 15")
@@ -524,7 +521,9 @@ namespace Allors.Domain
 
             this.DatabaseSession.Derive();
 
-            Assert.Equal(englischLocale, invoice1.Locale);
+            Assert.Equal(Singleton.Instance(this.DatabaseSession).DefaultLocale, invoice1.Locale);
+
+            var dutchLocale = new Locales(this.DatabaseSession).DutchNetherlands;
 
             customer.Locale = dutchLocale;
 
@@ -636,7 +635,7 @@ namespace Allors.Domain
 
                 .Build();
 
-            var administrator = new PersonBuilder(this.DatabaseSession).WithLastName("Administrator").WithUserName("administrator").Build();
+            var administrator = new PersonBuilder(this.DatabaseSession).WithLastName("Administrator").WithPersonRole(new PersonRoles(this.DatabaseSession).Employee).WithUserName("administrator").Build();
             var administrators = new UserGroups(this.DatabaseSession).Administrators;
             administrators.AddMember(administrator);
 

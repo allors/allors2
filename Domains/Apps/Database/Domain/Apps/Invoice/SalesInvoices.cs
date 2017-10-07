@@ -44,12 +44,6 @@ namespace Allors.Domain
 
             config.Deny(this.ObjectType, sent, sendId, cancelInvoiceId);
             config.Deny(this.ObjectType, partiallyPaid, sendId, cancelInvoiceId);
-            // TODO:
-            //config.Deny(this.ObjectType, sent, addNewInvoiceItem);
-            //config.Deny(this.ObjectType, paid, addNewInvoiceItem);
-            //config.Deny(this.ObjectType, partiallyPaid, addNewInvoiceItem);
-            //config.Deny(this.ObjectType, writtenOff, addNewInvoiceItem);
-            //config.Deny(this.ObjectType, cancelled, addNewInvoiceItem);
 
             config.Deny(this.ObjectType, paid, Operations.Write, Operations.Execute);
             config.Deny(this.ObjectType, writtenOff, Operations.Write, Operations.Execute);

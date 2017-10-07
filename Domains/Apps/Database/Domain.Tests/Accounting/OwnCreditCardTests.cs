@@ -124,21 +124,8 @@ namespace Allors.Domain
         }
 
         [Fact]
-        public void GivenOwnCreditCard_WhenDeriving_ThenGeneralLedgerAccountAndJournalCannotExistBoth()
+        public void GivenOwnCreditCard_WhenDeriving_ThenGeneralLedgerAccountAndJournalAtMostOne()
         {
-            var supplier = new OrganisationBuilder(this.DatabaseSession)
-                .WithName("supplier")
-                .WithLocale(new Locales(this.DatabaseSession).EnglishGreatBritain)
-                .WithOrganisationRole(new OrganisationRoles(this.DatabaseSession).Supplier)
-                .Build();
-
-            var internalOrganisation = Singleton.Instance(this.DatabaseSession).InternalOrganisation;
-
-            var supplierRelationship = new SupplierRelationshipBuilder(this.DatabaseSession)
-                .WithSupplier(supplier)
-                .WithFromDate(DateTime.UtcNow)
-                .Build();
-
             var generalLedgerAccount = new GeneralLedgerAccountBuilder(this.DatabaseSession)
                 .WithAccountNumber("0001")
                 .WithName("GeneralLedgerAccount")
@@ -162,12 +149,13 @@ namespace Allors.Domain
             var paymentMethod = new OwnCreditCardBuilder(this.DatabaseSession)
                 .WithCreditCard(creditCard)
                 .WithGeneralLedgerAccount(internalOrganisationGlAccount)
-                .WithCreditor(supplier)
                 .Build();
 
             this.DatabaseSession.Commit();
 
+            var internalOrganisation = Singleton.Instance(this.DatabaseSession).InternalOrganisation;
             internalOrganisation.DoAccounting = true;
+            internalOrganisation.DefaultPaymentMethod = paymentMethod;
 
             Assert.False(this.DatabaseSession.Derive(false).HasErrors);
 
@@ -183,18 +171,7 @@ namespace Allors.Domain
         [Fact]
         public void GivenOwnCreditCardForSingletonThatDoesAccounting_WhenDeriving_ThenEitherGeneralLedgerAccountOrJournalMustExist()
         {
-            var supplier = new OrganisationBuilder(this.DatabaseSession)
-                .WithName("supplier")
-                .WithLocale(new Locales(this.DatabaseSession).EnglishGreatBritain)
-                .WithOrganisationRole(new OrganisationRoles(this.DatabaseSession).Supplier)
-                .Build();
-
             var internalOrganisation = Singleton.Instance(this.DatabaseSession).InternalOrganisation;
-
-            var supplierRelationship = new SupplierRelationshipBuilder(this.DatabaseSession)
-                .WithSupplier(supplier)
-                .WithFromDate(DateTime.UtcNow)
-                .Build();
 
             var generalLedgerAccount = new GeneralLedgerAccountBuilder(this.DatabaseSession)
                 .WithAccountNumber("0001")
@@ -218,7 +195,6 @@ namespace Allors.Domain
 
             var paymentMethod = new OwnCreditCardBuilder(this.DatabaseSession)
                 .WithCreditCard(creditCard)
-                .WithCreditor(supplier)
                 .Build();
 
             this.DatabaseSession.Commit();

@@ -77,7 +77,6 @@ namespace Allors.Repository
         [Indexed]
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
-        [Required]
         [Workspace]
         Party ShipToParty { get; set; }
 
