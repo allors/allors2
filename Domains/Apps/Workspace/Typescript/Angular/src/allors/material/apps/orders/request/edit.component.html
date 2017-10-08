@@ -2,8 +2,8 @@
   <form #form="ngForm" *ngIf="request" (submit)="save()">
 
     <div class="pad">
-      <div *ngIf="request.CurrentObjectState">
-        <a-mat-static [object]="request" [roleType]="m.Request.CurrentObjectState" display="Name" label="Status"></a-mat-static>
+      <div *ngIf="request.RequestState">
+        <a-mat-static [object]="request" [roleType]="m.Request.RequestState" display="Name" label="Status"></a-mat-static>
         <button *ngIf="request.CanExecuteSubmit" mat-button type="button" (click)="submit()">Submit</button>
         <button *ngIf="request.CanExecuteCancel" mat-button type="button" (click)="cancel()">Cancel</button>
         <button *ngIf="request.CanExecuteHold" mat-button type="button" (click)="hold()">Pending Customer</button>

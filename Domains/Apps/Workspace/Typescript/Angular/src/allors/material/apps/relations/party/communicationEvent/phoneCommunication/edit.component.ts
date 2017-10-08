@@ -125,6 +125,10 @@ export class PartyCommunicationEventEditPhoneCommunicationComponent implements O
 
         this.scope.session.reset();
 
+        this.singleton = loaded.collections.singletons[0] as Singleton;
+        this.employees = this.singleton.InternalOrganisation.ActiveEmployees;
+        this.purposes = loaded.collections.purposes as CommunicationEventPurpose[];
+        this.party = loaded.objects.party as Party;
         this.communicationEvent = loaded.objects.communicationEvent as PhoneCommunication;
 
         if (!this.communicationEvent) {
@@ -132,18 +136,12 @@ export class PartyCommunicationEventEditPhoneCommunicationComponent implements O
           this.communicationEvent.AddCaller(this.party);
         }
 
-        this.party = loaded.objects.party as Party;
-
         const contactMechanisms: ContactMechanism[] = this.party.CurrentPartyContactMechanisms.map((v: PartyContactMechanism) => v.ContactMechanism);
         for (const contactMechanism of contactMechanisms) {
           if (contactMechanism instanceof (TelecommunicationsNumber)) {
             this.phonenumbers.push(contactMechanism);
           }
         }
-
-        this.singleton = loaded.collections.singletons[0] as Singleton;
-        this.employees = this.singleton.InternalOrganisation.ActiveEmployees;
-        this.purposes = loaded.collections.purposes as CommunicationEventPurpose[];
 
         this.contacts.push(this.party);
         if (this.employees.length > 0) {

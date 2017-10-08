@@ -2,8 +2,8 @@
   <form #form="ngForm" *ngIf="quoteItem" (submit)="save()">
 
     <div class="pad">
-      <div *ngIf="quoteItem.CurrentObjectState">
-        <a-mat-static [object]="quoteItem" [roleType]="m.QuoteItem.CurrentObjectState" display="Name" label="Status"></a-mat-static>
+      <div *ngIf="quoteItem.QuoteItemState">
+        <a-mat-static [object]="quoteItem" [roleType]="m.QuoteItem.QuoteItemState" display="Name" label="Status"></a-mat-static>
         <button *ngIf="quoteItem.CanExecuteSubmit" mat-button type="button" (click)="submit()">Submit</button>
         <button *ngIf="quoteItem.CanExecuteCancel" mat-button type="button" (click)="cancel()">Cancel</button>
       </div>
@@ -12,7 +12,7 @@
       <a-mat-input [object]="quoteItem" [roleType]="m.QuoteItem.Quantity"></a-mat-input>
       <a-mat-input [object]="quoteItem" [roleType]="m.QuoteItem.UnitPrice"></a-mat-input>
       <a-mat-static *ngIf="requestItem" [object]="requestItem" [roleType]="m.RequestItem.MaximumAllowedPrice"></a-mat-static>
-      <a-mat-static *ngIf="inventoryItem" [object]="inventoryItem" [roleType]="m.SerialisedInventoryItemVersioned.ExpectedSalesPrice"></a-mat-static>
+      <a-mat-static *ngIf="inventoryItem" [object]="inventoryItem" [roleType]="m.SerialisedInventoryItem.ExpectedSalesPrice"></a-mat-static>
       <a-mat-datepicker [object]="quoteItem" [roleType]="m.QuoteItem.RequiredByDate" disabled="true"></a-mat-datepicker>
       <a-mat-datepicker [object]="quoteItem" [roleType]="m.QuoteItem.EstimatedDeliveryDate"></a-mat-datepicker>
       <a-mat-static *ngIf="requestItem.Comment" [object]="requestItem" [roleType]="m.RequestItem.Comment"></a-mat-static>

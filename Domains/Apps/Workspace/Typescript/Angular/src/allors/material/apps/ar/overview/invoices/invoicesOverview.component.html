@@ -39,7 +39,7 @@
           <mat-list-item>
 
             <h3 mat-line> {{invoice.BillToCustomer.displayName}}</h3>
-            <h4 mat-line> {{invoice.InvoiceNumber }}: {{invoice.CustomerReference}} ({{invoice.CurrentObjectState.Name}})</h4>
+            <h4 mat-line> {{invoice.InvoiceNumber }}: {{invoice.CustomerReference}} ({{invoice.SalesInvoiceState.Name}})</h4>
             <p mat-line hide-gt-md class="mat-caption"> last modified: {{ invoice.LastModifiedDate | timeAgo }} </p>
 
             <span flex></span>

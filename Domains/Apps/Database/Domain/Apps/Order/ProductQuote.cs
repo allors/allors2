@@ -15,6 +15,8 @@
 // --------------------------------------------------------------------------------------------------------------------
 namespace Allors.Domain
 {
+    using System.Linq;
+
     using Allors.Meta;
 
     public partial class ProductQuote
@@ -25,5 +27,34 @@ namespace Allors.Domain
             };
 
         public TransitionalConfiguration[] TransitionalConfigurations => StaticTransitionalConfigurations;
+
+        private SalesOrder OrderThis()
+        {
+            var salesOrder = new SalesOrderBuilder(this.Strategy.Session)
+                .WithQuote(this)
+                .WithBillToCustomer(this.Receiver)
+                .Build();
+
+            var quoteItems = this.QuoteItems.Where(i => i.QuoteItemState.Equals(new QuoteItemStates(this.Strategy.Session).Submitted)).ToArray();
+
+            foreach (QuoteItem quoteItem in quoteItems)
+            {
+                salesOrder.AddSalesOrderItem(
+                    new SalesOrderItemBuilder(this.Strategy.Session)
+                        .WithProduct(quoteItem.Product)
+                        .WithProductFeature(quoteItem.ProductFeature)
+                        .WithQuantityOrdered(quoteItem.Quantity)
+                        .Build()
+                );
+            }
+
+            return salesOrder;
+        }
+
+        public void AppsOrder(ProductQuoteOrder Method)
+        {
+            this.QuoteState = new QuoteStates(this.Strategy.Session).Ordered;
+            this.OrderThis();
+        }
     }
 }

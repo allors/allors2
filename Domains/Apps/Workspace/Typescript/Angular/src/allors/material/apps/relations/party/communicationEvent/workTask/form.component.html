@@ -1,7 +1,7 @@
 <td-layout-card-over [cardTitle]="title" [cardSubtitle]="subTitle">
   <form #form="ngForm" *ngIf="workTask" (submit)="save()" class="pad">
     <div>
-      <a-mat-select [object]="workTask" [roleType]="m.WorkTask.CurrentObjectState" [options]="workEffortStates" display="Name"
+      <a-mat-select [object]="workTask" [roleType]="m.WorkTask.WorkEffortState" [options]="workEffortStates" display="Name"
         label="Status"></a-mat-select>
       <a-mat-input [object]="workTask" [roleType]="m.WorkTask.Name"></a-mat-input>
       <a-mat-textarea [object]="workTask" [roleType]="m.WorkTask.Description"></a-mat-textarea>

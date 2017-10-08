@@ -43,21 +43,21 @@
           <mat-list-item>
                  <div *ngIf="this.checkType(communicationEvent) === 'FaceToFaceCommunication'" mat-line class="mat-caption pointer"
                  [routerLink]="['/relations/party/' + communicationEvent.InvolvedParties[0].id + '/communicationevent/' + communicationEvent.id ]">
-                  Meeting, {{ communicationEvent.CurrentObjectState.Name }}</div>
+                  Meeting, {{ communicationEvent.CommunicationEventState.Name }}</div>
 
                 <div *ngIf="this.checkType(communicationEvent) === 'PhoneCommunication'" mat-line class="mat-caption pointer"
                 [routerLink]="['/relations/party/' + communicationEvent.InvolvedParties[0].id + '/communicationevent/' + communicationEvent.id ]">
-                  Phone call, {{ communicationEvent.CurrentObjectState.Name }}</div>
+                  Phone call, {{ communicationEvent.CommunicationEventState.Name }}</div>
 
                 <div *ngIf="this.checkType(communicationEvent) === 'EmailCommunication'" mat-line class="mat-caption pointer"
                 [routerLink]="['/relations/party/' + communicationEvent.InvolvedParties[0].id + '/communicationevent/' + communicationEvent.id ]">
-                  Email, {{ communicationEvent.CurrentObjectState.Name }}</div>
+                  Email, {{ communicationEvent.CommunicationEventState.Name }}</div>
 
                 <div *ngIf="this.checkType(communicationEvent) === 'LetterCorrespondence'" mat-line class="mat-caption pointer"
                 [routerLink]="['/relations/party/' + communicationEvent.InvolvedParties[0].id + '/communicationevent/' + communicationEvent.id ]">
-                  Letter, {{ communicationEvent.CurrentObjectState.Name }}</div>
+                  Letter, {{ communicationEvent.CommunicationEventState.Name }}</div>
 
-                <p mat-line class="mat-caption">State: {{ communicationEvent.CurrentObjectState.Name }} </p>
+                <p mat-line class="mat-caption">State: {{ communicationEvent.CommunicationEventState.Name }} </p>
                 <p mat-line class="mat-caption">Subject: {{ communicationEvent.Subject }} </p>
                 <p mat-line class="mat-caption">Involved:
                   <span *ngFor="let party of communicationEvent.InvolvedParties">{{ party.displayName }} </span>

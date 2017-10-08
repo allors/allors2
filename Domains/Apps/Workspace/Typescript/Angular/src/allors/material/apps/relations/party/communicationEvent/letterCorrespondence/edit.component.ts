@@ -164,17 +164,16 @@ export class PartyCommunicationEventEditLetterCorrespondenceComponent implements
 
         this.scope.session.reset();
 
+        this.party = loaded.objects.party as Party;
+        this.singleton = loaded.collections.singletons[0] as Singleton;
+        this.employees = this.singleton.InternalOrganisation.ActiveEmployees;
+        this.purposes = loaded.collections.purposes as CommunicationEventPurpose[];
         this.communicationEvent = loaded.objects.communicationEvent as LetterCorrespondence;
 
         if (!this.communicationEvent) {
           this.communicationEvent = this.scope.session.create("LetterCorrespondence") as LetterCorrespondence;
           this.communicationEvent.AddOriginator(this.party);
         }
-
-        this.party = loaded.objects.party as Party;
-        this.singleton = loaded.collections.singletons[0] as Singleton;
-        this.employees = this.singleton.InternalOrganisation.ActiveEmployees;
-        this.purposes = loaded.collections.purposes as CommunicationEventPurpose[];
 
         for (const employee of this.employees) {
           const employeeContactMechanisms: ContactMechanism[] = employee.CurrentPartyContactMechanisms.map((v: PartyContactMechanism) => v.ContactMechanism);

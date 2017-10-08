@@ -1,4 +1,4 @@
-import { AfterViewInit, ChangeDetectorRef, Component, OnDestroy , OnInit } from "@angular/core";
+import { AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit } from "@angular/core";
 import { Validators } from "@angular/forms";
 import { MatSnackBar, MatSnackBarConfig } from "@angular/material";
 import { ActivatedRoute, UrlSegment } from "@angular/router";
@@ -123,18 +123,16 @@ export class PartyCommunicationEventEditFaceToFaceCommunicationComponent impleme
 
         this.scope.session.reset();
 
+        this.party = loaded.objects.party as Party;
+        this.singleton = loaded.collections.singletons[0] as Singleton;
+        this.employees = this.singleton.InternalOrganisation.ActiveEmployees;
+        this.purposes = loaded.collections.purposes as CommunicationEventPurpose[];
         this.communicationEvent = loaded.objects.communicationEvent as FaceToFaceCommunication;
 
         if (!this.communicationEvent) {
           this.communicationEvent = this.scope.session.create("FaceToFaceCommunication") as FaceToFaceCommunication;
           this.communicationEvent.AddParticipant(this.party);
         }
-
-        this.party = loaded.objects.party as Party;
-
-        this.singleton = loaded.collections.singletons[0] as Singleton;
-        this.employees = this.singleton.InternalOrganisation.ActiveEmployees;
-        this.purposes = loaded.collections.purposes as CommunicationEventPurpose[];
 
         this.contacts.push(this.party);
 

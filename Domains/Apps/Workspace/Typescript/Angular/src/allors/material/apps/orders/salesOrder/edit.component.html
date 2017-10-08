@@ -2,8 +2,8 @@
   <form #form="ngForm" *ngIf="order" (submit)="save()">
 
     <div class="pad">
-      <div *ngIf="order.CurrentObjectState">
-        <a-mat-static [object]="order" [roleType]="m.SalesOrder.CurrentObjectState" display="Name" label="Status"></a-mat-static>
+      <div *ngIf="order.SalesOrderState">
+        <a-mat-static [object]="order" [roleType]="m.SalesOrder.SalesOrderState" display="Name" label="Status"></a-mat-static>
         <button *ngIf="order.CanExecuteCancel" mat-button type="button" (click)="cancel()">Cancel</button>
         <button *ngIf="order.CanExecuteApprove" mat-button type="button" (click)="approve()">Approve</button>
         <button *ngIf="order.CanExecuteReject" mat-button type="button" (click)="reject()">Reject</button>

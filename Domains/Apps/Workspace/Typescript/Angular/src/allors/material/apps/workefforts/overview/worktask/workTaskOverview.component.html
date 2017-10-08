@@ -68,16 +68,16 @@
             <ng-template let-communicationEvent let-last="last" ngFor [ngForOf]="this.communicationEvents">
               <mat-list-item>
                 <a *ngIf="this.checkType(communicationEvent) === 'FaceToFaceCommunication'" mat-line class="mat-caption" [routerLink]="['/party/' + person.id + '/facetofacecommunication/' + communicationEvent.id ]">
-                  Meeting, {{ communicationEvent.CurrentObjectState.Name }}</a>
+                  Meeting, {{ communicationEvent.CommunicationEventState.Name }}</a>
 
                 <a *ngIf="this.checkType(communicationEvent) === 'PhoneCommunication'" mat-line class="mat-caption" [routerLink]="['/party/' + person.id + '/phonecommunication/' + communicationEvent.id ]">
-                  Phone call, {{ communicationEvent.CurrentObjectState.Name }}</a>
+                  Phone call, {{ communicationEvent.vState.Name }}</a>
 
                 <a *ngIf="this.checkType(communicationEvent) === 'EmailCommunication'" mat-line class="mat-caption" [routerLink]="['/party/' + person.id + '/emailcommunication/' + communicationEvent.id ]">
-                  Email, {{ communicationEvent.CurrentObjectState.Name }}</a>
+                  Email, {{ communicationEvent.CommunicationEventState.Name }}</a>
 
                 <a *ngIf="this.checkType(communicationEvent) === 'LetterCorrespondence'" mat-line class="mat-caption" [routerLink]="['/party/' + person.id + '/lettercorrespondence/' + communicationEvent.id ]">
-                  Letter, {{ communicationEvent.CurrentObjectState.Name }}</a>
+                  Letter, {{ communicationEvent.CommunicationEventState.Name }}</a>
 
                 <p mat-line class="mat-caption">{{ communicationEvent.Subject }} </p>
                 <p mat-line class="mat-caption">Involved:

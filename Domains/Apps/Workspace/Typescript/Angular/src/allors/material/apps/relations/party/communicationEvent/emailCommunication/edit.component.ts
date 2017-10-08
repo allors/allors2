@@ -121,6 +121,10 @@ export class PartyCommunicationEventEditEmailCommunicationComponent implements O
 
         this.scope.session.reset();
 
+        this.party = loaded.objects.party as Party;
+        this.singleton = loaded.collections.singletons[0] as Singleton;
+        this.employees = this.singleton.InternalOrganisation.ActiveEmployees;
+        this.purposes = loaded.collections.purposes as CommunicationEventPurpose[];
         this.communicationEvent = loaded.objects.communicationEvent as EmailCommunication;
 
         if (!this.communicationEvent) {
@@ -129,11 +133,6 @@ export class PartyCommunicationEventEditEmailCommunicationComponent implements O
           this.communicationEvent.EmailTemplate = this.emailTemplate;
           this.communicationEvent.Originator = this.party.GeneralEmail;
         }
-
-        this.party = loaded.objects.party as Party;
-        this.singleton = loaded.collections.singletons[0] as Singleton;
-        this.employees = this.singleton.InternalOrganisation.ActiveEmployees;
-        this.purposes = loaded.collections.purposes as CommunicationEventPurpose[];
 
         for (const employee of this.employees) {
           const employeeContactMechanisms: ContactMechanism[] = employee.CurrentPartyContactMechanisms.map((v: PartyContactMechanism) => v.ContactMechanism);

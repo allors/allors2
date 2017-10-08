@@ -48,16 +48,16 @@
             <ng-template let-communicationEvent let-last="last" ngFor [ngForOf]="this.communicationEvents">
               <mat-list-item>
                 <div *ngIf="this.checkType(communicationEvent) === 'FaceToFaceCommunication'" mat-line class="mat-caption pointer" [routerLink]="['/relations/party/' + organisation.id + '/communicationevent/' + communicationEvent.id ]">
-                  Meeting, {{ communicationEvent.CurrentObjectState.Name }}</div>
+                  Meeting, {{ communicationEvent.CommunicationEventState.Name }}</div>
 
                 <div *ngIf="this.checkType(communicationEvent) === 'PhoneCommunication'" mat-line class="mat-caption pointer" [routerLink]="['/relations/party/' + organisation.id + '/communicationevent/' + communicationEvent.id ]">
-                  Phone call, {{ communicationEvent.CurrentObjectState.Name }}</div>
+                  Phone call, {{ communicationEvent.CommunicationEventState.Name }}</div>
 
                 <div *ngIf="this.checkType(communicationEvent) === 'EmailCommunication'" mat-line class="mat-caption pointer" [routerLink]="['/relations/party/' + organisation.id + '/communicationevent/' + communicationEvent.id ]">
-                  Email, {{ communicationEvent.CurrentObjectState.Name }}</div>
+                  Email, {{ communicationEvent.CommunicationEventState.Name }}</div>
 
                 <div *ngIf="this.checkType(communicationEvent) === 'LetterCorrespondence'" mat-line class="mat-caption pointer" [routerLink]="['/relations/party/' + organisation.id + '/communicationevent/' + communicationEvent.id ]">
-                  Letter, {{ communicationEvent.CurrentObjectState.Name }}</div>
+                  Letter, {{ communicationEvent.CommunicationEventState.Name }}</div>
 
                 <p mat-line class="mat-caption">{{ communicationEvent.Subject }} </p>
                 <p mat-line class="mat-caption">Involved:

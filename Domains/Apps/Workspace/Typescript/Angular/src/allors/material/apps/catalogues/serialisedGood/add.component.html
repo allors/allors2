@@ -18,12 +18,12 @@
       <mat-tab-group>
 
         <mat-tab label="General">
-          <a-mat-select [object]="inventoryItem" [roleType]="m.SerialisedInventoryItem.CurrentObjectState"
+          <a-mat-select [object]="inventoryItem" [roleType]="m.SerialisedInventoryItem.SerialisedInventoryItemState"
             [options]="serialisedInventoryItemStates" display="Name" label="Status"></a-mat-select>
-          <a-mat-input [object]="inventoryItem" [roleType]="m.SerialisedInventoryItemVersioned.SerialNumber"></a-mat-input>
+          <a-mat-input [object]="inventoryItem" [roleType]="m.SerialisedInventoryItem.SerialNumber"></a-mat-input>
           <a-mat-localised-text [object]="good" [roleType]="m.Good.LocalisedNames" [locales]="locales" label="Name"></a-mat-localised-text>
           <a-mat-localised-text [object]="good" [roleType]="m.Good.LocalisedDescriptions" [locales]="locales" label="Description"></a-mat-localised-text>
-          <a-mat-select [object]="inventoryItem" [roleType]="m.SerialisedInventoryItemVersioned.ProductType" [options]="productTypes"
+          <a-mat-select [object]="inventoryItem" [roleType]="m.SerialisedInventoryItem.ProductType" [options]="productTypes"
             display="Name"></a-mat-select>
           <a-mat-select [object]="good" [roleType]="m.Good.ProductCategories" [options]="categories" display="Name"></a-mat-select>
           <a-mat-autocomplete [object]="good" [roleType]="m.Good.PrimaryProductCategory" [options]="categories" display="Name"></a-mat-autocomplete>
@@ -50,8 +50,8 @@
             </div>
           </div>
 
-          <a-mat-select [object]="inventoryItem" [roleType]="m.SerialisedInventoryItemVersioned.Ownership" [options]="ownerships" display="Name"></a-mat-select>
-          <a-mat-input [object]="inventoryItem" [roleType]="m.SerialisedInventoryItemVersioned.Owner"></a-mat-input>
+          <a-mat-select [object]="inventoryItem" [roleType]="m.SerialisedInventoryItem.Ownership" [options]="ownerships" display="Name"></a-mat-select>
+          <a-mat-input [object]="inventoryItem" [roleType]="m.SerialisedInventoryItem.Owner"></a-mat-input>
           <a-mat-autocomplete [object]="good" [roleType]="m.Good.SuppliedBy" [filter]="suppliersFilter.create()" display="Name"></a-mat-autocomplete>
           <a-mat-autocomplete [object]="good" [roleType]="m.Good.ManufacturedBy" [filter]="manufacturersFilter.create()" display="Name"></a-mat-autocomplete>
           <a-mat-datepicker [object]="good" [roleType]="m.Good.SalesDiscontinuationDate"></a-mat-datepicker>
@@ -67,36 +67,36 @@
 
           <mat-divider></mat-divider>
 
-          <a-mat-input [object]="inventoryItem" [roleType]="m.SerialisedInventoryItemVersioned.AcquisitionYear"></a-mat-input>
-          <a-mat-input [object]="inventoryItem" [roleType]="m.SerialisedInventoryItemVersioned.ManufacturingYear"></a-mat-input>
+          <a-mat-input [object]="inventoryItem" [roleType]="m.SerialisedInventoryItem.AcquisitionYear"></a-mat-input>
+          <a-mat-input [object]="inventoryItem" [roleType]="m.SerialisedInventoryItem.ManufacturingYear"></a-mat-input>
           <mat-input-container fxLayout="column" fxLayoutAlign="top stretch">
             <input fxFlex matInput [(ngModel)]="inventoryItem.age" name="age" placeholder="Age" readonly>
           </mat-input-container>
-          <a-mat-input [object]="inventoryItem" [roleType]="m.SerialisedInventoryItemVersioned.LifeTime"></a-mat-input>
+          <a-mat-input [object]="inventoryItem" [roleType]="m.SerialisedInventoryItem.LifeTime"></a-mat-input>
           <mat-input-container fxLayout="column" fxLayoutAlign="top stretch">
             <input fxFlex matInput [(ngModel)]="inventoryItem.yearsToGo" name="yearsToGo" placeholder="Years to go" readonly>
           </mat-input-container>
-          <a-mat-input [object]="inventoryItem" [roleType]="m.SerialisedInventoryItemVersioned.DepreciationYears"></a-mat-input>
+          <a-mat-input [object]="inventoryItem" [roleType]="m.SerialisedInventoryItem.DepreciationYears"></a-mat-input>
 
           <a-mat-textarea *ngFor="let productCharacteristicValue of productCharacteristicValues" [object]="productCharacteristicValue"
             [roleType]="m.ProductCharacteristicValue.Value" [label]="localisedName(productCharacteristicValue.ProductCharacteristic)"></a-mat-textarea>
         </mat-tab>
 
         <mat-tab label="Financial">
-          <a-mat-input [object]="inventoryItem" [roleType]="m.SerialisedInventoryItemVersioned.ReplacementValue"></a-mat-input>
+          <a-mat-input [object]="inventoryItem" [roleType]="m.SerialisedInventoryItem.ReplacementValue"></a-mat-input>
           <mat-input-container fxLayout="column" fxLayoutAlign="top stretch">
             <input fxFlex matInput [(ngModel)]="inventoryItem.goingConcern" name="goingConcern" placeholder="Going Concern" readonly>
           </mat-input-container>
           <mat-input-container fxLayout="column" fxLayoutAlign="top stretch">
             <input fxFlex matInput [(ngModel)]="inventoryItem.marketValue" name="marketValue" placeholder="Market Value" readonly>
           </mat-input-container>
-          <a-mat-input [object]="inventoryItem" [roleType]="m.SerialisedInventoryItemVersioned.PurchasePrice"></a-mat-input>
-          <a-mat-input [object]="inventoryItem" [roleType]="m.SerialisedInventoryItemVersioned.RefurbishCost"></a-mat-input>
-          <a-mat-input [object]="inventoryItem" [roleType]="m.SerialisedInventoryItemVersioned.TransportCost"></a-mat-input>
+          <a-mat-input [object]="inventoryItem" [roleType]="m.SerialisedInventoryItem.PurchasePrice"></a-mat-input>
+          <a-mat-input [object]="inventoryItem" [roleType]="m.SerialisedInventoryItem.RefurbishCost"></a-mat-input>
+          <a-mat-input [object]="inventoryItem" [roleType]="m.SerialisedInventoryItem.TransportCost"></a-mat-input>
           <mat-input-container fxLayout="column" fxLayoutAlign="top stretch">
             <input fxFlex matInput [(ngModel)]="inventoryItem.grossBookValue" name="grossBookValue" placeholder="Gross Book Value" readonly>
           </mat-input-container>
-          <a-mat-input [object]="inventoryItem" [roleType]="m.SerialisedInventoryItemVersioned.ExpectedSalesPrice"></a-mat-input>
+          <a-mat-input [object]="inventoryItem" [roleType]="m.SerialisedInventoryItem.ExpectedSalesPrice"></a-mat-input>
           <mat-input-container fxLayout="column" fxLayoutAlign="top stretch">
             <input fxFlex matInput [(ngModel)]="inventoryItem.expectedPosa" name="expectedPosa" placeholder="Expected Posa" readonly>
           </mat-input-container>

@@ -38,7 +38,7 @@
         <mat-list-item>
 
           <h3 *ngIf="request.Originator" mat-line [routerLink]="['/orders/request/' + request.id ]" > {{request.Originator.displayName}}</h3>
-          <h4 mat-line [routerLink]="['/orders/request/' + request.id ]" > {{request.RequestNumber }}: {{request.Description}} ({{request.CurrentObjectState.Name}})</h4>
+          <h4 mat-line [routerLink]="['/orders/request/' + request.id ]" > {{request.RequestNumber }}: {{request.Description}} ({{request.RequestState.Name}})</h4>
           <p mat-line> Response required date: {{request.RequiredResponseDate | date}} </p>
           <p mat-line hide-gt-md class="mat-caption"> last modified: {{ request.LastModifiedDate | timeAgo }} </p>
 

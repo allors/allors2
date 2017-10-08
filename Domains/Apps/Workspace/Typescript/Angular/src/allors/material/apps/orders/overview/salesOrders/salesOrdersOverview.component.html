@@ -38,7 +38,7 @@
         <mat-list-item>
 
           <h3 mat-line [routerLink]="['/orders/salesOrder/' + order.id ]"> {{order.ShipToCustomer.displayName}}</h3>
-          <h4 mat-line [routerLink]="['/orders/salesOrder/' + order.id ]"> {{order.OrderNumber }}: {{order.CustomerReference}} ({{order.CurrentObjectState.Name}})</h4>
+          <h4 mat-line [routerLink]="['/orders/salesOrder/' + order.id ]"> {{order.OrderNumber }}: {{order.CustomerReference}} ({{order.SalesOrderState.Name}})</h4>
           <p mat-line hide-gt-md class="mat-caption"> last modified: {{ order.LastModifiedDate | timeAgo }} </p>
 
           <span flex></span>

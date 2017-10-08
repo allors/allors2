@@ -56,16 +56,16 @@
             <ng-template let-communicationEvent let-last="last" ngFor [ngForOf]="this.communicationEvents">
               <mat-list-item>
                 <div *ngIf="this.checkType(communicationEvent) === 'FaceToFaceCommunication'" mat-line class="mat-caption pointer" [routerLink]="['/relations/party/' + person.id + '/communicationevent/' + communicationEvent.id ]">
-                  Meeting, {{ communicationEvent.CurrentObjectState.Name }}</div>
+                  Meeting, {{ communicationEvent.CommunicationEventState.Name }}</div>
 
                 <div *ngIf="this.checkType(communicationEvent) === 'PhoneCommunication'" mat-line class="mat-caption pointer" [routerLink]="['/relations/party/' + person.id + '/communicationevent/' + communicationEvent.id ]">
-                  Phone call, {{ communicationEvent.CurrentObjectState.Name }}</div>
+                  Phone call, {{ communicationEvent.CommunicationEventState.Name }}</div>
 
                 <div *ngIf="this.checkType(communicationEvent) === 'EmailCommunication'" mat-line class="mat-caption pointer" [routerLink]="['/relations/party/' + person.id + '/communicationevent/' + communicationEvent.id ]">
-                  Email, {{ communicationEvent.CurrentObjectState.Name }}</div>
+                  Email, {{ communicationEvent.CommunicationEventState.Name }}</div>
 
                 <div *ngIf="this.checkType(communicationEvent) === 'LetterCorrespondence'" mat-line class="mat-caption pointer" [routerLink]="['/relations/party/' + person.id + '/communicationevent/' + communicationEvent.id ]">
-                  Letter, {{ communicationEvent.CurrentObjectState.Name }}</div>
+                  Letter, {{ communicationEvent.CommunicationEventState.Name }}</div>
 
                 <p mat-line class="mat-caption">{{ communicationEvent.Subject }} </p>
                 <p mat-line class="mat-caption">Involved:
@@ -212,7 +212,7 @@
             <ng-template let-workEffortAssignment let-last="last" ngFor [ngForOf]="workEffortAssignments">
               <mat-list-item>
                 <div mat-line class="mat-caption pointer" [routerLink]="['/worktask/' + workEffortAssignment.Assignment.id ]">
-                  {{ workEffortAssignment.Assignment.Name }}, {{ workEffortAssignment.Assignment.CurrentObjectState.Name }}
+                  {{ workEffortAssignment.Assignment.Name }}, {{ workEffortAssignment.Assignment.WorkEffortStateState.Name }}
                 </div>
 
                 <p mat-line class="mat-caption">{{ workEffortAssignment.Assignment.Description }} </p>

@@ -2,8 +2,8 @@
   <form #form="ngForm" *ngIf="invoice" (submit)="save()">
 
     <div class="pad">
-      <div *ngIf="invoice.CurrentObjectState">
-        <a-mat-static [object]="invoice" [roleType]="m.SalesOrder.CurrentObjectState" display="Name" label="Status"></a-mat-static>
+      <div *ngIf="invoice.SalesInvoiceState">
+        <a-mat-static [object]="invoice" [roleType]="m.SalesOrder.SalesOrderState" display="Name" label="Status"></a-mat-static>
         <button *ngIf="invoice.CanExecuteSend" mat-button type="button" (click)="send()">Send</button>
         <button *ngIf="invoice.CanExecuteSend" mat-button type="button" (click)="cancel()">Cancel</button>
         <button *ngIf="invoice.CanExecuteWriteOff" mat-button type="button" (click)="writeOff()">Write off</button>

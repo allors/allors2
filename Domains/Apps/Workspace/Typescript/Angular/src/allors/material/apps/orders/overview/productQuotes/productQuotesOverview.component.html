@@ -38,7 +38,7 @@
         <mat-list-item>
 
           <h3 mat-line [routerLink]="['/orders/productQuote/' + quote.id ]"> {{quote.Receiver.displayName}}</h3>
-          <h4 mat-line [routerLink]="['/orders/productQuote/' + quote.id ]"> {{quote.QuoteNumber }}: {{quote.Description}} ({{quote.CurrentObjectState.Name}})</h4>
+          <h4 mat-line [routerLink]="['/orders/productQuote/' + quote.id ]"> {{quote.QuoteNumber }}: {{quote.Description}} ({{quote.QuoteState.Name}})</h4>
           <p mat-line hide-gt-md class="mat-caption"> last modified: {{ quote.LastModifiedDate | timeAgo }} </p>
 
           <span flex></span>

@@ -45,7 +45,7 @@
         <ng-template let-workEffortAssignment let-last="last" ngFor [ngForOf]="data">
           <mat-list-item>
             <span class="mat-list-text pointer" [routerLink]="['/worktask/' + workEffortAssignment.Assignment.id]">
-              {{ workEffortAssignment.Assignment.Name }}, {{ workEffortAssignment.Assignment.CurrentObjectState.Name }}
+              {{ workEffortAssignment.Assignment.Name }}, {{ workEffortAssignment.Assignment.WorkEffortState.Name }}
 
               <div mat-line class="mat-caption pointer" [routerLink]="['/relations/person/' + workEffortAssignment.Professional.id]">Assigned to: {{ workEffortAssignment.Professional.displayName }} </div>
               <p mat-line class="mat-caption">{{ workEffortAssignment.Assignment.Description }} </p>
