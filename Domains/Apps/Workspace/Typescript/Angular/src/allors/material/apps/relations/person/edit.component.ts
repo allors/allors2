@@ -1,82 +1,86 @@
-import { Observable, Subject, Subscription } from 'rxjs/Rx';
-import { Component, OnInit, AfterViewInit, OnDestroy , ChangeDetectorRef } from '@angular/core';
-import { Validators } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
-import { MatSnackBar, MatSnackBarConfig } from '@angular/material';
-import { TdMediaService } from '@covalent/core';
+import { AfterViewInit, ChangeDetectorRef, Component, OnDestroy , OnInit } from "@angular/core";
+import { Validators } from "@angular/forms";
+import { MatSnackBar, MatSnackBarConfig } from "@angular/material";
+import { ActivatedRoute } from "@angular/router";
+import { TdMediaService } from "@covalent/core";
+import { Observable, Subject, Subscription } from "rxjs/Rx";
 
-import { MetaDomain } from '../../../../meta/index';
-import { PullRequest, PushResponse, Fetch, Path, Query, Equals, Like, TreeNode, Sort, Page } from '../../../../domain';
-import { Organisation, Person, PersonRole, Locale, Enumeration } from '../../../../domain';
-import { AllorsService, ErrorService, Scope, Loaded, Saved } from '../../../../angular';
+import { Title } from "@angular/platform-browser";
+import { AllorsService, ErrorService, Loaded, Saved, Scope } from "../../../../angular";
+import { Equals, Fetch, Like, Page, Path, PullRequest, PushResponse, Query, Sort, TreeNode } from "../../../../domain";
+import { Enumeration, Locale, Organisation, Person, PersonRole } from "../../../../domain";
+import { MetaDomain } from "../../../../meta/index";
 
 @Component({
-  templateUrl: './form.component.html',
+  templateUrl: "./form.component.html",
 })
 export class PersonEditComponent implements OnInit, AfterViewInit, OnDestroy {
 
+  public title: string = "Person";
+  public subTitle: string;
+
+  public m: MetaDomain;
+
+  public person: Person;
+
+  public locales: Locale[];
+  public genders: Enumeration[];
+  public salutations: Enumeration[];
+  public roles: PersonRole[];
+
   private subscription: Subscription;
   private scope: Scope;
-
-  title: string = 'Person';
-  subTitle: string;
-
-  m: MetaDomain;
-
-  person: Person;
-
-  locales: Locale[];
-  genders: Enumeration[];
-  salutations: Enumeration[];
-  roles: PersonRole[];
 
   constructor(
     private allors: AllorsService,
     private errorService: ErrorService,
     private route: ActivatedRoute,
-    public media: TdMediaService, private changeDetectorRef: ChangeDetectorRef) {
+    public media: TdMediaService,
+    private titleService: Title,
+    private changeDetectorRef: ChangeDetectorRef) {
 
     this.scope = new Scope(allors.database, allors.workspace);
     this.m = this.allors.meta;
+    this.titleService.setTitle(this.title);
   }
 
-  ngOnInit(): void {
+  public ngOnInit(): void {
     this.subscription = this.route.url
       .switchMap((url: any) => {
 
-        const id: string = this.route.snapshot.paramMap.get('id');
+        const id: string = this.route.snapshot.paramMap.get("id");
 
         const m: MetaDomain = this.allors.meta;
 
         const fetch: Fetch[] = [
           new Fetch({
-            name: 'person',
-            id: id,
+            id,
             include: [
               new TreeNode({ roleType: m.Person.Picture }),
             ],
+            name: "person",
           }),
         ];
 
         const query: Query[] = [
           new Query(
             {
-              name: 'locales',
+              name: "locales",
               objectType: this.m.Locale,
             }),
           new Query(
             {
-              name: 'genders',
+              name: "genders",
               objectType: this.m.GenderType,
             }),
           new Query(
             {
-              name: 'salutations',
+              name: "salutations",
               objectType: this.m.Salutation,
             }),
           new Query(
             {
-              name: 'roles',
+              name: "roles",
               objectType: this.m.PersonRole,
             }),
         ];
@@ -84,16 +88,16 @@ export class PersonEditComponent implements OnInit, AfterViewInit, OnDestroy {
         this.scope.session.reset();
 
         return this.scope
-          .load('Pull', new PullRequest({ fetch: fetch, query: query }));
+          .load("Pull", new PullRequest({ fetch, query }));
       })
       .subscribe((loaded: Loaded) => {
 
-        this.subTitle = 'edit person';
+        this.subTitle = "edit person";
         this.person = loaded.objects.person as Person;
 
         if (!this.person) {
-          this.subTitle = 'add a new person';
-          this.person = this.scope.session.create('Person') as Person;
+          this.subTitle = "add a new person";
+          this.person = this.scope.session.create("Person") as Person;
         }
 
         this.locales = loaded.collections.locales as Locale[];
@@ -108,18 +112,18 @@ export class PersonEditComponent implements OnInit, AfterViewInit, OnDestroy {
     );
   }
 
-  ngAfterViewInit(): void {
+  public ngAfterViewInit(): void {
     this.media.broadcast();
     this.changeDetectorRef.detectChanges();
   }
 
-  ngOnDestroy(): void {
+  public ngOnDestroy(): void {
     if (this.subscription) {
       this.subscription.unsubscribe();
     }
   }
 
-  save(): void {
+  public save(): void {
 
     this.scope
       .save()
@@ -131,7 +135,7 @@ export class PersonEditComponent implements OnInit, AfterViewInit, OnDestroy {
       });
   }
 
-  goBack(): void {
+  public goBack(): void {
     window.history.back();
   }
 }
