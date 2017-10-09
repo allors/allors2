@@ -590,7 +590,7 @@ namespace Allors.Domain
             decimal discountAdjustmentAmount = 0;
             decimal surchargeAdjustmentAmount = 0;
 
-            var internalOrganisation = Singleton.Instance(this);
+            var singleton = Singleton.Instance(this);
             var customer = this.SalesOrderWhereSalesOrderItem.BillToCustomer;
             var salesOrder = this.SalesOrderWhereSalesOrderItem;
 
@@ -747,7 +747,7 @@ namespace Allors.Domain
             }
 
             var toCurrency = this.SalesOrderWhereSalesOrderItem.CustomerCurrency;
-            var fromCurrency = internalOrganisation.PreferredCurrency;
+            var fromCurrency = singleton.PreferredCurrency;
 
             if (fromCurrency.Equals(toCurrency))
             {

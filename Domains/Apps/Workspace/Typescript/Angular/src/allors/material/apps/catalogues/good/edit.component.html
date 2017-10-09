@@ -27,7 +27,7 @@
           <a-mat-input *ngIf="SerialisedGood" [object]="serialisedInventoryItem" [roleType]="m.SerialisedInventoryItem.SerialNumber"></a-mat-input>
           <a-mat-localised-text [object]="good" [roleType]="m.Good.LocalisedNames" [locales]="locales" label="Name"></a-mat-localised-text>
           <a-mat-localised-text [object]="good" [roleType]="m.Good.LocalisedDescriptions" [locales]="locales" label="Description"></a-mat-localised-text>
-          <a-mat-select [object]="inventoryItem" [roleType]="m.InventoryItemVersiond.ProductType" [options]="productTypes" display="Name"></a-mat-select>
+          <a-mat-select [object]="inventoryItem" [roleType]="m.InventoryItem.ProductType" [options]="productTypes" display="Name"></a-mat-select>
           <a-mat-select [object]="good" [roleType]="m.Good.ProductCategories" [options]="categories" display="Name"></a-mat-select>
           <a-mat-autocomplete [object]="good" [roleType]="m.Good.PrimaryProductCategory" [options]="categories" display="Name"></a-mat-autocomplete>
 

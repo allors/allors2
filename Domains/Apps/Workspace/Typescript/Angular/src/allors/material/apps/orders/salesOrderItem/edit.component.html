@@ -11,9 +11,9 @@
       <!-- <a-mat-static *ngIf="quoteItem.RequestItem" [object]="quoteItem" [roleType]="m.QuoteItem.RequestItem" [display]=""></a-mat-static> -->
       <a-mat-select [object]="orderItem" [roleType]="m.SalesOrderItem.Product" [options]="goods" display="Name"></a-mat-select>
       <a-mat-input [object]="orderItem" [roleType]="m.SalesOrderItem.QuantityOrdered"></a-mat-input>
-      <a-mat-static *ngIf="quoteItem.Comment" [object]="quoteItem" [roleType]="m.QuoteItem.Comment" label="Quote Comment"></a-mat-static>
+      <a-mat-static *ngIf="quoteItem?.Comment" [object]="quoteItem" [roleType]="m.QuoteItem.Comment" label="Quote Comment"></a-mat-static>
       <a-mat-textarea [object]="orderItem" [roleType]="m.SalesOrderItem.Comment" label="Order Comment"></a-mat-textarea>
-      <a-mat-static *ngIf="quoteItem.InternalComment" [object]="quoteItem" [roleType]="m.QuoteItem.InternalComment" label="Quote Internal Comment"></a-mat-static>
+      <a-mat-static *ngIf="quoteItem?.InternalComment" [object]="quoteItem" [roleType]="m.QuoteItem.InternalComment" label="Quote Internal Comment"></a-mat-static>
       <a-mat-textarea [object]="orderItem" [roleType]="m.SalesOrderItem.InternalComment" label="Order Internal Comment"></a-mat-textarea>
     </div>
 
