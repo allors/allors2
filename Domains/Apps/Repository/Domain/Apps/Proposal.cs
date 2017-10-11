@@ -85,7 +85,6 @@ namespace Allors.Repository
         public void Approve() { }
 
         public void Reject() { }
-        public void AddNewQuoteItem() { }
 
         #endregion
     }

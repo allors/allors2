@@ -45,6 +45,11 @@ namespace Allors.Domain
             {
                 this.RequiredByDate = this.RequestItem.RequiredByDate;
             }
+
+            if (!this.ExistUnitOfMeasure)
+            {
+                this.UnitOfMeasure = new UnitsOfMeasure(this.strategy.Session).Piece;
+            }
         }
     }
 }

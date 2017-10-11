@@ -154,7 +154,7 @@ export class SalesOrderEditComponent implements OnInit, AfterViewInit, OnDestroy
 
         this.organisations = loaded.collections.organisations as Organisation[];
         this.people = loaded.collections.parties as Person[];
-        this.title = "Sales Order for: " + this.order.ShipToCustomer.PartyName;
+        this.title = "Sales Order " + this.order.OrderNumber + " for: " + this.order.ShipToCustomer.PartyName;
       },
       (error: Error) => {
         this.errorService.message(error);

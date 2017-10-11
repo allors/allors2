@@ -152,7 +152,7 @@ export class ProductQuoteEditComponent implements OnInit, AfterViewInit, OnDestr
 
         this.organisations = loaded.collections.organisations as Organisation[];
         this.people = loaded.collections.parties as Person[];
-        this.title = "Quote to: " + this.quote.Receiver.PartyName;
+        this.title = "Quote " + this.quote.QuoteNumber + " to: " + this.quote.Receiver.PartyName;
       },
       (error: Error) => {
         this.errorService.message(error);

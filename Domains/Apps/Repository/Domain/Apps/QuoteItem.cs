@@ -141,6 +141,7 @@ namespace Allors.Repository
         [RoleId("6eb4000d-559d-42b2-b02b-452370fa15b4")]
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
+        [Required]
         [Indexed]
         [Workspace]
         public UnitOfMeasure UnitOfMeasure { get; set; }
@@ -216,15 +217,15 @@ namespace Allors.Repository
         #region inherited methods
 
 
-        public void OnBuild(){}
+        public void OnBuild() { }
 
-        public void OnPostBuild(){}
+        public void OnPostBuild() { }
 
-        public void OnPreDerive(){}
+        public void OnPreDerive() { }
 
-        public void OnDerive(){}
+        public void OnDerive() { }
 
-        public void OnPostDerive(){}
+        public void OnPostDerive() { }
 
 
         #endregion

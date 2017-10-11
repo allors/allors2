@@ -7,7 +7,7 @@ import { BehaviorSubject, Observable, Subject, Subscription } from "rxjs/Rx";
 
 import { AllorsService, ErrorService, Filter, Invoked, Loaded, Saved, Scope } from "../../../../angular";
 import { Contains, Equals, Fetch, Like, Page, Path, PullRequest, PushResponse, Query, Sort, TreeNode } from "../../../../domain";
-import { Good, ProductQuote, QuoteItem, RequestItem, SerialisedInventoryItem } from "../../../../domain";
+import { Good, ProductQuote, QuoteItem, RequestItem, SerialisedInventoryItem, UnitOfMeasure } from "../../../../domain";
 import { MetaDomain } from "../../../../meta";
 
 @Component({
@@ -25,6 +25,7 @@ export class QuoteItemEditComponent implements OnInit, AfterViewInit, OnDestroy 
   public inventoryItems: SerialisedInventoryItem[];
   public inventoryItem: SerialisedInventoryItem;
   public goods: Good[];
+  public unitsOfMeasure: UnitOfMeasure[];
 
   public goodsFilter: Filter;
 
@@ -80,23 +81,29 @@ export class QuoteItemEditComponent implements OnInit, AfterViewInit, OnDestroy 
           }),
         ];
 
-        const rolesQuery: Query[] = [
+        const query: Query[] = [
           new Query(
             {
               name: "goods",
               objectType: m.Good,
             }),
-        ];
+            new Query(
+              {
+                name: "unitsOfMeasure",
+                objectType: m.UnitOfMeasure,
+              }),
+          ];
 
         this.scope.session.reset();
 
         return this.scope
-          .load("Pull", new PullRequest({ fetch, query: rolesQuery }))
+          .load("Pull", new PullRequest({ fetch, query }))
           .switchMap((loaded: Loaded) => {
             this.quote = loaded.objects.productQuote as ProductQuote;
             this.quoteItem = loaded.objects.quoteItem as QuoteItem;
             this.requestItem = loaded.objects.requestItem as RequestItem;
             this.goods = loaded.collections.goods as Good[];
+            this.unitsOfMeasure = loaded.collections.unitsOfMeasure as UnitOfMeasure[];
 
             if (!this.quoteItem) {
               this.title = "Add Quote Item";

@@ -187,6 +187,7 @@ namespace Allors.Repository
         [RoleId("7cf7c405-f20c-4416-84f5-a4ff05412162")]
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
+        [Required]
         [Workspace]
         [Indexed]
         public ContactMechanism TakenByContactMechanism { get; set; }
@@ -197,6 +198,7 @@ namespace Allors.Repository
         [RoleId("de181822-ac8e-4a85-af28-b217aa9fcfcd")]
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
+        [Required]
         [Indexed]
         [Workspace]
         public Party ShipToCustomer { get; set; }
@@ -207,6 +209,7 @@ namespace Allors.Repository
         [RoleId("97e7045d-cf35-46ee-acfc-34f6b2572096")]
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
+        [Required]
         [Workspace]
         [Indexed]
         public Party BillToCustomer { get; set; }
@@ -368,6 +371,7 @@ namespace Allors.Repository
         [RoleId("d99b70e4-1ad2-46a3-b362-26880a843ff8")]
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
+        [Required]
         [Workspace]
         [Indexed]
         public ContactMechanism BillFromContactMechanism { get; set; }
@@ -378,6 +382,7 @@ namespace Allors.Repository
         [RoleId("44f187d7-afed-47c8-b318-454a3982c8af")]
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
+        [Required]
         [Indexed]
         [Workspace]
         public PaymentMethod PaymentMethod { get; set; }

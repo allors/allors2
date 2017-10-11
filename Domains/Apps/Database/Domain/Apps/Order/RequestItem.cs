@@ -42,6 +42,11 @@ namespace Allors.Domain
 
             derivation.Validation.AssertAtLeastOne(this, M.RequestItem.Product, M.RequestItem.ProductFeature, M.RequestItem.Description, M.RequestItem.NeededSkill, M.RequestItem.Deliverable);
             derivation.Validation.AssertExistsAtMostOne(this, M.RequestItem.Product, M.RequestItem.ProductFeature, M.RequestItem.Description, M.RequestItem.NeededSkill, M.RequestItem.Deliverable);
+
+            if (!this.ExistUnitOfMeasure)
+            {
+                this.UnitOfMeasure = new UnitsOfMeasure(this.strategy.Session).Piece;
+            }
         }
     }
 }

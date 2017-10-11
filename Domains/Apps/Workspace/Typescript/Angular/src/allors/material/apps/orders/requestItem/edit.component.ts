@@ -7,7 +7,7 @@ import { BehaviorSubject, Observable, Subject, Subscription } from "rxjs/Rx";
 
 import { AllorsService, ErrorService, Filter, Invoked, Loaded, Saved, Scope } from "../../../../angular";
 import { Contains, Equals, Fetch, Like, Page, Path, PullRequest, PushResponse, Query, Sort, TreeNode } from "../../../../domain";
-import { Good, RequestForQuote, RequestItem } from "../../../../domain";
+import { Good, RequestForQuote, RequestItem, UnitOfMeasure } from "../../../../domain";
 import { MetaDomain } from "../../../../meta";
 
 @Component({
@@ -22,6 +22,7 @@ export class RequestItemEditComponent implements OnInit, AfterViewInit, OnDestro
   public request: RequestForQuote;
   public requestItem: RequestItem;
   public goods: Good[];
+  public unitsOfMeasure: UnitOfMeasure[];
 
   private refresh$: BehaviorSubject<Date>;
   private subscription: Subscription;
@@ -60,29 +61,35 @@ export class RequestItemEditComponent implements OnInit, AfterViewInit, OnDestro
           }),
           new Fetch({
             id: itemId,
-            include: [ new TreeNode({ roleType: m.RequestItem.RequestItemState })],
+            include: [new TreeNode({ roleType: m.RequestItem.RequestItemState })],
             name: "requestItem",
           }),
         ];
 
-        const rolesQuery: Query[] = [
+        const query: Query[] = [
           new Query(
             {
               name: "goods",
               objectType: m.Good,
+            }),
+          new Query(
+            {
+              name: "unitsOfMeasure",
+              objectType: m.UnitOfMeasure,
             }),
         ];
 
         this.scope.session.reset();
 
         return this.scope
-          .load("Pull", new PullRequest({ fetch, query: rolesQuery }));
+          .load("Pull", new PullRequest({ fetch, query }));
       })
       .subscribe((loaded: Loaded) => {
 
         this.request = loaded.objects.requestForQuote as RequestForQuote;
         this.requestItem = loaded.objects.requestItem as RequestItem;
         this.goods = loaded.collections.goods as Good[];
+        this.unitsOfMeasure = loaded.collections.unitsOfMeasure as UnitOfMeasure[];
 
         if (!this.requestItem) {
           this.title = "Add Request Item";

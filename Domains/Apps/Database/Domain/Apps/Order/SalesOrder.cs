@@ -167,12 +167,14 @@ namespace Allors.Domain
 
             if (!this.ExistBillFromContactMechanism)
             {
-                this.BillFromContactMechanism = Singleton.Instance(this).InternalOrganisation.BillingAddress;
+                this.BillFromContactMechanism = Singleton.Instance(this).InternalOrganisation.ExistBillingAddress ?
+                    Singleton.Instance(this).InternalOrganisation.BillingAddress : Singleton.Instance(this).InternalOrganisation.GeneralCorrespondence;
             }
 
             if (!this.ExistTakenByContactMechanism)
             {
-                this.TakenByContactMechanism = Singleton.Instance(this).InternalOrganisation.OrderAddress;
+                this.TakenByContactMechanism = Singleton.Instance(this).InternalOrganisation.ExistOrderAddress ? 
+                    Singleton.Instance(this).InternalOrganisation.OrderAddress : Singleton.Instance(this).InternalOrganisation.GeneralCorrespondence;
             }
 
             if (!this.ExistCustomerCurrency)

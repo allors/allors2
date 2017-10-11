@@ -85,8 +85,6 @@ namespace Allors.Repository
 
         public void Hold() { }
 
-        public void AddNewRequestItem() { }
-
         public void OnBuild() { }
 
         public void OnPostBuild() { }

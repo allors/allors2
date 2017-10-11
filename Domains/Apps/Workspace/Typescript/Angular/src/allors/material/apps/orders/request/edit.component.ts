@@ -154,7 +154,7 @@ export class RequestEditComponent implements OnInit, AfterViewInit, OnDestroy {
 
         this.organisations = loaded.collections.organisations as Organisation[];
         this.people = loaded.collections.parties as Person[];
-        this.title = "Request from: " + this.request.Originator.PartyName;
+        this.title = "Request " + this.request.RequestNumber + " from: " + this.request.Originator.PartyName;
       },
       (error: Error) => {
         this.errorService.message(error);

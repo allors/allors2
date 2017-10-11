@@ -61,7 +61,7 @@
 
       <mat-divider></mat-divider>
       <mat-card-actions>
-        <button *ngIf="request.CanExecuteAddNewRequestItem" mat-button [routerLink]="['/request/' + request.id ]">Edit</button>
+        <button *ngIf="request.CanWriteRequestItems" mat-button [routerLink]="['/request/' + request.id ]">Edit</button>
         <button *ngIf="request.CanExecuteCreateQuote && request.RequestItems.length > 0" mat-button (click)="createQuote()">Create Quote</button>
       </mat-card-actions>
     </mat-card>
@@ -100,7 +100,7 @@
       </mat-card-content>
       <mat-divider></mat-divider>
       <mat-card-actions>
-        <button *ngIf="request.CanExecuteAddNewRequestItem" mat-button [routerLink]="['/request/' + request.id +'/item']">+ Add</button>
+        <button *ngIf="request.CanWriteRequestItems" mat-button [routerLink]="['/request/' + request.id +'/item']">+ Add</button>
       </mat-card-actions>
     </mat-card>
   </div>

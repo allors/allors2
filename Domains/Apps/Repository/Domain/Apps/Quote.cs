@@ -114,6 +114,7 @@ namespace Allors.Repository
         [Indexed]
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
+        [Required]
         [Workspace]
         ContactMechanism FullfillContactMechanism { get; set; }
 
@@ -186,11 +187,5 @@ namespace Allors.Repository
         #endregion
         [Workspace]
         void Reject();
-
-        #region Allors
-        [Id("28349179-5B4F-4B33-B4C4-36FBB6A18EC3")]
-        #endregion
-        [Workspace]
-        void AddNewQuoteItem();
     }
 }

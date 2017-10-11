@@ -39,11 +39,10 @@ namespace Allors.Domain
             var approve = this.Meta.Approve;
             var reject = this.Meta.Reject;
             var order = this.Meta.Order;
-            var addNewQuoteItem = this.Meta.AddNewQuoteItem;
 
             config.Deny(this.ObjectType, created, order);
-            config.Deny(this.ObjectType, ordered, approve, reject, order, addNewQuoteItem);
-            config.Deny(this.ObjectType, rejected, approve, reject, order, addNewQuoteItem);
+            config.Deny(this.ObjectType, ordered, approve, reject, order);
+            config.Deny(this.ObjectType, rejected, approve, reject, order);
 
             config.Deny(this.ObjectType, rejected, Operations.Write);
             config.Deny(this.ObjectType, ordered, Operations.Write);

@@ -100,6 +100,7 @@ namespace Allors.Repository
         [AssociationId("0f924664-8b58-45f4-b6f3-d8201610de8f")]
         [RoleId("3560f38b-1945-4eb1-9b9a-c3e84d267647")]
         #endregion
+        [Required]
         [Workspace]
         public int Quantity { get; set; }
 
@@ -110,6 +111,7 @@ namespace Allors.Repository
         [Indexed]
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
+        [Required]
         [Workspace]
         public UnitOfMeasure UnitOfMeasure { get; set; }
 
