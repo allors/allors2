@@ -68,8 +68,7 @@ namespace Allors
                 internalOrganisation.IncomingShipmentNumberPrefix = "incoming shipmentno: ";
                 internalOrganisation.PurchaseInvoiceNumberPrefix = "incoming invoiceno: ";
                 internalOrganisation.PurchaseOrderNumberPrefix = "purchase orderno: ";
-                internalOrganisation.BillingAddress = postalAddress;
-                internalOrganisation.ShippingAddress = postalAddress;
+                internalOrganisation.GeneralCorrespondence = postalAddress;
                 internalOrganisation.DefaultPaymentMethod = ownBankAccount;
 
                 singleton.PreferredCurrency = new Currencies(session).CurrencyByCode["EUR"];
