@@ -71,7 +71,7 @@ namespace Allors.Services
             services.AddSingleton<IDatabaseService, DatabaseService>();
             services.AddSingleton<IMailService, MailService>();
             services.AddSingleton<IPasswordService, PasswordService>();
-            services.AddSingleton<IPublishService, PublishService>();
+            services.AddSingleton<IPublishingService, PublishingService>();
             services.AddSingleton<ISingletonService, SingletonService>();
             services.AddSingleton<IStickyService, StickyService>();
             services.AddSingleton<IStateService, StateService>();
