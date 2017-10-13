@@ -26,9 +26,9 @@ namespace Allors.Domain
 
     public partial class Countries
     {
-        private Cache<string, Country> countryByIsoCode;
+        private Sticky<string, Country> countryByIsoCode;
 
-        public Cache<string, Country> CountryByIsoCode => this.countryByIsoCode ?? (this.countryByIsoCode = new Cache<string, Country>(this.Session, M.Country.IsoCode));
+        public Sticky<string, Country> CountryByIsoCode => this.countryByIsoCode ?? (this.countryByIsoCode = new Sticky<string, Country>(this.Session, M.Country.IsoCode));
 
         protected override void BasePrepare(Setup config)
         {

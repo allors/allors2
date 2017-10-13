@@ -195,7 +195,7 @@ namespace Allors.Adapters.Object.SqlClient
         }
 
         [Fact]
-        public virtual void SortDifferentSession()
+        public override void SortDifferentSession()
         {
             foreach (var init in this.Inits)
             {

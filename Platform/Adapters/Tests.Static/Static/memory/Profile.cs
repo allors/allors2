@@ -25,8 +25,16 @@ namespace Allors.Adapters.Memory
 
     using Adapters;
 
+    using Microsoft.Extensions.DependencyInjection;
+
     public class Profile : Adapters.Profile
     {
+        public Profile()
+        {
+            var services = new ServiceCollection();
+            this.ServiceProvider = services.BuildServiceProvider();
+        }
+
         public override Action[] Markers
         {
             get
@@ -50,6 +58,8 @@ namespace Allors.Adapters.Memory
             }
         }
 
+        public ServiceProvider ServiceProvider { get; set; }
+
         public override IDatabase CreatePopulation()
         {
             return this.CreateDatabase();
@@ -57,7 +67,7 @@ namespace Allors.Adapters.Memory
 
         public override IDatabase CreateDatabase()
         {
-            return new Database(new Configuration { ObjectFactory = this.ObjectFactory });
+            return new Database(this.ServiceProvider, new Configuration { ObjectFactory = this.ObjectFactory });
         }
     }
 }

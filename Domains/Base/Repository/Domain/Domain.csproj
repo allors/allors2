@@ -64,6 +64,7 @@
     </Compile>
     <Compile Include="Base\Attributes\RequiredAttribute.cs" />
     <Compile Include="Base\Attributes\UniqueAttribute.cs" />
+    <Compile Include="Base\Common\Cachable.cs" />
     <Compile Include="Base\Common\Object.cs" />
     <Compile Include="Base\Common\Version.cs" />
     <Compile Include="Base\Common\Versioned.cs" />

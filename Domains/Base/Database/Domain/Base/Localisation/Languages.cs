@@ -22,9 +22,9 @@ namespace Allors.Domain
 {
     public partial class Languages
     {
-        private Cache<string, Language> languageByCode;
+        private Sticky<string, Language> languageByCode;
 
-        public Cache<string, Language> LanguageByCode => this.languageByCode ?? (this.languageByCode = new Cache<string, Language>(this.Session, this.Meta.IsoCode));
+        public Sticky<string, Language> LanguageByCode => this.languageByCode ?? (this.languageByCode = new Sticky<string, Language>(this.Session, this.Meta.IsoCode));
 
         protected override void BaseSetup(Setup config)
         {

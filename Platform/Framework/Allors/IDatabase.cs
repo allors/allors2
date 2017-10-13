@@ -20,6 +20,7 @@
 
 namespace Allors
 {
+    using System;
     using System.Xml;
 
     using Allors.Meta;
@@ -89,21 +90,11 @@ namespace Allors
         /// </summary>
         IDatabase Serializable { get; }
 
-
         /// <summary>
-        /// Population properties are simple key/value pairs.
-        /// Because Allors objects can not hold instance variables, this is the only way
-        /// for Allors objects to hold references to Non Allors objects or Allors objects
-        /// from a different population.
+        /// Gets the service provider.
         /// </summary>
-        /// <param name="name">The key by which the session object is retrieved.</param>
-        /// <returns>The properties.</returns>
-        object this[string name]
-        {
-            get;
-            set;
-        }
-        
+        IServiceProvider ServiceProvider { get; }
+
         /// <summary>
         /// Initializes the database. If this population is persistent then
         /// all existing objects will be deleted.

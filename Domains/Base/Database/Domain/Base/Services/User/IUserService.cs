@@ -1,9 +1,7 @@
 ﻿namespace Allors.Services
 {
-    using Allors.Domain;
-
-    public interface IUserService : IService
+    public interface IUserService : IStateful
     {
-        string GetUser();
+        long Id { get; set; }
     }
 }

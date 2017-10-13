@@ -49,15 +49,6 @@ namespace Allors.Domain
             return (C1[])session.Extent(Meta.ObjectType).ToArray();
         }
 
-        public void Broadcast(string message)
-        {
-            var subscriber = Strategy.Session["subscriber"] as Subscriber;
-            if (subscriber != null)
-            {
-                subscriber.Message = message;
-            }
-        }
-
         public void AnS1234Method()
         {
         }

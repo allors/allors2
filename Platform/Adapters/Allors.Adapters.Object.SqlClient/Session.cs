@@ -27,6 +27,8 @@ namespace Allors.Adapters.Object.SqlClient
 
     using Allors.Meta;
 
+    using Microsoft.Extensions.DependencyInjection;
+
     public sealed class Session : ISession
     {
         private static readonly IObject[] EmptyObjects = { };
@@ -39,6 +41,10 @@ namespace Allors.Adapters.Object.SqlClient
 
         internal Session(Database database, Connection connection)
         {
+            var serviceScopeFactory = database.ServiceProvider.GetRequiredService<IServiceScopeFactory>();
+            var scope = serviceScopeFactory.CreateScope();
+            this.ServiceProvider = scope.ServiceProvider;
+
             this.database = database;
             this.Connection = connection;
 
@@ -47,6 +53,8 @@ namespace Allors.Adapters.Object.SqlClient
             this.Prefetcher = new Prefetcher(this);
             this.Commands = new Commands(this, connection);
         }
+
+        public IServiceProvider ServiceProvider { get; }
 
         public Connection Connection { get; }
 

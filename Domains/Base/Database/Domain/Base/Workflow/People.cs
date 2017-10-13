@@ -21,6 +21,7 @@
 namespace Allors.Domain
 {
     using Allors.Meta;
+    using Allors.Services;
 
     public partial class People
     {
@@ -43,7 +44,7 @@ namespace Allors.Domain
             var guest = new PersonBuilder(this.Session).WithUserName(Users.GuestUserName).Build();
             userGroups.Guests.AddMember(guest);
 
-            var singleton = Singleton.Instance(this.Session);
+            var singleton = this.Session.GetSingleton();
             singleton.Guest = guest;
         }
 

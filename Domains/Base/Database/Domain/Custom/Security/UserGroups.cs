@@ -22,7 +22,6 @@
 namespace Allors.Domain
 {
     using global::System;
-    using global::System.Collections.Generic;
 
     public partial class UserGroups
     {
@@ -30,11 +29,11 @@ namespace Allors.Domain
         public static readonly Guid SalesId = new Guid("1511E4E2-829F-4133-8824-B94ED46E6BED");
         public static readonly Guid ProcurementId = new Guid("FF887B58-CDA3-4C76-8308-0F005E362E0E");
 
-        public UserGroup Operations => this.Cache.Get(OperationsId);
+        public UserGroup Operations => this.Sticky[OperationsId];
 
-        public UserGroup Sales => this.Cache.Get(SalesId);
+        public UserGroup Sales => this.Sticky[SalesId];
 
-        public UserGroup Procurement => this.Cache.Get(ProcurementId);
+        public UserGroup Procurement => this.Sticky[ProcurementId];
 
         protected override void CustomSetup(Setup setup)
         {

@@ -2,18 +2,21 @@
 {
     using System;
 
+    using Allors.Domain;
+    using Allors.Services;
+
     using Microsoft.AspNetCore.Authentication.JwtBearer;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
 
     public class DatabaseController : Controller
     {
-        private readonly IAllorsContext allors;
-
-        public DatabaseController(IAllorsContext allorsContext)
+        public DatabaseController(ISessionService sessionService)
         {
-            this.allors = allorsContext;
+            this.Session = sessionService.Session;
         }
+
+        private ISession Session { get; }
 
         [HttpPost]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
@@ -22,7 +25,7 @@
         {
             try
             {
-                var responseBuilder = new SyncResponseBuilder(this.allors.Session, this.allors.User, syncRequest);
+                var responseBuilder = new SyncResponseBuilder(this.Session, this.Session.GetUser(), syncRequest);
                 var response = responseBuilder.Build();
                 return this.Ok(response);
             }
@@ -39,7 +42,7 @@
         {
             try
             {
-                var responseBuilder = new PushResponseBuilder(this.allors.Session, this.allors.User, pushRequest);
+                var responseBuilder = new PushResponseBuilder(this.Session, this.Session.GetUser(), pushRequest);
                 var response = responseBuilder.Build();
                 return this.Ok(response);
             }
@@ -56,7 +59,7 @@
         {
             try
             {
-                var responseBuilder = new InvokeResponseBuilder(this.allors.Session, this.allors.User, invokeRequest);
+                var responseBuilder = new InvokeResponseBuilder(this.Session, this.Session.GetUser(), invokeRequest);
                 var response = responseBuilder.Build();
                 return this.Ok(response);
             }

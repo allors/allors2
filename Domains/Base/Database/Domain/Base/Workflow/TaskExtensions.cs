@@ -23,16 +23,17 @@ namespace Allors.Domain
     using System.Collections.Generic;
     using System.Linq;
 
+    using Allors.Services;
+
+    using Microsoft.Extensions.DependencyInjection;
+
     public static partial class TaskExtensions
     {
         public static void BaseOnBuild(this Task @this, ObjectOnBuild method)
         {
             if (!@this.ExistDateCreated)
             {
-                using (var timeService = @this.GetServiceLocator().CreateTimeService())
-                {
-                    @this.DateCreated = timeService.Now();
-                }
+                @this.DateCreated = @this.Strategy.Session.Now();
             }
         }
 
@@ -48,7 +49,7 @@ namespace Allors.Domain
 
         public static void AssignPerformer(this Task @this)
         {
-            var currentUser = (Person)new Users(@this.Strategy.Session).CurrentUser;
+            var currentUser = @this.Strategy.Session.GetUser() as Person;
             @this.Performer = currentUser;
         }
 
@@ -61,7 +62,7 @@ namespace Allors.Domain
             @this.Participants = participantSet.ToArray();
 
             // Manage Security
-            var singleton = Singleton.Instance(session);
+            var singleton = session.GetSingleton();
             var securityTokens = new HashSet<SecurityToken> {singleton.DefaultSecurityToken};
             var ownerSecurityTokens = participantSet.Where(v => v.ExistOwnerSecurityToken).Select(v => v.OwnerSecurityToken);
             securityTokens.UnionWith(ownerSecurityTokens);

@@ -18,16 +18,15 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-using Allors;
-
 namespace Allors.Adapters.Memory
 {
     using System;
-    using System.Collections;
     using System.Collections.Generic;
     using System.Xml;
 
     using Allors.Meta;
+
+    using Microsoft.Extensions.DependencyInjection;
 
     public class Session : ISession
     {
@@ -45,12 +44,14 @@ namespace Allors.Adapters.Memory
         private Dictionary<long, Strategy> strategyByObjectId;
         private Dictionary<IObjectType, HashSet<Strategy>> strategiesByObjectType;
 
-        private Dictionary<string, object> properties;
-
         private long currentId;
 
         internal Session(Database database)
         {
+            var serviceScopeFactory = database.ServiceProvider.GetRequiredService<IServiceScopeFactory>();
+            var scope = serviceScopeFactory.CreateScope();
+            this.ServiceProvider = scope.ServiceProvider;
+
             this.database = database;
             this.busyCommittingOrRollingBack = false;
 
@@ -61,6 +62,8 @@ namespace Allors.Adapters.Memory
             this.Reset();
         }
 
+        public IServiceProvider ServiceProvider { get; }
+
         public IDatabase Population => this.database;
 
         public IDatabase Database => this.database;
@@ -70,38 +73,6 @@ namespace Allors.Adapters.Memory
         internal ChangeSet MemoryChangeSet => this.changeSet;
 
         internal Database MemoryDatabase => this.database;
-
-        public object this[string name]
-        {
-            get
-            {
-                if (this.properties == null)
-                {
-                    return null;
-                }
-
-                object value;
-                this.properties.TryGetValue(name, out value);
-                return value;
-            }
-
-            set
-            {
-                if (this.properties == null)
-                {
-                    this.properties = new Dictionary<string, object>();
-                }
-
-                if (value == null)
-                {
-                    this.properties.Remove(name);
-                }
-                else
-                {
-                    this.properties[name] = value;
-                }
-            }
-        }
 
         public void Commit()
         {
@@ -430,8 +401,6 @@ namespace Allors.Adapters.Memory
             // Strategies
             this.strategyByObjectId = new Dictionary<long, Strategy>();
             this.strategiesByObjectType = new Dictionary<IObjectType, HashSet<Strategy>>();
-
-            this.properties = null;
         }
 
         internal virtual Strategy InstantiateMemoryStrategy(long objectId)

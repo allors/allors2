@@ -5,6 +5,7 @@
 
     using Allors.Domain;
     using Allors.Meta;
+    using Allors.Services;
 
     using Microsoft.AspNetCore.Authentication.JwtBearer;
     using Microsoft.AspNetCore.Authorization;
@@ -12,12 +13,12 @@
 
     public class PullController : Controller
     {
-        private readonly IAllorsContext allors;
-
-        public PullController(IAllorsContext allorsContext)
+        public PullController(ISessionService sessionService)
         {
-            this.allors = allorsContext;
+            this.Session = sessionService.Session;
         }
+
+        private ISession Session { get; }
 
         [HttpPost]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
@@ -25,15 +26,15 @@
         {
             try
             {
-                var response = new PullResponseBuilder(this.allors.User);
+                var response = new PullResponseBuilder(this.Session.GetUser());
 
                 if (req.Q != null)
                 {
-                    var metaPopulation = (MetaPopulation)this.allors.Session.Database.MetaPopulation;
+                    var metaPopulation = (MetaPopulation)this.Session.Database.MetaPopulation;
                     var queries = req.Q.Select(v => v.Parse(metaPopulation)).ToArray();
                     foreach (var query in queries)
                     {
-                        Extent extent = this.allors.Session.Query(query);
+                        Extent extent = this.Session.Query(query);
                         if (query.Page != null)
                         {
                             var page = query.Page;
@@ -52,11 +53,11 @@
                 {
                     foreach (var fetch in req.F)
                     {
-                        fetch.Parse(this.allors.Session, out IObject @object, out Path path, out Tree include);
+                        fetch.Parse(this.Session, out IObject @object, out Path path, out Tree include);
 
                         if (path != null)
                         {
-                            var acls = new AccessControlListCache(this.allors.User);
+                            var acls = new AccessControlListCache(this.Session.GetUser());
                             var result = path.Get(@object, acls);
                             if (result is IObject)
                             {

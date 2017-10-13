@@ -22,9 +22,9 @@ namespace Allors.Domain
 {
     public partial class Currencies
     {
-        private Cache<string, Currency> currencyByCode;
+        private Sticky<string, Currency> currencyByCode;
 
-        public Cache<string, Currency> CurrencyByCode => this.currencyByCode ?? (this.currencyByCode = new Cache<string, Currency>(this.Session, this.Meta.IsoCode));
+        public Sticky<string, Currency> CurrencyByCode => this.currencyByCode ?? (this.currencyByCode = new Sticky<string, Currency>(this.Session, this.Meta.IsoCode));
 
         protected override void BaseSetup(Setup config)
         {

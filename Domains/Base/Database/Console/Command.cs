@@ -1,15 +1,19 @@
 ﻿namespace Allors.Console
 {
     using System.Data;
+    using System.IO;
     using System.Security.Claims;
     using System.Security.Principal;
 
     using Allors.Adapters.Object.SqlClient;
     using Allors.Domain;
     using Allors.Meta;
-    using Allors.Services.Base;
+    using Allors.Services;
 
     using Microsoft.Extensions.Configuration;
+    using Microsoft.Extensions.DependencyInjection;
+
+    using ObjectFactory = Allors.ObjectFactory;
 
     public abstract class Command
     {
@@ -44,19 +48,11 @@
                 CommandTimeout = 0
             };
 
-            var database = new Database(configuration);
+            var services = new ServiceCollection();
+            services.AddAllors("../Server");
+            var serviceProvider = services.BuildServiceProvider();
 
-            var timeService = new TimeService();
-            var mailService = new MailService();
-            var securityService = new SecurityService();
-            var serviceLocator = new ServiceLocator
-                                     {
-                                         TimeServiceFactory = () => timeService,
-                                         MailServiceFactory = () => mailService,
-                                         SecurityServiceFactory = () => securityService
-                                     };
-            database.SetServiceLocator(serviceLocator.Assert());
-
+            var database = new Database(serviceProvider, configuration);
 
             return database;
         }

@@ -3,6 +3,11 @@ namespace Allors.Domain
 		public interface Object 
 		{
 		}
+		public interface Cachable  : Object 
+		{
+						global::System.Guid CacheId {set;}
+
+		}
 		public interface Version  : AccessControlledObject 
 		{
 						global::System.Guid? DerivationId {set;}
@@ -322,7 +327,7 @@ namespace Allors.Domain
 						global::System.String Text {set;}
 
 		}
-		public interface AccessControl  : Deletable, AccessControlledObject 
+		public interface AccessControl  : Cachable, Deletable, AccessControlledObject 
 		{
 						UserGroup SubjectGroups {set;}
 

@@ -22,6 +22,8 @@ namespace Allors.Domain
 {
     using System.Linq;
 
+    using Allors.Services;
+
     public partial class NotificationList
     {
         public void BaseOnDerive(ObjectOnDerive method)
@@ -33,7 +35,7 @@ namespace Allors.Domain
             {
                 if (this.ExistUserWhereNotificationList)
                 {
-                    var singleton = Singleton.Instance(this.strategy.Session);
+                    var singleton = this.strategy.Session.GetSingleton();
 
                     this.SecurityTokens = new[] { this.UserWhereNotificationList.OwnerSecurityToken, singleton.DefaultSecurityToken };
                 }

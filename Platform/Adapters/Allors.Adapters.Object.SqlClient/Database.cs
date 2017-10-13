@@ -17,7 +17,6 @@
 namespace Allors.Adapters.Object.SqlClient
 {
     using System;
-    using System.Collections.Concurrent;
     using System.Collections.Generic;
     using System.Data;
     using System.Data.SqlClient;
@@ -47,8 +46,6 @@ namespace Allors.Adapters.Object.SqlClient
 
         private Mapping mapping;
 
-        private ConcurrentDictionary<string, object> properties;
-
         private bool? isValid;
 
         private string validationMessage;
@@ -59,10 +56,9 @@ namespace Allors.Adapters.Object.SqlClient
 
         private ICacheFactory cacheFactory;
 
-        internal string ConnectionString { get; set; }
-
-        public Database(Configuration configuration)
+        public Database(IServiceProvider serviceProvider, Configuration configuration)
         {
+            this.ServiceProvider = serviceProvider;
             this.objectFactory = configuration.ObjectFactory;
             if (!this.objectFactory.MetaPopulation.IsValid)
             {
@@ -74,7 +70,7 @@ namespace Allors.Adapters.Object.SqlClient
             this.ManagementConnectionFactory = configuration.ManagementConnectionFactory;
 
             this.concreteClassesByObjectType = new Dictionary<IObjectType, HashSet<IObjectType>>();
-            
+
             this.CommandTimeout = configuration.CommandTimeout;
             this.IsolationLevel = configuration.IsolationLevel;
 
@@ -113,91 +109,45 @@ namespace Allors.Adapters.Object.SqlClient
         public event ObjectNotLoadedEventHandler ObjectNotLoaded;
 
         public event RelationNotLoadedEventHandler RelationNotLoaded;
+        
+        public IServiceProvider ServiceProvider { get; }
 
         public IConnectionFactory ConnectionFactory
         {
-            get
-            {
-                return this.connectionFactory ?? (this.connectionFactory = new DefaultConnectionFactory());
-            }
+            get => this.connectionFactory ?? (this.connectionFactory = new DefaultConnectionFactory());
 
-            set
-            {
-                this.connectionFactory = value;
-            }
+            set => this.connectionFactory = value;
         }
 
         public IConnectionFactory ManagementConnectionFactory
         {
-            get
-            {
-                return this.managementConnectionFactory ?? (this.managementConnectionFactory = new DefaultConnectionFactory());
-            }
+            get => this.managementConnectionFactory ?? (this.managementConnectionFactory = new DefaultConnectionFactory());
 
-            set
-            {
-                this.managementConnectionFactory = value;
-            }
+            set => this.managementConnectionFactory = value;
         }
 
         public ICacheFactory CacheFactory
         {
-            get
-            {
-                return this.cacheFactory;
-            }
+            get => this.cacheFactory;
 
-            set
-            {
-                this.cacheFactory = value ?? (this.cacheFactory = new DefaultCacheFactory());
-            }
+            set => this.cacheFactory = value ?? (this.cacheFactory = new DefaultCacheFactory());
         }
 
         public string Id { get; }
 
         public string SchemaName { get; }
 
-        public IObjectFactory ObjectFactory
-        {
-            get
-            {
-                return this.objectFactory;
-            }
-        }
+        public IObjectFactory ObjectFactory => this.objectFactory;
 
-        public IMetaPopulation MetaPopulation
-        {
-            get
-            {
-                return this.objectFactory.MetaPopulation;
-            }
-        }
+        public IMetaPopulation MetaPopulation => this.objectFactory.MetaPopulation;
 
         public IDatabase Serializable { get; }
 
-        public bool IsDatabase
-        {
-            get
-            {
-                return true;
-            }
-        }
+        public bool IsDatabase => true;
 
-        public bool IsWorkspace
-        {
-            get
-            {
-                return false;
-            }
-        }
+        public bool IsWorkspace => false;
 
-        public bool IsShared
-        {
-            get
-            {
-                return true;
-            }
-        }
+        public bool IsShared => true;
 
         public bool IsValid
         {
@@ -220,29 +170,13 @@ namespace Allors.Adapters.Object.SqlClient
             }
         }
 
-        internal string AscendingSortAppendix
-        {
-            get
-            {
-                return null;
-            }
-        }
+        internal string ConnectionString { get; set; }
 
-        internal string DescendingSortAppendix
-        {
-            get
-            {
-                return null;
-            }
-        }
+        internal string AscendingSortAppendix => null;
 
-        internal string Except
-        {
-            get
-            {
-                return "EXCEPT";
-            }
-        }
+        internal string DescendingSortAppendix => null;
+
+        internal string Except => "EXCEPT";
 
         internal ICache Cache { get; }
 
@@ -263,39 +197,6 @@ namespace Allors.Adapters.Object.SqlClient
                 }
 
                 return this.mapping;
-            }
-        }
-        
-        public object this[string name]
-        {
-            get
-            {
-                if (this.properties == null)
-                {
-                    return null;
-                }
-
-                object value;
-                this.properties.TryGetValue(name, out value);
-                return value;
-            }
-
-            set
-            {
-                if (this.properties == null)
-                {
-                    this.properties = new ConcurrentDictionary<string, object>();
-                }
-
-                if (value == null)
-                {
-                    object removed;
-                    this.properties.TryRemove(name, out removed);
-                }
-                else
-                {
-                    this.properties[name] = value;
-                }
             }
         }
 
@@ -323,7 +224,6 @@ namespace Allors.Adapters.Object.SqlClient
             }
             finally
             {
-                this.properties = null;
                 this.ResetSchema();
                 this.Cache.Invalidate();
             }
@@ -423,8 +323,7 @@ namespace Allors.Adapters.Object.SqlClient
 
         internal IRoleType[] GetSortedUnitRolesByObjectType(IObjectType objectType)
         {
-            IRoleType[] sortedUnitRoles;
-            if (!this.sortedUnitRolesByObjectType.TryGetValue(objectType, out sortedUnitRoles))
+            if (!this.sortedUnitRolesByObjectType.TryGetValue(objectType, out var sortedUnitRoles))
             {
                 var sortedUnitRoleList = new List<IRoleType>(((IComposite)objectType).RoleTypes.Where(r => r.ObjectType.IsUnit));
                 sortedUnitRoleList.Sort();

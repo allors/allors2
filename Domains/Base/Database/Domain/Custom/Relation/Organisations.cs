@@ -22,9 +22,9 @@ namespace Allors.Domain
 {
     public partial class Organisations
     {
-        private UniquelyIdentifiableCache<Organisation> organisationCache;
+        private UniquelyIdentifiableSticky<Organisation> sticky;
 
-        public UniquelyIdentifiableCache<Organisation> Cache => this.organisationCache ?? (this.organisationCache = new UniquelyIdentifiableCache<Organisation>(this.Session));
+        public UniquelyIdentifiableSticky<Organisation> Sticky => this.sticky ?? (this.sticky = new UniquelyIdentifiableSticky<Organisation>(this.Session));
 
         protected override void CustomSecure(Security config)
         {

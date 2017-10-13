@@ -1,40 +1,30 @@
-﻿using Allors;
-
-namespace Allors.Server
+﻿namespace Allors.Server
 {
-    using System.Collections.Concurrent;
-    using System.Collections.Generic;
     using System.Linq;
 
     using Allors.Meta;
+    using Allors.Services;
+
+    using Microsoft.Extensions.DependencyInjection;
 
     public static class DatabaseExtensions
     {
-        private const string FullTreeKey = "Allors.Strategy.FullTree";
-         
         public static Tree FullTree(this IDatabase @this, IComposite composite)
         {
-
-            var defaultPullTreeByClass = (IDictionary<IComposite, Tree>)@this[FullTreeKey];
-            if (defaultPullTreeByClass == null)
+            var treeService = @this.ServiceProvider.GetRequiredService<ITreeService>();
+            var tree = treeService.Get(composite);
+            if (tree == null)
             {
-                defaultPullTreeByClass = new ConcurrentDictionary<IComposite, Tree>();
-                @this[FullTreeKey] = defaultPullTreeByClass;
-            }
-
-            Tree defaultPullTree;
-            if (!defaultPullTreeByClass.TryGetValue(composite, out defaultPullTree))
-            {
-                defaultPullTree = new Tree(composite);
+                tree = new Tree(composite);
                 foreach (var compositeRoleType in composite.RoleTypes.Where(v => v.ObjectType.IsComposite && ((RoleType)v).Workspace))
                 {
-                    defaultPullTree.Add(compositeRoleType);
+                    tree.Add(compositeRoleType);
                 }
 
-                defaultPullTreeByClass[composite] = defaultPullTree;
+                treeService.Set(composite, tree);
             }
 
-            return defaultPullTree;
+            return tree;
         }
     }
 }

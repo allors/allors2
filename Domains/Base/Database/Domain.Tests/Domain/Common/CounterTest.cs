@@ -25,12 +25,16 @@ namespace Tests
 {
     using System;
     using System.Data;
+    using System.IO;
 
     using Allors;
     using Allors.Domain;
+    using Allors.Services;
+
+    using Microsoft.Extensions.DependencyInjection;
+
     using Xunit;
 
-    
     public class CounterTest : DomainTest
     {
         // Teamcity doesn't pick up connection string from app.config,
@@ -61,7 +65,7 @@ namespace Tests
                 ObjectFactory = this.ObjectFactory,
             };
 
-            var database = new Allors.Adapters.Object.SqlClient.Database(configuration);
+            var database = new Allors.Adapters.Object.SqlClient.Database(CreateServiceProvider(), configuration);
 
             this.Setup(database, true);
 
@@ -87,7 +91,7 @@ namespace Tests
                 IsolationLevel = IsolationLevel.Serializable
             };
 
-            var serializableDatabase = new Allors.Adapters.Object.SqlClient.Database(serializableConfiguration);
+            var serializableDatabase = new Allors.Adapters.Object.SqlClient.Database(CreateServiceProvider(), serializableConfiguration);
 
             var configuration = new Allors.Adapters.Object.SqlClient.Configuration
             {
@@ -96,7 +100,7 @@ namespace Tests
                 Serializable = serializableDatabase
             };
 
-            var database = new Allors.Adapters.Object.SqlClient.Database(configuration);
+            var database = new Allors.Adapters.Object.SqlClient.Database(CreateServiceProvider(), configuration);
 
             this.Setup(database, true);
 
@@ -110,6 +114,14 @@ namespace Tests
             Assert.Equal(2, Counters.NextValue(this.Session, id));
             Assert.Equal(3, Counters.NextValue(this.Session, id));
             Assert.Equal(4, Counters.NextValue(this.Session, id));
+        }
+
+        private static ServiceProvider CreateServiceProvider()
+        {
+            var services = new ServiceCollection();
+            services.AddAllors(Directory.GetCurrentDirectory());
+            var serviceProvider = services.BuildServiceProvider();
+            return serviceProvider;
         }
     }
 }

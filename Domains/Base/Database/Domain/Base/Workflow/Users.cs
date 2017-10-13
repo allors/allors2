@@ -34,39 +34,13 @@ namespace Allors.Domain
         public const string GuestUserName = "Guest";
         public const string AdministratorUserName = "Administrator";
 
-        private const string CurrentKey = nameof(User) + ".Current";
         private const string SessionKey = nameof(User) + ".Key";
-
-        public User CurrentUser
-        {
-            get
-            {
-                return (User)this.Session.Instantiate((string)this.Session[CurrentKey]);
-            }
-
-            set
-            {
-                this.Session[CurrentKey] = value?.Id.ToString();
-            }
-        }
-
+        
         public User GetUser(string userId)
         {
-            var cached = (CachedUser)this.Session[SessionKey];
-            if (cached == null || !userId.ToLower().Equals(cached.UserId))
-            {
-                var user = this.FindBy(this.Meta.UserName, userId);
-
-                if (user == null)
-                {
-                    return null;
-                }
-
-                cached = new CachedUser(user);
-                this.Session[SessionKey] = cached;
-            }
-
-            return cached.GetUser(this.Session);
+            // TODO: cache
+            var user = this.FindBy(this.Meta.UserName, userId);
+            return user;
         }
 
         public void SavePasswords(XmlWriter writer)

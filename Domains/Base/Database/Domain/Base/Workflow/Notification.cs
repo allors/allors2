@@ -20,16 +20,15 @@
 
 namespace Allors.Domain
 {
+    using Allors.Services;
+
     public partial class Notification
     {
         public void BaseOnBuild(ObjectOnBuild method)
         {
             if (!this.ExistDateCreated)
             {
-                using (var timeService = this.GetServiceLocator().CreateTimeService())
-                {
-                    this.DateCreated = timeService.Now();
-                }
+                this.DateCreated = this.Strategy.Session.Now();
             }
 
             if (!this.ExistConfirmed)
@@ -51,7 +50,7 @@ namespace Allors.Domain
             {
                 if (this.ExistNotificationListWhereNotification && this.NotificationListWhereNotification.ExistUserWhereNotificationList)
                 {
-                    var singleton = Singleton.Instance(this.strategy.Session);
+                    var singleton = this.strategy.Session.GetSingleton();
                     var user = this.NotificationListWhereNotification.UserWhereNotificationList;
 
                     this.SecurityTokens = new[] { user.OwnerSecurityToken, singleton.DefaultSecurityToken };

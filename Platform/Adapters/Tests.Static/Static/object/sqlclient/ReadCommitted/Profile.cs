@@ -19,11 +19,13 @@ namespace Allors.Adapters.Object.SqlClient.ReadCommitted
     using System;
     using System.Collections.Generic;
 
-    using Allors.Meta;
     using Adapters;
 
     using Allors.Adapters.Object.SqlClient.Caching.Debugging;
     using Allors.Adapters.Object.SqlClient.Debug;
+    using Allors.Meta;
+
+    using Microsoft.Extensions.DependencyInjection;
 
     public class Profile : SqlClient.Profile
     {
@@ -34,6 +36,8 @@ namespace Allors.Adapters.Object.SqlClient.ReadCommitted
 
         public Profile()
         {
+            var services = new ServiceCollection();
+            this.ServiceProvider = services.BuildServiceProvider();
         }
 
         public Profile(DebugConnectionFactory connectionFactory, DebugCacheFactory cacheFactory)
@@ -41,6 +45,8 @@ namespace Allors.Adapters.Object.SqlClient.ReadCommitted
             this.connectionFactory = connectionFactory;
             this.cacheFactory = cacheFactory;
         }
+
+        public ServiceProvider ServiceProvider { get; set; }
 
         public override Action[] Markers
         {
@@ -80,7 +86,7 @@ namespace Allors.Adapters.Object.SqlClient.ReadCommitted
                                         ConnectionFactory = this.connectionFactory,
                                         CacheFactory = this.cacheFactory
                                     };
-            var database = new Database(configuration);
+            var database = new Database(this.ServiceProvider, configuration);
 
             if (init)
             {
@@ -92,7 +98,7 @@ namespace Allors.Adapters.Object.SqlClient.ReadCommitted
 
         public override IDatabase CreatePopulation()
         {
-            return new Memory.Database(new Memory.Configuration { ObjectFactory = this.ObjectFactory });
+            return new Memory.Database(this.ServiceProvider, new Memory.Configuration { ObjectFactory = this.ObjectFactory });
         }
 
         public override IDatabase CreateDatabase()
@@ -105,7 +111,7 @@ namespace Allors.Adapters.Object.SqlClient.ReadCommitted
                 CacheFactory = this.cacheFactory
             };
 
-            var database = new Database(configuration);
+            var database = new Database(this.ServiceProvider, configuration);
 
             return database;
         }

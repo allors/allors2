@@ -18,10 +18,10 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-using System;
-
 namespace Allors
 {
+    using System;
+
     using Allors.Meta;
 
     /// <summary>
@@ -30,18 +30,9 @@ namespace Allors
     public interface ISession : IDisposable
     {
         /// <summary>
-        /// Session properties are simple key/value pairs.
-        /// Because AllorsObjects can not hold instance variables, this is the only way
-        /// for AllorsObjects to hold references to non Allors objects or Allors objects
-        /// from a different population.
+        /// Gets the service provider.
         /// </summary>
-        /// <param name="name">The key by which the session object is retrieved.</param>
-        /// <returns>The property.</returns>
-        object this[string name]
-        {
-            get;
-            set;
-        }
+        IServiceProvider ServiceProvider { get; }
 
         /// <summary>
         /// Creates a change set of all changes up to this checkpoint,

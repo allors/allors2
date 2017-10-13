@@ -21,18 +21,21 @@
 
 namespace Allors.Repository
 {
+    using System;
+
     using Attributes;
 
     #region Allors
     [Id("c4d93d5e-34c3-4731-9d37-47a8e801d9a8")]
     #endregion
-    public partial class AccessControl : Deletable, AccessControlledObject 
+    public partial class AccessControl : Cachable, Deletable, AccessControlledObject 
     {
         #region inherited properties
         public Permission[] DeniedPermissions { get; set; }
 
         public SecurityToken[] SecurityTokens { get; set; }
 
+        public Guid CacheId { get; set; }
         #endregion
 
         #region Allors

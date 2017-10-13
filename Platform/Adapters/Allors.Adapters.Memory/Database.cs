@@ -14,8 +14,6 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-using Allors;
-
 namespace Allors.Adapters.Memory
 {
     using System;
@@ -33,12 +31,11 @@ namespace Allors.Adapters.Memory
 
         private readonly string id;
         
-        public Dictionary<string, object> Properties;
-
         private Session session;
 
-        public Database(Configuration configuration)
+        public Database(IServiceProvider serviceProvider, Configuration configuration)
         {
+            this.ServiceProvider = serviceProvider;
             this.objectFactory = configuration.ObjectFactory;
             if (this.objectFactory == null)
             {
@@ -71,42 +68,12 @@ namespace Allors.Adapters.Memory
 
         public IDatabase Serializable => null;
 
+        public IServiceProvider ServiceProvider { get; }
+
         internal bool IsLoading { get; private set; }
 
-        protected virtual Memory.Session Session => this.session ?? (this.session = new Session(this));
-
-        public object this[string name]
-        {
-            get
-            {
-                if (this.Properties == null)
-                {
-                    return null;
-                }
-
-                object value;
-                this.Properties.TryGetValue(name, out value);
-                return value;
-            }
-
-            set
-            {
-                if (this.Properties == null)
-                {
-                    this.Properties = new Dictionary<string, object>();
-                }
-
-                if (value == null)
-                {
-                    this.Properties.Remove(name);
-                }
-                else
-                {
-                    this.Properties[name] = value;
-                }
-            }
-        }
-
+        protected virtual Session Session => this.session ?? (this.session = new Session(this));
+        
         public ISession CreateSession()
         {
             return this.CreateDatabaseSession();
@@ -272,7 +239,6 @@ namespace Allors.Adapters.Memory
             this.Session.Init();
 
             this.session = null;
-            this.Properties = null;
         }
     }
 }

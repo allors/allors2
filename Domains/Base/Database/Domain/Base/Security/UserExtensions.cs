@@ -24,6 +24,10 @@ namespace Allors.Domain
     using System.Security.Cryptography;
     using System.Text;
 
+    using Allors.Services;
+
+    using Microsoft.Extensions.DependencyInjection;
+
     public static partial class UserExtensions
     {
         public static void BaseOnPostBuild(this User @this, ObjectOnPostBuild method)
@@ -36,12 +40,9 @@ namespace Allors.Domain
         
         public static void SetPassword(this User @this, string clearTextPassword)
         {
-            var serviceLocator = @this.GetServiceLocator();
-            using (var securityService = serviceLocator.CreateSecurityService())
-            {
-                var passwordHash = securityService.HashPassword(@this.UserName, clearTextPassword);
-                @this.UserPasswordHash = passwordHash;
-            }
+            var securityService = @this.Strategy.Session.ServiceProvider.GetRequiredService<IPasswordService>();
+            var passwordHash = securityService.HashPassword(@this.UserName, clearTextPassword);
+            @this.UserPasswordHash = passwordHash;
         }
 
         public static bool VerifyPassword(this User @this, string clearTextPassword)
@@ -51,10 +52,8 @@ namespace Allors.Domain
                 return false;
             }
 
-            using (var securityService = @this.GetServiceLocator().CreateSecurityService())
-            {
-                return securityService.VerifyHashedPassword(@this.UserName, @this.UserPasswordHash, clearTextPassword);
-            }
+            var securityService = @this.Strategy.Session.ServiceProvider.GetRequiredService<IPasswordService>();
+            return securityService.VerifyHashedPassword(@this.UserName, @this.UserPasswordHash, clearTextPassword);
         }
 
         public static string SecurityHash(this User @this)

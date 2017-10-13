@@ -18,7 +18,7 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Allors.Services.Base
+namespace Allors.Services
 {
     using Allors.Domain;
 

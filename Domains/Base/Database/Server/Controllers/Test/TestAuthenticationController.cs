@@ -16,10 +16,7 @@
 
     public class TestAuthenticationController : Controller
     {
-        public TestAuthenticationController(
-            UserManager<ApplicationUser> userManager,
-            ILogger<AuthenticationController> logger,
-            IConfiguration config)
+        public TestAuthenticationController(UserManager<ApplicationUser> userManager, ILogger<AuthenticationController> logger, IConfiguration config)
         {
             this.UserManager = userManager;
             this.Logger = logger;

@@ -31,10 +31,13 @@ namespace Tests
     using Allors.Adapters.Memory;
     using Allors.Domain;
     using Allors.Meta;
-    using Allors.Services.Base;
+    using Allors.Services;
+
+    using Microsoft.Extensions.DependencyInjection;
 
     using Configuration = Allors.Adapters.Memory.Configuration;
     using Extent = Allors.Extent;
+    using ObjectFactory = Allors.ObjectFactory;
 
     public class DomainTest : IDisposable
     {
@@ -45,23 +48,13 @@ namespace Tests
 
         public ISession Session { get; private set; }
 
+        public ITimeService TimeService => this.Session.ServiceProvider.GetRequiredService<ITimeService>();
+
         public TimeSpan? TimeShift
         {
-            get
-            {
-                using (var timeService = this.Session.Database.GetServiceLocator().CreateTimeService())
-                {
-                    return timeService.Shift;
-                }
-            }
+            get => this.TimeService.Shift;
 
-            set
-            {
-                using (var timeService = this.Session.Database.GetServiceLocator().CreateTimeService())
-                {
-                    timeService.Shift = value;
-                }
-            }
+            set => this.TimeService.Shift = value;
         }
 
         protected ObjectFactory ObjectFactory => new ObjectFactory(MetaPopulation.Instance, typeof(User));
@@ -74,30 +67,23 @@ namespace Tests
 
         protected void Setup(bool populate)
         {
+            var services = new ServiceCollection();
+            services.AddAllors(Directory.GetCurrentDirectory());
+            var serviceProvider = services.BuildServiceProvider();
+
             var configuration = new Configuration
                                     {
                                         ObjectFactory = this.ObjectFactory,
                                     };
 
-            var database = new Database(configuration);
+            var database = new Database(serviceProvider, configuration);
             this.Setup(database, populate);
         }
 
         protected void Setup(IDatabase database, bool populate)
         {
             database.Init();
-
-            var timeService = new TimeService();
-            var mailService = new MailService { DefaultSender = "noreply@example.com" };
-            var securityService = new SecurityService();
-            var serviceLocator = new ServiceLocator
-                                     {
-                                         TimeServiceFactory = () => timeService,
-                                         MailServiceFactory = () => mailService,
-                                         SecurityServiceFactory = () => securityService
-                                     };
-            database.SetServiceLocator(serviceLocator.Assert());
-
+            
             this.Session = database.CreateSession();
 
             if (populate)

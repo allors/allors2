@@ -6,7 +6,10 @@
     using System.Text;
     using System.Threading.Tasks;
 
+    using Allors.Services;
+
     using Identity.Models;
+
     using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.Extensions.Configuration;
@@ -15,16 +18,13 @@
 
     public class AuthenticationController : Controller
     {
-        public AuthenticationController(
-            UserManager<ApplicationUser> userManager,
-            SignInManager<ApplicationUser> signInManager,
-            ILogger<AuthenticationController> logger,
-            IConfiguration config)
+        public AuthenticationController(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager, ILogger<AuthenticationController> logger, IConfiguration config, ISessionService sessionService)
         {
             this.UserManager = userManager;
             this.SignInManager = signInManager;
             this.Logger = logger;
             this.Configuration = config;
+            this.SessionService = sessionService;
         }
 
         public UserManager<ApplicationUser> UserManager { get; }
@@ -34,6 +34,8 @@
         public ILogger Logger { get; }
 
         public IConfiguration Configuration { get; }
+
+        public ISessionService SessionService { get; }
 
         [HttpPost]
         public async Task<IActionResult> SignIn([FromBody]SignInRequest signInRequest)
@@ -51,7 +53,7 @@
                         var claims = new[]
                                          {
                                              new Claim(ClaimTypes.Name, user.UserName), // Required for User.Identity.Name
-                                             new Claim(JwtRegisteredClaimNames.Sub, user.Email),
+                                             new Claim(JwtRegisteredClaimNames.Sub, user.UserName),
                                              new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
                                          };
 
@@ -67,11 +69,11 @@
 
                         return this.Ok(
                             new
-                                {
-                                    Authenticated = true,
-                                    UserId = user.Id,
-                                    Token = new JwtSecurityTokenHandler().WriteToken(token)
-                                });
+                            {
+                                Authenticated = true,
+                                UserId = user.Id,
+                                Token = new JwtSecurityTokenHandler().WriteToken(token)
+                            });
                     }
                 }
             }

@@ -4,6 +4,7 @@
 
     using Allors.Domain;
     using Allors.Meta;
+    using Allors.Services;
 
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
@@ -12,12 +13,12 @@
     {
         private const int OneYearInSeconds = 60 * 60 * 24 * 356;
 
-        private readonly IAllorsContext allors;
-
-        protected BaseMediaController(IAllorsContext allorsContext)
+        protected BaseMediaController(ISessionService sessionService)
         {
-            this.allors = allorsContext;
+            this.Session = sessionService.Session;
         }
+
+        private ISession Session { get; }
 
         [AllowAnonymous]
         [ResponseCache(Duration = OneYearInSeconds)]
@@ -25,7 +26,7 @@
         {
             if (Guid.TryParse(id, out Guid uniqueId))
             {
-                var media = new Medias(this.allors.Session).FindBy(M.Media.UniqueId, uniqueId);
+                var media = new Medias(this.Session).FindBy(M.Media.UniqueId, uniqueId);
                 var mediaContent = media?.MediaContent;
 
                 if (mediaContent != null)

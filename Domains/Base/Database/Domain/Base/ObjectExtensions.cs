@@ -24,6 +24,7 @@ namespace Allors
 
     using Allors.Domain;
     using Allors.Meta;
+    using Allors.Services;
 
     public static partial class ObjectExtensions
     {
@@ -70,7 +71,7 @@ namespace Allors
             var accessControlledObject = @this as AccessControlledObject;
             if (accessControlledObject != null)
             {
-                var creator = new Users(@this.Strategy.Session).CurrentUser;
+                var creator = @this.Strategy.Session.GetUser();
 
                 if (creator != null)
                 {

@@ -30,17 +30,17 @@ namespace Allors.Domain
         private static readonly Guid ClosedId = new Guid("0750D8B3-3B10-465F-BBC0-81D12F40A3DF");
         private static readonly Guid CancelledId = new Guid("F72CEBEE-D12C-4321-83A3-77019A7B8C76");
 
-        private UniquelyIdentifiableCache<OrderState> cache;
+        private UniquelyIdentifiableSticky<OrderState> sticky;
 
-        public Cache<Guid, OrderState> Cache => this.cache ?? (this.cache = new UniquelyIdentifiableCache<OrderState>(this.Session));
+        public Sticky<Guid, OrderState> Sticky => this.sticky ?? (this.sticky = new UniquelyIdentifiableSticky<OrderState>(this.Session));
 
-        public OrderState Initial => this.Cache[InitialId];
+        public OrderState Initial => this.Sticky[InitialId];
 
-        public OrderState Confirmed => this.Cache[ConfirmedId];
+        public OrderState Confirmed => this.Sticky[ConfirmedId];
 
-        public OrderState Closed => this.Cache[ClosedId];
+        public OrderState Closed => this.Sticky[ClosedId];
 
-        public OrderState Cancelled => this.Cache[CancelledId];
+        public OrderState Cancelled => this.Sticky[CancelledId];
 
         protected override void BaseSetup(Setup config)
         {

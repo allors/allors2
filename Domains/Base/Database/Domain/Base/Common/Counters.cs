@@ -27,9 +27,9 @@ namespace Allors.Domain
 
     public partial class Counters
     {
-        private UniquelyIdentifiableCache<Counter> cache;
+        private UniquelyIdentifiableSticky<Counter> sticky;
         
-        private UniquelyIdentifiableCache<Counter> Cache => this.cache ?? (this.cache = new UniquelyIdentifiableCache<Counter>(this.Session));
+        private UniquelyIdentifiableSticky<Counter> Sticky => this.sticky ?? (this.sticky = new UniquelyIdentifiableSticky<Counter>(this.Session));
         
         public static int NextValue(ISession session, Guid counterId)
         {
@@ -38,7 +38,7 @@ namespace Allors.Domain
             {
                 using (var counterSession = serializable.CreateSession())
                 {
-                    var serializableCounter = new Counters(counterSession).Cache[counterId];
+                    var serializableCounter = new Counters(counterSession).Sticky[counterId];
                     var newValue = serializableCounter.Value + 1;
                     serializableCounter.Value = newValue;
 
@@ -48,7 +48,7 @@ namespace Allors.Domain
                 }
             }
 
-            var counter = new Counters(session).Cache[counterId];
+            var counter = new Counters(session).Sticky[counterId];
             counter.Value = counter.Value + 1;
 
             return counter.Value;

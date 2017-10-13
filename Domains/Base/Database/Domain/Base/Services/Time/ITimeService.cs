@@ -22,10 +22,8 @@ namespace Allors.Services
 {
     using System;
 
-    public interface ITimeService : IService
+    public interface ITimeService : IStateful
     {
         TimeSpan? Shift { get; set; }
-
-        DateTime Now();
     }
 }

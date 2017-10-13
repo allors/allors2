@@ -20,6 +20,8 @@
 
 namespace Allors.Domain
 {
+    using Allors.Services;
+
     public partial class TaskAssignment
     {
         public void BaseOnPreDerive(ObjectOnPreDerive method)
@@ -37,7 +39,7 @@ namespace Allors.Domain
             }
             else
             {
-                var singleton = Singleton.Instance(this.strategy.Session);
+                var singleton = this.strategy.Session.GetSingleton();
                 this.SecurityTokens = new[] { singleton.DefaultSecurityToken, this.User?.OwnerSecurityToken };
 
                 this.Task.ManageNotification(this);

@@ -35,17 +35,17 @@ namespace Allors.Domain
         public static readonly Guid CreatorId = new Guid("3A3D1E25-4A91-4D07-8203-A9F3EA691598");
         public static readonly Guid OwnerId = new Guid("E22EA50F-E616-4429-92D5-B91684AD3C2A");
 
-        private UniquelyIdentifiableCache<Role> cache;
+        private UniquelyIdentifiableSticky<Role> sticky;
 
-        public Role Administrator => this.RoleCache.Get(AdministratorId);
+        public Role Administrator => this.Sticky[AdministratorId];
 
-        public Role Guest => this.RoleCache.Get(GuestId);
+        public Role Guest => this.Sticky[GuestId];
 
-        public Role Creator => this.RoleCache.Get(CreatorId);
+        public Role Creator => this.Sticky[CreatorId];
 
-        public Role Owner => this.RoleCache.Get(OwnerId);
+        public Role Owner => this.Sticky[OwnerId];
 
-        private UniquelyIdentifiableCache<Role> RoleCache => this.cache ?? (this.cache = new UniquelyIdentifiableCache<Role>(this.Session));
+        private UniquelyIdentifiableSticky<Role> Sticky => this.sticky ?? (this.sticky = new UniquelyIdentifiableSticky<Role>(this.Session));
 
         protected override void BaseSetup(Setup config)
         {

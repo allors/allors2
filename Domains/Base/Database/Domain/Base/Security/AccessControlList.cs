@@ -26,6 +26,7 @@ namespace Allors.Domain
 
     using Allors;
     using Allors.Meta;
+    using Allors.Services;
 
     /// <summary>
     /// List of permissions for an object/user combination.
@@ -114,7 +115,7 @@ namespace Allors.Domain
                 SecurityToken[] securityTokens = this.@object.SecurityTokens;
                 if (securityTokens.Length == 0)
                 {
-                    var singleton = Singleton.Instance(this.session);
+                    var singleton = this.session.GetSingleton();
                     securityTokens = this.@object.Strategy.IsNewInSession ?
                         new[] { singleton.InitialSecurityToken ?? singleton.DefaultSecurityToken } :
                         new[] { singleton.DefaultSecurityToken };

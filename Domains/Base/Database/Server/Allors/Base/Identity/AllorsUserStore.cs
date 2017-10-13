@@ -4,6 +4,8 @@
     using System.Threading;
     using System.Threading.Tasks;
 
+    using Allors.Services;
+
     using global::Allors;
     using global::Allors.Domain;
     using global::Allors.Meta;
@@ -27,9 +29,9 @@
     {
         private readonly IDatabase database;
 
-        public AllorsUserStore(IDatabase database)
+        public AllorsUserStore(IDatabaseService databaseService)
         {
-            this.database = database;
+            this.database = databaseService.Database;
         }
 
         #region IUserStore

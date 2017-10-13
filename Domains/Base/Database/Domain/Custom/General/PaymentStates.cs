@@ -29,15 +29,15 @@ namespace Allors.Domain
         private static readonly Guid PartiallyPaidId = new Guid("1801737F-2760-4600-9243-7E6BDD8A224D");
         private static readonly Guid PaidId = new Guid("04FAD96A-2B0F-4F07-ABB7-57657A34E422");
 
-        private UniquelyIdentifiableCache<PaymentState> cache;
+        private UniquelyIdentifiableSticky<PaymentState> sticky;
 
-        public Cache<Guid, PaymentState> Cache => this.cache ?? (this.cache = new UniquelyIdentifiableCache<PaymentState>(this.Session));
+        public Sticky<Guid, PaymentState> Sticky => this.sticky ?? (this.sticky = new UniquelyIdentifiableSticky<PaymentState>(this.Session));
 
-        public PaymentState Unpaid => this.Cache[UnpaidId];
+        public PaymentState Unpaid => this.Sticky[UnpaidId];
 
-        public PaymentState PartiallyPaid => this.Cache[PartiallyPaidId];
+        public PaymentState PartiallyPaid => this.Sticky[PartiallyPaidId];
 
-        public PaymentState Paid => this.Cache[PaidId];
+        public PaymentState Paid => this.Sticky[PaidId];
 
         protected override void BaseSetup(Setup config)
         {

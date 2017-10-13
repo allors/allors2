@@ -5,31 +5,32 @@
 
     using Allors.Domain;
     using Allors.Server;
+    using Allors.Services;
 
     using Microsoft.AspNetCore.Mvc;
 
     public class TestUnitSamplesController : Controller
     {
-        private readonly IAllorsContext allors;
-
-        public TestUnitSamplesController(IAllorsContext allorsContext)
+        public TestUnitSamplesController(ISessionService sessionService)
         {
-            this.allors = allorsContext;
+            this.Session = sessionService.Session;
         }
+
+        private ISession Session { get; }
 
         [HttpPost]
         public async Task<IActionResult> Pull([FromBody] TestUnitSamplesParams @params)
         {
             try
             {
-                var unitSample = new UnitSamples(this.allors.Session).Extent().First;
+                var unitSample = new UnitSamples(this.Session).Extent().First;
                 if (unitSample == null)
                 {
-                    unitSample = new UnitSampleBuilder(this.allors.Session).Build();
-                    this.allors.Session.Commit();
+                    unitSample = new UnitSampleBuilder(this.Session).Build();
+                    this.Session.Commit();
                 }
 
-                var responseBuilder = new PullResponseBuilder(this.allors.User);
+                var responseBuilder = new PullResponseBuilder(this.Session.GetUser());
 
                 switch (@params.Step)
                 {
@@ -58,7 +59,7 @@
                         break;
                 }
 
-                this.allors.Session.Commit();
+                this.Session.Commit();
 
                 responseBuilder.AddObject("unitSample", unitSample);
 

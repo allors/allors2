@@ -228,8 +228,8 @@ namespace Allors.Adapters
 
                     var initialObjectVersion = otherC1.Strategy.ObjectVersion;
 
-                    var xml = Save(otherPopulation);
-                    Load(this.Population, xml);
+                    var xml = DoSave(otherPopulation);
+                    DoLoad(this.Population, xml);
 
                     using (var session = this.Population.CreateSession())
                     {
@@ -245,8 +245,8 @@ namespace Allors.Adapters
 
                     var changedObjectVersion = otherC1.Strategy.ObjectVersion;
 
-                    xml = Save(otherPopulation);
-                    Load(this.Population, xml);
+                    xml = DoSave(otherPopulation);
+                    DoLoad(this.Population, xml);
 
                     using (var session = this.Population.CreateSession())
                     {
@@ -261,8 +261,8 @@ namespace Allors.Adapters
 
                     otherSession.Commit();
 
-                    xml = Save(otherPopulation);
-                    Load(this.Population, xml);
+                    xml = DoSave(otherPopulation);
+                    DoLoad(this.Population, xml);
 
                     using (var session = this.Population.CreateSession())
                     {
@@ -558,10 +558,10 @@ namespace Allors.Adapters
 
                     var initialObjectVersion = c1.Strategy.ObjectVersion;
 
-                    var xml = Save(this.Population);
+                    var xml = DoSave(this.Population);
 
                     var otherPopulation = this.CreatePopulation();
-                    Load(otherPopulation, xml);
+                    DoLoad(otherPopulation, xml);
 
                     using (var otherSession = otherPopulation.CreateSession())
                     {
@@ -578,10 +578,10 @@ namespace Allors.Adapters
 
                     var changedObjectVersion = c1.Strategy.ObjectVersion;
 
-                    xml = Save(this.Population);
+                    xml = DoSave(this.Population);
 
                     otherPopulation = this.CreatePopulation();
-                    Load(otherPopulation, xml);
+                    DoLoad(otherPopulation, xml);
 
                     using (var otherSession = otherPopulation.CreateSession())
                     {
@@ -596,10 +596,10 @@ namespace Allors.Adapters
 
                     session.Commit();
 
-                    xml = Save(this.Population);
+                    xml = DoSave(this.Population);
 
                     otherPopulation = this.CreatePopulation();
-                    Load(otherPopulation, xml);
+                    DoLoad(otherPopulation, xml);
 
                     using (var otherSession = otherPopulation.CreateSession())
                     {
@@ -711,7 +711,7 @@ namespace Allors.Adapters
 
         protected abstract IDatabase CreatePopulation();
 
-        private static string Save(IDatabase otherPopulation)
+        private static string DoSave(IDatabase otherPopulation)
         {
             var stringWriter = new StringWriter();
             using (var writer = XmlWriter.Create(stringWriter))
@@ -722,7 +722,7 @@ namespace Allors.Adapters
             return stringWriter.ToString();
         }
 
-        private static void Load(IDatabase database, string xml)
+        private static void DoLoad(IDatabase database, string xml)
         {
             var stringReader = new StringReader(xml);
             using (var reader = XmlReader.Create(stringReader))

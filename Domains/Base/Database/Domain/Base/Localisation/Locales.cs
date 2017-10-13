@@ -29,14 +29,14 @@ namespace Allors.Domain
         public const string DutchNetherlandsName = "nl-NL";
         public const string DutchBelgiumName = "nl-BE";
 
-        private Cache<string, Locale> localeByIdentifier;
+        private Sticky<string, Locale> localeByIdentifier;
 
-        public Cache<string, Locale> LocaleByIdentifier
+        public Sticky<string, Locale> LocaleByIdentifier
         {
             get
             {
                 return this.localeByIdentifier
-                       ?? (this.localeByIdentifier = new Cache<string, Locale>(this.Session, Meta.Name));
+                       ?? (this.localeByIdentifier = new Sticky<string, Locale>(this.Session, Meta.Name));
             }
         }
 

@@ -32,15 +32,15 @@ namespace Allors.Domain
 
         public static readonly Guid CreatorsId = new Guid("F0D8132B-79D6-4A30-A866-EF6E5C952761");
 
-        private UniquelyIdentifiableCache<UserGroup> cache;
+        private UniquelyIdentifiableSticky<UserGroup> sticky;
 
-        public UserGroup Administrators => this.Cache.Get(AdministratorsId);
+        public UserGroup Administrators => this.Sticky[AdministratorsId];
 
-        public UserGroup Guests => this.Cache.Get(GuestsId);
+        public UserGroup Guests => this.Sticky[GuestsId];
 
-        public UserGroup Creators => this.Cache.Get(CreatorsId);
+        public UserGroup Creators => this.Sticky[CreatorsId];
 
-        private UniquelyIdentifiableCache<UserGroup> Cache => this.cache ?? (this.cache = new UniquelyIdentifiableCache<UserGroup>(this.Session));
+        private UniquelyIdentifiableSticky<UserGroup> Sticky => this.sticky ?? (this.sticky = new UniquelyIdentifiableSticky<UserGroup>(this.Session));
 
         protected override void BaseSetup(Setup config)
         {

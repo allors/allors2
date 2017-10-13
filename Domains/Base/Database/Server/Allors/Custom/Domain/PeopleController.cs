@@ -4,6 +4,7 @@
 
     using Allors.Domain;
     using Allors.Server;
+    using Allors.Services;
 
     using Microsoft.AspNetCore.Authentication.JwtBearer;
     using Microsoft.AspNetCore.Authorization;
@@ -11,19 +12,19 @@
 
     public class PeopleController : Controller
     {
-        private readonly IAllorsContext allors;
-
-        public PeopleController(IAllorsContext allorsContext)
+        public PeopleController(ISessionService sessionService)
         {
-            this.allors = allorsContext;
+            this.Session = sessionService.Session;
         }
+
+        private ISession Session { get; }
 
         [HttpPost]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<IActionResult> Pull()
         {
-            var response = new PullResponseBuilder(this.allors.User);
-            var people = new People(this.allors.Session).Extent().ToArray();
+            var response = new PullResponseBuilder(this.Session.GetUser());
+            var people = new People(this.Session).Extent().ToArray();
             response.AddCollection("people", people);
             return this.Ok(response.Build());
         }

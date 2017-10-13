@@ -44,6 +44,9 @@
     <Compile Include="..\..\..\Base\Repository\Domain\Base\Attributes\UniqueAttribute.cs">
       <Link>Base\Attributes\UniqueAttribute.cs</Link>
     </Compile>
+    <Compile Include="..\..\..\Base\Repository\Domain\Base\Common\Cachable.cs">
+      <Link>Base\Common\Cachable.cs</Link>
+    </Compile>
     <Compile Include="..\..\..\Base\Repository\Domain\Base\Common\Counter.cs">
       <Link>Base\Common\Counter.cs</Link>
     </Compile>

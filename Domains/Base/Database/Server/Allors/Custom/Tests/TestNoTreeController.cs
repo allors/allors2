@@ -2,24 +2,26 @@
 {
     using Allors.Domain;
     using Allors.Server;
+    using Allors.Services;
 
     using Microsoft.AspNetCore.Mvc;
 
     public class TestNoTreeController : Controller
     {
-        private IAllorsContext allors;
-
-        public TestNoTreeController(IAllorsContext allorsContext)
+        public TestNoTreeController(ISessionService sessionService)
         {
-            this.allors = allorsContext;
+            this.Session = sessionService.Session;
         }
+
+        private ISession Session { get; }
 
         [HttpPost]
         public IActionResult Pull()
         {
-            var response = new PullResponseBuilder(this.allors.User);
-            response.AddObject("object", this.allors.User);
-            response.AddCollection("collection", new Organisations(this.allors.Session).Extent());
+            var user = this.Session.GetUser();
+            var response = new PullResponseBuilder(user);
+            response.AddObject("object", user);
+            response.AddCollection("collection", new Organisations(this.Session).Extent());
             return this.Ok(response.Build());
         }
     }

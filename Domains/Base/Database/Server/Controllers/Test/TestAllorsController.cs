@@ -2,35 +2,29 @@ namespace Allors.Server.Controllers
 {
     using System;
 
-    using Allors.Services.Base;
+    using Allors.Domain;
+    using Allors.Services;
 
     using Microsoft.AspNetCore.Mvc;
+    using Microsoft.Extensions.DependencyInjection;
 
     public class TestController : Controller
     {
-        public TestController(IAllorsContext allorsContext)
+        public TestController(IDatabaseService databaseService)
         {
-            this.AllorsSession = allorsContext.Session;
+            this.Database = databaseService.Database;
         }
 
-        public ISession AllorsSession { get; set; }
+        public IDatabase Database { get; set; }
 
         [HttpGet]
         public IActionResult Init()
         {
-            var database = this.AllorsSession.Database;
-            database.Init();
+            var stateService = this.Database.ServiceProvider.GetRequiredService<IStateService>();
 
-            var timeService = new TimeService();
-            var mailService = new TestMailService();
-            var securityService = new SecurityService();
-            var serviceLocator = new ServiceLocator
-                                     {
-                                         TimeServiceFactory = () => timeService,
-                                         MailServiceFactory = () => mailService,
-                                         SecurityServiceFactory = () => securityService
-                                     };
-            database.SetServiceLocator(serviceLocator);
+            var database = this.Database;
+            database.Init();
+            stateService.Clear();
 
             return this.Ok("Init");
         }
@@ -38,11 +32,8 @@ namespace Allors.Server.Controllers
         [HttpGet]
         public IActionResult TimeShift(int days, int hours = 0, int minutes = 0, int seconds = 0)
         {
-            using (var timeService = this.AllorsSession.Database.GetServiceLocator().CreateTimeService())
-            {
-                timeService.Shift = new TimeSpan(days, hours, minutes, seconds);
-            }
-
+            var timeService = this.Database.ServiceProvider.GetRequiredService<ITimeService>();
+            timeService.Shift = new TimeSpan(days, hours, minutes, seconds);
             return this.Ok();
         }
     }

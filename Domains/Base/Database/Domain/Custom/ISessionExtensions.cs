@@ -2,12 +2,18 @@
 {
     using System;
 
-    public static partial class ISessionExtensions
+    using Allors.Services;
+
+    using Microsoft.Extensions.DependencyInjection;
+
+    public static partial class SessionExtensions
     {
         public static DateTime Now(this ISession session)
         {
             var now = DateTime.UtcNow;
-            var timeshift = session.Database["TimeShift"];
+
+            var timeService = session.ServiceProvider.GetRequiredService<ITimeService>();
+            var timeshift = timeService.Shift;
             if (timeshift != null)
             {
                 now = now.Add((TimeSpan)timeshift);

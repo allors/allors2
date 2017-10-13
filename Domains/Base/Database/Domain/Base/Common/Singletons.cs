@@ -21,10 +21,11 @@
 namespace Allors.Domain
 {
     using Allors.Meta;
+    using Allors.Services;
 
     public partial class Singletons
     {
-        public Singleton Instance => Singleton.Instance(this.Session);
+        public Singleton Instance => this.Session.GetSingleton();
 
         protected override void BasePrepare(Setup config)
         {
@@ -40,7 +41,6 @@ namespace Allors.Domain
             var singleton = new SingletonBuilder(this.Session).Build();
 
             singleton.DefaultLocale = new Locales(this.Session).EnglishGreatBritain;
-            singleton.PreferredCurrency = new Currencies(this.Session).FindBy(M.Currency.IsoCode, "EUR");
             singleton.InitialSecurityToken = new SecurityTokenBuilder(this.Session).Build();
             singleton.DefaultSecurityToken = new SecurityTokenBuilder(this.Session).Build();
 

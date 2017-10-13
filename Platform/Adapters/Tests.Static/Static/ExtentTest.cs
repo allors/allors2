@@ -2779,7 +2779,7 @@ namespace Allors.Adapters
         }
 
         [Fact]
-        public void Equals()
+        public void Equalz()
         {
             foreach (var init in this.Inits)
             {

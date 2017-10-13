@@ -34,24 +34,25 @@ namespace Tests
     using Allors.Domain;
     using Allors.Meta;
     using Allors.Server;
-    using Allors.Services.Base;
+    using Allors.Services;
 
     using Microsoft.Extensions.Configuration;
+    using Microsoft.Extensions.DependencyInjection;
 
     using Newtonsoft.Json;
 
-    using Tests;
+    using ObjectFactory = Allors.ObjectFactory;
 
     public abstract class ServerTest : IDisposable
     {
+        public const string Url = "http://localhost:5000";
         public const int RetryCount = 3;
 
         protected ServerTest()
         {
             var builder = new ConfigurationBuilder()
                 .SetBasePath(new FileInfo("../../..").FullName)
-                .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
-                .AddEnvironmentVariables();
+                .AddJsonFile("appsettings.json", false, true);
             this.Configuration = builder.Build();
 
             this.ObjectFactory = new ObjectFactory(MetaPopulation.Instance, typeof(User));
@@ -61,9 +62,30 @@ namespace Tests
                 ConnectionString = this.Configuration.GetConnectionString("DefaultConnection")
             };
 
-            var database = new Allors.Adapters.Object.SqlClient.Database(configuration);
-          
-            this.SetUp(database, true);
+
+            var current = Directory.GetCurrentDirectory();
+            var directoryInfo = new DirectoryInfo(current + @"\..\..\..\..\Server");
+            var directory = directoryInfo.FullName;
+
+            var services = new ServiceCollection();
+            services.AddAllors(directory);
+            var serviceProvider = services.BuildServiceProvider();
+
+            var database = new Allors.Adapters.Object.SqlClient.Database(serviceProvider, configuration);
+            database.Init();
+            this.Session = database.CreateSession();
+
+            new Setup(this.Session, null).Apply();
+            this.Session.Commit();
+
+            this.HttpClientHandler = new HttpClientHandler();
+            this.HttpClient = new HttpClient(this.HttpClientHandler)
+            {
+                BaseAddress = new Uri(Url),
+            };
+
+            this.HttpClient.DefaultRequestHeaders.Accept.Clear();
+            this.HttpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
         }
 
         public IConfigurationRoot Configuration { get; set; }
@@ -84,39 +106,6 @@ namespace Tests
             this.HttpClient.Dispose();
             this.HttpClient = null;
         }
-        
-        protected void SetUp(IDatabase database, bool setup)
-        {
-            database.Init();
-
-            var timeService = new TimeService();
-            var mailService = new TestMailService();
-            var securityService = new SecurityService();
-            var serviceLocator = new ServiceLocator
-                                     {
-                                         TimeServiceFactory = () => timeService,
-                                         MailServiceFactory = () => mailService,
-                                         SecurityServiceFactory = () => securityService
-                                     };
-            database.SetServiceLocator(serviceLocator.Assert());
-
-            this.Session = database.CreateSession();
-
-            if (setup)
-            {
-                new Setup(this.Session, null).Apply();
-                this.Session.Commit();
-            }
-
-            this.HttpClientHandler = new HttpClientHandler();
-            this.HttpClient = new HttpClient(this.HttpClientHandler)
-                                  {
-                                      BaseAddress = new Uri(ServerFixture.Url),
-                                  };
-
-            this.HttpClient.DefaultRequestHeaders.Accept.Clear();
-            this.HttpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-        }
 
         protected async System.Threading.Tasks.Task SignIn(User user)
         {
@@ -129,6 +118,11 @@ namespace Tests
             var response = await this.PostAsJsonAsync(uri, args, RetryCount);
             var siginInResponse = await this.ReadAsAsync<SignInResponse>(response);
             this.HttpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", siginInResponse.Token);
+        }
+
+        protected void SignOut()
+        {
+            this.HttpClient.DefaultRequestHeaders.Authorization = null;
         }
 
         protected Stream GetResource(string name)

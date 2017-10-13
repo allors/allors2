@@ -22,6 +22,7 @@ namespace Tests
 {
     using Allors;
     using Allors.Meta;
+    using Allors.Services;
 
     using global::Allors.Domain;
 
@@ -37,7 +38,7 @@ namespace Tests
             var administrator = new PersonBuilder(this.Session).WithUserName("admin").WithLastName("Administrator").Build();
             var user = new PersonBuilder(this.Session).WithUserName("user").WithLastName("User").Build();
 
-            Singleton.Instance(this.Session).Guest = guest;
+            this.Session.GetSingleton().Guest = guest;
             new UserGroups(this.Session).FindBy(M.UserGroup.Name, "Administrators").AddMember(administrator);
 
             this.Session.Derive(true);

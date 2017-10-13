@@ -24,13 +24,10 @@ namespace Allors.Domain
     {
         public void BaseOnBuild(ObjectOnBuild method)
         {
-            using (var timeService = this.GetServiceLocator().CreateTimeService())
+            if (!this.ExistDateCreated)
             {
-                if (!this.ExistDateCreated)
-                {
-                    this.DateCreated = timeService.Now();
-                }
+                this.DateCreated = this.strategy.Session.Now();
             }
-        }
+    }
     }
 }
