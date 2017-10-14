@@ -1,5 +1,5 @@
 //------------------------------------------------------------------------------------------------- 
-// <copyright file="ServicesExtension.cs" company="Allors bvba">
+// <copyright file="ServiceCollectionExtension.cs" company="Allors bvba">
 // Copyright 2002-2009 Allors bvba.
 // 
 // Dual Licensed under
@@ -32,7 +32,7 @@ namespace Allors.Services
     using Microsoft.Extensions.FileProviders;
     using Microsoft.Extensions.ObjectPool;
 
-    public static class ServicesExtension
+    public static class ServiceCollectionExtension
     {
         public static void AddAllors(this IServiceCollection services, string serverDirectory)
         {
