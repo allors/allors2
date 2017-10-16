@@ -30,7 +30,7 @@ namespace Allors.Domain
             {
                 if (!this.ExistCurrency)
                 {
-                    this.Currency = Singleton.Instance(this).PreferredCurrency;
+                    this.Currency = this.Strategy.Session.GetSingleton().PreferredCurrency;
                 }
 
                 derivation.Validation.AssertExists(this, M.BasePrice.Currency);

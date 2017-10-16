@@ -33,7 +33,7 @@ namespace Allors.Domain
                                                                             .WithSalesChannel((SalesChannel)session.Instantiate(invoice.SalesChannel))
                                                                             .WithYear(invoice.InvoiceDate.Year)
                                                                             .WithMonth(invoice.InvoiceDate.Month)
-                                                                            .WithCurrency(Singleton.Instance(session).PreferredCurrency)
+                                                                            .WithCurrency(session.GetSingleton().PreferredCurrency)
                                                                             .Build();
             }
 
@@ -123,7 +123,7 @@ namespace Allors.Domain
                         .WithSalesChannel(invoice.SalesChannel)
                         .WithYear(invoice.InvoiceDate.Year)
                         .WithMonth(invoice.InvoiceDate.Month)
-                        .WithCurrency(Singleton.Instance(session).PreferredCurrency)
+                        .WithCurrency(session.GetSingleton().PreferredCurrency)
                         .Build();
         }
     }

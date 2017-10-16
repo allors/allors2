@@ -30,29 +30,29 @@ namespace Allors.Domain
         private static readonly Guid WarrantyId = new Guid("CC0B0A30-5E01-4146-B80D-6BB5F91574BE");
         private static readonly Guid PartItemId = new Guid("314FA35E-C015-4084-A54F-644EB8738E31");
 
-        private UniquelyIdentifiableCache<PurchaseInvoiceItemType> cache;
+        private UniquelyIdentifiableSticky<PurchaseInvoiceItemType> cache;
 
-        public PurchaseInvoiceItemType Fee => this.Cache.Get(FeeId);
+        public PurchaseInvoiceItemType Fee => this.Cache[FeeId];
 
-        public PurchaseInvoiceItemType Discount => this.Cache.Get(DiscountId);
+        public PurchaseInvoiceItemType Discount => this.Cache[DiscountId];
 
-        public PurchaseInvoiceItemType InterestCharge => this.Cache.Get(InterestChargeId);
+        public PurchaseInvoiceItemType InterestCharge => this.Cache[InterestChargeId];
 
-        public PurchaseInvoiceItemType MiscCharge => this.Cache.Get(MiscChargeId);
+        public PurchaseInvoiceItemType MiscCharge => this.Cache[MiscChargeId];
 
-        public PurchaseInvoiceItemType Promotion => this.Cache.Get(PromotionId);
+        public PurchaseInvoiceItemType Promotion => this.Cache[PromotionId];
 
-        public PurchaseInvoiceItemType SalesTax => this.Cache.Get(VatId);
+        public PurchaseInvoiceItemType SalesTax => this.Cache[VatId];
 
-        public PurchaseInvoiceItemType ShippingAndHandling => this.Cache.Get(ShippingAndHandlingId);
+        public PurchaseInvoiceItemType ShippingAndHandling => this.Cache[ShippingAndHandlingId];
 
-        public PurchaseInvoiceItemType Surcharge => this.Cache.Get(SurchargeId);
+        public PurchaseInvoiceItemType Surcharge => this.Cache[SurchargeId];
 
-        public PurchaseInvoiceItemType Warranty => this.Cache.Get(WarrantyId);
+        public PurchaseInvoiceItemType Warranty => this.Cache[WarrantyId];
 
-        public PurchaseInvoiceItemType PartItem => this.Cache.Get(PartItemId);
+        public PurchaseInvoiceItemType PartItem => this.Cache[PartItemId];
 
-        private UniquelyIdentifiableCache<PurchaseInvoiceItemType> Cache => this.cache ?? (this.cache = new UniquelyIdentifiableCache<PurchaseInvoiceItemType>(this.Session));
+        private UniquelyIdentifiableSticky<PurchaseInvoiceItemType> Cache => this.cache ?? (this.cache = new UniquelyIdentifiableSticky<PurchaseInvoiceItemType>(this.Session));
 
         protected override void AppsSetup(Setup setup)
         {

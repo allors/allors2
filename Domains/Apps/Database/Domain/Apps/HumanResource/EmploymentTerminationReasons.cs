@@ -24,17 +24,17 @@ namespace Allors.Domain
         private static readonly Guid NonPerformanceId = new Guid("A83EEE92-54B0-45cc-AC07-C33B0116D33B");
         private static readonly Guid MovedId = new Guid("D1BC9AE6-CD34-4164-B807-FB247B9A6278");
 
-        private UniquelyIdentifiableCache<EmploymentTerminationReason> cache;
+        private UniquelyIdentifiableSticky<EmploymentTerminationReason> cache;
 
-        public EmploymentTerminationReason Insubordination => this.Cache.Get(InsubordinationId);
+        public EmploymentTerminationReason Insubordination => this.Cache[InsubordinationId];
 
-        public EmploymentTerminationReason AcceptedNewJob => this.Cache.Get(AcceptedNewJobId);
+        public EmploymentTerminationReason AcceptedNewJob => this.Cache[AcceptedNewJobId];
 
-        public EmploymentTerminationReason NonPerformance => this.Cache.Get(NonPerformanceId);
+        public EmploymentTerminationReason NonPerformance => this.Cache[NonPerformanceId];
 
-        public EmploymentTerminationReason Moved => this.Cache.Get(MovedId);
+        public EmploymentTerminationReason Moved => this.Cache[MovedId];
 
-        private UniquelyIdentifiableCache<EmploymentTerminationReason> Cache => this.cache ?? (this.cache = new UniquelyIdentifiableCache<EmploymentTerminationReason>(this.Session));
+        private UniquelyIdentifiableSticky<EmploymentTerminationReason> Cache => this.cache ?? (this.cache = new UniquelyIdentifiableSticky<EmploymentTerminationReason>(this.Session));
 
         protected override void AppsSetup(Setup setup)
         {

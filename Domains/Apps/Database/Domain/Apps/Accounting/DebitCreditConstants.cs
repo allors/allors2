@@ -22,13 +22,13 @@ namespace Allors.Domain
         private static readonly Guid DebitId = new Guid("C957ED48-7A31-4308-8CC5-03C8014A8646");
         private static readonly Guid CreditId = new Guid("BECDF0E7-C2DD-4ddf-A1A0-FC5E9E15F0A8");
 
-        private UniquelyIdentifiableCache<DebitCreditConstant> cache;
+        private UniquelyIdentifiableSticky<DebitCreditConstant> cache;
 
-        public DebitCreditConstant Debit => this.Cache.Get(DebitId);
+        public DebitCreditConstant Debit => this.Cache[DebitId];
 
-        public DebitCreditConstant Credit => this.Cache.Get(CreditId);
+        public DebitCreditConstant Credit => this.Cache[CreditId];
 
-        private UniquelyIdentifiableCache<DebitCreditConstant> Cache => this.cache ?? (this.cache = new UniquelyIdentifiableCache<DebitCreditConstant>(this.Session));
+        private UniquelyIdentifiableSticky<DebitCreditConstant> Cache => this.cache ?? (this.cache = new UniquelyIdentifiableSticky<DebitCreditConstant>(this.Session));
 
         protected override void AppsSetup(Setup setup)
         {

@@ -28,7 +28,7 @@ namespace Allors.Domain
 
             if (!@this.ExistQuoteNumber)
             {
-                @this.QuoteNumber = Singleton.Instance(@this).InternalOrganisation.DeriveNextQuoteNumber();
+                @this.QuoteNumber = @this.Strategy.Session.GetSingleton().InternalOrganisation.DeriveNextQuoteNumber();
             }
         }
 

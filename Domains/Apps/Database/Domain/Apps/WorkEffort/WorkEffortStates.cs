@@ -31,31 +31,31 @@ namespace Allors.Domain
         private static readonly Guid AcceptedId = new Guid("09148AB2-28B4-4A84-B403-17884149156C");
         private static readonly Guid TentativeId = new Guid("A2FAAC53-49EC-45F4-84F3-10C9558A366E");
 
-        private UniquelyIdentifiableCache<WorkEffortState> stateCache;
+        private UniquelyIdentifiableSticky<WorkEffortState> stateCache;
 
-        public WorkEffortState NeedsAction => this.StateCache.Get(NeedsActionId);
+        public WorkEffortState NeedsAction => this.StateCache[NeedsActionId];
 
-        public WorkEffortState Confirmed => this.StateCache.Get(ConfirmedId);
+        public WorkEffortState Confirmed => this.StateCache[ConfirmedId];
 
-        public WorkEffortState InProgress => this.StateCache.Get(DeclinedId);
+        public WorkEffortState InProgress => this.StateCache[DeclinedId];
 
-        public WorkEffortState Completed => this.StateCache.Get(CompletedId);
+        public WorkEffortState Completed => this.StateCache[CompletedId];
 
-        public WorkEffortState Cancelled => this.StateCache.Get(CancelledId);
+        public WorkEffortState Cancelled => this.StateCache[CancelledId];
 
-        public WorkEffortState Delagated => this.StateCache.Get(DelegatedId);
+        public WorkEffortState Delagated => this.StateCache[DelegatedId];
 
-        public WorkEffortState InPlanning => this.StateCache.Get(InPlanningId);
+        public WorkEffortState InPlanning => this.StateCache[InPlanningId];
 
-        public WorkEffortState Planned => this.StateCache.Get(PlannedId);
+        public WorkEffortState Planned => this.StateCache[PlannedId];
 
-        public WorkEffortState Sent => this.StateCache.Get(SentId);
+        public WorkEffortState Sent => this.StateCache[SentId];
 
-        public WorkEffortState Accepted => this.StateCache.Get(AcceptedId);
+        public WorkEffortState Accepted => this.StateCache[AcceptedId];
 
-        public WorkEffortState Tentative => this.StateCache.Get(TentativeId);
+        public WorkEffortState Tentative => this.StateCache[TentativeId];
 
-        private UniquelyIdentifiableCache<WorkEffortState> StateCache => this.stateCache ?? (this.stateCache = new UniquelyIdentifiableCache<WorkEffortState>(this.Session));
+        private UniquelyIdentifiableSticky<WorkEffortState> StateCache => this.stateCache ?? (this.stateCache = new UniquelyIdentifiableSticky<WorkEffortState>(this.Session));
 
         protected override void AppsSetup(Setup setup)
         {

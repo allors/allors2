@@ -23,15 +23,15 @@ namespace Allors.Domain
         private static readonly Guid FemaleId = new Guid("B68704AD-82F1-4d5d-BBAF-A54635B5034F");
         private static readonly Guid OtherId = new Guid("09210D7C-804B-4E76-AD91-0E150D36E86E");
 
-        private UniquelyIdentifiableCache<GenderType> cache;
+        private UniquelyIdentifiableSticky<GenderType> cache;
 
-        public GenderType Male => this.Cache.Get(MaleId);
+        public GenderType Male => this.Cache[MaleId];
 
-        public GenderType Female => this.Cache.Get(FemaleId);
+        public GenderType Female => this.Cache[FemaleId];
 
-        public GenderType Other => this.Cache.Get(OtherId);
+        public GenderType Other => this.Cache[OtherId];
 
-        private UniquelyIdentifiableCache<GenderType> Cache => this.cache ?? (this.cache = new UniquelyIdentifiableCache<GenderType>(this.Session));
+        private UniquelyIdentifiableSticky<GenderType> Cache => this.cache ?? (this.cache = new UniquelyIdentifiableSticky<GenderType>(this.Session));
 
         protected override void AppsSetup(Setup setup)
         {

@@ -28,25 +28,25 @@ namespace Allors.Domain
         private static readonly Guid InProcessId = new Guid("DDBB678E-9A66-4842-87FD-4E628CFF0A75");
         private static readonly Guid FinishedId = new Guid("DFE75006-81FD-424a-AF58-2528A657155D");
 
-        private UniquelyIdentifiableCache<SalesOrderState> stateCache;
+        private UniquelyIdentifiableSticky<SalesOrderState> stateCache;
 
-        public SalesOrderState Provisional => this.StateCache.Get(ProvisionalId);
+        public SalesOrderState Provisional => this.StateCache[ProvisionalId];
 
-        public SalesOrderState RequestsApproval => this.StateCache.Get(RequestsApprovalId);
+        public SalesOrderState RequestsApproval => this.StateCache[RequestsApprovalId];
 
-        public SalesOrderState Cancelled => this.StateCache.Get(CancelledId);
+        public SalesOrderState Cancelled => this.StateCache[CancelledId];
 
-        public SalesOrderState Completed => this.StateCache.Get(CompletedId);
+        public SalesOrderState Completed => this.StateCache[CompletedId];
 
-        public SalesOrderState Rejected => this.StateCache.Get(RejectedId);
+        public SalesOrderState Rejected => this.StateCache[RejectedId];
 
-        public SalesOrderState Finished => this.StateCache.Get(FinishedId);
+        public SalesOrderState Finished => this.StateCache[FinishedId];
 
-        public SalesOrderState OnHold => this.StateCache.Get(OnHoldId);
+        public SalesOrderState OnHold => this.StateCache[OnHoldId];
 
-        public SalesOrderState InProcess => this.StateCache.Get(InProcessId);
+        public SalesOrderState InProcess => this.StateCache[InProcessId];
 
-        private UniquelyIdentifiableCache<SalesOrderState> StateCache => this.stateCache ?? (this.stateCache = new UniquelyIdentifiableCache<SalesOrderState>(this.Session));
+        private UniquelyIdentifiableSticky<SalesOrderState> StateCache => this.stateCache ?? (this.stateCache = new UniquelyIdentifiableSticky<SalesOrderState>(this.Session));
 
         protected override void AppsSetup(Setup setup)
         {

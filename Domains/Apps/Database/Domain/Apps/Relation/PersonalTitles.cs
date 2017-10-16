@@ -17,8 +17,8 @@ namespace Allors.Domain
 {
     public partial class PersonalTitles
     {
-        private UniquelyIdentifiableCache<PersonalTitle> cache;
+        private UniquelyIdentifiableSticky<PersonalTitle> cache;
 
-        private UniquelyIdentifiableCache<PersonalTitle> Cache => this.cache ?? (this.cache = new UniquelyIdentifiableCache<PersonalTitle>(this.Session));
+        private UniquelyIdentifiableSticky<PersonalTitle> Cache => this.cache ?? (this.cache = new UniquelyIdentifiableSticky<PersonalTitle>(this.Session));
     }
 }

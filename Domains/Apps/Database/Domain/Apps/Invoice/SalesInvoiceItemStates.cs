@@ -26,21 +26,21 @@ namespace Allors.Domain
         private static readonly Guid WrittenOffId = new Guid("F4408FD5-CCA3-44ea-BC00-4FFECC5D1EB9");
         private static readonly Guid CancelledId = new Guid("D521BBFA-1E18-453c-862F-28EBC0DA10C1");
 
-        private UniquelyIdentifiableCache<SalesInvoiceItemState> stateCache;
+        private UniquelyIdentifiableSticky<SalesInvoiceItemState> stateCache;
 
-        public SalesInvoiceItemState PartiallyPaid => this.StateCache.Get(PartiallyPaidId);
+        public SalesInvoiceItemState PartiallyPaid => this.StateCache[PartiallyPaidId];
 
-        public SalesInvoiceItemState Sent => this.StateCache.Get(SentId);
+        public SalesInvoiceItemState Sent => this.StateCache[SentId];
 
-        public SalesInvoiceItemState Paid => this.StateCache.Get(PaidId);
+        public SalesInvoiceItemState Paid => this.StateCache[PaidId];
 
-        public SalesInvoiceItemState ReadyForPosting => this.StateCache.Get(ReadyForPostingId);
+        public SalesInvoiceItemState ReadyForPosting => this.StateCache[ReadyForPostingId];
 
-        public SalesInvoiceItemState WrittenOff => this.StateCache.Get(WrittenOffId);
+        public SalesInvoiceItemState WrittenOff => this.StateCache[WrittenOffId];
 
-        public SalesInvoiceItemState Cancelled => this.StateCache.Get(CancelledId);
+        public SalesInvoiceItemState Cancelled => this.StateCache[CancelledId];
 
-        private UniquelyIdentifiableCache<SalesInvoiceItemState> StateCache => this.stateCache ?? (this.stateCache = new UniquelyIdentifiableCache<SalesInvoiceItemState>(this.Session));
+        private UniquelyIdentifiableSticky<SalesInvoiceItemState> StateCache => this.stateCache ?? (this.stateCache = new UniquelyIdentifiableSticky<SalesInvoiceItemState>(this.Session));
 
         protected override void AppsSetup(Setup setup)
         {

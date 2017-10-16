@@ -38,12 +38,12 @@ namespace Allors.Domain
 
             if (!this.ExistFacility)
             {
-                this.Facility = Singleton.Instance(this).InternalOrganisation.DefaultFacility;
+                this.Facility = this.Strategy.Session.GetSingleton().InternalOrganisation.DefaultFacility;
             }
 
             if (!this.ExistShipmentNumber)
             {
-                this.ShipmentNumber = Singleton.Instance(this).InternalOrganisation.DeriveNextShipmentNumber();
+                this.ShipmentNumber = this.Strategy.Session.GetSingleton().InternalOrganisation.DeriveNextShipmentNumber();
             }
 
             if (!this.ExistEstimatedArrivalDate)
@@ -77,7 +77,7 @@ namespace Allors.Domain
 
             if (!this.ExistShipToAddress)
             {
-                this.ShipToAddress = Singleton.Instance(this).InternalOrganisation.ShippingAddress;
+                this.ShipToAddress = this.Strategy.Session.GetSingleton().InternalOrganisation.ShippingAddress;
             }
 
             if (!this.ExistShipFromAddress && this.ExistShipFromParty)

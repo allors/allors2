@@ -34,8 +34,6 @@ namespace Allors.Domain
         public const string GuestUserName = "Guest";
         public const string AdministratorUserName = "Administrator";
 
-        private const string SessionKey = nameof(User) + ".Key";
-        
         public User GetUser(string userId)
         {
             // TODO: cache

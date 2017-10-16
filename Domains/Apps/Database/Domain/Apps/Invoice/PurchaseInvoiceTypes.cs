@@ -24,17 +24,17 @@ namespace Allors.Domain
         private static readonly Guid CommissionId = new Guid("92DF3246-CC44-4ab8-94F1-E0039261EA60");
         private static readonly Guid PayrollId = new Guid("5C637EA9-5F0A-4bd7-80BF-FFBA01EC1756");
 
-        private UniquelyIdentifiableCache<PurchaseInvoiceType> cache;
+        private UniquelyIdentifiableSticky<PurchaseInvoiceType> cache;
 
-        public PurchaseInvoiceType PurchaseInvoice => this.Cache.Get(PurchaseInvoiceId);
+        public PurchaseInvoiceType PurchaseInvoice => this.Cache[PurchaseInvoiceId];
 
-        public PurchaseInvoiceType CustomerReturn => this.Cache.Get(CustomerReturnId);
+        public PurchaseInvoiceType CustomerReturn => this.Cache[CustomerReturnId];
 
-        public PurchaseInvoiceType Commission => this.Cache.Get(CommissionId);
+        public PurchaseInvoiceType Commission => this.Cache[CommissionId];
 
-        public PurchaseInvoiceType Payroll => this.Cache.Get(PayrollId);
+        public PurchaseInvoiceType Payroll => this.Cache[PayrollId];
 
-        private UniquelyIdentifiableCache<PurchaseInvoiceType> Cache => this.cache ?? (this.cache = new UniquelyIdentifiableCache<PurchaseInvoiceType>(this.Session));
+        private UniquelyIdentifiableSticky<PurchaseInvoiceType> Cache => this.cache ?? (this.cache = new UniquelyIdentifiableSticky<PurchaseInvoiceType>(this.Session));
 
         protected override void AppsSetup(Setup setup)
         {

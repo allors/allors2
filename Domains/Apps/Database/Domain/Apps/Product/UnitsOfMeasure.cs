@@ -29,27 +29,27 @@ namespace Allors.Domain
         private static readonly Guid WidthCmId = new Guid("73C329FE-32EC-401f-A0F0-17EDE011B518");
         private static readonly Guid HeightCmId = new Guid("87519F22-9EA3-4a3f-9DC4-66A417AC08AD");
 
-        private UniquelyIdentifiableCache<UnitOfMeasure> cache;
+        private UniquelyIdentifiableSticky<UnitOfMeasure> cache;
 
-        public UnitOfMeasure Pack => this.Cache.Get(PackId);
+        public UnitOfMeasure Pack => this.Cache[PackId];
 
-        public UnitOfMeasure Pair => this.Cache.Get(PairId);
+        public UnitOfMeasure Pair => this.Cache[PairId];
 
-        public UnitOfMeasure Pieces => this.Cache.Get(PiecesId);
+        public UnitOfMeasure Pieces => this.Cache[PiecesId];
 
-        public UnitOfMeasure Piece => this.Cache.Get(PieceId);
+        public UnitOfMeasure Piece => this.Cache[PieceId];
 
-        public UnitOfMeasure LengthCm => this.Cache.Get(LengthCmId);
+        public UnitOfMeasure LengthCm => this.Cache[LengthCmId];
 
-        public UnitOfMeasure WidthCm => this.Cache.Get(WidthCmId);
+        public UnitOfMeasure WidthCm => this.Cache[WidthCmId];
 
-        public UnitOfMeasure HeightCm => this.Cache.Get(HeightCmId);
+        public UnitOfMeasure HeightCm => this.Cache[HeightCmId];
 
-        public UnitOfMeasure Centimeter => this.Cache.Get(CentimeterId);
+        public UnitOfMeasure Centimeter => this.Cache[CentimeterId];
 
-        public UnitOfMeasure Meter => this.Cache.Get(MeterId);
+        public UnitOfMeasure Meter => this.Cache[MeterId];
 
-        private UniquelyIdentifiableCache<UnitOfMeasure> Cache => this.cache ?? (this.cache = new UniquelyIdentifiableCache<UnitOfMeasure>(this.Session));
+        private UniquelyIdentifiableSticky<UnitOfMeasure> Cache => this.cache ?? (this.cache = new UniquelyIdentifiableSticky<UnitOfMeasure>(this.Session));
 
         protected override void AppsSetup(Setup setup)
         {

@@ -27,23 +27,23 @@ namespace Allors.Domain
         private static readonly Guid PendingApprovalFromClientId = new Guid("A6216522-44DA-404d-92A3-61160F814A15");
         private static readonly Guid FullfilledByOtherEnterpriseId = new Guid("10E9F384-541D-4fb3-ABDC-539EC291EFC6");
 
-        private UniquelyIdentifiableCache<RequirementState> stateCache;
+        private UniquelyIdentifiableSticky<RequirementState> stateCache;
 
-        public RequirementState Active => this.StateCache.Get(ActiveId);
+        public RequirementState Active => this.StateCache[ActiveId];
 
-        public RequirementState Inactive => this.StateCache.Get(InactiveId);
+        public RequirementState Inactive => this.StateCache[InactiveId];
 
-        public RequirementState OnHold => this.StateCache.Get(OnHoldId);
+        public RequirementState OnHold => this.StateCache[OnHoldId];
 
-        public RequirementState Cancelled => this.StateCache.Get(CancelledId);
+        public RequirementState Cancelled => this.StateCache[CancelledId];
 
-        public RequirementState Closed => this.StateCache.Get(ClosedId);
+        public RequirementState Closed => this.StateCache[ClosedId];
 
-        public RequirementState PendingApprovalFromClient => this.StateCache.Get(PendingApprovalFromClientId);
+        public RequirementState PendingApprovalFromClient => this.StateCache[PendingApprovalFromClientId];
 
-        public RequirementState FullfilledByOtherEnterprise => this.StateCache.Get(FullfilledByOtherEnterpriseId);
+        public RequirementState FullfilledByOtherEnterprise => this.StateCache[FullfilledByOtherEnterpriseId];
 
-        private UniquelyIdentifiableCache<RequirementState> StateCache => this.stateCache ?? (this.stateCache = new UniquelyIdentifiableCache<RequirementState>(this.Session));
+        private UniquelyIdentifiableSticky<RequirementState> StateCache => this.stateCache ?? (this.stateCache = new UniquelyIdentifiableSticky<RequirementState>(this.Session));
 
         protected override void AppsSetup(Setup setup)
         {

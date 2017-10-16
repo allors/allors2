@@ -47,7 +47,7 @@ namespace Allors.Domain
 
             if (!this.ExistOrderNumber)
             {
-                this.OrderNumber = Singleton.Instance(this).InternalOrganisation.DeriveNextPurchaseOrderNumber();
+                this.OrderNumber = this.Strategy.Session.GetSingleton().InternalOrganisation.DeriveNextPurchaseOrderNumber();
             }
 
             if (!this.ExistOrderDate)
@@ -62,12 +62,12 @@ namespace Allors.Domain
 
             if (!this.ExistCustomerCurrency)
             {
-                this.CustomerCurrency = Singleton.Instance(this).PreferredCurrency;
+                this.CustomerCurrency = this.Strategy.Session.GetSingleton().PreferredCurrency;
             }
 
             if (!this.ExistFacility)
             {
-                this.Facility = Singleton.Instance(this).InternalOrganisation.DefaultFacility;
+                this.Facility = this.Strategy.Session.GetSingleton().InternalOrganisation.DefaultFacility;
             }
         }
 
@@ -77,8 +77,8 @@ namespace Allors.Domain
 
             if (derivation.HasChangedRoles(this))
             {
-                derivation.AddDependency(this, Singleton.Instance(this));
-                derivation.AddDependency(this, Singleton.Instance(this));
+                derivation.AddDependency(this, this.Strategy.Session.GetSingleton());
+                derivation.AddDependency(this, this.Strategy.Session.GetSingleton());
                 derivation.AddDependency(this, this.TakenViaSupplier);
             }
 
@@ -96,7 +96,7 @@ namespace Allors.Domain
             Organisation supplier = this.TakenViaSupplier as Organisation;
             if (supplier != null)
             {
-                if (!Singleton.Instance(this.strategy.Session).InternalOrganisation.ActiveSuppliers.Contains(supplier))
+                if (!this.strategy.Session.GetSingleton().InternalOrganisation.ActiveSuppliers.Contains(supplier))
                 {
                     derivation.Validation.AddError(this, this.Meta.TakenViaSupplier, ErrorMessages.PartyIsNotASupplier);
                 }
@@ -104,12 +104,12 @@ namespace Allors.Domain
 
             if (!this.ExistShipToAddress)
             {
-                this.ShipToAddress = Singleton.Instance(this.strategy.Session).InternalOrganisation.ShippingAddress;
+                this.ShipToAddress = this.strategy.Session.GetSingleton().InternalOrganisation.ShippingAddress;
             }
 
             if (!this.ExistBillToContactMechanism)
             {
-                this.BillToContactMechanism = Singleton.Instance(this.strategy.Session).InternalOrganisation.BillingAddress;
+                this.BillToContactMechanism = this.strategy.Session.GetSingleton().InternalOrganisation.BillingAddress;
             }
 
             if (!this.ExistTakenViaContactMechanism && this.ExistTakenViaSupplier)
@@ -117,7 +117,7 @@ namespace Allors.Domain
                 this.TakenViaContactMechanism = this.TakenViaSupplier.OrderAddress;
             }
 
-            this.Locale = Singleton.Instance(this.Strategy.Session).DefaultLocale;
+            this.Locale = this.Strategy.Session.GetSingleton().DefaultLocale;
 
             this.AppsOnDeriveOrderItems(derivation);
             this.AppsOnDerivePurchaseOrderState(derivation);

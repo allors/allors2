@@ -29,27 +29,27 @@ namespace Allors.Domain
         private static readonly Guid HighestPayRateId = new Guid("5D09F716-5C8F-4c30-91C2-87AFB55BB371");
         private static readonly Guid LowestPayRateId = new Guid("C7353288-278A-44a0-AF7E-9AC9B584B984");
 
-        private UniquelyIdentifiableCache<RateType> cache;
+        private UniquelyIdentifiableSticky<RateType> cache;
 
-        public RateType BillingRate => this.Cache.Get(BillingRateId);
+        public RateType BillingRate => this.Cache[BillingRateId];
 
-        public RateType Cost => this.Cache.Get(CostId);
+        public RateType Cost => this.Cache[CostId];
 
-        public RateType RegularPay => this.Cache.Get(RegularPayId);
+        public RateType RegularPay => this.Cache[RegularPayId];
 
-        public RateType OvertimePay => this.Cache.Get(OvertimePayId);
+        public RateType OvertimePay => this.Cache[OvertimePayId];
 
-        public RateType OvertimeBillingRate => this.Cache.Get(OvertimeBillingRateId);
+        public RateType OvertimeBillingRate => this.Cache[OvertimeBillingRateId];
 
-        public RateType WeekendRate => this.Cache.Get(WeekendRateId);
+        public RateType WeekendRate => this.Cache[WeekendRateId];
 
-        public RateType AveragePayRate => this.Cache.Get(AveragePayRateId);
+        public RateType AveragePayRate => this.Cache[AveragePayRateId];
+        
+        public RateType HighestPayRate => this.Cache[HighestPayRateId];
 
-        public RateType HighestPayRate => this.Cache.Get(HighestPayRateId);
+        public RateType LowestPayRate => this.Cache[LowestPayRateId];
 
-        public RateType LowestPayRate => this.Cache.Get(LowestPayRateId);
-
-        private UniquelyIdentifiableCache<RateType> Cache => this.cache ?? (this.cache = new UniquelyIdentifiableCache<RateType>(this.Session));
+        private UniquelyIdentifiableSticky<RateType> Cache => this.cache ?? (this.cache = new UniquelyIdentifiableSticky<RateType>(this.Session));
 
         protected override void AppsSetup(Setup setup)
         {

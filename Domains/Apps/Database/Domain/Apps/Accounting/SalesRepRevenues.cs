@@ -122,7 +122,7 @@ namespace Allors.Domain
                         .WithSalesRep(item.SalesRep)
                         .WithYear(item.SalesInvoiceWhereSalesInvoiceItem.InvoiceDate.Year)
                         .WithMonth(item.SalesInvoiceWhereSalesInvoiceItem.InvoiceDate.Month)
-                        .WithCurrency(Singleton.Instance(session).PreferredCurrency)
+                        .WithCurrency(session.GetSingleton().PreferredCurrency)
                         .Build();
         }
     }

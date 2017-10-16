@@ -59,7 +59,7 @@ namespace Allors.Domain
             else
             {
                 var productCharacteristics = new HashSet<ProductCharacteristic>(@this.ProductType.ProductCharacteristics);
-                var locales = new HashSet<Locale>(Singleton.Instance(@this.Strategy.Session).Locales);
+                var locales = new HashSet<Locale>(@this.Strategy.Session.GetSingleton().Locales);
 
                 var currentProductCharacteristicValueByLocaleByProductCharacteristic = @this.ProductCharacteristicValues
                     .GroupBy(v => v.ProductCharacteristic)

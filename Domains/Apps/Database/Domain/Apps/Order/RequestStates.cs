@@ -26,21 +26,21 @@ namespace Allors.Domain
         private static readonly Guid PendingCustomerId = new Guid("671FDA2F-5AA6-4EA5-B5D6-C914F0911690");
         private static readonly Guid RejectedId = new Guid("26B1E962-9799-4C53-AE36-20E8490F757A");
 
-        private UniquelyIdentifiableCache<RequestState> stateCache;
+        private UniquelyIdentifiableSticky<RequestState> stateCache;
 
-        public RequestState Anonymous => this.StateCache.Get(AnonymousId);
+        public RequestState Anonymous => this.StateCache[AnonymousId];
 
-        public RequestState Submitted => this.StateCache.Get(SubmittedId);
+        public RequestState Submitted => this.StateCache[SubmittedId];
 
-        public RequestState Cancelled => this.StateCache.Get(CancelledId);
+        public RequestState Cancelled => this.StateCache[CancelledId];
 
-        public RequestState Quoted => this.StateCache.Get(QuotedId);
+        public RequestState Quoted => this.StateCache[QuotedId];
 
-        public RequestState PendingCustomer => this.StateCache.Get(PendingCustomerId);
+        public RequestState PendingCustomer => this.StateCache[PendingCustomerId];
 
-        public RequestState Rejected => this.StateCache.Get(RejectedId);
+        public RequestState Rejected => this.StateCache[RejectedId];
 
-        private UniquelyIdentifiableCache<RequestState> StateCache => this.stateCache ?? (this.stateCache = new UniquelyIdentifiableCache<RequestState>(this.Session));
+        private UniquelyIdentifiableSticky<RequestState> StateCache => this.stateCache ?? (this.stateCache = new UniquelyIdentifiableSticky<RequestState>(this.Session));
 
         protected override void AppsSetup(Setup setup)
         {

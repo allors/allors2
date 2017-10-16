@@ -26,21 +26,21 @@ namespace Allors.Domain
         private static readonly Guid NotifiedOfNonInterestedId = new Guid("E889B083-22D4-4aa8-85BE-6416AA0839F9");
         private static readonly Guid EmployedId = new Guid("2CB5ABD4-8799-46c1-9E2B-538DB076492E");
 
-        private UniquelyIdentifiableCache<EmploymentApplicationStatus> cache;
+        private UniquelyIdentifiableSticky<EmploymentApplicationStatus> cache;
 
-        public EmploymentApplicationStatus Received => this.Cache.Get(ReceivedId);
+        public EmploymentApplicationStatus Received => this.Cache[ReceivedId];
 
-        public EmploymentApplicationStatus Reviewed => this.Cache.Get(ReviewedId);
+        public EmploymentApplicationStatus Reviewed => this.Cache[ReviewedId];
 
-        public EmploymentApplicationStatus Filed => this.Cache.Get(FiledId);
+        public EmploymentApplicationStatus Filed => this.Cache[FiledId];
 
-        public EmploymentApplicationStatus Rejected => this.Cache.Get(RejectedId);
+        public EmploymentApplicationStatus Rejected => this.Cache[RejectedId];
 
-        public EmploymentApplicationStatus NotifiedOfNonInterested => this.Cache.Get(NotifiedOfNonInterestedId);
+        public EmploymentApplicationStatus NotifiedOfNonInterested => this.Cache[NotifiedOfNonInterestedId];
 
-        public EmploymentApplicationStatus Employed => this.Cache.Get(EmployedId);
+        public EmploymentApplicationStatus Employed => this.Cache[EmployedId];
 
-        private UniquelyIdentifiableCache<EmploymentApplicationStatus> Cache => this.cache ?? (this.cache = new UniquelyIdentifiableCache<EmploymentApplicationStatus>(this.Session));
+        private UniquelyIdentifiableSticky<EmploymentApplicationStatus> Cache => this.cache ?? (this.cache = new UniquelyIdentifiableSticky<EmploymentApplicationStatus>(this.Session));
 
         protected override void AppsSetup(Setup setup)
         {

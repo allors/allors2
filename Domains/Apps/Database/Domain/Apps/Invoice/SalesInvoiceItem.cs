@@ -217,7 +217,7 @@ namespace Allors.Domain
             decimal discountAdjustmentAmount = 0;
             decimal surchargeAdjustmentAmount = 0;
 
-            var internalOrganisation = Singleton.Instance(this);
+            var internalOrganisation = this.Strategy.Session.GetSingleton();
             var customer = this.SalesInvoiceWhereSalesInvoiceItem.BillToCustomer;
             var salesInvoice = this.SalesInvoiceWhereSalesInvoiceItem;
 
@@ -360,7 +360,7 @@ namespace Allors.Domain
             this.TotalIncVat = this.TotalExVat + this.TotalVat;
 
             var toCurrency = this.SalesInvoiceWhereSalesInvoiceItem.CustomerCurrency;
-            var fromCurrency = Singleton.Instance(this.strategy.Session).PreferredCurrency;
+            var fromCurrency = this.strategy.Session.GetSingleton().PreferredCurrency;
 
             if (fromCurrency.Equals(toCurrency))
             {

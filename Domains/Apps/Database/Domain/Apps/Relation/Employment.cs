@@ -47,13 +47,13 @@ namespace Allors.Domain
             {
                 if (this.FromDate <= DateTime.UtcNow && (!this.ExistThroughDate || this.ThroughDate >= DateTime.UtcNow))
                 {
-                    Singleton.Instance(this.strategy.Session).InternalOrganisation.AddActiveEmployee(this.Employee);
+                    this.strategy.Session.GetSingleton().InternalOrganisation.AddActiveEmployee(this.Employee);
                     new UserGroups(this.Strategy.Session).Creators.AddMember(this.Employee);
                 }
 
                 if (this.FromDate > DateTime.UtcNow || (this.ExistThroughDate && this.ThroughDate < DateTime.UtcNow))
                 {
-                    Singleton.Instance(this.strategy.Session).InternalOrganisation.RemoveActiveEmployee(this.Employee);
+                    this.strategy.Session.GetSingleton().InternalOrganisation.RemoveActiveEmployee(this.Employee);
                     new UserGroups(this.Strategy.Session).Creators.RemoveMember(this.Employee);
                 }
             }

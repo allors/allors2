@@ -45,7 +45,7 @@ namespace Allors.Domain
                                                             .WithParty(invoice.BillToCustomer)
                                                             .WithYear(invoice.InvoiceDate.Year)
                                                             .WithMonth(invoice.InvoiceDate.Month)
-                                                            .WithCurrency(Singleton.Instance(session).PreferredCurrency)
+                                                            .WithCurrency(session.GetSingleton().PreferredCurrency)
                                                             .Build();
 
             return partyRevenue;
@@ -132,7 +132,7 @@ namespace Allors.Domain
                         .WithParty(invoice.BillToCustomer)
                         .WithYear(invoice.InvoiceDate.Year)
                         .WithMonth(invoice.InvoiceDate.Month)
-                        .WithCurrency(Singleton.Instance(session).PreferredCurrency)
+                        .WithCurrency(session.GetSingleton().PreferredCurrency)
                         .Build();
         }
     }

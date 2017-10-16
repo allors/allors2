@@ -24,17 +24,17 @@ namespace Allors.Domain
         public static readonly Guid FedexId = new Guid("D626E669-6AA9-40D1-B18B-5B06564C59A4");
         public static readonly Guid DhlId = new Guid("4901794C-B611-4DE4-8613-183B1C08E0AD");
 
-        private UniquelyIdentifiableCache<Carrier> cache;
+        private UniquelyIdentifiableSticky<Carrier> cache;
 
-        public Carrier Gls => this.Cache.Get(GlsId);
+        public Carrier Gls => this.Cache[GlsId];
 
-        public Carrier Ups => this.Cache.Get(UpsId);
+        public Carrier Ups => this.Cache[UpsId];
 
-        public Carrier Fedex => this.Cache.Get(FedexId);
+        public Carrier Fedex => this.Cache[FedexId];
 
-        public Carrier Dhl => this.Cache.Get(DhlId);
+        public Carrier Dhl => this.Cache[DhlId];
 
-        private UniquelyIdentifiableCache<Carrier> Cache => this.cache ?? (this.cache = new UniquelyIdentifiableCache<Carrier>(this.Session));
+        private UniquelyIdentifiableSticky<Carrier> Cache => this.cache ?? (this.cache = new UniquelyIdentifiableSticky<Carrier>(this.Session));
 
         protected override void AppsSetup(Setup setup)
         {

@@ -24,17 +24,17 @@ namespace Allors.Domain
         private static readonly Guid GoodId = new Guid("374DEE3A-82FA-4bee-B66B-F48CA1B0CBD7");
         private static readonly Guid ExcellentId = new Guid("52029ECD-1752-4b40-A39D-54B0C1CB8297");
 
-        private UniquelyIdentifiableCache<SkillRating> cache;
+        private UniquelyIdentifiableSticky<SkillRating> cache;
 
-        public SkillRating Poor => this.Cache.Get(PoorId);
+        public SkillRating Poor => this.Cache[PoorId];
 
-        public SkillRating Fair => this.Cache.Get(FairId);
+        public SkillRating Fair => this.Cache[FairId];
 
-        public SkillRating Good => this.Cache.Get(GoodId);
+        public SkillRating Good => this.Cache[GoodId];
 
-        public SkillRating Excellent => this.Cache.Get(ExcellentId);
+        public SkillRating Excellent => this.Cache[ExcellentId];
 
-        private UniquelyIdentifiableCache<SkillRating> Cache => this.cache ?? (this.cache = new UniquelyIdentifiableCache<SkillRating>(this.Session));
+        private UniquelyIdentifiableSticky<SkillRating> Cache => this.cache ?? (this.cache = new UniquelyIdentifiableSticky<SkillRating>(this.Session));
 
         protected override void AppsSetup(Setup setup)
         {

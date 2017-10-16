@@ -25,19 +25,19 @@ namespace Allors.Domain
         private static readonly Guid ActivityId = new Guid("92E613F6-A12D-4BE1-9350-3F4C0DBA2EA1");
         private static readonly Guid WorkTaskId = new Guid("13472733-E7E9-47AC-A977-A8571BED05EC");
 
-        private UniquelyIdentifiableCache<WorkEffortTypeKind> cache;
+        private UniquelyIdentifiableSticky<WorkEffortTypeKind> cache;
 
-        public WorkEffortTypeKind Program => this.Cache.Get(ProgramId);
+        public WorkEffortTypeKind Program => this.Cache[ProgramId];
 
-        public WorkEffortTypeKind Project => this.Cache.Get(ProjectId);
+        public WorkEffortTypeKind Project => this.Cache[ProjectId];
 
-        public WorkEffortTypeKind Phase => this.Cache.Get(PhaseId);
+        public WorkEffortTypeKind Phase => this.Cache[PhaseId];
 
-        public WorkEffortTypeKind Activity => this.Cache.Get(ActivityId);
+        public WorkEffortTypeKind Activity => this.Cache[ActivityId];
 
-        public WorkEffortTypeKind WorkTask => this.Cache.Get(WorkTaskId);
+        public WorkEffortTypeKind WorkTask => this.Cache[WorkTaskId];
 
-        private UniquelyIdentifiableCache<WorkEffortTypeKind> Cache => this.cache ?? (this.cache = new UniquelyIdentifiableCache<WorkEffortTypeKind>(this.Session));
+        private UniquelyIdentifiableSticky<WorkEffortTypeKind> Cache => this.cache ?? (this.cache = new UniquelyIdentifiableSticky<WorkEffortTypeKind>(this.Session));
 
         protected override void AppsSetup(Setup setup)
         {

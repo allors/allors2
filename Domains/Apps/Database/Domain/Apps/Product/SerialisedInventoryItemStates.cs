@@ -30,29 +30,29 @@ namespace Allors.Domain
         private static readonly Guid OutOfRentId = new Guid("8422F80C-6923-4395-B998-23E5CBC9868A");
         private static readonly Guid AssignedId = new Guid("3AD2DEC0-65AB-4E31-BDE0-3227727D9329");
 
-        private UniquelyIdentifiableCache<SerialisedInventoryItemState> stateCache;
+        private UniquelyIdentifiableSticky<SerialisedInventoryItemState> stateCache;
 
-        public SerialisedInventoryItemState Good => this.StateCache.Get(GoodId);
+        public SerialisedInventoryItemState Good => this.StateCache[GoodId];
 
-        public SerialisedInventoryItemState BeingRepared => this.StateCache.Get(BeingReparedId);
+        public SerialisedInventoryItemState BeingRepared => this.StateCache[BeingReparedId];
 
-        public SerialisedInventoryItemState SlightlyDamaged => this.StateCache.Get(SlightlyDamagedId);
+        public SerialisedInventoryItemState SlightlyDamaged => this.StateCache[SlightlyDamagedId];
 
-        public SerialisedInventoryItemState Defective => this.StateCache.Get(DefectiveId);
+        public SerialisedInventoryItemState Defective => this.StateCache[DefectiveId];
 
-        public SerialisedInventoryItemState Scrap => this.StateCache.Get(ScrapId);
+        public SerialisedInventoryItemState Scrap => this.StateCache[ScrapId];
 
-        public SerialisedInventoryItemState ForSale => this.StateCache.Get(ForSaleId);
+        public SerialisedInventoryItemState ForSale => this.StateCache[ForSaleId];
 
-        public SerialisedInventoryItemState Sold => this.StateCache.Get(SoldId);
+        public SerialisedInventoryItemState Sold => this.StateCache[SoldId];
 
-        public SerialisedInventoryItemState InRent => this.StateCache.Get(InRentId);
+        public SerialisedInventoryItemState InRent => this.StateCache[InRentId];
 
-        public SerialisedInventoryItemState OutOfRent => this.StateCache.Get(OutOfRentId);
+        public SerialisedInventoryItemState OutOfRent => this.StateCache[OutOfRentId];
 
-        public SerialisedInventoryItemState Assigned => this.StateCache.Get(AssignedId);
+        public SerialisedInventoryItemState Assigned => this.StateCache[AssignedId];
 
-        private UniquelyIdentifiableCache<SerialisedInventoryItemState> StateCache => this.stateCache ?? (this.stateCache = new UniquelyIdentifiableCache<SerialisedInventoryItemState>(this.Session));
+        private UniquelyIdentifiableSticky<SerialisedInventoryItemState> StateCache => this.stateCache ?? (this.stateCache = new UniquelyIdentifiableSticky<SerialisedInventoryItemState>(this.Session));
 
         protected override void AppsSetup(Setup setup)
         {

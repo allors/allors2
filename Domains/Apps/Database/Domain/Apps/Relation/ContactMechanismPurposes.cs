@@ -39,47 +39,47 @@ namespace Allors.Domain
         private static readonly Guid PersonalEmailAddressId = new Guid("A3DBFB0C-3542-4a70-B2FD-EABFC34F8BF3");
         private static readonly Guid MobilePhoneNumberId = new Guid("C81E8F99-169B-4c8e-8C88-761CCCD5BBB0");
 
-        private UniquelyIdentifiableCache<ContactMechanismPurpose> cache;
+        private UniquelyIdentifiableSticky<ContactMechanismPurpose> cache;
 
-        public ContactMechanismPurpose HeadQuarters => this.Cache.Get(HeadQuartersId);
+        public ContactMechanismPurpose HeadQuarters => this.Cache[HeadQuartersId];
 
-        public ContactMechanismPurpose SalesOffice => this.Cache.Get(SalesOfficeId);
+        public ContactMechanismPurpose SalesOffice => this.Cache[SalesOfficeId];
 
-        public ContactMechanismPurpose HomeAddress => this.Cache.Get(HomeAddressId);
+        public ContactMechanismPurpose HomeAddress => this.Cache[HomeAddressId];
 
-        public ContactMechanismPurpose GeneralCorrespondence => this.Cache.Get(GeneralCorrespondenceId);
+        public ContactMechanismPurpose GeneralCorrespondence => this.Cache[GeneralCorrespondenceId];
 
-        public ContactMechanismPurpose GeneralFaxNumber => this.Cache.Get(GeneralFaxNumberId);
+        public ContactMechanismPurpose GeneralFaxNumber => this.Cache[GeneralFaxNumberId];
 
-        public ContactMechanismPurpose GeneralPhoneNumber => this.Cache.Get(GeneralPhoneNumberId);
+        public ContactMechanismPurpose GeneralPhoneNumber => this.Cache[GeneralPhoneNumberId];
 
-        public ContactMechanismPurpose GeneralEmail => this.Cache.Get(GeneralEmailId);
+        public ContactMechanismPurpose GeneralEmail => this.Cache[GeneralEmailId];
 
-        public ContactMechanismPurpose BillingAddress => this.Cache.Get(BillingAddressId);
+        public ContactMechanismPurpose BillingAddress => this.Cache[BillingAddressId];
 
-        public ContactMechanismPurpose InternetAddress => this.Cache.Get(InternetAddressId);
+        public ContactMechanismPurpose InternetAddress => this.Cache[InternetAddressId];
 
-        public ContactMechanismPurpose OrderAddress => this.Cache.Get(OrderAddressId);
+        public ContactMechanismPurpose OrderAddress => this.Cache[OrderAddressId];
 
-        public ContactMechanismPurpose ShippingAddress => this.Cache.Get(ShippingAddressId);
+        public ContactMechanismPurpose ShippingAddress => this.Cache[ShippingAddressId];
 
-        public ContactMechanismPurpose BillingInquiriesPhone => this.Cache.Get(BillingInquiriesPhoneId);
+        public ContactMechanismPurpose BillingInquiriesPhone => this.Cache[BillingInquiriesPhoneId];
 
-        public ContactMechanismPurpose OrderInquiriesPhone => this.Cache.Get(OrderInquiriesPhoneId);
+        public ContactMechanismPurpose OrderInquiriesPhone => this.Cache[OrderInquiriesPhoneId];
 
-        public ContactMechanismPurpose ShippingInquiriesPhone => this.Cache.Get(ShippingInquiriesPhoneId);
+        public ContactMechanismPurpose ShippingInquiriesPhone => this.Cache[ShippingInquiriesPhoneId];
 
-        public ContactMechanismPurpose BillingInquiriesFax => this.Cache.Get(BillingInquiriesFaxId);
+        public ContactMechanismPurpose BillingInquiriesFax => this.Cache[BillingInquiriesFaxId];
 
-        public ContactMechanismPurpose OrderInquiriesFax => this.Cache.Get(OrderInquiriesFaxId);
+        public ContactMechanismPurpose OrderInquiriesFax => this.Cache[OrderInquiriesFaxId];
 
-        public ContactMechanismPurpose ShippingInquiriesFax => this.Cache.Get(ShippingInquiriesFaxId);
+        public ContactMechanismPurpose ShippingInquiriesFax => this.Cache[ShippingInquiriesFaxId];
 
-        public ContactMechanismPurpose PersonalEmailAddress => this.Cache.Get(PersonalEmailAddressId);
+        public ContactMechanismPurpose PersonalEmailAddress => this.Cache[PersonalEmailAddressId];
 
-        public ContactMechanismPurpose MobilePhoneNumber => this.Cache.Get(MobilePhoneNumberId);
+        public ContactMechanismPurpose MobilePhoneNumber => this.Cache[MobilePhoneNumberId];
 
-        private UniquelyIdentifiableCache<ContactMechanismPurpose> Cache => this.cache ?? (this.cache = new UniquelyIdentifiableCache<ContactMechanismPurpose>(this.Session));
+        private UniquelyIdentifiableSticky<ContactMechanismPurpose> Cache => this.cache ?? (this.cache = new UniquelyIdentifiableSticky<ContactMechanismPurpose>(this.Session));
 
         protected override void AppsSetup(Setup setup)
         {

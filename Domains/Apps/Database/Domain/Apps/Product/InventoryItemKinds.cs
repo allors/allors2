@@ -22,13 +22,13 @@ namespace Allors.Domain
         private static readonly Guid SerialisedId = new Guid("2596E2DD-3F5D-4588-A4A2-167D6FBE3FAE");
         private static readonly Guid NonSerialisedId = new Guid("EAA6C331-0DD9-4bb1-8245-12A673304468");
 
-        private UniquelyIdentifiableCache<InventoryItemKind> cache;
+        private UniquelyIdentifiableSticky<InventoryItemKind> cache;
 
-        public InventoryItemKind Serialised => this.Cache.Get(SerialisedId);
+        public InventoryItemKind Serialised => this.Cache[SerialisedId];
 
-        public InventoryItemKind NonSerialised => this.Cache.Get(NonSerialisedId);
+        public InventoryItemKind NonSerialised => this.Cache[NonSerialisedId];
 
-        private UniquelyIdentifiableCache<InventoryItemKind> Cache => this.cache ?? (this.cache = new UniquelyIdentifiableCache<InventoryItemKind>(this.Session));
+        private UniquelyIdentifiableSticky<InventoryItemKind> Cache => this.cache ?? (this.cache = new UniquelyIdentifiableSticky<InventoryItemKind>(this.Session));
 
         protected override void AppsSetup(Setup setup)
         {

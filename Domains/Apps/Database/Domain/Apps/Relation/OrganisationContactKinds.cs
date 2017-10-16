@@ -17,9 +17,9 @@ namespace Allors.Domain
 {
     public partial class OrganisationContactKinds
     {
-        private UniquelyIdentifiableCache<OrganisationContactKind> cache;
+        private UniquelyIdentifiableSticky<OrganisationContactKind> cache;
 
-        private UniquelyIdentifiableCache<OrganisationContactKind> Cache => this.cache ?? (this.cache = new UniquelyIdentifiableCache<OrganisationContactKind>(this.Session));
+        private UniquelyIdentifiableSticky<OrganisationContactKind> Cache => this.cache ?? (this.cache = new UniquelyIdentifiableSticky<OrganisationContactKind>(this.Session));
 
         protected override void AppsSetup(Setup setup)
         {

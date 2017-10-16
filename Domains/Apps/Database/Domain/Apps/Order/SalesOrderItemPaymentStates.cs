@@ -22,13 +22,13 @@ namespace Allors.Domain
         private static readonly Guid PaidId = new Guid("086840CD-F7A6-4c04-A565-1D0AE07FED00");
         private static readonly Guid PartiallyPaidId = new Guid("110F12F8-8AC6-40fb-8208-7697A36E88D7");
 
-        private UniquelyIdentifiableCache<SalesOrderItemPaymentState> stateCache;
+        private UniquelyIdentifiableSticky<SalesOrderItemPaymentState> stateCache;
 
-        public SalesOrderItemPaymentState Paid => this.StateCache.Get(PaidId);
+        public SalesOrderItemPaymentState Paid => this.StateCache[PaidId];
 
-        public SalesOrderItemPaymentState PartiallyPaid => this.StateCache.Get(PartiallyPaidId);
+        public SalesOrderItemPaymentState PartiallyPaid => this.StateCache[PartiallyPaidId];
 
-        private UniquelyIdentifiableCache<SalesOrderItemPaymentState> StateCache => this.stateCache ?? (this.stateCache = new UniquelyIdentifiableCache<SalesOrderItemPaymentState>(this.Session));
+        private UniquelyIdentifiableSticky<SalesOrderItemPaymentState> StateCache => this.stateCache ?? (this.stateCache = new UniquelyIdentifiableSticky<SalesOrderItemPaymentState>(this.Session));
 
         protected override void AppsSetup(Setup setup)
         {

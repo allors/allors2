@@ -35,7 +35,7 @@ namespace Allors.Domain
 
             if (!this.ExistFacility)
             {
-                this.Facility = Singleton.Instance(this).InternalOrganisation.DefaultFacility;
+                this.Facility = this.Strategy.Session.GetSingleton().InternalOrganisation.DefaultFacility;
             }
         }
 

@@ -30,7 +30,7 @@ namespace Allors.Domain
                                                             .WithStore((Store)session.Instantiate(invoice.Store))
                                                             .WithYear(invoice.InvoiceDate.Year)
                                                             .WithMonth(invoice.InvoiceDate.Month)
-                                                            .WithCurrency(Singleton.Instance(session).PreferredCurrency)
+                                                            .WithCurrency(session.GetSingleton().PreferredCurrency)
                                                             .Build();
 
             InternalOrganisationRevenues.AppsFindOrCreateAsDependable(session, storeRevenue);
@@ -116,7 +116,7 @@ namespace Allors.Domain
                         .WithStore(invoice.Store)
                         .WithYear(invoice.InvoiceDate.Year)
                         .WithMonth(invoice.InvoiceDate.Month)
-                        .WithCurrency(Singleton.Instance(session).PreferredCurrency)
+                        .WithCurrency(session.GetSingleton().PreferredCurrency)
                         .Build();
         }
     }

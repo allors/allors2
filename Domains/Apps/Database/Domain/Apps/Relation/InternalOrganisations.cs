@@ -31,7 +31,7 @@ namespace Allors.Domain
             var internalOrganisation = new InternalOrganisationBuilder(this.Session)
                 .WithName("internalOrganisation")
                 .Build();
-            Singleton.Instance(this.Session).InternalOrganisation = internalOrganisation;
+            this.Session.GetSingleton().InternalOrganisation = internalOrganisation;
         }
     }
 }

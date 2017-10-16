@@ -22,13 +22,13 @@ namespace Allors.Domain
         private static readonly Guid OwnId = new Guid("74AA16DE-5719-4AE1-9547-0570E1111EDC");
         private static readonly Guid TradingId = new Guid("1E1BABFA-2F4F-45EF-BFC0-848E0199F4DF");
 
-        private UniquelyIdentifiableCache<Ownership> cache;
+        private UniquelyIdentifiableSticky<Ownership> cache;
 
-        public Ownership Own => this.Cache.Get(OwnId);
+        public Ownership Own => this.Cache[OwnId];
 
-        public Ownership Trading => this.Cache.Get(TradingId);
+        public Ownership Trading => this.Cache[TradingId];
 
-        private UniquelyIdentifiableCache<Ownership> Cache => this.cache ?? (this.cache = new UniquelyIdentifiableCache<Ownership>(this.Session));
+        private UniquelyIdentifiableSticky<Ownership> Cache => this.cache ?? (this.cache = new UniquelyIdentifiableSticky<Ownership>(this.Session));
 
         protected override void AppsSetup(Setup setup)
         {

@@ -167,14 +167,14 @@ namespace Allors.Domain
 
             if (!this.ExistBillFromContactMechanism)
             {
-                this.BillFromContactMechanism = Singleton.Instance(this).InternalOrganisation.ExistBillingAddress ?
-                    Singleton.Instance(this).InternalOrganisation.BillingAddress : Singleton.Instance(this).InternalOrganisation.GeneralCorrespondence;
+                this.BillFromContactMechanism = this.Strategy.Session.GetSingleton().InternalOrganisation.ExistBillingAddress ?
+                    this.Strategy.Session.GetSingleton().InternalOrganisation.BillingAddress : this.Strategy.Session.GetSingleton().InternalOrganisation.GeneralCorrespondence;
             }
 
             if (!this.ExistTakenByContactMechanism)
             {
-                this.TakenByContactMechanism = Singleton.Instance(this).InternalOrganisation.ExistOrderAddress ? 
-                    Singleton.Instance(this).InternalOrganisation.OrderAddress : Singleton.Instance(this).InternalOrganisation.GeneralCorrespondence;
+                this.TakenByContactMechanism = this.Strategy.Session.GetSingleton().InternalOrganisation.ExistOrderAddress ? 
+                    this.Strategy.Session.GetSingleton().InternalOrganisation.OrderAddress : this.Strategy.Session.GetSingleton().InternalOrganisation.GeneralCorrespondence;
             }
 
             if (!this.ExistCustomerCurrency)
@@ -186,7 +186,7 @@ namespace Allors.Domain
                 }
                 else
                 {
-                    this.CustomerCurrency = Singleton.Instance(this).PreferredCurrency;
+                    this.CustomerCurrency = this.Strategy.Session.GetSingleton().PreferredCurrency;
                 }
             }
 
@@ -548,7 +548,7 @@ namespace Allors.Domain
             }
             else
             {
-                this.Locale = Singleton.Instance(this.strategy.Session).DefaultLocale;
+                this.Locale = this.strategy.Session.GetSingleton().DefaultLocale;
             }
         }
 
@@ -612,7 +612,7 @@ namespace Allors.Domain
             if (pendingShipment == null)
             {
                 pendingShipment = new CustomerShipmentBuilder(this.Strategy.Session)
-                    .WithShipFromAddress(Singleton.Instance(this).InternalOrganisation.ShippingAddress)
+                    .WithShipFromAddress(this.Strategy.Session.GetSingleton().InternalOrganisation.ShippingAddress)
                     .WithBillToParty(this.BillToCustomer)
                     .WithBillToContactMechanism(this.BillToContactMechanism)
                     .WithShipToAddress(address.Key)

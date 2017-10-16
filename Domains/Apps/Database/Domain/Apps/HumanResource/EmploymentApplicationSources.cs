@@ -23,15 +23,15 @@ namespace Allors.Domain
         private static readonly Guid PersonallReferalId = new Guid("C7029F05-6CCD-4639-A497-A9D8320549D7");
         private static readonly Guid InternetId = new Guid("7931D959-4396-492d-90E4-C44632F2E3EA");
 
-        private UniquelyIdentifiableCache<EmploymentApplicationSource> cache;
+        private UniquelyIdentifiableSticky<EmploymentApplicationSource> cache;
 
-        public EmploymentApplicationSource NewsPaper => this.Cache.Get(NewsPaperId);
+        public EmploymentApplicationSource NewsPaper => this.Cache[NewsPaperId];
 
-        public EmploymentApplicationSource PersonallReferal => this.Cache.Get(PersonallReferalId);
+        public EmploymentApplicationSource PersonallReferal => this.Cache[PersonallReferalId];
 
-        public EmploymentApplicationSource Internet => this.Cache.Get(InternetId);
+        public EmploymentApplicationSource Internet => this.Cache[InternetId];
 
-        private UniquelyIdentifiableCache<EmploymentApplicationSource> Cache => this.cache ?? (this.cache = new UniquelyIdentifiableCache<EmploymentApplicationSource>(this.Session));
+        private UniquelyIdentifiableSticky<EmploymentApplicationSource> Cache => this.cache ?? (this.cache = new UniquelyIdentifiableSticky<EmploymentApplicationSource>(this.Session));
 
         protected override void AppsSetup(Setup setup)
         {

@@ -27,24 +27,24 @@ namespace Allors.Domain
         private static readonly Guid CancelledId = new Guid("1F50B912-C778-4c99-84F9-12DACA1E54C1");
         private static readonly Guid OnHoldId = new Guid("268CB9A7-6965-47E8-AF89-8F915242C23D");
 
-        private UniquelyIdentifiableCache<CustomerShipmentState> stateCache;
+        private UniquelyIdentifiableSticky<CustomerShipmentState> stateCache;
 
-        public CustomerShipmentState Created => this.StateCache.Get(CreatedId);
+        public CustomerShipmentState Created => this.StateCache[CreatedId];
 
-        public CustomerShipmentState Picked => this.StateCache.Get(PickedId);
+        public CustomerShipmentState Picked => this.StateCache[PickedId];
 
-        public CustomerShipmentState Packed => this.StateCache.Get(PackedId);
+        public CustomerShipmentState Packed => this.StateCache[PackedId];
 
-        public CustomerShipmentState Shipped => this.StateCache.Get(ShippedId);
+        public CustomerShipmentState Shipped => this.StateCache[ShippedId];
 
-        public CustomerShipmentState Delivered => this.StateCache.Get(DeliveredId);
+        public CustomerShipmentState Delivered => this.StateCache[DeliveredId];
 
-        public CustomerShipmentState Cancelled => this.StateCache.Get(CancelledId);
+        public CustomerShipmentState Cancelled => this.StateCache[CancelledId];
 
-        public CustomerShipmentState OnHold => this.StateCache.Get(OnHoldId);
+        public CustomerShipmentState OnHold => this.StateCache[OnHoldId];
 
-        private UniquelyIdentifiableCache<CustomerShipmentState> StateCache => this.stateCache
-                                                                                     ?? (this.stateCache = new UniquelyIdentifiableCache<CustomerShipmentState>(this.Session));
+        private UniquelyIdentifiableSticky<CustomerShipmentState> StateCache => this.stateCache
+                                                                                     ?? (this.stateCache = new UniquelyIdentifiableSticky<CustomerShipmentState>(this.Session));
 
         protected override void AppsSetup(Setup setup)
         {

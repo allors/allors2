@@ -27,19 +27,19 @@ namespace Allors.Domain
 
         public const string ApproveIdString = "7E08EA40-5A3B-4a18-A675-97212BA896DE";
 
-        private UniquelyIdentifiableCache<PartSpecificationState> stateCache;
+        private UniquelyIdentifiableSticky<PartSpecificationState> stateCache;
 
-        public PartSpecificationState Created => this.StateCache.Get(CreatedId);
+        public PartSpecificationState Created => this.StateCache[CreatedId];
 
-        public PartSpecificationState Designed => this.StateCache.Get(DesignedId);
+        public PartSpecificationState Designed => this.StateCache[DesignedId];
 
-        public PartSpecificationState Tested => this.StateCache.Get(TestedId);
+        public PartSpecificationState Tested => this.StateCache[TestedId];
 
-        public PartSpecificationState Approved => this.StateCache.Get(ApprovedId);
+        public PartSpecificationState Approved => this.StateCache[ApprovedId];
 
-        public PartSpecificationState RequirementSpecified => this.StateCache.Get(RequirementSpecifiedId);
+        public PartSpecificationState RequirementSpecified => this.StateCache[RequirementSpecifiedId];
 
-        private UniquelyIdentifiableCache<PartSpecificationState> StateCache => this.stateCache ?? (this.stateCache = new UniquelyIdentifiableCache<PartSpecificationState>(this.Session));
+        private UniquelyIdentifiableSticky<PartSpecificationState> StateCache => this.stateCache ?? (this.stateCache = new UniquelyIdentifiableSticky<PartSpecificationState>(this.Session));
 
         protected override void AppsSetup(Setup setup)
         {

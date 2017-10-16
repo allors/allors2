@@ -27,23 +27,23 @@ namespace Allors.Domain
         private static readonly Guid InProcessId = new Guid("E08401F7-1DEB-4b27-B0C5-8F034BFFEBD5");
         private static readonly Guid FinishedId = new Guid("33C0ED0C-FDFE-45ff-A008-7A638094A94A");
 
-        private UniquelyIdentifiableCache<SalesOrderItemState> stateCache;
+        private UniquelyIdentifiableSticky<SalesOrderItemState> stateCache;
 
-        public SalesOrderItemState Created => this.StateCache.Get(CreatedId);
+        public SalesOrderItemState Created => this.StateCache[CreatedId];
 
-        public SalesOrderItemState Cancelled => this.StateCache.Get(CancelledId);
+        public SalesOrderItemState Cancelled => this.StateCache[CancelledId];
 
-        public SalesOrderItemState Completed => this.StateCache.Get(CompletedId);
+        public SalesOrderItemState Completed => this.StateCache[CompletedId];
 
-        public SalesOrderItemState Rejected => this.StateCache.Get(RejectedId);
+        public SalesOrderItemState Rejected => this.StateCache[RejectedId];
 
-        public SalesOrderItemState Finished => this.StateCache.Get(FinishedId);
+        public SalesOrderItemState Finished => this.StateCache[FinishedId];
 
-        public SalesOrderItemState OnHold => this.StateCache.Get(OnHoldId);
+        public SalesOrderItemState OnHold => this.StateCache[OnHoldId];
 
-        public SalesOrderItemState InProcess => this.StateCache.Get(InProcessId);
+        public SalesOrderItemState InProcess => this.StateCache[InProcessId];
 
-        private UniquelyIdentifiableCache<SalesOrderItemState> StateCache => this.stateCache ?? (this.stateCache = new UniquelyIdentifiableCache<SalesOrderItemState>(this.Session));
+        private UniquelyIdentifiableSticky<SalesOrderItemState> StateCache => this.stateCache ?? (this.stateCache = new UniquelyIdentifiableSticky<SalesOrderItemState>(this.Session));
 
         protected override void AppsSetup(Setup setup)
         {

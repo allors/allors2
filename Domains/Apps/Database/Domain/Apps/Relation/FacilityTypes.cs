@@ -21,11 +21,11 @@ namespace Allors.Domain
     {
         private static readonly Guid WarehouseId = new Guid("56AD0A65-1FC0-40EA-BDA8-DADDFA6CBE63");
 
-        private UniquelyIdentifiableCache<FacilityType> cache;
+        private UniquelyIdentifiableSticky<FacilityType> cache;
 
-        public FacilityType Warehouse => this.Cache.Get(WarehouseId);
+        public FacilityType Warehouse => this.Cache[WarehouseId];
 
-        private UniquelyIdentifiableCache<FacilityType> Cache => this.cache ?? (this.cache = new UniquelyIdentifiableCache<FacilityType>(this.Session));
+        private UniquelyIdentifiableSticky<FacilityType> Cache => this.cache ?? (this.cache = new UniquelyIdentifiableSticky<FacilityType>(this.Session));
 
         protected override void AppsSetup(Setup setup)
         {

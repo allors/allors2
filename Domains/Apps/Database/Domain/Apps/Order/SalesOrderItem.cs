@@ -267,7 +267,7 @@ namespace Allors.Domain
 
         public void AppsOnDeriveReservedFromInventoryItem(IDerivation derivation)
         {
-            var internalOrganisation = Singleton.Instance(this).InternalOrganisation;
+            var internalOrganisation = this.Strategy.Session.GetSingleton().InternalOrganisation;
 
             if (this.ExistProduct)
             {
@@ -590,7 +590,7 @@ namespace Allors.Domain
             decimal discountAdjustmentAmount = 0;
             decimal surchargeAdjustmentAmount = 0;
 
-            var singleton = Singleton.Instance(this);
+            var singleton = this.Strategy.Session.GetSingleton();
             var customer = this.SalesOrderWhereSalesOrderItem.BillToCustomer;
             var salesOrder = this.SalesOrderWhereSalesOrderItem;
 

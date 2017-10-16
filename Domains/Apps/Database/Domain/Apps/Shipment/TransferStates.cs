@@ -21,10 +21,10 @@ namespace Allors.Domain
     {
         public static readonly Guid CreatedId = new Guid("ADAD2959-5472-4aed-977B-C04FBC67FAD8");
 
-        private UniquelyIdentifiableCache<TransferState> stateCache;
+        private UniquelyIdentifiableSticky<TransferState> stateCache;
 
-        public TransferState Created => this.StateCache.Get(CreatedId);
+        public TransferState Created => this.StateCache[CreatedId];
 
-        private UniquelyIdentifiableCache<TransferState> StateCache => this.stateCache ?? (this.stateCache = new UniquelyIdentifiableCache<TransferState>(this.Session));
+        private UniquelyIdentifiableSticky<TransferState> StateCache => this.stateCache ?? (this.stateCache = new UniquelyIdentifiableSticky<TransferState>(this.Session));
     }
 }

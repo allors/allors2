@@ -29,23 +29,23 @@ namespace Allors.Domain
         private static readonly Guid NotAssessableId = new Guid("4D57C8ED-1DF4-4db2-9AAA-4552257DC2BF");
         private static readonly Guid ExemptId = new Guid("82986030-5E18-43c1-8CBE-9832ACD4151D");
 
-        private UniquelyIdentifiableCache<VatRegime> cache;
+        private UniquelyIdentifiableSticky<VatRegime> cache;
 
-        public VatRegime CoContractor => this.Cache.Get(CoContractorId);
+        public VatRegime CoContractor => this.Cache[CoContractorId];
 
-        public VatRegime PrivatePerson => this.Cache.Get(PrivatePersonId);
+        public VatRegime PrivatePerson => this.Cache[PrivatePersonId];
 
-        public VatRegime Assessable => this.Cache.Get(AssessableId);
+        public VatRegime Assessable => this.Cache[AssessableId];
 
-        public VatRegime Export => this.Cache.Get(ExportId);
+        public VatRegime Export => this.Cache[ExportId];
 
-        public VatRegime IntraCommunautair => this.Cache.Get(IntraCommunautairId);
+        public VatRegime IntraCommunautair => this.Cache[IntraCommunautairId];
 
-        public VatRegime NotAssessable => this.Cache.Get(NotAssessableId);
+        public VatRegime NotAssessable => this.Cache[NotAssessableId];
 
-        public VatRegime Exempt => this.Cache.Get(ExemptId);
+        public VatRegime Exempt => this.Cache[ExemptId];
 
-        private UniquelyIdentifiableCache<VatRegime> Cache => this.cache ?? (this.cache = new UniquelyIdentifiableCache<VatRegime>(this.Session));
+        private UniquelyIdentifiableSticky<VatRegime> Cache => this.cache ?? (this.cache = new UniquelyIdentifiableSticky<VatRegime>(this.Session));
 
         protected override void AppsPrepare(Setup setup)
         {

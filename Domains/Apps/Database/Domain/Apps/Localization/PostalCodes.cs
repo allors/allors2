@@ -19,8 +19,8 @@ namespace Allors.Domain
 
     public partial class PostalCodes
     {
-        private Cache<string, PostalCode> postalCodeByCode;
+        private Sticky<string, PostalCode> postalCodeByCode;
 
-        public Cache<string, PostalCode> PostalCodeByCode => this.postalCodeByCode ?? (this.postalCodeByCode = new Cache<string, PostalCode>(this.Session, M.PostalCode.Code));
+        public Sticky<string, PostalCode> PostalCodeByCode => this.postalCodeByCode ?? (this.postalCodeByCode = new Sticky<string, PostalCode>(this.Session, M.PostalCode.Code));
     }
 }

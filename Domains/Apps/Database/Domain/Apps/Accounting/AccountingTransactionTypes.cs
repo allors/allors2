@@ -27,26 +27,26 @@ namespace Allors.Domain
         private static readonly Guid BudgettingId = new Guid("FB0E3794-A3E8-4A5A-9B8B-AD66525D3747");
         private static readonly Guid InventoryAdjustmentId = new Guid("2EC6F589-57C8-44C3-A3E2-810E7967C61D");
         private static readonly Guid GeneralId = new Guid("B9600D50-566F-43D2-84E6-65F315EED78D");
-        private UniquelyIdentifiableCache<AccountingTransactionType> cache;
+        private UniquelyIdentifiableSticky<AccountingTransactionType> cache;
 
-        public AccountingTransactionType BankStatement => this.Cache.Get(BankStatementId);
+        public AccountingTransactionType BankStatement => this.Cache[BankStatementId];
 
-        public AccountingTransactionType PaymentReceipt => this.Cache.Get(PaymentReceiptId);
+        public AccountingTransactionType PaymentReceipt => this.Cache[PaymentReceiptId];
 
-        public AccountingTransactionType PaymentDisbursement => this.Cache.Get(PaymentDisbursementId);
+        public AccountingTransactionType PaymentDisbursement => this.Cache[PaymentDisbursementId];
 
-        public AccountingTransactionType AccountsPayable => this.Cache.Get(AccountsPayableId);
+        public AccountingTransactionType AccountsPayable => this.Cache[AccountsPayableId];
 
-        public AccountingTransactionType AccountsReceivable => this.Cache.Get(AccountsReceivableId);
+        public AccountingTransactionType AccountsReceivable => this.Cache[AccountsReceivableId];
 
-        public AccountingTransactionType Budgetting => this.Cache.Get(BudgettingId);
+        public AccountingTransactionType Budgetting => this.Cache[BudgettingId];
 
-        public AccountingTransactionType InventoryAdjustment => this.Cache.Get(InventoryAdjustmentId);
+        public AccountingTransactionType InventoryAdjustment => this.Cache[InventoryAdjustmentId];
 
-        public AccountingTransactionType General => this.Cache.Get(GeneralId);
+        public AccountingTransactionType General => this.Cache[GeneralId];
 
-        private UniquelyIdentifiableCache<AccountingTransactionType> Cache => this.cache
-                                                                              ?? (this.cache = new UniquelyIdentifiableCache<AccountingTransactionType>(this.Session));
+        private UniquelyIdentifiableSticky<AccountingTransactionType> Cache => this.cache
+                                                                              ?? (this.cache = new UniquelyIdentifiableSticky<AccountingTransactionType>(this.Session));
 
         protected override void AppsSetup(Setup setup)
         {

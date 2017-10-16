@@ -29,27 +29,27 @@ namespace Allors.Domain
         private static readonly Guid AffiliateChannelId = new Guid("0FC9C19F-2005-4d7b-80B3-C7C862048CFA");
         private static readonly Guid EbayChannelId = new Guid("93FFD696-F11F-4cc1-A461-367AFCFD0579");
 
-        private UniquelyIdentifiableCache<SalesChannel> cache;
+        private UniquelyIdentifiableSticky<SalesChannel> cache;
 
-        public SalesChannel NoChannel => this.Cache.Get(NoChannelId);
+        public SalesChannel NoChannel => this.Cache[NoChannelId];
 
-        public SalesChannel WebChannel => this.Cache.Get(WebChannelId);
+        public SalesChannel WebChannel => this.Cache[WebChannelId];
 
-        public SalesChannel PosChannel => this.Cache.Get(PosChannelId);
+        public SalesChannel PosChannel => this.Cache[PosChannelId];
 
-        public SalesChannel FaxChannel => this.Cache.Get(FaxChannelId);
+        public SalesChannel FaxChannel => this.Cache[FaxChannelId];
 
-        public SalesChannel PhoneChannel => this.Cache.Get(PhoneChannelId);
+        public SalesChannel PhoneChannel => this.Cache[PhoneChannelId];
 
-        public SalesChannel EmailChannel => this.Cache.Get(EmailChannelId);
+        public SalesChannel EmailChannel => this.Cache[EmailChannelId];
 
-        public SalesChannel SnailMailChannel => this.Cache.Get(SnailMailChannelId);
+        public SalesChannel SnailMailChannel => this.Cache[SnailMailChannelId];
 
-        public SalesChannel AffiliateChannel => this.Cache.Get(AffiliateChannelId);
+        public SalesChannel AffiliateChannel => this.Cache[AffiliateChannelId];
 
-        public SalesChannel EbayChannel => this.Cache.Get(EbayChannelId);
+        public SalesChannel EbayChannel => this.Cache[EbayChannelId];
 
-        private UniquelyIdentifiableCache<SalesChannel> Cache => this.cache ?? (this.cache = new UniquelyIdentifiableCache<SalesChannel>(this.Session));
+        private UniquelyIdentifiableSticky<SalesChannel> Cache => this.cache ?? (this.cache = new UniquelyIdentifiableSticky<SalesChannel>(this.Session));
 
         protected override void AppsSetup(Setup setup)
         {

@@ -28,25 +28,25 @@ namespace Allors.Domain
         private static readonly Guid WorkFlowId = new Guid("553D67FC-9853-46B3-B87C-9CD1A7CB01A5");
         private static readonly Guid ResearchId = new Guid("6888DBF5-BFFC-4942-A16D-8BB680863261");
 
-        private UniquelyIdentifiableCache<WorkEffortPurpose> cache;
+        private UniquelyIdentifiableSticky<WorkEffortPurpose> cache;
 
-        public WorkEffortPurpose Meeting => this.Cache.Get(MeetingId);
+        public WorkEffortPurpose Meeting => this.Cache[MeetingId];
 
-        public WorkEffortPurpose Phonecall => this.Cache.Get(PhonecallId);
+        public WorkEffortPurpose Phonecall => this.Cache[PhonecallId];
 
-        public WorkEffortPurpose Email => this.Cache.Get(EmailId);
+        public WorkEffortPurpose Email => this.Cache[EmailId];
 
-        public WorkEffortPurpose Support => this.Cache.Get(SupportId);
+        public WorkEffortPurpose Support => this.Cache[SupportId];
 
-        public WorkEffortPurpose Maintenance => this.Cache.Get(MaintenanceId);
+        public WorkEffortPurpose Maintenance => this.Cache[MaintenanceId];
 
-        public WorkEffortPurpose ProductionRun => this.Cache.Get(ProductionRunId);
+        public WorkEffortPurpose ProductionRun => this.Cache[ProductionRunId];
 
-        public WorkEffortPurpose WorkFlow => this.Cache.Get(WorkFlowId);
+        public WorkEffortPurpose WorkFlow => this.Cache[WorkFlowId];
 
-        public WorkEffortPurpose Research => this.Cache.Get(ResearchId);
+        public WorkEffortPurpose Research => this.Cache[ResearchId];
 
-        private UniquelyIdentifiableCache<WorkEffortPurpose> Cache => this.cache ?? (this.cache = new UniquelyIdentifiableCache<WorkEffortPurpose>(this.Session));
+        private UniquelyIdentifiableSticky<WorkEffortPurpose> Cache => this.cache ?? (this.cache = new UniquelyIdentifiableSticky<WorkEffortPurpose>(this.Session));
 
         protected override void AppsSetup(Setup setup)
         {

@@ -121,22 +121,22 @@ namespace Allors.Domain
         {
             var session = party.Strategy.Session;
 
-            if (Singleton.Instance(session).ExistInternalOrganisation)
+            if (session.GetSingleton().ExistInternalOrganisation)
             {
                 if (!party.ExistLocale)
                 {
-                    party.Locale = Singleton.Instance(session).DefaultLocale;
+                    party.Locale = session.GetSingleton().DefaultLocale;
                 }
 
                 if (!party.ExistPreferredCurrency)
                 {
-                    party.PreferredCurrency = Singleton.Instance(session).PreferredCurrency;
+                    party.PreferredCurrency = session.GetSingleton().PreferredCurrency;
                 }
 
                 if (!party.ExistSubAccountNumber)
                 {
                     party.SubAccountNumber =
-                        Singleton.Instance(session).InternalOrganisation.DeriveNextSubAccountNumber();
+                        session.GetSingleton().InternalOrganisation.DeriveNextSubAccountNumber();
                 }
             }
         }
@@ -288,7 +288,7 @@ namespace Allors.Domain
 
         public static void AppsOnDeriveActiveCustomer(this Party party, IDerivation derivation)
         {
-            var internalOrganisation = Singleton.Instance(party.Strategy.Session).InternalOrganisation;
+            var internalOrganisation = party.Strategy.Session.GetSingleton().InternalOrganisation;
             if (party.AppsIsActiveCustomer(DateTime.UtcNow))
             {
                 internalOrganisation.AddActiveCustomer(party);

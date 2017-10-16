@@ -25,19 +25,19 @@ namespace Allors.Domain
         private static readonly Guid DefectiveId = new Guid("C0E10011-1BA4-412f-B426-103C1C11B879");
         private static readonly Guid ScrapId = new Guid("CF51C221-111C-4666-8E97-CC060643C5FD");
 
-        private UniquelyIdentifiableCache<NonSerialisedInventoryItemState> stateCache;
+        private UniquelyIdentifiableSticky<NonSerialisedInventoryItemState> stateCache;
 
-        public NonSerialisedInventoryItemState Good => this.StateCache.Get(GoodId);
+        public NonSerialisedInventoryItemState Good => this.StateCache[GoodId];
 
-        public NonSerialisedInventoryItemState BeingRepared => this.StateCache.Get(BeingReparedId);
+        public NonSerialisedInventoryItemState BeingRepared => this.StateCache[BeingReparedId];
 
-        public NonSerialisedInventoryItemState SlightlyDamaged => this.StateCache.Get(SlightlyDamagedId);
+        public NonSerialisedInventoryItemState SlightlyDamaged => this.StateCache[SlightlyDamagedId];
 
-        public NonSerialisedInventoryItemState Defective => this.StateCache.Get(DefectiveId);
+        public NonSerialisedInventoryItemState Defective => this.StateCache[DefectiveId];
 
-        public NonSerialisedInventoryItemState Scrap => this.StateCache.Get(ScrapId);
+        public NonSerialisedInventoryItemState Scrap => this.StateCache[ScrapId];
 
-        private UniquelyIdentifiableCache<NonSerialisedInventoryItemState> StateCache => this.stateCache ?? (this.stateCache = new UniquelyIdentifiableCache<NonSerialisedInventoryItemState>(this.Session));
+        private UniquelyIdentifiableSticky<NonSerialisedInventoryItemState> StateCache => this.stateCache ?? (this.stateCache = new UniquelyIdentifiableSticky<NonSerialisedInventoryItemState>(this.Session));
 
         protected override void AppsSetup(Setup setup)
         {

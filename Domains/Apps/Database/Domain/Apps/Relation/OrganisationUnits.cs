@@ -23,15 +23,15 @@ namespace Allors.Domain
         private static readonly Guid DivisionId = new Guid("C2C4FA98-B123-4dce-BFFD-D18CCA9984E3");
         private static readonly Guid SubsidiaryId = new Guid("EC515EC8-7CE8-49ee-B23B-BEA4B46AF540");
 
-        private UniquelyIdentifiableCache<OrganisationUnit> cache;
+        private UniquelyIdentifiableSticky<OrganisationUnit> cache;
 
-        public OrganisationUnit Department => this.Cache.Get(DepartmentId);
+        public OrganisationUnit Department => this.Cache[DepartmentId];
 
-        public OrganisationUnit Division => this.Cache.Get(DivisionId);
+        public OrganisationUnit Division => this.Cache[DivisionId];
 
-        public OrganisationUnit Subsidiary => this.Cache.Get(SubsidiaryId);
+        public OrganisationUnit Subsidiary => this.Cache[SubsidiaryId];
 
-        private UniquelyIdentifiableCache<OrganisationUnit> Cache => this.cache ?? (this.cache = new UniquelyIdentifiableCache<OrganisationUnit>(this.Session));
+        private UniquelyIdentifiableSticky<OrganisationUnit> Cache => this.cache ?? (this.cache = new UniquelyIdentifiableSticky<OrganisationUnit>(this.Session));
 
         protected override void AppsSetup(Setup setup)
         {

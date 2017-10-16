@@ -24,17 +24,17 @@ namespace Allors.Domain
         private static readonly Guid RetirenmentId = new Guid("1D567408-2630-4625-A676-D7CB8B19D04B");
         private static readonly Guid DeceasedId = new Guid("BE60EFE5-9790-49f2-886C-1C8DE5DB046C");
 
-        private UniquelyIdentifiableCache<EmploymentTermination> cache;
+        private UniquelyIdentifiableSticky<EmploymentTermination> cache;
 
-        public EmploymentTermination Resignation => this.Cache.Get(ResignationId);
+        public EmploymentTermination Resignation => this.Cache[ResignationId];
 
-        public EmploymentTermination Fired => this.Cache.Get(FiredId);
+        public EmploymentTermination Fired => this.Cache[FiredId];
 
-        public EmploymentTermination Retirenment => this.Cache.Get(RetirenmentId);
+        public EmploymentTermination Retirenment => this.Cache[RetirenmentId];
 
-        public EmploymentTermination Deceased => this.Cache.Get(DeceasedId);
+        public EmploymentTermination Deceased => this.Cache[DeceasedId];
 
-        private UniquelyIdentifiableCache<EmploymentTermination> Cache => this.cache ?? (this.cache = new UniquelyIdentifiableCache<EmploymentTermination>(this.Session));
+        private UniquelyIdentifiableSticky<EmploymentTermination> Cache => this.cache ?? (this.cache = new UniquelyIdentifiableSticky<EmploymentTermination>(this.Session));
 
         protected override void AppsSetup(Setup setup)
         {

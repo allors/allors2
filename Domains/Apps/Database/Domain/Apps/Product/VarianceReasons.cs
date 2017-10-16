@@ -26,21 +26,21 @@ namespace Allors.Domain
         private static readonly Guid UnknownId = new Guid("7A438996-B2DC-4b6d-8DDD-47690B06D9B6");
         private static readonly Guid RuinedId = new Guid("6790C5D4-7CC6-43c9-9CAC-48227021E7E9");
 
-        private UniquelyIdentifiableCache<VarianceReason> cache;
+        private UniquelyIdentifiableSticky<VarianceReason> cache;
 
-        public VarianceReason Order => this.Cache.Get(OrderId);
+        public VarianceReason Order => this.Cache[OrderId];
 
-        public VarianceReason Shipment => this.Cache.Get(ShipmentId);
+        public VarianceReason Shipment => this.Cache[ShipmentId];
 
-        public VarianceReason Theft => this.Cache.Get(TheftId);
+        public VarianceReason Theft => this.Cache[TheftId];
 
-        public VarianceReason Shrinkage => this.Cache.Get(ShrinkageId);
+        public VarianceReason Shrinkage => this.Cache[ShrinkageId];
 
-        public VarianceReason Unknown => this.Cache.Get(UnknownId);
+        public VarianceReason Unknown => this.Cache[UnknownId];
 
-        public VarianceReason Ruined => this.Cache.Get(RuinedId);
+        public VarianceReason Ruined => this.Cache[RuinedId];
 
-        private UniquelyIdentifiableCache<VarianceReason> Cache => this.cache ?? (this.cache = new UniquelyIdentifiableCache<VarianceReason>(this.Session));
+        private UniquelyIdentifiableSticky<VarianceReason> Cache => this.cache ?? (this.cache = new UniquelyIdentifiableSticky<VarianceReason>(this.Session));
 
         protected override void AppsSetup(Setup setup)
         {

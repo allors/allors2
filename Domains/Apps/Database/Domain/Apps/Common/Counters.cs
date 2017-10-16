@@ -32,7 +32,7 @@ namespace Allors.Domain
             {
                 using (var counterSession = serializable.CreateSession())
                 {
-                    var serializableCounter = new Counters(counterSession).Cache[counterId];
+                    var serializableCounter = new Counters(counterSession).Sticky[counterId];
                     var newValue = serializableCounter.Value + 1;
                     serializableCounter.Value = newValue;
 
@@ -42,7 +42,7 @@ namespace Allors.Domain
                 }
             }
 
-            var counter = new Counters(session).Cache[counterId];
+            var counter = new Counters(session).Sticky[counterId];
             counter.Value = counter.Value + 1;
 
             while (!IsValidElfProefNumber(counter.Value))

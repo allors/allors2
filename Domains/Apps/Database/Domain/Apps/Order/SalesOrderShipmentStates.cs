@@ -22,13 +22,13 @@ namespace Allors.Domain
         private static readonly Guid PartiallyShippedId = new Guid("40B4EFB9-42A4-43d9-BCE9-39E55FD9D507");
         private static readonly Guid ShippedId = new Guid("CBDBFF96-B5DA-4be3-9B8D-EA785D08C85C");
 
-        private UniquelyIdentifiableCache<SalesOrderShipmentState> stateCache;
+        private UniquelyIdentifiableSticky<SalesOrderShipmentState> stateCache;
 
-        public SalesOrderShipmentState PartiallyShipped => this.StateCache.Get(PartiallyShippedId);
+        public SalesOrderShipmentState PartiallyShipped => this.StateCache[PartiallyShippedId];
 
-        public SalesOrderShipmentState Shipped => this.StateCache.Get(ShippedId);
+        public SalesOrderShipmentState Shipped => this.StateCache[ShippedId];
 
-        private UniquelyIdentifiableCache<SalesOrderShipmentState> StateCache => this.stateCache ?? (this.stateCache = new UniquelyIdentifiableCache<SalesOrderShipmentState>(this.Session));
+        private UniquelyIdentifiableSticky<SalesOrderShipmentState> StateCache => this.stateCache ?? (this.stateCache = new UniquelyIdentifiableSticky<SalesOrderShipmentState>(this.Session));
 
         protected override void AppsSetup(Setup setup)
         {

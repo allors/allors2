@@ -31,31 +31,31 @@ namespace Allors.Domain
         private static readonly Guid SalesMeetingId = new Guid("344920EA-0903-4213-BC7C-837A74089706");
         private static readonly Guid InterviewId = new Guid("7143C121-1DF5-4a92-90BA-10800022BA12");
 
-        private UniquelyIdentifiableCache<CommunicationEventPurpose> cache;
+        private UniquelyIdentifiableSticky<CommunicationEventPurpose> cache;
 
-        public CommunicationEventPurpose SupportCall => this.Cache.Get(SupportCallId);
+        public CommunicationEventPurpose SupportCall => this.Cache[SupportCallId];
 
-        public CommunicationEventPurpose Inquiry => this.Cache.Get(InquiryId);
+        public CommunicationEventPurpose Inquiry => this.Cache[InquiryId];
 
-        public CommunicationEventPurpose CustomerServiceCall => this.Cache.Get(CustomerServiceCallId);
+        public CommunicationEventPurpose CustomerServiceCall => this.Cache[CustomerServiceCallId];
 
-        public CommunicationEventPurpose SalesFollowUp => this.Cache.Get(SalesFollowUpId);
+        public CommunicationEventPurpose SalesFollowUp => this.Cache[SalesFollowUpId];
 
-        public CommunicationEventPurpose Appointment => this.Cache.Get(AppointmentId);
+        public CommunicationEventPurpose Appointment => this.Cache[AppointmentId];
 
-        public CommunicationEventPurpose Meeting => this.Cache.Get(MeetingId);
+        public CommunicationEventPurpose Meeting => this.Cache[MeetingId];
 
-        public CommunicationEventPurpose Seminar => this.Cache.Get(SeminarId);
+        public CommunicationEventPurpose Seminar => this.Cache[SeminarId];
 
-        public CommunicationEventPurpose ActivityRequest => this.Cache.Get(ActivityRequestId);
+        public CommunicationEventPurpose ActivityRequest => this.Cache[ActivityRequestId];
 
-        public CommunicationEventPurpose Conference => this.Cache.Get(ConferenceId);
+        public CommunicationEventPurpose Conference => this.Cache[ConferenceId];
 
-        public CommunicationEventPurpose SalesMeeting => this.Cache.Get(SalesMeetingId);
+        public CommunicationEventPurpose SalesMeeting => this.Cache[SalesMeetingId];
 
-        public CommunicationEventPurpose Interview => this.Cache.Get(InterviewId);
+        public CommunicationEventPurpose Interview => this.Cache[InterviewId];
 
-        private UniquelyIdentifiableCache<CommunicationEventPurpose> Cache => this.cache ?? (this.cache = new UniquelyIdentifiableCache<CommunicationEventPurpose>(this.Session));
+        private UniquelyIdentifiableSticky<CommunicationEventPurpose> Cache => this.cache ?? (this.cache = new UniquelyIdentifiableSticky<CommunicationEventPurpose>(this.Session));
 
         protected override void AppsSetup(Setup setup)
         {

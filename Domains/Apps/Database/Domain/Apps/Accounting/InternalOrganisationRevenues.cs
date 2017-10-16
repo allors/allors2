@@ -94,7 +94,7 @@ namespace Allors.Domain
             return new InternalOrganisationRevenueBuilder(session)
                         .WithYear(invoice.InvoiceDate.Year)
                         .WithMonth(invoice.InvoiceDate.Month)
-                        .WithCurrency(Singleton.Instance(session).PreferredCurrency)
+                        .WithCurrency(session.GetSingleton().PreferredCurrency)
                         .Build();
         }
     }

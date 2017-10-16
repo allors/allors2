@@ -26,21 +26,21 @@ namespace Allors.Domain
         private static readonly Guid SalesId = new Guid("FAE9D5DB-0EAD-46CB-89E8-C32E4001D8D1");
         private static readonly Guid PurchaseId = new Guid("BB8A39C3-9F3E-4D3F-83A2-10100016A78E");
 
-        private UniquelyIdentifiableCache<JournalType> cache;
+        private UniquelyIdentifiableSticky<JournalType> cache;
 
-        public JournalType Cash => this.Cache.Get(CashId);
+        public JournalType Cash => this.Cache[CashId];
 
-        public JournalType Bank => this.Cache.Get(BankId);
+        public JournalType Bank => this.Cache[BankId];
 
-        public JournalType Giro => this.Cache.Get(GiroId);
+        public JournalType Giro => this.Cache[GiroId];
 
-        public JournalType General => this.Cache.Get(GeneralId);
+        public JournalType General => this.Cache[GeneralId];
 
-        public JournalType Sales => this.Cache.Get(SalesId);
+        public JournalType Sales => this.Cache[SalesId];
 
-        public JournalType Purchase => this.Cache.Get(PurchaseId);
+        public JournalType Purchase => this.Cache[PurchaseId];
 
-        private UniquelyIdentifiableCache<JournalType> Cache => this.cache ?? (this.cache = new UniquelyIdentifiableCache<JournalType>(this.Session));
+        private UniquelyIdentifiableSticky<JournalType> Cache => this.cache ?? (this.cache = new UniquelyIdentifiableSticky<JournalType>(this.Session));
 
         protected override void AppsSetup(Setup setup)
         {

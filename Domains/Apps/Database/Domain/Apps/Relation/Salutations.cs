@@ -24,17 +24,17 @@ namespace Allors.Domain
         private static readonly Guid DrId = new Guid("5827A6B6-375A-4781-9400-FAD8D62064A1");
         private static readonly Guid MsId = new Guid("BE1E6992-EFB6-4445-BDB6-B7AAE849EEEA");
 
-        private UniquelyIdentifiableCache<Salutation> cache;
+        private UniquelyIdentifiableSticky<Salutation> cache;
 
-        public Salutation Mr => this.Cache.Get(MrId);
+        public Salutation Mr => this.Cache[MrId];
 
-        public Salutation Mrs => this.Cache.Get(MrsId);
+        public Salutation Mrs => this.Cache[MrsId];
 
-        public Salutation Dr => this.Cache.Get(DrId);
+        public Salutation Dr => this.Cache[DrId];
 
-        public Salutation Ms => this.Cache.Get(MsId);
+        public Salutation Ms => this.Cache[MsId];
 
-        private UniquelyIdentifiableCache<Salutation> Cache => this.cache ?? (this.cache = new UniquelyIdentifiableCache<Salutation>(this.Session));
+        private UniquelyIdentifiableSticky<Salutation> Cache => this.cache ?? (this.cache = new UniquelyIdentifiableSticky<Salutation>(this.Session));
 
         protected override void AppsSetup(Setup setup)
         {

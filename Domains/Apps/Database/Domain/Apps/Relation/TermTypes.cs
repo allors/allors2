@@ -28,25 +28,25 @@ namespace Allors.Domain
         private static readonly Guid CollectionAgencyPenaltyId = new Guid("56C719DE-1B5D-4c2a-8AE3-F205F9852C79");
         private static readonly Guid NonReturnableSalesItemId = new Guid("B9A57CAF-3C48-463a-B627-3D0E127E5AF2");
 
-        private UniquelyIdentifiableCache<TermType> cache;
+        private UniquelyIdentifiableSticky<TermType> cache;
 
-        public TermType PercentageCancellationCharge => this.Cache.Get(PercentageCancellationChargeId);
+        public TermType PercentageCancellationCharge => this.Cache[PercentageCancellationChargeId];
 
-        public TermType DaysCancellationWithoutPenalty => this.Cache.Get(DaysCancellationWithoutPenaltyId);
+        public TermType DaysCancellationWithoutPenalty => this.Cache[DaysCancellationWithoutPenaltyId];
 
-        public TermType PercentagePenaltyNonPerformance => this.Cache.Get(PercentagePenaltyNonPerformanceId);
+        public TermType PercentagePenaltyNonPerformance => this.Cache[PercentagePenaltyNonPerformanceId];
 
-        public TermType PaymentNetDays => this.Cache.Get(PaymentNetDaysId);
+        public TermType PaymentNetDays => this.Cache[PaymentNetDaysId];
 
-        public TermType LateFee => this.Cache.Get(LateFeeId);
+        public TermType LateFee => this.Cache[LateFeeId];
 
-        public TermType CollectionAgencyPenalty => this.Cache.Get(CollectionAgencyPenaltyId);
+        public TermType CollectionAgencyPenalty => this.Cache[CollectionAgencyPenaltyId];
 
-        public TermType DaysWithinWhichDeliveraryMustOccur => this.Cache.Get(DaysWithinWhichDeliveraryMustOccurId);
+        public TermType DaysWithinWhichDeliveraryMustOccur => this.Cache[DaysWithinWhichDeliveraryMustOccurId];
 
-        public TermType NonReturnableSalesItem => this.Cache.Get(NonReturnableSalesItemId);
+        public TermType NonReturnableSalesItem => this.Cache[NonReturnableSalesItemId];
 
-        private UniquelyIdentifiableCache<TermType> Cache => this.cache ?? (this.cache = new UniquelyIdentifiableCache<TermType>(this.Session));
+        private UniquelyIdentifiableSticky<TermType> Cache => this.cache ?? (this.cache = new UniquelyIdentifiableSticky<TermType>(this.Session));
 
         protected override void AppsSetup(Setup setup)
         {

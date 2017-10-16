@@ -24,17 +24,17 @@ namespace Allors.Domain
         private static readonly Guid CancelledId = new Guid("F236E865-E2CA-43d7-8F17-56C3DC54C191");
         private static readonly Guid InProgressId = new Guid("D1232CEB-1530-451e-BAED-DB1356BC1EB2");
 
-        private UniquelyIdentifiableCache<CommunicationEventState> cache;
+        private UniquelyIdentifiableSticky<CommunicationEventState> cache;
 
-        public CommunicationEventState Scheduled => this.Cache.Get(ScheduledId);
+        public CommunicationEventState Scheduled => this.Cache[ScheduledId];
 
-        public CommunicationEventState InProgress => this.Cache.Get(InProgressId);
+        public CommunicationEventState InProgress => this.Cache[InProgressId];
 
-        public CommunicationEventState Completed => this.Cache.Get(CompletedId);
+        public CommunicationEventState Completed => this.Cache[CompletedId];
 
-        public CommunicationEventState Cancelled => this.Cache.Get(CancelledId);
+        public CommunicationEventState Cancelled => this.Cache[CancelledId];
 
-        private UniquelyIdentifiableCache<CommunicationEventState> Cache => this.cache ?? (this.cache = new UniquelyIdentifiableCache<CommunicationEventState>(this.Session));
+        private UniquelyIdentifiableSticky<CommunicationEventState> Cache => this.cache ?? (this.cache = new UniquelyIdentifiableSticky<CommunicationEventState>(this.Session));
 
         protected override void AppsSetup(Setup setup)
         {

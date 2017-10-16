@@ -24,17 +24,17 @@ namespace Allors.Domain
         private static readonly Guid ContactId = new Guid("FA2DF11E-7795-4DF7-8B3F-4FD87D0C4D8E");
         private static readonly Guid CustomerId = new Guid("B29444EF-0950-4D6F-AB3E-9C6DC44C050F");
 
-        private UniquelyIdentifiableCache<PersonRole> cache;
+        private UniquelyIdentifiableSticky<PersonRole> cache;
 
-        public PersonRole Employee => this.Cache.Get(EmployeeId);
+        public PersonRole Employee => this.Cache[EmployeeId];
 
-        public PersonRole SalesRep => this.Cache.Get(SalesRepId);
+        public PersonRole SalesRep => this.Cache[SalesRepId];
 
-        public PersonRole Contact => this.Cache.Get(ContactId);
+        public PersonRole Contact => this.Cache[ContactId];
 
-        public PersonRole Customer => this.Cache.Get(CustomerId);
+        public PersonRole Customer => this.Cache[CustomerId];
 
-        private UniquelyIdentifiableCache<PersonRole> Cache => this.cache ?? (this.cache = new UniquelyIdentifiableCache<PersonRole>(this.Session));
+        private UniquelyIdentifiableSticky<PersonRole> Cache => this.cache ?? (this.cache = new UniquelyIdentifiableSticky<PersonRole>(this.Session));
 
         protected override void AppsSetup(Setup setup)
         {

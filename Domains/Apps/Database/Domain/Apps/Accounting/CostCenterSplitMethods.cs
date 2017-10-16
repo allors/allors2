@@ -22,13 +22,13 @@ namespace Allors.Domain
         private static readonly Guid Topid = new Guid("844444D0-5D69-4A3B-9CB6-0D98747839D8");
         private static readonly Guid BottomId = new Guid("13AE2935-F926-426F-BB1C-979BE7F3DF0B");
 
-        private UniquelyIdentifiableCache<CostCenterSplitMethod> cache;
+        private UniquelyIdentifiableSticky<CostCenterSplitMethod> cache;
 
-        public CostCenterSplitMethod Top => this.Cache.Get(Topid);
+        public CostCenterSplitMethod Top => this.Cache[Topid];
 
-        public CostCenterSplitMethod Bottom => this.Cache.Get(BottomId);
+        public CostCenterSplitMethod Bottom => this.Cache[BottomId];
 
-        private UniquelyIdentifiableCache<CostCenterSplitMethod> Cache => this.cache ?? (this.cache = new UniquelyIdentifiableCache<CostCenterSplitMethod>(this.Session));
+        private UniquelyIdentifiableSticky<CostCenterSplitMethod> Cache => this.cache ?? (this.cache = new UniquelyIdentifiableSticky<CostCenterSplitMethod>(this.Session));
 
         protected override void AppsSetup(Setup setup)
         {

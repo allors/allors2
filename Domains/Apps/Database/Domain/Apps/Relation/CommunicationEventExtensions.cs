@@ -44,7 +44,7 @@ namespace Allors.Domain
 
             if (!@this.ExistOwner)
             {
-                @this.Owner = (Person)new Users(@this.Strategy.Session).CurrentUser;
+                @this.Owner = @this.Strategy.Session.GetUser() as Person;
             }
 
             if (@this.ExistScheduledStart && @this.ExistScheduledEnd && @this.ScheduledEnd < @this.ScheduledStart)
@@ -91,7 +91,7 @@ namespace Allors.Domain
 
         public static void AppsOnPostDerive(this CommunicationEvent @this, ObjectOnPostDerive method)
         {
-            @this.AddSecurityToken(Singleton.Instance(@this.Strategy.Session).DefaultSecurityToken);
+            @this.AddSecurityToken(@this.Strategy.Session.GetSingleton().DefaultSecurityToken);
             @this.AddSecurityToken(@this.Owner?.OwnerSecurityToken);
         }
 

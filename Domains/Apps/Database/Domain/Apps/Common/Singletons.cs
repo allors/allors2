@@ -12,7 +12,7 @@
         protected override void AppsSetup(Setup setup)
         {
             var singleton = this.Instance;
-            singleton.DefaultLocale = new Locales(this.Session).DutchBelgium;0
+            singleton.DefaultLocale = new Locales(this.Session).DutchBelgium;
             singleton.PreferredCurrency = new Currencies(this.Session).FindBy(M.Currency.IsoCode, "EUR");
         }
     }

@@ -39,7 +39,7 @@ namespace Allors.Domain
 
             if (!@this.ExistOwner)
             {
-                @this.Owner = (Person)new Users(@this.Strategy.Session).CurrentUser;
+                @this.Owner = @this.Strategy.Session.GetUser() as Person;
             }
 
             @this.DeriveOwnerSecurity();

@@ -49,12 +49,12 @@ namespace Allors.Domain
             {
                 if (this.FromDate <= DateTime.UtcNow && (!this.ExistThroughDate || this.ThroughDate >= DateTime.UtcNow))
                 {
-                    Singleton.Instance(this.strategy.Session).InternalOrganisation.AddActiveSupplier(this.Supplier);
+                    this.strategy.Session.GetSingleton().InternalOrganisation.AddActiveSupplier(this.Supplier);
                 }
 
                 if (this.FromDate > DateTime.UtcNow || (this.ExistThroughDate && this.ThroughDate < DateTime.UtcNow))
                 {
-                    Singleton.Instance(this.strategy.Session).InternalOrganisation.RemoveActiveSupplier(this.Supplier);
+                    this.strategy.Session.GetSingleton().InternalOrganisation.RemoveActiveSupplier(this.Supplier);
                 }
             }
         }

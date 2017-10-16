@@ -23,15 +23,15 @@ namespace Allors.Domain
         private static readonly Guid ReducedRateId = new Guid("7F5A5FE2-BB18-4644-B1CA-81B391AB82D6");
         private static readonly Guid ZeroRateId = new Guid("70C228CA-AE50-4DA2-B209-D115BEE7F4FF");
 
-        private UniquelyIdentifiableCache<VatTariff> cache;
+        private UniquelyIdentifiableSticky<VatTariff> cache;
 
-        public VatTariff Standard => this.Cache.Get(StandardId);
+        public VatTariff Standard => this.Cache[StandardId];
 
-        public VatTariff ReducedRate => this.Cache.Get(ReducedRateId);
+        public VatTariff ReducedRate => this.Cache[ReducedRateId];
 
-        public VatTariff ZeroRate => this.Cache.Get(ZeroRateId);
+        public VatTariff ZeroRate => this.Cache[ZeroRateId];
 
-        private UniquelyIdentifiableCache<VatTariff> Cache => this.cache ?? (this.cache = new UniquelyIdentifiableCache<VatTariff>(this.Session));
+        private UniquelyIdentifiableSticky<VatTariff> Cache => this.cache ?? (this.cache = new UniquelyIdentifiableSticky<VatTariff>(this.Session));
 
         protected override void AppsSetup(Setup setup)
         {

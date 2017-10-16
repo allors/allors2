@@ -28,25 +28,25 @@ namespace Allors.Domain
         private static readonly Guid TrimesterId = new Guid("E3E9AB81-D44C-4166-8983-917FAF4CCF6D");
         private static readonly Guid YearId = new Guid("F43E9D63-2BF0-4181-8247-B6BF39BA5313");
 
-        private UniquelyIdentifiableCache<TimeFrequency> cache;
+        private UniquelyIdentifiableSticky<TimeFrequency> cache;
 
-        public TimeFrequency Hour => this.Cache.Get(HourId);
+        public TimeFrequency Hour => this.Cache[HourId];
 
-        public TimeFrequency Day => this.Cache.Get(DayId);
+        public TimeFrequency Day => this.Cache[DayId];
 
-        public TimeFrequency Week => this.Cache.Get(WeekId);
+        public TimeFrequency Week => this.Cache[WeekId];
 
-        public TimeFrequency Fortnight => this.Cache.Get(FortnightId);
+        public TimeFrequency Fortnight => this.Cache[FortnightId];
 
-        public TimeFrequency Month => this.Cache.Get(MonthId);
+        public TimeFrequency Month => this.Cache[MonthId];
 
-        public TimeFrequency Semester => this.Cache.Get(SemesterId);
+        public TimeFrequency Semester => this.Cache[SemesterId];
 
-        public TimeFrequency Trimester => this.Cache.Get(TrimesterId);
+        public TimeFrequency Trimester => this.Cache[TrimesterId];
 
-        public TimeFrequency Year => this.Cache.Get(YearId);
+        public TimeFrequency Year => this.Cache[YearId];
 
-        private UniquelyIdentifiableCache<TimeFrequency> Cache => this.cache ?? (this.cache = new UniquelyIdentifiableCache<TimeFrequency>(this.Session));
+        private UniquelyIdentifiableSticky<TimeFrequency> Cache => this.cache ?? (this.cache = new UniquelyIdentifiableSticky<TimeFrequency>(this.Session));
 
         protected override void AppsSetup(Setup setup)
         {

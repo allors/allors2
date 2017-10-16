@@ -26,21 +26,21 @@ namespace Allors.Domain
         private static readonly Guid TestingRequirementId = new Guid("EC007D79-D657-44BC-B7C5-CB4B7893582E");
         private static readonly Guid ToleranceId = new Guid("E6425782-ACED-47A1-AB5A-4EC97A2C80EA");
 
-        private UniquelyIdentifiableCache<PartSpecificationType> cache;
+        private UniquelyIdentifiableSticky<PartSpecificationType> cache;
 
-        public PartSpecificationType ConstraintSpecification => this.Cache.Get(ConstraintSpecificationId);
+        public PartSpecificationType ConstraintSpecification => this.Cache[ConstraintSpecificationId];
 
-        public PartSpecificationType OperatingCondition => this.Cache.Get(OperatingConditionId);
+        public PartSpecificationType OperatingCondition => this.Cache[OperatingConditionId];
 
-        public PartSpecificationType PartSpecification => this.Cache.Get(PartSpecificationId);
+        public PartSpecificationType PartSpecification => this.Cache[PartSpecificationId];
 
-        public PartSpecificationType PerformanceSpecification => this.Cache.Get(PerformanceSpecificationId);
+        public PartSpecificationType PerformanceSpecification => this.Cache[PerformanceSpecificationId];
 
-        public PartSpecificationType TestingRequirement => this.Cache.Get(TestingRequirementId);
+        public PartSpecificationType TestingRequirement => this.Cache[TestingRequirementId];
 
-        public PartSpecificationType Tolerance => this.Cache.Get(ToleranceId);
+        public PartSpecificationType Tolerance => this.Cache[ToleranceId];
 
-        private UniquelyIdentifiableCache<PartSpecificationType> Cache => this.cache ?? (this.cache = new UniquelyIdentifiableCache<PartSpecificationType>(this.Session));
+        private UniquelyIdentifiableSticky<PartSpecificationType> Cache => this.cache ?? (this.cache = new UniquelyIdentifiableSticky<PartSpecificationType>(this.Session));
 
         protected override void AppsSetup(Setup setup)
         {

@@ -17,7 +17,7 @@ namespace Allors.Domain
 {
     public partial class ProductCategories
     {
-        private UniquelyIdentifiableCache<ProductCategory> cache;
+        private UniquelyIdentifiableSticky<ProductCategory> cache;
 
         public Extent<ProductCategory> RootCategories
         {
@@ -29,6 +29,6 @@ namespace Allors.Domain
             }
         }
 
-        private UniquelyIdentifiableCache<ProductCategory> Cache => this.cache ?? (this.cache = new UniquelyIdentifiableCache<ProductCategory>(this.Session));
+        private UniquelyIdentifiableSticky<ProductCategory> Cache => this.cache ?? (this.cache = new UniquelyIdentifiableSticky<ProductCategory>(this.Session));
     }
 }

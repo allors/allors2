@@ -32,33 +32,33 @@ namespace Allors.Domain
         private static readonly Guid ProductItemId = new Guid("0D07F778-2735-44cb-8354-FB887ADA42AD");
         private static readonly Guid ServiceProductItemId = new Guid("DA178F93-234A-41ed-815C-819AF8CA4E6F");
 
-        private UniquelyIdentifiableCache<SalesInvoiceItemType> cache;
+        private UniquelyIdentifiableSticky<SalesInvoiceItemType> cache;
 
-        public SalesInvoiceItemType Fee => this.Cache.Get(FeeId);
+        public SalesInvoiceItemType Fee => this.Cache[FeeId];
 
-        public SalesInvoiceItemType Discount => this.Cache.Get(DiscountId);
+        public SalesInvoiceItemType Discount => this.Cache[DiscountId];
 
-        public SalesInvoiceItemType InterestCharge => this.Cache.Get(InterestChargeId);
+        public SalesInvoiceItemType InterestCharge => this.Cache[InterestChargeId];
 
-        public SalesInvoiceItemType MiscCharge => this.Cache.Get(MiscChargeId);
+        public SalesInvoiceItemType MiscCharge => this.Cache[MiscChargeId];
 
-        public SalesInvoiceItemType Promotion => this.Cache.Get(PromotionId);
+        public SalesInvoiceItemType Promotion => this.Cache[PromotionId];
 
-        public SalesInvoiceItemType SalesTax => this.Cache.Get(VatId);
+        public SalesInvoiceItemType SalesTax => this.Cache[VatId];
 
-        public SalesInvoiceItemType ShippingAndHandling => this.Cache.Get(ShippingAndHandlingId);
+        public SalesInvoiceItemType ShippingAndHandling => this.Cache[ShippingAndHandlingId];
 
-        public SalesInvoiceItemType Surcharge => this.Cache.Get(SurchargeId);
+        public SalesInvoiceItemType Surcharge => this.Cache[SurchargeId];
 
-        public SalesInvoiceItemType Warranty => this.Cache.Get(WarrantyId);
+        public SalesInvoiceItemType Warranty => this.Cache[WarrantyId];
 
-        public SalesInvoiceItemType ProductFeatureItem => this.Cache.Get(ProductFeatureItemId);
+        public SalesInvoiceItemType ProductFeatureItem => this.Cache[ProductFeatureItemId];
 
-        public SalesInvoiceItemType ProductItem => this.Cache.Get(ProductItemId);
+        public SalesInvoiceItemType ProductItem => this.Cache[ProductItemId];
 
-        public SalesInvoiceItemType ServiceProductItem => this.Cache.Get(ServiceProductItemId);
+        public SalesInvoiceItemType ServiceProductItem => this.Cache[ServiceProductItemId];
 
-        private UniquelyIdentifiableCache<SalesInvoiceItemType> Cache => this.cache ?? (this.cache = new UniquelyIdentifiableCache<SalesInvoiceItemType>(this.Session));
+        private UniquelyIdentifiableSticky<SalesInvoiceItemType> Cache => this.cache ?? (this.cache = new UniquelyIdentifiableSticky<SalesInvoiceItemType>(this.Session));
 
         protected override void AppsSetup(Setup setup)
         {

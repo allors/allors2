@@ -22,13 +22,13 @@ namespace Allors.Domain
         public static readonly Guid CreatedId = new Guid("40B4CAC6-861D-45a8-9B77-0945558A1262");
         public static readonly Guid CancelledId = new Guid("D96047D7-10EC-49aa-90C5-54B1297831DE");
 
-        private UniquelyIdentifiableCache<DropShipmentState> stateCache;
+        private UniquelyIdentifiableSticky<DropShipmentState> stateCache;
 
-        public DropShipmentState Created => this.StateCache.Get(CreatedId);
+        public DropShipmentState Created => this.StateCache[CreatedId];
 
-        public DropShipmentState Cancelled => this.StateCache.Get(CancelledId);
+        public DropShipmentState Cancelled => this.StateCache[CancelledId];
 
-        private UniquelyIdentifiableCache<DropShipmentState> StateCache => this.stateCache ?? (this.stateCache = new UniquelyIdentifiableCache<DropShipmentState>(this.Session));
+        private UniquelyIdentifiableSticky<DropShipmentState> StateCache => this.stateCache ?? (this.stateCache = new UniquelyIdentifiableSticky<DropShipmentState>(this.Session));
 
         protected override void AppsSetup(Setup setup)
         {

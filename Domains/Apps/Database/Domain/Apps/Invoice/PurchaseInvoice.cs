@@ -39,7 +39,7 @@ namespace Allors.Domain
 
             if (!this.ExistInvoiceNumber)
             {
-                this.InvoiceNumber = Singleton.Instance(this).InternalOrganisation.DeriveNextPurchaseInvoiceNumber();
+                this.InvoiceNumber = this.Strategy.Session.GetSingleton().InternalOrganisation.DeriveNextPurchaseInvoiceNumber();
             }
 
             if (!this.ExistInvoiceDate)
@@ -56,7 +56,7 @@ namespace Allors.Domain
         public void AppsOnPreDerive(ObjectOnPreDerive method)
         {
             var derivation = method.Derivation;
-            var internalOrganisation = Singleton.Instance(this);
+            var internalOrganisation = this.Strategy.Session.GetSingleton();
 
             // TODO:
             if (derivation.HasChangedRoles(this))
@@ -85,7 +85,7 @@ namespace Allors.Domain
             Organisation supplier = this.BilledFromParty as Organisation;
             if (supplier != null)
             {
-                if (!Singleton.Instance(this.strategy.Session).InternalOrganisation.ActiveSuppliers.Contains(supplier))
+                if (!this.strategy.Session.GetSingleton().InternalOrganisation.ActiveSuppliers.Contains(supplier))
                 {
                     derivation.Validation.AddError(this, this.Meta.BilledFromParty, ErrorMessages.PartyIsNotASupplier);
                 }

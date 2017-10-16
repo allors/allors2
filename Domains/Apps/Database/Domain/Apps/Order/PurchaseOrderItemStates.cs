@@ -32,33 +32,33 @@ namespace Allors.Domain
         private static readonly Guid InProcessId = new Guid("9CD110AE-7787-469f-9A3E-F0000E35E588");
         private static readonly Guid FinishedId = new Guid("4166228F-0ECC-444b-A45E-43794184DBB9");
 
-        private UniquelyIdentifiableCache<PurchaseOrderItemState> stateCache;
+        private UniquelyIdentifiableSticky<PurchaseOrderItemState> stateCache;
 
-        public PurchaseOrderItemState Created => this.StateCache.Get(CreatedId);
+        public PurchaseOrderItemState Created => this.StateCache[CreatedId];
 
-        public PurchaseOrderItemState RequestsApproval => this.StateCache.Get(RequestsApprovalId);
+        public PurchaseOrderItemState RequestsApproval => this.StateCache[RequestsApprovalId];
 
-        public PurchaseOrderItemState Cancelled => this.StateCache.Get(CancelledId);
+        public PurchaseOrderItemState Cancelled => this.StateCache[CancelledId];
 
-        public PurchaseOrderItemState Completed => this.StateCache.Get(CompletedId);
+        public PurchaseOrderItemState Completed => this.StateCache[CompletedId];
 
-        public PurchaseOrderItemState Paid => this.StateCache.Get(PaidId);
+        public PurchaseOrderItemState Paid => this.StateCache[PaidId];
 
-        public PurchaseOrderItemState PartiallyPaid => this.StateCache.Get(PartiallyPaidId);
+        public PurchaseOrderItemState PartiallyPaid => this.StateCache[PartiallyPaidId];
 
-        public PurchaseOrderItemState PartiallyReceived => this.StateCache.Get(PartiallyReceivedId);
+        public PurchaseOrderItemState PartiallyReceived => this.StateCache[PartiallyReceivedId];
 
-        public PurchaseOrderItemState Received => this.StateCache.Get(ReceivedId);
+        public PurchaseOrderItemState Received => this.StateCache[ReceivedId];
 
-        public PurchaseOrderItemState Rejected => this.StateCache.Get(RejectedId);
+        public PurchaseOrderItemState Rejected => this.StateCache[RejectedId];
 
-        public PurchaseOrderItemState Finished => this.StateCache.Get(FinishedId);
+        public PurchaseOrderItemState Finished => this.StateCache[FinishedId];
 
-        public PurchaseOrderItemState OnHold => this.StateCache.Get(OnHoldId);
+        public PurchaseOrderItemState OnHold => this.StateCache[OnHoldId];
 
-        public PurchaseOrderItemState InProcess => this.StateCache.Get(InProcessId);
+        public PurchaseOrderItemState InProcess => this.StateCache[InProcessId];
 
-        private UniquelyIdentifiableCache<PurchaseOrderItemState> StateCache => this.stateCache ?? (this.stateCache = new UniquelyIdentifiableCache<PurchaseOrderItemState>(this.Session));
+        private UniquelyIdentifiableSticky<PurchaseOrderItemState> StateCache => this.stateCache ?? (this.stateCache = new UniquelyIdentifiableSticky<PurchaseOrderItemState>(this.Session));
 
         protected override void AppsSetup(Setup setup)
         {

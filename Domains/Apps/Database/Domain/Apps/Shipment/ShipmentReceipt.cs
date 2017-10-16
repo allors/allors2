@@ -61,7 +61,7 @@ namespace Allors.Domain
             if (this.ExistShipmentItem && this.ShipmentItem.ExistOrderShipmentsWhereShipmentItem)
             {
                 var purchaseOrderItem = this.ShipmentItem.OrderShipmentsWhereShipmentItem[0].PurchaseOrderItem;
-                var defaultFacility = Singleton.Instance(this).InternalOrganisation.DefaultFacility;
+                var defaultFacility = this.Strategy.Session.GetSingleton().InternalOrganisation.DefaultFacility;
 
                 if (purchaseOrderItem.ExistProduct)
                 {

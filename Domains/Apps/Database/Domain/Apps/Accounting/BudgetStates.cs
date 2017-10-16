@@ -23,13 +23,13 @@ namespace Allors.Domain
         private static readonly Guid ClosedId = new Guid("4986E755-51D6-4D88-86A4-F22445029D84");
         private static readonly Guid ReopenedId = new Guid("1C435A55-9327-4B32-AE62-07378B11CE0A");
 
-        private UniquelyIdentifiableCache<BudgetState> cache;
+        private UniquelyIdentifiableSticky<BudgetState> cache;
 
-        public BudgetState Opened => this.Cache.Get(OpenedId);
+        public BudgetState Opened => this.Cache[OpenedId];
 
-        public BudgetState Closed => this.Cache.Get(ClosedId);
+        public BudgetState Closed => this.Cache[ClosedId];
 
-        private UniquelyIdentifiableCache<BudgetState> Cache => this.cache ?? (this.cache = new UniquelyIdentifiableCache<BudgetState>(this.Session));
+        private UniquelyIdentifiableSticky<BudgetState> Cache => this.cache ?? (this.cache = new UniquelyIdentifiableSticky<BudgetState>(this.Session));
 
         protected override void AppsSetup(Setup setup)
         {

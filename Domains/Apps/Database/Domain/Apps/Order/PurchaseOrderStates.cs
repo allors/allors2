@@ -28,25 +28,25 @@ namespace Allors.Domain
         private static readonly Guid InProcessId = new Guid("7752F5C5-B19B-4339-A937-0BAD768142A8");
         private static readonly Guid FinishedId = new Guid("A62C1773-C42C-456c-92F3-5FC67382D9A3");
 
-        private UniquelyIdentifiableCache<PurchaseOrderState> stateCache;
+        private UniquelyIdentifiableSticky<PurchaseOrderState> stateCache;
 
-        public PurchaseOrderState Provisional => this.StateCache.Get(ProvisionalId);
+        public PurchaseOrderState Provisional => this.StateCache[ProvisionalId];
 
-        public PurchaseOrderState RequestsApproval => this.StateCache.Get(RequestsApprovalId);
+        public PurchaseOrderState RequestsApproval => this.StateCache[RequestsApprovalId];
 
-        public PurchaseOrderState Cancelled => this.StateCache.Get(CancelledId);
+        public PurchaseOrderState Cancelled => this.StateCache[CancelledId];
 
-        public PurchaseOrderState Completed => this.StateCache.Get(CompletedId);
+        public PurchaseOrderState Completed => this.StateCache[CompletedId];
 
-        public PurchaseOrderState Rejected => this.StateCache.Get(RejectedId);
+        public PurchaseOrderState Rejected => this.StateCache[RejectedId];
 
-        public PurchaseOrderState Finished => this.StateCache.Get(FinishedId);
+        public PurchaseOrderState Finished => this.StateCache[FinishedId];
 
-        public PurchaseOrderState OnHold => this.StateCache.Get(OnHoldId);
+        public PurchaseOrderState OnHold => this.StateCache[OnHoldId];
 
-        public PurchaseOrderState InProcess => this.StateCache.Get(InProcessId);
+        public PurchaseOrderState InProcess => this.StateCache[InProcessId];
 
-        private UniquelyIdentifiableCache<PurchaseOrderState> StateCache => this.stateCache ?? (this.stateCache = new UniquelyIdentifiableCache<PurchaseOrderState>(this.Session));
+        private UniquelyIdentifiableSticky<PurchaseOrderState> StateCache => this.stateCache ?? (this.stateCache = new UniquelyIdentifiableSticky<PurchaseOrderState>(this.Session));
 
         protected override void AppsSetup(Setup setup)
         {

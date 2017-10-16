@@ -30,7 +30,7 @@ namespace Allors.Domain
         {
             if (!this.ExistLocale)
             {
-                this.Locale = Singleton.Instance(this.Strategy.Session).DefaultLocale;
+                this.Locale = this.Strategy.Session.GetSingleton().DefaultLocale;
             }
         }
 

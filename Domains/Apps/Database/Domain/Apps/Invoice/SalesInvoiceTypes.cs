@@ -23,15 +23,15 @@ namespace Allors.Domain
         private static readonly Guid PurchaseReturnId = new Guid("CC990516-D7DD-44d1-8614-4BB88EC6EE97");
         private static readonly Guid InterestId = new Guid("D1FB37DF-39C9-4212-8EAB-5B0D540EF5E3");
 
-        private UniquelyIdentifiableCache<SalesInvoiceType> cache;
+        private UniquelyIdentifiableSticky<SalesInvoiceType> cache;
 
-        public SalesInvoiceType SalesInvoice => this.Cache.Get(SalesInvoiceId);
+        public SalesInvoiceType SalesInvoice => this.Cache[SalesInvoiceId];
 
-        public SalesInvoiceType PurchaseReturn => this.Cache.Get(PurchaseReturnId);
+        public SalesInvoiceType PurchaseReturn => this.Cache[PurchaseReturnId];
 
-        public SalesInvoiceType Interest => this.Cache.Get(InterestId);
+        public SalesInvoiceType Interest => this.Cache[InterestId];
 
-        private UniquelyIdentifiableCache<SalesInvoiceType> Cache => this.cache ?? (this.cache = new UniquelyIdentifiableCache<SalesInvoiceType>(this.Session));
+        private UniquelyIdentifiableSticky<SalesInvoiceType> Cache => this.cache ?? (this.cache = new UniquelyIdentifiableSticky<SalesInvoiceType>(this.Session));
 
         protected override void AppsSetup(Setup setup)
         {

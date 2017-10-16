@@ -25,19 +25,19 @@ namespace Allors.Domain
         private static readonly Guid InactiveId = new Guid("C3DF71FC-AE5E-4f72-A088-477A37D4B448");
         private static readonly Guid PositionClosedId = new Guid("49BBC4D9-96E0-444d-971D-56D90AB0F8C1");
 
-        private UniquelyIdentifiableCache<PositionStatus> cache;
+        private UniquelyIdentifiableSticky<PositionStatus> cache;
 
-        public PositionStatus PlannedFor => this.Cache.Get(PlannedForId);
+        public PositionStatus PlannedFor => this.Cache[PlannedForId];
 
-        public PositionStatus Active => this.Cache.Get(ActiveId);
+        public PositionStatus Active => this.Cache[ActiveId];
 
-        public PositionStatus PositionOpen => this.Cache.Get(PositionOpenId);
+        public PositionStatus PositionOpen => this.Cache[PositionOpenId];
 
-        public PositionStatus Inactive => this.Cache.Get(InactiveId);
+        public PositionStatus Inactive => this.Cache[InactiveId];
 
-        public PositionStatus PositionClosed => this.Cache.Get(PositionClosedId);
+        public PositionStatus PositionClosed => this.Cache[PositionClosedId];
 
-        private UniquelyIdentifiableCache<PositionStatus> Cache => this.cache ?? (this.cache = new UniquelyIdentifiableCache<PositionStatus>(this.Session));
+        private UniquelyIdentifiableSticky<PositionStatus> Cache => this.cache ?? (this.cache = new UniquelyIdentifiableSticky<PositionStatus>(this.Session));
 
         protected override void AppsSetup(Setup setup)
         {

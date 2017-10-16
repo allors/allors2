@@ -19,8 +19,8 @@ namespace Allors.Domain
 
     public partial class Cities
     {
-        private Cache<string, City> cityByName;
+        private Sticky<string, City> cityByName;
         
-        public Cache<string, City> CityByName => this.cityByName ?? (this.cityByName = new Cache<string, City>(this.Session, M.City.Name));
+        public Sticky<string, City> CityByName => this.cityByName ?? (this.cityByName = new Sticky<string, City>(this.Session, M.City.Name));
     }
 }

@@ -26,21 +26,21 @@ namespace Allors.Domain
         private static readonly Guid ReadyForPostingId = new Guid("AD5681F9-1B01-452f-8811-AE8428D59D69");
         private static readonly Guid CancelledId = new Guid("B983C7C4-4D18-4b53-966C-371D20DC4B2A");
 
-        private UniquelyIdentifiableCache<PurchaseInvoiceItemState> stateCache;
+        private UniquelyIdentifiableSticky<PurchaseInvoiceItemState> stateCache;
 
-        public PurchaseInvoiceItemState InProcess => this.StateCache.Get(InProcessId);
+        public PurchaseInvoiceItemState InProcess => this.StateCache[InProcessId];
 
-        public PurchaseInvoiceItemState Approved => this.StateCache.Get(ApprovedId);
+        public PurchaseInvoiceItemState Approved => this.StateCache[ApprovedId];
 
-        public PurchaseInvoiceItemState ReadyForPosting => this.StateCache.Get(ReadyForPostingId);
+        public PurchaseInvoiceItemState ReadyForPosting => this.StateCache[ReadyForPostingId];
 
-        public PurchaseInvoiceItemState Received => this.StateCache.Get(ReceivedId);
+        public PurchaseInvoiceItemState Received => this.StateCache[ReceivedId];
 
-        public PurchaseInvoiceItemState Paid => this.StateCache.Get(PaidId);
+        public PurchaseInvoiceItemState Paid => this.StateCache[PaidId];
 
-        public PurchaseInvoiceItemState Cancelled => this.StateCache.Get(CancelledId);
+        public PurchaseInvoiceItemState Cancelled => this.StateCache[CancelledId];
 
-        private UniquelyIdentifiableCache<PurchaseInvoiceItemState> StateCache => this.stateCache ?? (this.stateCache = new UniquelyIdentifiableCache<PurchaseInvoiceItemState>(this.Session));
+        private UniquelyIdentifiableSticky<PurchaseInvoiceItemState> StateCache => this.stateCache ?? (this.stateCache = new UniquelyIdentifiableSticky<PurchaseInvoiceItemState>(this.Session));
 
         protected override void AppsSetup(Setup setup)
         {

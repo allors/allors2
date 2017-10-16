@@ -23,15 +23,15 @@ namespace Allors.Domain
         private static readonly Guid SubmittedId = new Guid("B118C185-DE34-4131-BE1F-E6162C1DEA4B");
         private static readonly Guid CancelledId = new Guid("E98A3001-C343-4925-9D95-CE370DFC98E7");
 
-        private UniquelyIdentifiableCache<RequestItemState> stateCache;
+        private UniquelyIdentifiableSticky<RequestItemState> stateCache;
 
-        public RequestItemState Draft => this.StateCache.Get(DraftId);
+        public RequestItemState Draft => this.StateCache[DraftId];
 
-        public RequestItemState Submitted => this.StateCache.Get(SubmittedId);
+        public RequestItemState Submitted => this.StateCache[SubmittedId];
 
-        public RequestItemState Cancelled => this.StateCache.Get(CancelledId);
+        public RequestItemState Cancelled => this.StateCache[CancelledId];
 
-        private UniquelyIdentifiableCache<RequestItemState> StateCache => this.stateCache ?? (this.stateCache = new UniquelyIdentifiableCache<RequestItemState>(this.Session));
+        private UniquelyIdentifiableSticky<RequestItemState> StateCache => this.stateCache ?? (this.stateCache = new UniquelyIdentifiableSticky<RequestItemState>(this.Session));
 
         protected override void AppsSetup(Setup setup)
         {

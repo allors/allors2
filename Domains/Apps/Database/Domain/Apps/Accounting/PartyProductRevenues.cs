@@ -32,7 +32,7 @@ namespace Allors.Domain
                                                                         .WithProduct(product)
                                                                         .WithYear(invoice.InvoiceDate.Year)
                                                                         .WithMonth(invoice.InvoiceDate.Month)
-                                                                        .WithCurrency(Singleton.Instance(session).PreferredCurrency)
+                                                                        .WithCurrency(session.GetSingleton().PreferredCurrency)
                                                                         .Build();
 
             PartyRevenues.AppsFindOrCreateAsDependable(session, partyProductRevenue);
@@ -148,7 +148,7 @@ namespace Allors.Domain
                         .WithParty(item.SalesInvoiceWhereSalesInvoiceItem.BillToCustomer)
                         .WithYear(item.SalesInvoiceWhereSalesInvoiceItem.InvoiceDate.Year)
                         .WithMonth(item.SalesInvoiceWhereSalesInvoiceItem.InvoiceDate.Month)
-                        .WithCurrency(Singleton.Instance(session).PreferredCurrency)
+                        .WithCurrency(session.GetSingleton().PreferredCurrency)
                         .WithProduct(item.Product)
                         .Build();
         }

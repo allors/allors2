@@ -23,15 +23,15 @@ namespace Allors.Domain
         private static readonly Guid MobilePhoneId = new Guid("CFA76E30-42A9-46A6-8D0F-A3D1D7907743");
         private static readonly Guid FaxId = new Guid("7AC12B75-061D-4249-862B-49C38CD233DF");
 
-        private UniquelyIdentifiableCache<ContactMechanismType> cache;
+        private UniquelyIdentifiableSticky<ContactMechanismType> cache;
 
-        public ContactMechanismType Phone => this.Cache.Get(PhoneId);
+        public ContactMechanismType Phone => this.Cache[PhoneId];
 
-        public ContactMechanismType MobilePhone => this.Cache.Get(MobilePhoneId);
+        public ContactMechanismType MobilePhone => this.Cache[MobilePhoneId];
 
-        public ContactMechanismType Fax => this.Cache.Get(FaxId);
+        public ContactMechanismType Fax => this.Cache[FaxId];
 
-        private UniquelyIdentifiableCache<ContactMechanismType> Cache => this.cache ?? (this.cache = new UniquelyIdentifiableCache<ContactMechanismType>(this.Session));
+        private UniquelyIdentifiableSticky<ContactMechanismType> Cache => this.cache ?? (this.cache = new UniquelyIdentifiableSticky<ContactMechanismType>(this.Session));
 
         protected override void AppsSetup(Setup setup)
         {

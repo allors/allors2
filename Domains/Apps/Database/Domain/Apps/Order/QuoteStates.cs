@@ -24,17 +24,17 @@ namespace Allors.Domain
         private static readonly Guid OrderedId = new Guid("FE9A6F81-9935-466F-9F71-A537AF046019");
         private static readonly Guid RejectedId = new Guid("C897C8E8-2C01-438B-B4C9-B71AD8CCB7C4");
 
-        private UniquelyIdentifiableCache<QuoteState> stateCache;
+        private UniquelyIdentifiableSticky<QuoteState> stateCache;
 
-        public QuoteState Created => this.StateCache.Get(CreatedId);
+        public QuoteState Created => this.StateCache[CreatedId];
 
-        public QuoteState Approved => this.StateCache.Get(ApprovedId);
+        public QuoteState Approved => this.StateCache[ApprovedId];
 
-        public QuoteState Ordered => this.StateCache.Get(OrderedId);
+        public QuoteState Ordered => this.StateCache[OrderedId];
 
-        public QuoteState Rejected => this.StateCache.Get(RejectedId);
+        public QuoteState Rejected => this.StateCache[RejectedId];
 
-        private UniquelyIdentifiableCache<QuoteState> StateCache => this.stateCache ?? (this.stateCache = new UniquelyIdentifiableCache<QuoteState>(this.Session));
+        private UniquelyIdentifiableSticky<QuoteState> StateCache => this.stateCache ?? (this.stateCache = new UniquelyIdentifiableSticky<QuoteState>(this.Session));
 
         protected override void AppsSetup(Setup setup)
         {

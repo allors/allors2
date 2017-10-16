@@ -26,21 +26,21 @@ namespace Allors.Domain
         private static readonly Guid ResourceRequirementId = new Guid("809298A8-9C2A-4E21-9B03-BB5B9F681B2E");
         private static readonly Guid WorkRequirementId = new Guid("3E43DE6A-C68F-4422-A557-C8DE877C2CF6");
 
-        private UniquelyIdentifiableCache<RequirementType> cache;
+        private UniquelyIdentifiableSticky<RequirementType> cache;
 
-        public RequirementType CustomerRequirement => this.Cache.Get(CustomerRequirementId);
+        public RequirementType CustomerRequirement => this.Cache[CustomerRequirementId];
 
-        public RequirementType InternalRequirement => this.Cache.Get(InternalRequirementId);
+        public RequirementType InternalRequirement => this.Cache[InternalRequirementId];
 
-        public RequirementType ProductRequirement => this.Cache.Get(ProductRequirementId);
+        public RequirementType ProductRequirement => this.Cache[ProductRequirementId];
 
-        public RequirementType ProjectRequirement => this.Cache.Get(ProjectRequirementId);
+        public RequirementType ProjectRequirement => this.Cache[ProjectRequirementId];
 
-        public RequirementType ResourceRequirement => this.Cache.Get(ResourceRequirementId);
+        public RequirementType ResourceRequirement => this.Cache[ResourceRequirementId];
 
-        public RequirementType WorkRequirement => this.Cache.Get(WorkRequirementId);
+        public RequirementType WorkRequirement => this.Cache[WorkRequirementId];
 
-        private UniquelyIdentifiableCache<RequirementType> Cache => this.cache ?? (this.cache = new UniquelyIdentifiableCache<RequirementType>(this.Session));
+        private UniquelyIdentifiableSticky<RequirementType> Cache => this.cache ?? (this.cache = new UniquelyIdentifiableSticky<RequirementType>(this.Session));
 
         protected override void AppsSetup(Setup setup)
         {
