@@ -31,55 +31,55 @@ namespace Allors.Domain
         [Fact]
         public void GivenPurchaseInvoice_WhenDeriving_ThenRequiredRelationsMustExist()
         {
-            var builder = new PurchaseInvoiceBuilder(this.DatabaseSession);
+            var builder = new PurchaseInvoiceBuilder(this.Session);
             builder.Build();
 
-            Assert.True(this.DatabaseSession.Derive(false).HasErrors);
+            Assert.True(this.Session.Derive(false).HasErrors);
 
-            this.DatabaseSession.Rollback();
+            this.Session.Rollback();
 
-            builder.WithPurchaseInvoiceType(new PurchaseInvoiceTypes(this.DatabaseSession).PurchaseInvoice);
+            builder.WithPurchaseInvoiceType(new PurchaseInvoiceTypes(this.Session).PurchaseInvoice);
             builder.Build();
 
-            Assert.True(this.DatabaseSession.Derive(false).HasErrors);
+            Assert.True(this.Session.Derive(false).HasErrors);
 
-            this.DatabaseSession.Rollback();
+            this.Session.Rollback();
 
-            builder.WithBilledFromParty(new Organisations(this.DatabaseSession).FindBy(M.Organisation.Name, "supplier"));
+            builder.WithBilledFromParty(new Organisations(this.Session).FindBy(M.Organisation.Name, "supplier"));
             builder.Build();
 
-            Assert.False(this.DatabaseSession.Derive(false).HasErrors);
+            Assert.False(this.Session.Derive(false).HasErrors);
         }
 
         [Fact]
         public void GivenPurchaseInvoice_WhenDeriving_ThenBilledFromPartyMustBeInSupplierRelationship()
         {
-            var supplier2 = new OrganisationBuilder(this.DatabaseSession).WithName("supplier2").WithOrganisationRole(new OrganisationRoles(this.DatabaseSession).Supplier).Build();
+            var supplier2 = new OrganisationBuilder(this.Session).WithName("supplier2").WithOrganisationRole(new OrganisationRoles(this.Session).Supplier).Build();
 
-            var invoice = new PurchaseInvoiceBuilder(this.DatabaseSession)
+            var invoice = new PurchaseInvoiceBuilder(this.Session)
                 .WithInvoiceNumber("1")
-                .WithPurchaseInvoiceType(new PurchaseInvoiceTypes(this.DatabaseSession).PurchaseInvoice)
+                .WithPurchaseInvoiceType(new PurchaseInvoiceTypes(this.Session).PurchaseInvoice)
                 .WithBilledFromParty(supplier2)
                 .Build();
 
-            Assert.Equal(ErrorMessages.PartyIsNotASupplier, this.DatabaseSession.Derive(false).Errors[0].Message);
+            Assert.Equal(ErrorMessages.PartyIsNotASupplier, this.Session.Derive(false).Errors[0].Message);
 
-            new SupplierRelationshipBuilder(this.DatabaseSession).WithSupplier(supplier2).Build();
+            new SupplierRelationshipBuilder(this.Session).WithSupplier(supplier2).Build();
 
-            Assert.False(this.DatabaseSession.Derive(false).HasErrors);
+            Assert.False(this.Session.Derive(false).HasErrors);
         }
 
         [Fact]
         public void GivenPurchaseInvoice_WhenGettingInvoiceNumberWithoutFormat_ThenInvoiceNumberShouldBeReturned()
         {
-            var invoice1 = new PurchaseInvoiceBuilder(this.DatabaseSession)
-                .WithPurchaseInvoiceType(new PurchaseInvoiceTypes(this.DatabaseSession).PurchaseInvoice)
+            var invoice1 = new PurchaseInvoiceBuilder(this.Session)
+                .WithPurchaseInvoiceType(new PurchaseInvoiceTypes(this.Session).PurchaseInvoice)
                 .Build();
 
             Assert.Equal("incoming invoiceno: 1", invoice1.InvoiceNumber);
 
-            var invoice2 = new PurchaseInvoiceBuilder(this.DatabaseSession)
-                .WithPurchaseInvoiceType(new PurchaseInvoiceTypes(this.DatabaseSession).PurchaseInvoice)
+            var invoice2 = new PurchaseInvoiceBuilder(this.Session)
+                .WithPurchaseInvoiceType(new PurchaseInvoiceTypes(this.Session).PurchaseInvoice)
                 .Build();
 
             Assert.Equal("incoming invoiceno: 2", invoice2.InvoiceNumber);

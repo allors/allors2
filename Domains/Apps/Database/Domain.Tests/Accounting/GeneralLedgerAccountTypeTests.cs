@@ -29,17 +29,17 @@ namespace Allors.Domain
         [Fact]
         public void GivenGeneralLedgerAccountType_WhenDeriving_ThenRequiredRelationsMustExist()
         {
-            var builder = new GeneralLedgerAccountTypeBuilder(this.DatabaseSession);
+            var builder = new GeneralLedgerAccountTypeBuilder(this.Session);
             builder.Build();
 
-            Assert.True(this.DatabaseSession.Derive(false).HasErrors);
+            Assert.True(this.Session.Derive(false).HasErrors);
 
-            this.DatabaseSession.Rollback();
+            this.Session.Rollback();
 
             builder.WithDescription("GeneralLedgerAccountType");
             builder.Build();
 
-            Assert.False(this.DatabaseSession.Derive(false).HasErrors);
+            Assert.False(this.Session.Derive(false).HasErrors);
         }
     }
 }

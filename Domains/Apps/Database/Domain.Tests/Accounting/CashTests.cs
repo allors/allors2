@@ -29,75 +29,75 @@ namespace Allors.Domain
         [Fact]
         public void GivenCashPaymentMethod_WhenDeriving_ThenGeneralLedgerAccountAndJournalAtMostOne()
         {
-            var generalLedgerAccount = new GeneralLedgerAccountBuilder(this.DatabaseSession)
+            var generalLedgerAccount = new GeneralLedgerAccountBuilder(this.Session)
                 .WithAccountNumber("0001")
                 .WithName("GeneralLedgerAccount")
                 .WithBalanceSheetAccount(true)
                 .Build();
 
-            var internalOrganisationGlAccount = new OrganisationGlAccountBuilder(this.DatabaseSession)
+            var internalOrganisationGlAccount = new OrganisationGlAccountBuilder(this.Session)
                 .WithGeneralLedgerAccount(generalLedgerAccount)
                 .Build();
 
-            var journal = new JournalBuilder(this.DatabaseSession).WithDescription("journal").Build();
+            var journal = new JournalBuilder(this.Session).WithDescription("journal").Build();
 
-            this.DatabaseSession.Commit();
+            this.Session.Commit();
 
-            var cash = new CashBuilder(this.DatabaseSession)
+            var cash = new CashBuilder(this.Session)
                 .WithDescription("description")
                 .WithGeneralLedgerAccount(internalOrganisationGlAccount)
                 .Build();
 
-            var internalOrganisation = Singleton.Instance(this.DatabaseSession).InternalOrganisation;
+            var internalOrganisation = this.Session.GetSingleton().InternalOrganisation;
             internalOrganisation.DoAccounting = true;
             internalOrganisation.DefaultPaymentMethod = cash;
 
-            Assert.False(this.DatabaseSession.Derive(false).HasErrors);
+            Assert.False(this.Session.Derive(false).HasErrors);
 
             cash.Journal = journal;
 
-            Assert.True(this.DatabaseSession.Derive(false).HasErrors);
+            Assert.True(this.Session.Derive(false).HasErrors);
 
             cash.RemoveGeneralLedgerAccount();
 
-            Assert.False(this.DatabaseSession.Derive(false).HasErrors);
+            Assert.False(this.Session.Derive(false).HasErrors);
         }
 
         [Fact]
         public void GivenCashPaymentMethodForSingletonThatDoesAccounting_WhenDeriving_ThenEitherGeneralLedgerAccountOrJournalMustExist()
         {
-            var internalOrganisation = Singleton.Instance(this.DatabaseSession).InternalOrganisation;
+            var internalOrganisation = this.Session.GetSingleton().InternalOrganisation;
 
-            var generalLedgerAccount = new GeneralLedgerAccountBuilder(this.DatabaseSession)
+            var generalLedgerAccount = new GeneralLedgerAccountBuilder(this.Session)
                 .WithAccountNumber("0001")
                 .WithName("GeneralLedgerAccount")
                 .WithBalanceSheetAccount(true)
                 .Build();
 
-            var internalOrganisationGlAccount = new OrganisationGlAccountBuilder(this.DatabaseSession)
+            var internalOrganisationGlAccount = new OrganisationGlAccountBuilder(this.Session)
                 .WithGeneralLedgerAccount(generalLedgerAccount)
                 .Build();
 
-            var journal = new JournalBuilder(this.DatabaseSession).WithDescription("journal").Build();
+            var journal = new JournalBuilder(this.Session).WithDescription("journal").Build();
 
-            this.DatabaseSession.Commit();
+            this.Session.Commit();
 
-            var cash = new CashBuilder(this.DatabaseSession)
+            var cash = new CashBuilder(this.Session)
                 .WithDescription("description")
                 .Build();
 
             internalOrganisation.DoAccounting = true;
 
-            Assert.True(this.DatabaseSession.Derive(false).HasErrors);
+            Assert.True(this.Session.Derive(false).HasErrors);
 
             cash.Journal = journal;
 
-            Assert.False(this.DatabaseSession.Derive(false).HasErrors);
+            Assert.False(this.Session.Derive(false).HasErrors);
 
             cash.RemoveJournal();
             cash.GeneralLedgerAccount = internalOrganisationGlAccount;
 
-            Assert.False(this.DatabaseSession.Derive(false).HasErrors);
+            Assert.False(this.Session.Derive(false).HasErrors);
         }
     }
 }

@@ -29,20 +29,20 @@ namespace Allors.Domain
         [Fact]
         public void GivenCustomerRequirement_WhenBuild_ThenLastObjectStateEqualsCurrencObjectState()
         {
-            var requirement = new RequirementBuilder(this.DatabaseSession).WithDescription("CustomerRequirement").Build();
+            var requirement = new RequirementBuilder(this.Session).WithDescription("CustomerRequirement").Build();
 
-            this.DatabaseSession.Derive();
+            this.Session.Derive();
 
-            Assert.Equal(new RequirementStates(this.DatabaseSession).Active, requirement.RequirementState);
+            Assert.Equal(new RequirementStates(this.Session).Active, requirement.RequirementState);
             Assert.Equal(requirement.LastRequirementState, requirement.RequirementState);
         }
 
         [Fact]
         public void GivenCustomerRequirement_WhenBuild_ThenPreviousObjectStateIsNull()
         {
-            var requirement = new RequirementBuilder(this.DatabaseSession).WithDescription("CustomerRequirement").Build();
+            var requirement = new RequirementBuilder(this.Session).WithDescription("CustomerRequirement").Build();
 
-            this.DatabaseSession.Derive();
+            this.Session.Derive();
 
             Assert.Null(requirement.PreviousRequirementState);
         }
@@ -50,17 +50,17 @@ namespace Allors.Domain
         [Fact]
         public void GivenCustomerRequirement_WhenDeriving_ThenDescriptionIsRequired()
         {
-            var builder = new RequirementBuilder(this.DatabaseSession);
+            var builder = new RequirementBuilder(this.Session);
             var customerRequirement = builder.Build();
 
-            Assert.True(this.DatabaseSession.Derive(false).HasErrors);
+            Assert.True(this.Session.Derive(false).HasErrors);
 
-            this.DatabaseSession.Rollback();
+            this.Session.Rollback();
 
             builder.WithDescription("CustomerRequirement");
             builder.Build();
 
-            Assert.False(this.DatabaseSession.Derive(false).HasErrors);
+            Assert.False(this.Session.Derive(false).HasErrors);
         }
     }
 }

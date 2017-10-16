@@ -36,27 +36,27 @@ namespace Allors.Domain
 
         public SupplierRelationshipTests()
         {
-            this.contact = new PersonBuilder(this.DatabaseSession).WithLastName("contact").WithPersonRole(new PersonRoles(this.DatabaseSession).Contact).Build();
-            this.supplier = new OrganisationBuilder(this.DatabaseSession)
+            this.contact = new PersonBuilder(this.Session).WithLastName("contact").WithPersonRole(new PersonRoles(this.Session).Contact).Build();
+            this.supplier = new OrganisationBuilder(this.Session)
                 .WithName("supplier")
-                .WithLocale(new Locales(this.DatabaseSession).EnglishGreatBritain)
-                .WithOrganisationRole(new OrganisationRoles(this.DatabaseSession).Supplier)
+                .WithLocale(new Locales(this.Session).EnglishGreatBritain)
+                .WithOrganisationRole(new OrganisationRoles(this.Session).Supplier)
                 .Build();
-            this.internalOrganisation = new InternalOrganisations(this.DatabaseSession).FindBy(M.InternalOrganisation.Name, "internalOrganisation");
+            this.internalOrganisation = new InternalOrganisations(this.Session).FindBy(M.InternalOrganisation.Name, "internalOrganisation");
 
-            this.organisationContactRelationship = new OrganisationContactRelationshipBuilder(this.DatabaseSession)
+            this.organisationContactRelationship = new OrganisationContactRelationshipBuilder(this.Session)
                 .WithOrganisation(this.supplier)
                 .WithContact(this.contact)
                 .WithFromDate(DateTime.UtcNow)
                 .Build();
 
-            this.supplierRelationship = new SupplierRelationshipBuilder(this.DatabaseSession)
+            this.supplierRelationship = new SupplierRelationshipBuilder(this.Session)
                 .WithSupplier(this.supplier)
                 .WithFromDate(DateTime.UtcNow)
                 .Build();
 
-            this.DatabaseSession.Derive();
-            this.DatabaseSession.Commit();
+            this.Session.Derive();
+            this.Session.Commit();
         }
 
         [Fact]
@@ -64,26 +64,26 @@ namespace Allors.Domain
         {
             this.internalOrganisation.SubAccountCounter.Value = 1000;
 
-            this.DatabaseSession.Commit();
+            this.Session.Commit();
 
-            var supplier1 = new OrganisationBuilder(this.DatabaseSession).WithName("supplier1").WithOrganisationRole(new OrganisationRoles(this.DatabaseSession).Supplier).Build();
-            var supplierRelationship1 = new SupplierRelationshipBuilder(this.DatabaseSession).WithSupplier(supplier1).Build();
+            var supplier1 = new OrganisationBuilder(this.Session).WithName("supplier1").WithOrganisationRole(new OrganisationRoles(this.Session).Supplier).Build();
+            var supplierRelationship1 = new SupplierRelationshipBuilder(this.Session).WithSupplier(supplier1).Build();
 
-            this.DatabaseSession.Derive();
+            this.Session.Derive();
 
             Assert.Equal(1007, supplier1.SubAccountNumber);
 
-            var supplier2 = new OrganisationBuilder(this.DatabaseSession).WithName("supplier2").WithOrganisationRole(new OrganisationRoles(this.DatabaseSession).Supplier).Build();
-            var supplierRelationship2 = new SupplierRelationshipBuilder(this.DatabaseSession).WithSupplier(supplier2).Build();
+            var supplier2 = new OrganisationBuilder(this.Session).WithName("supplier2").WithOrganisationRole(new OrganisationRoles(this.Session).Supplier).Build();
+            var supplierRelationship2 = new SupplierRelationshipBuilder(this.Session).WithSupplier(supplier2).Build();
 
-            this.DatabaseSession.Derive();
+            this.Session.Derive();
 
             Assert.Equal(1015, supplier2.SubAccountNumber);
 
-            var supplier3 = new OrganisationBuilder(this.DatabaseSession).WithName("supplier3").WithOrganisationRole(new OrganisationRoles(this.DatabaseSession).Supplier).Build();
-            var supplierRelationship3 = new SupplierRelationshipBuilder(this.DatabaseSession).WithSupplier(supplier3).Build();
+            var supplier3 = new OrganisationBuilder(this.Session).WithName("supplier3").WithOrganisationRole(new OrganisationRoles(this.Session).Supplier).Build();
+            var supplierRelationship3 = new SupplierRelationshipBuilder(this.Session).WithSupplier(supplier3).Build();
 
-            this.DatabaseSession.Derive();
+            this.Session.Derive();
 
             Assert.Equal(1023, supplier3.SubAccountNumber);
         }
@@ -91,56 +91,56 @@ namespace Allors.Domain
         [Fact]
         public void GivenSupplierRelationship_WhenDeriving_ThenSubAccountNumberMustBeUniqueWithinInternalOrganisation()
         {
-            var supplier2 = new OrganisationBuilder(this.DatabaseSession).WithName("supplier").WithOrganisationRole(new OrganisationRoles(this.DatabaseSession).Supplier).Build();
+            var supplier2 = new OrganisationBuilder(this.Session).WithName("supplier").WithOrganisationRole(new OrganisationRoles(this.Session).Supplier).Build();
 
-            var belgium = new Countries(this.DatabaseSession).CountryByIsoCode["BE"];
+            var belgium = new Countries(this.Session).CountryByIsoCode["BE"];
             var euro = belgium.Currency;
 
-            var bank = new BankBuilder(this.DatabaseSession).WithCountry(belgium).WithName("ING België").WithBic("BBRUBEBB").Build();
+            var bank = new BankBuilder(this.Session).WithCountry(belgium).WithName("ING België").WithBic("BBRUBEBB").Build();
 
-            var ownBankAccount = new OwnBankAccountBuilder(this.DatabaseSession)
+            var ownBankAccount = new OwnBankAccountBuilder(this.Session)
                 .WithDescription("BE23 3300 6167 6391")
-                .WithBankAccount(new BankAccountBuilder(this.DatabaseSession).WithBank(bank).WithCurrency(euro).WithIban("BE23 3300 6167 6391").WithNameOnAccount("Koen").Build())
+                .WithBankAccount(new BankAccountBuilder(this.Session).WithBank(bank).WithCurrency(euro).WithIban("BE23 3300 6167 6391").WithNameOnAccount("Koen").Build())
                 .Build();
 
-            var internalOrganisation2 = new InternalOrganisationBuilder(this.DatabaseSession)
+            var internalOrganisation2 = new InternalOrganisationBuilder(this.Session)
                 .WithName("internalOrganisation2")
-                .WithBillingAddress(new WebAddressBuilder(this.DatabaseSession).WithElectronicAddressString("billfrom").Build())
+                .WithBillingAddress(new WebAddressBuilder(this.Session).WithElectronicAddressString("billfrom").Build())
                 .WithDefaultPaymentMethod(ownBankAccount)
                 .Build();
 
-            var supplierRelationship2 = new SupplierRelationshipBuilder(this.DatabaseSession)
+            var supplierRelationship2 = new SupplierRelationshipBuilder(this.Session)
                 .WithSupplier(supplier2)
                 .WithFromDate(DateTime.UtcNow)
                 .Build();
 
             supplier2.SubAccountNumber = 19;
 
-            Assert.False(this.DatabaseSession.Derive(false).HasErrors);
+            Assert.False(this.Session.Derive(false).HasErrors);
         }
 
         [Fact]
         public void GivenSupplierRelationship_WhenDeriving_ThenRequiredRelationsMustExist()
         {
-            this.InstantiateObjects(this.DatabaseSession);
+            this.InstantiateObjects(this.Session);
 
-            var builder = new SupplierRelationshipBuilder(this.DatabaseSession);
+            var builder = new SupplierRelationshipBuilder(this.Session);
             builder.Build();
 
-            Assert.True(this.DatabaseSession.Derive(false).HasErrors);
+            Assert.True(this.Session.Derive(false).HasErrors);
 
-            this.DatabaseSession.Rollback();
+            this.Session.Rollback();
 
             builder.WithSupplier(this.supplier);
             builder.Build();
 
-            Assert.False(this.DatabaseSession.Derive(false).HasErrors);
+            Assert.False(this.Session.Derive(false).HasErrors);
         }
 
         [Fact]
         public void GivenSupplierOrganisation_WhenOrganisationContactRelationshipIsCreated_ThenPersonIsAddedToUserGroup()
         {
-            this.InstantiateObjects(this.DatabaseSession);
+            this.InstantiateObjects(this.Session);
 
             Assert.Equal(1, this.supplierRelationship.Supplier.ContactsUserGroup.Members.Count);
             Assert.True(this.supplierRelationship.Supplier.ContactsUserGroup.Members.Contains(this.contact));
@@ -149,7 +149,7 @@ namespace Allors.Domain
         [Fact]
         public void GivenSupplierContactRelationship_WhenRelationshipPeriodIsNotValid_ThenContactIsNotInContactsUserGroup()
         {
-            this.InstantiateObjects(this.DatabaseSession);
+            this.InstantiateObjects(this.Session);
 
             Assert.Equal(1, this.supplierRelationship.Supplier.ContactsUserGroup.Members.Count);
             Assert.True(this.supplierRelationship.Supplier.ContactsUserGroup.Members.Contains(this.contact));
@@ -157,14 +157,14 @@ namespace Allors.Domain
             this.organisationContactRelationship.FromDate = DateTime.UtcNow.AddDays(+1);
             this.organisationContactRelationship.RemoveThroughDate();
 
-            this.DatabaseSession.Derive();
+            this.Session.Derive();
 
             Assert.Equal(0, this.supplierRelationship.Supplier.ContactsUserGroup.Members.Count);
 
             this.organisationContactRelationship.FromDate = DateTime.UtcNow.AddSeconds(-1);
             this.organisationContactRelationship.RemoveThroughDate();
 
-            this.DatabaseSession.Derive();
+            this.Session.Derive();
 
             Assert.Equal(1, this.supplierRelationship.Supplier.ContactsUserGroup.Members.Count);
             Assert.True(this.supplierRelationship.Supplier.ContactsUserGroup.Members.Contains(this.contact));
@@ -172,7 +172,7 @@ namespace Allors.Domain
             this.organisationContactRelationship.FromDate = DateTime.UtcNow.AddDays(-2);
             this.organisationContactRelationship.ThroughDate = DateTime.UtcNow.AddDays(-1);
 
-            this.DatabaseSession.Derive();
+            this.Session.Derive();
 
             Assert.Equal(0, this.supplierRelationship.Supplier.ContactsUserGroup.Members.Count);
         }
@@ -180,23 +180,23 @@ namespace Allors.Domain
         [Fact]
         public void GivenSupplierContactRelationship_WhenContactForOrganisationEnds_ThenContactIsRemovedfromContactsUserGroup()
         {
-            this.InstantiateObjects(this.DatabaseSession);
+            this.InstantiateObjects(this.Session);
 
-            var contact2 = new PersonBuilder(this.DatabaseSession).WithLastName("contact2").WithPersonRole(new PersonRoles(this.DatabaseSession).Contact).Build();
-            var contactRelationship2 = new OrganisationContactRelationshipBuilder(this.DatabaseSession)
+            var contact2 = new PersonBuilder(this.Session).WithLastName("contact2").WithPersonRole(new PersonRoles(this.Session).Contact).Build();
+            var contactRelationship2 = new OrganisationContactRelationshipBuilder(this.Session)
                 .WithOrganisation(this.supplier)
                 .WithContact(contact2)
                 .WithFromDate(DateTime.UtcNow)
                 .Build();
 
-            this.DatabaseSession.Derive();
+            this.Session.Derive();
 
             Assert.Equal(2, this.supplierRelationship.Supplier.ContactsUserGroup.Members.Count);
             Assert.True(this.supplierRelationship.Supplier.ContactsUserGroup.Members.Contains(this.contact));
 
             contactRelationship2.ThroughDate = DateTime.UtcNow.AddDays(-1);
 
-            this.DatabaseSession.Derive();
+            this.Session.Derive();
 
             Assert.Equal(1, this.supplierRelationship.Supplier.ContactsUserGroup.Members.Count);
             Assert.True(this.supplierRelationship.Supplier.ContactsUserGroup.Members.Contains(this.contact));
@@ -213,7 +213,7 @@ namespace Allors.Domain
         public void GivenSupplierRelationshipToCome_WhenDeriving_ThenInternalOrganisationSuppliersDosNotContainSupplier()
         {
             this.supplierRelationship.FromDate = DateTime.UtcNow.AddDays(1);
-            this.DatabaseSession.Derive();
+            this.Session.Derive();
 
             Assert.False(internalOrganisation.ActiveSuppliers.Contains(supplier));
         }
@@ -224,7 +224,7 @@ namespace Allors.Domain
             this.supplierRelationship.FromDate = DateTime.UtcNow.AddDays(-10);
             this.supplierRelationship.ThroughDate = DateTime.UtcNow.AddDays(-1);
 
-            this.DatabaseSession.Derive();
+            this.Session.Derive();
 
             Assert.False(internalOrganisation.ActiveSuppliers.Contains(supplier));
         }

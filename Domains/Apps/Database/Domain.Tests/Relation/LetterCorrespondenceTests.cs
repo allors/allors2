@@ -29,37 +29,37 @@ namespace Allors.Domain
         [Fact]
         public void GivenLetterCorrespondenceIsBuild_WhenDeriving_ThenStatusIsSet()
         {
-            var communication = new LetterCorrespondenceBuilder(this.DatabaseSession)
+            var communication = new LetterCorrespondenceBuilder(this.Session)
                 .WithSubject("Hello world!")
-                .WithOwner(new PersonBuilder(this.DatabaseSession).WithLastName("owner").WithPersonRole(new PersonRoles(this.DatabaseSession).Employee).Build())
-                .WithOriginator(new PersonBuilder(this.DatabaseSession).WithLastName("originator").WithPersonRole(new PersonRoles(this.DatabaseSession).Customer).Build())
-                .WithReceiver(new PersonBuilder(this.DatabaseSession).WithLastName("receiver").WithPersonRole(new PersonRoles(this.DatabaseSession).Customer).Build())
+                .WithOwner(new PersonBuilder(this.Session).WithLastName("owner").WithPersonRole(new PersonRoles(this.Session).Employee).Build())
+                .WithOriginator(new PersonBuilder(this.Session).WithLastName("originator").WithPersonRole(new PersonRoles(this.Session).Customer).Build())
+                .WithReceiver(new PersonBuilder(this.Session).WithLastName("receiver").WithPersonRole(new PersonRoles(this.Session).Customer).Build())
                 .Build();
 
-            Assert.False(this.DatabaseSession.Derive(false).HasErrors);
+            Assert.False(this.Session.Derive(false).HasErrors);
 
-            Assert.Equal(communication.CommunicationEventState, new CommunicationEventStates(this.DatabaseSession).Scheduled);
+            Assert.Equal(communication.CommunicationEventState, new CommunicationEventStates(this.Session).Scheduled);
             Assert.Equal(communication.CommunicationEventState, communication.LastCommunicationEventState);
         }
 
         [Fact]
         public void GivenLetterCorrespondence_WhenDeriving_ThenInvolvedPartiesAreDerived()
         {
-            var owner = new PersonBuilder(this.DatabaseSession).WithLastName("owner").WithPersonRole(new PersonRoles(this.DatabaseSession).Employee).Build();
-            var originator = new PersonBuilder(this.DatabaseSession).WithLastName("originator").WithPersonRole(new PersonRoles(this.DatabaseSession).Customer).Build();
-            var receiver = new PersonBuilder(this.DatabaseSession).WithLastName("receiver").WithPersonRole(new PersonRoles(this.DatabaseSession).Customer).Build();
+            var owner = new PersonBuilder(this.Session).WithLastName("owner").WithPersonRole(new PersonRoles(this.Session).Employee).Build();
+            var originator = new PersonBuilder(this.Session).WithLastName("originator").WithPersonRole(new PersonRoles(this.Session).Customer).Build();
+            var receiver = new PersonBuilder(this.Session).WithLastName("receiver").WithPersonRole(new PersonRoles(this.Session).Customer).Build();
 
-            this.DatabaseSession.Derive();
-            this.DatabaseSession.Commit();
+            this.Session.Derive();
+            this.Session.Commit();
 
-            var communication = new LetterCorrespondenceBuilder(this.DatabaseSession)
+            var communication = new LetterCorrespondenceBuilder(this.Session)
                 .WithSubject("Hello world!")
                 .WithOwner(owner)
                 .WithOriginator(originator)
                 .WithReceiver(receiver)
                 .Build();
 
-            this.DatabaseSession.Derive();
+            this.Session.Derive();
             
             Assert.Equal(3, communication.InvolvedParties.Count);
             Assert.Contains(owner, communication.InvolvedParties);
@@ -70,28 +70,28 @@ namespace Allors.Domain
         [Fact]
         public void GivenLetterCorrespondence_WhenOriginatorIsDeleted_ThenCommunicationEventIsDeleted()
         {
-            var owner = new PersonBuilder(this.DatabaseSession).WithLastName("owner").WithPersonRole(new PersonRoles(this.DatabaseSession).Employee).Build();
-            var originator = new PersonBuilder(this.DatabaseSession).WithLastName("originator").WithPersonRole(new PersonRoles(this.DatabaseSession).Customer).Build();
-            var receiver = new PersonBuilder(this.DatabaseSession).WithLastName("receiver").WithPersonRole(new PersonRoles(this.DatabaseSession).Customer).Build();
+            var owner = new PersonBuilder(this.Session).WithLastName("owner").WithPersonRole(new PersonRoles(this.Session).Employee).Build();
+            var originator = new PersonBuilder(this.Session).WithLastName("originator").WithPersonRole(new PersonRoles(this.Session).Customer).Build();
+            var receiver = new PersonBuilder(this.Session).WithLastName("receiver").WithPersonRole(new PersonRoles(this.Session).Customer).Build();
 
-            this.DatabaseSession.Derive();
-            this.DatabaseSession.Commit();
+            this.Session.Derive();
+            this.Session.Commit();
 
-            new LetterCorrespondenceBuilder(this.DatabaseSession)
+            new LetterCorrespondenceBuilder(this.Session)
                 .WithSubject("Hello world!")
                 .WithOwner(owner)
                 .WithOriginator(originator)
                 .WithReceiver(receiver)
                 .Build();
 
-            this.DatabaseSession.Derive();
+            this.Session.Derive();
 
-            Assert.Equal(1, this.DatabaseSession.Extent<LetterCorrespondence>().Count);
+            Assert.Equal(1, this.Session.Extent<LetterCorrespondence>().Count);
 
             originator.Delete();
-            this.DatabaseSession.Derive();
+            this.Session.Derive();
 
-            Assert.Equal(0, this.DatabaseSession.Extent<LetterCorrespondence>().Count);
+            Assert.Equal(0, this.Session.Extent<LetterCorrespondence>().Count);
         }
     }
 }

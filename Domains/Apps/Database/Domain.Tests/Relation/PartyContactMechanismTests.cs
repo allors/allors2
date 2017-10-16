@@ -29,37 +29,37 @@ namespace Allors.Domain
         [Fact]
         public void GivenPartyContactMechanism_WhenDeriving_ThenRequiredRelationsMustExist()
         {
-            var contactMechanism = new TelecommunicationsNumberBuilder(this.DatabaseSession).WithAreaCode("0495").WithContactNumber("493499").WithDescription("cellphone").Build();
-            this.DatabaseSession.Derive();
-            this.DatabaseSession.Commit();
+            var contactMechanism = new TelecommunicationsNumberBuilder(this.Session).WithAreaCode("0495").WithContactNumber("493499").WithDescription("cellphone").Build();
+            this.Session.Derive();
+            this.Session.Commit();
 
-            var builder = new PartyContactMechanismBuilder(this.DatabaseSession);
+            var builder = new PartyContactMechanismBuilder(this.Session);
             builder.Build();
 
-            Assert.True(this.DatabaseSession.Derive(false).HasErrors);
+            Assert.True(this.Session.Derive(false).HasErrors);
 
-            this.DatabaseSession.Rollback();
+            this.Session.Rollback();
 
             builder.WithContactMechanism(contactMechanism);
             builder.Build();
 
-            Assert.False(this.DatabaseSession.Derive(false).HasErrors);
+            Assert.False(this.Session.Derive(false).HasErrors);
         }
 
         [Fact]
         public void GivenPartyContactMechanism_WhenPartyIsDeleted_ThenPartyContactMechanismIsDeleted()
         {
-            var contactMechanism = new TelecommunicationsNumberBuilder(this.DatabaseSession).WithAreaCode("0495").WithContactNumber("493499").WithDescription("cellphone").Build();
-            var partyContactMechanism = new PartyContactMechanismBuilder(this.DatabaseSession).WithContactMechanism(contactMechanism).Build();
-            var party = new PersonBuilder(this.DatabaseSession).WithLastName("party").WithPartyContactMechanism(partyContactMechanism).WithPersonRole(new PersonRoles(this.DatabaseSession).Contact).Build();
+            var contactMechanism = new TelecommunicationsNumberBuilder(this.Session).WithAreaCode("0495").WithContactNumber("493499").WithDescription("cellphone").Build();
+            var partyContactMechanism = new PartyContactMechanismBuilder(this.Session).WithContactMechanism(contactMechanism).Build();
+            var party = new PersonBuilder(this.Session).WithLastName("party").WithPartyContactMechanism(partyContactMechanism).WithPersonRole(new PersonRoles(this.Session).Contact).Build();
 
-            this.DatabaseSession.Derive();
-            var countBefore = this.DatabaseSession.Extent<PartyContactMechanism>().Count;
+            this.Session.Derive();
+            var countBefore = this.Session.Extent<PartyContactMechanism>().Count;
 
             party.Delete();
-            this.DatabaseSession.Derive();
+            this.Session.Derive();
 
-            Assert.Equal(countBefore - 1, this.DatabaseSession.Extent<PartyContactMechanism>().Count);
+            Assert.Equal(countBefore - 1, this.Session.Extent<PartyContactMechanism>().Count);
 
         }
     }

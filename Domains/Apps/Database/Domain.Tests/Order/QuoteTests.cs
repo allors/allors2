@@ -28,49 +28,49 @@ namespace Allors.Domain
         [Fact]
         public void GivenProductQuote_WhenDeriving_ThenDescriptionIsRequired()
         {
-            var builder = new ProductQuoteBuilder(this.DatabaseSession);
+            var builder = new ProductQuoteBuilder(this.Session);
             var productQuote = builder.Build();
 
-            Assert.True(this.DatabaseSession.Derive(false).HasErrors);
+            Assert.True(this.Session.Derive(false).HasErrors);
 
-            this.DatabaseSession.Rollback();
+            this.Session.Rollback();
 
             builder.WithDescription("ProductQuote");
             productQuote = builder.Build();
 
-            Assert.False(this.DatabaseSession.Derive(false).HasErrors);
+            Assert.False(this.Session.Derive(false).HasErrors);
         }
 
         [Fact]
         public void GivenProposal_WhenDeriving_ThenDescriptionIsRequired()
         {
-            var builder = new ProposalBuilder(this.DatabaseSession);
+            var builder = new ProposalBuilder(this.Session);
             var requirement = builder.Build();
 
-            Assert.True(this.DatabaseSession.Derive(false).HasErrors);
+            Assert.True(this.Session.Derive(false).HasErrors);
 
-            this.DatabaseSession.Rollback();
+            this.Session.Rollback();
 
             builder.WithDescription("Proposal");
             requirement = builder.Build();
 
-            Assert.False(this.DatabaseSession.Derive(false).HasErrors);
+            Assert.False(this.Session.Derive(false).HasErrors);
         }
 
         [Fact]
         public void GivenStatementOfWork_WhenDeriving_ThenDescriptionIsRequired()
         {
-            var builder = new StatementOfWorkBuilder(this.DatabaseSession);
+            var builder = new StatementOfWorkBuilder(this.Session);
             var statementOfWork = builder.Build();
 
-            Assert.True(this.DatabaseSession.Derive(false).HasErrors);
+            Assert.True(this.Session.Derive(false).HasErrors);
 
-            this.DatabaseSession.Rollback();
+            this.Session.Rollback();
 
             builder.WithDescription("StatementOfWork");
             statementOfWork = builder.Build();
 
-            Assert.False(this.DatabaseSession.Derive(false).HasErrors);
+            Assert.False(this.Session.Derive(false).HasErrors);
         }
     }
 }

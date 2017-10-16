@@ -2,11 +2,10 @@
 {
     using System.Text;
 
-    using Allors;
     using Allors.Adapters.Object.SqlClient;
     using Allors.Domain;
     using Allors.Meta;
-    using Allors.Services.Base;
+    using Allors.Services;
 
     using Identity;
     using Identity.Models;
@@ -38,28 +37,7 @@
         public void ConfigureServices(IServiceCollection services)
         {
             // Allors
-            var objectFactory = new Allors.ObjectFactory(MetaPopulation.Instance, typeof(User));
-            var configuration = new Configuration
-            {
-                ObjectFactory = objectFactory,
-                ConnectionString = this.Configuration.GetConnectionString("DefaultConnection")
-            };
-
-            var database = new Database(configuration);
-
-            var timeService = new TimeService();
-            var mailService = new MailService { DefaultSender = this.Configuration["DefaultSender"] };
-            var securityService = new SecurityService();
-            var serviceLocator = new ServiceLocator
-            {
-                TimeServiceFactory = () => timeService,
-                MailServiceFactory = () => mailService,
-                SecurityServiceFactory = () => securityService
-            };
-            database.SetServiceLocator(serviceLocator.Assert());
-
-            services.AddSingleton<IDatabase>(database);
-            services.AddScoped<IAllorsContext, AllorsContext>();
+            services.AddAllorsEmbedded();
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
             // Identity
@@ -112,6 +90,17 @@
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
+            // Allors
+            var objectFactory = new Allors.ObjectFactory(MetaPopulation.Instance, typeof(User));
+            var configuration = new Configuration
+            {
+                ObjectFactory = objectFactory,
+                ConnectionString = this.Configuration.GetConnectionString("DefaultConnection")
+            };
+
+            var database = new Database(app.ApplicationServices, configuration);
+            app.UseAllors(database);
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -155,9 +144,7 @@
 
             app.UseMvc(routes =>
             {
-                routes.MapRoute(
-                    name: "default",
-                    template: "{controller=Home}/{action=Index}/{id?}");
+                routes.MapRoute("default", "{controller=Home}/{action=Index}/{id?}");
             });
         }
     }

@@ -28,62 +28,62 @@ namespace Allors.Domain
         [Fact]
         public void GivenOrderRequirementCommitment_WhenDeriving_ThenRequiredRelationsMustExist()
         {
-            var shipToCustomer = new OrganisationBuilder(this.DatabaseSession).WithName("shipToCustomer").WithOrganisationRole(new OrganisationRoles(this.DatabaseSession).Customer).Build();
-            var billToCustomer = new OrganisationBuilder(this.DatabaseSession).WithName("billToCustomer").WithOrganisationRole(new OrganisationRoles(this.DatabaseSession).Customer).Build();
+            var shipToCustomer = new OrganisationBuilder(this.Session).WithName("shipToCustomer").WithOrganisationRole(new OrganisationRoles(this.Session).Customer).Build();
+            var billToCustomer = new OrganisationBuilder(this.Session).WithName("billToCustomer").WithOrganisationRole(new OrganisationRoles(this.Session).Customer).Build();
 
-            new CustomerRelationshipBuilder(this.DatabaseSession)
+            new CustomerRelationshipBuilder(this.Session)
                 .WithCustomer(billToCustomer)
                 
                 .Build();
 
-            new CustomerRelationshipBuilder(this.DatabaseSession)
+            new CustomerRelationshipBuilder(this.Session)
                 .WithCustomer(shipToCustomer)
                 
                 .Build();
 
-            var vatRate21 = new VatRateBuilder(this.DatabaseSession).WithRate(21).Build();
-            var good = new GoodBuilder(this.DatabaseSession)
-                .WithLocalisedName(new LocalisedTextBuilder(this.DatabaseSession).WithText("Gizmo").WithLocale(Singleton.Instance(this.DatabaseSession).DefaultLocale).Build())
+            var vatRate21 = new VatRateBuilder(this.Session).WithRate(21).Build();
+            var good = new GoodBuilder(this.Session)
+                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Gizmo").WithLocale(this.Session.GetSingleton().DefaultLocale).Build())
                 .WithSku("10101")
                 .WithVatRate(vatRate21)
-                .WithInventoryItemKind(new InventoryItemKinds(this.DatabaseSession).NonSerialised)
-                .WithUnitOfMeasure(new UnitsOfMeasure(this.DatabaseSession).Piece)
+                .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
+                .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
                 .Build();
 
-            this.DatabaseSession.Derive();
+            this.Session.Derive();
 
-            var salesOrder = new SalesOrderBuilder(this.DatabaseSession)
+            var salesOrder = new SalesOrderBuilder(this.Session)
                 .WithShipToCustomer(shipToCustomer)
                 .WithBillToCustomer(billToCustomer)
-                .WithVatRegime(new VatRegimes(this.DatabaseSession).Export)
+                .WithVatRegime(new VatRegimes(this.Session).Export)
                 .Build();
 
-            var goodOrderItem = new SalesOrderItemBuilder(this.DatabaseSession).WithProduct(good).WithQuantityOrdered(1).Build();
+            var goodOrderItem = new SalesOrderItemBuilder(this.Session).WithProduct(good).WithQuantityOrdered(1).Build();
             salesOrder.AddSalesOrderItem(goodOrderItem);
 
-            var customerRequirement = new RequirementBuilder(this.DatabaseSession).WithDescription("100 gizmo's").Build();
+            var customerRequirement = new RequirementBuilder(this.Session).WithDescription("100 gizmo's").Build();
 
-            this.DatabaseSession.Derive();
-            this.DatabaseSession.Commit();
+            this.Session.Derive();
+            this.Session.Commit();
 
-            var builder = new OrderRequirementCommitmentBuilder(this.DatabaseSession);
+            var builder = new OrderRequirementCommitmentBuilder(this.Session);
             builder.Build();
 
-            Assert.True(this.DatabaseSession.Derive(false).HasErrors);
+            Assert.True(this.Session.Derive(false).HasErrors);
 
-            this.DatabaseSession.Rollback();
+            this.Session.Rollback();
 
             builder.WithOrderItem(goodOrderItem);
             builder.Build();
 
-            Assert.True(this.DatabaseSession.Derive(false).HasErrors);
+            Assert.True(this.Session.Derive(false).HasErrors);
 
-            this.DatabaseSession.Rollback();
+            this.Session.Rollback();
 
             builder.WithRequirement(customerRequirement);
             var tsts = builder.Build();
 
-            Assert.False(this.DatabaseSession.Derive(false).HasErrors);
+            Assert.False(this.Session.Derive(false).HasErrors);
         }
     }
 }

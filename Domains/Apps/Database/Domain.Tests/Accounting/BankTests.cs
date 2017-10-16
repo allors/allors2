@@ -29,79 +29,79 @@ namespace Allors.Domain
         [Fact]
         public void GivenBank_WhenDeriving_ThenRequiredRelationsMustExist()
         {
-            var netherlands = new Countries(this.DatabaseSession).CountryByIsoCode["NL"];
+            var netherlands = new Countries(this.Session).CountryByIsoCode["NL"];
 
-            var builder = new BankBuilder(this.DatabaseSession);
+            var builder = new BankBuilder(this.Session);
             builder.Build();
 
-            Assert.True(this.DatabaseSession.Derive(false).HasErrors);
+            Assert.True(this.Session.Derive(false).HasErrors);
 
-            this.DatabaseSession.Rollback();
+            this.Session.Rollback();
 
             builder.WithCountry(netherlands);
             builder.Build();
 
-            Assert.True(this.DatabaseSession.Derive(false).HasErrors);
+            Assert.True(this.Session.Derive(false).HasErrors);
 
-            this.DatabaseSession.Rollback();
+            this.Session.Rollback();
 
             builder.WithBic("RABONL2U");
             builder.Build();
 
-            Assert.True(this.DatabaseSession.Derive(false).HasErrors);
+            Assert.True(this.Session.Derive(false).HasErrors);
 
-            this.DatabaseSession.Rollback();
+            this.Session.Rollback();
 
             builder.WithName("Rabo");
             builder.Build();
 
-            Assert.False(this.DatabaseSession.Derive(false).HasErrors);
+            Assert.False(this.Session.Derive(false).HasErrors);
         }
         
         [Fact]
         public void GivenBankWithBic_WhenDeriving_ThenFirstfourCharactersMustBeAlphabetic()
         {
-            var netherlands = new Countries(this.DatabaseSession).CountryByIsoCode["NL"];
+            var netherlands = new Countries(this.Session).CountryByIsoCode["NL"];
 
-            var bank = new BankBuilder(this.DatabaseSession).WithCountry(netherlands).WithName("RABOBANK GROEP").WithBic("RABONL2U").Build();
+            var bank = new BankBuilder(this.Session).WithCountry(netherlands).WithName("RABOBANK GROEP").WithBic("RABONL2U").Build();
 
-            Assert.False(this.DatabaseSession.Derive(false).HasErrors);
+            Assert.False(this.Session.Derive(false).HasErrors);
 
             bank.Bic = "RAB1NL2U";
 
-            Assert.True(this.DatabaseSession.Derive(false).HasErrors);
+            Assert.True(this.Session.Derive(false).HasErrors);
         }
 
         [Fact]
         public void GivenBankWithBic_WhenDeriving_ThenCharacters5And6MustBeValidCountryCode()
         {
-            var netherlands = new Countries(this.DatabaseSession).CountryByIsoCode["NL"];
+            var netherlands = new Countries(this.Session).CountryByIsoCode["NL"];
 
-            var bank = new BankBuilder(this.DatabaseSession).WithCountry(netherlands).WithName("RABOBANK GROEP").WithBic("RABONL2U").Build();
+            var bank = new BankBuilder(this.Session).WithCountry(netherlands).WithName("RABOBANK GROEP").WithBic("RABONL2U").Build();
 
-            Assert.False(this.DatabaseSession.Derive(false).HasErrors);
+            Assert.False(this.Session.Derive(false).HasErrors);
 
             bank.Bic = "RABONN2U";
 
-            Assert.True(this.DatabaseSession.Derive(false).HasErrors);
+            Assert.True(this.Session.Derive(false).HasErrors);
         }
 
         [Fact]
         public void GivenBankWithBic_WhenDeriving_ThenStringLengthMustBeEightOrEleven()
         {
-            var netherlands = new Countries(this.DatabaseSession).CountryByIsoCode["NL"];
+            var netherlands = new Countries(this.Session).CountryByIsoCode["NL"];
 
-            var bank = new BankBuilder(this.DatabaseSession).WithCountry(netherlands).WithName("RABOBANK GROEP").WithBic("RABONL2").Build();
+            var bank = new BankBuilder(this.Session).WithCountry(netherlands).WithName("RABOBANK GROEP").WithBic("RABONL2").Build();
 
-            Assert.True(this.DatabaseSession.Derive(false).HasErrors);
+            Assert.True(this.Session.Derive(false).HasErrors);
 
             bank.Bic = "RABONL2UAAAA";
 
-            Assert.True(this.DatabaseSession.Derive(false).HasErrors);
+            Assert.True(this.Session.Derive(false).HasErrors);
 
             bank.Bic = "RABONL2UAAA";
 
-            Assert.False(this.DatabaseSession.Derive(false).HasErrors);
+            Assert.False(this.Session.Derive(false).HasErrors);
         }
     }
 }

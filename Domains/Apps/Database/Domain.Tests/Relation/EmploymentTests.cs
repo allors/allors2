@@ -34,28 +34,28 @@ namespace Allors.Domain
 
         public EmploymentTests()
         {
-            this.employee = new PersonBuilder(this.DatabaseSession).WithLastName("slave").WithPersonRole(new PersonRoles(this.DatabaseSession).Employee).Build();
+            this.employee = new PersonBuilder(this.Session).WithLastName("slave").WithPersonRole(new PersonRoles(this.Session).Employee).Build();
 
-            this.employment = new EmploymentBuilder(this.DatabaseSession)
+            this.employment = new EmploymentBuilder(this.Session)
                 .WithEmployee(this.employee)
                 .WithFromDate(DateTime.UtcNow)
                 .Build();
 
-            this.DatabaseSession.Derive();
-            this.DatabaseSession.Commit();
+            this.Session.Derive();
+            this.Session.Commit();
         }
 
         [Fact]
         public void GivenActiveEmployment_WhenDeriving_ThenInternalOrganisationEmployeesContainsEmployee()
         {
-            var employee = new PersonBuilder(this.DatabaseSession).WithLastName("customer").WithPersonRole(new PersonRoles(this.DatabaseSession).Customer).Build();
-            var employer = Singleton.Instance(this.DatabaseSession).InternalOrganisation;
+            var employee = new PersonBuilder(this.Session).WithLastName("customer").WithPersonRole(new PersonRoles(this.Session).Customer).Build();
+            var employer = this.Session.GetSingleton().InternalOrganisation;
 
-            new EmploymentBuilder(this.DatabaseSession)
+            new EmploymentBuilder(this.Session)
                 .WithEmployee(employee)
                 .Build();
 
-            this.DatabaseSession.Derive();
+            this.Session.Derive();
 
             Assert.Contains(employee, employer.ActiveEmployees);
         }
@@ -63,15 +63,15 @@ namespace Allors.Domain
         [Fact]
         public void GivenEmploymentToCome_WhenDeriving_ThenInternalOrganisationEmployeesDosNotContainEmployee()
         {
-            var employee = new PersonBuilder(this.DatabaseSession).WithLastName("customer").WithPersonRole(new PersonRoles(this.DatabaseSession).Customer).Build();
-            var employer = Singleton.Instance(this.DatabaseSession).InternalOrganisation;
+            var employee = new PersonBuilder(this.Session).WithLastName("customer").WithPersonRole(new PersonRoles(this.Session).Customer).Build();
+            var employer = this.Session.GetSingleton().InternalOrganisation;
 
-            new EmploymentBuilder(this.DatabaseSession)
+            new EmploymentBuilder(this.Session)
                 .WithEmployee(employee)
                 .WithFromDate(DateTime.UtcNow.AddDays(1))
                 .Build();
 
-            this.DatabaseSession.Derive();
+            this.Session.Derive();
 
             Assert.False(employer.ActiveEmployees.Contains(employee));
         }
@@ -79,16 +79,16 @@ namespace Allors.Domain
         [Fact]
         public void GivenEmploymentThatHasEnded_WhenDeriving_ThenInternalOrganisationEmployeesDosNotContainEmployee()
         {
-            var employee = new PersonBuilder(this.DatabaseSession).WithLastName("customer").WithPersonRole(new PersonRoles(this.DatabaseSession).Customer).Build();
-            var employer = Singleton.Instance(this.DatabaseSession).InternalOrganisation;
+            var employee = new PersonBuilder(this.Session).WithLastName("customer").WithPersonRole(new PersonRoles(this.Session).Customer).Build();
+            var employer = this.Session.GetSingleton().InternalOrganisation;
 
-            new EmploymentBuilder(this.DatabaseSession)
+            new EmploymentBuilder(this.Session)
                 .WithEmployee(employee)
                 .WithFromDate(DateTime.UtcNow.AddDays(-10))
                 .WithThroughDate(DateTime.UtcNow.AddDays(-1))
                 .Build();
 
-            this.DatabaseSession.Derive();
+            this.Session.Derive();
 
             Assert.False(employer.ActiveEmployees.Contains(employee));
         }

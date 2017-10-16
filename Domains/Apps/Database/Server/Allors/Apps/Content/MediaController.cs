@@ -1,9 +1,11 @@
 ﻿namespace Allors.Server.Controllers
 {
+    using Allors.Services;
+
     public class MediaController : BaseMediaController
     {
-        public MediaController(IAllorsContext allorsContext)
-            : base(allorsContext)
+        public MediaController(ISessionService sessionService)
+            : base(sessionService)
         {
         }
     }

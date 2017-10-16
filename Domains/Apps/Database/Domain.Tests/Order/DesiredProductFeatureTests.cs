@@ -29,34 +29,34 @@ namespace Allors.Domain
         [Fact]
         public void GivenDesiredProductFeature_WhenDeriving_ThenRequiredRelationsMustExist()
         {
-            var vatRate21 = new VatRateBuilder(this.DatabaseSession).WithRate(21).Build();
-            var softwareFeature = new SoftwareFeatureBuilder(this.DatabaseSession)
+            var vatRate21 = new VatRateBuilder(this.Session).WithRate(21).Build();
+            var softwareFeature = new SoftwareFeatureBuilder(this.Session)
                 .WithName("Tutorial DVD")
                 .WithVatRate(vatRate21)
-                .WithLocalisedName(new LocalisedTextBuilder(this.DatabaseSession).WithText("Tutorial").WithLocale(Singleton.Instance(this.DatabaseSession).DefaultLocale).Build())
+                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Tutorial").WithLocale(this.Session.GetSingleton().DefaultLocale).Build())
                 .Build();
 
-            this.DatabaseSession.Derive();
-            this.DatabaseSession.Commit();
+            this.Session.Derive();
+            this.Session.Commit();
 
-            var builder = new DesiredProductFeatureBuilder(this.DatabaseSession);
+            var builder = new DesiredProductFeatureBuilder(this.Session);
             builder.Build();
 
-            Assert.True(this.DatabaseSession.Derive(false).HasErrors);
+            Assert.True(this.Session.Derive(false).HasErrors);
 
-            this.DatabaseSession.Rollback();
+            this.Session.Rollback();
             
             builder.WithRequired(false);
             builder.Build();
 
-            Assert.True(this.DatabaseSession.Derive(false).HasErrors);
+            Assert.True(this.Session.Derive(false).HasErrors);
 
-            this.DatabaseSession.Rollback();
+            this.Session.Rollback();
 
             builder.WithProductFeature(softwareFeature);
             builder.Build();
 
-            Assert.False(this.DatabaseSession.Derive(false).HasErrors);
+            Assert.False(this.Session.Derive(false).HasErrors);
         }
     }
 }

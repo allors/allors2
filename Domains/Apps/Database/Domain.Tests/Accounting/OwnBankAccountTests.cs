@@ -31,42 +31,42 @@ namespace Allors.Domain
         [Fact]
         public void GivenOwnBankAccount_WhenDeriving_ThenBankAccountRelationMustExist()
         {
-            var netherlands = new Countries(this.DatabaseSession).CountryByIsoCode["NL"];
+            var netherlands = new Countries(this.Session).CountryByIsoCode["NL"];
             var euro = netherlands.Currency;
 
-            var bank = new BankBuilder(this.DatabaseSession).WithCountry(netherlands).WithName("RABOBANK GROEP").WithBic("RABONL2U").Build();
-            var bankAccount = new BankAccountBuilder(this.DatabaseSession).WithBank(bank).WithCurrency(euro).WithIban("NL50RABO0109546784").WithNameOnAccount("Martien").Build();
+            var bank = new BankBuilder(this.Session).WithCountry(netherlands).WithName("RABOBANK GROEP").WithBic("RABONL2U").Build();
+            var bankAccount = new BankAccountBuilder(this.Session).WithBank(bank).WithCurrency(euro).WithIban("NL50RABO0109546784").WithNameOnAccount("Martien").Build();
 
-            this.DatabaseSession.Commit();
+            this.Session.Commit();
 
-            var builder = new OwnBankAccountBuilder(this.DatabaseSession);
+            var builder = new OwnBankAccountBuilder(this.Session);
             builder.Build();
 
-            Assert.True(this.DatabaseSession.Derive(false).HasErrors);
+            Assert.True(this.Session.Derive(false).HasErrors);
 
-            this.DatabaseSession.Rollback();
+            this.Session.Rollback();
 
             builder.WithBankAccount(bankAccount);
             builder.Build();
 
-            Assert.False(this.DatabaseSession.Derive(false).HasErrors);
+            Assert.False(this.Session.Derive(false).HasErrors);
         }
 
         [Fact]
         public void GivenOwnBankAccount_WhenBuild_ThenPostBuildRelationsMustExist()
         {
-            var netherlands = new Countries(this.DatabaseSession).CountryByIsoCode["NL"];
+            var netherlands = new Countries(this.Session).CountryByIsoCode["NL"];
             var euro = netherlands.Currency;
 
-            var bank = new BankBuilder(this.DatabaseSession).WithCountry(netherlands).WithName("RABOBANK GROEP").WithBic("RABONL2U").Build();
-            var bankAccount = new BankAccountBuilder(this.DatabaseSession).WithBank(bank).WithCurrency(euro).WithIban("NL50RABO0109546784").WithNameOnAccount("Martien").Build();
+            var bank = new BankBuilder(this.Session).WithCountry(netherlands).WithName("RABOBANK GROEP").WithBic("RABONL2U").Build();
+            var bankAccount = new BankAccountBuilder(this.Session).WithBank(bank).WithCurrency(euro).WithIban("NL50RABO0109546784").WithNameOnAccount("Martien").Build();
 
-            var paymentMethod = new OwnBankAccountBuilder(this.DatabaseSession)
+            var paymentMethod = new OwnBankAccountBuilder(this.Session)
                 .WithDescription("own account")
                 .WithBankAccount(bankAccount)
                 .Build();
 
-            this.DatabaseSession.Derive();
+            this.Session.Derive();
 
             Assert.True(paymentMethod.IsActive);
             Assert.True(paymentMethod.ExistDescription);
@@ -75,131 +75,131 @@ namespace Allors.Domain
         [Fact]
         public void GivenOwnBankAccount_WhenDeriving_ThenBankAccountMustBeValidated()
         {
-            var netherlands = new Countries(this.DatabaseSession).CountryByIsoCode["NL"];
+            var netherlands = new Countries(this.Session).CountryByIsoCode["NL"];
             var euro = netherlands.Currency;
 
-            var builder = new BankAccountBuilder(this.DatabaseSession).WithCurrency(euro).WithIban("NL50RABO0109546784").WithNameOnAccount("Martien");
+            var builder = new BankAccountBuilder(this.Session).WithCurrency(euro).WithIban("NL50RABO0109546784").WithNameOnAccount("Martien");
             var bankAccount = builder.Build();
 
-            new OwnBankAccountBuilder(this.DatabaseSession)
+            new OwnBankAccountBuilder(this.Session)
                 .WithDescription("own account")
                 .WithBankAccount(bankAccount).Build();
 
-            Assert.True(this.DatabaseSession.Derive(false).HasErrors);
+            Assert.True(this.Session.Derive(false).HasErrors);
 
-            this.DatabaseSession.Rollback();
+            this.Session.Rollback();
 
-            var bank = new BankBuilder(this.DatabaseSession).WithCountry(netherlands).WithName("RABOBANK GROEP").WithBic("RABONL2U").Build();
+            var bank = new BankBuilder(this.Session).WithCountry(netherlands).WithName("RABOBANK GROEP").WithBic("RABONL2U").Build();
 
             builder.WithBank(bank);
             bankAccount = builder.Build();
 
-            new OwnBankAccountBuilder(this.DatabaseSession)
+            new OwnBankAccountBuilder(this.Session)
                 .WithDescription("own account")
                 .WithBankAccount(bankAccount).Build();
 
-            Assert.False(this.DatabaseSession.Derive(false).HasErrors);
+            Assert.False(this.Session.Derive(false).HasErrors);
         }
 
         [Fact]
         public void GivenOwnBankAccountForSingletonThatDoesAccounting_WhenDeriving_ThenCreditorIsRequired()
         {
-            var internalOrganisation = Singleton.Instance(this.DatabaseSession).InternalOrganisation;
+            var internalOrganisation = this.Session.GetSingleton().InternalOrganisation;
             internalOrganisation.DoAccounting = false;
 
-            Assert.False(this.DatabaseSession.Derive(false).HasErrors);
+            Assert.False(this.Session.Derive(false).HasErrors);
 
             internalOrganisation.DoAccounting = true;
 
-            Assert.True(this.DatabaseSession.Derive(false).HasErrors);
+            Assert.True(this.Session.Derive(false).HasErrors);
         }
 
         [Fact]
         public void GivenOwnBankAccount_WhenDeriving_ThenGeneralLedgerAccountAndJournalAtMostOne()
         {
-            var generalLedgerAccount = new GeneralLedgerAccountBuilder(this.DatabaseSession)
+            var generalLedgerAccount = new GeneralLedgerAccountBuilder(this.Session)
                 .WithAccountNumber("0001")
                 .WithName("GeneralLedgerAccount")
                 .WithBalanceSheetAccount(true)
                 .Build();
 
-            var internalOrganisationGlAccount = new OrganisationGlAccountBuilder(this.DatabaseSession)
+            var internalOrganisationGlAccount = new OrganisationGlAccountBuilder(this.Session)
                 .WithGeneralLedgerAccount(generalLedgerAccount)
                 .Build();
 
-            var journal = new JournalBuilder(this.DatabaseSession).WithDescription("journal").Build();
+            var journal = new JournalBuilder(this.Session).WithDescription("journal").Build();
 
-            var netherlands = new Countries(this.DatabaseSession).CountryByIsoCode["NL"];
+            var netherlands = new Countries(this.Session).CountryByIsoCode["NL"];
             var euro = netherlands.Currency;
 
-            var bank = new BankBuilder(this.DatabaseSession).WithCountry(netherlands).WithName("RABOBANK GROEP").WithBic("RABONL2U").Build();
-            var bankAccount = new BankAccountBuilder(this.DatabaseSession).WithBank(bank).WithCurrency(euro).WithIban("NL50RABO0109546784").WithNameOnAccount("Martien").Build();
+            var bank = new BankBuilder(this.Session).WithCountry(netherlands).WithName("RABOBANK GROEP").WithBic("RABONL2U").Build();
+            var bankAccount = new BankAccountBuilder(this.Session).WithBank(bank).WithCurrency(euro).WithIban("NL50RABO0109546784").WithNameOnAccount("Martien").Build();
 
-            var paymentMethod = new OwnBankAccountBuilder(this.DatabaseSession)
+            var paymentMethod = new OwnBankAccountBuilder(this.Session)
                 .WithDescription("own account")
                 .WithBankAccount(bankAccount)
                 .WithGeneralLedgerAccount(internalOrganisationGlAccount)
                 .Build();
 
-            this.DatabaseSession.Commit();
+            this.Session.Commit();
 
-            var internalOrganisation = Singleton.Instance(this.DatabaseSession).InternalOrganisation;
+            var internalOrganisation = this.Session.GetSingleton().InternalOrganisation;
             internalOrganisation.DoAccounting = true;
             internalOrganisation.DefaultPaymentMethod = paymentMethod;
 
-            Assert.False(this.DatabaseSession.Derive(false).HasErrors);
+            Assert.False(this.Session.Derive(false).HasErrors);
 
             paymentMethod.Journal = journal;
 
-            Assert.True(this.DatabaseSession.Derive(false).HasErrors);
+            Assert.True(this.Session.Derive(false).HasErrors);
 
             paymentMethod.RemoveGeneralLedgerAccount();
 
-            Assert.False(this.DatabaseSession.Derive(false).HasErrors);
+            Assert.False(this.Session.Derive(false).HasErrors);
         }
 
         [Fact]
         public void GivenOwnBankAccountForSingletonThatDoesAccounting_WhenDeriving_ThenEitherGeneralLedgerAccountOrJournalMustExist()
         {
-            var internalOrganisation = Singleton.Instance(this.DatabaseSession).InternalOrganisation;
+            var internalOrganisation = this.Session.GetSingleton().InternalOrganisation;
 
-            var generalLedgerAccount = new GeneralLedgerAccountBuilder(this.DatabaseSession)
+            var generalLedgerAccount = new GeneralLedgerAccountBuilder(this.Session)
                 .WithAccountNumber("0001")
                 .WithName("GeneralLedgerAccount")
                 .WithBalanceSheetAccount(true)
                 .Build();
 
-            var internalOrganisationGlAccount = new OrganisationGlAccountBuilder(this.DatabaseSession)
+            var internalOrganisationGlAccount = new OrganisationGlAccountBuilder(this.Session)
                 .WithGeneralLedgerAccount(generalLedgerAccount)
                 .Build();
 
-            var journal = new JournalBuilder(this.DatabaseSession).WithDescription("journal").Build();
+            var journal = new JournalBuilder(this.Session).WithDescription("journal").Build();
 
-            var netherlands = new Countries(this.DatabaseSession).CountryByIsoCode["NL"];
+            var netherlands = new Countries(this.Session).CountryByIsoCode["NL"];
             var euro = netherlands.Currency;
 
-            var bank = new BankBuilder(this.DatabaseSession).WithCountry(netherlands).WithName("RABOBANK GROEP").WithBic("RABONL2U").Build();
-            var bankAccount = new BankAccountBuilder(this.DatabaseSession).WithBank(bank).WithCurrency(euro).WithIban("NL50RABO0109546784").WithNameOnAccount("Martien").Build();
+            var bank = new BankBuilder(this.Session).WithCountry(netherlands).WithName("RABOBANK GROEP").WithBic("RABONL2U").Build();
+            var bankAccount = new BankAccountBuilder(this.Session).WithBank(bank).WithCurrency(euro).WithIban("NL50RABO0109546784").WithNameOnAccount("Martien").Build();
 
-            var paymentMethod = new OwnBankAccountBuilder(this.DatabaseSession)
+            var paymentMethod = new OwnBankAccountBuilder(this.Session)
                 .WithDescription("own account")
                 .WithBankAccount(bankAccount)
                 .Build();
 
-            this.DatabaseSession.Commit();
+            this.Session.Commit();
 
             internalOrganisation.DoAccounting = true;
 
-            Assert.True(this.DatabaseSession.Derive(false).HasErrors);
+            Assert.True(this.Session.Derive(false).HasErrors);
 
             paymentMethod.Journal = journal;
 
-            Assert.False(this.DatabaseSession.Derive(false).HasErrors);
+            Assert.False(this.Session.Derive(false).HasErrors);
 
             paymentMethod.RemoveJournal();
             paymentMethod.GeneralLedgerAccount = internalOrganisationGlAccount;
 
-            Assert.False(this.DatabaseSession.Derive(false).HasErrors);
+            Assert.False(this.Session.Derive(false).HasErrors);
         }
     }
 }

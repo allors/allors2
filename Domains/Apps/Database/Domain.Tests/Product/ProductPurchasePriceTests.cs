@@ -31,38 +31,38 @@ namespace Allors.Domain
         [Fact]
         public void GivenProductPurchasePrice_WhenDeriving_ThenRequiredRelationsMustExist()
         {
-            var builder = new ProductPurchasePriceBuilder(this.DatabaseSession);
+            var builder = new ProductPurchasePriceBuilder(this.Session);
             var purchasePrice = builder.Build();
 
-            Assert.True(this.DatabaseSession.Derive(false).HasErrors);
+            Assert.True(this.Session.Derive(false).HasErrors);
 
-            this.DatabaseSession.Rollback();
+            this.Session.Rollback();
 
             builder.WithPrice(1);
             purchasePrice = builder.Build();
 
-            Assert.True(this.DatabaseSession.Derive(false).HasErrors);
+            Assert.True(this.Session.Derive(false).HasErrors);
 
-            this.DatabaseSession.Rollback();
+            this.Session.Rollback();
 
-            builder.WithCurrency(new Currencies(this.DatabaseSession).FindBy(M.Currency.IsoCode, "EUR"));
+            builder.WithCurrency(new Currencies(this.Session).FindBy(M.Currency.IsoCode, "EUR"));
             purchasePrice = builder.Build();
 
-            Assert.True(this.DatabaseSession.Derive(false).HasErrors);
+            Assert.True(this.Session.Derive(false).HasErrors);
 
-            this.DatabaseSession.Rollback();
+            this.Session.Rollback();
 
             builder.WithFromDate(DateTime.UtcNow);
             purchasePrice = builder.Build();
 
-            Assert.True(this.DatabaseSession.Derive(false).HasErrors);
+            Assert.True(this.Session.Derive(false).HasErrors);
 
-            this.DatabaseSession.Rollback();
+            this.Session.Rollback();
 
-            builder.WithUnitOfMeasure(new UnitsOfMeasure(this.DatabaseSession).Piece);
+            builder.WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece);
             purchasePrice = builder.Build();
 
-            Assert.False(this.DatabaseSession.Derive(false).HasErrors);
+            Assert.False(this.Session.Derive(false).HasErrors);
         }
     }
 }

@@ -35,27 +35,27 @@ namespace Allors.Domain
         [Fact]
         public void GivenOrderKind_WhenDeriving_ThenRequiredRelationsMustExist()
         {
-            var builder = new OrderKindBuilder(this.DatabaseSession);
+            var builder = new OrderKindBuilder(this.Session);
             var orderKind = builder.Build();
 
-            Assert.True(this.DatabaseSession.Derive(false).HasErrors);
+            Assert.True(this.Session.Derive(false).HasErrors);
 
-            this.DatabaseSession.Rollback();
+            this.Session.Rollback();
 
             builder.WithDescription("orderkind");
             orderKind = builder.Build();
 
-            Assert.False(this.DatabaseSession.Derive(false).HasErrors);
+            Assert.False(this.Session.Derive(false).HasErrors);
         }
 
         [Fact]
         public void GivenOrderKind_WhenBuild_ThenPostBuildRelationsMustExist()
         {
-            var orderKind = new OrderKindBuilder(this.DatabaseSession)
+            var orderKind = new OrderKindBuilder(this.Session)
                 .WithDescription("Pre order summer collections")
                 .Build();
 
-            this.DatabaseSession.Derive();
+            this.Session.Derive();
 
             Assert.False(orderKind.ScheduleManually);
         }

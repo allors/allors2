@@ -33,29 +33,29 @@ namespace Allors.Domain
         [Fact]
         public void GivenParty_WhenSalesRepRelationshipIsUpdated_ThenCurrentSalesRepsAreUpdated()
         {
-            var salesRep1 = new PersonBuilder(this.DatabaseSession).WithLastName("salesRep1").WithPersonRole(new PersonRoles(this.DatabaseSession).Employee).Build();
-            var salesRep2 = new PersonBuilder(this.DatabaseSession).WithLastName("salesRep2").WithPersonRole(new PersonRoles(this.DatabaseSession).Employee).Build();
-            var salesRep3 = new PersonBuilder(this.DatabaseSession).WithLastName("salesRep3").WithPersonRole(new PersonRoles(this.DatabaseSession).Employee).Build();
-            var organisation = new OrganisationBuilder(this.DatabaseSession).WithName("customer").WithOrganisationRole(new OrganisationRoles(this.DatabaseSession).Customer).Build();
+            var salesRep1 = new PersonBuilder(this.Session).WithLastName("salesRep1").WithPersonRole(new PersonRoles(this.Session).Employee).Build();
+            var salesRep2 = new PersonBuilder(this.Session).WithLastName("salesRep2").WithPersonRole(new PersonRoles(this.Session).Employee).Build();
+            var salesRep3 = new PersonBuilder(this.Session).WithLastName("salesRep3").WithPersonRole(new PersonRoles(this.Session).Employee).Build();
+            var organisation = new OrganisationBuilder(this.Session).WithName("customer").WithOrganisationRole(new OrganisationRoles(this.Session).Customer).Build();
 
-            var salesRepRelationship1 = new SalesRepRelationshipBuilder(this.DatabaseSession)
+            var salesRepRelationship1 = new SalesRepRelationshipBuilder(this.Session)
                 .WithCustomer(organisation)
                 .WithSalesRepresentative(salesRep1)
                 .WithFromDate(DateTimeFactory.CreateDate(2010, 01, 01))
                 .Build();
 
-            this.DatabaseSession.Derive();
+            this.Session.Derive();
 
             Assert.Equal(1, organisation.CurrentSalesReps.Count);
             Assert.Contains(salesRep1, organisation.CurrentSalesReps);
 
-            new SalesRepRelationshipBuilder(this.DatabaseSession)
+            new SalesRepRelationshipBuilder(this.Session)
                 .WithCustomer(organisation)
                 .WithSalesRepresentative(salesRep2)
                 .WithFromDate(DateTimeFactory.CreateDate(2010, 01, 01))
                 .Build();
 
-            this.DatabaseSession.Derive();
+            this.Session.Derive();
 
             Assert.Equal(2, organisation.CurrentSalesReps.Count);
             Assert.Contains(salesRep1, organisation.CurrentSalesReps);
@@ -63,20 +63,20 @@ namespace Allors.Domain
 
             salesRepRelationship1.ThroughDate = DateTimeFactory.CreateDate(2010, 12, 31);
             
-            this.DatabaseSession.Derive();
+            this.Session.Derive();
 
             Assert.Equal(1, organisation.CurrentSalesReps.Count);
             Assert.Contains(salesRep2, organisation.CurrentSalesReps);
 
-            new SalesRepRelationshipBuilder(this.DatabaseSession)
+            new SalesRepRelationshipBuilder(this.Session)
                 .WithCustomer(organisation)
                 .WithSalesRepresentative(salesRep3)
-                .WithProductCategory(new ProductCategoryBuilder(this.DatabaseSession)
-                                        .WithLocalisedName(new LocalisedTextBuilder(this.DatabaseSession).WithText("category").WithLocale(Singleton.Instance(this.DatabaseSession).DefaultLocale).Build())
+                .WithProductCategory(new ProductCategoryBuilder(this.Session)
+                                        .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("category").WithLocale(this.Session.GetSingleton().DefaultLocale).Build())
                                         .Build())
                 .Build();
 
-            this.DatabaseSession.Derive();
+            this.Session.Derive();
 
             Assert.Equal(2, organisation.CurrentSalesReps.Count);
             Assert.Contains(salesRep2, organisation.CurrentSalesReps);
@@ -86,49 +86,49 @@ namespace Allors.Domain
         [Fact]
         public void GivenPartyWithOpenOrders_WhenDeriving_ThenOpenOrderAmountIsUpdated()
         {
-            var organisation = new OrganisationBuilder(this.DatabaseSession).WithName("customer").WithOrganisationRole(new OrganisationRoles(this.DatabaseSession).Customer).Build();
+            var organisation = new OrganisationBuilder(this.Session).WithName("customer").WithOrganisationRole(new OrganisationRoles(this.Session).Customer).Build();
 
-            new CustomerRelationshipBuilder(this.DatabaseSession).WithCustomer(organisation).Build();
+            new CustomerRelationshipBuilder(this.Session).WithCustomer(organisation).Build();
 
-            var mechelen = new CityBuilder(this.DatabaseSession).WithName("Mechelen").Build();
+            var mechelen = new CityBuilder(this.Session).WithName("Mechelen").Build();
 
-            var postalAddress = new PostalAddressBuilder(this.DatabaseSession)
+            var postalAddress = new PostalAddressBuilder(this.Session)
                   .WithAddress1("Kleine Nieuwedijkstraat 2")
                   .WithGeographicBoundary(mechelen)
                   .Build();
 
-            var good = new GoodBuilder(this.DatabaseSession)
+            var good = new GoodBuilder(this.Session)
                 .WithSku("10101")
-                .WithVatRate(new VatRateBuilder(this.DatabaseSession).WithRate(21).Build())
-                .WithLocalisedName(new LocalisedTextBuilder(this.DatabaseSession).WithText("good").WithLocale(Singleton.Instance(this.DatabaseSession).DefaultLocale).Build())
-                .WithInventoryItemKind(new InventoryItemKinds(this.DatabaseSession).NonSerialised)
-                .WithUnitOfMeasure(new UnitsOfMeasure(this.DatabaseSession).Piece)
+                .WithVatRate(new VatRateBuilder(this.Session).WithRate(21).Build())
+                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("good").WithLocale(this.Session.GetSingleton().DefaultLocale).Build())
+                .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
+                .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
                 .Build();
 
-            this.DatabaseSession.Derive();
+            this.Session.Derive();
 
-            var salesOrder1 = new SalesOrderBuilder(this.DatabaseSession).WithBillToCustomer(organisation).WithShipToAddress(postalAddress).WithComment("salesorder1").Build();
-            var orderItem1 = new SalesOrderItemBuilder(this.DatabaseSession)
+            var salesOrder1 = new SalesOrderBuilder(this.Session).WithBillToCustomer(organisation).WithShipToAddress(postalAddress).WithComment("salesorder1").Build();
+            var orderItem1 = new SalesOrderItemBuilder(this.Session)
                 .WithProduct(good)
                 .WithQuantityOrdered(10)
                 .WithActualUnitPrice(10)
                 .Build();
             salesOrder1.AddSalesOrderItem(orderItem1);
 
-            this.DatabaseSession.Derive();
+            this.Session.Derive();
 
-            var salesOrder2 = new SalesOrderBuilder(this.DatabaseSession).WithBillToCustomer(organisation).WithShipToAddress(postalAddress).WithComment("salesorder2").Build();
-            var orderItem2 = new SalesOrderItemBuilder(this.DatabaseSession)
+            var salesOrder2 = new SalesOrderBuilder(this.Session).WithBillToCustomer(organisation).WithShipToAddress(postalAddress).WithComment("salesorder2").Build();
+            var orderItem2 = new SalesOrderItemBuilder(this.Session)
                 .WithProduct(good)
                 .WithQuantityOrdered(10)
                 .WithActualUnitPrice(10)
                 .Build();
             salesOrder2.AddSalesOrderItem(orderItem2);
 
-            this.DatabaseSession.Derive();
+            this.Session.Derive();
 
-            var salesOrder3 = new SalesOrderBuilder(this.DatabaseSession).WithBillToCustomer(organisation).WithShipToAddress(postalAddress).WithComment("salesorder3").Build();
-            var orderItem3 = new SalesOrderItemBuilder(this.DatabaseSession)
+            var salesOrder3 = new SalesOrderBuilder(this.Session).WithBillToCustomer(organisation).WithShipToAddress(postalAddress).WithComment("salesorder3").Build();
+            var orderItem3 = new SalesOrderItemBuilder(this.Session)
                 .WithProduct(good)
                 .WithQuantityOrdered(10)
                 .WithActualUnitPrice(10)
@@ -136,7 +136,7 @@ namespace Allors.Domain
             salesOrder3.AddSalesOrderItem(orderItem3);
             salesOrder3.Cancel();
 
-            this.DatabaseSession.Derive();
+            this.Session.Derive();
 
             Assert.Equal(242M, organisation.OpenOrderAmount);
         }
@@ -144,54 +144,54 @@ namespace Allors.Domain
         [Fact]
         public void GivenPartyWithRevenue_WhenDeriving_ThenTotalRevenuesAreUpdated()
         {
-            var customer = new OrganisationBuilder(this.DatabaseSession).WithName("customer").WithOrganisationRole(new OrganisationRoles(this.DatabaseSession).Customer).Build();
-            var productItem = new SalesInvoiceItemTypes(this.DatabaseSession).ProductItem;
-            var contactMechanism = new ContactMechanisms(this.DatabaseSession).Extent().First;
+            var customer = new OrganisationBuilder(this.Session).WithName("customer").WithOrganisationRole(new OrganisationRoles(this.Session).Customer).Build();
+            var productItem = new SalesInvoiceItemTypes(this.Session).ProductItem;
+            var contactMechanism = new ContactMechanisms(this.Session).Extent().First;
 
-            new CustomerRelationshipBuilder(this.DatabaseSession).WithCustomer(customer).WithFromDate(DateTime.Now.AddYears(-2)).Build();
+            new CustomerRelationshipBuilder(this.Session).WithCustomer(customer).WithFromDate(DateTime.Now.AddYears(-2)).Build();
 
-            var good = new GoodBuilder(this.DatabaseSession)
+            var good = new GoodBuilder(this.Session)
                 .WithSku("10101")
-                .WithVatRate(new VatRateBuilder(this.DatabaseSession).WithRate(0).Build())
-                .WithLocalisedName(new LocalisedTextBuilder(this.DatabaseSession).WithText("goof").WithLocale(Singleton.Instance(this.DatabaseSession).DefaultLocale).Build())
-                .WithInventoryItemKind(new InventoryItemKinds(this.DatabaseSession).NonSerialised)
-                .WithUnitOfMeasure(new UnitsOfMeasure(this.DatabaseSession).Piece)
+                .WithVatRate(new VatRateBuilder(this.Session).WithRate(0).Build())
+                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("goof").WithLocale(this.Session.GetSingleton().DefaultLocale).Build())
+                .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
+                .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
                 .Build();
 
-            this.DatabaseSession.Derive();
+            this.Session.Derive();
 
             var date1 = DateTimeFactory.CreateDate(DateTime.UtcNow.AddYears(-1).Year, 1, 1);
             var date2 = DateTimeFactory.CreateDate(DateTime.UtcNow.Year, 1, 1);
             var date3 = DateTimeFactory.CreateDate(DateTime.UtcNow.Year, 2, 1);
 
-            new SalesInvoiceBuilder(this.DatabaseSession)
-                .WithSalesInvoiceType(new SalesInvoiceTypes(this.DatabaseSession).SalesInvoice)
+            new SalesInvoiceBuilder(this.Session)
+                .WithSalesInvoiceType(new SalesInvoiceTypes(this.Session).SalesInvoice)
                 .WithBillToCustomer(customer)
-                .WithSalesInvoiceItem(new SalesInvoiceItemBuilder(this.DatabaseSession).WithProduct(good).WithActualUnitPrice(10M).WithQuantity(1).WithSalesInvoiceItemType(productItem).Build())
+                .WithSalesInvoiceItem(new SalesInvoiceItemBuilder(this.Session).WithProduct(good).WithActualUnitPrice(10M).WithQuantity(1).WithSalesInvoiceItemType(productItem).Build())
                 .WithInvoiceDate(date1)
                 .WithBillToContactMechanism(contactMechanism)
                 .WithComment("invoice1")
                 .Build();
 
-            new SalesInvoiceBuilder(this.DatabaseSession)
-                .WithSalesInvoiceType(new SalesInvoiceTypes(this.DatabaseSession).SalesInvoice)
+            new SalesInvoiceBuilder(this.Session)
+                .WithSalesInvoiceType(new SalesInvoiceTypes(this.Session).SalesInvoice)
                 .WithBillToCustomer(customer)
-                .WithSalesInvoiceItem(new SalesInvoiceItemBuilder(this.DatabaseSession).WithProduct(good).WithActualUnitPrice(100M).WithQuantity(1).WithSalesInvoiceItemType(productItem).Build())
+                .WithSalesInvoiceItem(new SalesInvoiceItemBuilder(this.Session).WithProduct(good).WithActualUnitPrice(100M).WithQuantity(1).WithSalesInvoiceItemType(productItem).Build())
                 .WithInvoiceDate(date2)
                 .WithBillToContactMechanism(contactMechanism)
                 .WithComment("invoice2")
                 .Build();
 
-            new SalesInvoiceBuilder(this.DatabaseSession)
-                .WithSalesInvoiceType(new SalesInvoiceTypes(this.DatabaseSession).SalesInvoice)
+            new SalesInvoiceBuilder(this.Session)
+                .WithSalesInvoiceType(new SalesInvoiceTypes(this.Session).SalesInvoice)
                 .WithBillToCustomer(customer)
-                .WithSalesInvoiceItem(new SalesInvoiceItemBuilder(this.DatabaseSession).WithProduct(good).WithActualUnitPrice(100M).WithQuantity(1).WithSalesInvoiceItemType(productItem).Build())
+                .WithSalesInvoiceItem(new SalesInvoiceItemBuilder(this.Session).WithProduct(good).WithActualUnitPrice(100M).WithQuantity(1).WithSalesInvoiceItemType(productItem).Build())
                 .WithInvoiceDate(date3)
                 .WithBillToContactMechanism(contactMechanism)
                 .WithComment("invoice3")
                 .Build();
 
-            this.DatabaseSession.Derive();
+            this.Session.Derive();
 
             Assert.Equal(10M, customer.LastYearsRevenue);
             Assert.Equal(200M, customer.YTDRevenue);

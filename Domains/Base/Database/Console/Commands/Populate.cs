@@ -24,6 +24,8 @@ namespace Allors.Console
     using System.Data;
     using System.IO;
 
+    using Allors.Domain;
+
     public class Populate : Command
     {
         public override void Execute()
@@ -31,8 +33,6 @@ namespace Allors.Console
             var database = this.CreateDatabase(IsolationLevel.Serializable);
 
             Console.WriteLine("Are you sure, all current data will be destroyed? (Y/N)\n");
-
-            this.SetIdentity("Administrator");
 
             var confirmationKey = Console.ReadKey(true).KeyChar.ToString();
             if (confirmationKey.ToLower().Equals("y"))
@@ -46,6 +46,9 @@ namespace Allors.Console
                     var dataPath = this.Configuration["dataPath"];
                     var directoryInfo = dataPath != null ? new DirectoryInfo(dataPath) : null;
                     new Setup(session, directoryInfo).Apply();
+
+                    var administrator = new Users(session).GetUser("administrator");
+                    session.SetUser(administrator);
 
                     new Allors.Upgrade(session, directoryInfo).Execute();
 

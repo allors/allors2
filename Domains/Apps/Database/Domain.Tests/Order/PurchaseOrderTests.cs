@@ -34,13 +34,13 @@ namespace Allors.Domain
         [Fact]
         public void GivenPurchaseOrderBuilder_WhenBuild_ThenPostBuildRelationsMustExist()
         {
-            var supplier = new OrganisationBuilder(this.DatabaseSession).WithName("supplier").WithOrganisationRole(new OrganisationRoles(this.DatabaseSession).Supplier).Build();
-            var internalOrganisation = Singleton.Instance(this.DatabaseSession).InternalOrganisation;
-            new SupplierRelationshipBuilder(this.DatabaseSession).WithSupplier(supplier).Build();
+            var supplier = new OrganisationBuilder(this.Session).WithName("supplier").WithOrganisationRole(new OrganisationRoles(this.Session).Supplier).Build();
+            var internalOrganisation = this.Session.GetSingleton().InternalOrganisation;
+            new SupplierRelationshipBuilder(this.Session).WithSupplier(supplier).Build();
 
-            var order = new PurchaseOrderBuilder(this.DatabaseSession).WithTakenViaSupplier(supplier).Build();
+            var order = new PurchaseOrderBuilder(this.Session).WithTakenViaSupplier(supplier).Build();
 
-            Assert.Equal(new PurchaseOrderStates(this.DatabaseSession).Provisional, order.PurchaseOrderState);
+            Assert.Equal(new PurchaseOrderStates(this.Session).Provisional, order.PurchaseOrderState);
             Assert.Equal(DateTime.UtcNow.Date, order.OrderDate.Date);
             Assert.Equal(DateTime.UtcNow.Date, order.EntryDate.Date);
             Assert.Equal(order.PreviousTakenViaSupplier, order.TakenViaSupplier);
@@ -50,111 +50,111 @@ namespace Allors.Domain
         [Fact]
         public void GivenOrder_WhenDeriving_ThenRequiredRelationsMustExist()
         {
-            var supplier = new OrganisationBuilder(this.DatabaseSession).WithName("customer2").WithOrganisationRole(new OrganisationRoles(this.DatabaseSession).Customer).Build();
-            var internalOrganisation = Singleton.Instance(this.DatabaseSession).InternalOrganisation;
-            new SupplierRelationshipBuilder(this.DatabaseSession).WithSupplier(supplier).Build();
+            var supplier = new OrganisationBuilder(this.Session).WithName("customer2").WithOrganisationRole(new OrganisationRoles(this.Session).Customer).Build();
+            var internalOrganisation = this.Session.GetSingleton().InternalOrganisation;
+            new SupplierRelationshipBuilder(this.Session).WithSupplier(supplier).Build();
 
-            var mechelen = new CityBuilder(this.DatabaseSession).WithName("Mechelen").Build();
-            ContactMechanism takenViaContactMechanism = new PostalAddressBuilder(this.DatabaseSession).WithGeographicBoundary(mechelen).WithAddress1("Haverwerf 15").Build();
-            var supplierContactMechanism = new PartyContactMechanismBuilder(this.DatabaseSession)
+            var mechelen = new CityBuilder(this.Session).WithName("Mechelen").Build();
+            ContactMechanism takenViaContactMechanism = new PostalAddressBuilder(this.Session).WithGeographicBoundary(mechelen).WithAddress1("Haverwerf 15").Build();
+            var supplierContactMechanism = new PartyContactMechanismBuilder(this.Session)
                 .WithContactMechanism(takenViaContactMechanism)
                 .WithUseAsDefault(true)
-                .WithContactPurpose(new ContactMechanismPurposes(this.DatabaseSession).OrderAddress)
+                .WithContactPurpose(new ContactMechanismPurposes(this.Session).OrderAddress)
                 .Build();
             supplier.AddPartyContactMechanism(supplierContactMechanism);
 
-            this.DatabaseSession.Derive();
-            this.DatabaseSession.Commit();
+            this.Session.Derive();
+            this.Session.Commit();
 
-            var builder = new PurchaseOrderBuilder(this.DatabaseSession);
+            var builder = new PurchaseOrderBuilder(this.Session);
             builder.Build();
 
-            Assert.True(this.DatabaseSession.Derive(false).HasErrors);
+            Assert.True(this.Session.Derive(false).HasErrors);
 
-            this.DatabaseSession.Rollback();
+            this.Session.Rollback();
 
             builder.WithTakenViaSupplier(supplier);
             builder.Build();
 
-            Assert.False(this.DatabaseSession.Derive(false).HasErrors);
+            Assert.False(this.Session.Derive(false).HasErrors);
 
             builder.WithTakenViaContactMechanism(takenViaContactMechanism);
             builder.Build();
 
-            Assert.False(this.DatabaseSession.Derive(false).HasErrors);
+            Assert.False(this.Session.Derive(false).HasErrors);
         }
 
         [Fact]
         public void GivenPurchaseOrder_WhenDeriving_ThenTakenViaSupplierMustBeInSupplierRelationship()
         {
-            var supplier = new OrganisationBuilder(this.DatabaseSession).WithName("customer2").WithOrganisationRole(new OrganisationRoles(this.DatabaseSession).Customer).Build();
-            var internalOrganisation = Singleton.Instance(this.DatabaseSession).InternalOrganisation;
+            var supplier = new OrganisationBuilder(this.Session).WithName("customer2").WithOrganisationRole(new OrganisationRoles(this.Session).Customer).Build();
+            var internalOrganisation = this.Session.GetSingleton().InternalOrganisation;
 
-            new PurchaseOrderBuilder(this.DatabaseSession)
+            new PurchaseOrderBuilder(this.Session)
                 .WithTakenViaSupplier(supplier)
                 .Build();
 
             var expectedError = ErrorMessages.PartyIsNotASupplier;
-            Assert.Equal(expectedError, this.DatabaseSession.Derive(false).Errors[0].Message);
+            Assert.Equal(expectedError, this.Session.Derive(false).Errors[0].Message);
 
-            new SupplierRelationshipBuilder(this.DatabaseSession).WithSupplier(supplier).Build();
+            new SupplierRelationshipBuilder(this.Session).WithSupplier(supplier).Build();
 
-            Assert.False(this.DatabaseSession.Derive(false).HasErrors);
+            Assert.False(this.Session.Derive(false).HasErrors);
         }
 
         [Fact]
         public void GivenOrder_WhenDeriving_ThenLocaleMustExist()
         {
-            var supplier = new OrganisationBuilder(this.DatabaseSession).WithName("customer2").WithOrganisationRole(new OrganisationRoles(this.DatabaseSession).Customer).Build();
-            new SupplierRelationshipBuilder(this.DatabaseSession).WithSupplier(supplier).Build();
+            var supplier = new OrganisationBuilder(this.Session).WithName("customer2").WithOrganisationRole(new OrganisationRoles(this.Session).Customer).Build();
+            new SupplierRelationshipBuilder(this.Session).WithSupplier(supplier).Build();
 
-            var mechelen = new CityBuilder(this.DatabaseSession).WithName("Mechelen").Build();
-            ContactMechanism takenViaContactMechanism = new PostalAddressBuilder(this.DatabaseSession).WithGeographicBoundary(mechelen).WithAddress1("Haverwerf 15").Build();
-            var supplierContactMechanism = new PartyContactMechanismBuilder(this.DatabaseSession)
+            var mechelen = new CityBuilder(this.Session).WithName("Mechelen").Build();
+            ContactMechanism takenViaContactMechanism = new PostalAddressBuilder(this.Session).WithGeographicBoundary(mechelen).WithAddress1("Haverwerf 15").Build();
+            var supplierContactMechanism = new PartyContactMechanismBuilder(this.Session)
                 .WithContactMechanism(takenViaContactMechanism)
                 .WithUseAsDefault(true)
-                .WithContactPurpose(new ContactMechanismPurposes(this.DatabaseSession).OrderAddress)
+                .WithContactPurpose(new ContactMechanismPurposes(this.Session).OrderAddress)
                 .Build();
             supplier.AddPartyContactMechanism(supplierContactMechanism);
 
-            var order = new PurchaseOrderBuilder(this.DatabaseSession)
+            var order = new PurchaseOrderBuilder(this.Session)
                 .WithTakenViaSupplier(supplier)
                 .Build();
 
-            this.DatabaseSession.Derive();
+            this.Session.Derive();
 
-            Assert.Equal(Singleton.Instance(this.DatabaseSession).DefaultLocale, order.Locale);
+            Assert.Equal(this.Session.GetSingleton().DefaultLocale, order.Locale);
         }
 
         [Fact]
         public void GivenPurchaseOrder_WhenGettingOrderNumberWithoutFormat_ThenOrderNumberShouldBeReturned()
         {
-            var internalOrganisation = Singleton.Instance(this.DatabaseSession).InternalOrganisation;
+            var internalOrganisation = this.Session.GetSingleton().InternalOrganisation;
             internalOrganisation.RemovePurchaseOrderNumberPrefix();
 
-            var supplier = new OrganisationBuilder(this.DatabaseSession).WithName("customer2").WithOrganisationRole(new OrganisationRoles(this.DatabaseSession).Customer).Build();
+            var supplier = new OrganisationBuilder(this.Session).WithName("customer2").WithOrganisationRole(new OrganisationRoles(this.Session).Customer).Build();
 
-            var order1 = new PurchaseOrderBuilder(this.DatabaseSession).WithTakenViaSupplier(supplier).Build();
+            var order1 = new PurchaseOrderBuilder(this.Session).WithTakenViaSupplier(supplier).Build();
             Assert.Equal("1", order1.OrderNumber);
 
-            var order2 = new PurchaseOrderBuilder(this.DatabaseSession).WithTakenViaSupplier(supplier).Build();
+            var order2 = new PurchaseOrderBuilder(this.Session).WithTakenViaSupplier(supplier).Build();
             Assert.Equal("2", order2.OrderNumber);
         }
 
         [Fact]
         public void GivenPurchaseOrder_WhenGettingOrderNumberWithFormat_ThenFormattedOrderNumberShouldBeReturned()
         {
-            var supplier = new OrganisationBuilder(this.DatabaseSession).WithName("customer2").WithOrganisationRole(new OrganisationRoles(this.DatabaseSession).Customer).Build();
-            var internalOrganisation = Singleton.Instance(this.DatabaseSession).InternalOrganisation;
+            var supplier = new OrganisationBuilder(this.Session).WithName("customer2").WithOrganisationRole(new OrganisationRoles(this.Session).Customer).Build();
+            var internalOrganisation = this.Session.GetSingleton().InternalOrganisation;
             internalOrganisation.PurchaseOrderNumberPrefix = "the format is ";
 
-            var order1 = new PurchaseOrderBuilder(this.DatabaseSession)
+            var order1 = new PurchaseOrderBuilder(this.Session)
                 .WithTakenViaSupplier(supplier)
                 .Build();
 
             Assert.Equal("the format is 1", order1.OrderNumber);
 
-            var order2 = new PurchaseOrderBuilder(this.DatabaseSession)
+            var order2 = new PurchaseOrderBuilder(this.Session)
                 .WithTakenViaSupplier(supplier)
                 .Build();
 
@@ -166,24 +166,24 @@ namespace Allors.Domain
         {
             this.SetIdentity("orderProcessor");
 
-            var supplier = new OrganisationBuilder(this.DatabaseSession).WithName("customer2").WithOrganisationRole(new OrganisationRoles(this.DatabaseSession).Customer).Build();
-            var internalOrganisation = Singleton.Instance(this.DatabaseSession).InternalOrganisation;
-            new SupplierRelationshipBuilder(this.DatabaseSession).WithSupplier(supplier).Build();
+            var supplier = new OrganisationBuilder(this.Session).WithName("customer2").WithOrganisationRole(new OrganisationRoles(this.Session).Customer).Build();
+            var internalOrganisation = this.Session.GetSingleton().InternalOrganisation;
+            new SupplierRelationshipBuilder(this.Session).WithSupplier(supplier).Build();
 
-            var order = new PurchaseOrderBuilder(this.DatabaseSession)
+            var order = new PurchaseOrderBuilder(this.Session)
                 .WithTakenViaSupplier(supplier)
                 .Build();
 
             order.Confirm();
 
-            this.DatabaseSession.Derive(); 
+            this.Session.Derive(); 
             
             order.Approve();
 
-            this.DatabaseSession.Derive();
+            this.Session.Derive();
 
-            Assert.Equal(new PurchaseOrderStates(this.DatabaseSession).RequestsApproval, order.PurchaseOrderState);
-            var acl = new AccessControlList(order, new Users(this.DatabaseSession).CurrentUser);
+            Assert.Equal(new PurchaseOrderStates(this.Session).RequestsApproval, order.PurchaseOrderState);
+            var acl = new AccessControlList(order, this.Session.GetUser());
             Assert.False(acl.CanExecute(M.PurchaseOrder.Confirm));
             Assert.False(acl.CanExecute(M.PurchaseOrder.Reject));
             Assert.False(acl.CanExecute(M.PurchaseOrder.Approve));
@@ -195,20 +195,20 @@ namespace Allors.Domain
         {
             this.SetIdentity("orderProcessor");
 
-            var supplier = new OrganisationBuilder(this.DatabaseSession).WithName("customer2").WithOrganisationRole(new OrganisationRoles(this.DatabaseSession).Customer).Build();
-            var internalOrganisation = Singleton.Instance(this.DatabaseSession).InternalOrganisation;
-            new SupplierRelationshipBuilder(this.DatabaseSession).WithSupplier(supplier).Build();
+            var supplier = new OrganisationBuilder(this.Session).WithName("customer2").WithOrganisationRole(new OrganisationRoles(this.Session).Customer).Build();
+            var internalOrganisation = this.Session.GetSingleton().InternalOrganisation;
+            new SupplierRelationshipBuilder(this.Session).WithSupplier(supplier).Build();
 
-            var order = new PurchaseOrderBuilder(this.DatabaseSession)
+            var order = new PurchaseOrderBuilder(this.Session)
                 .WithTakenViaSupplier(supplier)
                 .Build();
 
             order.Confirm();
 
-            this.DatabaseSession.Derive();
+            this.Session.Derive();
 
-            Assert.Equal(new PurchaseOrderStates(this.DatabaseSession).InProcess, order.PurchaseOrderState);
-            var acl = new AccessControlList(order, new Users(this.DatabaseSession).CurrentUser);
+            Assert.Equal(new PurchaseOrderStates(this.Session).InProcess, order.PurchaseOrderState);
+            var acl = new AccessControlList(order, this.Session.GetUser());
             Assert.True(acl.CanExecute(M.PurchaseOrder.Cancel));
             Assert.True(acl.CanExecute(M.PurchaseOrder.Hold));
             Assert.False(acl.CanExecute(M.PurchaseOrder.Confirm));
@@ -222,24 +222,24 @@ namespace Allors.Domain
         {
             this.SetIdentity("orderProcessor");
 
-            var supplier = new OrganisationBuilder(this.DatabaseSession).WithName("customer2").WithOrganisationRole(new OrganisationRoles(this.DatabaseSession).Customer).Build();
-            var internalOrganisation = Singleton.Instance(this.DatabaseSession).InternalOrganisation;
-            new SupplierRelationshipBuilder(this.DatabaseSession).WithSupplier(supplier).Build();
+            var supplier = new OrganisationBuilder(this.Session).WithName("customer2").WithOrganisationRole(new OrganisationRoles(this.Session).Customer).Build();
+            var internalOrganisation = this.Session.GetSingleton().InternalOrganisation;
+            new SupplierRelationshipBuilder(this.Session).WithSupplier(supplier).Build();
 
-            var order = new PurchaseOrderBuilder(this.DatabaseSession)
+            var order = new PurchaseOrderBuilder(this.Session)
                 .WithTakenViaSupplier(supplier)
                 .Build();
 
             order.Confirm();
 
-            this.DatabaseSession.Derive(); 
+            this.Session.Derive(); 
             
             order.Hold();
 
-            this.DatabaseSession.Derive();
+            this.Session.Derive();
 
-            Assert.Equal(new PurchaseOrderStates(this.DatabaseSession).OnHold, order.PurchaseOrderState);
-            var acl = new AccessControlList(order, new Users(this.DatabaseSession).CurrentUser);
+            Assert.Equal(new PurchaseOrderStates(this.Session).OnHold, order.PurchaseOrderState);
+            var acl = new AccessControlList(order, this.Session.GetUser());
             Assert.True(acl.CanExecute(M.PurchaseOrder.Cancel));
             Assert.True(acl.CanExecute(M.PurchaseOrder.Continue));
             Assert.False(acl.CanExecute(M.PurchaseOrder.Confirm));
@@ -251,80 +251,80 @@ namespace Allors.Domain
         [Fact]
         public void GivenPurchaseOrder_WhenConfirming_ThenAllValidItemsAreInConfirmedState()
         {
-            var supplier = new OrganisationBuilder(this.DatabaseSession).WithName("customer2").WithOrganisationRole(new OrganisationRoles(this.DatabaseSession).Customer).Build();
-            var internalOrganisation = Singleton.Instance(this.DatabaseSession).InternalOrganisation;
-            new SupplierRelationshipBuilder(this.DatabaseSession).WithSupplier(supplier).Build();
+            var supplier = new OrganisationBuilder(this.Session).WithName("customer2").WithOrganisationRole(new OrganisationRoles(this.Session).Customer).Build();
+            var internalOrganisation = this.Session.GetSingleton().InternalOrganisation;
+            new SupplierRelationshipBuilder(this.Session).WithSupplier(supplier).Build();
 
-            var part = new RawMaterialBuilder(this.DatabaseSession).WithName("RawMaterial").Build();
+            var part = new RawMaterialBuilder(this.Session).WithName("RawMaterial").Build();
 
-            var order = new PurchaseOrderBuilder(this.DatabaseSession)
+            var order = new PurchaseOrderBuilder(this.Session)
                 .WithTakenViaSupplier(supplier)
-                .WithVatRegime(new VatRegimes(this.DatabaseSession).Exempt)
+                .WithVatRegime(new VatRegimes(this.Session).Exempt)
                 .Build();
 
-            var item1 = new PurchaseOrderItemBuilder(this.DatabaseSession).WithPart(part).WithQuantityOrdered(1).Build();
-            var item2 = new PurchaseOrderItemBuilder(this.DatabaseSession).WithPart(part).WithQuantityOrdered(2).Build();
-            var item3 = new PurchaseOrderItemBuilder(this.DatabaseSession).WithPart(part).WithQuantityOrdered(3).Build();
-            var item4 = new PurchaseOrderItemBuilder(this.DatabaseSession).WithPart(part).WithQuantityOrdered(4).Build();
+            var item1 = new PurchaseOrderItemBuilder(this.Session).WithPart(part).WithQuantityOrdered(1).Build();
+            var item2 = new PurchaseOrderItemBuilder(this.Session).WithPart(part).WithQuantityOrdered(2).Build();
+            var item3 = new PurchaseOrderItemBuilder(this.Session).WithPart(part).WithQuantityOrdered(3).Build();
+            var item4 = new PurchaseOrderItemBuilder(this.Session).WithPart(part).WithQuantityOrdered(4).Build();
             order.AddPurchaseOrderItem(item1);
             order.AddPurchaseOrderItem(item2);
             order.AddPurchaseOrderItem(item3);
             order.AddPurchaseOrderItem(item4);
 
-            this.DatabaseSession.Derive();
+            this.Session.Derive();
 
             order.Confirm();
 
-            this.DatabaseSession.Derive();
+            this.Session.Derive();
 
             item4.Cancel();
 
-            this.DatabaseSession.Derive(); 
+            this.Session.Derive(); 
 
             Assert.Equal(3, order.ValidOrderItems.Count);
             Assert.Contains(item1, order.ValidOrderItems);
             Assert.Contains(item2, order.ValidOrderItems);
             Assert.Contains(item3, order.ValidOrderItems);
-            Assert.Equal(new PurchaseOrderItemStates(this.DatabaseSession).InProcess, item1.PurchaseOrderItemState);
-            Assert.Equal(new PurchaseOrderItemStates(this.DatabaseSession).InProcess, item2.PurchaseOrderItemState);
-            Assert.Equal(new PurchaseOrderItemStates(this.DatabaseSession).InProcess, item3.PurchaseOrderItemState);
-            Assert.Equal(new PurchaseOrderItemStates(this.DatabaseSession).Cancelled, item4.PurchaseOrderItemState);
+            Assert.Equal(new PurchaseOrderItemStates(this.Session).InProcess, item1.PurchaseOrderItemState);
+            Assert.Equal(new PurchaseOrderItemStates(this.Session).InProcess, item2.PurchaseOrderItemState);
+            Assert.Equal(new PurchaseOrderItemStates(this.Session).InProcess, item3.PurchaseOrderItemState);
+            Assert.Equal(new PurchaseOrderItemStates(this.Session).Cancelled, item4.PurchaseOrderItemState);
         }
 
         [Fact]
         public void GivenPurchaseOrder_WhenOrdering_ThenAllValidItemsAreInInProcessState()
         {
-            var supplier = new OrganisationBuilder(this.DatabaseSession).WithName("customer2").WithOrganisationRole(new OrganisationRoles(this.DatabaseSession).Customer).Build();
-            var internalOrganisation = Singleton.Instance(this.DatabaseSession).InternalOrganisation;
-            new SupplierRelationshipBuilder(this.DatabaseSession).WithSupplier(supplier).Build();
+            var supplier = new OrganisationBuilder(this.Session).WithName("customer2").WithOrganisationRole(new OrganisationRoles(this.Session).Customer).Build();
+            var internalOrganisation = this.Session.GetSingleton().InternalOrganisation;
+            new SupplierRelationshipBuilder(this.Session).WithSupplier(supplier).Build();
 
-            var part = new RawMaterialBuilder(this.DatabaseSession).WithName("RawMaterial").Build();
+            var part = new RawMaterialBuilder(this.Session).WithName("RawMaterial").Build();
 
-            var order = new PurchaseOrderBuilder(this.DatabaseSession)
+            var order = new PurchaseOrderBuilder(this.Session)
                 .WithTakenViaSupplier(supplier)
-                .WithVatRegime(new VatRegimes(this.DatabaseSession).Exempt)
+                .WithVatRegime(new VatRegimes(this.Session).Exempt)
                 .Build();
 
-            var item1 = new PurchaseOrderItemBuilder(this.DatabaseSession).WithPart(part).WithQuantityOrdered(1).Build();
-            var item2 = new PurchaseOrderItemBuilder(this.DatabaseSession).WithPart(part).WithQuantityOrdered(2).Build();
-            var item3 = new PurchaseOrderItemBuilder(this.DatabaseSession).WithPart(part).WithQuantityOrdered(3).Build();
+            var item1 = new PurchaseOrderItemBuilder(this.Session).WithPart(part).WithQuantityOrdered(1).Build();
+            var item2 = new PurchaseOrderItemBuilder(this.Session).WithPart(part).WithQuantityOrdered(2).Build();
+            var item3 = new PurchaseOrderItemBuilder(this.Session).WithPart(part).WithQuantityOrdered(3).Build();
             order.AddPurchaseOrderItem(item1);
             order.AddPurchaseOrderItem(item2);
             order.AddPurchaseOrderItem(item3);
 
-            this.DatabaseSession.Derive();
+            this.Session.Derive();
 
             order.Confirm();
 
-            this.DatabaseSession.Derive();
+            this.Session.Derive();
 
             Assert.Equal(3, order.ValidOrderItems.Count);
             Assert.Contains(item1, order.ValidOrderItems);
             Assert.Contains(item2, order.ValidOrderItems);
             Assert.Contains(item3, order.ValidOrderItems);
-            Assert.Equal(new PurchaseOrderItemStates(this.DatabaseSession).InProcess, item1.PurchaseOrderItemState);
-            Assert.Equal(new PurchaseOrderItemStates(this.DatabaseSession).InProcess, item2.PurchaseOrderItemState);
-            Assert.Equal(new PurchaseOrderItemStates(this.DatabaseSession).InProcess, item3.PurchaseOrderItemState);
+            Assert.Equal(new PurchaseOrderItemStates(this.Session).InProcess, item1.PurchaseOrderItemState);
+            Assert.Equal(new PurchaseOrderItemStates(this.Session).InProcess, item2.PurchaseOrderItemState);
+            Assert.Equal(new PurchaseOrderItemStates(this.Session).InProcess, item3.PurchaseOrderItemState);
         }
     }
 }

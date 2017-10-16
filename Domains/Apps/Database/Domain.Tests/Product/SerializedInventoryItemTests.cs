@@ -30,53 +30,53 @@ namespace Allors.Domain
         [Fact]
         public void GivenInventoryItem_WhenDeriving_ThenRequiredRelationsMustExist()
         {
-            var part = new FinishedGoodBuilder(this.DatabaseSession).WithName("part")
+            var part = new FinishedGoodBuilder(this.Session).WithName("part")
                 .WithManufacturerId("10101")
-                .WithInventoryItemKind(new InventoryItemKinds(this.DatabaseSession).NonSerialised)
+                .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
                 .WithSku("sku")
                 .Build();
 
-            this.DatabaseSession.Commit();
+            this.Session.Commit();
 
-            var builder = new SerialisedInventoryItemBuilder(this.DatabaseSession);
+            var builder = new SerialisedInventoryItemBuilder(this.Session);
             builder.Build();
 
-            Assert.True(this.DatabaseSession.Derive(false).HasErrors);
+            Assert.True(this.Session.Derive(false).HasErrors);
 
-            this.DatabaseSession.Rollback();
+            this.Session.Rollback();
 
             builder.WithPart(part);
             builder.Build();
 
-            Assert.True(this.DatabaseSession.Derive(false).HasErrors);
+            Assert.True(this.Session.Derive(false).HasErrors);
 
-            this.DatabaseSession.Rollback();
+            this.Session.Rollback();
 
             builder.WithSerialNumber("1");
             builder.Build();
 
-            Assert.False(this.DatabaseSession.Derive(false).HasErrors);
+            Assert.False(this.Session.Derive(false).HasErrors);
 
-            builder.WithGood(new GoodBuilder(this.DatabaseSession)
+            builder.WithGood(new GoodBuilder(this.Session)
                 .WithSku("10101")
-                .WithLocalisedName(new LocalisedTextBuilder(this.DatabaseSession).WithText("good").WithLocale(Singleton.Instance(this.DatabaseSession).DefaultLocale).Build())
+                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("good").WithLocale(this.Session.GetSingleton().DefaultLocale).Build())
                 .Build());
 
             builder.Build();
 
-            Assert.True(this.DatabaseSession.Derive(false).HasErrors);
+            Assert.True(this.Session.Derive(false).HasErrors);
         }
 
         [Fact]
         public void GivenInventoryItem_WhenBuild_ThenPostBuildRelationsMustExist()
         {
-            var item = new SerialisedInventoryItemBuilder(this.DatabaseSession)
-                .WithPart(new FinishedGoodBuilder(this.DatabaseSession)
-                            .WithName("part").WithManufacturerId("10101").WithInventoryItemKind(new InventoryItemKinds(this.DatabaseSession).NonSerialised).Build())
+            var item = new SerialisedInventoryItemBuilder(this.Session)
+                .WithPart(new FinishedGoodBuilder(this.Session)
+                            .WithName("part").WithManufacturerId("10101").WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised).Build())
                 .Build();
 
-            Assert.Equal(new SerialisedInventoryItemStates(this.DatabaseSession).Good, item.SerialisedInventoryItemState);
-            Assert.Equal(new Facilities(this.DatabaseSession).FindBy(M.Facility.FacilityType, new FacilityTypes(this.DatabaseSession).Warehouse), item.Facility);
+            Assert.Equal(new SerialisedInventoryItemStates(this.Session).Good, item.SerialisedInventoryItemState);
+            Assert.Equal(new Facilities(this.Session).FindBy(M.Facility.FacilityType, new FacilityTypes(this.Session).Warehouse), item.Facility);
         }
     }
 }

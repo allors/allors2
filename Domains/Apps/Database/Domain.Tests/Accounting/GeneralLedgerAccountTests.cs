@@ -31,61 +31,61 @@ namespace Allors.Domain
         [Fact]
         public void GivenGeneralLedgerAccount_WhenDeriving_ThenRequiredRelationsMustExist()
         {
-            var accountGroup = new GeneralLedgerAccountGroupBuilder(this.DatabaseSession).WithDescription("accountGroup").Build();
-            var accountType = new GeneralLedgerAccountTypeBuilder(this.DatabaseSession).WithDescription("accountType").Build();
+            var accountGroup = new GeneralLedgerAccountGroupBuilder(this.Session).WithDescription("accountGroup").Build();
+            var accountType = new GeneralLedgerAccountTypeBuilder(this.Session).WithDescription("accountType").Build();
 
-            this.DatabaseSession.Commit();
+            this.Session.Commit();
 
-            var builder = new GeneralLedgerAccountBuilder(this.DatabaseSession);
+            var builder = new GeneralLedgerAccountBuilder(this.Session);
             builder.Build();
 
-            Assert.True(this.DatabaseSession.Derive(false).HasErrors);
+            Assert.True(this.Session.Derive(false).HasErrors);
 
-            this.DatabaseSession.Rollback();
+            this.Session.Rollback();
 
             builder.WithAccountNumber("0001");
             builder.Build();
 
-            Assert.True(this.DatabaseSession.Derive(false).HasErrors); 
+            Assert.True(this.Session.Derive(false).HasErrors); 
 
-            this.DatabaseSession.Rollback();
+            this.Session.Rollback();
 
             builder.WithName("GeneralLedgerAccount");
             builder.Build();
 
-            Assert.True(this.DatabaseSession.Derive(false).HasErrors);
+            Assert.True(this.Session.Derive(false).HasErrors);
 
-            this.DatabaseSession.Rollback();
+            this.Session.Rollback();
 
             builder.WithBalanceSheetAccount(true);
             builder.Build();
 
-            this.DatabaseSession.Rollback();
+            this.Session.Rollback();
 
-            builder.WithSide(new DebitCreditConstants(this.DatabaseSession).Debit);
+            builder.WithSide(new DebitCreditConstants(this.Session).Debit);
             builder.Build();
 
-            Assert.True(this.DatabaseSession.Derive(false).HasErrors);
+            Assert.True(this.Session.Derive(false).HasErrors);
 
-            this.DatabaseSession.Rollback();
+            this.Session.Rollback();
 
             builder.WithGeneralLedgerAccountGroup(accountGroup);
             builder.Build();
 
-            Assert.True(this.DatabaseSession.Derive(false).HasErrors);
+            Assert.True(this.Session.Derive(false).HasErrors);
 
-            this.DatabaseSession.Rollback();
+            this.Session.Rollback();
 
             builder.WithGeneralLedgerAccountType(accountType);
             builder.Build();
 
-            Assert.False(this.DatabaseSession.Derive(false).HasErrors);
+            Assert.False(this.Session.Derive(false).HasErrors);
         }
 
         [Fact]
         public void GivenGeneralLedgerAccount_WhenBuild_ThenPostBuildRelationsMustExist()
         {
-            var generalLedgerAccount = new GeneralLedgerAccountBuilder(this.DatabaseSession)
+            var generalLedgerAccount = new GeneralLedgerAccountBuilder(this.Session)
                 .WithAccountNumber("0001")
                 .WithName("GeneralLedgerAccount")
                 .WithBalanceSheetAccount(true)
@@ -104,54 +104,54 @@ namespace Allors.Domain
         [Fact]
         public void GivenGeneralLedgerAccount_WhenAddedToChartOfAccounts_ThenAccountNumberMustBeUnique()
         {
-            var glAccount0001 = new GeneralLedgerAccountBuilder(this.DatabaseSession)
+            var glAccount0001 = new GeneralLedgerAccountBuilder(this.Session)
                 .WithAccountNumber("0001")
                 .WithName("GeneralLedgerAccount")
                 .WithBalanceSheetAccount(true)
-                .WithSide(new DebitCreditConstants(this.DatabaseSession).Debit)
-                .WithGeneralLedgerAccountType(new GeneralLedgerAccountTypeBuilder(this.DatabaseSession).WithDescription("accountType").Build())
-                .WithGeneralLedgerAccountGroup(new GeneralLedgerAccountGroupBuilder(this.DatabaseSession).WithDescription("accountGroup").Build())
+                .WithSide(new DebitCreditConstants(this.Session).Debit)
+                .WithGeneralLedgerAccountType(new GeneralLedgerAccountTypeBuilder(this.Session).WithDescription("accountType").Build())
+                .WithGeneralLedgerAccountGroup(new GeneralLedgerAccountGroupBuilder(this.Session).WithDescription("accountGroup").Build())
                 .Build();
 
-            var glAccount0001Dup = new GeneralLedgerAccountBuilder(this.DatabaseSession)
+            var glAccount0001Dup = new GeneralLedgerAccountBuilder(this.Session)
                 .WithAccountNumber("0001")
                 .WithName("GeneralLedgerAccount duplicate number")
                 .WithBalanceSheetAccount(true)
-                .WithSide(new DebitCreditConstants(this.DatabaseSession).Debit)
-                .WithGeneralLedgerAccountType(new GeneralLedgerAccountTypeBuilder(this.DatabaseSession).WithDescription("accountType").Build())
-                .WithGeneralLedgerAccountGroup(new GeneralLedgerAccountGroupBuilder(this.DatabaseSession).WithDescription("accountGroup").Build())
+                .WithSide(new DebitCreditConstants(this.Session).Debit)
+                .WithGeneralLedgerAccountType(new GeneralLedgerAccountTypeBuilder(this.Session).WithDescription("accountType").Build())
+                .WithGeneralLedgerAccountGroup(new GeneralLedgerAccountGroupBuilder(this.Session).WithDescription("accountGroup").Build())
                 .Build();
 
-            var chart = new ChartOfAccountsBuilder(this.DatabaseSession).WithName("name").WithGeneralLedgerAccount(glAccount0001).Build();
+            var chart = new ChartOfAccountsBuilder(this.Session).WithName("name").WithGeneralLedgerAccount(glAccount0001).Build();
 
-            Assert.False(this.DatabaseSession.Derive(false).HasErrors);
+            Assert.False(this.Session.Derive(false).HasErrors);
 
             chart.AddGeneralLedgerAccount(glAccount0001Dup);
 
-            var derivationLog = this.DatabaseSession.Derive(false);
+            var derivationLog = this.Session.Derive(false);
             var expectedMessage = ErrorMessages.AccountNumberUniqueWithinChartOfAccounts;
 
             Assert.Equal(derivationLog.Errors[0].Message, expectedMessage);
 
-            new ChartOfAccountsBuilder(this.DatabaseSession).WithName("another Chart").WithGeneralLedgerAccount(glAccount0001Dup).Build();
+            new ChartOfAccountsBuilder(this.Session).WithName("another Chart").WithGeneralLedgerAccount(glAccount0001Dup).Build();
 
-            Assert.False(this.DatabaseSession.Derive(false).HasErrors);
+            Assert.False(this.Session.Derive(false).HasErrors);
         }
 
         [Fact]
         public void GivenGeneralLedgerAccount_WhenSettingCostCenterRequired_ThenAccountMustBeMarkedAsCostCenterAccount()
         {
-            new GeneralLedgerAccountBuilder(this.DatabaseSession)
+            new GeneralLedgerAccountBuilder(this.Session)
                 .WithAccountNumber("0001")
                 .WithName("GeneralLedgerAccount")
                 .WithCostCenterRequired(true)
                 .WithBalanceSheetAccount(true)
-                .WithSide(new DebitCreditConstants(this.DatabaseSession).Debit)
-                .WithGeneralLedgerAccountType(new GeneralLedgerAccountTypeBuilder(this.DatabaseSession).WithDescription("accountType").Build())
-                .WithGeneralLedgerAccountGroup(new GeneralLedgerAccountGroupBuilder(this.DatabaseSession).WithDescription("accountGroup").Build())
+                .WithSide(new DebitCreditConstants(this.Session).Debit)
+                .WithGeneralLedgerAccountType(new GeneralLedgerAccountTypeBuilder(this.Session).WithDescription("accountType").Build())
+                .WithGeneralLedgerAccountGroup(new GeneralLedgerAccountGroupBuilder(this.Session).WithDescription("accountGroup").Build())
                 .Build();
 
-            var derivationLog = this.DatabaseSession.Derive(false);
+            var derivationLog = this.Session.Derive(false);
             
             var expectedMessage = ErrorMessages.NotACostCenterAccount;
             
@@ -161,17 +161,17 @@ namespace Allors.Domain
         [Fact]
         public void GivenGeneralLedgerAccount_WhenSettingCostUnitRequired_ThenAccountMustBeMarkedAsCostUnitAccount()
         {
-            new GeneralLedgerAccountBuilder(this.DatabaseSession)
+            new GeneralLedgerAccountBuilder(this.Session)
                 .WithAccountNumber("0001")
                 .WithName("GeneralLedgerAccount")
                 .WithCostUnitRequired(true)
                 .WithBalanceSheetAccount(true)
-                .WithSide(new DebitCreditConstants(this.DatabaseSession).Debit)
-                .WithGeneralLedgerAccountType(new GeneralLedgerAccountTypeBuilder(this.DatabaseSession).WithDescription("accountType").Build())
-                .WithGeneralLedgerAccountGroup(new GeneralLedgerAccountGroupBuilder(this.DatabaseSession).WithDescription("accountGroup").Build())
+                .WithSide(new DebitCreditConstants(this.Session).Debit)
+                .WithGeneralLedgerAccountType(new GeneralLedgerAccountTypeBuilder(this.Session).WithDescription("accountType").Build())
+                .WithGeneralLedgerAccountGroup(new GeneralLedgerAccountGroupBuilder(this.Session).WithDescription("accountGroup").Build())
                 .Build();
 
-            var derivationLog = this.DatabaseSession.Derive(false);
+            var derivationLog = this.Session.Derive(false);
             var expectedMessage = ErrorMessages.NotACostUnitAccount;
 
             Assert.Equal(derivationLog.Errors[0].Message, expectedMessage);
@@ -180,21 +180,21 @@ namespace Allors.Domain
         [Fact]
         public void GivenGeneralLedgerAccount_WhenSettingDefaultCostCenter_ThenDefaultCostCenterMustBeInListOfAllowedCostCenters()
         {
-            var costCenter = new CostCenterBuilder(this.DatabaseSession).WithName("costCenter").Build();
+            var costCenter = new CostCenterBuilder(this.Session).WithName("costCenter").Build();
 
-            var glAccount = new GeneralLedgerAccountBuilder(this.DatabaseSession)
+            var glAccount = new GeneralLedgerAccountBuilder(this.Session)
                 .WithAccountNumber("0001")
                 .WithName("GeneralLedgerAccount")
                 .WithCostCenterAccount(true)
                 .WithCostCenterRequired(true)
                 .WithDefaultCostCenter(costCenter)
                 .WithBalanceSheetAccount(true)
-                .WithSide(new DebitCreditConstants(this.DatabaseSession).Debit)
-                .WithGeneralLedgerAccountType(new GeneralLedgerAccountTypeBuilder(this.DatabaseSession).WithDescription("accountType").Build())
-                .WithGeneralLedgerAccountGroup(new GeneralLedgerAccountGroupBuilder(this.DatabaseSession).WithDescription("accountGroup").Build())
+                .WithSide(new DebitCreditConstants(this.Session).Debit)
+                .WithGeneralLedgerAccountType(new GeneralLedgerAccountTypeBuilder(this.Session).WithDescription("accountType").Build())
+                .WithGeneralLedgerAccountGroup(new GeneralLedgerAccountGroupBuilder(this.Session).WithDescription("accountGroup").Build())
                 .Build();
 
-            var derivationLog = this.DatabaseSession.Derive(false);
+            var derivationLog = this.Session.Derive(false);
 
             var expectedMessage = ErrorMessages.CostCenterNotAllowed;
 
@@ -202,40 +202,40 @@ namespace Allors.Domain
 
             glAccount.AddCostCentersAllowed(costCenter);
 
-            Assert.False(this.DatabaseSession.Derive(false).HasErrors);
+            Assert.False(this.Session.Derive(false).HasErrors);
         }
 
         [Fact]
         public void GivenGeneralLedgerAccount_WhenSettingDefaultCostUnit_ThenDefaultCostUnitMustBeInListOfAllowedCostUnits()
         {
-            var costUnit = new GoodBuilder(this.DatabaseSession)
-                .WithLocalisedName(new LocalisedTextBuilder(this.DatabaseSession).WithText("good").WithLocale(Singleton.Instance(this.DatabaseSession).DefaultLocale).Build())
+            var costUnit = new GoodBuilder(this.Session)
+                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("good").WithLocale(this.Session.GetSingleton().DefaultLocale).Build())
                 .WithSku("10101")
-                .WithVatRate(new VatRateBuilder(this.DatabaseSession).WithRate(21).Build())
-                .WithInventoryItemKind(new InventoryItemKinds(this.DatabaseSession).NonSerialised)
-                .WithUnitOfMeasure(new UnitsOfMeasure(this.DatabaseSession).Piece)
+                .WithVatRate(new VatRateBuilder(this.Session).WithRate(21).Build())
+                .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
+                .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
                 .Build();
 
-            var glAccount = new GeneralLedgerAccountBuilder(this.DatabaseSession)
+            var glAccount = new GeneralLedgerAccountBuilder(this.Session)
                 .WithAccountNumber("0001")
                 .WithName("GeneralLedgerAccount")
                 .WithCostUnitAccount(true)
                 .WithCostUnitRequired(true)
                 .WithDefaultCostUnit(costUnit)
                 .WithBalanceSheetAccount(true)
-                .WithSide(new DebitCreditConstants(this.DatabaseSession).Debit)
-                .WithGeneralLedgerAccountType(new GeneralLedgerAccountTypeBuilder(this.DatabaseSession).WithDescription("accountType").Build())
-                .WithGeneralLedgerAccountGroup(new GeneralLedgerAccountGroupBuilder(this.DatabaseSession).WithDescription("accountGroup").Build())
+                .WithSide(new DebitCreditConstants(this.Session).Debit)
+                .WithGeneralLedgerAccountType(new GeneralLedgerAccountTypeBuilder(this.Session).WithDescription("accountType").Build())
+                .WithGeneralLedgerAccountGroup(new GeneralLedgerAccountGroupBuilder(this.Session).WithDescription("accountGroup").Build())
                 .Build();
 
-            var derivationLog = this.DatabaseSession.Derive(false);
+            var derivationLog = this.Session.Derive(false);
             var expectedMessage = ErrorMessages.CostUnitNotAllowed;
 
             Assert.Equal(derivationLog.Errors[0].Message, expectedMessage);
 
             glAccount.AddCostUnitsAllowed(costUnit);
 
-            Assert.False(this.DatabaseSession.Derive(false).HasErrors);
+            Assert.False(this.Session.Derive(false).HasErrors);
         }
     }
 }

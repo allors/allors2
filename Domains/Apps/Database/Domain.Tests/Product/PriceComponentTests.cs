@@ -30,99 +30,99 @@ namespace Allors.Domain
         [Fact]
         public void GivenBasePrice_WhenDeriving_ThenRequiredRelationsMustExist()
         {
-            var vatRate21 = new VatRateBuilder(this.DatabaseSession).WithRate(21).Build();
-            var good = new GoodBuilder(this.DatabaseSession)
-                .WithLocalisedName(new LocalisedTextBuilder(this.DatabaseSession).WithText("Gizmo").WithLocale(Singleton.Instance(this.DatabaseSession).DefaultLocale).Build())
+            var vatRate21 = new VatRateBuilder(this.Session).WithRate(21).Build();
+            var good = new GoodBuilder(this.Session)
+                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Gizmo").WithLocale(this.Session.GetSingleton().DefaultLocale).Build())
                 .WithSku("10101")
                 .WithVatRate(vatRate21)
-                .WithInventoryItemKind(new InventoryItemKinds(this.DatabaseSession).NonSerialised)
-                .WithUnitOfMeasure(new UnitsOfMeasure(this.DatabaseSession).Piece)
+                .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
+                .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
                 .Build();
 
-            var colorFeature = new ColourBuilder(this.DatabaseSession)
+            var colorFeature = new ColourBuilder(this.Session)
                 .WithName("golden")
                 .WithVatRate(vatRate21)
-                .WithLocalisedName(new LocalisedTextBuilder(this.DatabaseSession)
+                .WithLocalisedName(new LocalisedTextBuilder(this.Session)
                                             .WithText("black")
-                                            .WithLocale(Singleton.Instance(this.DatabaseSession).DefaultLocale)
+                                            .WithLocale(this.Session.GetSingleton().DefaultLocale)
                                             .Build())
                 .Build();
 
-            this.DatabaseSession.Derive();
-            this.DatabaseSession.Commit();
+            this.Session.Derive();
+            this.Session.Commit();
 
-            var builder = new BasePriceBuilder(this.DatabaseSession);
+            var builder = new BasePriceBuilder(this.Session);
             builder.Build();
 
-            Assert.True(this.DatabaseSession.Derive(false).HasErrors);
+            Assert.True(this.Session.Derive(false).HasErrors);
 
-            this.DatabaseSession.Rollback();
+            this.Session.Rollback();
 
             builder.WithPrice(1);
             builder.Build();
 
-            Assert.True(this.DatabaseSession.Derive(false).HasErrors);
+            Assert.True(this.Session.Derive(false).HasErrors);
 
-            this.DatabaseSession.Rollback();
+            this.Session.Rollback();
 
             builder.WithProduct(good);
             builder.Build();
 
-            Assert.True(this.DatabaseSession.Derive(false).HasErrors);
+            Assert.True(this.Session.Derive(false).HasErrors);
 
-            this.DatabaseSession.Rollback();
+            this.Session.Rollback();
 
             builder.WithProductFeature(colorFeature);
             builder.Build();
 
-            Assert.True(this.DatabaseSession.Derive(false).HasErrors);
+            Assert.True(this.Session.Derive(false).HasErrors);
 
-            this.DatabaseSession.Rollback();
+            this.Session.Rollback();
 
             builder.WithFromDate(DateTime.UtcNow);
             builder.Build();
 
-            Assert.True(this.DatabaseSession.Derive(false).HasErrors);
+            Assert.True(this.Session.Derive(false).HasErrors);
 
-            this.DatabaseSession.Rollback();
+            this.Session.Rollback();
 
             builder.WithDescription("description");
             builder.Build();
 
-            Assert.False(this.DatabaseSession.Derive(false).HasErrors);
+            Assert.False(this.Session.Derive(false).HasErrors);
         }
 
         [Fact]
         public void GivenBasePriceForVirtualProduct_WhenDeriving_ThenProductVirtualProductPriceComponentIsUpdated()
         {
-            var vatRate21 = new VatRateBuilder(this.DatabaseSession).WithRate(21).Build();
-            var virtualGood = new GoodBuilder(this.DatabaseSession)
-                .WithLocalisedName(new LocalisedTextBuilder(this.DatabaseSession).WithText("virtual gizmo").WithLocale(Singleton.Instance(this.DatabaseSession).DefaultLocale).Build())
+            var vatRate21 = new VatRateBuilder(this.Session).WithRate(21).Build();
+            var virtualGood = new GoodBuilder(this.Session)
+                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("virtual gizmo").WithLocale(this.Session.GetSingleton().DefaultLocale).Build())
                 .WithVatRate(vatRate21)
-                .WithInventoryItemKind(new InventoryItemKinds(this.DatabaseSession).NonSerialised)
-                .WithUnitOfMeasure(new UnitsOfMeasure(this.DatabaseSession).Piece)
+                .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
+                .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
                 .Build();
 
-            var physicalGood = new GoodBuilder(this.DatabaseSession)
-                .WithLocalisedName(new LocalisedTextBuilder(this.DatabaseSession).WithText("real gizmo").WithLocale(Singleton.Instance(this.DatabaseSession).DefaultLocale).Build())
+            var physicalGood = new GoodBuilder(this.Session)
+                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("real gizmo").WithLocale(this.Session.GetSingleton().DefaultLocale).Build())
                 .WithSku("10101")
                 .WithVatRate(vatRate21)
-                .WithInventoryItemKind(new InventoryItemKinds(this.DatabaseSession).NonSerialised)
-                .WithUnitOfMeasure(new UnitsOfMeasure(this.DatabaseSession).Piece)
+                .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
+                .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
                 .Build();
 
             virtualGood.AddVariant(physicalGood);
 
-            this.DatabaseSession.Derive();
+            this.Session.Derive();
 
-            var basePrice = new BasePriceBuilder(this.DatabaseSession)
+            var basePrice = new BasePriceBuilder(this.Session)
                 .WithDescription("baseprice")
                 .WithPrice(10)
                 .WithProduct(virtualGood)
                 .WithFromDate(DateTime.UtcNow)
                 .Build();
 
-            this.DatabaseSession.Derive();
+            this.Session.Derive();
 
             Assert.Equal(1, physicalGood.VirtualProductPriceComponents.Count);
             Assert.Contains(basePrice, physicalGood.VirtualProductPriceComponents);
@@ -132,17 +132,17 @@ namespace Allors.Domain
         [Fact]
         public void GivenBasePriceForNonVirtualProduct_WhenDeriving_ThenProductVirtualProductPriceComponentIsNull()
         {
-            var vatRate21 = new VatRateBuilder(this.DatabaseSession).WithRate(21).Build();
+            var vatRate21 = new VatRateBuilder(this.Session).WithRate(21).Build();
 
-            var physicalGood = new GoodBuilder(this.DatabaseSession)
-                .WithLocalisedName(new LocalisedTextBuilder(this.DatabaseSession).WithText("real gizmo").WithLocale(Singleton.Instance(this.DatabaseSession).DefaultLocale).Build())
+            var physicalGood = new GoodBuilder(this.Session)
+                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("real gizmo").WithLocale(this.Session.GetSingleton().DefaultLocale).Build())
                 .WithSku("10101")
                 .WithVatRate(vatRate21)
-                .WithInventoryItemKind(new InventoryItemKinds(this.DatabaseSession).NonSerialised)
-                .WithUnitOfMeasure(new UnitsOfMeasure(this.DatabaseSession).Piece)
+                .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
+                .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
                 .Build();
 
-            new BasePriceBuilder(this.DatabaseSession)
+            new BasePriceBuilder(this.Session)
                 .WithDescription("baseprice")
                 .WithPrice(10)
                 .WithProduct(physicalGood)
@@ -155,97 +155,97 @@ namespace Allors.Domain
         [Fact]
         public void GivenDiscount_WhenDeriving_ThenRequiredRelationsMustExist()
         {
-            var vatRate21 = new VatRateBuilder(this.DatabaseSession).WithRate(21).Build();
-            var good = new GoodBuilder(this.DatabaseSession)
-                .WithLocalisedName(new LocalisedTextBuilder(this.DatabaseSession).WithText("gizmo").WithLocale(Singleton.Instance(this.DatabaseSession).DefaultLocale).Build())
+            var vatRate21 = new VatRateBuilder(this.Session).WithRate(21).Build();
+            var good = new GoodBuilder(this.Session)
+                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("gizmo").WithLocale(this.Session.GetSingleton().DefaultLocale).Build())
                 .WithSku("10101")
                 .WithVatRate(vatRate21)
-                .WithInventoryItemKind(new InventoryItemKinds(this.DatabaseSession).NonSerialised)
-                .WithUnitOfMeasure(new UnitsOfMeasure(this.DatabaseSession).Piece)
+                .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
+                .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
                 .Build();
 
-            var colorFeature = new ColourBuilder(this.DatabaseSession)
+            var colorFeature = new ColourBuilder(this.Session)
              .WithName("golden")
              .WithVatRate(vatRate21)
-             .WithLocalisedName(new LocalisedTextBuilder(this.DatabaseSession)
+             .WithLocalisedName(new LocalisedTextBuilder(this.Session)
                                          .WithText("black")
-                                         .WithLocale(Singleton.Instance(this.DatabaseSession).DefaultLocale)
+                                         .WithLocale(this.Session.GetSingleton().DefaultLocale)
                                          .Build())
              .Build();
 
-            this.DatabaseSession.Derive();
-            this.DatabaseSession.Commit();
+            this.Session.Derive();
+            this.Session.Commit();
 
-            var builder = new DiscountComponentBuilder(this.DatabaseSession);
+            var builder = new DiscountComponentBuilder(this.Session);
             builder.Build();
 
-            Assert.True(this.DatabaseSession.Derive(false).HasErrors);
+            Assert.True(this.Session.Derive(false).HasErrors);
 
-            this.DatabaseSession.Rollback();
+            this.Session.Rollback();
 
             builder.WithPrice(1);
             builder.Build();
 
-            Assert.True(this.DatabaseSession.Derive(false).HasErrors);
+            Assert.True(this.Session.Derive(false).HasErrors);
 
-            this.DatabaseSession.Rollback();
+            this.Session.Rollback();
 
             builder.WithFromDate(DateTime.UtcNow);
             builder.Build();
 
-            Assert.True(this.DatabaseSession.Derive(false).HasErrors);
+            Assert.True(this.Session.Derive(false).HasErrors);
 
-            this.DatabaseSession.Rollback();
+            this.Session.Rollback();
 
             builder.WithDescription("description");
             builder.Build();
 
-            Assert.False(this.DatabaseSession.Derive(false).HasErrors);
+            Assert.False(this.Session.Derive(false).HasErrors);
 
             builder.WithProduct(good);
             builder.Build();
 
-            Assert.False(this.DatabaseSession.Derive(false).HasErrors);
+            Assert.False(this.Session.Derive(false).HasErrors);
 
             builder.WithProductFeature(colorFeature);
             builder.Build();
 
-            Assert.False(this.DatabaseSession.Derive(false).HasErrors);
+            Assert.False(this.Session.Derive(false).HasErrors);
 
-            this.DatabaseSession.Rollback();
+            this.Session.Rollback();
 
             builder.WithPercentage(10);
             builder.Build();
 
-            Assert.True(this.DatabaseSession.Derive(false).HasErrors);
+            Assert.True(this.Session.Derive(false).HasErrors);
         }
 
         [Fact]
         public void GivenDiscountForVirtualProduct_WhenDeriving_ThenProductVirtualProductPriceComponentIsUpdated()
         {
-            var vatRate21 = new VatRateBuilder(this.DatabaseSession).WithRate(21).Build();
-            var virtualService = new DeliverableBasedServiceBuilder(this.DatabaseSession)
-                .WithLocalisedName(new LocalisedTextBuilder(this.DatabaseSession).WithText("virtual service").WithLocale(Singleton.Instance(this.DatabaseSession).DefaultLocale).Build())
+            var vatRate21 = new VatRateBuilder(this.Session).WithRate(21).Build();
+            var virtualService = new DeliverableBasedServiceBuilder(this.Session)
+                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("virtual service").WithLocale(this.Session.GetSingleton().DefaultLocale).Build())
                 .WithVatRate(vatRate21)
                 .Build();
 
-            var physicalService = new DeliverableBasedServiceBuilder(this.DatabaseSession)
-                .WithLocalisedName(new LocalisedTextBuilder(this.DatabaseSession).WithText("real service").WithLocale(Singleton.Instance(this.DatabaseSession).DefaultLocale).Build())
+            var physicalService = new DeliverableBasedServiceBuilder(this.Session)
+                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("real service").WithLocale(this.Session.GetSingleton().DefaultLocale).Build())
                 .WithVatRate(vatRate21)
                 .Build();
 
             virtualService.AddVariant(physicalService);
 
-            this.DatabaseSession.Derive();
+            this.Session.Derive();
 
-            var discount = new DiscountComponentBuilder(this.DatabaseSession)
+            var discount = new DiscountComponentBuilder(this.Session)
                 .WithDescription("discount")
                 .WithPrice(10)
                 .WithProduct(virtualService)
                 .WithFromDate(DateTime.UtcNow)
                 .Build();
 
-            this.DatabaseSession.Derive();
+            this.Session.Derive();
 
             Assert.Equal(1, physicalService.VirtualProductPriceComponents.Count);
             Assert.Contains(discount, physicalService.VirtualProductPriceComponents);
@@ -255,13 +255,13 @@ namespace Allors.Domain
         [Fact]
         public void GivenDiscountForNonVirtualProduct_WhenDeriving_ThenProductVirtualProductPriceComponentIsNull()
         {
-            var vatRate21 = new VatRateBuilder(this.DatabaseSession).WithRate(21).Build();
-            var physicalService = new DeliverableBasedServiceBuilder(this.DatabaseSession)
-                .WithLocalisedName(new LocalisedTextBuilder(this.DatabaseSession).WithText("real service").WithLocale(Singleton.Instance(this.DatabaseSession).DefaultLocale).Build())
+            var vatRate21 = new VatRateBuilder(this.Session).WithRate(21).Build();
+            var physicalService = new DeliverableBasedServiceBuilder(this.Session)
+                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("real service").WithLocale(this.Session.GetSingleton().DefaultLocale).Build())
                 .WithVatRate(vatRate21)
                 .Build();
 
-            new DiscountComponentBuilder(this.DatabaseSession)
+            new DiscountComponentBuilder(this.Session)
                 .WithDescription("discount")
                 .WithPrice(10)
                 .WithProduct(physicalService)
@@ -274,95 +274,95 @@ namespace Allors.Domain
         [Fact]
         public void GivenSurcharge_WhenDeriving_ThenRequiredRelationsMustExist()
         {
-            var vatRate21 = new VatRateBuilder(this.DatabaseSession).WithRate(21).Build();
-            var good = new GoodBuilder(this.DatabaseSession)
-                .WithLocalisedName(new LocalisedTextBuilder(this.DatabaseSession).WithText("gizmo").WithLocale(Singleton.Instance(this.DatabaseSession).DefaultLocale).Build())
+            var vatRate21 = new VatRateBuilder(this.Session).WithRate(21).Build();
+            var good = new GoodBuilder(this.Session)
+                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("gizmo").WithLocale(this.Session.GetSingleton().DefaultLocale).Build())
                 .WithSku("10101")
                 .WithVatRate(vatRate21)
-                .WithInventoryItemKind(new InventoryItemKinds(this.DatabaseSession).NonSerialised)
-                .WithUnitOfMeasure(new UnitsOfMeasure(this.DatabaseSession).Piece)
+                .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
+                .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
                 .Build();
 
-            var colorFeature = new ColourBuilder(this.DatabaseSession)
+            var colorFeature = new ColourBuilder(this.Session)
                 .WithName("golden")
                 .WithVatRate(vatRate21)
-                .WithLocalisedName(new LocalisedTextBuilder(this.DatabaseSession)
+                .WithLocalisedName(new LocalisedTextBuilder(this.Session)
                                             .WithText("black")
-                                            .WithLocale(Singleton.Instance(this.DatabaseSession).DefaultLocale)
+                                            .WithLocale(this.Session.GetSingleton().DefaultLocale)
                                             .Build())
                 .Build();
 
-            this.DatabaseSession.Derive();
-            this.DatabaseSession.Commit();
+            this.Session.Derive();
+            this.Session.Commit();
 
-            var builder = new SurchargeComponentBuilder(this.DatabaseSession);
+            var builder = new SurchargeComponentBuilder(this.Session);
             builder.Build();
 
-            Assert.True(this.DatabaseSession.Derive(false).HasErrors);
+            Assert.True(this.Session.Derive(false).HasErrors);
 
-            this.DatabaseSession.Rollback();
+            this.Session.Rollback();
 
             builder.WithPrice(1);
             builder.Build();
 
-            Assert.True(this.DatabaseSession.Derive(false).HasErrors);
+            Assert.True(this.Session.Derive(false).HasErrors);
 
-            this.DatabaseSession.Rollback();
+            this.Session.Rollback();
 
             builder.WithFromDate(DateTime.UtcNow);
             builder.Build();
 
-            Assert.True(this.DatabaseSession.Derive(false).HasErrors);
+            Assert.True(this.Session.Derive(false).HasErrors);
 
-            this.DatabaseSession.Rollback();
+            this.Session.Rollback();
 
             builder.WithDescription("description");
             builder.Build();
 
-            Assert.False(this.DatabaseSession.Derive(false).HasErrors);
+            Assert.False(this.Session.Derive(false).HasErrors);
 
             builder.WithProduct(good);
             builder.Build();
 
-            Assert.False(this.DatabaseSession.Derive(false).HasErrors);
+            Assert.False(this.Session.Derive(false).HasErrors);
 
             builder.WithProductFeature(colorFeature);
             builder.Build();
 
-            Assert.False(this.DatabaseSession.Derive(false).HasErrors);
+            Assert.False(this.Session.Derive(false).HasErrors);
 
             builder.WithPercentage(10);
             builder.Build();
 
-            Assert.True(this.DatabaseSession.Derive(false).HasErrors);
+            Assert.True(this.Session.Derive(false).HasErrors);
         }
 
         [Fact]
         public void GivenSurchargeForVirtualProduct_WhenDeriving_ThenProductVirtualProductPriceComponentIsUpdated()
         {
-            var vatRate21 = new VatRateBuilder(this.DatabaseSession).WithRate(21).Build();
-            var virtualService = new TimeAndMaterialsServiceBuilder(this.DatabaseSession)
-                .WithLocalisedName(new LocalisedTextBuilder(this.DatabaseSession).WithText("virtual service").WithLocale(Singleton.Instance(this.DatabaseSession).DefaultLocale).Build())
+            var vatRate21 = new VatRateBuilder(this.Session).WithRate(21).Build();
+            var virtualService = new TimeAndMaterialsServiceBuilder(this.Session)
+                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("virtual service").WithLocale(this.Session.GetSingleton().DefaultLocale).Build())
                 .WithVatRate(vatRate21)
                 .Build();
 
-            var physicalService = new TimeAndMaterialsServiceBuilder(this.DatabaseSession)
-                .WithLocalisedName(new LocalisedTextBuilder(this.DatabaseSession).WithText("real service").WithLocale(Singleton.Instance(this.DatabaseSession).DefaultLocale).Build())
+            var physicalService = new TimeAndMaterialsServiceBuilder(this.Session)
+                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("real service").WithLocale(this.Session.GetSingleton().DefaultLocale).Build())
                 .WithVatRate(vatRate21)
                 .Build();
 
             virtualService.AddVariant(physicalService);
 
-            this.DatabaseSession.Derive();
+            this.Session.Derive();
 
-            var surcharge = new SurchargeComponentBuilder(this.DatabaseSession)
+            var surcharge = new SurchargeComponentBuilder(this.Session)
                 .WithDescription("surcharge")
                 .WithPrice(10)
                 .WithProduct(virtualService)
                 .WithFromDate(DateTime.UtcNow)
                 .Build();
 
-            this.DatabaseSession.Derive();
+            this.Session.Derive();
 
             Assert.Equal(1, physicalService.VirtualProductPriceComponents.Count);
             Assert.Contains(surcharge, physicalService.VirtualProductPriceComponents);
@@ -372,13 +372,13 @@ namespace Allors.Domain
         [Fact]
         public void GivenSurchargeForNonVirtualProduct_WhenDeriving_ThenProductVirtualProductPriceComponentIsNull()
         {
-            var vatRate21 = new VatRateBuilder(this.DatabaseSession).WithRate(21).Build();
-            var physicalService = new TimeAndMaterialsServiceBuilder(this.DatabaseSession)
-                .WithLocalisedName(new LocalisedTextBuilder(this.DatabaseSession).WithText("real service").WithLocale(Singleton.Instance(this.DatabaseSession).DefaultLocale).Build())
+            var vatRate21 = new VatRateBuilder(this.Session).WithRate(21).Build();
+            var physicalService = new TimeAndMaterialsServiceBuilder(this.Session)
+                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("real service").WithLocale(this.Session.GetSingleton().DefaultLocale).Build())
                 .WithVatRate(vatRate21)
                 .Build();
 
-            new SurchargeComponentBuilder(this.DatabaseSession)
+            new SurchargeComponentBuilder(this.Session)
                 .WithDescription("surcharge")
                 .WithPrice(10)
                 .WithProduct(physicalService)

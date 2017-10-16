@@ -21,6 +21,14 @@ SET /A ERROR_BUILD_META=2
 
 @SET PATH=%PATH%;C:\Program Files\MSBuild\14.0\Bin;C:\Program Files (x86)\MSBuild\14.0\Bin;C:\Windows\Microsoft.NET\Framework64\v4.0.30319;C:\Windows\Microsoft.NET\Framework\v4.0.30319
 
+
+rmdir /s /q .\Database\Domain\Generated >nul 2>&1
+rmdir /s /q .\Database\Diagrams\Generated >nul 2>&1
+rmdir /s /q .\Workspace\Typescript\Domain\src\allors\meta\generated >nul 2>&1
+rmdir /s /q .\Workspace\Typescript\Domain\src\allors\domain\generated >nul 2>&1
+rmdir /s /q .\Workspace\Typescript\Angular\src\allors\meta\generated >nul 2>&1
+rmdir /s /q .\Workspace\Typescript\Angular\src\allors\domain\generated >nul 2>&1
+
 @echo ==========
 @echo Repository
 @echo ==========
@@ -32,6 +40,7 @@ dotnet msbuild Repository.sln /target:Clean /verbosity:minimal
 @echo Domain and Workspace
 @echo ====================
 
+dotnet restore Apps.sln
 dotnet msbuild Apps.sln /target:Clean /verbosity:minimal
 dotnet msbuild Apps.sln /target:Database\Generate:Rebuild /p:Configuration="Debug" /verbosity:minimal || SET /A errno^|=%ERROR_BUILD_META% && GOTO :END
 

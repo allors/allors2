@@ -30,7 +30,7 @@ namespace Allors.Domain
         [Fact]
         public void GivenShipmentReceiptBuilderWhenBuildThenPostBuildRelationsMustExist()
         {
-            var receipt = new ShipmentReceiptBuilder(this.DatabaseSession).Build();
+            var receipt = new ShipmentReceiptBuilder(this.Session).Build();
 
             Assert.NotNull(receipt.ReceivedDateTime);
             Assert.Equal(0, receipt.QuantityAccepted);
@@ -40,79 +40,79 @@ namespace Allors.Domain
         [Fact]
         public void GivenShipmentReceiptWhenValidatingThenRequiredRelationsMustExist()
         {
-            var supplier = new OrganisationBuilder(this.DatabaseSession).WithName("supplier").WithOrganisationRole(new OrganisationRoles(this.DatabaseSession).Supplier).Build();
-            var internalOrganisation = Singleton.Instance(this.DatabaseSession).InternalOrganisation;
-            new SupplierRelationshipBuilder(this.DatabaseSession).WithSupplier(supplier).Build();
+            var supplier = new OrganisationBuilder(this.Session).WithName("supplier").WithOrganisationRole(new OrganisationRoles(this.Session).Supplier).Build();
+            var internalOrganisation = this.Session.GetSingleton().InternalOrganisation;
+            new SupplierRelationshipBuilder(this.Session).WithSupplier(supplier).Build();
 
-            var good = new GoodBuilder(this.DatabaseSession)
-                .WithLocalisedName(new LocalisedTextBuilder(this.DatabaseSession).WithText("good").WithLocale(Singleton.Instance(this.DatabaseSession).DefaultLocale).Build())
+            var good = new GoodBuilder(this.Session)
+                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("good").WithLocale(this.Session.GetSingleton().DefaultLocale).Build())
                 .WithSku("10101")
-                .WithVatRate(new VatRateBuilder(this.DatabaseSession).WithRate(21).Build())
-                .WithInventoryItemKind(new InventoryItemKinds(this.DatabaseSession).NonSerialised)
-                .WithUnitOfMeasure(new UnitsOfMeasure(this.DatabaseSession).Piece)
+                .WithVatRate(new VatRateBuilder(this.Session).WithRate(21).Build())
+                .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
+                .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
                 .Build();
 
-            var inventoryItem = new NonSerialisedInventoryItemBuilder(this.DatabaseSession).WithGood(good).Build();
-            inventoryItem.AddInventoryItemVariance(new InventoryItemVarianceBuilder(this.DatabaseSession).WithQuantity(100).WithReason(new VarianceReasons(this.DatabaseSession).Order).Build());
-            this.DatabaseSession.Derive();
-            this.DatabaseSession.Commit();
+            var inventoryItem = new NonSerialisedInventoryItemBuilder(this.Session).WithGood(good).Build();
+            inventoryItem.AddInventoryItemVariance(new InventoryItemVarianceBuilder(this.Session).WithQuantity(100).WithReason(new VarianceReasons(this.Session).Order).Build());
+            this.Session.Derive();
+            this.Session.Commit();
 
-            var builder = new ShipmentReceiptBuilder(this.DatabaseSession);
+            var builder = new ShipmentReceiptBuilder(this.Session);
             builder.Build();
 
-            Assert.True(this.DatabaseSession.Derive(false).HasErrors);
+            Assert.True(this.Session.Derive(false).HasErrors);
 
-            this.DatabaseSession.Rollback();
+            this.Session.Rollback();
 
             builder.WithInventoryItem(inventoryItem);
             builder.Build();
 
-            Assert.True(this.DatabaseSession.Derive(false).HasErrors);
+            Assert.True(this.Session.Derive(false).HasErrors);
 
-            this.DatabaseSession.Rollback();
+            this.Session.Rollback();
 
-            var shipment = new PurchaseShipmentBuilder(this.DatabaseSession).WithShipmentMethod(new ShipmentMethods(this.DatabaseSession).Ground).WithShipFromParty(supplier).Build();
-            var shipmentItem = new ShipmentItemBuilder(this.DatabaseSession).WithGood(good).Build();
+            var shipment = new PurchaseShipmentBuilder(this.Session).WithShipmentMethod(new ShipmentMethods(this.Session).Ground).WithShipFromParty(supplier).Build();
+            var shipmentItem = new ShipmentItemBuilder(this.Session).WithGood(good).Build();
             shipment.AddShipmentItem(shipmentItem);
 
             builder.WithShipmentItem(shipmentItem);
             builder.Build();
 
-            Assert.False(this.DatabaseSession.Derive(false).HasErrors);
+            Assert.False(this.Session.Derive(false).HasErrors);
         }
 
         [Fact]
         public void GivenShipmentReceiptForPartWithoutSelectedInventoryItemWhenDerivingThenInventoryItemIsFromDefaultFacility()
         {
-            var supplier = new OrganisationBuilder(this.DatabaseSession).WithName("supplier").WithOrganisationRole(new OrganisationRoles(this.DatabaseSession).Supplier).Build();
-            var internalOrganisation = Singleton.Instance(this.DatabaseSession).InternalOrganisation;
-            new SupplierRelationshipBuilder(this.DatabaseSession).WithSupplier(supplier).Build();
+            var supplier = new OrganisationBuilder(this.Session).WithName("supplier").WithOrganisationRole(new OrganisationRoles(this.Session).Supplier).Build();
+            var internalOrganisation = this.Session.GetSingleton().InternalOrganisation;
+            new SupplierRelationshipBuilder(this.Session).WithSupplier(supplier).Build();
 
 
-            var part = new RawMaterialBuilder(this.DatabaseSession)
+            var part = new RawMaterialBuilder(this.Session)
                 .WithName("RawMaterial")
                 .Build();
 
-            var order = new PurchaseOrderBuilder(this.DatabaseSession)
+            var order = new PurchaseOrderBuilder(this.Session)
                 .WithTakenViaSupplier(supplier)
-                .WithVatRegime(new VatRegimes(this.DatabaseSession).Export)
+                .WithVatRegime(new VatRegimes(this.Session).Export)
                 .Build();
 
-            var item1 = new PurchaseOrderItemBuilder(this.DatabaseSession).WithPart(part).WithQuantityOrdered(1).Build();
+            var item1 = new PurchaseOrderItemBuilder(this.Session).WithPart(part).WithQuantityOrdered(1).Build();
             order.AddPurchaseOrderItem(item1);
 
-            this.DatabaseSession.Derive();
+            this.Session.Derive();
 
             order.Confirm();
 
-            this.DatabaseSession.Derive();
-            this.DatabaseSession.Commit();
+            this.Session.Derive();
+            this.Session.Commit();
 
-            var shipment = new PurchaseShipmentBuilder(this.DatabaseSession).WithShipmentMethod(new ShipmentMethods(this.DatabaseSession).Ground).WithShipFromParty(supplier).Build();
-            var shipmentItem = new ShipmentItemBuilder(this.DatabaseSession).WithPart(part).Build();
+            var shipment = new PurchaseShipmentBuilder(this.Session).WithShipmentMethod(new ShipmentMethods(this.Session).Ground).WithShipFromParty(supplier).Build();
+            var shipmentItem = new ShipmentItemBuilder(this.Session).WithPart(part).Build();
             shipment.AddShipmentItem(shipmentItem);
 
-            var receipt = new ShipmentReceiptBuilder(this.DatabaseSession)
+            var receipt = new ShipmentReceiptBuilder(this.Session)
                 .WithQuantityAccepted(1M)
                 .WithShipmentItem(shipmentItem)
                 .WithOrderItem(item1)
@@ -120,146 +120,146 @@ namespace Allors.Domain
 
             shipment.AppsComplete();
 
-            this.DatabaseSession.Derive();
-            this.DatabaseSession.Commit();
+            this.Session.Derive();
+            this.Session.Commit();
 
-            Assert.Equal(new Facilities(this.DatabaseSession).FindBy(M.Facility.FacilityType, new FacilityTypes(this.DatabaseSession).Warehouse), receipt.InventoryItem.Facility);
+            Assert.Equal(new Facilities(this.Session).FindBy(M.Facility.FacilityType, new FacilityTypes(this.Session).Warehouse), receipt.InventoryItem.Facility);
             Assert.Equal(part.InventoryItemsWherePart[0], receipt.InventoryItem);
 
-            this.DatabaseSession.Rollback();
+            this.Session.Rollback();
         }
 
         [Fact]
         public void GivenShipmentReceiptForGoodWithoutSelectedInventoryItemWhenDerivingThenInventoryItemIsFromDefaultFacility()
         {
-            var supplier = new OrganisationBuilder(this.DatabaseSession).WithName("supplier").WithOrganisationRole(new OrganisationRoles(this.DatabaseSession).Supplier).Build();
-            var internalOrganisation = Singleton.Instance(this.DatabaseSession).InternalOrganisation;
-            new SupplierRelationshipBuilder(this.DatabaseSession).WithSupplier(supplier).Build();
+            var supplier = new OrganisationBuilder(this.Session).WithName("supplier").WithOrganisationRole(new OrganisationRoles(this.Session).Supplier).Build();
+            var internalOrganisation = this.Session.GetSingleton().InternalOrganisation;
+            new SupplierRelationshipBuilder(this.Session).WithSupplier(supplier).Build();
 
 
-            var good = new GoodBuilder(this.DatabaseSession)
-                .WithLocalisedName(new LocalisedTextBuilder(this.DatabaseSession).WithText("good").WithLocale(Singleton.Instance(this.DatabaseSession).DefaultLocale).Build())
+            var good = new GoodBuilder(this.Session)
+                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("good").WithLocale(this.Session.GetSingleton().DefaultLocale).Build())
                 .WithSku("10101")
-                .WithVatRate(new VatRateBuilder(this.DatabaseSession).WithRate(21).Build())
-                .WithInventoryItemKind(new InventoryItemKinds(this.DatabaseSession).NonSerialised)
-                .WithUnitOfMeasure(new UnitsOfMeasure(this.DatabaseSession).Piece)
+                .WithVatRate(new VatRateBuilder(this.Session).WithRate(21).Build())
+                .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
+                .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
                 .Build();
 
-            var order = new PurchaseOrderBuilder(this.DatabaseSession).WithTakenViaSupplier(supplier).Build();
+            var order = new PurchaseOrderBuilder(this.Session).WithTakenViaSupplier(supplier).Build();
 
-            var item1 = new PurchaseOrderItemBuilder(this.DatabaseSession).WithProduct(good).WithQuantityOrdered(1).Build();
+            var item1 = new PurchaseOrderItemBuilder(this.Session).WithProduct(good).WithQuantityOrdered(1).Build();
             order.AddPurchaseOrderItem(item1);
 
-            this.DatabaseSession.Derive();
-            this.DatabaseSession.Commit();
+            this.Session.Derive();
+            this.Session.Commit();
 
             order.Confirm();
 
-            var shipment = new PurchaseShipmentBuilder(this.DatabaseSession).WithShipmentMethod(new ShipmentMethods(this.DatabaseSession).Ground).WithShipFromParty(supplier).Build();
-            var shipmentItem = new ShipmentItemBuilder(this.DatabaseSession).WithGood(good).Build();
+            var shipment = new PurchaseShipmentBuilder(this.Session).WithShipmentMethod(new ShipmentMethods(this.Session).Ground).WithShipFromParty(supplier).Build();
+            var shipmentItem = new ShipmentItemBuilder(this.Session).WithGood(good).Build();
             shipment.AddShipmentItem(shipmentItem);
 
-            var receipt = new ShipmentReceiptBuilder(this.DatabaseSession)
+            var receipt = new ShipmentReceiptBuilder(this.Session)
                 .WithQuantityAccepted(1M)
                 .WithShipmentItem(shipmentItem)
                 .WithOrderItem(item1)
                 .Build();
 
-            this.DatabaseSession.Derive();
-            this.DatabaseSession.Commit();
+            this.Session.Derive();
+            this.Session.Commit();
 
             shipment.AppsComplete();
 
-            Assert.Equal(new Facilities(this.DatabaseSession).FindBy(M.Facility.FacilityType, new FacilityTypes(this.DatabaseSession).Warehouse), receipt.InventoryItem.Facility);
+            Assert.Equal(new Facilities(this.Session).FindBy(M.Facility.FacilityType, new FacilityTypes(this.Session).Warehouse), receipt.InventoryItem.Facility);
             Assert.Equal(good.InventoryItemsWhereGood[0], receipt.InventoryItem);
 
-            this.DatabaseSession.Rollback();
+            this.Session.Rollback();
         }
 
         [Fact]
         public void GivenShipmentReceiptWhenDerivingThenInventoryItemQuantityOnHandIsUpdated()
         {
-            var mechelen = new CityBuilder(this.DatabaseSession).WithName("Mechelen").Build();
-            var mechelenAddress = new PostalAddressBuilder(this.DatabaseSession).WithGeographicBoundary(mechelen).WithAddress1("Haverwerf 15").Build();
-            var shipToMechelen = new PartyContactMechanismBuilder(this.DatabaseSession)
+            var mechelen = new CityBuilder(this.Session).WithName("Mechelen").Build();
+            var mechelenAddress = new PostalAddressBuilder(this.Session).WithGeographicBoundary(mechelen).WithAddress1("Haverwerf 15").Build();
+            var shipToMechelen = new PartyContactMechanismBuilder(this.Session)
                 .WithContactMechanism(mechelenAddress)
-                .WithContactPurpose(new ContactMechanismPurposes(this.DatabaseSession).ShippingAddress)
+                .WithContactPurpose(new ContactMechanismPurposes(this.Session).ShippingAddress)
                 .WithUseAsDefault(true)
                 .Build();
 
-            var customer = new PersonBuilder(this.DatabaseSession).WithLastName("customer").WithPartyContactMechanism(shipToMechelen).WithPersonRole(new PersonRoles(this.DatabaseSession).Customer).Build();
-            var internalOrganisation = Singleton.Instance(this.DatabaseSession).InternalOrganisation;
-            new CustomerRelationshipBuilder(this.DatabaseSession).WithFromDate(DateTime.UtcNow).WithCustomer(customer).Build();
+            var customer = new PersonBuilder(this.Session).WithLastName("customer").WithPartyContactMechanism(shipToMechelen).WithPersonRole(new PersonRoles(this.Session).Customer).Build();
+            var internalOrganisation = this.Session.GetSingleton().InternalOrganisation;
+            new CustomerRelationshipBuilder(this.Session).WithFromDate(DateTime.UtcNow).WithCustomer(customer).Build();
 
 
-            var good = new GoodBuilder(this.DatabaseSession)
-                .WithLocalisedName(new LocalisedTextBuilder(this.DatabaseSession).WithText("good").WithLocale(Singleton.Instance(this.DatabaseSession).DefaultLocale).Build())
+            var good = new GoodBuilder(this.Session)
+                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("good").WithLocale(this.Session.GetSingleton().DefaultLocale).Build())
                 .WithSku("10101")
-                .WithVatRate(new VatRateBuilder(this.DatabaseSession).WithRate(21).Build())
-                .WithInventoryItemKind(new InventoryItemKinds(this.DatabaseSession).NonSerialised)
-                .WithUnitOfMeasure(new UnitsOfMeasure(this.DatabaseSession).Piece)
+                .WithVatRate(new VatRateBuilder(this.Session).WithRate(21).Build())
+                .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
+                .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
                 .Build();
 
-            var inventoryItem = new NonSerialisedInventoryItemBuilder(this.DatabaseSession).WithGood(good).Build();
-            inventoryItem.AddInventoryItemVariance(new InventoryItemVarianceBuilder(this.DatabaseSession).WithQuantity(20).WithReason(new VarianceReasons(this.DatabaseSession).Unknown).Build());
+            var inventoryItem = new NonSerialisedInventoryItemBuilder(this.Session).WithGood(good).Build();
+            inventoryItem.AddInventoryItemVariance(new InventoryItemVarianceBuilder(this.Session).WithQuantity(20).WithReason(new VarianceReasons(this.Session).Unknown).Build());
 
-            this.DatabaseSession.Derive();
+            this.Session.Derive();
 
-            var order1 = new SalesOrderBuilder(this.DatabaseSession)
+            var order1 = new SalesOrderBuilder(this.Session)
                 .WithBillToCustomer(customer)
                 .WithShipToCustomer(customer)
                 .WithDeliveryDate(DateTime.UtcNow)
                 .Build();
 
-            var salesItem = new SalesOrderItemBuilder(this.DatabaseSession).WithDescription("item1").WithProduct(good).WithQuantityOrdered(30).WithActualUnitPrice(15).Build();
+            var salesItem = new SalesOrderItemBuilder(this.Session).WithDescription("item1").WithProduct(good).WithQuantityOrdered(30).WithActualUnitPrice(15).Build();
             order1.AddSalesOrderItem(salesItem);
 
-            this.DatabaseSession.Derive();
-            this.DatabaseSession.Commit();
+            this.Session.Derive();
+            this.Session.Commit();
 
             order1.Confirm();
 
-            this.DatabaseSession.Derive();
-            this.DatabaseSession.Commit();
+            this.Session.Derive();
+            this.Session.Commit();
 
-            var sessionInventoryItem = (NonSerialisedInventoryItem)this.DatabaseSession.Instantiate(inventoryItem);
-            var sessionSalesItem = (SalesOrderItem)this.DatabaseSession.Instantiate(salesItem);
+            var sessionInventoryItem = (NonSerialisedInventoryItem)this.Session.Instantiate(inventoryItem);
+            var sessionSalesItem = (SalesOrderItem)this.Session.Instantiate(salesItem);
 
-            var supplier = new OrganisationBuilder(this.DatabaseSession).WithName("supplier").WithOrganisationRole(new OrganisationRoles(this.DatabaseSession).Supplier).Build();
-            new SupplierRelationshipBuilder(this.DatabaseSession).WithSupplier(supplier).Build();
+            var supplier = new OrganisationBuilder(this.Session).WithName("supplier").WithOrganisationRole(new OrganisationRoles(this.Session).Supplier).Build();
+            new SupplierRelationshipBuilder(this.Session).WithSupplier(supplier).Build();
 
 
             Assert.Equal(20, sessionSalesItem.QuantityPendingShipment);
             Assert.Equal(30, sessionSalesItem.QuantityReserved);
             Assert.Equal(10, sessionSalesItem.QuantityShortFalled);
 
-            var order = new PurchaseOrderBuilder(this.DatabaseSession).WithTakenViaSupplier(supplier).Build();
+            var order = new PurchaseOrderBuilder(this.Session).WithTakenViaSupplier(supplier).Build();
 
-            var item1 = new PurchaseOrderItemBuilder(this.DatabaseSession).WithProduct(good).WithQuantityOrdered(10).Build();
+            var item1 = new PurchaseOrderItemBuilder(this.Session).WithProduct(good).WithQuantityOrdered(10).Build();
             order.AddPurchaseOrderItem(item1);
 
-            this.DatabaseSession.Derive();
-            this.DatabaseSession.Commit();
+            this.Session.Derive();
+            this.Session.Commit();
 
             order.Confirm();
 
-            var shipment = new PurchaseShipmentBuilder(this.DatabaseSession).WithShipmentMethod(new ShipmentMethods(this.DatabaseSession).Ground).WithShipFromParty(supplier).Build();
-            var shipmentItem = new ShipmentItemBuilder(this.DatabaseSession).WithGood(good).Build();
+            var shipment = new PurchaseShipmentBuilder(this.Session).WithShipmentMethod(new ShipmentMethods(this.Session).Ground).WithShipFromParty(supplier).Build();
+            var shipmentItem = new ShipmentItemBuilder(this.Session).WithGood(good).Build();
             shipment.AddShipmentItem(shipmentItem);
 
-            new ShipmentReceiptBuilder(this.DatabaseSession)
+            new ShipmentReceiptBuilder(this.Session)
                 .WithQuantityAccepted(10)
                 .WithShipmentItem(shipmentItem)
                 .WithOrderItem(item1)
                 .Build();
 
-            this.DatabaseSession.Derive();
-            this.DatabaseSession.Commit();
+            this.Session.Derive();
+            this.Session.Commit();
 
             shipment.AppsComplete();
 
-            this.DatabaseSession.Derive();
-            this.DatabaseSession.Commit();
+            this.Session.Derive();
+            this.Session.Commit();
 
             Assert.Equal(30, sessionInventoryItem.QuantityOnHand);
 
@@ -271,34 +271,34 @@ namespace Allors.Domain
         [Fact]
         public void GivenShipmentReceiptWhenDerivingThenOrderItemQuantityReceivedIsUpdated()
         {
-            var supplier = new OrganisationBuilder(this.DatabaseSession).WithName("supplier").WithOrganisationRole(new OrganisationRoles(this.DatabaseSession).Supplier).Build();
-            var internalOrganisation = Singleton.Instance(this.DatabaseSession).InternalOrganisation;
-            new SupplierRelationshipBuilder(this.DatabaseSession).WithSupplier(supplier).Build();
+            var supplier = new OrganisationBuilder(this.Session).WithName("supplier").WithOrganisationRole(new OrganisationRoles(this.Session).Supplier).Build();
+            var internalOrganisation = this.Session.GetSingleton().InternalOrganisation;
+            new SupplierRelationshipBuilder(this.Session).WithSupplier(supplier).Build();
 
 
-            var good = new GoodBuilder(this.DatabaseSession)
-                .WithLocalisedName(new LocalisedTextBuilder(this.DatabaseSession).WithText("good").WithLocale(Singleton.Instance(this.DatabaseSession).DefaultLocale).Build())
+            var good = new GoodBuilder(this.Session)
+                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("good").WithLocale(this.Session.GetSingleton().DefaultLocale).Build())
                 .WithSku("10101")
-                .WithVatRate(new VatRateBuilder(this.DatabaseSession).WithRate(21).Build())
-                .WithInventoryItemKind(new InventoryItemKinds(this.DatabaseSession).NonSerialised)
-                .WithUnitOfMeasure(new UnitsOfMeasure(this.DatabaseSession).Piece)
+                .WithVatRate(new VatRateBuilder(this.Session).WithRate(21).Build())
+                .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
+                .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
                 .Build();
 
-            var order = new PurchaseOrderBuilder(this.DatabaseSession).WithTakenViaSupplier(supplier).Build();
+            var order = new PurchaseOrderBuilder(this.Session).WithTakenViaSupplier(supplier).Build();
 
-            var item1 = new PurchaseOrderItemBuilder(this.DatabaseSession).WithProduct(good).WithQuantityOrdered(10).Build();
+            var item1 = new PurchaseOrderItemBuilder(this.Session).WithProduct(good).WithQuantityOrdered(10).Build();
             order.AddPurchaseOrderItem(item1);
 
-            this.DatabaseSession.Derive();
-            this.DatabaseSession.Commit();
+            this.Session.Derive();
+            this.Session.Commit();
 
             order.Confirm();
 
-            var shipment = new PurchaseShipmentBuilder(this.DatabaseSession).WithShipmentMethod(new ShipmentMethods(this.DatabaseSession).Ground).WithShipFromParty(supplier).Build();
-            var shipmentItem = new ShipmentItemBuilder(this.DatabaseSession).WithGood(good).Build();
+            var shipment = new PurchaseShipmentBuilder(this.Session).WithShipmentMethod(new ShipmentMethods(this.Session).Ground).WithShipFromParty(supplier).Build();
+            var shipmentItem = new ShipmentItemBuilder(this.Session).WithGood(good).Build();
             shipment.AddShipmentItem(shipmentItem);
 
-            new ShipmentReceiptBuilder(this.DatabaseSession)
+            new ShipmentReceiptBuilder(this.Session)
                 .WithQuantityAccepted(10)
                 .WithShipmentItem(shipmentItem)
                 .WithOrderItem(item1)
@@ -306,12 +306,12 @@ namespace Allors.Domain
 
             shipment.AppsComplete();
 
-            this.DatabaseSession.Derive();
-            this.DatabaseSession.Commit();
+            this.Session.Derive();
+            this.Session.Commit();
 
             Assert.Equal(10, item1.QuantityReceived);
 
-            this.DatabaseSession.Rollback();
+            this.Session.Rollback();
         }
     }
 }

@@ -29,42 +29,42 @@ namespace Allors.Domain
         [Fact]
         public void GivenWebSiteCommunication_WhenDeriving_ThenRequiredRelationsMustExist()
         {
-            var person = new PersonBuilder(this.DatabaseSession).WithLastName("person").WithPersonRole(new PersonRoles(this.DatabaseSession).Employee).Build();
+            var person = new PersonBuilder(this.Session).WithLastName("person").WithPersonRole(new PersonRoles(this.Session).Employee).Build();
 
-            var builder = new WebSiteCommunicationBuilder(this.DatabaseSession).WithOriginator(person).WithReceiver(person);
+            var builder = new WebSiteCommunicationBuilder(this.Session).WithOriginator(person).WithReceiver(person);
             var communication = builder.Build();
 
-            Assert.True(this.DatabaseSession.Derive(false).HasErrors);
+            Assert.True(this.Session.Derive(false).HasErrors);
 
             builder.WithSubject("Website communication");
             communication = builder.Build();
 
-            this.DatabaseSession.Derive();
+            this.Session.Derive();
 
-            Assert.False(this.DatabaseSession.Derive(false).HasErrors);
+            Assert.False(this.Session.Derive(false).HasErrors);
 
-            Assert.Equal(communication.CommunicationEventState, new CommunicationEventStates(this.DatabaseSession).Scheduled);
+            Assert.Equal(communication.CommunicationEventState, new CommunicationEventStates(this.Session).Scheduled);
             Assert.Equal(communication.CommunicationEventState, communication.LastCommunicationEventState);
         }
 
         [Fact]
         public void GivenWebSiteCommunication_WhenDeriving_ThenInvolvedPartiesAreDerived()
         {
-            var owner = new PersonBuilder(this.DatabaseSession).WithLastName("owner").WithPersonRole(new PersonRoles(this.DatabaseSession).Employee).Build();
-            var originator = new PersonBuilder(this.DatabaseSession).WithLastName("originator").WithPersonRole(new PersonRoles(this.DatabaseSession).Customer).Build();
-            var receiver = new PersonBuilder(this.DatabaseSession).WithLastName("receiver").WithPersonRole(new PersonRoles(this.DatabaseSession).Customer).Build();
+            var owner = new PersonBuilder(this.Session).WithLastName("owner").WithPersonRole(new PersonRoles(this.Session).Employee).Build();
+            var originator = new PersonBuilder(this.Session).WithLastName("originator").WithPersonRole(new PersonRoles(this.Session).Customer).Build();
+            var receiver = new PersonBuilder(this.Session).WithLastName("receiver").WithPersonRole(new PersonRoles(this.Session).Customer).Build();
 
-            this.DatabaseSession.Derive();
-            this.DatabaseSession.Commit();
+            this.Session.Derive();
+            this.Session.Commit();
 
-            var communication = new WebSiteCommunicationBuilder(this.DatabaseSession)
+            var communication = new WebSiteCommunicationBuilder(this.Session)
                 .WithSubject("Hello world!")
                 .WithOwner(owner)
                 .WithOriginator(originator)
                 .WithReceiver(receiver)
                 .Build();
 
-            this.DatabaseSession.Derive();
+            this.Session.Derive();
 
             Assert.Equal(3, communication.InvolvedParties.Count);
             Assert.Contains(owner, communication.InvolvedParties);
@@ -75,28 +75,28 @@ namespace Allors.Domain
         [Fact]
         public void GivenWebSiteCommunication_WhenOriginatorIsDeleted_ThenCommunicationEventIsDeleted()
         {
-            var owner = new PersonBuilder(this.DatabaseSession).WithLastName("owner").WithPersonRole(new PersonRoles(this.DatabaseSession).Employee).Build();
-            var originator = new PersonBuilder(this.DatabaseSession).WithLastName("originator").WithPersonRole(new PersonRoles(this.DatabaseSession).Customer).Build();
-            var receiver = new PersonBuilder(this.DatabaseSession).WithLastName("receiver").WithPersonRole(new PersonRoles(this.DatabaseSession).Customer).Build();
+            var owner = new PersonBuilder(this.Session).WithLastName("owner").WithPersonRole(new PersonRoles(this.Session).Employee).Build();
+            var originator = new PersonBuilder(this.Session).WithLastName("originator").WithPersonRole(new PersonRoles(this.Session).Customer).Build();
+            var receiver = new PersonBuilder(this.Session).WithLastName("receiver").WithPersonRole(new PersonRoles(this.Session).Customer).Build();
 
-            this.DatabaseSession.Derive();
-            this.DatabaseSession.Commit();
+            this.Session.Derive();
+            this.Session.Commit();
 
-            new WebSiteCommunicationBuilder(this.DatabaseSession)
+            new WebSiteCommunicationBuilder(this.Session)
                 .WithSubject("Hello world!")
                 .WithOwner(owner)
                 .WithOriginator(originator)
                 .WithReceiver(receiver)
                 .Build();
 
-            this.DatabaseSession.Derive();
+            this.Session.Derive();
 
-            Assert.Equal(1, this.DatabaseSession.Extent<WebSiteCommunication>().Count);
+            Assert.Equal(1, this.Session.Extent<WebSiteCommunication>().Count);
 
             originator.Delete();
-            this.DatabaseSession.Derive();
+            this.Session.Derive();
 
-            Assert.Equal(0, this.DatabaseSession.Extent<WebSiteCommunication>().Count);
+            Assert.Equal(0, this.Session.Extent<WebSiteCommunication>().Count);
         }
     }
 }

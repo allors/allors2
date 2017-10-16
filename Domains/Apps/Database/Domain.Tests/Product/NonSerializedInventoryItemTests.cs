@@ -31,26 +31,26 @@ namespace Allors.Domain
         [Fact]
         public void GivenInventoryItem_WhenBuild_ThenLastObjectStateEqualsCurrencObjectState()
         {
-            var item = new NonSerialisedInventoryItemBuilder(this.DatabaseSession)
-                .WithPart(new FinishedGoodBuilder(this.DatabaseSession).WithName("part")
-                            .WithManufacturerId("10101").WithInventoryItemKind(new InventoryItemKinds(this.DatabaseSession).NonSerialised).Build())
+            var item = new NonSerialisedInventoryItemBuilder(this.Session)
+                .WithPart(new FinishedGoodBuilder(this.Session).WithName("part")
+                            .WithManufacturerId("10101").WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised).Build())
                 .Build();
 
-            this.DatabaseSession.Derive();
+            this.Session.Derive();
 
-            Assert.Equal(new NonSerialisedInventoryItemStates(this.DatabaseSession).Good, item.NonSerialisedInventoryItemState);
+            Assert.Equal(new NonSerialisedInventoryItemStates(this.Session).Good, item.NonSerialisedInventoryItemState);
             Assert.Equal(item.LastNonSerialisedInventoryItemState, item.NonSerialisedInventoryItemState);
         }
 
         [Fact]
         public void GivenInventoryItem_WhenBuild_ThenPreviousObjectStateIsNull()
         {
-            var item = new NonSerialisedInventoryItemBuilder(this.DatabaseSession)
-                .WithPart(new FinishedGoodBuilder(this.DatabaseSession)
-                            .WithName("part").WithManufacturerId("10101").WithInventoryItemKind(new InventoryItemKinds(this.DatabaseSession).NonSerialised).Build())
+            var item = new NonSerialisedInventoryItemBuilder(this.Session)
+                .WithPart(new FinishedGoodBuilder(this.Session)
+                            .WithName("part").WithManufacturerId("10101").WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised).Build())
                 .Build();
 
-            this.DatabaseSession.Derive();
+            this.Session.Derive();
 
             Assert.Null(item.PreviousNonSerialisedInventoryItemState);
         }
@@ -58,61 +58,61 @@ namespace Allors.Domain
         [Fact]
         public void GivenInventoryItem_WhenDeriving_ThenRequiredRelationsMustExist()
         {
-            var good = new GoodBuilder(this.DatabaseSession)
-                .WithLocalisedName(new LocalisedTextBuilder(this.DatabaseSession).WithText("good").WithLocale(Singleton.Instance(this.DatabaseSession).DefaultLocale).Build())
+            var good = new GoodBuilder(this.Session)
+                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("good").WithLocale(this.Session.GetSingleton().DefaultLocale).Build())
                 .WithSku("10101")
-                .WithVatRate(new VatRateBuilder(this.DatabaseSession).WithRate(21).Build())
-                .WithInventoryItemKind(new InventoryItemKinds(this.DatabaseSession).NonSerialised)
-                .WithUnitOfMeasure(new UnitsOfMeasure(this.DatabaseSession).Piece)
+                .WithVatRate(new VatRateBuilder(this.Session).WithRate(21).Build())
+                .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
+                .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
                 .Build();
 
-            this.DatabaseSession.Derive();
-            this.DatabaseSession.Commit();
+            this.Session.Derive();
+            this.Session.Commit();
 
-            var builder = new NonSerialisedInventoryItemBuilder(this.DatabaseSession);
+            var builder = new NonSerialisedInventoryItemBuilder(this.Session);
             var item = builder.Build();
 
-            Assert.True(this.DatabaseSession.Derive(false).HasErrors);
+            Assert.True(this.Session.Derive(false).HasErrors);
 
-            this.DatabaseSession.Rollback();
+            this.Session.Rollback();
 
-            builder.WithPart(new FinishedGoodBuilder(this.DatabaseSession).WithName("part").WithManufacturerId("10101").WithInventoryItemKind(new InventoryItemKinds(this.DatabaseSession).NonSerialised).Build());
+            builder.WithPart(new FinishedGoodBuilder(this.Session).WithName("part").WithManufacturerId("10101").WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised).Build());
             item = builder.Build();
 
-            Assert.False(this.DatabaseSession.Derive(false).HasErrors);
+            Assert.False(this.Session.Derive(false).HasErrors);
 
             builder.WithGood(good);
             item = builder.Build();
 
-            Assert.True(this.DatabaseSession.Derive(false).HasErrors);
+            Assert.True(this.Session.Derive(false).HasErrors);
 
             item.RemovePart();
 
-            Assert.False(this.DatabaseSession.Derive(false).HasErrors);
+            Assert.False(this.Session.Derive(false).HasErrors);
         }
 
         [Fact]
         public void GivenInventoryItem_WhenBuild_ThenPostBuildRelationsMustExist()
         {
-            var item = new NonSerialisedInventoryItemBuilder(this.DatabaseSession)
-                .WithPart(new FinishedGoodBuilder(this.DatabaseSession)
-                            .WithName("part").WithManufacturerId("10101").WithInventoryItemKind(new InventoryItemKinds(this.DatabaseSession).NonSerialised).Build())
+            var item = new NonSerialisedInventoryItemBuilder(this.Session)
+                .WithPart(new FinishedGoodBuilder(this.Session)
+                            .WithName("part").WithManufacturerId("10101").WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised).Build())
                 .Build();
 
             Assert.NotNull(item.AvailableToPromise);
             Assert.NotNull(item.QuantityCommittedOut);
             Assert.NotNull(item.QuantityExpectedIn);
             Assert.NotNull(item.QuantityOnHand);
-            Assert.Equal(new NonSerialisedInventoryItemStates(this.DatabaseSession).Good, item.NonSerialisedInventoryItemState);
-            Assert.Equal(new Facilities(this.DatabaseSession).FindBy(M.Facility.FacilityType, new FacilityTypes(this.DatabaseSession).Warehouse), item.Facility);
+            Assert.Equal(new NonSerialisedInventoryItemStates(this.Session).Good, item.NonSerialisedInventoryItemState);
+            Assert.Equal(new Facilities(this.Session).FindBy(M.Facility.FacilityType, new FacilityTypes(this.Session).Warehouse), item.Facility);
         }
 
         [Fact]
         public void GivenInventoryItemForPart_WhenDerived_ThenSkuIsEmpty()
         {
-            var item = new NonSerialisedInventoryItemBuilder(this.DatabaseSession)
-                .WithPart(new FinishedGoodBuilder(this.DatabaseSession)
-                            .WithName("part").WithManufacturerId("10101").WithInventoryItemKind(new InventoryItemKinds(this.DatabaseSession).NonSerialised).Build())
+            var item = new NonSerialisedInventoryItemBuilder(this.Session)
+                .WithPart(new FinishedGoodBuilder(this.Session)
+                            .WithName("part").WithManufacturerId("10101").WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised).Build())
                 .Build();
 
             Assert.False(item.ExistSku);
@@ -121,26 +121,26 @@ namespace Allors.Domain
         [Fact]
         public void GivenInventoryItemForGood_WhenDerived_ThenSkuIsFromGood()
         {
-            var vatRate21 = new VatRateBuilder(this.DatabaseSession).WithRate(21).Build();
+            var vatRate21 = new VatRateBuilder(this.Session).WithRate(21).Build();
 
-            var category = new ProductCategoryBuilder(this.DatabaseSession)
-                .WithLocalisedName(new LocalisedTextBuilder(this.DatabaseSession).WithText("category").WithLocale(Singleton.Instance(this.DatabaseSession).DefaultLocale).Build())
+            var category = new ProductCategoryBuilder(this.Session)
+                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("category").WithLocale(this.Session.GetSingleton().DefaultLocale).Build())
                 .Build();
 
-            var good = new GoodBuilder(this.DatabaseSession)
+            var good = new GoodBuilder(this.Session)
              .WithSku("10101")
              .WithVatRate(vatRate21)
-                .WithLocalisedName(new LocalisedTextBuilder(this.DatabaseSession).WithText("good1").WithLocale(Singleton.Instance(this.DatabaseSession).DefaultLocale).Build())
-             .WithInventoryItemKind(new InventoryItemKinds(this.DatabaseSession).NonSerialised)
-             .WithUnitOfMeasure(new UnitsOfMeasure(this.DatabaseSession).Piece)
+                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("good1").WithLocale(this.Session.GetSingleton().DefaultLocale).Build())
+             .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
+             .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
              .WithPrimaryProductCategory(category)
              .Build();
 
-            var item = new NonSerialisedInventoryItemBuilder(this.DatabaseSession)
+            var item = new NonSerialisedInventoryItemBuilder(this.Session)
                 .WithGood(good)
                 .Build();
 
-             this.DatabaseSession.Derive();
+             this.Session.Derive();
 
             Assert.Equal(good.Sku, item.Sku);
         }
@@ -148,12 +148,12 @@ namespace Allors.Domain
         [Fact]
         public void GivenInventoryItemForPart_WhenDerived_ThenNameIsPartName()
         {
-            var part = new FinishedGoodBuilder(this.DatabaseSession).WithName("part").WithManufacturerId("10101").WithInventoryItemKind(new InventoryItemKinds(this.DatabaseSession).NonSerialised).Build();
-            var item = new NonSerialisedInventoryItemBuilder(this.DatabaseSession)
+            var part = new FinishedGoodBuilder(this.Session).WithName("part").WithManufacturerId("10101").WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised).Build();
+            var item = new NonSerialisedInventoryItemBuilder(this.Session)
                 .WithPart(part)
                 .Build();
 
-            this.DatabaseSession.Derive();
+            this.Session.Derive();
 
             Assert.Equal(part.Name, item.Name);
         }
@@ -162,26 +162,26 @@ namespace Allors.Domain
         public void GivenInventoryItemForGood_WhenDerived_ThenNameIsGoodName()
         {
 
-            var vatRate21 = new VatRateBuilder(this.DatabaseSession).WithRate(21).Build();
+            var vatRate21 = new VatRateBuilder(this.Session).WithRate(21).Build();
 
-            var category = new ProductCategoryBuilder(this.DatabaseSession)
-                .WithLocalisedName(new LocalisedTextBuilder(this.DatabaseSession).WithText("category").WithLocale(Singleton.Instance(this.DatabaseSession).DefaultLocale).Build())
+            var category = new ProductCategoryBuilder(this.Session)
+                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("category").WithLocale(this.Session.GetSingleton().DefaultLocale).Build())
                 .Build();
 
-            var good = new GoodBuilder(this.DatabaseSession)
+            var good = new GoodBuilder(this.Session)
              .WithSku("10101")
              .WithVatRate(vatRate21)
-                .WithLocalisedName(new LocalisedTextBuilder(this.DatabaseSession).WithText("good1").WithLocale(Singleton.Instance(this.DatabaseSession).DefaultLocale).Build())
-             .WithInventoryItemKind(new InventoryItemKinds(this.DatabaseSession).NonSerialised)
-             .WithUnitOfMeasure(new UnitsOfMeasure(this.DatabaseSession).Piece)
+                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("good1").WithLocale(this.Session.GetSingleton().DefaultLocale).Build())
+             .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
+             .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
              .WithPrimaryProductCategory(category)
              .Build();
 
-            var item = new NonSerialisedInventoryItemBuilder(this.DatabaseSession)
+            var item = new NonSerialisedInventoryItemBuilder(this.Session)
                 .WithGood(good)
                 .Build();
 
-            this.DatabaseSession.Derive();
+            this.Session.Derive();
 
             Assert.Equal(good.Name, item.Name);
         }
@@ -189,19 +189,19 @@ namespace Allors.Domain
         [Fact]
         public void GivenInventoryItemForPart_WhenDerived_ThenUnitOfMeasureIsPartUnitOfMeasure()
         {
-            var uom = new UnitsOfMeasure(this.DatabaseSession).Centimeter;
-            var part = new FinishedGoodBuilder(this.DatabaseSession)
+            var uom = new UnitsOfMeasure(this.Session).Centimeter;
+            var part = new FinishedGoodBuilder(this.Session)
                 .WithName("part")
                 .WithManufacturerId("10101")
-                .WithInventoryItemKind(new InventoryItemKinds(this.DatabaseSession).NonSerialised)
+                .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
                 .WithUnitOfMeasure(uom)
                 .Build();
 
-            var item = new NonSerialisedInventoryItemBuilder(this.DatabaseSession)
+            var item = new NonSerialisedInventoryItemBuilder(this.Session)
                 .WithPart(part)
                 .Build();
 
-            this.DatabaseSession.Derive();
+            this.Session.Derive();
 
             Assert.Equal(part.UnitOfMeasure, item.UnitOfMeasure);
         }
@@ -209,27 +209,27 @@ namespace Allors.Domain
         [Fact]
         public void GivenInventoryItemForGood_WhenDerived_ThenUnitOfMeasureIsGoodUnitOfMeasure()
         {
-            var uom = new UnitsOfMeasure(this.DatabaseSession).Centimeter;
+            var uom = new UnitsOfMeasure(this.Session).Centimeter;
 
-            var vatRate21 = new VatRateBuilder(this.DatabaseSession).WithRate(21).Build();
-            var category = new ProductCategoryBuilder(this.DatabaseSession)
-                .WithLocalisedName(new LocalisedTextBuilder(this.DatabaseSession).WithText("category").WithLocale(Singleton.Instance(this.DatabaseSession).DefaultLocale).Build())
+            var vatRate21 = new VatRateBuilder(this.Session).WithRate(21).Build();
+            var category = new ProductCategoryBuilder(this.Session)
+                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("category").WithLocale(this.Session.GetSingleton().DefaultLocale).Build())
                 .Build();
 
-            var good = new GoodBuilder(this.DatabaseSession)
+            var good = new GoodBuilder(this.Session)
              .WithSku("10101")
              .WithVatRate(vatRate21)
-                .WithLocalisedName(new LocalisedTextBuilder(this.DatabaseSession).WithText("good1").WithLocale(Singleton.Instance(this.DatabaseSession).DefaultLocale).Build())
-             .WithInventoryItemKind(new InventoryItemKinds(this.DatabaseSession).NonSerialised)
+                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("good1").WithLocale(this.Session.GetSingleton().DefaultLocale).Build())
+             .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
              .WithUnitOfMeasure(uom)
              .WithPrimaryProductCategory(category)
              .Build();
             
-            var item = new NonSerialisedInventoryItemBuilder(this.DatabaseSession)
+            var item = new NonSerialisedInventoryItemBuilder(this.Session)
                 .WithGood(good)
                 .Build();
 
-            this.DatabaseSession.Derive();
+            this.Session.Derive();
 
             Assert.Equal(good.UnitOfMeasure, item.UnitOfMeasure);
         }
@@ -237,79 +237,79 @@ namespace Allors.Domain
         [Fact]
         public void GivenInventoryItem_WhenQuantityOnHandIsRaised_ThenSalesOrderItemsWithQuantityShortFalledAreUpdated()
         {
-            var vatRate21 = new VatRateBuilder(this.DatabaseSession).WithRate(21).Build();
+            var vatRate21 = new VatRateBuilder(this.Session).WithRate(21).Build();
 
-            var category = new ProductCategoryBuilder(this.DatabaseSession)
-                .WithLocalisedName(new LocalisedTextBuilder(this.DatabaseSession).WithText("category").WithLocale(Singleton.Instance(this.DatabaseSession).DefaultLocale).Build())
+            var category = new ProductCategoryBuilder(this.Session)
+                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("category").WithLocale(this.Session.GetSingleton().DefaultLocale).Build())
                 .Build();
 
-            var good = new GoodBuilder(this.DatabaseSession)
+            var good = new GoodBuilder(this.Session)
              .WithSku("10101")
              .WithVatRate(vatRate21)
-                .WithLocalisedName(new LocalisedTextBuilder(this.DatabaseSession).WithText("good1").WithLocale(Singleton.Instance(this.DatabaseSession).DefaultLocale).Build())
-             .WithInventoryItemKind(new InventoryItemKinds(this.DatabaseSession).NonSerialised)
-             .WithUnitOfMeasure(new UnitsOfMeasure(this.DatabaseSession).Piece)
+                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("good1").WithLocale(this.Session.GetSingleton().DefaultLocale).Build())
+             .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
+             .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
              .WithPrimaryProductCategory(category)
              .Build();
 
-            var inventoryItem = new NonSerialisedInventoryItemBuilder(this.DatabaseSession).WithGood(good).Build();
-            inventoryItem.AddInventoryItemVariance(new InventoryItemVarianceBuilder(this.DatabaseSession).WithQuantity(5).WithReason(new VarianceReasons(this.DatabaseSession).Unknown).Build());
+            var inventoryItem = new NonSerialisedInventoryItemBuilder(this.Session).WithGood(good).Build();
+            inventoryItem.AddInventoryItemVariance(new InventoryItemVarianceBuilder(this.Session).WithQuantity(5).WithReason(new VarianceReasons(this.Session).Unknown).Build());
 
-            this.DatabaseSession.Derive();
+            this.Session.Derive();
 
-            var mechelen = new CityBuilder(this.DatabaseSession).WithName("Mechelen").Build();
-            var mechelenAddress = new PostalAddressBuilder(this.DatabaseSession).WithGeographicBoundary(mechelen).WithAddress1("Haverwerf 15").Build();
-            var shipToMechelen = new PartyContactMechanismBuilder(this.DatabaseSession)
+            var mechelen = new CityBuilder(this.Session).WithName("Mechelen").Build();
+            var mechelenAddress = new PostalAddressBuilder(this.Session).WithGeographicBoundary(mechelen).WithAddress1("Haverwerf 15").Build();
+            var shipToMechelen = new PartyContactMechanismBuilder(this.Session)
                 .WithContactMechanism(mechelenAddress)
-                .WithContactPurpose(new ContactMechanismPurposes(this.DatabaseSession).ShippingAddress)
+                .WithContactPurpose(new ContactMechanismPurposes(this.Session).ShippingAddress)
                 .WithUseAsDefault(true)
                 .Build();
 
-            var customer = new PersonBuilder(this.DatabaseSession).WithLastName("customer").WithPartyContactMechanism(shipToMechelen).WithPersonRole(new PersonRoles(this.DatabaseSession).Customer).Build();
+            var customer = new PersonBuilder(this.Session).WithLastName("customer").WithPartyContactMechanism(shipToMechelen).WithPersonRole(new PersonRoles(this.Session).Customer).Build();
 
-            var internalOrganisation = Singleton.Instance(this.DatabaseSession).InternalOrganisation;
+            var internalOrganisation = this.Session.GetSingleton().InternalOrganisation;
 
 
-            new CustomerRelationshipBuilder(this.DatabaseSession).WithFromDate(DateTime.UtcNow).WithCustomer(customer).Build();
+            new CustomerRelationshipBuilder(this.Session).WithFromDate(DateTime.UtcNow).WithCustomer(customer).Build();
 
-            this.DatabaseSession.Derive();
-            this.DatabaseSession.Commit();
+            this.Session.Derive();
+            this.Session.Commit();
 
-            var order1 = new SalesOrderBuilder(this.DatabaseSession)
+            var order1 = new SalesOrderBuilder(this.Session)
                 .WithBillToCustomer(customer)
                 .WithShipToCustomer(customer)
                 .WithDeliveryDate(DateTime.UtcNow)
                 .Build();
 
-            var item1 = new SalesOrderItemBuilder(this.DatabaseSession).WithDescription("item1").WithProduct(good).WithQuantityOrdered(10).WithActualUnitPrice(15).Build();
-            var item2 = new SalesOrderItemBuilder(this.DatabaseSession).WithDescription("item2").WithProduct(good).WithQuantityOrdered(20).WithActualUnitPrice(15).Build();
+            var item1 = new SalesOrderItemBuilder(this.Session).WithDescription("item1").WithProduct(good).WithQuantityOrdered(10).WithActualUnitPrice(15).Build();
+            var item2 = new SalesOrderItemBuilder(this.Session).WithDescription("item2").WithProduct(good).WithQuantityOrdered(20).WithActualUnitPrice(15).Build();
             order1.AddSalesOrderItem(item1);
             order1.AddSalesOrderItem(item2);
 
-            this.DatabaseSession.Derive();
-            this.DatabaseSession.Commit();
+            this.Session.Derive();
+            this.Session.Commit();
 
             order1.Confirm();
 
-            this.DatabaseSession.Derive();
+            this.Session.Derive();
 
-            var order2 = new SalesOrderBuilder(this.DatabaseSession)
+            var order2 = new SalesOrderBuilder(this.Session)
                 .WithBillToCustomer(customer)
                 .WithShipToCustomer(customer)
                 .WithDeliveryDate(DateTime.UtcNow.AddDays(1))
                 .Build();
 
-            var item3 = new SalesOrderItemBuilder(this.DatabaseSession).WithDescription("item3").WithProduct(good).WithQuantityOrdered(10).WithActualUnitPrice(15).Build();
-            var item4 = new SalesOrderItemBuilder(this.DatabaseSession).WithDescription("item4").WithProduct(good).WithQuantityOrdered(20).WithActualUnitPrice(15).Build();
+            var item3 = new SalesOrderItemBuilder(this.Session).WithDescription("item3").WithProduct(good).WithQuantityOrdered(10).WithActualUnitPrice(15).Build();
+            var item4 = new SalesOrderItemBuilder(this.Session).WithDescription("item4").WithProduct(good).WithQuantityOrdered(20).WithActualUnitPrice(15).Build();
             order2.AddSalesOrderItem(item3);
             order2.AddSalesOrderItem(item4);
 
-            this.DatabaseSession.Derive();
-            this.DatabaseSession.Commit();
+            this.Session.Derive();
+            this.Session.Commit();
 
             order2.Confirm();
 
-            this.DatabaseSession.Derive();
+            this.Session.Derive();
 
             //Assert.Equal(0, item1.QuantityRequestsShipping);
             //Assert.Equal(5, item1.QuantityPendingShipment);
@@ -334,10 +334,10 @@ namespace Allors.Domain
             Assert.Equal(0, item1.ReservedFromInventoryItem.AvailableToPromise);
             Assert.Equal(5, item1.ReservedFromInventoryItem.QuantityOnHand);
 
-            inventoryItem.AddInventoryItemVariance(new InventoryItemVarianceBuilder(this.DatabaseSession).WithQuantity(15).WithReason(new VarianceReasons(this.DatabaseSession).Unknown).Build());
+            inventoryItem.AddInventoryItemVariance(new InventoryItemVarianceBuilder(this.Session).WithQuantity(15).WithReason(new VarianceReasons(this.Session).Unknown).Build());
 
-            this.DatabaseSession.Derive();
-            this.DatabaseSession.Commit();
+            this.Session.Derive();
+            this.Session.Commit();
 
             //// Orderitems are sorted as follows: item1, item2, item3, item4
             //Assert.Equal(0, item1.QuantityRequestsShipping);
@@ -363,10 +363,10 @@ namespace Allors.Domain
             Assert.Equal(0, item1.ReservedFromInventoryItem.AvailableToPromise);
             Assert.Equal(20, item1.ReservedFromInventoryItem.QuantityOnHand);
 
-            inventoryItem.AddInventoryItemVariance(new InventoryItemVarianceBuilder(this.DatabaseSession).WithQuantity(85).WithReason(new VarianceReasons(this.DatabaseSession).Unknown).Build());
+            inventoryItem.AddInventoryItemVariance(new InventoryItemVarianceBuilder(this.Session).WithQuantity(85).WithReason(new VarianceReasons(this.Session).Unknown).Build());
 
-            this.DatabaseSession.Derive();
-            this.DatabaseSession.Commit();
+            this.Session.Derive();
+            this.Session.Commit();
 
             //// Orderitems are sorted as follows: item2, item1, item4, item 3
             Assert.Equal(0, item1.QuantityRequestsShipping);
@@ -396,68 +396,68 @@ namespace Allors.Domain
         [Fact]
         public void GivenInventoryItem_WhenQuantityOnHandIsDecreased_ThenSalesOrderItemsWithQuantityRequestsShippingAreUpdated()
         {
-            var vatRate21 = new VatRateBuilder(this.DatabaseSession).WithRate(21).Build();
+            var vatRate21 = new VatRateBuilder(this.Session).WithRate(21).Build();
 
-            var category = new ProductCategoryBuilder(this.DatabaseSession)
-                .WithLocalisedName(new LocalisedTextBuilder(this.DatabaseSession).WithText("category").WithLocale(Singleton.Instance(this.DatabaseSession).DefaultLocale).Build())
+            var category = new ProductCategoryBuilder(this.Session)
+                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("category").WithLocale(this.Session.GetSingleton().DefaultLocale).Build())
                 .Build();
 
-            var good = new GoodBuilder(this.DatabaseSession)
+            var good = new GoodBuilder(this.Session)
              .WithSku("10101")
              .WithVatRate(vatRate21)
-                .WithLocalisedName(new LocalisedTextBuilder(this.DatabaseSession).WithText("good1").WithLocale(Singleton.Instance(this.DatabaseSession).DefaultLocale).Build())
-             .WithInventoryItemKind(new InventoryItemKinds(this.DatabaseSession).NonSerialised)
-             .WithUnitOfMeasure(new UnitsOfMeasure(this.DatabaseSession).Piece)
+                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("good1").WithLocale(this.Session.GetSingleton().DefaultLocale).Build())
+             .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
+             .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
              .WithPrimaryProductCategory(category)
              .Build();
 
-            var inventoryItem = new NonSerialisedInventoryItemBuilder(this.DatabaseSession).WithGood(good).Build();
-            inventoryItem.AddInventoryItemVariance(new InventoryItemVarianceBuilder(this.DatabaseSession).WithQuantity(5).WithReason(new VarianceReasons(this.DatabaseSession).Ruined).Build());
+            var inventoryItem = new NonSerialisedInventoryItemBuilder(this.Session).WithGood(good).Build();
+            inventoryItem.AddInventoryItemVariance(new InventoryItemVarianceBuilder(this.Session).WithQuantity(5).WithReason(new VarianceReasons(this.Session).Ruined).Build());
 
-            this.DatabaseSession.Derive();
+            this.Session.Derive();
 
-            var mechelen = new CityBuilder(this.DatabaseSession).WithName("Mechelen").Build();
-            var mechelenAddress = new PostalAddressBuilder(this.DatabaseSession).WithGeographicBoundary(mechelen).WithAddress1("Haverwerf 15").Build();
-            var shipToMechelen = new PartyContactMechanismBuilder(this.DatabaseSession)
+            var mechelen = new CityBuilder(this.Session).WithName("Mechelen").Build();
+            var mechelenAddress = new PostalAddressBuilder(this.Session).WithGeographicBoundary(mechelen).WithAddress1("Haverwerf 15").Build();
+            var shipToMechelen = new PartyContactMechanismBuilder(this.Session)
                 .WithContactMechanism(mechelenAddress)
-                .WithContactPurpose(new ContactMechanismPurposes(this.DatabaseSession).ShippingAddress)
+                .WithContactPurpose(new ContactMechanismPurposes(this.Session).ShippingAddress)
                 .WithUseAsDefault(true)
                 .Build();
 
-            var customer = new PersonBuilder(this.DatabaseSession).WithLastName("customer").WithPartyContactMechanism(shipToMechelen).WithPersonRole(new PersonRoles(this.DatabaseSession).Customer).Build();
+            var customer = new PersonBuilder(this.Session).WithLastName("customer").WithPartyContactMechanism(shipToMechelen).WithPersonRole(new PersonRoles(this.Session).Customer).Build();
 
-            var internalOrganisation = Singleton.Instance(this.DatabaseSession).InternalOrganisation;
-
-
-            new CustomerRelationshipBuilder(this.DatabaseSession).WithFromDate(DateTime.UtcNow).WithCustomer(customer).Build();
+            var internalOrganisation = this.Session.GetSingleton().InternalOrganisation;
 
 
-            this.DatabaseSession.Derive();
+            new CustomerRelationshipBuilder(this.Session).WithFromDate(DateTime.UtcNow).WithCustomer(customer).Build();
 
-            var order = new SalesOrderBuilder(this.DatabaseSession)
+
+            this.Session.Derive();
+
+            var order = new SalesOrderBuilder(this.Session)
                 .WithBillToCustomer(customer)
                 .WithShipToCustomer(customer)
                 .WithDeliveryDate(DateTime.UtcNow)
                 .WithPartiallyShip(false)
                 .Build();
 
-            var item1 = new SalesOrderItemBuilder(this.DatabaseSession).WithDescription("item1").WithProduct(good).WithQuantityOrdered(10).WithActualUnitPrice(15).Build();
+            var item1 = new SalesOrderItemBuilder(this.Session).WithDescription("item1").WithProduct(good).WithQuantityOrdered(10).WithActualUnitPrice(15).Build();
             order.AddSalesOrderItem(item1);
             
-            this.DatabaseSession.Derive();
+            this.Session.Derive();
             
             order.Confirm();
 
-            this.DatabaseSession.Derive();
+            this.Session.Derive();
 
             Assert.Equal(5, item1.QuantityRequestsShipping);
             Assert.Equal(0, item1.QuantityPendingShipment);
             Assert.Equal(10, item1.QuantityReserved);
             Assert.Equal(5, item1.QuantityShortFalled);
 
-            inventoryItem.AddInventoryItemVariance(new InventoryItemVarianceBuilder(this.DatabaseSession).WithQuantity(-2).WithReason(new VarianceReasons(this.DatabaseSession).Unknown).Build());
+            inventoryItem.AddInventoryItemVariance(new InventoryItemVarianceBuilder(this.Session).WithQuantity(-2).WithReason(new VarianceReasons(this.Session).Unknown).Build());
 
-            this.DatabaseSession.Derive();
+            this.Session.Derive();
 
             Assert.Equal(3, item1.QuantityRequestsShipping);
             Assert.Equal(0, item1.QuantityPendingShipment);

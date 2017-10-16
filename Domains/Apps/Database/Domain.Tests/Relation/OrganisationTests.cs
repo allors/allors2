@@ -35,44 +35,44 @@ namespace Allors.Domain
         [Fact]
         public void GivenOrganisation_WhenDeriving_ThenRequiredRelationsMustExist()
         {
-            var builder = new OrganisationBuilder(this.DatabaseSession);
+            var builder = new OrganisationBuilder(this.Session);
             builder.Build();
 
-            Assert.True(this.DatabaseSession.Derive(false).HasErrors);
+            Assert.True(this.Session.Derive(false).HasErrors);
 
-            this.DatabaseSession.Rollback();
+            this.Session.Rollback();
 
             builder.WithName("Organisation");
             builder.Build();
 
-            Assert.True(this.DatabaseSession.Derive(false).HasErrors);
+            Assert.True(this.Session.Derive(false).HasErrors);
 
-            this.DatabaseSession.Rollback();
+            this.Session.Rollback();
 
-            builder.WithOrganisationRole(new OrganisationRoles(this.DatabaseSession).Customer);
+            builder.WithOrganisationRole(new OrganisationRoles(this.Session).Customer);
             builder.Build();
 
-            Assert.False(this.DatabaseSession.Derive(false).HasErrors);
+            Assert.False(this.Session.Derive(false).HasErrors);
         }
 
         [Fact]
         public void GivenOrganisation_WhenActiveContactRelationship_ThenOrganisationCurrentOrganisationContactRelationshipsContainsOrganisation()
         {
-            var contact = new PersonBuilder(this.DatabaseSession).WithLastName("organisationContact").WithPersonRole(new PersonRoles(this.DatabaseSession).Contact).Build();
-            var organisation = new OrganisationBuilder(this.DatabaseSession).WithName("organisation").WithOrganisationRole(new OrganisationRoles(this.DatabaseSession).Customer).Build();
+            var contact = new PersonBuilder(this.Session).WithLastName("organisationContact").WithPersonRole(new PersonRoles(this.Session).Contact).Build();
+            var organisation = new OrganisationBuilder(this.Session).WithName("organisation").WithOrganisationRole(new OrganisationRoles(this.Session).Customer).Build();
 
-            new CustomerRelationshipBuilder(this.DatabaseSession)
+            new CustomerRelationshipBuilder(this.Session)
                 .WithCustomer(organisation)
                 .WithFromDate(DateTimeFactory.CreateDate(2010, 01, 01))
                 .Build();
 
-            new OrganisationContactRelationshipBuilder(this.DatabaseSession)
+            new OrganisationContactRelationshipBuilder(this.Session)
                 .WithContact(contact)
                 .WithOrganisation(organisation)
                 .WithFromDate(DateTime.UtcNow.Date)
                 .Build();
 
-            this.DatabaseSession.Derive();
+            this.Session.Derive();
 
             Assert.Equal(contact.CurrentOrganisationContactRelationships[0].Organisation, organisation);
             Assert.Equal(0, contact.InactiveOrganisationContactRelationships.Count);
@@ -81,22 +81,22 @@ namespace Allors.Domain
         [Fact]
         public void GivenOrganisation_WhenInActiveContactRelationship_ThenOrganisationnactiveOrganisationContactRelationshipsContainsOrganisation()
         {
-            var contact = new PersonBuilder(this.DatabaseSession).WithLastName("organisationContact").WithPersonRole(new PersonRoles(this.DatabaseSession).Contact).Build();
-            var organisation = new OrganisationBuilder(this.DatabaseSession).WithName("organisation").WithOrganisationRole(new OrganisationRoles(this.DatabaseSession).Customer).Build();
+            var contact = new PersonBuilder(this.Session).WithLastName("organisationContact").WithPersonRole(new PersonRoles(this.Session).Contact).Build();
+            var organisation = new OrganisationBuilder(this.Session).WithName("organisation").WithOrganisationRole(new OrganisationRoles(this.Session).Customer).Build();
 
-            new CustomerRelationshipBuilder(this.DatabaseSession)
+            new CustomerRelationshipBuilder(this.Session)
                 .WithCustomer(organisation)
                 .WithFromDate(DateTimeFactory.CreateDate(2010, 01, 01))
                 .Build();
 
-            new OrganisationContactRelationshipBuilder(this.DatabaseSession)
+            new OrganisationContactRelationshipBuilder(this.Session)
                 .WithContact(contact)
                 .WithOrganisation(organisation)
                 .WithFromDate(DateTime.UtcNow.Date.AddDays(-1))
                 .WithThroughDate(DateTime.UtcNow.Date.AddDays(-1))
                 .Build();
 
-            this.DatabaseSession.Derive();
+            this.Session.Derive();
 
             Assert.Equal(contact.InactiveOrganisationContactRelationships[0].Organisation, organisation);
             Assert.Equal(0, contact.CurrentOrganisationContactRelationships.Count);

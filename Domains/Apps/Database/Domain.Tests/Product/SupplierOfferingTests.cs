@@ -31,103 +31,103 @@ namespace Allors.Domain
         [Fact]
         public void GivenSupplierOffering_WhenDeriving_ThenRequiredRelationsMustExist()
         {
-            var supplier = new OrganisationBuilder(this.DatabaseSession).WithName("organisation").WithOrganisationRole(new OrganisationRoles(this.DatabaseSession).Customer).Build();
-            var part = new FinishedGoodBuilder(this.DatabaseSession).WithName("finishedGood").WithInventoryItemKind(new InventoryItemKinds(this.DatabaseSession).NonSerialised).Build();
+            var supplier = new OrganisationBuilder(this.Session).WithName("organisation").WithOrganisationRole(new OrganisationRoles(this.Session).Customer).Build();
+            var part = new FinishedGoodBuilder(this.Session).WithName("finishedGood").WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised).Build();
 
-            var good = new GoodBuilder(this.DatabaseSession)
-                .WithLocalisedName(new LocalisedTextBuilder(this.DatabaseSession).WithText("good").WithLocale(Singleton.Instance(this.DatabaseSession).DefaultLocale).Build())
+            var good = new GoodBuilder(this.Session)
+                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("good").WithLocale(this.Session.GetSingleton().DefaultLocale).Build())
                 .WithSku("10101")
-                .WithVatRate(new VatRateBuilder(this.DatabaseSession).WithRate(21).Build())
-                .WithInventoryItemKind(new InventoryItemKinds(this.DatabaseSession).NonSerialised)
-                .WithUnitOfMeasure(new UnitsOfMeasure(this.DatabaseSession).Piece)
+                .WithVatRate(new VatRateBuilder(this.Session).WithRate(21).Build())
+                .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
+                .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
                 .Build();
 
-            var purchasePrice = new ProductPurchasePriceBuilder(this.DatabaseSession)
+            var purchasePrice = new ProductPurchasePriceBuilder(this.Session)
                 .WithFromDate(DateTime.UtcNow)
-                .WithCurrency(new Currencies(this.DatabaseSession).FindBy(M.Currency.IsoCode, "EUR"))
+                .WithCurrency(new Currencies(this.Session).FindBy(M.Currency.IsoCode, "EUR"))
                 .WithPrice(1)
-                .WithUnitOfMeasure(new UnitsOfMeasure(this.DatabaseSession).Piece)
+                .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
                 .Build();
 
-            this.DatabaseSession.Commit();
+            this.Session.Commit();
 
-            var builder = new SupplierOfferingBuilder(this.DatabaseSession);
+            var builder = new SupplierOfferingBuilder(this.Session);
             builder.Build();
 
-            Assert.True(this.DatabaseSession.Derive(false).HasErrors);
+            Assert.True(this.Session.Derive(false).HasErrors);
 
-            this.DatabaseSession.Rollback();
+            this.Session.Rollback();
 
             builder.WithProduct(good);
             builder.Build();
 
-            Assert.True(this.DatabaseSession.Derive(false).HasErrors);
+            Assert.True(this.Session.Derive(false).HasErrors);
 
-            this.DatabaseSession.Rollback();
+            this.Session.Rollback();
 
             builder.WithProductPurchasePrice(purchasePrice);
             builder.Build();
 
-            Assert.True(this.DatabaseSession.Derive(false).HasErrors);
+            Assert.True(this.Session.Derive(false).HasErrors);
 
-            this.DatabaseSession.Rollback();
+            this.Session.Rollback();
 
             builder.WithSupplier(supplier);
             builder.Build();
 
-            Assert.False(this.DatabaseSession.Derive(false).HasErrors);
+            Assert.False(this.Session.Derive(false).HasErrors);
 
             builder.WithPart(part);
             builder.Build();
 
-            Assert.True(this.DatabaseSession.Derive(false).HasErrors);
+            Assert.True(this.Session.Derive(false).HasErrors);
 
-            this.DatabaseSession.Rollback();
+            this.Session.Rollback();
 
             var supplierOffering = builder.Build(); 
             supplierOffering.RemoveProduct();
 
-            Assert.False(this.DatabaseSession.Derive(false).HasErrors);
+            Assert.False(this.Session.Derive(false).HasErrors);
         }
 
         [Fact]
         public void GivenNewGood_WhenDeriving_ThenNonSerialisedInventryItemIsCreatedForEveryFacility()
         {
-            var supplier = new OrganisationBuilder(this.DatabaseSession).WithName("supplier").WithOrganisationRole(new OrganisationRoles(this.DatabaseSession).Supplier).Build();
-            var internalOrganisation = Singleton.Instance(this.DatabaseSession).InternalOrganisation;
-            var secondFacility = new FacilityBuilder(this.DatabaseSession)
-                .WithFacilityType(new FacilityTypes(this.DatabaseSession).Warehouse)
+            var supplier = new OrganisationBuilder(this.Session).WithName("supplier").WithOrganisationRole(new OrganisationRoles(this.Session).Supplier).Build();
+            var internalOrganisation = this.Session.GetSingleton().InternalOrganisation;
+            var secondFacility = new FacilityBuilder(this.Session)
+                .WithFacilityType(new FacilityTypes(this.Session).Warehouse)
                 .WithName("second facility")
                 .Build();
 
-            new SupplierRelationshipBuilder(this.DatabaseSession)
+            new SupplierRelationshipBuilder(this.Session)
                 .WithSupplier(supplier)
                 .WithFromDate(DateTime.UtcNow)
                 .Build();
 
-            var purchasePrice = new ProductPurchasePriceBuilder(this.DatabaseSession)
+            var purchasePrice = new ProductPurchasePriceBuilder(this.Session)
                 .WithFromDate(DateTime.UtcNow)
-                .WithCurrency(new Currencies(this.DatabaseSession).FindBy(M.Currency.IsoCode, "EUR"))
+                .WithCurrency(new Currencies(this.Session).FindBy(M.Currency.IsoCode, "EUR"))
                 .WithPrice(1)
-                .WithUnitOfMeasure(new UnitsOfMeasure(this.DatabaseSession).Piece)
+                .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
                 .Build();
 
-            var good = new GoodBuilder(this.DatabaseSession)
-                .WithLocalisedName(new LocalisedTextBuilder(this.DatabaseSession).WithText("good").WithLocale(Singleton.Instance(this.DatabaseSession).DefaultLocale).Build())
+            var good = new GoodBuilder(this.Session)
+                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("good").WithLocale(this.Session.GetSingleton().DefaultLocale).Build())
                 .WithSku("10101")
-                .WithVatRate(new VatRateBuilder(this.DatabaseSession).WithRate(21).Build())
-                .WithInventoryItemKind(new InventoryItemKinds(this.DatabaseSession).NonSerialised)
-                .WithUnitOfMeasure(new UnitsOfMeasure(this.DatabaseSession).Piece)
+                .WithVatRate(new VatRateBuilder(this.Session).WithRate(21).Build())
+                .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
+                .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
                 .Build();
 
-            new SupplierOfferingBuilder(this.DatabaseSession)
+            new SupplierOfferingBuilder(this.Session)
                 .WithProduct(good)
                 .WithSupplier(supplier)
                 .WithProductPurchasePrice(purchasePrice)
                 .WithFromDate(DateTime.UtcNow)
                 .Build();
 
-            this.DatabaseSession.Derive(); 
+            this.Session.Derive(); 
 
             Assert.Equal(2, good.InventoryItemsWhereGood.Count);
             Assert.Equal(1, internalOrganisation.DefaultFacility.InventoryItemsWhereFacility.Count);
@@ -137,46 +137,46 @@ namespace Allors.Domain
         [Fact]
         public void GivenNewGoodCoredOnFinishedGood_WhenDeriving_ThenNonSerialisedInventryItemIsCreatedForEveryFinishedGoodAndFacility()
         {
-            var supplier = new OrganisationBuilder(this.DatabaseSession).WithName("supplier").WithOrganisationRole(new OrganisationRoles(this.DatabaseSession).Supplier).Build();
-            var internalOrganisation = Singleton.Instance(this.DatabaseSession).InternalOrganisation;
-            var secondFacility = new FacilityBuilder(this.DatabaseSession)
-                .WithFacilityType(new FacilityTypes(this.DatabaseSession).Warehouse)
+            var supplier = new OrganisationBuilder(this.Session).WithName("supplier").WithOrganisationRole(new OrganisationRoles(this.Session).Supplier).Build();
+            var internalOrganisation = this.Session.GetSingleton().InternalOrganisation;
+            var secondFacility = new FacilityBuilder(this.Session)
+                .WithFacilityType(new FacilityTypes(this.Session).Warehouse)
                 .WithName("second facility")
                 .Build();
 
-            new SupplierRelationshipBuilder(this.DatabaseSession)
+            new SupplierRelationshipBuilder(this.Session)
                 .WithSupplier(supplier)
                 .WithFromDate(DateTime.UtcNow)
                 .Build();
 
-            var finishedGood = new FinishedGoodBuilder(this.DatabaseSession)
+            var finishedGood = new FinishedGoodBuilder(this.Session)
                 .WithName("part")
-                .WithInventoryItemKind(new InventoryItemKinds(this.DatabaseSession).NonSerialised)
+                .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
                 .Build();
 
-            var purchasePrice = new ProductPurchasePriceBuilder(this.DatabaseSession)
+            var purchasePrice = new ProductPurchasePriceBuilder(this.Session)
                 .WithFromDate(DateTime.UtcNow)
-                .WithCurrency(new Currencies(this.DatabaseSession).FindBy(M.Currency.IsoCode, "EUR"))
+                .WithCurrency(new Currencies(this.Session).FindBy(M.Currency.IsoCode, "EUR"))
                 .WithPrice(1)
-                .WithUnitOfMeasure(new UnitsOfMeasure(this.DatabaseSession).Piece)
+                .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
                 .Build();
 
-            var good = new GoodBuilder(this.DatabaseSession)
-                .WithLocalisedName(new LocalisedTextBuilder(this.DatabaseSession).WithText("good").WithLocale(Singleton.Instance(this.DatabaseSession).DefaultLocale).Build())
+            var good = new GoodBuilder(this.Session)
+                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("good").WithLocale(this.Session.GetSingleton().DefaultLocale).Build())
                 .WithSku("10101")
                 .WithFinishedGood(finishedGood)
-                .WithVatRate(new VatRateBuilder(this.DatabaseSession).WithRate(21).Build())
-                .WithUnitOfMeasure(new UnitsOfMeasure(this.DatabaseSession).Piece)
+                .WithVatRate(new VatRateBuilder(this.Session).WithRate(21).Build())
+                .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
                 .Build();
 
-            new SupplierOfferingBuilder(this.DatabaseSession)
+            new SupplierOfferingBuilder(this.Session)
                 .WithProduct(good)
                 .WithSupplier(supplier)
                 .WithProductPurchasePrice(purchasePrice)
                 .WithFromDate(DateTime.UtcNow)
                 .Build();
 
-            this.DatabaseSession.Derive(); 
+            this.Session.Derive(); 
 
             Assert.Equal(2, good.FinishedGood.InventoryItemsWherePart.Count);
             Assert.Equal(1, internalOrganisation.DefaultFacility.InventoryItemsWhereFacility.Count);

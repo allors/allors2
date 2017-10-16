@@ -29,65 +29,65 @@ namespace Allors.Domain
         [Fact]
         public void GivenAgreementExhibit_WhenDeriving_ThenDescriptionIsRequired()
         {
-            var builder = new AgreementExhibitBuilder(this.DatabaseSession);
+            var builder = new AgreementExhibitBuilder(this.Session);
             var agreementExhibit = builder.Build();
 
-            Assert.True(this.DatabaseSession.Derive(false).HasErrors);
+            Assert.True(this.Session.Derive(false).HasErrors);
 
-            this.DatabaseSession.Rollback();
+            this.Session.Rollback();
 
             builder.WithDescription("AgreementExhibit");
             agreementExhibit = builder.Build();
 
-            Assert.False(this.DatabaseSession.Derive(false).HasErrors);
+            Assert.False(this.Session.Derive(false).HasErrors);
         }
 
         [Fact]
         public void GivenAgreementPricingProgram_WhenDeriving_ThenDescriptionIsRequired()
         {
-            var builder = new AgreementPricingProgramBuilder(this.DatabaseSession);
+            var builder = new AgreementPricingProgramBuilder(this.Session);
             var agreementPricingProgram = builder.Build();
 
-            Assert.True(this.DatabaseSession.Derive(false).HasErrors);
+            Assert.True(this.Session.Derive(false).HasErrors);
 
-            this.DatabaseSession.Rollback();
+            this.Session.Rollback();
 
             builder.WithDescription("AgreementPricingProgram");
             agreementPricingProgram = builder.Build();
 
-            Assert.False(this.DatabaseSession.Derive(false).HasErrors);
+            Assert.False(this.Session.Derive(false).HasErrors);
         }
 
         [Fact]
         public void GivenAgreementSection_WhenDeriving_ThenDescriptionIsRequired()
         {
-            var builder = new AgreementSectionBuilder(this.DatabaseSession);
+            var builder = new AgreementSectionBuilder(this.Session);
             var agreementSection = builder.Build();
 
-            Assert.True(this.DatabaseSession.Derive(false).HasErrors);
+            Assert.True(this.Session.Derive(false).HasErrors);
 
-            this.DatabaseSession.Rollback();
+            this.Session.Rollback();
 
             builder.WithDescription("AgreementSection");
             agreementSection = builder.Build();
 
-            Assert.False(this.DatabaseSession.Derive(false).HasErrors);
+            Assert.False(this.Session.Derive(false).HasErrors);
         }
 
         [Fact]
         public void GivenSubAgreement_WhenDeriving_ThenDescriptionIsRequired()
         {
-            var builder = new SubAgreementBuilder(this.DatabaseSession);
+            var builder = new SubAgreementBuilder(this.Session);
             var subAgreement = builder.Build();
 
-            Assert.True(this.DatabaseSession.Derive(false).HasErrors);
+            Assert.True(this.Session.Derive(false).HasErrors);
 
-            this.DatabaseSession.Rollback();
+            this.Session.Rollback();
 
             builder.WithDescription("SubAgreement");
             subAgreement = builder.Build();
 
-            Assert.False(this.DatabaseSession.Derive(false).HasErrors);
+            Assert.False(this.Session.Derive(false).HasErrors);
         }
     }
 }

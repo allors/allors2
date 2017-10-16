@@ -32,81 +32,81 @@ namespace Allors.Domain
         [Fact]
         public void GivenCustomEngagementItem_WhenDeriving_ThenDescriptionIsRequired()
         {
-            var builder = new CustomEngagementItemBuilder(this.DatabaseSession);
+            var builder = new CustomEngagementItemBuilder(this.Session);
             var customEngagementItem = builder.Build();
 
-            Assert.True(this.DatabaseSession.Derive(false).HasErrors);
+            Assert.True(this.Session.Derive(false).HasErrors);
 
-            this.DatabaseSession.Rollback();
+            this.Session.Rollback();
 
             builder.WithDescription("CustomEngagementItem");
             customEngagementItem = builder.Build();
 
-            Assert.False(this.DatabaseSession.Derive(false).HasErrors);
+            Assert.False(this.Session.Derive(false).HasErrors);
         }
 
         [Fact]
         public void GivenDeliverableOrderItem_WhenDeriving_ThenDescriptionIsRequired()
         {
-            var builder = new DeliverableOrderItemBuilder(this.DatabaseSession);
+            var builder = new DeliverableOrderItemBuilder(this.Session);
             var deliverableOrderItem = builder.Build();
 
-            Assert.True(this.DatabaseSession.Derive(false).HasErrors);
+            Assert.True(this.Session.Derive(false).HasErrors);
 
-            this.DatabaseSession.Rollback();
+            this.Session.Rollback();
 
             builder.WithDescription("DeliverableOrderItem");
             deliverableOrderItem = builder.Build();
 
-            Assert.False(this.DatabaseSession.Derive(false).HasErrors);
+            Assert.False(this.Session.Derive(false).HasErrors);
         }
 
         [Fact]
         public void GivenGoodOrderItem_WhenDeriving_ThenDescriptionIsRequired()
         {
-            var builder = new GoodOrderItemBuilder(this.DatabaseSession);
+            var builder = new GoodOrderItemBuilder(this.Session);
             var goodOrderItem = builder.Build();
 
-            Assert.True(this.DatabaseSession.Derive(false).HasErrors);
+            Assert.True(this.Session.Derive(false).HasErrors);
 
-            this.DatabaseSession.Rollback();
+            this.Session.Rollback();
 
             builder.WithDescription("GoodOrderItem");
             goodOrderItem = builder.Build();
 
-            Assert.False(this.DatabaseSession.Derive(false).HasErrors);
+            Assert.False(this.Session.Derive(false).HasErrors);
         }
 
         [Fact]
         public void GivenProfessionalPlacement_WhenDeriving_ThenDescriptionIsRequired()
         {
-            var builder = new ProfessionalPlacementBuilder(this.DatabaseSession);
+            var builder = new ProfessionalPlacementBuilder(this.Session);
             var professionalPlacement = builder.Build();
 
-            Assert.True(this.DatabaseSession.Derive(false).HasErrors);
+            Assert.True(this.Session.Derive(false).HasErrors);
 
-            this.DatabaseSession.Rollback();
+            this.Session.Rollback();
 
             builder.WithDescription("ProfessionalPlacement");
             professionalPlacement = builder.Build();
 
-            Assert.False(this.DatabaseSession.Derive(false).HasErrors);
+            Assert.False(this.Session.Derive(false).HasErrors);
         }
 
         [Fact]
         public void GivenStandardServiceOrderItem_WhenDeriving_ThenDescriptionIsRequired()
         {
-            var builder = new StandardServiceOrderItemBuilder(this.DatabaseSession);
+            var builder = new StandardServiceOrderItemBuilder(this.Session);
             var standardServiceOrderItem = builder.Build();
 
-            Assert.True(this.DatabaseSession.Derive(false).HasErrors);
+            Assert.True(this.Session.Derive(false).HasErrors);
 
-            this.DatabaseSession.Rollback();
+            this.Session.Rollback();
 
             builder.WithDescription("StandardServiceOrderItem");
             standardServiceOrderItem = builder.Build();
 
-            Assert.False(this.DatabaseSession.Derive(false).HasErrors);
+            Assert.False(this.Session.Derive(false).HasErrors);
         }
     }
 }

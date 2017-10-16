@@ -29,23 +29,23 @@ namespace Allors.Domain
         [Fact]
         public void GivenCostCenter_WhenDeriving_ThenRequiredRelationsMustExist()
         {
-            var builder = new CostCenterBuilder(this.DatabaseSession);
+            var builder = new CostCenterBuilder(this.Session);
             builder.Build();
 
-            Assert.True(this.DatabaseSession.Derive(false).HasErrors);
+            Assert.True(this.Session.Derive(false).HasErrors);
 
-            this.DatabaseSession.Rollback();
+            this.Session.Rollback();
 
             builder.WithName("CostCenter");
             builder.Build();
 
-            Assert.False(this.DatabaseSession.Derive(false).HasErrors);
+            Assert.False(this.Session.Derive(false).HasErrors);
         }
 
         [Fact]
         public void GivenCostCenter_WhenDeriving_ThenPostBuildRelationsMustExist()
         {
-            var costCenter = new CostCenterBuilder(this.DatabaseSession)
+            var costCenter = new CostCenterBuilder(this.Session)
                 .WithName("CostCenter")
                 .Build();
 

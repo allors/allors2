@@ -31,30 +31,30 @@ namespace Allors.Domain
         [Fact]
         public void GivenSalesRepRelationship_WhenDeriving_ThenRequiredRelationsMustExist()
         {
-            var customer = new OrganisationBuilder(this.DatabaseSession).WithName("customer").WithLocale(new Locales(this.DatabaseSession).EnglishGreatBritain).WithOrganisationRole(new OrganisationRoles(this.DatabaseSession).Customer).Build();
-            this.DatabaseSession.Derive();
-            this.DatabaseSession.Commit();
+            var customer = new OrganisationBuilder(this.Session).WithName("customer").WithLocale(new Locales(this.Session).EnglishGreatBritain).WithOrganisationRole(new OrganisationRoles(this.Session).Customer).Build();
+            this.Session.Derive();
+            this.Session.Commit();
 
-            var builder = new SalesRepRelationshipBuilder(this.DatabaseSession);
+            var builder = new SalesRepRelationshipBuilder(this.Session);
             var relationship = builder.Build();
 
-            this.DatabaseSession.Derive();
+            this.Session.Derive();
             Assert.True(relationship.Strategy.IsDeleted);
 
-            this.DatabaseSession.Rollback();
+            this.Session.Rollback();
 
             builder.WithCustomer(customer);
             relationship = builder.Build();
 
-            this.DatabaseSession.Derive();
+            this.Session.Derive();
             Assert.True(relationship.Strategy.IsDeleted);
 
-            this.DatabaseSession.Rollback();
+            this.Session.Rollback();
 
-            builder.WithSalesRepresentative(new PersonBuilder(this.DatabaseSession).WithLastName("salesrep.").WithPersonRole(new PersonRoles(this.DatabaseSession).Employee).Build());
+            builder.WithSalesRepresentative(new PersonBuilder(this.Session).WithLastName("salesrep.").WithPersonRole(new PersonRoles(this.Session).Employee).Build());
             builder.Build();
 
-            Assert.False(this.DatabaseSession.Derive(false).HasErrors);
+            Assert.False(this.Session.Derive(false).HasErrors);
         }
     }
 }

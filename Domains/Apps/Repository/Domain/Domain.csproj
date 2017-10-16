@@ -146,6 +146,9 @@
     <Compile Include="..\..\..\Base\Repository\Domain\Base\Workflow\Transitional.cs">
       <Link>Base\Workflow\Transitional.cs</Link>
     </Compile>
+    <Compile Include="..\..\..\Base\Repository\Domain\Base\Workflow\TransitionalVersion.cs">
+      <Link>Base\Workflow\TransitionalVersion.cs</Link>
+    </Compile>
     <Compile Include="..\..\..\Base\Repository\Domain\Base\Workflow\User.cs">
       <Link>Base\Workflow\User.cs</Link>
     </Compile>

@@ -1,18 +1,16 @@
 ﻿namespace Allors.Server.Controllers
 {
-    using System.Threading.Tasks;
-
     using Allors.Domain;
-    using Allors.Meta;
     using Allors.Server;
+    using Allors.Services;
 
     using Microsoft.AspNetCore.Mvc;
 
     public class OrganisationContactRelationshipController : Controller
     {
-        private readonly IAllorsContext allors;
+        private readonly ISessionService allors;
 
-        public OrganisationContactRelationshipController(IAllorsContext allorsContext)
+        public OrganisationContactRelationshipController(ISessionService allorsContext)
         {
             this.allors = allorsContext;
         }
@@ -20,7 +18,7 @@
         [HttpPost]
         public IActionResult Pull([FromBody] Model model)
         {
-            var response = new PullResponseBuilder(this.allors.User);
+            var response = new PullResponseBuilder(this.allors.Session.GetUser());
 
             var organisationContactRelationship = (OrganisationContactRelationship)this.allors.Session.Instantiate(model.Id);
             response.AddObject("organisationContactRelationship", organisationContactRelationship);

@@ -29,7 +29,7 @@ namespace Allors.Domain
         [Fact]
         public void GivenShipmentPackageBuilder_WhenBuild_ThenPostBuildRelationsMustExist()
         {
-            var package = new ShipmentPackageBuilder(this.DatabaseSession).Build();
+            var package = new ShipmentPackageBuilder(this.Session).Build();
 
             Assert.NotNull(package.CreationDate);
         }

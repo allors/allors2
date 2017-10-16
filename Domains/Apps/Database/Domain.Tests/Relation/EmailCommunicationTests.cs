@@ -31,50 +31,50 @@ namespace Allors.Domain
         [Fact]
         public void GivenEmailCommunicationIsBuild_WhenDeriving_ThenStatusIsSet()
         {
-            var originatorEmail = new EmailAddressBuilder(this.DatabaseSession).WithElectronicAddressString("originator@allors.com").Build();
-            var addresseeEmail = new EmailAddressBuilder(this.DatabaseSession).WithElectronicAddressString("addressee@allors.com").Build();
+            var originatorEmail = new EmailAddressBuilder(this.Session).WithElectronicAddressString("originator@allors.com").Build();
+            var addresseeEmail = new EmailAddressBuilder(this.Session).WithElectronicAddressString("addressee@allors.com").Build();
 
-            var communication = new EmailCommunicationBuilder(this.DatabaseSession)
-                .WithOwner(new People(this.DatabaseSession).FindBy(M.Person.UserName, Users.AdministratorUserName))
+            var communication = new EmailCommunicationBuilder(this.Session)
+                .WithOwner(new People(this.Session).FindBy(M.Person.UserName, Users.AdministratorUserName))
                 .WithSubject("Hello")
                 .WithDescription("Hello world!")
                 .WithOriginator(originatorEmail)
                 .WithAddressee(addresseeEmail)
                 .Build();
 
-            Assert.False(this.DatabaseSession.Derive(false).HasErrors);
+            Assert.False(this.Session.Derive(false).HasErrors);
 
-            Assert.Equal(communication.CommunicationEventState, new CommunicationEventStates(this.DatabaseSession).Scheduled);
+            Assert.Equal(communication.CommunicationEventState, new CommunicationEventStates(this.Session).Scheduled);
             Assert.Equal(communication.CommunicationEventState, communication.LastCommunicationEventState);
         }
 
         [Fact]
         public void GivenEmailCommunication_WhenDeriving_ThenInvolvedPartiesAreDerived()
         {
-            var owner = new PersonBuilder(this.DatabaseSession).WithLastName("owner").WithPersonRole(new PersonRoles(this.DatabaseSession).Employee).Build();
+            var owner = new PersonBuilder(this.Session).WithLastName("owner").WithPersonRole(new PersonRoles(this.Session).Employee).Build();
 
-            var personalEmailAddress = new ContactMechanismPurposes(this.DatabaseSession).PersonalEmailAddress;
+            var personalEmailAddress = new ContactMechanismPurposes(this.Session).PersonalEmailAddress;
 
-            var originatorEmail = new EmailAddressBuilder(this.DatabaseSession).WithElectronicAddressString("originator@allors.com").Build();
-            var originatorContact = new PartyContactMechanismBuilder(this.DatabaseSession).WithContactMechanism(originatorEmail).WithContactPurpose(personalEmailAddress).WithUseAsDefault(true).Build();
-            var originator = new PersonBuilder(this.DatabaseSession).WithLastName("originator").WithPartyContactMechanism(originatorContact).WithPersonRole(new PersonRoles(this.DatabaseSession).Contact).Build();
+            var originatorEmail = new EmailAddressBuilder(this.Session).WithElectronicAddressString("originator@allors.com").Build();
+            var originatorContact = new PartyContactMechanismBuilder(this.Session).WithContactMechanism(originatorEmail).WithContactPurpose(personalEmailAddress).WithUseAsDefault(true).Build();
+            var originator = new PersonBuilder(this.Session).WithLastName("originator").WithPartyContactMechanism(originatorContact).WithPersonRole(new PersonRoles(this.Session).Contact).Build();
 
-            var addresseeEmail = new EmailAddressBuilder(this.DatabaseSession).WithElectronicAddressString("addressee@allors.com").Build();
-            var addresseeContact = new PartyContactMechanismBuilder(this.DatabaseSession).WithContactMechanism(addresseeEmail).WithContactPurpose(personalEmailAddress).WithUseAsDefault(true).Build();
-            var addressee = new PersonBuilder(this.DatabaseSession).WithLastName("addressee").WithPartyContactMechanism(addresseeContact).WithPersonRole(new PersonRoles(this.DatabaseSession).Contact).Build();
+            var addresseeEmail = new EmailAddressBuilder(this.Session).WithElectronicAddressString("addressee@allors.com").Build();
+            var addresseeContact = new PartyContactMechanismBuilder(this.Session).WithContactMechanism(addresseeEmail).WithContactPurpose(personalEmailAddress).WithUseAsDefault(true).Build();
+            var addressee = new PersonBuilder(this.Session).WithLastName("addressee").WithPartyContactMechanism(addresseeContact).WithPersonRole(new PersonRoles(this.Session).Contact).Build();
 
-            var carbonCopeeEmail = new EmailAddressBuilder(this.DatabaseSession).WithElectronicAddressString("carbonCopee@allors.com").Build();
-            var carbonCopeeContact = new PartyContactMechanismBuilder(this.DatabaseSession).WithContactMechanism(carbonCopeeEmail).WithContactPurpose(personalEmailAddress).WithUseAsDefault(true).Build();
-            var carbonCopee = new PersonBuilder(this.DatabaseSession).WithLastName("carbon copee").WithPartyContactMechanism(carbonCopeeContact).WithPersonRole(new PersonRoles(this.DatabaseSession).Contact).Build();
+            var carbonCopeeEmail = new EmailAddressBuilder(this.Session).WithElectronicAddressString("carbonCopee@allors.com").Build();
+            var carbonCopeeContact = new PartyContactMechanismBuilder(this.Session).WithContactMechanism(carbonCopeeEmail).WithContactPurpose(personalEmailAddress).WithUseAsDefault(true).Build();
+            var carbonCopee = new PersonBuilder(this.Session).WithLastName("carbon copee").WithPartyContactMechanism(carbonCopeeContact).WithPersonRole(new PersonRoles(this.Session).Contact).Build();
 
-            var blindCopeeEmail = new EmailAddressBuilder(this.DatabaseSession).WithElectronicAddressString("blindCopee@allors.com").Build();
-            var blindCopeeContact = new PartyContactMechanismBuilder(this.DatabaseSession).WithContactMechanism(blindCopeeEmail).WithContactPurpose(personalEmailAddress).WithUseAsDefault(true).Build();
-            var blindCopee = new PersonBuilder(this.DatabaseSession).WithLastName("blind copee").WithPartyContactMechanism(blindCopeeContact).WithPersonRole(new PersonRoles(this.DatabaseSession).Contact).Build();
+            var blindCopeeEmail = new EmailAddressBuilder(this.Session).WithElectronicAddressString("blindCopee@allors.com").Build();
+            var blindCopeeContact = new PartyContactMechanismBuilder(this.Session).WithContactMechanism(blindCopeeEmail).WithContactPurpose(personalEmailAddress).WithUseAsDefault(true).Build();
+            var blindCopee = new PersonBuilder(this.Session).WithLastName("blind copee").WithPartyContactMechanism(blindCopeeContact).WithPersonRole(new PersonRoles(this.Session).Contact).Build();
 
-            this.DatabaseSession.Derive();
-            this.DatabaseSession.Commit();
+            this.Session.Derive();
+            this.Session.Commit();
 
-            var communication = new EmailCommunicationBuilder(this.DatabaseSession)
+            var communication = new EmailCommunicationBuilder(this.Session)
                 .WithSubject("Hello")
                 .WithDescription("Hello world!")
                 .WithOwner(owner)
@@ -84,7 +84,7 @@ namespace Allors.Domain
                 .WithBlindCopy(blindCopeeEmail)
                 .Build();
 
-            this.DatabaseSession.Derive();
+            this.Session.Derive();
 
             Assert.Equal(5, communication.InvolvedParties.Count);
             Assert.Contains(owner, communication.InvolvedParties);
@@ -97,34 +97,34 @@ namespace Allors.Domain
         [Fact]
         public void GivenEmailCommunication_WhenOriginatorIsDeleted_ThenCommunicationEventIsDeleted()
         {
-            var personalEmailAddress = new ContactMechanismPurposes(this.DatabaseSession).PersonalEmailAddress;
+            var personalEmailAddress = new ContactMechanismPurposes(this.Session).PersonalEmailAddress;
 
-            var originatorEmail = new EmailAddressBuilder(this.DatabaseSession).WithElectronicAddressString("originator@allors.com").Build();
-            var originatorContact = new PartyContactMechanismBuilder(this.DatabaseSession).WithContactMechanism(originatorEmail).WithContactPurpose(personalEmailAddress).WithUseAsDefault(true).Build();
-            var originator = new PersonBuilder(this.DatabaseSession).WithLastName("originator").WithPartyContactMechanism(originatorContact).WithPersonRole(new PersonRoles(this.DatabaseSession).Contact).Build();
+            var originatorEmail = new EmailAddressBuilder(this.Session).WithElectronicAddressString("originator@allors.com").Build();
+            var originatorContact = new PartyContactMechanismBuilder(this.Session).WithContactMechanism(originatorEmail).WithContactPurpose(personalEmailAddress).WithUseAsDefault(true).Build();
+            var originator = new PersonBuilder(this.Session).WithLastName("originator").WithPartyContactMechanism(originatorContact).WithPersonRole(new PersonRoles(this.Session).Contact).Build();
 
-            var addresseeEmail = new EmailAddressBuilder(this.DatabaseSession).WithElectronicAddressString("addressee@allors.com").Build();
-            var addresseeContact = new PartyContactMechanismBuilder(this.DatabaseSession).WithContactMechanism(addresseeEmail).WithContactPurpose(personalEmailAddress).WithUseAsDefault(true).Build();
-            var addressee = new PersonBuilder(this.DatabaseSession).WithLastName("addressee").WithPartyContactMechanism(addresseeContact).WithPersonRole(new PersonRoles(this.DatabaseSession).Contact).Build();
+            var addresseeEmail = new EmailAddressBuilder(this.Session).WithElectronicAddressString("addressee@allors.com").Build();
+            var addresseeContact = new PartyContactMechanismBuilder(this.Session).WithContactMechanism(addresseeEmail).WithContactPurpose(personalEmailAddress).WithUseAsDefault(true).Build();
+            var addressee = new PersonBuilder(this.Session).WithLastName("addressee").WithPartyContactMechanism(addresseeContact).WithPersonRole(new PersonRoles(this.Session).Contact).Build();
 
-            this.DatabaseSession.Derive();
-            this.DatabaseSession.Commit();
+            this.Session.Derive();
+            this.Session.Commit();
 
-            var communication = new EmailCommunicationBuilder(this.DatabaseSession)
+            var communication = new EmailCommunicationBuilder(this.Session)
                 .WithSubject("Hello")
                 .WithDescription("Hello world!")
                 .WithOriginator(originatorEmail)
                 .WithAddressee(addresseeEmail)
                 .Build();
 
-            this.DatabaseSession.Derive();
+            this.Session.Derive();
 
-            Assert.Equal(1, this.DatabaseSession.Extent<EmailCommunication>().Count);
+            Assert.Equal(1, this.Session.Extent<EmailCommunication>().Count);
 
             originator.Delete();
-            this.DatabaseSession.Derive();
+            this.Session.Derive();
 
-            Assert.Equal(0, this.DatabaseSession.Extent<EmailCommunication>().Count);
+            Assert.Equal(0, this.Session.Extent<EmailCommunication>().Count);
         }
     }
 }

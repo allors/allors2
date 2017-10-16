@@ -27,20 +27,20 @@ namespace Allors.Domain
         [Fact]
         public void GivenConstraintSpecification_WhenBuild_ThenLastObjectStateEqualsCurrencObjectState()
         {
-            var specification = new PartSpecificationBuilder(this.DatabaseSession).WithDescription("specification").Build();
+            var specification = new PartSpecificationBuilder(this.Session).WithDescription("specification").Build();
 
-            this.DatabaseSession.Derive();
+            this.Session.Derive();
 
-            Assert.Equal(new PartSpecificationStates(this.DatabaseSession).Created, specification.PartSpecificationState);
+            Assert.Equal(new PartSpecificationStates(this.Session).Created, specification.PartSpecificationState);
             Assert.Equal(specification.LastPartSpecificationState, specification.PartSpecificationState);
         }
 
         [Fact]
         public void GivenConstraintSpecification_WhenBuild_ThenPreviousObjectStateIsNull()
         {
-            var specification = new PartSpecificationBuilder(this.DatabaseSession).WithDescription("specification").Build();
+            var specification = new PartSpecificationBuilder(this.Session).WithDescription("specification").Build();
 
-            this.DatabaseSession.Derive();
+            this.Session.Derive();
 
             Assert.Null(specification.PreviousPartSpecificationState);
         }

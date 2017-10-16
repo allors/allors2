@@ -29,27 +29,27 @@ namespace Allors.Domain
         [Fact]
         public void GivenNeededSkill_WhenDeriving_ThenRequiredRelationsMustExist()
         {
-            var projectManagement = new Skills(this.DatabaseSession).ProjectManagement;
-            var expert = new SkillLevels(this.DatabaseSession).Expert;
+            var projectManagement = new Skills(this.Session).ProjectManagement;
+            var expert = new SkillLevels(this.Session).Expert;
 
-            var builder = new NeededSkillBuilder(this.DatabaseSession);
+            var builder = new NeededSkillBuilder(this.Session);
             var neededSkill = builder.Build();
 
-            Assert.True(this.DatabaseSession.Derive(false).HasErrors);
+            Assert.True(this.Session.Derive(false).HasErrors);
 
-            this.DatabaseSession.Rollback();
+            this.Session.Rollback();
 
             builder.WithSkill(projectManagement);
             neededSkill = builder.Build();
 
-            Assert.True(this.DatabaseSession.Derive(false).HasErrors);
+            Assert.True(this.Session.Derive(false).HasErrors);
 
-            this.DatabaseSession.Rollback();
+            this.Session.Rollback();
 
             builder.WithSkillLevel(expert);
             neededSkill = builder.Build();
 
-            Assert.False(this.DatabaseSession.Derive(false).HasErrors);
+            Assert.False(this.Session.Derive(false).HasErrors);
         }
     }
 }

@@ -59,134 +59,134 @@ namespace Allors.Domain
         
         public SalesOrderItemPricingTests()
         {
-            var euro = new Currencies(this.DatabaseSession).FindBy(M.Currency.IsoCode, "EUR");
+            var euro = new Currencies(this.Session).FindBy(M.Currency.IsoCode, "EUR");
 
-            this.internalOrganisation = Singleton.Instance(this.DatabaseSession);
+            this.internalOrganisation = this.Session.GetSingleton();
             this.internalOrganisation.PreferredCurrency = euro;
 
-            this.supplier = new OrganisationBuilder(this.DatabaseSession).WithName("supplier").WithOrganisationRole(new OrganisationRoles(this.DatabaseSession).Supplier).Build();
+            this.supplier = new OrganisationBuilder(this.Session).WithName("supplier").WithOrganisationRole(new OrganisationRoles(this.Session).Supplier).Build();
 
-            this.vatRate21 = new VatRateBuilder(this.DatabaseSession).WithRate(21).Build();
+            this.vatRate21 = new VatRateBuilder(this.Session).WithRate(21).Build();
 
-            var mechelen = new CityBuilder(this.DatabaseSession).WithName("Mechelen").Build();
-            this.kiev = new CityBuilder(this.DatabaseSession).WithName("Kiev").Build();
+            var mechelen = new CityBuilder(this.Session).WithName("Mechelen").Build();
+            this.kiev = new CityBuilder(this.Session).WithName("Kiev").Build();
 
-            this.shipToContactMechanismMechelen = new PostalAddressBuilder(this.DatabaseSession).WithGeographicBoundary(mechelen).WithAddress1("Haverwerf 15").Build();
-            this.shipToContactMechanismKiev = new PostalAddressBuilder(this.DatabaseSession).WithGeographicBoundary(this.kiev).WithAddress1("Dnieper").Build();
-            this.shipToCustomer = new OrganisationBuilder(this.DatabaseSession).WithName("shipToCustomer").WithOrganisationRole(new OrganisationRoles(this.DatabaseSession).Customer).Build();
-            this.shipToCustomer.AddPartyContactMechanism(new PartyContactMechanismBuilder(this.DatabaseSession)
+            this.shipToContactMechanismMechelen = new PostalAddressBuilder(this.Session).WithGeographicBoundary(mechelen).WithAddress1("Haverwerf 15").Build();
+            this.shipToContactMechanismKiev = new PostalAddressBuilder(this.Session).WithGeographicBoundary(this.kiev).WithAddress1("Dnieper").Build();
+            this.shipToCustomer = new OrganisationBuilder(this.Session).WithName("shipToCustomer").WithOrganisationRole(new OrganisationRoles(this.Session).Customer).Build();
+            this.shipToCustomer.AddPartyContactMechanism(new PartyContactMechanismBuilder(this.Session)
                                                             .WithContactMechanism(this.shipToContactMechanismKiev)
-                                                            .WithContactPurpose(new ContactMechanismPurposes(this.DatabaseSession).ShippingAddress)
+                                                            .WithContactPurpose(new ContactMechanismPurposes(this.Session).ShippingAddress)
                                                             .WithUseAsDefault(true)
                                                             .Build());
-            this.DatabaseSession.Derive();
+            this.Session.Derive();
 
-            this.billToCustomer = new OrganisationBuilder(this.DatabaseSession)
+            this.billToCustomer = new OrganisationBuilder(this.Session)
                 .WithName("billToCustomer")
                 .WithPreferredCurrency(euro)
-                .WithOrganisationRole(new OrganisationRoles(this.DatabaseSession).Customer)
+                .WithOrganisationRole(new OrganisationRoles(this.Session).Customer)
                 .Build();
 
-            new CustomerRelationshipBuilder(this.DatabaseSession).WithFromDate(DateTime.UtcNow).WithCustomer(billToCustomer).Build();
-            new CustomerRelationshipBuilder(this.DatabaseSession).WithFromDate(DateTime.UtcNow).WithCustomer(shipToCustomer).Build();
+            new CustomerRelationshipBuilder(this.Session).WithFromDate(DateTime.UtcNow).WithCustomer(billToCustomer).Build();
+            new CustomerRelationshipBuilder(this.Session).WithFromDate(DateTime.UtcNow).WithCustomer(shipToCustomer).Build();
 
-            this.part = new FinishedGoodBuilder(this.DatabaseSession).WithName("part").WithInventoryItemKind(new InventoryItemKinds(this.DatabaseSession).NonSerialised).Build();
+            this.part = new FinishedGoodBuilder(this.Session).WithName("part").WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised).Build();
 
-            this.ancestorProductCategory = new ProductCategoryBuilder(this.DatabaseSession)
-                .WithLocalisedName(new LocalisedTextBuilder(this.DatabaseSession).WithText("ancestor").WithLocale(Singleton.Instance(this.DatabaseSession).DefaultLocale).Build())
+            this.ancestorProductCategory = new ProductCategoryBuilder(this.Session)
+                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("ancestor").WithLocale(this.Session.GetSingleton().DefaultLocale).Build())
                 .Build();
 
-            this.parentProductCategory = new ProductCategoryBuilder(this.DatabaseSession)
-                .WithLocalisedName(new LocalisedTextBuilder(this.DatabaseSession).WithText("parent").WithLocale(Singleton.Instance(this.DatabaseSession).DefaultLocale).Build())
+            this.parentProductCategory = new ProductCategoryBuilder(this.Session)
+                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("parent").WithLocale(this.Session.GetSingleton().DefaultLocale).Build())
                 .WithParent(this.ancestorProductCategory)
                 .Build();
 
-            this.productCategory = new ProductCategoryBuilder(this.DatabaseSession)
-                .WithLocalisedName(new LocalisedTextBuilder(this.DatabaseSession).WithText("gizmo").WithLocale(Singleton.Instance(this.DatabaseSession).DefaultLocale).Build())
+            this.productCategory = new ProductCategoryBuilder(this.Session)
+                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("gizmo").WithLocale(this.Session.GetSingleton().DefaultLocale).Build())
                 .Build();
 
             this.productCategory.AddParent(this.parentProductCategory);
 
-            this.good = new GoodBuilder(this.DatabaseSession)
+            this.good = new GoodBuilder(this.Session)
                 .WithSku("10101")
                 .WithVatRate(this.vatRate21)
-                .WithLocalisedName(new LocalisedTextBuilder(this.DatabaseSession).WithText("good").WithLocale(Singleton.Instance(this.DatabaseSession).DefaultLocale).Build())
+                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("good").WithLocale(this.Session.GetSingleton().DefaultLocale).Build())
                 .WithProductCategory(this.productCategory)
                 .WithFinishedGood(this.part)
-                .WithUnitOfMeasure(new UnitsOfMeasure(this.DatabaseSession).Piece)
+                .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
                 .Build();
 
-            this.variantGood = new GoodBuilder(this.DatabaseSession)
+            this.variantGood = new GoodBuilder(this.Session)
                 .WithSku("v10101")
                 .WithVatRate(this.vatRate21)
-                .WithLocalisedName(new LocalisedTextBuilder(this.DatabaseSession).WithText("variant good").WithLocale(Singleton.Instance(this.DatabaseSession).DefaultLocale).Build())
-                .WithUnitOfMeasure(new UnitsOfMeasure(this.DatabaseSession).Piece)
-                .WithInventoryItemKind(new InventoryItemKinds(this.DatabaseSession).NonSerialised)
+                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("variant good").WithLocale(this.Session.GetSingleton().DefaultLocale).Build())
+                .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
+                .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
                 .Build();
 
-            this.variantGood2 = new GoodBuilder(this.DatabaseSession)
+            this.variantGood2 = new GoodBuilder(this.Session)
                 .WithSku("v10102")
                 .WithVatRate(this.vatRate21)
-                .WithLocalisedName(new LocalisedTextBuilder(this.DatabaseSession).WithText("variant good2").WithLocale(Singleton.Instance(this.DatabaseSession).DefaultLocale).Build())
-                .WithUnitOfMeasure(new UnitsOfMeasure(this.DatabaseSession).Piece)
-                .WithInventoryItemKind(new InventoryItemKinds(this.DatabaseSession).NonSerialised)
+                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("variant good2").WithLocale(this.Session.GetSingleton().DefaultLocale).Build())
+                .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
+                .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
                 .Build();
 
-            this.virtualGood = new GoodBuilder(this.DatabaseSession)
+            this.virtualGood = new GoodBuilder(this.Session)
                 .WithVatRate(this.vatRate21)
-                .WithLocalisedName(new LocalisedTextBuilder(this.DatabaseSession).WithText("virtual good").WithLocale(Singleton.Instance(this.DatabaseSession).DefaultLocale).Build())
+                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("virtual good").WithLocale(this.Session.GetSingleton().DefaultLocale).Build())
                 .WithVariant(this.variantGood)
                 .WithVariant(this.variantGood2)
-                .WithUnitOfMeasure(new UnitsOfMeasure(this.DatabaseSession).Piece)
+                .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
                 .Build();
 
-            this.goodPurchasePrice = new ProductPurchasePriceBuilder(this.DatabaseSession)
+            this.goodPurchasePrice = new ProductPurchasePriceBuilder(this.Session)
                 .WithCurrency(euro)
                 .WithFromDate(DateTime.UtcNow.AddMinutes(-1))
                 .WithPrice(7)
-                .WithUnitOfMeasure(new UnitsOfMeasure(this.DatabaseSession).Piece)
+                .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
                 .Build();
 
-            this.goodSupplierOffering = new SupplierOfferingBuilder(this.DatabaseSession)
+            this.goodSupplierOffering = new SupplierOfferingBuilder(this.Session)
                 .WithProduct(this.good)
                 .WithSupplier(this.supplier)
                 .WithFromDate(DateTime.UtcNow.AddMinutes(-1))
                 .WithProductPurchasePrice(this.goodPurchasePrice)
                 .Build();
 
-            this.virtualGoodPurchasePrice = new ProductPurchasePriceBuilder(this.DatabaseSession)
+            this.virtualGoodPurchasePrice = new ProductPurchasePriceBuilder(this.Session)
                 .WithCurrency(euro)
                 .WithFromDate(DateTime.UtcNow.AddMinutes(-1))
                 .WithPrice(8)
-                .WithUnitOfMeasure(new UnitsOfMeasure(this.DatabaseSession).Piece)
+                .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
                 .Build();
 
-            this.virtualgoodSupplierOffering = new SupplierOfferingBuilder(this.DatabaseSession)
+            this.virtualgoodSupplierOffering = new SupplierOfferingBuilder(this.Session)
                 .WithProduct(this.virtualGood)
                 .WithSupplier(this.supplier)
                 .WithFromDate(DateTime.UtcNow.AddMinutes(-1))
                 .WithProductPurchasePrice(this.virtualGoodPurchasePrice)
                 .Build();
 
-            this.feature1 = new ColourBuilder(this.DatabaseSession)
+            this.feature1 = new ColourBuilder(this.Session)
                 .WithName("white")
                 .WithVatRate(this.vatRate21)
-                .WithLocalisedName(new LocalisedTextBuilder(this.DatabaseSession)
+                .WithLocalisedName(new LocalisedTextBuilder(this.Session)
                                             .WithText("white")
-                                            .WithLocale(Singleton.Instance(this.DatabaseSession).DefaultLocale)
+                                            .WithLocale(this.Session.GetSingleton().DefaultLocale)
                                             .Build())
                 .Build();
 
-            this.feature2 = new ColourBuilder(this.DatabaseSession)
+            this.feature2 = new ColourBuilder(this.Session)
                 .WithName("black")
                 .WithVatRate(this.vatRate21)
-                .WithLocalisedName(new LocalisedTextBuilder(this.DatabaseSession)
+                .WithLocalisedName(new LocalisedTextBuilder(this.Session)
                                             .WithText("black")
-                                            .WithLocale(Singleton.Instance(this.DatabaseSession).DefaultLocale)
+                                            .WithLocale(this.Session.GetSingleton().DefaultLocale)
                                             .Build())
                 .Build();
 
-            this.currentBasePriceGeoBoundary = new BasePriceBuilder(this.DatabaseSession)
+            this.currentBasePriceGeoBoundary = new BasePriceBuilder(this.Session)
                 .WithDescription("current BasePriceGeoBoundary ")
                 .WithGeographicBoundary(mechelen)
                 .WithProduct(this.good)
@@ -195,7 +195,7 @@ namespace Allors.Domain
                 .Build();
 
             // previous basePrice for good
-            new BasePriceBuilder(this.DatabaseSession).WithDescription("previous good")
+            new BasePriceBuilder(this.Session).WithDescription("previous good")
                 .WithProduct(this.good)
                 .WithPrice(8)
                 .WithFromDate(DateTime.UtcNow.AddYears(-1))
@@ -203,13 +203,13 @@ namespace Allors.Domain
                 .Build();
 
             // future basePrice for good
-            new BasePriceBuilder(this.DatabaseSession).WithDescription("future good")
+            new BasePriceBuilder(this.Session).WithDescription("future good")
                 .WithProduct(this.good)
                 .WithPrice(11)
                 .WithFromDate(DateTime.UtcNow.AddYears(1))
                 .Build();
 
-            this.currentGoodBasePrice = new BasePriceBuilder(this.DatabaseSession)
+            this.currentGoodBasePrice = new BasePriceBuilder(this.Session)
                 .WithDescription("current good")
                 .WithProduct(this.good)
                 .WithPrice(10)
@@ -218,7 +218,7 @@ namespace Allors.Domain
                 .Build();
 
             // previous basePrice for feature1
-            new BasePriceBuilder(this.DatabaseSession).WithDescription("previous feature1")
+            new BasePriceBuilder(this.Session).WithDescription("previous feature1")
                 .WithProductFeature(this.feature1)
                 .WithPrice(0.5M)
                 .WithFromDate(DateTime.UtcNow.AddYears(-1))
@@ -226,13 +226,13 @@ namespace Allors.Domain
                 .Build();
 
             // future basePrice for feature1
-            new BasePriceBuilder(this.DatabaseSession).WithDescription("future feature1")
+            new BasePriceBuilder(this.Session).WithDescription("future feature1")
                 .WithProductFeature(this.feature1)
                 .WithPrice(2.5M)
                 .WithFromDate(DateTime.UtcNow.AddYears(1))
                 .Build();
 
-            new BasePriceBuilder(this.DatabaseSession)
+            new BasePriceBuilder(this.Session)
                 .WithDescription("current feature1")
                 .WithProductFeature(this.feature1)
                 .WithPrice(2)
@@ -241,7 +241,7 @@ namespace Allors.Domain
                 .Build();
 
             // previous basePrice for feature2
-            new BasePriceBuilder(this.DatabaseSession).WithDescription("previous feature2")
+            new BasePriceBuilder(this.Session).WithDescription("previous feature2")
                 .WithProductFeature(this.feature2)
                 .WithPrice(2)
                 .WithFromDate(DateTime.UtcNow.AddYears(-1))
@@ -249,14 +249,14 @@ namespace Allors.Domain
                 .Build();
 
             // future basePrice for feature2
-            new BasePriceBuilder(this.DatabaseSession)
+            new BasePriceBuilder(this.Session)
                 .WithDescription("future feature2")
                 .WithProductFeature(this.feature2)
                 .WithPrice(4)
                 .WithFromDate(DateTime.UtcNow.AddYears(1))
                 .Build();
 
-            this.currentFeature2BasePrice = new BasePriceBuilder(this.DatabaseSession)
+            this.currentFeature2BasePrice = new BasePriceBuilder(this.Session)
                 .WithDescription("current feature2")
                 .WithProductFeature(this.feature2)
                 .WithPrice(3)
@@ -265,7 +265,7 @@ namespace Allors.Domain
                 .Build();
 
             // previous basePrice for good with feature1
-            new BasePriceBuilder(this.DatabaseSession).WithDescription("previous good/feature1")
+            new BasePriceBuilder(this.Session).WithDescription("previous good/feature1")
                 .WithProduct(this.good)
                 .WithProductFeature(this.feature1)
                 .WithPrice(4)
@@ -274,7 +274,7 @@ namespace Allors.Domain
                 .Build();
 
             // future basePrice for good with feature1
-            new BasePriceBuilder(this.DatabaseSession)
+            new BasePriceBuilder(this.Session)
                 .WithDescription("future good/feature1")
                 .WithProduct(this.good)
                 .WithProductFeature(this.feature1)
@@ -282,7 +282,7 @@ namespace Allors.Domain
                 .WithFromDate(DateTime.UtcNow.AddYears(1))
                 .Build();
 
-            this.currentGood1Feature1BasePrice = new BasePriceBuilder(this.DatabaseSession)
+            this.currentGood1Feature1BasePrice = new BasePriceBuilder(this.Session)
                 .WithDescription("current good/feature1")
                 .WithProduct(this.good)
                 .WithProductFeature(this.feature1)
@@ -291,35 +291,35 @@ namespace Allors.Domain
                 .WithThroughDate(DateTime.UtcNow.AddYears(1).AddDays(-1))
                 .Build();
 
-            this.currentVirtualGoodBasePrice = new BasePriceBuilder(this.DatabaseSession)
+            this.currentVirtualGoodBasePrice = new BasePriceBuilder(this.Session)
                 .WithDescription("current virtual good")
                 .WithProduct(this.virtualGood)
                 .WithPrice(10)
                 .WithFromDate(DateTime.UtcNow.AddMinutes(-1))
                 .Build();
 
-            new BasePriceBuilder(this.DatabaseSession)
+            new BasePriceBuilder(this.Session)
                 .WithDescription("current variant good2")
                 .WithProduct(this.variantGood2)
                 .WithPrice(11)
                 .WithFromDate(DateTime.UtcNow.AddMinutes(-1))
                 .Build();
 
-            this.DatabaseSession.Derive();
-            this.DatabaseSession.Commit();
+            this.Session.Derive();
+            this.Session.Commit();
 
-            this.order = new SalesOrderBuilder(this.DatabaseSession)
+            this.order = new SalesOrderBuilder(this.Session)
                 .WithShipToCustomer(this.shipToCustomer)
                 .WithBillToCustomer(this.billToCustomer)
                 .Build();
 
-            this.DatabaseSession.Derive();
-            this.DatabaseSession.Commit();
+            this.Session.Derive();
+            this.Session.Commit();
 
             this.order.Confirm();
 
-            this.DatabaseSession.Derive();
-            this.DatabaseSession.Commit();
+            this.Session.Derive();
+            this.Session.Commit();
         }
 
         [Fact(Skip = "to repair")]
@@ -329,10 +329,10 @@ namespace Allors.Domain
             const decimal priceIs1 = 1;
             const decimal priceIs3 = 3;
 
-            var break1 = new RevenueValueBreakBuilder(this.DatabaseSession).WithFromAmount(50).WithThroughAmount(99).WithProductCategory(this.productCategory).Build();
-            var break2 = new RevenueValueBreakBuilder(this.DatabaseSession).WithFromAmount(100).WithProductCategory(this.productCategory).Build();
+            var break1 = new RevenueValueBreakBuilder(this.Session).WithFromAmount(50).WithThroughAmount(99).WithProductCategory(this.productCategory).Build();
+            var break2 = new RevenueValueBreakBuilder(this.Session).WithFromAmount(100).WithProductCategory(this.productCategory).Build();
 
-            new BasePriceBuilder(this.DatabaseSession)
+            new BasePriceBuilder(this.Session)
                 .WithDescription("baseprice good for revenue break 1")
                 .WithRevenueValueBreak(break1)
                 .WithProductCategory(this.productCategory)
@@ -341,7 +341,7 @@ namespace Allors.Domain
                 .WithThroughDate(DateTime.UtcNow.AddYears(1).AddDays(-1))
                 .Build();
 
-            new BasePriceBuilder(this.DatabaseSession)
+            new BasePriceBuilder(this.Session)
                 .WithDescription("baseprice good for revenue break 2")
                 .WithRevenueValueBreak(break2)
                 .WithProductCategory(this.productCategory)
@@ -350,16 +350,16 @@ namespace Allors.Domain
                 .WithThroughDate(DateTime.UtcNow.AddYears(1).AddDays(-1))
                 .Build();
 
-            this.DatabaseSession.Commit();
+            this.Session.Commit();
 
-            this.InstantiateObjects(this.DatabaseSession);
+            this.InstantiateObjects(this.Session);
 
             //this.productCategoryRevenueHistory.Revenue = 20M;
 
-            var item1 = new SalesOrderItemBuilder(this.DatabaseSession).WithProduct(this.good).WithQuantityOrdered(quantityOrdered1).Build();
+            var item1 = new SalesOrderItemBuilder(this.Session).WithProduct(this.good).WithQuantityOrdered(quantityOrdered1).Build();
             this.order.AddSalesOrderItem(item1);
 
-            this.DatabaseSession.Derive();
+            this.Session.Derive();
 
             Assert.Equal(this.currentGoodBasePrice.Price, item1.UnitBasePrice);
 
@@ -367,7 +367,7 @@ namespace Allors.Domain
             this.order.RemoveSalesOrderItem(item1);
             this.order.AddSalesOrderItem(item1);
 
-            this.DatabaseSession.Derive();
+            this.Session.Derive();
 
             Assert.Equal(priceIs1, item1.UnitBasePrice);
 
@@ -375,7 +375,7 @@ namespace Allors.Domain
             this.order.RemoveSalesOrderItem(item1);
             this.order.AddSalesOrderItem(item1);
 
-            this.DatabaseSession.Derive();
+            this.Session.Derive();
 
             Assert.Equal(priceIs3, item1.UnitBasePrice);
         }
@@ -387,10 +387,10 @@ namespace Allors.Domain
             const decimal amount1 = 1;
             const decimal amount2 = 3;
 
-            var break1 = new RevenueValueBreakBuilder(this.DatabaseSession).WithFromAmount(50).WithThroughAmount(99).Build();
-            var break2 = new RevenueValueBreakBuilder(this.DatabaseSession).WithFromAmount(100).Build();
+            var break1 = new RevenueValueBreakBuilder(this.Session).WithFromAmount(50).WithThroughAmount(99).Build();
+            var break2 = new RevenueValueBreakBuilder(this.Session).WithFromAmount(100).Build();
 
-            new DiscountComponentBuilder(this.DatabaseSession)
+            new DiscountComponentBuilder(this.Session)
                 .WithDescription("discount good for revenue break 1")
                 .WithRevenueValueBreak(break1)
                 .WithProduct(this.good)
@@ -399,7 +399,7 @@ namespace Allors.Domain
                 .WithThroughDate(DateTime.UtcNow.AddYears(1).AddDays(-1))
                 .Build();
 
-            new DiscountComponentBuilder(this.DatabaseSession)
+            new DiscountComponentBuilder(this.Session)
                 .WithDescription("discount good for revenue break 2")
                 .WithRevenueValueBreak(break2)
                 .WithProduct(this.good)
@@ -408,17 +408,17 @@ namespace Allors.Domain
                 .WithThroughDate(DateTime.UtcNow.AddYears(1).AddDays(-1))
                 .Build();
 
-            this.DatabaseSession.Derive();
-            this.DatabaseSession.Commit();
+            this.Session.Derive();
+            this.Session.Commit();
 
-            this.InstantiateObjects(this.DatabaseSession);
+            this.InstantiateObjects(this.Session);
 
             //this.partyRevenueHistory.Revenue = 20M;
 
-            var item1 = new SalesOrderItemBuilder(this.DatabaseSession).WithProduct(this.good).WithQuantityOrdered(quantityOrdered1).Build();
+            var item1 = new SalesOrderItemBuilder(this.Session).WithProduct(this.good).WithQuantityOrdered(quantityOrdered1).Build();
             this.order.AddSalesOrderItem(item1);
 
-            this.DatabaseSession.Derive();
+            this.Session.Derive();
 
             Assert.Equal(this.currentGoodBasePrice.Price, item1.UnitBasePrice);
             Assert.Equal(0, item1.UnitDiscount);
@@ -430,7 +430,7 @@ namespace Allors.Domain
             this.order.RemoveSalesOrderItem(item1);
             this.order.AddSalesOrderItem(item1);
 
-            this.DatabaseSession.Derive();
+            this.Session.Derive();
 
             Assert.Equal(this.currentGoodBasePrice.Price, item1.UnitBasePrice);
             Assert.Equal(amount1, item1.UnitDiscount);
@@ -442,7 +442,7 @@ namespace Allors.Domain
             this.order.RemoveSalesOrderItem(item1);
             this.order.AddSalesOrderItem(item1);
 
-            this.DatabaseSession.Derive();
+            this.Session.Derive();
 
             Assert.Equal(this.currentGoodBasePrice.Price, item1.UnitBasePrice);
             Assert.Equal(amount2, item1.UnitDiscount);
@@ -458,13 +458,13 @@ namespace Allors.Domain
             const decimal amount1 = 1;
             const decimal amount2 = 3;
 
-            var valueBreak1 = new RevenueValueBreakBuilder(this.DatabaseSession).WithFromAmount(50).WithThroughAmount(99).Build();
-            var valueBreak2 = new RevenueValueBreakBuilder(this.DatabaseSession).WithFromAmount(100).Build();
+            var valueBreak1 = new RevenueValueBreakBuilder(this.Session).WithFromAmount(50).WithThroughAmount(99).Build();
+            var valueBreak2 = new RevenueValueBreakBuilder(this.Session).WithFromAmount(100).Build();
 
-            var quantityBreak1 = new RevenueQuantityBreakBuilder(this.DatabaseSession).WithFrom(2).WithThrough(9).Build();
-            var quantityBreak2 = new RevenueQuantityBreakBuilder(this.DatabaseSession).WithFrom(10).Build();
+            var quantityBreak1 = new RevenueQuantityBreakBuilder(this.Session).WithFrom(2).WithThrough(9).Build();
+            var quantityBreak2 = new RevenueQuantityBreakBuilder(this.Session).WithFrom(10).Build();
 
-            new DiscountComponentBuilder(this.DatabaseSession)
+            new DiscountComponentBuilder(this.Session)
                 .WithDescription("discount good for revenue value break 1")
                 .WithRevenueValueBreak(valueBreak1)
                 .WithProductCategory(this.productCategory)
@@ -473,7 +473,7 @@ namespace Allors.Domain
                 .WithThroughDate(DateTime.UtcNow.AddYears(1).AddDays(-1))
                 .Build();
 
-            new DiscountComponentBuilder(this.DatabaseSession)
+            new DiscountComponentBuilder(this.Session)
                 .WithDescription("discount good for revenue value break 2")
                 .WithRevenueValueBreak(valueBreak2)
                 .WithProductCategory(this.productCategory)
@@ -482,7 +482,7 @@ namespace Allors.Domain
                 .WithThroughDate(DateTime.UtcNow.AddYears(1).AddDays(-1))
                 .Build();
 
-            new DiscountComponentBuilder(this.DatabaseSession)
+            new DiscountComponentBuilder(this.Session)
                 .WithDescription("discount good for revenue quantity break 1")
                 .WithRevenueQuantityBreak(quantityBreak1)
                 .WithProductCategory(this.productCategory)
@@ -491,7 +491,7 @@ namespace Allors.Domain
                 .WithThroughDate(DateTime.UtcNow.AddYears(1).AddDays(-1))
                 .Build();
 
-            new DiscountComponentBuilder(this.DatabaseSession)
+            new DiscountComponentBuilder(this.Session)
                 .WithDescription("discount good for revenue quantity break 2")
                 .WithRevenueQuantityBreak(quantityBreak2)
                 .WithProductCategory(this.productCategory)
@@ -500,18 +500,18 @@ namespace Allors.Domain
                 .WithThroughDate(DateTime.UtcNow.AddYears(1).AddDays(-1))
                 .Build();
 
-            this.DatabaseSession.Derive();
-            this.DatabaseSession.Commit();
+            this.Session.Derive();
+            this.Session.Commit();
 
-            this.InstantiateObjects(this.DatabaseSession);
+            this.InstantiateObjects(this.Session);
 
             //this.productCategoryRevenueHistory.Revenue = 20M;
             //this.productCategoryRevenueHistory.Quantity = 1;
 
-            var item1 = new SalesOrderItemBuilder(this.DatabaseSession).WithProduct(this.good).WithQuantityOrdered(quantityOrdered1).Build();
+            var item1 = new SalesOrderItemBuilder(this.Session).WithProduct(this.good).WithQuantityOrdered(quantityOrdered1).Build();
             this.order.AddSalesOrderItem(item1);
 
-            this.DatabaseSession.Derive();
+            this.Session.Derive();
 
             Assert.Equal(this.currentGoodBasePrice.Price, item1.UnitBasePrice);
             Assert.Equal(0, item1.UnitDiscount);
@@ -524,7 +524,7 @@ namespace Allors.Domain
             this.order.RemoveSalesOrderItem(item1);
             this.order.AddSalesOrderItem(item1);
 
-            this.DatabaseSession.Derive();
+            this.Session.Derive();
 
             Assert.Equal(this.currentGoodBasePrice.Price, item1.UnitBasePrice);
             Assert.Equal(amount1, item1.UnitDiscount);
@@ -537,7 +537,7 @@ namespace Allors.Domain
             this.order.RemoveSalesOrderItem(item1);
             this.order.AddSalesOrderItem(item1);
 
-            this.DatabaseSession.Derive();
+            this.Session.Derive();
 
             Assert.Equal(this.currentGoodBasePrice.Price, item1.UnitBasePrice);
             Assert.Equal(amount2, item1.UnitDiscount);
@@ -555,13 +555,13 @@ namespace Allors.Domain
             const decimal quantityDiscount1 = 1;
             const decimal quantityDiscount2 = 3;
 
-            var valueBreak1 = new RevenueValueBreakBuilder(this.DatabaseSession).WithFromAmount(50).WithThroughAmount(99).Build();
-            var valueBreak2 = new RevenueValueBreakBuilder(this.DatabaseSession).WithFromAmount(100).Build();
+            var valueBreak1 = new RevenueValueBreakBuilder(this.Session).WithFromAmount(50).WithThroughAmount(99).Build();
+            var valueBreak2 = new RevenueValueBreakBuilder(this.Session).WithFromAmount(100).Build();
 
-            var quantityBreak1 = new RevenueQuantityBreakBuilder(this.DatabaseSession).WithFrom(2).WithThrough(9).Build();
-            var quantityBreak2 = new RevenueQuantityBreakBuilder(this.DatabaseSession).WithFrom(10).Build();
+            var quantityBreak1 = new RevenueQuantityBreakBuilder(this.Session).WithFrom(2).WithThrough(9).Build();
+            var quantityBreak2 = new RevenueQuantityBreakBuilder(this.Session).WithFrom(10).Build();
 
-            new DiscountComponentBuilder(this.DatabaseSession)
+            new DiscountComponentBuilder(this.Session)
                 .WithDescription("discount good for revenue value break 1")
                 .WithRevenueValueBreak(valueBreak1)
                 .WithProductCategory(this.productCategory)
@@ -570,7 +570,7 @@ namespace Allors.Domain
                 .WithThroughDate(DateTime.UtcNow.AddYears(1).AddDays(-1))
                 .Build();
 
-            new DiscountComponentBuilder(this.DatabaseSession)
+            new DiscountComponentBuilder(this.Session)
                 .WithDescription("discount good for revenue value break 2")
                 .WithRevenueValueBreak(valueBreak2)
                 .WithProductCategory(this.productCategory)
@@ -579,7 +579,7 @@ namespace Allors.Domain
                 .WithThroughDate(DateTime.UtcNow.AddYears(1).AddDays(-1))
                 .Build();
 
-            new DiscountComponentBuilder(this.DatabaseSession)
+            new DiscountComponentBuilder(this.Session)
                 .WithDescription("discount good for revenue quantity break 1")
                 .WithRevenueQuantityBreak(quantityBreak1)
                 .WithProductCategory(this.productCategory)
@@ -588,7 +588,7 @@ namespace Allors.Domain
                 .WithThroughDate(DateTime.UtcNow.AddYears(1).AddDays(-1))
                 .Build();
 
-            new DiscountComponentBuilder(this.DatabaseSession)
+            new DiscountComponentBuilder(this.Session)
                 .WithDescription("discount good for revenue quantity break 2")
                 .WithRevenueQuantityBreak(quantityBreak2)
                 .WithProductCategory(this.productCategory)
@@ -597,18 +597,18 @@ namespace Allors.Domain
                 .WithThroughDate(DateTime.UtcNow.AddYears(1).AddDays(-1))
                 .Build();
 
-            this.DatabaseSession.Derive();
-            this.DatabaseSession.Commit();
+            this.Session.Derive();
+            this.Session.Commit();
 
-            this.InstantiateObjects(this.DatabaseSession);
+            this.InstantiateObjects(this.Session);
 
             //this.productCategoryRevenueHistory.Revenue = 20M;
             //this.productCategoryRevenueHistory.Quantity = 1;
 
-            var item1 = new SalesOrderItemBuilder(this.DatabaseSession).WithProduct(this.good).WithQuantityOrdered(quantityOrdered1).Build();
+            var item1 = new SalesOrderItemBuilder(this.Session).WithProduct(this.good).WithQuantityOrdered(quantityOrdered1).Build();
             this.order.AddSalesOrderItem(item1);
 
-            this.DatabaseSession.Derive();
+            this.Session.Derive();
 
             Assert.Equal(this.currentGoodBasePrice.Price, item1.UnitBasePrice);
             Assert.Equal(0, item1.UnitDiscount);
@@ -621,7 +621,7 @@ namespace Allors.Domain
             this.order.RemoveSalesOrderItem(item1);
             this.order.AddSalesOrderItem(item1);
 
-            this.DatabaseSession.Derive();
+            this.Session.Derive();
 
             Assert.Equal(this.currentGoodBasePrice.Price, item1.UnitBasePrice);
             Assert.Equal(valueDiscount1, item1.UnitDiscount);
@@ -634,7 +634,7 @@ namespace Allors.Domain
             this.order.RemoveSalesOrderItem(item1);
             this.order.AddSalesOrderItem(item1);
 
-            this.DatabaseSession.Derive();
+            this.Session.Derive();
 
             Assert.Equal(this.currentGoodBasePrice.Price, item1.UnitBasePrice);
             Assert.Equal(valueDiscount2, item1.UnitDiscount);
@@ -652,13 +652,13 @@ namespace Allors.Domain
             const decimal quantityDiscount1 = 4;
             const decimal quantityDiscount2 = 5;
 
-            var valueBreak1 = new RevenueValueBreakBuilder(this.DatabaseSession).WithFromAmount(50).WithThroughAmount(99).Build();
-            var valueBreak2 = new RevenueValueBreakBuilder(this.DatabaseSession).WithFromAmount(100).Build();
+            var valueBreak1 = new RevenueValueBreakBuilder(this.Session).WithFromAmount(50).WithThroughAmount(99).Build();
+            var valueBreak2 = new RevenueValueBreakBuilder(this.Session).WithFromAmount(100).Build();
 
-            var quantityBreak1 = new RevenueQuantityBreakBuilder(this.DatabaseSession).WithFrom(2).WithThrough(9).Build();
-            var quantityBreak2 = new RevenueQuantityBreakBuilder(this.DatabaseSession).WithFrom(10).Build();
+            var quantityBreak1 = new RevenueQuantityBreakBuilder(this.Session).WithFrom(2).WithThrough(9).Build();
+            var quantityBreak2 = new RevenueQuantityBreakBuilder(this.Session).WithFrom(10).Build();
 
-            new DiscountComponentBuilder(this.DatabaseSession)
+            new DiscountComponentBuilder(this.Session)
                 .WithDescription("discount good for revenue value break 1")
                 .WithRevenueValueBreak(valueBreak1)
                 .WithProductCategory(this.productCategory)
@@ -667,7 +667,7 @@ namespace Allors.Domain
                 .WithThroughDate(DateTime.UtcNow.AddYears(1).AddDays(-1))
                 .Build();
 
-            new DiscountComponentBuilder(this.DatabaseSession)
+            new DiscountComponentBuilder(this.Session)
                 .WithDescription("discount good for revenue value break 2")
                 .WithRevenueValueBreak(valueBreak2)
                 .WithProductCategory(this.productCategory)
@@ -676,7 +676,7 @@ namespace Allors.Domain
                 .WithThroughDate(DateTime.UtcNow.AddYears(1).AddDays(-1))
                 .Build();
 
-            new DiscountComponentBuilder(this.DatabaseSession)
+            new DiscountComponentBuilder(this.Session)
                 .WithDescription("discount good for revenue quantity break 1")
                 .WithRevenueQuantityBreak(quantityBreak1)
                 .WithProductCategory(this.productCategory)
@@ -685,7 +685,7 @@ namespace Allors.Domain
                 .WithThroughDate(DateTime.UtcNow.AddYears(1).AddDays(-1))
                 .Build();
 
-            new DiscountComponentBuilder(this.DatabaseSession)
+            new DiscountComponentBuilder(this.Session)
                 .WithDescription("discount good for revenue quantity break 2")
                 .WithRevenueQuantityBreak(quantityBreak2)
                 .WithProductCategory(this.productCategory)
@@ -694,18 +694,18 @@ namespace Allors.Domain
                 .WithThroughDate(DateTime.UtcNow.AddYears(1).AddDays(-1))
                 .Build();
 
-            this.DatabaseSession.Derive();
-            this.DatabaseSession.Commit();
+            this.Session.Derive();
+            this.Session.Commit();
 
-            this.InstantiateObjects(this.DatabaseSession);
+            this.InstantiateObjects(this.Session);
 
             //this.productCategoryRevenueHistory.Revenue = 20M;
             //this.productCategoryRevenueHistory.Quantity = 1;
             
-            var item1 = new SalesOrderItemBuilder(this.DatabaseSession).WithProduct(this.good).WithQuantityOrdered(quantityOrdered1).Build();
+            var item1 = new SalesOrderItemBuilder(this.Session).WithProduct(this.good).WithQuantityOrdered(quantityOrdered1).Build();
             this.order.AddSalesOrderItem(item1);
 
-            this.DatabaseSession.Derive();
+            this.Session.Derive();
 
             Assert.Equal(this.currentGoodBasePrice.Price, item1.UnitBasePrice);
             Assert.Equal(0, item1.UnitDiscount);
@@ -718,7 +718,7 @@ namespace Allors.Domain
             this.order.RemoveSalesOrderItem(item1);
             this.order.AddSalesOrderItem(item1);
 
-            this.DatabaseSession.Derive();
+            this.Session.Derive();
 
             Assert.Equal(this.currentGoodBasePrice.Price, item1.UnitBasePrice);
             Assert.Equal(quantityDiscount1, item1.UnitDiscount);
@@ -731,7 +731,7 @@ namespace Allors.Domain
             this.order.RemoveSalesOrderItem(item1);
             this.order.AddSalesOrderItem(item1);
 
-            this.DatabaseSession.Derive();
+            this.Session.Derive();
 
             Assert.Equal(this.currentGoodBasePrice.Price, item1.UnitBasePrice);
             Assert.Equal(quantityDiscount2, item1.UnitDiscount);
@@ -747,10 +747,10 @@ namespace Allors.Domain
             const decimal amount1 = 1;
             const decimal amount2 = 3;
 
-            var break1 = new RevenueValueBreakBuilder(this.DatabaseSession).WithFromAmount(50).WithThroughAmount(99).Build();
-            var break2 = new RevenueValueBreakBuilder(this.DatabaseSession).WithFromAmount(100).Build();
+            var break1 = new RevenueValueBreakBuilder(this.Session).WithFromAmount(50).WithThroughAmount(99).Build();
+            var break2 = new RevenueValueBreakBuilder(this.Session).WithFromAmount(100).Build();
 
-            new DiscountComponentBuilder(this.DatabaseSession)
+            new DiscountComponentBuilder(this.Session)
                 .WithDescription("discount good for revenue break 1")
                 .WithRevenueValueBreak(break1)
                 .WithProductCategory(this.ancestorProductCategory)
@@ -759,7 +759,7 @@ namespace Allors.Domain
                 .WithThroughDate(DateTime.UtcNow.AddYears(1).AddDays(-1))
                 .Build();
 
-            new DiscountComponentBuilder(this.DatabaseSession)
+            new DiscountComponentBuilder(this.Session)
                 .WithDescription("discount good for revenue break 2")
                 .WithRevenueValueBreak(break2)
                 .WithProductCategory(this.ancestorProductCategory)
@@ -768,18 +768,18 @@ namespace Allors.Domain
                 .WithThroughDate(DateTime.UtcNow.AddYears(1).AddDays(-1))
                 .Build();
 
-            this.DatabaseSession.Derive();
-            this.DatabaseSession.Commit();
+            this.Session.Derive();
+            this.Session.Commit();
 
-            this.InstantiateObjects(this.DatabaseSession);
+            this.InstantiateObjects(this.Session);
 
             //this.ancestorProductCategoryRevenueHistory.Revenue = 20M;
             
 
-            var item1 = new SalesOrderItemBuilder(this.DatabaseSession).WithProduct(this.good).WithQuantityOrdered(quantityOrdered1).Build();
+            var item1 = new SalesOrderItemBuilder(this.Session).WithProduct(this.good).WithQuantityOrdered(quantityOrdered1).Build();
             this.order.AddSalesOrderItem(item1);
 
-            this.DatabaseSession.Derive();
+            this.Session.Derive();
 
             Assert.Equal(this.currentGoodBasePrice.Price, item1.UnitBasePrice);
             Assert.Equal(0, item1.UnitDiscount);
@@ -791,7 +791,7 @@ namespace Allors.Domain
             this.order.RemoveSalesOrderItem(item1);
             this.order.AddSalesOrderItem(item1);
 
-            this.DatabaseSession.Derive();
+            this.Session.Derive();
 
             Assert.Equal(this.currentGoodBasePrice.Price, item1.UnitBasePrice);
             Assert.Equal(amount1, item1.UnitDiscount);
@@ -803,7 +803,7 @@ namespace Allors.Domain
             this.order.RemoveSalesOrderItem(item1);
             this.order.AddSalesOrderItem(item1);
 
-            this.DatabaseSession.Derive();
+            this.Session.Derive();
 
             Assert.Equal(this.currentGoodBasePrice.Price, item1.UnitBasePrice);
             Assert.Equal(amount2, item1.UnitDiscount);
@@ -819,10 +819,10 @@ namespace Allors.Domain
             const decimal amount1 = 1;
             const decimal amount2 = 3;
 
-            var break1 = new RevenueValueBreakBuilder(this.DatabaseSession).WithFromAmount(50).WithThroughAmount(99).Build();
-            var break2 = new RevenueValueBreakBuilder(this.DatabaseSession).WithFromAmount(100).Build();
+            var break1 = new RevenueValueBreakBuilder(this.Session).WithFromAmount(50).WithThroughAmount(99).Build();
+            var break2 = new RevenueValueBreakBuilder(this.Session).WithFromAmount(100).Build();
 
-            new DiscountComponentBuilder(this.DatabaseSession)
+            new DiscountComponentBuilder(this.Session)
                 .WithDescription("discount good for revenue break 1")
                 .WithRevenueValueBreak(break1)
                 .WithProductCategory(this.parentProductCategory)
@@ -831,7 +831,7 @@ namespace Allors.Domain
                 .WithThroughDate(DateTime.UtcNow.AddYears(1).AddDays(-1))
                 .Build();
 
-            new DiscountComponentBuilder(this.DatabaseSession)
+            new DiscountComponentBuilder(this.Session)
                 .WithDescription("discount good for revenue break 2")
                 .WithRevenueValueBreak(break2)
                 .WithProductCategory(this.parentProductCategory)
@@ -840,18 +840,18 @@ namespace Allors.Domain
                 .WithThroughDate(DateTime.UtcNow.AddYears(1).AddDays(-1))
                 .Build();
 
-            this.DatabaseSession.Derive();
-            this.DatabaseSession.Commit();
+            this.Session.Derive();
+            this.Session.Commit();
 
-            this.InstantiateObjects(this.DatabaseSession);
+            this.InstantiateObjects(this.Session);
 
             //this.parentProductCategoryRevenueHistory.Revenue = 20M;
             
 
-            var item1 = new SalesOrderItemBuilder(this.DatabaseSession).WithProduct(this.good).WithQuantityOrdered(quantityOrdered1).Build();
+            var item1 = new SalesOrderItemBuilder(this.Session).WithProduct(this.good).WithQuantityOrdered(quantityOrdered1).Build();
             this.order.AddSalesOrderItem(item1);
 
-            this.DatabaseSession.Derive();
+            this.Session.Derive();
 
             Assert.Equal(this.currentGoodBasePrice.Price, item1.UnitBasePrice);
             Assert.Equal(0, item1.UnitDiscount);
@@ -863,7 +863,7 @@ namespace Allors.Domain
             this.order.RemoveSalesOrderItem(item1);
             this.order.AddSalesOrderItem(item1);
 
-            this.DatabaseSession.Derive();
+            this.Session.Derive();
 
             Assert.Equal(this.currentGoodBasePrice.Price, item1.UnitBasePrice);
             Assert.Equal(amount1, item1.UnitDiscount);
@@ -875,7 +875,7 @@ namespace Allors.Domain
             this.order.RemoveSalesOrderItem(item1);
             this.order.AddSalesOrderItem(item1);
 
-            this.DatabaseSession.Derive();
+            this.Session.Derive();
 
             Assert.Equal(this.currentGoodBasePrice.Price, item1.UnitBasePrice);
             Assert.Equal(amount2, item1.UnitDiscount);
@@ -891,10 +891,10 @@ namespace Allors.Domain
             const decimal amount1 = 1;
             const decimal amount2 = 3;
 
-            var break1 = new RevenueValueBreakBuilder(this.DatabaseSession).WithFromAmount(50).WithThroughAmount(99).Build();
-            var break2 = new RevenueValueBreakBuilder(this.DatabaseSession).WithFromAmount(100).Build();
+            var break1 = new RevenueValueBreakBuilder(this.Session).WithFromAmount(50).WithThroughAmount(99).Build();
+            var break2 = new RevenueValueBreakBuilder(this.Session).WithFromAmount(100).Build();
 
-            new DiscountComponentBuilder(this.DatabaseSession)
+            new DiscountComponentBuilder(this.Session)
                 .WithDescription("discount good for revenue break 1")
                 .WithRevenueValueBreak(break1)
                 .WithProductCategory(this.productCategory)
@@ -903,7 +903,7 @@ namespace Allors.Domain
                 .WithThroughDate(DateTime.UtcNow.AddYears(1).AddDays(-1))
                 .Build();
 
-            new DiscountComponentBuilder(this.DatabaseSession)
+            new DiscountComponentBuilder(this.Session)
                 .WithDescription("discount good for revenue break 2")
                 .WithRevenueValueBreak(break2)
                 .WithProductCategory(this.productCategory)
@@ -912,18 +912,18 @@ namespace Allors.Domain
                 .WithThroughDate(DateTime.UtcNow.AddYears(1).AddDays(-1))
                 .Build();
 
-            this.DatabaseSession.Derive();
-            this.DatabaseSession.Commit();
+            this.Session.Derive();
+            this.Session.Commit();
 
-            this.InstantiateObjects(this.DatabaseSession);
+            this.InstantiateObjects(this.Session);
 
             //this.productCategoryRevenueHistory.Revenue = 20M;
             
 
-            var item1 = new SalesOrderItemBuilder(this.DatabaseSession).WithProduct(this.good).WithQuantityOrdered(quantityOrdered1).Build();
+            var item1 = new SalesOrderItemBuilder(this.Session).WithProduct(this.good).WithQuantityOrdered(quantityOrdered1).Build();
             this.order.AddSalesOrderItem(item1);
 
-            this.DatabaseSession.Derive();
+            this.Session.Derive();
 
             Assert.Equal(this.currentGoodBasePrice.Price, item1.UnitBasePrice);
             Assert.Equal(0, item1.UnitDiscount);
@@ -935,7 +935,7 @@ namespace Allors.Domain
             this.order.RemoveSalesOrderItem(item1);
             this.order.AddSalesOrderItem(item1);
 
-            this.DatabaseSession.Derive();
+            this.Session.Derive();
 
             Assert.Equal(this.currentGoodBasePrice.Price, item1.UnitBasePrice);
             Assert.Equal(amount1, item1.UnitDiscount);
@@ -947,7 +947,7 @@ namespace Allors.Domain
             this.order.RemoveSalesOrderItem(item1);
             this.order.AddSalesOrderItem(item1);
 
-            this.DatabaseSession.Derive();
+            this.Session.Derive();
 
             Assert.Equal(this.currentGoodBasePrice.Price, item1.UnitBasePrice);
             Assert.Equal(amount2, item1.UnitDiscount);
@@ -963,10 +963,10 @@ namespace Allors.Domain
             const decimal percentage1 = 5;
             const decimal percentage2 = 10;
 
-            var break1 = new RevenueValueBreakBuilder(this.DatabaseSession).WithFromAmount(50).WithThroughAmount(99).Build();
-            var break2 = new RevenueValueBreakBuilder(this.DatabaseSession).WithFromAmount(100).Build();
+            var break1 = new RevenueValueBreakBuilder(this.Session).WithFromAmount(50).WithThroughAmount(99).Build();
+            var break2 = new RevenueValueBreakBuilder(this.Session).WithFromAmount(100).Build();
 
-            new DiscountComponentBuilder(this.DatabaseSession)
+            new DiscountComponentBuilder(this.Session)
                 .WithDescription("discount good for quantity break 1")
                 .WithRevenueValueBreak(break1)
                 .WithProduct(this.good)
@@ -975,7 +975,7 @@ namespace Allors.Domain
                 .WithThroughDate(DateTime.UtcNow.AddYears(1).AddDays(-1))
                 .Build();
 
-            new DiscountComponentBuilder(this.DatabaseSession)
+            new DiscountComponentBuilder(this.Session)
                 .WithDescription("discount good for quantity break 2")
                 .WithRevenueValueBreak(break2)
                 .WithProduct(this.good)
@@ -984,18 +984,18 @@ namespace Allors.Domain
                 .WithThroughDate(DateTime.UtcNow.AddYears(1).AddDays(-1))
                 .Build();
 
-            this.DatabaseSession.Derive();
-            this.DatabaseSession.Commit();
+            this.Session.Derive();
+            this.Session.Commit();
 
-            this.InstantiateObjects(this.DatabaseSession);
+            this.InstantiateObjects(this.Session);
 
             //this.partyRevenueHistory.Revenue = 20M;
             
 
-            var item1 = new SalesOrderItemBuilder(this.DatabaseSession).WithProduct(this.good).WithQuantityOrdered(quantityOrdered1).Build();
+            var item1 = new SalesOrderItemBuilder(this.Session).WithProduct(this.good).WithQuantityOrdered(quantityOrdered1).Build();
             this.order.AddSalesOrderItem(item1);
 
-            this.DatabaseSession.Derive();
+            this.Session.Derive();
 
             Assert.Equal(this.currentGoodBasePrice.Price, item1.UnitBasePrice);
             Assert.Equal(0, item1.UnitDiscount);
@@ -1007,7 +1007,7 @@ namespace Allors.Domain
             this.order.RemoveSalesOrderItem(item1);
             this.order.AddSalesOrderItem(item1);
 
-            this.DatabaseSession.Derive();
+            this.Session.Derive();
 
             var price = this.currentGoodBasePrice.Price ?? 0;
             var amount1 = Math.Round((price * percentage1) / 100, 2);
@@ -1021,7 +1021,7 @@ namespace Allors.Domain
             this.order.RemoveSalesOrderItem(item1);
             this.order.AddSalesOrderItem(item1);
 
-            this.DatabaseSession.Derive();
+            this.Session.Derive();
 
             var price2 = this.currentGoodBasePrice.Price ?? 0;
             var amount2 = Math.Round((price2 * percentage2) / 100, 2);
@@ -1039,10 +1039,10 @@ namespace Allors.Domain
             const decimal percentage1 = 5;
             const decimal percentage2 = 10;
 
-            var break1 = new RevenueValueBreakBuilder(this.DatabaseSession).WithFromAmount(50).WithThroughAmount(99).Build();
-            var break2 = new RevenueValueBreakBuilder(this.DatabaseSession).WithFromAmount(100).Build();
+            var break1 = new RevenueValueBreakBuilder(this.Session).WithFromAmount(50).WithThroughAmount(99).Build();
+            var break2 = new RevenueValueBreakBuilder(this.Session).WithFromAmount(100).Build();
 
-            new DiscountComponentBuilder(this.DatabaseSession)
+            new DiscountComponentBuilder(this.Session)
                 .WithDescription("discount good for quantity break 1")
                 .WithRevenueValueBreak(break1)
                 .WithProductCategory(this.productCategory)
@@ -1051,7 +1051,7 @@ namespace Allors.Domain
                 .WithThroughDate(DateTime.UtcNow.AddYears(1).AddDays(-1))
                 .Build();
 
-            new DiscountComponentBuilder(this.DatabaseSession)
+            new DiscountComponentBuilder(this.Session)
                 .WithDescription("discount good for quantity break 2")
                 .WithRevenueValueBreak(break2)
                 .WithProductCategory(this.productCategory)
@@ -1060,17 +1060,17 @@ namespace Allors.Domain
                 .WithThroughDate(DateTime.UtcNow.AddYears(1).AddDays(-1))
                 .Build();
 
-            this.DatabaseSession.Derive();
-            this.DatabaseSession.Commit();
+            this.Session.Derive();
+            this.Session.Commit();
 
-            this.InstantiateObjects(this.DatabaseSession);
+            this.InstantiateObjects(this.Session);
 
             //this.productCategoryRevenueHistory.Revenue = 20M;
             
-            var item1 = new SalesOrderItemBuilder(this.DatabaseSession).WithProduct(this.good).WithQuantityOrdered(quantityOrdered1).Build();
+            var item1 = new SalesOrderItemBuilder(this.Session).WithProduct(this.good).WithQuantityOrdered(quantityOrdered1).Build();
             this.order.AddSalesOrderItem(item1);
 
-            this.DatabaseSession.Derive();
+            this.Session.Derive();
 
             Assert.Equal(this.currentGoodBasePrice.Price, item1.UnitBasePrice);
             Assert.Equal(0, item1.UnitDiscount);
@@ -1082,7 +1082,7 @@ namespace Allors.Domain
             this.order.RemoveSalesOrderItem(item1);
             this.order.AddSalesOrderItem(item1);
 
-            this.DatabaseSession.Derive();
+            this.Session.Derive();
 
             var price = this.currentGoodBasePrice.Price ?? 0;
             var amount1 = Math.Round((price  * percentage1) / 100, 2);
@@ -1096,7 +1096,7 @@ namespace Allors.Domain
             this.order.RemoveSalesOrderItem(item1);
             this.order.AddSalesOrderItem(item1);
 
-            this.DatabaseSession.Derive();
+            this.Session.Derive();
 
             var price2 = this.currentGoodBasePrice.Price ?? 0;
             var amount2 = Math.Round((price2 * percentage2) / 100, 2);
@@ -1114,10 +1114,10 @@ namespace Allors.Domain
             const decimal amount1 = 1;
             const decimal amount2 = 3;
 
-            var break1 = new RevenueValueBreakBuilder(this.DatabaseSession).WithFromAmount(50).WithThroughAmount(99).Build();
-            var break2 = new RevenueValueBreakBuilder(this.DatabaseSession).WithFromAmount(100).Build();
+            var break1 = new RevenueValueBreakBuilder(this.Session).WithFromAmount(50).WithThroughAmount(99).Build();
+            var break2 = new RevenueValueBreakBuilder(this.Session).WithFromAmount(100).Build();
 
-            new SurchargeComponentBuilder(this.DatabaseSession)
+            new SurchargeComponentBuilder(this.Session)
                 .WithDescription("discount good for revenue break 1")
                 .WithRevenueValueBreak(break1)
                 .WithProduct(this.good)
@@ -1126,7 +1126,7 @@ namespace Allors.Domain
                 .WithThroughDate(DateTime.UtcNow.AddYears(1).AddDays(-1))
                 .Build();
 
-            new SurchargeComponentBuilder(this.DatabaseSession)
+            new SurchargeComponentBuilder(this.Session)
                 .WithDescription("discount good for revenue break 2")
                 .WithRevenueValueBreak(break2)
                 .WithProduct(this.good)
@@ -1135,17 +1135,17 @@ namespace Allors.Domain
                 .WithThroughDate(DateTime.UtcNow.AddYears(1).AddDays(-1))
                 .Build();
 
-            this.DatabaseSession.Derive();
-            this.DatabaseSession.Commit();
+            this.Session.Derive();
+            this.Session.Commit();
 
-            this.InstantiateObjects(this.DatabaseSession);
+            this.InstantiateObjects(this.Session);
 
             //this.partyRevenueHistory.Revenue = 20M;
 
-            var item1 = new SalesOrderItemBuilder(this.DatabaseSession).WithProduct(this.good).WithQuantityOrdered(quantityOrdered1).Build();
+            var item1 = new SalesOrderItemBuilder(this.Session).WithProduct(this.good).WithQuantityOrdered(quantityOrdered1).Build();
             this.order.AddSalesOrderItem(item1);
 
-            this.DatabaseSession.Derive();
+            this.Session.Derive();
 
             Assert.Equal(this.currentGoodBasePrice.Price, item1.UnitBasePrice);
             Assert.Equal(0, item1.UnitSurcharge);
@@ -1157,7 +1157,7 @@ namespace Allors.Domain
             this.order.RemoveSalesOrderItem(item1);
             this.order.AddSalesOrderItem(item1);
 
-            this.DatabaseSession.Derive();
+            this.Session.Derive();
 
             Assert.Equal(this.currentGoodBasePrice.Price, item1.UnitBasePrice);
             Assert.Equal(amount1, item1.UnitSurcharge);
@@ -1169,7 +1169,7 @@ namespace Allors.Domain
             this.order.RemoveSalesOrderItem(item1);
             this.order.AddSalesOrderItem(item1);
 
-            this.DatabaseSession.Derive();
+            this.Session.Derive();
 
             Assert.Equal(this.currentGoodBasePrice.Price, item1.UnitBasePrice);
             Assert.Equal(amount2, item1.UnitSurcharge);
@@ -1185,10 +1185,10 @@ namespace Allors.Domain
             const decimal amount1 = 1;
             const decimal amount2 = 3;
 
-            var break1 = new RevenueValueBreakBuilder(this.DatabaseSession).WithFromAmount(50).WithThroughAmount(99).Build();
-            var break2 = new RevenueValueBreakBuilder(this.DatabaseSession).WithFromAmount(100).Build();
+            var break1 = new RevenueValueBreakBuilder(this.Session).WithFromAmount(50).WithThroughAmount(99).Build();
+            var break2 = new RevenueValueBreakBuilder(this.Session).WithFromAmount(100).Build();
 
-            new SurchargeComponentBuilder(this.DatabaseSession)
+            new SurchargeComponentBuilder(this.Session)
                 .WithDescription("discount good for revenue break 1")
                 .WithRevenueValueBreak(break1)
                 .WithProductCategory(this.productCategory)
@@ -1197,7 +1197,7 @@ namespace Allors.Domain
                 .WithThroughDate(DateTime.UtcNow.AddYears(1).AddDays(-1))
                 .Build();
 
-            new SurchargeComponentBuilder(this.DatabaseSession)
+            new SurchargeComponentBuilder(this.Session)
                 .WithDescription("discount good for revenue break 2")
                 .WithRevenueValueBreak(break2)
                 .WithProductCategory(this.productCategory)
@@ -1206,17 +1206,17 @@ namespace Allors.Domain
                 .WithThroughDate(DateTime.UtcNow.AddYears(1).AddDays(-1))
                 .Build();
 
-            this.DatabaseSession.Derive();
-            this.DatabaseSession.Commit();
+            this.Session.Derive();
+            this.Session.Commit();
 
-            this.InstantiateObjects(this.DatabaseSession);
+            this.InstantiateObjects(this.Session);
 
             //this.productCategoryRevenueHistory.Revenue = 20M;
 
-            var item1 = new SalesOrderItemBuilder(this.DatabaseSession).WithProduct(this.good).WithQuantityOrdered(quantityOrdered1).Build();
+            var item1 = new SalesOrderItemBuilder(this.Session).WithProduct(this.good).WithQuantityOrdered(quantityOrdered1).Build();
             this.order.AddSalesOrderItem(item1);
 
-            this.DatabaseSession.Derive();
+            this.Session.Derive();
 
             Assert.Equal(this.currentGoodBasePrice.Price, item1.UnitBasePrice);
             Assert.Equal(0, item1.UnitSurcharge);
@@ -1228,7 +1228,7 @@ namespace Allors.Domain
             this.order.RemoveSalesOrderItem(item1);
             this.order.AddSalesOrderItem(item1);
 
-            this.DatabaseSession.Derive();
+            this.Session.Derive();
 
             Assert.Equal(this.currentGoodBasePrice.Price, item1.UnitBasePrice);
             Assert.Equal(amount1, item1.UnitSurcharge);
@@ -1240,7 +1240,7 @@ namespace Allors.Domain
             this.order.RemoveSalesOrderItem(item1);
             this.order.AddSalesOrderItem(item1);
 
-            this.DatabaseSession.Derive();
+            this.Session.Derive();
 
             Assert.Equal(this.currentGoodBasePrice.Price, item1.UnitBasePrice);
             Assert.Equal(amount2, item1.UnitSurcharge);
@@ -1256,10 +1256,10 @@ namespace Allors.Domain
             const decimal percentage1 = 5;
             const decimal percentage2 = 10;
 
-            var break1 = new RevenueValueBreakBuilder(this.DatabaseSession).WithFromAmount(50).WithThroughAmount(99).Build();
-            var break2 = new RevenueValueBreakBuilder(this.DatabaseSession).WithFromAmount(100).Build();
+            var break1 = new RevenueValueBreakBuilder(this.Session).WithFromAmount(50).WithThroughAmount(99).Build();
+            var break2 = new RevenueValueBreakBuilder(this.Session).WithFromAmount(100).Build();
 
-            new SurchargeComponentBuilder(this.DatabaseSession)
+            new SurchargeComponentBuilder(this.Session)
                 .WithDescription("discount good for quantity break 1")
                 .WithRevenueValueBreak(break1)
                 .WithProduct(this.good)
@@ -1268,7 +1268,7 @@ namespace Allors.Domain
                 .WithThroughDate(DateTime.UtcNow.AddYears(1).AddDays(-1))
                 .Build();
 
-            new SurchargeComponentBuilder(this.DatabaseSession)
+            new SurchargeComponentBuilder(this.Session)
                 .WithDescription("discount good for quantity break 2")
                 .WithRevenueValueBreak(break2)
                 .WithProduct(this.good)
@@ -1277,19 +1277,19 @@ namespace Allors.Domain
                 .WithThroughDate(DateTime.UtcNow.AddYears(1).AddDays(-1))
                 .Build();
 
-            this.DatabaseSession.Derive();
-            this.DatabaseSession.Commit();
+            this.Session.Derive();
+            this.Session.Commit();
 
-            this.DatabaseSession.Derive();
+            this.Session.Derive();
 
-            this.InstantiateObjects(this.DatabaseSession);
+            this.InstantiateObjects(this.Session);
 
             //this.partyRevenueHistory.Revenue = 20M;
 
-            var item1 = new SalesOrderItemBuilder(this.DatabaseSession).WithProduct(this.good).WithQuantityOrdered(quantityOrdered1).Build();
+            var item1 = new SalesOrderItemBuilder(this.Session).WithProduct(this.good).WithQuantityOrdered(quantityOrdered1).Build();
             this.order.AddSalesOrderItem(item1);
 
-            this.DatabaseSession.Derive();
+            this.Session.Derive();
 
             Assert.Equal(this.currentGoodBasePrice.Price, item1.UnitBasePrice);
             Assert.Equal(0, item1.UnitSurcharge);
@@ -1301,7 +1301,7 @@ namespace Allors.Domain
             this.order.RemoveSalesOrderItem(item1);
             this.order.AddSalesOrderItem(item1);
 
-            this.DatabaseSession.Derive();
+            this.Session.Derive();
 
             var price = this.currentGoodBasePrice.Price ?? 0;
             var amount1 = Math.Round((price * percentage1) / 100, 2);
@@ -1315,7 +1315,7 @@ namespace Allors.Domain
             this.order.RemoveSalesOrderItem(item1);
             this.order.AddSalesOrderItem(item1);
 
-            this.DatabaseSession.Derive();
+            this.Session.Derive();
 
             var price2 = this.currentGoodBasePrice.Price ?? 0;
             var amount2 = Math.Round((price2 * percentage2) / 100, 2);
@@ -1333,10 +1333,10 @@ namespace Allors.Domain
             const decimal amount1 = 1;
             const decimal amount2 = 3;
 
-            var break1 = new RevenueQuantityBreakBuilder(this.DatabaseSession).WithFrom(5).WithThrough(9).Build();
-            var break2 = new RevenueQuantityBreakBuilder(this.DatabaseSession).WithFrom(10).Build();
+            var break1 = new RevenueQuantityBreakBuilder(this.Session).WithFrom(5).WithThrough(9).Build();
+            var break2 = new RevenueQuantityBreakBuilder(this.Session).WithFrom(10).Build();
 
-            new DiscountComponentBuilder(this.DatabaseSession)
+            new DiscountComponentBuilder(this.Session)
                 .WithDescription("discount good for revenue break 1")
                 .WithRevenueQuantityBreak(break1)
                 .WithProductCategory(this.ancestorProductCategory)
@@ -1345,7 +1345,7 @@ namespace Allors.Domain
                 .WithThroughDate(DateTime.UtcNow.AddYears(1).AddDays(-1))
                 .Build();
 
-            new DiscountComponentBuilder(this.DatabaseSession)
+            new DiscountComponentBuilder(this.Session)
                 .WithDescription("discount good for revenue break 2")
                 .WithRevenueQuantityBreak(break2)
                 .WithProductCategory(this.ancestorProductCategory)
@@ -1354,17 +1354,17 @@ namespace Allors.Domain
                 .WithThroughDate(DateTime.UtcNow.AddYears(1).AddDays(-1))
                 .Build();
 
-            this.DatabaseSession.Derive();
-            this.DatabaseSession.Commit();
+            this.Session.Derive();
+            this.Session.Commit();
 
-            this.InstantiateObjects(this.DatabaseSession);
+            this.InstantiateObjects(this.Session);
 
             //this.ancestorProductCategoryRevenueHistory.Quantity = 2;
 
-            var item1 = new SalesOrderItemBuilder(this.DatabaseSession).WithProduct(this.good).WithQuantityOrdered(quantityOrdered1).Build();
+            var item1 = new SalesOrderItemBuilder(this.Session).WithProduct(this.good).WithQuantityOrdered(quantityOrdered1).Build();
             this.order.AddSalesOrderItem(item1);
 
-            this.DatabaseSession.Derive();
+            this.Session.Derive();
 
             Assert.Equal(this.currentGoodBasePrice.Price, item1.UnitBasePrice);
             Assert.Equal(0, item1.UnitDiscount);
@@ -1376,7 +1376,7 @@ namespace Allors.Domain
             this.order.RemoveSalesOrderItem(item1);
             this.order.AddSalesOrderItem(item1);
 
-            this.DatabaseSession.Derive();
+            this.Session.Derive();
 
             Assert.Equal(this.currentGoodBasePrice.Price, item1.UnitBasePrice);
             Assert.Equal(amount1, item1.UnitDiscount);
@@ -1388,7 +1388,7 @@ namespace Allors.Domain
             this.order.RemoveSalesOrderItem(item1);
             this.order.AddSalesOrderItem(item1);
 
-            this.DatabaseSession.Derive();
+            this.Session.Derive();
 
             Assert.Equal(this.currentGoodBasePrice.Price, item1.UnitBasePrice);
             Assert.Equal(amount2, item1.UnitDiscount);
@@ -1404,10 +1404,10 @@ namespace Allors.Domain
             const decimal amount1 = 1;
             const decimal amount2 = 3;
 
-            var break1 = new RevenueQuantityBreakBuilder(this.DatabaseSession).WithFrom(5).WithThrough(9).Build();
-            var break2 = new RevenueQuantityBreakBuilder(this.DatabaseSession).WithFrom(10).Build();
+            var break1 = new RevenueQuantityBreakBuilder(this.Session).WithFrom(5).WithThrough(9).Build();
+            var break2 = new RevenueQuantityBreakBuilder(this.Session).WithFrom(10).Build();
 
-            new DiscountComponentBuilder(this.DatabaseSession)
+            new DiscountComponentBuilder(this.Session)
                 .WithDescription("discount good for revenue break 1")
                 .WithRevenueQuantityBreak(break1)
                 .WithProductCategory(this.parentProductCategory)
@@ -1416,7 +1416,7 @@ namespace Allors.Domain
                 .WithThroughDate(DateTime.UtcNow.AddYears(1).AddDays(-1))
                 .Build();
 
-            new DiscountComponentBuilder(this.DatabaseSession)
+            new DiscountComponentBuilder(this.Session)
                 .WithDescription("discount good for revenue break 2")
                 .WithRevenueQuantityBreak(break2)
                 .WithProductCategory(this.parentProductCategory)
@@ -1425,17 +1425,17 @@ namespace Allors.Domain
                 .WithThroughDate(DateTime.UtcNow.AddYears(1).AddDays(-1))
                 .Build();
 
-            this.DatabaseSession.Derive();
-            this.DatabaseSession.Commit();
+            this.Session.Derive();
+            this.Session.Commit();
 
-            this.InstantiateObjects(this.DatabaseSession);
+            this.InstantiateObjects(this.Session);
 
             //this.parentProductCategoryRevenueHistory.Quantity = 2;
 
-            var item1 = new SalesOrderItemBuilder(this.DatabaseSession).WithProduct(this.good).WithQuantityOrdered(quantityOrdered1).Build();
+            var item1 = new SalesOrderItemBuilder(this.Session).WithProduct(this.good).WithQuantityOrdered(quantityOrdered1).Build();
             this.order.AddSalesOrderItem(item1);
 
-            this.DatabaseSession.Derive();
+            this.Session.Derive();
 
             Assert.Equal(this.currentGoodBasePrice.Price, item1.UnitBasePrice);
             Assert.Equal(0, item1.UnitDiscount);
@@ -1447,7 +1447,7 @@ namespace Allors.Domain
             this.order.RemoveSalesOrderItem(item1);
             this.order.AddSalesOrderItem(item1);
 
-            this.DatabaseSession.Derive();
+            this.Session.Derive();
 
             Assert.Equal(this.currentGoodBasePrice.Price, item1.UnitBasePrice);
             Assert.Equal(amount1, item1.UnitDiscount);
@@ -1459,7 +1459,7 @@ namespace Allors.Domain
             this.order.RemoveSalesOrderItem(item1);
             this.order.AddSalesOrderItem(item1);
 
-            this.DatabaseSession.Derive();
+            this.Session.Derive();
 
             Assert.Equal(this.currentGoodBasePrice.Price, item1.UnitBasePrice);
             Assert.Equal(amount2, item1.UnitDiscount);
@@ -1475,10 +1475,10 @@ namespace Allors.Domain
             const decimal amount1 = 1;
             const decimal amount2 = 3;
 
-            var break1 = new RevenueQuantityBreakBuilder(this.DatabaseSession).WithFrom(50).WithThrough(99).Build();
-            var break2 = new RevenueQuantityBreakBuilder(this.DatabaseSession).WithFrom(100).Build();
+            var break1 = new RevenueQuantityBreakBuilder(this.Session).WithFrom(50).WithThrough(99).Build();
+            var break2 = new RevenueQuantityBreakBuilder(this.Session).WithFrom(100).Build();
 
-            new DiscountComponentBuilder(this.DatabaseSession)
+            new DiscountComponentBuilder(this.Session)
                 .WithDescription("discount good for revenue break 1")
                 .WithRevenueQuantityBreak(break1)
                 .WithProductCategory(this.productCategory)
@@ -1487,7 +1487,7 @@ namespace Allors.Domain
                 .WithThroughDate(DateTime.UtcNow.AddYears(1).AddDays(-1))
                 .Build();
 
-            new DiscountComponentBuilder(this.DatabaseSession)
+            new DiscountComponentBuilder(this.Session)
                 .WithDescription("discount good for revenue break 2")
                 .WithRevenueQuantityBreak(break2)
                 .WithProductCategory(this.productCategory)
@@ -1496,17 +1496,17 @@ namespace Allors.Domain
                 .WithThroughDate(DateTime.UtcNow.AddYears(1).AddDays(-1))
                 .Build();
 
-            this.DatabaseSession.Derive();
-            this.DatabaseSession.Commit();
+            this.Session.Derive();
+            this.Session.Commit();
 
-            this.InstantiateObjects(this.DatabaseSession);
+            this.InstantiateObjects(this.Session);
 
             //this.productCategoryRevenueHistory.Quantity = 20M;
             
-            var item1 = new SalesOrderItemBuilder(this.DatabaseSession).WithProduct(this.good).WithQuantityOrdered(quantityOrdered1).Build();
+            var item1 = new SalesOrderItemBuilder(this.Session).WithProduct(this.good).WithQuantityOrdered(quantityOrdered1).Build();
             this.order.AddSalesOrderItem(item1);
 
-            this.DatabaseSession.Derive();
+            this.Session.Derive();
 
             Assert.Equal(this.currentGoodBasePrice.Price, item1.UnitBasePrice);
             Assert.Equal(0, item1.UnitDiscount);
@@ -1518,7 +1518,7 @@ namespace Allors.Domain
             this.order.RemoveSalesOrderItem(item1);
             this.order.AddSalesOrderItem(item1);
 
-            this.DatabaseSession.Derive();
+            this.Session.Derive();
 
             Assert.Equal(this.currentGoodBasePrice.Price, item1.UnitBasePrice);
             Assert.Equal(amount1, item1.UnitDiscount);
@@ -1530,7 +1530,7 @@ namespace Allors.Domain
             this.order.RemoveSalesOrderItem(item1);
             this.order.AddSalesOrderItem(item1);
 
-            this.DatabaseSession.Derive();
+            this.Session.Derive();
 
             Assert.Equal(this.currentGoodBasePrice.Price, item1.UnitBasePrice);
             Assert.Equal(amount2, item1.UnitDiscount);
@@ -1546,10 +1546,10 @@ namespace Allors.Domain
             const decimal percentage1 = 5;
             const decimal percentage2 = 10;
 
-            var break1 = new RevenueQuantityBreakBuilder(this.DatabaseSession).WithFrom(50).WithThrough(99).Build();
-            var break2 = new RevenueQuantityBreakBuilder(this.DatabaseSession).WithFrom(100).Build();
+            var break1 = new RevenueQuantityBreakBuilder(this.Session).WithFrom(50).WithThrough(99).Build();
+            var break2 = new RevenueQuantityBreakBuilder(this.Session).WithFrom(100).Build();
 
-            new DiscountComponentBuilder(this.DatabaseSession)
+            new DiscountComponentBuilder(this.Session)
                 .WithDescription("discount good for quantity break 1")
                 .WithRevenueQuantityBreak(break1)
                 .WithProductCategory(this.productCategory)
@@ -1558,7 +1558,7 @@ namespace Allors.Domain
                 .WithThroughDate(DateTime.UtcNow.AddYears(1).AddDays(-1))
                 .Build();
 
-            new DiscountComponentBuilder(this.DatabaseSession)
+            new DiscountComponentBuilder(this.Session)
                 .WithDescription("discount good for quantity break 2")
                 .WithRevenueQuantityBreak(break2)
                 .WithProductCategory(this.productCategory)
@@ -1567,17 +1567,17 @@ namespace Allors.Domain
                 .WithThroughDate(DateTime.UtcNow.AddYears(1).AddDays(-1))
                 .Build();
 
-            this.DatabaseSession.Derive();
-            this.DatabaseSession.Commit();
+            this.Session.Derive();
+            this.Session.Commit();
 
-            this.InstantiateObjects(this.DatabaseSession);
+            this.InstantiateObjects(this.Session);
 
             //this.productCategoryRevenueHistory.Quantity = 20M;
             
-            var item1 = new SalesOrderItemBuilder(this.DatabaseSession).WithProduct(this.good).WithQuantityOrdered(quantityOrdered1).Build();
+            var item1 = new SalesOrderItemBuilder(this.Session).WithProduct(this.good).WithQuantityOrdered(quantityOrdered1).Build();
             this.order.AddSalesOrderItem(item1);
 
-            this.DatabaseSession.Derive();
+            this.Session.Derive();
 
             Assert.Equal(this.currentGoodBasePrice.Price, item1.UnitBasePrice);
             Assert.Equal(0, item1.UnitDiscount);
@@ -1589,7 +1589,7 @@ namespace Allors.Domain
             this.order.RemoveSalesOrderItem(item1);
             this.order.AddSalesOrderItem(item1);
 
-            this.DatabaseSession.Derive();
+            this.Session.Derive();
 
             var price = this.currentGoodBasePrice.Price ?? 0;
             var amount1 = Math.Round((price * percentage1) / 100, 2);
@@ -1603,7 +1603,7 @@ namespace Allors.Domain
             this.order.RemoveSalesOrderItem(item1);
             this.order.AddSalesOrderItem(item1);
 
-            this.DatabaseSession.Derive();
+            this.Session.Derive();
 
             var price2 = this.currentGoodBasePrice.Price ?? 0;
             var amount2 = Math.Round((price2 * percentage2) / 100, 2);
@@ -1621,10 +1621,10 @@ namespace Allors.Domain
             const decimal amount1 = 1;
             const decimal amount2 = 3;
 
-            var break1 = new RevenueQuantityBreakBuilder(this.DatabaseSession).WithFrom(50).WithThrough(99).Build();
-            var break2 = new RevenueQuantityBreakBuilder(this.DatabaseSession).WithFrom(100).Build();
+            var break1 = new RevenueQuantityBreakBuilder(this.Session).WithFrom(50).WithThrough(99).Build();
+            var break2 = new RevenueQuantityBreakBuilder(this.Session).WithFrom(100).Build();
 
-            new SurchargeComponentBuilder(this.DatabaseSession)
+            new SurchargeComponentBuilder(this.Session)
                 .WithDescription("discount good for revenue break 1")
                 .WithRevenueQuantityBreak(break1)
                 .WithProductCategory(this.productCategory)
@@ -1633,7 +1633,7 @@ namespace Allors.Domain
                 .WithThroughDate(DateTime.UtcNow.AddYears(1).AddDays(-1))
                 .Build();
 
-            new SurchargeComponentBuilder(this.DatabaseSession)
+            new SurchargeComponentBuilder(this.Session)
                 .WithDescription("discount good for revenue break 2")
                 .WithRevenueQuantityBreak(break2)
                 .WithProductCategory(this.productCategory)
@@ -1642,17 +1642,17 @@ namespace Allors.Domain
                 .WithThroughDate(DateTime.UtcNow.AddYears(1).AddDays(-1))
                 .Build();
 
-            this.DatabaseSession.Derive();
-            this.DatabaseSession.Commit();
+            this.Session.Derive();
+            this.Session.Commit();
 
-            this.InstantiateObjects(this.DatabaseSession);
+            this.InstantiateObjects(this.Session);
 
             //this.productCategoryRevenueHistory.Quantity = 20M;
 
-            var item1 = new SalesOrderItemBuilder(this.DatabaseSession).WithProduct(this.good).WithQuantityOrdered(quantityOrdered1).Build();
+            var item1 = new SalesOrderItemBuilder(this.Session).WithProduct(this.good).WithQuantityOrdered(quantityOrdered1).Build();
             this.order.AddSalesOrderItem(item1);
 
-            this.DatabaseSession.Derive();
+            this.Session.Derive();
 
             Assert.Equal(this.currentGoodBasePrice.Price, item1.UnitBasePrice);
             Assert.Equal(0, item1.UnitSurcharge);
@@ -1664,7 +1664,7 @@ namespace Allors.Domain
             this.order.RemoveSalesOrderItem(item1);
             this.order.AddSalesOrderItem(item1);
 
-            this.DatabaseSession.Derive();
+            this.Session.Derive();
 
             Assert.Equal(this.currentGoodBasePrice.Price, item1.UnitBasePrice);
             Assert.Equal(amount1, item1.UnitSurcharge);
@@ -1676,7 +1676,7 @@ namespace Allors.Domain
             this.order.RemoveSalesOrderItem(item1);
             this.order.AddSalesOrderItem(item1);
 
-            this.DatabaseSession.Derive();
+            this.Session.Derive();
 
             Assert.Equal(this.currentGoodBasePrice.Price, item1.UnitBasePrice);
             Assert.Equal(amount2, item1.UnitSurcharge);
@@ -1692,10 +1692,10 @@ namespace Allors.Domain
             const decimal percentage1 = 5;
             const decimal percentage2 = 10;
 
-            var break1 = new RevenueQuantityBreakBuilder(this.DatabaseSession).WithFrom(50).WithThrough(99).Build();
-            var break2 = new RevenueQuantityBreakBuilder(this.DatabaseSession).WithFrom(100).Build();
+            var break1 = new RevenueQuantityBreakBuilder(this.Session).WithFrom(50).WithThrough(99).Build();
+            var break2 = new RevenueQuantityBreakBuilder(this.Session).WithFrom(100).Build();
 
-            new SurchargeComponentBuilder(this.DatabaseSession)
+            new SurchargeComponentBuilder(this.Session)
                 .WithDescription("discount good for quantity break 1")
                 .WithRevenueQuantityBreak(break1)
                 .WithProductCategory(this.productCategory)
@@ -1704,7 +1704,7 @@ namespace Allors.Domain
                 .WithThroughDate(DateTime.UtcNow.AddYears(1).AddDays(-1))
                 .Build();
 
-            new SurchargeComponentBuilder(this.DatabaseSession)
+            new SurchargeComponentBuilder(this.Session)
                 .WithDescription("discount good for quantity break 2")
                 .WithRevenueQuantityBreak(break2)
                 .WithProductCategory(this.productCategory)
@@ -1713,17 +1713,17 @@ namespace Allors.Domain
                 .WithThroughDate(DateTime.UtcNow.AddYears(1).AddDays(-1))
                 .Build();
 
-            this.DatabaseSession.Derive();
-            this.DatabaseSession.Commit();
+            this.Session.Derive();
+            this.Session.Commit();
 
-            this.InstantiateObjects(this.DatabaseSession);
+            this.InstantiateObjects(this.Session);
 
             //this.productCategoryRevenueHistory.Quantity = 20M;
             
-            var item1 = new SalesOrderItemBuilder(this.DatabaseSession).WithProduct(this.good).WithQuantityOrdered(quantityOrdered1).Build();
+            var item1 = new SalesOrderItemBuilder(this.Session).WithProduct(this.good).WithQuantityOrdered(quantityOrdered1).Build();
             this.order.AddSalesOrderItem(item1);
 
-            this.DatabaseSession.Derive();
+            this.Session.Derive();
 
             Assert.Equal(this.currentGoodBasePrice.Price, item1.UnitBasePrice);
             Assert.Equal(0, item1.UnitDiscount);
@@ -1735,7 +1735,7 @@ namespace Allors.Domain
             this.order.RemoveSalesOrderItem(item1);
             this.order.AddSalesOrderItem(item1);
 
-            this.DatabaseSession.Derive();
+            this.Session.Derive();
 
             var price = this.currentGoodBasePrice.Price ?? 0;
             var amount1 = Math.Round((price * percentage1) / 100, 2);
@@ -1749,7 +1749,7 @@ namespace Allors.Domain
             this.order.RemoveSalesOrderItem(item1);
             this.order.AddSalesOrderItem(item1);
 
-            this.DatabaseSession.Derive();
+            this.Session.Derive();
 
             var price2 = this.currentGoodBasePrice.Price ?? 0;
             var amount2 = Math.Round((price2 * percentage2) / 100, 2);
@@ -1766,14 +1766,14 @@ namespace Allors.Domain
             const decimal priceIs9 = 9;
             const decimal priceIs8 = 8;
 
-            var package1 = new PackageBuilder(this.DatabaseSession).WithName("package1").Build();
-            var package2 = new PackageBuilder(this.DatabaseSession).WithName("package2").Build();
-            var package3 = new PackageBuilder(this.DatabaseSession).WithName("package3").Build();
+            var package1 = new PackageBuilder(this.Session).WithName("package1").Build();
+            var package2 = new PackageBuilder(this.Session).WithName("package2").Build();
+            var package3 = new PackageBuilder(this.Session).WithName("package3").Build();
 
-            var break1 = new PackageQuantityBreakBuilder(this.DatabaseSession).WithFrom(2).WithThrough(2).Build();
-            var break2 = new PackageQuantityBreakBuilder(this.DatabaseSession).WithFrom(3).WithThrough(3).Build();
+            var break1 = new PackageQuantityBreakBuilder(this.Session).WithFrom(2).WithThrough(2).Build();
+            var break2 = new PackageQuantityBreakBuilder(this.Session).WithFrom(3).WithThrough(3).Build();
 
-            new BasePriceBuilder(this.DatabaseSession)
+            new BasePriceBuilder(this.Session)
                 .WithDescription("baseprice good when party revenue in 2 different packages")
                 .WithPackageQuantityBreak(break1)
                 .WithProduct(this.good)
@@ -1782,7 +1782,7 @@ namespace Allors.Domain
                 .WithThroughDate(DateTime.UtcNow.AddYears(1).AddDays(-1))
                 .Build();
 
-            new BasePriceBuilder(this.DatabaseSession)
+            new BasePriceBuilder(this.Session)
                 .WithDescription("baseprice good when party revenue in 3 different packages")
                 .WithPackageQuantityBreak(break2)
                 .WithProduct(this.good)
@@ -1812,19 +1812,19 @@ namespace Allors.Domain
             //    .WithRevenue(100M)
             //    .Build();
 
-            this.DatabaseSession.Derive();
-            this.DatabaseSession.Commit();
+            this.Session.Derive();
+            this.Session.Commit();
 
-            this.InstantiateObjects(this.DatabaseSession);
+            this.InstantiateObjects(this.Session);
             //package2RevenueHistory = (PartyPackageRevenueHistory)this.DatabaseSession.Instantiate(package2RevenueHistory);
             //package3RevenueHistory = (PartyPackageRevenueHistory)this.DatabaseSession.Instantiate(package3RevenueHistory);
 
             //package2RevenueHistory.Revenue = 0;
             //package3RevenueHistory.Revenue = 0;
             
-            var item1 = new SalesOrderItemBuilder(this.DatabaseSession).WithProduct(this.good).WithQuantityOrdered(3).Build();
+            var item1 = new SalesOrderItemBuilder(this.Session).WithProduct(this.good).WithQuantityOrdered(3).Build();
             this.order.AddSalesOrderItem(item1);
-            this.DatabaseSession.Derive();
+            this.Session.Derive();
 
             Assert.Equal(this.currentGoodBasePrice.Price, item1.UnitBasePrice);
 
@@ -1833,7 +1833,7 @@ namespace Allors.Domain
             this.order.RemoveSalesOrderItem(item1);
             this.order.AddSalesOrderItem(item1);
 
-            this.DatabaseSession.Derive();
+            this.Session.Derive();
 
             Assert.Equal(priceIs9, item1.UnitBasePrice);
 
@@ -1842,7 +1842,7 @@ namespace Allors.Domain
             this.order.RemoveSalesOrderItem(item1);
             this.order.AddSalesOrderItem(item1);
 
-            this.DatabaseSession.Derive();
+            this.Session.Derive();
 
             Assert.Equal(priceIs8, item1.UnitBasePrice);
         }
@@ -1854,10 +1854,10 @@ namespace Allors.Domain
             const decimal amount1 = 1;
             const decimal amount2 = 3;
 
-            var break1 = new PackageQuantityBreakBuilder(this.DatabaseSession).WithFrom(2).WithThrough(2).Build();
-            var break2 = new PackageQuantityBreakBuilder(this.DatabaseSession).WithFrom(3).WithThrough(3).Build();
+            var break1 = new PackageQuantityBreakBuilder(this.Session).WithFrom(2).WithThrough(2).Build();
+            var break2 = new PackageQuantityBreakBuilder(this.Session).WithFrom(3).WithThrough(3).Build();
 
-            new DiscountComponentBuilder(this.DatabaseSession)
+            new DiscountComponentBuilder(this.Session)
                 .WithDescription("discount good for revenue in 2 packages")
                 .WithPackageQuantityBreak(break1)
                 .WithProduct(this.good)
@@ -1866,7 +1866,7 @@ namespace Allors.Domain
                 .WithThroughDate(DateTime.UtcNow.AddYears(1).AddDays(-1))
                 .Build();
 
-            new DiscountComponentBuilder(this.DatabaseSession)
+            new DiscountComponentBuilder(this.Session)
                 .WithDescription("discount good for revenue in 3 packages")
                 .WithPackageQuantityBreak(break2)
                 .WithProduct(this.good)
@@ -1896,10 +1896,10 @@ namespace Allors.Domain
             //    .WithRevenue(100M)
             //    .Build();
 
-            this.DatabaseSession.Derive();
-            this.DatabaseSession.Commit();
+            this.Session.Derive();
+            this.Session.Commit();
 
-            this.InstantiateObjects(this.DatabaseSession);
+            this.InstantiateObjects(this.Session);
             //package2RevenueHistory = (PartyPackageRevenueHistory)this.DatabaseSession.Instantiate(package2RevenueHistory);
             //package3RevenueHistory = (PartyPackageRevenueHistory)this.DatabaseSession.Instantiate(package3RevenueHistory);
 
@@ -1907,10 +1907,10 @@ namespace Allors.Domain
             //package3RevenueHistory.Revenue = 0;
             
 
-            var item1 = new SalesOrderItemBuilder(this.DatabaseSession).WithProduct(this.good).WithQuantityOrdered(quantityOrdered1).Build();
+            var item1 = new SalesOrderItemBuilder(this.Session).WithProduct(this.good).WithQuantityOrdered(quantityOrdered1).Build();
             this.order.AddSalesOrderItem(item1);
 
-            this.DatabaseSession.Derive();
+            this.Session.Derive();
 
             Assert.Equal(this.currentGoodBasePrice.Price, item1.UnitBasePrice);
             Assert.Equal(0, item1.UnitDiscount);
@@ -1923,7 +1923,7 @@ namespace Allors.Domain
             this.order.RemoveSalesOrderItem(item1);
             this.order.AddSalesOrderItem(item1);
 
-            this.DatabaseSession.Derive();
+            this.Session.Derive();
 
             Assert.Equal(this.currentGoodBasePrice.Price, item1.UnitBasePrice);
             Assert.Equal(amount1, item1.UnitDiscount);
@@ -1936,7 +1936,7 @@ namespace Allors.Domain
             this.order.RemoveSalesOrderItem(item1);
             this.order.AddSalesOrderItem(item1);
 
-            this.DatabaseSession.Derive();
+            this.Session.Derive();
 
             Assert.Equal(this.currentGoodBasePrice.Price, item1.UnitBasePrice);
             Assert.Equal(amount2, item1.UnitDiscount);
@@ -1952,10 +1952,10 @@ namespace Allors.Domain
             const decimal percentage5 = 5;
             const decimal percentage10 = 10;
 
-            var break1 = new PackageQuantityBreakBuilder(this.DatabaseSession).WithFrom(2).WithThrough(2).Build();
-            var break2 = new PackageQuantityBreakBuilder(this.DatabaseSession).WithFrom(3).WithThrough(3).Build();
+            var break1 = new PackageQuantityBreakBuilder(this.Session).WithFrom(2).WithThrough(2).Build();
+            var break2 = new PackageQuantityBreakBuilder(this.Session).WithFrom(3).WithThrough(3).Build();
 
-            new DiscountComponentBuilder(this.DatabaseSession)
+            new DiscountComponentBuilder(this.Session)
                 .WithDescription("discount good for revenue in 2 packages")
                 .WithPackageQuantityBreak(break1)
                 .WithProduct(this.good)
@@ -1964,7 +1964,7 @@ namespace Allors.Domain
                 .WithThroughDate(DateTime.UtcNow.AddYears(1).AddDays(-1))
                 .Build();
 
-            new DiscountComponentBuilder(this.DatabaseSession)
+            new DiscountComponentBuilder(this.Session)
                 .WithDescription("discount good for revenue in 3 packages")
                 .WithPackageQuantityBreak(break2)
                 .WithProduct(this.good)
@@ -1994,20 +1994,20 @@ namespace Allors.Domain
             //    .WithRevenue(100M)
             //    .Build();
 
-            this.DatabaseSession.Derive();
-            this.DatabaseSession.Commit();
+            this.Session.Derive();
+            this.Session.Commit();
 
-            this.InstantiateObjects(this.DatabaseSession);
+            this.InstantiateObjects(this.Session);
             //package2RevenueHistory = (PartyPackageRevenueHistory)this.DatabaseSession.Instantiate(package2RevenueHistory);
             //package3RevenueHistory = (PartyPackageRevenueHistory)this.DatabaseSession.Instantiate(package3RevenueHistory);
 
             //package2RevenueHistory.Revenue = 0;
             //package3RevenueHistory.Revenue = 0;
 
-            var item1 = new SalesOrderItemBuilder(this.DatabaseSession).WithProduct(this.good).WithQuantityOrdered(quantityOrdered1).Build();
+            var item1 = new SalesOrderItemBuilder(this.Session).WithProduct(this.good).WithQuantityOrdered(quantityOrdered1).Build();
             this.order.AddSalesOrderItem(item1);
 
-            this.DatabaseSession.Derive();
+            this.Session.Derive();
 
             Assert.Equal(this.currentGoodBasePrice.Price, item1.UnitBasePrice);
             Assert.Equal(0, item1.UnitDiscount);
@@ -2020,7 +2020,7 @@ namespace Allors.Domain
             this.order.RemoveSalesOrderItem(item1);
             this.order.AddSalesOrderItem(item1);
 
-            this.DatabaseSession.Derive();
+            this.Session.Derive();
 
             var price = this.currentGoodBasePrice.Price ?? 0;
             var amount1 = Math.Round((price * percentage5) / 100, 2);
@@ -2035,7 +2035,7 @@ namespace Allors.Domain
             this.order.RemoveSalesOrderItem(item1);
             this.order.AddSalesOrderItem(item1);
 
-            this.DatabaseSession.Derive();
+            this.Session.Derive();
 
             var price2 = this.currentGoodBasePrice.Price ?? 0;
             var amount2 = Math.Round((price2 * percentage10) / 100, 2);
@@ -2049,23 +2049,23 @@ namespace Allors.Domain
         [Fact]
         public void GivenOrderItem_WhenBuild_ThenPostBuildRelationsMustExist()
         {
-            this.InstantiateObjects(this.DatabaseSession);
+            this.InstantiateObjects(this.Session);
 
-            var item = new SalesOrderItemBuilder(this.DatabaseSession).Build();
+            var item = new SalesOrderItemBuilder(this.Session).Build();
 
-            Assert.Equal(new SalesOrderItemStates(this.DatabaseSession).Created, item.SalesOrderItemState);
+            Assert.Equal(new SalesOrderItemStates(this.Session).Created, item.SalesOrderItemState);
         }
 
         [Fact]
         public void GivenOrderItemForGood1WithRequiredMarkupPercentage_WhenDerivingPrices_ThenCalculateActualUnitPrice()
         {
-            this.InstantiateObjects(this.DatabaseSession);
+            this.InstantiateObjects(this.Session);
 
-            var item1 = new SalesOrderItemBuilder(this.DatabaseSession).WithProduct(this.good).WithQuantityOrdered(3).WithRequiredMarkupPercentage(45).Build();
+            var item1 = new SalesOrderItemBuilder(this.Session).WithProduct(this.good).WithQuantityOrdered(3).WithRequiredMarkupPercentage(45).Build();
             this.order.AddSalesOrderItem(item1);
             item1.Confirm();
 
-            this.DatabaseSession.Derive();
+            this.Session.Derive();
 
             Assert.Equal(10.15M, item1.ActualUnitPrice);
             Assert.Equal(10M, item1.UnitBasePrice);
@@ -2099,12 +2099,12 @@ namespace Allors.Domain
         [Fact]
         public void GivenOrderItemForGood1WithRequiredProfitMargin_WhenDerivingPrices_ThenCalculateActualUnitPrice()
         {
-            this.InstantiateObjects(this.DatabaseSession);
+            this.InstantiateObjects(this.Session);
 
-            var item1 = new SalesOrderItemBuilder(this.DatabaseSession).WithProduct(this.good).WithQuantityOrdered(3).WithRequiredProfitMargin(25).Build();
+            var item1 = new SalesOrderItemBuilder(this.Session).WithProduct(this.good).WithQuantityOrdered(3).WithRequiredProfitMargin(25).Build();
             this.order.AddSalesOrderItem(item1);
 
-            this.DatabaseSession.Derive();
+            this.Session.Derive();
 
             Assert.Equal(9.33M, item1.ActualUnitPrice);
             Assert.Equal(10M, item1.UnitBasePrice);
@@ -2138,12 +2138,12 @@ namespace Allors.Domain
         [Fact]
         public void GivenOrderItemForGood1WithActualPrice_WhenDerivingPrices_ThenUseActualPrice()
         {
-            this.InstantiateObjects(this.DatabaseSession);
+            this.InstantiateObjects(this.Session);
 
-            var item1 = new SalesOrderItemBuilder(this.DatabaseSession).WithProduct(this.good).WithQuantityOrdered(3).WithActualUnitPrice(15).Build();
+            var item1 = new SalesOrderItemBuilder(this.Session).WithProduct(this.good).WithQuantityOrdered(3).WithActualUnitPrice(15).Build();
             this.order.AddSalesOrderItem(item1);
 
-            this.DatabaseSession.Derive();
+            this.Session.Derive();
 
             Assert.Equal(10, item1.UnitBasePrice);
             Assert.Equal(0, item1.UnitDiscount);
@@ -2176,15 +2176,15 @@ namespace Allors.Domain
         [Fact]
         public void GivenOrderWithoutCustomer_WhenDerivingPrices_ThenUsePriceComponentsForGood()
         {
-            this.InstantiateObjects(this.DatabaseSession);
+            this.InstantiateObjects(this.Session);
 
-            var anonymousOrder = new SalesOrderBuilder(this.DatabaseSession).Build();
+            var anonymousOrder = new SalesOrderBuilder(this.Session).Build();
 
             const decimal quantityOrdered = 3;
-            var item1 = new SalesOrderItemBuilder(this.DatabaseSession).WithProduct(this.good).WithQuantityOrdered(quantityOrdered).Build();
+            var item1 = new SalesOrderItemBuilder(this.Session).WithProduct(this.good).WithQuantityOrdered(quantityOrdered).Build();
             anonymousOrder.AddSalesOrderItem(item1);
 
-            this.DatabaseSession.Derive();
+            this.Session.Derive();
 
             Assert.Equal(this.currentGoodBasePrice.Price, item1.UnitBasePrice);
             Assert.Equal(0, item1.UnitDiscount);
@@ -2214,13 +2214,13 @@ namespace Allors.Domain
         [Fact]
         public void GivenOrderItemForGood1_WhenDerivingPrices_ThenUsePriceComponentsForGood1()
         {
-            this.InstantiateObjects(this.DatabaseSession);
+            this.InstantiateObjects(this.Session);
 
             const decimal quantityOrdered = 3;
-            var item1 = new SalesOrderItemBuilder(this.DatabaseSession).WithProduct(this.good).WithQuantityOrdered(quantityOrdered).Build();
+            var item1 = new SalesOrderItemBuilder(this.Session).WithProduct(this.good).WithQuantityOrdered(quantityOrdered).Build();
             this.order.AddSalesOrderItem(item1);
 
-            this.DatabaseSession.Derive();
+            this.Session.Derive();
 
             Assert.Equal(this.currentGoodBasePrice.Price, item1.UnitBasePrice);
             Assert.Equal(0, item1.UnitDiscount);
@@ -2250,15 +2250,15 @@ namespace Allors.Domain
         [Fact]
         public void GivenOrderItemForGood1WithFeature1_WhenDerivingPrices_ThenUsePriceComponentsForGood1WithFeature1()
         {
-            this.InstantiateObjects(this.DatabaseSession);
+            this.InstantiateObjects(this.Session);
 
             const decimal quantityOrdered = 3;
-            var item1 = new SalesOrderItemBuilder(this.DatabaseSession).WithProduct(this.good).WithQuantityOrdered(quantityOrdered).Build();
-            var item2 = new SalesOrderItemBuilder(this.DatabaseSession).WithProductFeature(this.feature1).WithQuantityOrdered(quantityOrdered).Build();
+            var item1 = new SalesOrderItemBuilder(this.Session).WithProduct(this.good).WithQuantityOrdered(quantityOrdered).Build();
+            var item2 = new SalesOrderItemBuilder(this.Session).WithProductFeature(this.feature1).WithQuantityOrdered(quantityOrdered).Build();
             item1.AddOrderedWithFeature(item2);
             this.order.AddSalesOrderItem(item1);
             this.order.AddSalesOrderItem(item2);
-            this.DatabaseSession.Derive();
+            this.Session.Derive();
 
             var expectedCalculatedUnitPrice = this.currentGoodBasePrice.Price;
             expectedCalculatedUnitPrice += this.currentGood1Feature1BasePrice.Price;
@@ -2296,16 +2296,16 @@ namespace Allors.Domain
         [Fact]
         public void GivenOrderItemForGood1WithFeature2_WhenDerivingPrices_ThenUsePriceComponentsForGood1AndFeature2()
         {
-            this.InstantiateObjects(this.DatabaseSession);
+            this.InstantiateObjects(this.Session);
 
             const decimal quantityOrdered = 3;
-            var item1 = new SalesOrderItemBuilder(this.DatabaseSession).WithProduct(this.good).WithQuantityOrdered(quantityOrdered).Build();
-            var item2 = new SalesOrderItemBuilder(this.DatabaseSession).WithProductFeature(this.feature2).WithQuantityOrdered(quantityOrdered).Build();
+            var item1 = new SalesOrderItemBuilder(this.Session).WithProduct(this.good).WithQuantityOrdered(quantityOrdered).Build();
+            var item2 = new SalesOrderItemBuilder(this.Session).WithProductFeature(this.feature2).WithQuantityOrdered(quantityOrdered).Build();
             item1.AddOrderedWithFeature(item2);
             this.order.AddSalesOrderItem(item1);
             this.order.AddSalesOrderItem(item2);
 
-            this.DatabaseSession.Derive();
+            this.Session.Derive();
 
             var expectedCalculatedUnitPrice = this.currentGoodBasePrice.Price;
             expectedCalculatedUnitPrice += this.currentFeature2BasePrice.Price;
@@ -2343,28 +2343,28 @@ namespace Allors.Domain
         [Fact]
         public void GivenProductWithMultipleBasePrices_WhenDeriving_ThenLowestUnitPriceMustBeCalculated()
         {
-            this.InstantiateObjects(this.DatabaseSession);
+            this.InstantiateObjects(this.Session);
 
             this.order.ShipToAddress = this.shipToContactMechanismMechelen;
 
-            this.DatabaseSession.Derive();
+            this.Session.Derive();
 
-            var item1 = new SalesOrderItemBuilder(this.DatabaseSession).WithProduct(this.good).WithQuantityOrdered(3).Build();
+            var item1 = new SalesOrderItemBuilder(this.Session).WithProduct(this.good).WithQuantityOrdered(3).Build();
             this.order.AddSalesOrderItem(item1);
 
-            this.DatabaseSession.Derive();
+            this.Session.Derive();
 
             Assert.Equal(this.currentBasePriceGeoBoundary.Price, item1.CalculatedUnitPrice);
 
-            var order2 = new SalesOrderBuilder(this.DatabaseSession)
+            var order2 = new SalesOrderBuilder(this.Session)
                 .WithShipToCustomer(this.shipToCustomer)
                 .WithBillToCustomer(this.billToCustomer)
                 .Build();
 
-            item1 = new SalesOrderItemBuilder(this.DatabaseSession).WithProduct(this.good).WithQuantityOrdered(3).Build();
+            item1 = new SalesOrderItemBuilder(this.Session).WithProduct(this.good).WithQuantityOrdered(3).Build();
             order2.AddSalesOrderItem(item1);
 
-            this.DatabaseSession.Derive();
+            this.Session.Derive();
 
             Assert.Equal(this.currentGoodBasePrice.Price, item1.CalculatedUnitPrice);
         }
@@ -2375,7 +2375,7 @@ namespace Allors.Domain
             const decimal quantityOrdered = 3;
             const decimal amount = 1;
 
-            new DiscountComponentBuilder(this.DatabaseSession)
+            new DiscountComponentBuilder(this.Session)
                 .WithDescription("discount good for geo boundary")
                 .WithGeographicBoundary(this.kiev)
                 .WithProduct(this.good)
@@ -2384,15 +2384,15 @@ namespace Allors.Domain
                 .WithThroughDate(DateTime.UtcNow.AddYears(1).AddDays(-1))
                 .Build();
 
-            this.DatabaseSession.Derive();
-            this.DatabaseSession.Commit();
+            this.Session.Derive();
+            this.Session.Commit();
 
-            this.InstantiateObjects(this.DatabaseSession);
+            this.InstantiateObjects(this.Session);
 
-            var item1 = new SalesOrderItemBuilder(this.DatabaseSession).WithProduct(this.good).WithQuantityOrdered(quantityOrdered).Build();
+            var item1 = new SalesOrderItemBuilder(this.Session).WithProduct(this.good).WithQuantityOrdered(quantityOrdered).Build();
             this.order.AddSalesOrderItem(item1);
 
-            this.DatabaseSession.Derive();
+            this.Session.Derive();
 
             Assert.Equal(this.currentGoodBasePrice.Price, item1.UnitBasePrice);
             Assert.Equal(amount, item1.UnitDiscount);
@@ -2413,7 +2413,7 @@ namespace Allors.Domain
             const decimal quantityOrdered = 3;
             const decimal percentage = 5;
 
-            new DiscountComponentBuilder(this.DatabaseSession)
+            new DiscountComponentBuilder(this.Session)
                 .WithDescription("discount good for geo boundary")
                 .WithGeographicBoundary(this.kiev)
                 .WithProduct(this.good)
@@ -2422,15 +2422,15 @@ namespace Allors.Domain
                 .WithThroughDate(DateTime.UtcNow.AddYears(1).AddDays(-1))
                 .Build();
 
-            this.DatabaseSession.Derive();
-            this.DatabaseSession.Commit();
+            this.Session.Derive();
+            this.Session.Commit();
 
-            this.InstantiateObjects(this.DatabaseSession);
+            this.InstantiateObjects(this.Session);
 
-            var item1 = new SalesOrderItemBuilder(this.DatabaseSession).WithProduct(this.good).WithQuantityOrdered(quantityOrdered).Build();
+            var item1 = new SalesOrderItemBuilder(this.Session).WithProduct(this.good).WithQuantityOrdered(quantityOrdered).Build();
             this.order.AddSalesOrderItem(item1);
 
-            this.DatabaseSession.Derive();
+            this.Session.Derive();
 
             var price = this.currentGoodBasePrice.Price ?? 0;
             var amount = Math.Round((price * percentage) / 100, 2);
@@ -2454,7 +2454,7 @@ namespace Allors.Domain
             const decimal amount = 1;
             const decimal adjustmentPercentage = 5;
 
-            new DiscountComponentBuilder(this.DatabaseSession)
+            new DiscountComponentBuilder(this.Session)
                 .WithDescription("discount good for geo boundary")
                 .WithGeographicBoundary(this.kiev)
                 .WithPrice(amount)
@@ -2462,20 +2462,20 @@ namespace Allors.Domain
                 .WithThroughDate(DateTime.UtcNow.AddYears(1).AddDays(-1))
                 .Build();
 
-            this.DatabaseSession.Derive();
-            this.DatabaseSession.Commit();
+            this.Session.Derive();
+            this.Session.Commit();
 
-            this.InstantiateObjects(this.DatabaseSession);
+            this.InstantiateObjects(this.Session);
 
-            var item1 = new SalesOrderItemBuilder(this.DatabaseSession)
+            var item1 = new SalesOrderItemBuilder(this.Session)
                 .WithProduct(this.good)
                 .WithQuantityOrdered(quantityOrdered)
-                .WithSurchargeAdjustment(new SurchargeAdjustmentBuilder(this.DatabaseSession).WithPercentage(adjustmentPercentage).Build())
+                .WithSurchargeAdjustment(new SurchargeAdjustmentBuilder(this.Session).WithPercentage(adjustmentPercentage).Build())
                 .Build();
 
             this.order.AddSalesOrderItem(item1);
 
-            this.DatabaseSession.Derive();
+            this.Session.Derive();
 
             var price = this.currentGoodBasePrice.Price ?? 0;
             var adjustmentAmount = Math.Round(((price - amount) * adjustmentPercentage) / 100, 2);
@@ -2498,7 +2498,7 @@ namespace Allors.Domain
             const decimal quantityOrdered = 3;
             const decimal amount = 1;
 
-            new SurchargeComponentBuilder(this.DatabaseSession)
+            new SurchargeComponentBuilder(this.Session)
                 .WithDescription("surcharge good for geo boundary")
                 .WithGeographicBoundary(this.kiev)
                 .WithProduct(this.good)
@@ -2507,15 +2507,15 @@ namespace Allors.Domain
                 .WithThroughDate(DateTime.UtcNow.AddYears(1).AddDays(-1))
                 .Build();
 
-            this.DatabaseSession.Derive();
-            this.DatabaseSession.Commit();
+            this.Session.Derive();
+            this.Session.Commit();
 
-            this.InstantiateObjects(this.DatabaseSession);
+            this.InstantiateObjects(this.Session);
 
-            var item1 = new SalesOrderItemBuilder(this.DatabaseSession).WithProduct(this.good).WithQuantityOrdered(quantityOrdered).Build();
+            var item1 = new SalesOrderItemBuilder(this.Session).WithProduct(this.good).WithQuantityOrdered(quantityOrdered).Build();
             this.order.AddSalesOrderItem(item1);
 
-            this.DatabaseSession.Derive();
+            this.Session.Derive();
 
             Assert.Equal(this.currentGoodBasePrice.Price, item1.UnitBasePrice);
             Assert.Equal(0, item1.UnitDiscount);
@@ -2535,7 +2535,7 @@ namespace Allors.Domain
             const decimal quantityOrdered = 3;
             const decimal percentage = 5;
 
-            new SurchargeComponentBuilder(this.DatabaseSession)
+            new SurchargeComponentBuilder(this.Session)
                 .WithDescription("surcharge good for geo boundary")
                 .WithGeographicBoundary(this.kiev)
                 .WithProduct(this.good)
@@ -2544,15 +2544,15 @@ namespace Allors.Domain
                 .WithThroughDate(DateTime.UtcNow.AddYears(1).AddDays(-1))
                 .Build();
 
-            this.DatabaseSession.Derive();
-            this.DatabaseSession.Commit();
+            this.Session.Derive();
+            this.Session.Commit();
 
-            this.InstantiateObjects(this.DatabaseSession);
+            this.InstantiateObjects(this.Session);
 
-            var item1 = new SalesOrderItemBuilder(this.DatabaseSession).WithProduct(this.good).WithQuantityOrdered(quantityOrdered).Build();
+            var item1 = new SalesOrderItemBuilder(this.Session).WithProduct(this.good).WithQuantityOrdered(quantityOrdered).Build();
             this.order.AddSalesOrderItem(item1);
 
-            this.DatabaseSession.Derive();
+            this.Session.Derive();
 
             var price = this.currentGoodBasePrice.Price ?? 0;
             var amount = Math.Round((price * percentage) / 100, 2);
@@ -2574,8 +2574,8 @@ namespace Allors.Domain
             const decimal quantityOrdered = 3;
             const decimal amount = 1;
 
-            var classification = new IndustryClassificationBuilder(this.DatabaseSession).WithName("gold customer").Build();
-            new DiscountComponentBuilder(this.DatabaseSession)
+            var classification = new IndustryClassificationBuilder(this.Session).WithName("gold customer").Build();
+            new DiscountComponentBuilder(this.Session)
                 .WithDescription("discount good for party classification")
                 .WithPartyClassification(classification)
                 .WithProduct(this.good)
@@ -2584,21 +2584,21 @@ namespace Allors.Domain
                 .WithThroughDate(DateTime.UtcNow.AddYears(1).AddDays(-1))
                 .Build();
 
-            this.DatabaseSession.Derive();
-            this.DatabaseSession.Commit();
+            this.Session.Derive();
+            this.Session.Commit();
 
-            this.InstantiateObjects(this.DatabaseSession);
+            this.InstantiateObjects(this.Session);
 
             this.billToCustomer.AddPartyClassification(classification);
 
             this.order.ShipToCustomer = this.shipToCustomer;
 
-            this.DatabaseSession.Derive();
+            this.Session.Derive();
 
-            var item1 = new SalesOrderItemBuilder(this.DatabaseSession).WithProduct(this.good).WithQuantityOrdered(quantityOrdered).Build();
+            var item1 = new SalesOrderItemBuilder(this.Session).WithProduct(this.good).WithQuantityOrdered(quantityOrdered).Build();
             this.order.AddSalesOrderItem(item1);
 
-            this.DatabaseSession.Derive();
+            this.Session.Derive();
 
             Assert.Equal(this.currentGoodBasePrice.Price, item1.UnitBasePrice);
             Assert.Equal(amount, item1.UnitDiscount);
@@ -2619,8 +2619,8 @@ namespace Allors.Domain
             const decimal quantityOrdered = 3;
             const decimal percentage = 5;
 
-            var classification = new IndustryClassificationBuilder(this.DatabaseSession).WithName("gold customer").Build();
-            new DiscountComponentBuilder(this.DatabaseSession)
+            var classification = new IndustryClassificationBuilder(this.Session).WithName("gold customer").Build();
+            new DiscountComponentBuilder(this.Session)
                 .WithDescription("discount good for party classification")
                 .WithPartyClassification(classification)
                 .WithProduct(this.good)
@@ -2629,21 +2629,21 @@ namespace Allors.Domain
                 .WithThroughDate(DateTime.UtcNow.AddYears(1).AddDays(-1))
                 .Build();
 
-            this.DatabaseSession.Derive();
-            this.DatabaseSession.Commit();
+            this.Session.Derive();
+            this.Session.Commit();
 
-            this.InstantiateObjects(this.DatabaseSession);
+            this.InstantiateObjects(this.Session);
 
             this.billToCustomer.AddPartyClassification(classification);
 
             this.order.ShipToCustomer = this.shipToCustomer;
 
-            this.DatabaseSession.Derive();
+            this.Session.Derive();
 
-            var item1 = new SalesOrderItemBuilder(this.DatabaseSession).WithProduct(this.good).WithQuantityOrdered(quantityOrdered).Build();
+            var item1 = new SalesOrderItemBuilder(this.Session).WithProduct(this.good).WithQuantityOrdered(quantityOrdered).Build();
             this.order.AddSalesOrderItem(item1);
 
-            this.DatabaseSession.Derive();
+            this.Session.Derive();
 
             var price = this.currentGoodBasePrice.Price ?? 0;
             var amount = Math.Round((price * percentage) / 100, 2);
@@ -2666,8 +2666,8 @@ namespace Allors.Domain
             const decimal quantityOrdered = 3;
             const decimal expected = 1;
 
-            var classification = new IndustryClassificationBuilder(this.DatabaseSession).WithName("gold customer").Build();
-            new SurchargeComponentBuilder(this.DatabaseSession)
+            var classification = new IndustryClassificationBuilder(this.Session).WithName("gold customer").Build();
+            new SurchargeComponentBuilder(this.Session)
                 .WithDescription("discount good for party classification")
                 .WithPartyClassification(classification)
                 .WithProduct(this.good)
@@ -2676,21 +2676,21 @@ namespace Allors.Domain
                 .WithThroughDate(DateTime.UtcNow.AddYears(1).AddDays(-1))
                 .Build();
 
-            this.DatabaseSession.Derive();
-            this.DatabaseSession.Commit();
+            this.Session.Derive();
+            this.Session.Commit();
 
-            this.InstantiateObjects(this.DatabaseSession);
+            this.InstantiateObjects(this.Session);
 
             this.billToCustomer.AddPartyClassification(classification);
 
             this.order.ShipToCustomer = this.shipToCustomer;
 
-            this.DatabaseSession.Derive();
+            this.Session.Derive();
 
-            var item1 = new SalesOrderItemBuilder(this.DatabaseSession).WithProduct(this.good).WithQuantityOrdered(quantityOrdered).Build();
+            var item1 = new SalesOrderItemBuilder(this.Session).WithProduct(this.good).WithQuantityOrdered(quantityOrdered).Build();
             this.order.AddSalesOrderItem(item1);
 
-            this.DatabaseSession.Derive();
+            this.Session.Derive();
 
             Assert.Equal(this.currentGoodBasePrice.Price, item1.UnitBasePrice);
             Assert.Equal(0, item1.UnitDiscount);
@@ -2710,8 +2710,8 @@ namespace Allors.Domain
             const decimal quantityOrdered = 3;
             const decimal percentage = 5;
 
-            var classification = new IndustryClassificationBuilder(this.DatabaseSession).WithName("gold customer").Build();
-            new SurchargeComponentBuilder(this.DatabaseSession)
+            var classification = new IndustryClassificationBuilder(this.Session).WithName("gold customer").Build();
+            new SurchargeComponentBuilder(this.Session)
                 .WithDescription("discount good for party classification")
                 .WithPartyClassification(classification)
                 .WithProduct(this.good)
@@ -2720,21 +2720,21 @@ namespace Allors.Domain
                 .WithThroughDate(DateTime.UtcNow.AddYears(1).AddDays(-1))
                 .Build();
 
-            this.DatabaseSession.Derive();
-            this.DatabaseSession.Commit();
+            this.Session.Derive();
+            this.Session.Commit();
 
-            this.InstantiateObjects(this.DatabaseSession);
+            this.InstantiateObjects(this.Session);
 
             this.billToCustomer.AddPartyClassification(classification);
 
             this.order.ShipToCustomer = this.shipToCustomer;
 
-            this.DatabaseSession.Derive();
+            this.Session.Derive();
 
-            var item1 = new SalesOrderItemBuilder(this.DatabaseSession).WithProduct(this.good).WithQuantityOrdered(quantityOrdered).Build();
+            var item1 = new SalesOrderItemBuilder(this.Session).WithProduct(this.good).WithQuantityOrdered(quantityOrdered).Build();
             this.order.AddSalesOrderItem(item1);
 
-            this.DatabaseSession.Derive();
+            this.Session.Derive();
 
             var price = this.currentGoodBasePrice.Price ?? 0;
             var amount = Math.Round((price * percentage) / 100, 2);
@@ -2756,7 +2756,7 @@ namespace Allors.Domain
             const decimal quantityOrdered = 3;
             const decimal expected = 1;
 
-            new DiscountComponentBuilder(this.DatabaseSession)
+            new DiscountComponentBuilder(this.Session)
                 .WithDescription("discount good for ancestor category")
                 .WithProductCategory(this.ancestorProductCategory)
                 .WithProduct(this.good)
@@ -2765,15 +2765,15 @@ namespace Allors.Domain
                 .WithThroughDate(DateTime.UtcNow.AddYears(1).AddDays(-1))
                 .Build();
 
-            this.DatabaseSession.Derive();
-            this.DatabaseSession.Commit();
+            this.Session.Derive();
+            this.Session.Commit();
 
-            this.InstantiateObjects(this.DatabaseSession);
+            this.InstantiateObjects(this.Session);
 
-            var item1 = new SalesOrderItemBuilder(this.DatabaseSession).WithProduct(this.good).WithQuantityOrdered(quantityOrdered).Build();
+            var item1 = new SalesOrderItemBuilder(this.Session).WithProduct(this.good).WithQuantityOrdered(quantityOrdered).Build();
             this.order.AddSalesOrderItem(item1);
 
-            this.DatabaseSession.Derive();
+            this.Session.Derive();
 
             Assert.Equal(this.currentGoodBasePrice.Price, item1.UnitBasePrice);
             Assert.Equal(expected, item1.UnitDiscount);
@@ -2794,7 +2794,7 @@ namespace Allors.Domain
             const decimal quantityOrdered = 3;
             const decimal percentage = 5;
 
-            new DiscountComponentBuilder(this.DatabaseSession)
+            new DiscountComponentBuilder(this.Session)
                 .WithDescription("discount good for ancestor category")
                 .WithProductCategory(this.ancestorProductCategory)
                 .WithProduct(this.good)
@@ -2803,15 +2803,15 @@ namespace Allors.Domain
                 .WithThroughDate(DateTime.UtcNow.AddYears(1).AddDays(-1))
                 .Build();
 
-            this.DatabaseSession.Derive();
-            this.DatabaseSession.Commit();
+            this.Session.Derive();
+            this.Session.Commit();
 
-            this.InstantiateObjects(this.DatabaseSession);
+            this.InstantiateObjects(this.Session);
 
-            var item1 = new SalesOrderItemBuilder(this.DatabaseSession).WithProduct(this.good).WithQuantityOrdered(quantityOrdered).Build();
+            var item1 = new SalesOrderItemBuilder(this.Session).WithProduct(this.good).WithQuantityOrdered(quantityOrdered).Build();
             this.order.AddSalesOrderItem(item1);
 
-            this.DatabaseSession.Derive();
+            this.Session.Derive();
 
             var price = this.currentGoodBasePrice.Price ?? 0;
             var amount = Math.Round((price * percentage) / 100, 2);
@@ -2834,7 +2834,7 @@ namespace Allors.Domain
             const decimal quantityOrdered = 3;
             const decimal amount = 1;
 
-            new DiscountComponentBuilder(this.DatabaseSession)
+            new DiscountComponentBuilder(this.Session)
                 .WithDescription("discount good for parent category")
                 .WithProductCategory(this.parentProductCategory)
                 .WithProduct(this.good)
@@ -2843,15 +2843,15 @@ namespace Allors.Domain
                 .WithThroughDate(DateTime.UtcNow.AddYears(1).AddDays(-1))
                 .Build();
 
-            this.DatabaseSession.Derive();
-            this.DatabaseSession.Commit();
+            this.Session.Derive();
+            this.Session.Commit();
 
-            this.InstantiateObjects(this.DatabaseSession);
+            this.InstantiateObjects(this.Session);
 
-            var item1 = new SalesOrderItemBuilder(this.DatabaseSession).WithProduct(this.good).WithQuantityOrdered(quantityOrdered).Build();
+            var item1 = new SalesOrderItemBuilder(this.Session).WithProduct(this.good).WithQuantityOrdered(quantityOrdered).Build();
             this.order.AddSalesOrderItem(item1);
 
-            this.DatabaseSession.Derive();
+            this.Session.Derive();
 
             Assert.Equal(this.currentGoodBasePrice.Price, item1.UnitBasePrice);
             Assert.Equal(amount, item1.UnitDiscount);
@@ -2872,7 +2872,7 @@ namespace Allors.Domain
             const decimal quantityOrdered = 3;
             const decimal percentage = 5;
 
-            new DiscountComponentBuilder(this.DatabaseSession)
+            new DiscountComponentBuilder(this.Session)
                 .WithDescription("discount good for parent category")
                 .WithProductCategory(this.parentProductCategory)
                 .WithProduct(this.good)
@@ -2881,15 +2881,15 @@ namespace Allors.Domain
                 .WithThroughDate(DateTime.UtcNow.AddYears(1).AddDays(-1))
                 .Build();
 
-            this.DatabaseSession.Derive();
-            this.DatabaseSession.Commit();
+            this.Session.Derive();
+            this.Session.Commit();
 
-            this.InstantiateObjects(this.DatabaseSession);
+            this.InstantiateObjects(this.Session);
 
-            var item1 = new SalesOrderItemBuilder(this.DatabaseSession).WithProduct(this.good).WithQuantityOrdered(quantityOrdered).Build();
+            var item1 = new SalesOrderItemBuilder(this.Session).WithProduct(this.good).WithQuantityOrdered(quantityOrdered).Build();
             this.order.AddSalesOrderItem(item1);
 
-            this.DatabaseSession.Derive();
+            this.Session.Derive();
 
             var price = this.currentGoodBasePrice.Price ?? 0;
             var amount = Math.Round((price * percentage) / 100, 2);
@@ -2912,7 +2912,7 @@ namespace Allors.Domain
             const decimal quantityOrdered = 3;
             const decimal amount = 1;
 
-            new DiscountComponentBuilder(this.DatabaseSession)
+            new DiscountComponentBuilder(this.Session)
                 .WithDescription("discount good for product category")
                 .WithProductCategory(this.productCategory)
                 .WithProduct(this.good)
@@ -2921,15 +2921,15 @@ namespace Allors.Domain
                 .WithThroughDate(DateTime.UtcNow.AddYears(1).AddDays(-1))
                 .Build();
 
-            this.DatabaseSession.Derive();
-            this.DatabaseSession.Commit();
+            this.Session.Derive();
+            this.Session.Commit();
 
-            this.InstantiateObjects(this.DatabaseSession);
+            this.InstantiateObjects(this.Session);
 
-            var item1 = new SalesOrderItemBuilder(this.DatabaseSession).WithProduct(this.good).WithQuantityOrdered(quantityOrdered).Build();
+            var item1 = new SalesOrderItemBuilder(this.Session).WithProduct(this.good).WithQuantityOrdered(quantityOrdered).Build();
             this.order.AddSalesOrderItem(item1);
 
-            this.DatabaseSession.Derive();
+            this.Session.Derive();
 
             Assert.Equal(this.currentGoodBasePrice.Price, item1.UnitBasePrice);
             Assert.Equal(amount, item1.UnitDiscount);
@@ -2950,7 +2950,7 @@ namespace Allors.Domain
             const decimal quantityOrdered = 3;
             const decimal percentage = 5;
 
-            new DiscountComponentBuilder(this.DatabaseSession)
+            new DiscountComponentBuilder(this.Session)
                 .WithDescription("discount good for product category")
                 .WithProductCategory(this.productCategory)
                 .WithProduct(this.good)
@@ -2959,15 +2959,15 @@ namespace Allors.Domain
                 .WithThroughDate(DateTime.UtcNow.AddYears(1).AddDays(-1))
                 .Build();
 
-            this.DatabaseSession.Derive();
-            this.DatabaseSession.Commit();
+            this.Session.Derive();
+            this.Session.Commit();
 
-            this.InstantiateObjects(this.DatabaseSession);
+            this.InstantiateObjects(this.Session);
 
-            var item1 = new SalesOrderItemBuilder(this.DatabaseSession).WithProduct(this.good).WithQuantityOrdered(quantityOrdered).Build();
+            var item1 = new SalesOrderItemBuilder(this.Session).WithProduct(this.good).WithQuantityOrdered(quantityOrdered).Build();
             this.order.AddSalesOrderItem(item1);
 
-            this.DatabaseSession.Derive();
+            this.Session.Derive();
 
             var price = this.currentGoodBasePrice.Price ?? 0;
             var amount = Math.Round((price * percentage) / 100, 2);
@@ -2990,7 +2990,7 @@ namespace Allors.Domain
             const decimal quantityOrdered = 3;
             const decimal amount = 1;
 
-            new SurchargeComponentBuilder(this.DatabaseSession)
+            new SurchargeComponentBuilder(this.Session)
                 .WithDescription("discount good for product category")
                 .WithProductCategory(this.productCategory)
                 .WithProduct(this.good)
@@ -2999,15 +2999,15 @@ namespace Allors.Domain
                 .WithThroughDate(DateTime.UtcNow.AddYears(1).AddDays(-1))
                 .Build();
 
-            this.DatabaseSession.Derive();
-            this.DatabaseSession.Commit();
+            this.Session.Derive();
+            this.Session.Commit();
 
-            this.InstantiateObjects(this.DatabaseSession);
+            this.InstantiateObjects(this.Session);
 
-            var item1 = new SalesOrderItemBuilder(this.DatabaseSession).WithProduct(this.good).WithQuantityOrdered(quantityOrdered).Build();
+            var item1 = new SalesOrderItemBuilder(this.Session).WithProduct(this.good).WithQuantityOrdered(quantityOrdered).Build();
             this.order.AddSalesOrderItem(item1);
 
-            this.DatabaseSession.Derive();
+            this.Session.Derive();
 
             Assert.Equal(this.currentGoodBasePrice.Price, item1.UnitBasePrice);
             Assert.Equal(0, item1.UnitDiscount);
@@ -3027,7 +3027,7 @@ namespace Allors.Domain
             const decimal quantityOrdered = 3;
             const decimal percentage = 5;
 
-            new SurchargeComponentBuilder(this.DatabaseSession)
+            new SurchargeComponentBuilder(this.Session)
                 .WithDescription("discount good for product category")
                 .WithProductCategory(this.productCategory)
                 .WithProduct(this.good)
@@ -3036,15 +3036,15 @@ namespace Allors.Domain
                 .WithThroughDate(DateTime.UtcNow.AddYears(1).AddDays(-1))
                 .Build();
 
-            this.DatabaseSession.Derive();
-            this.DatabaseSession.Commit();
+            this.Session.Derive();
+            this.Session.Commit();
 
-            this.InstantiateObjects(this.DatabaseSession);
+            this.InstantiateObjects(this.Session);
 
-            var item1 = new SalesOrderItemBuilder(this.DatabaseSession).WithProduct(this.good).WithQuantityOrdered(quantityOrdered).Build();
+            var item1 = new SalesOrderItemBuilder(this.Session).WithProduct(this.good).WithQuantityOrdered(quantityOrdered).Build();
             this.order.AddSalesOrderItem(item1);
 
-            this.DatabaseSession.Derive();
+            this.Session.Derive();
 
             var price = this.currentGoodBasePrice.Price ?? 0;
             var amount = Math.Round((price * percentage) / 100, 2);
@@ -3069,10 +3069,10 @@ namespace Allors.Domain
             const decimal amount1 = 1;
             const decimal amount2 = 3;
 
-            var break1 = new OrderQuantityBreakBuilder(this.DatabaseSession).WithFromAmount(50).WithThroughAmount(99).Build();
-            var break2 = new OrderQuantityBreakBuilder(this.DatabaseSession).WithFromAmount(100).Build();
+            var break1 = new OrderQuantityBreakBuilder(this.Session).WithFromAmount(50).WithThroughAmount(99).Build();
+            var break2 = new OrderQuantityBreakBuilder(this.Session).WithFromAmount(100).Build();
 
-            new DiscountComponentBuilder(this.DatabaseSession)
+            new DiscountComponentBuilder(this.Session)
                 .WithDescription("discount good for quantity break 1")
                 .WithOrderQuantityBreak(break1)
                 .WithProduct(this.good)
@@ -3081,7 +3081,7 @@ namespace Allors.Domain
                 .WithThroughDate(DateTime.UtcNow.AddYears(1).AddDays(-1))
                 .Build();
 
-            new DiscountComponentBuilder(this.DatabaseSession)
+            new DiscountComponentBuilder(this.Session)
                 .WithDescription("discount good for quantity break 2")
                 .WithOrderQuantityBreak(break2)
                 .WithProduct(this.good)
@@ -3090,15 +3090,15 @@ namespace Allors.Domain
                 .WithThroughDate(DateTime.UtcNow.AddYears(1).AddDays(-1))
                 .Build();
 
-            this.DatabaseSession.Derive();
-            this.DatabaseSession.Commit();
+            this.Session.Derive();
+            this.Session.Commit();
 
-            this.InstantiateObjects(this.DatabaseSession);
+            this.InstantiateObjects(this.Session);
 
-            var item1 = new SalesOrderItemBuilder(this.DatabaseSession).WithProduct(this.good).WithQuantityOrdered(quantityOrdered1).Build();
+            var item1 = new SalesOrderItemBuilder(this.Session).WithProduct(this.good).WithQuantityOrdered(quantityOrdered1).Build();
             this.order.AddSalesOrderItem(item1);
 
-            this.DatabaseSession.Derive();
+            this.Session.Derive();
 
             Assert.Equal(this.currentGoodBasePrice.Price, item1.UnitBasePrice);
             Assert.Equal(0, item1.UnitDiscount);
@@ -3111,10 +3111,10 @@ namespace Allors.Domain
             Assert.Equal(Math.Round(((item1.UnitBasePrice - this.goodPurchasePrice.Price) / item1.UnitBasePrice) * 100, 2), item1.InitialProfitMargin);
             Assert.Equal(Math.Round(((item1.CalculatedUnitPrice - this.goodPurchasePrice.Price) / item1.CalculatedUnitPrice) * 100, 2), item1.MaintainedProfitMargin);
 
-            var item2 = new SalesOrderItemBuilder(this.DatabaseSession).WithProduct(this.good).WithQuantityOrdered(quantityOrdered2).Build();
+            var item2 = new SalesOrderItemBuilder(this.Session).WithProduct(this.good).WithQuantityOrdered(quantityOrdered2).Build();
             this.order.AddSalesOrderItem(item2);
 
-            this.DatabaseSession.Derive();
+            this.Session.Derive();
 
             Assert.Equal(this.currentGoodBasePrice.Price, item1.UnitBasePrice);
             Assert.Equal(amount1, item1.UnitDiscount);
@@ -3138,10 +3138,10 @@ namespace Allors.Domain
             Assert.Equal(Math.Round(((item2.UnitBasePrice - this.goodPurchasePrice.Price) / item2.UnitBasePrice) * 100, 2), item2.InitialProfitMargin);
             Assert.Equal(Math.Round(((item2.CalculatedUnitPrice - this.goodPurchasePrice.Price) / item2.CalculatedUnitPrice) * 100, 2), item2.MaintainedProfitMargin);
 
-            var item3 = new SalesOrderItemBuilder(this.DatabaseSession).WithProduct(this.good).WithQuantityOrdered(quantityOrdered3).Build();
+            var item3 = new SalesOrderItemBuilder(this.Session).WithProduct(this.good).WithQuantityOrdered(quantityOrdered3).Build();
             this.order.AddSalesOrderItem(item3);
 
-            this.DatabaseSession.Derive();
+            this.Session.Derive();
 
             Assert.Equal(this.currentGoodBasePrice.Price, item1.UnitBasePrice);
             Assert.Equal(amount2, item1.UnitDiscount);
@@ -3186,10 +3186,10 @@ namespace Allors.Domain
             const decimal percentage1 = 5;
             const decimal percentage2 = 10;
 
-            var break1 = new OrderQuantityBreakBuilder(this.DatabaseSession).WithFromAmount(50).WithThroughAmount(99).Build();
-            var break2 = new OrderQuantityBreakBuilder(this.DatabaseSession).WithFromAmount(100).Build();
+            var break1 = new OrderQuantityBreakBuilder(this.Session).WithFromAmount(50).WithThroughAmount(99).Build();
+            var break2 = new OrderQuantityBreakBuilder(this.Session).WithFromAmount(100).Build();
 
-            new DiscountComponentBuilder(this.DatabaseSession)
+            new DiscountComponentBuilder(this.Session)
                 .WithDescription("discount good for quantity break 1")
                 .WithOrderQuantityBreak(break1)
                 .WithProduct(this.good)
@@ -3198,7 +3198,7 @@ namespace Allors.Domain
                 .WithThroughDate(DateTime.UtcNow.AddYears(1).AddDays(-1))
                 .Build();
 
-            new DiscountComponentBuilder(this.DatabaseSession)
+            new DiscountComponentBuilder(this.Session)
                 .WithDescription("discount good for quantity break 2")
                 .WithOrderQuantityBreak(break2)
                 .WithProduct(this.good)
@@ -3207,15 +3207,15 @@ namespace Allors.Domain
                 .WithThroughDate(DateTime.UtcNow.AddYears(1).AddDays(-1))
                 .Build();
 
-            this.DatabaseSession.Derive();
-            this.DatabaseSession.Commit();
+            this.Session.Derive();
+            this.Session.Commit();
 
-            this.InstantiateObjects(this.DatabaseSession);
+            this.InstantiateObjects(this.Session);
 
-            var item1 = new SalesOrderItemBuilder(this.DatabaseSession).WithProduct(this.good).WithQuantityOrdered(quantityOrdered1).Build();
+            var item1 = new SalesOrderItemBuilder(this.Session).WithProduct(this.good).WithQuantityOrdered(quantityOrdered1).Build();
             this.order.AddSalesOrderItem(item1);
 
-            this.DatabaseSession.Derive();
+            this.Session.Derive();
 
             Assert.Equal(this.currentGoodBasePrice.Price, item1.UnitBasePrice);
             Assert.Equal(0, item1.UnitDiscount);
@@ -3223,10 +3223,10 @@ namespace Allors.Domain
             Assert.Equal(this.currentGoodBasePrice.Price, item1.CalculatedUnitPrice);
             Assert.Equal(this.goodPurchasePrice.Price, item1.UnitPurchasePrice);
 
-            var item2 = new SalesOrderItemBuilder(this.DatabaseSession).WithProduct(this.good).WithQuantityOrdered(quantityOrdered2).Build();
+            var item2 = new SalesOrderItemBuilder(this.Session).WithProduct(this.good).WithQuantityOrdered(quantityOrdered2).Build();
             this.order.AddSalesOrderItem(item2);
 
-            this.DatabaseSession.Derive();
+            this.Session.Derive();
 
             var price = this.currentGoodBasePrice.Price ?? 0;
             var amount1 = Math.Round((price * percentage1) / 100, 2);
@@ -3242,10 +3242,10 @@ namespace Allors.Domain
             Assert.Equal(this.currentGoodBasePrice.Price - amount1, item2.CalculatedUnitPrice);
             Assert.Equal(this.goodPurchasePrice.Price, item2.UnitPurchasePrice);
 
-            var item3 = new SalesOrderItemBuilder(this.DatabaseSession).WithProduct(this.good).WithQuantityOrdered(quantityOrdered3).Build();
+            var item3 = new SalesOrderItemBuilder(this.Session).WithProduct(this.good).WithQuantityOrdered(quantityOrdered3).Build();
             this.order.AddSalesOrderItem(item3);
 
-            this.DatabaseSession.Derive();
+            this.Session.Derive();
 
             var price2 = this.currentGoodBasePrice.Price ?? 0;
             var amount2 = Math.Round((price2 * percentage2) / 100, 2);
@@ -3277,10 +3277,10 @@ namespace Allors.Domain
             const decimal amount1 = 1;
             const decimal amount2 = 3;
 
-            var break1 = new OrderQuantityBreakBuilder(this.DatabaseSession).WithFromAmount(50).WithThroughAmount(99).Build();
-            var break2 = new OrderQuantityBreakBuilder(this.DatabaseSession).WithFromAmount(100).Build();
+            var break1 = new OrderQuantityBreakBuilder(this.Session).WithFromAmount(50).WithThroughAmount(99).Build();
+            var break2 = new OrderQuantityBreakBuilder(this.Session).WithFromAmount(100).Build();
 
-            new SurchargeComponentBuilder(this.DatabaseSession)
+            new SurchargeComponentBuilder(this.Session)
                 .WithDescription("surcharge good for quantity break 1")
                 .WithOrderQuantityBreak(break1)
                 .WithProduct(this.good)
@@ -3289,7 +3289,7 @@ namespace Allors.Domain
                 .WithThroughDate(DateTime.UtcNow.AddYears(1).AddDays(-1))
                 .Build();
 
-            new SurchargeComponentBuilder(this.DatabaseSession)
+            new SurchargeComponentBuilder(this.Session)
                 .WithDescription("surcharge good for quantity break 2")
                 .WithOrderQuantityBreak(break2)
                 .WithProduct(this.good)
@@ -3298,15 +3298,15 @@ namespace Allors.Domain
                 .WithThroughDate(DateTime.UtcNow.AddYears(1).AddDays(-1))
                 .Build();
 
-            this.DatabaseSession.Derive();
-            this.DatabaseSession.Commit();
+            this.Session.Derive();
+            this.Session.Commit();
 
-            this.InstantiateObjects(this.DatabaseSession);
+            this.InstantiateObjects(this.Session);
 
-            var item1 = new SalesOrderItemBuilder(this.DatabaseSession).WithProduct(this.good).WithQuantityOrdered(quantityOrdered1).Build();
+            var item1 = new SalesOrderItemBuilder(this.Session).WithProduct(this.good).WithQuantityOrdered(quantityOrdered1).Build();
             this.order.AddSalesOrderItem(item1);
 
-            this.DatabaseSession.Derive();
+            this.Session.Derive();
 
             Assert.Equal(this.currentGoodBasePrice.Price, item1.UnitBasePrice);
             Assert.Equal(0, item1.UnitDiscount);
@@ -3319,10 +3319,10 @@ namespace Allors.Domain
             Assert.Equal(Math.Round(((item1.UnitBasePrice - this.goodPurchasePrice.Price) / item1.UnitBasePrice) * 100, 2), item1.InitialProfitMargin);
             Assert.Equal(Math.Round(((item1.CalculatedUnitPrice - this.goodPurchasePrice.Price) / item1.CalculatedUnitPrice) * 100, 2), item1.MaintainedProfitMargin);
 
-            var item2 = new SalesOrderItemBuilder(this.DatabaseSession).WithProduct(this.good).WithQuantityOrdered(quantityOrdered2).Build();
+            var item2 = new SalesOrderItemBuilder(this.Session).WithProduct(this.good).WithQuantityOrdered(quantityOrdered2).Build();
             this.order.AddSalesOrderItem(item2);
 
-            this.DatabaseSession.Derive();
+            this.Session.Derive();
 
             Assert.Equal(this.currentGoodBasePrice.Price, item1.UnitBasePrice);
             Assert.Equal(0, item1.UnitDiscount);
@@ -3346,10 +3346,10 @@ namespace Allors.Domain
             Assert.Equal(Math.Round(((item2.UnitBasePrice - this.goodPurchasePrice.Price) / item2.UnitBasePrice) * 100, 2), item2.InitialProfitMargin);
             Assert.Equal(Math.Round(((item2.CalculatedUnitPrice - this.goodPurchasePrice.Price) / item2.CalculatedUnitPrice) * 100, 2), item2.MaintainedProfitMargin);
 
-            var item3 = new SalesOrderItemBuilder(this.DatabaseSession).WithProduct(this.good).WithQuantityOrdered(quantityOrdered3).Build();
+            var item3 = new SalesOrderItemBuilder(this.Session).WithProduct(this.good).WithQuantityOrdered(quantityOrdered3).Build();
             this.order.AddSalesOrderItem(item3);
 
-            this.DatabaseSession.Derive();
+            this.Session.Derive();
 
             Assert.Equal(this.currentGoodBasePrice.Price, item1.UnitBasePrice);
             Assert.Equal(0, item1.UnitDiscount);
@@ -3394,10 +3394,10 @@ namespace Allors.Domain
             const decimal percentage1 = 5;
             const decimal percentage2 = 10;
 
-            var break1 = new OrderQuantityBreakBuilder(this.DatabaseSession).WithFromAmount(50).WithThroughAmount(99).Build();
-            var break2 = new OrderQuantityBreakBuilder(this.DatabaseSession).WithFromAmount(100).Build();
+            var break1 = new OrderQuantityBreakBuilder(this.Session).WithFromAmount(50).WithThroughAmount(99).Build();
+            var break2 = new OrderQuantityBreakBuilder(this.Session).WithFromAmount(100).Build();
 
-            new SurchargeComponentBuilder(this.DatabaseSession)
+            new SurchargeComponentBuilder(this.Session)
                 .WithDescription("surcharge good for quantity break 1")
                 .WithOrderQuantityBreak(break1)
                 .WithProduct(this.good)
@@ -3406,7 +3406,7 @@ namespace Allors.Domain
                 .WithThroughDate(DateTime.UtcNow.AddYears(1).AddDays(-1))
                 .Build();
 
-            new SurchargeComponentBuilder(this.DatabaseSession)
+            new SurchargeComponentBuilder(this.Session)
                 .WithDescription("surcharge good for quantity break 2")
                 .WithOrderQuantityBreak(break2)
                 .WithProduct(this.good)
@@ -3415,15 +3415,15 @@ namespace Allors.Domain
                 .WithThroughDate(DateTime.UtcNow.AddYears(1).AddDays(-1))
                 .Build();
 
-            this.DatabaseSession.Derive();
-            this.DatabaseSession.Commit();
+            this.Session.Derive();
+            this.Session.Commit();
 
-            this.InstantiateObjects(this.DatabaseSession);
+            this.InstantiateObjects(this.Session);
 
-            var item1 = new SalesOrderItemBuilder(this.DatabaseSession).WithProduct(this.good).WithQuantityOrdered(quantityOrdered1).Build();
+            var item1 = new SalesOrderItemBuilder(this.Session).WithProduct(this.good).WithQuantityOrdered(quantityOrdered1).Build();
             this.order.AddSalesOrderItem(item1);
 
-            this.DatabaseSession.Derive();
+            this.Session.Derive();
 
             Assert.Equal(this.currentGoodBasePrice.Price, item1.UnitBasePrice);
             Assert.Equal(0, item1.UnitDiscount);
@@ -3431,10 +3431,10 @@ namespace Allors.Domain
             Assert.Equal(this.currentGoodBasePrice.Price, item1.CalculatedUnitPrice);
             Assert.Equal(this.goodPurchasePrice.Price, item1.UnitPurchasePrice);
 
-            var item2 = new SalesOrderItemBuilder(this.DatabaseSession).WithProduct(this.good).WithQuantityOrdered(quantityOrdered2).Build();
+            var item2 = new SalesOrderItemBuilder(this.Session).WithProduct(this.good).WithQuantityOrdered(quantityOrdered2).Build();
             this.order.AddSalesOrderItem(item2);
 
-            this.DatabaseSession.Derive();
+            this.Session.Derive();
 
             var price = this.currentGoodBasePrice.Price ?? 0;
             var amount1 = Math.Round((price * percentage1) / 100, 2);
@@ -3450,10 +3450,10 @@ namespace Allors.Domain
             Assert.Equal(this.currentGoodBasePrice.Price + amount1, item2.CalculatedUnitPrice);
             Assert.Equal(this.goodPurchasePrice.Price, item2.UnitPurchasePrice);
 
-            var item3 = new SalesOrderItemBuilder(this.DatabaseSession).WithProduct(this.good).WithQuantityOrdered(quantityOrdered3).Build();
+            var item3 = new SalesOrderItemBuilder(this.Session).WithProduct(this.good).WithQuantityOrdered(quantityOrdered3).Build();
             this.order.AddSalesOrderItem(item3);
 
-            this.DatabaseSession.Derive();
+            this.Session.Derive();
 
             var price2 = this.currentGoodBasePrice.Price ?? 0;
             var amount2 = Math.Round((price2 * percentage2) / 100, 2);
@@ -3485,10 +3485,10 @@ namespace Allors.Domain
             const decimal amount1 = 1;
             const decimal amount2 = 3;
 
-            var value1 = new OrderValueBuilder(this.DatabaseSession).WithFromAmount(50).WithThroughAmount(99).Build();
-            var value2 = new OrderValueBuilder(this.DatabaseSession).WithFromAmount(100).Build();
+            var value1 = new OrderValueBuilder(this.Session).WithFromAmount(50).WithThroughAmount(99).Build();
+            var value2 = new OrderValueBuilder(this.Session).WithFromAmount(100).Build();
 
-            new DiscountComponentBuilder(this.DatabaseSession)
+            new DiscountComponentBuilder(this.Session)
                 .WithDescription("discount good for order value 1")
                 .WithOrderValue(value1)
                 .WithProduct(this.good)
@@ -3497,7 +3497,7 @@ namespace Allors.Domain
                 .WithThroughDate(DateTime.UtcNow.AddYears(1).AddDays(-1))
                 .Build();
 
-            new DiscountComponentBuilder(this.DatabaseSession)
+            new DiscountComponentBuilder(this.Session)
                 .WithDescription("discount good for order value 1")
                 .WithOrderValue(value2)
                 .WithProduct(this.good)
@@ -3506,15 +3506,15 @@ namespace Allors.Domain
                 .WithThroughDate(DateTime.UtcNow.AddYears(1).AddDays(-1))
                 .Build();
 
-            this.DatabaseSession.Derive();
-            this.DatabaseSession.Commit();
+            this.Session.Derive();
+            this.Session.Commit();
 
-            this.InstantiateObjects(this.DatabaseSession);
+            this.InstantiateObjects(this.Session);
 
-            var item1 = new SalesOrderItemBuilder(this.DatabaseSession).WithProduct(this.good).WithQuantityOrdered(quantityOrdered1).Build();
+            var item1 = new SalesOrderItemBuilder(this.Session).WithProduct(this.good).WithQuantityOrdered(quantityOrdered1).Build();
             this.order.AddSalesOrderItem(item1);
 
-            this.DatabaseSession.Derive();
+            this.Session.Derive();
 
             Assert.Equal(this.currentGoodBasePrice.Price, item1.UnitBasePrice);
             Assert.Equal(0, item1.UnitDiscount);
@@ -3527,10 +3527,10 @@ namespace Allors.Domain
             Assert.Equal(Math.Round(((item1.UnitBasePrice - this.goodPurchasePrice.Price) / item1.UnitBasePrice) * 100, 2), item1.InitialProfitMargin);
             Assert.Equal(Math.Round(((item1.CalculatedUnitPrice - this.goodPurchasePrice.Price) / item1.CalculatedUnitPrice) * 100, 2), item1.MaintainedProfitMargin);
 
-            var item2 = new SalesOrderItemBuilder(this.DatabaseSession).WithProduct(this.good).WithQuantityOrdered(quantityOrdered2).Build();
+            var item2 = new SalesOrderItemBuilder(this.Session).WithProduct(this.good).WithQuantityOrdered(quantityOrdered2).Build();
             this.order.AddSalesOrderItem(item2);
 
-            this.DatabaseSession.Derive();
+            this.Session.Derive();
 
             Assert.Equal(this.currentGoodBasePrice.Price, item1.UnitBasePrice);
             Assert.Equal(amount1, item1.UnitDiscount);
@@ -3554,10 +3554,10 @@ namespace Allors.Domain
             Assert.Equal(Math.Round(((item2.UnitBasePrice - this.goodPurchasePrice.Price) / item2.UnitBasePrice) * 100, 2), item2.InitialProfitMargin);
             Assert.Equal(Math.Round(((item2.CalculatedUnitPrice - this.goodPurchasePrice.Price) / item2.CalculatedUnitPrice) * 100, 2), item2.MaintainedProfitMargin);
 
-            var item3 = new SalesOrderItemBuilder(this.DatabaseSession).WithProduct(this.good).WithQuantityOrdered(quantityOrdered3).Build();
+            var item3 = new SalesOrderItemBuilder(this.Session).WithProduct(this.good).WithQuantityOrdered(quantityOrdered3).Build();
             this.order.AddSalesOrderItem(item3);
 
-            this.DatabaseSession.Derive();
+            this.Session.Derive();
 
             Assert.Equal(this.currentGoodBasePrice.Price, item1.UnitBasePrice);
             Assert.Equal(amount2, item1.UnitDiscount);
@@ -3602,10 +3602,10 @@ namespace Allors.Domain
             const decimal percentage1 = 5;
             const decimal percentage2 = 10;
 
-            var value1 = new OrderValueBuilder(this.DatabaseSession).WithFromAmount(50).WithThroughAmount(99).Build();
-            var value2 = new OrderValueBuilder(this.DatabaseSession).WithFromAmount(100).Build();
+            var value1 = new OrderValueBuilder(this.Session).WithFromAmount(50).WithThroughAmount(99).Build();
+            var value2 = new OrderValueBuilder(this.Session).WithFromAmount(100).Build();
 
-            new DiscountComponentBuilder(this.DatabaseSession)
+            new DiscountComponentBuilder(this.Session)
                 .WithDescription("discount good for order value 1")
                 .WithOrderValue(value1)
                 .WithProduct(this.good)
@@ -3614,7 +3614,7 @@ namespace Allors.Domain
                 .WithThroughDate(DateTime.UtcNow.AddYears(1).AddDays(-1))
                 .Build();
 
-            new DiscountComponentBuilder(this.DatabaseSession)
+            new DiscountComponentBuilder(this.Session)
                 .WithDescription("discount good for order value 1")
                 .WithOrderValue(value2)
                 .WithProduct(this.good)
@@ -3623,15 +3623,15 @@ namespace Allors.Domain
                 .WithThroughDate(DateTime.UtcNow.AddYears(1).AddDays(-1))
                 .Build();
 
-            this.DatabaseSession.Derive();
-            this.DatabaseSession.Commit();
+            this.Session.Derive();
+            this.Session.Commit();
 
-            this.InstantiateObjects(this.DatabaseSession);
+            this.InstantiateObjects(this.Session);
 
-            var item1 = new SalesOrderItemBuilder(this.DatabaseSession).WithProduct(this.good).WithQuantityOrdered(quantityOrdered1).Build();
+            var item1 = new SalesOrderItemBuilder(this.Session).WithProduct(this.good).WithQuantityOrdered(quantityOrdered1).Build();
             this.order.AddSalesOrderItem(item1);
 
-            this.DatabaseSession.Derive();
+            this.Session.Derive();
 
             Assert.Equal(this.currentGoodBasePrice.Price, item1.UnitBasePrice);
             Assert.Equal(0, item1.UnitDiscount);
@@ -3639,10 +3639,10 @@ namespace Allors.Domain
             Assert.Equal(this.currentGoodBasePrice.Price, item1.CalculatedUnitPrice);
             Assert.Equal(this.goodPurchasePrice.Price, item1.UnitPurchasePrice);
 
-            var item2 = new SalesOrderItemBuilder(this.DatabaseSession).WithProduct(this.good).WithQuantityOrdered(quantityOrdered2).Build();
+            var item2 = new SalesOrderItemBuilder(this.Session).WithProduct(this.good).WithQuantityOrdered(quantityOrdered2).Build();
             this.order.AddSalesOrderItem(item2);
 
-            this.DatabaseSession.Derive();
+            this.Session.Derive();
 
             var price = this.currentGoodBasePrice.Price ?? 0;
             var amount1 = Math.Round((price * percentage1) / 100, 2);
@@ -3658,10 +3658,10 @@ namespace Allors.Domain
             Assert.Equal(this.currentGoodBasePrice.Price - amount1, item2.CalculatedUnitPrice);
             Assert.Equal(this.goodPurchasePrice.Price, item2.UnitPurchasePrice);
 
-            var item3 = new SalesOrderItemBuilder(this.DatabaseSession).WithProduct(this.good).WithQuantityOrdered(quantityOrdered3).Build();
+            var item3 = new SalesOrderItemBuilder(this.Session).WithProduct(this.good).WithQuantityOrdered(quantityOrdered3).Build();
             this.order.AddSalesOrderItem(item3);
 
-            this.DatabaseSession.Derive();
+            this.Session.Derive();
 
             var price2 = this.currentGoodBasePrice.Price ?? 0;
             var amount2 = Math.Round((price2 * percentage2) / 100, 2);
@@ -3693,10 +3693,10 @@ namespace Allors.Domain
             const decimal amount1 = 1;
             const decimal amount2 = 3;
 
-            var value1 = new OrderValueBuilder(this.DatabaseSession).WithFromAmount(50).WithThroughAmount(99).Build();
-            var value2 = new OrderValueBuilder(this.DatabaseSession).WithFromAmount(100).Build();
+            var value1 = new OrderValueBuilder(this.Session).WithFromAmount(50).WithThroughAmount(99).Build();
+            var value2 = new OrderValueBuilder(this.Session).WithFromAmount(100).Build();
 
-            new SurchargeComponentBuilder(this.DatabaseSession)
+            new SurchargeComponentBuilder(this.Session)
                 .WithDescription("surcharge good for order value 1")
                 .WithOrderValue(value1)
                 .WithProduct(this.good)
@@ -3705,7 +3705,7 @@ namespace Allors.Domain
                 .WithThroughDate(DateTime.UtcNow.AddYears(1).AddDays(-1))
                 .Build();
 
-            new SurchargeComponentBuilder(this.DatabaseSession)
+            new SurchargeComponentBuilder(this.Session)
                 .WithDescription("surcharge good for order value 1")
                 .WithOrderValue(value2)
                 .WithProduct(this.good)
@@ -3714,15 +3714,15 @@ namespace Allors.Domain
                 .WithThroughDate(DateTime.UtcNow.AddYears(1).AddDays(-1))
                 .Build();
 
-            this.DatabaseSession.Derive();
-            this.DatabaseSession.Commit();
+            this.Session.Derive();
+            this.Session.Commit();
 
-            this.InstantiateObjects(this.DatabaseSession);
+            this.InstantiateObjects(this.Session);
 
-            var item1 = new SalesOrderItemBuilder(this.DatabaseSession).WithProduct(this.good).WithQuantityOrdered(quantityOrdered1).Build();
+            var item1 = new SalesOrderItemBuilder(this.Session).WithProduct(this.good).WithQuantityOrdered(quantityOrdered1).Build();
             this.order.AddSalesOrderItem(item1);
 
-            this.DatabaseSession.Derive();
+            this.Session.Derive();
 
             Assert.Equal(this.currentGoodBasePrice.Price, item1.UnitBasePrice);
             Assert.Equal(0, item1.UnitDiscount);
@@ -3735,10 +3735,10 @@ namespace Allors.Domain
             Assert.Equal(Math.Round(((item1.UnitBasePrice - this.goodPurchasePrice.Price) / item1.UnitBasePrice) * 100, 2), item1.InitialProfitMargin);
             Assert.Equal(Math.Round(((item1.CalculatedUnitPrice - this.goodPurchasePrice.Price) / item1.CalculatedUnitPrice) * 100, 2), item1.MaintainedProfitMargin);
 
-            var item2 = new SalesOrderItemBuilder(this.DatabaseSession).WithProduct(this.good).WithQuantityOrdered(quantityOrdered2).Build();
+            var item2 = new SalesOrderItemBuilder(this.Session).WithProduct(this.good).WithQuantityOrdered(quantityOrdered2).Build();
             this.order.AddSalesOrderItem(item2);
 
-            this.DatabaseSession.Derive();
+            this.Session.Derive();
 
             Assert.Equal(this.currentGoodBasePrice.Price, item1.UnitBasePrice);
             Assert.Equal(0, item1.UnitDiscount);
@@ -3762,10 +3762,10 @@ namespace Allors.Domain
             Assert.Equal(Math.Round(((item2.UnitBasePrice - this.goodPurchasePrice.Price) / item2.UnitBasePrice) * 100, 2), item2.InitialProfitMargin);
             Assert.Equal(Math.Round(((item2.CalculatedUnitPrice - this.goodPurchasePrice.Price) / item2.CalculatedUnitPrice) * 100, 2), item2.MaintainedProfitMargin);
 
-            var item3 = new SalesOrderItemBuilder(this.DatabaseSession).WithProduct(this.good).WithQuantityOrdered(quantityOrdered3).Build();
+            var item3 = new SalesOrderItemBuilder(this.Session).WithProduct(this.good).WithQuantityOrdered(quantityOrdered3).Build();
             this.order.AddSalesOrderItem(item3);
 
-            this.DatabaseSession.Derive();
+            this.Session.Derive();
 
             Assert.Equal(this.currentGoodBasePrice.Price, item1.UnitBasePrice);
             Assert.Equal(0, item1.UnitDiscount);
@@ -3810,10 +3810,10 @@ namespace Allors.Domain
             const decimal percentage1 = 5;
             const decimal percentage2 = 10;
 
-            var value1 = new OrderValueBuilder(this.DatabaseSession).WithFromAmount(50).WithThroughAmount(99).Build();
-            var value2 = new OrderValueBuilder(this.DatabaseSession).WithFromAmount(100).Build();
+            var value1 = new OrderValueBuilder(this.Session).WithFromAmount(50).WithThroughAmount(99).Build();
+            var value2 = new OrderValueBuilder(this.Session).WithFromAmount(100).Build();
 
-            new SurchargeComponentBuilder(this.DatabaseSession)
+            new SurchargeComponentBuilder(this.Session)
                 .WithDescription("surcharge good for order value 1")
                 .WithOrderValue(value1)
                 .WithProduct(this.good)
@@ -3822,7 +3822,7 @@ namespace Allors.Domain
                 .WithThroughDate(DateTime.UtcNow.AddYears(1).AddDays(-1))
                 .Build();
 
-            new SurchargeComponentBuilder(this.DatabaseSession)
+            new SurchargeComponentBuilder(this.Session)
                 .WithDescription("surcharge good for order value 1")
                 .WithOrderValue(value2)
                 .WithProduct(this.good)
@@ -3831,15 +3831,15 @@ namespace Allors.Domain
                 .WithThroughDate(DateTime.UtcNow.AddYears(1).AddDays(-1))
                 .Build();
 
-            this.DatabaseSession.Derive();
-            this.DatabaseSession.Commit();
+            this.Session.Derive();
+            this.Session.Commit();
 
-            this.InstantiateObjects(this.DatabaseSession);
+            this.InstantiateObjects(this.Session);
 
-            var item1 = new SalesOrderItemBuilder(this.DatabaseSession).WithProduct(this.good).WithQuantityOrdered(quantityOrdered1).Build();
+            var item1 = new SalesOrderItemBuilder(this.Session).WithProduct(this.good).WithQuantityOrdered(quantityOrdered1).Build();
             this.order.AddSalesOrderItem(item1);
 
-            this.DatabaseSession.Derive();
+            this.Session.Derive();
 
             Assert.Equal(this.currentGoodBasePrice.Price, item1.UnitBasePrice);
             Assert.Equal(0, item1.UnitDiscount);
@@ -3847,10 +3847,10 @@ namespace Allors.Domain
             Assert.Equal(this.currentGoodBasePrice.Price, item1.CalculatedUnitPrice);
             Assert.Equal(this.goodPurchasePrice.Price, item1.UnitPurchasePrice);
 
-            var item2 = new SalesOrderItemBuilder(this.DatabaseSession).WithProduct(this.good).WithQuantityOrdered(quantityOrdered2).Build();
+            var item2 = new SalesOrderItemBuilder(this.Session).WithProduct(this.good).WithQuantityOrdered(quantityOrdered2).Build();
             this.order.AddSalesOrderItem(item2);
 
-            this.DatabaseSession.Derive();
+            this.Session.Derive();
 
             var price = this.currentGoodBasePrice.Price ?? 0;
             var amount1 = Math.Round((price * percentage1) / 100, 2);
@@ -3866,10 +3866,10 @@ namespace Allors.Domain
             Assert.Equal(this.currentGoodBasePrice.Price + amount1, item2.CalculatedUnitPrice);
             Assert.Equal(this.goodPurchasePrice.Price, item2.UnitPurchasePrice);
 
-            var item3 = new SalesOrderItemBuilder(this.DatabaseSession).WithProduct(this.good).WithQuantityOrdered(quantityOrdered3).Build();
+            var item3 = new SalesOrderItemBuilder(this.Session).WithProduct(this.good).WithQuantityOrdered(quantityOrdered3).Build();
             this.order.AddSalesOrderItem(item3);
 
-            this.DatabaseSession.Derive();
+            this.Session.Derive();
 
             var price2 = this.currentGoodBasePrice.Price ?? 0;
             var amount2 = Math.Round((price2 * percentage2) / 100, 2);
@@ -3898,8 +3898,8 @@ namespace Allors.Domain
             const decimal quantityOrdered = 3;
             const decimal expected = 1;
 
-            var email = new SalesChannels(this.DatabaseSession).EmailChannel;
-            new DiscountComponentBuilder(this.DatabaseSession)
+            var email = new SalesChannels(this.Session).EmailChannel;
+            new DiscountComponentBuilder(this.Session)
                 .WithDescription("discount good for sales type")
                 .WithSalesChannel(email)
                 .WithProduct(this.good)
@@ -3908,17 +3908,17 @@ namespace Allors.Domain
                 .WithThroughDate(DateTime.UtcNow.AddYears(1).AddDays(-1))
                 .Build();
 
-            this.DatabaseSession.Derive();
-            this.DatabaseSession.Commit();
+            this.Session.Derive();
+            this.Session.Commit();
 
-            this.InstantiateObjects(this.DatabaseSession);
+            this.InstantiateObjects(this.Session);
 
             this.order.SalesChannel = email;
 
-            var item1 = new SalesOrderItemBuilder(this.DatabaseSession).WithProduct(this.good).WithQuantityOrdered(quantityOrdered).Build();
+            var item1 = new SalesOrderItemBuilder(this.Session).WithProduct(this.good).WithQuantityOrdered(quantityOrdered).Build();
             this.order.AddSalesOrderItem(item1);
 
-            this.DatabaseSession.Derive();
+            this.Session.Derive();
 
             Assert.Equal(this.currentGoodBasePrice.Price, item1.UnitBasePrice);
             Assert.Equal(expected, item1.UnitDiscount);
@@ -3938,10 +3938,10 @@ namespace Allors.Domain
             const decimal quantityOrdered = 3;
             const decimal percentage = 5;
             const decimal adjustmentPerc = 10;
-            var discountAdjustment = new DiscountAdjustmentBuilder(this.DatabaseSession).WithPercentage(adjustmentPerc).Build();
+            var discountAdjustment = new DiscountAdjustmentBuilder(this.Session).WithPercentage(adjustmentPerc).Build();
 
-            var email = new SalesChannels(this.DatabaseSession).EmailChannel;
-            new DiscountComponentBuilder(this.DatabaseSession)
+            var email = new SalesChannels(this.Session).EmailChannel;
+            new DiscountComponentBuilder(this.Session)
                 .WithDescription("discount good for sales type")
                 .WithSalesChannel(email)
                 .WithProduct(this.good)
@@ -3950,14 +3950,14 @@ namespace Allors.Domain
                 .WithThroughDate(DateTime.UtcNow.AddYears(1).AddDays(-1))
                 .Build();
 
-            this.DatabaseSession.Derive();
-            this.DatabaseSession.Commit();
+            this.Session.Derive();
+            this.Session.Commit();
 
-            this.InstantiateObjects(this.DatabaseSession);
+            this.InstantiateObjects(this.Session);
 
             this.order.SalesChannel = email;
 
-            var item1 = new SalesOrderItemBuilder(this.DatabaseSession)
+            var item1 = new SalesOrderItemBuilder(this.Session)
                 .WithProduct(this.good)
                 .WithQuantityOrdered(quantityOrdered)
                 .WithDiscountAdjustment(discountAdjustment)
@@ -3965,7 +3965,7 @@ namespace Allors.Domain
 
             this.order.AddSalesOrderItem(item1);
 
-            this.DatabaseSession.Derive();
+            this.Session.Derive();
 
             var price = this.currentGoodBasePrice.Price ?? 0;
             var discount = Math.Round((price * percentage) / 100, 2);
@@ -3991,8 +3991,8 @@ namespace Allors.Domain
             const decimal quantityOrdered = 3;
             const decimal amount = 1;
 
-            var email = new SalesChannels(this.DatabaseSession).EmailChannel;
-            new SurchargeComponentBuilder(this.DatabaseSession)
+            var email = new SalesChannels(this.Session).EmailChannel;
+            new SurchargeComponentBuilder(this.Session)
                 .WithDescription("discount good for sales type")
                 .WithSalesChannel(email)
                 .WithProduct(this.good)
@@ -4001,17 +4001,17 @@ namespace Allors.Domain
                 .WithThroughDate(DateTime.UtcNow.AddYears(1).AddDays(-1))
                 .Build();
 
-            this.DatabaseSession.Derive();
-            this.DatabaseSession.Commit();
+            this.Session.Derive();
+            this.Session.Commit();
 
-            this.InstantiateObjects(this.DatabaseSession);
+            this.InstantiateObjects(this.Session);
 
             this.order.SalesChannel = email;
 
-            var item1 = new SalesOrderItemBuilder(this.DatabaseSession).WithProduct(this.good).WithQuantityOrdered(quantityOrdered).Build();
+            var item1 = new SalesOrderItemBuilder(this.Session).WithProduct(this.good).WithQuantityOrdered(quantityOrdered).Build();
             this.order.AddSalesOrderItem(item1);
 
-            this.DatabaseSession.Derive();
+            this.Session.Derive();
 
             Assert.Equal(this.currentGoodBasePrice.Price, item1.UnitBasePrice);
             Assert.Equal(0, item1.UnitDiscount);
@@ -4031,8 +4031,8 @@ namespace Allors.Domain
             const decimal quantityOrdered = 3;
             const decimal percentage = 5;
 
-            var email = new SalesChannels(this.DatabaseSession).EmailChannel;
-            new SurchargeComponentBuilder(this.DatabaseSession)
+            var email = new SalesChannels(this.Session).EmailChannel;
+            new SurchargeComponentBuilder(this.Session)
                 .WithDescription("discount good for sales type")
                 .WithSalesChannel(email)
                 .WithProduct(this.good)
@@ -4041,17 +4041,17 @@ namespace Allors.Domain
                 .WithThroughDate(DateTime.UtcNow.AddYears(1).AddDays(-1))
                 .Build();
 
-            this.DatabaseSession.Derive();
-            this.DatabaseSession.Commit();
+            this.Session.Derive();
+            this.Session.Commit();
 
-            this.InstantiateObjects(this.DatabaseSession);
+            this.InstantiateObjects(this.Session);
 
             this.order.SalesChannel = email;
 
-            var item1 = new SalesOrderItemBuilder(this.DatabaseSession).WithProduct(this.good).WithQuantityOrdered(quantityOrdered).Build();
+            var item1 = new SalesOrderItemBuilder(this.Session).WithProduct(this.good).WithQuantityOrdered(quantityOrdered).Build();
             this.order.AddSalesOrderItem(item1);
 
-            this.DatabaseSession.Derive();
+            this.Session.Derive();
 
             var price = this.currentGoodBasePrice.Price ?? 0;
             var amount = Math.Round((price * percentage) / 100, 2);
@@ -4074,10 +4074,10 @@ namespace Allors.Domain
             const decimal percentage = 5;
             const decimal surchargePerc = 10;
 
-            var surchargeAdjustment = new SurchargeAdjustmentBuilder(this.DatabaseSession).WithPercentage(surchargePerc).Build();
+            var surchargeAdjustment = new SurchargeAdjustmentBuilder(this.Session).WithPercentage(surchargePerc).Build();
 
-            var email = new SalesChannels(this.DatabaseSession).EmailChannel;
-            new SurchargeComponentBuilder(this.DatabaseSession)
+            var email = new SalesChannels(this.Session).EmailChannel;
+            new SurchargeComponentBuilder(this.Session)
                 .WithDescription("discount good for sales type")
                 .WithSalesChannel(email)
                 .WithProduct(this.good)
@@ -4086,14 +4086,14 @@ namespace Allors.Domain
                 .WithThroughDate(DateTime.UtcNow.AddYears(1).AddDays(-1))
                 .Build();
 
-            this.DatabaseSession.Derive();
-            this.DatabaseSession.Commit();
+            this.Session.Derive();
+            this.Session.Commit();
 
-            this.InstantiateObjects(this.DatabaseSession);
+            this.InstantiateObjects(this.Session);
 
             this.order.SalesChannel = email;
 
-            var item1 = new SalesOrderItemBuilder(this.DatabaseSession)
+            var item1 = new SalesOrderItemBuilder(this.Session)
                 .WithProduct(this.good)
                 .WithQuantityOrdered(quantityOrdered)
                 .WithSurchargeAdjustment(surchargeAdjustment)
@@ -4101,7 +4101,7 @@ namespace Allors.Domain
 
             this.order.AddSalesOrderItem(item1);
 
-            this.DatabaseSession.Derive();
+            this.Session.Derive();
 
             var price = this.currentGoodBasePrice.Price ?? 0;
             var surcharge = Math.Round((price * percentage) / 100, 2);
@@ -4124,37 +4124,37 @@ namespace Allors.Domain
         [Fact]
         public void GivenBillToCustomerWithDifferentCurrency_WhenDerivingPrices_ThenCalculatePricesInPreferredCurrency()
         {
-            var poundSterling = new Currencies(this.DatabaseSession).FindBy(M.Currency.IsoCode, "GBP");
+            var poundSterling = new Currencies(this.Session).FindBy(M.Currency.IsoCode, "GBP");
 
             const decimal conversionfactor = 0.8553M;
-            var euroToPoundStirling = new UnitOfMeasureConversionBuilder(this.DatabaseSession)
+            var euroToPoundStirling = new UnitOfMeasureConversionBuilder(this.Session)
                 .WithConversionFactor(conversionfactor)
                 .WithToUnitOfMeasure(poundSterling)
                 .WithStartDate(DateTime.UtcNow)
                 .Build();
 
-            var euro = new Currencies(this.DatabaseSession).FindBy(M.Currency.IsoCode, "EUR");
+            var euro = new Currencies(this.Session).FindBy(M.Currency.IsoCode, "EUR");
             euro.AddUnitOfMeasureConversion(euroToPoundStirling);
 
-            this.DatabaseSession.Derive();
-            this.DatabaseSession.Commit();
+            this.Session.Derive();
+            this.Session.Commit();
 
-            this.InstantiateObjects(this.DatabaseSession);
+            this.InstantiateObjects(this.Session);
 
             Assert.Equal(euro, this.order.CustomerCurrency);
 
             this.billToCustomer.PreferredCurrency = poundSterling;
 
-            var newOrder = new SalesOrderBuilder(this.DatabaseSession)
+            var newOrder = new SalesOrderBuilder(this.Session)
                 .WithShipToCustomer(this.shipToCustomer)
                 .WithBillToCustomer(this.billToCustomer)
                 .Build();
 
             const decimal quantityOrdered = 3;
-            var item1 = new SalesOrderItemBuilder(this.DatabaseSession).WithProduct(this.good).WithQuantityOrdered(quantityOrdered).Build();
+            var item1 = new SalesOrderItemBuilder(this.Session).WithProduct(this.good).WithQuantityOrdered(quantityOrdered).Build();
             newOrder.AddSalesOrderItem(item1);
 
-            this.DatabaseSession.Derive();
+            this.Session.Derive();
 
             Assert.Equal(poundSterling, newOrder.CustomerCurrency);
 
@@ -4167,13 +4167,13 @@ namespace Allors.Domain
         [Fact]
         public void GivenOrderItemForVariantGood_WhenDerivingPrices_ThenUsePriceComponentsForVirtualGood()
         {
-            this.InstantiateObjects(this.DatabaseSession);
+            this.InstantiateObjects(this.Session);
 
             const decimal quantityOrdered = 3;
-            var item1 = new SalesOrderItemBuilder(this.DatabaseSession).WithProduct(this.variantGood).WithQuantityOrdered(quantityOrdered).Build();
+            var item1 = new SalesOrderItemBuilder(this.Session).WithProduct(this.variantGood).WithQuantityOrdered(quantityOrdered).Build();
             this.order.AddSalesOrderItem(item1);
 
-            this.DatabaseSession.Derive();
+            this.Session.Derive();
 
             Assert.Equal(this.currentVirtualGoodBasePrice.Price, item1.UnitBasePrice);
             Assert.Equal(0, item1.UnitDiscount);
@@ -4201,7 +4201,7 @@ namespace Allors.Domain
             const decimal amount = 1;
             const decimal adjustmentPercentage = 5;
 
-            new DiscountComponentBuilder(this.DatabaseSession)
+            new DiscountComponentBuilder(this.Session)
                 .WithDescription("discount good for geo boundary")
                 .WithGeographicBoundary(this.kiev)
                 .WithPrice(amount)
@@ -4209,20 +4209,20 @@ namespace Allors.Domain
                 .WithThroughDate(DateTime.UtcNow.AddYears(1).AddDays(-1))
                 .Build();
 
-            this.DatabaseSession.Derive();
-            this.DatabaseSession.Commit();
+            this.Session.Derive();
+            this.Session.Commit();
 
-            this.InstantiateObjects(this.DatabaseSession);
+            this.InstantiateObjects(this.Session);
 
-            var item1 = new SalesOrderItemBuilder(this.DatabaseSession)
+            var item1 = new SalesOrderItemBuilder(this.Session)
                 .WithProduct(this.good)
                 .WithQuantityOrdered(quantityOrdered)
-                .WithDiscountAdjustment(new DiscountAdjustmentBuilder(this.DatabaseSession).WithPercentage(adjustmentPercentage).Build())
+                .WithDiscountAdjustment(new DiscountAdjustmentBuilder(this.Session).WithPercentage(adjustmentPercentage).Build())
                 .Build();
 
             this.order.AddSalesOrderItem(item1);
 
-            this.DatabaseSession.Derive();
+            this.Session.Derive();
 
             var price = this.currentGoodBasePrice.Price ?? 0;
             var adjustmentAmount = Math.Round(((price - amount) * adjustmentPercentage) / 100, 2);
@@ -4245,7 +4245,7 @@ namespace Allors.Domain
             const decimal quantityOrdered = 3;
             const decimal amount = 1;
 
-            new DiscountComponentBuilder(this.DatabaseSession)
+            new DiscountComponentBuilder(this.Session)
                 .WithDescription("discount good for geo boundary")
                 .WithGeographicBoundary(this.kiev)
                 .WithPrice(amount)
@@ -4253,15 +4253,15 @@ namespace Allors.Domain
                 .WithThroughDate(DateTime.UtcNow.AddYears(1).AddDays(-1))
                 .Build();
 
-            this.DatabaseSession.Derive();
-            this.DatabaseSession.Commit();
+            this.Session.Derive();
+            this.Session.Commit();
 
-            this.InstantiateObjects(this.DatabaseSession);
+            this.InstantiateObjects(this.Session);
 
-            var item1 = new SalesOrderItemBuilder(this.DatabaseSession).WithProduct(this.good).WithQuantityOrdered(quantityOrdered).Build();
+            var item1 = new SalesOrderItemBuilder(this.Session).WithProduct(this.good).WithQuantityOrdered(quantityOrdered).Build();
             this.order.AddSalesOrderItem(item1);
 
-            this.DatabaseSession.Derive();
+            this.Session.Derive();
 
             Assert.Equal(this.currentGoodBasePrice.Price, item1.UnitBasePrice);
             Assert.Equal(amount, item1.UnitDiscount);
@@ -4277,14 +4277,14 @@ namespace Allors.Domain
         [Fact]
         public void GivenPurchasePriceInDifferenUnitOfMeasureComparedToProduct_WhenDerivingMarkupAndProfitMargin_ThenUnitOfMeasureConversionIsPerformed()
         {
-            var pair = new UnitsOfMeasure(this.DatabaseSession).Pair;
-            var piece = new UnitsOfMeasure(this.DatabaseSession).Piece;
+            var pair = new UnitsOfMeasure(this.Session).Pair;
+            var piece = new UnitsOfMeasure(this.Session).Piece;
 
-            var fromPairToPiece = new UnitOfMeasureConversionBuilder(this.DatabaseSession)
+            var fromPairToPiece = new UnitOfMeasureConversionBuilder(this.Session)
                 .WithToUnitOfMeasure(piece)
                 .WithConversionFactor(2).Build();
 
-            var fromPieceToPair = new UnitOfMeasureConversionBuilder(this.DatabaseSession)
+            var fromPieceToPair = new UnitOfMeasureConversionBuilder(this.Session)
                 .WithToUnitOfMeasure(pair)
                 .WithConversionFactor(0.5M).Build();
 
@@ -4294,16 +4294,16 @@ namespace Allors.Domain
             this.goodPurchasePrice.UnitOfMeasure = pair;
             this.good.UnitOfMeasure = piece;
 
-            this.DatabaseSession.Derive();
-            this.DatabaseSession.Commit();
+            this.Session.Derive();
+            this.Session.Commit();
 
-            this.InstantiateObjects(this.DatabaseSession);
+            this.InstantiateObjects(this.Session);
 
             const decimal quantityOrdered = 6;
-            var item1 = new SalesOrderItemBuilder(this.DatabaseSession).WithProduct(this.good).WithQuantityOrdered(quantityOrdered).Build();
+            var item1 = new SalesOrderItemBuilder(this.Session).WithProduct(this.good).WithQuantityOrdered(quantityOrdered).Build();
             this.order.AddSalesOrderItem(item1);
 
-            this.DatabaseSession.Derive();
+            this.Session.Derive();
 
             Assert.Equal(this.currentGoodBasePrice.Price, item1.UnitBasePrice);
             Assert.Equal(0, item1.UnitDiscount);

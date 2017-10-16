@@ -31,17 +31,17 @@ namespace Allors.Domain
         [Fact]
         public void GivenOrderTerm_WhenDeriving_ThenDescriptionIsRequired()
         {
-            var builder = new OrderTermBuilder(this.DatabaseSession);
+            var builder = new OrderTermBuilder(this.Session);
             var orderTerm = builder.Build();
 
-            Assert.True(this.DatabaseSession.Derive(false).HasErrors);
+            Assert.True(this.Session.Derive(false).HasErrors);
 
-            this.DatabaseSession.Rollback();
+            this.Session.Rollback();
 
-            builder.WithTermType(new TermTypes(this.DatabaseSession).PercentageCancellationCharge);
+            builder.WithTermType(new TermTypes(this.Session).PercentageCancellationCharge);
             orderTerm = builder.Build();
 
-            Assert.False(this.DatabaseSession.Derive(false).HasErrors);
+            Assert.False(this.Session.Derive(false).HasErrors);
         }
     }
 }

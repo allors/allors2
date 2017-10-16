@@ -29,20 +29,20 @@ namespace Allors.Domain
         [Fact]
         public void GivenCustomerShipment_WhenBuild_ThenLastObjectStateEqualsCurrencObjectState()
         {
-            var workEffort = new WorkTaskBuilder(this.DatabaseSession).WithName("Activity").Build();
+            var workEffort = new WorkTaskBuilder(this.Session).WithName("Activity").Build();
 
-            this.DatabaseSession.Derive();
+            this.Session.Derive();
 
-            Assert.Equal(new WorkEffortStates(this.DatabaseSession).NeedsAction, workEffort.WorkEffortState);
+            Assert.Equal(new WorkEffortStates(this.Session).NeedsAction, workEffort.WorkEffortState);
             Assert.Equal(workEffort.LastWorkEffortState, workEffort.WorkEffortState);
         }
 
         [Fact]
         public void GivenCustomerShipment_WhenBuild_ThenPreviousObjectStateIsNull()
         {
-            var workEffort = new WorkTaskBuilder(this.DatabaseSession).WithName("Activity").Build();
+            var workEffort = new WorkTaskBuilder(this.Session).WithName("Activity").Build();
 
-            this.DatabaseSession.Derive();
+            this.Session.Derive();
 
             Assert.Null(workEffort.PreviousWorkEffortState);
         }

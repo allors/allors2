@@ -49,7 +49,7 @@ namespace Tests
             {
                 session.Commit();
 
-                foreach (AccessControlledObject aco in this.GetObjects(session, M.Organisation.ObjectType))
+                foreach (AccessControlledObject aco in (IObject[])session.Extent(M.Organisation.ObjectType))
                 {
                     // When
                     var accessList = new AccessControlList(aco, guest);

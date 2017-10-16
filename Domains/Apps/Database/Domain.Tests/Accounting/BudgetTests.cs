@@ -31,28 +31,28 @@ namespace Allors.Domain
         [Fact]
         public void GivenOperatingBudget_WhenBuild_ThenLastObjectStateEqualsCurrencObjectState()
         {
-            var budget = new OperatingBudgetBuilder(this.DatabaseSession)
+            var budget = new OperatingBudgetBuilder(this.Session)
                 .WithDescription("Budget")
                 .WithFromDate(DateTime.UtcNow)
                 .WithThroughDate(DateTime.UtcNow.AddYears(1))
                 .Build();
 
-            this.DatabaseSession.Derive();
+            this.Session.Derive();
 
-            Assert.Equal(new BudgetStates(this.DatabaseSession).Opened, budget.BudgetState);
+            Assert.Equal(new BudgetStates(this.Session).Opened, budget.BudgetState);
             Assert.Equal(budget.LastBudgetState, budget.BudgetState);
         }
 
         [Fact]
         public void GivenOperatingBudget_WhenBuild_ThenPreviousObjectStateIsNUll()
         {
-            var budget = new OperatingBudgetBuilder(this.DatabaseSession)
+            var budget = new OperatingBudgetBuilder(this.Session)
                 .WithDescription("Budget")
                 .WithFromDate(DateTime.UtcNow)
                 .WithThroughDate(DateTime.UtcNow.AddYears(1))
                 .Build();
 
-            this.DatabaseSession.Derive();
+            this.Session.Derive();
 
             Assert.Null(budget.PreviousBudgetState);
         }
@@ -60,17 +60,17 @@ namespace Allors.Domain
         [Fact]
         public void GivenOperatingBudget_WhenDeriving_ThenRequiredRelationsMustExist()
         {
-            var builder = new OperatingBudgetBuilder(this.DatabaseSession);
+            var builder = new OperatingBudgetBuilder(this.Session);
             var budget = builder.Build();
 
-            Assert.True(this.DatabaseSession.Derive(false).HasErrors);
+            Assert.True(this.Session.Derive(false).HasErrors);
 
-            this.DatabaseSession.Rollback();
+            this.Session.Rollback();
 
             builder.WithDescription("Budget");
             budget = builder.Build();
 
-            Assert.False(this.DatabaseSession.Derive(false).HasErrors);
+            Assert.False(this.Session.Derive(false).HasErrors);
         }
     }
 }

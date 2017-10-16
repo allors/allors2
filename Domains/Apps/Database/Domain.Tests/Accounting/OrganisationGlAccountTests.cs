@@ -31,45 +31,45 @@ namespace Allors.Domain
         [Fact]
         public void GivenOrganisationGlAccount_WhenDeriving_ThenRequiredRelationsMustExist()
         {
-            var builder = new OrganisationGlAccountBuilder(this.DatabaseSession);
+            var builder = new OrganisationGlAccountBuilder(this.Session);
             builder.Build();
 
-            Assert.True(this.DatabaseSession.Derive(false).HasErrors);
+            Assert.True(this.Session.Derive(false).HasErrors);
 
-            this.DatabaseSession.Rollback();
+            this.Session.Rollback();
 
-            builder.WithGeneralLedgerAccount(new GeneralLedgerAccountBuilder(this.DatabaseSession)
+            builder.WithGeneralLedgerAccount(new GeneralLedgerAccountBuilder(this.Session)
                                                 .WithAccountNumber("0001")
                                                 .WithName("GeneralLedgerAccount")
                                                 .WithBalanceSheetAccount(true)
-                                                .WithSide(new DebitCreditConstants(this.DatabaseSession).Debit)
-                                                .WithGeneralLedgerAccountType(new GeneralLedgerAccountTypeBuilder(this.DatabaseSession).WithDescription("accountType").Build())
-                                                .WithGeneralLedgerAccountGroup(new GeneralLedgerAccountGroupBuilder(this.DatabaseSession).WithDescription("accountGroup").Build())
+                                                .WithSide(new DebitCreditConstants(this.Session).Debit)
+                                                .WithGeneralLedgerAccountType(new GeneralLedgerAccountTypeBuilder(this.Session).WithDescription("accountType").Build())
+                                                .WithGeneralLedgerAccountGroup(new GeneralLedgerAccountGroupBuilder(this.Session).WithDescription("accountGroup").Build())
                                                 .Build());
             builder.Build();
 
-            Assert.False(this.DatabaseSession.Derive(false).HasErrors);
+            Assert.False(this.Session.Derive(false).HasErrors);
         }
 
         [Fact]
         public void GivenOrganisationGlAccount_WhenBuild_ThenHasBankStatementTransactionsIsAlwaysFalse()
         {
-            var internalOrganisation = Singleton.Instance(this.DatabaseSession).InternalOrganisation;
+            var internalOrganisation = this.Session.GetSingleton().InternalOrganisation;
 
-            var generalLedgerAccount = new GeneralLedgerAccountBuilder(this.DatabaseSession)
+            var generalLedgerAccount = new GeneralLedgerAccountBuilder(this.Session)
                 .WithAccountNumber("0001")
                 .WithName("GeneralLedgerAccount")
                 .WithBalanceSheetAccount(true)
-                .WithSide(new DebitCreditConstants(this.DatabaseSession).Debit)
-                .WithGeneralLedgerAccountType(new GeneralLedgerAccountTypeBuilder(this.DatabaseSession).WithDescription("accountType").Build())
-                .WithGeneralLedgerAccountGroup(new GeneralLedgerAccountGroupBuilder(this.DatabaseSession).WithDescription("accountGroup").Build())
+                .WithSide(new DebitCreditConstants(this.Session).Debit)
+                .WithGeneralLedgerAccountType(new GeneralLedgerAccountTypeBuilder(this.Session).WithDescription("accountType").Build())
+                .WithGeneralLedgerAccountGroup(new GeneralLedgerAccountGroupBuilder(this.Session).WithDescription("accountGroup").Build())
                 .Build();
 
-            var organisationGlAccount = new OrganisationGlAccountBuilder(this.DatabaseSession)
+            var organisationGlAccount = new OrganisationGlAccountBuilder(this.Session)
                 .WithGeneralLedgerAccount(generalLedgerAccount)
                 .Build();
 
-            this.DatabaseSession.Derive();
+            this.Session.Derive();
 
             Assert.False(organisationGlAccount.HasBankStatementTransactions);
         }
@@ -77,18 +77,18 @@ namespace Allors.Domain
         [Fact]
         public void GivenOrganisationGlAccount_WhenNotReferenced_ThenAccountIsNeutral()
         {
-            var internalOrganisation = Singleton.Instance(this.DatabaseSession).InternalOrganisation;
+            var internalOrganisation = this.Session.GetSingleton().InternalOrganisation;
 
-            var generalLedgerAccount = new GeneralLedgerAccountBuilder(this.DatabaseSession)
+            var generalLedgerAccount = new GeneralLedgerAccountBuilder(this.Session)
                 .WithAccountNumber("0001")
                 .WithName("GeneralLedgerAccount")
                 .WithBalanceSheetAccount(true)
-                .WithSide(new DebitCreditConstants(this.DatabaseSession).Debit)
-                .WithGeneralLedgerAccountType(new GeneralLedgerAccountTypeBuilder(this.DatabaseSession).WithDescription("accountType").Build())
-                .WithGeneralLedgerAccountGroup(new GeneralLedgerAccountGroupBuilder(this.DatabaseSession).WithDescription("accountGroup").Build())
+                .WithSide(new DebitCreditConstants(this.Session).Debit)
+                .WithGeneralLedgerAccountType(new GeneralLedgerAccountTypeBuilder(this.Session).WithDescription("accountType").Build())
+                .WithGeneralLedgerAccountGroup(new GeneralLedgerAccountGroupBuilder(this.Session).WithDescription("accountGroup").Build())
                 .Build();
 
-            var organisationGlAccount = new OrganisationGlAccountBuilder(this.DatabaseSession)
+            var organisationGlAccount = new OrganisationGlAccountBuilder(this.Session)
                 .WithGeneralLedgerAccount(generalLedgerAccount)
                 .Build();
 

@@ -1,9 +1,6 @@
 ﻿namespace Allors.Console
 {
     using System.Data;
-    using System.IO;
-    using System.Security.Claims;
-    using System.Security.Principal;
 
     using Allors.Adapters.Object.SqlClient;
     using Allors.Domain;
@@ -33,11 +30,6 @@
 
         public abstract void Execute();
         
-        protected void SetIdentity(string identity)
-        {
-            ClaimsPrincipal.ClaimsPrincipalSelector = () => new GenericPrincipal(new GenericIdentity(identity, "Forms"), new string[0]);
-        }
-
         protected IDatabase CreateDatabase(IsolationLevel isolationLevel = IsolationLevel.Snapshot)
         {
             var configuration = new Configuration

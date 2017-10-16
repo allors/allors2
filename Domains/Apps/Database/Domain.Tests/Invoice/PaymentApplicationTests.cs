@@ -30,84 +30,84 @@ namespace Allors.Domain
         [Fact]
         public void GivenPaymentApplication_WhenDeriving_ThenRequiredRelationsMustExist()
         {
-            var billToContactMechanism = new EmailAddressBuilder(this.DatabaseSession).WithElectronicAddressString("info@allors.com").Build();
+            var billToContactMechanism = new EmailAddressBuilder(this.Session).WithElectronicAddressString("info@allors.com").Build();
 
-            var customer = new PersonBuilder(this.DatabaseSession).WithLastName("customer").WithPersonRole(new PersonRoles(this.DatabaseSession).Customer).Build();
-            new CustomerRelationshipBuilder(this.DatabaseSession)
+            var customer = new PersonBuilder(this.Session).WithLastName("customer").WithPersonRole(new PersonRoles(this.Session).Customer).Build();
+            new CustomerRelationshipBuilder(this.Session)
                 .WithCustomer(customer)
                 .Build();
 
-            new SalesInvoiceBuilder(this.DatabaseSession)
+            new SalesInvoiceBuilder(this.Session)
                 .WithBillToCustomer(customer)
                 .WithBillToContactMechanism(billToContactMechanism)
-                .WithSalesInvoiceType(new SalesInvoiceTypes(this.DatabaseSession).SalesInvoice)
-                .WithSalesInvoiceItem(new SalesInvoiceItemBuilder(this.DatabaseSession)
-                                        .WithProduct(new GoodBuilder(this.DatabaseSession)
-                                                            .WithLocalisedName(new LocalisedTextBuilder(this.DatabaseSession).WithText("good").WithLocale(Singleton.Instance(this.DatabaseSession).DefaultLocale).Build())
-                                                            .WithInventoryItemKind(new InventoryItemKinds(this.DatabaseSession).NonSerialised)
+                .WithSalesInvoiceType(new SalesInvoiceTypes(this.Session).SalesInvoice)
+                .WithSalesInvoiceItem(new SalesInvoiceItemBuilder(this.Session)
+                                        .WithProduct(new GoodBuilder(this.Session)
+                                                            .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("good").WithLocale(this.Session.GetSingleton().DefaultLocale).Build())
+                                                            .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
                                                             .Build())  
-                                        .WithSalesInvoiceItemType(new SalesInvoiceItemTypes(this.DatabaseSession).ProductItem)
+                                        .WithSalesInvoiceItemType(new SalesInvoiceItemTypes(this.Session).ProductItem)
                                         .WithQuantity(1)
                                         .WithActualUnitPrice(100M)
                                         .Build())
                 .Build();
 
-            var builder = new PaymentApplicationBuilder(this.DatabaseSession);
+            var builder = new PaymentApplicationBuilder(this.Session);
             builder.Build();
 
-            Assert.True(this.DatabaseSession.Derive(false).HasErrors);
+            Assert.True(this.Session.Derive(false).HasErrors);
 
-            this.DatabaseSession.Rollback();
+            this.Session.Rollback();
 
             builder.WithAmountApplied(0);
             builder.Build();
 
-            Assert.False(this.DatabaseSession.Derive(false).HasErrors);
+            Assert.False(this.Session.Derive(false).HasErrors);
         }
 
         [Fact]
         public void GivenPaymentApplication_WhenDeriving_ThenAmountAppliedCannotBeLargerThenAmountReceived()
         {
-            var contactMechanism = new ContactMechanisms(this.DatabaseSession).Extent().First;
+            var contactMechanism = new ContactMechanisms(this.Session).Extent().First;
 
-            var good = new GoodBuilder(this.DatabaseSession)
+            var good = new GoodBuilder(this.Session)
                 .WithSku("10101")
-                .WithVatRate(new VatRateBuilder(this.DatabaseSession).WithRate(0).Build())
-                .WithLocalisedName(new LocalisedTextBuilder(this.DatabaseSession).WithText("good").WithLocale(Singleton.Instance(this.DatabaseSession).DefaultLocale).Build())
-                .WithInventoryItemKind(new InventoryItemKinds(this.DatabaseSession).NonSerialised)
-                .WithUnitOfMeasure(new UnitsOfMeasure(this.DatabaseSession).Piece)
+                .WithVatRate(new VatRateBuilder(this.Session).WithRate(0).Build())
+                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("good").WithLocale(this.Session.GetSingleton().DefaultLocale).Build())
+                .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
+                .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
                 .Build();
 
-            var customer = new PersonBuilder(this.DatabaseSession).WithLastName("customer").WithPersonRole(new PersonRoles(this.DatabaseSession).Customer).Build();
-            new CustomerRelationshipBuilder(this.DatabaseSession)
+            var customer = new PersonBuilder(this.Session).WithLastName("customer").WithPersonRole(new PersonRoles(this.Session).Customer).Build();
+            new CustomerRelationshipBuilder(this.Session)
                 .WithCustomer(customer)
                 
                 .Build();
 
-            var invoice = new SalesInvoiceBuilder(this.DatabaseSession)
+            var invoice = new SalesInvoiceBuilder(this.Session)
                 .WithBillToCustomer(customer)
                 .WithBillToContactMechanism(contactMechanism)
-                .WithSalesInvoiceItem(new SalesInvoiceItemBuilder(this.DatabaseSession).WithProduct(good).WithQuantity(1).WithActualUnitPrice(1000M).WithSalesInvoiceItemType(new SalesInvoiceItemTypes(this.DatabaseSession).ProductItem).Build())
+                .WithSalesInvoiceItem(new SalesInvoiceItemBuilder(this.Session).WithProduct(good).WithQuantity(1).WithActualUnitPrice(1000M).WithSalesInvoiceItemType(new SalesInvoiceItemTypes(this.Session).ProductItem).Build())
                 .Build();
 
-            this.DatabaseSession.Derive();
+            this.Session.Derive();
 
-            var receipt = new ReceiptBuilder(this.DatabaseSession)
+            var receipt = new ReceiptBuilder(this.Session)
                 .WithAmount(100)
                 .WithEffectiveDate(DateTime.UtcNow)
                 .Build();
 
-            var paymentApplication = new PaymentApplicationBuilder(this.DatabaseSession)
+            var paymentApplication = new PaymentApplicationBuilder(this.Session)
                 .WithAmountApplied(200)
                 .WithInvoiceItem(invoice.InvoiceItems[0])
                 .Build();
 
-            this.DatabaseSession.Derive();
-            this.DatabaseSession.Commit();
+            this.Session.Derive();
+            this.Session.Commit();
             
             receipt.AddPaymentApplication(paymentApplication);
 
-            var derivationLog = this.DatabaseSession.Derive(false);
+            var derivationLog = this.Session.Derive(false);
             Assert.True(derivationLog.HasErrors);
             Assert.Contains(M.PaymentApplication.AmountApplied, derivationLog.Errors[0].RoleTypes);
         }

@@ -36,7 +36,7 @@ namespace Allors
             {
                 new Setup(session, null).Apply();
 
-                var singleton = Singleton.Instance(session);
+                var singleton = session.GetSingleton();
 
                 var administrator = new People(session).FindBy(M.Person.UserName, Users.AdministratorUserName);
                 new UserGroups(session).Administrators.AddMember(administrator);
@@ -63,7 +63,7 @@ namespace Allors
                 var postalBoundary = new PostalBoundaryBuilder(session).WithLocality("Mechelen").WithCountry(belgium).Build();
                 var postalAddress = new PostalAddressBuilder(session).WithAddress1("Kleine Nieuwedijkstraat 2").WithPostalBoundary(postalBoundary).Build();
 
-                var internalOrganisation = Singleton.Instance(session).InternalOrganisation;
+                var internalOrganisation = session.GetSingleton().InternalOrganisation;
                 internalOrganisation.Name = "internalOrganisation";
                 internalOrganisation.IncomingShipmentNumberPrefix = "incoming shipmentno: ";
                 internalOrganisation.PurchaseInvoiceNumberPrefix = "incoming invoiceno: ";

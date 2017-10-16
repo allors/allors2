@@ -37,54 +37,54 @@ namespace Allors.Domain
         
         public PurchaseOrderItemTests()
         {
-            var euro = new Currencies(this.DatabaseSession).FindBy(M.Currency.IsoCode, "EUR");
+            var euro = new Currencies(this.Session).FindBy(M.Currency.IsoCode, "EUR");
 
-            var mechelen = new CityBuilder(this.DatabaseSession).WithName("Mechelen").Build();
-            ContactMechanism takenViaContactMechanism = new PostalAddressBuilder(this.DatabaseSession).WithGeographicBoundary(mechelen).WithAddress1("Haverwerf 15").Build();
+            var mechelen = new CityBuilder(this.Session).WithName("Mechelen").Build();
+            ContactMechanism takenViaContactMechanism = new PostalAddressBuilder(this.Session).WithGeographicBoundary(mechelen).WithAddress1("Haverwerf 15").Build();
 
-            var supplierContactMechanism = new PartyContactMechanismBuilder(this.DatabaseSession)
+            var supplierContactMechanism = new PartyContactMechanismBuilder(this.Session)
                 .WithContactMechanism(takenViaContactMechanism)
                 .WithUseAsDefault(true)
-                .WithContactPurpose(new ContactMechanismPurposes(this.DatabaseSession).BillingAddress)
+                .WithContactPurpose(new ContactMechanismPurposes(this.Session).BillingAddress)
                 .Build();
 
-            var internalOrganisation = Singleton.Instance(this.DatabaseSession).InternalOrganisation;
-            this.supplier = new OrganisationBuilder(this.DatabaseSession).WithName("supplier").WithOrganisationRole(new OrganisationRoles(this.DatabaseSession).Supplier).Build();
+            var internalOrganisation = this.Session.GetSingleton().InternalOrganisation;
+            this.supplier = new OrganisationBuilder(this.Session).WithName("supplier").WithOrganisationRole(new OrganisationRoles(this.Session).Supplier).Build();
             this.supplier.AddPartyContactMechanism(supplierContactMechanism);
 
-            new SupplierRelationshipBuilder(this.DatabaseSession).WithSupplier(supplier).Build();
+            new SupplierRelationshipBuilder(this.Session).WithSupplier(supplier).Build();
 
-            this.finishedGood = new FinishedGoodBuilder(this.DatabaseSession)
+            this.finishedGood = new FinishedGoodBuilder(this.Session)
                 .WithManufacturerId("10101")
                 .WithName("finished good")
-                .WithInventoryItemKind(new InventoryItemKinds(this.DatabaseSession).NonSerialised)
+                .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
                 .Build();
 
-            var supplierOffering = new SupplierOfferingBuilder(this.DatabaseSession)
+            var supplierOffering = new SupplierOfferingBuilder(this.Session)
                 .WithPart(this.finishedGood)
                 .WithSupplier(this.supplier)
                 .WithFromDate(DateTime.UtcNow.AddYears(-1))
                 .Build();
 
-            var previousPurchasePrice = new ProductPurchasePriceBuilder(this.DatabaseSession)
+            var previousPurchasePrice = new ProductPurchasePriceBuilder(this.Session)
                 .WithCurrency(euro)
-                .WithUnitOfMeasure(new UnitsOfMeasure(this.DatabaseSession).Piece)
+                .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
                 .WithFromDate(DateTime.UtcNow.AddYears(-1))
                 .WithThroughDate(DateTime.UtcNow.AddDays(-1))
                 .WithPrice(8)
                 .Build();
 
-            this.currentPurchasePrice = new ProductPurchasePriceBuilder(this.DatabaseSession)
+            this.currentPurchasePrice = new ProductPurchasePriceBuilder(this.Session)
                 .WithCurrency(euro)
-                .WithUnitOfMeasure(new UnitsOfMeasure(this.DatabaseSession).Piece)
+                .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
                 .WithFromDate(DateTime.UtcNow)
                 .WithThroughDate(DateTime.UtcNow.AddYears(1).AddDays(-1))
                 .WithPrice(10)
                 .Build();
 
-            var futurePurchasePrice = new ProductPurchasePriceBuilder(this.DatabaseSession)
+            var futurePurchasePrice = new ProductPurchasePriceBuilder(this.Session)
                 .WithCurrency(euro)
-                .WithUnitOfMeasure(new UnitsOfMeasure(this.DatabaseSession).Piece)
+                .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
                 .WithFromDate(DateTime.UtcNow.AddYears(1))
                 .WithPrice(8)
                 .Build();
@@ -93,69 +93,69 @@ namespace Allors.Domain
             supplierOffering.AddProductPurchasePrice(this.currentPurchasePrice);
             supplierOffering.AddProductPurchasePrice(futurePurchasePrice);
 
-            this.order = new PurchaseOrderBuilder(this.DatabaseSession)
+            this.order = new PurchaseOrderBuilder(this.Session)
                 .WithTakenViaSupplier(this.supplier)
                 .WithBillToContactMechanism(takenViaContactMechanism)
                 .WithDeliveryDate(DateTime.UtcNow)
-                .WithVatRegime(new VatRegimes(this.DatabaseSession).Exempt)
+                .WithVatRegime(new VatRegimes(this.Session).Exempt)
                 .Build();
 
-            this.DatabaseSession.Derive();
-            this.DatabaseSession.Commit();
+            this.Session.Derive();
+            this.Session.Commit();
         }
 
         [Fact]
         public void GivenOrderItem_WhenDeriving_ThenRequiredRelationsMustExist()
         {
-            this.InstantiateObjects(this.DatabaseSession);
+            this.InstantiateObjects(this.Session);
 
-            var buyer = new OrganisationBuilder(this.DatabaseSession).WithName("buyer").WithOrganisationRole(new OrganisationRoles(this.DatabaseSession).Customer).Build();
-            var mechelen = new CityBuilder(this.DatabaseSession).WithName("Mechelen").Build();
-            var shipToContactMechanism = new PostalAddressBuilder(this.DatabaseSession).WithGeographicBoundary(mechelen).WithAddress1("Haverwerf 15").Build();
-            var partyContactMechanism = new PartyContactMechanismBuilder(this.DatabaseSession).WithContactMechanism(shipToContactMechanism).Build();
-            var part = new RawMaterialBuilder(this.DatabaseSession).WithName("raw stuff").Build();
+            var buyer = new OrganisationBuilder(this.Session).WithName("buyer").WithOrganisationRole(new OrganisationRoles(this.Session).Customer).Build();
+            var mechelen = new CityBuilder(this.Session).WithName("Mechelen").Build();
+            var shipToContactMechanism = new PostalAddressBuilder(this.Session).WithGeographicBoundary(mechelen).WithAddress1("Haverwerf 15").Build();
+            var partyContactMechanism = new PartyContactMechanismBuilder(this.Session).WithContactMechanism(shipToContactMechanism).Build();
+            var part = new RawMaterialBuilder(this.Session).WithName("raw stuff").Build();
             buyer.AddPartyContactMechanism(partyContactMechanism);
 
-            this.DatabaseSession.Derive();
-            this.DatabaseSession.Commit();
+            this.Session.Derive();
+            this.Session.Commit();
 
-            var builder = new PurchaseOrderItemBuilder(this.DatabaseSession);
+            var builder = new PurchaseOrderItemBuilder(this.Session);
             order.AddPurchaseOrderItem(builder.Build());
 
-            Assert.True(this.DatabaseSession.Derive(false).HasErrors);
+            Assert.True(this.Session.Derive(false).HasErrors);
 
-            this.DatabaseSession.Rollback();
+            this.Session.Rollback();
 
             builder.WithPart(part);
             order.AddPurchaseOrderItem(builder.Build());
 
-            Assert.False(this.DatabaseSession.Derive(false).HasErrors);
+            Assert.False(this.Session.Derive(false).HasErrors);
 
-            builder.WithProduct(new GoodBuilder(this.DatabaseSession).WithInventoryItemKind(new InventoryItemKinds(this.DatabaseSession).NonSerialised).Build());
+            builder.WithProduct(new GoodBuilder(this.Session).WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised).Build());
             var orderItem = builder.Build();
             order.AddPurchaseOrderItem(orderItem);
 
-            Assert.True(this.DatabaseSession.Derive(false).HasErrors);
+            Assert.True(this.Session.Derive(false).HasErrors);
 
             orderItem.RemovePart();
 
-            Assert.False(this.DatabaseSession.Derive(false).HasErrors);
+            Assert.False(this.Session.Derive(false).HasErrors);
         }
 
         [Fact]
         public void GivenConfirmedOrderItemForGood_WhenOrderItemIsRemoved_ThenItemIsRemovedFromValidOrderItems()
         {
-            this.InstantiateObjects(this.DatabaseSession);
+            this.InstantiateObjects(this.Session);
 
-            var good = new GoodBuilder(this.DatabaseSession)
+            var good = new GoodBuilder(this.Session)
                 .WithSku("10101")
-                .WithLocalisedName(new LocalisedTextBuilder(this.DatabaseSession).WithText("good").WithLocale(Singleton.Instance(this.DatabaseSession).DefaultLocale).Build())
-                .WithUnitOfMeasure(new UnitsOfMeasure(this.DatabaseSession).Piece)
-                .WithInventoryItemKind(new InventoryItemKinds(this.DatabaseSession).NonSerialised)
-                .WithVatRate(new VatRates(this.DatabaseSession).FindBy(M.VatRate.Rate, 21))
+                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("good").WithLocale(this.Session.GetSingleton().DefaultLocale).Build())
+                .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
+                .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
+                .WithVatRate(new VatRates(this.Session).FindBy(M.VatRate.Rate, 21))
                 .Build();
 
-            var item = new PurchaseOrderItemBuilder(this.DatabaseSession)
+            var item = new PurchaseOrderItemBuilder(this.Session)
                 .WithProduct(good)
                 .WithQuantityOrdered(3)
                 .WithActualUnitPrice(5)
@@ -163,17 +163,17 @@ namespace Allors.Domain
 
             this.order.AddPurchaseOrderItem(item);
 
-            this.DatabaseSession.Derive();
+            this.Session.Derive();
 
             this.order.Confirm();
 
-            this.DatabaseSession.Derive();
+            this.Session.Derive();
 
             Assert.Equal(1, this.order.ValidOrderItems.Count);
 
             item.Cancel();
 
-            this.DatabaseSession.Derive();
+            this.Session.Derive();
 
             Assert.Equal(0, this.order.ValidOrderItems.Count);
         }
@@ -181,13 +181,13 @@ namespace Allors.Domain
         [Fact]
         public void GivenOrderItemForPart_WhenDerivingPrices_ThenUsePartCurrentPurchasePrice()
         {
-            this.InstantiateObjects(this.DatabaseSession);
+            this.InstantiateObjects(this.Session);
 
             const decimal QuantityOrdered = 3;
-            var item1 = new PurchaseOrderItemBuilder(this.DatabaseSession).WithPart(this.finishedGood).WithQuantityOrdered(QuantityOrdered).Build();
+            var item1 = new PurchaseOrderItemBuilder(this.Session).WithPart(this.finishedGood).WithQuantityOrdered(QuantityOrdered).Build();
             this.order.AddPurchaseOrderItem(item1);
 
-            this.DatabaseSession.Derive();
+            this.Session.Derive();
 
             Assert.Equal(this.currentPurchasePrice.Price, item1.UnitBasePrice);
             Assert.Equal(0, item1.UnitDiscount);
@@ -208,41 +208,41 @@ namespace Allors.Domain
         [Fact]
         public void GivenOrderItemForProduct_WhenDerivingPrices_ThenUseProductCurrentPurchasePrice()
         {
-            var euro = new Currencies(this.DatabaseSession).FindBy(M.Currency.IsoCode, "EUR");
+            var euro = new Currencies(this.Session).FindBy(M.Currency.IsoCode, "EUR");
 
-            var good = new GoodBuilder(this.DatabaseSession)
+            var good = new GoodBuilder(this.Session)
                 .WithSku("10101")
-                .WithUnitOfMeasure(new UnitsOfMeasure(this.DatabaseSession).Piece)
-                .WithInventoryItemKind(new InventoryItemKinds(this.DatabaseSession).NonSerialised)
-                .WithVatRate(new VatRates(this.DatabaseSession).FindBy(M.VatRate.Rate,21))
-                .WithLocalisedName(new LocalisedTextBuilder(this.DatabaseSession).WithText("good").WithLocale(Singleton.Instance(this.DatabaseSession).DefaultLocale).Build())
+                .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
+                .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
+                .WithVatRate(new VatRates(this.Session).FindBy(M.VatRate.Rate,21))
+                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("good").WithLocale(this.Session.GetSingleton().DefaultLocale).Build())
                 .Build();
 
-            var supplierOffering = new SupplierOfferingBuilder(this.DatabaseSession)
+            var supplierOffering = new SupplierOfferingBuilder(this.Session)
                 .WithProduct(good)
                 .WithSupplier(this.supplier)
                 .WithFromDate(DateTime.UtcNow.AddYears(-1))
                 .Build();
 
-            var previousPurchasePriceGood = new ProductPurchasePriceBuilder(this.DatabaseSession)
+            var previousPurchasePriceGood = new ProductPurchasePriceBuilder(this.Session)
                 .WithCurrency(euro)
-                .WithUnitOfMeasure(new UnitsOfMeasure(this.DatabaseSession).Piece)
+                .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
                 .WithFromDate(DateTime.UtcNow.AddYears(-1))
                 .WithThroughDate(DateTime.UtcNow.AddDays(-1))
                 .WithPrice(8)
                 .Build();
 
-            var currentPurchasePriceGood = new ProductPurchasePriceBuilder(this.DatabaseSession)
+            var currentPurchasePriceGood = new ProductPurchasePriceBuilder(this.Session)
                 .WithCurrency(euro)
-                .WithUnitOfMeasure(new UnitsOfMeasure(this.DatabaseSession).Piece)
+                .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
                 .WithFromDate(DateTime.UtcNow.AddMinutes(-1))
                 .WithThroughDate(DateTime.UtcNow.AddYears(1).AddDays(-1))
                 .WithPrice(10)
                 .Build();
 
-            var futurePurchasePriceGood = new ProductPurchasePriceBuilder(this.DatabaseSession)
+            var futurePurchasePriceGood = new ProductPurchasePriceBuilder(this.Session)
                 .WithCurrency(euro)
-                .WithUnitOfMeasure(new UnitsOfMeasure(this.DatabaseSession).Piece)
+                .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
                 .WithFromDate(DateTime.UtcNow.AddYears(1))
                 .WithPrice(8)
                 .Build();
@@ -251,16 +251,16 @@ namespace Allors.Domain
             supplierOffering.AddProductPurchasePrice(currentPurchasePriceGood);
             supplierOffering.AddProductPurchasePrice(futurePurchasePriceGood);
 
-            this.DatabaseSession.Derive();
-            this.DatabaseSession.Commit();
+            this.Session.Derive();
+            this.Session.Commit();
 
-            this.InstantiateObjects(this.DatabaseSession);
+            this.InstantiateObjects(this.Session);
 
             const decimal QuantityOrdered = 3;
-            var item1 = new PurchaseOrderItemBuilder(this.DatabaseSession).WithProduct(good).WithQuantityOrdered(QuantityOrdered).Build();
+            var item1 = new PurchaseOrderItemBuilder(this.Session).WithProduct(good).WithQuantityOrdered(QuantityOrdered).Build();
             this.order.AddPurchaseOrderItem(item1);
 
-            this.DatabaseSession.Derive();
+            this.Session.Derive();
 
             Assert.Equal(currentPurchasePriceGood.Price, item1.UnitBasePrice);
             Assert.Equal(0, item1.UnitDiscount);
@@ -281,12 +281,12 @@ namespace Allors.Domain
         [Fact]
         public void GivenOrderItemForPartWithActualPrice_WhenDerivingPrices_ThenUseActualPrice()
         {
-            this.InstantiateObjects(this.DatabaseSession);
+            this.InstantiateObjects(this.Session);
 
-            var item1 = new PurchaseOrderItemBuilder(this.DatabaseSession).WithPart(this.finishedGood).WithQuantityOrdered(3).WithActualUnitPrice(15).Build();
+            var item1 = new PurchaseOrderItemBuilder(this.Session).WithPart(this.finishedGood).WithQuantityOrdered(3).WithActualUnitPrice(15).Build();
             this.order.AddPurchaseOrderItem(item1);
 
-            this.DatabaseSession.Derive();
+            this.Session.Derive();
 
             Assert.Equal(15, item1.UnitBasePrice);
             Assert.Equal(0, item1.UnitDiscount);
@@ -311,26 +311,26 @@ namespace Allors.Domain
         [Fact]
         public void GivenOrderItem_WhenObjectStateIsCreated_ThenItemMayBeDeletedButNotCancelledOrRejected()
         {
-            var administrator = new PersonBuilder(this.DatabaseSession).WithFirstName("Koen").WithUserName("admin").WithPersonRole(new PersonRoles(this.DatabaseSession).Employee).Build();
-            var administrators = new UserGroups(this.DatabaseSession).Administrators;
+            var administrator = new PersonBuilder(this.Session).WithFirstName("Koen").WithUserName("admin").WithPersonRole(new PersonRoles(this.Session).Employee).Build();
+            var administrators = new UserGroups(this.Session).Administrators;
             administrators.AddMember(administrator);
             
-            this.DatabaseSession.Derive();
-            this.DatabaseSession.Commit();
+            this.Session.Derive();
+            this.Session.Commit();
 
-            this.InstantiateObjects(this.DatabaseSession);
+            this.InstantiateObjects(this.Session);
 
-            var good = new GoodBuilder(this.DatabaseSession)
+            var good = new GoodBuilder(this.Session)
                 .WithSku("10101")
-                .WithLocalisedName(new LocalisedTextBuilder(this.DatabaseSession).WithText("good").WithLocale(Singleton.Instance(this.DatabaseSession).DefaultLocale).Build())
-                .WithUnitOfMeasure(new UnitsOfMeasure(this.DatabaseSession).Piece)
-                .WithInventoryItemKind(new InventoryItemKinds(this.DatabaseSession).NonSerialised)
-                .WithVatRate(new VatRates(this.DatabaseSession).FindBy(M.VatRate.Rate,21))
+                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("good").WithLocale(this.Session.GetSingleton().DefaultLocale).Build())
+                .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
+                .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
+                .WithVatRate(new VatRates(this.Session).FindBy(M.VatRate.Rate,21))
                 .Build();
 
             this.SetIdentity("admin");
 
-            var item = new PurchaseOrderItemBuilder(this.DatabaseSession)
+            var item = new PurchaseOrderItemBuilder(this.Session)
                 .WithProduct(good)
                 .WithQuantityOrdered(3)
                 .WithActualUnitPrice(5)
@@ -338,11 +338,11 @@ namespace Allors.Domain
 
             this.order.AddPurchaseOrderItem(item);
 
-            this.DatabaseSession.Derive();
-            this.DatabaseSession.Commit();
+            this.Session.Derive();
+            this.Session.Commit();
 
-            Assert.Equal(new PurchaseOrderItemStates(this.DatabaseSession).Created, item.PurchaseOrderItemState);
-            var currentUser = new Users(this.DatabaseSession).CurrentUser;
+            Assert.Equal(new PurchaseOrderItemStates(this.Session).Created, item.PurchaseOrderItemState);
+            var currentUser = this.Session.GetUser();
             var acl = new AccessControlList(item, currentUser);
 
             Assert.True(acl.CanExecute(M.PurchaseOrderItem.Delete));
@@ -353,26 +353,26 @@ namespace Allors.Domain
         [Fact]
         public void GivenOrderItem_WhenObjectStateIsConfirmed_ThenItemMayBeCancelledOrRejectedButNotDeleted()
         {
-            var administrator = new PersonBuilder(this.DatabaseSession).WithFirstName("Koen").WithUserName("admin").WithPersonRole(new PersonRoles(this.DatabaseSession).Employee).Build();
-            var administrators = new UserGroups(this.DatabaseSession).Administrators;
+            var administrator = new PersonBuilder(this.Session).WithFirstName("Koen").WithUserName("admin").WithPersonRole(new PersonRoles(this.Session).Employee).Build();
+            var administrators = new UserGroups(this.Session).Administrators;
             administrators.AddMember(administrator);
             
-            this.DatabaseSession.Derive();
-            this.DatabaseSession.Commit();
+            this.Session.Derive();
+            this.Session.Commit();
 
-            this.InstantiateObjects(this.DatabaseSession);
+            this.InstantiateObjects(this.Session);
 
-            var good = new GoodBuilder(this.DatabaseSession)
+            var good = new GoodBuilder(this.Session)
                 .WithSku("10101")
-                .WithLocalisedName(new LocalisedTextBuilder(this.DatabaseSession).WithText("good").WithLocale(Singleton.Instance(this.DatabaseSession).DefaultLocale).Build())
-                .WithUnitOfMeasure(new UnitsOfMeasure(this.DatabaseSession).Piece)
-                .WithInventoryItemKind(new InventoryItemKinds(this.DatabaseSession).NonSerialised)
-                .WithVatRate(new VatRates(this.DatabaseSession).FindBy(M.VatRate.Rate,21))
+                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("good").WithLocale(this.Session.GetSingleton().DefaultLocale).Build())
+                .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
+                .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
+                .WithVatRate(new VatRates(this.Session).FindBy(M.VatRate.Rate,21))
                 .Build();
 
             this.SetIdentity("admin");
 
-            var item = new PurchaseOrderItemBuilder(this.DatabaseSession)
+            var item = new PurchaseOrderItemBuilder(this.Session)
                 .WithProduct(good)
                 .WithQuantityOrdered(3)
                 .WithActualUnitPrice(5)
@@ -382,11 +382,11 @@ namespace Allors.Domain
 
             this.order.Confirm();
 
-            this.DatabaseSession.Derive();
-            this.DatabaseSession.Commit();
+            this.Session.Derive();
+            this.Session.Commit();
 
-            Assert.Equal(new PurchaseOrderItemStates(this.DatabaseSession).InProcess, item.PurchaseOrderItemState);
-            var acl = new AccessControlList(item, new Users(this.DatabaseSession).CurrentUser);
+            Assert.Equal(new PurchaseOrderItemStates(this.Session).InProcess, item.PurchaseOrderItemState);
+            var acl = new AccessControlList(item, this.Session.GetUser());
             Assert.True(acl.CanExecute(M.PurchaseOrderItem.Cancel));
             Assert.True(acl.CanExecute(M.PurchaseOrderItem.Reject));
             Assert.False(acl.CanExecute(M.PurchaseOrderItem.Delete));
@@ -395,26 +395,26 @@ namespace Allors.Domain
         [Fact]
         public void GivenOrderItem_WhenObjectStateIsPartiallyReceived_ThenItemMayNotBeCancelledOrRejectedOrDeleted()
         {
-            var administrator = new PersonBuilder(this.DatabaseSession).WithFirstName("Koen").WithUserName("admin").WithPersonRole(new PersonRoles(this.DatabaseSession).Employee).Build();
-            var administrators = new UserGroups(this.DatabaseSession).Administrators;
+            var administrator = new PersonBuilder(this.Session).WithFirstName("Koen").WithUserName("admin").WithPersonRole(new PersonRoles(this.Session).Employee).Build();
+            var administrators = new UserGroups(this.Session).Administrators;
             administrators.AddMember(administrator);
             
-            this.DatabaseSession.Derive();
-            this.DatabaseSession.Commit();
+            this.Session.Derive();
+            this.Session.Commit();
 
-            this.InstantiateObjects(this.DatabaseSession);
+            this.InstantiateObjects(this.Session);
 
-            var good = new GoodBuilder(this.DatabaseSession)
+            var good = new GoodBuilder(this.Session)
                 .WithSku("10101")
-                .WithLocalisedName(new LocalisedTextBuilder(this.DatabaseSession).WithText("good").WithLocale(Singleton.Instance(this.DatabaseSession).DefaultLocale).Build())
-                .WithUnitOfMeasure(new UnitsOfMeasure(this.DatabaseSession).Piece)
-                .WithInventoryItemKind(new InventoryItemKinds(this.DatabaseSession).NonSerialised)
-                .WithVatRate(new VatRates(this.DatabaseSession).FindBy(M.VatRate.Rate,21))
+                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("good").WithLocale(this.Session.GetSingleton().DefaultLocale).Build())
+                .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
+                .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
+                .WithVatRate(new VatRates(this.Session).FindBy(M.VatRate.Rate,21))
                 .Build();
 
             this.SetIdentity("admin");
 
-            var item = new PurchaseOrderItemBuilder(this.DatabaseSession)
+            var item = new PurchaseOrderItemBuilder(this.Session)
                 .WithProduct(good)
                 .WithQuantityOrdered(20)
                 .WithActualUnitPrice(5)
@@ -424,26 +424,26 @@ namespace Allors.Domain
 
             this.order.Confirm();
 
-            this.DatabaseSession.Derive();
+            this.Session.Derive();
 
-            var shipment = new PurchaseShipmentBuilder(this.DatabaseSession).WithShipmentMethod(new ShipmentMethods(this.DatabaseSession).Ground).WithShipFromParty(this.supplier).Build();
-            var shipmentItem = new ShipmentItemBuilder(this.DatabaseSession).WithGood(good).Build();
+            var shipment = new PurchaseShipmentBuilder(this.Session).WithShipmentMethod(new ShipmentMethods(this.Session).Ground).WithShipFromParty(this.supplier).Build();
+            var shipmentItem = new ShipmentItemBuilder(this.Session).WithGood(good).Build();
             shipment.AddShipmentItem(shipmentItem);
 
-            new ShipmentReceiptBuilder(this.DatabaseSession)
+            new ShipmentReceiptBuilder(this.Session)
                 .WithQuantityAccepted(3)
                 .WithShipmentItem(shipmentItem)
                 .WithOrderItem(item)
                 .Build();
 
-            this.DatabaseSession.Derive();
+            this.Session.Derive();
 
             shipment.AppsComplete();
 
-            this.DatabaseSession.Derive();
+            this.Session.Derive();
 
-            Assert.Equal(new PurchaseOrderItemStates(this.DatabaseSession).PartiallyReceived, item.PurchaseOrderItemState);
-            var acl = new AccessControlList(item, new Users(this.DatabaseSession).CurrentUser);
+            Assert.Equal(new PurchaseOrderItemStates(this.Session).PartiallyReceived, item.PurchaseOrderItemState);
+            var acl = new AccessControlList(item, this.Session.GetUser());
             Assert.False(acl.CanExecute(M.PurchaseOrderItem.Cancel));
             Assert.False(acl.CanExecute(M.PurchaseOrderItem.Reject));
             Assert.False(acl.CanExecute(M.PurchaseOrderItem.Delete));
@@ -452,26 +452,26 @@ namespace Allors.Domain
         [Fact]
         public void GivenOrderItem_WhenObjectStateIsCancelled_ThenItemMayNotBeCancelledOrRejectedOrDeleted()
         {
-            var administrator = new PersonBuilder(this.DatabaseSession).WithFirstName("Koen").WithUserName("admin").WithPersonRole(new PersonRoles(this.DatabaseSession).Employee).Build();
-            var administrators = new UserGroups(this.DatabaseSession).Administrators;
+            var administrator = new PersonBuilder(this.Session).WithFirstName("Koen").WithUserName("admin").WithPersonRole(new PersonRoles(this.Session).Employee).Build();
+            var administrators = new UserGroups(this.Session).Administrators;
             administrators.AddMember(administrator);
             
-            this.DatabaseSession.Derive();           
-            this.DatabaseSession.Commit();
+            this.Session.Derive();           
+            this.Session.Commit();
 
-            this.InstantiateObjects(this.DatabaseSession);
+            this.InstantiateObjects(this.Session);
 
-            var good = new GoodBuilder(this.DatabaseSession)
+            var good = new GoodBuilder(this.Session)
                 .WithSku("10101")
-                .WithLocalisedName(new LocalisedTextBuilder(this.DatabaseSession).WithText("good").WithLocale(Singleton.Instance(this.DatabaseSession).DefaultLocale).Build())
-                .WithUnitOfMeasure(new UnitsOfMeasure(this.DatabaseSession).Piece)
-                .WithInventoryItemKind(new InventoryItemKinds(this.DatabaseSession).NonSerialised)
-                .WithVatRate(new VatRates(this.DatabaseSession).FindBy(M.VatRate.Rate,21))
+                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("good").WithLocale(this.Session.GetSingleton().DefaultLocale).Build())
+                .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
+                .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
+                .WithVatRate(new VatRates(this.Session).FindBy(M.VatRate.Rate,21))
                 .Build();
 
             this.SetIdentity("admin");
 
-            var item = new PurchaseOrderItemBuilder(this.DatabaseSession)
+            var item = new PurchaseOrderItemBuilder(this.Session)
                 .WithProduct(good)
                 .WithQuantityOrdered(3)
                 .WithActualUnitPrice(5)
@@ -479,15 +479,15 @@ namespace Allors.Domain
 
             this.order.AddPurchaseOrderItem(item);            
 
-            this.DatabaseSession.Derive();
-            this.DatabaseSession.Commit();
+            this.Session.Derive();
+            this.Session.Commit();
 
             item.Cancel();
 
-            this.DatabaseSession.Derive();
+            this.Session.Derive();
 
-            Assert.Equal(new PurchaseOrderItemStates(this.DatabaseSession).Cancelled, item.PurchaseOrderItemState);
-            var acl = new AccessControlList(item, new Users(this.DatabaseSession).CurrentUser);
+            Assert.Equal(new PurchaseOrderItemStates(this.Session).Cancelled, item.PurchaseOrderItemState);
+            var acl = new AccessControlList(item, this.Session.GetUser());
             Assert.False(acl.CanExecute(M.PurchaseOrderItem.Cancel));
             Assert.False(acl.CanExecute(M.PurchaseOrderItem.Reject));
             Assert.False(acl.CanExecute(M.PurchaseOrderItem.Delete));
@@ -496,26 +496,26 @@ namespace Allors.Domain
         [Fact]
         public void GivenOrderItem_WhenObjectStateIsRejected_ThenItemMayNotBeCancelledOrRejectedOrDeleted()
         {
-            var administrator = new PersonBuilder(this.DatabaseSession).WithFirstName("Koen").WithUserName("admin").WithPersonRole(new PersonRoles(this.DatabaseSession).Employee).Build();
-            var administrators = new UserGroups(this.DatabaseSession).Administrators;
+            var administrator = new PersonBuilder(this.Session).WithFirstName("Koen").WithUserName("admin").WithPersonRole(new PersonRoles(this.Session).Employee).Build();
+            var administrators = new UserGroups(this.Session).Administrators;
             administrators.AddMember(administrator);
             
-            this.DatabaseSession.Derive();
-            this.DatabaseSession.Commit();
+            this.Session.Derive();
+            this.Session.Commit();
 
-            this.InstantiateObjects(this.DatabaseSession);
+            this.InstantiateObjects(this.Session);
 
-            var good = new GoodBuilder(this.DatabaseSession)
+            var good = new GoodBuilder(this.Session)
                 .WithSku("10101")
-                .WithLocalisedName(new LocalisedTextBuilder(this.DatabaseSession).WithText("good").WithLocale(Singleton.Instance(this.DatabaseSession).DefaultLocale).Build())
-                .WithUnitOfMeasure(new UnitsOfMeasure(this.DatabaseSession).Piece)
-                .WithInventoryItemKind(new InventoryItemKinds(this.DatabaseSession).NonSerialised)
-                .WithVatRate(new VatRates(this.DatabaseSession).FindBy(M.VatRate.Rate,21))
+                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("good").WithLocale(this.Session.GetSingleton().DefaultLocale).Build())
+                .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
+                .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
+                .WithVatRate(new VatRates(this.Session).FindBy(M.VatRate.Rate,21))
                 .Build();
 
             this.SetIdentity("admin");
 
-            var item = new PurchaseOrderItemBuilder(this.DatabaseSession)
+            var item = new PurchaseOrderItemBuilder(this.Session)
                 .WithProduct(good)
                 .WithQuantityOrdered(3)
                 .WithActualUnitPrice(5)
@@ -523,14 +523,14 @@ namespace Allors.Domain
 
             this.order.AddPurchaseOrderItem(item);
             
-            this.DatabaseSession.Derive();
+            this.Session.Derive();
 
             item.Reject();
 
-            this.DatabaseSession.Derive();
+            this.Session.Derive();
 
-            Assert.Equal(new PurchaseOrderItemStates(this.DatabaseSession).Rejected, item.PurchaseOrderItemState);
-            var acl = new AccessControlList(item, new Users(this.DatabaseSession).CurrentUser);
+            Assert.Equal(new PurchaseOrderItemStates(this.Session).Rejected, item.PurchaseOrderItemState);
+            var acl = new AccessControlList(item, this.Session.GetUser());
             Assert.False(acl.CanExecute(M.PurchaseOrderItem.Cancel));
             Assert.False(acl.CanExecute(M.PurchaseOrderItem.Reject));
             Assert.False(acl.CanExecute(M.PurchaseOrderItem.Delete));
@@ -539,26 +539,26 @@ namespace Allors.Domain
         [Fact]
         public void GivenOrderItem_WhenObjectStateIsCompleted_ThenItemMayNotBeCancelledOrRejectedOrDeleted()
         {
-            var administrator = new PersonBuilder(this.DatabaseSession).WithFirstName("Koen").WithUserName("admin").WithPersonRole(new PersonRoles(this.DatabaseSession).Employee).Build();
-            var administrators = new UserGroups(this.DatabaseSession).Administrators;
+            var administrator = new PersonBuilder(this.Session).WithFirstName("Koen").WithUserName("admin").WithPersonRole(new PersonRoles(this.Session).Employee).Build();
+            var administrators = new UserGroups(this.Session).Administrators;
             administrators.AddMember(administrator);
             
-            this.DatabaseSession.Derive();
-            this.DatabaseSession.Commit();
+            this.Session.Derive();
+            this.Session.Commit();
 
-            this.InstantiateObjects(this.DatabaseSession);
+            this.InstantiateObjects(this.Session);
 
-            var good = new GoodBuilder(this.DatabaseSession)
+            var good = new GoodBuilder(this.Session)
                 .WithSku("10101")
-                .WithLocalisedName(new LocalisedTextBuilder(this.DatabaseSession).WithText("good").WithLocale(Singleton.Instance(this.DatabaseSession).DefaultLocale).Build())
-                .WithUnitOfMeasure(new UnitsOfMeasure(this.DatabaseSession).Piece)
-                .WithInventoryItemKind(new InventoryItemKinds(this.DatabaseSession).NonSerialised)
-                .WithVatRate(new VatRates(this.DatabaseSession).FindBy(M.VatRate.Rate,21))
+                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("good").WithLocale(this.Session.GetSingleton().DefaultLocale).Build())
+                .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
+                .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
+                .WithVatRate(new VatRates(this.Session).FindBy(M.VatRate.Rate,21))
                 .Build();
 
             this.SetIdentity("admin");
 
-            var item = new PurchaseOrderItemBuilder(this.DatabaseSession)
+            var item = new PurchaseOrderItemBuilder(this.Session)
                 .WithProduct(good)
                 .WithQuantityOrdered(3)
                 .WithActualUnitPrice(5)
@@ -568,26 +568,26 @@ namespace Allors.Domain
             
             this.order.Confirm();
             
-            this.DatabaseSession.Derive();
+            this.Session.Derive();
 
-            var shipment = new PurchaseShipmentBuilder(this.DatabaseSession).WithShipFromParty(this.supplier).WithShipmentMethod(new ShipmentMethods(this.DatabaseSession).Ground).Build();
-            var shipmentItem = new ShipmentItemBuilder(this.DatabaseSession).WithGood(good).Build();
+            var shipment = new PurchaseShipmentBuilder(this.Session).WithShipFromParty(this.supplier).WithShipmentMethod(new ShipmentMethods(this.Session).Ground).Build();
+            var shipmentItem = new ShipmentItemBuilder(this.Session).WithGood(good).Build();
             shipment.AddShipmentItem(shipmentItem);
 
-            new ShipmentReceiptBuilder(this.DatabaseSession)
+            new ShipmentReceiptBuilder(this.Session)
                 .WithQuantityAccepted(3)
                 .WithShipmentItem(shipmentItem)
                 .WithOrderItem(item)
                 .Build();
 
-            this.DatabaseSession.Derive();
+            this.Session.Derive();
 
             shipment.AppsComplete();
             
-            this.DatabaseSession.Derive();
+            this.Session.Derive();
 
-            Assert.Equal(new PurchaseOrderItemStates(this.DatabaseSession).Completed, item.PurchaseOrderItemState);
-            var acl = new AccessControlList(item, new Users(this.DatabaseSession).CurrentUser);
+            Assert.Equal(new PurchaseOrderItemStates(this.Session).Completed, item.PurchaseOrderItemState);
+            var acl = new AccessControlList(item, this.Session.GetUser());
             Assert.False(acl.CanExecute(M.PurchaseOrderItem.Cancel));
             Assert.False(acl.CanExecute(M.PurchaseOrderItem.Reject));
             Assert.False(acl.CanExecute(M.PurchaseOrderItem.Delete));
@@ -596,26 +596,26 @@ namespace Allors.Domain
         [Fact]
         public void GivenOrderItem_WhenObjectStateIsFinished_ThenItemMayNotBeCancelledOrRejectedOrDeleted()
         {
-            var administrator = new PersonBuilder(this.DatabaseSession).WithFirstName("Koen").WithUserName("admin").WithPersonRole(new PersonRoles(this.DatabaseSession).Employee).Build();
-            var administrators = new UserGroups(this.DatabaseSession).Administrators;
+            var administrator = new PersonBuilder(this.Session).WithFirstName("Koen").WithUserName("admin").WithPersonRole(new PersonRoles(this.Session).Employee).Build();
+            var administrators = new UserGroups(this.Session).Administrators;
             administrators.AddMember(administrator);
             
-            this.DatabaseSession.Derive();
-            this.DatabaseSession.Commit();
+            this.Session.Derive();
+            this.Session.Commit();
 
-            this.InstantiateObjects(this.DatabaseSession);
+            this.InstantiateObjects(this.Session);
 
-            var good = new GoodBuilder(this.DatabaseSession)
+            var good = new GoodBuilder(this.Session)
                 .WithSku("10101")
-                .WithLocalisedName(new LocalisedTextBuilder(this.DatabaseSession).WithText("good").WithLocale(Singleton.Instance(this.DatabaseSession).DefaultLocale).Build())
-                .WithUnitOfMeasure(new UnitsOfMeasure(this.DatabaseSession).Piece)
-                .WithInventoryItemKind(new InventoryItemKinds(this.DatabaseSession).NonSerialised)
-                .WithVatRate(new VatRates(this.DatabaseSession).FindBy(M.VatRate.Rate,21))
+                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("good").WithLocale(this.Session.GetSingleton().DefaultLocale).Build())
+                .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
+                .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
+                .WithVatRate(new VatRates(this.Session).FindBy(M.VatRate.Rate,21))
                 .Build();
 
             this.SetIdentity("admin");
 
-            var item = new PurchaseOrderItemBuilder(this.DatabaseSession)
+            var item = new PurchaseOrderItemBuilder(this.Session)
                 .WithProduct(good)
                 .WithQuantityOrdered(3)
                 .WithActualUnitPrice(5)
@@ -623,14 +623,14 @@ namespace Allors.Domain
 
             this.order.AddPurchaseOrderItem(item);
 
-            this.DatabaseSession.Derive();
+            this.Session.Derive();
 
-            this.order.PurchaseOrderState = new PurchaseOrderStates(this.DatabaseSession).Finished;
+            this.order.PurchaseOrderState = new PurchaseOrderStates(this.Session).Finished;
             
-            this.DatabaseSession.Derive();
+            this.Session.Derive();
 
-            Assert.Equal(new PurchaseOrderItemStates(this.DatabaseSession).Finished, item.PurchaseOrderItemState);
-            var acl = new AccessControlList(item, new Users(this.DatabaseSession).CurrentUser);
+            Assert.Equal(new PurchaseOrderItemStates(this.Session).Finished, item.PurchaseOrderItemState);
+            var acl = new AccessControlList(item, this.Session.GetUser());
             Assert.False(acl.CanExecute(M.PurchaseOrderItem.Cancel));
             Assert.False(acl.CanExecute(M.PurchaseOrderItem.Reject));
             Assert.False(acl.CanExecute(M.PurchaseOrderItem.Delete));
@@ -639,26 +639,26 @@ namespace Allors.Domain
         [Fact]
         public void GivenOrderItem_WhenObjectStateIsPartiallyReceived_ThenProductChangeIsNotAllowed()
         {
-            var administrator = new PersonBuilder(this.DatabaseSession).WithFirstName("Koen").WithUserName("admin").WithPersonRole(new PersonRoles(this.DatabaseSession).Employee).Build();
-            var administrators = new UserGroups(this.DatabaseSession).Administrators;
+            var administrator = new PersonBuilder(this.Session).WithFirstName("Koen").WithUserName("admin").WithPersonRole(new PersonRoles(this.Session).Employee).Build();
+            var administrators = new UserGroups(this.Session).Administrators;
             administrators.AddMember(administrator);
             
-            this.DatabaseSession.Derive(); 
-            this.DatabaseSession.Commit();
+            this.Session.Derive(); 
+            this.Session.Commit();
 
-            this.InstantiateObjects(this.DatabaseSession);
+            this.InstantiateObjects(this.Session);
 
-            var good = new GoodBuilder(this.DatabaseSession)
+            var good = new GoodBuilder(this.Session)
                 .WithSku("10101")
-                .WithLocalisedName(new LocalisedTextBuilder(this.DatabaseSession).WithText("good").WithLocale(Singleton.Instance(this.DatabaseSession).DefaultLocale).Build())
-                .WithUnitOfMeasure(new UnitsOfMeasure(this.DatabaseSession).Piece)
-                .WithInventoryItemKind(new InventoryItemKinds(this.DatabaseSession).NonSerialised)
-                .WithVatRate(new VatRates(this.DatabaseSession).FindBy(M.VatRate.Rate,21))
+                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("good").WithLocale(this.Session.GetSingleton().DefaultLocale).Build())
+                .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
+                .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
+                .WithVatRate(new VatRates(this.Session).FindBy(M.VatRate.Rate,21))
                 .Build();
 
             this.SetIdentity("admin");
 
-            var item = new PurchaseOrderItemBuilder(this.DatabaseSession)
+            var item = new PurchaseOrderItemBuilder(this.Session)
                 .WithProduct(good)
                 .WithQuantityOrdered(3)
                 .WithActualUnitPrice(5)
@@ -668,43 +668,43 @@ namespace Allors.Domain
 
             this.order.Confirm();
             
-            this.DatabaseSession.Derive();
+            this.Session.Derive();
 
-            var shipment = new PurchaseShipmentBuilder(this.DatabaseSession).WithShipmentMethod(new ShipmentMethods(this.DatabaseSession).Ground).WithShipFromParty(this.supplier).Build();
-            var shipmentItem = new ShipmentItemBuilder(this.DatabaseSession).WithGood(good).Build();
+            var shipment = new PurchaseShipmentBuilder(this.Session).WithShipmentMethod(new ShipmentMethods(this.Session).Ground).WithShipFromParty(this.supplier).Build();
+            var shipmentItem = new ShipmentItemBuilder(this.Session).WithGood(good).Build();
             shipment.AddShipmentItem(shipmentItem);
 
-            new ShipmentReceiptBuilder(this.DatabaseSession)
+            new ShipmentReceiptBuilder(this.Session)
                 .WithQuantityAccepted(1)
                 .WithShipmentItem(shipmentItem)
                 .WithOrderItem(item)
                 .Build();
 
-            this.DatabaseSession.Derive();
+            this.Session.Derive();
 
             shipment.AppsComplete();
             
-            this.DatabaseSession.Derive();
+            this.Session.Derive();
 
-            Assert.Equal(new PurchaseOrderItemStates(this.DatabaseSession).PartiallyReceived, item.PurchaseOrderItemState);
-            var acl = new AccessControlList(item, new Users(this.DatabaseSession).CurrentUser);
+            Assert.Equal(new PurchaseOrderItemStates(this.Session).PartiallyReceived, item.PurchaseOrderItemState);
+            var acl = new AccessControlList(item, this.Session.GetUser());
             Assert.False(acl.CanWrite(M.PurchaseOrderItem.Product));
         }
 
         [Fact]
         public void GivenOrderItemWithAssignedDeliveryDate_WhenDeriving_ThenDeliveryDateIsOrderItemAssignedDeliveryDate()
         {
-            this.InstantiateObjects(this.DatabaseSession);
+            this.InstantiateObjects(this.Session);
 
-            var good = new GoodBuilder(this.DatabaseSession)
+            var good = new GoodBuilder(this.Session)
                 .WithSku("10101")
-                .WithLocalisedName(new LocalisedTextBuilder(this.DatabaseSession).WithText("good").WithLocale(Singleton.Instance(this.DatabaseSession).DefaultLocale).Build())
-                .WithUnitOfMeasure(new UnitsOfMeasure(this.DatabaseSession).Piece)
-                .WithInventoryItemKind(new InventoryItemKinds(this.DatabaseSession).NonSerialised)
-                .WithVatRate(new VatRates(this.DatabaseSession).FindBy(M.VatRate.Rate,21))
+                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("good").WithLocale(this.Session.GetSingleton().DefaultLocale).Build())
+                .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
+                .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
+                .WithVatRate(new VatRates(this.Session).FindBy(M.VatRate.Rate,21))
                 .Build();
 
-            var item = new PurchaseOrderItemBuilder(this.DatabaseSession)
+            var item = new PurchaseOrderItemBuilder(this.Session)
                 .WithProduct(good)
                 .WithQuantityOrdered(1)
                 .WithAssignedDeliveryDate(DateTime.UtcNow.AddMonths(1))
@@ -712,7 +712,7 @@ namespace Allors.Domain
 
             this.order.AddPurchaseOrderItem(item);
             
-            this.DatabaseSession.Derive();
+            this.Session.Derive();
 
             Assert.Equal(item.DeliveryDate, item.AssignedDeliveryDate);
         }
@@ -720,24 +720,24 @@ namespace Allors.Domain
         [Fact]
         public void GivenOrderItemWithoutDeliveryDate_WhenDeriving_ThenDerivedDeliveryDateIsOrderDeliveryDate()
         {
-            this.InstantiateObjects(this.DatabaseSession);
+            this.InstantiateObjects(this.Session);
 
-            var good = new GoodBuilder(this.DatabaseSession)
+            var good = new GoodBuilder(this.Session)
                 .WithSku("10101")
-                .WithLocalisedName(new LocalisedTextBuilder(this.DatabaseSession).WithText("good").WithLocale(Singleton.Instance(this.DatabaseSession).DefaultLocale).Build())
-                .WithUnitOfMeasure(new UnitsOfMeasure(this.DatabaseSession).Piece)
-                .WithInventoryItemKind(new InventoryItemKinds(this.DatabaseSession).NonSerialised)
-                .WithVatRate(new VatRates(this.DatabaseSession).FindBy(M.VatRate.Rate,21))
+                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("good").WithLocale(this.Session.GetSingleton().DefaultLocale).Build())
+                .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
+                .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
+                .WithVatRate(new VatRates(this.Session).FindBy(M.VatRate.Rate,21))
                 .Build();
 
-            var item = new PurchaseOrderItemBuilder(this.DatabaseSession)
+            var item = new PurchaseOrderItemBuilder(this.Session)
                 .WithProduct(good)
                 .WithQuantityOrdered(1)
                 .Build();
 
             this.order.AddPurchaseOrderItem(item);
             
-            this.DatabaseSession.Derive();
+            this.Session.Derive();
 
             Assert.Equal(item.DeliveryDate, this.order.DeliveryDate);
         }

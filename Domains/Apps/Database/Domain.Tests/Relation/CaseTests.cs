@@ -29,20 +29,20 @@ namespace Allors.Domain
         [Fact]
         public void GivenCase_WhenBuild_ThenLastObjectStateEqualsCurrencObjectState()
         {
-            var complaint = new CaseBuilder(this.DatabaseSession).WithDescription("Complaint").Build();
+            var complaint = new CaseBuilder(this.Session).WithDescription("Complaint").Build();
 
-            this.DatabaseSession.Derive();
+            this.Session.Derive();
             
-            Assert.Equal(new CaseStates(this.DatabaseSession).Opened, complaint.CaseState);
+            Assert.Equal(new CaseStates(this.Session).Opened, complaint.CaseState);
             Assert.Equal(complaint.LastCaseState, complaint.CaseState);
         }
 
         [Fact]
         public void GivenCase_WhenBuild_ThenPreviousObjectStateIsNull()
         {
-            var complaint = new CaseBuilder(this.DatabaseSession).WithDescription("Complaint").Build();
+            var complaint = new CaseBuilder(this.Session).WithDescription("Complaint").Build();
 
-            this.DatabaseSession.Derive();
+            this.Session.Derive();
 
             Assert.Null(complaint.PreviousCaseState);
         }
@@ -50,19 +50,19 @@ namespace Allors.Domain
         [Fact]
         public void GivenCase_WhenConfirmed_ThenCurrentCaseStatusMustBeDerived()
         {
-            var complaint = new CaseBuilder(this.DatabaseSession).WithDescription("Complaint").Build();
+            var complaint = new CaseBuilder(this.Session).WithDescription("Complaint").Build();
 
-            this.DatabaseSession.Derive();
+            this.Session.Derive();
 
             Assert.Equal(1, complaint.AllVersions.Count);
-            Assert.Equal(new CaseStates(this.DatabaseSession).Opened, complaint.CaseState);
+            Assert.Equal(new CaseStates(this.Session).Opened, complaint.CaseState);
 
             complaint.AppsClose();
 
-            this.DatabaseSession.Derive();
+            this.Session.Derive();
 
             Assert.Equal(2, complaint.AllVersions.Count);
-            Assert.Equal(new CaseStates(this.DatabaseSession).Closed, complaint.CaseState);
+            Assert.Equal(new CaseStates(this.Session).Closed, complaint.CaseState);
         }
     }
 }

@@ -31,73 +31,73 @@ namespace Allors.Domain
         [Fact]
         public void GivenCommunicationEvent_WhenInProgress_ThenCurrentObjectStateIsInProgress()
         {
-            var communication = new FaceToFaceCommunicationBuilder(this.DatabaseSession)
-                .WithOwner(new PersonBuilder(this.DatabaseSession).WithLastName("owner").WithPersonRole(new PersonRoles(this.DatabaseSession).Employee).Build())
-                .WithParticipant(new PersonBuilder(this.DatabaseSession).WithLastName("participant1").WithPersonRole(new PersonRoles(this.DatabaseSession).Customer).Build())
-                .WithParticipant(new PersonBuilder(this.DatabaseSession).WithLastName("participant2").WithPersonRole(new PersonRoles(this.DatabaseSession).Customer).Build())
+            var communication = new FaceToFaceCommunicationBuilder(this.Session)
+                .WithOwner(new PersonBuilder(this.Session).WithLastName("owner").WithPersonRole(new PersonRoles(this.Session).Employee).Build())
+                .WithParticipant(new PersonBuilder(this.Session).WithLastName("participant1").WithPersonRole(new PersonRoles(this.Session).Customer).Build())
+                .WithParticipant(new PersonBuilder(this.Session).WithLastName("participant2").WithPersonRole(new PersonRoles(this.Session).Customer).Build())
                 .WithSubject("Hello")
                 .WithActualStart(DateTime.UtcNow)
                 .Build();
 
-            this.DatabaseSession.Derive();
+            this.Session.Derive();
 
-            Assert.Equal(new CommunicationEventStates(this.DatabaseSession).InProgress, communication.CommunicationEventState);
+            Assert.Equal(new CommunicationEventStates(this.Session).InProgress, communication.CommunicationEventState);
         }
 
         [Fact]
         public void GivenCommunicationEvent_WhenInPast_ThenCurrencObjectStateIsCompleted()
         {
-            var communication = new FaceToFaceCommunicationBuilder(this.DatabaseSession)
-                .WithOwner(new PersonBuilder(this.DatabaseSession).WithLastName("owner").WithPersonRole(new PersonRoles(this.DatabaseSession).Employee).Build())
-                .WithParticipant(new PersonBuilder(this.DatabaseSession).WithLastName("participant1").WithPersonRole(new PersonRoles(this.DatabaseSession).Customer).Build())
-                .WithParticipant(new PersonBuilder(this.DatabaseSession).WithLastName("participant2").WithPersonRole(new PersonRoles(this.DatabaseSession).Customer).Build())
+            var communication = new FaceToFaceCommunicationBuilder(this.Session)
+                .WithOwner(new PersonBuilder(this.Session).WithLastName("owner").WithPersonRole(new PersonRoles(this.Session).Employee).Build())
+                .WithParticipant(new PersonBuilder(this.Session).WithLastName("participant1").WithPersonRole(new PersonRoles(this.Session).Customer).Build())
+                .WithParticipant(new PersonBuilder(this.Session).WithLastName("participant2").WithPersonRole(new PersonRoles(this.Session).Customer).Build())
                 .WithSubject("Hello")
                 .WithActualStart(DateTime.UtcNow.AddHours(-2))
                 .WithActualEnd(DateTime.UtcNow.AddHours(-1))
                 .Build();
 
-            this.DatabaseSession.Derive();
+            this.Session.Derive();
 
-            Assert.Equal(new CommunicationEventStates(this.DatabaseSession).Completed, communication.CommunicationEventState);
+            Assert.Equal(new CommunicationEventStates(this.Session).Completed, communication.CommunicationEventState);
         }
 
         [Fact]
         public void GivenCommunicationEvent_WhenInFuture_ThenCurrencObjectStateIsScheduled()
         {
-            var communication = new FaceToFaceCommunicationBuilder(this.DatabaseSession)
-                .WithOwner(new PersonBuilder(this.DatabaseSession).WithLastName("owner").WithPersonRole(new PersonRoles(this.DatabaseSession).Employee).Build())
-                .WithParticipant(new PersonBuilder(this.DatabaseSession).WithLastName("participant1").WithPersonRole(new PersonRoles(this.DatabaseSession).Customer).Build())
-                .WithParticipant(new PersonBuilder(this.DatabaseSession).WithLastName("participant2").WithPersonRole(new PersonRoles(this.DatabaseSession).Customer).Build())
+            var communication = new FaceToFaceCommunicationBuilder(this.Session)
+                .WithOwner(new PersonBuilder(this.Session).WithLastName("owner").WithPersonRole(new PersonRoles(this.Session).Employee).Build())
+                .WithParticipant(new PersonBuilder(this.Session).WithLastName("participant1").WithPersonRole(new PersonRoles(this.Session).Customer).Build())
+                .WithParticipant(new PersonBuilder(this.Session).WithLastName("participant2").WithPersonRole(new PersonRoles(this.Session).Customer).Build())
                 .WithSubject("Hello")
                 .WithActualStart(DateTime.UtcNow.AddHours(+1))
                 .WithActualEnd(DateTime.UtcNow.AddHours(+2))
                 .Build();
 
-            this.DatabaseSession.Derive();
+            this.Session.Derive();
 
-            Assert.Equal(new CommunicationEventStates(this.DatabaseSession).Scheduled, communication.CommunicationEventState);
+            Assert.Equal(new CommunicationEventStates(this.Session).Scheduled, communication.CommunicationEventState);
         }
 
         [Fact]
         public void GivenFaceToFaceCommunication_WhenConfirmed_ThenCurrentCommunicationEventStatusMustBeDerived()
         {
-            var communication = new FaceToFaceCommunicationBuilder(this.DatabaseSession)
-                .WithOwner(new PersonBuilder(this.DatabaseSession).WithLastName("owner").WithPersonRole(new PersonRoles(this.DatabaseSession).Employee).Build())
-                .WithParticipant(new PersonBuilder(this.DatabaseSession).WithLastName("participant1").WithPersonRole(new PersonRoles(this.DatabaseSession).Customer).Build())
-                .WithParticipant(new PersonBuilder(this.DatabaseSession).WithLastName("participant2").WithPersonRole(new PersonRoles(this.DatabaseSession).Customer).Build())
+            var communication = new FaceToFaceCommunicationBuilder(this.Session)
+                .WithOwner(new PersonBuilder(this.Session).WithLastName("owner").WithPersonRole(new PersonRoles(this.Session).Employee).Build())
+                .WithParticipant(new PersonBuilder(this.Session).WithLastName("participant1").WithPersonRole(new PersonRoles(this.Session).Customer).Build())
+                .WithParticipant(new PersonBuilder(this.Session).WithLastName("participant2").WithPersonRole(new PersonRoles(this.Session).Customer).Build())
                 .WithSubject("Hello")
                 .WithActualStart(DateTime.UtcNow)
                 .Build();
 
-            this.DatabaseSession.Derive();
+            this.Session.Derive();
 
-            Assert.Equal(new CommunicationEventStates(this.DatabaseSession).InProgress, communication.CommunicationEventState);
+            Assert.Equal(new CommunicationEventStates(this.Session).InProgress, communication.CommunicationEventState);
 
             communication.Close();
             
-            this.DatabaseSession.Derive();
+            this.Session.Derive();
 
-            Assert.Equal(new CommunicationEventStates(this.DatabaseSession).Completed, communication.CommunicationEventState);
+            Assert.Equal(new CommunicationEventStates(this.Session).Completed, communication.CommunicationEventState);
         }
     }
 }

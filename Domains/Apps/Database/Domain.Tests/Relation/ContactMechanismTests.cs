@@ -29,24 +29,24 @@ namespace Allors.Domain
         [Fact]
         public void GivenTelecommunicationsNumber_WhenDeriving_ThenRequiredRelationsMustExist()
         {
-            var builder = new TelecommunicationsNumberBuilder(this.DatabaseSession);
+            var builder = new TelecommunicationsNumberBuilder(this.Session);
             var contactMechanism = builder.Build();
 
-            Assert.True(this.DatabaseSession.Derive(false).HasErrors);
+            Assert.True(this.Session.Derive(false).HasErrors);
 
-            this.DatabaseSession.Rollback();
+            this.Session.Rollback();
 
             builder.WithAreaCode("area");
             contactMechanism = builder.Build();
 
-            Assert.True(this.DatabaseSession.Derive(false).HasErrors);
+            Assert.True(this.Session.Derive(false).HasErrors);
 
-            this.DatabaseSession.Rollback();
+            this.Session.Rollback();
 
             builder.WithContactNumber("number");
             contactMechanism = builder.Build();
 
-            Assert.False(this.DatabaseSession.Derive(false).HasErrors);
+            Assert.False(this.Session.Derive(false).HasErrors);
         }
     }
 }

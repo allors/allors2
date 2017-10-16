@@ -29,111 +29,111 @@ namespace Allors.Domain
         [Fact]
         public void GivenColor_WhenDeriving_ThenRequiredRelationsMustExist()
         {
-            var builder = new ColourBuilder(this.DatabaseSession);
+            var builder = new ColourBuilder(this.Session);
             builder.Build();
 
-            Assert.True(this.DatabaseSession.Derive(false).HasErrors);
+            Assert.True(this.Session.Derive(false).HasErrors);
 
-            this.DatabaseSession.Rollback();
+            this.Session.Rollback();
 
             builder.WithName("name").Build();
 
-            Assert.False(this.DatabaseSession.Derive(false).HasErrors);
+            Assert.False(this.Session.Derive(false).HasErrors);
         }
 
         [Fact]
         public void GivenDimension_WhenDeriving_ThenRequiredRelationsMustExist()
         {
-            var builder = new DimensionBuilder(this.DatabaseSession);
+            var builder = new DimensionBuilder(this.Session);
             builder.Build();
 
-            Assert.True(this.DatabaseSession.Derive(false).HasErrors);
+            Assert.True(this.Session.Derive(false).HasErrors);
 
-            this.DatabaseSession.Rollback();
+            this.Session.Rollback();
 
-            var unitOfMeasure = new UnitOfMeasureBuilder(this.DatabaseSession)
+            var unitOfMeasure = new UnitOfMeasureBuilder(this.Session)
                 .WithName("uom")
                 .Build();
 
             builder.WithUnitOfMeasure(unitOfMeasure);
             builder.Build();
 
-            Assert.False(this.DatabaseSession.Derive(false).HasErrors);
+            Assert.False(this.Session.Derive(false).HasErrors);
         }
 
         [Fact]
         public void GivenModel_WhenDeriving_ThenRequiredRelationsMustExist()
         {
-            var builder = new ModelBuilder(this.DatabaseSession);
+            var builder = new ModelBuilder(this.Session);
             builder.Build();
 
-            Assert.True(this.DatabaseSession.Derive(false).HasErrors);
+            Assert.True(this.Session.Derive(false).HasErrors);
 
-            this.DatabaseSession.Rollback();
+            this.Session.Rollback();
 
             builder.WithName("name").Build();
 
-            Assert.False(this.DatabaseSession.Derive(false).HasErrors);
+            Assert.False(this.Session.Derive(false).HasErrors);
         }
 
         [Fact]
         public void GivenServiceFeature_WhenDeriving_ThenRequiredRelationsMustExist()
         {
-            var builder = new ServiceFeatureBuilder(this.DatabaseSession);
+            var builder = new ServiceFeatureBuilder(this.Session);
             builder.Build();
 
-            Assert.True(this.DatabaseSession.Derive(false).HasErrors);
+            Assert.True(this.Session.Derive(false).HasErrors);
 
-            this.DatabaseSession.Rollback();
+            this.Session.Rollback();
 
             builder.WithName("name").Build();
 
-            Assert.False(this.DatabaseSession.Derive(false).HasErrors);
+            Assert.False(this.Session.Derive(false).HasErrors);
         }
 
         [Fact]
         public void GivenSizeConstant_WhenDeriving_ThenRequiredRelationsMustExist()
         {
-            var builder = new SizeBuilder(this.DatabaseSession);
+            var builder = new SizeBuilder(this.Session);
             builder.Build();
 
-            Assert.True(this.DatabaseSession.Derive(false).HasErrors);
+            Assert.True(this.Session.Derive(false).HasErrors);
 
-            this.DatabaseSession.Rollback();
+            this.Session.Rollback();
 
             builder.WithName("name").Build();
 
-            Assert.False(this.DatabaseSession.Derive(false).HasErrors);
+            Assert.False(this.Session.Derive(false).HasErrors);
         }
 
         [Fact]
         public void GivenSoftwareFeature_WhenDeriving_ThenRequiredRelationsMustExist()
         {
-            var builder = new SoftwareFeatureBuilder(this.DatabaseSession);
+            var builder = new SoftwareFeatureBuilder(this.Session);
             builder.Build();
 
-            Assert.True(this.DatabaseSession.Derive(false).HasErrors);
+            Assert.True(this.Session.Derive(false).HasErrors);
 
-            this.DatabaseSession.Rollback();
+            this.Session.Rollback();
 
             builder.WithName("name").Build();
 
-            Assert.False(this.DatabaseSession.Derive(false).HasErrors);
+            Assert.False(this.Session.Derive(false).HasErrors);
         }
 
         [Fact]
         public void GivenProductQualityConstant_WhenDeriving_ThenRequiredRelationsMustExist()
         {
-            var builder = new ProductQualityBuilder(this.DatabaseSession);
+            var builder = new ProductQualityBuilder(this.Session);
             builder.Build();
 
-            Assert.True(this.DatabaseSession.Derive(false).HasErrors);
+            Assert.True(this.Session.Derive(false).HasErrors);
 
-            this.DatabaseSession.Rollback();
+            this.Session.Rollback();
 
             builder.WithName("name").Build();
 
-            Assert.False(this.DatabaseSession.Derive(false).HasErrors);
+            Assert.False(this.Session.Derive(false).HasErrors);
         }
     }
 }

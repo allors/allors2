@@ -22,60 +22,75 @@
 namespace Allors
 {
     using System;
+    using System.IO;
+    using System.Reflection;
 
     using Allors.Adapters.Memory;
     using Allors.Domain;
     using Allors.Meta;
-    using Allors.Services.Base;
+    using Allors.Services;
+
+    using Microsoft.Extensions.DependencyInjection;
 
     public class DomainTest : IDisposable
     {
-        public DomainTest()
+        public DomainTest(bool populate = true)
         {
-            var configuration = new Configuration
-                                    { 
-                                        ObjectFactory = new ObjectFactory(MetaPopulation.Instance, typeof(User)),
-                                    };
-
-            var database = new Database(configuration);
-
-            database.Init();
-
-            var timeService = new TimeService();
-            var mailService = new MailService { DefaultSender = "noreply@example.com" };
-            var securityService = new SecurityService();
-            var serviceLocator = new ServiceLocator
-                                     {
-                                         TimeServiceFactory = () => timeService,
-                                         MailServiceFactory = () => mailService,
-                                         SecurityServiceFactory = () => securityService
-                                     };
-            database.SetServiceLocator(serviceLocator.Assert());
-
-            Fixture.Setup(database);
-
-            this.DatabaseSession = database.CreateSession();
-
-            this.SetIdentity(Users.AdministratorUserName);
+            this.Setup(populate);
         }
 
-        public ISession DatabaseSession { get; private set; }
+        public ISession Session { get; private set; }
+
+        public ITimeService TimeService => this.Session.ServiceProvider.GetRequiredService<ITimeService>();
+
+        public TimeSpan? TimeShift
+        {
+            get => this.TimeService.Shift;
+
+            set => this.TimeService.Shift = value;
+        }
+
+        protected ObjectFactory ObjectFactory => new ObjectFactory(MetaPopulation.Instance, typeof(User));
 
         public void Dispose()
         {
-            this.DatabaseSession.Rollback();
-            this.DatabaseSession = null;
+            this.Session.Rollback();
+            this.Session = null;
         }
 
-        protected IObject[] GetObjects(ISession session, Composite objectType)
+        protected void Setup(bool populate)
         {
-            return session.Extent(objectType);
+            var services = new ServiceCollection();
+            services.AddAllors(Directory.GetCurrentDirectory());
+            var serviceProvider = services.BuildServiceProvider();
+
+            var configuration = new Configuration
+                                    {
+                                        ObjectFactory = this.ObjectFactory,
+                                    };
+
+            var database = new Database(serviceProvider, configuration);
+            this.Setup(database, populate);
+        }
+
+        protected void Setup(IDatabase database, bool populate)
+        {
+            database.Init();
+
+            this.Session = database.CreateSession();
+
+            if (populate)
+            {
+                new Setup(this.Session, null).Apply();
+                this.Session.Commit();
+            }
         }
 
         protected void SetIdentity(string identity)
         {
-            var users = new Users(this.DatabaseSession);
-            users.CurrentUser = users.GetUser(identity) ?? Singleton.Instance(this.DatabaseSession).Guest;
+            var users = new Users(this.Session);
+            var user = users.GetUser(identity) ?? this.Session.GetSingleton().Guest;
+            this.Session.SetUser(user);
         }
     }
 }

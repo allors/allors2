@@ -32,7 +32,7 @@
         protected void SetIdentity(ISession session, string identity)
         {
             var users = new Users(session);
-            users.CurrentUser = users.GetUser(identity) ?? Singleton.Instance(session).Guest;
+            users.CurrentUser = users.GetUser(identity) ?? session.GetSingleton().Guest;
         }
 
         protected IDatabase CreateDatabase(IsolationLevel isolationLevel = IsolationLevel.Snapshot)

@@ -29,69 +29,69 @@ namespace Allors.Domain
         [Fact]
         public void GivenCreditCard_WhenDeriving_ThenRequiredRelationsMustExist()
         {
-            var builder = new CreditCardBuilder(this.DatabaseSession);
+            var builder = new CreditCardBuilder(this.Session);
             builder.Build();
 
-            Assert.True(this.DatabaseSession.Derive(false).HasErrors);
+            Assert.True(this.Session.Derive(false).HasErrors);
 
-            this.DatabaseSession.Rollback();
+            this.Session.Rollback();
 
             builder.WithCardNumber("4012888888881881");
             builder.Build();
 
-            Assert.True(this.DatabaseSession.Derive(false).HasErrors);
+            Assert.True(this.Session.Derive(false).HasErrors);
 
-            this.DatabaseSession.Rollback();
+            this.Session.Rollback();
 
             builder.WithExpirationYear(2016);
             builder.Build();
 
-            Assert.True(this.DatabaseSession.Derive(false).HasErrors);
+            Assert.True(this.Session.Derive(false).HasErrors);
 
-            this.DatabaseSession.Rollback();
+            this.Session.Rollback();
 
             builder.WithExpirationMonth(03);
             builder.Build();
 
-            Assert.True(this.DatabaseSession.Derive(false).HasErrors);
+            Assert.True(this.Session.Derive(false).HasErrors);
 
-            this.DatabaseSession.Rollback();
+            this.Session.Rollback();
 
             builder.WithNameOnCard("M.E. van Knippenberg");
             builder.Build();
 
-            Assert.True(this.DatabaseSession.Derive(false).HasErrors);
+            Assert.True(this.Session.Derive(false).HasErrors);
 
-            this.DatabaseSession.Rollback();
+            this.Session.Rollback();
 
-            builder.WithCreditCardCompany(new CreditCardCompanyBuilder(this.DatabaseSession).WithName("Visa").Build());
+            builder.WithCreditCardCompany(new CreditCardCompanyBuilder(this.Session).WithName("Visa").Build());
             builder.Build();
 
-            Assert.False(this.DatabaseSession.Derive(false).HasErrors);
+            Assert.False(this.Session.Derive(false).HasErrors);
         }
 
         [Fact]
         public void GivenCreditCard_WhenDeriving_ThenCardNumberMustBeUnique()
         {
-            new CreditCardBuilder(this.DatabaseSession)
+            new CreditCardBuilder(this.Session)
                 .WithCardNumber("4012888888881881")
                 .WithExpirationYear(2016)
                 .WithExpirationMonth(03)
                 .WithNameOnCard("M.E. van Knippenberg")
-                .WithCreditCardCompany(new CreditCardCompanyBuilder(this.DatabaseSession).WithName("Visa").Build())
+                .WithCreditCardCompany(new CreditCardCompanyBuilder(this.Session).WithName("Visa").Build())
                 .Build();
 
-            Assert.False(this.DatabaseSession.Derive(false).HasErrors);
+            Assert.False(this.Session.Derive(false).HasErrors);
 
-            new CreditCardBuilder(this.DatabaseSession)
+            new CreditCardBuilder(this.Session)
                 .WithCardNumber("4012888888881881")
                 .WithExpirationYear(2016)
                 .WithExpirationMonth(03)
                 .WithNameOnCard("M.E. van Knippenberg")
-                .WithCreditCardCompany(new CreditCardCompanyBuilder(this.DatabaseSession).WithName("Visa").Build())
+                .WithCreditCardCompany(new CreditCardCompanyBuilder(this.Session).WithName("Visa").Build())
                 .Build();
             
-            Assert.True(this.DatabaseSession.Derive(false).HasErrors);
+            Assert.True(this.Session.Derive(false).HasErrors);
         }
     }
 }

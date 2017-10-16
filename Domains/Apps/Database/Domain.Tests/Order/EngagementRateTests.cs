@@ -28,24 +28,24 @@ namespace Allors.Domain
         [Fact]
         public void GivenEngagementRate_WhenDeriving_ThenRequiredRelationsMustExist()
         {
-            var builder = new EngagementRateBuilder(this.DatabaseSession);
+            var builder = new EngagementRateBuilder(this.Session);
             builder.Build();
 
-            Assert.True(this.DatabaseSession.Derive(false).HasErrors);
+            Assert.True(this.Session.Derive(false).HasErrors);
 
-            this.DatabaseSession.Rollback();
+            this.Session.Rollback();
 
             builder.WithBillingRate(10M);
             builder.Build();
 
-            Assert.True(this.DatabaseSession.Derive(false).HasErrors);
+            Assert.True(this.Session.Derive(false).HasErrors);
 
-            this.DatabaseSession.Rollback();
+            this.Session.Rollback();
 
-            builder.WithRatingType(new RatingTypes(this.DatabaseSession).Poor);
+            builder.WithRatingType(new RatingTypes(this.Session).Poor);
             builder.Build();
             
-            Assert.False(this.DatabaseSession.Derive(false).HasErrors);
+            Assert.False(this.Session.Derive(false).HasErrors);
         }
     }
 }

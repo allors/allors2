@@ -32,28 +32,28 @@ namespace Allors.Domain
         [Fact]
         public void GivenInventoryItem_WhenPositiveVariance_ThenQuantityOnHandIsRaised()
         {
-            var good = new GoodBuilder(this.DatabaseSession)
-                .WithLocalisedName(new LocalisedTextBuilder(this.DatabaseSession).WithText("good")
-                    .WithLocale(Singleton.Instance(this.DatabaseSession).DefaultLocale).Build())
+            var good = new GoodBuilder(this.Session)
+                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("good")
+                    .WithLocale(this.Session.GetSingleton().DefaultLocale).Build())
                 .WithSku("10101")
-                .WithVatRate(new VatRateBuilder(this.DatabaseSession).WithRate(21).Build())
-                .WithInventoryItemKind(new InventoryItemKinds(this.DatabaseSession).NonSerialised)
-                .WithUnitOfMeasure(new UnitsOfMeasure(this.DatabaseSession).Piece)
+                .WithVatRate(new VatRateBuilder(this.Session).WithRate(21).Build())
+                .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
+                .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
                 .Build();
 
-            var inventoryItem = new NonSerialisedInventoryItemBuilder(this.DatabaseSession)
+            var inventoryItem = new NonSerialisedInventoryItemBuilder(this.Session)
                 .WithGood(good)
                 .Build();
 
-            this.DatabaseSession.Derive();
-            this.DatabaseSession.Commit();
+            this.Session.Derive();
+            this.Session.Commit();
 
             Assert.Equal(0, good.QuantityOnHand);
             Assert.Equal(0, inventoryItem.QuantityOnHand);
 
-            inventoryItem.AddInventoryItemVariance(new InventoryItemVarianceBuilder(this.DatabaseSession).WithQuantity(10).WithReason(new VarianceReasons(this.DatabaseSession).Unknown).Build());
+            inventoryItem.AddInventoryItemVariance(new InventoryItemVarianceBuilder(this.Session).WithQuantity(10).WithReason(new VarianceReasons(this.Session).Unknown).Build());
 
-            this.DatabaseSession.Derive();
+            this.Session.Derive();
             Assert.Equal(10, good.QuantityOnHand);
             Assert.Equal(10, inventoryItem.QuantityOnHand);
         }

@@ -29,17 +29,17 @@ namespace Allors.Domain
         [Fact]
         public void GivenInvoiceTerm_WhenDeriving_ThenRequiredRelationsMustExist()
         {
-            var builder = new InvoiceTermBuilder(this.DatabaseSession);
+            var builder = new InvoiceTermBuilder(this.Session);
             var invoiceTerm = builder.Build();
 
-            Assert.True(this.DatabaseSession.Derive(false).HasErrors);
+            Assert.True(this.Session.Derive(false).HasErrors);
 
-            this.DatabaseSession.Rollback();
+            this.Session.Rollback();
 
-            builder.WithTermType(new TermTypes(this.DatabaseSession).LateFee);
+            builder.WithTermType(new TermTypes(this.Session).LateFee);
             invoiceTerm = builder.Build();
 
-            Assert.False(this.DatabaseSession.Derive(false).HasErrors);
+            Assert.False(this.Session.Derive(false).HasErrors);
         }
     }
 }

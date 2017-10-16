@@ -33,87 +33,87 @@ namespace Allors.Domain
         [Fact]
         public void GivenStore_WhenDeriving_ThenRequiredRelationsMustExist()
         {
-            var builder = new StoreBuilder(this.DatabaseSession);
+            var builder = new StoreBuilder(this.Session);
             builder.Build();
 
-            Assert.True(this.DatabaseSession.Derive(false).HasErrors);
+            Assert.True(this.Session.Derive(false).HasErrors);
 
-            this.DatabaseSession.Rollback();
+            this.Session.Rollback();
 
             builder.WithName("Organisation store");
             builder.Build();
 
-            Assert.True(this.DatabaseSession.Derive(false).HasErrors);
+            Assert.True(this.Session.Derive(false).HasErrors);
 
-            this.DatabaseSession.Rollback();
+            this.Session.Rollback();
 
-            builder.WithDefaultCarrier(new Carriers(this.DatabaseSession).Fedex);
+            builder.WithDefaultCarrier(new Carriers(this.Session).Fedex);
             builder.Build();
 
-            Assert.True(this.DatabaseSession.Derive(false).HasErrors);
+            Assert.True(this.Session.Derive(false).HasErrors);
 
-            this.DatabaseSession.Rollback();
+            this.Session.Rollback();
 
-            builder.WithDefaultShipmentMethod(new ShipmentMethods(this.DatabaseSession).Ground);
+            builder.WithDefaultShipmentMethod(new ShipmentMethods(this.Session).Ground);
             builder.Build();
 
-            Assert.False(this.DatabaseSession.Derive(false).HasErrors);
+            Assert.False(this.Session.Derive(false).HasErrors);
 
-            builder.WithSalesInvoiceCounter( new CounterBuilder(this.DatabaseSession).Build() ).Build();
+            builder.WithSalesInvoiceCounter( new CounterBuilder(this.Session).Build() ).Build();
             builder.Build();
 
-            Assert.False(this.DatabaseSession.Derive(false).HasErrors);
+            Assert.False(this.Session.Derive(false).HasErrors);
 
-            builder.WithFiscalYearInvoiceNumber(new FiscalYearInvoiceNumberBuilder(this.DatabaseSession).WithFiscalYear(DateTime.Today.Year).Build());
+            builder.WithFiscalYearInvoiceNumber(new FiscalYearInvoiceNumberBuilder(this.Session).WithFiscalYear(DateTime.Today.Year).Build());
             builder.Build();
 
-            Assert.True(this.DatabaseSession.Derive(false).HasErrors);
+            Assert.True(this.Session.Derive(false).HasErrors);
         }
 
         [Fact]
         public void GivenStore_WhenBuild_ThenPostBuildRelationsMustExist()
         {
-            var internalOrganisation = Singleton.Instance(this.DatabaseSession).InternalOrganisation;
+            var internalOrganisation = this.Session.GetSingleton().InternalOrganisation;
 
-            var store = new StoreBuilder(this.DatabaseSession)
+            var store = new StoreBuilder(this.Session)
                 .WithName("Organisation store")
-                .WithDefaultCarrier(new Carriers(this.DatabaseSession).Fedex)
-                .WithDefaultShipmentMethod(new ShipmentMethods(this.DatabaseSession).Ground)
+                .WithDefaultCarrier(new Carriers(this.Session).Fedex)
+                .WithDefaultShipmentMethod(new ShipmentMethods(this.Session).Ground)
                 .Build();
 
-            this.DatabaseSession.Derive();
+            this.Session.Derive();
 
             Assert.Equal(0, store.CreditLimit);
             Assert.Equal(0, store.PaymentGracePeriod);
             Assert.Equal(0, store.ShipmentThreshold);
             Assert.Equal(internalOrganisation.DefaultPaymentMethod, store.DefaultPaymentMethod);
             Assert.Equal(1, store.PaymentMethods.Count);
-            Assert.Equal(new Facilities(this.DatabaseSession).FindBy(M.Facility.FacilityType, new FacilityTypes(this.DatabaseSession).Warehouse), store.DefaultFacility);
+            Assert.Equal(new Facilities(this.Session).FindBy(M.Facility.FacilityType, new FacilityTypes(this.Session).Warehouse), store.DefaultFacility);
         }
 
         [Fact]
         public void GivenStore_WhenDefaultPaymentMethodIsSet_ThenPaymentMethodIsAddedToCollectionPaymentMethods()
         {
-            this.DatabaseSession.Commit();
+            this.Session.Commit();
 
-            var netherlands = new Countries(this.DatabaseSession).CountryByIsoCode["NL"];
+            var netherlands = new Countries(this.Session).CountryByIsoCode["NL"];
             var euro = netherlands.Currency;
 
-            var bank = new BankBuilder(this.DatabaseSession).WithCountry(netherlands).WithName("RABOBANK GROEP").WithBic("RABONL2U").Build();
+            var bank = new BankBuilder(this.Session).WithCountry(netherlands).WithName("RABOBANK GROEP").WithBic("RABONL2U").Build();
 
-            var ownBankAccount = new OwnBankAccountBuilder(this.DatabaseSession)
+            var ownBankAccount = new OwnBankAccountBuilder(this.Session)
                 .WithDescription("BE23 3300 6167 6391")
-                .WithBankAccount(new BankAccountBuilder(this.DatabaseSession).WithBank(bank).WithCurrency(euro).WithIban("NL50RABO0109546784").WithNameOnAccount("Martien").Build())
+                .WithBankAccount(new BankAccountBuilder(this.Session).WithBank(bank).WithCurrency(euro).WithIban("NL50RABO0109546784").WithNameOnAccount("Martien").Build())
                 .Build();
 
-            var store = new StoreBuilder(this.DatabaseSession)
+            var store = new StoreBuilder(this.Session)
                 .WithName("Organisation store")
-                .WithDefaultCarrier(new Carriers(this.DatabaseSession).Fedex)
-                .WithDefaultShipmentMethod(new ShipmentMethods(this.DatabaseSession).Ground)
+                .WithDefaultCarrier(new Carriers(this.Session).Fedex)
+                .WithDefaultShipmentMethod(new ShipmentMethods(this.Session).Ground)
                 .WithDefaultPaymentMethod(ownBankAccount)
                 .Build();
 
-            this.DatabaseSession.Derive();
+            this.Session.Derive();
 
             Assert.Equal(1, store.PaymentMethods.Count);
             Assert.Equal(ownBankAccount, store.PaymentMethods.First);
@@ -122,26 +122,26 @@ namespace Allors.Domain
         [Fact]
         public void GivenStoreWithoutDefaultPaymentMethod_WhenSinglePaymentMethodIsAdded_ThenDefaultPaymentMethodIsSet()
         {
-            this.DatabaseSession.Commit();
+            this.Session.Commit();
 
-            var netherlands = new Countries(this.DatabaseSession).CountryByIsoCode["NL"];
+            var netherlands = new Countries(this.Session).CountryByIsoCode["NL"];
             var euro = netherlands.Currency;
 
-            var bank = new BankBuilder(this.DatabaseSession).WithCountry(netherlands).WithName("RABOBANK GROEP").WithBic("RABONL2U").Build();
+            var bank = new BankBuilder(this.Session).WithCountry(netherlands).WithName("RABOBANK GROEP").WithBic("RABONL2U").Build();
 
-            var ownBankAccount = new OwnBankAccountBuilder(this.DatabaseSession)
+            var ownBankAccount = new OwnBankAccountBuilder(this.Session)
                 .WithDescription("BE23 3300 6167 6391")
-                .WithBankAccount(new BankAccountBuilder(this.DatabaseSession).WithBank(bank).WithCurrency(euro).WithIban("NL50RABO0109546784").WithNameOnAccount("Martien").Build())
+                .WithBankAccount(new BankAccountBuilder(this.Session).WithBank(bank).WithCurrency(euro).WithIban("NL50RABO0109546784").WithNameOnAccount("Martien").Build())
                 .Build();
 
-            var store = new StoreBuilder(this.DatabaseSession)
+            var store = new StoreBuilder(this.Session)
                 .WithName("Organisation store")
-                .WithDefaultCarrier(new Carriers(this.DatabaseSession).Fedex)
-                .WithDefaultShipmentMethod(new ShipmentMethods(this.DatabaseSession).Ground)
+                .WithDefaultCarrier(new Carriers(this.Session).Fedex)
+                .WithDefaultShipmentMethod(new ShipmentMethods(this.Session).Ground)
                 .WithPaymentMethod(ownBankAccount)
                 .Build();
 
-            this.DatabaseSession.Derive();
+            this.Session.Derive();
 
             Assert.Equal(ownBankAccount, store.DefaultPaymentMethod);
         }

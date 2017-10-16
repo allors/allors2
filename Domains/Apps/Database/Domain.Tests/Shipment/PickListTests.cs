@@ -34,11 +34,11 @@ namespace Allors.Domain
         [Fact]
         public void GivenPickListBuilder_WhenBuild_ThenPostBuildRelationsMustExist()
         {
-            var pickList = new PickListBuilder(this.DatabaseSession).Build();
+            var pickList = new PickListBuilder(this.Session).Build();
 
-            this.DatabaseSession.Derive();
+            this.Session.Derive();
 
-            Assert.Equal(new PickListStates(this.DatabaseSession).Created, pickList.PickListState);
+            Assert.Equal(new PickListStates(this.Session).Created, pickList.PickListState);
         }
 
         [Fact]
@@ -46,11 +46,11 @@ namespace Allors.Domain
         {
             this.SetIdentity("orderProcessor");
 
-            var pickList = new PickListBuilder(this.DatabaseSession).Build();
+            var pickList = new PickListBuilder(this.Session).Build();
 
-            this.DatabaseSession.Derive();
+            this.Session.Derive();
 
-            var acl = new AccessControlList(pickList, new Users(this.DatabaseSession).CurrentUser);
+            var acl = new AccessControlList(pickList, this.Session.GetUser());
             Assert.True(acl.CanExecute(M.PickList.Cancel));
         }
 
@@ -59,15 +59,15 @@ namespace Allors.Domain
         {
             this.SetIdentity("orderProcessor");
 
-            var pickList = new PickListBuilder(this.DatabaseSession).Build();
+            var pickList = new PickListBuilder(this.Session).Build();
 
-            this.DatabaseSession.Derive();
+            this.Session.Derive();
 
             pickList.Cancel();
 
-            this.DatabaseSession.Derive();
+            this.Session.Derive();
 
-            var acl = new AccessControlList(pickList, new Users(this.DatabaseSession).CurrentUser);
+            var acl = new AccessControlList(pickList, this.Session.GetUser());
             Assert.False(acl.CanExecute(M.PickList.Cancel));
             Assert.False(acl.CanExecute(M.PickList.SetPicked));
         }
@@ -77,15 +77,15 @@ namespace Allors.Domain
         {
             this.SetIdentity("orderProcessor");
 
-            var pickList = new PickListBuilder(this.DatabaseSession).Build();
+            var pickList = new PickListBuilder(this.Session).Build();
 
-            this.DatabaseSession.Derive();
+            this.Session.Derive();
 
             pickList.SetPicked();
 
-            this.DatabaseSession.Derive();
+            this.Session.Derive();
 
-            var acl = new AccessControlList(pickList, new Users(this.DatabaseSession).CurrentUser);
+            var acl = new AccessControlList(pickList, this.Session.GetUser());
             Assert.False(acl.CanExecute(M.PickList.Cancel));
             Assert.False(acl.CanExecute(M.PickList.SetPicked));
         }
@@ -93,128 +93,128 @@ namespace Allors.Domain
         [Fact]
         public void GivenPickList_WhenPicked_ThenInventoryIsAdjustedAndOrderItemsQuantityPickedIsSet()
         {
-            var mechelen = new CityBuilder(this.DatabaseSession).WithName("Mechelen").Build();
-            var mechelenAddress = new PostalAddressBuilder(this.DatabaseSession).WithGeographicBoundary(mechelen).WithAddress1("Haverwerf 15").Build();
-            var shipToMechelen = new PartyContactMechanismBuilder(this.DatabaseSession)
+            var mechelen = new CityBuilder(this.Session).WithName("Mechelen").Build();
+            var mechelenAddress = new PostalAddressBuilder(this.Session).WithGeographicBoundary(mechelen).WithAddress1("Haverwerf 15").Build();
+            var shipToMechelen = new PartyContactMechanismBuilder(this.Session)
                 .WithContactMechanism(mechelenAddress)
-                .WithContactPurpose(new ContactMechanismPurposes(this.DatabaseSession).ShippingAddress)
+                .WithContactPurpose(new ContactMechanismPurposes(this.Session).ShippingAddress)
                 .WithUseAsDefault(true)
                 .Build();
 
-            var supplier = new OrganisationBuilder(this.DatabaseSession).WithName("supplier").WithOrganisationRole(new OrganisationRoles(this.DatabaseSession).Supplier).Build();
-            var customer = new PersonBuilder(this.DatabaseSession).WithLastName("person1").WithPartyContactMechanism(shipToMechelen).WithPersonRole(new PersonRoles(this.DatabaseSession).Customer).Build();
-            var internalOrganisation = Singleton.Instance(this.DatabaseSession).InternalOrganisation;
+            var supplier = new OrganisationBuilder(this.Session).WithName("supplier").WithOrganisationRole(new OrganisationRoles(this.Session).Supplier).Build();
+            var customer = new PersonBuilder(this.Session).WithLastName("person1").WithPartyContactMechanism(shipToMechelen).WithPersonRole(new PersonRoles(this.Session).Customer).Build();
+            var internalOrganisation = this.Session.GetSingleton().InternalOrganisation;
 
-            new CustomerRelationshipBuilder(this.DatabaseSession).WithFromDate(DateTime.UtcNow).WithCustomer(customer).Build();
+            new CustomerRelationshipBuilder(this.Session).WithFromDate(DateTime.UtcNow).WithCustomer(customer).Build();
 
-            new SupplierRelationshipBuilder(this.DatabaseSession)
+            new SupplierRelationshipBuilder(this.Session)
                 .WithSupplier(supplier)
                 .WithFromDate(DateTime.UtcNow)
                 .Build();
 
-            var vatRate21 = new VatRateBuilder(this.DatabaseSession).WithRate(21).Build();
+            var vatRate21 = new VatRateBuilder(this.Session).WithRate(21).Build();
 
-            var good1 = new GoodBuilder(this.DatabaseSession)
+            var good1 = new GoodBuilder(this.Session)
                 .WithSku("10101")
                 .WithVatRate(vatRate21)
-                .WithLocalisedName(new LocalisedTextBuilder(this.DatabaseSession).WithText("good1").WithLocale(Singleton.Instance(this.DatabaseSession).DefaultLocale).Build())
-                .WithInventoryItemKind(new InventoryItemKinds(this.DatabaseSession).NonSerialised)
-                .WithUnitOfMeasure(new UnitsOfMeasure(this.DatabaseSession).Piece)
+                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("good1").WithLocale(this.Session.GetSingleton().DefaultLocale).Build())
+                .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
+                .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
                 .Build();
 
-            var good2 = new GoodBuilder(this.DatabaseSession)
+            var good2 = new GoodBuilder(this.Session)
                 .WithSku("10102")
                 .WithVatRate(vatRate21)
-                .WithLocalisedName(new LocalisedTextBuilder(this.DatabaseSession).WithText("good2").WithLocale(Singleton.Instance(this.DatabaseSession).DefaultLocale).Build())
-                .WithInventoryItemKind(new InventoryItemKinds(this.DatabaseSession).NonSerialised)
-                .WithUnitOfMeasure(new UnitsOfMeasure(this.DatabaseSession).Piece)
+                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("good2").WithLocale(this.Session.GetSingleton().DefaultLocale).Build())
+                .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
+                .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
                 .Build();
 
-            var good1PurchasePrice = new ProductPurchasePriceBuilder(this.DatabaseSession)
-                .WithCurrency(new Currencies(this.DatabaseSession).FindBy(M.Currency.IsoCode, "EUR"))
+            var good1PurchasePrice = new ProductPurchasePriceBuilder(this.Session)
+                .WithCurrency(new Currencies(this.Session).FindBy(M.Currency.IsoCode, "EUR"))
                 .WithFromDate(DateTime.UtcNow)
                 .WithPrice(7)
-                .WithUnitOfMeasure(new UnitsOfMeasure(this.DatabaseSession).Piece)
+                .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
                 .Build();
 
-            var good2PurchasePrice = new ProductPurchasePriceBuilder(this.DatabaseSession)
-                .WithCurrency(new Currencies(this.DatabaseSession).FindBy(M.Currency.IsoCode, "EUR"))
+            var good2PurchasePrice = new ProductPurchasePriceBuilder(this.Session)
+                .WithCurrency(new Currencies(this.Session).FindBy(M.Currency.IsoCode, "EUR"))
                 .WithFromDate(DateTime.UtcNow)
                 .WithPrice(7)
-                .WithUnitOfMeasure(new UnitsOfMeasure(this.DatabaseSession).Piece)
+                .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
                 .Build();
 
-            new SupplierOfferingBuilder(this.DatabaseSession)
+            new SupplierOfferingBuilder(this.Session)
                 .WithProduct(good1)
                 .WithProductPurchasePrice(good1PurchasePrice)
                 .WithSupplier(supplier)
                 .WithFromDate(DateTime.UtcNow)
                 .Build();
 
-            new SupplierOfferingBuilder(this.DatabaseSession)
+            new SupplierOfferingBuilder(this.Session)
                 .WithProduct(good2)
                 .WithProductPurchasePrice(good2PurchasePrice)
                 .WithSupplier(supplier)
                 .WithFromDate(DateTime.UtcNow)
                 .Build();
 
-            this.DatabaseSession.Derive();
+            this.Session.Derive();
 
             var good1Inventory = (NonSerialisedInventoryItem)good1.InventoryItemsWhereGood[0];
-            good1Inventory.AddInventoryItemVariance(new InventoryItemVarianceBuilder(this.DatabaseSession).WithQuantity(100).WithReason(new VarianceReasons(this.DatabaseSession).Unknown).Build());
+            good1Inventory.AddInventoryItemVariance(new InventoryItemVarianceBuilder(this.Session).WithQuantity(100).WithReason(new VarianceReasons(this.Session).Unknown).Build());
 
-            this.DatabaseSession.Derive();
+            this.Session.Derive();
 
             var good2Inventory = (NonSerialisedInventoryItem)good2.InventoryItemsWhereGood[0];
-            good2Inventory.AddInventoryItemVariance(new InventoryItemVarianceBuilder(this.DatabaseSession).WithQuantity(100).WithReason(new VarianceReasons(this.DatabaseSession).Unknown).Build());
+            good2Inventory.AddInventoryItemVariance(new InventoryItemVarianceBuilder(this.Session).WithQuantity(100).WithReason(new VarianceReasons(this.Session).Unknown).Build());
 
-            this.DatabaseSession.Derive();
+            this.Session.Derive();
 
-            var colorWhite = new ColourBuilder(this.DatabaseSession)
+            var colorWhite = new ColourBuilder(this.Session)
                 .WithName("white")
-                .WithLocalisedName(new LocalisedTextBuilder(this.DatabaseSession)
+                .WithLocalisedName(new LocalisedTextBuilder(this.Session)
                             .WithText("white")
-                            .WithLocale(Singleton.Instance(this.DatabaseSession).DefaultLocale)
+                            .WithLocale(this.Session.GetSingleton().DefaultLocale)
                             .Build())
 
                 .Build();
-            var extraLarge = new SizeBuilder(this.DatabaseSession)
+            var extraLarge = new SizeBuilder(this.Session)
                 .WithName("extra large")
-                .WithLocalisedName(new LocalisedTextBuilder(this.DatabaseSession)
+                .WithLocalisedName(new LocalisedTextBuilder(this.Session)
                             .WithText("Extra large")
-                            .WithLocale(Singleton.Instance(this.DatabaseSession).DefaultLocale)
+                            .WithLocale(this.Session.GetSingleton().DefaultLocale)
                             .Build())
                 .Build();
 
-            var order = new SalesOrderBuilder(this.DatabaseSession)
+            var order = new SalesOrderBuilder(this.Session)
                 .WithBillToCustomer(customer)
                 .WithShipToCustomer(customer)
-                .WithVatRegime(new VatRegimes(this.DatabaseSession).Export)
+                .WithVatRegime(new VatRegimes(this.Session).Export)
                 .Build();
 
-            var item1 = new SalesOrderItemBuilder(this.DatabaseSession).WithProduct(good1).WithQuantityOrdered(1).WithActualUnitPrice(15).Build();
-            var item2 = new SalesOrderItemBuilder(this.DatabaseSession).WithProductFeature(colorWhite).WithQuantityOrdered(1).WithActualUnitPrice(15).Build();
-            var item3 = new SalesOrderItemBuilder(this.DatabaseSession).WithProductFeature(extraLarge).WithQuantityOrdered(1).WithActualUnitPrice(15).Build();
+            var item1 = new SalesOrderItemBuilder(this.Session).WithProduct(good1).WithQuantityOrdered(1).WithActualUnitPrice(15).Build();
+            var item2 = new SalesOrderItemBuilder(this.Session).WithProductFeature(colorWhite).WithQuantityOrdered(1).WithActualUnitPrice(15).Build();
+            var item3 = new SalesOrderItemBuilder(this.Session).WithProductFeature(extraLarge).WithQuantityOrdered(1).WithActualUnitPrice(15).Build();
             item1.AddOrderedWithFeature(item2);
             item1.AddOrderedWithFeature(item3);
-            var item4 = new SalesOrderItemBuilder(this.DatabaseSession).WithProduct(good1).WithQuantityOrdered(2).WithActualUnitPrice(15).Build();
-            var item5 = new SalesOrderItemBuilder(this.DatabaseSession).WithProduct(good2).WithQuantityOrdered(5).WithActualUnitPrice(15).Build();
+            var item4 = new SalesOrderItemBuilder(this.Session).WithProduct(good1).WithQuantityOrdered(2).WithActualUnitPrice(15).Build();
+            var item5 = new SalesOrderItemBuilder(this.Session).WithProduct(good2).WithQuantityOrdered(5).WithActualUnitPrice(15).Build();
             order.AddSalesOrderItem(item1);
             order.AddSalesOrderItem(item2);
             order.AddSalesOrderItem(item3);
             order.AddSalesOrderItem(item4);
             order.AddSalesOrderItem(item5);
 
-            this.DatabaseSession.Derive();
+            this.Session.Derive();
 
             order.Confirm();
 
-            this.DatabaseSession.Derive();
+            this.Session.Derive();
 
             var shipment = (CustomerShipment)mechelenAddress.ShipmentsWhereShipToAddress[0];
 
             var pickList = good1.InventoryItemsWhereGood[0].PickListItemsWhereInventoryItem[0].PickListWherePickListItem;
-            pickList.Picker = new People(this.DatabaseSession).FindBy(M.Person.LastName, "orderProcessor");
+            pickList.Picker = new People(this.Session).FindBy(M.Person.LastName, "orderProcessor");
 
             //// item5: only 4 out of 5 are actually picked
             foreach (PickListItem pickListItem in pickList.PickListItems)
@@ -227,7 +227,7 @@ namespace Allors.Domain
 
             pickList.SetPicked();
 
-            this.DatabaseSession.Derive();
+            this.Session.Derive();
 
             //// all orderitems have same physical finished good, so there is only one picklist item.
             Assert.Equal(1, item1.QuantityPicked);
@@ -248,103 +248,103 @@ namespace Allors.Domain
         [Fact]
         public void GivenPickList_WhenActualQuantityPickedIsLess_ThenShipmentItemQuantityIsAdjusted()
         {
-            var mechelen = new CityBuilder(this.DatabaseSession).WithName("Mechelen").Build();
-            var mechelenAddress = new PostalAddressBuilder(this.DatabaseSession).WithGeographicBoundary(mechelen).WithAddress1("Haverwerf 15").Build();
-            var shipToMechelen = new PartyContactMechanismBuilder(this.DatabaseSession)
+            var mechelen = new CityBuilder(this.Session).WithName("Mechelen").Build();
+            var mechelenAddress = new PostalAddressBuilder(this.Session).WithGeographicBoundary(mechelen).WithAddress1("Haverwerf 15").Build();
+            var shipToMechelen = new PartyContactMechanismBuilder(this.Session)
                 .WithContactMechanism(mechelenAddress)
-                .WithContactPurpose(new ContactMechanismPurposes(this.DatabaseSession).ShippingAddress)
+                .WithContactPurpose(new ContactMechanismPurposes(this.Session).ShippingAddress)
                 .WithUseAsDefault(true)
                 .Build();
 
-            var supplier = new OrganisationBuilder(this.DatabaseSession).WithName("supplier").WithOrganisationRole(new OrganisationRoles(this.DatabaseSession).Supplier).Build();
-            var customer = new PersonBuilder(this.DatabaseSession).WithLastName("person1").WithPartyContactMechanism(shipToMechelen).WithPersonRole(new PersonRoles(this.DatabaseSession).Customer).Build();
-            var internalOrganisation = Singleton.Instance(this.DatabaseSession).InternalOrganisation;
+            var supplier = new OrganisationBuilder(this.Session).WithName("supplier").WithOrganisationRole(new OrganisationRoles(this.Session).Supplier).Build();
+            var customer = new PersonBuilder(this.Session).WithLastName("person1").WithPartyContactMechanism(shipToMechelen).WithPersonRole(new PersonRoles(this.Session).Customer).Build();
+            var internalOrganisation = this.Session.GetSingleton().InternalOrganisation;
 
-            new CustomerRelationshipBuilder(this.DatabaseSession).WithFromDate(DateTime.UtcNow).WithCustomer(customer).Build();
+            new CustomerRelationshipBuilder(this.Session).WithFromDate(DateTime.UtcNow).WithCustomer(customer).Build();
 
-            new SupplierRelationshipBuilder(this.DatabaseSession)
+            new SupplierRelationshipBuilder(this.Session)
                 .WithSupplier(supplier)
                 .WithFromDate(DateTime.UtcNow)
                 .Build();
 
-            var vatRate21 = new VatRateBuilder(this.DatabaseSession).WithRate(21).Build();
+            var vatRate21 = new VatRateBuilder(this.Session).WithRate(21).Build();
 
-            var good1 = new GoodBuilder(this.DatabaseSession)
+            var good1 = new GoodBuilder(this.Session)
                 .WithSku("10101")
                 .WithVatRate(vatRate21)
-                .WithLocalisedName(new LocalisedTextBuilder(this.DatabaseSession).WithText("good1").WithLocale(Singleton.Instance(this.DatabaseSession).DefaultLocale).Build())
-                .WithInventoryItemKind(new InventoryItemKinds(this.DatabaseSession).NonSerialised)
-                .WithUnitOfMeasure(new UnitsOfMeasure(this.DatabaseSession).Piece)
+                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("good1").WithLocale(this.Session.GetSingleton().DefaultLocale).Build())
+                .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
+                .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
                 .Build();
 
-            var good2 = new GoodBuilder(this.DatabaseSession)
+            var good2 = new GoodBuilder(this.Session)
                 .WithSku("10102")
                 .WithVatRate(vatRate21)
-                .WithLocalisedName(new LocalisedTextBuilder(this.DatabaseSession).WithText("good2").WithLocale(Singleton.Instance(this.DatabaseSession).DefaultLocale).Build())
-                .WithInventoryItemKind(new InventoryItemKinds(this.DatabaseSession).NonSerialised)
-                .WithUnitOfMeasure(new UnitsOfMeasure(this.DatabaseSession).Piece)
+                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("good2").WithLocale(this.Session.GetSingleton().DefaultLocale).Build())
+                .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
+                .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
                 .Build();
 
-            var good1PurchasePrice = new ProductPurchasePriceBuilder(this.DatabaseSession)
-                .WithCurrency(new Currencies(this.DatabaseSession).FindBy(M.Currency.IsoCode, "EUR"))
+            var good1PurchasePrice = new ProductPurchasePriceBuilder(this.Session)
+                .WithCurrency(new Currencies(this.Session).FindBy(M.Currency.IsoCode, "EUR"))
                 .WithFromDate(DateTime.UtcNow)
                 .WithPrice(7)
-                .WithUnitOfMeasure(new UnitsOfMeasure(this.DatabaseSession).Piece)
+                .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
                 .Build();
 
-            var good2PurchasePrice = new ProductPurchasePriceBuilder(this.DatabaseSession)
-                .WithCurrency(new Currencies(this.DatabaseSession).FindBy(M.Currency.IsoCode, "EUR"))
+            var good2PurchasePrice = new ProductPurchasePriceBuilder(this.Session)
+                .WithCurrency(new Currencies(this.Session).FindBy(M.Currency.IsoCode, "EUR"))
                 .WithFromDate(DateTime.UtcNow)
                 .WithPrice(7)
-                .WithUnitOfMeasure(new UnitsOfMeasure(this.DatabaseSession).Piece)
+                .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
                 .Build();
 
-            new SupplierOfferingBuilder(this.DatabaseSession)
+            new SupplierOfferingBuilder(this.Session)
                 .WithProduct(good1)
                 .WithProductPurchasePrice(good1PurchasePrice)
                 .WithSupplier(supplier)
                 .WithFromDate(DateTime.UtcNow)
                 .Build();
 
-            new SupplierOfferingBuilder(this.DatabaseSession)
+            new SupplierOfferingBuilder(this.Session)
                 .WithProduct(good2)
                 .WithProductPurchasePrice(good2PurchasePrice)
                 .WithSupplier(supplier)
                 .WithFromDate(DateTime.UtcNow)
                 .Build();
 
-            this.DatabaseSession.Derive();
+            this.Session.Derive();
 
             var good1Inventory = (NonSerialisedInventoryItem)good1.InventoryItemsWhereGood[0];
-            good1Inventory.AddInventoryItemVariance(new InventoryItemVarianceBuilder(this.DatabaseSession).WithQuantity(100).WithReason(new VarianceReasons(this.DatabaseSession).Unknown).Build());
+            good1Inventory.AddInventoryItemVariance(new InventoryItemVarianceBuilder(this.Session).WithQuantity(100).WithReason(new VarianceReasons(this.Session).Unknown).Build());
 
-            this.DatabaseSession.Derive();
+            this.Session.Derive();
 
             var good2Inventory = (NonSerialisedInventoryItem)good2.InventoryItemsWhereGood[0];
-            good2Inventory.AddInventoryItemVariance(new InventoryItemVarianceBuilder(this.DatabaseSession).WithQuantity(100).WithReason(new VarianceReasons(this.DatabaseSession).Unknown).Build());
+            good2Inventory.AddInventoryItemVariance(new InventoryItemVarianceBuilder(this.Session).WithQuantity(100).WithReason(new VarianceReasons(this.Session).Unknown).Build());
 
-            this.DatabaseSession.Derive();
+            this.Session.Derive();
 
-            var order = new SalesOrderBuilder(this.DatabaseSession)
+            var order = new SalesOrderBuilder(this.Session)
                 .WithBillToCustomer(customer)
                 .WithShipToCustomer(customer)
                 .Build();
 
-            var item1 = new SalesOrderItemBuilder(this.DatabaseSession).WithProduct(good1).WithQuantityOrdered(1).WithActualUnitPrice(15).Build();
-            var item2 = new SalesOrderItemBuilder(this.DatabaseSession).WithProduct(good1).WithQuantityOrdered(2).WithActualUnitPrice(15).Build();
-            var item3 = new SalesOrderItemBuilder(this.DatabaseSession).WithProduct(good2).WithQuantityOrdered(5).WithActualUnitPrice(15).Build();
+            var item1 = new SalesOrderItemBuilder(this.Session).WithProduct(good1).WithQuantityOrdered(1).WithActualUnitPrice(15).Build();
+            var item2 = new SalesOrderItemBuilder(this.Session).WithProduct(good1).WithQuantityOrdered(2).WithActualUnitPrice(15).Build();
+            var item3 = new SalesOrderItemBuilder(this.Session).WithProduct(good2).WithQuantityOrdered(5).WithActualUnitPrice(15).Build();
             order.AddSalesOrderItem(item1);
             order.AddSalesOrderItem(item2);
             order.AddSalesOrderItem(item3);
 
-            this.DatabaseSession.Derive();
+            this.Session.Derive();
 
             order.Confirm();
 
-            this.DatabaseSession.Derive();
+            this.Session.Derive();
 
             var pickList = good1.InventoryItemsWhereGood[0].PickListItemsWhereInventoryItem[0].PickListWherePickListItem;
-            pickList.Picker = new People(this.DatabaseSession).FindBy(M.Person.LastName, "orderProcessor");
+            pickList.Picker = new People(this.Session).FindBy(M.Person.LastName, "orderProcessor");
 
             //// item3: only 4 out of 5 are actually picked
             PickListItem adjustedPicklistItem = null;
@@ -366,7 +366,7 @@ namespace Allors.Domain
 
             pickList.SetPicked();
 
-            this.DatabaseSession.Derive();
+            this.Session.Derive();
 
             Assert.Equal(4, itemIssuance.Quantity);
             Assert.Equal(4, shipmentItem.Quantity);
@@ -375,101 +375,101 @@ namespace Allors.Domain
         [Fact]
         public void GivenSalesOrder_WhenShipmentIsCreated_ThenOrdertemsAreAddedToPickList()
         {
-            var mechelen = new CityBuilder(this.DatabaseSession).WithName("Mechelen").Build();
-            var mechelenAddress = new PostalAddressBuilder(this.DatabaseSession).WithGeographicBoundary(mechelen).WithAddress1("Haverwerf 15").Build();
-            var shipToMechelen = new PartyContactMechanismBuilder(this.DatabaseSession)
+            var mechelen = new CityBuilder(this.Session).WithName("Mechelen").Build();
+            var mechelenAddress = new PostalAddressBuilder(this.Session).WithGeographicBoundary(mechelen).WithAddress1("Haverwerf 15").Build();
+            var shipToMechelen = new PartyContactMechanismBuilder(this.Session)
                 .WithContactMechanism(mechelenAddress)
-                .WithContactPurpose(new ContactMechanismPurposes(this.DatabaseSession).ShippingAddress)
+                .WithContactPurpose(new ContactMechanismPurposes(this.Session).ShippingAddress)
                 .WithUseAsDefault(true)
                 .Build();
 
-            var supplier = new OrganisationBuilder(this.DatabaseSession).WithName("supplier").WithOrganisationRole(new OrganisationRoles(this.DatabaseSession).Supplier).Build();
+            var supplier = new OrganisationBuilder(this.Session).WithName("supplier").WithOrganisationRole(new OrganisationRoles(this.Session).Supplier).Build();
 
-            var customer = new PersonBuilder(this.DatabaseSession).WithLastName("person1").WithPartyContactMechanism(shipToMechelen).WithPersonRole(new PersonRoles(this.DatabaseSession).Customer).Build();
-            var internalOrganisation = Singleton.Instance(this.DatabaseSession).InternalOrganisation;
+            var customer = new PersonBuilder(this.Session).WithLastName("person1").WithPartyContactMechanism(shipToMechelen).WithPersonRole(new PersonRoles(this.Session).Customer).Build();
+            var internalOrganisation = this.Session.GetSingleton().InternalOrganisation;
 
-            new CustomerRelationshipBuilder(this.DatabaseSession).WithFromDate(DateTime.UtcNow).WithCustomer(customer).Build();
+            new CustomerRelationshipBuilder(this.Session).WithFromDate(DateTime.UtcNow).WithCustomer(customer).Build();
 
-            new SupplierRelationshipBuilder(this.DatabaseSession)
+            new SupplierRelationshipBuilder(this.Session)
                 .WithSupplier(supplier)
                 .WithFromDate(DateTime.UtcNow)
                 .Build();
 
-            var vatRate21 = new VatRateBuilder(this.DatabaseSession).WithRate(21).Build();
+            var vatRate21 = new VatRateBuilder(this.Session).WithRate(21).Build();
 
-            var good1 = new GoodBuilder(this.DatabaseSession)
+            var good1 = new GoodBuilder(this.Session)
                 .WithSku("10101")
                 .WithVatRate(vatRate21)
-                .WithLocalisedName(new LocalisedTextBuilder(this.DatabaseSession).WithText("good1").WithLocale(Singleton.Instance(this.DatabaseSession).DefaultLocale).Build())
-                .WithInventoryItemKind(new InventoryItemKinds(this.DatabaseSession).NonSerialised)
-                .WithUnitOfMeasure(new UnitsOfMeasure(this.DatabaseSession).Piece)
+                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("good1").WithLocale(this.Session.GetSingleton().DefaultLocale).Build())
+                .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
+                .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
                 .Build();
 
-            var good2 = new GoodBuilder(this.DatabaseSession)
+            var good2 = new GoodBuilder(this.Session)
                 .WithSku("10102")
                 .WithVatRate(vatRate21)
-                .WithLocalisedName(new LocalisedTextBuilder(this.DatabaseSession).WithText("good2").WithLocale(Singleton.Instance(this.DatabaseSession).DefaultLocale).Build())
-                .WithInventoryItemKind(new InventoryItemKinds(this.DatabaseSession).NonSerialised)
-                .WithUnitOfMeasure(new UnitsOfMeasure(this.DatabaseSession).Piece)
+                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("good2").WithLocale(this.Session.GetSingleton().DefaultLocale).Build())
+                .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
+                .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
                 .Build();
 
-            var good1PurchasePrice = new ProductPurchasePriceBuilder(this.DatabaseSession)
-                .WithCurrency(new Currencies(this.DatabaseSession).FindBy(M.Currency.IsoCode, "EUR"))
+            var good1PurchasePrice = new ProductPurchasePriceBuilder(this.Session)
+                .WithCurrency(new Currencies(this.Session).FindBy(M.Currency.IsoCode, "EUR"))
                 .WithFromDate(DateTime.UtcNow)
                 .WithPrice(7)
-                .WithUnitOfMeasure(new UnitsOfMeasure(this.DatabaseSession).Piece)
+                .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
                 .Build();
 
-            var good2PurchasePrice = new ProductPurchasePriceBuilder(this.DatabaseSession)
-                .WithCurrency(new Currencies(this.DatabaseSession).FindBy(M.Currency.IsoCode, "EUR"))
+            var good2PurchasePrice = new ProductPurchasePriceBuilder(this.Session)
+                .WithCurrency(new Currencies(this.Session).FindBy(M.Currency.IsoCode, "EUR"))
                 .WithFromDate(DateTime.UtcNow)
                 .WithPrice(7)
-                .WithUnitOfMeasure(new UnitsOfMeasure(this.DatabaseSession).Piece)
+                .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
                 .Build();
 
-            new SupplierOfferingBuilder(this.DatabaseSession)
+            new SupplierOfferingBuilder(this.Session)
                 .WithProduct(good1)
                 .WithProductPurchasePrice(good1PurchasePrice)
                 .WithSupplier(supplier)
                 .WithFromDate(DateTime.UtcNow)
                 .Build();
 
-            new SupplierOfferingBuilder(this.DatabaseSession)
+            new SupplierOfferingBuilder(this.Session)
                 .WithProduct(good2)
                 .WithProductPurchasePrice(good2PurchasePrice)
                 .WithSupplier(supplier)
                 .WithFromDate(DateTime.UtcNow)
                 .Build();
 
-            this.DatabaseSession.Derive();
+            this.Session.Derive();
 
             var good1Inventory = (NonSerialisedInventoryItem)good1.InventoryItemsWhereGood[0];
-            good1Inventory.AddInventoryItemVariance(new InventoryItemVarianceBuilder(this.DatabaseSession).WithQuantity(100).WithReason(new VarianceReasons(this.DatabaseSession).Ruined).Build());
+            good1Inventory.AddInventoryItemVariance(new InventoryItemVarianceBuilder(this.Session).WithQuantity(100).WithReason(new VarianceReasons(this.Session).Ruined).Build());
 
-            this.DatabaseSession.Derive();
+            this.Session.Derive();
 
             var good2Inventory = (NonSerialisedInventoryItem)good2.InventoryItemsWhereGood[0];
-            good2Inventory.AddInventoryItemVariance(new InventoryItemVarianceBuilder(this.DatabaseSession).WithQuantity(100).WithReason(new VarianceReasons(this.DatabaseSession).Ruined).Build());
+            good2Inventory.AddInventoryItemVariance(new InventoryItemVarianceBuilder(this.Session).WithQuantity(100).WithReason(new VarianceReasons(this.Session).Ruined).Build());
 
-            this.DatabaseSession.Derive();
+            this.Session.Derive();
 
-            var order = new SalesOrderBuilder(this.DatabaseSession)
+            var order = new SalesOrderBuilder(this.Session)
                 .WithBillToCustomer(customer)
                 .WithShipToCustomer(customer)
                 .Build();
 
-            var item1 = new SalesOrderItemBuilder(this.DatabaseSession).WithProduct(good1).WithQuantityOrdered(1).WithActualUnitPrice(15).Build();
-            var item2 = new SalesOrderItemBuilder(this.DatabaseSession).WithProduct(good1).WithQuantityOrdered(2).WithActualUnitPrice(15).Build();
-            var item3 = new SalesOrderItemBuilder(this.DatabaseSession).WithProduct(good2).WithQuantityOrdered(5).WithActualUnitPrice(15).Build();
+            var item1 = new SalesOrderItemBuilder(this.Session).WithProduct(good1).WithQuantityOrdered(1).WithActualUnitPrice(15).Build();
+            var item2 = new SalesOrderItemBuilder(this.Session).WithProduct(good1).WithQuantityOrdered(2).WithActualUnitPrice(15).Build();
+            var item3 = new SalesOrderItemBuilder(this.Session).WithProduct(good2).WithQuantityOrdered(5).WithActualUnitPrice(15).Build();
             order.AddSalesOrderItem(item1);
             order.AddSalesOrderItem(item2);
             order.AddSalesOrderItem(item3);
 
-            this.DatabaseSession.Derive();
+            this.Session.Derive();
 
             order.Confirm();
 
-            this.DatabaseSession.Derive();
+            this.Session.Derive();
 
             var pickList = good1.InventoryItemsWhereGood[0].PickListItemsWhereInventoryItem[0].PickListWherePickListItem;
 
@@ -487,127 +487,127 @@ namespace Allors.Domain
         [Fact]
         public void GivenMultipleOrders_WhenCombinedPickListIsPicked_ThenSingleShipmentIsPickedState()
         {
-            var mechelen = new CityBuilder(this.DatabaseSession).WithName("Mechelen").Build();
-            var mechelenAddress = new PostalAddressBuilder(this.DatabaseSession).WithGeographicBoundary(mechelen).WithAddress1("Haverwerf").Build();
-            var shipToMechelen = new PartyContactMechanismBuilder(this.DatabaseSession)
+            var mechelen = new CityBuilder(this.Session).WithName("Mechelen").Build();
+            var mechelenAddress = new PostalAddressBuilder(this.Session).WithGeographicBoundary(mechelen).WithAddress1("Haverwerf").Build();
+            var shipToMechelen = new PartyContactMechanismBuilder(this.Session)
                 .WithContactMechanism(mechelenAddress)
-                .WithContactPurpose(new ContactMechanismPurposes(this.DatabaseSession).ShippingAddress)
+                .WithContactPurpose(new ContactMechanismPurposes(this.Session).ShippingAddress)
                 .WithUseAsDefault(true)
                 .Build();
 
-            var supplier = new OrganisationBuilder(this.DatabaseSession).WithName("supplier").WithOrganisationRole(new OrganisationRoles(this.DatabaseSession).Supplier).Build();
-            var customer = new PersonBuilder(this.DatabaseSession).WithLastName("person1").WithPartyContactMechanism(shipToMechelen).WithPersonRole(new PersonRoles(this.DatabaseSession).Customer).Build();
-            var internalOrganisation = Singleton.Instance(this.DatabaseSession).InternalOrganisation;
-            new CustomerRelationshipBuilder(this.DatabaseSession).WithFromDate(DateTime.UtcNow).WithCustomer(customer).Build();
+            var supplier = new OrganisationBuilder(this.Session).WithName("supplier").WithOrganisationRole(new OrganisationRoles(this.Session).Supplier).Build();
+            var customer = new PersonBuilder(this.Session).WithLastName("person1").WithPartyContactMechanism(shipToMechelen).WithPersonRole(new PersonRoles(this.Session).Customer).Build();
+            var internalOrganisation = this.Session.GetSingleton().InternalOrganisation;
+            new CustomerRelationshipBuilder(this.Session).WithFromDate(DateTime.UtcNow).WithCustomer(customer).Build();
 
-            new SupplierRelationshipBuilder(this.DatabaseSession)
+            new SupplierRelationshipBuilder(this.Session)
                 .WithSupplier(supplier)
                 .WithFromDate(DateTime.UtcNow)
                 .Build();
 
-            var vatRate21 = new VatRateBuilder(this.DatabaseSession).WithRate(21).Build();
+            var vatRate21 = new VatRateBuilder(this.Session).WithRate(21).Build();
 
-            var good1 = new GoodBuilder(this.DatabaseSession)
+            var good1 = new GoodBuilder(this.Session)
                 .WithSku("10101")
                 .WithVatRate(vatRate21)
-                .WithLocalisedName(new LocalisedTextBuilder(this.DatabaseSession).WithText("good1").WithLocale(Singleton.Instance(this.DatabaseSession).DefaultLocale).Build())
-                .WithInventoryItemKind(new InventoryItemKinds(this.DatabaseSession).NonSerialised)
-                .WithUnitOfMeasure(new UnitsOfMeasure(this.DatabaseSession).Piece)
+                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("good1").WithLocale(this.Session.GetSingleton().DefaultLocale).Build())
+                .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
+                .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
                 .Build();
 
-            var good2 = new GoodBuilder(this.DatabaseSession)
+            var good2 = new GoodBuilder(this.Session)
                 .WithSku("10102")
                 .WithVatRate(vatRate21)
-                .WithLocalisedName(new LocalisedTextBuilder(this.DatabaseSession).WithText("good2").WithLocale(Singleton.Instance(this.DatabaseSession).DefaultLocale).Build())
-                .WithInventoryItemKind(new InventoryItemKinds(this.DatabaseSession).NonSerialised)
-                .WithUnitOfMeasure(new UnitsOfMeasure(this.DatabaseSession).Piece)
+                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("good2").WithLocale(this.Session.GetSingleton().DefaultLocale).Build())
+                .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
+                .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
                 .Build();
 
-            var good1PurchasePrice = new ProductPurchasePriceBuilder(this.DatabaseSession)
-                .WithCurrency(new Currencies(this.DatabaseSession).FindBy(M.Currency.IsoCode, "EUR"))
+            var good1PurchasePrice = new ProductPurchasePriceBuilder(this.Session)
+                .WithCurrency(new Currencies(this.Session).FindBy(M.Currency.IsoCode, "EUR"))
                 .WithFromDate(DateTime.UtcNow)
                 .WithPrice(7)
-                .WithUnitOfMeasure(new UnitsOfMeasure(this.DatabaseSession).Piece)
+                .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
                 .Build();
 
-            var good2PurchasePrice = new ProductPurchasePriceBuilder(this.DatabaseSession)
-                .WithCurrency(new Currencies(this.DatabaseSession).FindBy(M.Currency.IsoCode, "EUR"))
+            var good2PurchasePrice = new ProductPurchasePriceBuilder(this.Session)
+                .WithCurrency(new Currencies(this.Session).FindBy(M.Currency.IsoCode, "EUR"))
                 .WithFromDate(DateTime.UtcNow)
                 .WithPrice(7)
-                .WithUnitOfMeasure(new UnitsOfMeasure(this.DatabaseSession).Piece)
+                .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
                 .Build();
 
-            new SupplierOfferingBuilder(this.DatabaseSession)
+            new SupplierOfferingBuilder(this.Session)
                 .WithProduct(good1)
                 .WithProductPurchasePrice(good1PurchasePrice)
                 .WithFromDate(DateTime.UtcNow)
                 .WithSupplier(supplier)
                 .Build();
 
-            new SupplierOfferingBuilder(this.DatabaseSession)
+            new SupplierOfferingBuilder(this.Session)
                 .WithProduct(good2)
                 .WithProductPurchasePrice(good2PurchasePrice)
                 .WithSupplier(supplier)
                 .WithFromDate(DateTime.UtcNow)
                 .Build();
 
-            this.DatabaseSession.Derive();
+            this.Session.Derive();
 
             var good1Inventory = (NonSerialisedInventoryItem)good1.InventoryItemsWhereGood[0];
-            good1Inventory.AddInventoryItemVariance(new InventoryItemVarianceBuilder(this.DatabaseSession).WithQuantity(100).WithReason(new VarianceReasons(this.DatabaseSession).Ruined).Build());
+            good1Inventory.AddInventoryItemVariance(new InventoryItemVarianceBuilder(this.Session).WithQuantity(100).WithReason(new VarianceReasons(this.Session).Ruined).Build());
 
-            this.DatabaseSession.Derive();
+            this.Session.Derive();
 
             var good2Inventory = (NonSerialisedInventoryItem)good2.InventoryItemsWhereGood[0];
-            good2Inventory.AddInventoryItemVariance(new InventoryItemVarianceBuilder(this.DatabaseSession).WithQuantity(100).WithReason(new VarianceReasons(this.DatabaseSession).Ruined).Build());
+            good2Inventory.AddInventoryItemVariance(new InventoryItemVarianceBuilder(this.Session).WithQuantity(100).WithReason(new VarianceReasons(this.Session).Ruined).Build());
 
-            this.DatabaseSession.Derive();
+            this.Session.Derive();
 
-            var order1 = new SalesOrderBuilder(this.DatabaseSession)
+            var order1 = new SalesOrderBuilder(this.Session)
                 .WithBillToCustomer(customer)
                 .WithShipToCustomer(customer)
                 .Build();
 
-            var item1 = new SalesOrderItemBuilder(this.DatabaseSession).WithProduct(good1).WithQuantityOrdered(1).WithActualUnitPrice(15).Build();
-            var item2 = new SalesOrderItemBuilder(this.DatabaseSession).WithProduct(good1).WithQuantityOrdered(2).WithActualUnitPrice(15).Build();
-            var item3 = new SalesOrderItemBuilder(this.DatabaseSession).WithProduct(good2).WithQuantityOrdered(5).WithActualUnitPrice(15).Build();
+            var item1 = new SalesOrderItemBuilder(this.Session).WithProduct(good1).WithQuantityOrdered(1).WithActualUnitPrice(15).Build();
+            var item2 = new SalesOrderItemBuilder(this.Session).WithProduct(good1).WithQuantityOrdered(2).WithActualUnitPrice(15).Build();
+            var item3 = new SalesOrderItemBuilder(this.Session).WithProduct(good2).WithQuantityOrdered(5).WithActualUnitPrice(15).Build();
             order1.AddSalesOrderItem(item1);
             order1.AddSalesOrderItem(item2);
             order1.AddSalesOrderItem(item3);
 
-            this.DatabaseSession.Derive();
+            this.Session.Derive();
 
             order1.Confirm();
 
-            this.DatabaseSession.Derive();
+            this.Session.Derive();
 
-            var order2 = new SalesOrderBuilder(this.DatabaseSession)
+            var order2 = new SalesOrderBuilder(this.Session)
                 .WithBillToCustomer(customer)
                 .WithShipToCustomer(customer)
                 .Build();
 
-            var itema = new SalesOrderItemBuilder(this.DatabaseSession).WithProduct(good1).WithQuantityOrdered(1).WithActualUnitPrice(15).Build();
-            var itemb = new SalesOrderItemBuilder(this.DatabaseSession).WithProduct(good2).WithQuantityOrdered(1).WithActualUnitPrice(15).Build();
+            var itema = new SalesOrderItemBuilder(this.Session).WithProduct(good1).WithQuantityOrdered(1).WithActualUnitPrice(15).Build();
+            var itemb = new SalesOrderItemBuilder(this.Session).WithProduct(good2).WithQuantityOrdered(1).WithActualUnitPrice(15).Build();
             order2.AddSalesOrderItem(itema);
             order2.AddSalesOrderItem(itemb);
 
-            this.DatabaseSession.Derive();
+            this.Session.Derive();
 
             order2.Confirm();
 
-            this.DatabaseSession.Derive();
+            this.Session.Derive();
 
             var pickList = good1.InventoryItemsWhereGood[0].PickListItemsWhereInventoryItem[0].PickListWherePickListItem;
-            pickList.Picker = new People(this.DatabaseSession).FindBy(M.Person.LastName, "orderProcessor");
+            pickList.Picker = new People(this.Session).FindBy(M.Person.LastName, "orderProcessor");
 
             pickList.SetPicked();
 
-            this.DatabaseSession.Derive();
+            this.Session.Derive();
 
             Assert.Equal(1, customer.ShipmentsWhereBillToParty.Count);
 
             var customerShipment = (CustomerShipment)customer.ShipmentsWhereBillToParty.First;
-            Assert.Equal(new CustomerShipmentStates(this.DatabaseSession).Picked, customerShipment.CustomerShipmentState);
+            Assert.Equal(new CustomerShipmentStates(this.Session).Picked, customerShipment.CustomerShipmentState);
         }
     }
 }

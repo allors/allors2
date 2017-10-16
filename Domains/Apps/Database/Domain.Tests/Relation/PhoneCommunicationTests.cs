@@ -29,63 +29,63 @@ namespace Allors.Domain
         [Fact]
         public void GivenPhoneCommunication_WhenDeriving_ThenRequiredRelationsMustExist()
         {
-            var receiver = new PersonBuilder(this.DatabaseSession).WithLastName("receiver").WithPersonRole(new PersonRoles(this.DatabaseSession).Customer).Build();
-            var caller = new PersonBuilder(this.DatabaseSession).WithLastName("caller").WithPersonRole(new PersonRoles(this.DatabaseSession).Customer).Build();
+            var receiver = new PersonBuilder(this.Session).WithLastName("receiver").WithPersonRole(new PersonRoles(this.Session).Customer).Build();
+            var caller = new PersonBuilder(this.Session).WithLastName("caller").WithPersonRole(new PersonRoles(this.Session).Customer).Build();
 
-            this.DatabaseSession.Derive();
-            this.DatabaseSession.Commit();
+            this.Session.Derive();
+            this.Session.Commit();
 
-            var builder = new PhoneCommunicationBuilder(this.DatabaseSession);
+            var builder = new PhoneCommunicationBuilder(this.Session);
             builder.WithReceiver(receiver);
             builder.WithCaller(caller);
             builder.Build();
 
-            Assert.True(this.DatabaseSession.Derive(false).HasErrors);
-            this.DatabaseSession.Rollback();
+            Assert.True(this.Session.Derive(false).HasErrors);
+            this.Session.Rollback();
 
             builder.WithSubject("Phonecall");
             var communication = builder.Build();
 
-            Assert.False(this.DatabaseSession.Derive(false).HasErrors);
+            Assert.False(this.Session.Derive(false).HasErrors);
 
-            Assert.Equal(communication.CommunicationEventState, new CommunicationEventStates(this.DatabaseSession).Scheduled);
+            Assert.Equal(communication.CommunicationEventState, new CommunicationEventStates(this.Session).Scheduled);
             Assert.Equal(communication.CommunicationEventState, communication.LastCommunicationEventState);
         }
 
         [Fact]
         public void GivenPhoneCommunicationIsBuild_WhenDeriving_ThenStatusIsSet()
         {
-            var communication = new PhoneCommunicationBuilder(this.DatabaseSession)
+            var communication = new PhoneCommunicationBuilder(this.Session)
                 .WithSubject("Hello world!")
-                .WithOwner(new PersonBuilder(this.DatabaseSession).WithLastName("owner").WithPersonRole(new PersonRoles(this.DatabaseSession).Employee).Build())
-                .WithCaller(new PersonBuilder(this.DatabaseSession).WithLastName("caller").WithPersonRole(new PersonRoles(this.DatabaseSession).Customer).Build())
-                .WithReceiver(new PersonBuilder(this.DatabaseSession).WithLastName("receiver").WithPersonRole(new PersonRoles(this.DatabaseSession).Customer).Build())
+                .WithOwner(new PersonBuilder(this.Session).WithLastName("owner").WithPersonRole(new PersonRoles(this.Session).Employee).Build())
+                .WithCaller(new PersonBuilder(this.Session).WithLastName("caller").WithPersonRole(new PersonRoles(this.Session).Customer).Build())
+                .WithReceiver(new PersonBuilder(this.Session).WithLastName("receiver").WithPersonRole(new PersonRoles(this.Session).Customer).Build())
                 .Build();
 
-            Assert.False(this.DatabaseSession.Derive(false).HasErrors);
+            Assert.False(this.Session.Derive(false).HasErrors);
 
-            Assert.Equal(communication.CommunicationEventState, new CommunicationEventStates(this.DatabaseSession).Scheduled);
+            Assert.Equal(communication.CommunicationEventState, new CommunicationEventStates(this.Session).Scheduled);
             Assert.Equal(communication.CommunicationEventState, communication.LastCommunicationEventState);
         }
 
         [Fact]
         public void GivenPhoneCommunication_WhenDeriving_ThenInvolvedPartiesAreDerived()
         {
-            var owner = new PersonBuilder(this.DatabaseSession).WithLastName("owner").WithPersonRole(new PersonRoles(this.DatabaseSession).Employee).Build();
-            var caller = new PersonBuilder(this.DatabaseSession).WithLastName("caller").WithPersonRole(new PersonRoles(this.DatabaseSession).Customer).Build();
-            var receiver = new PersonBuilder(this.DatabaseSession).WithLastName("receiver").WithPersonRole(new PersonRoles(this.DatabaseSession).Customer).Build();
+            var owner = new PersonBuilder(this.Session).WithLastName("owner").WithPersonRole(new PersonRoles(this.Session).Employee).Build();
+            var caller = new PersonBuilder(this.Session).WithLastName("caller").WithPersonRole(new PersonRoles(this.Session).Customer).Build();
+            var receiver = new PersonBuilder(this.Session).WithLastName("receiver").WithPersonRole(new PersonRoles(this.Session).Customer).Build();
 
-            this.DatabaseSession.Derive();
-            this.DatabaseSession.Commit();
+            this.Session.Derive();
+            this.Session.Commit();
 
-            var communication = new PhoneCommunicationBuilder(this.DatabaseSession)
+            var communication = new PhoneCommunicationBuilder(this.Session)
                 .WithSubject("Hello world!")
                 .WithOwner(owner)
                 .WithCaller(caller)
                 .WithReceiver(receiver)
                 .Build();
 
-            this.DatabaseSession.Derive();
+            this.Session.Derive();
 
             Assert.Equal(3, communication.InvolvedParties.Count);
             Assert.Contains(owner, communication.InvolvedParties);
@@ -96,28 +96,28 @@ namespace Allors.Domain
         [Fact]
         public void GivenPhoneCommunication_WhenCallerIsDeleted_ThenCommunicationEventIsDeleted()
         {
-            var owner = new PersonBuilder(this.DatabaseSession).WithLastName("owner").WithPersonRole(new PersonRoles(this.DatabaseSession).Employee).Build();
-            var originator = new PersonBuilder(this.DatabaseSession).WithLastName("originator").WithPersonRole(new PersonRoles(this.DatabaseSession).Customer).Build();
-            var receiver = new PersonBuilder(this.DatabaseSession).WithLastName("receiver").WithPersonRole(new PersonRoles(this.DatabaseSession).Customer).Build();
+            var owner = new PersonBuilder(this.Session).WithLastName("owner").WithPersonRole(new PersonRoles(this.Session).Employee).Build();
+            var originator = new PersonBuilder(this.Session).WithLastName("originator").WithPersonRole(new PersonRoles(this.Session).Customer).Build();
+            var receiver = new PersonBuilder(this.Session).WithLastName("receiver").WithPersonRole(new PersonRoles(this.Session).Customer).Build();
 
-            this.DatabaseSession.Derive();
-            this.DatabaseSession.Commit();
+            this.Session.Derive();
+            this.Session.Commit();
 
-            new PhoneCommunicationBuilder(this.DatabaseSession)
+            new PhoneCommunicationBuilder(this.Session)
                 .WithSubject("Hello world!")
                 .WithOwner(owner)
                 .WithCaller(originator)
                 .WithReceiver(receiver)
                 .Build();
 
-            this.DatabaseSession.Derive();
+            this.Session.Derive();
 
-            Assert.Equal(1, this.DatabaseSession.Extent<PhoneCommunication>().Count);
+            Assert.Equal(1, this.Session.Extent<PhoneCommunication>().Count);
 
             originator.Delete();
-            this.DatabaseSession.Derive();
+            this.Session.Derive();
 
-            Assert.Equal(0, this.DatabaseSession.Extent<PhoneCommunication>().Count);
+            Assert.Equal(0, this.Session.Extent<PhoneCommunication>().Count);
         }
     }
 }

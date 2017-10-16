@@ -29,25 +29,25 @@ namespace Allors.Domain
         [Fact]
         public void GivenPackageQuantityBreak_WhenDeriving_ThenRequiredRelationsMustExist()
         {
-            var builder = new PackageQuantityBreakBuilder(this.DatabaseSession);
+            var builder = new PackageQuantityBreakBuilder(this.Session);
             var revenueQuantityBreak = builder.Build();
 
-            Assert.True(this.DatabaseSession.Derive(false).HasErrors);
+            Assert.True(this.Session.Derive(false).HasErrors);
 
-            this.DatabaseSession.Rollback();
+            this.Session.Rollback();
 
             builder.WithFrom(10);
             revenueQuantityBreak = builder.Build();
 
-            Assert.False(this.DatabaseSession.Derive(false).HasErrors);
+            Assert.False(this.Session.Derive(false).HasErrors);
             builder.WithThrough(20);
             revenueQuantityBreak = builder.Build();
 
-            Assert.False(this.DatabaseSession.Derive(false).HasErrors);
+            Assert.False(this.Session.Derive(false).HasErrors);
 
             revenueQuantityBreak.RemoveFrom();
 
-            Assert.False(this.DatabaseSession.Derive(false).HasErrors);
+            Assert.False(this.Session.Derive(false).HasErrors);
         }
     }
 }

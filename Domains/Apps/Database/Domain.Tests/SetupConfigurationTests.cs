@@ -29,21 +29,21 @@ namespace Allors.Domain
         [Fact]
         public void GivenSetConfiguration_WhenApplied_ThenCountryEuMemberStateIsSet()
         {
-            var finland = new Countries(this.DatabaseSession).FindBy(M.Country.IsoCode, "FI");
+            var finland = new Countries(this.Session).FindBy(M.Country.IsoCode, "FI");
             Assert.True(finland.EuMemberState.Value);
 
-            var norway = new Countries(this.DatabaseSession).FindBy(M.Country.IsoCode, "NO");
+            var norway = new Countries(this.Session).FindBy(M.Country.IsoCode, "NO");
             Assert.False(norway.EuMemberState.Value);
         }
 
         [Fact]
         public void GivenSetConfiguration_WhenApplied_ThenCountryIbanDataIsSet()
         {
-            var finland = new Countries(this.DatabaseSession).FindBy(M.Country.IsoCode, "FI");
+            var finland = new Countries(this.Session).FindBy(M.Country.IsoCode, "FI");
             Assert.Equal(18, finland.IbanLength);
             Assert.Equal(@"\d{14}", finland.IbanRegex);
 
-            var norway = new Countries(this.DatabaseSession).FindBy(M.Country.IsoCode, "NO");
+            var norway = new Countries(this.Session).FindBy(M.Country.IsoCode, "NO");
             Assert.Equal(15, norway.IbanLength);
             Assert.Equal(@"\d{11}", norway.IbanRegex);
         }

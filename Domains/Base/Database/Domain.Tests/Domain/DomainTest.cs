@@ -24,8 +24,6 @@ namespace Tests
     using System;
     using System.IO;
     using System.Reflection;
-    using System.Security.Claims;
-    using System.Security.Principal;
 
     using Allors;
     using Allors.Adapters.Memory;
@@ -36,7 +34,6 @@ namespace Tests
     using Microsoft.Extensions.DependencyInjection;
 
     using Configuration = Allors.Adapters.Memory.Configuration;
-    using Extent = Allors.Extent;
     using ObjectFactory = Allors.ObjectFactory;
 
     public class DomainTest : IDisposable
@@ -93,41 +90,11 @@ namespace Tests
             }
         }
 
-        protected void SetIdentity(string identity)
-        {
-            ClaimsPrincipal.ClaimsPrincipalSelector = () => new GenericPrincipal(new GenericIdentity(identity, "Forms"), new string[0]);
-        }
-
         protected Stream GetResource(string name)
         {
             var assembly = this.GetType().GetTypeInfo().Assembly;
             var resource = assembly.GetManifestResourceStream(name);
             return resource;
-        }
-
-        protected IObject[] GetObjects(ISession session, Composite objectType)
-        {
-            return session.Extent(objectType);
-        }
-
-        protected void Derive(Extent extent, bool throwExceptionOnError = true)
-        {
-            var derivation = new Allors.Domain.NonLogging.Derivation(this.Session, extent.ToArray());
-            var validation = derivation.Derive();
-            if (validation.HasErrors)
-            {
-                throw new Exception("Derivation Error");
-            }
-        }
-
-        protected void Derive(IObject @object, bool throwExceptionOnError = true)
-        {
-            var derivation = new Allors.Domain.NonLogging.Derivation(this.Session, new[] { @object });
-            var validation = derivation.Derive();
-            if (validation.HasErrors)
-            {
-                throw new Exception("Derivation Error");
-            }
         }
     }
 }

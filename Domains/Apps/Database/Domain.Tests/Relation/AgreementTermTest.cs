@@ -29,102 +29,102 @@ namespace Allors.Domain
         [Fact]
         public void GivenFinancialTerm_WhenDeriving_ThenRequiredRelationsMustExist()
         {
-            var builder = new FinancialTermBuilder(this.DatabaseSession);
+            var builder = new FinancialTermBuilder(this.Session);
             var financialTerm = builder.Build();
 
-            Assert.True(this.DatabaseSession.Derive(false).HasErrors);
+            Assert.True(this.Session.Derive(false).HasErrors);
 
-            this.DatabaseSession.Rollback();
+            this.Session.Rollback();
 
             builder.WithDescription("FinancialTerm");
             financialTerm = builder.Build();
 
-            Assert.False(this.DatabaseSession.Derive(false).HasErrors);
+            Assert.False(this.Session.Derive(false).HasErrors);
 
-            builder.WithTermType(new TermTypes(this.DatabaseSession).NonReturnableSalesItem);
+            builder.WithTermType(new TermTypes(this.Session).NonReturnableSalesItem);
             financialTerm = builder.Build();
 
-            Assert.False(this.DatabaseSession.Derive(false).HasErrors);
+            Assert.False(this.Session.Derive(false).HasErrors);
 
             financialTerm.RemoveDescription();
 
-            Assert.False(this.DatabaseSession.Derive(false).HasErrors);
+            Assert.False(this.Session.Derive(false).HasErrors);
         }
 
         [Fact]
         public void GivenIncentive_WhenDeriving_ThenRequiredRelationsMustExist()
         {
-            var builder = new IncentiveBuilder(this.DatabaseSession);
+            var builder = new IncentiveBuilder(this.Session);
             var incentive = builder.Build();
 
-            Assert.True(this.DatabaseSession.Derive(false).HasErrors);
+            Assert.True(this.Session.Derive(false).HasErrors);
 
-            this.DatabaseSession.Rollback();
+            this.Session.Rollback();
             
             builder.WithDescription("Incentive");
             incentive = builder.Build();
 
-            Assert.False(this.DatabaseSession.Derive(false).HasErrors);
+            Assert.False(this.Session.Derive(false).HasErrors);
 
-            this.DatabaseSession.Rollback();
+            this.Session.Rollback();
 
-            builder.WithTermType(new TermTypes(this.DatabaseSession).NonReturnableSalesItem);
+            builder.WithTermType(new TermTypes(this.Session).NonReturnableSalesItem);
             incentive = builder.Build();
 
-            Assert.False(this.DatabaseSession.Derive(false).HasErrors);
+            Assert.False(this.Session.Derive(false).HasErrors);
 
             incentive.RemoveDescription();
 
-            Assert.False(this.DatabaseSession.Derive(false).HasErrors);
+            Assert.False(this.Session.Derive(false).HasErrors);
         }
 
         [Fact]
         public void GivenLegalTerm_WhenDeriving_ThenRequiredRelationsMustExist()
         {
-            var builder = new LegalTermBuilder(this.DatabaseSession);
+            var builder = new LegalTermBuilder(this.Session);
             var legalTerm = builder.Build();
 
-            Assert.True(this.DatabaseSession.Derive(false).HasErrors);
+            Assert.True(this.Session.Derive(false).HasErrors);
 
-            this.DatabaseSession.Rollback();
+            this.Session.Rollback();
 
             builder.WithDescription("LegalTerm");
             legalTerm = builder.Build();
 
-            Assert.False(this.DatabaseSession.Derive(false).HasErrors);
+            Assert.False(this.Session.Derive(false).HasErrors);
 
-            builder.WithTermType(new TermTypes(this.DatabaseSession).NonReturnableSalesItem);
+            builder.WithTermType(new TermTypes(this.Session).NonReturnableSalesItem);
             legalTerm = builder.Build();
 
-            Assert.False(this.DatabaseSession.Derive(false).HasErrors);
+            Assert.False(this.Session.Derive(false).HasErrors);
 
             legalTerm.RemoveDescription();
 
-            Assert.False(this.DatabaseSession.Derive(false).HasErrors);
+            Assert.False(this.Session.Derive(false).HasErrors);
         }
 
         [Fact]
         public void GivenThreshold_WhenDeriving_ThenRequiredRelationsMustExist()
         {
-            var builder = new ThresholdBuilder(this.DatabaseSession);
+            var builder = new ThresholdBuilder(this.Session);
             var threshold = builder.Build();
 
-            Assert.True(this.DatabaseSession.Derive(false).HasErrors);
+            Assert.True(this.Session.Derive(false).HasErrors);
 
-            this.DatabaseSession.Rollback();
+            this.Session.Rollback();
 
             builder.WithDescription("Threshold");
             threshold = builder.Build();
 
-            Assert.False(this.DatabaseSession.Derive(false).HasErrors);
-            builder.WithTermType(new TermTypes(this.DatabaseSession).NonReturnableSalesItem);
+            Assert.False(this.Session.Derive(false).HasErrors);
+            builder.WithTermType(new TermTypes(this.Session).NonReturnableSalesItem);
             threshold = builder.Build();
 
-            Assert.False(this.DatabaseSession.Derive(false).HasErrors);
+            Assert.False(this.Session.Derive(false).HasErrors);
 
             threshold.RemoveDescription();
 
-            Assert.False(this.DatabaseSession.Derive(false).HasErrors);
+            Assert.False(this.Session.Derive(false).HasErrors);
         }
     }
 }

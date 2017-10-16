@@ -29,43 +29,43 @@ namespace Allors.Domain
         [Fact]
         public void GivenInvoiceItem_WhenDeriving_ThenRequiredRelationsMustExist()
         {
-            var rawMaterial = new RawMaterialBuilder(this.DatabaseSession).WithName("rawmaterial").Build();
+            var rawMaterial = new RawMaterialBuilder(this.Session).WithName("rawmaterial").Build();
             
-            this.DatabaseSession.Derive();
-            this.DatabaseSession.Commit();
+            this.Session.Derive();
+            this.Session.Commit();
 
-            var builder = new PurchaseInvoiceItemBuilder(this.DatabaseSession);
+            var builder = new PurchaseInvoiceItemBuilder(this.Session);
             builder.Build();
 
-            Assert.True(this.DatabaseSession.Derive(false).HasErrors);
+            Assert.True(this.Session.Derive(false).HasErrors);
 
-            this.DatabaseSession.Rollback();
+            this.Session.Rollback();
 
             builder.WithPart(rawMaterial);
             builder.Build();
 
-            Assert.True(this.DatabaseSession.Derive(false).HasErrors);
+            Assert.True(this.Session.Derive(false).HasErrors);
 
-            this.DatabaseSession.Rollback();
+            this.Session.Rollback();
 
             builder.WithQuantity(1);
             builder.Build();
 
-            Assert.True(this.DatabaseSession.Derive(false).HasErrors);
+            Assert.True(this.Session.Derive(false).HasErrors);
 
-            this.DatabaseSession.Rollback();
+            this.Session.Rollback();
 
             builder.WithActualUnitPrice(15M);
             builder.Build();
 
-            Assert.True(this.DatabaseSession.Derive(false).HasErrors);
+            Assert.True(this.Session.Derive(false).HasErrors);
 
-            this.DatabaseSession.Rollback();
+            this.Session.Rollback();
 
-            builder.WithPurchaseInvoiceItemType(new PurchaseInvoiceItemTypes(this.DatabaseSession).PartItem);
+            builder.WithPurchaseInvoiceItemType(new PurchaseInvoiceItemTypes(this.Session).PartItem);
             builder.Build();
 
-            Assert.False(this.DatabaseSession.Derive(false).HasErrors);
+            Assert.False(this.Session.Derive(false).HasErrors);
         }
     }
 }
