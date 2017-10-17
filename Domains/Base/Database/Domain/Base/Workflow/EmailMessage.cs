@@ -28,6 +28,6 @@ namespace Allors.Domain
             {
                 this.DateCreated = this.strategy.Session.Now();
             }
-    }
+        }
     }
 }

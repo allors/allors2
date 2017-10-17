@@ -75,7 +75,6 @@ namespace Allors.Repository
         [Indexed]
         #endregion
         [Multiplicity(Multiplicity.ManyToMany)]
-        [Required]
         public User[] Recipients { get; set; }
 
         #region Allors
