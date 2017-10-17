@@ -26,7 +26,7 @@ namespace Allors.Domain
     public class QuoteTests : DomainTest
     {
         [Fact]
-        public void GivenProductQuote_WhenDeriving_ThenDescriptionIsRequired()
+        public void GivenProductQuote_WhenDeriving_ThenRequiredRelationsMustExist()
         {
             var builder = new ProductQuoteBuilder(this.Session);
             var productQuote = builder.Build();
@@ -36,13 +36,20 @@ namespace Allors.Domain
             this.Session.Rollback();
 
             builder.WithDescription("ProductQuote");
-            productQuote = builder.Build();
+            builder.Build();
+
+            Assert.True(this.Session.Derive(false).HasErrors);
+
+            this.Session.Rollback();
+
+            builder.WithFullfillContactMechanism(new WebAddressBuilder(this.Session).WithElectronicAddressString("test").Build());
+            builder.Build();
 
             Assert.False(this.Session.Derive(false).HasErrors);
         }
 
         [Fact]
-        public void GivenProposal_WhenDeriving_ThenDescriptionIsRequired()
+        public void GivenProposal_WhenDeriving_ThenRequiredRelationsMustExist()
         {
             var builder = new ProposalBuilder(this.Session);
             var requirement = builder.Build();
@@ -52,13 +59,20 @@ namespace Allors.Domain
             this.Session.Rollback();
 
             builder.WithDescription("Proposal");
-            requirement = builder.Build();
+            builder.Build();
+
+            Assert.True(this.Session.Derive(false).HasErrors);
+
+            this.Session.Rollback();
+
+            builder.WithFullfillContactMechanism(new WebAddressBuilder(this.Session).WithElectronicAddressString("test").Build());
+            builder.Build();
 
             Assert.False(this.Session.Derive(false).HasErrors);
         }
 
         [Fact]
-        public void GivenStatementOfWork_WhenDeriving_ThenDescriptionIsRequired()
+        public void GivenStatementOfWork_WhenDeriving_ThenRequiredRelationsMustExist()
         {
             var builder = new StatementOfWorkBuilder(this.Session);
             var statementOfWork = builder.Build();
@@ -68,7 +82,14 @@ namespace Allors.Domain
             this.Session.Rollback();
 
             builder.WithDescription("StatementOfWork");
-            statementOfWork = builder.Build();
+            builder.Build();
+
+            Assert.True(this.Session.Derive(false).HasErrors);
+
+            this.Session.Rollback();
+
+            builder.WithFullfillContactMechanism(new WebAddressBuilder(this.Session).WithElectronicAddressString("test").Build());
+            builder.Build();
 
             Assert.False(this.Session.Derive(false).HasErrors);
         }

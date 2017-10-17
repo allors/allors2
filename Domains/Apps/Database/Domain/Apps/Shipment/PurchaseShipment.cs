@@ -77,7 +77,9 @@ namespace Allors.Domain
 
             if (!this.ExistShipToAddress)
             {
-                this.ShipToAddress = this.Strategy.Session.GetSingleton().InternalOrganisation.ShippingAddress;
+                this.ShipToAddress = this.Strategy.Session.GetSingleton().InternalOrganisation.ExistShippingAddress ?
+                                         this.Strategy.Session.GetSingleton().InternalOrganisation.ShippingAddress :
+                                         this.Strategy.Session.GetSingleton().InternalOrganisation.GeneralCorrespondence;
             }
 
             if (!this.ExistShipFromAddress && this.ExistShipFromParty)

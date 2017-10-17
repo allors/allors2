@@ -2174,44 +2174,6 @@ namespace Allors.Domain
         }
 
         [Fact]
-        public void GivenOrderWithoutCustomer_WhenDerivingPrices_ThenUsePriceComponentsForGood()
-        {
-            this.InstantiateObjects(this.Session);
-
-            var anonymousOrder = new SalesOrderBuilder(this.Session).Build();
-
-            const decimal quantityOrdered = 3;
-            var item1 = new SalesOrderItemBuilder(this.Session).WithProduct(this.good).WithQuantityOrdered(quantityOrdered).Build();
-            anonymousOrder.AddSalesOrderItem(item1);
-
-            this.Session.Derive();
-
-            Assert.Equal(this.currentGoodBasePrice.Price, item1.UnitBasePrice);
-            Assert.Equal(0, item1.UnitDiscount);
-            Assert.Equal(0, item1.UnitSurcharge);
-            Assert.Equal(this.currentGoodBasePrice.Price, item1.CalculatedUnitPrice);
-            Assert.Equal(Math.Round(((item1.CalculatedUnitPrice * this.vatRate21.Rate) / 100), 2), item1.UnitVat);
-
-            Assert.Equal(this.currentGoodBasePrice.Price * quantityOrdered, item1.TotalBasePrice);
-            Assert.Equal(0, item1.TotalDiscount);
-            Assert.Equal(0, item1.TotalSurcharge);
-            Assert.Equal(this.currentGoodBasePrice.Price * quantityOrdered, item1.TotalExVat);
-            Assert.Equal(Math.Round(((item1.CalculatedUnitPrice * this.vatRate21.Rate) / 100), 2) * quantityOrdered, item1.TotalVat);
-            Assert.Equal(this.goodPurchasePrice.Price, item1.UnitPurchasePrice);
-
-            Assert.Equal(this.currentGoodBasePrice.Price * quantityOrdered, anonymousOrder.TotalBasePrice);
-            Assert.Equal(0, anonymousOrder.TotalDiscount);
-            Assert.Equal(0, anonymousOrder.TotalSurcharge);
-            Assert.Equal(this.currentGoodBasePrice.Price * quantityOrdered, anonymousOrder.TotalExVat);
-            Assert.Equal(Math.Round(((item1.CalculatedUnitPrice * this.vatRate21.Rate) / 100), 2) * quantityOrdered, anonymousOrder.TotalVat);
-
-            Assert.Equal(Math.Round(((item1.UnitBasePrice / this.goodPurchasePrice.Price) - 1) * 100, 2), item1.InitialMarkupPercentage);
-            Assert.Equal(Math.Round(((item1.CalculatedUnitPrice / this.goodPurchasePrice.Price) - 1) * 100, 2), item1.MaintainedMarkupPercentage);
-            Assert.Equal(Math.Round(((item1.UnitBasePrice - this.goodPurchasePrice.Price) / item1.UnitBasePrice) * 100, 2), item1.InitialProfitMargin);
-            Assert.Equal(Math.Round(((item1.CalculatedUnitPrice - this.goodPurchasePrice.Price) / item1.CalculatedUnitPrice) * 100, 2), item1.MaintainedProfitMargin);
-        }
-
-        [Fact]
         public void GivenOrderItemForGood1_WhenDerivingPrices_ThenUsePriceComponentsForGood1()
         {
             this.InstantiateObjects(this.Session);

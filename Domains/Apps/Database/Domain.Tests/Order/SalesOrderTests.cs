@@ -1503,7 +1503,12 @@ namespace Allors.Domain
         [Fact]
         public void GivenSalesOrderBuilder_WhenBuild_ThenOrderMustBeValid()
         {
-            new SalesOrderBuilder(this.Session).Build();
+            var billToCustomer = new PersonBuilder(this.Session).WithLastName("person1").WithPersonRole(new PersonRoles(this.Session).Customer).Build();
+            new CustomerRelationshipBuilder(this.Session).WithFromDate(DateTime.UtcNow).WithCustomer(billToCustomer).Build();
+
+            this.Session.Derive();
+
+            new SalesOrderBuilder(this.Session).WithBillToCustomer(billToCustomer).Build();
 
             Assert.False(this.Session.Derive(false).HasErrors);
         }
@@ -1513,13 +1518,9 @@ namespace Allors.Domain
         {
             var billToCustomer = new PersonBuilder(this.Session).WithLastName("person1").WithPersonRole(new PersonRoles(this.Session).Customer).Build();
             var shipToCustomer = new PersonBuilder(this.Session).WithLastName("person2").WithPersonRole(new PersonRoles(this.Session).Customer).Build();
-            var internalOrganisation = this.Session.GetSingleton().InternalOrganisation;
-
 
             new CustomerRelationshipBuilder(this.Session).WithFromDate(DateTime.UtcNow).WithCustomer(billToCustomer).Build();
             new CustomerRelationshipBuilder(this.Session).WithFromDate(DateTime.UtcNow).WithCustomer(shipToCustomer).Build();
-
-
 
             var mechelen = new CityBuilder(this.Session).WithName("Mechelen").Build();
 

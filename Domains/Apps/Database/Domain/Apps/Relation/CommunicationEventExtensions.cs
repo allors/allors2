@@ -44,7 +44,13 @@ namespace Allors.Domain
 
             if (!@this.ExistOwner)
             {
-                @this.Owner = @this.Strategy.Session.GetUser() as Person;
+                var owner = @this.Strategy.Session.GetUser() as Person;
+                if (owner == null)
+                {
+                    owner = @this.Strategy.Session.GetSingleton().Guest as Person;
+                }
+
+                @this.Owner = owner;
             }
 
             if (@this.ExistScheduledStart && @this.ExistScheduledEnd && @this.ScheduledEnd < @this.ScheduledStart)
@@ -120,17 +126,14 @@ namespace Allors.Domain
             if (!@this.ExistOwnerAccessControl)
             {
                 var ownerRole = new Roles(@this.Strategy.Session).Owner;
-                @this.OwnerAccessControl = new AccessControlBuilder(@this.Strategy.Session)
-                        .WithRole(ownerRole)
-                        .WithSubject(@this.Owner)
-                        .Build();
+                @this.OwnerAccessControl = new AccessControlBuilder(@this.Strategy.Session).WithRole(ownerRole)
+                    .WithSubject(@this.Owner).Build();
             }
 
             if (!@this.ExistOwnerSecurityToken)
             {
                 @this.OwnerSecurityToken = new SecurityTokenBuilder(@this.Strategy.Session)
-                    .WithAccessControl(@this.OwnerAccessControl)
-                    .Build();
+                    .WithAccessControl(@this.OwnerAccessControl).Build();
             }
         }
     }

@@ -81,7 +81,8 @@ namespace Allors
 
             if (populate)
             {
-                new Setup(this.Session, null).Apply();
+                Fixture.Setup(database);
+
                 this.Session.Commit();
             }
         }

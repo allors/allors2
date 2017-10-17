@@ -36,9 +36,11 @@ namespace Allors
             {
                 new Setup(session, null).Apply();
 
+                var administrator = new Users(session).GetUser("administrator");
+                session.SetUser(administrator);
+
                 var singleton = session.GetSingleton();
 
-                var administrator = new People(session).FindBy(M.Person.UserName, Users.AdministratorUserName);
                 new UserGroups(session).Administrators.AddMember(administrator);
 
                 singleton.Guest = new PersonBuilder(session).WithUserName("guest").WithLastName("guest").WithPersonRole(new PersonRoles(session).Contact).Build();
@@ -76,14 +78,12 @@ namespace Allors
                 singleton.InternalOrganisation = internalOrganisation;
 
                 var facility = new FacilityBuilder(session).WithFacilityType(new FacilityTypes(session).Warehouse).WithName("facility").Build();
-                internalOrganisation.DefaultFacility = facility;
-                
+                internalOrganisation.DefaultFacility = facility;                
 
                 var paymentMethod = new PaymentMethods(session).Extent().First;
 
                 new StoreBuilder(session)
                     .WithName("store")
-                    .WithDefaultFacility(facility)
                     .WithOutgoingShipmentNumberPrefix("shipmentno: ")
                     .WithSalesInvoiceNumberPrefix("invoiceno: ")
                     .WithSalesOrderNumberPrefix("orderno: ")

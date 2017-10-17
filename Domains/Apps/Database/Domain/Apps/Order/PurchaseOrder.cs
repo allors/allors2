@@ -109,7 +109,9 @@ namespace Allors.Domain
 
             if (!this.ExistBillToContactMechanism)
             {
-                this.BillToContactMechanism = this.strategy.Session.GetSingleton().InternalOrganisation.BillingAddress;
+                this.BillToContactMechanism = this.strategy.Session.GetSingleton().InternalOrganisation.ExistBillingAddress?
+                                                  this.strategy.Session.GetSingleton().InternalOrganisation.BillingAddress :
+                                                  this.strategy.Session.GetSingleton().InternalOrganisation.GeneralCorrespondence;
             }
 
             if (!this.ExistTakenViaContactMechanism && this.ExistTakenViaSupplier)

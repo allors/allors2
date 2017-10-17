@@ -567,7 +567,7 @@ namespace Allors.Domain
         {
             this.InstantiateObjects(this.Session);
 
-            var salesOrder = new SalesOrderBuilder(this.Session).Build();
+            var salesOrder = new SalesOrderBuilder(this.Session).WithBillToCustomer(this.billToCustomer).Build();
 
             var orderItem = new SalesOrderItemBuilder(this.Session).WithProduct(this.good).WithQuantityOrdered(1).Build();
             salesOrder.AddSalesOrderItem(orderItem);
