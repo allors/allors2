@@ -161,6 +161,7 @@ namespace Allors.Repository
         [AssociationId("7ee32e78-a214-4e4a-bb43-d2f6642e997a")]
         [RoleId("e64fb7aa-75de-41a6-a76c-f25f22dfcf47")]
         #endregion
+        [Required]
         [Precision(19)]
         [Scale(2)]
         [Workspace]
@@ -201,6 +202,7 @@ namespace Allors.Repository
         [AssociationId("a1d818f2-8e1a-4984-b2d7-4b1f34558568")]
         [RoleId("3a3442f4-26af-407d-90c6-38c4d5d40bae")]
         #endregion
+        [Required]
         [Workspace]
         public int Quantity { get; set; }
 

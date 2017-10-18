@@ -145,6 +145,10 @@ export class InvoiceEditComponent implements OnInit, AfterViewInit, OnDestroy {
           this.invoice = this.scope.session.create("SalesInvoice") as SalesInvoice;
         }
 
+        if (this.invoice.BillToCustomer) {
+          this.receiverSelected(this.invoice.BillToCustomer);
+        }
+
         this.organisations = loaded.collections.organisations as Organisation[];
         this.people = loaded.collections.parties as Person[];
         this.title = "Sales Invoice for: " + this.invoice.BillToCustomer.PartyName;

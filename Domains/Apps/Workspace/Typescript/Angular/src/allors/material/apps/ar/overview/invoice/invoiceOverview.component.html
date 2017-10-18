@@ -31,13 +31,13 @@
         <div *ngIf="invoice.BillToContactMechanism" layout="row">
           <a-mat-static [object]="invoice" [roleType]="m.SalesInvoice.BillToContactMechanism" display="displayName" label="Bill to"></a-mat-static>
         </div>
-        <div *ngIf="order.Comment" layout="row">
+        <div *ngIf="order?.Comment" layout="row">
           <a-mat-static [object]="order" [roleType]="m.SalesOrder.Comment" label="Order Comment"></a-mat-static>
         </div>
         <div *ngIf="invoice.Comment" layout="row">
           <a-mat-textarea [object]="invoice" [roleType]="m.SalesInvoice.Comment" label="Invoice Comment"></a-mat-textarea>
         </div>
-        <div *ngIf="order.InternalComment" layout="row">
+        <div *ngIf="order?.InternalComment" layout="row">
           <a-mat-static [object]="order" [roleType]="m.SalesOrder.InternalComment" label="Order Internal Comment"></a-mat-static>
         </div>
         <div *ngIf="invoice.InternalComment" layout="row">
@@ -54,7 +54,7 @@
 
       <mat-divider></mat-divider>
       <mat-card-actions>
-        <button *ngIf="invoice.CanExecuteAddNewInvoiceItem" mat-button [routerLink]="['/invoice/' + invoice.id]">Edit</button>
+        <button *ngIf="invoice.CanWriteSalesInvoiceItems" mat-button [routerLink]="['/invoice/' + invoice.id]">Edit</button>
       </mat-card-actions>
     </mat-card>
 
@@ -92,7 +92,7 @@
       </mat-card-content>
       <mat-divider></mat-divider>
       <mat-card-actions>
-        <button *ngIf="invoice.CanExecuteAddNewInvoiceItem" mat-button [routerLink]="['/invoice/' + invoice.id +'/item']">+ Add</button>
+        <button *ngIf="invoice.CanWriteSalesInvoiceItems" mat-button [routerLink]="['/invoice/' + invoice.id +'/item']">+ Add</button>
       </mat-card-actions>
     </mat-card>
   </div>

@@ -19,9 +19,9 @@
         display="displayName" (onSelect)="receiverSelected($event)" label="Ship to person "></a-mat-autocomplete>
       <a-mat-select [object]="order" [roleType]="m.SalesOrder.ShipToAddress" [options]="contactMechanisms" display="displayName"></a-mat-select>
       <a-mat-select [object]="order" [roleType]="m.SalesOrder.BillToContactMechanism" [options]="contactMechanisms" display="displayName"></a-mat-select>
-      <a-mat-static *ngIf="quote" [object]="quote" [roleType]="m.Quote.Comment" label="Quote Comment"></a-mat-static>
+      <a-mat-static *ngIf="quote?.Comment" [object]="quote" [roleType]="m.Quote.Comment" label="Quote Comment"></a-mat-static>
       <a-mat-textarea [object]="order" [roleType]="m.SalesOrder.Comment" label="Order Comment"></a-mat-textarea>
-      <a-mat-static *ngIf="quote" [object]="quote" [roleType]="m.Quote.InternalComment" label="Quote Internal Comment"></a-mat-static>
+      <a-mat-static *ngIf="quote?.InternalComment" [object]="quote" [roleType]="m.Quote.InternalComment" label="Quote Internal Comment"></a-mat-static>
       <a-mat-textarea [object]="order" [roleType]="m.SalesOrder.InternalComment" label="Order Internal Comment"></a-mat-textarea>
     </div>
 

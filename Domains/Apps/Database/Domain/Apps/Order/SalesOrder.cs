@@ -216,6 +216,12 @@ namespace Allors.Domain
                 this.PaymentMethod = this.BillToCustomer.DefaultPaymentMethod ?? this.Store.DefaultPaymentMethod;
             }
 
+            if (this.SalesOrderState.Equals(new SalesOrderStates(this.Strategy.Session).InProcess))
+            {
+                derivation.Validation.AssertExists(this, this.Meta.ShipToAddress);
+                derivation.Validation.AssertExists(this, this.Meta.BillToContactMechanism);
+            }
+
             this.AppsOnDeriveOrderItems(derivation);
 
             this.AppsOnDeriveOrderShipmentState(derivation);
@@ -730,6 +736,7 @@ namespace Allors.Domain
             {
                 var invoiceItem = new SalesInvoiceItemBuilder(this.Strategy.Session)
                     .WithSalesInvoiceItemType(new SalesInvoiceItemTypes(this.Strategy.Session).ProductItem)
+                    .WithActualUnitPrice(orderItem.ActualUnitPrice)
                     .WithProduct(orderItem.Product)
                     .WithQuantity(orderItem.QuantityOrdered)
                     .WithComment(orderItem.Comment)

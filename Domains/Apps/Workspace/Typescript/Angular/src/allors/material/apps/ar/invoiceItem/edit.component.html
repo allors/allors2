@@ -11,9 +11,10 @@
       <!-- <a-mat-static *ngIf="quoteItem.RequestItem" [object]="quoteItem" [roleType]="m.QuoteItem.RequestItem" [display]=""></a-mat-static> -->
       <a-mat-select [object]="invoiceItem" [roleType]="m.SalesInvoiceItem.Product" [options]="goods" display="Name"></a-mat-select>
       <a-mat-input [object]="invoiceItem" [roleType]="m.SalesInvoiceItem.Quantity"></a-mat-input>
-      <a-mat-static *ngIf="orderItem.Comment" [object]="orderItem" [roleType]="m.SalesOrderItem.Comment"></a-mat-static>
+      <a-mat-input [object]="invoiceItem" [roleType]="m.SalesInvoiceItem.ActualUnitPrice"></a-mat-input>
+      <a-mat-static *ngIf="orderItem?.Comment" [object]="orderItem" [roleType]="m.SalesOrderItem.Comment"></a-mat-static>
       <a-mat-textarea [object]="invoiceItem" [roleType]="m.SalesInvoiceItem.Comment"></a-mat-textarea>
-      <a-mat-static *ngIf="orderItem.InternalComment" [object]="orderItem" [roleType]="m.SalesOrderItem.InternalComment"></a-mat-static>
+      <a-mat-static *ngIf="orderItem?.InternalComment" [object]="orderItem" [roleType]="m.SalesOrderItem.InternalComment"></a-mat-static>
       <a-mat-textarea [object]="invoiceItem" [roleType]="m.SalesInvoiceItem.InternalComment"></a-mat-textarea>
     </div>
 

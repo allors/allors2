@@ -17,6 +17,7 @@ namespace Allors.Repository
         [Derived]
         [Precision(19)]
         [Scale(2)]
+        [Workspace]
         decimal TotalDiscountAsPercentage { get; set; }
 
         #region Allors
@@ -26,6 +27,7 @@ namespace Allors.Repository
         #endregion
         [Multiplicity(Multiplicity.OneToOne)]
         [Indexed]
+        [Workspace]
         DiscountAdjustment DiscountAdjustment { get; set; }
 
         #region Allors
@@ -37,6 +39,7 @@ namespace Allors.Repository
         [Required]
         [Precision(19)]
         [Scale(2)]
+        [Workspace]
         decimal UnitVat { get; set; }
 
         #region Allors
@@ -48,6 +51,7 @@ namespace Allors.Repository
         [Required]
         [Precision(19)]
         [Scale(2)]
+        [Workspace]
         decimal TotalVatCustomerCurrency { get; set; }
 
         #region Allors
@@ -58,6 +62,7 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.ManyToOne)]
         [Derived]
         [Indexed]
+        [Workspace]
         VatRegime VatRegime { get; set; }
 
         #region Allors
@@ -69,6 +74,7 @@ namespace Allors.Repository
         [Required]
         [Precision(19)]
         [Scale(2)]
+        [Workspace]
         decimal TotalVat { get; set; }
 
         #region Allors
@@ -80,6 +86,7 @@ namespace Allors.Repository
         [Required]
         [Precision(19)]
         [Scale(2)]
+        [Workspace]
         decimal UnitSurcharge { get; set; }
 
         #region Allors
@@ -91,6 +98,7 @@ namespace Allors.Repository
         [Required]
         [Precision(19)]
         [Scale(2)]
+        [Workspace]
         decimal UnitDiscount { get; set; }
 
         #region Allors
@@ -102,6 +110,7 @@ namespace Allors.Repository
         [Required]
         [Precision(19)]
         [Scale(2)]
+        [Workspace]
         decimal TotalExVatCustomerCurrency { get; set; }
 
         #region Allors
@@ -112,6 +121,7 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.ManyToOne)]
         [Derived]
         [Indexed]
+        [Workspace]
         VatRate DerivedVatRate { get; set; }
 
         #region Allors
@@ -121,6 +131,7 @@ namespace Allors.Repository
         #endregion
         [Precision(19)]
         [Scale(2)]
+        [Workspace]
         decimal ActualUnitPrice { get; set; }
 
         #region Allors
@@ -132,6 +143,7 @@ namespace Allors.Repository
         [Required]
         [Precision(19)]
         [Scale(2)]
+        [Workspace]
         decimal TotalIncVatCustomerCurrency { get; set; }
 
         #region Allors
@@ -143,6 +155,7 @@ namespace Allors.Repository
         [Required]
         [Precision(19)]
         [Scale(2)]
+        [Workspace]
         decimal UnitBasePrice { get; set; }
 
         #region Allors
@@ -154,6 +167,7 @@ namespace Allors.Repository
         [Required]
         [Precision(19)]
         [Scale(2)]
+        [Workspace]
         decimal CalculatedUnitPrice { get; set; }
 
         #region Allors
@@ -165,6 +179,7 @@ namespace Allors.Repository
         [Required]
         [Precision(19)]
         [Scale(2)]
+        [Workspace]
         decimal TotalSurchargeCustomerCurrency { get; set; }
 
         #region Allors
@@ -176,6 +191,7 @@ namespace Allors.Repository
         [Required]
         [Precision(19)]
         [Scale(2)]
+        [Workspace]
         decimal TotalIncVat { get; set; }
 
         #region Allors
@@ -186,6 +202,7 @@ namespace Allors.Repository
         [Derived]
         [Precision(19)]
         [Scale(2)]
+        [Workspace]
         decimal TotalSurchargeAsPercentage { get; set; }
 
         #region Allors
@@ -197,6 +214,7 @@ namespace Allors.Repository
         [Required]
         [Precision(19)]
         [Scale(2)]
+        [Workspace]
         decimal TotalDiscountCustomerCurrency { get; set; }
 
         #region Allors
@@ -208,6 +226,7 @@ namespace Allors.Repository
         [Required]
         [Precision(19)]
         [Scale(2)]
+        [Workspace]
         decimal TotalDiscount { get; set; }
 
         #region Allors
@@ -219,6 +238,7 @@ namespace Allors.Repository
         [Required]
         [Precision(19)]
         [Scale(2)]
+        [Workspace]
         decimal TotalSurcharge { get; set; }
 
         #region Allors
@@ -228,6 +248,7 @@ namespace Allors.Repository
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
+        [Workspace]
         VatRegime AssignedVatRegime { get; set; }
 
         #region Allors
@@ -239,6 +260,7 @@ namespace Allors.Repository
         [Required]
         [Precision(19)]
         [Scale(2)]
+        [Workspace]
         decimal TotalBasePrice { get; set; }
 
         #region Allors
@@ -250,6 +272,7 @@ namespace Allors.Repository
         [Required]
         [Precision(19)]
         [Scale(2)]
+        [Workspace]
         decimal TotalExVat { get; set; }
 
         #region Allors
@@ -261,6 +284,7 @@ namespace Allors.Repository
         [Required]
         [Precision(19)]
         [Scale(2)]
+        [Workspace]
         decimal TotalBasePriceCustomerCurrency { get; set; }
 
         #region Allors
@@ -280,6 +304,7 @@ namespace Allors.Repository
         #endregion
         [Multiplicity(Multiplicity.OneToOne)]
         [Indexed]
+        [Workspace]
         SurchargeAdjustment SurchargeAdjustment { get; set; }
     }
 }

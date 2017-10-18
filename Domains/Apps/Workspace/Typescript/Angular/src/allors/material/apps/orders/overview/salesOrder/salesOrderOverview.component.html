@@ -34,13 +34,13 @@
         <div *ngIf="order.ShipToAddress" layout="row">
           <a-mat-static [object]="order" [roleType]="m.SalesOrder.ShipToAddress" display="displayName" label="Ship to"></a-mat-static>
         </div>
-        <div *ngIf="quote.Comment" layout="row">
+        <div *ngIf="quote?.Comment" layout="row">
           <a-mat-static [object]="quote" [roleType]="m.Quote.Comment" label="Quote Comment"></a-mat-static>
         </div>
         <div *ngIf="order.Comment" layout="row">
           <a-mat-textarea [object]="order" [roleType]="m.SalesOrder.Comment" label="Order Comment"></a-mat-textarea>
         </div>
-        <div *ngIf="quote.InternalComment" layout="row">
+        <div *ngIf="quote?.InternalComment" layout="row">
           <a-mat-static [object]="quote" [roleType]="m.Quote.InternalComment" label="Quote Internal Comment"></a-mat-static>
         </div>
         <div *ngIf="order.InternalComment" layout="row">

@@ -340,7 +340,7 @@ export class SalesOrderEditComponent implements OnInit, AfterViewInit, OnDestroy
 
   public confirm(): void {
     const confirmFn: () => void = () => {
-      this.scope.invoke(this.order.Continue)
+      this.scope.invoke(this.order.Confirm)
         .subscribe((invoked: Invoked) => {
           this.refresh();
           this.snackBar.open("Successfully confirmed.", "close", { duration: 5000 });

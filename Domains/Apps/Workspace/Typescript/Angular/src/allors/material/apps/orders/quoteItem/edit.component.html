@@ -16,9 +16,9 @@
       <a-mat-static *ngIf="inventoryItem" [object]="inventoryItem" [roleType]="m.SerialisedInventoryItem.ExpectedSalesPrice"></a-mat-static>
       <a-mat-datepicker [object]="quoteItem" [roleType]="m.QuoteItem.RequiredByDate" disabled="true"></a-mat-datepicker>
       <a-mat-datepicker [object]="quoteItem" [roleType]="m.QuoteItem.EstimatedDeliveryDate"></a-mat-datepicker>
-      <a-mat-static *ngIf="requestItem.Comment" [object]="requestItem" [roleType]="m.RequestItem.Comment"></a-mat-static>
+      <a-mat-static *ngIf="requestItem?.Comment" [object]="requestItem" [roleType]="m.RequestItem.Comment"></a-mat-static>
       <a-mat-textarea [object]="quoteItem" [roleType]="m.QuoteItem.Comment"></a-mat-textarea>
-      <a-mat-static *ngIf="requestItem.InternalComment" [object]="requestItem" [roleType]="m.RequestItem.InternalComment"></a-mat-static>
+      <a-mat-static *ngIf="requestItem?.InternalComment" [object]="requestItem" [roleType]="m.RequestItem.InternalComment"></a-mat-static>
       <a-mat-textarea [object]="quoteItem" [roleType]="m.QuoteItem.InternalComment"></a-mat-textarea>
     </div>
 

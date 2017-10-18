@@ -3,7 +3,7 @@
 
     <div class="pad">
       <div *ngIf="invoice.SalesInvoiceState">
-        <a-mat-static [object]="invoice" [roleType]="m.SalesOrder.SalesOrderState" display="Name" label="Status"></a-mat-static>
+        <a-mat-static [object]="invoice" [roleType]="m.SalesInvoice.SalesInvoiceState" display="Name" label="Status"></a-mat-static>
         <button *ngIf="invoice.CanExecuteSend" mat-button type="button" (click)="send()">Send</button>
         <button *ngIf="invoice.CanExecuteSend" mat-button type="button" (click)="cancel()">Cancel</button>
         <button *ngIf="invoice.CanExecuteWriteOff" mat-button type="button" (click)="writeOff()">Write off</button>
@@ -15,9 +15,9 @@
       <a-mat-autocomplete *ngIf="showPeople" [object]="invoice" [roleType]="m.SalesInvoice.BillToCustomer" [filter]="peopleFilter.create()"
         display="displayName" (onSelect)="receiverSelected($event)" label="Bill to person"></a-mat-autocomplete>
       <a-mat-select [object]="invoice" [roleType]="m.SalesInvoice.BillToContactMechanism" [options]="contactMechanisms" display="displayName"></a-mat-select>
-      <a-mat-static *ngIf="order.Comment" [object]="order" [roleType]="m.SalesOrder.Comment"></a-mat-static>
+      <a-mat-static *ngIf="order?.Comment" [object]="order" [roleType]="m.SalesOrder.Comment"></a-mat-static>
       <a-mat-textarea [object]="invoice" [roleType]="m.SalesInvoice.Comment"></a-mat-textarea>
-      <a-mat-static *ngIf="order.InternalComment" [object]="order" [roleType]="m.SalesOrder.InternalComment"></a-mat-static>
+      <a-mat-static *ngIf="order?.InternalComment" [object]="order" [roleType]="m.SalesOrder.InternalComment"></a-mat-static>
       <a-mat-textarea [object]="invoice" [roleType]="m.SalesInvoice.InternalComment"></a-mat-textarea>
     </div>
 

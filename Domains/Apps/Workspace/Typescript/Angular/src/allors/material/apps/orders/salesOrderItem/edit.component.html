@@ -10,6 +10,7 @@
 
       <a-mat-select [object]="orderItem" [roleType]="m.SalesOrderItem.Product" [options]="goods" display="Name"></a-mat-select>
       <a-mat-input [object]="orderItem" [roleType]="m.SalesOrderItem.QuantityOrdered"></a-mat-input>
+      <a-mat-input [object]="orderItem" [roleType]="m.SalesOrderItem.ActualUnitPrice"></a-mat-input>
       <a-mat-static *ngIf="quoteItem?.Comment" [object]="quoteItem" [roleType]="m.QuoteItem.Comment" label="Quote Comment"></a-mat-static>
       <a-mat-textarea [object]="orderItem" [roleType]="m.SalesOrderItem.Comment" label="Order Comment"></a-mat-textarea>
       <a-mat-static *ngIf="quoteItem?.InternalComment" [object]="quoteItem" [roleType]="m.QuoteItem.InternalComment" label="Quote Internal Comment"></a-mat-static>
