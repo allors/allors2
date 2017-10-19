@@ -27,9 +27,12 @@ namespace Allors.Domain
         {
             var derivation = method.Derivation;
 
-            foreach (AccessControl accessControl in this.AccessControlsWhereRole)
+            if (derivation.HasChangedRole(this, this.Meta.Permissions))
             {
-                derivation.AddDependency(accessControl, this);
+                foreach (AccessControl accessControl in this.AccessControlsWhereRole)
+                {
+                    derivation.AddDependency(accessControl, this);
+                }
             }
         }
     }

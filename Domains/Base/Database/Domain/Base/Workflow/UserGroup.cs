@@ -25,10 +25,12 @@ namespace Allors.Domain
         public void BaseOnPreDerive(ObjectOnPreDerive method)
         {
             var derivation = method.Derivation;
-
-            foreach (AccessControl accessControl in this.AccessControlsWhereSubjectGroup)
+            if (derivation.HasChangedRole(this, this.Meta.Members))
             {
-                derivation.AddDependency(accessControl, this);
+                foreach (AccessControl accessControl in this.AccessControlsWhereSubjectGroup)
+                {
+                    derivation.AddDependency(accessControl, this);
+                }
             }
         }
     }
