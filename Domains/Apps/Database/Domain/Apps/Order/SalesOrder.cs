@@ -162,7 +162,8 @@ namespace Allors.Domain
 
             if (!this.ExistBillToContactMechanism && this.ExistBillToCustomer)
             {
-                this.BillToContactMechanism = this.BillToCustomer.BillingAddress;
+                this.BillToContactMechanism = this.BillToCustomer.ExistBillingAddress?
+                                                  this.BillToCustomer.BillingAddress : this.BillToCustomer.ExistShippingAddress ? this.BillToCustomer.ShippingAddress : this.BillToCustomer.GeneralCorrespondence;
             }
 
             if (!this.ExistBillFromContactMechanism)

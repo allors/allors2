@@ -311,6 +311,7 @@ namespace Allors.Domain
             this.order = new SalesOrderBuilder(this.Session)
                 .WithShipToCustomer(this.shipToCustomer)
                 .WithBillToCustomer(this.billToCustomer)
+                .WithBillToContactMechanism(this.shipToContactMechanismMechelen)
                 .Build();
 
             this.Session.Derive();
