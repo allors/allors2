@@ -26,15 +26,15 @@ namespace Tests
         [Fact]
         public async void CorrectUserAndPassword()
         {
-            var args = new SignInRequest
+            var args = new AuthenticationTokenRequest
                             {
                                 UserName = "Jane",
                                 Password = "p@ssw0rd"
                             };
 
-            var uri = new Uri("Authentication/SignIn", UriKind.Relative);
+            var uri = new Uri("Authentication/Token", UriKind.Relative);
             var response = await this.PostAsJsonAsync(uri, args);
-            var siginInResponse = await this.ReadAsAsync<SignInResponse>(response);
+            var siginInResponse = await this.ReadAsAsync<AuthenticationTokenResponse>(response);
 
             Assert.True(siginInResponse.Authenticated);
         }
@@ -43,15 +43,15 @@ namespace Tests
         [Fact]
         public async void NonExistingUser()
         {
-            var args = new SignInRequest
+            var args = new AuthenticationTokenRequest
                             {
                                 UserName = "Jeff",
                                 Password = "p@ssw0rd"
                             };
 
-            var uri = new Uri("Authentication/SignIn", UriKind.Relative);
+            var uri = new Uri("Authentication/Token", UriKind.Relative);
             var response = await this.PostAsJsonAsync(uri, args);
-            var siginInResponse = await this.ReadAsAsync<SignInResponse>(response);
+            var siginInResponse = await this.ReadAsAsync<AuthenticationTokenResponse>(response);
 
             Assert.False(siginInResponse.Authenticated);
         }
@@ -59,15 +59,15 @@ namespace Tests
         [Fact]
         public async void EmptyStringPassword()
         {
-            var args = new SignInRequest
+            var args = new AuthenticationTokenRequest
                             {
                                 UserName = "John",
                                 Password = ""
                             };
 
-            var uri = new Uri("Authentication/SignIn", UriKind.Relative);
+            var uri = new Uri("Authentication/Token", UriKind.Relative);
             var response = await this.PostAsJsonAsync(uri, args);
-            var siginInResponse = await this.ReadAsAsync<SignInResponse>(response);
+            var siginInResponse = await this.ReadAsAsync<AuthenticationTokenResponse>(response);
 
             Assert.False(siginInResponse.Authenticated);
         }
@@ -75,14 +75,14 @@ namespace Tests
         [Fact]
         public async void NoPassword()
         {
-            var args = new SignInRequest
+            var args = new AuthenticationTokenRequest
                             {
                                 UserName = "John"
                             };
 
-            var uri = new Uri("Authentication/SignIn", UriKind.Relative);
+            var uri = new Uri("Authentication/Token", UriKind.Relative);
             var response = await this.PostAsJsonAsync(uri, args);
-            var siginInResponse = await this.ReadAsAsync<SignInResponse>(response);
+            var siginInResponse = await this.ReadAsAsync<AuthenticationTokenResponse>(response);
 
             Assert.False(siginInResponse.Authenticated);
         }

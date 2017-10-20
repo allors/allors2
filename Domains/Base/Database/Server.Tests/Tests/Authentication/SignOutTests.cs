@@ -22,13 +22,13 @@ namespace Tests
         [Fact]
         public async void Successful()
         {
-            var args = new SignInRequest
+            var args = new AuthenticationTokenRequest
                             {
                                 UserName = "Jane",
                                 Password = "p@ssw0rd"
                             };
 
-            var signInUri = new Uri("Authentication/SignIn", UriKind.Relative);
+            var signInUri = new Uri("Authentication/Token", UriKind.Relative);
             await this.PostAsJsonAsync(signInUri, args);
 
             var signOutUri = new Uri("Authentication/SignOut", UriKind.Relative);

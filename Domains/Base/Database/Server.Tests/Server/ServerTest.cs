@@ -109,15 +109,15 @@ namespace Tests
 
         protected async System.Threading.Tasks.Task SignIn(User user)
         {
-            var args = new SignInRequest
+            var args = new AuthenticationTokenRequest
                            {
                                UserName = user.UserName,
                            };
 
-            var uri = new Uri("TestAuthentication/SignIn", UriKind.Relative);
+            var uri = new Uri("TestAuthentication/Token", UriKind.Relative);
             var response = await this.PostAsJsonAsync(uri, args, RetryCount);
-            var siginInResponse = await this.ReadAsAsync<SignInResponse>(response);
-            this.HttpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", siginInResponse.Token);
+            var signInResponse = await this.ReadAsAsync<AuthenticationTokenResponse>(response);
+            this.HttpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", signInResponse.Token);
         }
 
         protected void SignOut()
