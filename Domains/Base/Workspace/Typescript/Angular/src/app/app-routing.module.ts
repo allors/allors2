@@ -1,40 +1,45 @@
-import { NgModule } from '@angular/core';
-import { Routes, RouterModule } from '@angular/router';
+import { NgModule } from "@angular/core";
+import { RouterModule, Routes } from "@angular/router";
 
-import { AuthenticationService } from '../allors/angular';
-import { LoginComponent } from './auth/login.component';
+import { AuthenticationService } from "../allors/angular";
+import { LoginComponent } from "./auth/login.component";
 
-import { HomeComponent } from './home/home.component';
-import { FormComponent } from './form/form.component';
-import { QueryComponent } from './query/query.component';
-import { FetchComponent } from './fetch/fetch.component';
+import { FetchComponent } from "./fetch/fetch.component";
+import { FormComponent } from "./form/form.component";
+import { HomeComponent } from "./home/home.component";
+import { QueryComponent } from "./query/query.component";
 
 const routes: Routes = [
-  { path: 'login', component: LoginComponent },
+  {
+    component: LoginComponent,
+    path: "login",
+  },
   {
     canActivate: [AuthenticationService],
-    path: '',
-    children: [{
-      path: '',
-      component: HomeComponent,
-    },
-    {
-      path: 'form',
-      component: FormComponent,
-    },
-    {
-      path: 'query',
-      component: QueryComponent,
-    },
-    {
-      path: 'fetch/:id',
-      component: FetchComponent,
-    }]
-  }
+    children: [
+      {
+        component: HomeComponent,
+        path: "",
+      },
+      {
+        component: FormComponent,
+        path: "form",
+      },
+      {
+        component: QueryComponent,
+        path: "query",
+      },
+      {
+        component: FetchComponent,
+        path: "fetch/:id",
+      },
+    ],
+    path: "",
+  },
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
+  imports: [RouterModule.forRoot(routes)]
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}

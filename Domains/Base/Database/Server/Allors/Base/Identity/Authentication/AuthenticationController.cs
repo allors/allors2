@@ -1,20 +1,36 @@
-﻿namespace Allors.Server
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="AuthenticationController.cs" company="Allors bvba">
+//   Copyright 2002-2017 Allors bvba.
+//
+// Dual Licensed under
+//   a) the General Public Licence v3 (GPL)
+//   b) the Allors License
+//
+// The GPL License is included in the file gpl.txt.
+// The Allors License is an addendum to your contract.
+//
+// Allors Applications is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// For more information visit http://www.allors.com/legal
+// </copyright>
+// --------------------------------------------------------------------------------------------------------------------
+
+namespace Allors.Server
 {
-    using System;
-    using System.IdentityModel.Tokens.Jwt;
-    using System.Security.Claims;
-    using System.Text;
     using System.Threading.Tasks;
 
     using Allors.Services;
 
     using Identity.Models;
 
+    using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.Logging;
-    using Microsoft.IdentityModel.Tokens;
 
     public class AuthenticationController : Controller
     {
@@ -38,48 +54,33 @@
         public ISessionService SessionService { get; }
 
         [HttpPost]
-        public async Task<IActionResult> SignIn([FromBody]SignInRequest signInRequest)
+        [AllowAnonymous]
+        public async Task<IActionResult> Token([FromBody]AuthenticationTokenRequest request)
         {
             if (this.ModelState.IsValid)
             {
-                var user = await this.UserManager.FindByNameAsync(signInRequest.UserName);
+                var user = await this.UserManager.FindByNameAsync(request.UserName);
 
                 if (user != null)
                 {
-                    var result = await this.SignInManager.CheckPasswordSignInAsync(user, signInRequest.Password, false);
+                    var result = await this.SignInManager.CheckPasswordSignInAsync(user, request.Password, false);
                     if (result.Succeeded)
                     {
-
-                        var claims = new[]
-                                         {
-                                             new Claim(ClaimTypes.Name, user.UserName), // Required for User.Identity.Name
-                                             new Claim(JwtRegisteredClaimNames.Sub, user.UserName),
-                                             new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-                                         };
-
-                        var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(this.Configuration["Tokens:Key"]));
-                        var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
-
-                        var token = new JwtSecurityToken(
-                            this.Configuration["Tokens:Issuer"],
-                            this.Configuration["Tokens:Issuer"],
-                            claims,
-                            expires: DateTime.Now.AddDays(30),
-                            signingCredentials: credentials);
-
-                        return this.Ok(
-                            new
-                            {
-                                Authenticated = true,
-                                UserId = user.Id,
-                                Token = new JwtSecurityTokenHandler().WriteToken(token)
-                            });
+                        
+                        var token = user.CreateToken(this.Configuration);
+                        var response = new AuthenticationTokenResponse
+                                           {
+                                               Authenticated = true,
+                                               UserId = user.Id,
+                                               Token = token
+                                           };
+                        return this.Ok(response);
                     }
                 }
             }
 
             return this.Ok(new { Authenticated = false });
         }
+      
     }
 }
-

@@ -1,6 +1,6 @@
-import { Injectable, Inject } from '@angular/core';
+import { Inject, Injectable } from "@angular/core";
 
 export abstract class ErrorService {
-  abstract message(error: Error): void;
-  abstract dialog(error: Error): any;
+  public abstract message(error: Error): void;
+  public abstract dialog(error: Error): any;
 }

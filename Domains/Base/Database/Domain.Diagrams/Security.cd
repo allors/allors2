@@ -9,6 +9,13 @@
   </Interface>
   <Interface Name="Allors.Domain.AccessControl">
     <Position X="3.25" Y="2.25" Width="1.75" />
+    <AssociationLine Name="EffectiveUsers" Type="Allors.Domain.User" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="4.875" Y="3.377" />
+        <Point X="4.875" Y="3.663" />
+        <Point X="6.25" Y="3.663" />
+      </Path>
+    </AssociationLine>
     <TypeIdentifier>
       <HashCode>AAAAAEAAAACAAAAAEAAAAAAAAAAAAIAAAAAQAAAAAAA=</HashCode>
       <FileName>domain.g.cs</FileName>
@@ -17,6 +24,8 @@
       <Property Name="SubjectGroups" />
       <Property Name="Subjects" />
       <Property Name="Role" />
+      <Property Name="EffectivePermissions" />
+      <Property Name="EffectiveUsers" />
     </ShowAsAssociation>
   </Interface>
   <Interface Name="Allors.Domain.Permission">
@@ -37,11 +46,14 @@
     </ShowAsAssociation>
   </Interface>
   <Interface Name="Allors.Domain.UserGroup" Collapsed="true">
-    <Position X="6.25" Y="2" Width="1.75" />
+    <Position X="6.25" Y="1.75" Width="1.75" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAEAAAAAQAAAAAAAAAAAAEAAAAAAA=</HashCode>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAEAAAAAAA=</HashCode>
       <FileName>domain.g.cs</FileName>
     </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Members" />
+    </ShowAsAssociation>
   </Interface>
   <Interface Name="Allors.Domain.SecurityToken">
     <Position X="0.5" Y="2.25" Width="1.5" />
@@ -64,14 +76,12 @@
       </Path>
     </AssociationLine>
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAEAAAEhCgAQAAAAAAAAAAAAQAQAAAAAAAAg=</HashCode>
+      <HashCode>AAAAoAAAAEAAAAgCoAQAAAAAAAAAAAAQAAAAABAAAAg=</HashCode>
       <FileName>domain.g.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
-      <Property Name="DefaultAdministratorsAccessControl" />
-      <Property Name="DefaultGuestAccessControl" />
-      <Property Name="DefaultSecurityToken" />
       <Property Name="Guest" />
+      <Property Name="DefaultSecurityToken" />
     </ShowAsAssociation>
   </Interface>
   <Font Name="Segoe UI" Size="9" />

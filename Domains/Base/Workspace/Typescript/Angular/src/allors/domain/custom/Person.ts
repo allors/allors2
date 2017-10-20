@@ -1,6 +1,6 @@
-import { Person } from '../generated/Person.g';
+import { Person } from "../generated/Person.g";
 
-declare module '../generated/Person.g' {
+declare module "../generated/Person.g" {
     interface Person {
         displayName;
 
@@ -12,10 +12,11 @@ Person.prototype.hello = function(this: Person) {
     return `Hello ${this.displayName()}`;
 };
 
-Person.prototype.displayName = function (this: Person) {
+Object.defineProperty(Person.prototype, "displayName", {
+  get(this: Person): string {
     if (this.FirstName || this.LastName) {
         if (this.FirstName && this.LastName) {
-            return this.FirstName + ' ' + this.LastName;
+            return this.FirstName + " " + this.LastName;
         } else if (this.LastName) {
             return this.LastName;
         } else {
@@ -28,4 +29,5 @@ Person.prototype.displayName = function (this: Person) {
     }
 
     return "N/A";
-};
+  },
+});

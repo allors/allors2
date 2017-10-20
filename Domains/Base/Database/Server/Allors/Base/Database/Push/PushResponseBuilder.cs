@@ -1,8 +1,26 @@
-﻿using System;
-using Allors;
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="PushResponseBuilder.cs" company="Allors bvba">
+//   Copyright 2002-2017 Allors bvba.
+//
+// Dual Licensed under
+//   a) the General Public Licence v3 (GPL)
+//   b) the Allors License
+//
+// The GPL License is included in the file gpl.txt.
+// The Allors License is an addendum to your contract.
+//
+// Allors Applications is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// For more information visit http://www.allors.com/legal
+// </copyright>
+// --------------------------------------------------------------------------------------------------------------------
 
 namespace Allors.Server
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
 
@@ -74,12 +92,12 @@ namespace Allors.Server
                     }
                 }
 
-                foreach (Object newObject in objectByNewId.Values)
+                foreach (Allors.Domain.Object newObject in objectByNewId.Values)
                 {
                     newObject.OnBuild();
                 }
 
-                foreach (Object newObject in objectByNewId.Values)
+                foreach (Allors.Domain.Object newObject in objectByNewId.Values)
                 {
                     newObject.OnPostBuild();
                 }
@@ -142,11 +160,13 @@ namespace Allors.Server
                             {
                                 role = Serialization.ReadString((string)role, unitType.UnitTag);
                             }
-                            //Json.net deserializes number to long, in stead of int. 
+
+                            // Json.net deserializes number to long, in stead of int. 
                             if (role is long)
                             {
                                 role = Convert.ToInt32(role);
                             }
+
                             obj.Strategy.SetUnitRole(roleType.RelationType, role);
                         }
                         else

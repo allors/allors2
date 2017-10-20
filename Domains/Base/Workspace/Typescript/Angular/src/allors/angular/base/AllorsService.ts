@@ -1,9 +1,9 @@
-import { MetaDomain } from '../../meta';
-import { Workspace, } from '../../domain';
-import { Database } from './Database';
+import { Workspace, } from "../../domain";
+import { MetaDomain } from "../../meta";
+import { Database } from "./Database";
 
 export abstract class AllorsService {
-  abstract workspace: Workspace;
-  abstract database: Database;
-  abstract meta: MetaDomain;
+  public abstract workspace: Workspace;
+  public abstract database: Database;
+  public abstract meta: MetaDomain;
 }

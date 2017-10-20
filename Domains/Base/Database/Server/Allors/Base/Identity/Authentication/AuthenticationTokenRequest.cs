@@ -1,5 +1,5 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="PushRequest.cs" company="Allors bvba">
+// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="AuthenticationTokenRequest.cs" company="Allors bvba">
 //   Copyright 2002-2017 Allors bvba.
 //
 // Dual Licensed under
@@ -20,10 +20,10 @@
 
 namespace Allors.Server
 {
-    public class PushRequest
+    public class AuthenticationTokenRequest
     {
-        public PushRequestNewObject[] NewObjects { get; set; }
+        public string UserName { get; set; }
 
-        public PushRequestObject[] Objects { get; set; }
+        public string Password { get; set; }
     }
 }

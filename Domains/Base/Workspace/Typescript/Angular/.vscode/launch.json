@@ -10,10 +10,10 @@
       "webRoot": "${workspaceRoot}",
       "trace": true,
       "smartStep": true,
-      "runtimeArgs": [
-        "--disable-session-crashed-bubble",
-        "--disable-infobars"
-      ],
+      // "runtimeArgs": [
+      //   "--disable-session-crashed-bubble",
+      //   "--disable-infobars"
+      // ],
       "userDataDir": "${workspaceRoot}/.vscode/chrome",
       "sourceMapPathOverrides": {
         "webpack:///C:*": "C:/*",
