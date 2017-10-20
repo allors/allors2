@@ -21,9 +21,6 @@ export class OrganisationComponent implements OnInit, AfterViewInit, OnDestroy {
 
   title: string;
 
-  flex: string = '100%';
-  flex2: string = `calc(50%-25px)`;
-
   m: MetaDomain;
   people: Person[];
 

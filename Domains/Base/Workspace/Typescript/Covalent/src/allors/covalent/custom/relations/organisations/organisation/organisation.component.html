@@ -1,36 +1,36 @@
-<md-toolbar>
+<mat-toolbar>
   <div layout="row" layout-align="start center" flex>
-    <button md-icon-button tdLayoutManageListOpen [hideWhenOpened]="true" style="display: none">
-          <md-icon>arrow_back</md-icon>
+    <button mat-icon-button tdLayoutManageListOpen [hideWhenOpened]="true" style="display: none">
+          <mat-icon>arrow_back</mat-icon>
         </button>
     <span>{{title}}</span>
     <span flex></span>
-    <button md-icon-button><md-icon>settings</md-icon></button>
+    <button mat-icon-button><mat-icon>settings</mat-icon></button>
   </div>
-</md-toolbar>
+</mat-toolbar>
 
-<md-card>
+<mat-card>
   <form #form="ngForm" *ngIf="organisation" (submit)="save()">
-    <md-card-content class="push-bottom-none">
+    <mat-card-content class="push-bottom-none">
 
       <div fxLayout="row wrap" fxLayoutAlign="start stretch" fxLayoutGap.gt-md="25px">
-        <a-md-input class="push-top" [object]="organisation" [roleType]="m.Organisation.Name" [fxFlex]="flex" [fxFlex.gt-md]="flex2"></a-md-input>
-        <a-md-autocomplete class="push-top" [object]="organisation" [roleType]="m.Organisation.Owner" [options]="people" display="displayName" hint="With options" [fxFlex]="flex" [fxFlex.gt-md]="flex2"></a-md-autocomplete>
-        <a-md-autocomplete class="push-top" [object]="organisation" [roleType]="m.Organisation.Owner" [filter]="peopleFilter.create()" display="displayName" (onSelect)="ownerSelected($event)" hint="With filter" [fxFlex]="flex" [fxFlex.gt-md]="flex2"></a-md-autocomplete>
-        <a-td-chips class="push-top" [object]="organisation" [roleType]="m.Organisation.Employees" [filter]="peopleFilter.create()" display="displayName" hint="All current employees" [fxFlex]="flex" [fxFlex.gt-md]="flex2"></a-td-chips>
+        <a-mat-input class="push-top" [object]="organisation" [roleType]="m.Organisation.Name"></a-mat-input>
+        <a-mat-autocomplete class="push-top" [object]="organisation" [roleType]="m.Organisation.Owner" [options]="people" display="displayName" hint="With options"></a-mat-autocomplete>
+        <a-mat-autocomplete class="push-top" [object]="organisation" [roleType]="m.Organisation.Owner" [filter]="peopleFilter.create()" display="displayName" (onSelect)="ownerSelected($event)" hint="With filter"></a-mat-autocomplete>
+        <a-td-chips class="push-top" [object]="organisation" [roleType]="m.Organisation.Employees" [filter]="peopleFilter.create()" display="displayName" hint="All current employees"></a-td-chips>
 
-        <div [fxFlex]="flex" [fxFlex.gt-md]="flex2">{{organisation?.Owner?.displayName}}</div>
+        <div>{{organisation?.Owner?.displayName}}</div>
 
       </div>
 
-    </md-card-content>
+    </mat-card-content>
 
-    <md-divider></md-divider>
+    <mat-divider></mat-divider>
 
-    <md-card-actions>
-      <button md-button color="primary" type="submit">SAVE</button>
-      <button md-button (click)="goBack()" type="button">CANCEL</button>
-    </md-card-actions>
+    <mat-card-actions>
+      <button mat-button color="primary" type="submit">SAVE</button>
+      <button mat-button (click)="goBack()" type="button">CANCEL</button>
+    </mat-card-actions>
 
   </form>
-</md-card>
+</mat-card>

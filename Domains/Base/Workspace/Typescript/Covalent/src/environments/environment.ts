@@ -8,5 +8,5 @@ import { Environment } from '../allors/angular';
 export const environment: Environment = {
   production: false,
   url: 'http://localhost:5000/',
-  authenticationUrl: 'TestAuthentication/SignIn',
+  authenticationUrl: 'TestAuthentication/Token',
 };

@@ -5,14 +5,13 @@ import { MetaDomain, RoleType } from "../../../../allors/meta";
 import { Field } from "../../../angular";
 
 @Component({
-  selector: "a-md-slider",
+  selector: "a-mat-slider",
   template: `
-<md-input-container fxLayout="column" fxLayoutAlign="top stretch">
-  <md-slider fxFlex [(ngModel)]="model" [name]="name" [invert]="invert" [min]="min" [max]="max" [step]="step" [thumbLabel]="thumbLabel" [tickInterval]="tickInterval" [vertical]="vertical" [color]="color" [required]="required" [disabled]="disabled"></md-slider>
-
-  <input fxFlex mdInput [type]="textType"    >
-  <md-hint *ngIf="hint">{{hint}}</md-hint>
-</md-input-container>
+<mat-input-container fxLayout="column" fxLayoutAlign="top stretch">
+  <mat-slider [(ngModel)]="model" [name]="name" [invert]="invert" [min]="min" [max]="max" [step]="step" [thumbLabel]="thumbLabel" [tickInterval]="tickInterval" [vertical]="vertical" [color]="color" [required]="required" [disabled]="disabled"></mat-slider>
+  <input matInput [type]="textType"    >
+  <mat-hint *ngIf="hint">{{hint}}</mat-hint>
+</mat-input-container>
 `,
 })
 export class SliderComponent extends Field {

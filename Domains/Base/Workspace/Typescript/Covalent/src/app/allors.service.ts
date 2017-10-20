@@ -1,5 +1,5 @@
 import { Injectable, Inject } from '@angular/core';
-import { Http, RequestOptions } from '@angular/http';
+import { HttpClient } from "@angular/common/http";
 
 import { MetaDomain } from '../allors/meta/generated/meta.g';
 import { Workspace, } from '../allors/domain/base/Workspace';
@@ -16,13 +16,13 @@ export class DefaultAllorsService extends AllorsService {
   meta: MetaDomain;
 
   constructor(
-    http: Http,
+    http: HttpClient,
     authService: AuthenticationService,
     @Inject(ENVIRONMENT) private environment: Environment) {
 
     super();
 
-    this.database = new Database(http, environment.url, (requestOptions: RequestOptions) => authService.postProcessRequestOptions(requestOptions));
+    this.database = new Database(http, environment.url);
     this.workspace = workspace;
     this.meta = workspace.metaPopulation.createMetaDomain();
   }

@@ -8,7 +8,7 @@ import { Field } from "../../../angular";
   selector: "a-mat-checkbox",
   template: `
 <div fxLayout="row">
-  <mat-checkbox fxFlex [(ngModel)]="model" [name]="name" [required]="required" [disabled]="disabled">
+  <mat-checkbox [(ngModel)]="model" [name]="name" [required]="required" [disabled]="disabled">
   {{label}}
   </mat-checkbox>
   <mat-hint *ngIf="hint">{{hint}}</mat-hint>

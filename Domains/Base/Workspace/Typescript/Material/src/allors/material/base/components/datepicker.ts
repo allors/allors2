@@ -9,18 +9,18 @@ import { Field } from '../../../angular';
   selector: 'a-mat-datepicker',
   template: `
 <div fxLayout="row">
-  <mat-input-container fxFlex fxLayoutGap="1em">
-    <input fxFlex matInput [matDatepicker]="picker" [(ngModel)]="model" [name]="name" [placeholder]="label" [required]="required" [disabled]="disabled" [readonly]="readonly">
+  <mat-input-container fxLayoutGap="1em">
+    <input matInput [matDatepicker]="picker" [(ngModel)]="model" [name]="name" [placeholder]="label" [required]="required" [disabled]="disabled" [readonly]="readonly">
     <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
     <mat-datepicker #picker></mat-datepicker>
     <mat-hint *ngIf="hint">{{hint}}</mat-hint>
   </mat-input-container>
 
-  <mat-input-container fxFlex="4em" *ngIf="this.model && useTime">
+  <mat-input-container *ngIf="this.model && useTime">
     <input matInput matInput type="number" min="0" max="23" [(ngModel)]="hours" [name]="hours" placeholder="hours" [required]="required" [disabled]="disabled" [readonly]="readonly">
   </mat-input-container>
 
-  <mat-input-container fxFlex="4em" *ngIf="this.model && useTime">
+  <mat-input-container *ngIf="this.model && useTime">
     <input matInput matInput type="number" min="0" max="59" [(ngModel)]="minutes" [name]="minutes" placeholder="minutes" [required]="required" [disabled]="disabled" [readonly]="readonly">
   </mat-input-container>
 </div>

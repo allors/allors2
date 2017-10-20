@@ -1,21 +1,20 @@
-import { Injectable , ChangeDetectorRef } from '@angular/core';
-import { Router, Route, NavigationEnd, ActivatedRoute } from '@angular/router';
-import { Title } from '@angular/platform-browser';
-import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/operator/filter';
-import 'rxjs/add/operator/map';
+import { ChangeDetectorRef , Injectable } from "@angular/core";
+import { ActivatedRoute, NavigationEnd, Route, Router } from "@angular/router";
+import "rxjs/add/operator/filter";
+import "rxjs/add/operator/map";
+import { Observable } from "rxjs/Observable";
 
-import { MenuItem } from './MenuItem';
+import { MenuItem } from "./MenuItem";
 
 @Injectable()
 export class MenuService {
-  menuItems: MenuItem[];
-  menuItemByRoute: Map<Route, MenuItem>;
+  public menuItems: MenuItem[];
+  public menuItemByRoute: Map<Route, MenuItem>;
 
-  modules: MenuItem[];
-  pagesByModule: Map<MenuItem, MenuItem[]>;
+  public modules: MenuItem[];
+  public pagesByModule: Map<MenuItem, MenuItem[]>;
 
-  constructor(private router: Router, private titleService: Title) {
+  constructor(private router: Router) {
 
     this.menuItemByRoute = new Map();
     this.modules = [];
@@ -24,7 +23,7 @@ export class MenuService {
     this.menuItems = this.router.config.map((route: Route) => new MenuItem(this.menuItemByRoute, this.modules, this.pagesByModule, route));
   }
 
-  pages(route: Route): MenuItem[] {
+  public pages(route: Route): MenuItem[] {
     const menuItem: MenuItem = this.menuItemByRoute.get(route);
     const module: MenuItem =  menuItem.module;
     return this.pagesByModule.get(module);

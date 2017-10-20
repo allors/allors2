@@ -9,7 +9,7 @@ import { Field } from "../../../angular";
   selector: "a-mat-select",
   template: `
 <mat-form-field>
-    <mat-select fxFlex [(ngModel)]="model" [name]="name" [placeholder]="label" [multiple]="roleType.isMany" [required]="required" [disabled]="disabled">
+    <mat-select [(ngModel)]="model" [name]="name" [placeholder]="label" [multiple]="roleType.isMany" [required]="required" [disabled]="disabled">
       <mat-option *ngFor="let option of options" [value]="option">
         {{option[display]}}
       </mat-option>

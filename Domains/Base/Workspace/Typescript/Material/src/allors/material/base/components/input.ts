@@ -9,7 +9,7 @@ import { Field } from "../../../angular";
   selector: "a-mat-input",
   template: `
 <mat-input-container fxLayout="column" fxLayoutAlign="top stretch">
-  <input fxFlex matInput [type]="textType" [(ngModel)]="model" [name]="name" [placeholder]="label" [required]="required" [disabled]="disabled" [readonly]="readonly">
+  <input matInput [type]="textType" [(ngModel)]="model" [name]="name" [placeholder]="label" [required]="required" [disabled]="disabled" [readonly]="readonly">
   <mat-hint *ngIf="hint">{{hint}}</mat-hint>
 </mat-input-container>
 `,

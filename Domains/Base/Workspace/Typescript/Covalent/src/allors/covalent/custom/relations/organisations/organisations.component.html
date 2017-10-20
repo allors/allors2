@@ -1,53 +1,53 @@
-<md-toolbar>
+<mat-toolbar>
   <div layout="row" layout-align="start center" flex>
-    <button md-icon-button tdLayoutManageListOpen [hideWhenOpened]="true" style="display: none">
-          <md-icon>arrow_back</md-icon>
+    <button mat-icon-button tdLayoutManageListOpen [hideWhenOpened]="true" style="display: none">
+          <mat-icon>arrow_back</mat-icon>
         </button>
     <span>{{title}}</span>
     <span flex></span>
-    <button md-icon-button><md-icon>settings</md-icon></button>
+    <button mat-icon-button><mat-icon>settings</mat-icon></button>
   </div>
-</md-toolbar>
+</mat-toolbar>
 
-<md-card>
-  <md-card-content>
+<mat-card>
+  <mat-card-content>
     <ng-template tdLoading="data">
-      <md-list class="will-load">
-        <div class="md-padding" *ngIf="data && data.length === 0" layout="row" layout-align="center center">
+      <mat-list class="will-load">
+        <div class="mat-padding" *ngIf="data && data.length === 0" layout="row" layout-align="center center">
           <h3>No organisations to display.</h3>
         </div>
         <ng-template let-organisation let-last="last" ngFor [ngForOf]="data">
-          <md-list-item>
+          <mat-list-item>
 
-            <md-icon *ngIf="!organisation.Picture" md-list-avatar>organisation</md-icon>
-            <img *ngIf="organisation.Picture" md-list-avatar src="http://localhost:5000/Media/Download/{{organisation.Picture.UniqueId}}?revision={{organisation.Picture.Revision}}"
+            <mat-icon *ngIf="!organisation.Picture" mat-list-avatar>organisation</mat-icon>
+            <img *ngIf="organisation.Picture" mat-list-avatar src="http://localhost:5000/Media/Download/{{organisation.Picture.UniqueId}}?revision={{organisation.Picture.Revision}}"
             />
 
-            <h3 md-line>{{organisation.Name}}</h3>
-            <p md-line> {{organisation.Owner?.displayName}} </p>
-            <p md-line hide-gt-md class="md-caption"> last login: {{ organisation.LastAccess | timeAgo }} </p>
+            <h3 mat-line>{{organisation.Name}}</h3>
+            <p mat-line> {{organisation.Owner?.displayName}} </p>
+            <p mat-line hide-gt-md class="mat-caption"> last login: {{ organisation.LastAccess | timeAgo }} </p>
 
             <span flex></span>
 
             <span hide-xs hide-sm hide-md flex-gt-xs="60" flex-xs="40" layout-gt-xs="row">
-          <div class="md-caption tc-grey-500" flex-gt-xs="50"> {{ organisation.Created | date }} </div>
-          <div class="md-caption tc-grey-500" flex-gt-xs="50"> {{ organisation.LastAccess | timeAgo }} </div>
+          <div class="mat-caption tc-grey-500" flex-gt-xs="50"> {{ organisation.Created | date }} </div>
+          <div class="mat-caption tc-grey-500" flex-gt-xs="50"> {{ organisation.LastAccess | timeAgo }} </div>
         </span>
 
             <span>
-        <button md-icon-button [md-menu-trigger-for]="menu">
-        <md-icon>more_vert</md-icon>
+        <button mat-icon-button [mat-menu-trigger-for]="menu">
+        <mat-icon>more_vert</mat-icon>
         </button>
-        <md-menu x-position="before" #menu="mdMenu">
-        <a [routerLink]="[organisation.id + '/overview']" md-menu-item>Details</a>
-        <button md-menu-item (click)="delete(organisation)">Delete</button>
-        </md-menu>
+        <mat-menu x-position="before" #menu="matMenu">
+        <a [routerLink]="[organisation.id + '/overview']" mat-menu-item>Details</a>
+        <button mat-menu-item (click)="delete(organisation)">Delete</button>
+        </mat-menu>
         </span>
 
-          </md-list-item>
-          <md-divider *ngIf="!last" md-inset></md-divider>
+          </mat-list-item>
+          <mat-divider *ngIf="!last" mat-inset></mat-divider>
         </ng-template>
-      </md-list>
+      </mat-list>
     </ng-template>
-  </md-card-content>
-</md-card>
+  </mat-card-content>
+</mat-card>

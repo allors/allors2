@@ -1,28 +1,28 @@
-import { Component, Input } from '@angular/core';
-import { ISessionObject } from '../../../../allors/domain';
-import { MetaDomain, RoleType } from '../../../../allors/meta';
+import { Component, Input } from "@angular/core";
+import { ISessionObject } from "../../../../allors/domain";
+import { MetaDomain, RoleType } from "../../../../allors/meta";
 
 export abstract class Field {
   @Input()
-  object: ISessionObject;
+  public object: ISessionObject;
 
   @Input()
-  roleType: RoleType;
+  public roleType: RoleType;
 
-  @Input('disabled')
-  assignedDisabled: boolean;
+  @Input("disabled")
+  public assignedDisabled: boolean;
 
-  @Input('required')
-  assignedRequired: boolean;
+  @Input("required")
+  public assignedRequired: boolean;
 
-  @Input('label')
-  assignedLabel: string;
-
-  @Input()
-  readonly: boolean;
+  @Input("label")
+  public assignedLabel: string;
 
   @Input()
-  hint: string;
+  public readonly: boolean;
+
+  @Input()
+  public hint: string;
 
   get ExistObject(): boolean {
     return !!this.object;
@@ -51,13 +51,13 @@ export abstract class Field {
   }
 
   get textType(): string {
-    if (this.roleType.objectType.name === 'Integer' ||
-      this.roleType.objectType.name === 'Decimal' ||
-      this.roleType.objectType.name === 'Float') {
-      return 'number';
+    if (this.roleType.objectType.name === "Integer" ||
+      this.roleType.objectType.name === "Decimal" ||
+      this.roleType.objectType.name === "Float") {
+      return "number";
     }
 
-    return 'text';
+    return "text";
   }
 
   get name(): string {
@@ -77,8 +77,8 @@ export abstract class Field {
   }
 
   protected humanize(input: string): string {
-    return input ? input.replace(/([a-z\d])([A-Z])/g, '$1 $2')
-      .replace(/([A-Z]+)([A-Z][a-z\d]+)/g, '$1 $2')
+    return input ? input.replace(/([a-z\d])([A-Z])/g, "$1 $2")
+      .replace(/([A-Z]+)([A-Z][a-z\d]+)/g, "$1 $2")
       : undefined;
   }
 }

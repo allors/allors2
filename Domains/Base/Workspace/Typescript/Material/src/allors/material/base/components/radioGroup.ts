@@ -13,7 +13,7 @@ export class RadioGroupOption {
   selector: "a-mat-radio-group",
   template: `
 <mat-input-container fxLayout="row">
-  <mat-radio-group fxFlex [(ngModel)]="model" [name]="name" [required]="required" [disabled]="disabled">
+  <mat-radio-group [(ngModel)]="model" [name]="name" [required]="required" [disabled]="disabled">
     <mat-radio-button *ngFor="let option of options" [value]="optionValue(option)">{{optionLabel(option)}}</mat-radio-button>
   </mat-radio-group>
   <mat-hint *ngIf="hint">{{hint}}</mat-hint>

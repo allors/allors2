@@ -8,9 +8,8 @@ import { Field } from "../../../angular";
   selector: "a-mat-slider",
   template: `
 <mat-input-container fxLayout="column" fxLayoutAlign="top stretch">
-  <mat-slider fxFlex [(ngModel)]="model" [name]="name" [invert]="invert" [min]="min" [max]="max" [step]="step" [thumbLabel]="thumbLabel" [tickInterval]="tickInterval" [vertical]="vertical" [color]="color" [required]="required" [disabled]="disabled"></mat-slider>
-
-  <input fxFlex matInput [type]="textType"    >
+  <mat-slider [(ngModel)]="model" [name]="name" [invert]="invert" [min]="min" [max]="max" [step]="step" [thumbLabel]="thumbLabel" [tickInterval]="tickInterval" [vertical]="vertical" [color]="color" [required]="required" [disabled]="disabled"></mat-slider>
+  <input matInput [type]="textType"    >
   <mat-hint *ngIf="hint">{{hint}}</mat-hint>
 </mat-input-container>
 `,

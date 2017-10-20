@@ -1,29 +1,29 @@
-<md-toolbar>
+<mat-toolbar>
   <div layout="row" layout-align="start center" flex>
-    <button md-icon-button tdLayoutManageListOpen [hideWhenOpened]="true" style="display: none">
-          <md-icon>arrow_back</md-icon>
+    <button mat-icon-button tdLayoutManageListOpen [hideWhenOpened]="true" style="display: none">
+          <mat-icon>arrow_back</mat-icon>
         </button>
     <span>{{title}}</span>
     <span flex></span>
-    <button md-icon-button><md-icon>settings</md-icon></button>
+    <button mat-icon-button><mat-icon>settings</mat-icon></button>
   </div>
-</md-toolbar>
+</mat-toolbar>
 
-<md-card body *ngIf="organisation">
-  <md-card-content>
+<mat-card body *ngIf="organisation">
+  <mat-card-content>
 
     <div layout="row" class="push-top">
-      <a-md-static [object]="organisation" [roleType]="m.Organisation.Name"></a-md-static>
+      <a-mat-static [object]="organisation" [roleType]="m.Organisation.Name"></a-mat-static>
     </div>
 
     <div layout="row" class="push-top">
-      <a-md-static [object]="organisation" [roleType]="m.Organisation.Owner" display="displayName"></a-md-static>
+      <a-mat-static [object]="organisation" [roleType]="m.Organisation.Owner" display="displayName"></a-mat-static>
     </div>
 
-  </md-card-content>
+  </mat-card-content>
 
-  <md-divider></md-divider>
-  <md-card-actions>
-    <button md-button [routerLink]="[ '../edit']">Edit</button>
-  </md-card-actions>
-</md-card>
+  <mat-divider></mat-divider>
+  <mat-card-actions>
+    <button mat-button [routerLink]="[ '../edit']">Edit</button>
+  </mat-card-actions>
+</mat-card>

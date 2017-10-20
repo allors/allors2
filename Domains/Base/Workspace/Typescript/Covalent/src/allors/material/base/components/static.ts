@@ -5,11 +5,11 @@ import { MetaDomain, RoleType } from "../../../../allors/meta";
 import { Field } from "../../../angular";
 
 @Component({
-  selector: "a-md-static",
+  selector: "a-mat-static",
   template: `
-<md-input-container fxLayout="column" fxLayoutAlign="top stretch">
-  <input fxFlex mdInput type="type" [ngModel]="static" [name]="name" [placeholder]="label" readonly>
-</md-input-container>
+<mat-input-container fxLayout="column" fxLayoutAlign="top stretch">
+  <input matInput type="type" [ngModel]="static" [name]="name" [placeholder]="label" readonly>
+</mat-input-container>
 `,
 })
 export class StaticComponent extends Field {

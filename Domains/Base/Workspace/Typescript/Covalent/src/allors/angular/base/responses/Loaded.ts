@@ -1,10 +1,10 @@
-﻿import { ISession, ISessionObject, PullResponse } from '../../../domain';
+﻿import { ISession, ISessionObject, PullResponse } from "../../../domain";
 
 export class Loaded {
 
-    objects: { [name: string]: ISessionObject; } = {};
-    collections: { [name: string]: ISessionObject[]; } = {};
-    values: { [name: string]: any; } = {};
+    public objects: { [name: string]: ISessionObject; } = {};
+    public collections: { [name: string]: ISessionObject[]; } = {};
+    public values: { [name: string]: any; } = {};
 
     constructor(public session: ISession, public response: PullResponse) {
         const namedObjects: { [id: string]: string; } = response.namedObjects;

@@ -1,7 +1,7 @@
 import { NgModule, Type } from '@angular/core';
 import { BrowserModule, Title } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import {FlexLayoutModule} from '@angular/flex-layout';
+import { HTTP_INTERCEPTORS, HttpClientModule } from "@angular/common/http";
 
 import { ErrorService } from '../allors/angular';
 import { DefaultErrorService } from '../allors/covalent';
@@ -10,7 +10,7 @@ import { AppComponent } from './app.component';
 import { routedComponents, AppRoutingModule } from './app-routing.module';
 import { SharedModule } from './shared/shared.module';
 
-import { ENVIRONMENT, AllorsService, AuthenticationService } from '../allors/angular';
+import { ENVIRONMENT, AllorsService, AuthenticationInterceptor, AuthenticationService } from '../allors/angular';
 import { environment } from '../environments/environment';
 
 import { DefaultAllorsService } from './allors.service';
@@ -32,11 +32,12 @@ import { RELATIONS } from '../allors/covalent/custom/relations';
     AppRoutingModule,
     BrowserModule,
     BrowserAnimationsModule,
-    FlexLayoutModule,
+    HttpClientModule,
     SharedModule,
   ],
   providers: [
     { provide: ENVIRONMENT, useValue: environment },
+    { provide: HTTP_INTERCEPTORS, useClass: AuthenticationInterceptor, multi: true },
     { provide: ErrorService, useClass: DefaultErrorService },
     { provide: AllorsService, useClass: DefaultAllorsService },
     AuthenticationService,

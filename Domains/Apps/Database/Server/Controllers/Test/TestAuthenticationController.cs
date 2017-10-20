@@ -1,9 +1,5 @@
 ﻿namespace Allors.Server
 {
-    using System;
-    using System.IdentityModel.Tokens.Jwt;
-    using System.Security.Claims;
-    using System.Text;
     using System.Threading.Tasks;
 
     using Identity.Models;
@@ -12,14 +8,10 @@
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.Logging;
-    using Microsoft.IdentityModel.Tokens;
 
     public class TestAuthenticationController : Controller
     {
-        public TestAuthenticationController(
-            UserManager<ApplicationUser> userManager,
-            ILogger<AuthenticationController> logger,
-            IConfiguration config)
+        public TestAuthenticationController(UserManager<ApplicationUser> userManager, ILogger<AuthenticationController> logger, IConfiguration config)
         {
             this.UserManager = userManager;
             this.Logger = logger;
@@ -33,38 +25,22 @@
         public IConfiguration Configuration { get; }
 
         [HttpPost]
-        public async Task<IActionResult> SignIn([FromBody]SignInRequest signInRequest)
+        public async Task<IActionResult> Token([FromBody]AuthenticationTokenRequest request)
         {
             if (this.ModelState.IsValid)
             {
-                var user = await this.UserManager.FindByNameAsync(signInRequest.UserName);
+                var user = await this.UserManager.FindByNameAsync(request.UserName);
 
                 if (user != null)
                 {
-                    var claims = new[]
-                                        {
-                                            new Claim(ClaimTypes.Name, user.UserName), // Required for User.Identity.Name
-                                            new Claim(JwtRegisteredClaimNames.Sub, user.UserName),
-                                            new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-                                        };
-
-                    var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(this.Configuration["Tokens:Key"]));
-                    var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
-
-                    var token = new JwtSecurityToken(
-                        this.Configuration["Tokens:Issuer"],
-                        this.Configuration["Tokens:Issuer"],
-                        claims,
-                        expires: DateTime.Now.AddDays(30),
-                        signingCredentials: credentials);
-
-
-                    return this.Ok(
-                        new
-                        {
-                            Authenticated = true,
-                            Token = new JwtSecurityTokenHandler().WriteToken(token)
-                        });
+                    var token = user.CreateToken(this.Configuration);
+                    var response = new AuthenticationTokenResponse
+                                       {
+                                           Authenticated = true,
+                                           UserId = user.Id,
+                                           Token = token
+                                       };
+                    return this.Ok(response);
                 }
             }
 

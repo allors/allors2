@@ -5,13 +5,13 @@ import { MetaDomain, RoleType } from "../../../../allors/meta";
 import { Field } from "../../../angular";
 
 @Component({
-  selector: "a-md-slide-toggle",
+  selector: "a-mat-slide-toggle",
   template: `
 <div fxLayout="row">
-  <md-slide-toggle fxFlex [(ngModel)]="model" [name]="name" [required]="required" [disabled]="disabled">
+  <mat-slide-toggle [(ngModel)]="model" [name]="name" [required]="required" [disabled]="disabled">
   {{label}}
-  </md-slide-toggle>
-  <md-hint *ngIf="hint">{{hint}}</md-hint>
+  </mat-slide-toggle>
+  <mat-hint *ngIf="hint">{{hint}}</mat-hint>
 </div>
 `,
 })

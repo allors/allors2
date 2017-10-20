@@ -8,7 +8,7 @@ import { Field } from "../../../angular";
   selector: "a-mat-slide-toggle",
   template: `
 <div fxLayout="row">
-  <mat-slide-toggle fxFlex [(ngModel)]="model" [name]="name" [required]="required" [disabled]="disabled">
+  <mat-slide-toggle [(ngModel)]="model" [name]="name" [required]="required" [disabled]="disabled">
   {{label}}
   </mat-slide-toggle>
   <mat-hint *ngIf="hint">{{hint}}</mat-hint>

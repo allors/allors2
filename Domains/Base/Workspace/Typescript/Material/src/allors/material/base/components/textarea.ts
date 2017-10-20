@@ -9,7 +9,7 @@ import { Field } from "../../../angular";
   selector: "a-mat-textarea",
   template: `
 <mat-input-container fxLayout="column" fxLayoutAlign="top stretch">
-  <textarea fxFlex matInput [(ngModel)]="model" [name]="name" [placeholder]="label" [required]="required" [disabled]="disabled" [readonly]="readonly">
+  <textarea matInput [(ngModel)]="model" [name]="name" [placeholder]="label" [required]="required" [disabled]="disabled" [readonly]="readonly">
   </textarea>
   <mat-hint *ngIf="hint">{{hint}}</mat-hint>
 </mat-input-container>

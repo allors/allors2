@@ -8,7 +8,7 @@ import { Field } from "../../../angular";
   selector: "a-mat-static",
   template: `
 <mat-input-container fxLayout="column" fxLayoutAlign="top stretch">
-  <input fxFlex matInput type="type" [ngModel]="static" [name]="name" [placeholder]="label" readonly>
+  <input matInput type="type" [ngModel]="static" [name]="name" [placeholder]="label" readonly>
 </mat-input-container>
 `,
 })

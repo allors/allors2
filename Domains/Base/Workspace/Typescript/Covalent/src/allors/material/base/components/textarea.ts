@@ -6,13 +6,13 @@ import { MetaDomain, RoleType } from "../../../../allors/meta";
 import { Field } from "../../../angular";
 
 @Component({
-  selector: "a-md-textarea",
+  selector: "a-mat-textarea",
   template: `
-<md-input-container fxLayout="column" fxLayoutAlign="top stretch">
-  <textarea fxFlex mdInput [(ngModel)]="model" [name]="name" [placeholder]="label" [required]="required" [disabled]="disabled" [readonly]="readonly">
+<mat-input-container fxLayout="column" fxLayoutAlign="top stretch">
+  <textarea matInput [(ngModel)]="model" [name]="name" [placeholder]="label" [required]="required" [disabled]="disabled" [readonly]="readonly">
   </textarea>
-  <md-hint *ngIf="hint">{{hint}}</md-hint>
-</md-input-container>
+  <mat-hint *ngIf="hint">{{hint}}</mat-hint>
+</mat-input-container>
 `,
 })
 export class TextareaComponent extends Field implements AfterViewInit {
