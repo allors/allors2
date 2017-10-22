@@ -126,6 +126,7 @@ export class SalesOrderEditComponent implements OnInit, AfterViewInit, OnDestroy
                   new TreeNode({ roleType: m.SalesOrder.ShipToCustomer }),
                   new TreeNode({ roleType: m.SalesOrder.ShipToAddress }),
                   new TreeNode({ roleType: m.SalesOrder.SalesOrderState }),
+                  new TreeNode({ roleType: m.SalesOrder.BillToContactMechanism }),
                   new TreeNode({ roleType: m.SalesOrder.Quote }),
                 ],
                 name: "salesOrder",

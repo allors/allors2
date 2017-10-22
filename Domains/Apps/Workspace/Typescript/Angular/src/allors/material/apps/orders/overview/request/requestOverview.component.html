@@ -25,10 +25,10 @@
         <div *ngIf="quote" layout="row" class="link" [routerLink]="['/orders/productQuote/' + quote.id ]">
           <a-mat-static [object]="quote" [roleType]="m.Quote.QuoteNumber"></a-mat-static>
         </div>
-        <div *ngIf="request.Originator.objectType.name == 'Person'" layout="row" class="link" [routerLink]="['/relations/person/' + request.Originator.id ]">
+        <div *ngIf="request.Originator?.objectType.name == 'Person'" layout="row" class="link" [routerLink]="['/relations/person/' + request.Originator.id ]">
           <a-mat-static [object]="request" [roleType]="m.Request.Originator" display="displayName" label="From"></a-mat-static>
         </div>
-        <div *ngIf="request.Originator.objectType.name == 'Organisation'" layout="row" class="link" [routerLink]="['/relations/organisation/' + request.Originator.id ]">
+        <div *ngIf="request.Originator?.objectType.name == 'Organisation'" layout="row" class="link" [routerLink]="['/relations/organisation/' + request.Originator.id ]">
           <a-mat-static [object]="request" [roleType]="m.Request.Originator" display="displayName" label="From"></a-mat-static>
         </div>
         <div *ngIf="request.FullfillContactMechanism" layout="row">

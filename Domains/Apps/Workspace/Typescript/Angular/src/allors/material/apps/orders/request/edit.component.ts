@@ -154,11 +154,15 @@ export class RequestEditComponent implements OnInit, AfterViewInit, OnDestroy {
           this.request = this.scope.session.create("RequestForQuote") as RequestForQuote;
         }
 
-        this.originatorSelected(this.request.Originator);
+        this.title = "Request " + this.request.RequestNumber;
+
+        if (this.request.Originator) {
+          this.originatorSelected(this.request.Originator);
+          this.title = this.title + " from: " + this.request.Originator.PartyName;
+        }
 
         this.organisations = loaded.collections.organisations as Organisation[];
         this.people = loaded.collections.parties as Person[];
-        this.title = "Request " + this.request.RequestNumber + " from: " + this.request.Originator.PartyName;
       },
       (error: Error) => {
         this.errorService.message(error);

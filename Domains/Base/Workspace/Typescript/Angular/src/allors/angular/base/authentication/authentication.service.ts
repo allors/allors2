@@ -11,7 +11,7 @@ export class AuthenticationService implements CanActivate {
 
   constructor(private http: HttpClient, private router: Router, @Inject(ENVIRONMENT) private environment: Environment) { }
 
-  private token: string;
+  public token: string;
 
   public canActivate() {
     if (this.token) {

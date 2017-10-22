@@ -28,6 +28,10 @@ export class Filter {
 
   public create(): ((search: string) => Observable<ISessionObject[]>) {
     return (search: string) => {
+      if (!search.trim) {
+        return Observable.empty<ISessionObject[]>();
+      }
+
       const terms: string[] = search.trim().split(" ");
 
       const and: And = new And();
