@@ -8,18 +8,10 @@ import { AuthenticationTokenResponse } from "./AuthenticationTokenResponse";
 
 @Injectable()
 export class AuthenticationService implements CanActivate {
-  private tokenKey = "token";
 
   constructor(private http: HttpClient, private router: Router, @Inject(ENVIRONMENT) private environment: Environment) { }
 
-  public get token(): string {
-    return sessionStorage.getItem(this.tokenKey);
-  }
-
-  public set token(value: string)
-  {
-    sessionStorage.setItem(this.tokenKey, value);
-  }
+  private token: string;
 
   public canActivate() {
     if (this.token) {
@@ -38,7 +30,7 @@ export class AuthenticationService implements CanActivate {
       .post<AuthenticationTokenResponse>(url, request)
       .map((result) => {
         if (result.authenticated) {
-          sessionStorage.setItem(this.tokenKey, result.token);
+          this.token =  result.token;
         }
 
         return result;
