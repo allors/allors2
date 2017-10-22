@@ -42,6 +42,25 @@ namespace Allors.Domain
             return false;
         }
 
+        public bool IsActiveContact(DateTime? date)
+        {
+            if (date == DateTime.MinValue)
+            {
+                return false;
+            }
+
+            foreach (OrganisationContactRelationship relationship in this.OrganisationContactRelationshipsWhereContact)
+            {
+                if (relationship.FromDate.Date <= date &&
+                    (!relationship.ExistThroughDate || relationship.ThroughDate >= date))
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
         public void AppsOnDerive(ObjectOnDerive method)
         {
             var derivation = method.Derivation;

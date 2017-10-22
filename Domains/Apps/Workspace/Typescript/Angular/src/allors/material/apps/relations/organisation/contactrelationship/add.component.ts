@@ -1,34 +1,35 @@
-import { Observable, Subject, Subscription } from 'rxjs/Rx';
-import { Component, OnInit, AfterViewInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
-import { Validators } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
-import { MatSnackBar, MatSnackBarConfig } from '@angular/material';
-import { TdMediaService } from '@covalent/core';
+import { AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit } from "@angular/core";
+import { Validators } from "@angular/forms";
+import { MatSnackBar, MatSnackBarConfig } from "@angular/material";
+import { ActivatedRoute } from "@angular/router";
+import { TdMediaService } from "@covalent/core";
+import { BehaviorSubject, Observable, Subject, Subscription } from "rxjs/Rx";
 
-import { MetaDomain } from '../../../../../meta/index';
-import { PullRequest, PushResponse, Fetch, Path, Query, Equals, Like, TreeNode, Sort, Page } from '../../../../../domain';
-import { Organisation, Person, PersonRole, Locale, OrganisationContactRelationship, OrganisationContactKind, Enumeration } from '../../../../../domain';
-import { AllorsService, ErrorService, Scope, Loaded, Filter, Saved } from '../../../../../angular';
+import { AllorsService, ErrorService, Filter, Loaded, Saved, Scope } from "../../../../../angular";
+import { Equals, Fetch, ISessionObject, Like, Page, Path, PullRequest, PushResponse, Query, Sort, TreeNode } from "../../../../../domain";
+import { Enumeration, Locale, Organisation, OrganisationContactKind, OrganisationContactRelationship, Person, PersonRole } from "../../../../../domain";
+import { MetaDomain } from "../../../../../meta/index";
 
 @Component({
-  templateUrl: './form.component.html',
+  templateUrl: "./form.component.html",
 })
 export class OrganisationContactrelationshipAddComponent implements OnInit, AfterViewInit, OnDestroy {
 
+  public title: string = "Contact Relationship";
+  public subTitle: string = "add a new contact relationship";
+
+  public m: MetaDomain;
+
+  public peopleFilter: Filter;
+  public organisationContactRelationship: OrganisationContactRelationship;
+  public person: Person;
+  public organisationContactKinds: Enumeration[];
+  public roles: PersonRole[];
+  public addPerson: boolean = false;
+  private refresh$: BehaviorSubject<Date>;
+
   private subscription: Subscription;
   private scope: Scope;
-
-  title: string = 'Contact Relationship';
-  subTitle: string = 'add a new contact relationship';
-
-  m: MetaDomain;
-
-  peopleFilter: Filter;
-
-  organisationContactRelationship: OrganisationContactRelationship;
-  person: Person;
-  organisationContactKinds: Enumeration[];
-  roles: PersonRole[];
 
   constructor(
     private allors: AllorsService,
@@ -39,32 +40,32 @@ export class OrganisationContactrelationshipAddComponent implements OnInit, Afte
     this.scope = new Scope(allors.database, allors.workspace);
     this.m = this.allors.meta;
 
-    this.peopleFilter = new Filter(this.scope, this.m.Person, [this.m.Person.FirstName, this.m.Person.LastName]);
+    this.peopleFilter = new Filter({scope: this.scope, objectType: this.m.Person, roleTypes: [this.m.Person.FirstName, this.m.Person.LastName], notExistRoletypes: [this.m.Person.CurrentOrganisationContactRelationships]});
   }
 
-  ngOnInit(): void {
+  public ngOnInit(): void {
     this.subscription = this.route.url
       .switchMap((url: any) => {
 
-        const id: string = this.route.snapshot.paramMap.get('id');
+        const id: string = this.route.snapshot.paramMap.get("id");
         const m: MetaDomain = this.m;
 
         const fetch: Fetch[] = [
           new Fetch({
-            name: 'organisation',
-            id: id,
+            name: "organisation",
+            id,
           }),
         ];
 
         const query: Query[] = [
           new Query(
             {
-              name: 'organisationContactKinds',
+              name: "organisationContactKinds",
               objectType: this.m.OrganisationContactKind,
             }),
           new Query(
             {
-              name: 'roles',
+              name: "roles",
               objectType: this.m.PersonRole,
             }),
         ];
@@ -72,7 +73,7 @@ export class OrganisationContactrelationshipAddComponent implements OnInit, Afte
         this.scope.session.reset();
 
         return this.scope
-          .load('Pull', new PullRequest({ fetch: fetch, query: query }));
+          .load("Pull", new PullRequest({ fetch, query }));
       })
       .subscribe((loaded: Loaded) => {
 
@@ -81,7 +82,7 @@ export class OrganisationContactrelationshipAddComponent implements OnInit, Afte
 
         const organisation: Organisation = loaded.objects.organisation as Organisation;
 
-        this.organisationContactRelationship = this.scope.session.create('OrganisationContactRelationship') as OrganisationContactRelationship;
+        this.organisationContactRelationship = this.scope.session.create("OrganisationContactRelationship") as OrganisationContactRelationship;
         this.organisationContactRelationship.Organisation = organisation;
       },
       (error: any) => {
@@ -91,18 +92,30 @@ export class OrganisationContactrelationshipAddComponent implements OnInit, Afte
     );
   }
 
-  ngAfterViewInit(): void {
+  public personCancelled(): void {
+    this.addPerson = false;
+  }
+
+  public personAdded(id: string): void {
+    this.addPerson = false;
+
+    const contact: Person = this.scope.session.get(id) as Person;
+    this.organisationContactRelationship.Contact = contact;
+    this.refresh();
+  }
+
+  public ngAfterViewInit(): void {
     this.media.broadcast();
     this.changeDetectorRef.detectChanges();
   }
 
-  ngOnDestroy(): void {
+  public ngOnDestroy(): void {
     if (this.subscription) {
       this.subscription.unsubscribe();
     }
   }
 
-  save(): void {
+  public save(): void {
 
     this.scope
       .save()
@@ -114,7 +127,11 @@ export class OrganisationContactrelationshipAddComponent implements OnInit, Afte
       });
   }
 
-  goBack(): void {
+  public refresh(): void {
+    this.refresh$.next(new Date());
+  }
+
+  public goBack(): void {
     window.history.back();
   }
 }

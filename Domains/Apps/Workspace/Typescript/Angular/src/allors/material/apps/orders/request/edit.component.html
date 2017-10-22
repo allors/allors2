@@ -15,9 +15,32 @@
       <a-mat-autocomplete *ngIf="showPeople" [object]="request" [roleType]="m.Request.Originator" [filter]="peopleFilter.create()"
         display="displayName" (onSelect)="originatorSelected($event)" label="Requesting person"></a-mat-autocomplete>
       <a-mat-select [object]="request" [roleType]="m.Request.FullfillContactMechanism" [options]="contactMechanisms" display="displayName" label="Reply to"></a-mat-select>
+      <button *ngIf="request.Originator" type="button" mat-button (click)="addWebAddress = true">+Web</button>
+      <button *ngIf="request.Originator" type="button" mat-button (click)="addEmailAddress = true">+Email</button>
+      <button *ngIf="request.Originator" type="button" mat-button (click)="addPostalAddress = true">+Postal</button>
+      <button *ngIf="request.Originator" type="button" mat-button (click)="addTeleCommunicationsNumber = true">+Telecom</button>
+
+      <div *ngIf="addWebAddress && request.Originator" style="background: lightblue" class="pad">
+        <party-contactmechanism-webaddress (cancelled)="webAddressCancelled($event)" (saved)="webAddressAdded($event)">
+        </party-contactmechanism-webaddress>
+      </div>
+      <div *ngIf="addEmailAddress && request.Originator" style="background: lightblue" class="pad">
+        <party-contactmechanism-emailAddress (cancelled)="emailAddressCancelled($event)" (saved)="emailAddressAdded($event)">
+        </party-contactmechanism-emailAddress>
+      </div>
+      <div *ngIf="addPostalAddress && request.Originator" style="background: lightblue" class="pad">
+        <party-contactmechanism-postaladdress (cancelled)="postalAddressCancelled($event)" (saved)="postalAddressAdded($event)">
+        </party-contactmechanism-postaladdress>
+      </div>
+      <div *ngIf="addTeleCommunicationsNumber && request.Originator" style="background: lightblue" class="pad">
+        <party-contactmechanism-telecommunicationsnumber (cancelled)="teleCommunicationsNumberCancelled($event)" (saved)="teleCommunicationsNumberAdded($event)">
+        </party-contactmechanism-telecommunicationsnumber>
+      </div>
+
       <a-mat-static *ngIf="request.EmailAddress" [object]="request" [roleType]="m.Request.EmailAddress" ></a-mat-static>
       <a-mat-static *ngIf="request.TelephoneCountryCode" [object]="request" [roleType]="m.Request.TelephoneCountryCode" ></a-mat-static>
       <a-mat-static *ngIf="request.TelephoneNumber" [object]="request" [roleType]="m.Request.TelephoneNumber" ></a-mat-static>
+
       <a-mat-datepicker [object]="request" [roleType]="m.Request.RequestDate"></a-mat-datepicker>
       <a-mat-datepicker [object]="request" [roleType]="m.Request.RequiredResponseDate"></a-mat-datepicker>
       <a-mat-input [object]="request" [roleType]="m.Request.Description"></a-mat-input>

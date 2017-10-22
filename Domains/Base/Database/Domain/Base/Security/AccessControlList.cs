@@ -73,6 +73,10 @@ namespace Allors.Domain
 
         public bool IsPermitted(OperandType operandType, Operations operation)
         {
+            if (operandType.Id.ToString().ToUpper() == "0BC3A4E1-C3EB-4312-A699-D28EB778EA05")
+            {
+                
+            }
             return this.IsPermitted(operandType.Id, operation);
         }
 

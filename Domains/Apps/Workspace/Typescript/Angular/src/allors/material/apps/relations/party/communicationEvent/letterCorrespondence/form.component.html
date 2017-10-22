@@ -16,7 +16,7 @@
         <div fxLayout="row">
           <a-td-chips fxFlex [object]="communicationEvent" [roleType]="m.LetterCorrespondence.Originators" [options]="contacts" display="displayName"
             label="Sender"></a-td-chips>
-          <button *ngIf="communicationEvent.IncomingLetter && PartPartyIsOrganisation" type="button" mat-icon-button (click)="addSender = true"><mat-icon>add</mat-icon></button>
+          <button *ngIf="communicationEvent.IncomingLetter && PartyIsOrganisation" type="button" mat-icon-button (click)="addSender = true"><mat-icon>add</mat-icon></button>
         </div>
 
         <div *ngIf="addSender" style="background: lightblue" class="pad">
@@ -27,7 +27,7 @@
         <div fxLayout="row">
           <a-td-chips fxFlex [object]="communicationEvent" [roleType]="m.LetterCorrespondence.Receivers" [options]="contacts" display="displayName"
             label="Receiver"></a-td-chips>
-          <button *ngIf="!communicationEvent.IncomingLetter && PartPartyIsOrganisation" type="button" mat-icon-button (click)="addReceiver = true"><mat-icon>add</mat-icon></button>
+          <button *ngIf="!communicationEvent.IncomingLetter && PartyIsOrganisation" type="button" mat-icon-button (click)="addReceiver = true"><mat-icon>add</mat-icon></button>
         </div>
 
         <div *ngIf="addReceiver" style="background: lightblue" class="pad">

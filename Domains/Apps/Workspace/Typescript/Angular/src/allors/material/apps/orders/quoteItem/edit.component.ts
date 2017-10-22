@@ -43,7 +43,7 @@ export class QuoteItemEditComponent implements OnInit, AfterViewInit, OnDestroy 
     public media: TdMediaService, private changeDetectorRef: ChangeDetectorRef) {
     this.m = this.allorsService.meta;
 
-    this.goodsFilter = new Filter(this.scope, this.m.Product, [this.m.Product.Name]);
+    this.goodsFilter = new Filter({scope: this.scope, objectType: this.m.Product, roleTypes: [this.m.Product.Name]});
 
     this.scope = new Scope(allorsService.database, allorsService.workspace);
     this.refresh$ = new BehaviorSubject<Date>(undefined);

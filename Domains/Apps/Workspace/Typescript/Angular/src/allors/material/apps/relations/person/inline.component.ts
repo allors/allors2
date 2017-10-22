@@ -14,7 +14,7 @@ import { AllorsService, ErrorService,  Scope, Loaded, Saved } from '../../../../
   selector: 'person-inline',
   template:
 `
-  <a-mat-select  [object]="person" [roleType]="m.Person.PersonRoles" [options]="roles" display="Name"></a-mat-select>
+  <a-mat-select [object]="person" [roleType]="m.Person.PersonRoles" [options]="roles" display="Name"></a-mat-select>
   <a-mat-input [object]="person" [roleType]="m.Person.FirstName" ></a-mat-input>
   <a-mat-input [object]="person" [roleType]="m.Person.MiddleName" ></a-mat-input>
   <a-mat-input [object]="person" [roleType]="m.Person.LastName" ></a-mat-input>

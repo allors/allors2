@@ -54,9 +54,9 @@ export class InvoiceEditComponent implements OnInit, AfterViewInit, OnDestroy {
     this.m = this.allorsService.meta;
     this.refresh$ = new BehaviorSubject<Date>(undefined);
 
-    this.peopleFilter = new Filter(this.scope, this.m.Person, [this.m.Person.FirstName, this.m.Person.LastName]);
-    this.organisationsFilter = new Filter(this.scope, this.m.Organisation, [this.m.Organisation.Name]);
-    this.currenciesFilter = new Filter(this.scope, this.m.Currency, [this.m.Currency.Name]);
+    this.peopleFilter = new Filter({ scope: this.scope, objectType: this.m.Person, roleTypes: [this.m.Person.FirstName, this.m.Person.LastName]});
+    this.organisationsFilter = new Filter({ scope: this.scope, objectType: this.m.Organisation, roleTypes: [this.m.Organisation.Name]});
+    this.currenciesFilter = new Filter({scope: this.scope, objectType: this.m.Currency, roleTypes: [this.m.Currency.Name]});
   }
 
   public ngOnInit(): void {

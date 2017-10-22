@@ -733,7 +733,7 @@ namespace Allors.Domain
                 .WithInternalComment(this.InternalComment)
                 .Build();
 
-            foreach (SalesOrderItem orderItem in this.ValidOrderItems)
+             foreach (SalesOrderItem orderItem in this.ValidOrderItems)
             {
                 var invoiceItem = new SalesInvoiceItemBuilder(this.Strategy.Session)
                     .WithSalesInvoiceItemType(new SalesInvoiceItemTypes(this.Strategy.Session).ProductItem)

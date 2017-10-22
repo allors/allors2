@@ -2,11 +2,19 @@
   <form #form="ngForm" *ngIf="organisationContactRelationship" (submit)="save()">
 
     <div class="pad">
+      <a-mat-static *ngIf="!organisationContactRelationship.isNew" [object]="organisationContactRelationship" [roleType]="m.OrganisationContactRelationship.Contact"
+      display="displayName"></a-mat-static>
+      <a-mat-autocomplete *ngIf="organisationContactRelationship.isNew" [object]="organisationContactRelationship" [roleType]="m.OrganisationContactRelationship.Contact"
+      [filter]="peopleFilter.create()" display="displayName"></a-mat-autocomplete>
+      <button *ngIf="organisationContactRelationship.isNew" type="button" mat-icon-button (click)="addPerson = true"><mat-icon>add</mat-icon></button>
       <a-mat-select [object]="organisationContactRelationship" [roleType]="m.OrganisationContactRelationship.ContactKinds" [options]="organisationContactKinds"
         display="Description"></a-mat-select>
-      <a-mat-autocomplete [object]="organisationContactRelationship" [roleType]="m.OrganisationContactRelationship.Contact" [filter]="peopleFilter.create()"
-        display="displayName"></a-mat-autocomplete>
       <a-mat-select [object]="organisationContactRelationship.Contact" [roleType]="m.Person.PersonRoles" [options]="roles" display="Name"></a-mat-select>
+    </div>
+
+    <div *ngIf="addPerson" style="background: lightblue" class="pad">
+      <person-inline (cancelled)="personCancelled($event)" (saved)="personAdded($event)">
+      </person-inline>
     </div>
 
     <mat-divider></mat-divider>

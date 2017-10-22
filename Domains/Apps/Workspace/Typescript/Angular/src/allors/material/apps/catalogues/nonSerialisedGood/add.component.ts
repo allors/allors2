@@ -58,8 +58,8 @@ export class NonSerialisedGoodAddComponent implements OnInit, AfterViewInit, OnD
 
     this.scope = new Scope(allors.database, allors.workspace);
     this.m = this.allors.meta;
-    this.manufacturersFilter = new Filter(this.scope, this.m.Organisation, [this.m.Organisation.Name]);
-    this.suppliersFilter = new Filter(this.scope, this.m.Organisation, [this.m.Organisation.Name]);
+    this.manufacturersFilter = new Filter({scope: this.scope, objectType: this.m.Organisation, roleTypes: [this.m.Organisation.Name]});
+    this.suppliersFilter = new Filter({scope: this.scope, objectType: this.m.Organisation, roleTypes: [this.m.Organisation.Name]});
   }
 
   public ngOnInit(): void {

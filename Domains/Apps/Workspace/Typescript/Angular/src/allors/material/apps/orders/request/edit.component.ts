@@ -9,8 +9,7 @@ import { AllorsService, ErrorService, Filter, Invoked, Loaded, Saved, Scope } fr
 import { Contains, Equals, Fetch, Like, Page, Path, PullRequest, PushResponse, Query, Sort, TreeNode } from "../../../../domain";
 import {
   ContactMechanism, Currency, Organisation, OrganisationRole, Party, PartyContactMechanism,
-  Person, PersonRole, RequestForQuote,
-} from "../../../../domain";
+  Person, PersonRole, RequestForQuote, WebAddress} from "../../../../domain";
 import { MetaDomain } from "../../../../meta";
 
 @Component({
@@ -27,6 +26,11 @@ export class RequestEditComponent implements OnInit, AfterViewInit, OnDestroy {
   public organisations: Organisation[];
   public currencies: Currency[];
   public contactMechanisms: ContactMechanism[];
+
+  public addEmailAddress: boolean = false;
+  public addPostalAddress: boolean = false;
+  public addTeleCommunicationsNumber: boolean = false;
+  public addWebAddress: boolean = false;
 
   public peopleFilter: Filter;
   public organisationsFilter: Filter;
@@ -56,9 +60,9 @@ export class RequestEditComponent implements OnInit, AfterViewInit, OnDestroy {
     this.m = this.allorsService.meta;
     this.refresh$ = new BehaviorSubject<Date>(undefined);
 
-    this.peopleFilter = new Filter(this.scope, this.m.Person, [this.m.Person.FirstName, this.m.Person.LastName]);
-    this.organisationsFilter = new Filter(this.scope, this.m.Organisation, [this.m.Organisation.Name]);
-    this.currenciesFilter = new Filter(this.scope, this.m.Currency, [this.m.Currency.Name]);
+    this.peopleFilter = new Filter({scope: this.scope, objectType: this.m.Person, roleTypes: [this.m.Person.FirstName, this.m.Person.LastName]});
+    this.organisationsFilter = new Filter({scope: this.scope, objectType: this.m.Organisation, roleTypes: [this.m.Organisation.Name]});
+    this.currenciesFilter = new Filter({scope: this.scope, objectType: this.m.Currency, roleTypes: [this.m.Currency.Name]});
   }
 
   public ngOnInit(): void {
@@ -301,6 +305,50 @@ export class RequestEditComponent implements OnInit, AfterViewInit, OnDestroy {
     } else {
       rejectFn();
     }
+  }
+
+  public webAddressCancelled(): void {
+    this.addWebAddress = false;
+  }
+
+  public webAddressAdded(id: string): void {
+    this.addWebAddress = false;
+
+    const partyContactMechanism: PartyContactMechanism = this.scope.session.get(id) as PartyContactMechanism;
+    this.request.Originator.AddPartyContactMechanism(partyContactMechanism);
+  }
+
+  public emailAddressCancelled(): void {
+    this.addEmailAddress = false;
+  }
+
+  public emailAddressAdded(id: string): void {
+    this.addEmailAddress = false;
+
+    const partyContactMechanism: PartyContactMechanism = this.scope.session.get(id) as PartyContactMechanism;
+    this.request.Originator.AddPartyContactMechanism(partyContactMechanism);
+  }
+
+  public postalAddressCancelled(): void {
+    this.addPostalAddress = false;
+  }
+
+  public postalAddressAdded(id: string): void {
+    this.addPostalAddress = false;
+
+    const partyContactMechanism: PartyContactMechanism = this.scope.session.get(id) as PartyContactMechanism;
+    this.request.Originator.AddPartyContactMechanism(partyContactMechanism);
+  }
+
+  public teleCommunicationsNumberCancelled(): void {
+    this.addTeleCommunicationsNumber = false;
+  }
+
+  public teleCommunicationsNumberAdded(id: string): void {
+    this.addTeleCommunicationsNumber = false;
+
+    const partyContactMechanism: PartyContactMechanism = this.scope.session.get(id) as PartyContactMechanism;
+    this.request.Originator.AddPartyContactMechanism(partyContactMechanism);
   }
 
   public ngAfterViewInit(): void {

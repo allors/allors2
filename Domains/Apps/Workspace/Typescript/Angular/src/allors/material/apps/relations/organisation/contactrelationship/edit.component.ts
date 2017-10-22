@@ -1,33 +1,32 @@
-import { Observable, Subject, Subscription } from 'rxjs/Rx';
-import { Component, OnInit, AfterViewInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
-import { Validators } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
-import { MatSnackBar, MatSnackBarConfig } from '@angular/material';
-import { TdMediaService } from '@covalent/core';
+import { AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit } from "@angular/core";
+import { Validators } from "@angular/forms";
+import { MatSnackBar, MatSnackBarConfig } from "@angular/material";
+import { ActivatedRoute } from "@angular/router";
+import { TdMediaService } from "@covalent/core";
+import { Observable, Subject, Subscription } from "rxjs/Rx";
 
-import { MetaDomain } from '../../../../../meta/index';
-import { PullRequest, PushResponse, Fetch, Path, Query, Equals, Like, TreeNode, Sort, Page } from '../../../../../domain';
-import { Organisation, Person, PersonRole, Locale, OrganisationContactRelationship, OrganisationContactKind, Enumeration } from '../../../../../domain';
-import { AllorsService, ErrorService, Scope, Loaded, Saved, Filter, Invoked } from '../../../../../angular';
+import { AllorsService, ErrorService, Filter, Invoked, Loaded, Saved, Scope } from "../../../../../angular";
+import { Equals, Fetch, Like, Page, Path, PullRequest, PushResponse, Query, Sort, TreeNode } from "../../../../../domain";
+import { Enumeration, Locale, Organisation, OrganisationContactKind, OrganisationContactRelationship, Person, PersonRole } from "../../../../../domain";
+import { MetaDomain } from "../../../../../meta/index";
 
 @Component({
-  templateUrl: './form.component.html',
+  templateUrl: "./form.component.html",
 })
 export class OrganisationContactrelationshipEditComponent implements OnInit, AfterViewInit, OnDestroy {
 
+  public title: string = "Contact Relationship";
+  public subTitle: string = "add a new contact relationship";
+
+  public m: MetaDomain;
+
+  public peopleFilter: Filter;
+  public organisationContactRelationship: OrganisationContactRelationship;
+  public organisationContactKinds: Enumeration[];
+  public roles: PersonRole[];
+
   private subscription: Subscription;
   private scope: Scope;
-
-  title: string = 'Contact Relationship';
-  subTitle: string = 'add a new contact relationship';
-
-  m: MetaDomain;
-
-  peopleFilter: Filter;
-
-  organisationContactRelationship: OrganisationContactRelationship;
-  organisationContactKinds: Enumeration[];
-  roles: PersonRole[];
 
   constructor(
     private allors: AllorsService,
@@ -38,19 +37,19 @@ export class OrganisationContactrelationshipEditComponent implements OnInit, Aft
     this.scope = new Scope(allors.database, allors.workspace);
     this.m = this.allors.meta;
 
-    this.peopleFilter = new Filter(this.scope, this.m.Person, [this.m.Person.FirstName, this.m.Person.LastName]);
+    this.peopleFilter = new Filter({scope: this.scope, objectType: this.m.Person, roleTypes: [this.m.Person.FirstName, this.m.Person.LastName]});
   }
 
-  ngOnInit(): void {
+  public ngOnInit(): void {
     this.subscription = this.route.url
       .switchMap((url: any) => {
 
-        const roleId: string = this.route.snapshot.paramMap.get('roleId');
+        const roleId: string = this.route.snapshot.paramMap.get("roleId");
         const m: MetaDomain = this.m;
 
         const fetch: Fetch[] = [
           new Fetch({
-            name: 'organisationContactRelationship',
+            name: "organisationContactRelationship",
             id: roleId,
             include: [
               new TreeNode({ roleType: m.OrganisationContactRelationship.ContactKinds }),
@@ -61,12 +60,12 @@ export class OrganisationContactrelationshipEditComponent implements OnInit, Aft
         const query: Query[] = [
           new Query(
             {
-              name: 'organisationContactKinds',
+              name: "organisationContactKinds",
               objectType: this.m.OrganisationContactKind,
             }),
           new Query(
             {
-              name: 'roles',
+              name: "roles",
               objectType: this.m.PersonRole,
             }),
         ];
@@ -74,7 +73,7 @@ export class OrganisationContactrelationshipEditComponent implements OnInit, Aft
         this.scope.session.reset();
 
         return this.scope
-          .load('Pull', new PullRequest({ fetch: fetch, query: query }));
+          .load("Pull", new PullRequest({ fetch, query }));
       })
       .subscribe((loaded: Loaded) => {
 
@@ -90,18 +89,18 @@ export class OrganisationContactrelationshipEditComponent implements OnInit, Aft
     );
   }
 
-  ngAfterViewInit(): void {
+  public ngAfterViewInit(): void {
     this.media.broadcast();
     this.changeDetectorRef.detectChanges();
   }
 
-  ngOnDestroy(): void {
+  public ngOnDestroy(): void {
     if (this.subscription) {
       this.subscription.unsubscribe();
     }
   }
 
-  save(): void {
+  public save(): void {
 
     this.scope
       .save()
@@ -113,7 +112,7 @@ export class OrganisationContactrelationshipEditComponent implements OnInit, Aft
       });
   }
 
-  goBack(): void {
+  public goBack(): void {
     window.history.back();
   }
 }

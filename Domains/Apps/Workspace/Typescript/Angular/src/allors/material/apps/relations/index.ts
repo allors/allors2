@@ -20,6 +20,7 @@ import { PartyContactMechanismEditTelecommunicationsNumberComponent } from "./pa
 import { PartyContactMechanismInlineTelecommunicationsNumberComponent } from "./party/contactMechanism/telecommunicationsnumber/inline.component";
 import { PartyContactMechanismAddWebAddressComponent } from "./party/contactMechanism/webAddress/add.component";
 import { PartyContactMechanismEditWebAddressComponent } from "./party/contactMechanism/webAddress/edit.component";
+import { PartyContactMechanismInlineWebAddressComponent } from "./party/contactMechanism/webaddress/inline.component";
 
 import { PartyCommunicationEventEditEmailCommunicationComponent } from "./party/communicationevent/emailCommunication/edit.component";
 import { PartyCommunicationEventEditFaceToFaceCommunicationComponent } from "./party/communicationevent/faceToFaceCommunication/edit.component";
@@ -66,6 +67,7 @@ export const RELATIONS_ROUTING: any[] = [
   PartyContactMechanismEditPostalAddressComponent,
   PartyContactMechanismInlinePostalAddressComponent,
   PartyContactMechanismInlineTelecommunicationsNumberComponent,
+  PartyContactMechanismInlineWebAddressComponent,
   PartyContactMechanismAddTelecommunicationsNumberComponent,
   PartyContactMechanismEditTelecommunicationsNumberComponent,
   PartyContactMechanismAddWebAddressComponent,
@@ -108,6 +110,7 @@ export {
   PartyContactMechanismEditPostalAddressComponent,
   PartyContactMechanismInlinePostalAddressComponent,
   PartyContactMechanismInlineTelecommunicationsNumberComponent,
+  PartyContactMechanismInlineWebAddressComponent,
   PartyContactMechanismAddTelecommunicationsNumberComponent,
   PartyContactMechanismEditTelecommunicationsNumberComponent,
   PartyContactMechanismAddWebAddressComponent,
