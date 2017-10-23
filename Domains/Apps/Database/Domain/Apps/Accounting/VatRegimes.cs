@@ -59,7 +59,8 @@ namespace Allors.Domain
             base.AppsSetup(setup);
 
             var vatRate0 = new VatRates(this.Session).FindBy(M.VatRate.Rate, 0);
-        
+            var vatRate21 = new VatRates(this.Session).FindBy(M.VatRate.Rate, 21);
+
             var englishLocale = new Locales(this.Session).EnglishGreatBritain;
             var dutchLocale = new Locales(this.Session).DutchNetherlands;
 
@@ -67,6 +68,7 @@ namespace Allors.Domain
                 .WithName("Co-Contractor")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Co-Contractor").WithLocale(englishLocale).Build())
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Medecontractant").WithLocale(dutchLocale).Build())
+                .WithVatRate(vatRate0)
                 .WithUniqueId(CoContractorId)
                 .Build();
             
@@ -74,13 +76,15 @@ namespace Allors.Domain
                 .WithName("Private Person")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Private Person").WithLocale(englishLocale).Build())
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("particulier").WithLocale(dutchLocale).Build())
+                .WithVatRate(vatRate0)
                 .WithUniqueId(PrivatePersonId)
                 .Build();
             
             new VatRegimeBuilder(this.Session)
-                .WithName("VAT Assessable")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("VAT Assessable").WithLocale(englishLocale).Build())
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("BTW-plichtig").WithLocale(dutchLocale).Build())
+                .WithName("VAT Assessable 21%")
+                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("VAT Assessable 21%").WithLocale(englishLocale).Build())
+                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("BTW-plichtig 21%").WithLocale(dutchLocale).Build())
+                .WithVatRate(vatRate21)
                 .WithUniqueId(AssessableId)
                 .Build();
             
