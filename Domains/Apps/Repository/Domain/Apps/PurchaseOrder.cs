@@ -51,9 +51,9 @@ namespace Allors.Repository
         public SurchargeAdjustment SurchargeAdjustment { get; set; }
         public Permission[] DeniedPermissions { get; set; }
         public SecurityToken[] SecurityTokens { get; set; }
-        public Guid UniqueId { get; set; }
-        public string PrintContent { get; set; }
-        public string Comment { get; set; }
+      public string PrintContent { get; set; }
+
+      public string Comment { get; set; }
         public Locale Locale { get; set; }
         public User CreatedBy { get; set; }
         public User LastModifiedBy { get; set; }

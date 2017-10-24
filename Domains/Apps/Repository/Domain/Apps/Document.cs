@@ -1,16 +1,12 @@
 namespace Allors.Repository
 {
-    using System;
-
-    using Attributes;
+  using Attributes;
 
     #region Allors
     [Id("1d21adf0-6008-459d-9f6a-3a026e7640bc")]
     #endregion
-	public partial interface Document : Printable, AccessControlledObject, Commentable 
+    public partial interface Document : Printable, AccessControlledObject, Commentable 
     {
-
-
         #region Allors
         [Id("484d082e-b3e4-4915-a355-43315f466e6d")]
         [AssociationId("47509fbb-ba47-4ca7-8689-51b9c5b46746")]
@@ -50,6 +46,5 @@ namespace Allors.Repository
         [Size(256)]
 
         string DocumentLocation { get; set; }
-
     }
 }

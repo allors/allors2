@@ -1,25 +1,20 @@
 namespace Allors.Repository
 {
-    using System;
+  using Attributes;
 
-    using Attributes;
-
+  #region Allors
+  [Id("61207a42-3199-4249-baa4-9dd11dc0f5b1")]
+  #endregion
+  public partial interface Printable : Object
+  {
     #region Allors
-    [Id("61207a42-3199-4249-baa4-9dd11dc0f5b1")]
+    [Id("079C31BA-0D20-4CD7-921C-A1829E226970")]
+    [AssociationId("C98431FE-98EA-44EB-97C4-8D5F2C147424")]
+    [RoleId("B3ECE72C-D62C-4F24-805A-34D7FF21DE4F")]
+    [Indexed]
     #endregion
-	public partial interface Printable : AccessControlledObject, UniquelyIdentifiable 
-    {
-
-
-        #region Allors
-        [Id("c75d4e4c-d47c-4757-bcb0-25b6daedec9e")]
-        [AssociationId("480b7df7-b463-4038-a48d-35b8a8af899e")]
-        [RoleId("8d530dcd-2c3b-4d1d-8acc-9963338968ed")]
-        #endregion
-        [Derived]
-        [Size(-1)]
-
-        string PrintContent { get; set; }
-
-    }
+    [Size(-1)]
+    [Workspace]
+    string PrintContent { get; set; }
+  }
 }

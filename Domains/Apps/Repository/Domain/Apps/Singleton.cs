@@ -15,16 +15,6 @@ namespace Allors.Repository
 
         public DateTime LastModifiedDate { get; set; }
         #endregion
-
-        #region Allors
-        [Id("64aed238-7009-4157-8395-7eb58ebf7889")]
-        [AssociationId("2f79ecfe-5fd4-44d1-9c39-457bb3dc6815")]
-        [RoleId("d861c8f8-7362-4805-9941-661a99ab11ac")]
-        #endregion
-        [Multiplicity(Multiplicity.OneToOne)]
-        [Indexed]
-        [Workspace]
-        public PrintQueue DefaultPrintQueue { get; set; }
     
         #region Allors
         [Id("d9ea02e5-9aa1-4cbe-9318-06324529a923")]

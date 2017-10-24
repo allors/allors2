@@ -23,11 +23,15 @@ namespace Allors.Services
 {
     using System.Diagnostics;
     using System.IO;
+    using System.Linq;
+    using System.Linq.Expressions;
     using System.Reflection;
 
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Hosting.Internal;
     using Microsoft.AspNetCore.Mvc.Razor;
+    using Microsoft.CodeAnalysis;
+    using Microsoft.CSharp.RuntimeBinder;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.FileProviders;
     using Microsoft.Extensions.ObjectPool;
@@ -43,7 +47,7 @@ namespace Allors.Services
             IFileProvider fileProvider = new PhysicalFileProvider(serverDirectoryFullName);
             var hostingEnvironment = new HostingEnvironment
                                          {
-                                             ApplicationName = Assembly.GetEntryAssembly().GetName().Name,
+                                             ApplicationName = "Server",
                                              WebRootFileProvider = fileProvider,
                                          };
             services.AddSingleton<IHostingEnvironment>(hostingEnvironment);
@@ -51,6 +55,29 @@ namespace Allors.Services
                 {
                     options.FileProviders.Clear();
                     options.FileProviders.Add(fileProvider);
+
+                  var previous = options.CompilationCallback;
+                  options.CompilationCallback = (context) =>
+                    {
+                      previous?.Invoke(context);
+
+                      var assemblies = Assembly.GetEntryAssembly().GetReferencedAssemblies().Select(v => MetadataReference.CreateFromFile(Assembly.Load(v).Location)).ToList();
+                      assemblies.Add(MetadataReference.CreateFromFile(Assembly.Load(new AssemblyName("netstandard")).Location));
+                      assemblies.Add(MetadataReference.CreateFromFile(Assembly.Load(new AssemblyName("System.Private.CoreLib")).Location));
+                      assemblies.Add(MetadataReference.CreateFromFile(Assembly.Load(new AssemblyName("Microsoft.AspNetCore.Mvc")).Location));
+                      assemblies.Add(MetadataReference.CreateFromFile(Assembly.Load(new AssemblyName("Microsoft.AspNetCore.Mvc.Abstractions")).Location));
+                      assemblies.Add(MetadataReference.CreateFromFile(Assembly.Load(new AssemblyName("Microsoft.AspNetCore.Mvc.Razor")).Location));
+                      assemblies.Add(MetadataReference.CreateFromFile(Assembly.Load(new AssemblyName("Microsoft.AspNetCore.Mvc.ViewFeatures")).Location));
+                      assemblies.Add(MetadataReference.CreateFromFile(Assembly.Load(new AssemblyName("Microsoft.AspNetCore.Html.Abstractions")).Location));
+
+                      assemblies.Add(MetadataReference.CreateFromFile(typeof(object).GetTypeInfo().Assembly.Location));
+                      assemblies.Add(MetadataReference.CreateFromFile(typeof(RuntimeBinderException).GetTypeInfo().Assembly.Location));
+                      assemblies.Add(MetadataReference.CreateFromFile(typeof(System.Runtime.CompilerServices.DynamicAttribute).GetTypeInfo().Assembly.Location));
+                      assemblies.Add(MetadataReference.CreateFromFile(typeof(ExpressionType).GetTypeInfo().Assembly.Location));
+                      assemblies.Add(MetadataReference.CreateFromFile(Assembly.Load(new AssemblyName("System.Runtime")).Location));
+                      
+                      context.Compilation = context.Compilation.AddReferences(assemblies);
+                    };
                 });
 
             services.AddSingleton<ObjectPoolProvider, DefaultObjectPoolProvider>();
