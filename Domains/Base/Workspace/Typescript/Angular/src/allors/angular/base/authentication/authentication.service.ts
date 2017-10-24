@@ -1,26 +1,16 @@
 import { HttpClient } from "@angular/common/http";
 import { Inject, Injectable } from "@angular/core";
-import { CanActivate, Router } from "@angular/router";
 import { Observable } from "rxjs/Observable";
 import { ENVIRONMENT, Environment } from "../Environment";
 import { AuthenticationTokenRequest } from "./AuthenticationTokenRequest";
 import { AuthenticationTokenResponse } from "./AuthenticationTokenResponse";
 
 @Injectable()
-export class AuthenticationService implements CanActivate {
+export class AuthenticationService {
 
-  constructor(private http: HttpClient, private router: Router, @Inject(ENVIRONMENT) private environment: Environment) { }
+  constructor(private http: HttpClient, @Inject(ENVIRONMENT) private environment: Environment) { }
 
   public token: string;
-
-  public canActivate() {
-    if (this.token) {
-      return true;
-    } else {
-      this.router.navigate(["login"]);
-      return false;
-    }
-  }
 
   public login$(userName: string, password: string) {
     const url = this.environment.url + this.environment.authenticationUrl;
