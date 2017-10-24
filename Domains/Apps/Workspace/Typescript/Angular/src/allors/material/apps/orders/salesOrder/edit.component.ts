@@ -9,7 +9,7 @@ import { AllorsService, ErrorService, Filter, Invoked, Loaded, Saved, Scope } fr
 import { Contains, Equals, Fetch, Like, Page, Path, PullRequest, PushResponse, Query, Sort, TreeNode } from "../../../../domain";
 import {
   ContactMechanism, Currency, Organisation, OrganisationRole, Party, PartyContactMechanism,
-  Person, PersonRole, ProductQuote, SalesOrder,
+  Person, PersonRole, ProductQuote, SalesOrder, VatRate, VatRegime,
 } from "../../../../domain";
 import { MetaDomain } from "../../../../meta";
 
@@ -28,6 +28,15 @@ export class SalesOrderEditComponent implements OnInit, AfterViewInit, OnDestroy
   public organisations: Organisation[];
   public currencies: Currency[];
   public contactMechanisms: ContactMechanism[];
+  public ShipToAddresses: ContactMechanism[];
+  public vatRates: VatRate[];
+  public vatRegimes: VatRegime[];
+
+  public addEmailAddress: boolean = false;
+  public addPostalAddress: boolean = false;
+  public addTeleCommunicationsNumber: boolean = false;
+  public addWebAddress: boolean = false;
+  public addShipToAddress: boolean = false;
 
   public peopleFilter: Filter;
   public organisationsFilter: Filter;
@@ -89,6 +98,16 @@ export class SalesOrderEditComponent implements OnInit, AfterViewInit, OnDestroy
               name: "currencies",
               objectType: this.m.Currency,
             }),
+          new Query(
+            {
+              name: "vatRates",
+              objectType: m.VatRate,
+            }),
+          new Query(
+            {
+              name: "vatRegimes",
+              objectType: m.VatRegime,
+            }),
         ];
 
         this.scope.session.reset();
@@ -97,6 +116,8 @@ export class SalesOrderEditComponent implements OnInit, AfterViewInit, OnDestroy
           .load("Pull", new PullRequest({ query: rolesQuery }))
           .switchMap((loaded: Loaded) => {
             this.currencies = loaded.collections.currencies as Currency[];
+            this.vatRates = loaded.collections.vatRates as VatRate[];
+            this.vatRegimes = loaded.collections.vatRegimes as VatRegime[];
 
             const organisationRoles: OrganisationRole[] = loaded.collections.organisationRoles as OrganisationRole[];
             const oCustomerRole: OrganisationRole = organisationRoles.find((v: OrganisationRole) => v.Name === "Customer");
@@ -128,6 +149,10 @@ export class SalesOrderEditComponent implements OnInit, AfterViewInit, OnDestroy
                   new TreeNode({ roleType: m.SalesOrder.SalesOrderState }),
                   new TreeNode({ roleType: m.SalesOrder.BillToContactMechanism }),
                   new TreeNode({ roleType: m.SalesOrder.Quote }),
+                  new TreeNode({
+                    nodes: [new TreeNode({ roleType: m.VatRegime.VatRate })],
+                    roleType: m.SalesOrder.VatRegime,
+                  }),
                 ],
                 name: "salesOrder",
               }),
@@ -141,21 +166,83 @@ export class SalesOrderEditComponent implements OnInit, AfterViewInit, OnDestroy
 
         if (!this.order) {
           this.order = this.scope.session.create("SalesOrder") as SalesOrder;
+          this.title = "Add Sales Order";
+        } else {
+          this.title = "Sales Order " + this.order.OrderNumber;
         }
 
         if (this.order.ShipToCustomer) {
             this.receiverSelected(this.order.ShipToCustomer);
-          }
+        }
 
         this.organisations = loaded.collections.organisations as Organisation[];
         this.people = loaded.collections.parties as Person[];
-        this.title = "Sales Order " + this.order.OrderNumber + " for: " + this.order.ShipToCustomer.PartyName;
       },
       (error: Error) => {
         this.errorService.message(error);
         this.goBack();
       },
     );
+  }
+
+  public webAddressCancelled(): void {
+    this.addWebAddress = false;
+  }
+
+  public webAddressAdded(id: string): void {
+    this.addWebAddress = false;
+
+    const partyContactMechanism: PartyContactMechanism = this.scope.session.get(id) as PartyContactMechanism;
+    this.contactMechanisms.push(partyContactMechanism.ContactMechanism);
+    this.order.BillToCustomer.AddPartyContactMechanism(partyContactMechanism);
+  }
+
+  public emailAddressCancelled(): void {
+    this.addEmailAddress = false;
+  }
+
+  public emailAddressAdded(id: string): void {
+    this.addEmailAddress = false;
+
+    const partyContactMechanism: PartyContactMechanism = this.scope.session.get(id) as PartyContactMechanism;
+    this.contactMechanisms.push(partyContactMechanism.ContactMechanism);
+    this.order.BillToCustomer.AddPartyContactMechanism(partyContactMechanism);
+  }
+
+  public postalAddressCancelled(): void {
+    this.addPostalAddress = false;
+  }
+
+  public postalAddressAdded(id: string): void {
+    this.addPostalAddress = false;
+
+    const partyContactMechanism: PartyContactMechanism = this.scope.session.get(id) as PartyContactMechanism;
+    this.contactMechanisms.push(partyContactMechanism.ContactMechanism);
+    this.order.BillToCustomer.AddPartyContactMechanism(partyContactMechanism);
+  }
+
+  public teleCommunicationsNumberCancelled(): void {
+    this.addTeleCommunicationsNumber = false;
+  }
+
+  public teleCommunicationsNumberAdded(id: string): void {
+    this.addTeleCommunicationsNumber = false;
+
+    const partyContactMechanism: PartyContactMechanism = this.scope.session.get(id) as PartyContactMechanism;
+    this.contactMechanisms.push(partyContactMechanism.ContactMechanism);
+    this.order.BillToCustomer.AddPartyContactMechanism(partyContactMechanism);
+  }
+
+  public shipToAddressCancelled(): void {
+    this.addShipToAddress = false;
+  }
+
+  public shipToAddressAdded(id: string): void {
+    this.addShipToAddress = false;
+
+    const partyContactMechanism: PartyContactMechanism = this.scope.session.get(id) as PartyContactMechanism;
+    this.contactMechanisms.push(partyContactMechanism.ContactMechanism);
+    this.order.ShipToCustomer.AddPartyContactMechanism(partyContactMechanism);
   }
 
   public approve(): void {
@@ -489,6 +576,7 @@ export class SalesOrderEditComponent implements OnInit, AfterViewInit, OnDestroy
       .subscribe((loaded: Loaded) => {
 
         const partyContactMechanisms: PartyContactMechanism[] = loaded.collections.partyContactMechanisms as PartyContactMechanism[];
+        this.ShipToAddresses = partyContactMechanisms.filter((v: PartyContactMechanism) => v.ContactMechanism.objectType.name === "PostalAddress").map((v: PartyContactMechanism) => v.ContactMechanism);
         this.contactMechanisms = partyContactMechanisms.map((v: PartyContactMechanism) => v.ContactMechanism);
       },
       (error: Error) => {

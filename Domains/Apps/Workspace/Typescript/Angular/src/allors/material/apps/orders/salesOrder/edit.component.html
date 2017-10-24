@@ -13,12 +13,48 @@
       </div>
 
       <a-mat-static *ngIf="order.Quote" [object]="order" [roleType]="m.SalesOrder.Quote"></a-mat-static>
+
       <a-mat-autocomplete *ngIf="showOrganisations" [object]="order" [roleType]="m.SalesOrder.ShipToCustomer" [filter]="organisationsFilter.create()"
         display="Name" (onSelect)="receiverSelected($event)" label="Ship to organisation"></a-mat-autocomplete>
       <a-mat-autocomplete *ngIf="showPeople" [object]="order" [roleType]="m.SalesOrder.ShipToCustomer" [filter]="peopleFilter.create()"
         display="displayName" (onSelect)="receiverSelected($event)" label="Ship to person "></a-mat-autocomplete>
-      <a-mat-select [object]="order" [roleType]="m.SalesOrder.ShipToAddress" [options]="contactMechanisms" display="displayName"></a-mat-select>
+      <a-mat-select [object]="order" [roleType]="m.SalesOrder.ShipToAddress" [options]="ShipToAddresses" display="displayName"></a-mat-select>
+      <button *ngIf="order.ShipToCustomer" type="button" mat-button (click)="addShipToAddress = true">+Postal</button>
+
+      <div *ngIf="addShipToAddress && order.ShipToCustomer" style="background: lightblue" class="pad">
+        <party-contactmechanism-postaladdress (cancelled)="shipToAddressCancelled($event)" (saved)="shipToAddressAdded($event)">
+        </party-contactmechanism-postaladdress>
+      </div>
+
+      <a-mat-autocomplete *ngIf="showOrganisations" [object]="order" [roleType]="m.SalesOrder.BillToCustomer" [filter]="organisationsFilter.create()"
+      display="Name" (onSelect)="receiverSelected($event)" label="Bill to organisation"></a-mat-autocomplete>
+    <a-mat-autocomplete *ngIf="showPeople" [object]="order" [roleType]="m.SalesOrder.BillToCustomer" [filter]="peopleFilter.create()"
+      display="displayName" (onSelect)="receiverSelected($event)" label="Bill to person "></a-mat-autocomplete>
       <a-mat-select [object]="order" [roleType]="m.SalesOrder.BillToContactMechanism" [options]="contactMechanisms" display="displayName"></a-mat-select>
+      <button *ngIf="order.BillToCustomer" type="button" mat-button (click)="addWebAddress = true">+Web</button>
+      <button *ngIf="order.BillToCustomer" type="button" mat-button (click)="addEmailAddress = true">+Email</button>
+      <button *ngIf="order.BillToCustomer" type="button" mat-button (click)="addPostalAddress = true">+Postal</button>
+      <button *ngIf="order.BillToCustomer" type="button" mat-button (click)="addTeleCommunicationsNumber = true">+Telecom</button>
+
+      <div *ngIf="addWebAddress && order.BillToCustomer" style="background: lightblue" class="pad">
+        <party-contactmechanism-webaddress (cancelled)="webAddressCancelled($event)" (saved)="webAddressAdded($event)">
+        </party-contactmechanism-webaddress>
+      </div>
+      <div *ngIf="addEmailAddress && order.BillToCustomer" style="background: lightblue" class="pad">
+        <party-contactmechanism-emailAddress (cancelled)="emailAddressCancelled($event)" (saved)="emailAddressAdded($event)">
+        </party-contactmechanism-emailAddress>
+      </div>
+      <div *ngIf="addPostalAddress && order.BillToCustomer" style="background: lightblue" class="pad">
+        <party-contactmechanism-postaladdress (cancelled)="postalAddressCancelled($event)" (saved)="postalAddressAdded($event)">
+        </party-contactmechanism-postaladdress>
+      </div>
+      <div *ngIf="addTeleCommunicationsNumber && order.BillToCustomer" style="background: lightblue" class="pad">
+        <party-contactmechanism-telecommunicationsnumber (cancelled)="teleCommunicationsNumberCancelled($event)" (saved)="teleCommunicationsNumberAdded($event)">
+        </party-contactmechanism-telecommunicationsnumber>
+      </div>
+
+      <a-mat-select [object]="order" [roleType]="m.SalesOrder.VatRegime" [options]="vatRegimes" display="Name"></a-mat-select>
+      <a-mat-static *ngIf="order.VatRegime" [object]="order.VatRegime" [roleType]="m.VatRegime.VatRate" display="Rate"></a-mat-static>
       <a-mat-static *ngIf="quote?.Comment" [object]="quote" [roleType]="m.Quote.Comment" label="Quote Comment"></a-mat-static>
       <a-mat-textarea [object]="order" [roleType]="m.SalesOrder.Comment" label="Order Comment"></a-mat-textarea>
       <a-mat-static *ngIf="quote?.InternalComment" [object]="quote" [roleType]="m.Quote.InternalComment" label="Quote Internal Comment"></a-mat-static>

@@ -15,10 +15,37 @@
       <a-mat-autocomplete *ngIf="showPeople" [object]="invoice" [roleType]="m.SalesInvoice.BillToCustomer" [filter]="peopleFilter.create()"
         display="displayName" (onSelect)="receiverSelected($event)" label="Bill to person"></a-mat-autocomplete>
       <a-mat-select [object]="invoice" [roleType]="m.SalesInvoice.BillToContactMechanism" [options]="contactMechanisms" display="displayName"></a-mat-select>
+      <button *ngIf="invoice.BillToCustomer" type="button" mat-button (click)="addWebAddress = true">+Web</button>
+      <button *ngIf="invoice.BillToCustomer" type="button" mat-button (click)="addEmailAddress = true">+Email</button>
+      <button *ngIf="invoice.BillToCustomer" type="button" mat-button (click)="addPostalAddress = true">+Postal</button>
+      <button *ngIf="invoice.BillToCustomer" type="button" mat-button (click)="addTeleCommunicationsNumber = true">+Telecom</button>
+
+      <div *ngIf="addWebAddress && invoice.BillToCustomer" style="background: lightblue" class="pad">
+        <party-contactmechanism-webaddress (cancelled)="webAddressCancelled($event)" (saved)="webAddressAdded($event)">
+        </party-contactmechanism-webaddress>
+      </div>
+      <div *ngIf="addEmailAddress && invoice.BillToCustomer" style="background: lightblue" class="pad">
+        <party-contactmechanism-emailAddress (cancelled)="emailAddressCancelled($event)" (saved)="emailAddressAdded($event)">
+        </party-contactmechanism-emailAddress>
+      </div>
+      <div *ngIf="addPostalAddress && invoice.BillToCustomer" style="background: lightblue" class="pad">
+        <party-contactmechanism-postaladdress (cancelled)="postalAddressCancelled($event)" (saved)="postalAddressAdded($event)">
+        </party-contactmechanism-postaladdress>
+      </div>
+      <div *ngIf="addTeleCommunicationsNumber && invoice.BillToCustomer" style="background: lightblue" class="pad">
+        <party-contactmechanism-telecommunicationsnumber (cancelled)="teleCommunicationsNumberCancelled($event)" (saved)="teleCommunicationsNumberAdded($event)">
+        </party-contactmechanism-telecommunicationsnumber>
+      </div>
+
+      <a-mat-select [object]="invoice" [roleType]="m.SalesInvoice.VatRegime" [options]="vatRegimes" display="Name"></a-mat-select>
+      <a-mat-static *ngIf="invoice.VatRegime" [object]="invoice.VatRegime" [roleType]="m.VatRegime.VatRate" display="Rate"></a-mat-static>
+
       <a-mat-static *ngIf="order?.Comment" [object]="order" [roleType]="m.SalesOrder.Comment"></a-mat-static>
       <a-mat-textarea [object]="invoice" [roleType]="m.SalesInvoice.Comment"></a-mat-textarea>
       <a-mat-static *ngIf="order?.InternalComment" [object]="order" [roleType]="m.SalesOrder.InternalComment"></a-mat-static>
       <a-mat-textarea [object]="invoice" [roleType]="m.SalesInvoice.InternalComment"></a-mat-textarea>
+      <br/>
+      <a-mat-textarea [object]="invoice" [roleType]="m.SalesInvoice.Message"></a-mat-textarea>
     </div>
 
     <mat-divider></mat-divider>

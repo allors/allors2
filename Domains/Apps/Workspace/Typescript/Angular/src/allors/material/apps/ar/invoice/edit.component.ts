@@ -7,7 +7,7 @@ import { BehaviorSubject, Observable, Subject, Subscription } from "rxjs/Rx";
 
 import { AllorsService, ErrorService, Filter, Invoked, Loaded, Saved, Scope } from "../../../../angular";
 import { Contains, Equals, Fetch, Like, Page, Path, PullRequest, PushResponse, Query, Sort, TreeNode } from "../../../../domain";
-import { ContactMechanism, Currency, Organisation, OrganisationRole, Party, PartyContactMechanism, Person, PersonRole, SalesInvoice, SalesOrder } from "../../../../domain";
+import { ContactMechanism, Currency, Organisation, OrganisationRole, Party, PartyContactMechanism, Person, PersonRole, SalesInvoice, SalesOrder, VatRate, VatRegime } from "../../../../domain";
 import { MetaDomain } from "../../../../meta";
 
 @Component({
@@ -25,10 +25,17 @@ export class InvoiceEditComponent implements OnInit, AfterViewInit, OnDestroy {
   public organisations: Organisation[];
   public currencies: Currency[];
   public contactMechanisms: ContactMechanism[];
+  public vatRates: VatRate[];
+  public vatRegimes: VatRegime[];
 
   public peopleFilter: Filter;
   public organisationsFilter: Filter;
   public currenciesFilter: Filter;
+
+  public addEmailAddress: boolean = false;
+  public addPostalAddress: boolean = false;
+  public addTeleCommunicationsNumber: boolean = false;
+  public addWebAddress: boolean = false;
 
   private refresh$: BehaviorSubject<Date>;
   private subscription: Subscription;
@@ -86,6 +93,16 @@ export class InvoiceEditComponent implements OnInit, AfterViewInit, OnDestroy {
               name: "currencies",
               objectType: this.m.Currency,
             }),
+          new Query(
+            {
+              name: "vatRates",
+              objectType: m.VatRate,
+            }),
+          new Query(
+            {
+              name: "vatRegimes",
+              objectType: m.VatRegime,
+            }),
         ];
 
         this.scope.session.reset();
@@ -94,6 +111,8 @@ export class InvoiceEditComponent implements OnInit, AfterViewInit, OnDestroy {
           .load("Pull", new PullRequest({ query: rolesQuery }))
           .switchMap((loaded: Loaded) => {
             this.currencies = loaded.collections.currencies as Currency[];
+            this.vatRates = loaded.collections.vatRates as VatRate[];
+            this.vatRegimes = loaded.collections.vatRegimes as VatRegime[];
 
             const organisationRoles: OrganisationRole[] = loaded.collections.organisationRoles as OrganisationRole[];
             const oCustomerRole: OrganisationRole = organisationRoles.find((v: OrganisationRole) => v.Name === "Customer");
@@ -158,6 +177,54 @@ export class InvoiceEditComponent implements OnInit, AfterViewInit, OnDestroy {
         this.goBack();
       },
     );
+  }
+
+  public webAddressCancelled(): void {
+    this.addWebAddress = false;
+  }
+
+  public webAddressAdded(id: string): void {
+    this.addWebAddress = false;
+
+    const partyContactMechanism: PartyContactMechanism = this.scope.session.get(id) as PartyContactMechanism;
+    this.contactMechanisms.push(partyContactMechanism.ContactMechanism);
+    this.invoice.BillToCustomer.AddPartyContactMechanism(partyContactMechanism);
+  }
+
+  public emailAddressCancelled(): void {
+    this.addEmailAddress = false;
+  }
+
+  public emailAddressAdded(id: string): void {
+    this.addEmailAddress = false;
+
+    const partyContactMechanism: PartyContactMechanism = this.scope.session.get(id) as PartyContactMechanism;
+    this.contactMechanisms.push(partyContactMechanism.ContactMechanism);
+    this.invoice.BillToCustomer.AddPartyContactMechanism(partyContactMechanism);
+  }
+
+  public postalAddressCancelled(): void {
+    this.addPostalAddress = false;
+  }
+
+  public postalAddressAdded(id: string): void {
+    this.addPostalAddress = false;
+
+    const partyContactMechanism: PartyContactMechanism = this.scope.session.get(id) as PartyContactMechanism;
+    this.contactMechanisms.push(partyContactMechanism.ContactMechanism);
+    this.invoice.BillToCustomer.AddPartyContactMechanism(partyContactMechanism);
+  }
+
+  public teleCommunicationsNumberCancelled(): void {
+    this.addTeleCommunicationsNumber = false;
+  }
+
+  public teleCommunicationsNumberAdded(id: string): void {
+    this.addTeleCommunicationsNumber = false;
+
+    const partyContactMechanism: PartyContactMechanism = this.scope.session.get(id) as PartyContactMechanism;
+    this.contactMechanisms.push(partyContactMechanism.ContactMechanism);
+    this.invoice.BillToCustomer.AddPartyContactMechanism(partyContactMechanism);
   }
 
   public send(): void {

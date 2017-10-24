@@ -71,12 +71,13 @@
             <ng-template let-invoiceItem let-last="last" ngFor [ngForOf]="invoice.SalesInvoiceItems">
               <mat-list-item>
                 <div layout="row" class="link" [routerLink]="['/invoice/' + invoice.id + '/item/' + invoiceItem.id ]">
-                  <a-mat-static [object]="invoiceItem" [roleType]="m.SalesInvoiceItem.Product" display="Name"></a-mat-static>
+                  <a-mat-static *ngIf="invoiceItem.Product" [object]="invoiceItem" [roleType]="m.SalesInvoiceItem.Product" display="Name"></a-mat-static>
                 </div>
                 <div layout="row">
                   <a-mat-static [object]="invoiceItem" [roleType]="m.SalesInvoiceItem.Quantity"></a-mat-static>
                 </div>
-                <span>
+
+                    <span>
                   <button mat-icon-button [mat-menu-trigger-for]="menu">
                     <mat-icon>more_vert</mat-icon>
                   </button>

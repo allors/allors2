@@ -7,7 +7,7 @@ import { BehaviorSubject, Observable, Subject, Subscription } from "rxjs/Rx";
 
 import { AllorsService, ErrorService, Filter, Invoked, Loaded, Saved, Scope } from "../../../../angular";
 import { Contains, Equals, Fetch, Like, Page, Path, PullRequest, PushResponse, Query, Sort, TreeNode } from "../../../../domain";
-import { Good, SalesInvoice, SalesInvoiceItem, SalesOrderItem } from "../../../../domain";
+import { Good, SalesInvoice, SalesInvoiceItem, SalesInvoiceItemType, SalesOrderItem } from "../../../../domain";
 import { MetaDomain } from "../../../../meta";
 
 @Component({
@@ -23,6 +23,8 @@ export class InvoiceItemEditComponent implements OnInit, AfterViewInit, OnDestro
   public invoiceItem: SalesInvoiceItem;
   public orderItem: SalesOrderItem;
   public goods: Good[];
+  public salesInvoiceItemTypes: SalesInvoiceItemType[];
+  public productItemType: SalesInvoiceItemType;
 
   private refresh$: BehaviorSubject<Date>;
   private subscription: Subscription;
@@ -67,11 +69,6 @@ export class InvoiceItemEditComponent implements OnInit, AfterViewInit, OnDestro
             ],
             name: "invoiceItem",
           }),
-          new Fetch({
-            id: itemId,
-            name: "orderItem",
-            path: new Path({ step: m.SalesInvoiceItem.SalesOrderItem }),
-          }),
         ];
 
         const rolesQuery: Query[] = [
@@ -79,6 +76,11 @@ export class InvoiceItemEditComponent implements OnInit, AfterViewInit, OnDestro
             {
               name: "goods",
               objectType: m.Good,
+            }),
+          new Query(
+            {
+              name: "salesInvoiceItemTypes",
+              objectType: m.SalesInvoiceItemType,
             }),
         ];
 
@@ -93,10 +95,12 @@ export class InvoiceItemEditComponent implements OnInit, AfterViewInit, OnDestro
         this.invoiceItem = loaded.objects.invoiceItem as SalesInvoiceItem;
         this.orderItem = loaded.objects.orderItem as SalesOrderItem;
         this.goods = loaded.collections.goods as Good[];
+        this.salesInvoiceItemTypes = loaded.collections.salesInvoiceItemTypes as SalesInvoiceItemType[];
 
         if (!this.invoiceItem) {
           this.title = "Add invoice Item";
           this.invoiceItem = this.scope.session.create("SalesInvoiceItem") as SalesInvoiceItem;
+          this.productItemType = this.salesInvoiceItemTypes.find((v: SalesInvoiceItemType) => v.UniqueId.toUpperCase() === "0D07F778-2735-44CB-8354-FB887ADA42AD");
           this.invoice.AddSalesInvoiceItem(this.invoiceItem);
         }
       },
@@ -119,6 +123,10 @@ export class InvoiceItemEditComponent implements OnInit, AfterViewInit, OnDestro
   }
 
   public save(): void {
+
+    if (this.invoiceItem.Product) {
+      this.invoiceItem.SalesInvoiceItemType = this.productItemType;
+    }
 
     this.scope
       .save()

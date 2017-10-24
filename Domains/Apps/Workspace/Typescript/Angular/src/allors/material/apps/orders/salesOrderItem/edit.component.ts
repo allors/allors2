@@ -7,7 +7,7 @@ import { BehaviorSubject, Observable, Subject, Subscription } from "rxjs/Rx";
 
 import { AllorsService, ErrorService, Filter, Invoked, Loaded, Saved, Scope } from "../../../../angular";
 import { Contains, Equals, Fetch, Like, Page, Path, PullRequest, PushResponse, Query, Sort, TreeNode } from "../../../../domain";
-import { Good, QuoteItem, SalesOrder, SalesOrderItem } from "../../../../domain";
+import { DiscountAdjustment, Good, QuoteItem, SalesOrder, SalesOrderItem, SurchargeAdjustment, VatRate, VatRegime } from "../../../../domain";
 import { MetaDomain } from "../../../../meta";
 
 @Component({
@@ -23,6 +23,10 @@ export class SalesOrderItemEditComponent implements OnInit, AfterViewInit, OnDes
   public orderItem: SalesOrderItem;
   public quoteItem: QuoteItem;
   public goods: Good[];
+  public vatRates: VatRate[];
+  public vatRegimes: VatRegime[];
+  public discount: number;
+  public surcharge: number;
 
   private refresh$: BehaviorSubject<Date>;
   private subscription: Subscription;
@@ -64,13 +68,15 @@ export class SalesOrderItemEditComponent implements OnInit, AfterViewInit, OnDes
             include: [
               new TreeNode({ roleType: m.SalesOrderItem.SalesOrderItemState }),
               new TreeNode({ roleType: m.SalesOrderItem.QuoteItem }),
+              new TreeNode({ roleType: m.SalesOrderItem.DiscountAdjustment }),
+              new TreeNode({ roleType: m.SalesOrderItem.SurchargeAdjustment }),
+              new TreeNode({ roleType: m.SalesOrderItem.DerivedVatRate }),
+              new TreeNode({
+                nodes: [new TreeNode({ roleType: m.VatRegime.VatRate })],
+                roleType: m.SalesOrderItem.VatRegime,
+              }),
             ],
             name: "orderItem",
-          }),
-          new Fetch({
-            id: itemId,
-            name: "quoteItem",
-            path: new Path({ step: m.SalesOrderItem.QuoteItem }),
           }),
         ];
 
@@ -79,6 +85,16 @@ export class SalesOrderItemEditComponent implements OnInit, AfterViewInit, OnDes
             {
               name: "goods",
               objectType: m.Good,
+            }),
+          new Query(
+            {
+              name: "vatRates",
+              objectType: m.VatRate,
+            }),
+          new Query(
+            {
+              name: "vatRegimes",
+              objectType: m.VatRegime,
             }),
         ];
 
@@ -93,11 +109,20 @@ export class SalesOrderItemEditComponent implements OnInit, AfterViewInit, OnDes
         this.orderItem = loaded.objects.orderItem as SalesOrderItem;
         this.quoteItem = loaded.objects.quoteItem as QuoteItem;
         this.goods = loaded.collections.goods as Good[];
+        this.vatRates = loaded.collections.vatRates as VatRate[];
+        this.vatRegimes = loaded.collections.vatRegimes as VatRegime[];
 
         if (!this.orderItem) {
           this.title = "Add Order Item";
           this.orderItem = this.scope.session.create("SalesOrderItem") as SalesOrderItem;
           this.order.AddSalesOrderItem(this.orderItem);
+        } else {
+          if (this.orderItem.DiscountAdjustment) {
+            this.discount = this.orderItem.DiscountAdjustment.Amount;
+          }
+          if (this.orderItem.SurchargeAdjustment) {
+            this.surcharge = this.orderItem.SurchargeAdjustment.Amount;
+          }
         }
       },
       (error: Error) => {
@@ -119,6 +144,18 @@ export class SalesOrderItemEditComponent implements OnInit, AfterViewInit, OnDes
   }
 
   public save(): void {
+
+    // if (this.discount !== 0) {
+    //   const discountAdjustment = this.scope.session.create("DiscountAdjustment") as DiscountAdjustment;
+    //   discountAdjustment.Amount = this.discount;
+    //   this.orderItem.DiscountAdjustment = discountAdjustment;
+    // }
+
+    // if (this.surcharge !== 0) {
+    //   const surchargeAdjustment = this.scope.session.create("SurchargeAdjustment") as SurchargeAdjustment;
+    //   surchargeAdjustment.Amount = this.surcharge;
+    //   this.orderItem.SurchargeAdjustment = surchargeAdjustment;
+    // }
 
     this.scope
       .save()

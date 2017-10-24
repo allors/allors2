@@ -10,7 +10,17 @@
 
       <a-mat-select [object]="orderItem" [roleType]="m.SalesOrderItem.Product" [options]="goods" display="Name"></a-mat-select>
       <a-mat-input [object]="orderItem" [roleType]="m.SalesOrderItem.QuantityOrdered"></a-mat-input>
+      <br/>
       <a-mat-input [object]="orderItem" [roleType]="m.SalesOrderItem.ActualUnitPrice"></a-mat-input>
+      <a-mat-static [object]="orderItem" [roleType]="m.SalesOrderItem.UnitVat"></a-mat-static>
+      <a-mat-static [object]="orderItem" [roleType]="m.SalesOrderItem.TotalIncVat"></a-mat-static>
+      <!-- <mat-input-container>
+        <input matInput placeholder="Discount amount" name="discount" [(ngModel)]="discount">
+      </mat-input-container>
+      <mat-input-container>
+        <input matInput placeholder="Surcharge amount" name="surcharge" [(ngModel)]="surcharge">
+      </mat-input-container>
+      <br/> -->
       <a-mat-static *ngIf="quoteItem?.Comment" [object]="quoteItem" [roleType]="m.QuoteItem.Comment" label="Quote Comment"></a-mat-static>
       <a-mat-textarea [object]="orderItem" [roleType]="m.SalesOrderItem.Comment" label="Order Comment"></a-mat-textarea>
       <a-mat-static *ngIf="quoteItem?.InternalComment" [object]="quoteItem" [roleType]="m.QuoteItem.InternalComment" label="Quote Internal Comment"></a-mat-static>

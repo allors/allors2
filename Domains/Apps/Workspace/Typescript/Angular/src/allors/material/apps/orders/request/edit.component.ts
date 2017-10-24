@@ -152,9 +152,10 @@ export class RequestEditComponent implements OnInit, AfterViewInit, OnDestroy {
         this.request = loaded.objects.requestForQuote as RequestForQuote;
         if (!this.request) {
           this.request = this.scope.session.create("RequestForQuote") as RequestForQuote;
+          this.title = "Add Request";
+        } else {
+          this.title = "Request " + this.request.RequestNumber;
         }
-
-        this.title = "Request " + this.request.RequestNumber;
 
         if (this.request.Originator) {
           this.originatorSelected(this.request.Originator);
@@ -319,6 +320,7 @@ export class RequestEditComponent implements OnInit, AfterViewInit, OnDestroy {
     this.addWebAddress = false;
 
     const partyContactMechanism: PartyContactMechanism = this.scope.session.get(id) as PartyContactMechanism;
+    this.contactMechanisms.push(partyContactMechanism.ContactMechanism);
     this.request.Originator.AddPartyContactMechanism(partyContactMechanism);
   }
 
@@ -330,6 +332,7 @@ export class RequestEditComponent implements OnInit, AfterViewInit, OnDestroy {
     this.addEmailAddress = false;
 
     const partyContactMechanism: PartyContactMechanism = this.scope.session.get(id) as PartyContactMechanism;
+    this.contactMechanisms.push(partyContactMechanism.ContactMechanism);
     this.request.Originator.AddPartyContactMechanism(partyContactMechanism);
   }
 
@@ -341,6 +344,7 @@ export class RequestEditComponent implements OnInit, AfterViewInit, OnDestroy {
     this.addPostalAddress = false;
 
     const partyContactMechanism: PartyContactMechanism = this.scope.session.get(id) as PartyContactMechanism;
+    this.contactMechanisms.push(partyContactMechanism.ContactMechanism);
     this.request.Originator.AddPartyContactMechanism(partyContactMechanism);
   }
 
@@ -352,6 +356,7 @@ export class RequestEditComponent implements OnInit, AfterViewInit, OnDestroy {
     this.addTeleCommunicationsNumber = false;
 
     const partyContactMechanism: PartyContactMechanism = this.scope.session.get(id) as PartyContactMechanism;
+    this.contactMechanisms.push(partyContactMechanism.ContactMechanism);
     this.request.Originator.AddPartyContactMechanism(partyContactMechanism);
   }
 

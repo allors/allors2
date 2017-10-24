@@ -145,13 +145,19 @@ export class ProductQuoteEditComponent implements OnInit, AfterViewInit, OnDestr
 
         if (!this.quote) {
           this.quote = this.scope.session.create("ProductQuote") as ProductQuote;
+          this.title = "Add Quote";
+        } else {
+          this.title = "Quote " + this.quote.QuoteNumber;
+        }
+
+        if (this.quote.Receiver) {
+          this.title = this.title + " from: " + this.quote.Receiver.PartyName;
         }
 
         this.receiverSelected(this.quote.Receiver);
 
         this.organisations = loaded.collections.organisations as Organisation[];
         this.people = loaded.collections.parties as Person[];
-        this.title = "Quote " + this.quote.QuoteNumber + " to: " + this.quote.Receiver.PartyName;
       },
       (error: Error) => {
         this.errorService.message(error);
@@ -168,6 +174,7 @@ export class ProductQuoteEditComponent implements OnInit, AfterViewInit, OnDestr
     this.addWebAddress = false;
 
     const partyContactMechanism: PartyContactMechanism = this.scope.session.get(id) as PartyContactMechanism;
+    this.contactMechanisms.push(partyContactMechanism.ContactMechanism);
     this.request.Originator.AddPartyContactMechanism(partyContactMechanism);
   }
 
@@ -179,6 +186,7 @@ export class ProductQuoteEditComponent implements OnInit, AfterViewInit, OnDestr
     this.addEmailAddress = false;
 
     const partyContactMechanism: PartyContactMechanism = this.scope.session.get(id) as PartyContactMechanism;
+    this.contactMechanisms.push(partyContactMechanism.ContactMechanism);
     this.request.Originator.AddPartyContactMechanism(partyContactMechanism);
   }
 
@@ -190,6 +198,7 @@ export class ProductQuoteEditComponent implements OnInit, AfterViewInit, OnDestr
     this.addPostalAddress = false;
 
     const partyContactMechanism: PartyContactMechanism = this.scope.session.get(id) as PartyContactMechanism;
+    this.contactMechanisms.push(partyContactMechanism.ContactMechanism);
     this.request.Originator.AddPartyContactMechanism(partyContactMechanism);
   }
 
@@ -201,6 +210,7 @@ export class ProductQuoteEditComponent implements OnInit, AfterViewInit, OnDestr
     this.addTeleCommunicationsNumber = false;
 
     const partyContactMechanism: PartyContactMechanism = this.scope.session.get(id) as PartyContactMechanism;
+    this.contactMechanisms.push(partyContactMechanism.ContactMechanism);
     this.request.Originator.AddPartyContactMechanism(partyContactMechanism);
   }
 
