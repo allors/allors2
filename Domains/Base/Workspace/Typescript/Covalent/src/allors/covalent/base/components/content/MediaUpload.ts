@@ -1,11 +1,12 @@
-import { Component, Input , ChangeDetectorRef } from '@angular/core';
-import { ISession, ISessionObject, Media } from '../../../../../allors/domain';
-import { MetaDomain, RoleType } from '../../../../../allors/meta';
+import { ChangeDetectorRef, Component , Input } from "@angular/core";
+import { Field } from "@baseAngular";
+import { ISession, ISessionObject } from "@baseDomain";
+import { RoleType } from "@baseMeta";
 
-import { Field } from '../../../../angular';
+import { Media } from "@generatedDomain/index";
 
 @Component({
-  selector: 'a-mat-media-upload',
+  selector: "a-mat-media-upload",
   template: `
 <div fxLayout="row">
   <mat-input-container tdFileDrop (fileDrop)="dropEvent($event)" flex>
@@ -25,9 +26,9 @@ import { Field } from '../../../../angular';
 export class MediaUploadComponent extends Field {
 
   @Input()
-  accept: string;
+  public accept: string;
 
-  file: File;
+  public file: File;
 
   get media(): Media {
     return this.model;
@@ -55,7 +56,7 @@ export class MediaUploadComponent extends Field {
     if (this.ExistObject) {
       if (!this.model) {
         const session: ISession = this.object.session;
-        this.model = session.create('Media');
+        this.model = session.create("Media");
       }
     }
 
@@ -65,7 +66,7 @@ export class MediaUploadComponent extends Field {
       this.media.InDataUri = reader.result;
     };
 
-    reader.addEventListener('load', load, false);
+    reader.addEventListener("load", load, false);
     reader.readAsDataURL(file);
   }
 }

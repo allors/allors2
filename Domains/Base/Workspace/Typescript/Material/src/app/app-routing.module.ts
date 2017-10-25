@@ -1,16 +1,16 @@
 import { NgModule } from "@angular/core";
 import { RouterModule, Routes } from "@angular/router";
 
-import { AuthenticationService } from "../allors/angular";
-import { LoginComponent } from "./auth/login.component";
+import { AllorsService } from "@allors";
 
+import { LoginComponent } from "./auth/login.component";
 import { DashboardComponent } from "./dashboard/dashboard.component";
 import { FormComponent } from "./form/form.component";
 
 const routes: Routes = [
   { path: "login", component: LoginComponent },
   {
-    canActivate: [AuthenticationService],
+    canActivate: [AllorsService],
     children: [{
       component: DashboardComponent,
       path: "",

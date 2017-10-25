@@ -1,7 +1,6 @@
 {
   "name": "material",
   "version": "1.0.0",
-  "license": "MIT",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
@@ -9,14 +8,8 @@
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "sync": "npm run sync-meta && npm run sync-domain && npm run sync-angular",
-    "sync-meta": "sync-files ../Meta/src/allors/meta/base src/allors/meta/base",
-    "sync-domain": "sync-files ../Domain/src/allors/domain/base src/allors/domain/base",
-    "sync-angular": "sync-files ../Angular/src/allors/angular/base src/allors/angular/base",
-    "syncback": "npm run syncback-meta && npm run syncback-domain && npm run syncback-angular",
-    "syncback-meta": "sync-files src/allors/meta/base ../Meta/src/allors/meta/base",
-    "syncback-domain": "sync-files src/allors/domain/base ../Domain/src/allors/domain/base",
-    "syncback-angular": "sync-files src/allors/angular/base ../Angular/src/allors/angular/base"
+    "teamcity": "ng test --watch=false --reporters=teamcity",
+    "teamcity-e2e": "ng e2e --config ./protractor.conf.teamcity.js"
   },
   "private": true,
   "dependencies": {
@@ -25,7 +18,6 @@
     "@angular/common": "^4.4.3",
     "@angular/compiler": "^4.4.3",
     "@angular/core": "^4.4.3",
-    "@angular/flex-layout": "^2.0.0-beta.9",
     "@angular/forms": "^4.4.3",
     "@angular/http": "^4.4.3",
     "@angular/material": "^2.0.0-beta.12",
@@ -59,7 +51,6 @@
     "karma-jasmine-html-reporter": "^0.2.2",
     "karma-teamcity-reporter": "^1.0.1",
     "protractor": "~5.1.0",
-    "sync-files": "^1.0.3",
     "ts-node": "^3.0.4",
     "tslint": "5.2.0",
     "typescript": "~2.3.2"

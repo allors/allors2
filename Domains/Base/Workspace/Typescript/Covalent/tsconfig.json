@@ -1,23 +1,30 @@
 {
   "compileOnSave": false,
   "compilerOptions": {
-    "declaration": false,
-    "emitDecoratorMetadata": true,
-    "experimentalDecorators": true,
-    "lib": [
-      "es2016",
-      "dom"
-    ],
-    "moduleResolution": "node",
+    "baseUrl": "./src",
     "outDir": "./dist/out-tsc",
     "sourceMap": true,
+    "declaration": false,
+    "moduleResolution": "node",
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
     "target": "es5",
     "typeRoots": [
-      "./node_modules/@types"
+      "node_modules/@types"
     ],
-    "noUnusedParameters": false,
-    "noUnusedLocals": false,
-    "allowUnreachableCode": false,
-    "pretty": true
+    "lib": [
+      "es2017",
+      "dom"
+    ],
+    "paths": {
+      "@baseMeta": ["../../Meta/src/allors/meta/base/index"],
+      "@baseDomain": ["../../Domain/src/allors/domain/base/index"],
+      "@baseAngular": ["../../Angular/src/allors/angular/base/index"],
+
+      "@generatedMeta/*": ["./allors/meta/generated/*"],
+      "@generatedDomain/*": ["./allors/domain/generated/*"],
+
+      "@allors": ["./allors/index"]
+    }
   }
 }

@@ -1,12 +1,11 @@
-import { Component, Input, ChangeDetectorRef, ViewChildren, QueryList, AfterViewInit } from '@angular/core';
-import { NgModel, NgForm } from '@angular/forms';
-import { ISessionObject } from '../../../../allors/domain';
-import { MetaDomain, RoleType } from '../../../../allors/meta';
-
-import { Field } from '../../../angular';
+import { AfterViewInit, ChangeDetectorRef, Component, Input, QueryList, ViewChildren } from "@angular/core";
+import { NgForm, NgModel } from "@angular/forms";
+import { Field } from "@baseAngular";
+import { ISessionObject } from "@baseDomain";
+import { RoleType } from "@baseMeta";
 
 @Component({
-  selector: 'a-mat-datepicker',
+  selector: "a-mat-datepicker",
   template: `
 <div fxLayout="row">
   <mat-input-container fxLayoutGap="1em">
@@ -30,16 +29,16 @@ import { Field } from '../../../angular';
 export class DatepickerComponent extends Field implements AfterViewInit {
 
   @Input()
-  useTime: boolean;
+  public useTime: boolean;
 
   @ViewChildren(NgModel)
-  controls: QueryList<NgModel>;
+  public controls: QueryList<NgModel>;
 
   constructor(private parentForm: NgForm) {
     super();
   }
 
-  ngAfterViewInit(): void {
+  public ngAfterViewInit(): void {
     this.controls.forEach((control: NgModel) => {
       this.parentForm.addControl(control);
     });

@@ -1,17 +1,17 @@
-import { Observable, Subject, Subscription } from 'rxjs/Rx';
-import { Component, OnInit, AfterViewInit, OnDestroy } from '@angular/core';
-import { Validators } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
-import { Title } from '@angular/platform-browser';
-import { TdMediaService, TdDialogService } from '@covalent/core';
+import { AfterViewInit, Component, OnDestroy, OnInit } from "@angular/core";
+import { Validators } from "@angular/forms";
+import { Title } from "@angular/platform-browser";
+import { ActivatedRoute } from "@angular/router";
+import { TdDialogService, TdMediaService } from "@covalent/core";
+import { Observable, Subject, Subscription } from "rxjs/Rx";
 
-import { MetaDomain } from '../../../../../meta/index';
-import { PullRequest, PushResponse, Fetch, Path, Query, Equals, Like, TreeNode, Sort, Page } from '../../../../../domain';
-import { Organisation, Person, Locale, Enumeration } from '../../../../../domain';
-import { Scope, Loaded, Saved, AllorsService, ErrorService } from '../../../../../angular';
+import { AllorsService, ErrorService, Loaded, Saved, Scope } from "@allors";
+import { Equals, Fetch, Like, Page, Path, PullRequest, PushResponse, Query, Sort, TreeNode } from "@baseDomain";
+import { Enumeration, Locale, Organisation, Person } from "../../../../../domain";
+import { MetaDomain } from "../../../../../meta/index";
 
 @Component({
-  templateUrl: './person.component.html',
+  templateUrl: "./person.component.html",
 })
 export class PersonComponent implements OnInit, AfterViewInit, OnDestroy {
 
@@ -31,8 +31,7 @@ export class PersonComponent implements OnInit, AfterViewInit, OnDestroy {
     private route: ActivatedRoute,
     private media: TdMediaService) {
 
-
-    this.title = 'Person';
+    this.title = "Person";
     this.titleService.setTitle(this.title);
     this.scope = new Scope(allorsService.database, allorsService.workspace);
     this.m = this.allorsService.meta;
@@ -42,21 +41,21 @@ export class PersonComponent implements OnInit, AfterViewInit, OnDestroy {
     this.subscription = this.route.url
       .switchMap((url: any) => {
 
-        const id: string = this.route.snapshot.paramMap.get('id');
+        const id: string = this.route.snapshot.paramMap.get("id");
 
         const m: MetaDomain = this.allorsService.meta;
 
         const fetch: Fetch[] = [
           new Fetch({
-            name: 'person',
-            id: id,
+            name: "person",
+            id,
           }),
         ];
 
         const query: Query[] = [
           new Query(
             {
-              name: 'locales',
+              name: "locales",
               objectType: this.m.Locale,
             }),
         ];
@@ -64,13 +63,13 @@ export class PersonComponent implements OnInit, AfterViewInit, OnDestroy {
         this.scope.session.reset();
 
         return this.scope
-          .load('Pull', new PullRequest({ fetch: fetch, query: query }));
+          .load("Pull", new PullRequest({ fetch, query }));
       })
       .subscribe((loaded: Loaded) => {
 
         this.person = loaded.objects.person as Person;
         if (!this.person) {
-          this.person = this.scope.session.create('Person') as Person;
+          this.person = this.scope.session.create("Person") as Person;
         }
 
         this.locales = loaded.collections.locales as Locale[];

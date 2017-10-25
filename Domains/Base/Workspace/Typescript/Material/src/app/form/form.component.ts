@@ -1,12 +1,11 @@
 import { Component, OnDestroy, OnInit } from "@angular/core";
 import { Observable, Subscription } from "rxjs/Rx";
 
-import { Scope } from "../../allors/angular/base/Scope";
-import { Equals, Like, Page, PullRequest, Query, Sort, TreeNode } from "../../allors/domain";
-import { MetaDomain } from "../../allors/meta";
-import { AllorsService } from "../allors.service";
+import { Equals, Like, Page, PullRequest, Query, Scope, Sort, TreeNode } from "@allors";
+import { MetaDomain } from "@allors";
+import { AllorsService } from "@allors";
 
-import { Organisation } from "../../allors/domain/generated/Organisation.g";
+import { Organisation } from "@allors";
 
 @Component({
   selector: "app-form",
@@ -58,11 +57,12 @@ export class FormComponent implements OnInit, OnDestroy {
 
     this.scope
       .load("Pull", new PullRequest({ query: [query] }))
-      .subscribe(() => {
-        this.organisation = (this.scope.collections.organisations as Organisation[])[0];
+      .subscribe((loaded) => {
+        this.organisation = (loaded.collections.organisations as Organisation[])[0];
       },
       (e) => {
-        this.allors.onError(e);
+        // TODO:
+        // this.allors.onError(e);
       });
   }
 }

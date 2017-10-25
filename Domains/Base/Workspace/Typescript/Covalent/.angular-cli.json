@@ -1,7 +1,7 @@
 {
   "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
   "project": {
-    "name": "apps"
+    "name": "covalent"
   },
   "apps": [
     {
@@ -58,9 +58,6 @@
   },
   "defaults": {
     "styleExt": "scss",
-    "serve": {
-        "port": 4200,
-        "host": "localhost"
-    }
+    "component": {}
   }
 }

@@ -1,9 +1,8 @@
 import { AfterViewInit, ChangeDetectorRef, Component, Input, Optional, QueryList, ViewChildren } from "@angular/core";
 import { NgForm, NgModel } from "@angular/forms";
-import { ISessionObject } from "../../../../allors/domain";
-import { MetaDomain, RoleType } from "../../../../allors/meta";
-
-import { Field } from "../../../angular";
+import { Field } from "@baseAngular";
+import { ISessionObject } from "@baseDomain";
+import { RoleType } from "@baseMeta";
 
 @Component({
   selector: "a-mat-textarea",

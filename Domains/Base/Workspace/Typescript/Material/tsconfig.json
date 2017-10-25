@@ -1,8 +1,8 @@
 {
   "compileOnSave": false,
   "compilerOptions": {
+    "baseUrl": "./src",
     "outDir": "./dist/out-tsc",
-    "baseUrl": "src",
     "sourceMap": true,
     "declaration": false,
     "moduleResolution": "node",
@@ -15,6 +15,19 @@
     "lib": [
       "es2017",
       "dom"
-    ]
+    ],
+    "paths": {
+      "@baseMeta": ["../../Meta/src/allors/meta/base/index"],
+      "@baseDomain": ["../../Domain/src/allors/domain/base/index"],
+      "@baseAngular": ["../../Angular/src/allors/angular/base/index"],
+      "@baseMaterial": ["./allors/material/base/index"],
+
+      "@generatedMeta/*": ["../../Meta/src/allors/meta/generated/*"],
+      "@generatedDomain/*": ["../../Domain/src/allors/domain/generated/*"],
+
+      "@allors": ["./allors/index"],
+
+      "*": ["../node_modules/*"]
+    }
   }
 }

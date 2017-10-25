@@ -2,9 +2,9 @@
 import { Http, HttpModule, Response, ResponseOptions, XHRBackend } from "@angular/http";
 import { MockBackend } from "@angular/http/testing";
 
-import { Scope } from "../allors/angular";
-import { Organisation } from "../allors/domain";
-import { AllorsService } from "./allors.service";
+import { Scope } from "@allors";
+import { Organisation } from "@allors";
+import { AllorsService } from "@allors";
 
 describe("VideoService", () => {
 
@@ -38,8 +38,8 @@ describe("VideoService", () => {
         const scope = new Scope(allorsService.database, allorsService.workspace);
 
         scope.load("Organisations")
-          .subscribe(() => {
-            const organisations = scope.collections.organisations as Organisation[];
+          .subscribe((loaded) => {
+            const organisations = loaded.collections.organisations as Organisation[];
             expect(organisations.length).toBe(1);
           }, (error) => {
             fail(error);

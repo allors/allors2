@@ -16,7 +16,7 @@ exports.config = {
   framework: 'jasmine',
   jasmineNodeOpts: {
     showColors: true,
-    defaultTimeoutInterval: 30 * 60 * 1000, // 30 minutes
+    defaultTimeoutInterval: 30000,
     print: function() {}
   },
   onPrepare() {
@@ -24,6 +24,5 @@ exports.config = {
       project: 'e2e/tsconfig.e2e.json'
     });
     jasmine.getEnv().addReporter(new SpecReporter({ spec: { displayStacktrace: true } }));
-  },
-  SELENIUM_PROMISE_MANAGER: false
+  }
 };

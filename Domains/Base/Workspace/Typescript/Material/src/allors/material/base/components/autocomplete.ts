@@ -1,13 +1,12 @@
-import { Component, Input, Output, OnInit, EventEmitter , ChangeDetectorRef } from '@angular/core';
-import { FormControl } from '@angular/forms';
-import { ISessionObject } from '../../../../allors/domain';
-import { MetaDomain, RoleType } from '../../../../allors/meta';
-import { Observable } from 'rxjs';
-
-import { Field } from '../../../angular';
+import { ChangeDetectorRef, Component, EventEmitter, Input, OnInit , Output } from "@angular/core";
+import { FormControl } from "@angular/forms";
+import { Field } from "@baseAngular";
+import { ISessionObject } from "@baseDomain";
+import { RoleType } from "@baseMeta";
+import { Observable } from "rxjs";
 
 @Component({
-  selector: 'a-mat-autocomplete',
+  selector: "a-mat-autocomplete",
   template: `
 <mat-input-container fxLayout="column" fxLayoutAlign="top stretch">
   <input type="text" matInput (focusout)="focusout($event)" [formControl]="searchControl" [matAutocomplete]="usersComp" [placeholder]="label" [required]="required" [disabled]="disabled" [readonly]="readonly">
@@ -23,25 +22,25 @@ import { Field } from '../../../angular';
 })
 export class AutocompleteComponent extends Field implements OnInit {
   @Input()
-  display: string = 'display';
+  public display: string = "display";
 
   @Input()
-  debounceTime: number = 400;
+  public debounceTime: number = 400;
 
   @Input()
-  options: ISessionObject[];
+  public  options: ISessionObject[];
 
   @Input()
-  filter: ((search: string) => Observable<ISessionObject[]>);
+  public filter: ((search: string) => Observable<ISessionObject[]>);
 
   @Output()
-  onSelect: EventEmitter<ISessionObject> = new EventEmitter();
+  public onSelect: EventEmitter<ISessionObject> = new EventEmitter();
 
-  filteredOptions: Observable<ISessionObject[]>;
+  public filteredOptions: Observable<ISessionObject[]>;
 
-  searchControl: FormControl = new FormControl();
+  public searchControl: FormControl = new FormControl();
 
-  ngOnInit(): void {
+  public ngOnInit(): void {
     if (this.filter) {
       this.filteredOptions = Observable.of(new Array<ISessionObject>())
         .concat(this.searchControl
@@ -73,24 +72,25 @@ export class AutocompleteComponent extends Field implements OnInit {
     this.searchControl.setValue(this.model);
   }
 
-  displayFn(): (val: ISessionObject) => string {
+  public displayFn(): (val: ISessionObject) => string {
     return (val: ISessionObject) => {
       if (val) {
-        return val ? val[this.display] : '';
+        return val ? val[this.display] : "";
       }
     };
   }
 
-  selected(option: ISessionObject): void {
+  public selected(option: ISessionObject): void {
     this.model = option;
     this.onSelect.emit(option);
   }
 
-  focusout(): void {
+  public focusout(): void {
     if (!this.searchControl.value) {
       this.model = undefined;
       this.onSelect.emit(undefined);
     } else {
+      // TODO:
     }
   }
 }

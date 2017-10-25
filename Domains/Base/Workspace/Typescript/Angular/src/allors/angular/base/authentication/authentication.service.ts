@@ -12,7 +12,7 @@ export class AuthenticationService {
 
   constructor(private http: HttpClient, @Inject(ENVIRONMENT) private environment: Environment) { }
 
-  public login$(userName: string, password: string) {
+  public login$(userName: string, password: string): any {
     const url = this.environment.url + this.environment.authenticationUrl;
     const request: AuthenticationTokenRequest = { userName, password };
 
