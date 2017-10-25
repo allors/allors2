@@ -4,7 +4,7 @@ import {
   InvokeResponse, ISession, ISessionObject, Method, PullResponse,
   PushRequest, PushRequestObject, PushResponse, Session, SyncRequest,
   SyncResponse, Workspace,
-} from "../../domain";
+} from "@baseDomain";
 
 import { Database } from "./Database";
 

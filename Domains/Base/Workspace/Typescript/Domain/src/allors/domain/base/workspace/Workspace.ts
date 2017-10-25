@@ -1,5 +1,10 @@
-﻿import { ObjectType, Population as MetaPopulation } from "../../../meta";
-import { PullResponse, SyncRequest, SyncResponse } from "../database";
+﻿import { ObjectType } from "@baseMeta";
+import { Population as MetaPopulation } from "@baseMeta";
+
+import { PullResponse } from "./../database/pull/PullResponse";
+import { SyncRequest } from "./../database/sync/SyncRequest";
+import { SyncResponse } from "./../database/sync/SyncResponse";
+
 import { SessionObject } from "./SessionObject";
 import { WorkspaceObject } from "./WorkspaceObject";
 

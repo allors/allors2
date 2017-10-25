@@ -1,31 +1,57 @@
+import { Location } from "@angular/common";
 import { HttpClient } from "@angular/common/http";
 import { Inject, Injectable } from "@angular/core";
+import { CanActivate, Router } from "@angular/router";
 
-import { workspace } from "../allors/domain";
-import { Workspace } from "../allors/domain/base/Workspace";
-import { MetaDomain } from "../allors/meta/generated/meta.g";
+import { constructorByName } from "@generatedDomain/domain.g";
+import { data, MetaDomain } from "@generatedMeta/meta.g";
 
-import { Database } from "../allors/angular";
-import { AuthenticationService, ENVIRONMENT, Environment } from "../allors/angular";
+import { Database, Population, Workspace } from "@allors";
+import {
+  AllorsService,
+  AuthenticationService,
+  ENVIRONMENT,
+  Environment,
+} from "@allors";
 
 @Injectable()
-export class AllorsService {
+export class DefaultAllorsService extends AllorsService implements CanActivate {
 
-    public workspace: Workspace;
-    public database: Database;
-    public meta: MetaDomain;
+  public workspace: Workspace;
+  public database: Database;
+  public meta: MetaDomain;
 
-    constructor(
-        public http: HttpClient,
-        private authService: AuthenticationService,
-        @Inject(ENVIRONMENT) private environment: Environment) {
+  constructor(
+    public http: HttpClient,
+    private authService: AuthenticationService,
+    private location: Location,
+    private router: Router,
+    @Inject(ENVIRONMENT) private environment: Environment,
+  ) {
+    super();
 
-      this.database = new Database(http, environment.url);
-      this.workspace = workspace;
-      this.meta = workspace.metaPopulation.createMetaDomain();
+    const metaPopulation: Population = new Population();
+    metaPopulation.baseInit(data);
+    this.database = new Database(http, environment.url);
+    this.workspace = new Workspace(metaPopulation, constructorByName);
+
+    this.meta = this.workspace.metaPopulation.createMetaDomain();
+  }
+
+  public canActivate() {
+    if (this.authService.token) {
+      return true;
+    } else {
+      this.router.navigate(["login"]);
+      return false;
     }
+  }
 
-    public onError(error) {
-        alert(error);
-    }
+  public back() {
+    this.location.back();
+  }
+
+  public onError(error) {
+    alert(error);
+  }
 }

@@ -1,4 +1,11 @@
-﻿import { PushRequest, PushRequestNewObject, PushRequestObject, PushResponse, PushResponseNewObject, ResponseType, SyncResponse } from "../database";
+﻿import { PushRequest } from "./../database/push/PushRequest";
+import { PushRequestNewObject } from "./../database/push/PushRequestNewObject";
+import { PushRequestObject } from "./../database/push/PushRequestObject";
+import { PushResponse } from "./../database/push/PushResponse";
+import { PushResponseNewObject } from "./../database/push/PushResponseNewObject";
+import { ResponseType } from "./../database/ResponseType";
+import { SyncResponse } from "./../database/sync/SyncResponse";
+
 import { INewSessionObject, ISessionObject } from "./SessionObject";
 import { IWorkspace } from "./Workspace";
 import { WorkspaceObject } from "./WorkspaceObject";

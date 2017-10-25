@@ -1,5 +1,6 @@
-﻿import { ObjectType } from "../../../meta";
-import { SyncResponse, SyncResponseObject } from "../database";
+﻿import { ObjectType } from "@baseMeta";
+
+import { SyncResponse, SyncResponseObject } from "../database/sync/SyncResponse";
 
 import { IWorkspace } from "./Workspace";
 

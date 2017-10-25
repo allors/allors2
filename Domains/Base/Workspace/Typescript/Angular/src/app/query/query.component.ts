@@ -1,23 +1,23 @@
-import { Observable, Subject, Subscription } from 'rxjs/Rx';
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Title } from '@angular/platform-browser';
+import { Component, OnDestroy, OnInit } from "@angular/core";
+import { Title } from "@angular/platform-browser";
+import { Observable, Subject, Subscription } from "rxjs/Rx";
 
-import { PullRequest, Query, Equals, Like, TreeNode, Sort, Page } from '../../allors/domain';
-import { Scope, Loaded } from '../../allors/angular';
-import { AllorsService } from '../allors.service';
+import { Loaded, Scope } from "@allors";
+import { Equals, Like, Page, PullRequest, Query, Sort, TreeNode } from "@allors";
+import { AllorsService } from "@allors";
 
-import { Organisation, Person } from '../../allors/domain';
+import { Organisation, Person } from "@allors";
 
 @Component({
-  templateUrl: './query.component.html'
+  templateUrl: "./query.component.html",
 })
 export class QueryComponent implements OnInit, OnDestroy {
 
-  organisations: Organisation[];
+  public organisations: Organisation[];
 
-  organisationCount: number;
-  skip = 5;
-  take = 5;
+  public organisationCount: number;
+  public skip = 5;
+  public take = 5;
 
   private scope: Scope;
   private subscription: Subscription;
@@ -26,12 +26,12 @@ export class QueryComponent implements OnInit, OnDestroy {
     this.scope = new Scope(allors.database, allors.workspace);
   }
 
-  ngOnInit() {
-    this.title.setTitle('Query');
+  public ngOnInit() {
+    this.title.setTitle("Query");
     this.query();
   }
 
-  query() {
+  public query() {
     if (this.subscription) {
       this.subscription.unsubscribe();
     }
@@ -40,12 +40,12 @@ export class QueryComponent implements OnInit, OnDestroy {
 
     const query = new Query(
       {
-        name: 'organisations',
+        name: "organisations",
         objectType: m.Organisation,
         predicate: new Like(
           {
             roleType: m.Organisation.Name,
-            value: 'Org%'
+            value: "Org%",
           }),
         include: [new TreeNode(
           {
@@ -54,17 +54,17 @@ export class QueryComponent implements OnInit, OnDestroy {
         sort: [new Sort(
           {
             roleType: m.Organisation.Name,
-            direction: 'Asc'
+            direction: "Asc",
           })],
         page: new Page({
           skip: this.skip || 0,
-          take: this.take || 10
-        })
+          take: this.take || 10,
+        }),
       });
 
     this.scope.session.reset();
     this.subscription = this.scope
-      .load('Pull', new PullRequest({
+      .load("Pull", new PullRequest({
         query: [query],
       }))
       .subscribe((loaded: Loaded) => {
@@ -76,7 +76,7 @@ export class QueryComponent implements OnInit, OnDestroy {
       });
   }
 
-  ngOnDestroy(): void {
+  public ngOnDestroy(): void {
     if (this.subscription) {
       this.subscription.unsubscribe();
     }

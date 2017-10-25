@@ -1,11 +1,11 @@
-﻿import { ObjectType, ObjectTyped } from "../../../../meta";
+﻿import { ObjectType, ObjectTyped } from "@baseMeta";
 import { Page } from "./Page";
 import { Predicate } from "./Predicate";
 import { Sort } from "./Sort";
 import { TreeNode } from "./TreeNode";
 
 export class Query {
-  public name: String;
+  public name: string;
 
   public objectType: ObjectType | ObjectTyped;
 

@@ -1,10 +1,9 @@
 ﻿import { HttpClient } from "@angular/common/http";
-import { Observable, Observer } from "rxjs/Rx";
-import { Method } from "../../domain";
-import {
-  InvokeRequest, InvokeResponse, PullResponse, PushRequest,
+import { InvokeRequest,   InvokeResponse, PullResponse, PushRequest,
   PushResponse, ResponseError, ResponseType, SyncRequest, SyncResponse,
-} from "../../domain";
+ } from "@baseDomain";
+import { Method } from "@baseDomain";
+import { Observable, Observer } from "rxjs/Rx";
 
 export class Database {
 

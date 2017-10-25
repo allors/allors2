@@ -1,5 +1,5 @@
-import { Workspace, } from "../../domain";
-import { MetaDomain } from "../../meta";
+import { Workspace } from "@baseDomain";
+import { MetaDomain } from "@generatedMeta/meta.g";
 import { Database } from "./Database";
 
 export abstract class AllorsService {

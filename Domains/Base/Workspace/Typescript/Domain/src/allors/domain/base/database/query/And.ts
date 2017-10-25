@@ -1,4 +1,4 @@
-﻿import { ObjectType } from "../../../../meta";
+﻿import { ObjectType } from "@baseMeta";
 import { Predicate } from "./Predicate";
 
 export class And implements Predicate {

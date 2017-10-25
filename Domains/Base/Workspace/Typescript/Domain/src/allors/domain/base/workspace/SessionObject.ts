@@ -1,8 +1,11 @@
-﻿import { PushRequestNewObject, PushRequestObject, PushRequestRole } from "../database";
+﻿import { ObjectType } from "@baseMeta";
+
+import { PushRequestNewObject } from "./../database/push/PushRequestNewObject";
+import { PushRequestObject } from "./../database/push/PushRequestObject";
+import { PushRequestRole } from "./../database/push/PushRequestRole";
+
 import { ISession } from "./Session";
 import { IWorkspaceObject } from "./WorkspaceObject";
-
-import { ObjectType } from "../../../meta";
 
 export interface ISessionObject {
     id: string;

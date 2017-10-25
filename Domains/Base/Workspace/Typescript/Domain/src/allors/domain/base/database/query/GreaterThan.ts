@@ -1,4 +1,5 @@
-﻿import { RoleType } from "../../../../meta";
+﻿import { RoleType } from "@baseMeta";
+
 import { Predicate } from "./Predicate";
 
 export class GreaterThan implements Predicate {

@@ -1,6 +1,4 @@
-﻿import { WorkspaceObject } from "../../workspace";
-
-import { Path } from "./Path";
+﻿import { Path } from "./Path";
 import { TreeNode } from "./TreeNode";
 
 export class Fetch {

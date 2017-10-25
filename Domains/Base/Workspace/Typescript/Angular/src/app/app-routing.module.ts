@@ -1,7 +1,8 @@
 import { NgModule } from "@angular/core";
 import { RouterModule, Routes } from "@angular/router";
 
-import { AuthenticationService } from "../allors/angular";
+import { AllorsService } from "@allors";
+
 import { LoginComponent } from "./auth/login.component";
 
 import { FetchComponent } from "./fetch/fetch.component";
@@ -15,7 +16,7 @@ const routes: Routes = [
     path: "login",
   },
   {
-    canActivate: [AuthenticationService],
+    canActivate: [AllorsService],
     children: [
       {
         component: HomeComponent,
@@ -40,6 +41,6 @@ const routes: Routes = [
 
 @NgModule({
   exports: [RouterModule],
-  imports: [RouterModule.forRoot(routes)]
+  imports: [RouterModule.forRoot(routes)],
 })
 export class AppRoutingModule {}

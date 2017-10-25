@@ -1,21 +1,20 @@
-import { Observable, Subject, Subscription } from 'rxjs/Rx';
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { Title } from '@angular/platform-browser';
+import { Organisation } from "@generatedDomain/index";
 
-import { PullRequest, Fetch, Path, Query, Equals, Like, TreeNode, Sort, Page } from '../../allors/domain';
-import { Scope, Loaded } from '../../allors/angular';
-import { AllorsService } from '../allors.service';
+import { Component, OnDestroy, OnInit } from "@angular/core";
+import { Title } from "@angular/platform-browser";
+import { ActivatedRoute } from "@angular/router";
+import { Observable, Subject, Subscription } from "rxjs/Rx";
 
-import { Organisation, Person } from '../../allors/domain';
+import { AllorsService, Loaded, Scope } from "@allors";
+import { Equals, Fetch, Like, Page, Path, PullRequest, Query, Sort, TreeNode } from "@allors";
 
 @Component({
-  templateUrl: './fetch.component.html'
+  templateUrl: "./fetch.component.html",
 })
 export class FetchComponent implements OnInit, OnDestroy {
 
-  organisation: Organisation;
-  organisations: Organisation[];
+  public organisation: Organisation;
+  public organisations: Organisation[];
 
   private scope: Scope;
   private subscription: Subscription;
@@ -27,32 +26,32 @@ export class FetchComponent implements OnInit, OnDestroy {
     this.scope = new Scope(allors.database, allors.workspace);
   }
 
-  ngOnInit() {
-    this.title.setTitle('Fetch');
+  public ngOnInit() {
+    this.title.setTitle("Fetch");
     this.fetch();
   }
 
-  fetch() {
+  public fetch() {
     if (this.subscription) {
       this.subscription.unsubscribe();
     }
 
     const m = this.allors.meta;
 
-    const id = this.route.snapshot.paramMap.get('id');
+    const id = this.route.snapshot.paramMap.get("id");
 
     const fetch = [new Fetch(
       {
-        name: 'organisation',
-        id: id,
+        name: "organisation",
+        id,
         include: [new TreeNode(
           {
             roleType: m.Organisation.Owner,
           })],
       }),
       new Fetch({
-        name: 'organisations',
-        id: id,
+        name: "organisations",
+        id,
         path: new Path({
           step: m.Organisation.Owner,
           next: new Path({
@@ -67,8 +66,8 @@ export class FetchComponent implements OnInit, OnDestroy {
 
     this.scope.session.reset();
     this.subscription = this.scope
-      .load('Pull', new PullRequest({
-        fetch: fetch,
+      .load("Pull", new PullRequest({
+        fetch,
       }))
       .subscribe((loaded: Loaded) => {
         this.organisation = loaded.objects.organisation as Organisation;
@@ -79,7 +78,7 @@ export class FetchComponent implements OnInit, OnDestroy {
       });
   }
 
-  ngOnDestroy(): void {
+  public ngOnDestroy(): void {
     if (this.subscription) {
       this.subscription.unsubscribe();
     }

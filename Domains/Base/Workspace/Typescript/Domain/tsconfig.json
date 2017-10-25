@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    "baseUrl": "./",
     "target": "es2015",
     "declaration": true,
     "module": "commonjs",
@@ -16,5 +17,9 @@
     "node_modules",
     "data",
     "lib"
-  ]
+  ],
+  "paths": {
+    "@baseMeta": ["../Meta/src/allors/meta/base/index"],
+    "@generatedMeta": ["./src/allors/meta/generated/meta.g"]
+  }
 }

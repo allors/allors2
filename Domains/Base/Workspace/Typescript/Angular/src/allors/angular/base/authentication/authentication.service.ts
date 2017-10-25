@@ -8,9 +8,9 @@ import { AuthenticationTokenResponse } from "./AuthenticationTokenResponse";
 @Injectable()
 export class AuthenticationService {
 
-  constructor(private http: HttpClient, @Inject(ENVIRONMENT) private environment: Environment) { }
-
   public token: string;
+
+  constructor(private http: HttpClient, @Inject(ENVIRONMENT) private environment: Environment) { }
 
   public login$(userName: string, password: string) {
     const url = this.environment.url + this.environment.authenticationUrl;

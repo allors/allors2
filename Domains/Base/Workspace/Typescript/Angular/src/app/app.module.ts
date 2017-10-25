@@ -3,12 +3,13 @@ import { NgModule } from "@angular/core";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { BrowserModule, Title } from "@angular/platform-browser";
 
+import { AllorsService, AuthenticationInterceptor, AuthenticationService, ENVIRONMENT } from "@allors";
+
 import { AppRoutingModule } from "./app-routing.module";
 import { AppComponent } from "./app.component";
 
-import { AuthenticationInterceptor, AuthenticationService, ENVIRONMENT } from "../allors/angular";
 import { environment } from "../environments/environment";
-import { AllorsService } from "./allors.service";
+import { DefaultAllorsService } from "./allors.service";
 import { LoginComponent } from "./auth/login.component";
 
 import { FetchComponent } from "./fetch/fetch.component";
@@ -36,7 +37,7 @@ import { QueryComponent } from "./query/query.component";
   providers: [
     { provide: ENVIRONMENT, useValue: environment },
     { provide: HTTP_INTERCEPTORS, useClass: AuthenticationInterceptor, multi: true },
-    AllorsService,
+    { provide: AllorsService, useClass: DefaultAllorsService },
     AuthenticationService,
     Title,
   ],

@@ -1,4 +1,5 @@
-﻿import { AssociationType, ObjectType, RoleType } from "../../../../meta";
+﻿import { AssociationType, ObjectType, RoleType } from "@baseMeta";
+
 import { Predicate } from "./Predicate";
 
 export class Instanceof implements Predicate {

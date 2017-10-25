@@ -1,5 +1,6 @@
-﻿import { AssociationType, RoleType } from "../../../../meta";
-import { ISessionObject } from "../../workspace";
+﻿import { AssociationType, RoleType } from "@baseMeta";
+
+import { ISessionObject } from "./../../workspace/SessionObject";
 import { Predicate } from "./Predicate";
 import { Query } from "./Query";
 

@@ -1,4 +1,4 @@
-﻿import { AssociationType, RoleType } from "../../../../meta";
+﻿import { AssociationType, RoleType } from "@baseMeta";
 
 export class Path {
     public step: AssociationType | RoleType;

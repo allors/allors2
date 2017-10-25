@@ -1,17 +1,8 @@
 ﻿import { Observable } from "rxjs/Rx";
 
-import {
-  And,
-  Exists,
-  ISessionObject,
-  Like,
-  Not,
-  Or,
-  PullRequest,
-  Query,
-  Sort,
-} from "../../domain";
-import { ObjectType, ObjectTyped, RoleType } from "../../meta";
+import { And, Exists, ISessionObject, Like, Not, Or, PullRequest, Query, Sort } from "@baseDomain";
+import { ObjectType, ObjectTyped, RoleType } from "@baseMeta";
+
 import { Loaded } from "./responses/Loaded";
 import { Scope } from "./Scope";
 

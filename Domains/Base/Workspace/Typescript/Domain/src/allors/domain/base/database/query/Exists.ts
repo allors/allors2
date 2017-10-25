@@ -1,4 +1,4 @@
-﻿import { AssociationType, RoleType } from "../../../../meta";
+﻿import { AssociationType, RoleType } from "@baseMeta";
 import { Predicate } from "./Predicate";
 
 export class Exists implements Predicate {
