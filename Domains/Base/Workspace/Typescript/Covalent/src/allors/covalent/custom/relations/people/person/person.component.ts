@@ -6,23 +6,23 @@ import { TdDialogService, TdMediaService } from "@covalent/core";
 import { Observable, Subject, Subscription } from "rxjs/Rx";
 
 import { AllorsService, ErrorService, Loaded, Saved, Scope } from "@allors";
-import { Equals, Fetch, Like, Page, Path, PullRequest, PushResponse, Query, Sort, TreeNode } from "@baseDomain";
-import { Enumeration, Locale, Organisation, Person } from "../../../../../domain";
-import { MetaDomain } from "../../../../../meta/index";
+import { Equals, Fetch, Like, Page, Path, PullRequest, PushResponse, Query, Sort, TreeNode } from "@allors";
+import { Enumeration, Locale, Organisation, Person } from "@allors";
+import { MetaDomain } from "@allors";
 
 @Component({
   templateUrl: "./person.component.html",
 })
 export class PersonComponent implements OnInit, AfterViewInit, OnDestroy {
 
+  public title: string;
+
+  public m: MetaDomain;
+  public locales: Locale[];
+  public person: Person;
+
   private subscription: Subscription;
   private scope: Scope;
-
-  title: string;
-
-  m: MetaDomain;
-  locales: Locale[];
-  person: Person;
 
   constructor(
     private allorsService: AllorsService,
@@ -37,7 +37,7 @@ export class PersonComponent implements OnInit, AfterViewInit, OnDestroy {
     this.m = this.allorsService.meta;
   }
 
-  ngOnInit(): void {
+  public ngOnInit(): void {
     this.subscription = this.route.url
       .switchMap((url: any) => {
 
@@ -81,17 +81,17 @@ export class PersonComponent implements OnInit, AfterViewInit, OnDestroy {
     );
   }
 
-  ngAfterViewInit(): void {
+  public ngAfterViewInit(): void {
     this.media.broadcast();
   }
 
-  ngOnDestroy(): void {
+  public ngOnDestroy(): void {
     if (this.subscription) {
       this.subscription.unsubscribe();
     }
   }
 
-  save(): void {
+  public save(): void {
 
     this.scope
       .save()
@@ -103,7 +103,7 @@ export class PersonComponent implements OnInit, AfterViewInit, OnDestroy {
       });
   }
 
-  goBack(): void {
+  public goBack(): void {
     window.history.back();
   }
 }

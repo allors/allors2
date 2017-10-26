@@ -1,11 +1,11 @@
-import { Component, Input, Injectable, Inject } from '@angular/core';
-import { Http, RequestOptions } from '@angular/http';
-import { MatSnackBar, MatDialogRef } from '@angular/material';
-import { TdDialogService, TdAlertDialogComponent } from '@covalent/core';
+import { Component, Inject, Injectable, Input } from "@angular/core";
+import { Http, RequestOptions } from "@angular/http";
+import { MatDialogRef, MatSnackBar } from "@angular/material";
+import { TdAlertDialogComponent, TdDialogService } from "@covalent/core";
 
-import { workspace, Response, ResponseError, DerivationError } from '../../../domain';
-import { ErrorService } from '../../../angular';
-import { errorDialog } from './errorDialog';
+import { ErrorService } from "@baseAngular";
+import { DerivationError, Response, ResponseError } from "@baseDomain";
+import { errorDialog } from "./errorDialog";
 
 @Injectable()
 export class DefaultErrorService extends ErrorService {
@@ -13,12 +13,12 @@ export class DefaultErrorService extends ErrorService {
     super();
   }
 
-  message(error: Error): void {
+  public message(error: Error): void {
     const message: string = (error as any)._body || error.message;
-    this.snackBar.open(message, 'close', { duration: 5000 });
+    this.snackBar.open(message, "close", { duration: 5000 });
   }
 
-  dialog(error: Error): MatDialogRef<any> {
+  public dialog(error: Error): MatDialogRef<any> {
     return errorDialog(this.dialogService, error);
   }
 }

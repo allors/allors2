@@ -1,28 +1,29 @@
-import { Observable, Subject, Subscription } from 'rxjs/Rx';
-import { Component, OnInit, AfterViewInit, OnDestroy } from '@angular/core';
-import { Title } from '@angular/platform-browser';
-import { ActivatedRoute } from '@angular/router';
-import { TdMediaService } from '@covalent/core';
+import { AfterViewInit, Component, OnDestroy, OnInit } from "@angular/core";
+import { Title } from "@angular/platform-browser";
+import { ActivatedRoute } from "@angular/router";
+import { TdMediaService } from "@covalent/core";
+import { Observable, Subject, Subscription } from "rxjs/Rx";
 
-import { MetaDomain } from '../../../../../meta';
-import { PullRequest, Fetch, Path, Query, Equals, Like, TreeNode, Sort, Page } from '../../../../../domain';
-import { Organisation, Locale, Person } from '../../../../../domain';
-import { Scope, Loaded, AllorsService, ErrorService } from '../../../../../angular';
+import { AllorsService, ErrorService, Loaded, Scope } from "@baseAngular";
+import { Equals, Fetch, Like, Page, Path, PullRequest, Query, Sort, TreeNode } from "@baseDomain";
+
+import { Locale, Organisation, Person } from "@allors";
+import { MetaDomain } from "@allors";
 
 @Component({
-  templateUrl: './organisation-overview.component.html',
+  templateUrl: "./organisation-overview.component.html",
 })
 export class OrganisationOverviewComponent implements OnInit, AfterViewInit, OnDestroy {
 
+  public title: string;
+
+  public m: MetaDomain;
+
+  public organisation: Organisation;
+  public locales: Locale[];
+
   private subscription: Subscription;
   private scope: Scope;
-
-  title: string;
-
-  m: MetaDomain;
-
-  organisation: Organisation;
-  locales: Locale[];
 
   constructor(
     private allorsService: AllorsService,
@@ -31,35 +32,35 @@ export class OrganisationOverviewComponent implements OnInit, AfterViewInit, OnD
     private route: ActivatedRoute,
     public media: TdMediaService) {
 
-    this.title = 'Organisation';
+    this.title = "Organisation";
     this.titleService.setTitle(this.title);
     this.scope = new Scope(allorsService.database, allorsService.workspace);
     this.m = this.allorsService.meta;
   }
 
-  ngOnInit(): void {
+  public ngOnInit(): void {
 
     this.subscription = this.route.url
       .switchMap((url: any) => {
 
-        const id: string = this.route.snapshot.paramMap.get('id');
+        const id: string = this.route.snapshot.paramMap.get("id");
         const m: MetaDomain = this.m;
 
         const fetch: Fetch[] = [
           new Fetch({
-            name: 'organisation',
-            id: id,
+            id,
             include: [
               new TreeNode({ roleType: m.Organisation.Owner }),
               new TreeNode({ roleType: m.Organisation.Employees }),
             ],
+            name: "organisation",
           }),
         ];
 
         this.scope.session.reset();
 
         return this.scope
-          .load('Pull', new PullRequest({ fetch: fetch }));
+          .load("Pull", new PullRequest({ fetch }));
       })
       .subscribe((loaded: Loaded) => {
         this.organisation = loaded.objects.organisation as Organisation;
@@ -71,21 +72,21 @@ export class OrganisationOverviewComponent implements OnInit, AfterViewInit, OnD
     );
   }
 
-  ngAfterViewInit(): void {
+  public  ngAfterViewInit(): void {
     this.media.broadcast();
   }
 
-  ngOnDestroy(): void {
+  public ngOnDestroy(): void {
     if (this.subscription) {
       this.subscription.unsubscribe();
     }
   }
 
-  goBack(): void {
+  public goBack(): void {
     window.history.back();
   }
 
-  checkType(obj: any): string {
+  public checkType(obj: any): string {
     return obj.objectType.name;
   }
 }

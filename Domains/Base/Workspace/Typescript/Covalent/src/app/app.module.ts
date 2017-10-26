@@ -1,26 +1,43 @@
-import { NgModule, Type } from '@angular/core';
-import { BrowserModule, Title } from '@angular/platform-browser';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HTTP_INTERCEPTORS, HttpClientModule } from "@angular/common/http";
+import { NgModule, Type } from "@angular/core";
+import { BrowserModule, Title } from "@angular/platform-browser";
+import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 
-import { ErrorService } from '../allors/angular';
-import { DefaultErrorService } from '../allors/covalent';
+import { ErrorService } from "@baseAngular";
+import { DefaultErrorService } from "@baseCovalent";
 
-import { AppComponent } from './app.component';
-import { routedComponents, AppRoutingModule } from './app-routing.module';
-import { SharedModule } from './shared/shared.module';
+import { AppRoutingModule, routedComponents } from "./app-routing.module";
+import { AppComponent } from "./app.component";
+import { SharedModule } from "./shared/shared.module";
 
-import { ENVIRONMENT, AllorsService, AuthenticationInterceptor, AuthenticationService } from '../allors/angular';
-import { environment } from '../environments/environment';
+import { AllorsService, AuthenticationInterceptor, AuthenticationService, ENVIRONMENT } from "@baseAngular";
+import { environment } from "../environments/environment";
 
-import { DefaultAllorsService } from './allors.service';
+import { DefaultAllorsService } from "./allors.service";
 
-import { MATERIAL } from '../allors/material';
-import { COVALENT } from '../allors/covalent';
+import { COVALENT } from "@baseCovalent";
+import { MATERIAL } from "@baseMaterial";
 
-import { RELATIONS } from '../allors/covalent/custom/relations';
+import { RELATIONS } from "../allors/covalent/custom/relations";
+
+import {
+  MatAutocompleteModule, MatButtonModule, MatCardModule, MatCheckboxModule, MatDatepickerModule,
+  MatIconModule, MatInputModule, MatListModule, MatMenuModule,
+  MatNativeDateModule, MatRadioModule, MatSelectModule,
+  MatSidenavModule, MatSliderModule, MatSlideToggleModule,
+  MatSnackBarModule, MatTabsModule, MatToolbarModule, MatTooltipModule,
+} from "@angular/material";
+
+const MATERIAL_MODULES: any[] = [
+  MatButtonModule, MatCardModule, MatDatepickerModule, MatIconModule, MatAutocompleteModule,
+  MatListModule, MatMenuModule, MatTooltipModule,
+  MatSlideToggleModule, MatInputModule, MatCheckboxModule,
+  MatToolbarModule, MatSnackBarModule, MatSidenavModule,
+  MatTabsModule, MatSelectModule, MatRadioModule, MatSliderModule,
+];
 
 @NgModule({
+  bootstrap: [AppComponent],
   declarations: [
     MATERIAL,
     COVALENT,
@@ -29,6 +46,7 @@ import { RELATIONS } from '../allors/covalent/custom/relations';
     routedComponents,
   ],
   imports: [
+    MATERIAL_MODULES,
     AppRoutingModule,
     BrowserModule,
     BrowserAnimationsModule,
@@ -43,7 +61,5 @@ import { RELATIONS } from '../allors/covalent/custom/relations';
     AuthenticationService,
     Title,
   ],
-  entryComponents: [],
-  bootstrap: [AppComponent],
 })
 export class AppModule { }

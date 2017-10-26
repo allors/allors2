@@ -1,7 +1,7 @@
-import { Environment } from '../allors/angular';
+import { Environment } from "@allors";
 
 export const environment: Environment = {
+  authenticationUrl: "Authentication/Token",
   production: true,
-  url: 'https://apps.allors.com/',
-  authenticationUrl: 'Authentication/Token',
+  url: "https://apps.allors.com/",
 };

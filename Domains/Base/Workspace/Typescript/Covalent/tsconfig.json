@@ -20,11 +20,15 @@
       "@baseMeta": ["../../Meta/src/allors/meta/base/index"],
       "@baseDomain": ["../../Domain/src/allors/domain/base/index"],
       "@baseAngular": ["../../Angular/src/allors/angular/base/index"],
+      "@baseMaterial": ["../../Material/src/allors/material/base/index"],
+      "@baseCovalent": ["./allors/covalent/base/index"],
 
-      "@generatedMeta/*": ["./allors/meta/generated/*"],
-      "@generatedDomain/*": ["./allors/domain/generated/*"],
+      "@generatedMeta/*": ["../../Meta/src/allors/meta/generated/*"],
+      "@generatedDomain/*": ["../../Domain/src/allors/domain/generated/*"],
 
-      "@allors": ["./allors/index"]
+      "@allors": ["./allors/index"],
+
+      "*": ["../node_modules/*"]
     }
   }
 }

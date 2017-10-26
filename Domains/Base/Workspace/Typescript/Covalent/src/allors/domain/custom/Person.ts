@@ -1,0 +1,33 @@
+import { Person } from "@generatedDomain/Person.g";
+
+declare module "@generatedDomain/Person.g" {
+    interface Person {
+        displayName;
+
+        hello();
+    }
+}
+
+Person.prototype.hello = function(this: Person) {
+    return `Hello ${this.displayName}`;
+};
+
+Object.defineProperty(Person.prototype, "displayName", {
+  get(this: Person): string {
+    if (this.FirstName || this.LastName) {
+        if (this.FirstName && this.LastName) {
+            return this.FirstName + " " + this.LastName;
+        } else if (this.LastName) {
+            return this.LastName;
+        } else {
+            return this.FirstName;
+        }
+    }
+
+    if (this.UserName) {
+        return this.UserName;
+    }
+
+    return "N/A";
+  },
+});

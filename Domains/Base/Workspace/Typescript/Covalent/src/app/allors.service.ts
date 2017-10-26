@@ -1,29 +1,57 @@
-import { Injectable, Inject } from '@angular/core';
+import { Location } from "@angular/common";
 import { HttpClient } from "@angular/common/http";
+import { Inject, Injectable } from "@angular/core";
+import { CanActivate, Router } from "@angular/router";
 
-import { MetaDomain } from '../allors/meta/generated/meta.g';
-import { Workspace, } from '../allors/domain/base/Workspace';
-import { workspace } from '../allors/domain';
+import { constructorByName } from "@generatedDomain/domain.g";
+import { data, MetaDomain } from "@generatedMeta/meta.g";
 
-import { AllorsService, Database } from '../allors/angular';
-import { ENVIRONMENT, Environment, AuthenticationService } from '../allors/angular';
+import { Database, Population, Workspace } from "@allors";
+import {
+  AllorsService,
+  AuthenticationService,
+  ENVIRONMENT,
+  Environment,
+} from "@allors";
 
 @Injectable()
-export class DefaultAllorsService extends AllorsService {
+export class DefaultAllorsService extends AllorsService implements CanActivate {
 
-  workspace: Workspace;
-  database: Database;
-  meta: MetaDomain;
+  public workspace: Workspace;
+  public database: Database;
+  public meta: MetaDomain;
 
   constructor(
-    http: HttpClient,
-    authService: AuthenticationService,
-    @Inject(ENVIRONMENT) private environment: Environment) {
-
+    public http: HttpClient,
+    private authService: AuthenticationService,
+    private location: Location,
+    private router: Router,
+    @Inject(ENVIRONMENT) private environment: Environment,
+  ) {
     super();
 
+    const metaPopulation: Population = new Population();
+    metaPopulation.baseInit(data);
     this.database = new Database(http, environment.url);
-    this.workspace = workspace;
-    this.meta = workspace.metaPopulation.createMetaDomain();
+    this.workspace = new Workspace(metaPopulation, constructorByName);
+
+    this.meta = this.workspace.metaPopulation.createMetaDomain();
+  }
+
+  public canActivate() {
+    if (this.authService.token) {
+      return true;
+    } else {
+      this.router.navigate(["login"]);
+      return false;
+    }
+  }
+
+  public back() {
+    this.location.back();
+  }
+
+  public onError(error) {
+    alert(error);
   }
 }
