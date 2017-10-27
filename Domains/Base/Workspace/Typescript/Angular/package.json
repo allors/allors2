@@ -10,7 +10,7 @@
     "e2e": "ng e2e",
     "teamcity": "ng test --watch=false --reporters=teamcity",
     "teamcity-e2e": "ng e2e --config ./protractor.conf.teamcity.js"
-    },
+  },
   "private": true,
   "dependencies": {
     "@angular/animations": "^4.4.3",

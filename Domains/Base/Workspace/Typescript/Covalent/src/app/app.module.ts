@@ -36,6 +36,20 @@ const MATERIAL_MODULES: any[] = [
   MatTabsModule, MatSelectModule, MatRadioModule, MatSliderModule,
 ];
 
+import {
+  CovalentChipsModule, CovalentCommonModule, CovalentDataTableModule,
+  CovalentDialogsModule, CovalentFileModule, CovalentLayoutModule,
+  CovalentLoadingModule, CovalentMediaModule, CovalentMenuModule,
+  CovalentNotificationsModule, CovalentPagingModule, CovalentSearchModule, CovalentStepsModule,
+} from "@covalent/core";
+
+const COVALENT_MODULES: any[] = [
+  CovalentChipsModule, CovalentDataTableModule, CovalentMediaModule, CovalentLoadingModule,
+  CovalentNotificationsModule, CovalentLayoutModule, CovalentMenuModule,
+  CovalentPagingModule, CovalentSearchModule, CovalentStepsModule,
+  CovalentCommonModule, CovalentDialogsModule, CovalentFileModule, CovalentChipsModule,
+];
+
 @NgModule({
   bootstrap: [AppComponent],
   declarations: [
@@ -47,6 +61,7 @@ const MATERIAL_MODULES: any[] = [
   ],
   imports: [
     MATERIAL_MODULES,
+    COVALENT_MODULES,
     AppRoutingModule,
     BrowserModule,
     BrowserAnimationsModule,

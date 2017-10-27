@@ -1,7 +1,5 @@
 @echo off
 
 cd workspace\typescript\domain
-code .
-
-pause
+call code .
 

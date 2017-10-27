@@ -1,36 +1,11 @@
-import { AutocompleteComponent } from "./components/autocomplete";
-import { CheckboxComponent } from "./components/checkbox";
-import { DatepickerComponent } from "./components/datepicker";
-import { InputComponent } from "./components/input";
-import { RadioGroupComponent } from "./components/radioGroup";
-import { SelectComponent } from "./components/select";
-import { SliderComponent } from "./components/slider";
-import { SlideToggleComponent } from "./components/slideToggle";
-import { StaticComponent } from "./components/static";
-import { TextareaComponent } from "./components/textArea";
-
-export const MATERIAL = [
-  AutocompleteComponent,
-  CheckboxComponent,
-  DatepickerComponent,
-  InputComponent,
-  RadioGroupComponent,
-  SelectComponent,
-  SliderComponent,
-  SlideToggleComponent,
-  StaticComponent,
-  TextareaComponent,
- ];
-
-export {
-  AutocompleteComponent,
-  CheckboxComponent,
-  DatepickerComponent,
-  InputComponent,
-  RadioGroupComponent,
-  SelectComponent,
-  SliderComponent,
-  SlideToggleComponent,
-  StaticComponent,
-  TextareaComponent,
-};
+export * from "./autocomplete/autocomplete.module";
+export * from "./checkbox/checkbox.module";
+export * from "./datepicker/datepicker.module";
+export * from "./input/input.module";
+export * from "./localisedtext/localisedtext.module";
+export * from "./radiogroup/radiogroup.module";
+export * from "./select/select.module";
+export * from "./slider/slider.module";
+export * from "./slidetoggle/slidetoggle.module";
+export * from "./static/static.module";
+export * from "./textarea/textarea.module";

@@ -44,7 +44,6 @@ namespace Allors.Domain
             Assert.Equal(DateTime.UtcNow.Date, order.OrderDate.Date);
             Assert.Equal(DateTime.UtcNow.Date, order.EntryDate.Date);
             Assert.Equal(order.PreviousTakenViaSupplier, order.TakenViaSupplier);
-            Assert.True(order.ExistUniqueId);
         }
 
         [Fact]

@@ -1,4 +1,4 @@
-import { Environment } from "@baseAngular";
+import { Environment } from "@baseAngular/core";
 
 export const environment: Environment = {
   authenticationUrl: "Authentication/Token",

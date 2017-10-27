@@ -7,7 +7,6 @@ import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { AppRoutingModule } from "./app-routing.module";
 import { AppComponent } from "./app.component";
 
-import { AllorsService, AuthenticationInterceptor, AuthenticationService, ENVIRONMENT } from "@baseAngular";
 import { environment } from "../environments/environment";
 import { DefaultAllorsService } from "./allors.service";
 import { LoginComponent } from "./auth/login.component";
@@ -15,22 +14,16 @@ import { LoginComponent } from "./auth/login.component";
 import { DashboardComponent } from "./dashboard/dashboard.component";
 import { FormComponent } from "./form/form.component";
 
-import { MATERIAL } from "@baseMaterial";
+import { MaterialModule } from "./modules/material.module";
 
-import {
-  MatAutocompleteModule, MatButtonModule, MatCardModule, MatCheckboxModule, MatDatepickerModule,
-  MatIconModule, MatInputModule, MatListModule, MatMenuModule,
-  MatNativeDateModule, MatRadioModule, MatSelectModule,
-  MatSidenavModule, MatSliderModule, MatSlideToggleModule,
-  MatSnackBarModule, MatTabsModule, MatToolbarModule, MatTooltipModule,
-} from "@angular/material";
+import { AllorsService, AuthenticationInterceptor, AuthenticationService, ENVIRONMENT } from "@allors";
 
-const MATERIAL_MODULES: any[] = [
-  MatButtonModule, MatCardModule, MatDatepickerModule, MatIconModule, MatAutocompleteModule,
-  MatListModule, MatMenuModule, MatTooltipModule,
-  MatSlideToggleModule, MatInputModule, MatCheckboxModule,
-  MatToolbarModule, MatSnackBarModule, MatSidenavModule,
-  MatTabsModule, MatSelectModule, MatRadioModule, MatSliderModule,
+import { AutoCompleteModule, CheckboxModule, DatepickerModule, InputModule, LocalisedTextModule,
+         RadioGroupModule, SelectModule, SliderModule, SlideToggleModule, StaticModule, TextAreaModule } from "@baseMaterial/index";
+
+const BASE_MATERIAL_MODULES: any[] = [
+  AutoCompleteModule, CheckboxModule, DatepickerModule, InputModule, LocalisedTextModule,
+  RadioGroupModule, SelectModule, SliderModule, SlideToggleModule, StaticModule, TextAreaModule,
 ];
 
 @NgModule({
@@ -40,10 +33,10 @@ const MATERIAL_MODULES: any[] = [
     LoginComponent,
     DashboardComponent,
     FormComponent,
-    MATERIAL,
   ],
   imports: [
-    MATERIAL_MODULES,
+    BASE_MATERIAL_MODULES,
+    MaterialModule,
     BrowserModule,
     FormsModule,
     ReactiveFormsModule,

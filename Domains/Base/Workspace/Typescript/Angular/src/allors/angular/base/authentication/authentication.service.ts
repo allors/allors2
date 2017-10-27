@@ -1,7 +1,8 @@
 import { HttpClient } from "@angular/common/http";
 import { Inject, Injectable } from "@angular/core";
 import { Observable } from "rxjs/Observable";
-import { ENVIRONMENT, Environment } from "../Environment";
+
+import { ENVIRONMENT, Environment } from "@baseAngular/core/Environment";
 import { AuthenticationTokenRequest } from "./AuthenticationTokenRequest";
 import { AuthenticationTokenResponse } from "./AuthenticationTokenResponse";
 

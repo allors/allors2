@@ -1,10 +1,10 @@
 <div *ngIf="organisation">
-{{organisation.Name}} with owner {{organisation.Owner?.displayName()}}
+{{organisation.Name}} with owner {{organisation.Owner?.UserName}}
 </div>
 
 <ul>
   <li *ngFor="let organisation of organisations">
-    <a [routerLink]="['/fetch/' + organisation.id]">{{organisation.Name}}</a> with owner {{organisation.Owner?.displayName()}}
+    <a [routerLink]="['/fetch/' + organisation.id]">{{organisation.Name}}</a> with owner {{organisation.Owner?.UserName}}
   </li>
 </ul>
 

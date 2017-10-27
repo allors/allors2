@@ -19,8 +19,9 @@
     "paths": {
       "@baseMeta": ["../../Meta/src/allors/meta/base/index"],
       "@baseDomain": ["../../Domain/src/allors/domain/base/index"],
-      "@baseAngular": ["../../Angular/src/allors/angular/base/index"],
-      "@baseMaterial": ["./allors/material/base/index"],
+
+      "@baseAngular/*": ["../../Angular/src/allors/angular/base/*"],
+      "@baseMaterial/*": ["./allors/material/base/*"],
 
       "@generatedMeta/*": ["../../Meta/src/allors/meta/generated/*"],
       "@generatedDomain/*": ["../../Domain/src/allors/domain/generated/*"],
