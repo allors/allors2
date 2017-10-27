@@ -3,7 +3,7 @@ import { NgModule } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { FormsModule } from "@angular/forms";
 
-import { MatIconModule, MatInputModule } from "@angular/material";
+import { MatInputModule } from "@angular/material";
 
 import { StaticComponent } from "./static.component";
 export { StaticComponent } from "./static.component";
@@ -19,7 +19,6 @@ export { StaticComponent } from "./static.component";
     FormsModule,
     CommonModule,
     MatInputModule,
-    MatIconModule,
   ],
 })
 export class StaticModule {

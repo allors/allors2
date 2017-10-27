@@ -1,9 +1,8 @@
-import { AfterViewInit, ChangeDetectorRef, Component, Input, Optional, QueryList, ViewChildren } from "@angular/core";
+import { AfterViewInit, Component, Input, Optional, QueryList, ViewChildren } from "@angular/core";
 import { NgForm, NgModel } from "@angular/forms";
 
 import { Field } from "@baseAngular/core";
 import { ISessionObject } from "@baseDomain";
-import { RoleType } from "@baseMeta";
 
 @Component({
   selector: "a-mat-select",

@@ -3,7 +3,7 @@ import { NgModule } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { FormsModule } from "@angular/forms";
 
-import { MatAutocompleteModule, MatChipsModule, MatIconModule, MatInputModule } from "@angular/material";
+import { MatCheckboxModule, MatInputModule } from "@angular/material";
 
 import { CheckboxComponent } from "./checkbox.component";
 export { CheckboxComponent } from "./checkbox.component";
@@ -19,9 +19,7 @@ export { CheckboxComponent } from "./checkbox.component";
     FormsModule,
     CommonModule,
     MatInputModule,
-    MatIconModule,
-    MatChipsModule,
-    MatAutocompleteModule,
+    MatCheckboxModule,
   ],
 })
 export class CheckboxModule {

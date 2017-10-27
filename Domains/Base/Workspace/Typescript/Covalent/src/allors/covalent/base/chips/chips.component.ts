@@ -1,10 +1,9 @@
-import { AfterViewInit, ChangeDetectorRef, Component, EventEmitter, Input, OnDestroy, OnInit, Output, QueryList, ViewChildren } from "@angular/core";
+import { AfterViewInit, Component, EventEmitter, Input, OnDestroy, OnInit, Output, QueryList, ViewChildren } from "@angular/core";
 import { NgForm, NgModel } from "@angular/forms";
 import { ISessionObject } from "@baseDomain";
-import { RoleType } from "@baseMeta";
 import { Observable, Subject, Subscription } from "rxjs";
 
-import { Field } from "@baseAngular";
+import { Field } from "@baseAngular/core";
 
 @Component({
   selector: "a-td-chips",

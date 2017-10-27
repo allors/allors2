@@ -3,7 +3,7 @@ import { NgModule } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { FormsModule } from "@angular/forms";
 
-import { MatIconModule, MatInputModule } from "@angular/material";
+import { MatInputModule } from "@angular/material";
 
 import { TextareaComponent } from "./textarea.component";
 export { TextareaComponent } from "./textarea.component";
@@ -19,7 +19,6 @@ export { TextareaComponent } from "./textarea.component";
     FormsModule,
     CommonModule,
     MatInputModule,
-    MatIconModule,
   ],
 })
 export class TextAreaModule {

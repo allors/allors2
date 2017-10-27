@@ -8,8 +8,6 @@ import { MainComponent } from "./common/main/main.component";
 
 import * as relations from "../allors/covalent/custom/relations";
 
-import { RELATIONS_ROUTING } from "../allors/covalent/custom/relations";
-
 const routes: Routes = [
   { path: "login", component: LoginComponent },
   { path: "", redirectTo: "/relations", pathMatch: "full" },
@@ -60,5 +58,4 @@ export class AppRoutingModule { }
 export const routedComponents: any[] = [
   LoginComponent,
   MainComponent,
-  RELATIONS_ROUTING,
 ];

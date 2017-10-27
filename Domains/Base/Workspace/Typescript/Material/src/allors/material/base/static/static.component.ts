@@ -1,8 +1,6 @@
-import { ChangeDetectorRef, Component , Input } from "@angular/core";
+import { Component , Input } from "@angular/core";
 
 import { Field } from "@baseAngular/core";
-import { ISessionObject } from "@baseDomain";
-import { RoleType } from "@baseMeta";
 
 @Component({
   selector: "a-mat-static",
@@ -22,7 +20,9 @@ export class StaticComponent extends Field {
         return this.model;
       } else {
         if (this.roleType.isOne) {
-          return this.model[this.display];
+          if (this.model) {
+            return this.model[this.display];
+          }
         } else {
           const roles: any[] = this.model;
           if (roles && roles.length > 0) {

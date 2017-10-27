@@ -1,7 +1,7 @@
-import { ChangeDetectorRef, Component , Input } from "@angular/core";
-import { Field } from "@baseAngular";
+import { Component , Input } from "@angular/core";
+
+import { Field } from "@baseAngular/core";
 import { ISession, ISessionObject } from "@baseDomain";
-import { RoleType } from "@baseMeta";
 
 import { Media } from "@generatedDomain/index";
 

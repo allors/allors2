@@ -1,10 +1,9 @@
-import { ChangeDetectorRef, Component, EventEmitter, Input, OnInit , Output } from "@angular/core";
+import { Component, EventEmitter, Input, OnInit , Output } from "@angular/core";
 import { FormControl } from "@angular/forms";
 import { Observable } from "rxjs";
 
 import { Field } from "@baseAngular/core";
 import { ISessionObject } from "@baseDomain";
-import { RoleType } from "@baseMeta";
 
 @Component({
   selector: "a-mat-autocomplete",

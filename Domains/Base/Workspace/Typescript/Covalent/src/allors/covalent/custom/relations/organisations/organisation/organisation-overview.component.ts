@@ -4,7 +4,7 @@ import { ActivatedRoute } from "@angular/router";
 import { TdMediaService } from "@covalent/core";
 import { Observable, Subject, Subscription } from "rxjs/Rx";
 
-import { AllorsService, ErrorService, Loaded, Scope } from "@baseAngular";
+import { AllorsService, ErrorService, Loaded, Scope } from "@baseAngular/core";
 import { Equals, Fetch, Like, Page, Path, PullRequest, Query, Sort, TreeNode } from "@baseDomain";
 
 import { Locale, Organisation, Person } from "@allors";

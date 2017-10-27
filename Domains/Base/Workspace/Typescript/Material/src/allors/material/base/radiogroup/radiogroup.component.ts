@@ -1,8 +1,6 @@
-import { ChangeDetectorRef, Component , Input } from "@angular/core";
+import { Component , Input } from "@angular/core";
 
 import { Field } from "@baseAngular/core";
-import { ISessionObject } from "@baseDomain";
-import { RoleType } from "@baseMeta";
 
 export interface RadioGroupOption {
   label?: string;

@@ -1,32 +1,23 @@
-import { Component } from '@angular/core';
-import { DomSanitizer } from '@angular/platform-browser';
-import { MatIconRegistry } from '@angular/material';
+import { Component } from "@angular/core";
+import { MatIconRegistry } from "@angular/material";
+import { DomSanitizer } from "@angular/platform-browser";
 
 @Component({
-  selector: 'qs-app',
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss'],
+  selector: "qs-app",
+  styleUrls: ["./app.component.scss"],
+  templateUrl: "./app.component.html",
 })
 export class AppComponent {
 
-  constructor(private _iconRegistry: MatIconRegistry,
-              private _domSanitizer: DomSanitizer) {
-    this._iconRegistry.addSvgIconInNamespace('assets', 'teradata',
-      this._domSanitizer.bypassSecurityTrustResourceUrl('assets/icons/teradata.svg'));
-    this._iconRegistry.addSvgIconInNamespace('assets', 'github',
-      this._domSanitizer.bypassSecurityTrustResourceUrl('assets/icons/github.svg'));
-    this._iconRegistry.addSvgIconInNamespace('assets', 'covalent',
-      this._domSanitizer.bypassSecurityTrustResourceUrl('assets/icons/covalent.svg'));
-    this._iconRegistry.addSvgIconInNamespace('assets', 'covalent-mark',
-      this._domSanitizer.bypassSecurityTrustResourceUrl('assets/icons/covalent-mark.svg'));
-    this._iconRegistry.addSvgIconInNamespace('assets', 'teradata-ux',
-      this._domSanitizer.bypassSecurityTrustResourceUrl('assets/icons/teradata-ux.svg'));
-    this._iconRegistry.addSvgIconInNamespace('assets', 'appcenter',
-      this._domSanitizer.bypassSecurityTrustResourceUrl('assets/icons/appcenter.svg'));
-    this._iconRegistry.addSvgIconInNamespace('assets', 'listener',
-      this._domSanitizer.bypassSecurityTrustResourceUrl('assets/icons/listener.svg'));
-    this._iconRegistry.addSvgIconInNamespace('assets', 'querygrid',
-      this._domSanitizer.bypassSecurityTrustResourceUrl('assets/icons/querygrid.svg'));
+  constructor(private iconRegistry: MatIconRegistry, private domSanitizer: DomSanitizer) {
+    this.iconRegistry.addSvgIconInNamespace("assets", "teradata", this.domSanitizer.bypassSecurityTrustResourceUrl("assets/icons/teradata.svg"));
+    this.iconRegistry.addSvgIconInNamespace("assets", "github", this.domSanitizer.bypassSecurityTrustResourceUrl("assets/icons/github.svg"));
+    this.iconRegistry.addSvgIconInNamespace("assets", "covalent", this.domSanitizer.bypassSecurityTrustResourceUrl("assets/icons/covalent.svg"));
+    this.iconRegistry.addSvgIconInNamespace("assets", "covalent-mark", this.domSanitizer.bypassSecurityTrustResourceUrl("assets/icons/covalent-mark.svg"));
+    this.iconRegistry.addSvgIconInNamespace("assets", "teradata-ux", this.domSanitizer.bypassSecurityTrustResourceUrl("assets/icons/teradata-ux.svg"));
+    this.iconRegistry.addSvgIconInNamespace("assets", "appcenter", this.domSanitizer.bypassSecurityTrustResourceUrl("assets/icons/appcenter.svg"));
+    this.iconRegistry.addSvgIconInNamespace("assets", "listener", this.domSanitizer.bypassSecurityTrustResourceUrl("assets/icons/listener.svg"));
+    this.iconRegistry.addSvgIconInNamespace("assets", "querygrid", this.domSanitizer.bypassSecurityTrustResourceUrl("assets/icons/querygrid.svg"));
   }
 
 }

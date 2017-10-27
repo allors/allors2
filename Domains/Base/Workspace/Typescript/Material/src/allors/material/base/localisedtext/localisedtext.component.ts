@@ -1,12 +1,10 @@
-import { ChangeDetectorRef, Component, Input, OnChanges, SimpleChange , SimpleChanges } from "@angular/core";
+import { Component, Input, OnChanges, SimpleChange , SimpleChanges } from "@angular/core";
 
 import { Field } from "@baseAngular/core";
-import { ISession, ISessionObject } from "@baseDomain";
-import { RoleType } from "@baseMeta";
 
-import { Locale, LocalisedText } from "@generatedDomain/index";
+import { Locale } from "@generatedDomain/index";
 
-import { LocalisedTextModel } from "./LocalisedTextModel"
+import { LocalisedTextModel } from "./LocalisedTextModel";
 
 @Component({
   selector: "a-mat-localised-text",

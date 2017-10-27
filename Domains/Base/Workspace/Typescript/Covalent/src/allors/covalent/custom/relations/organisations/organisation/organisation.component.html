@@ -15,11 +15,11 @@
 
       <div fxLayout="row wrap" fxLayoutAlign="start stretch" fxLayoutGap.gt-md="25px">
         <a-mat-input class="push-top" [object]="organisation" [roleType]="m.Organisation.Name"></a-mat-input>
-        <a-mat-autocomplete class="push-top" [object]="organisation" [roleType]="m.Organisation.Owner" [options]="people" display="displayName" hint="With options"></a-mat-autocomplete>
-        <a-mat-autocomplete class="push-top" [object]="organisation" [roleType]="m.Organisation.Owner" [filter]="peopleFilter.create()" display="displayName" (onSelect)="ownerSelected($event)" hint="With filter"></a-mat-autocomplete>
-        <a-td-chips class="push-top" [object]="organisation" [roleType]="m.Organisation.Employees" [filter]="peopleFilter.create()" display="displayName" hint="All current employees"></a-td-chips>
+        <a-mat-autocomplete class="push-top" [object]="organisation" [roleType]="m.Organisation.Owner" [options]="people" display="UserName" hint="With options"></a-mat-autocomplete>
+        <a-mat-autocomplete class="push-top" [object]="organisation" [roleType]="m.Organisation.Owner" [filter]="peopleFilter.create()" display="UserName" (onSelect)="ownerSelected($event)" hint="With filter"></a-mat-autocomplete>
+        <a-td-chips class="push-top" [object]="organisation" [roleType]="m.Organisation.Employees" [filter]="peopleFilter.create()" display="UserName" hint="All current employees"></a-td-chips>
 
-        <div>{{organisation?.Owner?.displayName}}</div>
+        <div>{{organisation?.Owner?.UserName}}</div>
 
       </div>
 

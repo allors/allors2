@@ -1,8 +1,3 @@
-import { ChangeDetectorRef, Component, Input, OnChanges, SimpleChange , SimpleChanges } from "@angular/core";
-
-import { Field } from "@baseAngular/core";
-import { ISession, ISessionObject } from "@baseDomain";
-import { RoleType } from "@baseMeta";
 import { Locale, LocalisedText } from "@generatedDomain/index";
 
 import { LocalisedTextComponent } from "./localisedtext.component";

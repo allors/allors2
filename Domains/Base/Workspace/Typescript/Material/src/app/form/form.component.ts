@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from "@angular/core";
-import { Observable, Subscription } from "rxjs/Rx";
+import { Subscription } from "rxjs/Rx";
 
-import { Equals, Like, Page, PullRequest, Query, Scope, Sort, TreeNode } from "@allors";
+import { PullRequest, Query, Scope } from "@allors";
 import { MetaDomain } from "@allors";
 import { AllorsService } from "@allors";
 

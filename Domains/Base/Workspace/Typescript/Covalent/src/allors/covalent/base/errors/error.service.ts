@@ -3,8 +3,10 @@ import { Http, RequestOptions } from "@angular/http";
 import { MatDialogRef, MatSnackBar } from "@angular/material";
 import { TdAlertDialogComponent, TdDialogService } from "@covalent/core";
 
-import { ErrorService } from "@baseAngular";
 import { DerivationError, Response, ResponseError } from "@baseDomain";
+
+import { ErrorService } from "@baseAngular/core";
+
 import { errorDialog } from "./errorDialog";
 
 @Injectable()

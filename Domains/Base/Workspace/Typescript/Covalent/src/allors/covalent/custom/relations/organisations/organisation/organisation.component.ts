@@ -114,6 +114,6 @@ export class OrganisationComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   public ownerSelected(person: Person): void {
-    console.log(person.displayName);
+    console.log(person.UserName);
   }
 }

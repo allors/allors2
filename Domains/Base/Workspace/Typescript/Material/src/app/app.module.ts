@@ -14,7 +14,7 @@ import { LoginComponent } from "./auth/login.component";
 import { DashboardComponent } from "./dashboard/dashboard.component";
 import { FormComponent } from "./form/form.component";
 
-import { MaterialModule } from "./modules/material.module";
+import { SharedModule } from "./shared/shared.module";
 
 import { AllorsService, AuthenticationInterceptor, AuthenticationService, ENVIRONMENT } from "@allors";
 
@@ -36,7 +36,7 @@ const BASE_MATERIAL_MODULES: any[] = [
   ],
   imports: [
     BASE_MATERIAL_MODULES,
-    MaterialModule,
+    SharedModule,
     BrowserModule,
     FormsModule,
     ReactiveFormsModule,

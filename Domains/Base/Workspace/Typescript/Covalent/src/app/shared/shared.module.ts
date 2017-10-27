@@ -1,22 +1,37 @@
-import { NgModule, } from '@angular/core';
-import { HttpModule } from '@angular/http';
-import { CommonModule, } from '@angular/common';
-import { FormsModule, ReactiveFormsModule, } from '@angular/forms';
-import {
-  CovalentDataTableModule, CovalentMediaModule, CovalentLoadingModule,
-  CovalentNotificationsModule, CovalentLayoutModule, CovalentMenuModule,
-  CovalentPagingModule, CovalentSearchModule, CovalentStepsModule,
-  CovalentCommonModule, CovalentDialogsModule, CovalentFileModule,
-  CovalentChipsModule,
-} from '@covalent/core';
+import { CommonModule } from "@angular/common";
+import { NgModule } from "@angular/core";
+import { FormsModule, ReactiveFormsModule } from "@angular/forms";
+import { HttpModule } from "@angular/http";
+
 import {
   MatAutocompleteModule, MatButtonModule, MatCardModule, MatCheckboxModule, MatDatepickerModule,
   MatIconModule, MatInputModule, MatListModule, MatMenuModule,
   MatNativeDateModule, MatRadioModule, MatSelectModule,
   MatSidenavModule, MatSliderModule, MatSlideToggleModule,
   MatSnackBarModule, MatTabsModule, MatToolbarModule, MatTooltipModule,
-} from '@angular/material';
-import { NgxChartsModule, } from '@swimlane/ngx-charts';
+} from "@angular/material";
+
+import {
+  CovalentChipsModule, CovalentCommonModule, CovalentDataTableModule,
+  CovalentDialogsModule, CovalentFileModule, CovalentLayoutModule,
+  CovalentLoadingModule, CovalentMediaModule, CovalentMenuModule,
+  CovalentNotificationsModule, CovalentPagingModule, CovalentSearchModule,
+  CovalentStepsModule,
+} from "@covalent/core";
+
+import { NgxChartsModule } from "@swimlane/ngx-charts";
+
+import { AutoCompleteModule, CheckboxModule, DatepickerModule, InputModule, LocalisedTextModule,
+  RadioGroupModule, SelectModule, SliderModule, SlideToggleModule, StaticModule, TextAreaModule } from "@baseMaterial/index";
+
+import { ChipsModule, MediaUploadModule } from "@baseCovalent/index";
+
+import {
+    DashboardModule,
+    OrganisationModule, OrganisationOverviewModule, OrganisationsModule,
+    PeopleModule, PersonModule, PersonOverviewModule,
+    RelationsModule,
+ } from "@customCovalent/relations";
 
 const ANGULAR_MODULES: any[] = [
   HttpModule, FormsModule, ReactiveFormsModule,
@@ -42,22 +57,32 @@ const CHART_MODULES: any[] = [
   NgxChartsModule,
 ];
 
-@NgModule({
-  imports: [
-    CommonModule,
-    ANGULAR_MODULES,
-    MATERIAL_MODULES,
-    COVALENT_MODULES,
-    CHART_MODULES,
-  ],
-  declarations: [
+const BASE_MATERIAL_MODULES: any[] = [
+  AutoCompleteModule, CheckboxModule, DatepickerModule, InputModule, LocalisedTextModule,
+  RadioGroupModule, SelectModule, SliderModule, SlideToggleModule, StaticModule, TextAreaModule,
+];
 
-  ],
+const BASE_COVALENT_MODULES: any[] = [
+  ChipsModule, MediaUploadModule,
+];
+
+const RELATIONS_MODULES: any[] = [
+  DashboardModule,
+  OrganisationModule, OrganisationOverviewModule, OrganisationsModule,
+  PeopleModule, PersonModule, PersonOverviewModule,
+  RelationsModule,
+];
+
+@NgModule({
   exports: [
     ANGULAR_MODULES,
     MATERIAL_MODULES,
     COVALENT_MODULES,
     CHART_MODULES,
+
+    BASE_MATERIAL_MODULES,
+    BASE_COVALENT_MODULES,
+    RELATIONS_MODULES,
   ],
 })
 export class SharedModule { }

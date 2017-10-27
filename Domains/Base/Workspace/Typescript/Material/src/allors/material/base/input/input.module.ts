@@ -3,7 +3,7 @@ import { NgModule } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { FormsModule } from "@angular/forms";
 
-import { MatAutocompleteModule, MatChipsModule, MatIconModule, MatInputModule } from "@angular/material";
+import { MatInputModule } from "@angular/material";
 
 import { InputComponent } from "./input.component";
 export { InputComponent } from "./input.component";
@@ -19,9 +19,6 @@ export { InputComponent } from "./input.component";
     FormsModule,
     CommonModule,
     MatInputModule,
-    MatIconModule,
-    MatChipsModule,
-    MatAutocompleteModule,
   ],
 })
 export class InputModule {

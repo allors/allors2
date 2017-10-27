@@ -1,8 +1,12 @@
+import { CommonModule } from "@angular/common";
 import { NgModule } from "@angular/core";
-import { MatInputModule } from "@angular/material";
-import { CovalentChipsModule } from "@covalent/core";
+import { FormsModule } from "@angular/forms";
 
-import { MediaUploadComponent } from "./mediaUpload";
+import { MatIconModule, MatInputModule } from "@angular/material";
+import { CovalentFileModule } from "@covalent/core";
+
+import { MediaUploadComponent } from "./mediaupload.component";
+export { MediaUploadComponent } from "./mediaupload.component";
 
 @NgModule({
   declarations: [
@@ -12,7 +16,11 @@ import { MediaUploadComponent } from "./mediaUpload";
     MediaUploadComponent,
   ],
   imports: [
-    CovalentChipsModule,
+    CommonModule,
+    FormsModule,
+    MatIconModule,
+    MatInputModule,
+    CovalentFileModule,
   ],
 })
-export class ChipsModule {}
+export class MediaUploadModule {}

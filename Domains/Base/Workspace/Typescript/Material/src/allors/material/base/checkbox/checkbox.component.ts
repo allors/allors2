@@ -1,8 +1,6 @@
-import { ChangeDetectorRef, Component , Input } from "@angular/core";
+import { Component } from "@angular/core";
 
 import { Field } from "@baseAngular/core";
-import { ISessionObject } from "@baseDomain";
-import { RoleType } from "@baseMeta";
 
 @Component({
   selector: "a-mat-checkbox",

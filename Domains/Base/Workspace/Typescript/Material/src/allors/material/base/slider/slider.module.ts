@@ -3,7 +3,7 @@ import { NgModule } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { FormsModule } from "@angular/forms";
 
-import { MatIconModule, MatInputModule, MatSliderModule } from "@angular/material";
+import { MatSliderModule } from "@angular/material";
 
 import { SliderComponent } from "./slider.component";
 export { SliderComponent } from "./slider.component";
@@ -18,8 +18,6 @@ export { SliderComponent } from "./slider.component";
   imports: [
     FormsModule,
     CommonModule,
-    MatInputModule,
-    MatIconModule,
     MatSliderModule,
   ],
 })
