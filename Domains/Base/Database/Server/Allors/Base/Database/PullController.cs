@@ -75,7 +75,7 @@ namespace Allors.Server.Controllers
                     {
                         fetch.Parse(this.Session, out IObject @object, out Path path, out Tree include);
 
-                        if (path != null)
+                        if (path != null && @object != null)
                         {
                             var acls = new AccessControlListCache(this.Session.GetUser());
                             var result = path.Get(@object, acls);

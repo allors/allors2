@@ -132,15 +132,15 @@ namespace Allors.Domain
             
             new SalesInvoiceItemTypeBuilder(this.Session)
                 .WithName("Productfeature Item")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Product Item").WithLocale(englishLocale).Build())
+                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Product Feature").WithLocale(englishLocale).Build())
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Product onderdeel").WithLocale(dutchLocale).Build())
                 .WithUniqueId(ProductFeatureItemId)
                 .Build();
             
             new SalesInvoiceItemTypeBuilder(this.Session)
-                .WithName("Product Feature Item")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Product Feature Item").WithLocale(englishLocale).Build())
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Product kenmerk onderdeel").WithLocale(dutchLocale).Build())
+                .WithName("Product Item")
+                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Product").WithLocale(englishLocale).Build())
+                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Product").WithLocale(dutchLocale).Build())
                 .WithUniqueId(ProductItemId)
                 .Build();
             
