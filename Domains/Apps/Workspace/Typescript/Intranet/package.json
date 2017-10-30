@@ -1,8 +1,13 @@
 {
-  "name": "apps",
+  "name": "covalent",
   "version": "1.0.0",
   "private": true,
-  "description": "Allors Apps",
+  "description": "Allors Covalent",
+  "keywords": [
+    "allors",
+    "covalent",
+    "reusable"
+  ],
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
@@ -14,7 +19,7 @@
     "tc:e2e": "ng e2e --config ./protractor.conf.teamcity.js"
   },
   "repository": "https://github.com/allors/allors2.git",
-  "license": "LGPL-3.0",
+  "license": "LGPL",
   "author": "Allors bvba",
   "dependencies": {
     "@angular/animations": "^4.4.3",
@@ -42,7 +47,6 @@
     "d3": "^4.4.0",
     "hammerjs": "^2.0.8",
     "highlight.js": "9.11.0",
-    "papaparse": "^4.3.5",
     "rxjs": "^5.2.0",
     "showdown": "1.6.4",
     "tslib": "^1.7.1",
@@ -55,13 +59,12 @@
     "@types/fs-extra": "^4.0.0",
     "@types/hammerjs": "^2.0.30",
     "@types/jasmine": "2.5.38",
-    "@types/jasminewd2": "^2.0.3",
     "@types/node": "~6.0.60",
     "@types/selenium-webdriver": "^2.52.0",
     "codelyzer": "~3.0.0",
     "jasmine-core": "~2.5.2",
-    "jasmine-reporters": "^2.2.1",
     "jasmine-spec-reporter": "3.2.0",
+    "jasmine-reporters": "^2.2.1",
     "karma": "~1.4.1",
     "karma-chrome-launcher": "~2.0.0",
     "karma-cli": "~1.0.1",
@@ -69,7 +72,6 @@
     "karma-firefox-launcher": "^1.0.1",
     "karma-jasmine": "^1.1.0",
     "karma-jasmine-html-reporter": "^0.2.2",
-    "karma-teamcity-reporter": "^1.0.0",
     "protractor": "~5.1.0",
     "ts-node": "^3.0.4",
     "tslint": "5.2.0",

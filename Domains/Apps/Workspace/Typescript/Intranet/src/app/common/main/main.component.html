@@ -1,31 +1,15 @@
 <td-layout>
   <td-navigation-drawer flex sidenavTitle="Covalent" logo="assets:covalent" name="Firstname Lastname" email="firstname.lastname@company.com">
-    <md-nav-list>
-      <a *ngFor="let item of modules" md-list-item [routerLink]="item.link" routerLinkActive="active-link" [tdLayoutToggle]>
-        <md-icon>{{item.icon}}</md-icon>{{item.title}}</a>
-    </md-nav-list>
+    <mat-nav-list>
+      <a *ngFor="let item of routes" mat-list-item [routerLink]="item.route" routerLinkActive="active-link"><mat-icon>{{item.icon}}</mat-icon>{{item.title}}</a>
+    </mat-nav-list>
     <div td-navigation-drawer-menu>
-      <md-nav-list>
-        <a *ngFor="let item of usermenu" md-list-item [tdLayoutToggle]>
-          <md-icon>{{item.icon}}</md-icon>{{item.title}}</a>
-      </md-nav-list>
+      <mat-nav-list>
+        <a *ngFor="let item of usermenu" mat-list-item><mat-icon>{{item.icon}}</mat-icon>{{item.title}}</a>
+      </mat-nav-list>
     </div>
   </td-navigation-drawer>
 
-  <td-layout-nav>
-    <div td-toolbar-content layout="row" layout-align="start center" flex>
-      <button md-icon-button td-menu-button tdLayoutToggle>
-      <md-icon>menu</md-icon>
-    </button>
-      <md-icon [routerLink]="['/']" class="md-icon-logo cursor-pointer" svgIcon="assets:teradata"></md-icon>
-      <span [routerLink]="['/']" class="cursor-pointer">Apps</span>
-      <span flex></span>
-      <a md-icon-button mdTooltip="Worktasks" [routerLink]="['/workefforts/worktasks']">
-        <md-icon>chrome_reader_mode</md-icon>
-      </a>
-    </div>
+  <router-outlet></router-outlet>
 
-    <router-outlet></router-outlet>
-
-  </td-layout-nav>
 </td-layout>

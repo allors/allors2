@@ -9,9 +9,7 @@ import { DomSanitizer } from "@angular/platform-browser";
 })
 export class AppComponent {
 
-  constructor(
-    private iconRegistry: MatIconRegistry,
-    private domSanitizer: DomSanitizer) {
+  constructor(private iconRegistry: MatIconRegistry, private domSanitizer: DomSanitizer) {
     this.iconRegistry.addSvgIconInNamespace("assets", "teradata", this.domSanitizer.bypassSecurityTrustResourceUrl("assets/icons/teradata.svg"));
     this.iconRegistry.addSvgIconInNamespace("assets", "github", this.domSanitizer.bypassSecurityTrustResourceUrl("assets/icons/github.svg"));
     this.iconRegistry.addSvgIconInNamespace("assets", "covalent", this.domSanitizer.bypassSecurityTrustResourceUrl("assets/icons/covalent.svg"));

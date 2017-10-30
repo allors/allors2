@@ -1,0 +1,53 @@
+<mat-toolbar>
+  <div layout="row" layout-align="start center" flex>
+    <button mat-icon-button tdLayoutManageListOpen [hideWhenOpened]="true" style="display: none">
+          <mat-icon>arrow_back</mat-icon>
+        </button>
+    <span>{{title}}</span>
+    <span flex></span>
+    <button mat-icon-button><mat-icon>settings</mat-icon></button>
+  </div>
+</mat-toolbar>
+
+<mat-card>
+  <mat-card-content>
+    <ng-template tdLoading="data">
+      <mat-list class="will-load">
+        <div class="mat-padding" *ngIf="data && data.length === 0" layout="row" layout-align="center center">
+          <h3>No people to display.</h3>
+        </div>
+        <ng-template let-person let-last="last" ngFor [ngForOf]="data">
+          <mat-list-item>
+
+            <mat-icon *ngIf="!person.Picture" mat-list-avatar>person</mat-icon>
+            <img *ngIf="person.Picture" mat-list-avatar src="http://localhost:5000/Media/Download/{{person.Picture.UniqueId}}?revision={{person.Picture.Revision}}"
+            />
+
+            <h3 mat-line>{{person.FirstName}} {{person.LastName}}</h3>
+            <p mat-line> {{person.UserName}} </p>
+            <p mat-line hide-gt-md class="mat-caption"> last login: {{ person.LastAccess | timeAgo }} </p>
+
+            <span flex></span>
+
+            <span hide-xs hide-sm hide-md flex-gt-xs="60" flex-xs="40" layout-gt-xs="row">
+            <div class="mat-caption tc-grey-500" flex-gt-xs="50"> {{ person.Created | date }} </div>
+            <div class="mat-caption tc-grey-500" flex-gt-xs="50"> {{ person.LastAccess | timeAgo }} </div>
+          </span>
+
+            <span>
+          <button mat-icon-button [mat-menu-trigger-for]="menu">
+          <mat-icon>more_vert</mat-icon>
+          </button>
+          <mat-menu x-position="before" #menu="matMenu">
+          <a [routerLink]="[person.id + '/overview']" mat-menu-item>Details</a>
+          <button mat-menu-item (click)="delete(person)">Delete</button>
+          </mat-menu>
+          </span>
+
+          </mat-list-item>
+          <mat-divider *ngIf="!last" mat-inset></mat-divider>
+        </ng-template>
+      </mat-list>
+    </ng-template>
+  </mat-card-content>
+</mat-card>

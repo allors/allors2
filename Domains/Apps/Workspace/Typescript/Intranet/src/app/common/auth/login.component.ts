@@ -6,7 +6,6 @@ import { Subscription } from "rxjs/Subscription";
 import { AuthenticationService } from "@allors";
 
 @Component({
-  styleUrls: ["./login.component.scss"],
   templateUrl: "./login.component.html",
 })
 export class LoginComponent implements OnDestroy {
@@ -31,15 +30,16 @@ export class LoginComponent implements OnDestroy {
       this.subscription.unsubscribe();
     }
 
-    this.subscription = this.authService
-      .login$(userName, password)
-      .subscribe((result) => {
+    this.subscription = this.authService.login$(userName, password).subscribe(
+      (result) => {
         if (result.authenticated) {
           this.router.navigate(["/"]);
         } else {
-          alert(result.msg);
+          alert("Could not log in");
         }
-      });
+      },
+      (error) => alert(JSON.stringify(error)),
+    );
   }
 
   public ngOnDestroy() {

@@ -1,27 +1,23 @@
-import { AfterViewInit, ChangeDetectorRef, Component } from "@angular/core";
-import { Router } from "@angular/router";
-import { TdMediaService } from "@covalent/core";
-
-import { MenuItem, MenuService } from "@allors";
+import { Component, AfterViewInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { TdMediaService } from '@covalent/core';
 
 @Component({
-  templateUrl: "./main.component.html",
+  templateUrl: './main.component.html',
 })
 export class MainComponent implements AfterViewInit {
 
-  public modules: MenuItem[] = [];
+  routes = [
+    { title: 'Relations', route: '/relations', icon: 'people', }];
 
-  public usermenu: any[] = [
-    { icon: "tune", route: ".", title: "Account settings" },
-    { icon: "exit_to_app", route: ".", title: "Sign out" },
+  usermenu = [
+    { icon: 'tune', route: '.', title: 'Account settings', },
+    { icon: 'exit_to_app', route: '.', title: 'Sign out', },
   ];
 
-  constructor(public media: TdMediaService, private changeDetectorRef: ChangeDetectorRef, public menu: MenuService) {
-    this.modules = this.menu.modules;
-  }
+  constructor(public media: TdMediaService) { }
 
-  public ngAfterViewInit(): void {
-    this.media.broadcast();
-    this.changeDetectorRef.detectChanges();
+   ngAfterViewInit(): void {
+      this.media.broadcast();
   }
 }
