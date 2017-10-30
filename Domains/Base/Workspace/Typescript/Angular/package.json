@@ -8,8 +8,8 @@
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "teamcity": "ng test --watch=false --reporters=teamcity",
-    "teamcity-e2e": "ng e2e --config ./protractor.conf.teamcity.js"
+    "tc:test": "ng test --watch=false --reporters=teamcity",
+    "tc:e2e": "ng e2e --config ./protractor.conf.teamcity.js"
   },
   "private": true,
   "dependencies": {
