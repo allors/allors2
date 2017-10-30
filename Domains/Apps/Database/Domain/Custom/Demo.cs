@@ -54,14 +54,16 @@ namespace Allors
                 .WithCurrency(euro)
                 .Build();
 
-            var allors = new InternalOrganisationBuilder(this.Session)
+          var ownBankAccount = new OwnBankAccountBuilder(this.Session).WithBankAccount(bankaccount).WithDescription("Hoofdbank").Build();
+
+          var allors = new InternalOrganisationBuilder(this.Session)
                 .WithTaxNumber("BE 0476967014")
                 .WithName("Allors")
                 .WithBillingAddress(postalAddress)
                 .WithGeneralPhoneNumber(phone)
                 .WithGeneralEmailAddress(email)
                 .WithBankAccount(bankaccount)
-                .WithDefaultPaymentMethod(new OwnBankAccountBuilder(Session).WithBankAccount(bankaccount).WithDescription("Hoofdbank").Build())
+                .WithDefaultPaymentMethod(ownBankAccount)
                 .WithRequestNumberPrefix("requestno: ")
                 .WithQuoteNumberPrefix("quoteno: ")
                 .WithInvoiceSequence(new InvoiceSequences(this.Session).EnforcedSequence)
@@ -95,6 +97,7 @@ namespace Allors
                 .WithOutgoingShipmentNumberPrefix("shipmentno: ")
                 .WithSalesInvoiceNumberPrefix("invoiceno: ")
                 .WithSalesOrderNumberPrefix("orderno: ")
+                .WithDefaultPaymentMethod(ownBankAccount)
                 .WithDefaultShipmentMethod(new ShipmentMethods(this.Session).Ground)
                 .WithDefaultCarrier(new Carriers(this.Session).Fedex)
                 .Build();

@@ -1,11 +1,11 @@
 {
-  "name": "apps",
+  "name": "covalent",
   "version": "1.0.0",
   "private": true,
-  "description": "Allors Apps",
+  "description": "Allors Covalent",
   "keywords": [
     "allors",
-    "apps",
+    "covalent",
     "reusable"
   ],
   "scripts": {

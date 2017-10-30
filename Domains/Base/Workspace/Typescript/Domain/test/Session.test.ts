@@ -1,20 +1,20 @@
-import { Organisation, Person, PushResponse, ResponseType, Session, Workspace } from "../src/allors/domain";
+import { Organisation, Person, Population, PushResponse, ResponseType, Session, Workspace } from "@allors";
+import { data } from "@generatedMeta/meta.g";
 import { constructorByName } from "../src/allors/domain/generated/domain.g";
-import { Population as MetaPopulation } from "../src/allors/meta";
 import { syncResponse } from "./fixture";
 
 import { assert } from "chai";
 
-import * as _ from "lodash";
-
 describe("Session",
     () => {
-        let metaPopulation: MetaPopulation;
+        let metaPopulation: Population;
         let workspace: Workspace;
 
         beforeEach(() => {
-            metaPopulation = new MetaPopulation();
-            metaPopulation.init();
+            metaPopulation = new Population();
+            metaPopulation.baseInit(data);
+            metaPopulation.createMetaDomain();
+
             workspace = new Workspace(metaPopulation, constructorByName);
         });
 
@@ -223,13 +223,13 @@ describe("Session",
 
                 assert.equal(save.objects.length, 2);
 
-                const savedAcme = _.find(save.objects, (v) => (v.i === "101"));
+                const savedAcme = save.objects.find((v) => (v.i === "101"));
 
                 assert.equal(savedAcme.v, "1101");
                 assert.equal(savedAcme.roles.length, 2);
 
-                const savedAcmeOwner = _.find(savedAcme.roles, (v) => (v.t === "Owner"));
-                const savedAcmeManager = _.find(savedAcme.roles, (v) => (v.t === "Manager"));
+                const savedAcmeOwner = savedAcme.roles.find((v) => (v.t === "Owner"));
+                const savedAcmeManager = savedAcme.roles.find((v) => (v.t === "Manager"));
 
                 assert.equal(savedAcmeOwner.s, "3");
                 assert.isUndefined(savedAcmeOwner.a);
@@ -238,12 +238,12 @@ describe("Session",
                 assert.isUndefined(savedAcmeManager.a);
                 assert.isUndefined(savedAcmeManager.r);
 
-                const savedOcme = _.find(save.objects, (v) => (v.i === "102"));
+                const savedOcme = save.objects.find((v) => (v.i === "102"));
 
                 assert.equal(savedOcme.v, "1102");
                 assert.equal(savedOcme.roles.length, 1);
 
-                const savedOcmeOwner = _.find(savedOcme.roles, (v) => (v.t === "Owner"));
+                const savedOcmeOwner = savedOcme.roles.find((v) => (v.t === "Owner"));
 
                 assert.isNull(savedOcmeOwner.s);
                 assert.isUndefined(savedOcmeOwner.a);
@@ -269,13 +269,13 @@ describe("Session",
 
                 assert.equal(save.objects.length, 2);
 
-                const savedAcme = _.find(save.objects, (v) => (v.i === "101"));
+                const savedAcme = save.objects.find((v) => (v.i === "101"));
 
                 assert.equal(savedAcme.v, "1101");
                 assert.equal(savedAcme.roles.length, 2);
 
-                const savedAcmeOwner = _.find(savedAcme.roles, (v) => (v.t === "Owner"));
-                const savedAcmeManager = _.find(savedAcme.roles, (v) => (v.t === "Manager"));
+                const savedAcmeOwner = savedAcme.roles.find((v) => (v.t === "Owner"));
+                const savedAcmeManager = savedAcme.roles.find((v) => (v.t === "Manager"));
 
                 assert.equal(savedAcmeOwner.s, "3");
                 assert.isUndefined(savedAcmeOwner.a);
@@ -284,12 +284,12 @@ describe("Session",
                 assert.isUndefined(savedAcmeManager.a);
                 assert.isUndefined(savedAcmeManager.r);
 
-                const savedOcme = _.find(save.objects, (v) => (v.i === "102"));
+                const savedOcme = save.objects.find((v) => (v.i === "102"));
 
                 assert.equal(savedOcme.v, "1102");
                 assert.equal(savedOcme.roles.length, 1);
 
-                const savedOcmeOwner = _.find(savedOcme.roles, (v) => (v.t === "Owner"));
+                const savedOcmeOwner = savedOcme.roles.find((v) => (v.t === "Owner"));
 
                 assert.isNull(savedOcmeOwner.s);
                 assert.isUndefined(savedOcmeOwner.a);
@@ -318,40 +318,40 @@ describe("Session",
                 assert.equal(save.objects.length, 0);
 
                 {
-                    const savedMathijs = _.find(save.newObjects, (v) => (v.ni === mathijs.newId));
+                    const savedMathijs = save.newObjects.find((v) => (v.ni === mathijs.newId));
                     assert.equal(savedMathijs.t, "Person");
                     assert.equal(savedMathijs.roles.length, 2);
 
-                    const savedMathijsFirstName = _.find(savedMathijs.roles, (v) => (v.t === "FirstName"));
+                    const savedMathijsFirstName = savedMathijs.roles.find((v) => (v.t === "FirstName"));
                     assert.equal(savedMathijsFirstName.s, "Mathijs");
 
-                    const savedMathijsLastName = _.find(savedMathijs.roles, (v) => (v.t === "LastName"));
+                    const savedMathijsLastName = savedMathijs.roles.find((v) => (v.t === "LastName"));
                     assert.equal(savedMathijsLastName.s, "Verwer");
                 }
 
                 {
-                    const savedAcme2 = _.find(save.newObjects, (v) => (v.ni === acme2.newId));
+                    const savedAcme2 = save.newObjects.find((v) => (v.ni === acme2.newId));
                     assert.equal(savedAcme2.t, "Organisation");
                     assert.equal(savedAcme2.roles.length, 3);
 
-                    const savedAcme2Manager = _.find(savedAcme2.roles, (v) => (v.t === "Manager"));
+                    const savedAcme2Manager = savedAcme2.roles.find((v) => (v.t === "Manager"));
                     assert.equal(savedAcme2Manager.s, mathijs.newId);
 
-                    const savedAcme2Employees = _.find(savedAcme2.roles, (v) => (v.t === "Employees"));
+                    const savedAcme2Employees = savedAcme2.roles.find((v) => (v.t === "Employees"));
                     assert.isUndefined(savedAcme2Employees.s);
                     assert.sameMembers(savedAcme2Employees.a, [mathijs.newId]);
                     assert.isUndefined(savedAcme2Employees.r);
                 }
 
                 {
-                    const savedAcme3 = _.find(save.newObjects, (v) => (v.ni === acme3.newId));
+                    const savedAcme3 = save.newObjects.find((v) => (v.ni === acme3.newId));
                     assert.equal(savedAcme3.t, "Organisation");
                     assert.equal(savedAcme3.roles.length, 3);
 
-                    const savedAcme3Manager = _.find(savedAcme3.roles, (v) => (v.t === "Manager"));
+                    const savedAcme3Manager = savedAcme3.roles.find((v) => (v.t === "Manager"));
                     assert.equal(savedAcme3Manager.s, "3");
 
-                    const savedAcme3Employees = _.find(savedAcme3.roles, (v) => (v.t === "Employees"));
+                    const savedAcme3Employees = savedAcme3.roles.find((v) => (v.t === "Employees"));
                     assert.isUndefined(savedAcme3Employees.s);
                     assert.sameMembers(savedAcme3Employees.a, ["3"]);
                     assert.isUndefined(savedAcme3Employees.r);
@@ -376,34 +376,34 @@ describe("Session",
                 assert.equal(save.newObjects.length, 0);
                 assert.equal(save.objects.length, 3);
 
-                const savedAcme = _.find(save.objects, (v) => (v.i === "101"));
+                const savedAcme = save.objects.find((v) => (v.i === "101"));
 
                 assert.equal(savedAcme.v, "1101");
                 assert.equal(savedAcme.roles.length, 1);
 
-                const savedAcmeEmployees = _.find(savedAcme.roles, (v) => (v.t === "Employees"));
+                const savedAcmeEmployees = savedAcme.roles.find((v) => (v.t === "Employees"));
 
                 assert.isUndefined(savedAcmeEmployees.s);
                 assert.sameMembers(savedAcmeEmployees.a, []);
                 assert.sameMembers(savedAcmeEmployees.r, ["1", "2", "3"]);
 
-                const savedOcme = _.find(save.objects, (v) => (v.i === "102"));
+                const savedOcme = save.objects.find((v) => (v.i === "102"));
 
                 assert.equal(savedOcme.v, "1102");
                 assert.equal(savedOcme.roles.length, 1);
 
-                const savedOcmeEmployees = _.find(savedOcme.roles, (v) => (v.t === "Employees"));
+                const savedOcmeEmployees = savedOcme.roles.find((v) => (v.t === "Employees"));
 
                 assert.isUndefined(savedOcmeEmployees.s);
                 assert.sameMembers(savedOcmeEmployees.a, ["2", "3"]);
                 assert.sameMembers(savedOcmeEmployees.r, ["1"]);
 
-                const savedIcme = _.find(save.objects, (v) => (v.i === "103"));
+                const savedIcme = save.objects.find((v) => (v.i === "103"));
 
                 assert.equal(savedIcme.v, "1103");
                 assert.equal(savedIcme.roles.length, 1);
 
-                const savedIcmeEmployees = _.find(savedIcme.roles, (v) => (v.t === "Employees"));
+                const savedIcmeEmployees = savedIcme.roles.find((v) => (v.t === "Employees"));
 
                 assert.isUndefined(savedIcmeEmployees.s);
                 assert.sameMembers(savedIcmeEmployees.a, ["1", "2", "3"]);
@@ -434,40 +434,40 @@ describe("Session",
                 assert.equal(save.objects.length, 0);
 
                 {
-                    const savedMathijs = _.find(save.newObjects, (v) => (v.ni === mathijs.newId));
+                    const savedMathijs = save.newObjects.find((v) => (v.ni === mathijs.newId));
                     assert.equal(savedMathijs.t, "Person");
                     assert.equal(savedMathijs.roles.length, 2);
 
-                    const savedMathijsFirstName = _.find(savedMathijs.roles, (v) => (v.t === "FirstName"));
+                    const savedMathijsFirstName = savedMathijs.roles.find((v) => (v.t === "FirstName"));
                     assert.equal(savedMathijsFirstName.s, "Mathijs");
 
-                    const savedMathijsLastName = _.find(savedMathijs.roles, (v) => (v.t === "LastName"));
+                    const savedMathijsLastName = savedMathijs.roles.find((v) => (v.t === "LastName"));
                     assert.equal(savedMathijsLastName.s, "Verwer");
                 }
 
                 {
-                    const savedAcme2 = _.find(save.newObjects, (v) => (v.ni === acme2.newId));
+                    const savedAcme2 = save.newObjects.find((v) => (v.ni === acme2.newId));
                     assert.equal(savedAcme2.t, "Organisation");
                     assert.equal(savedAcme2.roles.length, 3);
 
-                    const savedAcme2Manager = _.find(savedAcme2.roles, (v) => (v.t === "Manager"));
+                    const savedAcme2Manager = savedAcme2.roles.find((v) => (v.t === "Manager"));
                     assert.equal(savedAcme2Manager.s, mathijs.newId);
 
-                    const savedAcme2Employees = _.find(savedAcme2.roles, (v) => (v.t === "Employees"));
+                    const savedAcme2Employees = savedAcme2.roles.find((v) => (v.t === "Employees"));
                     assert.isUndefined(savedAcme2Employees.s);
                     assert.sameMembers(savedAcme2Employees.a, [mathijs.newId]);
                     assert.isUndefined(savedAcme2Employees.r);
                 }
 
                 {
-                    const savedAcme3 = _.find(save.newObjects, (v) => (v.ni === acme3.newId));
+                    const savedAcme3 = save.newObjects.find((v) => (v.ni === acme3.newId));
                     assert.equal(savedAcme3.t, "Organisation");
                     assert.equal(savedAcme3.roles.length, 3);
 
-                    const savedAcme3Manager = _.find(savedAcme3.roles, (v) => (v.t === "Manager"));
+                    const savedAcme3Manager = savedAcme3.roles.find((v) => (v.t === "Manager"));
                     assert.equal(savedAcme3Manager.s, "3");
 
-                    const savedAcme3Employees = _.find(savedAcme3.roles, (v) => (v.t === "Employees"));
+                    const savedAcme3Employees = savedAcme3.roles.find((v) => (v.t === "Employees"));
                     assert.isUndefined(savedAcme3Employees.s);
                     assert.sameMembers(savedAcme3Employees.a, ["3"]);
                     assert.isUndefined(savedAcme3Employees.r);

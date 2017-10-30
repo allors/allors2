@@ -1,12 +1,25 @@
 {
   "compilerOptions": {
+    "baseUrl": ".",
     "target": "es2015",
     "declaration": true,
     "module": "commonjs",
     "moduleResolution": "node",
     "outDir": "lib/",
     "sourceMap": true,
-    "removeComments": true
+    "paths": {
+      "@baseMeta": ["../../../../Base/Workspace/Typescript/Meta/src/allors/meta/base/index"],
+      "@baseDomain": ["../../../../Base/Workspace/Typescript/Domain/src/allors/domain/base/index"],
+  
+      "@generatedMeta/*": ["./src/allors/meta/generated/*"],
+      "@generatedDomain/*": ["./src/allors/domain/generated/*"],
+  
+      "@appsDomain/*": ["./src/allors/domain/apps/*"],
+      
+      "@allors": ["./src/allors/index"],
+  
+      "*": ["./node_modules/*"]
+    }
   },  
  "include": [
     "src/**/*",

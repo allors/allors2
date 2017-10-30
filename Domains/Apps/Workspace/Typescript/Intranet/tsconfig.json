@@ -19,15 +19,16 @@
     "paths": {
       "@baseMeta": ["../../../../../Base/Workspace/Typescript/Meta/src/allors/meta/base/index"],
       "@baseDomain": ["../../../../../Base/Workspace/Typescript/Domain/src/allors/domain/base/index"],
-      "@baseAngular": ["../../../../../Base/Workspace/Typescript/Angular/src/allors/angular/base/index"],
-      "@baseMaterial": ["../../../../../Base/Workspace/Typescript/Material/src/allors/material/base/index"],
-      "@baseCovalent": ["../../../../../Base/Workspace/Typescript/Covalent/src/allors/covalent/base/index"],
+
+      "@baseAngular/*": ["../../../../../Base/Workspace/Typescript/Angular/src/allors/angular/base/*"],
+      "@baseMaterial/*": ["../../../../../Base/Workspace/Typescript/Material/src/allors/material/base/*"],
+      "@baseCovalent/*": ["../../../../../Base/Workspace/Typescript/Covalent/src/allors/covalent/base/*"],
 
       "@generatedMeta/*": ["../../Domain/src/allors/meta/generated/*"],
       "@generatedDomain/*": ["../../Domain/src/allors/domain/generated/*"],
 
-      "@appsDomain": ["../../Domain/src/allors/domain/apps/index"],
-      "@appsIntranet": ["./allors/intranet/apps/index"],
+      "@appsDomain": ["../../Domain/src/allors/domain/apps/*"],
+      "@appsIntranet": ["./allors/intranet/apps/*"],
 
       "@allors": ["./allors/index"],
 

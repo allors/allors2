@@ -1,13 +1,24 @@
 {
   "compilerOptions": {
-    "baseUrl": "./",
+    "baseUrl": ".",
     "target": "es2015",
     "declaration": true,
     "module": "commonjs",
     "moduleResolution": "node",
     "outDir": "lib/",
     "sourceMap": true,
-    "removeComments": true
+    "paths": {
+      "@baseMeta": ["../Meta/src/allors/meta/base/index"],
+      "@baseDomain": ["../Domain/src/allors/domain/base/index"],
+
+      "@generatedMeta/*": ["../Meta/src/allors/meta/generated/*"],
+      "@generatedDomain/*": ["./src/allors/domain/generated/*"],
+
+      "@customDomain/*": ["./src/allors/domain/custom/*"],
+
+      "@allors": ["./src/allors/index"],
+      "*": ["./node_modules/*"]
+    }
   },  
  "include": [
     "src/**/*",
@@ -17,9 +28,5 @@
     "node_modules",
     "data",
     "lib"
-  ],
-  "paths": {
-    "@baseMeta": ["../Meta/src/allors/meta/base/index"],
-    "@generatedMeta": ["./src/allors/meta/generated/meta.g"]
-  }
+  ]
 }

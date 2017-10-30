@@ -1,19 +1,23 @@
-import { Organisation, Person, PullResponse, ResponseType, Session, Workspace } from "../src/allors/domain";
-import { constructorByName } from "../src/allors/domain/generated/domain.g";
-import { Population as MetaPopulation } from "../src/allors/meta";
+import { Person, Population, PullResponse, ResponseType, Session, Workspace } from "@allors";
+import { constructorByName } from "@generatedDomain/domain.g";
+import { data } from "@generatedMeta/meta.g";
+
 import { syncResponse } from "./fixture";
 
 import { assert } from "chai";
+import "mocha";
 
 describe("Workspace",
     () => {
 
-        let metaPopulation: MetaPopulation;
+        let metaPopulation: Population;
         let workspace: Workspace;
 
         beforeEach(() => {
-            metaPopulation = new MetaPopulation();
-            metaPopulation.init();
+            metaPopulation = new Population();
+            metaPopulation.baseInit(data);
+            metaPopulation.createMetaDomain();
+
             workspace = new Workspace(metaPopulation, constructorByName);
         });
 

@@ -1,12 +1,22 @@
-import { Person, Session, workspace } from "../../src/allors/domain";
+import { Person, Population, Session, Workspace } from "@allors";
+import { constructorByName } from "@generatedDomain/domain.g";
+import { data, MetaDomain } from "@generatedMeta/meta.g";
 
 import { assert } from "chai";
+import "mocha";
 
 describe("Person",
     () => {
+
         let session: Session;
 
         beforeEach(() => {
+            const metaPopulation = new Population();
+            metaPopulation.baseInit(data);
+            metaPopulation.createMetaDomain();
+
+            const workspace = new Workspace(metaPopulation, constructorByName);
+
             session = new Session(workspace);
         });
 
@@ -45,4 +55,20 @@ describe("Person",
                 });
             },
         );
+
+        describe("hello",
+            () => {
+                let person: Person;
+
+                beforeEach(() => {
+                    person = session.create("Person") as Person;
+                });
+
+                it("should be Hello John Doe when lastName Doe and firstName John", () => {
+                    person.LastName = "Doe";
+                    person.FirstName = "John";
+
+                    assert.equal(person.hello(), "Hello John Doe");
+                });
+        });
 });
