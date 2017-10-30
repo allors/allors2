@@ -1,20 +1,21 @@
-import { Component, Input, AfterViewInit, ChangeDetectorRef } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { TdMediaService } from '@covalent/core';
+import { AfterViewInit, ChangeDetectorRef, Component, Input } from "@angular/core";
+import { ActivatedRoute } from "@angular/router";
+import { TdMediaService } from "@covalent/core";
+
+import { MenuItem, MenuService } from "@allors";
 
 @Component({
-  templateUrl: './relations.component.html',
+  templateUrl: "./relations.component.html",
 })
 export class RelationsComponent implements AfterViewInit {
 
-  pages = [
-    {title: 'Organisations', icon: 'building', link: 'organisations'},
-    {title: 'People', icon: 'people', link: 'people'}];
+  public pages: MenuItem[] = [];
 
-  constructor(public media: TdMediaService, private changeDetectorRef: ChangeDetectorRef, public activatedRoute: ActivatedRoute) {
+  constructor(public media: TdMediaService, private changeDetectorRef: ChangeDetectorRef, public activatedRoute: ActivatedRoute, public menu: MenuService) {
+    this.pages = menu.pages(activatedRoute.routeConfig);
   }
 
-  ngAfterViewInit(): void {
+  public ngAfterViewInit(): void {
     this.media.broadcast();
     this.changeDetectorRef.detectChanges();
   }

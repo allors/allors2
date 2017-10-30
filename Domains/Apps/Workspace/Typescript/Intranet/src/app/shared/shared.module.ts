@@ -3,6 +3,10 @@ import { NgModule } from "@angular/core";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { HttpModule } from "@angular/http";
 
+const ANGULAR_MODULES: any[] = [
+  HttpModule, FormsModule, ReactiveFormsModule,
+];
+
 import {
   MatAutocompleteModule, MatButtonModule, MatCardModule, MatCheckboxModule, MatDatepickerModule,
   MatIconModule, MatInputModule, MatListModule, MatMenuModule,
@@ -10,6 +14,14 @@ import {
   MatSidenavModule, MatSliderModule, MatSlideToggleModule,
   MatSnackBarModule, MatTabsModule, MatToolbarModule, MatTooltipModule,
 } from "@angular/material";
+
+const MATERIAL_MODULES: any[] = [
+  MatAutocompleteModule, MatButtonModule, MatCardModule, MatCheckboxModule, MatDatepickerModule,
+  MatIconModule, MatInputModule, MatListModule, MatMenuModule,
+  MatNativeDateModule, MatRadioModule, MatSelectModule,
+  MatSidenavModule, MatSliderModule, MatSlideToggleModule,
+  MatSnackBarModule, MatTabsModule, MatToolbarModule, MatTooltipModule,
+];
 
 import {
   CovalentChipsModule, CovalentCommonModule, CovalentDataTableModule,
@@ -19,51 +31,39 @@ import {
   CovalentStepsModule,
 } from "@covalent/core";
 
-import { NgxChartsModule } from "@swimlane/ngx-charts";
-
-import { AutoCompleteModule, CheckboxModule, DatepickerModule, InputModule, LocalisedTextModule,
-  RadioGroupModule, SelectModule, SliderModule, SlideToggleModule, StaticModule, TextAreaModule } from "@baseMaterial/index";
-
-import { ChipsModule, MediaUploadModule } from "@baseCovalent/index";
-
-import {
-    DashboardModule,
-    PeopleModule, PersonModule, PersonOverviewModule,
-    RelationsModule,
- } from "@appsIntranet/relations";
-
-const ANGULAR_MODULES: any[] = [
-  HttpModule, FormsModule, ReactiveFormsModule,
-];
-
-const MATERIAL_MODULES: any[] = [
-  MatButtonModule, MatCardModule, MatDatepickerModule, MatIconModule, MatAutocompleteModule,
-  MatListModule, MatMenuModule, MatTooltipModule,
-  MatSlideToggleModule, MatInputModule, MatCheckboxModule,
-  MatToolbarModule, MatSnackBarModule, MatSidenavModule,
-  MatTabsModule, MatSelectModule, MatRadioModule, MatSliderModule,
-];
-
 const COVALENT_MODULES: any[] = [
-  CovalentDataTableModule, CovalentMediaModule, CovalentLoadingModule,
-  CovalentNotificationsModule, CovalentLayoutModule, CovalentMenuModule,
-  CovalentPagingModule, CovalentSearchModule, CovalentStepsModule,
-  CovalentCommonModule, CovalentDialogsModule, CovalentFileModule,
-  CovalentChipsModule,
+  CovalentChipsModule, CovalentCommonModule, CovalentDataTableModule,
+  CovalentDialogsModule, CovalentFileModule, CovalentLayoutModule,
+  CovalentLoadingModule, CovalentMediaModule, CovalentMenuModule,
+  CovalentNotificationsModule, CovalentPagingModule, CovalentSearchModule,
+  CovalentStepsModule,
 ];
+
+import { NgxChartsModule } from "@swimlane/ngx-charts";
 
 const CHART_MODULES: any[] = [
   NgxChartsModule,
 ];
+
+import { AutoCompleteModule, CheckboxModule, DatepickerModule, InputModule, LocalisedTextModule,
+  RadioGroupModule, SelectModule, SliderModule, SlideToggleModule, StaticModule, TextAreaModule } from "@baseMaterial/index";
 
 const BASE_MATERIAL_MODULES: any[] = [
   AutoCompleteModule, CheckboxModule, DatepickerModule, InputModule, LocalisedTextModule,
   RadioGroupModule, SelectModule, SliderModule, SlideToggleModule, StaticModule, TextAreaModule,
 ];
 
+import { ChipsModule, MediaUploadModule } from "@baseCovalent/index";
+
 const BASE_COVALENT_MODULES: any[] = [
   ChipsModule, MediaUploadModule,
 ];
+
+import {
+    DashboardModule,
+    PeopleModule, PersonModule, PersonOverviewModule,
+    RelationsModule,
+ } from "@appsIntranet/relations";
 
 const RELATIONS_MODULES: any[] = [
   DashboardModule,
@@ -73,6 +73,16 @@ const RELATIONS_MODULES: any[] = [
 
 @NgModule({
   exports: [
+    ANGULAR_MODULES,
+    MATERIAL_MODULES,
+    COVALENT_MODULES,
+    CHART_MODULES,
+
+    BASE_MATERIAL_MODULES,
+    BASE_COVALENT_MODULES,
+    RELATIONS_MODULES,
+  ],
+  imports: [
     ANGULAR_MODULES,
     MATERIAL_MODULES,
     COVALENT_MODULES,

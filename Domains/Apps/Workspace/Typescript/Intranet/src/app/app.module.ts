@@ -13,6 +13,8 @@ import { DefaultErrorService } from "@baseCovalent/errors";
 
 import { environment } from "../environments/environment";
 
+import { MenuService } from "@allors";
+
 import { DefaultAllorsService } from "./allors.service";
 
 @NgModule({
@@ -35,6 +37,7 @@ import { DefaultAllorsService } from "./allors.service";
     { provide: AllorsService, useClass: DefaultAllorsService },
     AuthenticationService,
     Title,
+    MenuService,
   ],
 })
 export class AppModule { }
