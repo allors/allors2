@@ -38,7 +38,7 @@ namespace Allors.Services
 
     public static class ServiceCollectionExtension
     {
-        public static void AddAllors(this IServiceCollection services, string serverDirectory)
+        public static void AddAllors(this IServiceCollection services, string serverDirectory, string applicationName)
         {
             services.AddScoped<ISessionService, SessionService>();
             services.AddAllorsShared();
@@ -47,7 +47,7 @@ namespace Allors.Services
             IFileProvider fileProvider = new PhysicalFileProvider(serverDirectoryFullName);
             var hostingEnvironment = new HostingEnvironment
                                          {
-                                             ApplicationName = "Server",
+                                             ApplicationName = applicationName,
                                              WebRootFileProvider = fileProvider,
                                          };
             services.AddSingleton<IHostingEnvironment>(hostingEnvironment);

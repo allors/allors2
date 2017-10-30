@@ -38,6 +38,8 @@ namespace Tests
 
     public class DomainTest : IDisposable
     {
+        public const string ApplicationName = "Domain.Tests";
+
         public DomainTest(bool populate = true)
         {
             this.Setup(populate);
@@ -65,7 +67,7 @@ namespace Tests
         protected void Setup(bool populate)
         {
             var services = new ServiceCollection();
-            services.AddAllors(Directory.GetCurrentDirectory());
+            services.AddAllors(Directory.GetCurrentDirectory(), ApplicationName);
             var serviceProvider = services.BuildServiceProvider();
 
             var configuration = new Configuration

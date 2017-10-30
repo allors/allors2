@@ -41,7 +41,7 @@
             };
 
             var services = new ServiceCollection();
-            services.AddAllors("../Domain.Tests");
+            services.AddAllors("../Domain.Tests", "Server");
             var serviceProvider = services.BuildServiceProvider();
 
             var database = new Database(serviceProvider, configuration);

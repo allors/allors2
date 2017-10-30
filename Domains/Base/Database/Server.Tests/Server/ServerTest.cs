@@ -68,7 +68,7 @@ namespace Tests
             var directory = directoryInfo.FullName;
 
             var services = new ServiceCollection();
-            services.AddAllors(directory);
+            services.AddAllors(directory, "Server");
             var serviceProvider = services.BuildServiceProvider();
 
             var database = new Allors.Adapters.Object.SqlClient.Database(serviceProvider, configuration);

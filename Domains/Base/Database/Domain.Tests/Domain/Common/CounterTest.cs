@@ -26,6 +26,7 @@ namespace Tests
     using System;
     using System.Data;
     using System.IO;
+    using System.Reflection;
 
     using Allors;
     using Allors.Domain;
@@ -119,7 +120,7 @@ namespace Tests
         private static ServiceProvider CreateServiceProvider()
         {
             var services = new ServiceCollection();
-            services.AddAllors(Directory.GetCurrentDirectory());
+            services.AddAllors(Directory.GetCurrentDirectory(), ApplicationName);
             var serviceProvider = services.BuildServiceProvider();
             return serviceProvider;
         }
