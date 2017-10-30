@@ -16,6 +16,7 @@
     <ProjectReference Include="..\Domain\Domain.csproj" />
     <ProjectReference Include="..\Meta\Meta.csproj" />
     <ProjectReference Include="..\Resources\Resources.csproj" />
+    <ProjectReference Include="..\Server\Server.csproj" />
     <ProjectReference Include="..\Services\Services.csproj" />
   </ItemGroup>
 
