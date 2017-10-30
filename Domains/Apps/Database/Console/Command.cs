@@ -41,7 +41,7 @@
                                     };
 
             var services = new ServiceCollection();
-            services.AddAllors("../Server");
+            services.AddAllors("../Server", "Server");
             var serviceProvider = services.BuildServiceProvider();
 
             var database = new Database(serviceProvider, configuration);

@@ -1,4 +1,6 @@
 // Overview
+import { OverviewComponent } from "./overview/overview.component";
+
 import { WorkEffortsOverviewComponent } from "./overview/workefforts/workEffortsOverview.component";
 import { WorkTaskOverviewComponent } from "./overview/worktask/workTaskOverview.component";
 import { WorkTasksOverviewComponent } from "./overview/worktasks/workTasksOverview.component";
@@ -12,6 +14,8 @@ export const WORKEFFORTS: any[] = [
 
 export const WORKEFFORTS_ROUTING: any[] = [
   // Overview
+  OverviewComponent,
+
   WorkEffortsOverviewComponent,
   WorkTasksOverviewComponent,
   WorkTaskOverviewComponent,
@@ -23,6 +27,7 @@ export const WORKEFFORTS_ROUTING: any[] = [
 
 export {
   // Overview
+  OverviewComponent,
   WorkEffortsOverviewComponent,
   WorkTasksOverviewComponent,
   WorkTaskOverviewComponent,

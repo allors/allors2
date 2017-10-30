@@ -7,17 +7,17 @@ import { MainComponent } from "./common/main/main.component";
 
 import { AllorsService } from "@allors";
 
-import * as ar from "@appsIntranet";
-import * as catalogues from "@appsIntranet";
-import * as orders from "@appsIntranet";
-import * as relations from "@appsIntranet";
-import * as workefforts from "@appsIntranet";
+import * as ar from "@appsIntranet/ar";
+import * as catalogues from "@appsIntranet/catalogues";
+import * as orders from "@appsIntranet/orders";
+import * as relations from "@appsIntranet/relations";
+import * as workefforts from "@appsIntranet/workefforts";
 
-import { AR_ROUTING } from "@appsIntranet";
-import { CATALOGUES_ROUTING } from "@appsIntranet";
-import { ORDERS_ROUTING } from "@appsIntranet";
-import { RELATIONS_ROUTING } from "@appsIntranet";
-import { WORKEFFORTS_ROUTING } from "@appsIntranet";
+import { AR_ROUTING } from "@appsIntranet/ar";
+import { CATALOGUES_ROUTING } from "@appsIntranet/catalogues";
+import { ORDERS_ROUTING } from "@appsIntranet/orders";
+import { RELATIONS_ROUTING } from "@appsIntranet/relations";
+import { WORKEFFORTS_ROUTING } from "@appsIntranet/workefforts";
 
 const routes: Routes = [
   { path: "login", component: LoginComponent },

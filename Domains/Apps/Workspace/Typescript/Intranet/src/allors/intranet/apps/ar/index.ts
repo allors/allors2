@@ -1,4 +1,6 @@
 // Overview
+import { OverviewComponent } from "./overview.component";
+
 import { ArOverviewComponent } from "./overview/accountsReveivables/arOverview.component";
 import { InvoiceOverviewComponent } from "./overview/invoice/invoiceOverview.component";
 import { InvoicesOverviewComponent } from "./overview/invoices/invoicesOverview.component";
@@ -11,6 +13,8 @@ export const AR: any[] = [
 
 export const AR_ROUTING: any[] = [
   // Overview
+  OverviewComponent,
+
   ArOverviewComponent,
   InvoiceOverviewComponent,
   InvoicesOverviewComponent,
@@ -21,6 +25,7 @@ export const AR_ROUTING: any[] = [
 
 export {
   // Overview
+  OverviewComponent,
   ArOverviewComponent,
   InvoiceOverviewComponent,
   InvoicesOverviewComponent,

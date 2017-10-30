@@ -27,8 +27,8 @@
       "@generatedMeta/*": ["../../Domain/src/allors/meta/generated/*"],
       "@generatedDomain/*": ["../../Domain/src/allors/domain/generated/*"],
 
-      "@appsDomain": ["../../Domain/src/allors/domain/apps/*"],
-      "@appsIntranet": ["./allors/intranet/apps/*"],
+      "@appsDomain/*": ["../../Domain/src/allors/domain/apps/*"],
+      "@appsIntranet/*": ["./allors/intranet/apps/*"],
 
       "@allors": ["./allors/index"],
 

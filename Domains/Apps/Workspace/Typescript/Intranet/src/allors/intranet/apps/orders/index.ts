@@ -1,4 +1,6 @@
 // Overview
+import { OverviewComponent } from "./overview.component";
+
 import { OrdersOverviewComponent } from "./overview/orders/ordersOverview.component";
 import { ProductQuoteOverviewComponent } from "./overview/productQuote/productQuoteOverview.component";
 import { ProductQuotesOverviewComponent } from "./overview/productQuotes/productQuotesOverview.component";
@@ -19,6 +21,8 @@ export const ORDERS: any[] = [
 
 export const ORDERS_ROUTING: any[] = [
   // Overview
+  OverviewComponent,
+
   OrdersOverviewComponent,
   ProductQuoteOverviewComponent,
   ProductQuotesOverviewComponent,
@@ -37,6 +41,7 @@ export const ORDERS_ROUTING: any[] = [
 
 export {
   // Overview
+  OverviewComponent,
   OrdersOverviewComponent,
   ProductQuoteOverviewComponent,
   ProductQuotesOverviewComponent,

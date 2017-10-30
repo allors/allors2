@@ -61,7 +61,7 @@ namespace Allors
         protected void Setup(bool populate)
         {
             var services = new ServiceCollection();
-            services.AddAllors(Directory.GetCurrentDirectory());
+            services.AddAllors(Directory.GetCurrentDirectory(), "Domain.Tests");
             var serviceProvider = services.BuildServiceProvider();
 
             var configuration = new Configuration

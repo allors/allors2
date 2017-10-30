@@ -1,4 +1,6 @@
 // Routing
+import { OverviewComponent } from "./overview/overview.component";
+
 import { CataloguesOverviewComponent } from "./overview/catalogues/cataloguesOverview.component";
 import { CategoriesOverviewComponent } from "./overview/categories/categoriesOverview.component";
 import { DashboardComponent } from "./overview/dashboard/dashboard.component";
@@ -18,6 +20,8 @@ export const CATALOGUES: any[] = [
 ];
 
 export const CATALOGUES_ROUTING: any[] = [
+  OverviewComponent,
+
   DashboardComponent,
 
   CataloguesOverviewComponent,
@@ -37,6 +41,7 @@ export const CATALOGUES_ROUTING: any[] = [
 
 export {
   // Routing
+  OverviewComponent,
   DashboardComponent,
 
   CataloguesOverviewComponent,

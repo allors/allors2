@@ -8,3 +8,4 @@ export * from "@baseAngular/menu";
 export * from "@generatedMeta/meta.g";
 export * from "@generatedDomain/index";
 
+import "@appsDomain/index";

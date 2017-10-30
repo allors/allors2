@@ -4,7 +4,7 @@ import { BrowserModule, Title } from "@angular/platform-browser";
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 
 import { ErrorService, MenuService } from "@allors";
-import { DefaultErrorService } from "@allors";
+import { DefaultErrorService } from "@baseCovalent/errors";
 
 import { AppRoutingModule, routedComponents } from "./app-routing.module";
 import { AppComponent } from "./app.component";
@@ -15,23 +15,21 @@ import { environment } from "../environments/environment";
 
 import { DefaultAllorsService } from "./allors.service";
 
-import { MATERIAL } from "@allors";
-
-import { CATALOGUES } from "@appsIntranet";
-import { ORDERS } from "@appsIntranet";
-import { RELATIONS } from "@appsIntranet";
-import { WORKEFFORTS } from "@appsIntranet";
-
+import { AR } from "@appsIntranet/ar";
+import { CATALOGUES } from "@appsIntranet/catalogues";
+import { ORDERS  } from "@appsIntranet/orders";
+import { RELATIONS  } from "@appsIntranet/relations";
+import { WORKEFFORTS  } from "@appsIntranet/workefforts";
 
 @NgModule({
   bootstrap: [AppComponent],
   declarations: [
-    MATERIAL,
 
-    RELATIONS,
-    WORKEFFORTS,
+    AR,
     CATALOGUES,
     ORDERS,
+    RELATIONS,
+    WORKEFFORTS,
 
     AppComponent,
     routedComponents,

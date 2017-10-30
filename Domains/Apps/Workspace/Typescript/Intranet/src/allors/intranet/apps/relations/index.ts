@@ -1,9 +1,10 @@
 // Overview
+import { OverviewComponent } from "./overview/overview.component";
+
 import { PartyCommunicationEventOverviewComponent } from "./overview/communicationevent/communicationeventoverview.component";
 import { CommunicationEventsOverviewComponent } from "./overview/communicationevents/communicationeventsoverview.component";
 import { OrganisationOverviewComponent } from "./overview/organisation/organisationOverview.component";
 import { OrganisationsOverviewComponent } from "./overview/organisations/organisationsOverview.component";
-import { OverviewComponent } from "./overview/overview.component";
 import { PeopleOverviewComponent } from "./overview/people/peopleOverview.component";
 import { PersonOverviewComponent } from "./overview/person/personOverview.component";
 import { RelationsOverviewComponent } from "./overview/relations/relationsOverview.component";
@@ -45,6 +46,8 @@ export const RELATIONS: any[] = [
 
 export const RELATIONS_ROUTING: any[] = [
   // Overview
+  OverviewComponent,
+
   CommunicationEventsOverviewComponent,
   OverviewComponent,
   RelationsOverviewComponent,
@@ -88,8 +91,8 @@ export const RELATIONS_ROUTING: any[] = [
 
 export {
   // Overview
-  CommunicationEventsOverviewComponent,
   OverviewComponent,
+  CommunicationEventsOverviewComponent,
   RelationsOverviewComponent,
   PeopleOverviewComponent,
   PersonOverviewComponent,
