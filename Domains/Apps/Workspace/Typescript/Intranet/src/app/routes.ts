@@ -45,6 +45,28 @@ export const routes: Routes = [
         ],
         path: "organisation",
       },
+      {
+        children: [
+          { path: ":id/partycontactmechanism/emailaddress", component: relations.PartyContactMechanismEmailAddressAddComponent },
+          { path: ":id/partycontactmechanism/emailaddress/:roleId", component: relations.PartyContactMechanismEmailAddressEditComponent },
+          { path: ":id/partycontactmechanism/postaladdress", component: relations.PartyContactMechanismPostalAddressAddComponent },
+          { path: ":id/partycontactmechanism/postaladdress/:roleId", component: relations.PartyContactMechanismPostalAddressEditComponent },
+          { path: ":id/partycontactmechanism/telecommunicationsnumber", component: relations.PartyContactMechanismTelecommunicationsNumberAddComponent },
+          { path: ":id/partycontactmechanism/telecommunicationsnumber/:roleId", component: relations.PartyContactMechanismTelecommunicationsNumberEditComponent },
+          { path: ":id/partycontactmechanism/webaddress", component: relations.PartyContactMechanismAddWebAddressComponent },
+          { path: ":id/partycontactmechanism/webaddres/:roleId", component: relations.PartyContactMechanismEditWebAddressComponent },
+
+          { path: ":id/communicationevent/emailcommunication/:roleId", component: relations.PartyCommunicationEventEmailCommunicationComponent },
+          { path: ":id/communicationevent/emailcommunication", component: relations.PartyCommunicationEventEmailCommunicationComponent },
+          { path: ":id/communicationevent/facetofacecommunication/:roleId", component: relations.PartyCommunicationEventFaceToFaceCommunicationComponent },
+          { path: ":id/communicationevent/facetofacecommunication", component: relations.PartyCommunicationEventFaceToFaceCommunicationComponent },
+          { path: ":id/communicationevent/lettercorrespondence/:roleId", component: relations.PartyCommunicationEventLetterCorrespondenceComponent },
+          { path: ":id/communicationevent/lettercorrespondence", component: relations.PartyCommunicationEventLetterCorrespondenceComponent },
+          { path: ":id/communicationevent/phonecommunication/:roleId", component: relations.PartyCommunicationEventPhoneCommunicationComponent },
+          { path: ":id/communicationevent/phonecommunication", component: relations.PartyCommunicationEventPhoneCommunicationComponent },
+        ],
+        path: "party",
+      },
     ],
   },
 ];
