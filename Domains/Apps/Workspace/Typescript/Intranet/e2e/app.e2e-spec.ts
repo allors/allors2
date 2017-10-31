@@ -1,16 +1,16 @@
-import { AngularPage } from './app.po';
+import { AngularPage } from "./app.po";
 
-describe('angular App', () => {
+describe("angular App", () => {
   let page: AngularPage;
 
   beforeEach(() => {
     page = new AngularPage();
-    page.login('john@doe.org', 'john');
+    page.login("administrator", "secret");
   });
 
-  it('should have title Allors Apps', async () => {
+  it("should have title Allors Apps", async () => {
     page.navigateTo();
     const title = await page.title;
-    expect('Allors Apps').toEqual(title);
+    expect("Allors Apps").toEqual(title);
   });
 });
