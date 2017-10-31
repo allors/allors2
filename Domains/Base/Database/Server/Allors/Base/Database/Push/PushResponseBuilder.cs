@@ -167,6 +167,13 @@ namespace Allors.Server
                                 role = Convert.ToInt32(role);
                             }
 
+                            // Json.net deserializes number to double, in stead of int. 
+                            if (unitType.IsInteger && role is double)
+                            {
+                                role = Convert.ToInt32(role);
+                            }
+
+
                             obj.Strategy.SetUnitRole(roleType.RelationType, role);
                         }
                         else
