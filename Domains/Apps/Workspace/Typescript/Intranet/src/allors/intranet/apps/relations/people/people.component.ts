@@ -30,7 +30,7 @@ export class PeopleComponent implements AfterViewInit, OnDestroy {
     private loadingService: TdLoadingService,
     public media: TdMediaService) {
 
-    this.title = "Person";
+    this.title = "People";
     this.titleService.setTitle(this.title);
     this.scope = new Scope(allorsService.database, allorsService.workspace);
   }

@@ -2,9 +2,10 @@ import { CommonModule } from "@angular/common";
 import { NgModule } from "@angular/core";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { HttpModule } from "@angular/http";
+import { RouterModule } from "@angular/router";
 
 const ANGULAR_MODULES: any[] = [
-  HttpModule, FormsModule, ReactiveFormsModule,
+  HttpModule, FormsModule, ReactiveFormsModule, RouterModule,
 ];
 
 import {
@@ -59,18 +60,6 @@ const BASE_COVALENT_MODULES: any[] = [
   ChipsModule, MediaUploadModule,
 ];
 
-import {
-    DashboardModule,
-    PeopleModule, PersonModule, PersonOverviewModule,
-    RelationsModule,
- } from "@appsIntranet/relations";
-
-const RELATIONS_MODULES: any[] = [
-  DashboardModule,
-  PeopleModule, PersonModule, PersonOverviewModule,
-  RelationsModule,
-];
-
 @NgModule({
   exports: [
     ANGULAR_MODULES,
@@ -80,7 +69,6 @@ const RELATIONS_MODULES: any[] = [
 
     BASE_MATERIAL_MODULES,
     BASE_COVALENT_MODULES,
-    RELATIONS_MODULES,
   ],
   imports: [
     ANGULAR_MODULES,
@@ -90,7 +78,6 @@ const RELATIONS_MODULES: any[] = [
 
     BASE_MATERIAL_MODULES,
     BASE_COVALENT_MODULES,
-    RELATIONS_MODULES,
   ],
 })
 export class SharedModule { }

@@ -1,29 +1,27 @@
-import { NgModule } from "@angular/core";
-import { RouterModule, Routes } from "@angular/router";
-import { SharedModule } from "./shared/shared.module";
+import { Routes } from "@angular/router";
 
 import { AllorsService } from "@allors";
 
-import { LoginComponent } from "./common/auth/login.component";
-import { DashboardComponent } from "./common/dashboard/dashboard.component";
-import { MainComponent } from "./common/main/main.component";
-
 import * as relations from "../allors/intranet/apps/relations";
+import * as common from "./common";
 
 // tslint:disable:object-literal-sort-keys
-const routes: Routes = [
-  { path: "login", component: LoginComponent },
+export const routes: Routes = [
+  { path: "login", component: common.LoginComponent },
   {
     canActivate: [AllorsService],
     path: "",
-    component: MainComponent,
+    component: common.MainComponent,
     children: [
       {
-        path: "", component: DashboardComponent, data: { type: "module", title: "Home", icon: "home" },
+        path: "", component: common.DashboardComponent, data: { type: "module", title: "Home", icon: "home" },
       },
       {
         path: "relations", component: relations.RelationsComponent, data: { type: "module", title: "Relations", icon: "dashboard" },
         children: [
+          {
+            path: "", component: relations.DashboardComponent,
+          },
           {
             path: "people",
             children: [
@@ -39,20 +37,3 @@ const routes: Routes = [
   },
 ];
 // tslint:enable:object-literal-sort-keys
-
-@NgModule({
-  exports: [
-    RouterModule,
-    SharedModule,
-  ],
-  imports: [
-    RouterModule.forRoot(routes, { useHash: true }),
-    SharedModule,
-  ],
-})
-export class AppRoutingModule { }
-export const routedComponents: any[] = [
-  LoginComponent,
-  DashboardComponent,
-  MainComponent,
-];

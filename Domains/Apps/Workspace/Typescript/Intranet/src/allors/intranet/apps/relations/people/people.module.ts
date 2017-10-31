@@ -1,12 +1,5 @@
-import { CommonModule } from "@angular/common";
 import { NgModule } from "@angular/core";
-import { RouterModule } from "@angular/router";
-
-import { MatAutocompleteModule, MatButtonModule, MatCardModule, MatIconModule, MatListModule, MatMenuModule, MatToolbarModule } from "@angular/material";
-import { CovalentCommonModule, CovalentLayoutModule, CovalentLoadingModule } from "@covalent/core";
-
-import { ChipsModule } from "@baseCovalent/index";
-import { StaticModule } from "@baseMaterial/index";
+import { SharedModule } from "../../../shared.module";
 
 import { PeopleComponent } from "./people.component";
 export { PeopleComponent } from "./people.component";
@@ -17,22 +10,10 @@ export { PeopleComponent } from "./people.component";
   ],
   exports: [
     PeopleComponent,
+    SharedModule,
   ],
   imports: [
-    CommonModule,
-    RouterModule,
-    MatAutocompleteModule,
-    MatButtonModule,
-    MatCardModule,
-    MatIconModule,
-    MatListModule,
-    MatMenuModule,
-    MatToolbarModule,
-    CovalentLayoutModule,
-    CovalentCommonModule,
-    CovalentLoadingModule,
-    ChipsModule,
-    StaticModule,
+    SharedModule,
   ],
 })
 export class PeopleModule {}
