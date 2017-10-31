@@ -1,31 +1,28 @@
-import { AfterViewInit, ChangeDetectorRef, Component, OnDestroy , OnInit } from "@angular/core";
+import { AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit } from "@angular/core";
 import { Validators } from "@angular/forms";
 import { MatSnackBar, MatSnackBarConfig } from "@angular/material";
-import { Title } from "@angular/platform-browser";
 import { ActivatedRoute } from "@angular/router";
 import { TdMediaService } from "@covalent/core";
 import { Observable, Subject, Subscription } from "rxjs/Rx";
 
-import { AllorsService, ErrorService, Loaded, Saved, Scope } from "@allors";
+import { AllorsService, ErrorService, Filter, Invoked, Loaded, Saved, Scope } from "@allors";
 import { Equals, Fetch, Like, Page, Path, PullRequest, PushResponse, Query, Sort, TreeNode } from "@allors";
-import { Enumeration, Locale, Organisation, Person, PersonRole } from "@allors";
+import { Enumeration, Locale, Organisation, OrganisationContactKind, OrganisationContactRelationship, Person, PersonRole } from "@allors";
 import { MetaDomain } from "@allors";
 
 @Component({
-  templateUrl: "./person.component.html",
+  templateUrl: "./organisation-contactrelationship.component.html",
 })
-export class PersonComponent implements OnInit, AfterViewInit, OnDestroy {
+export class OrganisationContactrelationshipEditComponent implements OnInit, AfterViewInit, OnDestroy {
 
-  public title: string = "Person";
-  public subTitle: string;
+  public title: string = "Contact Relationship";
+  public subTitle: string = "add a new contact relationship";
 
   public m: MetaDomain;
 
-  public person: Person;
-
-  public locales: Locale[];
-  public genders: Enumeration[];
-  public salutations: Enumeration[];
+  public peopleFilter: Filter;
+  public organisationContactRelationship: OrganisationContactRelationship;
+  public organisationContactKinds: Enumeration[];
   public roles: PersonRole[];
 
   private subscription: Subscription;
@@ -35,48 +32,36 @@ export class PersonComponent implements OnInit, AfterViewInit, OnDestroy {
     private allors: AllorsService,
     private errorService: ErrorService,
     private route: ActivatedRoute,
-    public media: TdMediaService,
-    private titleService: Title,
-    private changeDetectorRef: ChangeDetectorRef) {
+    public media: TdMediaService, private changeDetectorRef: ChangeDetectorRef) {
 
     this.scope = new Scope(allors.database, allors.workspace);
     this.m = this.allors.meta;
-    this.titleService.setTitle(this.title);
+
+    this.peopleFilter = new Filter({scope: this.scope, objectType: this.m.Person, roleTypes: [this.m.Person.FirstName, this.m.Person.LastName]});
   }
 
   public ngOnInit(): void {
     this.subscription = this.route.url
       .switchMap((url: any) => {
 
-        const id: string = this.route.snapshot.paramMap.get("id");
-
-        const m: MetaDomain = this.allors.meta;
+        const roleId: string = this.route.snapshot.paramMap.get("roleId");
+        const m: MetaDomain = this.m;
 
         const fetch: Fetch[] = [
           new Fetch({
-            id,
+            name: "organisationContactRelationship",
+            id: roleId,
             include: [
-              new TreeNode({ roleType: m.Person.Picture }),
+              new TreeNode({ roleType: m.OrganisationContactRelationship.ContactKinds }),
             ],
-            name: "person",
           }),
         ];
 
         const query: Query[] = [
           new Query(
             {
-              name: "locales",
-              objectType: this.m.Locale,
-            }),
-          new Query(
-            {
-              name: "genders",
-              objectType: this.m.GenderType,
-            }),
-          new Query(
-            {
-              name: "salutations",
-              objectType: this.m.Salutation,
+              name: "organisationContactKinds",
+              objectType: this.m.OrganisationContactKind,
             }),
           new Query(
             {
@@ -92,22 +77,14 @@ export class PersonComponent implements OnInit, AfterViewInit, OnDestroy {
       })
       .subscribe((loaded: Loaded) => {
 
-        this.subTitle = "edit person";
-        this.person = loaded.objects.person as Person;
+        this.organisationContactRelationship = loaded.objects.organisationContactRelationship as OrganisationContactRelationship;
 
-        if (!this.person) {
-          this.subTitle = "add a new person";
-          this.person = this.scope.session.create("Person") as Person;
-        }
-
-        this.locales = loaded.collections.locales as Locale[];
-        this.genders = loaded.collections.genders as Enumeration[];
-        this.salutations = loaded.collections.salutations as Enumeration[];
+        this.organisationContactKinds = loaded.collections.organisationContactKinds as Enumeration[];
         this.roles = loaded.collections.roles as PersonRole[];
       },
       (error: any) => {
-         this.errorService.message(error);
-         this.goBack();
+        this.errorService.message(error);
+        this.goBack();
       },
     );
   }

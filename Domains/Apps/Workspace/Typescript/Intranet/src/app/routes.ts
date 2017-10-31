@@ -20,13 +20,13 @@ export const routes: Routes = [
       {
         path: "relations", component: relations.OverviewComponent, data: { type: "module", title: "Relations", icon: "dashboard" },
         children: [
-          {
-            path: "", component: relations.DashboardComponent,
-          },
-          {
-            path: "people", component: relations.PeopleOverviewComponent, data: { type: "page", title: "People", icon: "people" },
-          },
+          { path: "", component: relations.DashboardComponent },
+          { path: "people", component: relations.PeopleOverviewComponent, data: { type: "page", title: "People", icon: "people" }},
           { path: "person/:id", component: relations.PersonOverviewComponent },
+          { path: "organisations", component: relations.OrganisationsOverviewComponent, data: { type: "page", title: "Organisations", icon: "business" } },
+          { path: "organisation/:id", component: relations.OrganisationOverviewComponent },
+          { path: "communicationevents", component: relations.CommunicationEventsOverviewComponent, data: { type: "page", title: "Communications", icon: "share" } },
+          { path: "party/:id/communicationevent/:roleId", component: relations.CommunicationEventOverviewComponent },
         ],
       },
       {
@@ -35,6 +35,15 @@ export const routes: Routes = [
           { path: "", component: relations.PersonComponent },
           { path: ":id", component: relations.PersonComponent },
         ],
+      },
+      {
+        children: [
+          { path: "", component: relations.OrganisationComponent },
+          { path: ":id", component: relations.OrganisationComponent },
+          { path: ":id/contact", component: relations.OrganisationContactrelationshipAddComponent },
+          { path: ":id/contact/:roleId", component: relations.OrganisationContactrelationshipEditComponent },
+        ],
+        path: "organisation",
       },
     ],
   },

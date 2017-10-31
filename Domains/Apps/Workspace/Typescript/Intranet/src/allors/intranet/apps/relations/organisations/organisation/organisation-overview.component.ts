@@ -1,28 +1,29 @@
 import { AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit } from "@angular/core";
 import { MatSnackBar, MatSnackBarConfig } from "@angular/material";
-import { Title } from "@angular/platform-browser";
 import { ActivatedRoute, UrlSegment } from "@angular/router";
 import { TdDialogService, TdMediaService } from "@covalent/core";
-import { BehaviorSubject, Observable, Subject, Subscription } from "rxjs/Rx";
+import { BehaviorSubject, Observable, Subscription } from "rxjs/Rx";
 
 import { AllorsService, ErrorService, Invoked, Loaded, Saved, Scope } from "@allors";
 import { Equals, Fetch, Like, Page, Path, PullRequest, Query, Sort, TreeNode } from "@allors";
-import { CommunicationEvent, ContactMechanism, Locale, Organisation, OrganisationContactRelationship, PartyContactMechanism, Person, WorkEffort, WorkEffortAssignment } from "@allors";
+import { CommunicationEvent, ContactMechanism, Locale, Organisation, OrganisationContactRelationship, PartyContactMechanism, Person, TelecommunicationsNumber } from "@allors";
 import { MetaDomain } from "@allors";
 
 @Component({
-  templateUrl: "./person-overview.component.html",
+  templateUrl: "./organisation-overview.component.html",
 })
-export class PersonOverviewComponent implements OnInit, AfterViewInit, OnDestroy {
+export class OrganisationOverviewComponent implements OnInit, AfterViewInit, OnDestroy {
 
   public m: MetaDomain;
 
-  public communicationEvents: CommunicationEvent[];
-  public workEffortAssignments: WorkEffortAssignment[];
-
-  public title: string = "Person overview";
-  public person: Person;
+  public title: string = "Organisation overview";
   public organisation: Organisation;
+  public communicationEvents: CommunicationEvent[];
+
+  public contactsCollection: string = "Current";
+  public currentContactRelationships: OrganisationContactRelationship[] = [];
+  public inactiveContactRelationships: OrganisationContactRelationship[] = [];
+  public allContactRelationships: OrganisationContactRelationship[] = [];
 
   public contactMechanismsCollection: string = "Current";
   public currentContactMechanisms: PartyContactMechanism[] = [];
@@ -31,6 +32,7 @@ export class PersonOverviewComponent implements OnInit, AfterViewInit, OnDestroy
 
   private refresh$: BehaviorSubject<Date>;
   private subscription: Subscription;
+
   private scope: Scope;
 
   constructor(
@@ -39,15 +41,24 @@ export class PersonOverviewComponent implements OnInit, AfterViewInit, OnDestroy
     private route: ActivatedRoute,
     private dialogService: TdDialogService,
     private snackBar: MatSnackBar,
-    public media: TdMediaService,
-    private changeDetectorRef: ChangeDetectorRef,
-    private titleService: Title) {
-
-    titleService.setTitle(this.title);
+    public media: TdMediaService, private changeDetectorRef: ChangeDetectorRef) {
 
     this.scope = new Scope(allors.database, allors.workspace);
     this.m = this.allors.meta;
     this.refresh$ = new BehaviorSubject<Date>(undefined);
+  }
+
+  get contactRelationships(): any {
+
+    switch (this.contactsCollection) {
+      case "Current":
+        return this.currentContactRelationships;
+      case "Inactive":
+        return this.inactiveContactRelationships;
+      case "All":
+      default:
+        return this.allContactRelationships;
+    }
   }
 
   get contactMechanisms(): any {
@@ -70,74 +81,83 @@ export class PersonOverviewComponent implements OnInit, AfterViewInit, OnDestroy
     const combined$: Observable<[UrlSegment[], Date]> = Observable.combineLatest(route$, this.refresh$);
 
     this.subscription = combined$
-      .switchMap((url: any) => {
+      .switchMap(([urlSegments, date]: [UrlSegment[], Date]) => {
 
         const id: string = this.route.snapshot.paramMap.get("id");
         const m: MetaDomain = this.m;
+
+        const organisationContactRelationshipTreeNodes: TreeNode[] = [
+          new TreeNode({ roleType: m.OrganisationContactRelationship.ContactKinds }),
+          new TreeNode({
+            nodes: [
+              new TreeNode({
+                nodes: [
+                  new TreeNode({
+                    nodes: [
+                      new TreeNode({ roleType: m.ContactMechanism.ContactMechanismType }),
+                    ],
+                    roleType: m.PartyContactMechanism.ContactMechanism,
+                  }),
+                ],
+                roleType: m.Person.PartyContactMechanisms,
+              }),
+            ],
+            roleType: m.OrganisationContactRelationship.Contact,
+          }),
+        ];
+
+        const partyContactMechanismTreeNodes: TreeNode[] = [
+          new TreeNode({ roleType: m.PartyContactMechanism.ContactPurposes }),
+          new TreeNode({
+            nodes: [
+              new TreeNode({ roleType: m.ContactMechanism.ContactMechanismType }),
+              new TreeNode({
+                nodes: [
+                  new TreeNode({ roleType: m.PostalBoundary.Country }),
+                ],
+                roleType: m.PostalAddress.PostalBoundary,
+              }),
+            ],
+            roleType: m.PartyContactMechanism.ContactMechanism,
+          }),
+        ];
 
         const fetch: Fetch[] = [
           new Fetch({
             id,
             include: [
               new TreeNode({ roleType: m.Party.Locale }),
-              new TreeNode({ roleType: m.Person.PersonRoles }),
-              new TreeNode({ roleType: m.Person.LastModifiedBy }),
+              new TreeNode({ roleType: m.Organisation.IndustryClassifications }),
+              new TreeNode({ roleType: m.Organisation.OrganisationRoles }),
+              new TreeNode({ roleType: m.Organisation.OrganisationClassifications }),
+              new TreeNode({ roleType: m.Organisation.LastModifiedBy }),
               new TreeNode({
                 nodes: [
-                  new TreeNode({ roleType: m.PartyContactMechanism.ContactPurposes }),
-                  new TreeNode({ roleType: m.PartyContactMechanism.ContactMechanism }),
+                  new TreeNode({
+                    nodes: partyContactMechanismTreeNodes,
+                    roleType: m.Person.PartyContactMechanisms,
+                  }),
                 ],
+                roleType: m.Party.CurrentContacts,
+              }),
+              new TreeNode({
+                nodes: organisationContactRelationshipTreeNodes,
+                roleType: m.Party.CurrentOrganisationContactRelationships,
+              }),
+              new TreeNode({
+                nodes: organisationContactRelationshipTreeNodes,
+                roleType: m.Party.InactiveOrganisationContactRelationships,
+              }),
+              new TreeNode({
+                nodes: partyContactMechanismTreeNodes,
                 roleType: m.Party.PartyContactMechanisms,
               }),
               new TreeNode({
-                nodes: [
-                  new TreeNode({ roleType: m.PartyContactMechanism.ContactPurposes }),
-                  new TreeNode({
-                    nodes: [
-                      new TreeNode({
-                        nodes: [
-                          new TreeNode({ roleType: m.PostalBoundary.Country }),
-                        ],
-                        roleType: m.PostalAddress.PostalBoundary,
-                      }),
-                    ],
-                    roleType: m.PartyContactMechanism.ContactMechanism,
-                  }),
-                ],
-                roleType: m.Party.PartyContactMechanisms,
-              }),
-              new TreeNode({
-                nodes: [
-                  new TreeNode({ roleType: m.PartyContactMechanism.ContactPurposes }),
-                  new TreeNode({
-                    nodes: [
-                      new TreeNode({
-                        nodes: [
-                          new TreeNode({ roleType: m.PostalBoundary.Country }),
-                        ],
-                        roleType: m.PostalAddress.PostalBoundary,
-                      }),
-                    ],
-                    roleType: m.PartyContactMechanism.ContactMechanism,
-                  }),
-                ],
+                nodes: partyContactMechanismTreeNodes,
                 roleType: m.Party.CurrentPartyContactMechanisms,
               }),
               new TreeNode({
-                nodes: [
-                  new TreeNode({ roleType: m.PartyContactMechanism.ContactPurposes }),
-                  new TreeNode({
-                    nodes: [
-                      new TreeNode({
-                        nodes: [
-                          new TreeNode({ roleType: m.PostalBoundary.Country }),
-                        ],
-                        roleType: m.PostalAddress.PostalBoundary,
-                      }),
-                    ],
-                    roleType: m.PartyContactMechanism.ContactMechanism,
-                  }),
-                ],
+                nodes: partyContactMechanismTreeNodes,
                 roleType: m.Party.InactivePartyContactMechanisms,
               }),
               new TreeNode({
@@ -149,10 +169,10 @@ export class PersonOverviewComponent implements OnInit, AfterViewInit, OnDestroy
                     roleType: m.PostalAddress.PostalBoundary,
                   }),
                 ],
-                roleType: m.Person.GeneralCorrespondence,
+                roleType: m.Organisation.GeneralCorrespondence,
               }),
             ],
-            name: "person",
+            name: "organisation",
           }),
           new Fetch({
             id,
@@ -160,32 +180,9 @@ export class PersonOverviewComponent implements OnInit, AfterViewInit, OnDestroy
               new TreeNode({ roleType: m.CommunicationEvent.CommunicationEventState }),
               new TreeNode({ roleType: m.CommunicationEvent.FromParties }),
               new TreeNode({ roleType: m.CommunicationEvent.ToParties }),
-              new TreeNode({ roleType: m.CommunicationEvent.InvolvedParties }),
             ],
             name: "communicationEvents",
             path: new Path({ step: m.Party.CommunicationEventsWhereInvolvedParty }),
-          }),
-          new Fetch({
-            id,
-            include: [
-              new TreeNode({
-                nodes: [
-                  new TreeNode({ roleType: m.WorkEffort.WorkEffortState }),
-                  new TreeNode({ roleType: m.WorkEffort.Priority }),
-                ],
-                roleType: m.WorkEffortAssignment.Assignment,
-              }),
-            ],
-            name: "workEffortAssignments",
-            path: new Path({ step: m.Person.WorkEffortAssignmentsWhereProfessional }),
-          }),
-          new Fetch({
-            id,
-            include: [
-              new TreeNode({ roleType: m.OrganisationContactRelationship.Organisation }),
-            ],
-            name: "organisationContactRelationships",
-            path: new Path({ step: m.Person.OrganisationContactRelationshipsWhereContact }),
           }),
         ];
 
@@ -228,14 +225,15 @@ export class PersonOverviewComponent implements OnInit, AfterViewInit, OnDestroy
       .subscribe((loaded: Loaded) => {
         this.scope.session.reset();
 
-        this.person = loaded.objects.person as Person;
-        const organisationContactRelationships: OrganisationContactRelationship[] = loaded.collections.organisationContactRelationships as OrganisationContactRelationship[];
-        this.organisation = organisationContactRelationships.length > 0 ? organisationContactRelationships[0].Organisation as Organisation : undefined;
+        this.organisation = loaded.objects.organisation as Organisation;
         this.communicationEvents = loaded.collections.communicationEvents as CommunicationEvent[];
-        this.workEffortAssignments = loaded.collections.workEffortAssignments as WorkEffortAssignment[];
 
-        this.currentContactMechanisms = this.person.CurrentPartyContactMechanisms as PartyContactMechanism[];
-        this.inactiveContactMechanisms = this.person.InactivePartyContactMechanisms as PartyContactMechanism[];
+        this.currentContactRelationships = this.organisation.CurrentOrganisationContactRelationships as OrganisationContactRelationship[];
+        this.inactiveContactRelationships = this.organisation.InactiveOrganisationContactRelationships as OrganisationContactRelationship[];
+        this.allContactRelationships = this.currentContactRelationships.concat(this.inactiveContactRelationships);
+
+        this.currentContactMechanisms = this.organisation.CurrentPartyContactMechanisms as PartyContactMechanism[];
+        this.inactiveContactMechanisms = this.organisation.InactivePartyContactMechanisms as PartyContactMechanism[];
         this.allContactMechanisms = this.currentContactMechanisms.concat(this.inactiveContactMechanisms);
       },
       (error: any) => {
@@ -243,6 +241,60 @@ export class PersonOverviewComponent implements OnInit, AfterViewInit, OnDestroy
         this.goBack();
       },
     );
+  }
+
+  public ngAfterViewInit(): void {
+    this.media.broadcast();
+    this.changeDetectorRef.detectChanges();
+  }
+
+  public ngOnDestroy(): void {
+    if (this.subscription) {
+      this.subscription.unsubscribe();
+    }
+  }
+
+  public removeContact(organisationContactRelationship: OrganisationContactRelationship): void {
+    organisationContactRelationship.ThroughDate = new Date();
+    this.scope
+      .save()
+      .subscribe((saved: Saved) => {
+        this.scope.session.reset();
+        this.refresh();
+      },
+      (error: Error) => {
+        this.errorService.dialog(error);
+      });
+  }
+
+  public activateContact(organisationContactRelationship: OrganisationContactRelationship): void {
+    organisationContactRelationship.ThroughDate = undefined;
+    this.scope
+      .save()
+      .subscribe((saved: Saved) => {
+        this.scope.session.reset();
+        this.refresh();
+      },
+      (error: Error) => {
+        this.errorService.dialog(error);
+      });
+  }
+
+  public deleteContact(person: Person): void {
+    this.dialogService
+      .openConfirm({ message: "Are you sure you want to delete this?" })
+      .afterClosed().subscribe((confirm: boolean) => {
+        if (confirm) {
+          this.scope.invoke(person.Delete)
+            .subscribe((invoked: Invoked) => {
+              this.snackBar.open("Successfully deleted.", "close", { duration: 5000 });
+              this.refresh();
+            },
+            (error: Error) => {
+              this.errorService.dialog(error);
+            });
+        }
+      });
   }
 
   public removeContactMechanism(partyContactMechanism: PartyContactMechanism): void {
@@ -356,41 +408,19 @@ export class PersonOverviewComponent implements OnInit, AfterViewInit, OnDestroy
       });
   }
 
-  public delete(workEffort: WorkEffort): void {
-    this.dialogService
-      .openConfirm({ message: "Are you sure you want to delete this work effort?" })
-      .afterClosed()
-      .subscribe((confirm: boolean) => {
-        if (confirm) {
-          this.scope.invoke(workEffort.Delete)
-            .subscribe((invoked: Invoked) => {
-              this.snackBar.open("Successfully deleted.", "close", { duration: 5000 });
-              this.refresh();
-            },
-            (error: Error) => {
-              this.errorService.dialog(error);
-            });
-        }
-      });
-  }
-
-  public ngAfterViewInit(): void {
-    this.media.broadcast();
-    this.changeDetectorRef.detectChanges();
-  }
-
-  public ngOnDestroy(): void {
-    if (this.subscription) {
-      this.subscription.unsubscribe();
-    }
+  public goBack(): void {
+    window.history.back();
   }
 
   public refresh(): void {
     this.refresh$.next(new Date());
   }
 
-  public goBack(): void {
-    window.history.back();
+  public isPhone(contactMechanism: ContactMechanism): boolean {
+    if (contactMechanism instanceof TelecommunicationsNumber) {
+      const phoneCommunication: TelecommunicationsNumber = contactMechanism as TelecommunicationsNumber;
+      return phoneCommunication.ContactMechanismType && phoneCommunication.ContactMechanismType.Name === "Phone";
+    }
   }
 
   public checkType(obj: any): string {
