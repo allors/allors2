@@ -10,9 +10,9 @@ import { Person } from "@allors";
 import { MetaDomain } from "@allors";
 
 @Component({
-  templateUrl: "./people.component.html",
+  templateUrl: "./people-overview.component.html",
 })
-export class PeopleComponent implements AfterViewInit, OnDestroy {
+export class PeopleOverviewComponent implements AfterViewInit, OnDestroy {
 
   public title: string;
 

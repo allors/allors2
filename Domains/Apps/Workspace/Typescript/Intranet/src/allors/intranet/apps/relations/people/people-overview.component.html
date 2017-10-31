@@ -39,7 +39,7 @@
           <mat-icon>more_vert</mat-icon>
           </button>
           <mat-menu x-position="before" #menu="matMenu">
-          <a [routerLink]="[person.id + '/overview']" mat-menu-item>Details</a>
+          <a [routerLink]="['../person/' + person.id  ]" mat-menu-item>Details</a>
           <button mat-menu-item (click)="delete(person)">Delete</button>
           </mat-menu>
           </span>

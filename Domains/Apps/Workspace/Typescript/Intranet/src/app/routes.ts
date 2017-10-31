@@ -16,21 +16,24 @@ export const routes: Routes = [
       {
         path: "", component: common.DashboardComponent, data: { type: "module", title: "Home", icon: "home" },
       },
+      // Relations
       {
-        path: "relations", component: relations.RelationsComponent, data: { type: "module", title: "Relations", icon: "dashboard" },
+        path: "relations", component: relations.OverviewComponent, data: { type: "module", title: "Relations", icon: "dashboard" },
         children: [
           {
             path: "", component: relations.DashboardComponent,
           },
           {
-            path: "people",
-            children: [
-              { path: "", component: relations.PeopleComponent, data: { type: "page", title: "People", icon: "people" } },
-              { path: "add", component: relations.PersonComponent },
-              { path: ":id/edit", component: relations.PersonComponent },
-              { path: ":id/overview", component: relations.PersonOverviewComponent },
-            ],
+            path: "people", component: relations.PeopleOverviewComponent, data: { type: "page", title: "People", icon: "people" },
           },
+          { path: "person/:id", component: relations.PersonOverviewComponent },
+        ],
+      },
+      {
+        path: "person",
+        children: [
+          { path: "", component: relations.PersonComponent },
+          { path: ":id", component: relations.PersonComponent },
         ],
       },
     ],

@@ -5,9 +5,9 @@ import { TdMediaService } from "@covalent/core";
 import { MenuItem, MenuService } from "@allors";
 
 @Component({
-  templateUrl: "./relations.component.html",
+  templateUrl: "./overview.component.html",
 })
-export class RelationsComponent implements AfterViewInit {
+export class OverviewComponent implements AfterViewInit {
 
   public pages: MenuItem[] = [];
 
