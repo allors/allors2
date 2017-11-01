@@ -2,6 +2,7 @@ import { Routes } from "@angular/router";
 
 import { AllorsService } from "@allors";
 
+import * as orders from "../allors/intranet/apps/orders";
 import * as relations from "../allors/intranet/apps/relations";
 import * as common from "./common";
 
@@ -10,8 +11,7 @@ export const routes: Routes = [
   { path: "login", component: common.LoginComponent },
   {
     canActivate: [AllorsService],
-    path: "",
-    component: common.MainComponent,
+    path: "", component: common.MainComponent,
     children: [
       {
         path: "", component: common.DashboardComponent, data: { type: "module", title: "Home", icon: "home" },
@@ -37,15 +37,22 @@ export const routes: Routes = [
         ],
       },
       {
+        path: "export",
+        children: [
+          { path: "people", component: relations.PeopleExportComponent },
+        ],
+      },
+      {
+        path: "organisation",
         children: [
           { path: "", component: relations.OrganisationComponent },
           { path: ":id", component: relations.OrganisationComponent },
           { path: ":id/contact", component: relations.OrganisationContactrelationshipAddComponent },
           { path: ":id/contact/:roleId", component: relations.OrganisationContactrelationshipEditComponent },
         ],
-        path: "organisation",
       },
       {
+        path: "party",
         children: [
           { path: ":id/partycontactmechanism/emailaddress", component: relations.PartyContactMechanismEmailAddressAddComponent },
           { path: ":id/partycontactmechanism/emailaddress/:roleId", component: relations.PartyContactMechanismEmailAddressEditComponent },
@@ -65,8 +72,50 @@ export const routes: Routes = [
           { path: ":id/communicationevent/phonecommunication/:roleId", component: relations.PartyCommunicationEventPhoneCommunicationComponent },
           { path: ":id/communicationevent/phonecommunication", component: relations.PartyCommunicationEventPhoneCommunicationComponent },
         ],
-        path: "party",
       },
+
+      // Orders
+      {
+        path: "orders",
+        component: orders.OverviewComponent, data: { type: "module", title: "Orders", icon: "share" },
+        children: [
+          { path: "", component: orders.OrdersOverviewComponent },
+          { path: "requests", component: orders.RequestsOverviewComponent, data: { type: "page", title: "Requests", icon: "share" } },
+          { path: "request/:id", component: orders.RequestOverviewComponent },
+          { path: "productQuotes", component: orders.ProductQuotesOverviewComponent, data: { type: "page", title: "Quotes", icon: "share" } },
+          { path: "productQuote/:id", component: orders.ProductQuoteOverviewComponent },
+          { path: "salesOrders", component: orders.SalesOrdersOverviewComponent, data: { type: "page", title: "Orders", icon: "share" } },
+          { path: "salesOrder/:id", component: orders.SalesOrderOverviewComponent },
+        ],
+      },
+      {
+        path: "request",
+        children: [
+          { path: "", component: orders.RequestEditComponent },
+          { path: ":id", component: orders.RequestEditComponent },
+          { path: ":id/item", component: orders.RequestItemEditComponent },
+          { path: ":id/item/:itemId", component: orders.RequestItemEditComponent },
+        ],
+      },
+      {
+        path: "productQuote",
+        children: [
+          { path: "", component: orders.ProductQuoteEditComponent },
+          { path: ":id", component: orders.ProductQuoteEditComponent },
+          { path: ":id/item", component: orders.QuoteItemEditComponent },
+          { path: ":id/item/:itemId", component: orders.QuoteItemEditComponent },
+        ],
+      },
+      {
+        path: "salesOrder",
+        children: [
+          { path: "", component: orders.SalesOrderEditComponent },
+          { path: ":id", component: orders.SalesOrderEditComponent },
+          { path: ":id/item", component: orders.SalesOrderItemEditComponent },
+          { path: ":id/item/:itemId", component: orders.SalesOrderItemEditComponent },
+        ],
+      },
+
     ],
   },
 ];

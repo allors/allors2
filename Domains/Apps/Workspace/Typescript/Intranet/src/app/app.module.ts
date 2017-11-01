@@ -18,6 +18,7 @@ import { DefaultAllorsService } from "./allors.service";
 import { RouterModule, Routes } from "@angular/router";
 import { routes } from "./routes";
 
+import * as orders from "../allors/intranet/apps/orders";
 import * as relations from "../allors/intranet/apps/relations";
 import * as common from "./common";
 
@@ -34,6 +35,7 @@ import * as common from "./common";
 
     common.Modules,
     relations.Modules,
+    orders.Modules,
   ],
   providers: [
     { provide: ENVIRONMENT, useValue: environment },

@@ -3,6 +3,7 @@ export * from "./dashboard/dashboard.module";
 
 export * from "./people/person/person-overview.module";
 export * from "./people/person/person.module";
+export * from "./people/people-export.module";
 export * from "./people/people-overview.module";
 
 export * from "./organisations/organisations-overview.module";
@@ -33,6 +34,7 @@ import { OverviewModule } from "./overview.module";
 
 import { DashboardModule } from "./dashboard/dashboard.module";
 
+import { PeopleExportModule } from "./people/people-export.module";
 import { PeopleOverviewModule } from "./people/people-overview.module";
 import { PersonOverviewModule } from "./people/person/person-overview.module";
 import { PersonModule } from "./people/person/person.module";
@@ -64,7 +66,7 @@ import { CommunicationEventsOverviewModule } from "./communicationevents/communi
 export const Modules = [
   OverviewModule,
   DashboardModule,
-  PeopleOverviewModule, PersonOverviewModule, PersonModule,
+  PeopleExportModule, PeopleOverviewModule, PersonOverviewModule, PersonModule,
   OrganisationContactrelationshipAddModule , OrganisationContactrelationshipEditModule, OrganisationOverviewModule, OrganisationModule, OrganisationsOverviewModule,
   PartyContactMechanismEmailAddressAddModule, PartyContactMechanismEmailAddressEditModule, PartyContactMechanismAddPostalAddressModule, PartyContactMechanismPostalAddressEditModule, PartyContactMechanismTelecommunicationsNumberAddModule, PartyContactMechanismTelecommunicationsNumberEditModule, PartyContactMechanismAddWebAddressModule, PartyContactMechanismEditWebAddressModule,
   PartyCommunicationEventEmailCommunicationModule, PartyCommunicationEventFaceToFaceCommunicationModule, PartyCommunicationEventLetterCorrespondenceModule, PartyCommunicationEventPhoneCommunicationModule, PartyCommunicationEventWorkTaskModule,
