@@ -2,6 +2,7 @@ import { Routes } from "@angular/router";
 
 import { AllorsService } from "@allors";
 
+import * as catalogues from "../allors/intranet/apps/catalogues";
 import * as orders from "../allors/intranet/apps/orders";
 import * as relations from "../allors/intranet/apps/relations";
 import * as common from "./common";
@@ -116,6 +117,65 @@ export const routes: Routes = [
         ],
       },
 
+      // Catalogues
+      {
+        children: [
+          { path: "", component: catalogues.DashboardComponent },
+          { path: "catalogues", component: catalogues.CataloguesOverviewComponent, data: { type: "page", title: "Catalogues", icon: "share" } },
+          { path: "categories", component: catalogues.CategoriesOverviewComponent, data: { type: "page", title: "Categories", icon: "share" } },
+          { path: "goods", component: catalogues.GoodsOverviewComponent, data: { type: "page", title: "Products", icon: "share" } },
+          { path: "productCharacteristics", component: catalogues.ProductCharacteristicsOverviewComponent, data: { type: "page", title: "Product Characteristics", icon: "share" } },
+          { path: "productTypes", component: catalogues.ProductTypesOverviewComponent, data: { type: "page", title: "Product Types", icon: "share" } },
+        ],
+        component: catalogues.OverviewComponent, data: { type: "module", title: "Catalogues", icon: "share" },
+        path: "catalogues",
+      },
+      {
+        children: [
+          { path: "", component: catalogues.CatalogueEditComponent },
+          { path: ":id", component: catalogues.CatalogueEditComponent },
+        ],
+        path: "catalogue",
+      },
+      {
+        children: [
+          { path: "", component: catalogues.CategoryEditComponent },
+          { path: ":id", component: catalogues.CategoryEditComponent },
+        ],
+        path: "category",
+      },
+      {
+        children: [
+          { path: ":id", component: catalogues.GoodEditComponent },
+        ],
+        path: "good",
+      },
+      {
+        children: [
+          { path: "", component: catalogues.NonSerialisedGoodAddComponent },
+        ],
+        path: "nonSerialisedGood",
+      },
+      {
+        children: [
+          { path: "", component: catalogues.SerialisedGoodAddComponent },
+        ],
+        path: "serialisedGood",
+      },
+      {
+        children: [
+          { path: "", component: catalogues.ProductCharacteristicEditComponent },
+          { path: ":id", component: catalogues.ProductCharacteristicEditComponent },
+        ],
+        path: "productCharacteristic",
+      },
+      {
+        children: [
+          { path: "", component: catalogues.ProductTypeEditComponent },
+          { path: ":id", component: catalogues.ProductTypeEditComponent },
+        ],
+        path: "productType",
+      },
     ],
   },
 ];

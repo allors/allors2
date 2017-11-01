@@ -1,0 +1,115 @@
+<mat-toolbar>
+  <div layout="row" layout-align="start center" flex>
+    <button mat-icon-button tdLayoutManageListOpen [hideWhenOpened]="true" style="display: none">
+          <mat-icon>arrow_back</mat-icon>
+        </button>
+    <span>{{title}}</span>
+    <span flex></span>
+    <button mat-icon-button><mat-icon>settings</mat-icon></button>
+  </div>
+</mat-toolbar>
+
+<mat-card>
+  <div class="pad-top-xs pad-left pad-right">
+    <form novalidate [formGroup]="searchForm">
+      <mat-input-container>
+        <input fxFlex matInput placeholder="Name" formControlName="name">
+        <mat-icon matSuffix>search</mat-icon>
+      </mat-input-container>
+      <mat-input-container>
+        <input fxFlex matInput placeholder="ArticleNr" formControlName="articleNumber">
+        <mat-icon matSuffix>search</mat-icon>
+      </mat-input-container>
+      <mat-input-container>
+        <input fxFlex matInput placeholder="Keyword" formControlName="keyword">
+        <mat-icon matSuffix>search</mat-icon>
+      </mat-input-container>
+      <mat-input-container>
+        <input fxFlex matInput placeholder="Owner" formControlName="owner">
+        <mat-icon matSuffix>search</mat-icon>
+      </mat-input-container>
+      <mat-select formControlName="ownership" name="ownership" [(ngModel)]="selectedOwnership" placeholder="Ownership">
+        <mat-option>None</mat-option>
+        <mat-option *ngFor="let ownership of ownerships" [value]="ownership.Name">{{ ownership.Name }}</mat-option>
+      </mat-select>
+      <mat-select formControlName="brand" name="brand" [(ngModel)]="selectedBrand" placeholder="Brand">
+        <mat-option>None</mat-option>
+        <mat-option *ngFor="let brand of brands" [value]="brand.Name">{{ brand.Name }}</mat-option>
+      </mat-select>
+      <mat-select formControlName="model" name="model" [(ngModel)]="selectedModel" placeholder="Model">
+        <mat-option>None</mat-option>
+        <mat-option *ngFor="let model of models" [value]="model.Name">{{ model.Name }}</mat-option>
+      </mat-select>
+      <mat-select formControlName="productCategory" name="productCategory" [(ngModel)]="selectedProductCategory" placeholder="Category">
+        <mat-option>None</mat-option>
+        <mat-option *ngFor="let productCategory of productCategories" [value]="productCategory.Name">{{ productCategory.Name }}</mat-option>
+      </mat-select>
+      <mat-select formControlName="productType" name="productType" [(ngModel)]="selectedProductType" placeholder="Product Type">
+        <mat-option>None</mat-option>
+        <mat-option *ngFor="let productType of productTypes" [value]="productType.Name">{{ productType.Name }}</mat-option>
+      </mat-select>
+      <mat-select formControlName="inventoryItemKind" name="inventoryItemKind" [(ngModel)]="selectedInventoryItemKind" placeholder="Inventory Kind">
+        <mat-option>None</mat-option>
+        <mat-option *ngFor="let inventoryItemKind of inventoryItemKinds" [value]="inventoryItemKind.Name">{{ inventoryItemKind.Name }}</mat-option>
+      </mat-select>
+      <mat-select formControlName="manufacturer" name="manufacturer" [(ngModel)]="selectedManufacturer" placeholder="Manufacturer">
+        <mat-option>None</mat-option>
+        <mat-option *ngFor="let manufacturer of manufacturers" [value]="manufacturer.Name">{{ manufacturer.Name }}</mat-option>
+      </mat-select>
+      <mat-select formControlName="supplier" name="supplier" [(ngModel)]="selectedSupplier" placeholder="Supplier">
+        <mat-option>None</mat-option>
+        <mat-option *ngFor="let supplier of suppliers" [value]="supplier.Name">{{ supplier.Name }}</mat-option>
+      </mat-select>
+    </form>
+  </div>
+
+  <mat-divider></mat-divider>
+
+  <ng-template tdLoading="data">
+    <mat-list class="will-load">
+      <div class="mat-padding" *ngIf="data && data.length === 0" layout="row" layout-align="center center">
+        <h3>No products to display.</h3>
+      </div>
+      <ng-template let-good let-last="last" ngFor [ngForOf]="data">
+        <mat-list-item>
+
+          <mat-icon *ngIf="!good.PrimaryPhoto" mat-list-avatar>photo_camera</mat-icon>
+          <img *ngIf="good.PrimaryPhoto" src="http://localhost:5000/Media/Download/{{good.PrimaryPhoto.UniqueId}}?revision={{good.PrimaryPhoto.Revision}}"
+            widht="90" height="60" />
+
+          <h3 mat-line [routerLink]="'/good/' + [good.id]"> {{good.Name}}</h3>
+          <p mat-line class="mat-caption">{{ good.Description }} </p>
+          <p mat-line class="mat-caption">Primary category: {{ good.PrimaryProductCategory?.Name }} </p>
+
+          <span>
+                <button mat-icon-button [mat-menu-trigger-for]="menu">
+                <mat-icon>more_vert</mat-icon>
+                </button>
+                <mat-menu x-position="before" #menu="matMenu">
+                <a [routerLink]="'/good/' + [good.id]" mat-menu-item>Edit</a>
+                <button mat-menu-item (click)="delete(good)">Delete</button>
+                </mat-menu>
+              </span>
+
+        </mat-list-item>
+        <mat-divider *ngIf="!last" mat-inset></mat-divider>
+      </ng-template>
+    </mat-list>
+  </ng-template>
+</mat-card>
+
+<mat-card body tdMediaToggle="gt-xs" [mediaClasses]="['push']" *ngIf="this.data && this.data.length !== total">
+  <mat-card-content>
+    <button mat-button (click)="more()">More</button> {{this.data?.length}}/{{total}}
+  </mat-card-content>
+</mat-card>
+
+<span flex>
+  <a mat-fab color="accent" class="mat-fab-bottom-right fixed" [routerLink]="['/serialisedGood']">
+    <mat-icon>add</mat-icon>
+  </a>
+<!--
+  <a mat-fab color="accent" class="mat-fab-bottom-right fixed" [routerLink]="['/nonSerialisedGood']">
+    <mat-icon>add</mat-icon>N
+  </a> -->
+</span>
