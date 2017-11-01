@@ -1,53 +1,55 @@
-export * from "./overview/overview.module";
+export * from "./overview.module";
+export * from "./dashboard/dashboard.module";
 
-export * from "./overview/catalogues/cataloguesOverview.module";
-export * from "./overview/categories/categoriesOverview.module";
-export * from "./overview/dashboard/dashboard.module";
-export * from "./overview/goods/goodsOverview.module";
-export * from "./overview/productcharacteristics/productcharacteristicsOverview.module";
-export * from "./overview/productTypes/productTypesOverview.module";
+export * from "./catalogues/catalogues-overview.module";
+export * from "./catalogues/catalogue/catalogue.module";
 
-export * from "./catalogue/edit.module";
-export * from "./category/edit.module";
-export * from "./good/edit.module";
-export * from "./nonSerialisedGood/add.module";
-export * from "./productcharacteristic/edit.module";
-export * from "./producttype/edit.module";
-export * from "./serialisedGood/add.module";
+export * from "./categories/categories-overview.module";
+export * from "./categories/category/category.module";
 
-import { OverviewModule } from "./overview/overview.module";
+export * from "./goods/goods-overview.module";
+export * from "./goods/good/good.module";
 
-import { CataloguesOverviewModule } from "./overview/catalogues/cataloguesOverview.module";
-import { CategoriesOverviewModule } from "./overview/categories/categoriesOverview.module";
-import { DashboardModule } from "./overview/dashboard/dashboard.module";
-import { GoodsOverviewModule } from "./overview/goods/goodsOverview.module";
-import { ProductCharacteristicsOverviewModule } from "./overview/productcharacteristics/productcharacteristicsOverview.module";
-import { ProductTypesOverviewModule } from "./overview/productTypes/productTypesOverview.module";
+export * from "./productcharacteristics/productcharacteristics-overview.module";
+export * from "./productcharacteristics/productcharacteristic/productcharacteristic.module";
 
-import { CatalogueEditModule } from "./catalogue/edit.module";
-import { CategoryEditModule } from "./category/edit.module";
-import { GoodEditModule } from "./good/edit.module";
-import { NonSerialisedGoodAddModule } from "./nonSerialisedGood/add.module";
-import { ProductCharacteristicEditModule } from "./productcharacteristic/edit.module";
-import { ProductTypeEditModule } from "./producttype/edit.module";
-import { SerialisedGoodAddModule } from "./serialisedGood/add.module";
+export * from "./productTypes/producttypes-overview.module";
+export * from "./productTypes/producttype/producttype.module";
+
+export * from "./nonSerialisedGood/nonserialisedgood.module";
+export * from "./serialisedGood/serialisedgood.module";
+
+import { DashboardModule } from "./dashboard/dashboard.module";
+import { OverviewModule } from "./overview.module";
+
+import { CatalogueModule } from "./catalogues/catalogue/catalogue.module";
+import { CataloguesOverviewModule } from "./catalogues/catalogues-overview.module";
+
+import { CategoriesOverviewModule } from "./categories/categories-overview.module";
+import { CategoryModule } from "./categories/category/category.module";
+
+import { GoodModule } from "./goods/good/good.module";
+import { GoodsOverviewModule } from "./goods/goods-overview.module";
+
+import { ProductCharacteristicModule } from "./productcharacteristics/productcharacteristic/productcharacteristic.module";
+import { ProductCharacteristicsOverviewModule } from "./productcharacteristics/productcharacteristics-overview.module";
+
+import { ProductTypeModule } from "./productTypes/producttype/producttype.module";
+import { ProductTypesOverviewModule } from "./productTypes/producttypes-overview.module";
+
+import { NonSerialisedGoodModule } from "./nonSerialisedGood/nonserialisedgood.module";
+import { SerialisedGoodModule } from "./serialisedGood/serialisedgood.module";
 
 export const Modules = [
   // Routing
   OverviewModule,
   DashboardModule,
 
-  CataloguesOverviewModule,
-  CategoriesOverviewModule,
-  GoodsOverviewModule,
-  ProductCharacteristicsOverviewModule,
-  ProductTypesOverviewModule,
-
-  CatalogueEditModule,
-  ProductTypeEditModule,
-  CategoryEditModule,
-  GoodEditModule,
-  NonSerialisedGoodAddModule,
-  ProductCharacteristicEditModule,
-  SerialisedGoodAddModule,
+  CataloguesOverviewModule, CatalogueModule,
+  CategoriesOverviewModule, CategoryModule,
+  GoodsOverviewModule, GoodModule,
+  ProductCharacteristicsOverviewModule, ProductCharacteristicModule,
+  ProductTypesOverviewModule, ProductTypeModule,
+  NonSerialisedGoodModule,
+  SerialisedGoodModule,
 ];

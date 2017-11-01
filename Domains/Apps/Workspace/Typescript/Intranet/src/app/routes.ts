@@ -141,21 +141,21 @@ export const routes: Routes = [
       {
         path: "catalogue",
         children: [
-          { path: "", component: catalogues.CatalogueEditComponent },
-          { path: ":id", component: catalogues.CatalogueEditComponent },
+          { path: "", component: catalogues.CatalogueComponent },
+          { path: ":id", component: catalogues.CatalogueComponent },
         ],
       },
       {
         path: "category",
         children: [
-          { path: "", component: catalogues.CategoryEditComponent },
-          { path: ":id", component: catalogues.CategoryEditComponent },
+          { path: "", component: catalogues.CategoryComponent },
+          { path: ":id", component: catalogues.CategoryComponent },
         ],
       },
       {
         path: "good",
         children: [
-          { path: ":id", component: catalogues.GoodEditComponent },
+          { path: ":id", component: catalogues.GoodComponent },
         ],
       },
       {
@@ -167,21 +167,21 @@ export const routes: Routes = [
       {
         path: "serialisedGood",
         children: [
-          { path: "", component: catalogues.SerialisedGoodAddComponent },
+          { path: "", component: catalogues.SerialisedGoodComponent },
         ],
       },
       {
         path: "productCharacteristic",
         children: [
-          { path: "", component: catalogues.ProductCharacteristicEditComponent },
-          { path: ":id", component: catalogues.ProductCharacteristicEditComponent },
+          { path: "", component: catalogues.ProductCharacteristicComponent },
+          { path: ":id", component: catalogues.ProductCharacteristicComponent },
         ],
       },
       {
         path: "productType",
         children: [
-          { path: "", component: catalogues.ProductTypeEditComponent },
-          { path: ":id", component: catalogues.ProductTypeEditComponent },
+          { path: "", component: catalogues.ProductTypeComponent },
+          { path: ":id", component: catalogues.ProductTypeComponent },
         ],
       },
 
