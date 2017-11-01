@@ -2,9 +2,11 @@ import { Routes } from "@angular/router";
 
 import { AllorsService } from "@allors";
 
+import * as ar from "../allors/intranet/apps/ar";
 import * as catalogues from "../allors/intranet/apps/catalogues";
 import * as orders from "../allors/intranet/apps/orders";
 import * as relations from "../allors/intranet/apps/relations";
+import * as workefforts from "../allors/intranet/apps/workefforts";
 import * as common from "./common";
 
 // tslint:disable:object-literal-sort-keys
@@ -72,6 +74,13 @@ export const routes: Routes = [
           { path: ":id/communicationevent/lettercorrespondence", component: relations.PartyCommunicationEventLetterCorrespondenceComponent },
           { path: ":id/communicationevent/phonecommunication/:roleId", component: relations.PartyCommunicationEventPhoneCommunicationComponent },
           { path: ":id/communicationevent/phonecommunication", component: relations.PartyCommunicationEventPhoneCommunicationComponent },
+        ],
+      },
+      {
+        path: "communicationevent",
+        children: [
+          { path: ":id/worktask", component: relations.PartyCommunicationEventWorkTaskComponent },
+          { path: ":id/worktask/:roleId", component: relations.PartyCommunicationEventWorkTaskComponent },
         ],
       },
 
@@ -176,6 +185,45 @@ export const routes: Routes = [
         ],
         path: "productType",
       },
+
+      // AR
+      {
+        children: [
+          { path: "", component: ar.ArOverviewComponent },
+          { path: "invoices", component: ar.InvoicesOverviewComponent, data: { type: "page", title: "Invoices", icon: "attach_money" } },
+          { path: "invoice/:id", component: ar.InvoiceOverviewComponent },
+        ],
+        component: ar.OverviewComponent, data: { type: "module", title: "Accounts Receivable", icon: "dashboard" },
+        path: "ar",
+      },
+      {
+        children: [
+          { path: "", component: ar.InvoiceEditComponent },
+          { path: ":id", component: ar.InvoiceEditComponent },
+          { path: ":id/item", component: ar.InvoiceItemEditComponent },
+          { path: ":id/item/:itemId", component: ar.InvoiceItemEditComponent },
+        ],
+        path: "invoice",
+      },
+
+      // WorkEfforts
+      {
+        children: [
+          { path: "", component: workefforts.WorkEffortsOverviewComponent },
+          { path: "worktasks", component: workefforts.WorkTasksOverviewComponent, data: { type: "page", title: "Tasks", icon: "timer" } },
+          { path: "worktask/:id", component: workefforts.WorkTaskOverviewComponent },
+        ],
+        component: workefforts.OverviewComponent, data: { type: "module", title: "Work Efforts", icon: "work" },
+        path: "workefforts",
+      },
+      {
+        children: [
+          { path: "", component: workefforts.WorkTaskEditComponent },
+          { path: ":id", component: workefforts.WorkTaskEditComponent },
+        ],
+        path: "worktask",
+      },
+
     ],
   },
 ];

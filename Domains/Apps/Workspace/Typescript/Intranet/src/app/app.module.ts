@@ -18,9 +18,11 @@ import { DefaultAllorsService } from "./allors.service";
 import { RouterModule, Routes } from "@angular/router";
 import { routes } from "./routes";
 
+import * as ar from "../allors/intranet/apps/ar";
 import * as catalogues from "../allors/intranet/apps/catalogues";
 import * as orders from "../allors/intranet/apps/orders";
 import * as relations from "../allors/intranet/apps/relations";
+import * as workefforts from "../allors/intranet/apps/workefforts";
 import * as common from "./common";
 
 @NgModule({
@@ -38,6 +40,8 @@ import * as common from "./common";
     relations.Modules,
     orders.Modules,
     catalogues.Modules,
+    ar.Modules,
+    workefforts.Modules,
   ],
   providers: [
     { provide: ENVIRONMENT, useValue: environment },
