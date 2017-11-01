@@ -1,8 +1,8 @@
 import { NgModule } from "@angular/core";
 import { SharedModule } from "../../../../shared.module";
 
-import { InvoiceOverviewComponent } from "./invoiceOverview.component";
-export { InvoiceOverviewComponent } from "./invoiceOverview.component";
+import { InvoiceOverviewComponent } from "./invoice-overview.component";
+export { InvoiceOverviewComponent } from "./invoice-overview.component";
 
 @NgModule({
   declarations: [

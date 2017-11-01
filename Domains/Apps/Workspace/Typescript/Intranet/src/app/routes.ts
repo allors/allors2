@@ -128,6 +128,7 @@ export const routes: Routes = [
 
       // Catalogues
       {
+        path: "catalogues", component: catalogues.OverviewComponent, data: { type: "module", title: "Catalogues", icon: "share" },
         children: [
           { path: "", component: catalogues.DashboardComponent },
           { path: "catalogues", component: catalogues.CataloguesOverviewComponent, data: { type: "page", title: "Catalogues", icon: "share" } },
@@ -136,92 +137,88 @@ export const routes: Routes = [
           { path: "productCharacteristics", component: catalogues.ProductCharacteristicsOverviewComponent, data: { type: "page", title: "Product Characteristics", icon: "share" } },
           { path: "productTypes", component: catalogues.ProductTypesOverviewComponent, data: { type: "page", title: "Product Types", icon: "share" } },
         ],
-        component: catalogues.OverviewComponent, data: { type: "module", title: "Catalogues", icon: "share" },
-        path: "catalogues",
       },
       {
+        path: "catalogue",
         children: [
           { path: "", component: catalogues.CatalogueEditComponent },
           { path: ":id", component: catalogues.CatalogueEditComponent },
         ],
-        path: "catalogue",
       },
       {
+        path: "category",
         children: [
           { path: "", component: catalogues.CategoryEditComponent },
           { path: ":id", component: catalogues.CategoryEditComponent },
         ],
-        path: "category",
       },
       {
+        path: "good",
         children: [
           { path: ":id", component: catalogues.GoodEditComponent },
         ],
-        path: "good",
       },
       {
+        path: "nonSerialisedGood",
         children: [
           { path: "", component: catalogues.NonSerialisedGoodAddComponent },
         ],
-        path: "nonSerialisedGood",
       },
       {
+        path: "serialisedGood",
         children: [
           { path: "", component: catalogues.SerialisedGoodAddComponent },
         ],
-        path: "serialisedGood",
       },
       {
+        path: "productCharacteristic",
         children: [
           { path: "", component: catalogues.ProductCharacteristicEditComponent },
           { path: ":id", component: catalogues.ProductCharacteristicEditComponent },
         ],
-        path: "productCharacteristic",
       },
       {
+        path: "productType",
         children: [
           { path: "", component: catalogues.ProductTypeEditComponent },
           { path: ":id", component: catalogues.ProductTypeEditComponent },
         ],
-        path: "productType",
       },
 
       // AR
       {
+        path: "ar", component: ar.OverviewComponent, data: { type: "module", title: "Accounts Receivable", icon: "dashboard" },
         children: [
-          { path: "", component: ar.ArOverviewComponent },
+          { path: "", component: ar.DashboardComponent },
           { path: "invoices", component: ar.InvoicesOverviewComponent, data: { type: "page", title: "Invoices", icon: "attach_money" } },
           { path: "invoice/:id", component: ar.InvoiceOverviewComponent },
         ],
-        component: ar.OverviewComponent, data: { type: "module", title: "Accounts Receivable", icon: "dashboard" },
-        path: "ar",
       },
       {
-        children: [
-          { path: "", component: ar.InvoiceEditComponent },
-          { path: ":id", component: ar.InvoiceEditComponent },
-          { path: ":id/item", component: ar.InvoiceItemEditComponent },
-          { path: ":id/item/:itemId", component: ar.InvoiceItemEditComponent },
-        ],
         path: "invoice",
+        children: [
+          { path: "", component: ar.InvoiceComponent },
+          { path: ":id", component: ar.InvoiceComponent },
+          { path: ":id/item", component: ar.InvoiceInvoiceItemComponent },
+          { path: ":id/item/:itemId", component: ar.InvoiceInvoiceItemComponent },
+        ],
       },
 
       // WorkEfforts
       {
+        path: "workefforts", component: workefforts.OverviewComponent, data: { type: "module", title: "Work Efforts", icon: "work" },
         children: [
           { path: "", component: workefforts.WorkEffortsOverviewComponent },
           { path: "worktasks", component: workefforts.WorkTasksOverviewComponent, data: { type: "page", title: "Tasks", icon: "timer" } },
           { path: "worktask/:id", component: workefforts.WorkTaskOverviewComponent },
         ],
-        component: workefforts.OverviewComponent, data: { type: "module", title: "Work Efforts", icon: "work" },
-        path: "workefforts",
       },
       {
+        path: "worktask",
         children: [
           { path: "", component: workefforts.WorkTaskEditComponent },
           { path: ":id", component: workefforts.WorkTaskEditComponent },
         ],
-        path: "worktask",
       },
 
     ],

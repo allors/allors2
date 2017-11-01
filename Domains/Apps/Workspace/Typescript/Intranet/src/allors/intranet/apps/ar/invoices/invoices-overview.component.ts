@@ -19,7 +19,7 @@ interface SearchData {
 }
 
 @Component({
-  templateUrl: "./invoicesOverview.component.html",
+  templateUrl: "./invoices-overview.component.html",
 })
 export class InvoicesOverviewComponent implements AfterViewInit, OnDestroy {
 

@@ -3,9 +3,9 @@ import { Title } from "@angular/platform-browser";
 import { TdMediaService } from "@covalent/core";
 
 @Component({
-  templateUrl: "./arOverview.component.html",
+  templateUrl: "./dashboard.component.html",
 })
-export class ArOverviewComponent implements AfterViewInit {
+export class DashboardComponent implements AfterViewInit {
   public title: string = "Relations Dashboard";
 
   constructor(public media: TdMediaService, private changeDetectorRef: ChangeDetectorRef, private titleService: Title) {

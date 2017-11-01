@@ -11,9 +11,9 @@ import { Good, SalesInvoice, SalesInvoiceItem, SalesInvoiceItemType, SalesOrderI
 import { MetaDomain } from "@allors";
 
 @Component({
-  templateUrl: "./edit.component.html",
+  templateUrl: "./invoice-invoiceitem.component.html",
 })
-export class InvoiceItemEditComponent implements OnInit, AfterViewInit, OnDestroy {
+export class InvoiceInvoiceItemComponent implements OnInit, AfterViewInit, OnDestroy {
 
   public m: MetaDomain;
 

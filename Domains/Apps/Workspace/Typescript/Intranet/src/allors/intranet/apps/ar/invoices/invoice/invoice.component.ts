@@ -11,9 +11,9 @@ import { ContactMechanism, Currency, Organisation, OrganisationRole, Party, Part
 import { MetaDomain } from "@allors";
 
 @Component({
-  templateUrl: "./edit.component.html",
+  templateUrl: "./invoice.component.html",
 })
-export class InvoiceEditComponent implements OnInit, AfterViewInit, OnDestroy {
+export class InvoiceComponent implements OnInit, AfterViewInit, OnDestroy {
 
   public m: MetaDomain;
 

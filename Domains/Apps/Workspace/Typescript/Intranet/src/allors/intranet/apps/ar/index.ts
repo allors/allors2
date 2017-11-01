@@ -1,28 +1,30 @@
 export * from "./overview.module";
 
-export * from "./overview/accountsReveivables/arOverview.module";
-export * from "./overview/invoice/invoiceOverview.module";
-export * from "./overview/invoices/invoicesOverview.module";
+export * from "./dashboard/dashboard.module";
 
-export * from "./invoice/edit.module";
-export * from "./invoiceItem/edit.module";
+export * from "./invoices/invoices-overview.module";
+
+export * from "./invoices/invoice/invoice-overview.module";
+export * from "./invoices/invoice/invoice.module";
+export * from "./invoices/invoice/invoiceItem/invoice-invoiceitem.module";
 
 import { OverviewModule } from "./overview.module";
 
-import { ArOverviewModule } from "./overview/accountsReveivables/arOverview.module";
-import { InvoiceOverviewModule } from "./overview/invoice/invoiceOverview.module";
-import { InvoicesOverviewModule } from "./overview/invoices/invoicesOverview.module";
+import { DashboardModule } from "./dashboard/dashboard.module";
 
-import { InvoiceEditModule } from "./invoice/edit.module";
-import { InvoiceItemEditModule } from "./invoiceItem/edit.module";
+import { InvoiceOverviewModule } from "./invoices/invoice/invoice-overview.module";
 
-export const Modules = [
+import { InvoiceModule } from "./invoices/invoice/invoice.module";
+import { InvoiceInvoiceItemModule } from "./invoices/invoice/invoiceItem/invoice-invoiceitem.module";
+import { InvoicesOverviewModule } from "./invoices/invoices-overview.module";
+
+export const modules = [
   // Overview
   OverviewModule,
-  ArOverviewModule,
+  DashboardModule,
+
+  InvoiceModule,
   InvoiceOverviewModule,
   InvoicesOverviewModule,
-
-  InvoiceEditModule,
-  InvoiceItemEditModule,
+  InvoiceInvoiceItemModule,
 ];

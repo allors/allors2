@@ -40,7 +40,7 @@ import * as common from "./common";
     relations.Modules,
     orders.Modules,
     catalogues.Modules,
-    ar.Modules,
+    ar.modules,
     workefforts.Modules,
   ],
   providers: [

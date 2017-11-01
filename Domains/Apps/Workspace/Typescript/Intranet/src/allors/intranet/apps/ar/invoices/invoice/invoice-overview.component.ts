@@ -10,7 +10,7 @@ import { Good, SalesInvoice, SalesInvoiceItem, SalesOrder } from "@allors";
 import { MetaDomain } from "@allors";
 
 @Component({
-  templateUrl: "./invoiceOverview.component.html",
+  templateUrl: "./invoice-overview.component.html",
 })
 export class InvoiceOverviewComponent implements OnInit, AfterViewInit, OnDestroy {
 
