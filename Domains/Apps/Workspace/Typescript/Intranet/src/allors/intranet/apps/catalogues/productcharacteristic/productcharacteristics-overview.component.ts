@@ -21,17 +21,18 @@ interface SearchData {
 })
 export class ProductCharacteristicsOverviewComponent implements AfterViewInit, OnDestroy {
 
+  public title: string = "Product Characteristics";
+  public total: number;
+  public searchForm: FormGroup;
+  public data: ProductCharacteristic[];
+  public filtered: ProductCharacteristic[];
+
   private refresh$: BehaviorSubject<Date>;
   private page$: BehaviorSubject<number>;
 
   private subscription: Subscription;
   private scope: Scope;
 
-  title: string = "Product Characteristics";
-  total: number;
-  searchForm: FormGroup;
-  data: ProductCharacteristic[];
-  filtered: ProductCharacteristic[];
   constructor(
     private allors: AllorsService,
     private errorService: ErrorService,
@@ -100,27 +101,27 @@ export class ProductCharacteristicsOverviewComponent implements AfterViewInit, O
       });
   }
 
-  more(): void {
+  public more(): void {
     this.page$.next(this.data.length + 50);
   }
 
-  goBack(): void {
+  public goBack(): void {
     window.history.back();
   }
 
-  ngAfterViewInit(): void {
+  public ngAfterViewInit(): void {
     this.titleService.setTitle("Product Characteristics");
     this.media.broadcast();
     this.changeDetectorRef.detectChanges();
   }
 
-  ngOnDestroy(): void {
+  public ngOnDestroy(): void {
     if (this.subscription) {
       this.subscription.unsubscribe();
     }
   }
 
-  delete(productCharacteristic: ProductCharacteristic): void {
+  public delete(productCharacteristic: ProductCharacteristic): void {
     this.dialogService
       .openConfirm({ message: "Are you sure you want to delete this characteristic?" })
       .afterClosed().subscribe((confirm: boolean) => {
@@ -130,7 +131,7 @@ export class ProductCharacteristicsOverviewComponent implements AfterViewInit, O
       });
   }
 
-  onView(productCharacteristic: ProductCharacteristic): void {
+  public onView(productCharacteristic: ProductCharacteristic): void {
     this.router.navigate(["/productCharacteristic/" + productCharacteristic.id]);
   }
 }

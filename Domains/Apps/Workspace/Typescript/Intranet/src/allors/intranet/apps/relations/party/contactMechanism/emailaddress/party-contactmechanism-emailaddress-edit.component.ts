@@ -78,18 +78,18 @@ export class PartyContactMechanismEmailAddressEditComponent implements OnInit, A
     );
   }
 
-  ngAfterViewInit(): void {
+  public ngAfterViewInit(): void {
     this.media.broadcast();
     this.changeDetectorRef.detectChanges();
   }
 
-  ngOnDestroy(): void {
+  public ngOnDestroy(): void {
     if (this.subscription) {
       this.subscription.unsubscribe();
     }
   }
 
-  save(): void {
+  public save(): void {
 
     this.scope
       .save()
@@ -101,7 +101,7 @@ export class PartyContactMechanismEmailAddressEditComponent implements OnInit, A
       });
   }
 
-  goBack(): void {
+  public goBack(): void {
     window.history.back();
   }
 }

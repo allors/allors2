@@ -13,7 +13,7 @@ import {
 import { MetaDomain } from "@allors";
 
 @Component({
-  templateUrl: "./party-communicationevent-lettercorrespondence.html",
+  templateUrl: "./party-communicationevent-lettercorrespondence.component.html",
 })
 export class PartyCommunicationEventLetterCorrespondenceComponent implements OnInit, AfterViewInit, OnDestroy {
 

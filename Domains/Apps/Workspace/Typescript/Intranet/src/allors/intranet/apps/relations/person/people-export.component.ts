@@ -126,21 +126,21 @@ export class PeopleExportComponent implements AfterViewInit, OnDestroy {
       });
   }
 
-  copy(): void {
+  public copy(): void {
     const result: boolean = document.execCommand("copy");
     window.getSelection().removeAllRanges();
   }
 
-  goBack(): void {
+  public goBack(): void {
     window.history.back();
   }
 
-  ngAfterViewInit(): void {
+  public ngAfterViewInit(): void {
     this.media.broadcast();
     this.changeDetectorRef.detectChanges();
   }
 
-  ngOnDestroy(): void {
+  public ngOnDestroy(): void {
     if (this.subscription) {
       this.subscription.unsubscribe();
     }

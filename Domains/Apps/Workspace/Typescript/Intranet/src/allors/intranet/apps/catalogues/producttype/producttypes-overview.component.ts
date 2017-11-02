@@ -21,17 +21,17 @@ interface SearchData {
 })
 export class ProductTypesOverviewComponent implements AfterViewInit, OnDestroy {
 
+  public title: string = "Products";
+  public total: number;
+  public searchForm: FormGroup;
+  public data: ProductType[];
+  public filtered: ProductType[];
+
   private refresh$: BehaviorSubject<Date>;
   private page$: BehaviorSubject<number>;
 
   private subscription: Subscription;
   private scope: Scope;
-
-  title: string = "Products";
-  total: number;
-  searchForm: FormGroup;
-  data: ProductType[];
-  filtered: ProductType[];
 
   constructor(
     private allors: AllorsService,
@@ -101,27 +101,27 @@ export class ProductTypesOverviewComponent implements AfterViewInit, OnDestroy {
       });
   }
 
-  more(): void {
+  public more(): void {
     this.page$.next(this.data.length + 50);
   }
 
-  goBack(): void {
+  public goBack(): void {
     window.history.back();
   }
 
-  ngAfterViewInit(): void {
+  public ngAfterViewInit(): void {
     this.titleService.setTitle("ProductTypes");
     this.media.broadcast();
     this.changeDetectorRef.detectChanges();
   }
 
-  ngOnDestroy(): void {
+  public ngOnDestroy(): void {
     if (this.subscription) {
       this.subscription.unsubscribe();
     }
   }
 
-  delete(productType: ProductType): void {
+  public delete(productType: ProductType): void {
     this.dialogService
       .openConfirm({ message: "Are you sure you want to delete this product type?" })
       .afterClosed().subscribe((confirm: boolean) => {
@@ -131,7 +131,7 @@ export class ProductTypesOverviewComponent implements AfterViewInit, OnDestroy {
       });
   }
 
-  onView(productType: ProductType): void {
+  public onView(productType: ProductType): void {
     this.router.navigate(["/productType/" + productType.id]);
   }
 }

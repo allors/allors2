@@ -23,22 +23,22 @@ import { AllorsService, ErrorService,  Loaded, Saved, Scope } from "@allors";
 })
 export class PersonInlineComponent implements OnInit {
 
+  @Output()
+  public saved: EventEmitter<string> = new EventEmitter<string>();
+
+  @Output()
+  public cancelled: EventEmitter<any> = new EventEmitter();
+
+  public person: Person;
+
+  public m: MetaDomain;
+
+  public locales: Locale[];
+  public genders: Enumeration[];
+  public salutations: Enumeration[];
+  public roles: PersonRole[];
+
   private scope: Scope;
-
-  @Output()
-  saved: EventEmitter<string> = new EventEmitter<string>();
-
-  @Output()
-  cancelled: EventEmitter<any> = new EventEmitter();
-
-  person: Person;
-
-  m: MetaDomain;
-
-  locales: Locale[];
-  genders: Enumeration[];
-  salutations: Enumeration[];
-  roles: PersonRole[];
 
   constructor(private allors: AllorsService, private errorService: ErrorService) {
 
@@ -46,7 +46,7 @@ export class PersonInlineComponent implements OnInit {
     this.m = this.allors.meta;
   }
 
-  ngOnInit(): void {
+  public ngOnInit(): void {
     const query: Query[] = [
       new Query(
         {
@@ -86,11 +86,11 @@ export class PersonInlineComponent implements OnInit {
     );
   }
 
-  cancel(): void {
+  public cancel(): void {
     this.cancelled.emit();
   }
 
-  save(): void {
+  public save(): void {
     this.scope
       .save()
       .subscribe((saved: Saved) => {

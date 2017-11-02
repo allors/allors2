@@ -13,15 +13,15 @@ import { MetaDomain } from "@allors";
 })
 export class ProductCharacteristicComponent implements OnInit, AfterViewInit, OnDestroy {
 
+  public m: MetaDomain;
+
+  public productCharacteristic: ProductCharacteristic;
+
+  public singleton: Singleton;
+  public locales: Locale[];
+
   private subscription: Subscription;
   private scope: Scope;
-
-  m: MetaDomain;
-
-  productCharacteristic: ProductCharacteristic;
-
-  singleton: Singleton;
-  locales: Locale[];
 
   constructor(
     private allors: AllorsService,
@@ -33,7 +33,7 @@ export class ProductCharacteristicComponent implements OnInit, AfterViewInit, On
     this.m = this.allors.meta;
   }
 
-  ngOnInit(): void {
+  public ngOnInit(): void {
     this.subscription = this.route.url
       .switchMap((url: any) => {
 
@@ -83,18 +83,18 @@ export class ProductCharacteristicComponent implements OnInit, AfterViewInit, On
     );
   }
 
-  ngAfterViewInit(): void {
+  public ngAfterViewInit(): void {
     this.media.broadcast();
     this.changeDetectorRef.detectChanges();
   }
 
-  ngOnDestroy(): void {
+  public ngOnDestroy(): void {
     if (this.subscription) {
       this.subscription.unsubscribe();
     }
   }
 
-  save(): void {
+  public save(): void {
 
     this.scope
       .save()
@@ -106,7 +106,7 @@ export class ProductCharacteristicComponent implements OnInit, AfterViewInit, On
       });
   }
 
-  goBack(): void {
+  public goBack(): void {
     window.history.back();
   }
 }

@@ -13,17 +13,17 @@ import { MetaDomain } from "@allors";
 })
 export class ProductTypeComponent implements OnInit, AfterViewInit, OnDestroy {
 
+  public title: string = "Edit Product Type";
+  public subTitle: string;
+
+  public m: MetaDomain;
+
+  public productType: ProductType;
+
+  public characteristics: ProductCharacteristic[];
+
   private subscription: Subscription;
   private scope: Scope;
-
-  title: string = "Edit Product Type";
-  subTitle: string;
-
-  m: MetaDomain;
-
-  productType: ProductType;
-
-  characteristics: ProductCharacteristic[];
 
   constructor(
     private allors: AllorsService,
@@ -35,7 +35,7 @@ export class ProductTypeComponent implements OnInit, AfterViewInit, OnDestroy {
     this.m = this.allors.meta;
   }
 
-  ngOnInit(): void {
+  public ngOnInit(): void {
     this.subscription = this.route.url
       .switchMap((url: any) => {
 
@@ -81,18 +81,18 @@ export class ProductTypeComponent implements OnInit, AfterViewInit, OnDestroy {
     );
   }
 
-  ngAfterViewInit(): void {
+  public ngAfterViewInit(): void {
     this.media.broadcast();
     this.changeDetectorRef.detectChanges();
   }
 
-  ngOnDestroy(): void {
+  public ngOnDestroy(): void {
     if (this.subscription) {
       this.subscription.unsubscribe();
     }
   }
 
-  save(): void {
+  public save(): void {
 
     this.scope
       .save()
@@ -104,7 +104,7 @@ export class ProductTypeComponent implements OnInit, AfterViewInit, OnDestroy {
       });
   }
 
-  goBack(): void {
+  public goBack(): void {
     window.history.back();
   }
 }

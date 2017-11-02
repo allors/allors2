@@ -9,13 +9,13 @@ import { MenuItem, MenuService } from "@allors";
 })
 export class OverviewComponent implements AfterViewInit {
 
-  pages: MenuItem[] = [];
+  public pages: MenuItem[] = [];
 
   constructor(public media: TdMediaService, private changeDetectorRef: ChangeDetectorRef, public menu: MenuService, public activatedRoute: ActivatedRoute) {
     this.pages = menu.pages(activatedRoute.routeConfig);
   }
 
-  ngAfterViewInit(): void {
+  public ngAfterViewInit(): void {
     this.media.broadcast();
     this.changeDetectorRef.detectChanges();
   }
