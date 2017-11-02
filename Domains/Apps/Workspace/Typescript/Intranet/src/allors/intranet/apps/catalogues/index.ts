@@ -1,20 +1,20 @@
 export * from "./overview.module";
 export * from "./dashboard/dashboard.module";
 
-export * from "./catalogues/catalogues-overview.module";
-export * from "./catalogues/catalogue/catalogue.module";
+export * from "./catalogue/catalogues-overview.module";
+export * from "./catalogue/catalogue.module";
 
-export * from "./categories/categories-overview.module";
-export * from "./categories/category/category.module";
+export * from "./category/categories-overview.module";
+export * from "./category/category.module";
 
-export * from "./goods/goods-overview.module";
-export * from "./goods/good/good.module";
+export * from "./good/goods-overview.module";
+export * from "./good/good.module";
 
-export * from "./productcharacteristics/productcharacteristics-overview.module";
-export * from "./productcharacteristics/productcharacteristic/productcharacteristic.module";
+export * from "./productcharacteristic/productcharacteristics-overview.module";
+export * from "./productcharacteristic/productcharacteristic.module";
 
-export * from "./productTypes/producttypes-overview.module";
-export * from "./productTypes/producttype/producttype.module";
+export * from "./producttype/producttypes-overview.module";
+export * from "./producttype/producttype.module";
 
 export * from "./nonSerialisedGood/nonserialisedgood.module";
 export * from "./serialisedGood/serialisedgood.module";
@@ -22,20 +22,20 @@ export * from "./serialisedGood/serialisedgood.module";
 import { DashboardModule } from "./dashboard/dashboard.module";
 import { OverviewModule } from "./overview.module";
 
-import { CatalogueModule } from "./catalogues/catalogue/catalogue.module";
-import { CataloguesOverviewModule } from "./catalogues/catalogues-overview.module";
+import { CatalogueModule } from "./catalogue/catalogue.module";
+import { CataloguesOverviewModule } from "./catalogue/catalogues-overview.module";
 
-import { CategoriesOverviewModule } from "./categories/categories-overview.module";
-import { CategoryModule } from "./categories/category/category.module";
+import { CategoriesOverviewModule } from "./category/categories-overview.module";
+import { CategoryModule } from "./category/category.module";
 
-import { GoodModule } from "./goods/good/good.module";
-import { GoodsOverviewModule } from "./goods/goods-overview.module";
+import { GoodModule } from "./good/good.module";
+import { GoodsOverviewModule } from "./good/goods-overview.module";
 
-import { ProductCharacteristicModule } from "./productcharacteristics/productcharacteristic/productcharacteristic.module";
-import { ProductCharacteristicsOverviewModule } from "./productcharacteristics/productcharacteristics-overview.module";
+import { ProductCharacteristicModule } from "./productcharacteristic/productcharacteristic.module";
+import { ProductCharacteristicsOverviewModule } from "./productcharacteristic/productcharacteristics-overview.module";
 
-import { ProductTypeModule } from "./productTypes/producttype/producttype.module";
-import { ProductTypesOverviewModule } from "./productTypes/producttypes-overview.module";
+import { ProductTypeModule } from "./producttype/producttype.module";
+import { ProductTypesOverviewModule } from "./producttype/producttypes-overview.module";
 
 import { NonSerialisedGoodModule } from "./nonSerialisedGood/nonserialisedgood.module";
 import { SerialisedGoodModule } from "./serialisedGood/serialisedgood.module";

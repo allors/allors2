@@ -1,16 +1,16 @@
 export * from "./overview.module";
 export * from "./dashboard/dashboard.module";
 
-export * from "./people/person/person-overview.module";
-export * from "./people/person/person.module";
-export * from "./people/people-export.module";
-export * from "./people/people-overview.module";
+export * from "./person/person-overview.module";
+export * from "./person/person.module";
+export * from "./person/people-export.module";
+export * from "./person/people-overview.module";
 
-export * from "./organisations/organisations-overview.module";
-export * from "./organisations/organisation/organisation-overview.module";
-export * from "./organisations/organisation/organisation.module";
-export * from "./organisations/organisation/contactrelationship/organisation-contactrelationship-add.module";
-export * from "./organisations/organisation/contactrelationship/organisation-contactrelationship-edit.module";
+export * from "./organisation/organisations-overview.module";
+export * from "./organisation/organisation-overview.module";
+export * from "./organisation/organisation.module";
+export * from "./organisation/contactrelationship/organisation-contactrelationship-add.module";
+export * from "./organisation/contactrelationship/organisation-contactrelationship-edit.module";
 
 export * from "./party/contactmechanism/emailaddress/party-contactmechanism-emailaddress-add.module";
 export * from "./party/contactmechanism/emailaddress/party-contactmechanism-emailaddress-edit.module";
@@ -27,23 +27,23 @@ export * from "./party/communicationevent/lettercorrespondence/party-communicati
 export * from "./party/communicationevent/phonecommunication/party-communicationevent-phonecommunication.module";
 export * from "./party/communicationevent/worktask/party-communicationevent-worktask.module";
 
-export * from "./communicationevents/communicationevents-overview.module";
-export * from "./communicationevents/communicationevent/communicationevents-overview.module";
+export * from "./communicationevent/communicationevent-overview.module";
+export * from "./communicationevent/communicationevents-overview.module";
 
 import { OverviewModule } from "./overview.module";
 
 import { DashboardModule } from "./dashboard/dashboard.module";
 
-import { PeopleExportModule } from "./people/people-export.module";
-import { PeopleOverviewModule } from "./people/people-overview.module";
-import { PersonOverviewModule } from "./people/person/person-overview.module";
-import { PersonModule } from "./people/person/person.module";
+import { PeopleExportModule } from "./person/people-export.module";
+import { PeopleOverviewModule } from "./person/people-overview.module";
+import { PersonOverviewModule } from "./person/person-overview.module";
+import { PersonModule } from "./person/person.module";
 
-import { OrganisationContactrelationshipAddModule } from "./organisations/organisation/contactrelationship/organisation-contactrelationship-add.module";
-import { OrganisationContactrelationshipEditModule } from "./organisations/organisation/contactrelationship/organisation-contactrelationship-edit.module";
-import { OrganisationOverviewModule } from "./organisations/organisation/organisation-overview.module";
-import { OrganisationModule } from "./organisations/organisation/organisation.module";
-import { OrganisationsOverviewModule } from "./organisations/organisations-overview.module";
+import { OrganisationContactrelationshipAddModule } from "./organisation/contactrelationship/organisation-contactrelationship-add.module";
+import { OrganisationContactrelationshipEditModule } from "./organisation/contactrelationship/organisation-contactrelationship-edit.module";
+import { OrganisationOverviewModule } from "./organisation/organisation-overview.module";
+import { OrganisationModule } from "./organisation/organisation.module";
+import { OrganisationsOverviewModule } from "./organisation/organisations-overview.module";
 
 import { PartyContactMechanismEmailAddressAddModule } from "./party/contactmechanism/emailaddress/party-contactmechanism-emailaddress-add.module";
 import { PartyContactMechanismEmailAddressEditModule } from "./party/contactmechanism/emailaddress/party-contactmechanism-emailaddress-edit.module";
@@ -60,8 +60,8 @@ import { PartyCommunicationEventLetterCorrespondenceModule } from "./party/commu
 import { PartyCommunicationEventPhoneCommunicationModule } from "./party/communicationevent/phonecommunication/party-communicationevent-phonecommunication.module";
 import { PartyCommunicationEventWorkTaskModule } from "./party/communicationevent/worktask/party-communicationevent-worktask.module";
 
-import { CommunicationEventOverviewModule } from "./communicationevents/communicationevent/communicationevents-overview.module";
-import { CommunicationEventsOverviewModule } from "./communicationevents/communicationevents-overview.module";
+import { CommunicationEventOverviewModule } from "./communicationevent/communicationevent-overview.module";
+import { CommunicationEventsOverviewModule } from "./communicationevent/communicationevents-overview.module";
 
 export const Modules = [
   OverviewModule,

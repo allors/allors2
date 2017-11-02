@@ -1,18 +1,20 @@
-export * from "./overview/overview.module";
+export * from "./overview.module";
 
-export * from "./overview/workefforts/workEffortsOverview.module";
-export * from "./overview/worktask/workTaskOverview.module";
-export * from "./overview/worktasks/workTasksOverview.module";
+export * from "./workeffort/workefforts-overview.module";
 
-export * from "./worktask/edit.module";
+export * from "./worktask/worktask-overview.module";
+export * from "./worktask/worktasks-overview.module";
 
-import { OverviewModule } from "./overview/overview.module";
+export * from "./worktask/worktask.module";
 
-import { WorkEffortsOverviewModule } from "./overview/workefforts/workEffortsOverview.module";
-import { WorkTaskOverviewModule } from "./overview/worktask/workTaskOverview.module";
-import { WorkTasksOverviewModule } from "./overview/worktasks/workTasksOverview.module";
+import { OverviewModule } from "./overview.module";
 
-import { WorkTaskEditModule } from "./worktask/edit.module";
+import { WorkEffortsOverviewModule } from "./workeffort/workefforts-overview.module";
+
+import { WorkTaskOverviewModule } from "./worktask/worktask-overview.module";
+import { WorkTasksOverviewModule } from "./worktask/worktasks-overview.module";
+
+import { WorkTaskEditModule } from "./worktask/worktask.module";
 
 export const Modules = [
   OverviewModule,
