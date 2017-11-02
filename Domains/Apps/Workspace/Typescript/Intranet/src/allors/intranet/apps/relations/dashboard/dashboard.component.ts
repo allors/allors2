@@ -1,6 +1,5 @@
-import { AfterViewInit, Component } from "@angular/core";
+import { Component } from "@angular/core";
 import { Title } from "@angular/platform-browser";
-import { Router } from "@angular/router";
 import { TdMediaService } from "@covalent/core";
 
 @Component({

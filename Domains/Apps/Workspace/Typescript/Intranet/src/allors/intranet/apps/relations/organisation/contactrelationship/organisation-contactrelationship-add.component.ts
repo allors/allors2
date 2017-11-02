@@ -1,13 +1,11 @@
 import { AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit } from "@angular/core";
-import { Validators } from "@angular/forms";
-import { MatSnackBar, MatSnackBarConfig } from "@angular/material";
 import { ActivatedRoute } from "@angular/router";
 import { TdMediaService } from "@covalent/core";
-import { BehaviorSubject, Observable, Subject, Subscription } from "rxjs/Rx";
+import { BehaviorSubject, Subscription } from "rxjs/Rx";
 
 import { AllorsService, ErrorService, Filter, Loaded, Saved, Scope } from "@allors";
-import { Equals, Fetch, ISessionObject, Like, Page, Path, PullRequest, PushResponse, Query, Sort, TreeNode } from "@allors";
-import { Enumeration, Locale, Organisation, OrganisationContactKind, OrganisationContactRelationship, Person, PersonRole } from "@allors";
+import { Fetch, PullRequest, Query } from "@allors";
+import { Enumeration, Organisation, OrganisationContactRelationship, Person, PersonRole } from "@allors";
 import { MetaDomain } from "@allors";
 
 @Component({

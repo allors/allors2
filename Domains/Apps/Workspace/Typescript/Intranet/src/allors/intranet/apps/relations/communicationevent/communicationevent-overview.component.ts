@@ -1,11 +1,11 @@
 import { AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit } from "@angular/core";
-import { MatSnackBar, MatSnackBarConfig } from "@angular/material";
+import { MatSnackBar } from "@angular/material";
 import { ActivatedRoute, UrlSegment } from "@angular/router";
 import { TdDialogService, TdMediaService } from "@covalent/core";
-import { BehaviorSubject, Observable, Subject, Subscription } from "rxjs/Rx";
+import { BehaviorSubject, Observable, Subscription } from "rxjs/Rx";
 
-import { AllorsService, ErrorService, Invoked, Loaded, Saved, Scope } from "@allors";
-import { Equals, Fetch, Like, Page, Path, PullRequest, Query, Sort, TreeNode } from "@allors";
+import { AllorsService, ErrorService, Invoked, Loaded, Scope } from "@allors";
+import { Fetch, PullRequest, TreeNode } from "@allors";
 import { CommunicationEvent, EmailCommunication, FaceToFaceCommunication, LetterCorrespondence, Party, PhoneCommunication, WorkTask } from "@allors";
 import { MetaDomain } from "@allors";
 

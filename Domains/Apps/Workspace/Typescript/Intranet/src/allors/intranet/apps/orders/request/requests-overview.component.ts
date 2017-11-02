@@ -1,14 +1,13 @@
-import { AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild } from "@angular/core";
-import { FormBuilder, FormGroup, Validators } from "@angular/forms";
-import { MatSnackBar } from "@angular/material";
+import { AfterViewInit, ChangeDetectorRef, Component, OnDestroy } from "@angular/core";
+import { FormBuilder, FormGroup } from "@angular/forms";
 import { Title } from "@angular/platform-browser";
 import { Router } from "@angular/router";
 import { BehaviorSubject, Observable, Subscription } from "rxjs/Rx";
 
-import { TdDialogService, TdLoadingService, TdMediaService } from "@covalent/core";
+import { TdDialogService, TdMediaService } from "@covalent/core";
 
-import { AllorsService, ErrorService, Loaded, Saved, Scope } from "@allors";
-import { And, ContainedIn, Contains, Equals, Like, Not, Or, Page, Predicate, PullRequest, Query, Sort, TreeNode } from "@allors";
+import { AllorsService, ErrorService, Loaded, Scope } from "@allors";
+import { And, ContainedIn, Like, Page, Predicate, PullRequest, Query, Sort, TreeNode } from "@allors";
 import { Request } from "@allors";
 import { MetaDomain } from "@allors";
 

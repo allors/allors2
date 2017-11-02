@@ -1,5 +1,4 @@
 import { AfterViewInit, ChangeDetectorRef, Component } from "@angular/core";
-import { Router } from "@angular/router";
 import { TdMediaService } from "@covalent/core";
 
 import { MenuItem, MenuService } from "@allors";

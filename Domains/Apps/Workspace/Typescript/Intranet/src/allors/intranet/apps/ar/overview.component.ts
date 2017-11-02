@@ -1,4 +1,4 @@
-import { AfterViewInit, ChangeDetectorRef, Component, Input } from "@angular/core";
+import { AfterViewInit, ChangeDetectorRef, Component } from "@angular/core";
 import { ActivatedRoute } from "@angular/router";
 import { TdMediaService } from "@covalent/core";
 

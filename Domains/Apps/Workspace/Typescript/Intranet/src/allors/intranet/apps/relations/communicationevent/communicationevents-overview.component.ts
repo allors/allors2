@@ -1,15 +1,15 @@
 import { AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild } from "@angular/core";
-import { FormBuilder, FormGroup, Validators } from "@angular/forms";
-import { MatSnackBar, MatSnackBarConfig } from "@angular/material";
+import { FormBuilder, FormGroup } from "@angular/forms";
+import { MatSnackBar } from "@angular/material";
 import { Title } from "@angular/platform-browser";
 import { Router } from "@angular/router";
-import { BehaviorSubject, Observable, Subject, Subscription } from "rxjs/Rx";
+import { BehaviorSubject, Observable, Subscription } from "rxjs/Rx";
 
-import { TdDialogService, TdLoadingService, TdMediaService } from "@covalent/core";
+import { TdDialogService, TdMediaService } from "@covalent/core";
 
-import { AllorsService, ErrorService, Invoked, Loaded, Saved, Scope } from "@allors";
-import { And, ContainedIn, Contains, Equals, Like, Not, Or, Page, Predicate, PullRequest, Query, Sort, TreeNode } from "@allors";
-import { CommunicationEvent, CommunicationEventPurpose, CommunicationEventState, Person, Priority, Singleton } from "@allors";
+import { AllorsService, ErrorService, Invoked, Loaded, Scope } from "@allors";
+import { And, Contains, Equals, Like, Page, Predicate, PullRequest, Query, TreeNode } from "@allors";
+import { CommunicationEvent, CommunicationEventPurpose, CommunicationEventState, Person } from "@allors";
 import { MetaDomain } from "@allors";
 
 interface SearchData {

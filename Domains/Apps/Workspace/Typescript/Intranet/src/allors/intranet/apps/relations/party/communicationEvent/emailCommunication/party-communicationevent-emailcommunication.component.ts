@@ -1,15 +1,14 @@
 import { AfterViewInit, ChangeDetectorRef, Component, OnDestroy , OnInit } from "@angular/core";
-import { Validators } from "@angular/forms";
-import { MatSnackBar, MatSnackBarConfig } from "@angular/material";
+import { MatSnackBar } from "@angular/material";
 import { ActivatedRoute, UrlSegment } from "@angular/router";
 import { TdDialogService, TdMediaService } from "@covalent/core";
 import { BehaviorSubject, Observable, Subscription } from "rxjs/Rx";
 
-import { AllorsService, ErrorService, Filter, Invoked, Loaded, Saved, Scope } from "@allors";
-import { Equals, Fetch, Like, Page, Path, PullRequest, PushResponse, Query, Sort, TreeNode } from "@allors";
+import { AllorsService, ErrorService, Invoked, Loaded, Saved, Scope } from "@allors";
+import { Fetch, PullRequest, Query, TreeNode } from "@allors";
 import {
-  CommunicationEvent, CommunicationEventPurpose, ContactMechanism, EmailAddress, EmailCommunication, EmailTemplate, Enumeration,
-  Locale, Organisation, OrganisationContactRelationship, Party, PartyContactMechanism, PartyRelationship, Person, PersonRole, Singleton,
+  CommunicationEventPurpose, ContactMechanism, EmailAddress, EmailCommunication, EmailTemplate,
+  Party, PartyContactMechanism, Person, Singleton,
 } from "@allors";
 import { MetaDomain } from "@allors";
 
