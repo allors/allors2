@@ -38,7 +38,7 @@ namespace Allors.Domain
 
             this.Session.Rollback();
 
-            builder.WithTermType(new TermTypes(this.Session).PercentageCancellationCharge);
+            builder.WithTermType(new InvoiceTermTypes(this.Session).PercentageCancellationCharge);
             orderTerm = builder.Build();
 
             Assert.False(this.Session.Derive(false).HasErrors);

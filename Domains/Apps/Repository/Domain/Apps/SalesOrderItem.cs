@@ -469,6 +469,17 @@ namespace Allors.Repository
         [Workspace]
         public decimal QuantityRequestsShipping { get; set; }
 
+        #region Allors
+        [Id("9400A92D-DCA3-4F60-BC5C-05D4F32C337D")]
+        [AssociationId("02F3103F-D254-40B1-9159-6254F9F8A01C")]
+        [RoleId("0164D6CA-F07C-4C6E-9D50-EFE4E7D97464")]
+        [Indexed]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Required]
+        [Workspace]
+        public SalesInvoiceItemType ItemType { get; set; }
+
         #region inherited methods
 
 

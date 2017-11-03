@@ -49,7 +49,10 @@ namespace Allors.Repository
     public decimal TotalDiscountCustomerCurrency { get; set; }
     public decimal TotalVat { get; set; }
     public decimal TotalFee { get; set; }
-    public Permission[] DeniedPermissions { get; set; }
+
+      public Person ContactPerson { get; set; }
+
+      public Permission[] DeniedPermissions { get; set; }
     public SecurityToken[] SecurityTokens { get; set; }
     public Locale Locale { get; set; }
     public string Comment { get; set; }

@@ -23,7 +23,7 @@ namespace Allors.Domain
                 {
                     foreach (AgreementTerm term in this.InvoiceTerms)
                     {
-                        if (term.TermType.Equals(new TermTypes(this.Strategy.Session).PaymentNetDays))
+                        if (term.TermType.Equals(new InvoiceTermTypes(this.Strategy.Session).PaymentNetDays))
                         {
                             int netDays;
                             if (int.TryParse(term.TermValue, out netDays))

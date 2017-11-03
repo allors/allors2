@@ -36,7 +36,7 @@ namespace Allors.Domain
 
             this.Session.Rollback();
 
-            builder.WithTermType(new TermTypes(this.Session).LateFee);
+            builder.WithTermType(new InvoiceTermTypes(this.Session).LateFee);
             invoiceTerm = builder.Build();
 
             Assert.False(this.Session.Derive(false).HasErrors);

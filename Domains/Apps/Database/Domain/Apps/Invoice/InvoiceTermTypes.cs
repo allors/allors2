@@ -17,7 +17,7 @@ namespace Allors.Domain
 {
     using System;
 
-    public partial class TermTypes
+    public partial class InvoiceTermTypes
     {
         private static readonly Guid PercentageCancellationChargeId = new Guid("D81EE27F-EC44-4f66-BF45-9F5E0F95EA9B");
         private static readonly Guid DaysCancellationWithoutPenaltyId = new Guid("8475143A-D6CF-4ff7-BDB7-27168DC1C288");
@@ -28,25 +28,25 @@ namespace Allors.Domain
         private static readonly Guid CollectionAgencyPenaltyId = new Guid("56C719DE-1B5D-4c2a-8AE3-F205F9852C79");
         private static readonly Guid NonReturnableSalesItemId = new Guid("B9A57CAF-3C48-463a-B627-3D0E127E5AF2");
 
-        private UniquelyIdentifiableSticky<TermType> cache;
+        private UniquelyIdentifiableSticky<InvoiceTermType> cache;
 
-        public TermType PercentageCancellationCharge => this.Cache[PercentageCancellationChargeId];
+        public InvoiceTermType PercentageCancellationCharge => this.Cache[PercentageCancellationChargeId];
 
-        public TermType DaysCancellationWithoutPenalty => this.Cache[DaysCancellationWithoutPenaltyId];
+        public InvoiceTermType DaysCancellationWithoutPenalty => this.Cache[DaysCancellationWithoutPenaltyId];
 
-        public TermType PercentagePenaltyNonPerformance => this.Cache[PercentagePenaltyNonPerformanceId];
+        public InvoiceTermType PercentagePenaltyNonPerformance => this.Cache[PercentagePenaltyNonPerformanceId];
 
-        public TermType PaymentNetDays => this.Cache[PaymentNetDaysId];
+        public InvoiceTermType PaymentNetDays => this.Cache[PaymentNetDaysId];
 
-        public TermType LateFee => this.Cache[LateFeeId];
+        public InvoiceTermType LateFee => this.Cache[LateFeeId];
 
-        public TermType CollectionAgencyPenalty => this.Cache[CollectionAgencyPenaltyId];
+        public InvoiceTermType CollectionAgencyPenalty => this.Cache[CollectionAgencyPenaltyId];
 
-        public TermType DaysWithinWhichDeliveraryMustOccur => this.Cache[DaysWithinWhichDeliveraryMustOccurId];
+        public InvoiceTermType DaysWithinWhichDeliveraryMustOccur => this.Cache[DaysWithinWhichDeliveraryMustOccurId];
 
-        public TermType NonReturnableSalesItem => this.Cache[NonReturnableSalesItemId];
+        public InvoiceTermType NonReturnableSalesItem => this.Cache[NonReturnableSalesItemId];
 
-        private UniquelyIdentifiableSticky<TermType> Cache => this.cache ?? (this.cache = new UniquelyIdentifiableSticky<TermType>(this.Session));
+        private UniquelyIdentifiableSticky<InvoiceTermType> Cache => this.cache ?? (this.cache = new UniquelyIdentifiableSticky<InvoiceTermType>(this.Session));
 
         protected override void AppsSetup(Setup setup)
         {
@@ -55,56 +55,56 @@ namespace Allors.Domain
             var englishLocale = new Locales(this.Session).EnglishGreatBritain;
             var belgianLocale = new Locales(this.Session).DutchNetherlands;
 
-            new TermTypeBuilder(this.Session)
+            new InvoiceTermTypeBuilder(this.Session)
                 .WithName("Percentage Cancellation Charge")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Percentage Cancellation Charge").WithLocale(englishLocale).Build())
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Procent annulerings toeslag").WithLocale(belgianLocale).Build())
                 .WithUniqueId(PercentageCancellationChargeId)
                 .Build();
 
-            new TermTypeBuilder(this.Session)
+            new InvoiceTermTypeBuilder(this.Session)
                 .WithName("Days Cancellation Without Penalty")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Days Cancellation Without Penalty").WithLocale(englishLocale).Build())
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Aantal dagen annluatie zonder kost").WithLocale(belgianLocale).Build())
                 .WithUniqueId(DaysCancellationWithoutPenaltyId)
                 .Build();
             
-            new TermTypeBuilder(this.Session)
+            new InvoiceTermTypeBuilder(this.Session)
                 .WithName("Percentage Penalty Non Performance")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Percentage Penalty Non Performance").WithLocale(englishLocale).Build())
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Percentage toeslag slechte (non performance)").WithLocale(belgianLocale).Build())
                 .WithUniqueId(PercentagePenaltyNonPerformanceId)
                 .Build();
             
-            new TermTypeBuilder(this.Session)
+            new InvoiceTermTypeBuilder(this.Session)
                 .WithName("Days Within Which Deliverary Must Occur")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Days Within Which Deliverary Must Occur").WithLocale(englishLocale).Build())
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Aantal dagen waarin levering moet geberuren").WithLocale(belgianLocale).Build())
                 .WithUniqueId(DaysWithinWhichDeliveraryMustOccurId)
                 .Build();
             
-            new TermTypeBuilder(this.Session)
+            new InvoiceTermTypeBuilder(this.Session)
                 .WithName("Payment-net days")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Payment-net days").WithLocale(englishLocale).Build())
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Betaaltermijn").WithLocale(belgianLocale).Build())
                 .WithUniqueId(PaymentNetDaysId)
                 .Build();
             
-            new TermTypeBuilder(this.Session)
+            new InvoiceTermTypeBuilder(this.Session)
                 .WithName("Penalty for late fee")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Penalty for late fee").WithLocale(englishLocale).Build())
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Boete late betaling").WithLocale(belgianLocale).Build())
                 .WithUniqueId(LateFeeId)
                 .Build();
             
-            new TermTypeBuilder(this.Session)
+            new InvoiceTermTypeBuilder(this.Session)
                 .WithName("Penalty for collection agency")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Penalty for collection agency").WithLocale(englishLocale).Build())
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Boete incassobureau").WithLocale(belgianLocale).Build())
                 .WithUniqueId(CollectionAgencyPenaltyId)
                 .Build();
             
-            new TermTypeBuilder(this.Session)
+            new InvoiceTermTypeBuilder(this.Session)
                 .WithName("Non returnable sales item")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Non returnable sales item").WithLocale(englishLocale).Build())
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Niet retourneerbaat item").WithLocale(belgianLocale).Build())

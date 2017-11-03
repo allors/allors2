@@ -360,6 +360,8 @@
     <Compile Include="Apps\InventoryItemVariance.cs" />
     <Compile Include="Apps\InvestmentAccount.cs" />
     <Compile Include="Apps\InvoiceItemVersion.cs" />
+    <Compile Include="Apps\IncoTerm.cs" />
+    <Compile Include="Apps\IncoTermType.cs" />
     <Compile Include="Apps\InvoiceVersion.cs" />
     <Compile Include="Apps\Invoice.cs" />
     <Compile Include="Apps\InvoiceItem.cs" />
@@ -521,7 +523,6 @@
     <Compile Include="Apps\Priceable.cs" />
     <Compile Include="Apps\PriceComponent.cs" />
     <Compile Include="Apps\Printable.cs" />
-    <Compile Include="Apps\PrintQueue.cs" />
     <Compile Include="Apps\Priority.cs" />
     <Compile Include="Apps\Product.cs" />
     <Compile Include="Apps\ProductAssociation.cs" />
@@ -656,6 +657,7 @@
     <Compile Include="Apps\SurchargeAdjustment.cs" />
     <Compile Include="Apps\SurchargeComponent.cs" />
     <Compile Include="Apps\RequirementType.cs" />
+    <Compile Include="Apps\InvoiceTermType.cs" />
     <Compile Include="Apps\TransferVersion.cs" />
     <Compile Include="Apps\WebSiteCommunicationVersion.cs" />
     <Compile Include="Apps\WorkEffortVersion.cs" />
