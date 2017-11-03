@@ -1,5 +1,6 @@
-﻿import { Method } from "../../domain";
-import { InvokeRequest, InvokeResponse, PullResponse, PushRequest, PushResponse, ResponseError, ResponseType, SyncRequest, SyncResponse } from "../../domain";
+﻿import { Method } from "@baseDomain";
+import { InvokeRequest, InvokeResponse, PullResponse, PushRequest, PushResponse, ResponseError, ResponseType, SyncRequest, SyncResponse } from "@baseDomain";
+
 import { Http } from "./http/Http";
 import { HttpResponse } from "./http/HttpResponse";
 

@@ -5,17 +5,8 @@
   "repository": "https://github.com/Allors/allors2",
   "license": "LGPL-3.0",
   "scripts": {
-    "sync": "npm run sync-meta && npm run sync-domain",
-    "sync-meta": "sync-files ../Meta/src/allors/meta/base src/allors/meta/base",
-    "sync-domain": "sync-files ../Domain/src/allors/domain/base src/allors/domain/base",
-    "syncback": "npm run syncback-meta && npm run syncback-domain",
-    "syncback-meta": "sync-files src/allors/meta/base ../Meta/src/allors/meta/base",
-    "syncback-domain": "sync-files src/allors/domain/base ../Domain/src/allors/domain/base",
-    "postinstall": "npm run sync",
-    "pretest": "tsc",
-    "test": "mocha",
-    "cover": "istanbul cover ./node_modules/mocha/bin/_mocha",
-    "teamcity": "./node_modules/.bin/tsc && mocha --reporter mocha-teamcity-reporter"
+    "test": "mocha --compilers ts:ts-node/register -r tsconfig-paths/register ./test/**/*.spec.ts",
+    "tc:test": "mocha --compilers ts:ts-node/register -r tsconfig-paths/register --reporter mocha-teamcity-reporter ./test/**/*.spec.ts"
   },
   "dependencies": {
     "axios": "^0.16.2"
@@ -28,7 +19,8 @@
     "istanbul": "latest",
     "mocha": "latest",
     "mocha-teamcity-reporter": "latest",
-    "sync-files": "latest",
+    "ts-node": "latest",
+    "tsconfig-paths": "latest",
     "typescript": "latest"
   }
 }

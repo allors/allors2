@@ -5,7 +5,7 @@ import { TdDialogService, TdMediaService } from "@covalent/core";
 import { BehaviorSubject, Observable, Subscription } from "rxjs/Rx";
 
 import { AllorsService, ErrorService, Invoked, Loaded, Saved, Scope } from "@allors";
-import { Fetch,PullRequest, Query, TreeNode } from "@allors";
+import { Fetch, PullRequest, Query, TreeNode } from "@allors";
 import { Good, RequestForQuote, RequestItem, UnitOfMeasure } from "@allors";
 import { MetaDomain } from "@allors";
 

@@ -42,6 +42,7 @@
     "@ngx-translate/core": "8.0.0",
     "@ngx-translate/http-loader": "1.0.2",
     "@swimlane/ngx-charts": "5.3.1",
+    "axios": "^0.17.0",
     "classlist.js": "^1.1.20150312",
     "core-js": "^2.4.1",
     "d3": "^4.4.0",
@@ -77,6 +78,7 @@
     "karma-teamcity-reporter": "^1.0.0",
     "protractor": "~5.1.0",
     "ts-node": "^3.0.4",
+    "tsconfig-paths": "^2.3.0",
     "tslint": "5.2.0",
     "typescript": "~2.3.2"
   }

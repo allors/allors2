@@ -1,6 +1,6 @@
-import { Person } from "../generated/Person.g";
+import { Person } from "@generatedDomain/Person.g";
 
-declare module "../generated/Person.g" {
+declare module "@generatedDomain/Person.g" {
     interface Person {
         displayName;
 

@@ -1,5 +1,5 @@
 ﻿import { ObjectType } from "@baseMeta";
-import { Population as MetaPopulation } from "@baseMeta";
+import { MetaPopulation } from "@baseMeta";
 
 import { PullResponse } from "./../database/pull/PullResponse";
 import { SyncRequest } from "./../database/sync/SyncRequest";

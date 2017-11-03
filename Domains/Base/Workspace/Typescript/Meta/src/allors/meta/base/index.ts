@@ -1,7 +1,7 @@
 export { MetaObject } from "./MetaObject";
 export * from "./Data";
 
-export { Population } from "./Population";
+export { MetaPopulation } from "./MetaPopulation";
 export { ObjectType } from "./ObjectType";
 export { ObjectTyped } from "./ObjectTyped";
 

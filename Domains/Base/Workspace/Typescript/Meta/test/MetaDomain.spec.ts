@@ -1,6 +1,6 @@
 import { data } from "@generatedMeta/meta.g";
 import * as chai from "chai";
-import { Population } from "../src/allors/meta/base/index";
+import { MetaPopulation } from "../src/allors/meta/base/index";
 
 import { assert } from "chai";
 import "mocha";
@@ -10,7 +10,7 @@ describe("MetaDomain",
         describe("default constructor",
         () => {
 
-            const metaPopulation = new Population();
+            const metaPopulation = new MetaPopulation(data);
 
             it("should be newable",
                 () => {
@@ -18,8 +18,6 @@ describe("MetaDomain",
                 });
 
             describe("init with empty data population", () => {
-
-                metaPopulation.baseInit(data);
 
                 it("should contain Binary, Boolean, DateTime, Decimal, Float, Integer, String, Unique (from Core)",
                     () => {

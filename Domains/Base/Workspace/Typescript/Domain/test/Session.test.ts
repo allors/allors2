@@ -1,4 +1,4 @@
-import { Organisation, Person, Population, PushResponse, ResponseType, Session, Workspace } from "@allors";
+import { MetaPopulation, Organisation, Person, PushResponse, ResponseType, Session, Workspace } from "@allors";
 import { data } from "@generatedMeta/meta.g";
 import { constructorByName } from "../src/allors/domain/generated/domain.g";
 import { syncResponse } from "./fixture";
@@ -7,14 +7,11 @@ import { assert } from "chai";
 
 describe("Session",
     () => {
-        let metaPopulation: Population;
+        let metaPopulation: MetaPopulation;
         let workspace: Workspace;
 
         beforeEach(() => {
-            metaPopulation = new Population();
-            metaPopulation.baseInit(data);
-            metaPopulation.createMetaDomain();
-
+            metaPopulation = new MetaPopulation(data);
             workspace = new Workspace(metaPopulation, constructorByName);
         });
 

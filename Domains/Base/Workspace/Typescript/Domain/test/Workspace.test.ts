@@ -1,4 +1,4 @@
-import { Person, Population, PullResponse, ResponseType, Session, Workspace } from "@allors";
+import { MetaPopulation, Person, PullResponse, ResponseType, Session, Workspace } from "@allors";
 import { constructorByName } from "@generatedDomain/domain.g";
 import { data } from "@generatedMeta/meta.g";
 
@@ -10,14 +10,11 @@ import "mocha";
 describe("Workspace",
     () => {
 
-        let metaPopulation: Population;
+        let metaPopulation: MetaPopulation;
         let workspace: Workspace;
 
         beforeEach(() => {
-            metaPopulation = new Population();
-            metaPopulation.baseInit(data);
-            metaPopulation.createMetaDomain();
-
+            metaPopulation = new MetaPopulation(data);
             workspace = new Workspace(metaPopulation, constructorByName);
         });
 

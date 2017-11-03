@@ -18,7 +18,7 @@
         public IDatabase Database { get; set; }
 
         [HttpGet]
-        public IActionResult Init()
+        public IActionResult Setup()
         {
             var stateService = this.Database.ServiceProvider.GetRequiredService<IStateService>();
 
@@ -26,7 +26,15 @@
             database.Init();
             stateService.Clear();
 
-            return this.Ok("Init");
+            using (var session = database.CreateSession())
+            {
+              new Setup(session, null).Apply();
+
+              session.Derive();
+              session.Commit();
+            }
+
+            return this.Ok("Setup");
         }
 
         [HttpGet]

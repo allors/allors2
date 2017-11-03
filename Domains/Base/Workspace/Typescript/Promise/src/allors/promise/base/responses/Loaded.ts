@@ -1,4 +1,4 @@
-﻿import { ISession, ISessionObject, PullResponse } from "../../../domain";
+﻿import { ISession, ISessionObject, PullResponse } from "@baseDomain";
 
 export class Loaded {
 

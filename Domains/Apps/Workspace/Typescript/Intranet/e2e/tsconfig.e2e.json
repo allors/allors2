@@ -9,6 +9,20 @@
       "jasmine",
       "jasminewd2",
       "node"
-    ]
+    ],
+    "paths": {
+      "@baseMeta": ["../../../../../Base/Workspace/Typescript/Meta/src/allors/meta/base/index"],
+      "@baseDomain": ["../../../../../Base/Workspace/Typescript/Domain/src/allors/domain/base/index"],
+      "@basePromise/*": ["../../../../../Base/Workspace/Typescript/Promise/src/allors/promise/base/*"],
+
+      "@appsDomain": ["../../Domain/src/allors/domain/apps/index"],
+
+      "@generatedMeta/*": ["../../Domain/src/allors/meta/generated/*"],
+      "@generatedDomain/*": ["../../Domain/src/allors/domain/generated/*"],
+
+      "@allors": ["./allors"],
+
+      "*": ["../node_modules/*"]
+    }
   }
 }
