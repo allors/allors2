@@ -19,7 +19,7 @@
     "paths": {
       "@baseMeta": ["../../../../Base/Workspace/Typescript/Meta/src/allors/meta/base/index"],
       "@baseDomain": ["../../../../Base/Workspace/Typescript/Domain/src/allors/domain/base/index"],
-      "@basePromise": ["../../../../Base/Workspace/Typescript/Promise/src/allors/domain/promise/*"],
+      "@basePromise/*": ["../../../../Base/Workspace/Typescript/Promise/src/allors/promise/base/*"],
 
       "@baseAngular/*": ["../../../../Base/Workspace/Typescript/Angular/src/allors/angular/base/*"],
       "@baseMaterial/*": ["../../../../Base/Workspace/Typescript/Material/src/allors/material/base/*"],

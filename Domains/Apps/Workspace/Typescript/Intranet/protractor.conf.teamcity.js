@@ -23,6 +23,15 @@ exports.config = {
     require('ts-node').register({
       project: 'e2e/tsconfig.e2e.json'
     });
+
+    const tsConfig = require("./e2e/tsconfig.e2e.json");
+    const tsConfigPaths = require("tsconfig-paths");
+    const baseUrl = "./e2e";
+    tsConfigPaths.register({
+        baseUrl,
+        paths: tsConfig.compilerOptions.paths
+    });
+
     jasmine.getEnv().addReporter(new SpecReporter({ spec: { displayStacktrace: true } }));
   },
   SELENIUM_PROMISE_MANAGER: false

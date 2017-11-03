@@ -6,7 +6,7 @@ import { CanActivate, Router } from "@angular/router";
 import { constructorByName } from "@generatedDomain/domain.g";
 import { data, MetaDomain } from "@generatedMeta/meta.g";
 
-import { Database, Population, Workspace } from "@allors";
+import { Database, MetaPopulation, Workspace } from "@allors";
 import {
   AllorsService,
   AuthenticationService,
@@ -19,7 +19,7 @@ export class DefaultAllorsService extends AllorsService implements CanActivate {
 
   public workspace: Workspace;
   public database: Database;
-  public meta: MetaDomain;
+  public m: MetaDomain;
 
   constructor(
     public http: HttpClient,
@@ -30,12 +30,11 @@ export class DefaultAllorsService extends AllorsService implements CanActivate {
   ) {
     super();
 
-    const metaPopulation: Population = new Population();
-    metaPopulation.baseInit(data);
+    const metaPopulation = new MetaPopulation(data);
     this.database = new Database(http, environment.url);
     this.workspace = new Workspace(metaPopulation, constructorByName);
 
-    this.meta = this.workspace.metaPopulation.createMetaDomain();
+    this.m = metaPopulation.metaDomain;
   }
 
   public canActivate() {

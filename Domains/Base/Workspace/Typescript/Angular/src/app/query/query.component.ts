@@ -36,7 +36,7 @@ export class QueryComponent implements OnInit, OnDestroy {
       this.subscription.unsubscribe();
     }
 
-    const m = this.allors.meta;
+    const m = this.allors.m;
 
     const query = new Query(
       {

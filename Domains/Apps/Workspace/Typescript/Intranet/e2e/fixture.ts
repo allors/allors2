@@ -22,51 +22,58 @@ export class Fixture {
 
   public scope: Scope;
 
+  private workspace: Workspace;
+
   private url = "http://localhost:5000/";
 
   public constructor() {
     const metaPopulation = new MetaPopulation(data);
-    const workspace = new Workspace(metaPopulation, constructorByName);
-    this.objectTypeByName = workspace.metaPopulation.objectTypeByName;
+    this.workspace = new Workspace(metaPopulation, constructorByName);
+    this.objectTypeByName = this.workspace.metaPopulation.objectTypeByName;
     this.objectTypes = Object.keys(this.objectTypeByName).map((key) => this.objectTypeByName[key]);
     this.classes = this.objectTypes.filter((objectType) => objectType.isClass);
-
     this.m = metaPopulation.metaDomain;
-
-    const http = new AxiosHttp(this.url);
-    const database = new Database(http);
-    this.scope = new Scope(database, workspace);
   }
 
   public async setup(): Promise<any> {
+
+    const http = new AxiosHttp(this.url);
+    const database = new Database(http);
 
     await Axios.get(this.url + "Test/Setup");
 
     const loginPage = new LoginPage();
     await loginPage.login("administrator", "pwd");
 
-    const http = new AxiosHttp(this.url);
     await http.login("TestAuthentication/Token", "administrator");
+
+    this.scope = new Scope(database, this.workspace);
   }
 
   public async load(classes: ObjectType[] = null): Promise<Population> {
 
-    const query: Query[] = (classes || this.classes)
-        .map((objectType) => new Query(
-        {
-          name: objectType.name,
-          objectType,
-        }));
+    try {
+      const query: Query[] = (classes || this.classes)
+      .map((objectType) => new Query(
+      {
+        name: objectType.name,
+        objectType,
+      }));
 
-    const loaded: Loaded = await this.scope.load("Pull", new PullRequest({ query }));
+      const loaded: Loaded = await this.scope.load("Pull", new PullRequest({ query }));
 
-    const objectsByObjectType: Map<ObjectType, any[]> = new Map();
-    Object.keys(loaded.collections).forEach((key) => {
-      const objectType = this.objectTypeByName[key];
-      objectsByObjectType.set(objectType, loaded.collections[key]);
-    });
+      const objectsByObjectType: Map<ObjectType, any[]> = new Map();
 
-    const population = new Population(objectsByObjectType);
-    return population;
+      Object.keys(loaded.collections).forEach((key) => {
+        const objectType = this.objectTypeByName[key];
+        objectsByObjectType.set(objectType, loaded.collections[key]);
+      });
+
+      const population = new Population(objectsByObjectType);
+      return population;
+  } catch (e) {
+    console.log(e);
+    throw e;
   }
+}
 }

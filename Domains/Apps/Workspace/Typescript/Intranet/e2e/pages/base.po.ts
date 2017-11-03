@@ -4,6 +4,7 @@ import { config } from "./config";
 export abstract class BasePage {
 
   public async navigate(route: string): Promise<any> {
+    await browser.waitForAngular();
     await browser.executeScript(`
             var allors = window.allors;
             var ngZone = allors.ngZone;

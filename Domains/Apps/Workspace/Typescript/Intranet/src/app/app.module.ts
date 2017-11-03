@@ -31,7 +31,7 @@ import * as common from "./common";
     AppComponent,
   ],
   imports: [
-    RouterModule.forRoot(routes, { useHash: true }),
+    RouterModule.forRoot(routes, { useHash: false }),
     BrowserModule,
     BrowserAnimationsModule,
     HttpClientModule,

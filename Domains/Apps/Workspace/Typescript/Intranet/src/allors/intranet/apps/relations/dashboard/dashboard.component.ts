@@ -7,11 +7,10 @@ import { TdMediaService } from "@covalent/core";
 })
 export class DashboardComponent {
 
-  public title: string;
+  public title = "Relations Dashboard";
 
   constructor(public media: TdMediaService, private titleService: Title) {
 
-      this.title = "Dashboard";
       this.titleService.setTitle(this.title);
   }
 }
