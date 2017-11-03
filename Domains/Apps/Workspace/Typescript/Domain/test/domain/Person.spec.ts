@@ -1,4 +1,4 @@
-import { Person, Population, Session, Workspace } from "@allors";
+import { MetaPopulation, Person, Session, Workspace } from "@allors";
 import { constructorByName } from "@generatedDomain/domain.g";
 import { data, MetaDomain } from "@generatedMeta/meta.g";
 
@@ -11,10 +11,7 @@ describe("Person",
         let session: Session;
 
         beforeEach(() => {
-            const metaPopulation = new Population();
-            metaPopulation.baseInit(data);
-            metaPopulation.createMetaDomain();
-
+            const metaPopulation = new MetaPopulation(data);
             const workspace = new Workspace(metaPopulation, constructorByName);
 
             session = new Session(workspace);
