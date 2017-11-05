@@ -13,6 +13,7 @@ import * as common from "./common";
 // tslint:disable:object-literal-sort-keys
 export const routes: Routes = [
   { path: "login", component: common.LoginComponent },
+  { canActivate: [AllorsService],  path: "printinvoice/:id", component: ar.InvoicePrintComponent },
   {
     canActivate: [AllorsService],
     path: "", component: common.MainComponent,

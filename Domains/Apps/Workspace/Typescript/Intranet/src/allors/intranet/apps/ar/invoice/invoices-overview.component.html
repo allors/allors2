@@ -55,7 +55,8 @@
           </button>
           <mat-menu x-position="before" #menu="matMenu">
           <a [routerLink]="['/ar/invoice/' + invoice.id ]" mat-menu-item>Details</a>
-          </mat-menu>
+          <a [routerLink]="['/printinvoice/' + invoice.id ]" mat-menu-item>Print</a>
+        </mat-menu>
           </span>
 
           </mat-list-item>

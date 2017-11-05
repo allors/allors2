@@ -89,6 +89,11 @@ namespace Allors.Domain
             {
                 this.SalesOrderItemState = new SalesOrderItemStates(this.Strategy.Session).Created;
             }
+
+            if (this.ExistProduct && !this.ExistItemType)
+            {
+                this.ItemType = new SalesInvoiceItemTypes(this.Strategy.Session).ProductItem;
+            }
         }
 
         public void AppsOnPreDerive(ObjectOnPreDerive method)

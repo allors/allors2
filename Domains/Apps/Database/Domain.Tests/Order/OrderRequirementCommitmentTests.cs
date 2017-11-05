@@ -58,7 +58,12 @@ namespace Allors.Domain
                 .WithVatRegime(new VatRegimes(this.Session).Export)
                 .Build();
 
-            var goodOrderItem = new SalesOrderItemBuilder(this.Session).WithProduct(good).WithQuantityOrdered(1).Build();
+            var goodOrderItem = new SalesOrderItemBuilder(this.Session)
+                .WithItemType(new SalesInvoiceItemTypes(this.Session).ProductItem)
+                .WithProduct(good)
+                .WithQuantityOrdered(1)
+                .Build();
+
             salesOrder.AddSalesOrderItem(goodOrderItem);
 
             var customerRequirement = new RequirementBuilder(this.Session).WithDescription("100 gizmo's").Build();
