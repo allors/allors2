@@ -23,7 +23,6 @@ namespace Allors
 {
     using System;
     using System.IO;
-    using System.Reflection;
 
     using Allors.Adapters.Memory;
     using Allors.Domain;
