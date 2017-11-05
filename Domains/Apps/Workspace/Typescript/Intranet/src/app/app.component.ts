@@ -4,7 +4,7 @@ import { DomSanitizer } from "@angular/platform-browser";
 import { Router } from "@angular/router";
 
 @Component({
-  selector: "qs-app",
+  selector: "app-root",
   styleUrls: ["./app.component.scss"],
   templateUrl: "./app.component.html",
 })

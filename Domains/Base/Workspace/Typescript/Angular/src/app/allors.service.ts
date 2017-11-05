@@ -19,7 +19,7 @@ export class DefaultAllorsService extends AllorsService implements CanActivate {
 
   public workspace: Workspace;
   public database: Database;
-  public m: MetaDomain;
+  public meta: MetaDomain;
 
   constructor(
     public http: HttpClient,
@@ -34,7 +34,7 @@ export class DefaultAllorsService extends AllorsService implements CanActivate {
     this.database = new Database(http, environment.url);
     this.workspace = new Workspace(metaPopulation, constructorByName);
 
-    this.m = metaPopulation.metaDomain;
+    this.meta = metaPopulation.metaDomain;
   }
 
   public canActivate() {

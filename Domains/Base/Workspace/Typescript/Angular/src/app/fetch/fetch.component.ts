@@ -36,7 +36,7 @@ export class FetchComponent implements OnInit, OnDestroy {
       this.subscription.unsubscribe();
     }
 
-    const m = this.allors.m;
+    const m = this.allors.meta;
 
     const id = this.route.snapshot.paramMap.get("id");
 
