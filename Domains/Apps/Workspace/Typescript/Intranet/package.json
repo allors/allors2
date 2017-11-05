@@ -16,7 +16,8 @@
     "lint": "ng lint",
     "e2e": "ng e2e",
     "tc:test": "ng test --watch=false --reporters=teamcity",
-    "tc:e2e": "ng e2e --config ./protractor.conf.teamcity.js"
+    "tc:e2e": "ng e2e --config ./protractor.conf.teamcity.js",
+    "webdriver-update": "webdriver-manager update"
   },
   "repository": "https://github.com/allors/allors2.git",
   "license": "LGPL",

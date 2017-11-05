@@ -1,19 +1,19 @@
-import { Organisation } from '../generated/Organisation.g';
+import { Organisation } from "@generatedDomain/Organisation.g";
 
-declare module '../generated/Organisation.g' {
+declare module "@generatedDomain/Organisation.g" {
     interface Organisation {
         displayName: string;
 
     }
 }
 
-Object.defineProperty(Organisation.prototype, 'displayName', {
-  get: function (this: Organisation): string {
+Object.defineProperty(Organisation.prototype, "displayName", {
+  get(this: Organisation): string {
 
     if (this.Name) {
         return this.Name;
     }
 
-    return 'N/A';
+    return "N/A";
   },
 });

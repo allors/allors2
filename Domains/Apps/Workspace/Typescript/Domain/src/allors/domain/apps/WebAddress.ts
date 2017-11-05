@@ -1,17 +1,17 @@
-import { WebAddress } from '../generated/WebAddress.g';
+import { WebAddress } from "@generatedDomain/WebAddress.g";
 
-declare module '../generated/WebAddress.g' {
+declare module "@generatedDomain/WebAddress.g" {
   interface WebAddress {
     displayName;
   }
 }
 
-Object.defineProperty(WebAddress.prototype, 'displayName', {
-  get: function (this: WebAddress) {
+Object.defineProperty(WebAddress.prototype, "displayName", {
+  get(this: WebAddress) {
     if (this.ElectronicAddressString) {
         return this.ElectronicAddressString;
     }
 
-    return 'N/A';
+    return "N/A";
   },
 });

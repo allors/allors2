@@ -1,6 +1,6 @@
-import { SerialisedInventoryItem } from "../generated/SerialisedInventoryItem.g";
+import { SerialisedInventoryItem } from "@generatedDomain/SerialisedInventoryItem.g";
 
-declare module "../generated/SerialisedInventoryItem.g" {
+declare module "@generatedDomain/SerialisedInventoryItem.g" {
   interface SerialisedInventoryItem {
     age;
     yearsToGo;

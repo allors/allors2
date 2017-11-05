@@ -1,13 +1,13 @@
-import { PostalAddress } from '../generated/PostalAddress.g';
+import { PostalAddress } from "@generatedDomain/PostalAddress.g";
 
-declare module '../generated/PostalAddress.g' {
+declare module "@generatedDomain/PostalAddress.g" {
   interface PostalAddress {
     displayName;
   }
 }
 
-Object.defineProperty(PostalAddress.prototype, 'displayName', {
-  get: function (this: PostalAddress) {
+Object.defineProperty(PostalAddress.prototype, "displayName", {
+  get(this: PostalAddress) {
     let fullAddress: string;
     if (this.Address1 || this.Address2 || this.Address3) {
       if (this.Address1) {
@@ -19,22 +19,22 @@ Object.defineProperty(PostalAddress.prototype, 'displayName', {
       }
     }
 
-    if (fullAddress === '' && this.PostalBoundary.PostalCode) {
+    if (fullAddress === "" && this.PostalBoundary.PostalCode) {
       fullAddress += this.PostalBoundary.PostalCode;
     } else {
-      fullAddress += ' ' + this.PostalBoundary.PostalCode;
+      fullAddress += " " + this.PostalBoundary.PostalCode;
     }
 
-    if (fullAddress === '' && this.PostalBoundary.Locality) {
+    if (fullAddress === "" && this.PostalBoundary.Locality) {
       fullAddress += this.PostalBoundary.Locality;
     } else {
-      fullAddress += ' ' + this.PostalBoundary.Locality;
+      fullAddress += " " + this.PostalBoundary.Locality;
     }
 
-    if (fullAddress === '' && this.PostalBoundary.Country.Name) {
+    if (fullAddress === "" && this.PostalBoundary.Country.Name) {
       return fullAddress += this.PostalBoundary.Country.Name;
     } else {
-      return fullAddress += ' ' + this.PostalBoundary.Country.Name;
+      return fullAddress += " " + this.PostalBoundary.Country.Name;
     }
   },
 });

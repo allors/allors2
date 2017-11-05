@@ -1,17 +1,17 @@
-import { TelecommunicationsNumber } from '../generated/TelecommunicationsNumber.g';
+import { TelecommunicationsNumber } from "@generatedDomain/TelecommunicationsNumber.g";
 
-declare module '../generated/TelecommunicationsNumber.g' {
+declare module "@generatedDomain/TelecommunicationsNumber.g" {
   interface TelecommunicationsNumber {
     displayName;
   }
 }
 
-Object.defineProperty(TelecommunicationsNumber.prototype, 'displayName', {
-  get: function (this: TelecommunicationsNumber) {
-    let numberString: string = '';
+Object.defineProperty(TelecommunicationsNumber.prototype, "displayName", {
+  get(this: TelecommunicationsNumber) {
+    let numberString: string = "";
     if (this.CountryCode || this.AreaCode) {
       if (this.CountryCode && this.AreaCode) {
-        numberString = this.CountryCode + ' ' + this.AreaCode;
+        numberString = this.CountryCode + " " + this.AreaCode;
       } else if (this.CountryCode) {
         numberString = this.CountryCode;
       } else {
@@ -19,10 +19,10 @@ Object.defineProperty(TelecommunicationsNumber.prototype, 'displayName', {
       }
     }
 
-    if (numberString === '' && this.ContactNumber) {
+    if (numberString === "" && this.ContactNumber) {
       return numberString = this.ContactNumber;
     } else {
-      return numberString += ' ' + this.ContactNumber;
+      return numberString += " " + this.ContactNumber;
     }
   },
 });
