@@ -201,8 +201,8 @@ export const routes: Routes = [
         children: [
           { path: "", component: ar.InvoiceComponent },
           { path: ":id", component: ar.InvoiceComponent },
-          { path: ":id/item", component: ar.InvoiceInvoiceItemComponent },
-          { path: ":id/item/:itemId", component: ar.InvoiceInvoiceItemComponent },
+          { path: ":id/item", component: ar.InvoiceItemEditComponent },
+          { path: ":id/item/:itemId", component: ar.InvoiceItemEditComponent },
         ],
       },
 

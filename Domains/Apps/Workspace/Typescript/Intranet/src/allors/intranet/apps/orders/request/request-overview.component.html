@@ -81,20 +81,18 @@
 
             <ng-template let-requestItem let-last="last" ngFor [ngForOf]="request.RequestItems">
               <mat-list-item>
-                <div layout="row" class="link" [routerLink]="['/request/' + request.id + '/item/' + requestItem.id ]">
-                  <a-mat-static [object]="requestItem" [roleType]="m.RequestItem.Product" display="Name"></a-mat-static>
-                </div>
-                <div layout="row">
-                  <a-mat-static [object]="requestItem" [roleType]="m.RequestItem.Quantity"></a-mat-static>
-                </div>
+                <h3 *ngIf="requestItem.Product && request.CanWriteRequestItems" mat-line [routerLink]="['/request/' + request.id + '/item/' + requestItem.id ]">{{requestItem.Quantity}} * {{requestItem.Product.Name}}</h3>
+                <h3 *ngIf="requestItem.Product && !request.CanWriteRequestItems" mat-line>{{requestItem.Quantity}} * {{requestItem.Product.Name}}</h3>
+                <h4 *ngIf="serialisedInventoryItem?.ExpectedSalesPrice" mat-line>{{ serialisedInventoryItem.ExpectedSalesPrice }}</h4>
                 <span>
                   <button mat-icon-button [mat-menu-trigger-for]="menu">
                     <mat-icon>more_vert</mat-icon>
                   </button>
                   <mat-menu x-position="before" #menu="matMenu">
-                      <a [routerLink]="['/request/' + request.id + '/item/' + requestItem.id ]" mat-menu-item>Edit</a>
+                    <a *ngIf="request.CanWriteRequestItems" [routerLink]="['/request/' + request.id + '/item/' + requestItem.id ]" mat-menu-item>Edit</a>
+                    <button  mat-menu-item (click)="deleteRequestItem(requestItem)" [disabled]="!requestItem.CanExecuteDelete">Delete</button>
                   </mat-menu>
-              </span>
+                </span>
               </mat-list-item>
               <mat-divider *ngIf="!last" mat-inset></mat-divider>
             </ng-template>

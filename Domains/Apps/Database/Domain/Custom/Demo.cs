@@ -54,23 +54,23 @@ namespace Allors
                 .WithCurrency(euro)
                 .Build();
 
-          var ownBankAccount = new OwnBankAccountBuilder(this.Session).WithBankAccount(bankaccount).WithDescription("Hoofdbank").Build();
+            var ownBankAccount = new OwnBankAccountBuilder(this.Session).WithBankAccount(bankaccount).WithDescription("Hoofdbank").Build();
 
-          var allors = new InternalOrganisationBuilder(this.Session)
-                .WithTaxNumber("BE 0476967014")
-                .WithName("Allors")
-                .WithBillingAddress(postalAddress)
-                .WithGeneralPhoneNumber(phone)
-                .WithGeneralEmailAddress(email)
-                .WithBankAccount(bankaccount)
-                .WithDefaultPaymentMethod(ownBankAccount)
-                .WithRequestNumberPrefix("requestno: ")
-                .WithQuoteNumberPrefix("quoteno: ")
-                .WithInvoiceSequence(new InvoiceSequences(this.Session).EnforcedSequence)
-                .WithFiscalYearStartMonth(01)
-                .WithFiscalYearStartDay(01)
-                .WithDoAccounting(false)
-                .Build();
+            var internalOrganisation = this.Session.GetSingleton().InternalOrganisation;
+            internalOrganisation.TaxNumber = "BE 0476967014";
+            internalOrganisation.Name = "Allors";
+            internalOrganisation.GeneralCorrespondence = postalAddress;
+            internalOrganisation.BillingAddress = postalAddress;
+            internalOrganisation.GeneralPhoneNumber = phone;
+            internalOrganisation.GeneralEmailAddress = email;
+            internalOrganisation.AddBankAccount(bankaccount);
+            internalOrganisation.DefaultPaymentMethod = ownBankAccount;
+            internalOrganisation.RequestNumberPrefix = "requestno:";
+            internalOrganisation.QuoteNumberPrefix = "quoteno: ";
+            internalOrganisation.InvoiceSequence = new InvoiceSequences(this.Session).EnforcedSequence;
+            internalOrganisation.FiscalYearStartMonth = 01;
+            internalOrganisation.FiscalYearStartDay = 01;
+            internalOrganisation.DoAccounting = false;
 
             var logo = this.DataPath + @"\admin\images\logo.png";
 
@@ -81,7 +81,7 @@ namespace Allors
                 var fileName = System.IO.Path.GetFileNameWithoutExtension(fileInfo.FullName).ToLowerInvariant();
                 var content = File.ReadAllBytes(fileInfo.FullName);
                 var image = new MediaBuilder(this.Session).WithFileName(fileName).WithInData(content).Build();
-                allors.LogoImage = image;
+                internalOrganisation.LogoImage = image;
             }
 
             var facility = new FacilityBuilder(this.Session)
@@ -90,8 +90,8 @@ namespace Allors
                 .WithFacilityType(new FacilityTypes(this.Session).Warehouse)
                 .Build();
 
-            allors.DefaultFacility = facility;
-            
+            internalOrganisation.DefaultFacility = facility;
+
             new StoreBuilder(this.Session)
                 .WithName("Allors store")
                 .WithOutgoingShipmentNumberPrefix("shipmentno: ")
@@ -113,7 +113,7 @@ namespace Allors
                 .WithUseAsDefault(true)
                 .Build();
 
-            var acmeInquiries= new PartyContactMechanismBuilder(this.Session)
+            var acmeInquiries = new PartyContactMechanismBuilder(this.Session)
                 .WithContactMechanism(new TelecommunicationsNumberBuilder(this.Session).WithCountryCode("+1").WithContactNumber("111 222 333").Build())
                 .WithContactPurpose(new ContactMechanismPurposes(this.Session).GeneralPhoneNumber)
                 .WithContactPurpose(new ContactMechanismPurposes(this.Session).OrderInquiriesPhone)

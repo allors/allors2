@@ -8,12 +8,13 @@
         <button *ngIf="quoteItem.CanExecuteCancel" mat-button type="button" (click)="cancel()">Cancel</button>
       </div>
 
-      <a-mat-autocomplete [object]="quoteItem" [roleType]="m.QuoteItem.Product" [options]="goods" display="Name"></a-mat-autocomplete>
+      <a-mat-autocomplete [object]="quoteItem" [roleType]="m.QuoteItem.Product" [options]="goods" display="Name"
+        (onSelect)="goodSelected($event)" [filter]="goodsFilter.create()"></a-mat-autocomplete>
       <a-mat-input [object]="quoteItem" [roleType]="m.QuoteItem.Quantity"></a-mat-input>
       <a-mat-select [object]="quoteItem" [roleType]="m.QuoteItem.UnitOfMeasure" [options]="unitsOfMeasure" display="Name"></a-mat-select>
       <a-mat-input [object]="quoteItem" [roleType]="m.QuoteItem.UnitPrice"></a-mat-input>
       <a-mat-static *ngIf="requestItem" [object]="requestItem" [roleType]="m.RequestItem.MaximumAllowedPrice"></a-mat-static>
-      <a-mat-static *ngIf="inventoryItem" [object]="inventoryItem" [roleType]="m.SerialisedInventoryItem.ExpectedSalesPrice"></a-mat-static>
+      <a-mat-static *ngIf="serialisedInventoryItem?.ExpectedSalesPrice" [object]="serialisedInventoryItem" [roleType]="m.SerialisedInventoryItem.ExpectedSalesPrice"></a-mat-static>
       <a-mat-datepicker [object]="quoteItem" [roleType]="m.QuoteItem.RequiredByDate" disabled="true"></a-mat-datepicker>
       <a-mat-datepicker [object]="quoteItem" [roleType]="m.QuoteItem.EstimatedDeliveryDate"></a-mat-datepicker>
       <a-mat-static *ngIf="requestItem?.Comment" [object]="requestItem" [roleType]="m.RequestItem.Comment"></a-mat-static>

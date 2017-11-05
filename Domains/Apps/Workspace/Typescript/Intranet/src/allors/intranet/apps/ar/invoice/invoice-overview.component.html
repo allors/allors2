@@ -1,11 +1,13 @@
 <mat-toolbar>
   <div layout="row" layout-align="start center" flex>
     <button mat-icon-button tdLayoutManageListOpen [hideWhenOpened]="true" style="display: none">
-          <mat-icon>arrow_back</mat-icon>
-        </button>
+      <mat-icon>arrow_back</mat-icon>
+    </button>
     <span>{{title}}</span>
     <span flex></span>
-    <button mat-icon-button><mat-icon>settings</mat-icon></button>
+    <button mat-icon-button>
+      <mat-icon>settings</mat-icon>
+    </button>
   </div>
 </mat-toolbar>
 
@@ -70,21 +72,17 @@
 
             <ng-template let-invoiceItem let-last="last" ngFor [ngForOf]="invoice.SalesInvoiceItems">
               <mat-list-item>
-                <div layout="row" class="link" [routerLink]="['/invoice/' + invoice.id + '/item/' + invoiceItem.id ]">
-                  <a-mat-static *ngIf="invoiceItem.Product" [object]="invoiceItem" [roleType]="m.SalesInvoiceItem.Product" display="Name"></a-mat-static>
-                </div>
-                <div layout="row">
-                  <a-mat-static [object]="invoiceItem" [roleType]="m.SalesInvoiceItem.Quantity"></a-mat-static>
-                </div>
+                <h3 *ngIf="invoiceItem.Product && invoice.CanWriteSalesInvoiceItems" mat-line [routerLink]="['/invoice/' + invoice.id + '/item/' + invoiceItem.id ]">{{invoiceItem.Quantity}} * {{invoiceItem.Product.Name}}</h3>
+                <h3 *ngIf="invoiceItem.Product && !invoice.CanWriteSalesInvoiceItems" mat-line [routerLink]="['/invoice/' + invoice.id + '/item/' + invoiceItem.id ]">{{invoiceItem.Quantity}} * {{invoiceItem.Product.Name}}</h3>
 
-                    <span>
+                <span>
                   <button mat-icon-button [mat-menu-trigger-for]="menu">
                     <mat-icon>more_vert</mat-icon>
                   </button>
                   <mat-menu x-position="before" #menu="matMenu">
-                      <a [routerLink]="['/invoice/' + invoice.id + '/item/' + invoiceItem.id ]" mat-menu-item>Edit</a>
+                    <a *ngIf="invoice.CanWriteSalesInvoiceItems" [routerLink]="['/invoice/' + invoice.id + '/item/' + invoiceItem.id ]" mat-menu-item>Edit</a>
                   </mat-menu>
-              </span>
+                </span>
               </mat-list-item>
               <mat-divider *ngIf="!last" mat-inset></mat-divider>
             </ng-template>
@@ -114,7 +112,7 @@
 
                 <span hide-xs hide-sm hide-md flex-gt-xs="60" flex-xs="40" layout-gt-xs="row">
                   <div class="mat-caption tc-grey-500" flex-gt-xs="50"> Start: {{ status.StartDateTime | date }}</div>
-                  </span>
+                </span>
 
               </mat-list-item>
             </ng-template>

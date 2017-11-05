@@ -6,7 +6,7 @@ import { BehaviorSubject, Observable,  Subscription } from "rxjs/Rx";
 
 import { AllorsService, ErrorService, Filter, Invoked, Loaded, Saved, Scope } from "@allors";
 import { Fetch, Path, PullRequest, Query, TreeNode } from "@allors";
-import { Good, ProductQuote, QuoteItem, RequestItem, SerialisedInventoryItem, UnitOfMeasure } from "@allors";
+import { Good, InventoryItem, NonSerialisedInventoryItem, Product, ProductQuote, QuoteItem, RequestItem, SerialisedInventoryItem, UnitOfMeasure } from "@allors";
 import { MetaDomain } from "@allors";
 
 @Component({
@@ -21,8 +21,9 @@ export class QuoteItemEditComponent implements OnInit, AfterViewInit, OnDestroy 
   public quote: ProductQuote;
   public quoteItem: QuoteItem;
   public requestItem: RequestItem;
-  public inventoryItems: SerialisedInventoryItem[];
-  public inventoryItem: SerialisedInventoryItem;
+  public inventoryItems: InventoryItem[];
+  public serialisedInventoryItem: SerialisedInventoryItem;
+  public nonSerialisedInventoryItem: NonSerialisedInventoryItem;
   public goods: Good[];
   public unitsOfMeasure: UnitOfMeasure[];
 
@@ -42,10 +43,9 @@ export class QuoteItemEditComponent implements OnInit, AfterViewInit, OnDestroy 
     public media: TdMediaService, private changeDetectorRef: ChangeDetectorRef) {
     this.m = this.allorsService.meta;
 
-    this.goodsFilter = new Filter({scope: this.scope, objectType: this.m.Product, roleTypes: [this.m.Product.Name]});
-
     this.scope = new Scope(allorsService.database, allorsService.workspace);
     this.refresh$ = new BehaviorSubject<Date>(undefined);
+    this.goodsFilter = new Filter({scope: this.scope, objectType: this.m.Good, roleTypes: [this.m.Good.Name]});
   }
 
   public ngOnInit(): void {
@@ -96,35 +96,22 @@ export class QuoteItemEditComponent implements OnInit, AfterViewInit, OnDestroy 
         this.scope.session.reset();
 
         return this.scope
-          .load("Pull", new PullRequest({ fetch, query }))
-          .switchMap((loaded: Loaded) => {
-            this.quote = loaded.objects.productQuote as ProductQuote;
-            this.quoteItem = loaded.objects.quoteItem as QuoteItem;
-            this.requestItem = loaded.objects.requestItem as RequestItem;
-            this.goods = loaded.collections.goods as Good[];
-            this.unitsOfMeasure = loaded.collections.unitsOfMeasure as UnitOfMeasure[];
-
-            if (!this.quoteItem) {
-              this.title = "Add Quote Item";
-              this.quoteItem = this.scope.session.create("QuoteItem") as QuoteItem;
-              this.quote.AddQuoteItem(this.quoteItem);
-            }
-
-            const inventoryItemFetch: Fetch[] = [
-              new Fetch({
-                id: this.quoteItem.Product.id,
-                name: "inventoryItem",
-                path: new Path({ step: m.Good.InventoryItemsWhereGood }),
-              }),
-            ];
-
-            return this.scope
-              .load("Pull", new PullRequest({ fetch: inventoryItemFetch }));
-          });
+          .load("Pull", new PullRequest({ fetch, query }));
       })
       .subscribe((loaded: Loaded) => {
-        this.inventoryItems = loaded.collections.inventoryItem as SerialisedInventoryItem[];
-        this.inventoryItem = this.inventoryItems[0];
+        this.quote = loaded.objects.productQuote as ProductQuote;
+        this.quoteItem = loaded.objects.quoteItem as QuoteItem;
+        this.requestItem = loaded.objects.requestItem as RequestItem;
+        this.goods = loaded.collections.goods as Good[];
+        this.unitsOfMeasure = loaded.collections.unitsOfMeasure as UnitOfMeasure[];
+
+        if (!this.quoteItem) {
+          this.title = "Add Quote Item";
+          this.quoteItem = this.scope.session.create("QuoteItem") as QuoteItem;
+          this.quote.AddQuoteItem(this.quoteItem);
+        } else {
+          this.goodSelected(this.quoteItem.Product);
+        }
       },
       (error: Error) => {
         this.errorService.message(error);
@@ -142,6 +129,34 @@ export class QuoteItemEditComponent implements OnInit, AfterViewInit, OnDestroy 
     if (this.subscription) {
       this.subscription.unsubscribe();
     }
+  }
+
+  public goodSelected(product: Product): void {
+
+    const fetch: Fetch[] = [
+      new Fetch({
+        id: product.id,
+        name: "inventoryItem",
+        path: new Path({ step: this.m.Good.InventoryItemsWhereGood }),
+      }),
+    ];
+
+    this.scope
+        .load("Pull", new PullRequest({ fetch }))
+        .subscribe((loaded: Loaded) => {
+          this.inventoryItems = loaded.collections.inventoryItem as InventoryItem[];
+          if (this.inventoryItems[0] instanceof SerialisedInventoryItem) {
+            this.serialisedInventoryItem = this.inventoryItems[0] as SerialisedInventoryItem;
+          }
+          if (this.inventoryItems[0] instanceof NonSerialisedInventoryItem) {
+            this.nonSerialisedInventoryItem = this.inventoryItems[0] as NonSerialisedInventoryItem;
+          }
+        },
+        (error: Error) => {
+          this.errorService.message(error);
+          this.goBack();
+        },
+      );
   }
 
   public submit(): void {

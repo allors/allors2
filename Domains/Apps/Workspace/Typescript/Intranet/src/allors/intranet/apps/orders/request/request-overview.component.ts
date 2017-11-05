@@ -7,7 +7,7 @@ import { BehaviorSubject, Subscription } from "rxjs/Rx";
 
 import { AllorsService, ErrorService, Invoked, Loaded, Scope } from "@allors";
 import { Fetch, Path, PullRequest, Query, TreeNode } from "@allors";
-import { Product, ProductQuote, RequestForQuote } from "@allors";
+import { Good, InventoryItem, NonSerialisedInventoryItem, Product, ProductQuote, RequestForQuote, RequestItem, SerialisedInventoryItem } from "@allors";
 import { MetaDomain } from "@allors";
 
 @Component({
@@ -19,7 +19,9 @@ export class RequestOverviewComponent implements OnInit, AfterViewInit, OnDestro
   public title: string = "Requests Overview";
   public request: RequestForQuote;
   public quote: ProductQuote;
-  public products: Product[] = [];
+  public inventoryItems: InventoryItem[];
+  public serialisedInventoryItem: SerialisedInventoryItem;
+  public nonSerialisedInventoryItem: NonSerialisedInventoryItem;
 
   private subscription: Subscription;
   private scope: Scope;
@@ -92,21 +94,12 @@ export class RequestOverviewComponent implements OnInit, AfterViewInit, OnDestro
           fetch.push(quoteFetch);
         }
 
-        const query: Query[] = [
-          new Query(
-            {
-              name: "products",
-              objectType: m.Product,
-            }),
-        ];
-
         this.scope.session.reset();
 
         return this.scope
-          .load("Pull", new PullRequest({ fetch, query }));
+          .load("Pull", new PullRequest({ fetch }));
       })
       .subscribe((loaded: Loaded) => {
-        this.products = loaded.collections.products as Product[];
         this.request = loaded.objects.request as RequestForQuote;
         this.quote = loaded.objects.quote as ProductQuote;
       },
@@ -141,6 +134,51 @@ export class RequestOverviewComponent implements OnInit, AfterViewInit, OnDestro
       },
       (error: Error) => {
         this.errorService.dialog(error);
+      });
+  }
+
+  public getPrice(product: Good): void {
+
+    const fetch: Fetch[] = [
+      new Fetch({
+        id: product.id,
+        name: "inventoryItem",
+        path: new Path({ step: this.m.Good.InventoryItemsWhereGood }),
+      }),
+    ];
+    this.scope
+        .load("Pull", new PullRequest({ fetch }))
+        .subscribe((loaded: Loaded) => {
+          this.inventoryItems = loaded.collections.inventoryItem as InventoryItem[];
+          if (this.inventoryItems[0] instanceof SerialisedInventoryItem) {
+            this.serialisedInventoryItem = this.inventoryItems[0] as SerialisedInventoryItem;
+          }
+          if (this.inventoryItems[0] instanceof NonSerialisedInventoryItem) {
+            this.nonSerialisedInventoryItem = this.inventoryItems[0] as NonSerialisedInventoryItem;
+          }
+        },
+        (error: Error) => {
+          this.errorService.message(error);
+          this.goBack();
+        },
+      );
+  }
+
+  public deleteRequestItem(requestItem: RequestItem): void {
+    this.dialogService
+      .openConfirm({ message: "Are you sure you want to delete this item?" })
+      .afterClosed()
+      .subscribe((confirm: boolean) => {
+        if (confirm) {
+          this.scope.invoke(requestItem.Delete)
+            .subscribe((invoked: Invoked) => {
+              this.snackBar.open("Successfully deleted.", "close", { duration: 5000 });
+              this.refresh();
+            },
+            (error: Error) => {
+              this.errorService.dialog(error);
+            });
+        }
       });
   }
 

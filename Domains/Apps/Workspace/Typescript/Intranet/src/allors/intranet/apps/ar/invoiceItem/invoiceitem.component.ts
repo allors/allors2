@@ -4,15 +4,15 @@ import { ActivatedRoute, Router, UrlSegment } from "@angular/router";
 import { TdDialogService, TdMediaService } from "@covalent/core";
 import { BehaviorSubject, Observable, Subscription } from "rxjs/Rx";
 
-import { AllorsService, ErrorService, Loaded, Saved, Scope } from "@allors";
-import { Fetch, PullRequest, Query, TreeNode } from "@allors";
-import { Good, SalesInvoice, SalesInvoiceItem, SalesInvoiceItemType, SalesOrderItem } from "@allors";
+import { AllorsService, ErrorService, Filter, Loaded, Saved, Scope } from "@allors";
+import { Fetch, Path, PullRequest, Query, TreeNode } from "@allors";
+import { Good, InventoryItem, NonSerialisedInventoryItem, Product, SalesInvoice, SalesInvoiceItem, SalesInvoiceItemType, SalesOrderItem, SerialisedInventoryItem } from "@allors";
 import { MetaDomain } from "@allors";
 
 @Component({
-  templateUrl: "./invoice-invoiceitem.component.html",
+  templateUrl: "./invoiceitem.component.html",
 })
-export class InvoiceInvoiceItemComponent implements OnInit, AfterViewInit, OnDestroy {
+export class InvoiceItemEditComponent implements OnInit, AfterViewInit, OnDestroy {
 
   public m: MetaDomain;
 
@@ -21,9 +21,14 @@ export class InvoiceInvoiceItemComponent implements OnInit, AfterViewInit, OnDes
   public invoice: SalesInvoice;
   public invoiceItem: SalesInvoiceItem;
   public orderItem: SalesOrderItem;
+  public inventoryItems: InventoryItem[];
+  public serialisedInventoryItem: SerialisedInventoryItem;
+  public nonSerialisedInventoryItem: NonSerialisedInventoryItem;
   public goods: Good[];
   public salesInvoiceItemTypes: SalesInvoiceItemType[];
   public productItemType: SalesInvoiceItemType;
+
+  public goodsFilter: Filter;
 
   private refresh$: BehaviorSubject<Date>;
   private subscription: Subscription;
@@ -38,9 +43,10 @@ export class InvoiceInvoiceItemComponent implements OnInit, AfterViewInit, OnDes
     private dialogService: TdDialogService,
     public media: TdMediaService, private changeDetectorRef: ChangeDetectorRef) {
 
-    this.scope = new Scope(allorsService.database, allorsService.workspace);
     this.m = this.allorsService.meta;
+    this.scope = new Scope(allorsService.database, allorsService.workspace);
     this.refresh$ = new BehaviorSubject<Date>(undefined);
+    this.goodsFilter = new Filter({scope: this.scope, objectType: this.m.Good, roleTypes: [this.m.Good.Name]});
   }
 
   public ngOnInit(): void {
@@ -95,12 +101,16 @@ export class InvoiceInvoiceItemComponent implements OnInit, AfterViewInit, OnDes
         this.orderItem = loaded.objects.orderItem as SalesOrderItem;
         this.goods = loaded.collections.goods as Good[];
         this.salesInvoiceItemTypes = loaded.collections.salesInvoiceItemTypes as SalesInvoiceItemType[];
+        this.productItemType = this.salesInvoiceItemTypes.find((v: SalesInvoiceItemType) => v.UniqueId.toUpperCase() === "0D07F778-2735-44CB-8354-FB887ADA42AD");
 
         if (!this.invoiceItem) {
           this.title = "Add invoice Item";
           this.invoiceItem = this.scope.session.create("SalesInvoiceItem") as SalesInvoiceItem;
-          this.productItemType = this.salesInvoiceItemTypes.find((v: SalesInvoiceItemType) => v.UniqueId.toUpperCase() === "0D07F778-2735-44CB-8354-FB887ADA42AD");
           this.invoice.AddSalesInvoiceItem(this.invoiceItem);
+        } else {
+          if (this.invoiceItem.SalesInvoiceItemType === this.productItemType) {
+            this.goodSelected(this.invoiceItem.Product);
+          }
         }
       },
       (error: Error) => {
@@ -121,11 +131,37 @@ export class InvoiceInvoiceItemComponent implements OnInit, AfterViewInit, OnDes
     }
   }
 
-  public save(): void {
+  public goodSelected(product: Product): void {
 
-    if (this.invoiceItem.Product) {
-      this.invoiceItem.SalesInvoiceItemType = this.productItemType;
-    }
+    this.invoiceItem.SalesInvoiceItemType = this.productItemType;
+
+    const fetch: Fetch[] = [
+      new Fetch({
+        id: product.id,
+        name: "inventoryItem",
+        path: new Path({ step: this.m.Good.InventoryItemsWhereGood }),
+      }),
+    ];
+
+    this.scope
+        .load("Pull", new PullRequest({ fetch }))
+        .subscribe((loaded: Loaded) => {
+          this.inventoryItems = loaded.collections.inventoryItem as InventoryItem[];
+          if (this.inventoryItems[0] instanceof SerialisedInventoryItem) {
+            this.serialisedInventoryItem = this.inventoryItems[0] as SerialisedInventoryItem;
+          }
+          if (this.inventoryItems[0] instanceof NonSerialisedInventoryItem) {
+            this.nonSerialisedInventoryItem = this.inventoryItems[0] as NonSerialisedInventoryItem;
+          }
+        },
+        (error: Error) => {
+          this.errorService.message(error);
+          this.goBack();
+        },
+      );
+  }
+
+  public save(): void {
 
     this.scope
       .save()

@@ -4,9 +4,9 @@ import { ActivatedRoute, Router, UrlSegment } from "@angular/router";
 import { TdDialogService, TdMediaService } from "@covalent/core";
 import { BehaviorSubject, Observable, Subscription } from "rxjs/Rx";
 
-import { AllorsService, ErrorService, Invoked, Loaded, Saved, Scope } from "@allors";
-import { Fetch, PullRequest, Query, TreeNode } from "@allors";
-import { Good, RequestForQuote, RequestItem, UnitOfMeasure } from "@allors";
+import { AllorsService, ErrorService, Filter, Invoked, Loaded, Saved, Scope } from "@allors";
+import { Fetch, Path, PullRequest, Query, TreeNode } from "@allors";
+import { Good, InventoryItem, NonSerialisedInventoryItem, Product, RequestForQuote, RequestItem, SerialisedInventoryItem, UnitOfMeasure } from "@allors";
 import { MetaDomain } from "@allors";
 
 @Component({
@@ -21,7 +21,12 @@ export class RequestItemEditComponent implements OnInit, AfterViewInit, OnDestro
   public request: RequestForQuote;
   public requestItem: RequestItem;
   public goods: Good[];
+  public inventoryItems: InventoryItem[];
+  public serialisedInventoryItem: SerialisedInventoryItem;
+  public nonSerialisedInventoryItem: NonSerialisedInventoryItem;
   public unitsOfMeasure: UnitOfMeasure[];
+
+  public goodsFilter: Filter;
 
   private refresh$: BehaviorSubject<Date>;
   private subscription: Subscription;
@@ -36,9 +41,10 @@ export class RequestItemEditComponent implements OnInit, AfterViewInit, OnDestro
     private dialogService: TdDialogService,
     public media: TdMediaService, private changeDetectorRef: ChangeDetectorRef) {
 
-    this.scope = new Scope(allorsService.database, allorsService.workspace);
     this.m = this.allorsService.meta;
+    this.scope = new Scope(allorsService.database, allorsService.workspace);
     this.refresh$ = new BehaviorSubject<Date>(undefined);
+    this.goodsFilter = new Filter({scope: this.scope, objectType: this.m.Good, roleTypes: [this.m.Good.Name]});
   }
 
   public ngOnInit(): void {
@@ -94,6 +100,8 @@ export class RequestItemEditComponent implements OnInit, AfterViewInit, OnDestro
           this.title = "Add Request Item";
           this.requestItem = this.scope.session.create("RequestItem") as RequestItem;
           this.request.AddRequestItem(this.requestItem);
+        } else {
+          this.goodSelected(this.requestItem.Product);
         }
       },
       (error: Error) => {
@@ -101,6 +109,34 @@ export class RequestItemEditComponent implements OnInit, AfterViewInit, OnDestro
         this.goBack();
       },
     );
+  }
+
+  public goodSelected(product: Product): void {
+
+    const fetch: Fetch[] = [
+      new Fetch({
+        id: product.id,
+        name: "inventoryItem",
+        path: new Path({ step: this.m.Good.InventoryItemsWhereGood }),
+      }),
+    ];
+
+    this.scope
+        .load("Pull", new PullRequest({ fetch }))
+        .subscribe((loaded: Loaded) => {
+          this.inventoryItems = loaded.collections.inventoryItem as InventoryItem[];
+          if (this.inventoryItems[0] instanceof SerialisedInventoryItem) {
+            this.serialisedInventoryItem = this.inventoryItems[0] as SerialisedInventoryItem;
+          }
+          if (this.inventoryItems[0] instanceof NonSerialisedInventoryItem) {
+            this.nonSerialisedInventoryItem = this.inventoryItems[0] as NonSerialisedInventoryItem;
+          }
+        },
+        (error: Error) => {
+          this.errorService.message(error);
+          this.goBack();
+        },
+      );
   }
 
   public ngAfterViewInit(): void {

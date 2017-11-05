@@ -1,11 +1,13 @@
 <mat-toolbar>
   <div layout="row" layout-align="start center" flex>
     <button mat-icon-button tdLayoutManageListOpen [hideWhenOpened]="true" style="display: none">
-          <mat-icon>arrow_back</mat-icon>
-        </button>
+      <mat-icon>arrow_back</mat-icon>
+    </button>
     <span>{{title}}</span>
     <span flex></span>
-    <button mat-icon-button><mat-icon>settings</mat-icon></button>
+    <button mat-icon-button>
+      <mat-icon>settings</mat-icon>
+    </button>
   </div>
 </mat-toolbar>
 
@@ -74,20 +76,17 @@
 
             <ng-template let-orderItem let-last="last" ngFor [ngForOf]="order.SalesOrderItems">
               <mat-list-item>
-                <div layout="row" class="link" [routerLink]="['/salesOrder/' + order.id + '/item/' + orderItem.id ]">
-                  <a-mat-static [object]="orderItem" [roleType]="m.SalesOrderItem.Product" display="Name"></a-mat-static>
-                </div>
-                <div layout="row">
-                  <a-mat-static [object]="orderItem" [roleType]="m.SalesOrderItem.QuantityOrdered"></a-mat-static>
-                </div>
+                <h3 *ngIf="orderItem.Product && order.CanWriteSalesOrderItems" mat-line [routerLink]="['/salesOrder/' + order.id + '/item/' + orderItem.id ]">{{orderItem.Quantity}} * {{orderItem.Product.Name}}</h3>
+                <h3 *ngIf="orderItem.Product && !order.CanWriteSalesOrderItems" mat-line>{{orderItem.Quantity}} * {{orderItem.Product.Name}}</h3>
+
                 <span>
                   <button mat-icon-button [mat-menu-trigger-for]="menu">
                     <mat-icon>more_vert</mat-icon>
                   </button>
                   <mat-menu x-position="before" #menu="matMenu">
-                      <a [routerLink]="['/salesOrder/' + order.id + '/item/' + orderItem.id ]" mat-menu-item>Edit</a>
+                    <a *ngIf="order.CanWriteSalesOrderItems" [routerLink]="['/salesOrder/' + order.id + '/item/' + orderItem.id ]" mat-menu-item>Edit</a>
                   </mat-menu>
-              </span>
+                </span>
               </mat-list-item>
               <mat-divider *ngIf="!last" mat-inset></mat-divider>
             </ng-template>
@@ -117,7 +116,7 @@
 
                 <span hide-xs hide-sm hide-md flex-gt-xs="60" flex-xs="40" layout-gt-xs="row">
                   <div class="mat-caption tc-grey-500" flex-gt-xs="50"> Start: {{ status.StartDateTime | date }}</div>
-                  </span>
+                </span>
 
               </mat-list-item>
             </ng-template>

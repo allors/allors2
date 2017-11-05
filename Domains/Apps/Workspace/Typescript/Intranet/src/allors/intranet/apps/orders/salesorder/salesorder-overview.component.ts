@@ -91,11 +91,6 @@ export class SalesOrderOverviewComponent implements OnInit, AfterViewInit, OnDes
             ],
             name: "order",
           }),
-          new Fetch({
-            id,
-            name: "quote",
-            path: new Path({ step: m.SalesOrder.Quote }),
-          }),
         ];
 
         const salesInvoiceFetch: Fetch = new Fetch({
@@ -123,7 +118,6 @@ export class SalesOrderOverviewComponent implements OnInit, AfterViewInit, OnDes
       })
       .subscribe((loaded: Loaded) => {
         this.goods = loaded.collections.goods as Good[];
-        this.quote = loaded.objects.quote as ProductQuote;
         this.order = loaded.objects.order as SalesOrder;
         this.salesInvoice = loaded.objects.salesInvoice as SalesInvoice;
 

@@ -4,9 +4,9 @@ import { ActivatedRoute, Router, UrlSegment } from "@angular/router";
 import { TdDialogService, TdMediaService } from "@covalent/core";
 import { BehaviorSubject, Observable, Subscription } from "rxjs/Rx";
 
-import { AllorsService, ErrorService, Loaded, Saved, Scope } from "@allors";
-import { Fetch, PullRequest, Query, TreeNode } from "@allors";
-import { Good, QuoteItem, SalesOrder, SalesOrderItem, VatRate, VatRegime } from "@allors";
+import { AllorsService, ErrorService, Filter, Loaded, Saved, Scope } from "@allors";
+import { Fetch, Path, PullRequest, Query, TreeNode } from "@allors";
+import { DiscountAdjustment, Good, InventoryItem, NonSerialisedInventoryItem, Product, QuoteItem, SalesOrder, SalesOrderItem, SerialisedInventoryItem, SurchargeAdjustment, VatRate, VatRegime } from "@allors";
 import { MetaDomain } from "@allors";
 
 @Component({
@@ -26,6 +26,11 @@ export class SalesOrderItemEditComponent implements OnInit, AfterViewInit, OnDes
   public vatRegimes: VatRegime[];
   public discount: number;
   public surcharge: number;
+  public inventoryItems: InventoryItem[];
+  public serialisedInventoryItem: SerialisedInventoryItem;
+  public nonSerialisedInventoryItem: NonSerialisedInventoryItem;
+
+  public goodsFilter: Filter;
 
   private refresh$: BehaviorSubject<Date>;
   private subscription: Subscription;
@@ -40,9 +45,10 @@ export class SalesOrderItemEditComponent implements OnInit, AfterViewInit, OnDes
     private dialogService: TdDialogService,
     public media: TdMediaService, private changeDetectorRef: ChangeDetectorRef) {
 
-    this.scope = new Scope(allorsService.database, allorsService.workspace);
     this.m = this.allorsService.meta;
+    this.scope = new Scope(allorsService.database, allorsService.workspace);
     this.refresh$ = new BehaviorSubject<Date>(undefined);
+    this.goodsFilter = new Filter({scope: this.scope, objectType: this.m.Good, roleTypes: [this.m.Good.Name]});
   }
 
   public ngOnInit(): void {
@@ -116,6 +122,7 @@ export class SalesOrderItemEditComponent implements OnInit, AfterViewInit, OnDes
           this.orderItem = this.scope.session.create("SalesOrderItem") as SalesOrderItem;
           this.order.AddSalesOrderItem(this.orderItem);
         } else {
+          this.goodSelected(this.orderItem.Product);
           if (this.orderItem.DiscountAdjustment) {
             this.discount = this.orderItem.DiscountAdjustment.Amount;
           }
@@ -141,6 +148,34 @@ export class SalesOrderItemEditComponent implements OnInit, AfterViewInit, OnDes
       this.subscription.unsubscribe();
     }
   }
+
+  public goodSelected(product: Product): void {
+
+        const fetch: Fetch[] = [
+          new Fetch({
+            id: product.id,
+            name: "inventoryItem",
+            path: new Path({ step: this.m.Good.InventoryItemsWhereGood }),
+          }),
+        ];
+
+        this.scope
+            .load("Pull", new PullRequest({ fetch }))
+            .subscribe((loaded: Loaded) => {
+              this.inventoryItems = loaded.collections.inventoryItem as InventoryItem[];
+              if (this.inventoryItems[0] instanceof SerialisedInventoryItem) {
+                this.serialisedInventoryItem = this.inventoryItems[0] as SerialisedInventoryItem;
+              }
+              if (this.inventoryItems[0] instanceof NonSerialisedInventoryItem) {
+                this.nonSerialisedInventoryItem = this.inventoryItems[0] as NonSerialisedInventoryItem;
+              }
+            },
+            (error: Error) => {
+              this.errorService.message(error);
+              this.goBack();
+            },
+          );
+      }
 
   public save(): void {
 
