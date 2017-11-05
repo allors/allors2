@@ -69,6 +69,8 @@ export class SalesOrderOverviewComponent implements OnInit, AfterViewInit, OnDes
               new TreeNode({
                 nodes: [
                   new TreeNode({ roleType: m.SalesOrderItem.Product }),
+                  new TreeNode({ roleType: m.SalesOrderItem.ItemType }),
+                  new TreeNode({ roleType: m.SalesOrderItem.SalesOrderItemState }),
                 ],
                 roleType: m.SalesOrder.SalesOrderItems,
               }),

@@ -76,7 +76,7 @@ export class InvoiceItemEditComponent implements OnInit, AfterViewInit, OnDestro
           }),
         ];
 
-        const rolesQuery: Query[] = [
+        const query: Query[] = [
           new Query(
             {
               name: "goods",
@@ -92,7 +92,7 @@ export class InvoiceItemEditComponent implements OnInit, AfterViewInit, OnDestro
         this.scope.session.reset();
 
         return this.scope
-          .load("Pull", new PullRequest({ fetch, query: rolesQuery }));
+          .load("Pull", new PullRequest({ fetch, query }));
       })
       .subscribe((loaded: Loaded) => {
 

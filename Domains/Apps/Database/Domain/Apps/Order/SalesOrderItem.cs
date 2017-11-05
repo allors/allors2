@@ -139,7 +139,11 @@ namespace Allors.Domain
                 this.AssignedShipToAddress = this.AssignedShipToParty.ShippingAddress;
             }
 
-            derivation.Validation.AssertAtLeastOne(this, M.SalesOrderItem.Product, M.SalesOrderItem.ProductFeature);
+            if (this.ExistItemType && this.ItemType != new SalesInvoiceItemTypes(this.strategy.Session).ProductItem)
+            {
+                this.QuantityOrdered = 1;
+            }
+
             derivation.Validation.AssertExistsAtMostOne(this, M.SalesOrderItem.Product, M.SalesOrderItem.ProductFeature);
             derivation.Validation.AssertExistsAtMostOne(this, M.SalesOrderItem.ActualUnitPrice, M.SalesOrderItem.DiscountAdjustment, M.SalesOrderItem.SurchargeAdjustment);
             derivation.Validation.AssertExistsAtMostOne(this, M.SalesOrderItem.RequiredMarkupPercentage, M.SalesOrderItem.RequiredProfitMargin, M.SalesOrderItem.DiscountAdjustment, M.SalesOrderItem.SurchargeAdjustment);
@@ -987,7 +991,7 @@ namespace Allors.Domain
 
         public void AppsOnDeriveVatRate(IDerivation derivation)
         {
-            if (!this.ExistDerivedVatRate && this.ExistVatRegime && this.VatRegime.ExistVatRate)
+            if (this.ExistVatRegime && this.VatRegime.ExistVatRate)
             {
                 this.DerivedVatRate = this.VatRegime.VatRate;
             }

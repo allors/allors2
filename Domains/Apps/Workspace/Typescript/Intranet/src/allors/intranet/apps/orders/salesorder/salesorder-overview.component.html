@@ -76,8 +76,13 @@
 
             <ng-template let-orderItem let-last="last" ngFor [ngForOf]="order.SalesOrderItems">
               <mat-list-item>
-                <h3 *ngIf="orderItem.Product && order.CanWriteSalesOrderItems" mat-line [routerLink]="['/salesOrder/' + order.id + '/item/' + orderItem.id ]">{{orderItem.Quantity}} * {{orderItem.Product.Name}}</h3>
-                <h3 *ngIf="orderItem.Product && !order.CanWriteSalesOrderItems" mat-line>{{orderItem.Quantity}} * {{orderItem.Product.Name}}</h3>
+                <h3 *ngIf="orderItem.Product && order.CanWriteSalesOrderItems" mat-line [routerLink]="['/salesOrder/' + order.id + '/item/' + orderItem.id ]">{{orderItem.QuantityOrdered}} * {{orderItem.Product.Name}}</h3>
+                <h3 *ngIf="orderItem.Product && !order.CanWriteSalesOrderItems" mat-line>{{orderItem.QuantityOrdered}} * {{orderItem.Product.Name}}</h3>
+
+                <h3 *ngIf="!orderItem.Product && order.CanWriteSalesOrderItems" mat-line  [routerLink]="['/salesOrder/' + order.id + '/item/' + orderItem.id ]">{{orderItem.ItemType.Name}}</h3>
+                <h3 *ngIf="!orderItem.Product && !order.CanWriteSalesOrderItems" mat-line>{{orderItem.ItemType.Name}}</h3>
+
+                <h4 mat-line>Total ex VAT: {{orderItem.TotalExVat}}</h4>
 
                 <span>
                   <button mat-icon-button [mat-menu-trigger-for]="menu">

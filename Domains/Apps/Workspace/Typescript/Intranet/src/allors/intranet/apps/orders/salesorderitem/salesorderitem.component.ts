@@ -6,7 +6,7 @@ import { BehaviorSubject, Observable, Subscription } from "rxjs/Rx";
 
 import { AllorsService, ErrorService, Filter, Loaded, Saved, Scope } from "@allors";
 import { Fetch, Path, PullRequest, Query, TreeNode } from "@allors";
-import { DiscountAdjustment, Good, InventoryItem, NonSerialisedInventoryItem, Product, QuoteItem, SalesOrder, SalesOrderItem, SerialisedInventoryItem, SurchargeAdjustment, VatRate, VatRegime } from "@allors";
+import { DiscountAdjustment, Good, InventoryItem, NonSerialisedInventoryItem, Product, QuoteItem, SalesInvoiceItemType, SalesOrder, SalesOrderItem, SerialisedInventoryItem, SurchargeAdjustment, VatRate, VatRegime } from "@allors";
 import { MetaDomain } from "@allors";
 
 @Component({
@@ -29,6 +29,8 @@ export class SalesOrderItemEditComponent implements OnInit, AfterViewInit, OnDes
   public inventoryItems: InventoryItem[];
   public serialisedInventoryItem: SerialisedInventoryItem;
   public nonSerialisedInventoryItem: NonSerialisedInventoryItem;
+  public salesInvoiceItemTypes: SalesInvoiceItemType[];
+  public productItemType: SalesInvoiceItemType;
 
   public goodsFilter: Filter;
 
@@ -85,7 +87,7 @@ export class SalesOrderItemEditComponent implements OnInit, AfterViewInit, OnDes
           }),
         ];
 
-        const rolesQuery: Query[] = [
+        const query: Query[] = [
           new Query(
             {
               name: "goods",
@@ -101,12 +103,17 @@ export class SalesOrderItemEditComponent implements OnInit, AfterViewInit, OnDes
               name: "vatRegimes",
               objectType: m.VatRegime,
             }),
-        ];
+          new Query(
+            {
+              name: "salesInvoiceItemTypes",
+              objectType: m.SalesInvoiceItemType,
+            }),
+          ];
 
         this.scope.session.reset();
 
         return this.scope
-          .load("Pull", new PullRequest({ fetch, query: rolesQuery }));
+          .load("Pull", new PullRequest({ fetch, query }));
       })
       .subscribe((loaded: Loaded) => {
 
@@ -116,13 +123,17 @@ export class SalesOrderItemEditComponent implements OnInit, AfterViewInit, OnDes
         this.goods = loaded.collections.goods as Good[];
         this.vatRates = loaded.collections.vatRates as VatRate[];
         this.vatRegimes = loaded.collections.vatRegimes as VatRegime[];
+        this.salesInvoiceItemTypes = loaded.collections.salesInvoiceItemTypes as SalesInvoiceItemType[];
+        this.productItemType = this.salesInvoiceItemTypes.find((v: SalesInvoiceItemType) => v.UniqueId.toUpperCase() === "0D07F778-2735-44CB-8354-FB887ADA42AD");
 
         if (!this.orderItem) {
           this.title = "Add Order Item";
           this.orderItem = this.scope.session.create("SalesOrderItem") as SalesOrderItem;
           this.order.AddSalesOrderItem(this.orderItem);
         } else {
-          this.goodSelected(this.orderItem.Product);
+          if (this.orderItem.ItemType === this.productItemType) {
+            this.goodSelected(this.orderItem.Product);
+          }
           if (this.orderItem.DiscountAdjustment) {
             this.discount = this.orderItem.DiscountAdjustment.Amount;
           }
@@ -151,31 +162,33 @@ export class SalesOrderItemEditComponent implements OnInit, AfterViewInit, OnDes
 
   public goodSelected(product: Product): void {
 
-        const fetch: Fetch[] = [
-          new Fetch({
-            id: product.id,
-            name: "inventoryItem",
-            path: new Path({ step: this.m.Good.InventoryItemsWhereGood }),
-          }),
-        ];
+    this.orderItem.ItemType = this.productItemType;
 
-        this.scope
-            .load("Pull", new PullRequest({ fetch }))
-            .subscribe((loaded: Loaded) => {
-              this.inventoryItems = loaded.collections.inventoryItem as InventoryItem[];
-              if (this.inventoryItems[0] instanceof SerialisedInventoryItem) {
-                this.serialisedInventoryItem = this.inventoryItems[0] as SerialisedInventoryItem;
-              }
-              if (this.inventoryItems[0] instanceof NonSerialisedInventoryItem) {
-                this.nonSerialisedInventoryItem = this.inventoryItems[0] as NonSerialisedInventoryItem;
-              }
-            },
-            (error: Error) => {
-              this.errorService.message(error);
-              this.goBack();
-            },
-          );
-      }
+    const fetch: Fetch[] = [
+      new Fetch({
+        id: product.id,
+        name: "inventoryItem",
+        path: new Path({ step: this.m.Good.InventoryItemsWhereGood }),
+      }),
+    ];
+
+    this.scope
+        .load("Pull", new PullRequest({ fetch }))
+        .subscribe((loaded: Loaded) => {
+          this.inventoryItems = loaded.collections.inventoryItem as InventoryItem[];
+          if (this.inventoryItems[0] instanceof SerialisedInventoryItem) {
+            this.serialisedInventoryItem = this.inventoryItems[0] as SerialisedInventoryItem;
+          }
+          if (this.inventoryItems[0] instanceof NonSerialisedInventoryItem) {
+            this.nonSerialisedInventoryItem = this.inventoryItems[0] as NonSerialisedInventoryItem;
+          }
+        },
+        (error: Error) => {
+          this.errorService.message(error);
+          this.goBack();
+        },
+      );
+  }
 
   public save(): void {
 

@@ -4,7 +4,7 @@ import { ActivatedRoute } from "@angular/router";
 import { TdDialogService, TdMediaService } from "@covalent/core";
 import { BehaviorSubject, Subscription } from "rxjs/Rx";
 
-import { AllorsService, ErrorService, Loaded, Saved, Scope } from "@allors";
+import { AllorsService, ErrorService, Invoked, Loaded, Saved, Scope } from "@allors";
 import { Fetch, Path, PullRequest, Query, TreeNode } from "@allors";
 import { Good, SalesInvoice, SalesInvoiceItem, SalesOrder } from "@allors";
 import { MetaDomain } from "@allors";
@@ -68,6 +68,7 @@ export class InvoiceOverviewComponent implements OnInit, AfterViewInit, OnDestro
               new TreeNode({
                 nodes: [
                   new TreeNode({ roleType: m.SalesInvoiceItem.Product }),
+                  new TreeNode({ roleType: m.SalesInvoiceItem.SalesInvoiceItemType }),
                 ],
                 roleType: m.SalesInvoice.SalesInvoiceItems,
               }),
@@ -140,7 +141,21 @@ export class InvoiceOverviewComponent implements OnInit, AfterViewInit, OnDestro
     window.history.back();
   }
 
-  public deleteInvoiceItem(invoiceItem: SalesInvoiceItem): void {
-    this.invoice.RemoveSalesInvoiceItem(invoiceItem);
+  public deleteOrderItem(invoiceItem: SalesInvoiceItem): void {
+    this.dialogService
+      .openConfirm({ message: "Are you sure you want to delete this item?" })
+      .afterClosed()
+      .subscribe((confirm: boolean) => {
+        if (confirm) {
+          this.scope.invoke(invoiceItem.Delete)
+            .subscribe((invoked: Invoked) => {
+              this.snackBar.open("Successfully deleted.", "close", { duration: 5000 });
+              this.refresh();
+            },
+            (error: Error) => {
+              this.errorService.dialog(error);
+            });
+        }
+      });
   }
 }

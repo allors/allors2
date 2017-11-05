@@ -31,6 +31,7 @@ namespace Allors.Domain
             var cancel = this.Meta.Cancel;
             var hold = this.Meta.Hold;
             var submit = this.Meta.Submit;
+            var delete = this.Meta.Delete;
 
             config.Deny(this.ObjectType, submitted, submit);
             config.Deny(this.ObjectType, cancelled, cancel, submit, hold);

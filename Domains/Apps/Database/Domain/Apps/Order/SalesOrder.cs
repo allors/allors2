@@ -736,7 +736,7 @@ namespace Allors.Domain
              foreach (SalesOrderItem orderItem in this.ValidOrderItems)
             {
                 var invoiceItem = new SalesInvoiceItemBuilder(this.Strategy.Session)
-                    .WithSalesInvoiceItemType(new SalesInvoiceItemTypes(this.Strategy.Session).ProductItem)
+                    .WithSalesInvoiceItemType(orderItem.ItemType)
                     .WithActualUnitPrice(orderItem.ActualUnitPrice)
                     .WithProduct(orderItem.Product)
                     .WithQuantity(orderItem.QuantityOrdered)
