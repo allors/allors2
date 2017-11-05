@@ -73,6 +73,11 @@ namespace Allors.Domain
             {
                 this.SalesInvoiceItemState = new SalesInvoiceItemStates(this.Strategy.Session).ReadyForPosting;
             }
+
+            if (this.ExistProduct && !this.ExistSalesInvoiceItemType)
+            {
+                this.SalesInvoiceItemType = new SalesInvoiceItemTypes(this.Strategy.Session).ProductItem;
+            }
         }
 
         public void AppsOnPreDerive(ObjectOnPreDerive method)
@@ -112,7 +117,7 @@ namespace Allors.Domain
             //derivation.Validation.AssertAtLeastOne(this, this.Meta.Product, this.Meta.ProductFeature, this.Meta.TimeEntries);
             derivation.Validation.AssertExistsAtMostOne(this, this.Meta.Product, this.Meta.ProductFeature, this.Meta.TimeEntries);
 
-            if (this.SalesInvoiceItemType.Equals(new SalesInvoiceItemTypes(this.Strategy.Session).ProductItem) && this.Quantity <= 0)
+            if (this.ExistSalesInvoiceItemType && this.SalesInvoiceItemType.Equals(new SalesInvoiceItemTypes(this.Strategy.Session).ProductItem) && this.Quantity <= 0)
             {
                 derivation.Validation.AssertExists(this, this.Meta.Quantity);
             }

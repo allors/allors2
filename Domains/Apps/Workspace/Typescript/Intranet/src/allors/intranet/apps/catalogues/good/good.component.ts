@@ -130,6 +130,13 @@ export class GoodComponent implements OnInit, AfterViewInit, OnDestroy {
                     new TreeNode({ roleType: m.Locale.Language }),
                     new TreeNode({ roleType: m.Locale.Country }),
                   ],
+                  roleType: m.Singleton.DefaultLocale,
+                }),
+                new TreeNode({
+                  nodes: [
+                    new TreeNode({ roleType: m.Locale.Language }),
+                    new TreeNode({ roleType: m.Locale.Country }),
+                  ],
                   roleType: m.Singleton.Locales,
                 }),
                 new TreeNode({
@@ -331,7 +338,9 @@ export class GoodComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   public setProductCharacteristicValues(): void {
-    this.productCharacteristicValues = this.inventoryItem.ProductCharacteristicValues.filter((v: ProductCharacteristicValue) => v.Locale === this.locale);
+    if (this.inventoryItem) {
+      this.productCharacteristicValues = this.inventoryItem.ProductCharacteristicValues.filter((v: ProductCharacteristicValue) => v.Locale === this.locale);
+    }
   }
 
   get locale(): Locale {

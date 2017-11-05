@@ -243,20 +243,6 @@ namespace Allors.Domain
             builder.WithProduct(this.good);
             builder.Build();
 
-            Assert.True(this.Session.Derive(false).HasErrors);
-
-            this.Session.Rollback();
-
-            builder.WithQuantity(1);
-            builder.Build();
-
-            Assert.True(this.Session.Derive(false).HasErrors);
-
-            this.Session.Rollback();
-
-            builder.WithSalesInvoiceItemType(new SalesInvoiceItemTypes(this.Session).ProductItem);
-            builder.Build();
-
             Assert.False(this.Session.Derive(false).HasErrors);
 
             this.Session.Rollback();

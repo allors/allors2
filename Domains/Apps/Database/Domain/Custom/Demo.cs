@@ -156,6 +156,11 @@ namespace Allors
                 .WithPartyContactMechanism(contact2PhoneNumber)
                 .Build();
 
+            new CustomerRelationshipBuilder(this.Session)
+                .WithCustomer(acme)
+                .WithFromDate(DateTime.UtcNow)
+                .Build();
+
             new OrganisationContactRelationshipBuilder(this.Session)
                 .WithOrganisation(acme)
                 .WithContact(contact1)
