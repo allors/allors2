@@ -5,7 +5,7 @@ export * from "./dashboard/dashboard.module";
 export * from "./invoice/invoices-overview.module";
 export * from "./invoice/invoice-overview.module";
 export * from "./invoice/invoice.module";
-export * from "./invoiceItem/invoiceitem.module";
+export * from "./invoiceitem/invoiceitem.module";
 export * from "./invoice/invoice-print.module";
 
 import { OverviewModule } from "./overview.module";

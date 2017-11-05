@@ -85,6 +85,7 @@
                   </button>
                   <mat-menu x-position="before" #menu="matMenu">
                     <a *ngIf="order.CanWriteSalesOrderItems" [routerLink]="['/salesOrder/' + order.id + '/item/' + orderItem.id ]" mat-menu-item>Edit</a>
+                    <button  mat-menu-item (click)="deleteOrderItem(orderItem)" [disabled]="!orderItem.CanExecuteDelete">Delete</button>
                   </mat-menu>
                 </span>
               </mat-list-item>

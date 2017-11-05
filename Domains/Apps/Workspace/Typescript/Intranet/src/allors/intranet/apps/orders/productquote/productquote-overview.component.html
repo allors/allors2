@@ -97,6 +97,7 @@
                   </button>
                   <mat-menu x-position="before" #menu="matMenu">
                     <a *ngIf="quote.CanWriteQuoteItems" [routerLink]="['/productQuote/' + quote.id + '/item/' + quoteItem.id ]" mat-menu-item>Edit</a>
+                    <button  mat-menu-item (click)="deletequoteItem(quoteItem)" [disabled]="!quoteItem.CanExecuteDelete">Delete</button>
                   </mat-menu>
                 </span>
               </mat-list-item>

@@ -148,7 +148,21 @@ export class SalesOrderOverviewComponent implements OnInit, AfterViewInit, OnDes
   }
 
   public deleteOrderItem(orderItem: SalesOrderItem): void {
-    this.order.RemoveSalesOrderItem(orderItem);
+    this.dialogService
+      .openConfirm({ message: "Are you sure you want to delete this item?" })
+      .afterClosed()
+      .subscribe((confirm: boolean) => {
+        if (confirm) {
+          this.scope.invoke(orderItem.Delete)
+            .subscribe((invoked: Invoked) => {
+              this.snackBar.open("Successfully deleted.", "close", { duration: 5000 });
+              this.refresh();
+            },
+            (error: Error) => {
+              this.errorService.dialog(error);
+            });
+        }
+      });
   }
 
   public createInvoice(): void {

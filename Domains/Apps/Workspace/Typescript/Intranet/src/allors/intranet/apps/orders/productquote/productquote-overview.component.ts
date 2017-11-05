@@ -148,7 +148,21 @@ export class ProductQuoteOverviewComponent implements OnInit, AfterViewInit, OnD
   }
 
   public deleteQuoteItem(quoteItem: QuoteItem): void {
-    this.quote.RemoveQuoteItem(quoteItem);
+    this.dialogService
+      .openConfirm({ message: "Are you sure you want to delete this item?" })
+      .afterClosed()
+      .subscribe((confirm: boolean) => {
+        if (confirm) {
+          this.scope.invoke(quoteItem.Delete)
+            .subscribe((invoked: Invoked) => {
+              this.snackBar.open("Successfully deleted.", "close", { duration: 5000 });
+              this.refresh();
+            },
+            (error: Error) => {
+              this.errorService.dialog(error);
+            });
+        }
+      });
   }
 
   public Order(): void {
