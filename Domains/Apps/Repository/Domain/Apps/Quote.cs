@@ -177,6 +177,16 @@ namespace Allors.Repository
         Request Request { get; set; }
 
         #region Allors
+        [Id("2D6804B9-A745-497A-9F43-FADE6B1B76AB")]
+        [AssociationId("542367E1-1CAB-4DB6-9FB3-ECAD8930601F")]
+        [RoleId("EDF15A48-DF46-411C-B73A-9B6E9C184932")]
+        [Indexed]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Workspace]
+        Person ContactPerson { get; set; }
+
+        #region Allors
         [Id("519F70DC-0C4C-43E7-8929-378D8871CD84")]
         #endregion
         [Workspace]

@@ -9,7 +9,8 @@ import { ISessionObject } from "@baseDomain";
   template: `
 <mat-form-field>
     <mat-select [(ngModel)]="model" [name]="name" [placeholder]="label" [multiple]="roleType.isMany" [required]="required" [disabled]="disabled">
-      <mat-option *ngFor="let option of options" [value]="option">
+    <mat-option *ngIf="!required">None</mat-option>
+    <mat-option *ngFor="let option of options" [value]="option">
         {{option[display]}}
       </mat-option>
     </mat-select>

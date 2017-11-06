@@ -14,6 +14,14 @@
         display="Name" (onSelect)="originatorSelected($event)" label="Requesting organisation"></a-mat-autocomplete>
       <a-mat-autocomplete *ngIf="showPeople" [object]="request" [roleType]="m.Request.Originator" [filter]="peopleFilter.create()"
         display="displayName" (onSelect)="originatorSelected($event)" label="Requesting person"></a-mat-autocomplete>
+
+      <a-mat-select *ngIf="showOrganisations && !showPeople" [object]="request" [roleType]="m.Request.ContactPerson" [options]="request.Originator?.CurrentContacts" display="displayName"></a-mat-select>
+      <button *ngIf="showOrganisations && !showPeople" type="button" mat-icon-button (click)="addPerson = true"><mat-icon>add</mat-icon></button>
+      <div *ngIf="showOrganisations && addPerson" style="background: lightblue" class="pad">
+        <person-inline (cancelled)="personCancelled($event)" (saved)="personAdded($event)">
+        </person-inline>
+      </div>
+
       <a-mat-select [object]="request" [roleType]="m.Request.FullfillContactMechanism" [options]="contactMechanisms" display="displayName" label="Reply to"></a-mat-select>
       <button *ngIf="request.Originator" type="button" mat-button (click)="addWebAddress = true">+Web</button>
       <button *ngIf="request.Originator" type="button" mat-button (click)="addEmailAddress = true">+Email</button>

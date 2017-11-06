@@ -37,7 +37,10 @@ namespace Allors.Repository
     public string EmailAddress { get; set; }
     public string TelephoneNumber { get; set; }
     public string TelephoneCountryCode { get; set; }
-    public Permission[] DeniedPermissions { get; set; }
+
+      public Person ContactPerson { get; set; }
+
+      public Permission[] DeniedPermissions { get; set; }
     public SecurityToken[] SecurityTokens { get; set; }
     public string Comment { get; set; }
     public User CreatedBy { get; set; }

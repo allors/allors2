@@ -137,33 +137,6 @@ export class RequestOverviewComponent implements OnInit, AfterViewInit, OnDestro
       });
   }
 
-  public getPrice(product: Good): void {
-
-    const fetch: Fetch[] = [
-      new Fetch({
-        id: product.id,
-        name: "inventoryItem",
-        path: new Path({ step: this.m.Good.InventoryItemsWhereGood }),
-      }),
-    ];
-    this.scope
-        .load("Pull", new PullRequest({ fetch }))
-        .subscribe((loaded: Loaded) => {
-          this.inventoryItems = loaded.collections.inventoryItem as InventoryItem[];
-          if (this.inventoryItems[0] instanceof SerialisedInventoryItem) {
-            this.serialisedInventoryItem = this.inventoryItems[0] as SerialisedInventoryItem;
-          }
-          if (this.inventoryItems[0] instanceof NonSerialisedInventoryItem) {
-            this.nonSerialisedInventoryItem = this.inventoryItems[0] as NonSerialisedInventoryItem;
-          }
-        },
-        (error: Error) => {
-          this.errorService.message(error);
-          this.goBack();
-        },
-      );
-  }
-
   public deleteRequestItem(requestItem: RequestItem): void {
     this.dialogService
       .openConfirm({ message: "Are you sure you want to delete this item?" })

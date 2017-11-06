@@ -163,6 +163,16 @@ namespace Allors.Repository
         string TelephoneCountryCode { get; set; }
 
         #region Allors
+        [Id("44877BC8-F0E2-4D22-BEC5-8CA4E31BF953")]
+        [AssociationId("AF85A1F8-A616-4FB7-9176-FCCF3C630922")]
+        [RoleId("DC2CC965-E8B5-49AC-B27D-E6347E1FD3AB")]
+        [Indexed]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Workspace]
+        Person ContactPerson { get; set; }
+
+        #region Allors
         [Id("B30EDA48-5E99-44AE-B3A9-D053BCFA4895")]
         #endregion
         [Workspace]

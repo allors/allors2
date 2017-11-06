@@ -31,7 +31,10 @@ namespace Allors.Repository
     public QuoteItem[] QuoteItems { get; set; }
     public string QuoteNumber { get; set; }
     public Request Request { get; set; }
-    public Permission[] DeniedPermissions { get; set; }
+
+      public Person ContactPerson { get; set; }
+
+      public Permission[] DeniedPermissions { get; set; }
     public SecurityToken[] SecurityTokens { get; set; }
     public string PrintContent { get; set; }
 

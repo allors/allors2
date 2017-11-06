@@ -7,7 +7,7 @@ import { BehaviorSubject, Observable, Subscription } from "rxjs/Rx";
 import { AllorsService, ErrorService, Filter, Invoked, Loaded, Saved, Scope } from "@allors";
 import { Contains, Fetch, Path, PullRequest, Query, TreeNode } from "@allors";
 import {
-  ContactMechanism, Currency, Organisation, OrganisationRole, Party, PartyContactMechanism,
+  ContactMechanism, Currency, Organisation, OrganisationContactRelationship, OrganisationRole, Party, PartyContactMechanism,
   Person, RequestForQuote} from "@allors";
 import { MetaDomain } from "@allors";
 
@@ -23,13 +23,14 @@ export class RequestEditComponent implements OnInit, AfterViewInit, OnDestroy {
   public request: RequestForQuote;
   public people: Person[];
   public organisations: Organisation[];
-  public currencies: Currency[];
+  public currencies: Currency[];y
   public contactMechanisms: ContactMechanism[];
 
   public addEmailAddress: boolean = false;
   public addPostalAddress: boolean = false;
   public addTeleCommunicationsNumber: boolean = false;
   public addWebAddress: boolean = false;
+  public addPerson: boolean = false;
 
   public peopleFilter: Filter;
   public organisationsFilter: Filter;
@@ -131,6 +132,7 @@ export class RequestEditComponent implements OnInit, AfterViewInit, OnDestroy {
             const query: Query[] = [
               new Query(
                 {
+                  include: [new TreeNode({ roleType: m.Party.CurrentContacts })],
                   name: "organisations",
                   objectType: this.m.Organisation,
                   predicate: new Contains({ roleType: m.Organisation.OrganisationRoles, object: oCustomerRole }),
@@ -309,6 +311,22 @@ export class RequestEditComponent implements OnInit, AfterViewInit, OnDestroy {
     } else {
       rejectFn();
     }
+  }
+
+  public personCancelled(): void {
+    this.addPerson = false;
+  }
+
+  public personAdded(id: string): void {
+    this.addPerson = false;
+
+    const contact: Person = this.scope.session.get(id) as Person;
+
+    const organisationContactRelationship = this.scope.session.create("OrganisationContactRelationship") as OrganisationContactRelationship;
+    organisationContactRelationship.Organisation = this.request.Originator as Organisation;
+    organisationContactRelationship.Contact = contact;
+
+    this.refresh();
   }
 
   public webAddressCancelled(): void {
