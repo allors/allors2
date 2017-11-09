@@ -18,6 +18,9 @@ namespace Allors.Domain
     using System;
     using System.Collections.Generic;
     using Allors.Meta;
+    using Allors.Services;
+
+    using Microsoft.Extensions.DependencyInjection;
 
     using Resources;
 
@@ -255,6 +258,17 @@ namespace Allors.Domain
             this.PreviousShipToCustomer = this.ShipToCustomer;
 
             this.AppsOnDeriveRevenues(derivation);
+
+            var templateService = this.strategy.Session.ServiceProvider.GetRequiredService<ITemplateService>();
+
+            var model = new PrintSalesInvoice
+                            {
+                                SalesInvoice = this,
+                                Aviaco = this.strategy.Session.GetSingleton().InternalOrganisation
+                            };
+
+            this.PrintContent = templateService.Render("Templates/SalesInvoice.cshtml", model).Result;
+
         }
 
         private void DeriveCurrentPaymentStatus(IDerivation derivation)

@@ -72,6 +72,7 @@ export class InvoiceOverviewComponent implements OnInit, AfterViewInit, OnDestro
                 ],
                 roleType: m.SalesInvoice.SalesInvoiceItems,
               }),
+              new TreeNode({ roleType: m.SalesInvoice.ContactPerson }),
               new TreeNode({ roleType: m.SalesInvoice.BillToCustomer }),
               new TreeNode({ roleType: m.SalesInvoice.SalesInvoiceState }),
               new TreeNode({ roleType: m.SalesInvoice.CreatedBy }),

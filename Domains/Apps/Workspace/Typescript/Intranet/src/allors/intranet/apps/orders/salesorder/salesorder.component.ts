@@ -2,14 +2,12 @@ import { AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit } from "
 import { MatSnackBar } from "@angular/material";
 import { ActivatedRoute, Router, UrlSegment } from "@angular/router";
 import { TdDialogService, TdMediaService } from "@covalent/core";
-import { BehaviorSubject, Observable,Subscription } from "rxjs/Rx";
+import { BehaviorSubject, Observable, Subscription } from "rxjs/Rx";
 
 import { AllorsService, ErrorService, Filter, Invoked, Loaded, Saved, Scope } from "@allors";
 import { Contains, Fetch, Path, PullRequest, Query, TreeNode } from "@allors";
-import {
-  ContactMechanism, Currency, Organisation, OrganisationRole, Party, PartyContactMechanism,
-  Person, ProductQuote, SalesOrder, VatRate, VatRegime,
-} from "@allors";
+import { ContactMechanism, Currency, Organisation, OrganisationContactRelationship, OrganisationRole, Party, PartyContactMechanism,
+  Person, ProductQuote, SalesOrder, Store, VatRate, VatRegime } from "@allors";
 import { MetaDomain } from "@allors";
 
 @Component({
@@ -30,12 +28,15 @@ export class SalesOrderEditComponent implements OnInit, AfterViewInit, OnDestroy
   public ShipToAddresses: ContactMechanism[];
   public vatRates: VatRate[];
   public vatRegimes: VatRegime[];
+  public contacts: Person[];
+  public stores: Store[];
 
   public addEmailAddress: boolean = false;
   public addPostalAddress: boolean = false;
   public addTeleCommunicationsNumber: boolean = false;
   public addWebAddress: boolean = false;
   public addShipToAddress: boolean = false;
+  public addPerson: boolean = false;
 
   public peopleFilter: Filter;
   public organisationsFilter: Filter;
@@ -107,6 +108,14 @@ export class SalesOrderEditComponent implements OnInit, AfterViewInit, OnDestroy
               name: "vatRegimes",
               objectType: m.VatRegime,
             }),
+          new Query(
+            {
+            include: [
+              new TreeNode({ roleType: m.Store.ProcessFlow }),
+            ],
+            name: "stores",
+              objectType: m.Store,
+            }),
         ];
 
         this.scope.session.reset();
@@ -117,6 +126,7 @@ export class SalesOrderEditComponent implements OnInit, AfterViewInit, OnDestroy
             this.currencies = loaded.collections.currencies as Currency[];
             this.vatRates = loaded.collections.vatRates as VatRate[];
             this.vatRegimes = loaded.collections.vatRegimes as VatRegime[];
+            this.stores = loaded.collections.stores as Store[];
 
             const organisationRoles: OrganisationRole[] = loaded.collections.organisationRoles as OrganisationRole[];
             const oCustomerRole: OrganisationRole = organisationRoles.find((v: OrganisationRole) => v.Name === "Customer");
@@ -165,6 +175,11 @@ export class SalesOrderEditComponent implements OnInit, AfterViewInit, OnDestroy
 
         if (!this.order) {
           this.order = this.scope.session.create("SalesOrder") as SalesOrder;
+
+          if (this.stores.length === 1) {
+            this.order.Store =  this.stores[0];
+          }
+
           this.title = "Add Sales Order";
         } else {
           this.title = "Sales Order " + this.order.OrderNumber;
@@ -182,6 +197,22 @@ export class SalesOrderEditComponent implements OnInit, AfterViewInit, OnDestroy
         this.goBack();
       },
     );
+  }
+
+  public personCancelled(): void {
+    this.addPerson = false;
+  }
+
+  public personAdded(id: string): void {
+    this.addPerson = false;
+
+    const contact: Person = this.scope.session.get(id) as Person;
+
+    const organisationContactRelationship = this.scope.session.create("OrganisationContactRelationship") as OrganisationContactRelationship;
+    organisationContactRelationship.Organisation = this.order.ShipToCustomer as Organisation;
+    organisationContactRelationship.Contact = contact;
+
+    this.contacts.push(contact);
   }
 
   public webAddressCancelled(): void {
@@ -454,41 +485,6 @@ export class SalesOrderEditComponent implements OnInit, AfterViewInit, OnDestroy
     }
   }
 
-  public complete(): void {
-    const completeFn: () => void = () => {
-      this.scope.invoke(this.order.Continue)
-        .subscribe((invoked: Invoked) => {
-          this.refresh();
-          this.snackBar.open("Successfully completed.", "close", { duration: 5000 });
-        },
-        (error: Error) => {
-          this.errorService.dialog(error);
-        });
-    };
-
-    if (this.scope.session.hasChanges) {
-      this.dialogService
-        .openConfirm({ message: "Save changes?" })
-        .afterClosed().subscribe((confirm: boolean) => {
-          if (confirm) {
-            this.scope
-              .save()
-              .subscribe((saved: Saved) => {
-                this.scope.session.reset();
-                completeFn();
-              },
-              (error: Error) => {
-                this.errorService.dialog(error);
-              });
-          } else {
-            completeFn();
-          }
-        });
-    } else {
-      completeFn();
-    }
-  }
-
   public finish(): void {
     const finishFn: () => void = () => {
       this.scope.invoke(this.order.Continue)
@@ -568,6 +564,11 @@ export class SalesOrderEditComponent implements OnInit, AfterViewInit, OnDestroy
         name: "partyContactMechanisms",
         path: new Path({ step: this.m.Party.CurrentPartyContactMechanisms }),
       }),
+      new Fetch({
+        id: party.id,
+        name: "currentContacts",
+        path: new Path({ step: this.m.Party.CurrentContacts }),
+      }),
     ];
 
     this.scope
@@ -577,6 +578,7 @@ export class SalesOrderEditComponent implements OnInit, AfterViewInit, OnDestroy
         const partyContactMechanisms: PartyContactMechanism[] = loaded.collections.partyContactMechanisms as PartyContactMechanism[];
         this.ShipToAddresses = partyContactMechanisms.filter((v: PartyContactMechanism) => v.ContactMechanism.objectType.name === "PostalAddress").map((v: PartyContactMechanism) => v.ContactMechanism);
         this.contactMechanisms = partyContactMechanisms.map((v: PartyContactMechanism) => v.ContactMechanism);
+        this.contacts = loaded.collections.currentContacts as Person[];
       },
       (error: Error) => {
         this.errorService.message(error);

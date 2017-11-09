@@ -32,6 +32,7 @@ namespace Allors.Domain
         {
             var salesOrder = new SalesOrderBuilder(this.Strategy.Session)
                 .WithComment(this.Comment)
+                .WithContactPerson(this.ContactPerson)
                 .WithInternalComment(this.InternalComment)
                 .WithQuote(this)
                 .WithBillToCustomer(this.Receiver)
@@ -51,9 +52,7 @@ namespace Allors.Domain
                         .WithActualUnitPrice(quoteItem.UnitPrice)
                         .WithProduct(quoteItem.Product)
                         .WithProductFeature(quoteItem.ProductFeature)
-                        .WithQuantityOrdered(quoteItem.Quantity)
-                        .Build()
-                );
+                        .WithQuantityOrdered(quoteItem.Quantity).Build());
             }
 
             return salesOrder;

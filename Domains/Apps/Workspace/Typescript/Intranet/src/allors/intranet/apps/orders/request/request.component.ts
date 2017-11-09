@@ -23,8 +23,9 @@ export class RequestEditComponent implements OnInit, AfterViewInit, OnDestroy {
   public request: RequestForQuote;
   public people: Person[];
   public organisations: Organisation[];
-  public currencies: Currency[];y
+  public currencies: Currency[];
   public contactMechanisms: ContactMechanism[];
+  public contacts: Person[];
 
   public addEmailAddress: boolean = false;
   public addPostalAddress: boolean = false;
@@ -326,7 +327,7 @@ export class RequestEditComponent implements OnInit, AfterViewInit, OnDestroy {
     organisationContactRelationship.Organisation = this.request.Originator as Organisation;
     organisationContactRelationship.Contact = contact;
 
-    this.refresh();
+    this.contacts.push(contact);
   }
 
   public webAddressCancelled(): void {
@@ -421,6 +422,11 @@ export class RequestEditComponent implements OnInit, AfterViewInit, OnDestroy {
         name: "partyContactMechanisms",
         path: new Path({ step: this.m.Party.CurrentPartyContactMechanisms }),
       }),
+      new Fetch({
+        id: party.id,
+        name: "currentContacts",
+        path: new Path({ step: this.m.Party.CurrentContacts }),
+      }),
     ];
 
     this.scope
@@ -429,6 +435,7 @@ export class RequestEditComponent implements OnInit, AfterViewInit, OnDestroy {
 
         const partyContactMechanisms: PartyContactMechanism[] = loaded.collections.partyContactMechanisms as PartyContactMechanism[];
         this.contactMechanisms = partyContactMechanisms.map((v: PartyContactMechanism) => v.ContactMechanism);
+        this.contacts = loaded.collections.currentContacts as Person[];
       },
       (error: Error) => {
         this.errorService.message(error);

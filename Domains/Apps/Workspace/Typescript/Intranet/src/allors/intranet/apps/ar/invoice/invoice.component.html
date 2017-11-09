@@ -14,6 +14,14 @@
         display="Name" (onSelect)="receiverSelected($event)" label="Bill to organisation"></a-mat-autocomplete>
       <a-mat-autocomplete *ngIf="showPeople" [object]="invoice" [roleType]="m.SalesInvoice.BillToCustomer" [filter]="peopleFilter.create()"
         display="displayName" (onSelect)="receiverSelected($event)" label="Bill to person"></a-mat-autocomplete>
+
+      <a-mat-select *ngIf="showOrganisations && !showPeople" [object]="invoice" [roleType]="m.SalesInvoice.ContactPerson" [options]="contacts" display="displayName"></a-mat-select>
+      <button *ngIf="showOrganisations && !showPeople" type="button" mat-icon-button (click)="addPerson = true"><mat-icon>add</mat-icon></button>
+      <div *ngIf="showOrganisations && addPerson" style="background: lightblue" class="pad">
+        <person-inline (cancelled)="personCancelled($event)" (saved)="personAdded($event)">
+        </person-inline>
+      </div>
+
       <a-mat-select [object]="invoice" [roleType]="m.SalesInvoice.BillToContactMechanism" [options]="contactMechanisms" display="displayName"></a-mat-select>
       <button *ngIf="invoice.BillToCustomer" type="button" mat-button (click)="addWebAddress = true">+Web</button>
       <button *ngIf="invoice.BillToCustomer" type="button" mat-button (click)="addEmailAddress = true">+Email</button>

@@ -713,11 +713,13 @@ namespace Allors.Domain
         private void AppsInvoice()
         {
             var salesInvoice = new SalesInvoiceBuilder(this.Strategy.Session)
+                .WithSalesOrder(this)
                 .WithStore(this.Store)
                 .WithInvoiceDate(DateTime.UtcNow)
                 .WithSalesChannel(this.SalesChannel)
                 .WithSalesInvoiceType(new SalesInvoiceTypes(this.Strategy.Session).SalesInvoice)
                 .WithVatRegime(this.VatRegime)
+                .WithContactPerson(this.ContactPerson)
                 .WithBilledFromContactMechanism(this.BillFromContactMechanism)
                 .WithBillToContactMechanism(this.BillToContactMechanism)
                 .WithBillToCustomer(this.BillToCustomer)

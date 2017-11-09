@@ -96,15 +96,16 @@ namespace Allors.Services
         {
             services.AddSingleton<ICacheService, CacheService>();
             services.AddSingleton<IDatabaseService, DatabaseService>();
-            services.AddSingleton<IMailService, MailService>();
             services.AddSingleton<IPasswordService, PasswordService>();
-            services.AddSingleton<IPublishingService, PublishingService>();
             services.AddSingleton<ISingletonService, SingletonService>();
             services.AddSingleton<IStickyService, StickyService>();
             services.AddSingleton<IStateService, StateService>();
             services.AddSingleton<ITemplateService, TemplateService>();
             services.AddSingleton<ITimeService, TimeService>();
+
             services.AddScoped<IUserService, UserService>();
+            services.AddScoped<IMailService, MailService>();
+            services.AddScoped<IPublishingService, PublishingService>();
         }
     }
 }

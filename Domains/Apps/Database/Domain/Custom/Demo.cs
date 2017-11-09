@@ -100,6 +100,7 @@ namespace Allors
                 .WithDefaultPaymentMethod(ownBankAccount)
                 .WithDefaultShipmentMethod(new ShipmentMethods(this.Session).Ground)
                 .WithDefaultCarrier(new Carriers(this.Session).Fedex)
+                .WithProcessFlow(new ProcessFlows(this.Session).PayFirst)
                 .Build();
 
             var acmePostalAddress = new PostalAddressBuilder(this.Session)
@@ -217,7 +218,7 @@ namespace Allors
                 .WithProductCategory(productCategory1)
                 .Build();
 
-            new GoodBuilder(this.Session)
+            var good = new GoodBuilder(this.Session)
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Tiny blue round gizmo").WithLocale(this.Session.GetSingleton().DefaultLocale).Build())
                 .WithLocalisedDescription(new LocalisedTextBuilder(this.Session).WithText("perfect blue with nice curves").WithLocale(this.Session.GetSingleton().DefaultLocale).Build())
                 .WithSku("10101")
@@ -225,6 +226,50 @@ namespace Allors
                 .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
                 .WithPrimaryProductCategory(productCategory3)
                 .Build();
+
+            var item1 = new SalesInvoiceItemBuilder(this.Session)
+                .WithDescription("first item")
+                .WithProduct(good)
+                .WithActualUnitPrice(3000)
+                .WithQuantity(1)
+                .WithMessage(@"line1
+line2")
+                .WithSalesInvoiceItemType(new SalesInvoiceItemTypes(this.Session).ProductItem)
+                .Build();
+
+            var item2 = new SalesInvoiceItemBuilder(this.Session)
+                .WithDescription("second item")
+                .WithActualUnitPrice(2000)
+                .WithQuantity(2)
+                .WithSalesInvoiceItemType(new SalesInvoiceItemTypes(this.Session).ProductItem)
+                .Build();
+
+            var item3 = new SalesInvoiceItemBuilder(this.Session)
+                .WithDescription("Fee")
+                .WithActualUnitPrice(100)
+                .WithQuantity(1)
+                .WithSalesInvoiceItemType(new SalesInvoiceItemTypes(this.Session).Fee)
+                .Build();
+
+            var invoice = new SalesInvoiceBuilder(this.Session)
+                .WithInvoiceNumber("1")
+                .WithBillToCustomer(acme)
+                .WithBillToContactMechanism(acmeBillingAddress.ContactMechanism)
+                .WithSalesInvoiceItem(item1)
+                .WithSalesInvoiceItem(item2)
+                .WithSalesInvoiceItem(item3)
+                .WithCustomerReference("a reference number")
+                .WithDescription("Sale of 1 used Aircraft Towbar")
+                .WithSalesInvoiceType(new SalesInvoiceTypes(this.Session).SalesInvoice)
+                .WithVatRegime(new VatRegimes(this.Session).Assessable)
+                .Build();
+
+            this.Session.Derive();
+
+            var printContent = invoice.PrintContent;
+            File.WriteAllText(@"c:\temp\invoice.html", printContent);
+
+
         }
 
         private void SetupUser(string email, string firstName, string lastName, string password)

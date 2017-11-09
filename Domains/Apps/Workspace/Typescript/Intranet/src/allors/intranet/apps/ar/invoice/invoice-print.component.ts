@@ -1,4 +1,4 @@
-import { AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit } from "@angular/core";
+import { AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit, ViewEncapsulation } from "@angular/core";
 import { MatSnackBar } from "@angular/material";
 import { ActivatedRoute } from "@angular/router";
 import { TdDialogService, TdMediaService } from "@covalent/core";
@@ -6,20 +6,139 @@ import { BehaviorSubject, Subscription } from "rxjs/Rx";
 
 import { AllorsService, ErrorService, Loaded, Saved, Scope } from "@allors";
 import { Fetch, Path, PullRequest, Query, TreeNode } from "@allors";
-import { Good, SalesInvoice, SalesInvoiceItem, SalesOrder } from "@allors";
+import { SalesInvoice } from "@allors";
 import { MetaDomain } from "@allors";
 
 @Component({
-  template: `<div [innerHTML]="invoice.PrintContent"></div>`,
+  encapsulation: ViewEncapsulation.Native,
+  styles: [`
+  .invoice-box {
+    max-width: 800px;
+    min-width: 800px;
+    margin: auto;
+    padding: 30px;
+    font-size: 10px;
+    font-weight: normal;
+    line-height: 12px;
+    font-family: "Helvetica Rounded", Arial, sans-serif;
+    color: #555;
+}
+
+    .invoice-box table {
+        width: 100%;
+        line-height: inherit;
+        text-align: left;
+    }
+
+tr.ruler-top-normal td {
+    border-top: 1px solid #000;
+}
+
+tr.ruler-bottom-normal td {
+    border-bottom: 1px solid #000;
+}
+
+tr.ruler-top td {
+    border-top: 2px solid #000;
+}
+
+tr.ruler-bottom td {
+    border-bottom: 2px solid #000;
+}
+
+.invoice-box table td {
+    padding-top: 2px;
+    vertical-align: top;
+}
+
+    .invoice-box table td.amount {
+        text-align: right;
+    }
+
+tr.top table tr td.title {
+    font-size: 24px;
+    font-weight: bold;
+    vertical-align: middle;
+    text-align: left;
+    color: #000;
+}
+
+.invoice-box table tr.top table tr td.number {
+    font-size: 20px;
+    font-weight: bold;
+    vertical-align: middle;
+    text-align: right;
+}
+
+.invoice-box table tr.header td {
+    padding-top: 5px;
+    padding-bottom: 5px;
+    padding-right: 5px;
+    font-weight: bold;
+    vertical-align: middle;
+    text-align: left;
+}
+
+.invoice-box table tr.item td {
+    padding-top: 5px;
+    padding-right: 5px;
+}
+
+.headerSpacer {
+    height: 20px;
+}
+
+.logo {
+    max-width: 150px;
+    float: left;
+}
+
+.description {
+    padding-top: 30px;
+    padding-bottom: 15px;
+    font-weight: bold;
+}
+
+.totals {
+    float: right;
+    width: 35%;
+    position: relative;
+    top: 100px;
+}
+
+.bold {
+    font-weight: bold;
+}
+
+.footer {
+    position: absolute;
+    bottom: 10px;
+}
+
+    .footer p {
+        margin: 3px;
+        font-size: 8px;
+        line-height: 10px;
+        text-align: left;
+        font-weight: normal;
+    }
+
+@media print {
+  @page {
+      size: auto; /* auto is the initial value */
+      margin: 0; /* this affects the margin in the printer settings */
+  }
+}`,
+  ],
+  template: `<div [innerHTML]="body"></div>`,
 })
+
 export class InvoicePrintComponent implements OnInit, AfterViewInit, OnDestroy {
 
   public m: MetaDomain;
   public title: string = "Sales Invoice Overview";
-  public order: SalesOrder;
   public invoice: SalesInvoice;
-  public invoiceItems: SalesInvoiceItem[] = [];
-  public goods: Good[] = [];
+  public body: string;
 
   private subscription: Subscription;
   private scope: Scope;
@@ -41,18 +160,6 @@ export class InvoicePrintComponent implements OnInit, AfterViewInit, OnDestroy {
     this.refresh$.next(new Date());
   }
 
-  public save(): void {
-
-    this.scope
-      .save()
-      .subscribe((saved: Saved) => {
-        this.snackBar.open("items saved", "close", { duration: 1000 });
-      },
-      (error: Error) => {
-        this.errorService.dialog(error);
-      });
-  }
-
   public ngOnInit(): void {
 
     this.subscription = this.route.url
@@ -64,59 +171,22 @@ export class InvoicePrintComponent implements OnInit, AfterViewInit, OnDestroy {
         const fetch: Fetch[] = [
           new Fetch({
             id,
-            include: [
-              new TreeNode({
-                nodes: [
-                  new TreeNode({ roleType: m.SalesInvoiceItem.Product }),
-                ],
-                roleType: m.SalesInvoice.SalesInvoiceItems,
-              }),
-              new TreeNode({ roleType: m.SalesInvoice.BillToCustomer }),
-              new TreeNode({ roleType: m.SalesInvoice.SalesInvoiceState }),
-              new TreeNode({ roleType: m.SalesInvoice.CreatedBy }),
-              new TreeNode({ roleType: m.SalesInvoice.LastModifiedBy }),
-              new TreeNode({ roleType: m.SalesInvoice.SalesOrder }),
-              new TreeNode({
-                nodes: [
-                  new TreeNode({
-                    nodes: [
-                      new TreeNode({ roleType: m.PostalBoundary.Country }),
-                    ],
-                    roleType: m.PostalAddress.PostalBoundary,
-                  }),
-                ],
-                roleType: m.SalesInvoice.BillToContactMechanism,
-              }),
-            ],
             name: "invoice",
           }),
-          new Fetch({
-            id,
-            name: "order",
-            path: new Path({ step: m.SalesInvoice.SalesOrder }),
-          }),
-        ];
-
-        const query: Query[] = [
-          new Query(
-            {
-              name: "goods",
-              objectType: m.Good,
-            }),
         ];
 
         this.scope.session.reset();
 
         return this.scope
-          .load("Pull", new PullRequest({ fetch, query }));
+          .load("Pull", new PullRequest({ fetch }));
       })
       .subscribe((loaded: Loaded) => {
-        this.goods = loaded.collections.goods as Good[];
-        this.order = loaded.objects.order as SalesOrder;
         this.invoice = loaded.objects.invoice as SalesInvoice;
-        if (this.invoice) {
-          this.invoiceItems = this.invoice.SalesInvoiceItems;
-        }
+        const printContent = this.invoice.PrintContent;
+
+        const wrapper = document.createElement("div");
+        wrapper.innerHTML = printContent;
+        this.body = wrapper.querySelector("#dataContainer").innerHTML;
       },
       (error: any) => {
         this.errorService.message(error);
@@ -138,9 +208,5 @@ export class InvoicePrintComponent implements OnInit, AfterViewInit, OnDestroy {
 
   public goBack(): void {
     window.history.back();
-  }
-
-  public deleteInvoiceItem(invoiceItem: SalesInvoiceItem): void {
-    this.invoice.RemoveSalesInvoiceItem(invoiceItem);
   }
 }

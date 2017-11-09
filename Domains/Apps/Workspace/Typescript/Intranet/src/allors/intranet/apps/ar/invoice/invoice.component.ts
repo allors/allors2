@@ -6,7 +6,7 @@ import { BehaviorSubject, Observable, Subscription } from "rxjs/Rx";
 
 import { AllorsService, ErrorService, Filter, Invoked, Loaded, Saved, Scope } from "@allors";
 import { Contains, Fetch, Path, PullRequest, Query, TreeNode } from "@allors";
-import { ContactMechanism, Currency, Organisation, OrganisationRole, Party, PartyContactMechanism, Person, SalesInvoice, SalesOrder, VatRate, VatRegime } from "@allors";
+import { ContactMechanism, Currency, Organisation, OrganisationContactRelationship, OrganisationRole, Party, PartyContactMechanism, Person, SalesInvoice, SalesOrder, VatRate, VatRegime } from "@allors";
 import { MetaDomain } from "@allors";
 
 @Component({
@@ -26,6 +26,7 @@ export class InvoiceComponent implements OnInit, AfterViewInit, OnDestroy {
   public contactMechanisms: ContactMechanism[];
   public vatRates: VatRate[];
   public vatRegimes: VatRegime[];
+  public contacts: Person[];
 
   public peopleFilter: Filter;
   public organisationsFilter: Filter;
@@ -35,6 +36,7 @@ export class InvoiceComponent implements OnInit, AfterViewInit, OnDestroy {
   public addPostalAddress: boolean = false;
   public addTeleCommunicationsNumber: boolean = false;
   public addWebAddress: boolean = false;
+  public addPerson: boolean = false;
 
   private refresh$: BehaviorSubject<Date>;
   private subscription: Subscription;
@@ -176,6 +178,22 @@ export class InvoiceComponent implements OnInit, AfterViewInit, OnDestroy {
         this.goBack();
       },
     );
+  }
+
+  public personCancelled(): void {
+    this.addPerson = false;
+  }
+
+  public personAdded(id: string): void {
+    this.addPerson = false;
+
+    const contact: Person = this.scope.session.get(id) as Person;
+
+    const organisationContactRelationship = this.scope.session.create("OrganisationContactRelationship") as OrganisationContactRelationship;
+    organisationContactRelationship.Organisation = this.invoice.BillToCustomer as Organisation;
+    organisationContactRelationship.Contact = contact;
+
+    this.contacts.push(contact);
   }
 
   public webAddressCancelled(): void {
@@ -375,6 +393,11 @@ export class InvoiceComponent implements OnInit, AfterViewInit, OnDestroy {
         name: "partyContactMechanisms",
         path: new Path({ step: this.m.Party.CurrentPartyContactMechanisms }),
       }),
+      new Fetch({
+        id: party.id,
+        name: "currentContacts",
+        path: new Path({ step: this.m.Party.CurrentContacts }),
+      }),
     ];
 
     this.scope
@@ -383,6 +406,7 @@ export class InvoiceComponent implements OnInit, AfterViewInit, OnDestroy {
 
         const partyContactMechanisms: PartyContactMechanism[] = loaded.collections.partyContactMechanisms as PartyContactMechanism[];
         this.contactMechanisms = partyContactMechanisms.map((v: PartyContactMechanism) => v.ContactMechanism);
+        this.contacts = loaded.collections.currentContacts as Person[];
       },
       (error: Error) => {
         this.errorService.message(error);

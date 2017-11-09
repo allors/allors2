@@ -7,7 +7,7 @@ import { BehaviorSubject, Observable, Subscription } from "rxjs/Rx";
 import { AllorsService, ErrorService, Filter, Invoked, Loaded, Saved, Scope } from "@allors";
 import { Contains, Fetch, Path, PullRequest, Query, TreeNode } from "@allors";
 import {
-  ContactMechanism, Currency, Organisation, OrganisationRole, Party, PartyContactMechanism,
+  ContactMechanism, Currency, Organisation, OrganisationContactRelationship, OrganisationRole, Party, PartyContactMechanism,
   Person, PersonRole, ProductQuote, RequestForQuote,
 } from "@allors";
 import { MetaDomain } from "@allors";
@@ -27,11 +27,13 @@ export class ProductQuoteEditComponent implements OnInit, AfterViewInit, OnDestr
   public organisations: Organisation[];
   public currencies: Currency[];
   public contactMechanisms: ContactMechanism[];
+  public contacts: Person[];
 
   public addEmailAddress: boolean = false;
   public addPostalAddress: boolean = false;
   public addTeleCommunicationsNumber: boolean = false;
   public addWebAddress: boolean = false;
+  public addPerson: boolean = false;
 
   public peopleFilter: Filter;
   public organisationsFilter: Filter;
@@ -163,6 +165,22 @@ export class ProductQuoteEditComponent implements OnInit, AfterViewInit, OnDestr
         this.goBack();
       },
     );
+  }
+
+  public personCancelled(): void {
+    this.addPerson = false;
+  }
+
+  public personAdded(id: string): void {
+    this.addPerson = false;
+
+    const contact: Person = this.scope.session.get(id) as Person;
+
+    const organisationContactRelationship = this.scope.session.create("OrganisationContactRelationship") as OrganisationContactRelationship;
+    organisationContactRelationship.Organisation = this.quote.Receiver as Organisation;
+    organisationContactRelationship.Contact = contact;
+
+    this.contacts.push(contact);
   }
 
   public webAddressCancelled(): void {
@@ -362,6 +380,11 @@ export class ProductQuoteEditComponent implements OnInit, AfterViewInit, OnDestr
         name: "partyContactMechanisms",
         path: new Path({ step: this.m.Party.CurrentPartyContactMechanisms }),
       }),
+      new Fetch({
+        id: party.id,
+        name: "currentContacts",
+        path: new Path({ step: this.m.Party.CurrentContacts }),
+      }),
     ];
 
     this.scope
@@ -370,6 +393,7 @@ export class ProductQuoteEditComponent implements OnInit, AfterViewInit, OnDestr
 
         const partyContactMechanisms: PartyContactMechanism[] = loaded.collections.partyContactMechanisms as PartyContactMechanism[];
         this.contactMechanisms = partyContactMechanisms.map((v: PartyContactMechanism) => v.ContactMechanism);
+        this.contacts = loaded.collections.currentContacts as Person[];
       },
       (error: Error) => {
         this.errorService.message(error);

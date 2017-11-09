@@ -190,7 +190,6 @@ namespace Allors.Repository
     [RoleId("801d63a0-31ae-4000-802a-b827e4122c62")]
     #endregion
     [Multiplicity(Multiplicity.ManyToOne)]
-    [Derived]
     [Indexed]
     [Workspace]
     public SalesOrder SalesOrder { get; set; }

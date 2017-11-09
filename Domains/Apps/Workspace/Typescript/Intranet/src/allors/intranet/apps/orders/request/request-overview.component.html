@@ -31,6 +31,9 @@
         <div *ngIf="request.Originator?.objectType.name == 'Organisation'" layout="row" class="link" [routerLink]="['/relations/organisation/' + request.Originator.id ]">
           <a-mat-static [object]="request" [roleType]="m.Request.Originator" display="displayName" label="From"></a-mat-static>
         </div>
+        <div *ngIf="request.ContactPerson" layout="row" class="link" [routerLink]="['/relations/person/' + request.ContactPerson.id ]">
+          <a-mat-static [object]="request" [roleType]="m.Request.ContactPerson" display="displayName"></a-mat-static>
+        </div>
         <div *ngIf="request.FullfillContactMechanism" layout="row">
           <a-mat-static [object]="request" [roleType]="m.Request.FullfillContactMechanism" display="displayName" label="Reply to"></a-mat-static>
         </div>

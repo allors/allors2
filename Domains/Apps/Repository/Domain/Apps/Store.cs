@@ -223,6 +223,7 @@ namespace Allors.Repository
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
         [Required]
+        [Workspace]
         public ProcessFlow ProcessFlow { get; set; }
 
         #region inherited methods

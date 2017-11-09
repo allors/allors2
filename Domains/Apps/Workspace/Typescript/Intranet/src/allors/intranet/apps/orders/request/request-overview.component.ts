@@ -64,6 +64,7 @@ export class RequestOverviewComponent implements OnInit, AfterViewInit, OnDestro
               }),
               new TreeNode({ roleType: m.Request.RequestItems }),
               new TreeNode({ roleType: m.Request.Originator }),
+              new TreeNode({ roleType: m.Request.ContactPerson }),
               new TreeNode({ roleType: m.Request.RequestState }),
               new TreeNode({ roleType: m.Request.Currency }),
               new TreeNode({ roleType: m.Request.CreatedBy }),

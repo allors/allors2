@@ -34,6 +34,7 @@ namespace Allors.Domain
         {
             var productQuote = new ProductQuoteBuilder(this.Strategy.Session)
                 .WithRequest(this)
+                .WithContactPerson(this.ContactPerson)
                 .WithDescription(this.Description)
                 .WithReceiver(this.Originator)
                 .WithRequiredResponseDate(this.RequiredResponseDate)

@@ -1,12 +1,12 @@
 import { AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit } from "@angular/core";
 import { MatSnackBar } from "@angular/material";
-import { ActivatedRoute } from "@angular/router";
+import { ActivatedRoute, Router } from "@angular/router";
 import { TdDialogService, TdMediaService } from "@covalent/core";
 import { BehaviorSubject, Subscription } from "rxjs/Rx";
 
 import { AllorsService, ErrorService, Invoked, Loaded, Saved, Scope } from "@allors";
 import { Fetch, Path, PullRequest, Query, Sort, TreeNode } from "@allors";
-import { Good, ProductQuote, SalesInvoice, SalesOrder, SalesOrderItem } from "@allors";
+import { Good, ProcessFlow, ProductQuote, SalesInvoice, SalesOrder, SalesOrderItem } from "@allors";
 import { MetaDomain } from "@allors";
 
 @Component({
@@ -21,6 +21,8 @@ export class SalesOrderOverviewComponent implements OnInit, AfterViewInit, OnDes
   public orderItems: SalesOrderItem[] = [];
   public goods: Good[] = [];
   public salesInvoice: SalesInvoice;
+  public processFlows: ProcessFlow[];
+  public payFirst: ProcessFlow;
 
   private subscription: Subscription;
   private scope: Scope;
@@ -30,6 +32,7 @@ export class SalesOrderOverviewComponent implements OnInit, AfterViewInit, OnDes
     private allors: AllorsService,
     private errorService: ErrorService,
     private route: ActivatedRoute,
+    private router: Router,
     public dialogService: TdDialogService,
     private snackBar: MatSnackBar,
     public media: TdMediaService, private changeDetectorRef: ChangeDetectorRef) {
@@ -74,6 +77,7 @@ export class SalesOrderOverviewComponent implements OnInit, AfterViewInit, OnDes
                 ],
                 roleType: m.SalesOrder.SalesOrderItems,
               }),
+              new TreeNode({ roleType: m.SalesOrder.ContactPerson }),
               new TreeNode({ roleType: m.SalesOrder.ShipToCustomer }),
               new TreeNode({ roleType: m.SalesOrder.SalesOrderState }),
               new TreeNode({ roleType: m.SalesOrder.CreatedBy }),
@@ -111,6 +115,11 @@ export class SalesOrderOverviewComponent implements OnInit, AfterViewInit, OnDes
               name: "goods",
               objectType: m.Good,
             }),
+            new Query(
+            {
+              name: "processFlows",
+              objectType: m.ProcessFlow,
+            }),
         ];
 
         this.scope.session.reset();
@@ -122,6 +131,8 @@ export class SalesOrderOverviewComponent implements OnInit, AfterViewInit, OnDes
         this.goods = loaded.collections.goods as Good[];
         this.order = loaded.objects.order as SalesOrder;
         this.salesInvoice = loaded.objects.salesInvoice as SalesInvoice;
+        this.processFlows = loaded.collections.processFlows as ProcessFlow[];
+        this.payFirst = this.processFlows.find((v: ProcessFlow) => v.UniqueId.toUpperCase() === "AB01CCC2-6480-4FC0-B20E-265AFD41FAE2");
 
         if (this.order) {
           this.orderItems = this.order.SalesOrderItems;
@@ -172,9 +183,31 @@ export class SalesOrderOverviewComponent implements OnInit, AfterViewInit, OnDes
       .subscribe((invoked: Invoked) => {
         this.goBack();
         this.snackBar.open("Invoice successfully created.", "close", { duration: 5000 });
+        this.gotoInvoice();
       },
       (error: Error) => {
         this.errorService.dialog(error);
       });
   }
-}
+
+  public gotoInvoice(): void {
+
+      const fetch: Fetch[] = [new Fetch({
+        id: this.order.id,
+        name: "invoices",
+        path: new Path({ step: this.m.SalesOrder.SalesInvoicesWhereSalesOrder }),
+      })];
+
+      this.scope.load("Pull", new PullRequest({ fetch }))
+        .subscribe((loaded: Loaded) => {
+          const invoices = loaded.collections.invoices as SalesInvoice[];
+          if (invoices.length === 1) {
+            this.router.navigate(["/ar/invoice/" + invoices[0].id]);
+          }
+        },
+        (error: any) => {
+          this.errorService.message(error);
+          this.goBack();
+        });
+    }
+  }

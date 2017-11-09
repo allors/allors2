@@ -354,6 +354,7 @@ namespace Allors.Repository
     [Multiplicity(Multiplicity.ManyToOne)]
     [Indexed]
     [Required]
+    [Workspace]
     public Store Store { get; set; }
 
     #region Allors

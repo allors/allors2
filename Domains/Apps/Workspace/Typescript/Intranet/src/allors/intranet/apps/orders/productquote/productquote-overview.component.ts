@@ -1,6 +1,6 @@
 import { AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit } from "@angular/core";
 import { MatSnackBar } from "@angular/material";
-import { ActivatedRoute } from "@angular/router";
+import { ActivatedRoute, Router } from "@angular/router";
 import { TdDialogService, TdMediaService } from "@covalent/core";
 import { BehaviorSubject, Subscription } from "rxjs/Rx";
 
@@ -30,6 +30,7 @@ export class ProductQuoteOverviewComponent implements OnInit, AfterViewInit, OnD
     private allors: AllorsService,
     private errorService: ErrorService,
     private route: ActivatedRoute,
+    private router: Router,
     public dialogService: TdDialogService,
     private snackBar: MatSnackBar,
     public media: TdMediaService, private changeDetectorRef: ChangeDetectorRef) {
@@ -73,6 +74,7 @@ export class ProductQuoteOverviewComponent implements OnInit, AfterViewInit, OnD
                 roleType: m.Quote.QuoteItems,
               }),
               new TreeNode({ roleType: m.Quote.Receiver }),
+              new TreeNode({ roleType: m.Quote.ContactPerson }),
               new TreeNode({ roleType: m.Quote.QuoteState }),
               new TreeNode({ roleType: m.Quote.CreatedBy }),
               new TreeNode({ roleType: m.Quote.LastModifiedBy }),
@@ -170,9 +172,29 @@ export class ProductQuoteOverviewComponent implements OnInit, AfterViewInit, OnD
       .subscribe((invoked: Invoked) => {
         this.goBack();
         this.snackBar.open("Order successfully created.", "close", { duration: 5000 });
+        this.gotoOrder();
       },
       (error: Error) => {
         this.errorService.dialog(error);
+      });
+  }
+
+  public gotoOrder(): void {
+
+    const fetch: Fetch[] = [new Fetch({
+      id: this.quote.id,
+      name: "order",
+      path: new Path({ step: this.m.ProductQuote.SalesOrderWhereQuote }),
+    })];
+
+    this.scope.load("Pull", new PullRequest({ fetch }))
+      .subscribe((loaded: Loaded) => {
+        const order = loaded.objects.order as SalesOrder;
+        this.router.navigate(["/orders/salesOrder/" + order.id]);
+      },
+      (error: any) => {
+        this.errorService.message(error);
+        this.goBack();
       });
   }
 }

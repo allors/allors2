@@ -12,8 +12,16 @@
       <a-mat-autocomplete *ngIf="showOrganisations" [object]="quote" [roleType]="m.ProductQuote.Receiver" [filter]="organisationsFilter.create()"
         display="Name" (onSelect)="receiverSelected($event)" label="Receiving organisation"></a-mat-autocomplete>
       <a-mat-autocomplete *ngIf="showPeople" [object]="quote" [roleType]="m.ProductQuote.Receiver" [filter]="peopleFilter.create()"
-        display="displayName" (onSelect)="receiverSelected($event)" label="Receiving person"></a-mat-autocomplete>
-      <a-mat-select [object]="quote" [roleType]="m.ProductQuote.FullfillContactMechanism" [options]="contactMechanisms" display="displayName"></a-mat-select>
+        display="displayName" (onSelect)="receiverSelected($event)" label="Receiving private person"></a-mat-autocomplete>
+
+      <a-mat-select *ngIf="showOrganisations && !showPeople" [object]="quote" [roleType]="m.ProductQuote.ContactPerson" [options]="contacts" display="displayName"></a-mat-select>
+      <button *ngIf="showOrganisations && !showPeople" type="button" mat-icon-button (click)="addPerson = true"><mat-icon>add</mat-icon></button>
+      <div *ngIf="showOrganisations && addPerson" style="background: lightblue" class="pad">
+        <person-inline (cancelled)="personCancelled($event)" (saved)="personAdded($event)">
+        </person-inline>
+      </div>
+
+        <a-mat-select [object]="quote" [roleType]="m.ProductQuote.FullfillContactMechanism" [options]="contactMechanisms" display="displayName"></a-mat-select>
       <button *ngIf="quote.Receiver" type="button" mat-button (click)="addWebAddress = true">+Web</button>
       <button *ngIf="quote.Receiver" type="button" mat-button (click)="addEmailAddress = true">+Email</button>
       <button *ngIf="quote.Receiver" type="button" mat-button (click)="addPostalAddress = true">+Postal</button>
