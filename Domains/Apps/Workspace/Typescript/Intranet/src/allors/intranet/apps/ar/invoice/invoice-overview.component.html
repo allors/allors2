@@ -36,6 +36,9 @@
         <div *ngIf="invoice.BillToContactMechanism" layout="row">
           <a-mat-static [object]="invoice" [roleType]="m.SalesInvoice.BillToContactMechanism" display="displayName" label="Bill to"></a-mat-static>
         </div>
+        <div *ngIf="invoice.Description" layout="row">
+          <a-mat-static [object]="invoice" [roleType]="m.SalesInvoice.Description"></a-mat-static>
+        </div>
         <div *ngIf="order?.Comment" layout="row">
           <a-mat-static [object]="order" [roleType]="m.SalesOrder.Comment" label="Order Comment"></a-mat-static>
         </div>
@@ -59,6 +62,7 @@
 
       <mat-divider></mat-divider>
       <mat-card-actions>
+          <button mat-button [routerLink]="['/printinvoice/' + invoice.id ]">Print</button>
         <button *ngIf="invoice.CanWriteSalesInvoiceItems" mat-button [routerLink]="['/invoice/' + invoice.id]">Edit</button>
       </mat-card-actions>
     </mat-card>
@@ -78,8 +82,8 @@
                 <h3 *ngIf="invoiceItem.Product && invoice.CanWriteSalesInvoiceItems" mat-line [routerLink]="['/invoice/' + invoice.id + '/item/' + invoiceItem.id ]">{{invoiceItem.Quantity}} * {{invoiceItem.Product.Name}}</h3>
                 <h3 *ngIf="invoiceItem.Product && !invoice.CanWriteSalesInvoiceItems" mat-line>{{invoiceItem.Quantity}} * {{invoiceItem.Product.Name}}</h3>
 
-                <h3 *ngIf="!invoiceItem.Product && invoice.CanWriteSalesInvoiceItems" mat-line [routerLink]="['/invoice/' + invoice.id + '/item/' + invoiceItem.id ]">{{invoiceItem.ItemType.Name}}</h3>
-                <h3 *ngIf="!invoiceItem.Product && !invoice.CanWriteSalesInvoiceItems" mat-line>{{invoiceItem.ItemType.Name}}</h3>
+                <h3 *ngIf="!invoiceItem.Product && invoice.CanWriteSalesInvoiceItems" mat-line [routerLink]="['/invoice/' + invoice.id + '/item/' + invoiceItem.id ]">{{invoiceItem.SalesInvoiceItemType.Name}}</h3>
+                <h3 *ngIf="!invoiceItem.Product && !invoice.CanWriteSalesInvoiceItems" mat-line>{{invoiceItem.SalesInvoiceItemType.Name}}</h3>
 
                 <h4 mat-line>Total ex VAT: {{invoiceItem.TotalExVat}}</h4>
 

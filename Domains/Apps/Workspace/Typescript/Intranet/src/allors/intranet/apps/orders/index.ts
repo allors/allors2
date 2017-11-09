@@ -7,6 +7,7 @@ export * from "./request/request-overview.module";
 export * from "./request/requests-overview.module";
 export * from "./salesorder/salesorder-overview.module";
 export * from "./salesorder/salesorders-overview.module";
+export * from "./salesorder/salesorder-print.module";
 
 export * from "./productquote/productquote.module";
 export * from "./quoteitem/quoteitem.module";
@@ -23,6 +24,7 @@ import { ProductQuotesOverviewModule } from "./productquote/productquotes-overvi
 import { RequestOverviewModule } from "./request/request-overview.module";
 import { RequestsOverviewModule } from "./request/requests-overview.module";
 import { SalesOrderOverviewModule } from "./salesorder/salesorder-overview.module";
+import { SalesOrderPrintModule } from "./salesorder/salesorder-print.module";
 import { SalesOrdersOverviewModule } from "./salesorder/salesorders-overview.module";
 
 import { ProductQuoteEditModule } from "./productquote/productquote.module";
@@ -43,7 +45,7 @@ export const Modules = [
   RequestOverviewModule,
   SalesOrderOverviewModule,
   SalesOrdersOverviewModule,
-
+  SalesOrderPrintModule,
   ProductQuoteEditModule,
   RequestEditModule,
   QuoteItemEditModule,

@@ -32,6 +32,7 @@ namespace Allors.Domain
         {
             var salesOrder = new SalesOrderBuilder(this.Strategy.Session)
                 .WithComment(this.Comment)
+                .WithDescription(this.Description)
                 .WithContactPerson(this.ContactPerson)
                 .WithInternalComment(this.InternalComment)
                 .WithQuote(this)

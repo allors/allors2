@@ -45,6 +45,7 @@
         </party-contactmechanism-telecommunicationsnumber>
       </div>
 
+      <a-mat-input [object]="invoice" [roleType]="m.SalesInvoice.Description"></a-mat-input>
       <a-mat-select [object]="invoice" [roleType]="m.SalesInvoice.VatRegime" [options]="vatRegimes" display="Name"></a-mat-select>
       <a-mat-static *ngIf="invoice.VatRegime" [object]="invoice.VatRegime" [roleType]="m.VatRegime.VatRate" display="Rate"></a-mat-static>
 

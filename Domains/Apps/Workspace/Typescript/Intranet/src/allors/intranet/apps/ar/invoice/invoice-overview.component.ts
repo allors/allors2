@@ -18,7 +18,6 @@ export class InvoiceOverviewComponent implements OnInit, AfterViewInit, OnDestro
   public title: string = "Sales Invoice Overview";
   public order: SalesOrder;
   public invoice: SalesInvoice;
-  public invoiceItems: SalesInvoiceItem[] = [];
   public goods: Good[] = [];
 
   private subscription: Subscription;
@@ -116,9 +115,6 @@ export class InvoiceOverviewComponent implements OnInit, AfterViewInit, OnDestro
         this.goods = loaded.collections.goods as Good[];
         this.order = loaded.objects.order as SalesOrder;
         this.invoice = loaded.objects.invoice as SalesInvoice;
-        if (this.invoice) {
-          this.invoiceItems = this.invoice.SalesInvoiceItems;
-        }
       },
       (error: any) => {
         this.errorService.message(error);

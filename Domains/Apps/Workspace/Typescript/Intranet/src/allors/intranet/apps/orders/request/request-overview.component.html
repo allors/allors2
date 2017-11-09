@@ -44,6 +44,9 @@
           <a-mat-static [object]="request" [roleType]="m.Request.TelephoneCountryCode"></a-mat-static>
           <a-mat-static [object]="request" [roleType]="m.Request.TelephoneNumber"></a-mat-static>
         </div>
+        <div *ngIf="request.Description" layout="row">
+          <a-mat-static [object]="request" [roleType]="m.Request.Description"></a-mat-static>
+        </div>
         <div *ngIf="request.Comment" layout="row">
           <a-mat-textarea [object]="request" [roleType]="m.Request.Comment"></a-mat-textarea>
         </div>

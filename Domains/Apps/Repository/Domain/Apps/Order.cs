@@ -186,6 +186,15 @@ namespace Allors.Repository
         string Message { get; set; }
 
         #region Allors
+        [Id("7E66C6E0-F4BD-4085-AD5E-7012B576AFC2")]
+        [AssociationId("2BDED8C8-0A07-40B5-8F8A-7618E1D48E60")]
+        [RoleId("27B5B028-4D3A-493C-9501-6BF29978C35D")]
+        #endregion
+        [Size(256)]
+        [Workspace]
+        string Description { get; set; }
+
+        #region Allors
         [Id("9fd3ea50-280e-4d0d-a9db-450991248a53")]
         [AssociationId("5c3af601-e6f8-4adc-af83-88058d86975a")]
         [RoleId("7badb3f0-51a2-4e9b-bdc7-3d3bfbf7865f")]

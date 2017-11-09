@@ -5,19 +5,19 @@ import { BehaviorSubject, Subscription } from "rxjs/Rx";
 
 import { AllorsService, ErrorService, Loaded, Saved, Scope } from "@allors";
 import { Fetch, Path, PullRequest, Query, TreeNode } from "@allors";
-import { SalesInvoice } from "@allors";
+import { SalesOrder } from "@allors";
 import { MetaDomain } from "@allors";
 
 @Component({
   encapsulation: ViewEncapsulation.Native,
-  styleUrls: ["./salesinvoice.css"],
+  styleUrls: ["./salesorder.css"],
   template: `<div [innerHTML]="body"></div>`,
 })
 
-export class InvoicePrintComponent implements OnInit, AfterViewInit, OnDestroy {
+export class SalesOrderPrintComponent implements OnInit, AfterViewInit, OnDestroy {
 
   public m: MetaDomain;
-  public invoice: SalesInvoice;
+  public order: SalesOrder;
   public body: string;
 
   private subscription: Subscription;
@@ -49,7 +49,7 @@ export class InvoicePrintComponent implements OnInit, AfterViewInit, OnDestroy {
         const fetch: Fetch[] = [
           new Fetch({
             id,
-            name: "invoice",
+            name: "order",
           }),
         ];
 
@@ -59,8 +59,8 @@ export class InvoicePrintComponent implements OnInit, AfterViewInit, OnDestroy {
           .load("Pull", new PullRequest({ fetch }));
       })
       .subscribe((loaded: Loaded) => {
-        this.invoice = loaded.objects.invoice as SalesInvoice;
-        const printContent = this.invoice.PrintContent;
+        this.order = loaded.objects.order as SalesOrder;
+        const printContent = this.order.PrintContent;
 
         const wrapper = document.createElement("div");
         wrapper.innerHTML = printContent;

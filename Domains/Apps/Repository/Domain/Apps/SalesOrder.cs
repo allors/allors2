@@ -33,7 +33,10 @@ namespace Allors.Repository
     public decimal TotalVatCustomerCurrency { get; set; }
     public decimal TotalDiscount { get; set; }
     public string Message { get; set; }
-    public decimal TotalShippingAndHandlingCustomerCurrency { get; set; }
+
+      public string Description { get; set; }
+
+      public decimal TotalShippingAndHandlingCustomerCurrency { get; set; }
     public DateTime EntryDate { get; set; }
     public DiscountAdjustment DiscountAdjustment { get; set; }
     public OrderKind OrderKind { get; set; }

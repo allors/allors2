@@ -14,6 +14,7 @@ import * as common from "./common";
 export const routes: Routes = [
   { path: "login", component: common.LoginComponent },
   { canActivate: [AllorsService],  path: "printinvoice/:id", component: ar.InvoicePrintComponent },
+  { canActivate: [AllorsService],  path: "printsalesorder/:id", component: orders.SalesOrderPrintComponent },
   {
     canActivate: [AllorsService],
     path: "", component: common.MainComponent,

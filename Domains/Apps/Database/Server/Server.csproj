@@ -24,10 +24,6 @@
 	  <Content Remove="wwwroot\**" />
 	  <EmbeddedResource Remove="wwwroot\**" />
 	  <None Remove="wwwroot\**" />
-	</ItemGroup> 
-
-	<ItemGroup>
-	  <Content Include="Templates\salesInvoice.css" />
 	</ItemGroup>
   
 

@@ -86,8 +86,8 @@ tr.top table tr td.title {
 }
 
 .totals {
-    float: right; 
-    width: 35%; 
+    float: right;
+    width: 35%;
     position: relative;
     top: 100px;
 }
@@ -110,8 +110,8 @@ tr.top table tr td.title {
     }
 
 @media print {
-    @page {
-        size: auto; /* auto is the initial value */
-        margin: 0; /* this affects the margin in the printer settings */
-    }
+  @page {
+      size: auto; /* auto is the initial value */
+      margin: 0; /* this affects the margin in the printer settings */
+  }
 }

@@ -63,6 +63,7 @@
         </party-contactmechanism-telecommunicationsnumber>
       </div>
 
+      <a-mat-input [object]="order" [roleType]="m.SalesOrder.Description"></a-mat-input>
       <a-mat-select [object]="order" [roleType]="m.SalesOrder.VatRegime" [options]="vatRegimes" display="Name"></a-mat-select>
       <a-mat-static *ngIf="order.VatRegime" [object]="order.VatRegime" [roleType]="m.VatRegime.VatRate" display="Rate"></a-mat-static>
       <a-mat-static *ngIf="quote?.Comment" [object]="quote" [roleType]="m.Quote.Comment" label="Quote Comment"></a-mat-static>

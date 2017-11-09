@@ -54,6 +54,7 @@
             </button>
             <mat-menu x-position="before" #menu="matMenu">
             <a [routerLink]="['/orders/salesOrder/' + order.id ]" mat-menu-item>Details</a>
+            <a [routerLink]="['/printsalesorder/' + order.id ]" mat-menu-item>Print</a>
             <!-- <button mat-menu-item (click)="delete(organisation)">Delete</button> -->
             </mat-menu>
           </span>

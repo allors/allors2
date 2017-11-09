@@ -227,7 +227,43 @@ namespace Allors
                 .WithPrimaryProductCategory(productCategory3)
                 .Build();
 
-            var item1 = new SalesInvoiceItemBuilder(this.Session)
+            var salesOrderItem1 = new SalesOrderItemBuilder(this.Session)
+                .WithDescription("first item")
+                .WithProduct(good)
+                .WithActualUnitPrice(3000)
+                .WithQuantityOrdered(1)
+                .WithMessage(@"line1
+line2")
+                .WithItemType(new SalesInvoiceItemTypes(this.Session).ProductItem)
+                .Build();
+
+            var salesOrderItem2 = new SalesOrderItemBuilder(this.Session)
+                .WithDescription("second item")
+                .WithActualUnitPrice(2000)
+                .WithQuantityOrdered(2)
+                .WithItemType(new SalesInvoiceItemTypes(this.Session).ProductItem)
+                .Build();
+
+            var salesOrderItem3 = new SalesOrderItemBuilder(this.Session)
+                .WithDescription("Fee")
+                .WithActualUnitPrice(100)
+                .WithQuantityOrdered(1)
+                .WithItemType(new SalesInvoiceItemTypes(this.Session).Fee)
+                .Build();
+
+            var order = new SalesOrderBuilder(this.Session)
+                .WithBillToCustomer(acme)
+                .WithBillToContactMechanism(acmeBillingAddress.ContactMechanism)
+                .WithSalesOrderItem(salesOrderItem1)
+                .WithSalesOrderItem(salesOrderItem2)
+                .WithSalesOrderItem(salesOrderItem3)
+                .WithCustomerReference("a reference number")
+                .WithDescription("Sale of 1 used Aircraft Towbar")
+                .WithVatRegime(new VatRegimes(this.Session).Assessable)
+                .Build();
+
+
+            var salesInvoiceItem1 = new SalesInvoiceItemBuilder(this.Session)
                 .WithDescription("first item")
                 .WithProduct(good)
                 .WithActualUnitPrice(3000)
@@ -237,14 +273,14 @@ line2")
                 .WithSalesInvoiceItemType(new SalesInvoiceItemTypes(this.Session).ProductItem)
                 .Build();
 
-            var item2 = new SalesInvoiceItemBuilder(this.Session)
+            var salesInvoiceItem2 = new SalesInvoiceItemBuilder(this.Session)
                 .WithDescription("second item")
                 .WithActualUnitPrice(2000)
                 .WithQuantity(2)
                 .WithSalesInvoiceItemType(new SalesInvoiceItemTypes(this.Session).ProductItem)
                 .Build();
 
-            var item3 = new SalesInvoiceItemBuilder(this.Session)
+            var salesInvoiceItem3 = new SalesInvoiceItemBuilder(this.Session)
                 .WithDescription("Fee")
                 .WithActualUnitPrice(100)
                 .WithQuantity(1)
@@ -255,9 +291,9 @@ line2")
                 .WithInvoiceNumber("1")
                 .WithBillToCustomer(acme)
                 .WithBillToContactMechanism(acmeBillingAddress.ContactMechanism)
-                .WithSalesInvoiceItem(item1)
-                .WithSalesInvoiceItem(item2)
-                .WithSalesInvoiceItem(item3)
+                .WithSalesInvoiceItem(salesInvoiceItem1)
+                .WithSalesInvoiceItem(salesInvoiceItem2)
+                .WithSalesInvoiceItem(salesInvoiceItem3)
                 .WithCustomerReference("a reference number")
                 .WithDescription("Sale of 1 used Aircraft Towbar")
                 .WithSalesInvoiceType(new SalesInvoiceTypes(this.Session).SalesInvoice)
@@ -266,10 +302,12 @@ line2")
 
             this.Session.Derive();
 
-            var printContent = invoice.PrintContent;
-            File.WriteAllText(@"c:\temp\invoice.html", printContent);
 
+            var orderContent = order.PrintContent;
+            File.WriteAllText(@"c:\temp\order.html", orderContent);
 
+            var invoiceContent = invoice.PrintContent;
+            File.WriteAllText(@"c:\temp\invoice.html", invoiceContent);
         }
 
         private void SetupUser(string email, string firstName, string lastName, string password)

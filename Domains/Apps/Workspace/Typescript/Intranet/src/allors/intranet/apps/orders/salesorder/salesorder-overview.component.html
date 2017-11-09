@@ -39,6 +39,9 @@
         <div *ngIf="order.ShipToAddress" layout="row">
           <a-mat-static [object]="order" [roleType]="m.SalesOrder.ShipToAddress" display="displayName" label="Ship to"></a-mat-static>
         </div>
+        <div *ngIf="order.Description" layout="row">
+          <a-mat-static [object]="order" [roleType]="m.SalesOrder.Description"></a-mat-static>
+        </div>
         <div *ngIf="quote?.Comment" layout="row">
           <a-mat-static [object]="quote" [roleType]="m.Quote.Comment" label="Quote Comment"></a-mat-static>
         </div>
@@ -62,6 +65,7 @@
 
       <mat-divider></mat-divider>
       <mat-card-actions>
+        <button mat-button [routerLink]="['/printsalesorder/' + order.id ]">Print</button>
         <button *ngIf="order.CanWriteSalesOrderItems" mat-button [routerLink]="['/salesOrder/' + order.id]">Edit</button>
         <button *ngIf="payFirst && order.CanExecuteComplete && order.ValidOrderItems.length > 0"
           mat-button (click)="createInvoice()">Create Invoice</button>

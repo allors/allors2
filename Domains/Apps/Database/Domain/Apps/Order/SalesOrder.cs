@@ -17,7 +17,13 @@ namespace Allors.Domain
 {
     using System;
     using System.Collections.Generic;
+
+    using Allors.Services;
+
     using Meta;
+
+    using Microsoft.Extensions.DependencyInjection;
+
     using Resources;
 
     public partial class SalesOrder
@@ -240,6 +246,17 @@ namespace Allors.Domain
 
             this.PreviousBillToCustomer = this.BillToCustomer;
             this.PreviousShipToCustomer = this.ShipToCustomer;
+
+
+            var templateService = this.strategy.Session.ServiceProvider.GetRequiredService<ITemplateService>();
+
+            var model = new PrintSalesOrder
+                            {
+                                SalesOrder = this,
+                                Aviaco = this.strategy.Session.GetSingleton().InternalOrganisation
+                            };
+
+            this.PrintContent = templateService.Render("Templates/SalesOrder.cshtml", model).Result;
         }
 
         public void AppsCancel(OrderCancel method)
@@ -714,6 +731,7 @@ namespace Allors.Domain
         {
             var salesInvoice = new SalesInvoiceBuilder(this.Strategy.Session)
                 .WithSalesOrder(this)
+                .WithDescription(this.Description)
                 .WithStore(this.Store)
                 .WithInvoiceDate(DateTime.UtcNow)
                 .WithSalesChannel(this.SalesChannel)
