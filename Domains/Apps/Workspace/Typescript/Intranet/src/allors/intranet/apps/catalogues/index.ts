@@ -9,6 +9,7 @@ export * from "./category/category.module";
 
 export * from "./good/goods-overview.module";
 export * from "./good/good.module";
+export * from "./good/newgood-dialog.module";
 
 export * from "./productcharacteristic/productcharacteristics-overview.module";
 export * from "./productcharacteristic/productcharacteristic.module";
@@ -30,6 +31,7 @@ import { CategoryModule } from "./category/category.module";
 
 import { GoodModule } from "./good/good.module";
 import { GoodsOverviewModule } from "./good/goods-overview.module";
+import { NewGoodDialogModule } from "./good/newgood-dialog.module";
 
 import { ProductCharacteristicModule } from "./productcharacteristic/productcharacteristic.module";
 import { ProductCharacteristicsOverviewModule } from "./productcharacteristic/productcharacteristics-overview.module";
@@ -47,7 +49,7 @@ export const Modules = [
 
   CataloguesOverviewModule, CatalogueModule,
   CategoriesOverviewModule, CategoryModule,
-  GoodsOverviewModule, GoodModule,
+  GoodsOverviewModule, GoodModule, NewGoodDialogModule,
   ProductCharacteristicsOverviewModule, ProductCharacteristicModule,
   ProductTypesOverviewModule, ProductTypeModule,
   NonSerialisedGoodModule,

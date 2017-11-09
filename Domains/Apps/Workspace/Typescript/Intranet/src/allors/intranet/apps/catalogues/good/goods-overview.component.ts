@@ -1,6 +1,6 @@
 import { AfterViewInit, ChangeDetectorRef, Component, OnDestroy } from "@angular/core";
 import { FormBuilder, FormGroup } from "@angular/forms";
-import { MatSnackBar } from "@angular/material";
+import { MatDialog, MatSnackBar } from "@angular/material";
 import { Title } from "@angular/platform-browser";
 import { Router } from "@angular/router";
 import { BehaviorSubject, Observable, Subscription } from "rxjs/Rx";
@@ -11,6 +11,7 @@ import { AllorsService, ErrorService, Loaded, Scope } from "@allors";
 import { And, ContainedIn, Contains, Equals, Like, Page, Predicate, PullRequest, Query, Sort, TreeNode } from "@allors";
 import { Brand, Good, InventoryItemKind, Model, Organisation, OrganisationRole, Ownership, ProductCategory, ProductType, SerialisedInventoryItemState } from "@allors";
 import { MetaDomain } from "@allors";
+import { NewGoodDialogComponent } from "../../catalogues/good/newgood-dialog.module";
 
 interface SearchData {
   name: string;
@@ -38,6 +39,7 @@ export class GoodsOverviewComponent implements AfterViewInit, OnDestroy {
   public searchForm: FormGroup;
   public data: Good[];
   public filtered: Good[];
+  public chosenGood: string;
 
   public productCategories: ProductCategory[];
   public selectedProductCategory: ProductCategory;
@@ -86,6 +88,7 @@ export class GoodsOverviewComponent implements AfterViewInit, OnDestroy {
     private errorService: ErrorService,
     private formBuilder: FormBuilder,
     private titleService: Title,
+    private dialog: MatDialog,
     private snackBar: MatSnackBar,
     private router: Router,
     private dialogService: TdDialogService,
@@ -95,6 +98,7 @@ export class GoodsOverviewComponent implements AfterViewInit, OnDestroy {
 
     this.scope = new Scope(allors.database, allors.workspace);
     this.refresh$ = new BehaviorSubject<Date>(undefined);
+    this.chosenGood = "Serialised";
 
     this.searchForm = this.formBuilder.group({
       articleNumber: [""],
@@ -347,6 +351,24 @@ export class GoodsOverviewComponent implements AfterViewInit, OnDestroy {
           // TODO: Logical, physical or workflow delete
         }
       });
+  }
+
+  public addGood(): void {
+
+    const dialogRef = this.dialog.open(NewGoodDialogComponent, {
+      data: { chosenGood: this.chosenGood },
+      height: "300px",
+      width: "700px",
+    });
+
+    dialogRef.afterClosed().subscribe((answer: string) => {
+        if (answer === "Serialised") {
+          this.router.navigate(["/catalogue/serialisedGood/"]);
+        }
+        if (answer === "NonSerialised") {
+          this.router.navigate(["/catalogue/nonSerialisedGood/"]);
+        }
+    });
   }
 
   public goBack(): void {
