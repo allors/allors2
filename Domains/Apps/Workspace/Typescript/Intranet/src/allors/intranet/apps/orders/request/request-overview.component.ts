@@ -1,9 +1,9 @@
 import { AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit } from "@angular/core";
 import { MatSnackBar } from "@angular/material";
-import { ActivatedRoute } from "@angular/router";
+import { ActivatedRoute, UrlSegment } from "@angular/router";
 import { Router } from "@angular/router";
 import { TdDialogService, TdMediaService } from "@covalent/core";
-import { BehaviorSubject, Subscription } from "rxjs/Rx";
+import { BehaviorSubject, Observable, Subscription } from "rxjs/Rx";
 
 import { AllorsService, ErrorService, Invoked, Loaded, Scope } from "@allors";
 import { Fetch, Path, PullRequest, Query, TreeNode } from "@allors";
@@ -46,8 +46,11 @@ export class RequestOverviewComponent implements OnInit, AfterViewInit, OnDestro
 
   public ngOnInit(): void {
 
-    this.subscription = this.route.url
-      .switchMap((url: any) => {
+    const route$: Observable<UrlSegment[]> = this.route.url;
+    const combined$: Observable<[UrlSegment[], Date]> = Observable.combineLatest(route$, this.refresh$);
+
+    this.subscription = combined$
+      .switchMap(([urlSegments, date]: [UrlSegment[], Date]) => {
 
         const id: string = this.route.snapshot.paramMap.get("id");
         const m: MetaDomain = this.m;

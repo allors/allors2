@@ -19,16 +19,6 @@ namespace Allors.Repository
         #endregion
 
         #region Allors
-        [Id("57D5387B-003A-4D54-BD51-727DE96CB5B8")]
-        [AssociationId("5B958644-BF93-4275-8D90-D049341ED13A")]
-        [RoleId("C2BF0836-EBCD-4233-BDB4-0A07A1380C7E")]
-        #endregion
-        [Multiplicity(Multiplicity.ManyToOne)]
-        [Indexed]
-        [Workspace]
-        public Media NoImageAvailableImage { get; set; }
-
-        #region Allors
         [Id("21F55EB3-4DC1-42C5-AB16-4C47DBCF0456")]
         [AssociationId("E5F96073-E3F1-41FE-8DB4-D387CA3A8C34")]
         [RoleId("DDE889D2-FF86-45E3-AC75-214EDCD13EB8")]

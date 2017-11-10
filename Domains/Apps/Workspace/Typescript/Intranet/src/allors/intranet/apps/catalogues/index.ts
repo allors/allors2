@@ -17,8 +17,8 @@ export * from "./productcharacteristic/productcharacteristic.module";
 export * from "./producttype/producttypes-overview.module";
 export * from "./producttype/producttype.module";
 
-export * from "./nonSerialisedGood/nonserialisedgood.module";
-export * from "./serialisedGood/serialisedgood.module";
+export * from "./nonSerialisedGood/nonserialisedgood-add.module";
+export * from "./serialisedGood/serialisedgood-add.module";
 
 import { DashboardModule } from "./dashboard/dashboard.module";
 import { OverviewModule } from "./overview.module";
@@ -39,8 +39,8 @@ import { ProductCharacteristicsOverviewModule } from "./productcharacteristic/pr
 import { ProductTypeModule } from "./producttype/producttype.module";
 import { ProductTypesOverviewModule } from "./producttype/producttypes-overview.module";
 
-import { NonSerialisedGoodModule } from "./nonSerialisedGood/nonserialisedgood.module";
-import { SerialisedGoodModule } from "./serialisedGood/serialisedgood.module";
+import { NonSerialisedGoodAddModule } from "./nonSerialisedGood/nonserialisedgood-add.module";
+import { SerialisedGoodAddModule } from "./serialisedGood/serialisedgood-add.module";
 
 export const Modules = [
   // Routing
@@ -52,6 +52,6 @@ export const Modules = [
   GoodsOverviewModule, GoodModule, NewGoodDialogModule,
   ProductCharacteristicsOverviewModule, ProductCharacteristicModule,
   ProductTypesOverviewModule, ProductTypeModule,
-  NonSerialisedGoodModule,
-  SerialisedGoodModule,
+  NonSerialisedGoodAddModule,
+  SerialisedGoodAddModule,
 ];

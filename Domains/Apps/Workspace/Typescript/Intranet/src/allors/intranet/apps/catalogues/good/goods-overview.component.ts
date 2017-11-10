@@ -363,10 +363,10 @@ export class GoodsOverviewComponent implements AfterViewInit, OnDestroy {
 
     dialogRef.afterClosed().subscribe((answer: string) => {
         if (answer === "Serialised") {
-          this.router.navigate(["/catalogue/serialisedGood/"]);
+          this.router.navigate(["/serialisedGood"]);
         }
         if (answer === "NonSerialised") {
-          this.router.navigate(["/catalogue/nonSerialisedGood/"]);
+          this.router.navigate(["/nonSerialisedGood"]);
         }
     });
   }

@@ -77,7 +77,6 @@ export class OrganisationOverviewComponent implements OnInit, AfterViewInit, OnD
   public ngOnInit(): void {
 
     const route$: Observable<UrlSegment[]> = this.route.url;
-
     const combined$: Observable<[UrlSegment[], Date]> = Observable.combineLatest(route$, this.refresh$);
 
     this.subscription = combined$

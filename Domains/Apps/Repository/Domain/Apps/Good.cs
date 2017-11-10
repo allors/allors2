@@ -93,16 +93,6 @@ namespace Allors.Repository
         public decimal AvailableToPromise { get; set; }
 
         #region Allors
-        [Id("1e977b9c-8582-48be-ac1d-20a055598290")]
-        [AssociationId("be920e49-abff-4ef0-80c2-02df6dfa55e3")]
-        [RoleId("67e83a0e-db03-439d-832a-b5685887eeaa")]
-        #endregion
-        [Multiplicity(Multiplicity.ManyToOne)]
-        [Indexed]
-        [Workspace]
-        public Media Thumbnail { get; set; }
-
-        #region Allors
         [Id("2ca90db1-8595-4de0-957e-dc4476be1654")]
         [AssociationId("637fa802-fc65-4b5e-aaf5-e49ac5218b9b")]
         [RoleId("64036e01-6767-46d0-aca7-def5876db81f")]
@@ -215,7 +205,7 @@ namespace Allors.Repository
         [Indexed]
         #endregion
         [Workspace]
-        [Multiplicity(Multiplicity.OneToMany)]
+        [Multiplicity(Multiplicity.ManyToMany)]
         public Media[] Photos { get; set; }
 
         #region Allors

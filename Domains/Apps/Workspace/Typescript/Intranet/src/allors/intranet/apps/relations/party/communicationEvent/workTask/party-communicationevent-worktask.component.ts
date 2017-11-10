@@ -1,8 +1,8 @@
 import { AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit } from "@angular/core";
 import { MatSnackBar } from "@angular/material";
-import { ActivatedRoute, Router } from "@angular/router";
+import { ActivatedRoute, Router, UrlSegment } from "@angular/router";
 import { TdDialogService, TdMediaService } from "@covalent/core";
-import { BehaviorSubject, Subscription } from "rxjs/Rx";
+import { BehaviorSubject, Observable, Subscription } from "rxjs/Rx";
 
 import { AllorsService, ErrorService, Loaded, Saved, Scope } from "@allors";
 import { Fetch, PullRequest, Query, TreeNode } from "@allors";
@@ -48,8 +48,12 @@ export class PartyCommunicationEventWorkTaskComponent implements OnInit, AfterVi
   }
 
   public ngOnInit(): void {
-    this.subscription = this.route.url
-      .switchMap((url: any) => {
+
+    const route$: Observable<UrlSegment[]> = this.route.url;
+    const combined$: Observable<[UrlSegment[], Date]> = Observable.combineLatest(route$, this.refresh$);
+
+    this.subscription = combined$
+      .switchMap(([urlSegments, date]: [UrlSegment[], Date]) => {
 
         const id: string = this.route.snapshot.paramMap.get("id");
         const roleId: string = this.route.snapshot.paramMap.get("roleId");

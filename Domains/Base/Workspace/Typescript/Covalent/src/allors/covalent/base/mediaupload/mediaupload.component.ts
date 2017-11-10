@@ -1,4 +1,4 @@
-import { Component , Input } from "@angular/core";
+import { Component, EventEmitter, Input, Output } from "@angular/core";
 
 import { Field } from "@baseAngular/core";
 import { ISession, ISessionObject } from "@baseDomain";
@@ -24,6 +24,9 @@ import { Media } from "@generatedDomain/index";
 `,
 })
 export class MediaUploadComponent extends Field {
+
+  @Output()
+  public selected: EventEmitter<string> = new EventEmitter<string>();
 
   @Input()
   public accept: string;
@@ -64,6 +67,7 @@ export class MediaUploadComponent extends Field {
     const load: () => void =  () => {
       this.media.FileName = file.name;
       this.media.InDataUri = reader.result;
+      this.selected.emit(this.media.id);
     };
 
     reader.addEventListener("load", load, false);

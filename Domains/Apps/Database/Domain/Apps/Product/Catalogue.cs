@@ -45,6 +45,11 @@ namespace Allors.Domain
             {
                 this.Description = this.LocalisedDescriptions.First(x => x.Locale.Equals(defaultLocale)).Text;
             }
+
+            if (!this.ExistCatalogueImage)
+            {
+                this.CatalogueImage = this.strategy.Session.GetSingleton().NoImageAvailableImage;
+            }
         }
     }
 }

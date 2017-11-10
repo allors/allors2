@@ -2,27 +2,14 @@
 
   <form #form="ngForm" *ngIf="good" (submit)="save()">
     <div class="pad">
-
-      <div *ngIf="good.PrimaryPhoto" layout-gt-xs="row">
-        <mat-card>
-          <mat-card-title-group>
-            <mat-card-subtitle>{{ good.PrimaryPhoto.FileName}}</mat-card-subtitle>
-            <img src="http://localhost:5000/Media/Download/{{good.PrimaryPhoto.UniqueId}}?revision={{good.PrimaryPhoto.Revision}}" widht="90"
-              height="60" />
-          </mat-card-title-group>
-        </mat-card>
-
-        <mat-divider></mat-divider>
-      </div>
-
       <mat-tab-group>
 
         <mat-tab label="General">
           <a-mat-static [object]="good" [roleType]="m.Good.InventoryItemKind" display="Name"></a-mat-static>
           <a-mat-select *ngIf="SerialisedGood" [object]="serialisedInventoryItem" [roleType]="m.SerialisedInventoryItem.SerialisedInventoryItemState"
             [options]="serialisedInventoryItemStates" display="Name" label="Status"></a-mat-select>
-          <a-mat-select *ngIf="!SerialisedGood" [object]="nonSerialisedInventoryItem" [roleType]="m.NonSerialisedInventoryItem.NonSerialisedInventoryItemState"
-            [options]="nonSerialisedInventoryItemStates" display="Name" label="Status"></a-mat-select>
+          <!-- <a-mat-select *ngIf="!SerialisedGood" [object]="nonSerialisedInventoryItem" [roleType]="m.NonSerialisedInventoryItem.NonSerialisedInventoryItemState"
+            [options]="nonSerialisedInventoryItemStates" display="Name" label="Status"></a-mat-select> -->
           <a-mat-static [object]="good" [roleType]="m.Good.ArticleNumber"></a-mat-static>
           <a-mat-input *ngIf="SerialisedGood" [object]="serialisedInventoryItem" [roleType]="m.SerialisedInventoryItem.SerialNumber"></a-mat-input>
           <a-mat-localised-text [object]="good" [roleType]="m.Good.LocalisedNames" [locales]="locales" label="Name"></a-mat-localised-text>
@@ -120,7 +107,19 @@
         </mat-tab>
 
         <mat-tab label="Images">
-          <a-mat-media-upload [object]="good" [roleType]="m.Good.PrimaryPhoto" accept="image/*"></a-mat-media-upload>
+          <a-mat-media-upload [object]="good" [roleType]="m.Good.PrimaryPhoto" accept="image/*" (selected)="imageSelected($event)"></a-mat-media-upload>
+
+          <ng-template let-photo let-last="last" ngFor [ngForOf]="good.Photos">
+            <mat-list-item>
+              <mat-card class="image-card">
+                <mat-card-header>
+                  <mat-card-title>{{photo.FileName}}</mat-card-title>
+                </mat-card-header>
+                <img mat-card-image src="http://localhost:5000/Media/Download/{{photo.UniqueId}}?revision={{photo.Revision}}">
+              </mat-card>
+              </mat-list-item>
+            <mat-divider *ngIf="!last" mat-inset></mat-divider>
+          </ng-template>
         </mat-tab>
 
       </mat-tab-group>

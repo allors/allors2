@@ -68,7 +68,6 @@ namespace Allors.Domain
             this.DeriveProductCategoriesExpanded();
             this.DeriveQuantityOnHand();
             this.DeriveAvailableToPromise();
-            this.DeriveThumbnail();
         }
 
         public void DeriveVirtualProductPriceComponent()
@@ -148,25 +147,6 @@ namespace Allors.Domain
                     var nonSerialised = (NonSerialisedInventoryItem)inventoryItem;
                     this.AvailableToPromise += nonSerialised.AvailableToPromise;
                 }
-            }
-        }
-
-        public void DeriveThumbnail()
-        {
-            if (this.ExistPrimaryPhoto)
-            {
-                if (!this.ExistThumbnail)
-                {
-                    this.Thumbnail = new MediaBuilder(this.Strategy.Session).WithInData(this.PrimaryPhoto.InData).Build();
-                }
-
-                // TODO: Resize
-                // var thumbNail = Media.CreateThumbnail(this.Photo.Bitmap, ThumbnailWidth);
-                // this.Thumbnail.Load(thumbNail, ImageFormat.Jpeg);
-            }
-            else
-            {
-                this.RemoveThumbnail();
             }
         }
     }

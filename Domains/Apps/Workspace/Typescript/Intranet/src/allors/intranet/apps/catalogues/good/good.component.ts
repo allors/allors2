@@ -1,7 +1,8 @@
 import { AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit } from "@angular/core";
-import { ActivatedRoute } from "@angular/router";
+import { MatSnackBar } from "@angular/material";
+import { ActivatedRoute, UrlSegment } from "@angular/router";
 import { TdMediaService } from "@covalent/core";
-import { Subscription } from "rxjs/Rx";
+import { BehaviorSubject, Observable, Subscription } from "rxjs/Rx";
 
 import { AllorsService, ErrorService, Filter, Loaded, Saved, Scope } from "@allors";
 import { Contains, Fetch, Path, PullRequest, Query, Sort, TreeNode } from "@allors";
@@ -12,6 +13,7 @@ import {
   SerialisedInventoryItem, SerialisedInventoryItemState, Singleton, VarianceReason, VatRate,
 } from "@allors";
 import { MetaDomain } from "@allors";
+import { Media } from "../../../../../../../Domain/src/allors/domain/generated/Media.g";
 
 @Component({
   templateUrl: "./good.component.html",
@@ -41,7 +43,7 @@ export class GoodComponent implements OnInit, AfterViewInit, OnDestroy {
   public inventoryItems: InventoryItem[];
   public inventoryItem: InventoryItem;
   public nonSerialisedInventoryItems: NonSerialisedInventoryItem[];
-  public nonSerialisedinventoryItem: NonSerialisedInventoryItem;
+  public nonSerialisedInventoryItem: NonSerialisedInventoryItem;
   public serialisedInventoryItems: SerialisedInventoryItem[];
   public serialisedInventoryItem: SerialisedInventoryItem;
   public serialisedInventoryItemStates: SerialisedInventoryItemState[];
@@ -55,22 +57,29 @@ export class GoodComponent implements OnInit, AfterViewInit, OnDestroy {
 
   private subscription: Subscription;
   private scope: Scope;
+  private refresh$: BehaviorSubject<Date>;
 
   constructor(
     private allors: AllorsService,
     private errorService: ErrorService,
     private route: ActivatedRoute,
+    private snackBar: MatSnackBar,
     public media: TdMediaService, private changeDetectorRef: ChangeDetectorRef) {
 
     this.scope = new Scope(allors.database, allors.workspace);
     this.m = this.allors.meta;
     this.manufacturersFilter = new Filter({scope: this.scope, objectType: this.m.Organisation, roleTypes: [this.m.Organisation.Name]});
     this.suppliersFilter = new Filter({scope: this.scope, objectType: this.m.Organisation, roleTypes: [this.m.Organisation.Name]});
+    this.refresh$ = new BehaviorSubject<Date>(undefined);
   }
 
   public ngOnInit(): void {
-    this.subscription = this.route.url
-      .switchMap((url: any) => {
+
+    const route$: Observable<UrlSegment[]> = this.route.url;
+    const combined$: Observable<[UrlSegment[], Date]> = Observable.combineLatest(route$, this.refresh$);
+
+    this.subscription = combined$
+      .switchMap(([urlSegments, date]: [UrlSegment[], Date]) => {
 
         const id: string = this.route.snapshot.paramMap.get("id");
         const m: MetaDomain = this.m;
@@ -238,7 +247,7 @@ export class GoodComponent implements OnInit, AfterViewInit, OnDestroy {
               this.serialisedInventoryItem = this.serialisedInventoryItems[0];
             } else {
               this.nonSerialisedInventoryItems = loaded.collections.inventoryItems as NonSerialisedInventoryItem[];
-              this.nonSerialisedinventoryItem = this.nonSerialisedInventoryItems[0];
+              this.nonSerialisedInventoryItem = this.nonSerialisedInventoryItems[0];
             }
 
             this.setProductCharacteristicValues();
@@ -290,6 +299,16 @@ export class GoodComponent implements OnInit, AfterViewInit, OnDestroy {
     }
   }
 
+  public imageSelected(id: string): void {
+
+    const photo: Media = this.scope.session.get(id) as Media;
+    this.good.AddPhoto(photo);
+
+    this.update();
+
+    this.snackBar.open("Good succesfully saved.", "close", { duration: 5000 });
+  }
+
   public save(): void {
 
     this.good.StandardFeatures.forEach((feature: ProductFeature) => {
@@ -311,7 +330,12 @@ export class GoodComponent implements OnInit, AfterViewInit, OnDestroy {
       inventoryItemVariance.Quantity = this.actualQuantityOnHand - this.good.QuantityOnHand;
       inventoryItemVariance.Reason = reason;
 
-      this.nonSerialisedinventoryItem.AddInventoryItemVariance(inventoryItemVariance);
+      if (this.nonSerialisedInventoryItem === undefined) {
+        this.nonSerialisedInventoryItem = this.scope.session.create("NonSerialisedInventoryItem") as NonSerialisedInventoryItem;
+        this.nonSerialisedInventoryItem.Good = this.good;
+      }
+
+      this.nonSerialisedInventoryItem.AddInventoryItemVariance(inventoryItemVariance);
     }
 
     this.scope
@@ -322,6 +346,22 @@ export class GoodComponent implements OnInit, AfterViewInit, OnDestroy {
       (error: Error) => {
         this.errorService.dialog(error);
       });
+  }
+
+  public update(): void {
+
+      this.scope
+        .save()
+        .subscribe((saved: Saved) => {
+          this.refresh();
+        },
+        (error: Error) => {
+          this.errorService.dialog(error);
+        });
+    }
+
+    public refresh(): void {
+      this.refresh$.next(new Date());
   }
 
   public goBack(): void {

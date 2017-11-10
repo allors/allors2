@@ -22,7 +22,6 @@ export class InvoicePrintComponent implements OnInit, AfterViewInit, OnDestroy {
 
   private subscription: Subscription;
   private scope: Scope;
-  private refresh$: BehaviorSubject<Date>;
 
   constructor(
     private allors: AllorsService,
@@ -32,10 +31,6 @@ export class InvoicePrintComponent implements OnInit, AfterViewInit, OnDestroy {
 
     this.scope = new Scope(allors.database, allors.workspace);
     this.m = this.allors.meta;
-  }
-
-  public refresh(): void {
-    this.refresh$.next(new Date());
   }
 
   public ngOnInit(): void {

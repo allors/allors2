@@ -1,19 +1,20 @@
 import { AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit } from "@angular/core";
-import { ActivatedRoute } from "@angular/router";
+import { MatSnackBar } from "@angular/material";
+import { ActivatedRoute, UrlSegment } from "@angular/router";
 import { TdMediaService } from "@covalent/core";
-import { Subscription } from "rxjs/Rx";
+import { BehaviorSubject, Observable, Subscription } from "rxjs/Rx";
 
 import { AllorsService, ErrorService, Filter, Loaded, Saved, Scope } from "@allors";
 import { Contains, Fetch, PullRequest, Query, Sort, TreeNode } from "@allors";
 import {
-  Brand, Facility, Good, InventoryItemKind, InventoryItemVariance, Locale, LocalisedText, Model, NonSerialisedInventoryItem, NonSerialisedInventoryItemState,
+  Brand, Facility, Good, InventoryItemKind, InventoryItemVariance, Locale, LocalisedText, Media, Model, NonSerialisedInventoryItem, NonSerialisedInventoryItemState,
   Organisation, OrganisationRole, ProductCategory, ProductCharacteristic,
   ProductCharacteristicValue, ProductFeature, ProductType, Singleton, VarianceReason, VatRate,
 } from "@allors";
 import { MetaDomain } from "@allors";
 
 @Component({
-  templateUrl: "./nonserialisedgood.component.html",
+  templateUrl: "./nonserialisedgood-add.component.html",
 })
 export class NonSerialisedGoodAddComponent implements OnInit, AfterViewInit, OnDestroy {
 
@@ -47,22 +48,29 @@ export class NonSerialisedGoodAddComponent implements OnInit, AfterViewInit, OnD
 
   private subscription: Subscription;
   private scope: Scope;
+  private refresh$: BehaviorSubject<Date>;
 
   constructor(
     private allors: AllorsService,
     private errorService: ErrorService,
     private route: ActivatedRoute,
+    private snackBar: MatSnackBar,
     public media: TdMediaService, private changeDetectorRef: ChangeDetectorRef) {
 
     this.scope = new Scope(allors.database, allors.workspace);
     this.m = this.allors.meta;
     this.manufacturersFilter = new Filter({scope: this.scope, objectType: this.m.Organisation, roleTypes: [this.m.Organisation.Name]});
     this.suppliersFilter = new Filter({scope: this.scope, objectType: this.m.Organisation, roleTypes: [this.m.Organisation.Name]});
+    this.refresh$ = new BehaviorSubject<Date>(undefined);
   }
 
   public ngOnInit(): void {
-    this.subscription = this.route.url
-      .switchMap((url: any) => {
+
+    const route$: Observable<UrlSegment[]> = this.route.url;
+    const combined$: Observable<[UrlSegment[], Date]> = Observable.combineLatest(route$, this.refresh$);
+
+    this.subscription = combined$
+      .switchMap(([urlSegments, date]: [UrlSegment[], Date]) => {
 
         const id: string = this.route.snapshot.paramMap.get("id");
         const m: MetaDomain = this.m;
@@ -212,6 +220,16 @@ export class NonSerialisedGoodAddComponent implements OnInit, AfterViewInit, OnD
     );
   }
 
+  public imageSelected(id: string): void {
+
+    const photo: Media = this.scope.session.get(id) as Media;
+    this.good.AddPhoto(photo);
+
+    this.update();
+
+    this.snackBar.open("Good succesfully saved.", "close", { duration: 5000 });
+  }
+
   public ngAfterViewInit(): void {
     this.media.broadcast();
     this.changeDetectorRef.detectChanges();
@@ -221,6 +239,22 @@ export class NonSerialisedGoodAddComponent implements OnInit, AfterViewInit, OnD
     if (this.subscription) {
       this.subscription.unsubscribe();
     }
+  }
+
+  public update(): void {
+
+      this.scope
+        .save()
+        .subscribe((saved: Saved) => {
+          this.refresh();
+        },
+        (error: Error) => {
+          this.errorService.dialog(error);
+        });
+    }
+
+    public refresh(): void {
+      this.refresh$.next(new Date());
   }
 
   public save(): void {

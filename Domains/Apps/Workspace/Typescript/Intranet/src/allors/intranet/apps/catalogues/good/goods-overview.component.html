@@ -74,8 +74,7 @@
         <mat-list-item>
 
           <mat-icon *ngIf="!good.PrimaryPhoto" mat-list-avatar>photo_camera</mat-icon>
-          <img *ngIf="good.PrimaryPhoto" src="http://localhost:5000/Media/Download/{{good.PrimaryPhoto.UniqueId}}?revision={{good.PrimaryPhoto.Revision}}"
-            widht="90" height="60" />
+          <img *ngIf="good.PrimaryPhoto" mat-list-avatar  src="http://localhost:5000/Media/Download/{{good.PrimaryPhoto.UniqueId}}?revision={{good.PrimaryPhoto.Revision}}"/>
 
           <h3 mat-line [routerLink]="'/good/' + [good.id]"> {{good.Name}}</h3>
           <p mat-line class="mat-caption">{{ good.Description }} </p>
@@ -108,8 +107,4 @@
   <a mat-fab color="accent" class="mat-fab-bottom-right fixed" (click)="addGood()">
     <mat-icon>add</mat-icon>
   </a>
-<!--
-  <a mat-fab color="accent" class="mat-fab-bottom-right fixed" [routerLink]="['/nonSerialisedGood']">
-    <mat-icon>add</mat-icon>N
-  </a> -->
 </span>

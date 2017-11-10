@@ -34,6 +34,7 @@ namespace Allors.Repository
         [RoleId("d43b92ac-9e6f-4238-9625-1e889be054cf")]
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
+        [Required]
         [Indexed]
         [Workspace]
         Locale Locale { get; set; }

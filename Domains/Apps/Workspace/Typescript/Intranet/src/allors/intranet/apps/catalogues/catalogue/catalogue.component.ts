@@ -1,7 +1,8 @@
 import { AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit } from "@angular/core";
-import { ActivatedRoute } from "@angular/router";
+import { MatSnackBar } from "@angular/material";
+import { ActivatedRoute, UrlSegment } from "@angular/router";
 import { TdMediaService } from "@covalent/core";
-import { Subscription } from "rxjs/Rx";
+import { BehaviorSubject, Observable, Subscription } from "rxjs/Rx";
 
 import { AllorsService, ErrorService, Loaded, Saved, Scope } from "@allors";
 import { Fetch, PullRequest, Query, TreeNode } from "@allors";
@@ -26,21 +27,28 @@ export class CatalogueComponent implements OnInit, AfterViewInit, OnDestroy {
 
   private subscription: Subscription;
   private scope: Scope;
+  private refresh$: BehaviorSubject<Date>;
 
   constructor(
     private allorsService: AllorsService,
     private errorService: ErrorService,
     private route: ActivatedRoute,
+    private snackBar: MatSnackBar,
     public media: TdMediaService,
     private changeDetectorRef: ChangeDetectorRef) {
 
     this.scope = new Scope(allorsService.database, allorsService.workspace);
     this.m = this.allorsService.meta;
+    this.refresh$ = new BehaviorSubject<Date>(undefined);
   }
 
   public ngOnInit(): void {
-    this.subscription = this.route.url
-      .switchMap((url: any) => {
+
+    const route$: Observable<UrlSegment[]> = this.route.url;
+    const combined$: Observable<[UrlSegment[], Date]> = Observable.combineLatest(route$, this.refresh$);
+
+    this.subscription = combined$
+      .switchMap(([urlSegments, date]: [UrlSegment[], Date]) => {
 
         const id: string = this.route.snapshot.paramMap.get("id");
         const m: MetaDomain = this.m;
@@ -49,8 +57,14 @@ export class CatalogueComponent implements OnInit, AfterViewInit, OnDestroy {
           new Fetch({
             id,
             include: [
-              new TreeNode({ roleType: m.Catalogue.LocalisedNames }),
-              new TreeNode({ roleType: m.Catalogue.LocalisedDescriptions }),
+              new TreeNode({
+                nodes: [new TreeNode({ roleType: m.LocalisedText.Locale })],
+                roleType: m.Catalogue.LocalisedNames,
+               }),
+              new TreeNode({
+                nodes: [new TreeNode({ roleType: m.LocalisedText.Locale })],
+                roleType: m.Catalogue.LocalisedDescriptions,
+               }),
             ],
             name: "catalogue",
           }),
@@ -114,6 +128,11 @@ export class CatalogueComponent implements OnInit, AfterViewInit, OnDestroy {
     }
   }
 
+  public imageSelected(id: string): void {
+    this.update();
+    this.snackBar.open("Catalogue succesfully saved.", "close", { duration: 5000 });
+  }
+
   public save(): void {
 
     this.scope
@@ -124,6 +143,22 @@ export class CatalogueComponent implements OnInit, AfterViewInit, OnDestroy {
       (error: Error) => {
         this.errorService.dialog(error);
       });
+  }
+
+  public update(): void {
+
+    this.scope
+      .save()
+      .subscribe((saved: Saved) => {
+        this.refresh();
+      },
+      (error: Error) => {
+        this.errorService.dialog(error);
+      });
+  }
+
+  public refresh(): void {
+    this.refresh$.next(new Date());
   }
 
   public goBack(): void {

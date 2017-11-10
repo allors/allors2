@@ -1,19 +1,34 @@
 <td-layout-card-over [cardTitle]="title" [cardSubtitle]="subTitle">
   <form #form="ngForm" *ngIf="catalogue" (submit)="save()">
 
-    <div class="pad">
-      <a-mat-media-upload [object]="catalogue" [roleType]="m.Catalogue.CatalogueImage" accept="image/*"></a-mat-media-upload>
-      <a-mat-select [object]="catalogue" [roleType]="m.Catalogue.CatScope" [options]="catScopes" display="Name" label="Scope"></a-mat-select>
-      <a-mat-localised-text [object]="catalogue" [roleType]="m.Catalogue.LocalisedNames" [locales]="locales" label="Name"></a-mat-localised-text>
-      <a-mat-localised-text [object]="catalogue" [roleType]="m.Catalogue.LocalisedDescriptions" [locales]="locales" label="Description"></a-mat-localised-text>
-      <a-mat-select [object]="catalogue" [roleType]="m.Catalogue.ProductCategories" [options]="categories" display="Name"></a-mat-select>
-    </div>
+    <div body *ngIf="catalogue" layout-gt-md="row">
+      <div flex-gt-xs="60">
+        <div class="pad">
+          <a-mat-media-upload [object]="catalogue" [roleType]="m.Catalogue.CatalogueImage" accept="image/*" (selected)="imageSelected($event)"></a-mat-media-upload>
+          <a-mat-select [object]="catalogue" [roleType]="m.Catalogue.CatScope" [options]="catScopes" display="Name" label="Scope"></a-mat-select>
+          <a-mat-localised-text [object]="catalogue" [roleType]="m.Catalogue.LocalisedNames" [locales]="locales" label="Name"></a-mat-localised-text>
+          <a-mat-localised-text [object]="catalogue" [roleType]="m.Catalogue.LocalisedDescriptions" [locales]="locales" label="Description"></a-mat-localised-text>
+          <a-mat-select [object]="catalogue" [roleType]="m.Catalogue.ProductCategories" [options]="categories" display="Name"></a-mat-select>
+        </div>
 
-    <mat-divider></mat-divider>
-    <mat-card-actions>
-      <button mat-button color="primary" type="submit" [disabled]="!form.form.valid">SAVE</button>
-      <button mat-button (click)="goBack()" type="button">CANCEL</button>
-    </mat-card-actions>
+        <mat-divider></mat-divider>
+
+        <mat-card-actions>
+          <button mat-button color="primary" type="submit" [disabled]="!form.form.valid">SAVE</button>
+          <button mat-button (click)="goBack()" type="button">CANCEL</button>
+        </mat-card-actions>
+      </div>
+
+      <div *ngIf="catalogue.CatalogueImage" flex-gt-xs="40">
+        <mat-card class="image-card">
+          <mat-card-header>
+            <mat-card-title>{{catalogue.Name}}</mat-card-title>
+            <mat-card-subtitle>{{catalogue.CatalogueImage.FileName}}</mat-card-subtitle>
+          </mat-card-header>
+          <img mat-card-image src="http://localhost:5000/Media/Download/{{catalogue.CatalogueImage.UniqueId}}?revision={{catalogue.CatalogueImage.Revision}}">
+        </mat-card>
+      </div>
+    </div>
 
   </form>
 </td-layout-card-over>

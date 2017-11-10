@@ -83,6 +83,11 @@ namespace Allors.Domain
                 derivation.Validation.AddError(this, M.ProductCategory.Package, ErrorMessages.ProductCategoryPackageOnlyAtLowestLevel);
             }
 
+            if (!this.ExistCategoryImage)
+            {
+                this.CategoryImage = this.strategy.Session.GetSingleton().NoImageAvailableImage;
+            }
+
             foreach (ProductCategory productCategory in this.ProductCategoriesWhereAncestor)
             {
                 productCategory.AppsOnDeriveAncestors(derivation);

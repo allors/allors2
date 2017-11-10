@@ -1,8 +1,8 @@
 import { AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit } from "@angular/core";
 import { MatSnackBar } from "@angular/material";
-import { ActivatedRoute } from "@angular/router";
+import { ActivatedRoute, UrlSegment } from "@angular/router";
 import { TdDialogService, TdMediaService } from "@covalent/core";
-import { BehaviorSubject, Subscription } from "rxjs/Rx";
+import { BehaviorSubject, Observable, Subscription } from "rxjs/Rx";
 
 import { AllorsService, ErrorService, Invoked, Loaded, Saved, Scope } from "@allors";
 import { Fetch, Path, PullRequest, Query, TreeNode } from "@allors";
@@ -31,6 +31,7 @@ export class InvoiceOverviewComponent implements OnInit, AfterViewInit, OnDestro
     public dialogService: TdDialogService,
     private snackBar: MatSnackBar,
     public media: TdMediaService, private changeDetectorRef: ChangeDetectorRef) {
+    this.refresh$ = new BehaviorSubject<Date>(undefined);
 
     this.scope = new Scope(allors.database, allors.workspace);
     this.m = this.allors.meta;
@@ -54,8 +55,11 @@ export class InvoiceOverviewComponent implements OnInit, AfterViewInit, OnDestro
 
   public ngOnInit(): void {
 
-    this.subscription = this.route.url
-      .switchMap((url: any) => {
+    const route$: Observable<UrlSegment[]> = this.route.url;
+    const combined$: Observable<[UrlSegment[], Date]> = Observable.combineLatest(route$, this.refresh$);
+
+    this.subscription = combined$
+      .switchMap(([urlSegments, date]: [UrlSegment[], Date]) => {
 
         const id: string = this.route.snapshot.paramMap.get("id");
         const m: MetaDomain = this.m;
@@ -138,7 +142,7 @@ export class InvoiceOverviewComponent implements OnInit, AfterViewInit, OnDestro
     window.history.back();
   }
 
-  public deleteOrderItem(invoiceItem: SalesInvoiceItem): void {
+  public deleteInvoiceItem(invoiceItem: SalesInvoiceItem): void {
     this.dialogService
       .openConfirm({ message: "Are you sure you want to delete this item?" })
       .afterClosed()

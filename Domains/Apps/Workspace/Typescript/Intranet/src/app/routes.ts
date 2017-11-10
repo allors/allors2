@@ -170,7 +170,7 @@ export const routes: Routes = [
       {
         path: "serialisedGood",
         children: [
-          { path: "", component: catalogues.SerialisedGoodComponent },
+          { path: "", component: catalogues.SerialisedGoodAddComponent },
         ],
       },
       {

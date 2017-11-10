@@ -41,6 +41,7 @@ namespace Allors.Domain
             var singleton = new SingletonBuilder(this.Session).Build();
 
             singleton.DefaultLocale = new Locales(this.Session).EnglishGreatBritain;
+            singleton.AddLocale(singleton.DefaultLocale);
             singleton.InitialSecurityToken = new SecurityTokenBuilder(this.Session).Build();
             singleton.DefaultSecurityToken = new SecurityTokenBuilder(this.Session).Build();
 

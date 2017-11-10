@@ -268,7 +268,7 @@ export class OrganisationsOverviewComponent implements AfterViewInit, OnDestroy 
 
   delete(organisation: Organisation): void {
     this.dialogService
-      .openConfirm({ message: "Are you sure you want to delete this person?" })
+      .openConfirm({ message: "Are you sure you want to delete this organisation?" })
       .afterClosed()
       .subscribe((confirm: boolean) => {
         if (confirm) {
