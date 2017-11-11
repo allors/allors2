@@ -267,7 +267,7 @@ namespace Allors.Domain
                                 Aviaco = this.strategy.Session.GetSingleton().InternalOrganisation
                             };
 
-            //this.PrintContent = templateService.Render("Templates/SalesInvoice.cshtml", model).Result;
+          this.PrintContent = templateService.Render("Templates/SalesInvoice.cshtml", model).Result;
         }
 
         private void DeriveCurrentPaymentStatus(IDerivation derivation)

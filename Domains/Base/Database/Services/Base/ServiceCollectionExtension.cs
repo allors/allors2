@@ -100,12 +100,12 @@ namespace Allors.Services
             services.AddSingleton<ISingletonService, SingletonService>();
             services.AddSingleton<IStickyService, StickyService>();
             services.AddSingleton<IStateService, StateService>();
-            services.AddSingleton<ITemplateService, TemplateService>();
             services.AddSingleton<ITimeService, TimeService>();
+            services.AddSingleton<IMailService, MailService>();
+            services.AddSingleton<IPublishingService, PublishingService>();
 
             services.AddScoped<IUserService, UserService>();
-            services.AddScoped<IMailService, MailService>();
-            services.AddScoped<IPublishingService, PublishingService>();
+            services.AddScoped<ITemplateService, TemplateService>();  // Required for running Razor in Server mode
         }
     }
 }

@@ -52,7 +52,8 @@ namespace Allors.Services
 
         public async Task<string> Render<TModel>(string viewName, TModel model)
         {
-            var actionContext = this.GetActionContext();
+            var httpContext = new DefaultHttpContext { RequestServices = this.ServiceProvider };
+            var actionContext = new ActionContext(httpContext, new RouteData(), new ActionDescriptor());
             var view = this.FindView(actionContext, viewName);
 
             using (var output = new StringWriter())
@@ -92,12 +93,6 @@ namespace Allors.Services
             var errorMessage = string.Join(Environment.NewLine, new[] { $"Unable to find view '{viewName}'. The following locations were searched:" }.Concat(searchedLocations));
 
             throw new InvalidOperationException(errorMessage);
-        }
-
-        private ActionContext GetActionContext()
-        {
-            var httpContext = new DefaultHttpContext { RequestServices = this.ServiceProvider };
-            return new ActionContext(httpContext, new RouteData(), new ActionDescriptor());
         }
     }
 }
