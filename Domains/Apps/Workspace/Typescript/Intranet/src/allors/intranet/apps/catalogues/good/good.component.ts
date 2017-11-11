@@ -13,7 +13,7 @@ import {
   SerialisedInventoryItem, SerialisedInventoryItemState, Singleton, VarianceReason, VatRate,
 } from "@allors";
 import { MetaDomain } from "@allors";
-import { Media } from "../../../../../../../Domain/src/allors/domain/generated/Media.g";
+import { Media } from "@generatedBase/Media.g";
 
 @Component({
   templateUrl: "./good.component.html",
