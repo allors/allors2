@@ -17,7 +17,9 @@ namespace Allors.Domain
 {
     using System;
 
-    public partial class AccountingTransactionTypes
+    using Allors.Meta;
+
+  public partial class AccountingTransactionTypes
     {
         private static readonly Guid BankStatementId = new Guid("2E2CB1CB-BA50-43FD-8A3C-D5CA23CA5B4F");
         private static readonly Guid PaymentReceiptId = new Guid("BD9396A4-EFD9-444A-9666-0ACF2EE172F6");
@@ -48,7 +50,12 @@ namespace Allors.Domain
         private UniquelyIdentifiableSticky<AccountingTransactionType> Cache => this.cache
                                                                               ?? (this.cache = new UniquelyIdentifiableSticky<AccountingTransactionType>(this.Session));
 
-        protected override void AppsSetup(Setup setup)
+      protected override void AppsPrepare(Setup setup)
+      {
+        setup.AddDependency(this.ObjectType, M.Locale);
+      }
+
+      protected override void AppsSetup(Setup setup)
         {
             base.AppsSetup(setup);
 
