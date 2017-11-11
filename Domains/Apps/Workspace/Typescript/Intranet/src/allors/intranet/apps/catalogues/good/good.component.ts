@@ -12,8 +12,7 @@ import {
   ProductCategory, ProductCharacteristic, ProductCharacteristicValue, ProductFeature, ProductType,
   SerialisedInventoryItem, SerialisedInventoryItemState, Singleton, VarianceReason, VatRate,
 } from "@allors";
-import { MetaDomain } from "@allors";
-import { Media } from "@generatedBase/Media.g";
+import { Media, MetaDomain } from "@allors";
 
 @Component({
   templateUrl: "./good.component.html",
