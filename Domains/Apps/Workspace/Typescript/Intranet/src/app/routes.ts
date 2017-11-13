@@ -156,21 +156,17 @@ export const routes: Routes = [
         ],
       },
       {
-        path: "good",
-        children: [
-          { path: ":id", component: catalogues.GoodComponent },
-        ],
-      },
-      {
         path: "nonSerialisedGood",
         children: [
-          { path: "", component: catalogues.NonSerialisedGoodAddComponent },
+          { path: ":id", component: catalogues.NonSerialisedGoodComponent },
+          { path: "", component: catalogues.NonSerialisedGoodComponent },
         ],
       },
       {
         path: "serialisedGood",
         children: [
-          { path: "", component: catalogues.SerialisedGoodAddComponent },
+          { path: ":id", component: catalogues.SerialisedGoodComponent },
+          { path: "", component: catalogues.SerialisedGoodComponent },
         ],
       },
       {

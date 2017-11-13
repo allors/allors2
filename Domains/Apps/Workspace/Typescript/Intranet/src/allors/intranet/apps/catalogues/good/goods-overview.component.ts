@@ -371,6 +371,10 @@ export class GoodsOverviewComponent implements AfterViewInit, OnDestroy {
     });
   }
 
+  public serialisedGood(good: Good): boolean {
+    return good.InventoryItemKind === this.inventoryItemKinds.find((v: InventoryItemKind) => v.UniqueId.toUpperCase() === "2596E2DD-3F5D-4588-A4A2-167D6FBE3FAE");
+  }
+
   public goBack(): void {
     window.history.back();
   }

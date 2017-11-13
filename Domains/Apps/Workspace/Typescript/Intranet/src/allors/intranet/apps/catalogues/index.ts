@@ -8,7 +8,6 @@ export * from "./category/categories-overview.module";
 export * from "./category/category.module";
 
 export * from "./good/goods-overview.module";
-export * from "./good/good.module";
 export * from "./good/newgood-dialog.module";
 
 export * from "./productcharacteristic/productcharacteristics-overview.module";
@@ -17,8 +16,8 @@ export * from "./productcharacteristic/productcharacteristic.module";
 export * from "./producttype/producttypes-overview.module";
 export * from "./producttype/producttype.module";
 
-export * from "./nonSerialisedGood/nonserialisedgood-add.module";
-export * from "./serialisedGood/serialisedgood-add.module";
+export * from "./nonSerialisedGood/nonserialisedgoodmodule";
+export * from "./serialisedGood/serialisedgood.module";
 
 import { DashboardModule } from "./dashboard/dashboard.module";
 import { OverviewModule } from "./overview.module";
@@ -29,7 +28,6 @@ import { CataloguesOverviewModule } from "./catalogue/catalogues-overview.module
 import { CategoriesOverviewModule } from "./category/categories-overview.module";
 import { CategoryModule } from "./category/category.module";
 
-import { GoodModule } from "./good/good.module";
 import { GoodsOverviewModule } from "./good/goods-overview.module";
 import { NewGoodDialogModule } from "./good/newgood-dialog.module";
 
@@ -39,8 +37,8 @@ import { ProductCharacteristicsOverviewModule } from "./productcharacteristic/pr
 import { ProductTypeModule } from "./producttype/producttype.module";
 import { ProductTypesOverviewModule } from "./producttype/producttypes-overview.module";
 
-import { NonSerialisedGoodAddModule } from "./nonSerialisedGood/nonserialisedgood-add.module";
-import { SerialisedGoodAddModule } from "./serialisedGood/serialisedgood-add.module";
+import { NonSerialisedGoodModule } from "./nonSerialisedGood/nonserialisedgoodmodule";
+import { SerialisedGoodModule } from "./serialisedGood/serialisedgood.module";
 
 export const Modules = [
   // Routing
@@ -49,9 +47,9 @@ export const Modules = [
 
   CataloguesOverviewModule, CatalogueModule,
   CategoriesOverviewModule, CategoryModule,
-  GoodsOverviewModule, GoodModule, NewGoodDialogModule,
+  GoodsOverviewModule, NewGoodDialogModule,
   ProductCharacteristicsOverviewModule, ProductCharacteristicModule,
   ProductTypesOverviewModule, ProductTypeModule,
-  NonSerialisedGoodAddModule,
-  SerialisedGoodAddModule,
+  NonSerialisedGoodModule,
+  SerialisedGoodModule,
 ];

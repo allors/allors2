@@ -76,7 +76,8 @@
           <mat-icon *ngIf="!good.PrimaryPhoto" mat-list-avatar>photo_camera</mat-icon>
           <img *ngIf="good.PrimaryPhoto" mat-list-avatar  src="http://localhost:5000/Media/Download/{{good.PrimaryPhoto.UniqueId}}?revision={{good.PrimaryPhoto.Revision}}"/>
 
-          <h3 mat-line [routerLink]="'/good/' + [good.id]"> {{good.Name}}</h3>
+          <h3 *ngIf="serialisedGood(good)" mat-line [routerLink]="'/serialisedGood/' + [good.id]"> {{good.Name}}</h3>
+          <h3 *ngIf="!serialisedGood(good)" mat-line [routerLink]="'/nonSerialisedGood/' + [good.id]"> {{good.Name}}</h3>
           <p mat-line class="mat-caption">{{ good.Description }} </p>
           <p mat-line class="mat-caption">Primary category: {{ good.PrimaryProductCategory?.Name }} </p>
 
@@ -85,7 +86,8 @@
                 <mat-icon>more_vert</mat-icon>
                 </button>
                 <mat-menu x-position="before" #menu="matMenu">
-                <a [routerLink]="'/good/' + [good.id]" mat-menu-item>Edit</a>
+                <a *ngIf="serialisedGood(good)" [routerLink]="'/serialisedGood/' + [good.id]" mat-menu-item>Edit</a>
+                <a *ngIf="!serialisedGood(good)" [routerLink]="'/nonSerialisedGood/' + [good.id]" mat-menu-item>Edit</a>
                 <button mat-menu-item (click)="delete(good)">Delete</button>
                 </mat-menu>
               </span>

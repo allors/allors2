@@ -7,17 +7,16 @@ import { BehaviorSubject, Observable, Subscription } from "rxjs/Rx";
 import { AllorsService, ErrorService, Filter, Loaded, Saved, Scope } from "@allors";
 import { Contains, Fetch, Path, PullRequest, Query, Sort, TreeNode } from "@allors";
 import {
-  Brand, Facility, Good, InventoryItem, InventoryItemKind, InventoryItemVariance, Locale, LocalisedText, Model, NonSerialisedInventoryItem,
-  NonSerialisedInventoryItemState, Organisation, OrganisationRole, Ownership,
-  ProductCategory, ProductCharacteristic, ProductCharacteristicValue, ProductFeature, ProductType,
-  SerialisedInventoryItem, SerialisedInventoryItemState, Singleton, VarianceReason, VatRate,
+  Brand, Facility, Good, InventoryItemKind, InventoryItemVariance, Locale, LocalisedText, Media, Model, NonSerialisedInventoryItem, NonSerialisedInventoryItemState,
+  Organisation, OrganisationRole, ProductCategory, ProductCharacteristic,
+  ProductCharacteristicValue, ProductFeature, ProductType, Singleton, VarianceReason, VatRate,
 } from "@allors";
-import { Media, MetaDomain } from "@allors";
+import { MetaDomain } from "@allors";
 
 @Component({
-  templateUrl: "./good.component.html",
+  templateUrl: "./nonserialisedgood.component.html",
 })
-export class GoodComponent implements OnInit, AfterViewInit, OnDestroy {
+export class NonSerialisedGoodComponent implements OnInit, AfterViewInit, OnDestroy {
 
   public m: MetaDomain;
   public good: Good;
@@ -39,16 +38,10 @@ export class GoodComponent implements OnInit, AfterViewInit, OnDestroy {
   public selectedModel: Model;
   public varianceReasons: VarianceReason[];
   public inventoryItemKinds: InventoryItemKind[];
-  public inventoryItems: InventoryItem[];
-  public inventoryItem: InventoryItem;
-  public nonSerialisedInventoryItems: NonSerialisedInventoryItem[];
-  public nonSerialisedInventoryItem: NonSerialisedInventoryItem;
-  public serialisedInventoryItems: SerialisedInventoryItem[];
-  public serialisedInventoryItem: SerialisedInventoryItem;
-  public serialisedInventoryItemStates: SerialisedInventoryItemState[];
-  public nonSerialisedInventoryItemStates: NonSerialisedInventoryItemState[];
+  public inventoryItems: NonSerialisedInventoryItem[];
+  public inventoryItem: NonSerialisedInventoryItem;
+  public inventoryItemObjectStates: NonSerialisedInventoryItemState[];
   public vatRates: VatRate[];
-  public ownerships: Ownership[];
   public actualQuantityOnHand: number;
 
   public manufacturersFilter: Filter;
@@ -99,47 +92,37 @@ export class GoodComponent implements OnInit, AfterViewInit, OnDestroy {
             ],
             name: "good",
           }),
+          new Fetch({
+            id,
+            include: [
+              new TreeNode({
+                nodes: [
+                  new TreeNode({
+                    nodes: [new TreeNode({ roleType: m.ProductCharacteristic.LocalisedNames })],
+                    roleType: m.ProductType.ProductCharacteristics,
+                  }),
+                ],
+                roleType: m.InventoryItem.ProductType,
+              }),
+              new TreeNode({
+                nodes: [
+                  new TreeNode({ roleType: m.ProductCharacteristicValue.ProductCharacteristic }),
+                ],
+                roleType: m.InventoryItem.ProductCharacteristicValues,
+              }),
+              new TreeNode({
+                roleType: m.InventoryItem.InventoryItemVariances,
+              }),
+            ],
+            name: "inventoryItems",
+            path: new Path({ step: this.m.Good.InventoryItemsWhereGood }),
+          }),
         ];
-
-        const inventoryItemFetch: Fetch = new Fetch({
-          id,
-          include: [
-            new TreeNode({ roleType: m.SerialisedInventoryItem.Ownership }),
-            new TreeNode({
-              nodes: [
-                new TreeNode({
-                  nodes: [new TreeNode({ roleType: m.ProductCharacteristic.LocalisedNames })],
-                  roleType: m.ProductType.ProductCharacteristics,
-                }),
-              ],
-              roleType: m.InventoryItem.ProductType,
-            }),
-            new TreeNode({
-              nodes: [
-                new TreeNode({ roleType: m.ProductCharacteristicValue.ProductCharacteristic }),
-              ],
-              roleType: m.InventoryItem.ProductCharacteristicValues,
-            }),
-          ],
-          name: "inventoryItems",
-          path: new Path({ step: this.m.Good.InventoryItemsWhereGood }),
-        });
-
-        if (id != null) {
-          fetch.push(inventoryItemFetch);
-        }
 
         const query: Query[] = [
           new Query(
             {
               include: [
-                new TreeNode({
-                  nodes: [
-                    new TreeNode({ roleType: m.Locale.Language }),
-                    new TreeNode({ roleType: m.Locale.Country }),
-                  ],
-                  roleType: m.Singleton.DefaultLocale,
-                }),
                 new TreeNode({
                   nodes: [
                     new TreeNode({ roleType: m.Locale.Language }),
@@ -182,29 +165,19 @@ export class GoodComponent implements OnInit, AfterViewInit, OnDestroy {
             }),
           new Query(
             {
-              name: "inventoryItemKinds",
-              objectType: this.m.InventoryItemKind,
-            }),
-          new Query(
-            {
               name: "brands",
               objectType: this.m.Brand,
               sort: [new Sort({ roleType: m.Brand.Name, direction: "Asc" })],
             }),
           new Query(
             {
-              name: "serialisedInventoryItemStates",
-              objectType: this.m.SerialisedInventoryItemState,
+              name: "inventoryItemKinds",
+              objectType: this.m.InventoryItemKind,
             }),
-            new Query(
-              {
-                name: "nonSerialisedInventoryItemStates",
-                objectType: this.m.NonSerialisedInventoryItemState,
-              }),
-            new Query(
+          new Query(
             {
-              name: "ownerships",
-              objectType: this.m.Ownership,
+              name: "nonSerialisedInventoryItemStates",
+              objectType: this.m.NonSerialisedInventoryItemState,
             }),
         ];
 
@@ -214,42 +187,34 @@ export class GoodComponent implements OnInit, AfterViewInit, OnDestroy {
           .load("Pull", new PullRequest({ fetch, query }))
           .switchMap((loaded: Loaded) => {
 
+            this.good = loaded.objects.good as Good;
+            this.inventoryItems = loaded.collections.inventoryItems as NonSerialisedInventoryItem[];
+            this.inventoryItem = this.inventoryItems[0];
             this.categories = loaded.collections.categories as ProductCategory[];
             this.productTypes = loaded.collections.productTypes as ProductType[];
             this.varianceReasons = loaded.collections.varianceReasons as VarianceReason[];
             this.vatRates = loaded.collections.vatRates as VatRate[];
-            this.inventoryItemKinds = loaded.collections.inventoryItemKinds as InventoryItemKind[];
             this.brands = loaded.collections.brands as Brand[];
-            this.serialisedInventoryItemStates = loaded.collections.serialisedInventoryItemStates as SerialisedInventoryItemState[];
-            this.nonSerialisedInventoryItemStates = loaded.collections.nonSerialisedInventoryItemStates as NonSerialisedInventoryItemState[];
-            this.ownerships = loaded.collections.ownerships as Ownership[];
+            this.inventoryItemKinds = loaded.collections.inventoryItemKinds as InventoryItemKind[];
+            this.inventoryItemObjectStates = loaded.collections.nonSerialisedInventoryItemStates as NonSerialisedInventoryItemState[];
             this.singleton = loaded.collections.singletons[0] as Singleton;
             this.facility = this.singleton.InternalOrganisation.DefaultFacility;
             this.locales = this.singleton.Locales;
             this.selectedLocaleName = this.singleton.DefaultLocale.Name;
-            this.good = loaded.objects.good as Good;
-            this.inventoryItems = loaded.collections.inventoryItems as InventoryItem[];
-            this.inventoryItem = this.inventoryItems[0];
 
-            this.good.StandardFeatures.forEach((feature: ProductFeature) => {
-              if (feature instanceof (Brand)) {
-                this.selectedBrand = feature;
-                this.brandSelected(this.selectedBrand);
-              }
-              if (feature instanceof (Model)) {
-                this.selectedModel = feature;
-              }
-            });
+            const vatRateZero = this.vatRates.find((v: VatRate) => v.Rate === 0);
+            const inventoryItemKindNonSerialised = this.inventoryItemKinds.find((v: InventoryItemKind) => v.Name === "Non serialised");
 
-            if (this.SerialisedGood) {
-              this.serialisedInventoryItems = loaded.collections.inventoryItems as SerialisedInventoryItem[];
-              this.serialisedInventoryItem = this.serialisedInventoryItems[0];
-            } else {
-              this.nonSerialisedInventoryItems = loaded.collections.inventoryItems as NonSerialisedInventoryItem[];
-              this.nonSerialisedInventoryItem = this.nonSerialisedInventoryItems[0];
+            if (this.good === undefined) {
+              this.good = this.scope.session.create("Good") as Good;
+              this.good.VatRate = vatRateZero;
+              this.good.Sku = "";
+
+              this.inventoryItem = this.scope.session.create("NonSerialisedInventoryItem") as NonSerialisedInventoryItem;
+              this.good.InventoryItemKind = inventoryItemKindNonSerialised;
+              this.inventoryItem.Good = this.good;
+              this.inventoryItem.Facility = this.facility;
             }
-
-            this.setProductCharacteristicValues();
 
             this.title = this.good.Name;
             this.actualQuantityOnHand = this.good.QuantityOnHand;
@@ -287,6 +252,15 @@ export class GoodComponent implements OnInit, AfterViewInit, OnDestroy {
     );
   }
 
+  public imageSelected(id: string): void {
+
+    this.good.AddPhoto(this.good.PrimaryPhoto);
+
+    this.update();
+
+    this.snackBar.open("Good succesfully saved.", "close", { duration: 5000 });
+  }
+
   public ngAfterViewInit(): void {
     this.media.broadcast();
     this.changeDetectorRef.detectChanges();
@@ -296,55 +270,6 @@ export class GoodComponent implements OnInit, AfterViewInit, OnDestroy {
     if (this.subscription) {
       this.subscription.unsubscribe();
     }
-  }
-
-  public imageSelected(id: string): void {
-
-    const photo: Media = this.scope.session.get(id) as Media;
-    this.good.AddPhoto(photo);
-
-    this.update();
-
-    this.snackBar.open("Good succesfully saved.", "close", { duration: 5000 });
-  }
-
-  public save(): void {
-
-    this.good.StandardFeatures.forEach((feature: ProductFeature) => {
-      this.good.RemoveStandardFeature(feature);
-    });
-
-    if (this.selectedBrand != null) {
-      this.good.AddStandardFeature(this.selectedBrand);
-    }
-
-    if (this.selectedModel != null) {
-      this.good.AddStandardFeature(this.selectedModel);
-    }
-
-    if (!this.SerialisedGood && this.actualQuantityOnHand !== this.good.QuantityOnHand) {
-      const reason = this.varianceReasons.find((v: VarianceReason) => v.Name === "Unknown");
-
-      const inventoryItemVariance = this.scope.session.create("InventoryItemVariance") as InventoryItemVariance;
-      inventoryItemVariance.Quantity = this.actualQuantityOnHand - this.good.QuantityOnHand;
-      inventoryItemVariance.Reason = reason;
-
-      if (this.nonSerialisedInventoryItem === undefined) {
-        this.nonSerialisedInventoryItem = this.scope.session.create("NonSerialisedInventoryItem") as NonSerialisedInventoryItem;
-        this.nonSerialisedInventoryItem.Good = this.good;
-      }
-
-      this.nonSerialisedInventoryItem.AddInventoryItemVariance(inventoryItemVariance);
-    }
-
-    this.scope
-      .save()
-      .subscribe((saved: Saved) => {
-        this.goBack();
-      },
-      (error: Error) => {
-        this.errorService.dialog(error);
-      });
   }
 
   public update(): void {
@@ -363,6 +288,39 @@ export class GoodComponent implements OnInit, AfterViewInit, OnDestroy {
       this.refresh$.next(new Date());
   }
 
+  public save(): void {
+    this.good.StandardFeatures.forEach((feature: ProductFeature) => {
+      this.good.RemoveStandardFeature(feature);
+    });
+
+    if (this.selectedBrand != null) {
+      this.good.AddStandardFeature(this.selectedBrand);
+    }
+
+    if (this.selectedModel != null) {
+      this.good.AddStandardFeature(this.selectedModel);
+    }
+
+    if (this.actualQuantityOnHand !== this.good.QuantityOnHand) {
+      const reason = this.varianceReasons.find((v: VarianceReason) => v.Name === "Unknown");
+
+      const inventoryItemVariance = this.scope.session.create("InventoryItemVariance") as InventoryItemVariance;
+      inventoryItemVariance.Quantity = this.actualQuantityOnHand - this.good.QuantityOnHand;
+      inventoryItemVariance.Reason = reason;
+
+      this.inventoryItem.AddInventoryItemVariance(inventoryItemVariance);
+    }
+
+    this.scope
+      .save()
+      .subscribe((saved: Saved) => {
+        this.goBack();
+      },
+      (error: Error) => {
+        this.errorService.dialog(error);
+      });
+  }
+
   public goBack(): void {
     window.history.back();
   }
@@ -377,17 +335,11 @@ export class GoodComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   public setProductCharacteristicValues(): void {
-    if (this.inventoryItem) {
-      this.productCharacteristicValues = this.inventoryItem.ProductCharacteristicValues.filter((v: ProductCharacteristicValue) => v.Locale === this.locale);
-    }
+    this.productCharacteristicValues = this.inventoryItem.ProductCharacteristicValues.filter((v: ProductCharacteristicValue) => v.Locale === this.locale);
   }
 
   get locale(): Locale {
     return this.locales.find((v: Locale) => v.Name === this.selectedLocaleName);
-  }
-
-  get SerialisedGood(): boolean {
-    return this.good.InventoryItemKind === this.inventoryItemKinds.find((v: InventoryItemKind) => v.UniqueId.toUpperCase() === "2596E2DD-3F5D-4588-A4A2-167D6FBE3FAE");
   }
 
   public brandSelected(brand: Brand): void {

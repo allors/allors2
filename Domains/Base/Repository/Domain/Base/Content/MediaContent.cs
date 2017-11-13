@@ -42,6 +42,7 @@ namespace Allors.Repository
         [Required]
         [Indexed]
         [Size(1024)]
+        [Workspace]
         public string Type { get; set; }
 
         #region Allors
@@ -51,6 +52,7 @@ namespace Allors.Repository
         #endregion
         [Required]
         [Size(-1)]
+        [Workspace]
         public byte[] Data { get; set; }
         
         #region inherited methods

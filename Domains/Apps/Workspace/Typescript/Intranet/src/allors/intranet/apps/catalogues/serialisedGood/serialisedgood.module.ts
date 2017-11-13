@@ -3,15 +3,15 @@ import { NgModule } from "@angular/core";
 import { InlineModule } from "../../../inline.module";
 import { SharedModule } from "../../../shared.module";
 
-import { NonSerialisedGoodAddComponent } from "./nonserialisedgood-add.component";
-export { NonSerialisedGoodAddComponent } from "./nonserialisedgood-add.component";
+import { SerialisedGoodComponent } from "./serialisedgood.component";
+export { SerialisedGoodComponent } from "./serialisedgood.component";
 
 @NgModule({
   declarations: [
-    NonSerialisedGoodAddComponent,
+    SerialisedGoodComponent,
   ],
   exports: [
-    NonSerialisedGoodAddComponent,
+    SerialisedGoodComponent,
 
     InlineModule,
     SharedModule,
@@ -21,4 +21,4 @@ export { NonSerialisedGoodAddComponent } from "./nonserialisedgood-add.component
     SharedModule,
   ],
 })
-export class NonSerialisedGoodAddModule {}
+export class SerialisedGoodModule {}
