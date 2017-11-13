@@ -63,7 +63,7 @@ namespace Allors.Domain
             if (@this.ExistPrimaryProductCategory)
             {
                 @this.AddProductCategoriesExpanded(@this.PrimaryProductCategory);
-                foreach (ProductCategory ancestor in @this.PrimaryProductCategory.Ancestors)
+                foreach (ProductCategory ancestor in @this.PrimaryProductCategory.SuperJacent)
                 {
                     @this.AddProductCategoriesExpanded(ancestor);
                 }
@@ -72,7 +72,7 @@ namespace Allors.Domain
             foreach (ProductCategory productCategory in @this.ProductCategories)
             {
                 @this.AddProductCategoriesExpanded(productCategory);
-                foreach (ProductCategory ancestor in productCategory.Ancestors)
+                foreach (ProductCategory ancestor in productCategory.SuperJacent)
                 {
                     @this.AddProductCategoriesExpanded(ancestor);
                 }

@@ -23,19 +23,19 @@ namespace Allors.Domain
 
     public partial class ProductCategory
     {
-        private IEnumerable<ProductCategory> AncestorList
+        private IEnumerable<ProductCategory> AllSuperJacent
         {
             get
             {
-                var ancestors = new List<ProductCategory>();
+                var superJacent = new List<ProductCategory>();
 
                 foreach (ProductCategory parent in this.Parents)
                 {
-                    ancestors.Add(parent);
-                    ancestors.AddRange(parent.AncestorList);
+                    superJacent.Add(parent);
+                    superJacent.AddRange(parent.AllSuperJacent);
                 }
 
-                return ancestors;
+                return superJacent;
             }
         }
 
@@ -88,9 +88,9 @@ namespace Allors.Domain
                 this.CategoryImage = this.strategy.Session.GetSingleton().NoImageAvailableImage;
             }
 
-            foreach (ProductCategory productCategory in this.ProductCategoriesWhereAncestor)
+            foreach (ProductCategory productCategory in this.ProductCategoriesWhereSuperJacent)
             {
-                productCategory.AppsOnDeriveAncestors(derivation);
+                productCategory.AppsOnDeriveSuperJacent(derivation);
             }
 
             foreach (Product product in this.ProductsWhereProductCategoriesExpanded)
@@ -98,22 +98,18 @@ namespace Allors.Domain
                 product.AppsOnDeriveProductCategoriesExpanded();
             }
 
-            this.AppsOnDeriveAncestors(derivation);
+            this.AppsOnDeriveSuperJacent(derivation);
             this.AppsOnDeriveChildren(derivation);
+            this.AppsOnDeriveAllProducts(derivation);
         }
 
-        public void AppsOnDeriveAncestors(IDerivation derivation)
+        public void AppsOnDeriveSuperJacent(IDerivation derivation)
         {
-            this.RemoveAncestors();
+            this.RemoveSuperJacent();
 
-            foreach (var ancestor in this.AncestorList)
+            foreach (var superJacent in this.AllSuperJacent)
             {
-                this.AddAncestor(ancestor);
-            }
-
-            foreach (ProductCategory productCategory in this.ProductCategoriesWhereAncestor)
-            {
-                productCategory.AppsOnDeriveAncestors(derivation);
+                this.AddSuperJacent(superJacent);
             }
         }
 
@@ -130,6 +126,18 @@ namespace Allors.Domain
             {
                 parent.AppsOnDeriveChildren(derivation);
             }
+        }
+
+        public void AppsOnDeriveAllProducts(IDerivation derivation)
+        {
+            var allProducts = new List<Product>(this.ProductsWhereProductCategory);
+
+            foreach (ProductCategory child in this.Children)
+            {
+                allProducts.AddRange(child.ProductsWhereProductCategory.ToArray());
+            }
+
+            this.AllProducts = allProducts.ToArray();
         }
     }
 }

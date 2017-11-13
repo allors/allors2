@@ -119,7 +119,7 @@ namespace Allors.Repository
         [Derived]
         [Indexed]
         [Workspace]
-        public ProductCategory[] Ancestors { get; set; }
+        public ProductCategory[] SuperJacent { get; set; }
 
         #region Allors
         [Id("7B219D9E-0234-4F34-884D-D092573F6172")]
@@ -131,6 +131,17 @@ namespace Allors.Repository
         [Required]
         [Multiplicity(Multiplicity.ManyToOne)]
         public CatScope CatScope { get; set; }
+
+        #region Allors
+        [Id("293A6FED-2EFD-464F-9FCB-5C24E74DCE80")]
+        [AssociationId("00A1038B-DA0E-4FA4-8458-46D3B6420AA9")]
+        [RoleId("E3EE43F8-81B5-45EC-BF82-987EC4D45344")]
+        [Indexed]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToMany)]
+        [Derived]
+        [Workspace]
+        public Product[] AllProducts { get; set; }
 
         #region inherited methods
 

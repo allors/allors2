@@ -76,7 +76,7 @@ namespace Allors.Domain
         }
 
         [Fact]
-        public void GivenProductCategory_WhenDeriving_ThenAncestorsAreSet()
+        public void GivenProductCategory_WhenDeriving_ThenSuperJacentAreSet()
         {
             var productCategory1 = new ProductCategoryBuilder(this.Session)
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("1").WithLocale(this.Session.GetSingleton().DefaultLocale).Build())
@@ -109,35 +109,35 @@ namespace Allors.Domain
 
             this.Session.Derive(); 
 
-            Assert.False(productCategory1.ExistAncestors);
-            Assert.False(productCategory2.ExistAncestors);
+            Assert.False(productCategory1.ExistSuperJacent);
+            Assert.False(productCategory2.ExistSuperJacent);
 
-            Assert.Equal(2, productCategory11.Ancestors.Count);
-            Assert.Contains(productCategory1, productCategory11.Ancestors);
-            Assert.Contains(productCategory2, productCategory11.Ancestors);
+            Assert.Equal(2, productCategory11.SuperJacent.Count);
+            Assert.Contains(productCategory1, productCategory11.SuperJacent);
+            Assert.Contains(productCategory2, productCategory11.SuperJacent);
 
-            Assert.Equal(2, productCategory12.Ancestors.Count);
-            Assert.Contains(productCategory1, productCategory12.Ancestors);
-            Assert.Contains(productCategory2, productCategory12.Ancestors);
+            Assert.Equal(2, productCategory12.SuperJacent.Count);
+            Assert.Contains(productCategory1, productCategory12.SuperJacent);
+            Assert.Contains(productCategory2, productCategory12.SuperJacent);
 
-            Assert.Equal(3, productCategory111.Ancestors.Count);
-            Assert.Contains(productCategory11, productCategory111.Ancestors);
-            Assert.Contains(productCategory1, productCategory111.Ancestors);
-            Assert.Contains(productCategory2, productCategory111.Ancestors);
+            Assert.Equal(3, productCategory111.SuperJacent.Count);
+            Assert.Contains(productCategory11, productCategory111.SuperJacent);
+            Assert.Contains(productCategory1, productCategory111.SuperJacent);
+            Assert.Contains(productCategory2, productCategory111.SuperJacent);
 
-            Assert.Equal(3, productCategory121.Ancestors.Count);
-            Assert.Contains(productCategory12, productCategory121.Ancestors);
-            Assert.Contains(productCategory1, productCategory121.Ancestors);
-            Assert.Contains(productCategory2, productCategory121.Ancestors);
+            Assert.Equal(3, productCategory121.SuperJacent.Count);
+            Assert.Contains(productCategory12, productCategory121.SuperJacent);
+            Assert.Contains(productCategory1, productCategory121.SuperJacent);
+            Assert.Contains(productCategory2, productCategory121.SuperJacent);
 
-            Assert.Equal(3, productCategory122.Ancestors.Count);
-            Assert.Contains(productCategory12, productCategory122.Ancestors);
-            Assert.Contains(productCategory1, productCategory122.Ancestors);
-            Assert.Contains(productCategory2, productCategory122.Ancestors);
+            Assert.Equal(3, productCategory122.SuperJacent.Count);
+            Assert.Contains(productCategory12, productCategory122.SuperJacent);
+            Assert.Contains(productCategory1, productCategory122.SuperJacent);
+            Assert.Contains(productCategory2, productCategory122.SuperJacent);
         }
 
         [Fact]
-        public void GivenProductCategory_WhenNewParentsAreInserted_ThenAncestorsAreRecalculated()
+        public void GivenProductCategory_WhenNewParentsAreInserted_ThenSuperJacentAreRecalculated()
         {
             var productCategory1 = new ProductCategoryBuilder(this.Session)
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("1").WithLocale(this.Session.GetSingleton().DefaultLocale).Build())
@@ -170,31 +170,31 @@ namespace Allors.Domain
 
             this.Session.Derive(); 
 
-            Assert.False(productCategory1.ExistAncestors);
-            Assert.False(productCategory2.ExistAncestors);
+            Assert.False(productCategory1.ExistSuperJacent);
+            Assert.False(productCategory2.ExistSuperJacent);
 
-            Assert.Equal(2, productCategory11.Ancestors.Count);
-            Assert.Contains(productCategory1, productCategory11.Ancestors);
-            Assert.Contains(productCategory2, productCategory11.Ancestors);
+            Assert.Equal(2, productCategory11.SuperJacent.Count);
+            Assert.Contains(productCategory1, productCategory11.SuperJacent);
+            Assert.Contains(productCategory2, productCategory11.SuperJacent);
 
-            Assert.Equal(2, productCategory12.Ancestors.Count);
-            Assert.Contains(productCategory1, productCategory12.Ancestors);
-            Assert.Contains(productCategory2, productCategory12.Ancestors);
+            Assert.Equal(2, productCategory12.SuperJacent.Count);
+            Assert.Contains(productCategory1, productCategory12.SuperJacent);
+            Assert.Contains(productCategory2, productCategory12.SuperJacent);
 
-            Assert.Equal(3, productCategory111.Ancestors.Count);
-            Assert.Contains(productCategory11, productCategory111.Ancestors);
-            Assert.Contains(productCategory1, productCategory111.Ancestors);
-            Assert.Contains(productCategory2, productCategory111.Ancestors);
+            Assert.Equal(3, productCategory111.SuperJacent.Count);
+            Assert.Contains(productCategory11, productCategory111.SuperJacent);
+            Assert.Contains(productCategory1, productCategory111.SuperJacent);
+            Assert.Contains(productCategory2, productCategory111.SuperJacent);
 
-            Assert.Equal(3, productCategory121.Ancestors.Count);
-            Assert.Contains(productCategory12, productCategory121.Ancestors);
-            Assert.Contains(productCategory1, productCategory121.Ancestors);
-            Assert.Contains(productCategory2, productCategory121.Ancestors);
+            Assert.Equal(3, productCategory121.SuperJacent.Count);
+            Assert.Contains(productCategory12, productCategory121.SuperJacent);
+            Assert.Contains(productCategory1, productCategory121.SuperJacent);
+            Assert.Contains(productCategory2, productCategory121.SuperJacent);
 
-            Assert.Equal(3, productCategory122.Ancestors.Count);
-            Assert.Contains(productCategory12, productCategory122.Ancestors);
-            Assert.Contains(productCategory1, productCategory122.Ancestors);
-            Assert.Contains(productCategory2, productCategory122.Ancestors);
+            Assert.Equal(3, productCategory122.SuperJacent.Count);
+            Assert.Contains(productCategory12, productCategory122.SuperJacent);
+            Assert.Contains(productCategory1, productCategory122.SuperJacent);
+            Assert.Contains(productCategory2, productCategory122.SuperJacent);
 
             var productCategory3 = new ProductCategoryBuilder(this.Session)
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("3").WithLocale(this.Session.GetSingleton().DefaultLocale).Build())
@@ -203,34 +203,34 @@ namespace Allors.Domain
 
             this.Session.Derive();
 
-            Assert.False(productCategory1.ExistAncestors);
-            Assert.False(productCategory2.ExistAncestors);
-            Assert.False(productCategory3.ExistAncestors);
+            Assert.False(productCategory1.ExistSuperJacent);
+            Assert.False(productCategory2.ExistSuperJacent);
+            Assert.False(productCategory3.ExistSuperJacent);
 
-            Assert.Equal(3, productCategory11.Ancestors.Count);
-            Assert.Contains(productCategory1, productCategory11.Ancestors);
-            Assert.Contains(productCategory2, productCategory11.Ancestors);
-            Assert.Contains(productCategory3, productCategory11.Ancestors);
+            Assert.Equal(3, productCategory11.SuperJacent.Count);
+            Assert.Contains(productCategory1, productCategory11.SuperJacent);
+            Assert.Contains(productCategory2, productCategory11.SuperJacent);
+            Assert.Contains(productCategory3, productCategory11.SuperJacent);
 
-            Assert.Equal(2, productCategory12.Ancestors.Count);
-            Assert.Contains(productCategory1, productCategory12.Ancestors);
-            Assert.Contains(productCategory2, productCategory12.Ancestors);
+            Assert.Equal(2, productCategory12.SuperJacent.Count);
+            Assert.Contains(productCategory1, productCategory12.SuperJacent);
+            Assert.Contains(productCategory2, productCategory12.SuperJacent);
 
-            Assert.Equal(4, productCategory111.Ancestors.Count);
-            Assert.Contains(productCategory11, productCategory111.Ancestors);
-            Assert.Contains(productCategory1, productCategory111.Ancestors);
-            Assert.Contains(productCategory2, productCategory111.Ancestors);
-            Assert.Contains(productCategory3, productCategory111.Ancestors);
+            Assert.Equal(4, productCategory111.SuperJacent.Count);
+            Assert.Contains(productCategory11, productCategory111.SuperJacent);
+            Assert.Contains(productCategory1, productCategory111.SuperJacent);
+            Assert.Contains(productCategory2, productCategory111.SuperJacent);
+            Assert.Contains(productCategory3, productCategory111.SuperJacent);
 
-            Assert.Equal(3, productCategory121.Ancestors.Count);
-            Assert.Contains(productCategory12, productCategory121.Ancestors);
-            Assert.Contains(productCategory1, productCategory121.Ancestors);
-            Assert.Contains(productCategory2, productCategory121.Ancestors);
+            Assert.Equal(3, productCategory121.SuperJacent.Count);
+            Assert.Contains(productCategory12, productCategory121.SuperJacent);
+            Assert.Contains(productCategory1, productCategory121.SuperJacent);
+            Assert.Contains(productCategory2, productCategory121.SuperJacent);
 
-            Assert.Equal(3, productCategory122.Ancestors.Count);
-            Assert.Contains(productCategory12, productCategory122.Ancestors);
-            Assert.Contains(productCategory1, productCategory122.Ancestors);
-            Assert.Contains(productCategory2, productCategory122.Ancestors);
+            Assert.Equal(3, productCategory122.SuperJacent.Count);
+            Assert.Contains(productCategory12, productCategory122.SuperJacent);
+            Assert.Contains(productCategory1, productCategory122.SuperJacent);
+            Assert.Contains(productCategory2, productCategory122.SuperJacent);
 
             var productCategory13 = new ProductCategoryBuilder(this.Session)
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("1.3").WithLocale(this.Session.GetSingleton().DefaultLocale).Build())
@@ -240,42 +240,42 @@ namespace Allors.Domain
 
             this.Session.Derive();
 
-            Assert.False(productCategory1.ExistAncestors);
-            Assert.False(productCategory2.ExistAncestors);
-            Assert.False(productCategory3.ExistAncestors);
+            Assert.False(productCategory1.ExistSuperJacent);
+            Assert.False(productCategory2.ExistSuperJacent);
+            Assert.False(productCategory3.ExistSuperJacent);
 
-            Assert.Equal(3, productCategory11.Ancestors.Count);
-            Assert.Contains(productCategory1, productCategory11.Ancestors);
-            Assert.Contains(productCategory2, productCategory11.Ancestors);
-            Assert.Contains(productCategory3, productCategory11.Ancestors);
+            Assert.Equal(3, productCategory11.SuperJacent.Count);
+            Assert.Contains(productCategory1, productCategory11.SuperJacent);
+            Assert.Contains(productCategory2, productCategory11.SuperJacent);
+            Assert.Contains(productCategory3, productCategory11.SuperJacent);
 
-            Assert.Equal(2, productCategory12.Ancestors.Count);
-            Assert.Contains(productCategory1, productCategory12.Ancestors);
-            Assert.Contains(productCategory2, productCategory12.Ancestors);
+            Assert.Equal(2, productCategory12.SuperJacent.Count);
+            Assert.Contains(productCategory1, productCategory12.SuperJacent);
+            Assert.Contains(productCategory2, productCategory12.SuperJacent);
 
-            Assert.Equal(1, productCategory13.Ancestors.Count);
-            Assert.Contains(productCategory1, productCategory13.Ancestors);
+            Assert.Equal(1, productCategory13.SuperJacent.Count);
+            Assert.Contains(productCategory1, productCategory13.SuperJacent);
 
-            Assert.Equal(4, productCategory111.Ancestors.Count);
-            Assert.Contains(productCategory11, productCategory111.Ancestors);
-            Assert.Contains(productCategory1, productCategory111.Ancestors);
-            Assert.Contains(productCategory2, productCategory111.Ancestors);
-            Assert.Contains(productCategory3, productCategory111.Ancestors);
+            Assert.Equal(4, productCategory111.SuperJacent.Count);
+            Assert.Contains(productCategory11, productCategory111.SuperJacent);
+            Assert.Contains(productCategory1, productCategory111.SuperJacent);
+            Assert.Contains(productCategory2, productCategory111.SuperJacent);
+            Assert.Contains(productCategory3, productCategory111.SuperJacent);
 
-            Assert.Equal(3, productCategory121.Ancestors.Count);
-            Assert.Contains(productCategory12, productCategory121.Ancestors);
-            Assert.Contains(productCategory1, productCategory121.Ancestors);
-            Assert.Contains(productCategory2, productCategory121.Ancestors);
+            Assert.Equal(3, productCategory121.SuperJacent.Count);
+            Assert.Contains(productCategory12, productCategory121.SuperJacent);
+            Assert.Contains(productCategory1, productCategory121.SuperJacent);
+            Assert.Contains(productCategory2, productCategory121.SuperJacent);
 
-            Assert.Equal(4, productCategory122.Ancestors.Count);
-            Assert.Contains(productCategory12, productCategory122.Ancestors);
-            Assert.Contains(productCategory13, productCategory122.Ancestors);
-            Assert.Contains(productCategory1, productCategory122.Ancestors);
-            Assert.Contains(productCategory2, productCategory122.Ancestors);
+            Assert.Equal(4, productCategory122.SuperJacent.Count);
+            Assert.Contains(productCategory12, productCategory122.SuperJacent);
+            Assert.Contains(productCategory13, productCategory122.SuperJacent);
+            Assert.Contains(productCategory1, productCategory122.SuperJacent);
+            Assert.Contains(productCategory2, productCategory122.SuperJacent);
         }
 
         [Fact]
-        public void GivenProductCategory_WhenNewParentsAreRemoved_ThenAncestorsAreRecalculated()
+        public void GivenProductCategory_WhenNewParentsAreRemoved_ThenSuperJacentAreRecalculated()
         {
             var productCategory1 = new ProductCategoryBuilder(this.Session)
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("1").WithLocale(this.Session.GetSingleton().DefaultLocale).Build())
@@ -308,59 +308,59 @@ namespace Allors.Domain
 
             this.Session.Derive(); 
 
-            Assert.False(productCategory1.ExistAncestors);
-            Assert.False(productCategory2.ExistAncestors);
+            Assert.False(productCategory1.ExistSuperJacent);
+            Assert.False(productCategory2.ExistSuperJacent);
 
-            Assert.Equal(2, productCategory11.Ancestors.Count);
-            Assert.Contains(productCategory1, productCategory11.Ancestors);
-            Assert.Contains(productCategory2, productCategory11.Ancestors);
+            Assert.Equal(2, productCategory11.SuperJacent.Count);
+            Assert.Contains(productCategory1, productCategory11.SuperJacent);
+            Assert.Contains(productCategory2, productCategory11.SuperJacent);
 
-            Assert.Equal(2, productCategory12.Ancestors.Count);
-            Assert.Contains(productCategory1, productCategory12.Ancestors);
-            Assert.Contains(productCategory2, productCategory12.Ancestors);
+            Assert.Equal(2, productCategory12.SuperJacent.Count);
+            Assert.Contains(productCategory1, productCategory12.SuperJacent);
+            Assert.Contains(productCategory2, productCategory12.SuperJacent);
 
-            Assert.Equal(3, productCategory111.Ancestors.Count);
-            Assert.Contains(productCategory11, productCategory111.Ancestors);
-            Assert.Contains(productCategory1, productCategory111.Ancestors);
-            Assert.Contains(productCategory2, productCategory111.Ancestors);
+            Assert.Equal(3, productCategory111.SuperJacent.Count);
+            Assert.Contains(productCategory11, productCategory111.SuperJacent);
+            Assert.Contains(productCategory1, productCategory111.SuperJacent);
+            Assert.Contains(productCategory2, productCategory111.SuperJacent);
 
-            Assert.Equal(3, productCategory121.Ancestors.Count);
-            Assert.Contains(productCategory12, productCategory121.Ancestors);
-            Assert.Contains(productCategory1, productCategory121.Ancestors);
-            Assert.Contains(productCategory2, productCategory121.Ancestors);
+            Assert.Equal(3, productCategory121.SuperJacent.Count);
+            Assert.Contains(productCategory12, productCategory121.SuperJacent);
+            Assert.Contains(productCategory1, productCategory121.SuperJacent);
+            Assert.Contains(productCategory2, productCategory121.SuperJacent);
 
-            Assert.Equal(3, productCategory122.Ancestors.Count);
-            Assert.Contains(productCategory12, productCategory122.Ancestors);
-            Assert.Contains(productCategory1, productCategory122.Ancestors);
-            Assert.Contains(productCategory2, productCategory122.Ancestors);
+            Assert.Equal(3, productCategory122.SuperJacent.Count);
+            Assert.Contains(productCategory12, productCategory122.SuperJacent);
+            Assert.Contains(productCategory1, productCategory122.SuperJacent);
+            Assert.Contains(productCategory2, productCategory122.SuperJacent);
 
             productCategory11.RemoveParent(productCategory2);
 
             this.Session.Derive();
 
-            Assert.False(productCategory1.ExistAncestors);
-            Assert.False(productCategory2.ExistAncestors);
+            Assert.False(productCategory1.ExistSuperJacent);
+            Assert.False(productCategory2.ExistSuperJacent);
 
-            Assert.Equal(1, productCategory11.Ancestors.Count);
-            Assert.Contains(productCategory1, productCategory11.Ancestors);
+            Assert.Equal(1, productCategory11.SuperJacent.Count);
+            Assert.Contains(productCategory1, productCategory11.SuperJacent);
 
-            Assert.Equal(2, productCategory12.Ancestors.Count);
-            Assert.Contains(productCategory1, productCategory12.Ancestors);
-            Assert.Contains(productCategory2, productCategory12.Ancestors);
+            Assert.Equal(2, productCategory12.SuperJacent.Count);
+            Assert.Contains(productCategory1, productCategory12.SuperJacent);
+            Assert.Contains(productCategory2, productCategory12.SuperJacent);
 
-            Assert.Equal(2, productCategory111.Ancestors.Count);
-            Assert.Contains(productCategory11, productCategory111.Ancestors);
-            Assert.Contains(productCategory1, productCategory111.Ancestors);
+            Assert.Equal(2, productCategory111.SuperJacent.Count);
+            Assert.Contains(productCategory11, productCategory111.SuperJacent);
+            Assert.Contains(productCategory1, productCategory111.SuperJacent);
 
-            Assert.Equal(3, productCategory121.Ancestors.Count);
-            Assert.Contains(productCategory12, productCategory121.Ancestors);
-            Assert.Contains(productCategory1, productCategory121.Ancestors);
-            Assert.Contains(productCategory2, productCategory121.Ancestors);
+            Assert.Equal(3, productCategory121.SuperJacent.Count);
+            Assert.Contains(productCategory12, productCategory121.SuperJacent);
+            Assert.Contains(productCategory1, productCategory121.SuperJacent);
+            Assert.Contains(productCategory2, productCategory121.SuperJacent);
 
-            Assert.Equal(3, productCategory122.Ancestors.Count);
-            Assert.Contains(productCategory12, productCategory122.Ancestors);
-            Assert.Contains(productCategory1, productCategory122.Ancestors);
-            Assert.Contains(productCategory2, productCategory122.Ancestors);
+            Assert.Equal(3, productCategory122.SuperJacent.Count);
+            Assert.Contains(productCategory12, productCategory122.SuperJacent);
+            Assert.Contains(productCategory1, productCategory122.SuperJacent);
+            Assert.Contains(productCategory2, productCategory122.SuperJacent);
         }
 
         [Fact]
@@ -418,6 +418,126 @@ namespace Allors.Domain
             Assert.False(productCategory111.ExistChildren);
             Assert.False(productCategory121.ExistChildren);
             Assert.False(productCategory122.ExistChildren);
+        }
+
+        [Fact]
+        public void GivenProductCategoryHierarchy_WhenDeriving_ThenAllProductAreSet()
+        {
+            var productCategory1 = new ProductCategoryBuilder(this.Session)
+                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("1").WithLocale(this.Session.GetSingleton().DefaultLocale).Build())
+                .Build();
+            var productCategory2 = new ProductCategoryBuilder(this.Session)
+                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("2").WithLocale(this.Session.GetSingleton().DefaultLocale).Build())
+                .Build();
+            var productCategory11 = new ProductCategoryBuilder(this.Session)
+                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("1.1").WithLocale(this.Session.GetSingleton().DefaultLocale).Build())
+                .WithParent(productCategory1)
+                .Build();
+            var productCategory12 = new ProductCategoryBuilder(this.Session)
+                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("1.2").WithLocale(this.Session.GetSingleton().DefaultLocale).Build())
+                .WithParent(productCategory1)
+                .WithParent(productCategory2)
+                .Build();
+            var productCategory111 = new ProductCategoryBuilder(this.Session)
+                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("1.1.1").WithLocale(this.Session.GetSingleton().DefaultLocale).Build())
+                .WithParent(productCategory11)
+                .Build();
+            var productCategory121 = new ProductCategoryBuilder(this.Session)
+                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("1.2.1").WithLocale(this.Session.GetSingleton().DefaultLocale).Build())
+                .WithParent(productCategory12)
+                .Build();
+            var productCategory122 = new ProductCategoryBuilder(this.Session)
+                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("1.2.2").WithLocale(this.Session.GetSingleton().DefaultLocale).Build())
+                .WithParent(productCategory12)
+                .Build();
+
+            this.Session.Derive();
+
+            var vatRate21 = new VatRateBuilder(this.Session).WithRate(21).Build();
+
+            var good1 = new GoodBuilder(this.Session)
+                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("good1").WithLocale(this.Session.GetSingleton().DefaultLocale).Build())
+                .WithSku("good1")
+                .WithPrimaryProductCategory(productCategory1)
+                .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
+                .WithVatRate(vatRate21)
+                .Build();
+            var good2 = new GoodBuilder(this.Session)
+                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("good2").WithLocale(this.Session.GetSingleton().DefaultLocale).Build())
+                .WithSku("good2")
+                .WithPrimaryProductCategory(productCategory2)
+                .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
+                .WithVatRate(vatRate21)
+                .Build();
+            var good11 = new GoodBuilder(this.Session)
+                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("good11").WithLocale(this.Session.GetSingleton().DefaultLocale).Build())
+                .WithSku("good11")
+                .WithPrimaryProductCategory(productCategory11)
+                .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
+                .WithVatRate(vatRate21)
+                .Build();
+            var good12 = new GoodBuilder(this.Session)
+                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("good12").WithLocale(this.Session.GetSingleton().DefaultLocale).Build())
+                .WithSku("good12")
+                .WithPrimaryProductCategory(productCategory12)
+                .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
+                .WithVatRate(vatRate21)
+                .Build();
+            var good111 = new GoodBuilder(this.Session)
+                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("good111").WithLocale(this.Session.GetSingleton().DefaultLocale).Build())
+                .WithSku("good111")
+                .WithPrimaryProductCategory(productCategory111)
+                .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
+                .WithVatRate(vatRate21)
+                .Build();
+            var good121 = new GoodBuilder(this.Session)
+                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("good121").WithLocale(this.Session.GetSingleton().DefaultLocale).Build())
+                .WithSku("good121")
+                .WithPrimaryProductCategory(productCategory121)
+                .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
+                .WithVatRate(vatRate21)
+                .Build();
+            var good122 = new GoodBuilder(this.Session)
+                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("good122").WithLocale(this.Session.GetSingleton().DefaultLocale).Build())
+                .WithSku("good122")
+                .WithPrimaryProductCategory(productCategory122)
+                .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
+                .WithVatRate(vatRate21)
+                .Build();
+
+            this.Session.Derive();
+
+            Assert.Equal(6, productCategory1.AllProducts.Count);
+            Assert.Contains(good1, productCategory1.AllProducts);
+            Assert.Contains(good11, productCategory1.AllProducts);
+            Assert.Contains(good12, productCategory1.AllProducts);
+            Assert.Contains(good111, productCategory1.AllProducts);
+            Assert.Contains(good121, productCategory1.AllProducts);
+            Assert.Contains(good122, productCategory1.AllProducts);
+
+            Assert.Equal(4, productCategory2.AllProducts.Count);
+            Assert.Contains(good2, productCategory2.AllProducts);
+            Assert.Contains(good12, productCategory2.AllProducts);
+            Assert.Contains(good121, productCategory2.AllProducts);
+            Assert.Contains(good122, productCategory2.AllProducts);
+
+            Assert.Equal(2, productCategory11.AllProducts.Count);
+            Assert.Contains(good11, productCategory11.AllProducts);
+            Assert.Contains(good111, productCategory11.AllProducts);
+
+            Assert.Equal(3, productCategory12.AllProducts.Count);
+            Assert.Contains(good12, productCategory12.AllProducts);
+            Assert.Contains(good121, productCategory12.AllProducts);
+            Assert.Contains(good122, productCategory12.AllProducts);
+
+            Assert.Equal(1, productCategory111.AllProducts.Count);
+            Assert.Contains(good111, productCategory111.AllProducts);
+
+            Assert.Equal(1, productCategory121.AllProducts.Count);
+            Assert.Contains(good121, productCategory121.AllProducts);
+
+            Assert.Equal(1, productCategory122.AllProducts.Count);
+            Assert.Contains(good122, productCategory122.AllProducts);
         }
     }
 }

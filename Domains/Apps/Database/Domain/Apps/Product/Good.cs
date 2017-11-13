@@ -65,7 +65,7 @@ namespace Allors.Domain
             }
 
             this.DeriveVirtualProductPriceComponent();
-            this.DeriveProductCategoriesExpanded();
+            this.DeriveProductCategoriesExpanded(derivation);
             this.DeriveQuantityOnHand();
             this.DeriveAvailableToPromise();
         }
@@ -99,25 +99,27 @@ namespace Allors.Domain
             }
         }
 
-        public void DeriveProductCategoriesExpanded()
+        public void DeriveProductCategoriesExpanded(IDerivation derivation)
         {
             this.RemoveProductCategoriesExpanded();
 
             if (this.ExistPrimaryProductCategory)
             {
                 this.AddProductCategoriesExpanded(this.PrimaryProductCategory);
-                foreach (ProductCategory ancestor in this.PrimaryProductCategory.Ancestors)
+                foreach (ProductCategory superJacent in this.PrimaryProductCategory.SuperJacent)
                 {
-                    this.AddProductCategoriesExpanded(ancestor);
+                    this.AddProductCategoriesExpanded(superJacent);
+                    superJacent.AppsOnDeriveAllProducts(derivation);
                 }
             }
 
             foreach (ProductCategory productCategory in this.ProductCategories)
             {
                 this.AddProductCategoriesExpanded(productCategory);
-                foreach (ProductCategory ancestor in productCategory.Ancestors)
+                foreach (ProductCategory superJacent in productCategory.SuperJacent)
                 {
-                    this.AddProductCategoriesExpanded(ancestor);
+                    this.AddProductCategoriesExpanded(superJacent);
+                    superJacent.AppsOnDeriveAllProducts(derivation);
                 }
             }
         }
