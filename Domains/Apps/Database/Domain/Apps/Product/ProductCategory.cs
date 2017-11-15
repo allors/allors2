@@ -63,6 +63,16 @@ namespace Allors.Domain
             }
         }
 
+        public void AppsOnPreDerive(ObjectOnPreDerive method)
+        {
+            var derivation = method.Derivation;
+
+            foreach (Object parent in this.Parents)
+            {
+                derivation.AddDependency(parent, this);
+            }
+        }
+
         public void AppsOnDerive(ObjectOnDerive method)
         {
             var derivation = method.Derivation;
@@ -134,7 +144,7 @@ namespace Allors.Domain
 
             foreach (ProductCategory child in this.Children)
             {
-                allProducts.AddRange(child.ProductsWhereProductCategory.ToArray());
+                allProducts.AddRange(child.AllProducts);
             }
 
             this.AllProducts = allProducts.ToArray();
