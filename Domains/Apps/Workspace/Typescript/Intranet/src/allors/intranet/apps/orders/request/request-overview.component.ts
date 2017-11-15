@@ -38,6 +38,7 @@ export class RequestOverviewComponent implements OnInit, AfterViewInit, OnDestro
 
     this.scope = new Scope(allors.database, allors.workspace);
     this.m = this.allors.meta;
+    this.refresh$ = new BehaviorSubject<Date>(undefined);
   }
 
   public refresh(): void {

@@ -39,6 +39,7 @@ export class SalesOrderOverviewComponent implements OnInit, AfterViewInit, OnDes
 
     this.scope = new Scope(allors.database, allors.workspace);
     this.m = this.allors.meta;
+    this.refresh$ = new BehaviorSubject<Date>(undefined);
   }
 
   public refresh(): void {
