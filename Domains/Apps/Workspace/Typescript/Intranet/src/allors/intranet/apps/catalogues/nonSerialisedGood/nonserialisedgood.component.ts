@@ -81,6 +81,7 @@ export class NonSerialisedGoodComponent implements OnInit, AfterViewInit, OnDest
             id,
             include: [
               new TreeNode({ roleType: m.Good.PrimaryPhoto }),
+              new TreeNode({ roleType: m.Good.Photos }),
               new TreeNode({ roleType: m.Good.LocalisedNames }),
               new TreeNode({ roleType: m.Good.LocalisedDescriptions }),
               new TreeNode({ roleType: m.Good.LocalisedComments }),
