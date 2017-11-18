@@ -21,7 +21,6 @@ namespace Allors.Domain
     {
         private static readonly Guid PackId = new Guid("C4EC577A-D682-433c-BD70-84538BE83209");
         private static readonly Guid PairId = new Guid("62CB31EB-CD70-4836-B20F-1088C6CA9DCB");
-        private static readonly Guid PiecesId = new Guid("DDC5822F-9D7E-4729-B73F-8D033384B3FB");
         private static readonly Guid PieceId = new Guid("F4BBDB52-3441-4768-92D4-729C6C5D6F1B");
         private static readonly Guid LengthCmId = new Guid("BD1D2F1F-329E-41c4-A27B-0BA0CD3960E2");
         private static readonly Guid CentimeterId = new Guid("7D81FFC7-E77D-4a00-916D-49F2B1CCA12E");
@@ -34,8 +33,6 @@ namespace Allors.Domain
         public UnitOfMeasure Pack => this.Cache[PackId];
 
         public UnitOfMeasure Pair => this.Cache[PairId];
-
-        public UnitOfMeasure Pieces => this.Cache[PiecesId];
 
         public UnitOfMeasure Piece => this.Cache[PieceId];
 
@@ -70,13 +67,6 @@ namespace Allors.Domain
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Pair").WithLocale(englishLocale).Build())
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Paar").WithLocale(dutchLocale).Build())
                 .WithUniqueId(PairId)
-                .Build();
-            
-            new UnitOfMeasureBuilder(this.Session)
-                .WithName("Pieces")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Pieces").WithLocale(englishLocale).Build())
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Stuks").WithLocale(dutchLocale).Build())
-                .WithUniqueId(PiecesId)
                 .Build();
            
             new UnitOfMeasureBuilder(this.Session)

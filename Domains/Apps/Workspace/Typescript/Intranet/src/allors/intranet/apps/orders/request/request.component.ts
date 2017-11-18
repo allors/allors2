@@ -40,6 +40,7 @@ export class RequestEditComponent implements OnInit, AfterViewInit, OnDestroy {
   private refresh$: BehaviorSubject<Date>;
   private subscription: Subscription;
   private scope: Scope;
+  private previousOriginator: Party;
 
   get showOrganisations(): boolean {
     return !this.request.Originator || this.request.Originator instanceof (Organisation);
@@ -154,6 +155,7 @@ export class RequestEditComponent implements OnInit, AfterViewInit, OnDestroy {
         this.request = loaded.objects.requestForQuote as RequestForQuote;
         if (!this.request) {
           this.request = this.scope.session.create("RequestForQuote") as RequestForQuote;
+          this.request.RequestDate = new Date();
           this.title = "Add Request";
         } else {
           this.title = "Request " + this.request.RequestNumber;
@@ -164,6 +166,7 @@ export class RequestEditComponent implements OnInit, AfterViewInit, OnDestroy {
           this.title = this.title + " from: " + this.request.Originator.PartyName;
         }
 
+        this.previousOriginator = this.request.Originator;
         this.organisations = loaded.collections.organisations as Organisation[];
         this.people = loaded.collections.parties as Person[];
       },
@@ -432,6 +435,12 @@ export class RequestEditComponent implements OnInit, AfterViewInit, OnDestroy {
     this.scope
       .load("Pull", new PullRequest({ fetch }))
       .subscribe((loaded: Loaded) => {
+
+        if (this.request.Originator !== this.previousOriginator)
+        {
+          this.request.ContactPerson = null;
+          this.request.FullfillContactMechanism = null;
+        }
 
         const partyContactMechanisms: PartyContactMechanism[] = loaded.collections.partyContactMechanisms as PartyContactMechanism[];
         this.contactMechanisms = partyContactMechanisms.map((v: PartyContactMechanism) => v.ContactMechanism);

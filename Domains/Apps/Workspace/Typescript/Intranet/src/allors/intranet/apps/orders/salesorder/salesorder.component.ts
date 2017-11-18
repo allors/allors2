@@ -143,7 +143,7 @@ export class SalesOrderEditComponent implements OnInit, AfterViewInit, OnDestroy
                 }),
               new Query(
                 {
-                  name: "persons",
+                  name: "people",
                   objectType: this.m.Person,
                   predicate: new Contains({ roleType: m.Person.PersonRoles, object: pCustomerRole }),
                 }),
@@ -574,6 +574,14 @@ export class SalesOrderEditComponent implements OnInit, AfterViewInit, OnDestroy
     this.scope
       .load("Pull", new PullRequest({ fetch }))
       .subscribe((loaded: Loaded) => {
+
+        if (this.order.ShipToCustomer !== null && this.order.BillToCustomer === null) {
+          this.order.BillToCustomer = this.order.ShipToCustomer;
+        }
+
+        if (this.order.BillToCustomer !== null && this.order.ShipToCustomer === null) {
+          this.order.ShipToCustomer = this.order.BillToCustomer;
+        }
 
         const partyContactMechanisms: PartyContactMechanism[] = loaded.collections.partyContactMechanisms as PartyContactMechanism[];
         this.ShipToAddresses = partyContactMechanisms.filter((v: PartyContactMechanism) => v.ContactMechanism.objectType.name === "PostalAddress").map((v: PartyContactMechanism) => v.ContactMechanism);

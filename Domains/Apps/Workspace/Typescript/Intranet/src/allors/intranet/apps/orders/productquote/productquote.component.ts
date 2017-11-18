@@ -146,6 +146,7 @@ export class ProductQuoteEditComponent implements OnInit, AfterViewInit, OnDestr
 
         if (!this.quote) {
           this.quote = this.scope.session.create("ProductQuote") as ProductQuote;
+          this.quote.IssueDate = new Date();
           this.title = "Add Quote";
         } else {
           this.title = "Quote " + this.quote.QuoteNumber;

@@ -5,7 +5,7 @@ import { TdDialogService, TdMediaService } from "@covalent/core";
 import { BehaviorSubject, Observable,  Subscription } from "rxjs/Rx";
 
 import { AllorsService, ErrorService, Filter, Invoked, Loaded, Saved, Scope } from "@allors";
-import { Fetch, Path, PullRequest, Query, TreeNode } from "@allors";
+import { Fetch, Path, PullRequest, Query, Sort, TreeNode } from "@allors";
 import { Good, InventoryItem, NonSerialisedInventoryItem, Product, ProductQuote, QuoteItem, RequestItem, SerialisedInventoryItem, UnitOfMeasure } from "@allors";
 import { MetaDomain } from "@allors";
 
@@ -85,6 +85,7 @@ export class QuoteItemEditComponent implements OnInit, AfterViewInit, OnDestroy 
             {
               name: "goods",
               objectType: m.Good,
+              sort: [new Sort({ roleType: m.Good.Name, direction: "Asc" })],
             }),
             new Query(
               {
@@ -104,10 +105,12 @@ export class QuoteItemEditComponent implements OnInit, AfterViewInit, OnDestroy 
         this.requestItem = loaded.objects.requestItem as RequestItem;
         this.goods = loaded.collections.goods as Good[];
         this.unitsOfMeasure = loaded.collections.unitsOfMeasure as UnitOfMeasure[];
+        const piece = this.unitsOfMeasure.find((v: UnitOfMeasure) => v.UniqueId.toUpperCase() === "F4BBDB52-3441-4768-92D4-729C6C5D6F1B");
 
         if (!this.quoteItem) {
           this.title = "Add Quote Item";
           this.quoteItem = this.scope.session.create("QuoteItem") as QuoteItem;
+          this.quoteItem.UnitOfMeasure = piece;
           this.quote.AddQuoteItem(this.quoteItem);
         } else {
           this.goodSelected(this.quoteItem.Product);

@@ -9,8 +9,8 @@
         <button *ngIf="requestItem.CanExecuteHold" mat-button type="button" (click)="hold()">Pending Customer</button>
       </div>
 
-      <a-mat-autocomplete [object]="requestItem" [roleType]="m.RequestItem.Product" [options]="goods" display="Name"
-        (onSelect)="goodSelected($event)" [filter]="goodsFilter.create()"></a-mat-autocomplete>
+      <a-mat-select [object]="requestItem" [roleType]="m.RequestItem.Product" [options]="goods" display="Name"
+        (onSelect)="goodSelected($event)"></a-mat-select>
       <a-mat-input [object]="requestItem" [roleType]="m.RequestItem.Quantity"></a-mat-input>
       <a-mat-select [object]="requestItem" [roleType]="m.RequestItem.UnitOfMeasure" [options]="unitsOfMeasure" display="Name"></a-mat-select>
       <a-mat-static *ngIf="serialisedInventoryItem?.ExpectedSalesPrice" [object]="serialisedInventoryItem" [roleType]="m.SerialisedInventoryItem.ExpectedSalesPrice"></a-mat-static>

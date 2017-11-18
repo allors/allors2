@@ -67,9 +67,9 @@ export class SalesOrdersOverviewComponent implements AfterViewInit, OnDestroy {
         return [
           data,
           data !== previousData ? 50 : take,
-          date
+          date,
         ];
-      }, [] as [SearchData, number]);
+      }, [] as [SearchData, number, Date]);
 
     this.subscription = combined$
       .switchMap(([data, take]: [SearchData, number]) => {

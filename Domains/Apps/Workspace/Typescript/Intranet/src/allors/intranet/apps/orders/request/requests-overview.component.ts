@@ -61,13 +61,15 @@ export class RequestsOverviewComponent implements AfterViewInit, OnDestroy {
       .distinctUntilChanged()
       .startWith({});
 
-    const combined$: Observable<any> = Observable.combineLatest(search$, this.page$)
-      .scan(([previousData, previousTake]: [SearchData, number], [data, take]: [SearchData, number]): [SearchData, number] => {
-        return [
-          data,
-          data !== previousData ? 50 : take,
-        ];
-      }, [] as [SearchData, number]);
+    const combined$: Observable<any> = Observable
+    .combineLatest(search$, this.page$, this.refresh$)
+    .scan(([previousData, previousTake, previousDate]: [SearchData, number, Date], [data, take, date]: [SearchData, number, Date]): [SearchData, number, Date] => {
+      return [
+        data,
+        data !== previousData ? 50 : take,
+        date,
+      ];
+    }, [] as [SearchData, number, Date]);
 
     this.subscription = combined$
       .switchMap(([data, take]: [SearchData, number]) => {

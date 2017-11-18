@@ -5,7 +5,7 @@ import { TdDialogService, TdMediaService } from "@covalent/core";
 import { BehaviorSubject, Observable, Subscription } from "rxjs/Rx";
 
 import { AllorsService, ErrorService, Filter, Invoked, Loaded, Saved, Scope } from "@allors";
-import { Fetch, Path, PullRequest, Query, TreeNode } from "@allors";
+import { Fetch, Path, PullRequest, Query, Sort, TreeNode } from "@allors";
 import { Good, InventoryItem, NonSerialisedInventoryItem, Product, RequestForQuote, RequestItem, SerialisedInventoryItem, UnitOfMeasure } from "@allors";
 import { MetaDomain } from "@allors";
 
@@ -76,6 +76,7 @@ export class RequestItemEditComponent implements OnInit, AfterViewInit, OnDestro
             {
               name: "goods",
               objectType: m.Good,
+              sort: [new Sort({ roleType: m.Good.Name, direction: "Asc" })],
             }),
           new Query(
             {
@@ -95,10 +96,12 @@ export class RequestItemEditComponent implements OnInit, AfterViewInit, OnDestro
         this.requestItem = loaded.objects.requestItem as RequestItem;
         this.goods = loaded.collections.goods as Good[];
         this.unitsOfMeasure = loaded.collections.unitsOfMeasure as UnitOfMeasure[];
+        const piece = this.unitsOfMeasure.find((v: UnitOfMeasure) => v.UniqueId.toUpperCase() === "F4BBDB52-3441-4768-92D4-729C6C5D6F1B");
 
         if (!this.requestItem) {
           this.title = "Add Request Item";
           this.requestItem = this.scope.session.create("RequestItem") as RequestItem;
+          this.requestItem.UnitOfMeasure = piece;
           this.request.AddRequestItem(this.requestItem);
         } else {
           this.goodSelected(this.requestItem.Product);
