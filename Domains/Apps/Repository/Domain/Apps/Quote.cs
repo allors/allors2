@@ -122,10 +122,12 @@ namespace Allors.Repository
         [AssociationId("b9338369-9081-4fa7-91c2-140a46ea7d27")]
         [RoleId("984b073d-0213-4539-8d3c-a35a81a71bd5")]
         #endregion
+        [Required]
+        [Derived]
         [Precision(19)]
         [Scale(2)]
         [Workspace]
-        decimal Amount { get; set; }
+        decimal Price { get; set; }
 
         #region Allors
         [Id("BA16DE57-19A1-40BC-AF3C-99690EB5ECAB")]

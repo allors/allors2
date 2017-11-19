@@ -34,6 +34,16 @@ namespace Allors.Domain
             }
         }
 
+        public void AppsOnPreDerive(ObjectOnPreDerive method)
+        {
+            var derivation = method.Derivation;
+
+            if (this.ExistQuoteWhereQuoteItem)
+            {
+                derivation.AddDependency(this.QuoteWhereQuoteItem, this);
+            }
+        }
+
         public void AppsOnDerive(ObjectOnDerive method)
         {
             var derivation = method.Derivation;

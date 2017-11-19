@@ -32,6 +32,15 @@ namespace Allors.Domain
             }
         }
 
+        public static void AppsOnDerive(this Quote @this, ObjectOnDerive method)
+        {
+            @this.Price = 0;
+            foreach (QuoteItem item in @this.QuoteItems)
+            {
+                @this.Price += item.Quantity * item.UnitPrice;
+            }
+        }
+
         public static void AppsApprove(this Quote @this, QuoteApprove method)
         {
             @this.QuoteState = new QuoteStates(@this.Strategy.Session).Approved;

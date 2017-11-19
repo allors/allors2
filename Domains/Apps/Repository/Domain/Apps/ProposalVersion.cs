@@ -19,7 +19,7 @@ namespace Allors.Repository
         public string Description { get; set; }
         public Party Receiver { get; set; }
         public ContactMechanism FullfillContactMechanism { get; set; }
-        public decimal Amount { get; set; }
+        public decimal Price { get; set; }
         public Currency Currency { get; set; }
         public DateTime IssueDate { get; set; }
         public QuoteItem[] QuoteItems { get; set; }

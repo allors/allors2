@@ -5,8 +5,8 @@ import { TdMediaService } from "@covalent/core";
 import { Subscription } from "rxjs/Rx";
 
 import { AllorsService, ErrorService, Loaded, Saved, Scope } from "@allors";
-import { Fetch, PullRequest, Query, TreeNode } from "@allors";
-import { Enumeration, Locale, Person, PersonRole } from "@allors";
+import { Fetch, Path, PullRequest, Query, TreeNode } from "@allors";
+import { CustomerRelationship, Enumeration, Locale, Person, PersonRole } from "@allors";
 import { MetaDomain } from "@allors";
 
 @Component({
@@ -25,9 +25,11 @@ export class PersonComponent implements OnInit, AfterViewInit, OnDestroy {
   public genders: Enumeration[];
   public salutations: Enumeration[];
   public roles: PersonRole[];
+  public customerRelationships: CustomerRelationship[];
 
   private subscription: Subscription;
   private scope: Scope;
+  private customerRole: PersonRole;
 
   constructor(
     private allors: AllorsService,
@@ -57,6 +59,11 @@ export class PersonComponent implements OnInit, AfterViewInit, OnDestroy {
               new TreeNode({ roleType: m.Person.Picture }),
             ],
             name: "person",
+          }),
+          new Fetch({
+            name: "customerRelationships",
+            id,
+            path: new Path({ step: this.m.Organisation.CustomerRelationshipsWhereCustomer }),
           }),
         ];
 
@@ -92,6 +99,7 @@ export class PersonComponent implements OnInit, AfterViewInit, OnDestroy {
 
         this.subTitle = "edit person";
         this.person = loaded.objects.person as Person;
+        this.customerRelationships = loaded.collections.customerRelationships as CustomerRelationship[];
 
         if (!this.person) {
           this.subTitle = "add a new person";
@@ -102,6 +110,7 @@ export class PersonComponent implements OnInit, AfterViewInit, OnDestroy {
         this.genders = loaded.collections.genders as Enumeration[];
         this.salutations = loaded.collections.salutations as Enumeration[];
         this.roles = loaded.collections.roles as PersonRole[];
+        this.customerRole = this.roles.find((v: PersonRole) => v.UniqueId.toUpperCase() === "B29444EF-0950-4D6F-AB3E-9C6DC44C050F");
       },
       (error: any) => {
          this.errorService.message(error);
@@ -122,6 +131,11 @@ export class PersonComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   public save(): void {
+
+    if (this.person.PersonRoles.includes(this.customerRole) && this.customerRelationships === undefined) {
+      const customerRelationship = this.scope.session.create("CustomerRelationship") as CustomerRelationship;
+      customerRelationship.Customer = this.person;
+    }
 
     this.scope
       .save()

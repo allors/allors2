@@ -8,8 +8,8 @@
         <button *ngIf="quoteItem.CanExecuteCancel" mat-button type="button" (click)="cancel()">Cancel</button>
       </div>
 
-      <a-mat-select [object]="quoteItem" [roleType]="m.QuoteItem.Product" [options]="goods" display="Name"
-        (onSelect)="goodSelected($event)"></a-mat-select>
+      <a-mat-autocomplete [object]="quoteItem" [roleType]="m.QuoteItem.Product" [options]="goods" display="Name" [filter]="goodsFilter.create()"
+        (onSelect)="goodSelected($event)"></a-mat-autocomplete>
       <a-mat-input [object]="quoteItem" [roleType]="m.QuoteItem.Quantity"></a-mat-input>
       <a-mat-select [object]="quoteItem" [roleType]="m.QuoteItem.UnitOfMeasure" [options]="unitsOfMeasure" display="Name"></a-mat-select>
       <a-mat-input [object]="quoteItem" [roleType]="m.QuoteItem.UnitPrice"></a-mat-input>

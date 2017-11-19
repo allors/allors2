@@ -42,6 +42,7 @@ export class ProductQuoteEditComponent implements OnInit, AfterViewInit, OnDestr
   private refresh$: BehaviorSubject<Date>;
   private subscription: Subscription;
   private scope: Scope;
+  private previousReceiver: Party;
 
   get showOrganisations(): boolean {
     return !this.quote.Receiver || this.quote.Receiver instanceof (Organisation);
@@ -158,6 +159,7 @@ export class ProductQuoteEditComponent implements OnInit, AfterViewInit, OnDestr
 
         this.receiverSelected(this.quote.Receiver);
 
+        this.previousReceiver = this.quote.Receiver;
         this.organisations = loaded.collections.organisations as Organisation[];
         this.people = loaded.collections.parties as Person[];
       },
@@ -391,6 +393,12 @@ export class ProductQuoteEditComponent implements OnInit, AfterViewInit, OnDestr
     this.scope
       .load("Pull", new PullRequest({ fetch }))
       .subscribe((loaded: Loaded) => {
+
+        if (this.quote.Receiver !== this.previousReceiver) {
+          this.quote.ContactPerson = null;
+          this.quote.FullfillContactMechanism = null;
+          this.previousReceiver = this.quote.Receiver;
+        }
 
         const partyContactMechanisms: PartyContactMechanism[] = loaded.collections.partyContactMechanisms as PartyContactMechanism[];
         this.contactMechanisms = partyContactMechanisms.map((v: PartyContactMechanism) => v.ContactMechanism);

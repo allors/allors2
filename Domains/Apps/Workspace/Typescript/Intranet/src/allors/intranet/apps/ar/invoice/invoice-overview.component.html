@@ -62,8 +62,8 @@
 
       <mat-divider></mat-divider>
       <mat-card-actions>
-          <button mat-button [routerLink]="['/printinvoice/' + invoice.id ]">Print</button>
         <button *ngIf="invoice.CanWriteSalesInvoiceItems" mat-button [routerLink]="['/invoice/' + invoice.id]">Edit</button>
+        <button mat-button [routerLink]="['/printinvoice/' + invoice.id ]">Print</button>
       </mat-card-actions>
     </mat-card>
 

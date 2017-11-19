@@ -65,8 +65,8 @@
 
       <mat-divider></mat-divider>
       <mat-card-actions>
-        <button mat-button [routerLink]="['/printsalesorder/' + order.id ]">Print</button>
         <button *ngIf="order.CanWriteSalesOrderItems" mat-button [routerLink]="['/salesOrder/' + order.id]">Edit</button>
+        <button mat-button [routerLink]="['/printsalesorder/' + order.id ]">Print</button>
         <button *ngIf="payFirst && order.CanExecuteComplete && order.ValidOrderItems.length > 0"
           mat-button (click)="createInvoice()">Create Invoice</button>
       </mat-card-actions>

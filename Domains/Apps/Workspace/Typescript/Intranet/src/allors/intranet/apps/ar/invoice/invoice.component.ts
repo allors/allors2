@@ -41,6 +41,7 @@ export class InvoiceComponent implements OnInit, AfterViewInit, OnDestroy {
   private refresh$: BehaviorSubject<Date>;
   private subscription: Subscription;
   private scope: Scope;
+  private previousBillToCustomer: Party;
 
   get showOrganisations(): boolean {
     return !this.invoice.BillToCustomer || this.invoice.BillToCustomer instanceof (Organisation);
@@ -169,6 +170,7 @@ export class InvoiceComponent implements OnInit, AfterViewInit, OnDestroy {
           this.receiverSelected(this.invoice.BillToCustomer);
         }
 
+        this.previousBillToCustomer = this.invoice.BillToCustomer;
         this.organisations = loaded.collections.organisations as Organisation[];
         this.people = loaded.collections.parties as Person[];
         this.title = "Sales Invoice for: " + this.invoice.BillToCustomer.PartyName;
@@ -403,6 +405,12 @@ export class InvoiceComponent implements OnInit, AfterViewInit, OnDestroy {
     this.scope
       .load("Pull", new PullRequest({ fetch }))
       .subscribe((loaded: Loaded) => {
+
+        if (this.invoice.BillToCustomer !== this.previousBillToCustomer) {
+          this.invoice.ShipToAddress = null;
+          this.invoice.ContactPerson = null;
+          this.previousBillToCustomer =  this.invoice.BillToCustomer;
+        }
 
         const partyContactMechanisms: PartyContactMechanism[] = loaded.collections.partyContactMechanisms as PartyContactMechanism[];
         this.contactMechanisms = partyContactMechanisms.map((v: PartyContactMechanism) => v.ContactMechanism);

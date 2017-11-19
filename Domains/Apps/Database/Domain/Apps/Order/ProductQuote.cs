@@ -18,6 +18,9 @@ namespace Allors.Domain
     using System.Linq;
 
     using Allors.Meta;
+    using Allors.Services;
+
+    using Microsoft.Extensions.DependencyInjection;
 
     public partial class ProductQuote
     {
@@ -27,6 +30,21 @@ namespace Allors.Domain
             };
 
         public TransitionalConfiguration[] TransitionalConfigurations => StaticTransitionalConfigurations;
+
+        public void AppsOnDerive(ObjectOnDerive method)
+        {
+            var derivation = method.Derivation;
+
+            var templateService = this.strategy.Session.ServiceProvider.GetRequiredService<ITemplateService>();
+
+            var model = new PrintProductQuote
+            {
+                                ProductQuote = this,
+                                Aviaco = this.strategy.Session.GetSingleton().InternalOrganisation
+                            };
+
+            this.PrintContent = templateService.Render("Templates/ProductQuote.cshtml", model).Result;
+        }
 
         private SalesOrder OrderThis()
         {

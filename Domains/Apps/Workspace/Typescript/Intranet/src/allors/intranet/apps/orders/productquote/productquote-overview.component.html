@@ -64,8 +64,8 @@
         <div *ngIf="quote.IssueDate" layout="row">
           <a-mat-static [object]="quote" [roleType]="m.Quote.IssueDate"></a-mat-static>
         </div>
-        <div *ngIf="quote.RequiredResponseDate" layout="row">
-          <a-mat-static [object]="quote" [roleType]="m.Quote.RequiredResponseDate"></a-mat-static>
+        <div layout="row">
+          <a-mat-static [object]="quote" [roleType]="m.Quote.Price" label="Quote Value"></a-mat-static>
         </div>
         <div layout="row">
           <p class="mat-caption tc-grey-500"> created: {{ quote.CreationDate | date}} by {{ quote.CreatedBy.displayName}}</p>
@@ -79,6 +79,7 @@
       <mat-divider></mat-divider>
       <mat-card-actions>
         <button *ngIf="quote.CanWriteQuoteItems" mat-button [routerLink]="['/productQuote/' + quote.id]">Edit</button>
+        <button mat-button [routerLink]="['/printproductquote/' + quote.id ]">Print</button>
         <button *ngIf="quote.CanExecuteOrder" mat-button (click)="Order()">Create Sales Order</button>
       </mat-card-actions>
     </mat-card>

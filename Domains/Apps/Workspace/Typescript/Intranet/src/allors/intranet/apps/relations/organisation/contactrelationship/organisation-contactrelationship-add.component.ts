@@ -37,6 +37,7 @@ export class OrganisationContactrelationshipAddComponent implements OnInit, Afte
 
     this.scope = new Scope(allors.database, allors.workspace);
     this.m = this.allors.meta;
+    this.refresh$ = new BehaviorSubject<Date>(undefined);
 
     this.peopleFilter = new Filter({scope: this.scope, objectType: this.m.Person, roleTypes: [this.m.Person.FirstName, this.m.Person.LastName], notExistRoletypes: [this.m.Person.CurrentOrganisationContactRelationships]});
   }

@@ -18,7 +18,6 @@ export class ProductQuoteOverviewComponent implements OnInit, AfterViewInit, OnD
   public title: string = "Quote Overview";
   public request: RequestForQuote;
   public quote: ProductQuote;
-  public quoteItems: QuoteItem[] = [];
   public goods: Good[] = [];
   public salesOrder: SalesOrder;
 
@@ -126,10 +125,6 @@ export class ProductQuoteOverviewComponent implements OnInit, AfterViewInit, OnD
         this.goods = loaded.collections.goods as Good[];
         this.quote = loaded.objects.quote as ProductQuote;
         this.salesOrder = loaded.objects.salesOrder as SalesOrder;
-
-        if (this.quote) {
-          this.quoteItems = this.quote.QuoteItems;
-        }
       },
       (error: any) => {
         this.errorService.message(error);

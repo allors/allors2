@@ -24,7 +24,7 @@ export class SalesOrderEditComponent implements OnInit, AfterViewInit, OnDestroy
   public people: Person[];
   public organisations: Organisation[];
   public currencies: Currency[];
-  public contactMechanisms: ContactMechanism[];
+  public billToContactMechanisms: ContactMechanism[];
   public ShipToAddresses: ContactMechanism[];
   public vatRates: VatRate[];
   public vatRegimes: VatRegime[];
@@ -45,6 +45,8 @@ export class SalesOrderEditComponent implements OnInit, AfterViewInit, OnDestroy
   private refresh$: BehaviorSubject<Date>;
   private subscription: Subscription;
   private scope: Scope;
+  private previousShipToCustomer: Party;
+  private previousBillToCustomer: Party;
 
   get showOrganisations(): boolean {
     return !this.order.ShipToCustomer || this.order.ShipToCustomer instanceof (Organisation);
@@ -186,9 +188,15 @@ export class SalesOrderEditComponent implements OnInit, AfterViewInit, OnDestroy
         }
 
         if (this.order.ShipToCustomer) {
-            this.receiverSelected(this.order.ShipToCustomer);
+            this.shipToCustomerSelected(this.order.ShipToCustomer);
         }
 
+        if (this.order.BillToCustomer) {
+          this.billToCustomerSelected(this.order.BillToCustomer);
+      }
+
+        this.previousShipToCustomer = this.order.ShipToCustomer;
+        this.previousBillToCustomer = this.order.BillToCustomer;
         this.organisations = loaded.collections.organisations as Organisation[];
         this.people = loaded.collections.parties as Person[];
       },
@@ -223,7 +231,7 @@ export class SalesOrderEditComponent implements OnInit, AfterViewInit, OnDestroy
     this.addWebAddress = false;
 
     const partyContactMechanism: PartyContactMechanism = this.scope.session.get(id) as PartyContactMechanism;
-    this.contactMechanisms.push(partyContactMechanism.ContactMechanism);
+    this.billToContactMechanisms.push(partyContactMechanism.ContactMechanism);
     this.order.BillToCustomer.AddPartyContactMechanism(partyContactMechanism);
   }
 
@@ -235,7 +243,7 @@ export class SalesOrderEditComponent implements OnInit, AfterViewInit, OnDestroy
     this.addEmailAddress = false;
 
     const partyContactMechanism: PartyContactMechanism = this.scope.session.get(id) as PartyContactMechanism;
-    this.contactMechanisms.push(partyContactMechanism.ContactMechanism);
+    this.billToContactMechanisms.push(partyContactMechanism.ContactMechanism);
     this.order.BillToCustomer.AddPartyContactMechanism(partyContactMechanism);
   }
 
@@ -247,7 +255,7 @@ export class SalesOrderEditComponent implements OnInit, AfterViewInit, OnDestroy
     this.addPostalAddress = false;
 
     const partyContactMechanism: PartyContactMechanism = this.scope.session.get(id) as PartyContactMechanism;
-    this.contactMechanisms.push(partyContactMechanism.ContactMechanism);
+    this.billToContactMechanisms.push(partyContactMechanism.ContactMechanism);
     this.order.BillToCustomer.AddPartyContactMechanism(partyContactMechanism);
   }
 
@@ -259,7 +267,7 @@ export class SalesOrderEditComponent implements OnInit, AfterViewInit, OnDestroy
     this.addTeleCommunicationsNumber = false;
 
     const partyContactMechanism: PartyContactMechanism = this.scope.session.get(id) as PartyContactMechanism;
-    this.contactMechanisms.push(partyContactMechanism.ContactMechanism);
+    this.billToContactMechanisms.push(partyContactMechanism.ContactMechanism);
     this.order.BillToCustomer.AddPartyContactMechanism(partyContactMechanism);
   }
 
@@ -271,7 +279,7 @@ export class SalesOrderEditComponent implements OnInit, AfterViewInit, OnDestroy
     this.addShipToAddress = false;
 
     const partyContactMechanism: PartyContactMechanism = this.scope.session.get(id) as PartyContactMechanism;
-    this.contactMechanisms.push(partyContactMechanism.ContactMechanism);
+    this.ShipToAddresses.push(partyContactMechanism.ContactMechanism);
     this.order.ShipToCustomer.AddPartyContactMechanism(partyContactMechanism);
   }
 
@@ -543,7 +551,7 @@ export class SalesOrderEditComponent implements OnInit, AfterViewInit, OnDestroy
       });
   }
 
-  public receiverSelected(party: Party): void {
+  public shipToCustomerSelected(party: Party): void {
 
     const fetch: Fetch[] = [
       new Fetch({
@@ -575,18 +583,67 @@ export class SalesOrderEditComponent implements OnInit, AfterViewInit, OnDestroy
       .load("Pull", new PullRequest({ fetch }))
       .subscribe((loaded: Loaded) => {
 
-        if (this.order.ShipToCustomer !== null && this.order.BillToCustomer === null) {
-          this.order.BillToCustomer = this.order.ShipToCustomer;
+        if (this.order.ShipToCustomer !== this.previousShipToCustomer) {
+          this.order.ShipToAddress = null;
+          this.order.ContactPerson = null;
+          this.previousShipToCustomer =  this.order.ShipToCustomer;
         }
 
-        if (this.order.BillToCustomer !== null && this.order.ShipToCustomer === null) {
-          this.order.ShipToCustomer = this.order.BillToCustomer;
+        if (this.order.ShipToCustomer !== null && this.order.BillToCustomer === null) {
+          this.order.BillToCustomer = this.order.ShipToCustomer;
+          this.billToCustomerSelected(this.order.BillToCustomer);
         }
 
         const partyContactMechanisms: PartyContactMechanism[] = loaded.collections.partyContactMechanisms as PartyContactMechanism[];
         this.ShipToAddresses = partyContactMechanisms.filter((v: PartyContactMechanism) => v.ContactMechanism.objectType.name === "PostalAddress").map((v: PartyContactMechanism) => v.ContactMechanism);
-        this.contactMechanisms = partyContactMechanisms.map((v: PartyContactMechanism) => v.ContactMechanism);
         this.contacts = loaded.collections.currentContacts as Person[];
+      },
+      (error: Error) => {
+        this.errorService.message(error);
+        this.goBack();
+      },
+    );
+  }
+
+  public billToCustomerSelected(party: Party): void {
+
+    const fetch: Fetch[] = [
+      new Fetch({
+        id: party.id,
+        include: [
+          new TreeNode({
+            nodes: [
+              new TreeNode({
+                nodes: [
+                  new TreeNode({ roleType: this.m.PostalBoundary.Country }),
+                ],
+                roleType: this.m.PostalAddress.PostalBoundary,
+              }),
+            ],
+            roleType: this.m.PartyContactMechanism.ContactMechanism,
+          }),
+        ],
+        name: "partyContactMechanisms",
+        path: new Path({ step: this.m.Party.CurrentPartyContactMechanisms }),
+      }),
+    ];
+
+    this.scope
+      .load("Pull", new PullRequest({ fetch }))
+      .subscribe((loaded: Loaded) => {
+
+        if (this.order.BillToCustomer !== this.previousBillToCustomer) {
+          this.order.BillToContactMechanism = null;
+          this.previousBillToCustomer =  this.order.BillToCustomer;
+        }
+
+        if (this.order.BillToCustomer !== null && this.order.ShipToCustomer === null) {
+          this.order.ShipToCustomer = this.order.BillToCustomer;
+          this.shipToCustomerSelected(this.order.ShipToCustomer);
+        }
+
+        const partyContactMechanisms: PartyContactMechanism[] = loaded.collections.partyContactMechanisms as PartyContactMechanism[];
+        this.billToContactMechanisms = partyContactMechanisms.map((v: PartyContactMechanism) => v.ContactMechanism);
       },
       (error: Error) => {
         this.errorService.message(error);

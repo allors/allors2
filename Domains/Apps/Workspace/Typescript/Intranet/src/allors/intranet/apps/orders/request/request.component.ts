@@ -436,10 +436,10 @@ export class RequestEditComponent implements OnInit, AfterViewInit, OnDestroy {
       .load("Pull", new PullRequest({ fetch }))
       .subscribe((loaded: Loaded) => {
 
-        if (this.request.Originator !== this.previousOriginator)
-        {
+        if (this.request.Originator !== this.previousOriginator) {
           this.request.ContactPerson = null;
           this.request.FullfillContactMechanism = null;
+          this.previousOriginator = this.request.Originator;
         }
 
         const partyContactMechanisms: PartyContactMechanism[] = loaded.collections.partyContactMechanisms as PartyContactMechanism[];

@@ -247,7 +247,6 @@ namespace Allors.Domain
             this.PreviousBillToCustomer = this.BillToCustomer;
             this.PreviousShipToCustomer = this.ShipToCustomer;
 
-
             var templateService = this.strategy.Session.ServiceProvider.GetRequiredService<ITemplateService>();
 
             var model = new PrintSalesOrder

@@ -102,7 +102,7 @@ namespace Allors.Repository
         [Precision(19)]
         [Scale(2)]
         [Workspace]
-        decimal Amount { get; set; }
+        decimal Price { get; set; }
 
         #region Allors
         [Id("7C3916BA-3406-4DF3-88C3-FC8DABC9E888")]

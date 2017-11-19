@@ -2,11 +2,11 @@
     max-width: 800px;
     min-width: 800px;
     margin: auto;
-    padding: 30px;
-    font-size: 10px;
+    padding: 50px 30px 30px 30px;
+    font-size: 13px;
     font-weight: normal;
-    line-height: 12px;
-    font-family: "Helvetica Rounded", Arial, sans-serif;
+    line-height: 13px;
+    font-family:"Arial Rounded MT Bold", "Helvetica Rounded", Arial, sans-serif;
     color: #555;
 }
 
@@ -75,7 +75,7 @@ tr.top table tr td.title {
 }
 
 .logo {
-    max-width: 150px;
+    max-width: 200px;
     float: left;
 }
 

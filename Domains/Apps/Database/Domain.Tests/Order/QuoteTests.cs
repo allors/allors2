@@ -93,5 +93,31 @@ namespace Allors.Domain
 
             Assert.False(this.Session.Derive(false).HasErrors);
         }
+
+        [Fact]
+        public void GivenProductQuote_WhenDeriving_ThenTotalPriceIsDerivedFromItems()
+        {
+            var good = new GoodBuilder(this.Session)
+                .WithSku("10101")
+                .WithVatRate(new VatRateBuilder(this.Session).WithRate(21).Build())
+                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("good1").WithLocale(this.Session.GetSingleton().DefaultLocale).Build())
+                .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
+                .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
+                .Build();
+
+            var quote = new ProductQuoteBuilder(this.Session)
+            .WithFullfillContactMechanism(new WebAddressBuilder(this.Session).WithElectronicAddressString("test").Build())
+            .Build();
+
+            var item1 = new QuoteItemBuilder(this.Session).WithProduct(good).WithQuantity(1).WithUnitPrice(1000).Build();
+            var item2 = new QuoteItemBuilder(this.Session).WithProduct(good).WithQuantity(3).WithUnitPrice(100).Build();
+            
+            quote.AddQuoteItem(item1);
+            quote.AddQuoteItem(item2);
+
+            this.Session.Derive();
+
+            Assert.Equal(1300, quote.Price);
+        }
     }
 }
