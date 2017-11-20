@@ -82,8 +82,6 @@ export class CommunicationEventOverviewComponent implements OnInit, AfterViewIni
         return this.scope
           .load("Pull", new PullRequest({ fetch }))
           .switchMap((loaded: Loaded) => {
-            this.scope.session.reset();
-
             this.communicationEventPrefetch = loaded.objects.communicationEventPrefetch as CommunicationEvent;
             this.party = loaded.objects.party as Party;
 
@@ -197,6 +195,7 @@ export class CommunicationEventOverviewComponent implements OnInit, AfterViewIni
           });
       })
       .subscribe((loaded: Loaded) => {
+        this.scope.session.reset();
         this.communicationEvent = loaded.objects.communicationEvent as CommunicationEvent;
       },
       (error: any) => {

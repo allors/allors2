@@ -112,8 +112,6 @@ export class PartyCommunicationEventWorkTaskComponent implements OnInit, AfterVi
           .load("Pull", new PullRequest({ fetch, query }));
       })
       .subscribe((loaded: Loaded) => {
-        this.scope.session.reset();
-
         this.subTitle = "edit work task";
         this.workTask = loaded.objects.worktask as WorkTask;
         const communicationEvent: CommunicationEvent = loaded.objects.communicationEvent as CommunicationEvent;

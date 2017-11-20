@@ -110,8 +110,6 @@ export class SalesOrderItemEditComponent implements OnInit, AfterViewInit, OnDes
             }),
           ];
 
-        this.scope.session.reset();
-
         return this.scope
           .load("Pull", new PullRequest({ fetch, query }));
       })

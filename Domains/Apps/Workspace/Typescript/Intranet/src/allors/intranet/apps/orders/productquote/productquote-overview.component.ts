@@ -116,12 +116,11 @@ export class ProductQuoteOverviewComponent implements OnInit, AfterViewInit, OnD
             }),
         ];
 
-        this.scope.session.reset();
-
         return this.scope
           .load("Pull", new PullRequest({ fetch, query }));
       })
       .subscribe((loaded: Loaded) => {
+        this.scope.session.reset();
         this.goods = loaded.collections.goods as Good[];
         this.quote = loaded.objects.quote as ProductQuote;
         this.salesOrder = loaded.objects.salesOrder as SalesOrder;

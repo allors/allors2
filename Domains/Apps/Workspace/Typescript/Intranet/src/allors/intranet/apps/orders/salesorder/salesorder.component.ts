@@ -120,11 +120,10 @@ export class SalesOrderEditComponent implements OnInit, AfterViewInit, OnDestroy
             }),
         ];
 
-        this.scope.session.reset();
-
         return this.scope
           .load("Pull", new PullRequest({ query: rolesQuery }))
           .switchMap((loaded: Loaded) => {
+            this.scope.session.reset();
             this.currencies = loaded.collections.currencies as Currency[];
             this.vatRates = loaded.collections.vatRates as VatRate[];
             this.vatRegimes = loaded.collections.vatRegimes as VatRegime[];

@@ -48,8 +48,6 @@ export class ProductQuotePrintComponent implements OnInit, AfterViewInit, OnDest
           }),
         ];
 
-        this.scope.session.reset();
-
         return this.scope
           .load("Pull", new PullRequest({ fetch }));
       })

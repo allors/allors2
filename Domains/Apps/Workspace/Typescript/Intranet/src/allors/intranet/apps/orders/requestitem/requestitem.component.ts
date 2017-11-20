@@ -85,13 +85,11 @@ export class RequestItemEditComponent implements OnInit, AfterViewInit, OnDestro
             }),
         ];
 
-        this.scope.session.reset();
-
         return this.scope
           .load("Pull", new PullRequest({ fetch, query }));
       })
       .subscribe((loaded: Loaded) => {
-
+        this.scope.session.reset();
         this.request = loaded.objects.requestForQuote as RequestForQuote;
         this.requestItem = loaded.objects.requestItem as RequestItem;
         this.goods = loaded.collections.goods as Good[];

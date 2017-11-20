@@ -182,8 +182,6 @@ export class NonSerialisedGoodComponent implements OnInit, AfterViewInit, OnDest
             }),
         ];
 
-        this.scope.session.reset();
-
         return this.scope
           .load("Pull", new PullRequest({ fetch, query }))
           .switchMap((loaded: Loaded) => {

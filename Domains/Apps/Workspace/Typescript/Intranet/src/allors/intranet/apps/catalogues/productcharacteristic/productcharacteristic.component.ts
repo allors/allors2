@@ -61,8 +61,6 @@ export class ProductCharacteristicComponent implements OnInit, AfterViewInit, On
             }),
         ];
 
-        this.scope.session.reset();
-
         return this.scope
           .load("Pull", new PullRequest({ fetch, query }));
       })

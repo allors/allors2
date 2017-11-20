@@ -96,11 +96,10 @@ export class RequestEditComponent implements OnInit, AfterViewInit, OnDestroy {
             }),
         ];
 
-        this.scope.session.reset();
-
         return this.scope
           .load("Pull", new PullRequest({ query: rolesQuery }))
           .switchMap((loaded: Loaded) => {
+            this.scope.session.reset();
             this.currencies = loaded.collections.currencies as Currency[];
 
             const organisationRoles: OrganisationRole[] = loaded.collections.organisationRoles as OrganisationRole[];

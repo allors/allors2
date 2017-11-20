@@ -94,12 +94,11 @@ export class QuoteItemEditComponent implements OnInit, AfterViewInit, OnDestroy 
               }),
           ];
 
-        this.scope.session.reset();
-
         return this.scope
           .load("Pull", new PullRequest({ fetch, query }));
       })
       .subscribe((loaded: Loaded) => {
+        this.scope.session.reset();
         this.quote = loaded.objects.productQuote as ProductQuote;
         this.quoteItem = loaded.objects.quoteItem as QuoteItem;
         this.requestItem = loaded.objects.requestItem as RequestItem;

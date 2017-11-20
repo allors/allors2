@@ -42,7 +42,7 @@
         </div>
 
         <div *ngIf="addAddress" style="background: lightblue" class="pad">
-          <party-contactmechanism-postaladdress (cancelled)="addressCancelled($event)" (saved)="addressAdded($event)">
+          <party-contactmechanism-postaladdress [scope]="scope" (cancelled)="addressCancelled($event)" (saved)="addressAdded($event)">
           </party-contactmechanism-postaladdress>
         </div>
 

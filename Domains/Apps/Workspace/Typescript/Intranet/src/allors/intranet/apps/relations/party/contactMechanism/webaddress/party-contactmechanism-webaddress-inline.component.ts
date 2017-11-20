@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnInit , Output } from "@angular/core";
+import { Component, EventEmitter, Input, OnInit , Output } from "@angular/core";
 
 import { AllorsService, ErrorService, Loaded, Saved, Scope } from "@allors";
 import { PullRequest, Query } from "@allors";
@@ -19,9 +19,11 @@ import { MetaDomain } from "@allors";
 `,
 })
 export class PartyContactMechanismInlineWebAddressComponent implements OnInit {
-  @Output() public saved: EventEmitter<string> = new EventEmitter<string>();
+  @Output() public saved: EventEmitter<PartyContactMechanism> = new EventEmitter<PartyContactMechanism>();
 
   @Output() public cancelled: EventEmitter<any> = new EventEmitter();
+
+  @Input() public scope: Scope;
 
   public webAddress: WebAddress;
   public partyContactMechanism: PartyContactMechanism;
@@ -29,13 +31,10 @@ export class PartyContactMechanismInlineWebAddressComponent implements OnInit {
 
   public m: MetaDomain;
 
-  private scope: Scope;
-
   constructor(
     private allors: AllorsService,
     private errorService: ErrorService,
   ) {
-    this.scope = new Scope(allors.database, allors.workspace);
     this.m = this.allors.meta;
   }
 
@@ -66,13 +65,6 @@ export class PartyContactMechanismInlineWebAddressComponent implements OnInit {
   }
 
   public save(): void {
-    this.scope.save().subscribe(
-      (saved: Saved) => {
-        this.saved.emit(this.partyContactMechanism.id);
-      },
-      (error: Error) => {
-        this.errorService.dialog(error);
-      },
-    );
+      this.saved.emit(this.partyContactMechanism);
   }
 }

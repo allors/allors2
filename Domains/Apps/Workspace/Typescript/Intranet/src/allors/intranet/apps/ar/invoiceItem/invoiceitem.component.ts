@@ -89,8 +89,6 @@ export class InvoiceItemEditComponent implements OnInit, AfterViewInit, OnDestro
             }),
         ];
 
-        this.scope.session.reset();
-
         return this.scope
           .load("Pull", new PullRequest({ fetch, query }));
       })

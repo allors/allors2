@@ -232,7 +232,6 @@ export class OrganisationsOverviewComponent implements AfterViewInit, OnDestroy 
           });
       })
       .subscribe((loaded: Loaded) => {
-
         this.scope.session.reset();
 
         this.data = loaded.collections.organisations as Organisation[];

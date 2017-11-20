@@ -99,12 +99,11 @@ export class RequestOverviewComponent implements OnInit, AfterViewInit, OnDestro
           fetch.push(quoteFetch);
         }
 
-        this.scope.session.reset();
-
         return this.scope
           .load("Pull", new PullRequest({ fetch }));
       })
       .subscribe((loaded: Loaded) => {
+        this.scope.session.reset();
         this.request = loaded.objects.request as RequestForQuote;
         this.quote = loaded.objects.quote as ProductQuote;
       },

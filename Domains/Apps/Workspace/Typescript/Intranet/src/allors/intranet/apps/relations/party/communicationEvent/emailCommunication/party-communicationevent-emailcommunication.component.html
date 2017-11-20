@@ -19,7 +19,7 @@
       </div>
 
       <div *ngIf="addOriginator" style="background: lightblue" class="pad">
-        <party-contactmechanism-emailAddress (cancelled)="originatorCancelled($event)" (saved)="originatorAdded($event)">
+        <party-contactmechanism-emailAddress [scope]="scope"(cancelled)="originatorCancelled($event)" (saved)="originatorAdded($event)">
         </party-contactmechanism-emailAddress>
       </div>
 
@@ -30,7 +30,7 @@
       </div>
 
       <div *ngIf="addAddressee" style="background: lightblue" class="pad">
-        <party-contactmechanism-emailAddress (cancelled)="addresseeCancelled($event)" (saved)="addresseeAdded($event)">
+        <party-contactmechanism-emailAddress [scope]="scope" (cancelled)="addresseeCancelled($event)" (saved)="addresseeAdded($event)">
         </party-contactmechanism-emailAddress>
       </div>
 

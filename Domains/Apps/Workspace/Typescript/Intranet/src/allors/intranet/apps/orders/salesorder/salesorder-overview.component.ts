@@ -125,12 +125,11 @@ export class SalesOrderOverviewComponent implements OnInit, AfterViewInit, OnDes
             }),
         ];
 
-        this.scope.session.reset();
-
         return this.scope
           .load("Pull", new PullRequest({ fetch, query }));
       })
       .subscribe((loaded: Loaded) => {
+        this.scope.session.reset();
         this.goods = loaded.collections.goods as Good[];
         this.order = loaded.objects.order as SalesOrder;
         this.salesInvoice = loaded.objects.salesInvoice as SalesInvoice;

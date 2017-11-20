@@ -60,7 +60,6 @@ export class PartyContactMechanismEditWebAddressComponent implements OnInit, Aft
             }),
         ];
 
-        this.scope.session.reset();
         return this.scope
           .load("Pull", new PullRequest({ fetch, query }));
       })

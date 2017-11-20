@@ -84,8 +84,6 @@ export class PartyContactMechanismPostalAddressAddComponent implements OnInit, A
             }),
         ];
 
-        this.scope.session.reset();
-
         return this.scope
           .load("Pull", new PullRequest({ fetch, query }));
       })

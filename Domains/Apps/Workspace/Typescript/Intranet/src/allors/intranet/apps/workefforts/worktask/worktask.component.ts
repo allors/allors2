@@ -88,12 +88,9 @@ export class WorkTaskEditComponent implements OnInit, AfterViewInit, OnDestroy {
             }),
         ];
 
-        this.scope.session.reset();
-
         return this.scope
           .load("Pull", new PullRequest({ fetch, query }))
           .switchMap((loaded: Loaded) => {
-            this.scope.session.reset();
 
             this.subTitle = "edit work task";
             this.workTask = loaded.objects.worktask as WorkTask;
