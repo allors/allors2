@@ -184,8 +184,6 @@ export class SerialisedGoodComponent implements OnInit, AfterViewInit, OnDestroy
           .switchMap((loaded: Loaded) => {
 
             this.good = loaded.objects.good as Good;
-            this.inventoryItems = loaded.collections.inventoryItems as SerialisedInventoryItem[];
-            this.inventoryItem = this.inventoryItems[0];
             this.categories = loaded.collections.categories as ProductCategory[];
             this.productTypes = loaded.collections.productTypes as ProductType[];
             this.vatRates = loaded.collections.vatRates as VatRate[];
@@ -210,8 +208,13 @@ export class SerialisedGoodComponent implements OnInit, AfterViewInit, OnDestroy
               this.good.InventoryItemKind = inventoryItemKindSerialised;
               this.inventoryItem.Good = this.good;
               this.inventoryItem.Facility = this.facility;
+            } else {
+              this.inventoryItems = loaded.collections.inventoryItems as SerialisedInventoryItem[];
+              this.inventoryItem = this.inventoryItems[0];
             }
+
             this.title = this.good.Name;
+            this.subTitle = "Serialised";
 
             const organisationRoles: OrganisationRole[] = loaded.collections.organisationRoles as OrganisationRole[];
             const manufacturerRole: OrganisationRole = organisationRoles.find((v: OrganisationRole) => v.Name === "Manufacturer");

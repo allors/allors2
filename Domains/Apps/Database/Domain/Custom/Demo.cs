@@ -235,6 +235,9 @@ namespace Allors
                 .WithPrimaryProductCategory(productCategory3)
                 .Build();
 
+            var goodInventoryItem = new NonSerialisedInventoryItemBuilder(this.Session).WithGood(good).Build();
+            goodInventoryItem.AddInventoryItemVariance(new InventoryItemVarianceBuilder(this.Session).WithQuantity(100).WithReason(new VarianceReasons(this.Session).Unknown).Build());
+
             var salesOrderItem1 = new SalesOrderItemBuilder(this.Session)
                 .WithDescription("first item")
                 .WithProduct(good)

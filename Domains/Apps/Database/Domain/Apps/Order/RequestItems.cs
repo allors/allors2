@@ -27,6 +27,7 @@ namespace Allors.Domain
             var draft = new RequestItemStates(this.Session).Draft;
             var cancelled = new RequestItemStates(this.Session).Cancelled;
             var submitted = new RequestItemStates(this.Session).Submitted;
+            var quoted = new RequestItemStates(this.Session).Quoted;
 
             var cancel = this.Meta.Cancel;
             var hold = this.Meta.Hold;
@@ -35,8 +36,10 @@ namespace Allors.Domain
 
             config.Deny(this.ObjectType, submitted, submit);
             config.Deny(this.ObjectType, cancelled, cancel, submit, hold);
+            config.Deny(this.ObjectType, quoted, cancel, submit, hold, delete);
 
             config.Deny(this.ObjectType, cancelled, Operations.Write);
+            config.Deny(this.ObjectType, quoted, Operations.Write);
         }
     }
 }

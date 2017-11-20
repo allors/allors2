@@ -48,6 +48,8 @@ namespace Allors.Domain
 
             foreach (RequestItem requestItem in sourceItems)
             {
+                requestItem.RequestItemState = new RequestItemStates(this.Strategy.Session).Quoted;
+
                 productQuote.AddQuoteItem(
                     new QuoteItemBuilder(this.Strategy.Session)
                     .WithProduct(requestItem.Product)

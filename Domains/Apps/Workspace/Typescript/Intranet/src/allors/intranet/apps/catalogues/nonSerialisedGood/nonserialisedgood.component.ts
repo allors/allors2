@@ -187,8 +187,6 @@ export class NonSerialisedGoodComponent implements OnInit, AfterViewInit, OnDest
           .switchMap((loaded: Loaded) => {
 
             this.good = loaded.objects.good as Good;
-            this.inventoryItems = loaded.collections.inventoryItems as NonSerialisedInventoryItem[];
-            this.inventoryItem = this.inventoryItems[0];
             this.categories = loaded.collections.categories as ProductCategory[];
             this.productTypes = loaded.collections.productTypes as ProductType[];
             this.varianceReasons = loaded.collections.varianceReasons as VarianceReason[];
@@ -213,9 +211,13 @@ export class NonSerialisedGoodComponent implements OnInit, AfterViewInit, OnDest
               this.good.InventoryItemKind = inventoryItemKindNonSerialised;
               this.inventoryItem.Good = this.good;
               this.inventoryItem.Facility = this.facility;
+            } else {
+              this.inventoryItems = loaded.collections.inventoryItems as NonSerialisedInventoryItem[];
+              this.inventoryItem = this.inventoryItems[0];
             }
 
             this.title = this.good.Name;
+            this.subTitle = "Non Serialised";
             this.actualQuantityOnHand = this.good.QuantityOnHand;
 
             const organisationRoles: OrganisationRole[] = loaded.collections.organisationRoles as OrganisationRole[];
