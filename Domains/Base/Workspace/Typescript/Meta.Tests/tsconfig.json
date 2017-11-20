@@ -1,0 +1,25 @@
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "target": "es2015",
+    "declaration": true,
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "outDir": "dist/",
+    "sourceMap": true,
+    "removeComments": true,
+    "paths": {
+      "generated/*": ["./src/generated/*"],
+      "*": ["./node_modules/*"]
+    }
+  },  
+ "include": [
+    "src/**/*",
+    "test/**/*"
+  ],
+  "exclude": [
+    "node_modules",
+    "data",
+    "dist"
+  ]
+}

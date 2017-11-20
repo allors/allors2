@@ -150,6 +150,9 @@ namespace Allors.Domain
 								global::System.Guid? Revision {set;}
 
 
+								MediaContent MediaContent {set;}
+
+
 								global::System.Byte[] InData {set;}
 
 
@@ -164,6 +167,11 @@ namespace Allors.Domain
 				}
 				public interface MediaContent : Deletable 
 				{
+								global::System.String Type {set;}
+
+
+								global::System.Byte[] Data {set;}
+
 				}
 				public interface AutomatedAgent : User 
 				{

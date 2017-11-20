@@ -1,23 +1,15 @@
 {
-  "name": "domain",
+  "name": "@allors/base-domain",
   "version": "2.0.0",
   "description": "Allors Base Workspace Domain",
   "repository": "https://github.com/Allors/allors2",
   "license": "LGPL-3.0",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "scripts": {
-    "test": "mocha --compilers ts:ts-node/register -r tsconfig-paths/register ./test/**/*.spec.ts",
-    "tc:test": "mocha --compilers ts:ts-node/register -r tsconfig-paths/register --reporter mocha-teamcity-reporter ./test/**/*.spec.ts"
+    "preinstall": "npm link ../meta"
   },
-  "devDependencies": {
-    "@types/chai": "latest",
-    "@types/mocha": "latest",
-    "@types/node": "latest",
-    "chai": "latest",
-    "istanbul": "latest",
-    "mocha": "latest",
-    "mocha-teamcity-reporter": "latest",
-    "ts-node": "latest",
-    "tsconfig-paths": "latest",
-    "typescript": "latest"
+  "dependencies": {
+    "@allors/base-meta": "2.0.0"
   }
 }
