@@ -1,7 +1,7 @@
 {
   "name": "@allors/base-meta-test",
   "version": "2.0.0",
-  "description": "Allors Core Workspace Meta",
+  "description": "Allors Base Meta",
   "repository": "https://github.com/Allors/allors2",
   "license": "LGPL-3.0",
   "private": true,
