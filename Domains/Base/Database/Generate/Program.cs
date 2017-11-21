@@ -32,9 +32,13 @@
                     { "Workspace/Csharp/Templates/domain.cs.stg", "Workspace/CSharp/Domain/generated" },
 
                     { "Workspace/Typescript/Templates/meta.ts.stg", "Workspace/Typescript/Meta.Tests/src/generated/meta" },
+
                     { "Workspace/Typescript/Templates/meta.ts.stg", "Workspace/Typescript/Domain.Tests/src/generated/meta" },
                     { "Workspace/Typescript/Templates/domain.ts.stg", "Workspace/Typescript/Domain.Tests/src/generated/domain" },
-            };
+
+                    { "Workspace/Typescript/Templates/meta.ts.stg", "Workspace/Typescript/Angular.Tests/src/generated/meta" },
+                    { "Workspace/Typescript/Templates/domain.ts.stg", "Workspace/Typescript/Angular.Tests/src/generated/domain" },
+                };
 
             for (var i = 0; i < config.GetLength(0); i++)
             {
