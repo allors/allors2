@@ -1,8 +1,8 @@
 {
-  "name": "angular",
-  "version": "1.0.0",
+  "name": "@allors/base-angular-tests",
+  "version": "2.0.0",
   "scripts": {
-    "link": "npm link ../meta && npm link ../domain  && npm link ../angular",
+    "link": "npm link ../meta && npm link ../domain && npm link ../generated && npm link ../angular",
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
@@ -17,6 +17,7 @@
     "@allors/base-meta": "2.0.0",
     "@allors/base-domain": "2.0.0",
     "@allors/base-angular": "2.0.0",
+    "@allors/generated": "2.0.0",
     "@angular/animations": "^5.0.0",
     "@angular/common": "^5.0.0",
     "@angular/compiler": "^5.0.0",

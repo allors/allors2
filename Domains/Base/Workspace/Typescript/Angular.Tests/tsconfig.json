@@ -17,8 +17,6 @@
       "dom"
     ],
     "paths": {
-      "@allors/generated-meta/*": ["./src/generated/meta/*"],
-      "@allors/generated-domain/*": ["./src/generated/domain/*"],
       "@allors": ["./src/allors/index"],
       "*": ["./node_modules/*"]
     }

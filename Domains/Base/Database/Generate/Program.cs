@@ -36,9 +36,9 @@
                     { "Workspace/Typescript/Templates/meta.ts.stg", "Workspace/Typescript/Domain.Tests/src/generated/meta" },
                     { "Workspace/Typescript/Templates/domain.ts.stg", "Workspace/Typescript/Domain.Tests/src/generated/domain" },
 
-                    { "Workspace/Typescript/Templates/meta.ts.stg", "Workspace/Typescript/Angular.Tests/src/generated/meta" },
-                    { "Workspace/Typescript/Templates/domain.ts.stg", "Workspace/Typescript/Angular.Tests/src/generated/domain" },
-                };
+                    { "Workspace/Typescript/Templates/meta.ts.stg", "Workspace/Typescript/Generated/src/meta" },
+                    { "Workspace/Typescript/Templates/domain.ts.stg", "Workspace/Typescript/Generated/src/domain" },
+            };
 
             for (var i = 0; i < config.GetLength(0); i++)
             {
