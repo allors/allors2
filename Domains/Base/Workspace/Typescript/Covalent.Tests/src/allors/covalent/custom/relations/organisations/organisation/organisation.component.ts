@@ -6,10 +6,12 @@ import { TdDialogService, TdMediaService } from "@covalent/core";
 import { Observable, Subject, Subscription } from "rxjs/Rx";
 
 import { And, Equals, Fetch, Like, Or, Page, Path, PullRequest, PushResponse, Query, Sort, TreeNode } from "@allors";
-import { AllorsService, ErrorService, Filter, Loaded, Saved, Scope } from "@allors";
+import { ErrorService, Filter, Loaded, Saved, Scope } from "@allors";
 import { Enumeration, Locale, Organisation, Person } from "@allors";
 import { RoleType } from "@allors";
 import { MetaDomain } from "@allors";
+
+import { AllorsService } from "../../../../../../app/allors.service";
 
 @Component({
   templateUrl: "./organisation.component.html",

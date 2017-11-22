@@ -1,12 +1,12 @@
 import { NgModule } from "@angular/core";
 import { RouterModule, Routes } from "@angular/router";
 
-import { AllorsService } from "@allors";
-
 import { LoginComponent } from "./common/auth/login.component";
 import { MainComponent } from "./common/main/main.component";
 
 import * as relations from "../allors/covalent/custom/relations";
+
+import { AllorsService } from "./allors.service";
 
 const routes: Routes = [
   { path: "login", component: LoginComponent },

@@ -1,7 +1,7 @@
 {
-  "name": "domain",
+  "name": "@allors/base-promise",
   "version": "2.0.0",
-  "description": "Allors Base Workspace Domain",
+  "description": "Allors Base Promise",
   "repository": "https://github.com/Allors/allors2",
   "license": "LGPL-3.0",
   "scripts": {
@@ -10,6 +10,11 @@
   },
   "dependencies": {
     "axios": "^0.16.2"
+  },
+  "peerDependencies": {
+    "@allors/base-meta": "file:../meta",
+    "@allors/base-domain": "file:../domain",
+    "@allors/generated": "file:../generated"
   },
   "devDependencies": {
     "@types/chai": "latest",

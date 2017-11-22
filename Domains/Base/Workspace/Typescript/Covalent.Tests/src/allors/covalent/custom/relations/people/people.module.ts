@@ -5,8 +5,8 @@ import { RouterModule } from "@angular/router";
 import { MatAutocompleteModule, MatButtonModule, MatCardModule, MatIconModule, MatListModule, MatMenuModule, MatToolbarModule } from "@angular/material";
 import { CovalentCommonModule, CovalentLayoutModule, CovalentLoadingModule } from "@covalent/core";
 
-import { ChipsModule } from "@baseCovalent/index";
-import { StaticModule } from "@baseMaterial/index";
+import { ChipsModule } from "@allors/base-covalent";
+import { StaticModule } from "@allors/base-material";
 
 import { PeopleComponent } from "./people.component";
 export { PeopleComponent } from "./people.component";

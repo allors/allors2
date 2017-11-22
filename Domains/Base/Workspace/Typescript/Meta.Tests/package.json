@@ -6,12 +6,11 @@
   "license": "LGPL-3.0",
   "private": true,
   "scripts": {
-    "preinstall": "npm link ../meta",
     "test": "mocha --compilers ts:ts-node/register -r tsconfig-paths/register ./test/**/*.spec.ts",
     "tc:test": "mocha --compilers ts:ts-node/register -r tsconfig-paths/register --reporter mocha-teamcity-reporter ./test/**/*.spec.ts"
   },
   "dependencies": {
-    "@allors/base-meta": "2.0.0"
+    "@allors/base-meta": "file:../meta"
   },
   "devDependencies": {
     "@types/chai": "latest",

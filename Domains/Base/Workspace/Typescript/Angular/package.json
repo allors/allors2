@@ -6,12 +6,11 @@
   "license": "LGPL-3.0",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
-  "scripts": {
-    "link": "npm link ../meta && npm link ../domain"
-  },
-  "dependencies": {
-    "@allors/base-domain": "2.0.0",
-    "@allors/base-meta": "2.0.0",
+  "scripts": {},
+  "peerDependencies": {
+    "@allors/base-meta": "file:../meta",
+    "@allors/base-domain": "file:../domain",
+    "@allors/generated": "file:../generated",
     "@angular/common": "^5.0.0",
     "@angular/core": "^5.0.0",
     "@angular/router": "^5.0.0",

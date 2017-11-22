@@ -19,19 +19,17 @@ import {
   CovalentStepsModule,
 } from "@covalent/core";
 
-import { NgxChartsModule } from "@swimlane/ngx-charts";
-
 import { AutoCompleteModule, CheckboxModule, DatepickerModule, InputModule, LocalisedTextModule,
-  RadioGroupModule, SelectModule, SliderModule, SlideToggleModule, StaticModule, TextAreaModule } from "@baseMaterial/index";
+  RadioGroupModule, SelectModule, SliderModule, SlideToggleModule, StaticModule, TextAreaModule } from "@allors/base-material";
 
-import { ChipsModule, MediaUploadModule } from "@baseCovalent/index";
+import { ChipsModule, MediaUploadModule } from "@allors/base-covalent";
 
 import {
     DashboardModule,
     OrganisationModule, OrganisationOverviewModule, OrganisationsModule,
     PeopleModule, PersonModule, PersonOverviewModule,
     RelationsModule,
- } from "@customCovalent/relations";
+ } from "../../allors/covalent/custom/relations";
 
 const ANGULAR_MODULES: any[] = [
   HttpModule, FormsModule, ReactiveFormsModule,
@@ -51,10 +49,6 @@ const COVALENT_MODULES: any[] = [
   CovalentPagingModule, CovalentSearchModule, CovalentStepsModule,
   CovalentCommonModule, CovalentDialogsModule, CovalentFileModule,
   CovalentChipsModule,
-];
-
-const CHART_MODULES: any[] = [
-  NgxChartsModule,
 ];
 
 const BASE_MATERIAL_MODULES: any[] = [
@@ -78,7 +72,6 @@ const RELATIONS_MODULES: any[] = [
     ANGULAR_MODULES,
     MATERIAL_MODULES,
     COVALENT_MODULES,
-    CHART_MODULES,
 
     BASE_MATERIAL_MODULES,
     BASE_COVALENT_MODULES,

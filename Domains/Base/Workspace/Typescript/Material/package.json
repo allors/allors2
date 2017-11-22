@@ -7,13 +7,12 @@
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
-    "link": "npm link ../meta && npm link ../domain && npm link ../generated && npm link ../angular"
   },
-  "dependencies": {
-    "@allors/base-domain": "2.0.0",
-    "@allors/base-meta": "2.0.0",
-    "@allors/generated": "2.0.0",
-    "@allors/base-angular": "2.0.0",
+  "peerDependencies": {
+    "@allors/base-meta": "file:../meta",
+    "@allors/base-domain": "file:../domain",
+    "@allors/base-angular": "file:../angular",
+    "@allors/generated": "file:../generated",
     "@angular/animations": "^5.0.0",
     "@angular/cdk": "5.0.0-rc0",
     "@angular/common": "^5.0.0",

@@ -5,8 +5,8 @@ import { CovalentLayoutModule } from "@covalent/core";
 
 import { MatAutocompleteModule, MatCardModule, MatIconModule, MatListModule, MatToolbarModule } from "@angular/material";
 
-import { ChipsModule } from "@baseCovalent/index";
-import { StaticModule } from "@baseMaterial/index";
+import { ChipsModule } from "@allors/base-covalent";
+import { StaticModule } from "@allors/base-material";
 
 import { RelationsComponent } from "./relations.component";
 export { RelationsComponent } from "./relations.component";

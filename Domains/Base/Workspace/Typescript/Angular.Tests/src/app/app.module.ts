@@ -1,6 +1,7 @@
 import { HTTP_INTERCEPTORS, HttpClientModule } from "@angular/common/http";
 import { NgModule } from "@angular/core";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
+import { HttpModule } from "@angular/http";
 import { BrowserModule, Title } from "@angular/platform-browser";
 
 import { AuthenticationInterceptor, AuthenticationService, ENVIRONMENT } from "@allors";
@@ -33,6 +34,7 @@ import { QueryComponent } from "./query/query.component";
     FormsModule,
     ReactiveFormsModule,
     HttpClientModule,
+    HttpModule,
     AppRoutingModule,
   ],
   providers: [

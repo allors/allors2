@@ -3,10 +3,10 @@ import { NgModule } from "@angular/core";
 import { FormsModule } from "@angular/forms";
 import { CovalentLayoutModule } from "@covalent/core";
 
-import { MatAutocompleteModule, MatButtonModule, MatCardModule, MatIconModule, MatToolbarModule } from "@angular/material";
+import { MatAutocompleteModule, MatButtonModule, MatCardModule, MatIconModule, MatListModule, MatToolbarModule } from "@angular/material";
 
-import { ChipsModule } from "@baseCovalent/index";
-import { AutoCompleteModule, InputModule, SelectModule, StaticModule } from "@baseMaterial/index";
+import { ChipsModule } from "@allors/base-covalent";
+import { AutoCompleteModule, InputModule, SelectModule, StaticModule } from "@allors/base-material";
 
 import { PersonComponent } from "./person.component";
 export { PersonComponent } from "./person.component";
@@ -25,6 +25,7 @@ export { PersonComponent } from "./person.component";
     MatButtonModule,
     MatCardModule,
     MatIconModule,
+    MatListModule,
     MatToolbarModule,
     CovalentLayoutModule,
     AutoCompleteModule,

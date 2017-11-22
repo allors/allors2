@@ -5,7 +5,8 @@
     "declaration": true,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
-    "outDir": "./dist"
+    "outDir": "./dist",
+    "preserveSymlinks": true
   },
   "include": [
     "src/**/*"

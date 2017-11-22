@@ -4,10 +4,12 @@ import { Router } from "@angular/router";
 import { TdDialogService, TdLoadingService, TdMediaService } from "@covalent/core";
 import { Observable, Subject, Subscription } from "rxjs/Rx";
 
-import { AllorsService, ErrorService, Loaded, Scope } from "@allors";
+import { ErrorService, Loaded, Scope } from "@allors";
 import { Equals, Like, Page, PullRequest, Query, Sort, TreeNode } from "@allors";
 import { Person } from "@allors";
 import { MetaDomain } from "@allors";
+
+import { AllorsService } from "../../../../../app/allors.service";
 
 @Component({
   templateUrl: "./people.component.html",

@@ -1,9 +1,9 @@
 import { Component, EventEmitter, Input, Output } from "@angular/core";
 
-import { Field } from "@baseAngular/core";
-import { ISession, ISessionObject } from "@baseDomain";
+import { Field } from "@allors/base-angular";
+import { ISession, ISessionObject } from "@allors/base-domain";
 
-import { Media } from "@generatedDomain/index";
+import { Media } from "@allors/generated";
 
 @Component({
   selector: "a-mat-media-upload",

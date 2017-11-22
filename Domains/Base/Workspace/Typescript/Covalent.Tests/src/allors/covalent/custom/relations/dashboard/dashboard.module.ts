@@ -1,7 +1,7 @@
 import { NgModule } from "@angular/core";
 import { CovalentChipsModule, CovalentLayoutModule } from "@covalent/core";
 
-import { MatButtonModule, MatCardModule, MatIconModule, MatToolbarModule } from "@angular/material";
+import { MatButtonModule, MatCardModule, MatIconModule, MatListModule, MatToolbarModule } from "@angular/material";
 
 import { DashboardComponent } from "./dashboard.component";
 export { DashboardComponent } from "./dashboard.component";
@@ -17,6 +17,7 @@ export { DashboardComponent } from "./dashboard.component";
     MatButtonModule,
     MatCardModule,
     MatIconModule,
+    MatListModule,
     MatToolbarModule,
     CovalentChipsModule,
     CovalentLayoutModule,

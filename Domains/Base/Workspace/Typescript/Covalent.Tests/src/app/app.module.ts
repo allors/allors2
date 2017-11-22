@@ -7,13 +7,13 @@ import { AppRoutingModule, routedComponents } from "./app-routing.module";
 import { AppComponent } from "./app.component";
 import { SharedModule } from "./shared/shared.module";
 
-import { AuthenticationInterceptor, AuthenticationService } from "@baseAngular/authentication";
-import { AllorsService, ENVIRONMENT, ErrorService } from "@baseAngular/core";
-import { DefaultErrorService } from "@baseCovalent/errors";
+import { ENVIRONMENT, ErrorService } from "@allors/base-angular";
+import { AuthenticationInterceptor, AuthenticationService } from "@allors/base-angular";
+import { DefaultErrorService } from "@allors/base-covalent";
 
 import { environment } from "../environments/environment";
 
-import { DefaultAllorsService } from "./allors.service";
+import { AllorsService } from "./allors.service";
 
 @NgModule({
   bootstrap: [AppComponent],
@@ -32,7 +32,7 @@ import { DefaultAllorsService } from "./allors.service";
     { provide: ENVIRONMENT, useValue: environment },
     { provide: HTTP_INTERCEPTORS, useClass: AuthenticationInterceptor, multi: true },
     { provide: ErrorService, useClass: DefaultErrorService },
-    { provide: AllorsService, useClass: DefaultAllorsService },
+    { provide: AllorsService, useClass: AllorsService },
     AuthenticationService,
     Title,
   ],

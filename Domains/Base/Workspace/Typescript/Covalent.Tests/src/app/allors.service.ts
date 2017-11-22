@@ -3,19 +3,10 @@ import { HttpClient } from "@angular/common/http";
 import { Inject, Injectable } from "@angular/core";
 import { CanActivate, Router } from "@angular/router";
 
-import { constructorByName } from "@generatedDomain/domain.g";
-import { data, MetaDomain } from "@generatedMeta/meta.g";
-
-import { Database, Population, Workspace } from "@allors";
-import {
-  AllorsService,
-  AuthenticationService,
-  ENVIRONMENT,
-  Environment,
-} from "@allors";
+import { AuthenticationService, constructorByName, data, Database, ENVIRONMENT, Environment, MetaDomain, MetaPopulation, Workspace } from "@allors";
 
 @Injectable()
-export class DefaultAllorsService extends AllorsService implements CanActivate {
+export class AllorsService implements CanActivate {
 
   public workspace: Workspace;
   public database: Database;
@@ -26,16 +17,13 @@ export class DefaultAllorsService extends AllorsService implements CanActivate {
     private authService: AuthenticationService,
     private location: Location,
     private router: Router,
-    @Inject(ENVIRONMENT) private environment: Environment,
-  ) {
-    super();
+    @Inject(ENVIRONMENT) private environment: Environment) {
 
-    const metaPopulation: Population = new Population();
-    metaPopulation.baseInit(data);
+    const metaPopulation = new MetaPopulation(data);
     this.database = new Database(http, environment.url);
     this.workspace = new Workspace(metaPopulation, constructorByName);
 
-    this.meta = this.workspace.metaPopulation.createMetaDomain();
+    this.meta = metaPopulation.metaDomain;
   }
 
   public canActivate() {
@@ -45,7 +33,7 @@ export class DefaultAllorsService extends AllorsService implements CanActivate {
       this.router.navigate(["login"]);
       return false;
     }
-  }
+ }
 
   public back() {
     this.location.back();
