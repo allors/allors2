@@ -1,6 +1,6 @@
-import { Person } from "@allors/generated";
+import { Person } from "@allors/generated/dist/domain/Person.g";
 
-declare module "@allors/generated" {
+declare module "@allors/generated/dist/domain/Person.g" {
     interface Person {
         displayName;
 

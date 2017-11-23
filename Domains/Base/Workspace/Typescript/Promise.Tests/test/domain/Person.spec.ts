@@ -1,6 +1,6 @@
 import { MetaPopulation, Person, Session, Workspace } from "@allors";
 import { Database, Loaded, Scope } from "@allors/base-promise";
-import { AxiosHttp } from "@allors/base-promise/http/AxiosHttp";
+import { AxiosHttp } from "@allors/base-promise/dist/http/AxiosHttp";
 
 import { constructorByName, data } from "@allors/generated";
 
