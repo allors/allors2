@@ -1,8 +1,7 @@
 import { assert } from "chai";
 import "mocha";
 
-import { constructorByName, data, MetaPopulation, PullResponse, ResponseType, Session, Workspace } from "@allors";
-import { Person } from "@allors";
+import { constructorByName, data, MetaPopulation, Person, PullResponse, ResponseType, Session, Workspace } from "../src/index";
 
 import { syncResponse } from "./fixture";
 

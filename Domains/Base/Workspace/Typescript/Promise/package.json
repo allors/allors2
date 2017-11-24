@@ -14,9 +14,9 @@
     "axios": "^0.16.2"
   },
   "peerDependencies": {
-    "@allors/base-meta": "file:../meta",
-    "@allors/base-domain": "file:../domain",
-    "@allors/generated": "file:../generated"
+    "@allors/base-meta": "*",
+    "@allors/base-domain": "*",
+    "@allors/generated": "*"
   },
   "devDependencies": {
     "@types/chai": "latest",

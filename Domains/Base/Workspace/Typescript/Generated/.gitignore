@@ -1,3 +1,5 @@
 node_modules
-lib
-coverage
+domain
+meta
+index.js
+index.d.ts

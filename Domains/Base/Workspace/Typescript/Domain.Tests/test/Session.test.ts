@@ -1,7 +1,6 @@
 import { assert } from "chai";
 
-import { constructorByName,  data, MetaPopulation, PushResponse, ResponseType, Session, Workspace } from "@allors";
-import { Organisation, Person } from "@allors";
+import { constructorByName, data, MetaPopulation, Organisation, Person, PushResponse, ResponseType, Session, Workspace } from "../src/index";
 
 import { syncResponse } from "./fixture";
 

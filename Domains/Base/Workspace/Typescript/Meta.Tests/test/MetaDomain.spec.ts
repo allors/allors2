@@ -4,7 +4,7 @@ import "mocha";
 
 import { MetaPopulation } from "@allors/base-meta";
 
-import { data } from "generated/meta";
+import { data } from "@allors/generated";
 
 describe("MetaDomain",
     () => {

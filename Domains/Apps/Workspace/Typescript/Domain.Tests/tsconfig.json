@@ -1,0 +1,24 @@
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "target": "es2015",
+    "declaration": true,
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "outDir": "lib/",
+    "sourceMap": true,
+    "paths": {
+      "@allors": ["./src/index"],
+      "*": ["./node_modules/*"]
+    }
+  },  
+ "include": [
+    "src/**/*",
+    "test/**/*"
+  ],
+  "exclude": [
+    "node_modules",
+    "data",
+    "lib"
+  ]
+}

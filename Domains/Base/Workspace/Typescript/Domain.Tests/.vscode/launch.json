@@ -10,7 +10,7 @@
         "--no-timeouts",
         "--colors",
         "--compilers", "ts:ts-node/register",
-        "-r", "tsconfig-paths/register",
+        "--preserve-symlinks",
         "${workspaceRoot}/test/**/*.spec.ts"
       ],
       "protocol": "inspector",

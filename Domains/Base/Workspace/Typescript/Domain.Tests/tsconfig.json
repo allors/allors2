@@ -1,26 +1,14 @@
 {
   "compilerOptions": {
-    "baseUrl": ".",
     "target": "es2015",
     "declaration": true,
     "module": "commonjs",
     "moduleResolution": "node",
-    "outDir": "lib/",
+    "outDir": "dist/",
     "sourceMap": true,
-    "paths": {
-      "@allors/generated-meta/*": ["./src/generated/meta/*"],
-      "@allors/generated-domain/*": ["./src/generated/domain/*"],
-      "@allors": ["./src/index"],
-      "*": ["./node_modules/*"]
-    }
-  },  
- "include": [
-    "src/**/*",
-    "test/**/*"
-  ],
-  "exclude": [
-    "node_modules",
-    "data",
-    "lib"
+    "preserveSymlinks": true
+  },
+  "include": [
+    "src/**/*"
   ]
 }

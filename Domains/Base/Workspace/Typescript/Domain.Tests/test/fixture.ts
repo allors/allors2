@@ -1,5 +1,4 @@
-﻿import { SyncResponse } from "@allors";
-import { ResponseType } from "@allors";
+﻿import { ResponseType, SyncResponse  } from "../src/index";
 
 export let syncResponse: SyncResponse = {
     hasErrors: false,

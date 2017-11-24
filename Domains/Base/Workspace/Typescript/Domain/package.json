@@ -4,10 +4,13 @@
   "description": "Allors Base Domain",
   "repository": "https://github.com/Allors/allors2",
   "license": "LGPL-3.0",
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
+  "main": "index.js",
+  "types": "index.d.ts",
   "scripts": {},
   "peerDependencies": {
-    "@allors/base-meta": "file:../meta"
-   }
+    "@allors/base-meta": "*"
+  },
+  "devDependencies": {
+    "@allors/base-meta": "../meta"
+  }
 }

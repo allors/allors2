@@ -8,9 +8,9 @@
   "types": "dist/index.d.ts",
   "scripts": {},
   "peerDependencies": {
-    "@allors/base-meta": "file:../meta",
-    "@allors/base-domain": "file:../domain",
-    "@allors/generated": "file:../generated",
+    "@allors/base-meta": "*",
+    "@allors/base-domain": "*",
+    "@allors/generated": "*",
     "@angular/common": "^5.0.0",
     "@angular/core": "^5.0.0",
     "@angular/router": "^5.0.0",
