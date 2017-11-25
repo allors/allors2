@@ -7,7 +7,7 @@ namespace Allors.Repository
     #region Allors
     [Id("e3e87d40-b4f0-4953-9716-db13b35d716b")]
     #endregion
-    public partial class Good : Product, Deletable 
+    public partial class Good : Product
     {
         #region inherited properties
 

@@ -80,10 +80,7 @@ namespace Allors.Repository
         public void OnDerive(){}
 
         public void OnPostDerive(){}
-
-
-
-
+        public void Delete() { }
         #endregion
 
         public string Comment { get; set; }

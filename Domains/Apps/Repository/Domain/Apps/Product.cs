@@ -7,7 +7,7 @@ namespace Allors.Repository
     #region Allors
     [Id("56b79619-d04a-4924-96e8-e3e7be9faa09")]
     #endregion
-    public partial interface Product : Commentable, UniquelyIdentifiable, AccessControlledObject 
+    public partial interface Product : Commentable, UniquelyIdentifiable, AccessControlledObject, Deletable
     {
         #region Allors
         [Id("D88189C8-735E-4A5A-B46F-AEFF4F1F0501")]

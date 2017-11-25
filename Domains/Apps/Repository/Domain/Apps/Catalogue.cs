@@ -7,7 +7,7 @@ namespace Allors.Repository
     #region Allors
     [Id("974DCB55-4D12-460F-A45D-9EBCCA54DA0B")]
     #endregion
-    public partial class Catalogue : AccessControlledObject, UniquelyIdentifiable 
+    public partial class Catalogue : AccessControlledObject, UniquelyIdentifiable, Deletable
     {
         #region inherited properties
         public Permission[] DeniedPermissions { get; set; }
@@ -102,6 +102,7 @@ namespace Allors.Repository
 
         public void OnPostDerive(){}
 
+        public void Delete() {}
 
         #endregion
 
