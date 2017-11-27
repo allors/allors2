@@ -1,0 +1,28 @@
+{
+  "name": "@allors/apps-domain-test",
+  "version": "2.0.0",
+  "description": "Allors Apps Domain Tests",
+  "repository": "https://github.com/Allors/allors2",
+  "license": "LGPL-3.0",
+  "private": true,
+  "scripts": {
+    "test": "mocha --compilers ts:ts-node/register -r tsconfig-paths/register ./test/**/*.spec.ts",
+    "tc:test": "mocha --compilers ts:ts-node/register -r tsconfig-paths/register --reporter mocha-teamcity-reporter ./test/**/*.spec.ts"
+  },
+  "dependencies": {
+    "@allors/framework": "file:../../../../../Platform/Workspace/Typescript",
+    "@allors/workspace": "file:../Workspace"
+  },
+  "devDependencies": {
+    "@types/chai": "latest",
+    "@types/mocha": "latest",
+    "@types/node": "latest",
+    "chai": "latest",
+    "istanbul": "latest",
+    "mocha": "latest",
+    "mocha-teamcity-reporter": "latest",
+    "ts-node": "latest",
+    "tsconfig-paths": "latest",
+    "typescript": "latest"
+  }
+}

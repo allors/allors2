@@ -294,6 +294,21 @@ namespace Allors.Domain
 				return BasePriceOnBuildMethodInvocation;
 			}
 		}
+	}public partial class CatalogueOnBuild : ObjectOnBuild
+	{
+	    private static readonly Allors.Meta.MethodInvocation CatalogueOnBuildMethodInvocation = new Allors.Meta.MethodInvocation(Allors.Meta.M.Catalogue.ObjectType, Allors.Meta.M.Catalogue.OnBuild); 
+
+		public CatalogueOnBuild(Object @object) : base(@object)
+		{
+		}
+
+		public override Allors.Meta.MethodInvocation MethodInvocation
+		{
+			get
+			{
+				return CatalogueOnBuildMethodInvocation;
+			}
+		}
 	}public partial class CustomerRelationshipOnBuild : ObjectOnBuild
 	{
 	    private static readonly Allors.Meta.MethodInvocation CustomerRelationshipOnBuildMethodInvocation = new Allors.Meta.MethodInvocation(Allors.Meta.M.CustomerRelationship.ObjectType, Allors.Meta.M.CustomerRelationship.OnBuild); 
@@ -322,21 +337,6 @@ namespace Allors.Domain
 			get
 			{
 				return EmploymentOnBuildMethodInvocation;
-			}
-		}
-	}public partial class GoodOnBuild : ObjectOnBuild
-	{
-	    private static readonly Allors.Meta.MethodInvocation GoodOnBuildMethodInvocation = new Allors.Meta.MethodInvocation(Allors.Meta.M.Good.ObjectType, Allors.Meta.M.Good.OnBuild); 
-
-		public GoodOnBuild(Object @object) : base(@object)
-		{
-		}
-
-		public override Allors.Meta.MethodInvocation MethodInvocation
-		{
-			get
-			{
-				return GoodOnBuildMethodInvocation;
 			}
 		}
 	}public partial class InternalOrganisationRevenueOnBuild : ObjectOnBuild
@@ -517,6 +517,21 @@ namespace Allors.Domain
 			get
 			{
 				return PostalBoundaryOnBuildMethodInvocation;
+			}
+		}
+	}public partial class ProductCategoryOnBuild : ObjectOnBuild
+	{
+	    private static readonly Allors.Meta.MethodInvocation ProductCategoryOnBuildMethodInvocation = new Allors.Meta.MethodInvocation(Allors.Meta.M.ProductCategory.ObjectType, Allors.Meta.M.ProductCategory.OnBuild); 
+
+		public ProductCategoryOnBuild(Object @object) : base(@object)
+		{
+		}
+
+		public override Allors.Meta.MethodInvocation MethodInvocation
+		{
+			get
+			{
+				return ProductCategoryOnBuildMethodInvocation;
 			}
 		}
 	}public partial class ProductCategoryRevenueOnBuild : ObjectOnBuild
@@ -1014,6 +1029,51 @@ namespace Allors.Domain
 				return SalesOrderItemOnBuildMethodInvocation;
 			}
 		}
+	}public partial class GoodOnBuild : ObjectOnBuild
+	{
+	    private static readonly Allors.Meta.MethodInvocation GoodOnBuildMethodInvocation = new Allors.Meta.MethodInvocation(Allors.Meta.M.Good.ObjectType, Allors.Meta.M.Good.OnBuild); 
+
+		public GoodOnBuild(Object @object) : base(@object)
+		{
+		}
+
+		public override Allors.Meta.MethodInvocation MethodInvocation
+		{
+			get
+			{
+				return GoodOnBuildMethodInvocation;
+			}
+		}
+	}public partial class DeliverableBasedServiceOnBuild : ObjectOnBuild
+	{
+	    private static readonly Allors.Meta.MethodInvocation DeliverableBasedServiceOnBuildMethodInvocation = new Allors.Meta.MethodInvocation(Allors.Meta.M.DeliverableBasedService.ObjectType, Allors.Meta.M.DeliverableBasedService.OnBuild); 
+
+		public DeliverableBasedServiceOnBuild(Object @object) : base(@object)
+		{
+		}
+
+		public override Allors.Meta.MethodInvocation MethodInvocation
+		{
+			get
+			{
+				return DeliverableBasedServiceOnBuildMethodInvocation;
+			}
+		}
+	}public partial class TimeAndMaterialsServiceOnBuild : ObjectOnBuild
+	{
+	    private static readonly Allors.Meta.MethodInvocation TimeAndMaterialsServiceOnBuildMethodInvocation = new Allors.Meta.MethodInvocation(Allors.Meta.M.TimeAndMaterialsService.ObjectType, Allors.Meta.M.TimeAndMaterialsService.OnBuild); 
+
+		public TimeAndMaterialsServiceOnBuild(Object @object) : base(@object)
+		{
+		}
+
+		public override Allors.Meta.MethodInvocation MethodInvocation
+		{
+			get
+			{
+				return TimeAndMaterialsServiceOnBuildMethodInvocation;
+			}
+		}
 	}public partial class WorkTaskOnBuild : ObjectOnBuild
 	{
 	    private static readonly Allors.Meta.MethodInvocation WorkTaskOnBuildMethodInvocation = new Allors.Meta.MethodInvocation(Allors.Meta.M.WorkTask.ObjectType, Allors.Meta.M.WorkTask.OnBuild); 
@@ -1102,21 +1162,6 @@ namespace Allors.Domain
 			get
 			{
 				return CaseOnBuildMethodInvocation;
-			}
-		}
-	}public partial class CatalogueOnBuild : ObjectOnBuild
-	{
-	    private static readonly Allors.Meta.MethodInvocation CatalogueOnBuildMethodInvocation = new Allors.Meta.MethodInvocation(Allors.Meta.M.Catalogue.ObjectType, Allors.Meta.M.Catalogue.OnBuild); 
-
-		public CatalogueOnBuild(Object @object) : base(@object)
-		{
-		}
-
-		public override Allors.Meta.MethodInvocation MethodInvocation
-		{
-			get
-			{
-				return CatalogueOnBuildMethodInvocation;
 			}
 		}
 	}public partial class ChartOfAccountsOnBuild : ObjectOnBuild
@@ -1252,21 +1297,6 @@ namespace Allors.Domain
 			get
 			{
 				return PartSpecificationOnBuildMethodInvocation;
-			}
-		}
-	}public partial class ProductCategoryOnBuild : ObjectOnBuild
-	{
-	    private static readonly Allors.Meta.MethodInvocation ProductCategoryOnBuildMethodInvocation = new Allors.Meta.MethodInvocation(Allors.Meta.M.ProductCategory.ObjectType, Allors.Meta.M.ProductCategory.OnBuild); 
-
-		public ProductCategoryOnBuild(Object @object) : base(@object)
-		{
-		}
-
-		public override Allors.Meta.MethodInvocation MethodInvocation
-		{
-			get
-			{
-				return ProductCategoryOnBuildMethodInvocation;
 			}
 		}
 	}public partial class ProductTypeOnBuild : ObjectOnBuild
@@ -3382,36 +3412,6 @@ namespace Allors.Domain
 			get
 			{
 				return OwnCreditCardOnBuildMethodInvocation;
-			}
-		}
-	}public partial class DeliverableBasedServiceOnBuild : ObjectOnBuild
-	{
-	    private static readonly Allors.Meta.MethodInvocation DeliverableBasedServiceOnBuildMethodInvocation = new Allors.Meta.MethodInvocation(Allors.Meta.M.DeliverableBasedService.ObjectType, Allors.Meta.M.DeliverableBasedService.OnBuild); 
-
-		public DeliverableBasedServiceOnBuild(Object @object) : base(@object)
-		{
-		}
-
-		public override Allors.Meta.MethodInvocation MethodInvocation
-		{
-			get
-			{
-				return DeliverableBasedServiceOnBuildMethodInvocation;
-			}
-		}
-	}public partial class TimeAndMaterialsServiceOnBuild : ObjectOnBuild
-	{
-	    private static readonly Allors.Meta.MethodInvocation TimeAndMaterialsServiceOnBuildMethodInvocation = new Allors.Meta.MethodInvocation(Allors.Meta.M.TimeAndMaterialsService.ObjectType, Allors.Meta.M.TimeAndMaterialsService.OnBuild); 
-
-		public TimeAndMaterialsServiceOnBuild(Object @object) : base(@object)
-		{
-		}
-
-		public override Allors.Meta.MethodInvocation MethodInvocation
-		{
-			get
-			{
-				return TimeAndMaterialsServiceOnBuildMethodInvocation;
 			}
 		}
 	}public partial class BrandOnBuild : ObjectOnBuild

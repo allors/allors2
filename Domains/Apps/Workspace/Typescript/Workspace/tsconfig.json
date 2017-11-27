@@ -1,0 +1,11 @@
+{
+  "compilerOptions": {
+    "module": "commonjs",
+    "target": "es2015",
+    "declaration": true,
+    "preserveSymlinks": true,
+    "outDir": "."
+  },
+  "include": ["src/**/*"],
+  "exclude" : []
+}

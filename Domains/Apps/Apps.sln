@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.27004.2006
+VisualStudioVersion = 15.0.27004.2009
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Domain", "Database\Domain\Domain.csproj", "{B4EDDCC1-BA69-4415-BFC8-78098AEFF221}"
 EndProject
@@ -11,11 +11,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Meta", "Database\Meta\Meta.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Resources", "Database\Resources\Resources.csproj", "{514AB4D1-CC77-49DC-8BC4-0DEDE041FFD1}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Allors", "..\..\Platform\Framework\Allors\Allors.csproj", "{5B4E2D7C-8EF8-45F5-BFB2-E595C401A95F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Allors.Framework", "..\..\Platform\Database\Framework\Allors.Framework\Allors.Framework.csproj", "{5B4E2D7C-8EF8-45F5-BFB2-E595C401A95F}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Allors.Adapters.Memory", "..\..\Platform\Adapters\Allors.Adapters.Memory\Allors.Adapters.Memory.csproj", "{CB9B7108-C8F3-459C-B2DA-88187C84CFC1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Allors.Adapters.Memory", "..\..\Platform\Database\Adapters\Allors.Adapters.Memory\Allors.Adapters.Memory.csproj", "{CB9B7108-C8F3-459C-B2DA-88187C84CFC1}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Allors.Adapters.Object.SqlClient", "..\..\Platform\Adapters\Allors.Adapters.Object.SqlClient\Allors.Adapters.Object.SqlClient.csproj", "{06BC1665-8FE8-4F04-9E80-EC2D54404BA7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Allors.Adapters.Object.SqlClient", "..\..\Platform\Database\Adapters\Allors.Adapters.Object.SqlClient\Allors.Adapters.Object.SqlClient.csproj", "{06BC1665-8FE8-4F04-9E80-EC2D54404BA7}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Allors", "Allors", "{00113E18-8657-4208-B453-1EB128032710}"
 EndProject

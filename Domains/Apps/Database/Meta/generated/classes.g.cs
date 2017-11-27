@@ -3282,6 +3282,7 @@ namespace Allors.Meta
         public MethodType OnPreDerive;
         public MethodType OnDerive;
         public MethodType OnPostDerive;
+        public MethodType Delete;
 
 		// Defined Roles
         public RoleType Name;
@@ -4883,6 +4884,7 @@ namespace Allors.Meta
         public MethodType OnPreDerive;
         public MethodType OnDerive;
         public MethodType OnPostDerive;
+        public MethodType Delete;
 
 		// Defined Roles
 
@@ -16167,6 +16169,7 @@ namespace Allors.Meta
         public MethodType OnPreDerive;
         public MethodType OnDerive;
         public MethodType OnPostDerive;
+        public MethodType Delete;
 
 		// Defined Roles
         public RoleType Package;
@@ -23491,6 +23494,7 @@ namespace Allors.Meta
         public MethodType OnPreDerive;
         public MethodType OnDerive;
         public MethodType OnPostDerive;
+        public MethodType Delete;
 
 		// Defined Roles
 

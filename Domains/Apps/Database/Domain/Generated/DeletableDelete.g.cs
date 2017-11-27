@@ -174,6 +174,21 @@ namespace Allors.Domain
 				return BasePriceDeleteMethodInvocation;
 			}
 		}
+	}public partial class CatalogueDelete : DeletableDelete
+	{
+	    private static readonly Allors.Meta.MethodInvocation CatalogueDeleteMethodInvocation = new Allors.Meta.MethodInvocation(Allors.Meta.M.Catalogue.ObjectType, Allors.Meta.M.Catalogue.Delete); 
+
+		public CatalogueDelete(Deletable @object) : base(@object)
+		{
+		}
+
+		public override Allors.Meta.MethodInvocation MethodInvocation
+		{
+			get
+			{
+				return CatalogueDeleteMethodInvocation;
+			}
+		}
 	}public partial class CustomerRelationshipDelete : DeletableDelete
 	{
 	    private static readonly Allors.Meta.MethodInvocation CustomerRelationshipDeleteMethodInvocation = new Allors.Meta.MethodInvocation(Allors.Meta.M.CustomerRelationship.ObjectType, Allors.Meta.M.CustomerRelationship.Delete); 
@@ -202,21 +217,6 @@ namespace Allors.Domain
 			get
 			{
 				return EmploymentDeleteMethodInvocation;
-			}
-		}
-	}public partial class GoodDelete : DeletableDelete
-	{
-	    private static readonly Allors.Meta.MethodInvocation GoodDeleteMethodInvocation = new Allors.Meta.MethodInvocation(Allors.Meta.M.Good.ObjectType, Allors.Meta.M.Good.Delete); 
-
-		public GoodDelete(Deletable @object) : base(@object)
-		{
-		}
-
-		public override Allors.Meta.MethodInvocation MethodInvocation
-		{
-			get
-			{
-				return GoodDeleteMethodInvocation;
 			}
 		}
 	}public partial class InternalOrganisationRevenueDelete : DeletableDelete
@@ -397,6 +397,21 @@ namespace Allors.Domain
 			get
 			{
 				return PostalBoundaryDeleteMethodInvocation;
+			}
+		}
+	}public partial class ProductCategoryDelete : DeletableDelete
+	{
+	    private static readonly Allors.Meta.MethodInvocation ProductCategoryDeleteMethodInvocation = new Allors.Meta.MethodInvocation(Allors.Meta.M.ProductCategory.ObjectType, Allors.Meta.M.ProductCategory.Delete); 
+
+		public ProductCategoryDelete(Deletable @object) : base(@object)
+		{
+		}
+
+		public override Allors.Meta.MethodInvocation MethodInvocation
+		{
+			get
+			{
+				return ProductCategoryDeleteMethodInvocation;
 			}
 		}
 	}public partial class ProductCategoryRevenueDelete : DeletableDelete
@@ -892,6 +907,51 @@ namespace Allors.Domain
 			get
 			{
 				return SalesOrderItemDeleteMethodInvocation;
+			}
+		}
+	}public partial class GoodDelete : DeletableDelete
+	{
+	    private static readonly Allors.Meta.MethodInvocation GoodDeleteMethodInvocation = new Allors.Meta.MethodInvocation(Allors.Meta.M.Good.ObjectType, Allors.Meta.M.Good.Delete); 
+
+		public GoodDelete(Deletable @object) : base(@object)
+		{
+		}
+
+		public override Allors.Meta.MethodInvocation MethodInvocation
+		{
+			get
+			{
+				return GoodDeleteMethodInvocation;
+			}
+		}
+	}public partial class DeliverableBasedServiceDelete : DeletableDelete
+	{
+	    private static readonly Allors.Meta.MethodInvocation DeliverableBasedServiceDeleteMethodInvocation = new Allors.Meta.MethodInvocation(Allors.Meta.M.DeliverableBasedService.ObjectType, Allors.Meta.M.DeliverableBasedService.Delete); 
+
+		public DeliverableBasedServiceDelete(Deletable @object) : base(@object)
+		{
+		}
+
+		public override Allors.Meta.MethodInvocation MethodInvocation
+		{
+			get
+			{
+				return DeliverableBasedServiceDeleteMethodInvocation;
+			}
+		}
+	}public partial class TimeAndMaterialsServiceDelete : DeletableDelete
+	{
+	    private static readonly Allors.Meta.MethodInvocation TimeAndMaterialsServiceDeleteMethodInvocation = new Allors.Meta.MethodInvocation(Allors.Meta.M.TimeAndMaterialsService.ObjectType, Allors.Meta.M.TimeAndMaterialsService.Delete); 
+
+		public TimeAndMaterialsServiceDelete(Deletable @object) : base(@object)
+		{
+		}
+
+		public override Allors.Meta.MethodInvocation MethodInvocation
+		{
+			get
+			{
+				return TimeAndMaterialsServiceDeleteMethodInvocation;
 			}
 		}
 	}public partial class WorkTaskDelete : DeletableDelete

@@ -40,9 +40,9 @@
   
 
 <ItemGroup>
-    <ProjectReference Include="..\..\..\..\Platform\Adapters\Allors.Adapters.Memory\Allors.Adapters.Memory.csproj" />
-    <ProjectReference Include="..\..\..\..\Platform\Adapters\Allors.Adapters.Object.SqlClient\Allors.Adapters.Object.SqlClient.csproj" />
-    <ProjectReference Include="..\..\..\..\Platform\Framework\Allors\Allors.csproj" />
+    <ProjectReference Include="..\..\..\..\Platform\Database\Adapters\Allors.Adapters.Memory\Allors.Adapters.Memory.csproj" />
+    <ProjectReference Include="..\..\..\..\Platform\Database\Adapters\Allors.Adapters.Object.SqlClient\Allors.Adapters.Object.SqlClient.csproj" />
+    <ProjectReference Include="..\..\..\..\Platform\Database\Framework\Allors.Framework\Allors.Framework.csproj" />
     <ProjectReference Include="..\Domain\Domain.csproj" />
     <ProjectReference Include="..\Meta\Meta.csproj" />
     <ProjectReference Include="..\Resources\Resources.csproj" />

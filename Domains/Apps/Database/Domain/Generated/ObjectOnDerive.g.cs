@@ -294,6 +294,21 @@ namespace Allors.Domain
 				return BasePriceOnDeriveMethodInvocation;
 			}
 		}
+	}public partial class CatalogueOnDerive : ObjectOnDerive
+	{
+	    private static readonly Allors.Meta.MethodInvocation CatalogueOnDeriveMethodInvocation = new Allors.Meta.MethodInvocation(Allors.Meta.M.Catalogue.ObjectType, Allors.Meta.M.Catalogue.OnDerive); 
+
+		public CatalogueOnDerive(Object @object) : base(@object)
+		{
+		}
+
+		public override Allors.Meta.MethodInvocation MethodInvocation
+		{
+			get
+			{
+				return CatalogueOnDeriveMethodInvocation;
+			}
+		}
 	}public partial class CustomerRelationshipOnDerive : ObjectOnDerive
 	{
 	    private static readonly Allors.Meta.MethodInvocation CustomerRelationshipOnDeriveMethodInvocation = new Allors.Meta.MethodInvocation(Allors.Meta.M.CustomerRelationship.ObjectType, Allors.Meta.M.CustomerRelationship.OnDerive); 
@@ -322,21 +337,6 @@ namespace Allors.Domain
 			get
 			{
 				return EmploymentOnDeriveMethodInvocation;
-			}
-		}
-	}public partial class GoodOnDerive : ObjectOnDerive
-	{
-	    private static readonly Allors.Meta.MethodInvocation GoodOnDeriveMethodInvocation = new Allors.Meta.MethodInvocation(Allors.Meta.M.Good.ObjectType, Allors.Meta.M.Good.OnDerive); 
-
-		public GoodOnDerive(Object @object) : base(@object)
-		{
-		}
-
-		public override Allors.Meta.MethodInvocation MethodInvocation
-		{
-			get
-			{
-				return GoodOnDeriveMethodInvocation;
 			}
 		}
 	}public partial class InternalOrganisationRevenueOnDerive : ObjectOnDerive
@@ -517,6 +517,21 @@ namespace Allors.Domain
 			get
 			{
 				return PostalBoundaryOnDeriveMethodInvocation;
+			}
+		}
+	}public partial class ProductCategoryOnDerive : ObjectOnDerive
+	{
+	    private static readonly Allors.Meta.MethodInvocation ProductCategoryOnDeriveMethodInvocation = new Allors.Meta.MethodInvocation(Allors.Meta.M.ProductCategory.ObjectType, Allors.Meta.M.ProductCategory.OnDerive); 
+
+		public ProductCategoryOnDerive(Object @object) : base(@object)
+		{
+		}
+
+		public override Allors.Meta.MethodInvocation MethodInvocation
+		{
+			get
+			{
+				return ProductCategoryOnDeriveMethodInvocation;
 			}
 		}
 	}public partial class ProductCategoryRevenueOnDerive : ObjectOnDerive
@@ -1014,6 +1029,51 @@ namespace Allors.Domain
 				return SalesOrderItemOnDeriveMethodInvocation;
 			}
 		}
+	}public partial class GoodOnDerive : ObjectOnDerive
+	{
+	    private static readonly Allors.Meta.MethodInvocation GoodOnDeriveMethodInvocation = new Allors.Meta.MethodInvocation(Allors.Meta.M.Good.ObjectType, Allors.Meta.M.Good.OnDerive); 
+
+		public GoodOnDerive(Object @object) : base(@object)
+		{
+		}
+
+		public override Allors.Meta.MethodInvocation MethodInvocation
+		{
+			get
+			{
+				return GoodOnDeriveMethodInvocation;
+			}
+		}
+	}public partial class DeliverableBasedServiceOnDerive : ObjectOnDerive
+	{
+	    private static readonly Allors.Meta.MethodInvocation DeliverableBasedServiceOnDeriveMethodInvocation = new Allors.Meta.MethodInvocation(Allors.Meta.M.DeliverableBasedService.ObjectType, Allors.Meta.M.DeliverableBasedService.OnDerive); 
+
+		public DeliverableBasedServiceOnDerive(Object @object) : base(@object)
+		{
+		}
+
+		public override Allors.Meta.MethodInvocation MethodInvocation
+		{
+			get
+			{
+				return DeliverableBasedServiceOnDeriveMethodInvocation;
+			}
+		}
+	}public partial class TimeAndMaterialsServiceOnDerive : ObjectOnDerive
+	{
+	    private static readonly Allors.Meta.MethodInvocation TimeAndMaterialsServiceOnDeriveMethodInvocation = new Allors.Meta.MethodInvocation(Allors.Meta.M.TimeAndMaterialsService.ObjectType, Allors.Meta.M.TimeAndMaterialsService.OnDerive); 
+
+		public TimeAndMaterialsServiceOnDerive(Object @object) : base(@object)
+		{
+		}
+
+		public override Allors.Meta.MethodInvocation MethodInvocation
+		{
+			get
+			{
+				return TimeAndMaterialsServiceOnDeriveMethodInvocation;
+			}
+		}
 	}public partial class WorkTaskOnDerive : ObjectOnDerive
 	{
 	    private static readonly Allors.Meta.MethodInvocation WorkTaskOnDeriveMethodInvocation = new Allors.Meta.MethodInvocation(Allors.Meta.M.WorkTask.ObjectType, Allors.Meta.M.WorkTask.OnDerive); 
@@ -1102,21 +1162,6 @@ namespace Allors.Domain
 			get
 			{
 				return CaseOnDeriveMethodInvocation;
-			}
-		}
-	}public partial class CatalogueOnDerive : ObjectOnDerive
-	{
-	    private static readonly Allors.Meta.MethodInvocation CatalogueOnDeriveMethodInvocation = new Allors.Meta.MethodInvocation(Allors.Meta.M.Catalogue.ObjectType, Allors.Meta.M.Catalogue.OnDerive); 
-
-		public CatalogueOnDerive(Object @object) : base(@object)
-		{
-		}
-
-		public override Allors.Meta.MethodInvocation MethodInvocation
-		{
-			get
-			{
-				return CatalogueOnDeriveMethodInvocation;
 			}
 		}
 	}public partial class ChartOfAccountsOnDerive : ObjectOnDerive
@@ -1252,21 +1297,6 @@ namespace Allors.Domain
 			get
 			{
 				return PartSpecificationOnDeriveMethodInvocation;
-			}
-		}
-	}public partial class ProductCategoryOnDerive : ObjectOnDerive
-	{
-	    private static readonly Allors.Meta.MethodInvocation ProductCategoryOnDeriveMethodInvocation = new Allors.Meta.MethodInvocation(Allors.Meta.M.ProductCategory.ObjectType, Allors.Meta.M.ProductCategory.OnDerive); 
-
-		public ProductCategoryOnDerive(Object @object) : base(@object)
-		{
-		}
-
-		public override Allors.Meta.MethodInvocation MethodInvocation
-		{
-			get
-			{
-				return ProductCategoryOnDeriveMethodInvocation;
 			}
 		}
 	}public partial class ProductTypeOnDerive : ObjectOnDerive
@@ -3382,36 +3412,6 @@ namespace Allors.Domain
 			get
 			{
 				return OwnCreditCardOnDeriveMethodInvocation;
-			}
-		}
-	}public partial class DeliverableBasedServiceOnDerive : ObjectOnDerive
-	{
-	    private static readonly Allors.Meta.MethodInvocation DeliverableBasedServiceOnDeriveMethodInvocation = new Allors.Meta.MethodInvocation(Allors.Meta.M.DeliverableBasedService.ObjectType, Allors.Meta.M.DeliverableBasedService.OnDerive); 
-
-		public DeliverableBasedServiceOnDerive(Object @object) : base(@object)
-		{
-		}
-
-		public override Allors.Meta.MethodInvocation MethodInvocation
-		{
-			get
-			{
-				return DeliverableBasedServiceOnDeriveMethodInvocation;
-			}
-		}
-	}public partial class TimeAndMaterialsServiceOnDerive : ObjectOnDerive
-	{
-	    private static readonly Allors.Meta.MethodInvocation TimeAndMaterialsServiceOnDeriveMethodInvocation = new Allors.Meta.MethodInvocation(Allors.Meta.M.TimeAndMaterialsService.ObjectType, Allors.Meta.M.TimeAndMaterialsService.OnDerive); 
-
-		public TimeAndMaterialsServiceOnDerive(Object @object) : base(@object)
-		{
-		}
-
-		public override Allors.Meta.MethodInvocation MethodInvocation
-		{
-			get
-			{
-				return TimeAndMaterialsServiceOnDeriveMethodInvocation;
 			}
 		}
 	}public partial class BrandOnDerive : ObjectOnDerive

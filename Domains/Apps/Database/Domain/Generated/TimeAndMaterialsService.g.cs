@@ -1609,6 +1609,21 @@ namespace Allors.Domain
             method.Execute();
             return method;
 		}
+
+		public DeletableDelete Delete()
+		{ 
+			var method = new TimeAndMaterialsServiceDelete(this);
+            method.Execute();
+            return method;
+		}
+
+		public DeletableDelete Delete(System.Action<DeletableDelete> action)
+		{ 
+			var method = new TimeAndMaterialsServiceDelete(this);
+            action(method);
+            method.Execute();
+            return method;
+		}
 	}
 
 	public partial class TimeAndMaterialsServiceBuilder : Allors.ObjectBuilder<TimeAndMaterialsService> , ServiceBuilder, global::System.IDisposable

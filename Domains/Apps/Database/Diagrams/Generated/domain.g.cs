@@ -1518,7 +1518,7 @@ namespace Allors.Domain
 						global::System.String PrintContent {set;}
 
 		}
-		public interface Product  : Commentable, UniquelyIdentifiable, AccessControlledObject 
+		public interface Product  : Commentable, UniquelyIdentifiable, AccessControlledObject, Deletable 
 		{
 						global::System.String InternalComment {set;}
 
@@ -2469,7 +2469,7 @@ namespace Allors.Domain
 						Person PersonResponsible {set;}
 
 		}
-		public interface Catalogue  : AccessControlledObject, UniquelyIdentifiable 
+		public interface Catalogue  : AccessControlledObject, UniquelyIdentifiable, Deletable 
 		{
 						global::System.String Name {set;}
 
@@ -3159,7 +3159,7 @@ namespace Allors.Domain
 						global::System.Decimal AllocationPercentage {set;}
 
 		}
-		public interface Good  : Product, Deletable 
+		public interface Good  : Product 
 		{
 						global::System.Decimal QuantityOnHand {set;}
 
@@ -4836,7 +4836,7 @@ namespace Allors.Domain
 		public interface Priority  : Enumeration 
 		{
 		}
-		public interface ProductCategory  : AccessControlledObject, UniquelyIdentifiable 
+		public interface ProductCategory  : AccessControlledObject, UniquelyIdentifiable, Deletable 
 		{
 						Package Package {set;}
 
