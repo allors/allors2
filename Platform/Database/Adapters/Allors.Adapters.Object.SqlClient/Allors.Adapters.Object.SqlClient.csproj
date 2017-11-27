@@ -6,12 +6,11 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="2.0.0" />
+    <PackageReference Include="System.Data.SqlClient" Version="4.4.0" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\Platform\Database\Framework\Allors.Framework\Allors.Framework.csproj" />
-    <ProjectReference Include="..\Meta\Meta.csproj" />
-    <ProjectReference Include="..\Resources\Resources.csproj" />
+    <ProjectReference Include="..\..\Framework\Allors.Framework\Allors.Framework.csproj" />
   </ItemGroup>
 
 </Project>

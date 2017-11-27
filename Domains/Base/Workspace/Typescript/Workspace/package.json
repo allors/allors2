@@ -1,0 +1,17 @@
+{
+  "name": "@allors/workspace",
+  "version": "2.0.0",
+  "description": "Allors Generated",
+  "repository": "https://github.com/Allors/allors2",
+  "private": true,
+  "license": "LGPL-3.0",
+  "main": "index.js",
+  "types": "index.d.ts",
+  "scripts": {},
+  "peerDependencies": {
+    "@allors/framework": "*"
+  },
+  "devDependencies": {
+    "@allors/framework": "file:../../../../../Platform/Workspace/Typescript"
+  }
+}
