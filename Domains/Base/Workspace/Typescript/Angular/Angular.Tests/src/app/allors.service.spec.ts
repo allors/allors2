@@ -1,12 +1,13 @@
-﻿import { async, inject, TestBed } from "@angular/core/testing";
+import { async, inject, TestBed } from "@angular/core/testing";
 import { Http, HttpModule, Response, ResponseOptions, XHRBackend } from "@angular/http";
 import { MockBackend } from "@angular/http/testing";
 
-import { Scope } from "@allors";
-import { Organisation } from "@allors";
-import { AllorsService } from "@allors";
+import { Scope } from "@allors/base-angular";
+import { Organisation } from "@allors/workspace";
 
-describe("VideoService", () => {
+import { AllorsService } from "./allors.service";
+
+describe("AllorsService", () => {
 
   beforeEach(() => {
 

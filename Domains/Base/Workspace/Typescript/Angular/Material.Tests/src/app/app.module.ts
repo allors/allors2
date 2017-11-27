@@ -29,7 +29,7 @@ const MATERIAL_MODULES: any[] = [
   MatSnackBarModule, MatTabsModule, MatToolbarModule, MatTooltipModule,
 ];
 
-import { AuthenticationInterceptor, AuthenticationService, ENVIRONMENT } from "@allors";
+import { AuthenticationInterceptor, AuthenticationService, ENVIRONMENT } from "@allors/base-angular";
 
 import { AllorsService } from "./allors.service";
 

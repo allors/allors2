@@ -1,9 +1,9 @@
 {
   "compileOnSave": false,
   "compilerOptions": {
-    "baseUrl": "./src",
     "outDir": "./dist/out-tsc",
     "sourceMap": true,
+    // "preserveSymlinks": true, // Only supported in Typescript ^2.5.0
     "declaration": false,
     "moduleResolution": "node",
     "emitDecoratorMetadata": true,
@@ -15,10 +15,6 @@
     "lib": [
       "es2017",
       "dom"
-    ],
-    "paths": {
-      "@allors": ["./allors/index"],
-      "*": ["../node_modules/*"]
-    }
+    ]
   }
 }

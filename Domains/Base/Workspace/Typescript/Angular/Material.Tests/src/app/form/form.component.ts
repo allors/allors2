@@ -1,7 +1,11 @@
 import { Component, OnDestroy, OnInit } from "@angular/core";
 import { Subscription } from "rxjs/Rx";
 
-import { MetaDomain, Organisation, PullRequest, Query, Scope } from "@allors";
+import { PullRequest, Query } from "@allors/framework";
+import { MetaDomain, Organisation } from "@allors/workspace";
+
+import { Scope } from "@allors/base-angular";
+
 import { AllorsService } from "../allors.service";
 
 @Component({

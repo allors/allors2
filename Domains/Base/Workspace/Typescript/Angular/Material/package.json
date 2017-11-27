@@ -4,15 +4,28 @@
   "description": "Allors Base Material",
   "repository": "https://github.com/Allors/allors2",
   "license": "LGPL-3.0",
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
-  "scripts": {
-  },
+  "main": "index.js",
+  "types": "index.d.ts",
+  "scripts": {},
   "peerDependencies": {
     "@allors/base-meta": "*",
     "@allors/base-domain": "*",
     "@allors/base-angular": "*",
     "@allors/generated": "*",
+    "@angular/animations": "*",
+    "@angular/cdk": "*",
+    "@angular/common": "*",
+    "@angular/core": "*",
+    "@angular/forms": "*",
+    "@angular/material": "*",
+    "@angular/platform-browser": "*",
+    "@angular/router": "*",
+    "rxjs": "*"
+  },
+  "devDependencies": {
+    "@allors/framework": "file:../../../../../../Platform/Workspace/Typescript",
+    "@allors/workspace": "file:../../workspace",
+    "@allors/base-angular": "file:../angular",
     "@angular/animations": "^5.0.0",
     "@angular/cdk": "5.0.0-rc0",
     "@angular/common": "^5.0.0",
@@ -22,8 +35,5 @@
     "@angular/platform-browser": "^5.0.0",
     "@angular/router": "^5.0.0",
     "rxjs": "^5.5.2"
-  },
-  "devDependencies": {
-    "typescript": "~2.4.2"
   }
 }
