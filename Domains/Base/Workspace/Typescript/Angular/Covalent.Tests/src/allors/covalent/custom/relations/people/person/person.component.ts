@@ -5,10 +5,11 @@ import { ActivatedRoute } from "@angular/router";
 import { TdDialogService, TdMediaService } from "@covalent/core";
 import { Observable, Subject, Subscription } from "rxjs/Rx";
 
-import { ErrorService, Loaded, Saved, Scope } from "@allors";
-import { Equals, Fetch, Like, Page, Path, PullRequest, PushResponse, Query, Sort, TreeNode } from "@allors";
-import { Enumeration, Locale, Organisation, Person } from "@allors";
-import { MetaDomain } from "@allors";
+import { Equals, Fetch, Like, Page, Path, PullRequest, PushResponse, Query, Sort, TreeNode } from "@allors/framework";
+import { MetaDomain } from "@allors/workspace";
+import { Enumeration, Locale, Organisation, Person } from "@allors/workspace";
+
+import { ErrorService, Loaded, Saved, Scope } from "@allors/base-angular";
 
 import { AllorsService } from "../../../../../../app/allors.service";
 

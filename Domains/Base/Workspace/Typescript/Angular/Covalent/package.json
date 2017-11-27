@@ -8,11 +8,34 @@
   "types": "dist/index.d.ts",
   "scripts": {},
   "peerDependencies": {
-    "@allors/base-meta": "*",
-    "@allors/base-domain": "*",
+    "@allors/framework": "*",
+    "@allors/workspace": "*",
     "@allors/base-angular": "*",
     "@allors/base-material": "*",
-    "@allors/generated": "*",
+    "@angular/animations": "*",
+    "@angular/cdk": "*",
+    "@angular/common": "*",
+    "@angular/core": "*",
+    "@angular/forms": "*",
+    "@angular/material": "*",
+    "@angular/platform-browser": "*",
+    "@angular/router": "*",
+    "@covalent/core": "*",
+    "@covalent/dynamic-forms": "*",
+    "@covalent/highlight": "*",
+    "@covalent/http": "*",
+    "@covalent/markdown": "*",
+    "core-js": "*",
+    "hammerjs": "*",
+    "rxjs": "*",
+    "showdown": "*",
+    "zone.js": "*"
+  },
+  "devDependencies": {
+    "@allors/framework": "file:../../../../../../Platform/Workspace/Typescript",
+    "@allors/workspace": "file:../../workspace",
+    "@allors/base-angular": "file:../angular",
+    "@allors/base-material": "file:../material",
     "@angular/animations": "^5.0.0",
     "@angular/cdk": "5.0.0-rc0",
     "@angular/common": "^5.0.0",
@@ -30,9 +53,7 @@
     "hammerjs": "^2.0.8",
     "rxjs": "^5.5.2",
     "showdown": "1.6.4",
-    "zone.js": "^0.8.17"
-  },
-  "devDependencies": {
+    "zone.js": "^0.8.17",
     "typescript": "~2.4.2"
   }
 }

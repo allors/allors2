@@ -8,10 +8,9 @@
   "types": "index.d.ts",
   "scripts": {},
   "peerDependencies": {
-    "@allors/base-meta": "*",
-    "@allors/base-domain": "*",
+    "@allors/framework": "*",
+    "@allors/workspace": "*",
     "@allors/base-angular": "*",
-    "@allors/generated": "*",
     "@angular/animations": "*",
     "@angular/cdk": "*",
     "@angular/common": "*",

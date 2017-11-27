@@ -3,7 +3,10 @@ import { HttpClient } from "@angular/common/http";
 import { Inject, Injectable } from "@angular/core";
 import { CanActivate, Router } from "@angular/router";
 
-import { AuthenticationService, constructorByName, data, Database, ENVIRONMENT, Environment, MetaDomain, MetaPopulation, Workspace } from "@allors";
+import { MetaPopulation, Workspace } from "@allors/framework";
+import { constructorByName, data, MetaDomain } from "@allors/workspace";
+
+import { AuthenticationService, Database, ENVIRONMENT, Environment } from "@allors/base-angular";
 
 @Injectable()
 export class AllorsService implements CanActivate {
