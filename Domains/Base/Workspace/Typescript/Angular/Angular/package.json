@@ -1,0 +1,26 @@
+{
+  "name": "@allors/base-angular",
+  "version": "2.0.0",
+  "description": "Allors Base Angular",
+  "repository": "https://github.com/Allors/allors2",
+  "license": "LGPL-3.0",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {},
+  "peerDependencies": {
+    "@allors/framework": "*",
+    "@allors/workspace": "*",
+    "@angular/common": "*",
+    "@angular/core": "*",
+    "@angular/router": "*",
+    "rxjs": "*"
+  },
+  "devDependencies": {
+    "@allors/framework": "file:../../../../../../Platform/Workspace/Typescript",
+    "@allors/workspace": "file:../../workspace",
+    "@angular/common": "^5.0.0",
+    "@angular/core": "^5.0.0",
+    "@angular/router": "^5.0.0",
+    "rxjs": "^5.5.2"
+  }
+}
