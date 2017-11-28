@@ -2,27 +2,22 @@ import { HTTP_INTERCEPTORS, HttpClientModule } from "@angular/common/http";
 import { NgModule } from "@angular/core";
 import { BrowserModule, Title } from "@angular/platform-browser";
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
+import { RouterModule, Routes } from "@angular/router";
 
-import { AppComponent } from "./app.component";
+import { AuthenticationInterceptor, AuthenticationService, DatabaseService, WorkspaceService } from "@allors/base-angular";
+import { ENVIRONMENT, ErrorService, MenuService } from "@allors/base-angular";
+import { DefaultErrorService } from "@allors/base-covalent";
 
-import { AuthenticationInterceptor, AuthenticationService } from "@baseAngular/authentication";
-import { AllorsService, ENVIRONMENT, ErrorService } from "@baseAngular/core";
-import { DefaultErrorService } from "@baseCovalent/errors";
+import * as ar from "@allors/apps-intranet/components/ar";
+import * as catalogues from "@allors/apps-intranet/components/catalogues";
+import * as orders from "@allors/apps-intranet/components/orders";
+import * as relations from "@allors/apps-intranet/components/relations";
+import * as workefforts from "@allors/apps-intranet/components/workefforts";
 
 import { environment } from "../environments/environment";
-
-import { MenuService } from "@allors";
-
-import { DefaultAllorsService } from "./allors.service";
-
-import { RouterModule, Routes } from "@angular/router";
+import { AppComponent } from "./app.component";
+import { AuthorizationService } from "./common/auth/authorization.service";
 import { routes } from "./routes";
-
-import * as ar from "@appsIntranet/ar";
-import * as catalogues from "@appsIntranet/catalogues";
-import * as orders from "@appsIntranet/orders";
-import * as relations from "@appsIntranet/relations";
-import * as workefforts from "@appsIntranet/workefforts";
 
 import * as common from "./common";
 
@@ -48,8 +43,10 @@ import * as common from "./common";
     { provide: ENVIRONMENT, useValue: environment },
     { provide: HTTP_INTERCEPTORS, useClass: AuthenticationInterceptor, multi: true },
     { provide: ErrorService, useClass: DefaultErrorService },
-    { provide: AllorsService, useClass: DefaultAllorsService },
+    DatabaseService,
+    WorkspaceService,
     AuthenticationService,
+    AuthorizationService,
     Title,
     MenuService,
   ],

@@ -40,21 +40,15 @@ const COVALENT_MODULES: any[] = [
   CovalentStepsModule,
 ];
 
-import { NgxChartsModule } from "@swimlane/ngx-charts";
-
-const CHART_MODULES: any[] = [
-  NgxChartsModule,
-];
-
 import { AutoCompleteModule, CheckboxModule, DatepickerModule, InputModule, LocalisedTextModule,
-  RadioGroupModule, SelectModule, SliderModule, SlideToggleModule, StaticModule, TextAreaModule } from "@baseMaterial/index";
+  RadioGroupModule, SelectModule, SliderModule, SlideToggleModule, StaticModule, TextAreaModule } from "@allors/base-material";
 
 const BASE_MATERIAL_MODULES: any[] = [
   AutoCompleteModule, CheckboxModule, DatepickerModule, InputModule, LocalisedTextModule,
   RadioGroupModule, SelectModule, SliderModule, SlideToggleModule, StaticModule, TextAreaModule,
 ];
 
-import { ChipsModule, MediaUploadModule } from "@baseCovalent/index";
+import { ChipsModule, MediaUploadModule } from "@allors/base-covalent";
 
 const BASE_COVALENT_MODULES: any[] = [
   ChipsModule, MediaUploadModule,
@@ -65,7 +59,6 @@ const BASE_COVALENT_MODULES: any[] = [
     ANGULAR_MODULES,
     MATERIAL_MODULES,
     COVALENT_MODULES,
-    CHART_MODULES,
 
     BASE_MATERIAL_MODULES,
     BASE_COVALENT_MODULES,
@@ -74,7 +67,6 @@ const BASE_COVALENT_MODULES: any[] = [
     ANGULAR_MODULES,
     MATERIAL_MODULES,
     COVALENT_MODULES,
-    CHART_MODULES,
 
     BASE_MATERIAL_MODULES,
     BASE_COVALENT_MODULES,

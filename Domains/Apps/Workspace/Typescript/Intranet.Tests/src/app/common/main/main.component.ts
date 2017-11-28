@@ -1,7 +1,7 @@
 import { AfterViewInit, ChangeDetectorRef, Component } from "@angular/core";
 import { TdMediaService } from "@covalent/core";
 
-import { MenuItem, MenuService } from "@allors";
+import { MenuItem, MenuService } from "@allors/base-angular";
 
 @Component({
   templateUrl: "./main.component.html",

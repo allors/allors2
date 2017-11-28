@@ -1,23 +1,23 @@
 import { Routes } from "@angular/router";
 
-import { AllorsService } from "@allors";
+import * as ar from "@allors/apps-intranet/components/ar";
+import * as catalogues from "@allors/apps-intranet/components/catalogues";
+import * as orders from "@allors/apps-intranet/components/orders";
+import * as relations from "@allors/apps-intranet/components/relations";
+import * as workefforts from "@allors/apps-intranet/components/workefforts";
 
-import * as ar from "@appsIntranet/ar";
-import * as catalogues from "@appsIntranet/catalogues";
-import * as orders from "@appsIntranet/orders";
-import * as relations from "@appsIntranet/relations";
-import * as workefforts from "@appsIntranet/workefforts";
+import { AuthorizationService } from "./common/auth/authorization.service";
 
 import * as common from "./common";
 
 // tslint:disable:object-literal-sort-keys
 export const routes: Routes = [
   { path: "login", component: common.LoginComponent },
-  { canActivate: [AllorsService],  path: "printinvoice/:id", component: ar.InvoicePrintComponent },
-  { canActivate: [AllorsService],  path: "printsalesorder/:id", component: orders.SalesOrderPrintComponent },
-  { canActivate: [AllorsService],  path: "printproductquote/:id", component: orders.ProductQuotePrintComponent },
+  { canActivate: [AuthorizationService],  path: "printinvoice/:id", component: ar.InvoicePrintComponent },
+  { canActivate: [AuthorizationService],  path: "printsalesorder/:id", component: orders.SalesOrderPrintComponent },
+  { canActivate: [AuthorizationService],  path: "printproductquote/:id", component: orders.ProductQuotePrintComponent },
   {
-    canActivate: [AllorsService],
+    canActivate: [AuthorizationService],
     path: "", component: common.MainComponent,
     children: [
       {

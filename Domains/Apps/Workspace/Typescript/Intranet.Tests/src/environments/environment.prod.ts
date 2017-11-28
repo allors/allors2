@@ -1,4 +1,4 @@
-import { Environment } from "@allors";
+import { Environment } from "@allors/base-angular";
 
 export const environment: Environment = {
   authenticationUrl: "Authentication/Token",
