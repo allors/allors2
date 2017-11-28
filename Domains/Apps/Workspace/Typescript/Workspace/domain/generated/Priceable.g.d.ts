@@ -1,0 +1,33 @@
+import { SessionObject } from "@allors/framework";
+import { Commentable } from './Commentable.g';
+import { DiscountAdjustment } from './DiscountAdjustment.g';
+import { VatRegime } from './VatRegime.g';
+import { VatRate } from './VatRate.g';
+import { SurchargeAdjustment } from './SurchargeAdjustment.g';
+export interface Priceable extends SessionObject, Commentable {
+    TotalDiscountAsPercentage: number;
+    DiscountAdjustment: DiscountAdjustment;
+    UnitVat: number;
+    TotalVatCustomerCurrency: number;
+    VatRegime: VatRegime;
+    TotalVat: number;
+    UnitSurcharge: number;
+    UnitDiscount: number;
+    TotalExVatCustomerCurrency: number;
+    DerivedVatRate: VatRate;
+    ActualUnitPrice: number;
+    TotalIncVatCustomerCurrency: number;
+    UnitBasePrice: number;
+    CalculatedUnitPrice: number;
+    TotalSurchargeCustomerCurrency: number;
+    TotalIncVat: number;
+    TotalSurchargeAsPercentage: number;
+    TotalDiscountCustomerCurrency: number;
+    TotalDiscount: number;
+    TotalSurcharge: number;
+    AssignedVatRegime: VatRegime;
+    TotalBasePrice: number;
+    TotalExVat: number;
+    TotalBasePriceCustomerCurrency: number;
+    SurchargeAdjustment: SurchargeAdjustment;
+}

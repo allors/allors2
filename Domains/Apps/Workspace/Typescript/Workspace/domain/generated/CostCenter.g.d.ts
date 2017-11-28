@@ -1,0 +1,32 @@
+import { SessionObject } from "@allors/framework";
+import { UniquelyIdentifiable } from './UniquelyIdentifiable.g';
+import { OrganisationGlAccount } from './OrganisationGlAccount.g';
+import { CostCenterCategory } from './CostCenterCategory.g';
+export declare class CostCenter extends SessionObject implements UniquelyIdentifiable {
+    readonly CanReadDescription: boolean;
+    readonly CanWriteDescription: boolean;
+    Description: string;
+    readonly CanReadInternalTransferGlAccount: boolean;
+    readonly CanWriteInternalTransferGlAccount: boolean;
+    InternalTransferGlAccount: OrganisationGlAccount;
+    readonly CanReadCostCenterCategories: boolean;
+    readonly CanWriteCostCenterCategories: boolean;
+    CostCenterCategories: CostCenterCategory[];
+    AddCostCenterCategory(value: CostCenterCategory): void;
+    RemoveCostCenterCategory(value: CostCenterCategory): void;
+    readonly CanReadRedistributedCostsGlAccount: boolean;
+    readonly CanWriteRedistributedCostsGlAccount: boolean;
+    RedistributedCostsGlAccount: OrganisationGlAccount;
+    readonly CanReadName: boolean;
+    readonly CanWriteName: boolean;
+    Name: string;
+    readonly CanReadActive: boolean;
+    readonly CanWriteActive: boolean;
+    Active: boolean;
+    readonly CanReadUseGlAccountOfBooking: boolean;
+    readonly CanWriteUseGlAccountOfBooking: boolean;
+    UseGlAccountOfBooking: boolean;
+    readonly CanReadUniqueId: boolean;
+    readonly CanWriteUniqueId: boolean;
+    UniqueId: string;
+}

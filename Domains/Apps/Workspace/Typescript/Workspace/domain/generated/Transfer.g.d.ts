@@ -1,0 +1,36 @@
+import { SessionObject } from "@allors/framework";
+import { Shipment } from './Shipment.g';
+import { TransferState } from './TransferState.g';
+import { TransferVersion } from './TransferVersion.g';
+import { User } from './User.g';
+export declare class Transfer extends SessionObject implements Shipment {
+    readonly CanReadTransferState: boolean;
+    readonly CanWriteTransferState: boolean;
+    TransferState: TransferState;
+    readonly CanReadCurrentVersion: boolean;
+    readonly CanWriteCurrentVersion: boolean;
+    CurrentVersion: TransferVersion;
+    readonly CanReadAllVersions: boolean;
+    readonly CanWriteAllVersions: boolean;
+    AllVersions: TransferVersion[];
+    AddAllVersion(value: TransferVersion): void;
+    RemoveAllVersion(value: TransferVersion): void;
+    readonly CanReadPrintContent: boolean;
+    readonly CanWritePrintContent: boolean;
+    PrintContent: string;
+    readonly CanReadComment: boolean;
+    readonly CanWriteComment: boolean;
+    Comment: string;
+    readonly CanReadCreatedBy: boolean;
+    readonly CanWriteCreatedBy: boolean;
+    CreatedBy: User;
+    readonly CanReadLastModifiedBy: boolean;
+    readonly CanWriteLastModifiedBy: boolean;
+    LastModifiedBy: User;
+    readonly CanReadCreationDate: boolean;
+    readonly CanWriteCreationDate: boolean;
+    CreationDate: Date;
+    readonly CanReadLastModifiedDate: boolean;
+    readonly CanWriteLastModifiedDate: boolean;
+    LastModifiedDate: Date;
+}

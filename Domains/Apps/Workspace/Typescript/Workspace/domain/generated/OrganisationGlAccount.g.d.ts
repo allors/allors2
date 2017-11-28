@@ -1,0 +1,31 @@
+import { SessionObject } from "@allors/framework";
+import { Period } from './Period.g';
+import { Product } from './Product.g';
+import { Party } from './Party.g';
+import { ProductCategory } from './ProductCategory.g';
+import { GeneralLedgerAccount } from './GeneralLedgerAccount.g';
+export declare class OrganisationGlAccount extends SessionObject implements Period {
+    readonly CanReadProduct: boolean;
+    readonly CanWriteProduct: boolean;
+    Product: Product;
+    readonly CanReadParent: boolean;
+    readonly CanWriteParent: boolean;
+    Parent: OrganisationGlAccount;
+    readonly CanReadParty: boolean;
+    readonly CanWriteParty: boolean;
+    Party: Party;
+    readonly CanReadHasBankStatementTransactions: boolean;
+    readonly HasBankStatementTransactions: boolean;
+    readonly CanReadProductCategory: boolean;
+    readonly CanWriteProductCategory: boolean;
+    ProductCategory: ProductCategory;
+    readonly CanReadGeneralLedgerAccount: boolean;
+    readonly CanWriteGeneralLedgerAccount: boolean;
+    GeneralLedgerAccount: GeneralLedgerAccount;
+    readonly CanReadFromDate: boolean;
+    readonly CanWriteFromDate: boolean;
+    FromDate: Date;
+    readonly CanReadThroughDate: boolean;
+    readonly CanWriteThroughDate: boolean;
+    ThroughDate: Date;
+}

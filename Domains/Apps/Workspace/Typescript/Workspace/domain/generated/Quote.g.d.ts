@@ -1,0 +1,38 @@
+import { SessionObject, Method } from "@allors/framework";
+import { Printable } from './Printable.g';
+import { Auditable } from './Auditable.g';
+import { Commentable } from './Commentable.g';
+import { QuoteState } from './QuoteState.g';
+import { QuoteTerm } from './QuoteTerm.g';
+import { Party } from './Party.g';
+import { ContactMechanism } from './ContactMechanism.g';
+import { Currency } from './Currency.g';
+import { QuoteItem } from './QuoteItem.g';
+import { Request } from './Request.g';
+import { Person } from './Person.g';
+export interface Quote extends SessionObject, Printable, Auditable, Commentable {
+    QuoteState: QuoteState;
+    InternalComment: string;
+    RequiredResponseDate: Date;
+    ValidFromDate: Date;
+    QuoteTerms: QuoteTerm[];
+    AddQuoteTerm(value: QuoteTerm): any;
+    RemoveQuoteTerm(value: QuoteTerm): any;
+    ValidThroughDate: Date;
+    Description: string;
+    Receiver: Party;
+    FullfillContactMechanism: ContactMechanism;
+    Price: number;
+    Currency: Currency;
+    IssueDate: Date;
+    QuoteItems: QuoteItem[];
+    AddQuoteItem(value: QuoteItem): any;
+    RemoveQuoteItem(value: QuoteItem): any;
+    QuoteNumber: string;
+    Request: Request;
+    ContactPerson: Person;
+    CanExecuteApprove: boolean;
+    Approve: Method;
+    CanExecuteReject: boolean;
+    Reject: Method;
+}

@@ -1,0 +1,35 @@
+import { SessionObject, Method } from "@allors/framework";
+import { Priceable } from './Priceable.g';
+import { Deletable } from './Deletable.g';
+import { PurchaseOrder } from './PurchaseOrder.g';
+import { QuoteItem } from './QuoteItem.g';
+import { OrderTerm } from './OrderTerm.g';
+export interface OrderItem extends SessionObject, Priceable, Deletable {
+    InternalComment: string;
+    QuantityOrdered: number;
+    Description: string;
+    CorrespondingPurchaseOrder: PurchaseOrder;
+    TotalOrderAdjustmentCustomerCurrency: number;
+    TotalOrderAdjustment: number;
+    QuoteItem: QuoteItem;
+    AssignedDeliveryDate: Date;
+    DeliveryDate: Date;
+    OrderTerms: OrderTerm[];
+    AddOrderTerm(value: OrderTerm): any;
+    RemoveOrderTerm(value: OrderTerm): any;
+    ShippingInstruction: string;
+    Associations: OrderItem[];
+    AddAssociation(value: OrderItem): any;
+    RemoveAssociation(value: OrderItem): any;
+    Message: string;
+    CanExecuteCancel: boolean;
+    Cancel: Method;
+    CanExecuteReject: boolean;
+    Reject: Method;
+    CanExecuteConfirm: boolean;
+    Confirm: Method;
+    CanExecuteApprove: boolean;
+    Approve: Method;
+    CanExecuteDelete: boolean;
+    Delete: Method;
+}

@@ -1,0 +1,36 @@
+import { SessionObject } from "@allors/framework";
+import { Shipment } from './Shipment.g';
+import { PurchaseReturnState } from './PurchaseReturnState.g';
+import { PurchaseReturnVersion } from './PurchaseReturnVersion.g';
+import { User } from './User.g';
+export declare class PurchaseReturn extends SessionObject implements Shipment {
+    readonly CanReadPurchaseReturnState: boolean;
+    readonly CanWritePurchaseReturnState: boolean;
+    PurchaseReturnState: PurchaseReturnState;
+    readonly CanReadCurrentVersion: boolean;
+    readonly CanWriteCurrentVersion: boolean;
+    CurrentVersion: PurchaseReturnVersion;
+    readonly CanReadAllVersions: boolean;
+    readonly CanWriteAllVersions: boolean;
+    AllVersions: PurchaseReturnVersion[];
+    AddAllVersion(value: PurchaseReturnVersion): void;
+    RemoveAllVersion(value: PurchaseReturnVersion): void;
+    readonly CanReadPrintContent: boolean;
+    readonly CanWritePrintContent: boolean;
+    PrintContent: string;
+    readonly CanReadComment: boolean;
+    readonly CanWriteComment: boolean;
+    Comment: string;
+    readonly CanReadCreatedBy: boolean;
+    readonly CanWriteCreatedBy: boolean;
+    CreatedBy: User;
+    readonly CanReadLastModifiedBy: boolean;
+    readonly CanWriteLastModifiedBy: boolean;
+    LastModifiedBy: User;
+    readonly CanReadCreationDate: boolean;
+    readonly CanWriteCreationDate: boolean;
+    CreationDate: Date;
+    readonly CanReadLastModifiedDate: boolean;
+    readonly CanWriteLastModifiedDate: boolean;
+    LastModifiedDate: Date;
+}
