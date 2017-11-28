@@ -1,6 +1,9 @@
 import { EventEmitter, OnInit } from "@angular/core";
 import { FormControl } from "@angular/forms";
-import { Observable } from "rxjs";
+import { Observable } from "rxjs/Observable";
+import "rxjs/add/operator/concat";
+import "rxjs/add/operator/debounceTime";
+import "rxjs/add/operator/distinctUntilChanged";
 import { ISessionObject } from "@allors/framework";
 import { Field } from "@allors/base-angular";
 export declare class AutocompleteComponent extends Field implements OnInit {

@@ -1,4 +1,7 @@
-﻿import { Observable } from "rxjs/Rx";
+﻿import { Observable } from "rxjs/Observable";
+
+import "rxjs/add/observable/of";
+import "rxjs/add/operator/switchMap";
 
 import {
   InvokeResponse, ISession, ISessionObject, Method, PullResponse,

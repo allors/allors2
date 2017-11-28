@@ -1,4 +1,6 @@
-﻿import { Observable } from "rxjs/Rx";
+﻿import { Observable } from "rxjs/Observable";
+
+import "rxjs/add/observable/empty";
 
 import { And, Exists, ISessionObject, Like, Not, ObjectType, ObjectTyped, Or, PullRequest, Query, RoleType, Sort } from "@allors/framework";
 

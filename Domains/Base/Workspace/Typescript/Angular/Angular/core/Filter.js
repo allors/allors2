@@ -1,6 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const Rx_1 = require("rxjs/Rx");
+const Observable_1 = require("rxjs/Observable");
+require("rxjs/add/observable/empty");
 const framework_1 = require("@allors/framework");
 class Filter {
     constructor(options) {
@@ -9,7 +10,7 @@ class Filter {
     create() {
         return (search) => {
             if (!search.trim) {
-                return Rx_1.Observable.empty();
+                return Observable_1.Observable.empty();
             }
             const terms = search.trim().split(" ");
             const and = new framework_1.And();

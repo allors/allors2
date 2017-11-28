@@ -15,6 +15,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const http_1 = require("@angular/common/http");
 const core_1 = require("@angular/core");
 const Observable_1 = require("rxjs/Observable");
+require("rxjs/add/operator/catch");
+require("rxjs/add/operator/map");
 const Environment_1 = require("../core/Environment");
 let AuthenticationService = class AuthenticationService {
     constructor(http, environment) {
@@ -31,8 +33,13 @@ let AuthenticationService = class AuthenticationService {
                 this.token = result.token;
             }
             return result;
-        }).catch((error) => {
-            const errMsg = (error.message) ? error.message : error.status ? `${error.status} - ${error.statusText}` : "Server error";
+        })
+            .catch((error) => {
+            const errMsg = error.message
+                ? error.message
+                : error.status
+                    ? `${error.status} - ${error.statusText}`
+                    : "Server error";
             return Observable_1.Observable.throw(errMsg);
         });
     }
@@ -40,6 +47,7 @@ let AuthenticationService = class AuthenticationService {
 AuthenticationService = __decorate([
     core_1.Injectable(),
     __param(1, core_1.Inject(Environment_1.ENVIRONMENT)),
-    __metadata("design:paramtypes", [http_1.HttpClient, Environment_1.Environment])
+    __metadata("design:paramtypes", [http_1.HttpClient,
+        Environment_1.Environment])
 ], AuthenticationService);
 exports.AuthenticationService = AuthenticationService;

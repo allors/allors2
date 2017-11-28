@@ -2,6 +2,9 @@ import { HttpClient } from "@angular/common/http";
 import { Inject, Injectable } from "@angular/core";
 import { Observable } from "rxjs/Observable";
 
+import "rxjs/add/operator/catch";
+import "rxjs/add/operator/map";
+
 import { ENVIRONMENT, Environment } from "../core/Environment";
 import { AuthenticationTokenRequest } from "./AuthenticationTokenRequest";
 import { AuthenticationTokenResponse } from "./AuthenticationTokenResponse";
@@ -12,7 +15,7 @@ export class AuthenticationService {
 
   constructor(
     private http: HttpClient,
-    @Inject(ENVIRONMENT) private environment: Environment
+    @Inject(ENVIRONMENT) private environment: Environment,
   ) {}
 
   public login$(userName: string, password: string): any {
@@ -21,7 +24,7 @@ export class AuthenticationService {
 
     return this.http
       .post<AuthenticationTokenResponse>(url, request)
-      .map(result => {
+      .map((result) => {
         if (result.authenticated) {
           this.token = result.token;
         }

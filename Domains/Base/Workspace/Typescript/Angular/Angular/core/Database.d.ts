@@ -1,7 +1,8 @@
 import { InvokeResponse, PullResponse, PushRequest, PushResponse, SyncRequest, SyncResponse } from "@allors/framework";
 import { Method } from "@allors/framework";
 import { HttpClient } from "@angular/common/http";
-import { Observable } from "rxjs/Rx";
+import { Observable } from "rxjs/Observable";
+import "rxjs/add/operator/map";
 export declare class Database {
     private http;
     url: string;

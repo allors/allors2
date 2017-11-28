@@ -1,6 +1,11 @@
 import { AfterViewInit, EventEmitter, OnDestroy, OnInit } from "@angular/core";
 import { NgForm } from "@angular/forms";
-import { Observable, Subject, Subscription } from "rxjs";
+import { Observable } from "rxjs/Observable";
+import { Subject } from "rxjs/Subject";
+import { Subscription } from "rxjs/Subscription";
+import 'rxjs/add/operator/debounceTime';
+import 'rxjs/add/operator/distinctUntilChanged';
+import 'rxjs/add/operator/do';
 import { ISessionObject } from "@allors/framework";
 import { Field } from "@allors/base-angular";
 export declare class ChipsComponent extends Field implements OnInit, AfterViewInit, OnDestroy {

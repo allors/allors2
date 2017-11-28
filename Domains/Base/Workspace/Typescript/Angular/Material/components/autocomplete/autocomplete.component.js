@@ -11,7 +11,10 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const core_1 = require("@angular/core");
 const forms_1 = require("@angular/forms");
-const rxjs_1 = require("rxjs");
+const Observable_1 = require("rxjs/Observable");
+require("rxjs/add/operator/concat");
+require("rxjs/add/operator/debounceTime");
+require("rxjs/add/operator/distinctUntilChanged");
 const base_angular_1 = require("@allors/base-angular");
 let AutocompleteComponent = class AutocompleteComponent extends base_angular_1.Field {
     constructor() {
@@ -23,7 +26,7 @@ let AutocompleteComponent = class AutocompleteComponent extends base_angular_1.F
     }
     ngOnInit() {
         if (this.filter) {
-            this.filteredOptions = rxjs_1.Observable.of(new Array())
+            this.filteredOptions = Observable_1.Observable.of(new Array())
                 .concat(this.searchControl
                 .valueChanges
                 .debounceTime(this.debounceTime)
@@ -33,7 +36,7 @@ let AutocompleteComponent = class AutocompleteComponent extends base_angular_1.F
             }));
         }
         else {
-            this.filteredOptions = rxjs_1.Observable.of(new Array())
+            this.filteredOptions = Observable_1.Observable.of(new Array())
                 .concat(this.searchControl
                 .valueChanges
                 .debounceTime(this.debounceTime)

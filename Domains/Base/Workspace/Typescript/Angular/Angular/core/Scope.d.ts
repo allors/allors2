@@ -1,4 +1,6 @@
-import { Observable } from "rxjs/Rx";
+import { Observable } from "rxjs/Observable";
+import "rxjs/add/observable/of";
+import "rxjs/add/operator/switchMap";
 import { ISession, Method, Workspace } from "@allors/framework";
 import { Database } from "./Database";
 import { Invoked } from "./responses/Invoked";

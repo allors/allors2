@@ -2,6 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const framework_1 = require("@allors/framework");
 const framework_2 = require("@allors/framework");
+require("rxjs/add/operator/map");
 class Database {
     constructor(http, url) {
         this.http = http;

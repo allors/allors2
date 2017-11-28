@@ -1,6 +1,8 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const Rx_1 = require("rxjs/Rx");
+const Observable_1 = require("rxjs/Observable");
+require("rxjs/add/observable/of");
+require("rxjs/add/operator/switchMap");
 const framework_1 = require("@allors/framework");
 const Invoked_1 = require("./responses/Invoked");
 const Loaded_1 = require("./responses/Loaded");
@@ -27,7 +29,7 @@ class Scope {
             }
             else {
                 const loaded = new Loaded_1.Loaded(this.session, pullResponse);
-                return Rx_1.Observable.of(loaded);
+                return Observable_1.Observable.of(loaded);
             }
         });
     }

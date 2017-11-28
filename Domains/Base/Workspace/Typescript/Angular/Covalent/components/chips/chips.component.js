@@ -11,7 +11,10 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const core_1 = require("@angular/core");
 const forms_1 = require("@angular/forms");
-const rxjs_1 = require("rxjs");
+const Subject_1 = require("rxjs/Subject");
+require("rxjs/add/operator/debounceTime");
+require("rxjs/add/operator/distinctUntilChanged");
+require("rxjs/add/operator/do");
 const base_angular_1 = require("@allors/base-angular");
 let ChipsComponent = class ChipsComponent extends base_angular_1.Field {
     constructor(parentForm) {
@@ -23,7 +26,7 @@ let ChipsComponent = class ChipsComponent extends base_angular_1.Field {
         this.onRemove = new core_1.EventEmitter();
     }
     ngOnInit() {
-        this.subject = new rxjs_1.Subject();
+        this.subject = new Subject_1.Subject();
         if (this.filter) {
             this.subscription = this.subject
                 .debounceTime(this.debounceTime)

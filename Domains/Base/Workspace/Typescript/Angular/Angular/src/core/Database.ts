@@ -1,7 +1,11 @@
 ﻿import { InvokeRequest, InvokeResponse, PullResponse, PushRequest, PushResponse, ResponseError, ResponseType, SyncRequest, SyncResponse } from "@allors/framework";
 import { Method } from "@allors/framework";
 import { HttpClient } from "@angular/common/http";
-import { Observable, Observer } from "rxjs/Rx";
+
+import { Observable } from "rxjs/Observable";
+import { Observer } from "rxjs/Observer";
+
+import "rxjs/add/operator/map";
 
 export class Database {
 
