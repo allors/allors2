@@ -1,40 +1,13 @@
 {
-  "compileOnSave": false,
   "compilerOptions": {
-    "outDir": "./dist/out-tsc",
-    "baseUrl": ".",
-    "sourceMap": true,
-    "declaration": false,
-    "moduleResolution": "node",
+    "module": "commonjs",
+    "target": "es2015",
+    "declaration": true,
+    "preserveSymlinks": true,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
-    "target": "es5",
-    "typeRoots": [
-      "node_modules/@types"
-    ],
-    "lib": [
-      "es2017",
-      "dom"
-    ],
-    "paths": {
-      "@baseMeta": ["../../../../Base/Workspace/Typescript/Meta/src/allors/meta/base/index"],
-      "@baseDomain": ["../../../../Base/Workspace/Typescript/Domain/src/allors/domain/base/index"],
-      "@basePromise/*": ["../../../../Base/Workspace/Typescript/Promise/src/allors/promise/base/*"],
-
-      "@baseAngular/*": ["../../../../Base/Workspace/Typescript/Angular/src/allors/angular/base/*"],
-      "@baseMaterial/*": ["../../../../Base/Workspace/Typescript/Material/src/allors/material/base/*"],
-      "@baseCovalent/*": ["../../../../Base/Workspace/Typescript/Covalent/src/allors/covalent/base/*"],
-
-      "@appsDomain": ["../Domain/src/allors/domain/apps/index"],
-
-      "@appsIntranet/*": ["./src/allors/intranet/apps/*"],
-
-      "@generatedMeta/*": ["../Domain/src/allors/meta/generated/*"],
-      "@generatedDomain/*": ["../Domain/src/allors/domain/generated/*"],
-
-      "@allors": ["./src/allors/index"],
-
-      "*": ["./node_modules/*"]
-    }
-  }
+    "outDir": "."
+  },
+  "include": ["src/**/*"],
+  "exclude" : []
 }

@@ -1,7 +1,7 @@
 import { NgModule } from "@angular/core";
 import { RouterModule, Routes } from "@angular/router";
 
-import { AllorsService } from "./allors.service";
+import { AuthorizationService } from "./auth/authorization.service";
 import { LoginComponent } from "./auth/login.component";
 
 import { FetchComponent } from "./fetch/fetch.component";
@@ -15,7 +15,7 @@ const routes: Routes = [
     path: "login",
   },
   {
-    canActivate: [AllorsService],
+    canActivate: [AuthorizationService],
     children: [
       {
         component: HomeComponent,

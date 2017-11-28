@@ -1,0 +1,31 @@
+import { AfterViewInit, ChangeDetectorRef, OnDestroy, OnInit } from "@angular/core";
+import { MatSnackBar } from "@angular/material";
+import { ActivatedRoute } from "@angular/router";
+import { TdDialogService, TdMediaService } from "@covalent/core";
+import { MetaDomain, SalesOrder, SalesInvoice, Good, SalesInvoiceItem } from "@allors/workspace";
+import { WorkspaceService, ErrorService } from "@allors/base-angular";
+export declare class InvoiceOverviewComponent implements OnInit, AfterViewInit, OnDestroy {
+    private workspaceService;
+    private errorService;
+    private route;
+    dialogService: TdDialogService;
+    private snackBar;
+    media: TdMediaService;
+    private changeDetectorRef;
+    m: MetaDomain;
+    title: string;
+    order: SalesOrder;
+    invoice: SalesInvoice;
+    goods: Good[];
+    private subscription;
+    private scope;
+    private refresh$;
+    constructor(workspaceService: WorkspaceService, errorService: ErrorService, route: ActivatedRoute, dialogService: TdDialogService, snackBar: MatSnackBar, media: TdMediaService, changeDetectorRef: ChangeDetectorRef);
+    refresh(): void;
+    save(): void;
+    ngOnInit(): void;
+    ngAfterViewInit(): void;
+    ngOnDestroy(): void;
+    goBack(): void;
+    deleteInvoiceItem(invoiceItem: SalesInvoiceItem): void;
+}

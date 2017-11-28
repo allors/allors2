@@ -8,6 +8,8 @@ import { AppRoutingModule } from "./app-routing.module";
 import { AppComponent } from "./app.component";
 
 import { environment } from "../environments/environment";
+
+import { AuthorizationService } from "./auth/authorization.service";
 import { LoginComponent } from "./auth/login.component";
 
 import { DashboardComponent } from "./dashboard/dashboard.component";
@@ -29,9 +31,7 @@ const MATERIAL_MODULES: any[] = [
   MatSnackBarModule, MatTabsModule, MatToolbarModule, MatTooltipModule,
 ];
 
-import { AuthenticationInterceptor, AuthenticationService, ENVIRONMENT } from "@allors/base-angular";
-
-import { AllorsService } from "./allors.service";
+import { AuthenticationInterceptor, AuthenticationService, DatabaseService, ENVIRONMENT, WorkspaceService } from "@allors/base-angular";
 
 import { AutoCompleteModule, CheckboxModule, DatepickerModule, InputModule, LocalisedTextModule,
          RadioGroupModule, SelectModule, SliderModule, SlideToggleModule, StaticModule, TextAreaModule } from "@allors/base-material";
@@ -62,8 +62,10 @@ const BASE_MATERIAL_MODULES: any[] = [
   providers: [
     { provide: ENVIRONMENT, useValue: environment },
     { provide: HTTP_INTERCEPTORS, useClass: AuthenticationInterceptor, multi: true },
-    AllorsService,
+    DatabaseService,
+    WorkspaceService,
     AuthenticationService,
+    AuthorizationService,
   ],
 })
 export class AppModule { }

@@ -1,0 +1,32 @@
+import { AfterViewInit, ChangeDetectorRef, OnDestroy, OnInit } from "@angular/core";
+import { Title } from "@angular/platform-browser";
+import { ActivatedRoute } from "@angular/router";
+import { TdMediaService } from "@covalent/core";
+import { MetaDomain, Locale, Enumeration, Person, PersonRole, CustomerRelationship } from "@allors/workspace";
+import { WorkspaceService, ErrorService } from "@allors/base-angular";
+export declare class PersonComponent implements OnInit, AfterViewInit, OnDestroy {
+    private workspaceService;
+    private errorService;
+    private route;
+    media: TdMediaService;
+    private titleService;
+    private changeDetectorRef;
+    title: string;
+    subTitle: string;
+    m: MetaDomain;
+    person: Person;
+    locales: Locale[];
+    genders: Enumeration[];
+    salutations: Enumeration[];
+    roles: PersonRole[];
+    customerRelationships: CustomerRelationship[];
+    private subscription;
+    private scope;
+    private customerRole;
+    constructor(workspaceService: WorkspaceService, errorService: ErrorService, route: ActivatedRoute, media: TdMediaService, titleService: Title, changeDetectorRef: ChangeDetectorRef);
+    ngOnInit(): void;
+    ngAfterViewInit(): void;
+    ngOnDestroy(): void;
+    save(): void;
+    goBack(): void;
+}

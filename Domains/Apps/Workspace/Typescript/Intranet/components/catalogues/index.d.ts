@@ -1,0 +1,16 @@
+export * from "./overview.module";
+export * from "./dashboard/dashboard.module";
+export * from "./catalogue/catalogues-overview.module";
+export * from "./catalogue/catalogue.module";
+export * from "./category/categories-overview.module";
+export * from "./category/category.module";
+export * from "./good/goods-overview.module";
+export * from "./good/newgood-dialog.module";
+export * from "./productcharacteristic/productcharacteristics-overview.module";
+export * from "./productcharacteristic/productcharacteristic.module";
+export * from "./producttype/producttypes-overview.module";
+export * from "./producttype/producttype.module";
+export * from "./nonSerialisedGood/nonserialisedgoodmodule";
+export * from "./serialisedGood/serialisedgood.module";
+import { OverviewModule } from "./overview.module";
+export declare const Modules: (typeof OverviewModule)[];

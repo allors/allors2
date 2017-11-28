@@ -3,7 +3,7 @@
   "compilerOptions": {
     "outDir": "./dist/out-tsc",
     "sourceMap": true,
-    // "preserveSymlinks": true, // Only supported in Typescript ^2.5.0
+    "preserveSymlinks": true, // Only supported in Typescript ^2.5.0
     "declaration": false,
     "moduleResolution": "node",
     "emitDecoratorMetadata": true,

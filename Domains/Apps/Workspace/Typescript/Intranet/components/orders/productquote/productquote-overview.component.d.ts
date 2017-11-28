@@ -1,0 +1,35 @@
+import { AfterViewInit, ChangeDetectorRef, OnDestroy, OnInit } from "@angular/core";
+import { MatSnackBar } from "@angular/material";
+import { ActivatedRoute, Router } from "@angular/router";
+import { TdDialogService, TdMediaService } from "@covalent/core";
+import { MetaDomain, SalesOrder, Good, RequestForQuote, ProductQuote, QuoteItem } from "@allors/workspace";
+import { WorkspaceService, ErrorService } from "@allors/base-angular";
+export declare class ProductQuoteOverviewComponent implements OnInit, AfterViewInit, OnDestroy {
+    private workspaceService;
+    private errorService;
+    private route;
+    private router;
+    dialogService: TdDialogService;
+    private snackBar;
+    media: TdMediaService;
+    private changeDetectorRef;
+    m: MetaDomain;
+    title: string;
+    request: RequestForQuote;
+    quote: ProductQuote;
+    goods: Good[];
+    salesOrder: SalesOrder;
+    private subscription;
+    private scope;
+    private refresh$;
+    constructor(workspaceService: WorkspaceService, errorService: ErrorService, route: ActivatedRoute, router: Router, dialogService: TdDialogService, snackBar: MatSnackBar, media: TdMediaService, changeDetectorRef: ChangeDetectorRef);
+    refresh(): void;
+    save(): void;
+    ngOnInit(): void;
+    ngAfterViewInit(): void;
+    ngOnDestroy(): void;
+    goBack(): void;
+    deleteQuoteItem(quoteItem: QuoteItem): void;
+    Order(): void;
+    gotoOrder(): void;
+}

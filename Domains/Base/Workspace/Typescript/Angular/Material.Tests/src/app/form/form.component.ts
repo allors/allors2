@@ -1,12 +1,10 @@
 import { Component, OnDestroy, OnInit } from "@angular/core";
 import { Subscription } from "rxjs/Rx";
 
-import { PullRequest, Query } from "@allors/framework";
+import { ObjectTyped, PullRequest, Query } from "@allors/framework";
 import { MetaDomain, Organisation } from "@allors/workspace";
 
-import { Scope } from "@allors/base-angular";
-
-import { AllorsService } from "../allors.service";
+import { Scope, WorkspaceService } from "@allors/base-angular";
 
 @Component({
   selector: "app-form",
@@ -20,9 +18,9 @@ export class FormComponent implements OnInit, OnDestroy {
   private scope: Scope;
   private subscription: Subscription;
 
-  constructor(private allors: AllorsService) {
-    this.scope = new Scope(allors.database, allors.workspace);
-    this.m = allors.meta;
+  constructor(private workspaceService: WorkspaceService) {
+    this.scope = this.workspaceService.createScope();
+    this.m = this.workspaceService.metaPopulation.metaDomain;
   }
 
   public ngOnDestroy() {
@@ -32,7 +30,6 @@ export class FormComponent implements OnInit, OnDestroy {
   }
 
   public ngOnInit() {
-    const m = this.allors.meta;
     this.refresh();
   }
 
@@ -49,11 +46,9 @@ export class FormComponent implements OnInit, OnDestroy {
       this.subscription.unsubscribe();
     }
 
-    const m = this.allors.meta;
-
     const query = new Query({
       name: "organisations",
-      objectType: m.Organisation,
+      objectType: this.m.Organisation as ObjectTyped,
     });
 
     this.scope

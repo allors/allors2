@@ -2,12 +2,9 @@ import { Component, OnDestroy, OnInit } from "@angular/core";
 import { Title } from "@angular/platform-browser";
 import { Observable, Subject, Subscription } from "rxjs/Rx";
 
+import { Loaded, Scope, WorkspaceService } from "@allors/base-angular";
 import { Equals, Like, Page, PullRequest, Query, Sort, TreeNode } from "@allors/framework";
 import { Organisation, Person } from "@allors/workspace";
-
-import { Loaded, Scope } from "@allors/base-angular";
-
-import { AllorsService } from "../allors.service";
 
 @Component({
   templateUrl: "./query.component.html",
@@ -23,8 +20,8 @@ export class QueryComponent implements OnInit, OnDestroy {
   private scope: Scope;
   private subscription: Subscription;
 
-  constructor(private title: Title, private allors: AllorsService) {
-    this.scope = new Scope(allors.database, allors.workspace);
+  constructor(private title: Title, private workspaceService: WorkspaceService) {
+    this.scope = workspaceService.createScope();
   }
 
   public ngOnInit() {
@@ -37,7 +34,7 @@ export class QueryComponent implements OnInit, OnDestroy {
       this.subscription.unsubscribe();
     }
 
-    const m = this.allors.meta;
+    const m = this.workspaceService.metaPopulation.metaDomain;
 
     const query = new Query(
       {

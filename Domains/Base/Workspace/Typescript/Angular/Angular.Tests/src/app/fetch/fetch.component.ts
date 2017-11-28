@@ -6,9 +6,7 @@ import { Observable, Subject, Subscription } from "rxjs/Rx";
 import { Equals, Fetch, Like, Page, Path, PullRequest, Query, Sort, TreeNode } from "@allors/framework";
 import { Organisation } from "@allors/workspace";
 
-import { Loaded, Scope } from "@allors/base-angular";
-
-import { AllorsService } from "../allors.service";
+import { Loaded, Scope, WorkspaceService } from "@allors/base-angular";
 
 @Component({
   templateUrl: "./fetch.component.html",
@@ -24,8 +22,9 @@ export class FetchComponent implements OnInit, OnDestroy {
   constructor(
     private title: Title,
     private route: ActivatedRoute,
-    private allors: AllorsService) {
-    this.scope = new Scope(allors.database, allors.workspace);
+    private workspaceService: WorkspaceService) {
+
+    this.scope = workspaceService.createScope();
   }
 
   public ngOnInit() {
@@ -38,7 +37,7 @@ export class FetchComponent implements OnInit, OnDestroy {
       this.subscription.unsubscribe();
     }
 
-    const m = this.allors.meta;
+    const m = this.workspaceService.metaPopulation.metaDomain;
 
     const id = this.route.snapshot.paramMap.get("id");
 

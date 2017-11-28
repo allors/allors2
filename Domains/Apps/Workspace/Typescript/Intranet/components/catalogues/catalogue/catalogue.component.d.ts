@@ -1,0 +1,34 @@
+import { AfterViewInit, ChangeDetectorRef, OnDestroy, OnInit } from "@angular/core";
+import { MatSnackBar } from "@angular/material";
+import { ActivatedRoute } from "@angular/router";
+import { TdMediaService } from "@covalent/core";
+import { MetaDomain, Catalogue, Singleton, Locale, ProductCategory, CatScope } from "@allors/workspace";
+import { WorkspaceService, ErrorService } from "@allors/base-angular";
+export declare class CatalogueComponent implements OnInit, AfterViewInit, OnDestroy {
+    private workspaceService;
+    private errorService;
+    private route;
+    private snackBar;
+    media: TdMediaService;
+    private changeDetectorRef;
+    m: MetaDomain;
+    catalogue: Catalogue;
+    title: string;
+    subTitle: string;
+    singleton: Singleton;
+    locales: Locale[];
+    categories: ProductCategory[];
+    catScopes: CatScope[];
+    private subscription;
+    private scope;
+    private refresh$;
+    constructor(workspaceService: WorkspaceService, errorService: ErrorService, route: ActivatedRoute, snackBar: MatSnackBar, media: TdMediaService, changeDetectorRef: ChangeDetectorRef);
+    ngOnInit(): void;
+    ngAfterViewInit(): void;
+    ngOnDestroy(): void;
+    imageSelected(id: string): void;
+    save(): void;
+    update(): void;
+    refresh(): void;
+    goBack(): void;
+}
