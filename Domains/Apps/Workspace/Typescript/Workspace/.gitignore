@@ -1,5 +1,5 @@
 node_modules
-meta
-domain
-index.js
-index.d.ts
+/meta
+/domain
+/index.js
+/index.d.ts

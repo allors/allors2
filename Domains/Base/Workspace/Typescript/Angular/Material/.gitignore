@@ -1,4 +1,4 @@
 node_modules
-components
-index.js
-index.d.ts
+/components
+/index.js
+/index.d.ts

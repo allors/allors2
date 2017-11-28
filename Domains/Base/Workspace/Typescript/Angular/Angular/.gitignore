@@ -1,4 +1,4 @@
 node_modules
-authentication
-core
-menu
+/authentication
+/core
+/menu
