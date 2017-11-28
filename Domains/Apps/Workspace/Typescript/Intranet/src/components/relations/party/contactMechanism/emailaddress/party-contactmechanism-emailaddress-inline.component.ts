@@ -6,15 +6,14 @@ import { Fetch, TreeNode, Path, Query, PullRequest, And, Predicate, Like, Contai
 
 @Component({
   selector: "party-contactmechanism-emailAddress",
-  template:
-  `
-  <a-mat-select [object]="partyContactMechanism" [roleType]="m.PartyContactMechanism.ContactPurposes" [options]="contactMechanismPurposes" display="Name"></a-mat-select>
-  <a-mat-input [object]="emailAddress" [roleType]="m.EmailAddress.ElectronicAddressString" label="Email address"></a-mat-input>
-  <a-mat-slide-toggle [object]="partyContactMechanism" [roleType]="m.PartyContactMechanism.UseAsDefault" label="Use as default"></a-mat-slide-toggle>
-  <a-mat-slide-toggle [object]="partyContactMechanism" [roleType]="m.PartyContactMechanism.NonSolicitationIndicator" label="Non Solicitation"></a-mat-slide-toggle>
+  template: `
+<a-mat-select [object]="partyContactMechanism" [roleType]="m.PartyContactMechanism.ContactPurposes" [options]="contactMechanismPurposes" display="Name"></a-mat-select>
+<a-mat-input [object]="emailAddress" [roleType]="m.EmailAddress.ElectronicAddressString" label="Email address"></a-mat-input>
+<a-mat-slide-toggle [object]="partyContactMechanism" [roleType]="m.PartyContactMechanism.UseAsDefault" label="Use as default"></a-mat-slide-toggle>
+<a-mat-slide-toggle [object]="partyContactMechanism" [roleType]="m.PartyContactMechanism.NonSolicitationIndicator" label="Non Solicitation"></a-mat-slide-toggle>
 
-  <button mat-button color="primary" type="button" (click)="save()">Save</button>
-  <button mat-button color="secondary" type="button"(click)="cancel()">Cancel</button>
+<button mat-button color="primary" type="button" (click)="save()">Save</button>
+<button mat-button color="secondary" type="button"(click)="cancel()">Cancel</button>
 `,
 })
 export class PartyContactMechanismEmailAddressInlineComponent implements OnInit {

@@ -4,29 +4,10 @@
     "outDir": "../out-tsc/app",
     "baseUrl": "./",
     "module": "es2015",
-    "types": [],
-    "paths": {
-      "@baseMeta": ["../../../../../Base/Workspace/Typescript/Meta/src/allors/meta/base/index"],
-      "@baseDomain": ["../../../../../Base/Workspace/Typescript/Domain/src/allors/domain/base/index"],
-
-      "@baseAngular/*": ["../../../../../Base/Workspace/Typescript/Angular/src/allors/angular/base/*"],
-      "@baseMaterial/*": ["../../../../../Base/Workspace/Typescript/Material/src/allors/material/base/*"],
-      "@baseCovalent/*": ["../../../../../Base/Workspace/Typescript/Covalent/src/allors/covalent/base/*"],
-
-      "@appsDomain": ["../../Domain/src/allors/domain/apps/index"],
-
-      "@appsIntranet/*": ["./allors/intranet/apps/*"],
-
-      "@generatedMeta/*": ["../../Domain/src/allors/meta/generated/*"],
-      "@generatedDomain/*": ["../../Domain/src/allors/domain/generated/*"],
-
-      "@allors": ["./allors/index"],
-
-      "*": ["../node_modules/*"]
-    }
+    "types": []
   },
   "exclude": [
     "test.ts",
     "**/*.spec.ts"
-  ]
+    ]
 }

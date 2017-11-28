@@ -20,7 +20,7 @@ import { MenuItem, MenuService } from "@allors/base-angular";
 </mat-nav-list>
 <router-outlet></router-outlet>
 </td-layout-manage-list>
-  `,
+`,
 })
 export class OverviewComponent implements AfterViewInit {
 

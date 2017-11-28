@@ -10,7 +10,76 @@ import { Filter, Scope, WorkspaceService, ErrorService, Loaded, Invoked, Saved }
 import { Query, PullRequest, Contains, Fetch, TreeNode, Path } from "@allors/framework";
 
 @Component({
-  templateUrl: "./invoice.component.html",
+  template: `
+<td-layout-card-over [cardTitle]="title" [cardSubtitle]="subTitle">
+  <form #form="ngForm" *ngIf="invoice" (submit)="save()">
+
+    <div class="pad">
+      <div *ngIf="invoice.SalesInvoiceState">
+        <a-mat-static [object]="invoice" [roleType]="m.SalesInvoice.SalesInvoiceState" display="Name" label="Status"></a-mat-static>
+        <button *ngIf="invoice.CanExecuteSend" mat-button type="button" (click)="send()">Send</button>
+        <button *ngIf="invoice.CanExecuteSend" mat-button type="button" (click)="cancel()">Cancel</button>
+        <button *ngIf="invoice.CanExecuteWriteOff" mat-button type="button" (click)="writeOff()">Write off</button>
+      </div>
+
+      <a-mat-static *ngIf="invoice.SalesOrder" [object]="invoice" [roleType]="m.SalesInvoice.SalesOrder"></a-mat-static>
+      <a-mat-autocomplete *ngIf="showOrganisations" [object]="invoice" [roleType]="m.SalesInvoice.BillToCustomer" [filter]="organisationsFilter.create()"
+        display="Name" (onSelect)="receiverSelected($event)" label="Bill to organisation"></a-mat-autocomplete>
+      <a-mat-autocomplete *ngIf="showPeople" [object]="invoice" [roleType]="m.SalesInvoice.BillToCustomer" [filter]="peopleFilter.create()"
+        display="displayName" (onSelect)="receiverSelected($event)" label="Bill to person"></a-mat-autocomplete>
+
+      <a-mat-select *ngIf="showOrganisations && !showPeople" [object]="invoice" [roleType]="m.SalesInvoice.ContactPerson" [options]="contacts" display="displayName"></a-mat-select>
+      <button *ngIf="showOrganisations && !showPeople" type="button" mat-icon-button (click)="addPerson = true"><mat-icon>add</mat-icon></button>
+      <div *ngIf="showOrganisations && addPerson" style="background: lightblue" class="pad">
+        <person-inline (cancelled)="personCancelled($event)" (saved)="personAdded($event)">
+        </person-inline>
+      </div>
+
+      <a-mat-select [object]="invoice" [roleType]="m.SalesInvoice.BillToContactMechanism" [options]="contactMechanisms" display="displayName"></a-mat-select>
+      <button *ngIf="invoice.BillToCustomer" type="button" mat-button (click)="addWebAddress = true">+Web</button>
+      <button *ngIf="invoice.BillToCustomer" type="button" mat-button (click)="addEmailAddress = true">+Email</button>
+      <button *ngIf="invoice.BillToCustomer" type="button" mat-button (click)="addPostalAddress = true">+Postal</button>
+      <button *ngIf="invoice.BillToCustomer" type="button" mat-button (click)="addTeleCommunicationsNumber = true">+Telecom</button>
+
+      <div *ngIf="addWebAddress && invoice.BillToCustomer" style="background: lightblue" class="pad">
+        <party-contactmechanism-webaddress [scope]="scope" (cancelled)="webAddressCancelled($event)" (saved)="webAddressAdded($event)">
+        </party-contactmechanism-webaddress>
+      </div>
+      <div *ngIf="addEmailAddress && invoice.BillToCustomer" style="background: lightblue" class="pad">
+        <party-contactmechanism-emailAddress [scope]="scope" (cancelled)="emailAddressCancelled($event)" (saved)="emailAddressAdded($event)">
+        </party-contactmechanism-emailAddress>
+      </div>
+      <div *ngIf="addPostalAddress && invoice.BillToCustomer" style="background: lightblue" class="pad">
+        <party-contactmechanism-postaladdress [scope]="scope" (cancelled)="postalAddressCancelled($event)" (saved)="postalAddressAdded($event)">
+        </party-contactmechanism-postaladdress>
+      </div>
+      <div *ngIf="addTeleCommunicationsNumber && invoice.BillToCustomer" style="background: lightblue" class="pad">
+        <party-contactmechanism-telecommunicationsnumber [scope]="scope" (cancelled)="teleCommunicationsNumberCancelled($event)" (saved)="teleCommunicationsNumberAdded($event)">
+        </party-contactmechanism-telecommunicationsnumber>
+      </div>
+
+      <a-mat-input [object]="invoice" [roleType]="m.SalesInvoice.Description"></a-mat-input>
+      <a-mat-select [object]="invoice" [roleType]="m.SalesInvoice.VatRegime" [options]="vatRegimes" display="Name"></a-mat-select>
+      <a-mat-static *ngIf="invoice.VatRegime" [object]="invoice.VatRegime" [roleType]="m.VatRegime.VatRate" display="Rate"></a-mat-static>
+
+      <a-mat-static *ngIf="order?.Comment" [object]="order" [roleType]="m.SalesOrder.Comment"></a-mat-static>
+      <a-mat-textarea [object]="invoice" [roleType]="m.SalesInvoice.Comment"></a-mat-textarea>
+      <a-mat-static *ngIf="order?.InternalComment" [object]="order" [roleType]="m.SalesOrder.InternalComment"></a-mat-static>
+      <a-mat-textarea [object]="invoice" [roleType]="m.SalesInvoice.InternalComment"></a-mat-textarea>
+      <br/>
+      <a-mat-textarea [object]="invoice" [roleType]="m.SalesInvoice.Message"></a-mat-textarea>
+    </div>
+
+    <mat-divider></mat-divider>
+
+    <mat-card-actions>
+      <button mat-button color="primary" type="submit" [disabled]="!form.form.valid">SAVE</button>
+      <button mat-button (click)="goBack()" type="button">CANCEL</button>
+    </mat-card-actions>
+
+  </form>
+</td-layout-card-over>
+`,
 })
 export class InvoiceComponent implements OnInit, AfterViewInit, OnDestroy {
 

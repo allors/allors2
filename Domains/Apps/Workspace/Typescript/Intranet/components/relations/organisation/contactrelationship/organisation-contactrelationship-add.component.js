@@ -15,6 +15,7 @@ const core_2 = require("@covalent/core");
 const Rx_1 = require("rxjs/Rx");
 const base_angular_1 = require("@allors/base-angular");
 const framework_1 = require("@allors/framework");
+const organisation_contactrelationship_component_1 = require("./organisation-contactrelationship.component");
 let OrganisationContactrelationshipAddComponent = class OrganisationContactrelationshipAddComponent {
     constructor(workspaceService, errorService, route, media, changeDetectorRef) {
         this.workspaceService = workspaceService;
@@ -103,7 +104,7 @@ let OrganisationContactrelationshipAddComponent = class OrganisationContactrelat
 };
 OrganisationContactrelationshipAddComponent = __decorate([
     core_1.Component({
-        templateUrl: "./organisation-contactrelationship.component.html",
+        template: organisation_contactrelationship_component_1.template,
     }),
     __metadata("design:paramtypes", [base_angular_1.WorkspaceService,
         base_angular_1.ErrorService,

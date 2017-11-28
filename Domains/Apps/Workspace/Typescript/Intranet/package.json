@@ -34,7 +34,7 @@
     "zone.js": "*"
   },
   "devDependencies": {
-    "@allors/framework": "file:../../../../../Platform/Workspace/Typescript",
+    "@allors/framework": "file:../../../../../platform/workspace/typescript",
     "@allors/workspace": "file:../workspace",
     "@allors/base-angular": "file:../../../../base/workspace/typescript/angular/angular",
     "@allors/base-material": "file:../../../../base/workspace/typescript/angular/material",

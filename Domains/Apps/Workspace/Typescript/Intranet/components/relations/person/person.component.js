@@ -114,7 +114,32 @@ let PersonComponent = class PersonComponent {
 };
 PersonComponent = __decorate([
     core_1.Component({
-        templateUrl: "./person.component.html",
+        template: `
+<td-layout-card-over [cardTitle]="title" [cardSubtitle]="subTitle">
+  <form #form="ngForm" *ngIf="person" (submit)="save()">
+
+    <div class="pad">
+      <a-mat-media-upload [object]="person" [roleType]="m.Person.Picture" accept="image/*"></a-mat-media-upload>
+      <a-mat-select [object]="person" [roleType]="m.Person.PersonRoles" [options]="roles" display="Name"></a-mat-select>
+      <a-mat-input [object]="person" [roleType]="m.Person.FirstName"></a-mat-input>
+      <a-mat-input [object]="person" [roleType]="m.Person.MiddleName"></a-mat-input>
+      <a-mat-input [object]="person" [roleType]="m.Person.LastName"></a-mat-input>
+      <a-mat-input [object]="person" [roleType]="m.Person.Comment"></a-mat-input>
+      <a-mat-input [object]="person" [roleType]="m.Person.Function"></a-mat-input>
+      <a-mat-select [object]="person" [roleType]="m.Person.Gender" [options]="genders" display="Name"></a-mat-select>
+      <a-mat-select [object]="person" [roleType]="m.Person.Salutation" [options]="salutations" display="Name"></a-mat-select>
+      <a-mat-select [object]="person" [roleType]="m.Person.Locale" [options]="locales" display="Name"></a-mat-select>
+    </div>
+
+    <mat-divider></mat-divider>
+
+    <mat-card-actions>
+      <button mat-button color="primary" type="submit" [disabled]="!form.form.valid">SAVE</button>
+      <button mat-button (click)="goBack()" type="button">CANCEL</button>
+    </mat-card-actions>
+  </form>
+</td-layout-card-over>
+`,
     }),
     __metadata("design:paramtypes", [base_angular_1.WorkspaceService,
         base_angular_1.ErrorService,

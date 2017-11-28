@@ -14,6 +14,7 @@ const router_1 = require("@angular/router");
 const core_2 = require("@covalent/core");
 const base_angular_1 = require("@allors/base-angular");
 const framework_1 = require("@allors/framework");
+const party_contactmechanism_webaddress_component_1 = require("./party-contactmechanism-webaddress.component");
 let PartyContactMechanismAddWebAddressComponent = class PartyContactMechanismAddWebAddressComponent {
     constructor(workspaceService, errorService, route, media, changeDetectorRef) {
         this.workspaceService = workspaceService;
@@ -94,7 +95,7 @@ let PartyContactMechanismAddWebAddressComponent = class PartyContactMechanismAdd
 };
 PartyContactMechanismAddWebAddressComponent = __decorate([
     core_1.Component({
-        templateUrl: "./party-contactmechanism-webaddress.component.html",
+        template: party_contactmechanism_webaddress_component_1.template,
     }),
     __metadata("design:paramtypes", [base_angular_1.WorkspaceService,
         base_angular_1.ErrorService,

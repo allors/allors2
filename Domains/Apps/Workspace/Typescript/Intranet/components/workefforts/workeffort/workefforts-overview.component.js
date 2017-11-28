@@ -27,7 +27,16 @@ let WorkEffortsOverviewComponent = class WorkEffortsOverviewComponent {
 };
 WorkEffortsOverviewComponent = __decorate([
     core_1.Component({
-        templateUrl: "./workefforts-overview.component.html",
+        template: `
+<mat-card>
+  <mat-card-title>Work Efforts Dashboard</mat-card-title>
+  <mat-card-subtitle>Overview</mat-card-subtitle>
+  <mat-divider></mat-divider>
+  <mat-card-content>
+    Info
+  </mat-card-content>
+</mat-card>
+`,
     }),
     __metadata("design:paramtypes", [core_2.TdMediaService, core_1.ChangeDetectorRef, platform_browser_1.Title])
 ], WorkEffortsOverviewComponent);

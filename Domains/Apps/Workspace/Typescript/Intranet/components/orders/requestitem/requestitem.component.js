@@ -236,7 +236,39 @@ let RequestItemEditComponent = class RequestItemEditComponent {
 };
 RequestItemEditComponent = __decorate([
     core_1.Component({
-        templateUrl: "./requestitem.component.html",
+        template: `
+<td-layout-card-over [cardTitle]="title" [cardSubtitle]="subTitle">
+  <form #form="ngForm" *ngIf="requestItem" (submit)="save()">
+
+    <div class="pad">
+      <div *ngIf="requestItem.RequestItemState">
+        <a-mat-static [object]="requestItem" [roleType]="m.RequestItem.RequestItemState" display="Name" label="Status"></a-mat-static>
+         <button *ngIf="requestItem.CanExecuteSubmit" mat-button type="button" (click)="submit()">Submit</button>
+        <button *ngIf="requestItem.CanExecuteCancel" mat-button type="button" (click)="cancel()">Cancel</button>
+        <button *ngIf="requestItem.CanExecuteHold" mat-button type="button" (click)="hold()">Pending Customer</button>
+      </div>
+
+      <a-mat-autocomplete [object]="requestItem" [roleType]="m.RequestItem.Product" [options]="goods" display="Name" [filter]="goodsFilter.create()"
+        (onSelect)="goodSelected($event)"></a-mat-autocomplete>
+      <a-mat-input [object]="requestItem" [roleType]="m.RequestItem.Quantity"></a-mat-input>
+      <a-mat-select [object]="requestItem" [roleType]="m.RequestItem.UnitOfMeasure" [options]="unitsOfMeasure" display="Name"></a-mat-select>
+      <a-mat-static *ngIf="serialisedInventoryItem?.ExpectedSalesPrice" [object]="serialisedInventoryItem" [roleType]="m.SerialisedInventoryItem.ExpectedSalesPrice"></a-mat-static>
+      <a-mat-input [object]="requestItem" [roleType]="m.RequestItem.MaximumAllowedPrice"></a-mat-input>
+      <a-mat-datepicker [object]="requestItem" [roleType]="m.RequestItem.RequiredByDate"></a-mat-datepicker>
+      <a-mat-textarea [object]="requestItem" [roleType]="m.RequestItem.Comment"></a-mat-textarea>
+      <a-mat-textarea [object]="requestItem" [roleType]="m.RequestItem.InternalComment"></a-mat-textarea>
+    </div>
+
+    <mat-divider></mat-divider>
+
+    <mat-card-actions>
+      <button mat-button color="primary" type="submit" [disabled]="!form.form.valid">SAVE</button>
+      <button mat-button (click)="goBack()" type="button">CANCEL</button>
+    </mat-card-actions>
+
+  </form>
+</td-layout-card-over>
+`,
     }),
     __metadata("design:paramtypes", [base_angular_1.WorkspaceService,
         base_angular_1.ErrorService,

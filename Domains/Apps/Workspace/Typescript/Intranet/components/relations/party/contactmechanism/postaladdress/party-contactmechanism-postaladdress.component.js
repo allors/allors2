@@ -1,3 +1,6 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.template = `
 <td-layout-card-over [cardTitle]="title" [cardSubtitle]="subTitle">
   <form #form="ngForm" *ngIf="contactMechanism" (submit)="save()">
 
@@ -23,3 +26,4 @@
 
   </form>
 </td-layout-card-over>
+`;

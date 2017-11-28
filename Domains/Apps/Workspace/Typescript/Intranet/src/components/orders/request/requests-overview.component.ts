@@ -17,7 +17,84 @@ interface SearchData {
 }
 
 @Component({
-  templateUrl: "./requests-overview.component.html",
+  template: `
+<mat-toolbar>
+  <div layout="row" layout-align="start center" flex>
+    <button mat-icon-button tdLayoutManageListOpen [hideWhenOpened]="true" style="display: none">
+          <mat-icon>arrow_back</mat-icon>
+        </button>
+    <span>{{title}}</span>
+    <span flex></span>
+    <button mat-icon-button><mat-icon>settings</mat-icon></button>
+  </div>
+</mat-toolbar>
+
+<mat-card>
+  <div class="pad-top-xs pad-left pad-right">
+    <form novalidate [formGroup]="searchForm">
+      <mat-input-container>
+        <input fxFlex matInput placeholder="Organisation" formControlName="company">
+        <mat-icon matSuffix>search</mat-icon>
+      </mat-input-container>
+      <mat-input-container>
+        <input fxFlex matInput placeholder="Number" formControlName="requestNumber">
+        <mat-icon matSuffix>search</mat-icon>
+      </mat-input-container>
+      <mat-input-container>
+        <input fxFlex matInput placeholder="Description" formControlName="description">
+        <mat-icon matSuffix>search</mat-icon>
+      </mat-input-container>
+    </form>
+  </div>
+
+  <mat-divider></mat-divider>
+
+  <ng-template tdLoading="organisations">
+    <mat-list class="will-load">
+      <div class="mat-padding" *ngIf="data && data.length === 0" layout="row" layout-align="center center">
+        <h3>No requests to display.</h3>
+      </div>
+      <ng-template let-request let-last="last" ngFor [ngForOf]="data">
+        <mat-list-item>
+
+          <h3 *ngIf="request.Originator" mat-line [routerLink]="['/orders/request/' + request.id ]" > {{request.Originator.displayName}}</h3>
+          <h4 mat-line [routerLink]="['/orders/request/' + request.id ]" > {{request.RequestNumber }}: {{request.Description}} ({{request.RequestState.Name}})</h4>
+          <p mat-line> Response required date: {{request.RequiredResponseDate | date}} </p>
+          <p mat-line hide-gt-md class="mat-caption"> last modified: {{ request.LastModifiedDate | timeAgo }} </p>
+
+          <span flex></span>
+
+          <span hide-xs hide-sm hide-md flex-gt-xs="60" flex-xs="40" layout-gt-xs="row">
+                <div class="mat-caption tc-grey-500" flex-gt-xs="50"> {{ request.CreationDate | date }} </div>
+                <div class="mat-caption tc-grey-500" flex-gt-xs="50"> {{ request.LastModifiedDate | timeAgo }} </div>
+          </span>
+
+          <span>
+            <button mat-icon-button [mat-menu-trigger-for]="menu">
+            <mat-icon>more_vert</mat-icon>
+            </button>
+            <mat-menu x-position="before" #menu="matMenu">
+            <a [routerLink]="['/orders/request/' + request.id ]" mat-menu-item>Details</a>
+            <!-- <button mat-menu-item (click)="delete(organisation)">Delete</button> -->
+            </mat-menu>
+          </span>
+        </mat-list-item>
+        <mat-divider *ngIf="!last" mat-inset></mat-divider>
+      </ng-template>
+    </mat-list>
+  </ng-template>
+</mat-card>
+
+<mat-card body tdMediaToggle="gt-xs" [mediaClasses]="['push']" *ngIf="this.data && this.data.length !== total">
+  <mat-card-content>
+    <button mat-button (click)="more()">More</button> {{this.data?.length}}/{{total}}
+  </mat-card-content>
+</mat-card>
+
+<a mat-fab color="accent" class="mat-fab-bottom-right fixed" [routerLink]="['/request']">
+  <mat-icon>add</mat-icon>
+</a>
+`,
 })
 export class RequestsOverviewComponent implements AfterViewInit, OnDestroy {
 

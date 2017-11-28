@@ -16,7 +16,72 @@ interface SearchData {
 }
 
 @Component({
-  templateUrl: "./catalogues-overview.component.html",
+  template: `
+<mat-toolbar>
+  <div layout="row" layout-align="start center" flex>
+    <button mat-icon-button tdLayoutManageListOpen [hideWhenOpened]="true" style="display: none">
+          <mat-icon>arrow_back</mat-icon>
+        </button>
+    <span>{{title}}</span>
+    <span flex></span>
+    <button mat-icon-button><mat-icon>settings</mat-icon></button>
+  </div>
+</mat-toolbar>
+
+<mat-card>
+  <div class="pad-top-xs pad-left pad-right">
+    <form novalidate [formGroup]="searchForm">
+      <mat-input-container>
+        <input fxFlex matInput placeholder="Name" formControlName="name">
+        <mat-icon matSuffix>search</mat-icon>
+      </mat-input-container>
+    </form>
+  </div>
+
+  <mat-divider></mat-divider>
+  <ng-template tdLoading="data">
+    <mat-list class="will-load">
+      <div class="mat-padding" *ngIf="data && data.length === 0" layout="row" layout-align="center center">
+        <h3>No catalogues to display.</h3>
+      </div>
+
+      <ng-template let-catalogue let-last="last" ngFor [ngForOf]="data">
+        <mat-list-item>
+
+          <mat-icon *ngIf="!catalogue.CatalogueImage" mat-list-avatar>photo_camera</mat-icon>
+          <img *ngIf="catalogue.CatalogueImage" mat-list-avatar src="http://localhost:5000/Media/Download/{{catalogue.CatalogueImage.UniqueId}}?revision={{catalogue.CatalogueImage.Revision}}"
+          />
+
+          <h3 mat-line [routerLink]="'/catalogue/' +[catalogue.id]"> {{catalogue.Name}}</h3>
+          <p mat-line> {{catalogue.Description}} </p>
+
+          <span>
+                <button mat-icon-button [mat-menu-trigger-for]="menu">
+                <mat-icon>more_vert</mat-icon>
+                </button>
+                <mat-menu x-position="before" #menu="matMenu">
+                <a [routerLink]="'/catalogue/' +[catalogue.id]" mat-menu-item>Edit</a>
+                <button mat-menu-item (click)="delete(catalogue)">Delete</button>
+                </mat-menu>
+              </span>
+
+        </mat-list-item>
+        <mat-divider *ngIf="!last" mat-inset></mat-divider>
+      </ng-template>
+    </mat-list>
+  </ng-template>
+</mat-card>
+
+<mat-card body tdMediaToggle="gt-xs" [mediaClasses]="['push']" *ngIf="this.data && this.data.length !== total">
+  <mat-card-content>
+    <button mat-button (click)="more()">More</button> {{this.data?.length}}/{{total}}
+  </mat-card-content>
+</mat-card>
+
+<a mat-fab color="accent" class="mat-fab-bottom-right fixed" [routerLink]="['/catalogue']">
+  <mat-icon>add</mat-icon>
+</a>
+`,
 })
 export class CataloguesOverviewComponent implements AfterViewInit, OnDestroy {
 

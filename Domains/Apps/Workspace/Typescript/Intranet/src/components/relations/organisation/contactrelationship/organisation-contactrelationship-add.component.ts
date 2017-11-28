@@ -7,8 +7,10 @@ import { PostalAddress, MetaDomain, SalesOrder, SalesInvoice, Good, SalesInvoice
 import { Scope, WorkspaceService, Saved, ErrorService, Loaded, Invoked, Filter } from "@allors/base-angular";
 import { Fetch, TreeNode, Path, Query, PullRequest, And, Predicate, Like, ContainedIn, Page, Sort, Equals, Contains } from "@allors/framework";
 
+import { template } from "./organisation-contactrelationship.component";
+
 @Component({
-  templateUrl: "./organisation-contactrelationship.component.html",
+  template: template,
 })
 export class OrganisationContactrelationshipAddComponent implements OnInit, AfterViewInit, OnDestroy {
 

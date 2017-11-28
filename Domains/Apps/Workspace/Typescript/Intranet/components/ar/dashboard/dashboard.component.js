@@ -27,7 +27,16 @@ let DashboardComponent = class DashboardComponent {
 };
 DashboardComponent = __decorate([
     core_1.Component({
-        templateUrl: "./dashboard.component.html",
+        template: `
+<mat-card>
+  <mat-card-title>Accounts Receivable Dashboard</mat-card-title>
+  <mat-card-subtitle>Overview</mat-card-subtitle>
+  <mat-divider></mat-divider>
+  <mat-card-content>
+    Info
+  </mat-card-content>
+</mat-card>
+`,
     }),
     __metadata("design:paramtypes", [core_2.TdMediaService, core_1.ChangeDetectorRef, platform_browser_1.Title])
 ], DashboardComponent);

@@ -10,6 +10,6 @@
     "@allors/framework": "*"
   },
   "devDependencies": {
-    "@allors/framework": "file:../../../../../Platform/Workspace/Typescript"
+    "@allors/framework": "file:../../../../../platform/workspace/typescript"
   }
 }

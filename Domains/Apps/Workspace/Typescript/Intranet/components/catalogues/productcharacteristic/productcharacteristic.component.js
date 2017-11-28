@@ -86,7 +86,23 @@ let ProductCharacteristicComponent = class ProductCharacteristicComponent {
 };
 ProductCharacteristicComponent = __decorate([
     core_1.Component({
-        templateUrl: "./productcharacteristic.component.html",
+        template: `
+<td-layout-card-over [cardTitle]="title" [cardSubtitle]="subTitle">
+  <form #form="ngForm" *ngIf="productCharacteristic" (submit)="save()">
+
+    <div class="pad">        <a-mat-localised-text [object]="productCharacteristic" [roleType]="m.ProductCharacteristic.LocalisedNames" [locales]="locales"
+          label="Name"></a-mat-localised-text>
+      </div>
+
+    <mat-divider></mat-divider>
+    <mat-card-actions>
+      <button mat-button color="primary" type="submit" [disabled]="!form.form.valid">SAVE</button>
+      <button mat-button (click)="goBack()" type="button">CANCEL</button>
+    </mat-card-actions>
+
+  </form>
+</td-layout-card-over>
+`,
     }),
     __metadata("design:paramtypes", [base_angular_1.WorkspaceService,
         base_angular_1.ErrorService,

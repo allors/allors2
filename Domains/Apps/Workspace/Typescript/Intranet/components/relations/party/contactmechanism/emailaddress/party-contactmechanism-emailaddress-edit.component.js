@@ -14,6 +14,7 @@ const router_1 = require("@angular/router");
 const core_2 = require("@covalent/core");
 const base_angular_1 = require("@allors/base-angular");
 const framework_1 = require("@allors/framework");
+const party_contactmechanism_emailaddress_component_1 = require("./party-contactmechanism-emailaddress.component");
 let PartyContactMechanismEmailAddressEditComponent = class PartyContactMechanismEmailAddressEditComponent {
     constructor(workspaceService, errorService, route, media, changeDetectorRef) {
         this.workspaceService = workspaceService;
@@ -82,7 +83,7 @@ let PartyContactMechanismEmailAddressEditComponent = class PartyContactMechanism
 };
 PartyContactMechanismEmailAddressEditComponent = __decorate([
     core_1.Component({
-        templateUrl: "./party-contactmechanism-emailaddress.component.html",
+        template: party_contactmechanism_emailaddress_component_1.template,
     }),
     __metadata("design:paramtypes", [base_angular_1.WorkspaceService,
         base_angular_1.ErrorService,

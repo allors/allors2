@@ -1,16 +1,15 @@
+export const template = `
 <td-layout-card-over [cardTitle]="title" [cardSubtitle]="subTitle">
   <form #form="ngForm" *ngIf="contactMechanism" (submit)="save()">
 
     <div class="pad">
       <a-mat-select [object]="partyContactMechanism" [roleType]="m.PartyContactMechanism.ContactPurposes" [options]="contactMechanismPurposes" display="Name" label="Contact purposes"></a-mat-select>
-      <a-mat-select [object]="contactMechanism" [roleType]="m.TelecommunicationsNumber.ContactMechanismType" [options]="contactMechanismTypes" display="Name" label="Type"></a-mat-select>
-      <a-mat-input [object]="contactMechanism" [roleType]="m.TelecommunicationsNumber.CountryCode"></a-mat-input>
-      <a-mat-input [object]="contactMechanism" [roleType]="m.TelecommunicationsNumber.AreaCode"></a-mat-input>
-      <a-mat-input [object]="contactMechanism" [roleType]="m.TelecommunicationsNumber.ContactNumber"></a-mat-input>
+      <a-mat-input [object]="contactMechanism" [roleType]="m.EmailAddress.ElectronicAddressString" label="Email address"></a-mat-input>
       <a-mat-slide-toggle [object]="partyContactMechanism" [roleType]="m.PartyContactMechanism.UseAsDefault" label="Use as default"></a-mat-slide-toggle>
     </div>
 
     <mat-divider></mat-divider>
+
     <mat-card-actions>
       <button mat-button color="primary" type="submit" [disabled]="!form.form.valid">SAVE</button>
       <button mat-button (click)="goBack()" type="button">CANCEL</button>
@@ -18,3 +17,5 @@
 
   </form>
 </td-layout-card-over>
+`;
+

@@ -7,8 +7,10 @@ import { MetaDomain, SalesOrder, SalesInvoice, Good, SalesInvoiceItem, PartyCont
 import { Scope, WorkspaceService, Saved, ErrorService, Loaded, Invoked } from "@allors/base-angular";
 import { Fetch, TreeNode, Path, Query, PullRequest } from "@allors/framework";
 
+import { template } from "./party-contactmechanism-webaddress.component";
+
 @Component({
-  templateUrl: "./party-contactmechanism-webaddress.component.html",
+  template: template,
 })
 export class PartyContactMechanismEditWebAddressComponent implements OnInit, AfterViewInit, OnDestroy {
 

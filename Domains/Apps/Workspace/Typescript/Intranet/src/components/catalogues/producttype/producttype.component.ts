@@ -8,7 +8,25 @@ import { Scope, WorkspaceService, Saved, ErrorService, Loaded, Invoked } from "@
 import { Fetch, TreeNode, Path, Query, PullRequest, And, Predicate, Like, ContainedIn, Page, Sort, Equals } from "@allors/framework";
 
 @Component({
-  templateUrl: "./producttype.component.html",
+  template: `
+<td-layout-card-over [cardTitle]="title" [cardSubtitle]="subTitle">
+  <form #form="ngForm" *ngIf="productType" (submit)="save()">
+
+    <div class="pad">
+      <a-mat-input [object]="productType" [roleType]="m.ProductType.Name"></a-mat-input>
+      <a-mat-select [object]="productType" [roleType]="m.ProductType.ProductCharacteristics" [options]="characteristics" display="Name"></a-mat-select>
+    </div>
+
+    <mat-divider></mat-divider>
+
+    <mat-card-actions>
+      <button mat-button color="primary" type="submit" [disabled]="!form.form.valid">SAVE</button>
+      <button mat-button (click)="goBack()" type="button">CANCEL</button>
+    </mat-card-actions>
+
+  </form>
+</td-layout-card-over>
+`,
 })
 export class ProductTypeComponent implements OnInit, AfterViewInit, OnDestroy {
 

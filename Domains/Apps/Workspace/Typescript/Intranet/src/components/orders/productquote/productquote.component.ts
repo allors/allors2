@@ -9,7 +9,75 @@ import { Scope, WorkspaceService, Saved, ErrorService, Loaded, Invoked, Filter }
 import { Fetch, TreeNode, Path, Query, PullRequest, And, Predicate, Like, ContainedIn, Page, Sort, Equals, Contains } from "@allors/framework";
 
 @Component({
-  templateUrl: "./productquote.component.html",
+  template: `
+<td-layout-card-over [cardTitle]="title" [cardSubtitle]="subTitle">
+  <form #form="ngForm" *ngIf="quote" (submit)="save()">
+
+    <div class="pad">
+      <div *ngIf="quote.QuoteState">
+        <a-mat-static [object]="quote" [roleType]="m.Quote.QuoteState" display="Name" label="Status"></a-mat-static>
+        <button *ngIf="quote.CanExecuteApprove" mat-button type="button" (click)="approve()">Approve</button>
+        <button *ngIf="quote.CanExecuteReject" mat-button type="button" (click)="reject()">Reject</button>
+      </div>
+
+      <a-mat-static *ngIf="quote.Request" [object]="quote" [roleType]="m.ProductQuote.Request" display="RequestNumber"></a-mat-static>
+      <a-mat-autocomplete *ngIf="showOrganisations" [object]="quote" [roleType]="m.ProductQuote.Receiver" [filter]="organisationsFilter.create()"
+        display="Name" (onSelect)="receiverSelected($event)" label="Receiving organisation"></a-mat-autocomplete>
+      <a-mat-autocomplete *ngIf="showPeople" [object]="quote" [roleType]="m.ProductQuote.Receiver" [filter]="peopleFilter.create()"
+        display="displayName" (onSelect)="receiverSelected($event)" label="Receiving private person"></a-mat-autocomplete>
+
+      <a-mat-select *ngIf="showOrganisations && !showPeople" [object]="quote" [roleType]="m.ProductQuote.ContactPerson" [options]="contacts" display="displayName"></a-mat-select>
+      <button *ngIf="showOrganisations && !showPeople" type="button" mat-icon-button (click)="addPerson = true"><mat-icon>add</mat-icon></button>
+      <div *ngIf="showOrganisations && addPerson" style="background: lightblue" class="pad">
+        <person-inline (cancelled)="personCancelled($event)" (saved)="personAdded($event)">
+        </person-inline>
+      </div>
+
+        <a-mat-select [object]="quote" [roleType]="m.ProductQuote.FullfillContactMechanism" [options]="contactMechanisms" display="displayName"></a-mat-select>
+      <button *ngIf="quote.Receiver" type="button" mat-button (click)="addWebAddress = true">+Web</button>
+      <button *ngIf="quote.Receiver" type="button" mat-button (click)="addEmailAddress = true">+Email</button>
+      <button *ngIf="quote.Receiver" type="button" mat-button (click)="addPostalAddress = true">+Postal</button>
+      <button *ngIf="quote.Receiver" type="button" mat-button (click)="addTeleCommunicationsNumber = true">+Telecom</button>
+
+      <div *ngIf="addWebAddress && quote.Receiver" style="background: lightblue" class="pad">
+        <party-contactmechanism-webaddress [scope]="scope" (cancelled)="webAddressCancelled($event)" (saved)="webAddressAdded($event)">
+        </party-contactmechanism-webaddress>
+      </div>
+      <div *ngIf="addEmailAddress && quote.Receiver" style="background: lightblue" class="pad">
+        <party-contactmechanism-emailAddress [scope]="scope" (cancelled)="emailAddressCancelled($event)" (saved)="emailAddressAdded($event)">
+        </party-contactmechanism-emailAddress>
+      </div>
+      <div *ngIf="addPostalAddress && quote.Receiver" style="background: lightblue" class="pad">
+        <party-contactmechanism-postaladdress [scope]="scope" (cancelled)="postalAddressCancelled($event)" (saved)="postalAddressAdded($event)">
+        </party-contactmechanism-postaladdress>
+      </div>
+      <div *ngIf="addTeleCommunicationsNumber && quote.Receiver" style="background: lightblue" class="pad">
+        <party-contactmechanism-telecommunicationsnumber [scope]="scope" (cancelled)="teleCommunicationsNumberCancelled($event)" (saved)="teleCommunicationsNumberAdded($event)">
+        </party-contactmechanism-telecommunicationsnumber>
+      </div>
+
+      <a-mat-datepicker [object]="quote" [roleType]="m.ProductQuote.ValidFromDate"></a-mat-datepicker>
+      <a-mat-datepicker [object]="quote" [roleType]="m.ProductQuote.ValidThroughDate"></a-mat-datepicker>
+      <a-mat-datepicker [object]="quote" [roleType]="m.ProductQuote.IssueDate"></a-mat-datepicker>
+      <a-mat-datepicker [object]="quote" [roleType]="m.ProductQuote.RequiredResponseDate"></a-mat-datepicker>
+      <a-mat-input [object]="quote" [roleType]="m.ProductQuote.Description"></a-mat-input>
+      <a-mat-autocomplete [object]="quote" [roleType]="m.ProductQuote.Currency" [filter]="currenciesFilter.create()" display="Name"></a-mat-autocomplete>
+      <a-mat-static *ngIf="request?.Comment" [object]="request" [roleType]="m.Request.Comment" label="Request Comment"></a-mat-static>
+      <a-mat-textarea [object]="quote" [roleType]="m.ProductQuote.Comment" label="Quote Comment"></a-mat-textarea>
+      <a-mat-static *ngIf="request?.InternalComment" [object]="request" [roleType]="m.Request.InternalComment" label="Request Internal Comment"></a-mat-static>
+      <a-mat-textarea [object]="quote" [roleType]="m.ProductQuote.InternalComment" label="Quote Internal Comment"></a-mat-textarea>
+    </div>
+
+    <mat-divider></mat-divider>
+
+    <mat-card-actions>
+      <button mat-button color="primary" type="submit" [disabled]="!form.form.valid">SAVE</button>
+      <button mat-button (click)="goBack()" type="button">CANCEL</button>
+    </mat-card-actions>
+
+  </form>
+</td-layout-card-over>
+`,
 })
 export class ProductQuoteEditComponent implements OnInit, AfterViewInit, OnDestroy {
 
