@@ -1,6 +1,7 @@
 import { AfterViewInit, ChangeDetectorRef, OnDestroy, OnInit } from "@angular/core";
 import { ActivatedRoute } from "@angular/router";
 import { TdMediaService } from "@covalent/core";
+import 'rxjs/add/observable/combineLatest';
 import { MetaDomain, SalesOrder } from "@allors/workspace";
 import { WorkspaceService, ErrorService } from "@allors/base-angular";
 export declare class SalesOrderPrintComponent implements OnInit, AfterViewInit, OnDestroy {

@@ -2,7 +2,11 @@ import { AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit } from "
 import { MatSnackBar } from "@angular/material";
 import { ActivatedRoute, Router, UrlSegment } from "@angular/router";
 import { TdDialogService, TdMediaService } from "@covalent/core";
-import { BehaviorSubject, Observable, Subscription } from "rxjs/Rx";
+
+import { BehaviorSubject } from "rxjs/BehaviorSubject";
+import { Observable } from "rxjs/Observable";
+import { Subscription } from "rxjs/Subscription";
+import 'rxjs/add/observable/combineLatest';
 
 import { MetaDomain, SalesInvoice, SalesOrder, Currency, ContactMechanism, VatRate, VatRegime, Party, OrganisationRole, OrganisationContactRelationship, PartyContactMechanism } from "@allors/workspace";
 import { Organisation, Person } from "@allors/workspace";

@@ -2,7 +2,11 @@ import { AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit } from "
 import { MatSnackBar } from "@angular/material";
 import { ActivatedRoute, UrlSegment } from "@angular/router";
 import { TdMediaService } from "@covalent/core";
-import { BehaviorSubject, Observable, Subscription } from "rxjs/Rx";
+
+import { BehaviorSubject } from "rxjs/BehaviorSubject";
+import { Observable } from "rxjs/Observable";
+import { Subscription } from "rxjs/Subscription";
+import 'rxjs/add/observable/combineLatest';
 
 import { PostalAddress, MetaDomain, SalesOrder, SalesInvoice, Good, SalesInvoiceItem, Catalogue, Singleton, Locale, ProductCategory, CatScope, PartyContactMechanism, Enumeration, ContactMechanismType, TelecommunicationsNumber, WorkEffortAssignment, WorkEffortState, Priority, Person, WorkTask, WorkEffortPurpose, CommunicationEvent, Organisation, OrganisationContactRelationship, ContactMechanism, PersonRole, CustomerRelationship, Country, Facility, ProductType, ProductCharacteristicValue, Brand, Model, VarianceReason, InventoryItemKind, NonSerialisedInventoryItem, NonSerialisedInventoryItemState, VatRate, OrganisationRole, ProductFeature, InventoryItemVariance, ProductCharacteristic, LocalisedText } from "@allors/workspace";
 import { Scope, WorkspaceService, Saved, ErrorService, Loaded, Invoked, Filter } from "@allors/base-angular";

@@ -13,7 +13,9 @@ const core_1 = require("@angular/core");
 const material_1 = require("@angular/material");
 const router_1 = require("@angular/router");
 const core_2 = require("@covalent/core");
-const Rx_1 = require("rxjs/Rx");
+const BehaviorSubject_1 = require("rxjs/BehaviorSubject");
+const Observable_1 = require("rxjs/Observable");
+require("rxjs/add/observable/combineLatest");
 const workspace_1 = require("@allors/workspace");
 const base_angular_1 = require("@allors/base-angular");
 const framework_1 = require("@allors/framework");
@@ -30,12 +32,12 @@ let InvoiceItemEditComponent = class InvoiceItemEditComponent {
         this.title = "Edit Sales Invoice Item";
         this.m = this.workspaceService.metaPopulation.metaDomain;
         this.scope = this.workspaceService.createScope();
-        this.refresh$ = new Rx_1.BehaviorSubject(undefined);
+        this.refresh$ = new BehaviorSubject_1.BehaviorSubject(undefined);
         this.goodsFilter = new base_angular_1.Filter({ scope: this.scope, objectType: this.m.Good, roleTypes: [this.m.Good.Name] });
     }
     ngOnInit() {
         const route$ = this.route.url;
-        const combined$ = Rx_1.Observable.combineLatest(route$, this.refresh$);
+        const combined$ = Observable_1.Observable.combineLatest(route$, this.refresh$);
         this.subscription = combined$
             .switchMap(([urlSegments, date]) => {
             const id = this.route.snapshot.paramMap.get("id");

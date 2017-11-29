@@ -3,7 +3,12 @@ import { FormBuilder, FormGroup } from "@angular/forms";
 import { MatSnackBar } from "@angular/material";
 import { Title } from "@angular/platform-browser";
 import { Router } from "@angular/router";
-import { BehaviorSubject, Observable, Subscription } from "rxjs/Rx";
+
+import { BehaviorSubject } from "rxjs/BehaviorSubject";
+import { Observable } from "rxjs/Observable";
+import { Subscription } from "rxjs/Subscription";
+import 'rxjs/add/operator/startWith';
+import 'rxjs/add/operator/scan';
 
 import { TdDialogService, TdMediaService } from "@covalent/core";
 

@@ -2,6 +2,7 @@ import { AfterViewInit, ChangeDetectorRef, OnDestroy, OnInit } from "@angular/co
 import { MatSnackBar } from "@angular/material";
 import { ActivatedRoute, Router } from "@angular/router";
 import { TdDialogService, TdMediaService } from "@covalent/core";
+import 'rxjs/add/observable/combineLatest';
 import { MetaDomain, SalesOrder, SalesInvoice, Good, ProductQuote, SalesOrderItem, ProcessFlow } from "@allors/workspace";
 import { WorkspaceService, ErrorService } from "@allors/base-angular";
 export declare class SalesOrderOverviewComponent implements OnInit, AfterViewInit, OnDestroy {

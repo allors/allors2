@@ -13,7 +13,8 @@ const core_1 = require("@angular/core");
 const material_1 = require("@angular/material");
 const router_1 = require("@angular/router");
 const core_2 = require("@covalent/core");
-const Rx_1 = require("rxjs/Rx");
+const BehaviorSubject_1 = require("rxjs/BehaviorSubject");
+const Observable_1 = require("rxjs/Observable");
 const base_angular_1 = require("@allors/base-angular");
 const framework_1 = require("@allors/framework");
 let InvoiceOverviewComponent = class InvoiceOverviewComponent {
@@ -27,7 +28,7 @@ let InvoiceOverviewComponent = class InvoiceOverviewComponent {
         this.changeDetectorRef = changeDetectorRef;
         this.title = "Sales Invoice Overview";
         this.goods = [];
-        this.refresh$ = new Rx_1.BehaviorSubject(undefined);
+        this.refresh$ = new BehaviorSubject_1.BehaviorSubject(undefined);
         this.scope = this.workspaceService.createScope();
         this.m = this.workspaceService.metaPopulation.metaDomain;
     }
@@ -45,7 +46,7 @@ let InvoiceOverviewComponent = class InvoiceOverviewComponent {
     }
     ngOnInit() {
         const route$ = this.route.url;
-        const combined$ = Rx_1.Observable.combineLatest(route$, this.refresh$);
+        const combined$ = Observable_1.Observable.combineLatest(route$, this.refresh$);
         this.subscription = combined$
             .switchMap(([urlSegments, date]) => {
             const id = this.route.snapshot.paramMap.get("id");

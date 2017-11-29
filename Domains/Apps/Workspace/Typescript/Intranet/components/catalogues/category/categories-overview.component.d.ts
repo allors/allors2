@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup } from "@angular/forms";
 import { MatSnackBar } from "@angular/material";
 import { Title } from "@angular/platform-browser";
 import { Router } from "@angular/router";
+import 'rxjs/add/observable/combineLatest';
 import { TdDialogService, TdMediaService } from "@covalent/core";
 import { ProductCategory } from "@allors/workspace";
 import { WorkspaceService, ErrorService } from "@allors/base-angular";

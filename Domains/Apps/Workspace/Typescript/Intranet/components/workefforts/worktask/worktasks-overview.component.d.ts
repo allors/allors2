@@ -3,6 +3,8 @@ import { FormBuilder, FormGroup } from "@angular/forms";
 import { MatSnackBar } from "@angular/material";
 import { Title } from "@angular/platform-browser";
 import { Router } from "@angular/router";
+import 'rxjs/add/operator/startWith';
+import 'rxjs/add/operator/scan';
 import { TdDialogService, TdMediaService } from "@covalent/core";
 import { WorkEffortAssignment, WorkEffortState, Priority, Person, WorkTask } from "@allors/workspace";
 import { WorkspaceService, ErrorService } from "@allors/base-angular";

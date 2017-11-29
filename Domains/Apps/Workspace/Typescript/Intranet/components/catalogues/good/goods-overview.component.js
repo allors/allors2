@@ -14,7 +14,9 @@ const forms_1 = require("@angular/forms");
 const material_1 = require("@angular/material");
 const platform_browser_1 = require("@angular/platform-browser");
 const router_1 = require("@angular/router");
-const Rx_1 = require("rxjs/Rx");
+const BehaviorSubject_1 = require("rxjs/BehaviorSubject");
+const Observable_1 = require("rxjs/Observable");
+require("rxjs/add/observable/combineLatest");
 const core_2 = require("@covalent/core");
 const framework_1 = require("@allors/framework");
 const base_angular_1 = require("@allors/base-angular");
@@ -34,7 +36,7 @@ let GoodsOverviewComponent = class GoodsOverviewComponent {
         this.title = "Products";
         this.titleService.setTitle("Products");
         this.scope = this.workspaceService.createScope();
-        this.refresh$ = new Rx_1.BehaviorSubject(undefined);
+        this.refresh$ = new BehaviorSubject_1.BehaviorSubject(undefined);
         this.chosenGood = "Serialised";
         this.searchForm = this.formBuilder.group({
             articleNumber: [""],
@@ -50,12 +52,12 @@ let GoodsOverviewComponent = class GoodsOverviewComponent {
             productType: [""],
             supplier: [""],
         });
-        this.page$ = new Rx_1.BehaviorSubject(50);
+        this.page$ = new BehaviorSubject_1.BehaviorSubject(50);
         const search$ = this.searchForm.valueChanges
             .debounceTime(400)
             .distinctUntilChanged()
             .startWith({});
-        const combined$ = Rx_1.Observable
+        const combined$ = Observable_1.Observable
             .combineLatest(search$, this.page$, this.refresh$)
             .scan(([previousData, previousTake, previousDate], [data, take, date]) => {
             return [

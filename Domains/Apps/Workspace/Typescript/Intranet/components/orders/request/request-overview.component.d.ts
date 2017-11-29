@@ -3,6 +3,7 @@ import { MatSnackBar } from "@angular/material";
 import { ActivatedRoute } from "@angular/router";
 import { Router } from "@angular/router";
 import { TdDialogService, TdMediaService } from "@covalent/core";
+import 'rxjs/add/observable/combineLatest';
 import { MetaDomain, ProductQuote, RequestForQuote, InventoryItem, SerialisedInventoryItem, NonSerialisedInventoryItem, RequestItem } from "@allors/workspace";
 import { WorkspaceService, ErrorService } from "@allors/base-angular";
 export declare class RequestOverviewComponent implements OnInit, AfterViewInit, OnDestroy {

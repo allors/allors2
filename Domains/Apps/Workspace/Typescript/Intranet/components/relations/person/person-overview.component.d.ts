@@ -3,6 +3,7 @@ import { MatSnackBar } from "@angular/material";
 import { Title } from "@angular/platform-browser";
 import { ActivatedRoute } from "@angular/router";
 import { TdDialogService, TdMediaService } from "@covalent/core";
+import 'rxjs/add/observable/combineLatest';
 import { MetaDomain, PartyContactMechanism, WorkEffortAssignment, Person, CommunicationEvent, Organisation, ContactMechanism, WorkEffort } from "@allors/workspace";
 import { WorkspaceService, ErrorService } from "@allors/base-angular";
 export declare class PersonOverviewComponent implements OnInit, AfterViewInit, OnDestroy {

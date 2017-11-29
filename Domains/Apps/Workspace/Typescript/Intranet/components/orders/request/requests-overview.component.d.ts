@@ -2,6 +2,7 @@ import { AfterViewInit, ChangeDetectorRef, OnDestroy } from "@angular/core";
 import { FormBuilder, FormGroup } from "@angular/forms";
 import { Title } from "@angular/platform-browser";
 import { Router } from "@angular/router";
+import 'rxjs/add/observable/combineLatest';
 import { TdDialogService, TdMediaService } from "@covalent/core";
 import { Request } from "@allors/workspace";
 import { WorkspaceService, ErrorService } from "@allors/base-angular";

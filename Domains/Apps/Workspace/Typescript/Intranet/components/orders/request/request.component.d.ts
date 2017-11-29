@@ -2,6 +2,7 @@ import { AfterViewInit, ChangeDetectorRef, OnDestroy, OnInit } from "@angular/co
 import { MatSnackBar } from "@angular/material";
 import { ActivatedRoute, Router } from "@angular/router";
 import { TdDialogService, TdMediaService } from "@covalent/core";
+import 'rxjs/add/observable/combineLatest';
 import { ContactMechanism, MetaDomain, RequestForQuote, Person, Organisation, Currency, Party } from "@allors/workspace";
 import { WorkspaceService, ErrorService, Filter } from "@allors/base-angular";
 export declare class RequestEditComponent implements OnInit, AfterViewInit, OnDestroy {

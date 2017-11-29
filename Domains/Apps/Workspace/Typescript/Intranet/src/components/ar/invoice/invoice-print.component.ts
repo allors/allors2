@@ -1,7 +1,11 @@
 import { AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit, ViewEncapsulation } from "@angular/core";
 import { ActivatedRoute } from "@angular/router";
 import { TdMediaService } from "@covalent/core";
-import { BehaviorSubject, Subscription } from "rxjs/Rx";
+
+import { BehaviorSubject } from "rxjs/BehaviorSubject";
+import { Observable } from "rxjs/Observable";
+import { Subscription } from "rxjs/Subscription";
+import 'rxjs/add/observable/combineLatest';
 
 import { MetaDomain, SalesInvoice } from "@allors/workspace";
 import { Scope, WorkspaceService, ErrorService, Loaded } from "@allors/base-angular";

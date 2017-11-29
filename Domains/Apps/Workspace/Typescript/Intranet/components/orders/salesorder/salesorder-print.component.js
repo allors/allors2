@@ -12,6 +12,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const core_1 = require("@angular/core");
 const router_1 = require("@angular/router");
 const core_2 = require("@covalent/core");
+require("rxjs/add/observable/combineLatest");
 const base_angular_1 = require("@allors/base-angular");
 const framework_1 = require("@allors/framework");
 let SalesOrderPrintComponent = class SalesOrderPrintComponent {

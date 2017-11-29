@@ -2,7 +2,11 @@ import { AfterViewInit, ChangeDetectorRef, Component, OnDestroy } from "@angular
 import { FormBuilder, FormGroup } from "@angular/forms";
 import { Title } from "@angular/platform-browser";
 import { Router } from "@angular/router";
-import { BehaviorSubject, Observable, Subscription } from "rxjs/Rx";
+
+import { BehaviorSubject } from "rxjs/BehaviorSubject";
+import { Observable } from "rxjs/Observable";
+import { Subscription } from "rxjs/Subscription";
+import 'rxjs/add/observable/combineLatest';
 
 import { TdDialogService, TdMediaService } from "@covalent/core";
 

@@ -2,6 +2,7 @@ import { AfterViewInit, ChangeDetectorRef, OnDestroy, OnInit } from "@angular/co
 import { MatSnackBar } from "@angular/material";
 import { ActivatedRoute, Router } from "@angular/router";
 import { TdDialogService, TdMediaService } from "@covalent/core";
+import 'rxjs/add/observable/combineLatest';
 import { MetaDomain, SalesInvoice, SalesOrder, Currency, ContactMechanism, VatRate, VatRegime, Party } from "@allors/workspace";
 import { Organisation, Person } from "@allors/workspace";
 import { Filter, WorkspaceService, ErrorService } from "@allors/base-angular";

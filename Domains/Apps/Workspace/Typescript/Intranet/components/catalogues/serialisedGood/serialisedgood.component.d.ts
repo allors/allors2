@@ -2,6 +2,7 @@ import { AfterViewInit, ChangeDetectorRef, OnDestroy, OnInit } from "@angular/co
 import { MatSnackBar } from "@angular/material";
 import { ActivatedRoute } from "@angular/router";
 import { TdMediaService } from "@covalent/core";
+import 'rxjs/add/observable/combineLatest';
 import { MetaDomain, Good, Singleton, Locale, ProductCategory, Organisation, ProductCharacteristic, Facility, ProductType, ProductCharacteristicValue, Brand, Model, InventoryItemKind, SerialisedInventoryItem, SerialisedInventoryItemState, VatRate, Ownership } from "@allors/workspace";
 import { WorkspaceService, ErrorService, Filter } from "@allors/base-angular";
 export declare class SerialisedGoodComponent implements OnInit, AfterViewInit, OnDestroy {

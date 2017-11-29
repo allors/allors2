@@ -13,7 +13,9 @@ const core_1 = require("@angular/core");
 const forms_1 = require("@angular/forms");
 const platform_browser_1 = require("@angular/platform-browser");
 const router_1 = require("@angular/router");
-const Rx_1 = require("rxjs/Rx");
+const BehaviorSubject_1 = require("rxjs/BehaviorSubject");
+const Observable_1 = require("rxjs/Observable");
+require("rxjs/add/observable/combineLatest");
 const core_2 = require("@covalent/core");
 const base_angular_1 = require("@allors/base-angular");
 const framework_1 = require("@allors/framework");
@@ -29,18 +31,18 @@ let SalesOrdersOverviewComponent = class SalesOrdersOverviewComponent {
         this.changeDetectorRef = changeDetectorRef;
         this.title = "Sales Orders";
         this.scope = this.workspaceService.createScope();
-        this.refresh$ = new Rx_1.BehaviorSubject(undefined);
+        this.refresh$ = new BehaviorSubject_1.BehaviorSubject(undefined);
         this.searchForm = this.formBuilder.group({
             company: [""],
             orderNumber: [""],
             reference: [""],
         });
-        this.page$ = new Rx_1.BehaviorSubject(50);
+        this.page$ = new BehaviorSubject_1.BehaviorSubject(50);
         const search$ = this.searchForm.valueChanges
             .debounceTime(400)
             .distinctUntilChanged()
             .startWith({});
-        const combined$ = Rx_1.Observable
+        const combined$ = Observable_1.Observable
             .combineLatest(search$, this.page$, this.refresh$)
             .scan(([previousData, previousTake, previousDate], [data, take, date]) => {
             return [
