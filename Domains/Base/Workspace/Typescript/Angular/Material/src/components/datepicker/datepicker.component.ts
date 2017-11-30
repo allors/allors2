@@ -6,7 +6,7 @@ import { Field } from "@allors/base-angular";
 @Component({
   selector: "a-mat-datepicker",
   template: `
-<div fxLayout="row">
+<div style="width: 100%;" fxLayout="row">
   <mat-form-field fxLayoutGap="1em">
     <input matInput [matDatepicker]="picker" [(ngModel)]="model" [name]="name" [placeholder]="label" [required]="required" [disabled]="disabled" [readonly]="readonly">
     <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>

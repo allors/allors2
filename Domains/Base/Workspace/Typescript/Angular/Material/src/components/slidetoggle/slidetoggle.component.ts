@@ -5,7 +5,7 @@ import { Field } from "@allors/base-angular";
 @Component({
   selector: "a-mat-slide-toggle",
   template: `
-<div fxLayout="row">
+<div style="width: 100%;" fxLayout="row">
   <mat-slide-toggle [(ngModel)]="model" [name]="name" [required]="required" [disabled]="disabled">
   {{label}}
   </mat-slide-toggle>

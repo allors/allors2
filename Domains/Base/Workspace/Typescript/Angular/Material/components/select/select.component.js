@@ -53,7 +53,7 @@ SelectComponent = __decorate([
     core_1.Component({
         selector: "a-mat-select",
         template: `
-<mat-form-field>
+<mat-form-field style="width: 100%;" >
     <mat-select [(ngModel)]="model" [name]="name" [placeholder]="label" [multiple]="roleType.isMany" [required]="required" [disabled]="disabled">
     <mat-option *ngIf="!required">None</mat-option>
     <mat-option *ngFor="let option of options" [value]="option" (onSelectionChange)="selected(option)">

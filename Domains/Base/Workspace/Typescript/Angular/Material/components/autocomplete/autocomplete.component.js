@@ -100,7 +100,7 @@ AutocompleteComponent = __decorate([
     core_1.Component({
         selector: "a-mat-autocomplete",
         template: `
-<mat-form-field fxLayout="column" fxLayoutAlign="top stretch">
+<mat-form-field style="width: 100%;" fxLayout="column" fxLayoutAlign="top stretch">
   <input type="text" matInput (focusout)="focusout($event)" [formControl]="searchControl" [matAutocomplete]="usersComp" [placeholder]="label" [required]="required" [disabled]="disabled" [readonly]="readonly">
   <mat-hint *ngIf="hint">{{hint}}</mat-hint>
 </mat-form-field>

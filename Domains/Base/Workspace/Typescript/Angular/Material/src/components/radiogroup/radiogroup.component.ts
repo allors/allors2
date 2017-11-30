@@ -10,7 +10,7 @@ export interface RadioGroupOption {
 @Component({
   selector: "a-mat-radio-group",
   template: `
-<mat-form-field fxLayout="row">
+<mat-form-field style="width: 100%;" fxLayout="row">
   <mat-radio-group [(ngModel)]="model" [name]="name" [required]="required" [disabled]="disabled">
     <mat-radio-button *ngFor="let option of options" [value]="optionValue(option)">{{optionLabel(option)}}</mat-radio-button>
   </mat-radio-group>

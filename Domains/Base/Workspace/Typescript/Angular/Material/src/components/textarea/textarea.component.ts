@@ -6,7 +6,7 @@ import { Field } from "@allors/base-angular";
 @Component({
   selector: "a-mat-textarea",
   template: `
-<mat-form-field fxLayout="column" fxLayoutAlign="top stretch">
+<mat-form-field style="width: 100%;" fxLayout="column" fxLayoutAlign="top stretch">
   <textarea matInput [(ngModel)]="model" [name]="name" [placeholder]="label" [required]="required" [disabled]="disabled" [readonly]="readonly">
   </textarea>
   <mat-hint *ngIf="hint">{{hint}}</mat-hint>

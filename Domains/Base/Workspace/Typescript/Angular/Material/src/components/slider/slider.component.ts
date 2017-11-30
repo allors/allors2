@@ -5,7 +5,7 @@ import { Field } from "@allors/base-angular";
 @Component({
   selector: "a-mat-slider",
   template: `
-<mat-form-field fxLayout="column" fxLayoutAlign="top stretch">
+<mat-form-field style="width: 100%;" fxLayout="column" fxLayoutAlign="top stretch">
   <mat-slider [(ngModel)]="model" [name]="name" [invert]="invert" [min]="min" [max]="max" [step]="step" [thumbLabel]="thumbLabel" [tickInterval]="tickInterval" [vertical]="vertical" [color]="color" [required]="required" [disabled]="disabled"></mat-slider>
   <input matInput [type]="textType"    >
   <mat-hint *ngIf="hint">{{hint}}</mat-hint>

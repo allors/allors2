@@ -28,12 +28,10 @@ LocalisedTextComponent = __decorate([
     core_1.Component({
         selector: "a-mat-localised-text",
         template: `
-<div>
-  <div *ngFor="let model of models">
-    <mat-form-field fxLayout="row">
-      <input matInput [(ngModel)]="model.text" [name]="model.name" [placeholder]="model.label">
-    </mat-form-field>
-  </div>
+<div style="width: 100%;" *ngFor="let model of models">
+  <mat-form-field fxLayout="row">
+    <input matInput [(ngModel)]="model.text" [name]="model.name" [placeholder]="model.label">
+  </mat-form-field>
 </div>
 `,
     })
