@@ -11,7 +11,15 @@ import { AuthenticationTokenResponse } from "./AuthenticationTokenResponse";
 
 @Injectable()
 export class AuthenticationService {
-  public token: string;
+  private tokenName = "ALLORS_JWT";
+
+  public get token(): string {
+    return sessionStorage.getItem(this.tokenName);
+  }
+
+  public set token(value: string) {
+    sessionStorage.setItem(this.tokenName, value);
+  }
 
   constructor(
     private http: HttpClient,

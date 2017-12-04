@@ -32,25 +32,33 @@ import { Fetch, TreeNode, Path, Query, PullRequest, And, Predicate, Like, Contai
       <mat-card-title>Person</mat-card-title>
       <mat-divider></mat-divider>
       <mat-card-content>
-
-        <div *ngIf="organisation" class="pointer" [routerLink]="['/relations/organisation/' + organisation.id ]" layout="row">
-          <a-mat-static [object]="organisation" [roleType]="m.Organisation.Name" label="Organisation"></a-mat-static>
+        <div class="grid-2_xs-1">
+          <div *ngIf="organisation" class="pointer" [routerLink]="['/relations/organisation/' + organisation.id]">
+            <a-mat-static [object]="organisation" [roleType]="m.Organisation.Name" label="Organisation"></a-mat-static>
+          </div>
+          <a-mat-static [object]="person" [roleType]="m.Person.PersonRoles" display="Name"></a-mat-static>
         </div>
 
-        <a-mat-static [object]="person" [roleType]="m.Person.PersonRoles" display="Name"></a-mat-static>
-        <a-mat-static [object]="person" [roleType]="m.Person.FirstName"></a-mat-static>
-        <a-mat-static [object]="person" [roleType]="m.Person.MiddleName"></a-mat-static>
-        <a-mat-static [object]="person" [roleType]="m.Person.LastName"></a-mat-static>
-        <a-mat-static *ngIf="person.Comment "[object]="person" [roleType]="m.Person.Comment"></a-mat-static>
-        <a-mat-static *ngIf="person.Function" [object]="person" [roleType]="m.Person.Function"></a-mat-static>
-        <a-mat-static *ngIf="person.Gender" [object]="person" [roleType]="m.Person.Gender" display="Name"></a-mat-static>
-        <a-mat-static *ngIf="person.Salutation" [object]="person" [roleType]="m.Person.Salutation" display="Name"></a-mat-static>
-        <a-mat-static [object]="person" [roleType]="m.Person.Locale" display="Name"></a-mat-static>
+        <div class="grid-2_xs-1">
+          <a-mat-static *ngIf="person.Salutation" [object]="person" [roleType]="m.Person.Salutation" display="Name"></a-mat-static>
+          <a-mat-static [object]="person" [roleType]="m.Person.FirstName"></a-mat-static>
+          <a-mat-static [object]="person" [roleType]="m.Person.MiddleName"></a-mat-static>
+          <a-mat-static [object]="person" [roleType]="m.Person.LastName"></a-mat-static>
+        </div>
+
+        <div class="grid-2_xs-1">
+          <a-mat-static *ngIf="person.Function" [object]="person" [roleType]="m.Person.Function"></a-mat-static>
+          <a-mat-static *ngIf="person.Gender" [object]="person" [roleType]="m.Person.Gender" display="Name"></a-mat-static>
+          <a-mat-static [object]="person" [roleType]="m.Person.Locale" display="Name"></a-mat-static>
+        </div>
+
+        <div class="grid">
+          <a-mat-static *ngIf="person.Comment "[object]="person" [roleType]="m.Person.Comment"></a-mat-static>
+        </div>
 
         <div layout="row">
-          <p class="mat-caption tc-grey-500"> last modified: {{ person.LastModifiedDate | date}} by {{ person.LastModifiedBy?.displayName}}</p>
+            <p class="mat-caption tc-grey-500"> last modified: {{ person.LastModifiedDate | date}} by {{ person.LastModifiedBy?.displayName}}</p>
         </div>
-
       </mat-card-content>
 
       <mat-divider></mat-divider>

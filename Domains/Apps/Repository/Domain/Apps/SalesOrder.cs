@@ -507,5 +507,10 @@ namespace Allors.Repository
     }
 
     #endregion
+
+    #region Allors
+    [Id("B5313EA3-2C46-4919-BE12-78CE94939B4E")]
+    #endregion
+    public void Ship() { }
   }
-}
+} 

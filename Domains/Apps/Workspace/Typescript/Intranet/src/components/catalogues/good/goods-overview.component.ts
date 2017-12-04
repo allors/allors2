@@ -1,4 +1,9 @@
-import { AfterViewInit, ChangeDetectorRef, Component, OnDestroy } from "@angular/core";
+import {
+  AfterViewInit,
+  ChangeDetectorRef,
+  Component,
+  OnDestroy
+} from "@angular/core";
 import { FormBuilder, FormGroup } from "@angular/forms";
 import { MatDialog, MatSnackBar } from "@angular/material";
 import { Title } from "@angular/platform-browser";
@@ -7,13 +12,42 @@ import { Router } from "@angular/router";
 import { BehaviorSubject } from "rxjs/BehaviorSubject";
 import { Observable } from "rxjs/Observable";
 import { Subscription } from "rxjs/Subscription";
-import 'rxjs/add/observable/combineLatest';
+import "rxjs/add/observable/combineLatest";
 
 import { TdDialogService, TdMediaService } from "@covalent/core";
 
-import { And, ContainedIn, Contains, Equals, Like, Page, Predicate, PullRequest, Query, Sort, TreeNode } from "@allors/framework";
-import { MetaDomain, Brand, Good, InventoryItemKind, Model, Organisation, OrganisationRole, Ownership, ProductCategory, ProductType, SerialisedInventoryItemState } from "@allors/workspace";
-import { ErrorService, Loaded, Scope, WorkspaceService } from "@allors/base-angular";
+import {
+  And,
+  ContainedIn,
+  Contains,
+  Equals,
+  Like,
+  Page,
+  Predicate,
+  PullRequest,
+  Query,
+  Sort,
+  TreeNode
+} from "@allors/framework";
+import {
+  MetaDomain,
+  Brand,
+  Good,
+  InventoryItemKind,
+  Model,
+  Organisation,
+  OrganisationRole,
+  Ownership,
+  ProductCategory,
+  ProductType,
+  SerialisedInventoryItemState
+} from "@allors/workspace";
+import {
+  ErrorService,
+  Loaded,
+  Scope,
+  WorkspaceService
+} from "@allors/base-angular";
 
 import { NewGoodDialogComponent } from "../../catalogues/good/newgood-dialog.module";
 
@@ -49,55 +83,72 @@ interface SearchData {
 <mat-card>
   <div class="pad-top-xs pad-left pad-right">
     <form novalidate [formGroup]="searchForm">
-      <mat-input-container>
-        <input fxFlex matInput placeholder="Name" formControlName="name">
-        <mat-icon matSuffix>search</mat-icon>
-      </mat-input-container>
-      <mat-input-container>
-        <input fxFlex matInput placeholder="ArticleNr" formControlName="articleNumber">
-        <mat-icon matSuffix>search</mat-icon>
-      </mat-input-container>
-      <mat-input-container>
-        <input fxFlex matInput placeholder="Keyword" formControlName="keyword">
-        <mat-icon matSuffix>search</mat-icon>
-      </mat-input-container>
-      <mat-input-container>
-        <input fxFlex matInput placeholder="Owner" formControlName="owner">
-        <mat-icon matSuffix>search</mat-icon>
-      </mat-input-container>
-      <mat-select formControlName="ownership" name="ownership" [(ngModel)]="selectedOwnership" placeholder="Ownership">
-        <mat-option>None</mat-option>
-        <mat-option *ngFor="let ownership of ownerships" [value]="ownership.Name">{{ ownership.Name }}</mat-option>
-      </mat-select>
-      <mat-select formControlName="brand" name="brand" [(ngModel)]="selectedBrand" placeholder="Brand">
-        <mat-option>None</mat-option>
-        <mat-option *ngFor="let brand of brands" [value]="brand.Name">{{ brand.Name }}</mat-option>
-      </mat-select>
-      <mat-select formControlName="model" name="model" [(ngModel)]="selectedModel" placeholder="Model">
-        <mat-option>None</mat-option>
-        <mat-option *ngFor="let model of models" [value]="model.Name">{{ model.Name }}</mat-option>
-      </mat-select>
-      <mat-select formControlName="productCategory" name="productCategory" [(ngModel)]="selectedProductCategory" placeholder="Category">
-        <mat-option>None</mat-option>
-        <mat-option *ngFor="let productCategory of productCategories" [value]="productCategory.Name">{{ productCategory.Name }}</mat-option>
-      </mat-select>
-      <mat-select formControlName="productType" name="productType" [(ngModel)]="selectedProductType" placeholder="Product Type">
-        <mat-option>None</mat-option>
-        <mat-option *ngFor="let productType of productTypes" [value]="productType.Name">{{ productType.Name }}</mat-option>
-      </mat-select>
-      <mat-select formControlName="inventoryItemKind" name="inventoryItemKind" [(ngModel)]="selectedInventoryItemKind" placeholder="Inventory Kind">
-        <mat-option>None</mat-option>
-        <mat-option *ngFor="let inventoryItemKind of inventoryItemKinds" [value]="inventoryItemKind.Name">{{ inventoryItemKind.Name }}</mat-option>
-      </mat-select>
-      <mat-select formControlName="manufacturer" name="manufacturer" [(ngModel)]="selectedManufacturer" placeholder="Manufacturer">
-        <mat-option>None</mat-option>
-        <mat-option *ngFor="let manufacturer of manufacturers" [value]="manufacturer.Name">{{ manufacturer.Name }}</mat-option>
-      </mat-select>
-      <mat-select formControlName="supplier" name="supplier" [(ngModel)]="selectedSupplier" placeholder="Supplier">
-        <mat-option>None</mat-option>
-        <mat-option *ngFor="let supplier of suppliers" [value]="supplier.Name">{{ supplier.Name }}</mat-option>
-      </mat-select>
-    </form>
+    <div class="grid-8_xs-1">
+        <mat-input-container class="col">
+          <input matInput placeholder="Name" formControlName="name">
+        </mat-input-container>
+        <mat-input-container class="col">
+          <input matInput placeholder="ArticleNr" formControlName="articleNumber">
+        </mat-input-container>
+        <mat-input-container class="col">
+          <input matInput placeholder="Keyword" formControlName="keyword">
+        </mat-input-container>
+        <mat-input-container class="col">
+          <input matInput placeholder="Owner" formControlName="owner">
+          <mat-icon matSuffix>search</mat-icon>
+        </mat-input-container>
+        </div>
+        <div class="grid-8_xs-1">
+        <mat-input-container class="col">
+          <mat-select formControlName="ownership" name="ownership" [(ngModel)]="selectedOwnership" placeholder="Ownership" >
+          <mat-option>None</mat-option>
+            <mat-option *ngFor="let ownership of ownerships" [value]="ownership.Name">{{ ownership.Name }}</mat-option>
+          </mat-select>
+        </mat-input-container>
+        <mat-input-container class="col">
+          <mat-select formControlName="brand" name="brand" [(ngModel)]="selectedBrand" placeholder="Brand">
+            <mat-option>None</mat-option>
+            <mat-option *ngFor="let brand of brands" [value]="brand.Name">{{ brand.Name }}</mat-option>
+          </mat-select>
+        </mat-input-container>
+        <mat-input-container class="col">
+          <mat-select formControlName="model" name="model" [(ngModel)]="selectedModel" placeholder="Model">
+            <mat-option>None</mat-option>
+            <mat-option *ngFor="let model of models" [value]="model.Name">{{ model.Name }}</mat-option>
+          </mat-select>
+        </mat-input-container>
+        <mat-input-container class="col">
+          <mat-select formControlName="productCategory" name="productCategory" [(ngModel)]="selectedProductCategory" placeholder="Category">
+            <mat-option>None</mat-option>
+            <mat-option *ngFor="let productCategory of productCategories" [value]="productCategory.Name">{{ productCategory.Name }}</mat-option>
+          </mat-select>
+        </mat-input-container>
+        <mat-input-container class="col">
+          <mat-select formControlName="productType" name="productType" [(ngModel)]="selectedProductType" placeholder="Product Type">
+            <mat-option>None</mat-option>
+            <mat-option *ngFor="let productType of productTypes" [value]="productType.Name">{{ productType.Name }}</mat-option>
+          </mat-select>
+        </mat-input-container>
+        <mat-input-container class="col">
+          <mat-select formControlName="inventoryItemKind" name="inventoryItemKind" [(ngModel)]="selectedInventoryItemKind" placeholder="Inventory Kind">
+            <mat-option>None</mat-option>
+            <mat-option *ngFor="let inventoryItemKind of inventoryItemKinds" [value]="inventoryItemKind.Name">{{ inventoryItemKind.Name }}</mat-option>
+          </mat-select>
+        </mat-input-container>
+        <mat-input-container class="col">
+          <mat-select formControlName="manufacturer" name="manufacturer" [(ngModel)]="selectedManufacturer" placeholder="Manufacturer">
+            <mat-option>None</mat-option>
+            <mat-option *ngFor="let manufacturer of manufacturers" [value]="manufacturer.Name">{{ manufacturer.Name }}</mat-option>
+          </mat-select>
+        </mat-input-container>
+        <mat-input-container class="col">
+          <mat-select formControlName="supplier" name="supplier" [(ngModel)]="selectedSupplier" placeholder="Supplier">
+            <mat-option>None</mat-option>
+            <mat-option *ngFor="let supplier of suppliers" [value]="supplier.Name">{{ supplier.Name }}</mat-option>
+          </mat-select>
+        </mat-input-container>
+      </div>
+      </form>
   </div>
 
   <mat-divider></mat-divider>
@@ -147,10 +198,9 @@ interface SearchData {
     <mat-icon>add</mat-icon>
   </a>
 </span>
-`,
+`
 })
 export class GoodsOverviewComponent implements AfterViewInit, OnDestroy {
-
   public title: string = "Products";
   public total: number;
   public searchForm: FormGroup;
@@ -209,11 +259,12 @@ export class GoodsOverviewComponent implements AfterViewInit, OnDestroy {
     private snackBar: MatSnackBar,
     private router: Router,
     private dialogService: TdDialogService,
-    public media: TdMediaService, private changeDetectorRef: ChangeDetectorRef) {
-
+    public media: TdMediaService,
+    private changeDetectorRef: ChangeDetectorRef
+  ) {
     this.titleService.setTitle("Products");
 
-    this.scope = this.workspaceService.createScope()
+    this.scope = this.workspaceService.createScope();
     this.refresh$ = new BehaviorSubject<Date>(undefined);
     this.chosenGood = "Serialised";
 
@@ -229,7 +280,7 @@ export class GoodsOverviewComponent implements AfterViewInit, OnDestroy {
       ownership: [""],
       productCategory: [""],
       productType: [""],
-      supplier: [""],
+      supplier: [""]
     });
 
     this.page$ = new BehaviorSubject<number>(50);
@@ -239,169 +290,244 @@ export class GoodsOverviewComponent implements AfterViewInit, OnDestroy {
       .distinctUntilChanged()
       .startWith({});
 
-    const combined$: Observable<any> = Observable
-    .combineLatest(search$, this.page$, this.refresh$)
-    .scan(([previousData, previousTake, previousDate]: [SearchData, number, Date], [data, take, date]: [SearchData, number, Date]): [SearchData, number, Date] => {
-      return [
-        data,
-        data !== previousData ? 50 : take,
-        date,
-      ];
-    }, [] as [SearchData, number, Date]);
+    const combined$: Observable<any> = Observable.combineLatest(
+      search$,
+      this.page$,
+      this.refresh$
+    ).scan(
+      (
+        [previousData, previousTake, previousDate]: [SearchData, number, Date],
+        [data, take, date]: [SearchData, number, Date]
+      ): [SearchData, number, Date] => {
+        return [data, data !== previousData ? 50 : take, date];
+      },
+      [] as [SearchData, number, Date],
+    );
 
     const m: MetaDomain = this.workspaceService.metaPopulation.metaDomain;
 
     this.subscription = combined$
       .switchMap(([data, take]: [SearchData, number]) => {
-
         const rolesQuery: Query[] = [
-          new Query(
-            {
-              name: "organisationRoles",
-              objectType: m.OrganisationRole,
-            }),
+          new Query({
+            name: "organisationRoles",
+            objectType: m.OrganisationRole
+          }),
         ];
 
         return this.scope
           .load("Pull", new PullRequest({ query: rolesQuery }))
           .switchMap((rolesLoaded: Loaded) => {
-            const organisationRoles: OrganisationRole[] = rolesLoaded.collections.organisationRoles as OrganisationRole[];
-            const manufacturerRole: OrganisationRole = organisationRoles.find((v: OrganisationRole) => v.Name === "Manufacturer");
-            const supplierRole: OrganisationRole = organisationRoles.find((v: OrganisationRole) => v.Name === "Supplier");
+            const organisationRoles: OrganisationRole[] = rolesLoaded
+              .collections.organisationRoles as OrganisationRole[];
+            const manufacturerRole: OrganisationRole = organisationRoles.find(
+              (v: OrganisationRole) => v.Name === "Manufacturer",
+            );
+            const supplierRole: OrganisationRole = organisationRoles.find(
+              (v: OrganisationRole) => v.Name === "Supplier",
+            );
 
             const searchQuery: Query[] = [
-              new Query(
-                {
-                  name: "brands",
-                  objectType: m.Brand,
+              new Query({
+                name: "brands",
+                objectType: m.Brand,
+              }),
+              new Query({
+                name: "models",
+                objectType: m.Model,
+              }),
+              new Query({
+                name: "inventoryItemKinds",
+                objectType: m.InventoryItemKind,
+              }),
+              new Query({
+                name: "categories",
+                objectType: m.ProductCategory,
+              }),
+              new Query({
+                name: "productTypes",
+                objectType: m.ProductType,
+              }),
+              new Query({
+                name: "organisations",
+                objectType: m.ProductType,
+              }),
+              new Query({
+                name: "ownerships",
+                objectType: m.Ownership,
+              }),
+              new Query({
+                name: "manufacturers",
+                objectType: m.Organisation,
+                predicate: new Contains({
+                  roleType: m.Organisation.OrganisationRoles,
+                  object: manufacturerRole,
                 }),
-              new Query(
-                {
-                  name: "models",
-                  objectType: m.Model,
+                sort: [
+                  new Sort({ roleType: m.Organisation.Name, direction: "Asc" }),
+                ],
+              }),
+              new Query({
+                name: "suppliers",
+                objectType: m.Organisation,
+                predicate: new Contains({
+                  roleType: m.Organisation.OrganisationRoles,
+                  object: supplierRole,
                 }),
-              new Query(
-                {
-                  name: "inventoryItemKinds",
-                  objectType: m.InventoryItemKind,
-                }),
-              new Query(
-                {
-                  name: "categories",
-                  objectType: m.ProductCategory,
-                }),
-              new Query(
-                {
-                  name: "productTypes",
-                  objectType: m.ProductType,
-                }),
-              new Query(
-                {
-                  name: "organisations",
-                  objectType: m.ProductType,
-                }),
-              new Query(
-                {
-                  name: "ownerships",
-                  objectType: m.Ownership,
-                }),
-              new Query(
-                {
-                  name: "manufacturers",
-                  objectType: m.Organisation,
-                  predicate: new Contains({ roleType: m.Organisation.OrganisationRoles, object: manufacturerRole }),
-                  sort: [new Sort ({ roleType: m.Organisation.Name, direction: "Asc" })],
-                }),
-                new Query(
-                  {
-                    name: "suppliers",
-                    objectType: m.Organisation,
-                    predicate: new Contains({ roleType: m.Organisation.OrganisationRoles, object: supplierRole }),
-                    sort: [new Sort ({ roleType: m.Organisation.Name, direction: "Asc" })],
-                  }),
-              ];
+                sort: [
+                  new Sort({ roleType: m.Organisation.Name, direction: "Asc" }),
+                ],
+              }),
+            ];
 
             return this.scope
               .load("Pull", new PullRequest({ query: searchQuery }))
               .switchMap((loaded: Loaded) => {
-
                 this.brands = loaded.collections.brands as Brand[];
-                this.brand = this.brands.find((v: Brand) => v.Name === data.brand);
+                this.brand = this.brands.find(
+                  (v: Brand) => v.Name === data.brand,
+                );
 
                 this.models = loaded.collections.models as Model[];
-                this.model = this.models.find((v: Model) => v.Name === data.model);
+                this.model = this.models.find(
+                  (v: Model) => v.Name === data.model,
+                );
 
-                this.inventoryItemKinds = loaded.collections.inventoryItemKinds as InventoryItemKind[];
-                this.inventoryItemKind = this.inventoryItemKinds.find((v: InventoryItemKind) => v.Name === data.inventoryItemKind);
+                this.inventoryItemKinds = loaded.collections
+                  .inventoryItemKinds as InventoryItemKind[];
+                this.inventoryItemKind = this.inventoryItemKinds.find(
+                  (v: InventoryItemKind) => v.Name === data.inventoryItemKind,
+                );
 
-                this.productCategories = loaded.collections.categories as ProductCategory[];
-                this.productCategory = this.productCategories.find((v: ProductCategory) => v.Name === data.productCategory);
+                this.productCategories = loaded.collections
+                  .categories as ProductCategory[];
+                this.productCategory = this.productCategories.find(
+                  (v: ProductCategory) => v.Name === data.productCategory,
+                );
 
-                this.productTypes = loaded.collections.productTypes as ProductType[];
-                this.productType = this.productTypes.find((v: ProductType) => v.Name === data.productType);
+                this.productTypes = loaded.collections
+                  .productTypes as ProductType[];
+                this.productType = this.productTypes.find(
+                  (v: ProductType) => v.Name === data.productType,
+                );
 
                 this.ownerships = loaded.collections.ownerships as Ownership[];
-                this.ownership = this.ownerships.find((v: Ownership) => v.Name === data.ownership);
+                this.ownership = this.ownerships.find(
+                  (v: Ownership) => v.Name === data.ownership,
+                );
 
-                this.manufacturers = loaded.collections.manufacturers as Organisation[];
-                this.manufacturer = this.manufacturers.find((v: Organisation) => v.Name === data.manufacturer);
+                this.manufacturers = loaded.collections
+                  .manufacturers as Organisation[];
+                this.manufacturer = this.manufacturers.find(
+                  (v: Organisation) => v.Name === data.manufacturer,
+                );
 
                 this.suppliers = loaded.collections.suppliers as Organisation[];
-                this.supplier = this.suppliers.find((v: Organisation) => v.Name === data.supplier);
+                this.supplier = this.suppliers.find(
+                  (v: Organisation) => v.Name === data.supplier,
+                );
 
                 const goodsPredicate: And = new And();
                 const goodsPredicates: Predicate[] = goodsPredicate.predicates;
 
                 if (data.name) {
                   const like: string = data.name.replace("*", "%") + "%";
-                  goodsPredicates.push(new Like({ roleType: m.Good.Name, value: like }));
+                  goodsPredicates.push(
+                    new Like({ roleType: m.Good.Name, value: like }),
+                  );
                 }
 
                 if (data.articleNumber) {
-                  const like: string = data.articleNumber.replace("*", "%") + "%";
-                  goodsPredicates.push(new Like({ roleType: m.Good.ArticleNumber, value: like }));
+                  const like: string =
+                    data.articleNumber.replace("*", "%") + "%";
+                  goodsPredicates.push(
+                    new Like({ roleType: m.Good.ArticleNumber, value: like }),
+                  );
                 }
 
                 if (data.keyword) {
                   const like: string = data.keyword.replace("*", "%") + "%";
-                  goodsPredicates.push(new Like({ roleType: m.Good.Keywords, value: like }));
+                  goodsPredicates.push(
+                    new Like({ roleType: m.Good.Keywords, value: like }),
+                  );
                 }
 
                 if (data.brand) {
-                  goodsPredicates.push(new Contains({ roleType: m.Good.StandardFeatures, object: this.brand }));
+                  goodsPredicates.push(
+                    new Contains({
+                      roleType: m.Good.StandardFeatures,
+                      object: this.brand,
+                    }),
+                  );
                 }
 
                 if (data.model) {
-                  goodsPredicates.push(new Contains({ roleType: m.Good.StandardFeatures, object: this.model }));
+                  goodsPredicates.push(
+                    new Contains({
+                      roleType: m.Good.StandardFeatures,
+                      object: this.model,
+                    }),
+                  );
                 }
 
                 if (data.productCategory) {
-                  goodsPredicates.push(new Contains({ roleType: m.Good.ProductCategories, object: this.productCategory }));
+                  goodsPredicates.push(
+                    new Contains({
+                      roleType: m.Good.ProductCategories,
+                      object: this.productCategory,
+                    }),
+                  );
                 }
 
                 if (data.inventoryItemKind) {
-                  goodsPredicates.push(new Equals({ roleType: m.Good.InventoryItemKind, value: this.inventoryItemKind }));
+                  goodsPredicates.push(
+                    new Equals({
+                      roleType: m.Good.InventoryItemKind,
+                      value: this.inventoryItemKind,
+                    }),
+                  );
                 }
 
                 if (data.manufacturer) {
-                  goodsPredicates.push(new Equals({ roleType: m.Good.ManufacturedBy, value: this.manufacturer }));
+                  goodsPredicates.push(
+                    new Equals({
+                      roleType: m.Good.ManufacturedBy,
+                      value: this.manufacturer,
+                    }),
+                  );
                 }
 
                 if (data.supplier) {
-                  goodsPredicates.push(new Equals({ roleType: m.Good.SuppliedBy, value: this.supplier }));
+                  goodsPredicates.push(
+                    new Equals({
+                      roleType: m.Good.SuppliedBy,
+                      value: this.supplier,
+                    }),
+                  );
                 }
 
                 if (data.owner || data.ownership) {
                   const inventoryPredicate: And = new And();
-                  const inventoryPredicates: Predicate[] = inventoryPredicate.predicates;
+                  const inventoryPredicates: Predicate[] =
+                    inventoryPredicate.predicates;
 
                   if (data.owner) {
                     const like: string = data.owner.replace("*", "%") + "%";
-                    inventoryPredicates.push(new Like({ roleType: m.SerialisedInventoryItem.Owner, value: like }));
+                    inventoryPredicates.push(
+                      new Like({
+                        roleType: m.SerialisedInventoryItem.Owner,
+                        value: like,
+                      }),
+                    );
                   }
 
                   if (data.ownership) {
-                    inventoryPredicates.push(new Equals({ roleType: m.SerialisedInventoryItem.Ownership, value: this.ownership }));
+                    inventoryPredicates.push(
+                      new Equals({
+                        roleType: m.SerialisedInventoryItem.Ownership,
+                        value: this.ownership,
+                      }),
+                    );
                   }
 
                   const serialisedInventoryQuery: Query = new Query({
@@ -409,16 +535,25 @@ export class GoodsOverviewComponent implements AfterViewInit, OnDestroy {
                     predicate: inventoryPredicate,
                   });
 
-                  const containedIn: ContainedIn = new ContainedIn({ associationType: m.Good.InventoryItemsWhereGood, query: serialisedInventoryQuery });
+                  const containedIn: ContainedIn = new ContainedIn({
+                    associationType: m.Good.InventoryItemsWhereGood,
+                    query: serialisedInventoryQuery,
+                  });
                   goodsPredicates.push(containedIn);
                 }
 
                 if (data.productType) {
                   const inventoryPredicate: And = new And();
-                  const inventoryPredicates: Predicate[] = inventoryPredicate.predicates;
+                  const inventoryPredicates: Predicate[] =
+                    inventoryPredicate.predicates;
 
                   if (data.productType) {
-                    inventoryPredicates.push(new Equals({ roleType: m.InventoryItem.ProductType, value: this.productType }));
+                    inventoryPredicates.push(
+                      new Equals({
+                        roleType: m.InventoryItem.ProductType,
+                        value: this.productType,
+                      }),
+                    );
                   }
 
                   const inventoryQuery: Query = new Query({
@@ -426,12 +561,15 @@ export class GoodsOverviewComponent implements AfterViewInit, OnDestroy {
                     predicate: inventoryPredicate,
                   });
 
-                  const containedIn: ContainedIn = new ContainedIn({ associationType: m.Good.InventoryItemsWhereGood, query: inventoryQuery });
+                  const containedIn: ContainedIn = new ContainedIn({
+                    associationType: m.Good.InventoryItemsWhereGood,
+                    query: inventoryQuery,
+                  });
                   goodsPredicates.push(containedIn);
                 }
 
-                const goodsQuery: Query[] = [new Query(
-                  {
+                const goodsQuery: Query[] = [
+                  new Query({
                     include: [
                       new TreeNode({ roleType: m.Good.PrimaryPhoto }),
                       new TreeNode({ roleType: m.Good.LocalisedNames }),
@@ -442,20 +580,26 @@ export class GoodsOverviewComponent implements AfterViewInit, OnDestroy {
                     objectType: m.Good,
                     page: new Page({ skip: 0, take }),
                     predicate: goodsPredicate,
-                  })];
+                  }),
+                ];
 
-                return this.scope.load("Pull", new PullRequest({ query: goodsQuery }));
+                return this.scope.load(
+                  "Pull",
+                  new PullRequest({ query: goodsQuery }),
+                );
               });
           });
       })
-      .subscribe((loaded: Loaded) => {
-        this.data = loaded.collections.goods as Good[];
-        this.total = loaded.values.goods_total;
-      },
-      (error: any) => {
-        this.errorService.message(error);
-        this.goBack();
-      });
+      .subscribe(
+        (loaded: Loaded) => {
+          this.data = loaded.collections.goods as Good[];
+          this.total = loaded.values.goods_total;
+        },
+        (error: any) => {
+          this.errorService.message(error);
+          this.goBack();
+        },
+      );
   }
 
   public more(): void {
@@ -465,7 +609,8 @@ export class GoodsOverviewComponent implements AfterViewInit, OnDestroy {
   public delete(good: Good): void {
     this.dialogService
       .openConfirm({ message: "Are you sure you want to delete this product?" })
-      .afterClosed().subscribe((confirm: boolean) => {
+      .afterClosed()
+      .subscribe((confirm: boolean) => {
         if (confirm) {
           // TODO: Logical, physical or workflow delete
         }
@@ -473,7 +618,6 @@ export class GoodsOverviewComponent implements AfterViewInit, OnDestroy {
   }
 
   public addGood(): void {
-
     const dialogRef = this.dialog.open(NewGoodDialogComponent, {
       data: { chosenGood: this.chosenGood },
       height: "300px",
@@ -481,17 +625,23 @@ export class GoodsOverviewComponent implements AfterViewInit, OnDestroy {
     });
 
     dialogRef.afterClosed().subscribe((answer: string) => {
-        if (answer === "Serialised") {
-          this.router.navigate(["/serialisedGood"]);
-        }
-        if (answer === "NonSerialised") {
-          this.router.navigate(["/nonSerialisedGood"]);
-        }
+      if (answer === "Serialised") {
+        this.router.navigate(["/serialisedGood"]);
+      }
+      if (answer === "NonSerialised") {
+        this.router.navigate(["/nonSerialisedGood"]);
+      }
     });
   }
 
   public serialisedGood(good: Good): boolean {
-    return good.InventoryItemKind === this.inventoryItemKinds.find((v: InventoryItemKind) => v.UniqueId.toUpperCase() === "2596E2DD-3F5D-4588-A4A2-167D6FBE3FAE");
+    return (
+      good.InventoryItemKind ===
+      this.inventoryItemKinds.find(
+        (v: InventoryItemKind) =>
+          v.UniqueId.toUpperCase() === "2596E2DD-3F5D-4588-A4A2-167D6FBE3FAE",
+      )
+    );
   }
 
   public goBack(): void {

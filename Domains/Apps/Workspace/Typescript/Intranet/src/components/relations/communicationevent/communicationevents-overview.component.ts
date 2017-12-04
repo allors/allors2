@@ -38,22 +38,30 @@ interface SearchData {
 <mat-card *ngIf="communicationEventStates">
   <div class="pad-top-xs pad-left pad-right">
     <form novalidate [formGroup]="searchForm">
-      <mat-input-container>
-        <input fxFlex matInput placeholder="Subject" formControlName="subject">
-      </mat-input-container>
-      <mat-select formControlName="state" name="state" [(ngModel)]="selectedCommunicationEventState" placeholder="State">
-        <mat-option>None</mat-option>
-        <mat-option *ngFor="let objectState of communicationEventStates" [value]="objectState.Name">{{ objectState.Name }}</mat-option>
-      </mat-select>
-      <mat-select formControlName="purpose" name="purpose" [(ngModel)]="selectedPurpose" placeholder="Purpose">
-        <mat-option>None</mat-option>
-        <mat-option *ngFor="let purpose of purposes" [value]="purpose.Name">{{ purpose.Name }}</mat-option>
-      </mat-select>
-       <mat-select formControlName="involved" name="involved" [(ngModel)]="selectedInvolded" placeholder="Person Involved">
-        <mat-option>None</mat-option>
-        <mat-option *ngFor="let person of people" [value]="person.displayName">{{ person.displayName }}</mat-option>
-      </mat-select>
-      <mat-icon matSuffix>search</mat-icon>
+      <div class="grid-8_xs-1">
+        <mat-input-container class="col">
+          <input fxFlex matInput placeholder="Subject" formControlName="subject">
+        </mat-input-container>
+        <mat-input-container class="col">
+          <mat-select formControlName="state" name="state" [(ngModel)]="selectedCommunicationEventState" placeholder="State">
+            <mat-option>None</mat-option>
+            <mat-option *ngFor="let objectState of communicationEventStates" [value]="objectState.Name">{{ objectState.Name }}</mat-option>
+          </mat-select>
+        </mat-input-container>
+        <mat-input-container class="col">
+          <mat-select formControlName="purpose" name="purpose" [(ngModel)]="selectedPurpose" placeholder="Purpose">
+            <mat-option>None</mat-option>
+            <mat-option *ngFor="let purpose of purposes" [value]="purpose.Name">{{ purpose.Name }}</mat-option>
+          </mat-select>
+        </mat-input-container>
+        <mat-input-container class="col">
+          <mat-select formControlName="involved" name="involved" [(ngModel)]="selectedInvolded" placeholder="Person Involved">
+            <mat-option>None</mat-option>
+            <mat-option *ngFor="let person of people" [value]="person.displayName">{{ person.displayName }}</mat-option>
+          </mat-select>
+          <mat-icon matSuffix>search</mat-icon>
+          </mat-input-container>
+      </div>
     </form>
   </div>
 

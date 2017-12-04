@@ -19,17 +19,16 @@ require("rxjs/add/operator/catch");
 require("rxjs/add/operator/map");
 const Environment_1 = require("../core/Environment");
 let AuthenticationService = class AuthenticationService {
-    // public get token(): string
-    // {
-    //   return sessionStorage.getItem(this.tokenName);
-    // }
-    // public set token(value: string)
-    // {
-    //   sessionStorage.setItem(this.tokenName, value);
-    // }
     constructor(http, environment) {
         this.http = http;
         this.environment = environment;
+        this.tokenName = "ALLORS_JWT";
+    }
+    get token() {
+        return sessionStorage.getItem(this.tokenName);
+    }
+    set token(value) {
+        sessionStorage.setItem(this.tokenName, value);
     }
     login$(userName, password) {
         const url = this.environment.url + this.environment.authenticationUrl;
