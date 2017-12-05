@@ -133,11 +133,9 @@ ProductQuotesOverviewComponent = __decorate([
     <form novalidate [formGroup]="searchForm">
       <mat-input-container>
         <input fxFlex matInput placeholder="Organisation" formControlName="company">
-        <mat-icon matSuffix>search</mat-icon>
       </mat-input-container>
       <mat-input-container>
         <input fxFlex matInput placeholder="Number" formControlName="quoteNumber">
-        <mat-icon matSuffix>search</mat-icon>
       </mat-input-container>
       <mat-input-container>
         <input fxFlex matInput placeholder="Description" formControlName="description">

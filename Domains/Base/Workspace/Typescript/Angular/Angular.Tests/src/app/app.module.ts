@@ -4,7 +4,7 @@ import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { HttpModule } from "@angular/http";
 import { BrowserModule, Title } from "@angular/platform-browser";
 
-import { AuthenticationInterceptor, AuthenticationService, DatabaseService, ENVIRONMENT, WorkspaceService } from "@allors/base-angular";
+import { AuthenticationConfig, AuthenticationInterceptor, AuthenticationService, DatabaseConfig, DatabaseService, WorkspaceService } from "@allors/base-angular";
 
 import { AppRoutingModule } from "./app-routing.module";
 import { AppComponent } from "./app.component";
@@ -38,7 +38,8 @@ import { QueryComponent } from "./query/query.component";
     AppRoutingModule,
   ],
   providers: [
-    { provide: ENVIRONMENT, useValue: environment },
+    { provide: DatabaseConfig, useValue: { url: environment.url } },
+    { provide: AuthenticationConfig, useValue: { url: environment.url + environment.authenticationUrl} },
     { provide: HTTP_INTERCEPTORS, useClass: AuthenticationInterceptor, multi: true },
     DatabaseService,
     WorkspaceService,

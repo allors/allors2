@@ -5,7 +5,7 @@ import { Observable } from "rxjs/Observable";
 import "rxjs/add/operator/catch";
 import "rxjs/add/operator/map";
 
-import { ENVIRONMENT, Environment } from "../core/Environment";
+import { AuthenticationConfig } from "./authentication.config";
 import { AuthenticationTokenRequest } from "./AuthenticationTokenRequest";
 import { AuthenticationTokenResponse } from "./AuthenticationTokenResponse";
 
@@ -23,11 +23,11 @@ export class AuthenticationService {
 
   constructor(
     private http: HttpClient,
-    @Inject(ENVIRONMENT) private environment: Environment,
+    private authenticationConfig: AuthenticationConfig,
   ) {}
 
   public login$(userName: string, password: string): any {
-    const url = this.environment.url + this.environment.authenticationUrl;
+    const url = this.authenticationConfig.url;
     const request: AuthenticationTokenRequest = { userName, password };
 
     return this.http

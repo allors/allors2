@@ -4,8 +4,8 @@ import { BrowserModule, Title } from "@angular/platform-browser";
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { RouterModule, Routes } from "@angular/router";
 
-import { AuthenticationInterceptor, AuthenticationService, DatabaseService, WorkspaceService } from "@allors/base-angular";
-import { ENVIRONMENT, ErrorService, MenuService } from "@allors/base-angular";
+import { AuthenticationConfig, AuthenticationInterceptor, AuthenticationService, DatabaseConfig, DatabaseService, WorkspaceService } from "@allors/base-angular";
+import { ErrorService, MenuService } from "@allors/base-angular";
 import { DefaultErrorService } from "@allors/base-covalent";
 
 import * as ar from "@allors/apps-intranet/components/ar";
@@ -40,7 +40,8 @@ import * as common from "./common";
     workefforts.Modules,
   ],
   providers: [
-    { provide: ENVIRONMENT, useValue: environment },
+    { provide: DatabaseConfig, useValue: { url: environment.url } },
+    { provide: AuthenticationConfig, useValue: { url: environment.url + environment.authenticationUrl} },
     { provide: HTTP_INTERCEPTORS, useClass: AuthenticationInterceptor, multi: true },
     { provide: ErrorService, useClass: DefaultErrorService },
     DatabaseService,

@@ -133,11 +133,9 @@ SalesOrdersOverviewComponent = __decorate([
     <form novalidate [formGroup]="searchForm">
       <mat-input-container>
         <input fxFlex matInput placeholder="Organisation" formControlName="company">
-        <mat-icon matSuffix>search</mat-icon>
       </mat-input-container>
       <mat-input-container>
         <input fxFlex matInput placeholder="Number" formControlName="orderNumber">
-        <mat-icon matSuffix>search</mat-icon>
       </mat-input-container>
       <mat-input-container>
         <input fxFlex matInput placeholder="Customer Reference" formControlName="reference">

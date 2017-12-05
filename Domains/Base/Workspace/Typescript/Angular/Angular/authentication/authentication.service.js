@@ -8,20 +8,17 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-var __param = (this && this.__param) || function (paramIndex, decorator) {
-    return function (target, key) { decorator(target, key, paramIndex); }
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 const http_1 = require("@angular/common/http");
 const core_1 = require("@angular/core");
 const Observable_1 = require("rxjs/Observable");
 require("rxjs/add/operator/catch");
 require("rxjs/add/operator/map");
-const Environment_1 = require("../core/Environment");
+const authentication_config_1 = require("./authentication.config");
 let AuthenticationService = class AuthenticationService {
-    constructor(http, environment) {
+    constructor(http, authenticationConfig) {
         this.http = http;
-        this.environment = environment;
+        this.authenticationConfig = authenticationConfig;
         this.tokenName = "ALLORS_JWT";
     }
     get token() {
@@ -31,7 +28,7 @@ let AuthenticationService = class AuthenticationService {
         sessionStorage.setItem(this.tokenName, value);
     }
     login$(userName, password) {
-        const url = this.environment.url + this.environment.authenticationUrl;
+        const url = this.authenticationConfig.url;
         const request = { userName, password };
         return this.http
             .post(url, request)
@@ -53,8 +50,7 @@ let AuthenticationService = class AuthenticationService {
 };
 AuthenticationService = __decorate([
     core_1.Injectable(),
-    __param(1, core_1.Inject(Environment_1.ENVIRONMENT)),
     __metadata("design:paramtypes", [http_1.HttpClient,
-        Environment_1.Environment])
+        authentication_config_1.AuthenticationConfig])
 ], AuthenticationService);
 exports.AuthenticationService = AuthenticationService;

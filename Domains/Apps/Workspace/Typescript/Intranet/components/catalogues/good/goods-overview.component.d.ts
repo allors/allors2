@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup } from "@angular/forms";
 import { MatDialog, MatSnackBar } from "@angular/material";
 import { Title } from "@angular/platform-browser";
 import { Router } from "@angular/router";
-import 'rxjs/add/observable/combineLatest';
+import "rxjs/add/observable/combineLatest";
 import { TdDialogService, TdMediaService } from "@covalent/core";
 import { Brand, Good, InventoryItemKind, Model, Organisation, Ownership, ProductCategory, ProductType, SerialisedInventoryItemState } from "@allors/workspace";
 import { ErrorService, WorkspaceService } from "@allors/base-angular";

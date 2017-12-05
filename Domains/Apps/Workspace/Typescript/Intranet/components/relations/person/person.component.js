@@ -116,20 +116,29 @@ PersonComponent = __decorate([
     core_1.Component({
         template: `
 <td-layout-card-over [cardTitle]="title" [cardSubtitle]="subTitle">
-  <form #form="ngForm" *ngIf="person" (submit)="save()">
+  <form class="pad" #form="ngForm" *ngIf="person" (submit)="save()">
 
-    <div class="pad">
-      <a-mat-media-upload [object]="person" [roleType]="m.Person.Picture" accept="image/*"></a-mat-media-upload>
-      <a-mat-select [object]="person" [roleType]="m.Person.PersonRoles" [options]="roles" display="Name"></a-mat-select>
-      <a-mat-input [object]="person" [roleType]="m.Person.FirstName"></a-mat-input>
-      <a-mat-input [object]="person" [roleType]="m.Person.MiddleName"></a-mat-input>
-      <a-mat-input [object]="person" [roleType]="m.Person.LastName"></a-mat-input>
-      <a-mat-input [object]="person" [roleType]="m.Person.Comment"></a-mat-input>
-      <a-mat-input [object]="person" [roleType]="m.Person.Function"></a-mat-input>
-      <a-mat-select [object]="person" [roleType]="m.Person.Gender" [options]="genders" display="Name"></a-mat-select>
-      <a-mat-select [object]="person" [roleType]="m.Person.Salutation" [options]="salutations" display="Name"></a-mat-select>
-      <a-mat-select [object]="person" [roleType]="m.Person.Locale" [options]="locales" display="Name"></a-mat-select>
+    <div class="grid-2_xs-1">
+      <a-mat-media-upload class="col" [object]="person" [roleType]="m.Person.Picture" accept="image/*"></a-mat-media-upload>
+      <a-mat-select class="col" [object]="person" [roleType]="m.Person.PersonRoles" [options]="roles" display="Name"></a-mat-select>
     </div>
+
+    <div class="grid-4_xs-1">
+    <a-mat-select class="col" [object]="person" [roleType]="m.Person.Salutation" [options]="salutations" display="Name"></a-mat-select>
+    <a-mat-input class="col" [object]="person" [roleType]="m.Person.FirstName"></a-mat-input>
+      <a-mat-input class="col" [object]="person" [roleType]="m.Person.MiddleName"></a-mat-input>
+      <a-mat-input class="col" [object]="person" [roleType]="m.Person.LastName"></a-mat-input>
+    </div>
+
+    <div class="grid-2_xs-1">
+      <a-mat-input class="col" [object]="person" [roleType]="m.Person.Function"></a-mat-input>
+      <a-mat-select class="col" [object]="person" [roleType]="m.Person.Gender" [options]="genders" display="Name"></a-mat-select>
+      <a-mat-select class="col" [object]="person" [roleType]="m.Person.Locale" [options]="locales" display="Name"></a-mat-select>
+    </div>
+
+    <div class="grid">
+    <a-mat-textarea class="col" [object]="person" [roleType]="m.Person.Comment"></a-mat-textarea>
+  </div>
 
     <mat-divider></mat-divider>
 

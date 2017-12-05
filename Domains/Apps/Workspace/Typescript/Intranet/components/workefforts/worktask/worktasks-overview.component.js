@@ -206,25 +206,33 @@ WorkTasksOverviewComponent = __decorate([
 <mat-card *ngIf="workEffortStates">
   <div class="pad-top-xs pad-left pad-right">
     <form novalidate [formGroup]="searchForm">
-      <mat-input-container>
-        <input fxFlex matInput placeholder="Name" formControlName="name">
-      </mat-input-container>
-      <mat-input-container>
-        <input fxFlex matInput placeholder="Description" formControlName="description">
-      </mat-input-container>
-      <mat-select formControlName="state" name="state" [(ngModel)]="selectedWorkEffortState" placeholder="State">
-        <mat-option>None</mat-option>
-        <mat-option *ngFor="let objectState of workEffortStates" [value]="objectState.Name">{{ objectState.Name }}</mat-option>
-      </mat-select>
-      <mat-select formControlName="priority" name="priority" [(ngModel)]="selectedPriority" placeholder="Priority">
-        <mat-option>None</mat-option>
-        <mat-option *ngFor="let priority of priorities" [value]="priority.Name">{{ priority.Name }}</mat-option>
-      </mat-select>
-      <mat-select formControlName="assignee" name="assignee" [(ngModel)]="selectedAssignee" placeholder="Assignee">
-        <mat-option>None</mat-option>
-        <mat-option *ngFor="let assignee of assignees" [value]="assignee.displayName">{{ assignee.displayName }}</mat-option>
-      </mat-select>
-      <mat-icon matSuffix>search</mat-icon>
+      <div class="grid-8_xs-1">
+        <mat-input-container class="col">
+          <input fxFlex matInput placeholder="Name" formControlName="name">
+        </mat-input-container>
+        <mat-input-container class="col">
+          <input fxFlex matInput placeholder="Description" formControlName="description">
+        </mat-input-container>
+        <mat-input-container class="col">
+          <mat-select formControlName="state" name="state" [(ngModel)]="selectedWorkEffortState" placeholder="State">
+            <mat-option>None</mat-option>
+            <mat-option *ngFor="let objectState of workEffortStates" [value]="objectState.Name">{{ objectState.Name }}</mat-option>
+          </mat-select>
+        </mat-input-container>
+        <mat-input-container class="col">
+          <mat-select formControlName="priority" name="priority" [(ngModel)]="selectedPriority" placeholder="Priority">
+            <mat-option>None</mat-option>
+            <mat-option *ngFor="let priority of priorities" [value]="priority.Name">{{ priority.Name }}</mat-option>
+          </mat-select>
+        </mat-input-container>
+        <mat-input-container class="col">
+          <mat-select formControlName="assignee" name="assignee" [(ngModel)]="selectedAssignee" placeholder="Assignee">
+            <mat-option>None</mat-option>
+            <mat-option *ngFor="let assignee of assignees" [value]="assignee.displayName">{{ assignee.displayName }}</mat-option>
+          </mat-select>
+        </mat-input-container>
+        <mat-icon matSuffix>search</mat-icon>
+      </div>
     </form>
   </div>
 

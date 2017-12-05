@@ -232,28 +232,36 @@ OrganisationsOverviewComponent = __decorate([
 <mat-card>
   <div class="pad-top-xs pad-left pad-right">
     <form novalidate [formGroup]="searchForm">
-      <mat-input-container>
-        <input fxFlex matInput placeholder="Name" formControlName="name">
-      </mat-input-container>
-      <mat-select formControlName="country" name="country" [(ngModel)]="selectedCountry" placeholder="Country">
-        <mat-option>None</mat-option>
-        <mat-option *ngFor="let country of countries" [value]="country.Name">{{ country.Name }}</mat-option>
-      </mat-select>
-      <mat-select formControlName="role" name="role" [(ngModel)]="selectedRole" placeholder="Role">
-        <mat-option>None</mat-option>
-        <mat-option *ngFor="let role of roles" [value]="role.Name">{{ role.Name }}</mat-option>
-      </mat-select>
-      <mat-select formControlName="classification" name="classification" [(ngModel)]="selectedClassification" placeholder="Classification">
-        <mat-option>None</mat-option>
-        <mat-option *ngFor="let classification of classifications" [value]="classification.Name">{{ classification.Name }}</mat-option>
-      </mat-select>
-      <mat-input-container>
-        <input fxFlex matInput placeholder="First Name" formControlName="contactFirstName">
-      </mat-input-container>
-      <mat-input-container>
-        <input fxFlex matInput placeholder="Last Name" formControlName="contactLastName">
-      </mat-input-container>
-      <mat-icon matSuffix>search</mat-icon>
+      <div class="grid-8_xs-1">
+        <mat-input-container class="col">
+          <input fxFlex matInput placeholder="Name" formControlName="name">
+        </mat-input-container>
+        <mat-input-container class="col">
+          <mat-select formControlName="country" name="country" [(ngModel)]="selectedCountry" placeholder="Country">
+            <mat-option>None</mat-option>
+            <mat-option *ngFor="let country of countries" [value]="country.Name">{{ country.Name }}</mat-option>
+          </mat-select>
+        </mat-input-container>
+        <mat-input-container class="col">
+          <mat-select formControlName="role" name="role" [(ngModel)]="selectedRole" placeholder="Role">
+            <mat-option>None</mat-option>
+            <mat-option *ngFor="let role of roles" [value]="role.Name">{{ role.Name }}</mat-option>
+          </mat-select>
+        </mat-input-container>
+        <mat-input-container class="col">
+          <mat-select formControlName="classification" name="classification" [(ngModel)]="selectedClassification" placeholder="Classification">
+            <mat-option>None</mat-option>
+            <mat-option *ngFor="let classification of classifications" [value]="classification.Name">{{ classification.Name }}</mat-option>
+          </mat-select>
+        </mat-input-container>
+        <mat-input-container class="col">
+          <input fxFlex matInput placeholder="First Name" formControlName="contactFirstName">
+        </mat-input-container>
+        <mat-input-container class="col">
+          <input fxFlex matInput placeholder="Last Name" formControlName="contactLastName">
+          <mat-icon matSuffix>search</mat-icon>
+        </mat-input-container>
+      </div>
     </form>
   </div>
 

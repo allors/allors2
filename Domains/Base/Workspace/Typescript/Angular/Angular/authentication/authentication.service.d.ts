@@ -1,12 +1,12 @@
 import { HttpClient } from "@angular/common/http";
 import "rxjs/add/operator/catch";
 import "rxjs/add/operator/map";
-import { Environment } from "../core/Environment";
+import { AuthenticationConfig } from "./authentication.config";
 export declare class AuthenticationService {
     private http;
-    private environment;
+    private authenticationConfig;
     private tokenName;
     token: string;
-    constructor(http: HttpClient, environment: Environment);
+    constructor(http: HttpClient, authenticationConfig: AuthenticationConfig);
     login$(userName: string, password: string): any;
 }

@@ -3,9 +3,7 @@
 // `ng build --env=prod` then `environment.prod.ts` will be used instead.
 // The list of which env maps to which file can be found in `.angular-cli.json`.
 
-import { Environment } from "@allors/base-angular";
-
-export const environment: Environment = {
+export const environment = {
   authenticationUrl: "TestAuthentication/Token",
   production: false,
   url: "http://localhost:5000/",

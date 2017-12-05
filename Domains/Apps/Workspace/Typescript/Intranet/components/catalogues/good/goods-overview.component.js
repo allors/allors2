@@ -50,21 +50,15 @@ let GoodsOverviewComponent = class GoodsOverviewComponent {
             ownership: [""],
             productCategory: [""],
             productType: [""],
-            supplier: [""],
+            supplier: [""]
         });
         this.page$ = new BehaviorSubject_1.BehaviorSubject(50);
         const search$ = this.searchForm.valueChanges
             .debounceTime(400)
             .distinctUntilChanged()
             .startWith({});
-        const combined$ = Observable_1.Observable
-            .combineLatest(search$, this.page$, this.refresh$)
-            .scan(([previousData, previousTake, previousDate], [data, take, date]) => {
-            return [
-                data,
-                data !== previousData ? 50 : take,
-                date,
-            ];
+        const combined$ = Observable_1.Observable.combineLatest(search$, this.page$, this.refresh$).scan(([previousData, previousTake, previousDate], [data, take, date]) => {
+            return [data, data !== previousData ? 50 : take, date];
         }, []);
         const m = this.workspaceService.metaPopulation.metaDomain;
         this.subscription = combined$
@@ -72,13 +66,14 @@ let GoodsOverviewComponent = class GoodsOverviewComponent {
             const rolesQuery = [
                 new framework_1.Query({
                     name: "organisationRoles",
-                    objectType: m.OrganisationRole,
+                    objectType: m.OrganisationRole
                 }),
             ];
             return this.scope
                 .load("Pull", new framework_1.PullRequest({ query: rolesQuery }))
                 .switchMap((rolesLoaded) => {
-                const organisationRoles = rolesLoaded.collections.organisationRoles;
+                const organisationRoles = rolesLoaded
+                    .collections.organisationRoles;
                 const manufacturerRole = organisationRoles.find((v) => v.Name === "Manufacturer");
                 const supplierRole = organisationRoles.find((v) => v.Name === "Supplier");
                 const searchQuery = [
@@ -113,14 +108,24 @@ let GoodsOverviewComponent = class GoodsOverviewComponent {
                     new framework_1.Query({
                         name: "manufacturers",
                         objectType: m.Organisation,
-                        predicate: new framework_1.Contains({ roleType: m.Organisation.OrganisationRoles, object: manufacturerRole }),
-                        sort: [new framework_1.Sort({ roleType: m.Organisation.Name, direction: "Asc" })],
+                        predicate: new framework_1.Contains({
+                            roleType: m.Organisation.OrganisationRoles,
+                            object: manufacturerRole,
+                        }),
+                        sort: [
+                            new framework_1.Sort({ roleType: m.Organisation.Name, direction: "Asc" }),
+                        ],
                     }),
                     new framework_1.Query({
                         name: "suppliers",
                         objectType: m.Organisation,
-                        predicate: new framework_1.Contains({ roleType: m.Organisation.OrganisationRoles, object: supplierRole }),
-                        sort: [new framework_1.Sort({ roleType: m.Organisation.Name, direction: "Asc" })],
+                        predicate: new framework_1.Contains({
+                            roleType: m.Organisation.OrganisationRoles,
+                            object: supplierRole,
+                        }),
+                        sort: [
+                            new framework_1.Sort({ roleType: m.Organisation.Name, direction: "Asc" }),
+                        ],
                     }),
                 ];
                 return this.scope
@@ -130,15 +135,19 @@ let GoodsOverviewComponent = class GoodsOverviewComponent {
                     this.brand = this.brands.find((v) => v.Name === data.brand);
                     this.models = loaded.collections.models;
                     this.model = this.models.find((v) => v.Name === data.model);
-                    this.inventoryItemKinds = loaded.collections.inventoryItemKinds;
+                    this.inventoryItemKinds = loaded.collections
+                        .inventoryItemKinds;
                     this.inventoryItemKind = this.inventoryItemKinds.find((v) => v.Name === data.inventoryItemKind);
-                    this.productCategories = loaded.collections.categories;
+                    this.productCategories = loaded.collections
+                        .categories;
                     this.productCategory = this.productCategories.find((v) => v.Name === data.productCategory);
-                    this.productTypes = loaded.collections.productTypes;
+                    this.productTypes = loaded.collections
+                        .productTypes;
                     this.productType = this.productTypes.find((v) => v.Name === data.productType);
                     this.ownerships = loaded.collections.ownerships;
                     this.ownership = this.ownerships.find((v) => v.Name === data.ownership);
-                    this.manufacturers = loaded.collections.manufacturers;
+                    this.manufacturers = loaded.collections
+                        .manufacturers;
                     this.manufacturer = this.manufacturers.find((v) => v.Name === data.manufacturer);
                     this.suppliers = loaded.collections.suppliers;
                     this.supplier = this.suppliers.find((v) => v.Name === data.supplier);
@@ -157,54 +166,88 @@ let GoodsOverviewComponent = class GoodsOverviewComponent {
                         goodsPredicates.push(new framework_1.Like({ roleType: m.Good.Keywords, value: like }));
                     }
                     if (data.brand) {
-                        goodsPredicates.push(new framework_1.Contains({ roleType: m.Good.StandardFeatures, object: this.brand }));
+                        goodsPredicates.push(new framework_1.Contains({
+                            roleType: m.Good.StandardFeatures,
+                            object: this.brand,
+                        }));
                     }
                     if (data.model) {
-                        goodsPredicates.push(new framework_1.Contains({ roleType: m.Good.StandardFeatures, object: this.model }));
+                        goodsPredicates.push(new framework_1.Contains({
+                            roleType: m.Good.StandardFeatures,
+                            object: this.model,
+                        }));
                     }
                     if (data.productCategory) {
-                        goodsPredicates.push(new framework_1.Contains({ roleType: m.Good.ProductCategories, object: this.productCategory }));
+                        goodsPredicates.push(new framework_1.Contains({
+                            roleType: m.Good.ProductCategories,
+                            object: this.productCategory,
+                        }));
                     }
                     if (data.inventoryItemKind) {
-                        goodsPredicates.push(new framework_1.Equals({ roleType: m.Good.InventoryItemKind, value: this.inventoryItemKind }));
+                        goodsPredicates.push(new framework_1.Equals({
+                            roleType: m.Good.InventoryItemKind,
+                            value: this.inventoryItemKind,
+                        }));
                     }
                     if (data.manufacturer) {
-                        goodsPredicates.push(new framework_1.Equals({ roleType: m.Good.ManufacturedBy, value: this.manufacturer }));
+                        goodsPredicates.push(new framework_1.Equals({
+                            roleType: m.Good.ManufacturedBy,
+                            value: this.manufacturer,
+                        }));
                     }
                     if (data.supplier) {
-                        goodsPredicates.push(new framework_1.Equals({ roleType: m.Good.SuppliedBy, value: this.supplier }));
+                        goodsPredicates.push(new framework_1.Equals({
+                            roleType: m.Good.SuppliedBy,
+                            value: this.supplier,
+                        }));
                     }
                     if (data.owner || data.ownership) {
                         const inventoryPredicate = new framework_1.And();
                         const inventoryPredicates = inventoryPredicate.predicates;
                         if (data.owner) {
                             const like = data.owner.replace("*", "%") + "%";
-                            inventoryPredicates.push(new framework_1.Like({ roleType: m.SerialisedInventoryItem.Owner, value: like }));
+                            inventoryPredicates.push(new framework_1.Like({
+                                roleType: m.SerialisedInventoryItem.Owner,
+                                value: like,
+                            }));
                         }
                         if (data.ownership) {
-                            inventoryPredicates.push(new framework_1.Equals({ roleType: m.SerialisedInventoryItem.Ownership, value: this.ownership }));
+                            inventoryPredicates.push(new framework_1.Equals({
+                                roleType: m.SerialisedInventoryItem.Ownership,
+                                value: this.ownership,
+                            }));
                         }
                         const serialisedInventoryQuery = new framework_1.Query({
                             objectType: m.SerialisedInventoryItem,
                             predicate: inventoryPredicate,
                         });
-                        const containedIn = new framework_1.ContainedIn({ associationType: m.Good.InventoryItemsWhereGood, query: serialisedInventoryQuery });
+                        const containedIn = new framework_1.ContainedIn({
+                            associationType: m.Good.InventoryItemsWhereGood,
+                            query: serialisedInventoryQuery,
+                        });
                         goodsPredicates.push(containedIn);
                     }
                     if (data.productType) {
                         const inventoryPredicate = new framework_1.And();
                         const inventoryPredicates = inventoryPredicate.predicates;
                         if (data.productType) {
-                            inventoryPredicates.push(new framework_1.Equals({ roleType: m.InventoryItem.ProductType, value: this.productType }));
+                            inventoryPredicates.push(new framework_1.Equals({
+                                roleType: m.InventoryItem.ProductType,
+                                value: this.productType,
+                            }));
                         }
                         const inventoryQuery = new framework_1.Query({
                             objectType: m.InventoryItem,
                             predicate: inventoryPredicate,
                         });
-                        const containedIn = new framework_1.ContainedIn({ associationType: m.Good.InventoryItemsWhereGood, query: inventoryQuery });
+                        const containedIn = new framework_1.ContainedIn({
+                            associationType: m.Good.InventoryItemsWhereGood,
+                            query: inventoryQuery,
+                        });
                         goodsPredicates.push(containedIn);
                     }
-                    const goodsQuery = [new framework_1.Query({
+                    const goodsQuery = [
+                        new framework_1.Query({
                             include: [
                                 new framework_1.TreeNode({ roleType: m.Good.PrimaryPhoto }),
                                 new framework_1.TreeNode({ roleType: m.Good.LocalisedNames }),
@@ -215,7 +258,8 @@ let GoodsOverviewComponent = class GoodsOverviewComponent {
                             objectType: m.Good,
                             page: new framework_1.Page({ skip: 0, take }),
                             predicate: goodsPredicate,
-                        })];
+                        }),
+                    ];
                     return this.scope.load("Pull", new framework_1.PullRequest({ query: goodsQuery }));
                 });
             });
@@ -234,7 +278,8 @@ let GoodsOverviewComponent = class GoodsOverviewComponent {
     delete(good) {
         this.dialogService
             .openConfirm({ message: "Are you sure you want to delete this product?" })
-            .afterClosed().subscribe((confirm) => {
+            .afterClosed()
+            .subscribe((confirm) => {
             if (confirm) {
                 // TODO: Logical, physical or workflow delete
             }
@@ -256,7 +301,8 @@ let GoodsOverviewComponent = class GoodsOverviewComponent {
         });
     }
     serialisedGood(good) {
-        return good.InventoryItemKind === this.inventoryItemKinds.find((v) => v.UniqueId.toUpperCase() === "2596E2DD-3F5D-4588-A4A2-167D6FBE3FAE");
+        return (good.InventoryItemKind ===
+            this.inventoryItemKinds.find((v) => v.UniqueId.toUpperCase() === "2596E2DD-3F5D-4588-A4A2-167D6FBE3FAE"));
     }
     goBack() {
         window.history.back();
@@ -291,55 +337,72 @@ GoodsOverviewComponent = __decorate([
 <mat-card>
   <div class="pad-top-xs pad-left pad-right">
     <form novalidate [formGroup]="searchForm">
-      <mat-input-container>
-        <input fxFlex matInput placeholder="Name" formControlName="name">
-        <mat-icon matSuffix>search</mat-icon>
-      </mat-input-container>
-      <mat-input-container>
-        <input fxFlex matInput placeholder="ArticleNr" formControlName="articleNumber">
-        <mat-icon matSuffix>search</mat-icon>
-      </mat-input-container>
-      <mat-input-container>
-        <input fxFlex matInput placeholder="Keyword" formControlName="keyword">
-        <mat-icon matSuffix>search</mat-icon>
-      </mat-input-container>
-      <mat-input-container>
-        <input fxFlex matInput placeholder="Owner" formControlName="owner">
-        <mat-icon matSuffix>search</mat-icon>
-      </mat-input-container>
-      <mat-select formControlName="ownership" name="ownership" [(ngModel)]="selectedOwnership" placeholder="Ownership">
-        <mat-option>None</mat-option>
-        <mat-option *ngFor="let ownership of ownerships" [value]="ownership.Name">{{ ownership.Name }}</mat-option>
-      </mat-select>
-      <mat-select formControlName="brand" name="brand" [(ngModel)]="selectedBrand" placeholder="Brand">
-        <mat-option>None</mat-option>
-        <mat-option *ngFor="let brand of brands" [value]="brand.Name">{{ brand.Name }}</mat-option>
-      </mat-select>
-      <mat-select formControlName="model" name="model" [(ngModel)]="selectedModel" placeholder="Model">
-        <mat-option>None</mat-option>
-        <mat-option *ngFor="let model of models" [value]="model.Name">{{ model.Name }}</mat-option>
-      </mat-select>
-      <mat-select formControlName="productCategory" name="productCategory" [(ngModel)]="selectedProductCategory" placeholder="Category">
-        <mat-option>None</mat-option>
-        <mat-option *ngFor="let productCategory of productCategories" [value]="productCategory.Name">{{ productCategory.Name }}</mat-option>
-      </mat-select>
-      <mat-select formControlName="productType" name="productType" [(ngModel)]="selectedProductType" placeholder="Product Type">
-        <mat-option>None</mat-option>
-        <mat-option *ngFor="let productType of productTypes" [value]="productType.Name">{{ productType.Name }}</mat-option>
-      </mat-select>
-      <mat-select formControlName="inventoryItemKind" name="inventoryItemKind" [(ngModel)]="selectedInventoryItemKind" placeholder="Inventory Kind">
-        <mat-option>None</mat-option>
-        <mat-option *ngFor="let inventoryItemKind of inventoryItemKinds" [value]="inventoryItemKind.Name">{{ inventoryItemKind.Name }}</mat-option>
-      </mat-select>
-      <mat-select formControlName="manufacturer" name="manufacturer" [(ngModel)]="selectedManufacturer" placeholder="Manufacturer">
-        <mat-option>None</mat-option>
-        <mat-option *ngFor="let manufacturer of manufacturers" [value]="manufacturer.Name">{{ manufacturer.Name }}</mat-option>
-      </mat-select>
-      <mat-select formControlName="supplier" name="supplier" [(ngModel)]="selectedSupplier" placeholder="Supplier">
-        <mat-option>None</mat-option>
-        <mat-option *ngFor="let supplier of suppliers" [value]="supplier.Name">{{ supplier.Name }}</mat-option>
-      </mat-select>
-    </form>
+    <div class="grid-8_xs-1">
+        <mat-input-container class="col">
+          <input matInput placeholder="Name" formControlName="name">
+        </mat-input-container>
+        <mat-input-container class="col">
+          <input matInput placeholder="ArticleNr" formControlName="articleNumber">
+        </mat-input-container>
+        <mat-input-container class="col">
+          <input matInput placeholder="Keyword" formControlName="keyword">
+        </mat-input-container>
+        <mat-input-container class="col">
+          <input matInput placeholder="Owner" formControlName="owner">
+          <mat-icon matSuffix>search</mat-icon>
+        </mat-input-container>
+        </div>
+        <div class="grid-8_xs-1">
+        <mat-input-container class="col">
+          <mat-select formControlName="ownership" name="ownership" [(ngModel)]="selectedOwnership" placeholder="Ownership" >
+          <mat-option>None</mat-option>
+            <mat-option *ngFor="let ownership of ownerships" [value]="ownership.Name">{{ ownership.Name }}</mat-option>
+          </mat-select>
+        </mat-input-container>
+        <mat-input-container class="col">
+          <mat-select formControlName="brand" name="brand" [(ngModel)]="selectedBrand" placeholder="Brand">
+            <mat-option>None</mat-option>
+            <mat-option *ngFor="let brand of brands" [value]="brand.Name">{{ brand.Name }}</mat-option>
+          </mat-select>
+        </mat-input-container>
+        <mat-input-container class="col">
+          <mat-select formControlName="model" name="model" [(ngModel)]="selectedModel" placeholder="Model">
+            <mat-option>None</mat-option>
+            <mat-option *ngFor="let model of models" [value]="model.Name">{{ model.Name }}</mat-option>
+          </mat-select>
+        </mat-input-container>
+        <mat-input-container class="col">
+          <mat-select formControlName="productCategory" name="productCategory" [(ngModel)]="selectedProductCategory" placeholder="Category">
+            <mat-option>None</mat-option>
+            <mat-option *ngFor="let productCategory of productCategories" [value]="productCategory.Name">{{ productCategory.Name }}</mat-option>
+          </mat-select>
+        </mat-input-container>
+        <mat-input-container class="col">
+          <mat-select formControlName="productType" name="productType" [(ngModel)]="selectedProductType" placeholder="Product Type">
+            <mat-option>None</mat-option>
+            <mat-option *ngFor="let productType of productTypes" [value]="productType.Name">{{ productType.Name }}</mat-option>
+          </mat-select>
+        </mat-input-container>
+        <mat-input-container class="col">
+          <mat-select formControlName="inventoryItemKind" name="inventoryItemKind" [(ngModel)]="selectedInventoryItemKind" placeholder="Inventory Kind">
+            <mat-option>None</mat-option>
+            <mat-option *ngFor="let inventoryItemKind of inventoryItemKinds" [value]="inventoryItemKind.Name">{{ inventoryItemKind.Name }}</mat-option>
+          </mat-select>
+        </mat-input-container>
+        <mat-input-container class="col">
+          <mat-select formControlName="manufacturer" name="manufacturer" [(ngModel)]="selectedManufacturer" placeholder="Manufacturer">
+            <mat-option>None</mat-option>
+            <mat-option *ngFor="let manufacturer of manufacturers" [value]="manufacturer.Name">{{ manufacturer.Name }}</mat-option>
+          </mat-select>
+        </mat-input-container>
+        <mat-input-container class="col">
+          <mat-select formControlName="supplier" name="supplier" [(ngModel)]="selectedSupplier" placeholder="Supplier">
+            <mat-option>None</mat-option>
+            <mat-option *ngFor="let supplier of suppliers" [value]="supplier.Name">{{ supplier.Name }}</mat-option>
+          </mat-select>
+        </mat-input-container>
+      </div>
+      </form>
   </div>
 
   <mat-divider></mat-divider>
@@ -389,7 +452,7 @@ GoodsOverviewComponent = __decorate([
     <mat-icon>add</mat-icon>
   </a>
 </span>
-`,
+`
     }),
     __metadata("design:paramtypes", [base_angular_1.WorkspaceService,
         base_angular_1.ErrorService,
@@ -399,6 +462,7 @@ GoodsOverviewComponent = __decorate([
         material_1.MatSnackBar,
         router_1.Router,
         core_2.TdDialogService,
-        core_2.TdMediaService, core_1.ChangeDetectorRef])
+        core_2.TdMediaService,
+        core_1.ChangeDetectorRef])
 ], GoodsOverviewComponent);
 exports.GoodsOverviewComponent = GoodsOverviewComponent;

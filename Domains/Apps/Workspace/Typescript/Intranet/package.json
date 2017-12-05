@@ -60,5 +60,8 @@
     "showdown": "1.6.4",
     "zone.js": "^0.8.17",
     "typescript": "~2.5.0"
+  },
+  "dependencies": {
+    "@angular/flex-layout": "^2.0.0-beta.10-4905443"
   }
 }
