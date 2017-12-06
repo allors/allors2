@@ -1,0 +1,27 @@
+{
+  "name": "@allors/base-promise",
+  "version": "2.0.0",
+  "description": "Allors Base Promise",
+  "repository": "https://github.com/Allors/allors2",
+  "license": "LGPL-3.0",
+  "scripts": {
+    "link": "lnk ../../../../../Platform/Workspace/Typescript/src/allors/framework src/allors",
+    "test": "mocha --compilers ts:ts-node/register ./test/**/*.spec.ts",
+    "tc:test": "mocha --compilers ts:ts-node/register --reporter mocha-teamcity-reporter ./test/**/*.spec.ts"
+  },
+  "dependencies": {
+    "axios": "^0.16.2"
+  },
+  "devDependencies": {
+    "@types/chai": "latest",
+    "@types/mocha": "latest",
+    "@types/node": "latest",
+    "chai": "latest",
+    "istanbul": "latest",
+    "mocha": "latest",
+    "mocha-teamcity-reporter": "latest",
+    "ts-node": "latest",
+    "typescript": "latest",
+    "lnk-cli": "^1.0.1"
+  }
+}

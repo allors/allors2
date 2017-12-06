@@ -1,9 +1,7 @@
 {
   "name": "@allors/framework",
   "version": "2.0.0",
-  "description": "Allors Base Framework",
+  "description": "Allors Framework",
   "repository": "https://github.com/Allors/allors2",
-  "license": "LGPL-3.0",
-  "main": "index.js",
-  "types": "index.d.ts"
+  "license": "LGPL-3.0"
 }

@@ -1,0 +1,48 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Launch Chrome against localhost, with sourcemaps",
+      "type": "chrome",
+      "request": "launch",
+      "url": "http://localhost:4200",
+      "sourceMaps": true,
+      "webRoot": "${workspaceRoot}",
+      "trace": true,
+      "smartStep": true,
+      "runtimeArgs": [
+        "--disable-session-crashed-bubble",
+        "--disable-infobars"
+      ],
+      "userDataDir": "${workspaceRoot}/.vscode/chrome",
+      "sourceMapPathOverrides": {
+        "webpack:///C:*": "C:/*",
+        "webpack:///*": "${workspaceRoot}/*"
+      }
+    },
+    {
+      "name": "Debug Karma",
+      "type": "chrome",
+      "request": "attach",
+      "port": 9222,
+      "sourceMaps": true,
+      "webRoot": "${workspaceRoot}"
+    },
+    {
+      "name": "Debug Protractor",
+      "type": "node",
+      "request": "launch",
+      "stopOnEntry": false,
+      "program": "${workspaceRoot}/node_modules/protractor/bin/protractor",
+      "args": [
+        "${workspaceRoot}/protractor.conf.debug.js"
+      ],
+      "preLaunchTask": "e2e-compile",
+      "cwd": "${workspaceRoot}",
+      "sourceMaps": true,
+      "outFiles": [
+        "${workspaceRoot}/dist/out-tsc/e2e/*.js"
+      ]
+    }
+  ]
+}

@@ -29,6 +29,7 @@ namespace Allors.Domain
         {
             setup.AddDependency(this.Meta.ObjectType, M.Singleton.ObjectType);
             setup.AddDependency(this.Meta.ObjectType, M.UserGroup.ObjectType);
+            setup.AddDependency(this.Meta.ObjectType, M.Locale.ObjectType);
         }
 
         protected override void BaseSetup(Setup config)
@@ -37,11 +38,12 @@ namespace Allors.Domain
 
             var userGroups = new UserGroups(this.Session);
 
-            var administrator = new PersonBuilder(this.Session).WithUserName(Users.AdministratorUserName).Build();
+            var locale = new Locales(this.Session).DutchBelgium;
+            var administrator = new PersonBuilder(this.Session).WithUserName(Users.AdministratorUserName).WithLocale(locale).Build();
             userGroups.Administrators.AddMember(administrator);
             userGroups.Creators.AddMember(administrator);
 
-            var guest = new PersonBuilder(this.Session).WithUserName(Users.GuestUserName).Build();
+            var guest = new PersonBuilder(this.Session).WithUserName(Users.GuestUserName).WithLocale(locale).Build();
             userGroups.Guests.AddMember(guest);
 
             var singleton = this.Session.GetSingleton();
