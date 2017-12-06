@@ -1,0 +1,12 @@
+{
+  "compilerOptions": {
+    "target": "es2015",
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "outDir": "dist/out-tsc",
+    "sourceMap": true,
+    "preserveSymlinks": true
+  },
+  "include": ["src/**/*", "test/**/*"],
+  "exclude": []
+}

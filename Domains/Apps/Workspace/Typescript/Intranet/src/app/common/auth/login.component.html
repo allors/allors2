@@ -1,0 +1,35 @@
+<div layout="column" layout-fill>
+  <mat-toolbar color="primary" class="mat-whiteframe-z1">
+    <span>Login</span>
+  </mat-toolbar>
+  <div class="mat-content" layout-padding flex>
+    <div layout-gt-xs="row" layout-align-gt-xs="center start" class="margin">
+      <form flex-gt-xs="50" [formGroup]="loginForm" (ngSubmit)="login($event)">
+        <mat-card tdMediaToggle="gt-xs" [mediaClasses]="['push-top-lg']">
+          <mat-card-title>
+            <mat-icon class="mat-icon-logo" svgIcon="assets:covalent"></mat-icon> Login</mat-card-title>
+          <mat-card-subtitle>sign in via your current corporate account</mat-card-subtitle>
+          <mat-divider></mat-divider>
+          <mat-card-content>
+            <div layout="row">
+              <mat-input-container flex>
+                <input matInput formControlName="userName" placeholder="Username">
+                <span mat-prefix><mat-icon>person</mat-icon></span>
+              </mat-input-container>
+            </div>
+            <div layout="row">
+              <mat-input-container flex>
+                <input matInput formControlName="password" placeholder="Password" type="password">
+                <span mat-prefix><mat-icon>lock</mat-icon></span>
+              </mat-input-container>
+            </div>
+          </mat-card-content>
+          <mat-divider></mat-divider>
+          <mat-card-actions layout="row">
+            <button flex mat-raised-button color="accent">Sign In</button>
+          </mat-card-actions>
+        </mat-card>
+      </form>
+    </div>
+  </div>
+</div>

@@ -1,15 +1,12 @@
 {
-  "defaultSeverity": "error",
-  "extends": [
-    "tslint:recommended"
-  ],
-  "jsRules": {},
-  "rules": {
-    "interface-name": [false],
-    "max-line-length": [false],
-    "no-shadowed-variable": [false]
-  },
-  "rulesDirectory": [
-    "./node_modules/codelyzer"
-  ]
+    "defaultSeverity": "error",
+    "extends": [
+        "tslint:recommended"
+    ],
+    "jsRules": {},
+    "rules": {
+        "interface-name": [false],
+        "max-line-length": [false]
+    },
+    "rulesDirectory": []
 }

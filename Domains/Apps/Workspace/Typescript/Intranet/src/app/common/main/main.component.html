@@ -1,0 +1,31 @@
+<td-layout>
+  <td-navigation-drawer flex sidenavTitle="Covalent" logo="assets:covalent" name="Firstname Lastname" email="firstname.lastname@company.com">
+    <mat-nav-list>
+      <a *ngFor="let item of modules" mat-list-item [routerLink]="item.link" routerLinkActive="active-link" [tdLayoutToggle]>
+        <mat-icon>{{item.icon}}</mat-icon>{{item.title}}</a>
+    </mat-nav-list>
+    <div td-navigation-drawer-menu>
+      <mat-nav-list>
+        <a *ngFor="let item of usermenu" mat-list-item [tdLayoutToggle]>
+          <mat-icon>{{item.icon}}</mat-icon>{{item.title}}</a>
+      </mat-nav-list>
+    </div>
+  </td-navigation-drawer>
+
+  <td-layout-nav>
+    <div td-toolbar-content layout="row" layout-align="start center" flex>
+      <button mat-icon-button td-menu-button tdLayoutToggle>
+      <mat-icon>menu</mat-icon>
+    </button>
+      <mat-icon [routerLink]="['/']" class="mat-icon-logo cursor-pointer" svgIcon="assets:teradata"></mat-icon>
+      <span [routerLink]="['/']" class="cursor-pointer">Apps</span>
+      <span flex></span>
+      <a mat-icon-button mdTooltip="Worktasks" [routerLink]="['/workefforts/worktasks']">
+        <mat-icon>chrome_reader_mode</mat-icon>
+      </a>
+    </div>
+
+    <router-outlet></router-outlet>
+
+  </td-layout-nav>
+</td-layout>

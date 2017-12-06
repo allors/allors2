@@ -1,0 +1,1 @@
+{"version":3,"file":"WebAddress.js","sourceRoot":"","sources":["../../../../../../src/allors/domain/apps/WebAddress.ts"],"names":[],"mappings":";;AAAA,4DAAuD;AAQvD,MAAM,CAAC,cAAc,CAAC,yBAAU,CAAC,SAAS,EAAE,aAAa,EAAE;IACzD,GAAG;QACD,EAAE,CAAC,CAAC,IAAI,CAAC,uBAAuB,CAAC,CAAC,CAAC;YAC/B,MAAM,CAAC,IAAI,CAAC,uBAAuB,CAAC;QACxC,CAAC;QAED,MAAM,CAAC,KAAK,CAAC;IACf,CAAC;CACF,CAAC,CAAC"}
