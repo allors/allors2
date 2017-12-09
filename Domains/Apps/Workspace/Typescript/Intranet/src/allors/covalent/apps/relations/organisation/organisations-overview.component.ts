@@ -318,6 +318,7 @@ export class OrganisationsOverviewComponent implements AfterViewInit, OnDestroy 
                 predicate,
                 page: new Page({ skip: 0, take: take }),
                 include: [
+                  new TreeNode({ roleType: m.Organisation.LogoImage }),
                   new TreeNode({ roleType: m.Organisation.OrganisationClassifications }),
                   new TreeNode({ roleType: m.Organisation.GeneralPhoneNumber }),
                   new TreeNode({
