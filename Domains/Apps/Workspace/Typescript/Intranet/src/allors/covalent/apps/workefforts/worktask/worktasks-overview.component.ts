@@ -48,10 +48,10 @@ interface SearchData {
     <form novalidate [formGroup]="searchForm">
       <div class="grid-8_xs-1">
         <mat-input-container class="col">
-          <input fxFlex matInput placeholder="Name" formControlName="name">
+          <input matInput placeholder="Name" formControlName="name">
         </mat-input-container>
         <mat-input-container class="col">
-          <input fxFlex matInput placeholder="Description" formControlName="description">
+          <input matInput placeholder="Description" formControlName="description">
         </mat-input-container>
         <mat-input-container class="col">
           <mat-select formControlName="state" name="state" [(ngModel)]="selectedWorkEffortState" placeholder="State">

@@ -42,7 +42,7 @@ interface SearchData {
     <form novalidate [formGroup]="searchForm">
       <div class="grid-8_xs-1">
         <mat-input-container class="col">
-          <input fxFlex matInput placeholder="Subject" formControlName="subject">
+          <input matInput placeholder="Subject" formControlName="subject">
         </mat-input-container>
         <mat-input-container class="col">
           <mat-select formControlName="state" name="state" [(ngModel)]="selectedCommunicationEventState" placeholder="State">

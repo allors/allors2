@@ -41,13 +41,13 @@ interface SearchData {
   <div class="pad-top-xs pad-left pad-right">
     <form novalidate [formGroup]="searchForm">
       <mat-input-container>
-        <input fxFlex matInput placeholder="Organisation" formControlName="company">
+        <input matInput placeholder="Organisation" formControlName="company">
       </mat-input-container>
       <mat-input-container>
-        <input fxFlex matInput placeholder="Number" formControlName="invoiceNumber">
+        <input matInput placeholder="Number" formControlName="invoiceNumber">
       </mat-input-container>
       <mat-input-container>
-        <input fxFlex matInput placeholder="Customer Reference" formControlName="reference">
+        <input matInput placeholder="Customer Reference" formControlName="reference">
         <mat-icon matSuffix>search</mat-icon>
       </mat-input-container>
     </form>

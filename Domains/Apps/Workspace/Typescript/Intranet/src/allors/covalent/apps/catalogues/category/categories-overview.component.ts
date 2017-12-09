@@ -39,7 +39,7 @@ interface SearchData {
   <div class="pad-top-xs pad-left pad-right">
     <form novalidate [formGroup]="searchForm">
       <mat-input-container>
-        <input fxFlex matInput placeholder="Name" formControlName="name">
+        <input matInput placeholder="Name" formControlName="name">
         <mat-icon matSuffix>search</mat-icon>
       </mat-input-container>
     </form>
