@@ -22,6 +22,26 @@ namespace Allors.Domain
 
     public partial class Good
     {
+        private bool IsDeletable => !this.ExistDeploymentsWhereProductOffering 
+            && !this.ExistEngagementItemsWhereProduct
+            && !this.ExistGeneralLedgerAccountsWhereCostUnitsAllowed
+            && !this.ExistGeneralLedgerAccountsWhereDefaultCostUnit
+            && !this.ExistQuoteItemsWhereProduct
+            && !this.ExistShipmentItemsWhereGood 
+            && !this.ExistWorkEffortGoodStandardsWhereGood
+            && !this.ExistMarketingPackageWhereProductsUsedIn
+            && !this.ExistMarketingPackagesWhereProduct
+            && !this.ExistOrganisationGlAccountsWhereProduct
+            && !this.ExistProductConfigurationsWhereProductsUsedIn
+            && !this.ExistProductConfigurationsWhereProduct
+            && !this.ExistPurchaseOrderItemsWhereProduct 
+            && !this.ExistRequestItemsWhereProduct
+            && !this.ExistSalesInvoiceItemsWhereProduct
+            && !this.ExistSalesOrderItemsWhereProduct
+            && !this.ExistSupplierOfferingsWhereProduct
+            && !this.ExistWorkEffortTypesWhereProductToProduce
+            && !this.ExistEngagementItemsWhereProduct
+            && !this.ExistProductWhereVariant;
 
         public void AppsOnPreDerive(ObjectOnPreDerive method)
         {
@@ -149,6 +169,53 @@ namespace Allors.Domain
                     var nonSerialised = (NonSerialisedInventoryItem)inventoryItem;
                     this.AvailableToPromise += nonSerialised.AvailableToPromise;
                 }
+            }
+        }
+
+        public void AppsDelete(DeletableDelete method)
+        {
+            if (this.IsDeletable)
+            {
+                foreach (LocalisedText localisedText in this.LocalisedNames)
+                {
+                    localisedText.Delete();
+                }
+
+                foreach (LocalisedText localisedText in this.LocalisedComments)
+                {
+                    localisedText.Delete();
+                }
+
+                foreach (LocalisedText localisedText in this.LocalisedDescriptions)
+                {
+                    localisedText.Delete();
+                }
+
+                foreach (PriceComponent priceComponent in this.VirtualProductPriceComponents)
+                {
+                    priceComponent.Delete();
+                }
+
+                foreach (EstimatedProductCost estimatedProductCosts in this.EstimatedProductCosts)
+                {
+                    estimatedProductCosts.Delete();
+                }
+
+                foreach (PartyProductRevenue revenue in this.PartyProductRevenuesWhereProduct)
+                {
+                    revenue.Delete();
+                }
+
+                foreach (ProductRevenue revenue in this.ProductRevenuesWhereProduct)
+                {
+                    revenue.Delete();
+                }
+
+                foreach (InventoryItem inventoryItem in this.InventoryItemsWhereGood)
+                {
+                    inventoryItem.Delete();
+                }
+
             }
         }
     }

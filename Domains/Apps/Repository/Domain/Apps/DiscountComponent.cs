@@ -65,10 +65,7 @@ namespace Allors.Repository
         [Scale(2)]
         public decimal Percentage { get; set; }
 
-
         #region inherited methods
-
-
         public void OnBuild(){}
 
         public void OnPostBuild(){}
@@ -79,10 +76,7 @@ namespace Allors.Repository
 
         public void OnPostDerive(){}
 
-
-
-
+        public void Delete() { }
         #endregion
-
     }
 }

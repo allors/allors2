@@ -20,9 +20,7 @@ namespace Allors.Domain
     public partial class SerialisedInventoryItem
     {
         public static readonly TransitionalConfiguration[] StaticTransitionalConfigurations =
-            {
-                new TransitionalConfiguration(M.SerialisedInventoryItem.SerialisedInventoryItemState),
-            };
+            { new TransitionalConfiguration(M.SerialisedInventoryItem.SerialisedInventoryItemState), };
 
         public TransitionalConfiguration[] TransitionalConfigurations => StaticTransitionalConfigurations;
 
@@ -73,6 +71,14 @@ namespace Allors.Domain
             }
 
             this.AppsOnDeriveProductCategories(derivation);
+        }
+
+        public void AppsDelete(DeletableDelete method)
+        {
+            foreach (InventoryItemVersion version in this.AllVersions)
+            {
+                version.Delete();
+            }
         }
     }
 }

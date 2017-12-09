@@ -5,7 +5,7 @@ namespace Allors.Repository
     #region Allors
     [Id("F3D6AC19-E987-4C01-B582-A4567B7818A9")]
     #endregion
-    public partial interface InventoryItemVersion : Version
+    public partial interface InventoryItemVersion : Version, Deletable
     {
         #region Allors
         [Id("25040B1D-C5D6-446F-BDDA-8BF54A1BFC6E")]

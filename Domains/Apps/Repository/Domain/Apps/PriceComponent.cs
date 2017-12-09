@@ -5,7 +5,7 @@ namespace Allors.Repository
     #region Allors
     [Id("383589fb-f410-4d22-ade6-aa5126fdef18")]
     #endregion
-    public partial interface PriceComponent : Period, AccessControlledObject, Commentable 
+    public partial interface PriceComponent : Period, AccessControlledObject, Commentable, Deletable
     {
         #region Allors
         [Id("18cda5a7-6720-4133-a71b-ce23e9ebc1bb")]

@@ -293,5 +293,13 @@ namespace Allors.Domain
                 this.UnitOfMeasure = this.Part.UnitOfMeasure;
             }
         }
+
+        public void AppsDelete(DeletableDelete method)
+        {
+            foreach (InventoryItemVersion version in this.AllVersions)
+            {
+                version.Delete();
+            }
+        }
     }
 }
