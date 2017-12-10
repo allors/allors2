@@ -322,7 +322,7 @@ namespace Allors.Domain
 						global::System.Guid? UniqueId {set;}
 
 		}
-		public interface LocalisedText  : AccessControlledObject, Localised 
+		public interface LocalisedText  : AccessControlledObject, Localised, Deletable 
 		{
 						global::System.String Text {set;}
 
@@ -459,6 +459,8 @@ namespace Allors.Domain
 						Address MainAddress {set;}
 
 						Media Photo {set;}
+
+						Media Pictures {set;}
 
 						global::System.Int32? ShirtSize {set;}
 

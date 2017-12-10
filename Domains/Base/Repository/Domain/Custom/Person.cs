@@ -94,7 +94,18 @@ namespace Allors.Repository
         [Workspace]
         #endregion
         public Media Photo { get; set; }
-        
+
+        #region Allors
+        [Id("2E878C18-9DF7-4DEF-8145-983F4A5CCB2D")]
+        [AssociationId("1741B8BB-9A35-4AE1-B562-63531D5A0036")]
+        [RoleId("D19DF5E5-A273-4975-A79E-7B63C7AC0450")]
+        [Multiplicity(Multiplicity.ManyToMany)]
+        [Indexed]
+        [Workspace]
+        #endregion
+        public Media[] Pictures { get; set; }
+
+
         #region Allors
         [Id("6b626ba5-0c45-48c7-8b6b-5ea85e002d90")]
         [AssociationId("520bb966-6e8a-46a4-a3c0-18422af13cba")]

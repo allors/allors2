@@ -13,11 +13,13 @@
   <form #form="ngForm" *ngIf="person" (submit)="save()">
     <mat-card-content class="push-bottom-none">
 
-      <div fxLayout="row wrap" fxLayoutAlign="start stretch" fxLayoutGap.gt-md="25px">
-        <a-mat-input class="push-top" [object]="person" [roleType]="m.Person.FirstName"></a-mat-input>
-        <a-mat-input class="push-top" [object]="person" [roleType]="m.Person.MiddleName"></a-mat-input>
-        <a-mat-input class="push-top" [object]="person" [roleType]="m.Person.LastName"></a-mat-input>
-        <a-mat-select class="push-top" [object]="person" [roleType]="m.Person.Locale" [options]="locales" display="Name"></a-mat-select>
+      <div>
+        <a-mat-input [object]="person" [roleType]="m.Person.FirstName"></a-mat-input>
+        <a-mat-input [object]="person" [roleType]="m.Person.MiddleName"></a-mat-input>
+        <a-mat-input [object]="person" [roleType]="m.Person.LastName"></a-mat-input>
+        <a-mat-select [object]="person" [roleType]="m.Person.Locale" [options]="locales" display="Name"></a-mat-select>
+        <a-td-image [object]="person" [roleType]="m.Person.Photo"></a-td-image>
+        <a-td-images [object]="person" [roleType]="m.Person.Pictures"></a-td-images>
       </div>
 
     </mat-card-content>

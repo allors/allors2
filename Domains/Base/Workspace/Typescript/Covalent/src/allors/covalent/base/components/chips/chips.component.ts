@@ -16,7 +16,8 @@ import { Field } from "../../../../angular";
 @Component({
   selector: "a-td-chips",
   template: `
-<td-chips [name]="name"
+<td-chips style="width: 100%;"
+          [name]="name"
           [items]="filteredOptions"
           [(ngModel)]="model"
           [placeholder]="label"

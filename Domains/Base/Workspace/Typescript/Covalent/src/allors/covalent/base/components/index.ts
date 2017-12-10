@@ -1,2 +1,3 @@
 export * from "./chips/chips.module";
-export * from "./mediaupload/mediaupload.module";
+export * from "./media/image/image.module";
+export * from "./media/images/images.module";

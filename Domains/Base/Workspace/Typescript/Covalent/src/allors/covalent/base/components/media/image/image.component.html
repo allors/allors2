@@ -1,0 +1,26 @@
+<div layout="row">
+
+    <mat-form-field tdFileDrop [disabled]="disabled" (fileDrop)="set($event)" (click)="fileInput.inputElement.click()" (keyup.enter)="fileInput.inputElement.click()"
+        (keyup.delete)="delete()" (keyup.backspace)="delete()" flex>
+        <input matInput [placeholder]="label" [value]="fieldValue" [disabled]="disabled" readonly/>
+    </mat-form-field>
+
+    <button mat-icon-button *ngIf="model" (click)="delete()" (keyup.enter)="delete()">
+        <mat-icon>cancel</mat-icon>
+    </button>
+
+    <td-file-input #fileInput class="push-left-sm push-right-sm" [(ngModel)]="file" (select)="set($event)" [accept]="accept"
+        [disabled]="disabled">
+        <mat-icon>folder</mat-icon>
+        <span class="text-upper">Browse...</span>
+    </td-file-input>
+</div>
+
+<div *ngIf="src" layout="row">
+    <mat-card>
+        <img mat-card-md-image [src]="src">
+        <mat-card-actions>
+            <button mat-button (click)="delete()">DELETE</button>
+        </mat-card-actions>
+    </mat-card>
+</div>

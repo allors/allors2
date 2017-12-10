@@ -81,7 +81,7 @@ namespace Allors.Domain
 								global::System.String I1AllorsString {set;}
 
 				}
-				public interface LocalisedText : Localised 
+				public interface LocalisedText : Localised, Deletable 
 				{
 								global::System.String Text {set;}
 
@@ -200,6 +200,9 @@ namespace Allors.Domain
 
 
 								Media Photo {set;}
+
+
+								Media Pictures {set;}
 
 
 								global::System.Decimal? Weight {set;}

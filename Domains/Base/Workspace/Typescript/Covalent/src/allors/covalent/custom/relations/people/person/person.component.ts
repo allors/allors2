@@ -46,8 +46,12 @@ export class PersonComponent implements OnInit, AfterViewInit, OnDestroy {
 
         const fetch: Fetch[] = [
           new Fetch({
-            name: "person",
             id,
+            include: [
+              new TreeNode({ roleType: this.m.Person.Photo }),
+              new TreeNode({ roleType: this.m.Person.Pictures }),
+            ],
+            name: "person",
           }),
         ];
 

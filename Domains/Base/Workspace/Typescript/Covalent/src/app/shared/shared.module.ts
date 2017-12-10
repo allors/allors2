@@ -22,7 +22,7 @@ import {
 import { AutoCompleteModule, CheckboxModule, DatepickerModule, InputModule, LocalisedTextModule,
   RadioGroupModule, SelectModule, SliderModule, SlideToggleModule, StaticModule, TextAreaModule } from "../../allors/material";
 
-import { ChipsModule, MediaUploadModule } from "../../allors/covalent";
+import { ChipsModule, MediaImageModule, MediaImagesModule } from "../../allors/covalent";
 
 import {
     DashboardModule,
@@ -57,7 +57,7 @@ const BASE_MATERIAL_MODULES: any[] = [
 ];
 
 const BASE_COVALENT_MODULES: any[] = [
-  ChipsModule, MediaUploadModule,
+  ChipsModule, MediaImageModule, MediaImagesModule,
 ];
 
 const RELATIONS_MODULES: any[] = [

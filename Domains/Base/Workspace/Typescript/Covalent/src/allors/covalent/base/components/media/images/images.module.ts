@@ -2,25 +2,27 @@ import { CommonModule } from "@angular/common";
 import { NgModule } from "@angular/core";
 import { FormsModule } from "@angular/forms";
 
-import { MatIconModule, MatInputModule } from "@angular/material";
+import { MatButtonModule, MatCardModule, MatIconModule, MatInputModule } from "@angular/material";
 import { CovalentFileModule } from "@covalent/core";
 
-import { MediaUploadComponent } from "./mediaupload.component";
-export { MediaUploadComponent } from "./mediaupload.component";
+import { ImagesComponent } from "./images.component";
+export { ImagesComponent } from "./images.component";
 
 @NgModule({
   declarations: [
-    MediaUploadComponent,
+    ImagesComponent,
   ],
   exports: [
-    MediaUploadComponent,
+    ImagesComponent,
   ],
   imports: [
     CommonModule,
     FormsModule,
+    MatButtonModule,
+    MatCardModule,
     MatIconModule,
     MatInputModule,
     CovalentFileModule,
   ],
 })
-export class MediaUploadModule {}
+export class MediaImagesModule {}
