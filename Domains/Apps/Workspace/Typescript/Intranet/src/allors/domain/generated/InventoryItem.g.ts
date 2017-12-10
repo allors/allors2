@@ -4,6 +4,7 @@
 import { SessionObject, Method } from "../../framework";
 
 import { UniquelyIdentifiable } from './UniquelyIdentifiable.g';
+import { Deletable } from './Deletable.g';
 import { ProductCharacteristicValue } from './ProductCharacteristicValue.g';
 import { InventoryItemVariance } from './InventoryItemVariance.g';
 import { Part } from './Part.g';
@@ -15,7 +16,7 @@ import { Facility } from './Facility.g';
 import { WorkEffortVersion } from './WorkEffortVersion.g';
 import { WorkEffort } from './WorkEffort.g';
 
-export interface InventoryItem extends SessionObject , UniquelyIdentifiable {
+export interface InventoryItem extends SessionObject , UniquelyIdentifiable, Deletable {
         ProductCharacteristicValues : ProductCharacteristicValue[];
         AddProductCharacteristicValue(value: ProductCharacteristicValue);
         RemoveProductCharacteristicValue(value: ProductCharacteristicValue);
@@ -49,5 +50,8 @@ export interface InventoryItem extends SessionObject , UniquelyIdentifiable {
 
         Facility : Facility;
 
+
+    CanExecuteDelete: boolean;
+    Delete: Method;
 
 }

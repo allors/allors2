@@ -6,6 +6,7 @@ import { SessionObject, Method } from "../../framework";
 import { PriceComponent } from './PriceComponent.g';
 import { Period } from './Period.g';
 import { Commentable } from './Commentable.g';
+import { Deletable } from './Deletable.g';
 import { Product } from './Product.g';
 import { ProductFeature } from './ProductFeature.g';
 
@@ -59,4 +60,11 @@ export class SurchargeComponent extends SessionObject implements PriceComponent 
     }
 
 
+    get CanExecuteDelete(): boolean {
+        return this.canExecute('Delete');
+    }
+
+    get Delete(): Method {
+        return new Method(this, 'Delete');
+    }
 }

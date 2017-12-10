@@ -410,6 +410,21 @@ namespace Allors.Domain
             method.Execute();
             return method;
 		}
+
+		public DeletableDelete Delete()
+		{ 
+			var method = new EstimatedOtherCostDelete(this);
+            method.Execute();
+            return method;
+		}
+
+		public DeletableDelete Delete(System.Action<DeletableDelete> action)
+		{ 
+			var method = new EstimatedOtherCostDelete(this);
+            action(method);
+            method.Execute();
+            return method;
+		}
 	}
 
 	public partial class EstimatedOtherCostBuilder : Allors.ObjectBuilder<EstimatedOtherCost> , EstimatedProductCostBuilder, global::System.IDisposable

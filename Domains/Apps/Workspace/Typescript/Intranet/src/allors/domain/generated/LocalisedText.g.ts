@@ -4,6 +4,7 @@
 import { SessionObject, Method } from "../../framework";
 
 import { Localised } from './Localised.g';
+import { Deletable } from './Deletable.g';
 import { Locale } from './Locale.g';
 import { Country } from './Country.g';
 import { Currency } from './Currency.g';
@@ -13,7 +14,7 @@ import { ProductCategory } from './ProductCategory.g';
 import { Enumeration } from './Enumeration.g';
 import { Product } from './Product.g';
 
-export class LocalisedText extends SessionObject implements Localised {
+export class LocalisedText extends SessionObject implements Localised, Deletable {
     get CanReadText(): boolean {
         return this.canRead('Text');
     }
@@ -47,4 +48,11 @@ export class LocalisedText extends SessionObject implements Localised {
     }
 
 
+    get CanExecuteDelete(): boolean {
+        return this.canExecute('Delete');
+    }
+
+    get Delete(): Method {
+        return new Method(this, 'Delete');
+    }
 }

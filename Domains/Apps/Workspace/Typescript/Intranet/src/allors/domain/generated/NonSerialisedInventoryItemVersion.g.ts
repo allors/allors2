@@ -5,6 +5,7 @@ import { SessionObject, Method } from "../../framework";
 
 import { InventoryItemVersion } from './InventoryItemVersion.g';
 import { Version } from './Version.g';
+import { Deletable } from './Deletable.g';
 import { NonSerialisedInventoryItemState } from './NonSerialisedInventoryItemState.g';
 import { ProductCharacteristicValue } from './ProductCharacteristicValue.g';
 import { InventoryItemVariance } from './InventoryItemVariance.g';
@@ -257,4 +258,11 @@ export class NonSerialisedInventoryItemVersion extends SessionObject implements 
     }
 
 
+    get CanExecuteDelete(): boolean {
+        return this.canExecute('Delete');
+    }
+
+    get Delete(): Method {
+        return new Method(this, 'Delete');
+    }
 }

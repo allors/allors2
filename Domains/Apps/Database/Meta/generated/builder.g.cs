@@ -616,6 +616,7 @@ namespace Allors.Meta
             new Inheritance(this.metaPopulation){ Subtype = (Composite)MetaLocale.Instance.ObjectType, Supertype = MetaAccessControlledObject.Instance.Interface};
             new Inheritance(this.metaPopulation){ Subtype = (Composite)MetaLocalisedText.Instance.ObjectType, Supertype = MetaAccessControlledObject.Instance.Interface};
             new Inheritance(this.metaPopulation){ Subtype = (Composite)MetaLocalisedText.Instance.ObjectType, Supertype = MetaLocalised.Instance.Interface};
+            new Inheritance(this.metaPopulation){ Subtype = (Composite)MetaLocalisedText.Instance.ObjectType, Supertype = MetaDeletable.Instance.Interface};
             new Inheritance(this.metaPopulation){ Subtype = (Composite)MetaAccessControl.Instance.ObjectType, Supertype = MetaCachable.Instance.Interface};
             new Inheritance(this.metaPopulation){ Subtype = (Composite)MetaAccessControl.Instance.ObjectType, Supertype = MetaDeletable.Instance.Interface};
             new Inheritance(this.metaPopulation){ Subtype = (Composite)MetaAccessControl.Instance.ObjectType, Supertype = MetaAccessControlledObject.Instance.Interface};
@@ -659,7 +660,6 @@ namespace Allors.Meta
             new Inheritance(this.metaPopulation){ Subtype = (Composite)MetaAutomatedAgentVersion.Instance.ObjectType, Supertype = MetaPartyVersion.Instance.Interface};
             new Inheritance(this.metaPopulation){ Subtype = (Composite)MetaBank.Instance.ObjectType, Supertype = MetaAccessControlledObject.Instance.Interface};
             new Inheritance(this.metaPopulation){ Subtype = (Composite)MetaBankAccount.Instance.ObjectType, Supertype = MetaFinancialAccount.Instance.Interface};
-            new Inheritance(this.metaPopulation){ Subtype = (Composite)MetaBasePrice.Instance.ObjectType, Supertype = MetaDeletable.Instance.Interface};
             new Inheritance(this.metaPopulation){ Subtype = (Composite)MetaBasePrice.Instance.ObjectType, Supertype = MetaPriceComponent.Instance.Interface};
             new Inheritance(this.metaPopulation){ Subtype = (Composite)MetaBenefit.Instance.ObjectType, Supertype = MetaAccessControlledObject.Instance.Interface};
             new Inheritance(this.metaPopulation){ Subtype = (Composite)MetaBillingAccount.Instance.ObjectType, Supertype = MetaAccessControlledObject.Instance.Interface};
@@ -1297,6 +1297,7 @@ namespace Allors.Meta
             new Inheritance(this.metaPopulation){ Subtype = (Composite)MetaEngagementItem.Instance.ObjectType, Supertype = MetaAccessControlledObject.Instance.Interface};
             new Inheritance(this.metaPopulation){ Subtype = (Composite)MetaEstimatedProductCost.Instance.ObjectType, Supertype = MetaPeriod.Instance.Interface};
             new Inheritance(this.metaPopulation){ Subtype = (Composite)MetaEstimatedProductCost.Instance.ObjectType, Supertype = MetaAccessControlledObject.Instance.Interface};
+            new Inheritance(this.metaPopulation){ Subtype = (Composite)MetaEstimatedProductCost.Instance.ObjectType, Supertype = MetaDeletable.Instance.Interface};
             new Inheritance(this.metaPopulation){ Subtype = (Composite)MetaExternalAccountingTransaction.Instance.ObjectType, Supertype = MetaAccountingTransaction.Instance.Interface};
             new Inheritance(this.metaPopulation){ Subtype = (Composite)MetaFinancialAccount.Instance.ObjectType, Supertype = MetaAccessControlledObject.Instance.Interface};
             new Inheritance(this.metaPopulation){ Subtype = (Composite)MetaFinancialAccountTransaction.Instance.ObjectType, Supertype = MetaAccessControlledObject.Instance.Interface};
@@ -1307,8 +1308,10 @@ namespace Allors.Meta
             new Inheritance(this.metaPopulation){ Subtype = (Composite)MetaGeoLocatable.Instance.ObjectType, Supertype = MetaUniquelyIdentifiable.Instance.Interface};
             new Inheritance(this.metaPopulation){ Subtype = (Composite)MetaInternalAccountingTransaction.Instance.ObjectType, Supertype = MetaAccountingTransaction.Instance.Interface};
             new Inheritance(this.metaPopulation){ Subtype = (Composite)MetaInventoryItemVersion.Instance.ObjectType, Supertype = MetaVersion.Instance.Interface};
+            new Inheritance(this.metaPopulation){ Subtype = (Composite)MetaInventoryItemVersion.Instance.ObjectType, Supertype = MetaDeletable.Instance.Interface};
             new Inheritance(this.metaPopulation){ Subtype = (Composite)MetaInventoryItem.Instance.ObjectType, Supertype = MetaUniquelyIdentifiable.Instance.Interface};
             new Inheritance(this.metaPopulation){ Subtype = (Composite)MetaInventoryItem.Instance.ObjectType, Supertype = MetaTransitional.Instance.Interface};
+            new Inheritance(this.metaPopulation){ Subtype = (Composite)MetaInventoryItem.Instance.ObjectType, Supertype = MetaDeletable.Instance.Interface};
             new Inheritance(this.metaPopulation){ Subtype = (Composite)MetaInventoryItemConfiguration.Instance.ObjectType, Supertype = MetaCommentable.Instance.Interface};
             new Inheritance(this.metaPopulation){ Subtype = (Composite)MetaInventoryItemConfiguration.Instance.ObjectType, Supertype = MetaAccessControlledObject.Instance.Interface};
             new Inheritance(this.metaPopulation){ Subtype = (Composite)MetaInvoiceItemVersion.Instance.ObjectType, Supertype = MetaPriceableVersion.Instance.Interface};
@@ -1363,6 +1366,7 @@ namespace Allors.Meta
             new Inheritance(this.metaPopulation){ Subtype = (Composite)MetaPriceComponent.Instance.ObjectType, Supertype = MetaPeriod.Instance.Interface};
             new Inheritance(this.metaPopulation){ Subtype = (Composite)MetaPriceComponent.Instance.ObjectType, Supertype = MetaAccessControlledObject.Instance.Interface};
             new Inheritance(this.metaPopulation){ Subtype = (Composite)MetaPriceComponent.Instance.ObjectType, Supertype = MetaCommentable.Instance.Interface};
+            new Inheritance(this.metaPopulation){ Subtype = (Composite)MetaPriceComponent.Instance.ObjectType, Supertype = MetaDeletable.Instance.Interface};
             new Inheritance(this.metaPopulation){ Subtype = (Composite)MetaPrintable.Instance.ObjectType, Supertype = MetaObject.Instance.Interface};
             new Inheritance(this.metaPopulation){ Subtype = (Composite)MetaProduct.Instance.ObjectType, Supertype = MetaCommentable.Instance.Interface};
             new Inheritance(this.metaPopulation){ Subtype = (Composite)MetaProduct.Instance.ObjectType, Supertype = MetaUniquelyIdentifiable.Instance.Interface};
@@ -15342,6 +15346,17 @@ namespace Allors.Meta
 		relationType.RoleType.SingularName = "Quote";
 		relationType.RoleType.PluralName = "Quotes";
 		MetaSalesOrder.Instance.Quote = relationType.RoleType; 
+	}
+	{
+		var relationType = new RelationType(this.metaPopulation, new System.Guid("5308B55C-A248-44C1-9438-951B1BCDB48C"), new System.Guid("E5A38939-FC2C-447F-82CB-BED3E18957F2"), new System.Guid("EA7C07AA-BA50-4279-97B6-559643788CBC"));
+		relationType.AssociationType.ObjectType = MetaSalesOrder.Instance;
+		relationType.Workspace = true;
+		relationType.IsDerived = true;
+		relationType.RoleType.ObjectType = MetaBoolean.Instance;
+		relationType.RoleType.SingularName = "CanShip";
+		relationType.RoleType.PluralName = "CanShips";
+		relationType.RoleType.IsRequired = true;
+		MetaSalesOrder.Instance.CanShip = relationType.RoleType; 
 	}
 	{
 		var relationType = new RelationType(this.metaPopulation, new System.Guid("552F50AC-5ACD-4F8F-A6CD-68E0C3426F3B"), new System.Guid("3A01771D-E007-4D5B-B9D6-8426BF7FA9FA"), new System.Guid("FF4AAFCC-26A2-4ADB-9FFC-AA96A76F5F55"));
@@ -36825,7 +36840,13 @@ namespace Allors.Meta
 
 
 
-
+			{
+				var method = new MethodType(this.metaPopulation, new System.Guid("E822B75C-3A37-480A-A469-B18A060EC560"));
+				method.ObjectType = MetaSalesOrder.Instance;
+				method.Name = "Ship";
+				method.Workspace = true;
+				MetaSalesOrder.Instance.Ship = method; 
+			}
 			{
 				var method = new MethodType(this.metaPopulation, new System.Guid("323F3F47-9577-47C6-A77F-DC11CBAEA91C"));
 				method.ObjectType = MetaSalesOrderItem.Instance;
@@ -37356,6 +37377,7 @@ namespace Allors.Meta
 				MetaLocalisedText.Instance.OnPreDerive = MetaObject.Instance.OnPreDerive;
 				MetaLocalisedText.Instance.OnDerive = MetaObject.Instance.OnDerive;
 				MetaLocalisedText.Instance.OnPostDerive = MetaObject.Instance.OnPostDerive;
+				MetaLocalisedText.Instance.Delete = MetaDeletable.Instance.Delete;
 				MetaAccessControl.Instance.OnBuild = MetaObject.Instance.OnBuild;
 				MetaAccessControl.Instance.OnPostBuild = MetaObject.Instance.OnPostBuild;
 				MetaAccessControl.Instance.OnPreDerive = MetaObject.Instance.OnPreDerive;
@@ -37848,6 +37870,7 @@ namespace Allors.Meta
 				MetaDiscountComponent.Instance.OnPreDerive = MetaObject.Instance.OnPreDerive;
 				MetaDiscountComponent.Instance.OnDerive = MetaObject.Instance.OnDerive;
 				MetaDiscountComponent.Instance.OnPostDerive = MetaObject.Instance.OnPostDerive;
+				MetaDiscountComponent.Instance.Delete = MetaDeletable.Instance.Delete;
 				MetaDropShipment.Instance.OnBuild = MetaObject.Instance.OnBuild;
 				MetaDropShipment.Instance.OnPostBuild = MetaObject.Instance.OnPostBuild;
 				MetaDropShipment.Instance.OnPreDerive = MetaObject.Instance.OnPreDerive;
@@ -37974,16 +37997,19 @@ namespace Allors.Meta
 				MetaEstimatedLaborCost.Instance.OnPreDerive = MetaObject.Instance.OnPreDerive;
 				MetaEstimatedLaborCost.Instance.OnDerive = MetaObject.Instance.OnDerive;
 				MetaEstimatedLaborCost.Instance.OnPostDerive = MetaObject.Instance.OnPostDerive;
+				MetaEstimatedLaborCost.Instance.Delete = MetaDeletable.Instance.Delete;
 				MetaEstimatedMaterialCost.Instance.OnBuild = MetaObject.Instance.OnBuild;
 				MetaEstimatedMaterialCost.Instance.OnPostBuild = MetaObject.Instance.OnPostBuild;
 				MetaEstimatedMaterialCost.Instance.OnPreDerive = MetaObject.Instance.OnPreDerive;
 				MetaEstimatedMaterialCost.Instance.OnDerive = MetaObject.Instance.OnDerive;
 				MetaEstimatedMaterialCost.Instance.OnPostDerive = MetaObject.Instance.OnPostDerive;
+				MetaEstimatedMaterialCost.Instance.Delete = MetaDeletable.Instance.Delete;
 				MetaEstimatedOtherCost.Instance.OnBuild = MetaObject.Instance.OnBuild;
 				MetaEstimatedOtherCost.Instance.OnPostBuild = MetaObject.Instance.OnPostBuild;
 				MetaEstimatedOtherCost.Instance.OnPreDerive = MetaObject.Instance.OnPreDerive;
 				MetaEstimatedOtherCost.Instance.OnDerive = MetaObject.Instance.OnDerive;
 				MetaEstimatedOtherCost.Instance.OnPostDerive = MetaObject.Instance.OnPostDerive;
+				MetaEstimatedOtherCost.Instance.Delete = MetaDeletable.Instance.Delete;
 				MetaEuSalesListType.Instance.OnBuild = MetaObject.Instance.OnBuild;
 				MetaEuSalesListType.Instance.OnPostBuild = MetaObject.Instance.OnPostBuild;
 				MetaEuSalesListType.Instance.OnPreDerive = MetaObject.Instance.OnPreDerive;
@@ -38255,6 +38281,7 @@ namespace Allors.Meta
 				MetaManufacturerSuggestedRetailPrice.Instance.OnPreDerive = MetaObject.Instance.OnPreDerive;
 				MetaManufacturerSuggestedRetailPrice.Instance.OnDerive = MetaObject.Instance.OnDerive;
 				MetaManufacturerSuggestedRetailPrice.Instance.OnPostDerive = MetaObject.Instance.OnPostDerive;
+				MetaManufacturerSuggestedRetailPrice.Instance.Delete = MetaDeletable.Instance.Delete;
 				MetaManufacturingBom.Instance.OnBuild = MetaObject.Instance.OnBuild;
 				MetaManufacturingBom.Instance.OnPostBuild = MetaObject.Instance.OnPostBuild;
 				MetaManufacturingBom.Instance.OnPreDerive = MetaObject.Instance.OnPreDerive;
@@ -38305,6 +38332,7 @@ namespace Allors.Meta
 				MetaNonSerialisedInventoryItem.Instance.OnPreDerive = MetaObject.Instance.OnPreDerive;
 				MetaNonSerialisedInventoryItem.Instance.OnDerive = MetaObject.Instance.OnDerive;
 				MetaNonSerialisedInventoryItem.Instance.OnPostDerive = MetaObject.Instance.OnPostDerive;
+				MetaNonSerialisedInventoryItem.Instance.Delete = MetaDeletable.Instance.Delete;
 				MetaNonSerialisedInventoryItemState.Instance.OnBuild = MetaObject.Instance.OnBuild;
 				MetaNonSerialisedInventoryItemState.Instance.OnPostBuild = MetaObject.Instance.OnPostBuild;
 				MetaNonSerialisedInventoryItemState.Instance.OnPreDerive = MetaObject.Instance.OnPreDerive;
@@ -38315,6 +38343,7 @@ namespace Allors.Meta
 				MetaNonSerialisedInventoryItemVersion.Instance.OnPreDerive = MetaObject.Instance.OnPreDerive;
 				MetaNonSerialisedInventoryItemVersion.Instance.OnDerive = MetaObject.Instance.OnDerive;
 				MetaNonSerialisedInventoryItemVersion.Instance.OnPostDerive = MetaObject.Instance.OnPostDerive;
+				MetaNonSerialisedInventoryItemVersion.Instance.Delete = MetaDeletable.Instance.Delete;
 				MetaNonSerializedInventoryItemObjectState.Instance.OnBuild = MetaObject.Instance.OnBuild;
 				MetaNonSerializedInventoryItemObjectState.Instance.OnPostBuild = MetaObject.Instance.OnPostBuild;
 				MetaNonSerializedInventoryItemObjectState.Instance.OnPreDerive = MetaObject.Instance.OnPreDerive;
@@ -38495,6 +38524,7 @@ namespace Allors.Meta
 				MetaSerialisedInventoryItemVersion.Instance.OnPreDerive = MetaObject.Instance.OnPreDerive;
 				MetaSerialisedInventoryItemVersion.Instance.OnDerive = MetaObject.Instance.OnDerive;
 				MetaSerialisedInventoryItemVersion.Instance.OnPostDerive = MetaObject.Instance.OnPostDerive;
+				MetaSerialisedInventoryItemVersion.Instance.Delete = MetaDeletable.Instance.Delete;
 				MetaNote.Instance.OnBuild = MetaObject.Instance.OnBuild;
 				MetaNote.Instance.OnPostBuild = MetaObject.Instance.OnPostBuild;
 				MetaNote.Instance.OnPreDerive = MetaObject.Instance.OnPreDerive;
@@ -38510,6 +38540,7 @@ namespace Allors.Meta
 				MetaOneTimeCharge.Instance.OnPreDerive = MetaObject.Instance.OnPreDerive;
 				MetaOneTimeCharge.Instance.OnDerive = MetaObject.Instance.OnDerive;
 				MetaOneTimeCharge.Instance.OnPostDerive = MetaObject.Instance.OnPostDerive;
+				MetaOneTimeCharge.Instance.Delete = MetaDeletable.Instance.Delete;
 				MetaOperatingBudget.Instance.OnBuild = MetaObject.Instance.OnBuild;
 				MetaOperatingBudget.Instance.OnPostBuild = MetaObject.Instance.OnPostBuild;
 				MetaOperatingBudget.Instance.OnPreDerive = MetaObject.Instance.OnPreDerive;
@@ -39102,6 +39133,7 @@ namespace Allors.Meta
 				MetaRecurringCharge.Instance.OnPreDerive = MetaObject.Instance.OnPreDerive;
 				MetaRecurringCharge.Instance.OnDerive = MetaObject.Instance.OnDerive;
 				MetaRecurringCharge.Instance.OnPostDerive = MetaObject.Instance.OnPostDerive;
+				MetaRecurringCharge.Instance.Delete = MetaDeletable.Instance.Delete;
 				MetaRegion.Instance.OnBuild = MetaObject.Instance.OnBuild;
 				MetaRegion.Instance.OnPostBuild = MetaObject.Instance.OnPostBuild;
 				MetaRegion.Instance.OnPreDerive = MetaObject.Instance.OnPreDerive;
@@ -39344,6 +39376,7 @@ namespace Allors.Meta
 				MetaSerialisedInventoryItem.Instance.OnPreDerive = MetaObject.Instance.OnPreDerive;
 				MetaSerialisedInventoryItem.Instance.OnDerive = MetaObject.Instance.OnDerive;
 				MetaSerialisedInventoryItem.Instance.OnPostDerive = MetaObject.Instance.OnPostDerive;
+				MetaSerialisedInventoryItem.Instance.Delete = MetaDeletable.Instance.Delete;
 				MetaSerialisedInventoryItemState.Instance.OnBuild = MetaObject.Instance.OnBuild;
 				MetaSerialisedInventoryItemState.Instance.OnPostBuild = MetaObject.Instance.OnPostBuild;
 				MetaSerialisedInventoryItemState.Instance.OnPreDerive = MetaObject.Instance.OnPreDerive;
@@ -39530,6 +39563,7 @@ namespace Allors.Meta
 				MetaSurchargeComponent.Instance.OnPreDerive = MetaObject.Instance.OnPreDerive;
 				MetaSurchargeComponent.Instance.OnDerive = MetaObject.Instance.OnDerive;
 				MetaSurchargeComponent.Instance.OnPostDerive = MetaObject.Instance.OnPostDerive;
+				MetaSurchargeComponent.Instance.Delete = MetaDeletable.Instance.Delete;
 				MetaRequirementType.Instance.OnBuild = MetaObject.Instance.OnBuild;
 				MetaRequirementType.Instance.OnPostBuild = MetaObject.Instance.OnPostBuild;
 				MetaRequirementType.Instance.OnPreDerive = MetaObject.Instance.OnPreDerive;
@@ -39642,6 +39676,7 @@ namespace Allors.Meta
 				MetaUtilizationCharge.Instance.OnPreDerive = MetaObject.Instance.OnPreDerive;
 				MetaUtilizationCharge.Instance.OnDerive = MetaObject.Instance.OnDerive;
 				MetaUtilizationCharge.Instance.OnPostDerive = MetaObject.Instance.OnPostDerive;
+				MetaUtilizationCharge.Instance.Delete = MetaDeletable.Instance.Delete;
 				MetaVarianceReason.Instance.OnBuild = MetaObject.Instance.OnBuild;
 				MetaVarianceReason.Instance.OnPostBuild = MetaObject.Instance.OnPostBuild;
 				MetaVarianceReason.Instance.OnPreDerive = MetaObject.Instance.OnPreDerive;

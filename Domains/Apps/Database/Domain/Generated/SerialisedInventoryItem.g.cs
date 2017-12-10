@@ -1290,6 +1290,21 @@ namespace Allors.Domain
             method.Execute();
             return method;
 		}
+
+		public DeletableDelete Delete()
+		{ 
+			var method = new SerialisedInventoryItemDelete(this);
+            method.Execute();
+            return method;
+		}
+
+		public DeletableDelete Delete(System.Action<DeletableDelete> action)
+		{ 
+			var method = new SerialisedInventoryItemDelete(this);
+            action(method);
+            method.Execute();
+            return method;
+		}
 	}
 
 	public partial class SerialisedInventoryItemBuilder : Allors.ObjectBuilder<SerialisedInventoryItem> , InventoryItemBuilder, VersionedBuilder, global::System.IDisposable

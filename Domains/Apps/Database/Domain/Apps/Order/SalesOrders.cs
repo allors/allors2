@@ -47,14 +47,15 @@ namespace Allors.Domain
             var hold = this.Meta.Hold;
             var @continue = this.Meta.Continue;
             var confirm = this.Meta.Confirm;
+            var ship = this.Meta.Ship;
 
-            config.Deny(this.ObjectType, provisional, reject, approve, hold, @continue);
-            config.Deny(this.ObjectType, requestsApproval, confirm, hold, @continue);
+            config.Deny(this.ObjectType, provisional, reject, approve, hold, @continue, ship);
+            config.Deny(this.ObjectType, requestsApproval, confirm, hold, @continue, ship);
             config.Deny(this.ObjectType, inProcess, confirm, reject, approve, @continue);
-            config.Deny(this.ObjectType, onHold, confirm, reject, approve, hold);
-            config.Deny(this.ObjectType, rejected, reject);
-            config.Deny(this.ObjectType, cancelled, cancel);
-            config.Deny(this.ObjectType, completed, complete);
+            config.Deny(this.ObjectType, onHold, confirm, reject, approve, hold, ship);
+            config.Deny(this.ObjectType, rejected, reject, ship);
+            config.Deny(this.ObjectType, cancelled, cancel, ship);
+            config.Deny(this.ObjectType, completed, complete, ship);
 
             config.Deny(this.ObjectType, cancelled, Operations.Execute, Operations.Write);
             config.Deny(this.ObjectType, rejected, Operations.Execute, Operations.Write);

@@ -454,6 +454,7 @@ namespace Allors.Meta
         public MethodType OnPreDerive;
         public MethodType OnDerive;
         public MethodType OnPostDerive;
+        public MethodType Delete;
 
 		// Defined Roles
         public RoleType Text;
@@ -5585,6 +5586,7 @@ namespace Allors.Meta
         public MethodType OnPreDerive;
         public MethodType OnDerive;
         public MethodType OnPostDerive;
+        public MethodType Delete;
 
 		// Defined Roles
         public RoleType Percentage;
@@ -6914,6 +6916,7 @@ namespace Allors.Meta
         public MethodType OnPreDerive;
         public MethodType OnDerive;
         public MethodType OnPostDerive;
+        public MethodType Delete;
 
 		// Defined Roles
 
@@ -6960,6 +6963,7 @@ namespace Allors.Meta
         public MethodType OnPreDerive;
         public MethodType OnDerive;
         public MethodType OnPostDerive;
+        public MethodType Delete;
 
 		// Defined Roles
 
@@ -7006,6 +7010,7 @@ namespace Allors.Meta
         public MethodType OnPreDerive;
         public MethodType OnDerive;
         public MethodType OnPostDerive;
+        public MethodType Delete;
 
 		// Defined Roles
 
@@ -9673,6 +9678,7 @@ namespace Allors.Meta
         public MethodType OnPreDerive;
         public MethodType OnDerive;
         public MethodType OnPostDerive;
+        public MethodType Delete;
 
 		// Defined Roles
 
@@ -10166,6 +10172,7 @@ namespace Allors.Meta
         public MethodType OnPreDerive;
         public MethodType OnDerive;
         public MethodType OnPostDerive;
+        public MethodType Delete;
 
 		// Defined Roles
         public RoleType PreviousNonSerialisedInventoryItemState;
@@ -10293,6 +10300,7 @@ namespace Allors.Meta
         public MethodType OnPreDerive;
         public MethodType OnDerive;
         public MethodType OnPostDerive;
+        public MethodType Delete;
 
 		// Defined Roles
         public RoleType NonSerialisedInventoryItemState;
@@ -12635,6 +12643,7 @@ namespace Allors.Meta
         public MethodType OnPreDerive;
         public MethodType OnDerive;
         public MethodType OnPostDerive;
+        public MethodType Delete;
 
 		// Defined Roles
         public RoleType SerialisedInventoryItemState;
@@ -12790,6 +12799,7 @@ namespace Allors.Meta
         public MethodType OnPreDerive;
         public MethodType OnDerive;
         public MethodType OnPostDerive;
+        public MethodType Delete;
 
 		// Defined Roles
 
@@ -18575,6 +18585,7 @@ namespace Allors.Meta
         public MethodType OnPreDerive;
         public MethodType OnDerive;
         public MethodType OnPostDerive;
+        public MethodType Delete;
 
 		// Defined Roles
         public RoleType TimeFrequency;
@@ -20115,6 +20126,7 @@ namespace Allors.Meta
 		public override Class Class { get; }
 
 		// Defined Methods
+        public MethodType Ship;
 
 		// Inherited Methods
         public MethodType OnBuild;
@@ -20169,6 +20181,7 @@ namespace Allors.Meta
         public RoleType SalesOrderItems;
         public RoleType InitialMarkupPercentage;
         public RoleType Quote;
+        public RoleType CanShip;
 
 		// Inherited Roles
         public ConcreteRoleType PreviousObjectStates;
@@ -20960,6 +20973,7 @@ namespace Allors.Meta
         public MethodType OnPreDerive;
         public MethodType OnDerive;
         public MethodType OnPostDerive;
+        public MethodType Delete;
 
 		// Defined Roles
         public RoleType PreviousSerialisedInventoryItemState;
@@ -22782,6 +22796,7 @@ namespace Allors.Meta
         public MethodType OnPreDerive;
         public MethodType OnDerive;
         public MethodType OnPostDerive;
+        public MethodType Delete;
 
 		// Defined Roles
         public RoleType Percentage;
@@ -24051,6 +24066,7 @@ namespace Allors.Meta
         public MethodType OnPreDerive;
         public MethodType OnDerive;
         public MethodType OnPostDerive;
+        public MethodType Delete;
 
 		// Defined Roles
         public RoleType Quantity;

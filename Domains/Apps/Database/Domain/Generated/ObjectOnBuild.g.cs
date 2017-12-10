@@ -174,6 +174,21 @@ namespace Allors.Domain
 				return MediaContentOnBuildMethodInvocation;
 			}
 		}
+	}public partial class LocalisedTextOnBuild : ObjectOnBuild
+	{
+	    private static readonly Allors.Meta.MethodInvocation LocalisedTextOnBuildMethodInvocation = new Allors.Meta.MethodInvocation(Allors.Meta.M.LocalisedText.ObjectType, Allors.Meta.M.LocalisedText.OnBuild); 
+
+		public LocalisedTextOnBuild(Object @object) : base(@object)
+		{
+		}
+
+		public override Allors.Meta.MethodInvocation MethodInvocation
+		{
+			get
+			{
+				return LocalisedTextOnBuildMethodInvocation;
+			}
+		}
 	}public partial class LoginOnBuild : ObjectOnBuild
 	{
 	    private static readonly Allors.Meta.MethodInvocation LoginOnBuildMethodInvocation = new Allors.Meta.MethodInvocation(Allors.Meta.M.Login.ObjectType, Allors.Meta.M.Login.OnBuild); 
@@ -277,21 +292,6 @@ namespace Allors.Domain
 			get
 			{
 				return TaskListOnBuildMethodInvocation;
-			}
-		}
-	}public partial class BasePriceOnBuild : ObjectOnBuild
-	{
-	    private static readonly Allors.Meta.MethodInvocation BasePriceOnBuildMethodInvocation = new Allors.Meta.MethodInvocation(Allors.Meta.M.BasePrice.ObjectType, Allors.Meta.M.BasePrice.OnBuild); 
-
-		public BasePriceOnBuild(Object @object) : base(@object)
-		{
-		}
-
-		public override Allors.Meta.MethodInvocation MethodInvocation
-		{
-			get
-			{
-				return BasePriceOnBuildMethodInvocation;
 			}
 		}
 	}public partial class CatalogueOnBuild : ObjectOnBuild
@@ -894,6 +894,111 @@ namespace Allors.Domain
 				return WebAddressOnBuildMethodInvocation;
 			}
 		}
+	}public partial class EstimatedLaborCostOnBuild : ObjectOnBuild
+	{
+	    private static readonly Allors.Meta.MethodInvocation EstimatedLaborCostOnBuildMethodInvocation = new Allors.Meta.MethodInvocation(Allors.Meta.M.EstimatedLaborCost.ObjectType, Allors.Meta.M.EstimatedLaborCost.OnBuild); 
+
+		public EstimatedLaborCostOnBuild(Object @object) : base(@object)
+		{
+		}
+
+		public override Allors.Meta.MethodInvocation MethodInvocation
+		{
+			get
+			{
+				return EstimatedLaborCostOnBuildMethodInvocation;
+			}
+		}
+	}public partial class EstimatedMaterialCostOnBuild : ObjectOnBuild
+	{
+	    private static readonly Allors.Meta.MethodInvocation EstimatedMaterialCostOnBuildMethodInvocation = new Allors.Meta.MethodInvocation(Allors.Meta.M.EstimatedMaterialCost.ObjectType, Allors.Meta.M.EstimatedMaterialCost.OnBuild); 
+
+		public EstimatedMaterialCostOnBuild(Object @object) : base(@object)
+		{
+		}
+
+		public override Allors.Meta.MethodInvocation MethodInvocation
+		{
+			get
+			{
+				return EstimatedMaterialCostOnBuildMethodInvocation;
+			}
+		}
+	}public partial class EstimatedOtherCostOnBuild : ObjectOnBuild
+	{
+	    private static readonly Allors.Meta.MethodInvocation EstimatedOtherCostOnBuildMethodInvocation = new Allors.Meta.MethodInvocation(Allors.Meta.M.EstimatedOtherCost.ObjectType, Allors.Meta.M.EstimatedOtherCost.OnBuild); 
+
+		public EstimatedOtherCostOnBuild(Object @object) : base(@object)
+		{
+		}
+
+		public override Allors.Meta.MethodInvocation MethodInvocation
+		{
+			get
+			{
+				return EstimatedOtherCostOnBuildMethodInvocation;
+			}
+		}
+	}public partial class NonSerialisedInventoryItemVersionOnBuild : ObjectOnBuild
+	{
+	    private static readonly Allors.Meta.MethodInvocation NonSerialisedInventoryItemVersionOnBuildMethodInvocation = new Allors.Meta.MethodInvocation(Allors.Meta.M.NonSerialisedInventoryItemVersion.ObjectType, Allors.Meta.M.NonSerialisedInventoryItemVersion.OnBuild); 
+
+		public NonSerialisedInventoryItemVersionOnBuild(Object @object) : base(@object)
+		{
+		}
+
+		public override Allors.Meta.MethodInvocation MethodInvocation
+		{
+			get
+			{
+				return NonSerialisedInventoryItemVersionOnBuildMethodInvocation;
+			}
+		}
+	}public partial class SerialisedInventoryItemVersionOnBuild : ObjectOnBuild
+	{
+	    private static readonly Allors.Meta.MethodInvocation SerialisedInventoryItemVersionOnBuildMethodInvocation = new Allors.Meta.MethodInvocation(Allors.Meta.M.SerialisedInventoryItemVersion.ObjectType, Allors.Meta.M.SerialisedInventoryItemVersion.OnBuild); 
+
+		public SerialisedInventoryItemVersionOnBuild(Object @object) : base(@object)
+		{
+		}
+
+		public override Allors.Meta.MethodInvocation MethodInvocation
+		{
+			get
+			{
+				return SerialisedInventoryItemVersionOnBuildMethodInvocation;
+			}
+		}
+	}public partial class NonSerialisedInventoryItemOnBuild : ObjectOnBuild
+	{
+	    private static readonly Allors.Meta.MethodInvocation NonSerialisedInventoryItemOnBuildMethodInvocation = new Allors.Meta.MethodInvocation(Allors.Meta.M.NonSerialisedInventoryItem.ObjectType, Allors.Meta.M.NonSerialisedInventoryItem.OnBuild); 
+
+		public NonSerialisedInventoryItemOnBuild(Object @object) : base(@object)
+		{
+		}
+
+		public override Allors.Meta.MethodInvocation MethodInvocation
+		{
+			get
+			{
+				return NonSerialisedInventoryItemOnBuildMethodInvocation;
+			}
+		}
+	}public partial class SerialisedInventoryItemOnBuild : ObjectOnBuild
+	{
+	    private static readonly Allors.Meta.MethodInvocation SerialisedInventoryItemOnBuildMethodInvocation = new Allors.Meta.MethodInvocation(Allors.Meta.M.SerialisedInventoryItem.ObjectType, Allors.Meta.M.SerialisedInventoryItem.OnBuild); 
+
+		public SerialisedInventoryItemOnBuild(Object @object) : base(@object)
+		{
+		}
+
+		public override Allors.Meta.MethodInvocation MethodInvocation
+		{
+			get
+			{
+				return SerialisedInventoryItemOnBuildMethodInvocation;
+			}
+		}
 	}public partial class PurchaseInvoiceItemOnBuild : ObjectOnBuild
 	{
 	    private static readonly Allors.Meta.MethodInvocation PurchaseInvoiceItemOnBuildMethodInvocation = new Allors.Meta.MethodInvocation(Allors.Meta.M.PurchaseInvoiceItem.ObjectType, Allors.Meta.M.PurchaseInvoiceItem.OnBuild); 
@@ -1027,6 +1132,111 @@ namespace Allors.Domain
 			get
 			{
 				return SalesOrderItemOnBuildMethodInvocation;
+			}
+		}
+	}public partial class BasePriceOnBuild : ObjectOnBuild
+	{
+	    private static readonly Allors.Meta.MethodInvocation BasePriceOnBuildMethodInvocation = new Allors.Meta.MethodInvocation(Allors.Meta.M.BasePrice.ObjectType, Allors.Meta.M.BasePrice.OnBuild); 
+
+		public BasePriceOnBuild(Object @object) : base(@object)
+		{
+		}
+
+		public override Allors.Meta.MethodInvocation MethodInvocation
+		{
+			get
+			{
+				return BasePriceOnBuildMethodInvocation;
+			}
+		}
+	}public partial class DiscountComponentOnBuild : ObjectOnBuild
+	{
+	    private static readonly Allors.Meta.MethodInvocation DiscountComponentOnBuildMethodInvocation = new Allors.Meta.MethodInvocation(Allors.Meta.M.DiscountComponent.ObjectType, Allors.Meta.M.DiscountComponent.OnBuild); 
+
+		public DiscountComponentOnBuild(Object @object) : base(@object)
+		{
+		}
+
+		public override Allors.Meta.MethodInvocation MethodInvocation
+		{
+			get
+			{
+				return DiscountComponentOnBuildMethodInvocation;
+			}
+		}
+	}public partial class ManufacturerSuggestedRetailPriceOnBuild : ObjectOnBuild
+	{
+	    private static readonly Allors.Meta.MethodInvocation ManufacturerSuggestedRetailPriceOnBuildMethodInvocation = new Allors.Meta.MethodInvocation(Allors.Meta.M.ManufacturerSuggestedRetailPrice.ObjectType, Allors.Meta.M.ManufacturerSuggestedRetailPrice.OnBuild); 
+
+		public ManufacturerSuggestedRetailPriceOnBuild(Object @object) : base(@object)
+		{
+		}
+
+		public override Allors.Meta.MethodInvocation MethodInvocation
+		{
+			get
+			{
+				return ManufacturerSuggestedRetailPriceOnBuildMethodInvocation;
+			}
+		}
+	}public partial class OneTimeChargeOnBuild : ObjectOnBuild
+	{
+	    private static readonly Allors.Meta.MethodInvocation OneTimeChargeOnBuildMethodInvocation = new Allors.Meta.MethodInvocation(Allors.Meta.M.OneTimeCharge.ObjectType, Allors.Meta.M.OneTimeCharge.OnBuild); 
+
+		public OneTimeChargeOnBuild(Object @object) : base(@object)
+		{
+		}
+
+		public override Allors.Meta.MethodInvocation MethodInvocation
+		{
+			get
+			{
+				return OneTimeChargeOnBuildMethodInvocation;
+			}
+		}
+	}public partial class RecurringChargeOnBuild : ObjectOnBuild
+	{
+	    private static readonly Allors.Meta.MethodInvocation RecurringChargeOnBuildMethodInvocation = new Allors.Meta.MethodInvocation(Allors.Meta.M.RecurringCharge.ObjectType, Allors.Meta.M.RecurringCharge.OnBuild); 
+
+		public RecurringChargeOnBuild(Object @object) : base(@object)
+		{
+		}
+
+		public override Allors.Meta.MethodInvocation MethodInvocation
+		{
+			get
+			{
+				return RecurringChargeOnBuildMethodInvocation;
+			}
+		}
+	}public partial class SurchargeComponentOnBuild : ObjectOnBuild
+	{
+	    private static readonly Allors.Meta.MethodInvocation SurchargeComponentOnBuildMethodInvocation = new Allors.Meta.MethodInvocation(Allors.Meta.M.SurchargeComponent.ObjectType, Allors.Meta.M.SurchargeComponent.OnBuild); 
+
+		public SurchargeComponentOnBuild(Object @object) : base(@object)
+		{
+		}
+
+		public override Allors.Meta.MethodInvocation MethodInvocation
+		{
+			get
+			{
+				return SurchargeComponentOnBuildMethodInvocation;
+			}
+		}
+	}public partial class UtilizationChargeOnBuild : ObjectOnBuild
+	{
+	    private static readonly Allors.Meta.MethodInvocation UtilizationChargeOnBuildMethodInvocation = new Allors.Meta.MethodInvocation(Allors.Meta.M.UtilizationCharge.ObjectType, Allors.Meta.M.UtilizationCharge.OnBuild); 
+
+		public UtilizationChargeOnBuild(Object @object) : base(@object)
+		{
+		}
+
+		public override Allors.Meta.MethodInvocation MethodInvocation
+		{
+			get
+			{
+				return UtilizationChargeOnBuildMethodInvocation;
 			}
 		}
 	}public partial class GoodOnBuild : ObjectOnBuild
@@ -3219,36 +3429,6 @@ namespace Allors.Domain
 				return ServiceTerritoryOnBuildMethodInvocation;
 			}
 		}
-	}public partial class NonSerialisedInventoryItemOnBuild : ObjectOnBuild
-	{
-	    private static readonly Allors.Meta.MethodInvocation NonSerialisedInventoryItemOnBuildMethodInvocation = new Allors.Meta.MethodInvocation(Allors.Meta.M.NonSerialisedInventoryItem.ObjectType, Allors.Meta.M.NonSerialisedInventoryItem.OnBuild); 
-
-		public NonSerialisedInventoryItemOnBuild(Object @object) : base(@object)
-		{
-		}
-
-		public override Allors.Meta.MethodInvocation MethodInvocation
-		{
-			get
-			{
-				return NonSerialisedInventoryItemOnBuildMethodInvocation;
-			}
-		}
-	}public partial class SerialisedInventoryItemOnBuild : ObjectOnBuild
-	{
-	    private static readonly Allors.Meta.MethodInvocation SerialisedInventoryItemOnBuildMethodInvocation = new Allors.Meta.MethodInvocation(Allors.Meta.M.SerialisedInventoryItem.ObjectType, Allors.Meta.M.SerialisedInventoryItem.OnBuild); 
-
-		public SerialisedInventoryItemOnBuild(Object @object) : base(@object)
-		{
-		}
-
-		public override Allors.Meta.MethodInvocation MethodInvocation
-		{
-			get
-			{
-				return SerialisedInventoryItemOnBuildMethodInvocation;
-			}
-		}
 	}public partial class CurrencyOnBuild : ObjectOnBuild
 	{
 	    private static readonly Allors.Meta.MethodInvocation CurrencyOnBuildMethodInvocation = new Allors.Meta.MethodInvocation(Allors.Meta.M.Currency.ObjectType, Allors.Meta.M.Currency.OnBuild); 
@@ -3712,21 +3892,6 @@ namespace Allors.Domain
 			get
 			{
 				return TransferOnBuildMethodInvocation;
-			}
-		}
-	}public partial class LocalisedTextOnBuild : ObjectOnBuild
-	{
-	    private static readonly Allors.Meta.MethodInvocation LocalisedTextOnBuildMethodInvocation = new Allors.Meta.MethodInvocation(Allors.Meta.M.LocalisedText.ObjectType, Allors.Meta.M.LocalisedText.OnBuild); 
-
-		public LocalisedTextOnBuild(Object @object) : base(@object)
-		{
-		}
-
-		public override Allors.Meta.MethodInvocation MethodInvocation
-		{
-			get
-			{
-				return LocalisedTextOnBuildMethodInvocation;
 			}
 		}
 	}public partial class LanguageOnBuild : ObjectOnBuild
@@ -5544,36 +5709,6 @@ namespace Allors.Domain
 				return WebSiteCommunicationVersionOnBuildMethodInvocation;
 			}
 		}
-	}public partial class NonSerialisedInventoryItemVersionOnBuild : ObjectOnBuild
-	{
-	    private static readonly Allors.Meta.MethodInvocation NonSerialisedInventoryItemVersionOnBuildMethodInvocation = new Allors.Meta.MethodInvocation(Allors.Meta.M.NonSerialisedInventoryItemVersion.ObjectType, Allors.Meta.M.NonSerialisedInventoryItemVersion.OnBuild); 
-
-		public NonSerialisedInventoryItemVersionOnBuild(Object @object) : base(@object)
-		{
-		}
-
-		public override Allors.Meta.MethodInvocation MethodInvocation
-		{
-			get
-			{
-				return NonSerialisedInventoryItemVersionOnBuildMethodInvocation;
-			}
-		}
-	}public partial class SerialisedInventoryItemVersionOnBuild : ObjectOnBuild
-	{
-	    private static readonly Allors.Meta.MethodInvocation SerialisedInventoryItemVersionOnBuildMethodInvocation = new Allors.Meta.MethodInvocation(Allors.Meta.M.SerialisedInventoryItemVersion.ObjectType, Allors.Meta.M.SerialisedInventoryItemVersion.OnBuild); 
-
-		public SerialisedInventoryItemVersionOnBuild(Object @object) : base(@object)
-		{
-		}
-
-		public override Allors.Meta.MethodInvocation MethodInvocation
-		{
-			get
-			{
-				return SerialisedInventoryItemVersionOnBuildMethodInvocation;
-			}
-		}
 	}public partial class PurchaseInvoiceVersionOnBuild : ObjectOnBuild
 	{
 	    private static readonly Allors.Meta.MethodInvocation PurchaseInvoiceVersionOnBuildMethodInvocation = new Allors.Meta.MethodInvocation(Allors.Meta.M.PurchaseInvoiceVersion.ObjectType, Allors.Meta.M.PurchaseInvoiceVersion.OnBuild); 
@@ -6564,51 +6699,6 @@ namespace Allors.Domain
 				return StandardServiceOrderItemOnBuildMethodInvocation;
 			}
 		}
-	}public partial class EstimatedLaborCostOnBuild : ObjectOnBuild
-	{
-	    private static readonly Allors.Meta.MethodInvocation EstimatedLaborCostOnBuildMethodInvocation = new Allors.Meta.MethodInvocation(Allors.Meta.M.EstimatedLaborCost.ObjectType, Allors.Meta.M.EstimatedLaborCost.OnBuild); 
-
-		public EstimatedLaborCostOnBuild(Object @object) : base(@object)
-		{
-		}
-
-		public override Allors.Meta.MethodInvocation MethodInvocation
-		{
-			get
-			{
-				return EstimatedLaborCostOnBuildMethodInvocation;
-			}
-		}
-	}public partial class EstimatedMaterialCostOnBuild : ObjectOnBuild
-	{
-	    private static readonly Allors.Meta.MethodInvocation EstimatedMaterialCostOnBuildMethodInvocation = new Allors.Meta.MethodInvocation(Allors.Meta.M.EstimatedMaterialCost.ObjectType, Allors.Meta.M.EstimatedMaterialCost.OnBuild); 
-
-		public EstimatedMaterialCostOnBuild(Object @object) : base(@object)
-		{
-		}
-
-		public override Allors.Meta.MethodInvocation MethodInvocation
-		{
-			get
-			{
-				return EstimatedMaterialCostOnBuildMethodInvocation;
-			}
-		}
-	}public partial class EstimatedOtherCostOnBuild : ObjectOnBuild
-	{
-	    private static readonly Allors.Meta.MethodInvocation EstimatedOtherCostOnBuildMethodInvocation = new Allors.Meta.MethodInvocation(Allors.Meta.M.EstimatedOtherCost.ObjectType, Allors.Meta.M.EstimatedOtherCost.OnBuild); 
-
-		public EstimatedOtherCostOnBuild(Object @object) : base(@object)
-		{
-		}
-
-		public override Allors.Meta.MethodInvocation MethodInvocation
-		{
-			get
-			{
-				return EstimatedOtherCostOnBuildMethodInvocation;
-			}
-		}
 	}public partial class BankAccountOnBuild : ObjectOnBuild
 	{
 	    private static readonly Allors.Meta.MethodInvocation BankAccountOnBuildMethodInvocation = new Allors.Meta.MethodInvocation(Allors.Meta.M.BankAccount.ObjectType, Allors.Meta.M.BankAccount.OnBuild); 
@@ -6892,96 +6982,6 @@ namespace Allors.Domain
 			get
 			{
 				return IndustryClassificationOnBuildMethodInvocation;
-			}
-		}
-	}public partial class DiscountComponentOnBuild : ObjectOnBuild
-	{
-	    private static readonly Allors.Meta.MethodInvocation DiscountComponentOnBuildMethodInvocation = new Allors.Meta.MethodInvocation(Allors.Meta.M.DiscountComponent.ObjectType, Allors.Meta.M.DiscountComponent.OnBuild); 
-
-		public DiscountComponentOnBuild(Object @object) : base(@object)
-		{
-		}
-
-		public override Allors.Meta.MethodInvocation MethodInvocation
-		{
-			get
-			{
-				return DiscountComponentOnBuildMethodInvocation;
-			}
-		}
-	}public partial class ManufacturerSuggestedRetailPriceOnBuild : ObjectOnBuild
-	{
-	    private static readonly Allors.Meta.MethodInvocation ManufacturerSuggestedRetailPriceOnBuildMethodInvocation = new Allors.Meta.MethodInvocation(Allors.Meta.M.ManufacturerSuggestedRetailPrice.ObjectType, Allors.Meta.M.ManufacturerSuggestedRetailPrice.OnBuild); 
-
-		public ManufacturerSuggestedRetailPriceOnBuild(Object @object) : base(@object)
-		{
-		}
-
-		public override Allors.Meta.MethodInvocation MethodInvocation
-		{
-			get
-			{
-				return ManufacturerSuggestedRetailPriceOnBuildMethodInvocation;
-			}
-		}
-	}public partial class OneTimeChargeOnBuild : ObjectOnBuild
-	{
-	    private static readonly Allors.Meta.MethodInvocation OneTimeChargeOnBuildMethodInvocation = new Allors.Meta.MethodInvocation(Allors.Meta.M.OneTimeCharge.ObjectType, Allors.Meta.M.OneTimeCharge.OnBuild); 
-
-		public OneTimeChargeOnBuild(Object @object) : base(@object)
-		{
-		}
-
-		public override Allors.Meta.MethodInvocation MethodInvocation
-		{
-			get
-			{
-				return OneTimeChargeOnBuildMethodInvocation;
-			}
-		}
-	}public partial class RecurringChargeOnBuild : ObjectOnBuild
-	{
-	    private static readonly Allors.Meta.MethodInvocation RecurringChargeOnBuildMethodInvocation = new Allors.Meta.MethodInvocation(Allors.Meta.M.RecurringCharge.ObjectType, Allors.Meta.M.RecurringCharge.OnBuild); 
-
-		public RecurringChargeOnBuild(Object @object) : base(@object)
-		{
-		}
-
-		public override Allors.Meta.MethodInvocation MethodInvocation
-		{
-			get
-			{
-				return RecurringChargeOnBuildMethodInvocation;
-			}
-		}
-	}public partial class SurchargeComponentOnBuild : ObjectOnBuild
-	{
-	    private static readonly Allors.Meta.MethodInvocation SurchargeComponentOnBuildMethodInvocation = new Allors.Meta.MethodInvocation(Allors.Meta.M.SurchargeComponent.ObjectType, Allors.Meta.M.SurchargeComponent.OnBuild); 
-
-		public SurchargeComponentOnBuild(Object @object) : base(@object)
-		{
-		}
-
-		public override Allors.Meta.MethodInvocation MethodInvocation
-		{
-			get
-			{
-				return SurchargeComponentOnBuildMethodInvocation;
-			}
-		}
-	}public partial class UtilizationChargeOnBuild : ObjectOnBuild
-	{
-	    private static readonly Allors.Meta.MethodInvocation UtilizationChargeOnBuildMethodInvocation = new Allors.Meta.MethodInvocation(Allors.Meta.M.UtilizationCharge.ObjectType, Allors.Meta.M.UtilizationCharge.OnBuild); 
-
-		public UtilizationChargeOnBuild(Object @object) : base(@object)
-		{
-		}
-
-		public override Allors.Meta.MethodInvocation MethodInvocation
-		{
-			get
-			{
-				return UtilizationChargeOnBuildMethodInvocation;
 			}
 		}
 	}public partial class MarketingPackageOnBuild : ObjectOnBuild

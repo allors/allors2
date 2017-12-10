@@ -410,6 +410,21 @@ namespace Allors.Domain
             method.Execute();
             return method;
 		}
+
+		public DeletableDelete Delete()
+		{ 
+			var method = new EstimatedLaborCostDelete(this);
+            method.Execute();
+            return method;
+		}
+
+		public DeletableDelete Delete(System.Action<DeletableDelete> action)
+		{ 
+			var method = new EstimatedLaborCostDelete(this);
+            action(method);
+            method.Execute();
+            return method;
+		}
 	}
 
 	public partial class EstimatedLaborCostBuilder : Allors.ObjectBuilder<EstimatedLaborCost> , EstimatedProductCostBuilder, global::System.IDisposable

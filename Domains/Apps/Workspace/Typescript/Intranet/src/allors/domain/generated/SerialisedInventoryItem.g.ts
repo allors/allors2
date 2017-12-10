@@ -5,6 +5,7 @@ import { SessionObject, Method } from "../../framework";
 
 import { InventoryItem } from './InventoryItem.g';
 import { UniquelyIdentifiable } from './UniquelyIdentifiable.g';
+import { Deletable } from './Deletable.g';
 import { SerialisedInventoryItemState } from './SerialisedInventoryItemState.g';
 import { SerialisedInventoryItemVersion } from './SerialisedInventoryItemVersion.g';
 import { Ownership } from './Ownership.g';
@@ -440,4 +441,11 @@ export class SerialisedInventoryItem extends SessionObject implements InventoryI
     }
 
 
+    get CanExecuteDelete(): boolean {
+        return this.canExecute('Delete');
+    }
+
+    get Delete(): Method {
+        return new Method(this, 'Delete');
+    }
 }

@@ -429,6 +429,15 @@ export class SalesOrder extends SessionObject implements Order {
         this.set('Quote', value);
     }
 
+    get CanReadCanShip(): boolean {
+        return this.canRead('CanShip');
+    }
+
+    get CanShip(): boolean {
+        return this.get('CanShip');
+    }
+
+
     get CanReadInternalComment(): boolean {
         return this.canRead('InternalComment');
     }
@@ -954,6 +963,13 @@ export class SalesOrder extends SessionObject implements Order {
     }
 
 
+    get CanExecuteShip(): boolean {
+        return this.canExecute('Ship');
+    }
+
+    get Ship(): Method {
+        return new Method(this, 'Ship');
+    }
     get CanExecuteApprove(): boolean {
         return this.canExecute('Approve');
     }

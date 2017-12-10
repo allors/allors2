@@ -857,6 +857,21 @@ namespace Allors.Domain
             method.Execute();
             return method;
 		}
+
+		public DeletableDelete Delete()
+		{ 
+			var method = new RecurringChargeDelete(this);
+            method.Execute();
+            return method;
+		}
+
+		public DeletableDelete Delete(System.Action<DeletableDelete> action)
+		{ 
+			var method = new RecurringChargeDelete(this);
+            action(method);
+            method.Execute();
+            return method;
+		}
 	}
 
 	public partial class RecurringChargeBuilder : Allors.ObjectBuilder<RecurringCharge> , PriceComponentBuilder, global::System.IDisposable

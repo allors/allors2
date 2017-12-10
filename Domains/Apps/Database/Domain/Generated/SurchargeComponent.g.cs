@@ -856,6 +856,21 @@ namespace Allors.Domain
             method.Execute();
             return method;
 		}
+
+		public DeletableDelete Delete()
+		{ 
+			var method = new SurchargeComponentDelete(this);
+            method.Execute();
+            return method;
+		}
+
+		public DeletableDelete Delete(System.Action<DeletableDelete> action)
+		{ 
+			var method = new SurchargeComponentDelete(this);
+            action(method);
+            method.Execute();
+            return method;
+		}
 	}
 
 	public partial class SurchargeComponentBuilder : Allors.ObjectBuilder<SurchargeComponent> , PriceComponentBuilder, global::System.IDisposable

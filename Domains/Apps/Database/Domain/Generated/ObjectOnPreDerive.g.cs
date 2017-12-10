@@ -174,6 +174,21 @@ namespace Allors.Domain
 				return MediaContentOnPreDeriveMethodInvocation;
 			}
 		}
+	}public partial class LocalisedTextOnPreDerive : ObjectOnPreDerive
+	{
+	    private static readonly Allors.Meta.MethodInvocation LocalisedTextOnPreDeriveMethodInvocation = new Allors.Meta.MethodInvocation(Allors.Meta.M.LocalisedText.ObjectType, Allors.Meta.M.LocalisedText.OnPreDerive); 
+
+		public LocalisedTextOnPreDerive(Object @object) : base(@object)
+		{
+		}
+
+		public override Allors.Meta.MethodInvocation MethodInvocation
+		{
+			get
+			{
+				return LocalisedTextOnPreDeriveMethodInvocation;
+			}
+		}
 	}public partial class LoginOnPreDerive : ObjectOnPreDerive
 	{
 	    private static readonly Allors.Meta.MethodInvocation LoginOnPreDeriveMethodInvocation = new Allors.Meta.MethodInvocation(Allors.Meta.M.Login.ObjectType, Allors.Meta.M.Login.OnPreDerive); 
@@ -277,21 +292,6 @@ namespace Allors.Domain
 			get
 			{
 				return TaskListOnPreDeriveMethodInvocation;
-			}
-		}
-	}public partial class BasePriceOnPreDerive : ObjectOnPreDerive
-	{
-	    private static readonly Allors.Meta.MethodInvocation BasePriceOnPreDeriveMethodInvocation = new Allors.Meta.MethodInvocation(Allors.Meta.M.BasePrice.ObjectType, Allors.Meta.M.BasePrice.OnPreDerive); 
-
-		public BasePriceOnPreDerive(Object @object) : base(@object)
-		{
-		}
-
-		public override Allors.Meta.MethodInvocation MethodInvocation
-		{
-			get
-			{
-				return BasePriceOnPreDeriveMethodInvocation;
 			}
 		}
 	}public partial class CatalogueOnPreDerive : ObjectOnPreDerive
@@ -894,6 +894,111 @@ namespace Allors.Domain
 				return WebAddressOnPreDeriveMethodInvocation;
 			}
 		}
+	}public partial class EstimatedLaborCostOnPreDerive : ObjectOnPreDerive
+	{
+	    private static readonly Allors.Meta.MethodInvocation EstimatedLaborCostOnPreDeriveMethodInvocation = new Allors.Meta.MethodInvocation(Allors.Meta.M.EstimatedLaborCost.ObjectType, Allors.Meta.M.EstimatedLaborCost.OnPreDerive); 
+
+		public EstimatedLaborCostOnPreDerive(Object @object) : base(@object)
+		{
+		}
+
+		public override Allors.Meta.MethodInvocation MethodInvocation
+		{
+			get
+			{
+				return EstimatedLaborCostOnPreDeriveMethodInvocation;
+			}
+		}
+	}public partial class EstimatedMaterialCostOnPreDerive : ObjectOnPreDerive
+	{
+	    private static readonly Allors.Meta.MethodInvocation EstimatedMaterialCostOnPreDeriveMethodInvocation = new Allors.Meta.MethodInvocation(Allors.Meta.M.EstimatedMaterialCost.ObjectType, Allors.Meta.M.EstimatedMaterialCost.OnPreDerive); 
+
+		public EstimatedMaterialCostOnPreDerive(Object @object) : base(@object)
+		{
+		}
+
+		public override Allors.Meta.MethodInvocation MethodInvocation
+		{
+			get
+			{
+				return EstimatedMaterialCostOnPreDeriveMethodInvocation;
+			}
+		}
+	}public partial class EstimatedOtherCostOnPreDerive : ObjectOnPreDerive
+	{
+	    private static readonly Allors.Meta.MethodInvocation EstimatedOtherCostOnPreDeriveMethodInvocation = new Allors.Meta.MethodInvocation(Allors.Meta.M.EstimatedOtherCost.ObjectType, Allors.Meta.M.EstimatedOtherCost.OnPreDerive); 
+
+		public EstimatedOtherCostOnPreDerive(Object @object) : base(@object)
+		{
+		}
+
+		public override Allors.Meta.MethodInvocation MethodInvocation
+		{
+			get
+			{
+				return EstimatedOtherCostOnPreDeriveMethodInvocation;
+			}
+		}
+	}public partial class NonSerialisedInventoryItemVersionOnPreDerive : ObjectOnPreDerive
+	{
+	    private static readonly Allors.Meta.MethodInvocation NonSerialisedInventoryItemVersionOnPreDeriveMethodInvocation = new Allors.Meta.MethodInvocation(Allors.Meta.M.NonSerialisedInventoryItemVersion.ObjectType, Allors.Meta.M.NonSerialisedInventoryItemVersion.OnPreDerive); 
+
+		public NonSerialisedInventoryItemVersionOnPreDerive(Object @object) : base(@object)
+		{
+		}
+
+		public override Allors.Meta.MethodInvocation MethodInvocation
+		{
+			get
+			{
+				return NonSerialisedInventoryItemVersionOnPreDeriveMethodInvocation;
+			}
+		}
+	}public partial class SerialisedInventoryItemVersionOnPreDerive : ObjectOnPreDerive
+	{
+	    private static readonly Allors.Meta.MethodInvocation SerialisedInventoryItemVersionOnPreDeriveMethodInvocation = new Allors.Meta.MethodInvocation(Allors.Meta.M.SerialisedInventoryItemVersion.ObjectType, Allors.Meta.M.SerialisedInventoryItemVersion.OnPreDerive); 
+
+		public SerialisedInventoryItemVersionOnPreDerive(Object @object) : base(@object)
+		{
+		}
+
+		public override Allors.Meta.MethodInvocation MethodInvocation
+		{
+			get
+			{
+				return SerialisedInventoryItemVersionOnPreDeriveMethodInvocation;
+			}
+		}
+	}public partial class NonSerialisedInventoryItemOnPreDerive : ObjectOnPreDerive
+	{
+	    private static readonly Allors.Meta.MethodInvocation NonSerialisedInventoryItemOnPreDeriveMethodInvocation = new Allors.Meta.MethodInvocation(Allors.Meta.M.NonSerialisedInventoryItem.ObjectType, Allors.Meta.M.NonSerialisedInventoryItem.OnPreDerive); 
+
+		public NonSerialisedInventoryItemOnPreDerive(Object @object) : base(@object)
+		{
+		}
+
+		public override Allors.Meta.MethodInvocation MethodInvocation
+		{
+			get
+			{
+				return NonSerialisedInventoryItemOnPreDeriveMethodInvocation;
+			}
+		}
+	}public partial class SerialisedInventoryItemOnPreDerive : ObjectOnPreDerive
+	{
+	    private static readonly Allors.Meta.MethodInvocation SerialisedInventoryItemOnPreDeriveMethodInvocation = new Allors.Meta.MethodInvocation(Allors.Meta.M.SerialisedInventoryItem.ObjectType, Allors.Meta.M.SerialisedInventoryItem.OnPreDerive); 
+
+		public SerialisedInventoryItemOnPreDerive(Object @object) : base(@object)
+		{
+		}
+
+		public override Allors.Meta.MethodInvocation MethodInvocation
+		{
+			get
+			{
+				return SerialisedInventoryItemOnPreDeriveMethodInvocation;
+			}
+		}
 	}public partial class PurchaseInvoiceItemOnPreDerive : ObjectOnPreDerive
 	{
 	    private static readonly Allors.Meta.MethodInvocation PurchaseInvoiceItemOnPreDeriveMethodInvocation = new Allors.Meta.MethodInvocation(Allors.Meta.M.PurchaseInvoiceItem.ObjectType, Allors.Meta.M.PurchaseInvoiceItem.OnPreDerive); 
@@ -1027,6 +1132,111 @@ namespace Allors.Domain
 			get
 			{
 				return SalesOrderItemOnPreDeriveMethodInvocation;
+			}
+		}
+	}public partial class BasePriceOnPreDerive : ObjectOnPreDerive
+	{
+	    private static readonly Allors.Meta.MethodInvocation BasePriceOnPreDeriveMethodInvocation = new Allors.Meta.MethodInvocation(Allors.Meta.M.BasePrice.ObjectType, Allors.Meta.M.BasePrice.OnPreDerive); 
+
+		public BasePriceOnPreDerive(Object @object) : base(@object)
+		{
+		}
+
+		public override Allors.Meta.MethodInvocation MethodInvocation
+		{
+			get
+			{
+				return BasePriceOnPreDeriveMethodInvocation;
+			}
+		}
+	}public partial class DiscountComponentOnPreDerive : ObjectOnPreDerive
+	{
+	    private static readonly Allors.Meta.MethodInvocation DiscountComponentOnPreDeriveMethodInvocation = new Allors.Meta.MethodInvocation(Allors.Meta.M.DiscountComponent.ObjectType, Allors.Meta.M.DiscountComponent.OnPreDerive); 
+
+		public DiscountComponentOnPreDerive(Object @object) : base(@object)
+		{
+		}
+
+		public override Allors.Meta.MethodInvocation MethodInvocation
+		{
+			get
+			{
+				return DiscountComponentOnPreDeriveMethodInvocation;
+			}
+		}
+	}public partial class ManufacturerSuggestedRetailPriceOnPreDerive : ObjectOnPreDerive
+	{
+	    private static readonly Allors.Meta.MethodInvocation ManufacturerSuggestedRetailPriceOnPreDeriveMethodInvocation = new Allors.Meta.MethodInvocation(Allors.Meta.M.ManufacturerSuggestedRetailPrice.ObjectType, Allors.Meta.M.ManufacturerSuggestedRetailPrice.OnPreDerive); 
+
+		public ManufacturerSuggestedRetailPriceOnPreDerive(Object @object) : base(@object)
+		{
+		}
+
+		public override Allors.Meta.MethodInvocation MethodInvocation
+		{
+			get
+			{
+				return ManufacturerSuggestedRetailPriceOnPreDeriveMethodInvocation;
+			}
+		}
+	}public partial class OneTimeChargeOnPreDerive : ObjectOnPreDerive
+	{
+	    private static readonly Allors.Meta.MethodInvocation OneTimeChargeOnPreDeriveMethodInvocation = new Allors.Meta.MethodInvocation(Allors.Meta.M.OneTimeCharge.ObjectType, Allors.Meta.M.OneTimeCharge.OnPreDerive); 
+
+		public OneTimeChargeOnPreDerive(Object @object) : base(@object)
+		{
+		}
+
+		public override Allors.Meta.MethodInvocation MethodInvocation
+		{
+			get
+			{
+				return OneTimeChargeOnPreDeriveMethodInvocation;
+			}
+		}
+	}public partial class RecurringChargeOnPreDerive : ObjectOnPreDerive
+	{
+	    private static readonly Allors.Meta.MethodInvocation RecurringChargeOnPreDeriveMethodInvocation = new Allors.Meta.MethodInvocation(Allors.Meta.M.RecurringCharge.ObjectType, Allors.Meta.M.RecurringCharge.OnPreDerive); 
+
+		public RecurringChargeOnPreDerive(Object @object) : base(@object)
+		{
+		}
+
+		public override Allors.Meta.MethodInvocation MethodInvocation
+		{
+			get
+			{
+				return RecurringChargeOnPreDeriveMethodInvocation;
+			}
+		}
+	}public partial class SurchargeComponentOnPreDerive : ObjectOnPreDerive
+	{
+	    private static readonly Allors.Meta.MethodInvocation SurchargeComponentOnPreDeriveMethodInvocation = new Allors.Meta.MethodInvocation(Allors.Meta.M.SurchargeComponent.ObjectType, Allors.Meta.M.SurchargeComponent.OnPreDerive); 
+
+		public SurchargeComponentOnPreDerive(Object @object) : base(@object)
+		{
+		}
+
+		public override Allors.Meta.MethodInvocation MethodInvocation
+		{
+			get
+			{
+				return SurchargeComponentOnPreDeriveMethodInvocation;
+			}
+		}
+	}public partial class UtilizationChargeOnPreDerive : ObjectOnPreDerive
+	{
+	    private static readonly Allors.Meta.MethodInvocation UtilizationChargeOnPreDeriveMethodInvocation = new Allors.Meta.MethodInvocation(Allors.Meta.M.UtilizationCharge.ObjectType, Allors.Meta.M.UtilizationCharge.OnPreDerive); 
+
+		public UtilizationChargeOnPreDerive(Object @object) : base(@object)
+		{
+		}
+
+		public override Allors.Meta.MethodInvocation MethodInvocation
+		{
+			get
+			{
+				return UtilizationChargeOnPreDeriveMethodInvocation;
 			}
 		}
 	}public partial class GoodOnPreDerive : ObjectOnPreDerive
@@ -3219,36 +3429,6 @@ namespace Allors.Domain
 				return ServiceTerritoryOnPreDeriveMethodInvocation;
 			}
 		}
-	}public partial class NonSerialisedInventoryItemOnPreDerive : ObjectOnPreDerive
-	{
-	    private static readonly Allors.Meta.MethodInvocation NonSerialisedInventoryItemOnPreDeriveMethodInvocation = new Allors.Meta.MethodInvocation(Allors.Meta.M.NonSerialisedInventoryItem.ObjectType, Allors.Meta.M.NonSerialisedInventoryItem.OnPreDerive); 
-
-		public NonSerialisedInventoryItemOnPreDerive(Object @object) : base(@object)
-		{
-		}
-
-		public override Allors.Meta.MethodInvocation MethodInvocation
-		{
-			get
-			{
-				return NonSerialisedInventoryItemOnPreDeriveMethodInvocation;
-			}
-		}
-	}public partial class SerialisedInventoryItemOnPreDerive : ObjectOnPreDerive
-	{
-	    private static readonly Allors.Meta.MethodInvocation SerialisedInventoryItemOnPreDeriveMethodInvocation = new Allors.Meta.MethodInvocation(Allors.Meta.M.SerialisedInventoryItem.ObjectType, Allors.Meta.M.SerialisedInventoryItem.OnPreDerive); 
-
-		public SerialisedInventoryItemOnPreDerive(Object @object) : base(@object)
-		{
-		}
-
-		public override Allors.Meta.MethodInvocation MethodInvocation
-		{
-			get
-			{
-				return SerialisedInventoryItemOnPreDeriveMethodInvocation;
-			}
-		}
 	}public partial class CurrencyOnPreDerive : ObjectOnPreDerive
 	{
 	    private static readonly Allors.Meta.MethodInvocation CurrencyOnPreDeriveMethodInvocation = new Allors.Meta.MethodInvocation(Allors.Meta.M.Currency.ObjectType, Allors.Meta.M.Currency.OnPreDerive); 
@@ -3712,21 +3892,6 @@ namespace Allors.Domain
 			get
 			{
 				return TransferOnPreDeriveMethodInvocation;
-			}
-		}
-	}public partial class LocalisedTextOnPreDerive : ObjectOnPreDerive
-	{
-	    private static readonly Allors.Meta.MethodInvocation LocalisedTextOnPreDeriveMethodInvocation = new Allors.Meta.MethodInvocation(Allors.Meta.M.LocalisedText.ObjectType, Allors.Meta.M.LocalisedText.OnPreDerive); 
-
-		public LocalisedTextOnPreDerive(Object @object) : base(@object)
-		{
-		}
-
-		public override Allors.Meta.MethodInvocation MethodInvocation
-		{
-			get
-			{
-				return LocalisedTextOnPreDeriveMethodInvocation;
 			}
 		}
 	}public partial class LanguageOnPreDerive : ObjectOnPreDerive
@@ -5544,36 +5709,6 @@ namespace Allors.Domain
 				return WebSiteCommunicationVersionOnPreDeriveMethodInvocation;
 			}
 		}
-	}public partial class NonSerialisedInventoryItemVersionOnPreDerive : ObjectOnPreDerive
-	{
-	    private static readonly Allors.Meta.MethodInvocation NonSerialisedInventoryItemVersionOnPreDeriveMethodInvocation = new Allors.Meta.MethodInvocation(Allors.Meta.M.NonSerialisedInventoryItemVersion.ObjectType, Allors.Meta.M.NonSerialisedInventoryItemVersion.OnPreDerive); 
-
-		public NonSerialisedInventoryItemVersionOnPreDerive(Object @object) : base(@object)
-		{
-		}
-
-		public override Allors.Meta.MethodInvocation MethodInvocation
-		{
-			get
-			{
-				return NonSerialisedInventoryItemVersionOnPreDeriveMethodInvocation;
-			}
-		}
-	}public partial class SerialisedInventoryItemVersionOnPreDerive : ObjectOnPreDerive
-	{
-	    private static readonly Allors.Meta.MethodInvocation SerialisedInventoryItemVersionOnPreDeriveMethodInvocation = new Allors.Meta.MethodInvocation(Allors.Meta.M.SerialisedInventoryItemVersion.ObjectType, Allors.Meta.M.SerialisedInventoryItemVersion.OnPreDerive); 
-
-		public SerialisedInventoryItemVersionOnPreDerive(Object @object) : base(@object)
-		{
-		}
-
-		public override Allors.Meta.MethodInvocation MethodInvocation
-		{
-			get
-			{
-				return SerialisedInventoryItemVersionOnPreDeriveMethodInvocation;
-			}
-		}
 	}public partial class PurchaseInvoiceVersionOnPreDerive : ObjectOnPreDerive
 	{
 	    private static readonly Allors.Meta.MethodInvocation PurchaseInvoiceVersionOnPreDeriveMethodInvocation = new Allors.Meta.MethodInvocation(Allors.Meta.M.PurchaseInvoiceVersion.ObjectType, Allors.Meta.M.PurchaseInvoiceVersion.OnPreDerive); 
@@ -6564,51 +6699,6 @@ namespace Allors.Domain
 				return StandardServiceOrderItemOnPreDeriveMethodInvocation;
 			}
 		}
-	}public partial class EstimatedLaborCostOnPreDerive : ObjectOnPreDerive
-	{
-	    private static readonly Allors.Meta.MethodInvocation EstimatedLaborCostOnPreDeriveMethodInvocation = new Allors.Meta.MethodInvocation(Allors.Meta.M.EstimatedLaborCost.ObjectType, Allors.Meta.M.EstimatedLaborCost.OnPreDerive); 
-
-		public EstimatedLaborCostOnPreDerive(Object @object) : base(@object)
-		{
-		}
-
-		public override Allors.Meta.MethodInvocation MethodInvocation
-		{
-			get
-			{
-				return EstimatedLaborCostOnPreDeriveMethodInvocation;
-			}
-		}
-	}public partial class EstimatedMaterialCostOnPreDerive : ObjectOnPreDerive
-	{
-	    private static readonly Allors.Meta.MethodInvocation EstimatedMaterialCostOnPreDeriveMethodInvocation = new Allors.Meta.MethodInvocation(Allors.Meta.M.EstimatedMaterialCost.ObjectType, Allors.Meta.M.EstimatedMaterialCost.OnPreDerive); 
-
-		public EstimatedMaterialCostOnPreDerive(Object @object) : base(@object)
-		{
-		}
-
-		public override Allors.Meta.MethodInvocation MethodInvocation
-		{
-			get
-			{
-				return EstimatedMaterialCostOnPreDeriveMethodInvocation;
-			}
-		}
-	}public partial class EstimatedOtherCostOnPreDerive : ObjectOnPreDerive
-	{
-	    private static readonly Allors.Meta.MethodInvocation EstimatedOtherCostOnPreDeriveMethodInvocation = new Allors.Meta.MethodInvocation(Allors.Meta.M.EstimatedOtherCost.ObjectType, Allors.Meta.M.EstimatedOtherCost.OnPreDerive); 
-
-		public EstimatedOtherCostOnPreDerive(Object @object) : base(@object)
-		{
-		}
-
-		public override Allors.Meta.MethodInvocation MethodInvocation
-		{
-			get
-			{
-				return EstimatedOtherCostOnPreDeriveMethodInvocation;
-			}
-		}
 	}public partial class BankAccountOnPreDerive : ObjectOnPreDerive
 	{
 	    private static readonly Allors.Meta.MethodInvocation BankAccountOnPreDeriveMethodInvocation = new Allors.Meta.MethodInvocation(Allors.Meta.M.BankAccount.ObjectType, Allors.Meta.M.BankAccount.OnPreDerive); 
@@ -6892,96 +6982,6 @@ namespace Allors.Domain
 			get
 			{
 				return IndustryClassificationOnPreDeriveMethodInvocation;
-			}
-		}
-	}public partial class DiscountComponentOnPreDerive : ObjectOnPreDerive
-	{
-	    private static readonly Allors.Meta.MethodInvocation DiscountComponentOnPreDeriveMethodInvocation = new Allors.Meta.MethodInvocation(Allors.Meta.M.DiscountComponent.ObjectType, Allors.Meta.M.DiscountComponent.OnPreDerive); 
-
-		public DiscountComponentOnPreDerive(Object @object) : base(@object)
-		{
-		}
-
-		public override Allors.Meta.MethodInvocation MethodInvocation
-		{
-			get
-			{
-				return DiscountComponentOnPreDeriveMethodInvocation;
-			}
-		}
-	}public partial class ManufacturerSuggestedRetailPriceOnPreDerive : ObjectOnPreDerive
-	{
-	    private static readonly Allors.Meta.MethodInvocation ManufacturerSuggestedRetailPriceOnPreDeriveMethodInvocation = new Allors.Meta.MethodInvocation(Allors.Meta.M.ManufacturerSuggestedRetailPrice.ObjectType, Allors.Meta.M.ManufacturerSuggestedRetailPrice.OnPreDerive); 
-
-		public ManufacturerSuggestedRetailPriceOnPreDerive(Object @object) : base(@object)
-		{
-		}
-
-		public override Allors.Meta.MethodInvocation MethodInvocation
-		{
-			get
-			{
-				return ManufacturerSuggestedRetailPriceOnPreDeriveMethodInvocation;
-			}
-		}
-	}public partial class OneTimeChargeOnPreDerive : ObjectOnPreDerive
-	{
-	    private static readonly Allors.Meta.MethodInvocation OneTimeChargeOnPreDeriveMethodInvocation = new Allors.Meta.MethodInvocation(Allors.Meta.M.OneTimeCharge.ObjectType, Allors.Meta.M.OneTimeCharge.OnPreDerive); 
-
-		public OneTimeChargeOnPreDerive(Object @object) : base(@object)
-		{
-		}
-
-		public override Allors.Meta.MethodInvocation MethodInvocation
-		{
-			get
-			{
-				return OneTimeChargeOnPreDeriveMethodInvocation;
-			}
-		}
-	}public partial class RecurringChargeOnPreDerive : ObjectOnPreDerive
-	{
-	    private static readonly Allors.Meta.MethodInvocation RecurringChargeOnPreDeriveMethodInvocation = new Allors.Meta.MethodInvocation(Allors.Meta.M.RecurringCharge.ObjectType, Allors.Meta.M.RecurringCharge.OnPreDerive); 
-
-		public RecurringChargeOnPreDerive(Object @object) : base(@object)
-		{
-		}
-
-		public override Allors.Meta.MethodInvocation MethodInvocation
-		{
-			get
-			{
-				return RecurringChargeOnPreDeriveMethodInvocation;
-			}
-		}
-	}public partial class SurchargeComponentOnPreDerive : ObjectOnPreDerive
-	{
-	    private static readonly Allors.Meta.MethodInvocation SurchargeComponentOnPreDeriveMethodInvocation = new Allors.Meta.MethodInvocation(Allors.Meta.M.SurchargeComponent.ObjectType, Allors.Meta.M.SurchargeComponent.OnPreDerive); 
-
-		public SurchargeComponentOnPreDerive(Object @object) : base(@object)
-		{
-		}
-
-		public override Allors.Meta.MethodInvocation MethodInvocation
-		{
-			get
-			{
-				return SurchargeComponentOnPreDeriveMethodInvocation;
-			}
-		}
-	}public partial class UtilizationChargeOnPreDerive : ObjectOnPreDerive
-	{
-	    private static readonly Allors.Meta.MethodInvocation UtilizationChargeOnPreDeriveMethodInvocation = new Allors.Meta.MethodInvocation(Allors.Meta.M.UtilizationCharge.ObjectType, Allors.Meta.M.UtilizationCharge.OnPreDerive); 
-
-		public UtilizationChargeOnPreDerive(Object @object) : base(@object)
-		{
-		}
-
-		public override Allors.Meta.MethodInvocation MethodInvocation
-		{
-			get
-			{
-				return UtilizationChargeOnPreDeriveMethodInvocation;
 			}
 		}
 	}public partial class MarketingPackageOnPreDerive : ObjectOnPreDerive

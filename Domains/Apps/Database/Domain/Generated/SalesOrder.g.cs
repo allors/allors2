@@ -1070,6 +1070,31 @@ namespace Allors.Domain
 		}
 
 
+		virtual public global::System.Boolean CanShip 
+		{
+			get
+			{
+				return (global::System.Boolean) Strategy.GetUnitRole(Meta.CanShip.RelationType);
+			}
+			set
+			{
+				Strategy.SetUnitRole(Meta.CanShip.RelationType, value);
+			}
+		}
+
+		virtual public bool ExistCanShip{
+			get
+			{
+				return Strategy.ExistUnitRole(Meta.CanShip.RelationType);
+			}
+		}
+
+		virtual public void RemoveCanShip()
+		{
+			Strategy.RemoveUnitRole(Meta.CanShip.RelationType);
+		}
+
+
 		virtual public global::System.String InternalComment 
 		{
 			get
@@ -2344,6 +2369,21 @@ namespace Allors.Domain
 
 
 
+		public SalesOrderShip Ship()
+		{ 
+			var method = new SalesOrderShip(this);
+            method.Execute();
+            return method;
+		}
+
+		public SalesOrderShip Ship(System.Action<SalesOrderShip> action)
+		{ 
+			var method = new SalesOrderShip(this);
+            action(method);
+            method.Execute();
+            return method;
+		}
+
 		public OrderApprove Approve()
 		{ 
 			var method = new SalesOrderApprove(this);
@@ -2541,7 +2581,7 @@ namespace Allors.Domain
 				instance.PartiallyShip = this.PartiallyShip.Value;
 			}			
 		
-						
+								
 
 			instance.InternalComment = this.InternalComment;
 		

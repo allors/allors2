@@ -6740,6 +6740,7 @@ export interface MetaSalesOrder extends ObjectTyped {
    SalesOrderItems: RoleType;
    InitialMarkupPercentage: RoleType;
    Quote: RoleType;
+   CanShip: RoleType;
    InternalComment: RoleType;
    CustomerCurrency: RoleType;
    TotalBasePriceCustomerCurrency: RoleType;
@@ -9356,6 +9357,7 @@ export let data: Data = {
         interfaces:
         [
             'Period',
+            'Deletable',
 
         ],
 
@@ -9427,6 +9429,7 @@ export let data: Data = {
         interfaces:
         [
             'Version',
+            'Deletable',
 
         ],
 
@@ -9520,6 +9523,7 @@ export let data: Data = {
         interfaces:
         [
             'UniquelyIdentifiable',
+            'Deletable',
 
         ],
 
@@ -13310,6 +13314,7 @@ export let data: Data = {
         [
             'Period',
             'Commentable',
+            'Deletable',
 
         ],
 
@@ -15566,6 +15571,7 @@ export let data: Data = {
         interfaces:
         [
             'Localised',
+            'Deletable',
 
         ],
 
@@ -15641,6 +15647,12 @@ export let data: Data = {
                 }
         ],
 
+        concreteMethodTypes:
+        [
+                {
+                    id: '430702d2e02b45ad9b22b8331dc75a3f'
+                }
+        ]
     }, {
         id: 'c4d93d5e34c347319d3747a8e801d9a8',
         name: 'AccessControl',
@@ -17600,10 +17612,10 @@ export let data: Data = {
         name: 'BasePrice',
         interfaces:
         [
-            'Deletable',
             'PriceComponent',
             'Period',
             'Commentable',
+            'Deletable',
 
         ],
 
@@ -20113,6 +20125,7 @@ export let data: Data = {
             'PriceComponent',
             'Period',
             'Commentable',
+            'Deletable',
 
         ],
 
@@ -20132,6 +20145,12 @@ export let data: Data = {
                 }
         ],
 
+        concreteMethodTypes:
+        [
+                {
+                    id: '430702d2e02b45ad9b22b8331dc75a3f'
+                }
+        ]
     }, {
         id: 'a981c832dd3a4b979bc9d2dd83872bf2',
         name: 'DropShipment',
@@ -21448,6 +21467,7 @@ export let data: Data = {
         [
             'EstimatedProductCost',
             'Period',
+            'Deletable',
 
         ],
 
@@ -21463,6 +21483,12 @@ export let data: Data = {
                 }
         ],
 
+        concreteMethodTypes:
+        [
+                {
+                    id: '430702d2e02b45ad9b22b8331dc75a3f'
+                }
+        ]
     }, {
         id: 'cb6a8e8a04a6437bb952f502cca2a2db',
         name: 'EstimatedMaterialCost',
@@ -21470,6 +21496,7 @@ export let data: Data = {
         [
             'EstimatedProductCost',
             'Period',
+            'Deletable',
 
         ],
 
@@ -21485,6 +21512,12 @@ export let data: Data = {
                 }
         ],
 
+        concreteMethodTypes:
+        [
+                {
+                    id: '430702d2e02b45ad9b22b8331dc75a3f'
+                }
+        ]
     }, {
         id: '9b637b39f61a4985bb1b876ed769f448',
         name: 'EstimatedOtherCost',
@@ -21492,6 +21525,7 @@ export let data: Data = {
         [
             'EstimatedProductCost',
             'Period',
+            'Deletable',
 
         ],
 
@@ -21507,6 +21541,12 @@ export let data: Data = {
                 }
         ],
 
+        concreteMethodTypes:
+        [
+                {
+                    id: '430702d2e02b45ad9b22b8331dc75a3f'
+                }
+        ]
     }, {
         id: 'acbe7b46bcfe4e8bb8a77b9eeac4d6e2',
         name: 'EuSalesListType',
@@ -25083,6 +25123,7 @@ export let data: Data = {
             'PriceComponent',
             'Period',
             'Commentable',
+            'Deletable',
 
         ],
 
@@ -25102,6 +25143,12 @@ export let data: Data = {
                 }
         ],
 
+        concreteMethodTypes:
+        [
+                {
+                    id: '430702d2e02b45ad9b22b8331dc75a3f'
+                }
+        ]
     }, {
         id: '68a0c64546714dda87a553395934a9fc',
         name: 'ManufacturingBom',
@@ -25374,6 +25421,7 @@ export let data: Data = {
         [
             'InventoryItem',
             'UniquelyIdentifiable',
+            'Deletable',
 
         ],
 
@@ -25537,6 +25585,12 @@ export let data: Data = {
                 }
         ],
 
+        concreteMethodTypes:
+        [
+                {
+                    id: '430702d2e02b45ad9b22b8331dc75a3f'
+                }
+        ]
     }, {
         id: '41d19e808abb4515aa443e0af1146ae7',
         name: 'NonSerialisedInventoryItemState',
@@ -25578,6 +25632,7 @@ export let data: Data = {
         [
             'InventoryItemVersion',
             'Version',
+            'Deletable',
 
         ],
 
@@ -25717,6 +25772,12 @@ export let data: Data = {
                 }
         ],
 
+        concreteMethodTypes:
+        [
+                {
+                    id: '430702d2e02b45ad9b22b8331dc75a3f'
+                }
+        ]
     }, {
         id: '9dd17a3f0e3c4d87b8402f23a96dd165',
         name: 'NonSerializedInventoryItemObjectState',
@@ -30651,6 +30712,7 @@ export let data: Data = {
         [
             'InventoryItemVersion',
             'Version',
+            'Deletable',
 
         ],
 
@@ -30874,6 +30936,12 @@ export let data: Data = {
                 }
         ],
 
+        concreteMethodTypes:
+        [
+                {
+                    id: '430702d2e02b45ad9b22b8331dc75a3f'
+                }
+        ]
     }, {
         id: '5835aca6214b41cfaefee361dda026d7',
         name: 'OneTimeCharge',
@@ -30882,6 +30950,7 @@ export let data: Data = {
             'PriceComponent',
             'Period',
             'Commentable',
+            'Deletable',
 
         ],
 
@@ -30901,6 +30970,12 @@ export let data: Data = {
                 }
         ],
 
+        concreteMethodTypes:
+        [
+                {
+                    id: '430702d2e02b45ad9b22b8331dc75a3f'
+                }
+        ]
     }, {
         id: 'b5d151c70b18428080d177b46162dba8',
         name: 'OperatingBudget',
@@ -36524,6 +36599,7 @@ export let data: Data = {
             'PriceComponent',
             'Period',
             'Commentable',
+            'Deletable',
 
         ],
 
@@ -36543,6 +36619,12 @@ export let data: Data = {
                 }
         ],
 
+        concreteMethodTypes:
+        [
+                {
+                    id: '430702d2e02b45ad9b22b8331dc75a3f'
+                }
+        ]
     }, {
         id: '62693ee81fd34b2b85ce8d88df3bba0c',
         name: 'Region',
@@ -38972,6 +39054,14 @@ export let data: Data = {
                     isUnit: false,
                     isOne: true,
                     isRequired: false
+                },
+                {
+                    id: 'ea7c07aaba50427997b6559643788cbc',
+                    name: 'CanShip',
+                    objectType: 'Boolean',
+                    isUnit: true,
+                    isOne: true,
+                    isRequired: true
                 }
         ],
 
@@ -39084,6 +39174,10 @@ export let data: Data = {
                 {
                     id: '4344c29caca647fc9b6885488a755903',
                     isRequired: false
+                },
+                {
+                    id: 'ea7c07aaba50427997b6559643788cbc',
+                    isRequired: true
                 },
                 {
                     id: '4c5b1b31ec174e95b18a5a8429105ca1',
@@ -39263,8 +39357,19 @@ export let data: Data = {
                 }
         ],
 
+        exclusiveMethodTypes:
+        [
+                {
+                    id: 'e822b75c3a37480aa469b18a060ec560',
+                    name: 'Ship',
+                }
+        ],
+
         concreteMethodTypes:
         [
+                {
+                    id: 'e822b75c3a37480aa469b18a060ec560'
+                },
                 {
                     id: '116d62fc04e5407cb0447092454c8806'
                 },
@@ -40261,6 +40366,7 @@ export let data: Data = {
         [
             'InventoryItem',
             'UniquelyIdentifiable',
+            'Deletable',
 
         ],
 
@@ -40496,6 +40602,12 @@ export let data: Data = {
                 }
         ],
 
+        concreteMethodTypes:
+        [
+                {
+                    id: '430702d2e02b45ad9b22b8331dc75a3f'
+                }
+        ]
     }, {
         id: 'd042eeae5c174936861baaa9dfaed254',
         name: 'SerialisedInventoryItemState',
@@ -41928,6 +42040,7 @@ export let data: Data = {
             'PriceComponent',
             'Period',
             'Commentable',
+            'Deletable',
 
         ],
 
@@ -41947,6 +42060,12 @@ export let data: Data = {
                 }
         ],
 
+        concreteMethodTypes:
+        [
+                {
+                    id: '430702d2e02b45ad9b22b8331dc75a3f'
+                }
+        ]
     }, {
         id: '2c2ce6877db14b8ca582ede6e021ea03',
         name: 'RequirementType',
@@ -43198,6 +43317,7 @@ export let data: Data = {
             'PriceComponent',
             'Period',
             'Commentable',
+            'Deletable',
 
         ],
 
@@ -43217,6 +43337,12 @@ export let data: Data = {
                 }
         ],
 
+        concreteMethodTypes:
+        [
+                {
+                    id: '430702d2e02b45ad9b22b8331dc75a3f'
+                }
+        ]
     }, {
         id: '8ff461098ae74da5a1f9f19d4cf4e27e',
         name: 'VarianceReason',

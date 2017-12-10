@@ -238,10 +238,16 @@ namespace Allors.Domain
             this.AppsOnDeriveCustomers(derivation);
             this.AppsOnDeriveSalesReps(derivation);
             this.AppsOnDeriveOrderPaymentState(derivation);
+            this.AppsDeriveCanShip(derivation);
 
-            if (Equals(this.Store.ProcessFlow, new ProcessFlows(this.strategy.Session).ShipFirst))
+            if (!CanShip)
             {
-                this.AppsTryShip(derivation);
+                this.AddDeniedPermission(new Permissions(this.strategy.Session).Get(this.Meta.Class, this.Meta.Ship, Operations.Execute));
+            }
+
+            if (Equals(this.Store.ProcessFlow, new ProcessFlows(this.strategy.Session).ShipFirst) && this.CanShip)
+            {
+                this.AppsShipThis(derivation);
             }
 
             this.PreviousBillToCustomer = this.BillToCustomer;
@@ -392,7 +398,6 @@ namespace Allors.Domain
 
             this.AppsOnDeriveOrderState(derivation);
         }
-
 
         public void AppsOnDeriveOrderState(IDerivation derivation)
         {
@@ -584,7 +589,7 @@ namespace Allors.Domain
             this.AddCustomer(this.PlacingCustomer);
         }
 
-        public void AppsTryShip(IDerivation derivation)
+        public void AppsDeriveCanShip(IDerivation derivation)
         {
             if (this.SalesOrderState.Equals(new SalesOrderStates(this.Strategy.Session).InProcess))
             {
@@ -608,12 +613,14 @@ namespace Allors.Domain
                 if (this.SalesOrderState.Equals(new SalesOrderStates(this.Strategy.Session).InProcess) &&
                     ((!this.PartiallyShip && allItemsAvailable) || somethingToShip))
                 {
-                    this.AppsShip(derivation);
+                   this.CanShip = true;
                 }
             }
+
+            this.CanShip = false;
         }
 
-        private List<Shipment> AppsShip(IDerivation derivation)
+        private List<Shipment> AppsShipThis(IDerivation derivation)
         {
             var addresses = this.ShipToAddresses();
             var shipments = new List<Shipment>();
@@ -621,14 +628,14 @@ namespace Allors.Domain
             {
                 foreach (var address in addresses)
                 {
-                    shipments.Add(this.AppsShip(derivation, address));
+                    shipments.Add(this.AppsShipToAddress(derivation, address));
                 }
             }
 
             return shipments;
         }
 
-        private CustomerShipment AppsShip(IDerivation derivation, KeyValuePair<PostalAddress, Party> address)
+        private CustomerShipment AppsShipToAddress(IDerivation derivation, KeyValuePair<PostalAddress, Party> address)
         {
             var pendingShipment = address.Value.AppsGetPendingCustomerShipmentForStore(address.Key, this.Store, this.ShipmentMethod);
 

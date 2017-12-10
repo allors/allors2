@@ -5,9 +5,13 @@ import { SessionObject, Method } from "../../framework";
 
 import { Period } from './Period.g';
 import { Commentable } from './Commentable.g';
+import { Deletable } from './Deletable.g';
 import { Product } from './Product.g';
 import { ProductFeature } from './ProductFeature.g';
 
-export interface PriceComponent extends SessionObject , Period, Commentable {
+export interface PriceComponent extends SessionObject , Period, Commentable, Deletable {
+
+    CanExecuteDelete: boolean;
+    Delete: Method;
 
 }

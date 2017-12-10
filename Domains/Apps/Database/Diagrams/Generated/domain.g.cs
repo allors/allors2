@@ -412,7 +412,7 @@ namespace Allors.Domain
 						ProductFeature ProductFeature {set;}
 
 		}
-		public interface EstimatedProductCost  : Period, AccessControlledObject 
+		public interface EstimatedProductCost  : Period, AccessControlledObject, Deletable 
 		{
 						global::System.Decimal Cost {set;}
 
@@ -481,7 +481,7 @@ namespace Allors.Domain
 		public interface InternalAccountingTransaction  : AccountingTransaction 
 		{
 		}
-		public interface InventoryItemVersion  : Version 
+		public interface InventoryItemVersion  : Version, Deletable 
 		{
 						ProductCharacteristicValue ProductCharacteristicValues {set;}
 
@@ -506,7 +506,7 @@ namespace Allors.Domain
 						Facility Facility {set;}
 
 		}
-		public interface InventoryItem  : UniquelyIdentifiable, Transitional 
+		public interface InventoryItem  : UniquelyIdentifiable, Transitional, Deletable 
 		{
 						ProductCharacteristicValue ProductCharacteristicValues {set;}
 
@@ -1476,7 +1476,7 @@ namespace Allors.Domain
 						SurchargeAdjustment SurchargeAdjustment {set;}
 
 		}
-		public interface PriceComponent  : Period, AccessControlledObject, Commentable 
+		public interface PriceComponent  : Period, AccessControlledObject, Commentable, Deletable 
 		{
 						GeographicBoundary GeographicBoundary {set;}
 
@@ -2002,7 +2002,7 @@ namespace Allors.Domain
 						Country Country {set;}
 
 		}
-		public interface LocalisedText  : AccessControlledObject, Localised 
+		public interface LocalisedText  : AccessControlledObject, Localised, Deletable 
 		{
 						global::System.String Text {set;}
 
@@ -2343,7 +2343,7 @@ namespace Allors.Domain
 						Person ContactPersons {set;}
 
 		}
-		public interface BasePrice  : Deletable, PriceComponent 
+		public interface BasePrice  : PriceComponent 
 		{
 		}
 		public interface Benefit  : AccessControlledObject 
@@ -5602,6 +5602,8 @@ namespace Allors.Domain
 						global::System.Decimal InitialMarkupPercentage {set;}
 
 						ProductQuote Quote {set;}
+
+						global::System.Boolean CanShip {set;}
 
 		}
 		public interface SalesOrderItem  : OrderItem, Versioned 

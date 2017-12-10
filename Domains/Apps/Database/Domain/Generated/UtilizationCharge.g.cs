@@ -882,6 +882,21 @@ namespace Allors.Domain
             method.Execute();
             return method;
 		}
+
+		public DeletableDelete Delete()
+		{ 
+			var method = new UtilizationChargeDelete(this);
+            method.Execute();
+            return method;
+		}
+
+		public DeletableDelete Delete(System.Action<DeletableDelete> action)
+		{ 
+			var method = new UtilizationChargeDelete(this);
+            action(method);
+            method.Execute();
+            return method;
+		}
 	}
 
 	public partial class UtilizationChargeBuilder : Allors.ObjectBuilder<UtilizationCharge> , PriceComponentBuilder, global::System.IDisposable

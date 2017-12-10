@@ -4,6 +4,7 @@
 import { SessionObject, Method } from "../../framework";
 
 import { Version } from './Version.g';
+import { Deletable } from './Deletable.g';
 import { ProductCharacteristicValue } from './ProductCharacteristicValue.g';
 import { InventoryItemVariance } from './InventoryItemVariance.g';
 import { Part } from './Part.g';
@@ -13,7 +14,7 @@ import { Good } from './Good.g';
 import { ProductType } from './ProductType.g';
 import { Facility } from './Facility.g';
 
-export interface InventoryItemVersion extends SessionObject , Version {
+export interface InventoryItemVersion extends SessionObject , Version, Deletable {
         ProductCharacteristicValues : ProductCharacteristicValue[];
         AddProductCharacteristicValue(value: ProductCharacteristicValue);
         RemoveProductCharacteristicValue(value: ProductCharacteristicValue);
@@ -47,5 +48,8 @@ export interface InventoryItemVersion extends SessionObject , Version {
 
         Facility : Facility;
 
+
+    CanExecuteDelete: boolean;
+    Delete: Method;
 
 }

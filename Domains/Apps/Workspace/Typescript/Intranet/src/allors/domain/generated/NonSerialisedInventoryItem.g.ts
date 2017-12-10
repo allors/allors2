@@ -5,6 +5,7 @@ import { SessionObject, Method } from "../../framework";
 
 import { InventoryItem } from './InventoryItem.g';
 import { UniquelyIdentifiable } from './UniquelyIdentifiable.g';
+import { Deletable } from './Deletable.g';
 import { NonSerialisedInventoryItemState } from './NonSerialisedInventoryItemState.g';
 import { NonSerialisedInventoryItemVersion } from './NonSerialisedInventoryItemVersion.g';
 import { ProductCharacteristicValue } from './ProductCharacteristicValue.g';
@@ -301,4 +302,11 @@ export class NonSerialisedInventoryItem extends SessionObject implements Invento
     }
 
 
+    get CanExecuteDelete(): boolean {
+        return this.canExecute('Delete');
+    }
+
+    get Delete(): Method {
+        return new Method(this, 'Delete');
+    }
 }

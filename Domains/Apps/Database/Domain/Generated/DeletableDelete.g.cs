@@ -39,6 +39,21 @@ namespace Allors.Domain
 				return MediaContentDeleteMethodInvocation;
 			}
 		}
+	}public partial class LocalisedTextDelete : DeletableDelete
+	{
+	    private static readonly Allors.Meta.MethodInvocation LocalisedTextDeleteMethodInvocation = new Allors.Meta.MethodInvocation(Allors.Meta.M.LocalisedText.ObjectType, Allors.Meta.M.LocalisedText.Delete); 
+
+		public LocalisedTextDelete(Deletable @object) : base(@object)
+		{
+		}
+
+		public override Allors.Meta.MethodInvocation MethodInvocation
+		{
+			get
+			{
+				return LocalisedTextDeleteMethodInvocation;
+			}
+		}
 	}public partial class AccessControlDelete : DeletableDelete
 	{
 	    private static readonly Allors.Meta.MethodInvocation AccessControlDeleteMethodInvocation = new Allors.Meta.MethodInvocation(Allors.Meta.M.AccessControl.ObjectType, Allors.Meta.M.AccessControl.Delete); 
@@ -157,21 +172,6 @@ namespace Allors.Domain
 			get
 			{
 				return TaskListDeleteMethodInvocation;
-			}
-		}
-	}public partial class BasePriceDelete : DeletableDelete
-	{
-	    private static readonly Allors.Meta.MethodInvocation BasePriceDeleteMethodInvocation = new Allors.Meta.MethodInvocation(Allors.Meta.M.BasePrice.ObjectType, Allors.Meta.M.BasePrice.Delete); 
-
-		public BasePriceDelete(Deletable @object) : base(@object)
-		{
-		}
-
-		public override Allors.Meta.MethodInvocation MethodInvocation
-		{
-			get
-			{
-				return BasePriceDeleteMethodInvocation;
 			}
 		}
 	}public partial class CatalogueDelete : DeletableDelete
@@ -774,6 +774,111 @@ namespace Allors.Domain
 				return WebAddressDeleteMethodInvocation;
 			}
 		}
+	}public partial class EstimatedLaborCostDelete : DeletableDelete
+	{
+	    private static readonly Allors.Meta.MethodInvocation EstimatedLaborCostDeleteMethodInvocation = new Allors.Meta.MethodInvocation(Allors.Meta.M.EstimatedLaborCost.ObjectType, Allors.Meta.M.EstimatedLaborCost.Delete); 
+
+		public EstimatedLaborCostDelete(Deletable @object) : base(@object)
+		{
+		}
+
+		public override Allors.Meta.MethodInvocation MethodInvocation
+		{
+			get
+			{
+				return EstimatedLaborCostDeleteMethodInvocation;
+			}
+		}
+	}public partial class EstimatedMaterialCostDelete : DeletableDelete
+	{
+	    private static readonly Allors.Meta.MethodInvocation EstimatedMaterialCostDeleteMethodInvocation = new Allors.Meta.MethodInvocation(Allors.Meta.M.EstimatedMaterialCost.ObjectType, Allors.Meta.M.EstimatedMaterialCost.Delete); 
+
+		public EstimatedMaterialCostDelete(Deletable @object) : base(@object)
+		{
+		}
+
+		public override Allors.Meta.MethodInvocation MethodInvocation
+		{
+			get
+			{
+				return EstimatedMaterialCostDeleteMethodInvocation;
+			}
+		}
+	}public partial class EstimatedOtherCostDelete : DeletableDelete
+	{
+	    private static readonly Allors.Meta.MethodInvocation EstimatedOtherCostDeleteMethodInvocation = new Allors.Meta.MethodInvocation(Allors.Meta.M.EstimatedOtherCost.ObjectType, Allors.Meta.M.EstimatedOtherCost.Delete); 
+
+		public EstimatedOtherCostDelete(Deletable @object) : base(@object)
+		{
+		}
+
+		public override Allors.Meta.MethodInvocation MethodInvocation
+		{
+			get
+			{
+				return EstimatedOtherCostDeleteMethodInvocation;
+			}
+		}
+	}public partial class NonSerialisedInventoryItemVersionDelete : DeletableDelete
+	{
+	    private static readonly Allors.Meta.MethodInvocation NonSerialisedInventoryItemVersionDeleteMethodInvocation = new Allors.Meta.MethodInvocation(Allors.Meta.M.NonSerialisedInventoryItemVersion.ObjectType, Allors.Meta.M.NonSerialisedInventoryItemVersion.Delete); 
+
+		public NonSerialisedInventoryItemVersionDelete(Deletable @object) : base(@object)
+		{
+		}
+
+		public override Allors.Meta.MethodInvocation MethodInvocation
+		{
+			get
+			{
+				return NonSerialisedInventoryItemVersionDeleteMethodInvocation;
+			}
+		}
+	}public partial class SerialisedInventoryItemVersionDelete : DeletableDelete
+	{
+	    private static readonly Allors.Meta.MethodInvocation SerialisedInventoryItemVersionDeleteMethodInvocation = new Allors.Meta.MethodInvocation(Allors.Meta.M.SerialisedInventoryItemVersion.ObjectType, Allors.Meta.M.SerialisedInventoryItemVersion.Delete); 
+
+		public SerialisedInventoryItemVersionDelete(Deletable @object) : base(@object)
+		{
+		}
+
+		public override Allors.Meta.MethodInvocation MethodInvocation
+		{
+			get
+			{
+				return SerialisedInventoryItemVersionDeleteMethodInvocation;
+			}
+		}
+	}public partial class NonSerialisedInventoryItemDelete : DeletableDelete
+	{
+	    private static readonly Allors.Meta.MethodInvocation NonSerialisedInventoryItemDeleteMethodInvocation = new Allors.Meta.MethodInvocation(Allors.Meta.M.NonSerialisedInventoryItem.ObjectType, Allors.Meta.M.NonSerialisedInventoryItem.Delete); 
+
+		public NonSerialisedInventoryItemDelete(Deletable @object) : base(@object)
+		{
+		}
+
+		public override Allors.Meta.MethodInvocation MethodInvocation
+		{
+			get
+			{
+				return NonSerialisedInventoryItemDeleteMethodInvocation;
+			}
+		}
+	}public partial class SerialisedInventoryItemDelete : DeletableDelete
+	{
+	    private static readonly Allors.Meta.MethodInvocation SerialisedInventoryItemDeleteMethodInvocation = new Allors.Meta.MethodInvocation(Allors.Meta.M.SerialisedInventoryItem.ObjectType, Allors.Meta.M.SerialisedInventoryItem.Delete); 
+
+		public SerialisedInventoryItemDelete(Deletable @object) : base(@object)
+		{
+		}
+
+		public override Allors.Meta.MethodInvocation MethodInvocation
+		{
+			get
+			{
+				return SerialisedInventoryItemDeleteMethodInvocation;
+			}
+		}
 	}public partial class PurchaseInvoiceItemDelete : DeletableDelete
 	{
 	    private static readonly Allors.Meta.MethodInvocation PurchaseInvoiceItemDeleteMethodInvocation = new Allors.Meta.MethodInvocation(Allors.Meta.M.PurchaseInvoiceItem.ObjectType, Allors.Meta.M.PurchaseInvoiceItem.Delete); 
@@ -907,6 +1012,111 @@ namespace Allors.Domain
 			get
 			{
 				return SalesOrderItemDeleteMethodInvocation;
+			}
+		}
+	}public partial class BasePriceDelete : DeletableDelete
+	{
+	    private static readonly Allors.Meta.MethodInvocation BasePriceDeleteMethodInvocation = new Allors.Meta.MethodInvocation(Allors.Meta.M.BasePrice.ObjectType, Allors.Meta.M.BasePrice.Delete); 
+
+		public BasePriceDelete(Deletable @object) : base(@object)
+		{
+		}
+
+		public override Allors.Meta.MethodInvocation MethodInvocation
+		{
+			get
+			{
+				return BasePriceDeleteMethodInvocation;
+			}
+		}
+	}public partial class DiscountComponentDelete : DeletableDelete
+	{
+	    private static readonly Allors.Meta.MethodInvocation DiscountComponentDeleteMethodInvocation = new Allors.Meta.MethodInvocation(Allors.Meta.M.DiscountComponent.ObjectType, Allors.Meta.M.DiscountComponent.Delete); 
+
+		public DiscountComponentDelete(Deletable @object) : base(@object)
+		{
+		}
+
+		public override Allors.Meta.MethodInvocation MethodInvocation
+		{
+			get
+			{
+				return DiscountComponentDeleteMethodInvocation;
+			}
+		}
+	}public partial class ManufacturerSuggestedRetailPriceDelete : DeletableDelete
+	{
+	    private static readonly Allors.Meta.MethodInvocation ManufacturerSuggestedRetailPriceDeleteMethodInvocation = new Allors.Meta.MethodInvocation(Allors.Meta.M.ManufacturerSuggestedRetailPrice.ObjectType, Allors.Meta.M.ManufacturerSuggestedRetailPrice.Delete); 
+
+		public ManufacturerSuggestedRetailPriceDelete(Deletable @object) : base(@object)
+		{
+		}
+
+		public override Allors.Meta.MethodInvocation MethodInvocation
+		{
+			get
+			{
+				return ManufacturerSuggestedRetailPriceDeleteMethodInvocation;
+			}
+		}
+	}public partial class OneTimeChargeDelete : DeletableDelete
+	{
+	    private static readonly Allors.Meta.MethodInvocation OneTimeChargeDeleteMethodInvocation = new Allors.Meta.MethodInvocation(Allors.Meta.M.OneTimeCharge.ObjectType, Allors.Meta.M.OneTimeCharge.Delete); 
+
+		public OneTimeChargeDelete(Deletable @object) : base(@object)
+		{
+		}
+
+		public override Allors.Meta.MethodInvocation MethodInvocation
+		{
+			get
+			{
+				return OneTimeChargeDeleteMethodInvocation;
+			}
+		}
+	}public partial class RecurringChargeDelete : DeletableDelete
+	{
+	    private static readonly Allors.Meta.MethodInvocation RecurringChargeDeleteMethodInvocation = new Allors.Meta.MethodInvocation(Allors.Meta.M.RecurringCharge.ObjectType, Allors.Meta.M.RecurringCharge.Delete); 
+
+		public RecurringChargeDelete(Deletable @object) : base(@object)
+		{
+		}
+
+		public override Allors.Meta.MethodInvocation MethodInvocation
+		{
+			get
+			{
+				return RecurringChargeDeleteMethodInvocation;
+			}
+		}
+	}public partial class SurchargeComponentDelete : DeletableDelete
+	{
+	    private static readonly Allors.Meta.MethodInvocation SurchargeComponentDeleteMethodInvocation = new Allors.Meta.MethodInvocation(Allors.Meta.M.SurchargeComponent.ObjectType, Allors.Meta.M.SurchargeComponent.Delete); 
+
+		public SurchargeComponentDelete(Deletable @object) : base(@object)
+		{
+		}
+
+		public override Allors.Meta.MethodInvocation MethodInvocation
+		{
+			get
+			{
+				return SurchargeComponentDeleteMethodInvocation;
+			}
+		}
+	}public partial class UtilizationChargeDelete : DeletableDelete
+	{
+	    private static readonly Allors.Meta.MethodInvocation UtilizationChargeDeleteMethodInvocation = new Allors.Meta.MethodInvocation(Allors.Meta.M.UtilizationCharge.ObjectType, Allors.Meta.M.UtilizationCharge.Delete); 
+
+		public UtilizationChargeDelete(Deletable @object) : base(@object)
+		{
+		}
+
+		public override Allors.Meta.MethodInvocation MethodInvocation
+		{
+			get
+			{
+				return UtilizationChargeDeleteMethodInvocation;
 			}
 		}
 	}public partial class GoodDelete : DeletableDelete

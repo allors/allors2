@@ -5,6 +5,7 @@ import { SessionObject, Method } from "../../framework";
 
 import { EstimatedProductCost } from './EstimatedProductCost.g';
 import { Period } from './Period.g';
+import { Deletable } from './Deletable.g';
 import { Product } from './Product.g';
 import { ProductFeature } from './ProductFeature.g';
 
@@ -42,4 +43,11 @@ export class EstimatedOtherCost extends SessionObject implements EstimatedProduc
     }
 
 
+    get CanExecuteDelete(): boolean {
+        return this.canExecute('Delete');
+    }
+
+    get Delete(): Method {
+        return new Method(this, 'Delete');
+    }
 }

@@ -3,14 +3,14 @@
 /* tslint:disable */
 import { SessionObject, Method } from "../../framework";
 
-import { Deletable } from './Deletable.g';
 import { PriceComponent } from './PriceComponent.g';
 import { Period } from './Period.g';
 import { Commentable } from './Commentable.g';
+import { Deletable } from './Deletable.g';
 import { Product } from './Product.g';
 import { ProductFeature } from './ProductFeature.g';
 
-export class BasePrice extends SessionObject implements Deletable, PriceComponent {
+export class BasePrice extends SessionObject implements PriceComponent {
     get CanReadFromDate(): boolean {
         return this.canRead('FromDate');
     }
