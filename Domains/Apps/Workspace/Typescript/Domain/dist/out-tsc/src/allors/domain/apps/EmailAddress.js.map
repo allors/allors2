@@ -1,1 +1,0 @@
-{"version":3,"file":"EmailAddress.js","sourceRoot":"","sources":["../../../../../../src/allors/domain/apps/EmailAddress.ts"],"names":[],"mappings":";;AAAA,gEAA2D;AAQ3D,MAAM,CAAC,cAAc,CAAC,6BAAY,CAAC,SAAS,EAAE,aAAa,EAAE;IAC3D,GAAG;QACD,EAAE,CAAC,CAAC,IAAI,CAAC,uBAAuB,CAAC,CAAC,CAAC;YAC/B,MAAM,CAAC,IAAI,CAAC,uBAAuB,CAAC;QACxC,CAAC;QAED,MAAM,CAAC,KAAK,CAAC;IACf,CAAC;CACF,CAAC,CAAC"}

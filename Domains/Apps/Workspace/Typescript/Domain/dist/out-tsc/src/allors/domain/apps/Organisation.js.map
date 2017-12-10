@@ -1,1 +1,0 @@
-{"version":3,"file":"Organisation.js","sourceRoot":"","sources":["../../../../../../src/allors/domain/apps/Organisation.ts"],"names":[],"mappings":";;AAAA,gEAA2D;AAS3D,MAAM,CAAC,cAAc,CAAC,6BAAY,CAAC,SAAS,EAAE,aAAa,EAAE;IAC3D,GAAG;QAED,EAAE,CAAC,CAAC,IAAI,CAAC,IAAI,CAAC,CAAC,CAAC;YACZ,MAAM,CAAC,IAAI,CAAC,IAAI,CAAC;QACrB,CAAC;QAED,MAAM,CAAC,KAAK,CAAC;IACf,CAAC;CACF,CAAC,CAAC"}
