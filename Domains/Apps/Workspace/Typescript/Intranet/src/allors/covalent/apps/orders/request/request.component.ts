@@ -9,7 +9,7 @@ import { Subscription } from "rxjs/Subscription";
 
 import "rxjs/add/observable/combineLatest";
 
-import { ErrorService, Filter, Invoked, Loaded, Saved, Scope, WorkspaceService } from "../../../../angular";
+import { ErrorService, Field, Filter, Invoked, Loaded, Saved, Scope, WorkspaceService } from "../../../../angular";
 import { Brand, Catalogue, CatScope, ContactMechanism, Currency, Facility, Good, InventoryItemKind, InventoryItemVariance, Locale, LocalisedText, Model, NonSerialisedInventoryItem, NonSerialisedInventoryItemState, Organisation, OrganisationContactRelationship, OrganisationRole, Party, PartyContactMechanism, Person, ProductCategory, ProductCharacteristic, ProductCharacteristicValue, ProductFeature, ProductType, SalesInvoice, SalesInvoiceItem, SalesOrder, Singleton, VarianceReason, VatRate, VatRegime, RequestForQuote, ProductQuote, QuoteItem } from "../../../../domain";
 import { And, ContainedIn, Contains, Fetch, Like, Page, Path, Predicate, PullRequest, Query, Sort, TreeNode } from "../../../../framework";
 import { MetaDomain } from "../../../../meta";
@@ -29,9 +29,9 @@ import { MetaDomain } from "../../../../meta";
       </div>
 
       <a-mat-autocomplete *ngIf="showOrganisations" [object]="request" [roleType]="m.Request.Originator" [filter]="organisationsFilter.create()"
-        display="Name" (onSelect)="originatorSelected($event)" label="Requesting organisation"></a-mat-autocomplete>
+        display="Name" (onChange)="originatorSelected($event)" label="Requesting organisation"></a-mat-autocomplete>
       <a-mat-autocomplete *ngIf="showPeople" [object]="request" [roleType]="m.Request.Originator" [filter]="peopleFilter.create()"
-        display="displayName" (onSelect)="originatorSelected($event)" label="Requesting private person"></a-mat-autocomplete>
+        display="displayName" (onChange)="originatorSelected($event)" label="Requesting private person"></a-mat-autocomplete>
 
       <a-mat-select *ngIf="showOrganisations && !showPeople" [object]="request" [roleType]="m.Request.ContactPerson" [options]="contacts" display="displayName"></a-mat-select>
       <button *ngIf="showOrganisations && !showPeople" type="button" mat-icon-button (click)="addPerson = true"><mat-icon>add</mat-icon></button>
@@ -234,7 +234,7 @@ export class RequestEditComponent implements OnInit, AfterViewInit, OnDestroy {
         }
 
         if (this.request.Originator) {
-          this.originatorSelected(this.request.Originator);
+          this.update(this.request.Originator);
           this.title = this.title + " from: " + this.request.Originator.PartyName;
         }
 
@@ -476,53 +476,10 @@ export class RequestEditComponent implements OnInit, AfterViewInit, OnDestroy {
       });
   }
 
-  public originatorSelected(party: Party): void {
-
-    const fetch: Fetch[] = [
-      new Fetch({
-        id: party.id,
-        include: [
-          new TreeNode({
-            nodes: [
-              new TreeNode({
-                nodes: [
-                  new TreeNode({ roleType: this.m.PostalBoundary.Country }),
-                ],
-                roleType: this.m.PostalAddress.PostalBoundary,
-              }),
-            ],
-            roleType: this.m.PartyContactMechanism.ContactMechanism,
-          }),
-        ],
-        name: "partyContactMechanisms",
-        path: new Path({ step: this.m.Party.CurrentPartyContactMechanisms }),
-      }),
-      new Fetch({
-        id: party.id,
-        name: "currentContacts",
-        path: new Path({ step: this.m.Party.CurrentContacts }),
-      }),
-    ];
-
-    this.scope
-      .load("Pull", new PullRequest({ fetch }))
-      .subscribe((loaded: Loaded) => {
-
-        if (this.request.Originator !== this.previousOriginator) {
-          this.request.ContactPerson = null;
-          this.request.FullfillContactMechanism = null;
-          this.previousOriginator = this.request.Originator;
-        }
-
-        const partyContactMechanisms: PartyContactMechanism[] = loaded.collections.partyContactMechanisms as PartyContactMechanism[];
-        this.contactMechanisms = partyContactMechanisms.map((v: PartyContactMechanism) => v.ContactMechanism);
-        this.contacts = loaded.collections.currentContacts as Person[];
-      },
-      (error: Error) => {
-        this.errorService.message(error);
-        this.goBack();
-      },
-    );
+  public originatorSelected(field: Field): void {
+    if (field.object) {
+      this.update(field.object as Party);
+    }
   }
 
   public refresh(): void {
@@ -532,4 +489,53 @@ export class RequestEditComponent implements OnInit, AfterViewInit, OnDestroy {
   public goBack(): void {
     window.history.back();
   }
-}
+
+  private update(party: Party): void {
+
+        const fetch: Fetch[] = [
+          new Fetch({
+            id: party.id,
+            include: [
+              new TreeNode({
+                nodes: [
+                  new TreeNode({
+                    nodes: [
+                      new TreeNode({ roleType: this.m.PostalBoundary.Country }),
+                    ],
+                    roleType: this.m.PostalAddress.PostalBoundary,
+                  }),
+                ],
+                roleType: this.m.PartyContactMechanism.ContactMechanism,
+              }),
+            ],
+            name: "partyContactMechanisms",
+            path: new Path({ step: this.m.Party.CurrentPartyContactMechanisms }),
+          }),
+          new Fetch({
+            id: party.id,
+            name: "currentContacts",
+            path: new Path({ step: this.m.Party.CurrentContacts }),
+          }),
+        ];
+
+        this.scope
+          .load("Pull", new PullRequest({ fetch }))
+          .subscribe((loaded: Loaded) => {
+
+            if (this.request.Originator !== this.previousOriginator) {
+              this.request.ContactPerson = null;
+              this.request.FullfillContactMechanism = null;
+              this.previousOriginator = this.request.Originator;
+            }
+
+            const partyContactMechanisms: PartyContactMechanism[] = loaded.collections.partyContactMechanisms as PartyContactMechanism[];
+            this.contactMechanisms = partyContactMechanisms.map((v: PartyContactMechanism) => v.ContactMechanism);
+            this.contacts = loaded.collections.currentContacts as Person[];
+          },
+          (error: Error) => {
+            this.errorService.message(error);
+            this.goBack();
+          },
+        );
+      }
+    }

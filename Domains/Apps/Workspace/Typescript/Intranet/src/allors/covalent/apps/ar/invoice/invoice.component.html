@@ -11,9 +11,9 @@
   
         <a-mat-static *ngIf="invoice.SalesOrder" [object]="invoice" [roleType]="m.SalesInvoice.SalesOrder"></a-mat-static>
         <a-mat-autocomplete *ngIf="showOrganisations" [object]="invoice" [roleType]="m.SalesInvoice.BillToCustomer" [filter]="organisationsFilter.create()"
-          display="Name" (onSelect)="receiverSelected($event)" label="Bill to organisation"></a-mat-autocomplete>
+          display="Name" (onChange)="receiverSelected($event)" label="Bill to organisation"></a-mat-autocomplete>
         <a-mat-autocomplete *ngIf="showPeople" [object]="invoice" [roleType]="m.SalesInvoice.BillToCustomer" [filter]="peopleFilter.create()"
-          display="displayName" (onSelect)="receiverSelected($event)" label="Bill to person"></a-mat-autocomplete>
+          display="displayName" (onChange)="receiverSelected($event)" label="Bill to person"></a-mat-autocomplete>
   
         <a-mat-select *ngIf="showOrganisations && !showPeople" [object]="invoice" [roleType]="m.SalesInvoice.ContactPerson" [options]="contacts" display="displayName"></a-mat-select>
         <button *ngIf="showOrganisations && !showPeople" type="button" mat-icon-button (click)="addPerson = true"><mat-icon>add</mat-icon></button>

@@ -9,7 +9,7 @@ import { Subscription } from "rxjs/Subscription";
 
 import "rxjs/add/observable/combineLatest";
 
-import { ErrorService, Filter, Invoked, Loaded, Saved, Scope, WorkspaceService } from "../../../../angular";
+import { ErrorService, Filter, Invoked, Loaded, Saved, Scope, WorkspaceService, Field } from "../../../../angular";
 import { Brand, Catalogue, CatScope, ContactMechanism, Currency, Facility, Good, InventoryItemKind, InventoryItemVariance, Locale, LocalisedText, Model, NonSerialisedInventoryItem, NonSerialisedInventoryItemState, Organisation, OrganisationContactRelationship, OrganisationRole, Party, PartyContactMechanism, Person, ProductCategory, ProductCharacteristic, ProductCharacteristicValue, ProductFeature, ProductType, SalesInvoice, SalesInvoiceItem, SalesOrder, Singleton, VarianceReason, VatRate, VatRegime, RequestForQuote, ProductQuote, QuoteItem, SalesOrderItem, ProcessFlow, Store, InventoryItem, SerialisedInventoryItem, SalesInvoiceItemType, Product } from "../../../../domain";
 import { And, ContainedIn, Contains, Fetch, Like, Page, Path, Predicate, PullRequest, Query, Sort, TreeNode } from "../../../../framework";
 import { MetaDomain } from "../../../../meta";
@@ -27,7 +27,7 @@ import { MetaDomain } from "../../../../meta";
       </div>
       <a-mat-autocomplete *ngIf="!orderItem.ItemType || orderItem.ItemType === productItemType"
       [object]="orderItem" [roleType]="m.SalesOrderItem.Product" [options]="goods" display="Name"
-      (onSelect)="goodSelected($event)" [filter]="goodsFilter.create()"></a-mat-autocomplete>
+      (onChange)="goodSelected($event)" [filter]="goodsFilter.create()"></a-mat-autocomplete>
       <a-mat-select  [object]="orderItem" [roleType]="m.SalesOrderItem.ItemType" [options]="salesInvoiceItemTypes" display="Name"></a-mat-select>
       <a-mat-input *ngIf="orderItem.ItemType && orderItem.ItemType === productItemType" [object]="orderItem" [roleType]="m.SalesOrderItem.QuantityOrdered"></a-mat-input>
       <a-mat-static *ngIf="serialisedInventoryItem?.ExpectedSalesPrice" [object]="serialisedInventoryItem" [roleType]="m.SerialisedInventoryItem.ExpectedSalesPrice"></a-mat-static>
@@ -181,7 +181,7 @@ export class SalesOrderItemEditComponent implements OnInit, AfterViewInit, OnDes
           this.order.AddSalesOrderItem(this.orderItem);
         } else {
           if (this.orderItem.ItemType === this.productItemType) {
-            this.goodSelected(this.orderItem.Product);
+            this.update(this.orderItem.Product);
           }
           if (this.orderItem.DiscountAdjustment) {
             this.discount = this.orderItem.DiscountAdjustment.Amount;
@@ -209,34 +209,10 @@ export class SalesOrderItemEditComponent implements OnInit, AfterViewInit, OnDes
     }
   }
 
-  public goodSelected(product: Product): void {
-
-    this.orderItem.ItemType = this.productItemType;
-
-    const fetch: Fetch[] = [
-      new Fetch({
-        id: product.id,
-        name: "inventoryItem",
-        path: new Path({ step: this.m.Good.InventoryItemsWhereGood }),
-      }),
-    ];
-
-    this.scope
-        .load("Pull", new PullRequest({ fetch }))
-        .subscribe((loaded: Loaded) => {
-          this.inventoryItems = loaded.collections.inventoryItem as InventoryItem[];
-          if (this.inventoryItems[0] instanceof SerialisedInventoryItem) {
-            this.serialisedInventoryItem = this.inventoryItems[0] as SerialisedInventoryItem;
-          }
-          if (this.inventoryItems[0] instanceof NonSerialisedInventoryItem) {
-            this.nonSerialisedInventoryItem = this.inventoryItems[0] as NonSerialisedInventoryItem;
-          }
-        },
-        (error: Error) => {
-          this.errorService.message(error);
-          this.goBack();
-        },
-      );
+  public goodSelected(field: Field) {
+    if (field.object) {
+      this.update(field.object as Product);
+    }
   }
 
   public save(): void {
@@ -270,4 +246,35 @@ export class SalesOrderItemEditComponent implements OnInit, AfterViewInit, OnDes
   public goBack(): void {
     window.history.back();
   }
+
+  private update(product: Product): void {
+
+    this.orderItem.ItemType = this.productItemType;
+
+    const fetch: Fetch[] = [
+      new Fetch({
+        id: product.id,
+        name: "inventoryItem",
+        path: new Path({ step: this.m.Good.InventoryItemsWhereGood }),
+      }),
+    ];
+
+    this.scope
+        .load("Pull", new PullRequest({ fetch }))
+        .subscribe((loaded: Loaded) => {
+          this.inventoryItems = loaded.collections.inventoryItem as InventoryItem[];
+          if (this.inventoryItems[0] instanceof SerialisedInventoryItem) {
+            this.serialisedInventoryItem = this.inventoryItems[0] as SerialisedInventoryItem;
+          }
+          if (this.inventoryItems[0] instanceof NonSerialisedInventoryItem) {
+            this.nonSerialisedInventoryItem = this.inventoryItems[0] as NonSerialisedInventoryItem;
+          }
+        },
+        (error: Error) => {
+          this.errorService.message(error);
+          this.goBack();
+        },
+      );
+  }
+
 }

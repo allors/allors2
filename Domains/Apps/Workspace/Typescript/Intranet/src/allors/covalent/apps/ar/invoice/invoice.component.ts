@@ -9,7 +9,7 @@ import { Subscription } from "rxjs/Subscription";
 
 import "rxjs/add/observable/combineLatest";
 
-import { ErrorService, Filter, Invoked, Loaded, Saved, Scope, WorkspaceService } from "../../../../angular";
+import { ErrorService, Filter, Invoked, Loaded, Saved, Scope, WorkspaceService, Field } from "../../../../angular";
 import { ContactMechanism, Currency, Good, Organisation, OrganisationContactRelationship, OrganisationRole, Party, PartyContactMechanism, Person, SalesInvoice, SalesInvoiceItem, SalesOrder, VatRate, VatRegime } from "../../../../domain";
 import { Contains, Fetch, Path, PullRequest, Query, TreeNode } from "../../../../framework";
 import { MetaDomain } from "../../../../meta";
@@ -171,7 +171,7 @@ export class InvoiceComponent implements OnInit, AfterViewInit, OnDestroy {
         }
 
         if (this.invoice.BillToCustomer) {
-          this.receiverSelected(this.invoice.BillToCustomer);
+          this.update(this.invoice.BillToCustomer);
         }
 
         this.previousBillToCustomer = this.invoice.BillToCustomer;
@@ -378,8 +378,21 @@ export class InvoiceComponent implements OnInit, AfterViewInit, OnDestroy {
       });
   }
 
-  public receiverSelected(party: Party): void {
+  public receiverSelected(field: Field) {
+    if (field.object) {
+      this.update(field.object as Party);
+    }
+  }
 
+  public refresh(): void {
+    this.refresh$.next(new Date());
+  }
+
+  public goBack(): void {
+    window.history.back();
+  }
+
+  private update(party: Party) {
     const fetch: Fetch[] = [
       new Fetch({
         id: party.id,
@@ -425,13 +438,5 @@ export class InvoiceComponent implements OnInit, AfterViewInit, OnDestroy {
         this.goBack();
       },
     );
-  }
-
-  public refresh(): void {
-    this.refresh$.next(new Date());
-  }
-
-  public goBack(): void {
-    window.history.back();
   }
 }

@@ -9,7 +9,7 @@ import { Subscription } from "rxjs/Subscription";
 
 import "rxjs/add/observable/combineLatest";
 
-import { ErrorService, Filter, Invoked, Loaded, Saved, Scope, WorkspaceService } from "../../../../angular";
+import { ErrorService, Filter, Invoked, Loaded, Saved, Scope, WorkspaceService, Field } from "../../../../angular";
 import { Brand, Catalogue, CatScope, ContactMechanism, Currency, Facility, Good, InventoryItemKind, InventoryItemVariance, Locale, LocalisedText, Model, NonSerialisedInventoryItem, NonSerialisedInventoryItemState, Organisation, OrganisationContactRelationship, OrganisationRole, Party, PartyContactMechanism, Person, ProductCategory, ProductCharacteristic, ProductCharacteristicValue, ProductFeature, ProductType, SalesInvoice, SalesInvoiceItem, SalesOrder, Singleton, VarianceReason, VatRate, VatRegime, RequestForQuote, ProductQuote, QuoteItem, RequestItem, InventoryItem, SerialisedInventoryItem, UnitOfMeasure, Product } from "../../../../domain";
 import { And, ContainedIn, Contains, Fetch, Like, Page, Path, Predicate, PullRequest, Query, Sort, TreeNode } from "../../../../framework";
 import { MetaDomain } from "../../../../meta";
@@ -28,7 +28,7 @@ import { MetaDomain } from "../../../../meta";
       </div>
 
       <a-mat-autocomplete [object]="requestItem" [roleType]="m.RequestItem.Product" [options]="goods" display="Name" [filter]="goodsFilter.create()"
-        (onSelect)="goodSelected($event)"></a-mat-autocomplete>
+        (onChange)="goodSelected($event)"></a-mat-autocomplete>
       <a-mat-input [object]="requestItem" [roleType]="m.RequestItem.Quantity"></a-mat-input>
       <a-mat-select [object]="requestItem" [roleType]="m.RequestItem.UnitOfMeasure" [options]="unitsOfMeasure" display="Name"></a-mat-select>
       <a-mat-static *ngIf="serialisedInventoryItem?.ExpectedSalesPrice" [object]="serialisedInventoryItem" [roleType]="m.SerialisedInventoryItem.ExpectedSalesPrice"></a-mat-static>
@@ -139,7 +139,7 @@ export class RequestItemEditComponent implements OnInit, AfterViewInit, OnDestro
           this.requestItem.UnitOfMeasure = piece;
           this.request.AddRequestItem(this.requestItem);
         } else {
-          this.goodSelected(this.requestItem.Product);
+          this.update(this.requestItem.Product);
         }
       },
       (error: Error) => {
@@ -149,32 +149,10 @@ export class RequestItemEditComponent implements OnInit, AfterViewInit, OnDestro
     );
   }
 
-  public goodSelected(product: Product): void {
-
-    const fetch: Fetch[] = [
-      new Fetch({
-        id: product.id,
-        name: "inventoryItem",
-        path: new Path({ step: this.m.Good.InventoryItemsWhereGood }),
-      }),
-    ];
-
-    this.scope
-        .load("Pull", new PullRequest({ fetch }))
-        .subscribe((loaded: Loaded) => {
-          this.inventoryItems = loaded.collections.inventoryItem as InventoryItem[];
-          if (this.inventoryItems[0] instanceof SerialisedInventoryItem) {
-            this.serialisedInventoryItem = this.inventoryItems[0] as SerialisedInventoryItem;
-          }
-          if (this.inventoryItems[0] instanceof NonSerialisedInventoryItem) {
-            this.nonSerialisedInventoryItem = this.inventoryItems[0] as NonSerialisedInventoryItem;
-          }
-        },
-        (error: Error) => {
-          this.errorService.message(error);
-          this.goBack();
-        },
-      );
+  public goodSelected(field: Field): void {
+    if (field.object) {
+      this.update(field.object as Product);
+    }
   }
 
   public ngAfterViewInit(): void {
@@ -311,5 +289,33 @@ export class RequestItemEditComponent implements OnInit, AfterViewInit, OnDestro
 
   public goBack(): void {
     window.history.back();
+  }
+
+  private update(product: Product): void {
+
+    const fetch: Fetch[] = [
+      new Fetch({
+        id: product.id,
+        name: "inventoryItem",
+        path: new Path({ step: this.m.Good.InventoryItemsWhereGood }),
+      }),
+    ];
+
+    this.scope
+        .load("Pull", new PullRequest({ fetch }))
+        .subscribe((loaded: Loaded) => {
+          this.inventoryItems = loaded.collections.inventoryItem as InventoryItem[];
+          if (this.inventoryItems[0] instanceof SerialisedInventoryItem) {
+            this.serialisedInventoryItem = this.inventoryItems[0] as SerialisedInventoryItem;
+          }
+          if (this.inventoryItems[0] instanceof NonSerialisedInventoryItem) {
+            this.nonSerialisedInventoryItem = this.inventoryItems[0] as NonSerialisedInventoryItem;
+          }
+        },
+        (error: Error) => {
+          this.errorService.message(error);
+          this.goBack();
+        },
+      );
   }
 }

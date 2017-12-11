@@ -9,7 +9,7 @@ import { Subscription } from "rxjs/Subscription";
 
 import "rxjs/add/observable/combineLatest";
 
-import { ErrorService, Filter, Invoked, Loaded, Saved, Scope, WorkspaceService } from "../../../../angular";
+import { ErrorService, Field, Filter, Invoked, Loaded, Saved, Scope, WorkspaceService } from "../../../../angular";
 import { Brand, Catalogue, CatScope, ContactMechanism, Currency, Facility, Good, InventoryItemKind, InventoryItemVariance, Locale, LocalisedText, Model, NonSerialisedInventoryItem, NonSerialisedInventoryItemState, Organisation, OrganisationContactRelationship, OrganisationRole, Party, PartyContactMechanism, Person, ProductCategory, ProductCharacteristic, ProductCharacteristicValue, ProductFeature, ProductType, SalesInvoice, SalesInvoiceItem, SalesOrder, Singleton, VarianceReason, VatRate, VatRegime, RequestForQuote, ProductQuote, QuoteItem, SalesOrderItem, ProcessFlow, Store } from "../../../../domain";
 import { And, ContainedIn, Contains, Fetch, Like, Page, Path, Predicate, PullRequest, Query, Sort, TreeNode } from "../../../../framework";
 import { MetaDomain } from "../../../../meta";
@@ -35,9 +35,9 @@ import { MetaDomain } from "../../../../meta";
       <a-mat-select *ngIf="stores.length > 1" [object]="stores" [roleType]="m.SalesOrder.Store" [options]="stores" display="Name"></a-mat-select>
 
       <a-mat-autocomplete *ngIf="showOrganisations" [object]="order" [roleType]="m.SalesOrder.ShipToCustomer" [options]="organisations" [filter]="organisationsFilter.create()"
-        display="Name" (onSelect)="shipToCustomerSelected($event)" label="Ship to organisation"></a-mat-autocomplete>
+        display="Name" (onChange)="shipToCustomerSelected($event)" label="Ship to organisation"></a-mat-autocomplete>
       <a-mat-autocomplete *ngIf="showPeople" [object]="order" [roleType]="m.SalesOrder.ShipToCustomer" [options]="people" [filter]="peopleFilter.create()"
-        display="displayName" (onSelect)="shipToCustomerSelected($event)" label="Ship to private  person "></a-mat-autocomplete>
+        display="displayName" (onChange)="shipToCustomerSelected($event)" label="Ship to private  person "></a-mat-autocomplete>
 
       <a-mat-select *ngIf="showOrganisations && !showPeople" [object]="order" [roleType]="m.SalesOrder.ContactPerson" [options]="contacts" display="displayName"></a-mat-select>
       <button *ngIf="showOrganisations && !showPeople" type="button" mat-icon-button (click)="addPerson = true"><mat-icon>add</mat-icon></button>
@@ -55,9 +55,9 @@ import { MetaDomain } from "../../../../meta";
       </div>
 
       <a-mat-autocomplete *ngIf="showOrganisations" [object]="order" [roleType]="m.SalesOrder.BillToCustomer" [options]="organisations" [filter]="organisationsFilter.create()"
-        display="Name" (onSelect)="billToCustomerSelected($event)" label="Bill to organisation"></a-mat-autocomplete>
+        display="Name" (onChange)="billToCustomerSelected($event)" label="Bill to organisation"></a-mat-autocomplete>
       <a-mat-autocomplete *ngIf="showPeople" [object]="order" [roleType]="m.SalesOrder.BillToCustomer" [options]="people" [filter]="peopleFilter.create()"
-        display="displayName" (onSelect)="billToCustomerSelected($event)" label="Bill to person "></a-mat-autocomplete>
+        display="displayName" (onChange)="billToCustomerSelected($event)" label="Bill to person "></a-mat-autocomplete>
       <a-mat-select [object]="order" [roleType]="m.SalesOrder.BillToContactMechanism" [options]="billToContactMechanisms" display="displayName"></a-mat-select>
       <button *ngIf="order.BillToCustomer" type="button" mat-button (click)="addWebAddress = true">+Web</button>
       <button *ngIf="order.BillToCustomer" type="button" mat-button (click)="addEmailAddress = true">+Email</button>
@@ -275,11 +275,11 @@ export class SalesOrderEditComponent implements OnInit, AfterViewInit, OnDestroy
         }
 
         if (this.order.ShipToCustomer) {
-            this.shipToCustomerSelected(this.order.ShipToCustomer);
+            this.updateShipToCustomer(this.order.ShipToCustomer);
         }
 
         if (this.order.BillToCustomer) {
-          this.billToCustomerSelected(this.order.BillToCustomer);
+          this.updateBillToCustomer(this.order.BillToCustomer);
       }
 
         this.previousShipToCustomer = this.order.ShipToCustomer;
@@ -638,105 +638,16 @@ export class SalesOrderEditComponent implements OnInit, AfterViewInit, OnDestroy
       });
   }
 
-  public shipToCustomerSelected(party: Party): void {
-
-    const fetch: Fetch[] = [
-      new Fetch({
-        id: party.id,
-        include: [
-          new TreeNode({
-            nodes: [
-              new TreeNode({
-                nodes: [
-                  new TreeNode({ roleType: this.m.PostalBoundary.Country }),
-                ],
-                roleType: this.m.PostalAddress.PostalBoundary,
-              }),
-            ],
-            roleType: this.m.PartyContactMechanism.ContactMechanism,
-          }),
-        ],
-        name: "partyContactMechanisms",
-        path: new Path({ step: this.m.Party.CurrentPartyContactMechanisms }),
-      }),
-      new Fetch({
-        id: party.id,
-        name: "currentContacts",
-        path: new Path({ step: this.m.Party.CurrentContacts }),
-      }),
-    ];
-
-    this.scope
-      .load("Pull", new PullRequest({ fetch }))
-      .subscribe((loaded: Loaded) => {
-
-        if (this.order.ShipToCustomer !== this.previousShipToCustomer) {
-          this.order.ShipToAddress = null;
-          this.order.ContactPerson = null;
-          this.previousShipToCustomer =  this.order.ShipToCustomer;
-        }
-
-        if (this.order.ShipToCustomer !== null && this.order.BillToCustomer === null) {
-          this.order.BillToCustomer = this.order.ShipToCustomer;
-          this.billToCustomerSelected(this.order.BillToCustomer);
-        }
-
-        const partyContactMechanisms: PartyContactMechanism[] = loaded.collections.partyContactMechanisms as PartyContactMechanism[];
-        this.ShipToAddresses = partyContactMechanisms.filter((v: PartyContactMechanism) => v.ContactMechanism.objectType.name === "PostalAddress").map((v: PartyContactMechanism) => v.ContactMechanism);
-        this.contacts = loaded.collections.currentContacts as Person[];
-      },
-      (error: Error) => {
-        this.errorService.message(error);
-        this.goBack();
-      },
-    );
+  public shipToCustomerSelected(field: Field) {
+    if (field.object) {
+      this.updateShipToCustomer(field.object as Party);
+    }
   }
 
-  public billToCustomerSelected(party: Party): void {
-
-    const fetch: Fetch[] = [
-      new Fetch({
-        id: party.id,
-        include: [
-          new TreeNode({
-            nodes: [
-              new TreeNode({
-                nodes: [
-                  new TreeNode({ roleType: this.m.PostalBoundary.Country }),
-                ],
-                roleType: this.m.PostalAddress.PostalBoundary,
-              }),
-            ],
-            roleType: this.m.PartyContactMechanism.ContactMechanism,
-          }),
-        ],
-        name: "partyContactMechanisms",
-        path: new Path({ step: this.m.Party.CurrentPartyContactMechanisms }),
-      }),
-    ];
-
-    this.scope
-      .load("Pull", new PullRequest({ fetch }))
-      .subscribe((loaded: Loaded) => {
-
-        if (this.order.BillToCustomer !== this.previousBillToCustomer) {
-          this.order.BillToContactMechanism = null;
-          this.previousBillToCustomer =  this.order.BillToCustomer;
-        }
-
-        if (this.order.BillToCustomer !== null && this.order.ShipToCustomer === null) {
-          this.order.ShipToCustomer = this.order.BillToCustomer;
-          this.shipToCustomerSelected(this.order.ShipToCustomer);
-        }
-
-        const partyContactMechanisms: PartyContactMechanism[] = loaded.collections.partyContactMechanisms as PartyContactMechanism[];
-        this.billToContactMechanisms = partyContactMechanisms.map((v: PartyContactMechanism) => v.ContactMechanism);
-      },
-      (error: Error) => {
-        this.errorService.message(error);
-        this.goBack();
-      },
-    );
+  public billToCustomerSelected(field: Field) {
+    if (field.object) {
+      this.updateBillToCustomer(field.object as Party);
+    }
   }
 
   public refresh(): void {
@@ -746,4 +657,105 @@ export class SalesOrderEditComponent implements OnInit, AfterViewInit, OnDestroy
   public goBack(): void {
     window.history.back();
   }
+
+  private updateShipToCustomer(party: Party): void {
+
+      const fetch: Fetch[] = [
+        new Fetch({
+          id: party.id,
+          include: [
+            new TreeNode({
+              nodes: [
+                new TreeNode({
+                  nodes: [
+                    new TreeNode({ roleType: this.m.PostalBoundary.Country }),
+                  ],
+                  roleType: this.m.PostalAddress.PostalBoundary,
+                }),
+              ],
+              roleType: this.m.PartyContactMechanism.ContactMechanism,
+            }),
+          ],
+          name: "partyContactMechanisms",
+          path: new Path({ step: this.m.Party.CurrentPartyContactMechanisms }),
+        }),
+        new Fetch({
+          id: party.id,
+          name: "currentContacts",
+          path: new Path({ step: this.m.Party.CurrentContacts }),
+        }),
+      ];
+
+      this.scope
+        .load("Pull", new PullRequest({ fetch }))
+        .subscribe((loaded: Loaded) => {
+
+          if (this.order.ShipToCustomer !== this.previousShipToCustomer) {
+            this.order.ShipToAddress = null;
+            this.order.ContactPerson = null;
+            this.previousShipToCustomer =  this.order.ShipToCustomer;
+          }
+
+          if (this.order.ShipToCustomer !== null && this.order.BillToCustomer === null) {
+            this.order.BillToCustomer = this.order.ShipToCustomer;
+            this.updateBillToCustomer(this.order.BillToCustomer);
+          }
+
+          const partyContactMechanisms: PartyContactMechanism[] = loaded.collections.partyContactMechanisms as PartyContactMechanism[];
+          this.ShipToAddresses = partyContactMechanisms.filter((v: PartyContactMechanism) => v.ContactMechanism.objectType.name === "PostalAddress").map((v: PartyContactMechanism) => v.ContactMechanism);
+          this.contacts = loaded.collections.currentContacts as Person[];
+        },
+        (error: Error) => {
+          this.errorService.message(error);
+          this.goBack();
+        },
+      );
+    }
+
+    private updateBillToCustomer(party: Party) {
+
+      const fetch: Fetch[] = [
+        new Fetch({
+          id: party.id,
+          include: [
+            new TreeNode({
+              nodes: [
+                new TreeNode({
+                  nodes: [
+                    new TreeNode({ roleType: this.m.PostalBoundary.Country }),
+                  ],
+                  roleType: this.m.PostalAddress.PostalBoundary,
+                }),
+              ],
+              roleType: this.m.PartyContactMechanism.ContactMechanism,
+            }),
+          ],
+          name: "partyContactMechanisms",
+          path: new Path({ step: this.m.Party.CurrentPartyContactMechanisms }),
+        }),
+      ];
+
+      this.scope
+        .load("Pull", new PullRequest({ fetch }))
+        .subscribe((loaded: Loaded) => {
+
+          if (this.order.BillToCustomer !== this.previousBillToCustomer) {
+            this.order.BillToContactMechanism = null;
+            this.previousBillToCustomer =  this.order.BillToCustomer;
+          }
+
+          if (this.order.BillToCustomer !== null && this.order.ShipToCustomer === null) {
+            this.order.ShipToCustomer = this.order.BillToCustomer;
+            this.updateShipToCustomer(this.order.ShipToCustomer);
+          }
+
+          const partyContactMechanisms: PartyContactMechanism[] = loaded.collections.partyContactMechanisms as PartyContactMechanism[];
+          this.billToContactMechanisms = partyContactMechanisms.map((v: PartyContactMechanism) => v.ContactMechanism);
+        },
+        (error: Error) => {
+          this.errorService.message(error);
+          this.goBack();
+        },
+      );
+    }
 }

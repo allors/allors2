@@ -28,7 +28,7 @@ import { MetaDomain } from "../../../../meta";
       <!-- <a-mat-static *ngIf="quoteItem.RequestItem" [object]="quoteItem" [roleType]="m.QuoteItem.RequestItem" [display]=""></a-mat-static> -->
       <a-mat-autocomplete *ngIf="!invoiceItem.SalesInvoiceItemType || invoiceItem.SalesInvoiceItemType === productItemType"
         [object]="invoiceItem" [roleType]="m.SalesInvoiceItem.Product" [options]="goods" display="Name"
-        (onSelect)="goodSelected($event)" [filter]="goodsFilter.create()"></a-mat-autocomplete>
+        (onChange)="goodSelected($event)" [filter]="goodsFilter.create()"></a-mat-autocomplete>
       <a-mat-select  [object]="invoiceItem" [roleType]="m.SalesInvoiceItem.SalesInvoiceItemType" [options]="salesInvoiceItemTypes" display="Name"></a-mat-select>
       <a-mat-input *ngIf="invoiceItem.Product" [object]="invoiceItem" [roleType]="m.SalesInvoiceItem.Quantity"></a-mat-input>
       <a-mat-input [object]="invoiceItem" [roleType]="m.SalesInvoiceItem.ActualUnitPrice"></a-mat-input>

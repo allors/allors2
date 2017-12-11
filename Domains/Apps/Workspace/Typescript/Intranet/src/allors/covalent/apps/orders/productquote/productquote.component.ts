@@ -9,7 +9,7 @@ import { Subscription } from "rxjs/Subscription";
 
 import "rxjs/add/observable/combineLatest";
 
-import { ErrorService, Filter, Invoked, Loaded, Saved, Scope, WorkspaceService } from "../../../../angular";
+import { ErrorService, Filter, Invoked, Loaded, Saved, Scope, WorkspaceService, Field } from "../../../../angular";
 import { Brand, Catalogue, CatScope, ContactMechanism, Currency, Facility, Good, InventoryItemKind, InventoryItemVariance, Locale, LocalisedText, Model, NonSerialisedInventoryItem, NonSerialisedInventoryItemState, Organisation, OrganisationContactRelationship, OrganisationRole, Party, PartyContactMechanism, Person, ProductCategory, ProductCharacteristic, ProductCharacteristicValue, ProductFeature, ProductType, SalesInvoice, SalesInvoiceItem, SalesOrder, Singleton, VarianceReason, VatRate, VatRegime, RequestForQuote, ProductQuote, QuoteItem } from "../../../../domain";
 import { And, ContainedIn, Contains, Fetch, Like, Page, Path, Predicate, PullRequest, Query, Sort, TreeNode } from "../../../../framework";
 import { MetaDomain } from "../../../../meta";
@@ -28,9 +28,9 @@ import { MetaDomain } from "../../../../meta";
 
       <a-mat-static *ngIf="quote.Request" [object]="quote" [roleType]="m.ProductQuote.Request" display="RequestNumber"></a-mat-static>
       <a-mat-autocomplete *ngIf="showOrganisations" [object]="quote" [roleType]="m.ProductQuote.Receiver" [filter]="organisationsFilter.create()"
-        display="Name" (onSelect)="receiverSelected($event)" label="Receiving organisation"></a-mat-autocomplete>
+        display="Name" (onChange)="receiverSelected($event)" label="Receiving organisation"></a-mat-autocomplete>
       <a-mat-autocomplete *ngIf="showPeople" [object]="quote" [roleType]="m.ProductQuote.Receiver" [filter]="peopleFilter.create()"
-        display="displayName" (onSelect)="receiverSelected($event)" label="Receiving private person"></a-mat-autocomplete>
+        display="displayName" (onChange)="receiverSelected($event)" label="Receiving private person"></a-mat-autocomplete>
 
       <a-mat-select *ngIf="showOrganisations && !showPeople" [object]="quote" [roleType]="m.ProductQuote.ContactPerson" [options]="contacts" display="displayName"></a-mat-select>
       <button *ngIf="showOrganisations && !showPeople" type="button" mat-icon-button (click)="addPerson = true"><mat-icon>add</mat-icon></button>
@@ -226,7 +226,7 @@ export class ProductQuoteEditComponent implements OnInit, AfterViewInit, OnDestr
           this.title = this.title + " from: " + this.quote.Receiver.PartyName;
         }
 
-        this.receiverSelected(this.quote.Receiver);
+        this.update(this.quote.Receiver);
 
         this.previousReceiver = this.quote.Receiver;
         this.organisations = loaded.collections.organisations as Organisation[];
@@ -431,8 +431,21 @@ export class ProductQuoteEditComponent implements OnInit, AfterViewInit, OnDestr
       });
   }
 
-  public receiverSelected(party: Party): void {
+  public receiverSelected(field: Field): void {
+    if (field.object) {
+      this.update(field.object as Party);
+    }
+  }
 
+  public refresh(): void {
+    this.refresh$.next(new Date());
+  }
+
+  public goBack(): void {
+    window.history.back();
+  }
+
+  private update(party: Party) {
     const fetch: Fetch[] = [
       new Fetch({
         id: party.id,
@@ -478,13 +491,6 @@ export class ProductQuoteEditComponent implements OnInit, AfterViewInit, OnDestr
         this.goBack();
       },
     );
-  }
 
-  public refresh(): void {
-    this.refresh$.next(new Date());
-  }
-
-  public goBack(): void {
-    window.history.back();
   }
 }
