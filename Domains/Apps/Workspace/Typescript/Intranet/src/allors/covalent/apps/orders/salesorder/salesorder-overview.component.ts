@@ -85,6 +85,7 @@ import { MetaDomain } from "../../../../meta";
       <mat-card-actions>
         <button *ngIf="order.CanWriteSalesOrderItems" mat-button [routerLink]="['/salesOrder/' + order.id]">Edit</button>
         <button mat-button [routerLink]="['/printsalesorder/' + order.id ]">Print</button>
+        <button *ngIf="order.CanExecuteShip" mat-button (click)="Ship()">Ship Order</button>
         <button *ngIf="payFirst && order.CanExecuteComplete && order.ValidOrderItems.length > 0"
           mat-button (click)="createInvoice()">Create Invoice</button>
       </mat-card-actions>
@@ -335,6 +336,17 @@ export class SalesOrderOverviewComponent implements OnInit, AfterViewInit, OnDes
         this.goBack();
         this.snackBar.open("Invoice successfully created.", "close", { duration: 5000 });
         this.gotoInvoice();
+      },
+      (error: Error) => {
+        this.errorService.dialog(error);
+      });
+  }
+
+  public Ship(): void {
+    this.scope.invoke(this.order.Ship)
+      .subscribe((invoked: Invoked) => {
+        this.goBack();
+        this.snackBar.open("Customer Shipment successfully created.", "close", { duration: 5000 });
       },
       (error: Error) => {
         this.errorService.dialog(error);

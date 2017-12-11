@@ -141,22 +141,26 @@ namespace Allors.Repository
 
     #region Allors
     [Id("46CB3076-14AE-48C1-8C9F-F4EFB4B060EB")]
-    #endregion
+        #endregion
+    [Workspace]
     public void Hold() { }
 
     #region Allors
     [Id("F3D35303-BA28-4CF0-B393-7E7D76F5B86D")]
-    #endregion
+        #endregion
+    [Workspace]
     public void Continue() { }
 
     #region Allors
     [Id("8753A40E-FAA1-44E7-86B1-6CA6712989B5")]
-    #endregion
+        #endregion
+    [Workspace]
     public void Cancel() { }
 
     #region Allors
     [Id("CA2ADD8E-C43E-4C95-A8A4-B279FEE4CB0A")]
-    #endregion
+        #endregion
+    [Workspace]
     public void SetPicked() { }
 
     #region inherited methods

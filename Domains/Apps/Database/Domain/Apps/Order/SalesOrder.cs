@@ -18,6 +18,7 @@ namespace Allors.Domain
     using System;
     using System.Collections.Generic;
 
+    using Allors.Domain.NonLogging;
     using Allors.Services;
 
     using Meta;
@@ -618,6 +619,12 @@ namespace Allors.Domain
             }
 
             this.CanShip = false;
+        }
+
+        public void AppsShip(SalesOrderShip method)
+        {
+            var derivation = new Derivation(this.Strategy.Session);
+            this.AppsShipThis(derivation);
         }
 
         private List<Shipment> AppsShipThis(IDerivation derivation)
