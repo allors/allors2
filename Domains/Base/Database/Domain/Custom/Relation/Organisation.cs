@@ -23,6 +23,25 @@ namespace Allors.Domain
 {
     public partial class Organisation
     {
+        public void CustomToggleCanWrite(OrganisationToggleCanWrite method)
+        {
+            if (this.DeniedPermissions.Count != 0)
+            {
+                this.RemoveDeniedPermissions();
+            }
+            else
+            {
+                var permissions = new Permissions(this.strategy.Session);
+                var deniedPermissions = new[]
+                                            {
+                                                permissions.Get(this.Meta.Class, this.Meta.Name, Operations.Write),
+                                                permissions.Get(this.Meta.Class, this.Meta.Owner, Operations.Write)
+                                            };
+
+                this.DeniedPermissions = deniedPermissions;
+            }
+        }
+
         public override string ToString()
         {
             return this.Name;

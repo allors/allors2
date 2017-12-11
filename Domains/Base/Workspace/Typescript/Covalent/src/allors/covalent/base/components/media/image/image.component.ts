@@ -10,7 +10,7 @@ import { ISession, ISessionObject } from "../../../../../framework";
   templateUrl: "./image.component.html",
 })
 export class ImageComponent extends Field {
-  @Output() public changed: EventEmitter<ISessionObject> = new EventEmitter<ISessionObject>();
+  @Output() public onChange: EventEmitter<Field> = new EventEmitter<Field>();
 
   @Input() public accept: string = "image/*";
 
@@ -53,7 +53,7 @@ export class ImageComponent extends Field {
     const load: () => void = () => {
       this.media.FileName = file.name;
       this.media.InDataUri = reader.result;
-      this.changed.emit(this.object);
+      this.onChange.emit(this);
     };
 
     reader.addEventListener("load", load, false);

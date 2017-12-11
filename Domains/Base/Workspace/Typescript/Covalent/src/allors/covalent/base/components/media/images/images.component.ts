@@ -11,7 +11,7 @@ import { ISession, ISessionObject } from "../../../../../framework";
 })
 export class ImagesComponent extends Field {
   @Output()
-  public changed: EventEmitter<ISessionObject> = new EventEmitter<ISessionObject>();
+  public onChange: EventEmitter<Field> = new EventEmitter<Field>();
 
   @Input() public accept: string = "image/*";
 
@@ -72,6 +72,6 @@ export class ImagesComponent extends Field {
     reader.addEventListener("load", load, false);
     reader.readAsDataURL(file);
 
-    this.changed.emit(this.object);
+    this.onChange.emit(this);
   }
 }

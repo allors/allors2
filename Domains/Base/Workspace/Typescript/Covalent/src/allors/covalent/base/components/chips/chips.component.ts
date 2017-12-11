@@ -32,11 +32,13 @@ import { Field } from "../../../../angular";
   <ng-template td-chip let-chip="chip">
     {{chip[this.display]}}
   </ng-template>
+
   <ng-template td-autocomplete-option let-option="option">
     <div layout="row" layout-align="start center">
       {{option[this.display]}}
     </div>
   </ng-template>
+
   <mat-hint *ngIf="hint">{{hint}}</mat-hint>
 </td-chips>
 `,
@@ -56,10 +58,7 @@ export class ChipsComponent extends Field implements OnInit, AfterViewInit, OnDe
   public filter: ((search: string) => Observable<ISessionObject[]>);
 
   @Output()
-  public onAdd: EventEmitter<ISessionObject> = new EventEmitter();
-
-  @Output()
-  public onRemove: EventEmitter<ISessionObject> = new EventEmitter();
+  public onChange: EventEmitter<Field> = new EventEmitter();
 
   public filteredOptions: ISessionObject[];
 
@@ -122,11 +121,11 @@ export class ChipsComponent extends Field implements OnInit, AfterViewInit, OnDe
   }
 
   public add(object: ISessionObject): void {
-    this.onAdd.emit(object);
+    this.onChange.emit(this);
   }
 
   public remove(object: ISessionObject): void {
-    this.onRemove.emit(object);
+    this.onChange.emit(this);
   }
 
   public inputChange(search: string): void {

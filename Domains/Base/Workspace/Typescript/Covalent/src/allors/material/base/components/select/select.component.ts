@@ -26,7 +26,7 @@ export class SelectComponent extends Field implements AfterViewInit {
   public options: ISessionObject[];
 
   @Output()
-  public onSelect: EventEmitter<ISessionObject> = new EventEmitter();
+  public onSelect: EventEmitter<Field> = new EventEmitter();
 
   @ViewChildren(NgModel) private controls: QueryList<NgModel>;
 
@@ -43,6 +43,6 @@ export class SelectComponent extends Field implements AfterViewInit {
   }
 
   public selected(option: ISessionObject): void {
-    this.onSelect.emit(option);
+    this.onSelect.emit(this);
   }
 }

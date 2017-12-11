@@ -35,7 +35,7 @@ export class Scope {
             .map((syncResponse: SyncResponse) => {
               this.workspace.sync(syncResponse);
               const loaded: Loaded = new Loaded(this.session, pullResponse);
-              return loaded
+              return loaded;
             });
         } else {
           const loaded: Loaded = new Loaded(this.session, pullResponse);

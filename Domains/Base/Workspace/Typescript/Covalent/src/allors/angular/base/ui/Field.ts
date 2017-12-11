@@ -8,20 +8,20 @@ export abstract class Field {
   @Input()
   public roleType: RoleType;
 
-  @Input("disabled")
-  public assignedDisabled: boolean;
-
-  @Input("required")
-  public assignedRequired: boolean;
-
   @Input("label")
   public assignedLabel: string;
 
   @Input()
-  public readonly: boolean;
-
-  @Input()
   public hint: string;
+
+  @Input("disabled")
+  public assignedDisabled: boolean;
+
+  @Input("readonly")
+  public assignedReadonly: boolean;
+
+  @Input("required")
+  public assignedRequired: boolean;
 
   get ExistObject(): boolean {
     return !!this.object;
@@ -67,12 +67,16 @@ export abstract class Field {
     return this.assignedLabel ? this.assignedLabel : this.humanize(this.roleType.name);
   }
 
-  get required(): boolean {
-    return this.assignedRequired ? this.assignedRequired : this.roleType.isRequired;
+  get disabled(): boolean {
+    return !this.canWrite ? true : this.assignedDisabled;
   }
 
-  get disabled(): boolean {
-    return !this.canWrite || this.assignedDisabled;
+  get readonly(): boolean {
+    return !this.canWrite ? true : this.assignedReadonly;
+  }
+
+  get required(): boolean {
+    return this.roleType.isRequired ? true : this.assignedRequired;
   }
 
   protected humanize(input: string): string {

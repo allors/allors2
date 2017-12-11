@@ -186,5 +186,9 @@ namespace Allors.Repository
         [Id("1869873F-F2F0-4D03-A0F9-7DC73491C117")]
         [Workspace]
         public void JustDoIt(){}
+
+        [Id("2CD2FF48-93FC-4C7D-BF2F-3F411D0DF7C3")]
+        [Workspace]
+        public void ToggleCanWrite() { }
     }
 }

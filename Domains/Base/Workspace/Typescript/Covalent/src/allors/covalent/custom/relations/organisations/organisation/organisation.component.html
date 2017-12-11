@@ -13,13 +13,23 @@
   <form #form="ngForm" *ngIf="organisation" (submit)="save()">
     <mat-card-content class="push-bottom-none">
 
-      <div fxLayout="row wrap" fxLayoutAlign="start stretch" fxLayoutGap.gt-md="25px">
+      <div>
         <a-mat-input class="push-top" [object]="organisation" [roleType]="m.Organisation.Name"></a-mat-input>
+        
+        <a-mat-autocomplete class="push-top" [object]="organisation" [roleType]="m.Organisation.Owner" [filter]="peopleFilter.create()" display="UserName" (onChange)="ownerSelected($event)" hint="With filter"></a-mat-autocomplete>
         <a-mat-autocomplete class="push-top" [object]="organisation" [roleType]="m.Organisation.Owner" [options]="people" display="UserName" hint="With options"></a-mat-autocomplete>
-        <a-mat-autocomplete class="push-top" [object]="organisation" [roleType]="m.Organisation.Owner" [filter]="peopleFilter.create()" display="UserName" (onSelect)="ownerSelected($event)" hint="With filter"></a-mat-autocomplete>
+        
         <a-td-chips class="push-top" [object]="organisation" [roleType]="m.Organisation.Employees" [filter]="peopleFilter.create()" display="UserName" hint="All current employees"></a-td-chips>
 
-        <div>{{organisation?.Owner?.UserName}}</div>
+        <h3>Output</h3>
+        <div class="push-top">{{organisation?.Owner?.UserName}}</div>
+
+        <h3>Security</h3>
+        <div>CanWriteName: {{organisation.CanWriteName}}</div>
+        <div>CanWriteOwner: {{organisation.CanWriteOwner}}</div>
+
+        <h3>Events</h3>
+        <div>id: {{field?.object?.id}}, roleType: {{field?.roleType?.name}}</div>
 
       </div>
 
@@ -28,6 +38,7 @@
     <mat-divider></mat-divider>
 
     <mat-card-actions>
+      <button mat-button (click)="toggleCanWrite()" type="button">TOGGLE CANWRITE</button>
       <button mat-button color="primary" type="submit">SAVE</button>
       <button mat-button (click)="goBack()" type="button">CANCEL</button>
     </mat-card-actions>

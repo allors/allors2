@@ -1,11 +1,12 @@
 import { AfterViewInit, Component, OnDestroy, OnInit } from "@angular/core";
 import { Validators } from "@angular/forms";
 import { Title } from "@angular/platform-browser";
-import { ActivatedRoute } from "@angular/router";
+import { ActivatedRoute, Router, UrlSegment } from "@angular/router";
 import { TdDialogService, TdMediaService } from "@covalent/core";
-import { Observable, Subject, Subscription } from "rxjs/Rx";
 
-import { ErrorService, Filter, Loaded, Saved, Scope, WorkspaceService } from "../../../../../angular";
+import { BehaviorSubject, Observable, Subject, Subscription } from "rxjs/Rx";
+
+import { ErrorService, Filter, Invoked, Loaded, Saved, Scope, WorkspaceService, Field } from "../../../../../angular";
 import { Enumeration, Locale, Organisation, Person } from "../../../../../domain";
 import { And, Equals, Fetch, Like, Or, Page, Path, PullRequest, PushResponse, Query, RoleType, Sort, TreeNode } from "../../../../../framework";
 import { MetaDomain } from "../../../../../meta";
@@ -17,6 +18,8 @@ export class OrganisationComponent implements OnInit, AfterViewInit, OnDestroy {
 
   public title: string;
 
+  public field: Field;
+
   public m: MetaDomain;
   public people: Person[];
 
@@ -24,6 +27,7 @@ export class OrganisationComponent implements OnInit, AfterViewInit, OnDestroy {
 
   public peopleFilter: Filter;
 
+  private refresh$: BehaviorSubject<Date>;
   private subscription: Subscription;
   private scope: Scope;
 
@@ -31,8 +35,11 @@ export class OrganisationComponent implements OnInit, AfterViewInit, OnDestroy {
     private workspaceService: WorkspaceService,
     private errorService: ErrorService,
     private titleService: Title,
+    private router: Router,
     private route: ActivatedRoute,
-    private media: TdMediaService) {
+    private media: TdMediaService,
+    private dialogService: TdDialogService,
+  ) {
 
     this.title = "Organisation";
     this.titleService.setTitle(this.title);
@@ -40,11 +47,16 @@ export class OrganisationComponent implements OnInit, AfterViewInit, OnDestroy {
     this.m = this.workspaceService.metaPopulation.metaDomain;
 
     this.peopleFilter = new Filter({scope: this.scope, objectType: this.m.Person, roleTypes: [this.m.Person.FirstName, this.m.Person.LastName]});
+
+    this.refresh$ = new BehaviorSubject<Date>(undefined);
   }
 
   public ngOnInit(): void {
-    this.subscription = this.route.url
-      .switchMap((url: any) => {
+    const route$: Observable<UrlSegment[]> = this.route.url;
+    const combined$: Observable<[UrlSegment[], Date]> = Observable.combineLatest(route$, this.refresh$);
+
+    this.subscription = combined$
+        .switchMap(([urlSegments, date]: [UrlSegment[], Date]) => {
 
         const id: string = this.route.snapshot.paramMap.get("id");
 
@@ -63,12 +75,12 @@ export class OrganisationComponent implements OnInit, AfterViewInit, OnDestroy {
             }),
         ];
 
-        this.scope.session.reset();
-
         return this.scope
           .load("Pull", new PullRequest({ fetch, query }));
       })
       .subscribe((loaded: Loaded) => {
+
+        this.scope.session.reset();
 
         this.organisation = loaded.objects.organisation as Organisation;
         if (!this.organisation) {
@@ -94,6 +106,21 @@ export class OrganisationComponent implements OnInit, AfterViewInit, OnDestroy {
     }
   }
 
+  public refresh(): void {
+    this.refresh$.next(new Date());
+  }
+
+  public toggleCanWrite() {
+    this.scope
+    .invoke(this.organisation.ToggleCanWrite)
+    .subscribe((invoded: Invoked) => {
+      this.refresh();
+    },
+    (error: Error) => {
+      this.errorService.dialog(error);
+    });
+  }
+
   public save(): void {
 
     this.scope
@@ -110,7 +137,7 @@ export class OrganisationComponent implements OnInit, AfterViewInit, OnDestroy {
     window.history.back();
   }
 
-  public ownerSelected(person: Person): void {
-    console.log(person.UserName);
+  public ownerSelected(field: Field): void {
+    this.field = field;
   }
 }
