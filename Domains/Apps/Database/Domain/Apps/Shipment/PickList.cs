@@ -93,6 +93,29 @@ namespace Allors.Domain
             }
         }
 
+        public void AppsOnDerive(ObjectOnDerive method)
+        {
+            var derivation = method.Derivation;
+
+            if (this.Store.IsImmediatelyPicked)
+            {
+                this.SetPicked();
+
+                foreach (PickListItem pickListItem in this.PickListItems)
+                {
+                    foreach (ItemIssuance itemIssuance in pickListItem.ItemIssuancesWherePickListItem)
+                    {
+                        var shipment = itemIssuance.ShipmentItem.ShipmentWhereShipmentItem as CustomerShipment;
+
+                        shipment?.ShipmentPackages[0].AddPackagingContent(
+                            new PackagingContentBuilder(this.strategy.Session)
+                                .WithShipmentItem(itemIssuance.ShipmentItem).WithQuantity(itemIssuance.Quantity)
+                                .Build());
+                    }
+                }
+            }
+        }
+
         public void AppsCancel(PickListCancel method)
         {
             this.PickListState = new PickListStates(this.Strategy.Session).Cancelled;

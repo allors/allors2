@@ -226,6 +226,15 @@ namespace Allors.Repository
         [Workspace]
         public ProcessFlow ProcessFlow { get; set; }
 
+        #region Allors
+        [Id("ECA0A308-BB12-419C-8E10-67BDCC7D37E6")]
+        [AssociationId("219BBCE1-809C-44D9-AE2B-61C09A29A7E7")]
+        [RoleId("6E13FD5D-D633-4278-AC18-4E4EE0A52A01")]
+        #endregion
+        [Required]
+        [Workspace]
+        public bool IsImmediatelyPicked { get; set; }
+
         #region inherited methods
 
 

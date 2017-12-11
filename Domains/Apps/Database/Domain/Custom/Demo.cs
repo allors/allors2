@@ -104,6 +104,7 @@ namespace Allors
                 .WithDefaultShipmentMethod(new ShipmentMethods(this.Session).Ground)
                 .WithDefaultCarrier(new Carriers(this.Session).Fedex)
                 .WithProcessFlow(new ProcessFlows(this.Session).PayFirst)
+                .WithIsImmediatelyPicked(true)
                 .Build();
 
             var acmePostalAddress = new PostalAddressBuilder(this.Session)
