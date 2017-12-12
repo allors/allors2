@@ -1,0 +1,35 @@
+<td-layout-card-over [cardTitle]="title" [cardSubtitle]="subTitle">
+  <form #form="ngForm" *ngIf="category" (submit)="save()">
+
+    <div body *ngIf="category" layout-gt-md="row">
+      <div flex-gt-xs="60">
+
+        <div class="pad">
+          <a-td-image [object]="category" [roleType]="m.ProductCategory.CategoryImage" accept="image/*" (selected)="imageSelected($event)"></a-td-image>
+          <a-mat-select [object]="category" [roleType]="m.ProductCategory.CatScope" [options]="catScopes" display="Name" label="Scope"></a-mat-select>
+          <a-mat-localised-text [object]="category" [roleType]="m.ProductCategory.LocalisedNames" [locales]="locales" label="Name"></a-mat-localised-text>
+          <a-mat-localised-text [object]="category" [roleType]="m.ProductCategory.LocalisedDescriptions" [locales]="locales" label="Description"></a-mat-localised-text>
+          <a-mat-select [object]="category" [roleType]="m.ProductCategory.Parents" [options]="categories" display="Name"></a-mat-select>
+        </div>
+
+        <mat-divider></mat-divider>
+
+        <mat-card-actions>
+          <button mat-button color="primary" type="submit" [disabled]="!form.form.valid">SAVE</button>
+          <button mat-button (click)="goBack()" type="button">CANCEL</button>
+        </mat-card-actions>
+      </div>
+
+      <div *ngIf="category.CategoryImage" flex-gt-xs="40">
+        <mat-card class="image-card">
+          <mat-card-header>
+            <mat-card-title>{{category.Name}}</mat-card-title>
+            <mat-card-subtitle>{{category.CategoryImage.FileName}}</mat-card-subtitle>
+          </mat-card-header>
+          <img mat-card-image src="http://localhost:5000/Media/Download/{{category.CategoryImage.UniqueId}}?revision={{category.CategoryImage.Revision}}">
+        </mat-card>
+      </div>
+
+    </div>
+  </form>
+</td-layout-card-over>

@@ -7,16 +7,7 @@ import { Field } from "../../../../angular";
 
 @Component({
   selector: "a-mat-select",
-  template: `
-<mat-form-field style="width: 100%;" >
-    <mat-select [(ngModel)]="model" [name]="name" [placeholder]="label" [multiple]="roleType.isMany" [required]="required" [disabled]="disabled">
-    <mat-option *ngIf="!required">None</mat-option>
-    <mat-option *ngFor="let option of options" [value]="option" (onSelectionChange)="selected(option)">
-        {{option[display]}}
-      </mat-option>
-    </mat-select>
-</mat-form-field>
-`,
+  templateUrl: "./select.component.html",
 })
 export class SelectComponent extends Field implements AfterViewInit {
   @Input()

@@ -19,50 +19,7 @@ import { And, ContainedIn, Contains, Fetch, Like, Page, Path, Predicate, PullReq
 import { MetaDomain } from "../../../../../../meta";
 
 @Component({
-  template: `
-<td-layout-card-over [cardTitle]="title" [cardSubtitle]="subTitle">
-  <form #form="ngForm" *ngIf="workTask" (submit)="save()" class="pad">
-    <div>
-      <a-mat-select [object]="workTask" [roleType]="m.WorkTask.WorkEffortState" [options]="workEffortStates" display="Name"
-        label="Status"></a-mat-select>
-      <a-mat-input [object]="workTask" [roleType]="m.WorkTask.Name"></a-mat-input>
-      <a-mat-textarea [object]="workTask" [roleType]="m.WorkTask.Description"></a-mat-textarea>
-      <div class="mat-input-wrapper">
-        <div class="mat-input-flex">
-          <div class="mat-input-infix">
-            <mat-select fxFlex name="assignment" [(ngModel)]="assignees" placeholder="Assign To" multiple="true">
-              <mat-option *ngFor="let employee of employees" [value]="employee">{{ employee.displayName }}</mat-option>
-            </mat-select>
-          </div>
-        </div>
-      </div>
-      <a-mat-select [object]="workTask" [roleType]="m.WorkTask.Priority" [options]="priorities" display="Name"></a-mat-select>
-      <a-mat-select [object]="workTask" [roleType]="m.WorkTask.WorkEffortPurposes" [options]="workEffortPurposes" display="Name"
-        label="Purpose(s)"></a-mat-select>
-      <a-mat-input [object]="workTask" [roleType]="m.WorkTask.EstimatedHours"></a-mat-input>
-      <a-mat-input [object]="workTask" [roleType]="m.WorkTask.ActualHours"></a-mat-input>
-      <a-mat-slide-toggle [object]="communicationEvent" [roleType]="m.CommunicationEvent.SendNotification"></a-mat-slide-toggle>
-      <a-mat-slide-toggle [object]="communicationEvent" [roleType]="m.CommunicationEvent.SendReminder"></a-mat-slide-toggle>
-      <div fxLayout="column" fxLayout.gt-sm="row" fxLayoutGap.gt-sm="2rem" class="pad-bottom">
-        <a-mat-datepicker [object]="workTask" [roleType]="m.WorkTask.ScheduledStart" [useTime]="true"></a-mat-datepicker>
-        <a-mat-datepicker [object]="workTask" [roleType]="m.WorkTask.ScheduledCompletion" [useTime]="true"></a-mat-datepicker>
-      </div>
-      <div fxLayout="column" fxLayout.gt-sm="row" fxLayoutGap.gt-sm="2rem" class="pad-bottom">
-        <a-mat-datepicker [object]="workTask" [roleType]="m.WorkTask.ActualStart" [useTime]="true"></a-mat-datepicker>
-        <a-mat-datepicker [object]="workTask" [roleType]="m.WorkTask.ActualCompletion" [useTime]="true"></a-mat-datepicker>
-      </div>
-    </div>
-
-    <mat-divider></mat-divider>
-
-    <mat-card-actions>
-      <button mat-button color="primary" type="submit" [disabled]="!form.form.valid">SAVE</button>
-      <button mat-button (click)="goBack()" type="button">CANCEL</button>
-    </mat-card-actions>
-
-  </form>
-</td-layout-card-over>
-`,
+  templateUrl: "./party-communicationevent-worktask.component.html",
 })
 export class PartyCommunicationEventWorkTaskComponent implements OnInit, AfterViewInit, OnDestroy {
 

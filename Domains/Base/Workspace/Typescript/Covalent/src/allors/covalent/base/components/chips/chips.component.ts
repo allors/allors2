@@ -15,33 +15,7 @@ import { Field } from "../../../../angular";
 
 @Component({
   selector: "a-td-chips",
-  template: `
-<td-chips style="width: 100%;"
-          [name]="name"
-          [items]="filteredOptions"
-          [(ngModel)]="model"
-          [placeholder]="label"
-          (inputChange)="inputChange($event)"
-          (add)="add($event)"
-          (remove)="remove($event)"
-          requireMatch
-          [disabled]="disabled"
-          [readOnly]="readonly"
-          [required]="required">
-
-  <ng-template td-chip let-chip="chip">
-    {{chip[this.display]}}
-  </ng-template>
-
-  <ng-template td-autocomplete-option let-option="option">
-    <div layout="row" layout-align="start center">
-      {{option[this.display]}}
-    </div>
-  </ng-template>
-
-  <mat-hint *ngIf="hint">{{hint}}</mat-hint>
-</td-chips>
-`,
+  templateUrl: "./chips.component.html",
 })
 export class ChipsComponent extends Field implements OnInit, AfterViewInit, OnDestroy {
 

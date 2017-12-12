@@ -12,10 +12,8 @@ import { Brand, Catalogue, CatScope, ContactMechanism, Currency, Facility, Good,
 import { And, ContainedIn, Contains, Fetch, Like, Page, Path, Predicate, PullRequest, Query, Sort, TreeNode } from "../../../../../../framework";
 import { MetaDomain } from "../../../../../../meta";
 
-import { template } from "./party-contactmechanism-telecommunicationsnumber.component";
-
 @Component({
-  template: template,
+  templateUrl: "./party-contactmechanism-telecommunicationsnumber.html",
 })
 export class PartyContactMechanismTelecommunicationsNumberEditComponent implements OnInit, AfterViewInit, OnDestroy {
 

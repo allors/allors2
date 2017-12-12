@@ -19,67 +19,7 @@ import { And, ContainedIn, Contains, Fetch, Like, Page, Path, Predicate, PullReq
 import { MetaDomain } from "../../../../../../meta";
 
 @Component({
-  template: `
-<td-layout-card-over [cardTitle]="title" [cardSubtitle]="subTitle">
-  <form #form="ngForm" *ngIf="communicationEvent" (submit)="save()">
-
-    <div class="pad-left pad-right">
-      <div *ngIf="communicationEvent.CommunicationEventState">
-        <a-mat-static [object]="communicationEvent" [roleType]="m.CommunicationEvent.CommunicationEventState" display="Name" label="Status"></a-mat-static>
-        <button *ngIf="communicationEvent.CanExecuteClose" mat-button type="button" (click)="close()">Close</button>
-        <button *ngIf="communicationEvent.CanExecuteCancel" mat-button type="button" (click)="cancel()">Cancel</button>
-        <button *ngIf="communicationEvent.CanExecuteReopen" mat-button type="button" (click)="reopen()">Reopen</button>
-      </div>
-
-      <a-mat-select [object]="communicationEvent" [roleType]="m.EmailCommunication.EventPurposes" [options]="purposes" display="Name"></a-mat-select>
-      <a-mat-slide-toggle [object]="communicationEvent" [roleType]="m.EmailCommunication.IncomingMail"></a-mat-slide-toggle>
-
-      <div fxLayout="row">
-        <a-mat-select fxFlex [object]="communicationEvent" [roleType]="m.EmailCommunication.Originator" [options]="emailAddresses"
-          display="displayName" label="From"></a-mat-select>
-        <button *ngIf="communicationEvent.IncomingMail" type="button" mat-icon-button (click)="addOriginator = true"><mat-icon>add</mat-icon></button>
-      </div>
-
-      <div *ngIf="addOriginator" style="background: lightblue" class="pad">
-        <party-contactmechanism-emailAddress [scope]="scope"(cancelled)="originatorCancelled($event)" (saved)="originatorAdded($event)">
-        </party-contactmechanism-emailAddress>
-      </div>
-
-      <div fxLayout="row">
-        <a-td-chips fxFlex [object]="communicationEvent" [roleType]="m.EmailCommunication.Addressees" [options]="emailAddresses"
-          display="displayName" label="To"></a-td-chips>
-        <button *ngIf="!communicationEvent.IncomingMail" type="button" mat-icon-button (click)="addAddressee = true"><mat-icon>add</mat-icon></button>
-      </div>
-
-      <div *ngIf="addAddressee" style="background: lightblue" class="pad">
-        <party-contactmechanism-emailAddress [scope]="scope" (cancelled)="addresseeCancelled($event)" (saved)="addresseeAdded($event)">
-        </party-contactmechanism-emailAddress>
-      </div>
-
-      <a-mat-input [object]="emailTemplate" [roleType]="m.EmailTemplate.SubjectTemplate" label="Subject "></a-mat-input>
-      <a-mat-textarea [object]="emailTemplate" [roleType]="m.EmailTemplate.BodyTemplate" label="Body"></a-mat-textarea>
-      <a-mat-slide-toggle [object]="communicationEvent" [roleType]="m.CommunicationEvent.SendNotification"></a-mat-slide-toggle>
-      <a-mat-slide-toggle [object]="communicationEvent" [roleType]="m.CommunicationEvent.SendReminder"></a-mat-slide-toggle>
-      <div fxLayout="column" fxLayout.gt-sm="row" fxLayoutGap.gt-sm="2rem" class="pad-bottom">
-        <a-mat-datepicker [object]="communicationEvent" [roleType]="m.CommunicationEvent.ScheduledStart" [useTime]="true"></a-mat-datepicker>
-        <a-mat-datepicker [object]="communicationEvent" [roleType]="m.CommunicationEvent.ScheduledEnd" [useTime]="true"></a-mat-datepicker>
-      </div>
-      <div fxLayout="column" fxLayout.gt-sm="row" fxLayoutGap.gt-sm="2rem" class="pad-bottom">
-        <a-mat-datepicker [object]="communicationEvent" [roleType]="m.CommunicationEvent.ActualStart" [useTime]="true"></a-mat-datepicker>
-        <a-mat-datepicker [object]="communicationEvent" [roleType]="m.CommunicationEvent.ActualEnd" [useTime]="true"></a-mat-datepicker>
-      </div>
-    </div>
-
-    <mat-divider></mat-divider>
-
-    <mat-card-actions>
-      <button mat-button color="primary" type="submit" [disabled]="!form.form.valid">SAVE</button>
-      <button mat-button (click)="goBack()" type="button">CANCEL</button>
-    </mat-card-actions>
-
-  </form>
-</td-layout-card-over>
-`,
+  templateUrl: "./party-communicationevent-emailcommunication.component.html",
 })
 export class PartyCommunicationEventEmailCommunicationComponent implements OnInit, AfterViewInit, OnDestroy {
 

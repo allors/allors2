@@ -5,7 +5,7 @@
   "repository": "https://github.com/Allors/allors2",
   "license": "LGPL-3.0",
   "scripts": {
-    "link": "npm run link-framework && npm run link-angular && npm run link-material && npm run link-covalent && npm run link-domain",
+    "link": "npm run link-framework && npm run link-domain && npm run link-angular && npm run link-material && npm run link-covalent && npm run link-promise",
     "link-framework": "lnk ../../../../../Platform/Workspace/Typescript/src/allors/framework src/allors",
     "link-angular": "lnk ../../../../Base/Workspace/Typescript/Angular/src/allors/angular/base src/allors/angular",
     "link-material": "lnk ../../../../Base/Workspace/Typescript/Material/src/allors/material/base src/allors/material",

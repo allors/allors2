@@ -11,19 +11,7 @@ import { MetaDomain } from "../../../../../../meta";
 
 @Component({
   selector: "party-contactmechanism-telecommunicationsnumber",
-  template:
-  `
-  <a-mat-select [object]="partyContactMechanism" [roleType]="m.PartyContactMechanism.ContactPurposes" [options]="contactMechanismPurposes" display="Name"></a-mat-select>
-  <a-mat-select [object]="telecommunicationsNumber" [roleType]="m.ContactMechanism.ContactMechanismType" [options]="contactMechanismTypes" display="Name"></a-mat-select>
-  <a-mat-input  [object]="telecommunicationsNumber" [roleType]="m.TelecommunicationsNumber.CountryCode"></a-mat-input>
-  <a-mat-input  [object]="telecommunicationsNumber" [roleType]="m.TelecommunicationsNumber.AreaCode"></a-mat-input>
-  <a-mat-input  [object]="telecommunicationsNumber" [roleType]="m.TelecommunicationsNumber.ContactNumber"></a-mat-input>
-  <a-mat-slide-toggle [object]="partyContactMechanism" [roleType]="m.PartyContactMechanism.UseAsDefault" label="Use as default"></a-mat-slide-toggle>
-  <a-mat-slide-toggle [object]="partyContactMechanism" [roleType]="m.PartyContactMechanism.NonSolicitationIndicator" label="Non Solicitation"></a-mat-slide-toggle>
-
-  <button mat-button color="primary" type="button" (click)="save()">Save</button>
-  <button mat-button color="secondary" type="button"(click)="cancel()">Cancel</button>
-`,
+  templateUrl: "./party-contactmechanism-telecommunicationsnumber-inline.component.html",
 })
 export class PartyContactMechanismTelecommunicationsNumberInlineComponent implements OnInit {
 

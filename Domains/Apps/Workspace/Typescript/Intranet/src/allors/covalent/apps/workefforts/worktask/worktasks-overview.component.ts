@@ -8,8 +8,8 @@ import { BehaviorSubject } from "rxjs/BehaviorSubject";
 import { Observable } from "rxjs/Observable";
 import { Subscription } from "rxjs/Subscription";
 
-import "rxjs/add/operator/startWith";
 import "rxjs/add/operator/scan";
+import "rxjs/add/operator/startWith";
 
 import { TdDialogService, TdMediaService } from "@covalent/core";
 
@@ -31,105 +31,7 @@ interface SearchData {
 }
 
 @Component({
-  template: `
-<mat-toolbar>
-  <div layout="row" layout-align="start center" flex>
-    <button mat-icon-button tdLayoutManageListOpen [hideWhenOpened]="true" style="display: none">
-          <mat-icon>arrow_back</mat-icon>
-        </button>
-    <span>{{title}}</span>
-    <span flex></span>
-    <button mat-icon-button><mat-icon>settings</mat-icon></button>
-  </div>
-</mat-toolbar>
-
-<mat-card *ngIf="workEffortStates">
-  <div class="pad-top-xs pad-left pad-right">
-    <form novalidate [formGroup]="searchForm">
-      <div class="grid-8_xs-1">
-        <mat-input-container class="col">
-          <input matInput placeholder="Name" formControlName="name">
-        </mat-input-container>
-        <mat-input-container class="col">
-          <input matInput placeholder="Description" formControlName="description">
-        </mat-input-container>
-        <mat-input-container class="col">
-          <mat-select formControlName="state" name="state" [(ngModel)]="selectedWorkEffortState" placeholder="State">
-            <mat-option>None</mat-option>
-            <mat-option *ngFor="let objectState of workEffortStates" [value]="objectState.Name">{{ objectState.Name }}</mat-option>
-          </mat-select>
-        </mat-input-container>
-        <mat-input-container class="col">
-          <mat-select formControlName="priority" name="priority" [(ngModel)]="selectedPriority" placeholder="Priority">
-            <mat-option>None</mat-option>
-            <mat-option *ngFor="let priority of priorities" [value]="priority.Name">{{ priority.Name }}</mat-option>
-          </mat-select>
-        </mat-input-container>
-        <mat-input-container class="col">
-          <mat-select formControlName="assignee" name="assignee" [(ngModel)]="selectedAssignee" placeholder="Assignee">
-            <mat-option>None</mat-option>
-            <mat-option *ngFor="let assignee of assignees" [value]="assignee.displayName">{{ assignee.displayName }}</mat-option>
-          </mat-select>
-        </mat-input-container>
-        <mat-icon matSuffix>search</mat-icon>
-      </div>
-    </form>
-  </div>
-
-  <mat-divider></mat-divider>
-
-  <mat-card-content>
-    <ng-template tdLoading="data">
-      <mat-list class="will-load">
-        <div class="mat-padding" *ngIf="data && data.length === 0" layout="row" layout-align="center center">
-          <h3>No work tasks to display.</h3>
-        </div>
-        <ng-template let-workEffortAssignment let-last="last" ngFor [ngForOf]="data">
-          <mat-list-item>
-            <span class="mat-list-text pointer" [routerLink]="['/worktask/' + workEffortAssignment.Assignment.id]">
-              {{ workEffortAssignment.Assignment.Name }}, {{ workEffortAssignment.Assignment.WorkEffortState.Name }}
-
-              <div mat-line class="mat-caption pointer" [routerLink]="['/relations/person/' + workEffortAssignment.Professional.id]">Assigned to: {{ workEffortAssignment.Professional.displayName }} </div>
-              <p mat-line class="mat-caption">{{ workEffortAssignment.Assignment.Description }} </p>
-              <p *ngIf="workEffortAssignment.Assignment.Priority" mat-line class="mat-caption">Priority {{ workEffortAssignment.Assignment.Priority.Name }} </p>
-
-              <span hide-xs hide-sm hide-md flex-gt-xs="60" flex-xs="40" layout-gt-xs="row">
-                <div class="mat-caption tc-grey-500" flex-gt-xs="50"> Sched. Start: {{ workEffortAssignment.Assignment.ScheduledStart | date}} </div>
-                <div class="mat-caption tc-grey-500" flex-gt-xs="50"> Sched. Compl.: {{ workEffortAssignment.Assignment.ScheduledCompletion | date }} </div>
-                <div class="mat-caption tc-grey-500" flex-gt-xs="50"> Act. Start: {{ workEffortAssignment.Assignment.ActualStart | date}} </div>
-                <div class="mat-caption tc-grey-500" flex-gt-xs="50"> Act. Compl.: {{ workEffortAssignment.Assignment.ActualCompletion | date }} </div>
-              </span>
-            </span>
-
-            <span>
-              <button mat-icon-button [mat-menu-trigger-for]="menu">
-                <mat-icon>more_vert</mat-icon>
-              </button>
-              <mat-menu x-position="before" #menu="matMenu">
-                <a [routerLink]="['/worktask/' + workEffortAssignment.Assignment.id]" mat-menu-item>Edit</a>
-                <button  mat-menu-item (click)="delete(workEffortAssignment.Assignment)" [disabled]="!workEffortAssignment.Assignment.CanExecuteDelete">Delete</button>
-              </mat-menu>
-            </span>
-
-          </mat-list-item>
-          <mat-divider *ngIf="!last" mat-inset></mat-divider>
-        </ng-template>
-      </mat-list>
-    </ng-template>
-
-  </mat-card-content>
-</mat-card>
-
-<mat-card body tdMediaToggle="gt-xs" [mediaClasses]="['push']" *ngIf="this.data && this.data.length !== total">
-  <mat-card-content>
-    <button mat-button (click)="more()">More</button> {{this.data?.length}}/{{total}}
-  </mat-card-content>
-</mat-card>
-
-<a mat-fab color="accent" class="mat-fab-bottom-right fixed" [routerLink]="['/worktask']">
-  <mat-icon>add</mat-icon>
-</a>
-`,
+  templateUrl: "./worktasks-overview.component.html",
 })
 export class WorkTasksOverviewComponent implements AfterViewInit, OnDestroy {
 

@@ -12,10 +12,8 @@ import { Brand, Catalogue, CatScope, ContactMechanism, Currency, Enumeration, Fa
 import { And, ContainedIn, Contains, Fetch, Like, Page, Path, Predicate, PullRequest, Query, Sort, TreeNode } from "../../../../../../framework";
 import { MetaDomain } from "../../../../../../meta";
 
-import { template } from "./party-contactmechanism-webaddress.component";
-
 @Component({
-  template: template,
+  templateUrl: "./party-contactmechanism-webaddress.html",
 })
 export class PartyContactMechanismAddWebAddressComponent implements OnInit, AfterViewInit, OnDestroy {
 

@@ -11,15 +11,7 @@ import { MetaDomain } from "../../../../../../meta";
 
 @Component({
   selector: "party-contactmechanism-webaddress",
-  template: `
-  <a-mat-select [object]="partyContactMechanism" [roleType]="m.PartyContactMechanism.ContactPurposes" [options]="contactMechanismPurposes" display="Name"></a-mat-select>
-  <a-mat-input [object]="webAddress" [roleType]="m.EmailAddress.ElectronicAddressString" label="Web address"></a-mat-input>
-  <a-mat-slide-toggle [object]="partyContactMechanism" [roleType]="m.PartyContactMechanism.UseAsDefault" label="Use as default"></a-mat-slide-toggle>
-  <a-mat-slide-toggle [object]="partyContactMechanism" [roleType]="m.PartyContactMechanism.NonSolicitationIndicator" label="Non Solicitation"></a-mat-slide-toggle>
-
-  <button mat-button color="primary" type="button" (click)="save()">Save</button>
-  <button mat-button color="secondary" type="button"(click)="cancel()">Cancel</button>
-`,
+  template: "./party-contactmechanism-webaddress-inline.component.html",
 })
 export class PartyContactMechanismInlineWebAddressComponent implements OnInit {
   @Output() public saved: EventEmitter<PartyContactMechanism> = new EventEmitter<PartyContactMechanism>();

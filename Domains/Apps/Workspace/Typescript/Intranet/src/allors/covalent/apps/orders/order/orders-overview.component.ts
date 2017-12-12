@@ -3,23 +3,7 @@ import { Title } from "@angular/platform-browser";
 import { TdMediaService } from "@covalent/core";
 
 @Component({
-  template: `
-<mat-toolbar>
-  <div layout="row" layout-align="start center" flex>
-    <button mat-icon-button tdLayoutManageListOpen [hideWhenOpened]="true" style="display: none">
-          <mat-icon>arrow_back</mat-icon>
-        </button>
-    <span>{{title}}</span>
-    <span flex></span>
-    <button mat-icon-button><mat-icon>settings</mat-icon></button>
-  </div>
-</mat-toolbar>
-
-<mat-card>
-  <mat-card-title>Orders</mat-card-title>
-  <mat-card-content>Blah Blah</mat-card-content>
-</mat-card>
-`,
+  templateUrl: "./orders-overview.component.html",
 })
 export class OrdersOverviewComponent implements AfterViewInit {
   public title: string = "Orders Dashboard";

@@ -5,12 +5,7 @@ import { Field } from "../../../../angular";
 
 @Component({
   selector: "a-mat-input",
-  template: `
-<mat-form-field style="width: 100%;" fxLayout="column" fxLayoutAlign="top stretch">
-  <input matInput [type]="textType" [(ngModel)]="model" [name]="name" [placeholder]="label" [required]="required" [disabled]="disabled" [readonly]="readonly">
-  <mat-hint *ngIf="hint">{{hint}}</mat-hint>
-</mat-form-field>
-`,
+  templateUrl: "./input.component.html",
 })
 export class InputComponent extends Field implements AfterViewInit {
   @ViewChildren(NgModel) private controls: QueryList<NgModel>;

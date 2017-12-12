@@ -5,13 +5,7 @@ import { Field } from "../../../../angular";
 
 @Component({
   selector: "a-mat-textarea",
-  template: `
-<mat-form-field style="width: 100%;" fxLayout="column" fxLayoutAlign="top stretch">
-  <textarea matInput [(ngModel)]="model" [name]="name" [placeholder]="label" [required]="required" [disabled]="disabled" [readonly]="readonly">
-  </textarea>
-  <mat-hint *ngIf="hint">{{hint}}</mat-hint>
-</mat-form-field>
-`,
+  templateUrl: "./textarea.component.html",
 })
 export class TextareaComponent extends Field implements AfterViewInit {
   @ViewChildren(NgModel) private controls: QueryList<NgModel>;

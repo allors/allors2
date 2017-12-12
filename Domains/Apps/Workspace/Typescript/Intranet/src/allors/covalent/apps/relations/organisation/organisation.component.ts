@@ -14,30 +14,7 @@ import { And, ContainedIn, Contains, Fetch, Like, Page, Path, Predicate, PullReq
 import { MetaDomain } from "../../../../meta";
 
 @Component({
-  template: `
-<td-layout-card-over [cardTitle]="title" [cardSubtitle]="subTitle">
-  <form #form="ngForm" *ngIf="organisation" (submit)="save()">
-
-    <div class="pad">
-      <a-td-image [object]="organisation" [roleType]="m.Organisation.LogoImage" accept="image/*"></a-td-image>
-      <a-mat-select [object]="organisation" [roleType]="m.Organisation.OrganisationRoles" [options]="roles" display="Name"></a-mat-select>
-      <a-mat-select [object]="organisation" [roleType]="m.Organisation.OrganisationClassifications" [options]="classifications" display="Name" label="Classification"></a-mat-select>
-      <a-mat-select [object]="organisation" [roleType]="m.Organisation.IndustryClassifications" [options]="industries" display="Name" label="Industry"></a-mat-select>
-      <a-mat-input [object]="organisation" [roleType]="m.Organisation.Name"></a-mat-input>
-      <a-mat-input [object]="organisation" [roleType]="m.Organisation.Comment"></a-mat-input>
-      <a-mat-select [object]="organisation" [roleType]="m.Organisation.Locale" [options]="locales" display="Name"></a-mat-select>
-    </div>
-
-    <mat-divider></mat-divider>
-
-    <mat-card-actions>
-      <button mat-button color="primary" type="submit" [disabled]="!form.form.valid">SAVE</button>
-      <button mat-button (click)="goBack()" type="button">CANCEL</button>
-    </mat-card-actions>
-  </form>
-
-</td-layout-card-over>
-`,
+  templateUrl: "./organisation.component.html",
 })
 export class OrganisationComponent implements OnInit, AfterViewInit, OnDestroy {
 

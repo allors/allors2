@@ -29,45 +29,12 @@ interface SearchData {
 }
 
 @Component({
-  template: `
-<td-layout-card-over [cardTitle]="title" [cardSubtitle]="subTitle">
-
-  <div class="pad-top-xs pad-left pad-right">
-    <form novalidate [formGroup]="searchForm">
-      <mat-input-container>
-        <input matInput placeholder="First Name" formControlName="firstName">
-        <mat-icon matSuffix>search</mat-icon>
-      </mat-input-container>
-      <mat-input-container>
-        <input matInput placeholder="Last Name" formControlName="lastName">
-        <mat-icon matSuffix>search</mat-icon>
-      </mat-input-container>
-    </form>
-  </div>
-
-  <mat-divider></mat-divider>
-
-  <mat-card-content style="min-height: 60vh">
-    <ng-template tdLoading="csv">
-      <mat-list class="will-load" fxLayout="column">
-
-        <textarea #clipSource style="min-height: 60vh" [ngModel]="csv"></textarea>
-
-        <a mat-icon-button matTooltip="Copy to clipboard" (click)="clipSource.select(); copy()">
-          <mat-icon>content_copy</mat-icon>
-        </a>
-
-      </mat-list>
-    </ng-template>
-  </mat-card-content>
-
-</td-layout-card-over>
-`,
+  templateUrl: "./people-export.component.html",
 })
 export class PeopleExportComponent implements AfterViewInit, OnDestroy {
 
   public total: number;
-  
+
   public title: string = "Export People to CSV";
   public subTitle: string;
 
@@ -75,7 +42,7 @@ export class PeopleExportComponent implements AfterViewInit, OnDestroy {
 
   public data: Person[];
   public csv: string;
- 
+
   private refresh$: BehaviorSubject<Date>;
   private subscription: Subscription;
   private scope: Scope;

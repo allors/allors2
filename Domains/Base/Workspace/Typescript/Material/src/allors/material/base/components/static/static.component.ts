@@ -4,11 +4,7 @@ import { Field } from "../../../../angular";
 
 @Component({
   selector: "a-mat-static",
-  template: `
-<mat-form-field style="width: 100%;" fxLayout="column" fxLayoutAlign="top stretch">
-  <input matInput type="type" [ngModel]="static" [name]="name" [placeholder]="label" readonly>
-</mat-form-field>
-`,
+  templateUrl: "./static.component.html",
 })
 export class StaticComponent extends Field {
   @Input()

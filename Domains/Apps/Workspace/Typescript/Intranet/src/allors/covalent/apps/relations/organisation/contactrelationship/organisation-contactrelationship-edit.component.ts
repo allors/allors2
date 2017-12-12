@@ -8,10 +8,8 @@ import { Brand, Catalogue, CatScope, ContactMechanism, Currency, Facility, Good,
 import { And, ContainedIn, Contains, Fetch, Like, Page, Path, Predicate, PullRequest, Query, Sort, TreeNode } from "../../../../../framework";
 import { MetaDomain } from "../../../../../meta";
 
-import { template } from "./organisation-contactrelationship.component";
-
 @Component({
-  template: template,
+  templateUrl: "./organisation-contactrelationship.html",
 })
 export class OrganisationContactrelationshipEditComponent implements OnInit, AfterViewInit, OnDestroy {
 

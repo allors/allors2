@@ -3,16 +3,7 @@ import { Title } from "@angular/platform-browser";
 import { TdMediaService } from "@covalent/core";
 
 @Component({
-  template: `
-<mat-card>
-  <mat-card-title>Accounts Receivable Dashboard</mat-card-title>
-  <mat-card-subtitle>Overview</mat-card-subtitle>
-  <mat-divider></mat-divider>
-  <mat-card-content>
-    Info
-  </mat-card-content>
-</mat-card>
-`,
+  templateUrl: "./dashboard.component.html",
 })
 export class DashboardComponent implements AfterViewInit {
   public title: string = "Relations Dashboard";

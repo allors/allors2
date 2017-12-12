@@ -1,11 +1,9 @@
-export const template = `
 <td-layout-card-over [cardTitle]="title" [cardSubtitle]="subTitle">
   <form #form="ngForm" *ngIf="contactMechanism" (submit)="save()">
 
     <div class="pad">
-      <a-mat-select [object]="partyContactMechanism" [roleType]="m.PartyContactMechanism.ContactPurposes" [options]="contactMechanismPurposes"
-        display="Name" label="Contact purposes"></a-mat-select>
-      <a-mat-input [object]="contactMechanism" [roleType]="m.WebAddress.ElectronicAddressString"></a-mat-input>
+      <a-mat-select [object]="partyContactMechanism" [roleType]="m.PartyContactMechanism.ContactPurposes" [options]="contactMechanismPurposes" display="Name" label="Contact purposes"></a-mat-select>
+      <a-mat-input [object]="contactMechanism" [roleType]="m.EmailAddress.ElectronicAddressString" label="Email address"></a-mat-input>
       <a-mat-slide-toggle [object]="partyContactMechanism" [roleType]="m.PartyContactMechanism.UseAsDefault" label="Use as default"></a-mat-slide-toggle>
     </div>
 
@@ -18,4 +16,3 @@ export const template = `
 
   </form>
 </td-layout-card-over>
-`;

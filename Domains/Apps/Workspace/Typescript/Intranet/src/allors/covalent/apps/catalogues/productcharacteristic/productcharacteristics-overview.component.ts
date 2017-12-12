@@ -22,66 +22,7 @@ interface SearchData {
 }
 
 @Component({
-  template: `
-<mat-toolbar>
-  <div layout="row" layout-align="start center" flex>
-    <button mat-icon-button tdLayoutManageListOpen [hideWhenOpened]="true" style="display: none">
-          <mat-icon>arrow_back</mat-icon>
-        </button>
-    <span>{{title}}</span>
-    <span flex></span>
-    <button mat-icon-button><mat-icon>settings</mat-icon></button>
-  </div>
-</mat-toolbar>
-
-<mat-card>
-  <div class="pad-top-xs pad-left pad-right">
-    <form novalidate [formGroup]="searchForm">
-      <mat-input-container>
-        <input matInput placeholder="Name" formControlName="name">
-        <mat-icon matSuffix>search</mat-icon>
-      </mat-input-container>
-    </form>
-  </div>
-
-  <mat-divider></mat-divider>
-  <ng-template tdLoading="data">
-    <mat-list class="will-load">
-      <div class="mat-padding" *ngIf="data && data.length === 0" layout="row" layout-align="center center">
-        <h3>No characteristics to display.</h3>
-      </div>
-      <ng-template let-characteristic let-last="last" ngFor [ngForOf]="data">
-          <mat-list-item>
-
-            <h3 mat-line [routerLink]="'/productCharacteristic/' + [characteristic.id]"> {{characteristic.Name}}</h3>
-
-            <span>
-                <button mat-icon-button [mat-menu-trigger-for]="menu">
-                <mat-icon>more_vert</mat-icon>
-                </button>
-                <mat-menu x-position="before" #menu="matMenu">
-                <a [routerLink]="'/productCharacteristic/' + [characteristic.id]" mat-menu-item>Edit</a>
-                <button mat-menu-item (click)="delete(characteristic)">Delete</button>
-                </mat-menu>
-              </span>
-
-          </mat-list-item>
-          <mat-divider *ngIf="!last" mat-inset></mat-divider>
-      </ng-template>
-    </mat-list>
-  </ng-template>
-</mat-card>
-
-<mat-card body tdMediaToggle="gt-xs" [mediaClasses]="['push']" *ngIf="this.data && this.data.length !== total">
-  <mat-card-content>
-    <button mat-button (click)="more()">More</button> {{this.data?.length}}/{{total}}
-  </mat-card-content>
-</mat-card>
-
-<a mat-fab color="accent" class="mat-fab-bottom-right fixed" [routerLink]="['/productCharacteristic']">
-  <mat-icon>add</mat-icon>
-</a>
-`,
+  templateUrl: "./productcharacteristics-overview.component.html",
 })
 export class ProductCharacteristicsOverviewComponent implements AfterViewInit, OnDestroy {
 
@@ -145,13 +86,13 @@ export class ProductCharacteristicsOverviewComponent implements AfterViewInit, O
 
         const query: Query[] = [new Query(
           {
-            name: "productCharacteristics",
-            objectType: m.ProductCharacteristic,
-            predicate,
-            page: new Page({ skip: 0, take: take }),
             include: [
               new TreeNode({ roleType: m.ProductCharacteristic.LocalisedNames }),
             ],
+            name: "productCharacteristics",
+            objectType: m.ProductCharacteristic,
+            page: new Page({ skip: 0, take }),
+            predicate,
           })];
 
         return this.scope.load("Pull", new PullRequest({ query }));
