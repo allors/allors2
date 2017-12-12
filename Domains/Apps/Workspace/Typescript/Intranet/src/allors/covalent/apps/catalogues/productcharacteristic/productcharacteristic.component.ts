@@ -30,6 +30,9 @@ import { MetaDomain } from "../../../../meta";
 })
 export class ProductCharacteristicComponent implements OnInit, AfterViewInit, OnDestroy {
 
+  public title: string = "Product Characteristic";
+  public subTitle: string;
+ 
   public m: MetaDomain;
 
   public productCharacteristic: ProductCharacteristic;

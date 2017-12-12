@@ -48,10 +48,10 @@ const BASE_MATERIAL_MODULES: any[] = [
   RadioGroupModule, SelectModule, SliderModule, SlideToggleModule, StaticModule, TextAreaModule,
 ];
 
-import { ChipsModule, MediaUploadModule } from "../../covalent";
+import { ChipsModule, MediaImageModule, MediaImagesModule } from "../../covalent";
 
 const BASE_COVALENT_MODULES: any[] = [
-  ChipsModule, MediaUploadModule,
+  ChipsModule, MediaImageModule, MediaImagesModule,
 ];
 
 @NgModule({

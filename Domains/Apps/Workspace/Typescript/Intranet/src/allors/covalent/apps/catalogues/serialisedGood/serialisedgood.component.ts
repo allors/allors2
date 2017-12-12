@@ -115,7 +115,7 @@ import { MetaDomain } from "../../../../meta";
           </mat-tab>
 
           <mat-tab label="Images">
-            <a-mat-media-upload [object]="good" [roleType]="m.Good.PrimaryPhoto" accept="image/*" (selected)="imageSelected($event)"></a-mat-media-upload>
+            <a-td-image [object]="good" [roleType]="m.Good.PrimaryPhoto" accept="image/*" (selected)="imageSelected($event)"></a-td-image>
 
             <ng-template let-photo let-last="last" ngFor [ngForOf]="good.Photos">
               <mat-list-item>

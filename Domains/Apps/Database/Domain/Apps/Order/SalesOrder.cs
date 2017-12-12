@@ -840,11 +840,5 @@ namespace Allors.Domain
                 salesOrderItem.AppsOnDerivePrices(derivation, quantityOrdered, totalBasePrice);
             }
         }
-
-        public void AppsShip(SalesOrderShip Method)
-        {
-            var derivation = new NonLogging.Derivation(this.strategy.Session);
-            this.AppsShipThis(derivation);
-        }
     }
 }

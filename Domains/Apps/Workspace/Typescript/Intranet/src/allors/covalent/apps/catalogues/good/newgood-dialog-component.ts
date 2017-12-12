@@ -27,7 +27,7 @@ import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from "@angular/material";
 export class NewGoodDialogComponent {
   constructor(public dialogRef: MatDialogRef<NewGoodDialogComponent>, @Inject(MAT_DIALOG_DATA) public data: any) {}
 
-  private onCancelClick(): void {
+  public onCancelClick(): void {
     this.dialogRef.close();
   }
 }

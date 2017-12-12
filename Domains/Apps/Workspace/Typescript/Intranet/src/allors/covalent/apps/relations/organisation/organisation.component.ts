@@ -19,7 +19,7 @@ import { MetaDomain } from "../../../../meta";
   <form #form="ngForm" *ngIf="organisation" (submit)="save()">
 
     <div class="pad">
-      <a-mat-media-upload [object]="organisation" [roleType]="m.Organisation.LogoImage" accept="image/*"></a-mat-media-upload>
+      <a-td-image [object]="organisation" [roleType]="m.Organisation.LogoImage" accept="image/*"></a-td-image>
       <a-mat-select [object]="organisation" [roleType]="m.Organisation.OrganisationRoles" [options]="roles" display="Name"></a-mat-select>
       <a-mat-select [object]="organisation" [roleType]="m.Organisation.OrganisationClassifications" [options]="classifications" display="Name" label="Classification"></a-mat-select>
       <a-mat-select [object]="organisation" [roleType]="m.Organisation.IndustryClassifications" [options]="industries" display="Name" label="Industry"></a-mat-select>

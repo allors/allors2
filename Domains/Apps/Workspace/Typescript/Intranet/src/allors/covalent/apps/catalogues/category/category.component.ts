@@ -23,7 +23,7 @@ import { MetaDomain } from "../../../../meta";
       <div flex-gt-xs="60">
 
         <div class="pad">
-          <a-mat-media-upload [object]="category" [roleType]="m.ProductCategory.CategoryImage" accept="image/*" (selected)="imageSelected($event)"></a-mat-media-upload>
+          <a-td-image [object]="category" [roleType]="m.ProductCategory.CategoryImage" accept="image/*" (selected)="imageSelected($event)"></a-td-image>
           <a-mat-select [object]="category" [roleType]="m.ProductCategory.CatScope" [options]="catScopes" display="Name" label="Scope"></a-mat-select>
           <a-mat-localised-text [object]="category" [roleType]="m.ProductCategory.LocalisedNames" [locales]="locales" label="Name"></a-mat-localised-text>
           <a-mat-localised-text [object]="category" [roleType]="m.ProductCategory.LocalisedDescriptions" [locales]="locales" label="Description"></a-mat-localised-text>

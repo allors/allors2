@@ -20,7 +20,7 @@ import { MetaDomain } from "../../../../meta";
   <form class="pad" #form="ngForm" *ngIf="person" (submit)="save()">
 
     <div class="grid-2_xs-1">
-      <a-mat-media-upload class="col" [object]="person" [roleType]="m.Person.Picture" accept="image/*"></a-mat-media-upload>
+      <a-td-image class="col" [object]="person" [roleType]="m.Person.Picture" accept="image/*"></a-td-image>
       <a-mat-select class="col" [object]="person" [roleType]="m.Person.PersonRoles" [options]="roles" display="Name"></a-mat-select>
     </div>
 
