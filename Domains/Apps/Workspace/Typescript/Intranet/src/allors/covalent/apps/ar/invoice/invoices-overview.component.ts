@@ -11,9 +11,9 @@ import "rxjs/add/observable/combineLatest";
 
 import { TdDialogService, TdMediaService } from "@covalent/core";
 
-import { ErrorService, Filter, Invoked, Loaded, Saved, Scope, WorkspaceService } from "../../../../angular";
-import { ContactMechanism, Currency, Good, Organisation, OrganisationContactRelationship, OrganisationRole, Party, PartyContactMechanism, Person, SalesInvoice, SalesInvoiceItem, SalesOrder, VatRate, VatRegime } from "../../../../domain";
-import { And, ContainedIn, Contains, Fetch, Like, Page, Path, Predicate, PullRequest, Query, Sort, TreeNode } from "../../../../framework";
+import { ErrorService, Loaded,Scope, WorkspaceService } from "../../../../angular";
+import { SalesInvoice } from "../../../../domain";
+import { And, ContainedIn, Like, Page, Predicate, PullRequest, Query, Sort, TreeNode } from "../../../../framework";
 import { MetaDomain } from "../../../../meta";
 
 interface SearchData {

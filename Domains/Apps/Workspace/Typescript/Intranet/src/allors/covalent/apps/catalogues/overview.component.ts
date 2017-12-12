@@ -1,26 +1,11 @@
-import { AfterViewInit, ChangeDetectorRef, Component, Input } from "@angular/core";
+import { AfterViewInit, ChangeDetectorRef, Component } from "@angular/core";
 import { ActivatedRoute } from "@angular/router";
 import { TdMediaService } from "@covalent/core";
 
 import { MenuItem, MenuService } from "../../../angular";
 
 @Component({
-  template: `
-<td-layout-manage-list #manageList [opened]="media.registerQuery('gt-sm') | async" [mode]="(media.registerQuery('gt-sm') | async) ? 'side' :  'over'"
-  [sidenavWidth]="(media.registerQuery('gt-xs') | async) ? '257px' : '100%'">
-  <mat-toolbar td-sidenav-content>
-    <span>Catalogues</span>
-  </mat-toolbar>
-  <mat-nav-list td-sidenav-content [tdLayoutManageListClose]="!media.query('gt-sm')">
-    <ng-template let-item let-last="last" ngFor [ngForOf]="pages">
-      <a mat-list-item [routerLink]="item.link" routerLinkActive="active-link">
-        <mat-icon mat-list-icon>{{item.icon}}</mat-icon> {{item.title}}
-      </a>
-    </ng-template>
-  </mat-nav-list>
-  <router-outlet></router-outlet>
-</td-layout-manage-list>
-`,
+  templateUrl: "./overview.component.html",
 })
 export class OverviewComponent implements AfterViewInit {
 

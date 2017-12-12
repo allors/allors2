@@ -4,13 +4,9 @@ import { TdMediaService } from "@covalent/core";
 
 import { Subscription } from "rxjs/Subscription";
 
-import { ErrorService, Filter, Invoked, Loaded, Saved, Scope, WorkspaceService } from "../../../../angular";
-import { Brand, Catalogue, CatScope, CommunicationEvent, ContactMechanism, Currency, CustomerRelationship, Enumeration, Facility,
-  Good, InventoryItemKind, InventoryItemVariance, Locale, LocalisedText, Model, NonSerialisedInventoryItem,
-  NonSerialisedInventoryItemState, Organisation, OrganisationContactRelationship, OrganisationRole, Party, PartyContactMechanism, Person,
-  PersonRole, ProcessFlow, ProductCategory, ProductCharacteristic, ProductCharacteristicValue, ProductFeature, ProductQuote, ProductType, QuoteItem, RequestForQuote,
-  SalesInvoice, SalesInvoiceItem, SalesOrder, SalesOrderItem, Singleton, TelecommunicationsNumber, VarianceReason, VatRate, VatRegime, WorkTask, WorkEffortState, Priority, WorkEffortPurpose, WorkEffortAssignment } from "../../../../domain";
-import { And, ContainedIn, Contains, Fetch, Like, Page, Path, Predicate, PullRequest, Query, Sort, TreeNode } from "../../../../framework";
+import { ErrorService, Loaded, Saved, Scope, WorkspaceService } from "../../../../angular";
+import { Person, Singleton, WorkTask, WorkEffortState, Priority, WorkEffortPurpose, WorkEffortAssignment } from "../../../../domain";
+import { Fetch, Path, PullRequest, Query, TreeNode } from "../../../../framework";
 import { MetaDomain } from "../../../../meta";
 
 @Component({

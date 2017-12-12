@@ -8,7 +8,7 @@ import { TdMediaService } from "@covalent/core";
 export class DashboardComponent implements AfterViewInit {
   public title: string = "Relations Dashboard";
 
-  constructor(public media: TdMediaService, private changeDetectorRef: ChangeDetectorRef, private titleService: Title) {
+  constructor(public media: TdMediaService, private readonly changeDetectorRef: ChangeDetectorRef, private readonly titleService: Title) {
       this.titleService.setTitle(this.title);
   }
 

@@ -1,12 +1,8 @@
 import { Component, EventEmitter, OnInit , Output } from "@angular/core";
 
-import { ErrorService, Filter, Invoked, Loaded, Saved, Scope, WorkspaceService } from "../../../../angular";
-import { Brand, Catalogue, CatScope, ContactMechanism, Currency, Enumeration, Facility, Good, InventoryItemKind,
-  InventoryItemVariance, Locale, LocalisedText, Model, NonSerialisedInventoryItem, NonSerialisedInventoryItemState, Organisation,
-  OrganisationContactRelationship, OrganisationRole, Party, PartyContactMechanism, Person, PersonRole, ProcessFlow,
-  ProductCategory, ProductCharacteristic, ProductCharacteristicValue, ProductFeature, ProductQuote, ProductType, QuoteItem, RequestForQuote, SalesInvoice, SalesInvoiceItem,
-  SalesOrder, SalesOrderItem, Singleton, TelecommunicationsNumber, VarianceReason, VatRate, VatRegime } from "../../../../domain";
-import { And, ContainedIn, Contains, Fetch, Like, Page, Path, Predicate, PullRequest, Query, Sort, TreeNode } from "../../../../framework";
+import { ErrorService, Loaded, Saved, Scope, WorkspaceService } from "../../../../angular";
+import { Enumeration, Locale, Person, PersonRole } from "../../../../domain";
+import { PullRequest, Query } from "../../../../framework";
 import { MetaDomain } from "../../../../meta";
 
 @Component({

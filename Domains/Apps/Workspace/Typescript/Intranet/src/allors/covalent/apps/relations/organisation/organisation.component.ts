@@ -8,9 +8,9 @@ import { Subscription } from "rxjs/Subscription";
 
 import "rxjs/add/observable/combineLatest";
 
-import { ErrorService, Filter, Invoked, Loaded, Saved, Scope, WorkspaceService } from "../../../../angular";
-import { Brand, Catalogue, CatScope, ContactMechanism, Currency, Facility, Good, InventoryItemKind, InventoryItemVariance, Locale, LocalisedText, Model, NonSerialisedInventoryItem, NonSerialisedInventoryItemState, Organisation, OrganisationContactRelationship, OrganisationRole, Party, PartyContactMechanism, Person, ProductCategory, ProductCharacteristic, ProductCharacteristicValue, ProductFeature, ProductType, SalesInvoice, SalesInvoiceItem, SalesOrder, Singleton, VarianceReason, VatRate, VatRegime, RequestForQuote, ProductQuote, QuoteItem, SalesOrderItem, ProcessFlow, CommunicationEvent, TelecommunicationsNumber, CustomOrganisationClassification, IndustryClassification, CustomerRelationship } from "../../../../domain";
-import { And, ContainedIn, Contains, Fetch, Like, Page, Path, Predicate, PullRequest, Query, Sort, TreeNode } from "../../../../framework";
+import { ErrorService, Loaded, Saved, Scope, WorkspaceService } from "../../../../angular";
+import { Locale, Organisation, OrganisationRole, CustomOrganisationClassification, IndustryClassification, CustomerRelationship } from "../../../../domain";
+import { Fetch, Path, PullRequest, Query } from "../../../../framework";
 import { MetaDomain } from "../../../../meta";
 
 @Component({

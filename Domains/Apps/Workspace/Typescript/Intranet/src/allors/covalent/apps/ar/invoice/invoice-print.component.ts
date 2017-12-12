@@ -2,15 +2,13 @@ import { AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit, ViewEnc
 import { ActivatedRoute } from "@angular/router";
 import { TdMediaService } from "@covalent/core";
 
-import { BehaviorSubject } from "rxjs/BehaviorSubject";
-import { Observable } from "rxjs/Observable";
 import { Subscription } from "rxjs/Subscription";
 
 import "rxjs/add/observable/combineLatest";
 
-import { ErrorService, Invoked, Loaded, Saved, Scope, WorkspaceService } from "../../../../angular";
-import { Good, SalesInvoice, SalesInvoiceItem, SalesOrder } from "../../../../domain";
-import { Fetch, Path, PullRequest, Query, TreeNode } from "../../../../framework";
+import { ErrorService, Loaded, Scope, WorkspaceService } from "../../../../angular";
+import { SalesInvoice } from "../../../../domain";
+import { Fetch, PullRequest } from "../../../../framework";
 import { MetaDomain } from "../../../../meta";
 
 @Component({

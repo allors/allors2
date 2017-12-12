@@ -14,13 +14,9 @@ import { TdDialogService, TdMediaService } from "@covalent/core";
 
 import * as Papa from "papaparse";
 
-import { ErrorService, Filter, Invoked, Loaded, Saved, Scope, WorkspaceService } from "../../../../angular";
-import { Brand, Catalogue, CatScope, CommunicationEvent, ContactMechanism, Currency, CustomerRelationship, Enumeration, Facility,
-  Good, InventoryItemKind, InventoryItemVariance, Locale, LocalisedText, Model, NonSerialisedInventoryItem,
-  NonSerialisedInventoryItemState, Organisation, OrganisationContactRelationship, OrganisationRole, Party, PartyContactMechanism, Person,
-  PersonRole, ProcessFlow, ProductCategory, ProductCharacteristic, ProductCharacteristicValue, ProductFeature, ProductQuote, ProductType, QuoteItem, RequestForQuote,
-  SalesInvoice, SalesInvoiceItem, SalesOrder, SalesOrderItem, Singleton, TelecommunicationsNumber, VarianceReason, VatRate, VatRegime } from "../../../../domain";
-import { And, ContainedIn, Contains, Fetch, Like, Page, Path, Predicate, PullRequest, Query, Sort, TreeNode } from "../../../../framework";
+import { ErrorService, Loaded, Scope, WorkspaceService } from "../../../../angular";
+import { Person } from "../../../../domain";
+import { And, Like, Page, Predicate, PullRequest, Query, Sort, TreeNode } from "../../../../framework";
 import { MetaDomain } from "../../../../meta";
 
 interface SearchData {

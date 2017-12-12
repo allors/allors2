@@ -12,9 +12,9 @@ import "rxjs/add/observable/combineLatest";
 
 import { TdDialogService, TdMediaService } from "@covalent/core";
 
-import { ErrorService, Filter, Invoked, Loaded, Saved, Scope, WorkspaceService } from "../../../../angular";
-import { ContactMechanism, Currency, Good, Organisation, OrganisationContactRelationship, OrganisationRole, Party, PartyContactMechanism, Person, SalesInvoice, SalesInvoiceItem, SalesOrder, VatRate, VatRegime, Catalogue, Singleton, ProductCategory, CatScope, Locale, ProductType, Brand, Model, SerialisedInventoryItemState, Ownership, InventoryItemKind } from "../../../../domain";
-import { And, ContainedIn, Contains, Fetch, Like, Page, Path, Predicate, PullRequest, Query, Sort, TreeNode, Equals } from "../../../../framework";
+import { ErrorService, Loaded, Scope, WorkspaceService } from "../../../../angular";
+import { Good, Organisation, OrganisationRole, ProductCategory, ProductType, Brand, Model, SerialisedInventoryItemState, Ownership, InventoryItemKind } from "../../../../domain";
+import { And, ContainedIn, Contains, Like, Page, Predicate, PullRequest, Query, Sort, TreeNode, Equals } from "../../../../framework";
 import { MetaDomain } from "../../../../meta";
 
 import { NewGoodDialogComponent } from "../../catalogues/good/newgood-dialog.module";
