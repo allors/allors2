@@ -486,6 +486,16 @@ namespace Allors.Repository
         [Workspace]
         public bool CanShip { get; set; }
 
+        #region Allors
+        [Id("5B00CA2E-3F97-445E-813E-AA315C588AAC")]
+        [AssociationId("5AB68B1A-2367-4D62-9504-D80A83AB0DFB")]
+        [RoleId("9619BA05-1768-4196-861E-28B2F7C69F25")]
+        #endregion
+        [Derived]
+        [Required]
+        [Workspace]
+        public bool CanInvoice { get; set; }
+
         #region inherited methods
 
 
@@ -523,5 +533,12 @@ namespace Allors.Repository
         #endregion
         [Workspace]
         public void Ship() { }
+
+
+        #region Allors
+        [Id("794F36F3-04A0-41E9-8AE1-AD48C006CE6B")]
+        #endregion
+        [Workspace]
+        public void Invoice() { }
     }
 }

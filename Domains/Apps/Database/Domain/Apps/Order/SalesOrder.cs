@@ -17,6 +17,7 @@ namespace Allors.Domain
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
 
     using Allors.Domain.NonLogging;
     using Allors.Services;
@@ -169,7 +170,7 @@ namespace Allors.Domain
 
             if (!this.ExistBillToContactMechanism && this.ExistBillToCustomer)
             {
-                this.BillToContactMechanism = this.BillToCustomer.ExistBillingAddress?
+                this.BillToContactMechanism = this.BillToCustomer.ExistBillingAddress ?
                                                   this.BillToCustomer.BillingAddress : this.BillToCustomer.ExistShippingAddress ? this.BillToCustomer.ShippingAddress : this.BillToCustomer.GeneralCorrespondence;
             }
 
@@ -181,7 +182,7 @@ namespace Allors.Domain
 
             if (!this.ExistTakenByContactMechanism)
             {
-                this.TakenByContactMechanism = this.Strategy.Session.GetSingleton().InternalOrganisation.ExistOrderAddress ? 
+                this.TakenByContactMechanism = this.Strategy.Session.GetSingleton().InternalOrganisation.ExistOrderAddress ?
                     this.Strategy.Session.GetSingleton().InternalOrganisation.OrderAddress : this.Strategy.Session.GetSingleton().InternalOrganisation.GeneralCorrespondence;
             }
 
@@ -240,13 +241,9 @@ namespace Allors.Domain
             this.AppsOnDeriveSalesReps(derivation);
             this.AppsOnDeriveOrderPaymentState(derivation);
             this.AppsDeriveCanShip(derivation);
+            this.AppsDeriveCanInvoice(derivation);
 
-            if (!CanShip)
-            {
-                this.AddDeniedPermission(new Permissions(this.strategy.Session).Get(this.Meta.Class, this.Meta.Ship, Operations.Execute));
-            }
-
-            if (Equals(this.Store.ProcessFlow, new ProcessFlows(this.strategy.Session).ShipFirst) && this.CanShip)
+            if (Equals(this.Store.BillingProcess, new BillingProcesses(this.strategy.Session).BillingForShipmentItems) && this.CanShip)
             {
                 this.AppsShipThis(derivation);
             }
@@ -257,12 +254,32 @@ namespace Allors.Domain
             var templateService = this.strategy.Session.ServiceProvider.GetRequiredService<ITemplateService>();
 
             var model = new PrintSalesOrder
-                            {
-                                SalesOrder = this,
-                                Aviaco = this.strategy.Session.GetSingleton().InternalOrganisation
-                            };
+            {
+                SalesOrder = this,
+                Aviaco = this.strategy.Session.GetSingleton().InternalOrganisation
+            };
 
             this.PrintContent = templateService.Render("Templates/SalesOrder.cshtml", model).Result;
+        }
+
+        public void AppsOnPostDerive(ObjectOnPostDerive method)
+        {
+            if (!CanShip)
+            {
+                this.AddDeniedPermission(new Permissions(this.strategy.Session).Get(this.Meta.Class, this.Meta.Ship, Operations.Execute));
+            }
+
+            if (!CanInvoice)
+            {
+                this.AddDeniedPermission(new Permissions(this.strategy.Session).Get(this.Meta.Class, this.Meta.Invoice, Operations.Execute));
+            }
+
+            if (this.SalesOrderState.Equals(new SalesOrderStates(this.Strategy.Session).InProcess) && Equals(
+                    this.Store.BillingProcess,
+                    new BillingProcesses(this.strategy.Session).BillingForShipmentItems))
+            {
+                this.RemoveDeniedPermission(new Permissions(this.strategy.Session).Get(this.Meta.Class, this.Meta.Invoice, Operations.Execute));
+            }
         }
 
         public void AppsCancel(OrderCancel method)
@@ -311,11 +328,6 @@ namespace Allors.Domain
         public void AppsComplete(OrderComplete method)
         {
             this.SalesOrderState = new SalesOrderStates(this.Strategy.Session).Completed;
-
-            if (Equals(this.Store.ProcessFlow, new ProcessFlows(this.strategy.Session).PayFirst))
-            {
-                this.AppsInvoice();
-            }
         }
 
         public void AppsOnDeriveOrderPaymentState(IDerivation derivation)
@@ -614,7 +626,7 @@ namespace Allors.Domain
                 if (this.SalesOrderState.Equals(new SalesOrderStates(this.Strategy.Session).InProcess) &&
                     ((!this.PartiallyShip && allItemsAvailable) || somethingToShip))
                 {
-                   this.CanShip = true;
+                    this.CanShip = true;
                 }
             }
 
@@ -624,7 +636,11 @@ namespace Allors.Domain
         public void AppsShip(SalesOrderShip method)
         {
             var derivation = new Derivation(this.Strategy.Session);
-            this.AppsShipThis(derivation);
+
+            if (this.CanShip)
+            {
+                this.AppsShipThis(derivation);
+            }
         }
 
         private List<Shipment> AppsShipThis(IDerivation derivation)
@@ -740,7 +756,29 @@ namespace Allors.Domain
             return addresses;
         }
 
-        private void AppsInvoice()
+        public void AppsDeriveCanInvoice(IDerivation derivation)
+        {
+            if (this.SalesOrderState.Equals(new SalesOrderStates(this.Strategy.Session).InProcess) &&
+                Equals(this.Store.BillingProcess, new BillingProcesses(this.strategy.Session).BillingForShipmentItems))
+            {
+                this.CanInvoice = true;
+            }
+
+            this.CanInvoice = false;
+        }
+
+        public void AppsInvoice(SalesOrderInvoice method)
+        {
+            var derivation = new Derivation(this.Strategy.Session);
+
+            if (this.CanInvoice)
+            {
+                this.AppsInvoiceThis(derivation);
+                this.Complete();
+            }
+        }
+
+        private void AppsInvoiceThis(IDerivation derivation)
         {
             var salesInvoice = new SalesInvoiceBuilder(this.Strategy.Session)
                 .WithSalesOrder(this)
@@ -766,18 +804,32 @@ namespace Allors.Domain
                 .WithInternalComment(this.InternalComment)
                 .Build();
 
-             foreach (SalesOrderItem orderItem in this.ValidOrderItems)
+            foreach (SalesOrderItem orderItem in this.ValidOrderItems)
             {
-                var invoiceItem = new SalesInvoiceItemBuilder(this.Strategy.Session)
-                    .WithSalesInvoiceItemType(orderItem.ItemType)
-                    .WithActualUnitPrice(orderItem.ActualUnitPrice)
-                    .WithProduct(orderItem.Product)
-                    .WithQuantity(orderItem.QuantityOrdered)
-                    .WithComment(orderItem.Comment)
-                    .WithInternalComment(orderItem.InternalComment)
-                    .Build();
+                var amountAlreadyInvoiced = orderItem.OrderItemBillingsWhereOrderItem.Sum(v => v.Amount);
 
-                salesInvoice.AddSalesInvoiceItem(invoiceItem);
+                var invoiceAmount = (orderItem.QuantityOrdered * orderItem.ActualUnitPrice) - amountAlreadyInvoiced;
+
+                if (invoiceAmount != amountAlreadyInvoiced)
+                { 
+                    var invoiceItem = new SalesInvoiceItemBuilder(this.Strategy.Session)
+                        .WithSalesInvoiceItemType(orderItem.ItemType)
+                        .WithActualUnitPrice(orderItem.ActualUnitPrice)
+                        .WithProduct(orderItem.Product)
+                        .WithQuantity(orderItem.QuantityOrdered)
+                        .WithComment(orderItem.Comment)
+                        .WithInternalComment(orderItem.InternalComment)
+                        .Build();
+
+                    salesInvoice.AddSalesInvoiceItem(invoiceItem);
+
+                    new OrderItemBillingBuilder(this.strategy.Session)
+                        .WithQuantity(orderItem.QuantityOrdered)
+                        .WithAmount(invoiceAmount)
+                        .WithOrderItem(orderItem)
+                        .WithSalesInvoiceItem(invoiceItem)
+                        .Build();
+                }
             }
         }
 

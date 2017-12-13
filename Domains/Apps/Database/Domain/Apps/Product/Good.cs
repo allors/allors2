@@ -215,7 +215,6 @@ namespace Allors.Domain
                 {
                     inventoryItem.Delete();
                 }
-
             }
         }
     }

@@ -49,7 +49,6 @@ namespace Allors.Repository
         [Scale(2)]
         public decimal Quantity { get; set; }
 
-
         #region inherited methods
 
 
@@ -63,6 +62,5 @@ namespace Allors.Repository
 
         public void OnPostDerive(){}
         #endregion
-
     }
 }

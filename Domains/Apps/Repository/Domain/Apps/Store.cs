@@ -224,7 +224,7 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.ManyToOne)]
         [Required]
         [Workspace]
-        public ProcessFlow ProcessFlow { get; set; }
+        public BillingProcess BillingProcess { get; set; }
 
         #region Allors
         [Id("ECA0A308-BB12-419C-8E10-67BDCC7D37E6")]

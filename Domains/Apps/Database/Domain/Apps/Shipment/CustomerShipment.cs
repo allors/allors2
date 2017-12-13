@@ -651,7 +651,11 @@ namespace Allors.Domain
             {
                 if (this.CustomerShipmentState.Equals(new CustomerShipmentStates(this.Strategy.Session).Shipped))
                 {
-                    this.AppsOnDeriveInvoices(derivation);
+                    if (Equals(this.Store.BillingProcess, new BillingProcesses(this.strategy.Session).BillingForShipmentItems))
+                    {
+                        this.AppsOnDeriveInvoices(derivation);
+                    }
+
                     this.AppsOnDeriveOrderItemQuantityShipped(derivation);
                 }
             }
