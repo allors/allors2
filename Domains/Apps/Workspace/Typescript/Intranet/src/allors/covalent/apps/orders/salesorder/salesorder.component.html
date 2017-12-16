@@ -41,14 +41,14 @@
       <a-mat-autocomplete *ngIf="showPeople" [object]="order" [roleType]="m.SalesOrder.BillToCustomer" [options]="people" [filter]="peopleFilter.create()"
         display="displayName" (onChange)="billToCustomerSelected($event)" label="Bill to person "></a-mat-autocomplete>
       <a-mat-select [object]="order" [roleType]="m.SalesOrder.BillToContactMechanism" [options]="billToContactMechanisms" display="displayName"></a-mat-select>
-      <button *ngIf="order.BillToCustomer" type="button" mat-button (click)="addWebAddress = true">+Web</button>
-      <button *ngIf="order.BillToCustomer" type="button" mat-button (click)="addEmailAddress = true">+Email</button>
-      <button *ngIf="order.BillToCustomer" type="button" mat-button (click)="addPostalAddress = true">+Postal</button>
-      <button *ngIf="order.BillToCustomer" type="button" mat-button (click)="addTeleCommunicationsNumber = true">+Telecom</button>
+      <button *ngIf="order.BillToCustomer" type="button" mat-button (click)="addWebAddress = true"><mat-icon>add</mat-icon>Web</button>
+      <button *ngIf="order.BillToCustomer" type="button" mat-button (click)="addEmailAddress = true"><mat-icon>add</mat-icon>Email</button>
+      <button *ngIf="order.BillToCustomer" type="button" mat-button (click)="addPostalAddress = true"><mat-icon>add</mat-icon>Postal</button>
+      <button *ngIf="order.BillToCustomer" type="button" mat-button (click)="addTeleCommunicationsNumber = true"><mat-icon>add</mat-icon>Telecom</button>
 
       <div *ngIf="addWebAddress && order.BillToCustomer" style="background: lightblue" class="pad">
-        <party-contactmechanism-webaddress  [scope]="scope" (cancelled)="webAddressCancelled($event)" (saved)="webAddressAdded($event)">
-        </party-contactmechanism-webaddress>
+        <party-contactmechanism-webAddress  [scope]="scope" (cancelled)="webAddressCancelled($event)" (saved)="webAddressAdded($event)">
+        </party-contactmechanism-webAddress>
       </div>
       <div *ngIf="addEmailAddress && order.BillToCustomer" style="background: lightblue" class="pad">
         <party-contactmechanism-emailAddress  [scope]="scope" (cancelled)="emailAddressCancelled($event)" (saved)="emailAddressAdded($event)">

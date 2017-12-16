@@ -138,9 +138,9 @@ export class QuoteItemEditComponent implements OnInit, AfterViewInit, OnDestroy 
     }
   }
 
-  public goodSelected(field: Field) {
-    if (field.object) {
-      this.update(field.object as Product)
+  public goodSelected(object: any) {
+    if (object) {
+      this.update(object as Product)
     }
   }
 

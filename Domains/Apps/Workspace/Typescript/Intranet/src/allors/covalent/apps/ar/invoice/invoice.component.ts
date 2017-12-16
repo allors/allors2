@@ -206,10 +206,9 @@ export class InvoiceComponent implements OnInit, AfterViewInit, OnDestroy {
     this.addWebAddress = false;
   }
 
-  public webAddressAdded(id: string): void {
+  public webAddressAdded(partyContactMechanism: PartyContactMechanism): void {
     this.addWebAddress = false;
 
-    const partyContactMechanism: PartyContactMechanism = this.scope.session.get(id) as PartyContactMechanism;
     this.contactMechanisms.push(partyContactMechanism.ContactMechanism);
     this.invoice.BillToCustomer.AddPartyContactMechanism(partyContactMechanism);
   }
@@ -218,10 +217,9 @@ export class InvoiceComponent implements OnInit, AfterViewInit, OnDestroy {
     this.addEmailAddress = false;
   }
 
-  public emailAddressAdded(id: string): void {
+  public emailAddressAdded(partyContactMechanism: PartyContactMechanism): void {
     this.addEmailAddress = false;
 
-    const partyContactMechanism: PartyContactMechanism = this.scope.session.get(id) as PartyContactMechanism;
     this.contactMechanisms.push(partyContactMechanism.ContactMechanism);
     this.invoice.BillToCustomer.AddPartyContactMechanism(partyContactMechanism);
   }
@@ -230,10 +228,9 @@ export class InvoiceComponent implements OnInit, AfterViewInit, OnDestroy {
     this.addPostalAddress = false;
   }
 
-  public postalAddressAdded(id: string): void {
+  public postalAddressAdded(partyContactMechanism: PartyContactMechanism): void {
     this.addPostalAddress = false;
 
-    const partyContactMechanism: PartyContactMechanism = this.scope.session.get(id) as PartyContactMechanism;
     this.contactMechanisms.push(partyContactMechanism.ContactMechanism);
     this.invoice.BillToCustomer.AddPartyContactMechanism(partyContactMechanism);
   }
@@ -242,10 +239,9 @@ export class InvoiceComponent implements OnInit, AfterViewInit, OnDestroy {
     this.addTeleCommunicationsNumber = false;
   }
 
-  public teleCommunicationsNumberAdded(id: string): void {
+  public teleCommunicationsNumberAdded(partyContactMechanism: PartyContactMechanism): void {
     this.addTeleCommunicationsNumber = false;
 
-    const partyContactMechanism: PartyContactMechanism = this.scope.session.get(id) as PartyContactMechanism;
     this.contactMechanisms.push(partyContactMechanism.ContactMechanism);
     this.invoice.BillToCustomer.AddPartyContactMechanism(partyContactMechanism);
   }
@@ -378,9 +374,9 @@ export class InvoiceComponent implements OnInit, AfterViewInit, OnDestroy {
       });
   }
 
-  public receiverSelected(field: Field) {
-    if (field.object) {
-      this.update(field.object as Party);
+  public receiverSelected(object: any) {
+    if (object) {
+      this.update(object as Party);
     }
   }
 

@@ -23,14 +23,14 @@
         </div>
   
         <a-mat-select [object]="invoice" [roleType]="m.SalesInvoice.BillToContactMechanism" [options]="contactMechanisms" display="displayName"></a-mat-select>
-        <button *ngIf="invoice.BillToCustomer" type="button" mat-button (click)="addWebAddress = true">+Web</button>
-        <button *ngIf="invoice.BillToCustomer" type="button" mat-button (click)="addEmailAddress = true">+Email</button>
-        <button *ngIf="invoice.BillToCustomer" type="button" mat-button (click)="addPostalAddress = true">+Postal</button>
-        <button *ngIf="invoice.BillToCustomer" type="button" mat-button (click)="addTeleCommunicationsNumber = true">+Telecom</button>
+        <button *ngIf="invoice.BillToCustomer" type="button" mat-button (click)="addWebAddress = true"><mat-icon>add</mat-icon>Web</button>
+        <button *ngIf="invoice.BillToCustomer" type="button" mat-button (click)="addEmailAddress = true"><mat-icon>add</mat-icon>Email</button>
+        <button *ngIf="invoice.BillToCustomer" type="button" mat-button (click)="addPostalAddress = true"><mat-icon>add</mat-icon>Postal</button>
+        <button *ngIf="invoice.BillToCustomer" type="button" mat-button (click)="addTeleCommunicationsNumber = true"><mat-icon>add</mat-icon>Telecom</button>
   
         <div *ngIf="addWebAddress && invoice.BillToCustomer" style="background: lightblue" class="pad">
-          <party-contactmechanism-webaddress [scope]="scope" (cancelled)="webAddressCancelled($event)" (saved)="webAddressAdded($event)">
-          </party-contactmechanism-webaddress>
+          <party-contactmechanism-webAddress [scope]="scope" (cancelled)="webAddressCancelled($event)" (saved)="webAddressAdded($event)">
+          </party-contactmechanism-webAddress>
         </div>
         <div *ngIf="addEmailAddress && invoice.BillToCustomer" style="background: lightblue" class="pad">
           <party-contactmechanism-emailAddress [scope]="scope" (cancelled)="emailAddressCancelled($event)" (saved)="emailAddressAdded($event)">

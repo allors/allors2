@@ -23,7 +23,7 @@ interface SearchData {
 }
 
 @Component({
-  templateUrl: "./salesorder-overview.component.html",
+  templateUrl: "./salesorders-overview.component.html",
 })
 export class SalesOrdersOverviewComponent implements AfterViewInit, OnDestroy {
 

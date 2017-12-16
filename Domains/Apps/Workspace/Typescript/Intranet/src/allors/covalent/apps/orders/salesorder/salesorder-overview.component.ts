@@ -10,7 +10,7 @@ import { Subscription } from "rxjs/Subscription";
 import "rxjs/add/observable/combineLatest";
 
 import { ErrorService, Invoked, Loaded, Saved, Scope, WorkspaceService } from "../../../../angular";
-import { Good, SalesInvoice, SalesOrder, ProductQuote, SalesOrderItem, ProcessFlow } from "../../../../domain";
+import { BillingProcess, Good, ProductQuote, SalesInvoice, SalesOrder, SalesOrderItem} from "../../../../domain";
 import { Fetch, Path, PullRequest, Query, TreeNode } from "../../../../framework";
 import { MetaDomain } from "../../../../meta";
 
@@ -26,8 +26,8 @@ export class SalesOrderOverviewComponent implements OnInit, AfterViewInit, OnDes
   public orderItems: SalesOrderItem[] = [];
   public goods: Good[] = [];
   public salesInvoice: SalesInvoice;
-  public processFlows: ProcessFlow[];
-  public payFirst: ProcessFlow;
+  public billingProcesses: BillingProcess[];
+  public billingForOrderItems: BillingProcess;
 
   private subscription: Subscription;
   private scope: Scope;
@@ -126,7 +126,7 @@ export class SalesOrderOverviewComponent implements OnInit, AfterViewInit, OnDes
             new Query(
             {
               name: "processFlows",
-              objectType: m.ProcessFlow,
+              objectType: m.BillingProcess,
             }),
         ];
 
@@ -138,8 +138,8 @@ export class SalesOrderOverviewComponent implements OnInit, AfterViewInit, OnDes
         this.goods = loaded.collections.goods as Good[];
         this.order = loaded.objects.order as SalesOrder;
         this.salesInvoice = loaded.objects.salesInvoice as SalesInvoice;
-        this.processFlows = loaded.collections.processFlows as ProcessFlow[];
-        this.payFirst = this.processFlows.find((v: ProcessFlow) => v.UniqueId.toUpperCase() === "AB01CCC2-6480-4FC0-B20E-265AFD41FAE2");
+        this.billingProcesses = loaded.collections.processFlows as BillingProcess[];
+        this.billingForOrderItems = this.billingProcesses.find((v: BillingProcess) => v.UniqueId.toUpperCase() === "AB01CCC2-6480-4FC0-B20E-265AFD41FAE2");
 
         if (this.order) {
           this.orderItems = this.order.SalesOrderItems;

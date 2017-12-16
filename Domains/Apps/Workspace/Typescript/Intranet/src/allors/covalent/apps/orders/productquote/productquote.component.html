@@ -22,14 +22,14 @@
       </div>
 
         <a-mat-select [object]="quote" [roleType]="m.ProductQuote.FullfillContactMechanism" [options]="contactMechanisms" display="displayName"></a-mat-select>
-      <button *ngIf="quote.Receiver" type="button" mat-button (click)="addWebAddress = true">+Web</button>
-      <button *ngIf="quote.Receiver" type="button" mat-button (click)="addEmailAddress = true">+Email</button>
-      <button *ngIf="quote.Receiver" type="button" mat-button (click)="addPostalAddress = true">+Postal</button>
-      <button *ngIf="quote.Receiver" type="button" mat-button (click)="addTeleCommunicationsNumber = true">+Telecom</button>
+      <button *ngIf="quote.Receiver" type="button" mat-button (click)="addWebAddress = true"><mat-icon>add</mat-icon>Web</button>
+      <button *ngIf="quote.Receiver" type="button" mat-button (click)="addEmailAddress = true"><mat-icon>add</mat-icon>Email</button>
+      <button *ngIf="quote.Receiver" type="button" mat-button (click)="addPostalAddress = true"><mat-icon>add</mat-icon>Postal</button>
+      <button *ngIf="quote.Receiver" type="button" mat-button (click)="addTeleCommunicationsNumber = true"><mat-icon>add</mat-icon>Telecom</button>
 
       <div *ngIf="addWebAddress && quote.Receiver" style="background: lightblue" class="pad">
-        <party-contactmechanism-webaddress [scope]="scope" (cancelled)="webAddressCancelled($event)" (saved)="webAddressAdded($event)">
-        </party-contactmechanism-webaddress>
+        <party-contactmechanism-webAddress [scope]="scope" (cancelled)="webAddressCancelled($event)" (saved)="webAddressAdded($event)">
+        </party-contactmechanism-webAddress>
       </div>
       <div *ngIf="addEmailAddress && quote.Receiver" style="background: lightblue" class="pad">
         <party-contactmechanism-emailAddress [scope]="scope" (cancelled)="emailAddressCancelled($event)" (saved)="emailAddressAdded($event)">

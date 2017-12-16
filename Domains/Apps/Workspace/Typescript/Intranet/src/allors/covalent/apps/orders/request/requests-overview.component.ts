@@ -23,7 +23,7 @@ interface SearchData {
 }
 
 @Component({
-  templateUrl: "./request-overview.component.html",
+  templateUrl: "./requests-overview.component.html",
 })
 export class RequestsOverviewComponent implements AfterViewInit, OnDestroy {
 

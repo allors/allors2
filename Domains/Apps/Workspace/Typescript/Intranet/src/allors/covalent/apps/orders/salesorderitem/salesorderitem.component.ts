@@ -163,9 +163,9 @@ export class SalesOrderItemEditComponent implements OnInit, AfterViewInit, OnDes
     }
   }
 
-  public goodSelected(field: Field) {
-    if (field.object) {
-      this.update(field.object as Product);
+  public goodSelected(object: any) {
+    if (object) {
+      this.update(object as Product);
     }
   }
 

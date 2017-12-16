@@ -6,8 +6,8 @@ import { PullRequest, Query } from "../../../../../../framework";
 import { MetaDomain } from "../../../../../../meta";
 
 @Component({
-  selector: "party-contactmechanism-webaddress",
-  template: "./party-contactmechanism-webaddress-inline.component.html",
+  selector: "party-contactmechanism-webAddress",
+  templateUrl: "./party-contactmechanism-webaddress-inline.component.html",
 })
 export class PartyContactMechanismInlineWebAddressComponent implements OnInit {
   @Output() public saved: EventEmitter<PartyContactMechanism> = new EventEmitter<PartyContactMechanism>();

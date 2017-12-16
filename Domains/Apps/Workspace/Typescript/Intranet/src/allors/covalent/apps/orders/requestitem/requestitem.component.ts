@@ -117,9 +117,9 @@ export class RequestItemEditComponent implements OnInit, AfterViewInit, OnDestro
     );
   }
 
-  public goodSelected(field: Field): void {
-    if (field.object) {
-      this.update(field.object as Product);
+  public goodSelected(object: any): void {
+    if (object) {
+      this.update(object as Product);
     }
   }
 
