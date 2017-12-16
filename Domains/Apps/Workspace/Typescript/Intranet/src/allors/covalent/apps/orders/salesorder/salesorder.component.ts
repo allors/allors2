@@ -117,7 +117,7 @@ export class SalesOrderEditComponent implements OnInit, AfterViewInit, OnDestroy
           new Query(
             {
             include: [
-              new TreeNode({ roleType: m.Store.ProcessFlow }),
+              new TreeNode({ roleType: m.Store.BillingProcess }),
             ],
             name: "stores",
               objectType: m.Store,
