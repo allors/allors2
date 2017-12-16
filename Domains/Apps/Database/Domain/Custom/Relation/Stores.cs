@@ -6,7 +6,7 @@
     {
         protected override void AppsPrepare(Setup config)
         {
-            config.AddDependency(this.ObjectType, M.ProcessFlow.ObjectType);
+            config.AddDependency(this.ObjectType, M.BillingProcess.ObjectType);
         }
     }
 }

@@ -103,7 +103,7 @@ namespace Allors
                 .WithDefaultPaymentMethod(ownBankAccount)
                 .WithDefaultShipmentMethod(new ShipmentMethods(this.Session).Ground)
                 .WithDefaultCarrier(new Carriers(this.Session).Fedex)
-                .WithProcessFlow(new ProcessFlows(this.Session).PayFirst)
+                .WithBillingProcess(new BillingProcesses(this.Session).BillingForShipmentItems)
                 .WithIsImmediatelyPicked(true)
                 .Build();
 
