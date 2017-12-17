@@ -25,7 +25,7 @@ export class AutocompleteComponent extends Field implements OnInit {
 
   @Input() public filter: ((search: string) => Observable<ISessionObject[]>);
 
-  @Output() public onChange: EventEmitter<Field> = new EventEmitter();
+  @Output() public onChange: EventEmitter<ISessionObject> = new EventEmitter();
 
   public filteredOptions: Observable<ISessionObject[]>;
 
@@ -82,7 +82,7 @@ export class AutocompleteComponent extends Field implements OnInit {
 
   public selected(option: ISessionObject): void {
     this.model = option;
-    this.onChange.emit(this);
+    this.onChange.emit(option);
   }
 
   public focusout(event: any): void {

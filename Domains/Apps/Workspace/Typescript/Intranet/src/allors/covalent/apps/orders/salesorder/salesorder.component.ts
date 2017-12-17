@@ -196,7 +196,7 @@ export class SalesOrderEditComponent implements OnInit, AfterViewInit, OnDestroy
 
         if (this.order.BillToCustomer) {
           this.updateBillToCustomer(this.order.BillToCustomer);
-      }
+    }
 
         this.previousShipToCustomer = this.order.ShipToCustomer;
         this.previousBillToCustomer = this.order.BillToCustomer;
@@ -550,15 +550,15 @@ export class SalesOrderEditComponent implements OnInit, AfterViewInit, OnDestroy
       });
   }
 
-  public shipToCustomerSelected(object: any) {
-    if (object) {
-      this.updateShipToCustomer(object as Party);
+  public shipToCustomerSelected(party: Party) {
+    if (party) {
+      this.updateShipToCustomer(party);
     }
   }
 
-  public billToCustomerSelected(object: any) {
-    if (object) {
-      this.updateBillToCustomer(object as Party);
+  public billToCustomerSelected(party: Party) {
+    if (party) {
+      this.updateBillToCustomer(party);
     }
   }
 

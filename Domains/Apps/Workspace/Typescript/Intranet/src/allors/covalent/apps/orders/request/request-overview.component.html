@@ -1,71 +1,76 @@
 <mat-toolbar>
   <div layout="row" layout-align="start center" flex>
     <button mat-icon-button tdLayoutManageListOpen [hideWhenOpened]="true" style="display: none">
-          <mat-icon>arrow_back</mat-icon>
-        </button>
+      <mat-icon>arrow_back</mat-icon>
+    </button>
     <span>{{title}}</span>
     <span flex></span>
-    <button mat-icon-button><mat-icon>settings</mat-icon></button>
+    <button mat-icon-button>
+      <mat-icon>settings</mat-icon>
+    </button>
   </div>
 </mat-toolbar>
 
-<div body *ngIf="request" layout-gt-md="row">
+<div body *ngIf="request">
   <div flex-gt-xs="50">
     <mat-card tdMediaToggle="gt-xs" [mediaClasses]="['push']">
       <mat-card-title>Request for Quote</mat-card-title>
       <mat-divider></mat-divider>
       <mat-card-content>
+        <div class="pad">
+          <div class="grid-4_lg-2_sm-1">
+            <a-mat-static class="col" [object]="request" [roleType]="m.Request.RequestNumber"></a-mat-static>
+            <a-mat-static class="col" [object]="request" [roleType]="m.Request.RequestState" display="Name" label="Status"></a-mat-static>
+            <div class="col" *ngIf="quote" class="link" [routerLink]="['/orders/productQuote/' + quote.id ]">
+              <a-mat-static [object]="quote" [roleType]="m.Quote.QuoteNumber"></a-mat-static>
+            </div>
+          </div>
 
-        <div layout="row">
-          <a-mat-static [object]="request" [roleType]="m.Request.RequestState" display="Name" label="Status"></a-mat-static>
-        </div>
-        <div layout="row">
-          <a-mat-static [object]="request" [roleType]="m.Request.RequestNumber"></a-mat-static>
-        </div>
-        <div *ngIf="quote" layout="row" class="link" [routerLink]="['/orders/productQuote/' + quote.id ]">
-          <a-mat-static [object]="quote" [roleType]="m.Quote.QuoteNumber"></a-mat-static>
-        </div>
-        <div *ngIf="request.Originator?.objectType.name == 'Person'" layout="row" class="link" [routerLink]="['/relations/person/' + request.Originator.id ]">
-          <a-mat-static [object]="request" [roleType]="m.Request.Originator" display="displayName" label="From"></a-mat-static>
-        </div>
-        <div *ngIf="request.Originator?.objectType.name == 'Organisation'" layout="row" class="link" [routerLink]="['/relations/organisation/' + request.Originator.id ]">
-          <a-mat-static [object]="request" [roleType]="m.Request.Originator" display="displayName" label="From"></a-mat-static>
-        </div>
-        <div *ngIf="request.ContactPerson" layout="row" class="link" [routerLink]="['/relations/person/' + request.ContactPerson.id ]">
-          <a-mat-static [object]="request" [roleType]="m.Request.ContactPerson" display="displayName"></a-mat-static>
-        </div>
-        <div *ngIf="request.FullfillContactMechanism" layout="row">
-          <a-mat-static [object]="request" [roleType]="m.Request.FullfillContactMechanism" display="displayName" label="Reply to"></a-mat-static>
-        </div>
-        <div *ngIf="request.EmailAddress" layout="row">
-          <a-mat-static [object]="request" [roleType]="m.Request.EmailAddress" display="displayName"></a-mat-static>
-        </div>
-        <div *ngIf="request.TelephoneNumber" layout="row">
-          <a-mat-static [object]="request" [roleType]="m.Request.TelephoneCountryCode"></a-mat-static>
-          <a-mat-static [object]="request" [roleType]="m.Request.TelephoneNumber"></a-mat-static>
-        </div>
-        <div *ngIf="request.Description" layout="row">
-          <a-mat-static [object]="request" [roleType]="m.Request.Description"></a-mat-static>
-        </div>
-        <div *ngIf="request.Comment" layout="row">
-          <a-mat-textarea [object]="request" [roleType]="m.Request.Comment"></a-mat-textarea>
-        </div>
-        <div *ngIf="request.InternalComment" layout="row">
-          <a-mat-textarea [object]="request" [roleType]="m.Request.InternalComment"></a-mat-textarea>
-        </div>
-        <div *ngIf="request.RequestDate" layout="row">
-          <a-mat-static [object]="request" [roleType]="m.Request.RequestDate"></a-mat-static>
-        </div>
-        <div *ngIf="request.RequiredResponseDate" layout="row">
-          <a-mat-static [object]="request" [roleType]="m.Request.RequiredResponseDate"></a-mat-static>
-        </div>
-        <div layout="row">
-          <p class="mat-caption tc-grey-500"> created: {{ request.CreationDate | date}} by {{ request.CreatedBy.displayName}}</p>
-        </div>
-        <div layout="row">
-          <p class="mat-caption tc-grey-500"> last modified: {{ request.LastModifiedDate | date}} by {{ request.LastModifiedBy.displayName}}</p>
-        </div>
+          <div class="grid-2_xs-1">
+            <a-mat-static class="col link" *ngIf="request.Originator?.objectType.name == 'Person'" [object]="request" [roleType]="m.Request.Originator"
+              display="displayName" label="From" [routerLink]="['/relations/person/' + request.Originator.id ]"></a-mat-static>
+            <a-mat-static class="col link" *ngIf="request.Originator?.objectType.name == 'Organisation'" [object]="request" [roleType]="m.Request.Originator"
+              display="displayName" label="From" [routerLink]="['/relations/organisation/' + request.Originator.id ]"></a-mat-static>
+            <a-mat-static class="col link" *ngIf="request.ContactPerson" [object]="request" [roleType]="m.Request.ContactPerson" display="displayName"
+              [routerLink]="['/relations/person/' + request.ContactPerson.id ]"></a-mat-static>
+          </div>
 
+          <div class="grid-1">
+            <a-mat-static class="col" *ngIf="request.FullfillContactMechanism" [object]="request" [roleType]="m.Request.FullfillContactMechanism"
+              display="displayName" label="Reply to"></a-mat-static>
+          </div>
+
+          <div class="grid-4_lg-2_xs-1">
+            <a-mat-static class="col" *ngIf="request.TelephoneNumber" [object]="request" [roleType]="m.Request.TelephoneCountryCode"
+              label="Country code"></a-mat-static>
+            <a-mat-static class="col" *ngIf="request.TelephoneNumber" [object]="request" [roleType]="m.Request.TelephoneNumber" label="Contac number"></a-mat-static>
+            <a-mat-static class="col" *ngIf="request.EmailAddress" [object]="request" [roleType]="m.Request.EmailAddress" display="displayName"></a-mat-static>
+          </div>
+
+          <div class="grid-4_lg-2_sm-1">
+            <mat-form-field class="col" *ngIf="request.RequestDate">
+              <input matInput placeholder="Request date" [value]="request.RequestDate.toDateString()">
+            </mat-form-field>
+            <mat-form-field class="col" *ngIf="request.RequiredResponseDate">
+              <input matInput placeholder="Required response date" [value]="request.RequiredResponseDate.toDateString()">
+            </mat-form-field>
+          </div>
+
+          <div class="grid-1">
+            <a-mat-static class="col" *ngIf="request.Description" [object]="request" [roleType]="m.Request.Description"></a-mat-static>
+          </div>
+          <div class="grid-1">
+            <a-mat-textarea class="col" *ngIf="request.Comment" [object]="request" [roleType]="m.Request.Comment"></a-mat-textarea>
+          </div>
+          <div class="grid-1">
+            <a-mat-textarea class="col" *ngIf="request.InternalComment" [object]="request" [roleType]="m.Request.InternalComment"></a-mat-textarea>
+          </div>
+
+          <div class="grid-2_sm-1">
+            <p class="col mat-caption tc-grey-500"> created: {{ request.CreationDate | date}} by {{ request.CreatedBy.displayName}}</p>
+            <p class="col mat-caption tc-grey-500"> last modified: {{ request.LastModifiedDate | date}} by {{ request.LastModifiedBy.displayName}}</p>
+          </div>
+        </div>
       </mat-card-content>
 
       <mat-divider></mat-divider>
@@ -95,7 +100,7 @@
                   </button>
                   <mat-menu x-position="before" #menu="matMenu">
                     <a [routerLink]="['/request/' + request.id + '/item/' + requestItem.id ]" mat-menu-item>Edit</a>
-                    <button  mat-menu-item (click)="deleteRequestItem(requestItem)" [disabled]="!requestItem.CanExecuteDelete">Delete</button>
+                    <button mat-menu-item (click)="deleteRequestItem(requestItem)" [disabled]="!requestItem.CanExecuteDelete">Delete</button>
                   </mat-menu>
                 </span>
               </mat-list-item>
@@ -127,7 +132,7 @@
 
                 <span hide-xs hide-sm hide-md flex-gt-xs="60" flex-xs="40" layout-gt-xs="row">
                   <div class="mat-caption tc-grey-500" flex-gt-xs="50"> Start: {{ status.StartDateTime | date }}</div>
-                  </span>
+                </span>
 
               </mat-list-item>
             </ng-template>

@@ -149,6 +149,7 @@ export class ProductQuoteEditComponent implements OnInit, AfterViewInit, OnDestr
         if (!this.quote) {
           this.quote = this.scope.session.create("ProductQuote") as ProductQuote;
           this.quote.IssueDate = new Date();
+          this.quote.ValidFromDate = new Date();
           this.title = "Add Quote";
         } else {
           this.title = "Quote " + this.quote.QuoteNumber;
@@ -195,7 +196,7 @@ export class ProductQuoteEditComponent implements OnInit, AfterViewInit, OnDestr
     this.addWebAddress = false;
 
     this.contactMechanisms.push(partyContactMechanism.ContactMechanism);
-    this.request.Originator.AddPartyContactMechanism(partyContactMechanism);
+    this.quote.Receiver.AddPartyContactMechanism(partyContactMechanism);
   }
 
   public emailAddressCancelled(): void {
@@ -206,7 +207,7 @@ export class ProductQuoteEditComponent implements OnInit, AfterViewInit, OnDestr
     this.addEmailAddress = false;
 
     this.contactMechanisms.push(partyContactMechanism.ContactMechanism);
-    this.request.Originator.AddPartyContactMechanism(partyContactMechanism);
+    this.quote.Receiver.AddPartyContactMechanism(partyContactMechanism);
   }
 
   public postalAddressCancelled(): void {
@@ -217,7 +218,7 @@ export class ProductQuoteEditComponent implements OnInit, AfterViewInit, OnDestr
     this.addPostalAddress = false;
 
     this.contactMechanisms.push(partyContactMechanism.ContactMechanism);
-    this.request.Originator.AddPartyContactMechanism(partyContactMechanism);
+    this.quote.Receiver.AddPartyContactMechanism(partyContactMechanism);
   }
 
   public teleCommunicationsNumberCancelled(): void {
@@ -228,7 +229,7 @@ export class ProductQuoteEditComponent implements OnInit, AfterViewInit, OnDestr
     this.addTeleCommunicationsNumber = false;
 
     this.contactMechanisms.push(partyContactMechanism.ContactMechanism);
-    this.request.Originator.AddPartyContactMechanism(partyContactMechanism);
+    this.quote.Receiver.AddPartyContactMechanism(partyContactMechanism);
   }
 
   public approve(): void {
@@ -359,9 +360,9 @@ export class ProductQuoteEditComponent implements OnInit, AfterViewInit, OnDestr
       });
   }
 
-  public receiverSelected(object: any): void {
-    if (object) {
-      this.update(object as Party);
+  public receiverSelected(party: Party): void {
+    if (party) {
+      this.update(party);
     }
   }
 

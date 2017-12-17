@@ -1,100 +1,102 @@
 <td-layout-card-over [cardTitle]="title" [cardSubtitle]="subTitle">
-  <form class="pad" #form="ngForm" *ngIf="request" (submit)="save()">
+  <form #form="ngForm" *ngIf="request" (submit)="save()">
 
-    <div class="grid-2_md-1" *ngIf="request.RequestState">
-      <a-mat-static class="col" [object]="request" [roleType]="m.Request.RequestState" display="Name" label="Status"></a-mat-static>
-      <button *ngIf="request.CanExecuteSubmit" mat-button type="button" (click)="submit()">Submit</button>
-      <button *ngIf="request.CanExecuteCancel" mat-button type="button" (click)="cancel()">Cancel</button>
-      <button *ngIf="request.CanExecuteHold" mat-button type="button" (click)="hold()">Pending Customer</button>
-      <button *ngIf="request.CanExecuteReject" mat-button type="button" (click)="reject()">Reject</button>
-    </div>
-
-    <div class="grid-2_xs-1">
-      <a-mat-autocomplete class="col" *ngIf="showOrganisations" [object]="request" [roleType]="m.Request.Originator" [filter]="organisationsFilter.create()"
-        display="Name" (onChange)="originatorSelected($event)" label="Requesting organisation"></a-mat-autocomplete>
-      <a-mat-autocomplete class="col" *ngIf="showPeople" [object]="request" [roleType]="m.Request.Originator" [filter]="peopleFilter.create()"
-        display="displayName" (onChange)="originatorSelected($event)" label="Requesting private person"></a-mat-autocomplete>
-    </div>
-
-    <div class="grid-2_md-1" *ngIf="showOrganisations && !showPeople">
-      <a-mat-select class="col" [object]="request" [roleType]="m.Request.FullfillContactMechanism" [options]="contactMechanisms"
-        display="displayName" label="Reply to"></a-mat-select>
-      <button class="col-1" *ngIf="request.Originator" type="button" mat-button (click)="addWebAddress = true">
-        <mat-icon>add</mat-icon>Web</button>
-      <button class="col-1" *ngIf="request.Originator" type="button" mat-button (click)="addEmailAddress = true">
-        <mat-icon>add</mat-icon>Email</button>
-      <button class="col-1" *ngIf="request.Originator" type="button" mat-button (click)="addPostalAddress = true">
-        <mat-icon>add</mat-icon>Postal</button>
-      <button class="col-1" *ngIf="request.Originator" type="button" mat-button (click)="addTeleCommunicationsNumber = true">
-        <mat-icon>add</mat-icon>Telecom</button>
-    </div>
-
-    <div class="grid-2" *ngIf="showOrganisations && !showPeople">
-      <a-mat-select class="col" [object]="request" [roleType]="m.Request.ContactPerson" [options]="contacts" display="displayName"></a-mat-select>
-      <button *ngIf="showOrganisations && !showPeople" type="button" mat-icon-button (click)="addPerson = true">
-        <mat-icon>add</mat-icon>
-      </button>
-      <div *ngIf="showOrganisations && addPerson" style="background: lightblue" class="pad">
-        <person-inline (cancelled)="personCancelled($event)" (saved)="personAdded($event)">
-        </person-inline>
+    <div class="pad">
+      <div class="grid-2_md-1" *ngIf="request.RequestState">
+        <a-mat-static class="col" [object]="request" [roleType]="m.Request.RequestState" display="Name" label="Status"></a-mat-static>
+        <button *ngIf="request.CanExecuteSubmit" mat-button type="button" (click)="submit()">Submit</button>
+        <button *ngIf="request.CanExecuteCancel" mat-button type="button" (click)="cancel()">Cancel</button>
+        <button *ngIf="request.CanExecuteHold" mat-button type="button" (click)="hold()">Pending Customer</button>
+        <button *ngIf="request.CanExecuteReject" mat-button type="button" (click)="reject()">Reject</button>
       </div>
-    </div>
 
-    <div class="grid-2_md-1" *ngIf="showPeople && !showOrganisations">
-      <a-mat-select class="col" [object]="request" [roleType]="m.Request.FullfillContactMechanism" [options]="contactMechanisms"
-        display="displayName" label="Reply to"></a-mat-select>
-      <button *ngIf="request.Originator" type="button" mat-button (click)="addWebAddress = true">
-        <mat-icon>add</mat-icon>Web</button>
-      <button *ngIf="request.Originator" type="button" mat-button (click)="addEmailAddress = true">
-        <mat-icon>add</mat-icon>Email</button>
-      <button *ngIf="request.Originator" type="button" mat-button (click)="addPostalAddress = true">
-        <mat-icon>add</mat-icon>Postal</button>
-      <button *ngIf="request.Originator" type="button" mat-button (click)="addTeleCommunicationsNumber = true">
-        <mat-icon>add</mat-icon>Telecom</button>
-    </div>
+      <div class="grid-2_xs-1">
+        <a-mat-autocomplete class="col" *ngIf="showOrganisations" [object]="request" [roleType]="m.Request.Originator" [filter]="organisationsFilter.create()"
+          display="Name" (onChange)="originatorSelected($event)" label="Requesting organisation"></a-mat-autocomplete>
+        <a-mat-autocomplete class="col" *ngIf="showPeople" [object]="request" [roleType]="m.Request.Originator" [filter]="peopleFilter.create()"
+          display="displayName" (onChange)="originatorSelected($event)" label="Requesting private person"></a-mat-autocomplete>
+      </div>
 
-    <div *ngIf="addWebAddress && request.Originator" style="background: lightblue" class="pad">
-      <party-contactmechanism-webAddress [scope]="scope" (cancelled)="webAddressCancelled($event)" (saved)="webAddressAdded($event)">
-      </party-contactmechanism-webAddress>
-    </div>
-    <div *ngIf="addEmailAddress && request.Originator" style="background: lightblue" class="pad">
-      <party-contactmechanism-emailAddress [scope]="scope" (cancelled)="emailAddressCancelled($event)" (saved)="emailAddressAdded($event)">
-      </party-contactmechanism-emailAddress>
-    </div>
-    <div *ngIf="addPostalAddress && request.Originator" style="background: lightblue" class="pad">
-      <party-contactmechanism-postaladdress [scope]="scope" (cancelled)="postalAddressCancelled($event)" (saved)="postalAddressAdded($event)">
-      </party-contactmechanism-postaladdress>
-    </div>
-    <div *ngIf="addTeleCommunicationsNumber && request.Originator" style="background: lightblue" class="pad">
-      <party-contactmechanism-telecommunicationsnumber [scope]="scope" (cancelled)="teleCommunicationsNumberCancelled($event)"
-        (saved)="teleCommunicationsNumberAdded($event)">
-      </party-contactmechanism-telecommunicationsnumber>
-    </div>
+      <div class="grid-2_md-1" *ngIf="showOrganisations && !showPeople">
+        <a-mat-select class="col" [object]="request" [roleType]="m.Request.FullfillContactMechanism" [options]="contactMechanisms"
+          display="displayName" label="Reply to"></a-mat-select>
+        <button class="col-1" *ngIf="request.Originator" type="button" mat-button (click)="addWebAddress = true">
+          <mat-icon>add</mat-icon>Web</button>
+        <button class="col-1" *ngIf="request.Originator" type="button" mat-button (click)="addEmailAddress = true">
+          <mat-icon>add</mat-icon>Email</button>
+        <button class="col-1" *ngIf="request.Originator" type="button" mat-button (click)="addPostalAddress = true">
+          <mat-icon>add</mat-icon>Postal</button>
+        <button class="col-1" *ngIf="request.Originator" type="button" mat-button (click)="addTeleCommunicationsNumber = true">
+          <mat-icon>add</mat-icon>Telecom</button>
+      </div>
 
-    <div class="grid-2_xs-1">
-      <a-mat-static class="col-6_xs-12" *ngIf="request.EmailAddress" [object]="request" [roleType]="m.Request.EmailAddress"></a-mat-static>
-      <div class="grid">
-        <a-mat-static class="col-6_xs-12" *ngIf="request.TelephoneCountryCode" [object]="request" [roleType]="m.Request.TelephoneCountryCode"
-        label="Country code"></a-mat-static>
-      <a-mat-static class="col-6_xs-12" *ngIf="request.TelephoneNumber" [object]="request" [roleType]="m.Request.TelephoneNumber"></a-mat-static>
-    </div>
-</div>
-    <div class="grid-2_sm-1">
-      <a-mat-datepicker class="col" [object]="request" [roleType]="m.Request.RequestDate"></a-mat-datepicker>
-      <a-mat-datepicker class="col" [object]="request" [roleType]="m.Request.RequiredResponseDate"></a-mat-datepicker>
-    </div>
+      <div class="grid-2" *ngIf="showOrganisations && !showPeople">
+        <a-mat-select class="col" [object]="request" [roleType]="m.Request.ContactPerson" [options]="contacts" display="displayName"></a-mat-select>
+        <button *ngIf="showOrganisations && !showPeople" type="button" mat-icon-button (click)="addPerson = true">
+          <mat-icon>add</mat-icon>
+        </button>
+        <div *ngIf="showOrganisations && addPerson" style="background: lightblue" class="pad">
+          <person-inline (cancelled)="personCancelled($event)" (saved)="personAdded($event)">
+          </person-inline>
+        </div>
+      </div>
 
-    <div class="grid-1">
-      <a-mat-input class="col" [object]="request" [roleType]="m.Request.Description"></a-mat-input>
-    </div>
-    <div class="grid-1">
-      <a-mat-textarea class="col" [object]="request" [roleType]="m.Request.Comment"></a-mat-textarea>
-    </div>
-    <div class="grid-1">
-      <a-mat-textarea class="col" [object]="request" [roleType]="m.Request.InternalComment"></a-mat-textarea>
-    </div>
+      <div class="grid-2_md-1" *ngIf="showPeople && !showOrganisations">
+        <a-mat-select class="col" [object]="request" [roleType]="m.Request.FullfillContactMechanism" [options]="contactMechanisms"
+          display="displayName" label="Reply to"></a-mat-select>
+        <button class="col-1" *ngIf="request.Originator" type="button" mat-button (click)="addWebAddress = true">
+          <mat-icon>add</mat-icon>Web</button>
+        <button class="col-1" *ngIf="request.Originator" type="button" mat-button (click)="addEmailAddress = true">
+          <mat-icon>add</mat-icon>Email</button>
+        <button class="col-1" *ngIf="request.Originator" type="button" mat-button (click)="addPostalAddress = true">
+          <mat-icon>add</mat-icon>Postal</button>
+        <button class="col-1" *ngIf="request.Originator" type="button" mat-button (click)="addTeleCommunicationsNumber = true">
+          <mat-icon>add</mat-icon>Telecom</button>
+      </div>
 
-    <mat-divider></mat-divider>
+      <div *ngIf="addWebAddress && request.Originator" style="background: lightblue" class="pad">
+        <party-contactmechanism-webAddress [scope]="scope" (cancelled)="webAddressCancelled($event)" (saved)="webAddressAdded($event)">
+        </party-contactmechanism-webAddress>
+      </div>
+      <div *ngIf="addEmailAddress && request.Originator" style="background: lightblue" class="pad">
+        <party-contactmechanism-emailAddress [scope]="scope" (cancelled)="emailAddressCancelled($event)" (saved)="emailAddressAdded($event)">
+        </party-contactmechanism-emailAddress>
+      </div>
+      <div *ngIf="addPostalAddress && request.Originator" style="background: lightblue" class="pad">
+        <party-contactmechanism-postaladdress [scope]="scope" (cancelled)="postalAddressCancelled($event)" (saved)="postalAddressAdded($event)">
+        </party-contactmechanism-postaladdress>
+      </div>
+      <div *ngIf="addTeleCommunicationsNumber && request.Originator" style="background: lightblue" class="pad">
+        <party-contactmechanism-telecommunicationsnumber [scope]="scope" (cancelled)="teleCommunicationsNumberCancelled($event)"
+          (saved)="teleCommunicationsNumberAdded($event)">
+        </party-contactmechanism-telecommunicationsnumber>
+      </div>
+
+      <div class="grid-2_xs-1">
+        <a-mat-static class="col-6_xs-12" *ngIf="request.EmailAddress" [object]="request" [roleType]="m.Request.EmailAddress"></a-mat-static>
+        <div class="grid">
+          <a-mat-static class="col-6_xs-12" *ngIf="request.TelephoneCountryCode" [object]="request" [roleType]="m.Request.TelephoneCountryCode"
+            label="Country code"></a-mat-static>
+          <a-mat-static class="col-6_xs-12" *ngIf="request.TelephoneNumber" [object]="request" [roleType]="m.Request.TelephoneNumber"></a-mat-static>
+        </div>
+      </div>
+      
+      <div class="grid-4_lg-2_sm-1">
+        <a-mat-datepicker class="col" [object]="request" [roleType]="m.Request.RequestDate"></a-mat-datepicker>
+        <a-mat-datepicker class="col" [object]="request" [roleType]="m.Request.RequiredResponseDate"></a-mat-datepicker>
+      </div>
+
+      <div class="grid-1">
+        <a-mat-input class="col" [object]="request" [roleType]="m.Request.Description"></a-mat-input>
+      </div>
+      <div class="grid-1">
+        <a-mat-textarea class="col" [object]="request" [roleType]="m.Request.Comment"></a-mat-textarea>
+      </div>
+      <div class="grid-1">
+        <a-mat-textarea class="col" [object]="request" [roleType]="m.Request.InternalComment"></a-mat-textarea>
+      </div>
+      <mat-divider></mat-divider>
+    </div>
 
     <mat-card-actions>
       <button mat-button color="primary" type="submit" [disabled]="!form.form.valid">SAVE</button>

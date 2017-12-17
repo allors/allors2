@@ -11,56 +11,68 @@
   </div>
 </mat-toolbar>
 
-<div body *ngIf="order" layout-gt-md="row">
+<div body *ngIf="order">
   <div flex-gt-xs="50">
     <mat-card tdMediaToggle="gt-xs" [mediaClasses]="['push']">
       <mat-card-title>Sales Order</mat-card-title>
       <mat-divider></mat-divider>
       <mat-card-content>
+        <div class="pad">
+          <div class="grid-8_lg-2_sm-1">
+            <a-mat-static class="col" [object]="order" [roleType]="m.SalesOrder.SalesOrderState" display="Name" label="Status"></a-mat-static>
+            <a-mat-static class="col" [object]="order" [roleType]="m.SalesOrder.OrderNumber"></a-mat-static>
+            <a-mat-static class="col link" *ngIf="order.Quote" [object]="order" [roleType]="m.SalesOrder.Quote" display="QuoteNumber"
+              [routerLink]="['/orders/productQuote/' + order.Quote.id ]"></a-mat-static>
+            <a-mat-static class="col link" *ngIf="salesInvoice" [object]="salesInvoice" [roleType]="m.SalesInvoice.InvoiceNumber" [routerLink]="['/ar/invoice/' + salesInvoice.id ]"></a-mat-static>
+          </div>
 
-        <div layout="row">
-          <a-mat-static [object]="order" [roleType]="m.SalesOrder.SalesOrderState" display="Name" label="Status"></a-mat-static>
-        </div>
-        <div layout="row">
-          <a-mat-static [object]="order" [roleType]="m.SalesOrder.OrderNumber"></a-mat-static>
-        </div>
-        <div *ngIf="order.Quote" layout="row" class="link" [routerLink]="['/orders/productQuote/' + order.Quote.id ]">
-          <a-mat-static [object]="order" [roleType]="m.SalesOrder.Quote" display="QuoteNumber"></a-mat-static>
-        </div>
-        <div *ngIf="salesInvoice" layout="row" class="link" [routerLink]="['/ar/invoice/' + salesInvoice.id ]">
-          <a-mat-static [object]="salesInvoice" [roleType]="m.SalesInvoice.InvoiceNumber"></a-mat-static>
-        </div>
-        <div *ngIf="order.ContactPerson" layout="row" class="link" [routerLink]="['/relations/person/' + order.ContactPerson.id ]">
-          <a-mat-static [object]="order" [roleType]="m.SalesOrder.ContactPerson" display="displayName"></a-mat-static>
-        </div>
-        <div layout="row" class="link" [routerLink]="['/relations/organisation/' + order.ShipToCustomer.id ]">
-          <a-mat-static [object]="order" [roleType]="m.SalesOrder.ShipToCustomer" display="displayName" label="Customer"></a-mat-static>
-        </div>
-        <div *ngIf="order.ShipToAddress" layout="row">
-          <a-mat-static [object]="order" [roleType]="m.SalesOrder.ShipToAddress" display="displayName" label="Ship to"></a-mat-static>
-        </div>
-        <div *ngIf="order.Description" layout="row">
-          <a-mat-static [object]="order" [roleType]="m.SalesOrder.Description"></a-mat-static>
-        </div>
-        <div *ngIf="quote?.Comment" layout="row">
-          <a-mat-static [object]="quote" [roleType]="m.Quote.Comment" label="Quote Comment"></a-mat-static>
-        </div>
-        <div *ngIf="order.Comment" layout="row">
-          <a-mat-textarea [object]="order" [roleType]="m.SalesOrder.Comment" label="Order Comment"></a-mat-textarea>
-        </div>
-        <div *ngIf="quote?.InternalComment" layout="row">
-          <a-mat-static [object]="quote" [roleType]="m.Quote.InternalComment" label="Quote Internal Comment"></a-mat-static>
-        </div>
-        <div *ngIf="order.InternalComment" layout="row">
-          <a-mat-textarea [object]="order" [roleType]="m.SalesOrder.InternalComment" label="Order Internal Comment"></a-mat-textarea>
-        </div>
-        <div layout="row">
-          <p class="mat-caption tc-grey-500"> created: {{ order.CreationDate | date}} by {{ order.CreatedBy.displayName}}</p>
-        </div>
-        <div layout="row">
-          <p class="mat-caption tc-grey-500"> last modified: {{ order.LastModifiedDate | date}} by {{ order.LastModifiedBy.displayName}}</p>
-        </div>
+          <div class="grid-2_xs-1">
+            <a-mat-static class="col link" *ngIf="order.ShipToCustomer?.objectType.name == 'Organisation'" [object]="order" [roleType]="m.SalesOrder.ShipToCustomer"
+              display="displayName" label="Ship to Customer" [routerLink]="['/relations/organisation/' + order.ShipToCustomer.id ]"></a-mat-static>
+            <a-mat-static class="col link" *ngIf="order.ShipToCustomer?.objectType.name == 'Person'" [object]="order" [roleType]="m.SalesOrder.ShipToCustomer"
+              display="displayName" label="Ship to Customer" [routerLink]="['/relations/person/' + order.ShipToCustomer.id ]"></a-mat-static>
+            <a-mat-static class="col link" *ngIf="order.ContactPerson" [object]="order" [roleType]="m.SalesOrder.ContactPerson" display="displayName"
+              [routerLink]="['/relations/person/' + order.ContactPerson.id ]"></a-mat-static>
+          </div>
 
+          <div class="grid-2_xs-1" *ngIf="order.ShipToCustomer != order.BillToCustomer">
+            <a-mat-static class="col link" *ngIf="order.BillToCustomer?.objectType.name == 'Organisation'" [object]="order" [roleType]="m.SalesOrder.BillToCustomer"
+              display="displayName" label="Bill to Customer" [routerLink]="['/relations/organisation/' + order.BillToCustomer.id ]"></a-mat-static>
+            <a-mat-static class="col link" *ngIf="order.BillToCustomer?.objectType.name == 'Person'" [object]="order" [roleType]="m.SalesOrder.BillToCustomer"
+              display="displayName" label="Bill to Customer" [routerLink]="['/relations/person/' + order.BillToCustomer.id ]"></a-mat-static>
+          </div>
+
+          <div class="grid-1">
+            <a-mat-static class="col" *ngIf="order.ShipToAddress" [object]="order" [roleType]="m.SalesOrder.ShipToAddress" display="displayName"
+              label="Ship to"></a-mat-static>
+          </div>
+
+          <div class="grid-1">
+            <a-mat-static class="col" *ngIf="order.ShipToAddress != order.BillToContactMechanism" [object]="order" [roleType]="m.SalesOrder.BillToContactMechanism" display="displayName"
+              label="Bill to"></a-mat-static>
+          </div>
+
+          <div class="grid-1">
+            <a-mat-static class="col" *ngIf="order.Description" [object]="order" [roleType]="m.SalesOrder.Description"></a-mat-static>
+          </div>
+          <div class="grid-1">
+            <a-mat-static class="col" *ngIf="quote?.Comment" [object]="quote" [roleType]="m.Quote.Comment" label="Quote Comment"></a-mat-static>
+          </div>
+          <div class="grid-1">
+            <a-mat-textarea class="col" *ngIf="order.Comment" [object]="order" [roleType]="m.SalesOrder.Comment" label="Order Comment"></a-mat-textarea>
+          </div>
+          <div class="grid-1">
+            <a-mat-static class="col" *ngIf="quote?.InternalComment" [object]="quote" [roleType]="m.Quote.InternalComment" label="Quote Internal Comment"></a-mat-static>
+          </div>
+          <div class="grid-1">
+            <a-mat-textarea class="col" *ngIf="order.InternalComment" [object]="order" [roleType]="m.SalesOrder.InternalComment" label="Order Internal Comment"></a-mat-textarea>
+          </div>
+
+          <div class="grid-2_sm-1">
+            <p class="col mat-caption tc-grey-500"> created: {{ order.CreationDate | date}} by {{ order.CreatedBy.displayName}}</p>
+            <p class="col mat-caption tc-grey-500"> last modified: {{ order.LastModifiedDate | date}} by {{ order.LastModifiedBy.displayName}}</p>
+          </div>
+        </div>
       </mat-card-content>
 
       <mat-divider></mat-divider>
@@ -68,8 +80,7 @@
         <button *ngIf="order.CanWriteSalesOrderItems" mat-button [routerLink]="['/salesOrder/' + order.id]">Edit</button>
         <button mat-button [routerLink]="['/printsalesorder/' + order.id ]">Print</button>
         <button *ngIf="order.CanExecuteShip" mat-button (click)="ship()">Ship to customer</button>
-      <button *ngIf="payFirst && order.CanExecuteComplete && order.ValidOrderItems.length > 0"
-          mat-button (click)="createInvoice()">Create Invoice</button>
+        <button *ngIf="payFirst && order.CanExecuteComplete && order.ValidOrderItems.length > 0" mat-button (click)="createInvoice()">Create Invoice</button>
       </mat-card-actions>
     </mat-card>
 
@@ -88,7 +99,7 @@
                 <h3 *ngIf="orderItem.Product && order.CanWriteSalesOrderItems" mat-line [routerLink]="['/salesOrder/' + order.id + '/item/' + orderItem.id ]">{{orderItem.QuantityOrdered}} * {{orderItem.Product.Name}}</h3>
                 <h3 *ngIf="orderItem.Product && !order.CanWriteSalesOrderItems" mat-line>{{orderItem.QuantityOrdered}} * {{orderItem.Product.Name}}</h3>
 
-                <h3 *ngIf="!orderItem.Product && order.CanWriteSalesOrderItems" mat-line  [routerLink]="['/salesOrder/' + order.id + '/item/' + orderItem.id ]">{{orderItem.ItemType.Name}}</h3>
+                <h3 *ngIf="!orderItem.Product && order.CanWriteSalesOrderItems" mat-line [routerLink]="['/salesOrder/' + order.id + '/item/' + orderItem.id ]">{{orderItem.ItemType.Name}}</h3>
                 <h3 *ngIf="!orderItem.Product && !order.CanWriteSalesOrderItems" mat-line>{{orderItem.ItemType.Name}}</h3>
 
                 <h4 mat-line>Total ex VAT: {{orderItem.TotalExVat}}</h4>
@@ -99,7 +110,7 @@
                   </button>
                   <mat-menu x-position="before" #menu="matMenu">
                     <a *ngIf="order.CanWriteSalesOrderItems" [routerLink]="['/salesOrder/' + order.id + '/item/' + orderItem.id ]" mat-menu-item>Edit</a>
-                    <button  mat-menu-item (click)="deleteOrderItem(orderItem)" [disabled]="!orderItem.CanExecuteDelete">Delete</button>
+                    <button mat-menu-item (click)="deleteOrderItem(orderItem)" [disabled]="!orderItem.CanExecuteDelete">Delete</button>
                   </mat-menu>
                 </span>
               </mat-list-item>

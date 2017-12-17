@@ -402,9 +402,9 @@ export class RequestEditComponent implements OnInit, AfterViewInit, OnDestroy {
       });
   }
 
-  public originatorSelected(object: any): void {
-    if (object) {
-      this.update(object as Party);
+  public originatorSelected(party: Party): void {
+    if (party) {
+      this.update(party);
     }
   }
 

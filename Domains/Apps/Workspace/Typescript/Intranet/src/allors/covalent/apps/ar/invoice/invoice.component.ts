@@ -374,9 +374,9 @@ export class InvoiceComponent implements OnInit, AfterViewInit, OnDestroy {
       });
   }
 
-  public receiverSelected(object: any) {
-    if (object) {
-      this.update(object as Party);
+  public receiverSelected(party: Party) {
+    if (party) {
+      this.update(party);
     }
   }
 

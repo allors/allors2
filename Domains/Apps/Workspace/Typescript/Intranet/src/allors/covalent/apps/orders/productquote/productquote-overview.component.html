@@ -1,79 +1,82 @@
 <mat-toolbar>
   <div layout="row" layout-align="start center" flex>
     <button mat-icon-button tdLayoutManageListOpen [hideWhenOpened]="true" style="display: none">
-          <mat-icon>arrow_back</mat-icon>
-        </button>
+      <mat-icon>arrow_back</mat-icon>
+    </button>
     <span>{{title}}</span>
     <span flex></span>
-    <button mat-icon-button><mat-icon>settings</mat-icon></button>
+    <button mat-icon-button>
+      <mat-icon>settings</mat-icon>
+    </button>
   </div>
 </mat-toolbar>
 
-<div body *ngIf="quote" layout-gt-md="row">
+<div body *ngIf="quote">
   <div flex-gt-xs="50">
     <mat-card tdMediaToggle="gt-xs" [mediaClasses]="['push']">
       <mat-card-title>Product Quote</mat-card-title>
       <mat-divider></mat-divider>
       <mat-card-content>
+        <div class="pad">
+          <div class="grid-4_lg-2_sm-1">
+            <a-mat-static class="col" [object]="quote" [roleType]="m.Quote.QuoteState" display="Name" label="Status"></a-mat-static>
+            <a-mat-static class="col" [object]="quote" [roleType]="m.Quote.QuoteNumber"></a-mat-static>
+            <a-mat-static class="col link" *ngIf="quote.Request" [object]="quote" [roleType]="m.Quote.Request" display="RequestNumber"
+              [routerLink]="['/orders/request/' + quote.Request.id]"></a-mat-static>
+            <a-mat-static class="col link" *ngIf="salesOrder" [object]="salesOrder" [roleType]="m.SalesOrder.OrderNumber" [routerLink]="['/orders/salesOrder/' + salesOrder.id ]"></a-mat-static>
+          </div>
 
-        <div layout="row">
-          <a-mat-static [object]="quote" [roleType]="m.Quote.QuoteState" display="Name" label="Status"></a-mat-static>
-        </div>
-        <div layout="row">
-          <a-mat-static [object]="quote" [roleType]="m.Quote.QuoteNumber"></a-mat-static>
-        </div>
-        <div *ngIf="quote.Request" layout="row" class="link" [routerLink]="['/orders/request/' + quote.Request.id]">
-          <a-mat-static [object]="quote" [roleType]="m.Quote.Request" display="RequestNumber"></a-mat-static>
-        </div>
-        <div *ngIf="salesOrder" layout="row" class="link" [routerLink]="['/orders/salesOrder/' + salesOrder.id ]">
-          <a-mat-static [object]="salesOrder" [roleType]="m.SalesOrder.OrderNumber"></a-mat-static>
-        </div>
-        <div *ngIf="quote.Receiver.objectType.name == 'Person'" layout="row" class="link" [routerLink]="['/relations/person/' + quote.Receiver.id ]">
-          <a-mat-static [object]="quote" [roleType]="m.Quote.Receiver" display="displayName" label="To"></a-mat-static>
-        </div>
-        <div *ngIf="quote.Receiver.objectType.name == 'Organisation'" layout="row" class="link" [routerLink]="['/relations/organisation/' + quote.Receiver.id ]">
-          <a-mat-static [object]="quote" [roleType]="m.Quote.Receiver" display="displayName" label="To"></a-mat-static>
-        </div>
-        <div *ngIf="quote.ContactPerson" layout="row">
-          <a-mat-static [object]="quote" [roleType]="m.Quote.ContactPerson" class="link" [routerLink]="['/relations/person/' + quote.ContactPerson.id ]" display="displayName"></a-mat-static>
-        </div>
-        <div *ngIf="quote.FullfillContactMechanism" layout="row">
-          <a-mat-static [object]="quote" [roleType]="m.Quote.FullfillContactMechanism" display="displayName" label="Reply to"></a-mat-static>
-        </div>
-        <div *ngIf="quote.Description" layout="row">
-          <a-mat-static [object]="quote" [roleType]="m.Quote.Description"y></a-mat-static>
-        </div>
-        <div *ngIf="request?.Comment" layout="row">
-          <a-mat-static [object]="request" [roleType]="m.Request.Comment" label="Request Comment"></a-mat-static>
-        </div>
-        <div *ngIf="quote.Comment" layout="row">
-          <a-mat-textarea [object]="quote" [roleType]="m.Quote.Comment" label="Quote Comment"></a-mat-textarea>
-        </div>
-        <div *ngIf="request?.InternalComment" layout="row">
-          <a-mat-static [object]="request" [roleType]="m.Request.InternalComment" label="Request Internal Comment"></a-mat-static>
-        </div>
-        <div *ngIf="quote.InternalComment" layout="row">
-          <a-mat-textarea [object]="quote" [roleType]="m.Quote.InternalComment" label="Quote Internal Comment"></a-mat-textarea>
-        </div>
-        <div *ngIf="quote.ValidFromDate" layout="row">
-          <a-mat-static [object]="quote" [roleType]="m.Quote.ValidFromDate"></a-mat-static>
-        </div>
-        <div *ngIf="quote.ValidThroughDate" layout="row">
-          <a-mat-static [object]="quote" [roleType]="m.Quote.ValidThroughDate"></a-mat-static>
-        </div>
-        <div *ngIf="quote.IssueDate" layout="row">
-          <a-mat-static [object]="quote" [roleType]="m.Quote.IssueDate"></a-mat-static>
-        </div>
-        <div layout="row">
-          <a-mat-static [object]="quote" [roleType]="m.Quote.Price" label="Quote Value"></a-mat-static>
-        </div>
-        <div layout="row">
-          <p class="mat-caption tc-grey-500"> created: {{ quote.CreationDate | date}} by {{ quote.CreatedBy.displayName}}</p>
-        </div>
-        <div layout="row">
-          <p class="mat-caption tc-grey-500"> last modified: {{ quote.LastModifiedDate | date}} by {{ quote.LastModifiedBy.displayName}}</p>
-        </div>
+          <div class="grid-2_xs-1">
+            <a-mat-static class="col link" *ngIf="quote.Receiver.objectType.name == 'Person'" [object]="quote" [roleType]="m.Quote.Receiver"
+              display="displayName" label="To" [routerLink]="['/relations/person/' + quote.Receiver.id ]"></a-mat-static>
+            <a-mat-static class="col link" *ngIf="quote.Receiver.objectType.name == 'Organisation'" [object]="quote" [roleType]="m.Quote.Receiver"
+              display="displayName" label="To" [routerLink]="['/relations/organisation/' + quote.Receiver.id ]"></a-mat-static>
+            <a-mat-static class="col link" *ngIf="quote.ContactPerson" [object]="quote" [roleType]="m.Quote.ContactPerson" class="link"
+              [routerLink]="['/relations/person/' + quote.ContactPerson.id ]" display="displayName"></a-mat-static>
+          </div>
 
+          <div class="grid">
+            <a-mat-static class="col" *ngIf="quote.FullfillContactMechanism" [object]="quote" [roleType]="m.Quote.FullfillContactMechanism"
+              display="displayName" label="Reply to"></a-mat-static>
+          </div>
+
+          <div class="grid-4_lg-2_sm-1">
+            <mat-form-field class="col" *ngIf="quote.IssueDate">
+              <input matInput placeholder="Issue date" [value]="quote.IssueDate.toDateString()">
+            </mat-form-field>
+            <mat-form-field class="col" *ngIf="quote.ValidFromDate">
+              <input matInput placeholder="Valid From" [value]="quote.ValidFromDate.toDateString()">
+            </mat-form-field>
+            <mat-form-field class="col" *ngIf="quote.ValidThroughDate">
+              <input matInput placeholder="Valid Trough" [value]="quote.ValidThroughDate.toDateString()">
+            </mat-form-field>
+          </div>
+
+          <div class="grid-4_sm-1">
+            <a-mat-static class="col" [object]="quote" [roleType]="m.Quote.Price" label="Quote Value"></a-mat-static>
+          </div>
+
+          <div class="grid-1">
+            <a-mat-static class="col" *ngIf="quote.Description" [object]="quote" [roleType]="m.Quote.Description" y></a-mat-static>
+          </div>
+          <div class="grid-1">
+            <a-mat-static class="col" *ngIf="request?.Comment" [object]="request" [roleType]="m.Request.Comment" label="Request Comment"></a-mat-static>
+          </div>
+          <div class="grid-1">
+            <a-mat-textarea class="col" *ngIf="quote.Comment" [object]="quote" [roleType]="m.Quote.Comment" label="Quote Comment"></a-mat-textarea>
+          </div>
+          <div class="grid-1">
+            <a-mat-static class="col" *ngIf="request?.InternalComment" [object]="request" [roleType]="m.Request.InternalComment" label="Request Internal Comment"></a-mat-static>
+          </div>
+          <div class="grid-1">
+            <a-mat-textarea class="col" *ngIf="quote.InternalComment" [object]="quote" [roleType]="m.Quote.InternalComment" label="Quote Internal Comment"></a-mat-textarea>
+          </div>
+
+          <div class="grid-2_sm-1">
+            <p class="col mat-caption tc-grey-500"> created: {{ quote.CreationDate | date}} by {{ quote.CreatedBy.displayName}}</p>
+            <p class="col mat-caption tc-grey-500"> last modified: {{ quote.LastModifiedDate | date}} by {{ quote.LastModifiedBy.displayName}}</p>
+          </div>
+        </div>
       </mat-card-content>
 
       <mat-divider></mat-divider>
@@ -104,7 +107,7 @@
                   </button>
                   <mat-menu x-position="before" #menu="matMenu">
                     <a *ngIf="quote.CanWriteQuoteItems" [routerLink]="['/productQuote/' + quote.id + '/item/' + quoteItem.id ]" mat-menu-item>Edit</a>
-                    <button  mat-menu-item (click)="deletequoteItem(quoteItem)" [disabled]="!quoteItem.CanExecuteDelete">Delete</button>
+                    <button mat-menu-item (click)="deletequoteItem(quoteItem)" [disabled]="!quoteItem.CanExecuteDelete">Delete</button>
                   </mat-menu>
                 </span>
               </mat-list-item>
