@@ -94,6 +94,7 @@ namespace Allors.Services
 
         private static void AddAllorsShared(this IServiceCollection services)
         {
+            services.AddSingleton<ITreeService, TreeService>();
             services.AddSingleton<ICacheService, CacheService>();
             services.AddSingleton<IDatabaseService, DatabaseService>();
             services.AddSingleton<IPasswordService, PasswordService>();

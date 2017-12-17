@@ -185,6 +185,7 @@
     <Compile Include="..\..\..\Core\Repository\Domain\Core\Common\Object.cs">
       <Link>Core\Common\Object.cs</Link>
     </Compile>
+    <Compile Include="Apps\User.cs" />
     <Compile Include="Apps\AccountAdjustment.cs" />
     <Compile Include="Apps\AccountingPeriod.cs" />
     <Compile Include="Apps\AccountingPeriodVersion.cs" />
