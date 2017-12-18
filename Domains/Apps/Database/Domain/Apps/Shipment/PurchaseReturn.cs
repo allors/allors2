@@ -21,7 +21,7 @@ namespace Allors.Domain
     {
         public static readonly TransitionalConfiguration[] StaticTransitionalConfigurations =
             {
-                new TransitionalConfiguration(M.PurchaseReturn.PurchaseReturnState),
+                new TransitionalConfiguration(M.PurchaseReturn, M.PurchaseReturn.PurchaseReturnState),
             };
 
         public TransitionalConfiguration[] TransitionalConfigurations => StaticTransitionalConfigurations;

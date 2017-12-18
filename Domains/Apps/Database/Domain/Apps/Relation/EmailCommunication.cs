@@ -22,7 +22,7 @@ namespace Allors.Domain
     {
         public static readonly TransitionalConfiguration[] StaticTransitionalConfigurations =
             {
-                new TransitionalConfiguration(M.EmailCommunication.CommunicationEventState),
+                new TransitionalConfiguration(M.EmailCommunication, M.EmailCommunication.CommunicationEventState),
             };
 
         public TransitionalConfiguration[] TransitionalConfigurations => StaticTransitionalConfigurations;

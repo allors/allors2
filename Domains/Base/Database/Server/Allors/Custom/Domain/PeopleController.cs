@@ -6,7 +6,6 @@
     using Allors.Server;
     using Allors.Services;
 
-    using Microsoft.AspNetCore.Authentication.JwtBearer;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
 
@@ -20,7 +19,7 @@
         private ISession Session { get; }
 
         [HttpPost]
-        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        [Authorize]
         public async Task<IActionResult> Pull()
         {
             var response = new PullResponseBuilder(this.Session.GetUser());

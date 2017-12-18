@@ -21,7 +21,7 @@ namespace Allors.Domain
     {
         public static readonly TransitionalConfiguration[] StaticTransitionalConfigurations =
             {
-                new TransitionalConfiguration(M.FaxCommunication.CommunicationEventState),
+                new TransitionalConfiguration(M.FaxCommunication, M.FaxCommunication.CommunicationEventState),
             };
 
         public TransitionalConfiguration[] TransitionalConfigurations => StaticTransitionalConfigurations;

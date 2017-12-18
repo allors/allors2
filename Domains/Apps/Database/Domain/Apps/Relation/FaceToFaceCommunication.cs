@@ -21,7 +21,7 @@ namespace Allors.Domain
     {
         public static readonly TransitionalConfiguration[] StaticTransitionalConfigurations =
             {
-                new TransitionalConfiguration(M.FaceToFaceCommunication.CommunicationEventState),
+                new TransitionalConfiguration(M.FaceToFaceCommunication, M.FaceToFaceCommunication.CommunicationEventState),
             };
 
         public TransitionalConfiguration[] TransitionalConfigurations => StaticTransitionalConfigurations;

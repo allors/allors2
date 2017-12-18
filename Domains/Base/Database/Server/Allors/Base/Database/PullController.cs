@@ -27,7 +27,6 @@ namespace Allors.Server.Controllers
     using Allors.Meta;
     using Allors.Services;
 
-    using Microsoft.AspNetCore.Authentication.JwtBearer;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
 
@@ -41,7 +40,7 @@ namespace Allors.Server.Controllers
         private ISession Session { get; }
 
         [HttpPost]
-        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        [Authorize]
         public IActionResult Pull([FromBody] PullRequest req)
         {
             try

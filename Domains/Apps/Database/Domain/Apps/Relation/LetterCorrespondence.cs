@@ -21,7 +21,7 @@ namespace Allors.Domain
     {
         public static readonly TransitionalConfiguration[] StaticTransitionalConfigurations =
             {
-                new TransitionalConfiguration(M.LetterCorrespondence.CommunicationEventState),
+                new TransitionalConfiguration(M.LetterCorrespondence, M.LetterCorrespondence.CommunicationEventState),
             };
 
         public TransitionalConfiguration[] TransitionalConfigurations => StaticTransitionalConfigurations;

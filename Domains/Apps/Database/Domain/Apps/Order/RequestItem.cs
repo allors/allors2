@@ -24,7 +24,7 @@ namespace Allors.Domain
     {
         public static readonly TransitionalConfiguration[] StaticTransitionalConfigurations =
             {
-                new TransitionalConfiguration(M.RequestItem.RequestItemState),
+                new TransitionalConfiguration(M.RequestItem, M.RequestItem.RequestItemState),
             };
 
         public TransitionalConfiguration[] TransitionalConfigurations => StaticTransitionalConfigurations;

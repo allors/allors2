@@ -7,6 +7,8 @@ namespace Allors.Repository
     public partial class AutomatedAgent : Party, Versioned 
     {
         #region inherited properties
+        public Locale Locale { get; set; }
+
         public User CreatedBy { get; set; }
 
         public User LastModifiedBy { get; set; }

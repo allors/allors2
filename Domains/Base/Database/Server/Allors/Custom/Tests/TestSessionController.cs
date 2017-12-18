@@ -3,7 +3,6 @@
     using Allors.Domain;
     using Allors.Services;
 
-    using Microsoft.AspNetCore.Authentication.JwtBearer;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
 
@@ -18,7 +17,7 @@
 
         [HttpPost]
         [AllowAnonymous]
-        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        [Authorize]
         public IActionResult UserName()
         {
             var user = this.Session.GetUser();

@@ -23,7 +23,7 @@ namespace Allors.Domain
     {
         public static readonly TransitionalConfiguration[] StaticTransitionalConfigurations =
             {
-                new TransitionalConfiguration(M.AccountingPeriod.BudgetState),
+                new TransitionalConfiguration(M.AccountingPeriod, M.AccountingPeriod.BudgetState),
             };
 
         public TransitionalConfiguration[] TransitionalConfigurations => StaticTransitionalConfigurations;

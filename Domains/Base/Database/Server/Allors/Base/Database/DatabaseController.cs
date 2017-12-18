@@ -25,7 +25,6 @@ namespace Allors.Server
     using Allors.Domain;
     using Allors.Services;
 
-    using Microsoft.AspNetCore.Authentication.JwtBearer;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
 
@@ -39,7 +38,7 @@ namespace Allors.Server
         private ISession Session { get; }
 
         [HttpPost]
-        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        [Authorize]
         [AllowAnonymous]
         public IActionResult Sync([FromBody]SyncRequest syncRequest)
         {
@@ -56,7 +55,7 @@ namespace Allors.Server
         }
 
         [HttpPost]
-        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        [Authorize]
         [AllowAnonymous]
         public IActionResult Push([FromBody]PushRequest pushRequest)
         {
@@ -73,7 +72,7 @@ namespace Allors.Server
         }
 
         [HttpPost]
-        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        [Authorize]
         [AllowAnonymous]
         public IActionResult Invoke([FromBody]InvokeRequest invokeRequest)
         {
