@@ -39,11 +39,11 @@ namespace Allors.Domain
             var userGroups = new UserGroups(this.Session);
 
             var locale = new Locales(this.Session).DutchBelgium;
-            var administrator = new PersonBuilder(this.Session).WithUserName(Users.AdministratorUserName).WithLocale(locale).Build();
+            var administrator = new PersonBuilder(this.Session).WithUserName(Users.AdministratorUserName).Build();
             userGroups.Administrators.AddMember(administrator);
             userGroups.Creators.AddMember(administrator);
 
-            var guest = new PersonBuilder(this.Session).WithUserName(Users.GuestUserName).WithLocale(locale).Build();
+            var guest = new PersonBuilder(this.Session).WithUserName(Users.GuestUserName).Build();
             userGroups.Guests.AddMember(guest);
 
             var singleton = this.Session.GetSingleton();
