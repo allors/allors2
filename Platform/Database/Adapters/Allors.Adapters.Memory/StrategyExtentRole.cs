@@ -90,12 +90,13 @@ namespace Allors.Adapters.Memory
             return strategies.Contains(valueStrategy);
         }
 
+        // TODO: write test
         public override void CopyTo(Array array, int index)
         {
             this.FillObjects();
-            for (int i = index; i < this.roles.Count; i++)
+            for (int i = 0; i < this.roles.Count; i++)
             {
-                array.SetValue(this.roles[i].GetObject(), i);
+                array.SetValue(this.roles[i].GetObject(), i + index);
             }
         }
 
