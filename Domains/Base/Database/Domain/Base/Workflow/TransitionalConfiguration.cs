@@ -27,9 +27,8 @@ namespace Allors.Domain
 
     public partial class TransitionalConfiguration
     {
-        public TransitionalConfiguration(RoleType roleType)
+        public TransitionalConfiguration(Class objectType, RoleType roleType)
         {
-            var objectType = roleType.AssociationType.ObjectType;
             var previousObjectState = objectType.RoleTypes.FirstOrDefault(v => v.Name.Equals("Previous" + roleType.Name));
             var lastObjectState = objectType.RoleTypes.FirstOrDefault(v => v.Name.Equals("Last" + roleType.Name));
 
