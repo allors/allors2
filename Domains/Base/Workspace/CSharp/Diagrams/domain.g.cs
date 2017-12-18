@@ -34,7 +34,7 @@ namespace Allors.Domain
 								global::System.Guid UniqueId {set;}
 
 				}
-				public interface User : Localised 
+				public interface User 
 				{
 								global::System.String UserName {set;}
 

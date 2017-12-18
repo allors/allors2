@@ -79,7 +79,7 @@ namespace Allors.Domain
 						global::System.Guid UniqueId {set;}
 
 		}
-		public interface User  : SecurityTokenOwner, AccessControlledObject, Localised 
+		public interface User  : SecurityTokenOwner, AccessControlledObject 
 		{
 						global::System.String UserName {set;}
 
