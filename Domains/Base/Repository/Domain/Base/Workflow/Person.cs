@@ -53,8 +53,6 @@ namespace Allors.Repository
 
         public SecurityToken[] SecurityTokens { get; set; }
 
-        public Locale Locale { get; set; }
-
         public Guid UniqueId { get; set; }
 
         #endregion
