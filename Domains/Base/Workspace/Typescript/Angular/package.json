@@ -5,8 +5,7 @@
   "repository": "https://github.com/Allors/allors2",
   "license": "LGPL-3.0",
   "scripts": {
-    "link": "npm run link-framework",
-    "link-framework": "lnk ../../../../../Platform/Workspace/Typescript/src/allors/framework src/allors",
+    "postinstall": "node ./postinstall.js",
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
@@ -50,6 +49,6 @@
     "ts-node": "~3.2.0",
     "tslint": "~5.7.0",
     "typescript": "~2.4.2",
-    "lnk-cli": "^1.0.1"
+    "lnk": "latest"
   }
 }
