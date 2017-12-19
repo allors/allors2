@@ -22,6 +22,7 @@ namespace Tests
             var content = await response.Content.ReadAsStringAsync();
             Assert.Equal("Administrator", content);
         }
+
         [Fact]
         public async void SignedOut()
         {
@@ -36,6 +37,5 @@ namespace Tests
 
             Assert.Equal("Guest", content);
         }
-
     }
 }

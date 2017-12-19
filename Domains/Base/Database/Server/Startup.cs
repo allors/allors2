@@ -11,6 +11,7 @@
     using Identity.Models;
     using Identity.Services;
 
+    using Microsoft.AspNetCore.Authentication.JwtBearer;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Diagnostics;
     using Microsoft.AspNetCore.Hosting;
@@ -49,7 +50,10 @@
             services.AddTransient<IEmailSender, EmailSender>();
 
             // Enable Dual Authentication 
-            services.AddAuthentication()
+            services.AddAuthentication(option =>
+                    {
+                        option.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                    })
                 .AddCookie(cfg => cfg.SlidingExpiration = true)
                 .AddJwtBearer(cfg =>
                     {

@@ -66,7 +66,7 @@ namespace Tests
             var current = Directory.GetCurrentDirectory();
             var directoryInfo = new DirectoryInfo(current + @"\..\..\..\..\Server");
             var directory = directoryInfo.FullName;
-
+            
             var services = new ServiceCollection();
             services.AddAllors(directory, "Server");
             var serviceProvider = services.BuildServiceProvider();
