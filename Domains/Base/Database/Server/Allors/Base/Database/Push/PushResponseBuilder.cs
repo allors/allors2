@@ -80,7 +80,7 @@ namespace Allors.Server
                 }
             }
 
-            if (objectByNewId != null)
+            if (objectByNewId != null && !saveResponse.HasErrors)
             {
                 foreach (var saveRequestNewObject in this.pushRequest.NewObjects)
                 {
