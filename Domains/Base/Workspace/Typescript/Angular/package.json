@@ -11,7 +11,9 @@
     "build": "ng build",
     "test": "ng test",
     "lint": "ng lint",
-    "e2e": "ng e2e"
+    "e2e": "ng e2e",
+    "tc:test": "ng test --watch=false --reporters=teamcity",
+    "tc:e2e": "ng e2e --config ./protractor.conf.teamcity.js"
   },
   "private": true,
   "dependencies": {
@@ -37,6 +39,7 @@
     "@types/node": "~6.0.60",
     "codelyzer": "^4.0.1",
     "jasmine-core": "~2.6.2",
+    "jasmine-reporters": "^2.2.1",
     "jasmine-spec-reporter": "~4.1.0",
     "karma": "~1.7.0",
     "karma-chrome-launcher": "~2.1.1",
@@ -45,10 +48,10 @@
     "karma-jasmine": "~1.1.0",
     "karma-jasmine-html-reporter": "^0.2.2",
     "karma-teamcity-reporter": "^1.0.1",
+    "lnk": "latest",
     "protractor": "~5.1.2",
     "ts-node": "~3.2.0",
     "tslint": "~5.7.0",
-    "typescript": "~2.4.2",
-    "lnk": "latest"
+    "typescript": "~2.4.2"
   }
 }
