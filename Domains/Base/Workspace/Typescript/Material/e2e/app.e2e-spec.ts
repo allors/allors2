@@ -1,14 +1,14 @@
-import { AngularMaterialPage } from './app.po';
+import { AngularMaterialPage } from "./app.po";
 
-describe('angular-material App', () => {
+describe("angular-material App", () => {
   let page: AngularMaterialPage;
 
   beforeEach(() => {
     page = new AngularMaterialPage();
   });
 
-  it('should display welcome message', () => {
+  it("should display welcome message", async () => {
     page.navigateTo();
-    expect(page.getParagraphText()).toEqual('Welcome to app!!');
+    expect(await page.getTitle()).toEqual("AngularMaterial");
   });
 });

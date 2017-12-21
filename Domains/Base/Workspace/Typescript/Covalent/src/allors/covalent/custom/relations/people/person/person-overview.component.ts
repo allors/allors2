@@ -48,7 +48,7 @@ export class PersonOverviewComponent implements OnInit, AfterViewInit, OnDestroy
           new Fetch({
             id,
             include: [
-              new TreeNode({ roleType: m.Person.Locale }),
+              new TreeNode({ roleType: m.Person.Photo }),
             ],
             name: "person",
           }),

@@ -1,11 +1,11 @@
-import { browser, by, element } from 'protractor';
+import { browser, by, element } from "protractor";
 
 export class AngularMaterialPage {
-  navigateTo() {
-    return browser.get('/');
+  public navigateTo() {
+    return browser.get("/");
   }
 
-  getParagraphText() {
-    return element(by.css('app-root h1')).getText();
+  public getTitle() {
+    return browser.getTitle();
   }
 }

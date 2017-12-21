@@ -5,16 +5,15 @@
   "repository": "https://github.com/Allors/allors2",
   "license": "LGPL-3.0",
   "scripts": {
-    "link": "npm run link-framework && npm run link-angular && npm run link-material",
-    "link-framework": "lnk ../../../../../Platform/Workspace/Typescript/src/allors/framework src/allors",
-    "link-angular": "lnk ../Angular/src/allors/angular/base src/allors/angular",
-    "link-material": "lnk ../Material/src/allors/material/base src/allors/material",
+    "postinstall": "node ./postinstall.js",
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
     "test": "ng test",
     "lint": "ng lint",
-    "e2e": "ng e2e"
+    "e2e": "ng e2e",
+    "tc:test": "ng test --watch=false --reporters=teamcity",
+    "tc:e2e": "ng e2e --config ./protractor.conf.teamcity.js"
   },
   "private": true,
   "dependencies": {
