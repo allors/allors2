@@ -1,13 +1,9 @@
-// Protractor configuration file, see link for more information
-// https://github.com/angular/protractor/blob/master/lib/config.ts
-
 const { SpecReporter } = require('jasmine-spec-reporter');
-var TeamCityReporter = require('jasmine-reporters').TeamCityReporter;
 
 exports.config = {
   allScriptsTimeout: 11000,
   specs: [
-    './e2e/**/*.e2e-spec.ts'
+    './out-tsc/e2e/**/*.e2e-spec.js'
   ],
   capabilities: {
     'browserName': 'chrome'
@@ -18,12 +14,12 @@ exports.config = {
   jasmineNodeOpts: {
     showColors: true,
     defaultTimeoutInterval: 30000,
-    print: function () { }
+    print: function() {}
   },
   onPrepare() {
     require('ts-node').register({
-      project: 'e2e/tsconfig.e2e.json',
+      project: 'e2e/tsconfig.e2e.json'
     });
-    jasmine.getEnv().addReporter(new TeamCityReporter());
+    jasmine.getEnv().addReporter(new SpecReporter({ spec: { displayStacktrace: true } }));
   }
 };

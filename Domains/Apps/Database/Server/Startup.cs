@@ -1,4 +1,6 @@
-﻿namespace Allors.Server
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+
+namespace Allors.Server
 {
     using System.Text;
 
@@ -49,7 +51,10 @@
             services.AddTransient<IEmailSender, EmailSender>();
 
             // Enable Dual Authentication 
-            services.AddAuthentication()
+            services.AddAuthentication(option =>
+                {
+                    option.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                })
                 .AddCookie(cfg => cfg.SlidingExpiration = true)
                 .AddJwtBearer(cfg =>
                 {

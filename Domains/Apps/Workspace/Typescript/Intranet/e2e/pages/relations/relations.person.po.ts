@@ -1,5 +1,4 @@
-import { $, browser, by, element, ExpectedConditions } from "protractor";
-import { WebElementPromise } from "selenium-webdriver";
+import { $, browser, by, element, ExpectedConditions, WebElementPromise } from "protractor";
 import { BasePage } from "../base.po";
 import { config } from "../config";
 

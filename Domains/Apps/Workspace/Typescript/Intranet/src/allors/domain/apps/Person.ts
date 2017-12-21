@@ -9,13 +9,28 @@ declare module "../generated/Person.g" {
 Object.defineProperty(Person.prototype, "displayName", {
   get(this: Person): string {
     if (this.FirstName || this.LastName) {
-        if (this.FirstName && this.LastName) {
-            return this.FirstName + " " + this.LastName;
-        } else if (this.LastName) {
-            return this.LastName;
-        } else {
-            return this.FirstName;
+        let name = null;
+        if (this.FirstName) {
+            name = this.FirstName;
         }
+
+        if (this.MiddleName) {
+            if (name !=  null) {
+                name += " " + this.MiddleName;
+            } else {
+                name = this.MiddleName;
+            }
+        }
+
+        if (this.LastName) {
+            if (name !=  null) {
+                name += " " + this.LastName;
+            } else {
+                name = this.LastName;
+            }
+        }
+
+        return name;
     }
 
     if (this.UserName) {
