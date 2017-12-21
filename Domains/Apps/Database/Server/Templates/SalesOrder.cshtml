@@ -140,11 +140,11 @@
     var billToElectronicAddress = Model.SalesOrder.BillToContactMechanism as ElectronicAddress;
 
     var salesInvoiceItemTypes = Model.SalesOrder.Strategy.Session.Extent<SalesInvoiceItemType>();
-    var processFlows = Model.SalesOrder.Strategy.Session.Extent<ProcessFlow>();
+    var billingProcesses = Model.SalesOrder.Strategy.Session.Extent<BillingProcess>();
 
-    var payFirst = processFlows.First(t => t.UniqueId.ToString().ToUpper() == "AB01CCC2-6480-4FC0-B20E-265AFD41FAE2");
+    var payFirst = billingProcesses.First(t => t.UniqueId.ToString().ToUpper() == "AB01CCC2-6480-4FC0-B20E-265AFD41FAE2");
 
-    var title = Model.SalesOrder.Store.ProcessFlow == payFirst ? "PROFORMA" : "ORDER";
+    var title = Model.SalesOrder.Store.BillingProcess == payFirst ? "PROFORMA" : "ORDER";
 }
 
 <body>
