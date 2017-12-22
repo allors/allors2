@@ -6,8 +6,8 @@ const lnk = require('lnk');
 function link(src, dst){
  
     lnk([src], dst, {force: true})
-    .then(() => console.log(src + ' linked to dst') )
-    .catch((e) =>  console.log(src + ' already linked dst'))
+    .then(() => console.log(src + ' linked to ' + dst) )
+    .catch((e) =>  console.log(src + ' already linked ' + dst))
 }
 
 link ('../../../../../Platform/Workspace/Typescript/src/allors/framework', 'src/allors');

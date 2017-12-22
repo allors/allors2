@@ -19,6 +19,8 @@
 // <summary>Defines the DomainTest type.</summary>
 //-------------------------------------------------------------------------------------------------
 
+using System.Reflection;
+
 namespace Allors
 {
     using System;
@@ -60,7 +62,17 @@ namespace Allors
         protected void Setup(bool populate)
         {
             var services = new ServiceCollection();
-            services.AddAllors(Directory.GetCurrentDirectory(), "Domain.Tests");
+            services.AddAllors(new ServiceConfig
+            {
+                Directory = new DirectoryInfo("../../../../Server"),
+                ApplicationName = "Server",
+                Assemblies = new[]
+                {
+                    typeof(Database).GetTypeInfo().Assembly,
+                    typeof(Person).GetTypeInfo().Assembly,
+                    typeof(System.Linq.Queryable).Assembly
+                }
+            });
             var serviceProvider = services.BuildServiceProvider();
 
             var configuration = new Configuration

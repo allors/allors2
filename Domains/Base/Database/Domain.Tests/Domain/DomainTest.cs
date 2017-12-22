@@ -67,7 +67,12 @@ namespace Tests
         protected void Setup(bool populate)
         {
             var services = new ServiceCollection();
-            services.AddAllors(Directory.GetCurrentDirectory(), ApplicationName);
+            services.AddAllors(new ServiceConfig
+            {
+                Directory = new DirectoryInfo("."),
+                ApplicationName = ApplicationName,
+                Assemblies = new[] { typeof(Person).GetTypeInfo().Assembly }
+            });
             var serviceProvider = services.BuildServiceProvider();
 
             var configuration = new Configuration

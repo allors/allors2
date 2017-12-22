@@ -41,7 +41,7 @@
       "cwd": "${workspaceRoot}",
       "sourceMaps": true,
       "outFiles": [
-        "${workspaceRoot}/dist/out-tsc/e2e/*.js"
+        "${workspaceRoot}/out-tsc/e2e/*.js"
       ]
     }
   ]

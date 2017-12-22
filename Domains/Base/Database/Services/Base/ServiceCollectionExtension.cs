@@ -19,6 +19,8 @@
 // <summary>Defines the DomainTest type.</summary>
 //-------------------------------------------------------------------------------------------------
 
+using System.Collections.Generic;
+
 namespace Allors.Services
 {
     using System.Diagnostics;
@@ -38,46 +40,58 @@ namespace Allors.Services
 
     public static class ServiceCollectionExtension
     {
-        public static void AddAllors(this IServiceCollection services, string serverDirectory, string applicationName = null)
+        public static void AddAllors(this IServiceCollection services, ServiceConfig config)
         {
             services.AddScoped<ISessionService, SessionService>();
             services.AddAllorsShared();
 
-            var serverDirectoryFullName = new DirectoryInfo(serverDirectory).FullName;
+            var serverDirectoryFullName = config.Directory.FullName;
             IFileProvider fileProvider = new PhysicalFileProvider(serverDirectoryFullName);
             var hostingEnvironment = new HostingEnvironment
-                                         {
-                                             ApplicationName = applicationName ?? Path.GetFileName(serverDirectory),
-                                             WebRootFileProvider = fileProvider,
-                                         };
+            {
+                ApplicationName = config.ApplicationName ?? Path.GetFileName(config.Directory.Name),
+                WebRootFileProvider = fileProvider,
+            };
             services.AddSingleton<IHostingEnvironment>(hostingEnvironment);
             services.Configure<RazorViewEngineOptions>(options =>
                 {
                     options.FileProviders.Clear();
                     options.FileProviders.Add(fileProvider);
 
-                  var previous = options.CompilationCallback;
-                  options.CompilationCallback = (context) =>
-                    {
-                      previous?.Invoke(context);
+                    var previous = options.CompilationCallback;
+                    options.CompilationCallback = (context) =>
+                      {
+                          previous?.Invoke(context);
 
-                      var assemblies = Assembly.GetEntryAssembly().GetReferencedAssemblies().Select(v => MetadataReference.CreateFromFile(Assembly.Load(v).Location)).ToList();
-                      assemblies.Add(MetadataReference.CreateFromFile(Assembly.Load(new AssemblyName("netstandard")).Location));
-                      assemblies.Add(MetadataReference.CreateFromFile(Assembly.Load(new AssemblyName("System.Private.CoreLib")).Location));
-                      assemblies.Add(MetadataReference.CreateFromFile(Assembly.Load(new AssemblyName("Microsoft.AspNetCore.Mvc")).Location));
-                      assemblies.Add(MetadataReference.CreateFromFile(Assembly.Load(new AssemblyName("Microsoft.AspNetCore.Mvc.Abstractions")).Location));
-                      assemblies.Add(MetadataReference.CreateFromFile(Assembly.Load(new AssemblyName("Microsoft.AspNetCore.Mvc.Razor")).Location));
-                      assemblies.Add(MetadataReference.CreateFromFile(Assembly.Load(new AssemblyName("Microsoft.AspNetCore.Mvc.ViewFeatures")).Location));
-                      assemblies.Add(MetadataReference.CreateFromFile(Assembly.Load(new AssemblyName("Microsoft.AspNetCore.Html.Abstractions")).Location));
+                          var assemblies = new List<MetadataReference>();
 
-                      assemblies.Add(MetadataReference.CreateFromFile(typeof(object).GetTypeInfo().Assembly.Location));
-                      assemblies.Add(MetadataReference.CreateFromFile(typeof(RuntimeBinderException).GetTypeInfo().Assembly.Location));
-                      assemblies.Add(MetadataReference.CreateFromFile(typeof(System.Runtime.CompilerServices.DynamicAttribute).GetTypeInfo().Assembly.Location));
-                      assemblies.Add(MetadataReference.CreateFromFile(typeof(ExpressionType).GetTypeInfo().Assembly.Location));
-                      assemblies.Add(MetadataReference.CreateFromFile(Assembly.Load(new AssemblyName("System.Runtime")).Location));
-                      
-                      context.Compilation = context.Compilation.AddReferences(assemblies);
-                    };
+                          var rootAssemblies = new List<Assembly> {Assembly.GetEntryAssembly()};
+                          rootAssemblies.AddRange(config.Assemblies);
+
+                          foreach (var rootAssembly in rootAssemblies)
+                          {
+                              assemblies.AddRange(rootAssembly.GetReferencedAssemblies()
+                                      .Select(v => MetadataReference.CreateFromFile(Assembly.Load(v).Location))
+                                      .ToList());
+                          }
+
+                          assemblies.AddRange(config.Assemblies?.Select(assembly => MetadataReference.CreateFromFile(assembly.Location)));
+                          assemblies.Add(MetadataReference.CreateFromFile(Assembly.Load(new AssemblyName("netstandard")).Location));
+                          assemblies.Add(MetadataReference.CreateFromFile(Assembly.Load(new AssemblyName("System.Private.CoreLib")).Location));
+                          assemblies.Add(MetadataReference.CreateFromFile(Assembly.Load(new AssemblyName("Microsoft.AspNetCore.Mvc")).Location));
+                          assemblies.Add(MetadataReference.CreateFromFile(Assembly.Load(new AssemblyName("Microsoft.AspNetCore.Mvc.Abstractions")).Location));
+                          assemblies.Add(MetadataReference.CreateFromFile(Assembly.Load(new AssemblyName("Microsoft.AspNetCore.Mvc.Razor")).Location));
+                          assemblies.Add(MetadataReference.CreateFromFile(Assembly.Load(new AssemblyName("Microsoft.AspNetCore.Mvc.ViewFeatures")).Location));
+                          assemblies.Add(MetadataReference.CreateFromFile(Assembly.Load(new AssemblyName("Microsoft.AspNetCore.Html.Abstractions")).Location));
+
+                          assemblies.Add(MetadataReference.CreateFromFile(typeof(object).GetTypeInfo().Assembly.Location));
+                          assemblies.Add(MetadataReference.CreateFromFile(typeof(RuntimeBinderException).GetTypeInfo().Assembly.Location));
+                          assemblies.Add(MetadataReference.CreateFromFile(typeof(System.Runtime.CompilerServices.DynamicAttribute).GetTypeInfo().Assembly.Location));
+                          assemblies.Add(MetadataReference.CreateFromFile(typeof(ExpressionType).GetTypeInfo().Assembly.Location));
+                          assemblies.Add(MetadataReference.CreateFromFile(Assembly.Load(new AssemblyName("System.Runtime")).Location));
+
+                          context.Compilation = context.Compilation.AddReferences(assemblies);
+                      };
                 });
 
             services.AddSingleton<ObjectPoolProvider, DefaultObjectPoolProvider>();

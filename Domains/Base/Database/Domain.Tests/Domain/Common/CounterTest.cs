@@ -120,7 +120,11 @@ namespace Tests
         private static ServiceProvider CreateServiceProvider()
         {
             var services = new ServiceCollection();
-            services.AddAllors(Directory.GetCurrentDirectory(), ApplicationName);
+            services.AddAllors(new ServiceConfig
+            {
+                Directory = new DirectoryInfo("."),
+                ApplicationName = ApplicationName
+            });
             var serviceProvider = services.BuildServiceProvider();
             return serviceProvider;
         }
