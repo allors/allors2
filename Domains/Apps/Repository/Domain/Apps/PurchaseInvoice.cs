@@ -54,7 +54,6 @@ namespace Allors.Repository
 
       public Permission[] DeniedPermissions { get; set; }
     public SecurityToken[] SecurityTokens { get; set; }
-    public Locale Locale { get; set; }
     public string Comment { get; set; }
     public string PrintContent { get; set; }
 
