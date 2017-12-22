@@ -18,7 +18,7 @@
       <mat-divider></mat-divider>
       <mat-card-content>
         <div class="pad">
-          <div class="grid-8_lg-2_sm-1">
+          <div class="grid-4_lg-2_sm-1">
             <a-mat-static class="col" [object]="order" [roleType]="m.SalesOrder.SalesOrderState" display="Name" label="Status"></a-mat-static>
             <a-mat-static class="col" [object]="order" [roleType]="m.SalesOrder.OrderNumber"></a-mat-static>
             <a-mat-static class="col link" *ngIf="order.Quote" [object]="order" [roleType]="m.SalesOrder.Quote" display="QuoteNumber"
@@ -80,7 +80,7 @@
         <button *ngIf="order.CanWriteSalesOrderItems" mat-button [routerLink]="['/salesOrder/' + order.id]">Edit</button>
         <button mat-button [routerLink]="['/printsalesorder/' + order.id ]">Print</button>
         <button *ngIf="order.CanExecuteShip" mat-button (click)="ship()">Ship to customer</button>
-        <button *ngIf="payFirst && order.CanExecuteComplete && order.ValidOrderItems.length > 0" mat-button (click)="createInvoice()">Create Invoice</button>
+        <button *ngIf="billingForOrderItems && order.CanExecuteComplete && order.ValidOrderItems.length > 0" mat-button (click)="createInvoice()">Create Invoice</button>
       </mat-card-actions>
     </mat-card>
 
@@ -127,29 +127,5 @@
   </div>
 
   <div flex-gt-xs="50">
-    <mat-card tdMediaToggle="gt-xs" [mediaClasses]="['push']">
-      <mat-card-title>Status History</mat-card-title>
-      <mat-divider></mat-divider>
-      <mat-card-content>
-
-        <ng-template tdLoading="order.OrderStatuses">
-          <mat-list class="will-load">
-
-            <ng-template let-status let-last="last" ngFor [ngForOf]="order.OrderStatuses">
-              <mat-list-item>
-                <p mat-line class="mat-caption">{{ status.SalesOrderObjectState.Name }} </p>
-                <p mat-line hide-gt-md class="mat-caption"> Start: {{ status.StartDateTime | date}} </p>
-
-                <span hide-xs hide-sm hide-md flex-gt-xs="60" flex-xs="40" layout-gt-xs="row">
-                  <div class="mat-caption tc-grey-500" flex-gt-xs="50"> Start: {{ status.StartDateTime | date }}</div>
-                </span>
-
-              </mat-list-item>
-            </ng-template>
-          </mat-list>
-        </ng-template>
-      </mat-card-content>
-
-    </mat-card>
   </div>
 </div>
