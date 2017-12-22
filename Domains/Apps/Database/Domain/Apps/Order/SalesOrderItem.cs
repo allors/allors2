@@ -139,11 +139,6 @@ namespace Allors.Domain
                 this.AssignedShipToAddress = this.AssignedShipToParty.ShippingAddress;
             }
 
-            if (this.ExistItemType && this.ItemType != new SalesInvoiceItemTypes(this.strategy.Session).ProductItem)
-            {
-                this.QuantityOrdered = 1;
-            }
-
             derivation.Validation.AssertExistsAtMostOne(this, M.SalesOrderItem.Product, M.SalesOrderItem.ProductFeature);
             derivation.Validation.AssertExistsAtMostOne(this, M.SalesOrderItem.ActualUnitPrice, M.SalesOrderItem.DiscountAdjustment, M.SalesOrderItem.SurchargeAdjustment);
             derivation.Validation.AssertExistsAtMostOne(this, M.SalesOrderItem.RequiredMarkupPercentage, M.SalesOrderItem.RequiredProfitMargin, M.SalesOrderItem.DiscountAdjustment, M.SalesOrderItem.SurchargeAdjustment);
