@@ -70,8 +70,7 @@ namespace Tests
             services.AddAllors(new ServiceConfig
             {
                 Directory = new DirectoryInfo("."),
-                ApplicationName = ApplicationName,
-                Assemblies = new[] { typeof(Person).GetTypeInfo().Assembly }
+                ApplicationName = ApplicationName
             });
             var serviceProvider = services.BuildServiceProvider();
 

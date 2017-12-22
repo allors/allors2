@@ -63,12 +63,13 @@ namespace Tests
             };
 
 
-            var current = Directory.GetCurrentDirectory();
-            var directoryInfo = new DirectoryInfo(current + @"\..\..\..\..\Server");
-            var directory = directoryInfo.FullName;
-            
+           
             var services = new ServiceCollection();
-            services.AddAllors(directory, "Server");
+            services.AddAllors(new ServiceConfig
+            {
+                Directory = new DirectoryInfo(@"\..\..\..\..\Server"),
+                ApplicationName = "Server"
+            });
             var serviceProvider = services.BuildServiceProvider();
 
             var database = new Allors.Adapters.Object.SqlClient.Database(serviceProvider, configuration);

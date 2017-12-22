@@ -66,12 +66,12 @@ namespace Allors
             {
                 Directory = new DirectoryInfo("../../../../Server"),
                 ApplicationName = "Server",
-                Assemblies = new[]
-                {
-                    typeof(Database).GetTypeInfo().Assembly,
-                    typeof(Person).GetTypeInfo().Assembly,
-                    typeof(System.Linq.Queryable).Assembly
-                }
+                //Assemblies = new[]
+                //{
+                //    typeof(Database).GetTypeInfo().Assembly,
+                //    typeof(Person).GetTypeInfo().Assembly,
+                //    typeof(System.Linq.Queryable).Assembly
+                //}
             });
             var serviceProvider = services.BuildServiceProvider();
 

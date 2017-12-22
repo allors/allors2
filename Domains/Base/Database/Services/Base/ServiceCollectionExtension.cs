@@ -42,6 +42,8 @@ namespace Allors.Services
     {
         public static void AddAllors(this IServiceCollection services, ServiceConfig config)
         {
+            var rootAssemblies = config.Assemblies ?? new[] { Assembly.GetCallingAssembly() };
+
             services.AddScoped<ISessionService, SessionService>();
             services.AddAllorsShared();
 
@@ -63,19 +65,11 @@ namespace Allors.Services
                       {
                           previous?.Invoke(context);
 
-                          var assemblies = new List<MetadataReference>();
+                          var assemblies = rootAssemblies
+                              .SelectMany(v => v.GetReferencedAssemblies()
+                                  .Select(w => MetadataReference.CreateFromFile(Assembly.Load(w).Location)))
+                              .ToList();
 
-                          var rootAssemblies = new List<Assembly> {Assembly.GetEntryAssembly()};
-                          rootAssemblies.AddRange(config.Assemblies);
-
-                          foreach (var rootAssembly in rootAssemblies)
-                          {
-                              assemblies.AddRange(rootAssembly.GetReferencedAssemblies()
-                                      .Select(v => MetadataReference.CreateFromFile(Assembly.Load(v).Location))
-                                      .ToList());
-                          }
-
-                          assemblies.AddRange(config.Assemblies?.Select(assembly => MetadataReference.CreateFromFile(assembly.Location)));
                           assemblies.Add(MetadataReference.CreateFromFile(Assembly.Load(new AssemblyName("netstandard")).Location));
                           assemblies.Add(MetadataReference.CreateFromFile(Assembly.Load(new AssemblyName("System.Private.CoreLib")).Location));
                           assemblies.Add(MetadataReference.CreateFromFile(Assembly.Load(new AssemblyName("Microsoft.AspNetCore.Mvc")).Location));

@@ -1,4 +1,6 @@
-﻿namespace Allors.Console
+﻿using System.IO;
+
+namespace Allors.Console
 {
     using System.Data;
 
@@ -41,7 +43,11 @@
             };
 
             var services = new ServiceCollection();
-            services.AddAllors("../Domain.Tests", "Server");
+            services.AddAllors(new ServiceConfig
+            {
+                Directory = new DirectoryInfo(@"..\Server"),
+                ApplicationName = "Server"
+            });
             var serviceProvider = services.BuildServiceProvider();
 
             var database = new Database(serviceProvider, configuration);
