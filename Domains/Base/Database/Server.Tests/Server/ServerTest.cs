@@ -67,7 +67,7 @@ namespace Tests
             var services = new ServiceCollection();
             services.AddAllors(new ServiceConfig
             {
-                Directory = new DirectoryInfo(@"\..\..\..\..\Server"),
+                Directory = new DirectoryInfo(@"..\..\..\..\Server"),
                 ApplicationName = "Server"
             });
             var serviceProvider = services.BuildServiceProvider();
