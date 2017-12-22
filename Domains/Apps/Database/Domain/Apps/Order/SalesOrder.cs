@@ -627,6 +627,7 @@ namespace Allors.Domain
                     ((!this.PartiallyShip && allItemsAvailable) || somethingToShip))
                 {
                     this.CanShip = true;
+                    return;
                 }
             }
 
