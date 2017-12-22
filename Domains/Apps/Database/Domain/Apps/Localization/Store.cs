@@ -89,11 +89,6 @@ namespace Allors.Domain
                 this.OutgoingShipmentCounter = new CounterBuilder(this.strategy.Session).WithUniqueId(Guid.NewGuid()).WithValue(0).Build();
             }
 
-            if (!this.ExistSalesInvoiceCounter)
-            {
-                this.SalesInvoiceCounter = new CounterBuilder(this.strategy.Session).WithUniqueId(Guid.NewGuid()).WithValue(0).Build();
-            }
-
             if (!this.ExistBillingProcess)
             {
                 this.BillingProcess = new BillingProcesses(this.strategy.Session).BillingForShipmentItems;
