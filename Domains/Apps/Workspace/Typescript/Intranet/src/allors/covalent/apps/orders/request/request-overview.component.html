@@ -117,29 +117,5 @@
   </div>
 
   <div flex-gt-xs="50">
-    <mat-card tdMediaToggle="gt-xs" [mediaClasses]="['push']">
-      <mat-card-title>Status History</mat-card-title>
-      <mat-divider></mat-divider>
-      <mat-card-content>
-
-        <ng-template tdLoading="request.RequestStatuses">
-          <mat-list class="will-load">
-
-            <ng-template let-status let-last="last" ngFor [ngForOf]="request.RequestStatuses">
-              <mat-list-item>
-                <p mat-line class="mat-caption">{{ status.RequestObjectState.Name }} </p>
-                <p mat-line hide-gt-md class="mat-caption"> Start: {{ status.StartDateTime | date}} </p>
-
-                <span hide-xs hide-sm hide-md flex-gt-xs="60" flex-xs="40" layout-gt-xs="row">
-                  <div class="mat-caption tc-grey-500" flex-gt-xs="50"> Start: {{ status.StartDateTime | date }}</div>
-                </span>
-
-              </mat-list-item>
-            </ng-template>
-          </mat-list>
-        </ng-template>
-      </mat-card-content>
-
-    </mat-card>
   </div>
 </div>

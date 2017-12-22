@@ -2,22 +2,28 @@
   <form #form="ngForm" *ngIf="requestItem" (submit)="save()">
 
     <div class="pad">
-      <div *ngIf="requestItem.RequestItemState">
-        <a-mat-static [object]="requestItem" [roleType]="m.RequestItem.RequestItemState" display="Name" label="Status"></a-mat-static>
-         <button *ngIf="requestItem.CanExecuteSubmit" mat-button type="button" (click)="submit()">Submit</button>
+      <div class="grid-2_md-1" *ngIf="requestItem.RequestItemState">
+        <a-mat-static class="col" [object]="requestItem" [roleType]="m.RequestItem.RequestItemState" display="Name" label="Status"></a-mat-static>
+        <button *ngIf="requestItem.CanExecuteSubmit" mat-button type="button" (click)="submit()">Submit</button>
         <button *ngIf="requestItem.CanExecuteCancel" mat-button type="button" (click)="cancel()">Cancel</button>
         <button *ngIf="requestItem.CanExecuteHold" mat-button type="button" (click)="hold()">Pending Customer</button>
       </div>
 
-      <a-mat-autocomplete [object]="requestItem" [roleType]="m.RequestItem.Product" [options]="goods" display="Name" [filter]="goodsFilter.create()"
-        (onChange)="goodSelected($event)"></a-mat-autocomplete>
-      <a-mat-input [object]="requestItem" [roleType]="m.RequestItem.Quantity"></a-mat-input>
-      <a-mat-select [object]="requestItem" [roleType]="m.RequestItem.UnitOfMeasure" [options]="unitsOfMeasure" display="Name"></a-mat-select>
-      <a-mat-static *ngIf="serialisedInventoryItem?.ExpectedSalesPrice" [object]="serialisedInventoryItem" [roleType]="m.SerialisedInventoryItem.ExpectedSalesPrice"></a-mat-static>
-      <a-mat-input [object]="requestItem" [roleType]="m.RequestItem.MaximumAllowedPrice"></a-mat-input>
-      <a-mat-datepicker [object]="requestItem" [roleType]="m.RequestItem.RequiredByDate"></a-mat-datepicker>
-      <a-mat-textarea [object]="requestItem" [roleType]="m.RequestItem.Comment"></a-mat-textarea>
-      <a-mat-textarea [object]="requestItem" [roleType]="m.RequestItem.InternalComment"></a-mat-textarea>
+      <div class="grid-2_xs-1">
+        <a-mat-autocomplete class="col" [object]="requestItem" [roleType]="m.RequestItem.Product" [options]="goods" display="Name"
+          [filter]="goodsFilter.create()" (onChange)="goodSelected($event)"></a-mat-autocomplete>
+      </div>
+
+      <div class="grid-4_xs-1">
+        <a-mat-input class="col" [object]="requestItem" [roleType]="m.RequestItem.Quantity"></a-mat-input>
+        <a-mat-select class="col" [object]="requestItem" [roleType]="m.RequestItem.UnitOfMeasure" [options]="unitsOfMeasure" display="Name"></a-mat-select>
+        <a-mat-static class="col" *ngIf="serialisedInventoryItem?.ExpectedSalesPrice" [object]="serialisedInventoryItem" [roleType]="m.SerialisedInventoryItem.ExpectedSalesPrice"></a-mat-static>
+        <a-mat-input class="col" [object]="requestItem" [roleType]="m.RequestItem.MaximumAllowedPrice"></a-mat-input>
+      </div>
+
+      <a-mat-datepicker class="col" [object]="requestItem" [roleType]="m.RequestItem.RequiredByDate"></a-mat-datepicker>
+      <a-mat-textarea class="col" [object]="requestItem" [roleType]="m.RequestItem.Comment"></a-mat-textarea>
+      <a-mat-textarea class="col" [object]="requestItem" [roleType]="m.RequestItem.InternalComment"></a-mat-textarea>
     </div>
 
     <mat-divider></mat-divider>
