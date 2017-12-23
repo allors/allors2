@@ -128,11 +128,10 @@
 
   <div flex-gt-xs="50">
     <mat-card tdMediaToggle="gt-xs" [mediaClasses]="['push']">
-      <div class="grid pad">
-        <mat-card-title class="col">Contact info</mat-card-title>
-
-        <div class="pad">
-          <mat-radio-group class="col-4" data-push-left="off-4" [(ngModel)]="contactMechanismsCollection">
+      <div class="grid">
+        <mat-card-title class="col" style="padding-bottom: 0px">Contact info</mat-card-title>
+        <div class="text-micro col-right pad-top" data-push-right="off-1">
+          <mat-radio-group  [(ngModel)]="contactMechanismsCollection">
             <mat-radio-button value="Current">Current</mat-radio-button>
             <mat-radio-button value="Inactive">Inactive</mat-radio-button>
             <mat-radio-button value="All">All</mat-radio-button>

@@ -1,11 +1,13 @@
 <mat-toolbar>
   <div layout="row" layout-align="start center" flex>
     <button mat-icon-button tdLayoutManageListOpen [hideWhenOpened]="true" style="display: none">
-          <mat-icon>arrow_back</mat-icon>
-        </button>
+      <mat-icon>arrow_back</mat-icon>
+    </button>
     <span>{{title}}</span>
     <span flex></span>
-    <button mat-icon-button><mat-icon>settings</mat-icon></button>
+    <button mat-icon-button>
+      <mat-icon>settings</mat-icon>
+    </button>
   </div>
 </mat-toolbar>
 
@@ -67,24 +69,24 @@
                 <span hide-xs hide-sm hide-md flex-gt-xs="60" flex-xs="40" layout-gt-xs="row">
                   <div class="mat-caption tc-grey-500" flex-gt-xs="50"> started: {{ communicationEvent.ActualStart | date}} </div>
                   <div class="mat-caption tc-grey-500" flex-gt-xs="50"> ended: {{ communicationEvent.ActualEnd | date }} </div>
-                  </span>
+                </span>
 
                 <span>
-                    <button mat-icon-button [mat-menu-trigger-for]="menu">
-                      <mat-icon>more_vert</mat-icon>
-                    </button>
-                    <mat-menu x-position="before" #menu="matMenu">
-                        <button mat-menu-item [routerLink]="['/relations/party/' + organisation.id + '/communicationevent/' + communicationEvent.id ]">Details</button>
-                        <button *ngIf="this.checkType(communicationEvent) === 'EmailCommunication'" mat-menu-item [routerLink]="['/relations/party/' + organisation.id + '/communicationevent/emailcommunication/' + communicationEvent.id ]">Edit</button>
-                        <button *ngIf="this.checkType(communicationEvent) === 'FaceToFaceCommunication'" mat-menu-item [routerLink]="['/relations/party/' + organisation.id + '/communicationevent/facetofacecommunication/' + communicationEvent.id ]">Edit</button>
-                        <button *ngIf="this.checkType(communicationEvent) === 'LetterCorrespondence'" mat-menu-item [routerLink]="['/relations/party/' + organisation.id + '/communicationevent/lettercorrespondence/' + communicationEvent.id ]">Edit</button>
-                        <button *ngIf="this.checkType(communicationEvent) === 'PhoneCommunication'" mat-menu-item [routerLink]="['/relations/party/' + organisation.id + '/communicationevent/emailcommunication/' + communicationEvent.id ]">Edit</button>
-                        <button [disabled]="!communicationEvent.CanExecuteDelete" mat-menu-item (click)="deleteCommunication(communicationEvent)">Delete</button>
-                        <button [disabled]="!communicationEvent.CanExecuteCancel" mat-menu-item (click)="cancelCommunication(communicationEvent)">Cancel</button>
-                        <button [disabled]="!communicationEvent.CanExecuteClose" mat-menu-item (click)="closeCommunication(communicationEvent)">Close</button>
-                        <button [disabled]="!communicationEvent.CanExecuteReopen" mat-menu-item (click)="reopenCommunication(communicationEvent)">Reopen</button>
-                    </mat-menu>
-                  </span>
+                  <button mat-icon-button [mat-menu-trigger-for]="menu">
+                    <mat-icon>more_vert</mat-icon>
+                  </button>
+                  <mat-menu x-position="before" #menu="matMenu">
+                    <button mat-menu-item [routerLink]="['/relations/party/' + organisation.id + '/communicationevent/' + communicationEvent.id ]">Details</button>
+                    <button *ngIf="this.checkType(communicationEvent) === 'EmailCommunication'" mat-menu-item [routerLink]="['/relations/party/' + organisation.id + '/communicationevent/emailcommunication/' + communicationEvent.id ]">Edit</button>
+                    <button *ngIf="this.checkType(communicationEvent) === 'FaceToFaceCommunication'" mat-menu-item [routerLink]="['/relations/party/' + organisation.id + '/communicationevent/facetofacecommunication/' + communicationEvent.id ]">Edit</button>
+                    <button *ngIf="this.checkType(communicationEvent) === 'LetterCorrespondence'" mat-menu-item [routerLink]="['/relations/party/' + organisation.id + '/communicationevent/lettercorrespondence/' + communicationEvent.id ]">Edit</button>
+                    <button *ngIf="this.checkType(communicationEvent) === 'PhoneCommunication'" mat-menu-item [routerLink]="['/relations/party/' + organisation.id + '/communicationevent/emailcommunication/' + communicationEvent.id ]">Edit</button>
+                    <button [disabled]="!communicationEvent.CanExecuteDelete" mat-menu-item (click)="deleteCommunication(communicationEvent)">Delete</button>
+                    <button [disabled]="!communicationEvent.CanExecuteCancel" mat-menu-item (click)="cancelCommunication(communicationEvent)">Cancel</button>
+                    <button [disabled]="!communicationEvent.CanExecuteClose" mat-menu-item (click)="closeCommunication(communicationEvent)">Close</button>
+                    <button [disabled]="!communicationEvent.CanExecuteReopen" mat-menu-item (click)="reopenCommunication(communicationEvent)">Reopen</button>
+                  </mat-menu>
+                </span>
 
               </mat-list-item>
               <mat-divider *ngIf="!last" mat-inset></mat-divider>
@@ -106,14 +108,16 @@
 
   <div flex-gt-xs="50">
     <mat-card tdMediaToggle="gt-xs" [mediaClasses]="['push']">
-      <mat-card-title>Contact persons</mat-card-title>
-      <mat-card-subtitle>
-        <mat-radio-group [(ngModel)]="contactsCollection">
-          <mat-radio-button value="Current">Current</mat-radio-button>
-          <mat-radio-button value="Inactive">Inactive</mat-radio-button>
-          <mat-radio-button value="All">All</mat-radio-button>
-        </mat-radio-group>
-      </mat-card-subtitle>
+      <div class="grid">
+        <mat-card-title class="col" style="padding-bottom: 0px">Contact persons</mat-card-title>
+        <div class="text-micro col-right pad-top" data-push-right="off-1">
+          <mat-radio-group [(ngModel)]="contactsCollection">
+            <mat-radio-button value="Current">Current</mat-radio-button>
+            <mat-radio-button value="Inactive">Inactive</mat-radio-button>
+            <mat-radio-button value="All">All</mat-radio-button>
+          </mat-radio-group>
+        </div>
+      </div>
       <mat-divider></mat-divider>
       <mat-card-content>
 
@@ -152,18 +156,18 @@
                 <span hide-xs hide-sm hide-md flex-gt-xs="60" flex-xs="40" layout-gt-xs="row">
                   <div class="mat-caption tc-grey-500" flex-gt-xs="50"> created: {{ contactRelationship.Contact.CreationDate | date }} </div>
                   <div class="mat-caption tc-grey-500" flex-gt-xs="50"> modified: {{ contactRelationship.Contact.LastModifiedDate | timeAgo }} </div>
-              </span>
+                </span>
                 <span>
                   <button mat-icon-button [mat-menu-trigger-for]="menu">
                     <mat-icon>more_vert</mat-icon>
                   </button>
                   <mat-menu x-position="before" #menu="matMenu">
-                      <a [routerLink]="['/organisation/' + organisation.id + '/contact/' + contactRelationship.id ]" mat-menu-item>Edit</a>
-                      <button mat-menu-item (click)="activateContact(contactRelationship)" [disabled]="!contactRelationship.ThroughDate">Activate</button>
-                      <button mat-menu-item (click)="removeContact(contactRelationship)" [disabled]="!!contactRelationship.ThroughDate">Deactivate</button>
-                      <button mat-menu-item (click)="deleteContact(contactRelationship.Contact)" [disabled]="!contactRelationship.Contact.CanExecuteDelete">Delete</button>
+                    <a [routerLink]="['/organisation/' + organisation.id + '/contact/' + contactRelationship.id ]" mat-menu-item>Edit</a>
+                    <button mat-menu-item (click)="activateContact(contactRelationship)" [disabled]="!contactRelationship.ThroughDate">Activate</button>
+                    <button mat-menu-item (click)="removeContact(contactRelationship)" [disabled]="!!contactRelationship.ThroughDate">Deactivate</button>
+                    <button mat-menu-item (click)="deleteContact(contactRelationship.Contact)" [disabled]="!contactRelationship.Contact.CanExecuteDelete">Delete</button>
                   </mat-menu>
-              </span>
+                </span>
 
               </mat-list-item>
               <mat-divider *ngIf="!last" mat-inset></mat-divider>
@@ -179,14 +183,16 @@
     </mat-card>
 
     <mat-card tdMediaToggle="gt-xs" [mediaClasses]="['push']">
-      <mat-card-title>Contact info</mat-card-title>
-      <mat-card-subtitle>
-        <mat-radio-group [(ngModel)]="contactMechanismsCollection">
-          <mat-radio-button value="Current">Current</mat-radio-button>
-          <mat-radio-button value="Inactive">Inactive</mat-radio-button>
-          <mat-radio-button value="All">All</mat-radio-button>
-        </mat-radio-group>
-      </mat-card-subtitle>
+      <div class="grid">
+        <mat-card-title class="col" style="padding-bottom: 0px">Contact info</mat-card-title>
+        <div class="text-micro col-right pad-top" data-push-right="off-1">
+          <mat-radio-group [(ngModel)]="contactMechanismsCollection">
+            <mat-radio-button value="Current">Current</mat-radio-button>
+            <mat-radio-button value="Inactive">Inactive</mat-radio-button>
+            <mat-radio-button value="All">All</mat-radio-button>
+          </mat-radio-group>
+        </div>
+      </div>
       <mat-divider></mat-divider>
       <mat-card-content>
 
@@ -223,26 +229,26 @@
                 <span hide-xs hide-sm hide-md flex-gt-xs="60" flex-xs="40" layout-gt-xs="row">
                   <div class="mat-caption tc-grey-500" flex-gt-xs="50"> created: {{ partyContactMechanism.CreationDate | date }} </div>
                   <div class="mat-caption tc-grey-500" flex-gt-xs="50"> modified: {{ partyContactMechanism.LastModifiedDate | timeAgo }} </div>
-              </span>
+                </span>
 
                 <span>
                   <button mat-icon-button [mat-menu-trigger-for]="menu">
                     <mat-icon>more_vert</mat-icon>
                   </button>
                   <mat-menu x-position="before" #menu="matMenu">
-                       <a *ngIf="this.checkType(partyContactMechanism.ContactMechanism) === 'EmailAddress'"
-                          [routerLink]="['/party/' + organisation.id + '/partycontactmechanism/emailaddress/' + partyContactMechanism.id]" mat-menu-item>Edit</a>
-                      <a *ngIf="this.checkType(partyContactMechanism.ContactMechanism) === 'WebAddress'"
-                          [routerLink]="['/party/' + organisation.id + '/partycontactmechanism/webaddress/' + partyContactMechanism.id]" mat-menu-item>Edit</a>
-                      <a *ngIf="this.checkType(partyContactMechanism.ContactMechanism) === 'TelecommunicationsNumber'"
-                          [routerLink]="['/party/' + organisation.id + '/partycontactmechanism/telecommunicationsnumber/' + partyContactMechanism.id]" mat-menu-item>Edit</a>
-                      <a *ngIf="this.checkType(partyContactMechanism.ContactMechanism) === 'PostalAddress'"
-                          [routerLink]="['/party/' + organisation.id + '/partycontactmechanism/postaladdress/' + partyContactMechanism.id]" mat-menu-item>Edit</a>
-                      <button mat-menu-item (click)="removeContactMechanism(partyContactMechanism)"[disabled]="!!partyContactMechanism.ThroughDate">Remove</button>
-                      <button  mat-menu-item (click)="activateContactMechanism(partyContactMechanism)"[disabled]="!partyContactMechanism.ThroughDate">Activate</button>
-                      <button mat-menu-item (click)="deleteContactMechanism(partyContactMechanism.ContactMechanism)" [disabled]="!partyContactMechanism.ContactMechanism.CanExecuteDelete">Delete</button>
+                    <a *ngIf="this.checkType(partyContactMechanism.ContactMechanism) === 'EmailAddress'" [routerLink]="['/party/' + organisation.id + '/partycontactmechanism/emailaddress/' + partyContactMechanism.id]"
+                      mat-menu-item>Edit</a>
+                    <a *ngIf="this.checkType(partyContactMechanism.ContactMechanism) === 'WebAddress'" [routerLink]="['/party/' + organisation.id + '/partycontactmechanism/webaddress/' + partyContactMechanism.id]"
+                      mat-menu-item>Edit</a>
+                    <a *ngIf="this.checkType(partyContactMechanism.ContactMechanism) === 'TelecommunicationsNumber'" [routerLink]="['/party/' + organisation.id + '/partycontactmechanism/telecommunicationsnumber/' + partyContactMechanism.id]"
+                      mat-menu-item>Edit</a>
+                    <a *ngIf="this.checkType(partyContactMechanism.ContactMechanism) === 'PostalAddress'" [routerLink]="['/party/' + organisation.id + '/partycontactmechanism/postaladdress/' + partyContactMechanism.id]"
+                      mat-menu-item>Edit</a>
+                    <button mat-menu-item (click)="removeContactMechanism(partyContactMechanism)" [disabled]="!!partyContactMechanism.ThroughDate">Remove</button>
+                    <button mat-menu-item (click)="activateContactMechanism(partyContactMechanism)" [disabled]="!partyContactMechanism.ThroughDate">Activate</button>
+                    <button mat-menu-item (click)="deleteContactMechanism(partyContactMechanism.ContactMechanism)" [disabled]="!partyContactMechanism.ContactMechanism.CanExecuteDelete">Delete</button>
                   </mat-menu>
-              </span>
+                </span>
 
               </mat-list-item>
               <mat-divider *ngIf="!last" mat-inset></mat-divider>

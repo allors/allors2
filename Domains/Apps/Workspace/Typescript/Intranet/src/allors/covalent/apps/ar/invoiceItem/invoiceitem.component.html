@@ -11,7 +11,7 @@
       <div class="grid-2_xs-1" *ngIf="invoiceItem.SalesInvoiceItemType && invoiceItem.SalesInvoiceItemType !== productItemType">
         <a-mat-select class="col" [object]="invoiceItem" [roleType]="m.SalesInvoiceItem.SalesInvoiceItemType" [options]="salesInvoiceItemTypes"
           display="Name"></a-mat-select>
-        <a-mat-input class="col" [object]="orderItem" [roleType]="m.SalesInvoiceItem.ActualUnitPrice" label="Amount"></a-mat-input>
+        <a-mat-input class="col" [object]="invoiceItem" [roleType]="m.SalesInvoiceItem.ActualUnitPrice" label="Amount"></a-mat-input>
       </div>
 
       <div class="grid-2_xs-1" *ngIf="!invoiceItem.SalesInvoiceItemType || invoiceItem.SalesInvoiceItemType === productItemType">

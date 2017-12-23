@@ -141,7 +141,7 @@ export class InvoiceItemEditComponent
           new Query({
             name: "vatRegimes",
             objectType: m.VatRegime
-          }),
+          })
         ];
 
         return this.scope.load("Pull", new PullRequest({ fetch, query }));
@@ -152,8 +152,9 @@ export class InvoiceItemEditComponent
           this.invoiceItem = loaded.objects.invoiceItem as SalesInvoiceItem;
           this.orderItem = loaded.objects.orderItem as SalesOrderItem;
           this.goods = loaded.collections.goods as Good[];
-          this.salesInvoiceItemTypes = loaded.collections
-            .salesInvoiceItemTypes as SalesInvoiceItemType[];
+          this.vatRates = loaded.collections.vatRates as VatRate[];
+          this.vatRegimes = loaded.collections.vatRegimes as VatRegime[];
+          this.salesInvoiceItemTypes = loaded.collections.salesInvoiceItemTypes as SalesInvoiceItemType[];
           this.productItemType = this.salesInvoiceItemTypes.find(
             (v: SalesInvoiceItemType) =>
               v.UniqueId.toUpperCase() ===
