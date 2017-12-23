@@ -1,11 +1,12 @@
 import { CommonModule } from "@angular/common";
 import { NgModule } from "@angular/core";
+import { FlexLayoutModule } from "@angular/flex-layout";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { HttpModule } from "@angular/http";
 import { RouterModule } from "@angular/router";
 
 const ANGULAR_MODULES: any[] = [
-  HttpModule, FormsModule, ReactiveFormsModule, RouterModule,
+  FlexLayoutModule, HttpModule, FormsModule, ReactiveFormsModule, RouterModule
 ];
 
 import {

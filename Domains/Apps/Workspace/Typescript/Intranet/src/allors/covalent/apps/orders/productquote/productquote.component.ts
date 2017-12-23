@@ -35,7 +35,8 @@ export class ProductQuoteEditComponent implements OnInit, AfterViewInit, OnDestr
   public addPostalAddress: boolean = false;
   public addTeleCommunicationsNumber: boolean = false;
   public addWebAddress: boolean = false;
-  public addPerson: boolean = false;
+  public addContactPerson: boolean = false;
+  public addContactMechanism: boolean = false;
 
   public peopleFilter: Filter;
   public organisationsFilter: Filter;
@@ -173,11 +174,11 @@ export class ProductQuoteEditComponent implements OnInit, AfterViewInit, OnDestr
   }
 
   public personCancelled(): void {
-    this.addPerson = false;
+    this.addContactPerson = false;
   }
 
   public personAdded(id: string): void {
-    this.addPerson = false;
+    this.addContactPerson = false;
 
     const contact: Person = this.scope.session.get(id) as Person;
 

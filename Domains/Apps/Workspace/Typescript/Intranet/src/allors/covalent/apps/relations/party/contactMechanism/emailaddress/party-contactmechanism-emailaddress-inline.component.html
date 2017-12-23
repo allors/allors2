@@ -1,9 +1,9 @@
-<div class="grid-4_md-2_xs-1">
+<div class="grid-2_xs-1">
     <a-mat-select class="col" [object]="partyContactMechanism" [roleType]="m.PartyContactMechanism.ContactPurposes" [options]="contactMechanismPurposes"
         display="Name"></a-mat-select>
     <a-mat-input class="col" [object]="emailAddress" [roleType]="m.EmailAddress.ElectronicAddressString" label="Email address"></a-mat-input>
 </div>
-<div class="grid-4_md-2_xs-1">
+<div class="grid-2_xs-1">
     <a-mat-slide-toggle class="col" [object]="partyContactMechanism" [roleType]="m.PartyContactMechanism.UseAsDefault" label="Use as default"></a-mat-slide-toggle>
     <a-mat-slide-toggle class="col" [object]="partyContactMechanism" [roleType]="m.PartyContactMechanism.NonSolicitationIndicator" label="Non Solicitation"></a-mat-slide-toggle>
 </div>

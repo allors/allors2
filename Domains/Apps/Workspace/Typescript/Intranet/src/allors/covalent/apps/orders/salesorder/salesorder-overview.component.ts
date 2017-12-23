@@ -88,7 +88,6 @@ export class SalesOrderOverviewComponent implements OnInit, AfterViewInit, OnDes
               new TreeNode({ roleType: m.SalesOrder.ContactPerson }),
               new TreeNode({ roleType: m.SalesOrder.ShipToCustomer }),
               new TreeNode({ roleType: m.SalesOrder.BillToCustomer }),
-              new TreeNode({ roleType: m.SalesOrder.BillToContactMechanism }),
               new TreeNode({ roleType: m.SalesOrder.SalesOrderState }),
               new TreeNode({ roleType: m.SalesOrder.CreatedBy }),
               new TreeNode({ roleType: m.SalesOrder.LastModifiedBy }),
@@ -103,6 +102,17 @@ export class SalesOrderOverviewComponent implements OnInit, AfterViewInit, OnDes
                   }),
                 ],
                 roleType: m.SalesOrder.ShipToAddress,
+              }),
+              new TreeNode({
+                nodes: [
+                  new TreeNode({
+                    nodes: [
+                      new TreeNode({ roleType: m.PostalBoundary.Country }),
+                    ],
+                    roleType: m.PostalAddress.PostalBoundary,
+                  }),
+                ],
+                roleType: m.SalesOrder.BillToContactMechanism,
               }),
             ],
             name: "order",

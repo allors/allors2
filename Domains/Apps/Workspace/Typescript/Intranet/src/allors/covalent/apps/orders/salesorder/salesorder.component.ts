@@ -15,6 +15,12 @@ import { Contains, Fetch, Path, PullRequest, Query, Sort, TreeNode } from "../..
 import { MetaDomain } from "../../../../meta";
 
 @Component({
+  styles: [`
+    .tabInlineComponent {
+    border-bottom: 1px solid #CCCCCC;
+    border-left: 1px solid #CCCCCC;
+    border-right: 1px solid #CCCCCC;}
+  `],
   templateUrl: "./salesorder.component.html",
 })
 export class SalesOrderEditComponent implements OnInit, AfterViewInit, OnDestroy {
@@ -40,11 +46,13 @@ export class SalesOrderEditComponent implements OnInit, AfterViewInit, OnDestroy
   public addTeleCommunicationsNumber: boolean = false;
   public addWebAddress: boolean = false;
   public addShipToAddress: boolean = false;
-  public addPerson: boolean = false;
+  public addContactPerson: boolean = false;
 
   public peopleFilter: Filter;
   public organisationsFilter: Filter;
   public currenciesFilter: Filter;
+
+  public addContactMechanism: boolean;
 
   private refresh$: BehaviorSubject<Date>;
   private subscription: Subscription;
@@ -211,11 +219,11 @@ export class SalesOrderEditComponent implements OnInit, AfterViewInit, OnDestroy
   }
 
   public personCancelled(): void {
-    this.addPerson = false;
+    this.addContactPerson = false;
   }
 
   public personAdded(id: string): void {
-    this.addPerson = false;
+    this.addContactPerson = false;
 
     const contact: Person = this.scope.session.get(id) as Person;
 

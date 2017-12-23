@@ -42,6 +42,7 @@ export class InvoiceComponent implements OnInit, AfterViewInit, OnDestroy {
   public addTeleCommunicationsNumber: boolean = false;
   public addWebAddress: boolean = false;
   public addPerson: boolean = false;
+  public addContactMechanism: boolean = false;
 
   private refresh$: BehaviorSubject<Date>;
   private subscription: Subscription;

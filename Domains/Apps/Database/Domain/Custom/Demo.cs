@@ -104,6 +104,7 @@ namespace Allors
                 .WithDefaultShipmentMethod(new ShipmentMethods(this.Session).Ground)
                 .WithDefaultCarrier(new Carriers(this.Session).Fedex)
                 .WithBillingProcess(new BillingProcesses(this.Session).BillingForShipmentItems)
+                .WithSalesInvoiceCounter(new CounterBuilder(this.Session).WithUniqueId(Guid.NewGuid()).WithValue(0).Build())
                 .WithIsImmediatelyPicked(true)
                 .Build();
 

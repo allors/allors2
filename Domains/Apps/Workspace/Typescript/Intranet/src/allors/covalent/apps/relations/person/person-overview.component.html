@@ -1,11 +1,13 @@
 <mat-toolbar>
   <div layout="row" layout-align="start center" flex>
     <button mat-icon-button tdLayoutManageListOpen [hideWhenOpened]="true" style="display: none">
-          <mat-icon>arrow_back</mat-icon>
-        </button>
+      <mat-icon>arrow_back</mat-icon>
+    </button>
     <span>{{title}}</span>
     <span flex></span>
-    <button mat-icon-button><mat-icon>settings</mat-icon></button>
+    <button mat-icon-button>
+      <mat-icon>settings</mat-icon>
+    </button>
   </div>
 </mat-toolbar>
 
@@ -15,32 +17,34 @@
       <mat-card-title>Person</mat-card-title>
       <mat-divider></mat-divider>
       <mat-card-content>
-        <div class="grid-2_xs-1">
-          <div *ngIf="organisation" class="pointer" [routerLink]="['/relations/organisation/' + organisation.id]">
-            <a-mat-static [object]="organisation" [roleType]="m.Organisation.Name" label="Organisation"></a-mat-static>
+        <div class="pad">
+          <div class="grid-2_xs-1">
+            <div *ngIf="organisation" class="pointer" [routerLink]="['/relations/organisation/' + organisation.id]">
+              <a-mat-static [object]="organisation" [roleType]="m.Organisation.Name" label="Organisation"></a-mat-static>
+            </div>
+            <a-mat-static [object]="person" [roleType]="m.Person.PersonRoles" display="Name"></a-mat-static>
           </div>
-          <a-mat-static [object]="person" [roleType]="m.Person.PersonRoles" display="Name"></a-mat-static>
-        </div>
 
-        <div class="grid-2_xs-1">
-          <a-mat-static *ngIf="person.Salutation" [object]="person" [roleType]="m.Person.Salutation" display="Name"></a-mat-static>
-          <a-mat-static [object]="person" [roleType]="m.Person.FirstName"></a-mat-static>
-          <a-mat-static [object]="person" [roleType]="m.Person.MiddleName"></a-mat-static>
-          <a-mat-static [object]="person" [roleType]="m.Person.LastName"></a-mat-static>
-        </div>
+          <div class="grid-2_xs-1">
+            <a-mat-static *ngIf="person.Salutation" [object]="person" [roleType]="m.Person.Salutation" display="Name"></a-mat-static>
+            <a-mat-static [object]="person" [roleType]="m.Person.FirstName"></a-mat-static>
+            <a-mat-static [object]="person" [roleType]="m.Person.MiddleName"></a-mat-static>
+            <a-mat-static [object]="person" [roleType]="m.Person.LastName"></a-mat-static>
+          </div>
 
-        <div class="grid-2_xs-1">
-          <a-mat-static *ngIf="person.Function" [object]="person" [roleType]="m.Person.Function"></a-mat-static>
-          <a-mat-static *ngIf="person.Gender" [object]="person" [roleType]="m.Person.Gender" display="Name"></a-mat-static>
-          <a-mat-static [object]="person" [roleType]="m.Person.Locale" display="Name"></a-mat-static>
-        </div>
+          <div class="grid-2_xs-1">
+            <a-mat-static *ngIf="person.Function" [object]="person" [roleType]="m.Person.Function"></a-mat-static>
+            <a-mat-static *ngIf="person.Gender" [object]="person" [roleType]="m.Person.Gender" display="Name"></a-mat-static>
+            <a-mat-static [object]="person" [roleType]="m.Person.Locale" display="Name"></a-mat-static>
+          </div>
 
-        <div class="grid">
-          <a-mat-static *ngIf="person.Comment "[object]="person" [roleType]="m.Person.Comment"></a-mat-static>
-        </div>
+          <div class="grid">
+            <a-mat-static *ngIf="person.Comment " [object]="person" [roleType]="m.Person.Comment"></a-mat-static>
+          </div>
 
-        <div layout="row">
+          <div layout="row">
             <p class="mat-caption tc-grey-500"> last modified: {{ person.LastModifiedDate | date}} by {{ person.LastModifiedBy?.displayName}}</p>
+          </div>
         </div>
       </mat-card-content>
 
@@ -83,24 +87,24 @@
                 <span hide-xs hide-sm hide-md flex-gt-xs="60" flex-xs="40" layout-gt-xs="row">
                   <div class="mat-caption tc-grey-500" flex-gt-xs="50"> started: {{ communicationEvent.ActualStart | date}} </div>
                   <div class="mat-caption tc-grey-500" flex-gt-xs="50"> ended: {{ communicationEvent.ActualEnd | date }} </div>
-                  </span>
+                </span>
 
                 <span>
-                    <button mat-icon-button [mat-menu-trigger-for]="menu">
-                      <mat-icon>more_vert</mat-icon>
-                    </button>
-                    <mat-menu x-position="before" #menu="matMenu">
-                        <button mat-menu-item [routerLink]="['/relations/party/' + person.id + '/communicationevent/' + communicationEvent.id ]">Details</button>
-                        <button *ngIf="this.checkType(communicationEvent) === 'EmailCommunication'" mat-menu-item [routerLink]="['/relations/party/' + person.id + '/communicationevent/emailcommunication/' + communicationEvent.id ]">Edit</button>
-                        <button *ngIf="this.checkType(communicationEvent) === 'FaceToFaceCommunication'" mat-menu-item [routerLink]="['/relations/party/' + person.id + '/communicationevent/facetofacecommunication/' + communicationEvent.id ]">Edit</button>
-                        <button *ngIf="this.checkType(communicationEvent) === 'LetterCorrespondence'" mat-menu-item [routerLink]="['/relations/party/' + person.id + '/communicationevent/lettercorrespondence/' + communicationEvent.id ]">Edit</button>
-                        <button *ngIf="this.checkType(communicationEvent) === 'PhoneCommunication'" mat-menu-item [routerLink]="['/relations/party/' + person.id + '/communicationevent/emailcommunication/' + communicationEvent.id ]">Edit</button>
-                        <button [disabled]="!communicationEvent.CanExecuteDelete" mat-menu-item (click)="deleteCommunication(communicationEvent)">Delete</button>
-                        <button [disabled]="!communicationEvent.CanExecuteCancel" mat-menu-item (click)="cancelCommunication(communicationEvent)">Cancel</button>
-                        <button [disabled]="!communicationEvent.CanExecuteClose" mat-menu-item (click)="closeCommunication(communicationEvent)">Close</button>
-                        <button [disabled]="!communicationEvent.CanExecuteReopen" mat-menu-item (click)="reopenCommunication(communicationEvent)">Reopen</button>
-                    </mat-menu>
-                  </span>
+                  <button mat-icon-button [mat-menu-trigger-for]="menu">
+                    <mat-icon>more_vert</mat-icon>
+                  </button>
+                  <mat-menu x-position="before" #menu="matMenu">
+                    <button mat-menu-item [routerLink]="['/relations/party/' + person.id + '/communicationevent/' + communicationEvent.id ]">Details</button>
+                    <button *ngIf="this.checkType(communicationEvent) === 'EmailCommunication'" mat-menu-item [routerLink]="['/relations/party/' + person.id + '/communicationevent/emailcommunication/' + communicationEvent.id ]">Edit</button>
+                    <button *ngIf="this.checkType(communicationEvent) === 'FaceToFaceCommunication'" mat-menu-item [routerLink]="['/relations/party/' + person.id + '/communicationevent/facetofacecommunication/' + communicationEvent.id ]">Edit</button>
+                    <button *ngIf="this.checkType(communicationEvent) === 'LetterCorrespondence'" mat-menu-item [routerLink]="['/relations/party/' + person.id + '/communicationevent/lettercorrespondence/' + communicationEvent.id ]">Edit</button>
+                    <button *ngIf="this.checkType(communicationEvent) === 'PhoneCommunication'" mat-menu-item [routerLink]="['/relations/party/' + person.id + '/communicationevent/emailcommunication/' + communicationEvent.id ]">Edit</button>
+                    <button [disabled]="!communicationEvent.CanExecuteDelete" mat-menu-item (click)="deleteCommunication(communicationEvent)">Delete</button>
+                    <button [disabled]="!communicationEvent.CanExecuteCancel" mat-menu-item (click)="cancelCommunication(communicationEvent)">Cancel</button>
+                    <button [disabled]="!communicationEvent.CanExecuteClose" mat-menu-item (click)="closeCommunication(communicationEvent)">Close</button>
+                    <button [disabled]="!communicationEvent.CanExecuteReopen" mat-menu-item (click)="reopenCommunication(communicationEvent)">Reopen</button>
+                  </mat-menu>
+                </span>
 
               </mat-list-item>
 
@@ -124,17 +128,21 @@
 
   <div flex-gt-xs="50">
     <mat-card tdMediaToggle="gt-xs" [mediaClasses]="['push']">
-      <mat-card-title>Contact info</mat-card-title>
+      <div class="grid pad">
+        <mat-card-title class="col">Contact info</mat-card-title>
+
+        <div class="pad">
+          <mat-radio-group class="col-4" data-push-left="off-4" [(ngModel)]="contactMechanismsCollection">
+            <mat-radio-button value="Current">Current</mat-radio-button>
+            <mat-radio-button value="Inactive">Inactive</mat-radio-button>
+            <mat-radio-button value="All">All</mat-radio-button>
+          </mat-radio-group>
+        </div>
+      </div>
 
       <mat-divider></mat-divider>
+
       <mat-card-content>
-
-        <mat-radio-group [(ngModel)]="contactMechanismsCollection">
-          <mat-radio-button value="Current">Current</mat-radio-button>
-          <mat-radio-button value="Inactive">Inactive</mat-radio-button>
-          <mat-radio-button value="All">All</mat-radio-button>
-        </mat-radio-group>
-
         <ng-template tdLoading="contactMechanisms">
           <mat-list class="will-load">
             <div class="mat-padding" *ngIf="contactMechanisms.length === 0" layout="row" layout-align="center center">
@@ -168,26 +176,26 @@
                 <span hide-xs hide-sm hide-md flex-gt-xs="60" flex-xs="40" layout-gt-xs="row">
                   <div class="mat-caption tc-grey-500" flex-gt-xs="50"> created: {{ partyContactMechanism.CreationDate | date }} </div>
                   <div class="mat-caption tc-grey-500" flex-gt-xs="50"> modified: {{ partyContactMechanism.LastModifiedDate | timeAgo }} </div>
-              </span>
+                </span>
 
                 <span>
                   <button mat-icon-button [mat-menu-trigger-for]="menu">
                     <mat-icon>more_vert</mat-icon>
                   </button>
                   <mat-menu x-position="before" #menu="matMenu">
-                      <a *ngIf="this.checkType(partyContactMechanism.ContactMechanism) === 'EmailAddress'"
-                          [routerLink]="['/party/' + person.id + '/partycontactmechanism/emailaddress/' + partyContactMechanism.id]" mat-menu-item>Edit</a>
-                      <a *ngIf="this.checkType(partyContactMechanism.ContactMechanism) === 'WebAddress'"
-                          [routerLink]="['/party/' + person.id + '/partycontactmechanism/webaddress/' + partyContactMechanism.id]" mat-menu-item>Edit</a>
-                      <a *ngIf="this.checkType(partyContactMechanism.ContactMechanism) === 'TelecommunicationsNumber'"
-                          [routerLink]="['/party/' + person.id + '/partycontactmechanism/telecommunicationsnumber/' + partyContactMechanism.id]" mat-menu-item>Edit</a>
-                      <a *ngIf="this.checkType(partyContactMechanism.ContactMechanism) === 'PostalAddress'"
-                          [routerLink]="['/party/' + person.id + '/partycontactmechanism/postaladdress/' + partyContactMechanism.id]" mat-menu-item>Edit</a>
-                      <button mat-menu-item (click)="removeContactMechanism(partyContactMechanism)"[disabled]="!!partyContactMechanism.ThroughDate">Remove</button>
-                      <button  mat-menu-item (click)="activateContactMechanism(partyContactMechanism)"[disabled]="!partyContactMechanism.ThroughDate">Activate</button>
-                      <button mat-menu-item (click)="deleteContactMechanism(partyContactMechanism.ContactMechanism)" [disabled]="!partyContactMechanism.ContactMechanism.CanExecuteDelete">Delete</button>
+                    <a *ngIf="this.checkType(partyContactMechanism.ContactMechanism) === 'EmailAddress'" [routerLink]="['/party/' + person.id + '/partycontactmechanism/emailaddress/' + partyContactMechanism.id]"
+                      mat-menu-item>Edit</a>
+                    <a *ngIf="this.checkType(partyContactMechanism.ContactMechanism) === 'WebAddress'" [routerLink]="['/party/' + person.id + '/partycontactmechanism/webaddress/' + partyContactMechanism.id]"
+                      mat-menu-item>Edit</a>
+                    <a *ngIf="this.checkType(partyContactMechanism.ContactMechanism) === 'TelecommunicationsNumber'" [routerLink]="['/party/' + person.id + '/partycontactmechanism/telecommunicationsnumber/' + partyContactMechanism.id]"
+                      mat-menu-item>Edit</a>
+                    <a *ngIf="this.checkType(partyContactMechanism.ContactMechanism) === 'PostalAddress'" [routerLink]="['/party/' + person.id + '/partycontactmechanism/postaladdress/' + partyContactMechanism.id]"
+                      mat-menu-item>Edit</a>
+                    <button mat-menu-item (click)="removeContactMechanism(partyContactMechanism)" [disabled]="!!partyContactMechanism.ThroughDate">Remove</button>
+                    <button mat-menu-item (click)="activateContactMechanism(partyContactMechanism)" [disabled]="!partyContactMechanism.ThroughDate">Activate</button>
+                    <button mat-menu-item (click)="deleteContactMechanism(partyContactMechanism.ContactMechanism)" [disabled]="!partyContactMechanism.ContactMechanism.CanExecuteDelete">Delete</button>
                   </mat-menu>
-              </span>
+                </span>
 
               </mat-list-item>
               <mat-divider *ngIf="!last" mat-inset></mat-divider>
@@ -227,21 +235,21 @@
                 <p *ngIf="workEffortAssignment.Assignment.Priority" mat-line class="mat-caption">Priority {{ workEffortAssignment.Assignment.Priority.Name }} </p>
 
                 <span hide-xs hide-sm hide-md flex-gt-xs="60" flex-xs="40" layout-gt-xs="row">
-              <div class="mat-caption tc-grey-500" flex-gt-xs="50"> Sched. Start: {{ workEffortAssignment.Assignment.ScheduledStart | date}} </div>
-              <div class="mat-caption tc-grey-500" flex-gt-xs="50"> Sched. Compl.: {{ workEffortAssignment.Assignment.ScheduledCompletion | date }} </div>
-              <div class="mat-caption tc-grey-500" flex-gt-xs="50"> Act. Start: {{ workEffortAssignment.Assignment.ActualStart | date}} </div>
-              <div class="mat-caption tc-grey-500" flex-gt-xs="50"> Act. Compl.: {{ workEffortAssignment.Assignment.ActualCompletion | date }} </div>
-            </span>
+                  <div class="mat-caption tc-grey-500" flex-gt-xs="50"> Sched. Start: {{ workEffortAssignment.Assignment.ScheduledStart | date}} </div>
+                  <div class="mat-caption tc-grey-500" flex-gt-xs="50"> Sched. Compl.: {{ workEffortAssignment.Assignment.ScheduledCompletion | date }} </div>
+                  <div class="mat-caption tc-grey-500" flex-gt-xs="50"> Act. Start: {{ workEffortAssignment.Assignment.ActualStart | date}} </div>
+                  <div class="mat-caption tc-grey-500" flex-gt-xs="50"> Act. Compl.: {{ workEffortAssignment.Assignment.ActualCompletion | date }} </div>
+                </span>
 
                 <span>
-              <button mat-icon-button [mat-menu-trigger-for]="menu">
-                <mat-icon>more_vert</mat-icon>
-              </button>
-              <mat-menu x-position="before" #menu="matMenu">
-                <a [routerLink]="['/worktask/' + workEffortAssignment.Assignment.id]" mat-menu-item>Edit</a>
-                <button  mat-menu-item (click)="delete(workEffortAssignment.Assignment)" [disabled]="!workEffortAssignment.Assignment.CanExecuteDelete">Delete</button>
-              </mat-menu>
-          </span>
+                  <button mat-icon-button [mat-menu-trigger-for]="menu">
+                    <mat-icon>more_vert</mat-icon>
+                  </button>
+                  <mat-menu x-position="before" #menu="matMenu">
+                    <a [routerLink]="['/worktask/' + workEffortAssignment.Assignment.id]" mat-menu-item>Edit</a>
+                    <button mat-menu-item (click)="delete(workEffortAssignment.Assignment)" [disabled]="!workEffortAssignment.Assignment.CanExecuteDelete">Delete</button>
+                  </mat-menu>
+                </span>
 
 
               </mat-list-item>
