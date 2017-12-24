@@ -226,6 +226,11 @@ namespace Allors
                 .WithProductCategory(productCategory1)
                 .Build();
 
+            var model1Brand1 = new ModelBuilder(this.Session).WithName("model 1").Build();
+            var model2Brand1 = new ModelBuilder(this.Session).WithName("model 2").Build();
+
+            var brand1 = new BrandBuilder(this.Session).WithName("brand 1").WithModel(model1Brand1).WithModel(model2Brand1).Build();
+
             var good = new GoodBuilder(this.Session)
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Zeer kleine blauwe ronde gizmo").WithLocale(singleton.DefaultLocale).Build())
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Tiny blue round gizmo").WithLocale(englishLocale).Build())
@@ -235,6 +240,8 @@ namespace Allors
                 .WithVatRate(new VatRateBuilder(this.Session).WithRate(21).Build())
                 .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
                 .WithPrimaryProductCategory(productCategory3)
+                .WithStandardFeature(brand1)
+                .WithStandardFeature(model1Brand1)
                 .Build();
 
             var goodInventoryItem = new NonSerialisedInventoryItemBuilder(this.Session).WithGood(good).Build();

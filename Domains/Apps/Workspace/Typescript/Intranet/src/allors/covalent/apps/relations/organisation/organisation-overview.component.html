@@ -17,17 +17,33 @@
     <mat-card tdMediaToggle="gt-xs" [mediaClasses]="['push']">
       <mat-card-title>Organisation</mat-card-title>
       <mat-divider></mat-divider>
-
       <mat-card-content>
-        <a-mat-static [object]="organisation" [roleType]="m.Organisation.OrganisationRoles" display="Name"></a-mat-static>
-        <a-mat-static [object]="organisation" [roleType]="m.Organisation.Name"></a-mat-static>
-        <a-mat-static *ngIf="organisation.OrganisationClassifications.length > 0" [object]="organisation" [roleType]="m.Organisation.OrganisationClassifications"
-          display="Name" label="Classification"></a-mat-static>
-        <a-mat-static *ngIf="organisation.IndustryClassifications.length > 0" [object]="organisation" [roleType]="m.Organisation.IndustryClassifications"
-          display="Name" label="Industry"></a-mat-static>
-        <a-mat-static *ngIf="organisation.Comment " [object]="organisation" [roleType]="m.Organisation.Comment"></a-mat-static>
-        <a-mat-static [object]="organisation" [roleType]="m.Organisation.Locale" display="Name"></a-mat-static>
-        <p class="mat-caption tc-grey-500"> last modified: {{ organisation.LastModifiedDate | date}} by {{ organisation.LastModifiedBy.displayName}}</p>
+        <div class="pad">
+          <div class="grid-2_xs-1">
+            <a-mat-static class="col" [object]="organisation" [roleType]="m.Organisation.Name"></a-mat-static>
+            <a-mat-static class="col" [object]="organisation" [roleType]="m.Organisation.OrganisationRoles" display="Name"></a-mat-static>
+          </div>
+
+          <div class="grid-2_xs-1">
+            <a-mat-static class="col" *ngIf="organisation.OrganisationClassifications.length > 0" [object]="organisation" [roleType]="m.Organisation.OrganisationClassifications"
+              display="Name" label="Classification"></a-mat-static>
+            <a-mat-static class="col" *ngIf="organisation.IndustryClassifications.length > 0" [object]="organisation" [roleType]="m.Organisation.IndustryClassifications"
+              display="Name" label="Industry"></a-mat-static>
+            <a-mat-static class="col" *ngIf="organisation.OrganisationClassifications.length > 0" [object]="organisation" [roleType]="m.Organisation.OrganisationClassifications"
+              display="Name" label="Classification"></a-mat-static>
+            <a-mat-static class="col" [object]="organisation" [roleType]="m.Organisation.Locale" display="Name"></a-mat-static>
+            <a-mat-static class="col" *ngIf="organisation.IndustryClassifications.length > 0" [object]="organisation" [roleType]="m.Organisation.IndustryClassifications"
+              display="Name" label="Industry"></a-mat-static>
+          </div>
+
+          <div class="grid">
+            <a-mat-static class="col" *ngIf="organisation.Comment " [object]="organisation" [roleType]="m.Organisation.Comment"></a-mat-static>
+          </div>
+
+          <div class="grid">
+            <p class="col mat-caption tc-grey-500"> last modified: {{ organisation.LastModifiedDate | date}} by {{ organisation.LastModifiedBy.displayName}}</p>
+          </div>
+        </div>
       </mat-card-content>
 
       <mat-divider></mat-divider>
@@ -108,16 +124,16 @@
 
   <div flex-gt-xs="50">
     <mat-card tdMediaToggle="gt-xs" [mediaClasses]="['push']">
-      <div class="grid">
-        <mat-card-title class="col" style="padding-bottom: 0px">Contact persons</mat-card-title>
-        <div class="text-micro col-right pad-top" data-push-right="off-1">
-          <mat-radio-group [(ngModel)]="contactsCollection">
+      <mat-card-title>
+        <div class="grid-right">
+          <div class="col" style="padding-bottom: 0px">Contact persons</div>
+          <mat-radio-group class="text-xs" data-push-right="off-1" [(ngModel)]="contactsCollection">
             <mat-radio-button value="Current">Current</mat-radio-button>
             <mat-radio-button value="Inactive">Inactive</mat-radio-button>
             <mat-radio-button value="All">All</mat-radio-button>
           </mat-radio-group>
         </div>
-      </div>
+      </mat-card-title>
       <mat-divider></mat-divider>
       <mat-card-content>
 
@@ -183,16 +199,16 @@
     </mat-card>
 
     <mat-card tdMediaToggle="gt-xs" [mediaClasses]="['push']">
-      <div class="grid">
-        <mat-card-title class="col" style="padding-bottom: 0px">Contact info</mat-card-title>
-        <div class="text-micro col-right pad-top" data-push-right="off-1">
-          <mat-radio-group [(ngModel)]="contactMechanismsCollection">
+      <mat-card-title>
+        <div class="grid-right">
+          <div class="col" style="padding-bottom: 0px">Contact Info</div>
+          <mat-radio-group class="text-xs" data-push-right="off-1" [(ngModel)]="contactMechanismsCollection">
             <mat-radio-button value="Current">Current</mat-radio-button>
             <mat-radio-button value="Inactive">Inactive</mat-radio-button>
             <mat-radio-button value="All">All</mat-radio-button>
           </mat-radio-group>
         </div>
-      </div>
+      </mat-card-title>
       <mat-divider></mat-divider>
       <mat-card-content>
 

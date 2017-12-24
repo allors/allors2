@@ -56,8 +56,7 @@
         <mat-list-item>
 
           <mat-icon *ngIf="!organisation.LogoImage" mat-list-avatar>insert_photo</mat-icon>
-          <img *ngIf="organisation.LogoImage" mat-list-avatar src="http://localhost:5000/Media/Download/{{organisation.LogoImage.UniqueId}}?revision={{organisation.LogoImage.Revision}}"
-          />
+          <img *ngIf="organisation.LogoImage" mat-list-avatar src="http://localhost:5000/Media/Download/{{organisation.LogoImage.UniqueId}}?revision={{organisation.LogoImage.Revision}}"/>
 
           <h3 mat-line [routerLink]="['/relations/organisation/' + organisation.id]"> {{organisation.PartyName}} </h3>
 

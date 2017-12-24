@@ -1,5 +1,5 @@
-<div style="width: 100%;" *ngFor="let model of models">
-  <mat-form-field fxLayout="row">
+<div *ngFor="let model of models">
+  <mat-form-field style="width: 100%;" fxLayout="row">
     <input matInput [(ngModel)]="model.text" [name]="model.name" [placeholder]="model.label">
   </mat-form-field>
 </div>

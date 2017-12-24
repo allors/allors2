@@ -19,31 +19,31 @@
       <mat-card-content>
         <div class="pad">
           <div class="grid-2_xs-1">
-            <div *ngIf="organisation" class="pointer" [routerLink]="['/relations/organisation/' + organisation.id]">
+            <div class="col pointer" *ngIf="organisation" [routerLink]="['/relations/organisation/' + organisation.id]">
               <a-mat-static [object]="organisation" [roleType]="m.Organisation.Name" label="Organisation"></a-mat-static>
             </div>
-            <a-mat-static [object]="person" [roleType]="m.Person.PersonRoles" display="Name"></a-mat-static>
+            <a-mat-static class="col" [object]="person" [roleType]="m.Person.PersonRoles" display="Name"></a-mat-static>
           </div>
 
           <div class="grid-2_xs-1">
-            <a-mat-static *ngIf="person.Salutation" [object]="person" [roleType]="m.Person.Salutation" display="Name"></a-mat-static>
-            <a-mat-static [object]="person" [roleType]="m.Person.FirstName"></a-mat-static>
-            <a-mat-static [object]="person" [roleType]="m.Person.MiddleName"></a-mat-static>
-            <a-mat-static [object]="person" [roleType]="m.Person.LastName"></a-mat-static>
+            <a-mat-static class="col" *ngIf="person.Salutation" [object]="person" [roleType]="m.Person.Salutation" display="Name"></a-mat-static>
+            <mat-form-field class="col" style="width: 100%;" fxLayout="column" fxLayoutAlign="top stretch">
+              <input matInput type="string" [ngModel]="person.displayName" name="name" placeholder="Name" readonly>
+            </mat-form-field>
           </div>
 
           <div class="grid-2_xs-1">
-            <a-mat-static *ngIf="person.Function" [object]="person" [roleType]="m.Person.Function"></a-mat-static>
-            <a-mat-static *ngIf="person.Gender" [object]="person" [roleType]="m.Person.Gender" display="Name"></a-mat-static>
-            <a-mat-static [object]="person" [roleType]="m.Person.Locale" display="Name"></a-mat-static>
+            <a-mat-static class="col" *ngIf="person.Function" [object]="person" [roleType]="m.Person.Function"></a-mat-static>
+            <a-mat-static class="col" *ngIf="person.Gender" [object]="person" [roleType]="m.Person.Gender" display="Name"></a-mat-static>
+            <a-mat-static class="col" [object]="person" [roleType]="m.Person.Locale" display="Name"></a-mat-static>
           </div>
 
           <div class="grid">
-            <a-mat-static *ngIf="person.Comment " [object]="person" [roleType]="m.Person.Comment"></a-mat-static>
+            <a-mat-static class="col" *ngIf="person.Comment " [object]="person" [roleType]="m.Person.Comment"></a-mat-static>
           </div>
 
-          <div layout="row">
-            <p class="mat-caption tc-grey-500"> last modified: {{ person.LastModifiedDate | date}} by {{ person.LastModifiedBy?.displayName}}</p>
+          <div class="grid">
+            <p class="col mat-caption tc-grey-500"> last modified: {{ person.LastModifiedDate | date}} by {{ person.LastModifiedBy?.displayName}}</p>
           </div>
         </div>
       </mat-card-content>
@@ -128,16 +128,16 @@
 
   <div flex-gt-xs="50">
     <mat-card tdMediaToggle="gt-xs" [mediaClasses]="['push']">
-      <div class="grid">
-        <mat-card-title class="col" style="padding-bottom: 0px">Contact info</mat-card-title>
-        <div class="text-micro col-right pad-top" data-push-right="off-1">
-          <mat-radio-group  [(ngModel)]="contactMechanismsCollection">
+      <mat-card-title>
+        <div class="grid-right">
+          <div class="col" style="padding-bottom: 0px">Contact Info</div>
+          <mat-radio-group class="text-xs" data-push-right="off-1" [(ngModel)]="contactMechanismsCollection">
             <mat-radio-button value="Current">Current</mat-radio-button>
             <mat-radio-button value="Inactive">Inactive</mat-radio-button>
             <mat-radio-button value="All">All</mat-radio-button>
           </mat-radio-group>
         </div>
-      </div>
+      </mat-card-title>
 
       <mat-divider></mat-divider>
 

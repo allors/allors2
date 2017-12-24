@@ -9,8 +9,10 @@ import { Subscription } from "rxjs/Subscription";
 
 import "rxjs/add/observable/combineLatest";
 
+import { isType } from "@angular/core/src/type";
+import { forEach } from "@angular/router/src/utils/collection";
 import { ErrorService, Filter, Loaded, Saved, Scope, WorkspaceService } from "../../../../angular";
-import { Brand, Facility, Good, InventoryItemKind, Locale, LocalisedText, Model, Organisation, OrganisationRole, ProductCategory, ProductCharacteristic, ProductCharacteristicValue, ProductFeature, ProductType, Singleton, VatRate, SerialisedInventoryItem, SerialisedInventoryItemState, Ownership } from "../../../../domain";
+import { Brand, Facility, Good, InventoryItemKind, Locale, LocalisedText, Model, Organisation, OrganisationRole, Ownership, ProductCategory, ProductCharacteristic, ProductCharacteristicValue, ProductFeature, ProductType, SerialisedInventoryItem, SerialisedInventoryItemState, Singleton, VatRate } from "../../../../domain";
 import { Contains, Fetch, Path, PullRequest, Query, Sort, TreeNode } from "../../../../framework";
 import { MetaDomain } from "../../../../meta";
 
@@ -212,6 +214,15 @@ export class SerialisedGoodComponent implements OnInit, AfterViewInit, OnDestroy
             } else {
               this.inventoryItems = loaded.collections.inventoryItems as SerialisedInventoryItem[];
               this.inventoryItem = this.inventoryItems[0];
+              this.good.StandardFeatures.forEach((feature: ProductFeature) => {
+                 if (feature instanceof (Brand)) {
+                   this.selectedBrand = feature;
+                   this.brandSelected(this.selectedBrand);
+                 }
+                 if (feature instanceof (Model)) {
+                  this.selectedModel = feature;
+                }
+             });
             }
 
             this.title = this.good.Name;

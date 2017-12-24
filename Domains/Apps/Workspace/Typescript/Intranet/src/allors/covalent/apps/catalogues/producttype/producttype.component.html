@@ -1,9 +1,12 @@
 <td-layout-card-over [cardTitle]="title" [cardSubtitle]="subTitle">
-  <form #form="ngForm" *ngIf="productType" (submit)="save()">
+  <form #form="ngForm" class="pad" *ngIf="productType" (submit)="save()">
 
-    <div class="pad">
-      <a-mat-input [object]="productType" [roleType]="m.ProductType.Name"></a-mat-input>
-      <a-mat-select [object]="productType" [roleType]="m.ProductType.ProductCharacteristics" [options]="characteristics" display="Name"></a-mat-select>
+    <div class="grid">
+      <a-mat-input class="col" [object]="productType" [roleType]="m.ProductType.Name"></a-mat-input>
+    </div>
+    <div class="grid">
+      <a-mat-select class="col" [object]="productType" [roleType]="m.ProductType.ProductCharacteristics" [options]="characteristics"
+        display="Name"></a-mat-select>
     </div>
 
     <mat-divider></mat-divider>

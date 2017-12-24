@@ -215,7 +215,16 @@ export class NonSerialisedGoodComponent implements OnInit, AfterViewInit, OnDest
             } else {
               this.inventoryItems = loaded.collections.inventoryItems as NonSerialisedInventoryItem[];
               this.inventoryItem = this.inventoryItems[0];
-            }
+              this.good.StandardFeatures.forEach((feature: ProductFeature) => {
+                if (feature instanceof (Brand)) {
+                  this.selectedBrand = feature;
+                  this.brandSelected(this.selectedBrand);
+                }
+                if (feature instanceof (Model)) {
+                 this.selectedModel = feature;
+               }
+            });
+           }
 
             this.title = this.good.Name;
             this.subTitle = "Non Serialised";

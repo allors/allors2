@@ -10,7 +10,7 @@ import { Subscription } from "rxjs/Subscription";
 import "rxjs/add/observable/combineLatest";
 
 import { ErrorService, Loaded, Saved, Scope, WorkspaceService } from "../../../../angular";
-import { Catalogue, Singleton, ProductCategory, CatScope, Locale } from "../../../../domain";
+import { Catalogue, CatScope, Locale, ProductCategory, Singleton } from "../../../../domain";
 import { Fetch, PullRequest, Query, TreeNode } from "../../../../framework";
 import { MetaDomain } from "../../../../meta";
 
@@ -62,6 +62,7 @@ export class CatalogueComponent implements OnInit, AfterViewInit, OnDestroy {
           new Fetch({
             id,
             include: [
+              new TreeNode({ roleType: m.Catalogue.CatalogueImage}),
               new TreeNode({
                 nodes: [new TreeNode({ roleType: m.LocalisedText.Locale })],
                 roleType: m.Catalogue.LocalisedNames,

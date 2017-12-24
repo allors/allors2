@@ -1,8 +1,8 @@
 <td-layout-card-over [cardTitle]="title" [cardSubtitle]="subTitle">
-  <form #form="ngForm" *ngIf="productCharacteristic" (submit)="save()">
+  <form #form="ngForm" class="pad" *ngIf="productCharacteristic" (submit)="save()">
 
-    <div class="pad">
-      <a-mat-localised-text [object]="productCharacteristic" [roleType]="m.ProductCharacteristic.LocalisedNames" [locales]="locales" label="Name"></a-mat-localised-text>
+    <div class="grid">
+      <a-mat-localised-text class="col" [object]="productCharacteristic" [roleType]="m.ProductCharacteristic.LocalisedNames" [locales]="locales" label="Name"></a-mat-localised-text>
     </div>
 
     <mat-divider></mat-divider>

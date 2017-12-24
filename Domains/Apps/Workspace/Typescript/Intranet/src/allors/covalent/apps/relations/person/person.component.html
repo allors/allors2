@@ -1,12 +1,12 @@
 <td-layout-card-over [cardTitle]="title" [cardSubtitle]="subTitle">
   <form class="pad" #form="ngForm" *ngIf="person" (submit)="save()">
 
-    <div class="grid-2_xs-1">
+    <div class="grid-2_md-1">
       <a-td-image class="col" [object]="person" [roleType]="m.Person.Picture" accept="image/*"></a-td-image>
       <a-mat-select class="col" [object]="person" [roleType]="m.Person.PersonRoles" [options]="roles" display="Name"></a-mat-select>
     </div>
 
-    <div class="grid-4_xs-1">
+    <div class="grid-4_md-2_xs-1">
     <a-mat-select class="col" [object]="person" [roleType]="m.Person.Salutation" [options]="salutations" display="Name"></a-mat-select>
     <a-mat-input class="col" [object]="person" [roleType]="m.Person.FirstName"></a-mat-input>
       <a-mat-input class="col" [object]="person" [roleType]="m.Person.MiddleName"></a-mat-input>
