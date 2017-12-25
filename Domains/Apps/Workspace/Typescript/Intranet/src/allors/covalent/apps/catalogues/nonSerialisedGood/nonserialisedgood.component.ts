@@ -9,7 +9,7 @@ import { Subscription } from "rxjs/Subscription";
 
 import "rxjs/add/observable/combineLatest";
 
-import { ErrorService, Filter, Loaded, Saved, Scope, WorkspaceService } from "../../../../angular";
+import { ErrorService, Filter, Loaded, Saved, Scope, WorkspaceService, MediaService } from "../../../../angular";
 import { Brand, Facility, Good, InventoryItemKind, InventoryItemVariance, Locale, LocalisedText, Model, NonSerialisedInventoryItem, NonSerialisedInventoryItemState, Organisation, OrganisationRole, ProductCategory, ProductCharacteristic, ProductCharacteristicValue, ProductFeature, ProductType, Singleton, VarianceReason, VatRate } from "../../../../domain";
 import { Contains, Fetch, Path, PullRequest, Query, Sort, TreeNode } from "../../../../framework";
 import { MetaDomain } from "../../../../meta";
@@ -57,7 +57,9 @@ export class NonSerialisedGoodComponent implements OnInit, AfterViewInit, OnDest
     private errorService: ErrorService,
     private route: ActivatedRoute,
     private snackBar: MatSnackBar,
-    public media: TdMediaService, private changeDetectorRef: ChangeDetectorRef) {
+    public media: TdMediaService,
+    public mediaService: MediaService,
+    private changeDetectorRef: ChangeDetectorRef) {
 
     this.scope = this.workspaceService.createScope();
     this.m = this.workspaceService.metaPopulation.metaDomain;

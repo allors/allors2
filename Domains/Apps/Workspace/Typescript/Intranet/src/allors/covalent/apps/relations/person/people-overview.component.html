@@ -35,7 +35,7 @@
           <mat-list-item>
 
             <mat-icon *ngIf="!person.Picture" mat-list-avatar>person</mat-icon>
-            <img *ngIf="person.Picture" mat-list-avatar src="http://localhost:5000/Media/Download/{{person.Picture.UniqueId}}?revision={{person.Picture.Revision}}"/>
+            <img *ngIf="person.Picture" mat-list-avatar [src]="mediaService.url(person.Picture)"/>
 
             <h3 mat-line [routerLink]="['/relations/person/' + person.id]"> {{person.PartyName}} </h3>
             <p *ngIf="person.GeneralPhoneNumber" mat-line> {{person.GeneralPhoneNumber.CountryCode}} {{person.GeneralPhoneNumber.AreaCode}} {{person.GeneralPhoneNumber.ContactNumber}}

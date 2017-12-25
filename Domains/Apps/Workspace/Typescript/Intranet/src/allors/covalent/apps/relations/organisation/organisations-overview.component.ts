@@ -12,7 +12,7 @@ import "rxjs/add/observable/combineLatest";
 
 import { TdDialogService, TdMediaService } from "@covalent/core";
 
-import { ErrorService, Invoked, Loaded, Scope, WorkspaceService } from "../../../../angular";
+import { ErrorService, Invoked, Loaded, Scope, WorkspaceService, MediaService } from "../../../../angular";
 import { Organisation, OrganisationRole, Country, CustomOrganisationClassification } from "../../../../domain";
 import { And, ContainedIn, Contains, Like, Page, Path, Predicate, PullRequest, Query, Sort, TreeNode, Equals } from "../../../../framework";
 import { MetaDomain } from "../../../../meta";
@@ -62,9 +62,11 @@ export class OrganisationsOverviewComponent implements AfterViewInit, OnDestroy 
     private snackBar: MatSnackBar,
     private router: Router,
     private dialogService: TdDialogService,
-    public media: TdMediaService, private changeDetectorRef: ChangeDetectorRef) {
+    public media: TdMediaService,
+    public mediaService: MediaService,
+    private changeDetectorRef: ChangeDetectorRef) {
 
-    this.scope = this.workspaceService.createScope()
+    this.scope = this.workspaceService.createScope();
     this.refresh$ = new BehaviorSubject<Date>(undefined);
 
     this.searchForm = this.formBuilder.group({

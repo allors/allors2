@@ -12,7 +12,7 @@ import "rxjs/add/observable/combineLatest";
 
 import { TdDialogService, TdMediaService } from "@covalent/core";
 
-import { ErrorService, Loaded, Scope, WorkspaceService } from "../../../../angular";
+import { ErrorService, Loaded, MediaService, Scope, WorkspaceService } from "../../../../angular";
 import { Catalogue } from "../../../../domain";
 import { And, Like, Page, Predicate, PullRequest, Query, TreeNode } from "../../../../framework";
 import { MetaDomain } from "../../../../meta";
@@ -47,6 +47,7 @@ export class CataloguesOverviewComponent implements AfterViewInit, OnDestroy {
     private router: Router,
     private dialogService: TdDialogService,
     public media: TdMediaService,
+    public mediaService: MediaService,
     private changeDetectorRef: ChangeDetectorRef) {
 
     this.titleService.setTitle(this.title);

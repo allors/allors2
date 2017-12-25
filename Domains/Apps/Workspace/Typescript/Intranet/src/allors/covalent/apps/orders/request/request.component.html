@@ -28,7 +28,7 @@
               display="displayName" label="Reply to"></a-mat-select>
             <button mat-mini-fab color="accent" type="button" (click)="addContactMechanism = !addContactMechanism">
               <mat-icon *ngIf="!addContactMechanism">add</mat-icon>
-              <mat-icon *ngIf="addContactMechanism">remove</mat-icon>
+              <mat-icon *ngIf="addContactMechanism">close</mat-icon>
             </button>
           </div>
           <mat-tab-group dynamicHeight="true" *ngIf="request.Originator && addContactMechanism">
@@ -67,7 +67,7 @@
             <a-mat-select fxFlex [object]="request" [roleType]="m.Request.ContactPerson" [options]="contacts" display="displayName"></a-mat-select>
             <button mat-mini-fab color="accent" type="button" (click)="addContactPerson = !addContactPerson">
               <mat-icon *ngIf="!addContactPerson">add</mat-icon>
-              <mat-icon *ngIf="addContactPerson">remove</mat-icon>
+              <mat-icon *ngIf="addContactPerson">close</mat-icon>
             </button>
           </div>
           <mat-tab-group dynamicHeight="true" *ngIf="request.Originator && addContactPerson">

@@ -91,7 +91,7 @@
         <mat-list-item>
 
           <mat-icon *ngIf="!good.PrimaryPhoto" mat-list-avatar>photo_camera</mat-icon>
-          <img *ngIf="good.PrimaryPhoto" mat-list-avatar  src="http://localhost:5000/Media/Download/{{good.PrimaryPhoto.UniqueId}}?revision={{good.PrimaryPhoto.Revision}}"/>
+          <img *ngIf="good.PrimaryPhoto" mat-list-avatar [src]="mediaService.url(good.PrimaryPhoto)"/>
 
           <h3 *ngIf="serialisedGood(good)" mat-line [routerLink]="'/serialisedGood/' + [good.id]"> {{good.Name}}</h3>
           <h3 *ngIf="!serialisedGood(good)" mat-line [routerLink]="'/nonSerialisedGood/' + [good.id]"> {{good.Name}}</h3>

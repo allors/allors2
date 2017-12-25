@@ -12,7 +12,7 @@ import "rxjs/add/observable/combineLatest";
 
 import { TdDialogService, TdMediaService } from "@covalent/core";
 
-import { ErrorService, Invoked, Loaded, Saved, Scope, WorkspaceService } from "../../../../angular";
+import { ErrorService, Invoked, Loaded, Saved, Scope, WorkspaceService, MediaService } from "../../../../angular";
 import { Person } from "../../../../domain";
 import { And, Like, Page, Predicate, PullRequest, Query, Sort, TreeNode } from "../../../../framework";
 import { MetaDomain } from "../../../../meta";
@@ -48,10 +48,11 @@ export class PeopleOverviewComponent implements AfterViewInit, OnDestroy {
     private dialogService: TdDialogService,
     private snackBarService: MatSnackBar,
     public media: TdMediaService,
+    public mediaService: MediaService,
     private changeDetectorRef: ChangeDetectorRef) {
 
     titleService.setTitle(this.title);
-    this.scope = this.workspaceService.createScope()
+    this.scope = this.workspaceService.createScope();
     this.refresh$ = new BehaviorSubject<Date>(undefined);
 
     this.searchForm = this.formBuilder.group({

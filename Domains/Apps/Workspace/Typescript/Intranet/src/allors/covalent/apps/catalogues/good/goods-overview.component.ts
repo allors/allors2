@@ -12,7 +12,7 @@ import "rxjs/add/observable/combineLatest";
 
 import { TdDialogService, TdMediaService } from "@covalent/core";
 
-import { ErrorService, Loaded, Scope, WorkspaceService } from "../../../../angular";
+import { ErrorService, Loaded, Scope, WorkspaceService, MediaService } from "../../../../angular";
 import { Good, Organisation, OrganisationRole, ProductCategory, ProductType, Brand, Model, SerialisedInventoryItemState, Ownership, InventoryItemKind } from "../../../../domain";
 import { And, ContainedIn, Contains, Like, Page, Predicate, PullRequest, Query, Sort, TreeNode, Equals } from "../../../../framework";
 import { MetaDomain } from "../../../../meta";
@@ -98,6 +98,7 @@ export class GoodsOverviewComponent implements AfterViewInit, OnDestroy {
     private router: Router,
     private dialogService: TdDialogService,
     public media: TdMediaService,
+    public mediaService: MediaService,
     private changeDetectorRef: ChangeDetectorRef,
   ) {
     this.titleService.setTitle("Products");

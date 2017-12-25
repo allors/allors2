@@ -5,7 +5,7 @@ import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { RouterModule, Routes } from "@angular/router";
 
 import { AuthenticationConfig, AuthenticationInterceptor, AuthenticationService, DatabaseConfig, DatabaseService, WorkspaceService } from "../allors/angular";
-import { ErrorService, MenuService } from "../allors/angular";
+import { ErrorService, MediaService, MenuService } from "../allors/angular";
 import { DefaultErrorService } from "../allors/covalent";
 
 import * as ar from "../allors/covalent/apps/ar";
@@ -50,6 +50,7 @@ import * as common from "./common";
     AuthorizationService,
     Title,
     MenuService,
+    MediaService,
   ],
 })
 export class AppModule { }

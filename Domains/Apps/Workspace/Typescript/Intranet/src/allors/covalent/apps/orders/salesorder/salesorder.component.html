@@ -43,7 +43,7 @@
             <a-mat-select fxFlex [object]="order" [roleType]="m.SalesOrder.ShipToAddress" [options]="ShipToAddresses" display="displayName"></a-mat-select>
             <button mat-mini-fab color="accent" type="button" (click)="addShipToAddress = !addShipToAddress">
               <mat-icon *ngIf="!addShipToAddress">add</mat-icon>
-              <mat-icon *ngIf="addShipToAddress">remove</mat-icon>
+              <mat-icon *ngIf="addShipToAddress">close</mat-icon>
             </button>
           </div>
           <mat-tab-group dynamicHeight="true" *ngIf="order.ShipToCustomer && addShipToAddress">
@@ -62,7 +62,7 @@
               label="Shipping Contact Person"></a-mat-select>
             <button mat-mini-fab color="accent" type="button" (click)="addContactPerson = !addContactPerson">
               <mat-icon *ngIf="!addContactPerson">add</mat-icon>
-              <mat-icon *ngIf="addContactPerson">remove</mat-icon>
+              <mat-icon *ngIf="addContactPerson">close</mat-icon>
             </button>
           </div>
           <mat-tab-group dynamicHeight="true" *ngIf="order.ShipToCustomer && addContactPerson">
@@ -87,7 +87,7 @@
               display="displayName"></a-mat-select>
             <button mat-mini-fab color="accent" type="button" (click)="addContactMechanism = !addContactMechanism">
               <mat-icon *ngIf="!addContactMechanism">add</mat-icon>
-              <mat-icon *ngIf="addContactMechanism">remove</mat-icon>
+              <mat-icon *ngIf="addContactMechanism">close</mat-icon>
             </button>
           </div>
           <mat-tab-group dynamicHeight="true" *ngIf="order.BillToCustomer && addContactMechanism">

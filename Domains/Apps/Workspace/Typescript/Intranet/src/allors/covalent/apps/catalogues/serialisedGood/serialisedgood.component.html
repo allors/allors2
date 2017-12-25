@@ -103,7 +103,7 @@
               <mat-card-header>
                 <mat-card-title>{{photo.FileName}}</mat-card-title>
               </mat-card-header>
-              <img mat-card-image src="http://localhost:5000/Media/Download/{{photo.UniqueId}}?revision={{photo.Revision}}">
+              <img mat-card-image [src]="mediaService.url(photo)">
             </mat-card>
           </mat-list-item>
           <mat-divider *ngIf="!last" mat-inset></mat-divider>

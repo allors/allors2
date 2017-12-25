@@ -29,7 +29,7 @@
       <ng-template let-category let-last="last" ngFor [ngForOf]="data">
         <mat-list-item>
           <mat-icon *ngIf="!category.CategoryImage" mat-list-avatar>photo_camera</mat-icon>
-          <img *ngIf="category.CategoryImage" mat-list-avatar src="http://localhost:5000/Media/Download/{{category.CategoryImage.UniqueId}}?revision={{category.CategoryImage.Revision}}"
+          <img *ngIf="category.CategoryImage" mat-list-avatar [src]="mediaService.url(category.CategoryImage)"
           />
 
           <h3 mat-line [routerLink]="'/category/' + [category.id]"> {{category.Name}}</h3>

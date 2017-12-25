@@ -6,7 +6,7 @@ import { HttpModule } from "@angular/http";
 import { RouterModule } from "@angular/router";
 
 const ANGULAR_MODULES: any[] = [
-  FlexLayoutModule, HttpModule, FormsModule, ReactiveFormsModule, RouterModule
+  FlexLayoutModule, HttpModule, FormsModule, ReactiveFormsModule, RouterModule,
 ];
 
 import {

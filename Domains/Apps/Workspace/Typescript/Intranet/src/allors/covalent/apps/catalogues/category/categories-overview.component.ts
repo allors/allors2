@@ -12,7 +12,7 @@ import "rxjs/add/observable/combineLatest";
 
 import { TdDialogService, TdMediaService } from "@covalent/core";
 
-import { ErrorService, Loaded, Scope, WorkspaceService } from "../../../../angular";
+import { ErrorService, Loaded, Scope, WorkspaceService, MediaService } from "../../../../angular";
 import { ProductCategory } from "../../../../domain";
 import { And, Like, Page, Predicate, PullRequest, Query, TreeNode } from "../../../../framework";
 import { MetaDomain } from "../../../../meta";
@@ -45,7 +45,9 @@ export class CategoriesOverviewComponent implements AfterViewInit, OnDestroy {
     private snackBar: MatSnackBar,
     private router: Router,
     private dialogService: TdDialogService,
-    public media: TdMediaService, private changeDetectorRef: ChangeDetectorRef) {
+    public media: TdMediaService,
+    public mediaService: MediaService,
+    private changeDetectorRef: ChangeDetectorRef) {
 
     this.titleService.setTitle("Categories");
 
