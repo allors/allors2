@@ -10,14 +10,14 @@ import { Subscription } from "rxjs/Subscription";
 import "rxjs/add/observable/combineLatest";
 
 import { ErrorService, Invoked, Loaded, Saved, Scope, WorkspaceService } from "../../../../../../angular";
-import { ContactMechanism, Organisation, OrganisationContactRelationship, Party, PartyContactMechanism, Person, Singleton, CommunicationEventPurpose, PhoneCommunication, TelecommunicationsNumber } from "../../../../../../domain";
+import { CommunicationEventPurpose, ContactMechanism, Organisation, OrganisationContactRelationship, Party, PartyContactMechanism, Person, PhoneCommunication, Singleton, TelecommunicationsNumber } from "../../../../../../domain";
 import { Fetch, PullRequest, Query, TreeNode } from "../../../../../../framework";
 import { MetaDomain } from "../../../../../../meta";
 
 @Component({
   templateUrl: "./party-communicationevent-phonecommunication.component.html",
 })
-export class PartyCommunicationEventPhoneCommunicationComponent implements OnInit, AfterViewInit, OnDestroy {
+export class PartyCommunicationEventPhoneCommunicationComponent implements OnInit, OnDestroy {
 
   public title: string = "Phone Communication";
   public subTitle: string;
@@ -158,11 +158,6 @@ export class PartyCommunicationEventPhoneCommunicationComponent implements OnIni
         this.goBack();
       },
     );
-  }
-
-  public ngAfterViewInit(): void {
-    this.media.broadcast();
-    this.changeDetectorRef.detectChanges();
   }
 
   public ngOnDestroy(): void {

@@ -13,8 +13,8 @@ import "rxjs/add/observable/combineLatest";
 import { TdDialogService, TdMediaService } from "@covalent/core";
 
 import { ErrorService, Invoked, Loaded, Scope, WorkspaceService } from "../../../../angular";
-import { Person, CommunicationEvent, CommunicationEventState, CommunicationEventPurpose } from "../../../../domain";
-import { And, Contains, Like, Page, Predicate, PullRequest, Query, Sort, TreeNode, Equals } from "../../../../framework";
+import { CommunicationEvent, CommunicationEventPurpose, CommunicationEventState, Person } from "../../../../domain";
+import { And, Contains, Equals, Like, Page, Predicate, PullRequest, Query, Sort, TreeNode } from "../../../../framework";
 import { MetaDomain } from "../../../../meta";
 
 interface SearchData {
@@ -27,7 +27,7 @@ interface SearchData {
 @Component({
   templateUrl: "./communicationevents-overview.component.html",
 })
-export class CommunicationEventsOverviewComponent implements AfterViewInit, OnDestroy {
+export class CommunicationEventsOverviewComponent implements OnDestroy {
 
   public total: number;
 
@@ -188,11 +188,6 @@ export class CommunicationEventsOverviewComponent implements AfterViewInit, OnDe
 
   public goBack(): void {
     window.history.back();
-  }
-
-  public ngAfterViewInit(): void {
-    this.media.broadcast();
-    this.changeDetectorRef.detectChanges();
   }
 
   public ngOnDestroy(): void {

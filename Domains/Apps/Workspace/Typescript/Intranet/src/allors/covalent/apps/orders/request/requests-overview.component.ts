@@ -25,7 +25,7 @@ interface SearchData {
 @Component({
   templateUrl: "./requests-overview.component.html",
 })
-export class RequestsOverviewComponent implements AfterViewInit, OnDestroy {
+export class RequestsOverviewComponent implements OnDestroy {
 
   public total: number;
 
@@ -136,12 +136,6 @@ export class RequestsOverviewComponent implements AfterViewInit, OnDestroy {
 
   public goBack(): void {
     window.history.back();
-  }
-
-  public ngAfterViewInit(): void {
-    this.titleService.setTitle("Requests");
-    this.media.broadcast();
-    this.changeDetectorRef.detectChanges();
   }
 
   public ngOnDestroy(): void {

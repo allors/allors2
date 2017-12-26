@@ -4,14 +4,14 @@ import { TdMediaService } from "@covalent/core";
 import { Subscription } from "rxjs/Subscription";
 
 import { ErrorService, Filter, Loaded, Saved, Scope, WorkspaceService } from "../../../../../angular";
-import { OrganisationContactRelationship, Enumeration, PersonRole } from "../../../../../domain";
+import { Enumeration, OrganisationContactRelationship, PersonRole } from "../../../../../domain";
 import { Fetch, PullRequest, Query, TreeNode } from "../../../../../framework";
 import { MetaDomain } from "../../../../../meta";
 
 @Component({
   templateUrl: "./organisation-contactrelationship.html",
 })
-export class OrganisationContactrelationshipEditComponent implements OnInit, AfterViewInit, OnDestroy {
+export class OrganisationContactrelationshipEditComponent implements OnInit, OnDestroy {
 
   public title: string = "Contact Relationship";
   public subTitle: string = "add a new contact relationship";
@@ -32,7 +32,7 @@ export class OrganisationContactrelationshipEditComponent implements OnInit, Aft
     private route: ActivatedRoute,
     public media: TdMediaService, private changeDetectorRef: ChangeDetectorRef) {
 
-    this.scope = this.workspaceService.createScope()
+    this.scope = this.workspaceService.createScope();
     this.m = this.workspaceService.metaPopulation.metaDomain;
 
     this.peopleFilter = new Filter({scope: this.scope, objectType: this.m.Person, roleTypes: [this.m.Person.FirstName, this.m.Person.LastName]});
@@ -83,11 +83,6 @@ export class OrganisationContactrelationshipEditComponent implements OnInit, Aft
         this.goBack();
       },
     );
-  }
-
-  public ngAfterViewInit(): void {
-    this.media.broadcast();
-    this.changeDetectorRef.detectChanges();
   }
 
   public ngOnDestroy(): void {

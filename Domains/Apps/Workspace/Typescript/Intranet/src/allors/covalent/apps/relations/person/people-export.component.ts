@@ -27,7 +27,7 @@ interface SearchData {
 @Component({
   templateUrl: "./people-export.component.html",
 })
-export class PeopleExportComponent implements AfterViewInit, OnDestroy {
+export class PeopleExportComponent implements OnDestroy {
 
   public total: number;
 
@@ -141,11 +141,6 @@ export class PeopleExportComponent implements AfterViewInit, OnDestroy {
 
   public goBack(): void {
     window.history.back();
-  }
-
-  public ngAfterViewInit(): void {
-    this.media.broadcast();
-    this.changeDetectorRef.detectChanges();
   }
 
   public ngOnDestroy(): void {

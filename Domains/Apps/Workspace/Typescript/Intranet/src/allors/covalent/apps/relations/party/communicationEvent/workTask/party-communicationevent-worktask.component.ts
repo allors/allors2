@@ -10,14 +10,14 @@ import { Subscription } from "rxjs/Subscription";
 import "rxjs/add/observable/combineLatest";
 
 import { ErrorService, Loaded, Saved, Scope, WorkspaceService } from "../../../../../../angular";
-import { Person, Singleton, WorkTask, CommunicationEvent, WorkEffortState, Priority, WorkEffortPurpose, WorkEffortAssignment } from "../../../../../../domain";
+import { CommunicationEvent, Person, Priority, Singleton, WorkEffortAssignment, WorkEffortPurpose, WorkEffortState, WorkTask } from "../../../../../../domain";
 import { Fetch, PullRequest, Query, TreeNode } from "../../../../../../framework";
 import { MetaDomain } from "../../../../../../meta";
 
 @Component({
   templateUrl: "./party-communicationevent-worktask.component.html",
 })
-export class PartyCommunicationEventWorkTaskComponent implements OnInit, AfterViewInit, OnDestroy {
+export class PartyCommunicationEventWorkTaskComponent implements OnInit, OnDestroy {
 
   public title: string = "Work Task";
   public subTitle: string;
@@ -138,11 +138,6 @@ export class PartyCommunicationEventWorkTaskComponent implements OnInit, AfterVi
         this.goBack();
       },
     );
-  }
-
-  public ngAfterViewInit(): void {
-    this.media.broadcast();
-    this.changeDetectorRef.detectChanges();
   }
 
   public ngOnDestroy(): void {

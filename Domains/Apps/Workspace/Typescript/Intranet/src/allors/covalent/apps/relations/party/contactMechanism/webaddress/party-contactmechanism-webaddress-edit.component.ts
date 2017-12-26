@@ -4,14 +4,14 @@ import { TdMediaService } from "@covalent/core";
 import { Subscription } from "rxjs/Subscription";
 
 import { ErrorService, Loaded, Saved, Scope, WorkspaceService } from "../../../../../../angular";
-import { PartyContactMechanism, WebAddress, Enumeration } from "../../../../../../domain";
+import { Enumeration, PartyContactMechanism, WebAddress } from "../../../../../../domain";
 import { Fetch, PullRequest, Query, Sort, TreeNode } from "../../../../../../framework";
 import { MetaDomain } from "../../../../../../meta";
 
 @Component({
   templateUrl: "./party-contactmechanism-webaddress.html",
 })
-export class PartyContactMechanismEditWebAddressComponent implements OnInit, AfterViewInit, OnDestroy {
+export class PartyContactMechanismEditWebAddressComponent implements OnInit, OnDestroy {
 
   public title: string = "Web Address";
   public subTitle: string = "edit web address";
@@ -74,11 +74,6 @@ export class PartyContactMechanismEditWebAddressComponent implements OnInit, Aft
         this.goBack();
       },
     );
-  }
-
-  public ngAfterViewInit(): void {
-    this.media.broadcast();
-    this.changeDetectorRef.detectChanges();
   }
 
   public ngOnDestroy(): void {

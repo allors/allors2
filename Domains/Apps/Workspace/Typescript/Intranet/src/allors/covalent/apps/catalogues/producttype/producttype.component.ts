@@ -11,7 +11,7 @@ import { MetaDomain } from "../../../../meta";
 @Component({
   templateUrl: "./producttype.component.html",
 })
-export class ProductTypeComponent implements OnInit, AfterViewInit, OnDestroy {
+export class ProductTypeComponent implements OnInit, OnDestroy {
 
   public title: string = "Edit Product Type";
   public subTitle: string;
@@ -77,11 +77,6 @@ export class ProductTypeComponent implements OnInit, AfterViewInit, OnDestroy {
         this.goBack();
       },
     );
-  }
-
-  public ngAfterViewInit(): void {
-    this.media.broadcast();
-    this.changeDetectorRef.detectChanges();
   }
 
   public ngOnDestroy(): void {

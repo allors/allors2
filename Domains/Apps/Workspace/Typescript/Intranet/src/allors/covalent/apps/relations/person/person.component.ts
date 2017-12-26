@@ -6,14 +6,14 @@ import { TdMediaService } from "@covalent/core";
 import { Subscription } from "rxjs/Subscription";
 
 import { ErrorService, Loaded, Saved, Scope, WorkspaceService } from "../../../../angular";
-import { Enumeration, Locale, Person, PersonRole, CustomerRelationship } from "../../../../domain";
+import { CustomerRelationship, Enumeration, Locale, Person, PersonRole } from "../../../../domain";
 import { Fetch, Path, PullRequest, Query, TreeNode } from "../../../../framework";
 import { MetaDomain } from "../../../../meta";
 
 @Component({
   templateUrl: "./person.component.html",
 })
-export class PersonComponent implements OnInit, AfterViewInit, OnDestroy {
+export class PersonComponent implements OnInit, OnDestroy {
 
   public title: string = "Person";
   public subTitle: string;
@@ -116,11 +116,6 @@ export class PersonComponent implements OnInit, AfterViewInit, OnDestroy {
          this.goBack();
       },
     );
-  }
-
-  public ngAfterViewInit(): void {
-    this.media.broadcast();
-    this.changeDetectorRef.detectChanges();
   }
 
   public ngOnDestroy(): void {

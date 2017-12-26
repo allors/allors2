@@ -23,7 +23,7 @@ import { MetaDomain } from "../../../../meta";
   `],
   templateUrl: "./salesorder.component.html",
 })
-export class SalesOrderEditComponent implements OnInit, AfterViewInit, OnDestroy {
+export class SalesOrderEditComponent implements OnInit, OnDestroy {
 
   public m: MetaDomain;
 
@@ -533,11 +533,6 @@ export class SalesOrderEditComponent implements OnInit, AfterViewInit, OnDestroy
     } else {
       finishFn();
     }
-  }
-
-  public ngAfterViewInit(): void {
-    this.media.broadcast();
-    this.changeDetectorRef.detectChanges();
   }
 
   public ngOnDestroy(): void {

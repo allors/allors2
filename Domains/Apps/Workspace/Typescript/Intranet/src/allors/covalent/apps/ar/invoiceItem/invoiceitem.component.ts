@@ -1,10 +1,4 @@
-import {
-  AfterViewInit,
-  ChangeDetectorRef,
-  Component,
-  OnDestroy,
-  OnInit
-} from "@angular/core";
+import {AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit } from "@angular/core";
 import { MatSnackBar } from "@angular/material";
 import { ActivatedRoute, Router, UrlSegment } from "@angular/router";
 import { TdDialogService, TdMediaService } from "@covalent/core";
@@ -14,41 +8,16 @@ import { Observable } from "rxjs/Observable";
 import { Subscription } from "rxjs/Subscription";
 
 import "rxjs/add/observable/combineLatest";
-import {
-  ErrorService,
-  Filter,
-  Loaded,
-  Saved,
-  Scope,
-  WorkspaceService
-} from "../../../../angular";
-import {
-  Good,
-  InventoryItem,
-  NonSerialisedInventoryItem,
-  Product,
-  SalesInvoice,
-  SalesInvoiceItem,
-  SalesInvoiceItemType,
-  SalesOrderItem,
-  SerialisedInventoryItem,
-  VatRate,
-  VatRegime
-} from "../../../../domain";
-import {
-  Fetch,
-  Path,
-  PullRequest,
-  Query,
-  TreeNode
-} from "../../../../framework";
+import { ErrorService, Filter, Loaded, Saved, Scope, WorkspaceService } from "../../../../angular";
+import { Good, InventoryItem, NonSerialisedInventoryItem, Product, SalesInvoice, SalesInvoiceItem, SalesInvoiceItemType, SalesOrderItem, SerialisedInventoryItem, VatRate, VatRegime } from "../../../../domain";
+import { Fetch, Path, PullRequest, Query, TreeNode } from "../../../../framework";
 import { MetaDomain } from "../../../../meta";
 
 @Component({
-  templateUrl: "./invoiceitem.component.html"
+  templateUrl: "./invoiceitem.component.html",
 })
 export class InvoiceItemEditComponent
-  implements OnInit, AfterViewInit, OnDestroy {
+  implements OnInit, OnDestroy {
   public m: MetaDomain;
 
   public title: string = "Edit Sales Invoice Item";
@@ -113,12 +82,12 @@ export class InvoiceItemEditComponent
             id: itemId,
             include: [
               new TreeNode({
-                roleType: m.SalesInvoiceItem.SalesInvoiceItemState
+                roleType: m.SalesInvoiceItem.SalesInvoiceItemState,
               }),
               new TreeNode({ roleType: m.SalesInvoiceItem.SalesOrderItem }),
               new TreeNode({
                 nodes: [new TreeNode({ roleType: m.VatRegime.VatRate })],
-                roleType: m.SalesInvoiceItem.VatRegime
+                roleType: m.SalesInvoiceItem.VatRegime,
               })
             ],
             name: "invoiceItem"
@@ -178,13 +147,8 @@ export class InvoiceItemEditComponent
         (error: Error) => {
           this.errorService.message(error);
           this.goBack();
-        }
+        };
       );
-  }
-
-  public ngAfterViewInit(): void {
-    this.media.broadcast();
-    this.changeDetectorRef.detectChanges();
   }
 
   public ngOnDestroy(): void {

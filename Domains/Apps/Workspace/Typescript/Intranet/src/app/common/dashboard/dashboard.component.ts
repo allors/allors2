@@ -4,13 +4,8 @@ import { TdMediaService } from "@covalent/core";
 @Component({
   templateUrl: "./dashboard.component.html",
 })
-export class DashboardComponent implements AfterViewInit {
+export class DashboardComponent {
 
   constructor(public media: TdMediaService, private changeDetectorRef: ChangeDetectorRef) {
-  }
-
-  public ngAfterViewInit(): void {
-    this.media.broadcast();
-    this.changeDetectorRef.detectChanges();
   }
 }

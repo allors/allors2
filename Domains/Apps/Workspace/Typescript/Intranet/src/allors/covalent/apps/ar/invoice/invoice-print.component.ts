@@ -17,7 +17,7 @@ import { MetaDomain } from "../../../../meta";
   templateUrl: "./invoice-print.component.html",
 })
 
-export class InvoicePrintComponent implements OnInit, AfterViewInit, OnDestroy {
+export class InvoicePrintComponent implements OnInit, OnDestroy {
 
   public m: MetaDomain;
   public invoice: SalesInvoice;
@@ -67,11 +67,6 @@ export class InvoicePrintComponent implements OnInit, AfterViewInit, OnDestroy {
         this.goBack();
       },
     );
-  }
-
-  public ngAfterViewInit(): void {
-    this.media.broadcast();
-    this.changeDetectorRef.detectChanges();
   }
 
   public ngOnDestroy(): void {

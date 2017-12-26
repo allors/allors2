@@ -10,14 +10,14 @@ import { Subscription } from "rxjs/Subscription";
 import "rxjs/add/observable/combineLatest";
 
 import { ErrorService, Invoked, Loaded, Saved, Scope, WorkspaceService } from "../../../../../../angular";
-import { Organisation, OrganisationContactRelationship, Party, Person, Singleton, FaceToFaceCommunication, CommunicationEventPurpose } from "../../../../../../domain";
+import { CommunicationEventPurpose, FaceToFaceCommunication, Organisation, OrganisationContactRelationship, Party, Person, Singleton } from "../../../../../../domain";
 import { Fetch, PullRequest, Query, TreeNode } from "../../../../../../framework";
 import { MetaDomain } from "../../../../../../meta";
 
 @Component({
   templateUrl: "./party-communicationevent-facetofacecommunication.component.html",
 })
-export class PartyCommunicationEventFaceToFaceCommunicationComponent implements OnInit, AfterViewInit, OnDestroy {
+export class PartyCommunicationEventFaceToFaceCommunicationComponent implements OnInit, OnDestroy {
 
   public title: string = "Face to Face Communication (Meeting)";
   public subTitle: string;
@@ -46,7 +46,7 @@ export class PartyCommunicationEventFaceToFaceCommunicationComponent implements 
     private dialogService: TdDialogService,
     public media: TdMediaService, private changeDetectorRef: ChangeDetectorRef) {
 
-    this.scope = this.workspaceService.createScope()
+    this.scope = this.workspaceService.createScope();
     this.m = this.workspaceService.metaPopulation.metaDomain;
     this.refresh$ = new BehaviorSubject<Date>(undefined);
   }
@@ -165,11 +165,6 @@ export class PartyCommunicationEventFaceToFaceCommunicationComponent implements 
     relationShip.Organisation = this.party as Organisation;
 
     this.communicationEvent.AddParticipant(participant);
-  }
-
-  public ngAfterViewInit(): void {
-    this.media.broadcast();
-    this.changeDetectorRef.detectChanges();
   }
 
   public ngOnDestroy(): void {

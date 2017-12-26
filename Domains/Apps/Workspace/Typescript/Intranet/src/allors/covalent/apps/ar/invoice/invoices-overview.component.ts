@@ -25,7 +25,7 @@ interface SearchData {
 @Component({
   templateUrl: "./invoices-overview.component.html",
 })
-export class InvoicesOverviewComponent implements AfterViewInit, OnDestroy {
+export class InvoicesOverviewComponent implements OnDestroy {
 
   public searchForm: FormGroup;
 
@@ -49,6 +49,8 @@ export class InvoicesOverviewComponent implements AfterViewInit, OnDestroy {
     public dialogService: TdDialogService,
     public media: TdMediaService,
     private changeDetectorRef: ChangeDetectorRef) {
+
+    this.titleService.setTitle("Sales Invoices");
 
     this.scope = this.workspaceService.createScope();
     this.refresh$ = new BehaviorSubject<Date>(undefined);
@@ -132,12 +134,6 @@ export class InvoicesOverviewComponent implements AfterViewInit, OnDestroy {
 
   public goBack(): void {
     window.history.back();
-  }
-
-  public ngAfterViewInit(): void {
-    this.titleService.setTitle("Sales Invoices");
-    this.media.broadcast();
-    this.changeDetectorRef.detectChanges();
   }
 
   public ngOnDestroy(): void {

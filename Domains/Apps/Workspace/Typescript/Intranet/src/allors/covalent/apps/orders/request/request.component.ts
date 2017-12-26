@@ -17,7 +17,7 @@ import { MetaDomain } from "../../../../meta";
 @Component({
   templateUrl: "./request.component.html",
 })
-export class RequestEditComponent implements OnInit, AfterViewInit, OnDestroy {
+export class RequestEditComponent implements OnInit, OnDestroy {
 
   public m: MetaDomain;
 
@@ -378,11 +378,6 @@ export class RequestEditComponent implements OnInit, AfterViewInit, OnDestroy {
 
     this.contactMechanisms.push(partyContactMechanism.ContactMechanism);
     this.request.Originator.AddPartyContactMechanism(partyContactMechanism);
-  }
-
-  public ngAfterViewInit(): void {
-    this.media.broadcast();
-    this.changeDetectorRef.detectChanges();
   }
 
   public ngOnDestroy(): void {

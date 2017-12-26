@@ -24,7 +24,7 @@ interface SearchData {
 @Component({
   templateUrl: "./producttypes-overview.component.html",
 })
-export class ProductTypesOverviewComponent implements AfterViewInit, OnDestroy {
+export class ProductTypesOverviewComponent implements OnDestroy {
 
   public title: string = "Products";
   public total: number;
@@ -114,12 +114,6 @@ export class ProductTypesOverviewComponent implements AfterViewInit, OnDestroy {
 
   public goBack(): void {
     window.history.back();
-  }
-
-  public ngAfterViewInit(): void {
-    this.titleService.setTitle("ProductTypes");
-    this.media.broadcast();
-    this.changeDetectorRef.detectChanges();
   }
 
   public ngOnDestroy(): void {

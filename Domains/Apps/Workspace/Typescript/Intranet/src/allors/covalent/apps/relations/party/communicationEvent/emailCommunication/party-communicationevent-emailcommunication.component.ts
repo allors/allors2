@@ -17,7 +17,7 @@ import { MetaDomain } from "../../../../../../meta";
 @Component({
   templateUrl: "./party-communicationevent-emailcommunication.component.html",
 })
-export class PartyCommunicationEventEmailCommunicationComponent implements OnInit, AfterViewInit, OnDestroy {
+export class PartyCommunicationEventEmailCommunicationComponent implements OnInit, OnDestroy {
 
   public title: string = "Email Communication";
   public subTitle: string;
@@ -156,11 +156,6 @@ export class PartyCommunicationEventEmailCommunicationComponent implements OnIni
         this.goBack();
       },
     );
-  }
-
-  public ngAfterViewInit(): void {
-    this.media.broadcast();
-    this.changeDetectorRef.detectChanges();
   }
 
   public ngOnDestroy(): void {

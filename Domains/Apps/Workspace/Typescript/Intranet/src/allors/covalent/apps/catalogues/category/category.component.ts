@@ -10,14 +10,14 @@ import { Subscription } from "rxjs/Subscription";
 import "rxjs/add/observable/combineLatest";
 
 import { ErrorService, Loaded, Saved, Scope, WorkspaceService } from "../../../../angular";
-import { Singleton, ProductCategory, CatScope, Locale } from "../../../../domain";
+import { CatScope, Locale, ProductCategory, Singleton } from "../../../../domain";
 import { Fetch, PullRequest, Query, TreeNode } from "../../../../framework";
 import { MetaDomain } from "../../../../meta";
 
 @Component({
   templateUrl: "./category.component.html",
 })
-export class CategoryComponent implements OnInit, AfterViewInit, OnDestroy {
+export class CategoryComponent implements OnInit, OnDestroy {
 
   public m: MetaDomain;
 
@@ -114,11 +114,6 @@ export class CategoryComponent implements OnInit, AfterViewInit, OnDestroy {
         this.goBack();
       },
     );
-  }
-
-  public ngAfterViewInit(): void {
-    this.media.broadcast();
-    this.changeDetectorRef.detectChanges();
   }
 
   public ngOnDestroy(): void {

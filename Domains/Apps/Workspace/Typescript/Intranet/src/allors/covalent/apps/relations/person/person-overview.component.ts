@@ -11,14 +11,14 @@ import { Subscription } from "rxjs/Subscription";
 import "rxjs/add/observable/combineLatest";
 
 import { ErrorService, Invoked, Loaded, Saved, Scope, WorkspaceService } from "../../../../angular";
-import { ContactMechanism, Organisation, OrganisationContactRelationship, PartyContactMechanism, Person, CommunicationEvent, WorkEffortAssignment, WorkEffort } from "../../../../domain";
+import { CommunicationEvent, ContactMechanism, Organisation, OrganisationContactRelationship, PartyContactMechanism, Person, WorkEffort, WorkEffortAssignment } from "../../../../domain";
 import { Fetch, Path, PullRequest, Query, TreeNode } from "../../../../framework";
 import { MetaDomain } from "../../../../meta";
 
 @Component({
   templateUrl: "./person-overview.component.html",
 })
-export class PersonOverviewComponent implements OnInit, AfterViewInit, OnDestroy {
+export class PersonOverviewComponent implements OnInit, OnDestroy {
 
   public m: MetaDomain;
 
@@ -376,11 +376,6 @@ export class PersonOverviewComponent implements OnInit, AfterViewInit, OnDestroy
             });
         }
       });
-  }
-
-  public ngAfterViewInit(): void {
-    this.media.broadcast();
-    this.changeDetectorRef.detectChanges();
   }
 
   public ngOnDestroy(): void {

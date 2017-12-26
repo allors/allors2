@@ -11,7 +11,7 @@ import { MetaDomain } from "../../../../../../meta";
 @Component({
   templateUrl: "./party-contactmechanism-webaddress.html",
 })
-export class PartyContactMechanismAddWebAddressComponent implements OnInit, AfterViewInit, OnDestroy {
+export class PartyContactMechanismAddWebAddressComponent implements OnInit, OnDestroy {
 
   public title: string = "Web Address";
   public subTitle: string = "add a web address";
@@ -91,11 +91,6 @@ export class PartyContactMechanismAddWebAddressComponent implements OnInit, Afte
         this.goBack();
       },
     );
-  }
-
-  public ngAfterViewInit(): void {
-    this.media.broadcast();
-    this.changeDetectorRef.detectChanges();
   }
 
   public ngOnDestroy(): void {

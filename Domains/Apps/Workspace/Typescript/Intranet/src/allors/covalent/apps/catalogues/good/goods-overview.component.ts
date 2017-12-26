@@ -12,9 +12,9 @@ import "rxjs/add/observable/combineLatest";
 
 import { TdDialogService, TdMediaService } from "@covalent/core";
 
-import { ErrorService, Loaded, Scope, WorkspaceService, MediaService } from "../../../../angular";
-import { Good, Organisation, OrganisationRole, ProductCategory, ProductType, Brand, Model, SerialisedInventoryItemState, Ownership, InventoryItemKind } from "../../../../domain";
-import { And, ContainedIn, Contains, Like, Page, Predicate, PullRequest, Query, Sort, TreeNode, Equals } from "../../../../framework";
+import { ErrorService, Loaded, MediaService, Scope, WorkspaceService } from "../../../../angular";
+import { Brand, Good, InventoryItemKind, Model, Organisation, OrganisationRole, Ownership, ProductCategory, ProductType, SerialisedInventoryItemState } from "../../../../domain";
+import { And, ContainedIn, Contains, Equals, Like, Page, Predicate, PullRequest, Query, Sort, TreeNode } from "../../../../framework";
 import { MetaDomain } from "../../../../meta";
 
 import { NewGoodDialogComponent } from "../../catalogues/good/newgood-dialog.module";
@@ -38,7 +38,7 @@ interface SearchData {
 @Component({
   templateUrl: "./goods-overview.component.html",
 })
-export class GoodsOverviewComponent implements AfterViewInit, OnDestroy {
+export class GoodsOverviewComponent implements OnDestroy {
   public title: string = "Products";
   public total: number;
   public searchForm: FormGroup;
@@ -136,7 +136,7 @@ export class GoodsOverviewComponent implements AfterViewInit, OnDestroy {
     ).scan(
       (
         [previousData, previousTake, previousDate]: [SearchData, number, Date],
-        [data, take, date]: [SearchData, number, Date]
+        [data, take, date]: [SearchData, number, Date],
       ): [SearchData, number, Date] => {
         return [data, data !== previousData ? 50 : take, date];
       },
@@ -485,11 +485,6 @@ export class GoodsOverviewComponent implements AfterViewInit, OnDestroy {
 
   public goBack(): void {
     window.history.back();
-  }
-
-  public ngAfterViewInit(): void {
-    this.media.broadcast();
-    this.changeDetectorRef.detectChanges();
   }
 
   public ngOnDestroy(): void {

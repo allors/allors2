@@ -5,15 +5,10 @@ import { TdMediaService } from "@covalent/core";
 @Component({
   templateUrl: "./workefforts-overview.component.html",
 })
-export class WorkEffortsOverviewComponent implements AfterViewInit {
+export class WorkEffortsOverviewComponent {
   public title: string = "Relations Dashboard";
 
   constructor(public media: TdMediaService, private changeDetectorRef: ChangeDetectorRef, private titleService: Title) {
       this.titleService.setTitle(this.title);
-  }
-
-  public ngAfterViewInit(): void {
-      this.media.broadcast();
-      this.changeDetectorRef.detectChanges();
   }
 }

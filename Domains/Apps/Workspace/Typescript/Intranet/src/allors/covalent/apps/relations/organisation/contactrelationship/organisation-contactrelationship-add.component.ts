@@ -9,14 +9,14 @@ import { Subscription } from "rxjs/Subscription";
 import "rxjs/add/observable/combineLatest";
 
 import { ErrorService, Filter, Loaded, Saved, Scope, WorkspaceService } from "../../../../../angular";
-import { Organisation, OrganisationContactRelationship, Person, Enumeration, PersonRole } from "../../../../../domain";
+import { Enumeration, Organisation, OrganisationContactRelationship, Person, PersonRole } from "../../../../../domain";
 import { Fetch, PullRequest, Query } from "../../../../../framework";
 import { MetaDomain } from "../../../../../meta";
 
 @Component({
   templateUrl: "./organisation-contactrelationship.html",
 })
-export class OrganisationContactrelationshipAddComponent implements OnInit, AfterViewInit, OnDestroy {
+export class OrganisationContactrelationshipAddComponent implements OnInit, OnDestroy {
 
   public title: string = "Contact Relationship";
   public subTitle: string = "add a new contact relationship";
@@ -107,11 +107,6 @@ export class OrganisationContactrelationshipAddComponent implements OnInit, Afte
     const contact: Person = this.scope.session.get(id) as Person;
     this.organisationContactRelationship.Contact = contact;
     this.refresh();
-  }
-
-  public ngAfterViewInit(): void {
-    this.media.broadcast();
-    this.changeDetectorRef.detectChanges();
   }
 
   public ngOnDestroy(): void {

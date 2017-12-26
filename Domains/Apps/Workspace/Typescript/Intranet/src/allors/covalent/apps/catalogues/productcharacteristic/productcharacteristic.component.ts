@@ -12,7 +12,7 @@ import { MetaDomain } from "../../../../meta";
 @Component({
   templateUrl: "./productcharacteristic.component.html",
 })
-export class ProductCharacteristicComponent implements OnInit, AfterViewInit, OnDestroy {
+export class ProductCharacteristicComponent implements OnInit, OnDestroy {
 
   public title: string = "Product Characteristic";
   public subTitle: string;
@@ -83,11 +83,6 @@ export class ProductCharacteristicComponent implements OnInit, AfterViewInit, On
         this.goBack();
       },
     );
-  }
-
-  public ngAfterViewInit(): void {
-    this.media.broadcast();
-    this.changeDetectorRef.detectChanges();
   }
 
   public ngOnDestroy(): void {

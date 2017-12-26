@@ -17,7 +17,7 @@ import { MetaDomain } from "../../../../meta";
 @Component({
   templateUrl: "./worktask-overview.component.html",
 })
-export class WorkTaskOverviewComponent implements OnInit, AfterViewInit, OnDestroy {
+export class WorkTaskOverviewComponent implements OnInit, OnDestroy {
 
   public m: MetaDomain;
 
@@ -338,11 +338,6 @@ export class WorkTaskOverviewComponent implements OnInit, AfterViewInit, OnDestr
             });
         }
       });
-  }
-
-  public ngAfterViewInit(): void {
-    this.media.broadcast();
-    this.changeDetectorRef.detectChanges();
   }
 
   public ngOnDestroy(): void {

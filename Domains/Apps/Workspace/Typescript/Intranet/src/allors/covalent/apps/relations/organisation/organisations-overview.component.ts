@@ -12,9 +12,9 @@ import "rxjs/add/observable/combineLatest";
 
 import { TdDialogService, TdMediaService } from "@covalent/core";
 
-import { ErrorService, Invoked, Loaded, Scope, WorkspaceService, MediaService } from "../../../../angular";
-import { Organisation, OrganisationRole, Country, CustomOrganisationClassification } from "../../../../domain";
-import { And, ContainedIn, Contains, Like, Page, Path, Predicate, PullRequest, Query, Sort, TreeNode, Equals } from "../../../../framework";
+import { ErrorService, Invoked, Loaded, MediaService, Scope, WorkspaceService } from "../../../../angular";
+import { Country, CustomOrganisationClassification, Organisation, OrganisationRole } from "../../../../domain";
+import { And, ContainedIn, Contains, Equals, Like, Page, Path, Predicate, PullRequest, Query, Sort, TreeNode } from "../../../../framework";
 import { MetaDomain } from "../../../../meta";
 
 interface SearchData {
@@ -29,7 +29,7 @@ interface SearchData {
 @Component({
   templateUrl: "./organisations-overview.component.html",
 })
-export class OrganisationsOverviewComponent implements AfterViewInit, OnDestroy {
+export class OrganisationsOverviewComponent implements OnDestroy {
 
   public title: string = "Organisations";
   public total: number;
@@ -65,6 +65,8 @@ export class OrganisationsOverviewComponent implements AfterViewInit, OnDestroy 
     public media: TdMediaService,
     public mediaService: MediaService,
     private changeDetectorRef: ChangeDetectorRef) {
+
+    this.titleService.setTitle("Organisations");
 
     this.scope = this.workspaceService.createScope();
     this.refresh$ = new BehaviorSubject<Date>(undefined);
@@ -257,12 +259,6 @@ export class OrganisationsOverviewComponent implements AfterViewInit, OnDestroy 
 
   public goBack(): void {
     window.history.back();
-  }
-
-  public ngAfterViewInit(): void {
-    this.titleService.setTitle("Organisations");
-    this.media.broadcast();
-    this.changeDetectorRef.detectChanges();
   }
 
   public ngOnDestroy(): void {

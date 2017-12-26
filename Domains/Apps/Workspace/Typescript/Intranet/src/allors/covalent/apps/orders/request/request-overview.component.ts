@@ -11,14 +11,14 @@ import { Subscription } from "rxjs/Subscription";
 import "rxjs/add/observable/combineLatest";
 
 import { ErrorService, Invoked, Loaded, Scope, WorkspaceService } from "../../../../angular";
-import { NonSerialisedInventoryItem, RequestForQuote, ProductQuote, InventoryItem, SerialisedInventoryItem, RequestItem } from "../../../../domain";
+import { InventoryItem, NonSerialisedInventoryItem, ProductQuote, RequestForQuote, RequestItem, SerialisedInventoryItem } from "../../../../domain";
 import { Fetch, Path, PullRequest, TreeNode } from "../../../../framework";
 import { MetaDomain } from "../../../../meta";
 
 @Component({
   templateUrl: "./request-overview.component.html",
 })
-export class RequestOverviewComponent implements OnInit, AfterViewInit, OnDestroy {
+export class RequestOverviewComponent implements OnInit, OnDestroy {
 
   public m: MetaDomain;
   public title: string = "Requests Overview";
@@ -117,11 +117,6 @@ export class RequestOverviewComponent implements OnInit, AfterViewInit, OnDestro
         this.goBack();
       },
     );
-  }
-
-  public ngAfterViewInit(): void {
-    this.media.broadcast();
-    this.changeDetectorRef.detectChanges();
   }
 
   public ngOnDestroy(): void {

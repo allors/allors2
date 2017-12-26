@@ -24,7 +24,7 @@ interface SearchData {
 @Component({
   templateUrl: "./catalogues-overview.component.html",
 })
-export class CataloguesOverviewComponent implements AfterViewInit, OnDestroy {
+export class CataloguesOverviewComponent implements OnDestroy {
 
   public title: string = "Catalogues";
   public total: number;
@@ -119,11 +119,6 @@ export class CataloguesOverviewComponent implements AfterViewInit, OnDestroy {
 
   public goBack(): void {
     window.history.back();
-  }
-
-  public ngAfterViewInit(): void {
-    this.media.broadcast();
-    this.changeDetectorRef.detectChanges();
   }
 
   public ngOnDestroy(): void {

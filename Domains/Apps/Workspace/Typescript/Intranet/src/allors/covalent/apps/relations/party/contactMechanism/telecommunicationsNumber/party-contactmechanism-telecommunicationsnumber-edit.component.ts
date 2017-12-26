@@ -4,14 +4,14 @@ import { TdMediaService } from "@covalent/core";
 import { Subscription } from "rxjs/Subscription";
 
 import { ErrorService, Loaded, Saved, Scope, WorkspaceService } from "../../../../../../angular";
-import { PartyContactMechanism, TelecommunicationsNumber, Enumeration } from "../../../../../../domain";
+import { Enumeration, PartyContactMechanism, TelecommunicationsNumber } from "../../../../../../domain";
 import { Fetch, PullRequest, Query, TreeNode } from "../../../../../../framework";
 import { MetaDomain } from "../../../../../../meta";
 
 @Component({
   templateUrl: "./party-contactmechanism-telecommunicationsnumber.html",
 })
-export class PartyContactMechanismTelecommunicationsNumberEditComponent implements OnInit, AfterViewInit, OnDestroy {
+export class PartyContactMechanismTelecommunicationsNumberEditComponent implements OnInit, OnDestroy {
 
   public title: string = "Telecommunications Number";
   public subTitle: string = "edit telecommunications number";
@@ -85,11 +85,6 @@ export class PartyContactMechanismTelecommunicationsNumberEditComponent implemen
         this.goBack();
       },
     );
-  }
-
-  public ngAfterViewInit(): void {
-    this.media.broadcast();
-    this.changeDetectorRef.detectChanges();
   }
 
   public ngOnDestroy(): void {

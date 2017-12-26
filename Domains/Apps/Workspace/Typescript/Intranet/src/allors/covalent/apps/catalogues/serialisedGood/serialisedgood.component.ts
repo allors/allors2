@@ -11,7 +11,7 @@ import "rxjs/add/observable/combineLatest";
 
 import { isType } from "@angular/core/src/type";
 import { forEach } from "@angular/router/src/utils/collection";
-import { ErrorService, Filter, Loaded, Saved, Scope, WorkspaceService, MediaService } from "../../../../angular";
+import { ErrorService, Filter, Loaded, MediaService, Saved, Scope, WorkspaceService } from "../../../../angular";
 import { Brand, Facility, Good, InventoryItemKind, Locale, LocalisedText, Model, Organisation, OrganisationRole, Ownership, ProductCategory, ProductCharacteristic, ProductCharacteristicValue, ProductFeature, ProductType, SerialisedInventoryItem, SerialisedInventoryItemState, Singleton, VatRate } from "../../../../domain";
 import { Contains, Fetch, Path, PullRequest, Query, Sort, TreeNode } from "../../../../framework";
 import { MetaDomain } from "../../../../meta";
@@ -19,7 +19,7 @@ import { MetaDomain } from "../../../../meta";
 @Component({
   templateUrl: "./serialisedgood.component.html",
 })
-export class SerialisedGoodComponent implements OnInit, AfterViewInit, OnDestroy {
+export class SerialisedGoodComponent implements OnInit, OnDestroy {
 
   public m: MetaDomain;
   public good: Good;
@@ -261,11 +261,6 @@ export class SerialisedGoodComponent implements OnInit, AfterViewInit, OnDestroy
         this.goBack();
       },
     );
-  }
-
-  public ngAfterViewInit(): void {
-    this.media.broadcast();
-    this.changeDetectorRef.detectChanges();
   }
 
   public ngOnDestroy(): void {

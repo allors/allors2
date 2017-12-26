@@ -10,14 +10,14 @@ import { Subscription } from "rxjs/Subscription";
 import "rxjs/add/observable/combineLatest";
 
 import { ErrorService, Invoked, Loaded, Saved, Scope, WorkspaceService } from "../../../../angular";
-import { ContactMechanism, Organisation, OrganisationContactRelationship, PartyContactMechanism, Person, CommunicationEvent, TelecommunicationsNumber } from "../../../../domain";
+import { CommunicationEvent, ContactMechanism, Organisation, OrganisationContactRelationship, PartyContactMechanism, Person, TelecommunicationsNumber } from "../../../../domain";
 import { Fetch, Path, PullRequest, Query, TreeNode } from "../../../../framework";
 import { MetaDomain } from "../../../../meta";
 
 @Component({
   templateUrl: "./organisation-overview.component.html",
 })
-export class OrganisationOverviewComponent implements OnInit, AfterViewInit, OnDestroy {
+export class OrganisationOverviewComponent implements OnInit, OnDestroy {
 
   public m: MetaDomain;
 
@@ -246,11 +246,6 @@ export class OrganisationOverviewComponent implements OnInit, AfterViewInit, OnD
         this.goBack();
       },
     );
-  }
-
-  public ngAfterViewInit(): void {
-    this.media.broadcast();
-    this.changeDetectorRef.detectChanges();
   }
 
   public ngOnDestroy(): void {

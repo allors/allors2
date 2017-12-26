@@ -17,7 +17,7 @@ import { MetaDomain } from "../../../../meta";
   templateUrl: "./salesorder-print.component.html",
 })
 
-export class SalesOrderPrintComponent implements OnInit, AfterViewInit, OnDestroy {
+export class SalesOrderPrintComponent implements OnInit, OnDestroy {
 
   public m: MetaDomain;
   public order: SalesOrder;
@@ -67,11 +67,6 @@ export class SalesOrderPrintComponent implements OnInit, AfterViewInit, OnDestro
         this.goBack();
       },
     );
-  }
-
-  public ngAfterViewInit(): void {
-    this.media.broadcast();
-    this.changeDetectorRef.detectChanges();
   }
 
   public ngOnDestroy(): void {

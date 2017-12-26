@@ -17,7 +17,7 @@ import { MetaDomain } from "../../../../meta";
   templateUrl: "./productquote-print.component.html",
 })
 
-export class ProductQuotePrintComponent implements OnInit, AfterViewInit, OnDestroy {
+export class ProductQuotePrintComponent implements OnInit, OnDestroy {
 
   public m: MetaDomain;
   public quote: ProductQuote;
@@ -67,11 +67,6 @@ export class ProductQuotePrintComponent implements OnInit, AfterViewInit, OnDest
         this.goBack();
       },
     );
-  }
-
-  public ngAfterViewInit(): void {
-    this.media.broadcast();
-    this.changeDetectorRef.detectChanges();
   }
 
   public ngOnDestroy(): void {

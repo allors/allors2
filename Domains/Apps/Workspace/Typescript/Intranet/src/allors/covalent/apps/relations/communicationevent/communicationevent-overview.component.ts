@@ -10,14 +10,14 @@ import { Subscription } from "rxjs/Subscription";
 import "rxjs/add/observable/combineLatest";
 
 import { ErrorService, Invoked, Loaded, Scope, WorkspaceService } from "../../../../angular";
-import { Party, CommunicationEvent, EmailCommunication, FaceToFaceCommunication, PhoneCommunication, LetterCorrespondence, WorkTask } from "../../../../domain";
+import { CommunicationEvent, EmailCommunication, FaceToFaceCommunication, LetterCorrespondence, Party, PhoneCommunication, WorkTask } from "../../../../domain";
 import { Fetch, PullRequest, TreeNode } from "../../../../framework";
 import { MetaDomain } from "../../../../meta";
 
 @Component({
   templateUrl: "./communicationevent-overview.component.html",
 })
-export class CommunicationEventOverviewComponent implements OnInit, AfterViewInit, OnDestroy {
+export class CommunicationEventOverviewComponent implements OnInit, OnDestroy {
 
   public title: string = "Communication Event overview";
   public m: MetaDomain;
@@ -55,7 +55,7 @@ export class CommunicationEventOverviewComponent implements OnInit, AfterViewIni
 
     public media: TdMediaService, private changeDetectorRef: ChangeDetectorRef) {
 
-    this.scope = this.workspaceService.createScope()
+    this.scope = this.workspaceService.createScope();
     this.m = this.workspaceService.metaPopulation.metaDomain;
     this.refresh$ = new BehaviorSubject<Date>(undefined);
   }
@@ -226,11 +226,6 @@ export class CommunicationEventOverviewComponent implements OnInit, AfterViewIni
             });
         }
       });
-  }
-
-  public ngAfterViewInit(): void {
-    this.media.broadcast();
-    this.changeDetectorRef.detectChanges();
   }
 
   public ngOnDestroy(): void {

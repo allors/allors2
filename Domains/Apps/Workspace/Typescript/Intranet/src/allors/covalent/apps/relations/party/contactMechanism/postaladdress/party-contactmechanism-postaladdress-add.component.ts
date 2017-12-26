@@ -4,14 +4,14 @@ import { TdMediaService } from "@covalent/core";
 import { Subscription } from "rxjs/Subscription";
 
 import { ErrorService, Loaded, Saved, Scope, WorkspaceService } from "../../../../../../angular";
-import { Party, PartyContactMechanism, PostalAddress, PostalBoundary, Enumeration, Country } from "../../../../../../domain";
+import { Country, Enumeration, Party, PartyContactMechanism, PostalAddress, PostalBoundary } from "../../../../../../domain";
 import { Fetch, PullRequest, Query, TreeNode } from "../../../../../../framework";
 import { MetaDomain } from "../../../../../../meta";
 
 @Component({
   templateUrl: "./party-contactmechanism-postaladdress.html",
 })
-export class PartyContactMechanismPostalAddressAddComponent implements OnInit, AfterViewInit, OnDestroy {
+export class PartyContactMechanismPostalAddressAddComponent implements OnInit, OnDestroy {
 
   public title: string = "Postal Address";
   public subTitle: string = "add postal address";
@@ -111,11 +111,6 @@ export class PartyContactMechanismPostalAddressAddComponent implements OnInit, A
         this.goBack();
       },
     );
-  }
-
-  public ngAfterViewInit(): void {
-    this.media.broadcast();
-    this.changeDetectorRef.detectChanges();
   }
 
   public ngOnDestroy(): void {

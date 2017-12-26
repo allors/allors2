@@ -9,15 +9,15 @@ import { Subscription } from "rxjs/Subscription";
 
 import "rxjs/add/observable/combineLatest";
 
-import { ErrorService, Filter, Invoked, Loaded, Saved, Scope, WorkspaceService, Field } from "../../../../angular";
-import { Good, NonSerialisedInventoryItem, RequestForQuote, RequestItem, InventoryItem, SerialisedInventoryItem, UnitOfMeasure, Product } from "../../../../domain";
+import { ErrorService, Field, Filter, Invoked, Loaded, Saved, Scope, WorkspaceService } from "../../../../angular";
+import { Good, InventoryItem, NonSerialisedInventoryItem, Product, RequestForQuote, RequestItem, SerialisedInventoryItem, UnitOfMeasure } from "../../../../domain";
 import { Fetch, Path, PullRequest, Query, Sort, TreeNode } from "../../../../framework";
 import { MetaDomain } from "../../../../meta";
 
 @Component({
   templateUrl: "./requestitem.component.html",
 })
-export class RequestItemEditComponent implements OnInit, AfterViewInit, OnDestroy {
+export class RequestItemEditComponent implements OnInit, OnDestroy {
 
   public m: MetaDomain;
 
@@ -121,11 +121,6 @@ export class RequestItemEditComponent implements OnInit, AfterViewInit, OnDestro
     if (object) {
       this.update(object as Product);
     }
-  }
-
-  public ngAfterViewInit(): void {
-    this.media.broadcast();
-    this.changeDetectorRef.detectChanges();
   }
 
   public ngOnDestroy(): void {

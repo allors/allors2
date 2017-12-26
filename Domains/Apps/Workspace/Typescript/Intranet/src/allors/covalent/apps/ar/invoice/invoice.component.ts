@@ -17,7 +17,7 @@ import { MetaDomain } from "../../../../meta";
 @Component({
   templateUrl: "./invoice.component.html",
 })
-export class InvoiceComponent implements OnInit, AfterViewInit, OnDestroy {
+export class InvoiceComponent implements OnInit, OnDestroy {
 
   public m: MetaDomain;
 
@@ -350,11 +350,6 @@ export class InvoiceComponent implements OnInit, AfterViewInit, OnDestroy {
     } else {
       writeOffFn();
     }
-  }
-
-  public ngAfterViewInit(): void {
-    this.media.broadcast();
-    this.changeDetectorRef.detectChanges();
   }
 
   public ngOnDestroy(): void {

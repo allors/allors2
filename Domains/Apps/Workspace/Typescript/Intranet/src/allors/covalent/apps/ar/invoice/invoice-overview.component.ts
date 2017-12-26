@@ -15,7 +15,7 @@ import { MetaDomain } from "../../../../meta";
 @Component({
   templateUrl: "./invoice-overview.component.html",
 })
-export class InvoiceOverviewComponent implements OnInit, AfterViewInit, OnDestroy {
+export class InvoiceOverviewComponent implements OnInit, OnDestroy {
 
   public m: MetaDomain;
   public title: string = "Sales Invoice Overview";
@@ -129,11 +129,6 @@ export class InvoiceOverviewComponent implements OnInit, AfterViewInit, OnDestro
         this.goBack();
       },
     );
-  }
-
-  public ngAfterViewInit(): void {
-    this.media.broadcast();
-    this.changeDetectorRef.detectChanges();
   }
 
   public ngOnDestroy(): void {

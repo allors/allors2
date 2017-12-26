@@ -5,14 +5,14 @@ import { TdMediaService } from "@covalent/core";
 import { Subscription } from "rxjs/Subscription";
 
 import { ErrorService, Loaded, Saved, Scope, WorkspaceService } from "../../../../angular";
-import { Person, Singleton, WorkTask, WorkEffortState, Priority, WorkEffortPurpose, WorkEffortAssignment } from "../../../../domain";
+import { Person, Priority, Singleton, WorkEffortAssignment, WorkEffortPurpose, WorkEffortState, WorkTask } from "../../../../domain";
 import { Fetch, Path, PullRequest, Query, TreeNode } from "../../../../framework";
 import { MetaDomain } from "../../../../meta";
 
 @Component({
   templateUrl: "./worktask.component.html",
 })
-export class WorkTaskEditComponent implements OnInit, AfterViewInit, OnDestroy {
+export class WorkTaskEditComponent implements OnInit, OnDestroy {
 
   public title: string = "Work Task";
   public subTitle: string;
@@ -139,11 +139,6 @@ export class WorkTaskEditComponent implements OnInit, AfterViewInit, OnDestroy {
         this.goBack();
       },
     );
-  }
-
-  public ngAfterViewInit(): void {
-    this.media.broadcast();
-    this.changeDetectorRef.detectChanges();
   }
 
   public ngOnDestroy(): void {

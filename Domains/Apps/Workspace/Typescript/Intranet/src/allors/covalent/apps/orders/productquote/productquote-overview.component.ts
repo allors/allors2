@@ -10,14 +10,14 @@ import { Subscription } from "rxjs/Subscription";
 import "rxjs/add/observable/combineLatest";
 
 import { ErrorService, Invoked, Loaded, Saved, Scope, WorkspaceService } from "../../../../angular";
-import { Good, SalesOrder, RequestForQuote, ProductQuote, QuoteItem } from "../../../../domain";
+import { Good, ProductQuote, QuoteItem, RequestForQuote, SalesOrder } from "../../../../domain";
 import { Fetch, Path, PullRequest, Query, TreeNode } from "../../../../framework";
 import { MetaDomain } from "../../../../meta";
 
 @Component({
   templateUrl: "./productquote-overview.component.html",
 })
-export class ProductQuoteOverviewComponent implements OnInit, AfterViewInit, OnDestroy {
+export class ProductQuoteOverviewComponent implements OnInit, OnDestroy {
 
   public m: MetaDomain;
   public title: string = "Quote Overview";
@@ -135,11 +135,6 @@ export class ProductQuoteOverviewComponent implements OnInit, AfterViewInit, OnD
         this.goBack();
       },
     );
-  }
-
-  public ngAfterViewInit(): void {
-    this.media.broadcast();
-    this.changeDetectorRef.detectChanges();
   }
 
   public ngOnDestroy(): void {

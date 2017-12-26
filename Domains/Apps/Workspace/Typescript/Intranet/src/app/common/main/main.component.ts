@@ -6,7 +6,7 @@ import { MenuItem, MenuService } from "../../../allors/angular";
 @Component({
   templateUrl: "./main.component.html",
 })
-export class MainComponent implements AfterViewInit {
+export class MainComponent {
 
   public modules: MenuItem[] = [];
 
@@ -17,10 +17,5 @@ export class MainComponent implements AfterViewInit {
 
   constructor(public media: TdMediaService, private changeDetectorRef: ChangeDetectorRef, public menu: MenuService) {
     this.modules = this.menu.modules;
-  }
-
-  public ngAfterViewInit(): void {
-    this.media.broadcast();
-    this.changeDetectorRef.detectChanges();
   }
 }

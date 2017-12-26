@@ -12,7 +12,7 @@ import "rxjs/add/observable/combineLatest";
 
 import { TdDialogService, TdMediaService } from "@covalent/core";
 
-import { ErrorService, Invoked, Loaded, Saved, Scope, WorkspaceService, MediaService } from "../../../../angular";
+import { ErrorService, Invoked, Loaded, MediaService, Saved, Scope, WorkspaceService } from "../../../../angular";
 import { Person } from "../../../../domain";
 import { And, Like, Page, Predicate, PullRequest, Query, Sort, TreeNode } from "../../../../framework";
 import { MetaDomain } from "../../../../meta";
@@ -25,7 +25,7 @@ interface SearchData {
 @Component({
   templateUrl: "./people-overview.component.html",
 })
-export class PeopleOverviewComponent implements AfterViewInit, OnDestroy {
+export class PeopleOverviewComponent implements OnDestroy {
 
   public total: number;
   public title: string = "People";
@@ -129,11 +129,6 @@ export class PeopleOverviewComponent implements AfterViewInit, OnDestroy {
 
   public goBack(): void {
     window.history.back();
-  }
-
-  public ngAfterViewInit(): void {
-    this.media.broadcast();
-    this.changeDetectorRef.detectChanges();
   }
 
   public ngOnDestroy(): void {

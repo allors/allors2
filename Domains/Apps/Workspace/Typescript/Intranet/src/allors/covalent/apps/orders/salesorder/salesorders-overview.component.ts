@@ -25,7 +25,7 @@ interface SearchData {
 @Component({
   templateUrl: "./salesorders-overview.component.html",
 })
-export class SalesOrdersOverviewComponent implements AfterViewInit, OnDestroy {
+export class SalesOrdersOverviewComponent implements OnDestroy {
 
   public searchForm: FormGroup;
 
@@ -132,12 +132,6 @@ export class SalesOrdersOverviewComponent implements AfterViewInit, OnDestroy {
 
   public goBack(): void {
     window.history.back();
-  }
-
-  public ngAfterViewInit(): void {
-    this.titleService.setTitle("Sales Orders");
-    this.media.broadcast();
-    this.changeDetectorRef.detectChanges();
   }
 
   public ngOnDestroy(): void {

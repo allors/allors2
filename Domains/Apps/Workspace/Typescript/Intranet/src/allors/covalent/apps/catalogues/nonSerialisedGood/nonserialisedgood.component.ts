@@ -17,7 +17,7 @@ import { MetaDomain } from "../../../../meta";
 @Component({
   templateUrl: "./nonserialisedgood.component.html",
 })
-export class NonSerialisedGoodComponent implements OnInit, AfterViewInit, OnDestroy {
+export class NonSerialisedGoodComponent implements OnInit, OnDestroy {
 
   public m: MetaDomain;
   public good: Good;
@@ -272,11 +272,6 @@ export class NonSerialisedGoodComponent implements OnInit, AfterViewInit, OnDest
     this.update();
 
     this.snackBar.open("Good succesfully saved.", "close", { duration: 5000 });
-  }
-
-  public ngAfterViewInit(): void {
-    this.media.broadcast();
-    this.changeDetectorRef.detectChanges();
   }
 
   public ngOnDestroy(): void {

@@ -9,8 +9,6 @@
       "jasmine",
       "jasminewd2",
       "node"
-    ],
-    "skipLibCheck": true,
-    "preserveSymlinks": true
+    ]
   }
 }

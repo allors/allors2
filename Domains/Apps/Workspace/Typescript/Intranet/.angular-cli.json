@@ -9,7 +9,6 @@
       "outDir": "dist",
       "assets": [
         "assets",
-        "data",
         "favicon.ico"
       ],
       "index": "index.html",
@@ -20,15 +19,12 @@
       "testTsconfig": "tsconfig.spec.json",
       "prefix": "app",
       "styles": [
-        "styles.scss",
         "theme.scss",
-        "../node_modules/@covalent/core/common/platform.css",
+        "styles.scss",
+        "../node_modules/@covalent/core/common/platform.scss",
         "../node_modules/gridlex/src/gridlex.scss"
       ],
-      "scripts": [
-        "../node_modules/hammerjs/hammer.min.js",
-        "../node_modules/showdown/dist/showdown.js"
-      ],
+      "scripts": [],
       "environmentSource": "environments/environment.ts",
       "environments": {
         "dev": "environments/environment.ts",

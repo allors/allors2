@@ -9,14 +9,14 @@ import { Subscription } from "rxjs/Subscription";
 import "rxjs/add/observable/combineLatest";
 
 import { ErrorService, Loaded, Saved, Scope, WorkspaceService } from "../../../../angular";
-import { Locale, Organisation, OrganisationRole, CustomOrganisationClassification, IndustryClassification, CustomerRelationship } from "../../../../domain";
+import { CustomerRelationship, CustomOrganisationClassification, IndustryClassification, Locale, Organisation, OrganisationRole } from "../../../../domain";
 import { Fetch, Path, PullRequest, Query } from "../../../../framework";
 import { MetaDomain } from "../../../../meta";
 
 @Component({
   templateUrl: "./organisation.component.html",
 })
-export class OrganisationComponent implements OnInit, AfterViewInit, OnDestroy {
+export class OrganisationComponent implements OnInit, OnDestroy {
 
   public title: string = "Organisation";
   public subTitle: string;
@@ -118,11 +118,6 @@ export class OrganisationComponent implements OnInit, AfterViewInit, OnDestroy {
         this.goBack();
       },
     );
-  }
-
-  public ngAfterViewInit(): void {
-    this.media.broadcast();
-    this.changeDetectorRef.detectChanges();
   }
 
   public ngOnDestroy(): void {

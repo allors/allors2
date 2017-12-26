@@ -10,14 +10,14 @@ import { Subscription } from "rxjs/Subscription";
 import "rxjs/add/observable/combineLatest";
 
 import { ErrorService, Invoked, Loaded, Saved, Scope, WorkspaceService } from "../../../../../../angular";
-import { ContactMechanism, Organisation, OrganisationContactRelationship, Party, PartyContactMechanism, Person, Singleton, LetterCorrespondence, CommunicationEventPurpose, PostalAddress } from "../../../../../../domain";
+import { CommunicationEventPurpose, ContactMechanism, LetterCorrespondence, Organisation, OrganisationContactRelationship, Party, PartyContactMechanism, Person, PostalAddress, Singleton } from "../../../../../../domain";
 import { Fetch, PullRequest, Query, TreeNode } from "../../../../../../framework";
 import { MetaDomain } from "../../../../../../meta";
 
 @Component({
   templateUrl: "./party-communicationevent-lettercorrespondence.component.html",
 })
-export class PartyCommunicationEventLetterCorrespondenceComponent implements OnInit, AfterViewInit, OnDestroy {
+export class PartyCommunicationEventLetterCorrespondenceComponent implements OnInit, OnDestroy {
 
   public title: string = "Letter Correspondence";
   public subTitle: string;
@@ -48,7 +48,7 @@ export class PartyCommunicationEventLetterCorrespondenceComponent implements OnI
     private dialogService: TdDialogService,
     public media: TdMediaService, private changeDetectorRef: ChangeDetectorRef) {
 
-    this.scope = this.workspaceService.createScope()
+    this.scope = this.workspaceService.createScope();
     this.m = this.workspaceService.metaPopulation.metaDomain;
     this.refresh$ = new BehaviorSubject<Date>(undefined);
   }
@@ -206,11 +206,6 @@ export class PartyCommunicationEventLetterCorrespondenceComponent implements OnI
         this.goBack();
       },
     );
-  }
-
-  public ngAfterViewInit(): void {
-    this.media.broadcast();
-    this.changeDetectorRef.detectChanges();
   }
 
   public ngOnDestroy(): void {

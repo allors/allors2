@@ -24,7 +24,7 @@ interface SearchData {
 @Component({
   templateUrl: "./productcharacteristics-overview.component.html",
 })
-export class ProductCharacteristicsOverviewComponent implements AfterViewInit, OnDestroy {
+export class ProductCharacteristicsOverviewComponent implements OnDestroy {
 
   public title: string = "Product Characteristics";
   public total: number;
@@ -114,12 +114,6 @@ export class ProductCharacteristicsOverviewComponent implements AfterViewInit, O
 
   public goBack(): void {
     window.history.back();
-  }
-
-  public ngAfterViewInit(): void {
-    this.titleService.setTitle("Product Characteristics");
-    this.media.broadcast();
-    this.changeDetectorRef.detectChanges();
   }
 
   public ngOnDestroy(): void {

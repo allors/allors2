@@ -25,7 +25,7 @@ interface SearchData {
 @Component({
   templateUrl: "./productquotes-overview.component.html",
 })
-export class ProductQuotesOverviewComponent implements AfterViewInit, OnDestroy {
+export class ProductQuotesOverviewComponent implements OnDestroy {
 
   public searchForm: FormGroup;
 
@@ -132,12 +132,6 @@ export class ProductQuotesOverviewComponent implements AfterViewInit, OnDestroy 
 
   public goBack(): void {
     window.history.back();
-  }
-
-  public ngAfterViewInit(): void {
-    this.titleService.setTitle("Requests");
-    this.media.broadcast();
-    this.changeDetectorRef.detectChanges();
   }
 
   public ngOnDestroy(): void {

@@ -9,15 +9,15 @@ import { Subscription } from "rxjs/Subscription";
 
 import "rxjs/add/observable/combineLatest";
 
-import { ErrorService, Filter, Loaded, Saved, Scope, WorkspaceService, Field } from "../../../../angular";
-import { Good, NonSerialisedInventoryItem, SalesOrder, VatRate, VatRegime, QuoteItem, SalesOrderItem, InventoryItem, SerialisedInventoryItem, SalesInvoiceItemType, Product } from "../../../../domain";
+import { ErrorService, Field, Filter, Loaded, Saved, Scope, WorkspaceService } from "../../../../angular";
+import { Good, InventoryItem, NonSerialisedInventoryItem, Product, QuoteItem, SalesInvoiceItemType, SalesOrder, SalesOrderItem, SerialisedInventoryItem, VatRate, VatRegime } from "../../../../domain";
 import { Fetch, Path, PullRequest, Query, TreeNode } from "../../../../framework";
 import { MetaDomain } from "../../../../meta";
 
 @Component({
   templateUrl: "./salesorderitem.component.html",
 })
-export class SalesOrderItemEditComponent implements OnInit, AfterViewInit, OnDestroy {
+export class SalesOrderItemEditComponent implements OnInit, OnDestroy {
 
   public m: MetaDomain;
 
@@ -150,11 +150,6 @@ export class SalesOrderItemEditComponent implements OnInit, AfterViewInit, OnDes
         this.goBack();
       },
     );
-  }
-
-  public ngAfterViewInit(): void {
-    this.media.broadcast();
-    this.changeDetectorRef.detectChanges();
   }
 
   public ngOnDestroy(): void {

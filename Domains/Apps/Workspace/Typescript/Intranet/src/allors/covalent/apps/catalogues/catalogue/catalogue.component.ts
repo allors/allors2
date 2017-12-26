@@ -17,7 +17,7 @@ import { MetaDomain } from "../../../../meta";
 @Component({
   templateUrl: "./catalogue.component.html",
 })
-export class CatalogueComponent implements OnInit, AfterViewInit, OnDestroy {
+export class CatalogueComponent implements OnInit, OnDestroy {
 
   public m: MetaDomain;
 
@@ -119,11 +119,6 @@ export class CatalogueComponent implements OnInit, AfterViewInit, OnDestroy {
         this.goBack();
       },
     );
-  }
-
-  public ngAfterViewInit(): void {
-    this.media.broadcast();
-    this.changeDetectorRef.detectChanges();
   }
 
   public ngOnDestroy(): void {

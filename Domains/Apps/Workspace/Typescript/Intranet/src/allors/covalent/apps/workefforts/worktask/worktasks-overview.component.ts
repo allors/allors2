@@ -14,8 +14,8 @@ import "rxjs/add/operator/startWith";
 import { TdDialogService, TdMediaService } from "@covalent/core";
 
 import { ErrorService, Invoked, Loaded, Scope, WorkspaceService } from "../../../../angular";
-import { Person, Singleton, WorkTask, WorkEffortState, Priority, WorkEffortAssignment } from "../../../../domain";
-import { And, ContainedIn, Like, Page, Predicate, PullRequest, Query, TreeNode, Equals } from "../../../../framework";
+import { Person, Priority, Singleton, WorkEffortAssignment, WorkEffortState, WorkTask } from "../../../../domain";
+import { And, ContainedIn, Equals, Like, Page, Predicate, PullRequest, Query, TreeNode } from "../../../../framework";
 import { MetaDomain } from "../../../../meta";
 
 interface SearchData {
@@ -29,7 +29,7 @@ interface SearchData {
 @Component({
   templateUrl: "./worktasks-overview.component.html",
 })
-export class WorkTasksOverviewComponent implements AfterViewInit, OnDestroy {
+export class WorkTasksOverviewComponent implements OnDestroy {
 
   public total: number;
 
@@ -220,11 +220,6 @@ export class WorkTasksOverviewComponent implements AfterViewInit, OnDestroy {
 
   public goBack(): void {
     window.history.back();
-  }
-
-  public ngAfterViewInit(): void {
-    this.media.broadcast();
-    this.changeDetectorRef.detectChanges();
   }
 
   public ngOnDestroy(): void {

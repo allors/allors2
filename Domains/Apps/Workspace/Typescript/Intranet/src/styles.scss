@@ -1,27 +1,34 @@
-// Custom style for loading elements without height
-.will-load {
-    min-height: 80px;
-}
-// Href line height wasn't right for mat-icon-button
-a[mat-icon-button] {
-    line-height: 36px;
-}
-
-// Capitalize
-.text-capital {
-  text-transform: capitalize;
+// Adjust your logo position
+.mat-icon {
+  &.mat-icon-logo {
+    position: relative;
+    top: -2px;
+  }
 }
 
-// Lighter font weight in sub-toolbars
-td-layout-manage-list .mat-toolbar {
-    font-weight: 400;
-}
-
-.image-card {
-  padding-top: 40px;
-  width: 400px;
-}
-
-.image-card-header {
-  background-size: cover;
+// Hack for small search box
+.td-search-box {
+  .td-search-icon.mat-icon-button {
+    margin: 0;
+    height: 30px;
+    .mat-icon {
+      margin-top: -10px;
+    }
+  }
+  td-search-input {
+    margin-left: 0 !important;
+    margin-bottom: 5px;
+    .mat-form-field {
+      width: auto;
+    }
+    .mat-form-field-wrapper {
+      padding-bottom: 0;
+    }
+    .mat-input-infix {
+      padding: 0;
+    }
+    .mat-form-field-infix {
+      border-top: 0;
+    }
+  }
 }

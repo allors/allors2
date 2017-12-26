@@ -17,7 +17,7 @@ import { MetaDomain } from "../../../../meta";
 @Component({
   templateUrl: "./productquote.component.html",
 })
-export class ProductQuoteEditComponent implements OnInit, AfterViewInit, OnDestroy {
+export class ProductQuoteEditComponent implements OnInit, OnDestroy {
 
   public m: MetaDomain;
 
@@ -336,11 +336,6 @@ export class ProductQuoteEditComponent implements OnInit, AfterViewInit, OnDestr
     } else {
       rejectFn();
     }
-  }
-
-  public ngAfterViewInit(): void {
-    this.media.broadcast();
-    this.changeDetectorRef.detectChanges();
   }
 
   public ngOnDestroy(): void {

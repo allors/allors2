@@ -11,7 +11,7 @@ import { MetaDomain } from "../../../../../../meta";
 @Component({
   template: "./party-contactmechanism-telecommunicationsnumber.html",
 })
-export class PartyContactMechanismTelecommunicationsNumberAddComponent implements OnInit, AfterViewInit, OnDestroy {
+export class PartyContactMechanismTelecommunicationsNumberAddComponent implements OnInit, OnDestroy {
 
   public title: string = "Telecommunications Number";
   public subTitle: string = "add a telecommunications number";
@@ -101,11 +101,6 @@ export class PartyContactMechanismTelecommunicationsNumberAddComponent implement
         this.goBack();
       },
     );
-  }
-
-  public ngAfterViewInit(): void {
-    this.media.broadcast();
-    this.changeDetectorRef.detectChanges();
   }
 
   public ngOnDestroy(): void {
