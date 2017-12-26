@@ -48,7 +48,7 @@ export class InvoiceItemEditComponent
     private snackBar: MatSnackBar,
     private dialogService: TdDialogService,
     public media: TdMediaService,
-    private changeDetectorRef: ChangeDetectorRef
+    private changeDetectorRef: ChangeDetectorRef,
   ) {
     this.m = this.workspaceService.metaPopulation.metaDomain;
     this.scope = this.workspaceService.createScope();
@@ -56,7 +56,7 @@ export class InvoiceItemEditComponent
     this.goodsFilter = new Filter({
       scope: this.scope,
       objectType: this.m.Good,
-      roleTypes: [this.m.Good.Name]
+      roleTypes: [this.m.Good.Name],
     });
   }
 
@@ -76,7 +76,7 @@ export class InvoiceItemEditComponent
         const fetch: Fetch[] = [
           new Fetch({
             id,
-            name: "salesInvoice"
+            name: "salesInvoice",
           }),
           new Fetch({
             id: itemId,
@@ -88,28 +88,28 @@ export class InvoiceItemEditComponent
               new TreeNode({
                 nodes: [new TreeNode({ roleType: m.VatRegime.VatRate })],
                 roleType: m.SalesInvoiceItem.VatRegime,
-              })
+              }),
             ],
-            name: "invoiceItem"
-          })
+            name: "invoiceItem",
+          }),
         ];
 
         const query: Query[] = [
           new Query({
             name: "goods",
-            objectType: m.Good
+            objectType: m.Good,
           }),
           new Query({
             name: "salesInvoiceItemTypes",
-            objectType: m.SalesInvoiceItemType
+            objectType: m.SalesInvoiceItemType,
           }),
           new Query({
             name: "vatRates",
-            objectType: m.VatRate
+            objectType: m.VatRate,
           }),
           new Query({
             name: "vatRegimes",
-            objectType: m.VatRegime
+            objectType: m.VatRegime,
           })
         ];
 
@@ -127,13 +127,13 @@ export class InvoiceItemEditComponent
           this.productItemType = this.salesInvoiceItemTypes.find(
             (v: SalesInvoiceItemType) =>
               v.UniqueId.toUpperCase() ===
-              "0D07F778-2735-44CB-8354-FB887ADA42AD"
+              "0D07F778-2735-44CB-8354-FB887ADA42AD",
           );
 
           if (!this.invoiceItem) {
             this.title = "Add invoice Item";
             this.invoiceItem = this.scope.session.create(
-              "SalesInvoiceItem"
+              "SalesInvoiceItem",
             ) as SalesInvoiceItem;
             this.invoice.AddSalesInvoiceItem(this.invoiceItem);
           } else {
@@ -147,7 +147,7 @@ export class InvoiceItemEditComponent
         (error: Error) => {
           this.errorService.message(error);
           this.goBack();
-        };
+        },
       );
   }
 
@@ -165,7 +165,7 @@ export class InvoiceItemEditComponent
         id: product.id,
         name: "inventoryItem",
         path: new Path({ step: this.m.Good.InventoryItemsWhereGood })
-      })
+      }),
     ];
 
     this.scope.load("Pull", new PullRequest({ fetch })).subscribe(
@@ -184,7 +184,7 @@ export class InvoiceItemEditComponent
       (error: Error) => {
         this.errorService.message(error);
         this.goBack();
-      }
+      },
     );
   }
 
@@ -195,7 +195,7 @@ export class InvoiceItemEditComponent
       },
       (error: Error) => {
         this.errorService.dialog(error);
-      }
+      },
     );
   }
 

@@ -10,7 +10,7 @@ import { Subscription } from "rxjs/Subscription";
 import "rxjs/add/observable/combineLatest";
 
 import { ErrorService, Field, Filter, Invoked, Loaded, Saved, Scope, WorkspaceService } from "../../../../angular";
-import { ContactMechanism, Currency, Organisation, OrganisationContactRelationship, OrganisationRole, Party, PartyContactMechanism, Person, RequestForQuote, ProductQuote } from "../../../../domain";
+import { ContactMechanism, Currency, Organisation, OrganisationContactRelationship, OrganisationRole, Party, PartyContactMechanism, Person, ProductQuote, RequestForQuote } from "../../../../domain";
 import { Contains, Fetch, Path, PullRequest, Query, TreeNode } from "../../../../framework";
 import { MetaDomain } from "../../../../meta";
 
@@ -42,9 +42,10 @@ export class ProductQuoteEditComponent implements OnInit, OnDestroy {
   public organisationsFilter: Filter;
   public currenciesFilter: Filter;
 
+  public scope: Scope;
+
   private refresh$: BehaviorSubject<Date>;
   private subscription: Subscription;
-  private scope: Scope;
   private previousReceiver: Party;
 
   get showOrganisations(): boolean {
@@ -158,9 +159,8 @@ export class ProductQuoteEditComponent implements OnInit, OnDestroy {
 
         if (this.quote.Receiver) {
           this.title = this.title + " from: " + this.quote.Receiver.PartyName;
+          this.update(this.quote.Receiver);
         }
-
-        this.update(this.quote.Receiver);
 
         this.previousReceiver = this.quote.Receiver;
         this.organisations = loaded.collections.organisations as Organisation[];
