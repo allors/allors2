@@ -1,0 +1,26 @@
+<mat-tab-group dynamicHeight="true">
+    <mat-tab label="Web">
+      <div class="pad tabInlineComponent">
+        <party-contactmechanism-webAddress [scope]="scope" (cancelled)="cancelled.emit($event)" (saved)="saved.emit($event)">
+        </party-contactmechanism-webAddress>
+      </div>
+    </mat-tab>
+    <mat-tab label="Email">
+      <div class="pad tabInlineComponent">
+        <party-contactmechanism-emailAddress [scope]="scope" (cancelled)="cancelled.emit($event)" (saved)="saved.emit($event)">
+        </party-contactmechanism-emailAddress>
+      </div>
+    </mat-tab>
+    <mat-tab label="Postal">
+      <div class="pad tabInlineComponent">
+        <party-contactmechanism-postaladdress [scope]="scope" (cancelled)="cancelled.emit($event)" (saved)="saved.emit($event)">
+        </party-contactmechanism-postaladdress>
+      </div>
+    </mat-tab>
+    <mat-tab label="Telecom">
+      <div class="pad tabInlineComponent">
+        <party-contactmechanism-telecommunicationsnumber [scope]="scope" (cancelled)="cancelled.emit($event)" (saved)="saved.emit($event)">
+        </party-contactmechanism-telecommunicationsnumber>
+      </div>
+    </mat-tab>
+  </mat-tab-group>

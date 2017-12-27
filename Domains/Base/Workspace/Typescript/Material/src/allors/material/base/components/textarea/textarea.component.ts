@@ -7,18 +7,9 @@ import { Field } from "../../../../angular";
   selector: "a-mat-textarea",
   templateUrl: "./textarea.component.html",
 })
-export class TextareaComponent extends Field implements AfterViewInit {
-  @ViewChildren(NgModel) private controls: QueryList<NgModel>;
+export class TextareaComponent extends Field {
 
-  constructor( @Optional() private parentForm: NgForm) {
-    super();
-  }
-
-  public ngAfterViewInit(): void {
-    if (!!this.parentForm) {
-      this.controls.forEach((control: NgModel) => {
-        this.parentForm.addControl(control);
-      });
-    }
+  constructor(@Optional() parentForm: NgForm) {
+    super(parentForm);
   }
 }

@@ -1,4 +1,5 @@
-import { Component , Input } from "@angular/core";
+import { Component , Input, Optional } from "@angular/core";
+import { NgForm } from "@angular/forms";
 
 import { Field } from "../../../../angular";
 
@@ -14,6 +15,10 @@ export interface RadioGroupOption {
 export class RadioGroupComponent extends Field {
   @Input()
   public options: RadioGroupOption[];
+
+  constructor(@Optional() parentForm: NgForm) {
+    super(parentForm);
+  }
 
   get keys(): string[]{
     return Object.keys(this.options);

@@ -1,4 +1,5 @@
-import { Component , Input } from "@angular/core";
+import { Component , Input, Optional } from "@angular/core";
+import { NgForm } from "@angular/forms";
 
 import { Field } from "../../../../angular";
 
@@ -31,4 +32,8 @@ export class SliderComponent extends Field {
 
   @Input()
   public color: "primary" | "accent" | "warn" = "accent";
+
+  constructor(@Optional() parentForm: NgForm) {
+    super(parentForm);
+  }
 }

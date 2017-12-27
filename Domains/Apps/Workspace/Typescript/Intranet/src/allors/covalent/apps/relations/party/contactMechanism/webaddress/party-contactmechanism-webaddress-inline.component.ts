@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit , Output } from "@angular/core";
+import { Component, EventEmitter, Input, OnDestroy , OnInit, Output } from "@angular/core";
 
 import { ErrorService, Loaded, Scope, WorkspaceService } from "../../../../../../angular";
 import { ContactMechanismPurpose, PartyContactMechanism, WebAddress } from "../../../../../../domain";
@@ -9,7 +9,7 @@ import { MetaDomain } from "../../../../../../meta";
   selector: "party-contactmechanism-webAddress",
   templateUrl: "./party-contactmechanism-webaddress-inline.component.html",
 })
-export class PartyContactMechanismInlineWebAddressComponent implements OnInit {
+export class PartyContactMechanismInlineWebAddressComponent implements OnInit, OnDestroy {
   @Output() public saved: EventEmitter<PartyContactMechanism> = new EventEmitter<PartyContactMechanism>();
 
   @Output() public cancelled: EventEmitter<any> = new EventEmitter();
@@ -49,6 +49,13 @@ export class PartyContactMechanismInlineWebAddressComponent implements OnInit {
         this.cancelled.emit();
       },
     );
+  }
+
+  public ngOnDestroy(): void {
+    // if(!this.isSaved){
+    //   this.partyContactMechanism.delete();
+    //   this.webAddress.delete();
+    // }
   }
 
   public cancel(): void {

@@ -1,5 +1,5 @@
-import {Component, EventEmitter, Input, OnInit, Output, ViewChild } from "@angular/core";
-import { FormControl } from "@angular/forms";
+import {AfterViewInit, Component, EventEmitter, Input, OnDestroy, OnInit, Optional, Output, ViewChild } from "@angular/core";
+import { FormControl, NgForm } from "@angular/forms";
 
 import { Observable } from "rxjs/Observable";
 
@@ -7,10 +7,10 @@ import "rxjs/add/operator/concat";
 import "rxjs/add/operator/debounceTime";
 import "rxjs/add/operator/distinctUntilChanged";
 
+import { Field } from "../../../../angular";
 import { ISessionObject } from "../../../../framework";
 
 import { MatAutocompleteTrigger } from "@angular/material";
-import { Field } from "../../../../angular";
 
 @Component({
   selector: "a-mat-autocomplete",
@@ -32,6 +32,10 @@ export class AutocompleteComponent extends Field implements OnInit {
   public searchControl: FormControl = new FormControl();
 
   @ViewChild(MatAutocompleteTrigger) private trigger: MatAutocompleteTrigger;
+
+  constructor(@Optional() parentForm: NgForm) {
+    super(parentForm);
+  }
 
   public ngOnInit(): void {
     if (this.filter) {

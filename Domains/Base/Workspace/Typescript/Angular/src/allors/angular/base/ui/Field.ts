@@ -1,7 +1,14 @@
-import { Component, Input } from "@angular/core";
+import { AfterViewInit, Component, Input, OnDestroy, QueryList, ViewChildren } from "@angular/core";
+import { NgForm, NgModel } from "@angular/forms";
 import { ISessionObject, RoleType } from "../../../framework";
 
-export abstract class Field {
+export abstract class Field implements AfterViewInit, OnDestroy {
+
+  private static counter = 0;
+
+  @Input("name")
+  public assignedName: string;
+
   @Input()
   public object: ISessionObject;
 
@@ -22,6 +29,15 @@ export abstract class Field {
 
   @Input()
   public hint: string;
+
+  @ViewChildren(NgModel) private controls: QueryList<NgModel>;
+
+  private id = 0;
+
+  constructor(private parentForm: NgForm) {
+    // TODO: wrap around
+    this.id = ++Field.counter;
+  }
 
   get ExistObject(): boolean {
     return !!this.object;
@@ -60,7 +76,7 @@ export abstract class Field {
   }
 
   get name(): string {
-    return this.roleType.name;
+    return this.assignedName ? this.assignedName : this.roleType.name + "_" + this.id;
   }
 
   get label(): string {
@@ -72,7 +88,23 @@ export abstract class Field {
   }
 
   get disabled(): boolean {
-    return !this.canWrite || this.assignedDisabled;
+    return !this.canWrite || !!this.assignedDisabled;
+  }
+
+  public ngAfterViewInit(): void {
+    if (!!this.parentForm) {
+      this.controls.forEach((control: NgModel) => {
+        this.parentForm.addControl(control);
+      });
+    }
+  }
+
+  public ngOnDestroy(): void {
+    if (!!this.parentForm) {
+      this.controls.forEach((control: NgModel) => {
+        this.parentForm.removeControl(control);
+      });
+    }
   }
 
   protected humanize(input: string): string {

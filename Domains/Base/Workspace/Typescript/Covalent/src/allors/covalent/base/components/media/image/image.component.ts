@@ -1,4 +1,5 @@
-import { Component, EventEmitter, Input, Output } from "@angular/core";
+import { Component, EventEmitter, Input, Optional, Output } from "@angular/core";
+import { NgForm } from "@angular/forms";
 
 import { Field } from "../../../../../angular";
 import { Media } from "../../../../../domain";
@@ -15,6 +16,10 @@ export class ImageComponent extends Field {
   @Input() public accept: string = "image/*";
 
   public file: File;
+
+  constructor(@Optional() parentForm: NgForm) {
+    super(parentForm);
+  }
 
   get media(): Media {
     return this.model;

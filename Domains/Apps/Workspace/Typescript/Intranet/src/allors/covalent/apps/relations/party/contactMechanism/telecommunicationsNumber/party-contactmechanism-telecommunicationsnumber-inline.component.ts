@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, OnInit , Output } from "@angular/core";
 
 import { ErrorService, Loaded, Scope, WorkspaceService } from "../../../../../../angular";
-import { PartyContactMechanism, TelecommunicationsNumber, Enumeration, ContactMechanismType, ContactMechanismPurpose } from "../../../../../../domain";
+import { ContactMechanismPurpose, ContactMechanismType, Enumeration, PartyContactMechanism, TelecommunicationsNumber } from "../../../../../../domain";
 import { PullRequest, Query } from "../../../../../../framework";
 import { MetaDomain } from "../../../../../../meta";
 

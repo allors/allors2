@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, Input, QueryList, ViewChildren } from "@angular/core";
+import { AfterViewInit, Component, Input, Optional, QueryList, ViewChildren } from "@angular/core";
 import { NgForm, NgModel } from "@angular/forms";
 
 import { Field } from "../../../../angular";
@@ -7,26 +7,16 @@ import { Field } from "../../../../angular";
   selector: "a-mat-datepicker",
   templateUrl: "./datepicker.component.html",
 })
-export class DatepickerComponent extends Field implements AfterViewInit {
+export class DatepickerComponent extends Field {
 
   @Input()
   public useTime: boolean;
 
-  @ViewChildren(NgModel)
-  public controls: QueryList<NgModel>;
-
-  constructor(private parentForm: NgForm) {
-    super();
-  }
-
-  public ngAfterViewInit(): void {
-    this.controls.forEach((control: NgModel) => {
-      this.parentForm.addControl(control);
-    });
+  constructor(@Optional() parentForm: NgForm) {
+    super(parentForm);
   }
 
   get hours(): number {
-
     if (this.model) {
       return this.model.getHours();
     }
@@ -39,7 +29,6 @@ export class DatepickerComponent extends Field implements AfterViewInit {
   }
 
   get minutes(): number {
-
     if (this.model) {
       return this.model.getMinutes();
     }

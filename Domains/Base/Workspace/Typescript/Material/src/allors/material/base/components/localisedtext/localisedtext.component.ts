@@ -1,4 +1,5 @@
-import { Component, Input, OnChanges, SimpleChange , SimpleChanges } from "@angular/core";
+import { Component, Input, OnChanges, Optional , SimpleChange, SimpleChanges } from "@angular/core";
+import { NgForm } from "@angular/forms";
 
 import { Field } from "../../../../angular";
 import { Locale } from "../../../../domain";
@@ -14,6 +15,10 @@ export class LocalisedTextComponent extends Field implements OnChanges {
   public locales: Locale[];
 
   public models: LocalisedTextModel[];
+
+  constructor(@Optional() parentForm: NgForm) {
+    super(parentForm);
+  }
 
   public ngOnChanges(changes: SimpleChanges): void {
     const changedLocales: SimpleChange = changes.locales;

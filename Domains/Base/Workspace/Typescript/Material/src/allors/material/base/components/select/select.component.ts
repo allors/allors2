@@ -9,7 +9,7 @@ import { Field } from "../../../../angular";
   selector: "a-mat-select",
   templateUrl: "./select.component.html",
 })
-export class SelectComponent extends Field implements AfterViewInit {
+export class SelectComponent extends Field {
   @Input()
   public display: string = "display";
 
@@ -19,18 +19,8 @@ export class SelectComponent extends Field implements AfterViewInit {
   @Output()
   public onSelect: EventEmitter<ISessionObject> = new EventEmitter();
 
-  @ViewChildren(NgModel) private controls: QueryList<NgModel>;
-
-  constructor( @Optional() private parentForm: NgForm) {
-    super();
-  }
-
-  public ngAfterViewInit(): void {
-    if (!!this.parentForm) {
-      this.controls.forEach((control: NgModel) => {
-        this.parentForm.addControl(control);
-      });
-    }
+  constructor(@Optional() parentForm: NgForm) {
+    super(parentForm);
   }
 
   public selected(option: ISessionObject): void {

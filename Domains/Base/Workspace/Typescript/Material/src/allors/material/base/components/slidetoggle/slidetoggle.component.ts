@@ -1,4 +1,5 @@
-import { Component } from "@angular/core";
+import { Component, Optional } from "@angular/core";
+import { NgForm } from "@angular/forms";
 
 import { Field } from "../../../../angular";
 
@@ -8,4 +9,7 @@ import { Field } from "../../../../angular";
 })
 export class SlideToggleComponent extends Field {
 
+  constructor(@Optional() parentForm: NgForm) {
+    super(parentForm);
+  }
 }

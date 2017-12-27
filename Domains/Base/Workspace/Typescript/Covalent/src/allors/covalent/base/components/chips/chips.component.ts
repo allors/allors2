@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, EventEmitter, Input, OnDestroy, OnInit, Output, QueryList, ViewChildren } from "@angular/core";
+import { AfterViewInit, Component, EventEmitter, Input, OnDestroy, OnInit, Optional, Output, QueryList, ViewChildren } from "@angular/core";
 import { NgForm, NgModel } from "@angular/forms";
 
 import { Observable } from "rxjs/Observable";
@@ -17,7 +17,7 @@ import { Field } from "../../../../angular";
   selector: "a-td-chips",
   templateUrl: "./chips.component.html",
 })
-export class ChipsComponent extends Field implements OnInit, AfterViewInit, OnDestroy {
+export class ChipsComponent extends Field implements OnInit {
 
   @Input()
   public display: string = "display";
@@ -39,11 +39,8 @@ export class ChipsComponent extends Field implements OnInit, AfterViewInit, OnDe
   public subject: Subject<string>;
   public subscription: Subscription;
 
-  @ViewChildren(NgModel)
-  private controls: QueryList<NgModel>;
-
-  constructor(private parentForm: NgForm) {
-    super();
+  constructor(@Optional() parentForm: NgForm) {
+    super(parentForm);
   }
 
   public ngOnInit(): void {
@@ -82,13 +79,9 @@ export class ChipsComponent extends Field implements OnInit, AfterViewInit, OnDe
     }
   }
 
-  public ngAfterViewInit(): void {
-    this.controls.forEach((control: NgModel) => {
-      this.parentForm.addControl(control);
-    });
-  }
-
   public ngOnDestroy(): void {
+    super.ngOnDestroy();
+
     if (this.subscription) {
       this.subscription.unsubscribe();
     }
