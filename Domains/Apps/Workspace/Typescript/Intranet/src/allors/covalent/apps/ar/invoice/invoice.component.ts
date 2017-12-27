@@ -37,11 +37,7 @@ export class InvoiceComponent implements OnInit, OnDestroy {
   public organisationsFilter: Filter;
   public currenciesFilter: Filter;
 
-  public addEmailAddress: boolean = false;
-  public addPostalAddress: boolean = false;
-  public addTeleCommunicationsNumber: boolean = false;
-  public addWebAddress: boolean = false;
-  public addPerson: boolean = false;
+  public addContactPerson: boolean = false;
   public addContactMechanism: boolean = false;
 
   private refresh$: BehaviorSubject<Date>;
@@ -188,11 +184,11 @@ export class InvoiceComponent implements OnInit, OnDestroy {
   }
 
   public personCancelled(): void {
-    this.addPerson = false;
+    this.addContactPerson = false;
   }
 
   public personAdded(id: string): void {
-    this.addPerson = false;
+    this.addContactPerson = false;
 
     const contact: Person = this.scope.session.get(id) as Person;
 
@@ -203,45 +199,12 @@ export class InvoiceComponent implements OnInit, OnDestroy {
     this.contacts.push(contact);
   }
 
-  public webAddressCancelled(): void {
-    this.addWebAddress = false;
+  public partyContactMechanismCancelled() {
+    this.addContactMechanism = false;
   }
 
-  public webAddressAdded(partyContactMechanism: PartyContactMechanism): void {
-    this.addWebAddress = false;
-
-    this.contactMechanisms.push(partyContactMechanism.ContactMechanism);
-    this.invoice.BillToCustomer.AddPartyContactMechanism(partyContactMechanism);
-  }
-
-  public emailAddressCancelled(): void {
-    this.addEmailAddress = false;
-  }
-
-  public emailAddressAdded(partyContactMechanism: PartyContactMechanism): void {
-    this.addEmailAddress = false;
-
-    this.contactMechanisms.push(partyContactMechanism.ContactMechanism);
-    this.invoice.BillToCustomer.AddPartyContactMechanism(partyContactMechanism);
-  }
-
-  public postalAddressCancelled(): void {
-    this.addPostalAddress = false;
-  }
-
-  public postalAddressAdded(partyContactMechanism: PartyContactMechanism): void {
-    this.addPostalAddress = false;
-
-    this.contactMechanisms.push(partyContactMechanism.ContactMechanism);
-    this.invoice.BillToCustomer.AddPartyContactMechanism(partyContactMechanism);
-  }
-
-  public teleCommunicationsNumberCancelled(): void {
-    this.addTeleCommunicationsNumber = false;
-  }
-
-  public teleCommunicationsNumberAdded(partyContactMechanism: PartyContactMechanism): void {
-    this.addTeleCommunicationsNumber = false;
+  public partyContactMechanismAdded(partyContactMechanism: PartyContactMechanism): void {
+    this.addContactMechanism = false;
 
     this.contactMechanisms.push(partyContactMechanism.ContactMechanism);
     this.invoice.BillToCustomer.AddPartyContactMechanism(partyContactMechanism);

@@ -41,7 +41,7 @@
         <div class="col">
           <div fxLayout fxLayoutGap="1em">
             <a-mat-select fxFlex [object]="order" [roleType]="m.SalesOrder.ShipToAddress" [options]="ShipToAddresses" display="displayName"></a-mat-select>
-            <button mat-mini-fab color="accent" type="button" (click)="addShipToAddress = !addShipToAddress">
+            <button mat-mini-fab color="accent" [disabled]="!order.ShipToCustomer" type="button" (click)="addShipToAddress = !addShipToAddress">
               <mat-icon *ngIf="!addShipToAddress">add</mat-icon>
               <mat-icon *ngIf="addShipToAddress">close</mat-icon>
             </button>
@@ -60,7 +60,7 @@
           <div fxLayout fxLayoutGap="1em">
             <a-mat-select class="col" [object]="order" [roleType]="m.SalesOrder.ContactPerson" [options]="contacts" display="displayName"
               label="Shipping Contact Person"></a-mat-select>
-            <button mat-mini-fab color="accent" type="button" (click)="addContactPerson = !addContactPerson">
+            <button mat-mini-fab color="accent" [disabled]="!order.ShipToCustomer" type="button" (click)="addContactPerson = !addContactPerson">
               <mat-icon *ngIf="!addContactPerson">add</mat-icon>
               <mat-icon *ngIf="addContactPerson">close</mat-icon>
             </button>
@@ -85,41 +85,15 @@
           <div fxLayout fxLayoutGap="1em">
             <a-mat-select fxFlex [object]="order" [roleType]="m.SalesOrder.BillToContactMechanism" [options]="billToContactMechanisms"
               display="displayName"></a-mat-select>
-            <button mat-mini-fab color="accent" type="button" (click)="addContactMechanism = !addContactMechanism">
+            <button mat-mini-fab color="accent" [disabled]="!order.ShipToCustomer" type="button" (click)="addContactMechanism = !addContactMechanism">
               <mat-icon *ngIf="!addContactMechanism">add</mat-icon>
               <mat-icon *ngIf="addContactMechanism">close</mat-icon>
             </button>
           </div>
-          <mat-tab-group dynamicHeight="true" *ngIf="order.BillToCustomer && addContactMechanism">
-            <mat-tab label="Web">
-              <div class="pad tabInlineComponent">
-                <party-contactmechanism-webAddress [scope]="scope" (cancelled)="webAddressCancelled($event); addContactMechanism = false"
-                  (saved)="webAddressAdded($event); addContactMechanism = false">
-                </party-contactmechanism-webAddress>
-              </div>
-            </mat-tab>
-            <mat-tab label="Email">
-              <div class="pad tabInlineComponent">
-                <party-contactmechanism-emailAddress [scope]="scope" (cancelled)="emailAddressCancelled($event); addContactMechanism = false"
-                  (saved)="emailAddressAdded($event); addContactMechanism = false">
-                </party-contactmechanism-emailAddress>
-              </div>
-            </mat-tab>
-            <mat-tab label="Postal">
-              <div class="pad tabInlineComponent">
-                <party-contactmechanism-postaladdress [scope]="scope" (cancelled)="postalAddressCancelled($event); addContactMechanism = false"
-                  (saved)="postalAddressAdded($event); addContactMechanism = false">
-                </party-contactmechanism-postaladdress>
-              </div>
-            </mat-tab>
-            <mat-tab label="Telecom">
-              <div class="pad tabInlineComponent">
-                <party-contactmechanism-telecommunicationsnumber [scope]="scope" (cancelled)="teleCommunicationsNumberCancelled($event); addContactMechanism = false"
-                  (saved)="teleCommunicationsNumberAdded($event); addContactMechanism = false">
-                </party-contactmechanism-telecommunicationsnumber>
-              </div>
-            </mat-tab>
-          </mat-tab-group>
+
+          <party-contactmechanism *ngIf="order.ShipToCustomer && addContactMechanism" [scope]="scope" (saved)="partyContactMechanismAdded($event)" (cancelled)="partyContactMechanismCancelled()">
+          </party-contactmechanism>
+
         </div>
       </div>
 

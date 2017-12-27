@@ -41,10 +41,6 @@ export class SalesOrderEditComponent implements OnInit, OnDestroy {
   public contacts: Person[];
   public stores: Store[];
 
-  public addEmailAddress: boolean = false;
-  public addPostalAddress: boolean = false;
-  public addTeleCommunicationsNumber: boolean = false;
-  public addWebAddress: boolean = false;
   public addShipToAddress: boolean = false;
   public addContactPerson: boolean = false;
 
@@ -234,45 +230,12 @@ export class SalesOrderEditComponent implements OnInit, OnDestroy {
     this.contacts.push(contact);
   }
 
-  public webAddressCancelled(): void {
-    this.addWebAddress = false;
+  public partyContactMechanismCancelled() {
+    this.addContactMechanism = false;
   }
 
-  public webAddressAdded(partyContactMechanism: PartyContactMechanism): void {
-    this.addWebAddress = false;
-
-    this.billToContactMechanisms.push(partyContactMechanism.ContactMechanism);
-    this.order.BillToCustomer.AddPartyContactMechanism(partyContactMechanism);
-  }
-
-  public emailAddressCancelled(): void {
-    this.addEmailAddress = false;
-  }
-
-  public emailAddressAdded(partyContactMechanism: PartyContactMechanism): void {
-    this.addEmailAddress = false;
-
-    this.billToContactMechanisms.push(partyContactMechanism.ContactMechanism);
-    this.order.BillToCustomer.AddPartyContactMechanism(partyContactMechanism);
-  }
-
-  public postalAddressCancelled(): void {
-    this.addPostalAddress = false;
-  }
-
-  public postalAddressAdded(partyContactMechanism: PartyContactMechanism): void {
-    this.addPostalAddress = false;
-
-    this.billToContactMechanisms.push(partyContactMechanism.ContactMechanism);
-    this.order.BillToCustomer.AddPartyContactMechanism(partyContactMechanism);
-  }
-
-  public teleCommunicationsNumberCancelled(): void {
-    this.addTeleCommunicationsNumber = false;
-  }
-
-  public teleCommunicationsNumberAdded(partyContactMechanism: PartyContactMechanism): void {
-    this.addTeleCommunicationsNumber = false;
+  public partyContactMechanismAdded(partyContactMechanism: PartyContactMechanism): void {
+    this.addContactMechanism = false;
 
     this.billToContactMechanisms.push(partyContactMechanism.ContactMechanism);
     this.order.BillToCustomer.AddPartyContactMechanism(partyContactMechanism);

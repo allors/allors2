@@ -122,11 +122,6 @@ export class CategoryComponent implements OnInit, OnDestroy {
     }
   }
 
-  public imageSelected(id: string): void {
-    this.update();
-    this.snackBar.open("Category succesfully saved.", "close", { duration: 5000 });
-  }
-
   public save(): void {
 
     this.scope

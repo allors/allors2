@@ -1,5 +1,5 @@
 import { AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit } from "@angular/core";
-import { MatSnackBar } from "@angular/material";
+import { MatSnackBar, MatTabChangeEvent } from "@angular/material";
 import { ActivatedRoute, UrlSegment } from "@angular/router";
 import { TdMediaService } from "@covalent/core";
 
@@ -29,7 +29,6 @@ export class SerialisedGoodComponent implements OnInit, OnDestroy {
   public singleton: Singleton;
   public facility: Facility;
   public locales: Locale[];
-  public selectedLocaleName: string;
   public categories: ProductCategory[];
   public productTypes: ProductType[];
   public productCharacteristicValues: ProductCharacteristicValue[];
@@ -199,7 +198,6 @@ export class SerialisedGoodComponent implements OnInit, OnDestroy {
             this.singleton = loaded.collections.singletons[0] as Singleton;
             this.facility = this.singleton.InternalOrganisation.DefaultFacility;
             this.locales = this.singleton.Locales;
-            this.selectedLocaleName = this.singleton.DefaultLocale.Name;
 
             const vatRateZero = this.vatRates.find((v: VatRate) => v.Rate === 0);
             const inventoryItemKindSerialised = this.inventoryItemKinds.find((v: InventoryItemKind) => v.Name === "Serialised");
@@ -216,6 +214,7 @@ export class SerialisedGoodComponent implements OnInit, OnDestroy {
             } else {
               this.inventoryItems = loaded.collections.inventoryItems as SerialisedInventoryItem[];
               this.inventoryItem = this.inventoryItems[0];
+              this.productCharacteristicValues = this.inventoryItem.ProductCharacteristicValues;
               this.good.StandardFeatures.forEach((feature: ProductFeature) => {
                  if (feature instanceof (Brand)) {
                    this.selectedBrand = feature;
@@ -269,15 +268,6 @@ export class SerialisedGoodComponent implements OnInit, OnDestroy {
     }
   }
 
-  public imageSelected(id: string): void {
-
-    this.good.AddPhoto(this.good.PrimaryPhoto);
-
-    this.update();
-
-    this.snackBar.open("Good succesfully saved.", "close", { duration: 5000 });
-  }
-
   public save(): void {
     this.good.StandardFeatures.forEach((feature: ProductFeature) => {
       this.good.RemoveStandardFeature(feature);
@@ -290,6 +280,8 @@ export class SerialisedGoodComponent implements OnInit, OnDestroy {
     if (this.selectedModel != null) {
       this.good.AddStandardFeature(this.selectedModel);
     }
+
+    this.inventoryItem.ProductCharacteristicValues = this.productCharacteristicValues;
 
     this.scope
       .save()
@@ -321,8 +313,8 @@ export class SerialisedGoodComponent implements OnInit, OnDestroy {
     window.history.back();
   }
 
-  public localisedName(productCharacteristic: ProductCharacteristic): string {
-    const localisedText: LocalisedText = productCharacteristic.LocalisedNames.find((v: LocalisedText) => v.Locale === this.locale);
+  public localisedName(productCharacteristic: ProductCharacteristic, locale: Locale): string {
+    const localisedText: LocalisedText = productCharacteristic.LocalisedNames.find((v: LocalisedText) => v.Locale === locale);
     if (localisedText) {
       return localisedText.Text;
     }
@@ -330,12 +322,8 @@ export class SerialisedGoodComponent implements OnInit, OnDestroy {
     return productCharacteristic.Name;
   }
 
-  public setProductCharacteristicValues(): void {
-    this.productCharacteristicValues = this.inventoryItem.ProductCharacteristicValues.filter((v: ProductCharacteristicValue) => v.Locale === this.locale);
-  }
-
-  get locale(): Locale {
-    return this.locales.find((v: Locale) => v.Name === this.selectedLocaleName);
+  public localisedProductCharacteristicValues(locale: Locale): ProductCharacteristicValue[] {
+    return  this.inventoryItem.ProductCharacteristicValues.filter((v: ProductCharacteristicValue) => v.Locale === locale);
   }
 
   public brandSelected(brand: Brand): void {

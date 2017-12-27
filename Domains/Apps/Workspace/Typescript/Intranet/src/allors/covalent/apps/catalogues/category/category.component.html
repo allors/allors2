@@ -3,7 +3,7 @@
 
     <div body *ngIf="category">
       <div class="grid-2_md-1">
-        <a-td-image class="col" [object]="category" [roleType]="m.ProductCategory.CategoryImage" accept="image/*" (selected)="imageSelected($event)"></a-td-image>
+        <a-td-image class="col" [object]="category" [roleType]="m.ProductCategory.CategoryImage" accept="image/*"></a-td-image>
         <a-mat-select class="col" [object]="category" [roleType]="m.ProductCategory.CatScope" [options]="catScopes" display="Name"
           label="Scope"></a-mat-select>
       </div>

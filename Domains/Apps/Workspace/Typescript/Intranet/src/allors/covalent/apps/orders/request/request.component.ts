@@ -30,10 +30,6 @@ export class RequestEditComponent implements OnInit, OnDestroy {
   public contactMechanisms: ContactMechanism[];
   public contacts: Person[];
 
-  public addEmailAddress: boolean = false;
-  public addPostalAddress: boolean = false;
-  public addTeleCommunicationsNumber: boolean = false;
-  public addWebAddress: boolean = false;
   public addContactPerson: boolean = false;
   public addContactMechanism: boolean = false;
 
@@ -336,45 +332,12 @@ export class RequestEditComponent implements OnInit, OnDestroy {
     this.contacts.push(contact);
   }
 
-  public webAddressCancelled(): void {
-    this.addWebAddress = false;
+  public partyContactMechanismCancelled() {
+    this.addContactMechanism = false;
   }
 
-  public webAddressAdded(partyContactMechanism: PartyContactMechanism): void {
-    this.addWebAddress = false;
-
-    this.contactMechanisms.push(partyContactMechanism.ContactMechanism);
-    this.request.Originator.AddPartyContactMechanism(partyContactMechanism);
-  }
-
-  public emailAddressCancelled(): void {
-    this.addEmailAddress = false;
-  }
-
-  public emailAddressAdded(partyContactMechanism: PartyContactMechanism): void {
-    this.addEmailAddress = false;
-
-    this.contactMechanisms.push(partyContactMechanism.ContactMechanism);
-    this.request.Originator.AddPartyContactMechanism(partyContactMechanism);
-  }
-
-  public postalAddressCancelled(): void {
-    this.addPostalAddress = false;
-  }
-
-  public postalAddressAdded(partyContactMechanism: PartyContactMechanism): void {
-    this.addPostalAddress = false;
-
-    this.contactMechanisms.push(partyContactMechanism.ContactMechanism);
-    this.request.Originator.AddPartyContactMechanism(partyContactMechanism);
-  }
-
-  public teleCommunicationsNumberCancelled(): void {
-    this.addTeleCommunicationsNumber = false;
-  }
-
-  public teleCommunicationsNumberAdded(partyContactMechanism: PartyContactMechanism): void {
-    this.addTeleCommunicationsNumber = false;
+  public partyContactMechanismAdded(partyContactMechanism: PartyContactMechanism): void {
+    this.addContactMechanism = false;
 
     this.contactMechanisms.push(partyContactMechanism.ContactMechanism);
     this.request.Originator.AddPartyContactMechanism(partyContactMechanism);

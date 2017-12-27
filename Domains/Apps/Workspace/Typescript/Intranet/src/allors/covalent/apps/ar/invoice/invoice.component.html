@@ -28,46 +28,21 @@
           <div fxLayout fxLayoutGap="1em">
             <a-mat-select fxFlex [object]="invoice" [roleType]="m.SalesInvoice.BillToContactMechanism" [options]="contactMechanisms"
               display="displayName"></a-mat-select>
-            <button mat-mini-fab color="accent" type="button" (click)="addContactMechanism = !addContactMechanism">
+            <button mat-mini-fab color="accent" [disabled]="!invoice.BillToCustomer" type="button" (click)="addContactMechanism = !addContactMechanism">
               <mat-icon *ngIf="!addContactMechanism">add</mat-icon>
               <mat-icon *ngIf="addContactMechanism">close</mat-icon>
             </button>
           </div>
-          <mat-tab-group dynamicHeight="true" *ngIf="invoice.BillToCustomer && addContactMechanism">
-            <mat-tab label="Web">
-              <div class="pad tabInlineComponent">
-                <party-contactmechanism-webAddress [scope]="scope" (cancelled)="webAddressCancelled($event); addContactMechanism = false"
-                  (saved)="webAddressAdded($event); addContactMechanism = false">
-                </party-contactmechanism-webAddress>
-              </div>
-            </mat-tab>
-            <mat-tab label="Email">
-              <div class="pad tabInlineComponent">
-                <party-contactmechanism-emailAddress [scope]="scope" (cancelled)="emailAddressCancelled($event); addContactMechanism = false"
-                  (saved)="emailAddressAdded($event); addContactMechanism = false">
-                </party-contactmechanism-emailAddress>
-              </div>
-            </mat-tab>
-            <mat-tab label="Postal">
-              <div class="pad tabInlineComponent">
-                <party-contactmechanism-postaladdress [scope]="scope" (cancelled)="postalAddressCancelled($event); addContactMechanism = false"
-                  (saved)="postalAddressAdded($event); addContactMechanism = false">
-                </party-contactmechanism-postaladdress>
-              </div>
-            </mat-tab>
-            <mat-tab label="Telecom">
-              <div class="pad tabInlineComponent">
-                <party-contactmechanism-telecommunicationsnumber [scope]="scope" (cancelled)="teleCommunicationsNumberCancelled($event); addContactMechanism = false"
-                  (saved)="teleCommunicationsNumberAdded($event); addContactMechanism = false">
-                </party-contactmechanism-telecommunicationsnumber>
-              </div>
-            </mat-tab>
-          </mat-tab-group>
+
+          <party-contactmechanism *ngIf="invoice.BillToCustomer && addContactMechanism" [scope]="scope" (saved)="partyContactMechanismAdded($event)" (cancelled)="partyContactMechanismCancelled()">
+          </party-contactmechanism>
+
         </div>
+
         <div class="col">
           <div fxLayout fxLayoutGap="1em">
             <a-mat-select fxFlex [object]="invoice" [roleType]="m.SalesInvoice.ContactPerson" [options]="contacts" display="displayName"></a-mat-select>
-            <button mat-mini-fab color="accent" type="button" (click)="addContactPerson = !addContactPerson">
+            <button mat-mini-fab color="accent" [disabled]="!invoice.BillToCustomer" type="button" (click)="addContactPerson = !addContactPerson">
               <mat-icon *ngIf="!addContactPerson">add</mat-icon>
               <mat-icon *ngIf="addContactPerson">close</mat-icon>
             </button>

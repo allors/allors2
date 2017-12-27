@@ -1,9 +1,9 @@
 <td-layout-card-over [cardTitle]="title" [cardSubtitle]="subTitle">
-  <form #form="ngForm" *ngIf="catalogue" (submit)="save()">
+  <form #form="ngForm" class="pad" *ngIf="catalogue" (submit)="save()">
 
     <div *ngIf="catalogue">
       <div class="grid-2_md-1">
-        <a-td-image class="col" [object]="catalogue" [roleType]="m.Catalogue.CatalogueImage" accept="image/*" (selected)="imageSelected($event)"></a-td-image>
+        <a-td-image class="col" [object]="catalogue" [roleType]="m.Catalogue.CatalogueImage" accept="image/*"></a-td-image>
         <a-mat-select class="col" [object]="catalogue" [roleType]="m.Catalogue.CatScope" [options]="catScopes" display="Name" label="Scope"></a-mat-select>
       </div>
 

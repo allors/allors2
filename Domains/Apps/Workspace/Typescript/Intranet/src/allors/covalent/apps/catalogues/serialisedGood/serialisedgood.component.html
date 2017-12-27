@@ -3,7 +3,7 @@
     <mat-tab-group dynamicHeight="true">
 
       <mat-tab label="General">
-        <div class="grid-2_xs-1">
+        <div class="grid-2_xs-1 pad-top">
           <a-mat-select class="col" [object]="inventoryItem" [roleType]="m.SerialisedInventoryItem.SerialisedInventoryItemState" [options]="serialisedInventoryItemStates"
             display="Name" label="Status"></a-mat-select>
           <a-mat-input class="col" [object]="inventoryItem" [roleType]="m.SerialisedInventoryItem.SerialNumber"></a-mat-input>
@@ -39,12 +39,7 @@
       </mat-tab>
 
       <mat-tab label="Characteristics">
-        <mat-tab-group dynamicHeight="true" [(ngModel)]="selectedLocaleName">
-          <mat-tab *ngFor="let locale of locales" [label]="locale.Language.Name">
-          </mat-tab>
-        </mat-tab-group>
-
-        <div class="grid-2_md-1">
+        <div class="grid-2_md-1 pad-top">
           <a-mat-input class="col" [object]="inventoryItem" [roleType]="m.SerialisedInventoryItem.AcquisitionYear"></a-mat-input>
           <a-mat-input class="col" [object]="inventoryItem" [roleType]="m.SerialisedInventoryItem.ManufacturingYear"></a-mat-input>
           <mat-input-container class="col" fxLayout="column" fxLayoutAlign="top stretch">
@@ -55,34 +50,44 @@
             <input fxFlex matInput [(ngModel)]="inventoryItem.yearsToGo" name="yearsToGo" placeholder="Years to go" readonly>
           </mat-input-container>
           <a-mat-input class="col" [object]="inventoryItem" [roleType]="m.SerialisedInventoryItem.DepreciationYears"></a-mat-input>
-          <a-mat-textarea *ngFor="let productCharacteristicValue of productCharacteristicValues" [object]="productCharacteristicValue"
-            [roleType]="m.ProductCharacteristicValue.Value" [label]="localisedName(productCharacteristicValue.ProductCharacteristic)"></a-mat-textarea>
+        </div>
+        <div class="grid">
+          <mat-tab-group class="col" dynamicHeight="true">
+            <mat-tab *ngFor="let locale of locales" [label]="locale.Name">
+              <div class="grid-2_md-1">
+                <div *ngFor="let productCharacteristicValue of localisedProductCharacteristicValues(locale)">
+                  <a-mat-textarea class="col" [object]="productCharacteristicValue" [roleType]="m.ProductCharacteristicValue.Value" [label]="localisedName(productCharacteristicValue.ProductCharacteristic, locale)"></a-mat-textarea>
+                </div>
+              </div>
+            </mat-tab>
+          </mat-tab-group>
         </div>
       </mat-tab>
 
       <mat-tab label="Financial">
-
-        <a-mat-input class="col" [object]="inventoryItem" [roleType]="m.SerialisedInventoryItem.ReplacementValue"></a-mat-input>
-        <mat-input-container class="col" fxLayout="column" fxLayoutAlign="top stretch">
-          <input fxFlex matInput [(ngModel)]="inventoryItem.goingConcern" name="goingConcern" placeholder="Going Concern" readonly>
-        </mat-input-container>
-        <mat-input-container class="col" fxLayout="column" fxLayoutAlign="top stretch">
-          <input fxFlex matInput [(ngModel)]="inventoryItem.marketValue" name="marketValue" placeholder="Market Value" readonly>
-        </mat-input-container>
-        <a-mat-input class="col" [object]="inventoryItem" [roleType]="m.SerialisedInventoryItem.PurchasePrice"></a-mat-input>
-        <a-mat-input class="col" [object]="inventoryItem" [roleType]="m.SerialisedInventoryItem.RefurbishCost"></a-mat-input>
-        <a-mat-input class="col" [object]="inventoryItem" [roleType]="m.SerialisedInventoryItem.TransportCost"></a-mat-input>
-        <mat-input-container class="col" fxLayout="column" fxLayoutAlign="top stretch">
-          <input fxFlex matInput [(ngModel)]="inventoryItem.grossBookValue" name="grossBookValue" placeholder="Gross Book Value" readonly>
-        </mat-input-container>
-        <a-mat-input class="col" [object]="inventoryItem" [roleType]="m.SerialisedInventoryItem.ExpectedSalesPrice"></a-mat-input>
-        <mat-input-container class="col" fxLayout="column" fxLayoutAlign="top stretch">
-          <input fxFlex matInput [(ngModel)]="inventoryItem.expectedPosa" name="expectedPosa" placeholder="Expected Posa" readonly>
-        </mat-input-container>
+        <div class="grid-2_md-1 pad-top">
+          <a-mat-input class="col" [object]="inventoryItem" [roleType]="m.SerialisedInventoryItem.ExpectedSalesPrice"></a-mat-input>
+          <a-mat-input class="col" [object]="inventoryItem" [roleType]="m.SerialisedInventoryItem.PurchasePrice"></a-mat-input>
+          <a-mat-input class="col" [object]="inventoryItem" [roleType]="m.SerialisedInventoryItem.ReplacementValue"></a-mat-input>
+          <mat-input-container class="col">
+            <input fxFlex matInput [(ngModel)]="inventoryItem.goingConcern" name="goingConcern" placeholder="Going Concern" readonly>
+          </mat-input-container>
+          <mat-input-container class="col">
+            <input fxFlex matInput [(ngModel)]="inventoryItem.marketValue" name="marketValue" placeholder="Market Value" readonly>
+          </mat-input-container>
+          <a-mat-input class="col" [object]="inventoryItem" [roleType]="m.SerialisedInventoryItem.RefurbishCost"></a-mat-input>
+          <a-mat-input class="col" [object]="inventoryItem" [roleType]="m.SerialisedInventoryItem.TransportCost"></a-mat-input>
+          <mat-input-container class="col">
+            <input fxFlex matInput [(ngModel)]="inventoryItem.grossBookValue" name="grossBookValue" placeholder="Gross Book Value" readonly>
+          </mat-input-container>
+          <mat-input-container class="col">
+            <input fxFlex matInput [(ngModel)]="inventoryItem.expectedPosa" name="expectedPosa" placeholder="Expected Posa" readonly>
+          </mat-input-container>
+        </div>
       </mat-tab>
 
       <mat-tab label="Comments">
-        <div class="grid">
+        <div class="grid pad-top">
           <a-mat-localised-text class="col" [object]="good" [roleType]="m.Good.LocalisedComments" [locales]="locales" label="Comment"></a-mat-localised-text>
         </div>
         <div class="grid">
@@ -94,20 +99,12 @@
       </mat-tab>
 
       <mat-tab label="Images">
-
-        <a-td-image [object]="good" [roleType]="m.Good.PrimaryPhoto" accept="image/*" (selected)="imageSelected($event)"></a-td-image>
-
-        <ng-template let-photo let-last="last" ngFor [ngForOf]="good.Photos">
-          <mat-list-item>
-            <mat-card class="image-card">
-              <mat-card-header>
-                <mat-card-title>{{photo.FileName}}</mat-card-title>
-              </mat-card-header>
-              <img mat-card-image [src]="mediaService.url(photo)">
-            </mat-card>
-          </mat-list-item>
-          <mat-divider *ngIf="!last" mat-inset></mat-divider>
-        </ng-template>
+        <div class="grid pad-top">
+          <a-td-image class="col"  [object]="good" [roleType]="m.Good.PrimaryPhoto" accept="image/*"></a-td-image>
+        </div>
+        <div class="grid">
+          <a-td-images class="col"  [object]="good" [roleType]="m.Good.Photos" accept="image/*"></a-td-images>
+        </div>
       </mat-tab>
     </mat-tab-group>
 

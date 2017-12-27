@@ -31,10 +31,6 @@ export class ProductQuoteEditComponent implements OnInit, OnDestroy {
   public contactMechanisms: ContactMechanism[];
   public contacts: Person[];
 
-  public addEmailAddress: boolean = false;
-  public addPostalAddress: boolean = false;
-  public addTeleCommunicationsNumber: boolean = false;
-  public addWebAddress: boolean = false;
   public addContactPerson: boolean = false;
   public addContactMechanism: boolean = false;
 
