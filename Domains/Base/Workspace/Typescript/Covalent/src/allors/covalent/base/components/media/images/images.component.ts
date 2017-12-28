@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, Optional, Output } from "@angular/core";
 import { NgForm } from "@angular/forms";
 
-import { Field } from "../../../../../angular";
+import { Field, MediaService } from "../../../../../angular";
 import { Media } from "../../../../../domain";
 import { ISession, ISessionObject } from "../../../../../framework";
 
@@ -18,7 +18,7 @@ export class ImagesComponent extends Field {
 
   public files: File[];
 
-  constructor(@Optional() parentForm: NgForm) {
+  constructor(@Optional() parentForm: NgForm, private mediaService: MediaService) {
     super(parentForm);
   }
 
@@ -38,7 +38,7 @@ export class ImagesComponent extends Field {
     if (media.InDataUri) {
       return media.InDataUri;
     } else if (media.UniqueId) {
-      return ("http://localhost:5000/Media/Download/" + media.UniqueId + "?revision=" + media.Revision);
+      return this.mediaService.url(media);
     }
   }
 
