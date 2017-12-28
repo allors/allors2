@@ -1,6 +1,6 @@
 import { assert } from "chai";
 
-import { constructorByName, Organisation, Person } from "../../src/allors/domain";
+import { constructorByName, Organisation, Person, Media } from "../../src/allors/domain";
 import { MetaPopulation, PushResponse, ResponseType, Session, Workspace } from "../../src/allors/framework";
 import { data, MetaDomain } from "../../src/allors/meta";
 
@@ -14,6 +14,96 @@ describe("Session",
         beforeEach(() => {
             metaPopulation = new MetaPopulation(data);
             workspace = new Workspace(metaPopulation, constructorByName);
+        });
+
+        describe("delete",
+        () => {
+            let session: Session;
+
+            beforeEach(() => {
+                workspace.sync(syncResponse);
+                session = new Session(workspace);
+            });
+
+            it("should throw exception for existing object", () => {
+                const koen = session.get("1") as Person;
+                assert.throw( () => { session.delete(koen); } );
+            });
+
+            it("should not throw exception for a new object", () => {
+                const jos = session.create("Person") as Person;
+                assert.doesNotThrow( () => { session.delete(jos); } );
+            });
+
+            it("should throw exception for a deleted object", () => {
+                const acme = session.create("Organisation") as Organisation;
+
+                session.delete(acme);
+
+                assert.isUndefined(acme.CanReadName);
+                assert.isUndefined(acme.CanWriteName);
+                assert.isUndefined(acme.Name);
+                assert.throw( () => { acme.Name = "Acme"; } );
+
+                const jos = session.create("Person") as Person;
+
+                assert.isUndefined(acme.CanReadOwner);
+                assert.isUndefined(acme.CanWriteOwner);
+                assert.isUndefined(acme.Owner);
+                assert.throw( () => { acme.Owner = jos; } );
+
+                assert.isUndefined(acme.CanReadEmployees);
+                assert.isUndefined(acme.CanWriteEmployees);
+                assert.isUndefined(acme.Employees);
+                assert.throw( () => { acme.AddEmployee(jos); } );
+
+                assert.isUndefined(acme.CanExecuteJustDoIt);
+                assert.isUndefined(acme.JustDoIt);
+            });
+
+            it("should delete role from existing object", () => {
+                const acme = session.get("101") as Organisation;
+                const jos = session.create("Person") as Person;
+
+                acme.Owner = jos;
+
+                session.delete(jos);
+
+                assert.isNull(acme.Owner);
+            });
+
+            it("should remove role from existing object", () => {
+                const acme = session.get("101") as Organisation;
+                const jos = session.create("Person") as Person;
+
+                acme.AddEmployee(jos);
+
+                session.delete(jos);
+
+                assert.notInclude(acme.Employees, jos);
+            });
+
+            it("should delete role from new object", () => {
+                const acme = session.create("Organisation") as Organisation;
+                const jos = session.create("Person") as Person;
+
+                acme.Owner = jos;
+
+                session.delete(jos);
+
+                assert.isNull(acme.Owner);
+            });
+
+            it("should remove role from new object", () => {
+                const acme = session.create("Organisation") as Organisation;
+                const jos = session.create("Person") as Person;
+
+                acme.AddEmployee(jos);
+
+                session.delete(jos);
+
+                assert.notInclude(acme.Employees, jos);
+            });
         });
 
         describe("sync",

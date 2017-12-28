@@ -6,6 +6,7 @@ import { PushRequestRole } from "./../database/push/PushRequestRole";
 
 import { ISession } from "./Session";
 import { IWorkspaceObject } from "./WorkspaceObject";
+import { Method } from "./Method";
 
 export interface ISessionObject {
     id: string;
@@ -96,6 +97,14 @@ export class SessionObject implements INewSessionObject {
         }
 
         return undefined;
+    }
+
+    public method(methodName: string): Method {
+        if (!this.roleByRoleTypeName) {
+            return undefined;
+        }
+
+        return new Method(this, methodName);
     }
 
     public get(roleTypeName: string): any {
@@ -237,6 +246,30 @@ export class SessionObject implements INewSessionObject {
         }
 
         delete this.changedRoleByRoleTypeName;
+    }
+
+    public onDelete(deleted: SessionObject) {
+        if (this.changedRoleByRoleTypeName) {
+            Object
+                .keys(this.changedRoleByRoleTypeName)
+                .forEach((roleTypeName) => {
+                    const roleType = this.objectType.roleTypeByName[roleTypeName];
+
+                    if (!roleType.objectType.isUnit) {
+                        if (roleType.isOne) {
+                            const role = this.changedRoleByRoleTypeName[roleTypeName] as SessionObject;
+                            if (role && role === deleted) {
+                                this.set(roleType.name, null);
+                            }
+                        } else {
+                            const roles = this.changedRoleByRoleTypeName[roleTypeName] as SessionObject[];
+                            if (roles && roles.indexOf(deleted) > -1) {
+                                this.remove(roleType.name, deleted);
+                            }
+                        }
+                    }
+                });
+        }
     }
 
     private assertExists() {

@@ -16,9 +16,10 @@ export class PartyContactMechanismInlineWebAddressComponent implements OnInit, O
 
   @Input() public scope: Scope;
 
-  public webAddress: WebAddress;
-  public partyContactMechanism: PartyContactMechanism;
   public contactMechanismPurposes: ContactMechanismPurpose[];
+
+  public partyContactMechanism: PartyContactMechanism;
+  public webAddress: WebAddress;
 
   public m: MetaDomain;
 
@@ -52,10 +53,10 @@ export class PartyContactMechanismInlineWebAddressComponent implements OnInit, O
   }
 
   public ngOnDestroy(): void {
-    // if(!this.isSaved){
-    //   this.partyContactMechanism.delete();
-    //   this.webAddress.delete();
-    // }
+    if (!!this.partyContactMechanism) {
+      this.scope.session.delete(this.partyContactMechanism);
+      this.scope.session.delete(this.webAddress);
+    }
   }
 
   public cancel(): void {
@@ -64,5 +65,8 @@ export class PartyContactMechanismInlineWebAddressComponent implements OnInit, O
 
   public save(): void {
       this.saved.emit(this.partyContactMechanism);
+
+      this.partyContactMechanism = undefined;
+      this.webAddress = undefined;
   }
 }

@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit , Output } from "@angular/core";
+import { Component, EventEmitter, Input, OnDestroy , OnInit, Output } from "@angular/core";
 
 import { ErrorService, Loaded, Scope, WorkspaceService } from "../../../../../../angular";
 import { ContactMechanismPurpose, ContactMechanismType, Enumeration, PartyContactMechanism, TelecommunicationsNumber } from "../../../../../../domain";
@@ -9,7 +9,7 @@ import { MetaDomain } from "../../../../../../meta";
   selector: "party-contactmechanism-telecommunicationsnumber",
   templateUrl: "./party-contactmechanism-telecommunicationsnumber-inline.component.html",
 })
-export class PartyContactMechanismTelecommunicationsNumberInlineComponent implements OnInit {
+export class PartyContactMechanismTelecommunicationsNumberInlineComponent implements OnInit, OnDestroy {
 
   @Output()
   public saved: EventEmitter<PartyContactMechanism> = new EventEmitter<PartyContactMechanism>();
@@ -20,8 +20,9 @@ export class PartyContactMechanismTelecommunicationsNumberInlineComponent implem
   @Input() public scope: Scope;
 
   public contactMechanismPurposes: Enumeration[];
-  public partyContactMechanism: PartyContactMechanism;
   public contactMechanismTypes: ContactMechanismType[];
+  
+  public partyContactMechanism: PartyContactMechanism;
   public telecommunicationsNumber: TelecommunicationsNumber;
 
   public m: MetaDomain;
@@ -50,6 +51,7 @@ export class PartyContactMechanismTelecommunicationsNumberInlineComponent implem
       .subscribe((loaded: Loaded) => {
         this.contactMechanismPurposes = loaded.collections.contactMechanismPurposes as ContactMechanismPurpose[];
         this.contactMechanismTypes = loaded.collections.contactMechanismTypes as ContactMechanismType[];
+
         this.partyContactMechanism = this.scope.session.create("PartyContactMechanism") as PartyContactMechanism;
         this.telecommunicationsNumber = this.scope.session.create("TelecommunicationsNumber") as TelecommunicationsNumber;
         this.partyContactMechanism.ContactMechanism = this.telecommunicationsNumber;
@@ -60,11 +62,21 @@ export class PartyContactMechanismTelecommunicationsNumberInlineComponent implem
     );
   }
 
+  public ngOnDestroy(): void {
+    if (!!this.partyContactMechanism) {
+      this.scope.session.delete(this.partyContactMechanism);
+      this.scope.session.delete(this.telecommunicationsNumber);
+    }
+  }
+
   public cancel(): void {
     this.cancelled.emit();
   }
 
   public save(): void {
     this.saved.emit(this.partyContactMechanism);
+
+    this.partyContactMechanism = undefined;
+    this.telecommunicationsNumber = undefined;
   }
 }

@@ -169,11 +169,11 @@ $endif$
 
 classMethodType() ::= <<
     get CanExecute$methodType.Name$(): boolean {
-        return this.canExecute('$methodType.Name$');
+        return this.canExecute("$methodType.Name$");
     }
     
     get $methodType.Name$(): Method {
-        return new Method(this, '$methodType.Name$');
+        return this.method("$methodType.Name$");
     }
 >>
 

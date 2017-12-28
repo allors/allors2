@@ -1,7 +1,7 @@
-import { Component, EventEmitter, Input, OnInit , Output } from "@angular/core";
+import { Component, EventEmitter, Input, OnDestroy , OnInit, Output } from "@angular/core";
 
 import { ErrorService, Loaded, Scope, WorkspaceService } from "../../../../../../angular";
-import { PartyContactMechanism, PostalAddress, PostalBoundary, ContactMechanismPurpose, Country } from "../../../../../../domain";
+import { ContactMechanismPurpose, Country, PartyContactMechanism, PostalAddress, PostalBoundary } from "../../../../../../domain";
 import { PullRequest, Query } from "../../../../../../framework";
 import { MetaDomain } from "../../../../../../meta";
 
@@ -9,7 +9,7 @@ import { MetaDomain } from "../../../../../../meta";
   selector: "party-contactmechanism-postaladdress",
   templateUrl: "./party-contactmechanism-postaladdress-inline.component.html",
 })
-export class PartyContactMechanismPostalAddressInlineComponent implements OnInit {
+export class PartyContactMechanismPostalAddressInlineComponent implements OnInit, OnDestroy {
 
   @Output()
   public saved: EventEmitter<PartyContactMechanism> = new EventEmitter<PartyContactMechanism>();
@@ -19,11 +19,12 @@ export class PartyContactMechanismPostalAddressInlineComponent implements OnInit
 
   @Input() public scope: Scope;
 
+  public countries: Country[];
+  public contactMechanismPurposes: ContactMechanismPurpose[];
+
   public partyContactMechanism: PartyContactMechanism;
   public postalAddress: PostalAddress;
   public postalBoundary: PostalBoundary;
-  public countries: Country[];
-  public contactMechanismPurposes: ContactMechanismPurpose[];
 
   public m: MetaDomain;
 
@@ -64,11 +65,23 @@ export class PartyContactMechanismPostalAddressInlineComponent implements OnInit
     );
   }
 
+  public ngOnDestroy(): void {
+    if (!!this.partyContactMechanism) {
+      this.scope.session.delete(this.partyContactMechanism);
+      this.scope.session.delete(this.postalAddress);
+      this.scope.session.delete(this.postalBoundary);
+    }
+  }
+
   public cancel(): void {
     this.cancelled.emit();
   }
 
   public save(): void {
     this.saved.emit(this.partyContactMechanism);
+
+    this.partyContactMechanism = undefined;
+    this.postalAddress = undefined;
+    this.postalBoundary = undefined;
   }
 }

@@ -6,7 +6,7 @@ import { PushResponseNewObject } from "./../database/push/PushResponseNewObject"
 import { ResponseType } from "./../database/ResponseType";
 import { SyncResponse } from "./../database/sync/SyncResponse";
 
-import { INewSessionObject, ISessionObject } from "./SessionObject";
+import { INewSessionObject, ISessionObject, SessionObject } from "./SessionObject";
 import { IWorkspace } from "./Workspace";
 import { WorkspaceObject } from "./WorkspaceObject";
 
@@ -16,6 +16,8 @@ export interface ISession {
   get(id: string): ISessionObject;
 
   create(objectTypeName: string): ISessionObject;
+
+  delete(object: ISessionObject): void;
 
   pushRequest(): PushRequest;
 
@@ -29,8 +31,8 @@ export class Session implements ISession {
 
   public hasChanges: boolean;
 
-  private sessionObjectById: { [id: string]: ISessionObject; } = {};
-  private newSessionObjectById: { [id: string]: INewSessionObject; } = {};
+  private sessionObjectById: { [id: string]: ISessionObject } = {};
+  private newSessionObjectById: { [id: string]: INewSessionObject } = {};
 
   constructor(private workspace: IWorkspace) {
     this.hasChanges = false;
@@ -48,7 +50,9 @@ export class Session implements ISession {
       if (sessionObject === undefined) {
         const workspaceObject: WorkspaceObject = this.workspace.get(id);
 
-        const constructor: any = this.workspace.constructorByName[workspaceObject.objectType.name];
+        const constructor: any = this.workspace.constructorByName[
+          workspaceObject.objectType.name
+        ];
         sessionObject = new constructor();
         sessionObject.session = this;
         sessionObject.workspaceObject = workspaceObject;
@@ -65,7 +69,9 @@ export class Session implements ISession {
     const constructor: any = this.workspace.constructorByName[objectTypeName];
     const newSessionObject: INewSessionObject = new constructor();
     newSessionObject.session = this;
-    newSessionObject.objectType = this.workspace.metaPopulation.objectTypeByName[objectTypeName];
+    newSessionObject.objectType = this.workspace.metaPopulation.objectTypeByName[
+      objectTypeName
+    ];
     newSessionObject.newId = (--Session.idCounter).toString();
 
     this.newSessionObjectById[newSessionObject.newId] = newSessionObject;
@@ -75,17 +81,43 @@ export class Session implements ISession {
     return newSessionObject;
   }
 
+  public delete(object: ISessionObject): void {
+    if (!object.isNew) {
+      throw new Error("Existing objects can not be deleted");
+    }
+
+    const newSessionObject = object as SessionObject;
+    const newId = newSessionObject.newId;
+
+    if (this.newSessionObjectById && this.newSessionObjectById.hasOwnProperty(newId)) {
+
+      Object.keys(this.newSessionObjectById).forEach((key: string) =>
+        (this.newSessionObjectById[key] as SessionObject).onDelete(newSessionObject),
+      );
+
+      if (this.sessionObjectById) {
+        Object.keys(this.sessionObjectById).forEach((key: string) =>
+          (this.sessionObjectById[key] as SessionObject).onDelete(newSessionObject),
+        );
+      }
+
+      newSessionObject.reset();
+
+      delete this.newSessionObjectById[newId];
+    }
+  }
+
   public reset(): void {
     if (this.newSessionObjectById) {
-      Object
-        .keys(this.newSessionObjectById)
-        .forEach((key: string) => this.newSessionObjectById[key].reset());
+      Object.keys(this.newSessionObjectById).forEach((key: string) =>
+        this.newSessionObjectById[key].reset(),
+      );
     }
 
     if (this.sessionObjectById) {
-      Object
-        .keys(this.sessionObjectById)
-        .forEach((key: string) => this.sessionObjectById[key].reset());
+      Object.keys(this.sessionObjectById).forEach((key: string) =>
+        this.sessionObjectById[key].reset(),
+      );
     }
 
     this.hasChanges = false;
@@ -97,27 +129,25 @@ export class Session implements ISession {
     data.objects = [];
 
     if (this.newSessionObjectById) {
-      Object
-        .keys(this.newSessionObjectById)
-        .forEach((key: string) => {
-          const newSessionObject: INewSessionObject = this.newSessionObjectById[key];
-          const objectData: PushRequestNewObject = newSessionObject.saveNew();
-          if (objectData !== undefined) {
-            data.newObjects.push(objectData);
-          }
-        });
+      Object.keys(this.newSessionObjectById).forEach((key: string) => {
+        const newSessionObject: INewSessionObject = this.newSessionObjectById[
+          key
+        ];
+        const objectData: PushRequestNewObject = newSessionObject.saveNew();
+        if (objectData !== undefined) {
+          data.newObjects.push(objectData);
+        }
+      });
     }
 
     if (this.sessionObjectById) {
-      Object
-        .keys(this.sessionObjectById)
-        .forEach((key: string) => {
-          const sessionObject: ISessionObject = this.sessionObjectById[key];
-          const objectData: PushRequestObject = sessionObject.save();
-          if (objectData !== undefined) {
-            data.objects.push(objectData);
-          }
-        });
+      Object.keys(this.sessionObjectById).forEach((key: string) => {
+        const sessionObject: ISessionObject = this.sessionObjectById[key];
+        const objectData: PushRequestObject = sessionObject.save();
+        if (objectData !== undefined) {
+          data.objects.push(objectData);
+        }
+      });
     }
 
     return data;
@@ -125,39 +155,40 @@ export class Session implements ISession {
 
   public pushResponse(pushResponse: PushResponse): void {
     if (pushResponse.newObjects) {
-      Object
-        .keys(pushResponse.newObjects)
-        .forEach((key: string) => {
-          const pushResponseNewObject: PushResponseNewObject = pushResponse.newObjects[key];
-          const newId: string = pushResponseNewObject.ni;
-          const id: string = pushResponseNewObject.i;
+      Object.keys(pushResponse.newObjects).forEach((key: string) => {
+        const pushResponseNewObject: PushResponseNewObject =
+          pushResponse.newObjects[key];
+        const newId: string = pushResponseNewObject.ni;
+        const id: string = pushResponseNewObject.i;
 
-          const newSessionObject: INewSessionObject = this.newSessionObjectById[newId];
+        const newSessionObject: INewSessionObject = this.newSessionObjectById[
+          newId
+        ];
 
-          const syncResponse: SyncResponse = {
-            hasErrors: false,
-            objects: [
-              {
-                i: id,
-                methods: [],
-                roles: [],
-                t: newSessionObject.objectType.name,
-                v: "",
-              },
-            ],
-            responseType: ResponseType.Sync,
-            userSecurityHash: "#", // This should trigger a load on next check
-          };
+        const syncResponse: SyncResponse = {
+          hasErrors: false,
+          objects: [
+            {
+              i: id,
+              methods: [],
+              roles: [],
+              t: newSessionObject.objectType.name,
+              v: "",
+            },
+          ],
+          responseType: ResponseType.Sync,
+          userSecurityHash: "#", // This should trigger a load on next check
+        };
 
-          delete (this.newSessionObjectById[newId]);
-          delete (newSessionObject.newId);
+        delete this.newSessionObjectById[newId];
+        delete newSessionObject.newId;
 
-          this.workspace.sync(syncResponse);
-          const workspaceObject: WorkspaceObject = this.workspace.get(id);
-          newSessionObject.workspaceObject = workspaceObject;
+        this.workspace.sync(syncResponse);
+        const workspaceObject: WorkspaceObject = this.workspace.get(id);
+        newSessionObject.workspaceObject = workspaceObject;
 
-          this.sessionObjectById[id] = newSessionObject;
-        });
+        this.sessionObjectById[id] = newSessionObject;
+      });
     }
 
     if (Object.getOwnPropertyNames(this.newSessionObjectById).length !== 0) {
