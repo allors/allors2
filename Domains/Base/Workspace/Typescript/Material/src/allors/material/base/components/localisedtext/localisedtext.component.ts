@@ -14,7 +14,10 @@ export class LocalisedTextComponent extends Field implements OnChanges {
   @Input()
   public locales: Locale[];
 
-  public models: LocalisedTextModel[];
+  @Input()
+  public locale: Locale;
+
+  public models: LocalisedTextModel[] = [];
 
   constructor(@Optional() parentForm: NgForm) {
     super(parentForm);
@@ -24,6 +27,8 @@ export class LocalisedTextComponent extends Field implements OnChanges {
     const changedLocales: SimpleChange = changes.locales;
     if (changedLocales) {
       this.models = this.locales.map((v: Locale) => new LocalisedTextModel(this, v));
+    } else {
+      this.models[0] = new LocalisedTextModel(this, this.locale);
     }
   }
 }

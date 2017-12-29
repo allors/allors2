@@ -26,7 +26,7 @@ export class NonSerialisedGoodComponent implements OnInit, OnDestroy {
   public subTitle: string;
   public singleton: Singleton;
   public facility: Facility;
-  public locales: Locale[];
+  public locales: Locale[] = [];
   public categories: ProductCategory[];
   public productTypes: ProductType[];
   public productCharacteristicValues: ProductCharacteristicValue[];
