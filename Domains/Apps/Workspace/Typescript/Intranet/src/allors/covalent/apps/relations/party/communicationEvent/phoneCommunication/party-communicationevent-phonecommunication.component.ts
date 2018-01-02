@@ -48,7 +48,7 @@ export class PartyCommunicationEventPhoneCommunicationComponent implements OnIni
     private dialogService: TdDialogService,
     public media: TdMediaService, private changeDetectorRef: ChangeDetectorRef) {
 
-    this.scope = this.workspaceService.createScope()
+    this.scope = this.workspaceService.createScope();
     this.m = this.workspaceService.metaPopulation.metaDomain;
     this.refresh$ = new BehaviorSubject<Date>(undefined);
   }
@@ -134,7 +134,6 @@ export class PartyCommunicationEventPhoneCommunicationComponent implements OnIni
 
         if (!this.communicationEvent) {
           this.communicationEvent = this.scope.session.create("PhoneCommunication") as PhoneCommunication;
-          this.communicationEvent.AddCaller(this.party);
         }
 
         const contactMechanisms: ContactMechanism[] = this.party.CurrentPartyContactMechanisms.map((v: PartyContactMechanism) => v.ContactMechanism);
@@ -145,9 +144,6 @@ export class PartyCommunicationEventPhoneCommunicationComponent implements OnIni
         }
 
         this.contacts.push(this.party);
-        if (this.employees.length > 0) {
-          this.contacts = this.contacts.concat(this.employees);
-        }
 
         if (this.party.CurrentContacts.length > 0) {
           this.contacts = this.contacts.concat(this.party.CurrentContacts);
@@ -170,46 +166,44 @@ export class PartyCommunicationEventPhoneCommunicationComponent implements OnIni
     this.addPhoneNumber = false;
   }
 
+  public phoneNumberAdded(partyContactMechanism: PartyContactMechanism): void {
+    this.addPhoneNumber = false;
+
+    this.party.AddPartyContactMechanism(partyContactMechanism);
+
+    const phonenumber = partyContactMechanism.ContactMechanism as TelecommunicationsNumber;
+    this.phonenumbers.push(phonenumber);
+    this.communicationEvent.AddContactMechanism(phonenumber);
+  }
+
   public callerCancelled(): void {
     this.addCaller = false;
+  }
+
+  public callerAdded(id: string): void {
+    this.addCaller = false;
+
+    const person: Person = this.scope.session.get(id) as Person;
+    const relationShip: OrganisationContactRelationship = this.scope.session.create("OrganisationContactRelationship") as OrganisationContactRelationship;
+    relationShip.Contact = person;
+    relationShip.Organisation = this.party as Organisation;
+
+    this.communicationEvent.AddCaller(person);
   }
 
   public receiverCancelled(): void {
     this.addReceiver = false;
   }
 
-  public phoneNumberAdded(id: string): void {
-    this.addPhoneNumber = false;
-
-    const telecommunicationsNumber: TelecommunicationsNumber = this.scope.session.get(id) as TelecommunicationsNumber;
-    const partyContactMechanism: PartyContactMechanism = this.scope.session.create("PartyContactMechanism") as PartyContactMechanism;
-    partyContactMechanism.ContactMechanism = telecommunicationsNumber;
-    this.party.AddPartyContactMechanism(partyContactMechanism);
-
-    this.phonenumbers.push(telecommunicationsNumber);
-    this.communicationEvent.AddContactMechanism(telecommunicationsNumber);
-  }
-
-  public callerAdded(id: string): void {
-    this.addCaller = false;
-
-    const caller: Person = this.scope.session.get(id) as Person;
-    const relationShip: OrganisationContactRelationship = this.scope.session.create("OrganisationContactRelationship") as OrganisationContactRelationship;
-    relationShip.Contact = caller;
-    relationShip.Organisation = this.party as Organisation;
-
-    this.communicationEvent.AddCaller(caller);
-  }
-
   public receiverAdded(id: string): void {
     this.addReceiver = false;
 
-    const receiver: Person = this.scope.session.get(id) as Person;
+    const person: Person = this.scope.session.get(id) as Person;
     const relationShip: OrganisationContactRelationship = this.scope.session.create("OrganisationContactRelationship") as OrganisationContactRelationship;
-    relationShip.Contact = receiver;
+    relationShip.Contact = person;
     relationShip.Organisation = this.party as Organisation;
 
-    this.communicationEvent.AddReceiver(receiver);
+    this.communicationEvent.AddReceiver(person);
   }
 
   public cancel(): void {

@@ -1,17 +1,28 @@
 <td-layout-card-over [cardTitle]="title" [cardSubtitle]="subTitle">
-  <form #form="ngForm" *ngIf="contactMechanism" (submit)="save()">
+  <form #form="ngForm" class="pad" *ngIf="contactMechanism" (submit)="save()">
 
-    <div class="pad">
-      <a-mat-select [object]="partyContactMechanism" [roleType]="m.PartyContactMechanism.ContactPurposes" [options]="contactMechanismPurposes"
+    <div class="grid">
+      <a-mat-select class="col" [object]="partyContactMechanism" [roleType]="m.PartyContactMechanism.ContactPurposes" [options]="contactMechanismPurposes"
         display="Name" label="Contact purposes"></a-mat-select>
-      <a-mat-input [object]="contactMechanism" [roleType]="m.PostalAddress.Address1" label="Address line 1"></a-mat-input>
-      <a-mat-input [object]="contactMechanism" [roleType]="m.PostalAddress.Address2" label="Address line 2"></a-mat-input>
-      <a-mat-input [object]="contactMechanism" [roleType]="m.PostalAddress.Address3" label="Address line 3"></a-mat-input>
-      <a-mat-input [object]="contactMechanism.PostalBoundary" [roleType]="m.PostalBoundary?.Locality" label="City"></a-mat-input>
-      <a-mat-input [object]="contactMechanism.PostalBoundary" [roleType]="m.PostalBoundary?.PostalCode" label="Postal code"></a-mat-input>
-      <a-mat-autocomplete [object]="contactMechanism.PostalBoundary" [roleType]="m.PostalBoundary?.Country" [options]="countries"
+    </div>
+
+    <div class="grid-1">
+      <a-mat-input class="col" [object]="contactMechanism" [roleType]="m.PostalAddress.Address1" label="Address line 1"></a-mat-input>
+      <a-mat-input class="col" [object]="contactMechanism" [roleType]="m.PostalAddress.Address2" label="Address line 2"></a-mat-input>
+      <a-mat-input class="col" [object]="contactMechanism" [roleType]="m.PostalAddress.Address3" label="Address line 3"></a-mat-input>
+    </div>
+
+    <div class="grid-3_xs-1">
+      <a-mat-input class="col" [object]="contactMechanism.PostalBoundary" [roleType]="m.PostalBoundary?.Locality" label="City"></a-mat-input>
+      <a-mat-input class="col" [object]="contactMechanism.PostalBoundary" [roleType]="m.PostalBoundary?.PostalCode" label="Postal code"></a-mat-input>
+      <a-mat-autocomplete class="col" [object]="contactMechanism.PostalBoundary" [roleType]="m.PostalBoundary?.Country" [options]="countries"
         display="Name"></a-mat-autocomplete>
-      <a-mat-slide-toggle [object]="partyContactMechanism" [roleType]="m.PartyContactMechanism.UseAsDefault" label="Use as default"></a-mat-slide-toggle>
+    </div>
+
+    <div class="grid-2_xs-1">
+      <a-mat-slide-toggle class="col" [object]="partyContactMechanism" [roleType]="m.PartyContactMechanism.UseAsDefault" label="Use as default"></a-mat-slide-toggle>
+      <a-mat-slide-toggle class="col" [object]="partyContactMechanism" [roleType]="m.PartyContactMechanism.NonSolicitationIndicator"
+        label="Non Solicitation"></a-mat-slide-toggle>
     </div>
 
     <mat-divider></mat-divider>

@@ -348,6 +348,8 @@ line2")
                     .WithContactPurpose(new ContactMechanismPurposes(this.Session).PersonalEmailAddress).WithUseAsDefault(true)
                     .Build());
 
+            new EmploymentBuilder(this.Session).WithEmployee(person).Build();
+
             new UserGroups(this.Session).Administrators.AddMember(person);
             new UserGroups(this.Session).Creators.AddMember(person);
 

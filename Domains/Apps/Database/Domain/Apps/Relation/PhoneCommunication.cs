@@ -13,6 +13,8 @@
 // For more information visit http://www.allors.com/legal
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
+
+using System;
 using Allors.Meta;
 using Resources;
 
@@ -84,6 +86,21 @@ namespace Allors.Domain
             if (this.ExistOwner && !this.InvolvedParties.Contains(this.Owner))
             {
                 this.AddInvolvedParty(this.Owner);
+            }
+
+            foreach (Party party in this.InvolvedParties)
+            {
+                if (party is Person person)
+                {
+                    foreach (OrganisationContactRelationship organisationContactRelationship in person.OrganisationContactRelationshipsWhereContact)
+                    {
+                        if (organisationContactRelationship.FromDate <= DateTime.UtcNow &&
+                            (!organisationContactRelationship.ExistThroughDate || organisationContactRelationship.ThroughDate >= DateTime.UtcNow))
+                        {
+                            this.AddInvolvedParty(organisationContactRelationship.Organisation);
+                        }
+                    }
+                }
             }
         }
     }

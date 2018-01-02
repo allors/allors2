@@ -29,6 +29,7 @@ export class RequestEditComponent implements OnInit, OnDestroy {
   public currencies: Currency[];
   public contactMechanisms: ContactMechanism[];
   public contacts: Person[];
+  public scope: Scope;
 
   public addContactPerson: boolean = false;
   public addContactMechanism: boolean = false;
@@ -39,7 +40,6 @@ export class RequestEditComponent implements OnInit, OnDestroy {
 
   private refresh$: BehaviorSubject<Date>;
   private subscription: Subscription;
-  private scope: Scope;
   private previousOriginator: Party;
 
   get showOrganisations(): boolean {

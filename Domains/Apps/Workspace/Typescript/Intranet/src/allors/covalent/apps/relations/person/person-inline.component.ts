@@ -30,7 +30,7 @@ export class PersonInlineComponent implements OnInit {
 
   constructor(private workspaceService: WorkspaceService, private errorService: ErrorService) {
 
-    this.scope = this.workspaceService.createScope()
+    this.scope = this.workspaceService.createScope();
     this.m = this.workspaceService.metaPopulation.metaDomain;
   }
 

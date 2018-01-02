@@ -11,7 +11,7 @@ import "rxjs/add/observable/combineLatest";
 
 import { ErrorService, Invoked, Loaded, Saved, Scope, WorkspaceService } from "../../../../../../angular";
 import { CommunicationEventPurpose, FaceToFaceCommunication, Organisation, OrganisationContactRelationship, Party, Person, Singleton } from "../../../../../../domain";
-import { Fetch, PullRequest, Query, TreeNode } from "../../../../../../framework";
+import { Fetch, Path, PullRequest, Query, TreeNode } from "../../../../../../framework";
 import { MetaDomain } from "../../../../../../meta";
 
 @Component({
@@ -132,7 +132,9 @@ export class PartyCommunicationEventFaceToFaceCommunicationComponent implements 
 
         if (!this.communicationEvent) {
           this.communicationEvent = this.scope.session.create("FaceToFaceCommunication") as FaceToFaceCommunication;
-          this.communicationEvent.AddParticipant(this.party);
+          if (this.party instanceof Person) {
+            this.communicationEvent.AddParticipant(this.party);
+          }
         }
 
         this.contacts.push(this.party);

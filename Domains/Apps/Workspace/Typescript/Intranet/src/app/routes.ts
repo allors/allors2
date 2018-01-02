@@ -68,7 +68,7 @@ export const routes: Routes = [
           { path: ":id/partycontactmechanism/telecommunicationsnumber", component: relations.PartyContactMechanismTelecommunicationsNumberAddComponent },
           { path: ":id/partycontactmechanism/telecommunicationsnumber/:roleId", component: relations.PartyContactMechanismTelecommunicationsNumberEditComponent },
           { path: ":id/partycontactmechanism/webaddress", component: relations.PartyContactMechanismAddWebAddressComponent },
-          { path: ":id/partycontactmechanism/webaddres/:roleId", component: relations.PartyContactMechanismEditWebAddressComponent },
+          { path: ":id/partycontactmechanism/webaddress/:roleId", component: relations.PartyContactMechanismEditWebAddressComponent },
 
           { path: ":id/communicationevent/emailcommunication/:roleId", component: relations.PartyCommunicationEventEmailCommunicationComponent },
           { path: ":id/communicationevent/emailcommunication", component: relations.PartyCommunicationEventEmailCommunicationComponent },

@@ -39,7 +39,7 @@ export class WorkTaskEditComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     public media: TdMediaService, private changeDetectorRef: ChangeDetectorRef) {
 
-    this.scope = this.workspaceService.createScope()
+    this.scope = this.workspaceService.createScope();
     this.m = this.workspaceService.metaPopulation.metaDomain;
   }
 
@@ -53,8 +53,8 @@ export class WorkTaskEditComponent implements OnInit, OnDestroy {
 
         const fetch: Fetch[] = [
           new Fetch({
-            name: "worktask",
             id,
+            name: "worktask",
           }),
         ];
 
@@ -112,8 +112,8 @@ export class WorkTaskEditComponent implements OnInit, OnDestroy {
             const assignmentsFetch: Fetch[] = [
               new Fetch(
                 {
-                  name: "workEffortAssignments",
                   id,
+                  name: "workEffortAssignments",
                   path: new Path({ step: m.WorkEffort.WorkEffortAssignmentsWhereAssignment }),
                 }),
             ];

@@ -20,11 +20,15 @@ import { MetaDomain } from "../../../../meta";
 export class CommunicationEventOverviewComponent implements OnInit, OnDestroy {
 
   public title: string = "Communication Event overview";
+  public itemTitle: string;
   public m: MetaDomain;
 
   public communicationEventPrefetch: CommunicationEvent;
   public communicationEvent: CommunicationEvent;
-  public  party: Party;
+  public email: EmailCommunication;
+  public letter: LetterCorrespondence;
+  public phoneCall: PhoneCommunication;
+  public party: Party;
 
   private refresh$: BehaviorSubject<Date>;
   private subscription: Subscription;
@@ -43,7 +47,7 @@ export class CommunicationEventOverviewComponent implements OnInit, OnDestroy {
   }
 
   get isLetter(): boolean {
-    return this.communicationEvent instanceof (LetterCorrespondence);
+    return this.communicationEventPrefetch instanceof (LetterCorrespondence);
   }
 
   constructor(
@@ -79,8 +83,8 @@ export class CommunicationEventOverviewComponent implements OnInit, OnDestroy {
             name: "communicationEventPrefetch",
           }),
           new Fetch({
-            name: "party",
             id,
+            name: "party",
           }),
         ];
 
@@ -99,6 +103,7 @@ export class CommunicationEventOverviewComponent implements OnInit, OnDestroy {
                   new TreeNode({ roleType: m.EmailCommunication.EmailTemplate }),
                   new TreeNode({ roleType: m.CommunicationEvent.EventPurposes }),
                   new TreeNode({ roleType: m.CommunicationEvent.CommunicationEventState }),
+                  new TreeNode({ roleType: m.CommunicationEvent.ContactMechanisms }),
                   new TreeNode({
                     nodes: [
                       new TreeNode({ roleType: m.WorkEffort.WorkEffortState }),
@@ -119,6 +124,7 @@ export class CommunicationEventOverviewComponent implements OnInit, OnDestroy {
                   new TreeNode({ roleType: m.LetterCorrespondence.Receivers }),
                   new TreeNode({ roleType: m.CommunicationEvent.EventPurposes }),
                   new TreeNode({ roleType: m.CommunicationEvent.CommunicationEventState }),
+                  new TreeNode({ roleType: m.CommunicationEvent.ContactMechanisms }),
                   new TreeNode({
                     nodes: [
                       new TreeNode({ roleType: m.WorkEffort.WorkEffortState }),
@@ -150,6 +156,7 @@ export class CommunicationEventOverviewComponent implements OnInit, OnDestroy {
                   new TreeNode({ roleType: m.CommunicationEvent.ToParties }),
                   new TreeNode({ roleType: m.CommunicationEvent.EventPurposes }),
                   new TreeNode({ roleType: m.CommunicationEvent.CommunicationEventState }),
+                  new TreeNode({ roleType: m.CommunicationEvent.ContactMechanisms }),
                   new TreeNode({
                     nodes: [
                       new TreeNode({ roleType: m.WorkEffort.WorkEffortState }),
@@ -170,6 +177,7 @@ export class CommunicationEventOverviewComponent implements OnInit, OnDestroy {
                   new TreeNode({ roleType: m.CommunicationEvent.ToParties }),
                   new TreeNode({ roleType: m.CommunicationEvent.EventPurposes }),
                   new TreeNode({ roleType: m.CommunicationEvent.CommunicationEventState }),
+                  new TreeNode({ roleType: m.CommunicationEvent.ContactMechanisms }),
                   new TreeNode({
                     nodes: [
                       new TreeNode({ roleType: m.WorkEffort.WorkEffortState }),
@@ -202,6 +210,33 @@ export class CommunicationEventOverviewComponent implements OnInit, OnDestroy {
       .subscribe((loaded: Loaded) => {
         this.scope.session.reset();
         this.communicationEvent = loaded.objects.communicationEvent as CommunicationEvent;
+
+        if (this.isEmail) {
+          this.email = this.communicationEvent as EmailCommunication;
+          if (this.email.IncomingMail) {
+            this.itemTitle = "Incoming Email";
+          } else {
+            this.itemTitle = "Outgoing Email";
+          }
+        }
+
+        if (this.isLetter) {
+          this.letter = this.communicationEvent as LetterCorrespondence;
+          if (this.letter.IncomingLetter) {
+            this.itemTitle = "Incoming Letter";
+          } else {
+            this.itemTitle = "Outgoing Letter";
+          }
+        }
+
+        if (this.isPhone) {
+          this.phoneCall = this.communicationEvent as PhoneCommunication;
+          if (this.phoneCall.IncomingCall) {
+            this.itemTitle = "Incoming Phone call";
+          } else {
+            this.itemTitle = "Outgoing Phone call";
+          }
+        }
       },
       (error: any) => {
         this.errorService.message(error);

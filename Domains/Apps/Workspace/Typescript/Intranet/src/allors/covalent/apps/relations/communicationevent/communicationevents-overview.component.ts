@@ -160,8 +160,8 @@ export class CommunicationEventsOverviewComponent implements OnDestroy {
                   ],
                   name: "communicationEvents",
                   objectType: m.CommunicationEvent,
-                  predicate,
                   page: new Page({ skip: 0, take }),
+                  predicate,
                 }),
             ];
 

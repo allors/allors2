@@ -9,7 +9,7 @@ import { Fetch, PullRequest, Query, TreeNode } from "../../../../../../framework
 import { MetaDomain } from "../../../../../../meta";
 
 @Component({
-  template: "./party-contactmechanism-telecommunicationsnumber.html",
+  templateUrl: "./party-contactmechanism-telecommunicationsnumber.html",
 })
 export class PartyContactMechanismTelecommunicationsNumberAddComponent implements OnInit, OnDestroy {
 

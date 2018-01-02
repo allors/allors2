@@ -32,7 +32,8 @@ export class PartyCommunicationEventEmailCommunicationComponent implements OnIni
   public employees: Person[];
   public party: Party;
   public purposes: CommunicationEventPurpose[];
-  public emailAddresses: ContactMechanism[] = [];
+  public ownEmailAddresses: EmailAddress[] = [];
+  public allEmailAddresses: EmailAddress[];
   public emailTemplate: EmailTemplate;
 
   private refresh$: BehaviorSubject<Date>;
@@ -68,8 +69,11 @@ export class PartyCommunicationEventEmailCommunicationComponent implements OnIni
 
         const fetch: Fetch[] = [
           new Fetch({
-            name: "party",
             id,
+            include: [
+              new TreeNode({ roleType: m.Party.GeneralEmail }),
+            ],
+            name: "party",
           }),
           new Fetch({
             id: roleId,
@@ -113,7 +117,12 @@ export class PartyCommunicationEventEmailCommunicationComponent implements OnIni
               name: "purposes",
               objectType: this.m.CommunicationEventPurpose,
             }),
-        ];
+          new Query(
+            {
+              name: "emailAddresses",
+              objectType: this.m.EmailAddress,
+            }),
+          ];
 
         return this.scope
           .load("Pull", new PullRequest({ fetch, query }));
@@ -126,6 +135,7 @@ export class PartyCommunicationEventEmailCommunicationComponent implements OnIni
         this.singleton = loaded.collections.singletons[0] as Singleton;
         this.employees = this.singleton.InternalOrganisation.ActiveEmployees;
         this.purposes = loaded.collections.purposes as CommunicationEventPurpose[];
+        this.allEmailAddresses = loaded.collections.emailAddresses as EmailAddress[];
         this.communicationEvent = loaded.objects.communicationEvent as EmailCommunication;
 
         if (!this.communicationEvent) {
@@ -133,21 +143,15 @@ export class PartyCommunicationEventEmailCommunicationComponent implements OnIni
           this.emailTemplate = this.scope.session.create("EmailTemplate") as EmailTemplate;
           this.communicationEvent.EmailTemplate = this.emailTemplate;
           this.communicationEvent.Originator = this.party.GeneralEmail;
+          this.communicationEvent.IncomingMail = false;
         }
 
         for (const employee of this.employees) {
           const employeeContactMechanisms: ContactMechanism[] = employee.CurrentPartyContactMechanisms.map((v: PartyContactMechanism) => v.ContactMechanism);
           for (const contactMechanism of employeeContactMechanisms) {
             if (contactMechanism instanceof (EmailAddress)) {
-              this.emailAddresses.push(contactMechanism);
+              this.ownEmailAddresses.push(contactMechanism);
             }
-          }
-        }
-
-        const contactMechanisms: ContactMechanism[] = this.party.CurrentPartyContactMechanisms.map((v: PartyContactMechanism) => v.ContactMechanism);
-        for (const contactMechanism of contactMechanisms) {
-          if (contactMechanism instanceof (EmailAddress)) {
-            this.emailAddresses.push(contactMechanism);
           }
         }
       },
@@ -162,38 +166,6 @@ export class PartyCommunicationEventEmailCommunicationComponent implements OnIni
     if (this.subscription) {
       this.subscription.unsubscribe();
     }
-  }
-
-  public originatorCancelled(): void {
-    this.addOriginator = false;
-  }
-
-  public addresseeCancelled(): void {
-    this.addAddressee = false;
-  }
-
-  public originatorAdded(id: string): void {
-    this.addOriginator = false;
-
-    const emailAddress: EmailAddress = this.scope.session.get(id) as EmailAddress;
-    const partyContactMechanism: PartyContactMechanism = this.scope.session.create("PartyContactMechanism") as PartyContactMechanism;
-    partyContactMechanism.ContactMechanism = emailAddress;
-    this.party.AddPartyContactMechanism(partyContactMechanism);
-
-    this.emailAddresses.push(emailAddress);
-    this.communicationEvent.Originator = emailAddress;
-  }
-
-  public addresseeAdded(id: string): void {
-    this.addAddressee = false;
-
-    const emailAddress: EmailAddress = this.scope.session.get(id) as EmailAddress;
-    const partyContactMechanism: PartyContactMechanism = this.scope.session.create("PartyContactMechanism") as PartyContactMechanism;
-    partyContactMechanism.ContactMechanism = emailAddress;
-    this.party.AddPartyContactMechanism(partyContactMechanism);
-
-    this.emailAddresses.push(emailAddress);
-    this.communicationEvent.AddAddressee(emailAddress);
   }
 
   public cancel(): void {

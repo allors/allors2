@@ -19,6 +19,7 @@ import { MetaDomain } from "../../../../../../meta";
 })
 export class PartyCommunicationEventLetterCorrespondenceComponent implements OnInit, OnDestroy {
 
+  public scope: Scope;
   public title: string = "Letter Correspondence";
   public subTitle: string;
 
@@ -38,7 +39,6 @@ export class PartyCommunicationEventLetterCorrespondenceComponent implements OnI
 
   private refresh$: BehaviorSubject<Date>;
   private subscription: Subscription;
-  private scope: Scope;
 
   constructor(
     private workspaceService: WorkspaceService,
@@ -173,7 +173,7 @@ export class PartyCommunicationEventLetterCorrespondenceComponent implements OnI
 
         if (!this.communicationEvent) {
           this.communicationEvent = this.scope.session.create("LetterCorrespondence") as LetterCorrespondence;
-          this.communicationEvent.AddOriginator(this.party);
+          this.communicationEvent.IncomingLetter = true;
         }
 
         for (const employee of this.employees) {
@@ -248,14 +248,12 @@ export class PartyCommunicationEventLetterCorrespondenceComponent implements OnI
     this.communicationEvent.AddReceiver(receiver);
   }
 
-  public addressAdded(id: string): void {
+  public addressAdded(partyContactMechanism: PartyContactMechanism): void {
     this.addAddress = false;
 
-    const postalAddress: PostalAddress = this.scope.session.get(id) as PostalAddress;
-    const partyContactMechanism: PartyContactMechanism = this.scope.session.create("PartyContactMechanism") as PartyContactMechanism;
-    partyContactMechanism.ContactMechanism = postalAddress;
     this.party.AddPartyContactMechanism(partyContactMechanism);
 
+    const postalAddress = partyContactMechanism.ContactMechanism as PostalAddress;
     this.postalAddresses.push(postalAddress);
     this.communicationEvent.AddPostalAddress(postalAddress);
   }

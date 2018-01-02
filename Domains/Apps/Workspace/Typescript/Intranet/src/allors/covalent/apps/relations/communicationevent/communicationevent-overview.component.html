@@ -1,33 +1,58 @@
 <mat-toolbar>
   <div layout="row" layout-align="start center" flex>
     <button mat-icon-button tdLayoutManageListOpen [hideWhenOpened]="true" style="display: none">
-          <mat-icon>arrow_back</mat-icon>
-        </button>
+      <mat-icon>arrow_back</mat-icon>
+    </button>
     <span>{{title}}</span>
     <span flex></span>
-    <button mat-icon-button><mat-icon>settings</mat-icon></button>
+    <button mat-icon-button>
+      <mat-icon>settings</mat-icon>
+    </button>
   </div>
 </mat-toolbar>
 
 <div body *ngIf="isEmail" layout-gt-md="row">
   <div flex-gt-xs="50">
     <mat-card *ngIf="communicationEvent" tdMediaToggle="gt-xs" [mediaClasses]="['push']">
-      <mat-card-title>Email</mat-card-title>
+      <mat-card-title>{{itemTitle}}</mat-card-title>
       <mat-divider></mat-divider>
       <mat-card-content>
 
         <div class="pad">
-          <a-mat-static [object]="communicationEvent" [roleType]="m.CommunicationEvent.CommunicationEventState" display="Name" label="Status"></a-mat-static>
-          <a-mat-static *ngIf="communicationEvent.EventPurposes" [object]="communicationEvent" [roleType]="m.CommunicationEvent.EventPurposes" display="Name" label="Purposes"></a-mat-static>
-          <a-mat-static [object]="communicationEvent" [roleType]="m.EmailCommunication.IncomingMail"></a-mat-static>
-          <a-mat-static [object]="communicationEvent" [roleType]="m.EmailCommunication.Originator" display="displayName" label="From"></a-mat-static>
-          <a-mat-static [object]="communicationEvent" [roleType]="m.EmailCommunication.Addressees" display="displayName" label="To"></a-mat-static>
-          <a-mat-static [object]="communicationEvent" [roleType]="m.EmailCommunication.EmailTemplate" display="SubjectTemplate" label="Subject"></a-mat-static>
-          <a-mat-static [object]="communicationEvent" [roleType]="m.EmailCommunication.EmailTemplate" display="BodyTemplate" label="Body"></a-mat-static>
-          <a-mat-static [object]="communicationEvent" [roleType]="m.CommunicationEvent.ScheduledStart"></a-mat-static>
-          <a-mat-static [object]="communicationEvent" [roleType]="m.CommunicationEvent.ScheduledEnd"></a-mat-static>
-          <a-mat-static [object]="communicationEvent" [roleType]="m.CommunicationEvent.ActualStart"></a-mat-static>
-          <a-mat-static [object]="communicationEvent" [roleType]="m.CommunicationEvent.ActualEnd"></a-mat-static>
+          <div class="grid-2_xs-1">
+            <a-mat-static class="col" [object]="communicationEvent" [roleType]="m.CommunicationEvent.CommunicationEventState" display="Name"
+              label="Status"></a-mat-static>
+            <a-mat-static class="col" *ngIf="communicationEvent.EventPurposes" [object]="communicationEvent" [roleType]="m.CommunicationEvent.EventPurposes"
+              display="Name" label="Purposes"></a-mat-static>
+          </div>
+          <div class="grid-2_md-1">
+            <a-mat-static class="col" [object]="communicationEvent" [roleType]="m.EmailCommunication.Originator" display="displayName"
+              label="From"></a-mat-static>
+            <a-mat-static class="col" [object]="communicationEvent" [roleType]="m.EmailCommunication.Addressees" display="displayName"
+              label="To"></a-mat-static>
+          </div>
+          <div class="grid-1">
+            <a-mat-static class="col" [object]="communicationEvent" [roleType]="m.EmailCommunication.EmailTemplate" display="SubjectTemplate"
+              label="Subject"></a-mat-static>
+            <a-mat-textarea class="col" [object]="email.EmailTemplate" [roleType]="m.EmailTemplate.BodyTemplate" readonly="true" label="Body"></a-mat-textarea>
+          </div>
+          <div class="grid-2_xs-1">
+            <mat-form-field class="col" *ngIf="communicationEvent.ScheduledStart">
+              <input matInput placeholder="Scheduled Start" [value]="communicationEvent.ScheduledStart | date:'MMM d, y, HH:mm'">
+            </mat-form-field>
+            <mat-form-field class="col" *ngIf="communicationEvent.ActualStart">
+              <input matInput placeholder="Actual Start" [value]="communicationEvent.ActualStart | date:'MMM d, y, HH:mm'">
+            </mat-form-field>
+            <mat-form-field class="col" *ngIf="communicationEvent.ScheduledEnd">
+              <input matInput placeholder="Scheduled End" [value]="communicationEvent.ScheduledEnd | date:'MMM d, y, HH:mm'">
+            </mat-form-field>
+            <mat-form-field class="col" *ngIf="communicationEvent.ActualEnd">
+              <input matInput placeholder="Actual End" [value]="communicationEvent.ActualEnd | date:'MMM d, y, HH:mm'">
+            </mat-form-field>
+          </div>
+          <div class="grid">
+            <p class="col mat-caption tc-grey-500"> last modified: {{ communicationEvent.LastModifiedDate | date}} by {{ communicationEvent.LastModifiedBy.displayName}}</p>
+          </div>
         </div>
 
       </mat-card-content>
@@ -43,23 +68,46 @@
 <div body *ngIf="isLetter" layout-gt-md="row">
   <div flex-gt-xs="50">
     <mat-card *ngIf="communicationEvent" tdMediaToggle="gt-xs" [mediaClasses]="['push']">
-      <mat-card-title>Letter</mat-card-title>
+      <mat-card-title>{{itemTitle}}</mat-card-title>
       <mat-divider></mat-divider>
       <mat-card-content>
 
         <div class="pad">
-          <a-mat-static [object]="communicationEvent" [roleType]="m.CommunicationEvent.CommunicationEventState" display="Name" label="Status"></a-mat-static>
-          <a-mat-static *ngIf="communicationEvent.EventPurposes" [object]="communicationEvent" [roleType]="m.CommunicationEvent.EventPurposes" display="Name" label="Purposes"></a-mat-static>
-          <a-mat-static [object]="communicationEvent" [roleType]="m.LetterCorrespondence.Originators" display="displayName" label="Sender"></a-mat-static>
-          <a-mat-static [object]="communicationEvent" [roleType]="m.LetterCorrespondence.Receivers" display="displayName" label="Receiver"></a-mat-static>
-          <a-mat-static [object]="communicationEvent" [roleType]="m.LetterCorrespondence.ContactMechanisms" display="displayName" label="Postal Address"></a-mat-static>
-          <a-mat-static [object]="communicationEvent" [roleType]="m.LetterCorrespondence.Subject"></a-mat-static>
-          <a-mat-static [object]="communicationEvent" [roleType]="m.LetterCorrespondence.Note"></a-mat-static>
-          <a-mat-static [object]="communicationEvent" [roleType]="m.LetterCorrespondence.IncomingLetter"></a-mat-static>
-          <a-mat-static [object]="communicationEvent" [roleType]="m.CommunicationEvent.ScheduledStart"></a-mat-static>
-          <a-mat-static [object]="communicationEvent" [roleType]="m.CommunicationEvent.ScheduledEnd"></a-mat-static>
-          <a-mat-static [object]="communicationEvent" [roleType]="m.CommunicationEvent.ActualStart"></a-mat-static>
-          <a-mat-static [object]="communicationEvent" [roleType]="m.CommunicationEvent.ActualEnd"></a-mat-static>
+          <div class="grid-2_xs-1">
+            <a-mat-static class="col" [object]="communicationEvent" [roleType]="m.CommunicationEvent.CommunicationEventState" display="Name"
+              label="Status"></a-mat-static>
+            <a-mat-static class="col" *ngIf="communicationEvent.EventPurposes" [object]="communicationEvent" [roleType]="m.CommunicationEvent.EventPurposes"
+              display="Name" label="Purposes"></a-mat-static>
+          </div>
+          <div class="grid-2_md-1">
+            <a-mat-static class="col" [object]="communicationEvent" [roleType]="m.LetterCorrespondence.Originators" display="displayName"
+              label="Sender"></a-mat-static>
+            <a-mat-static class="col" [object]="communicationEvent" [roleType]="m.LetterCorrespondence.Receivers" display="displayName"
+              label="Receiver"></a-mat-static>
+          </div>
+          <div class="grid-1">
+            <a-mat-static class="col" [object]="communicationEvent" [roleType]="m.LetterCorrespondence.ContactMechanisms" display="displayName"
+              label="Postal Address"></a-mat-static>
+            <a-mat-static class="col" [object]="communicationEvent" [roleType]="m.LetterCorrespondence.Subject"></a-mat-static>
+            <a-mat-textarea class="col" [object]="communicationEvent" [roleType]="m.LetterCorrespondence.Note" readonly="true"></a-mat-textarea>
+          </div>
+          <div class="grid-2_xs-1">
+            <mat-form-field class="col" *ngIf="communicationEvent.ScheduledStart">
+              <input matInput placeholder="Scheduled Start" [value]="communicationEvent.ScheduledStart | date:'MMM d, y, HH:mm'">
+            </mat-form-field>
+            <mat-form-field class="col" *ngIf="communicationEvent.ActualStart">
+              <input matInput placeholder="Actual Start" [value]="communicationEvent.ActualStart | date:'MMM d, y, HH:mm'">
+            </mat-form-field>
+            <mat-form-field class="col" *ngIf="communicationEvent.ScheduledEnd">
+              <input matInput placeholder="Scheduled End" [value]="communicationEvent.ScheduledEnd | date:'MMM d, y, HH:mm'">
+            </mat-form-field>
+            <mat-form-field class="col" *ngIf="communicationEvent.ActualEnd">
+              <input matInput placeholder="Actual End" [value]="communicationEvent.ActualEnd | date:'MMM d, y, HH:mm'">
+            </mat-form-field>
+          </div>
+          <div class="grid">
+            <p class="col mat-caption tc-grey-500"> last modified: {{ communicationEvent.LastModifiedDate | date}} by {{ communicationEvent.LastModifiedBy.displayName}}</p>
+          </div>
         </div>
 
       </mat-card-content>
@@ -80,16 +128,36 @@
       <mat-card-content>
 
         <div class="pad">
-          <a-mat-static [object]="communicationEvent" [roleType]="m.CommunicationEvent.CommunicationEventState" display="Name" label="Status"></a-mat-static>
-          <a-mat-static [object]="communicationEvent" [roleType]="m.CommunicationEvent.EventPurposes" display="Name" label="Purposes"></a-mat-static>
-          <a-mat-static [object]="communicationEvent" [roleType]="m.FaceToFaceCommunication.Participants" display="PartyName"></a-mat-static>
-          <a-mat-static [object]="communicationEvent" [roleType]="m.FaceToFaceCommunication.Location"></a-mat-static>
-          <a-mat-static [object]="communicationEvent" [roleType]="m.FaceToFaceCommunication.Subject"></a-mat-static>
-          <a-mat-static [object]="communicationEvent" [roleType]="m.FaceToFaceCommunication.Note"></a-mat-static>
-          <a-mat-static [object]="communicationEvent" [roleType]="m.CommunicationEvent.ScheduledStart"></a-mat-static>
-          <a-mat-static [object]="communicationEvent" [roleType]="m.CommunicationEvent.ScheduledEnd"></a-mat-static>
-          <a-mat-static [object]="communicationEvent" [roleType]="m.CommunicationEvent.ActualStart"></a-mat-static>
-          <a-mat-static [object]="communicationEvent" [roleType]="m.CommunicationEvent.ActualEnd"></a-mat-static>
+          <div class="grid-2_xs-1">
+            <a-mat-static class="col" [object]="communicationEvent" [roleType]="m.CommunicationEvent.CommunicationEventState" display="Name"
+              label="Status"></a-mat-static>
+            <a-mat-static class="col" [object]="communicationEvent" [roleType]="m.CommunicationEvent.EventPurposes" display="Name" label="Purposes"></a-mat-static>
+          </div>
+          <div class="grid-2_md-1">
+            <a-mat-static class="col" [object]="communicationEvent" [roleType]="m.FaceToFaceCommunication.Participants" display="PartyName"></a-mat-static>
+            <a-mat-static class="col" [object]="communicationEvent" [roleType]="m.FaceToFaceCommunication.Location"></a-mat-static>
+          </div>
+          <div class="grid-1">
+            <a-mat-static class="col" [object]="communicationEvent" [roleType]="m.FaceToFaceCommunication.Subject"></a-mat-static>
+            <a-mat-textarea class="col" [object]="communicationEvent" [roleType]="m.FaceToFaceCommunication.Note" readonly="true"></a-mat-textarea>
+          </div>
+          <div class="grid-2_xs-1">
+            <mat-form-field class="col" *ngIf="communicationEvent.ScheduledStart">
+              <input matInput placeholder="Scheduled Start" [value]="communicationEvent.ScheduledStart | date:'MMM d, y, HH:mm'">
+            </mat-form-field>
+            <mat-form-field class="col" *ngIf="communicationEvent.ActualStart">
+              <input matInput placeholder="Actual Start" [value]="communicationEvent.ActualStart | date:'MMM d, y, HH:mm'">
+            </mat-form-field>
+            <mat-form-field class="col" *ngIf="communicationEvent.ScheduledEnd">
+              <input matInput placeholder="Scheduled End" [value]="communicationEvent.ScheduledEnd | date:'MMM d, y, HH:mm'">
+            </mat-form-field>
+            <mat-form-field class="col" *ngIf="communicationEvent.ActualEnd">
+              <input matInput placeholder="Actual End" [value]="communicationEvent.ActualEnd | date:'MMM d, y, HH:mm'">
+            </mat-form-field>
+          </div>
+          <div class="grid">
+            <p class="col mat-caption tc-grey-500"> last modified: {{ communicationEvent.LastModifiedDate | date}} by {{ communicationEvent.LastModifiedBy.displayName}}</p>
+          </div>
         </div>
 
       </mat-card-content>
@@ -105,25 +173,46 @@
 <div body *ngIf="isPhone" layout-gt-md="row">
   <div flex-gt-xs="50">
     <mat-card *ngIf="communicationEvent" tdMediaToggle="gt-xs" [mediaClasses]="['push']">
-      <mat-card-title>Phone call</mat-card-title>
+      <mat-card-title>{{itemTitle}}</mat-card-title>
       <mat-divider></mat-divider>
       <mat-card-content>
 
         <div class="pad">
-          <a-mat-static [object]="communicationEvent" [roleType]="m.CommunicationEvent.CommunicationEventState" display="Name" label="Status"></a-mat-static>
-          <a-mat-static *ngIf="communicationEvent.EventPurposes" [object]="communicationEvent" [roleType]="m.CommunicationEvent.EventPurposes" display="Name" label="Purposes"></a-mat-static>
-          <a-mat-static [object]="communicationEvent" [roleType]="m.PhoneCommunication.Subject"></a-mat-static>
-          <a-mat-static [object]="communicationEvent" [roleType]="m.PhoneCommunication.Note"></a-mat-static>
-          <a-mat-static [object]="communicationEvent" [roleType]="m.PhoneCommunication.IncomingCall"></a-mat-static>
-          <a-mat-static [object]="communicationEvent" [roleType]="m.PhoneCommunication.LeftVoiceMail"></a-mat-static>
-          <a-mat-static [object]="communicationEvent" [roleType]="m.PhoneCommunication.Callers" display="PartyName"></a-mat-static>
-          <a-mat-static [object]="communicationEvent" [roleType]="m.PhoneCommunication.Receivers" display="PartyName"></a-mat-static>
-          <a-mat-static *ngIf="!communicationEvent.IncomingCall && communicationEvent.ContactMechanisms" [object]="communicationEvent" [roleType]="m.PhoneCommunication.ContactMechanisms"
-            display="displayName" label="Phone number"></a-mat-static>
-          <a-mat-static [object]="communicationEvent" [roleType]="m.CommunicationEvent.ScheduledStart"></a-mat-static>
-          <a-mat-static [object]="communicationEvent" [roleType]="m.CommunicationEvent.ScheduledEnd"></a-mat-static>
-          <a-mat-static [object]="communicationEvent" [roleType]="m.CommunicationEvent.ActualStart"></a-mat-static>
-          <a-mat-static [object]="communicationEvent" [roleType]="m.CommunicationEvent.ActualEnd"></a-mat-static>
+          <div class="grid-2_xs-1">
+            <a-mat-static class="col" [object]="communicationEvent" [roleType]="m.CommunicationEvent.CommunicationEventState" display="Name"
+              label="Status"></a-mat-static>
+            <a-mat-static class="col" *ngIf="communicationEvent.EventPurposes" [object]="communicationEvent" [roleType]="m.CommunicationEvent.EventPurposes"
+              display="Name" label="Purposes"></a-mat-static>
+          </div>
+          <div class="grid-2_xs-1">
+            <a-mat-static class="col" [object]="communicationEvent" [roleType]="m.PhoneCommunication.Callers" display="PartyName"></a-mat-static>
+            <a-mat-static class="col" [object]="communicationEvent" [roleType]="m.PhoneCommunication.Receivers" display="PartyName"></a-mat-static>
+          </div>
+          <div class="grid-1">
+            <a-mat-static class="col" [object]="communicationEvent" [roleType]="m.PhoneCommunication.Subject"></a-mat-static>
+            <a-mat-textarea class="col" [object]="communicationEvent" [roleType]="m.PhoneCommunication.Note" readonly="true"></a-mat-textarea>
+          </div>
+          <div class="grid-2_xs-1">
+            <a-mat-static class="col"  [object]="communicationEvent"
+              [roleType]="m.CommunicationEvent.ContactMechanisms" display="displayName" label="Phone number"></a-mat-static>
+          </div>
+          <div class="grid-2_xs-1">
+            <mat-form-field class="col" *ngIf="communicationEvent.ScheduledStart">
+              <input matInput placeholder="Scheduled Start" [value]="communicationEvent.ScheduledStart | date:'MMM d, y, HH:mm'">
+            </mat-form-field>
+            <mat-form-field class="col" *ngIf="communicationEvent.ActualStart">
+              <input matInput placeholder="Actual Start" [value]="communicationEvent.ActualStart | date:'MMM d, y, HH:mm'">
+            </mat-form-field>
+            <mat-form-field class="col" *ngIf="communicationEvent.ScheduledEnd">
+              <input matInput placeholder="Scheduled End" [value]="communicationEvent.ScheduledEnd | date:'MMM d, y, HH:mm'">
+            </mat-form-field>
+            <mat-form-field class="col" *ngIf="communicationEvent.ActualEnd">
+              <input matInput placeholder="Actual End" [value]="communicationEvent.ActualEnd | date:'MMM d, y, HH:mm'">
+            </mat-form-field>
+          </div>
+          <div class="grid">
+            <p class="col mat-caption tc-grey-500"> last modified: {{ communicationEvent.LastModifiedDate | date}} by {{ communicationEvent.LastModifiedBy.displayName}}</p>
+          </div>
         </div>
 
       </mat-card-content>
@@ -169,9 +258,9 @@
               </button>
               <mat-menu x-position="before" #menu="matMenu">
                 <a [routerLink]="['/worktask/' + workEffort.id]" mat-menu-item>Edit</a>
-                <button  mat-menu-item (click)="deleteWorkEffort(workEffort)" [disabled]="!workEffort.CanExecuteDelete">Delete</button>
+                <button mat-menu-item (click)="deleteWorkEffort(workEffort)" [disabled]="!workEffort.CanExecuteDelete">Delete</button>
               </mat-menu>
-          </span>
+            </span>
 
           </mat-list-item>
 

@@ -29,7 +29,7 @@
           </mat-select>
         </mat-input-container>
         <mat-input-container class="col">
-          <mat-select formControlName="involved" name="involved" [(ngModel)]="selectedInvolded" placeholder="Person Involved">
+          <mat-select formControlName="involved" name="involved" [(ngModel)]="selectedInvolved" placeholder="Person Involved">
             <mat-option>None</mat-option>
             <mat-option *ngFor="let person of people" [value]="person.displayName">{{ person.displayName }}</mat-option>
           </mat-select>
@@ -82,10 +82,10 @@
                     </button>
                     <mat-menu x-position="before" #menu="matMenu">
                          <button mat-menu-item [routerLink]="['/relations/party/' + communicationEvent.InvolvedParties[0].id + '/communicationevent/' + communicationEvent.id ]">Details</button>
-                        <button *ngIf="this.checkType(communicationEvent) === 'EmailCommunication'" mat-menu-item [routerLink]="['/relations/party/' + communicationEvent.InvolvedParties[0].id + '/communicationevent/emailcommunication/' + communicationEvent.id ]">Edit</button>
-                        <button *ngIf="this.checkType(communicationEvent) === 'FaceToFaceCommunication'" mat-menu-item [routerLink]="['/relations/party/' + communicationEvent.InvolvedParties[0].id + '/communicationevent/facetofacecommunication/' + communicationEvent.id ]">Edit</button>
-                        <button *ngIf="this.checkType(communicationEvent) === 'LetterCorrespondence'" mat-menu-item [routerLink]="['/relations/party/' + communicationEvent.InvolvedParties[0].id + '/communicationevent/lettercorrespondence/' + communicationEvent.id ]">Edit</button>
-                        <button *ngIf="this.checkType(communicationEvent) === 'PhoneCommunication'" mat-menu-item [routerLink]="['/relations/party/' + communicationEvent.InvolvedParties[0].id + '/communicationevent/emailcommunication/' + communicationEvent.id ]">Edit</button>
+                        <button *ngIf="this.checkType(communicationEvent) === 'EmailCommunication'" mat-menu-item [routerLink]="['/party/' + communicationEvent.InvolvedParties[0].id + '/communicationevent/emailcommunication/' + communicationEvent.id ]">Edit</button>
+                        <button *ngIf="this.checkType(communicationEvent) === 'FaceToFaceCommunication'" mat-menu-item [routerLink]="['/party/' + communicationEvent.InvolvedParties[0].id + '/communicationevent/facetofacecommunication/' + communicationEvent.id ]">Edit</button>
+                        <button *ngIf="this.checkType(communicationEvent) === 'LetterCorrespondence'" mat-menu-item [routerLink]="['/party/' + communicationEvent.InvolvedParties[0].id + '/communicationevent/lettercorrespondence/' + communicationEvent.id ]">Edit</button>
+                        <button *ngIf="this.checkType(communicationEvent) === 'PhoneCommunication'" mat-menu-item [routerLink]="['/party/' + communicationEvent.InvolvedParties[0].id + '/communicationevent/emailcommunication/' + communicationEvent.id ]">Edit</button>
                         <button [disabled]="!communicationEvent.CanExecuteDelete" mat-menu-item (click)="delete(communicationEvent)">Delete</button>
                         <button [disabled]="!communicationEvent.CanExecuteCancel" mat-menu-item (click)="cancel(communicationEvent)">Cancel</button>
                         <button [disabled]="!communicationEvent.CanExecuteClose" mat-menu-item (click)="close(communicationEvent)">Close</button>

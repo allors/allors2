@@ -14,6 +14,8 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
+using System;
+
 namespace Allors.Domain
 {
     using Allors.Meta;
@@ -47,9 +49,17 @@ namespace Allors.Domain
         public void AppsOnDeriveFromParties()
         {
             this.RemoveFromParties();
+
             if (this.ExistOriginator)
             {
-                this.AddFromParty(this.Originator.PartyWherePersonalEmailAddress);
+                foreach (PartyContactMechanism partyContactMechanism in this.Originator.PartyContactMechanismsWhereContactMechanism)
+                {
+                    if (partyContactMechanism.FromDate <= DateTime.UtcNow &&
+                        (!partyContactMechanism.ExistThroughDate || partyContactMechanism.ThroughDate >= DateTime.UtcNow))
+                    {
+                        this.AddFromParty(partyContactMechanism.PartyWherePartyContactMechanism);
+                    }
+                }
             }
         }
 
@@ -59,25 +69,37 @@ namespace Allors.Domain
 
             foreach (EmailAddress addressee in this.Addressees)
             {
-                if (addressee.ExistPartyWherePersonalEmailAddress && !this.ToParties.Contains(addressee.PartyWherePersonalEmailAddress))
+                foreach (PartyContactMechanism partyContactMechanism in addressee.PartyContactMechanismsWhereContactMechanism)
                 {
-                    this.AddToParty(addressee.PartyWherePersonalEmailAddress);
+                    if (partyContactMechanism.FromDate <= DateTime.UtcNow &&
+                        (!partyContactMechanism.ExistThroughDate || partyContactMechanism.ThroughDate >= DateTime.UtcNow))
+                    {
+                        this.AddToParty(partyContactMechanism.PartyWherePartyContactMechanism);
+                    }
                 }
             }
 
             foreach (EmailAddress carbonCopy in this.CarbonCopies)
             {
-                if (carbonCopy.ExistPartyWherePersonalEmailAddress && !this.ToParties.Contains(carbonCopy.PartyWherePersonalEmailAddress))
+                foreach (PartyContactMechanism partyContactMechanism in carbonCopy.PartyContactMechanismsWhereContactMechanism)
                 {
-                    this.AddToParty(carbonCopy.PartyWherePersonalEmailAddress);
+                    if (partyContactMechanism.FromDate <= DateTime.UtcNow &&
+                        (!partyContactMechanism.ExistThroughDate || partyContactMechanism.ThroughDate >= DateTime.UtcNow))
+                    {
+                        this.AddToParty(partyContactMechanism.PartyWherePartyContactMechanism);
+                    }
                 }
             }
 
             foreach (EmailAddress blindCopy in this.BlindCopies)
             {
-                if (blindCopy.ExistPartyWherePersonalEmailAddress && !this.ToParties.Contains(blindCopy.PartyWherePersonalEmailAddress))
+                foreach (PartyContactMechanism partyContactMechanism in blindCopy.PartyContactMechanismsWhereContactMechanism)
                 {
-                    this.AddToParty(blindCopy.PartyWherePersonalEmailAddress);
+                    if (partyContactMechanism.FromDate <= DateTime.UtcNow &&
+                        (!partyContactMechanism.ExistThroughDate || partyContactMechanism.ThroughDate >= DateTime.UtcNow))
+                    {
+                        this.AddToParty(partyContactMechanism.PartyWherePartyContactMechanism);
+                    }
                 }
             }
 
@@ -104,6 +126,21 @@ namespace Allors.Domain
             if (this.ExistOwner && !this.InvolvedParties.Contains(this.Owner))
             {
                 this.AddInvolvedParty(this.Owner);
+            }
+
+            foreach (Party party in this.InvolvedParties)
+            {
+                if (party is Person person)
+                {
+                    foreach (OrganisationContactRelationship organisationContactRelationship in person.OrganisationContactRelationshipsWhereContact)
+                    {
+                        if (organisationContactRelationship.FromDate <= DateTime.UtcNow &&
+                            (!organisationContactRelationship.ExistThroughDate || organisationContactRelationship.ThroughDate >= DateTime.UtcNow))
+                        {
+                            this.AddInvolvedParty(organisationContactRelationship.Organisation);
+                        }
+                    }
+                }
             }
         }
     }
