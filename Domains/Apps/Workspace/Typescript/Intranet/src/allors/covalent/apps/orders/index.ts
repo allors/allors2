@@ -16,6 +16,7 @@ export * from "./request/request.module";
 export * from "./requestitem/requestitem.module";
 export * from "./salesorder/salesorder.module";
 export * from "./salesorderitem/salesorderitem.module";
+export * from "./salesterm/salesterm.module";
 
 import { OverviewModule } from "./overview.module";
 
@@ -35,6 +36,7 @@ import { RequestEditModule } from "./request/request.module";
 import { RequestItemEditModule } from "./requestitem/requestitem.module";
 import { SalesOrderEditModule } from "./salesorder/salesorder.module";
 import { SalesOrderItemEditModule } from "./salesorderitem/salesorderitem.module";
+import { SalesTermEditModule } from "./salesterm/salesterm.module";
 
 export const Modules = [
   // Overview
@@ -55,4 +57,5 @@ export const Modules = [
   RequestItemEditModule,
   SalesOrderEditModule,
   SalesOrderItemEditModule,
+  SalesTermEditModule,
 ];

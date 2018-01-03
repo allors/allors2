@@ -104,7 +104,7 @@ namespace Allors.Repository
         [Workspace]
         [Multiplicity(Multiplicity.OneToMany)]
         [Indexed]
-        OrderTerm[] OrderTerms { get; set; }
+        SalesTerm[] SalesTerms { get; set; }
 
         #region Allors
         [Id("7374e62f-0f0b-49de-8c70-9ef224a706b1")]

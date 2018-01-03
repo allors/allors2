@@ -41,7 +41,7 @@ namespace Allors.Repository
     public decimal TotalBasePriceCustomerCurrency { get; set; }
     public SurchargeAdjustment SurchargeAdjustment { get; set; }
     public decimal TotalExVat { get; set; }
-    public InvoiceTerm[] InvoiceTerms { get; set; }
+    public SalesTerm[] SalesTerms { get; set; }
     public decimal TotalSurchargeCustomerCurrency { get; set; }
     public string InvoiceNumber { get; set; }
     public string Message { get; set; }

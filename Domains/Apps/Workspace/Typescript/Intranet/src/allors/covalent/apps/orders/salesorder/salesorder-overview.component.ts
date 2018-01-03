@@ -10,7 +10,7 @@ import { Subscription } from "rxjs/Subscription";
 import "rxjs/add/observable/combineLatest";
 
 import { ErrorService, Invoked, Loaded, Saved, Scope, WorkspaceService } from "../../../../angular";
-import { BillingProcess, Good, ProductQuote, SalesInvoice, SalesOrder, SalesOrderItem} from "../../../../domain";
+import { BillingProcess, Good, ProductQuote, SalesInvoice, SalesOrder, SalesOrderItem, SalesTerm} from "../../../../domain";
 import { Fetch, Path, PullRequest, Query, TreeNode } from "../../../../framework";
 import { MetaDomain } from "../../../../meta";
 
@@ -84,6 +84,12 @@ export class SalesOrderOverviewComponent implements OnInit, OnDestroy {
                   new TreeNode({ roleType: m.SalesOrderItem.SalesOrderItemState }),
                 ],
                 roleType: m.SalesOrder.SalesOrderItems,
+              }),
+              new TreeNode({
+                nodes: [
+                  new TreeNode({ roleType: m.SalesTerm.TermType }),
+                ],
+                roleType: m.SalesOrder.SalesTerms,
               }),
               new TreeNode({ roleType: m.SalesOrder.ContactPerson }),
               new TreeNode({ roleType: m.SalesOrder.ShipToCustomer }),
@@ -181,6 +187,24 @@ export class SalesOrderOverviewComponent implements OnInit, OnDestroy {
       .subscribe((confirm: boolean) => {
         if (confirm) {
           this.scope.invoke(orderItem.Delete)
+            .subscribe((invoked: Invoked) => {
+              this.snackBar.open("Successfully deleted.", "close", { duration: 5000 });
+              this.refresh();
+            },
+            (error: Error) => {
+              this.errorService.dialog(error);
+            });
+        }
+      });
+  }
+
+  public deleteSalesTerm(salesTerm: SalesTerm): void {
+    this.dialogService
+      .openConfirm({ message: "Are you sure you want to delete this order term?" })
+      .afterClosed()
+      .subscribe((confirm: boolean) => {
+        if (confirm) {
+          this.scope.invoke(salesTerm.Delete)
             .subscribe((invoked: Invoked) => {
               this.snackBar.open("Successfully deleted.", "close", { duration: 5000 });
               this.refresh();

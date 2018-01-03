@@ -5,9 +5,9 @@ namespace Allors.Repository
     using Attributes;
 
     #region Allors
-    [Id("2C934905-DAFF-4288-ACC4-2EBDF5CC79E4")]
+    [Id("F2C51AE4-CD1E-489C-946F-539F24744C52")]
     #endregion
-    public partial class InvoiceTermType : TermType 
+    public partial class SalesTermType : TermType 
     {
         #region inherited properties
 

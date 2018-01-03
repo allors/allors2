@@ -11,7 +11,7 @@
   </div>
 </mat-toolbar>
 
-<div body *ngIf="invoice">
+<div body *ngIf="invoice" layout-gt-md="row">
   <div flex-gt-xs="50">
     <mat-card tdMediaToggle="gt-xs" [mediaClasses]="['push']">
       <mat-card-title>Sales Invoice</mat-card-title>
@@ -109,5 +109,40 @@
   </div>
 
   <div flex-gt-xs="50">
+    <mat-card tdMediaToggle="gt-xs" [mediaClasses]="['push']">
+      <mat-card-title>Invoice Terms</mat-card-title>
+      <mat-divider></mat-divider>
+      <mat-card-content>
+        <ng-template tdLoading="invoice.SalesTerms">
+          <mat-list class="will-load">
+            <div *ngIf="invoice.SalesTerms.length === 0" layout="row" layout-align="center center">
+              <h3>No terms to display.</h3>
+            </div>
+
+            <ng-template let-salesTerm let-last="last" ngFor [ngForOf]="invoice.SalesTerms">
+              <mat-list-item>
+                <h3 *ngIf="salesTerm.TermValue" mat-line [routerLink]="['/invoice/' + invoice.id + '/term/' + salesTerm.id ]">{{salesTerm.TermType.Name}}, value {{salesTerm.TermValue}}</h3>
+                <h3 *ngIf="!salesTerm.TermValue" mat-line [routerLink]="['/invoice/' + invoice.id + '/term/' + salesTerm.id ]">{{salesTerm.TermType.Name}}</h3>
+
+                <span>
+                  <button mat-icon-button [mat-menu-trigger-for]="menu">
+                    <mat-icon>more_vert</mat-icon>
+                  </button>
+                  <mat-menu x-position="before" #menu="matMenu">
+                    <a [routerLink]="['/invoice/' + invoice.id + '/term/' + salesTerm.id ]" mat-menu-item>Edit</a>
+                    <button mat-menu-item (click)="deleteSalesTerm(salesTerm)" [disabled]="!salesTerm.CanExecuteDelete">Delete</button>
+                  </mat-menu>
+                </span>
+              </mat-list-item>
+              <mat-divider *ngIf="!last" mat-inset></mat-divider>
+            </ng-template>
+          </mat-list>
+        </ng-template>
+      </mat-card-content>
+      <mat-divider></mat-divider>
+      <mat-card-actions>
+        <button *ngIf="invoice.CanWriteSalesTerms" mat-button [routerLink]="['/invoice/' + invoice.id +'/term']">+ Add</button>
+      </mat-card-actions>
+    </mat-card>
   </div>
 </div>

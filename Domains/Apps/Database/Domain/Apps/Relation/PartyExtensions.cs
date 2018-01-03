@@ -28,7 +28,7 @@ namespace Allors.Domain
             {
                 foreach (AgreementTerm term in agreement.AgreementTerms)
                 {
-                    if (term.TermType.Equals(new InvoiceTermTypes(party.Strategy.Session).PaymentNetDays))
+                    if (term.TermType.Equals(new SalesTermTypes(party.Strategy.Session).PaymentNetDays))
                     {
                         if (int.TryParse(term.TermValue, out var netDays))
                         {

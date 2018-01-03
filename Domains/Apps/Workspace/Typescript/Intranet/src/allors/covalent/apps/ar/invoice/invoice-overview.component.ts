@@ -8,7 +8,7 @@ import { Observable } from "rxjs/Observable";
 import { Subscription } from "rxjs/Subscription";
 
 import { ErrorService, Invoked, Loaded, Saved, Scope, WorkspaceService } from "../../../../angular";
-import { Good, SalesInvoice, SalesInvoiceItem, SalesOrder } from "../../../../domain";
+import { Good, SalesInvoice, SalesInvoiceItem, SalesOrder, SalesTerm } from "../../../../domain";
 import { Fetch, Path, PullRequest, Query, TreeNode } from "../../../../framework";
 import { MetaDomain } from "../../../../meta";
 
@@ -80,6 +80,12 @@ export class InvoiceOverviewComponent implements OnInit, OnDestroy {
                 ],
                 roleType: m.SalesInvoice.SalesInvoiceItems,
               }),
+              new TreeNode({
+                nodes: [
+                  new TreeNode({ roleType: m.SalesTerm.TermType }),
+                ],
+                roleType: m.SalesInvoice.SalesTerms,
+              }),
               new TreeNode({ roleType: m.SalesInvoice.ContactPerson }),
               new TreeNode({ roleType: m.SalesInvoice.BillToCustomer }),
               new TreeNode({ roleType: m.SalesInvoice.SalesInvoiceState }),
@@ -148,6 +154,24 @@ export class InvoiceOverviewComponent implements OnInit, OnDestroy {
       .subscribe((confirm: boolean) => {
         if (confirm) {
           this.scope.invoke(invoiceItem.Delete)
+            .subscribe((invoked: Invoked) => {
+              this.snackBar.open("Successfully deleted.", "close", { duration: 5000 });
+              this.refresh();
+            },
+            (error: Error) => {
+              this.errorService.dialog(error);
+            });
+        }
+      });
+  }
+
+  public deleteSalesTerm(salesTerm: SalesTerm): void {
+    this.dialogService
+      .openConfirm({ message: "Are you sure you want to delete this order term?" })
+      .afterClosed()
+      .subscribe((confirm: boolean) => {
+        if (confirm) {
+          this.scope.invoke(salesTerm.Delete)
             .subscribe((invoked: Invoked) => {
               this.snackBar.open("Successfully deleted.", "close", { duration: 5000 });
               this.refresh();

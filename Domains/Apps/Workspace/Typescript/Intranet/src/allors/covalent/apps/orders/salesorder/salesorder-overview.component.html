@@ -11,7 +11,7 @@
   </div>
 </mat-toolbar>
 
-<div body *ngIf="order">
+<div body *ngIf="order" layout-gt-md="row">
   <div flex-gt-xs="50">
     <mat-card tdMediaToggle="gt-xs" [mediaClasses]="['push']">
       <mat-card-title>Sales Order</mat-card-title>
@@ -48,8 +48,8 @@
           </div>
 
           <div class="grid-1">
-            <a-mat-static class="col" *ngIf="order.ShipToAddress != order.BillToContactMechanism" [object]="order" [roleType]="m.SalesOrder.BillToContactMechanism" display="displayName"
-              label="Bill to"></a-mat-static>
+            <a-mat-static class="col" *ngIf="order.ShipToAddress != order.BillToContactMechanism" [object]="order" [roleType]="m.SalesOrder.BillToContactMechanism"
+              display="displayName" label="Bill to"></a-mat-static>
           </div>
 
           <div class="grid-1">
@@ -127,5 +127,40 @@
   </div>
 
   <div flex-gt-xs="50">
+    <mat-card tdMediaToggle="gt-xs" [mediaClasses]="['push']">
+      <mat-card-title>Order Terms</mat-card-title>
+      <mat-divider></mat-divider>
+      <mat-card-content>
+        <ng-template tdLoading="order.SalesTerms">
+          <mat-list class="will-load">
+            <div *ngIf="order.SalesTerms.length === 0" layout="row" layout-align="center center">
+              <h3>No terms to display.</h3>
+            </div>
+
+            <ng-template let-salesTerm let-last="last" ngFor [ngForOf]="order.SalesTerms">
+              <mat-list-item>
+                <h3 *ngIf="salesTerm.TermValue" mat-line [routerLink]="['/salesOrder/' + order.id + '/term/' + salesTerm.id ]">{{salesTerm.TermType.Name}}: {{salesTerm.TermValue}}</h3>
+                <h3 *ngIf="!salesTerm.TermValue" mat-line [routerLink]="['/salesOrder/' + order.id + '/term/' + salesTerm.id ]">{{salesTerm.TermType.Name}}</h3>
+
+                <span>
+                  <button mat-icon-button [mat-menu-trigger-for]="menu">
+                    <mat-icon>more_vert</mat-icon>
+                  </button>
+                  <mat-menu x-position="before" #menu="matMenu">
+                    <a [routerLink]="['/salesOrder/' + order.id + '/term/' + salesTerm.id ]" mat-menu-item>Edit</a>
+                    <button mat-menu-item (click)="deleteSalesTerm(salesTerm)" [disabled]="!salesTerm.CanExecuteDelete">Delete</button>
+                  </mat-menu>
+                </span>
+              </mat-list-item>
+              <mat-divider *ngIf="!last" mat-inset></mat-divider>
+            </ng-template>
+          </mat-list>
+        </ng-template>
+      </mat-card-content>
+      <mat-divider></mat-divider>
+      <mat-card-actions>
+        <button *ngIf="order.CanWriteSalesTerms" mat-button [routerLink]="['/salesOrder/' + order.id +'/term']">+ Add</button>
+      </mat-card-actions>
+    </mat-card>
   </div>
 </div>

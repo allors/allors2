@@ -38,11 +38,11 @@ namespace Allors.Domain
             get
             {
                 int? invoicePaymentNetDays = null;
-                if (this.ExistInvoiceTerms)
+                if (this.ExistSalesTerms)
                 {
-                    foreach (AgreementTerm term in this.InvoiceTerms)
+                    foreach (AgreementTerm term in this.SalesTerms)
                     {
-                        if (term.TermType.Equals(new InvoiceTermTypes(this.Strategy.Session).PaymentNetDays))
+                        if (term.TermType.Equals(new SalesTermTypes(this.Strategy.Session).PaymentNetDays))
                         {
                             int netDays;
                             if (int.TryParse(term.TermValue, out netDays))

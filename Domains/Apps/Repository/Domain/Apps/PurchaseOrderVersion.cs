@@ -31,7 +31,7 @@ namespace Allors.Repository
         public string CustomerReference { get; set; }
         public Fee Fee { get; set; }
         public decimal TotalExVat { get; set; }
-        public OrderTerm[] OrderTerms { get; set; }
+        public SalesTerm[] SalesTerms { get; set; }
         public decimal TotalVat { get; set; }
         public decimal TotalSurcharge { get; set; }
         public OrderItem[] ValidOrderItems { get; set; }

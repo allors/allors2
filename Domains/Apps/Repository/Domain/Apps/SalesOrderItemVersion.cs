@@ -20,7 +20,7 @@ namespace Allors.Repository
         public QuoteItem QuoteItem { get; set; }
         public DateTime AssignedDeliveryDate { get; set; }
         public DateTime DeliveryDate { get; set; }
-        public OrderTerm[] OrderTerms { get; set; }
+        public SalesTerm[] SalesTerms { get; set; }
         public string ShippingInstruction { get; set; }
         public OrderItem[] Associations { get; set; }
         public string Message { get; set; }

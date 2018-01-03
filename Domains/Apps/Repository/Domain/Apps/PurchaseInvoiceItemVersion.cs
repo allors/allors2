@@ -12,7 +12,7 @@ namespace Allors.Repository
         public Permission[] DeniedPermissions { get; set; }
         public SecurityToken[] SecurityTokens { get; set; }
         public string InternalComment { get; set; }
-        public AgreementTerm[] InvoiceTerms { get; set; }
+        public SalesTerm[] SalesTerms { get; set; }
         public decimal TotalInvoiceAdjustment { get; set; }
         public InvoiceVatRateItem[] InvoiceVatRateItems { get; set; }
         public InvoiceItem AdjustmentFor { get; set; }

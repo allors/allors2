@@ -127,6 +127,8 @@ export const routes: Routes = [
           { path: ":id", component: orders.SalesOrderEditComponent },
           { path: ":id/item", component: orders.SalesOrderItemEditComponent },
           { path: ":id/item/:itemId", component: orders.SalesOrderItemEditComponent },
+          { path: ":id/term", component: orders.SalesTermEditComponent },
+          { path: ":id/term/:termId", component: orders.SalesTermEditComponent },
         ],
       },
 
@@ -201,6 +203,8 @@ export const routes: Routes = [
           { path: ":id", component: ar.InvoiceComponent },
           { path: ":id/item", component: ar.InvoiceItemEditComponent },
           { path: ":id/item/:itemId", component: ar.InvoiceItemEditComponent },
+          { path: ":id/term", component: ar.SalesTermEditComponent},
+          { path: ":id/term/:termId", component: ar.SalesTermEditComponent },
         ],
       },
 

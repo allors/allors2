@@ -25,7 +25,7 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.OneToMany)]
         [Indexed]
         [Workspace]
-        AgreementTerm[] InvoiceTerms { get; set; }
+        SalesTerm[] SalesTerms { get; set; }
 
         #region Allors
         [Id("1f92aed8-8a8f-4eb6-8102-83a6395788d6")]

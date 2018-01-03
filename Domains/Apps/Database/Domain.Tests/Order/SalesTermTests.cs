@@ -1,5 +1,5 @@
 //------------------------------------------------------------------------------------------------- 
-// <copyright file="InvoiceTermTests.cs" company="Allors bvba">
+// <copyright file="SalesTermTests.cs" company="Allors bvba">
 // Copyright 2002-2009 Allors bvba.
 // 
 // Dual Licensed under
@@ -21,23 +21,25 @@
 
 namespace Allors.Domain
 {
+    
+
     using Xunit;
 
     
-    public class InvoiceTermTests : DomainTest
+    public class SalesTermTests : DomainTest
     {
         [Fact]
-        public void GivenInvoiceTerm_WhenDeriving_ThenRequiredRelationsMustExist()
+        public void GivenSalesTerm_WhenDeriving_ThenDescriptionIsRequired()
         {
-            var builder = new InvoiceTermBuilder(this.Session);
-            var invoiceTerm = builder.Build();
+            var builder = new SalesTermBuilder(this.Session);
+            var salesTerm = builder.Build();
 
             Assert.True(this.Session.Derive(false).HasErrors);
 
             this.Session.Rollback();
 
-            builder.WithTermType(new InvoiceTermTypes(this.Session).LateFee);
-            invoiceTerm = builder.Build();
+            builder.WithTermType(new SalesTermTypes(this.Session).PercentageCancellationCharge);
+            salesTerm = builder.Build();
 
             Assert.False(this.Session.Derive(false).HasErrors);
         }
