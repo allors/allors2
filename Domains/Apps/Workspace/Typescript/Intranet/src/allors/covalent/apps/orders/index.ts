@@ -16,7 +16,9 @@ export * from "./request/request.module";
 export * from "./requestitem/requestitem.module";
 export * from "./salesorder/salesorder.module";
 export * from "./salesorderitem/salesorderitem.module";
-export * from "./salesterm/salesterm.module";
+export * from "./salesterms/incoterm/incoterm.module";
+export * from "./salesterms/invoiceterm/invoiceterm.module";
+export * from "./salesterms/orderterm/orderterm.module";
 
 import { OverviewModule } from "./overview.module";
 
@@ -36,13 +38,18 @@ import { RequestEditModule } from "./request/request.module";
 import { RequestItemEditModule } from "./requestitem/requestitem.module";
 import { SalesOrderEditModule } from "./salesorder/salesorder.module";
 import { SalesOrderItemEditModule } from "./salesorderitem/salesorderitem.module";
-import { SalesTermEditModule } from "./salesterm/salesterm.module";
+import { IncoTermEditModule } from "./salesterms/incoterm/incoterm.module";
+import { InvoiceTermEditModule } from "./salesterms/invoiceterm/invoiceterm.module";
+import { OrderTermEditModule } from "./salesterms/orderterm/orderterm.module";
 
 export const Modules = [
   // Overview
   OverviewModule,
 
+  IncoTermEditModule,
+  InvoiceTermEditModule,
   OrdersOverviewModule,
+  OrderTermEditModule,
   ProductQuoteOverviewModule,
   ProductQuotesOverviewModule,
   ProductQuotePrintModule,
@@ -57,5 +64,4 @@ export const Modules = [
   RequestItemEditModule,
   SalesOrderEditModule,
   SalesOrderItemEditModule,
-  SalesTermEditModule,
 ];

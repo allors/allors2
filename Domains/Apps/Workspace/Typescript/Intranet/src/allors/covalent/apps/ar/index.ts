@@ -7,7 +7,7 @@ export * from "./invoice/invoice-overview.module";
 export * from "./invoice/invoice.module";
 export * from "./invoice/invoice-print.module";
 export * from "./invoiceitem/invoiceitem.module";
-export * from "./salesterm/salesterm.module";
+export * from "./invoiceterm/invoiceterm.module";
 
 import { OverviewModule } from "./overview.module";
 
@@ -20,12 +20,17 @@ import { InvoiceModule } from "./invoice/invoice.module";
 import { InvoicesOverviewModule } from "./invoice/invoices-overview.module";
 import { InvoiceItemEditComponent } from "./invoiceitem/invoiceitem.component";
 import { InvoiceItemEditModule } from "./invoiceitem/invoiceitem.module";
-import { SalesTermEditModule } from "./salesterm/salesterm.module";
+import { InvoiceTermEditModule } from "./invoiceterm/invoiceterm.module";
 
 export const modules = [
   // Overview
   OverviewModule,
   DashboardModule,
 
-  InvoiceModule, InvoiceOverviewModule, InvoicesOverviewModule, InvoicePrintModule, InvoiceItemEditModule, SalesTermEditModule,
+  InvoiceModule,
+  InvoiceOverviewModule,
+  InvoicesOverviewModule,
+  InvoicePrintModule,
+  InvoiceItemEditModule,
+  InvoiceTermEditModule,
 ];

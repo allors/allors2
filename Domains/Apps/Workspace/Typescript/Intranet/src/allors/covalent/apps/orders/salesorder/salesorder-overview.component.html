@@ -139,15 +139,21 @@
 
             <ng-template let-salesTerm let-last="last" ngFor [ngForOf]="order.SalesTerms">
               <mat-list-item>
-                <h3 *ngIf="salesTerm.TermValue" mat-line [routerLink]="['/salesOrder/' + order.id + '/term/' + salesTerm.id ]">{{salesTerm.TermType.Name}}: {{salesTerm.TermValue}}</h3>
-                <h3 *ngIf="!salesTerm.TermValue" mat-line [routerLink]="['/salesOrder/' + order.id + '/term/' + salesTerm.id ]">{{salesTerm.TermType.Name}}</h3>
+                <h3 *ngIf="salesTerm?.objectType.name == 'IncoTerm' && salesTerm.TermValue" mat-line [routerLink]="['/salesOrder/' + order.id + '/incoterm/' + salesTerm.id ]">{{salesTerm.TermType.Name}}: {{salesTerm.TermValue}}</h3>
+                <h3 *ngIf="salesTerm?.objectType.name == 'IncoTerm' && !salesTerm.TermValue" mat-line [routerLink]="['/salesOrder/' + order.id + '/incoterm/' + salesTerm.id ]">{{salesTerm.TermType.Name}}</h3>
+                <h3 *ngIf="salesTerm?.objectType.name == 'InvoiceTerm' && salesTerm.TermValue" mat-line [routerLink]="['/salesOrder/' + order.id + '/invoiceterm/' + salesTerm.id ]">{{salesTerm.TermType.Name}}: {{salesTerm.TermValue}}</h3>
+                <h3 *ngIf="salesTerm?.objectType.name == 'InvoiceTerm' && !salesTerm.TermValue" mat-line [routerLink]="['/salesOrder/' + order.id + '/invoiceterm/' + salesTerm.id ]">{{salesTerm.TermType.Name}}</h3>
+                <h3 *ngIf="salesTerm?.objectType.name == 'OrderTerm' && salesTerm.TermValue" mat-line [routerLink]="['/salesOrder/' + order.id + '/orderterm/' + salesTerm.id ]">{{salesTerm.TermType.Name}}: {{salesTerm.TermValue}}</h3>
+                <h3 *ngIf="salesTerm?.objectType.name == 'OrderTerm' && !salesTerm.TermValue" mat-line [routerLink]="['/salesOrder/' + order.id + '/orderterm/' + salesTerm.id ]">{{salesTerm.TermType.Name}}</h3>
 
                 <span>
                   <button mat-icon-button [mat-menu-trigger-for]="menu">
                     <mat-icon>more_vert</mat-icon>
                   </button>
                   <mat-menu x-position="before" #menu="matMenu">
-                    <a [routerLink]="['/salesOrder/' + order.id + '/term/' + salesTerm.id ]" mat-menu-item>Edit</a>
+                    <a *ngIf="salesTerm?.objectType.name == 'IncoTerm'" [routerLink]="['/salesOrder/' + order.id + '/incoterm/' + salesTerm.id ]" mat-menu-item>Edit</a>
+                    <a *ngIf="salesTerm?.objectType.name == 'InvoiceTerm'" [routerLink]="['/salesOrder/' + order.id + '/invoiceterm/' + salesTerm.id ]" mat-menu-item>Edit</a>
+                    <a *ngIf="salesTerm?.objectType.name == 'OrderTerm'" [routerLink]="['/salesOrder/' + order.id + '/orderterm/' + salesTerm.id ]" mat-menu-item>Edit</a>
                     <button mat-menu-item (click)="deleteSalesTerm(salesTerm)" [disabled]="!salesTerm.CanExecuteDelete">Delete</button>
                   </mat-menu>
                 </span>
@@ -159,7 +165,9 @@
       </mat-card-content>
       <mat-divider></mat-divider>
       <mat-card-actions>
-        <button *ngIf="order.CanWriteSalesTerms" mat-button [routerLink]="['/salesOrder/' + order.id +'/term']">+ Add</button>
+        <button *ngIf="order.CanWriteSalesTerms" mat-button [routerLink]="['/salesOrder/' + order.id +'/incoterm']">+ Incoterm</button>
+        <button *ngIf="order.CanWriteSalesTerms" mat-button [routerLink]="['/salesOrder/' + order.id +'/invoiceterm']">+ Invoice term</button>
+        <button *ngIf="order.CanWriteSalesTerms" mat-button [routerLink]="['/salesOrder/' + order.id +'/orderterm']">+ Order term</button>
       </mat-card-actions>
     </mat-card>
   </div>
