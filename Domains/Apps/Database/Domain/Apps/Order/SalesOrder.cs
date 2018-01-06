@@ -760,12 +760,14 @@ namespace Allors.Domain
         public void AppsDeriveCanInvoice(IDerivation derivation)
         {
             if (this.SalesOrderState.Equals(new SalesOrderStates(this.Strategy.Session).InProcess) &&
-                Equals(this.Store.BillingProcess, new BillingProcesses(this.strategy.Session).BillingForShipmentItems))
+                Equals(this.Store.BillingProcess, new BillingProcesses(this.strategy.Session).BillingForOrderItems))
             {
                 this.CanInvoice = true;
             }
-
-            this.CanInvoice = false;
+            else
+            {
+                this.CanInvoice = false;
+            }
         }
 
         public void AppsInvoice(SalesOrderInvoice method)
