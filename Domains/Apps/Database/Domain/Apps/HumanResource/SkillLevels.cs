@@ -44,28 +44,24 @@ namespace Allors.Domain
             var dutchLocale = new Locales(this.Session).DutchNetherlands;
             
             new SkillLevelBuilder(this.Session)
-                .WithName("Beginner")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Beginner").WithLocale(englishLocale).Build())
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Starter").WithLocale(dutchLocale).Build())
                 .WithUniqueId(BeginnerId)
                 .Build();
 
             new SkillLevelBuilder(this.Session)
-                .WithName("Intermediate")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Intermediate").WithLocale(englishLocale).Build())
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Intermediate").WithLocale(dutchLocale).Build())
                 .WithUniqueId(IntermediateId)
                 .Build();
             
             new SkillLevelBuilder(this.Session)
-                .WithName("Advanced")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Advanced").WithLocale(englishLocale).Build())
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Ervaren").WithLocale(dutchLocale).Build())
                 .WithUniqueId(AdvancedId)
                 .Build();
             
             new SkillLevelBuilder(this.Session)
-                .WithName("Expert")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Expert").WithLocale(englishLocale).Build())
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Expert").WithLocale(dutchLocale).Build())
                 .WithUniqueId(ExpertId)

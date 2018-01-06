@@ -1,13 +1,13 @@
-namespace Allors.Repository
+﻿namespace Allors.Repository
 {
     using System;
 
     using Attributes;
 
     #region Allors
-    [Id("F2C51AE4-CD1E-489C-946F-539F24744C52")]
+    [Id("3A45D43B-CEDD-43DC-B18D-BA7600C3DF2A")]
     #endregion
-    public partial class SalesTermType : TermType 
+    public partial class IncoTermType : TermType
     {
         #region inherited properties
 

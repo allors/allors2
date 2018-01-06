@@ -27,21 +27,6 @@ namespace Allors.Domain
     public class ProductFeatureTests : DomainTest
     {
         [Fact]
-        public void GivenColor_WhenDeriving_ThenRequiredRelationsMustExist()
-        {
-            var builder = new ColourBuilder(this.Session);
-            builder.Build();
-
-            Assert.True(this.Session.Derive(false).HasErrors);
-
-            this.Session.Rollback();
-
-            builder.WithName("name").Build();
-
-            Assert.False(this.Session.Derive(false).HasErrors);
-        }
-
-        [Fact]
         public void GivenDimension_WhenDeriving_ThenRequiredRelationsMustExist()
         {
             var builder = new DimensionBuilder(this.Session);
@@ -52,7 +37,7 @@ namespace Allors.Domain
             this.Session.Rollback();
 
             var unitOfMeasure = new UnitOfMeasureBuilder(this.Session)
-                .WithName("uom")
+                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Mt").WithLocale(this.Session.GetSingleton().DefaultLocale).Build())
                 .Build();
 
             builder.WithUnitOfMeasure(unitOfMeasure);
@@ -71,7 +56,7 @@ namespace Allors.Domain
 
             this.Session.Rollback();
 
-            builder.WithName("name").Build();
+            builder.WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Mt").WithLocale(this.Session.GetSingleton().DefaultLocale).Build());
 
             Assert.False(this.Session.Derive(false).HasErrors);
         }
@@ -86,7 +71,7 @@ namespace Allors.Domain
 
             this.Session.Rollback();
 
-            builder.WithName("name").Build();
+            builder.WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Mt").WithLocale(this.Session.GetSingleton().DefaultLocale).Build());
 
             Assert.False(this.Session.Derive(false).HasErrors);
         }
@@ -101,7 +86,7 @@ namespace Allors.Domain
 
             this.Session.Rollback();
 
-            builder.WithName("name").Build();
+            builder.WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Mt").WithLocale(this.Session.GetSingleton().DefaultLocale).Build());
 
             Assert.False(this.Session.Derive(false).HasErrors);
         }
@@ -116,7 +101,7 @@ namespace Allors.Domain
 
             this.Session.Rollback();
 
-            builder.WithName("name").Build();
+            builder.WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Mt").WithLocale(this.Session.GetSingleton().DefaultLocale).Build());
 
             Assert.False(this.Session.Derive(false).HasErrors);
         }
@@ -131,7 +116,7 @@ namespace Allors.Domain
 
             this.Session.Rollback();
 
-            builder.WithName("name").Build();
+            builder.WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Mt").WithLocale(this.Session.GetSingleton().DefaultLocale).Build());
 
             Assert.False(this.Session.Derive(false).HasErrors);
         }

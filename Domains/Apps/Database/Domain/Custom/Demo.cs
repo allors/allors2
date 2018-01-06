@@ -226,8 +226,8 @@ namespace Allors
                 .WithProductCategory(productCategory1)
                 .Build();
 
-            var model1Brand1 = new ModelBuilder(this.Session).WithName("model 1").Build();
-            var model2Brand1 = new ModelBuilder(this.Session).WithName("model 2").Build();
+            var model1Brand1 = new ModelBuilder(this.Session).WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("model 1").WithLocale(singleton.DefaultLocale).Build()).Build();
+            var model2Brand1 = new ModelBuilder(this.Session).WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("model 2").WithLocale(singleton.DefaultLocale).Build()).Build();
 
             var brand1 = new BrandBuilder(this.Session).WithName("brand 1").WithModel(model1Brand1).WithModel(model2Brand1).Build();
 

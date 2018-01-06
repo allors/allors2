@@ -40,7 +40,6 @@ namespace Allors.Domain
                 .Build();
 
             var colorFeature = new ColourBuilder(this.Session)
-                .WithName("golden")
                 .WithVatRate(vatRate21)
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session)
                                             .WithText("black")
@@ -165,7 +164,6 @@ namespace Allors.Domain
                 .Build();
 
             var colorFeature = new ColourBuilder(this.Session)
-             .WithName("golden")
              .WithVatRate(vatRate21)
              .WithLocalisedName(new LocalisedTextBuilder(this.Session)
                                          .WithText("black")
@@ -284,7 +282,6 @@ namespace Allors.Domain
                 .Build();
 
             var colorFeature = new ColourBuilder(this.Session)
-                .WithName("golden")
                 .WithVatRate(vatRate21)
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session)
                                             .WithText("black")

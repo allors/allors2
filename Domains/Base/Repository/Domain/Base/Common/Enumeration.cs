@@ -45,6 +45,7 @@ namespace Allors.Repository
         #endregion
         [Indexed]
         [Required]
+        [Derived]
         [Size(256)]
         [Workspace]
         string Name { get; set; }

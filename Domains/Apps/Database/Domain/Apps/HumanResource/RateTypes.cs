@@ -59,63 +59,54 @@ namespace Allors.Domain
             var dutchLocale = new Locales(this.Session).DutchNetherlands;
 
             new RateTypeBuilder(this.Session)
-                .WithName("Billing Rate")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Billing Rate").WithLocale(englishLocale).Build())
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Facturatie rate").WithLocale(dutchLocale).Build())
                 .WithUniqueId(BillingRateId)
                 .Build();
             
             new RateTypeBuilder(this.Session)
-                .WithName("Cost")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Cost").WithLocale(englishLocale).Build())
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Kost").WithLocale(dutchLocale).Build())
                 .WithUniqueId(CostId)
                 .Build();
             
             new RateTypeBuilder(this.Session)
-                .WithName("Regular Pay")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Regular Pay").WithLocale(englishLocale).Build())
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Gewone bezoldiging").WithLocale(dutchLocale).Build())
                 .WithUniqueId(RegularPayId)
                 .Build();
             
             new RateTypeBuilder(this.Session)
-                .WithName("Overtime Pay")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Overtime Pay").WithLocale(englishLocale).Build())
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Betaling overuren").WithLocale(dutchLocale).Build())
                 .WithUniqueId(OvertimePayId)
                 .Build();
             
             new RateTypeBuilder(this.Session)
-                .WithName("Overtime Billing Rate")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Overtime Billing Rate").WithLocale(englishLocale).Build())
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Overuren rate").WithLocale(dutchLocale).Build())
                 .WithUniqueId(OvertimeBillingRateId)
                 .Build();
             
             new RateTypeBuilder(this.Session)
-                .WithName("Weekend Rate")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Weekend Rate").WithLocale(englishLocale).Build())
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Weekend rate").WithLocale(dutchLocale).Build())
                 .WithUniqueId(WeekendRateId)
                 .Build();
             
             new RateTypeBuilder(this.Session)
-                .WithName("Average Pay Rate")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Average Pay Rate").WithLocale(englishLocale).Build())
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Gemiddeld bezoldiging").WithLocale(dutchLocale).Build())
                 .WithUniqueId(AveragePayRateId)
                 .Build();
             
             new RateTypeBuilder(this.Session)
-                .WithName("Highest Pay Rate")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Highest Pay Rate").WithLocale(englishLocale).Build())
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Hoogste bezoldiging").WithLocale(dutchLocale).Build())
                 .WithUniqueId(HighestPayRateId)
                 .Build();
             
             new RateTypeBuilder(this.Session)
-                .WithName("Lowest Pay Rate")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Lowest Pay Rate").WithLocale(englishLocale).Build())
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Laagste bezoldiging").WithLocale(dutchLocale).Build())
                 .WithUniqueId(LowestPayRateId)

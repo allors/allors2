@@ -50,42 +50,36 @@ namespace Allors.Domain
             var dutchLocale = new Locales(this.Session).DutchNetherlands;
 
             new VarianceReasonBuilder(this.Session)
-                .WithName("Order")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Order").WithLocale(englishLocale).Build())
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Bestelling").WithLocale(dutchLocale).Build())
                 .WithUniqueId(OrderId)
                 .Build();
 
             new VarianceReasonBuilder(this.Session)
-                .WithName("Shipment")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Shipment").WithLocale(englishLocale).Build())
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Verscheping").WithLocale(dutchLocale).Build())
                 .WithUniqueId(ShipmentId)
                 .Build();
             
             new VarianceReasonBuilder(this.Session)
-                .WithName("Theft")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Theft").WithLocale(englishLocale).Build())
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Diefstal").WithLocale(dutchLocale).Build())
                 .WithUniqueId(TheftId)
                 .Build();
             
             new VarianceReasonBuilder(this.Session)
-                .WithName("Shrinkage")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Shrinkage").WithLocale(englishLocale).Build())
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Inkrimping").WithLocale(dutchLocale).Build())
                 .WithUniqueId(ShrinkageId)
                 .Build();
             
             new VarianceReasonBuilder(this.Session)
-                .WithName("Unknown")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Unknown").WithLocale(englishLocale).Build())
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Ongekend").WithLocale(dutchLocale).Build())
+                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Onbekend").WithLocale(dutchLocale).Build())
                 .WithUniqueId(UnknownId)
                 .Build();
             
             new VarianceReasonBuilder(this.Session)
-                .WithName("Ruined")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Ruined").WithLocale(englishLocale).Build())
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Vernield").WithLocale(dutchLocale).Build())
                 .WithUniqueId(RuinedId)

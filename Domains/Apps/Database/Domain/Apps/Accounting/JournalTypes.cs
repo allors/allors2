@@ -50,42 +50,36 @@ namespace Allors.Domain
             var dutchLocale = new Locales(this.Session).DutchNetherlands;
 
             new JournalTypeBuilder(this.Session)
-                .WithName("Cash")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Cash").WithLocale(englishLocale).Build())
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Kas").WithLocale(dutchLocale).Build())
                 .WithUniqueId(CashId)
                 .Build();
 
             new JournalTypeBuilder(this.Session)
-                .WithName("Bank")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Bank").WithLocale(englishLocale).Build())
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Bank").WithLocale(dutchLocale).Build())
                 .WithUniqueId(BankId)
                 .Build();
 
             new JournalTypeBuilder(this.Session)
-                .WithName("Giro")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Giro").WithLocale(englishLocale).Build())
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Giro").WithLocale(dutchLocale).Build())
                 .WithUniqueId(GiroId)
                 .Build();
 
             new JournalTypeBuilder(this.Session)
-                .WithName("General")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("General").WithLocale(englishLocale).Build())
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Memoriaal").WithLocale(dutchLocale).Build())
                 .WithUniqueId(GeneralId)
                 .Build();
 
             new JournalTypeBuilder(this.Session)
-                .WithName("Sales")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Sales").WithLocale(englishLocale).Build())
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Verkoop").WithLocale(dutchLocale).Build())
                 .WithUniqueId(SalesId)
                 .Build();
 
             new JournalTypeBuilder(this.Session)
-                .WithName("Purchase")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Purchase").WithLocale(englishLocale).Build())
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Verkoop").WithLocale(dutchLocale).Build())
                 .WithUniqueId(PurchaseId)

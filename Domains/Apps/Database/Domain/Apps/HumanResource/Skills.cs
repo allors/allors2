@@ -35,7 +35,6 @@ namespace Allors.Domain
             var dutchLocale = new Locales(this.Session).DutchNetherlands;
 
             new SkillBuilder(this.Session)
-                .WithName("Project Management")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Project Management").WithLocale(englishLocale).Build())
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Project Management").WithLocale(dutchLocale).Build())
                 .WithUniqueId(ProjectManagementId)

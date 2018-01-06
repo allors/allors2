@@ -1,5 +1,5 @@
 //------------------------------------------------------------------------------------------------- 
-// <copyright file="SalesTermTests.cs" company="Allors bvba">
+// <copyright file="OrderTermTests.cs" company="Allors bvba">
 // Copyright 2002-2009 Allors bvba.
 // 
 // Dual Licensed under
@@ -26,19 +26,19 @@ namespace Allors.Domain
     using Xunit;
 
     
-    public class SalesTermTests : DomainTest
+    public class OrderTermTests : DomainTest
     {
         [Fact]
-        public void GivenSalesTerm_WhenDeriving_ThenDescriptionIsRequired()
+        public void GivenOrderTerm_WhenDeriving_ThenDescriptionIsRequired()
         {
-            var builder = new SalesTermBuilder(this.Session);
+            var builder = new OrderTermBuilder(this.Session);
             var salesTerm = builder.Build();
 
             Assert.True(this.Session.Derive(false).HasErrors);
 
             this.Session.Rollback();
 
-            builder.WithTermType(new SalesTermTypes(this.Session).PercentageCancellationCharge);
+            builder.WithTermType(new OrderTermTypes(this.Session).PercentageCancellationCharge);
             salesTerm = builder.Build();
 
             Assert.False(this.Session.Derive(false).HasErrors);

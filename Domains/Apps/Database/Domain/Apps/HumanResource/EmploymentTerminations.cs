@@ -44,28 +44,24 @@ namespace Allors.Domain
             var dutchLocale = new Locales(this.Session).DutchNetherlands;
 
             new EmploymentTerminationBuilder(this.Session)
-                .WithName("Resignation")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Resignation").WithLocale(englishLocale).Build())
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Ontslag genomen").WithLocale(dutchLocale).Build())
                 .WithUniqueId(ResignationId)
                 .Build();
             
             new EmploymentTerminationBuilder(this.Session)
-                .WithName("Fired")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Fired").WithLocale(englishLocale).Build())
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Ontslagen").WithLocale(dutchLocale).Build())
                 .WithUniqueId(FiredId)
                 .Build();
             
             new EmploymentTerminationBuilder(this.Session)
-                .WithName("Retirenment")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Retirenment").WithLocale(englishLocale).Build())
+                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Retirement").WithLocale(englishLocale).Build())
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Pensioen").WithLocale(dutchLocale).Build())
                 .WithUniqueId(RetirenmentId)
                 .Build();
             
             new EmploymentTerminationBuilder(this.Session)
-                .WithName("Deceased")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Deceased").WithLocale(englishLocale).Build())
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Overleden").WithLocale(dutchLocale).Build())
                 .WithUniqueId(DeceasedId)

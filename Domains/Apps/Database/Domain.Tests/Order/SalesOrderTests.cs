@@ -2658,17 +2658,15 @@ namespace Allors.Domain
                 .Build();
 
             var colorBlack = new ColourBuilder(this.Session)
-                .WithName("white")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session)
-                                            .WithText("White")
+                                            .WithText("Black")
                                             .WithLocale(this.Session.GetSingleton().DefaultLocale)
                                             .Build())
                 .Build();
 
             var extraLarge = new SizeBuilder(this.Session)
-                .WithName("Extra large")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session)
-                                            .WithText("White")
+                                            .WithText("Extra large")
                                             .WithLocale(this.Session.GetSingleton().DefaultLocale)
                                             .Build())
                 .Build();

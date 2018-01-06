@@ -44,28 +44,24 @@ namespace Allors.Domain
             var dutchLocale = new Locales(this.Session).DutchNetherlands;
 
             new RatingTypeBuilder(this.Session)
-                .WithName("Poor")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Poor").WithLocale(englishLocale).Build())
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Laag").WithLocale(dutchLocale).Build())
                 .WithUniqueId(PoorId)
                 .Build();
             
             new RatingTypeBuilder(this.Session)
-                .WithName("Fair")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Fair").WithLocale(englishLocale).Build())
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Redelijk").WithLocale(dutchLocale).Build())
                 .WithUniqueId(FairId)
                 .Build();
             
             new RatingTypeBuilder(this.Session)
-                .WithName("Good")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Good").WithLocale(englishLocale).Build())
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Goed").WithLocale(dutchLocale).Build())
                 .WithUniqueId(GoodId)
                 .Build();
             
             new RatingTypeBuilder(this.Session)
-                .WithName("Outstanding")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Outstanding").WithLocale(englishLocale).Build())
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Uitstekend").WithLocale(dutchLocale).Build())
                 .WithUniqueId(OutstandingId)

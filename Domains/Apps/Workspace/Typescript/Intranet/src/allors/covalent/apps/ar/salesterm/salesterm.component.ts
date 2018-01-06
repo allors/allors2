@@ -1,4 +1,4 @@
-import { AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit } from "@angular/core";
+import {  AfterViewInit,  ChangeDetectorRef,  Component,  OnDestroy,  OnInit } from "@angular/core";
 import { MatSnackBar } from "@angular/material";
 import { ActivatedRoute, Router, UrlSegment } from "@angular/router";
 import { TdDialogService, TdMediaService } from "@covalent/core";
@@ -9,23 +9,46 @@ import { Subscription } from "rxjs/Subscription";
 
 import "rxjs/add/observable/combineLatest";
 
-import { ErrorService, Field, Filter, Loaded, Saved, Scope, WorkspaceService } from "../../../../angular";
-import { SalesInvoice, SalesTerm, SalesTermType } from "../../../../domain";
-import { Fetch, Path, PullRequest, Query, Sort, TreeNode } from "../../../../framework";
+import {
+  ErrorService,
+  Field,
+  Filter,
+  Loaded,
+  Saved,
+  Scope,
+  WorkspaceService,
+} from "../../../../angular";
+import {
+  IncoTermType,
+  InvoiceTermType,
+  OrderTermType,
+  SalesInvoice,
+  SalesTerm,
+} from "../../../../domain";
+import {
+  Fetch,
+  Path,
+  PullRequest,
+  Query,
+  Sort,
+  TreeNode
+} from "../../../../framework";
 import { MetaDomain } from "../../../../meta";
 
 @Component({
-  templateUrl: "./salesterm.component.html",
+  templateUrl: "./salesterm.component.html"
 })
 export class SalesTermEditComponent implements OnInit, OnDestroy {
-
   public m: MetaDomain;
 
   public title: string = "Edit Sales Invoice Item";
   public subTitle: string;
   public invoice: SalesInvoice;
   public salesTerm: SalesTerm;
-  public salesTermTypes: SalesTermType[];
+  public incoTermTypes: IncoTermType[];
+  public invoiceTermTypes: InvoiceTermType[];
+  public orderTermTypes: OrderTermType[];
+  public salesTermTypes: any[];
 
   private refresh$: BehaviorSubject<Date>;
   private subscription: Subscription;
@@ -38,8 +61,9 @@ export class SalesTermEditComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private snackBar: MatSnackBar,
     private dialogService: TdDialogService,
-    public media: TdMediaService, private changeDetectorRef: ChangeDetectorRef) {
-
+    public media: TdMediaService,
+    private changeDetectorRef: ChangeDetectorRef,
+  ) {
     this.m = this.workspaceService.metaPopulation.metaDomain;
     this.scope = this.workspaceService.createScope();
     this.refresh$ = new BehaviorSubject<Date>(undefined);
@@ -48,11 +72,12 @@ export class SalesTermEditComponent implements OnInit, OnDestroy {
   public ngOnInit(): void {
     const route$: Observable<UrlSegment[]> = this.route.url;
 
-    const combined$: Observable<[UrlSegment[], Date]> = Observable.combineLatest(route$, this.refresh$);
+    const combined$: Observable<
+      [UrlSegment[], Date]
+    > = Observable.combineLatest(route$, this.refresh$);
 
     this.subscription = combined$
       .switchMap(([urlSegments, date]: [UrlSegment[], Date]) => {
-
         const id: string = this.route.snapshot.paramMap.get("id");
         const termId: string = this.route.snapshot.paramMap.get("termId");
         const m: MetaDomain = this.m;
@@ -64,42 +89,50 @@ export class SalesTermEditComponent implements OnInit, OnDestroy {
           }),
           new Fetch({
             id: termId,
-            include: [
-              new TreeNode({ roleType: m.SalesTerm.TermType }),
-            ],
+            include: [new TreeNode({ roleType: m.SalesTerm.TermType })],
             name: "salesTerm",
           }),
         ];
 
         const query: Query[] = [
-          new Query(
-            {
-              name: "salesTermTypes",
-              objectType: m.SalesTermType,
-              sort: [new Sort({ roleType: m.SalesTermType.Name, direction: "Asc" })],
-            }),
-          ];
+          new Query({
+            name: "incoTermTypes",
+            objectType: m.IncoTermType,
+          }),
+          new Query({
+            name: "invoiceTermTypes",
+            objectType: m.InvoiceTermType,
+          }),
+          new Query({
+            name: "orderTermTypes",
+            objectType: m.OrderTermType,
+          }),
+        ];
 
-        return this.scope
-          .load("Pull", new PullRequest({ fetch, query }));
+        return this.scope.load("Pull", new PullRequest({ fetch, query }));
       })
-      .subscribe((loaded: Loaded) => {
+      .subscribe(
+        (loaded: Loaded) => {
+          this.invoice = loaded.objects.salesInvoice as SalesInvoice;
+          this.salesTerm = loaded.objects.salesTerm as SalesTerm;
+          this.incoTermTypes = loaded.collections.incoTermTypes as IncoTermType[];
+          this.invoiceTermTypes = loaded.collections.invoiceTermTypes as InvoiceTermType[];
+          this.orderTermTypes = loaded.collections.orderTermTypes as OrderTermType[];
+          this.salesTermTypes = this.incoTermTypes.concat(this.invoiceTermTypes).concat(this.orderTermTypes);
 
-        this.invoice = loaded.objects.salesInvoice as SalesInvoice;
-        this.salesTerm = loaded.objects.salesTerm as SalesTerm;
-        this.salesTermTypes = loaded.collections.salesTermTypes as SalesTermType[];
-
-        if (!this.salesTerm) {
-          this.title = "Add Invoice Term";
-          this.salesTerm = this.scope.session.create("SalesTerm") as SalesTerm;
-          this.invoice.AddSalesTerm(this.salesTerm);
+          if (!this.salesTerm) {
+            this.title = "Add Invoice Term";
+            this.salesTerm = this.scope.session.create(
+              "SalesTerm",
+            ) as SalesTerm;
+            this.invoice.AddSalesTerm(this.salesTerm);
+          }
+        },
+        (error: Error) => {
+          this.errorService.message(error);
+          this.goBack();
         }
-      },
-      (error: Error) => {
-        this.errorService.message(error);
-        this.goBack();
-      },
-    );
+      );
   }
 
   public ngOnDestroy(): void {
@@ -109,14 +142,14 @@ export class SalesTermEditComponent implements OnInit, OnDestroy {
   }
 
   public save(): void {
-    this.scope
-      .save()
-      .subscribe((saved: Saved) => {
+    this.scope.save().subscribe(
+      (saved: Saved) => {
         this.router.navigate(["/ar/invoice/" + this.invoice.id]);
       },
       (error: Error) => {
         this.errorService.dialog(error);
-      });
+      }
+    );
   }
 
   public refresh(): void {

@@ -44,28 +44,24 @@ namespace Allors.Domain
             var dutchLocale = new Locales(this.Session).DutchNetherlands;
 
             new MaritalStatusBuilder(this.Session)
-                .WithName("Single")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Single").WithLocale(englishLocale).Build())
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Alleenstaand").WithLocale(dutchLocale).Build())
                 .WithUniqueId(SingleId)
                 .Build();
             
             new MaritalStatusBuilder(this.Session)
-                .WithName("Married")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Married").WithLocale(englishLocale).Build())
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Gehuwd").WithLocale(dutchLocale).Build())
                 .WithUniqueId(MarriedId)
                 .Build();
             
             new MaritalStatusBuilder(this.Session)
-                .WithName("Divorced")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Divorced").WithLocale(englishLocale).Build())
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Gescheiden").WithLocale(dutchLocale).Build())
                 .WithUniqueId(DivorcedId)
                 .Build();
             
             new MaritalStatusBuilder(this.Session)
-                .WithName("Widowed")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Widowed").WithLocale(englishLocale).Build())
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Weduw(e)(naar)").WithLocale(dutchLocale).Build())
                 .WithUniqueId(WidowedId)

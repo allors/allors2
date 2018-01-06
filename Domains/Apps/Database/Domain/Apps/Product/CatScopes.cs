@@ -38,14 +38,12 @@ namespace Allors.Domain
             var dutchLocale = new Locales(this.Session).DutchNetherlands;
 
             new CatScopeBuilder(this.Session)
-                .WithName("Private")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Private").WithLocale(englishLocale).Build())
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Prive").WithLocale(dutchLocale).Build())
                 .WithUniqueId(PrivateId)
                 .Build();
             
             new CatScopeBuilder(this.Session)
-                .WithName("Public")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Public").WithLocale(englishLocale).Build())
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Publiek").WithLocale(dutchLocale).Build())
                 .WithUniqueId(PublicId)

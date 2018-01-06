@@ -38,14 +38,12 @@ namespace Allors.Domain
             var dutchLocale = new Locales(this.Session).DutchNetherlands;
 
             new InventoryItemKindBuilder(this.Session)
-                .WithName("Serialised")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Serialised").WithLocale(englishLocale).Build())
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Op serienummer").WithLocale(dutchLocale).Build())
                 .WithUniqueId(SerialisedId)
                 .Build();
             
             new InventoryItemKindBuilder(this.Session)
-                .WithName("Non serialised")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Non serialised").WithLocale(englishLocale).Build())
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Zonder serienummer").WithLocale(dutchLocale).Build())
                 .WithUniqueId(NonSerialisedId)

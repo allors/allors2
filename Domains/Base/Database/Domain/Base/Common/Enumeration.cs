@@ -18,16 +18,24 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
+using System.Runtime.CompilerServices;
+
 namespace Allors.Domain
 {
     using System.Linq;
 
     public static partial class EnumerationExtensions
     {
+        private static void AppsOnDerive(this Enumeration @this, ObjectOnDerive method)
+        {
+            var defaultLocale = @this.Strategy.Session.GetSingleton().DefaultLocale;
+            @this.Name = GetLocalisedName(@this, defaultLocale);
+        }
+
         public static string GetLocalisedName(this Enumeration enumeration, Locale locale)
         {
             var localisedName = enumeration.LocalisedNames.FirstOrDefault(localizedText => localizedText.Locale.Equals(locale));
-            return localisedName != null ? localisedName.Text : enumeration.Name;
+            return localisedName?.Text;
         }
 
         public static void SetLocalisedName(this Enumeration enumeration, Locale locale, string name)

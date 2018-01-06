@@ -44,28 +44,24 @@ namespace Allors.Domain
             var dutchLocale = new Locales(this.Session).DutchNetherlands;
 
             new PurchaseInvoiceTypeBuilder(this.Session)
-                .WithName("Purchase invoice")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Purchase invoice").WithLocale(englishLocale).Build())
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Aankoop factuur").WithLocale(dutchLocale).Build())
                 .WithUniqueId(PurchaseInvoiceId)
                 .Build();
             
             new PurchaseInvoiceTypeBuilder(this.Session)
-                .WithName("Customer return")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Customer return").WithLocale(englishLocale).Build())
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Crediet nota retour").WithLocale(dutchLocale).Build())
                 .WithUniqueId(CustomerReturnId)
                 .Build();
             
             new PurchaseInvoiceTypeBuilder(this.Session)
-                .WithName("Commission")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Commission").WithLocale(englishLocale).Build())
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Commissie").WithLocale(dutchLocale).Build())
                 .WithUniqueId(CommissionId)
                 .Build();
             
             new PurchaseInvoiceTypeBuilder(this.Session)
-                .WithName("Payroll")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Payroll").WithLocale(englishLocale).Build())
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Salaris").WithLocale(dutchLocale).Build())
                 .WithUniqueId(PayrollId)

@@ -44,28 +44,24 @@ namespace Allors.Domain
             var dutchLocale = new Locales(this.Session).DutchNetherlands;
 
             new PersonRoleBuilder(this.Session)
-                .WithName("Employee")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Employee").WithLocale(englishLocale).Build())
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Werknemer").WithLocale(dutchLocale).Build())
                 .WithUniqueId(EmployeeId)
                 .Build();
 
             new PersonRoleBuilder(this.Session)
-                .WithName("Sales Rep")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Sales Rep").WithLocale(englishLocale).Build())
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Verkoper").WithLocale(dutchLocale).Build())
                 .WithUniqueId(EmployeeId)
                 .Build();
 
             new PersonRoleBuilder(this.Session)
-                .WithName("Contact")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Contact").WithLocale(englishLocale).Build())
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Contact").WithLocale(dutchLocale).Build())
                 .WithUniqueId(ContactId)
                 .Build();
 
             new PersonRoleBuilder(this.Session)
-                .WithName("Customer")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Customer").WithLocale(englishLocale).Build())
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Klant").WithLocale(dutchLocale).Build())
                 .WithUniqueId(CustomerId)

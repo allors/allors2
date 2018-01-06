@@ -41,7 +41,7 @@ namespace Allors.Domain
 
             Assert.False(this.Session.Derive(false).HasErrors);
 
-            builder.WithTermType(new SalesTermTypes(this.Session).NonReturnableSalesItem);
+            builder.WithTermType(new OrderTermTypes(this.Session).NonReturnableSalesItem);
             financialTerm = builder.Build();
 
             Assert.False(this.Session.Derive(false).HasErrors);
@@ -68,7 +68,7 @@ namespace Allors.Domain
 
             this.Session.Rollback();
 
-            builder.WithTermType(new SalesTermTypes(this.Session).NonReturnableSalesItem);
+            builder.WithTermType(new OrderTermTypes(this.Session).NonReturnableSalesItem);
             incentive = builder.Build();
 
             Assert.False(this.Session.Derive(false).HasErrors);
@@ -93,7 +93,7 @@ namespace Allors.Domain
 
             Assert.False(this.Session.Derive(false).HasErrors);
 
-            builder.WithTermType(new SalesTermTypes(this.Session).NonReturnableSalesItem);
+            builder.WithTermType(new OrderTermTypes(this.Session).NonReturnableSalesItem);
             legalTerm = builder.Build();
 
             Assert.False(this.Session.Derive(false).HasErrors);
@@ -117,7 +117,7 @@ namespace Allors.Domain
             threshold = builder.Build();
 
             Assert.False(this.Session.Derive(false).HasErrors);
-            builder.WithTermType(new SalesTermTypes(this.Session).NonReturnableSalesItem);
+            builder.WithTermType(new OrderTermTypes(this.Session).NonReturnableSalesItem);
             threshold = builder.Build();
 
             Assert.False(this.Session.Derive(false).HasErrors);

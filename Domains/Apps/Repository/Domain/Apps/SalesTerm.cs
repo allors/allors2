@@ -1,40 +1,11 @@
 namespace Allors.Repository
 {
-    using System;
-
     using Attributes;
 
     #region Allors
-    [Id("86cf6a28-baeb-479d-ac9e-fabc7fe1994d")]
+    [Id("DE6BE0F7-AC9B-472F-A1F2-DA0DFDF1F3EA")]
     #endregion
-    public partial class SalesTerm : AccessControlledObject, AgreementTerm
+    public partial interface SalesTerm : AgreementTerm 
     {
-        #region inherited properties
-
-        public string TermValue { get; set; }
-        public TermType TermType { get; set; }
-        public string Description { get; set; }
-
-        public Permission[] DeniedPermissions { get; set; }
-
-        public SecurityToken[] SecurityTokens { get; set; }
-
-        #endregion
-
-        #region inherited methods
-
-
-        public void OnBuild(){}
-
-        public void OnPostBuild(){}
-
-        public void OnPreDerive(){}
-
-        public void OnDerive(){}
-
-        public void OnPostDerive(){}
-        public void Delete() { }
-
-        #endregion
     }
 }

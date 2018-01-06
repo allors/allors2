@@ -56,56 +56,48 @@ namespace Allors.Domain
             var dutchLocale = new Locales(this.Session).DutchNetherlands;
 
             new WorkEffortPurposeBuilder(this.Session)
-                .WithName("Meeting")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Meeting").WithLocale(englishLocale).Build())
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Vergadering").WithLocale(dutchLocale).Build())
                 .WithUniqueId(MeetingId)
                 .Build();
 
             new WorkEffortPurposeBuilder(this.Session)
-                .WithName("Phonecall")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Phonecall").WithLocale(englishLocale).Build())
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Telefoon gesprek").WithLocale(dutchLocale).Build())
                 .WithUniqueId(PhonecallId)
                 .Build();
 
             new WorkEffortPurposeBuilder(this.Session)
-                .WithName("Email")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Email").WithLocale(englishLocale).Build())
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Email").WithLocale(dutchLocale).Build())
                 .WithUniqueId(EmailId)
                 .Build();
 
             new WorkEffortPurposeBuilder(this.Session)
-                .WithName("Support")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Support").WithLocale(englishLocale).Build())
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Support").WithLocale(dutchLocale).Build())
                 .WithUniqueId(SupportId)
                 .Build();
 
             new WorkEffortPurposeBuilder(this.Session)
-                .WithName("Project")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Maintenance").WithLocale(englishLocale).Build())
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Onderhoud").WithLocale(dutchLocale).Build())
                 .WithUniqueId(MaintenanceId)
                 .Build();
 
             new WorkEffortPurposeBuilder(this.Session)
-                .WithName("Project")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Production run").WithLocale(englishLocale).Build())
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Productie run").WithLocale(dutchLocale).Build())
                 .WithUniqueId(ProductionRunId)
                 .Build();
 
             new WorkEffortPurposeBuilder(this.Session)
-                .WithName("Project")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Workflow").WithLocale(englishLocale).Build())
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Workflow").WithLocale(dutchLocale).Build())
                 .WithUniqueId(WorkFlowId)
                 .Build();
 
             new WorkEffortPurposeBuilder(this.Session)
-                .WithName("Project")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Research").WithLocale(englishLocale).Build())
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Onderzoek").WithLocale(dutchLocale).Build())
                 .WithUniqueId(ResearchId)

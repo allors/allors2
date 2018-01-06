@@ -38,14 +38,12 @@ namespace Allors.Domain
             var dutchLocale = new Locales(this.Session).DutchNetherlands;
 
             new OwnershipBuilder(this.Session)
-                .WithName("Own")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Own").WithLocale(englishLocale).Build())
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Eigen").WithLocale(dutchLocale).Build())
                 .WithUniqueId(OwnId)
                 .Build();
             
             new OwnershipBuilder(this.Session)
-                .WithName("Trading")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Trading").WithLocale(englishLocale).Build())
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Handel").WithLocale(dutchLocale).Build())
                 .WithUniqueId(TradingId)

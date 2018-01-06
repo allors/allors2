@@ -47,35 +47,30 @@ namespace Allors.Domain
             var dutchLocale = new Locales(this.Session).DutchNetherlands;
 
             new PositionStatusBuilder(this.Session)
-                .WithName("Planned For")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Planned For").WithLocale(englishLocale).Build())
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Gepland").WithLocale(dutchLocale).Build())
                 .WithUniqueId(PlannedForId)
                 .Build();
             
             new PositionStatusBuilder(this.Session)
-                .WithName("Active")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Active").WithLocale(englishLocale).Build())
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Actief").WithLocale(dutchLocale).Build())
                 .WithUniqueId(ActiveId)
                 .Build();
             
             new PositionStatusBuilder(this.Session)
-                .WithName("Open")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Open").WithLocale(englishLocale).Build())
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Open").WithLocale(dutchLocale).Build())
                 .WithUniqueId(PositionOpenId)
                 .Build();
             
             new PositionStatusBuilder(this.Session)
-                .WithName("Inactive")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Inactive").WithLocale(englishLocale).Build())
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Niet actief").WithLocale(dutchLocale).Build())
                 .WithUniqueId(InactiveId)
                 .Build();
             
             new PositionStatusBuilder(this.Session)
-                .WithName("Closed")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Closed").WithLocale(englishLocale).Build())
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Gesloten").WithLocale(dutchLocale).Build())
                 .WithUniqueId(PositionClosedId)

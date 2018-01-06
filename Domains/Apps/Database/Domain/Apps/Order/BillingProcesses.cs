@@ -44,28 +44,24 @@ namespace Allors.Domain
             var dutchLocale = new Locales(this.Session).DutchNetherlands;
 
             new BillingProcessBuilder(this.Session)
-                .WithName("BillingForOrderItems")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Billing for Order Items").WithLocale(englishLocale).Build())
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Billing for Order Items").WithLocale(dutchLocale).Build())
                 .WithUniqueId(BillingForOrderItemsId)
                 .Build();
 
             new BillingProcessBuilder(this.Session)
-                .WithName("BillingForShipmentItems")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Billing for Shipment Items").WithLocale(englishLocale).Build())
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Billing for Shipment Items").WithLocale(dutchLocale).Build())
                 .WithUniqueId(BillingForShipmentItemsId)
                 .Build();
 
             new BillingProcessBuilder(this.Session)
-                .WithName("BillingForWorkEfforts")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Billing for Work Efforts").WithLocale(englishLocale).Build())
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Billing for Shipment Items").WithLocale(dutchLocale).Build())
                 .WithUniqueId(BillingForWorkEffortsId)
                 .Build();
 
             new BillingProcessBuilder(this.Session)
-                .WithName("BillingForTimeEntries")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Billing for Time Entries").WithLocale(englishLocale).Build())
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Billing for Shipment Items").WithLocale(dutchLocale).Build())
                 .WithUniqueId(BillingForTimeEntriesId)

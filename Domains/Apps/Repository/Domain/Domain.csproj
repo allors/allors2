@@ -185,7 +185,12 @@
     <Compile Include="..\..\..\Core\Repository\Domain\Core\Common\Object.cs">
       <Link>Core\Common\Object.cs</Link>
     </Compile>
-    <Compile Include="Apps\SalesTermType.cs" />
+    <Compile Include="Apps\OrderTermType.cs" />
+    <Compile Include="Apps\SalesTerm.cs" />
+    <Compile Include="Apps\InvoiceTermType.cs" />
+    <Compile Include="Apps\OrderTerm.cs" />
+    <Compile Include="Apps\IncoTerm.cs" />
+    <Compile Include="Apps\IncoTermType.cs" />
     <Compile Include="Apps\User.cs" />
     <Compile Include="Apps\AccountAdjustment.cs" />
     <Compile Include="Apps\AccountingPeriod.cs" />
@@ -450,7 +455,7 @@
     <Compile Include="Apps\OrderQuantityBreak.cs" />
     <Compile Include="Apps\OrderRequirementCommitment.cs" />
     <Compile Include="Apps\OrderShipment.cs" />
-    <Compile Include="Apps\SalesTerm.cs" />
+    <Compile Include="Apps\InvoiceTerm.cs" />
     <Compile Include="Apps\OrderValue.cs" />
     <Compile Include="Apps\Ordinal.cs" />
     <Compile Include="Apps\Organisation.cs" />

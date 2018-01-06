@@ -36,7 +36,7 @@ namespace Allors.Domain
 
             this.Session.Rollback();
 
-            builder.WithName("uom");
+            builder.WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Mt").WithLocale(this.Session.GetSingleton().DefaultLocale).Build());
 
             Assert.False(this.Session.Derive(false).HasErrors);
         }

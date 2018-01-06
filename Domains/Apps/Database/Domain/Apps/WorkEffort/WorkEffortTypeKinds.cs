@@ -47,35 +47,30 @@ namespace Allors.Domain
             var dutchLocale = new Locales(this.Session).DutchNetherlands;
 
             new WorkEffortTypeKindBuilder(this.Session)
-                .WithName("Production Run")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Program").WithLocale(englishLocale).Build())
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Programma").WithLocale(dutchLocale).Build())
                 .WithUniqueId(ProgramId)
                 .Build();
             
             new WorkEffortTypeKindBuilder(this.Session)
-                .WithName("Process")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Project").WithLocale(englishLocale).Build())
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Project").WithLocale(dutchLocale).Build())
                 .WithUniqueId(ProjectId)
                 .Build();
             
             new WorkEffortTypeKindBuilder(this.Session)
-                .WithName("Process Step")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Phase").WithLocale(englishLocale).Build())
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Fase").WithLocale(dutchLocale).Build())
                 .WithUniqueId(PhaseId)
                 .Build();
 
             new WorkEffortTypeKindBuilder(this.Session)
-                .WithName("Process Step")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Activity").WithLocale(englishLocale).Build())
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Activiteit").WithLocale(dutchLocale).Build())
                 .WithUniqueId(ActivityId)
                 .Build();
 
             new WorkEffortTypeKindBuilder(this.Session)
-                .WithName("Process Step")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Task").WithLocale(englishLocale).Build())
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Taak").WithLocale(dutchLocale).Build())
                 .WithUniqueId(WorkTaskId)

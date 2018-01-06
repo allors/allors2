@@ -38,13 +38,11 @@ namespace Allors.Domain
             var dutchLocale = new Locales(this.Session).DutchNetherlands;
 
             new DebitCreditConstantBuilder(this.Session)
-                .WithName("Debit")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Debit").WithLocale(englishLocale).Build())
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Debet").WithLocale(dutchLocale).Build())
                 .WithUniqueId(DebitId).Build();
             
             new DebitCreditConstantBuilder(this.Session)
-                .WithName("Credit")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Credit").WithLocale(englishLocale).Build())
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Credit").WithLocale(dutchLocale).Build())
                 .WithUniqueId(CreditId)

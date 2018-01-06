@@ -41,20 +41,17 @@ namespace Allors.Domain
             var dutchLocale = new Locales(this.Session).DutchNetherlands;
 
             new DebitCreditConstantBuilder(this.Session)
-                .WithName("FiFo")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("FiFo").WithLocale(englishLocale).Build())
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("FiFo").WithLocale(dutchLocale).Build())
                 .WithUniqueId(FiFoId).Build();
             
             new DebitCreditConstantBuilder(this.Session)
-                .WithName("LiFo")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("LiFo").WithLocale(englishLocale).Build())
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("LiFo").WithLocale(dutchLocale).Build())
                 .WithUniqueId(LiFoId)
                 .Build();
 
             new DebitCreditConstantBuilder(this.Session)
-                .WithName("Average price")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Average price").WithLocale(englishLocale).Build())
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Gemiddelde prijs").WithLocale(dutchLocale).Build())
                 .WithUniqueId(AverageId)

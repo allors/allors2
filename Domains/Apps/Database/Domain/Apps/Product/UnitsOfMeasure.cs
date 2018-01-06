@@ -56,56 +56,48 @@ namespace Allors.Domain
             var dutchLocale = new Locales(this.Session).DutchNetherlands;
 
             new UnitOfMeasureBuilder(this.Session)
-                .WithName("Pack")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Pack").WithLocale(englishLocale).Build())
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Pakket").WithLocale(dutchLocale).Build())
                 .WithUniqueId(PackId)
                 .Build();
 
             new UnitOfMeasureBuilder(this.Session)
-                .WithName("Pair")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Pair").WithLocale(englishLocale).Build())
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Paar").WithLocale(dutchLocale).Build())
                 .WithUniqueId(PairId)
                 .Build();
            
             new UnitOfMeasureBuilder(this.Session)
-                .WithName("Piece")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Piece").WithLocale(englishLocale).Build())
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Stuk").WithLocale(dutchLocale).Build())
                 .WithUniqueId(PieceId)
                 .Build();
             
             new UnitOfMeasureBuilder(this.Session)
-                .WithName("cm length")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("cm length").WithLocale(englishLocale).Build())
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("cm lengte").WithLocale(dutchLocale).Build())
                 .WithUniqueId(LengthCmId)
                 .Build();
             
             new UnitOfMeasureBuilder(this.Session)
-                .WithName("cm width")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("cm width").WithLocale(englishLocale).Build())
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("cm breedte").WithLocale(dutchLocale).Build())
                 .WithUniqueId(WidthCmId)
                 .Build();
             
             new UnitOfMeasureBuilder(this.Session)
-                .WithName("cm height")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("cm height").WithLocale(englishLocale).Build())
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("cm hoogte").WithLocale(dutchLocale).Build())
                 .WithUniqueId(HeightCmId)
                 .Build();
             
             new UnitOfMeasureBuilder(this.Session)
-                .WithName("cm")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("cm").WithLocale(englishLocale).Build())
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("cm").WithLocale(dutchLocale).Build())
                 .WithUniqueId(CentimeterId)
                 .Build();
             
             new UnitOfMeasureBuilder(this.Session)
-                .WithName("meter")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("meter").WithLocale(englishLocale).Build())
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("meter").WithLocale(dutchLocale).Build())
                 .WithUniqueId(MeterId)

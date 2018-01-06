@@ -50,42 +50,36 @@ namespace Allors.Domain
             var dutchLocale = new Locales(this.Session).DutchNetherlands;
 
             new RequirementTypeBuilder(this.Session)
-                .WithName("Production Run")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Customer Requirement").WithLocale(englishLocale).Build())
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Klant vereiste").WithLocale(dutchLocale).Build())
                 .WithUniqueId(CustomerRequirementId)
                 .Build();
             
             new RequirementTypeBuilder(this.Session)
-                .WithName("Process")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Internal Requirement").WithLocale(englishLocale).Build())
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Interne vereiste").WithLocale(dutchLocale).Build())
                 .WithUniqueId(InternalRequirementId)
                 .Build();
             
             new RequirementTypeBuilder(this.Session)
-                .WithName("Process Step")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Product Requirement").WithLocale(englishLocale).Build())
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Product vereiste").WithLocale(dutchLocale).Build())
                 .WithUniqueId(ProductRequirementId)
                 .Build();
 
             new RequirementTypeBuilder(this.Session)
-                .WithName("Process Step")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Project Requirement").WithLocale(englishLocale).Build())
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Project vereiste").WithLocale(dutchLocale).Build())
                 .WithUniqueId(ProjectRequirementId)
                 .Build();
 
             new RequirementTypeBuilder(this.Session)
-                .WithName("Process Step")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Resource Requirement").WithLocale(englishLocale).Build())
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Resource vereiste").WithLocale(dutchLocale).Build())
                 .WithUniqueId(ResourceRequirementId)
                 .Build();
 
             new RequirementTypeBuilder(this.Session)
-                .WithName("Process Step")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Work Requirement").WithLocale(englishLocale).Build())
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Werk vereiste").WithLocale(dutchLocale).Build())
                 .WithUniqueId(WorkRequirementId)

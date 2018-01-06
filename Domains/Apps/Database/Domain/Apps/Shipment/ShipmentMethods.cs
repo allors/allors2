@@ -47,35 +47,30 @@ namespace Allors.Domain
             var dutchLocale = new Locales(this.Session).DutchNetherlands;
 
             new ShipmentMethodBuilder(this.Session)
-                .WithName("Ground")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Ground").WithLocale(englishLocale).Build())
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Weg").WithLocale(dutchLocale).Build())
                 .WithUniqueId(GroundId)
                 .Build();
 
             new ShipmentMethodBuilder(this.Session)
-                .WithName("Rail")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Rail").WithLocale(englishLocale).Build())
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Spoor").WithLocale(dutchLocale).Build())
                 .WithUniqueId(RailId)
                 .Build();
             
             new ShipmentMethodBuilder(this.Session)
-                .WithName("Air")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Air").WithLocale(englishLocale).Build())
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Vliegtuig").WithLocale(dutchLocale).Build())
                 .WithUniqueId(FirstClassAirId)
                 .Build();
             
             new ShipmentMethodBuilder(this.Session)
-                .WithName("Boat")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Boat").WithLocale(englishLocale).Build())
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Boot").WithLocale(dutchLocale).Build())
                 .WithUniqueId(BoatId)
                 .Build();
 
             new ShipmentMethodBuilder(this.Session)
-                .WithName("Ex works")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Ex works").WithLocale(englishLocale).Build())
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Af fabriek").WithLocale(dutchLocale).Build())
                 .WithUniqueId(ExWorksId)

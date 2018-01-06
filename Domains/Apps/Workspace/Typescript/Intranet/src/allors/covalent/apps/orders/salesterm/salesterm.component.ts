@@ -10,7 +10,7 @@ import { Subscription } from "rxjs/Subscription";
 import "rxjs/add/observable/combineLatest";
 
 import { ErrorService, Field, Filter, Loaded, Saved, Scope, WorkspaceService } from "../../../../angular";
-import { SalesOrder, SalesTerm, SalesTermType } from "../../../../domain";
+import { IncoTermType, InvoiceTermType, OrderTermType, SalesOrder, SalesTerm } from "../../../../domain";
 import { Fetch, Path, PullRequest, Query, Sort, TreeNode } from "../../../../framework";
 import { MetaDomain } from "../../../../meta";
 
@@ -25,7 +25,10 @@ export class SalesTermEditComponent implements OnInit, OnDestroy {
   public subTitle: string;
   public order: SalesOrder;
   public salesTerm: SalesTerm;
-  public salesTermTypes: SalesTermType[];
+  public incoTermTypes: IncoTermType[];
+  public invoiceTermTypes: InvoiceTermType[];
+  public orderTermTypes: OrderTermType[];
+  public salesTermTypes: any[];
 
   private refresh$: BehaviorSubject<Date>;
   private subscription: Subscription;
@@ -72,13 +75,19 @@ export class SalesTermEditComponent implements OnInit, OnDestroy {
         ];
 
         const query: Query[] = [
-          new Query(
-            {
-              name: "salesTermTypes",
-              objectType: m.SalesTermType,
-              sort: [new Sort({ roleType: m.SalesTermType.Name, direction: "Asc" })],
-            }),
-          ];
+          new Query({
+            name: "incoTermTypes",
+            objectType: m.IncoTermType,
+          }),
+          new Query({
+            name: "invoiceTermTypes",
+            objectType: m.InvoiceTermType,
+          }),
+          new Query({
+            name: "orderTermTypes",
+            objectType: m.OrderTermType,
+          }),
+        ];
 
         return this.scope
           .load("Pull", new PullRequest({ fetch, query }));
@@ -87,7 +96,10 @@ export class SalesTermEditComponent implements OnInit, OnDestroy {
 
         this.order = loaded.objects.salesOrder as SalesOrder;
         this.salesTerm = loaded.objects.salesTerm as SalesTerm;
-        this.salesTermTypes = loaded.collections.salesTermTypes as SalesTermType[];
+        this.incoTermTypes = loaded.collections.incoTermTypes as IncoTermType[];
+        this.invoiceTermTypes = loaded.collections.invoiceTermTypes as InvoiceTermType[];
+        this.orderTermTypes = loaded.collections.orderTermTypes as OrderTermType[];
+        this.salesTermTypes = this.incoTermTypes.concat(this.invoiceTermTypes).concat(this.orderTermTypes);
 
         if (!this.salesTerm) {
           this.title = "Add Order Term";

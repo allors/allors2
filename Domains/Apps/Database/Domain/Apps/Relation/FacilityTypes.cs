@@ -35,7 +35,6 @@ namespace Allors.Domain
             var dutchLocale = new Locales(this.Session).DutchNetherlands;
 
             new FacilityTypeBuilder(this.Session)
-                .WithName("Employee")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Warehouse").WithLocale(englishLocale).Build())
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Magazijn").WithLocale(dutchLocale).Build())
                 .WithUniqueId(WarehouseId)

@@ -62,70 +62,60 @@ namespace Allors.Domain
             var dutchLocale = new Locales(this.Session).DutchNetherlands;
 
             new PurchaseInvoiceItemTypeBuilder(this.Session)
-                .WithName("Fee")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Fee").WithLocale(englishLocale).Build())
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Honorarium").WithLocale(dutchLocale).Build())
                 .WithUniqueId(FeeId)
                 .Build();
             
             new PurchaseInvoiceItemTypeBuilder(this.Session)
-                .WithName("Discount")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Discount").WithLocale(englishLocale).Build())
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Korting").WithLocale(dutchLocale).Build())
                 .WithUniqueId(DiscountId)
                 .Build();
             
             new PurchaseInvoiceItemTypeBuilder(this.Session)
-                .WithName("Interest Charge")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Interest Charge").WithLocale(englishLocale).Build())
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Interest toeslag").WithLocale(dutchLocale).Build())
                 .WithUniqueId(InterestChargeId)
                 .Build();
             
             new PurchaseInvoiceItemTypeBuilder(this.Session)
-                .WithName("Miscellaneous Charge")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Miscellaneous Charge").WithLocale(englishLocale).Build())
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Overige toeslag").WithLocale(dutchLocale).Build())
                 .WithUniqueId(MiscChargeId)
                 .Build();
             
             new PurchaseInvoiceItemTypeBuilder(this.Session)
-                .WithName("Promotion")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Promotion").WithLocale(englishLocale).Build())
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Verkoopbevordering ").WithLocale(dutchLocale).Build())
                 .WithUniqueId(PromotionId)
                 .Build();
             
             new PurchaseInvoiceItemTypeBuilder(this.Session)
-                .WithName("VAT")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("VAT").WithLocale(englishLocale).Build())
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("BTW").WithLocale(dutchLocale).Build())
                 .WithUniqueId(VatId)
                 .Build();
             
             new PurchaseInvoiceItemTypeBuilder(this.Session)
-                .WithName("Shipping & Handling")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Shipping & Handling").WithLocale(englishLocale).Build())
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Bezorgkosten").WithLocale(dutchLocale).Build())
                 .WithUniqueId(ShippingAndHandlingId)
                 .Build();
             
             new PurchaseInvoiceItemTypeBuilder(this.Session)
-                .WithName("Surcharge")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Surcharge").WithLocale(englishLocale).Build())
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Toeslag").WithLocale(dutchLocale).Build())
                 .WithUniqueId(SurchargeId)
                 .Build();
             
             new PurchaseInvoiceItemTypeBuilder(this.Session)
-                .WithName("Warranty")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Warranty").WithLocale(englishLocale).Build())
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Garantie").WithLocale(dutchLocale).Build())
                 .WithUniqueId(WarrantyId)
                 .Build();
             
             new PurchaseInvoiceItemTypeBuilder(this.Session)
-                .WithName("Part Item")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Part Item").WithLocale(englishLocale).Build())
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Onderdeel item").WithLocale(dutchLocale).Build())
                 .WithUniqueId(PartItemId)
