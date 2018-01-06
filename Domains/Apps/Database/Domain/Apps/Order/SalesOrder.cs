@@ -832,9 +832,39 @@ namespace Allors.Domain
                         .Build();
                 }
             }
+
+            foreach (SalesTerm salesTerm in this.SalesTerms)
+            {
+                if (salesTerm.GetType().Namespace == typeof(IncoTerm).Name)
+                {
+                    salesInvoice.AddSalesTerm(new IncoTermBuilder(this.strategy.Session)
+                                                .WithTermType(salesTerm.TermType)
+                                                .WithTermValue(salesTerm.TermValue)
+                                                .WithDescription(salesTerm.Description)
+                                                .Build());
+                }
+
+                if (salesTerm.GetType().Namespace == typeof(InvoiceTerm).Name)
+                {
+                    salesInvoice.AddSalesTerm(new InvoiceTermBuilder(this.strategy.Session)
+                        .WithTermType(salesTerm.TermType)
+                        .WithTermValue(salesTerm.TermValue)
+                        .WithDescription(salesTerm.Description)
+                        .Build());
+                }
+
+                if (salesTerm.GetType().Namespace == typeof(OrderTerm).Name)
+                {
+                    salesInvoice.AddSalesTerm(new OrderTermBuilder(this.strategy.Session)
+                        .WithTermType(salesTerm.TermType)
+                        .WithTermValue(salesTerm.TermValue)
+                        .WithDescription(salesTerm.Description)
+                        .Build());
+                }
+            }
         }
 
-        public void AppsOnDeriveOrderItems(IDerivation derivation)
+            public void AppsOnDeriveOrderItems(IDerivation derivation)
         {
             var quantityOrderedByProduct = new Dictionary<Product, decimal>();
             var totalBasePriceByProduct = new Dictionary<Product, decimal>();

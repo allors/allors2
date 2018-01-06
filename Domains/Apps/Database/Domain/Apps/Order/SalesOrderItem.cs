@@ -52,6 +52,7 @@ namespace Allors.Domain
                 if (this.SalesOrderItemState.Equals(new SalesOrderItemStates(this.Strategy.Session).Cancelled) ||
                     this.SalesOrderItemState.Equals(new SalesOrderItemStates(this.Strategy.Session).Rejected) ||
                     this.QuantityOrdered == 0 ||
+                    !this.ExistShipToAddress || !this.ExistShipToParty ||
                     (this.ExistCalculatedUnitPrice && this.CalculatedUnitPrice == 0))
                 {
                     return false;
@@ -145,6 +146,7 @@ namespace Allors.Domain
 
             this.AppsOnDerivePrices(derivation, 0, 0);
             this.AppsOnDeriveDeliveryDate(derivation);
+            this.AppsOnDeriveShipTo(derivation);
             this.AppsOnDeriveVatRegime(derivation);
             this.AppsOnDeriveIsValidOrderItem(derivation);
 

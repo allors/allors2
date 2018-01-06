@@ -80,7 +80,7 @@
         <button *ngIf="order.CanWriteSalesOrderItems" mat-button [routerLink]="['/salesOrder/' + order.id]">Edit</button>
         <button mat-button [routerLink]="['/printsalesorder/' + order.id ]">Print</button>
         <button *ngIf="order.CanExecuteShip" mat-button (click)="ship()">Ship to customer</button>
-        <button *ngIf="billingForOrderItems && order.CanExecuteComplete && order.ValidOrderItems.length > 0" mat-button (click)="createInvoice()">Create Invoice</button>
+        <button *ngIf="order.CanExecuteInvoice && order.ValidOrderItems.length > 0" mat-button (click)="createInvoice()">Create Invoice</button>
       </mat-card-actions>
     </mat-card>
 

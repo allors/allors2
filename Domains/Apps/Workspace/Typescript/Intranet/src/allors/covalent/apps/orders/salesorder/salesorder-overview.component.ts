@@ -228,7 +228,7 @@ export class SalesOrderOverviewComponent implements OnInit, OnDestroy {
   }
 
   public createInvoice(): void {
-    this.scope.invoke(this.order.Complete)
+    this.scope.invoke(this.order.Invoice)
       .subscribe((invoked: Invoked) => {
         this.goBack();
         this.snackBar.open("Invoice successfully created.", "close", { duration: 5000 });
