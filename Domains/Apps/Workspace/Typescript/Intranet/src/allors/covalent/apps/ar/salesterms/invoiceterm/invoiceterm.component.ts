@@ -9,26 +9,23 @@ import { Subscription } from "rxjs/Subscription";
 
 import "rxjs/add/observable/combineLatest";
 
-import { ErrorService, Field, Filter, Loaded, Saved, Scope, WorkspaceService } from "../../../../angular";
-import { IncoTermType, InvoiceTermType, OrderTermType, SalesOrder, SalesTerm } from "../../../../domain";
-import { Fetch, Path, PullRequest, Query, Sort, TreeNode } from "../../../../framework";
-import { MetaDomain } from "../../../../meta";
+import { ErrorService, Field, Filter, Loaded, Saved, Scope, WorkspaceService } from "../../../../../angular";
+import { InvoiceTermType, SalesInvoice, SalesTerm } from "../../../../../domain";
+import { Fetch, Path, PullRequest, Query, Sort, TreeNode } from "../../../../../framework";
+import { MetaDomain } from "../../../../../meta";
 
 @Component({
-  templateUrl: "./salesterm.component.html",
+  templateUrl: "./invoiceterm.component.html",
 })
-export class SalesTermEditComponent implements OnInit, OnDestroy {
+export class InvoiceTermEditComponent implements OnInit, OnDestroy {
 
   public m: MetaDomain;
 
-  public title: string = "Edit Sales Order Item";
+  public title: string = "Edit Sales Order Invoice Term";
   public subTitle: string;
-  public order: SalesOrder;
+  public invoice: SalesInvoice;
   public salesTerm: SalesTerm;
-  public incoTermTypes: IncoTermType[];
   public invoiceTermTypes: InvoiceTermType[];
-  public orderTermTypes: OrderTermType[];
-  public salesTermTypes: any[];
 
   private refresh$: BehaviorSubject<Date>;
   private subscription: Subscription;
@@ -63,7 +60,7 @@ export class SalesTermEditComponent implements OnInit, OnDestroy {
         const fetch: Fetch[] = [
           new Fetch({
             id,
-            name: "salesOrder",
+            name: "salesInvoice",
           }),
           new Fetch({
             id: termId,
@@ -76,16 +73,8 @@ export class SalesTermEditComponent implements OnInit, OnDestroy {
 
         const query: Query[] = [
           new Query({
-            name: "incoTermTypes",
-            objectType: m.IncoTermType,
-          }),
-          new Query({
             name: "invoiceTermTypes",
             objectType: m.InvoiceTermType,
-          }),
-          new Query({
-            name: "orderTermTypes",
-            objectType: m.OrderTermType,
           }),
         ];
 
@@ -94,17 +83,14 @@ export class SalesTermEditComponent implements OnInit, OnDestroy {
       })
       .subscribe((loaded: Loaded) => {
 
-        this.order = loaded.objects.salesOrder as SalesOrder;
+        this.invoice = loaded.objects.salesInvoice as SalesInvoice;
         this.salesTerm = loaded.objects.salesTerm as SalesTerm;
-        this.incoTermTypes = loaded.collections.incoTermTypes as IncoTermType[];
         this.invoiceTermTypes = loaded.collections.invoiceTermTypes as InvoiceTermType[];
-        this.orderTermTypes = loaded.collections.orderTermTypes as OrderTermType[];
-        this.salesTermTypes = this.incoTermTypes.concat(this.invoiceTermTypes).concat(this.orderTermTypes);
 
         if (!this.salesTerm) {
-          this.title = "Add Order Term";
-          this.salesTerm = this.scope.session.create("SalesTerm") as SalesTerm;
-          this.order.AddSalesTerm(this.salesTerm);
+          this.title = "Add Sales Invoice Term";
+          this.salesTerm = this.scope.session.create("InvoiceTerm") as SalesTerm;
+          this.invoice.AddSalesTerm(this.salesTerm);
         }
       },
       (error: Error) => {
@@ -124,7 +110,7 @@ export class SalesTermEditComponent implements OnInit, OnDestroy {
     this.scope
       .save()
       .subscribe((saved: Saved) => {
-        this.router.navigate(["/orders/salesOrder/" + this.order.id]);
+        this.router.navigate(["/ar/invoice/" + this.invoice.id]);
       },
       (error: Error) => {
         this.errorService.dialog(error);

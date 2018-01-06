@@ -7,7 +7,9 @@ export * from "./invoice/invoice-overview.module";
 export * from "./invoice/invoice.module";
 export * from "./invoice/invoice-print.module";
 export * from "./invoiceitem/invoiceitem.module";
-export * from "./invoiceterm/invoiceterm.module";
+export * from "./salesterms/incoterm/incoterm.module";
+export * from "./salesterms/invoiceterm/invoiceterm.module";
+export * from "./salesterms/orderterm/orderterm.module";
 
 import { OverviewModule } from "./overview.module";
 
@@ -20,17 +22,21 @@ import { InvoiceModule } from "./invoice/invoice.module";
 import { InvoicesOverviewModule } from "./invoice/invoices-overview.module";
 import { InvoiceItemEditComponent } from "./invoiceitem/invoiceitem.component";
 import { InvoiceItemEditModule } from "./invoiceitem/invoiceitem.module";
-import { InvoiceTermEditModule } from "./invoiceterm/invoiceterm.module";
+import { IncoTermEditModule } from "./salesterms/incoterm/incoterm.module";
+import { InvoiceTermEditModule } from "./salesterms/invoiceterm/invoiceterm.module";
+import { OrderTermEditModule } from "./salesterms/orderterm/orderterm.module";
 
 export const modules = [
   // Overview
   OverviewModule,
   DashboardModule,
 
+  IncoTermEditModule,
   InvoiceModule,
   InvoiceOverviewModule,
   InvoicesOverviewModule,
   InvoicePrintModule,
   InvoiceItemEditModule,
   InvoiceTermEditModule,
+  OrderTermEditModule,
 ];
