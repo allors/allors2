@@ -32,9 +32,12 @@ namespace Allors.Domain
         {
             var derivation = method.Derivation;
 
-            foreach (Role role in this.RolesWherePermission)
+            if (derivation.IsModified(this))
             {
-                derivation.AddDependency(role, this);
+                foreach (Role role in this.RolesWherePermission)
+                {
+                    derivation.AddDependency(role, this);
+                }
             }
         }
 

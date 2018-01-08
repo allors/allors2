@@ -183,7 +183,7 @@ namespace Allors.Domain
             {
                 if (this.DerivedObjects.Contains(derivable))
                 {
-                    throw new ArgumentException("Object has alreadry been derived.");
+                    throw new ArgumentException("Object has already been derived.");
                 }
                 
                 this.derivationGraph.Add(derivable);
@@ -207,7 +207,7 @@ namespace Allors.Domain
             {
                 if (this.DerivedObjects.Contains(dependent) || this.DerivedObjects.Contains(dependee))
                 {
-                    throw new ArgumentException("Object has alreadry been derived.");
+                    throw new ArgumentException("Object has already been derived.");
                 }
                 
                 this.addedDerivables.Add(dependent);
