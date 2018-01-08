@@ -38,10 +38,12 @@ namespace Tests
             this.Session.Derive(true);
 
             Assert.True(first.ExistIsDerived);
-
             Assert.True(first.Second.ExistIsDerived);
-
             Assert.True(first.Second.Third.ExistIsDerived);
+
+            Assert.Equal(1, first.DerivationCount);
+            Assert.Equal(1, first.Second.DerivationCount);
+            Assert.Equal(1, first.Second.Third.DerivationCount);
         }
 
         [Fact]

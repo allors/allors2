@@ -7,9 +7,11 @@ namespace Allors.Repository
     #region Allors
     [Id("0cb8d2a7-4566-432f-9882-893b05a77f44")]
     #endregion
-    public partial class Dependent : Object, Deletable 
+    public partial class Dependent : Object, Deletable, DerivationCounted
     {
         #region inherited properties
+        public int DerivationCount { get; set; }
+
         #endregion
 
         #region Allors

@@ -7,9 +7,11 @@ namespace Allors.Repository
     #region Allors
     [Id("2cc9bde1-80da-4159-bb20-219074266101")]
     #endregion
-    public partial class Dependee : Object 
+    public partial class Dependee : Object, DerivationCounted 
     {
         #region inherited properties
+        public int DerivationCount { get; set; }
+        
         #endregion
 
         #region Allors

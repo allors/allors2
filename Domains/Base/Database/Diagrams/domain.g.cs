@@ -119,6 +119,11 @@ namespace Allors.Domain
 						Place Place {set;}
 
 		}
+		public interface DerivationCounted  : Object 
+		{
+						global::System.Int32 DerivationCount {set;}
+
+		}
 		public interface I1  : I12, S1 
 		{
 						I1 I1I1Many2One {set;}
@@ -598,7 +603,7 @@ namespace Allors.Domain
 						global::System.String AllorsString {set;}
 
 		}
-		public interface C1  : I1, AccessControlledObject 
+		public interface C1  : I1, DerivationCounted, AccessControlledObject 
 		{
 						global::System.Byte[] C1AllorsBinary {set;}
 
@@ -659,7 +664,7 @@ namespace Allors.Domain
 						I2 C1I2One2One {set;}
 
 		}
-		public interface C2  : I2 
+		public interface C2  : DerivationCounted, I2 
 		{
 						global::System.Decimal? C2AllorsDecimal {set;}
 
@@ -721,7 +726,7 @@ namespace Allors.Domain
 		public interface ClassWithoutRoles  : Object 
 		{
 		}
-		public interface Dependee  : Object 
+		public interface Dependee  : DerivationCounted 
 		{
 						Subdependee Subdependee {set;}
 
@@ -732,7 +737,7 @@ namespace Allors.Domain
 						global::System.Boolean? DeleteDependent {set;}
 
 		}
-		public interface Dependent  : Deletable 
+		public interface Dependent  : Deletable, DerivationCounted 
 		{
 						Dependee Dependee {set;}
 
@@ -746,7 +751,7 @@ namespace Allors.Domain
 						global::System.String AllorsString {set;}
 
 		}
-		public interface First  : Object 
+		public interface First  : DerivationCounted 
 		{
 						Second Second {set;}
 
@@ -773,9 +778,25 @@ namespace Allors.Domain
 						global::System.String HouseNumber {set;}
 
 		}
+		public interface Left  : DerivationCounted 
+		{
+						Middle Middle {set;}
+
+						global::System.Int32 Counter {set;}
+
+						global::System.Boolean CreateMiddle {set;}
+
+		}
 		public interface MailboxAddress  : Address 
 		{
 						global::System.String PoBox {set;}
+
+		}
+		public interface Middle  : DerivationCounted 
+		{
+						Right Right {set;}
+
+						global::System.Int32 Counter {set;}
 
 		}
 		public interface One  : Shared 
@@ -834,6 +855,11 @@ namespace Allors.Domain
 		}
 		public interface PaymentState  : ObjectState 
 		{
+		}
+		public interface Right  : DerivationCounted 
+		{
+						global::System.Int32 Counter {set;}
+
 		}
 		public interface ShipmentState  : ObjectState 
 		{
@@ -896,7 +922,7 @@ namespace Allors.Domain
 						global::System.String PostalCode {set;}
 
 		}
-		public interface Second  : Object 
+		public interface Second  : DerivationCounted 
 		{
 						Third Third {set;}
 
@@ -922,7 +948,7 @@ namespace Allors.Domain
 						global::System.Int32? Subcounter {set;}
 
 		}
-		public interface Third  : Object 
+		public interface Third  : DerivationCounted 
 		{
 						global::System.Boolean? IsDerived {set;}
 

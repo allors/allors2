@@ -5,9 +5,12 @@ namespace Allors.Repository
     #region Allors
     [Id("39116edf-34cf-45a6-ac09-2e4f98f28e14")]
     #endregion
-    public partial class Third : Object 
+    public partial class Third : Object, DerivationCounted
     {
         #region inherited properties
+
+        public int DerivationCount { get; set; }
+
         #endregion
 
         #region Allors

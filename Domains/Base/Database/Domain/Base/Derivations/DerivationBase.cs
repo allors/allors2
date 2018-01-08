@@ -205,11 +205,14 @@ namespace Allors.Domain
         {
             if (dependent != null && dependee != null)
             {
-                // TODO: add additional methods in case dependent/dependee is already derived and should not be derived again.
-                this.derivationGraph.AddDependency(dependent, dependee);
-
+                if (this.DerivedObjects.Contains(dependent) || this.DerivedObjects.Contains(dependee))
+                {
+                    throw new ArgumentException("Object has alreadry been derived.");
+                }
+                
                 this.addedDerivables.Add(dependent);
                 this.addedDerivables.Add(dependee);
+                this.derivationGraph.AddDependency(dependent, dependee);
 
                 this.OnAddedDependency(dependent, dependee);
             }
