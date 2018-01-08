@@ -24,7 +24,7 @@ namespace Allors.Domain
     {
         public void DeriveRevenues(IDerivation derivation)
         {
-            this.CalculateRevenues(derivation);
+            //this.CalculateRevenues(derivation);
         }
     }
 }

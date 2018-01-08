@@ -69,23 +69,21 @@ namespace Allors.Domain
         {
             var derivation = method.Derivation;
 
-            // TODO:
-            if (derivation.ChangeSet.Associations.Contains(this.Id))
+            foreach (PickListItem pickListItem in this.PickListItems)
             {
-                foreach (PickListItem pickListItem in this.PickListItems)
-                {
-                    derivation.AddDependency(this, pickListItem);
+                derivation.AddDependency(this, pickListItem);
 
-                    var inventoryItem = pickListItem.InventoryItem as NonSerialisedInventoryItem;
-                    if (inventoryItem != null)
-                    {
-                        derivation.AddDependency(this, inventoryItem);
-                    }
+                if (pickListItem.InventoryItem is NonSerialisedInventoryItem inventoryItem)
+                {
+                    derivation.AddDependency(this, inventoryItem);
                 }
+            }
 
-                if (this.ExistShipToParty)
+            if (this.ExistShipToParty)
+            {
+                foreach (var customerShipment in this.ShipToParty.AppsGetPendingCustomerShipments())
                 {
-                    foreach (var customerShipment in this.ShipToParty.AppsGetPendingCustomerShipments())
+                    if (!customerShipment.Strategy.IsNewInSession)
                     {
                         derivation.AddDependency(customerShipment, this);
                     }

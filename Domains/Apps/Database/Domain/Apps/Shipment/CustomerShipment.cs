@@ -146,12 +146,12 @@ namespace Allors.Domain
 
                 foreach (OrderShipment orderShipment in shipmentItem.OrderShipmentsWhereShipmentItem)
                 {
-                    if (orderShipment.ExistSalesOrderItem)
+                    if (orderShipment.ExistSalesOrderItem && !orderShipment.SalesOrderItem.Strategy.IsNewInSession)
                     {
                         derivation.AddDependency(this, orderShipment.SalesOrderItem);
                     }
 
-                    if (orderShipment.ExistPurchaseOrderItem)
+                    if (orderShipment.ExistPurchaseOrderItem && !orderShipment.PurchaseOrderItem.Strategy.IsNewInSession)
                     {
                         derivation.AddDependency(this, orderShipment.PurchaseOrderItem);
                     }

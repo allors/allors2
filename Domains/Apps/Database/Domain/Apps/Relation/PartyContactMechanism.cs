@@ -37,7 +37,7 @@ namespace Allors.Domain
         {
             var derivation = method.Derivation;
 
-            if (this.ExistPartyWherePartyContactMechanism)
+            if (derivation.IsModified(this) && this.ExistPartyWherePartyContactMechanism)
             {
                 derivation.AddDependency(this.PartyWherePartyContactMechanism, this);
             }
