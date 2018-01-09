@@ -26,7 +26,13 @@ namespace Allors.Domain
 
     public static partial class EnumerationExtensions
     {
-        private static void AppsOnDerive(this Enumeration @this, ObjectOnDerive method)
+        private static void BaseOnPostBuild(this Enumeration @this, ObjectOnPostBuild method)
+        {
+            var defaultLocale = @this.Strategy.Session.GetSingleton().DefaultLocale;
+            @this.Name = GetLocalisedName(@this, defaultLocale);
+        }
+
+        private static void BaseOnDerive(this Enumeration @this, ObjectOnDerive method)
         {
             var defaultLocale = @this.Strategy.Session.GetSingleton().DefaultLocale;
             @this.Name = GetLocalisedName(@this, defaultLocale);
