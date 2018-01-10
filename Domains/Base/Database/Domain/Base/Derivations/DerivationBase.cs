@@ -40,7 +40,7 @@ namespace Allors.Domain
         private DerivationGraphBase derivationGraph;
         private HashSet<IObject> addedDerivables;
 
-        protected DerivationBase(ISession session, DerivationConfig config = null)
+        protected DerivationBase(ISession session, DerivationConfig config)
         {
             this.Id = Guid.NewGuid();
             this.TimeStamp = session.Now();
@@ -59,14 +59,14 @@ namespace Allors.Domain
 
         public DerivationConfig Config { get; }
 
-        protected DerivationBase(ISession session, IEnumerable<long> markedAsModified)
-            : this(session)
+        protected DerivationBase(ISession session, IEnumerable<long> markedAsModified, DerivationConfig config)
+            : this(session, config)
         {
             this.markedAsModified.UnionWith(markedAsModified);
         }
 
-        protected DerivationBase(ISession session, IEnumerable<IObject> markedAsModified)
-            : this(session)
+        protected DerivationBase(ISession session, IEnumerable<IObject> markedAsModified, DerivationConfig config)
+            : this(session, config)
         {
             this.markedAsModified.UnionWith(markedAsModified.Where(v => v != null).Select(v => v.Id));
         }

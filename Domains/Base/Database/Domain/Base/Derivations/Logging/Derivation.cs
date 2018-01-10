@@ -26,22 +26,22 @@ namespace Allors.Domain.Logging
     {
         private readonly IDerivationLog derivationLog;
 
-        public Derivation(ISession session, IDerivationLog derivationLog)
-            : base(session)
+        public Derivation(ISession session, IDerivationLog derivationLog, DerivationConfig config = null)
+            : base(session, config)
         {
             this.derivationLog = derivationLog;
             this.Validation = new Validation(this, this.derivationLog);
         }
 
-        public Derivation(ISession session, IDerivationLog derivationLog, IEnumerable<long> markedAsModified)
-            : base(session, markedAsModified)
+        public Derivation(ISession session, IDerivationLog derivationLog, IEnumerable<long> markedAsModified, DerivationConfig config = null)
+            : base(session, markedAsModified, config)
         {
             this.derivationLog = derivationLog;
             this.Validation = new Validation(this, this.derivationLog);
         }
 
-        public Derivation(ISession session, IDerivationLog derivationLog, IEnumerable<IObject> markedAsModified)
-            : base(session, markedAsModified)
+        public Derivation(ISession session, IDerivationLog derivationLog, IEnumerable<IObject> markedAsModified, DerivationConfig config = null)
+            : base(session, markedAsModified, config)
         {
             this.derivationLog = derivationLog;
             this.Validation = new Validation(this, this.derivationLog);

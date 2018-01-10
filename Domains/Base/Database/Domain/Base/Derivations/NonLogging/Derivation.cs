@@ -24,20 +24,20 @@ namespace Allors.Domain.NonLogging
 
     public sealed class Derivation : DerivationBase
     {
-        public Derivation(ISession session)
-            : base(session)
+        public Derivation(ISession session, DerivationConfig config = null)
+            : base(session, config)
         {
             this.Validation = new Validation(this);
         }
 
-        public Derivation(ISession session, IEnumerable<long> markedAsModified)
-            : base(session, markedAsModified)
+        public Derivation(ISession session, IEnumerable<long> markedAsModified, DerivationConfig config = null)
+            : base(session, markedAsModified, config)
         {
             this.Validation = new Validation(this);
         }
 
-        public Derivation(ISession session, IEnumerable<IObject> markedAsModified)
-            : base(session, markedAsModified)
+        public Derivation(ISession session, IEnumerable<IObject> markedAsModified, DerivationConfig config = null)
+            : base(session, markedAsModified, config)
         {
             this.Validation = new Validation(this);
         }
