@@ -40,8 +40,8 @@ namespace Allors.Domain
 
         public static string GetLocalisedName(this Enumeration enumeration, Locale locale)
         {
-            var localisedName = enumeration.LocalisedNames.FirstOrDefault(localizedText => localizedText.Locale.Equals(locale));
-            return localisedName?.Text;
+            var localisedName = enumeration.LocalisedNames.FirstOrDefault(localizedText => Equals(localizedText.Locale, locale));
+            return localisedName?.Text ??  string.Empty;
         }
 
         public static void SetLocalisedName(this Enumeration enumeration, Locale locale, string name)
