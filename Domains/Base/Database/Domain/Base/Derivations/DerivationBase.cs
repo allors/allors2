@@ -40,7 +40,7 @@ namespace Allors.Domain
         private DerivationGraphBase derivationGraph;
         private HashSet<IObject> addedDerivables;
 
-        protected DerivationBase(ISession session)
+        protected DerivationBase(ISession session, DerivationConfig config = null)
         {
             this.Id = Guid.NewGuid();
             this.TimeStamp = session.Now();
@@ -53,7 +53,11 @@ namespace Allors.Domain
             this.ChangeSet = session.Checkpoint();
 
             this.generation = 0;
+
+            this.Config = config ?? new DerivationConfig();
         }
+
+        public DerivationConfig Config { get; }
 
         protected DerivationBase(ISession session, IEnumerable<long> markedAsModified)
             : this(session)
@@ -183,7 +187,11 @@ namespace Allors.Domain
             {
                 if (this.DerivedObjects.Contains(derivable))
                 {
-                    throw new ArgumentException("Object has already been derived.");
+                    this.OnCycleDetected(derivable);
+                    if (this.Config.ThrowExceptionOnCycleDetected)
+                    {
+                        throw new ArgumentException("Object has already been derived.");
+                    }
                 }
                 
                 this.derivationGraph.Add(derivable);
@@ -207,7 +215,11 @@ namespace Allors.Domain
             {
                 if (this.DerivedObjects.Contains(dependent) || this.DerivedObjects.Contains(dependee))
                 {
-                    throw new ArgumentException("Object has already been derived.");
+                    this.OnCycleDetected(dependent, dependee);
+                    if (this.Config.ThrowExceptionOnCycleDetected)
+                    {
+                        throw new ArgumentException("Object has already been derived.");
+                    }
                 }
                 
                 this.addedDerivables.Add(dependent);
@@ -321,5 +333,14 @@ namespace Allors.Domain
         protected abstract void OnPreDeriving(Object derivable);
 
         protected abstract void OnPreDerived(Object derivable);
+
+        protected abstract void OnCycleDetected(Object derivable);
+
+        protected abstract void OnCycleDetected(Object dependent, Object dependee);
+    }
+
+    public class DerivationConfig
+    {
+        public bool ThrowExceptionOnCycleDetected { get; set; } = false;
     }
 }

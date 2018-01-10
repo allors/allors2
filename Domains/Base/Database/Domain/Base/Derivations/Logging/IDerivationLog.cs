@@ -51,5 +51,9 @@ namespace Allors.Domain.Logging
         void PostDeriving(Object derivable);
 
         void PostDerived(Object derivable);
+
+        void CycleDetected(Object derivable);
+
+        void CycleDetected(Object dependent, Object dependee);
     }
 }

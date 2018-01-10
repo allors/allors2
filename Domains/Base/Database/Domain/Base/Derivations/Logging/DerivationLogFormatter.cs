@@ -64,6 +64,16 @@ namespace Allors.Domain.Logging
             return $"Cycle root: {root}, object: {derivable}";
         }
 
+        public static string FormatCycleDetected(Object dependent, Object dependee)
+        {
+            return $"Cycle detected between dependent: {dependent}, dependee: {dependee}";
+        }
+
+        public static string FormatCycleDetected(Object derivable)
+        {
+            return $"Cycle detected: {derivable}";
+        }
+
         public static string FormatDeriving(Object derivable)
         {
             return $"{"Derive",-TabWith} " + FormatDerivable(derivable);

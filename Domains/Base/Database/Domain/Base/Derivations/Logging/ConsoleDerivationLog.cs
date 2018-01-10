@@ -100,5 +100,16 @@ namespace Allors.Domain.Logging
             var message = DerivationLogFormatter.FormatPostDerived(derivable);
             Console.WriteLine(message);
         }
+        public void CycleDetected(Object derivable)
+        {
+            var message = DerivationLogFormatter.FormatCycleDetected(derivable);
+            Console.WriteLine(message);
+        }
+
+        public void CycleDetected(Object dependent, Object dependee)
+        {
+            var message = DerivationLogFormatter.FormatCycleDetected(dependent, dependee);
+            Console.WriteLine(message);
+        }
     }
 }
