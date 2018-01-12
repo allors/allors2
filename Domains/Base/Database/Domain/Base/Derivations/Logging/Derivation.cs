@@ -25,58 +25,58 @@ namespace Allors.Domain.Logging
     [SuppressMessage("StyleCop.CSharp.ReadabilityRules", "SA1121:UseBuiltInTypeAlias", Justification = "Allors Object")]
     public sealed class Derivation : DerivationBase
     {
-        private readonly IDerivationLog derivationLog;
-
         public Derivation(ISession session, DerivationConfig config)
             : base(session, config)
         {
-            this.derivationLog = config.DerivationLogFunc();
-            this.Validation = new Validation(this, this.derivationLog);
+            this.DerivationLog = config.DerivationLogFunc();
+            this.Validation = new Validation(this, this.DerivationLog);
         }
+
+        public IDerivationLog DerivationLog { get; }
 
         protected override DerivationGraphBase CreateDerivationGraph(DerivationBase derivation)
         {
-            return new DerivationGraph(derivation, this.derivationLog);
+            return new DerivationGraph(derivation, this.DerivationLog);
         }
 
         protected override void OnAddedDerivable(Object derivable)
         {
-            this.derivationLog.AddedDerivable(derivable);
+            this.DerivationLog.AddedDerivable(derivable);
         }
 
         protected override void OnAddedDependency(Object dependent, Object dependee)
         {
-            this.derivationLog.AddedDependency(dependent, dependee);
+            this.DerivationLog.AddedDependency(dependent, dependee);
         }
 
         protected override void OnStartedGeneration(int generation)
         {
-            this.derivationLog.StartedGeneration(generation);
+            this.DerivationLog.StartedGeneration(generation);
         }
 
         protected override void OnStartedPreparation(int preparationRun)
         {
-            this.derivationLog.StartedPreparation(preparationRun);
+            this.DerivationLog.StartedPreparation(preparationRun);
         }
 
         protected override void OnPreDeriving(Object derivable)
         {
-            this.derivationLog.PreDeriving(derivable);
+            this.DerivationLog.PreDeriving(derivable);
         }
 
         protected override void OnPreDerived(Object derivable)
         {
-            this.derivationLog.PreDerived(derivable);
+            this.DerivationLog.PreDerived(derivable);
         }
 
         protected override void OnCycleDetected(Object derivable)
         {
-            this.derivationLog.CycleDetected(derivable);
+            this.DerivationLog.CycleDetected(derivable);
         }
 
         protected override void OnCycleDetected(Object dependent, Object dependee)
         {
-            this.derivationLog.CycleDetected(dependent, dependee);
+            this.DerivationLog.CycleDetected(dependent, dependee);
         }
     }
 }

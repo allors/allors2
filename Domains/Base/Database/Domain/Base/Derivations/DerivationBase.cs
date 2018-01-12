@@ -44,6 +44,8 @@ namespace Allors.Domain
 
         protected DerivationBase(ISession session, DerivationConfig config)
         {
+            this.Config = config ?? new DerivationConfig();
+
             this.Id = Guid.NewGuid();
             this.TimeStamp = session.Now();
 
@@ -55,8 +57,6 @@ namespace Allors.Domain
             this.ChangeSet = session.Checkpoint();
 
             this.generation = 0;
-
-            this.Config = config ?? new DerivationConfig();
         }
 
         public DerivationConfig Config { get; }

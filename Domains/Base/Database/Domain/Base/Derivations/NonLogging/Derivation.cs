@@ -25,7 +25,7 @@ namespace Allors.Domain.NonLogging
     [SuppressMessage("StyleCop.CSharp.ReadabilityRules", "SA1121:UseBuiltInTypeAlias", Justification = "Allors Object")]
     public sealed class Derivation : DerivationBase
     {
-        public Derivation(ISession session, DerivationConfig config)
+        public Derivation(ISession session, DerivationConfig config = null)
             : base(session, config)
         {
             this.Validation = new Validation(this);
