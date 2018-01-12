@@ -144,7 +144,8 @@
     <Compile Include="Custom\Singleton.cs" />
     <Compile Include="Custom\StatefulCompany.cs" />
     <Compile Include="Custom\Subdependee.cs" />
-    <Compile Include="Custom\SyncDepth1.cs" />
+    <Compile Include="Custom\SyncDepthC1.cs" />
+    <Compile Include="Custom\SyncDepthI1.cs" />
     <Compile Include="Custom\SyncDepth2.cs" />
     <Compile Include="Custom\SyncRoot.cs" />
     <Compile Include="Custom\Third.cs" />

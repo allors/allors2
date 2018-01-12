@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------------------------------------------
-// <copyright file="DebugDerivation.cs" company="Allors bvba">
+// <copyright file="Derivation.cs" company="Allors bvba">
 //   Copyright 2002-2017 Allors bvba.
 //
 // Dual Licensed under
@@ -20,30 +20,17 @@
 
 namespace Allors.Domain.Logging
 {
-    using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
 
+    [SuppressMessage("StyleCop.CSharp.ReadabilityRules", "SA1121:UseBuiltInTypeAlias", Justification = "Allors Object")]
     public sealed class Derivation : DerivationBase
     {
         private readonly IDerivationLog derivationLog;
 
-        public Derivation(ISession session, IDerivationLog derivationLog, DerivationConfig config = null)
+        public Derivation(ISession session, DerivationConfig config)
             : base(session, config)
         {
-            this.derivationLog = derivationLog;
-            this.Validation = new Validation(this, this.derivationLog);
-        }
-
-        public Derivation(ISession session, IDerivationLog derivationLog, IEnumerable<long> markedAsModified, DerivationConfig config = null)
-            : base(session, markedAsModified, config)
-        {
-            this.derivationLog = derivationLog;
-            this.Validation = new Validation(this, this.derivationLog);
-        }
-
-        public Derivation(ISession session, IDerivationLog derivationLog, IEnumerable<IObject> markedAsModified, DerivationConfig config = null)
-            : base(session, markedAsModified, config)
-        {
-            this.derivationLog = derivationLog;
+            this.derivationLog = config.DerivationLogFunc();
             this.Validation = new Validation(this, this.derivationLog);
         }
 

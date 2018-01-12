@@ -19,8 +19,6 @@
 // <summary>Defines the DomainTest type.</summary>
 //-------------------------------------------------------------------------------------------------
 
-using System.Collections.Generic;
-
 namespace Allors.Services
 {
     using System.Diagnostics;
@@ -28,6 +26,8 @@ namespace Allors.Services
     using System.Linq;
     using System.Linq.Expressions;
     using System.Reflection;
+
+    using Allors.Domain;
 
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Hosting.Internal;
@@ -88,6 +88,8 @@ namespace Allors.Services
                       };
                 });
 
+            services.AddSingleton<IDerivationService>(new DerivationService(config.DerivationConfig));
+
             services.AddSingleton<ObjectPoolProvider, DefaultObjectPoolProvider>();
             services.AddSingleton<DiagnosticSource>(new DiagnosticListener("Microsoft.AspNetCore"));
             services.AddLogging();
@@ -98,6 +100,7 @@ namespace Allors.Services
         {
             services.AddScoped<ISessionService, EmbeddedSessionService>();
             services.AddAllorsShared();
+            services.AddSingleton<IDerivationService, DerivationService>();
         }
 
         private static void AddAllorsShared(this IServiceCollection services)

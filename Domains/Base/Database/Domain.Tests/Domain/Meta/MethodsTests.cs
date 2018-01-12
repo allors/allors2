@@ -27,7 +27,6 @@ namespace Tests
 
     using Xunit;
 
-    
     public class MethodsTests : DomainTest
     {
         [Fact]

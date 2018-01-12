@@ -1,51 +1,40 @@
 // --------------------------------------------------------------------------------------------------------------------
-// <copyright file="SessionExtension.cs" company="Allors bvba">
-//   Copyright 2002-2017 Allors bvba.
-//
+// <copyright file="SyncRoot.cs" company="Allors bvba">
+//   Copyright 2002-2016 Allors bvba.
+// 
 // Dual Licensed under
 //   a) the General Public Licence v3 (GPL)
 //   b) the Allors License
-//
+// 
 // The GPL License is included in the file gpl.txt.
 // The Allors License is an addendum to your contract.
-//
+// 
 // Allors Applications is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-//
+// 
 // For more information visit http://www.allors.com/legal
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace Allors.Domain
 {
-    using System;
-    using System.Collections.Concurrent;
-    using System.Collections.Generic;
-
-    using Allors.Services;
-
-    using Microsoft.Extensions.DependencyInjection;
-
-    public static partial class SessionExtension
+    public partial class SyncRoot
     {
-        public static IDictionary<long, T> GetCache<T>(this ISession @this)
+        public void CustomOnDerive(ObjectOnDerive method)
         {
-            return GetCache<T>(@this, typeof(T));
+            this.Sync();
         }
 
-        public static IDictionary<long, T> GetCache<T>(this ISession @this, Type type)
+        private void Sync()
         {
-            var caches = @this.ServiceProvider.GetRequiredService<ICacheService>();
-            var cache = caches.Get<T>(type);
-            if (cache == null)
+            if (!this.ExistSyncDepth1)
             {
-                cache = new ConcurrentDictionary<long, T>();
-                caches.Set(type, cache);
+                this.SyncDepth1 = new SyncDepthC1Builder(this.strategy.Session).Build();
             }
 
-            return cache;
+            this.SyncDepth1.Sync();
         }
     }
 }

@@ -28,6 +28,9 @@ namespace Allors.Meta
     {
         private bool derivedWorkspace;
 
+        private bool assignedIsSynced;
+        private bool isSynced;
+
         private LazySet<Interface> derivedDirectSupertypes;
         private LazySet<Interface> derivedSupertypes;
 
@@ -41,15 +44,9 @@ namespace Allors.Meta
 
         public string XmlDoc
         {
-            get
-            {
-                return this.xmlDoc;
-            }
+            get => this.xmlDoc;
 
-            set
-            {
-                this.xmlDoc = !string.IsNullOrWhiteSpace(value) ? value : null;
-            }
+            set => this.xmlDoc = !string.IsNullOrWhiteSpace(value) ? value : null;
         }
 
         public string XmlDocComment
@@ -66,6 +63,30 @@ namespace Allors.Meta
             }
         }
 
+        public bool AssignedIsSynced 
+        {
+            get
+            {
+                return this.assignedIsSynced;
+            }
+
+            set
+            {
+                this.MetaPopulation.AssertUnlocked();
+                this.assignedIsSynced = value;
+                this.MetaPopulation.Stale();
+            }
+        }
+
+        public bool IsSynced 
+        {
+            get
+            {
+                this.MetaPopulation.Derive();
+                return this.isSynced;
+            }
+        }
+        
         protected Composite(MetaPopulation metaPopulation)
             : base(metaPopulation)
         {
@@ -376,6 +397,11 @@ namespace Allors.Meta
             this.derivedWorkspace = this.RoleTypes.Any(v => v.Workspace) || this.AssociationTypes.Any(v => v.Workspace) || this.MethodTypes.Any(v => v.Workspace);
         }
 
+        internal void DeriveIsSynced()
+        {
+            this.isSynced = this.assignedIsSynced || this.derivedSupertypes.Any(v => v.assignedIsSynced);
+        }
+
         /// <summary>
         /// Derive super types recursively.
         /// </summary>
@@ -392,6 +418,7 @@ namespace Allors.Meta
                 }
             }
         }
+
 
         // TODO: Added for Workspace.Meta
         public IEnumerable<MethodType> DefinedMethods

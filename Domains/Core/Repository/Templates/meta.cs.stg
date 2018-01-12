@@ -2,7 +2,7 @@ group AllorsCSharpRepository;
 
 TemplateId() ::= <<14F49218-A676-43ba-9CBD-B8FFA059D1BF>>
 TemplateName() ::= <<Allors C# Meta>>
-TemplateVersion() ::= <<1.0.3>>
+TemplateVersion() ::= <<1.0.4>>
 TemplateAllors() ::= <<1.0>>
 TemplateConfiguration(repository) ::= <<
 $! 
@@ -310,7 +310,8 @@ $interface.InheritedReverseProperties:{property|         public AssociationType 
 			{
 				SingularName = "$interface.SingularName$",
 				$if(interface.AttributeByName.Plural)$PluralName = "$interface.AttributeByName.Plural.Value$",$endif$
-$if(interface.XmlDoc)$		XmlDoc = @"$interface.XmlDoc.VerbatimValue$"$endif$
+$if(interface.XmlDoc)$			XmlDoc = @"$interface.XmlDoc.VerbatimValue$",$endif$
+$if(interface.AttributeByName.Synced)$				AssignedIsSynced = $interface.AttributeByName.Synced.Value$$endif$
 			};
         }
 	}
@@ -355,7 +356,8 @@ $class.InheritedReverseProperties:{property|         public AssociationType $pro
 			{
 				SingularName = "$class.SingularName$",
 				PluralName = "$class.PluralName$",
-$if(class.XmlDoc)$		XmlDoc = @"$class.XmlDoc.VerbatimValue$"$endif$
+$if(class.XmlDoc)$			XmlDoc = @"$class.XmlDoc.VerbatimValue$",$endif$
+$if(class.AttributeByName.Synced)$				AssignedIsSynced = $class.AttributeByName.Synced.Value$$endif$
 			};
         }
 

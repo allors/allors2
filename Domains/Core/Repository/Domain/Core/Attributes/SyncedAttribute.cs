@@ -23,7 +23,7 @@ namespace Allors.Repository.Attributes
 {
     using System;
 
-    [AttributeUsage(AttributeTargets.Property | AttributeTargets.Class)]
+    [AttributeUsage(AttributeTargets.Property | AttributeTargets.Class | AttributeTargets.Interface)]
     public class SyncedAttribute : RepositoryAttribute
     {
         public SyncedAttribute(bool value = true)

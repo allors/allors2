@@ -20,24 +20,13 @@
 
 namespace Allors.Domain.NonLogging
 {
-    using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
 
+    [SuppressMessage("StyleCop.CSharp.ReadabilityRules", "SA1121:UseBuiltInTypeAlias", Justification = "Allors Object")]
     public sealed class Derivation : DerivationBase
     {
-        public Derivation(ISession session, DerivationConfig config = null)
+        public Derivation(ISession session, DerivationConfig config)
             : base(session, config)
-        {
-            this.Validation = new Validation(this);
-        }
-
-        public Derivation(ISession session, IEnumerable<long> markedAsModified, DerivationConfig config = null)
-            : base(session, markedAsModified, config)
-        {
-            this.Validation = new Validation(this);
-        }
-
-        public Derivation(ISession session, IEnumerable<IObject> markedAsModified, DerivationConfig config = null)
-            : base(session, markedAsModified, config)
         {
             this.Validation = new Validation(this);
         }

@@ -1,51 +1,44 @@
 // --------------------------------------------------------------------------------------------------------------------
-// <copyright file="SessionExtension.cs" company="Allors bvba">
-//   Copyright 2002-2017 Allors bvba.
-//
+// <copyright file="SyncDepthC1.cs" company="Allors bvba">
+//   Copyright 2002-2016 Allors bvba.
+// 
 // Dual Licensed under
 //   a) the General Public Licence v3 (GPL)
 //   b) the Allors License
-//
+// 
 // The GPL License is included in the file gpl.txt.
 // The Allors License is an addendum to your contract.
-//
+// 
 // Allors Applications is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-//
+// 
 // For more information visit http://www.allors.com/legal
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace Allors.Domain
 {
-    using System;
-    using System.Collections.Concurrent;
-    using System.Collections.Generic;
-
-    using Allors.Services;
-
-    using Microsoft.Extensions.DependencyInjection;
-
-    public static partial class SessionExtension
+    public partial class SyncDepthC1
     {
-        public static IDictionary<long, T> GetCache<T>(this ISession @this)
+        public void CustomOnPreDerive(ObjectOnPreDerive method)
         {
-            return GetCache<T>(@this, typeof(T));
+            var derivation = method.Derivation;
+
+            if (!this.strategy.IsNewInSession && (derivation.IsMarkedAsModified(this) || derivation.HasChangedRoles(this, RelationKind.Regular)))
+            {
+                derivation.MarkAsModified(this.SyncRootWhereSyncDepth1);
+                derivation.AddDependency(this, this.SyncRootWhereSyncDepth1);
+            }
         }
 
-        public static IDictionary<long, T> GetCache<T>(this ISession @this, Type type)
+        public void Sync()
         {
-            var caches = @this.ServiceProvider.GetRequiredService<ICacheService>();
-            var cache = caches.Get<T>(type);
-            if (cache == null)
+            if (!this.ExistSyncDepth2)
             {
-                cache = new ConcurrentDictionary<long, T>();
-                caches.Set(type, cache);
+                this.SyncDepth2 = new SyncDepth2Builder(this.strategy.Session).Build();
             }
-
-            return cache;
         }
     }
 }

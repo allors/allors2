@@ -24,7 +24,6 @@ namespace Allors
     using System;
 
     using Allors.Domain;
-    using Allors.Domain.NonLogging;
     using Allors.Services;
 
     using Microsoft.Extensions.DependencyInjection;
@@ -33,7 +32,8 @@ namespace Allors
     {
         public static IValidation Derive(this ISession session, bool throwExceptionOnError = true)
         {
-            var derivation = new Derivation(session);
+            var derivationService = session.ServiceProvider.GetRequiredService<IDerivationService>();
+            var derivation = derivationService.CreateDerivation(session);
             var validation = derivation.Derive();
             if (throwExceptionOnError && validation.HasErrors)
             {

@@ -309,17 +309,11 @@ namespace Allors.Domain
 		public interface Shared  : Object 
 		{
 		}
-		public interface SyncDepth1  : Object 
+		public interface SyncDepthI1  : DerivationCounted 
 		{
 						SyncDepth2 SyncDepth2 {set;}
 
-		}
-		public interface SyncDepth2  : Object 
-		{
-		}
-		public interface SyncRoot  : Object 
-		{
-						SyncDepth1 SyncDepth1 {set;}
+						global::System.Int32 Value {set;}
 
 		}
 		public interface ValidationI12  : Object 
@@ -946,6 +940,21 @@ namespace Allors.Domain
 		public interface Subdependee  : Object 
 		{
 						global::System.Int32? Subcounter {set;}
+
+		}
+		public interface SyncDepthC1  : SyncDepthI1 
+		{
+		}
+		public interface SyncDepth2  : DerivationCounted 
+		{
+						global::System.Int32 Value {set;}
+
+		}
+		public interface SyncRoot  : DerivationCounted 
+		{
+						SyncDepthI1 SyncDepth1 {set;}
+
+						global::System.Int32 Value {set;}
 
 		}
 		public interface Third  : DerivationCounted 

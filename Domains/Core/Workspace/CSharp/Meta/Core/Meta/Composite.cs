@@ -30,6 +30,9 @@ namespace Allors.Workspace.Meta
     {
         private bool derivedWorkspace;
 
+        private bool assignedIsSynced;
+        private bool isSynced;
+
         private LazySet<Interface> derivedDirectSupertypes;
         private LazySet<Interface> derivedSupertypes;
 
@@ -65,6 +68,30 @@ namespace Allors.Workspace.Meta
                 }
 
                 return null;
+            }
+        }
+        
+        public bool AssignedIsSynced 
+        {
+            get
+            {
+                return this.assignedIsSynced;
+            }
+
+            set
+            {
+                this.MetaPopulation.AssertUnlocked();
+                this.assignedIsSynced = value;
+                this.MetaPopulation.Stale();
+            }
+        }
+
+        public bool IsSynced 
+        {
+            get
+            {
+                this.MetaPopulation.Derive();
+                return this.isSynced;
             }
         }
 
@@ -376,6 +403,11 @@ namespace Allors.Workspace.Meta
         internal void DeriveWorkspace()
         {
             this.derivedWorkspace = this.RoleTypes.Any(v => v.Workspace) || this.AssociationTypes.Any(v => v.Workspace) || this.MethodTypes.Any(v => v.Workspace);
+        }
+
+        internal void DeriveIsSynced()
+        {
+            this.isSynced = this.assignedIsSynced || this.derivedSupertypes.Any(v => v.assignedIsSynced);
         }
 
         /// <summary>

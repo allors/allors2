@@ -56,13 +56,13 @@ namespace Tests
             var resolved = new HashSet<IObject>();
             tree.Resolve(c1A, resolved);
 
-            Assert.Equal(resolved.Count, 1);
+            Assert.Equal(1, resolved.Count);
             Assert.Contains(c2A, resolved);
 
             resolved = new HashSet<IObject>();
             tree.Resolve(c1B, resolved);
 
-            Assert.Equal(resolved.Count, 2);
+            Assert.Equal(2, resolved.Count);
             Assert.Contains(c2B, resolved);
             Assert.Contains(c2C, resolved);
         }

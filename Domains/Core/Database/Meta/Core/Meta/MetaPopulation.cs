@@ -393,6 +393,12 @@ namespace Allors.Meta
                         type.DeriveSupertypes(sharedInterfaces);
                     }
 
+                    // isSynced
+                    foreach (var composite in this.Composites)
+                    {
+                        composite.DeriveIsSynced();
+                    }
+
                     // Subtypes
                     foreach (var type in this.Interfaces)
                     {
@@ -490,7 +496,7 @@ namespace Allors.Meta
                     {
                         composite.DeriveWorkspace();
                     }
-
+                    
                     // MetaPopulation
                     this.derivedClassByLowercaseName = new Dictionary<string, Class>();
                     foreach (var cls in this.classes)

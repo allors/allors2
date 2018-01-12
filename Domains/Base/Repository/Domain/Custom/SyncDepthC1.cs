@@ -3,13 +3,17 @@ namespace Allors.Repository
     using Allors.Repository.Attributes;
 
     #region Allors
-    [Id("B9996F8F-12FB-4E42-8B7F-907433A622B2")]
+    [Id("4EA6AD12-C1FB-4661-B4F7-72B81435DD70")]
     #endregion
-    [Synced]
-    public partial class SyncDepth2 : Object, DerivationCounted
+    public partial class SyncDepthC1 : SyncDepthI1 
     {
         #region inherited properties
         public int DerivationCount { get; set; }
+
+        public SyncDepth2 SyncDepth2 { get; set; }
+        
+        public int Value { get; set; }
+
         #endregion
 
         #region inherited methods
@@ -23,13 +27,5 @@ namespace Allors.Repository
 
         public void OnPostDerive(){}
         #endregion
-
-        #region Allors
-        [Id("C6254113-00CB-475E-AE15-B45FC3E623BC")]
-        [AssociationId("91C77FB8-FDB9-4E7A-8BAD-A0747BA1A480")]
-        [RoleId("748C78D8-F48F-4615-B0ED-3F1AA2193D06")]
-        #endregion
-        [Required]
-        public int Value { get; set; }
     }
 }

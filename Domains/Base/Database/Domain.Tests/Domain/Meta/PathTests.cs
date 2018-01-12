@@ -20,7 +20,6 @@
 
 namespace Tests
 {
-    using System.Collections;
     using System.Collections.Generic;
 
     using Allors;
@@ -31,7 +30,6 @@ namespace Tests
 
     using Xunit;
 
-    
     public class PathTests : DomainTest
     {
         [Fact]

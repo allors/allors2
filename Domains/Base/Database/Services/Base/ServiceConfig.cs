@@ -19,11 +19,13 @@
 // <summary>Defines the DomainTest type.</summary>
 //-------------------------------------------------------------------------------------------------
 
-using System.IO;
-using System.Reflection;
-
 namespace Allors.Services
 {
+    using System.IO;
+    using System.Reflection;
+
+    using Allors.Domain;
+
     public partial class ServiceConfig
     {
         public DirectoryInfo Directory { get; set; }
@@ -31,5 +33,7 @@ namespace Allors.Services
         public string ApplicationName { get; set; }
 
         public Assembly[] Assemblies { get; set; }
+
+        public DerivationConfig DerivationConfig { get; set; }
     }
 }

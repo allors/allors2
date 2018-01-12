@@ -22,11 +22,13 @@ namespace Allors.Domain
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
     using System.Linq;
 
     using Allors;
     using Allors.Meta;
 
+    [SuppressMessage("StyleCop.CSharp.ReadabilityRules", "SA1121:UseBuiltInTypeAlias", Justification = "Allors Object")]
     public abstract class DerivationBase : IDerivation
     {
         private readonly HashSet<long> markedAsModified;
@@ -59,18 +61,6 @@ namespace Allors.Domain
 
         public DerivationConfig Config { get; }
 
-        protected DerivationBase(ISession session, IEnumerable<long> markedAsModified, DerivationConfig config)
-            : this(session, config)
-        {
-            this.markedAsModified.UnionWith(markedAsModified);
-        }
-
-        protected DerivationBase(ISession session, IEnumerable<IObject> markedAsModified, DerivationConfig config)
-            : this(session, config)
-        {
-            this.markedAsModified.UnionWith(markedAsModified.Where(v => v != null).Select(v => v.Id));
-        }
-
         public Guid Id { get; }
 
         public DateTime TimeStamp { get; }
@@ -79,15 +69,9 @@ namespace Allors.Domain
 
         public IValidation Validation
         {
-            get
-            {
-                return this.validation;
-            }
+            get => this.validation;
 
-            protected set
-            {
-                this.validation = value;
-            }
+            protected set => this.validation = value;
         }
 
         public IChangeSet ChangeSet { get; private set; }
@@ -102,8 +86,7 @@ namespace Allors.Domain
             {
                 var lowerName = name.ToLowerInvariant();
 
-                object value;
-                if (this.properties != null && this.properties.TryGetValue(lowerName, out value))
+                if (this.properties != null && this.properties.TryGetValue(lowerName, out var value))
                 {
                     return value;
                 }
@@ -151,18 +134,62 @@ namespace Allors.Domain
 
         public bool HasChangedRole(Object derivable, RoleType roleType)
         {
-            ISet<IRoleType> changedRoleTypes;
-            this.ChangeSet.RoleTypesByAssociation.TryGetValue(derivable.Id, out changedRoleTypes);
+            this.ChangeSet.RoleTypesByAssociation.TryGetValue(derivable.Id, out var changedRoleTypes);
             return changedRoleTypes?.Contains(roleType) ?? false;
         }
 
         public bool HasChangedRoles(Object derivable, params RoleType[] roleTypes)
         {
-            ISet<IRoleType> changedRoleTypes;
-            this.ChangeSet.RoleTypesByAssociation.TryGetValue(derivable.Id, out changedRoleTypes);
+            this.ChangeSet.RoleTypesByAssociation.TryGetValue(derivable.Id, out var changedRoleTypes);
             if (changedRoleTypes != null)
             {
                 if (roleTypes.Any(roleType => changedRoleTypes.Contains(roleType)))
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        public bool HasChangedRoles(Object derivable, RelationKind relationKind)
+        {
+            Func<IRoleType, bool> check;
+            switch (relationKind)
+            {
+                case RelationKind.Regular:
+                    check = (roleType) => !roleType.RelationType.IsDerived && !roleType.RelationType.IsSynced;
+                    break;
+
+                case RelationKind.Derived:
+                    check = (roleType) => roleType.RelationType.IsDerived;
+                    break;
+
+                case RelationKind.Synced:
+                    check = (roleType) => roleType.RelationType.IsSynced;
+                    break;
+
+                case RelationKind.Regular | RelationKind.Derived:
+                    check = (roleType) => !roleType.RelationType.IsSynced;
+                    break;
+
+                case RelationKind.Regular | RelationKind.Synced:
+                    check = (roleType) => !roleType.RelationType.IsDerived;
+                    break;
+
+                case RelationKind.Derived | RelationKind.Synced:
+                    check = (roleType) => roleType.RelationType.IsDerived || roleType.RelationType.IsSynced;
+                    break;
+
+                default:
+                    check = (roleType) => true;
+                    break;
+            }
+
+            this.ChangeSet.RoleTypesByAssociation.TryGetValue(derivable.Id, out var changedRoleTypes);
+            if (changedRoleTypes != null)
+            {
+                if (changedRoleTypes.Any(roleType => check(roleType)))
                 {
                     return true;
                 }
@@ -193,7 +220,7 @@ namespace Allors.Domain
                         throw new ArgumentException("Object has already been derived.");
                     }
                 }
-                
+
                 this.derivationGraph.Add(derivable);
                 this.addedDerivables.Add(derivable);
 
@@ -221,7 +248,7 @@ namespace Allors.Domain
                         throw new ArgumentException("Object has already been derived.");
                     }
                 }
-                
+
                 this.addedDerivables.Add(dependent);
                 this.addedDerivables.Add(dependee);
                 this.derivationGraph.AddDependency(dependent, dependee);
@@ -249,15 +276,13 @@ namespace Allors.Domain
                 this.addedDerivables = new HashSet<IObject>();
 
                 var preparationRun = 1;
-                
+
                 this.OnStartedPreparation(preparationRun);
 
                 this.derivationGraph = this.CreateDerivationGraph(this);
                 foreach (var changedObject in changedObjects)
                 {
-                    var derivable = this.Session.Instantiate(changedObject) as Object;
-
-                    if (derivable != null)
+                    if (this.Session.Instantiate(changedObject) is Object derivable)
                     {
                         this.OnPreDeriving(derivable);
 
@@ -273,7 +298,7 @@ namespace Allors.Domain
                 {
                     preparationRun++;
                     this.OnStartedPreparation(preparationRun);
- 
+
                     var dependencyObjectsToPrepare = new HashSet<IObject>(this.addedDerivables);
                     dependencyObjectsToPrepare.ExceptWith(preparedObjects);
 
@@ -337,10 +362,5 @@ namespace Allors.Domain
         protected abstract void OnCycleDetected(Object derivable);
 
         protected abstract void OnCycleDetected(Object dependent, Object dependee);
-    }
-
-    public class DerivationConfig
-    {
-        public bool ThrowExceptionOnCycleDetected { get; set; } = false;
     }
 }

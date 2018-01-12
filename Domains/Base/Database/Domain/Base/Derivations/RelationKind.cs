@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------------------------------------------
-// <copyright file="SessionExtension.cs" company="Allors bvba">
+// <copyright file="RelationKind.cs" company="Allors bvba">
 //   Copyright 2002-2017 Allors bvba.
 //
 // Dual Licensed under
@@ -21,31 +21,14 @@
 namespace Allors.Domain
 {
     using System;
-    using System.Collections.Concurrent;
-    using System.Collections.Generic;
 
-    using Allors.Services;
-
-    using Microsoft.Extensions.DependencyInjection;
-
-    public static partial class SessionExtension
+    [Flags]
+    public enum RelationKind
     {
-        public static IDictionary<long, T> GetCache<T>(this ISession @this)
-        {
-            return GetCache<T>(@this, typeof(T));
-        }
+        Regular = 1,
 
-        public static IDictionary<long, T> GetCache<T>(this ISession @this, Type type)
-        {
-            var caches = @this.ServiceProvider.GetRequiredService<ICacheService>();
-            var cache = caches.Get<T>(type);
-            if (cache == null)
-            {
-                cache = new ConcurrentDictionary<long, T>();
-                caches.Set(type, cache);
-            }
+        Derived = 2,
 
-            return cache;
-        }
+        Synced = 4,
     }
 }

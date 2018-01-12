@@ -1,8 +1,7 @@
-﻿using System.IO;
-
-namespace Allors.Console
+﻿namespace Allors.Console
 {
     using System.Data;
+    using System.IO;
 
     using Allors.Adapters.Object.SqlClient;
     using Allors.Domain;

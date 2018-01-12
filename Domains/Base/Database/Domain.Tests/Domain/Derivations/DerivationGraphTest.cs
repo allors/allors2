@@ -44,7 +44,7 @@ namespace Tests
             x.AddDependency(y);
             y.AddDependency(z);
 
-            var derivation = new Derivation(this.Session);
+            var derivation = new Derivation(this.Session, new DerivationConfig { ThrowExceptionOnCycleDetected = true});
 
             var sequence = new List<IObject>();
             derivation["sequence"] = sequence;
@@ -74,7 +74,7 @@ namespace Tests
             b.AddDependency(d);
             c.AddDependency(d);
 
-            var derivation = new Derivation(this.Session);
+            var derivation = new Derivation(this.Session, new DerivationConfig { ThrowExceptionOnCycleDetected = true});
 
             var sequence = new List<IObject>();
             derivation["sequence"] = sequence;
@@ -100,7 +100,7 @@ namespace Tests
             left.Middle = middle;
             middle.Right = right;
 
-            var derivation = new Derivation(this.Session);
+            var derivation = new Derivation(this.Session, new DerivationConfig { ThrowExceptionOnCycleDetected = true});
             derivation.Derive();
             this.Session.Commit();
 
@@ -112,7 +112,7 @@ namespace Tests
             middle.Counter += 1;
             right.Counter += 1;
 
-            derivation = new Derivation(this.Session);
+            derivation = new Derivation(this.Session, new DerivationConfig { ThrowExceptionOnCycleDetected = true});
             derivation.Derive();
             this.Session.Commit();
 
@@ -124,7 +124,7 @@ namespace Tests
             left.Counter += 1;
             right.Counter += 1;
 
-            derivation = new Derivation(this.Session);
+            derivation = new Derivation(this.Session, new DerivationConfig { ThrowExceptionOnCycleDetected = true});
             derivation.Derive();
             this.Session.Commit();
 
@@ -136,7 +136,7 @@ namespace Tests
             middle.Counter += 1;
             left.Counter += 1;
 
-            derivation = new Derivation(this.Session);
+            derivation = new Derivation(this.Session, new DerivationConfig { ThrowExceptionOnCycleDetected = true});
             derivation.Derive();
             this.Session.Commit();
 
@@ -148,7 +148,7 @@ namespace Tests
             left.Counter += 1;
             middle.Counter += 1;
 
-            derivation = new Derivation(this.Session);
+            derivation = new Derivation(this.Session, new DerivationConfig { ThrowExceptionOnCycleDetected = true});
             derivation.Derive();
             this.Session.Commit();
 
@@ -159,7 +159,7 @@ namespace Tests
             left.Counter += 1;
             middle.Counter += 1;
 
-            derivation = new Derivation(this.Session);
+            derivation = new Derivation(this.Session, new DerivationConfig { ThrowExceptionOnCycleDetected = true});
             derivation.Derive();
             this.Session.Commit();
 
@@ -170,7 +170,7 @@ namespace Tests
             middle.Counter += 1;
             left.Counter += 1;
 
-            derivation = new Derivation(this.Session);
+            derivation = new Derivation(this.Session, new DerivationConfig { ThrowExceptionOnCycleDetected = true});
             derivation.Derive();
             this.Session.Commit();
 
@@ -181,7 +181,7 @@ namespace Tests
             right.Counter += 1;
             middle.Counter += 1;
 
-            derivation = new Derivation(this.Session);
+            derivation = new Derivation(this.Session, new DerivationConfig { ThrowExceptionOnCycleDetected = true});
             derivation.Derive();
             this.Session.Commit();
 
@@ -192,7 +192,7 @@ namespace Tests
             middle.Counter += 1;
             right.Counter += 1;
             
-            derivation = new Derivation(this.Session);
+            derivation = new Derivation(this.Session, new DerivationConfig { ThrowExceptionOnCycleDetected = true});
             derivation.Derive();
             this.Session.Commit();
 
@@ -202,7 +202,7 @@ namespace Tests
 
             middle.Counter += 1;
             
-            derivation = new Derivation(this.Session);
+            derivation = new Derivation(this.Session, new DerivationConfig { ThrowExceptionOnCycleDetected = true});
             derivation.Derive();
             this.Session.Commit();
 
@@ -220,7 +220,7 @@ namespace Tests
 
             var errorThrown = false;
 
-            var derivation = new Derivation(this.Session);
+            var derivation = new Derivation(this.Session, new DerivationConfig { ThrowExceptionOnCycleDetected = true});
             try
             {
                 derivation.Derive();
@@ -234,6 +234,58 @@ namespace Tests
 
             Assert.Equal(1, left.DerivationCount);
             Assert.Equal(0, left.Middle.DerivationCount);
+        }
+
+        [Fact]
+        public void NoCyclicDependencyDuringSyncCreate()
+        {
+            var syncRoot = new SyncRootBuilder(this.Session).Build();
+
+            var errorThrown = false;
+
+            var derivation = new Derivation(this.Session, new DerivationConfig { ThrowExceptionOnCycleDetected = true});
+            try
+            {
+                derivation.Derive();
+            }
+            catch(Exception)
+            {
+                errorThrown = true;
+            }
+
+            Assert.False(errorThrown);
+
+            Assert.Equal(1, syncRoot.DerivationCount);
+            Assert.Equal(1, syncRoot.SyncDepth1.DerivationCount);
+            Assert.Equal(1, syncRoot.SyncDepth1.SyncDepth2.DerivationCount);
+        }
+
+        [Fact]
+        public void NoCyclicDependencyDuringSyncExisting()
+        {
+            var syncRoot = new SyncRootBuilder(this.Session).Build();
+            this.Session.Derive();
+            this.Session.Commit();
+
+            var errorThrown = false;
+
+            syncRoot.SyncDepth1.SyncDepth2.Value = 1;
+
+            var derivation = new Derivation(this.Session, new DerivationConfig { ThrowExceptionOnCycleDetected = true});
+            try
+            {
+                derivation.Derive();
+            }
+            catch(Exception)
+            {
+                errorThrown = true;
+            }
+
+            Assert.False(errorThrown);
+
+            Assert.Equal(2, syncRoot.DerivationCount);
+            Assert.Equal(2, syncRoot.SyncDepth1.DerivationCount);
+            Assert.Equal(2, syncRoot.SyncDepth1.SyncDepth2.DerivationCount);
         }
     }
 }

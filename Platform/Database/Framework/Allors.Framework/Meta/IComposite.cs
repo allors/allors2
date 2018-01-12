@@ -48,5 +48,9 @@ namespace Allors.Meta
         bool ExistExclusiveClass { get; }
 
         IClass ExclusiveClass { get; }
+
+        bool IsSynced { get;}
+
+        bool AssignedIsSynced { get; set; }
     }
 }

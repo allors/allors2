@@ -80,7 +80,6 @@ namespace Allors.Workspace.Meta
             }
         }
 
-
         public ConcreteMethodType[] ConcreteMethodTypes
         {
             get
