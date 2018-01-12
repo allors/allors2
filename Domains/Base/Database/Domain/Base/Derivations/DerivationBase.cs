@@ -123,8 +123,12 @@ namespace Allors.Domain
 
         public bool IsModified(Object @object)
         {
-            var id = @object.Id;
-            return this.markedAsModified.Contains(id) || this.ChangeSet.Associations.Contains(id) || this.ChangeSet.Created.Contains(id);
+            return this.IsMarkedAsModified(@object) || this.IsCreated(@object) || this.HasChangedRoles(@object);
+        }
+
+        public bool IsModified(Object @object, RelationKind kind)
+        {
+            return this.IsMarkedAsModified(@object) || this.IsCreated(@object) || this.HasChangedRoles(@object, kind);
         }
 
         public bool IsCreated(Object derivable)
@@ -143,7 +147,7 @@ namespace Allors.Domain
             this.ChangeSet.RoleTypesByAssociation.TryGetValue(derivable.Id, out var changedRoleTypes);
             if (changedRoleTypes != null)
             {
-                if (roleTypes.Any(roleType => changedRoleTypes.Contains(roleType)))
+                if (roleTypes.Length == 0 || roleTypes.Any(roleType => changedRoleTypes.Contains(roleType)))
                 {
                     return true;
                 }

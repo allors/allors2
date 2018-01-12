@@ -70,6 +70,8 @@ namespace Allors.Domain
         /// <returns>a value indicating if this derivable object is modified</returns>
         bool IsModified(Object derivable);
 
+        bool IsModified(Object derivable, RelationKind kind);
+
         bool IsCreated(Object derivable);
 
         bool IsMarkedAsModified(Object derivable);

@@ -26,7 +26,7 @@ namespace Allors.Domain
         {
             var derivation = method.Derivation;
 
-            if (!this.strategy.IsNewInSession && (derivation.IsMarkedAsModified(this) || derivation.HasChangedRoles(this, RelationKind.Regular)))
+            if (!derivation.IsCreated(this) && derivation.IsModified(this, RelationKind.Regular))
             {
                 derivation.MarkAsModified(this.SyncRootWhereSyncDepth1);
                 derivation.AddDependency(this, this.SyncRootWhereSyncDepth1);
