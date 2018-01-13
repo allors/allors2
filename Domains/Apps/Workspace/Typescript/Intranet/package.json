@@ -30,7 +30,7 @@
     "@angular/platform-browser": "5.1.0",
     "@angular/platform-browser-dynamic": "5.1.0",
     "@angular/router": "5.1.0",
-    "@covalent/core": "1.0.0-rc.1",
+    "@covalent/core": "1.0.0-rc.2",
     "core-js": "2.4.1",
     "gridlex": "^2.6.1",
     "papaparse": "^4.3.6",
