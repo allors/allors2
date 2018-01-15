@@ -5,7 +5,7 @@ import { TdMediaService } from "@covalent/core";
 import { Subscription } from "rxjs/Subscription";
 
 import { ErrorService, Loaded, Saved, Scope, WorkspaceService } from "../../../../angular";
-import { Locale, ProductCharacteristic, Singleton } from "../../../../domain";
+import { Locale, ProductCharacteristic, Singleton, UnitOfMeasure } from "../../../../domain";
 import { Fetch, PullRequest, Query, TreeNode } from "../../../../framework";
 import { MetaDomain } from "../../../../meta";
 
@@ -23,6 +23,7 @@ export class ProductCharacteristicComponent implements OnInit, OnDestroy {
 
   public singleton: Singleton;
   public locales: Locale[];
+  public uoms: UnitOfMeasure[];
 
   private subscription: Subscription;
   private scope: Scope;
@@ -63,7 +64,12 @@ export class ProductCharacteristicComponent implements OnInit, OnDestroy {
                 new TreeNode({ roleType: m.Singleton.Locales }),
               ],
             }),
-        ];
+            new Query(
+              {
+                name: "uoms",
+                objectType: this.m.UnitOfMeasure,
+              }),
+          ];
 
         return this.scope
           .load("Pull", new PullRequest({ fetch, query }));
@@ -76,6 +82,7 @@ export class ProductCharacteristicComponent implements OnInit, OnDestroy {
         }
 
         this.singleton = loaded.collections.singletons[0] as Singleton;
+        this.uoms = loaded.collections.uoms as UnitOfMeasure[];
         this.locales = this.singleton.Locales;
       },
       (error: any) => {

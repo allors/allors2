@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------------------------------------------
-// <copyright file="Good.cs" company="Allors bvba">
+// <copyright file="ProductCharacteristic.cs" company="Allors bvba">
 //   Copyright 2002-2012 Allors bvba.
 // Dual Licensed under
 //   a) the General Public Licence v3 (GPL)
@@ -29,6 +29,35 @@ namespace Allors.Domain
             if (this.LocalisedNames.Any(x => x.Locale.Equals(defaultLocale)))
             {
                 this.Name = this.LocalisedNames.First(x => x.Locale.Equals(defaultLocale)).Text;
+            }
+
+            this.Sync();
+        }
+
+        private void Sync()
+        {
+            var supportedLocales = this.strategy.Session.GetSingleton().Locales.ToArray();
+            var existingCharacteristicValues = this.ProductCharacteristicValuesWhereProductCharacteristic.ToDictionary(d => d.Locale);
+
+            foreach (Locale supportedLocale in supportedLocales)
+            {
+                ProductCharacteristicValue productCharacteristicValue;
+                if (existingCharacteristicValues.TryGetValue(supportedLocale, out productCharacteristicValue))
+                {
+                    existingCharacteristicValues.Remove(supportedLocale);
+                }
+                else
+                {
+                    new ProductCharacteristicValueBuilder(this.strategy.Session)
+                        .WithProductCharacteristic(this)
+                        .WithLocale(supportedLocale)
+                        .Build();
+                }
+            }
+
+            foreach (ProductCharacteristicValue productCharacteristicValue in existingCharacteristicValues.Values)
+            {
+                productCharacteristicValue.Delete();
             }
         }
     }

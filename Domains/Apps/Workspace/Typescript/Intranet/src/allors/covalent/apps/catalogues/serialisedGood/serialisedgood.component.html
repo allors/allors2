@@ -64,8 +64,12 @@
           <mat-tab-group class="col" dynamicHeight="true">
             <mat-tab *ngFor="let locale of locales" [label]="locale.Name">
               <div class="grid-2_md-1">
-                <a-mat-textarea class="col" *ngFor="let productCharacteristicValue of localisedProductCharacteristicValues(locale)" [object]="productCharacteristicValue"
-                  [roleType]="m.ProductCharacteristicValue.Value" [label]="localisedName(productCharacteristicValue.ProductCharacteristic, locale)"></a-mat-textarea>
+                <div *ngFor="let productCharacteristicValue of localisedProductCharacteristicValues(locale)" class="col">
+                  <a-mat-static *ngIf="productCharacteristicValue.DerivedValue != null" [object]="productCharacteristicValue" 
+                  [roleType]="m.ProductCharacteristicValue.DerivedValue" [label]="localisedName(productCharacteristicValue.ProductCharacteristic, locale)"></a-mat-static>
+                  <a-mat-textarea *ngIf="productCharacteristicValue.DerivedValue == null" [object]="productCharacteristicValue"
+                    [roleType]="m.ProductCharacteristicValue.AssignedValue" [label]="localisedName(productCharacteristicValue.ProductCharacteristic, locale)"></a-mat-textarea>
+                </div>
               </div>
             </mat-tab>
           </mat-tab-group>

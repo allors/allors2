@@ -7,9 +7,9 @@ namespace Allors.Repository
   #region Allors
   [Id("C3A647C2-1073-4D8B-99EB-AE5293AADB6B")]
   #endregion
+  [Synced]
   public partial class ProductCharacteristicValue : AccessControlledObject, Deletable, Localised
   {
-
     #region inherited properties
 
     public Locale Locale { get; set; }
@@ -28,6 +28,7 @@ namespace Allors.Repository
     [Multiplicity(Multiplicity.ManyToOne)]
     [Required]
     [Workspace]
+    [Synced]
     public ProductCharacteristic ProductCharacteristic { get; set; }
 
     #region Allors
@@ -38,7 +39,17 @@ namespace Allors.Repository
     [Multiplicity(Multiplicity.OneToOne)]
     [Size(-1)]
     [Workspace]
-    public string Value { get; set; }
+    public string AssignedValue { get; set; }
+
+    #region Allors
+    [Id("0675493A-FB2F-4EBC-9C6C-DCF29F2C79A3")]
+    [AssociationId("419E2294-5E95-47A8-9183-A1BD676F29F3")]
+    [RoleId("EE4767C5-1315-4201-9104-3F214024A1AC")]
+        #endregion
+    [Derived]
+    [Size(-1)]
+    [Workspace]
+    public string DerivedValue { get; set; }
 
     #region inherited methods
 

@@ -4,6 +4,9 @@
     <div class="grid">
       <a-mat-localised-text class="col" [object]="productCharacteristic" [roleType]="m.ProductCharacteristic.LocalisedNames" [locales]="locales" label="Name"></a-mat-localised-text>
     </div>
+    <div class="grid-2">
+      <a-mat-select class="col" [object]="productCharacteristic" [roleType]="m.ProductCharacteristic.UnitOfMeasure" [options]="uoms" display="Name"></a-mat-select>
+    </div>
 
     <mat-divider></mat-divider>
     <mat-card-actions>

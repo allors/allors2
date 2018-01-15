@@ -9,7 +9,6 @@ namespace Allors.Repository
     #endregion
     public partial class ProductCharacteristic : Enumeration
     {
-
         #region inherited properties
 
         public LocalisedText[] LocalisedNames { get; set; }
@@ -25,6 +24,15 @@ namespace Allors.Repository
         public SecurityToken[] SecurityTokens { get; set; }
         #endregion
 
+        #region Allors
+        [Id("A141BDEF-06EF-4441-BACE-C5E3B42F755C")]
+        [AssociationId("7D8146E2-78C6-4D10-81BA-13BF6F474F0A")]
+        [RoleId("C18F7738-0988-4173-9B64-9447CC50767D")]
+        [Indexed]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Workspace]
+        public UnitOfMeasure UnitOfMeasure { get; set; }
 
         #region inherited methods
 
