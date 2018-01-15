@@ -212,8 +212,21 @@ namespace Allors.Domain
             this.markedAsModified.Add(derivable.Id);
         }
 
+        public void MarkAsModified(IEnumerable<Object> derivables)
+        {
+            foreach (var derivable in derivables)
+            {
+                this.MarkAsModified(derivable);
+            }
+        }
+
         public void AddDerivable(Object derivable)
         {
+            if (this.generation == 0)
+            {
+                throw new Exception("AddDerivable can only be called during a derivation. Use MarkAsModified() instead.");
+            }
+
             if (derivable != null)
             {
                 if (this.DerivedObjects.Contains(derivable))
@@ -242,6 +255,11 @@ namespace Allors.Domain
 
         public void AddDependency(Object dependent, Object dependee)
         {
+            if (this.generation == 0)
+            {
+                throw new Exception("AddDependency can only be called during a derivation.");
+            }
+
             if (dependent != null && dependee != null)
             {
                 if (this.DerivedObjects.Contains(dependent) || this.DerivedObjects.Contains(dependee))
@@ -263,6 +281,11 @@ namespace Allors.Domain
 
         public IValidation Derive()
         {
+            if (this.generation != 0)
+            {
+                throw new Exception("Derive can only be called once. Create a new Derivation object.");
+            }
+
             var changedObjectIds = new HashSet<long>(this.ChangeSet.Associations);
             changedObjectIds.UnionWith(this.ChangeSet.Roles);
             changedObjectIds.UnionWith(this.ChangeSet.Created);

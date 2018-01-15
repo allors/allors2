@@ -8,7 +8,8 @@
           (remove)="remove($event)"
           requireMatch
           [disabled]="disabled"
-          [readOnly]="readonly"
+          [chipAddition]="!readonly"
+          [chipRemoval]="!readonly"
           [required]="required">
 
   <ng-template td-chip let-chip="chip">

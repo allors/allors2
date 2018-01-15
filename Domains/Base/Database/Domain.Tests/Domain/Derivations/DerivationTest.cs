@@ -25,11 +25,27 @@ namespace Tests
 {
     using Allors;
     using Allors.Domain;
+    using Allors.Domain.NonLogging;
 
     using Xunit;
     
     public class DerivationTest : DomainTest
     {
+        [Fact]
+        public void MarkAsModified()
+        {
+            var first = new C1Builder(this.Session).Build();
+            this.Session.Commit();
+
+            Assert.Equal(0, first.DerivationCount);
+
+            var derivation = new Derivation(this.Session);
+            derivation.MarkAsModified(first);
+            derivation.Derive();
+
+            Assert.Equal(1, first.DerivationCount);
+        }
+
         [Fact]
         public void Next()
         {
